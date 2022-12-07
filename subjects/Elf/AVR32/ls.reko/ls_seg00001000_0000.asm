@@ -540,7 +540,7 @@ fn000027FC proc
 	mov	r11,r3
 	mov	r10,r2
 	mov	r5,r12
-	rcall	00002744
+	rcall	fn00002744
 	brne	0000281E
 
 l00002818:
@@ -566,7 +566,7 @@ fn00002824 proc
 	mov	r11,r3
 	mov	r10,r2
 	mov	r5,r12
-	rcall	00002744
+	rcall	fn00002744
 	brne	00002846
 
 l00002840:
@@ -592,7 +592,7 @@ fn0000284C proc
 	mov	r11,r3
 	mov	r10,r2
 	mov	r5,r12
-	rcall	00002744
+	rcall	fn00002744
 	brne	0000286E
 
 l00002868:
@@ -950,7 +950,7 @@ l00002C40:
 	ld.w	r12,r6[1200]
 	mcall	r6[20]
 	ld.w	r12,r7[0]
-	rcall	00006E94
+	rcall	fn00006E94
 	ld.w	r8,r6[1196]
 	st.w	--sp,r8
 	st.w	--sp,r12
@@ -966,14 +966,14 @@ l00002C40:
 	ld.w	r12,r6[1180]
 	mcall	r6[20]
 	mov	r12,00000005
-	rcall	00008A8C
+	rcall	fn00008A8C
 	sub	sp,FFFFFFEC
 	castu.b	r12
 	breq	00002CB4
 
 l00002CA2:
 	ld.w	r12,r7[0]
-	rcall	00006E94
+	rcall	fn00006E94
 	st.w	--sp,r12
 	ld.w	r12,r6[1176]
 	mcall	r6[88]
@@ -1144,7 +1144,7 @@ fn00002DB4 proc
 	pushm	r4-r7,lr
 	lddpc	r6,pc[56]
 	rsub	r6,pc
-	rcall	00002A70
+	rcall	fn00002A70
 	bfextu	r7,r12,+00000000,+00000008
 	breq	00002DE4
 
@@ -1625,7 +1625,7 @@ fn00003094 proc
 	rsub	r6,pc
 	mov	r5,r12
 	mov	r12,00000008
-	rcall	0000B95C
+	rcall	fn0000B95C
 	ld.w	r8,r6[8]
 	ld.w	r9,r8[-48]
 	st.w	r12[0],r5
@@ -1648,11 +1648,11 @@ fn000030B4 proc
 	brcc	000030C8
 
 l000030C4:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l000030C8:
 	mul	r12,r11,r12
-	rcall	0000B95C
+	rcall	fn0000B95C
 	popm	r4-r7,pc
 000030D2       D7 03 FF FE E0 C8                           ......        
 
@@ -1715,7 +1715,7 @@ fn00003120 proc
 	mov	r7,r11
 	mov	r12,00000010
 	mov	r3,r10
-	rcall	0000B95C
+	rcall	fn0000B95C
 	mov	r5,r12
 	cp.w	r7,00000000
 	brne	0000313C
@@ -1726,7 +1726,7 @@ l00003138:
 
 l0000313C:
 	mov	r12,r7
-	rcall	0000B994
+	rcall	fn0000B994
 
 l00003142:
 	st.w	r5[4],r12
@@ -1739,7 +1739,7 @@ l00003148:
 
 l0000314C:
 	mov	r12,r4
-	rcall	0000B994
+	rcall	fn0000B994
 
 l00003152:
 	ld.w	r8,r6[8]
@@ -1766,7 +1766,7 @@ fn00003168 proc
 	mov	r2,r12
 	mov	r12,r10
 	mov	r3,r11
-	rcall	0000A778
+	rcall	fn0000A778
 	mov	r5,r12
 	mcall	r6[28]
 	st.w	--sp,r5
@@ -1775,7 +1775,7 @@ fn00003168 proc
 	mov	r12,00000000
 	mcall	r6[68]
 	mov	r12,r2
-	rcall	000027D8
+	rcall	fn000027D8
 	sub	sp,FFFFFFFC
 	popm	r0-r3,r4-r7,pc
 00003194             FF FE E1 7C                             ...|        
@@ -1796,7 +1796,7 @@ fn00003198 proc
 
 l000031A6:
 	mov	r11,00000000
-	rcall	00006AA8
+	rcall	fn00006AA8
 	ld.w	r8,r6[40]
 	sub	r7,r12
 	ld.w	r11,r8[0]
@@ -1868,11 +1868,11 @@ fn00003210 proc
 	brcc	00003224
 
 l00003220:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l00003224:
 	mul	r11,r10,r11
-	rcall	0000B904
+	rcall	fn0000B904
 	popm	r4-r7,pc
 0000322E                                           D7 03               ..
 00003230 FF FE E2 24                                     ...$            
@@ -1939,7 +1939,7 @@ fn000032D0 proc
 
 l000032DE:
 	mov	r11,00000000
-	rcall	00006AA8
+	rcall	fn00006AA8
 	mov	r8,00000000
 	max	r12,r12,r8
 	rjmp	00003302
@@ -1979,11 +1979,11 @@ l00003322:
 	rjmp	0000332A
 
 l00003326:
-	rcall	00009B5C
+	rcall	fn00009B5C
 
 l0000332A:
 	mov	r11,r7
-	rcall	000032D0
+	rcall	fn000032D0
 	popm	r4-r7,pc
 00003330 FF FE E3 20                                     ...             
 
@@ -2028,7 +2028,7 @@ l00003370:
 l0000337A:
 	ld.w	r12,r10[20]
 	mov	r10,000000F8
-	rcall	00003210
+	rcall	fn00003210
 	ld.w	r9,r6[8]
 	ld.w	r8,r9[-36]
 	st.w	r9[20],r12
@@ -2138,7 +2138,7 @@ l00003432:
 
 l0000343E:
 	mov	r12,0000000E
-	rcall	000030D8
+	rcall	fn000030D8
 	cp.b	r12,r3
 	breq	000038B0
 
@@ -2299,7 +2299,7 @@ l0000353E:
 	ld.w	r11,r6[1148]
 	mov	r10,r2
 	mov	r12,r0
-	rcall	00003168
+	rcall	fn00003168
 	cp.w	r0,00000000
 	breq	00003554
 
@@ -2311,7 +2311,7 @@ l0000354C:
 l00003554:
 	ld.w	r12,r7[-680]
 	mov	r0,00000000
-	rcall	0000B994
+	rcall	fn0000B994
 	mov	r1,00000000
 	ld.w	r9,r6[8]
 	br	000038E4
@@ -2352,7 +2352,7 @@ l000035A2:
 l000035A6:
 	sub	r11,r4,FFFFFFF8
 	mov	r12,r2
-	rcall	000066CC
+	rcall	fn000066CC
 	lsr	r1,r12,0000001F
 	cp.w	r12,00000000
 	brle	000035C0
@@ -2379,7 +2379,7 @@ l000035C2:
 
 l000035DC:
 	mov	r12,r2
-	rcall	0000A778
+	rcall	fn0000A778
 	ld.w	r10,r6[1144]
 	st.w	--sp,r12
 	ld.w	r11,r3[0]
@@ -2408,7 +2408,7 @@ l00003606:
 l00003612:
 	ld.w	r11,r4[56]
 	mov	r12,r2
-	rcall	000066D0
+	rcall	fn000066D0
 	st.w	r4[4],r12
 	brne	0000362C
 
@@ -2417,7 +2417,7 @@ l0000361E:
 	cp.w	r0,00000000
 	srne	r12
 	mov	r10,r2
-	rcall	00003168
+	rcall	fn00003168
 
 l0000362C:
 	ld.w	r1,r4[4]
@@ -2442,7 +2442,7 @@ l00003640:
 
 l0000364A:
 	mov	r12,r1
-	rcall	0000B994
+	rcall	fn0000B994
 	mov	r3,r12
 	rjmp	0000367C
 
@@ -2453,7 +2453,7 @@ l00003654:
 	sub	r5,r2
 	sub	r12,FFFFFFFF
 	add	r12,r5
-	rcall	0000B95C
+	rcall	fn0000B95C
 	mov	r11,r2
 	mov	r10,r5
 	mov	r3,r12
@@ -2583,9 +2583,9 @@ l0000373C:
 	mov	r11,r1
 	ld.w	r9,r5[-12]
 	sub	r12,r7,000002A4
-	rcall	000093B8
+	rcall	fn000093B8
 	mov	r11,00000000
-	rcall	00006AA8
+	rcall	fn00006AA8
 	sub	sp,FFFFFFF0
 	ld.w	r8,r5[36]
 	cp.w	r8,r12
@@ -2608,7 +2608,7 @@ l00003770:
 
 l0000377A:
 	ld.w	r12,r4[32]
-	rcall	0000330C
+	rcall	fn0000330C
 	ld.w	r8,r5[44]
 	cp.w	r8,r12
 	brge	00003788
@@ -2637,11 +2637,11 @@ l000037A2:
 
 l000037A8:
 	mov	r12,r5
-	rcall	00009A5C
+	rcall	fn00009A5C
 
 l000037AE:
 	mov	r11,r5
-	rcall	000032D0
+	rcall	fn000032D0
 	ld.w	r9,r6[8]
 	ld.w	r8,r9[48]
 	cp.w	r8,r12
@@ -2659,7 +2659,7 @@ l000037BE:
 
 l000037CC:
 	ld.w	r12,r4[32]
-	rcall	0000330C
+	rcall	fn0000330C
 	ld.w	r8,r5[52]
 	cp.w	r8,r12
 	brge	000037DA
@@ -2694,7 +2694,7 @@ l000037FE:
 	ld.w	r10,r4[28]
 	mov	r11,r3
 	sub	r12,r7,00000018
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mcall	r6[16]
 	ld.w	r8,r5[40]
 	cp.w	r8,r12
@@ -2716,11 +2716,11 @@ l00003822:
 l00003828:
 	ld.d	r11:r10,r4[40]
 	sub	r2,r7,000002A4
-	rcall	00002718
+	rcall	fn00002718
 	mov	r11,r3
 	mov	r10,r12
 	mov	r12,r2
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mcall	r6[16]
 	ld.w	r8,r5[60]
 	cp.w	r8,r12
@@ -2731,11 +2731,11 @@ l00003848:
 
 l0000384A:
 	ld.d	r11:r10,r4[40]
-	rcall	0000272E
+	rcall	fn0000272E
 	mov	r11,r3
 	mov	r10,r12
 	mov	r12,r2
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mcall	r6[16]
 	ld.w	r8,r5[-64]
 	cp.w	r8,r12
@@ -2767,9 +2767,9 @@ l0000387E:
 	st.d	--sp,r9:r8
 	ld.d	r11:r10,r4[52]
 	ld.w	r9,r5[-12]
-	rcall	000093B8
+	rcall	fn000093B8
 	mov	r11,r3
-	rcall	00006AA8
+	rcall	fn00006AA8
 	sub	sp,FFFFFFF0
 	ld.w	r8,r5[-60]
 	cp.w	r8,r12
@@ -2794,7 +2794,7 @@ l000038B4:
 l000038C2:
 	ld.d	r11:r10,r4[96]
 	sub	r12,r7,000002A4
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mcall	r6[16]
 	ld.w	r8,r5[32]
 	cp.w	r8,r12
@@ -2805,7 +2805,7 @@ l000038D8:
 
 l000038DA:
 	ld.w	r12,r7[-680]
-	rcall	0000B994
+	rcall	fn0000B994
 	ld.w	r9,r6[8]
 
 l000038E4:
@@ -2856,12 +2856,12 @@ l00003926:
 	rjmp	0000392E
 
 l0000392A:
-	rcall	00009B5C
+	rcall	fn00009B5C
 
 l0000392E:
 	mov	r10,r5
 	mov	r11,r7
-	rcall	00003198
+	rcall	fn00003198
 	popm	r4-r7,pc
 00003938                         FF FE E9 18                     ....    
 
@@ -2886,14 +2886,14 @@ l00003954:
 	mcall	r6[12]
 	ld.w	r12,r7[12]
 	mov	r11,0000000C
-	rcall	000030B4
+	rcall	fn000030B4
 	ld.w	r8,r7[12]
 	add	r8,r8,r8<<1
 	st.w	r7[132],r8
 	st.w	r7[16],r12
 
 l0000396E:
-	rcall	00002A4C
+	rcall	fn00002A4C
 	ld.w	r8,r7[136]
 	cp.w	r8,FFFFFFFF
 	breq	000039E4
@@ -2918,7 +2918,7 @@ l0000398E:
 	mcall	r6[60]
 
 l000039A4:
-	rcall	00002A4C
+	rcall	fn00002A4C
 	mov	r12,00000001
 
 l000039AA:
@@ -2946,7 +2946,7 @@ l000039BC:
 	ld.w	r12,r11[16]
 	ld.w	r10,r9[r8<<2]
 	ld.w	r11,r11[12]
-	rcall	00009D6C
+	rcall	fn00009D6C
 
 l000039E4:
 	popm	r4-r7,pc
@@ -2961,7 +2961,7 @@ fn00003A0C proc
 	rsub	r6,pc
 	ld.w	r11,r11[0]
 	ld.w	r12,r12[0]
-	rcall	00006814
+	rcall	fn00006814
 	popm	r4-r7,pc
 00003A1C                                     FF FE EA 20             ... 
 00003A20 D4 21 48 46 1E 26 16 98 18 9B 10 9C CF 0F D8 22 .!HF.&........."
@@ -2990,7 +2990,7 @@ l00003A5C:
 	mov	r10,00000000
 	mov	r11,r12
 	mov	r12,r10
-	rcall	00003120
+	rcall	fn00003120
 
 l00003A66:
 	ld.w	r8,r6[8]
@@ -3016,7 +3016,7 @@ l00003A84:
 
 l00003A88:
 	ld.w	r12,r7[0]
-	rcall	00006E94
+	rcall	fn00006E94
 	mov	r8,0000002E
 	ld.ub	r9,r12[0]
 	cp.b	r9,r8
@@ -3047,17 +3047,17 @@ l00003AB8:
 	ld.w	r11,r7[4]
 	ld.w	r12,r7[0]
 	mov	r10,r1
-	rcall	00003120
+	rcall	fn00003120
 	rjmp	00003ADC
 
 l00003AC4:
 	mov	r10,00000000
 	mov	r12,r3
-	rcall	000071D4
+	rcall	fn000071D4
 	ld.w	r11,r7[4]
 	mov	r10,r1
 	mov	r5,r12
-	rcall	00003120
+	rcall	fn00003120
 	mov	r12,r5
 	mcall	r6[12]
 
@@ -3140,7 +3140,7 @@ fn00003B2C proc
 l00003B42:
 	mov	r8,00000001
 	st.b	r10[328],r8
-	rcall	00003B60
+	rcall	fn00003B60
 
 l00003B4A:
 	ld.w	r8,r6[40]
@@ -3171,13 +3171,13 @@ l00003B6E:
 
 l00003B74:
 	mov	r12,r7
-	rcall	00003B2C
+	rcall	fn00003B2C
 	sub	r12,r7,FFFFFFE8
-	rcall	00003B2C
+	rcall	fn00003B2C
 	sub	r12,r7,FFFFFFF8
 
 l00003B82:
-	rcall	00003B2C
+	rcall	fn00003B2C
 	popm	r4-r7,pc
 00003B86                   D7 03 FF FE EB 74                   .....t    
 
@@ -3190,9 +3190,9 @@ fn00003B8C proc
 	rsub	r6,pc
 	ld.w	r5,r6[-56]
 	mov	r12,r5
-	rcall	00003B2C
+	rcall	fn00003B2C
 	sub	r12,r5,FFFFFFF8
-	rcall	00003B2C
+	rcall	fn00003B2C
 	popm	r4-r7,pc
 00003BA0 FF FE EB A0                                     ....            
 
@@ -3210,7 +3210,7 @@ fn00003BA4 proc
 
 l00003BB0:
 	ld.w	r12,r7[0]
-	rcall	000087C0
+	rcall	fn000087C0
 	brne	00003BBA
 
 l00003BB8:
@@ -3343,7 +3343,7 @@ fn0000418C proc
 	mov	r9,FFFFFFFF
 	mov	r11,00001000
 	mov	r12,r2
-	rcall	0000A8DC
+	rcall	fn0000A8DC
 	st.w	r7[-4116],sp
 	mov	r5,r12
 	cp.w	r12,00000FFF
@@ -3359,7 +3359,7 @@ l000041C4:
 	mov	r9,FFFFFFFF
 	mov	r12,sp
 	mov	r2,sp
-	rcall	0000A8DC
+	rcall	fn0000A8DC
 
 l000041E0:
 	ld.w	r8,r6[8]
@@ -3465,7 +3465,7 @@ l0000428E:
 
 l0000429C:
 	st.w	r7[-4120],r8
-	rcall	0000B88C
+	rcall	fn0000B88C
 	brlt	000042C2
 
 l000042A6:
@@ -3547,7 +3547,7 @@ l00004318:
 	mov	r10,00000000
 	mov	r11,r5
 	mov	r12,r2
-	rcall	00006998
+	rcall	fn00006998
 	mov	r3,r12
 	rjmp	0000434E
 
@@ -3627,7 +3627,7 @@ l00004392:
 l00004398:
 	ld.d	r11:r10,r12[96]
 	mov	r12,sp
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mcall	r6[16]
 	sub	r4,r12,FFFFFFFF
 	rjmp	000043B2
@@ -3657,7 +3657,7 @@ l000043C6:
 	mov	r2,00000200
 	mov	r3,00000000
 	st.d	--sp,r3:r2
-	rcall	000093B8
+	rcall	fn000093B8
 	mcall	r6[16]
 	sub	sp,FFFFFFF0
 	sub	r12,FFFFFFFF
@@ -3701,7 +3701,7 @@ l00004418:
 	ld.w	r10,r5[332]
 	sub	r9,sp,FFFFFD74
 	mov	r12,00000000
-	rcall	0000418C
+	rcall	fn0000418C
 	ld.w	r9,r5[24]
 	ld.w	r8,sp[652]
 	add	r5,r4,r8
@@ -3712,7 +3712,7 @@ l00004436:
 	ld.ub	r12,r7[116]
 	ld.w	r10,r7[-24]
 	ld.w	r11,r7[24]
-	rcall	00002A70
+	rcall	fn00002A70
 	mov	r8,00000000
 	cp.b	r12,r8
 	srne	r8
@@ -3757,14 +3757,14 @@ l00004484:
 	ld.w	r12,r7[344]
 	mov	r10,00000018
 	mov	r11,r3
-	rcall	00003210
+	rcall	fn00003210
 	lsl	r5,r3,00000001
 	rjmp	000044A4
 
 l00004496:
 	ld.w	r12,r7[344]
 	mov	r10,0000000C
-	rcall	00003210
+	rcall	fn00003210
 	ld.w	r5,r7[336]
 
 l000044A4:
@@ -3784,12 +3784,12 @@ l000044BA:
 	breq	000044CE
 
 l000044CA:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l000044CE:
 	mov	r11,00000004
 	lsr	r12,+00000001
-	rcall	000030B4
+	rcall	fn000030B4
 	ld.w	r10,r7[340]
 	ld.w	r9,r7[344]
 	add	r8,r10,r10<<1
@@ -3851,7 +3851,7 @@ l00004536:
 l0000453A:
 	ld.w	r8,r7[16]
 	ld.w	r12,r8[r4<<2]
-	rcall	00004374
+	rcall	fn00004374
 	ld.w	r1,r7[12]
 	ld.w	r2,r7[348]
 	ld.w	r8,r7[344]
@@ -4017,7 +4017,7 @@ l0000464A:
 l0000464E:
 	andl	r7,0049,COH
 	mov	r12,00000015
-	rcall	000030D8
+	rcall	fn000030D8
 	cp.w	r7,00000000
 	breq	00004660
 
@@ -4027,7 +4027,7 @@ l0000465C:
 
 l00004660:
 	mov	r12,00000016
-	rcall	000030D8
+	rcall	fn000030D8
 	castu.b	r12
 	breq	000046F2
 
@@ -4175,11 +4175,11 @@ l00004734:
 	ld.w	r5,r6[-56]
 	mov	r2,00000001
 	mov	r12,r5
-	rcall	00003B2C
+	rcall	fn00003B2C
 	mov	r12,r7
-	rcall	00003B2C
+	rcall	fn00003B2C
 	sub	r12,r5,FFFFFFF8
-	rcall	00003B2C
+	rcall	fn00003B2C
 	rjmp	00004750
 
 l0000474E:
@@ -4223,7 +4223,7 @@ l00004782:
 	ld.w	r12,r8[0]
 	mov	r11,r1
 	mov	r9,00000000
-	rcall	0000418C
+	rcall	fn0000418C
 	ld.w	r8,r7[-52]
 	add	r8,r12,r8
 	st.w	r7[76],r8
@@ -4271,7 +4271,7 @@ l000047D6:
 	breq	000047E6
 
 l000047E2:
-	rcall	00003B8C
+	rcall	fn00003B8C
 
 l000047E6:
 	ld.w	r8,r6[40]
@@ -4312,7 +4312,7 @@ l00004822:
 	brne	000047D6
 
 l0000482C:
-	rcall	00003B60
+	rcall	fn00003B60
 	ld.w	r11,r5[348]
 	sub	r9,r0,00000001
 	add	r9,r3
@@ -4325,7 +4325,7 @@ l0000482C:
 l00004848:
 	ld.w	r12,r6[-56]
 	sub	r12,r12,FFFFFF48
-	rcall	00003B2C
+	rcall	fn00003B2C
 	rjmp	0000485E
 
 l00004854:
@@ -4364,7 +4364,7 @@ fn00004864 proc
 l00004880:
 	ld.d	r11:r10,r12[96]
 	mov	r12,sp
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	ld.w	r8,r5[-20]
 	mov	r9,r12
 	cp.w	r8,00000004
@@ -4400,7 +4400,7 @@ l000048B4:
 	mov	r2,00000200
 	mov	r3,00000000
 	st.d	--sp,r3:r2
-	rcall	000093B8
+	rcall	fn000093B8
 	sub	sp,FFFFFFF0
 	ld.w	r8,r5[-20]
 	mov	r9,r12
@@ -4472,7 +4472,7 @@ l00004932:
 	st.w	--sp,r4
 	st.w	--sp,r5
 	st.w	--sp,lr
-	rcall	000045F0
+	rcall	fn000045F0
 	sub	sp,FFFFFFF4
 	ld.w	r8,r6[8]
 	ld.w	r8,r8[24]
@@ -4484,7 +4484,7 @@ l0000494C:
 	ld.ub	r12,r7[116]
 	ld.w	r10,r7[-24]
 	ld.w	r11,r7[24]
-	rcall	00002DB4
+	rcall	fn00002DB4
 	castu.b	r12
 	add	r3,r12
 
@@ -4549,7 +4549,7 @@ l000049B4:
 	ld.w	r8,r9[16]
 	mov	r11,00000000
 	ld.w	r12,r8[r7<<2]
-	rcall	00004864
+	rcall	fn00004864
 	ld.w	r8,r6[-64]
 	ld.w	r11,r8[0]
 	ld.w	r9,r11[16]
@@ -4581,7 +4581,7 @@ l000049E2:
 
 l000049E6:
 	mov	r12,00000001
-	rcall	00004458
+	rcall	fn00004458
 	ld.w	r9,r7[12]
 	ld.w	r10,r7[344]
 	divu	r8,r9,r12
@@ -4613,7 +4613,7 @@ l00004A20:
 	lddsp	r8,sp[32]
 	mov	r12,r5
 	add	r4,r8
-	rcall	00004374
+	rcall	fn00004374
 	lddsp	r11,sp[16]
 	lddsp	r10,sp[36]
 	stdsp	sp[8],r12
@@ -4623,7 +4623,7 @@ l00004A20:
 	mov	r11,r2
 	sub	r10,FFFFFFFC
 	stdsp	sp[36],r10
-	rcall	00004864
+	rcall	fn00004864
 	ld.w	r8,r3[12]
 	cp.w	r7,r8
 	brcc	00004A62
@@ -4633,7 +4633,7 @@ l00004A50:
 	add	r5,r1,r2
 	add	r12,r2
 	mov	r11,r5
-	rcall	00002D38
+	rcall	fn00002D38
 	mov	r2,r5
 	rjmp	00004A20
 
@@ -4671,7 +4671,7 @@ l00004A88:
 
 l00004A90:
 	mov	r12,00000000
-	rcall	00004458
+	rcall	fn00004458
 	mov	r0,00000001
 	ld.w	r8,r7[16]
 	ld.w	r9,r7[344]
@@ -4682,7 +4682,7 @@ l00004A90:
 	mov	r1,r12
 	mov	r12,r5
 	stdsp	sp[24],r8
-	rcall	00004374
+	rcall	fn00004374
 	lddsp	r11,sp[24]
 	mov	r10,00000000
 	ld.w	r8,r11[8]
@@ -4691,7 +4691,7 @@ l00004A90:
 	mov	r4,r12
 	mov	r11,r10
 	mov	r12,r5
-	rcall	00004864
+	rcall	fn00004864
 	rjmp	00004B26
 
 l00004AC8:
@@ -4726,7 +4726,7 @@ l00004AF2:
 	add	r5,r7,r9
 	add	r12,r4,r9
 	mov	r11,r5
-	rcall	00002D38
+	rcall	fn00002D38
 	stdsp	sp[28],r5
 
 l00004B04:
@@ -4736,9 +4736,9 @@ l00004B04:
 	ld.w	r5,r8[r0<<2]
 	sub	r0,FFFFFFFF
 	mov	r12,r5
-	rcall	00004864
+	rcall	fn00004864
 	mov	r12,r5
-	rcall	00004374
+	rcall	fn00004374
 	lddsp	r11,sp[24]
 	lddsp	r10,sp[20]
 	ld.w	r8,r11[8]
@@ -4758,7 +4758,7 @@ l00004B30:
 	ld.w	r8,r7[16]
 	ld.w	r3,r8[r4<<2]
 	mov	r12,r3
-	rcall	00004374
+	rcall	fn00004374
 	mov	r2,r12
 	cp.w	r4,00000000
 	breq	00004B8C
@@ -4814,7 +4814,7 @@ l00004B86:
 l00004B8C:
 	mov	r11,r5
 	mov	r12,r3
-	rcall	00004864
+	rcall	fn00004864
 	add	r5,r2
 	sub	r4,FFFFFFFF
 
@@ -4854,7 +4854,7 @@ l00004BC0:
 l00004BCE:
 	sub	r11,sp,FFFFEB24
 	sub	r12,r7,FFFFFFF8
-	rcall	00007130
+	rcall	fn00007130
 	rjmp	00004BFC
 
 l00004BDC:
@@ -4954,7 +4954,7 @@ l00004C6A:
 
 l00004C70:
 	sub	r12,sp,FFFFF19C
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mov	r9,r12
 
 l00004C7A:
@@ -4996,7 +4996,7 @@ l00004CBA:
 	st.d	--sp,r9:r8
 	ld.d	r11:r10,r7[64]
 	ld.w	r9,lr[-12]
-	rcall	000093B8
+	rcall	fn000093B8
 	sub	sp,FFFFFFF0
 
 l00004CD8:
@@ -5004,7 +5004,7 @@ l00004CD8:
 	mov	r11,00000000
 	ld.w	r5,r8[36]
 	mov	r3,r12
-	rcall	00006AA8
+	rcall	fn00006AA8
 	sub	r5,r12
 	rjmp	00004CEE
 
@@ -5041,7 +5041,7 @@ l00004D14:
 	ld.w	r10,r7[28]
 	mov	r11,00000000
 	sub	r12,sp,FFFFF19C
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	mov	r9,r12
 
 l00004D22:
@@ -5101,7 +5101,7 @@ l00004D9C:
 	ld.ub	r10,r7[116]
 	ld.w	r11,r3[44]
 	ld.w	r12,r7[32]
-	rcall	00003904
+	rcall	fn00003904
 
 l00004DA8:
 	ld.ub	r8,r2[3]
@@ -5130,12 +5130,12 @@ l00004DCE:
 
 l00004DD2:
 	mov	r12,r5
-	rcall	00009A5C
+	rcall	fn00009A5C
 
 l00004DD8:
 	mov	r10,r4
 	mov	r11,r5
-	rcall	00003198
+	rcall	fn00003198
 
 l00004DE0:
 	ld.w	r3,r6[8]
@@ -5148,7 +5148,7 @@ l00004DEE:
 	ld.ub	r10,r7[116]
 	ld.w	r11,r3[52]
 	ld.w	r12,r7[32]
-	rcall	00003904
+	rcall	fn00003904
 
 l00004DFA:
 	ld.ub	r8,r3[112]
@@ -5160,7 +5160,7 @@ l00004E08:
 	ld.w	r10,r3[56]
 	ld.w	r12,r7[-16]
 	mov	r11,00000000
-	rcall	00003198
+	rcall	fn00003198
 
 l00004E12:
 	mov	r4,r5
@@ -5195,19 +5195,19 @@ l00004E3A:
 	sub	r5,00000002
 	sub	r5,r9
 	sub	r5,r8
-	rcall	0000272E
+	rcall	fn0000272E
 	mov	r11,00000000
 	mov	r10,r12
 	sub	r12,sp,FFFFEDB0
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	ld.w	r1,r3[-64]
 	ld.d	r11:r10,r7[40]
 	mov	r2,r12
-	rcall	00002718
+	rcall	fn00002718
 	mov	r11,00000000
 	mov	r10,r12
 	sub	r12,sp,FFFFF19C
-	rcall	0000B7D4
+	rcall	fn0000B7D4
 	ld.w	r9,r3[60]
 	mov	r8,00000000
 	max	r5,r5,r8
@@ -5236,7 +5236,7 @@ l00004E9E:
 	ld.w	r8,r6[8]
 	ld.d	r11:r10,r7[52]
 	ld.w	r9,r8[-12]
-	rcall	000093B8
+	rcall	fn000093B8
 	sub	sp,FFFFFFF0
 
 l00004EBE:
@@ -5244,7 +5244,7 @@ l00004EBE:
 	mov	r11,00000000
 	ld.w	r5,r8[-60]
 	mov	r3,r12
-	rcall	00006AA8
+	rcall	fn00006AA8
 	sub	r5,r12
 	rjmp	00004ED4
 
@@ -5269,7 +5269,7 @@ l00004EE2:
 
 l00004EE8:
 	sub	r12,sp,FFFFEB18
-	rcall	00008A6C
+	rcall	fn00008A6C
 	mov	r8,00000001
 	st.b	r4[0],r8
 	ld.ub	r9,r7[116]
@@ -5286,12 +5286,12 @@ l00004F06:
 	ld.w	r5,r6[8]
 	ld.d	r9:r8,sp[5352]
 	ld.d	r11:r10,r5[488]
-	rcall	00002744
+	rcall	fn00002744
 	brge	00004F1E
 
 l00004F16:
 	sub	r12,r5,FFFFFE18
-	rcall	0000895C
+	rcall	fn0000895C
 
 l00004F1E:
 	lddpc	r8,pc[40]
@@ -5304,7 +5304,7 @@ l00004F1E:
 	ld.d	r11:r10,sp[0]
 	mov	r8,r2
 	mov	r9,r3
-	rcall	00002744
+	rcall	fn00002744
 	brlt	00004F48
 
 l00004F40:
@@ -5316,7 +5316,7 @@ l00004F48:
 	ld.d	r9:r8,r5[488]
 	mov	r10,r2
 	mov	r11,r3
-	rcall	00002744
+	rcall	fn00002744
 	com	r12
 	lsr	r12,+0000001F
 	eorl	r12,0001
@@ -5331,7 +5331,7 @@ l00004F5C:
 	mov	r11,000003E9
 	mov	r12,r4
 	st.w	--sp,lr
-	rcall	0000B7B2
+	rcall	fn0000B7B2
 	sub	sp,FFFFFFFC
 	cp.w	r12,00000000
 	brne	00004F8C
@@ -5368,7 +5368,7 @@ l00004FAC:
 	sub	r12,sp,FFFFEDB0
 	mov	r10,r8
 	asr	r11,r8,0000001F
-	rcall	00009BC8
+	rcall	fn00009BC8
 	mov	r1,r12
 
 l00004FC0:
@@ -5381,7 +5381,7 @@ l00004FC8:
 	sub	r12,sp,FFFFEB0C
 	mov	r5,00000000
 	st.w	--r12,r5
-	rcall	00008A6C
+	rcall	fn00008A6C
 	breq	00005002
 
 l00004FD6:
@@ -5393,7 +5393,7 @@ l00004FD6:
 	mov	r11,000003E9
 	mov	r12,r3
 	st.w	--sp,r5
-	rcall	0000B7B2
+	rcall	fn0000B7B2
 	sub	sp,FFFFFFFC
 	cp.w	r12,00000000
 	breq	00005002
@@ -5402,7 +5402,7 @@ l00004FF6:
 	mov	r11,r12
 	mov	r10,r5
 	mov	r12,r3
-	rcall	00006998
+	rcall	fn00006998
 	st.w	r2[12],r12
 
 l00005002:
@@ -5464,7 +5464,7 @@ l00005066:
 	ld.w	r12,r7[0]
 	mov	r8,r3
 	mov	r10,lr
-	rcall	000045F0
+	rcall	fn000045F0
 	sub	sp,FFFFFFF4
 	ld.w	r10,r7[-24]
 	mov	r3,r12
@@ -5497,7 +5497,7 @@ l0000508C:
 	ld.w	r11,r7[-20]
 	ld.w	r12,r7[4]
 	sub	r10,00000001
-	rcall	000045F0
+	rcall	fn000045F0
 	sub	sp,FFFFFFF4
 	ld.w	r8,r4[24]
 	cp.w	r8,00000000
@@ -5519,7 +5519,7 @@ l000050DA:
 	ld.w	r11,r7[24]
 
 l000050E0:
-	rcall	00002DB4
+	rcall	fn00002DB4
 
 l000050E4:
 	ld.w	r8,r6[-64]
@@ -5579,7 +5579,7 @@ l00005140:
 	ld.w	r11,r6[1120]
 	lddsp	r10,sp[8]
 	lddsp	r12,sp[0]
-	rcall	00003168
+	rcall	fn00003168
 	br	0000556E
 
 l00005150:
@@ -5610,7 +5610,7 @@ l00005178:
 	lddsp	r12,sp[0]
 	ld.w	r11,r6[1116]
 	lddsp	r10,sp[8]
-	rcall	00003168
+	rcall	fn00003168
 	lddsp	r12,sp[16]
 	mcall	r6[232]
 	br	0000556E
@@ -5619,18 +5619,18 @@ l0000518E:
 	mov	r12,00000010
 	ld.d	r3:r2,sp[108]
 	ld.d	r1:r0,sp[20]
-	rcall	0000B95C
+	rcall	fn0000B95C
 	ld.w	r7,r6[8]
 	mov	r5,r12
 	st.d	r12[0],r3:r2
 	mov	r11,r5
 	st.d	r12[8],r1:r0
 	ld.w	r12,r7[324]
-	rcall	000090C0
+	rcall	fn000090C0
 	brne	000051B8
 
 l000051B4:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l000051B8:
 	cp.w	r12,r5
@@ -5640,7 +5640,7 @@ l000051BC:
 	mov	r12,r5
 	mcall	r6[12]
 	lddsp	r12,sp[8]
-	rcall	0000A778
+	rcall	fn0000A778
 	ld.w	r10,r6[1112]
 	mov	r11,r4
 	st.w	--sp,r12
@@ -5674,7 +5674,7 @@ l00005202:
 	st.d	r10[0],r9:r8
 
 l0000521E:
-	rcall	00002CBC
+	rcall	fn00002CBC
 	ld.w	r3,r6[1108]
 	mov	r0,00000000
 	mov	r1,00000000
@@ -5728,7 +5728,7 @@ l00005272:
 l00005276:
 	ld.w	r12,r11[588]
 	mov	r11,r5
-	rcall	00003BA4
+	rcall	fn00003BA4
 	castu.b	r12
 	brne	0000522A
 
@@ -5736,7 +5736,7 @@ l00005284:
 	ld.w	r8,r6[8]
 	mov	r11,r5
 	ld.w	r12,r8[-48]
-	rcall	00003BA4
+	rcall	fn00003BA4
 	castu.b	r12
 	brne	0000522A
 
@@ -5781,7 +5781,7 @@ l000052B4:
 	sub	r12,r7,FFFFFFED
 	mov	r10,00000000
 	st.w	--sp,lr
-	rcall	00003334
+	rcall	fn00003334
 	sub	sp,FFFFFFFC
 	ld.w	r9,r6[8]
 	ld.w	r8,r9[-20]
@@ -5796,9 +5796,9 @@ l000052D6:
 	brne	0000522A
 
 l000052DE:
-	rcall	0000393C
-	rcall	00004968
-	rcall	00002CBC
+	rcall	fn0000393C
+	rcall	fn00004968
+	rcall	fn00002CBC
 	rjmp	0000522A
 
 l000052EC:
@@ -5811,7 +5811,7 @@ l000052F4:
 	lddsp	r10,sp[8]
 	lddsp	r12,sp[0]
 	mov	r11,r3
-	rcall	00003168
+	rcall	fn00003168
 	lddsp	lr,sp[12]
 	ld.w	r8,lr[0]
 	cp.w	r8,0000004B
@@ -5826,10 +5826,10 @@ l00005310:
 	ld.w	r11,r6[1104]
 	lddsp	r10,sp[8]
 	lddsp	r12,sp[0]
-	rcall	00003168
+	rcall	fn00003168
 
 l0000531C:
-	rcall	0000393C
+	rcall	fn0000393C
 	ld.w	r5,r6[8]
 	ld.ub	r8,r5[592]
 	cp.b	r8,r7
@@ -5838,7 +5838,7 @@ l0000531C:
 l0000532C:
 	lddsp	r11,sp[0]
 	lddsp	r12,sp[8]
-	rcall	00003A44
+	rcall	fn00003A44
 
 l00005334:
 	ld.ub	r9,r5[592]
@@ -5933,7 +5933,7 @@ l000053D2:
 l000053E6:
 	mov	r9,00000000
 	ld.w	r5,r3[-52]
-	rcall	0000418C
+	rcall	fn0000418C
 	ld.ub	r9,r3[356]
 	mov	r8,00000000
 	add	r12,r5
@@ -6040,7 +6040,7 @@ l000054A6:
 	mov	r3,00000000
 	mov	r2,00000200
 	st.d	--sp,r3:r2
-	rcall	000093B8
+	rcall	fn000093B8
 	ld.w	r8,r6[40]
 	ld.w	r11,r8[0]
 	mov	r3,r12
@@ -6081,7 +6081,7 @@ l0000550A:
 	breq	0000556E
 
 l00005512:
-	rcall	00004968
+	rcall	fn00004968
 	rjmp	0000556E
 
 l00005518:
@@ -6536,7 +6536,7 @@ l00006776:
 	breq	00006794
 
 l0000677A:
-	rcall	0000BCB0
+	rcall	fn0000BCB0
 	castu.b	r12
 	brne	000067C4
 
@@ -6572,7 +6572,7 @@ l000067A8:
 	rjmp	000067C6
 
 l000067AC:
-	rcall	0000BC98
+	rcall	fn0000BC98
 	castu.b	r12
 	brne	000067C6
 
@@ -6615,7 +6615,7 @@ fn000067DC proc
 	lddpc	r6,pc[52]
 	rsub	r6,pc
 	mov	r7,r12
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	breq	000067F0
 
@@ -6625,7 +6625,7 @@ l000067EC:
 
 l000067F0:
 	mov	r12,r7
-	rcall	0000BCB0
+	rcall	fn0000BCB0
 	castu.b	r12
 	brne	0000680C
 
@@ -6687,10 +6687,10 @@ l0000684E:
 	sub	r12,sp,FFFFFFF0
 	stdsp	sp[16],r2
 	stdsp	sp[12],r4
-	rcall	00006768
+	rcall	fn00006768
 	mov	r7,r12
 	sub	r12,sp,FFFFFFF4
-	rcall	00006768
+	rcall	fn00006768
 	cp.w	r7,00000000
 	breq	00006868
 
@@ -6755,7 +6755,7 @@ l000068AA:
 
 l000068AE:
 	ld.ub	r12,r7[0]
-	rcall	000067DC
+	rcall	fn000067DC
 	lddsp	r9,sp[4]
 	mov	r5,r12
 	cp.w	r1,r9
@@ -6767,7 +6767,7 @@ l000068BA:
 
 l000068BE:
 	ld.ub	r12,r3[0]
-	rcall	000067DC
+	rcall	fn000067DC
 
 l000068C2:
 	sub	r3,FFFFFFFF
@@ -6794,7 +6794,7 @@ l000068D8:
 
 l000068DE:
 	ld.ub	r12,r7[0]
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	breq	000068AE
 
@@ -6809,7 +6809,7 @@ l000068EE:
 
 l000068F4:
 	ld.ub	r12,r3[0]
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	breq	000068A4
 
@@ -6862,19 +6862,19 @@ l00006940:
 
 l00006944:
 	ld.ub	r12,r7[0]
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	breq	00006958
 
 l0000694E:
 	ld.ub	r12,r5[0]
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	brne	00006930
 
 l00006958:
 	ld.ub	r12,r7[0]
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	breq	00006966
 
@@ -6884,7 +6884,7 @@ l00006962:
 
 l00006966:
 	ld.ub	r12,r4[r1]
-	rcall	0000BCDC
+	rcall	fn0000BCDC
 	castu.b	r12
 	brne	0000698C
 
@@ -7028,7 +7028,7 @@ l00006A42:
 
 l00006A48:
 	lddsp	r12,sp[8]
-	rcall	0000B88C
+	rcall	fn0000B88C
 	brlt	00006A54
 
 l00006A50:
@@ -7112,7 +7112,7 @@ fn00006AA8 proc
 	mov	r10,r5
 	mov	r11,r12
 	mov	r12,r3
-	rcall	00006998
+	rcall	fn00006998
 	popm	r0-r3,r4-r7,pc
 00006AC0 FF FF 1A BC                                     ....            
 
@@ -7318,7 +7318,7 @@ l00006C50:
 
 l00006C56:
 	mov	r12,r7
-	rcall	0000B818
+	rcall	fn0000B818
 	sub	sp,FFFFFFF8
 	popm	r4-r7,pc
 00006C60 FF FF 1B 72                                     ...r            
@@ -7331,7 +7331,7 @@ fn00006C64 proc
 	rsub	r6,pc
 	sub	r8,sp,FFFFFFE8
 	stdsp	sp[0],r8
-	rcall	00006B5C
+	rcall	fn00006B5C
 	sub	sp,FFFFFFFC
 	popm	r4-r7,pc
 00006C78                         FF FF 1C 7A 43 6F 70 79         ...zCopy
@@ -7369,7 +7369,7 @@ l00006CD0:
 	lddpc	r6,pc[16]
 	rsub	r6,pc
 	mov	r12,00000001
-	rcall	00002B30
+	rcall	fn00002B30
 	popm	r4-r7,pc
 00006CDE                                           D7 03               ..
 00006CE0 FF FF 1C E4 D4 31 48 B6 1E 26 18 92 12 93 16 95 .....1H..&......
@@ -7471,12 +7471,12 @@ fn00006D9C proc
 	moveq	r5,r8
 
 l00006DB6:
-	rcall	00009D80
+	rcall	fn00009D80
 	mov	r10,r2
 	mov	r3,r12
 	mov	r11,00000006
 	mov	r12,00000000
-	rcall	0000A7C8
+	rcall	fn0000A7C8
 	st.w	--sp,r3
 	mov	r11,00000000
 	st.w	--sp,r12
@@ -7587,18 +7587,18 @@ fn00006E5C proc
 	mov	r12,r7
 	mov	r5,r8
 	lddsp	r1,sp[36]
-	rcall	00006DDC
+	rcall	fn00006DDC
 	brge	00006E8E
 
 l00006E7A:
 	mov	r10,r12
 	mov	r11,r7
 	mov	r12,r3
-	rcall	00006D9C
+	rcall	fn00006D9C
 	mov	r12,r2
 	mov	r10,r5
 	mov	r11,r4
-	rcall	00006D14
+	rcall	fn00006D14
 	icall	r1
 	mov	r12,FFFFFFFF
 
@@ -7917,7 +7917,7 @@ fn00007130 proc
 	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r12,r12[16]
-	rcall	00006FF8
+	rcall	fn00006FF8
 	popm	r4-r7,pc
 0000713C                                     FF FF 21 44             ..!D
 
@@ -7932,9 +7932,9 @@ fn00007140 proc
 	mov	r0,r11
 	stdsp	sp[0],r10
 	mov	r1,r12
-	rcall	00006E94
+	rcall	fn00006E94
 	mov	r7,r12
-	rcall	00006ED4
+	rcall	fn00006ED4
 	sub	r8,r7,r1
 	add	r2,r8,r12
 	cp.w	r12,00000000
@@ -8016,11 +8016,11 @@ fn000071D4 proc
 	pushm	r4-r7,lr
 	lddpc	r6,pc[16]
 	rsub	r6,pc
-	rcall	00007140
+	rcall	fn00007140
 	brne	000071E2
 
 l000071DE:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l000071E2:
 	popm	r4-r7,pc
@@ -8132,7 +8132,7 @@ l00007270:
 	brne	00007282
 
 l0000727C:
-	rcall	000071E8
+	rcall	fn000071E8
 	mov	r7,r12
 	rjmp	000071F6
 
@@ -8265,7 +8265,7 @@ l00007330:
 	brne	00007344
 
 l0000733E:
-	rcall	00007294
+	rcall	fn00007294
 	mov	r7,r12
 	rjmp	000072A2
 
@@ -8588,7 +8588,7 @@ l00007590:
 	mov	r10,r0
 	mov	r11,r1
 	mov	r12,r4
-	rcall	00007754
+	rcall	fn00007754
 	breq	0000773A
 
 l000075A2:
@@ -8609,7 +8609,7 @@ l000075BC:
 	mov	r10,r5
 	mov	r11,r1
 	st.w	r7[-32],r9
-	rcall	00007754
+	rcall	fn00007754
 	brne	0000764A
 
 l000075CA:
@@ -8650,7 +8650,7 @@ l000075FA:
 	mov	r11,r5
 	mov	r10,r0
 	mov	r12,r4
-	rcall	00007754
+	rcall	fn00007754
 	breq	0000773A
 
 l0000760C:
@@ -8688,7 +8688,7 @@ l0000763A:
 	mov	r11,r5
 	mov	r10,r0
 	sub	r12,00000004
-	rcall	00007754
+	rcall	fn00007754
 	breq	0000773A
 
 l0000764A:
@@ -8714,7 +8714,7 @@ l00007662:
 	mov	r10,r0
 	mov	r11,r1
 	mov	r12,r4
-	rcall	00007754
+	rcall	fn00007754
 	breq	0000773A
 
 l00007672:
@@ -8741,7 +8741,7 @@ l00007696:
 	mov	r8,r5
 	mov	r10,r0
 	mov	r11,r1
-	rcall	00007754
+	rcall	fn00007754
 	breq	0000773A
 
 l000076A8:
@@ -8759,7 +8759,7 @@ l000076B8:
 	rjmp	000076C4
 
 l000076BE:
-	rcall	00007754
+	rcall	fn00007754
 	breq	00007718
 
 l000076C2:
@@ -8818,7 +8818,7 @@ l0000770C:
 	mov	r11,r2
 	mov	r10,r0
 	mov	r12,r4
-	rcall	00007754
+	rcall	fn00007754
 	breq	0000773A
 
 l00007718:
@@ -8952,7 +8952,7 @@ l000077CC:
 	mov	r10,r4
 	mov	r11,r5
 	st.w	--sp,r1
-	rcall	00007358
+	rcall	fn00007358
 	sub	sp,FFFFFFFC
 	cp.w	r12,FFFFFFFF
 	brne	00007D50
@@ -9046,7 +9046,7 @@ l00007860:
 	mov	r10,r4
 	mov	r11,r5
 	st.w	--sp,r1
-	rcall	00007358
+	rcall	fn00007358
 	sub	sp,FFFFFFFC
 	cp.w	r12,FFFFFFFF
 	brne	00007D50
@@ -9081,7 +9081,7 @@ l0000789A:
 
 l000078A0:
 	mov	r12,r2
-	rcall	000071E8
+	rcall	fn000071E8
 	cp.w	r12,r2
 	breq	000078B4
 
@@ -9212,7 +9212,7 @@ l00007968:
 	rjmp	0000797C
 
 l00007970:
-	rcall	00007754
+	rcall	fn00007754
 	sub	r4,FFFFFFFC
 	mov	r9,00000000
 	cp.w	r12,00000000
@@ -9254,7 +9254,7 @@ l000079AA:
 	mov	r8,r1
 	mov	r12,r2
 	bfextu	r9,r1,+00000002,+00000001
-	rcall	00007754
+	rcall	fn00007754
 
 l000079B6:
 	cp.w	r12,00000000
@@ -9324,7 +9324,7 @@ l00007A04:
 	srne	r9
 	mov	r11,r4
 	mov	r12,r3
-	rcall	00007754
+	rcall	fn00007754
 	breq	00007D44
 
 l00007A16:
@@ -9787,7 +9787,7 @@ l00007CD2:
 	mov	r11,r5
 	mov	r12,r7
 	st.w	--sp,r1
-	rcall	00007358
+	rcall	fn00007358
 	sub	sp,FFFFFFFC
 	cp.w	r12,FFFFFFFF
 	breq	00007D06
@@ -10176,7 +10176,7 @@ l00007F78:
 	mov	r10,r0
 	mov	r11,r1
 	mov	r12,r4
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008128
 
 l00007F8A:
@@ -10197,7 +10197,7 @@ l00007FA4:
 	mov	r10,r5
 	mov	r11,r1
 	st.w	r7[-32],r9
-	rcall	00008144
+	rcall	fn00008144
 	brne	00008032
 
 l00007FB2:
@@ -10239,7 +10239,7 @@ l00007FE4:
 	mov	r11,r5
 	mov	r10,r0
 	mov	r12,r4
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008128
 
 l00007FF6:
@@ -10277,7 +10277,7 @@ l00008022:
 	mov	r11,r5
 	mov	r10,r0
 	sub	r12,00000001
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008128
 
 l00008032:
@@ -10304,7 +10304,7 @@ l0000804C:
 	mov	r10,r0
 	mov	r11,r1
 	mov	r12,r4
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008128
 
 l0000805C:
@@ -10331,7 +10331,7 @@ l00008080:
 	mov	r8,r5
 	mov	r10,r0
 	mov	r11,r1
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008128
 
 l00008092:
@@ -10349,7 +10349,7 @@ l000080A2:
 	rjmp	000080AE
 
 l000080A8:
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008104
 
 l000080AC:
@@ -10409,7 +10409,7 @@ l000080F8:
 	mov	r11,r2
 	mov	r10,r0
 	mov	r12,r4
-	rcall	00008144
+	rcall	fn00008144
 	breq	00008128
 
 l00008104:
@@ -10555,7 +10555,7 @@ l000081D2:
 	mov	r10,r4
 	mov	r11,r5
 	st.w	--sp,r1
-	rcall	00007D56
+	rcall	fn00007D56
 	sub	sp,FFFFFFFC
 	cp.w	r12,FFFFFFFF
 	brne	000087BA
@@ -10655,7 +10655,7 @@ l00008272:
 	mov	r10,r4
 	mov	r11,r5
 	st.w	--sp,r1
-	rcall	00007D56
+	rcall	fn00007D56
 	sub	sp,FFFFFFFC
 	cp.w	r12,FFFFFFFF
 	brne	000087BA
@@ -10693,7 +10693,7 @@ l000082B6:
 
 l000082BC:
 	mov	r12,r3
-	rcall	00007294
+	rcall	fn00007294
 	cp.w	r12,r3
 	breq	000082CA
 
@@ -10828,7 +10828,7 @@ l0000838A:
 	rjmp	0000839E
 
 l00008392:
-	rcall	00008144
+	rcall	fn00008144
 	sub	r4,FFFFFFFF
 	mov	r9,00000000
 	cp.w	r12,00000000
@@ -10872,7 +10872,7 @@ l000083D0:
 	mov	r8,r1
 	mov	r12,r3
 	bfextu	r9,r1,+00000002,+00000001
-	rcall	00008144
+	rcall	fn00008144
 
 l000083DC:
 	cp.w	r12,00000000
@@ -10949,7 +10949,7 @@ l00008436:
 	mov	r11,r4
 	mov	r8,r2
 	mov	r12,r7
-	rcall	00008144
+	rcall	fn00008144
 	breq	000087AC
 
 l00008448:
@@ -11425,7 +11425,7 @@ l00008730:
 	mov	r11,r5
 	mov	r12,r7
 	st.w	--sp,r1
-	rcall	00007D56
+	rcall	fn00007D56
 	sub	sp,FFFFFFFC
 	cp.w	r12,FFFFFFFF
 	breq	00008764
@@ -11660,7 +11660,7 @@ l000088CC:
 	mov	r8,r1
 	sub	r10,00000004
 	mov	r12,r3
-	rcall	00007754
+	rcall	fn00007754
 	ld.w	r9,r7[-20]
 	mov	r5,r12
 	cp.w	r9,000007CF
@@ -11682,7 +11682,7 @@ l0000890C:
 	ld.w	r12,r7[-12]
 	mov	r8,r1
 	mov	r9,r3
-	rcall	00008144
+	rcall	fn00008144
 	mov	r5,r12
 
 l0000892E:
@@ -11711,7 +11711,7 @@ fn0000895C proc
 l00008970:
 	mov	r11,00000000
 	mov	r12,sp
-	rcall	0000898C
+	rcall	fn0000898C
 	lddsp	r8,sp[4]
 	mov	r9,000003E8
 	mul	r8,r9
@@ -11907,48 +11907,48 @@ fn00008BE0 proc
 	ld.w	r4,r5[8]
 	lddpc	r12,pc[100]
 	mov	r11,r4
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00008C40
 
 l00008BF6:
 	lddpc	r11,pc[96]
 	mov	r12,r4
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00008C40
 
 l00008C00:
 	ld.w	r11,r5[12]
 	lddpc	r12,pc[88]
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00008C40
 
 l00008C0A:
 	ld.w	r7,r5[0]
 	mov	r11,00000000
 	mov	r12,r7
-	rcall	0000F9D0
+	rcall	fn0000F9D0
 	breq	00008C40
 
 l00008C16:
 	lddpc	r11,pc[60]
 	mov	r12,r7
-	rcall	0000FF9C
+	rcall	fn0000FF9C
 	ld.w	r7,r5[4]
 	mov	r11,r7
 	mov	r3,r12
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00008C40
 
 l00008C2A:
 	lddpc	r12,pc[52]
 	mov	r11,r7
-	rcall	0000F9D0
+	rcall	fn0000F9D0
 	breq	00008C40
 
 l00008C34:
 	mov	r11,r4
 	mov	r12,r3
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00008C40
 
 l00008C3E:
@@ -12225,7 +12225,7 @@ l00008EAA:
 
 l00008EB6:
 	st.w	r12[20],r5
-	rcall	00008BE0
+	rcall	fn00008BE0
 	castu.b	r12
 	breq	00008F50
 
@@ -12237,17 +12237,17 @@ l00008EBE:
 
 l00008ECA:
 	mov	r12,r4
-	rcall	0001013A
+	rcall	fn0001013A
 	ld.w	r11,r5[8]
-	rcall	0000FD70
+	rcall	fn0000FD70
 	lddpc	r11,pc[140]
 	mov	r5,r12
-	rcall	0000F9D0
+	rcall	fn0000F9D0
 	brne	00008F50
 
 l00008EE0:
 	mov	r12,r5
-	rcall	000101B2
+	rcall	fn000101B2
 	mov	r4,r12
 
 l00008EE8:
@@ -12301,7 +12301,7 @@ l00008F24:
 
 l00008F2E:
 	mov	r11,00000008
-	rcall	0000CCF0
+	rcall	fn0000CCF0
 	st.w	r7[0],r12
 	breq	00008F50
 
@@ -12345,7 +12345,7 @@ fn00008F68 proc
 	ld.w	r9,r3[28]
 	ld.w	r10,r3[24]
 	ld.w	r11,r3[20]
-	rcall	00008E88
+	rcall	fn00008E88
 	mov	r4,r12
 	breq	00009014
 
@@ -12353,12 +12353,12 @@ l00008F80:
 	ld.w	r8,r3[36]
 	ld.w	r2,r3[0]
 	st.w	r12[-28],r8
-	rjmp	00008FEC
+	rjmp	fn00008FEC
 
 l00008F88:
 	ld.w	r8,r2[0]
 	cp.w	r8,00000000
-	breq	00008FEA
+	breq	fn00008FEA
 
 l00008F8E:
 	mov	r7,r2
@@ -12391,7 +12391,7 @@ l00008FB4:
 
 l00008FB8:
 	mov	r12,r4
-	rcall	00008DF4
+	rcall	fn00008DF4
 	breq	00009014
 
 l00008FBE:
@@ -12479,7 +12479,7 @@ fn0000901C proc
 	mov	r9,00000001
 	mov	r10,sp
 	mov	r7,r12
-	rcall	00008CAA
+	rcall	fn00008CAA
 	mov	r1,r12
 	breq	000090B6
 
@@ -12497,34 +12497,34 @@ l0000903E:
 	sub	r8,00000001
 	mov	r12,r8
 	st.w	r7[12],r8
-	rcall	0001013A
+	rcall	fn0001013A
 	ld.w	r5,r7[20]
 	mov	r3,r12
 	ld.w	r12,r7[8]
-	rcall	0001013A
+	rcall	fn0001013A
 	ld.w	r11,r5[0]
-	rcall	00010050
+	rcall	fn00010050
 	mov	r11,r12
 	mov	r12,r3
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	000090B6
 
 l00009064:
 	mov	r12,r7
-	rcall	00008BE0
+	rcall	fn00008BE0
 	ld.w	r3,r7[20]
 	ld.w	r12,r7[8]
-	rcall	0001013A
+	rcall	fn0001013A
 	mov	r4,r12
 	ld.w	r12,r7[12]
-	rcall	0001013A
+	rcall	fn0001013A
 	ld.w	r11,r3[0]
 	mov	r5,r12
 	mov	r12,r4
-	rcall	00010050
+	rcall	fn00010050
 	mov	r11,r12
 	mov	r12,r5
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	000090B6
 
 l0000908E:
@@ -12540,15 +12540,15 @@ l00009098:
 l0000909E:
 	ld.w	r11,r3[4]
 	mov	r12,r4
-	rcall	00010050
+	rcall	fn00010050
 	ld.w	r11,r3[8]
 
 l000090A8:
-	rcall	00010050
-	rcall	000101B2
+	rcall	fn00010050
+	rcall	fn000101B2
 	mov	r11,r12
 	mov	r12,r7
-	rcall	00008F68
+	rcall	fn00008F68
 
 l000090B6:
 	mov	r12,r1
@@ -12575,7 +12575,7 @@ l000090D0:
 l000090D4:
 	mov	r9,00000000
 	mov	r10,sp
-	rcall	00008CAA
+	rcall	fn00008CAA
 	mov	r1,r12
 	brne	00009196
 
@@ -12587,7 +12587,7 @@ l000090E0:
 
 l000090E8:
 	mov	r12,r7
-	rcall	00008DF4
+	rcall	fn00008DF4
 	breq	00009196
 
 l000090EE:
@@ -12612,33 +12612,33 @@ l00009104:
 	mov	r12,r9
 	st.w	r7[16],r8
 	st.w	r7[12],r9
-	rcall	0001013A
+	rcall	fn0001013A
 	ld.w	r5,r7[20]
 	mov	r3,r12
 	ld.w	r12,r7[8]
-	rcall	0001013A
+	rcall	fn0001013A
 	ld.w	r11,r5[8]
-	rcall	00010050
+	rcall	fn00010050
 	mov	r11,r3
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00009194
 
 l00009130:
 	mov	r12,r7
-	rcall	00008BE0
+	rcall	fn00008BE0
 	ld.w	r3,r7[20]
 	ld.w	r0,r3[8]
 	ld.w	r12,r7[8]
-	rcall	0001013A
+	rcall	fn0001013A
 	mov	r4,r12
 	ld.w	r12,r7[12]
-	rcall	0001013A
+	rcall	fn0001013A
 	mov	r11,r4
 	mov	r5,r12
 	mov	r12,r0
-	rcall	00010050
+	rcall	fn00010050
 	mov	r11,r5
-	rcall	0000FA0E
+	rcall	fn0000FA0E
 	breq	00009194
 
 l0000915A:
@@ -12654,22 +12654,22 @@ l00009164:
 l0000916A:
 	ld.w	r11,r3[12]
 	mov	r12,r4
-	rcall	00010050
+	rcall	fn00010050
 	mov	r11,r0
 
 l00009174:
-	rcall	00010050
+	rcall	fn00010050
 	lddpc	r11,pc[40]
 	mov	r5,r12
-	rcall	0000F9D0
+	rcall	fn0000F9D0
 	brne	00009196
 
 l00009182:
 	mov	r12,r5
-	rcall	000101B2
+	rcall	fn000101B2
 	mov	r11,r12
 	mov	r12,r7
-	rcall	00008F68
+	rcall	fn00008F68
 	castu.b	r12
 	moveq	r2,r12
 
@@ -12710,13 +12710,13 @@ fn00009248 proc
 
 l00009258:
 	ld.d	r9:r8,pc[84]
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	breq	000092A2
 
 l00009262:
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F792
+	rcall	fn0000F792
 	mov	r2,r10
 	mov	r3,r11
 	cp.w	r7,00000000
@@ -12728,10 +12728,10 @@ l00009272:
 
 l00009276:
 	mov	r11,r3
-	rcall	000101CC
+	rcall	fn000101CC
 	mov	r8,r4
 	mov	r9,r5
-	rcall	0000F8EC
+	rcall	__avr32_f64_cmp_eq
 	mov	r5,r7
 	moveq	r5,00000001
 
@@ -12744,7 +12744,7 @@ l00009290:
 	mov	r11,00000000
 	add	r10,r2
 	adc	r11,r11,r3
-	rcall	000101CC
+	rcall	fn000101CC
 	mov	r4,r10
 	mov	r5,r11
 
@@ -12803,7 +12803,7 @@ l000092F6:
 	brne	0000930C
 
 l00009302:
-	rcall	000092B4
+	rcall	fn000092B4
 	mov	r5,r7
 	st.d	r3[0],r11:r10
 	rjmp	0000939A
@@ -12832,7 +12832,7 @@ l00009326:
 	mov	r9,00000004
 	mov	r10,r4
 	mov	r12,r7
-	rcall	00006DDC
+	rcall	fn00006DDC
 	brlt	0000934A
 
 l0000933A:
@@ -12849,7 +12849,7 @@ l0000934A:
 	mov	r10,00000000
 	mov	r11,sp
 	mov	r12,r7
-	rcall	0000CAE0
+	rcall	fn0000CAE0
 	brne	00009360
 
 l0000935C:
@@ -12904,7 +12904,7 @@ l0000939E:
 	brne	000093B0
 
 l000093A8:
-	rcall	000092B4
+	rcall	fn000092B4
 	mov	r12,00000004
 	st.d	r3[0],r11:r10
 
@@ -12993,7 +12993,7 @@ l00009450:
 	brhi	000094AE
 
 l00009460:
-	rcall	00010A4C
+	rcall	fn00010A4C
 	cp.w	r10,00000000
 	cpc	r11
 	brne	00009546
@@ -13001,7 +13001,7 @@ l00009460:
 l0000946A:
 	ld.d	r9:r8,sp[4]
 	ld.d	r11:r10,sp[12]
-	rcall	000107C0
+	rcall	fn000107C0
 	mov	r8,r10
 	lddsp	r10,sp[28]
 	mov	r9,r11
@@ -13015,7 +13015,7 @@ l0000946A:
 	add	r11,r10,r11
 	stdsp	sp[44],r11
 	ld.d	r11:r10,sp[44]
-	rcall	000107C0
+	rcall	fn000107C0
 	ld.d	r9:r8,sp[24]
 	cp.w	r10,r8
 	cpc	r11,r9
@@ -13034,7 +13034,7 @@ l000094B8:
 	mov	r8,r10
 	mov	r9,r11
 	ld.d	r11:r10,sp[4]
-	rcall	00010A4C
+	rcall	fn00010A4C
 	cp.w	r10,00000000
 	cpc	r11
 	brne	00009546
@@ -13042,13 +13042,13 @@ l000094B8:
 l000094CA:
 	ld.d	r9:r8,sp[12]
 	ld.d	r11:r10,sp[4]
-	rcall	000107C0
+	rcall	fn000107C0
 	mov	r1,r11
 	mov	r8,r10
 	mov	r0,r10
 	ld.d	r11:r10,sp[24]
 	mov	r9,r1
-	rcall	00010A4C
+	rcall	fn00010A4C
 	mov	r8,0000000A
 	mulu.d	r2,r10,r8
 	mov	r9,r1
@@ -13056,7 +13056,7 @@ l000094CA:
 	mov	r10,r2
 	mov	r8,r0
 	mov	r11,r3
-	rcall	00010A4C
+	rcall	fn00010A4C
 	add	r10,r10
 	adc	r11,r11,r11
 	cp.w	r10,r0
@@ -13081,37 +13081,37 @@ l00009526:
 	ld.d	r11:r10,sp[24]
 	mov	r8,r0
 	mov	r9,r1
-	rcall	000107C0
+	rcall	fn000107C0
 	mov	r8,r0
 	st.d	sp[44],r11:r10
 	mov	r9,r1
 	mov	r11,r3
 	mov	r10,r2
-	rcall	000107C0
+	rcall	fn000107C0
 	mov	r3,r10
 	rjmp	0000969A
 
 l00009546:
 	ld.d	r11:r10,sp[24]
-	rcall	000101CC
+	rcall	fn000101CC
 	mov	r0,r10
 	mov	r1,r11
 	ld.d	r11:r10,sp[12]
-	rcall	000101CC
+	rcall	fn000101CC
 	mov	r2,r10
 	mov	r3,r11
 	ld.d	r11:r10,sp[4]
-	rcall	000101CC
+	rcall	fn000101CC
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000FA54
+	rcall	__avr32_f64_div
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r0
 	mov	r11,r1
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r0,r10
 	lddsp	r10,sp[0]
 	mov	r1,r11
@@ -13122,7 +13122,7 @@ l00009588:
 	lddsp	r12,sp[36]
 	mov	r10,r0
 	mov	r11,r1
-	rcall	00009248
+	rcall	fn00009248
 	lddsp	r4,sp[0]
 	mov	r9,FFFFFFFF
 	stdsp	sp[52],r9
@@ -13132,7 +13132,7 @@ l00009588:
 	mcall	r6[100]
 	mov	r12,r7
 	mcall	r6[16]
-	rjmp	0000967A
+	rjmp	fn0000967A
 
 l000095AA:
 	ld.d	r5:r4,pc[278]
@@ -13145,14 +13145,14 @@ l000095AA:
 ;;     000095EE (in fn000095D6)
 fn000095B2 proc
 	lddsp	r12,sp[40]
-	rcall	0000F7FA
+	rcall	__avr32_u32_to_f64
 	mov	r3,r11
 	mov	r8,r10
 	mov	r2,r10
 	mov	r9,r3
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r8,r2
 	mov	r5,r11
 	lddsp	r11,sp[52]
@@ -13166,30 +13166,30 @@ fn000095B2 proc
 ;;     000095D4 (in fn000095B2)
 fn000095D6 proc
 	mov	r4,r10
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r0
 	mov	r11,r1
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	breq	000095F2
 
 l000095EA:
 	lddsp	r10,sp[52]
 	cp.w	r10,00000007
-	brle	000095B2
+	brle	fn000095B2
 
 l000095F2:
 	mov	r8,r4
 	mov	r9,r5
 	mov	r10,r0
 	mov	r11,r1
-	rcall	0000FA54
+	rcall	__avr32_f64_div
 	lddsp	r12,sp[36]
 	mov	r3,r11
 	mov	r11,r3
 	mov	r2,r10
-	rcall	00009248
+	rcall	fn00009248
 	lddsp	r4,sp[64]
 	sub	r4,FFFFFFFF
 	mov	r12,r7
@@ -13215,25 +13215,25 @@ l0000962C:
 l00009634:
 	lddsp	r8,sp[20]
 	bld	r8,+00000003
-	brne	0000967E
+	brne	fn0000967E
 
 l0000963C:
 	add	r8,r12,r7
 	ld.ub	r9,r8[-1]
 	mov	r8,00000030
 	cp.b	r9,r8
-	brne	0000967E
+	brne	fn0000967E
 
 l0000964C:
 	ld.d	r9:r8,pc[124]
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r4,00000000
 	lddsp	r12,sp[36]
-	rcall	00009248
+	rcall	fn00009248
 	ld.d	r9:r8,pc[104]
-	rcall	0000FA54
+	rcall	__avr32_f64_div
 	mov	r12,r7
 	st.d	--sp,r11:r10
 	ld.w	r11,r6[364]
@@ -13263,7 +13263,7 @@ fn0000967E proc
 	mcall	r6[576]
 	add	r8,r1,r5
 	sub	r12,r8,r4
-	rjmp	0000988A
+	rjmp	fn0000988A
 
 l00009696:
 	mov	r3,00000000
@@ -13302,7 +13302,7 @@ l000096D4:
 	ld.d	r11:r10,sp[44]
 	mov	r8,r0
 	mov	r9,r1
-	rcall	00010A4C
+	rcall	fn00010A4C
 	asr	r5,r4,00000001
 	mov	r9,0000000A
 	mulu.d	r8,r10,r9
@@ -13312,7 +13312,7 @@ l000096D4:
 	lddsp	r8,sp[40]
 	divu	r2,r3,r8
 	mov	r8,r0
-	rcall	000107C0
+	rcall	fn000107C0
 	lddsp	r7,sp[40]
 	st.d	sp[44],r11:r10
 	add	r5,r5,r3<<1
@@ -13525,13 +13525,13 @@ l00009860:
 	ld.d	r11:r10,sp[44]
 	mov	r8,0000000A
 	mov	r9,00000000
-	rcall	00010A4C
+	rcall	fn00010A4C
 	mov	r8,0000000A
 	sub	r12,r10,FFFFFFD0
 	ld.d	r11:r10,sp[44]
 	mov	r9,00000000
 	st.b	--r1,r12
-	rcall	000107C0
+	rcall	fn000107C0
 	st.d	sp[44],r11:r10
 	cp.w	r10,00000000
 	cpc	r11
@@ -13781,7 +13781,7 @@ l00009A7E:
 	mov	r12,r5
 	mcall	r6[16]
 	sub	r12,FFFFFFF7
-	rcall	0000B95C
+	rcall	fn0000B95C
 	mov	r11,r5
 	mov	r7,r12
 	st.w	r12[0],r4
@@ -13861,7 +13861,7 @@ l00009B7E:
 	mov	r12,r5
 	mcall	r6[16]
 	sub	r12,FFFFFFF7
-	rcall	0000B95C
+	rcall	fn0000B95C
 	mov	r11,r5
 	mov	r7,r12
 	st.w	r12[0],r4
@@ -13914,14 +13914,14 @@ l00009BE0:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	000104EA
+	rcall	__moddi3
 	mov	r11,r5
 	rsub	r10,r10,00000030
 	st.b	--r7,r10
 	mov	r8,0000000A
 	mov	r10,r4
 	mov	r9,00000000
-	rcall	00010208
+	rcall	__avr32_sdiv64
 	mov	r4,r10
 	mov	r5,r11
 	cp.w	r4,00000000
@@ -13938,14 +13938,14 @@ l00009C0E:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	000104EA
+	rcall	__moddi3
 	mov	r11,r5
 	sub	r12,r10,FFFFFFD0
 	mov	r8,0000000A
 	mov	r10,r4
 	mov	r9,00000000
 	st.b	--r7,r12
-	rcall	00010208
+	rcall	__avr32_sdiv64
 	mov	r4,r10
 	mov	r5,r11
 	cp.w	r4,00000000
@@ -14000,7 +14000,7 @@ l00009C70:
 	sub	r11,r0
 	mov	r12,r8
 	stdsp	sp[16],r8
-	rcall	00009C40
+	rcall	fn00009C40
 	cp.w	r0,00000001
 	brne	00009C8E
 
@@ -14018,12 +14018,12 @@ l00009C8E:
 	lddsp	r10,sp[8]
 	mov	r12,r5
 	sub	r11,r0,r4
-	rcall	00009C40
+	rcall	fn00009C40
 	lddsp	r9,sp[4]
 	lddsp	r10,sp[8]
 	mov	r11,r4
 	mov	r12,r3
-	rcall	00009C40
+	rcall	fn00009C40
 	ld.w	r1,r5[0]
 	lddsp	r5,sp[8]
 	ld.w	r2,r3[0]
@@ -14149,7 +14149,7 @@ fn00009D6C proc
 	rsub	r6,pc
 	mov	r9,r10
 	add	r10,r12,r11<<2
-	rcall	00009C40
+	rcall	fn00009C40
 	popm	r4-r7,pc
 00009D7C                                     FF FF 4D 80             ..M.
 
@@ -14163,7 +14163,7 @@ fn00009D80 proc
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,00000006
-	rcall	0000A7C8
+	rcall	fn0000A7C8
 	popm	r4-r7,pc
 00009D90 FF FF 4D 94                                     ..M.            
 
@@ -14174,7 +14174,7 @@ fn00009D94 proc
 	rsub	r6,pc
 	mov	r11,r12
 	mov	r12,00000000
-	rcall	00009D80
+	rcall	fn00009D80
 	popm	r4-r7,pc
 00009DA2       D7 03 FF FF 4D A8                           ....M.        
 
@@ -14278,7 +14278,7 @@ fn00009EDC proc
 	pushm	r4-r7,lr
 	lddpc	r6,pc[12]
 	rsub	r6,pc
-	rcall	0000B95C
+	rcall	fn0000B95C
 	popm	r4-r7,pc
 00009EE8                         FF FF 4E F0                     ..N.    
 
@@ -15426,7 +15426,7 @@ l0000A5D4:
 	lddsp	r7,sp[8]
 	mov	r11,r0
 	st.w	--sp,r7
-	rcall	00009EEC
+	rcall	fn00009EEC
 	sub	sp,FFFFFFF8
 	mov	r3,r12
 	rjmp	0000A60E
@@ -15489,7 +15489,7 @@ l0000A648:
 	brls	0000A658
 
 l0000A654:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l0000A658:
 	sub	r9,r2,FFFFFFFC
@@ -15504,7 +15504,7 @@ l0000A666:
 l0000A66A:
 	lsl	r11,r4,00000003
 	stdsp	sp[0],r9
-	rcall	0000B904
+	rcall	fn0000B904
 	st.w	r2[0],r12
 	mov	r7,r12
 	cp.w	r5,00000000
@@ -15538,7 +15538,7 @@ l0000A69A:
 	mov	r12,r4
 	st.w	--sp,r0
 	st.w	--sp,r3
-	rcall	00009EEC
+	rcall	fn00009EEC
 	sub	sp,FFFFFFF8
 	cp.w	r5,r12
 	brhi	0000A6F4
@@ -15557,7 +15557,7 @@ l0000A6D2:
 
 l0000A6D8:
 	mov	r12,r7
-	rcall	00009EDC
+	rcall	fn00009EDC
 	mov	r11,r7
 	st.w	r2[4],r12
 	st.w	--sp,r0
@@ -15566,7 +15566,7 @@ l0000A6D8:
 	lddsp	r10,sp[16]
 	ld.w	r8,r1[0]
 	mov	r4,r12
-	rcall	00009EEC
+	rcall	fn00009EEC
 	sub	sp,FFFFFFF8
 
 l0000A6F4:
@@ -15600,13 +15600,13 @@ fn0000A708 proc
 	mov	r10,00000001
 	mov	r12,sp
 	stm	r8,r0-r3
-	rcall	00009DD8
+	rcall	fn00009DD8
 	mov	r5,sp
 	mov	r9,sp
 	mov	r10,r7
 	mov	r11,r4
 	mov	r12,00000000
-	rcall	0000A614
+	rcall	fn0000A614
 	sub	sp,FFFFFFD8
 	popm	r0-r3,r4-r7,pc
 0000A74E                                           D7 03               ..
@@ -15622,7 +15622,7 @@ fn0000A764 proc
 	rsub	r6,pc
 	mov	r10,r11
 	mov	r11,FFFFFFFF
-	rcall	0000A708
+	rcall	fn0000A708
 	popm	r4-r7,pc
 0000A772       D7 03 FF FF 57 78                           ....Wx        
 
@@ -15636,7 +15636,7 @@ fn0000A778 proc
 	lddpc	r6,pc[12]
 	rsub	r6,pc
 	mov	r11,0000003A
-	rcall	0000A764
+	rcall	fn0000A764
 	popm	r4-r7,pc
 0000A784             FF FF 57 8C                             ..W.        
 
@@ -15650,13 +15650,13 @@ fn0000A788 proc
 	mov	r12,sp
 	mov	r2,r10
 	mov	r3,r9
-	rcall	00009E30
+	rcall	fn00009E30
 	mov	r5,sp
 	mov	r9,sp
 	mov	r10,r3
 	mov	r11,r2
 	mov	r12,r1
-	rcall	0000A614
+	rcall	fn0000A614
 	sub	sp,FFFFFFD8
 	popm	r0-r3,r4-r7,pc
 0000A7AC                                     FF FF 57 9E             ..W.
@@ -15675,13 +15675,13 @@ fn0000A7C8 proc
 	mov	r2,r12
 	mov	r12,sp
 	mov	r3,r10
-	rcall	00009E30
+	rcall	fn00009E30
 	mov	r5,sp
 	mov	r9,sp
 	mov	r11,r3
 	mov	r12,r2
 	mov	r10,FFFFFFFF
-	rcall	0000A614
+	rcall	fn0000A614
 	sub	sp,FFFFFFD8
 	popm	r0-r3,r4-r7,pc
 0000A7EA                               D7 03 FF FF 57 DE           ....W.
@@ -15694,7 +15694,7 @@ fn0000A804 proc
 	lddpc	r6,pc[12]
 	rsub	r6,pc
 	ld.w	r9,r6[-36]
-	rcall	0000A614
+	rcall	fn0000A614
 	popm	r4-r7,pc
 0000A810 FF FF 58 18 D4 21 48 46 1E 26 16 9A 18 9B 30 0C ..X..!HF.&....0.
 0000A820 CF 2F D8 22 FF FF 58 28                         ./."..X(        
@@ -15708,7 +15708,7 @@ fn0000A828 proc
 	rsub	r6,pc
 	ld.w	r9,r6[-36]
 	mov	r10,FFFFFFFF
-	rcall	0000A614
+	rcall	fn0000A614
 	popm	r4-r7,pc
 0000A836                   D7 03 FF FF 58 3C                   ....X<    
 
@@ -15719,7 +15719,7 @@ fn0000A83C proc
 	rsub	r6,pc
 	mov	r11,r12
 	mov	r12,00000000
-	rcall	0000A828
+	rcall	fn0000A828
 	popm	r4-r7,pc
 0000A84A                               D7 03 FF FF 58 50           ....XP
 
@@ -15756,11 +15756,11 @@ l0000A868:
 	ld.w	r8,r3[0]
 	mov	r10,r0
 	mov	r12,r11
-	rcall	00009EEC
+	rcall	fn00009EEC
 	sub	r2,r12,FFFFFFFF
 	mov	r4,r12
 	mov	r12,r2
-	rcall	00009EDC
+	rcall	fn00009EDC
 	mov	r10,r0
 	stdsp	sp[20],r12
 	st.w	--sp,r1
@@ -15768,7 +15768,7 @@ l0000A868:
 	lddsp	r9,sp[16]
 	ld.w	r8,r3[0]
 	mov	r11,r2
-	rcall	00009EEC
+	rcall	fn00009EEC
 	lddsp	r8,sp[20]
 	lddsp	r9,sp[24]
 	st.w	r8[0],r9
@@ -15818,7 +15818,7 @@ l0000A8F2:
 	mov	r10,r0
 	mov	r11,r7
 	mov	r12,r4
-	rcall	00009EEC
+	rcall	fn00009EEC
 	sub	sp,FFFFFFF8
 	st.w	r3[0],r1
 	popm	r0-r3,r4-r7,pc
@@ -15839,7 +15839,7 @@ fn0000A920 proc
 	movne	r12,r5
 
 l0000A93A:
-	rcall	0000B978
+	rcall	fn0000B978
 	st.w	r3[0],r2
 	popm	r0-r3,r4-r7,pc
 0000A942       D7 03 FF FF 59 34 00 00 00 00 00 00 00 01   ....Y4........
@@ -16004,7 +16004,7 @@ l0000AA4E:
 l0000AA50:
 	lddsp	r12,sp[44]
 	sub	r12,FFFFFFFF
-	br	0000AEFA
+	br	fn0000AEFA
 
 l0000AA58:
 	mov	r10,00000001
@@ -16500,7 +16500,7 @@ l0000AD00:
 	br	0000B706
 
 l0000AD04:
-	br	0000AE3E
+	br	fn0000AE3E
 
 l0000AD08:
 	br	0000B308
@@ -16607,7 +16607,7 @@ l0000AD9E:
 	brne	0000B706
 
 l0000ADA6:
-	rjmp	0000AE3E
+	rjmp	fn0000AE3E
 
 l0000ADA8:
 	cp.w	r4,00000000
@@ -16618,7 +16618,7 @@ l0000ADAE:
 	brne	0000AE34
 
 l0000ADB2:
-	rjmp	0000AE3E
+	rjmp	fn0000AE3E
 
 l0000ADB4:
 	ld.w	r3,r6[712]
@@ -16633,7 +16633,7 @@ l0000ADB8:
 	lddsp	r4,sp[24]
 	mov	r11,00000000
 	st.w	--sp,r4
-	rcall	0000A9DE
+	rcall	fn0000A9DE
 	lddsp	r2,sp[36]
 	lddsp	r10,sp[64]
 	lddsp	lr,sp[52]
@@ -16685,7 +16685,7 @@ l0000AE10:
 	lddsp	r4,sp[24]
 	mov	r10,r2
 	st.w	--sp,r4
-	rcall	0000A9DE
+	rcall	fn0000A9DE
 	sub	sp,FFFFFFF8
 
 l0000AE2A:
@@ -16699,7 +16699,7 @@ l0000AE34:
 	mov	r2,00000001
 	mov	r1,r3
 	stdsp	sp[60],r2
-	rjmp	0000AE42
+	rjmp	fn0000AE42
 
 ;; fn0000AE3E: 0000AE3E
 ;;   Called from:
@@ -16801,7 +16801,7 @@ l0000AECA:
 	mov	r10,r5
 	sub	r11,sp,FFFFFFB7
 	mov	r12,r7
-	rcall	0000A968
+	rcall	fn0000A968
 	rjmp	0000AEF4
 
 l0000AED8:
@@ -16813,7 +16813,7 @@ l0000AED8:
 l0000AEE2:
 	mov	r10,r5
 	mov	r12,r7
-	rcall	0000A998
+	rcall	fn0000A998
 	rjmp	0000AEF4
 
 l0000AEEC:
@@ -16843,7 +16843,7 @@ l0000AF00:
 
 l0000AF08:
 	cp.w	r4,00000045
-	breq	0000AE3E
+	breq	fn0000AE3E
 
 l0000AF0E:
 	lddsp	r11,sp[24]
@@ -16875,7 +16875,7 @@ l0000AF40:
 l0000AF48:
 	lddsp	r10,sp[24]
 	ld.w	r12,r10[12]
-	rjmp	0000AF6C
+	rjmp	fn0000AF6C
 
 l0000AF4E:
 	cp.w	r4,00000045
@@ -16888,11 +16888,11 @@ l0000AF56:
 l0000AF5A:
 	lddsp	r8,sp[52]
 	cp.w	r8,00000030
-	breq	0000AF6C
+	breq	fn0000AF6C
 
 l0000AF62:
 	cp.w	r8,0000002D
-	breq	0000AF6C
+	breq	fn0000AF6C
 
 l0000AF68:
 	mov	r5,0000005F
@@ -16946,7 +16946,7 @@ l0000AF7E:
 
 l0000AF82:
 	mov	r1,r5
-	rjmp	0000AE42
+	rjmp	fn0000AE42
 
 l0000AF86:
 	cp.w	r5,00000000
@@ -17322,7 +17322,7 @@ l0000B1BA:
 	mov	r11,r0
 	mov	r10,r5
 	mov	r12,r7
-	rcall	0000A998
+	rcall	fn0000A998
 	rjmp	0000B1D0
 
 l0000B1C6:
@@ -17355,7 +17355,7 @@ l0000B1EA:
 l0000B1F2:
 	lddsp	r3,sp[24]
 	ld.w	r12,r3[8]
-	rjmp	0000AF6C
+	rjmp	fn0000AF6C
 
 l0000B1F8:
 	cp.w	r4,00000045
@@ -17363,7 +17363,7 @@ l0000B1F8:
 
 l0000B200:
 	lddsp	r12,sp[36]
-	rjmp	0000AF6C
+	rjmp	fn0000AF6C
 
 l0000B204:
 	cp.w	r4,00000045
@@ -17394,7 +17394,7 @@ l0000B226:
 	cp.w	r8,FFFFFFFF
 	srlt	r5
 	sub	r11,r8,FFFFFFFF
-	rjmp	0000AF76
+	rjmp	fn0000AF76
 
 l0000B238:
 	cp.w	r4,00000045
@@ -17403,7 +17403,7 @@ l0000B238:
 l0000B240:
 	lddsp	r11,sp[24]
 	ld.w	r12,r11[4]
-	rjmp	0000AF6C
+	rjmp	fn0000AF6C
 
 l0000B246:
 	cp.w	r4,00000045
@@ -17417,7 +17417,7 @@ l0000B24E:
 	cp.w	r8,FFFFFFFF
 	srlt	r5
 	sub	r11,r8,FFFFFFFF
-	rjmp	0000AF76
+	rjmp	fn0000AF76
 
 l0000B260:
 	cp.w	r4,00000045
@@ -17518,7 +17518,7 @@ l0000B2EC:
 l0000B2F0:
 	mov	r3,00000000
 	stdsp	sp[60],r12
-	br	0000AE42
+	br	fn0000AE42
 
 l0000B2F8:
 	cp.w	r4,00000045
@@ -17527,7 +17527,7 @@ l0000B2F8:
 l0000B300:
 	lddsp	r11,sp[24]
 	ld.w	r12,r11[0]
-	br	0000AF6C
+	br	fn0000AF6C
 
 l0000B308:
 	lddsp	r8,sp[24]
@@ -17546,7 +17546,7 @@ l0000B308:
 	stm	r9,r2-r5
 	st.d	sp[1128],r11:r10
 	st.w	sp[1136],lr
-	rcall	0000D1B8
+	rcall	fn0000D1B8
 	lsr	r5,r12,0000001F
 
 l0000B348:
@@ -17576,7 +17576,7 @@ l0000B36A:
 
 l0000B370:
 	cp.w	r4,0000004F
-	brne	0000AE3E
+	brne	fn0000AE3E
 
 l0000B378:
 	br	0000B706
@@ -17674,7 +17674,7 @@ l0000B41C:
 	mov	r11,r9
 	mov	r12,r2
 	add	r3,r8,r1
-	rcall	0000A9CC
+	rcall	fn0000A9CC
 	mov	r5,r12
 	brge	0000B466
 
@@ -17707,7 +17707,7 @@ l0000B454:
 	sub	r12,r2,FFFFFE93
 	lddsp	r11,sp[68]
 	add	r12,r8
-	rcall	0000A9CC
+	rcall	fn0000A9CC
 	mov	r5,r12
 	mov	r12,FFFFFFFF
 	rjmp	0000B4A2
@@ -17740,7 +17740,7 @@ l0000B48A:
 	sub	r12,r2,0000016D
 	lddsp	r11,sp[68]
 	sub	r12,r8
-	rcall	0000A9CC
+	rcall	fn0000A9CC
 	movge	r5,r12
 
 l0000B49A:
@@ -17770,7 +17770,7 @@ l0000B4B2:
 
 l0000B4C6:
 	mov	r12,r11
-	br	0000AF6C
+	br	fn0000AF6C
 
 l0000B4CC:
 	mov	r10,FFFFF894
@@ -17784,7 +17784,7 @@ l0000B4DE:
 	movlt	r12,r8
 
 l0000B4E2:
-	br	0000AF6C
+	br	fn0000AF6C
 
 l0000B4E6:
 	mov	r8,FFFFF894
@@ -17795,7 +17795,7 @@ l0000B4E6:
 	mov	lr,00000000
 	add	r11,r9,r12
 	mov	r3,00000004
-	br	0000AF76
+	br	fn0000AF76
 
 l0000B500:
 	mov	r9,00000007
@@ -17835,7 +17835,7 @@ l0000B540:
 
 l0000B54A:
 	cp.w	r4,00000045
-	breq	0000AE3E
+	breq	fn0000AE3E
 
 l0000B552:
 	cp.w	r4,0000004F
@@ -17852,7 +17852,7 @@ l0000B55A:
 
 l0000B56C:
 	cp.w	r4,00000045
-	breq	0000AE3E
+	breq	fn0000AE3E
 
 l0000B574:
 	lddsp	lr,sp[24]
@@ -17861,7 +17861,7 @@ l0000B574:
 	divs	r8,r10,r9
 	mov	r12,r9
 	cp.w	r9,00000000
-	brge	0000AF6C
+	brge	fn0000AF6C
 
 l0000B586:
 	sub	r9,r12,FFFFFF9C
@@ -17873,7 +17873,7 @@ l0000B596:
 	movle	r12,r8
 
 l0000B59A:
-	br	0000AF6C
+	br	fn0000AF6C
 
 l0000B59E:
 	ld.w	r8,r6[700]
@@ -17945,7 +17945,7 @@ l0000B60C:
 	lddsp	r11,sp[40]
 	mov	r10,r5
 	mov	r12,r7
-	rcall	0000A968
+	rcall	fn0000A968
 	rjmp	0000B634
 
 l0000B618:
@@ -17957,7 +17957,7 @@ l0000B61E:
 	lddsp	r11,sp[40]
 	mov	r10,r5
 	mov	r12,r7
-	rcall	0000A998
+	rcall	fn0000A998
 	rjmp	0000B634
 
 l0000B62A:
@@ -18143,7 +18143,7 @@ l0000B760:
 	mov	r11,r5
 	mov	r10,r3
 	mov	r12,r7
-	rcall	0000A998
+	rcall	fn0000A998
 	rjmp	0000B776
 
 l0000B76C:
@@ -18217,7 +18217,7 @@ fn0000B7B2 proc
 	mov	r10,r11
 	mov	r11,r12
 	mov	r12,00000000
-	rcall	0000A9DE
+	rcall	fn0000A9DE
 	sub	sp,FFFFFFF8
 	popm	r4-r7,pc
 0000B7D0 FF FF 67 C6                                     ..g.            
@@ -18249,14 +18249,14 @@ l0000B7E6:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	00010A4C
+	rcall	fn00010A4C
 	mov	r11,r5
 	sub	r12,r10,FFFFFFD0
 	mov	r8,0000000A
 	mov	r10,r4
 	mov	r9,00000000
 	st.b	--r7,r12
-	rcall	000107C0
+	rcall	fn000107C0
 	mov	r4,r10
 	mov	r5,r11
 	cp.w	r4,00000000
@@ -18284,7 +18284,7 @@ fn0000B818 proc
 	mov	r10,r11
 	mov	r12,sp
 	mov	r11,lr
-	rcall	0000D220
+	rcall	fn0000D220
 	mov	r4,sp
 	ld.w	r5,sp[2000]
 	mov	r7,r12
@@ -18323,7 +18323,7 @@ l0000B86E:
 
 l0000B876:
 	mov	r12,r3
-	rcall	0000BD82
+	rcall	fn0000BD82
 
 l0000B87C:
 	mov	r12,FFFFFFFF
@@ -18346,7 +18346,7 @@ fn0000B88C proc
 	lddpc	r6,pc[92]
 	rsub	r6,pc
 	mov	r7,r12
-	rcall	0000BD8C
+	rcall	fn0000BD8C
 	mov	r8,00000055
 	ld.ub	r9,r12[0]
 	cp.b	r9,r8
@@ -18385,7 +18385,7 @@ l0000B8CA:
 l0000B8D4:
 	mov	r11,r12
 	mov	r12,r7
-	rcall	0000C058
+	rcall	fn0000C058
 	popm	r4-r7,pc
 
 l0000B8DE:
@@ -18413,7 +18413,7 @@ l0000B912:
 	breq	0000B91A
 
 l0000B916:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l0000B91A:
 	popm	r4-r7,pc
@@ -18447,7 +18447,7 @@ l0000B96A:
 	breq	0000B972
 
 l0000B96E:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l0000B972:
 	popm	r4-r7,pc
@@ -18464,7 +18464,7 @@ fn0000B978 proc
 	mov	r3,r12
 	mov	r12,r11
 	mov	r5,r11
-	rcall	0000B95C
+	rcall	fn0000B95C
 	mov	r10,r5
 	mov	r11,r3
 	mcall	r6[36]
@@ -18486,7 +18486,7 @@ fn0000B994 proc
 	mcall	r6[16]
 	sub	r11,r12,FFFFFFFF
 	mov	r12,r5
-	rcall	0000B978
+	rcall	fn0000B978
 	popm	r4-r7,pc
 0000B9AA                               D7 03 FF FF 69 A8           ....i.
 0000B9B0 D4 21 48 56 1E 26 18 95 CD 2F 0A 9A 30 0B F0 16 .!HV.&.../..0...
@@ -18606,7 +18606,7 @@ fn0000BA66 proc
 	rjmp	0000BA7A
 
 l0000BA76:
-	rcall	0000BA44
+	rcall	fn0000BA44
 	or	r5,r12
 
 l0000BA7A:
@@ -18874,7 +18874,7 @@ l0000BC26:
 
 l0000BC2A:
 	mov	r12,sp
-	rcall	0000BA44
+	rcall	fn0000BA44
 	rjmp	0000BC5E
 
 l0000BC30:
@@ -18914,7 +18914,7 @@ l0000BC50:
 
 l0000BC52:
 	mov	r12,sp
-	rcall	0000BA66
+	rcall	fn0000BA66
 	rjmp	0000BC5E
 
 l0000BC58:
@@ -19620,7 +19620,7 @@ l0000C1A4:
 	st.w	--sp,r3
 	st.w	--sp,r2
 	st.w	--sp,r4
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	r7,r12
 	cp.w	r12,00000000
@@ -19641,7 +19641,7 @@ l0000C1D0:
 	mov	r10,00000047
 	mov	r12,r5
 	st.w	--sp,lr
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	lr,r12
 	cp.w	r12,00000000
@@ -19659,7 +19659,7 @@ l0000C1F8:
 	st.w	--sp,lr
 	st.w	--sp,lr
 	st.w	--sp,lr
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	lr,r12
 	cp.w	r12,00000000
@@ -19679,7 +19679,7 @@ l0000C21A:
 	mov	r12,r5
 	st.w	--sp,lr
 	st.w	--sp,r4
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	lr,r12
 	cp.w	r12,00000000
@@ -19698,7 +19698,7 @@ l0000C240:
 	st.w	--sp,lr
 	mov	lr,00000035
 	st.w	--sp,lr
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	lr,r12
 	cp.w	r12,00000000
@@ -19718,7 +19718,7 @@ l0000C264:
 	mov	r12,r5
 	st.w	--sp,lr
 	st.w	--sp,r4
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	r7,r12
 	cp.w	r12,00000000
@@ -19738,7 +19738,7 @@ l0000C28A:
 	st.w	--sp,lr
 	mov	lr,00000034
 	st.w	--sp,lr
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	mov	lr,r12
 	cp.w	r12,00000000
@@ -19763,7 +19763,7 @@ l0000C2B0:
 fn0000C2C8 proc
 	mov	r9,0000004F
 	st.w	--sp,lr
-	rcall	0000BFB8
+	rcall	fn0000BFB8
 	sub	sp,FFFFFFE8
 	cp.w	r12,00000000
 	rjmp	0000C2D4
@@ -20103,7 +20103,7 @@ fn0000C77E proc
 	add	r0,r0
 	add	r0,r0
 	add	r0,r0
-	rcall	0000C67A
+	rcall	fn0000C67A
 	add	r0,r0
 	ld.uh	pc,r0[-2]
 0000C87A                               03 00 00 00 00 00           ......
@@ -20138,7 +20138,7 @@ fn0000CA50 proc
 	brne	0000CA60
 
 l0000CA5C:
-	rcall	00006CAC
+	rcall	fn00006CAC
 
 l0000CA60:
 	popm	r4-r7,pc
@@ -20160,7 +20160,7 @@ fn0000CA68 proc
 	mov	r10,FFFFFFFF
 	mov	r11,FFFFFFFF
 	ld.d	r3:r2,r12[0]
-	rcall	000107C0
+	rcall	fn000107C0
 	cp.w	r10,r2
 	cpc	r11,r3
 	brcc	0000CA9A
@@ -20196,7 +20196,7 @@ fn0000CAB8 proc
 	rjmp	0000CACC
 
 l0000CAC8:
-	rcall	0000CA68
+	rcall	fn0000CA68
 	or	r5,r12
 
 l0000CACC:
@@ -20470,7 +20470,7 @@ l0000CC82:
 
 l0000CC86:
 	mov	r12,sp
-	rcall	0000CA68
+	rcall	fn0000CA68
 	rjmp	0000CCBA
 
 l0000CC8C:
@@ -20510,7 +20510,7 @@ l0000CCAC:
 
 l0000CCAE:
 	mov	r12,sp
-	rcall	0000CAB8
+	rcall	fn0000CAB8
 	rjmp	0000CCBA
 
 l0000CCB4:
@@ -20726,7 +20726,7 @@ l0000CE22:
 	st.w	--sp,lr
 	ld.w	lr,r7[20]
 	st.w	--sp,lr
-	rcall	0000CD78
+	rcall	fn0000CD78
 	sub	sp,FFFFFFEC
 	ld.w	r8,r5[0]
 	add	lr,r8,r12
@@ -20951,7 +20951,7 @@ l0000CF94:
 	st.w	--sp,r7
 	st.w	--sp,r7
 	st.w	--sp,lr
-	rcall	0000CD78
+	rcall	fn0000CD78
 	sub	sp,FFFFFFEC
 	asr	r9,r5,0000000A
 	asr	r8,r4,00000001
@@ -21048,7 +21048,7 @@ l0000D050:
 	lddsp	r12,sp[36]
 	sub	r10,sp,FFFFFF88
 	mov	r11,r5
-	rcall	0000CE88
+	rcall	fn0000CE88
 	sub	r4,00000001
 	lddsp	r8,sp[44]
 	st.w	--sp,r12
@@ -21057,7 +21057,7 @@ l0000D050:
 	lddsp	r11,sp[68]
 	lddsp	r12,sp[64]
 	st.w	--sp,r5
-	rcall	0000CE10
+	rcall	fn0000CE10
 	sub	sp,FFFFFFF8
 	lddsp	r10,sp[172]
 	cp.w	r10,r12
@@ -21097,7 +21097,7 @@ l0000D0A2:
 	lddsp	r12,sp[36]
 	mov	r11,r1
 	mov	r10,r2
-	rcall	0000CE88
+	rcall	fn0000CE88
 	lddsp	r8,sp[108]
 	lddsp	r11,sp[56]
 	cp.w	r8,r11
@@ -21111,13 +21111,13 @@ l0000D0BA:
 	lddsp	r12,sp[60]
 	st.w	--sp,r2
 	st.w	--sp,r1
-	rcall	0000CE10
+	rcall	fn0000CE10
 	sub	sp,FFFFFFF8
 	sub	r10,sp,FFFFFF88
 	stdsp	sp[172],r12
 	lddsp	r12,sp[36]
 	sub	r11,sp,FFFFFF54
-	rcall	0000CE88
+	rcall	fn0000CE88
 	rjmp	0000D0EC
 
 l0000D0DC:
@@ -21236,7 +21236,7 @@ fn0000D1B8 proc
 	rsub	r6,pc
 	ld.w	r10,r6[612]
 	ld.w	r11,r6[444]
-	rcall	0000CEEE
+	rcall	fn0000CEEE
 	popm	r4-r7,pc
 0000D1CA                               D7 03 FF FF 81 CC           ......
 0000D1D0 00 00 00 1F 00 3B 00 5A 00 78 00 97 00 B5 00 D4 .....;.Z.x......
@@ -21280,7 +21280,7 @@ fn0000D220 proc
 	mov	r12,r4
 	mov	r5,r9
 	st.w	r7[-820],sp
-	rcall	0000EB48
+	rcall	fn0000EB48
 	brge	0000D258
 
 l0000D24E:
@@ -21291,7 +21291,7 @@ l0000D24E:
 l0000D258:
 	mov	r11,r3
 	mov	r12,r5
-	rcall	0000EA4C
+	rcall	fn0000EA4C
 	brge	0000D284
 
 l0000D262:
@@ -21887,7 +21887,7 @@ l0000D6CA:
 	mov	r9,r5
 	mov	r10,r4
 	mov	r11,r5
-	rcall	00010CFC
+	rcall	fn00010CFC
 	breq	0000D70C
 
 l0000D6E4:
@@ -21914,7 +21914,7 @@ l0000D702:
 l0000D70C:
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F278
+	rcall	fn0000F278
 	breq	0000D72C
 
 l0000D716:
@@ -21960,7 +21960,7 @@ l0000D764:
 	mov	r9,r5
 	mov	r10,00000000
 	mov	r11,00000000
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	breq	0000D79C
 
 l0000D772:
@@ -21968,17 +21968,17 @@ l0000D772:
 	mov	r9,r5
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F650
+	rcall	__avr32_f64_add
 	mov	r8,r4
 	mov	r9,r5
-	rcall	0000F8EC
+	rcall	__avr32_f64_cmp_eq
 	brne	0000DA7A
 
 l0000D78A:
 	mov	r10,r4
 	mov	r11,r5
 	sub	r12,r7,00000004
-	rcall	0000E868
+	rcall	fn0000E868
 	st.d	r7[-764],r11:r10
 	rjmp	0000D7A8
 
@@ -22003,14 +22003,14 @@ l0000D7B2:
 l0000D7B8:
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F764
+	rcall	__avr32_f64_to_s32
 	st.w	r7[-812],r12
-	rcall	0000F802
+	rcall	__avr32_s32_to_f64
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	mov	r2,r10
 	mov	r3,r11
 	cp.w	r0,00000000
@@ -22025,7 +22025,7 @@ l0000D7E6:
 	ld.d	r9:r8,pc[118]
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r5,r0
 	movne	r5,00000001
 
@@ -22037,7 +22037,7 @@ l0000D7FE:
 	ld.d	r11:r10,pc[94]
 	mov	r8,r2
 	mov	r9,r3
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	mov	r8,r0
 	movne	r8,00000001
 
@@ -22052,7 +22052,7 @@ l0000D816:
 	ld.d	r11:r10,pc[78]
 	mov	r8,r2
 	mov	r9,r3
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	mov	r4,r10
 	mov	r5,r11
 	rjmp	0000D844
@@ -22067,7 +22067,7 @@ l0000D832:
 	ld.d	r9:r8,pc[66]
 	mov	r11,r3
 	sub	r0,00000001
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r4,r10
 	mov	r5,r11
 	rjmp	0000D7B8
@@ -22077,7 +22077,7 @@ l0000D844:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F8EC
+	rcall	__avr32_f64_cmp_eq
 	brne	0000D892
 
 l0000D852:
@@ -22091,7 +22091,7 @@ l0000D87C:
 	ld.d	r9:r8,pc[-16]
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	sub	r3,00000001
 	mov	r4,r10
 	mov	r5,r11
@@ -22104,7 +22104,7 @@ l0000D892:
 	ld.d	r11:r10,r7[-764]
 	mov	r8,r4
 	mov	r9,r5
-	rcall	0000F650
+	rcall	__avr32_f64_add
 	st.d	r7[-764],r11:r10
 
 l0000D8A2:
@@ -22118,15 +22118,15 @@ l0000D8A2:
 	sub	r8,FFFFFFE9
 	st.b	r9++,r8
 	mov	r0,r9
-	rcall	0000F764
+	rcall	__avr32_f64_to_s32
 	mov	r4,r0
 	mov	r5,r12
-	rcall	0000F802
+	rcall	__avr32_s32_to_f64
 	sub	r5,FFFFFFD0
 	mov	r8,r10
 	mov	r9,r11
 	ld.d	r11:r10,r7[-764]
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	st.b	r4++,r5
 	ld.w	r8,r7[-780]
 	mov	r2,r10
@@ -22139,7 +22139,7 @@ l0000D8E8:
 	mov	r9,r3
 	mov	r10,00000000
 	mov	r11,00000000
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	brne	0000D8FA
 
 l0000D8F6:
@@ -22147,7 +22147,7 @@ l0000D8F6:
 	breq	0000D976
 
 l0000D8FA:
-	rcall	0000D204
+	rcall	fn0000D204
 	st.b	r4++,r12
 	mov	r5,r4
 	rjmp	0000D954
@@ -22156,11 +22156,11 @@ l0000D904:
 	ld.d	r9:r8,pc[-144]
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r3,r11
 	mov	r11,r3
 	mov	r2,r10
-	rcall	0000F764
+	rcall	__avr32_f64_to_s32
 	cp.w	r12,00000009
 	brgt	0000D924
 
@@ -22182,13 +22182,13 @@ l0000D930:
 	movne	r1,r8
 
 l0000D93E:
-	rcall	0000F802
+	rcall	__avr32_s32_to_f64
 	sub	r5,FFFFFFFF
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	mov	r2,r10
 	mov	r3,r11
 
@@ -22197,7 +22197,7 @@ l0000D954:
 	mov	r9,r3
 	mov	r10,00000000
 	mov	r11,00000000
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	brne	0000D904
 
 l0000D962:
@@ -22251,7 +22251,7 @@ l0000D9A6:
 	mov	r9,r5
 	mov	r10,r4
 	mov	r11,r5
-	rcall	00010CFC
+	rcall	fn00010CFC
 	breq	0000D9F6
 
 l0000D9C0:
@@ -22293,7 +22293,7 @@ l0000D9F0:
 l0000D9F6:
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F278
+	rcall	fn0000F278
 	breq	0000DA16
 
 l0000DA00:
@@ -22341,7 +22341,7 @@ l0000DA56:
 	mov	r9,r5
 	mov	r10,00000000
 	mov	r11,00000000
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	breq	0000DAD8
 
 l0000DA64:
@@ -22349,10 +22349,10 @@ l0000DA64:
 	mov	r9,r5
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F650
+	rcall	__avr32_f64_add
 	mov	r8,r4
 	mov	r9,r5
-	rcall	0000F8EC
+	rcall	__avr32_f64_cmp_eq
 	breq	0000DAB2
 
 l0000DA7A:
@@ -22388,7 +22388,7 @@ l0000DAB2:
 	mov	r10,r4
 	mov	r11,r5
 	sub	r12,r7,00000004
-	rcall	0000E684
+	rcall	fn0000E684
 	st.d	r7[-756],r11:r10
 	rjmp	0000DAE4
 0000DAC4             80 00 00 00 3F E0 00 00 00 00 00 00     ....?.......
@@ -22415,14 +22415,14 @@ l0000DAEE:
 l0000DAF4:
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F764
+	rcall	__avr32_f64_to_s32
 	st.w	r7[-816],r12
-	rcall	0000F802
+	rcall	__avr32_s32_to_f64
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	mov	r2,r10
 	mov	r3,r11
 	cp.w	r0,00000000
@@ -22437,7 +22437,7 @@ l0000DB22:
 	ld.d	r9:r8,pc[-90]
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r5,r0
 	movne	r5,00000001
 
@@ -22449,7 +22449,7 @@ l0000DB3A:
 	ld.d	r11:r10,pc[-114]
 	mov	r8,r2
 	mov	r9,r3
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	mov	r8,r0
 	movne	r8,00000001
 
@@ -22464,7 +22464,7 @@ l0000DB52:
 	ld.d	r11:r10,pc[-130]
 	mov	r8,r2
 	mov	r9,r3
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	mov	r4,r10
 	mov	r5,r11
 	rjmp	0000DB80
@@ -22479,7 +22479,7 @@ l0000DB6E:
 	ld.d	r9:r8,pc[322]
 	mov	r11,r3
 	sub	r0,00000001
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r4,r10
 	mov	r5,r11
 	rjmp	0000DAF4
@@ -22489,7 +22489,7 @@ l0000DB80:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F8EC
+	rcall	__avr32_f64_cmp_eq
 	brne	0000DBA8
 
 l0000DB8E:
@@ -22500,7 +22500,7 @@ l0000DB92:
 	ld.d	r9:r8,pc[294]
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	sub	r3,00000001
 	mov	r4,r10
 	mov	r5,r11
@@ -22513,7 +22513,7 @@ l0000DBA8:
 	ld.d	r11:r10,r7[-756]
 	mov	r8,r4
 	mov	r9,r5
-	rcall	0000F650
+	rcall	__avr32_f64_add
 	st.d	r7[-756],r11:r10
 
 l0000DBB8:
@@ -22527,15 +22527,15 @@ l0000DBB8:
 	sub	r8,FFFFFFE9
 	st.b	r9++,r8
 	mov	r0,r9
-	rcall	0000F764
+	rcall	__avr32_f64_to_s32
 	mov	r4,r0
 	mov	r5,r12
-	rcall	0000F802
+	rcall	__avr32_s32_to_f64
 	sub	r5,FFFFFFD0
 	mov	r8,r10
 	mov	r9,r11
 	ld.d	r11:r10,r7[-756]
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	st.b	r4++,r5
 	ld.w	r8,r7[-780]
 	mov	r2,r10
@@ -22548,7 +22548,7 @@ l0000DBFE:
 	mov	r9,r3
 	mov	r10,00000000
 	mov	r11,00000000
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	brne	0000DC10
 
 l0000DC0C:
@@ -22556,7 +22556,7 @@ l0000DC0C:
 	breq	0000DC8C
 
 l0000DC10:
-	rcall	0000D204
+	rcall	fn0000D204
 	st.b	r4++,r12
 	mov	r5,r4
 	rjmp	0000DC6A
@@ -22565,11 +22565,11 @@ l0000DC1A:
 	ld.d	r9:r8,pc[150]
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r3,r11
 	mov	r11,r3
 	mov	r2,r10
-	rcall	0000F764
+	rcall	__avr32_f64_to_s32
 	cp.w	r12,00000009
 	brgt	0000DC3A
 
@@ -22591,13 +22591,13 @@ l0000DC46:
 	movne	r1,r8
 
 l0000DC54:
-	rcall	0000F802
+	rcall	__avr32_s32_to_f64
 	sub	r5,FFFFFFFF
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F4B4
+	rcall	__avr32_f64_sub
 	mov	r2,r10
 	mov	r3,r11
 
@@ -22606,7 +22606,7 @@ l0000DC6A:
 	mov	r9,r3
 	mov	r10,00000000
 	mov	r11,00000000
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	brne	0000DC1A
 
 l0000DC78:
@@ -24040,7 +24040,7 @@ fn0000E684 proc
 	mov	r4,r10
 	mov	r5,r11
 	stdsp	sp[8],r12
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	ld.d	r11:r10,pc[376]
 	ld.d	r9:r8,pc[380]
 	breq	0000E718
@@ -24056,7 +24056,7 @@ l0000E6B2:
 	ld.d	r9:r8,sp[12]
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r8,00000001
 	lsl	lr,r8,r1
 	mov	r10,r4
@@ -24068,7 +24068,7 @@ l0000E6B2:
 
 l0000E6D2:
 	add	r0,lr
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	lsl	r8,r1,00000003
 	sub	r9,sp,FFFFFFE4
 	st.b	r8[r9],r3:r2
@@ -24081,13 +24081,13 @@ l0000E6D2:
 	ld.d	r9:r8,sp[12]
 	mov	r10,r8
 	mov	r11,r9
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r8,r2
 	st.d	sp[12],r11:r10
 	mov	r9,r3
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r2,r10
 	mov	r3,r11
 	rjmp	0000E6B2
@@ -24109,12 +24109,12 @@ l0000E724:
 	brlt	0000E794
 
 l0000E73C:
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	ld.d	r9:r8,pc[204]
 	mov	r5,r11
 	mov	r11,r5
 	mov	r4,r10
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	ld.d	r9:r8,sp[0]
 	lsl	lr,r1,00000003
 	mov	r10,r8
@@ -24130,12 +24130,12 @@ l0000E75E:
 	ld.d	r3:r2,sp[0]
 	sub	r1,FFFFFFFF
 	st.b	lr[r12],r3:r2
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	ld.d	r9:r8,sp[20]
 	st.d	sp[0],r11:r10
 	mov	r10,r8
 	mov	r11,r9
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	lr,r0
 	st.d	sp[20],r11:r10
 	rjmp	0000E724
@@ -24147,7 +24147,7 @@ l0000E796:
 	ld.d	r9:r8,pc[118]
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	breq	0000E7EE
 
 l0000E7A4:
@@ -24167,12 +24167,12 @@ l0000E7B4:
 
 l0000E7C6:
 	ld.d	r9:r8,r7[0]
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	ld.d	r9:r8,pc[62]
 	mov	r5,r11
 	mov	r11,r5
 	mov	r4,r10
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r9,r0
 	brne	0000E7EE
 
@@ -24204,7 +24204,7 @@ l0000E824:
 	ld.d	r9:r8,r3[0]
 	sub	r1,00000001
 	sub	r3,00000008
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r8,00000001
 	lsl	lr,r8,r1
 	mov	r10,r4
@@ -24215,7 +24215,7 @@ l0000E824:
 l0000E83E:
 	ld.d	r9:r8,r7[0]
 	add	r0,lr
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r4,r10
 	mov	r5,r11
 
@@ -24249,7 +24249,7 @@ fn0000E868 proc
 	mov	r4,r10
 	mov	r5,r11
 	stdsp	sp[8],r12
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	ld.d	r11:r10,pc[376]
 	ld.d	r9:r8,pc[380]
 	breq	0000E8FC
@@ -24265,7 +24265,7 @@ l0000E896:
 	ld.d	r9:r8,sp[12]
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r8,00000001
 	lsl	lr,r8,r1
 	mov	r10,r4
@@ -24277,7 +24277,7 @@ l0000E896:
 
 l0000E8B6:
 	add	r0,lr
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	lsl	r8,r1,00000003
 	sub	r9,sp,FFFFFFE4
 	st.b	r8[r9],r3:r2
@@ -24290,13 +24290,13 @@ l0000E8B6:
 	ld.d	r9:r8,sp[12]
 	mov	r10,r8
 	mov	r11,r9
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r8,r2
 	st.d	sp[12],r11:r10
 	mov	r9,r3
 	mov	r10,r2
 	mov	r11,r3
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r2,r10
 	mov	r3,r11
 	rjmp	0000E896
@@ -24318,12 +24318,12 @@ l0000E908:
 	brlt	0000E978
 
 l0000E920:
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	ld.d	r9:r8,pc[204]
 	mov	r5,r11
 	mov	r11,r5
 	mov	r4,r10
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	ld.d	r9:r8,sp[0]
 	lsl	lr,r1,00000003
 	mov	r10,r8
@@ -24339,12 +24339,12 @@ l0000E942:
 	ld.d	r3:r2,sp[0]
 	sub	r1,FFFFFFFF
 	st.b	lr[r12],r3:r2
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	ld.d	r9:r8,sp[20]
 	st.d	sp[0],r11:r10
 	mov	r10,r8
 	mov	r11,r9
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	lr,r0
 	st.d	sp[20],r11:r10
 	rjmp	0000E908
@@ -24356,7 +24356,7 @@ l0000E97A:
 	ld.d	r9:r8,pc[118]
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	breq	0000E9D2
 
 l0000E988:
@@ -24376,12 +24376,12 @@ l0000E998:
 
 l0000E9AA:
 	ld.d	r9:r8,r7[0]
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	ld.d	r9:r8,pc[62]
 	mov	r5,r11
 	mov	r11,r5
 	mov	r4,r10
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r9,r0
 	brne	0000E9D2
 
@@ -24413,7 +24413,7 @@ l0000EA08:
 	ld.d	r9:r8,r3[0]
 	sub	r1,00000001
 	sub	r3,00000008
-	rcall	0000F91C
+	rcall	__avr32_f64_cmp_ge
 	mov	r8,00000001
 	lsl	lr,r8,r1
 	mov	r10,r4
@@ -24424,7 +24424,7 @@ l0000EA08:
 l0000EA22:
 	ld.d	r9:r8,r7[0]
 	add	r0,lr
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r4,r10
 	mov	r5,r11
 
@@ -25762,7 +25762,7 @@ fn0000F278 proc
 	mov	r9,r11
 	mov	r4,r10
 	mov	r5,r11
-	rcall	00010CFC
+	rcall	fn00010CFC
 	brne	0000F2C4
 
 l0000F28E:
@@ -25770,7 +25770,7 @@ l0000F28E:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F976
+	rcall	__avr32_f64_cmp_lt
 	breq	0000F2A0
 
 l0000F29C:
@@ -25782,7 +25782,7 @@ l0000F2A0:
 	mov	r9,00000000
 	mov	r10,r4
 	mov	r11,r5
-	rcall	0000F8EC
+	rcall	__avr32_f64_cmp_eq
 	breq	0000F2C4
 
 l0000F2AE:
@@ -26564,7 +26564,7 @@ l0000F7EA:
 __avr32_u32_to_f64 proc
 	sub	r11,r12,00000000
 	mov	r12,00000000
-	rjmp	0000F806
+	rjmp	fn0000F806
 
 ;; __avr32_s32_to_f64: 0000F802
 ;;   Called from:
@@ -28009,18 +28009,18 @@ fn000101CC proc
 	mov	r12,r11
 	mov	r2,r10
 	mov	r3,r11
-	rcall	0000F7FA
+	rcall	__avr32_u32_to_f64
 	ld.d	r9:r8,pc[36]
-	rcall	0000F2D0
+	rcall	__avr32_f64_mul
 	mov	r12,r2
 	mov	r0,r10
 	mov	r1,r11
-	rcall	0000F7FA
+	rcall	__avr32_u32_to_f64
 	mov	r8,r10
 	mov	r9,r11
 	mov	r10,r0
 	mov	r11,r1
-	rcall	0000F650
+	rcall	__avr32_f64_add
 	popm	r0-r3,r4-r7,pc
 000101FC                                     FF FF B1 E0             ....
 00010200 41 F0 00 00 00 00 00 00                         A.......        
@@ -29438,10 +29438,10 @@ fn00010CFC proc
 	sub	r12,sp,FFFFFFD0
 	sub	r11,sp,FFFFFFEC
 	st.d	sp[40],r9:r8
-	rcall	00010D38
+	rcall	fn00010D38
 	mov	r11,sp
 	sub	r12,sp,FFFFFFD8
-	rcall	00010D38
+	rcall	fn00010D38
 	lddsp	r8,sp[20]
 	cp.w	r8,00000001
 	brhi	00010D2A

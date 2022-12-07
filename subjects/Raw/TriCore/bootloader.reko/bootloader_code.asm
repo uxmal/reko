@@ -11,7 +11,7 @@ l00000014:
 	jz.t	d1,#0x0,00000020
 
 l0000001C:
-	jl	000000EC
+	jl	fn000000EC
 
 l00000020:
 	movh.a	a10,#0xB001
@@ -52,18 +52,18 @@ l00000020:
 
 ;; fn000000A8: 000000A8
 fn000000A8 proc
-	jl	00000294
-	jl	00000128
-	jl	0000016E
-	jl	000001E2
-	jl	00000236
-	call	00001F40
+	jl	fn00000294
+	jl	fn00000128
+	jl	fn0000016E
+	jl	fn000001E2
+	jl	fn00000236
+	call	fn00001F40
 	mov	d4,#0x0
 	sub.a	a8,#0x8
 	st.w	[a10],d4
 	st.w	[a10]4,d4
 	mov.aa	a4,a10
-	call	000012F6
+	call	fn000012F6
 	mov	d4,d2
 	lea	a10,[a10]8
 	mov.u	d1,#0x900D
@@ -345,7 +345,7 @@ fn00000400 proc
 	ld.w	d4,[0003C5F0]
 	sub.a	a8,#0x8
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l0000040E:
 	ld.w	d15,[0003C5F0]
@@ -371,7 +371,7 @@ l00000430:
 	st.w	[a10]4,d15
 	ld.w	d4,[0003C5F0]
 	or	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 	movh.a	a3,#0xF000
 	lea	a3,[a3]16836
 	mov.aa	a2,a3
@@ -1168,7 +1168,7 @@ l00000B26:
 l00000B2E:
 	ld.w	d4,[0003C5F0]
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000B3A:
 	ld.w	d15,[0003C5F0]
@@ -1183,14 +1183,14 @@ l00000B42:
 	st.a	[0003C518],a15
 	ld.w	d4,[0003C5F0]
 	or	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 	ld.w	d15,[0003C514]
 	jnz.t	d15,#0x1,00000BF2
 
 l00000B6E:
 	ld.w	d4,[0003C5F0]
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000B7A:
 	ld.w	d15,[0003C5F0]
@@ -1216,7 +1216,7 @@ l00000B9C:
 	st.a	[0003C51C],a15
 	ld.w	d4,[0003C5F0]
 	or	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000BBE:
 	ld.w	d15,[0003C514]
@@ -1225,7 +1225,7 @@ l00000BBE:
 l00000BC6:
 	ld.w	d4,[0003C5F0]
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000BD2:
 	ld.w	d15,[0003C5F0]
@@ -1237,12 +1237,12 @@ l00000BDA:
 	st.a	[0003C518],a15
 	ld.w	d4,[0003C5F0]
 	or	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000BF2:
 	ld.w	d4,[0003C5F0]
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000BFE:
 	ld.w	d15,[0003C5F0]
@@ -1254,12 +1254,12 @@ l00000C06:
 	ld.w	d4,[0003C5F0]
 	mov	d15,#0x0
 	or	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 	mtcr	ICR,d15
 	isync
 	ld.w	d4,[0003C5F0]
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000C2E:
 	ld.w	d15,[0003C5F0]
@@ -1275,7 +1275,7 @@ l00000C36:
 	ld.w	d4,[0003C5F0]
 	movh.a	a15,#0xF004
 	or	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 	st.w	[a15]16160,d15
 	movh.a	a15,#0xF004
 	st.w	[a15]16164,d15
@@ -1292,7 +1292,7 @@ l00000C36:
 	st.w	[a15]16348,d15
 	ld.w	d4,[0003C5F0]
 	andn	d4,d4,#0x1
-	call	00000AC0
+	call	fn00000AC0
 
 l00000C9E:
 	ld.w	d15,[0003C5F0]
@@ -1306,8 +1306,8 @@ l00000CA6:
 	st.w	[a15]576,d15
 	ld.w	d4,[0003C5F0]
 	or	d4,d4,#0x1
-	call	00000AC0
-	call	00000400
+	call	fn00000AC0
+	call	fn00000400
 	disable
 	ret
 
@@ -1325,13 +1325,13 @@ fn00000CCE proc
 
 l00000CD0:
 	mov	d4,#0x1
-	call	00000648
+	call	fn00000648
 	jne	d2,#0x1,00000CD0
 
 l00000CDA:
 	mov	d4,#0x1
 	mov.aa	a4,a15
-	call	0000074E
+	call	fn0000074E
 	mov	d4,#0x1
 	j	0000067A
 
@@ -1356,7 +1356,7 @@ l00000CF8:
 l00000D06:
 	mov	d15,#0x1
 	mov.aa	a4,a10
-	call	00000CCE
+	call	fn00000CCE
 	st.b	[a10]1,d15
 	ld.bu	d15,[a15]
 	st.b	[a10]2,d15
@@ -1373,7 +1373,7 @@ l00000D06:
 	ld.b	d15,[00034000]
 	Invalid
 	st.b	[a10]7,d15
-	j	00000CCE
+	j	fn00000CCE
 	ld.bu	d2,[a4]13
 	ld.bu	d15,[a4]14
 	sh	d2,d2,#0x18
@@ -1401,7 +1401,7 @@ l00000D06:
 	st.b	[a10]5,d15
 	st.b	[a10]6,d15
 	st.b	[a10]7,d15
-	j	00000CCE
+	j	fn00000CCE
 	ld.bu	d3,[a4]13
 	ld.bu	d15,[a4]14
 	sh	d3,d3,#0x18
@@ -1429,7 +1429,7 @@ l00000D06:
 	st.b	[a10]5,d2
 	st.b	[a10]6,d2
 	st.b	[a10]7,d2
-	call	00000CCE
+	call	fn00000CCE
 	st.w	[a15]4,d15
 	ret
 	ld.bu	d3,[a4]13
@@ -1461,7 +1461,7 @@ l00000D06:
 	st.b	[a10]5,d15
 	st.b	[a10]6,d15
 	st.b	[a10]7,d15
-	j	00000CCE
+	j	fn00000CCE
 	ld.bu	d3,[a4]13
 	ld.bu	d15,[a4]14
 	sh	d3,d3,#0x18
@@ -1490,7 +1490,7 @@ l00000D06:
 	st.b	[a10]5,d2
 	st.b	[a10]6,d2
 	st.b	[a10]7,d2
-	call	00000CCE
+	call	fn00000CCE
 	movh.a	a2,#0xD000
 	lea	a15,[a2]556
 	st.b	[a15]6,d10
@@ -1522,7 +1522,7 @@ fn00000EB6 proc
 	ld.w	d6,[a2]556
 	or	d7,d15
 	sel	d5,d5,d2,d3
-	call	0000098A
+	call	fn0000098A
 	ld.bu	d15,[a15]4
 	movh.a	a15,#0xF800
 	lea	a15,[a15]16400
@@ -1548,7 +1548,7 @@ l00000F0E:
 	st.b	[a10]13,d15
 	st.b	[a10]14,d15
 	st.b	[a10]15,d15
-	j	00000CCE
+	j	fn00000CCE
 
 ;; fn00000F40: 00000F40
 fn00000F40 proc
@@ -1577,7 +1577,7 @@ l00000F7E:
 
 l00000F8A:
 	mov.aa	a4,a15
-	call	000009BA
+	call	fn000009BA
 	mov	d2,#0x5
 	ld.w	d15,[a15]
 	st.b	[a10]1,d15
@@ -1593,7 +1593,7 @@ l00000F8A:
 	st.b	[a10]5,d15
 	st.b	[a10]6,d15
 	st.b	[a10]7,d15
-	j	00000CCE
+	j	fn00000CCE
 
 ;; fn00000FBE: 00000FBE
 fn00000FBE proc
@@ -1627,7 +1627,7 @@ fn00000FBE proc
 	st.b	[a10]5,d15
 	st.b	[a10]6,d15
 	st.b	[a10]7,d15
-	j	00000CCE
+	j	fn00000CCE
 
 ;; fn0000101C: 0000101C
 fn0000101C proc
@@ -1684,7 +1684,7 @@ l00001084:
 	mov	d15,#0x6
 	movh.a	a5,#0xD000
 	lea	a5,[a5]300
-	call	00000A0C
+	call	fn00000A0C
 	st.b	[a10],d15
 	mov	d15,#0x0
 	mov.aa	a4,a10
@@ -1696,7 +1696,7 @@ l00001084:
 	st.b	[a10]5,d15
 	st.b	[a10]6,d15
 	st.b	[a10]7,d15
-	call	00000CCE
+	call	fn00000CCE
 	mov	d2,#0x1
 	ret
 
@@ -1711,15 +1711,15 @@ fn000010B0 proc
 
 l000010C4:
 	mov	d4,#0x0
-	call	00000664
+	call	fn00000664
 	jz	d2,000010E4
 
 l000010CC:
 	mov	d4,#0x0
 	mov.aa	a4,a10
-	call	000005CE
+	call	fn000005CE
 	mov	d4,#0x0
-	call	000007CE
+	call	fn000007CE
 	ld.hu	d2,[a10]12
 	jne	d2,d8,000010C4
 
@@ -1776,7 +1776,7 @@ l00001160:
 	mov.a	a4,d8
 	lea	a5,[a10]8
 	mov	d5,#0x1020
-	call	00001DB0
+	call	fn00001DB0
 	mov	d15,d2
 	jlt	d2,#0x1,000011F8
 
@@ -1797,7 +1797,7 @@ l00001174:
 	st.b	[a10]5,d2
 	sha	d2,d15,#0x38
 	st.b	[a10]6,d2
-	call	00000CCE
+	call	fn00000CCE
 	mov.a	a2,d8
 	lea	a15,[a10]8
 	add.a	a15,a2
@@ -1818,11 +1818,11 @@ l00001174:
 	st.b	[a10],d9
 	st.b	[a10]1,d10
 	st.b	[a10]7,d2
-	call	00000CCE
+	call	fn00000CCE
 	Invalid
 	mul	d15,d7
 	mov	d4,#0x2710
-	call	000010B0
+	call	fn000010B0
 	j	00001144
 
 l000011F8:
@@ -1870,7 +1870,7 @@ fn000012F6 proc
 	movh.a	a15,#0xD000
 	sub.a	a8,#0x18
 	lea	a15,[a15]564
-	call	00000B04
+	call	fn00000B04
 	mov	d15,#0x0
 	st.w	[a15+],d15
 	st.w	[a15+],d15
@@ -1878,17 +1878,17 @@ fn000012F6 proc
 
 l0000130C:
 	mov	d4,#0x0
-	call	00000664
+	call	fn00000664
 	jeq	d2,#0x0,0000130C
 
 l00001316:
 	mov.aa	a4,a10
 	mov	d4,#0x0
-	call	000005CE
+	call	fn000005CE
 	mov	d4,#0x0
-	call	000007CE
+	call	fn000007CE
 	mov.aa	a4,a10
-	call	000011FA
+	call	fn000011FA
 	j	0000130C
 
 ;; fn0000132C: 0000132C
@@ -2120,7 +2120,7 @@ l00001CDE:
 	mov	e8,d5,d6
 	st.a	[a10]12,d6
 	mov.aa	a15,a5
-	call	00001CB4
+	call	fn00001CB4
 	movh	d3,#0x1
 	add	d3,#0x1
 	min	d2,d8,d3
@@ -2128,7 +2128,7 @@ l00001CDE:
 	ge	d8,d8,#0x1
 	mov.aa	a12,a2
 	sel	d8,d8,d2,#0x1
-	call	00001B9A
+	call	fn00001B9A
 	ld.a	a6,[a10]12
 	Invalid
 	adds	d0,d0
@@ -2306,8 +2306,8 @@ l00001F3C:
 ;;   Called from:
 ;;     000000BC (in fn000000A8)
 fn00001F40 proc
-	call	00001EE0
-	call	00001F20
+	call	fn00001EE0
+	call	fn00001F20
 	ret
 00001F4A                               00 00 00 00 00 00           ......
 00001F50 6D FF A2 FF 00 90 00 00 31 2E 39 2E 33 00 00 00 m.......1.9.3...

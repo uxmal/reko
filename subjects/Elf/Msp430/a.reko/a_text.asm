@@ -28,7 +28,7 @@ l0000402C:
 	jnc	0000402C
 
 l00004036:
-	br.w	414C
+	br.w	main
 0000403A                               30 40 3E 40 00 13           0@>@..
 00004040 0A 0D 5B 25 64 5D 20 00                         ..[%d] .        
 
@@ -1336,11 +1336,11 @@ l000049A6:
 prvIdleTask proc
 	call	4A5E
 	cmp.w	#0002,&0222
-	jnc	49AC
+	jnc	prvIdleTask
 
 l49B6:
 	call	523A
-	jmp	49AC
+	jmp	prvIdleTask
 49BC                                     30 41                   0A  
 
 ;; prvInitialiseTCBVariables: 49BE

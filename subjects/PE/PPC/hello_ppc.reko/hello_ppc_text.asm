@@ -12,7 +12,7 @@ fn00400220 proc
 	lwz	r4,68(r2)
 	addi	r4,r4,+0000
 	ori	r3,r4,0000
-	bl	$00400268
+	bl	fn00400268
 	nop
 	addi	r5,r0,+0000
 	stw	r5,56(r1)
@@ -45,19 +45,19 @@ fn00400268 proc
 	stw	r3,96(r1)
 	addi	r31,r31,+0020
 	ori	r3,r31,0000
-	bl	$004002F8
+	bl	fn004002F8
 	nop
 	lwz	r4,96(r1)
 	ori	r30,r3,0000
 	ori	r3,r31,0000
 	addi	r5,r1,+0060
 	addi	r5,r5,+0004
-	bl	$004004B4
+	bl	fn004004B4
 	nop
 	ori	r29,r3,0000
 	ori	r3,r30,0000
 	ori	r4,r31,0000
-	bl	$00400430
+	bl	fn00400430
 	nop
 	lwz	r12,80(r1)
 	ori	r3,r29,0000
@@ -77,7 +77,7 @@ fn004002F8 proc
 	mflr	r12
 	lwz	r3,16(r31)
 	stw	r12,72(r1)
-	bl	$00401474
+	bl	fn00401474
 	nop
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00400338
@@ -135,7 +135,7 @@ l00400394:
 
 l004003AC:
 	addi	r3,r0,+1000
-	bl	$00400F9C
+	bl	fn00400F9C
 	nop
 	ori	r11,r3,0000
 	cmplwi	cr1,r11,0000
@@ -194,7 +194,7 @@ l0040044C:
 
 l00400458:
 	ori	r3,r31,0000
-	bl	$004012B0
+	bl	fn004012B0
 	nop
 	lwz	r4,12(r31)
 	addi	r5,r0,+0000
@@ -213,7 +213,7 @@ l00400488:
 
 l00400494:
 	ori	r3,r31,0000
-	bl	$004012B0
+	bl	fn004012B0
 	nop
 
 l004004A0:
@@ -295,7 +295,7 @@ l00400548:
 
 l00400578:
 	rlwinm	r11,r11,02,00,1D
-	bl	$004005A0
+	bl	fn004005A0
 	b	$004005B0
 00400584             48 00 00 84 48 00 00 9C 48 00 01 2C     H...H...H..,
 00400590 48 00 01 60 48 00 01 64 48 00 01 94 48 00 01 A0 H..`H..dH...H...
@@ -323,7 +323,7 @@ l004005C8:
 	lwz	r5,616(r1)
 	ori	r4,r22,0000
 	ori	r3,r31,0000
-	bl	$00400E04
+	bl	fn00400E04
 	lbz	r31,0(r23)
 	addi	r23,r23,+0001
 	extsb	r31,r31
@@ -334,7 +334,7 @@ l004005EC:
 	lwz	r5,616(r1)
 	ori	r4,r22,0000
 	ori	r3,r31,0000
-	bl	$00400E04
+	bl	fn00400E04
 	b	$00400DDC
 00400608                         39 E0 00 00 3A 60 00 00         9...:`..
 00400610 3A 80 00 00 3B 00 00 00 3B C0 00 00 3B 80 FF FF :...;...;...;...
@@ -523,7 +523,7 @@ l00400E2C:
 	b	$00400E68
 
 l00400E5C:
-	bl	$00401598
+	bl	fn00401598
 	nop
 	ori	r11,r3,0000
 
@@ -567,7 +567,7 @@ l00400ECC:
 	ori	r3,r28,0000
 	ori	r4,r29,0000
 	ori	r5,r30,0000
-	bl	$00400E04
+	bl	fn00400E04
 	ori	r4,r31,0000
 	cmpwi	cr1,r4,+0000
 	addi	r31,r31,-0001
@@ -603,7 +603,7 @@ l00400F30:
 	addi	r30,r30,+0001
 	ori	r3,r4,0000
 	ori	r4,r28,0000
-	bl	$00400E04
+	bl	fn00400E04
 	ori	r4,r31,0000
 	cmpwi	cr1,r4,+0000
 	addi	r31,r31,-0001
@@ -643,7 +643,7 @@ fn00400F9C proc
 	lwz	r4,0(r4)
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
-	bl	$00400FC4
+	bl	fn00400FC4
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
 	mtlr	r12
@@ -676,7 +676,7 @@ l00400FF8:
 
 l00401004:
 	ori	r3,r31,0000
-	bl	$0040105C
+	bl	fn0040105C
 	cmplwi	cr1,r3,0000
 	bne	cr1,$00401048
 
@@ -686,7 +686,7 @@ l00401014:
 
 l0040101C:
 	ori	r3,r31,0000
-	bl	$004017F0
+	bl	fn004017F0
 	nop
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00401004
@@ -716,7 +716,7 @@ fn0040105C proc
 	stmw	r29,56(r1)
 	ori	r30,r3,0000
 	ori	r3,r30,0000
-	bl	$00401F40
+	bl	fn00401F40
 	nop
 	ori	r31,r3,0000
 	cmplwi	cr1,r31,0000
@@ -724,21 +724,21 @@ fn0040105C proc
 
 l00401088:
 	ori	r3,r30,0000
-	bl	$00401ADC
+	bl	fn00401ADC
 	nop
 	cmpwi	cr1,r3,-0001
 	beq	cr1,$004010C0
 
 l0040109C:
 	ori	r3,r30,0000
-	bl	$00401F40
+	bl	fn00401F40
 	nop
 	ori	r31,r3,0000
 	cmplwi	cr1,r31,0000
 	bne	cr1,$004010D8
 
 l004010B4:
-	bl	$00401AB4
+	bl	fn00401AB4
 	nop
 	b	$004010D8
 
@@ -765,7 +765,7 @@ l004010D8:
 l00401100:
 	ori	r3,r31,0000
 	ori	r4,r30,0000
-	bl	$0040115C
+	bl	fn0040115C
 	cmplwi	cr1,r3,0000
 	beq	cr1,$00401128
 
@@ -813,7 +813,7 @@ fn0040115C proc
 	ble	cr1,$004011E4
 
 l0040119C:
-	bl	$004019CC
+	bl	fn004019CC
 	nop
 	cmplwi	cr1,r3,0000
 	beq	cr1,$004011E4
@@ -858,7 +858,7 @@ fn004011FC proc
 
 l00401218:
 	addi	r3,r0,+0000
-	bl	$00401380
+	bl	fn00401380
 	lwz	r12,72(r1)
 	lwz	r31,56(r1)
 	mtlr	r12
@@ -867,7 +867,7 @@ l00401218:
 
 l00401234:
 	ori	r3,r31,0000
-	bl	$004012B0
+	bl	fn004012B0
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$0040125C
 
@@ -886,7 +886,7 @@ l0040125C:
 
 l00401268:
 	lwz	r3,16(r31)
-	bl	$004020BC
+	bl	fn004020BC
 	nop
 	cmpwi	cr1,r3,+0000
 	addi	r3,r0,-0001
@@ -942,7 +942,7 @@ l004012E0:
 l004012F0:
 	lwz	r3,16(r31)
 	ori	r5,r30,0000
-	bl	$00402248
+	bl	fn00402248
 	nop
 	cmp	cr1,r3,r30
 	bne	cr1,$00401324
@@ -982,7 +982,7 @@ fn0040135C proc
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
 	addi	r3,r0,+0001
-	bl	$00401380
+	bl	fn00401380
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
 	mtlr	r12
@@ -1018,7 +1018,7 @@ l004013BC:
 
 l004013C8:
 	ori	r3,r31,0000
-	bl	$004011FC
+	bl	fn004011FC
 	cmpwi	cr1,r3,-0001
 	beq	cr1,$00401408
 
@@ -1037,7 +1037,7 @@ l004013E8:
 
 l004013F4:
 	ori	r3,r31,0000
-	bl	$004011FC
+	bl	fn004011FC
 	cmpwi	cr1,r3,-0001
 	bne	cr1,$00401408
 
@@ -1275,14 +1275,14 @@ l0040165C:
 
 l00401668:
 	ori	r3,r30,0000
-	bl	$00401474
+	bl	fn00401474
 	nop
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00401688
 
 l0040167C:
 	ori	r3,r31,0000
-	bl	$0040298C
+	bl	fn0040298C
 	nop
 
 l00401688:
@@ -1305,7 +1305,7 @@ l004016B8:
 	lwz	r4,8(r31)
 	ori	r3,r30,0000
 	ori	r5,r29,0000
-	bl	$00402248
+	bl	fn00402248
 	nop
 	ori	r28,r3,0000
 	b	$004016FC
@@ -1321,7 +1321,7 @@ l004016E8:
 	ori	r3,r30,0000
 	addi	r4,r0,+0000
 	addi	r5,r0,+0002
-	bl	$004026B8
+	bl	fn004026B8
 	nop
 
 l004016FC:
@@ -1337,7 +1337,7 @@ l0040170C:
 	addi	r29,r0,+0001
 	stb	r6,56(r1)
 	addi	r5,r0,+0001
-	bl	$00402248
+	bl	fn00402248
 	nop
 	ori	r28,r3,0000
 
@@ -1400,7 +1400,7 @@ fn004017F0 proc
 l0040180C:
 	lwz	r11,128(r2)
 	lwz	r12,0(r11)
-	bl	$00403F10
+	bl	fn00403F10
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$00401838
@@ -1461,7 +1461,7 @@ fn004019CC proc
 	bne	cr1,$00401A10
 
 l004019EC:
-	bl	$00401A34
+	bl	fn00401A34
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00401A10
 
@@ -1492,7 +1492,7 @@ fn00401A34 proc
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
 	addi	r3,r0,+1000
-	bl	$00404104
+	bl	fn00404104
 	lwz	r2,20(r1)
 	cmplwi	cr1,r3,0000
 	bne	cr1,$00401A68
@@ -1539,7 +1539,7 @@ fn00401AB4 proc
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
 	addi	r3,r0,+0012
-	bl	$00402C4C
+	bl	fn00402C4C
 	nop
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
@@ -1583,7 +1583,7 @@ l00401B2C:
 l00401B40:
 	ori	r3,r30,0000
 	ori	r4,r26,0000
-	bl	$00401DD8
+	bl	fn00401DD8
 	cmpwi	cr1,r3,-0001
 	bne	cr1,$00401B80
 
@@ -1632,7 +1632,7 @@ l00401BB4:
 l00401BC4:
 	ori	r3,r9,0000
 	ori	r4,r31,0000
-	bl	$0040408C
+	bl	fn0040408C
 	lwz	r2,20(r1)
 	lwz	r9,0(r29)
 
@@ -1649,7 +1649,7 @@ l00401BE0:
 
 l00401BF4:
 	ori	r3,r31,0000
-	bl	$004040A4
+	bl	fn004040A4
 	lwz	r2,20(r1)
 	ori	r31,r3,0000
 	cmplwi	cr1,r31,0000
@@ -1665,7 +1665,7 @@ l00401C0C:
 
 l00401C24:
 	ori	r3,r31,0000
-	bl	$004040BC
+	bl	fn004040BC
 	lwz	r2,20(r1)
 	lwz	r9,0(r29)
 	cmplwi	cr1,r9,0000
@@ -1678,11 +1678,11 @@ l00401C3C:
 	lwz	r4,0(r31)
 	lwz	r5,56(r1)
 	rlwinm	r5,r5,04,00,1B
-	bl	$004040D4
+	bl	fn004040D4
 	lwz	r2,20(r1)
 	lwz	r4,0(r29)
 	ori	r3,r4,0000
-	bl	$004040EC
+	bl	fn004040EC
 	lwz	r2,20(r1)
 
 l00401C6C:
@@ -1719,7 +1719,7 @@ l00401CB8:
 l00401CC8:
 	ori	r3,r27,0000
 	ori	r4,r26,0000
-	bl	$00401CE8
+	bl	fn00401CE8
 	lwz	r12,96(r1)
 	lmw	r25,60(r1)
 	mtlr	r12
@@ -1749,7 +1749,7 @@ l00401D1C:
 
 l00401D20:
 	addi	r3,r31,+0008
-	bl	$00404104
+	bl	fn00404104
 	lwz	r2,20(r1)
 	ori	r10,r3,0000
 	cmplwi	cr1,r10,0000
@@ -1784,13 +1784,13 @@ l00401D78:
 	stw	r31,8(r8)
 	addi	r5,r0,+0000
 	stw	r5,4(r8)
-	bl	$00401DD8
+	bl	fn00401DD8
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$00401DA8
 
 l00401D9C:
 	ori	r3,r30,0000
-	bl	$00401ED4
+	bl	fn00401ED4
 	b	$00401DC0
 
 l00401DA8:
@@ -1840,7 +1840,7 @@ l00401E24:
 	addi	r28,r9,+0008
 	and	r28,r28,r7
 	ori	r4,r28,0000
-	bl	$0040411C
+	bl	fn0040411C
 	lwz	r2,20(r1)
 	lwz	r4,152(r2)
 	lwz	r10,0(r29)
@@ -1873,13 +1873,13 @@ l00401E88:
 	lwz	r5,56(r1)
 	ori	r4,r30,0000
 	stw	r5,4(r11)
-	bl	$00402CE0
+	bl	fn00402CE0
 	nop
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$00401EBC
 
 l00401EB4:
-	bl	$00401AB4
+	bl	fn00401AB4
 	nop
 
 l00401EBC:
@@ -1909,7 +1909,7 @@ fn00401ED4 proc
 
 l00401F04:
 	lwz	r3,12(r10)
-	bl	$00404134
+	bl	fn00404134
 	lwz	r2,20(r1)
 	lwz	r11,0(r30)
 
@@ -2120,7 +2120,7 @@ l00402138:
 	ori	r3,r31,0000
 	extsh	r4,r4
 	sth	r4,24(r31)
-	bl	$00404074
+	bl	fn00404074
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$00402184
@@ -2158,13 +2158,13 @@ l004021B4:
 	lhax	r4,r4,r29
 	ori	r3,r31,0000
 	sth	r4,22(r31)
-	bl	$00403F3C
+	bl	fn00403F3C
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$004021F8
 
 l004021D8:
-	bl	$00403104
+	bl	fn00403104
 	nop
 	lwz	r12,160(r1)
 	lmw	r29,136(r1)
@@ -2244,7 +2244,7 @@ l00402294:
 	lwz	r30,16(r30)
 	ori	r3,r31,0000
 	ori	r12,r30,0000
-	bl	$00403F10
+	bl	fn00403F10
 	lwz	r2,20(r1)
 	ori	r30,r3,0000
 	extsh.	r3,r30
@@ -2283,7 +2283,7 @@ l00402320:
 
 l00402324:
 	ori	r3,r31,0000
-	bl	$0040405C
+	bl	fn0040405C
 	lwz	r2,20(r1)
 	lwz	r11,40(r31)
 
@@ -2300,7 +2300,7 @@ l0040233C:
 	blr
 
 l00402354:
-	bl	$00403104
+	bl	fn00403104
 	nop
 	lwz	r12,168(r1)
 	lmw	r29,144(r1)
@@ -2336,7 +2336,7 @@ fn00402398 proc
 
 l004023C4:
 	ori	r3,r31,0000
-	bl	$00403170
+	bl	fn00403170
 	nop
 	cmpwi	cr1,r3,-0001
 	beq	cr1,$004023DC
@@ -2368,18 +2368,18 @@ fn00402404 proc
 	stwu	r1,-64(r1)
 	stw	r12,72(r1)
 	stw	r31,60(r1)
-	bl	$0040262C
+	bl	fn0040262C
 	lwz	r3,176(r2)
 	lwz	r4,180(r2)
-	bl	$0040262C
+	bl	fn0040262C
 	addi	r3,r0,-5E53
 	addi	r4,r0,+0000
-	bl	$00404044
+	bl	fn00404044
 	lwz	r2,20(r1)
 	ori	r31,r3,0000
 	addi	r3,r0,-5761
 	addi	r4,r0,+0001
-	bl	$00404044
+	bl	fn00404044
 	lwz	r2,20(r1)
 	cmplw	cr1,r31,r3
 	beq	cr1,$00402480
@@ -2388,7 +2388,7 @@ l00402458:
 	addi	r4,r1,+0038
 	addis	r3,r0,+7379
 	ori	r3,r3,7376
-	bl	$00403F9C
+	bl	fn00403F9C
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00402480
@@ -2438,17 +2438,17 @@ l0040251C:
 l0040252C:
 	lwz	r4,192(r2)
 	lwz	r4,0(r4)
-	bl	$0040262C
+	bl	fn0040262C
 
 l00402538:
 	lwz	r3,196(r2)
 	lwz	r4,200(r2)
-	bl	$0040262C
+	bl	fn0040262C
 
 l00402544:
 	lwz	r3,204(r2)
 	lwz	r4,208(r2)
-	bl	$0040262C
+	bl	fn0040262C
 	cmpwi	cr1,r31,+0000
 	bne	cr1,$00402574
 
@@ -2462,7 +2462,7 @@ l00402568:
 	stw	r30,14(r11)
 
 l0040256C:
-	bl	$00403248
+	bl	fn00403248
 	nop
 
 l00402574:
@@ -2512,7 +2512,7 @@ l00402658:
 
 l00402664:
 	ori	r12,r31,0000
-	bl	$00403F10
+	bl	fn00403F10
 	lwz	r2,20(r1)
 
 l00402670:
@@ -2609,7 +2609,7 @@ l0040277C:
 	ori	r3,r31,0000
 	extsh	r4,r4
 	sth	r4,24(r31)
-	bl	$00403FE4
+	bl	fn00403FE4
 	lwz	r2,20(r1)
 	lwz	r31,46(r31)
 	add	r29,r29,r31
@@ -2640,7 +2640,7 @@ l004027E0:
 	ori	r3,r31,0000
 	extsh	r4,r4
 	sth	r4,24(r31)
-	bl	$00403FFC
+	bl	fn00403FFC
 	lwz	r2,20(r1)
 	lwz	r31,28(r31)
 	add	r29,r29,r31
@@ -2677,7 +2677,7 @@ l00402844:
 	add	r27,r28,r27
 	addi	r26,r0,+0001
 	sth	r26,44(r31)
-	bl	$00404014
+	bl	fn00404014
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,-0027
 	bne	cr1,$00402920
@@ -2704,7 +2704,7 @@ l004028AC:
 	stw	r29,28(r31)
 	extsh	r4,r4
 	sth	r4,24(r31)
-	bl	$0040402C
+	bl	fn0040402C
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00402920
@@ -2732,7 +2732,7 @@ l00402900:
 	stw	r29,46(r31)
 	extsh	r27,r27
 	sth	r27,24(r31)
-	bl	$00404014
+	bl	fn00404014
 	lwz	r2,20(r1)
 
 l00402920:
@@ -2740,7 +2740,7 @@ l00402920:
 	beq	cr1,$00402948
 
 l00402928:
-	bl	$00403104
+	bl	fn00403104
 	nop
 	lwz	r12,168(r1)
 	lmw	r26,136(r1)
@@ -2784,7 +2784,7 @@ fn0040298C proc
 	addi	r5,r5,+0001
 	stw	r5,0(r4)
 	addi	r3,r0,+1000
-	bl	$00400F9C
+	bl	fn00400F9C
 	nop
 	ori	r4,r3,0000
 	cmplwi	cr1,r4,0000
@@ -2845,7 +2845,7 @@ l00402A60:
 	addi	r4,r0,+0000
 	addi	r5,r0,+0004
 	addi	r6,r0,+0000
-	bl	$00403450
+	bl	fn00403450
 	nop
 
 l00402A7C:
@@ -2856,10 +2856,10 @@ l00402A7C:
 	addi	r30,r31,+0040
 	ori	r3,r30,0000
 	addi	r4,r4,+0000
-	bl	$004033C4
+	bl	fn004033C4
 	nop
 	ori	r3,r30,0000
-	bl	$004011FC
+	bl	fn004011FC
 	nop
 	b	$00402B84
 
@@ -2868,7 +2868,7 @@ l00402AB0:
 	ori	r4,r31,0000
 	addis	r3,r0,+6164
 	ori	r3,r3,6472
-	bl	$00403F9C
+	bl	fn00403F9C
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00402B04
@@ -2876,7 +2876,7 @@ l00402AB0:
 l00402AD0:
 	ori	r3,r31,0000
 	addi	r4,r0,+001D
-	bl	$00403FB4
+	bl	fn00403FB4
 	lwz	r2,20(r1)
 	cmplwi	cr1,r3,0000
 	bne	cr1,$00402AF4
@@ -2904,13 +2904,13 @@ l00402B0C:
 	addi	r31,r1,+0040
 	ori	r3,r31,0000
 	addi	r4,r4,+0000
-	bl	$004032FC
+	bl	fn004032FC
 	nop
 	ori	r3,r31,0000
-	bl	$004032AC
+	bl	fn004032AC
 	nop
 	ori	r3,r31,0000
-	bl	$00403FCC
+	bl	fn00403FCC
 	lwz	r2,20(r1)
 	b	$00402B84
 
@@ -2922,16 +2922,16 @@ l00402B4C:
 	addi	r31,r1,+0040
 	ori	r3,r31,0000
 	addi	r4,r4,+0000
-	bl	$004032FC
+	bl	fn004032FC
 	nop
 	ori	r5,r3,0000
 	ori	r4,r31,0000
 	addi	r3,r0,+0002
-	bl	$00402248
+	bl	fn00402248
 	nop
 
 l00402B84:
-	bl	$0040326C
+	bl	fn0040326C
 	nop
 	lwz	r12,608(r1)
 	lmw	r27,576(r1)
@@ -2960,7 +2960,7 @@ l00402BB8:
 	beq	cr1,$00402BD8
 
 l00402BD0:
-	bl	$00401AB4
+	bl	fn00401AB4
 	nop
 
 l00402BD8:
@@ -3011,15 +3011,15 @@ fn00402C4C proc
 	stw	r12,72(r1)
 	stw	r31,56(r1)
 	ori	r31,r3,0000
-	bl	$004035CC
+	bl	fn004035CC
 	nop
 	ori	r3,r31,0000
-	bl	$00403618
+	bl	fn00403618
 	nop
 	lwz	r11,224(r2)
 	addi	r3,r0,+00FF
 	lwz	r12,0(r11)
-	bl	$00403F10
+	bl	fn00403F10
 	lwz	r2,20(r1)
 	lwz	r12,72(r1)
 	lwz	r31,56(r1)
@@ -3050,7 +3050,7 @@ fn00402CE0 proc
 	stw	r4,4(r31)
 	stw	r4,8(r31)
 	stw	r4,12(r31)
-	bl	$004019CC
+	bl	fn004019CC
 	nop
 	ori	r4,r3,0000
 	cmplwi	cr1,r4,0000
@@ -3058,7 +3058,7 @@ fn00402CE0 proc
 	beq	cr1,$00403014
 
 l00402D30:
-	bl	$004019CC
+	bl	fn004019CC
 	nop
 	ori	r4,r3,0000
 	cmplwi	cr1,r4,0000
@@ -3066,7 +3066,7 @@ l00402D30:
 	beq	cr1,$00403014
 
 l00402D48:
-	bl	$004019CC
+	bl	fn004019CC
 	nop
 	ori	r4,r3,0000
 	cmplwi	cr1,r4,0000
@@ -3077,7 +3077,7 @@ l00402D60:
 	ori	r3,r26,0000
 	addi	r29,r1,+004C
 	ori	r4,r29,0000
-	bl	$004036B0
+	bl	fn004036B0
 	nop
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00402D9C
@@ -3114,7 +3114,7 @@ l00402DB0:
 
 l00402DD4:
 	rlwinm	r11,r11,02,00,1D
-	bl	$00402DEC
+	bl	fn00402DEC
 	b	$00402E94
 00402DE0 48 00 00 EC 48 00 01 5C 48 00 01 84             H...H..\H...    
 
@@ -3163,7 +3163,7 @@ l00402E50:
 	ori	r4,r27,0000
 	addi	r28,r1,+0048
 	ori	r6,r28,0000
-	bl	$00403070
+	bl	fn00403070
 	lwz	r4,76(r1)
 	lwz	r5,0(r4)
 	lwz	r6,4(r4)
@@ -3174,7 +3174,7 @@ l00402E50:
 	subf	r4,r6,r5
 	ori	r5,r30,0000
 	ori	r6,r28,0000
-	bl	$00403070
+	bl	fn00403070
 	b	$00402FB8
 
 l00402E94:
@@ -3187,7 +3187,7 @@ l00402E94:
 	add	r5,r27,r26
 	stw	r5,16(r31)
 	addi	r5,r31,+000C
-	bl	$00403070
+	bl	fn00403070
 	stw	r30,4(r31)
 	stw	r30,0(r31)
 	addi	r29,r0,-0004
@@ -3402,14 +3402,14 @@ l004031AC:
 
 l004031B4:
 	ori	r3,r31,0000
-	bl	$004012B0
+	bl	fn004012B0
 	nop
 	ori	r30,r3,0000
 	ori	r3,r31,0000
-	bl	$00403A0C
+	bl	fn00403A0C
 	nop
 	lwz	r3,16(r31)
-	bl	$00403898
+	bl	fn00403898
 	nop
 	cmpwi	cr1,r3,+0000
 	bge	cr1,$004031F0
@@ -3425,7 +3425,7 @@ l004031F0:
 	beq	cr1,$00403228
 
 l004031FC:
-	bl	$00403744
+	bl	fn00403744
 	nop
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$00403210
@@ -3435,7 +3435,7 @@ l0040320C:
 
 l00403210:
 	lwz	r3,28(r31)
-	bl	$00402BA0
+	bl	fn00402BA0
 	nop
 	addi	r11,r0,+0000
 	stw	r11,28(r31)
@@ -3460,7 +3460,7 @@ fn00403248 proc
 	mflr	r12
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
-	bl	$00403F84
+	bl	fn00403F84
 	lwz	r2,20(r1)
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
@@ -3475,13 +3475,13 @@ fn0040326C proc
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
 	addi	r3,r0,+000A
-	bl	$00403618
+	bl	fn00403618
 	nop
 	addi	r3,r0,+0016
-	bl	$00403B08
+	bl	fn00403B08
 	nop
 	addi	r3,r0,+0003
-	bl	$004035A0
+	bl	fn004035A0
 	nop
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
@@ -3557,7 +3557,7 @@ fn004032FC proc
 	addis	r7,r0,+7FFF
 	ori	r7,r7,FFFF
 	stw	r7,4(r31)
-	bl	$004004B4
+	bl	fn004004B4
 	nop
 	lwz	r4,4(r31)
 	ori	r30,r3,0000
@@ -3579,7 +3579,7 @@ l00403380:
 l0040339C:
 	ori	r4,r31,0000
 	addi	r3,r0,+0000
-	bl	$00401598
+	bl	fn00401598
 	nop
 
 l004033AC:
@@ -3609,19 +3609,19 @@ fn004033C4 proc
 	ori	r31,r3,0000
 	ori	r3,r31,0000
 	stw	r4,100(r1)
-	bl	$004002F8
+	bl	fn004002F8
 	nop
 	lwz	r4,100(r1)
 	ori	r30,r3,0000
 	ori	r3,r31,0000
 	addi	r5,r1,+0064
 	addi	r5,r5,+0004
-	bl	$004004B4
+	bl	fn004004B4
 	nop
 	ori	r29,r3,0000
 	ori	r3,r30,0000
 	ori	r4,r31,0000
-	bl	$00400430
+	bl	fn00400430
 	nop
 	lwz	r12,80(r1)
 	ori	r3,r29,0000
@@ -3672,10 +3672,10 @@ l004034A4:
 
 l004034B4:
 	ori	r3,r31,0000
-	bl	$004012B0
+	bl	fn004012B0
 	nop
 	ori	r3,r31,0000
-	bl	$00403A0C
+	bl	fn00403A0C
 	nop
 	andi.	r30,r30,0004
 	lwz	r11,12(r31)
@@ -3697,7 +3697,7 @@ l004034F8:
 
 l00403500:
 	ori	r3,r28,0000
-	bl	$00400F9C
+	bl	fn00400F9C
 	nop
 	ori	r29,r3,0000
 	cmplwi	cr1,r29,0000
@@ -3745,7 +3745,7 @@ fn00403574 proc
 	stw	r12,64(r1)
 	addi	r4,r0,+0000
 	addi	r5,r0,+0000
-	bl	$004024F0
+	bl	fn004024F0
 	nop
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
@@ -3762,7 +3762,7 @@ fn004035A0 proc
 	stw	r12,64(r1)
 	addi	r4,r0,+0001
 	addi	r5,r0,+0000
-	bl	$004024F0
+	bl	fn004024F0
 	nop
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
@@ -3777,7 +3777,7 @@ fn004035CC proc
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
 	addi	r3,r0,+00FC
-	bl	$00403618
+	bl	fn00403618
 	lwz	r4,232(r2)
 	lwz	r4,0(r4)
 	cmplwi	cr1,r4,0000
@@ -3786,12 +3786,12 @@ fn004035CC proc
 l004035F0:
 	lwz	r11,232(r2)
 	lwz	r12,0(r11)
-	bl	$00403F10
+	bl	fn00403F10
 	lwz	r2,20(r1)
 
 l00403600:
 	addi	r3,r0,+00FF
-	bl	$00403618
+	bl	fn00403618
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
 	mtlr	r12
@@ -3848,7 +3848,7 @@ l00403684:
 
 l00403694:
 	addi	r3,r0,+0002
-	bl	$00402248
+	bl	fn00402248
 	nop
 
 l004036A0:
@@ -3962,7 +3962,7 @@ l00403790:
 
 l004037A4:
 	ori	r3,r29,0000
-	bl	$004032AC
+	bl	fn004032AC
 	nop
 	addi	r31,r1,+0138
 	addi	r11,r0,+0000
@@ -3984,7 +3984,7 @@ l004037C4:
 l004037E8:
 	ori	r3,r31,0000
 	stw	r29,18(r31)
-	bl	$00403F54
+	bl	fn00403F54
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	bne	cr1,$00403840
@@ -4008,7 +4008,7 @@ l0040380C:
 l00403830:
 	ori	r3,r31,0000
 	stw	r29,18(r31)
-	bl	$00403F6C
+	bl	fn00403F6C
 	lwz	r2,20(r1)
 
 l00403840:
@@ -4016,7 +4016,7 @@ l00403840:
 	beq	cr1,$00403868
 
 l00403848:
-	bl	$00403104
+	bl	fn00403104
 	nop
 	lwz	r12,416(r1)
 	lmw	r29,392(r1)
@@ -4088,13 +4088,13 @@ l00403904:
 	sth	r11,24(r31)
 	addi	r30,r0,+0000
 	stw	r30,18(r31)
-	bl	$00403F24
+	bl	fn00403F24
 	lwz	r2,20(r1)
 	cmpwi	cr1,r3,+0000
 	beq	cr1,$0040394C
 
 l0040392C:
-	bl	$00403104
+	bl	fn00403104
 	nop
 	lwz	r12,160(r1)
 	lmw	r28,136(r1)
@@ -4125,7 +4125,7 @@ l0040397C:
 	lhax	r4,r4,r29
 	ori	r3,r31,0000
 	sth	r4,22(r31)
-	bl	$00403F3C
+	bl	fn00403F3C
 	lwz	r2,20(r1)
 	b	$004039A0
 
@@ -4138,7 +4138,7 @@ l004039A0:
 	beq	cr1,$004039CC
 
 l004039AC:
-	bl	$00403104
+	bl	fn00403104
 	nop
 	lwz	r12,160(r1)
 	lmw	r28,136(r1)
@@ -4187,7 +4187,7 @@ l00403A2C:
 
 l00403A34:
 	lwz	r3,8(r31)
-	bl	$00402BA0
+	bl	fn00402BA0
 	nop
 	lwz	r4,12(r31)
 	addi	r5,r0,+0000
@@ -4230,7 +4230,7 @@ fn00403B08 proc
 
 l00403B28:
 	rlwinm	r11,r11,02,00,1D
-	bl	$00403B84
+	bl	fn00403B84
 	b	$00403BAC
 00403B34             48 00 00 60 48 00 00 74 48 00 00 58     H..`H..tH..X
 00403B40 48 00 00 54 48 00 00 50 48 00 00 64 48 00 00 48 H..TH..PH..dH..H
@@ -4258,7 +4258,7 @@ l00403B94:
 
 l00403BAC:
 	ori	r3,r30,0000
-	bl	$00403C20
+	bl	fn00403C20
 	ori	r29,r3,0000
 	lwz	r31,8(r29)
 	cmplwi	cr1,r31,0001
@@ -4278,7 +4278,7 @@ l00403BDC:
 
 l00403BE4:
 	addi	r3,r0,+0003
-	bl	$004035A0
+	bl	fn004035A0
 	nop
 
 l00403BF0:
@@ -4286,7 +4286,7 @@ l00403BF0:
 	ori	r12,r31,0000
 	addi	r4,r0,+0000
 	stw	r4,8(r29)
-	bl	$00403F10
+	bl	fn00403F10
 	lwz	r2,20(r1)
 	lwz	r12,80(r1)
 	lmw	r29,56(r1)
@@ -4334,11 +4334,11 @@ Win32CrtStartup proc
 	mflr	r12
 	stwu	r1,-56(r1)
 	stw	r12,64(r1)
-	bl	$00403DD8
+	bl	fn00403DD8
 	nop
 	lwz	r4,340(r2)
 	stw	r3,0(r4)
-	bl	$00403CA0
+	bl	fn00403CA0
 	nop
 	lwz	r12,64(r1)
 	addi	r1,r1,+0038
@@ -4383,7 +4383,7 @@ l00403CD0:
 	stw	r12,24(r3)
 	lwz	r13,2348(r0)
 	stw	r13,28(r3)
-	bl	$00403D7C
+	bl	fn00403D7C
 	lwz	r5,352(r2)
 	addi	r4,r1,+0058
 	stw	r3,0(r4)
@@ -4393,14 +4393,14 @@ l00403CD0:
 l00403D38:
 	lwz	r30,348(r2)
 	lwz	r31,352(r2)
-	bl	$00402404
+	bl	fn00402404
 	nop
 	lwz	r3,0(r30)
 	lwz	r4,0(r31)
 	lwz	r5,0(r29)
-	bl	$00400220
+	bl	fn00400220
 	nop
-	bl	$00403574
+	bl	fn00403574
 	nop
 	lwz	r12,120(r1)
 	lwz	r13,96(r1)

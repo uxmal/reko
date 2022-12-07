@@ -15,7 +15,7 @@ main proc
 	push	eax
 	lea	ecx,[ebp-28h]
 	push	ecx
-	call	4010D0h
+	call	GetMin
 	add	esp,8h
 	mov	[ebp-4h],eax
 	mov	dword ptr [ebp-28h],64h

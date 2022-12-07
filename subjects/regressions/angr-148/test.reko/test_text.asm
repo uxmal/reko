@@ -82,7 +82,7 @@ __do_global_dtors_aux proc
 l00000000004004E9:
 	push	rbp
 	mov	rbp,rsp
-	call	400470h
+	call	deregister_tm_clones
 	pop	rbp
 	mov	[0000000000601040],1h                                  ; [rip+00200B46]
 
@@ -106,11 +106,11 @@ l0000000000400514:
 	mov	rbp,rsp
 	call	rax
 	pop	rbp
-	jmp	4004A0h
+	jmp	register_tm_clones
 0000000000400525                0F 1F 00                              ...        
 
 l0000000000400528:
-	jmp	4004A0h
+	jmp	register_tm_clones
 
 ;; f: 000000000040052D
 ;;   Called from:
@@ -128,7 +128,7 @@ main proc
 	push	rbp
 	mov	rbp,rsp
 	mov	eax,0h
-	call	40052Dh
+	call	f
 	pop	rbp
 	ret
 000000000040054D                                        0F 1F 00              ...
@@ -150,7 +150,7 @@ __libc_csu_init proc
 	xor	ebx,ebx
 	sar	rbp,3h
 	sub	rsp,8h
-	call	4003E0h
+	call	_init
 	test	rbp,rbp
 	jz	4005A6h
 

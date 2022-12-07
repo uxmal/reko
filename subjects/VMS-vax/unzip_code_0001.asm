@@ -1248,7 +1248,7 @@ fn00011F06 proc
 	bgtr	0001216C
 	cvtbl	#01,r0
 	ret
-	bvc	000121EA
+	bvc	fn000121EA
 
 ;; fn000121EA: 000121EA
 fn000121EA proc
@@ -7660,7 +7660,7 @@ l00016765:
 	clrl	r0
 	ret
 	tstl	r0
-	bvc	000167AA
+	bvc	fn000167AA
 
 ;; fn000167AA: 000167AA
 fn000167AA proc

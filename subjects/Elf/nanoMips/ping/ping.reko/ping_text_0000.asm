@@ -42,15 +42,15 @@ l00400136:
 ;;     004007A6 (in main)
 set_socket_option.isra.0.part.1 proc
 	save	00000010,ra,00000001
-	balc	004049B0
+	balc	__errno_location
 	lw	r4,0000(r4)
-	balc	004049EA
+	balc	strerror
 	addiupc	r5,00010384
 	move	r6,r4
 	lwpc	r4,00412EF0
-	balc	00408340
+	balc	fprintf
 	li	r4,00000002
-	balc	0040015A
+	balc	exit
 
 ;; exit: 0040015A
 ;;   Called from:
@@ -67,11 +67,11 @@ set_socket_option.isra.0.part.1 proc
 exit proc
 	save	00000020,ra,00000001
 	sw	r4,000C(sp)
-	balc	00404A20
-	balc	00404A22
-	balc	0040E720
+	balc	__funcs_on_exit
+	balc	__libc_exit_fini
+	balc	__stdio_exit_needed
 	lw	r17,000C(sp)
-	balc	0040B230
+	balc	_Exit
 
 ;; main: 00400170
 ;;   Called from:
@@ -84,7 +84,7 @@ main proc
 	movep	r16,r18,r4,r5
 	move	r5,r0
 	addu	r4,sp,r6
-	balc	0040A690
+	balc	memset
 	li	r7,00000001
 	sw	r7,0028(sp)
 	li	r7,00000011
@@ -97,9 +97,9 @@ main proc
 	sw	r0,0018(sp)
 	sw	r0,001C(sp)
 	sw	r19,0020(sp)
-	balc	00401CB6
+	balc	limit_capabilities
 	lw	r17,0000(r18)
-	move.balc	r4,r17,0040A890
+	move.balc	r4,r17,strlen
 	addu	r4,r17,r4
 	lbu	r7,-0001(r4)
 	bneiuc	r7,00000034,004001D0
@@ -110,7 +110,7 @@ l004001AE:
 l004001B0:
 	addiupc	r6,00010A58
 	movep	r4,r5,r16,r18
-	balc	0040598A
+	balc	__posix_getopt
 	li	r7,FFFFFFFF
 	beqc	r4,r7,0040071A
 
@@ -134,7 +134,7 @@ l004001D4:
 
 l004001EA:
 	li	r4,00000002
-	balc	0040015A
+	balc	exit
 	li	r7,00000002
 
 l004001F2:
@@ -155,7 +155,7 @@ l004001F2:
 
 l004002B0:
 	lwpc	r4,00412EF0
-	balc	00408340
+	balc	fprintf
 	bc	004001EA
 004002BC                                     EB 60 2A 42             .`*B
 004002C0 05 00 E7 80 00 02 53 1B 8B 60 1A 42 05 00 00 2A ......S..`.B...*
@@ -236,14 +236,14 @@ l0040071A:
 	bnezc	r16,0040072C
 
 l00400728:
-	balc	0040094E
+	balc	usage
 
 l0040072C:
 	move	r7,r16
 	li	r4,00000001
 	addiu	r7,r7,3FFFFFFF
 	lwxs	r20,r7(r18)
-	balc	00401CE2
+	balc	modify_capability
 	lw	r18,0024(sp)
 	beqic	r8,0000000A,00400754
 
@@ -253,7 +253,7 @@ l00400744:
 	li	r7,00000001
 	li	r5,00000002
 	addiu	r4,sp,00000008
-	balc	00400966
+	balc	create_socket
 
 l00400754:
 	lw	r17,0024(sp)
@@ -267,11 +267,11 @@ l0040075A:
 	addiu	r8,r8,00000001
 	addiu	r4,sp,00000014
 	sltiu	r8,r8,00000001
-	balc	00400966
+	balc	create_socket
 
 l0040076E:
 	move	r4,r0
-	balc	00401CE2
+	balc	modify_capability
 	lw	r17,0024(sp)
 	bnezc	r7,00400784
 
@@ -300,11 +300,11 @@ l00400794:
 	addiupc	r7,00053D94
 	li	r6,00000001
 	move	r5,r0
-	balc	00407D60
+	balc	setsockopt
 	bnec	r17,r4,004007B4
 
 l004007A6:
-	balc	00400138
+	balc	set_socket_option.isra.0.part.1
 
 l004007AA:
 	lw	r17,0014(sp)
@@ -328,41 +328,41 @@ l004007C2:
 	addiupc	r7,00053D3A
 	li	r6,00000043
 	li	r5,00000029
-	balc	00407D60
+	balc	setsockopt
 	beqc	r17,r4,004007A6
 
 l004007D6:
 	addiu	r7,sp,00000004
 	addiu	r6,sp,00000020
 	movep	r4,r5,r20,r0
-	balc	00405E20
+	balc	getaddrinfo
 	lw	r4,0004(sp)
 	move	r19,r4
 	beqzc	r4,0040081E
 
 l004007E6:
-	balc	00405E00
+	balc	gai_strerror
 	addiupc	r5,0000FD22
 	movep	r6,r7,r20,r4
 	lwpc	r4,00412EF0
-	balc	00408340
+	balc	fprintf
 	bc	004001EA
 
 l004007FE:
 	addiu	r7,sp,00000008
 	movep	r5,r6,r18,r17
-	move.balc	r4,r16,00400B6A
+	move.balc	r4,r16,ping4_run
 
 l00400806:
 	addiu	r7,sp,00000014
 	movep	r5,r6,r18,r17
-	move.balc	r4,r16,004035A0
+	move.balc	r4,r16,ping6_run
 	move	r19,r4
 	bnezc	r4,0040081C
 
 l00400812:
 	lw	r17,0004(sp)
-	balc	00405DF0
+	balc	freeaddrinfo
 	move	r4,r19
 	restore.jrc	00000060,ra,00000007
 
@@ -385,7 +385,7 @@ l0040082A:
 
 ;; fn00400832: 00400832
 fn00400832 proc
-	bc	00409BD0
+	bc	atoi
 00400836                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; _start: 00400840
@@ -413,7 +413,7 @@ _start_c proc
 	addiupc	r8,0000FAD2
 	addiupc	r7,FFFFF860
 	addiupc	r4,FFFFF8F8
-	balc	00404988
+	balc	__libc_start_main
 	sigrie	00000000
 
 ;; deregister_tm_clones: 00400880
@@ -467,7 +467,7 @@ __do_global_dtors_aux proc
 	bnezc	r6,004008E4
 
 l004008CC:
-	balc	00400880
+	balc	deregister_tm_clones
 	addiupc	r7,FFBFF72A
 	beqzc	r7,004008DE
 
@@ -500,7 +500,7 @@ l004008FA:
 
 l00400902:
 	restore	00000010,ra,00000001
-	bc	0040089C
+	bc	register_tm_clones
 
 l0040090A:
 	addiupc	r7,FFBFF6F0
@@ -553,11 +553,11 @@ usage proc
 	save	00000010,ra,00000001
 	lwpc	r5,00412EF0
 	addiupc	r4,0000F9FE
-	balc	00400B5A
+	balc	fn00400B5A
 	li	r4,00000001
-	balc	0040357C
+	balc	ping6_usage
 	li	r4,00000002
-	balc	00400B66
+	balc	fn00400B66
 
 ;; create_socket: 00400966
 ;;   Called from:
@@ -571,16 +571,16 @@ create_socket proc
 	move	r18,r8
 
 l0040096E:
-	balc	00400B56
+	balc	fn00400B56
 	sw	r0,0000(sp)
 	movep	r5,r6,r16,r20
-	move.balc	r4,r19,00407D80
+	move.balc	r4,r19,socket
 	li	r7,FFFFFFFF
 	sw	r4,0040(sp)
 	bnec	r7,r4,004009B0
 
 l00400980:
-	balc	00400B56
+	balc	fn00400B56
 	lw	r7,0000(r4)
 	beqic	r7,00000021,004009B0
 
@@ -593,13 +593,13 @@ l0040098C:
 	bbeqzc	r7,00000008,0040096E
 
 l00400998:
-	balc	00400B56
+	balc	fn00400B56
 	lw	r4,0000(r4)
-	balc	004049EA
+	balc	strerror
 	addiupc	r5,0000FAD8
 	move	r6,r4
 	lwpc	r4,00412EF0
-	balc	00400B5E
+	balc	fn00400B5E
 	bc	0040096E
 
 l004009B0:
@@ -611,21 +611,21 @@ l004009B8:
 	beqzc	r18,004009D6
 
 l004009BA:
-	balc	00400B56
+	balc	fn00400B56
 	lw	r4,0000(r4)
-	balc	004049EA
+	balc	strerror
 	addiupc	r5,0000FAE2
 	move	r6,r4
 	lwpc	r4,00412EF0
-	balc	00400B5E
+	balc	fn00400B5E
 	beqzc	r18,004009EC
 
 l004009D2:
 	li	r4,00000002
-	balc	00400B66
+	balc	fn00400B66
 
 l004009D6:
-	balc	00400B56
+	balc	fn00400B56
 	lw	r7,0000(r4)
 	bneiuc	r7,00000021,004009BA
 
@@ -646,11 +646,11 @@ l004009EC:
 pr_echo_reply proc
 	save	00000010,ra,00000001
 	lhu	r4,0006(r4)
-	balc	00407630
+	balc	ntohs
 	restore	00000010,ra,00000001
 	move	r5,r4
 	addiupc	r4,0000FABC
-	bc	004086C0
+	bc	printf
 
 ;; write_stdout: 00400A04
 ;;   Called from:
@@ -664,7 +664,7 @@ l00400A0A:
 	subu	r6,r17,r16
 	addu	r5,r18,r16
 	li	r4,00000001
-	balc	0040B080
+	balc	write
 	addu	r16,r16,r4
 	bltuc	r16,r17,00400A0A
 
@@ -685,7 +685,7 @@ ping4_send_probe proc
 	sh	r0,0002(r16)
 	addiu	r4,r4,00000001
 	andi	r4,r4,0000FFFF
-	balc	00400B62
+	balc	fn00400B62
 	lwpc	r7,004544C4
 	sh	r7,0004(r16)
 	lwpc	r7,004544E4
@@ -712,16 +712,16 @@ l00400A6E:
 l00400A7A:
 	move	r5,r0
 	addiu	r4,sp,00000008
-	balc	0040AF40
+	balc	gettimeofday
 	li	r6,00000008
 	addu	r5,sp,r6
-	move.balc	r4,r17,0040A130
+	move.balc	r4,r17,memcpy
 
 l00400A8C:
 	lwpc	r17,00430074
 	addiu	r17,r17,00000008
 	movep	r5,r6,r17,r0
-	move.balc	r4,r16,00400920
+	move.balc	r4,r16,in_cksum
 	lwpc	r7,00454508
 	sh	r4,0002(r16)
 	beqzc	r7,00400AD2
@@ -733,17 +733,17 @@ l00400AA4:
 l00400AAE:
 	move	r5,r0
 	addiu	r4,sp,00000008
-	balc	0040AF40
+	balc	gettimeofday
 	li	r6,00000008
 	addu	r5,sp,r6
 	addu	r4,r16,r6
-	balc	00400B52
+	balc	fn00400B52
 	lhu	r6,0002(r16)
 	li	r5,00000008
 	nor	r6,r0,r6
 	addu	r4,sp,r5
 	andi	r6,r6,0000FFFF
-	balc	00400920
+	balc	in_cksum
 	sh	r4,0002(r16)
 
 l00400AD2:
@@ -751,7 +751,7 @@ l00400AD2:
 	addiu	r9,r0,00000010
 	movep	r6,r7,r17,r0
 	addiupc	r8,000309AA
-	move.balc	r5,r16,00407D40
+	move.balc	r5,r16,sendto
 	xor	r17,r17,r4
 	movz	r4,r0,r17
 
@@ -761,7 +761,7 @@ l00400AE8:
 l00400AEA:
 	li	r6,00000008
 	movep	r4,r5,r17,r0
-	balc	00400B4E
+	balc	fn00400B4E
 	bc	00400A8C
 
 ;; ping4_install_filter: 00400AF2
@@ -777,7 +777,7 @@ l00400AFE:
 	sw	r7,000C(sp)
 	swpc	r16,0045451C
 	lhu	r4,000C(sp)
-	balc	00400B62
+	balc	fn00400B62
 	addiupc	r7,0002F4F0
 	sb	r0,0012(r7)
 	li	r6,00000015
@@ -789,13 +789,13 @@ l00400AFE:
 	sh	r6,0010(r7)
 	addiupc	r7,0002F4CA
 	li	r6,0000001A
-	balc	00400B4A
+	balc	fn00400B4A
 	beqzc	r4,00400B48
 
 l00400B3C:
 	addiupc	r4,0000F9A4
 	restore	00000020,ra,00000003
-	bc	00408630
+	bc	perror
 
 l00400B48:
 	restore.jrc	00000020,ra,00000003
@@ -807,7 +807,7 @@ l00400B48:
 ;;     00400D4C (in ping4_run)
 ;;     00400EEE (in ping4_run)
 fn00400B4A proc
-	bc	00407D60
+	bc	setsockopt
 
 ;; fn00400B4E: 00400B4E
 ;;   Called from:
@@ -816,7 +816,7 @@ fn00400B4A proc
 ;;     00400CAA (in ping4_run)
 ;;     00400E50 (in ping4_run)
 fn00400B4E proc
-	bc	0040A690
+	bc	memset
 
 ;; fn00400B52: 00400B52
 ;;   Called from:
@@ -824,7 +824,7 @@ fn00400B4E proc
 ;;     00400BDE (in ping4_run)
 ;;     00400C7C (in ping4_run)
 fn00400B52 proc
-	bc	0040A130
+	bc	memcpy
 
 ;; fn00400B56: 00400B56
 ;;   Called from:
@@ -835,7 +835,7 @@ fn00400B52 proc
 ;;     004009D6 (in create_socket)
 ;;     00400D86 (in ping4_run)
 fn00400B56 proc
-	bc	004049B0
+	bc	__errno_location
 
 ;; fn00400B5A: 00400B5A
 ;;   Called from:
@@ -843,7 +843,7 @@ fn00400B56 proc
 ;;     00400DA8 (in ping4_run)
 ;;     00400E0A (in ping4_run)
 fn00400B5A proc
-	bc	004083F0
+	bc	fputs_unlocked
 
 ;; fn00400B5E: 00400B5E
 ;;   Called from:
@@ -853,7 +853,7 @@ fn00400B5A proc
 ;;     00400D12 (in ping4_run)
 ;;     00400E30 (in ping4_run)
 fn00400B5E proc
-	bc	00408340
+	bc	fprintf
 
 ;; fn00400B62: 00400B62
 ;;   Called from:
@@ -861,7 +861,7 @@ fn00400B5E proc
 ;;     00400B12 (in ping4_install_filter)
 ;;     00400D5E (in ping4_run)
 fn00400B62 proc
-	bc	00406700
+	bc	htons
 
 ;; fn00400B66: 00400B66
 ;;   Called from:
@@ -869,7 +869,7 @@ fn00400B62 proc
 ;;     004009D4 (in create_socket)
 ;;     00400C98 (in ping4_run)
 fn00400B66 proc
-	bc	0040015A
+	bc	exit
 
 ;; ping4_run: 00400B6A
 ;;   Called from:
@@ -885,7 +885,7 @@ l00400B76:
 	bbeqzc	r7,00000005,00400B82
 
 l00400B80:
-	balc	0040094E
+	balc	usage
 
 l00400B82:
 	bbeqzc	r7,00000009,00400B96
@@ -919,17 +919,17 @@ l00400BAE:
 	addiu	r7,sp,00000038
 	addiupc	r6,00011648
 	movep	r4,r5,r20,r0
-	balc	00405E20
+	balc	getaddrinfo
 	beqzc	r4,00400BD0
 
 l00400BBC:
-	balc	00405E00
+	balc	gai_strerror
 	addiupc	r5,0000F94C
 	movep	r6,r7,r20,r4
 
 l00400BC6:
 	lwpc	r4,00412EF0
-	balc	00400B5E
+	balc	fn00400B5E
 	bc	00400C96
 
 l00400BD0:
@@ -940,16 +940,16 @@ l00400BD2:
 	li	r6,00000010
 	addiupc	r4,000308AE
 	addiu	r20,sp,00000060
-	balc	00400B52
+	balc	fn00400B52
 	addiu	r6,r0,000000FF
 	movep	r4,r5,r20,r0
-	balc	00400B4E
+	balc	fn00400B4E
 	lw	r5,0018(r18)
 	beqzc	r5,00400BF4
 
 l00400BEC:
 	addiu	r6,r0,000000FE
-	move.balc	r4,r20,0040A930
+	move.balc	r4,r20,strncpy
 
 l00400BF4:
 	lw	r17,0038(sp)
@@ -957,7 +957,7 @@ l00400BF4:
 	beqzc	r4,00400C02
 
 l00400BFE:
-	balc	00405DF0
+	balc	freeaddrinfo
 
 l00400C02:
 	beqic	r17,00000001,00400C20
@@ -988,7 +988,7 @@ l00400C28:
 	sw	r0,0048(sp)
 	sw	r0,004C(sp)
 	sh	r6,0488(r7)
-	move.balc	r4,r20,004067A0
+	move.balc	r4,r20,__inet_aton
 	bneiuc	r4,00000001,00400BA6
 
 l00400C4E:
@@ -1010,11 +1010,11 @@ l00400C74:
 	li	r6,00000010
 	addiupc	r5,0003080E
 	addiu	r4,sp,00000028
-	balc	00400B52
+	balc	fn00400B52
 	move	r6,r0
 	li	r5,00000001
 	li	r4,00000002
-	balc	00407D80
+	balc	socket
 	move	r17,r4
 	bgec	r4,r0,00400C9A
 
@@ -1022,11 +1022,11 @@ l00400C8E:
 	addiupc	r4,0000F88E
 
 l00400C92:
-	balc	00408630
+	balc	perror
 
 l00400C96:
 	li	r4,00000002
-	balc	00400B66
+	balc	fn00400B66
 
 l00400C9A:
 	lwpc	r19,00454528
@@ -1036,28 +1036,28 @@ l00400CA4:
 	li	r6,00000020
 	move	r5,r0
 	addiu	r4,sp,00000038
-	balc	00400B4E
+	balc	fn00400B4E
 	li	r6,0000000F
 	addiu	r4,sp,00000038
-	move.balc	r5,r19,0040A930
+	move.balc	r5,r19,strncpy
 	li	r4,00000001
-	balc	00401CE2
+	balc	modify_capability
 	lwpc	r19,00454528
-	move.balc	r4,r19,0040A890
+	move.balc	r4,r19,strlen
 	move	r7,r19
 	addiu	r8,r4,00000001
 	li	r6,00000019
 	addiu	r5,r0,0000FFFF
-	move.balc	r4,r17,00407D60
+	move.balc	r4,r17,setsockopt
 	move	r19,r4
 	move	r4,r0
-	balc	00401CE2
+	balc	modify_capability
 	li	r7,FFFFFFFF
 	bnec	r7,r19,00400D38
 
 l00400CE2:
 	lw	r17,002C(sp)
-	balc	00407620
+	balc	ntohl
 	lui	r7,FFFE0000
 	ins	r4,r0,00000000,00000001
 	bnec	r7,r4,00400D32
@@ -1065,14 +1065,14 @@ l00400CE2:
 l00400CF4:
 	addiu	r6,sp,00000038
 	addiu	r5,r0,00008933
-	move.balc	r4,r17,00405B80
+	move.balc	r4,r17,ioctl
 	bgec	r4,r0,00400D16
 
 l00400D02:
 	lwpc	r6,00454528
 	addiupc	r5,0000F81C
 	lwpc	r4,00412EF0
-	balc	00400B5E
+	balc	fn00400B5E
 	bc	00400C96
 
 l00400D16:
@@ -1084,7 +1084,7 @@ l00400D16:
 	addiu	r7,sp,0000001C
 	movep	r4,r5,r17,r0
 	sw	r0,0020(sp)
-	balc	00400B4A
+	balc	fn00400B4A
 	bnec	r19,r4,00400D38
 
 l00400D2C:
@@ -1104,16 +1104,16 @@ l00400D40:
 	addiupc	r7,000537E8
 	li	r6,00000001
 	movep	r4,r5,r17,r0
-	balc	00400B4A
+	balc	fn00400B4A
 	bgec	r4,r0,00400D5A
 
 l00400D52:
 	addiupc	r4,0000F81A
-	balc	00408630
+	balc	perror
 
 l00400D5A:
 	addiu	r4,r0,00000401
-	balc	00400B62
+	balc	fn00400B62
 	lwpc	r7,00454538
 	sh	r4,002A(sp)
 	beqzc	r7,00400D76
@@ -1126,13 +1126,13 @@ l00400D6C:
 l00400D76:
 	li	r6,00000010
 	addiu	r5,sp,00000028
-	move.balc	r4,r17,00405DD0
+	move.balc	r4,r17,connect
 	li	r7,FFFFFFFF
 	move	r19,r4
 	bnec	r7,r4,00400DD6
 
 l00400D86:
-	balc	00400B56
+	balc	fn00400B56
 	lw	r7,0000(r4)
 	bneiuc	r7,0000000D,00400DD0
 
@@ -1146,12 +1146,12 @@ l00400D8E:
 
 l00400DA4:
 	addiupc	r4,0000F814
-	balc	00400B5A
+	balc	fn00400B5A
 	addiu	r8,r0,00000004
 	addiupc	r7,0005377A
 	li	r6,00000020
 	addiu	r5,r0,0000FFFF
-	move.balc	r4,r17,00407D60
+	move.balc	r4,r17,setsockopt
 	bgec	r4,r0,00400DC6
 
 l00400DC0:
@@ -1161,7 +1161,7 @@ l00400DC0:
 l00400DC6:
 	li	r6,00000010
 	addiu	r5,sp,00000028
-	move.balc	r4,r17,00405DD0
+	move.balc	r4,r17,connect
 	bnec	r19,r4,00400DD6
 
 l00400DD0:
@@ -1173,7 +1173,7 @@ l00400DD6:
 	addiu	r6,sp,0000001C
 	addiupc	r5,0002F26E
 	sw	r7,001C(sp)
-	move.balc	r4,r17,004066B0
+	move.balc	r4,r17,getsockname
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00400DEE
 
@@ -1188,7 +1188,7 @@ l00400DEE:
 
 l00400DF8:
 	addiu	r4,sp,00000038
-	balc	004062A2
+	balc	getifaddrs
 	beqzc	r4,00400E0E
 
 l00400E00:
@@ -1196,7 +1196,7 @@ l00400E00:
 	addiupc	r4,0000F802
 
 l00400E0A:
-	balc	00400B5A
+	balc	fn00400B5A
 	bc	00400C96
 
 l00400E0E:
@@ -1208,17 +1208,17 @@ l00400E18:
 	bnezc	r19,00400E96
 
 l00400E1A:
-	move.balc	r4,r21,00406292
+	move.balc	r4,r21,freeifaddrs
 	bnezc	r19,00400E32
 
 l00400E20:
 	lwpc	r6,00454528
 	addiupc	r5,0000F7FA
 	lwpc	r4,00412EF0
-	balc	00400B5E
+	balc	fn00400B5E
 
 l00400E32:
-	move.balc	r4,r17,0040AF72
+	move.balc	r4,r17,close
 
 l00400E36:
 	addiupc	r17,0003064E
@@ -1237,14 +1237,14 @@ l00400E4A:
 	li	r6,00000020
 	move	r5,r0
 	addiu	r4,sp,00000038
-	balc	00400B4E
+	balc	fn00400B4E
 	li	r6,0000000F
 	addiu	r4,sp,00000038
-	move.balc	r5,r19,0040A930
+	move.balc	r5,r19,strncpy
 	lw	r4,0000(r16)
 	addiu	r6,sp,00000038
 	addiu	r5,r0,00008933
-	balc	00405B80
+	balc	ioctl
 	bltc	r4,r0,00400D02
 
 l00400E6A:
@@ -1279,14 +1279,14 @@ l00400E9C:
 l00400EA4:
 	lw	r4,0004(r19)
 	li	r6,00000003
-	move.balc	r5,r22,0040A8E0
+	move.balc	r5,r22,strncmp
 	bnezc	r4,00400EC0
 
 l00400EAE:
 	li	r6,00000004
 	addiupc	r5,0002F19C
 	addu	r4,r20,r6
-	balc	0040A100
+	balc	memcmp
 	beqc	r0,r4,00400E1A
 
 l00400EC0:
@@ -1295,7 +1295,7 @@ l00400EC0:
 
 l00400EC4:
 	lw	r4,0004(r17)
-	balc	00407620
+	balc	ntohl
 	lui	r7,FFFE0000
 	ins	r4,r0,00000000,00000001
 	beqc	r4,r7,00400E7A
@@ -1310,7 +1310,7 @@ l00400EE0:
 	addiu	r8,r0,00000004
 	li	r6,0000000A
 	move	r5,r0
-	balc	00400B4A
+	balc	fn00400B4A
 	li	r7,FFFFFFFF
 	bnec	r7,r4,00400F30
 
@@ -1348,7 +1348,7 @@ l00400F3A:
 	lw	r4,0000(r16)
 	li	r6,00000010
 	addiupc	r5,0002F10A
-	balc	00405DB0
+	balc	bind
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00400F50
 
@@ -1368,13 +1368,13 @@ l00400F56:
 	addiu	r7,sp,00000038
 	li	r6,00000001
 	addiu	r5,r0,000000FF
-	balc	00401280
+	balc	fn00401280
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00400F78
 
 l00400F72:
 	addiupc	r4,0000F776
-	balc	00401284
+	balc	fn00401284
 
 l00400F78:
 	li	r7,00000001
@@ -1384,13 +1384,13 @@ l00400F78:
 	li	r6,0000000B
 	move	r5,r0
 	addiu	r7,sp,0000001C
-	balc	00401280
+	balc	fn00401280
 	beqzc	r4,00400F9A
 
 l00400F8C:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000F77A
-	balc	004083F0
+	balc	fputs_unlocked
 
 l00400F9A:
 	lw	r7,0004(r16)
@@ -1402,12 +1402,12 @@ l00400FA0:
 	addiu	r7,sp,0000001C
 	li	r6,0000000C
 	move	r5,r0
-	balc	00401280
+	balc	fn00401280
 	beqzc	r4,00400FB6
 
 l00400FB0:
 	addiupc	r4,0000F790
-	balc	00401284
+	balc	fn00401284
 
 l00400FB6:
 	lw	r4,0000(r16)
@@ -1415,12 +1415,12 @@ l00400FB6:
 	addiu	r7,sp,0000001C
 	li	r6,00000007
 	move	r5,r0
-	balc	00401280
+	balc	fn00401280
 	beqzc	r4,00400FCC
 
 l00400FC6:
 	addiupc	r4,0000F79A
-	balc	00401284
+	balc	fn00401284
 
 l00400FCC:
 	lwpc	r7,004544EC
@@ -1430,7 +1430,7 @@ l00400FD6:
 	li	r19,00000028
 	addiu	r4,sp,00000038
 	movep	r5,r6,r0,r19
-	balc	00401366
+	balc	fn00401366
 	li	r7,00000001
 	sb	r7,0038(sp)
 	li	r7,00000007
@@ -1445,7 +1445,7 @@ l00400FD6:
 	move	r5,r0
 	addiu	r7,sp,00000038
 	swpc	r19,00454534
-	balc	00401280
+	balc	fn00401280
 	bgec	r4,r0,00401012
 
 l0040100C:
@@ -1460,7 +1460,7 @@ l0040101C:
 	li	r6,00000028
 	move	r5,r0
 	addiu	r4,sp,00000038
-	balc	00401366
+	balc	fn00401366
 	li	r7,00000044
 	li	r5,00000028
 	li	r6,00000024
@@ -1481,7 +1481,7 @@ l0040104A:
 	lw	r4,0000(r16)
 	li	r6,00000004
 	move	r5,r0
-	balc	00401280
+	balc	fn00401280
 	bgec	r4,r0,004010A0
 
 l0040105C:
@@ -1492,7 +1492,7 @@ l0040105C:
 	sb	r7,003B(sp)
 	move	r5,r0
 	addiu	r7,sp,00000038
-	balc	00401280
+	balc	fn00401280
 	bgec	r4,r0,004010A0
 
 l00401074:
@@ -1530,7 +1530,7 @@ l004010B2:
 	addiu	r20,sp,00000038
 	li	r6,00000028
 	movep	r4,r5,r20,r0
-	balc	00401366
+	balc	fn00401366
 	li	r7,00000001
 	andi	r19,r19,00000080
 	addiu	r6,r0,00000083
@@ -1560,7 +1560,7 @@ l004010F8:
 	move	r7,r20
 	li	r6,00000004
 	move	r5,r0
-	balc	00401280
+	balc	fn00401280
 	bltc	r4,r0,0040100C
 
 l0040110C:
@@ -1578,7 +1578,7 @@ l00401114:
 	mul	r5,r5,r6
 	addu	r5,r5,r7
 	sw	r5,001C(sp)
-	move.balc	r4,r16,0040212E
+	move.balc	r4,r16,sock_setbufs
 	lwpc	r7,0045452C
 	beqzc	r7,0040116E
 
@@ -1588,7 +1588,7 @@ l00401144:
 	addiupc	r7,000533DE
 	li	r6,00000020
 	addiu	r5,r0,0000FFFF
-	balc	00401280
+	balc	fn00401280
 	bgec	r4,r0,0040116E
 
 l0040115A:
@@ -1613,7 +1613,7 @@ l00401178:
 	li	r6,00000022
 	move	r5,r0
 	sw	r0,0028(sp)
-	balc	00401280
+	balc	fn00401280
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00401194
 
@@ -1634,7 +1634,7 @@ l0040119E:
 	move	r5,r0
 	addiupc	r7,0005335C
 	li	r19,FFFFFFFF
-	balc	00401280
+	balc	fn00401280
 	bnec	r19,r4,004011C2
 
 l004011BA:
@@ -1647,7 +1647,7 @@ l004011C2:
 	addiu	r7,sp,00000028
 	li	r6,00000002
 	move	r5,r0
-	balc	00401280
+	balc	fn00401280
 	bnec	r19,r4,004011DA
 
 l004011D2:
@@ -1674,7 +1674,7 @@ l004011FC:
 
 l00401204:
 	addiu	r19,r6,00000088
-	move.balc	r4,r19,00405292
+	move.balc	r4,r19,malloc
 	move	r20,r4
 	bnezc	r4,0040121E
 
@@ -1686,10 +1686,10 @@ l00401210:
 l0040121E:
 	lw	r4,0004(r17)
 	lwpc	r21,004544C0
-	balc	00401590
+	balc	fn00401590
 	movep	r5,r6,r21,r4
 	addiupc	r4,0000F65E
-	balc	00401594
+	balc	fn00401594
 	lwpc	r7,00454528
 	bnezc	r7,00401242
 
@@ -1699,7 +1699,7 @@ l00401238:
 
 l00401242:
 	lw	r4,0004(r18)
-	balc	00401590
+	balc	fn00401590
 	lwpc	r6,00454528
 	addiupc	r7,0000F228
 	move	r5,r4
@@ -1707,7 +1707,7 @@ l00401242:
 
 l00401256:
 	addiupc	r4,0000F642
-	balc	00401594
+	balc	fn00401594
 
 l0040125C:
 	lwpc	r5,00430074
@@ -1715,11 +1715,11 @@ l0040125C:
 	addu	r6,r5,r6
 	addiupc	r4,0000F63E
 	addiu	r6,r6,0000001C
-	balc	00401594
-	move.balc	r4,r16,004021B4
+	balc	fn00401594
+	move.balc	r4,r16,setup
 	movep	r6,r7,r20,r19
 	addiupc	r4,0002EDE0
-	move.balc	r5,r16,00402A9E
+	move.balc	r5,r16,main_loop
 
 ;; fn00401280: 00401280
 ;;   Called from:
@@ -1737,7 +1737,7 @@ l0040125C:
 ;;     004011CE (in ping4_run)
 ;;     0040127C (in ping4_run)
 fn00401280 proc
-	bc	00407D60
+	bc	setsockopt
 
 ;; fn00401284: 00401284
 ;;   Called from:
@@ -1745,7 +1745,7 @@ fn00401280 proc
 ;;     00400FB4 (in ping4_run)
 ;;     00400FCA (in ping4_run)
 fn00401284 proc
-	bc	00408630
+	bc	perror
 
 ;; pr_addr: 00401288
 ;;   Called from:
@@ -1772,11 +1772,11 @@ pr_addr proc
 	move	r5,r0
 	addiu	r4,sp,00000014
 	sw	r0,0010(sp)
-	balc	00401366
+	balc	fn00401366
 	movep	r5,r6,r0,r16
 	addiu	r4,sp,00000114
 	sw	r0,0110(sp)
-	balc	00401366
+	balc	fn00401366
 	lw	r17,0008(sp)
 	lwpc	r7,00454520
 	bnec	r6,r7,004012C2
@@ -1784,7 +1784,7 @@ pr_addr proc
 l004012B4:
 	lw	r17,000C(sp)
 	addiupc	r5,00030126
-	balc	0040A100
+	balc	memcmp
 	beqc	r0,r4,0040135E
 
 l004012C2:
@@ -1793,9 +1793,9 @@ l004012C2:
 	lw	r17,000C(sp)
 	move	r6,r7
 	swpc	r7,00454520
-	balc	00401608
+	balc	fn00401608
 	addiupc	r4,00053068
-	balc	00407E80
+	balc	_setjmp
 	addiu	r7,r0,000000FF
 	sltiu	r4,r4,00000001
 	lw	r17,0008(sp)
@@ -1805,7 +1805,7 @@ l004012C2:
 	move	r9,r0
 	move	r8,r0
 	addiu	r6,sp,00000110
-	balc	00406302
+	balc	getnameinfo
 	lwpc	r7,004544B8
 	beqzc	r7,00401322
 
@@ -1818,7 +1818,7 @@ l0040130C:
 	addiupc	r6,0000F95C
 	addiu	r5,r0,00001000
 	addiupc	r4,0002F0C4
-	balc	00408820
+	balc	snprintf
 	bc	00401358
 
 l00401322:
@@ -1833,7 +1833,7 @@ l0040132C:
 	move	r8,r0
 	addiu	r7,r0,000000FF
 	addiu	r6,sp,00000010
-	balc	00406302
+	balc	getnameinfo
 	bc	00401306
 
 l00401342:
@@ -1842,7 +1842,7 @@ l00401342:
 	addiupc	r6,0000F91C
 	addiu	r5,r0,00001000
 	addiupc	r4,0002F08C
-	balc	00408820
+	balc	snprintf
 
 l00401358:
 	swpc	r0,004314C0
@@ -1859,7 +1859,7 @@ l0040135E:
 ;;     0040129C (in pr_addr)
 ;;     004012A8 (in pr_addr)
 fn00401366 proc
-	bc	0040A690
+	bc	memset
 
 ;; pr_options: 0040136A
 ;;   Called from:
@@ -1887,7 +1887,7 @@ l00401380:
 	addiupc	r4,0000F8F0
 	addiu	r20,r20,FFFFFFFF
 	addiu	r16,r16,00000001
-	balc	00401594
+	balc	fn00401594
 	bc	00401372
 
 l0040138C:
@@ -1926,7 +1926,7 @@ l004013B6:
 	movn	r7,r6,r5
 
 l004013C6:
-	move.balc	r5,r7,004086C0
+	move.balc	r5,r7,printf
 	lbu	r21,0001(r16)
 	bltic	r21,00000005,004013FA
 
@@ -1939,17 +1939,17 @@ l004013D8:
 	li	r6,00000004
 	addiu	r4,sp,0000000C
 	addiu	r17,r17,00000004
-	balc	00401608
+	balc	fn00401608
 	lw	r17,000C(sp)
 	bnezc	r7,00401402
 
 l004013E6:
 	addiupc	r4,0000F89E
-	balc	00401594
+	balc	fn00401594
 
 l004013EC:
 	li	r4,0000000A
-	balc	00401766
+	balc	fn00401766
 	subu	r7,r21,r17
 	addu	r7,r18,r7
 	bgeic	r7,00000005,004013D8
@@ -1968,10 +1968,10 @@ l00401402:
 	sh	r6,0010(sp)
 	sw	r0,0018(sp)
 	sw	r0,001C(sp)
-	balc	00401288
+	balc	pr_addr
 	move	r5,r4
 	addiupc	r4,0000F876
-	balc	00401594
+	balc	fn00401594
 	bc	004013EC
 
 l00401422:
@@ -1993,7 +1993,7 @@ l00401436:
 l00401444:
 	move	r6,r17
 	addiupc	r5,00030016
-	move.balc	r4,r18,0040A100
+	move.balc	r4,r18,memcmp
 	bnezc	r4,00401462
 
 l00401450:
@@ -2002,35 +2002,35 @@ l00401450:
 
 l0040145A:
 	addiupc	r4,0000F83A
-	balc	00401594
+	balc	fn00401594
 	bc	004013FA
 
 l00401462:
 	movep	r5,r6,r18,r17
 	addiupc	r4,0002FFF8
 	swpc	r17,00454524
-	balc	00401608
+	balc	fn00401608
 	addiupc	r4,0000F834
 	addiu	r18,r16,00000003
-	balc	00401594
+	balc	fn00401594
 
 l0040147A:
 	subu	r5,r21,r17
 	li	r6,00000004
 	addu	r5,r18,r5
 	addiu	r4,sp,0000000C
-	balc	00401608
+	balc	fn00401608
 	lw	r17,000C(sp)
 	bnezc	r7,0040149C
 
 l0040148A:
 	addiupc	r4,0000F7FA
-	balc	00401594
+	balc	fn00401594
 
 l00401490:
 	addiu	r17,r17,FFFFFFFC
 	li	r4,0000000A
-	balc	00401766
+	balc	fn00401766
 	bltc	r0,r17,0040147A
 
 l0040149A:
@@ -2045,10 +2045,10 @@ l0040149C:
 	sh	r6,0010(sp)
 	sw	r0,0018(sp)
 	sw	r0,001C(sp)
-	balc	00401288
+	balc	pr_addr
 	move	r5,r4
 	addiupc	r4,0000F7DC
-	balc	00401594
+	balc	fn00401594
 	bc	00401490
 
 l004014BC:
@@ -2066,7 +2066,7 @@ l004014CE:
 	lbu	r21,0003(r16)
 	addiu	r30,r16,00000004
 	move	r23,r0
-	balc	00401594
+	balc	fn00401594
 	move	r22,r0
 	bc	00401524
 
@@ -2079,10 +2079,10 @@ l004014E2:
 	sh	r6,0010(sp)
 	sw	r0,0018(sp)
 	sw	r0,001C(sp)
-	balc	00401288
+	balc	pr_addr
 	move	r5,r4
 	addiupc	r4,0000F796
-	balc	00401594
+	balc	fn00401594
 	bc	00401540
 
 l00401502:
@@ -2098,13 +2098,13 @@ l00401510:
 	addiupc	r4,0000F7D2
 
 l00401516:
-	balc	00401594
+	balc	fn00401594
 	move	r22,r17
 
 l0040151A:
 	addiu	r18,r18,FFFFFFFC
 	li	r4,0000000A
-	balc	00401766
+	balc	fn00401766
 	bgec	r0,r18,00401580
 
 l00401524:
@@ -2117,13 +2117,13 @@ l0040152C:
 	move	r5,r30
 	addiu	r4,sp,0000000C
 	addiu	r17,r17,00000004
-	balc	00401608
+	balc	fn00401608
 	lw	r17,000C(sp)
 	bnezc	r7,004014E2
 
 l0040153A:
 	addiupc	r4,0000F74A
-	balc	00401594
+	balc	fn00401594
 
 l00401540:
 	addiu	r18,r18,FFFFFFFC
@@ -2152,7 +2152,7 @@ l0040156A:
 	addiupc	r4,0000F748
 
 l00401570:
-	balc	00401594
+	balc	fn00401594
 	move	r23,r17
 	bc	0040151A
 
@@ -2167,7 +2167,7 @@ l00401580:
 	beqc	r0,r5,004013FA
 
 l0040158C:
-	balc	00401594
+	balc	fn00401594
 	bc	004013FA
 
 ;; fn00401590: 00401590
@@ -2177,7 +2177,7 @@ l0040158C:
 ;;     004015E8 (in pr_iph)
 ;;     004015F2 (in pr_iph)
 fn00401590 proc
-	bc	00406830
+	bc	inet_ntoa
 
 ;; fn00401594: 00401594
 ;;   Called from:
@@ -2203,7 +2203,7 @@ fn00401590 proc
 ;;     0040175E (in pr_icmph)
 ;;     00401918 (in ping4_receive_error_msg)
 fn00401594 proc
-	bc	004086C0
+	bc	printf
 
 ;; pr_iph: 00401598
 pr_iph proc
@@ -2212,7 +2212,7 @@ pr_iph proc
 	addiupc	r4,0000F78C
 	addiupc	r18,0000F808
 	lw	r17,0000(r16)
-	balc	00401762
+	balc	fn00401762
 	lw	r5,0000(r16)
 	addiupc	r4,0000F7C2
 	lhu	r9,0004(r16)
@@ -2222,31 +2222,31 @@ pr_iph proc
 	lbu	r7,0001(r16)
 	ext	r5,r5,00000004,00000004
 	sll	r17,r17,00000002
-	balc	00401594
+	balc	fn00401594
 	lhu	r5,0006(r16)
 	addiupc	r4,0000F7C2
 	ext	r6,r5,00000000,0000000D
 	srl	r5,r5,0000000D
-	balc	00401594
+	balc	fn00401594
 	lhu	r7,000A(r16)
 	lbu	r6,0009(r16)
 	addiupc	r4,0000F7B8
 	lbu	r5,0008(r16)
-	balc	00401594
+	balc	fn00401594
 	lw	r4,000C(r16)
-	balc	00401590
+	balc	fn00401590
 	move	r5,r4
-	move.balc	r4,r18,004086C0
+	move.balc	r4,r18,printf
 	lw	r4,0010(r16)
-	balc	00401590
+	balc	fn00401590
 	move	r5,r4
-	move.balc	r4,r18,004086C0
+	move.balc	r4,r18,printf
 	li	r4,0000000A
-	balc	00401766
+	balc	fn00401766
 	move	r5,r17
 	addiu	r4,r16,00000014
 	restore	00000010,ra,00000004
-	bc	0040136A
+	bc	pr_options
 
 ;; fn00401608: 00401608
 ;;   Called from:
@@ -2256,7 +2256,7 @@ pr_iph proc
 ;;     00401484 (in pr_options)
 ;;     00401534 (in pr_options)
 fn00401608 proc
-	bc	0040A130
+	bc	memcpy
 
 ;; pr_icmph: 0040160C
 ;;   Called from:
@@ -2297,7 +2297,7 @@ l00401614:
 l00401758:
 	move	r5,r4
 	addiupc	r4,0000FA06
-	balc	00401594
+	balc	fn00401594
 	restore.jrc	00000020,ra,00000003
 
 ;; fn00401762: 00401762
@@ -2305,7 +2305,7 @@ l00401758:
 ;;     004015A6 (in pr_iph)
 ;;     00401B3C (in ping4_parse_reply)
 fn00401762 proc
-	bc	00408780
+	bc	puts
 
 ;; fn00401766: 00401766
 ;;   Called from:
@@ -2315,13 +2315,13 @@ fn00401762 proc
 ;;     004015FC (in pr_iph)
 ;;     00401B5E (in ping4_parse_reply)
 fn00401766 proc
-	bc	00408770
+	bc	putchar
 
 ;; ping4_receive_error_msg: 0040176A
 ping4_receive_error_msg proc
 	save	00000270,ra,00000005
 	move	r17,r4
-	balc	004049B0
+	balc	__errno_location
 	addiu	r7,sp,FFFFF250
 	move	r16,r7
 	addiu	r7,sp,0000001C
@@ -2345,7 +2345,7 @@ ping4_receive_error_msg proc
 	addiu	r7,r0,00000200
 	sw	r0,0DFC(r16)
 	sw	r7,0DF8(r16)
-	balc	00407670
+	balc	recvmsg
 	bltc	r4,r0,0040187A
 
 l004017C2:
@@ -2395,7 +2395,7 @@ l00401800:
 	bnezc	r18,00401806
 
 l00401802:
-	balc	00404A00
+	balc	abort
 
 l00401806:
 	lbu	r5,0004(r18)
@@ -2411,7 +2411,7 @@ l0040181C:
 
 l00401820:
 	addiupc	r4,0000F954
-	balc	00401BA0
+	balc	fn00401BA0
 
 l00401826:
 	lwpc	r7,004544D0
@@ -2420,7 +2420,7 @@ l00401826:
 	swpc	r7,004544D0
 
 l00401836:
-	balc	004049B0
+	balc	__errno_location
 	sw	r19,0000(sp)
 	bnezc	r16,00401842
 
@@ -2438,13 +2438,13 @@ l00401848:
 	beqic	r4,0000001A,00401868
 
 l00401856:
-	balc	004049EA
+	balc	strerror
 	addiupc	r5,0000F91E
 	move	r6,r4
 
 l00401860:
 	lw	r17,000C(sp)
-	balc	00408340
+	balc	fprintf
 	bc	00401826
 
 l00401868:
@@ -2477,13 +2477,13 @@ l0040188A:
 
 l00401892:
 	lhu	r5,0020(sp)
-	move.balc	r4,r17,00402CD6
+	move.balc	r4,r17,is_ours
 	beqzc	r4,00401878
 
 l0040189C:
 	lhu	r4,0022(sp)
-	balc	00401B9C
-	balc	004000F0
+	balc	fn00401B9C
+	balc	acknowledge
 	lw	r7,0004(r17)
 	bneiuc	r7,00000003,004018D6
 
@@ -2500,13 +2500,13 @@ l004018B0:
 	addiu	r5,r0,000000FF
 	addiu	r7,sp,00000010
 	sw	r6,0048(sp)
-	balc	00407D60
+	balc	setsockopt
 	li	r7,FFFFFFFF
 	bnec	r4,r7,004018D6
 
 l004018CE:
 	addiupc	r4,0000F8F2
-	balc	00408630
+	balc	perror
 
 l004018D6:
 	lwpc	r7,004544D0
@@ -2523,27 +2523,27 @@ l004018F0:
 l004018F4:
 	li	r5,00000002
 	addiupc	r4,0000F8EE
-	balc	00401BA0
+	balc	fn00401BA0
 	bc	00401836
 
 l004018FE:
-	balc	00401E5C
+	balc	print_timestamp
 	li	r5,00000010
 	addu	r4,r18,r5
-	balc	00401288
+	balc	pr_addr
 	move	r17,r4
 	lhu	r4,0022(sp)
-	balc	00401B9C
+	balc	fn00401B9C
 	movep	r5,r6,r17,r4
 	addiupc	r4,0000F8D4
-	balc	00401594
+	balc	fn00401594
 	lbu	r4,0005(r18)
 	lbu	r5,0006(r18)
 	move	r7,r0
 	lw	r6,0008(r18)
-	balc	0040160C
+	balc	pr_icmph
 	lwpc	r4,00412EF4
-	balc	00401B98
+	balc	fn00401B98
 
 l00401930:
 	move	r17,r0
@@ -2562,7 +2562,7 @@ l00401938:
 ;;     00401AEE (in ping4_parse_reply)
 ;;     00401B46 (in ping4_parse_reply)
 fn0040193C proc
-	bc	00407620
+	bc	ntohl
 
 ;; ping4_parse_reply: 00401940
 ping4_parse_reply proc
@@ -2598,11 +2598,11 @@ l00401970:
 
 l00401974:
 	li	r5,00000010
-	move.balc	r4,r18,00401288
+	move.balc	r4,r18,pr_addr
 	addiupc	r5,0000F886
 	movep	r6,r7,r20,r4
 	lwpc	r4,00412EF0
-	balc	00408340
+	balc	fprintf
 	bc	0040196E
 
 l0040198C:
@@ -2614,22 +2614,22 @@ l00401998:
 	subu	r20,r20,r7
 	addu	r16,r16,r7
 	movep	r5,r6,r20,r0
-	move.balc	r4,r16,00400920
+	move.balc	r4,r16,in_cksum
 	lbu	r7,0000(r16)
 	move	r19,r4
 	bnec	r0,r7,00401A40
 
 l004019AC:
 	lhu	r5,0004(r16)
-	move.balc	r4,r9,00402CD6
+	move.balc	r4,r9,is_ours
 	beqzc	r4,0040196E
 
 l004019B4:
 	lhu	r4,0006(r16)
-	balc	00401B9C
+	balc	fn00401B9C
 	li	r5,00000010
 	move	r19,r4
-	move.balc	r4,r18,00401288
+	move.balc	r4,r18,pr_addr
 	addiupc	r7,FFFFF02A
 	move	r11,r4
 	move	r10,r17
@@ -2638,13 +2638,13 @@ l004019B4:
 	move	r8,r23
 	movep	r6,r7,r20,r19
 	li	r5,00000008
-	move.balc	r4,r16,004023F6
+	move.balc	r4,r16,gather_statistics
 	move	r17,r4
 	beqc	r0,r4,00401B52
 
 l004019DC:
 	lwpc	r4,00412EF4
-	balc	00401B98
+	balc	fn00401B98
 
 l004019E4:
 	move	r17,r0
@@ -2736,7 +2736,7 @@ l00401A68:
 l00401A6C:
 	li	r5,00000002
 	addiupc	r4,0000F7E6
-	balc	00401BA0
+	balc	fn00401BA0
 	bc	00401970
 
 l00401A76:
@@ -2763,7 +2763,7 @@ l00401A90:
 
 l00401A9C:
 	lhu	r5,0004(r17)
-	move.balc	r4,r9,00402CD6
+	move.balc	r4,r9,is_ours
 	beqc	r0,r4,0040196E
 
 l00401AA6:
@@ -2774,8 +2774,8 @@ l00401AA6:
 
 l00401AB0:
 	lhu	r4,0006(r17)
-	balc	00401B9C
-	balc	004000F0
+	balc	fn00401B9C
+	balc	acknowledge
 	bc	004019E4
 
 l00401ABA:
@@ -2784,35 +2784,35 @@ l00401ABA:
 	bnec	r0,r7,0040196E
 
 l00401AC8:
-	balc	00401E5C
+	balc	print_timestamp
 	li	r5,00000010
-	move.balc	r4,r18,00401288
+	move.balc	r4,r18,pr_addr
 	move	r18,r4
 	lhu	r4,0006(r17)
-	balc	00401B9C
+	balc	fn00401B9C
 	movep	r5,r6,r18,r4
 	addiupc	r4,0000F752
-	balc	00401B94
+	balc	fn00401B94
 	beqzc	r19,00401AE8
 
 l00401AE2:
 	addiupc	r4,0000F762
-	balc	00401B94
+	balc	fn00401B94
 
 l00401AE8:
 	lw	r4,0004(r16)
 	lbu	r17,0000(r16)
 	lbu	r18,0001(r16)
-	balc	0040193C
+	balc	fn0040193C
 	movep	r6,r7,r4,r16
 	movep	r4,r5,r17,r18
-	balc	0040160C
+	balc	pr_icmph
 	bc	0040196E
 
 l00401AFA:
 	li	r5,00000003
 	addiupc	r4,0000F75C
-	balc	00401BA0
+	balc	fn00401BA0
 	bc	004019E4
 
 l00401B04:
@@ -2828,32 +2828,32 @@ l00401B12:
 l00401B16:
 	move	r5,r0
 	addiu	r4,sp,00000018
-	balc	0040AF40
+	balc	gettimeofday
 	addiupc	r4,0000F73E
 	lwm	r5,0018(sp),00000002
-	balc	00401B94
+	balc	fn00401B94
 
 l00401B28:
 	li	r5,00000010
-	move.balc	r4,r18,00401288
+	move.balc	r4,r18,pr_addr
 	move	r5,r4
 	addiupc	r4,0000F738
-	balc	00401B94
+	balc	fn00401B94
 	beqzc	r19,00401B40
 
 l00401B38:
 	addiupc	r4,0000F70C
-	balc	00401762
+	balc	fn00401762
 	bc	004019E4
 
 l00401B40:
 	lw	r4,0004(r16)
 	lbu	r18,0000(r16)
 	lbu	r19,0001(r16)
-	balc	0040193C
+	balc	fn0040193C
 	movep	r6,r7,r4,r16
 	movep	r4,r5,r18,r19
-	balc	0040160C
+	balc	pr_icmph
 	bc	00401970
 
 l00401B52:
@@ -2862,13 +2862,13 @@ l00401B52:
 
 l00401B5C:
 	li	r4,00000007
-	balc	00401766
+	balc	fn00401766
 	lwpc	r7,004544EC
 	bbeqzc	r7,00000000,00401B7C
 
 l00401B6A:
 	lwpc	r4,00412EF4
-	balc	00401B98
+	balc	fn00401B98
 
 l00401B72:
 	lwpc	r7,004544EC
@@ -2876,11 +2876,11 @@ l00401B72:
 
 l00401B7C:
 	addiu	r5,r22,00000014
-	move.balc	r4,r21,0040136A
+	move.balc	r4,r21,pr_options
 	li	r4,0000000A
-	balc	00408770
+	balc	putchar
 	lwpc	r4,00412EF4
-	balc	00401B98
+	balc	fn00401B98
 	bc	00401970
 
 ;; fn00401B94: 00401B94
@@ -2890,7 +2890,7 @@ l00401B7C:
 ;;     00401B26 (in ping4_parse_reply)
 ;;     00401B34 (in ping4_parse_reply)
 fn00401B94 proc
-	bc	004086C0
+	bc	printf
 
 ;; fn00401B98: 00401B98
 ;;   Called from:
@@ -2899,7 +2899,7 @@ fn00401B94 proc
 ;;     00401B70 (in ping4_parse_reply)
 ;;     00401B90 (in ping4_parse_reply)
 fn00401B98 proc
-	bc	004081A0
+	bc	fflush_unlocked
 
 ;; fn00401B9C: 00401B9C
 ;;   Called from:
@@ -2909,7 +2909,7 @@ fn00401B98 proc
 ;;     00401AB2 (in ping4_parse_reply)
 ;;     00401AD6 (in ping4_parse_reply)
 fn00401B9C proc
-	bc	00407630
+	bc	ntohs
 
 ;; fn00401BA0: 00401BA0
 ;;   Called from:
@@ -2918,7 +2918,7 @@ fn00401B9C proc
 ;;     00401A72 (in ping4_parse_reply)
 ;;     00401B00 (in ping4_parse_reply)
 fn00401BA0 proc
-	bc	00400A04
+	bc	write_stdout
 00401BA4             00 80 00 C0 00 80 00 C0 00 80 00 C0     ............
 
 ;; in_flight: 00401BB0
@@ -3025,7 +3025,7 @@ l00401C66:
 	subu	r6,r17,r16
 	addu	r5,r18,r16
 	li	r4,00000001
-	balc	0040B080
+	balc	write
 	addu	r16,r16,r4
 	bltuc	r16,r17,00401C66
 
@@ -3044,11 +3044,11 @@ set_signal proc
 	movep	r16,r17,r4,r5
 	move	r5,r0
 	addiu	r4,sp,00000004
-	balc	0040A690
+	balc	memset
 	move	r6,r0
 	addiu	r5,sp,00000004
 	sw	r17,0004(sp)
-	move.balc	r4,r16,0040800A
+	move.balc	r4,r16,__sigaction
 	restore.jrc	000000A0,ra,00000003
 
 ;; sigexit: 00401C98
@@ -3065,7 +3065,7 @@ l00401CAA:
 l00401CAC:
 	move	r5,r0
 	addiupc	r4,0005268E
-	balc	00407E60
+	balc	_longjmp
 
 ;; limit_capabilities: 00401CB6
 ;;   Called from:
@@ -3073,12 +3073,12 @@ l00401CAC:
 ;;     00401CB2 (in sigexit)
 limit_capabilities proc
 	save	00000010,ra,00000001
-	balc	00401E82
+	balc	fn00401E82
 	swpc	r4,00454514
-	balc	0040AFA0
+	balc	geteuid
 	swpc	r4,004544B4
 	lwpc	r4,00454514
-	balc	0040AFF0
+	balc	seteuid
 	bnezc	r4,00401CD8
 
 l00401CD6:
@@ -3086,9 +3086,9 @@ l00401CD6:
 
 l00401CD8:
 	addiupc	r4,0000F59C
-	balc	00401E7A
+	balc	fn00401E7A
 	li	r4,FFFFFFFF
-	balc	00401E7E
+	balc	fn00401E7E
 
 ;; modify_capability: 00401CE2
 ;;   Called from:
@@ -3107,11 +3107,11 @@ modify_capability proc
 	bnezc	r4,00401CF0
 
 l00401CEC:
-	balc	00401E82
+	balc	fn00401E82
 	move	r7,r4
 
 l00401CF0:
-	move.balc	r4,r7,0040AFF0
+	move.balc	r4,r7,seteuid
 	bnezc	r4,00401CF8
 
 l00401CF6:
@@ -3119,7 +3119,7 @@ l00401CF6:
 
 l00401CF8:
 	addiupc	r4,0000F58C
-	balc	00401E7A
+	balc	fn00401E7A
 	li	r4,FFFFFFFF
 	bc	00401CF6
 
@@ -3128,8 +3128,8 @@ l00401CF8:
 ;;     00403C70 (in ping6_run)
 drop_capabilities proc
 	save	00000010,ra,00000001
-	balc	00401E82
-	balc	0040B000
+	balc	fn00401E82
+	balc	setuid
 	bnezc	r4,00401D0E
 
 l00401D0C:
@@ -3137,9 +3137,9 @@ l00401D0C:
 
 l00401D0E:
 	addiupc	r4,0000F566
-	balc	00401E7A
+	balc	fn00401E7A
 	li	r4,FFFFFFFF
-	balc	00401E7E
+	balc	fn00401E7E
 
 ;; fill: 00401D18
 ;;   Called from:
@@ -3183,7 +3183,7 @@ l00401D24:
 	addiu	r8,sp,00000038
 	addiupc	r5,0000F560
 	addiu	r7,sp,00000034
-	move.balc	r4,r20,004088A0
+	move.balc	r4,r20,__isoc99_sscanf
 	move	r6,r0
 	move	r16,r4
 	bltc	r0,r4,00401DC0
@@ -3195,7 +3195,7 @@ l00401D72:
 l00401D7C:
 	addiupc	r4,0000F578
 	move	r17,r18
-	balc	0040212A
+	balc	fn0040212A
 
 l00401D84:
 	subu	r7,r17,r18
@@ -3203,21 +3203,21 @@ l00401D84:
 
 l00401D8A:
 	li	r4,0000000A
-	balc	00408770
+	balc	putchar
 
 l00401D90:
 	restore.jrc	00000090,ra,00000006
 
 l00401D92:
-	balc	00404850
+	balc	isxdigit
 	bnezc	r4,00401DA8
 
 l00401D98:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000F4EE
-	balc	00402126
+	balc	fn00402126
 	li	r4,00000002
-	balc	00401E7E
+	balc	fn00401E7E
 
 l00401DA8:
 	addiu	r16,r16,00000001
@@ -3249,7 +3249,7 @@ l00401DCC:
 	lbu	r5,0008(r17)
 	addiupc	r4,0000F530
 	addiu	r17,r17,00000001
-	balc	0040212A
+	balc	fn0040212A
 	bc	00401D84
 
 ;; __schedule_exit: 00401DDA
@@ -3300,7 +3300,7 @@ l00401E2A:
 	move	r5,sp
 	sw	r0,0000(sp)
 	sw	r0,0004(sp)
-	balc	00407F10
+	balc	setitimer
 
 l00401E4A:
 	move	r4,r16
@@ -3328,10 +3328,10 @@ print_timestamp proc
 l00401E68:
 	move	r5,r0
 	addiu	r4,sp,00000008
-	balc	004021B0
+	balc	fn004021B0
 	addiupc	r4,0000F49A
 	lwm	r5,0008(sp),00000002
-	balc	0040212A
+	balc	fn0040212A
 
 l00401E78:
 	restore.jrc	00000020,ra,00000001
@@ -3343,7 +3343,7 @@ l00401E78:
 ;;     00401D12 (in drop_capabilities)
 ;;     00402122 (in pinger)
 fn00401E7A proc
-	bc	00408630
+	bc	perror
 
 ;; fn00401E7E: 00401E7E
 ;;   Called from:
@@ -3352,7 +3352,7 @@ fn00401E7A proc
 ;;     00401DA6 (in fill)
 ;;     004021F2 (in setup)
 fn00401E7E proc
-	bc	0040015A
+	bc	exit
 
 ;; fn00401E82: 00401E82
 ;;   Called from:
@@ -3360,7 +3360,7 @@ fn00401E7E proc
 ;;     00401CEC (in modify_capability)
 ;;     00401D04 (in drop_capabilities)
 fn00401E82 proc
-	bc	0040AFC0
+	bc	getuid
 
 ;; pinger: 00401E86
 ;;   Called from:
@@ -3393,7 +3393,7 @@ l00401EB4:
 
 l00401EC4:
 	addiupc	r4,000525C8
-	balc	004021B0
+	balc	fn004021B0
 	lwpc	r7,00430088
 	addiu	r7,r7,FFFFFFFF
 	lwpc	r6,0043008C
@@ -3418,14 +3418,14 @@ l00401EF4:
 	bnezc	r7,00401F2A
 
 l00401F08:
-	balc	00401E5C
+	balc	print_timestamp
 	lwpc	r5,004544E4
 	lui	r7,00000010
 	addiupc	r4,0000F404
 	mod	r6,r5,r7
-	move.balc	r5,r6,004086C0
+	move.balc	r5,r6,printf
 	lwpc	r4,00412EF4
-	balc	004081A0
+	balc	fflush_unlocked
 
 l00401F2A:
 	lw	r7,0000(r16)
@@ -3439,17 +3439,17 @@ l00401F40:
 	bltc	r0,r4,00402054
 
 l00401F44:
-	balc	004021AC
+	balc	fn004021AC
 	lw	r7,0000(r4)
 	beqic	r7,00000029,00402058
 
 l00401F4C:
-	balc	004021AC
+	balc	fn004021AC
 	lw	r7,0000(r4)
 	beqic	r7,0000000C,00402058
 
 l00401F54:
-	balc	004021AC
+	balc	fn004021AC
 	lw	r7,0000(r4)
 	beqic	r7,0000000B,00402106
 
@@ -3468,17 +3468,17 @@ l00401F6A:
 	beqzc	r7,00401F84
 
 l00401F72:
-	balc	004021AC
+	balc	fn004021AC
 	lw	r7,0000(r4)
 	bneiuc	r7,00000016,00401F84
 
 l00401F7A:
 	swpc	r0,00430080
-	balc	004021AC
+	balc	fn004021AC
 	sw	r0,0000(sp)
 
 l00401F84:
-	balc	004021AC
+	balc	fn004021AC
 	lw	r7,0000(r4)
 	beqzc	r7,00401F2A
 
@@ -3487,7 +3487,7 @@ l00401F8A:
 
 l00401F8C:
 	addiu	r4,sp,00000008
-	balc	004021B0
+	balc	fn004021B0
 	lw	r8,0490(r19)
 	lw	r17,0008(sp)
 	addiu	r5,r0,000003E8
@@ -3508,7 +3508,7 @@ l00401FC0:
 	bgeic	r8,0000000A,00401FD4
 
 l00401FC4:
-	balc	00401BB0
+	balc	in_flight
 	bltc	r4,r9,00401FD4
 
 l00401FCC:
@@ -3541,7 +3541,7 @@ l00401FEE:
 
 l00402002:
 	swpc	r0,00454540
-	balc	00401BD8
+	balc	advance_ntransmitted
 	lwpc	r7,004544EC
 	andi	r7,r7,00000011
 	bneiuc	r7,00000001,00402044
@@ -3556,13 +3556,13 @@ l0040202A:
 	bltc	r7,r5,0040203C
 
 l00402034:
-	balc	00401BB0
+	balc	in_flight
 	bgec	r4,r5,00402044
 
 l0040203C:
 	li	r5,00000001
 	addiupc	r4,0000F2FA
-	balc	00401C60
+	balc	write_stdout
 
 l00402044:
 	lwpc	r7,00454544
@@ -3571,7 +3571,7 @@ l00402044:
 	restore.jrc	00000030,ra,00000005
 
 l00402054:
-	balc	00404A00
+	balc	abort
 
 l00402058:
 	lwpc	r7,004544F4
@@ -3590,7 +3590,7 @@ l00402072:
 	bbeqzc	r7,0000000E,0040208E
 
 l0040208A:
-	balc	00401C0E
+	balc	update_interval
 
 l0040208E:
 	lwpc	r7,0043008C
@@ -3615,7 +3615,7 @@ l004020C4:
 	move	r18,r0
 
 l004020C6:
-	balc	00401BD8
+	balc	advance_ntransmitted
 	bnezc	r18,004020E4
 
 l004020CC:
@@ -3628,7 +3628,7 @@ l004020D6:
 l004020DA:
 	li	r5,00000001
 	addiupc	r4,0000F098
-	balc	00401C60
+	balc	write_stdout
 
 l004020E4:
 	lwpc	r7,0043008C
@@ -3658,7 +3658,7 @@ l00402106:
 
 l0040211E:
 	addiupc	r4,0000F21E
-	balc	00401E7A
+	balc	fn00401E7A
 	bc	004020E4
 
 ;; fn00402126: 00402126
@@ -3668,7 +3668,7 @@ l0040211E:
 ;;     00402212 (in setup)
 ;;     00402274 (in setup)
 fn00402126 proc
-	bc	004083F0
+	bc	fputs_unlocked
 
 ;; fn0040212A: 0040212A
 ;;   Called from:
@@ -3676,7 +3676,7 @@ fn00402126 proc
 ;;     00401DD6 (in fill)
 ;;     00401E76 (in print_timestamp)
 fn0040212A proc
-	bc	004086C0
+	bc	printf
 
 ;; sock_setbufs: 0040212E
 ;;   Called from:
@@ -3699,7 +3699,7 @@ l00402144:
 	addiu	r8,r0,00000004
 	addiu	r6,r0,00001001
 	addiu	r5,r0,0000FFFF
-	balc	004023EE
+	balc	fn004023EE
 	lwpc	r7,00430088
 	mul	r16,r16,r7
 	addiu	r7,r0,0000FFFF
@@ -3714,13 +3714,13 @@ l0040216A:
 	addiu	r7,sp,00000008
 	addiu	r6,r0,00001002
 	addiu	r5,r0,0000FFFF
-	balc	004023EE
+	balc	fn004023EE
 	lw	r4,0000(r17)
 	addiu	r8,sp,0000000C
 	addiu	r7,sp,00000008
 	addiu	r6,r0,00001002
 	addiu	r5,r0,0000FFFF
-	balc	004066D0
+	balc	getsockopt
 	bnezc	r4,004021A4
 
 l00402192:
@@ -3730,7 +3730,7 @@ l00402192:
 l00402198:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000F1AE
-	balc	00402126
+	balc	fn00402126
 
 l004021A4:
 	restore.jrc	00000020,ra,00000003
@@ -3749,7 +3749,7 @@ l004021A6:
 ;;     00401F80 (in pinger)
 ;;     00401F84 (in pinger)
 fn004021AC proc
-	bc	004049B0
+	bc	__errno_location
 
 ;; fn004021B0: 004021B0
 ;;   Called from:
@@ -3759,7 +3759,7 @@ fn004021AC proc
 ;;     00402396 (in setup)
 ;;     004024AE (in gather_statistics)
 fn004021B0 proc
-	bc	0040AF40
+	bc	gettimeofday
 
 ;; setup: 004021B4
 ;;   Called from:
@@ -3788,11 +3788,11 @@ l004021E0:
 	addiu	r6,r0,000000C8
 	addiupc	r5,0000F1A4
 	lwpc	r4,00412EF0
-	balc	004023F2
+	balc	fn004023F2
 
 l004021F0:
 	li	r4,00000002
-	balc	00401E7E
+	balc	fn00401E7E
 
 l004021F4:
 	lwpc	r4,00430088
@@ -3803,7 +3803,7 @@ l004021F4:
 l00402208:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000F1BA
-	balc	00402126
+	balc	fn00402126
 	bc	004021F0
 
 l00402216:
@@ -3816,7 +3816,7 @@ l0040221E:
 	lw	r4,0000(r16)
 	addu	r7,sp,r8
 	addiu	r5,r0,0000FFFF
-	balc	004023EE
+	balc	fn004023EE
 
 l0040222E:
 	lwpc	r7,004544EC
@@ -3828,7 +3828,7 @@ l00402238:
 	addu	r7,sp,r8
 	li	r6,00000010
 	addiu	r5,r0,0000FFFF
-	balc	004023EE
+	balc	fn004023EE
 
 l0040224A:
 	lwpc	r7,004544EC
@@ -3842,13 +3842,13 @@ l00402254:
 	li	r6,0000001D
 	addiu	r5,r0,0000FFFF
 	addiu	r7,sp,00000020
-	balc	004023EE
+	balc	fn004023EE
 	beqzc	r4,00402276
 
 l0040226A:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000F180
-	balc	00402126
+	balc	fn00402126
 
 l00402276:
 	lwpc	r7,004544EC
@@ -3856,16 +3856,16 @@ l00402276:
 
 l00402280:
 	li	r4,00000001
-	balc	00401CE2
+	balc	modify_capability
 	lw	r4,0000(r16)
 	addiupc	r7,0005223C
 	addiu	r8,r0,00000004
 	li	r6,00000024
 	addiu	r5,r0,0000FFFF
-	balc	004023EE
+	balc	fn004023EE
 	move	r17,r4
 	move	r4,r0
-	balc	00401CE2
+	balc	modify_capability
 	li	r7,FFFFFFFF
 	bnec	r17,r7,004022B6
 
@@ -3873,7 +3873,7 @@ l004022A4:
 	lwpc	r6,004544C8
 	addiupc	r5,0000F186
 	lwpc	r4,00412EF0
-	balc	004023F2
+	balc	fn004023F2
 
 l004022B6:
 	li	r7,00000001
@@ -3900,7 +3900,7 @@ l004022E0:
 	addu	r7,sp,r8
 	addiu	r6,r0,00001005
 	addiu	r5,r0,0000FFFF
-	balc	004023EE
+	balc	fn004023EE
 	lwpc	r6,0043008C
 	slti	r7,r6,0000000A
 	li	r5,0000000A
@@ -3919,7 +3919,7 @@ l00402304:
 	addiu	r5,r0,0000FFFF
 	sw	r7,000C(sp)
 	addu	r7,sp,r8
-	balc	004023EE
+	balc	fn004023EE
 	beqzc	r4,00402340
 
 l00402330:
@@ -3938,30 +3938,30 @@ l00402352:
 	bneiuc	r7,00000003,00402368
 
 l00402358:
-	balc	0040AFB0
+	balc	getpid
 	andi	r4,r4,0000FFFF
-	balc	00406700
+	balc	htons
 	swpc	r4,004544C4
 
 l00402368:
 	addiupc	r5,FFFFF92C
 	li	r4,00000002
-	balc	0040271C
+	balc	fn0040271C
 	addiupc	r5,FFFFF924
 	li	r4,0000000E
-	balc	0040271C
+	balc	fn0040271C
 	addiupc	r5,FFFFF888
 	li	r4,00000003
-	balc	0040271C
+	balc	fn0040271C
 	addiu	r4,sp,00000020
-	balc	00408030
+	balc	sigemptyset
 	move	r6,r0
 	addiu	r5,sp,00000020
 	li	r4,00000002
-	balc	00408040
+	balc	sigprocmask
 	move	r5,r0
 	addiupc	r4,00052102
-	balc	004021B0
+	balc	fn004021B0
 	lwpc	r7,004314C8
 	beqzc	r7,004023B2
 
@@ -3973,18 +3973,18 @@ l004023A0:
 	sw	r0,0014(sp)
 	sw	r7,0018(sp)
 	sw	r0,001C(sp)
-	balc	00407F10
+	balc	setitimer
 
 l004023B2:
 	li	r4,00000001
-	balc	0040AFD0
+	balc	isatty
 	beqzc	r4,004023D8
 
 l004023BA:
 	addiu	r6,sp,00000010
 	li	r5,40087468
 	li	r4,00000001
-	balc	00405B80
+	balc	ioctl
 	li	r7,FFFFFFFF
 	beqc	r4,r7,004023D8
 
@@ -4021,7 +4021,7 @@ l004023EC:
 ;;     004022F2 (in setup)
 ;;     0040232C (in setup)
 fn004023EE proc
-	bc	00407D60
+	bc	setsockopt
 
 ;; fn004023F2: 004023F2
 ;;   Called from:
@@ -4029,7 +4029,7 @@ fn004023EE proc
 ;;     004022B4 (in setup)
 ;;     004024A0 (in gather_statistics)
 fn004023F2 proc
-	bc	00408340
+	bc	fprintf
 
 ;; gather_statistics: 004023F6
 ;;   Called from:
@@ -4090,7 +4090,7 @@ l00402468:
 l0040246C:
 	li	r6,00000008
 	addu	r4,sp,r6
-	move.balc	r5,r20,0040A130
+	move.balc	r5,r20,memcpy
 	bc	004024C2
 
 l00402478:
@@ -4108,13 +4108,13 @@ l00402494:
 	move	r6,r22
 	addiupc	r5,0000EFBA
 	lwpc	r4,00412EF0
-	balc	004023F2
+	balc	fn004023F2
 	lwpc	r7,004544EC
 	bbnezc	r7,0000000C,004024DE
 
 l004024AC:
 	movep	r4,r5,r17,r0
-	balc	004021B0
+	balc	fn004021B0
 	lwpc	r7,004544EC
 	addiu	r6,r0,00001000
 	or	r7,r7,r6
@@ -4192,7 +4192,7 @@ l00402566:
 	bbeqzc	r7,0000000E,0040257A
 
 l00402576:
-	balc	00401C0E
+	balc	update_interval
 
 l0040257A:
 	srl	r7,r16,00000005
@@ -4231,7 +4231,7 @@ l004025CC:
 	addiupc	r4,0000EEC6
 
 l004025D2:
-	balc	00401C60
+	balc	write_stdout
 	move	r16,r0
 
 l004025D8:
@@ -4264,10 +4264,10 @@ l00402604:
 	bc	004025D2
 
 l0040260C:
-	balc	00401E5C
+	balc	print_timestamp
 	move	r6,r30
 	addiupc	r4,0000EE8A
-	move.balc	r5,r19,004086C0
+	move.balc	r5,r19,printf
 	lw	r17,0040(sp)
 	beqzc	r7,00402622
 
@@ -4280,7 +4280,7 @@ l00402622:
 
 l00402626:
 	addiupc	r4,0000EE8A
-	move.balc	r5,r21,004086C0
+	move.balc	r5,r21,printf
 
 l0040262E:
 	lwpc	r7,00430074
@@ -4290,7 +4290,7 @@ l0040262E:
 l0040263A:
 	addiupc	r4,0000EE7E
 	li	r16,00000001
-	balc	00408780
+	balc	puts
 	bc	004025D8
 
 l00402646:
@@ -4305,21 +4305,21 @@ l00402658:
 	addiu	r5,r0,000003E8
 	addiupc	r4,0000EE6C
 	div	r7,r22,r5
-	move.balc	r5,r7,004086C0
+	move.balc	r5,r7,printf
 
 l00402668:
 	beqzc	r17,00402670
 
 l0040266A:
 	addiupc	r4,0000EEAA
-	balc	004029C6
+	balc	fn004029C6
 
 l00402670:
 	beqzc	r18,00402678
 
 l00402672:
 	addiupc	r4,0000EEAA
-	balc	004029C6
+	balc	fn004029C6
 
 l00402678:
 	lwpc	r4,00430074
@@ -4338,7 +4338,7 @@ l00402684:
 l00402698:
 	addiupc	r4,0000EE98
 	li	r17,00000008
-	balc	004029C6
+	balc	fn004029C6
 
 l004026A0:
 	lwpc	r7,00430074
@@ -4351,13 +4351,13 @@ l004026AA:
 
 l004026B4:
 	addiupc	r4,0000EEB0
-	move.balc	r5,r17,004086C0
+	move.balc	r5,r17,printf
 
 l004026BC:
 	lbux	r5,r17(r20)
 	addiupc	r4,0000EEAC
 	addiu	r17,r17,00000001
-	balc	004029C6
+	balc	fn004029C6
 	bc	004026A0
 
 l004026CA:
@@ -4374,7 +4374,7 @@ l004026D2:
 	addiupc	r4,0000EDF2
 
 l004026EA:
-	balc	004029C6
+	balc	fn004029C6
 	bc	00402668
 
 l004026EE:
@@ -4406,7 +4406,7 @@ l00402718:
 ;;     00402376 (in setup)
 ;;     0040237E (in setup)
 fn0040271C proc
-	bc	00401C7C
+	bc	set_signal
 
 ;; finish: 00402720
 ;;   Called from:
@@ -4431,24 +4431,24 @@ l00402746:
 	li	r4,0000000A
 	lw	r5,0498(r7)
 	subu	r16,r16,r5
-	balc	00402A96
+	balc	fn00402A96
 	lwpc	r4,00412EF4
-	balc	004081A0
+	balc	fflush_unlocked
 	lwpc	r5,004544C0
 	addiupc	r4,0000EE10
-	balc	004029C6
+	balc	fn004029C6
 	lwpc	r5,004544E4
 	addiupc	r4,0000EE20
-	balc	004029C6
+	balc	fn004029C6
 	lwpc	r5,004544DC
 	addiupc	r4,0000EE30
-	balc	004029C6
+	balc	fn004029C6
 	lwpc	r5,004544E0
 	beqzc	r5,00402790
 
 l0040278A:
 	addiupc	r4,0000EE32
-	balc	004029C6
+	balc	fn004029C6
 
 l00402790:
 	lwpc	r5,004544CC
@@ -4456,7 +4456,7 @@ l00402790:
 
 l00402798:
 	addiupc	r4,0000EE38
-	balc	004029C6
+	balc	fn004029C6
 
 l0040279E:
 	lwpc	r5,004544D0
@@ -4464,7 +4464,7 @@ l0040279E:
 
 l004027A6:
 	addiupc	r4,0000EE3E
-	balc	004029C6
+	balc	fn004029C6
 
 l004027AC:
 	lwpc	r6,004544E4
@@ -4477,21 +4477,21 @@ l004027B4:
 	sra	r7,r6,0000001F
 	muh	r5,r4,r17
 	mul	r4,r4,r17
-	balc	00402A9A
+	balc	fn00402A9A
 	move	r5,r4
 	addiupc	r4,0000EE28
-	balc	004029C6
+	balc	fn004029C6
 	addiu	r7,r0,000003E8
 	mul	r5,r16,r7
 	div	r6,r20,r7
 	addiupc	r4,0000EE2A
 	addu	r5,r5,r6
-	balc	004029C6
+	balc	fn004029C6
 
 l004027E6:
 	li	r4,0000000A
 	addiupc	r18,0000DC8C
-	balc	00402A96
+	balc	fn00402A96
 	lwpc	r17,004544DC
 	beqc	r0,r17,00402908
 
@@ -4507,7 +4507,7 @@ l00402802:
 	sra	r21,r17,0000001F
 	lw	r5,0484(r18)
 	movep	r6,r7,r17,r21
-	balc	00402A9A
+	balc	fn00402A9A
 	movep	r19,r22,r4,r5
 	sw	r19,0480(r18)
 	sw	r22,0484(r18)
@@ -4515,7 +4515,7 @@ l00402802:
 	lw	r4,0488(r18)
 	lw	r5,048C(r18)
 	movep	r6,r7,r17,r21
-	balc	00402A9A
+	balc	fn00402A9A
 	mul	r17,r22,r19
 	mul	r21,r19,r19
 	muhu	r7,r19,r19
@@ -4544,7 +4544,7 @@ l00402868:
 l00402876:
 	movep	r6,r7,r18,r23
 	movep	r4,r5,r21,r17
-	balc	00402A9A
+	balc	fn00402A9A
 	addu	r6,r4,r18
 	addu	r5,r5,r23
 	sltu	r4,r6,r4
@@ -4579,13 +4579,13 @@ l004028B0:
 	movep	r4,r5,r19,r22
 	div	r11,r18,r17
 	swm	r10,0018(sp),00000002
-	balc	00403F30
+	balc	__moddi3
 	move	r23,r4
 	addiu	r6,r0,000003E8
 	move	r7,r0
 	lwpc	r21,0043007C
 	movep	r4,r5,r19,r22
-	balc	00402A9A
+	balc	fn00402A9A
 	mod	r7,r18,r17
 	move	r9,r30
 	sw	r7,0000(sp)
@@ -4595,7 +4595,7 @@ l004028B0:
 	div	r5,r21,r17
 	addiupc	r18,0000EC72
 	lwm	r10,0018(sp),00000002
-	balc	004029C6
+	balc	fn004029C6
 
 l00402908:
 	lwpc	r6,00430078
@@ -4603,7 +4603,7 @@ l00402908:
 
 l00402912:
 	addiupc	r4,0000ED4A
-	move.balc	r5,r18,004086C0
+	move.balc	r5,r18,printf
 	addiupc	r18,0000EC56
 
 l0040291E:
@@ -4635,7 +4635,7 @@ l00402946:
 	addu	r16,r16,r7
 	addu	r5,r5,r16
 	sra	r7,r6,0000001F
-	balc	00402A9A
+	balc	fn00402A9A
 	lwpc	r7,004544F4
 	li	r6,00000008
 	addiu	r8,r0,00001F40
@@ -4649,11 +4649,11 @@ l00402946:
 	div	r5,r4,r6
 	addiupc	r4,0000ECD4
 	move	r6,r5
-	move.balc	r5,r18,004086C0
+	move.balc	r5,r18,printf
 
 l0040299E:
 	li	r4,0000000A
-	balc	00402A96
+	balc	fn00402A96
 	lwpc	r7,004544DC
 	li	r4,00000001
 	beqzc	r7,004029BE
@@ -4667,7 +4667,7 @@ l004029B4:
 	slt	r4,r7,r4
 
 l004029BE:
-	balc	0040015A
+	balc	exit
 
 l004029C2:
 	move	r18,r21
@@ -4690,7 +4690,7 @@ l004029C2:
 ;;     004027E4 (in finish)
 ;;     00402906 (in finish)
 fn004029C6 proc
-	bc	004086C0
+	bc	printf
 
 ;; status: 004029CA
 ;;   Called from:
@@ -4710,7 +4710,7 @@ l004029E2:
 	move	r6,r16
 	mul	r4,r4,r8
 	sra	r7,r16,0000001F
-	balc	00402A9A
+	balc	fn00402A9A
 
 l004029F6:
 	lwpc	r7,00412EF0
@@ -4719,7 +4719,7 @@ l004029F6:
 	movep	r6,r7,r17,r16
 	lw	r17,001C(sp)
 	addiupc	r5,0000EC84
-	balc	00408340
+	balc	fprintf
 	lwpc	r6,004544DC
 	beqzc	r6,00402A8A
 
@@ -4734,7 +4734,7 @@ l00402A1C:
 	lw	r4,0480(r5)
 	lw	r5,0484(r5)
 	sra	r7,r6,0000001F
-	balc	00402A9A
+	balc	fn00402A9A
 	lwpc	r7,004544F4
 	li	r6,00000008
 	lwpc	r5,0043007C
@@ -4757,13 +4757,13 @@ l00402A1C:
 	move	r10,r16
 	addiupc	r5,0000EC24
 	sw	r17,0000(sp)
-	balc	00408340
+	balc	fprintf
 
 l00402A8A:
 	lw	r17,001C(sp)
 	li	r4,0000000A
 	restore	00000030,ra,00000003
-	bc	00408380
+	bc	fputc
 
 ;; fn00402A96: 00402A96
 ;;   Called from:
@@ -4771,7 +4771,7 @@ l00402A8A:
 ;;     004027EC (in finish)
 ;;     004029A0 (in finish)
 fn00402A96 proc
-	bc	00408770
+	bc	putchar
 
 ;; fn00402A9A: 00402A9A
 ;;   Called from:
@@ -4784,7 +4784,7 @@ fn00402A96 proc
 ;;     004029F4 (in status)
 ;;     00402A34 (in status)
 fn00402A9A proc
-	bc	00403CB0
+	bc	__divdi3
 
 ;; main_loop: 00402A9E
 ;;   Called from:
@@ -4824,11 +4824,11 @@ l00402AE2:
 	beqzc	r7,00402AEC
 
 l00402AEA:
-	balc	004029CA
+	balc	status
 
 l00402AEC:
 	movep	r4,r5,r17,r16
-	balc	00401E86
+	balc	pinger
 	lwpc	r7,004544D8
 	move	r20,r4
 	beqzc	r7,00402B14
@@ -4842,7 +4842,7 @@ l00402B06:
 	bnezc	r7,00402B14
 
 l00402B0E:
-	balc	00401DDA
+	balc	__schedule_exit
 	move	r20,r4
 
 l00402B14:
@@ -4886,17 +4886,17 @@ l00402B3C:
 	sw	r18,0008(sp)
 	sw	r0,002C(sp)
 	sw	r7,0028(sp)
-	balc	00407670
+	balc	recvmsg
 	move	r19,r4
 	bgec	r4,r0,00402C06
 
 l00402B76:
-	balc	00402CEA
+	balc	fn00402CEA
 	lw	r7,0000(r4)
 	beqic	r7,0000000B,00402AAC
 
 l00402B7E:
-	balc	00402CEA
+	balc	fn00402CEA
 	lw	r7,0000(r4)
 	beqic	r7,00000004,00402AAC
 
@@ -4907,7 +4907,7 @@ l00402B86:
 	bnec	r0,r4,00402C74
 
 l00402B90:
-	balc	00402CEA
+	balc	fn00402CEA
 	lw	r7,0000(r4)
 	bnezc	r7,00402BFC
 
@@ -4922,17 +4922,17 @@ l00402B9C:
 	bc	00402C74
 
 l00402BA4:
-	balc	00401BB0
+	balc	in_flight
 	addiu	r21,r0,000003E8
 	move	r19,r4
 	li	r4,00000002
-	balc	00402CEE
+	balc	fn00402CEE
 	mod	r7,r21,r4
 	bnezc	r7,00402BDC
 
 l00402BB8:
 	li	r4,00000002
-	balc	00402CEE
+	balc	fn00402CEE
 	div	r7,r21,r4
 	slt	r4,r7,r20
 	xori	r4,r4,00000001
@@ -4945,7 +4945,7 @@ l00402BCC:
 	bnec	r0,r19,00402C96
 
 l00402BD4:
-	balc	00407E10
+	balc	sched_yield
 
 l00402BD8:
 	li	r6,00000040
@@ -4953,7 +4953,7 @@ l00402BD8:
 
 l00402BDC:
 	li	r4,00000002
-	balc	00402CEE
+	balc	fn00402CEE
 	li	r6,7FFFFFFF
 	div	r7,r6,r4
 	move	r4,r0
@@ -4961,14 +4961,14 @@ l00402BDC:
 
 l00402BF0:
 	li	r4,00000002
-	balc	00402CEE
+	balc	fn00402CEE
 	mul	r4,r4,r20
 	slti	r4,r4,000003E9
 	bc	00402BC8
 
 l00402BFC:
 	addiupc	r4,0000EAE8
-	balc	00408630
+	balc	perror
 	bc	00402AAC
 
 l00402C06:
@@ -5025,7 +5025,7 @@ l00402C4E:
 l00402C58:
 	move	r5,r0
 	addiu	r4,sp,0000000C
-	balc	0040AF40
+	balc	gettimeofday
 
 l00402C60:
 	addiu	r7,sp,0000000C
@@ -5041,7 +5041,7 @@ l00402C64:
 	bnec	r0,r4,00402B96
 
 l00402C74:
-	balc	00401BB0
+	balc	in_flight
 	bnec	r0,r4,00402BD8
 
 l00402C7C:
@@ -5054,14 +5054,14 @@ l00402C82:
 	lw	r4,0000(r16)
 	addiu	r6,sp,0000000C
 	addiu	r5,r0,00008906
-	balc	00405B80
+	balc	ioctl
 	bnezc	r4,00402C58
 
 l00402C90:
 	bc	00402C60
 
 l00402C92:
-	balc	00402720
+	balc	finish
 
 l00402C96:
 	addiu	r6,r0,00004800
@@ -5082,7 +5082,7 @@ l00402CAE:
 	li	r7,00000009
 	sh	r0,0012(sp)
 	sh	r7,0010(sp)
-	balc	00407E20
+	balc	poll
 	bgec	r0,r4,00402AAC
 
 l00402CCA:
@@ -5120,7 +5120,7 @@ l00402CE8:
 ;;     00402B7E (in main_loop)
 ;;     00402B90 (in main_loop)
 fn00402CEA proc
-	bc	004049B0
+	bc	__errno_location
 
 ;; fn00402CEE: 00402CEE
 ;;   Called from:
@@ -5129,7 +5129,7 @@ fn00402CEA proc
 ;;     00402BDE (in main_loop)
 ;;     00402BF2 (in main_loop)
 fn00402CEE proc
-	bc	00404730
+	bc	sysconf
 00402CF2       08 90 00 80 00 C0 00 80 00 C0 00 80 00 C0   ..............
 
 ;; niquery_option_help_handler: 00402D00
@@ -5139,9 +5139,9 @@ niquery_option_help_handler proc
 	save	00000010,ra,00000001
 	lwpc	r5,00412EF0
 	addiupc	r4,0000E9EC
-	balc	00403098
+	balc	fn00403098
 	li	r4,00000002
-	balc	004030A0
+	balc	fn004030A0
 
 ;; niquery_option_subject_name_handler: 00402D12
 ;;   Called from:
@@ -5150,9 +5150,9 @@ niquery_option_subject_name_handler proc
 	save	00000010,ra,00000001
 	lwpc	r5,00412EF0
 	addiupc	r4,0000EABE
-	balc	00403098
+	balc	fn00403098
 	li	r4,00000003
-	balc	004030A0
+	balc	fn004030A0
 
 ;; niquery_set_qtype: 00402D24
 ;;   Called from:
@@ -5172,7 +5172,7 @@ l00402D30:
 
 l00402D32:
 	addiupc	r4,0000EAD6
-	balc	00408780
+	balc	puts
 	li	r4,FFFFFFFF
 	restore.jrc	00000010,ra,00000001
 
@@ -5186,7 +5186,7 @@ niquery_option_ipv4_flag_handler proc
 	save	00000010,ra,00000002
 	move	r16,r4
 	li	r4,00000004
-	balc	00402D24
+	balc	niquery_set_qtype
 	li	r7,FFFFFFFF
 	bltc	r4,r0,00402D72
 
@@ -5209,7 +5209,7 @@ l00402D72:
 niquery_option_ipv4_handler proc
 	save	00000010,ra,00000001
 	li	r4,00000004
-	balc	00402D24
+	balc	niquery_set_qtype
 	sra	r4,r4,0000001F
 	restore.jrc	00000010,ra,00000001
 
@@ -5218,7 +5218,7 @@ niquery_option_ipv6_flag_handler proc
 	save	00000010,ra,00000002
 	move	r16,r4
 	li	r4,00000003
-	balc	00402D24
+	balc	niquery_set_qtype
 	li	r7,FFFFFFFF
 	bltc	r4,r0,00402DAC
 
@@ -5241,7 +5241,7 @@ l00402DAC:
 niquery_option_ipv6_handler proc
 	save	00000010,ra,00000001
 	li	r4,00000003
-	balc	00402D24
+	balc	niquery_set_qtype
 	sra	r4,r4,0000001F
 	restore.jrc	00000010,ra,00000001
 
@@ -5249,7 +5249,7 @@ niquery_option_ipv6_handler proc
 niquery_option_name_handler proc
 	save	00000010,ra,00000001
 	li	r4,00000002
-	balc	00402D24
+	balc	niquery_set_qtype
 	sra	r4,r4,0000001F
 	restore.jrc	00000010,ra,00000001
 
@@ -5288,7 +5288,7 @@ l00402DF0:
 
 l00402DF4:
 	addiupc	r4,0000EB20
-	balc	0040309C
+	balc	fn0040309C
 	addiupc	r4,0000EB2E
 	beqzc	r16,00402E08
 
@@ -5299,7 +5299,7 @@ l00402E04:
 	addiupc	r4,0000EB38
 
 l00402E08:
-	balc	0040309C
+	balc	fn0040309C
 
 l00402E0A:
 	move	r5,r17
@@ -5327,7 +5327,7 @@ l00402E2E:
 
 l00402E34:
 	addiupc	r4,0000E9E4
-	balc	0040309C
+	balc	fn0040309C
 	bgeiuc	r16,00000005,00402E68
 
 l00402E3E:
@@ -5337,7 +5337,7 @@ l00402E3E:
 00402E46                   80 04 EE E9                         ....      
 
 l00402E4A:
-	balc	0040309C
+	balc	fn0040309C
 
 l00402E4C:
 	move	r4,r0
@@ -5350,12 +5350,12 @@ l00402E68:
 	addiupc	r4,0000EA3A
 
 l00402E6E:
-	balc	0040309C
+	balc	fn0040309C
 	bc	00402E4C
 
 l00402E72:
 	addiupc	r4,0000EA42
-	move.balc	r5,r17,004086C0
+	move.balc	r5,r17,printf
 	beqzc	r16,00402E4C
 
 l00402E7C:
@@ -5365,7 +5365,7 @@ l00402E7C:
 
 l00402E84:
 	addiupc	r4,0000EA54
-	balc	0040309C
+	balc	fn0040309C
 	bnezc	r16,00402E92
 
 l00402E8C:
@@ -5387,7 +5387,7 @@ l00402EA2:
 
 l00402EAA:
 	addiupc	r4,0000EAB2
-	move.balc	r5,r16,004086C0
+	move.balc	r5,r16,printf
 	bc	00402E0A
 
 l00402EB4:
@@ -5410,11 +5410,11 @@ l00402EC6:
 pr_echo_reply proc
 	save	00000010,ra,00000001
 	lhu	r4,0006(r4)
-	balc	004030A4
+	balc	fn004030A4
 	restore	00000010,ra,00000001
 	move	r5,r4
 	addiupc	r4,0000D5E0
-	bc	004086C0
+	bc	printf
 
 ;; write_stdout: 00402EE0
 ;;   Called from:
@@ -5430,7 +5430,7 @@ l00402EE6:
 	subu	r6,r17,r16
 	addu	r5,r18,r16
 	li	r4,00000001
-	balc	0040B080
+	balc	write
 	addu	r16,r16,r4
 	bltuc	r16,r17,00402EE6
 
@@ -5444,7 +5444,7 @@ l00402EFA:
 ping6_receive_error_msg proc
 	save	00000280,ra,00000005
 	move	r17,r4
-	balc	004032A0
+	balc	fn004032A0
 	addiu	r7,sp,FFFFF260
 	move	r16,r7
 	addiu	r7,sp,00000020
@@ -5468,7 +5468,7 @@ ping6_receive_error_msg proc
 	addiu	r7,r0,00000200
 	sw	r0,0040(sp)
 	sw	r7,003C(sp)
-	balc	00407670
+	balc	recvmsg
 	bltc	r4,r0,00402FF6
 
 l00402F40:
@@ -5518,7 +5518,7 @@ l00402F80:
 	bnezc	r18,00402F86
 
 l00402F82:
-	balc	00404A00
+	balc	abort
 
 l00402F86:
 	lbu	r5,0004(r18)
@@ -5534,7 +5534,7 @@ l00402F9C:
 
 l00402FA0:
 	addiupc	r4,0000E1D4
-	balc	00402EE0
+	balc	write_stdout
 
 l00402FA6:
 	lwpc	r7,004544D0
@@ -5543,7 +5543,7 @@ l00402FA6:
 	swpc	r7,004544D0
 
 l00402FB6:
-	balc	004032A0
+	balc	fn004032A0
 	sw	r19,0000(sp)
 	bnezc	r17,00402FC0
 
@@ -5561,13 +5561,13 @@ l00402FC6:
 	beqic	r4,0000001A,00402FE4
 
 l00402FD4:
-	balc	004049EA
+	balc	strerror
 	addiupc	r5,0000E1A0
 	move	r6,r4
 
 l00402FDE:
 	lw	r17,000C(sp)
-	balc	004032FE
+	balc	fn004032FE
 	bc	00402FA6
 
 l00402FE4:
@@ -5592,7 +5592,7 @@ l00402FFA:
 	li	r6,00000010
 	addiupc	r5,0002F500
 	addiu	r4,sp,0000004C
-	balc	0040A100
+	balc	memcmp
 	move	r16,r4
 	bnezc	r4,00402FF4
 
@@ -5603,7 +5603,7 @@ l0040300A:
 
 l00403016:
 	lhu	r5,0024(sp)
-	move.balc	r4,r17,00402CD6
+	move.balc	r4,r17,is_ours
 	beqzc	r4,00402FF4
 
 l00403020:
@@ -5621,30 +5621,30 @@ l0040303A:
 l0040303E:
 	li	r5,00000002
 	addiupc	r4,0000E1A4
-	balc	00402EE0
+	balc	write_stdout
 	bc	00402FB6
 
 l00403048:
-	balc	004033EA
+	balc	fn004033EA
 	li	r5,0000001C
 	addiu	r4,r18,00000010
-	balc	00401288
+	balc	pr_addr
 	move	r16,r4
 	lhu	r4,0026(sp)
-	balc	004030A4
+	balc	fn004030A4
 	movep	r5,r6,r16,r4
 	addiupc	r4,0000E18C
-	balc	0040309C
+	balc	fn0040309C
 	lbu	r5,0006(r18)
 	lw	r6,0008(r18)
 	move	r16,r17
 	lbu	r4,0005(r18)
 	li	r17,00000001
-	balc	00402DC8
+	balc	pr_icmph
 	li	r4,0000000A
-	balc	004033EE
+	balc	fn004033EE
 	lwpc	r4,00412EF4
-	balc	004033F2
+	balc	fn004033F2
 	bc	00402FB6
 
 l00403080:
@@ -5662,9 +5662,9 @@ niquery_nonce.isra.0 proc
 	save	00000010,ra,00000001
 	lwpc	r5,00412EF0
 	addiupc	r4,0000E74A
-	balc	00403098
+	balc	fn00403098
 	li	r4,00000003
-	balc	004030A0
+	balc	fn004030A0
 
 ;; fn00403098: 00403098
 ;;   Called from:
@@ -5673,7 +5673,7 @@ niquery_nonce.isra.0 proc
 ;;     00403092 (in niquery_nonce.isra.0)
 ;;     00403096 (in niquery_nonce.isra.0)
 fn00403098 proc
-	bc	004083F0
+	bc	fputs_unlocked
 
 ;; fn0040309C: 0040309C
 ;;   Called from:
@@ -5687,7 +5687,7 @@ fn00403098 proc
 ;;     00403238 (in ping6_parse_reply)
 ;;     0040329C (in ping6_parse_reply)
 fn0040309C proc
-	bc	004086C0
+	bc	printf
 
 ;; fn004030A0: 004030A0
 ;;   Called from:
@@ -5696,7 +5696,7 @@ fn0040309C proc
 ;;     00403096 (in niquery_nonce.isra.0)
 ;;     004033E8 (in if_name2index)
 fn004030A0 proc
-	bc	0040015A
+	bc	exit
 
 ;; fn004030A4: 004030A4
 ;;   Called from:
@@ -5706,7 +5706,7 @@ fn004030A0 proc
 ;;     004031B6 (in ping6_parse_reply)
 ;;     00403230 (in ping6_parse_reply)
 fn004030A4 proc
-	bc	00407630
+	bc	ntohs
 
 ;; ping6_parse_reply: 004030A8
 ping6_parse_reply proc
@@ -5731,16 +5731,16 @@ l004030C4:
 
 l004030CE:
 	lhu	r5,0004(r16)
-	move.balc	r4,r20,00402CD6
+	move.balc	r4,r20,is_ours
 	beqc	r0,r4,00403158
 
 l004030D8:
 	lhu	r4,0006(r16)
-	balc	004030A4
+	balc	fn004030A4
 	li	r5,0000001C
 	move	r17,r4
 	lw	r4,001C(sp)
-	move.balc	r4,r19,00401288
+	move.balc	r4,r19,pr_addr
 	addiupc	r7,FFFFFDE2
 	move	r11,r4
 	sw	r7,0000(sp)
@@ -5749,12 +5749,12 @@ l004030D8:
 	move	r8,r18
 	movep	r6,r7,r21,r17
 	li	r5,00000008
-	move.balc	r4,r16,004023F6
+	move.balc	r4,r16,gather_statistics
 	beqc	r0,r4,0040324A
 
 l00403100:
 	lwpc	r4,00412EF4
-	balc	004033F2
+	balc	fn004033F2
 	bc	004031FE
 
 l0040310A:
@@ -5783,7 +5783,7 @@ l00403128:
 	li	r6,00000004
 	addiu	r5,r17,0000000C
 	addiu	r4,sp,0000001C
-	balc	004034E2
+	balc	fn004034E2
 
 l00403130:
 	addiu	r18,r18,00000003
@@ -5819,7 +5819,7 @@ l0040315E:
 	move	r6,r21
 	addiupc	r5,0000E86C
 	lwpc	r4,00412EF0
-	balc	004032FE
+	balc	fn004032FE
 	bc	00403158
 
 l0040316E:
@@ -5827,7 +5827,7 @@ l0040316E:
 	bnec	r6,r7,00403176
 
 l00403174:
-	balc	00403086
+	balc	niquery_nonce.isra.0
 
 l00403176:
 	bltic	r21,00000038,00403158
@@ -5836,7 +5836,7 @@ l0040317A:
 	li	r6,00000010
 	addiupc	r5,0002F380
 	addiu	r4,r16,00000020
-	balc	0040A100
+	balc	memcmp
 	bnezc	r4,00403158
 
 l0040318A:
@@ -5858,12 +5858,12 @@ l004031A2:
 
 l004031AC:
 	lhu	r5,0004(r18)
-	move.balc	r4,r20,00402CD6
+	move.balc	r4,r20,is_ours
 	beqzc	r4,00403158
 
 l004031B4:
 	lhu	r4,0006(r18)
-	balc	004030A4
+	balc	fn004030A4
 	lwpc	r7,004544E4
 	subu	r5,r7,r4
 	andi	r6,r5,0000FFFF
@@ -5911,27 +5911,27 @@ l00403202:
 l0040321A:
 	li	r5,00000002
 	addiupc	r4,0000DFC8
-	balc	00402EE0
+	balc	write_stdout
 	bc	0040315A
 
 l00403224:
-	balc	004033EA
+	balc	fn004033EA
 	li	r5,0000001C
-	move.balc	r4,r19,00401288
+	move.balc	r4,r19,pr_addr
 	move	r17,r4
 	lhu	r4,0006(r18)
-	balc	004030A4
+	balc	fn004030A4
 	movep	r5,r6,r17,r4
 	addiupc	r4,0000DFF8
-	balc	0040309C
+	balc	fn0040309C
 
 l0040323A:
 	lw	r4,0004(r16)
 	lbu	r17,0000(r16)
 	lbu	r18,0001(r16)
-	balc	00407620
+	balc	ntohl
 	movep	r5,r6,r18,r4
-	move.balc	r4,r17,00402DC8
+	move.balc	r4,r17,pr_icmph
 
 l0040324A:
 	lwpc	r7,004544EC
@@ -5939,13 +5939,13 @@ l0040324A:
 
 l00403254:
 	li	r4,00000007
-	balc	004033EE
+	balc	fn004033EE
 	lwpc	r7,004544EC
 	bbeqzc	r7,00000000,00403274
 
 l00403262:
 	lwpc	r4,00412EF4
-	balc	004033F2
+	balc	fn004033F2
 
 l0040326A:
 	lwpc	r7,004544EC
@@ -5953,7 +5953,7 @@ l0040326A:
 
 l00403274:
 	li	r4,0000000A
-	balc	004033EE
+	balc	fn004033EE
 	bc	00403100
 
 l0040327A:
@@ -5965,12 +5965,12 @@ l00403284:
 	bnec	r0,r7,00403158
 
 l0040328E:
-	balc	004033EA
+	balc	fn004033EA
 	li	r5,0000001C
-	move.balc	r4,r19,00401288
+	move.balc	r4,r19,pr_addr
 	move	r5,r4
 	addiupc	r4,0000DFD0
-	balc	0040309C
+	balc	fn0040309C
 	bc	0040323A
 
 ;; fn004032A0: 004032A0
@@ -5981,7 +5981,7 @@ l0040328E:
 ;;     00403462 (in hextoui)
 ;;     0040346A (in hextoui)
 fn004032A0 proc
-	bc	004049B0
+	bc	__errno_location
 
 ;; ping6_install_filter: 004032A4
 ping6_install_filter proc
@@ -5996,7 +5996,7 @@ l004032B0:
 	sw	r7,000C(sp)
 	swpc	r16,0045454C
 	lhu	r4,000C(sp)
-	balc	0040359C
+	balc	fn0040359C
 	addiupc	r7,0002CDCE
 	sb	r0,000A(r7)
 	li	r6,00000015
@@ -6008,13 +6008,13 @@ l004032B0:
 	sh	r6,0008(r7)
 	addiupc	r7,0002CDA8
 	li	r6,0000001A
-	balc	00407D60
+	balc	setsockopt
 	beqzc	r4,004032FC
 
 l004032F0:
 	addiupc	r4,0000D1F0
 	restore	00000020,ra,00000003
-	bc	00408630
+	bc	perror
 
 l004032FC:
 	restore.jrc	00000020,ra,00000003
@@ -6027,7 +6027,7 @@ l004032FC:
 ;;     004033E4 (in if_name2index)
 ;;     00403594 (in ping6_usage)
 fn004032FE proc
-	bc	00408340
+	bc	fprintf
 
 ;; niquery_option_subject_addr_handler: 00403302
 niquery_option_subject_addr_handler proc
@@ -6036,7 +6036,7 @@ niquery_option_subject_addr_handler proc
 	movep	r16,r19,r4,r5
 	move	r5,r0
 	addiu	r4,sp,00000010
-	balc	0040A690
+	balc	memset
 	li	r4,00000014
 	mul	r16,r16,r4
 	li	r7,00000002
@@ -6075,17 +6075,17 @@ l00403356:
 	addiu	r7,sp,0000000C
 	addiu	r6,sp,00000010
 	movep	r4,r5,r19,r0
-	balc	00405E20
+	balc	getaddrinfo
 	lw	r4,000C(sp)
 	move	r17,r4
 	beqzc	r4,004033A6
 
 l00403366:
-	balc	00405E00
+	balc	gai_strerror
 	addiupc	r5,0000E69E
 	movep	r6,r7,r19,r4
 	lwpc	r4,00412EF0
-	balc	004032FE
+	balc	fn004032FE
 	bc	004033C6
 
 l0040337A:
@@ -6098,14 +6098,14 @@ l00403386:
 	lw	r5,0014(r18)
 	move	r6,r20
 	addu	r5,r5,r16
-	balc	004034E2
+	balc	fn004034E2
 	lwpc	r4,004314D4
-	balc	00404F2E
+	balc	free
 	swpc	r19,004314D4
 
 l0040339E:
 	lw	r17,000C(sp)
-	balc	00405DF0
+	balc	freeaddrinfo
 	bc	004033C8
 
 l004033A6:
@@ -6113,7 +6113,7 @@ l004033A6:
 
 l004033A8:
 	lwpc	r20,004314D0
-	move.balc	r4,r20,00405292
+	move.balc	r4,r20,malloc
 	move	r19,r4
 	bnezc	r4,00403386
 
@@ -6126,7 +6126,7 @@ l004033BA:
 
 l004033BE:
 	addiupc	r4,0000E632
-	balc	00408780
+	balc	puts
 
 l004033C6:
 	li	r17,FFFFFFFF
@@ -6143,7 +6143,7 @@ l004033C8:
 if_name2index proc
 	save	00000010,ra,00000002
 	move	r16,r4
-	balc	00406760
+	balc	if_nametoindex
 	beqzc	r4,004033D8
 
 l004033D6:
@@ -6153,9 +6153,9 @@ l004033D8:
 	move	r6,r16
 	addiupc	r5,0000D14A
 	lwpc	r4,00412EF0
-	balc	004032FE
+	balc	fn004032FE
 	li	r4,00000002
-	balc	004030A0
+	balc	fn004030A0
 
 ;; fn004033EA: 004033EA
 ;;   Called from:
@@ -6163,7 +6163,7 @@ l004033D8:
 ;;     00403224 (in ping6_parse_reply)
 ;;     0040328E (in ping6_parse_reply)
 fn004033EA proc
-	bc	00401E5C
+	bc	print_timestamp
 
 ;; fn004033EE: 004033EE
 ;;   Called from:
@@ -6171,7 +6171,7 @@ fn004033EA proc
 ;;     00403256 (in ping6_parse_reply)
 ;;     00403276 (in ping6_parse_reply)
 fn004033EE proc
-	bc	00408770
+	bc	putchar
 
 ;; fn004033F2: 004033F2
 ;;   Called from:
@@ -6179,7 +6179,7 @@ fn004033EE proc
 ;;     00403106 (in ping6_parse_reply)
 ;;     00403268 (in ping6_parse_reply)
 fn004033F2 proc
-	bc	004081A0
+	bc	fflush_unlocked
 
 ;; niquery_option_handler: 004033F6
 niquery_option_handler proc
@@ -6210,7 +6210,7 @@ l00403416:
 l0040341A:
 	lw	r18,0004(r16)
 	movep	r5,r6,r20,r18
-	balc	0040A8E0
+	balc	strncmp
 	bnezc	r4,00403412
 
 l00403424:
@@ -6237,7 +6237,7 @@ l0040343C:
 
 l00403440:
 	movep	r4,r5,r0,r0
-	balc	00402D00
+	balc	niquery_option_help_handler
 
 l00403446:
 	move	r4,r17
@@ -6247,24 +6247,24 @@ l00403446:
 hextoui proc
 	save	00000020,ra,00000002
 	move	r16,r4
-	balc	004032A0
+	balc	fn004032A0
 	li	r6,00000010
 	sw	r0,0000(sp)
 	addiu	r5,sp,0000000C
-	move.balc	r4,r16,0040A022
+	move.balc	r4,r16,__strtoul_internal
 	lw	r17,000C(sp)
 	move	r16,r4
 	lbu	r7,0000(r7)
 	beqzc	r7,00403470
 
 l00403462:
-	balc	004032A0
+	balc	fn004032A0
 	li	r16,FFFFFFFF
 	lw	r7,0000(r4)
 	bnezc	r7,00403470
 
 l0040346A:
-	balc	004032A0
+	balc	fn004032A0
 	li	r7,00000016
 	sw	r7,0000(sp)
 
@@ -6285,7 +6285,7 @@ build_echo proc
 	lwpc	r4,004544E4
 	addiu	r4,r4,00000001
 	andi	r4,r4,0000FFFF
-	balc	0040359C
+	balc	fn0040359C
 	lwpc	r7,004544C4
 	sh	r7,0004(r16)
 	lwpc	r7,00454508
@@ -6295,7 +6295,7 @@ build_echo proc
 l004034A0:
 	move	r5,r0
 	addiu	r4,r16,00000008
-	balc	0040AF40
+	balc	gettimeofday
 
 l004034A8:
 	lwpc	r4,00430074
@@ -6315,12 +6315,12 @@ build_niquery proc
 	addiu	r4,r4,00000001
 	swpc	r0,00430074
 	andi	r4,r4,0000FFFF
-	balc	0040359C
+	balc	fn0040359C
 	sb	r4,0008(r16)
 	sh	r4,000E(sp)
 	srl	r4,r4,00000008
 	sb	r4,0009(r16)
-	balc	00403086
+	balc	niquery_nonce.isra.0
 
 ;; fn004034E2: 004034E2
 ;;   Called from:
@@ -6329,7 +6329,7 @@ build_niquery proc
 ;;     004034DE (in build_niquery)
 ;;     004036A2 (in ping6_run)
 fn004034E2 proc
-	bc	0040A130
+	bc	memcpy
 
 ;; ping6_send_probe: 004034E6
 ping6_send_probe proc
@@ -6353,7 +6353,7 @@ ping6_send_probe proc
 	bgec	r7,r0,0040354C
 
 l0040351C:
-	balc	00403474
+	balc	build_echo
 	lwpc	r7,00454554
 	move	r16,r4
 	bnezc	r7,0040354E
@@ -6364,7 +6364,7 @@ l00403528:
 	addiupc	r8,0002EFC6
 	movep	r5,r6,r17,r16
 	lwpc	r7,004314C4
-	balc	00407D40
+	balc	sendto
 
 l0040353E:
 	xor	r16,r16,r4
@@ -6375,7 +6375,7 @@ l0040354A:
 	restore.jrc	00000050,ra,00000005
 
 l0040354C:
-	balc	004034B2
+	balc	build_niquery
 
 l0040354E:
 	addiupc	r6,0002EFA6
@@ -6394,7 +6394,7 @@ l0040354E:
 	sw	r19,0020(sp)
 	sw	r7,0028(sp)
 	sw	r0,002C(sp)
-	balc	00407D20
+	balc	sendmsg
 	bc	0040353E
 
 ;; ping6_usage: 0040357C
@@ -6410,9 +6410,9 @@ ping6_usage proc
 l0040358A:
 	addiupc	r5,0000E49E
 	lwpc	r4,00412EF0
-	balc	004032FE
+	balc	fn004032FE
 	li	r4,00000002
-	balc	0040015A
+	balc	exit
 
 ;; fn0040359C: 0040359C
 ;;   Called from:
@@ -6424,7 +6424,7 @@ l0040358A:
 ;;     0040386C (in ping6_run)
 ;;     00403874 (in ping6_run)
 fn0040359C proc
-	bc	00406700
+	bc	htons
 
 ;; ping6_run: 004035A0
 ;;   Called from:
@@ -6441,8 +6441,8 @@ ping6_run proc
 l004035B8:
 	move	r5,r0
 	addiupc	r4,00050EB2
-	balc	0040AF40
-	balc	0040AFB0
+	balc	gettimeofday
+	balc	getpid
 	addiupc	r7,00050EA6
 	sw	r4,0048(sp)
 	lwpc	r7,00430210
@@ -6458,11 +6458,11 @@ l004035E0:
 l004035E4:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000E576
-	balc	004083F0
+	balc	fputs_unlocked
 
 l004035F2:
 	move	r4,r0
-	balc	0040357C
+	balc	ping6_usage
 
 l004035F6:
 	bneiuc	r17,00000001,0040362C
@@ -6477,20 +6477,20 @@ l004035FE:
 	addiu	r7,r30,00000FA4
 	addiupc	r6,0000ECDE
 	movep	r4,r5,r17,r0
-	balc	00405E20
+	balc	getaddrinfo
 	lw	r19,0FA4(r30)
 	beqzc	r4,00403648
 
 l00403612:
-	balc	00405E00
+	balc	gai_strerror
 	addiupc	r5,0000E3F2
 	movep	r6,r7,r17,r4
 	lwpc	r4,00412EF0
-	balc	00408340
+	balc	fprintf
 
 l00403626:
 	li	r4,00000002
-	balc	0040015A
+	balc	exit
 
 l0040362C:
 	lwpc	r7,00430214
@@ -6508,21 +6508,21 @@ l00403648:
 	addiupc	r18,0002EEAC
 	lw	r5,0014(r19)
 	li	r6,0000001C
-	move.balc	r4,r18,0040A130
+	move.balc	r4,r18,memcpy
 	li	r4,0000003A
-	balc	0040359C
+	balc	fn0040359C
 	sh	r4,0002(r18)
 	lw	r4,0FA4(r30)
 	beqzc	r4,00403664
 
 l00403660:
-	balc	00405DF0
+	balc	freeaddrinfo
 
 l00403664:
-	move.balc	r4,r17,0040A890
+	move.balc	r4,r17,strlen
 	li	r5,0000003A
 	move	r6,r4
-	move.balc	r4,r17,0040A050
+	move.balc	r4,r17,memchr
 	beqzc	r4,00403682
 
 l00403672:
@@ -6552,7 +6552,7 @@ l00403698:
 	li	r6,00000010
 	addiupc	r5,0002EE62
 	addiupc	r4,0002EE42
-	balc	004034E2
+	balc	fn004034E2
 	lw	r7,0018(r18)
 	lwpc	r6,00454550
 	sw	r7,0058(sp)
@@ -6569,7 +6569,7 @@ l004036B4:
 	addiupc	r4,0000E4DA
 
 l004036BE:
-	balc	004083F0
+	balc	fputs_unlocked
 	bc	00403626
 
 l004036C4:
@@ -6600,7 +6600,7 @@ l004036EA:
 l004036F0:
 	li	r5,00000001
 	li	r4,0000000A
-	balc	00407D80
+	balc	socket
 	move	r19,r4
 	addiupc	r4,0000CE22
 	bltc	r19,r0,00403790
@@ -6610,7 +6610,7 @@ l00403702:
 	beqc	r0,r4,0040379C
 
 l0040370C:
-	balc	004033CC
+	balc	if_name2index
 	lbu	r7,0008(r20)
 	addiu	r6,r0,000000FE
 	sw	r0,0FB0(r30)
@@ -6641,45 +6641,45 @@ l00403746:
 
 l00403750:
 	li	r4,00000001
-	balc	00401CE2
+	balc	modify_capability
 	addiu	r7,r30,00000FB0
 	addiu	r8,r0,00000014
 	li	r6,00000032
 	li	r5,00000029
-	move.balc	r4,r19,00407D60
+	move.balc	r4,r19,setsockopt
 	li	r7,FFFFFFFF
 	move	r21,r4
 	bnec	r7,r4,00403796
 
 l0040376E:
 	lwpc	r22,004544B0
-	move.balc	r4,r22,0040A890
+	move.balc	r4,r22,strlen
 	move	r7,r22
 	addiu	r8,r4,00000001
 	li	r6,00000019
 	addiu	r5,r0,0000FFFF
-	move.balc	r4,r19,00407D60
+	move.balc	r4,r19,setsockopt
 	bnec	r4,r21,00403796
 
 l0040378C:
 	addiupc	r4,0000E42C
 
 l00403790:
-	balc	00408630
+	balc	perror
 	bc	00403626
 
 l00403796:
 	move	r4,r0
-	balc	00401CE2
+	balc	modify_capability
 
 l0040379C:
 	addiu	r4,r0,00000401
-	balc	0040359C
+	balc	fn0040359C
 	li	r6,0000001C
 	sh	r4,0002(r20)
 	addiupc	r5,0002ED30
 	addiu	r20,r0,FFFFFFFF
-	move.balc	r4,r19,00405DD0
+	move.balc	r4,r19,connect
 	bnec	r4,r20,004037BE
 
 l004037B8:
@@ -6691,7 +6691,7 @@ l004037BE:
 	addiu	r6,r30,00000FAC
 	addiupc	r5,0002CA54
 	sw	r7,0FAC(r30)
-	move.balc	r4,r19,004066B0
+	move.balc	r4,r19,getsockname
 	bnec	r4,r20,004037DA
 
 l004037D4:
@@ -6700,13 +6700,13 @@ l004037D4:
 
 l004037DA:
 	sh	r0,0002(r17)
-	move.balc	r4,r19,0040AF72
+	move.balc	r4,r19,close
 	lwpc	r7,004544B0
 	beqzc	r7,0040382A
 
 l004037E8:
 	addiu	r4,r30,00000FB0
-	balc	004062A2
+	balc	getifaddrs
 	beqzc	r4,004037F8
 
 l004037F2:
@@ -6727,11 +6727,11 @@ l00403812:
 	move	r6,r20
 	addiupc	r5,0000E590
 	lwpc	r4,00412EF0
-	balc	00408340
+	balc	fprintf
 
 l00403822:
 	lw	r4,0FB0(r30)
-	balc	00406292
+	balc	freeifaddrs
 
 l0040382A:
 	lwpc	r19,004544B0
@@ -6752,17 +6752,17 @@ l00403832:
 	li	r7,00000032
 	sw	r7,0048(sp)
 	addiu	r4,r17,0000000C
-	balc	0040A690
-	move.balc	r4,r19,004033CC
+	balc	memset
+	move.balc	r4,r19,if_name2index
 	sw	r4,005C(sp)
 
 l00403864:
 	lhu	r17,0008(r18)
 	addiu	r4,r0,0000FF00
-	balc	0040359C
+	balc	fn0040359C
 	and	r17,r17,r4
 	addiu	r4,r0,0000FF00
-	balc	0040359C
+	balc	fn0040359C
 	bnec	r4,r17,0040394C
 
 l0040387A:
@@ -6791,7 +6791,7 @@ l004038A8:
 	lw	r4,0004(r19)
 	li	r6,00000003
 	sw	r8,0F9C(r30)
-	move.balc	r5,r20,0040A8E0
+	move.balc	r5,r20,strncmp
 	lw	r8,0F9C(r30)
 	bnezc	r4,004038DC
 
@@ -6829,7 +6829,7 @@ l004038F4:
 	bnec	r7,r6,0040382A
 
 l00403904:
-	balc	004033CC
+	balc	if_name2index
 	sw	r4,0058(sp)
 	bc	0040382A
 
@@ -6875,7 +6875,7 @@ l00403956:
 	addiu	r8,r0,00000004
 	li	r6,00000017
 	li	r5,00000029
-	balc	00403C9A
+	balc	fn00403C9A
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00403970
 
@@ -6891,7 +6891,7 @@ l0040397A:
 	lw	r4,0000(r16)
 	li	r6,0000001C
 	addiupc	r5,0002C89A
-	balc	00405DB0
+	balc	bind
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00403990
 
@@ -6913,7 +6913,7 @@ l004039A4:
 
 l004039AC:
 	addiu	r17,r17,00001038
-	move.balc	r4,r17,00405292
+	move.balc	r4,r17,malloc
 	move	r19,r4
 	bnezc	r4,004039C4
 
@@ -6931,13 +6931,13 @@ l004039C4:
 	li	r6,00000019
 	li	r5,00000029
 	addiu	r7,r30,00000FA8
-	balc	00403C9A
+	balc	fn00403C9A
 	beqzc	r4,004039EE
 
 l004039DE:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000CD28
-	balc	004083F0
+	balc	fputs_unlocked
 	sw	r0,0008(sp)
 
 l004039EE:
@@ -6950,7 +6950,7 @@ l004039EE:
 	mul	r5,r5,r6
 	addu	r5,r5,r7
 	sw	r5,0FA8(r30)
-	move.balc	r4,r16,0040212E
+	move.balc	r4,r16,sock_setbufs
 	lw	r7,0004(r16)
 	bneiuc	r7,00000003,00403A96
 
@@ -6962,19 +6962,19 @@ l00403A18:
 	li	r6,00000007
 	addiu	r5,r0,000000FF
 	addiu	r7,r30,00000FAC
-	balc	00403C9A
+	balc	fn00403C9A
 	bgec	r4,r0,00403A42
 
 l00403A34:
 	lwpc	r5,00412EF0
 	addiupc	r4,0000E232
-	balc	004083F0
+	balc	fputs_unlocked
 
 l00403A42:
 	li	r6,00000020
 	addiu	r5,r0,000000FF
 	addiu	r4,r30,00000FB0
-	balc	0040A690
+	balc	memset
 	lw	r7,0008(r16)
 	bnezc	r7,00403A60
 
@@ -6998,7 +6998,7 @@ l00403A72:
 	li	r6,00000001
 	li	r5,0000003A
 	addiu	r7,r30,00000FB0
-	balc	00403C9A
+	balc	fn00403C9A
 	bgec	r4,r0,00403A96
 
 l00403A8A:
@@ -7020,7 +7020,7 @@ l00403AA0:
 	li	r6,00000013
 	li	r5,00000029
 	sw	r0,0FAC(r30)
-	balc	00403C9A
+	balc	fn00403C9A
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00403ABE
 
@@ -7039,7 +7039,7 @@ l00403AC8:
 	li	r6,00000012
 	li	r5,00000029
 	addiu	r20,r0,FFFFFFFF
-	balc	00403C9A
+	balc	fn00403C9A
 	bnec	r4,r20,00403AE6
 
 l00403AE0:
@@ -7052,7 +7052,7 @@ l00403AE6:
 	addiupc	r7,00050A20
 	li	r6,00000010
 	li	r5,00000029
-	balc	00403C9A
+	balc	fn00403C9A
 	bnec	r4,r20,00403B00
 
 l00403AFA:
@@ -7067,7 +7067,7 @@ l00403B00:
 	addiu	r7,r30,00000FAC
 	li	r6,00000033
 	li	r5,00000029
-	balc	00403C9A
+	balc	fn00403C9A
 	li	r7,FFFFFFFF
 	move	r20,r4
 	bnec	r4,r7,00403B36
@@ -7078,7 +7078,7 @@ l00403B1C:
 	addiu	r7,r30,00000FAC
 	li	r6,00000008
 	li	r5,00000029
-	balc	00403C9A
+	balc	fn00403C9A
 	bnec	r4,r20,00403B36
 
 l00403B30:
@@ -7095,7 +7095,7 @@ l00403B40:
 	addiu	r8,r0,00000004
 	li	r6,00000043
 	li	r5,00000029
-	balc	00403C9A
+	balc	fn00403C9A
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00403B5A
 
@@ -7117,10 +7117,10 @@ l00403B64:
 	subu	sp,sp,r7
 	addiu	r21,r0,FFFFFFFF
 	move	r4,sp
-	balc	0040A690
+	balc	memset
 	lwpc	r4,004544BC
 	ext	r4,r4,00000000,00000014
-	balc	004066F0
+	balc	htonl
 	li	r7,00000001
 	li	r6,00000010
 	addiupc	r5,0002E964
@@ -7129,13 +7129,13 @@ l00403B64:
 	sb	r7,0015(sp)
 	sh	r7,0016(sp)
 	sb	r0,0014(sp)
-	balc	0040A130
+	balc	memcpy
 	addiu	r8,r0,00000020
 	lw	r4,0000(r16)
 	move	r7,sp
 	move	r6,r8
 	li	r5,00000029
-	balc	00403C9A
+	balc	fn00403C9A
 	bnec	r4,r21,00403BCA
 
 l00403BC2:
@@ -7151,7 +7151,7 @@ l00403BCA:
 	sw	r7,0004(sp)
 	li	r5,00000029
 	addiu	r7,r30,00000FAC
-	balc	00403C9A
+	balc	fn00403C9A
 	bnec	r4,r21,00403BF0
 
 l00403BE8:
@@ -7165,18 +7165,18 @@ l00403BF2:
 	li	r5,0000001C
 	addiupc	r4,0002E900
 	lwpc	r18,004544C0
-	balc	00401288
+	balc	pr_addr
 	movep	r5,r6,r18,r4
 	addiupc	r4,0000E170
-	balc	00403C9E
+	balc	fn00403C9E
 	lwpc	r4,004544BC
 	beqzc	r4,00403C1E
 
 l00403C12:
-	balc	00407620
+	balc	ntohl
 	move	r5,r4
 	addiupc	r4,0000E16C
-	balc	00403C9E
+	balc	fn00403C9E
 
 l00403C1E:
 	lwpc	r7,004544B0
@@ -7191,7 +7191,7 @@ l00403C30:
 	li	r5,0000001C
 	addiupc	r4,0002C5E2
 	swpc	r7,004544EC
-	balc	00401288
+	balc	pr_addr
 	lwpc	r6,004544B0
 	move	r5,r4
 	addiupc	r7,0000C828
@@ -7199,18 +7199,18 @@ l00403C30:
 
 l00403C54:
 	addiupc	r4,0000CC44
-	balc	00403C9E
+	balc	fn00403C9E
 	swpc	r18,004544EC
 
 l00403C60:
 	lwpc	r5,00430074
 	addiupc	r4,0000E12E
-	balc	00403C9E
-	move.balc	r4,r16,004021B4
-	balc	00401D02
+	balc	fn00403C9E
+	move.balc	r4,r16,setup
+	balc	drop_capabilities
 	movep	r6,r7,r19,r17
 	addiupc	r4,0002C5BE
-	move.balc	r5,r16,00402A9E
+	move.balc	r5,r16,main_loop
 
 l00403C7E:
 	addiupc	r7,0002E87E
@@ -7235,7 +7235,7 @@ l00403C7E:
 ;;     00403BBC (in ping6_run)
 ;;     00403BE2 (in ping6_run)
 fn00403C9A proc
-	bc	00407D60
+	bc	setsockopt
 
 ;; fn00403C9E: 00403C9E
 ;;   Called from:
@@ -7244,7 +7244,7 @@ fn00403C9A proc
 ;;     00403C58 (in ping6_run)
 ;;     00403C6A (in ping6_run)
 fn00403C9E proc
-	bc	004086C0
+	bc	printf
 00403CA2       08 90 00 80 00 C0 00 80 00 C0 00 80 00 C0   ..............
 
 ;; __divdi3: 00403CB0
@@ -8551,7 +8551,7 @@ l0040473E:
 	bnezc	r4,00404756
 
 l00404748:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -8570,7 +8570,7 @@ l0040475C:
 l00404764:
 	addiu	r5,sp,00000008
 	ext	r4,r4,00000000,0000000E
-	balc	00405B30
+	balc	getrlimit64
 	lw	r17,000C(sp)
 	li	r7,7FFFFFFF
 	lw	r17,0008(sp)
@@ -8608,14 +8608,14 @@ l004047A8:
 	addiu	r16,sp,00000008
 	addiu	r6,r0,00000080
 	movep	r4,r5,r16,r0
-	balc	0040A690
+	balc	memset
 	li	r7,00000001
 	sb	r7,0008(sp)
 	addiu	r6,r0,00000080
 	move	r7,r16
 	move	r5,r0
 	li	r4,0000007B
-	balc	00404A50
+	balc	__syscall
 	move	r4,r0
 	move	r7,r0
 	bc	004047DA
@@ -8640,7 +8640,7 @@ l004047EA:
 
 l004047EC:
 	addiu	r4,sp,00000008
-	balc	00404A70
+	balc	sysinfo
 	lw	r17,003C(sp)
 	addiu	r7,sp,FFFFF140
 	bnezc	r6,00404800
@@ -8668,7 +8668,7 @@ l0040480C:
 	lw	r6,0024(r7)
 	move	r7,r0
 	addu	r5,r5,r8
-	balc	0040EAB0
+	balc	__udivdi3
 	li	r7,7FFFFFFF
 	beqc	r0,r5,0040477C
 
@@ -8705,7 +8705,7 @@ l00404866:
 
 ;; isxdigit_l: 0040486A
 isxdigit_l proc
-	bc	00404850
+	bc	isxdigit
 0040486E                                           00 00               ..
 
 ;; dummy: 00404870
@@ -8727,7 +8727,7 @@ __init_libc proc
 	movep	r17,r16,r4,r5
 	move	r5,r0
 	addiu	r4,sp,00000028
-	balc	0040A690
+	balc	memset
 	swpc	r17,00432DD0
 	move	r4,r0
 
@@ -8770,9 +8770,9 @@ l004048B6:
 
 l004048CE:
 	addiu	r4,sp,00000028
-	balc	0040B152
+	balc	__init_tls
 	lw	r4,008C(sp)
-	balc	00404872
+	balc	__init_ssp
 	lwm	r6,0054(sp),00000002
 	bnec	r6,r7,004048EE
 
@@ -8802,7 +8802,7 @@ l004048EE:
 	sw	r0,0014(sp)
 	sw	r0,001C(sp)
 	sw	r0,0024(sp)
-	balc	00404A50
+	balc	__syscall
 
 l00404918:
 	addiu	r7,sp,00000010
@@ -8815,7 +8815,7 @@ l00404922:
 	addiupc	r6,0000D586
 	addiu	r5,r0,FFFFFF9C
 	li	r4,00000038
-	balc	00404A50
+	balc	__syscall
 	bgec	r4,r0,0040495C
 
 l00404938:
@@ -8857,7 +8857,7 @@ l00404966:
 __libc_start_init proc
 	save	00000010,ra,00000002
 	addiupc	r16,0002B684
-	balc	004000D4
+	balc	_init
 	bc	0040497C
 
 l00404976:
@@ -8882,12 +8882,12 @@ __libc_start_main proc
 	lw	r5,0000(r6)
 	lsa	r16,r16,r6,00000002
 	move	r17,r6
-	move.balc	r4,r16,00404874
-	balc	00404968
+	move.balc	r4,r16,__init_libc
+	balc	__libc_start_init
 	move	r4,r18
 	movep	r5,r6,r17,r16
 	jalrc	ra,r19
-	balc	0040015A
+	balc	exit
 	sigrie	00000000
 004049AE                                           00 00               ..
 
@@ -8975,7 +8975,7 @@ l004049D0:
 
 l004049D2:
 	lw	r5,0014(r5)
-	bc	00404A92
+	bc	__lctrans
 
 l004049D8:
 	beqc	r4,r6,004049CC
@@ -9004,7 +9004,7 @@ l004049E6:
 strerror proc
 	rdhwr	r3,0000001D,00000000
 	lw	r5,-0038(r3)
-	bc	004049C0
+	bc	strerror_l
 004049F6                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; abort: 00404A00
@@ -9015,9 +9015,9 @@ strerror proc
 abort proc
 	save	00000010,ra,00000001
 	li	r4,00000006
-	balc	00407EE0
+	balc	raise
 	move	r4,r0
-	balc	00407EA0
+	balc	__block_all_sigs
 	sb	r0,0000(r0)
 	teq	r0,r0,00000000
 	sigrie	00000000
@@ -9048,7 +9048,7 @@ l00404A32:
 
 l00404A3C:
 	restore	00000010,ra,00000002
-	bc	00410340
+	bc	_fini
 00404A44             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; __syscall: 00404A50
@@ -9165,9 +9165,9 @@ sysinfo proc
 	save	00000010,ra,00000001
 	move	r5,r4
 	addiu	r4,r0,000000B3
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00404A84             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; __lctrans_impl: 00404A90
@@ -9181,7 +9181,7 @@ __lctrans_impl proc
 ;;   Called from:
 ;;     004049D4 (in strerror_l)
 __lctrans proc
-	bc	00404A90
+	bc	__lctrans_impl
 
 ;; __lctrans_cur: 00404A96
 ;;   Called from:
@@ -9191,7 +9191,7 @@ __lctrans_cur proc
 	rdhwr	r3,0000001D,00000000
 	lw	r7,-0038(r3)
 	lw	r5,0014(r7)
-	bc	00404A90
+	bc	__lctrans_impl
 00404AA4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; __simple_malloc: 00404AB0
@@ -9219,7 +9219,7 @@ l00404AC8:
 
 l00404ACA:
 	addiupc	r4,0002DA6A
-	balc	0040AD30
+	balc	__lock
 	lwpc	r7,00432534
 	subu	r6,r0,r7
 	and	r16,r16,r6
@@ -9235,7 +9235,7 @@ l00404AE0:
 l00404AEC:
 	addiu	r4,sp,0000000C
 	sw	r17,000C(sp)
-	balc	0040CDF0
+	balc	__expand_heap
 	beqzc	r4,00404B64
 
 l00404AF6:
@@ -9257,14 +9257,14 @@ l00404B10:
 	addu	r16,r7,r16
 	addiupc	r4,0002DA20
 	swpc	r17,00432534
-	balc	0040AD60
+	balc	__unlock
 	move	r4,r16
 	restore.jrc	00000020,ra,00000003
 
 l00404B26:
 	addiupc	r4,0002DA0E
 	move	r16,r0
-	balc	0040AD30
+	balc	__lock
 	li	r17,00000001
 	lwpc	r7,00432534
 	bc	00404ADE
@@ -9272,7 +9272,7 @@ l00404B26:
 l00404B3A:
 	addiupc	r4,0002D9FA
 	addiu	r16,r16,FFFFFFFF
-	balc	0040AD30
+	balc	__lock
 	lwpc	r7,00432534
 	subu	r6,r0,r7
 	li	r5,8000000F
@@ -9289,7 +9289,7 @@ l00404B5C:
 l00404B64:
 	addiupc	r4,0002D9D0
 	move	r16,r0
-	balc	0040AD60
+	balc	__unlock
 	move	r4,r16
 	restore.jrc	00000020,ra,00000003
 
@@ -9365,7 +9365,7 @@ l00404BE0:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,00404B84
 
@@ -9373,7 +9373,7 @@ l00404BF4:
 	li	r7,00000001
 	li	r6,00000001
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	lw	r18,0004(r19)
 	bc	00404B86
 
@@ -9385,7 +9385,7 @@ l00404C08:
 	li	r7,00000001
 	li	r6,00000001
 	addiu	r5,r16,00000004
-	move.balc	r4,r16,0040ADB0
+	move.balc	r4,r16,__wait
 
 l00404C12:
 	sync	00000000
@@ -9485,7 +9485,7 @@ l00404CCA:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,00404CC6
 
@@ -9493,7 +9493,7 @@ l00404CDE:
 	li	r7,00000001
 	li	r6,00000001
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	li	r4,00000001
 	restore.jrc	00000020,ra,00000008
 
@@ -9618,7 +9618,7 @@ l00404DB4:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,00404D58
 
@@ -9626,7 +9626,7 @@ l00404DC8:
 	li	r7,00000001
 	li	r6,00000001
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	lw	r18,0000(r19)
 	bc	00404D5A
 
@@ -9638,7 +9638,7 @@ l00404DDC:
 	li	r7,00000001
 	li	r6,00000001
 	addiu	r5,r16,00000004
-	move.balc	r4,r16,0040ADB0
+	move.balc	r4,r16,__wait
 
 l00404DE6:
 	sync	00000000
@@ -9741,7 +9741,7 @@ l00404EA6:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,00404EA2
 
@@ -9749,7 +9749,7 @@ l00404EBA:
 	li	r7,00000001
 	li	r6,00000001
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	li	r4,00000001
 	restore.jrc	00000020,ra,00000008
 
@@ -9851,7 +9851,7 @@ l00404F66:
 
 l00404F6E:
 	restore	00000040,r30,0000000A
-	bc	00405CC2
+	bc	munmap
 
 l00404F76:
 	move	r19,r22
@@ -9931,7 +9931,7 @@ l00404FFC:
 	bnec	r0,r7,004050F8
 
 l0040500C:
-	move.balc	r4,r17,00404D54
+	move.balc	r4,r17,alloc_rev
 	beqzc	r4,0040503E
 
 l00405012:
@@ -9956,7 +9956,7 @@ l0040503C:
 	sw	r5,0008(sp)
 
 l0040503E:
-	move.balc	r4,r18,00404B80
+	move.balc	r4,r18,alloc_fwd
 	beqc	r0,r4,00404F82
 
 l00405046:
@@ -9990,7 +9990,7 @@ l00405076:
 	li	r6,00000001
 	addiupc	r5,0002D8DE
 	addiupc	r4,0002D8D6
-	balc	0040ADB0
+	balc	__wait
 
 l00405086:
 	sync	00000000
@@ -10014,7 +10014,7 @@ l004050A8:
 	li	r7,00000001
 	li	r6,00000001
 	addiu	r5,r23,00000004
-	move.balc	r4,r23,0040ADB0
+	move.balc	r4,r23,__wait
 
 l004050B4:
 	sync	00000000
@@ -10056,7 +10056,7 @@ l004050F8:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r23,00404A50
+	move.balc	r5,r23,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,0040500C
 
@@ -10064,7 +10064,7 @@ l0040510C:
 	li	r7,00000001
 	li	r6,00000001
 	li	r4,00000062
-	move.balc	r5,r23,00404A50
+	move.balc	r5,r23,__syscall
 	bc	0040500C
 
 l00405118:
@@ -10072,7 +10072,7 @@ l00405118:
 	addiu	r6,r0,00000081
 	addiupc	r5,0002D836
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,00404FF8
 
@@ -10081,7 +10081,7 @@ l00405130:
 	li	r6,00000001
 	addiupc	r5,0002D820
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	bc	00404FF8
 
 l00405140:
@@ -10157,7 +10157,7 @@ l004051D4:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r23,00404A50
+	move.balc	r5,r23,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,004051D2
 
@@ -10167,7 +10167,7 @@ l004051E8:
 	li	r6,00000001
 	li	r4,00000062
 	restore	00000040,r30,0000000A
-	bc	00404A50
+	bc	__syscall
 
 l004051F8:
 	lw	r7,0024(r21)
@@ -10179,7 +10179,7 @@ l004051F8:
 	and	r5,r5,r7
 	and	r4,r4,r7
 	subu	r5,r5,r4
-	balc	00405BC0
+	balc	madvise
 	bc	004051C0
 
 l00405218:
@@ -10233,7 +10233,7 @@ l00405268:
 	addiu	r6,r0,00000081
 	addiupc	r5,0002D6E6
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,0040519C
 
@@ -10242,7 +10242,7 @@ l00405280:
 	li	r6,00000001
 	addiupc	r5,0002D6D0
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	bc	0040519C
 
 l00405290:
@@ -10336,7 +10336,7 @@ l00405336:
 	addiu	r6,r0,00000081
 	move	r5,r30
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,004052C2
 
@@ -10345,7 +10345,7 @@ l0040534C:
 	li	r6,00000001
 	move	r5,r30
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	lw	r4,0550(r23)
 	lw	r5,0554(r23)
 	and	r7,r4,r21
@@ -10363,7 +10363,7 @@ l00405370:
 
 l00405380:
 	addiu	r4,sp,0000001C
-	balc	0040CDF0
+	balc	__expand_heap
 	move	r16,r4
 	beqc	r0,r4,004056EA
 
@@ -10404,7 +10404,7 @@ l004053DC:
 
 l004053E0:
 	sw	r9,000C(sp)
-	move.balc	r4,r9,00404D54
+	move.balc	r4,r9,alloc_rev
 	lw	r18,000C(sp)
 	beqc	r0,r4,00405636
 
@@ -10444,7 +10444,7 @@ l00405430:
 	li	r6,00000001
 	addiu	r5,r30,00000004
 	move	r4,r30
-	balc	0040ADB0
+	balc	__wait
 
 l0040543E:
 	sync	00000000
@@ -10491,7 +10491,7 @@ l00405484:
 	addiu	r8,r0,FFFFFFFF
 	li	r6,00000003
 	movep	r4,r5,r0,r16
-	balc	00405BE2
+	balc	mmap64
 	li	r7,FFFFFFFF
 	beqc	r4,r7,004056D2
 
@@ -10627,7 +10627,7 @@ l004055A4:
 	li	r6,00000001
 	addiupc	r5,0002CF9C
 	addiupc	r4,0002CF94
-	balc	0040ADB0
+	balc	__wait
 
 l004055B4:
 	sync	00000000
@@ -10655,7 +10655,7 @@ l004055CE:
 	sw	r6,0004(sp)
 	swx	r6,r7(r9)
 	sw	r5,0001(r9)
-	balc	00404F2E
+	balc	free
 	lw	r18,0008(sp)
 	addiu	r16,r9,00000008
 	bc	00405424
@@ -10704,7 +10704,7 @@ l0040564A:
 	move	r5,r30
 	li	r4,00000062
 	sw	r9,000C(sp)
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	lw	r18,000C(sp)
 	bnec	r7,r4,0040558A
@@ -10715,7 +10715,7 @@ l00405664:
 	move	r5,r30
 	li	r4,00000062
 	sw	r9,000C(sp)
-	balc	00404A50
+	balc	__syscall
 	lw	r18,000C(sp)
 	lw	r7,0001(r9)
 	bc	0040558C
@@ -10726,7 +10726,7 @@ l00405678:
 	addiupc	r5,0002CEC2
 	li	r4,00000062
 	sw	r9,000C(sp)
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	lw	r18,000C(sp)
 	bnec	r7,r4,004053DC
@@ -10736,7 +10736,7 @@ l00405694:
 	li	r6,00000001
 	addiupc	r5,0002CEA8
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	lw	r18,000C(sp)
 	bc	004053DC
 
@@ -10771,7 +10771,7 @@ l004056D8:
 	bc	0040554A
 
 l004056DC:
-	balc	004049B0
+	balc	__errno_location
 	move	r16,r0
 	li	r7,0000000C
 	sw	r7,0000(sp)
@@ -10795,7 +10795,7 @@ l00405704:
 	addiu	r6,r0,00000081
 	addiupc	r5,0002CE36
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,004056D2
 
@@ -10804,7 +10804,7 @@ l0040571C:
 	li	r6,00000001
 	addiupc	r5,0002CE20
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	move	r4,r16
 	restore.jrc	00000050,r30,0000000A
 
@@ -10875,7 +10875,7 @@ l00405790:
 __malloc0 proc
 	save	00000010,ra,00000002
 	move	r16,r4
-	balc	00405292
+	balc	malloc
 	beqzc	r4,004057CE
 
 l004057A4:
@@ -10954,7 +10954,7 @@ l00405822:
 	beqzc	r5,004057FA
 
 l00405826:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000000C
 	move	r18,r0
 	sw	r7,0000(sp)
@@ -10977,7 +10977,7 @@ l00405848:
 	li	r7,00000001
 	subu	r4,r21,r22
 	movep	r5,r6,r17,r20
-	balc	00405C52
+	balc	mremap
 	li	r7,FFFFFFFF
 	beqc	r4,r7,00405932
 
@@ -11029,12 +11029,12 @@ l0040589C:
 	move	r18,r16
 	swx	r6,r7(r21)
 	sw	r5,-0004(r16)
-	balc	00404F2E
+	balc	free
 	move	r4,r18
 	restore.jrc	00000030,ra,00000009
 
 l004058C4:
-	move.balc	r4,r18,00404B80
+	move.balc	r4,r18,alloc_fwd
 	beqzc	r4,0040591E
 
 l004058CA:
@@ -11048,32 +11048,32 @@ l004058CA:
 
 l004058E2:
 	addiu	r4,r19,FFFFFFF8
-	balc	00405292
+	balc	malloc
 	move	r18,r4
 	beqc	r0,r4,00405830
 
 l004058F0:
 	addiu	r6,r17,FFFFFFF8
-	move.balc	r5,r16,0040A130
-	move.balc	r4,r16,00404F2E
+	move.balc	r5,r16,memcpy
+	move.balc	r4,r16,free
 	move	r4,r18
 	restore.jrc	00000030,ra,00000009
 
 l00405900:
-	move.balc	r4,r19,00405292
+	move.balc	r4,r19,malloc
 	move	r18,r4
 	beqzc	r4,0040592C
 
 l00405908:
 	addiu	r6,r19,FFFFFFF8
-	move.balc	r5,r16,0040A130
-	move.balc	r4,r16,00404F2E
+	move.balc	r5,r16,memcpy
+	move.balc	r4,r16,free
 	move	r4,r18
 	restore.jrc	00000030,ra,00000009
 
 l00405918:
 	move	r4,r5
-	bc	00405292
+	bc	malloc
 
 l0040591E:
 	ori	r7,r17,00000001
@@ -11102,35 +11102,35 @@ __getopt_msg proc
 	move	r20,r4
 	lwpc	r16,00412EF0
 	movep	r19,r17,r6,r7
-	move.balc	r4,r5,00404A96
+	move.balc	r4,r5,__lctrans_cur
 	move	r18,r4
-	move.balc	r4,r16,00408310
+	move.balc	r4,r16,flockfile
 	movep	r4,r5,r20,r16
-	balc	004083F0
+	balc	fputs_unlocked
 	bltc	r4,r0,00405980
 
 l00405960:
-	move.balc	r4,r18,0040A890
+	move.balc	r4,r18,strlen
 	move	r7,r16
 	move	r5,r4
 	li	r6,00000001
-	move.balc	r4,r18,0040857C
+	move.balc	r4,r18,fwrite_unlocked
 	beqzc	r4,00405980
 
 l00405970:
 	movep	r6,r7,r17,r16
 	li	r5,00000001
-	move.balc	r4,r19,0040857C
+	move.balc	r4,r19,fwrite_unlocked
 	bnec	r17,r4,00405980
 
 l0040597A:
 	li	r4,0000000A
-	move.balc	r5,r16,00408700
+	move.balc	r5,r16,_IO_putc
 
 l00405980:
 	move	r4,r16
 	restore	00000020,ra,00000006
-	bc	004084E0
+	bc	funlockfile
 
 ;; __posix_getopt: 0040598A
 ;;   Called from:
@@ -11206,7 +11206,7 @@ l00405A0E:
 	li	r6,00000004
 	addu	r5,r5,r7
 	addiu	r4,sp,00000018
-	balc	00405CE0
+	balc	mbtowc
 	move	r7,r4
 	bgec	r4,r0,00405A2C
 
@@ -11256,7 +11256,7 @@ l00405A74:
 	addu	r5,r17,r16
 	addiu	r4,sp,0000001C
 	sw	r7,000C(sp)
-	balc	00405CE0
+	balc	mbtowc
 	lw	r17,000C(sp)
 	lw	r17,0018(sp)
 	lw	r17,001C(sp)
@@ -11289,7 +11289,7 @@ l00405AAC:
 
 l00405AB2:
 	lw	r4,0000(r18)
-	balc	00405940
+	balc	__getopt_msg
 	bc	00405AA0
 
 l00405ABA:
@@ -11354,8 +11354,8 @@ getrlimit64 proc
 	movep	r7,r8,r0,r16
 	movep	r5,r6,r0,r4
 	addiu	r4,r0,00000105
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	bnezc	r4,00405B76
 
 l00405B46:
@@ -11416,8 +11416,8 @@ ioctl proc
 	move	r6,r5
 	move	r5,r4
 	li	r4,0000001D
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	restore	00000020,ra,00000001
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -11431,9 +11431,9 @@ madvise proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000E9
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00405BD8                         00 00 00 00 00 00 00 00         ........
 
 ;; __vm_wait: 00405BE0
@@ -11462,7 +11462,7 @@ mmap64 proc
 	beqc	r0,r10,00405C0C
 
 l00405C00:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 
 l00405C06:
@@ -11475,7 +11475,7 @@ l00405C0C:
 	bgeuc	r7,r18,00405C1E
 
 l00405C16:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000000C
 	bc	00405C06
 
@@ -11483,7 +11483,7 @@ l00405C1E:
 	bbeqzc	r19,00000004,00405C26
 
 l00405C22:
-	balc	00405BE0
+	balc	__vm_wait
 
 l00405C26:
 	sll	r10,r17,00000014
@@ -11493,9 +11493,9 @@ l00405C26:
 	movep	r7,r8,r21,r19
 	movep	r5,r6,r20,r18
 	addiu	r4,r0,000000DE
-	balc	00404A50
+	balc	__syscall
 	restore	00000020,ra,00000008
-	bc	0040CC30
+	bc	__syscall_ret
 00405C48                         00 00 00 00 00 00 00 00         ........
 
 ;; dummy: 00405C50
@@ -11516,7 +11516,7 @@ mremap proc
 	bgeuc	r7,r16,00405C82
 
 l00405C6E:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000000C
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -11531,7 +11531,7 @@ l00405C82:
 	bbeqzc	r17,00000001,00405CA2
 
 l00405C88:
-	balc	00405BE0
+	balc	__vm_wait
 	addiu	r7,sp,00000040
 	sw	r7,0000(sp)
 	sw	r7,0004(sp)
@@ -11546,8 +11546,8 @@ l00405CA2:
 	movep	r7,r8,r16,r17
 	movep	r5,r6,r18,r19
 	addiu	r4,r0,000000D8
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	bc	00405C78
 00405CB4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
@@ -11561,12 +11561,12 @@ dummy proc
 munmap proc
 	save	00000010,ra,00000003
 	movep	r16,r17,r4,r5
-	balc	00405BE0
+	balc	__vm_wait
 	addiu	r4,r0,000000D7
 	movep	r5,r6,r16,r17
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000003
-	bc	0040CC30
+	bc	__syscall_ret
 00405CDC                                     00 00 00 00             ....
 
 ;; mbtowc: 00405CE0
@@ -11679,7 +11679,7 @@ l00405D94:
 	bc	00405CFE
 
 l00405D9E:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000054
 	sw	r7,0000(sp)
 	li	r7,FFFFFFFF
@@ -11699,9 +11699,9 @@ bind proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000C8
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00405DCC                                     00 00 00 00             ....
 
 ;; connect: 00405DD0
@@ -11718,9 +11718,9 @@ connect proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000CB
-	balc	0040ADA4
+	balc	__syscall_cp
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00405DEC                                     00 00 00 00             ....
 
 ;; freeaddrinfo: 00405DF0
@@ -11730,7 +11730,7 @@ connect proc
 ;;     004033A0 (in niquery_option_subject_addr_handler)
 ;;     00403660 (in ping6_run)
 freeaddrinfo proc
-	bc	00404F2E
+	bc	free
 00405DF4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; gai_strerror: 00405E00
@@ -11754,7 +11754,7 @@ l00405E0E:
 	addiu	r4,r4,00000001
 
 l00405E10:
-	bc	00404A96
+	bc	__lctrans_cur
 
 l00405E14:
 	beqzc	r6,00405E0E
@@ -11819,7 +11819,7 @@ l00405E66:
 	move	r8,r16
 	move	r6,r19
 	addiu	r4,sp,00000038
-	balc	004073A0
+	balc	__lookup_serv
 	move	r30,r4
 	bltc	r4,r0,00405E58
 
@@ -11828,21 +11828,21 @@ l00405E76:
 	move	r6,r18
 	addiu	r5,sp,00000040
 	addiu	r4,sp,00000140
-	balc	00406FCE
+	balc	__lookup_name
 	move	r19,r4
 	bltc	r4,r0,00405FAA
 
 l00405E8A:
 	mul	r16,r30,r4
 	addiu	r4,sp,00000040
-	balc	0040A890
+	balc	strlen
 	li	r7,0000003C
 	move	r17,r4
 	mul	r16,r16,r7
 	addiu	r5,r16,00000001
 	addu	r5,r5,r4
 	li	r4,00000001
-	balc	0040CDC0
+	balc	calloc
 	move	r18,r4
 	beqc	r0,r4,00405FAE
 
@@ -11854,7 +11854,7 @@ l00405EB0:
 	addu	r22,r4,r16
 	addiu	r6,r17,00000001
 	addiu	r5,sp,00000040
-	move.balc	r4,r22,0040A130
+	move.balc	r4,r22,memcpy
 
 l00405EBE:
 	li	r7,0000003C
@@ -11892,7 +11892,7 @@ l00405EF4:
 	sw	r7,0014(sp)
 	sw	r11,0020(sp)
 	sw	r10,0024(sp)
-	balc	0040A690
+	balc	memset
 	lw	r18,0020(sp)
 	addiu	r6,r20,00000020
 	lw	r18,0024(sp)
@@ -11933,20 +11933,20 @@ l00405F4E:
 l00405F5C:
 	sh	r10,0020(r20)
 	lhu	r4,0000(r21)
-	balc	00406700
+	balc	htons
 	li	r6,00000004
 	sh	r4,0022(r20)
 	move	r5,r17
 	addiu	r4,r20,00000024
 
 l00405F74:
-	balc	0040A130
+	balc	memcpy
 	bc	00405F3E
 
 l00405F7A:
 	sh	r10,0020(r20)
 	lhu	r4,0000(r21)
-	balc	00406700
+	balc	htons
 	move	r5,r17
 	sh	r4,0022(r20)
 	addiu	r4,r20,00000028
@@ -12003,7 +12003,7 @@ fn00405FD4 proc
 
 l00405FD8:
 	sh	r5,0000(r16)
-	move.balc	r5,r7,0040A130
+	move.balc	r5,r7,memcpy
 	sw	r16,0000(r17)
 
 l00405FE0:
@@ -12028,17 +12028,17 @@ l00405FF0:
 ;;     0040601C (in fn0040601C)
 fn00405FFE proc
 	li	r6,00000010
-	bc	00405FD4
+	bc	fn00405FD4
 
 l00406002:
 	addiu	r11,r0,000000FF
 	li	r6,00000010
-	bnec	r10,r11,00405FD4
+	bnec	r10,r11,fn00405FD4
 
 l0040600C:
 	lbu	r10,0001(r7)
 	andi	r10,r10,0000000F
-	bneiuc	r10,00000002,00405FD4
+	bneiuc	r10,00000002,fn00405FD4
 
 l00406018:
 	sw	r9,0018(r16)
@@ -12048,7 +12048,7 @@ l00406018:
 ;;     00406018 (in copy_addr)
 ;;     004075B6 (in __netlink_enumerate)
 fn0040601C proc
-	bc	00405FFE
+	bc	fn00405FFE
 
 ;; netlink_msg_to_ifaddr: 0040601E
 netlink_msg_to_ifaddr proc
@@ -12087,7 +12087,7 @@ l0040604C:
 l0040604E:
 	addiu	r5,r5,000000A4
 	li	r4,00000001
-	balc	0040CDC0
+	balc	calloc
 	move	r16,r4
 	li	r4,FFFFFFFF
 	beqzc	r16,004060AA
@@ -12194,7 +12194,7 @@ l004060EA:
 	addiu	r6,r6,FFFFFFFC
 	addiu	r5,r18,00000004
 	sw	r4,0018(sp)
-	balc	0040628E
+	balc	fn0040628E
 	bc	004060D6
 
 l004060F8:
@@ -12204,7 +12204,7 @@ l004060F8:
 l004060FE:
 	addiu	r20,r16,00000090
 	addiu	r5,r18,00000004
-	move.balc	r4,r20,0040A130
+	move.balc	r4,r20,memcpy
 	sw	r20,0001(r16)
 	bc	004060D6
 
@@ -12223,7 +12223,7 @@ l00406112:
 	addiu	r5,r18,00000004
 	sh	r7,0028(r16)
 	sb	r6,002B(r16)
-	balc	0040628E
+	balc	fn0040628E
 	sw	r20,0003(r16)
 	bc	004060D6
 
@@ -12242,7 +12242,7 @@ l0040613E:
 	addiu	r5,r18,00000004
 	sh	r7,0070(r16)
 	sb	r6,0073(r16)
-	balc	0040628E
+	balc	fn0040628E
 	sw	r20,0014(r16)
 	bc	004060D6
 
@@ -12285,7 +12285,7 @@ l004061A8:
 	sra	r18,r17,00000003
 	move	r4,sp
 	move	r6,r18
-	balc	0040A690
+	balc	memset
 	beqic	r18,00000010,004061D4
 
 l004061BE:
@@ -12303,7 +12303,7 @@ l004061D4:
 	addiu	r8,r0,00000010
 	move	r7,sp
 	movep	r5,r6,r21,r22
-	move.balc	r4,r20,00405FC0
+	move.balc	r4,r20,copy_addr
 	bc	00406094
 
 l004061E4:
@@ -12360,7 +12360,7 @@ l00406238:
 	addiu	r4,r16,0000000C
 
 l0040623A:
-	balc	00405FC0
+	balc	copy_addr
 	bc	004061F6
 
 l00406240:
@@ -12372,12 +12372,12 @@ l00406248:
 	addiu	r7,r16,00000068
 	li	r6,00000024
 	movep	r4,r5,r7,r20
-	balc	0040628E
+	balc	fn0040628E
 	li	r6,00000024
 	move	r7,r4
 	sw	r7,0014(sp)
 	movep	r4,r5,r20,r0
-	balc	0040A690
+	balc	memset
 
 l0040625E:
 	lhu	r8,0000(r18)
@@ -12395,12 +12395,12 @@ l00406272:
 l0040627A:
 	addiu	r20,r16,00000090
 	addiu	r5,r18,00000004
-	move.balc	r4,r20,0040A130
+	move.balc	r4,r20,memcpy
 	sw	r20,0001(r16)
 	bc	004061F6
 
 l00406288:
-	move.balc	r4,r16,00404F2E
+	move.balc	r4,r16,free
 	bc	004060A8
 
 ;; fn0040628E: 0040628E
@@ -12410,7 +12410,7 @@ l00406288:
 ;;     00406160 (in netlink_msg_to_ifaddr)
 ;;     00406250 (in netlink_msg_to_ifaddr)
 fn0040628E proc
-	bc	0040A130
+	bc	memcpy
 
 ;; freeifaddrs: 00406292
 ;;   Called from:
@@ -12423,7 +12423,7 @@ freeifaddrs proc
 
 l00406296:
 	lw	r16,0000(r4)
-	balc	00404F2E
+	balc	free
 	move	r4,r16
 
 l0040629E:
@@ -12442,11 +12442,11 @@ getifaddrs proc
 	move	r5,r0
 	move	r17,r4
 	addiu	r4,sp,00000008
-	balc	0040A690
+	balc	memset
 	addiu	r7,sp,00000008
 	addiupc	r6,FFFFFD64
 	movep	r4,r5,r0,r0
-	balc	004075D2
+	balc	__rtnetlink_enumerate
 	move	r16,r4
 	bnezc	r4,004062CE
 
@@ -12460,7 +12460,7 @@ l004062C8:
 
 l004062CE:
 	lw	r17,0008(sp)
-	balc	00406292
+	balc	freeifaddrs
 	bc	004062C8
 004062D6                   00 00 00 00 00 00 00 00 00 00       ..........
 
@@ -12475,7 +12475,7 @@ l004062EA:
 	addiu	r8,r0,00000100
 	move	r7,r16
 	addiu	r5,r4,00000200
-	balc	0040D000
+	balc	dn_expand
 	bltc	r0,r4,004062FE
 
 l004062FC:
@@ -12519,7 +12519,7 @@ l0040632E:
 	lbu	r7,0006(r16)
 	move	r18,r0
 	lbu	r6,0007(r16)
-	balc	00408860
+	balc	sprintf
 
 l0040634A:
 	beqc	r0,r23,004065BE
@@ -12538,7 +12538,7 @@ l0040635E:
 	addiu	r6,sp,00000438
 	addiu	r5,sp,000000A8
 	addiupc	r4,0000BBB0
-	balc	00408070
+	balc	__fopen_rb_ca
 	move	r21,r4
 	beqc	r0,r4,0040644E
 
@@ -12549,11 +12549,11 @@ l00406376:
 l0040637C:
 	li	r6,00000004
 	addiu	r4,sp,00000038
-	move.balc	r5,r17,0040A130
+	move.balc	r5,r17,memcpy
 	li	r6,0000000C
 	addiupc	r5,0000CA82
 	addiu	r4,sp,0000002C
-	balc	004066AA
+	balc	fn004066AA
 	addiu	r7,sp,0000002C
 	sw	r7,0010(sp)
 
@@ -12561,13 +12561,13 @@ l00406392:
 	move	r6,r21
 	addiu	r5,r0,00000200
 	addiu	r4,sp,00000238
-	balc	00408240
+	balc	fgets_unlocked
 	beqc	r0,r4,0040644A
 
 l004063A4:
 	li	r5,00000023
 	addiu	r4,sp,00000238
-	balc	0040A770
+	balc	strchr
 	beqzc	r4,004063B6
 
 l004063B0:
@@ -12593,7 +12593,7 @@ l004063CE:
 	addiu	r5,sp,00000238
 	addiu	r4,sp,0000003C
 	move	r6,r0
-	balc	00406B50
+	balc	__lookup_ipliteral
 	bgec	r0,r4,00406392
 
 l004063E0:
@@ -12604,18 +12604,18 @@ l004063E6:
 	li	r6,00000004
 	addiu	r5,sp,00000044
 	addiu	r4,sp,00000050
-	balc	004066AA
+	balc	fn004066AA
 	li	r6,0000000C
 	addiupc	r5,0000CA18
 	addiu	r4,sp,00000044
-	balc	004066AA
+	balc	fn004066AA
 	sw	r0,0040(sp)
 
 l004063FA:
 	lw	r17,0010(sp)
 	li	r6,00000010
 	addiu	r5,sp,00000044
-	balc	0040A100
+	balc	memcmp
 	bnezc	r4,00406392
 
 l00406406:
@@ -12654,10 +12654,10 @@ l00406432:
 l00406440:
 	addiu	r6,r6,00000001
 	addiu	r4,sp,00000138
-	move.balc	r5,r22,0040A130
+	move.balc	r5,r22,memcpy
 
 l0040644A:
-	move.balc	r4,r21,00408060
+	move.balc	r4,r21,__fclose_ca
 
 l0040644E:
 	lbu	r7,0138(sp)
@@ -12678,12 +12678,12 @@ l00406458:
 	sw	r7,0000(sp)
 	move	r4,r0
 	li	r7,0000000C
-	balc	00407690
+	balc	res_mkquery
 	addiu	r7,r0,00000200
 	move	r5,r4
 	addiu	r6,sp,00000438
 	addiu	r4,sp,00000238
-	balc	00407AC0
+	balc	res_send
 	sb	r0,0138(sp)
 	move	r5,r4
 	bgec	r0,r4,0040649E
@@ -12692,7 +12692,7 @@ l0040648E:
 	addiu	r7,sp,00000138
 	addiupc	r6,FFFFFE4A
 	addiu	r4,sp,00000438
-	balc	0040D0D0
+	balc	__dns_parse
 
 l0040649E:
 	lbu	r7,0138(sp)
@@ -12706,7 +12706,7 @@ l004064AE:
 	addiu	r7,r0,00000100
 	addiu	r6,sp,00000138
 	movep	r4,r5,r20,r17
-	balc	00406860
+	balc	inet_ntop
 	beqc	r0,r18,00406590
 
 l004064C0:
@@ -12737,7 +12737,7 @@ l004064E4:
 l004064EE:
 	li	r6,0000000C
 	addiupc	r5,0000C918
-	move.balc	r4,r17,0040A100
+	move.balc	r4,r17,memcmp
 	beqzc	r4,00406536
 
 l004064FA:
@@ -12764,7 +12764,7 @@ l004064FE:
 l00406528:
 	addiupc	r5,0000B9E4
 	addiu	r4,sp,00000098
-	balc	0040A860
+	balc	strcpy
 
 l00406532:
 	lw	r18,0018(r16)
@@ -12777,7 +12777,7 @@ l00406536:
 	addiu	r4,sp,00000058
 	lbu	r7,0016(r16)
 	lbu	r6,0017(r16)
-	balc	00408860
+	balc	sprintf
 	bc	00406532
 
 l00406552:
@@ -12801,7 +12801,7 @@ l00406564:
 
 l00406572:
 	addiu	r5,sp,00000439
-	move.balc	r4,r18,00406710
+	move.balc	r4,r18,if_indextoname
 	beqc	r0,r4,004064C4
 
 l0040657E:
@@ -12809,11 +12809,11 @@ l0040657E:
 	addiu	r5,r4,FFFFFFFF
 	sb	r7,-0001(r4)
 	addiu	r4,sp,00000138
-	balc	0040A750
+	balc	strcat
 
 l00406590:
 	addiu	r4,sp,00000138
-	balc	0040A890
+	balc	strlen
 	bltuc	r4,r30,004065B6
 
 l0040659C:
@@ -12836,7 +12836,7 @@ l004065B4:
 
 l004065B6:
 	addiu	r5,sp,00000138
-	move.balc	r4,r23,0040A860
+	move.balc	r4,r23,strcpy
 
 l004065BE:
 	lw	r17,0014(sp)
@@ -12849,7 +12849,7 @@ l004065C4:
 
 l004065C8:
 	lhu	r4,0002(r16)
-	balc	00407630
+	balc	ntohs
 	sb	r0,0138(sp)
 	move	r18,r4
 	bbnezc	r19,00000001,004065F4
@@ -12859,7 +12859,7 @@ l004065D8:
 	addiu	r6,sp,00000438
 	addiu	r5,sp,00000238
 	addiupc	r4,0000B940
-	balc	00408070
+	balc	__fopen_rb_ca
 	andi	r19,r19,00000010
 	move	r20,r4
 	bnezc	r4,00406636
@@ -12885,13 +12885,13 @@ l00406608:
 	bnezc	r4,00406608
 
 l0040661E:
-	move.balc	r4,r16,0040A890
+	move.balc	r4,r16,strlen
 	lw	r17,0018(sp)
 	bgeuc	r4,r7,0040659C
 
 l00406628:
 	lw	r17,0014(sp)
-	move.balc	r5,r16,0040A860
+	move.balc	r5,r16,strcpy
 	move	r4,r0
 	bc	004065A0
 
@@ -12903,12 +12903,12 @@ l00406636:
 	addiu	r17,sp,000000A8
 	move	r6,r20
 	addiu	r5,r0,00000080
-	move.balc	r4,r17,00408240
+	move.balc	r4,r17,fgets_unlocked
 	beqzc	r4,0040669C
 
 l00406644:
 	li	r5,00000023
-	move.balc	r4,r17,0040A770
+	move.balc	r4,r17,strchr
 	beqzc	r4,00406652
 
 l0040664C:
@@ -12935,7 +12935,7 @@ l00406668:
 	sb	r0,0000(r6)
 	addiu	r5,sp,0000002C
 	li	r6,0000000A
-	move.balc	r4,r16,0040A022
+	move.balc	r4,r16,__strtoul_internal
 	bnec	r4,r18,00406636
 
 l00406676:
@@ -12951,7 +12951,7 @@ l00406684:
 	addiupc	r5,0000B8B0
 
 l00406688:
-	balc	0040A8E0
+	balc	strncmp
 	bnezc	r4,00406636
 
 l0040668E:
@@ -12960,10 +12960,10 @@ l0040668E:
 
 l00406694:
 	addiu	r4,sp,00000138
-	move.balc	r5,r17,0040A130
+	move.balc	r5,r17,memcpy
 
 l0040669C:
-	move.balc	r4,r20,00408060
+	move.balc	r4,r20,__fclose_ca
 	bc	004065F4
 
 l004066A2:
@@ -12980,7 +12980,7 @@ l004066A6:
 ;;     004063EC (in getnameinfo)
 ;;     004063F6 (in getnameinfo)
 fn004066AA proc
-	bc	0040A130
+	bc	memcpy
 004066AE                                           00 00               ..
 
 ;; getsockname: 004066B0
@@ -12996,9 +12996,9 @@ getsockname proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000CC
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 004066CC                                     00 00 00 00             ....
 
 ;; getsockopt: 004066D0
@@ -13013,9 +13013,9 @@ getsockopt proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000D1
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 004066EE                                           00 00               ..
 
 ;; htonl: 004066F0
@@ -13051,7 +13051,7 @@ if_indextoname proc
 	movep	r18,r17,r4,r5
 	li	r5,00080001
 	li	r4,00000001
-	balc	00407D80
+	balc	socket
 	move	r16,r4
 	bltc	r4,r0,00406752
 
@@ -13059,19 +13059,19 @@ l00406728:
 	addiu	r5,r0,00008910
 	move	r6,sp
 	sw	r18,0010(sp)
-	balc	00405B80
+	balc	ioctl
 	move	r18,r4
 	li	r4,00000039
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	bgec	r18,r0,00406756
 
 l00406740:
-	balc	004049B0
+	balc	__errno_location
 	lw	r7,0000(r4)
 	bneiuc	r7,00000013,00406752
 
 l0040674A:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000006
 	sw	r7,0000(sp)
 
@@ -13082,7 +13082,7 @@ l00406752:
 l00406756:
 	li	r6,00000010
 	move	r5,sp
-	move.balc	r4,r17,0040A930
+	move.balc	r4,r17,strncpy
 	restore.jrc	00000030,ra,00000004
 
 ;; if_nametoindex: 00406760
@@ -13095,7 +13095,7 @@ if_nametoindex proc
 	move	r17,r4
 	li	r5,00080001
 	li	r4,00000001
-	balc	00407D80
+	balc	socket
 	move	r16,r4
 	bgec	r4,r0,0040677C
 
@@ -13106,13 +13106,13 @@ l00406778:
 l0040677C:
 	li	r6,00000010
 	move	r4,sp
-	move.balc	r5,r17,0040A930
+	move.balc	r5,r17,strncpy
 	addiu	r5,r0,00008933
 	move	r6,sp
-	move.balc	r4,r16,00405B80
+	move.balc	r4,r16,ioctl
 	move	r17,r4
 	li	r4,00000039
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	bltc	r17,r0,00406778
 
 l0040679A:
@@ -13136,7 +13136,7 @@ __inet_aton proc
 l004067AE:
 	move	r6,r0
 	addiu	r5,sp,0000000C
-	move.balc	r4,r17,0040A022
+	move.balc	r4,r17,__strtoul_internal
 	addiu	r7,sp,00000010
 	swxs	r4,r16(r7)
 	lw	r17,000C(sp)
@@ -13230,7 +13230,7 @@ inet_ntoa proc
 	andi	r7,r4,000000FF
 	li	r5,00000010
 	addiupc	r4,0002C126
-	balc	00408820
+	balc	snprintf
 	addiupc	r4,0002C11E
 	restore.jrc	00000010,ra,00000001
 00406854             00 00 00 00 00 00 00 00 00 00 00 00     ............
@@ -13248,7 +13248,7 @@ l0040686A:
 	beqic	r4,0000000A,0040689E
 
 l0040686E:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000061
 
 l00406874:
@@ -13263,11 +13263,11 @@ l0040687A:
 	lbu	r8,0001(r16)
 	lbu	r7,0000(r16)
 	movep	r4,r5,r17,r20
-	balc	00408820
+	balc	snprintf
 	bltuc	r4,r20,004069BC
 
 l00406896:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000001C
 	bc	00406874
 
@@ -13275,7 +13275,7 @@ l0040689E:
 	li	r6,0000000C
 	addiupc	r5,0000C58C
 	addiu	r18,sp,0000002C
-	move.balc	r4,r16,0040A100
+	move.balc	r4,r16,memcmp
 	lbu	r5,0002(r16)
 	lbu	r6,0000(r16)
 	lbu	r2,0008(r16)
@@ -13315,7 +13315,7 @@ l004068EE:
 	addu	r7,r7,r13
 	li	r5,00000064
 	addiupc	r6,0000B630
-	move.balc	r4,r18,00408820
+	move.balc	r4,r18,snprintf
 
 l00406928:
 	move	r19,r0
@@ -13340,7 +13340,7 @@ l00406932:
 	addu	r4,r4,r6
 	addiupc	r6,0000B612
 	sw	r4,0000(sp)
-	move.balc	r4,r18,00408820
+	move.balc	r4,r18,snprintf
 	bc	00406928
 
 l00406962:
@@ -13359,7 +13359,7 @@ l0040696C:
 l00406970:
 	addiupc	r5,0000B618
 	addu	r4,r18,r16
-	balc	0040A960
+	balc	strspn
 	bgec	r21,r4,00406962
 
 l0040697E:
@@ -13383,15 +13383,15 @@ l00406988:
 	addu	r5,r18,r5
 	addu	r4,r18,r4
 	addiu	r6,r6,00000001
-	balc	0040A510
+	balc	memmove
 
 l004069AE:
-	move.balc	r4,r18,0040A890
+	move.balc	r4,r18,strlen
 	bgeuc	r4,r20,00406896
 
 l004069B6:
 	movep	r4,r5,r17,r18
-	balc	0040A860
+	balc	strcpy
 
 l004069BC:
 	move	r4,r17
@@ -13470,7 +13470,7 @@ l00406A24:
 	beqic	r4,0000000A,00406A34
 
 l00406A28:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000061
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -13595,7 +13595,7 @@ l00406ADE:
 	subu	r4,r4,r17
 	sll	r6,r6,00000001
 	lsa	r4,r4,sp,00000001
-	move.balc	r5,r20,0040A510
+	move.balc	r5,r20,memmove
 	move	r7,r0
 
 l00406AF8:
@@ -13631,7 +13631,7 @@ l00406B24:
 l00406B28:
 	addiu	r6,r19,0000000C
 	li	r4,00000002
-	move.balc	r5,r16,004069C0
+	move.balc	r5,r16,inet_pton
 	slt	r4,r0,r4
 	restore.jrc	00000030,ra,00000006
 
@@ -13664,7 +13664,7 @@ __lookup_ipliteral proc
 	movep	r16,r18,r4,r5
 	addiu	r5,sp,00000008
 	move	r20,r6
-	move.balc	r4,r18,004067A0
+	move.balc	r4,r18,__inet_aton
 	bgec	r0,r4,00406B7E
 
 l00406B60:
@@ -13678,7 +13678,7 @@ l00406B6A:
 	li	r6,00000004
 	addiu	r5,sp,00000008
 	addiu	r4,r16,00000008
-	balc	00406C24
+	balc	fn00406C24
 	li	r7,00000002
 	sw	r7,0000(sp)
 	sw	r0,0004(sp)
@@ -13692,7 +13692,7 @@ l00406B7A:
 
 l00406B7E:
 	li	r5,00000025
-	move.balc	r4,r18,0040A770
+	move.balc	r4,r18,strchr
 	move	r17,r4
 	beqzc	r4,00406B9E
 
@@ -13704,7 +13704,7 @@ l00406B8E:
 	movep	r5,r6,r18,r19
 	addiu	r4,sp,00000020
 	addiu	r18,sp,00000020
-	balc	00406C24
+	balc	fn00406C24
 	addiu	r7,sp,00000060
 	addu	r19,r7,r19
 	sb	r0,-0040(r19)
@@ -13712,7 +13712,7 @@ l00406B8E:
 l00406B9E:
 	addiu	r6,sp,00000010
 	li	r4,0000000A
-	move.balc	r5,r18,004069C0
+	move.balc	r5,r18,inet_pton
 	move	r7,r0
 	bgec	r0,r4,00406B7A
 
@@ -13723,7 +13723,7 @@ l00406BB0:
 	li	r6,00000010
 	addiu	r4,r16,00000008
 	addu	r5,sp,r6
-	balc	00406C24
+	balc	fn00406C24
 	li	r6,0000000A
 	sw	r6,0000(sp)
 	beqzc	r17,00406C20
@@ -13736,7 +13736,7 @@ l00406BC0:
 
 l00406BCE:
 	addiu	r5,sp,0000000C
-	move.balc	r4,r18,0040A00C
+	move.balc	r4,r18,__strtoull_internal
 
 l00406BD4:
 	lw	r17,000C(sp)
@@ -13755,7 +13755,7 @@ l00406BE6:
 	bnec	r7,r6,00406B64
 
 l00406BF6:
-	move.balc	r4,r18,00406760
+	move.balc	r4,r18,if_nametoindex
 	beqc	r0,r4,00406B64
 
 l00406BFE:
@@ -13795,7 +13795,7 @@ l00406C20:
 ;;     00406B94 (in __lookup_ipliteral)
 ;;     00406BB8 (in __lookup_ipliteral)
 fn00406C24 proc
-	bc	0040A130
+	bc	memcpy
 00406C28                         00 00 00 00 00 00 00 00         ........
 
 ;; __isspace: 00406C30
@@ -13839,7 +13839,7 @@ l00406C58:
 	addiu	r8,r0,00000080
 	li	r4,00000002
 	andi	r5,r5,000000C0
-	beqc	r5,r8,00406CA8
+	beqc	r5,r8,fn00406CA8
 
 l00406C68:
 	lw	r5,0000(r7)
@@ -13868,12 +13868,12 @@ l00406C80:
 l00406C86:
 	lbu	r5,000F(r7)
 	li	r4,00000002
-	beqic	r5,00000001,00406CA8
+	beqic	r5,00000001,fn00406CA8
 
 l00406C90:
 	addiu	r5,r0,000000FE
 	li	r4,0000000E
-	bnec	r5,r6,00406CA8
+	bnec	r5,r6,fn00406CA8
 
 l00406C98:
 	lbu	r7,0001(r7)
@@ -13937,7 +13937,7 @@ l00406CE8:
 	move	r9,r0
 	move	r8,r0
 	movep	r4,r5,r0,r19
-	balc	00407690
+	balc	res_mkquery
 	li	r7,FFFFFFFF
 	sw	r4,09B4(r16)
 	beqc	r4,r7,00406D8C
@@ -13954,7 +13954,7 @@ l00406D10:
 	move	r8,r19
 	addiu	r6,sp,00000024
 	addiu	r5,sp,00000014
-	move.balc	r4,r16,004077AA
+	move.balc	r4,r16,__res_msend_rc
 	move	r17,r0
 	addiu	r7,r0,FFFFFFF5
 	bltc	r4,r0,00406D90
@@ -14001,7 +14001,7 @@ l00406D5C:
 	li	r6,00000001
 	movep	r4,r5,r0,r19
 	addu	r11,r11,r17
-	balc	00407690
+	balc	res_mkquery
 	addiu	r7,sp,FFFFF670
 	lsa	r7,r16,r7,00000002
 	addiu	r16,r16,00000001
@@ -14023,7 +14023,7 @@ l00406D96:
 	addiupc	r6,000001A8
 	addu	r4,r18,r4
 	addiu	r17,r17,00000001
-	balc	0040D0D0
+	balc	__dns_parse
 	bc	00406D2E
 
 ;; policyof: 00406DAC
@@ -14045,7 +14045,7 @@ l00406DBA:
 l00406DBE:
 	lbu	r18,0010(r16)
 	movep	r5,r6,r16,r18
-	move.balc	r4,r19,0040A100
+	move.balc	r4,r19,memcmp
 	bnezc	r4,00406DBA
 
 l00406DCA:
@@ -14070,7 +14070,7 @@ is_valid_hostname proc
 	save	00000010,ra,00000002
 	addiu	r5,r0,000000FF
 	move	r16,r4
-	balc	0040A940
+	balc	strnlen
 	addiu	r7,r0,000000FD
 	addiu	r4,r4,FFFFFFFF
 	bgeuc	r7,r4,00406E02
@@ -14082,7 +14082,7 @@ l00406DFE:
 l00406E02:
 	movep	r5,r6,r16,r0
 	move	r4,r0
-	balc	0040CFE0
+	balc	mbstowcs
 	li	r7,FFFFFFFF
 	bnec	r4,r7,00406E12
 
@@ -14103,7 +14103,7 @@ l00406E1C:
 	bltiuc	r7,00000002,00406E10
 
 l00406E26:
-	balc	0040B0A0
+	balc	isalnum
 	bnezc	r4,00406E10
 
 l00406E2C:
@@ -14119,13 +14119,13 @@ name_from_hosts proc
 	movep	r22,r23,r4,r5
 	move	r20,r6
 	move	r30,r7
-	move.balc	r4,r6,0040A890
+	move.balc	r4,r6,strlen
 	addiu	r7,r0,00000408
 	sw	r4,000C(sp)
 	addiu	r6,sp,000002A8
 	addiu	r5,sp,00000018
 	addiupc	r4,0000B0CA
-	balc	00408070
+	balc	__fopen_rb_ca
 	move	r19,r4
 	beqzc	r4,00406E7A
 
@@ -14137,7 +14137,7 @@ l00406E5E:
 	move	r6,r19
 	addiu	r5,r0,00000200
 	addiu	r4,sp,000000A8
-	balc	00408240
+	balc	fgets_unlocked
 	beqzc	r4,00406E70
 
 l00406E6C:
@@ -14147,11 +14147,11 @@ l00406E70:
 	movn	r16,r18,r18
 
 l00406E74:
-	move.balc	r4,r19,00408060
+	move.balc	r4,r19,__fclose_ca
 	bc	00406EA0
 
 l00406E7A:
-	balc	004049B0
+	balc	__errno_location
 	addiu	r16,r0,FFFFFFF5
 	lw	r7,0000(r4)
 	bgeiuc	r7,00000015,00406EA0
@@ -14174,7 +14174,7 @@ l00406EA0:
 l00406EA6:
 	li	r5,00000023
 	addiu	r4,sp,000000A8
-	balc	0040A770
+	balc	strchr
 	beqzc	r4,00406EB6
 
 l00406EB0:
@@ -14190,19 +14190,19 @@ l00406EBC:
 	addiu	r4,r6,00000001
 
 l00406EC0:
-	move.balc	r5,r20,0040AC28
+	move.balc	r5,r20,strstr
 	move	r6,r4
 	beqzc	r4,00406E5E
 
 l00406EC8:
 	lbu	r4,-0001(r4)
-	balc	00406F46
+	balc	fn00406F46
 	beqzc	r4,00406EBC
 
 l00406ED0:
 	lw	r17,000C(sp)
 	lbux	r4,r7(r6)
-	balc	00406F46
+	balc	fn00406F46
 	beqzc	r4,00406EBC
 
 l00406EDA:
@@ -14214,7 +14214,7 @@ l00406EDC:
 	beqzc	r4,00406EE8
 
 l00406EE4:
-	balc	00406F46
+	balc	fn00406F46
 	beqzc	r4,00406F30
 
 l00406EE8:
@@ -14224,7 +14224,7 @@ l00406EE8:
 	addiu	r5,sp,000000A8
 	move	r6,r30
 	addu	r4,r4,r22
-	balc	00406B50
+	balc	__lookup_ipliteral
 	beqc	r0,r4,00406E5E
 
 l00406EFC:
@@ -14238,7 +14238,7 @@ l00406F02:
 	beqzc	r4,00406F3C
 
 l00406F06:
-	balc	00406F46
+	balc	fn00406F46
 	bnezc	r4,00406F34
 
 l00406F0A:
@@ -14249,19 +14249,19 @@ l00406F0C:
 	beqzc	r4,00406F16
 
 l00406F12:
-	balc	00406F46
+	balc	fn00406F46
 	beqzc	r4,00406F38
 
 l00406F16:
 	sb	r0,0000(r21)
-	move.balc	r4,r17,00406DE8
+	move.balc	r4,r17,is_valid_hostname
 	beqc	r0,r4,00406E5E
 
 l00406F22:
 	subu	r6,r21,r17
 	addiu	r6,r6,00000001
 	movep	r4,r5,r23,r17
-	balc	0040A130
+	balc	memcpy
 	bc	00406E5E
 
 l00406F30:
@@ -14292,7 +14292,7 @@ l00406F40:
 ;;     00406F06 (in name_from_hosts)
 ;;     00406F12 (in name_from_hosts)
 fn00406F46 proc
-	bc	00406C30
+	bc	__isspace
 
 ;; fn00406F48: 00406F48
 ;;   Called from:
@@ -14334,7 +14334,7 @@ l00406F64:
 	move	r6,r7
 
 l00406F80:
-	balc	0040A130
+	balc	memcpy
 
 l00406F84:
 	move	r4,r0
@@ -14364,18 +14364,18 @@ l00406FAA:
 	addiu	r8,r0,00000100
 	move	r7,sp
 	addiu	r5,r4,00000200
-	balc	0040D000
+	balc	dn_expand
 	bgec	r0,r4,00406F84
 
 l00406FBC:
 	move	r4,sp
-	balc	00406DE8
+	balc	is_valid_hostname
 	beqzc	r4,00406F84
 
 l00406FC4:
 	lw	r4,0004(r16)
 	move	r5,sp
-	balc	0040A860
+	balc	strcpy
 	bc	00406F84
 
 ;; __lookup_name: 00406FCE
@@ -14391,7 +14391,7 @@ __lookup_name proc
 
 l00406FE0:
 	addiu	r5,r0,000000FF
-	move.balc	r4,r22,0040A940
+	move.balc	r4,r22,strnlen
 	addiu	r6,r0,000000FD
 	addiu	r7,r4,FFFFFFFF
 	bgeuc	r6,r7,00406FFE
@@ -14406,7 +14406,7 @@ l00406FF8:
 l00406FFE:
 	addiu	r6,r4,00000001
 	movep	r4,r5,r21,r22
-	balc	0040738E
+	balc	fn0040738E
 
 l00407006:
 	bbeqzc	r18,00000003,00407010
@@ -14540,7 +14540,7 @@ l004070B0:
 
 l004070D2:
 	movep	r5,r6,r22,r19
-	move.balc	r4,r16,00406B50
+	move.balc	r4,r16,__lookup_ipliteral
 	move	r17,r4
 	bnec	r0,r4,004071AC
 
@@ -14550,7 +14550,7 @@ l004070DE:
 l004070E2:
 	movep	r6,r7,r22,r19
 	movep	r4,r5,r16,r21
-	balc	00406E34
+	balc	name_from_hosts
 	move	r17,r4
 	bnec	r0,r4,004071AC
 
@@ -14559,7 +14559,7 @@ l004070F0:
 	addiu	r5,sp,00000080
 	addiu	r4,sp,0000001C
 	li	r17,FFFFFFFF
-	balc	00407B02
+	balc	__get_resolv_conf
 	bltc	r4,r0,00406FF8
 
 l00407102:
@@ -14590,7 +14590,7 @@ l00407122:
 l0040712E:
 	movep	r5,r6,r22,r23
 	addu	r30,r21,r23
-	move.balc	r4,r21,0040A130
+	move.balc	r4,r21,memcpy
 	li	r7,0000002E
 	sb	r7,0000(r30)
 	addiu	r7,sp,00000080
@@ -14619,7 +14619,7 @@ l00407156:
 
 l00407158:
 	lbu	r4,0000(r5)
-	balc	00406C30
+	balc	__isspace
 	bnezc	r4,00407156
 
 l00407160:
@@ -14634,7 +14634,7 @@ l00407166:
 	beqzc	r4,00407172
 
 l0040716C:
-	balc	00406C30
+	balc	__isspace
 	beqzc	r4,00407164
 
 l00407172:
@@ -14651,7 +14651,7 @@ l00407186:
 	move	r6,r17
 	addu	r4,r21,r7
 	sw	r7,000C(sp)
-	balc	0040738E
+	balc	fn0040738E
 	lw	r17,000C(sp)
 	addu	r17,r17,r21
 	movep	r5,r6,r21,r21
@@ -14659,7 +14659,7 @@ l00407186:
 	addiu	r7,sp,0000001C
 	move	r8,r7
 	move	r7,r19
-	move.balc	r4,r16,00406CB2
+	move.balc	r4,r16,name_from_dns
 	move	r17,r4
 	beqzc	r4,00407142
 
@@ -14676,7 +14676,7 @@ l004071B4:
 	move	r8,r7
 	movep	r4,r5,r16,r21
 	movep	r6,r7,r22,r19
-	balc	00406CB2
+	balc	name_from_dns
 	move	r17,r4
 	move	r20,r4
 	bltc	r0,r4,00407054
@@ -14713,7 +14713,7 @@ l004071F0:
 	mul	r18,r18,r6
 	addu	r4,r16,r18
 	move	r18,r22
-	move.balc	r5,r17,0040A130
+	move.balc	r5,r17,memcpy
 
 l00407200:
 	addiu	r21,r21,00000001
@@ -14736,10 +14736,10 @@ l00407218:
 	addiu	r21,r18,FFFFFFF4
 	li	r6,00000004
 	movep	r4,r5,r18,r21
-	balc	0040738E
+	balc	fn0040738E
 	li	r6,0000000C
 	addiupc	r5,0000BC18
-	move.balc	r4,r21,0040A130
+	move.balc	r4,r21,memcpy
 	li	r7,0000000A
 	sw	r7,-0014(r18)
 
@@ -14754,7 +14754,7 @@ l00407238:
 l0040723C:
 	addiu	r5,sp,00000014
 	li	r4,00000001
-	balc	0040AE50
+	balc	__pthread_setcancelstate
 	addiu	r19,r16,00000008
 	move	r20,r0
 
@@ -14779,12 +14779,12 @@ l00407278:
 	addiu	r4,sp,00000088
 
 l0040727E:
-	balc	0040738E
+	balc	fn0040738E
 	addiu	r4,sp,00000088
-	balc	00406DAC
+	balc	policyof
 	move	r18,r4
 	addiu	r4,sp,00000088
-	balc	00406C42
+	balc	scopeof
 	li	r6,00000011
 	lbu	r7,0013(r18)
 	move	r22,r4
@@ -14792,14 +14792,14 @@ l0040727E:
 	li	r4,0000000A
 	lbu	r21,0012(r18)
 	sw	r7,000C(sp)
-	balc	00407D80
+	balc	socket
 	move	r23,r4
 	bltc	r4,r0,00407388
 
 l004072AE:
 	li	r6,0000001C
 	addiu	r5,sp,00000080
-	balc	00405DD0
+	balc	connect
 	move	r18,r4
 	bnec	r0,r4,00407382
 
@@ -14809,19 +14809,19 @@ l004072BC:
 	addu	r5,sp,r7
 	lui	r30,00040000
 	sw	r7,0018(sp)
-	move.balc	r4,r23,004066B0
+	move.balc	r4,r23,getsockname
 	bnezc	r4,0040732A
 
 l004072D0:
 	addiu	r4,sp,00000024
-	balc	00406C42
+	balc	scopeof
 	lui	r6,00060000
 	xor	r4,r22,r4
 	movz	r30,r6,r4
 
 l004072E2:
 	addiu	r4,sp,00000024
-	balc	00406DAC
+	balc	policyof
 	lw	r17,000C(sp)
 	lbu	r6,0013(r4)
 	bnec	r6,r7,004072F8
@@ -14857,7 +14857,7 @@ l00407328:
 	move	r18,r4
 
 l0040732A:
-	move.balc	r4,r23,0040AF72
+	move.balc	r4,r23,close
 
 l0040732E:
 	li	r4,0000000F
@@ -14880,17 +14880,17 @@ l0040735A:
 	movep	r4,r5,r16,r17
 	addiupc	r7,FFFFF94A
 	li	r6,0000001C
-	balc	00409E0E
+	balc	qsort
 	lw	r17,0014(sp)
 	move	r5,r0
-	balc	0040AE50
+	balc	__pthread_setcancelstate
 	bc	00406FF8
 
 l00407370:
 	li	r6,0000000C
 	addiupc	r5,0000BACA
 	addiu	r4,sp,00000088
-	balc	0040738E
+	balc	fn0040738E
 	li	r6,00000004
 	move	r5,r19
 	addiu	r4,sp,00000094
@@ -14914,7 +14914,7 @@ l00407388:
 ;;     0040727E (in __lookup_name)
 ;;     00407378 (in __lookup_name)
 fn0040738E proc
-	bc	0040A130
+	bc	memcpy
 00407392       00 00 00 00 00 00 00 00 00 00 00 00 00 00   ..............
 
 ;; __lookup_serv: 004073A0
@@ -14945,7 +14945,7 @@ l004073BE:
 l004073C4:
 	li	r6,0000000A
 	addiu	r5,sp,00000004
-	move.balc	r4,r20,0040A022
+	move.balc	r4,r20,__strtoul_internal
 
 l004073CC:
 	lw	r17,0004(sp)
@@ -15029,18 +15029,18 @@ l00407436:
 	bnezc	r16,00407408
 
 l0040743C:
-	move.balc	r4,r20,0040A890
+	move.balc	r4,r20,strlen
 	addiu	r7,r0,00000408
 	move	r22,r4
 	addiu	r6,sp,00000118
 	addiu	r5,sp,00000088
 	addiupc	r4,0000AAD8
-	balc	00408070
+	balc	__fopen_rb_ca
 	move	r21,r4
 	bnezc	r4,0040748E
 
 l00407458:
-	balc	004049B0
+	balc	__errno_location
 	addiu	r16,r0,FFFFFFF5
 	lw	r6,0000(r4)
 	bgeiuc	r6,00000015,00407424
@@ -15057,7 +15057,7 @@ l00407476:
 
 l00407478:
 	li	r5,00000023
-	move.balc	r4,r17,0040A770
+	move.balc	r4,r17,strchr
 	beqzc	r4,00407486
 
 l00407480:
@@ -15069,21 +15069,21 @@ l00407486:
 	move	r4,r17
 
 l00407488:
-	move.balc	r5,r20,0040AC28
+	move.balc	r5,r20,strstr
 	bnezc	r4,004074AA
 
 l0040748E:
 	addiu	r17,sp,00000008
 	move	r6,r21
 	addiu	r5,r0,00000080
-	move.balc	r4,r17,00408240
+	move.balc	r4,r17,fgets_unlocked
 	beqzc	r4,004074A0
 
 l0040749C:
 	bltic	r16,00000002,00407478
 
 l004074A0:
-	move.balc	r4,r21,00408060
+	move.balc	r4,r21,__fclose_ca
 	bnec	r0,r16,00407424
 
 l004074A8:
@@ -15128,7 +15128,7 @@ l004074DE:
 l004074E6:
 	li	r6,0000000A
 	addiu	r5,sp,00000004
-	move.balc	r4,r17,0040A022
+	move.balc	r4,r17,__strtoul_internal
 	addiu	r7,r0,0000FFFF
 	move	r23,r4
 	bltuc	r7,r4,0040748E
@@ -15140,7 +15140,7 @@ l004074F8:
 l004074FE:
 	li	r6,00000004
 	addiupc	r5,0000AA34
-	balc	0040A8E0
+	balc	strncmp
 	bnezc	r4,00407520
 
 l0040750A:
@@ -15159,7 +15159,7 @@ l00407520:
 	lw	r17,0004(sp)
 	li	r6,00000004
 	addiupc	r5,0000AA18
-	balc	0040A8E0
+	balc	strncmp
 	bnec	r0,r4,0040748E
 
 l00407530:
@@ -15190,7 +15190,7 @@ __netlink_enumerate proc
 	move	r4,sp
 	move	r18,r8
 	move	r19,r9
-	balc	0040A690
+	balc	memset
 	addiu	r7,r0,00000301
 	li	r6,00000014
 	sh	r7,0006(sp)
@@ -15200,14 +15200,14 @@ __netlink_enumerate proc
 	sh	r21,0004(sp)
 	sw	r20,0008(sp)
 	sb	r16,0010(sp)
-	move.balc	r4,r17,00407D10
+	move.balc	r4,r17,send
 	bltc	r4,r0,004075C8
 
 l0040758C:
 	li	r7,00000040
 	addiu	r6,r0,00002000
 	move	r5,sp
-	move.balc	r4,r17,00407640
+	move.balc	r4,r17,recv
 	move	r20,r4
 	bgec	r0,r4,004075C6
 
@@ -15260,7 +15260,7 @@ __rtnetlink_enumerate proc
 	move	r6,r0
 	li	r4,00000010
 	li	r16,FFFFFFFF
-	balc	00407D80
+	balc	socket
 	move	r17,r4
 	bltc	r4,r0,00407612
 
@@ -15269,7 +15269,7 @@ l004075EE:
 	li	r6,00000012
 	movep	r7,r8,r21,r18
 	li	r5,00000001
-	balc	00407550
+	balc	__netlink_enumerate
 	move	r16,r4
 	bnezc	r4,0040760C
 
@@ -15278,12 +15278,12 @@ l004075FE:
 	li	r6,00000016
 	movep	r7,r8,r20,r18
 	li	r5,00000002
-	move.balc	r4,r17,00407550
+	move.balc	r4,r17,__netlink_enumerate
 	move	r16,r4
 
 l0040760C:
 	li	r4,00000039
-	move.balc	r5,r17,00404A50
+	move.balc	r5,r17,__syscall
 
 l00407612:
 	move	r4,r16
@@ -15320,7 +15320,7 @@ ntohs proc
 recv proc
 	move	r9,r0
 	move	r8,r0
-	bc	00407650
+	bc	recvfrom
 00407648                         00 00 00 00 00 00 00 00         ........
 
 ;; recvfrom: 00407650
@@ -15336,9 +15336,9 @@ recvfrom proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000CF
-	balc	0040ADA4
+	balc	__syscall_cp
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 0040766E                                           00 00               ..
 
 ;; recvmsg: 00407670
@@ -15354,9 +15354,9 @@ recvmsg proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000D4
-	balc	0040ADA4
+	balc	__syscall_cp
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 0040768C                                     00 00 00 00             ....
 
 ;; res_mkquery: 00407690
@@ -15373,7 +15373,7 @@ res_mkquery proc
 	movep	r22,r23,r6,r7
 	move	r20,r11
 	lw	r18,0150(sp)
-	balc	0040A940
+	balc	strnlen
 	move	r17,r4
 	beqzc	r4,004076BE
 
@@ -15416,14 +15416,14 @@ l004076EE:
 	sll	r21,r21,00000003
 	movep	r5,r6,r0,r16
 	addiu	r21,r21,00000001
-	move.balc	r4,r18,0040A690
+	move.balc	r4,r18,memset
 	li	r6,00000001
 	sb	r6,000D(sp)
 	move	r5,r30
 	move	r6,r17
 	addiu	r4,sp,00000015
 	sb	r21,000A(sp)
-	balc	0040A130
+	balc	memcpy
 	li	r6,0000000D
 
 l00407714:
@@ -15463,7 +15463,7 @@ l0040774A:
 	move	r4,r0
 	sb	r23,0EE9(r7)
 	sb	r22,0EEB(r7)
-	balc	0040AEF4
+	balc	__clock_gettime
 	lw	r17,0004(sp)
 	movep	r4,r5,r20,r18
 	srl	r7,r6,00000010
@@ -15473,7 +15473,7 @@ l0040774A:
 	sb	r7,0009(sp)
 	sb	r6,0008(sp)
 	move	r6,r16
-	balc	0040A130
+	balc	memcpy
 	bc	004076D4
 0040777A                               00 00 00 00 00 00           ......
 
@@ -15485,7 +15485,7 @@ mtime proc
 	save	00000020,ra,00000001
 	move	r4,r0
 	addiu	r5,sp,00000008
-	balc	0040AEF4
+	balc	__clock_gettime
 	lw	r17,0008(sp)
 	addiu	r4,r0,000003E8
 	li	r6,000F4240
@@ -15499,7 +15499,7 @@ mtime proc
 cleanup proc
 	move	r5,r4
 	li	r4,00000039
-	bc	00404A50
+	bc	__syscall
 
 ;; __res_msend_rc: 004077AA
 ;;   Called from:
@@ -15528,10 +15528,10 @@ __res_msend_rc proc
 	sw	r0,0060(sp)
 	sw	r0,0064(sp)
 	sw	r0,0068(sp)
-	balc	0040A690
+	balc	memset
 	addiu	r5,sp,00000030
 	li	r4,00000001
-	balc	00407A82
+	balc	fn00407A82
 	lw	r6,0060(r30)
 	addiu	r7,r0,000003E8
 	lw	r22,0058(r30)
@@ -15546,7 +15546,7 @@ l004077FC:
 	move	r6,r0
 	li	r5,00080081
 	sh	r17,0050(sp)
-	move.balc	r4,r17,00407D80
+	move.balc	r4,r17,socket
 	move	r16,r4
 	bgec	r4,r0,00407836
 
@@ -15554,7 +15554,7 @@ l00407812:
 	bneiuc	r17,0000000A,00407846
 
 l00407816:
-	balc	004049B0
+	balc	__errno_location
 	lw	r7,0000(r4)
 	bneiuc	r7,00000021,00407846
 
@@ -15562,7 +15562,7 @@ l00407820:
 	move	r6,r0
 	li	r5,00080081
 	li	r4,00000002
-	balc	00407D80
+	balc	socket
 	move	r16,r4
 	bltc	r4,r0,00407846
 
@@ -15572,16 +15572,16 @@ l00407834:
 l00407836:
 	move	r6,r19
 	addiu	r5,sp,00000050
-	move.balc	r4,r16,00405DB0
+	move.balc	r4,r16,bind
 	bgec	r4,r0,00407898
 
 l00407842:
-	move.balc	r4,r16,0040AF72
+	move.balc	r4,r16,close
 
 l00407846:
 	lw	r17,0030(sp)
 	move	r5,r0
-	balc	00407A82
+	balc	fn00407A82
 	li	r4,FFFFFFFF
 	restore.jrc	000000F0,r30,0000000A
 
@@ -15593,9 +15593,9 @@ l00407858:
 	li	r6,00000004
 	addu	r4,r16,r6
 	sw	r7,0018(sp)
-	move.balc	r5,r23,0040A130
+	move.balc	r5,r23,memcpy
 	li	r4,00000035
-	balc	00406700
+	balc	htons
 	lw	r17,0018(sp)
 	sh	r4,0002(r16)
 	sh	r7,0000(r16)
@@ -15610,9 +15610,9 @@ l00407878:
 	li	r6,00000010
 	addiu	r4,r16,00000008
 	li	r17,0000000A
-	move.balc	r5,r23,0040A130
+	move.balc	r5,r23,memcpy
 	li	r4,00000035
-	balc	00406700
+	balc	htons
 	lw	r7,-0004(r23)
 	li	r19,0000001C
 	sh	r4,0002(r16)
@@ -15625,10 +15625,10 @@ l00407898:
 	addiupc	r5,FFFFFF06
 	addiu	r4,sp,00000044
 	move	r6,r16
-	balc	0040AE32
+	balc	_pthread_cleanup_push
 	lw	r17,0030(sp)
 	move	r5,r0
-	balc	00407A82
+	balc	fn00407A82
 	beqic	r17,0000000A,0040791A
 
 l004078AE:
@@ -15636,13 +15636,13 @@ l004078AE:
 	sll	r6,r18,00000002
 	move	r5,r0
 	move	r17,r0
-	balc	0040A690
+	balc	memset
 	li	r7,00000001
 	sh	r7,0040(sp)
 	sw	r16,003C(sp)
 	lw	r17,000C(sp)
 	div	r23,r7,r22
-	balc	00407780
+	balc	mtime
 	sll	r7,r18,00000001
 	sw	r7,001C(sp)
 	li	r7,0000001C
@@ -15678,11 +15678,11 @@ l004078FE:
 	li	r5,00000001
 	addu	r6,r6,r30
 	addiu	r4,sp,0000003C
-	balc	00407E20
+	balc	poll
 	bltc	r0,r4,004079EE
 
 l00407912:
-	balc	00407780
+	balc	mtime
 	move	r10,r4
 	bc	004078E2
 
@@ -15694,7 +15694,7 @@ l0040791A:
 	addiu	r17,sp,00000070
 	move	r23,r0
 	sw	r0,0034(sp)
-	move.balc	r4,r16,00407D60
+	move.balc	r4,r16,setsockopt
 
 l0040792E:
 	beqc	r20,r23,004078AE
@@ -15706,11 +15706,11 @@ l00407932:
 l0040793A:
 	li	r6,00000004
 	addiu	r4,r17,00000010
-	move.balc	r5,r17,0040A130
+	move.balc	r5,r17,memcpy
 	li	r6,0000000C
 	addiupc	r5,0000B580
 	addiu	r4,r17,00000004
-	balc	0040A130
+	balc	memcpy
 	li	r7,0000000A
 	sh	r7,-0004(r17)
 	sw	r0,0040(sp)
@@ -15740,7 +15740,7 @@ l0040796A:
 	addiu	r30,r30,0000001C
 	lwxs	r6,r21(r6)
 	sw	r10,0024(sp)
-	move.balc	r4,r16,00407D40
+	move.balc	r4,r16,sendto
 	lw	r18,0024(sp)
 
 l0040798A:
@@ -15829,7 +15829,7 @@ l004079F4:
 	move	r7,r0
 	sw	r10,0024(sp)
 	sw	r19,0038(sp)
-	move.balc	r4,r16,00407650
+	move.balc	r4,r16,recvfrom
 	move	r9,r4
 	lw	r18,0024(sp)
 	bltc	r4,r0,00407912
@@ -15853,7 +15853,7 @@ l00407A20:
 	addiu	r5,sp,00000050
 	sw	r8,0024(sp)
 	addu	r4,r7,r4
-	balc	0040A100
+	balc	memcmp
 	lw	r18,0024(sp)
 	lw	r18,0028(sp)
 	lw	r18,002C(sp)
@@ -15878,14 +15878,14 @@ l00407A44:
 	lwx	r6,r4(r6)
 	addu	r8,r8,r7
 	addiu	r7,r0,00004000
-	move.balc	r4,r16,00407D40
+	move.balc	r4,r16,sendto
 	bc	004079EE
 
 l00407A66:
 	lw	r17,0014(sp)
 	move	r6,r9
 	lwx	r4,r4(r7)
-	balc	0040A130
+	balc	memcpy
 
 l00407A72:
 	bnec	r18,r17,004079EE
@@ -15893,7 +15893,7 @@ l00407A72:
 l00407A76:
 	addiu	r4,sp,00000044
 	li	r5,00000001
-	balc	0040AE3A
+	balc	_pthread_cleanup_pop
 	move	r4,r0
 	restore.jrc	000000F0,r30,0000000A
 
@@ -15903,7 +15903,7 @@ l00407A76:
 ;;     0040784A (in __res_msend_rc)
 ;;     004078A8 (in __res_msend_rc)
 fn00407A82 proc
-	bc	0040AE50
+	bc	__pthread_setcancelstate
 
 ;; __res_msend: 00407A86
 ;;   Called from:
@@ -15917,7 +15917,7 @@ __res_msend proc
 	sw	r9,0004(sp)
 	sw	r8,0008(sp)
 	sw	r7,000C(sp)
-	balc	00407B02
+	balc	__get_resolv_conf
 	li	r6,FFFFFFFF
 	bltc	r4,r0,00407AB2
 
@@ -15928,7 +15928,7 @@ l00407AA0:
 	lw	r18,0008(sp)
 	lw	r17,000C(sp)
 	movep	r5,r6,r17,r18
-	move.balc	r4,r16,004077AA
+	move.balc	r4,r16,__res_msend_rc
 	move	r6,r4
 
 l00407AB2:
@@ -15951,7 +15951,7 @@ res_send proc
 	addiu	r6,sp,00000008
 	addiu	r5,sp,0000000C
 	li	r4,00000001
-	balc	00407A86
+	balc	__res_msend
 	bltc	r4,r0,00407AE0
 
 l00407ADE:
@@ -16000,13 +16000,13 @@ l00407B24:
 	addiu	r6,sp,000001A0
 	addiu	r5,sp,00000010
 	addiupc	r4,0000A45E
-	balc	00408070
+	balc	__fopen_rb_ca
 	move	r17,r0
 	move	r19,r4
 	bnezc	r4,00407B8C
 
 l00407B3C:
-	balc	004049B0
+	balc	__errno_location
 	lw	r6,0000(r4)
 	li	r4,FFFFFFFF
 	bgeiuc	r6,00000015,00407B6A
@@ -16022,7 +16022,7 @@ l00407B58:
 	move	r6,r0
 	addiupc	r5,0000A446
 	li	r17,00000001
-	move.balc	r4,r16,00406B50
+	move.balc	r4,r16,__lookup_ipliteral
 
 l00407B64:
 	move	r4,r0
@@ -16034,7 +16034,7 @@ l00407B6A:
 l00407B6E:
 	li	r5,0000000A
 	addiu	r4,sp,000000A0
-	balc	0040A770
+	balc	strchr
 	bnezc	r4,00407BA2
 
 l00407B78:
@@ -16042,7 +16042,7 @@ l00407B78:
 	bbnezc	r7,00000004,00407BA2
 
 l00407B7E:
-	move.balc	r4,r19,004085C0
+	move.balc	r4,r19,_IO_getc
 	beqic	r4,0000000A,00407B8C
 
 l00407B86:
@@ -16053,11 +16053,11 @@ l00407B8C:
 	move	r6,r19
 	addiu	r5,r0,00000100
 	addiu	r4,sp,000000A0
-	balc	00408240
+	balc	fgets_unlocked
 	bnezc	r4,00407B6E
 
 l00407B9A:
-	move.balc	r4,r19,00408060
+	move.balc	r4,r19,__fclose_ca
 	bnezc	r17,00407B64
 
 l00407BA0:
@@ -16067,20 +16067,20 @@ l00407BA2:
 	li	r6,00000007
 	addiupc	r5,0000A408
 	addiu	r4,sp,000000A0
-	balc	00407D00
+	balc	fn00407D00
 	bnec	r0,r4,00407C66
 
 l00407BB0:
 	lbu	r4,00A7(sp)
 	addiu	r7,sp,FFFFF2A0
 	move	r22,r7
-	balc	00407D08
+	balc	fn00407D08
 	beqc	r0,r4,00407C66
 
 l00407BC0:
 	addiupc	r5,0000A3F4
 	addiu	r4,sp,000000A0
-	balc	00407D04
+	balc	fn00407D04
 	beqzc	r4,00407BF6
 
 l00407BCA:
@@ -16092,7 +16092,7 @@ l00407BD6:
 	addiu	r18,r4,00000006
 	li	r6,0000000A
 	addiu	r5,sp,0000000C
-	move.balc	r4,r18,0040A022
+	move.balc	r4,r18,__strtoul_internal
 	lw	r7,0D6C(r22)
 	beqc	r18,r7,00407BF6
 
@@ -16107,7 +16107,7 @@ l00407BF2:
 l00407BF6:
 	addiupc	r5,0000A3C6
 	addiu	r4,sp,000000A0
-	balc	00407D04
+	balc	fn00407D04
 	beqzc	r4,00407C2A
 
 l00407C00:
@@ -16119,7 +16119,7 @@ l00407C0C:
 	addiu	r18,r4,00000009
 	li	r6,0000000A
 	addiu	r5,sp,0000000C
-	move.balc	r4,r18,0040A022
+	move.balc	r4,r18,__strtoul_internal
 	lw	r17,000C(sp)
 	beqc	r18,r7,00407C2A
 
@@ -16134,7 +16134,7 @@ l00407C26:
 l00407C2A:
 	addiupc	r5,0000A39E
 	addiu	r4,sp,000000A0
-	balc	00407D04
+	balc	fn00407D04
 	beqc	r0,r4,00407B8C
 
 l00407C36:
@@ -16149,7 +16149,7 @@ l00407C46:
 	addiu	r18,r4,00000008
 	li	r6,0000000A
 	addiu	r5,sp,0000000C
-	move.balc	r4,r18,0040A022
+	move.balc	r4,r18,__strtoul_internal
 	lw	r17,000C(sp)
 	beqc	r18,r7,00407B8C
 
@@ -16166,12 +16166,12 @@ l00407C66:
 	li	r6,0000000A
 	addiupc	r5,0000A36C
 	addiu	r4,sp,000000A0
-	balc	00407D00
+	balc	fn00407D00
 	bnezc	r4,00407CB4
 
 l00407C72:
 	lbu	r4,00AA(sp)
-	balc	00407D08
+	balc	fn00407D08
 	beqzc	r4,00407CB4
 
 l00407C7A:
@@ -16180,7 +16180,7 @@ l00407C7A:
 
 l00407C82:
 	lbu	r4,0000(r5)
-	balc	00407D08
+	balc	fn00407D08
 	bnezc	r4,00407CA6
 
 l00407C88:
@@ -16197,7 +16197,7 @@ l00407C90:
 	mul	r4,r4,r17
 	move	r6,r0
 	addu	r4,r16,r4
-	balc	00406B50
+	balc	__lookup_ipliteral
 	bgec	r0,r4,00407B8C
 
 l00407CA2:
@@ -16209,7 +16209,7 @@ l00407CA6:
 	bc	00407C82
 
 l00407CAA:
-	balc	00407D08
+	balc	fn00407D08
 	bnezc	r4,00407C90
 
 l00407CAE:
@@ -16224,35 +16224,35 @@ l00407CB8:
 	li	r6,00000006
 	addiupc	r5,0000A326
 	addiu	r4,sp,000000A0
-	balc	00407D00
+	balc	fn00407D00
 	bnezc	r4,00407CEC
 
 l00407CC4:
 	lbu	r4,00A6(sp)
 	addiu	r18,sp,000000A7
-	balc	00407D08
+	balc	fn00407D08
 	beqc	r0,r4,00407B8C
 
 l00407CD2:
 	lbu	r4,0000(r18)
-	balc	00407D08
+	balc	fn00407D08
 	bnezc	r4,00407CFC
 
 l00407CD8:
-	move.balc	r4,r18,0040A890
+	move.balc	r4,r18,strlen
 	bgeuc	r4,r21,00407B8C
 
 l00407CE0:
 	addiu	r6,r4,00000001
 	movep	r4,r5,r20,r18
-	balc	0040A130
+	balc	memcpy
 	bc	00407B8C
 
 l00407CEC:
 	li	r6,00000006
 	addiupc	r5,0000A2FA
 	addiu	r4,sp,000000A0
-	balc	00407D00
+	balc	fn00407D00
 	bnec	r0,r4,00407B8C
 
 l00407CFA:
@@ -16269,7 +16269,7 @@ l00407CFC:
 ;;     00407CC0 (in __get_resolv_conf)
 ;;     00407CF4 (in __get_resolv_conf)
 fn00407D00 proc
-	bc	0040A8E0
+	bc	strncmp
 
 ;; fn00407D04: 00407D04
 ;;   Called from:
@@ -16277,7 +16277,7 @@ fn00407D00 proc
 ;;     00407BFC (in __get_resolv_conf)
 ;;     00407C30 (in __get_resolv_conf)
 fn00407D04 proc
-	bc	0040AC28
+	bc	strstr
 
 ;; fn00407D08: 00407D08
 ;;   Called from:
@@ -16288,7 +16288,7 @@ fn00407D04 proc
 ;;     00407CCC (in __get_resolv_conf)
 ;;     00407CD4 (in __get_resolv_conf)
 fn00407D08 proc
-	bc	00407AF0
+	bc	__isspace
 00407D0C                                     00 00 00 00             ....
 
 ;; send: 00407D10
@@ -16297,7 +16297,7 @@ fn00407D08 proc
 send proc
 	move	r9,r0
 	move	r8,r0
-	bc	00407D40
+	bc	sendto
 00407D18                         00 00 00 00 00 00 00 00         ........
 
 ;; sendmsg: 00407D20
@@ -16311,9 +16311,9 @@ sendmsg proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000D3
-	balc	0040ADA4
+	balc	__syscall_cp
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00407D3C                                     00 00 00 00             ....
 
 ;; sendto: 00407D40
@@ -16332,9 +16332,9 @@ sendto proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000CE
-	balc	0040ADA4
+	balc	__syscall_cp
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00407D5E                                           00 00               ..
 
 ;; setsockopt: 00407D60
@@ -16361,9 +16361,9 @@ setsockopt proc
 	move	r6,r5
 	move	r5,r4
 	addiu	r4,r0,000000D0
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00407D7E                                           00 00               ..
 
 ;; socket: 00407D80
@@ -16386,13 +16386,13 @@ socket proc
 	addiu	r4,r0,000000C6
 	movep	r7,r8,r19,r0
 	movep	r5,r6,r18,r17
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	move	r16,r4
 	bgec	r4,r0,00407E00
 
 l00407DA0:
-	balc	004049B0
+	balc	__errno_location
 	lw	r7,0000(r4)
 	bneiuc	r7,00000016,00407DF6
 
@@ -16408,8 +16408,8 @@ l00407DB4:
 	and	r6,r6,r17
 	movep	r7,r8,r19,r0
 	addiu	r4,r0,000000C6
-	move.balc	r5,r18,00404A50
-	balc	0040CC30
+	move.balc	r5,r18,__syscall
+	balc	__syscall_ret
 	move	r16,r4
 	bltc	r4,r0,00407E00
 
@@ -16421,7 +16421,7 @@ l00407DD8:
 	li	r7,00000001
 	li	r6,00000002
 	li	r4,00000019
-	balc	00404A50
+	balc	__syscall
 
 l00407DE4:
 	bbeqzc	r17,00000007,00407E00
@@ -16430,11 +16430,11 @@ l00407DE8:
 	addiu	r7,r0,00000800
 	li	r6,00000004
 	li	r4,00000019
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	bc	00407E00
 
 l00407DF6:
-	balc	004049B0
+	balc	__errno_location
 	lw	r7,0000(r4)
 	beqic	r7,0000001D,00407DAA
 
@@ -16449,9 +16449,9 @@ l00407E00:
 sched_yield proc
 	save	00000010,ra,00000001
 	li	r4,0000007C
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 
 ;; poll: 00407E20
 ;;   Called from:
@@ -16479,8 +16479,8 @@ l00407E42:
 	addiu	r9,r0,00000008
 	move	r8,r0
 	li	r4,00000049
-	balc	0040ADA4
-	balc	0040CC30
+	balc	__syscall_cp
+	balc	__syscall_ret
 	restore.jrc	00000020,ra,00000001
 00407E5A                               00 00 00 00 00 00           ......
 
@@ -16527,7 +16527,7 @@ __block_all_sigs proc
 	addiupc	r6,0000B03E
 	move	r5,r0
 	addiu	r4,r0,00000087
-	bc	00404A50
+	bc	__syscall
 
 ;; __block_app_sigs: 00407EB4
 ;;   Called from:
@@ -16539,7 +16539,7 @@ __block_app_sigs proc
 	addiupc	r6,0000B01A
 	move	r5,r0
 	addiu	r4,r0,00000087
-	bc	00404A50
+	bc	__syscall
 
 ;; __restore_sigs: 00407EC8
 ;;   Called from:
@@ -16550,7 +16550,7 @@ __restore_sigs proc
 	addiu	r8,r0,00000008
 	li	r5,00000002
 	addiu	r4,r0,00000087
-	bc	00404A50
+	bc	__syscall
 00407ED8                         00 00 00 00 00 00 00 00         ........
 
 ;; raise: 00407EE0
@@ -16560,16 +16560,16 @@ raise proc
 	save	00000090,ra,00000002
 	move	r16,r4
 	move	r4,sp
-	balc	00407EB4
+	balc	__block_app_sigs
 	addiu	r4,r0,000000B2
-	balc	00404A50
+	balc	__syscall
 	movep	r5,r6,r4,r16
 	addiu	r4,r0,00000082
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	move	r16,r4
 	move	r4,sp
-	balc	00407EC8
+	balc	__restore_sigs
 	move	r4,r16
 	restore.jrc	00000090,ra,00000002
 00407F0C                                     00 00 00 00             ....
@@ -16584,16 +16584,16 @@ setitimer proc
 	move	r6,r5
 	move	r5,r4
 	li	r4,00000067
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 00407F26                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; __get_handler_set: 00407F30
 __get_handler_set proc
 	li	r6,00000008
 	addiupc	r5,0002AA4A
-	bc	0040A130
+	bc	memcpy
 
 ;; __libc_sigaction: 00407F3A
 ;;   Called from:
@@ -16645,7 +16645,7 @@ l00407F84:
 	li	r5,00000001
 	addiu	r4,r0,00000087
 	sw	r0,0000(sp)
-	balc	00404A50
+	balc	__syscall
 	li	r7,00000001
 	swpc	r7,00432988
 
@@ -16667,7 +16667,7 @@ l00407FC4:
 	move	r7,r6
 	li	r6,00000008
 	sw	r7,0018(sp)
-	balc	0040A130
+	balc	memcpy
 	addiu	r6,sp,00000008
 
 l00407FD2:
@@ -16680,8 +16680,8 @@ l00407FD6:
 l00407FD8:
 	addiu	r8,r0,00000008
 	addiu	r4,r0,00000086
-	move.balc	r5,r18,00404A50
-	balc	0040CC30
+	move.balc	r5,r18,__syscall
+	balc	__syscall_ret
 	li	r7,FFFFFFFF
 	bnezc	r4,00408006
 
@@ -16697,7 +16697,7 @@ l00407FF0:
 	sw	r7,0000(sp)
 	lw	r17,0020(sp)
 	sw	r7,0084(r16)
-	balc	0040A130
+	balc	memcpy
 	move	r7,r0
 
 l00408006:
@@ -16719,10 +16719,10 @@ l00408016:
 
 l0040801C:
 	restore	00000010,ra,00000001
-	bc	00407F3A
+	bc	__libc_sigaction
 
 l00408024:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -16743,7 +16743,7 @@ sigemptyset proc
 ;;     0040238C (in setup)
 sigprocmask proc
 	save	00000010,ra,00000002
-	balc	0040AE70
+	balc	pthread_sigmask
 	move	r16,r4
 	bnezc	r4,0040804E
 
@@ -16752,7 +16752,7 @@ l0040804A:
 	restore.jrc	00000010,ra,00000002
 
 l0040804E:
-	balc	004049B0
+	balc	__errno_location
 	sw	r16,0000(r4)
 	li	r16,FFFFFFFF
 	bc	0040804A
@@ -16783,13 +16783,13 @@ __fopen_rb_ca proc
 	movep	r18,r17,r6,r7
 	movep	r4,r5,r16,r0
 	addiu	r6,r0,00000090
-	balc	0040A690
+	balc	memset
 	addiu	r5,r0,FFFFFF9C
 	lui	r7,00000088
 	move	r6,r19
 	li	r4,00000038
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	move	r5,r4
 	sw	r4,003C(sp)
 	bltc	r4,r0,004080CE
@@ -16799,7 +16799,7 @@ l0040809C:
 	li	r6,00000002
 	li	r4,00000019
 	addiu	r18,r18,00000008
-	balc	00404A50
+	balc	__syscall
 	li	r7,00000009
 	sw	r7,0000(sp)
 	addiupc	r7,00000050
@@ -16834,12 +16834,12 @@ __aio_close proc
 __stdio_close proc
 	save	00000010,ra,00000001
 	lw	r4,003C(r4)
-	balc	004080E0
+	balc	__aio_close
 	move	r5,r4
 	li	r4,00000039
-	balc	00404A50
+	balc	__syscall
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 004080FA                               00 00 00 00 00 00           ......
 
 ;; __stdio_read: 00408100
@@ -16859,8 +16859,8 @@ __stdio_read proc
 	sw	r18,0000(sp)
 	sw	r7,0008(sp)
 	li	r7,00000002
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	bltc	r0,r4,0040813E
 
 l0040812C:
@@ -16908,8 +16908,8 @@ __stdio_seek proc
 	lw	r5,003C(r4)
 	addiu	r8,sp,00000008
 	li	r4,0000003E
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	bgec	r4,r0,00408194
 
 l0040818C:
@@ -16942,11 +16942,11 @@ l004081A6:
 
 l004081B0:
 	lwpc	r4,00430300
-	balc	004081A0
+	balc	fflush_unlocked
 	move	r17,r4
 
 l004081BA:
-	balc	00408610
+	balc	__ofl_lock
 	lw	r16,0000(r4)
 	bc	004081C4
 
@@ -16962,12 +16962,12 @@ l004081C6:
 	bgeuc	r6,r7,004081C2
 
 l004081CE:
-	move.balc	r4,r16,004081A0
+	move.balc	r4,r16,fflush_unlocked
 	or	r17,r17,r4
 	bc	004081C2
 
 l004081D6:
-	balc	00408620
+	balc	__ofl_unlock
 
 l004081DA:
 	move	r4,r17
@@ -16979,7 +16979,7 @@ l004081DE:
 	bltc	r7,r0,004081EE
 
 l004081E8:
-	balc	0040D1D0
+	balc	__lockfile
 	move	r17,r4
 
 l004081EE:
@@ -16999,7 +16999,7 @@ l00408202:
 	beqzc	r17,00408208
 
 l00408204:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 
 l00408208:
 	li	r17,FFFFFFFF
@@ -17027,7 +17027,7 @@ l00408224:
 
 l00408230:
 	move	r17,r0
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 	bc	004081DA
 00408238                         00 00 00 00 00 00 00 00         ........
 
@@ -17047,7 +17047,7 @@ fgets_unlocked proc
 	bltc	r7,r0,00408256
 
 l00408250:
-	move.balc	r4,r6,0040D1D0
+	move.balc	r4,r6,__lockfile
 	move	r21,r4
 
 l00408256:
@@ -17063,7 +17063,7 @@ l00408260:
 	beqc	r0,r21,00408276
 
 l00408272:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 
 l00408276:
 	move	r17,r0
@@ -17083,7 +17083,7 @@ l00408284:
 	bc	004082D6
 
 l0040828A:
-	move.balc	r4,r16,0040D3E0
+	move.balc	r4,r16,__uflow
 	bgec	r4,r0,004082AC
 
 l00408292:
@@ -17104,7 +17104,7 @@ l004082A0:
 	beqc	r0,r21,00408280
 
 l004082A6:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 	bc	00408280
 
 l004082AC:
@@ -17123,7 +17123,7 @@ l004082C0:
 	li	r5,0000000A
 	lw	r6,0008(r16)
 	subu	r6,r6,r4
-	balc	0040A050
+	balc	memchr
 	lw	r7,0004(r16)
 	move	r22,r4
 	beqzc	r4,00408284
@@ -17141,7 +17141,7 @@ l004082E0:
 	move	r4,r17
 	move	r6,r18
 	addu	r17,r17,r18
-	balc	0040A130
+	balc	memcpy
 	lw	r7,0004(r16)
 	subu	r20,r20,r18
 	addu	r7,r7,r18
@@ -17173,7 +17173,7 @@ flockfile proc
 	move	r16,r4
 
 l00408314:
-	move.balc	r4,r16,0040845C
+	move.balc	r4,r16,ftrylockfile
 	beqzc	r4,00408330
 
 l0040831A:
@@ -17184,7 +17184,7 @@ l00408320:
 	li	r7,00000001
 	addiu	r5,r16,00000050
 	addiu	r4,r16,0000004C
-	balc	0040ADB0
+	balc	__wait
 	bc	00408314
 
 l00408330:
@@ -17220,7 +17220,7 @@ fprintf proc
 	li	r7,00000040
 	swm	r10,0038(sp),00000002
 	sb	r7,000D(sp)
-	balc	004099EE
+	balc	vfprintf
 	restore	00000020,ra,00000001
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -17249,10 +17249,10 @@ l00408390:
 l00408398:
 	movep	r4,r5,r16,r18
 	restore	00000020,ra,00000005
-	bc	0040D250
+	bc	__overflow
 
 l004083A2:
-	move.balc	r4,r16,0040D1D0
+	move.balc	r4,r16,__lockfile
 	beqzc	r4,00408390
 
 l004083A8:
@@ -17269,7 +17269,7 @@ l004083B8:
 	sb	r19,0000(r7)
 
 l004083C0:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 	bc	004083D6
 
 l004083C6:
@@ -17287,7 +17287,7 @@ l004083D6:
 
 l004083DA:
 	movep	r4,r5,r16,r18
-	balc	0040D250
+	balc	__overflow
 	move	r17,r4
 	bc	004083C0
 004083E4             00 00 00 00 00 00 00 00 00 00 00 00     ............
@@ -17307,11 +17307,11 @@ l004083DA:
 fputs_unlocked proc
 	save	00000010,ra,00000004
 	movep	r17,r18,r4,r5
-	balc	0040A890
+	balc	strlen
 	li	r5,00000001
 	move	r16,r4
 	movep	r6,r7,r16,r18
-	move.balc	r4,r17,0040857C
+	move.balc	r4,r17,fwrite_unlocked
 	xor	r4,r4,r16
 	sltu	r4,r0,r4
 	subu	r4,r0,r4
@@ -17452,11 +17452,11 @@ l004084EC:
 	restore.jrc	00000010,ra,00000002
 
 l004084F4:
-	balc	00408432
+	balc	__unlist_locked_file
 	move	r4,r16
 	sw	r0,0044(r16)
 	restore	00000010,ra,00000002
-	bc	0040D210
+	bc	__unlockfile
 00408506                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; __fwritex: 00408510
@@ -17484,7 +17484,7 @@ l00408524:
 	jrc	r7
 
 l00408530:
-	move.balc	r4,r6,0040D3A0
+	move.balc	r4,r6,__towrite
 	beqzc	r4,0040851A
 
 l00408536:
@@ -17528,7 +17528,7 @@ l00408566:
 l0040856A:
 	lw	r4,0014(r16)
 	movep	r5,r6,r19,r18
-	balc	0040A130
+	balc	memcpy
 	lw	r7,0014(r16)
 	addu	r4,r18,r17
 	addu	r7,r7,r18
@@ -17556,17 +17556,17 @@ l00408590:
 	bltc	r7,r0,0040859A
 
 l00408594:
-	move.balc	r4,r17,0040D1D0
+	move.balc	r4,r17,__lockfile
 	move	r21,r4
 
 l0040859A:
 	movep	r5,r6,r20,r17
-	move.balc	r4,r19,00408510
+	move.balc	r4,r19,__fwritex
 	move	r19,r4
 	beqc	r0,r21,004085AA
 
 l004085A6:
-	move.balc	r4,r17,0040D210
+	move.balc	r4,r17,__unlockfile
 
 l004085AA:
 	beqc	r20,r19,004085B2
@@ -17596,10 +17596,10 @@ l004085CC:
 l004085D4:
 	move	r4,r16
 	restore	00000010,ra,00000003
-	bc	0040D3E0
+	bc	__uflow
 
 l004085DE:
-	balc	0040D1D0
+	balc	__lockfile
 	beqzc	r4,004085CC
 
 l004085E4:
@@ -17613,7 +17613,7 @@ l004085EC:
 	lbu	r17,0000(r7)
 
 l004085F4:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 	bc	00408602
 
 l004085FA:
@@ -17626,7 +17626,7 @@ l00408602:
 	restore.jrc	00000010,ra,00000003
 
 l00408606:
-	move.balc	r4,r16,0040D3E0
+	move.balc	r4,r16,__uflow
 	move	r17,r4
 	bc	004085F4
 0040860E                                           00 00               ..
@@ -17638,7 +17638,7 @@ l00408606:
 __ofl_lock proc
 	save	00000010,ra,00000001
 	addiupc	r4,0002A38A
-	balc	0040AD30
+	balc	__lock
 	addiupc	r4,0002A38A
 	restore.jrc	00000010,ra,00000001
 
@@ -17647,7 +17647,7 @@ __ofl_lock proc
 ;;     004081D6 (in fflush_unlocked)
 __ofl_unlock proc
 	addiupc	r4,0002A37C
-	bc	0040AD60
+	bc	__unlock
 00408628                         00 00 00 00 00 00 00 00         ........
 
 ;; perror: 00408630
@@ -17665,15 +17665,15 @@ perror proc
 	save	00000020,ra,00000005
 	lwpc	r16,00412EF0
 	move	r17,r4
-	balc	004049B0
+	balc	__errno_location
 	lw	r4,0000(r4)
-	balc	004049EA
+	balc	strerror
 	lw	r7,004C(r16)
 	move	r18,r4
 	bltc	r7,r0,00408694
 
 l0040864E:
-	move.balc	r4,r16,0040D1D0
+	move.balc	r4,r16,__lockfile
 	move	r19,r4
 	beqzc	r17,00408674
 
@@ -17682,45 +17682,45 @@ l00408656:
 	beqzc	r7,00408674
 
 l0040865A:
-	move.balc	r4,r17,0040A890
+	move.balc	r4,r17,strlen
 	move	r7,r16
 	move	r5,r4
 	li	r6,00000001
-	move.balc	r4,r17,0040857C
+	move.balc	r4,r17,fwrite_unlocked
 	li	r4,0000003A
-	move.balc	r5,r16,00408380
+	move.balc	r5,r16,fputc
 	li	r4,00000020
-	move.balc	r5,r16,00408380
+	move.balc	r5,r16,fputc
 
 l00408674:
-	move.balc	r4,r18,0040A890
+	move.balc	r4,r18,strlen
 	move	r7,r16
 	move	r5,r4
 	li	r6,00000001
-	move.balc	r4,r18,0040857C
+	move.balc	r4,r18,fwrite_unlocked
 	li	r4,0000000A
-	move.balc	r5,r16,00408380
+	move.balc	r5,r16,fputc
 	beqzc	r19,004086B2
 
 l0040868A:
 	move	r4,r16
 	restore	00000020,ra,00000005
-	bc	0040D210
+	bc	__unlockfile
 
 l00408694:
 	move	r19,r0
 	bnezc	r17,00408656
 
 l00408698:
-	balc	0040A890
+	balc	strlen
 	move	r7,r16
 	move	r5,r4
 	li	r6,00000001
-	move.balc	r4,r18,0040857C
+	move.balc	r4,r18,fwrite_unlocked
 	move	r5,r16
 	li	r4,0000000A
 	restore	00000020,ra,00000005
-	bc	00408380
+	bc	fputc
 
 l004086B2:
 	restore.jrc	00000020,ra,00000005
@@ -17766,7 +17766,7 @@ printf proc
 	swm	r9,0034(sp),00000002
 	sw	r11,003C(sp)
 	sb	r7,000D(sp)
-	balc	004099EE
+	balc	vfprintf
 	restore	00000020,ra,00000001
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -17789,10 +17789,10 @@ l00408710:
 l00408718:
 	movep	r4,r5,r16,r18
 	restore	00000020,ra,00000005
-	bc	0040D250
+	bc	__overflow
 
 l00408722:
-	move.balc	r4,r16,0040D1D0
+	move.balc	r4,r16,__lockfile
 	beqzc	r4,00408710
 
 l00408728:
@@ -17809,7 +17809,7 @@ l00408738:
 	sb	r19,0000(r7)
 
 l00408740:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 	bc	00408756
 
 l00408746:
@@ -17827,7 +17827,7 @@ l00408756:
 
 l0040875A:
 	movep	r4,r5,r16,r18
-	balc	0040D250
+	balc	__overflow
 	move	r17,r4
 	bc	00408740
 00408764             00 00 00 00 00 00 00 00 00 00 00 00     ............
@@ -17841,7 +17841,7 @@ l0040875A:
 ;;     004033EE (in fn004033EE)
 putchar proc
 	lwpc	r5,00412EF4
-	bc	00408380
+	bc	fputc
 0040877A                               00 00 00 00 00 00           ......
 
 ;; puts: 00408780
@@ -17859,12 +17859,12 @@ puts proc
 	bltc	r7,r0,0040879A
 
 l00408794:
-	move.balc	r4,r16,0040D1D0
+	move.balc	r4,r16,__lockfile
 	move	r18,r4
 
 l0040879A:
 	movep	r4,r5,r17,r16
-	balc	004083F0
+	balc	fputs_unlocked
 	li	r17,00000001
 	bltc	r4,r0,004087C0
 
@@ -17888,7 +17888,7 @@ l004087C0:
 	beqzc	r18,004087CA
 
 l004087C6:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 
 l004087CA:
 	move	r4,r17
@@ -17896,7 +17896,7 @@ l004087CA:
 
 l004087CE:
 	li	r5,0000000A
-	move.balc	r4,r16,0040D250
+	move.balc	r4,r16,__overflow
 	srl	r17,r4,0000001F
 	bc	004087C0
 004087DA                               00 00 00 00 00 00           ......
@@ -17908,7 +17908,7 @@ setbuf proc
 	movn	r6,r0,r5
 
 l004087EA:
-	bc	004087F0
+	bc	setvbuf
 004087EE                                           00 00               ..
 
 ;; setvbuf: 004087F0
@@ -17961,7 +17961,7 @@ snprintf proc
 	sb	r7,000D(sp)
 	move	r7,sp
 	sw	r11,003C(sp)
-	balc	00409B10
+	balc	vsnprintf
 	restore	00000020,ra,00000001
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -17986,7 +17986,7 @@ sprintf proc
 	li	r7,00000040
 	swm	r10,0038(sp),00000002
 	sb	r7,000D(sp)
-	balc	00409B70
+	balc	vsprintf
 	restore	00000020,ra,00000001
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -18010,7 +18010,7 @@ __isoc99_sscanf proc
 	li	r7,00000040
 	swm	r10,0038(sp),00000002
 	sb	r7,000D(sp)
-	balc	00409B94
+	balc	__isoc99_vsscanf
 	restore	00000020,ra,00000001
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -18030,14 +18030,14 @@ l004088E8:
 	move	r7,r0
 	li	r6,0000000A
 	movep	r4,r5,r16,r18
-	balc	0040ED50
+	balc	__umoddi3
 	addiu	r17,r17,FFFFFFFF
 	addiu	r4,r4,00000030
 	sb	r4,0000(r17)
 	li	r6,0000000A
 	movep	r4,r5,r16,r18
 	move	r7,r0
-	balc	0040EAB0
+	balc	__udivdi3
 	movep	r16,r18,r4,r5
 
 l00408906:
@@ -18130,7 +18130,7 @@ out proc
 
 l0040896E:
 	move	r6,r7
-	bc	00408510
+	bc	__fwritex
 
 l00408974:
 	jrc	ra
@@ -18218,14 +18218,14 @@ l00408B38:
 l00408B48:
 	move	r18,r16
 	move	r6,r7
-	balc	0040A690
+	balc	memset
 	bc	00408B5E
 
 l00408B52:
 	addiu	r6,r6,00000001
 	move	r5,sp
 	addiu	r16,r16,FFFFFF00
-	move.balc	r4,r17,00408962
+	move.balc	r4,r17,out
 
 l00408B5E:
 	addiu	r6,r0,000000FF
@@ -18234,7 +18234,7 @@ l00408B5E:
 l00408B66:
 	andi	r6,r18,000000FF
 	move	r5,sp
-	move.balc	r4,r17,00408962
+	move.balc	r4,r17,out
 
 l00408B6E:
 	restore.jrc	00000110,ra,00000004
@@ -18263,7 +18263,7 @@ fn00408B86 proc
 	lw	r17,0004(sp)
 	li	r7,7FFFFFFF
 	subu	r7,r7,r6
-	bltc	r7,r22,00408D8E
+	bltc	r7,r22,fn00408D8E
 
 l00408B94:
 	lw	r5,004C(sp)
@@ -18332,17 +18332,17 @@ l00408BEE:
 	subu	r22,r22,r21
 	subu	r7,r20,r7
 	sw	r7,0008(sp)
-	bltc	r7,r22,00408D8E
+	bltc	r7,r22,fn00408D8E
 
 l00408C04:
 	beqzc	r16,00408C0C
 
 l00408C06:
 	movep	r5,r6,r21,r22
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 
 l00408C0C:
-	bnec	r0,r22,00408B86
+	bnec	r0,r22,fn00408B86
 
 l00408C10:
 	lw	r17,004C(sp)
@@ -18485,7 +18485,7 @@ l00408D1A:
 	bnec	r0,r16,00408E12
 
 l00408D1E:
-	bc	00408B86
+	bc	fn00408B86
 
 l00408D20:
 	addiu	r7,r7,00000001
@@ -18506,7 +18506,7 @@ l00408D36:
 	beqzc	r7,00408D48
 
 l00408D3A:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 
 l00408D40:
@@ -18553,7 +18553,7 @@ l00408D76:
 
 l00408D82:
 	addiu	r4,sp,0000004C
-	balc	00408924
+	balc	getint
 	sw	r4,0000(sp)
 	bgec	r4,r0,00408C96
 
@@ -18573,7 +18573,7 @@ l00408D82:
 ;;     004098A2 (in fn00409170)
 ;;     004099CA (in fn00408B86)
 fn00408D8E proc
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000004B
 	bc	00408D40
 
@@ -18620,7 +18620,7 @@ l00408DD0:
 	addiu	r7,r7,00000001
 	addiu	r4,sp,0000004C
 	sw	r7,004C(sp)
-	balc	00408924
+	balc	getint
 	addiu	r30,r0,00000001
 	move	r18,r4
 	bc	00408CE2
@@ -18654,7 +18654,7 @@ l00408E04:
 l00408E0A:
 	lw	r17,000C(sp)
 	addiu	r4,sp,00000058
-	balc	00408976
+	balc	pop_arg
 
 l00408E12:
 	lw	r17,004C(sp)
@@ -18720,33 +18720,33 @@ l00408FC8:
 
 l00408FD8:
 	lw	r17,0008(sp)
-	bltc	r7,r18,00408D8E
+	bltc	r7,r18,fn00408D8E
 
 l00408FDE:
 	movep	r7,r8,r20,r17
 	move	r6,r18
 	li	r5,00000020
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	movep	r5,r6,r23,r22
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	lui	r8,00000010
 	movep	r6,r7,r18,r20
 	xor	r8,r17,r8
 	li	r5,00000030
 	move	r22,r18
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	move	r6,r30
 	movep	r7,r8,r19,r0
 	li	r5,00000030
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	movep	r5,r6,r21,r19
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	addiu	r8,r0,00002000
 	xor	r8,r17,r8
 	li	r5,00000020
 	movep	r6,r7,r18,r20
-	move.balc	r4,r16,00408B22
-	bc	00408B86
+	move.balc	r4,r16,pad
+	bc	fn00408B86
 00409024             F6 34 20 82 10 E4 E0 06 C6 8F 01 D1     .4 .........
 00409030 EE 71 BD 02 B7 00 FD 84 B7 10 71 1B FF 2B 71 B9 .q........q..+q.
 00409040 40 16 FF 2B A5 B9 A4 12 B2 80 00 40 E0 60 FF FF @..+.......@.`..
@@ -18765,7 +18765,7 @@ l004090C2:
 	move	r7,r19
 	xor	r8,r17,r8
 	li	r5,00000020
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	lw	r17,0000(sp)
 	slt	r22,r7,r19
 	movn	r7,r19,r22
@@ -18830,11 +18830,11 @@ l004091BA:
 	move	r7,r11
 	swm	r10,0010(sp),00000002
 	movep	r4,r5,r22,r21
-	balc	0040FAE0
+	balc	__subdf3
 	lwm	r10,0010(sp),00000002
 	movep	r6,r7,r4,r5
 	move	r5,r11
-	move.balc	r4,r10,0040EFC0
+	move.balc	r4,r10,__adddf3
 	move	r21,r4
 	xor	r20,r20,r5
 
@@ -18846,7 +18846,7 @@ l004091E4:
 	xor	r7,r7,r4
 	subu	r4,r7,r4
 	sra	r5,r4,0000001F
-	balc	004088E0
+	balc	fmt_u
 	bnec	r4,r22,0040920A
 
 l00409200:
@@ -18872,22 +18872,22 @@ l0040921E:
 l0040922C:
 	movep	r4,r5,r21,r20
 	sw	r21,0034(sp)
-	balc	004046C0
+	balc	__fixdfsi
 	addiupc	r7,00009E08
 	lw	r17,0030(sp)
 	lbux	r7,r4(r7)
 	addiu	r19,r30,00000001
 	or	r7,r7,r6
 	sb	r7,0000(r30)
-	balc	00410170
+	balc	__floatsidf
 	lw	r18,0034(sp)
 	movep	r6,r7,r4,r5
 	move	r4,r11
-	move.balc	r5,r20,0040FAE0
+	move.balc	r5,r20,__subdf3
 	lw	r17,0024(sp)
 	lw	r6,0268(r7)
 	lw	r7,026C(r7)
-	balc	00404330
+	balc	__muldf3
 	subu	r7,r19,r22
 	movep	r11,r23,r4,r5
 	move	r21,r11
@@ -18898,7 +18898,7 @@ l00409272:
 	move	r4,r11
 	movep	r6,r7,r0,r0
 	sw	r11,0034(sp)
-	move.balc	r5,r23,0040FA70
+	move.balc	r5,r23,__nedf2
 	lw	r18,0034(sp)
 	bnezc	r4,00409288
 
@@ -18916,7 +18916,7 @@ l00409288:
 l00409292:
 	movep	r6,r7,r0,r0
 	move	r4,r11
-	move.balc	r5,r23,0040FA70
+	move.balc	r5,r23,__nedf2
 	bnec	r0,r4,004093F6
 
 l0040929E:
@@ -18926,7 +18926,7 @@ l0040929E:
 	li	r7,7FFFFFFD
 	subu	r7,r7,r23
 	subu	r7,r7,r6
-	bltc	r7,r18,00408D8E
+	bltc	r7,r18,fn00408D8E
 
 l004092B6:
 	subu	r19,r19,r22
@@ -18946,39 +18946,39 @@ l004092CE:
 	li	r5,00000020
 	addu	r21,r7,r20
 	movep	r7,r8,r21,r17
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	lw	r17,0008(sp)
 	lw	r17,0018(sp)
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	lw	r17,0000(sp)
 	lui	r8,00000010
 	move	r7,r21
 	xor	r8,r17,r8
 	li	r5,00000030
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	movep	r5,r6,r22,r19
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	subu	r6,r20,r23
 	movep	r7,r8,r0,r0
 	subu	r6,r6,r19
 	li	r5,00000030
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	lw	r17,0010(sp)
 	move	r6,r23
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	addiu	r8,r0,00002000
 	lw	r17,0000(sp)
 	move	r7,r21
 	xor	r8,r17,r8
 	li	r5,00000020
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	lw	r17,0000(sp)
 	slt	r22,r7,r21
 	movn	r7,r21,r22
 
 l00409330:
 	move	r22,r7
-	bc	00408B86
+	bc	fn00408B86
 00409336                   01 D3 C4 B4 C3 60 CB 8C 00 00       .....`....
 00409340 DF 19 F5 BC C0 04 D4 8C 73 82 20 20 80 06 D0 8C ........s.  ....
 00409350 B6 FE 66 22 10 A6 AC BC B6 BE 00 2A 12 67 0C 9A ..f".......*.g..
@@ -18994,7 +18994,7 @@ l004093C0:
 	move	r5,r11
 	lw	r6,0268(r7)
 	lw	r7,026C(r7)
-	move.balc	r4,r10,00404330
+	move.balc	r4,r10,__muldf3
 	movep	r10,r11,r4,r5
 	bc	004091AA
 
@@ -19005,11 +19005,11 @@ l004093D4:
 	move	r7,r11
 	movep	r4,r5,r21,r20
 	swm	r10,0010(sp),00000002
-	balc	0040EFC0
+	balc	__adddf3
 	lwm	r10,0010(sp),00000002
 	move	r6,r10
 	move	r7,r11
-	balc	0040FAE0
+	balc	__subdf3
 	movep	r21,r20,r4,r5
 	bc	004091E4
 
@@ -19029,7 +19029,7 @@ l00409400:
 l0040940A:
 	movep	r6,r7,r0,r0
 	move	r5,r30
-	move.balc	r4,r23,0040FA70
+	move.balc	r4,r23,__nedf2
 	beqzc	r4,00409434
 
 l00409414:
@@ -19039,7 +19039,7 @@ l00409414:
 	move	r20,r30
 	lw	r7,0274(r7)
 	movep	r4,r5,r21,r20
-	balc	00404330
+	balc	__muldf3
 	lw	r17,0054(sp)
 	movep	r21,r20,r4,r5
 	addiu	r7,r7,FFFFFFE4
@@ -19062,23 +19062,23 @@ l00409446:
 	movep	r4,r5,r21,r20
 	sw	r2,0034(sp)
 	sw	r21,0030(sp)
-	balc	00410110
+	balc	__fixunsdfsi
 	sw	r4,0000(r30)
 	addiu	r30,r30,00000004
-	balc	004101D0
+	balc	__floatunsidf
 	lw	r18,0030(sp)
 	movep	r6,r7,r4,r5
 	move	r4,r11
-	move.balc	r5,r20,0040FAE0
+	move.balc	r5,r20,__subdf3
 	lui	r7,00000412
 	lw	r6,0278(r7)
 	lw	r7,027C(r7)
-	balc	00404330
+	balc	__muldf3
 	movep	r11,r8,r4,r5
 	movep	r21,r20,r4,r5
 	movep	r6,r7,r0,r0
 	move	r4,r11
-	move.balc	r5,r8,0040FA70
+	move.balc	r5,r8,__nedf2
 	lw	r16,0034(sp)
 	bnezc	r4,00409446
 
@@ -19250,7 +19250,7 @@ l004095A8:
 	move	r5,r0
 	sw	r3,0034(sp)
 	sw	r2,0038(sp)
-	balc	0040EA50
+	balc	__ashldi3
 	addu	r20,r20,r4
 	move	r7,r0
 	sltu	r4,r20,r4
@@ -19258,13 +19258,13 @@ l004095A8:
 	addu	r8,r4,r5
 	movep	r4,r5,r20,r8
 	sw	r8,0030(sp)
-	balc	0040ED50
+	balc	__umoddi3
 	lw	r18,0030(sp)
 	li	r6,3B9ACA00
 	sw	r4,0000(r21)
 	move	r7,r0
 	movep	r4,r5,r20,r8
-	balc	0040EAB0
+	balc	__udivdi3
 	addiu	r21,r21,FFFFFFFC
 	move	r20,r4
 	lw	r16,0034(sp)
@@ -19386,13 +19386,13 @@ l004096A4:
 	sw	r4,0034(sp)
 	sw	r2,0038(sp)
 	sw	r8,003C(sp)
-	balc	0040EFC0
+	balc	__adddf3
 	lw	r16,0030(sp)
 	lw	r19,0034(sp)
 	movep	r6,r7,r4,r5
 	move	r4,r12
 	move	r5,r3
-	balc	0040FA70
+	balc	__nedf2
 	beqzc	r4,004096FC
 
 l004096D0:
@@ -19536,7 +19536,7 @@ l004097B4:
 l004097B8:
 	li	r7,7FFFFFFE
 	subu	r5,r7,r6
-	bltc	r5,r18,00408D8E
+	bltc	r5,r18,fn00408D8E
 
 l004097C4:
 	addiu	r22,r18,00000001
@@ -19547,7 +19547,7 @@ l004097C4:
 	bneiuc	r20,00000026,0040985C
 
 l004097D8:
-	bltc	r7,r21,00408D8E
+	bltc	r7,r21,fn00408D8E
 
 l004097DC:
 	bgec	r0,r21,004097E2
@@ -19559,23 +19559,23 @@ l004097E2:
 	lw	r17,0010(sp)
 	li	r7,7FFFFFFF
 	subu	r7,r7,r6
-	bltc	r7,r22,00408D8E
+	bltc	r7,r22,fn00408D8E
 
 l004097F0:
 	addu	r19,r6,r22
 	lw	r17,0000(sp)
 	movep	r7,r8,r19,r17
 	li	r5,00000020
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	lw	r17,0010(sp)
 	lw	r17,0018(sp)
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	lui	r8,00000010
 	lw	r17,0000(sp)
 	xor	r8,r17,r8
 	move	r7,r19
 	li	r5,00000030
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	bneiuc	r20,00000026,0040991A
 
 l0040981C:
@@ -19600,7 +19600,7 @@ l00409832:
 l00409836:
 	li	r6,00000001
 	addiupc	r5,00007B00
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 
 l00409840:
 	bgeuc	r21,r30,00409848
@@ -19613,7 +19613,7 @@ l00409848:
 	move	r8,r0
 	addu	r6,r18,r7
 	li	r5,00000030
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	bc	004090C2
 
 l00409858:
@@ -19629,7 +19629,7 @@ l0040985C:
 	move	r6,r8
 	sra	r5,r4,0000001F
 	sw	r7,002C(sp)
-	balc	004099EA
+	balc	fn004099EA
 	lw	r18,0024(sp)
 	lw	r17,002C(sp)
 
@@ -19650,7 +19650,7 @@ l00409892:
 	subu	r8,r8,r6
 	sb	r21,-0001(r4)
 	sw	r6,002C(sp)
-	bltc	r7,r8,00408D8E
+	bltc	r7,r8,fn00408D8E
 
 l004098A6:
 	addu	r22,r22,r8
@@ -19666,7 +19666,7 @@ l004098B2:
 	addiu	r22,sp,00000081
 	lw	r4,0000(r21)
 	movep	r5,r6,r0,r22
-	balc	004099EA
+	balc	fn004099EA
 	move	r5,r4
 	bnec	r20,r21,004098D6
 
@@ -19690,7 +19690,7 @@ l004098D6:
 
 l004098DC:
 	subu	r6,r22,r5
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	addiu	r21,r21,00000004
 	bc	0040982A
 
@@ -19698,7 +19698,7 @@ l004098E8:
 	lw	r4,0000(r21)
 	move	r5,r0
 	addiu	r6,sp,00000081
-	balc	004099EA
+	balc	fn004099EA
 	move	r5,r4
 
 l004098F4:
@@ -19713,7 +19713,7 @@ l004098FA:
 l00409904:
 	move	r6,r7
 	addiu	r21,r21,00000004
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	addiu	r18,r18,FFFFFFF7
 	bc	00409840
 
@@ -19743,19 +19743,19 @@ l0040992C:
 	addu	r6,r18,r7
 	move	r8,r0
 	li	r5,00000030
-	move.balc	r4,r16,00408B22
+	move.balc	r4,r16,pad
 	lw	r17,002C(sp)
 	addiu	r6,sp,00000078
 	movep	r4,r5,r16,r7
 	subu	r6,r6,r7
-	balc	00408962
+	balc	out
 	bc	004090C2
 
 l00409948:
 	addiu	r20,sp,00000081
 	lw	r4,0000(r21)
 	movep	r5,r6,r0,r20
-	balc	004099EA
+	balc	fn004099EA
 	move	r5,r4
 	bnec	r4,r20,00409960
 
@@ -19771,7 +19771,7 @@ l00409960:
 l00409966:
 	li	r6,00000001
 	addiu	r22,r5,00000001
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	bnezc	r18,00409976
 
 l00409972:
@@ -19780,7 +19780,7 @@ l00409972:
 l00409976:
 	li	r6,00000001
 	addiupc	r5,000079C0
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	bc	00409990
 
 l00409982:
@@ -19801,7 +19801,7 @@ l00409990:
 l0040999E:
 	addiu	r21,r21,00000004
 	movep	r5,r6,r22,r7
-	move.balc	r4,r16,00408962
+	move.balc	r4,r16,out
 	subu	r18,r18,r20
 	bc	00409924
 004099AC                                     A7 12 67 12             ..g.
@@ -19812,7 +19812,7 @@ l004099B4:
 	lw	r17,000C(sp)
 	lsa	r4,r16,r7,00000003
 	addiu	r16,r16,00000001
-	balc	00408976
+	balc	pop_arg
 	beqic	r16,0000000A,004099CA
 
 l004099C6:
@@ -19843,7 +19843,7 @@ l004099E4:
 ;;     004098F0 (in fn00409170)
 ;;     00409950 (in fn00409170)
 fn004099EA proc
-	bc	004088E0
+	bc	fmt_u
 
 ;; vfprintf: 004099EE
 ;;   Called from:
@@ -19857,21 +19857,21 @@ vfprintf proc
 	addiu	r4,sp,00000018
 	li	r6,00000010
 	li	r17,FFFFFFFF
-	balc	0040A130
+	balc	memcpy
 	li	r6,00000028
 	move	r5,r0
 	addu	r4,sp,r6
-	balc	0040A690
+	balc	memset
 	li	r6,00000010
 	addiu	r5,sp,00000018
 	addiu	r4,sp,00000008
-	balc	0040A130
+	balc	memcpy
 	addiu	r7,sp,00000028
 	move	r8,r7
 	addiu	r6,sp,00000008
 	addiu	r7,sp,00000050
 	movep	r4,r5,r0,r21
-	balc	00408B72
+	balc	printf_core
 	bltc	r4,r0,00409AA8
 
 l00409A28:
@@ -19880,7 +19880,7 @@ l00409A28:
 	bltc	r7,r0,00409A38
 
 l00409A32:
-	move.balc	r4,r16,0040D1D0
+	move.balc	r4,r16,__lockfile
 	move	r20,r4
 
 l00409A38:
@@ -19915,7 +19915,7 @@ l00409A64:
 	move	r8,r7
 	addiu	r7,sp,00000050
 	movep	r4,r5,r16,r21
-	balc	00408B72
+	balc	printf_core
 	move	r17,r4
 	beqzc	r19,00409A90
 
@@ -19947,7 +19947,7 @@ l00409A9E:
 	beqc	r0,r20,00409AA8
 
 l00409AA4:
-	move.balc	r4,r16,0040D210
+	move.balc	r4,r16,__unlockfile
 
 l00409AA8:
 	move	r4,r17
@@ -19973,7 +19973,7 @@ l00409ACA:
 
 l00409ACE:
 	lw	r4,0000(r16)
-	balc	0040A130
+	balc	memcpy
 	lw	r7,0000(r16)
 	addu	r7,r7,r18
 	sw	r7,0000(sp)
@@ -19993,7 +19993,7 @@ l00409AEA:
 l00409AEE:
 	lw	r4,0000(r16)
 	movep	r5,r6,r20,r18
-	balc	0040A130
+	balc	memcpy
 	lw	r7,0000(r16)
 	addu	r7,r7,r18
 	sw	r7,0000(sp)
@@ -20024,7 +20024,7 @@ vsnprintf proc
 	movn	r17,r16,r18
 
 l00409B22:
-	move.balc	r5,r7,0040A130
+	move.balc	r5,r7,memcpy
 	move	r7,r0
 	sw	r17,0008(sp)
 	beqzc	r18,00409B30
@@ -20037,7 +20037,7 @@ l00409B30:
 	move	r5,r0
 	addiu	r4,sp,00000020
 	sw	r7,000C(sp)
-	balc	0040A690
+	balc	memset
 	addiupc	r7,FFFFFF6E
 	sw	r7,0044(sp)
 	li	r7,FFFFFFFF
@@ -20053,11 +20053,11 @@ l00409B58:
 	addiu	r6,sp,00000010
 	addiu	r4,sp,00000020
 	sb	r0,0000(r17)
-	move.balc	r5,r19,004099EE
+	move.balc	r5,r19,vfprintf
 	restore.jrc	000000D0,ra,00000005
 
 l00409B64:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000004B
 	sw	r7,0000(sp)
 	move	r4,r16
@@ -20072,17 +20072,17 @@ vsprintf proc
 	move	r5,r6
 	move	r4,sp
 	li	r6,00000010
-	balc	0040A130
+	balc	memcpy
 	move	r7,sp
 	move	r6,r17
 	li	r5,7FFFFFFF
-	move.balc	r4,r16,00409B10
+	move.balc	r4,r16,vsnprintf
 	restore.jrc	00000020,ra,00000003
 00409B8E                                           00 00               ..
 
 ;; do_read: 00409B90
 do_read proc
-	bc	0040D360
+	bc	__string_read
 
 ;; __isoc99_vsscanf: 00409B94
 ;;   Called from:
@@ -20093,11 +20093,11 @@ __isoc99_vsscanf proc
 	move	r5,r6
 	move	r4,sp
 	li	r6,00000010
-	balc	0040A130
+	balc	memcpy
 	addiu	r6,r0,00000090
 	move	r5,r0
 	addiu	r4,sp,00000010
-	balc	0040A690
+	balc	memset
 	addiupc	r7,FFFFFFDE
 	sw	r7,0030(sp)
 	move	r6,sp
@@ -20106,7 +20106,7 @@ __isoc99_vsscanf proc
 	sw	r16,003C(sp)
 	sw	r16,0064(sp)
 	sw	r7,005C(sp)
-	move.balc	r5,r17,0040D4A6
+	move.balc	r5,r17,__isoc99_vfscanf
 	restore.jrc	000000B0,ra,00000003
 00409BC6                   00 00 00 00 00 00 00 00 00 00       ..........
 
@@ -20256,12 +20256,12 @@ l00409C9E:
 	move	r16,r7
 	move	r17,r19
 	move	r21,r0
-	balc	0040A130
+	balc	memcpy
 
 l00409CAE:
 	move	r6,r16
 	lwm	r4,0000(r17),00000002
-	balc	0040A130
+	balc	memcpy
 	lw	r7,0000(r17)
 	addiu	r21,r21,00000001
 	addu	r7,r7,r16
@@ -20296,7 +20296,7 @@ l00409CDA:
 l00409CE4:
 	move	r6,r18
 	addiu	r5,sp,0000000C
-	move.balc	r4,r21,00409C78
+	move.balc	r4,r21,cycle
 	restore.jrc	00000110,ra,00000008
 
 l00409CF0:
@@ -20405,13 +20405,13 @@ l00409DA8:
 	addiu	r4,sp,00000004
 	swxs	r16,r20(r7)
 	move	r19,r0
-	balc	00409D32
+	balc	pntz
 	addiu	r20,r20,00000001
 	move	r17,r4
 	move	r5,r4
 	addiu	r4,sp,00000004
 	addu	r18,r18,r17
-	balc	00409C4C
+	balc	shr
 	move	r17,r16
 
 l00409DC6:
@@ -20428,10 +20428,10 @@ l00409DD0:
 l00409DD2:
 	move	r6,r20
 	addiu	r5,sp,0000000C
-	move.balc	r4,r22,00409C78
+	move.balc	r4,r22,cycle
 	movep	r7,r8,r18,r23
 	movep	r5,r6,r22,r21
-	move.balc	r4,r17,00409CCA
+	move.balc	r4,r17,sift
 
 l00409DE2:
 	restore.jrc	00000120,r30,0000000A
@@ -20501,7 +20501,7 @@ l00409E4A:
 	move	r8,r16
 	addiu	r7,sp,00000008
 	movep	r5,r6,r17,r20
-	move.balc	r4,r18,00409D74
+	move.balc	r4,r18,trinkle
 	bc	00409EDE
 
 l00409E5A:
@@ -20513,10 +20513,10 @@ l00409E62:
 	movep	r7,r8,r16,r21
 	movep	r5,r6,r17,r20
 	addiu	r16,r16,00000002
-	move.balc	r4,r18,00409CCA
+	move.balc	r4,r18,sift
 	li	r5,00000002
 	addiu	r4,sp,00000008
-	balc	00409F4C
+	balc	fn00409F4C
 
 l00409E72:
 	lw	r17,0008(sp)
@@ -20539,27 +20539,27 @@ l00409E92:
 	move	r8,r16
 	addiu	r7,sp,00000008
 	movep	r5,r6,r17,r20
-	move.balc	r4,r18,00409D74
+	move.balc	r4,r18,trinkle
 
 l00409EA0:
 	bneiuc	r16,00000001,00409EB8
 
 l00409EA4:
 	addiu	r4,sp,00000008
-	move.balc	r5,r16,00409C20
+	move.balc	r5,r16,shl
 	move	r16,r0
 	bc	00409E72
 
 l00409EAE:
 	movep	r7,r8,r16,r21
 	movep	r5,r6,r17,r20
-	move.balc	r4,r18,00409CCA
+	move.balc	r4,r18,sift
 	bc	00409EA0
 
 l00409EB8:
 	move	r5,r30
 	addiu	r4,sp,00000008
-	balc	00409F48
+	balc	fn00409F48
 	li	r16,00000001
 	bc	00409E72
 
@@ -20569,12 +20569,12 @@ l00409EC2:
 
 l00409ECA:
 	addiu	r4,sp,00000008
-	balc	00409D32
+	balc	pntz
 	move	r19,r4
 	move	r5,r4
 	addiu	r4,sp,00000008
 	addu	r19,r16,r19
-	balc	00409F4C
+	balc	fn00409F4C
 
 l00409EDA:
 	addu	r18,r18,r23
@@ -20597,14 +20597,14 @@ l00409EEC:
 l00409EF0:
 	addiu	r4,sp,00000008
 	li	r5,00000002
-	balc	00409F48
+	balc	fn00409F48
 	lw	r17,0008(sp)
 	addiu	r4,sp,00000008
 	li	r5,00000001
 	xori	r7,r7,00000007
 	addiu	r19,r16,FFFFFFFE
 	sw	r7,0008(sp)
-	balc	00409F4C
+	balc	fn00409F4C
 	addiu	r7,sp,000000D0
 	move	r10,r21
 	lsa	r7,r19,r7,00000002
@@ -20615,10 +20615,10 @@ l00409EF0:
 	addiu	r7,sp,00000008
 	addu	r4,r17,r4
 	subu	r4,r18,r4
-	balc	00409D74
+	balc	trinkle
 	addiu	r4,sp,00000008
 	li	r5,00000001
-	balc	00409F48
+	balc	fn00409F48
 	lw	r17,0008(sp)
 	move	r10,r21
 	addiu	r9,r0,00000001
@@ -20627,7 +20627,7 @@ l00409EF0:
 	sw	r7,0008(sp)
 	movep	r5,r6,r17,r20
 	addiu	r7,sp,00000008
-	move.balc	r4,r22,00409D74
+	move.balc	r4,r22,trinkle
 	bc	00409EDA
 
 ;; fn00409F48: 00409F48
@@ -20636,7 +20636,7 @@ l00409EF0:
 ;;     00409EF4 (in qsort)
 ;;     00409F2C (in qsort)
 fn00409F48 proc
-	bc	00409C20
+	bc	shl
 
 ;; fn00409F4C: 00409F4C
 ;;   Called from:
@@ -20644,7 +20644,7 @@ fn00409F48 proc
 ;;     00409ED8 (in qsort)
 ;;     00409F06 (in qsort)
 fn00409F4C proc
-	bc	00409C4C
+	bc	shr
 
 ;; strtox: 00409F50
 ;;   Called from:
@@ -20658,7 +20658,7 @@ strtox proc
 	move	r5,r0
 	addiu	r6,r0,00000090
 	move	r4,sp
-	balc	0040A690
+	balc	memset
 	li	r7,FFFFFFFF
 	move	r4,sp
 	sw	r7,0008(sp)
@@ -20666,10 +20666,10 @@ strtox proc
 	movep	r6,r7,r0,r0
 	sw	r16,0004(sp)
 	sw	r16,002C(sp)
-	balc	0040CB40
+	balc	__shlim
 	li	r6,00000001
 	move	r4,sp
-	move.balc	r5,r18,0040BD5C
+	move.balc	r5,r18,__floatscan
 	lw	r17,0008(sp)
 	lw	r17,0004(sp)
 	movep	r8,r9,r4,r5
@@ -20701,19 +20701,19 @@ l00409FA0:
 strtof_l proc
 	save	00000010,ra,00000001
 	move	r6,r0
-	balc	00409F50
-	balc	00410220
+	balc	strtox
+	balc	__truncdfsf2
 	restore.jrc	00000010,ra,00000001
 
 ;; strtod_l: 00409FB2
 strtod_l proc
 	li	r6,00000001
-	bc	00409F50
+	bc	strtox
 
 ;; strtold_l: 00409FB8
 strtold_l proc
 	li	r6,00000002
-	bc	00409F50
+	bc	strtox
 00409FBE                                           00 00               ..
 
 ;; strtox: 00409FC0
@@ -20743,11 +20743,11 @@ l00409FDA:
 	sw	r7,005C(sp)
 	movep	r6,r7,r0,r0
 	swm	r8,0008(sp),00000002
-	balc	0040CB40
+	balc	__shlim
 	li	r6,00000001
 	addiu	r4,sp,00000010
 	lwm	r8,0008(sp),00000002
-	move.balc	r5,r18,0040C670
+	move.balc	r5,r18,__intscan
 	beqzc	r17,0040A00A
 
 l00409FFA:
@@ -20769,7 +20769,7 @@ l0040A00A:
 __strtoull_internal proc
 	addiu	r8,r0,FFFFFFFF
 	addiu	r9,r0,FFFFFFFF
-	bc	00409FC0
+	bc	strtox
 
 ;; __strtoll_internal: 0040A018
 ;;   Called from:
@@ -20777,7 +20777,7 @@ __strtoull_internal proc
 __strtoll_internal proc
 	move	r8,r0
 	lui	r9,FFF80000
-	bc	00409FC0
+	bc	strtox
 
 ;; __strtoul_internal: 0040A022
 ;;   Called from:
@@ -20793,7 +20793,7 @@ __strtoul_internal proc
 	save	00000010,ra,00000001
 	addiu	r8,r0,FFFFFFFF
 	move	r9,r0
-	balc	00409FC0
+	balc	strtox
 	restore.jrc	00000010,ra,00000001
 
 ;; __strtol_internal: 0040A030
@@ -20801,16 +20801,16 @@ __strtol_internal proc
 	save	00000010,ra,00000001
 	lui	r8,FFF80000
 	move	r9,r0
-	balc	00409FC0
+	balc	strtox
 	restore.jrc	00000010,ra,00000001
 
 ;; __strtoimax_internal: 0040A03E
 __strtoimax_internal proc
-	bc	0040A018
+	bc	__strtoll_internal
 
 ;; __strtoumax_internal: 0040A042
 __strtoumax_internal proc
-	bc	0040A00C
+	bc	__strtoull_internal
 0040A046                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; memchr: 0040A050
@@ -21542,7 +21542,7 @@ l0040A60C:
 	jrc	ra
 
 l0040A616:
-	bc	0040A130
+	bc	memcpy
 
 l0040A61A:
 	bnec	r0,r8,0040A658
@@ -21744,10 +21744,10 @@ strcat proc
 	save	00000020,ra,00000002
 	move	r16,r4
 	sw	r5,000C(sp)
-	balc	0040A890
+	balc	strlen
 	lw	r17,000C(sp)
 	addu	r4,r16,r4
-	balc	0040A860
+	balc	strcpy
 	move	r4,r16
 	restore.jrc	00000020,ra,00000002
 0040A766                   00 00 00 00 00 00 00 00 00 00       ..........
@@ -21764,7 +21764,7 @@ strcat proc
 strchr proc
 	save	00000010,ra,00000002
 	move	r16,r5
-	balc	0040A790
+	balc	strchrnul
 	andi	r16,r16,000000FF
 	lbu	r7,0000(r4)
 	xor	r7,r7,r16
@@ -21858,7 +21858,7 @@ l0040A820:
 	restore.jrc	00000010,ra,00000002
 
 l0040A824:
-	balc	0040A890
+	balc	strlen
 	addu	r4,r16,r4
 	restore.jrc	00000010,ra,00000002
 0040A82C                                     00 00 00 00             ....
@@ -21912,7 +21912,7 @@ l0040A858:
 strcpy proc
 	save	00000010,ra,00000002
 	move	r16,r4
-	balc	0040DC10
+	balc	stpcpy
 	move	r4,r16
 	restore.jrc	00000010,ra,00000002
 0040A86C                                     00 00 00 00             ....
@@ -21921,15 +21921,15 @@ strcpy proc
 __strdup proc
 	save	00000010,ra,00000003
 	move	r17,r4
-	balc	0040A890
+	balc	strlen
 	addiu	r16,r4,00000001
-	move.balc	r4,r16,00405292
+	move.balc	r4,r16,malloc
 	beqzc	r4,0040A88C
 
 l0040A882:
 	movep	r5,r6,r17,r16
 	restore	00000010,ra,00000003
-	bc	0040A130
+	bc	memcpy
 
 l0040A88C:
 	restore.jrc	00000010,ra,00000003
@@ -22095,7 +22095,7 @@ l0040A926:
 strncpy proc
 	save	00000010,ra,00000002
 	move	r16,r4
-	balc	0040DC90
+	balc	stpncpy
 	move	r4,r16
 	restore.jrc	00000010,ra,00000002
 0040A93C                                     00 00 00 00             ....
@@ -22109,7 +22109,7 @@ strnlen proc
 	save	00000010,ra,00000003
 	movep	r17,r16,r4,r5
 	movep	r5,r6,r0,r16
-	balc	0040A050
+	balc	memchr
 	beqzc	r4,0040A950
 
 l0040A94C:
@@ -22338,7 +22338,7 @@ l0040AAF0:
 l0040AAF6:
 	move	r6,r30
 	addu	r5,r19,r17
-	move.balc	r4,r19,0040A100
+	move.balc	r4,r19,memcmp
 	beqc	r0,r4,0040AC14
 
 l0040AB02:
@@ -22399,7 +22399,7 @@ l0040AB62:
 l0040AB6E:
 	ori	r18,r20,0000003F
 	movep	r5,r6,r0,r18
-	move.balc	r4,r22,0040A050
+	move.balc	r4,r22,memchr
 	beqc	r0,r4,0040AC10
 
 l0040AB7C:
@@ -22532,7 +22532,7 @@ l0040AC2C:
 l0040AC2E:
 	save	00000010,ra,00000002
 	move	r16,r5
-	move.balc	r5,r6,0040A770
+	move.balc	r5,r6,strchr
 	move	r7,r4
 	beqzc	r4,0040ACB2
 
@@ -22567,7 +22567,7 @@ l0040AC66:
 l0040AC6C:
 	move	r5,r16
 	restore	00000010,ra,00000002
-	bc	0040AA20
+	bc	twoway_strstr
 
 l0040AC76:
 	lbu	r4,0000(r16)
@@ -22690,7 +22690,7 @@ l0040AD3C:
 l0040AD3E:
 	move	r6,r7
 	addiu	r5,r16,00000004
-	move.balc	r4,r16,0040ADB0
+	move.balc	r4,r16,__wait
 
 l0040AD46:
 	sync	00000000
@@ -22734,7 +22734,7 @@ l0040AD76:
 	move	r5,r4
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r4,r7,0040AD98
 
@@ -22743,7 +22743,7 @@ l0040AD8A:
 	li	r4,00000062
 	movep	r5,r6,r16,r7
 	restore	00000010,ra,00000002
-	bc	00404A50
+	bc	__syscall
 
 l0040AD98:
 	restore.jrc	00000010,ra,00000002
@@ -22753,7 +22753,7 @@ l0040AD98:
 ;;   Called from:
 ;;     0040ADA4 (in __syscall_cp)
 __syscall_cp_c proc
-	bc	00404A50
+	bc	__syscall
 
 ;; __syscall_cp: 0040ADA4
 ;;   Called from:
@@ -22769,7 +22769,7 @@ __syscall_cp_c proc
 ;;     0040E9E0 (in __timedwait_cp)
 ;;     0040E9FA (in __timedwait_cp)
 __syscall_cp proc
-	bc	0040ADA0
+	bc	__syscall_cp_c
 0040ADA8                         00 00 00 00 00 00 00 00         ........
 
 ;; __wait: 0040ADB0
@@ -22854,7 +22854,7 @@ l0040AE0A:
 	movep	r7,r8,r17,r0
 	movep	r5,r6,r18,r19
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,0040ADEE
 
@@ -22862,7 +22862,7 @@ l0040AE1C:
 	movep	r7,r8,r17,r0
 	movep	r5,r6,r18,r0
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 	bc	0040ADEE
 0040AE28                         00 00 00 00 00 00 00 00         ........
 
@@ -22879,7 +22879,7 @@ __do_cleanup_push proc
 ;;     0040E904 (in sem_timedwait)
 _pthread_cleanup_push proc
 	swm	r5,0000(r4),00000002
-	bc	0040AE30
+	bc	__do_cleanup_push
 
 ;; _pthread_cleanup_pop: 0040AE3A
 ;;   Called from:
@@ -22888,7 +22888,7 @@ _pthread_cleanup_push proc
 _pthread_cleanup_pop proc
 	save	00000010,ra,00000003
 	movep	r16,r17,r4,r5
-	balc	0040AE30
+	balc	__do_cleanup_push
 	beqzc	r17,0040AE4E
 
 l0040AE44:
@@ -22944,7 +22944,7 @@ l0040AE7C:
 	movep	r6,r7,r5,r16
 	addiu	r8,r0,00000008
 	addiu	r4,r0,00000087
-	move.balc	r5,r9,00404A50
+	move.balc	r5,r9,__syscall
 	beqzc	r4,0040AE92
 
 l0040AE8C:
@@ -22973,7 +22973,7 @@ cgt_init proc
 	movep	r16,r17,r4,r5
 	addiupc	r5,00007174
 	addiupc	r4,00007188
-	balc	0040CC50
+	balc	__vdsosym
 	addiupc	r5,FFFFFFEC
 	move	r6,r4
 	sync	00000000
@@ -23025,12 +23025,12 @@ l0040AF04:
 
 l0040AF0A:
 	restore	00000010,ra,00000003
-	bc	0040CC30
+	bc	__syscall_ret
 
 l0040AF12:
 	movep	r5,r6,r17,r16
 	li	r4,00000071
-	balc	00404A50
+	balc	__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,0040AF0A
 
@@ -23041,7 +23041,7 @@ l0040AF22:
 l0040AF28:
 	movep	r5,r6,r16,r0
 	addiu	r4,r0,000000A9
-	balc	00404A50
+	balc	__syscall
 	lw	r7,0004(r16)
 	addiu	r6,r0,000003E8
 	mul	r7,r7,r6
@@ -23068,7 +23068,7 @@ gettimeofday proc
 l0040AF46:
 	addiu	r5,sp,00000008
 	move	r4,r0
-	balc	0040AEF4
+	balc	__clock_gettime
 	lw	r17,0008(sp)
 	addiu	r6,r0,000003E8
 	lw	r17,000C(sp)
@@ -23094,20 +23094,20 @@ dummy proc
 ;;     0040DF62 (in __synccall)
 close proc
 	save	00000010,ra,00000001
-	balc	004080E0
+	balc	__aio_close
 	move	r10,r0
 	movep	r7,r8,r0,r0
 	movep	r5,r6,r4,r0
 	move	r9,r0
 	li	r4,00000039
-	balc	0040ADA4
+	balc	__syscall_cp
 	addiu	r7,r0,FFFFFFFC
 	xor	r7,r7,r4
 	restore	00000010,ra,00000001
 	movz	r4,r0,r7
 
 l0040AF94:
-	bc	0040CC30
+	bc	__syscall_ret
 0040AF98                         00 00 00 00 00 00 00 00         ........
 
 ;; geteuid: 0040AFA0
@@ -23115,7 +23115,7 @@ l0040AF94:
 ;;     00401CC0 (in limit_capabilities)
 geteuid proc
 	addiu	r4,r0,000000AF
-	bc	00404A50
+	bc	__syscall
 0040AFA8                         00 00 00 00 00 00 00 00         ........
 
 ;; getpid: 0040AFB0
@@ -23124,7 +23124,7 @@ geteuid proc
 ;;     004035C2 (in ping6_run)
 getpid proc
 	addiu	r4,r0,000000AC
-	bc	00404A50
+	bc	__syscall
 0040AFB8                         00 00 00 00 00 00 00 00         ........
 
 ;; getuid: 0040AFC0
@@ -23132,7 +23132,7 @@ getpid proc
 ;;     00401E82 (in fn00401E82)
 getuid proc
 	addiu	r4,r0,000000AE
-	bc	00404A50
+	bc	__syscall
 0040AFC8                         00 00 00 00 00 00 00 00         ........
 
 ;; isatty: 0040AFD0
@@ -23144,7 +23144,7 @@ isatty proc
 	move	r5,r4
 	addiu	r7,sp,00000008
 	li	r4,0000001D
-	balc	00404A50
+	balc	__syscall
 	sltiu	r4,r4,00000001
 	restore.jrc	00000020,ra,00000001
 0040AFE8                         00 00 00 00 00 00 00 00         ........
@@ -23157,7 +23157,7 @@ seteuid proc
 	li	r7,FFFFFFFF
 	movep	r5,r6,r7,r4
 	addiu	r4,r0,00000093
-	bc	0040B04C
+	bc	__setxid
 0040AFFC                                     00 00 00 00             ....
 
 ;; setuid: 0040B000
@@ -23167,7 +23167,7 @@ setuid proc
 	move	r5,r4
 	addiu	r4,r0,00000092
 	movep	r6,r7,r0,r0
-	bc	0040B04C
+	bc	__setxid
 0040B00C                                     00 00 00 00             ....
 
 ;; do_setxid: 0040B010
@@ -23183,7 +23183,7 @@ l0040B01A:
 	lwm	r5,0000(r4),00000002
 	lw	r7,0008(r4)
 	lw	r4,000C(r4)
-	balc	0040B048
+	balc	fn0040B048
 	subu	r17,r0,r4
 	beqzc	r4,0040B044
 
@@ -23193,13 +23193,13 @@ l0040B02A:
 
 l0040B02E:
 	move	r4,r0
-	balc	00407EA0
+	balc	__block_all_sigs
 	addiu	r4,r0,000000AC
-	balc	0040B048
+	balc	fn0040B048
 	li	r6,00000009
 	move	r5,r4
 	addiu	r4,r0,00000081
-	balc	0040B048
+	balc	fn0040B048
 
 l0040B044:
 	sw	r17,0010(sp)
@@ -23213,7 +23213,7 @@ l0040B046:
 ;;     0040B038 (in do_setxid)
 ;;     0040B042 (in do_setxid)
 fn0040B048 proc
-	bc	00404A50
+	bc	__syscall
 
 ;; __setxid: 0040B04C
 ;;   Called from:
@@ -23228,7 +23228,7 @@ __setxid proc
 	addiupc	r4,FFFFFFB4
 	sw	r7,0014(sp)
 	sw	r16,001C(sp)
-	balc	0040DDF2
+	balc	__synccall
 	lw	r17,001C(sp)
 	beqzc	r4,0040B076
 
@@ -23236,7 +23236,7 @@ l0040B068:
 	bgec	r0,r4,0040B074
 
 l0040B06C:
-	balc	004049B0
+	balc	__errno_location
 	lw	r17,001C(sp)
 	sw	r7,0000(sp)
 
@@ -23260,9 +23260,9 @@ write proc
 	move	r6,r5
 	move	r5,r4
 	li	r4,00000040
-	balc	0040ADA4
+	balc	__syscall_cp
 	restore	00000010,ra,00000001
-	bc	0040CC30
+	bc	__syscall_ret
 0040B09A                               00 00 00 00 00 00           ......
 
 ;; isalnum: 0040B0A0
@@ -23285,7 +23285,7 @@ l0040B0B6:
 
 ;; isalnum_l: 0040B0BA
 isalnum_l proc
-	bc	0040B0A0
+	bc	isalnum
 0040B0BE                                           00 00               ..
 
 ;; __init_tp: 0040B0C0
@@ -23296,7 +23296,7 @@ __init_tp proc
 	move	r16,r4
 	addiu	r4,r4,000000B0
 	sw	r16,0000(r16)
-	balc	0040DD30
+	balc	__set_thread_area
 	li	r7,FFFFFFFF
 	bltc	r4,r0,0040B0FC
 
@@ -23311,7 +23311,7 @@ l0040B0D6:
 l0040B0E0:
 	addiu	r5,r16,0000001C
 	li	r4,00000060
-	balc	00404A50
+	balc	__syscall
 	addiupc	r7,0004936C
 	sw	r7,0078(r16)
 	addiu	r7,r16,00000064
@@ -23353,7 +23353,7 @@ l0040B12C:
 	sw	r4,0000(r20)
 	addiu	r20,r20,00000004
 	lw	r5,0004(r19)
-	balc	0040A130
+	balc	memcpy
 	lw	r19,0000(r19)
 
 l0040B142:
@@ -23464,11 +23464,11 @@ l0040B1F8:
 	li	r7,00000003
 	move	r5,r0
 	addiu	r4,r0,000000DE
-	balc	00404A50
+	balc	__syscall
 
 l0040B20E:
-	balc	0040B100
-	balc	0040B0C0
+	balc	__copy_tls
+	balc	__init_tp
 	bgec	r4,r0,0040B222
 
 l0040B21A:
@@ -23489,7 +23489,7 @@ _Exit proc
 	li	r4,0000005E
 
 l0040B238:
-	balc	00404A50
+	balc	__syscall
 	move	r5,r16
 	li	r4,0000005D
 	bc	0040B238
@@ -23547,7 +23547,7 @@ l0040B292:
 	bltuc	r7,r9,0040B27C
 
 l0040B2A8:
-	move.balc	r4,r19,0040CB78
+	move.balc	r4,r19,__shgetc
 	lw	r9,0068(r19)
 	move	r17,r4
 	li	r7,0CCCCCCB
@@ -23620,7 +23620,7 @@ l0040B344:
 	restore.jrc	00000030,ra,00000006
 
 l0040B348:
-	move.balc	r4,r19,0040CB78
+	move.balc	r4,r19,__shgetc
 	lw	r9,0068(r19)
 	move	r17,r4
 	addiu	r10,r17,FFFFFFD0
@@ -23640,7 +23640,7 @@ l0040B360:
 	bc	0040B356
 
 l0040B36E:
-	move.balc	r4,r19,0040CB78
+	move.balc	r4,r19,__shgetc
 	lw	r9,0068(r19)
 	move	r17,r4
 	addiu	r10,r17,FFFFFFD0
@@ -23685,7 +23685,7 @@ l0040B3B4:
 
 l0040B3BC:
 	sw	r5,000C(sp)
-	balc	0040CB78
+	balc	__shgetc
 	move	r17,r4
 	lw	r9,0068(r19)
 	lw	r17,000C(sp)
@@ -23709,7 +23709,7 @@ l0040B3DC:
 
 l0040B3E4:
 	sw	r5,000C(sp)
-	move.balc	r4,r19,0040CB78
+	move.balc	r4,r19,__shgetc
 	lw	r9,0068(r19)
 	lw	r17,000C(sp)
 	bc	0040B3AC
@@ -23830,7 +23830,7 @@ l0040B4B2:
 	bltuc	r7,r6,0040B462
 
 l0040B4C4:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	move	r5,r4
 	bc	0040B440
 
@@ -23950,7 +23950,7 @@ l0040B59C:
 l0040B59E:
 	lw	r17,0008(sp)
 	move	r20,r23
-	balc	00410170
+	balc	__floatsidf
 	swm	r4,0008(sp),00000002
 	bgeic	r19,00000009,0040B668
 
@@ -23989,11 +23989,11 @@ l0040B5E0:
 	addiupc	r7,00007C5C
 	addiu	r23,r23,FFFFFFF6
 	lwxs	r4,r23(r7)
-	balc	00410170
+	balc	__floatsidf
 	movep	r18,r19,r4,r5
-	move.balc	r4,r16,004101D0
+	move.balc	r4,r16,__floatunsidf
 	lwm	r6,0008(sp),00000002
-	balc	00404330
+	balc	__muldf3
 	bc	0040BBD0
 
 l0040B602:
@@ -24016,7 +24016,7 @@ l0040B618:
 	bc	0040B458
 
 l0040B62E:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	move	r5,r4
 	beqic	r4,00000030,0040B410
 
@@ -24039,13 +24039,13 @@ l0040B64A:
 	bnec	r0,r7,0040B4EC
 
 l0040B652:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 	sw	r7,0000(sp)
 
 l0040B65A:
 	movep	r6,r7,r0,r0
-	move.balc	r4,r16,0040CB40
+	move.balc	r4,r16,__shlim
 	movep	r4,r5,r0,r0
 
 l0040B662:
@@ -24180,12 +24180,12 @@ l0040B770:
 	bgeuc	r3,r19,0040B7A8
 
 l0040B774:
-	move.balc	r5,r18,0040EAB0
+	move.balc	r5,r18,__udivdi3
 	li	r6,3B9ACA00
 	move	r7,r0
 	move	r21,r4
 	movep	r4,r5,r19,r18
-	balc	0040ED50
+	balc	__umoddi3
 	addiu	r6,sp,FFFFF230
 	addu	r23,r23,r6
 	andi	r7,r16,0000007F
@@ -24259,9 +24259,9 @@ l0040B822:
 
 l0040B826:
 	lw	r17,0008(sp)
-	balc	00410170
+	balc	__floatsidf
 	movep	r6,r7,r0,r0
-	balc	00404330
+	balc	__muldf3
 	restore.jrc	00000260,r30,0000000A
 
 l0040B836:
@@ -24304,7 +24304,7 @@ l0040B874:
 	bc	0040B434
 
 l0040B880:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	move	r5,r4
 	bneiuc	r4,00000030,0040B874
 
@@ -24421,9 +24421,9 @@ l0040B984:
 	andi	r18,r18,0000007F
 	lsa	r6,r6,r7,00000002
 	lw	r4,0E00(r6)
-	balc	004101D0
+	balc	__floatunsidf
 	movep	r6,r7,r0,r0
-	balc	0040EFC0
+	balc	__adddf3
 	beqc	r18,r30,0040BB8E
 
 l0040B9A2:
@@ -24436,16 +24436,16 @@ l0040B9A2:
 	sw	r16,001C(sp)
 	subu	r16,r16,r19
 	sw	r16,0028(sp)
-	balc	00404330
+	balc	__muldf3
 	addiu	r7,sp,FFFFF230
 	lsa	r18,r18,r7,00000002
 	movep	r22,r23,r4,r5
 	lw	r4,0E00(r18)
-	balc	004101D0
+	balc	__floatunsidf
 	movep	r6,r7,r22,r23
-	balc	0040EFC0
+	balc	__adddf3
 	lwm	r6,0008(sp),00000002
-	balc	00404330
+	balc	__muldf3
 	lw	r17,0010(sp)
 	movep	r22,r23,r4,r5
 	bgec	r16,r7,0040BADE
@@ -24493,10 +24493,10 @@ l0040BA30:
 	lw	r7,028C(r7)
 
 l0040BA40:
-	balc	00404330
+	balc	__muldf3
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r18,r19
-	balc	0040EFC0
+	balc	__adddf3
 	movep	r18,r19,r4,r5
 
 l0040BA4E:
@@ -24511,15 +24511,15 @@ l0040BA58:
 	lw	r21,025C(r7)
 	movep	r4,r5,r18,r19
 	movep	r6,r7,r20,r21
-	balc	0040CF20
+	balc	fmodl
 	movep	r6,r7,r0,r0
-	balc	0040FA70
+	balc	__nedf2
 	bnezc	r4,0040BA7E
 
 l0040BA74:
 	movep	r4,r5,r18,r19
 	movep	r6,r7,r20,r21
-	balc	0040EFC0
+	balc	__adddf3
 	movep	r18,r19,r4,r5
 
 l0040BA7E:
@@ -24527,10 +24527,10 @@ l0040BA7E:
 	movep	r4,r5,r22,r23
 	subu	r17,r0,r7
 	movep	r6,r7,r18,r19
-	balc	0040EFC0
+	balc	__adddf3
 	lw	r4,0010(sp)
 	lwm	r6,0020(sp),00000002
-	balc	0040FAE0
+	balc	__subdf3
 	lw	r17,001C(sp)
 	subu	r30,r17,r16
 	addiu	r6,r30,FFFFFFFF
@@ -24542,7 +24542,7 @@ l0040BAAA:
 	lw	r17,0000(sp)
 	movep	r4,r5,r20,r21
 	restore	00000260,r30,0000000A
-	bc	0040CFD0
+	bc	scalbnl
 
 l0040BAB6:
 	andi	r6,r17,0000007F
@@ -24573,7 +24573,7 @@ l0040BAE8:
 
 l0040BAEE:
 	lw	r17,0014(sp)
-	move.balc	r4,r16,0040B250
+	move.balc	r4,r16,scanexp
 	beqc	r0,r4,0040BCCE
 
 l0040BAF8:
@@ -24588,18 +24588,18 @@ l0040BB08:
 	bgeuc	r23,r6,0040B530
 
 l0040BB0C:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000022
 	sw	r7,0000(sp)
 	lui	r16,00000412
 	lw	r17,0008(sp)
-	balc	00410170
+	balc	__floatsidf
 	lw	r6,0280(r16)
 	lw	r7,0284(r16)
-	balc	00404330
+	balc	__muldf3
 	lw	r6,0280(r16)
 	lw	r7,0284(r16)
-	balc	00404330
+	balc	__muldf3
 	bc	0040B662
 
 l0040BB3A:
@@ -24614,25 +24614,25 @@ l0040BB46:
 	lw	r18,0258(r7)
 	lw	r19,025C(r7)
 	movep	r4,r5,r18,r19
-	balc	0040CF40
+	balc	scalbn
 	movep	r6,r7,r22,r23
-	balc	0040CF00
+	balc	copysignl
 	lw	r18,002C(sp)
 	movep	r20,r21,r4,r5
 	swm	r20,0020(sp),00000002
 	move	r6,r10
 	movep	r4,r5,r18,r19
-	balc	0040CF40
+	balc	scalbn
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r22,r23
-	balc	0040CF20
+	balc	fmodl
 	movep	r18,r19,r4,r5
 	movep	r6,r7,r18,r19
 	movep	r4,r5,r22,r23
-	balc	0040FAE0
+	balc	__subdf3
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r20,r21
-	balc	0040EFC0
+	balc	__adddf3
 	movep	r22,r23,r4,r5
 	bc	0040BA00
 
@@ -24669,14 +24669,14 @@ l0040BBBC:
 
 l0040BBC4:
 	lw	r17,0008(sp)
-	balc	00410170
+	balc	__floatsidf
 	movep	r18,r19,r4,r5
-	move.balc	r4,r16,004101D0
+	move.balc	r4,r16,__floatunsidf
 
 l0040BBD0:
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r18,r19
-	balc	00404330
+	balc	__muldf3
 	bc	0040B662
 
 l0040BBDC:
@@ -24691,18 +24691,18 @@ l0040BBF2:
 	bgeuc	r7,r23,0040B51E
 
 l0040BBF6:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000022
 	sw	r7,0000(sp)
 	lui	r16,00000412
 	lw	r17,0008(sp)
-	balc	00410170
+	balc	__floatsidf
 	lw	r6,0220(r16)
 	lw	r7,0224(r16)
-	balc	00404330
+	balc	__muldf3
 	lw	r6,0220(r16)
 	lw	r7,0224(r16)
-	balc	00404330
+	balc	__muldf3
 	restore.jrc	00000260,r30,0000000A
 
 l0040BC24:
@@ -24719,16 +24719,16 @@ l0040BC32:
 	bc	0040BA40
 
 l0040BC40:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	move	r5,r4
 	bc	0040B848
 
 l0040BC48:
-	balc	0040CF10
+	balc	fabs
 	lui	r7,00000412
 	lw	r6,0240(r7)
 	lw	r7,0244(r7)
-	balc	004041D0
+	balc	__gtdf2
 	bltc	r4,r0,0040BC82
 
 l0040BC60:
@@ -24747,7 +24747,7 @@ l0040BC66:
 	movep	r4,r5,r20,r21
 	sw	r16,0000(sp)
 	sw	r17,0018(sp)
-	balc	00404330
+	balc	__muldf3
 	movep	r20,r21,r4,r5
 
 l0040BC82:
@@ -24763,11 +24763,11 @@ l0040BC8E:
 l0040BC94:
 	movep	r6,r7,r0,r0
 	movep	r4,r5,r18,r19
-	balc	0040FA70
+	balc	__nedf2
 	beqc	r0,r4,0040BAAA
 
 l0040BCA0:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000022
 	sw	r7,0000(sp)
 	bc	0040BAAA
@@ -24817,24 +24817,24 @@ l0040BCEC:
 	bc	0040B434
 
 l0040BCF8:
-	move.balc	r4,r16,004101D0
+	move.balc	r4,r16,__floatunsidf
 	lwm	r6,0008(sp),00000002
-	balc	00404330
+	balc	__muldf3
 	li	r7,00000008
 	subu	r23,r7,r23
 	addiupc	r7,00007532
 	movep	r16,r17,r4,r5
 	lwxs	r4,r23(r7)
-	balc	00410170
+	balc	__floatsidf
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r16,r17
-	balc	0040F5E0
+	balc	__divdf3
 	bc	0040B662
 
 l0040BD24:
-	move.balc	r4,r16,004101D0
+	move.balc	r4,r16,__floatunsidf
 	lwm	r6,0008(sp),00000002
-	balc	00404330
+	balc	__muldf3
 	bc	0040B662
 
 l0040BD34:
@@ -25025,18 +25025,18 @@ l0040BE7A:
 	sw	r7,0001(r21)
 
 l0040BE80:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 	move	r22,r0
 	move	r23,r0
 	sw	r7,0000(sp)
 	movep	r6,r7,r0,r0
-	move.balc	r4,r21,0040CB40
+	move.balc	r4,r21,__shlim
 	movep	r4,r5,r22,r23
 	restore.jrc	00000080,r30,0000000A
 
 l0040BE96:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	beqic	r4,00000020,0040BD90
 
 l0040BE9E:
@@ -25066,17 +25066,17 @@ l0040BEA8:
 	bc	0040BD90
 
 l0040BECC:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BE50
 
 l0040BED6:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BDE2
 
 l0040BEE0:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BDF8
 
@@ -25196,12 +25196,12 @@ l0040BFA8:
 	bc	0040BEA4
 
 l0040BFB6:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BE0E
 
 l0040BFC0:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BE24
 
@@ -25235,11 +25235,11 @@ l0040BFF0:
 	move	r4,r21
 	movep	r6,r7,r17,r18
 	restore	00000080,r30,0000000A
-	bc	0040B3FA
+	bc	decfloat
 
 l0040BFFE:
 	sw	r8,0030(sp)
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r18,0030(sp)
 	move	r5,r4
 	bc	0040BDC8
@@ -25252,23 +25252,23 @@ l0040C00A:
 	bc	0040BEFA
 
 l0040C01C:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BE3A
 
 l0040C026:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	bc	0040BE66
 
 l0040C02C:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BF3A
 
 l0040C036:
 	sw	r5,0020(sp)
 	sw	r8,0030(sp)
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	lw	r17,0020(sp)
 	lw	r18,0030(sp)
@@ -25323,7 +25323,7 @@ l0040C086:
 	bltuc	r6,r7,0040BF64
 
 l0040C092:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	bc	0040BF6C
 
 l0040C098:
@@ -25339,14 +25339,14 @@ l0040C09C:
 	bc	0040BEA4
 
 l0040C0B0:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	xori	r6,r4,00000028
 	sltu	r6,r0,r6
 	bc	0040BF58
 
 l0040C0C2:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r7,0068(r21)
 	bc	0040BF24
 
@@ -25492,15 +25492,15 @@ l0040C1A0:
 	lw	r7,02B4(r7)
 	sw	r11,0044(sp)
 	sw	r9,003C(sp)
-	balc	00404330
+	balc	__muldf3
 	lw	r18,003C(sp)
 	swm	r4,0028(sp),00000002
-	move.balc	r4,r9,00410170
+	move.balc	r4,r9,__floatsidf
 	lwm	r6,0028(sp),00000002
-	balc	00404330
+	balc	__muldf3
 	movep	r6,r7,r4,r5
 	lwm	r4,0020(sp),00000002
-	balc	0040EFC0
+	balc	__adddf3
 	lw	r18,0040(sp)
 	lw	r18,0044(sp)
 	swm	r4,0020(sp),00000002
@@ -25529,10 +25529,10 @@ l0040C1F6:
 	lwm	r4,0028(sp),00000002
 	sw	r11,0040(sp)
 	sw	r8,0048(sp)
-	balc	00404330
+	balc	__muldf3
 	movep	r6,r7,r4,r5
 	lwm	r4,0020(sp),00000002
-	balc	0040EFC0
+	balc	__adddf3
 	lw	r18,003C(sp)
 	lw	r18,0040(sp)
 	swm	r4,0020(sp),00000002
@@ -25547,14 +25547,14 @@ l0040C230:
 	sw	r8,003C(sp)
 	sw	r6,0040(sp)
 	sw	r11,0044(sp)
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r18,003C(sp)
 	lw	r17,0040(sp)
 	lw	r18,0044(sp)
 	bc	0040C140
 
 l0040C242:
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	bneiuc	r4,00000030,0040C114
 
 l0040C24A:
@@ -25684,7 +25684,7 @@ l0040C340:
 	sll	r16,r16,00000001
 	lw	r7,0254(r20)
 	movep	r4,r5,r22,r23
-	balc	004041D0
+	balc	__gtdf2
 	movep	r6,r7,r22,r23
 	bltc	r4,r0,0040C36A
 
@@ -25694,12 +25694,12 @@ l0040C356:
 	movep	r4,r5,r22,r23
 	lw	r6,0258(r7)
 	lw	r7,025C(r7)
-	balc	0040FAE0
+	balc	__subdf3
 	movep	r6,r7,r4,r5
 
 l0040C36A:
 	movep	r4,r5,r22,r23
-	balc	0040EFC0
+	balc	__adddf3
 	addiu	r7,r17,FFFFFFFF
 	sltu	r6,r7,r17
 	addiu	r21,r21,FFFFFFFF
@@ -25746,32 +25746,32 @@ l0040C3C0:
 	move	r19,r0
 
 l0040C3C4:
-	move.balc	r4,r8,00410170
+	move.balc	r4,r8,__floatsidf
 	lwm	r6,0020(sp),00000002
 	movep	r8,r9,r4,r5
 	swm	r8,0008(sp),00000002
-	balc	00404330
+	balc	__muldf3
 	movep	r20,r21,r4,r5
-	move.balc	r4,r23,004101D0
+	move.balc	r4,r23,__floatunsidf
 	lwm	r8,0008(sp),00000002
 	movep	r6,r7,r8,r9
-	balc	00404330
+	balc	__muldf3
 	movep	r6,r7,r18,r19
-	balc	0040EFC0
+	balc	__adddf3
 	movep	r6,r7,r20,r21
-	balc	0040EFC0
+	balc	__adddf3
 	movep	r6,r7,r18,r19
-	balc	0040FAE0
+	balc	__subdf3
 	movep	r6,r7,r0,r0
 	movep	r18,r19,r4,r5
-	balc	0040FA70
+	balc	__nedf2
 	beqc	r0,r4,0040C632
 
 l0040C404:
 	move	r6,r16
 	movep	r4,r5,r18,r19
 	restore	00000080,r30,0000000A
-	bc	0040CFD0
+	bc	scalbnl
 
 l0040C410:
 	lw	r7,0068(r21)
@@ -25794,9 +25794,9 @@ l0040C42E:
 	sw	r7,0001(r21)
 
 l0040C432:
-	move.balc	r4,r8,00410170
+	move.balc	r4,r8,__floatsidf
 	movep	r6,r7,r0,r0
-	balc	00404330
+	balc	__muldf3
 	movep	r22,r23,r4,r5
 	bc	0040BEA4
 
@@ -25877,7 +25877,7 @@ l0040C4B0:
 
 l0040C4C6:
 	addiu	r23,r23,FFFFFFFF
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	addiu	r7,r22,FFFFFFFF
 	sltu	r6,r7,r22
 	move	r22,r7
@@ -25890,7 +25890,7 @@ l0040C4DC:
 
 l0040C4E2:
 	sw	r8,0030(sp)
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r18,0030(sp)
 	bc	0040C0F8
 
@@ -25904,7 +25904,7 @@ l0040C4F0:
 l0040C4F4:
 	movep	r6,r7,r0,r0
 	sw	r8,0008(sp)
-	move.balc	r4,r21,0040CB40
+	move.balc	r4,r21,__shlim
 	lw	r18,0008(sp)
 	bc	0040C432
 
@@ -25918,7 +25918,7 @@ l0040C500:
 l0040C50A:
 	sw	r6,0020(sp)
 	sw	r8,0030(sp)
-	move.balc	r4,r21,0040CB78
+	move.balc	r4,r21,__shgetc
 	lw	r17,0020(sp)
 	lw	r18,0030(sp)
 	bc	0040C476
@@ -25929,18 +25929,18 @@ l0040C518:
 
 l0040C51E:
 	sw	r8,0008(sp)
-	balc	004049B0
+	balc	__errno_location
 	lw	r18,0008(sp)
 	li	r7,00000022
 	lui	r16,00000412
 	sw	r7,0000(sp)
-	move.balc	r4,r8,00410170
+	move.balc	r4,r8,__floatsidf
 	lw	r6,0280(r16)
 	lw	r7,0284(r16)
-	balc	00404330
+	balc	__muldf3
 	lw	r6,0280(r16)
 	lw	r7,0284(r16)
-	balc	00404330
+	balc	__muldf3
 	movep	r22,r23,r4,r5
 	bc	0040BEA4
 
@@ -25950,13 +25950,13 @@ l0040C550:
 	sw	r8,0008(sp)
 	lw	r4,0258(r7)
 	lw	r5,025C(r7)
-	balc	0040CF40
+	balc	scalbn
 	lw	r18,0008(sp)
 	movep	r18,r19,r4,r5
-	move.balc	r4,r8,00410170
+	move.balc	r4,r8,__floatsidf
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r18,r19
-	balc	0040CF00
+	balc	copysignl
 	lw	r18,0008(sp)
 	movep	r18,r19,r4,r5
 
@@ -25964,7 +25964,7 @@ l0040C576:
 	movep	r6,r7,r0,r0
 	lwm	r4,0020(sp),00000002
 	sw	r8,0008(sp)
-	balc	0040FA70
+	balc	__nedf2
 	lw	r18,0008(sp)
 	beqc	r0,r4,0040C3C4
 
@@ -25983,18 +25983,18 @@ l0040C594:
 
 l0040C59A:
 	sw	r8,0008(sp)
-	balc	004049B0
+	balc	__errno_location
 	lw	r18,0008(sp)
 	li	r7,00000022
 	lui	r16,00000412
 	sw	r7,0000(sp)
-	move.balc	r4,r8,00410170
+	move.balc	r4,r8,__floatsidf
 	lw	r6,0220(r16)
 	lw	r7,0224(r16)
-	balc	00404330
+	balc	__muldf3
 	lw	r6,0220(r16)
 	lw	r7,0224(r16)
-	balc	00404330
+	balc	__muldf3
 	movep	r22,r23,r4,r5
 	bc	0040BEA4
 
@@ -26008,7 +26008,7 @@ l0040C5CE:
 l0040C5D2:
 	movep	r4,r5,r21,r16
 	sw	r8,0030(sp)
-	balc	0040B250
+	balc	scanexp
 	lw	r18,0030(sp)
 	bnec	r0,r4,0040C2EE
 
@@ -26044,7 +26044,7 @@ l0040C604:
 
 l0040C606:
 	movep	r6,r7,r0,r0
-	move.balc	r4,r21,0040CB40
+	move.balc	r4,r21,__shlim
 	move	r22,r0
 	move	r23,r0
 	bc	0040BEA4
@@ -26080,7 +26080,7 @@ l0040C630:
 	bc	0040C2DE
 
 l0040C632:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000022
 	sw	r7,0000(sp)
 	bc	0040C404
@@ -26092,13 +26092,13 @@ l0040C63C:
 	sw	r8,0008(sp)
 	lw	r4,0258(r7)
 	lw	r5,025C(r7)
-	balc	0040CF40
+	balc	scalbn
 	lw	r18,0008(sp)
 	movep	r18,r19,r4,r5
-	move.balc	r4,r8,00410170
+	move.balc	r4,r8,__floatsidf
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r18,r19
-	balc	0040CF00
+	balc	copysignl
 	lw	r18,0008(sp)
 	movep	r18,r19,r4,r5
 	bltic	r17,00000020,0040C576
@@ -26194,7 +26194,7 @@ l0040C6FE:
 	bc	0040C6DE
 
 l0040C708:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	beqic	r4,00000020,0040C688
 
@@ -26219,10 +26219,10 @@ l0040C72A:
 
 l0040C730:
 	movep	r6,r7,r0,r0
-	move.balc	r4,r16,0040CB40
+	move.balc	r4,r16,__shlim
 
 l0040C736:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 	sw	r7,0000(sp)
 
@@ -26320,19 +26320,19 @@ l0040C7FA:
 	bc	0040C7A0
 
 l0040C808:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	lbux	r20,r4(r22)
 	bc	0040C6DE
 
 l0040C816:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	addiu	r6,r4,FFFFFFD0
 	bc	0040C7A0
 
 l0040C824:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	bc	0040C75C
 
@@ -26395,7 +26395,7 @@ l0040C88E:
 	bgeuc	r7,r17,0040C854
 
 l0040C894:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000022
 	sw	r7,0000(sp)
 	lw	r17,0004(sp)
@@ -26413,7 +26413,7 @@ l0040C8A4:
 l0040C8AC:
 	li	r4,FFFFFFFF
 	li	r5,FFFFFFFF
-	balc	0040EAB0
+	balc	__udivdi3
 	lw	r21,0001(r16)
 	mul	r7,r18,r30
 	addiu	r10,r0,FFFFFFFF
@@ -26463,7 +26463,7 @@ l0040C916:
 	bltuc	r21,r19,0040C902
 
 l0040C91A:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lbux	r7,r4(r22)
 	bgeuc	r7,r30,0040C92E
 
@@ -26473,7 +26473,7 @@ l0040C926:
 	bc	0040C916
 
 l0040C92E:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000022
 	sw	r7,0000(sp)
 	lw	r17,0008(sp)
@@ -26490,7 +26490,7 @@ l0040C94A:
 	bc	0040C854
 
 l0040C94C:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	lbux	r20,r4(r22)
 	bc	0040C8A4
@@ -26522,7 +26522,7 @@ l0040C978:
 	bc	0040C9B0
 
 l0040C98A:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	bc	0040C6AC
 
@@ -26568,7 +26568,7 @@ l0040C9D6:
 
 l0040C9E4:
 	sw	r5,000C(sp)
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	lw	r17,000C(sp)
 	lbux	r20,r4(r22)
@@ -26631,7 +26631,7 @@ l0040CA60:
 	sw	r3,0010(sp)
 	swm	r10,0014(sp),00000002
 	sw	r2,001C(sp)
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lbux	r20,r4(r22)
 	lwm	r10,0014(sp),00000002
 	lw	r19,0068(r16)
@@ -26667,7 +26667,7 @@ l0040CAA2:
 	bc	0040C8FE
 
 l0040CAA4:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	bc	0040C96C
 
@@ -26706,7 +26706,7 @@ l0040CAE0:
 	bc	0040C838
 
 l0040CAE2:
-	balc	004049B0
+	balc	__errno_location
 	lw	r17,0008(sp)
 	move	r7,r6
 	addiu	r7,r7,FFFFFFFF
@@ -26734,7 +26734,7 @@ l0040CB0C:
 	bc	0040C854
 
 l0040CB16:
-	move.balc	r4,r16,0040CB78
+	move.balc	r4,r16,__shgetc
 	lw	r19,0068(r16)
 	bc	0040CABC
 
@@ -26743,7 +26743,7 @@ l0040CB20:
 
 l0040CB22:
 	movep	r6,r7,r0,r0
-	move.balc	r4,r16,0040CB40
+	move.balc	r4,r16,__shlim
 	movep	r4,r5,r0,r0
 	restore.jrc	00000050,r30,0000000A
 
@@ -26854,7 +26854,7 @@ l0040CB86:
 	bgec	r5,r7,0040CC1C
 
 l0040CB8E:
-	move.balc	r4,r16,0040D3E0
+	move.balc	r4,r16,__uflow
 	bltc	r4,r0,0040CC26
 
 l0040CB96:
@@ -26979,7 +26979,7 @@ l0040CC38:
 l0040CC3A:
 	save	00000010,ra,00000002
 	move	r16,r4
-	balc	004049B0
+	balc	__errno_location
 	subu	r7,r0,r16
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -27173,7 +27173,7 @@ l0040CD6A:
 l0040CD70:
 	lw	r5,0000(r18)
 	addu	r5,r5,r21
-	move.balc	r4,r19,0040A830
+	move.balc	r4,r19,strcmp
 	bnezc	r4,0040CD9E
 
 l0040CD7A:
@@ -27213,7 +27213,7 @@ l0040CDA6:
 	lw	r6,000C(r7)
 	lwx	r5,r6(r7)
 	addu	r5,r5,r21
-	move.balc	r4,r20,0040A830
+	move.balc	r4,r20,strcmp
 	bnezc	r4,0040CD9E
 
 l0040CDB4:
@@ -27239,11 +27239,11 @@ l0040CDCC:
 
 l0040CDD0:
 	mul	r4,r4,r5
-	bc	0040579A
+	bc	__malloc0
 
 l0040CDD6:
 	save	00000010,ra,00000001
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000000C
 	sw	r7,0000(sp)
 	move	r4,r0
@@ -27306,7 +27306,7 @@ l0040CE42:
 l0040CE62:
 	li	r6,00000003
 	movep	r4,r5,r0,r16
-	balc	00405BE2
+	balc	mmap64
 	li	r7,FFFFFFFF
 	beqc	r4,r7,0040CEF4
 
@@ -27334,7 +27334,7 @@ l0040CE98:
 
 l0040CE9C:
 	addiu	r4,r0,000000D6
-	balc	00404A50
+	balc	__syscall
 	lwpc	r7,00432EF4
 	addu	r6,r16,r7
 	beqc	r4,r6,0040CEE8
@@ -27346,7 +27346,7 @@ l0040CEB0:
 l0040CEB4:
 	move	r5,r0
 	addiu	r4,r0,000000D6
-	balc	00404A50
+	balc	__syscall
 	lw	r6,0024(r18)
 	subu	r7,r0,r4
 	addiu	r5,r6,FFFFFFFF
@@ -27364,7 +27364,7 @@ l0040CED8:
 	bc	0040CE94
 
 l0040CEDC:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000000C
 	sw	r7,0000(sp)
 	move	r4,r0
@@ -27387,7 +27387,7 @@ l0040CEF4:
 ;;     0040C56E (in __floatscan)
 ;;     0040C65C (in __floatscan)
 copysignl proc
-	bc	0040E120
+	bc	copysign
 0040CF04             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; fabs: 0040CF10
@@ -27405,12 +27405,12 @@ fabs proc
 ;;     0040BA68 (in decfloat)
 ;;     0040BB74 (in decfloat)
 fmodl proc
-	bc	0040E140
+	bc	fmod
 0040CF24             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; frexpl: 0040CF30
 frexpl proc
-	bc	0040E2C0
+	bc	frexp
 0040CF34             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; scalbn: 0040CF40
@@ -27432,7 +27432,7 @@ l0040CF4E:
 	addiu	r16,r17,FFFFFC01
 	lw	r6,02B8(r19)
 	lw	r7,02BC(r19)
-	balc	0040CFCC
+	balc	fn0040CFCC
 	movep	r8,r9,r4,r5
 	bgec	r18,r16,0040CF7E
 
@@ -27440,7 +27440,7 @@ l0040CF66:
 	lw	r7,02BC(r19)
 	addiu	r16,r17,FFFFF802
 	lw	r6,02B8(r19)
-	balc	0040CFCC
+	balc	fn0040CFCC
 	slti	r7,r16,00000400
 	movep	r8,r9,r4,r5
 	movz	r16,r18,r7
@@ -27451,7 +27451,7 @@ l0040CF7E:
 	sll	r5,r16,00000014
 	movep	r6,r7,r4,r5
 	movep	r4,r5,r8,r9
-	balc	0040CFCC
+	balc	fn0040CFCC
 	restore.jrc	00000020,ra,00000005
 
 l0040CF90:
@@ -27464,7 +27464,7 @@ l0040CF9A:
 	addiu	r16,r17,000003C9
 	lw	r6,02C0(r19)
 	lw	r7,02C4(r19)
-	balc	0040CFCC
+	balc	fn0040CFCC
 	movep	r8,r9,r4,r5
 	bgec	r16,r18,0040CF7E
 
@@ -27472,7 +27472,7 @@ l0040CFB2:
 	lw	r7,02C4(r19)
 	addiu	r16,r17,00000792
 	lw	r6,02C0(r19)
-	balc	0040CFCC
+	balc	fn0040CFCC
 	slt	r7,r16,r18
 	movep	r8,r9,r4,r5
 	movn	r16,r18,r7
@@ -27488,14 +27488,14 @@ l0040CFCA:
 ;;     0040CFAA (in scalbn)
 ;;     0040CFBE (in scalbn)
 fn0040CFCC proc
-	bc	00404330
+	bc	__muldf3
 
 ;; scalbnl: 0040CFD0
 ;;   Called from:
 ;;     0040BAB2 (in decfloat)
 ;;     0040C40C (in __floatscan)
 scalbnl proc
-	bc	0040CF40
+	bc	scalbn
 0040CFD4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; mbstowcs: 0040CFE0
@@ -27506,7 +27506,7 @@ mbstowcs proc
 	move	r7,r0
 	sw	r5,000C(sp)
 	addiu	r5,sp,0000000C
-	balc	0040E410
+	balc	mbsrtowcs
 	restore.jrc	00000020,ra,00000001
 0040CFEE                                           00 00               ..
 
@@ -27516,7 +27516,7 @@ wctomb proc
 
 l0040CFF2:
 	move	r6,r0
-	bc	0040E600
+	bc	wcrtomb
 
 l0040CFF8:
 	jrc	ra
@@ -27817,7 +27817,7 @@ l0040D1E4:
 l0040D1E6:
 	li	r7,00000001
 	addiu	r5,r16,00000050
-	balc	0040ADB0
+	balc	__wait
 
 l0040D1F0:
 	addiu	r4,r16,0000004C
@@ -27868,7 +27868,7 @@ l0040D224:
 	li	r7,00000001
 	addiu	r6,r0,00000081
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r4,r7,0040D248
 
@@ -27877,7 +27877,7 @@ l0040D23A:
 	li	r4,00000062
 	movep	r5,r6,r16,r7
 	restore	00000010,ra,00000002
-	bc	00404A50
+	bc	__syscall
 
 l0040D248:
 	restore.jrc	00000010,ra,00000002
@@ -27914,7 +27914,7 @@ l0040D274:
 	restore.jrc	00000020,ra,00000002
 
 l0040D27A:
-	balc	0040D3A0
+	balc	__towrite
 	beqzc	r4,0040D25C
 
 l0040D280:
@@ -27989,8 +27989,8 @@ l0040D2F2:
 	lw	r5,003C(r16)
 	li	r4,00000042
 	movep	r6,r7,r17,r20
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	beqc	r18,r4,0040D2BE
 
 l0040D304:
@@ -28027,7 +28027,7 @@ l0040D332:
 	addiu	r7,sp,00000008
 	li	r6,40087468
 	li	r4,0000001D
-	balc	00404A50
+	balc	__syscall
 	beqzc	r4,0040D34A
 
 l0040D344:
@@ -28036,7 +28036,7 @@ l0040D344:
 
 l0040D34A:
 	movep	r5,r6,r17,r18
-	move.balc	r4,r16,0040D2A0
+	move.balc	r4,r16,__stdio_write
 	restore.jrc	00000020,ra,00000004
 0040D352       00 00 00 00 00 00 00 00 00 00 00 00 00 00   ..............
 
@@ -28050,7 +28050,7 @@ __string_read proc
 	move	r20,r6
 	lw	r16,0054(r19)
 	movep	r5,r6,r0,r18
-	move.balc	r4,r16,0040A050
+	move.balc	r4,r16,memchr
 	beqzc	r4,0040D378
 
 l0040D376:
@@ -28063,7 +28063,7 @@ l0040D378:
 l0040D380:
 	move	r17,r20
 	movep	r5,r6,r16,r17
-	move.balc	r4,r21,0040A130
+	move.balc	r4,r21,memcpy
 	addu	r7,r16,r17
 	addu	r16,r16,r18
 	move	r4,r20
@@ -28105,7 +28105,7 @@ l0040D3C8:
 
 ;; __towrite_needs_stdio_exit: 0040D3D2
 __towrite_needs_stdio_exit proc
-	bc	0040E720
+	bc	__stdio_exit_needed
 0040D3D6                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; __uflow: 0040D3E0
@@ -28117,7 +28117,7 @@ __towrite_needs_stdio_exit proc
 __uflow proc
 	save	00000020,ra,00000002
 	move	r16,r4
-	balc	0040E750
+	balc	__toread
 	bnezc	r4,0040D400
 
 l0040D3EA:
@@ -28167,11 +28167,11 @@ arg_n proc
 	move	r16,r5
 	move	r5,r4
 	addu	r4,sp,r6
-	balc	0040A130
+	balc	memcpy
 	li	r6,00000010
 	addu	r5,sp,r6
 	move	r4,sp
-	balc	0040A130
+	balc	memcpy
 	lb	r7,000C(sp)
 	move	r6,r0
 	move	r4,r0
@@ -28244,7 +28244,7 @@ __isoc99_vfscanf proc
 	move	r30,r4
 	li	r6,00000010
 	addiu	r4,sp,0000004C
-	move.balc	r5,r17,0040A130
+	move.balc	r5,r17,memcpy
 	lw	r7,0000(r17)
 	sw	r0,0020(sp)
 	sw	r7,001C(sp)
@@ -28257,7 +28257,7 @@ __isoc99_vfscanf proc
 
 l0040D4CE:
 	move	r4,r30
-	balc	0040D1D0
+	balc	__lockfile
 	sw	r4,0020(sp)
 
 l0040D4D6:
@@ -28275,7 +28275,7 @@ l0040D4E0:
 
 l0040D4E4:
 	move	r4,r30
-	balc	0040D210
+	balc	__unlockfile
 
 l0040D4EA:
 	lw	r17,0008(sp)
@@ -28306,7 +28306,7 @@ l0040D50E:
 	move	r4,r30
 	addu	r16,r16,r7
 	movep	r6,r7,r0,r0
-	balc	0040CB40
+	balc	__shlim
 	lw	r7,0004(r30)
 	lw	r6,0068(r30)
 	bgeuc	r7,r6,0040D562
@@ -28343,12 +28343,12 @@ l0040D554:
 
 l0040D558:
 	move	r4,r30
-	balc	0040CB78
+	balc	__shgetc
 	bc	0040DB7C
 
 l0040D562:
 	move	r4,r30
-	balc	0040CB78
+	balc	__shgetc
 	bc	0040D532
 
 l0040D56A:
@@ -28414,7 +28414,7 @@ l0040D5CE:
 	sw	r7,0050(sp)
 	lbu	r7,0018(sp)
 	sb	r7,0058(sp)
-	balc	0040D434
+	balc	arg_n
 	move	r18,r4
 	addiu	r7,r16,00000003
 	bc	0040D586
@@ -28488,7 +28488,7 @@ l0040D662:
 	lw	r17,000C(sp)
 	sra	r7,r7,0000001F
 	sw	r7,0028(sp)
-	balc	0040CB40
+	balc	__shlim
 	lw	r7,0004(r30)
 	lw	r6,0068(r30)
 	bgeuc	r7,r6,0040D7AA
@@ -28590,13 +28590,13 @@ l0040D726:
 l0040D72A:
 	lw	r17,0010(sp)
 	movep	r5,r6,r21,r23
-	move.balc	r4,r18,0040D410
+	move.balc	r4,r18,store_int
 	bc	0040DBC8
 
 l0040D736:
 	movep	r6,r7,r0,r0
 	move	r4,r30
-	balc	0040CB40
+	balc	__shlim
 
 l0040D73E:
 	lw	r7,0004(r30)
@@ -28646,12 +28646,12 @@ l0040D770:
 
 l0040D7A2:
 	move	r4,r30
-	balc	0040CB78
+	balc	__shgetc
 	bc	0040D754
 
 l0040D7AA:
 	move	r4,r30
-	balc	0040CB78
+	balc	__shgetc
 	bgec	r4,r0,0040D684
 
 l0040D7B4:
@@ -28685,7 +28685,7 @@ l0040D7D6:
 	addiu	r6,r0,00000101
 	movep	r4,r5,r8,r22
 	sw	r8,002C(sp)
-	balc	0040A690
+	balc	memset
 	lbu	r6,0000(r16)
 	addiu	r7,sp,FFFFF160
 	lw	r18,002C(sp)
@@ -28753,7 +28753,7 @@ l0040D84C:
 	addiu	r9,r0,FFFFFFFF
 	move	r6,r0
 	move	r4,r30
-	balc	0040C670
+	balc	__intscan
 	lw	r22,0004(r30)
 	movep	r6,r7,r4,r5
 	lw	r5,0008(r30)
@@ -28804,7 +28804,7 @@ l0040D8AE:
 	addiu	r6,r0,00000101
 	li	r5,FFFFFFFF
 	addiu	r4,sp,0000005C
-	balc	0040A690
+	balc	memset
 	sb	r0,005C(sp)
 	bneiuc	r17,00000033,0040D9A8
 
@@ -28829,7 +28829,7 @@ l0040D8E2:
 
 l0040D8E8:
 	sll	r4,r22,00000002
-	balc	00405292
+	balc	malloc
 	move	r20,r4
 	beqc	r0,r4,0040DBF8
 
@@ -28858,7 +28858,7 @@ l0040D912:
 l0040D922:
 	addiu	r4,sp,00000044
 	move	r19,r0
-	balc	0040E400
+	balc	mbsinit
 	beqc	r0,r4,0040D7B4
 
 l0040D92E:
@@ -28903,8 +28903,8 @@ l0040D974:
 	beqc	r0,r7,0040D4E0
 
 l0040D97A:
-	move.balc	r4,r19,00404F2E
-	move.balc	r4,r20,00404F2E
+	move.balc	r4,r19,free
+	move.balc	r4,r20,free
 	bc	0040D4E0
 
 l0040D986:
@@ -28942,7 +28942,7 @@ l0040D9B8:
 	li	r6,00000001
 	addiu	r5,sp,0000003F
 	addiu	r4,sp,00000040
-	balc	0040E320
+	balc	mbrtowc
 	addiu	r7,r0,FFFFFFFE
 	lw	r18,002C(sp)
 	beqc	r4,r7,0040D8FC
@@ -28971,7 +28971,7 @@ l0040D9F0:
 	addiu	r22,r22,00000001
 	sw	r8,002C(sp)
 	sll	r5,r22,00000002
-	move.balc	r4,r20,004057D0
+	move.balc	r4,r20,realloc
 	beqc	r0,r4,0040DBFA
 
 l0040DA04:
@@ -28982,7 +28982,7 @@ l0040DA04:
 l0040DA0A:
 	move	r4,r30
 	sw	r8,002C(sp)
-	balc	0040DC0C
+	balc	fn0040DC0C
 	lw	r18,002C(sp)
 	bc	0040D912
 
@@ -28991,7 +28991,7 @@ l0040DA14:
 	beqzc	r7,0040DA76
 
 l0040DA18:
-	move.balc	r4,r22,00405292
+	move.balc	r4,r22,malloc
 	move	r19,r4
 	beqc	r0,r4,0040DBF8
 
@@ -29027,7 +29027,7 @@ l0040DA4A:
 l0040DA58:
 	sll	r22,r22,00000001
 	addiu	r22,r22,00000001
-	move.balc	r5,r22,004057D0
+	move.balc	r5,r22,realloc
 	beqc	r0,r4,0040DC08
 
 l0040DA66:
@@ -29038,7 +29038,7 @@ l0040DA66:
 l0040DA6C:
 	move	r4,r30
 	sw	r8,002C(sp)
-	balc	0040DC0C
+	balc	fn0040DC0C
 	lw	r18,002C(sp)
 	bc	0040DA3A
 
@@ -29096,13 +29096,13 @@ l0040DACE:
 l0040DAD2:
 	move	r4,r30
 	sw	r19,002C(sp)
-	balc	0040DC0C
+	balc	fn0040DC0C
 	lw	r18,002C(sp)
 	bc	0040DAC2
 
 l0040DADC:
 	move	r4,r30
-	balc	0040DC0C
+	balc	fn0040DC0C
 	bc	0040DA90
 
 l0040DAE2:
@@ -29119,13 +29119,13 @@ l0040DAEA:
 
 l0040DAEE:
 	movep	r4,r5,r18,r21
-	balc	0040D410
+	balc	store_int
 	bc	0040D6B4
 
 l0040DAF8:
 	movep	r5,r6,r21,r0
 	move	r4,r30
-	balc	0040BD5C
+	balc	__floatscan
 	lw	r6,0008(r30)
 	lw	r7,0004(r30)
 	lw	r22,007C(r30)
@@ -29153,7 +29153,7 @@ l0040DB34:
 	bnec	r0,r21,0040D6B4
 
 l0040DB38:
-	balc	00410220
+	balc	__truncdfsf2
 	sw	r4,0000(sp)
 	bc	0040D6B4
 
@@ -29179,7 +29179,7 @@ l0040DB56:
 l0040DB5E:
 	movep	r6,r7,r0,r0
 	move	r4,r30
-	balc	0040CB40
+	balc	__shlim
 
 l0040DB66:
 	lw	r7,0004(r30)
@@ -29291,7 +29291,7 @@ l0040DC08:
 ;;     0040DAD6 (in __isoc99_vfscanf)
 ;;     0040DADE (in __isoc99_vfscanf)
 fn0040DC0C proc
-	bc	0040CB78
+	bc	__shgetc
 
 ;; stpcpy: 0040DC10
 ;;   Called from:
@@ -29455,7 +29455,7 @@ l0040DD12:
 
 l0040DD1A:
 	movep	r4,r5,r16,r0
-	balc	0040A690
+	balc	memset
 	move	r4,r16
 	restore.jrc	00000010,ra,00000002
 
@@ -29470,22 +29470,22 @@ l0040DD24:
 __set_thread_area proc
 	move	r5,r4
 	addiu	r4,r0,000000F4
-	bc	00404A50
+	bc	__syscall
 0040DD3A                               00 00 00 00 00 00           ......
 
 ;; handler: 0040DD40
 handler proc
 	save	00000040,ra,00000002
-	balc	004049B0
+	balc	__errno_location
 	lw	r16,0000(r4)
 	addiu	r4,sp,00000010
 	movep	r5,r6,r0,r0
-	balc	0040E7A0
+	balc	sem_init
 	addiu	r4,sp,00000020
 	movep	r5,r6,r0,r0
-	balc	0040E7A0
+	balc	sem_init
 	addiu	r4,r0,000000B2
-	balc	00404A50
+	balc	__syscall
 	sw	r4,000C(sp)
 
 l0040DD62:
@@ -29529,19 +29529,19 @@ l0040DDAE:
 	addiu	r6,r0,00000087
 	addiupc	r5,00025156
 	li	r4,00000062
-	balc	00404A50
+	balc	__syscall
 
 l0040DDBC:
 	addiu	r4,sp,00000010
-	balc	0040E850
+	balc	sem_wait
 	lwpc	r7,00432F08
 	lwpc	r4,00432F04
 	jalrc	ra,r7
 	addiu	r4,sp,00000020
-	balc	0040E7D0
+	balc	sem_post
 	addiu	r4,sp,00000010
-	balc	0040E850
-	balc	004049B0
+	balc	sem_wait
+	balc	__errno_location
 	sw	r16,0000(r4)
 	restore.jrc	00000040,ra,00000002
 
@@ -29564,11 +29564,11 @@ __synccall proc
 	movep	r18,r19,r4,r5
 	move	r5,r0
 	addiu	r4,sp,00000120
-	balc	0040E008
+	balc	fn0040E008
 	addiu	r6,r0,0000008C
 	move	r5,r0
 	addiu	r4,sp,00000094
-	balc	0040E008
+	balc	fn0040E008
 	addiu	r7,sp,FFFFF940
 	move	r16,r7
 	addiupc	r7,FFFFFF24
@@ -29576,14 +29576,14 @@ __synccall proc
 	sw	r7,0754(r16)
 	lui	r7,00010000
 	sw	r7,07D8(r16)
-	balc	00407EB4
+	balc	__block_app_sigs
 	addiupc	r4,000250DE
-	balc	0040AD30
+	balc	__lock
 	move	r4,r0
-	balc	00407EA0
+	balc	__block_all_sigs
 	addiu	r5,sp,00000008
 	li	r4,00000001
-	balc	0040AE50
+	balc	__pthread_setcancelstate
 	lw	r7,0001(r21)
 	swpc	r0,00432F18
 	beqc	r0,r7,0040DF7E
@@ -29598,20 +29598,20 @@ l0040DE50:
 	addiu	r6,r0,00000080
 	li	r5,FFFFFFFF
 	addiu	r4,sp,00000098
-	balc	0040E008
+	balc	fn0040E008
 	move	r6,r0
 	addiu	r5,sp,00000094
 	li	r4,00000022
-	balc	00407F3A
+	balc	__libc_sigaction
 	addiu	r4,r0,000000AC
-	balc	0040E00C
+	balc	fn0040E00C
 	move	r17,r4
 	addiu	r4,r0,000000B2
-	balc	0040E00C
+	balc	fn0040E00C
 	lui	r5,00000090
 	move	r20,r4
 	addiupc	r4,000041B8
-	balc	0040E0A0
+	balc	open64
 	sw	r4,07E0(r16)
 	bgec	r4,r0,0040DEF8
 
@@ -29623,7 +29623,7 @@ l0040DEA4:
 	addiu	r6,r0,00000081
 	addiupc	r5,0002503E
 	li	r4,00000062
-	balc	0040E00C
+	balc	fn0040E00C
 	addiu	r7,r0,FFFFFFDA
 	bnec	r4,r7,0040DEDE
 
@@ -29632,16 +29632,16 @@ l0040DECC:
 	li	r6,00000001
 	addiupc	r5,00025026
 	li	r4,00000062
-	balc	0040E00C
+	balc	fn0040E00C
 
 l0040DEDE:
 	lw	r17,0008(sp)
 	move	r5,r0
-	balc	0040AE50
+	balc	__pthread_setcancelstate
 	addiupc	r4,00025026
-	balc	0040AD60
+	balc	__unlock
 	addiu	r4,sp,00000014
-	balc	00407EC8
+	balc	__restore_sigs
 	restore.jrc	00000960,ra,00000007
 
 l0040DEF8:
@@ -29655,7 +29655,7 @@ l0040DEFC:
 
 l0040DEFE:
 	addiu	r4,sp,00000120
-	balc	0040E010
+	balc	readdir64
 	bnezc	r4,0040DF22
 
 l0040DF08:
@@ -29663,14 +29663,14 @@ l0040DF08:
 
 l0040DF0A:
 	addiu	r4,sp,00000120
-	balc	0040E070
+	balc	rewinddir
 	bc	0040DEFC
 
 l0040DF14:
 	li	r6,00000022
 	addiu	r4,r0,00000081
 	addiu	r16,r16,FFFFFFFF
-	move.balc	r5,r17,00404A50
+	move.balc	r5,r17,__syscall
 	bc	0040DEFA
 
 l0040DF22:
@@ -29680,7 +29680,7 @@ l0040DF22:
 
 l0040DF2E:
 	addiu	r4,r4,00000013
-	balc	00409BD0
+	balc	atoi
 	move	r6,r4
 	beqc	r4,r20,0040DEFE
 
@@ -29706,7 +29706,7 @@ l0040DF5A:
 
 l0040DF5E:
 	lw	r4,0120(sp)
-	balc	0040AF72
+	balc	close
 	lwpc	r16,00432F18
 
 l0040DF6C:
@@ -29718,7 +29718,7 @@ l0040DF6E:
 	addiu	r5,sp,00000094
 	li	r4,00000022
 	sw	r7,0094(sp)
-	balc	00407F3A
+	balc	__libc_sigaction
 
 l0040DF7E:
 	move	r4,r19
@@ -29728,16 +29728,16 @@ l0040DF7E:
 
 l0040DF8A:
 	addiu	r4,r16,00000008
-	balc	0040E7D0
+	balc	sem_post
 	addiu	r4,r16,00000018
-	balc	0040E850
+	balc	sem_wait
 	lw	r16,0000(r16)
 	bc	0040DF6C
 
 l0040DF9A:
 	lw	r16,0000(r4)
 	addiu	r4,r4,00000008
-	balc	0040E7D0
+	balc	sem_post
 	move	r4,r16
 
 l0040DFA4:
@@ -29749,14 +29749,14 @@ l0040DFA6:
 l0040DFA8:
 	li	r7,00000022
 	addiu	r4,r0,00000083
-	move.balc	r5,r17,00404A50
+	move.balc	r5,r17,__syscall
 	addiu	r7,r0,FFFFFFFD
 	beqc	r4,r7,0040DEFE
 
 l0040DFBA:
 	addiu	r5,sp,0000000C
 	move	r4,r0
-	balc	0040AEF4
+	balc	__clock_gettime
 	lw	r17,0010(sp)
 	li	r5,3B9AC9FF
 	move	r6,r7
@@ -29777,7 +29777,7 @@ l0040DFE6:
 	addiupc	r5,00024F1A
 	move	r7,r0
 	li	r4,00000062
-	balc	0040E00C
+	balc	fn0040E00C
 	beqc	r0,r4,0040DEFE
 
 l0040DFFC:
@@ -29794,7 +29794,7 @@ l0040E004:
 ;;     0040DE10 (in __synccall)
 ;;     0040DE74 (in __synccall)
 fn0040E008 proc
-	bc	0040A690
+	bc	memset
 
 ;; fn0040E00C: 0040E00C
 ;;   Called from:
@@ -29804,7 +29804,7 @@ fn0040E008 proc
 ;;     0040DEDC (in __synccall)
 ;;     0040DFF6 (in __synccall)
 fn0040E00C proc
-	bc	00404A50
+	bc	__syscall
 
 ;; readdir64: 0040E010
 ;;   Called from:
@@ -29821,7 +29821,7 @@ l0040E020:
 	addiu	r7,r0,00000800
 	move	r6,r17
 	li	r4,0000003D
-	balc	00404A50
+	balc	__syscall
 	move	r18,r4
 	bltc	r0,r4,0040E04C
 
@@ -29832,7 +29832,7 @@ l0040E034:
 	beqzc	r7,0040E064
 
 l0040E040:
-	balc	004049B0
+	balc	__errno_location
 	subu	r18,r0,r18
 	sw	r18,0000(sp)
 	bc	0040E064
@@ -29863,18 +29863,18 @@ rewinddir proc
 	save	00000010,ra,00000003
 	move	r16,r4
 	addiu	r17,r4,00000018
-	move.balc	r4,r17,0040AD30
+	move.balc	r4,r17,__lock
 	lw	r4,0000(r16)
 	movep	r6,r7,r0,r0
 	move	r8,r0
-	balc	0040E860
+	balc	lseek64
 	move	r4,r17
 	movep	r6,r7,r0,r0
 	swm	r6,0008(r16),00000002
 	sw	r0,0010(sp)
 	sw	r0,0014(sp)
 	restore	00000010,ra,00000003
-	bc	0040AD60
+	bc	__unlock
 0040E098                         00 00 00 00 00 00 00 00         ........
 
 ;; open64: 0040E0A0
@@ -29914,7 +29914,7 @@ l0040E0DA:
 	or	r7,r7,r16
 	addiu	r5,r0,FFFFFF9C
 	li	r4,00000038
-	balc	0040ADA4
+	balc	__syscall_cp
 	move	r17,r4
 	bltc	r4,r0,0040E106
 
@@ -29926,10 +29926,10 @@ l0040E0FA:
 	li	r7,00000001
 	li	r6,00000002
 	li	r4,00000019
-	balc	00404A50
+	balc	__syscall
 
 l0040E106:
-	move.balc	r4,r17,0040CC30
+	move.balc	r4,r17,__syscall_ret
 	restore	00000020,ra,00000003
 	addiu	sp,sp,00000020
 	jrc	ra
@@ -29982,9 +29982,9 @@ l0040E16E:
 l0040E178:
 	movep	r6,r7,r20,r19
 	movep	r4,r5,r23,r22
-	balc	00404330
+	balc	__muldf3
 	movep	r6,r7,r4,r5
-	balc	0040F5E0
+	balc	__divdf3
 
 l0040E186:
 	movep	r23,r22,r4,r5
@@ -30015,7 +30015,7 @@ l0040E1A6:
 l0040E1AA:
 	movep	r6,r7,r0,r0
 	movep	r4,r5,r23,r22
-	balc	00404330
+	balc	__muldf3
 	bc	0040E186
 
 l0040E1B4:
@@ -30033,7 +30033,7 @@ l0040E1C4:
 l0040E1C8:
 	li	r6,00000001
 	subu	r6,r6,r16
-	move.balc	r5,r21,0040EA50
+	move.balc	r5,r21,__ashldi3
 	movep	r17,r18,r4,r5
 
 l0040E1D2:
@@ -30053,7 +30053,7 @@ l0040E1EC:
 	li	r6,00000001
 	subu	r6,r6,r30
 	movep	r4,r5,r20,r19
-	balc	0040EA50
+	balc	__ashldi3
 
 l0040E1F8:
 	move	r19,r4
@@ -30159,7 +30159,7 @@ l0040E2A0:
 l0040E2B0:
 	li	r6,00000001
 	subu	r6,r6,r16
-	move.balc	r5,r7,0040EA80
+	move.balc	r5,r7,__lshrdi3
 	bc	0040E28C
 0040E2BA                               00 00 00 00 00 00           ......
 
@@ -30177,7 +30177,7 @@ frexp proc
 
 l0040E2CE:
 	movep	r6,r7,r0,r0
-	balc	0040FA70
+	balc	__nedf2
 	beqzc	r4,0040E2FA
 
 l0040E2D6:
@@ -30185,9 +30185,9 @@ l0040E2D6:
 	lw	r6,02C8(r7)
 	lw	r7,02CC(r7)
 	movep	r4,r5,r17,r16
-	balc	00404330
+	balc	__muldf3
 	move	r6,r18
-	balc	0040E2C0
+	balc	frexp
 	lw	r7,0000(r18)
 	movep	r17,r16,r4,r5
 	addiu	r7,r7,FFFFFFC0
@@ -30325,7 +30325,7 @@ l0040E3E8:
 
 l0040E3F2:
 	sw	r0,0040(sp)
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000054
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -30405,7 +30405,7 @@ l0040E464:
 l0040E468:
 	move	r4,r16
 	restore	00000010,ra,00000004
-	bc	0040A890
+	bc	strlen
 
 l0040E472:
 	lbu	r7,0000(r16)
@@ -30563,7 +30563,7 @@ l0040E556:
 	addiu	r16,r16,FFFFFFFF
 
 l0040E558:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000054
 	li	r6,FFFFFFFF
 	sw	r7,0000(sp)
@@ -30684,7 +30684,7 @@ l0040E622:
 	bltuc	r6,r7,0040E60E
 
 l0040E62E:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000054
 	sw	r7,0000(sp)
 	li	r7,FFFFFFFF
@@ -30771,7 +30771,7 @@ l0040E6E6:
 	bltc	r7,r0,0040E6F2
 
 l0040E6EE:
-	balc	0040D1D0
+	balc	__lockfile
 
 l0040E6F2:
 	lw	r7,0014(r16)
@@ -30807,12 +30807,12 @@ l0040E71E:
 ;;     0040E79A (in __toread_needs_stdio_exit)
 __stdio_exit_needed proc
 	save	00000010,ra,00000002
-	balc	00408610
+	balc	__ofl_lock
 	lw	r16,0000(r4)
 	bc	0040E730
 
 l0040E72A:
-	move.balc	r4,r16,0040E6E0
+	move.balc	r4,r16,close_file
 	lw	r16,0038(r16)
 
 l0040E730:
@@ -30820,10 +30820,10 @@ l0040E730:
 
 l0040E732:
 	lwpc	r4,00432F30
-	balc	0040E6E0
+	balc	close_file
 	lwpc	r4,00430300
 	restore	00000010,ra,00000002
-	bc	0040E6E0
+	bc	close_file
 0040E74A                               00 00 00 00 00 00           ......
 
 ;; __toread: 0040E750
@@ -30870,7 +30870,7 @@ l0040E790:
 
 ;; __toread_needs_stdio_exit: 0040E79A
 __toread_needs_stdio_exit proc
-	bc	0040E720
+	bc	__stdio_exit_needed
 0040E79E                                           00 00               ..
 
 ;; sem_init: 0040E7A0
@@ -30891,7 +30891,7 @@ l0040E7A6:
 	restore.jrc	00000010,ra,00000001
 
 l0040E7B6:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,00000016
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -30915,7 +30915,7 @@ l0040E7D6:
 	bnec	r5,r7,0040E7EE
 
 l0040E7E2:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000004B
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -30958,7 +30958,7 @@ l0040E828:
 	li	r7,00000001
 	or	r6,r6,r7
 	li	r4,00000062
-	move.balc	r5,r16,00404A50
+	move.balc	r5,r16,__syscall
 	addiu	r7,r0,FFFFFFDA
 	bnec	r7,r4,0040E81C
 
@@ -30966,7 +30966,7 @@ l0040E83A:
 	li	r7,00000001
 	li	r4,00000062
 	movep	r5,r6,r16,r7
-	balc	00404A50
+	balc	__syscall
 	bc	0040E81C
 0040E846                   00 00 00 00 00 00 00 00 00 00       ..........
 
@@ -30977,7 +30977,7 @@ l0040E83A:
 ;;     0040DF92 (in __synccall)
 sem_wait proc
 	move	r5,r0
-	bc	0040E8A6
+	bc	sem_timedwait
 0040E856                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; lseek64: 0040E860
@@ -30991,8 +30991,8 @@ lseek64 proc
 	move	r6,r5
 	move	r5,r4
 	li	r4,0000003E
-	balc	00404A50
-	balc	0040CC30
+	balc	__syscall
+	balc	__syscall_ret
 	li	r6,FFFFFFFF
 	li	r7,FFFFFFFF
 	bnezc	r4,0040E882
@@ -31025,8 +31025,8 @@ l0040E8A0:
 sem_timedwait proc
 	save	00000020,ra,00000004
 	movep	r16,r18,r4,r5
-	balc	0040EA42
-	move.balc	r4,r16,0040E930
+	balc	__pthread_testcancel
+	move.balc	r4,r16,sem_trywait
 	li	r7,00000065
 	bnezc	r4,0040E8BE
 
@@ -31050,7 +31050,7 @@ l0040E8C8:
 	beqzc	r6,0040E8BA
 
 l0040E8CC:
-	move.balc	r4,r16,0040E930
+	move.balc	r4,r16,sem_trywait
 	beqzc	r4,0040E8B6
 
 l0040E8D2:
@@ -31080,21 +31080,21 @@ l0040E8FA:
 	sync	00000000
 	addiupc	r5,FFFFFF8E
 	addiu	r4,sp,00000004
-	balc	0040AE32
+	balc	_pthread_cleanup_push
 	lw	r8,0002(r16)
 	movep	r6,r7,r0,r18
 	li	r5,FFFFFFFF
-	move.balc	r4,r16,0040E980
+	move.balc	r4,r16,__timedwait_cp
 	li	r5,00000001
 	move	r17,r4
 	addiu	r4,sp,00000004
-	balc	0040AE3A
+	balc	_pthread_cleanup_pop
 	move	r7,r17
 	ins	r7,r0,00000002,00000001
 	beqzc	r7,0040E8CC
 
 l0040E924:
-	balc	004049B0
+	balc	__errno_location
 	sw	r17,0000(sp)
 	li	r4,FFFFFFFF
 	restore.jrc	00000020,ra,00000004
@@ -31112,7 +31112,7 @@ l0040E932:
 	bltc	r0,r7,0040E944
 
 l0040E938:
-	balc	004049B0
+	balc	__errno_location
 	li	r7,0000000B
 	sw	r7,0000(sp)
 	li	r4,FFFFFFFF
@@ -31174,7 +31174,7 @@ l0040E99C:
 
 l0040E9A0:
 	addiu	r5,sp,00000008
-	move.balc	r4,r6,0040AEF4
+	move.balc	r4,r6,__clock_gettime
 	bnezc	r4,0040E99C
 
 l0040E9A8:
@@ -31212,7 +31212,7 @@ l0040E9D6:
 	move	r10,r0
 	move	r9,r0
 	li	r4,00000062
-	balc	0040ADA4
+	balc	__syscall_cp
 	addiu	r6,r0,FFFFFFDA
 	move	r7,r4
 	subu	r4,r0,r4
@@ -31224,7 +31224,7 @@ l0040E9F0:
 	movep	r7,r8,r18,r16
 	movep	r5,r6,r17,r0
 	li	r4,00000062
-	balc	0040ADA4
+	balc	__syscall_cp
 	subu	r4,r0,r4
 
 l0040EA02:
@@ -31249,16 +31249,16 @@ __timedwait proc
 	sw	r8,0004(sp)
 	sw	r7,0008(sp)
 	sw	r6,000C(sp)
-	balc	0040AE50
+	balc	__pthread_setcancelstate
 	lw	r18,0004(sp)
 	lw	r17,0008(sp)
 	lw	r17,000C(sp)
 	movep	r4,r5,r16,r17
-	balc	0040E980
+	balc	__timedwait_cp
 	move	r5,r0
 	move	r16,r4
 	lw	r17,001C(sp)
-	balc	0040AE50
+	balc	__pthread_setcancelstate
 	move	r4,r16
 	restore.jrc	00000030,ra,00000003
 
@@ -31272,7 +31272,7 @@ __testcancel proc
 ;;   Called from:
 ;;     0040E8AA (in sem_timedwait)
 __pthread_testcancel proc
-	bc	0040EA40
+	bc	__testcancel
 0040EA46                   00 00 00 00 00 00 00 00 00 00       ..........
 
 ;; __ashldi3: 0040EA50
@@ -33011,7 +33011,7 @@ l0040F84A:
 	sltu	r2,r2,r5
 	subu	r6,r9,r2
 	addiu	r9,r0,FFFFFFFF
-	beqc	r4,r6,0040F91A
+	beqc	r4,r6,fn0040F91A
 
 l0040F862:
 	divu	r14,r6,r12
@@ -33071,7 +33071,7 @@ l0040F8DE:
 	bnec	r6,r2,0040F916
 
 l0040F8E4:
-	beqc	r0,r3,0040F91A
+	beqc	r0,r3,fn0040F91A
 
 l0040F8E8:
 	addu	r6,r4,r6
@@ -33099,7 +33099,7 @@ l0040F90E:
 	bnec	r6,r2,0040F916
 
 l0040F912:
-	beqc	r3,r7,0040F91A
+	beqc	r3,r7,fn0040F91A
 
 l0040F916:
 	ori	r9,r9,00000001
@@ -33141,7 +33141,7 @@ l0040F940:
 
 l0040F948:
 	addiu	r7,r0,000007FE
-	bltc	r7,r6,0040FA5A
+	bltc	r7,r6,fn0040FA5A
 
 l0040F950:
 	sll	r7,r8,0000001D
@@ -33205,13 +33205,13 @@ fn0040F9A8 proc
 0040F9B0 83 11                                           ..              
 
 l0040F9B2:
-	beqic	r12,00000002,0040FA5A
+	beqic	r12,00000002,fn0040FA5A
 
 l0040F9B6:
 	beqic	r12,00000003,0040F99C
 
 l0040F9BA:
-	bneiuc	r12,00000001,0040F91A
+	bneiuc	r12,00000001,fn0040F91A
 
 l0040F9BC:
 	illegal
@@ -33233,7 +33233,7 @@ l0040F9C4:
 l0040F9C8:
 	li	r5,00000001
 	subu	r5,r5,r6
-	bgeic	r5,00000039,0040F9BE
+	bgeic	r5,00000039,fn0040F9BE
 
 l0040F9D0:
 	bgeic	r5,00000020,0040FA24
@@ -33309,7 +33309,7 @@ l0040FA58:
 fn0040FA5A proc
 	move	r8,r0
 	move	r9,r0
-	bc	0040F9A4
+	bc	fn0040F9A4
 
 l0040FA60:
 	move	r8,r0

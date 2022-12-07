@@ -5,7 +5,7 @@
 ;;     00008664 (in __libc_csu_init)
 _init proc
 	push	lr
-	bl	$0000836C
-	bl	$00008404
-	bl	$0000870C
+	bl	call_gmon_start
+	bl	frame_dummy
+	bl	__do_global_ctors_aux
 	pop	pc

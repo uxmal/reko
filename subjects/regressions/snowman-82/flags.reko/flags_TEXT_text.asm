@@ -5,7 +5,7 @@ foo proc
 	mov	ecx,[rdi]
 	shr	ecx,0Ah
 	xor	cl,sil
-	jz	0FB4h
+	jz	bar
 
 l0000000000000FAC:
 	mov	rax,+1h

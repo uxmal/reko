@@ -272,7 +272,7 @@ l100012B6:
 
 l100012BF:
 	push	100033B8h
-	call	10001742h
+	call	fn10001742
 	test	eax,eax
 	pop	ecx
 	jz	100012DDh
@@ -380,7 +380,7 @@ l10001384:
 fn10001388 proc
 	push	10h
 	push	100021E8h
-	call	100017E8h
+	call	fn100017E8
 	mov	edi,ecx
 	mov	esi,edx
 	mov	ebx,[ebp+8h]
@@ -430,7 +430,7 @@ l100013E7:
 	push	edi
 	push	esi
 	push	ebx
-	call	100011E9h
+	call	fn100011E9
 	mov	[ebp-1Ch],eax
 	test	eax,eax
 	jz	1000147Ah
@@ -439,7 +439,7 @@ l100013FA:
 	push	edi
 	push	esi
 	push	ebx
-	call	100017C6h
+	call	fn100017C6
 	mov	[ebp-1Ch],eax
 	cmp	esi,1h
 	jnz	1000142Eh
@@ -452,11 +452,11 @@ l1000140E:
 	push	edi
 	push	eax
 	push	ebx
-	call	100017C6h
+	call	fn100017C6
 	push	edi
 	push	0h
 	push	ebx
-	call	100011E9h
+	call	fn100011E9
 	mov	eax,[100020CCh]
 	test	eax,eax
 	jz	1000142Eh
@@ -479,7 +479,7 @@ l10001437:
 	push	edi
 	push	esi
 	push	ebx
-	call	100011E9h
+	call	fn100011E9
 	test	eax,eax
 	jnz	10001446h
 
@@ -509,9 +509,9 @@ l10001455:
 l1000147A:
 	and	dword ptr [ebp-4h],0h
 	mov	dword ptr [ebp-4h],0FFFFFFFEh
-	call	10001493h
+	call	fn10001493
 	mov	eax,[ebp-1Ch]
-	call	1000182Dh
+	call	fn1000182D
 	ret
 
 ;; fn10001493: 10001493
@@ -527,13 +527,13 @@ DllMain proc
 	jnz	100014AAh
 
 l100014A5:
-	call	10001864h
+	call	fn10001864
 
 l100014AA:
 	push	dword ptr [esp+4h]
 	mov	ecx,[esp+10h]
 	mov	edx,[esp+0Ch]
-	call	10001388h
+	call	fn10001388
 	pop	ecx
 	ret	0Ch
 100014BF                                              55                U
@@ -649,11 +649,11 @@ l1000173E:
 fn10001742 proc
 	push	8h
 	push	10002230h
-	call	100017E8h
+	call	fn100017E8
 	and	dword ptr [ebp-4h],0h
 	mov	edx,10000000h
 	push	edx
-	call	100016D0h
+	call	fn100016D0
 	pop	ecx
 	test	eax,eax
 	jz	1000179Fh
@@ -663,7 +663,7 @@ l10001762:
 	sub	eax,edx
 	push	eax
 	push	edx
-	call	10001700h
+	call	fn10001700
 	pop	ecx
 	pop	ecx
 	test	eax,eax
@@ -684,7 +684,7 @@ l1000179F:
 	xor	eax,eax
 
 l100017A8:
-	call	1000182Dh
+	call	fn1000182D
 	ret
 100017AE                                           FF 25               .%
 100017B0 64 20 00 10                                     d ..            

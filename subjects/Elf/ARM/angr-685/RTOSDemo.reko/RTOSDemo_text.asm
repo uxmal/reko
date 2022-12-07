@@ -2,12 +2,12 @@
 
 ;; NmiSR: 00008000
 NmiSR proc
-E7FE           	b	$00008000
+E7FE           	b	NmiSR
 00008002       00 BF                                       ..            
 
 ;; FaultISR: 00008004
 FaultISR proc
-E7FE           	b	$00008004
+E7FE           	b	FaultISR
 00008006                   00 BF                               ..        
 
 ;; ResetISR: 00008008
@@ -31,13 +31,13 @@ F843 1B04     	str	r1,[r3],#&4
 D1FB           	bne	$0000801E
 
 l00008026:
-F000 B83B     	b	$000080A0
+F000 B83B     	b	Main
 0000802A                               00 BF 60 01 00 20           ..`.. 
 00008030 80 08 00 20                                     ...             
 
 ;; raise: 00008034
 raise proc
-E7FE           	b	$00008034
+E7FE           	b	raise
 00008036                   00 BF                               ..        
 
 ;; vPrintTask: 00008038
@@ -53,12 +53,12 @@ A901           	add	r1,sp,#4
 2300           	mov	r3,#0
 F04F 32FF     	mov	r2,#&FFFFFFFF
 6828           	ldr	r0,[r5]
-F000 FD8E     	bl	$00008B6C
-F001 FB96     	bl	$00009780
+F000 FD8E     	bl	MPU_xQueueGenericReceive
+F001 FB96     	bl	OSRAMClear
 F004 0201     	and	r2,r4,#1
 F004 013F     	and	r1,r4,#&3F
 9801           	ldr	r0,[sp,#&4]
-F001 FBB5     	bl	$000097CC
+F001 FBB5     	bl	OSRAMStringDraw
 E7ED           	b	$00008040
 00008064             80 08 00 20                             ...         
 
@@ -68,7 +68,7 @@ B530           	push	{r4-r5,lr}
 4B0B           	ldr	r3,[00008098]                           ; [pc,#&2C]
 B083           	sub	sp,#&C
 9301           	str	r3,[sp,#&4]
-F000 FC48     	bl	$00008904
+F000 FC48     	bl	MPU_xTaskGetTickCount
 AC02           	add	r4,sp,#8
 4D09           	ldr	r5,[0000809C]                           ; [pc,#&24]
 F844 0D08     	str	r0,[r4,-#&8]!
@@ -76,12 +76,12 @@ F844 0D08     	str	r0,[r4,-#&8]!
 l0000807C:
 4620           	mov	r0,r4
 F241 3188     	mov	r1,#&1388
-F000 FBF7     	bl	$00008874
+F000 FBF7     	bl	MPU_vTaskDelayUntil
 2300           	mov	r3,#0
 F04F 32FF     	mov	r2,#&FFFFFFFF
 A901           	add	r1,sp,#4
 6828           	ldr	r0,[r5]
-F000 FD28     	bl	$00008AE4
+F000 FD28     	bl	MPU_xQueueGenericSend
 E7F2           	b	$0000807C
 00008096                   00 BF 50 A2 00 00 80 08 00 20       ..P...... 
 
@@ -95,11 +95,11 @@ B083           	sub	sp,#&C
 2104           	mov	r1,#4
 2003           	mov	r0,#3
 2400           	mov	r4,#0
-F000 FCEC     	bl	$00008A88
+F000 FCEC     	bl	MPU_xQueueGenericCreate
 4B0F           	ldr	r3,[000080F0]                           ; [pc,#&3C]
 6018           	str	r0,[r3]
 4620           	mov	r0,r4
-F001 FC1B     	bl	$000098F0
+F001 FC1B     	bl	OSRAMInit
 2203           	mov	r2,#3
 4623           	mov	r3,r4
 9200           	str	r2,[sp]
@@ -107,7 +107,7 @@ F001 FC1B     	bl	$000098F0
 223B           	mov	r2,#&3B
 9401           	str	r4,[sp,#&4]
 480C           	ldr	r0,[000080F8]                           ; [pc,#&30]
-F000 FB9E     	bl	$00008808
+F000 FB9E     	bl	MPU_xTaskCreate
 2202           	mov	r2,#2
 490B           	ldr	r1,[000080FC]                           ; [pc,#&2C]
 4623           	mov	r3,r4
@@ -115,12 +115,12 @@ F000 FB9E     	bl	$00008808
 9401           	str	r4,[sp,#&4]
 223B           	mov	r2,#&3B
 4809           	ldr	r0,[00008100]                           ; [pc,#&24]
-F000 FB95     	bl	$00008808
-F7F8 FC57     	bl	$00000990
+F000 FB95     	bl	MPU_xTaskCreate
+F7F8 FC57     	bl	vTaskStartScheduler
 4622           	mov	r2,r4
 4621           	mov	r1,r4
 4807           	ldr	r0,[00008104]                           ; [pc,#&1C]
-F001 FB70     	bl	$000097CC
+F001 FB70     	bl	OSRAMStringDraw
 
 l000080EC:
 E7FE           	b	$000080EC
@@ -137,11 +137,11 @@ B082           	sub	sp,#8
 2101           	mov	r1,#1
 4628           	mov	r0,r5
 9601           	str	r6,[sp,#&4]
-F001 FFD9     	bl	$0000A0CC
+F001 FFD9     	bl	UARTIntStatus
 4604           	mov	r4,r0
 4601           	mov	r1,r0
 4628           	mov	r0,r5
-F001 FFDA     	bl	$0000A0D8
+F001 FFDA     	bl	UARTIntClear
 06E2           	lsls	r2,r4,#&1B
 D503           	bpl	$00008130
 
@@ -194,7 +194,7 @@ l0000815E:
 AA01           	add	r2,sp,#4
 F10D 0103     	add	r0,sp,#3
 F88D 5003     	strb	r5,[sp,#&3]
-F7F8 F973     	bl	$00000458
+F7F8 F973     	bl	xQueueGenericSendFromISR
 E7DD           	b	$00008130
 00008174             00 C0 00 40 18 C0 00 40 2C 02 00 20     ...@...@,.. 
 00008180 04 ED 00 E0                                     ....            
@@ -205,7 +205,7 @@ E7DD           	b	$00008130
 vSetErrorLED proc
 2101           	mov	r1,#1
 2007           	mov	r0,#7
-F000 BA34     	b	$000085F4
+F000 BA34     	b	vParTestSetLED
 
 ;; prvSetAndCheckRegisters: 0000818C
 ;;   Called from:
@@ -293,8 +293,8 @@ vApplicationIdleHook proc
 B508           	push	{r3,lr}
 
 l00008212:
-F000 FE8B     	bl	$00008F2C
-F7FF FFB9     	bl	$0000818C
+F000 FE8B     	bl	vCoRoutineSchedule
+F7FF FFB9     	bl	prvSetAndCheckRegisters
 E7FA           	b	$00008212
 0000821C                                     85 81 00 00             ....
 
@@ -305,22 +305,22 @@ PDCInit proc
 B530           	push	{r4-r5,lr}
 481A           	ldr	r0,[0000828C]                           ; [pc,#&68]
 B083           	sub	sp,#&C
-F001 FCA9     	bl	$00009B7C
+F001 FCA9     	bl	SysCtlPeripheralEnable
 4819           	ldr	r0,[00008290]                           ; [pc,#&64]
-F001 FCA6     	bl	$00009B7C
+F001 FCA6     	bl	SysCtlPeripheralEnable
 2202           	mov	r2,#2
 2134           	mov	r1,#&34
 F04F 2040     	mov	r0,#&40004000
-F000 FF68     	bl	$0000910C
+F000 FF68     	bl	GPIODirModeSet
 2201           	mov	r2,#1
 2108           	mov	r1,#8
 F04F 2040     	mov	r0,#&40004000
-F000 FF62     	bl	$0000910C
+F000 FF62     	bl	GPIODirModeSet
 230A           	mov	r3,#&A
 2202           	mov	r2,#2
 2104           	mov	r1,#4
 F04F 2040     	mov	r0,#&40004000
-F000 FFB9     	bl	$000091C8
+F000 FFB9     	bl	GPIOPadConfigSet
 2408           	mov	r4,#8
 2200           	mov	r2,#0
 4D0E           	ldr	r5,[00008294]                           ; [pc,#&38]
@@ -328,19 +328,19 @@ F000 FFB9     	bl	$000091C8
 4B0E           	ldr	r3,[00008298]                           ; [pc,#&38]
 4628           	mov	r0,r5
 9400           	str	r4,[sp]
-F001 FBC0     	bl	$000099E8
+F001 FBC0     	bl	SSIConfig
 4628           	mov	r0,r5
-F001 FBE3     	bl	$00009A34
+F001 FBE3     	bl	SSIEnable
 4621           	mov	r1,r4
 2200           	mov	r2,#0
 F04F 2040     	mov	r0,#&40004000
-F001 F8ED     	bl	$00009454
+F001 F8ED     	bl	GPIOPinWrite
 4622           	mov	r2,r4
 4621           	mov	r1,r4
 F04F 2040     	mov	r0,#&40004000
 B003           	add	sp,#&C
 E8BD 4030     	pop.w	{r4-r5,lr}
-F001 B8E4     	b	$00009454
+F001 B8E4     	b	GPIOPinWrite
 0000828C                                     10 00 00 10             ....
 00008290 01 00 00 20 00 80 00 40 40 42 0F 00             ... ...@@B..    
 
@@ -356,16 +356,16 @@ B530           	push	{r4-r5,lr}
 B083           	sub	sp,#&C
 F000 010F     	and	r1,r0,#&F
 4620           	mov	r0,r4
-F001 FBF5     	bl	$00009A98
+F001 FBF5     	bl	SSIDataPut
 4629           	mov	r1,r5
 4620           	mov	r0,r4
-F001 FBF1     	bl	$00009A98
+F001 FBF1     	bl	SSIDataPut
 4620           	mov	r0,r4
 A901           	add	r1,sp,#4
-F001 FBFD     	bl	$00009AB8
+F001 FBFD     	bl	SSIDataGet
 A901           	add	r1,sp,#4
 4620           	mov	r0,r4
-F001 FBF9     	bl	$00009AB8
+F001 FBF9     	bl	SSIDataGet
 B003           	add	sp,#&C
 BD30           	pop	{r4-r5,pc}
 000082CA                               00 BF 00 80 00 40           .....@
@@ -544,14 +544,14 @@ F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
-F000 F8FC     	bl	$00008578
+F000 F8FC     	bl	vPortEnterCritical
 6BAA           	ldr	r2,[r5,#&38]
 6BEB           	ldr	r3,[r5,#&3C]
 429A           	cmps	r2,r3
 D014           	beq	$000083B2
 
 l00008388:
-F000 F912     	bl	$000085B0
+F000 F912     	bl	vPortExitCritical
 2000           	mov	r0,#0
 F380 8811     	msr	cpsr,r0
 F04F 03BF     	mov	r3,#&BF
@@ -569,7 +569,7 @@ F383 8811     	msr	cpsr,r3
 BD70           	pop	{r4-r6,pc}
 
 l000083B2:
-F000 F8FD     	bl	$000085B0
+F000 F8FD     	bl	vPortExitCritical
 B97C           	cbnz	r4,$000083D8
 
 l000083B8:
@@ -581,7 +581,7 @@ l000083C0:
 4602           	mov	r2,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FE91     	bl	$000000EC
+F7F7 FE91     	bl	prvCopyDataToQueue
 6A6B           	ldr	r3,[r5,#&24]
 B97B           	cbnz	r3,$000083EE
 
@@ -594,7 +594,7 @@ BD70           	pop	{r4-r6,pc}
 l000083D8:
 F105 0110     	add	r1,r5,#&10
 4620           	mov	r0,r4
-F000 FD87     	bl	$00008EF0
+F000 FD87     	bl	vCoRoutineAddToDelayedList
 2300           	mov	r3,#0
 F383 8811     	msr	cpsr,r3
 F06F 0003     	mvn	r0,#3
@@ -602,7 +602,7 @@ BD70           	pop	{r4-r6,pc}
 
 l000083EE:
 F105 0024     	add	r0,r5,#&24
-F000 FE4F     	bl	$00009094
+F000 FE4F     	bl	xCoRoutineRemoveFromEventList
 2800           	cmps	r0,#0
 D0E9           	beq	$000083CE
 
@@ -670,7 +670,7 @@ BF28           	it	hs
 60E1           	strhs	r1,[r4,#&C]
 
 l00008466:
-F002 F8AD     	bl	$0000A5C4
+F002 F8AD     	bl	memcpy
 6923           	ldr	r3,[r4,#&10]
 B923           	cbnz	r3,$00008478
 
@@ -682,7 +682,7 @@ BD38           	pop	{r3-r5,pc}
 
 l00008478:
 F104 0010     	add	r0,r4,#&10
-F000 FE0A     	bl	$00009094
+F000 FE0A     	bl	xCoRoutineRemoveFromEventList
 2800           	cmps	r0,#0
 D0F4           	beq	$0000846E
 
@@ -693,7 +693,7 @@ E7DA           	b	$00008440
 l0000848A:
 F100 0124     	add	r1,r0,#&24
 4610           	mov	r0,r2
-F000 FD2E     	bl	$00008EF0
+F000 FD2E     	bl	vCoRoutineAddToDelayedList
 F385 8811     	msr	cpsr,r5
 F06F 0003     	mvn	r0,#3
 BD38           	pop	{r3-r5,pc}
@@ -715,7 +715,7 @@ BD70           	pop	{r4-r6,pc}
 l000084B0:
 2200           	mov	r2,#0
 4604           	mov	r4,r0
-F7F7 FE1A     	bl	$000000EC
+F7F7 FE1A     	bl	prvCopyDataToQueue
 2D00           	cmps	r5,#0
 D1F7           	bne	$000084AC
 
@@ -726,7 +726,7 @@ D0F4           	beq	$000084AC
 
 l000084C2:
 F104 0024     	add	r0,r4,#&24
-F000 FDE5     	bl	$00009094
+F000 FDE5     	bl	xCoRoutineRemoveFromEventList
 1C05           	add	r5,r0,#0
 BF18           	it	ne
 2501           	movne	r5,#1
@@ -765,7 +765,7 @@ l000084FC:
 4672           	mov	r2,lr
 4630           	mov	r0,r6
 63A7           	str	r7,[r4,#&38]
-F002 F85E     	bl	$0000A5C4
+F002 F85E     	bl	memcpy
 682B           	ldr	r3,[r5]
 B90B           	cbnz	r3,$00008510
 
@@ -783,7 +783,7 @@ BDF8           	pop	{r3-r7,pc}
 
 l00008518:
 F104 0010     	add	r0,r4,#&10
-F000 FDBA     	bl	$00009094
+F000 FDBA     	bl	xCoRoutineRemoveFromEventList
 2800           	cmps	r0,#0
 D0F5           	beq	$00008510
 
@@ -798,7 +798,7 @@ prvIdleTask proc
 B508           	push	{r3,lr}
 
 l0000852E:
-F7FF FE6F     	bl	$00008210
+F7FF FE6F     	bl	vApplicationIdleHook
 E7FC           	b	$0000852E
 
 ;; xTaskNotifyStateClear: 00008534
@@ -812,7 +812,7 @@ l00008538:
 4604           	mov	r4,r0
 
 l0000853A:
-F000 F81D     	bl	$00008578
+F000 F81D     	bl	vPortEnterCritical
 F894 3064     	ldrb	r3,[r4,#&64]
 2B02           	cmps	r3,#2
 BF05           	ittet	eq
@@ -822,7 +822,7 @@ l00008548:
 2501           	mov	r5,#1
 2500           	mov	r5,#0
 F884 3064     	strb	r3,[r4,#&64]
-F000 F82E     	bl	$000085B0
+F000 F82E     	bl	vPortExitCritical
 4628           	mov	r0,r5
 BD38           	pop	{r3-r5,pc}
 
@@ -919,7 +919,7 @@ DF02           	svc	#2
 ;;     0000853A (in xTaskNotifyStateClear)
 vPortEnterCritical proc
 B508           	push	{r3,lr}
-F7FF FFF3     	bl	$00008564
+F7FF FFF3     	bl	xPortRaisePrivilege
 F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
@@ -985,7 +985,7 @@ BD08           	pop	{r3,pc}
 ;;     00008550 (in xTaskNotifyStateClear)
 vPortExitCritical proc
 B508           	push	{r3,lr}
-F7FF FFD7     	bl	$00008564
+F7FF FFD7     	bl	xPortRaisePrivilege
 4A08           	ldr	r2,[000085D8]                           ; [pc,#&20]
 6813           	ldr	r3,[r2]
 3B01           	subs	r3,#1
@@ -1011,12 +1011,12 @@ BD08           	pop	{r3,pc}
 ;; vParTestInitialise: 000085DC
 vParTestInitialise proc
 B508           	push	{r3,lr}
-F7FF FE1F     	bl	$00008220
+F7FF FE1F     	bl	PDCInit
 4B03           	ldr	r3,[000085F0]                           ; [pc,#&C]
 2005           	mov	r0,#5
 7819           	ldrb	r1,[r3]
 E8BD 4008     	pop.w	{r3,lr}
-F7FF BE56     	b	$0000829C
+F7FF BE56     	b	PDCWrite
 000085F0 F4 07 00 20                                     ...             
 
 ;; vParTestSetLED: 000085F4
@@ -1026,7 +1026,7 @@ vParTestSetLED proc
 B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
 460D           	mov	r5,r1
-F000 F961     	bl	$000088C0
+F000 F961     	bl	MPU_vTaskSuspendAll
 2C07           	cmps	r4,#7
 D80C           	bhi	$0000861C
 
@@ -1045,11 +1045,11 @@ l00008610:
 l00008614:
 7819           	ldrb	r1,[r3]
 2005           	mov	r0,#5
-F7FF FE40     	bl	$0000829C
+F7FF FE40     	bl	PDCWrite
 
 l0000861C:
 E8BD 4038     	pop.w	{r3-r5,lr}
-F000 B95E     	b	$000088E0
+F000 B95E     	b	MPU_xTaskResumeAll
 
 l00008624:
 EA22 0000     	bic.w	r0,r2,r0
@@ -1063,7 +1063,7 @@ E7F3           	b	$00008614
 vParTestToggleLED proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
-F000 F944     	bl	$000088C0
+F000 F944     	bl	MPU_vTaskSuspendAll
 2C07           	cmps	r4,#7
 D80E           	bhi	$0000865A
 
@@ -1084,11 +1084,11 @@ l0000864C:
 l00008652:
 7819           	ldrb	r1,[r3]
 2005           	mov	r0,#5
-F7FF FE21     	bl	$0000829C
+F7FF FE21     	bl	PDCWrite
 
 l0000865A:
 E8BD 4010     	pop.w	{r4,lr}
-F000 B93F     	b	$000088E0
+F000 B93F     	b	MPU_xTaskResumeAll
 
 l00008662:
 781A           	ldrb	r2,[r3]
@@ -1124,13 +1124,13 @@ AE01           	add	r6,sp,#4
 
 l00008690:
 9801           	ldr	r0,[sp,#&4]
-F7FF FFCD     	bl	$00008630
+F7FF FFCD     	bl	vParTestToggleLED
 
 l00008696:
 F04F 32FF     	mov	r2,#&FFFFFFFF
 4631           	mov	r1,r6
 6828           	ldr	r0,[r5]
-F7FF FEAF     	bl	$00008400
+F7FF FEAF     	bl	xQueueCRReceive
 1D02           	add	r2,r0,#4
 D018           	beq	$000086D8
 
@@ -1154,7 +1154,7 @@ AE01           	add	r6,sp,#4
 6828           	ldr	r0,[r5]
 4631           	mov	r1,r6
 2200           	mov	r2,#0
-F7FF FE9E     	bl	$00008400
+F7FF FE9E     	bl	xQueueCRReceive
 1D43           	add	r3,r0,#5
 D1F0           	bne	$000086AA
 
@@ -1216,7 +1216,7 @@ l0000871C:
 2200           	mov	r2,#0
 6818           	ldr	r0,[r3]
 A901           	add	r1,sp,#4
-F7FF FE1E     	bl	$00008364
+F7FF FE1E     	bl	xQueueCRSend
 1D02           	add	r2,r0,#4
 D020           	beq	$0000876E
 
@@ -1254,12 +1254,12 @@ l00008750:
 2200           	mov	r2,#0
 6818           	ldr	r0,[r3]
 A901           	add	r1,sp,#4
-F7FF FE04     	bl	$00008364
+F7FF FE04     	bl	xQueueCRSend
 E7E6           	b	$0000872C
 
 l0000875E:
 2100           	mov	r1,#0
-F000 FBC6     	bl	$00008EF0
+F000 FBC6     	bl	vCoRoutineAddToDelayedList
 E7D2           	b	$0000870C
 
 l00008766:
@@ -1286,7 +1286,7 @@ B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 2104           	mov	r1,#4
 2001           	mov	r0,#1
-F000 F978     	bl	$00008A88
+F000 F978     	bl	MPU_xQueueGenericCreate
 4B0A           	ldr	r3,[000087C4]                           ; [pc,#&28]
 6018           	str	r0,[r3]
 B188           	cbz	r0,$000087C2
@@ -1303,7 +1303,7 @@ l000087A4:
 2100           	mov	r1,#0
 3401           	adds	r4,#1
 4630           	mov	r0,r6
-F000 FB48     	bl	$00008E40
+F000 FB48     	bl	xCoRoutineCreate
 42AC           	cmps	r4,r5
 D1F7           	bne	$000087A4
 
@@ -1312,7 +1312,7 @@ l000087B4:
 E8BD 4070     	pop.w	{r4-r6,lr}
 2101           	mov	r1,#1
 4803           	ldr	r0,[000087CC]                           ; [pc,#&C]
-F000 BB3F     	b	$00008E40
+F000 BB3F     	b	xCoRoutineCreate
 
 l000087C2:
 BD70           	pop	{r4-r6,pc}
@@ -1330,11 +1330,11 @@ MPU_xTaskCreateRestricted proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FEBF     	bl	$00008564
+F7FF FEBF     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 F896     	bl	$0000091C
+F7F8 F896     	bl	xTaskCreateRestricted
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008802
@@ -1362,7 +1362,7 @@ B082           	sub	sp,#8
 469A           	mov	r10,r3
 9F0A           	ldr	r7,[sp,#&28]
 9E0B           	ldr	r6,[sp,#&2C]
-F7FF FEA3     	bl	$00008564
+F7FF FEA3     	bl	xPortRaisePrivilege
 4653           	mov	r3,r10
 4604           	mov	r4,r0
 9700           	str	r7,[sp]
@@ -1370,7 +1370,7 @@ F7FF FEA3     	bl	$00008564
 464A           	mov	r2,r9
 4641           	mov	r1,r8
 4628           	mov	r0,r5
-F7F8 F842     	bl	$000008B4
+F7F8 F842     	bl	xTaskCreate
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008842
@@ -1391,11 +1391,11 @@ MPU_vTaskAllocateMPURegions proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FE87     	bl	$00008564
+F7FF FE87     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 F888     	bl	$00000970
+F7F8 F888     	bl	vTaskAllocateMPURegions
 2C01           	cmps	r4,#1
 D005           	beq	$00008870
 
@@ -1415,11 +1415,11 @@ MPU_vTaskDelayUntil proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FE73     	bl	$00008564
+F7FF FE73     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 FB7C     	bl	$00000F80
+F7F8 FB7C     	bl	vTaskDelayUntil
 2C01           	cmps	r4,#1
 D005           	beq	$00008898
 
@@ -1436,10 +1436,10 @@ BD70           	pop	{r4-r6,pc}
 MPU_vTaskDelay proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FE60     	bl	$00008564
+F7FF FE60     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FB4E     	bl	$00000F48
+F7F8 FB4E     	bl	vTaskDelay
 2C01           	cmps	r4,#1
 D005           	beq	$000088BC
 
@@ -1458,9 +1458,9 @@ BD38           	pop	{r3-r5,pc}
 ;;     00008634 (in vParTestToggleLED)
 MPU_vTaskSuspendAll proc
 B510           	push	{r4,lr}
-F7FF FE4F     	bl	$00008564
+F7FF FE4F     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 F8A0     	bl	$00000A0C
+F7F8 F8A0     	bl	vTaskSuspendAll
 2C01           	cmps	r4,#1
 D005           	beq	$000088DC
 
@@ -1479,9 +1479,9 @@ BD10           	pop	{r4,pc}
 ;;     0000865E (in vParTestToggleLED)
 MPU_xTaskResumeAll proc
 B510           	push	{r4,lr}
-F7FF FE3F     	bl	$00008564
+F7FF FE3F     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 FAC0     	bl	$00000E6C
+F7F8 FAC0     	bl	xTaskResumeAll
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$000088FE
@@ -1502,9 +1502,9 @@ BD10           	pop	{r4,pc}
 ;;     00008F82 (in vCoRoutineSchedule)
 MPU_xTaskGetTickCount proc
 B510           	push	{r4,lr}
-F7FF FE2D     	bl	$00008564
+F7FF FE2D     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 F888     	bl	$00000A20
+F7F8 F888     	bl	xTaskGetTickCount
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008922
@@ -1522,9 +1522,9 @@ BD10           	pop	{r4,pc}
 ;; MPU_uxTaskGetNumberOfTasks: 00008928
 MPU_uxTaskGetNumberOfTasks proc
 B510           	push	{r4,lr}
-F7FF FE1B     	bl	$00008564
+F7FF FE1B     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 F882     	bl	$00000A38
+F7F8 F882     	bl	uxTaskGetNumberOfTasks
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008946
@@ -1543,10 +1543,10 @@ BD10           	pop	{r4,pc}
 MPU_pcTaskGetName proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FE08     	bl	$00008564
+F7FF FE08     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 F874     	bl	$00000A44
+F7F8 F874     	bl	pcTaskGetName
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$0000896E
@@ -1565,10 +1565,10 @@ BD38           	pop	{r3-r5,pc}
 MPU_vTaskSetTimeOutState proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FDF4     	bl	$00008564
+F7FF FDF4     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FBE0     	bl	$00001144
+F7F8 FBE0     	bl	vTaskSetTimeOutState
 2C01           	cmps	r4,#1
 D005           	beq	$00008994
 
@@ -1586,11 +1586,11 @@ MPU_xTaskCheckForTimeOut proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FDE1     	bl	$00008564
+F7FF FDE1     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FBD6     	bl	$00001158
+F7F8 FBD6     	bl	xTaskCheckForTimeOut
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$000089BE
@@ -1612,13 +1612,13 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FDC8     	bl	$00008564
+F7FF FDC8     	bl	xPortRaisePrivilege
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 F83B     	bl	$00000A58
+F7F8 F83B     	bl	xTaskGenericNotify
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$000089F4
@@ -1640,13 +1640,13 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FDAC     	bl	$00008564
+F7FF FDAC     	bl	xPortRaisePrivilege
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 F8DD     	bl	$00000BD4
+F7F8 F8DD     	bl	xTaskNotifyWait
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008A2C
@@ -1666,11 +1666,11 @@ MPU_ulTaskNotifyTake proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FD93     	bl	$00008564
+F7FF FD93     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 F95C     	bl	$00000D00
+F7F8 F95C     	bl	ulTaskNotifyTake
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008A5A
@@ -1689,10 +1689,10 @@ BD70           	pop	{r4-r6,pc}
 MPU_xTaskNotifyStateClear proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FD7E     	bl	$00008564
+F7FF FD7E     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7FF FD62     	bl	$00008534
+F7FF FD62     	bl	xTaskNotifyStateClear
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008A82
@@ -1716,12 +1716,12 @@ B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
 4617           	mov	r7,r2
-F7FF FD68     	bl	$00008564
+F7FF FD68     	bl	xPortRaisePrivilege
 463A           	mov	r2,r7
 4604           	mov	r4,r0
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FE06     	bl	$000006AC
+F7F7 FE06     	bl	xQueueGenericCreate
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008AB2
@@ -1741,11 +1741,11 @@ MPU_xQueueGenericReset proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FD51     	bl	$00008564
+F7FF FD51     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FDB2     	bl	$00000630
+F7F7 FDB2     	bl	xQueueGenericReset
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008ADE
@@ -1769,13 +1769,13 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FD38     	bl	$00008564
+F7FF FD38     	bl	xPortRaisePrivilege
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FB47     	bl	$00000190
+F7F7 FB47     	bl	xQueueGenericSend
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008B14
@@ -1794,10 +1794,10 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 MPU_uxQueueMessagesWaiting proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FD20     	bl	$00008564
+F7FF FD20     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FC7E     	bl	$00000428
+F7F7 FC7E     	bl	uxQueueMessagesWaiting
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008B3E
@@ -1816,10 +1816,10 @@ BD38           	pop	{r3-r5,pc}
 MPU_uxQueueSpacesAvailable proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FD0C     	bl	$00008564
+F7FF FD0C     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FC74     	bl	$0000043C
+F7F7 FC74     	bl	uxQueueSpacesAvailable
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008B66
@@ -1843,13 +1843,13 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FCF4     	bl	$00008564
+F7FF FCF4     	bl	xPortRaisePrivilege
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F7 FBA7     	bl	$000002D8
+F7F7 FBA7     	bl	xQueueGenericReceive
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008B9C
@@ -1869,11 +1869,11 @@ MPU_xQueuePeekFromISR proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FCDB     	bl	$00008564
+F7FF FCDB     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FB76     	bl	$000002A4
+F7F7 FB76     	bl	xQueuePeekFromISR
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008BCA
@@ -1892,10 +1892,10 @@ BD70           	pop	{r4-r6,pc}
 MPU_xQueueGetMutexHolder proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FCC6     	bl	$00008564
+F7FF FCC6     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FCEA     	bl	$000005B4
+F7F7 FCEA     	bl	xQueueGetMutexHolder
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008BF2
@@ -1914,10 +1914,10 @@ BD38           	pop	{r3-r5,pc}
 MPU_xQueueCreateMutex proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FCB2     	bl	$00008564
+F7FF FCB2     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FD6A     	bl	$000006DC
+F7F7 FD6A     	bl	xQueueCreateMutex
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008C1A
@@ -1937,11 +1937,11 @@ MPU_xQueueTakeMutexRecursive proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FC9D     	bl	$00008564
+F7FF FC9D     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FCD0     	bl	$000005D4
+F7F7 FCD0     	bl	xQueueTakeMutexRecursive
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008C46
@@ -1960,10 +1960,10 @@ BD70           	pop	{r4-r6,pc}
 MPU_xQueueGiveMutexRecursive proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC88     	bl	$00008564
+F7FF FC88     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FCD4     	bl	$00000604
+F7F7 FCD4     	bl	xQueueGiveMutexRecursive
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008C6E
@@ -1982,10 +1982,10 @@ BD38           	pop	{r3-r5,pc}
 MPU_vQueueDelete proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC74     	bl	$00008564
+F7FF FC74     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F7 FBE8     	bl	$00000454
+F7F7 FBE8     	bl	vQueueDelete
 2C01           	cmps	r4,#1
 D005           	beq	$00008C94
 
@@ -2002,10 +2002,10 @@ BD38           	pop	{r3-r5,pc}
 MPU_pvPortMalloc proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC62     	bl	$00008564
+F7FF FC62     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD42     	bl	$0000172C
+F7F8 FD42     	bl	pvPortMalloc
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008CBA
@@ -2024,10 +2024,10 @@ BD38           	pop	{r3-r5,pc}
 MPU_vPortFree proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FC4E     	bl	$00008564
+F7FF FC4E     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD58     	bl	$00001780
+F7F8 FD58     	bl	vPortFree
 2C01           	cmps	r4,#1
 D005           	beq	$00008CE0
 
@@ -2043,9 +2043,9 @@ BD38           	pop	{r3-r5,pc}
 ;; MPU_vPortInitialiseBlocks: 00008CE4
 MPU_vPortInitialiseBlocks proc
 B510           	push	{r4,lr}
-F7FF FC3D     	bl	$00008564
+F7FF FC3D     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 FD4A     	bl	$00001784
+F7F8 FD4A     	bl	vPortInitialiseBlocks
 2C01           	cmps	r4,#1
 D005           	beq	$00008D00
 
@@ -2061,9 +2061,9 @@ BD10           	pop	{r4,pc}
 ;; MPU_xPortGetFreeHeapSize: 00008D04
 MPU_xPortGetFreeHeapSize proc
 B510           	push	{r4,lr}
-F7FF FC2D     	bl	$00008564
+F7FF FC2D     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 FD42     	bl	$00001794
+F7F8 FD42     	bl	xPortGetFreeHeapSize
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008D22
@@ -2081,9 +2081,9 @@ BD10           	pop	{r4,pc}
 ;; MPU_xEventGroupCreate: 00008D28
 MPU_xEventGroupCreate proc
 B510           	push	{r4,lr}
-F7FF FC1B     	bl	$00008564
+F7FF FC1B     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
-F7F8 FD3A     	bl	$000017A8
+F7F8 FD3A     	bl	xEventGroupCreate
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008D46
@@ -2107,14 +2107,14 @@ B083           	sub	sp,#&C
 4690           	mov	r8,r2
 4699           	mov	r9,r3
 9F0A           	ldr	r7,[sp,#&28]
-F7FF FC02     	bl	$00008564
+F7FF FC02     	bl	xPortRaisePrivilege
 464B           	mov	r3,r9
 4604           	mov	r4,r0
 9700           	str	r7,[sp]
 4642           	mov	r2,r8
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 FD2A     	bl	$000017C4
+F7F8 FD2A     	bl	xEventGroupWaitBits
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008D82
@@ -2135,11 +2135,11 @@ MPU_xEventGroupClearBits proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FBE7     	bl	$00008564
+F7FF FBE7     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD6A     	bl	$00001874
+F7F8 FD6A     	bl	xEventGroupClearBits
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008DB2
@@ -2159,11 +2159,11 @@ MPU_xEventGroupSetBits proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
 460E           	mov	r6,r1
-F7FF FBD1     	bl	$00008564
+F7FF FBD1     	bl	xPortRaisePrivilege
 4631           	mov	r1,r6
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FD62     	bl	$00001890
+F7F8 FD62     	bl	xEventGroupSetBits
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008DDE
@@ -2185,13 +2185,13 @@ E92D 41F0     	push.w	{r4-r8,lr}
 460E           	mov	r6,r1
 4617           	mov	r7,r2
 4698           	mov	r8,r3
-F7FF FBB8     	bl	$00008564
+F7FF FBB8     	bl	xPortRaisePrivilege
 4643           	mov	r3,r8
 4604           	mov	r4,r0
 463A           	mov	r2,r7
 4631           	mov	r1,r6
 4628           	mov	r0,r5
-F7F8 FD7B     	bl	$000018F8
+F7F8 FD7B     	bl	xEventGroupSync
 2C01           	cmps	r4,#1
 4603           	mov	r3,r0
 D005           	beq	$00008E14
@@ -2210,10 +2210,10 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 MPU_vEventGroupDelete proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-F7FF FBA0     	bl	$00008564
+F7FF FBA0     	bl	xPortRaisePrivilege
 4604           	mov	r4,r0
 4628           	mov	r0,r5
-F7F8 FDBC     	bl	$000019A4
+F7F8 FDBC     	bl	vEventGroupDelete
 2C01           	cmps	r4,#1
 D005           	beq	$00008E3C
 
@@ -2236,7 +2236,7 @@ E92D 4FF8     	push.w	{r3-fp,lr}
 2038           	mov	r0,#&38
 460D           	mov	r5,r1
 4692           	mov	r10,r2
-F7F8 FC6E     	bl	$0000172C
+F7F8 FC6E     	bl	pvPortMalloc
 2800           	cmps	r0,#0
 D047           	beq	$00008EE4
 
@@ -2262,9 +2262,9 @@ l00008E66:
 F8C4 A030     	str	r10,[r4,#&30]
 F846 9B04     	str	r9,[r6],#&4
 4630           	mov	r0,r6
-F7FF FA36     	bl	$000082E8
+F7FF FA36     	bl	vListInitialiseItem
 F104 0018     	add	r0,r4,#&18
-F7FF FA32     	bl	$000082E8
+F7FF FA32     	bl	vListInitialiseItem
 6AE0           	ldr	r0,[r4,#&2C]
 6F3B           	ldr	r3,[r7,#&70]
 F1C5 0502     	rsb	r5,r5,#2
@@ -2279,7 +2279,7 @@ EB08 0080     	add.w	r0,r8,r0,lsl #2
 6124           	str	r4,[r4,#&10]
 6264           	str	r4,[r4,#&24]
 4631           	mov	r1,r6
-F7FF FA25     	bl	$000082F0
+F7FF FA25     	bl	vListInsertEnd
 2001           	mov	r0,#1
 E8BD 8FF8     	pop.w	{r3-fp,pc}
 
@@ -2287,17 +2287,17 @@ l00008EAC:
 46B8           	mov	r8,r7
 F848 0B04     	str	r0,[r8],#&4
 4640           	mov	r0,r8
-F7FF FA0C     	bl	$000082D0
+F7FF FA0C     	bl	vListInitialise
 F107 0B2C     	add	fp,r7,#&2C
 F107 0018     	add	r0,r7,#&18
-F7FF FA06     	bl	$000082D0
+F7FF FA06     	bl	vListInitialise
 F107 0640     	add	r6,r7,#&40
 4658           	mov	r0,fp
-F7FF FA01     	bl	$000082D0
+F7FF FA01     	bl	vListInitialise
 4630           	mov	r0,r6
-F7FF F9FE     	bl	$000082D0
+F7FF F9FE     	bl	vListInitialise
 F107 0054     	add	r0,r7,#&54
-F7FF F9FA     	bl	$000082D0
+F7FF F9FA     	bl	vListInitialise
 F8C7 B068     	str	fp,[r7,#&68]
 66FE           	str	r6,[r7,#&6C]
 E7BD           	b	$00008E60
@@ -2320,7 +2320,7 @@ B570           	push	{r4-r6,lr}
 6F65           	ldr	r5,[r4,#&74]
 4405           	adds	r5,r0
 1D18           	add	r0,r3,#4
-F7FF FA1F     	bl	$00008340
+F7FF FA1F     	bl	uxListRemove
 6F63           	ldr	r3,[r4,#&74]
 6821           	ldr	r1,[r4]
 429D           	cmps	r5,r3
@@ -2331,7 +2331,7 @@ BF34           	ite	lo
 l00008F0E:
 6EA0           	ldr	r0,[r4,#&68]
 3104           	adds	r1,#4
-F7FF F9FB     	bl	$0000830C
+F7FF F9FB     	bl	vListInsert
 B136           	cbz	r6,$00008F26
 
 l00008F18:
@@ -2339,7 +2339,7 @@ l00008F18:
 4630           	mov	r0,r6
 E8BD 4070     	pop.w	{r4-r6,lr}
 3118           	adds	r1,#&18
-F7FF B9F3     	b	$0000830C
+F7FF B9F3     	b	vListInsert
 
 l00008F26:
 BD70           	pop	{r4-r6,pc}
@@ -2366,11 +2366,11 @@ F3BF 8F4F     	dsb	sy
 6E2B           	ldr	r3,[r5,#&60]
 68DC           	ldr	r4,[r3,#&C]
 F104 0018     	add	r0,r4,#&18
-F7FF F9F4     	bl	$00008340
+F7FF F9F4     	bl	uxListRemove
 F387 8811     	msr	cpsr,r7
 1D26           	add	r6,r4,#4
 4630           	mov	r0,r6
-F7FF F9EE     	bl	$00008340
+F7FF F9EE     	bl	uxListRemove
 6AE3           	ldr	r3,[r4,#&2C]
 6F2A           	ldr	r2,[r5,#&70]
 EB03 0083     	add.w	r0,r3,r3,lsl #2
@@ -2381,13 +2381,13 @@ BF88           	it	hi
 672B           	strhi	r3,[r5,#&70]
 
 l00008F78:
-F7FF F9BA     	bl	$000082F0
+F7FF F9BA     	bl	vListInsertEnd
 6D6B           	ldr	r3,[r5,#&54]
 2B00           	cmps	r3,#0
 D1DC           	bne	$00008F3C
 
 l00008F82:
-F7FF FCBF     	bl	$00008904
+F7FF FCBF     	bl	MPU_xTaskGetTickCount
 2700           	mov	r7,#0
 6FAA           	ldr	r2,[r5,#&78]
 6F6B           	ldr	r3,[r5,#&74]
@@ -2440,13 +2440,13 @@ F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 1D26           	add	r6,r4,#4
 4630           	mov	r0,r6
-F7FF F9B2     	bl	$00008340
+F7FF F9B2     	bl	uxListRemove
 6AA3           	ldr	r3,[r4,#&28]
 F104 0018     	add	r0,r4,#&18
 B10B           	cbz	r3,$00008FE8
 
 l00008FE4:
-F7FF F9AC     	bl	$00008340
+F7FF F9AC     	bl	uxListRemove
 
 l00008FE8:
 F387 8811     	msr	cpsr,r7
@@ -2460,7 +2460,7 @@ BF88           	it	hi
 672B           	strhi	r3,[r5,#&70]
 
 l00009000:
-F7FF F976     	bl	$000082F0
+F7FF F976     	bl	vListInsertEnd
 6EAB           	ldr	r3,[r5,#&68]
 681A           	ldr	r2,[r3]
 2A00           	cmps	r2,#0
@@ -2567,10 +2567,10 @@ B570           	push	{r4-r6,lr}
 4D09           	ldr	r5,[000090C0]                           ; [pc,#&24]
 F104 0618     	add	r6,r4,#&18
 4630           	mov	r0,r6
-F7FF F94D     	bl	$00008340
+F7FF F94D     	bl	uxListRemove
 F105 0054     	add	r0,r5,#&54
 4631           	mov	r1,r6
-F7FF F920     	bl	$000082F0
+F7FF F920     	bl	vListInsertEnd
 682B           	ldr	r3,[r5]
 6AE0           	ldr	r0,[r4,#&2C]
 6ADB           	ldr	r3,[r3,#&2C]
@@ -2953,10 +2953,10 @@ D118           	bne	$0000935E
 l0000932C:
 2411           	mov	r4,#&11
 4620           	mov	r0,r4
-F000 F8E8     	bl	$00009504
+F000 F8E8     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B94F     	b	$000095DC
+F000 B94F     	b	IntEnable
 
 l0000933E:
 4B1B           	ldr	r3,[000093AC]                           ; [pc,#&6C]
@@ -2971,42 +2971,42 @@ D108           	bne	$0000935E
 l0000934C:
 2414           	mov	r4,#&14
 4620           	mov	r0,r4
-F000 F8D8     	bl	$00009504
+F000 F8D8     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B93F     	b	$000095DC
+F000 B93F     	b	IntEnable
 
 l0000935E:
 F04F 34FF     	mov	r4,#&FFFFFFFF
 4620           	mov	r0,r4
-F000 F8CE     	bl	$00009504
+F000 F8CE     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B935     	b	$000095DC
+F000 B935     	b	IntEnable
 
 l00009372:
 2413           	mov	r4,#&13
 4620           	mov	r0,r4
-F000 F8C5     	bl	$00009504
+F000 F8C5     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B92C     	b	$000095DC
+F000 B92C     	b	IntEnable
 
 l00009384:
 2410           	mov	r4,#&10
 4620           	mov	r0,r4
-F000 F8BC     	bl	$00009504
+F000 F8BC     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B923     	b	$000095DC
+F000 B923     	b	IntEnable
 
 l00009396:
 2412           	mov	r4,#&12
 4620           	mov	r0,r4
-F000 F8B3     	bl	$00009504
+F000 F8B3     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B91A     	b	$000095DC
+F000 B91A     	b	IntEnable
 000093A8                         00 60 00 40 00 70 00 40         .`.@.p.@
 
 ;; GPIOPortIntUnregister: 000093B0
@@ -3031,10 +3031,10 @@ D118           	bne	$000093FA
 l000093C8:
 2411           	mov	r4,#&11
 4620           	mov	r0,r4
-F000 F934     	bl	$00009638
+F000 F934     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B8AF     	b	$00009538
+F000 B8AF     	b	IntUnregister
 
 l000093DA:
 4B1B           	ldr	r3,[00009448]                           ; [pc,#&6C]
@@ -3049,42 +3049,42 @@ D108           	bne	$000093FA
 l000093E8:
 2414           	mov	r4,#&14
 4620           	mov	r0,r4
-F000 F924     	bl	$00009638
+F000 F924     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B89F     	b	$00009538
+F000 B89F     	b	IntUnregister
 
 l000093FA:
 F04F 34FF     	mov	r4,#&FFFFFFFF
 4620           	mov	r0,r4
-F000 F91A     	bl	$00009638
+F000 F91A     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B895     	b	$00009538
+F000 B895     	b	IntUnregister
 
 l0000940E:
 2413           	mov	r4,#&13
 4620           	mov	r0,r4
-F000 F911     	bl	$00009638
+F000 F911     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B88C     	b	$00009538
+F000 B88C     	b	IntUnregister
 
 l00009420:
 2410           	mov	r4,#&10
 4620           	mov	r0,r4
-F000 F908     	bl	$00009638
+F000 F908     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B883     	b	$00009538
+F000 B883     	b	IntUnregister
 
 l00009432:
 2412           	mov	r4,#&12
 4620           	mov	r0,r4
-F000 F8FF     	bl	$00009638
+F000 F8FF     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F000 B87A     	b	$00009538
+F000 B87A     	b	IntUnregister
 00009444             00 60 00 40 00 70 00 40                 .`.@.p.@    
 
 ;; GPIOPinRead: 0000944C
@@ -3115,7 +3115,7 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4035           	ands	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BEA5     	b	$000091C8
+F7FF BEA5     	b	GPIOPadConfigSet
 0000947E                                           00 BF               ..
 
 ;; GPIOPinTypeI2C: 00009480
@@ -3133,7 +3133,7 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4335           	orrs	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BE92     	b	$000091C8
+F7FF BE92     	b	GPIOPadConfigSet
 
 ;; GPIOPinTypeQEI: 000094A4
 GPIOPinTypeQEI proc
@@ -3148,7 +3148,7 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4335           	orrs	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BE80     	b	$000091C8
+F7FF BE80     	b	GPIOPadConfigSet
 
 ;; GPIOPinTypeUART: 000094C8
 ;;   Called from:
@@ -3167,32 +3167,32 @@ F8D0 6420     	ldr	r6,[r0,#&420]
 4335           	orrs	r5,r6
 F8C0 5420     	str	r5,[r0,#&420]
 BC70           	pop	{r4-r6}
-F7FF BE6E     	b	$000091C8
+F7FF BE6E     	b	GPIOPadConfigSet
 
 ;; GPIOPinTypeTimer: 000094EC
 GPIOPinTypeTimer proc
-F7FF BFEC     	b	$000094C8
+F7FF BFEC     	b	GPIOPinTypeUART
 
 ;; GPIOPinTypeSSI: 000094F0
 GPIOPinTypeSSI proc
-F7FF BFEA     	b	$000094C8
+F7FF BFEA     	b	GPIOPinTypeUART
 
 ;; GPIOPinTypePWM: 000094F4
 GPIOPinTypePWM proc
-F7FF BFE8     	b	$000094C8
+F7FF BFE8     	b	GPIOPinTypeUART
 
 ;; IntDefaultHandler: 000094F8
 IntDefaultHandler proc
-E7FE           	b	$000094F8
+E7FE           	b	IntDefaultHandler
 000094FA                               00 BF                       ..    
 
 ;; IntMasterEnable: 000094FC
 IntMasterEnable proc
-F000 BDEE     	b	$0000A0DC
+F000 BDEE     	b	CPUcpsie
 
 ;; IntMasterDisable: 00009500
 IntMasterDisable proc
-F000 BDF0     	b	$0000A0E4
+F000 BDF0     	b	CPUcpsid
 
 ;; IntRegister: 00009504
 ;;   Called from:
@@ -3476,7 +3476,7 @@ F423 2380     	bic	r3,r3,#&40000
 ;;     00009776 (in OSRAMWriteFinal)
 OSRAMDelay proc
 3801           	subs	r0,#1
-D1FD           	bne	$00009694
+D1FD           	bne	OSRAMDelay
 
 l00009698:
 4770           	bx	lr
@@ -3498,14 +3498,14 @@ B538           	push	{r3-r5,lr}
 2200           	mov	r2,#0
 4620           	mov	r0,r4
 213D           	mov	r1,#&3D
-F000 FDAE     	bl	$0000A208
+F000 FDAE     	bl	I2CMasterSlaveAddrSet
 4629           	mov	r1,r5
 4620           	mov	r0,r4
-F000 FDC4     	bl	$0000A23C
+F000 FDC4     	bl	I2CMasterDataPut
 4620           	mov	r0,r4
 E8BD 4038     	pop.w	{r3-r5,lr}
 2103           	mov	r1,#3
-F000 BDB0     	b	$0000A220
+F000 BDB0     	b	I2CMasterControl
 000096C0 00 00 02 40                                     ...@            
 
 ;; OSRAMWriteArray: 000096C4
@@ -3530,19 +3530,19 @@ B5F8           	push	{r3-r7,lr}
 l000096D0:
 2100           	mov	r1,#0
 4620           	mov	r0,r4
-F000 FD78     	bl	$0000A1C8
+F000 FD78     	bl	I2CMasterIntStatus
 2800           	cmps	r0,#0
 D0F9           	beq	$000096D0
 
 l000096DC:
 6838           	ldr	r0,[r7]
-F7FF FFD9     	bl	$00009694
+F7FF FFD9     	bl	OSRAMDelay
 F815 1B01     	ldrb	r1,[r5],#&1
 4620           	mov	r0,r4
-F000 FDA8     	bl	$0000A23C
+F000 FDA8     	bl	I2CMasterDataPut
 2101           	mov	r1,#1
 4620           	mov	r0,r4
-F000 FD96     	bl	$0000A220
+F000 FD96     	bl	I2CMasterControl
 42AE           	cmps	r6,r5
 D1EB           	bne	$000096D0
 
@@ -3582,21 +3582,21 @@ B510           	push	{r4,lr}
 l00009708:
 2100           	mov	r1,#0
 4809           	ldr	r0,[00009730]                           ; [pc,#&24]
-F000 FD5C     	bl	$0000A1C8
+F000 FD5C     	bl	I2CMasterIntStatus
 2800           	cmps	r0,#0
 D0F9           	beq	$00009708
 
 l00009714:
 4B07           	ldr	r3,[00009734]                           ; [pc,#&1C]
 6818           	ldr	r0,[r3]
-F7FF FFBC     	bl	$00009694
+F7FF FFBC     	bl	OSRAMDelay
 4621           	mov	r1,r4
 4804           	ldr	r0,[00009730]                           ; [pc,#&10]
-F000 FD8C     	bl	$0000A23C
+F000 FD8C     	bl	I2CMasterDataPut
 E8BD 4010     	pop.w	{r4,lr}
 2101           	mov	r1,#1
 4801           	ldr	r0,[00009730]                           ; [pc,#&4]
-F000 BD78     	b	$0000A220
+F000 BD78     	b	I2CMasterControl
 00009730 00 00 02 40 7C 08 00 20                         ...@|..         
 
 ;; OSRAMWriteFinal: 00009738
@@ -3617,7 +3617,7 @@ B570           	push	{r4-r6,lr}
 l0000973E:
 2100           	mov	r1,#0
 4620           	mov	r0,r4
-F000 FD41     	bl	$0000A1C8
+F000 FD41     	bl	I2CMasterIntStatus
 2800           	cmps	r0,#0
 D0F9           	beq	$0000973E
 
@@ -3625,25 +3625,25 @@ l0000974A:
 4D0C           	ldr	r5,[0000977C]                           ; [pc,#&30]
 4C0A           	ldr	r4,[00009778]                           ; [pc,#&28]
 6828           	ldr	r0,[r5]
-F7FF FFA0     	bl	$00009694
+F7FF FFA0     	bl	OSRAMDelay
 4631           	mov	r1,r6
 4620           	mov	r0,r4
-F000 FD70     	bl	$0000A23C
+F000 FD70     	bl	I2CMasterDataPut
 2105           	mov	r1,#5
 4620           	mov	r0,r4
-F000 FD5E     	bl	$0000A220
+F000 FD5E     	bl	I2CMasterControl
 
 l00009764:
 2100           	mov	r1,#0
 4620           	mov	r0,r4
-F000 FD2E     	bl	$0000A1C8
+F000 FD2E     	bl	I2CMasterIntStatus
 2800           	cmps	r0,#0
 D0F9           	beq	$00009764
 
 l00009770:
 6828           	ldr	r0,[r5]
 E8BD 4070     	pop.w	{r4-r6,lr}
-E78D           	b	$00009694
+E78D           	b	OSRAMDelay
 00009778                         00 00 02 40 7C 08 00 20         ...@|.. 
 
 ;; OSRAMClear: 00009780
@@ -3653,38 +3653,38 @@ E78D           	b	$00009694
 OSRAMClear proc
 B510           	push	{r4,lr}
 2080           	mov	r0,#&80
-F7FF FF8A     	bl	$0000969C
+F7FF FF8A     	bl	OSRAMWriteFirst
 2106           	mov	r1,#6
 480E           	ldr	r0,[000097C4]                           ; [pc,#&38]
-F7FF FF9A     	bl	$000096C4
+F7FF FF9A     	bl	OSRAMWriteArray
 245F           	mov	r4,#&5F
 
 l00009792:
 2000           	mov	r0,#0
-F7FF FFB6     	bl	$00009704
+F7FF FFB6     	bl	OSRAMWriteByte
 3C01           	subs	r4,#1
 D1FA           	bne	$00009792
 
 l0000979C:
 4620           	mov	r0,r4
-F7FF FFCB     	bl	$00009738
+F7FF FFCB     	bl	OSRAMWriteFinal
 2080           	mov	r0,#&80
-F7FF FF7A     	bl	$0000969C
+F7FF FF7A     	bl	OSRAMWriteFirst
 2106           	mov	r1,#6
 4807           	ldr	r0,[000097C8]                           ; [pc,#&1C]
-F7FF FF8A     	bl	$000096C4
+F7FF FF8A     	bl	OSRAMWriteArray
 245F           	mov	r4,#&5F
 
 l000097B2:
 2000           	mov	r0,#0
-F7FF FFA6     	bl	$00009704
+F7FF FFA6     	bl	OSRAMWriteByte
 3C01           	subs	r4,#1
 D1FA           	bne	$000097B2
 
 l000097BC:
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-E7B9           	b	$00009738
+E7B9           	b	OSRAMWriteFinal
 000097C4             F4 A2 00 00 FC A2 00 00                 ........    
 
 ;; OSRAMStringDraw: 000097CC
@@ -3697,26 +3697,26 @@ B570           	push	{r4-r6,lr}
 460C           	mov	r4,r1
 4605           	mov	r5,r0
 2080           	mov	r0,#&80
-F7FF FF61     	bl	$0000969C
+F7FF FF61     	bl	OSRAMWriteFirst
 2E00           	cmps	r6,#0
 BF0C           	ite	eq
 20B0           	moveq	r0,#&B0
 
 l000097E0:
 20B1           	mov	r0,#&B1
-F7FF FF8F     	bl	$00009704
+F7FF FF8F     	bl	OSRAMWriteByte
 F104 0624     	add	r6,r4,#&24
 2080           	mov	r0,#&80
-F7FF FF8A     	bl	$00009704
+F7FF FF8A     	bl	OSRAMWriteByte
 F006 000F     	and	r0,r6,#&F
-F7FF FF86     	bl	$00009704
+F7FF FF86     	bl	OSRAMWriteByte
 2080           	mov	r0,#&80
-F7FF FF83     	bl	$00009704
+F7FF FF83     	bl	OSRAMWriteByte
 F3C6 1003     	ubfx	r0,r6,#4,#4
 F040 0010     	orr	r0,r0,#&10
-F7FF FF7D     	bl	$00009704
+F7FF FF7D     	bl	OSRAMWriteByte
 2040           	mov	r0,#&40
-F7FF FF7A     	bl	$00009704
+F7FF FF7A     	bl	OSRAMWriteByte
 782B           	ldrb	r3,[r5]
 B383           	cbz	r3,$00009876
 
@@ -3734,7 +3734,7 @@ F815 3F01     	ldrb	r3,[r5,#&1]!
 B183           	cbz	r3,$00009846
 
 l00009824:
-F7FF FF6E     	bl	$00009704
+F7FF FF6E     	bl	OSRAMWriteByte
 782B           	ldrb	r3,[r5]
 B31B           	cbz	r3,$00009874
 
@@ -3747,14 +3747,14 @@ l00009830:
 EB03 0383     	add.w	r3,r3,r3,lsl #2
 18F0           	add	r0,r6,r3
 2105           	mov	r1,#5
-F7FF FF43     	bl	$000096C4
+F7FF FF43     	bl	OSRAMWriteArray
 2C5A           	cmps	r4,#&5A
 F04F 0000     	mov	r0,#0
 D1EA           	bne	$0000981C
 
 l00009846:
 E8BD 4070     	pop.w	{r4-r6,lr}
-E775           	b	$00009738
+E775           	b	OSRAMWriteFinal
 
 l0000984C:
 3B20           	subs	r3,#&20
@@ -3762,7 +3762,7 @@ EB03 0383     	add.w	r3,r3,r3,lsl #2
 F1C4 045F     	rsb	r4,r4,#&5F
 18F0           	add	r0,r6,r3
 4621           	mov	r1,r4
-F7FF FF33     	bl	$000096C4
+F7FF FF33     	bl	OSRAMWriteArray
 782B           	ldrb	r3,[r5]
 4A06           	ldr	r2,[0000987C]                           ; [pc,#&18]
 3B20           	subs	r3,#&20
@@ -3771,7 +3771,7 @@ EB03 0383     	add.w	r3,r3,r3,lsl #2
 4423           	adds	r3,r4
 7C18           	ldrb	r0,[r3,#&10]
 E8BD 4070     	pop.w	{r4-r6,lr}
-E761           	b	$00009738
+E761           	b	OSRAMWriteFinal
 
 l00009874:
 BD70           	pop	{r4-r6,pc}
@@ -3799,31 +3799,31 @@ F103 3AFF     	add	r10,r3,#&FFFFFFFF
 
 l000098A2:
 2080           	mov	r0,#&80
-F7FF FEFA     	bl	$0000969C
+F7FF FEFA     	bl	OSRAMWriteFirst
 2C00           	cmps	r4,#0
 BF14           	ite	ne
 20B1           	movne	r0,#&B1
 
 l000098AE:
 20B0           	mov	r0,#&B0
-F7FF FF28     	bl	$00009704
+F7FF FF28     	bl	OSRAMWriteByte
 2080           	mov	r0,#&80
-F7FF FF25     	bl	$00009704
+F7FF FF25     	bl	OSRAMWriteByte
 4638           	mov	r0,r7
-F7FF FF22     	bl	$00009704
+F7FF FF22     	bl	OSRAMWriteByte
 2080           	mov	r0,#&80
-F7FF FF1F     	bl	$00009704
+F7FF FF1F     	bl	OSRAMWriteByte
 4640           	mov	r0,r8
-F7FF FF1C     	bl	$00009704
+F7FF FF1C     	bl	OSRAMWriteByte
 2040           	mov	r0,#&40
-F7FF FF19     	bl	$00009704
+F7FF FF19     	bl	OSRAMWriteByte
 4628           	mov	r0,r5
 4651           	mov	r1,r10
 444D           	adds	r5,r9
-F7FF FEF4     	bl	$000096C4
+F7FF FEF4     	bl	OSRAMWriteArray
 3401           	adds	r4,#1
 F815 0C01     	ldrb.w	r0,[r5,-#&1]
-F7FF FF29     	bl	$00009738
+F7FF FF29     	bl	OSRAMWriteFinal
 42A6           	cmps	r6,r4
 D1DB           	bne	$000098A2
 
@@ -3838,15 +3838,15 @@ OSRAMInit proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4604           	mov	r4,r0
 F04F 2010     	mov	r0,#&10001000
-F000 F93F     	bl	$00009B7C
+F000 F93F     	bl	SysCtlPeripheralEnable
 4818           	ldr	r0,[00009960]                           ; [pc,#&60]
-F000 F93C     	bl	$00009B7C
+F000 F93C     	bl	SysCtlPeripheralEnable
 210C           	mov	r1,#&C
 4817           	ldr	r0,[00009964]                           ; [pc,#&5C]
-F7FF FDBA     	bl	$00009480
+F7FF FDBA     	bl	GPIOPinTypeI2C
 4621           	mov	r1,r4
 4816           	ldr	r0,[00009968]                           ; [pc,#&58]
-F000 FBF0     	bl	$0000A0F4
+F000 FBF0     	bl	I2CMasterInit
 2201           	mov	r2,#1
 4B15           	ldr	r3,[0000996C]                           ; [pc,#&54]
 4F15           	ldr	r7,[00009970]                           ; [pc,#&54]
@@ -3865,22 +3865,22 @@ F893 01ED     	ldrb	r0,[r3,#&1ED]
 F893 61EC     	ldrb	r6,[r3,#&1EC]
 
 l00009938:
-F7FF FEB0     	bl	$0000969C
+F7FF FEB0     	bl	OSRAMWriteFirst
 1CA8           	add	r0,r5,#2
 1EA1           	sub	r1,r4,#2
 4440           	adds	r0,r8
 3401           	adds	r4,#1
-F7FF FEBE     	bl	$000096C4
+F7FF FEBE     	bl	OSRAMWriteArray
 4425           	adds	r5,r4
 4630           	mov	r0,r6
-F7FF FEF4     	bl	$00009738
+F7FF FEF4     	bl	OSRAMWriteFinal
 2D70           	cmps	r5,#&70
 EB07 0305     	add.w	r3,r7,r5
 D9E8           	bls	$0000992A
 
 l00009958:
 E8BD 41F0     	pop.w	{r4-r8,lr}
-F7FF BF10     	b	$00009780
+F7FF BF10     	b	OSRAMClear
 00009960 02 00 00 20 00 50 00 40 00 00 02 40 7C 08 00 20 ... .P.@...@|.. 
 00009970 F4 A2 00 00                                     ....            
 
@@ -3902,15 +3902,15 @@ F893 01ED     	ldrb	r0,[r3,#&1ED]
 F893 61EC     	ldrb	r6,[r3,#&1EC]
 
 l00009996:
-F7FF FE81     	bl	$0000969C
+F7FF FE81     	bl	OSRAMWriteFirst
 1CA8           	add	r0,r5,#2
 1EA1           	sub	r1,r4,#2
 4440           	adds	r0,r8
 3401           	adds	r4,#1
-F7FF FE8F     	bl	$000096C4
+F7FF FE8F     	bl	OSRAMWriteArray
 4425           	adds	r5,r4
 4630           	mov	r0,r6
-F7FF FEC5     	bl	$00009738
+F7FF FEC5     	bl	OSRAMWriteFinal
 2D70           	cmps	r5,#&70
 EB07 0305     	add.w	r3,r7,r5
 D9E8           	bls	$00009988
@@ -3923,18 +3923,18 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 OSRAMDisplayOff proc
 B508           	push	{r3,lr}
 2080           	mov	r0,#&80
-F7FF FE6A     	bl	$0000969C
+F7FF FE6A     	bl	OSRAMWriteFirst
 20AE           	mov	r0,#&AE
-F7FF FE9B     	bl	$00009704
+F7FF FE9B     	bl	OSRAMWriteByte
 2080           	mov	r0,#&80
-F7FF FE98     	bl	$00009704
+F7FF FE98     	bl	OSRAMWriteByte
 20AD           	mov	r0,#&AD
-F7FF FE95     	bl	$00009704
+F7FF FE95     	bl	OSRAMWriteByte
 2080           	mov	r0,#&80
-F7FF FE92     	bl	$00009704
+F7FF FE92     	bl	OSRAMWriteByte
 E8BD 4008     	pop.w	{r3,lr}
 208A           	mov	r0,#&8A
-E6A7           	b	$00009738
+E6A7           	b	OSRAMWriteFinal
 
 ;; SSIConfig: 000099E8
 ;;   Called from:
@@ -3946,7 +3946,7 @@ E92D 41F0     	push.w	{r4-r8,lr}
 4688           	mov	r8,r1
 461C           	mov	r4,r3
 9D06           	ldr	r5,[sp,#&18]
-F000 F9FB     	bl	$00009DF0
+F000 F9FB     	bl	SysCtlClockGet
 2F02           	cmps	r7,#2
 D018           	beq	$00009A30
 
@@ -4003,20 +4003,20 @@ F023 0302     	bic	r3,r3,#2
 SSIIntRegister proc
 B508           	push	{r3,lr}
 2017           	mov	r0,#&17
-F7FF FD58     	bl	$00009504
+F7FF FD58     	bl	IntRegister
 E8BD 4008     	pop.w	{r3,lr}
 2017           	mov	r0,#&17
-F7FF BDBF     	b	$000095DC
+F7FF BDBF     	b	IntEnable
 00009A5E                                           00 BF               ..
 
 ;; SSIIntUnregister: 00009A60
 SSIIntUnregister proc
 B508           	push	{r3,lr}
 2017           	mov	r0,#&17
-F7FF FDE8     	bl	$00009638
+F7FF FDE8     	bl	IntDisable
 E8BD 4008     	pop.w	{r3,lr}
 2017           	mov	r0,#&17
-F7FF BD63     	b	$00009538
+F7FF BD63     	b	IntUnregister
 00009A72       00 BF                                       ..            
 
 ;; SSIIntEnable: 00009A74
@@ -4302,19 +4302,19 @@ SysCtlIntRegister proc
 B508           	push	{r3,lr}
 4601           	mov	r1,r0
 202C           	mov	r0,#&2C
-F7FF FC5D     	bl	$00009504
+F7FF FC5D     	bl	IntRegister
 E8BD 4008     	pop.w	{r3,lr}
 202C           	mov	r0,#&2C
-F7FF BCC4     	b	$000095DC
+F7FF BCC4     	b	IntEnable
 
 ;; SysCtlIntUnregister: 00009C54
 SysCtlIntUnregister proc
 B508           	push	{r3,lr}
 202C           	mov	r0,#&2C
-F7FF FCEE     	bl	$00009638
+F7FF FCEE     	bl	IntDisable
 E8BD 4008     	pop.w	{r3,lr}
 202C           	mov	r0,#&2C
-F7FF BC69     	b	$00009538
+F7FF BC69     	b	IntUnregister
 00009C66                   00 BF                               ..        
 
 ;; SysCtlIntEnable: 00009C68
@@ -4392,7 +4392,7 @@ E7FE           	b	$00009CD6
 
 ;; SysCtlSleep: 00009CE0
 SysCtlSleep proc
-F000 BA04     	b	$0000A0EC
+F000 BA04     	b	CPUwfi
 
 ;; SysCtlDeepSleep: 00009CE4
 SysCtlDeepSleep proc
@@ -4401,7 +4401,7 @@ B510           	push	{r4,lr}
 6823           	ldr	r3,[r4]
 F043 0304     	orr	r3,r3,#4
 6023           	str	r3,[r4]
-F000 F9FC     	bl	$0000A0EC
+F000 F9FC     	bl	CPUwfi
 6823           	ldr	r3,[r4]
 F023 0304     	bic	r3,r3,#4
 6023           	str	r3,[r4]
@@ -4755,7 +4755,7 @@ F023 0310     	bic	r3,r3,#&10
 F422 7240     	bic	r2,r2,#&300
 F022 0201     	bic	r2,r2,#1
 632A           	str	r2,[r5,#&30]
-F7FF FF3D     	bl	$00009DF0
+F7FF FF3D     	bl	SysCtlClockGet
 013B           	lsls	r3,r7,#4
 FBB0 F2F3     	udiv	r2,r0,r3
 FB03 0312     	mls	r3,r3,r2,r0
@@ -4784,7 +4784,7 @@ F8D0 8024     	ldr	r8,[r0,#&24]
 460F           	mov	r7,r1
 4616           	mov	r6,r2
 6A85           	ldr	r5,[r0,#&28]
-F7FF FF1A     	bl	$00009DF0
+F7FF FF1A     	bl	SysCtlClockGet
 EB05 1588     	add.w	r5,r5,r8,lsl #6
 0080           	lsls	r0,r0,#2
 FBB0 F0F5     	udiv	r0,r0,r5
@@ -4918,10 +4918,10 @@ BF0C           	ite	eq
 l0000A082:
 2416           	mov	r4,#&16
 4620           	mov	r0,r4
-F7FF FA3D     	bl	$00009504
+F7FF FA3D     	bl	IntRegister
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F7FF BAA4     	b	$000095DC
+F7FF BAA4     	b	IntEnable
 0000A094             00 C0 00 40                             ...@        
 
 ;; UARTIntUnregister: 0000A098
@@ -4935,10 +4935,10 @@ BF0C           	ite	eq
 l0000A0A2:
 2416           	mov	r4,#&16
 4620           	mov	r0,r4
-F7FF FAC7     	bl	$00009638
+F7FF FAC7     	bl	IntDisable
 4620           	mov	r0,r4
 E8BD 4010     	pop.w	{r4,lr}
-F7FF BA42     	b	$00009538
+F7FF BA42     	b	IntUnregister
 0000A0B4             00 C0 00 40                             ...@        
 
 ;; UARTIntEnable: 0000A0B8
@@ -5013,7 +5013,7 @@ B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
 F042 0210     	orr	r2,r2,#&10
 6202           	str	r2,[r0,#&20]
-F7FF FE75     	bl	$00009DF0
+F7FF FE75     	bl	SysCtlClockGet
 4B06           	ldr	r3,[0000A120]                           ; [pc,#&18]
 4A06           	ldr	r2,[0000A124]                           ; [pc,#&18]
 3801           	subs	r0,#1
@@ -5085,20 +5085,20 @@ F023 0320     	bic	r3,r3,#&20
 I2CIntRegister proc
 B508           	push	{r3,lr}
 2018           	mov	r0,#&18
-F7FF F9BE     	bl	$00009504
+F7FF F9BE     	bl	IntRegister
 E8BD 4008     	pop.w	{r3,lr}
 2018           	mov	r0,#&18
-F7FF BA25     	b	$000095DC
+F7FF BA25     	b	IntEnable
 0000A192       00 BF                                       ..            
 
 ;; I2CIntUnregister: 0000A194
 I2CIntUnregister proc
 B508           	push	{r3,lr}
 2018           	mov	r0,#&18
-F7FF FA4E     	bl	$00009638
+F7FF FA4E     	bl	IntDisable
 E8BD 4008     	pop.w	{r3,lr}
 2018           	mov	r0,#&18
-F7FF B9C9     	b	$00009538
+F7FF B9C9     	b	IntUnregister
 0000A1A6                   00 BF                               ..        
 
 ;; I2CMasterIntEnable: 0000A1A8

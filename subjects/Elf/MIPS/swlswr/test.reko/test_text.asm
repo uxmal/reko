@@ -143,7 +143,7 @@ l000007A0:
 
 l000007A4:
 	addiu	r25,r25,+00000670
-	bal	00000670
+	bal	deregister_tm_clones
 	nop
 	addiu	r2,r0,+00000001
 	sb	r2,0AF0(r19)
@@ -164,7 +164,7 @@ frame_dummy proc
 	addu	r28,r28,r25
 	lw	r25,-7FCC(r28)
 	addiu	r25,r25,+000006A8
-	beq	r0,r0,000006A8
+	beq	r0,r0,register_tm_clones
 	nop
 
 ;; main: 000007F0
@@ -239,7 +239,7 @@ __libc_csu_init proc
 	sw	r18,0024(sp)
 	sw	r16,001C(sp)
 	sw	ra,0034(sp)
-	bal	00000588
+	bal	_init
 	sw	r17,0020(sp)
 	lw	r28,0010(sp)
 	lw	r16,-7FC4(r28)

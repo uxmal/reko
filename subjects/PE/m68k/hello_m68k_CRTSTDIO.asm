@@ -92,7 +92,7 @@ l00001690:
 
 l00001698:
 	move.l	a2,-(a7)
-	jsr.l	00001D80                                             ; $06E6(pc)
+	jsr.l	fn00001D80                                           ; $06E6(pc)
 	addq.w	#$04,a7
 	andi.w	#$EEFF,$000E(a2)
 	moveq	#$00,d2
@@ -109,7 +109,7 @@ l000016B8:
 
 l000016C0:
 	move.l	a2,-(a7)
-	jsr.l	00001D80                                             ; $06BE(pc)
+	jsr.l	fn00001D80                                           ; $06BE(pc)
 	addq.w	#$04,a7
 
 l000016C8:
@@ -293,7 +293,7 @@ l00001C4E:
 l00001C60:
 	move.l	a1,-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	00001E94                                             ; $022E(pc)
+	jsr.l	fn00001E94                                           ; $022E(pc)
 	addq.w	#$08,a7
 
 l00001C6C:
@@ -332,7 +332,7 @@ l00001CA4:
 	move.l	d6,-(a7)
 	move.l	d4,-(a7)
 	move.l	d3,-(a7)
-	jsr.l	00001C40                                             ; -$006A(pc)
+	jsr.l	fn00001C40                                           ; -$006A(pc)
 	lea	$000C(a7),a7
 	move.l	d5,d0
 	subq.l	#$01,d5
@@ -368,7 +368,7 @@ l00001CE4:
 	move.b	(a0),d0
 	extb.l	d0
 	move.l	d0,-(a7)
-	jsr.l	00001C40                                             ; -$00B2(pc)
+	jsr.l	fn00001C40                                           ; -$00B2(pc)
 	lea	$000C(a7),a7
 	move.l	d5,d0
 	subq.l	#$01,d5
@@ -407,7 +407,7 @@ fn00001D24 proc
 l00001D32:
 	moveq	#$00,d2
 	move.l	d2,-(a7)
-	jsr.l	00001E04                                             ; $00CE(pc)
+	jsr.l	fn00001E04                                           ; $00CE(pc)
 	addq.w	#$04,a7
 	movea.l	(a7)+,a2
 	unlk	a6
@@ -416,7 +416,7 @@ l00001D32:
 
 l00001D44:
 	move.l	a2,-(a7)
-	jsr.l	00001D80                                             ; $003A(pc)
+	jsr.l	fn00001D80                                           ; $003A(pc)
 	addq.w	#$04,a7
 	tst.l	d0
 	beq	$00001D58
@@ -516,7 +516,7 @@ fn00001DF4 proc
 	link	a6,#$0000
 	moveq	#$01,d2
 	move.l	d2,-(a7)
-	jsr.l	00001E04                                             ; $0008(pc)
+	jsr.l	fn00001E04                                           ; $0008(pc)
 	unlk	a6
 	rts
 
@@ -549,7 +549,7 @@ l00001E26:
 
 l00001E30:
 	move.l	a2,-(a7)
-	jsr.l	00001D24                                             ; -$010E(pc)
+	jsr.l	fn00001D24                                           ; -$010E(pc)
 	addq.w	#$04,a7
 	cmp.l	d7,d0
 	beq	$00001E58
@@ -568,7 +568,7 @@ l00001E44:
 
 l00001E4A:
 	move.l	a2,-(a7)
-	jsr.l	00001D24                                             ; -$0128(pc)
+	jsr.l	fn00001D24                                           ; -$0128(pc)
 	addq.w	#$04,a7
 	cmp.l	d7,d0
 	bne	$00001E58
@@ -669,7 +669,7 @@ l00001F08:
 
 l00001F14:
 	move.l	a3,-(a7)
-	jsr.l	00002014                                             ; $00FE(pc)
+	jsr.l	fn00002014                                           ; $00FE(pc)
 	addq.w	#$04,a7
 
 l00001F1C:
@@ -772,7 +772,7 @@ fn00001FD8 proc
 
 l00001FF2:
 	move.l	d4,-(a7)
-	jsr.l	00002068                                             ; $0074(pc)
+	jsr.l	fn00002068                                           ; $0074(pc)
 	addq.w	#$04,a7
 	cmp.l	d5,d0
 	beq	$00002000
@@ -855,11 +855,11 @@ l00002090:
 
 l00002096:
 	move.l	a2,-(a7)
-	jsr.l	00001D80                                             ; -$0318(pc)
+	jsr.l	fn00001D80                                           ; -$0318(pc)
 	addq.w	#$04,a7
 	move.l	d0,d3
 	move.l	a2,-(a7)
-	jsr.l	000020F0                                             ; $004E(pc)
+	jsr.l	fn000020F0                                           ; $004E(pc)
 	addq.w	#$04,a7
 	move.l	$0010(a2),-(a7)
 	jsr.l	$00A2(a5)

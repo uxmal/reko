@@ -23,9 +23,9 @@ l000000010000179D:
 
 l00000001000017A3:
 	add	rcx,8h
-	call	1000026A0h
+	call	fn00000001000026A0
 	mov	edi,eax
-	call	100004E14h
+	call	exit
 	hlt
 00000001000017B4             55 48 89 E5 48 83 C7 68 48 83 C6 68     UH..H..hH..h
 00000001000017C0 5D E9 3E 37 00 00 55 48 89 E5 48 8D 46 68 48 8D ].>7..UH..H.FhH.
@@ -131,7 +131,7 @@ l0000000100001BB3:
 
 l0000000100001BBD:
 	lea	rdi,[00000001000052A8]                                 ; [rip+000036E4]
-	call	100004E56h
+	call	getenv
 	test	rax,rax
 	mov	qword ptr [rbp-0B0h],+0h
 	mov	dword ptr [rbp-0DCh],0h
@@ -152,9 +152,9 @@ l0000000100001C32:
 
 l0000000100001C41:
 	mov	rdi,rbx
-	call	100004F22h
+	call	strlen
 	lea	rdi,[rax+rax+2h]
-	call	100004EAAh
+	call	malloc
 	test	rax,rax
 	jz	100002337h
 
@@ -233,7 +233,7 @@ l0000000100001CC5:
 	lea	r8,[rbp-0C8h]
 	lea	r9,[rbp-0E4h]
 	xor	al,al
-	call	100004EFEh
+	call	sscanf
 	lea	rcx,[0000000100006580]                                 ; [rip+0000484F]
 	mov	dword ptr [rcx],1h
 	cmp	eax,8h
@@ -349,13 +349,13 @@ l0000000100001EAB:
 
 l0000000100001EB1:
 	mov	edi,[rbx+38h]
-	call	100004F16h
+	call	strerror
 	lea	rsi,[rbx+68h]
 	lea	rcx,[00000001000052F5]                                 ; [rip+00003431]
 	mov	rdi,rcx
 	mov	rdx,rax
 	xor	al,al
-	call	100004F58h
+	call	warnx
 	mov	qword ptr [rbx+18h],+1h
 	mov	[00000001000065D0],1h                                  ; [rip+000046F0]
 	jmp	1000021ABh
@@ -408,7 +408,7 @@ l0000000100001F3A:
 l0000000100001F46:
 	movzx	esi,word ptr [rbx+42h]
 	lea	rdi,[rbx+68h]
-	call	100004AFAh
+	call	fn0000000100004AFA
 	cmp	rax,[rbp-0C0h]
 	jbe	100001F63h
 
@@ -474,7 +474,7 @@ l0000000100001FF7:
 	lea	rax,[00000001000052FC]                                 ; [rip+000032EB]
 	mov	rdx,rax
 	xor	al,al
-	call	100004EF8h
+	call	snprintf
 	mov	ecx,[r14+14h]
 	lea	r15,[rbp-55h]
 	mov	rdi,r15
@@ -482,22 +482,22 @@ l0000000100001FF7:
 	lea	rax,[00000001000052FC]                                 ; [rip+000032CA]
 	mov	rdx,rax
 	xor	al,al
-	call	100004EF8h
+	call	snprintf
 	jmp	10000205Ch
 
 l000000010000203E:
 	mov	edi,ecx
 	xor	esi,esi
-	call	100004F4Ch
+	call	user_from_uid
 	mov	[rbp-0F8h],rax
 	mov	edi,[r14+14h]
 	xor	esi,esi
-	call	100004E80h
+	call	group_from_gid
 	mov	r15,rax
 
 l000000010000205C:
 	mov	rdi,[rbp-0F8h]
-	call	100004F22h
+	call	strlen
 	mov	ecx,[rbp-0E4h]
 	cmp	rax,rcx
 	mov	[rbp-100h],rax
@@ -508,7 +508,7 @@ l000000010000207A:
 
 l0000000100002080:
 	mov	rdi,r15
-	call	100004F22h
+	call	strlen
 	mov	ecx,[rbp-0E0h]
 	cmp	rax,rcx
 	mov	r12,rax
@@ -528,7 +528,7 @@ l00000001000020A9:
 
 l00000001000020AD:
 	mov	edi,[r14+74h]
-	call	100004E1Ah
+	call	fflagstostr
 	test	rax,rax
 	jz	1000020D7h
 
@@ -538,10 +538,10 @@ l00000001000020BB:
 
 l00000001000020C0:
 	mov	rdi,rax
-	call	100004E2Ch
+	call	free
 	lea	rax,[00000001000052FF]                                 ; [rip+00003230]
 	mov	rdi,rax
-	call	100004F10h
+	call	strdup
 
 l00000001000020D7:
 	mov	[rbp-0F0h],rax
@@ -550,7 +550,7 @@ l00000001000020D7:
 
 l00000001000020EC:
 	mov	rdi,[rbp-0F0h]
-	call	100004F22h
+	call	strlen
 	movsxd	rcx,dword ptr [rbp-0DCh]
 	cmp	rax,rcx
 	jbe	10000210Ah
@@ -561,7 +561,7 @@ l0000000100002104:
 l000000010000210A:
 	add	r12,[rbp-100h]
 	lea	rdi,[rax+24h]
-	call	100004EAAh
+	call	malloc
 	test	rax,rax
 	jz	100002337h
 
@@ -570,12 +570,12 @@ l0000000100002124:
 	lea	rdi,[r13+18h]
 	mov	[r13+0h],rdi
 	mov	rsi,[rbp-0F8h]
-	call	100004F0Ah
+	call	strcpy
 	mov	rax,[rbp-100h]
 	lea	rdi,[rax+r13+19h]
 	mov	[r13+8h],rdi
 	mov	rsi,r15
-	call	100004F0Ah
+	call	strcpy
 	movzx	eax,word ptr [r14+4h]
 	and	eax,0F000h
 	cmp	eax,2000h
@@ -598,9 +598,9 @@ l0000000100002181:
 	mov	[r13+10h],rdi
 	mov	r14,[rbp-0F0h]
 	mov	rsi,r14
-	call	100004F0Ah
+	call	strcpy
 	mov	rdi,r14
-	call	100004E2Ch
+	call	free
 
 l00000001000021A1:
 	mov	[rbx+20h],r13
@@ -641,9 +641,9 @@ l00000001000021F8:
 	mov	esi,18h
 	mov	rdx,r14
 	xor	al,al
-	call	100004EF8h
+	call	snprintf
 	mov	rdi,rbx
-	call	100004F22h
+	call	strlen
 	mov	[rbp-8Ch],eax
 	mov	eax,[rbp-0DCh]
 	mov	[rbp-88h],eax
@@ -656,27 +656,27 @@ l00000001000021F8:
 	mov	rdi,rbx
 	mov	esi,18h
 	xor	al,al
-	call	100004EF8h
+	call	snprintf
 	mov	rdi,rbx
-	call	100004F22h
+	call	strlen
 	mov	[rbp-7Ch],eax
 	mov	rcx,[rbp-0C8h]
 	lea	rdx,[0000000100005316]                                 ; [rip+0000307B]
 	mov	rdi,rbx
 	mov	esi,18h
 	xor	al,al
-	call	100004EF8h
+	call	snprintf
 	mov	rdi,rbx
-	call	100004F22h
+	call	strlen
 	mov	[rbp-78h],eax
 	mov	rcx,[rbp-0B0h]
 	mov	rdi,rbx
 	mov	esi,18h
 	mov	rdx,r14
 	xor	al,al
-	call	100004EF8h
+	call	snprintf
 	mov	rdi,rbx
-	call	100004F22h
+	call	strlen
 	mov	[rbp-74h],eax
 	mov	eax,[rbp-0E4h]
 	mov	[rbp-70h],eax
@@ -692,7 +692,7 @@ l00000001000022E2:
 l0000000100002302:
 	mov	rbx,[rbp-108h]
 	mov	rdi,[rbx+20h]
-	call	100004E2Ch
+	call	free
 	mov	rbx,[rbx+10h]
 	mov	[rbp-108h],rbx
 	test	rbx,rbx
@@ -705,13 +705,13 @@ l0000000100002322:
 	jz	100002379h
 
 l0000000100002332:
-	call	100004DC0h
+	call	__stack_chk_fail
 
 l0000000100002337:
 	mov	edi,1h
 	lea	rsi,[00000001000052B5]                                 ; [rip+00002F72]
 	xor	al,al
-	call	100004E0Eh
+	call	err
 
 l000000010000234A:
 	xor	ecx,ecx
@@ -733,7 +733,7 @@ l0000000100002366:
 	mov	edi,1h
 	lea	rsi,[0000000100005301]                                 ; [rip+00002F8F]
 	xor	al,al
-	call	100004E0Eh
+	call	err
 
 l0000000100002379:
 	add	rsp,+128h
@@ -771,7 +771,7 @@ fn00000001000023B0 proc
 l00000001000023DB:
 	mov	rdi,rsi
 	mov	esi,ebx
-	call	100004E3Eh
+	call	fts_open$INODE64
 	mov	r14,rax
 	test	r14,r14
 	jz	10000265Bh
@@ -779,10 +779,10 @@ l00000001000023DB:
 l00000001000023F1:
 	xor	esi,esi
 	mov	rdi,r14
-	call	100004E32h
+	call	fts_children$INODE64
 	xor	edi,edi
 	mov	rsi,rax
-	call	100001B4Ah
+	call	fn0000000100001B4A
 	mov	al,[00000001000065C0]                                  ; [rip+000041B5]
 	cmp	al,1h
 	jz	10000266Eh
@@ -805,7 +805,7 @@ l000000010000242B:
 
 l0000000100002432:
 	mov	rdi,r14
-	call	100004E44h
+	call	fts_read$INODE64
 	test	rax,rax
 	jz	100002619h
 
@@ -836,7 +836,7 @@ l0000000100002472:
 
 l000000010000247B:
 	mov	rdi,r14
-	call	100004E44h
+	call	fts_read$INODE64
 	test	rax,rax
 	jnz	10000244Dh
 
@@ -849,11 +849,11 @@ l000000010000248D:
 	xor	al,al
 	lea	r12,[0000000100005323]                                 ; [rip+00002E86]
 	mov	rdi,r12
-	call	100004F58h
+	call	warnx
 	lea	r12,[0000000100005340]                                 ; [rip+00002E94]
 	mov	rdi,r12
 	mov	rsi,r15
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	10000247Bh
 
@@ -863,7 +863,7 @@ l00000001000024BB:
 
 l00000001000024C4:
 	mov	edi,[r12+38h]
-	call	100004F16h
+	call	strerror
 	mov	rsi,r12
 	add	rsi,68h
 	lea	r12,[00000001000052F5]                                 ; [rip+00002E19]
@@ -872,7 +872,7 @@ l00000001000024C4:
 l00000001000024DF:
 	mov	rdx,rax
 	xor	al,al
-	call	100004F58h
+	call	warnx
 	jmp	1000024BBh
 
 l00000001000024EB:
@@ -898,7 +898,7 @@ l0000000100002514:
 	xor	al,al
 	lea	rcx,[0000000100005348]                                 ; [rip+00002E26]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 	jmp	10000254Fh
 
 l000000010000252C:
@@ -910,18 +910,18 @@ l0000000100002532:
 	xor	al,al
 	lea	rcx,[000000010000534E]                                 ; [rip+00002E0E]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 	mov	[00000001000065E0],1h                                  ; [rip+00004091]
 
 l000000010000254F:
 	mov	rdi,r14
 	mov	esi,[rbp-2Ch]
-	call	100004E32h
+	call	fts_children$INODE64
 	mov	r13,rax
 	lea	rax,[0000000100005340]                                 ; [rip+00002DDC]
 	mov	rdi,rax
 	mov	rsi,r15
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	100002597h
 
@@ -951,7 +951,7 @@ l000000010000258E:
 l0000000100002597:
 	mov	rdi,r12
 	mov	rsi,r13
-	call	100001B4Ah
+	call	fn0000000100001B4A
 	test	r13,r13
 	jz	10000247Bh
 
@@ -965,14 +965,14 @@ l00000001000025BB:
 	mov	rdi,r14
 	mov	rsi,r12
 	mov	edx,4h
-	call	100004E4Ah
+	call	fts_set$INODE64
 	jmp	10000247Bh
 
 l00000001000025D0:
 	lea	rax,[0000000100005340]                                 ; [rip+00002D69]
 	mov	rdi,rax
 	mov	rsi,r15
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	10000247Bh
 
@@ -987,20 +987,20 @@ l00000001000025F2:
 	cmovz	edi,eax
 
 l0000000100002601:
-	call	100004F16h
+	call	strerror
 	mov	rsi,r12
 	add	rsi,68h
 	lea	rdi,[00000001000052F5]                                 ; [rip+00002CE1]
 	jmp	1000024DFh
 
 l0000000100002619:
-	call	100004DAEh
+	call	__error
 	mov	ebx,[rax]
 	mov	rdi,r14
-	call	100004E38h
-	call	100004DAEh
+	call	fts_close$INODE64
+	call	__error
 	mov	[rax],ebx
-	call	100004DAEh
+	call	__error
 	cmp	dword ptr [rax],0h
 	jz	10000264Ch
 
@@ -1008,7 +1008,7 @@ l0000000100002639:
 	mov	edi,1h
 	lea	rsi,[0000000100005353]                                 ; [rip+00002D0E]
 	xor	al,al
-	call	100004E0Eh
+	call	err
 
 l000000010000264C:
 	add	rsp,8h
@@ -1024,7 +1024,7 @@ l000000010000265B:
 	mov	edi,1h
 	lea	rsi,[000000010000531A]                                 ; [rip+00002CB3]
 	xor	al,al
-	call	100004E0Eh
+	call	err
 
 l000000010000266E:
 	mov	rdi,r14
@@ -1035,7 +1035,7 @@ l000000010000266E:
 	pop	r14
 	pop	r15
 	pop	rbp
-	jmp	100004E38h
+	jmp	fts_close$INODE64
 l0000000100002684	dd	0xFFFFFE67
 l0000000100002688	dd	0xFFFFFE09
 l000000010000268C	dd	0xFFFFFDF7
@@ -1065,21 +1065,21 @@ fn00000001000026A0 proc
 	jg	1000026DAh
 
 l00000001000026D5:
-	call	10000488Bh
+	call	fn000000010000488B
 
 l00000001000026DA:
 	xor	edi,edi
 	lea	rsi,[0000000100005410]                                 ; [rip+00002D2D]
-	call	100004EECh
+	call	setlocale
 	mov	edi,1h
-	call	100004E92h
+	call	isatty
 	test	eax,eax
 	jz	100002759h
 
 l00000001000026F6:
 	mov	[00000001000062B0],50h                                 ; [rip+00003BB0]
 	lea	rdi,[000000010000535D]                                 ; [rip+00002C56]
-	call	100004E56h
+	call	getenv
 	test	rax,rax
 	jz	100002720h
 
@@ -1089,7 +1089,7 @@ l0000000100002711:
 
 l0000000100002716:
 	mov	rdi,rax
-	call	100004E02h
+	call	atoi
 	jmp	100002742h
 
 l0000000100002720:
@@ -1097,7 +1097,7 @@ l0000000100002720:
 	mov	esi,40087468h
 	lea	rdx,[rbp-30h]
 	xor	al,al
-	call	100004E8Ch
+	call	ioctl
 	cmp	eax,0FFh
 	jz	100002748h
 
@@ -1117,20 +1117,20 @@ l0000000100002748:
 
 l0000000100002759:
 	lea	rdi,[000000010000535D]                                 ; [rip+00002BFD]
-	call	100004E56h
+	call	getenv
 	test	rax,rax
 	jz	100002778h
 
 l000000010000276A:
 	mov	rdi,rax
-	call	100004E02h
+	call	atoi
 	mov	[00000001000062B0],eax                                 ; [rip+00003B38]
 
 l0000000100002778:
 	mov	ebx,1h
 
 l000000010000277D:
-	call	100004E74h
+	call	getuid
 	test	eax,eax
 	jz	1000027A8h
 
@@ -1222,7 +1222,7 @@ l00000001000028A0:
 l00000001000028B9:
 	lea	rdi,[0000000100005340]                                 ; [rip+00002A80]
 	lea	rsi,[00000001000054CC]                                 ; [rip+00002C05]
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	1000028E3h
 
@@ -1239,13 +1239,13 @@ l00000001000028EC:
 	lea	rdi,[0000000100005365]                                 ; [rip+00002A72]
 	lea	rsi,[0000000100005410]                                 ; [rip+00002B16]
 	mov	edx,1h
-	call	100004EE6h
+	call	setenv
 	jmp	100002B5Bh
 
 l0000000100002909:
 	lea	rdi,[0000000100005340]                                 ; [rip+00002A30]
 	lea	rsi,[00000001000054CC]                                 ; [rip+00002BB5]
-	call	100004E08h
+	call	compat_mode
 	and	r14d,0EDh
 	add	r14d,2h
 	test	al,al
@@ -1280,7 +1280,7 @@ l0000000100002977:
 	mov	[00000001000065E1],1h                                  ; [rip+00003C63]
 	lea	rdi,[0000000100005340]                                 ; [rip+000029BB]
 	lea	rsi,[00000001000054CC]                                 ; [rip+00002B40]
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	100002B5Bh
 
@@ -1292,7 +1292,7 @@ l0000000100002999:
 l00000001000029A9:
 	lea	rdi,[0000000100005340]                                 ; [rip+00002990]
 	lea	rsi,[00000001000054CC]                                 ; [rip+00002B15]
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	100002B5Bh
 
@@ -1323,7 +1323,7 @@ l00000001000029FA:
 	mov	dword ptr [rax],1h
 	lea	rdi,[0000000100005340]                                 ; [rip+00002932]
 	lea	rsi,[00000001000054CC]                                 ; [rip+00002AB7]
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	100002B5Bh
 
@@ -1336,7 +1336,7 @@ l0000000100002A22:
 l0000000100002A3B:
 	lea	rdi,[0000000100005340]                                 ; [rip+000028FE]
 	lea	rsi,[00000001000054CC]                                 ; [rip+00002A83]
-	call	100004E08h
+	call	compat_mode
 	test	al,al
 	jz	100002B4Ah
 
@@ -1419,7 +1419,7 @@ l0000000100002B4A:
 	jmp	1000029DAh
 
 l0000000100002B56:
-	call	10000488Bh
+	call	fn000000010000488B
 
 l0000000100002B5B:
 	mov	eax,r12d
@@ -1429,7 +1429,7 @@ l0000000100002B5E:
 	lea	rdx,[000000010000536E]                                 ; [rip+00002806]
 	mov	edi,[rbp-64Ch]
 	mov	rsi,[rbp-658h]
-	call	100004E62h
+	call	getopt
 	cmp	eax,30h
 	jg	1000027B1h
 
@@ -1448,28 +1448,28 @@ l0000000100002B88:
 	sub	ecx,eax
 	mov	[rbp-664h],ecx
 	lea	rdi,[0000000100005365]                                 ; [rip+000027A5]
-	call	100004E56h
+	call	getenv
 	test	rax,rax
 	jz	100002CFEh
 
 l0000000100002BCE:
 	mov	edi,1h
-	call	100004E92h
+	call	isatty
 	test	eax,eax
 	jnz	100002BF1h
 
 l0000000100002BDC:
 	lea	rdi,[0000000100005396]                                 ; [rip+000027B3]
-	call	100004E56h
+	call	getenv
 	test	rax,rax
 	jz	100002CFEh
 
 l0000000100002BF1:
 	lea	rdi,[00000001000053A5]                                 ; [rip+000027AD]
-	call	100004E56h
+	call	getenv
 	lea	rdi,[rbp-434h]
 	mov	rsi,rax
-	call	100004F2Eh
+	call	tgetent
 	cmp	eax,1h
 	jnz	100002CFEh
 
@@ -1477,27 +1477,27 @@ l0000000100002C15:
 	lea	rdi,[00000001000053AA]                                 ; [rip+0000278E]
 	lea	r13,[rbp-640h]
 	mov	rsi,r13
-	call	100004F34h
+	call	tgetstr
 	lea	rcx,[0000000100006538]                                 ; [rip+00003906]
 	mov	[rcx],rax
 	lea	rdi,[00000001000053AD]                                 ; [rip+00002771]
 	mov	rsi,r13
-	call	100004F34h
+	call	tgetstr
 	lea	rcx,[0000000100006528]                                 ; [rip+000038DD]
 	mov	[rcx],rax
 	lea	rdi,[00000001000053B0]                                 ; [rip+0000275B]
 	mov	rsi,r13
-	call	100004F34h
+	call	tgetstr
 	lea	rcx,[0000000100006540]                                 ; [rip+000038DC]
 	mov	[rcx],rax
 	lea	rdi,[00000001000053B3]                                 ; [rip+00002745]
 	mov	rsi,r13
-	call	100004F34h
+	call	tgetstr
 	lea	rcx,[0000000100006550]                                 ; [rip+000038D3]
 	mov	[rcx],rax
 	lea	rdi,[00000001000053B6]                                 ; [rip+0000272F]
 	mov	rsi,r13
-	call	100004F34h
+	call	tgetstr
 	lea	rcx,[0000000100006530]                                 ; [rip+0000389A]
 	mov	[rcx],rax
 	test	rax,rax
@@ -1506,7 +1506,7 @@ l0000000100002C15:
 l0000000100002C9E:
 	lea	rdi,[00000001000053B9]                                 ; [rip+00002714]
 	lea	rsi,[rbp-640h]
-	call	100004F34h
+	call	tgetstr
 	lea	rcx,[0000000100006530]                                 ; [rip+00003878]
 	mov	[rcx],rax
 
@@ -1547,14 +1547,14 @@ l0000000100002D0A:
 	mov	edi,2h
 	lea	r13,[000000010000319B]                                 ; [rip+00000478]
 	mov	rsi,r13
-	call	100004EF2h
+	call	signal
 	mov	edi,3h
 	mov	rsi,r13
-	call	100004EF2h
+	call	signal
 	lea	rdi,[00000001000053BC]                                 ; [rip+0000267D]
-	call	100004E56h
+	call	getenv
 	mov	rdi,rax
-	call	10000328Eh
+	call	fn000000010000328E
 
 l0000000100002D4C:
 	lea	rax,[0000000100006578]                                 ; [rip+00003825]
@@ -1641,7 +1641,7 @@ l0000000100002E0F:
 	lea	rdi,[rbp-34h]
 	lea	r14,[0000000100006548]                                 ; [rip+0000372E]
 	mov	rsi,r14
-	call	100004E50h
+	call	getbsize
 	mov	rax,[r14]
 	mov	rcx,rax
 	sar	rcx,3Fh
@@ -1794,9 +1794,9 @@ l0000000100002F87:
 
 l0000000100002F93:
 	mov	edx,r13d
-	call	1000023B0h
+	call	fn00000001000023B0
 	movzx	edi,[00000001000065D0]                               ; [rip+0000362E]
-	call	100004E14h
+	call	exit
 	nop
 l0000000100002FA8	dd	0xFFFFF81C
 l0000000100002FAC	dd	0xFFFFFBAE
@@ -1913,7 +1913,7 @@ l000000010000321F:
 	mov	edi,2Fh
 
 l0000000100003224:
-	call	100004ED4h
+	call	putchar
 	mov	eax,1h
 	pop	rbp
 	ret
@@ -1995,7 +1995,7 @@ l00000001000032AD:
 	mov	rdi,rax
 	lea	rax,[rax+1h]
 	mov	[rbp-40h],rax
-	call	100004F22h
+	call	strlen
 	mov	[rbp-44h],eax
 	xor	ebx,ebx
 	lea	r14,[00000001000065F8]                                 ; [rip+0000332F]
@@ -2052,7 +2052,7 @@ l000000010000333B:
 	mov	rax,[0000000100006038]                                 ; [rip+00002CF6]
 	mov	rsi,[rax]
 	lea	rdi,[0000000100005428]                                 ; [rip+000020DC]
-	call	100004E26h
+	call	fputs
 	jmp	100003332h
 
 l0000000100003353:
@@ -2084,7 +2084,7 @@ l0000000100003388:
 	cmp	r12b,78h
 	setz	al
 	movzx	edi,al
-	call	100004DC6h
+	call	__tolower
 	test	eax,eax
 	jnz	1000033B7h
 
@@ -2094,7 +2094,7 @@ l000000010000339B:
 	movsx	edx,r12b
 	xor	al,al
 	lea	rsi,[0000000100005477]                                 ; [rip+000020C5]
-	call	100004E20h
+	call	fprintf
 
 l00000001000033B7:
 	mov	dword ptr [r14+r13*4-8h],0FFFFFFFFh
@@ -2140,7 +2140,7 @@ l0000000100003411:
 	mov	rdi,[rax]
 	mov	esi,1h
 	lea	rdx,[000000010000318E]                                 ; [rip-00000299]
-	call	100004F46h
+	call	tputs
 
 l000000010000342C:
 	lea	rax,[00000001000065F0]                                 ; [rip+000031BD]
@@ -2152,7 +2152,7 @@ l000000010000343B:
 	lea	rax,[0000000100006538]                                 ; [rip+000030F6]
 	mov	rdi,[rax]
 	xor	esi,esi
-	call	100004F3Ah
+	call	tgoto
 	test	rax,rax
 	jz	100003465h
 
@@ -2160,7 +2160,7 @@ l0000000100003451:
 	mov	esi,1h
 	lea	rdx,[000000010000318E]                                 ; [rip-000002CF]
 	mov	rdi,rax
-	call	100004F46h
+	call	tputs
 
 l0000000100003465:
 	lea	rax,[00000001000065F0]                                 ; [rip+00003184]
@@ -2172,7 +2172,7 @@ l0000000100003475:
 	lea	rax,[0000000100006528]                                 ; [rip+000030AC]
 	mov	rdi,[rax]
 	xor	esi,esi
-	call	100004F3Ah
+	call	tgoto
 	test	rax,rax
 	jnz	100003492h
 
@@ -2189,7 +2189,7 @@ l0000000100003492:
 	add	rsp,8h
 	pop	rbx
 	pop	rbp
-	jmp	100004F46h
+	jmp	tputs
 
 ;; fn00000001000034AC: 00000001000034AC
 ;;   Called from:
@@ -2236,7 +2236,7 @@ l00000001000034EE:
 	mov	edi,9h
 
 l00000001000034F3:
-	call	1000033F4h
+	call	fn00000001000033F4
 	mov	eax,1h
 	pop	rbp
 	ret
@@ -2337,11 +2337,11 @@ l000000010000358B:
 
 l0000000100003597:
 	pop	rbp
-	jmp	100004715h
+	jmp	fn0000000100004715
 
 l000000010000359D:
 	pop	rbp
-	jmp	1000048AFh
+	jmp	fn00000001000048AF
 
 l00000001000035A3:
 	pop	rbp
@@ -2370,7 +2370,7 @@ l00000001000035CE:
 	mov	rdx,[rbx+8h]
 	lea	rdi,[00000001000054AA]                                 ; [rip+00001ED1]
 	xor	al,al
-	call	100004ECEh
+	call	printf
 
 l00000001000035E0:
 	mov	r12d,eax
@@ -2390,7 +2390,7 @@ l00000001000035EF:
 	mov	esi,r14d
 	lea	rdi,[00000001000054B1]                                 ; [rip+00001E9C]
 	xor	al,al
-	call	100004ECEh
+	call	printf
 	add	r12d,eax
 
 l000000010000361F:
@@ -2404,14 +2404,14 @@ l000000010000362B:
 
 l0000000100003630:
 	movzx	edi,word ptr [rbx+4h]
-	call	1000034ACh
+	call	fn00000001000034AC
 	test	eax,eax
 	setnz	r14b
 
 l000000010000363F:
 	mov	rdi,r15
 	add	rdi,68h
-	call	10000356Fh
+	call	fn000000010000356F
 	mov	r15d,eax
 	lea	rax,[0000000100006564]                                 ; [rip+00002F0F]
 	cmp	dword ptr [rax],0h
@@ -2427,12 +2427,12 @@ l0000000100003660:
 	lea	r14,[000000010000318E]                                 ; [rip-000004E3]
 	mov	esi,1h
 	mov	rdx,r14
-	call	100004F46h
+	call	tputs
 	lea	rax,[0000000100006540]                                 ; [rip+00002EBB]
 	mov	rdi,[rax]
 	mov	esi,1h
 	mov	rdx,r14
-	call	100004F46h
+	call	tputs
 
 l0000000100003695:
 	add	r15d,r12d
@@ -2442,7 +2442,7 @@ l0000000100003695:
 
 l00000001000036A4:
 	movzx	edi,word ptr [rbx+4h]
-	call	100003201h
+	call	fn0000000100003201
 	add	eax,r15d
 	jmp	1000036B5h
 
@@ -2492,18 +2492,18 @@ l000000010000379E:
 	mov	r8d,20h
 	mov	r9d,7h
 	mov	rdi,rbx
-	call	100004E86h
+	call	humanize_number
 	lea	rdi,[00000001000054BA]                                 ; [rip+00001CF1]
 	xor	al,al
 	mov	rsi,rbx
-	call	100004ECEh
+	call	printf
 	jmp	1000037E5h
 
 l00000001000037D5:
 	mov	esi,edi
 	lea	rdi,[00000001000054BF]                                 ; [rip+00001CE1]
 	xor	al,al
-	call	100004ECEh
+	call	printf
 
 l00000001000037E5:
 	add	rsp,8h
@@ -2574,7 +2574,7 @@ fn0000000100003AA8 proc
 
 l0000000100003ACE:
 	mov	edi,39h
-	call	100004EC8h
+	call	nl_langinfo
 	cmp	byte ptr [rax],64h
 	setz	al
 	movzx	eax,al
@@ -2586,7 +2586,7 @@ l0000000100003AE7:
 
 l0000000100003AF1:
 	xor	edi,edi
-	call	100004F40h
+	call	time
 	mov	[0000000100006680],rax                                 ; [rip+00002B81]
 
 l0000000100003AFF:
@@ -2603,7 +2603,7 @@ l0000000100003B0B:
 l0000000100003B22:
 	lea	rdi,[0000000100005340]                                 ; [rip+00001817]
 	lea	rsi,[00000001000054CC]                                 ; [rip+0000199C]
-	call	100004E08h
+	call	compat_mode
 	mov	rbx,[rbp-70h]
 	lea	rcx,[rbx+0EFF100h]
 	test	al,al
@@ -2656,17 +2656,17 @@ l0000000100003B9F:
 
 l0000000100003BA3:
 	lea	rdi,[rbp-70h]
-	call	100004EA4h
+	call	localtime
 	lea	r14,[rbp-68h]
 	mov	esi,50h
 	mov	rdi,r14
 	mov	rdx,rbx
 	mov	rcx,rax
-	call	100004F1Ch
+	call	strftime
 	mov	rax,[0000000100006040]                                 ; [rip+00002476]
 	mov	rsi,[rax]
 	mov	rdi,r14
-	call	100004E26h
+	call	fputs
 	mov	rax,[0000000100006030]                                 ; [rip+00002454]
 	mov	rax,[rax]
 	cmp	rax,[rbp-18h]
@@ -2680,7 +2680,7 @@ l0000000100003BE5:
 	ret
 
 l0000000100003BEE:
-	call	100004DC0h
+	call	__stack_chk_fail
 	push	rbp
 	mov	rbp,rsp
 	push	r15
@@ -2719,7 +2719,7 @@ l0000000100003C3E:
 	add	rsi,rax
 	lea	rdi,[00000001000054D5]                                 ; [rip+0000186D]
 	xor	al,al
-	call	100004ECEh
+	call	printf
 
 l0000000100003C6F:
 	mov	dword ptr [rbp-0CC4h],0h
@@ -2750,7 +2750,7 @@ l0000000100003CCA:
 	xor	al,al
 	lea	rcx,[00000001000054AA]                                 ; [rip+000017C2]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 
 l0000000100003CF0:
 	lea	rax,[0000000100006598]                                 ; [rip+000028A1]
@@ -2772,14 +2772,14 @@ l0000000100003CFC:
 	xor	al,al
 	lea	rcx,[00000001000054B1]                                 ; [rip+0000177F]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 
 l0000000100003D3A:
 	mov	rax,[rbp-0C88h]
 	movzx	edi,word ptr [rax+4h]
 	lea	rax,[rbp-846h]
 	mov	rsi,rax
-	call	100004F28h
+	call	strmode
 	mov	rax,[rbp-0CB0h]
 	mov	rcx,[rax+20h]
 	mov	[rbp-0CB8h],rcx
@@ -2805,12 +2805,12 @@ l0000000100003D8B:
 	mov	esi,400h
 	lea	rdx,[0000000100005527]                                 ; [rip+0000176E]
 	mov	r8,[rbp-0CC0h]
-	call	100004EF8h
+	call	snprintf
 
 l0000000100003DC5:
 	mov	rdi,[rbp-0CA8h]
 	mov	esi,100h
-	call	100004DE4h
+	call	acl_get_link_np
 	test	rax,rax
 	mov	[rbp-0C98h],rax
 	jz	100003E12h
@@ -2820,13 +2820,13 @@ l0000000100003DE2:
 	mov	rdi,rax
 	lea	rax,[rbp-0C78h]
 	mov	rdx,rax
-	call	100004DD2h
+	call	acl_get_entry
 	cmp	eax,0FFh
 	jnz	100003E12h
 
 l0000000100003DFB:
 	mov	rdi,[rbp-0C98h]
-	call	100004DCCh
+	call	acl_free
 	mov	qword ptr [rbp-0C98h],+0h
 
 l0000000100003E12:
@@ -2834,7 +2834,7 @@ l0000000100003E12:
 	xor	esi,esi
 	xor	edx,edx
 	mov	ecx,1h
-	call	100004E9Eh
+	call	listxattr
 	test	rax,rax
 	mov	ecx,0h
 	cmovns	rcx,rax
@@ -2882,7 +2882,7 @@ l0000000100003E86:
 	lea	rdx,[rbp-846h]
 	mov	rsi,rdx
 	lea	rdx,[rbp-0C7Ah]
-	call	100004ECEh
+	call	printf
 	jmp	100003F87h
 
 l0000000100003EC3:
@@ -2940,7 +2940,7 @@ l0000000100003F6E:
 	lea	rdx,[rbp-846h]
 	mov	rsi,rdx
 	lea	rdx,[rbp-0C7Ah]
-	call	100004ECEh
+	call	printf
 
 l0000000100003F87:
 	lea	rax,[0000000100006568]                                 ; [rip+000025DA]
@@ -2955,7 +2955,7 @@ l0000000100003F93:
 	xor	al,al
 	lea	rcx,[00000001000056BF]                                 ; [rip+0000170E]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 
 l0000000100003FB9:
 	mov	rax,[rbp-0C88h]
@@ -2983,7 +2983,7 @@ l0000000100003FF4:
 
 l0000000100003FFD:
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 	jmp	100004059h
 
 l0000000100004007:
@@ -3006,13 +3006,13 @@ l000000010000402D:
 	lea	rdx,[00000001000056DC]                                 ; [rip+0000169F]
 	mov	rdi,rdx
 	lea	rdx,[0000000100005410]                                 ; [rip+000013C9]
-	call	100004ECEh
+	call	printf
 	jmp	100004059h
 
 l000000010000404E:
 	mov	rdi,rcx
 	mov	rsi,r8
-	call	100003786h
+	call	fn0000000100003786
 
 l0000000100004059:
 	lea	rax,[0000000100006558]                                 ; [rip+000024F8]
@@ -3049,7 +3049,7 @@ l00000001000040A4:
 	mov	rdi,[rax+30h]
 
 l00000001000040AF:
-	call	100003AA8h
+	call	fn0000000100003AA8
 	lea	rax,[0000000100006564]                                 ; [rip+000024A9]
 	cmp	dword ptr [rax],0h
 	jz	1000040D6h
@@ -3057,12 +3057,12 @@ l00000001000040AF:
 l00000001000040C0:
 	mov	rax,[rbp-0C88h]
 	movzx	edi,word ptr [rax+4h]
-	call	1000034ACh
+	call	fn00000001000034AC
 	mov	[rbp-0CC4h],eax
 
 l00000001000040D6:
 	mov	rdi,[rbp-0CC0h]
-	call	10000356Fh
+	call	fn000000010000356F
 	lea	rax,[0000000100006564]                                 ; [rip+0000247B]
 	cmp	dword ptr [rax],0h
 	jz	10000412Dh
@@ -3076,12 +3076,12 @@ l00000001000040F7:
 	mov	rdi,[rax]
 	mov	esi,1h
 	lea	rdx,[000000010000318E]                                 ; [rip-00000F7F]
-	call	100004F46h
+	call	tputs
 	lea	rax,[0000000100006540]                                 ; [rip+00002427]
 	mov	rdi,[rax]
 	mov	esi,1h
 	lea	rdx,[000000010000318E]                                 ; [rip-00000F9A]
-	call	100004F46h
+	call	tputs
 
 l000000010000412D:
 	lea	rax,[00000001000065AC]                                 ; [rip+00002478]
@@ -3091,7 +3091,7 @@ l000000010000412D:
 l0000000100004139:
 	mov	rax,[rbp-0C88h]
 	movzx	edi,word ptr [rax+4h]
-	call	100003201h
+	call	fn0000000100003201
 
 l0000000100004149:
 	mov	rax,[rbp-0C88h]
@@ -3113,7 +3113,7 @@ l0000000100004172:
 	lea	rcx,[0000000100005524]                                 ; [rip+0000139A]
 	mov	rdx,rcx
 	mov	rcx,[rbp-0CC0h]
-	call	100004EF8h
+	call	snprintf
 	jmp	1000041CEh
 
 l000000010000419B:
@@ -3126,7 +3126,7 @@ l000000010000419B:
 	mov	esi,401h
 	lea	rdx,[0000000100005527]                                 ; [rip+00001365]
 	mov	r8,[rbp-0CC0h]
-	call	100004EF8h
+	call	snprintf
 
 l00000001000041CE:
 	lea	rax,[rbp-431h]
@@ -3134,14 +3134,14 @@ l00000001000041CE:
 	lea	rax,[rbp-832h]
 	mov	rsi,rax
 	mov	edx,400h
-	call	100004EDAh
+	call	readlink
 	cmp	eax,0FFh
 	jnz	100004227h
 
 l00000001000041F1:
-	call	100004DAEh
+	call	__error
 	mov	edi,[rax]
-	call	100004F16h
+	call	strerror
 	mov	rcx,[0000000100006038]                                 ; [rip+00001E34]
 	mov	rdi,[rcx]
 	lea	rcx,[000000010000552D]                                 ; [rip+0000131F]
@@ -3150,7 +3150,7 @@ l00000001000041F1:
 	mov	rdx,rcx
 	mov	rcx,rax
 	xor	al,al
-	call	100004E20h
+	call	fprintf
 	jmp	100004252h
 
 l0000000100004227:
@@ -3159,14 +3159,14 @@ l0000000100004227:
 	xor	al,al
 	lea	rcx,[000000010000553A]                                 ; [rip+000012FF]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 	lea	rax,[rbp-832h]
 	mov	rdi,rax
-	call	10000356Fh
+	call	fn000000010000356F
 
 l0000000100004252:
 	mov	edi,0Ah
-	call	100004ED4h
+	call	putchar
 	lea	rax,[00000001000065B0]                                 ; [rip+0000234D]
 	cmp	dword ptr [rax],0h
 	jz	10000434Eh
@@ -3177,7 +3177,7 @@ l000000010000426C:
 
 l000000010000427A:
 	mov	rdi,[rbp-0CA0h]
-	call	100004EAAh
+	call	malloc
 	test	rax,rax
 	jz	1000046F0h
 
@@ -3187,7 +3187,7 @@ l000000010000428F:
 	mov	rsi,rax
 	mov	rdx,[rbp-0CA0h]
 	mov	ecx,1h
-	call	100004E9Eh
+	call	listxattr
 	test	rax,rax
 	jle	100004342h
 
@@ -3207,29 +3207,29 @@ l00000001000042D5:
 	mov	rsi,r15
 	xor	ecx,ecx
 	mov	r9d,1h
-	call	100004E7Ah
+	call	getxattr
 	mov	r12,rax
 	mov	edi,9h
-	call	100004ED4h
+	call	putchar
 	mov	rdi,r15
-	call	10000356Fh
+	call	fn000000010000356F
 	mov	edi,9h
-	call	100004ED4h
+	call	putchar
 	mov	rax,[rbp-0C90h]
 	mov	edi,[rax+34h]
 	mov	rsi,r12
-	call	100003786h
+	call	fn0000000100003786
 	mov	edi,0Ah
-	call	100004ED4h
+	call	putchar
 	mov	rdi,r15
-	call	100004F22h
+	call	strlen
 	lea	r15,[rax+r15+1h]
 	cmp	r15,[rbp-0CA0h]
 	jc	1000042D5h
 
 l0000000100004342:
 	mov	rdi,[rbp-0CB8h]
-	call	100004E2Ch
+	call	free
 
 l000000010000434E:
 	cmp	qword ptr [rbp-0C98h],0h
@@ -3257,7 +3257,7 @@ l00000001000043A7:
 	mov	rdi,[rbp-0C58h]
 	lea	rax,[rbp-0C5Ch]
 	mov	rsi,rax
-	call	100004DFCh
+	call	acl_get_tag_type
 	test	eax,eax
 	jnz	100004675h
 
@@ -3265,7 +3265,7 @@ l00000001000043C5:
 	mov	rdi,[rbp-0C58h]
 	lea	rax,[rbp-0C68h]
 	mov	rsi,rax
-	call	100004DDEh
+	call	acl_get_flagset_np
 	test	eax,eax
 	jnz	100004675h
 
@@ -3273,13 +3273,13 @@ l00000001000043E3:
 	mov	rdi,[rbp-0C58h]
 	lea	rax,[rbp-0C70h]
 	mov	rsi,rax
-	call	100004DF0h
+	call	acl_get_permset
 	test	eax,eax
 	jnz	100004675h
 
 l0000000100004401:
 	mov	rdi,[rbp-0C58h]
-	call	100004DF6h
+	call	acl_get_qualifier
 	mov	r12,rax
 	test	r12,r12
 	jz	100004675h
@@ -3287,7 +3287,7 @@ l0000000100004401:
 l0000000100004419:
 	mov	dword ptr [rbp-0C4Ch],0FFFFFFFFh
 	mov	edi,105h
-	call	100004EAAh
+	call	malloc
 	test	rax,rax
 	jz	1000046F0h
 
@@ -3303,7 +3303,7 @@ l0000000100004449:
 	mov	rsi,rax
 	lea	rax,[rbp-0C4Ch]
 	mov	rdx,rax
-	call	100004EB0h
+	call	mbr_uuid_to_id
 	test	eax,eax
 	jnz	1000044F6h
 
@@ -3318,7 +3318,7 @@ l0000000100004478:
 
 l000000010000447C:
 	mov	edi,[rbp-0C50h]
-	call	100004E6Eh
+	call	getpwuid
 	test	rax,rax
 	jz	1000044F6h
 
@@ -3332,12 +3332,12 @@ l000000010000448C:
 	mov	ecx,105h
 	lea	r8,[0000000100005546]                                  ; [rip+0000109B]
 	lea	r9,[000000010000554C]                                  ; [rip+0000109A]
-	call	100004DBAh
+	call	__snprintf_chk
 	jmp	100004533h
 
 l00000001000044B9:
 	mov	edi,[rbp-0C50h]
-	call	100004E5Ch
+	call	getgrgid
 	test	rax,rax
 	jz	1000044F6h
 
@@ -3351,13 +3351,13 @@ l00000001000044C9:
 	mov	ecx,105h
 	lea	r8,[0000000100005546]                                  ; [rip+0000105E]
 	lea	r9,[0000000100005551]                                  ; [rip+00001062]
-	call	100004DBAh
+	call	__snprintf_chk
 	jmp	100004533h
 
 l00000001000044F6:
 	mov	rdi,r12
 	mov	rsi,r13
-	call	100004EB6h
+	call	mbr_uuid_to_string
 	test	eax,eax
 	jz	100004533h
 
@@ -3366,14 +3366,14 @@ l0000000100004505:
 	mov	rsi,[rax]
 	lea	rax,[0000000100005557]                                 ; [rip+00001041]
 	mov	rdi,rax
-	call	100004E26h
+	call	fputs
 	mov	rax,4E574F4E4B4E553Ch
 	mov	[r13+0h],rax
 	mov	word ptr [r13+8h],3Eh
 
 l0000000100004533:
 	mov	rdi,r12
-	call	100004DCCh
+	call	acl_free
 	mov	eax,[rbp-0C5Ch]
 	cmp	eax,2h
 	jz	100004554h
@@ -3396,7 +3396,7 @@ l000000010000455D:
 l0000000100004564:
 	mov	rdi,[rbp-0C68h]
 	mov	esi,10h
-	call	100004DD8h
+	call	acl_get_flag_np
 	test	eax,eax
 	lea	rcx,[0000000100005592]                                 ; [rip+00001014]
 	lea	rax,[0000000100005410]                                 ; [rip+00000E8B]
@@ -3408,16 +3408,16 @@ l0000000100004589:
 	mov	esi,[rbp-0C88h]
 	mov	rdx,r13
 	mov	r8,r12
-	call	100004ECEh
+	call	printf
 	mov	rdi,r13
-	call	100004E2Ch
+	call	free
 	xor	r12d,r12d
 	mov	r13d,10h
 
 l00000001000045B4:
 	mov	esi,[r13+rbx-10h]
 	mov	rdi,[rbp-0C70h]
-	call	100004DEAh
+	call	acl_get_perm_np
 	test	eax,eax
 	jz	100004601h
 
@@ -3437,7 +3437,7 @@ l00000001000045E8:
 	xor	al,al
 	lea	rcx,[000000010000564E]                                 ; [rip+00001058]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 	inc	r12d
 
 l0000000100004601:
@@ -3451,7 +3451,7 @@ l000000010000460E:
 l0000000100004614:
 	mov	esi,[r13+r14-10h]
 	mov	rdi,[rbp-0C68h]
-	call	100004DD8h
+	call	acl_get_flag_np
 	test	eax,eax
 	jz	100004661h
 
@@ -3471,7 +3471,7 @@ l0000000100004648:
 	xor	al,al
 	lea	rcx,[000000010000564E]                                 ; [rip+00000FF8]
 	mov	rdi,rcx
-	call	100004ECEh
+	call	printf
 	inc	r12d
 
 l0000000100004661:
@@ -3481,7 +3481,7 @@ l0000000100004661:
 
 l000000010000466B:
 	mov	edi,0Ah
-	call	100004ED4h
+	call	putchar
 
 l0000000100004675:
 	cmp	qword ptr [rbp-0C58h],0h
@@ -3495,13 +3495,13 @@ l0000000100004686:
 	mov	rdi,[rbp-0C98h]
 	lea	rax,[rbp-0C58h]
 	mov	rdx,rax
-	call	100004DD2h
+	call	acl_get_entry
 	test	eax,eax
 	jz	1000043A7h
 
 l00000001000046AD:
 	mov	rdi,[rbp-0C98h]
-	call	100004DCCh
+	call	acl_free
 
 l00000001000046B9:
 	add	qword ptr [rbp-0CB0h],10h
@@ -3520,13 +3520,13 @@ l00000001000046DB:
 	jz	100004703h
 
 l00000001000046EB:
-	call	100004DC0h
+	call	__stack_chk_fail
 
 l00000001000046F0:
 	mov	edi,1h
 	lea	rsi,[00000001000052B5]                                 ; [rip+00000BB9]
 	xor	al,al
-	call	100004E0Eh
+	call	err
 
 l0000000100004703:
 	add	rsp,+0CB8h
@@ -3568,7 +3568,7 @@ l000000010000476F:
 	lea	rdi,[0000000100005524]                                 ; [rip+00000DAE]
 	xor	al,al
 	mov	rsi,r14
-	call	100004ECEh
+	call	printf
 	add	eax,[rbp-0B8h]
 	jmp	100004879h
 
@@ -3583,7 +3583,7 @@ l000000010000478B:
 	movaps	[rbp-0A0h],xmm0
 	movaps	[rbp-0B0h],xmm0
 	movzx	edi,byte ptr [r14]
-	call	100004ED4h
+	call	putchar
 	inc	dword ptr [rbp-0B8h]
 	inc	r14
 	jmp	10000482Fh
@@ -3594,7 +3594,7 @@ l00000001000047CC:
 
 l00000001000047D2:
 	movzx	edi,byte ptr [r13+0h]
-	call	100004ED4h
+	call	putchar
 	inc	r13
 	dec	r12
 	jnz	1000047D2h
@@ -3614,7 +3614,7 @@ l00000001000047F4:
 
 l0000000100004808:
 	mov	esi,40000h
-	call	100004DB4h
+	call	__maskrune
 	test	eax,eax
 	setnz	al
 	movzx	eax,al
@@ -3625,7 +3625,7 @@ l000000010000481A:
 
 l000000010000481E:
 	mov	edi,[rbp-0B4h]
-	call	100004F5Eh
+	call	wcwidth
 	add	[rbp-0B8h],eax
 
 l000000010000482F:
@@ -3634,7 +3634,7 @@ l000000010000482F:
 	mov	rsi,r14
 	mov	edx,6h
 	mov	rcx,rbx
-	call	100004EBCh
+	call	mbrtowc
 	cmp	rax,0FEh
 	jz	10000476Fh
 
@@ -3677,9 +3677,9 @@ fn000000010000488B proc
 	mov	rax,[0000000100006038]                                 ; [rip+000017A2]
 	mov	rsi,[rax]
 	lea	rdi,[0000000100005730]                                 ; [rip+00000E90]
-	call	100004E26h
+	call	fputs
 	mov	edi,1h
-	call	100004E14h
+	call	exit
 
 ;; fn00000001000048AF: 00000001000048AF
 ;;   Called from:
@@ -3705,7 +3705,7 @@ fn00000001000048AF proc
 	movaps	[rbp-0B0h],xmm0
 	mov	dword ptr [rbp-0B8h],0h
 	mov	rbx,rdi
-	jmp	100004ABBh
+	jmp	fn0000000100004ABB
 
 l0000000100004902:
 	pxor	xmm0,xmm0
@@ -3718,7 +3718,7 @@ l0000000100004902:
 	movaps	[rbp-0A0h],xmm0
 	movaps	[rbp-0B0h],xmm0
 	inc	rbx
-	jmp	100004ABBh
+	jmp	fn0000000100004ABB
 
 l0000000100004937:
 	mov	r14,rax
@@ -3739,7 +3739,7 @@ l0000000100004951:
 
 l0000000100004964:
 	mov	esi,40000h
-	call	100004DB4h
+	call	__maskrune
 	test	eax,eax
 	setnz	al
 	movzx	eax,al
@@ -3767,7 +3767,7 @@ l000000010000498F:
 
 l0000000100004995:
 	movzx	edi,byte ptr [r12]
-	call	100004ED4h
+	call	putchar
 	inc	r12
 	dec	r15
 	jnz	100004995h
@@ -3776,7 +3776,7 @@ l00000001000049A7:
 	mov	edi,[rbp-0B4h]
 
 l00000001000049AD:
-	call	100004F5Eh
+	call	wcwidth
 	jmp	100004AA2h
 
 l00000001000049B7:
@@ -3802,16 +3802,16 @@ l00000001000049DA:
 	lea	rax,[0000000100005770]                                 ; [rip+00000D8C]
 	mov	rdi,rax
 	mov	edx,13h
-	call	100004EC2h
+	call	memchr
 	test	rax,rax
 	jz	100004A19h
 
 l00000001000049F6:
 	mov	r15,rax
 	mov	edi,5Ch
-	call	100004ED4h
+	call	putchar
 	movsx	edi,byte ptr [r15+1h]
-	call	100004ED4h
+	call	putchar
 	add	dword ptr [rbp-0B8h],2h
 	jmp	100004AA8h
 
@@ -3833,7 +3833,7 @@ l0000000100004A2A:
 
 l0000000100004A31:
 	mov	rdi,rbx
-	call	100004F22h
+	call	strlen
 
 l0000000100004A39:
 	test	eax,eax
@@ -3848,22 +3848,22 @@ l0000000100004A3D:
 l0000000100004A51:
 	movzx	r13d,byte ptr [r12]
 	mov	edi,5Ch
-	call	100004ED4h
+	call	putchar
 	mov	al,r13b
 	shr	al,6h
 	movzx	edi,al
 	add	edi,30h
-	call	100004ED4h
+	call	putchar
 	mov	al,r13b
 	shr	al,3h
 	movzx	edi,al
 	and	edi,7h
 	add	edi,30h
-	call	100004ED4h
+	call	putchar
 	and	r13d,7h
 	mov	edi,r13d
 	add	edi,30h
-	call	100004ED4h
+	call	putchar
 	inc	r12
 	dec	r15
 	jnz	100004A51h
@@ -3895,7 +3895,7 @@ fn0000000100004ABB proc
 	mov	edx,6h
 	lea	rax,[rbp-0B0h]
 	mov	rcx,rax
-	call	100004EBCh
+	call	mbrtowc
 	test	rax,rax
 	jnz	100004937h
 
@@ -3975,7 +3975,7 @@ l0000000100004BB7:
 
 l0000000100004BCA:
 	mov	esi,40000h
-	call	100004DB4h
+	call	__maskrune
 	test	eax,eax
 	setnz	al
 	movzx	eax,al
@@ -4005,7 +4005,7 @@ l0000000100004BF0:
 	mov	rdx,r15
 	lea	r13,[rbp-0B0h]
 	mov	rcx,r13
-	call	100004EBCh
+	call	mbrtowc
 	cmp	rax,0FEh
 	jz	100004B59h
 
@@ -4055,21 +4055,21 @@ l0000000100004C44:
 
 l0000000100004C8F:
 	mov	edi,3Fh
-	call	100004ED4h
+	call	putchar
 	mov	eax,ebx
 	inc	eax
 	jmp	100004D9Bh
 
 l0000000100004CA2:
 	mov	edi,3Fh
-	call	100004ED4h
+	call	putchar
 	add	r14,r15
 	inc	ebx
 	jmp	100004D5Bh
 
 l0000000100004CB6:
 	mov	edi,3Fh
-	call	100004ED4h
+	call	putchar
 	pxor	xmm0,xmm0
 	movaps	[rbp-40h],xmm0
 	movaps	[rbp-50h],xmm0
@@ -4097,7 +4097,7 @@ l0000000100004D01:
 
 l0000000100004D14:
 	mov	esi,40000h
-	call	100004DB4h
+	call	__maskrune
 	test	eax,eax
 	setnz	al
 	movzx	eax,al
@@ -4116,7 +4116,7 @@ l0000000100004D33:
 
 l0000000100004D39:
 	movzx	edi,byte ptr [r13+0h]
-	call	100004ED4h
+	call	putchar
 	inc	r13
 	dec	r12
 	jnz	100004D39h
@@ -4124,7 +4124,7 @@ l0000000100004D39:
 l0000000100004D4B:
 	add	r14,r15
 	mov	edi,[rbp-0B4h]
-	call	100004F5Eh
+	call	wcwidth
 	add	ebx,eax
 
 l0000000100004D5B:
@@ -4133,7 +4133,7 @@ l0000000100004D5B:
 	mov	edx,6h
 	lea	r15,[rbp-0B0h]
 	mov	rcx,r15
-	call	100004EBCh
+	call	mbrtowc
 	cmp	rax,0FEh
 	jz	100004C8Fh
 

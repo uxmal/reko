@@ -5,7 +5,7 @@
 ;;     00010A1C (in _start)
 _init proc
 	save	%sp,FFFFFFA0,%sp
-	call	00010C90
+	call	fn00010C90
 	sethi	00000000,%g0
 	unimp
 

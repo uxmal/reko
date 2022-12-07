@@ -10,7 +10,7 @@
 
 ;; _GetExceptDLLinfo: 00401071
 _GetExceptDLLinfo proc
-	jmp	4011FCh
+	jmp	fn004011FC
 00401076                   33 C0 A0 7D 20 40 00 C3 A1 93       3..} @....
 00401080 20 40 00 C3                                      @..            
 
@@ -111,14 +111,14 @@ l004011C6:
 l004011CA:
 	lea	edx,[ebp-8h]
 	push	edx
-	call	4011FCh
+	call	fn004011FC
 	pop	ecx
 	mov	ebx,[ebp-4h]
 
 l004011D7:
 	push	9Ch
 	push	ebx
-	call	401158h
+	call	fn00401158
 	add	eax,0h
 	push	eax
 	call	4012EAh
@@ -140,7 +140,7 @@ fn004011FC proc
 	mov	ebp,esp
 	push	ebx
 	mov	ebx,[ebp+8h]
-	call	401158h
+	call	fn00401158
 	add	eax,1Ch
 	mov	[4020F8h],eax
 	mov	dword ptr [ebx],82727349h

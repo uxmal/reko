@@ -3,7 +3,7 @@
 ;; hello: 0100
 hello proc
 	lim	gp0,#0x111
-	sjs	gp15,0105
+	sjs	gp15,puts
 	urs	gp15
 
 ;; puts: 0105
@@ -17,7 +17,7 @@ l0106:
 	bez	010D
 
 l0109:
-	sjs	gp15,010E
+	sjs	gp15,putchar
 	aisp	gp1,#1
 	br	0106
 

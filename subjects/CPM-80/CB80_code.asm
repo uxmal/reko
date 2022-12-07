@@ -135,7 +135,7 @@ fn03CB proc
 	push	af
 	ld	hl,(1658)
 	ld	c,l
-	call	03BB
+	call	fn03BB
 	pop	bc
 	ld	c,b
 	or	a,c
@@ -150,7 +150,7 @@ fn03E6 proc
 	ld	(hl),c
 	ld	hl,(1659)
 	ld	c,l
-	call	03BB
+	call	fn03BB
 	rra
 	jp	nc,03FB
 
@@ -303,7 +303,7 @@ fn0483 proc
 	add	hl,de
 	dec	hl
 	ld	c,07
-	call	1326
+	call	fn1326
 	ex	de,hl
 	ld	hl,1667
 	ld	(hl),e
@@ -348,7 +348,7 @@ l04DD:
 l04E6:
 	ld	hl,(1668)
 	ld	c,(hl)
-	call	0473
+	call	fn0473
 	ld	hl,(1668)
 	inc	hl
 	ld	(1668),hl
@@ -374,10 +374,10 @@ l050D:
 	add	a,(hl)
 	dec	a
 	ld	c,a
-	call	0473
+	call	fn0473
 	ld	c,3A
-	call	0473
-	call	0387
+	call	fn0473
+	call	fn0387
 
 l0520:
 	jp	04A6
@@ -415,7 +415,7 @@ fn0534 proc
 	ld	(14BE),hl
 	ex	de,hl
 	ld	hl,0200
-	call	1335
+	call	fn1335
 	jp	c,056A
 
 l0555:
@@ -425,7 +425,7 @@ l0555:
 	ld	b,h
 	ld	c,l
 	ld	de,0200
-	call	0483
+	call	fn0483
 	ld	hl,0000
 	ld	(14BE),hl
 
@@ -464,7 +464,7 @@ fn056B proc
 l0577:
 	ld	hl,(166C)
 	ld	c,l
-	call	0524
+	call	fn0524
 	jp	05A2
 
 l0581:
@@ -475,7 +475,7 @@ l0581:
 l0589:
 	ld	hl,(166C)
 	ld	c,l
-	call	0473
+	call	fn0473
 	jp	05A2
 
 l0593:
@@ -486,7 +486,7 @@ l0593:
 l059B:
 	ld	hl,(166C)
 	ld	c,l
-	call	0534
+	call	fn0534
 
 l05A2:
 	ld	a,(166C)
@@ -547,7 +547,7 @@ l05D4:
 l05DD:
 	ld	hl,(166D)
 	ld	c,(hl)
-	call	056B
+	call	fn056B
 	ld	hl,(166D)
 	inc	hl
 	ld	(166D),hl
@@ -584,7 +584,7 @@ l0605:
 	ld	hl,(166F)
 	add	hl,de
 	ld	c,(hl)
-	call	056B
+	call	fn056B
 	ld	hl,1671
 	inc	(hl)
 	jp	nz,05FA
@@ -611,12 +611,12 @@ fn061B proc
 	ld	hl,(1672)
 	ld	b,h
 	ld	c,l
-	call	05CE
+	call	fn05CE
 	ld	hl,(1674)
 	ld	b,h
 	ld	c,l
-	call	05EF
-	call	0387
+	call	fn05EF
+	call	fn0387
 	ret
 
 ;; fn063E: 063E
@@ -655,7 +655,7 @@ l0665:
 	add	hl,hl
 	add	hl,bc
 	ld	de,1676
-	call	1348
+	call	fn1348
 	jp	c,0697
 
 l0678:
@@ -665,7 +665,7 @@ l0678:
 	add	hl,hl
 	add	hl,bc
 	ld	de,1676
-	call	1348
+	call	fn1348
 	ex	de,hl
 	dec	hl
 	ld	(hl),e
@@ -731,9 +731,9 @@ fn06CE proc
 	ld	b,h
 	ld	c,l
 	ld	de,162C
-	call	063E
+	call	fn063E
 	ld	bc,162C
-	call	05EF
+	call	fn05EF
 	ret
 06E6                   21 80 16 70 2B 71 2A 7F 16 7C       !..p+q*..|
 06F0 E6 F8 1F 1F 1F 1F 4F CD 22 07 2A 7F 16 7C E6 0F ......O.".*..|..
@@ -754,14 +754,14 @@ l072F:
 	ld	a,(1681)
 	add	a,57
 	ld	c,a
-	call	056B
+	call	fn056B
 	jp	0744
 
 l073B:
 	ld	a,(1681)
 	add	a,30
 	ld	c,a
-	call	056B
+	call	fn056B
 
 l0744:
 	ret
@@ -781,7 +781,7 @@ l0749:
 
 l0753:
 	ld	c,20
-	call	056B
+	call	fn056B
 	jp	0749
 
 l075B:
@@ -808,37 +808,37 @@ fn075C proc
 
 l0773:
 	ld	c,0D
-	call	056B
+	call	fn056B
 	ld	c,0A
-	call	056B
+	call	fn056B
 
 l077D:
 	ld	bc,0260
-	call	05CE
+	call	fn05CE
 	ld	hl,(1683)
 	ld	b,h
 	ld	c,l
-	call	06CE
+	call	fn06CE
 	ld	c,0D
-	call	056B
+	call	fn056B
 	ld	c,0A
-	call	056B
+	call	fn056B
 	ld	a,00
 	ld	de,1685
-	call	1353
+	call	fn1353
 	or	a,l
 	jp	z,07AF
 
 l07A1:
 	ld	bc,034E
-	call	05CE
+	call	fn05CE
 	ld	hl,(1685)
 	ld	b,h
 	ld	c,l
-	call	06CE
+	call	fn06CE
 
 l07AF:
-	call	0387
+	call	fn0387
 	ret
 
 ;; fn07B3: 07B3
@@ -852,7 +852,7 @@ fn07B3 proc
 
 l07BA:
 	ld	c,0D
-	call	056B
+	call	fn056B
 
 l07BF:
 	ld	hl,14F7
@@ -862,34 +862,34 @@ l07BF:
 
 l07C9:
 	ld	c,0D
-	call	056B
+	call	fn056B
 	ld	c,0A
-	call	056B
+	call	fn056B
 	jp	07BF
 
 l07D6:
 	ld	c,0D
-	call	056B
+	call	fn056B
 	ld	c,0A
-	call	056B
+	call	fn056B
 	ld	bc,02B7
-	call	05CE
+	call	fn05CE
 	ld	bc,14FF
-	call	05EF
+	call	fn05EF
 	ld	a,(14F8)
 	sub	a,0A
 	ld	c,a
-	call	0745
+	call	fn0745
 	ld	bc,02FC
-	call	05CE
+	call	fn05CE
 	ld	hl,(14FE)
 	ld	c,l
 	ld	b,00
-	call	06CE
+	call	fn06CE
 	ld	hl,14FE
 	inc	(hl)
 	ld	bc,0382
-	call	05EF
+	call	fn05EF
 
 l080E:
 	ld	hl,14FD
@@ -902,9 +902,9 @@ l080E:
 ;;     0C17 (in fn0BE4)
 fn0814 proc
 	ld	c,0D
-	call	056B
+	call	fn056B
 	ld	c,0A
-	call	056B
+	call	fn056B
 	ld	a,(14F7)
 	sub	a,03
 	ld	c,a
@@ -913,7 +913,7 @@ fn0814 proc
 	jp	c,082E
 
 l082B:
-	call	07B3
+	call	fn07B3
 
 l082E:
 	ret
@@ -1002,7 +1002,7 @@ l088E:
 	ld	c,l
 	ld	hl,(1689)
 	ex	de,hl
-	call	0990
+	call	fn0990
 	cpl
 	rra
 	jp	nc,08B1
@@ -1011,7 +1011,7 @@ l08A7:
 	ld	hl,(1687)
 	ex	de,hl
 	ld	bc,024C
-	call	061B
+	call	fn061B
 
 l08B1:
 	ld	a,(1690)
@@ -1041,7 +1041,7 @@ l08D3:
 	ld	(hl),a
 
 l08DA:
-	jp	0920
+	jp	fn0920
 
 l08DD:
 	ld	a,(1691)
@@ -1061,7 +1061,7 @@ fn08EC proc
 	ld	hl,(168B)
 	ld	a,(151E)
 	ld	(hl),a
-	jp	08FD
+	jp	fn08FD
 
 l08F6:
 	ld	hl,(168B)
@@ -1073,12 +1073,12 @@ l08F6:
 ;;     08F3 (in fn08EC)
 ;;     08FC (in fn08FD)
 fn08FD proc
-	jp	0920
+	jp	fn0920
 
 l0900:
 	ld	a,(168F)
 	rra
-	jp	nc,0920
+	jp	nc,fn0920
 
 l0907:
 	ld	a,(1520)
@@ -1089,7 +1089,7 @@ l090F:
 	ld	hl,(168B)
 	ld	a,(1520)
 	ld	(hl),a
-	jp	0920
+	jp	fn0920
 
 l0919:
 	ld	hl,(168B)
@@ -1145,7 +1145,7 @@ l0961:
 	ld	hl,(1687)
 	ex	de,hl
 	ld	bc,0236
-	call	061B
+	call	fn061B
 
 l096B:
 	jp	098F
@@ -1166,7 +1166,7 @@ l0985:
 	ld	hl,(1687)
 	ex	de,hl
 	ld	bc,0287
-	call	061B
+	call	fn061B
 
 l098F:
 	ret
@@ -1190,7 +1190,7 @@ fn0990 proc
 	ld	b,h
 	ld	c,l
 	ld	e,20
-	call	0390
+	call	fn0390
 	ld	hl,(1692)
 	ld	a,(hl)
 	ld	(1696),a
@@ -1205,7 +1205,7 @@ fn0990 proc
 l09BD:
 	ld	hl,(1692)
 	ld	c,(hl)
-	call	03CB
+	call	fn03CB
 	ld	hl,(1692)
 	push	af
 	ld	a,(hl)
@@ -1273,7 +1273,7 @@ l0A16:
 	sbc	a,a
 	cpl
 	push	af
-	call	0B74
+	call	fn0B74
 	pop	bc
 	ld	c,b
 	and	a,c
@@ -1305,7 +1305,7 @@ l0A4A:
 	ret
 
 l0A4D:
-	call	0B91
+	call	fn0B91
 	jp	0A16
 
 l0A53:
@@ -1330,7 +1330,7 @@ l0A53:
 	jp	nc,0AA3
 
 l0A70:
-	call	0B91
+	call	fn0B91
 	ld	a,03
 	ld	hl,1696
 	cp	a,(hl)
@@ -1426,7 +1426,7 @@ l0AE5:
 	ld	b,h
 	ld	c,l
 	ld	e,00
-	call	0390
+	call	fn0390
 	ld	bc,0020
 	ld	hl,(168B)
 	add	hl,bc
@@ -1449,7 +1449,7 @@ l0B0D:
 	ld	hl,(168B)
 	add	hl,de
 	ld	c,(hl)
-	call	03E6
+	call	fn03E6
 	ld	hl,(1697)
 	ld	h,00
 	ld	bc,0001
@@ -1482,7 +1482,7 @@ l0B46:
 	ld	hl,(168B)
 	add	hl,de
 	ld	c,(hl)
-	call	03E6
+	call	fn03E6
 	ld	hl,(1697)
 	ld	h,00
 	ld	bc,0009
@@ -1565,17 +1565,17 @@ l0BFC:
 	jp	z,0C07
 
 l0C04:
-	call	0814
+	call	fn0814
 
 l0C07:
 	ld	bc,0296
-	call	05CE
+	call	fn05CE
 	ld	a,(138A)
 	dec	a
 	ld	c,a
 	ld	b,00
-	call	06CE
-	call	0814
+	call	fn06CE
+	call	fn0814
 
 l0C1A:
 	ld	hl,(1388)
@@ -1589,19 +1589,19 @@ l0C1A:
 	push	bc
 	ld	e,10
 	ld	bc,005C
-	call	082F
+	call	fn082F
 	ld	bc,005C
 	push	bc
 	ld	bc,0108
 	ld	de,0103
-	call	1346
+	call	fn1346
 	ld	c,07
-	call	1326
+	call	fn1326
 	ex	de,hl
 	ld	hl,(0108)
 	ld	b,h
 	ld	c,l
-	call	040D
+	call	fn040D
 	ld	a,(138A)
 	sub	a,00
 	sub	a,01
@@ -1620,7 +1620,7 @@ l0C1A:
 l0C68:
 	ld	de,0000
 	ld	bc,0001
-	call	075C
+	call	fn075C
 
 l0C71:
 	ld	a,(138A)
@@ -1703,14 +1703,14 @@ fn0D6F proc
 
 ;; fn0D84: 0D84
 fn0D84 proc
-	call	0D64
+	call	fn0D64
 	rra
 	jp	nc,0D94
 
 l0D8B:
 	ld	de,0000
 	ld	bc,0002
-	call	075C
+	call	fn075C
 
 l0D94:
 	ld	bc,0009
@@ -1760,7 +1760,7 @@ fn0DCB proc
 fn0E63 proc
 	ld	hl,16A6
 	ld	(hl),c
-	call	0C93
+	call	fn0C93
 	ld	c,a
 	ld	b,00
 	ld	hl,152C
@@ -1775,7 +1775,7 @@ fn0E63 proc
 l0E79:
 	ld	a,00
 	ld	de,1521
-	call	1353
+	call	fn1353
 	or	a,l
 	jp	z,0EA8
 
@@ -1788,7 +1788,7 @@ l0E85:
 	jp	nz,0E9B
 
 l0E91:
-	call	0EAB
+	call	fn0EAB
 	rra
 	jp	nc,0E9B
 
@@ -1926,7 +1926,7 @@ l1032:
 	add	hl,bc
 	ld	a,(16A8)
 	ld	(hl),a
-	call	045B
+	call	fn045B
 	ld	(16A8),a
 	jp	1002
 
@@ -1937,8 +1937,8 @@ l104D:
 
 l1055:
 	ld	bc,0369
-	call	05CE
-	call	0387
+	call	fn05CE
+	call	fn0387
 
 l105E:
 	ld	a,(16A8)
@@ -1958,12 +1958,12 @@ l105E:
 	jp	nc,1081
 
 l1078:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
 	jp	105E
 
 l1081:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
 
 l1087:
@@ -1989,7 +1989,7 @@ l10A1:
 	jp	nz,10AC
 
 l10A9:
-	call	1262
+	call	fn1262
 
 l10AC:
 	ld	a,(16A8)
@@ -2007,7 +2007,7 @@ l10BC:
 	jp	nz,10CD
 
 l10C4:
-	call	12D8
+	call	fn12D8
 	ld	(151D),a
 	jp	11B5
 
@@ -2017,7 +2017,7 @@ l10CD:
 	jp	nz,10DE
 
 l10D5:
-	call	1279
+	call	fn1279
 	ld	(138B),a
 	jp	11B5
 
@@ -2047,7 +2047,7 @@ l10FE:
 	jp	nz,110F
 
 l1106:
-	call	1279
+	call	fn1279
 	ld	(14F7),a
 	jp	11B5
 
@@ -2087,7 +2087,7 @@ l113F:
 	jp	nz,1150
 
 l1147:
-	call	12D8
+	call	fn12D8
 	ld	(1520),a
 	jp	11B5
 
@@ -2137,7 +2137,7 @@ l1190:
 	jp	nz,11A1
 
 l1198:
-	call	1279
+	call	fn1279
 	ld	(14F8),a
 	jp	11B5
 
@@ -2147,23 +2147,23 @@ l11A1:
 	jp	nz,11B2
 
 l11A9:
-	call	12D8
+	call	fn12D8
 	ld	(151E),a
 	jp	11B5
 
 l11B2:
-	call	1229
+	call	fn1229
 
 l11B5:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
-	call	1262
+	call	fn1262
 	ld	a,(16A8)
 	cp	a,2C
 	jp	nz,11CF
 
 l11C6:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
 	jp	11FA
 
@@ -2174,9 +2174,9 @@ l11CF:
 	jp	nz,11FA
 
 l11D9:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
-	call	1262
+	call	fn1262
 	ld	a,(16A8)
 	add	a,5F
 	cp	a,5B
@@ -2188,7 +2188,7 @@ l11EC:
 	jp	11FA
 
 l11F4:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
 
 l11FA:
@@ -2201,7 +2201,7 @@ l11FD:
 
 l1205:
 	ld	c,0C
-	call	056B
+	call	fn056B
 	ld	hl,14F9
 	ld	(hl),01
 
@@ -2213,8 +2213,8 @@ l120F:
 	ld	(14FD),a
 	ld	hl,138A
 	ld	(hl),01
-	call	07B3
-	call	0BE4
+	call	fn07B3
+	call	fn0BE4
 	ei
 	hlt
 
@@ -2229,16 +2229,16 @@ fn1229 proc
 	ld	hl,14F3
 	ld	(hl),02
 	ld	bc,02D1
-	call	05CE
+	call	fn05CE
 	ld	a,(16A8)
 	cp	a,00
 	jp	z,125E
 
 l123C:
 	ld	c,3E
-	call	056B
+	call	fn056B
 	ld	c,20
-	call	056B
+	call	fn056B
 
 l1246:
 	ld	a,(16A8)
@@ -2248,13 +2248,13 @@ l1246:
 l124E:
 	ld	hl,(16A8)
 	ld	c,l
-	call	056B
-	call	045B
+	call	fn056B
+	call	fn045B
 	ld	(16A8),a
 	jp	1246
 
 l125E:
-	call	0387
+	call	fn0387
 	ret
 
 ;; fn1262: 1262
@@ -2271,7 +2271,7 @@ fn1262 proc
 	jp	nz,1278
 
 l126A:
-	call	045B
+	call	fn045B
 	ld	(16A8),a
 	cp	a,20
 	jp	nz,1278
@@ -2288,22 +2288,22 @@ l1278:
 ;;     1106 (in fn100A)
 ;;     1198 (in fn100A)
 fn1279 proc
-	call	045B
+	call	fn045B
 	ld	(16A8),a
-	call	1262
+	call	fn1262
 	ld	a,(16A8)
 	cp	a,28
 	jp	z,128D
 
 l128A:
-	call	1229
+	call	fn1229
 
 l128D:
 	ld	hl,16AA
 	ld	(hl),00
 
 l1292:
-	call	045B
+	call	fn045B
 	ld	(16A9),a
 	sub	a,30
 	ld	c,a
@@ -2337,7 +2337,7 @@ l12BE:
 	jp	nz,12C9
 
 l12C6:
-	call	1262
+	call	fn1262
 
 l12C9:
 	ld	a,(16A9)
@@ -2345,7 +2345,7 @@ l12C9:
 	jp	z,12D4
 
 l12D1:
-	call	1229
+	call	fn1229
 
 l12D4:
 	ld	a,(16AA)
@@ -2357,24 +2357,24 @@ l12D4:
 ;;     1147 (in fn100A)
 ;;     11A9 (in fn100A)
 fn12D8 proc
-	call	045B
+	call	fn045B
 	ld	(16A8),a
-	call	1262
+	call	fn1262
 	ld	a,(16A8)
 	cp	a,28
 	jp	nz,12F4
 
 l12E9:
-	call	045B
+	call	fn045B
 	add	a,1F
 	ld	(16AB),a
 	jp	12F7
 
 l12F4:
-	call	1229
+	call	fn1229
 
 l12F7:
-	call	045B
+	call	fn045B
 	sub	a,29
 	add	a,FF
 	sbc	a,a
@@ -2390,7 +2390,7 @@ l12F7:
 	jp	nc,1311
 
 l130E:
-	call	1229
+	call	fn1229
 
 l1311:
 	ld	a,(16AB)
@@ -2425,7 +2425,7 @@ fn1326 proc
 	rra
 	ld	l,a
 	dec	c
-	jp	nz,1326
+	jp	nz,fn1326
 
 l1331:
 	ret

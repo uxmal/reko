@@ -83,7 +83,7 @@ __do_global_dtors_aux proc
 l0000000000400D89:
 	push	rbp
 	mov	rbp,rsp
-	call	400D00h
+	call	deregister_tm_clones
 	pop	rbp
 	mov	[0000000000602108],1h                                  ; [rip+0020136E]
 
@@ -98,7 +98,7 @@ frame_dummy proc
 	jnz	400DB0h
 
 l0000000000400DAB:
-	jmp	400D40h
+	jmp	register_tm_clones
 0000000000400DAD                                        0F 1F 00              ...
 
 l0000000000400DB0:
@@ -111,7 +111,7 @@ l0000000000400DBA:
 	mov	rbp,rsp
 	call	rax
 	pop	rbp
-	jmp	400D40h
+	jmp	register_tm_clones
 
 ;; component: 0000000000400DC6
 ;;   Called from:
@@ -279,7 +279,7 @@ l0000000000400F58:
 	mov	ecx,edx
 	mov	edx,0h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	esi,eax
 	mov	edi,4018B0h
 	mov	eax,0h
@@ -294,7 +294,7 @@ l0000000000400F8D:
 	mov	ecx,edx
 	mov	edx,0h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	[rbp-3Ch],eax
 	mov	qword ptr [rbp-38h],+0h
 	mov	dword ptr [rbp-48h],0h
@@ -444,7 +444,7 @@ l0000000000401155:
 	mov	ecx,edx
 	mov	edx,2h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	r12d,eax
 	mov	edx,[rbp-40h]
 	mov	esi,[rbp-6Ch]
@@ -453,7 +453,7 @@ l0000000000401155:
 	mov	ecx,edx
 	mov	edx,1h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	ebx,eax
 	mov	edx,[rbp-40h]
 	mov	esi,[rbp-6Ch]
@@ -462,7 +462,7 @@ l0000000000401155:
 	mov	ecx,edx
 	mov	edx,0h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	ecx,r12d
 	mov	edx,ebx
 	mov	esi,eax
@@ -479,7 +479,7 @@ l00000000004011D2:
 	mov	ecx,edx
 	mov	edx,1h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	ebx,eax
 	mov	edx,[rbp-40h]
 	mov	esi,[rbp-6Ch]
@@ -488,7 +488,7 @@ l00000000004011D2:
 	mov	ecx,edx
 	mov	edx,0h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	edx,ebx
 	mov	esi,eax
 	mov	edi,401914h
@@ -504,7 +504,7 @@ l000000000040122A:
 	mov	ecx,edx
 	mov	edx,3h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	r13d,eax
 	mov	edx,[rbp-40h]
 	mov	esi,[rbp-6Ch]
@@ -513,7 +513,7 @@ l000000000040122A:
 	mov	ecx,edx
 	mov	edx,2h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	r12d,eax
 	mov	edx,[rbp-40h]
 	mov	esi,[rbp-6Ch]
@@ -522,7 +522,7 @@ l000000000040122A:
 	mov	ecx,edx
 	mov	edx,1h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	ebx,eax
 	mov	edx,[rbp-40h]
 	mov	esi,[rbp-6Ch]
@@ -531,7 +531,7 @@ l000000000040122A:
 	mov	ecx,edx
 	mov	edx,0h
 	mov	rdi,rax
-	call	400DC6h
+	call	component
 	mov	r8d,r13d
 	mov	ecx,r12d
 	mov	edx,ebx
@@ -858,7 +858,7 @@ l0000000000401633:
 	mov	ecx,[rbp-44h]
 	mov	rdx,[rbp-10h]
 	mov	rdi,rax
-	call	400EE9h
+	call	print_pixel
 	jmp	40167Fh
 
 l000000000040164C:
@@ -988,7 +988,7 @@ __libc_csu_init proc
 	sub	rbp,r12
 	sub	rsp,8h
 	sar	rbp,3h
-	call	400AE8h
+	call	_init
 	test	rbp,rbp
 	jz	4017D6h
 

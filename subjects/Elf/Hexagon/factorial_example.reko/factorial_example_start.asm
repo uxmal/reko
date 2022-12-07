@@ -689,7 +689,7 @@ event_handle_reset proc
 	{ r19:r18 = combine(r3,r2); r17:r16 = combine(r3,r2); r15:r14 = combine(r3,r2); r13:r12 = combine(r3,r2) }
 	{ r27:r26 = combine(r3,r2); r25:r24 = combine(r3,r2); r23:r22 = combine(r3,r2); r21:r20 = combine(r3,r2) }
 	{ r29 = memw(r29); r28 = memw(r28); r31.h = 0000 }
-	{ r0 = memw(r0); r30 = 00000000; jump	00000A68; r31.l = 4901 }
+	{ r0 = memw(r0); r30 = 00000000; jump	event_handle_nmi; r31.l = 4901 }
 
 ;; thread_start: 00000A64
 thread_start proc
@@ -701,20 +701,20 @@ thread_start proc
 event_handle_nmi proc
 	{ r0 = 00000001 }
 	{ stid = r0 }
-	{ jump	00000770 }
+	{ jump	__coredump }
 
 ;; event_handle_error: 00000A74
 event_handle_error proc
 	{ r0 = 00000002 }
 	{ stid = r0 }
-	{ jump	00000770 }
+	{ jump	__coredump }
 
 ;; event_handle_rsvd: 00000A80
 event_handle_rsvd proc
 	{ r0.h = 7AB7 }
 	{ r0.l = FBBE }
 	{ stid = r0 }
-	{ jump	00000770 }
+	{ jump	__coredump }
 00000A90 00 40 00 7F 00 40 00 7F 00 40 00 7F 00 C0 00 7F .@...@...@......
 00000AA0 00 40 00 7F 00 40 00 7F 00 40 00 7F 00 C0 00 7F .@...@...@......
 00000AB0 00 40 00 7F 00 40 00 7F 00 40 00 7F 00 C0 00 7F .@...@...@......
@@ -957,7 +957,7 @@ l00000E14:
 event_handle_trap1 proc
 	{ r0 = 00000009 }
 	{ stid = r0 }
-	{ jump	00000770 }
+	{ jump	__coredump }
 
 ;; event_handle_int: 00000E3C
 event_handle_int proc
@@ -1649,7 +1649,7 @@ l00003CBC:
 	{ callr	r28 }
 	{ r0.h = 0000 }
 	{ r0.l = 0000 }
-	{ if (p0.new) jump:nt	00003D34; p0 = cmp.gt(r0,00000002) }
+	{ if (p0.new) jump:nt	hexagon_start_main; p0 = cmp.gt(r0,00000002) }
 
 l00003CEC:
 	{ r0.h = 0000 }

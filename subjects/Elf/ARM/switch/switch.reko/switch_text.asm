@@ -11,8 +11,8 @@ _start proc
 	ldr	r0,[00008364]                                          ; [pc,#&10]
 	ldr	r3,[00008368]                                          ; [pc,#&10]
 	push	ip
-	bl	$00008324
-	bl	$00008314
+	bl	__libc_start_main
+	bl	abort
 00008360 B0 86 00 00 5C 85 00 00 54 86 00 00             ....\...T...    
 
 ;; call_gmon_start: 0000836C
@@ -110,7 +110,7 @@ frobulate proc
 	mov	r0,r3
 	mov	r1,#&530
 	add	r1,r1,#9
-	bl	$00008588
+	bl	__divsi3
 	mov	r3,r0
 	mov	r0,r3
 	ldmdb	fp,{fp,sp,pc}
@@ -130,18 +130,18 @@ bazulate proc
 	ldr	r3,[fp,-#&18]
 	add	r4,r2,r3
 	ldr	r0,[fp,-#&14]
-	bl	$00008434
+	bl	frobulate
 	mov	r3,r0
 	mov	r0,r4
 	mov	r1,r3
-	bl	$00008588
+	bl	__divsi3
 	mov	r4,r0
 	ldr	r0,[fp,-#&18]
-	bl	$00008434
+	bl	frobulate
 	mov	r3,r0
 	mov	r0,r4
 	mov	r1,r3
-	bl	$00008588
+	bl	__divsi3
 	mov	r3,r0
 	mov	r0,r3
 	ldmdb	fp,{r4,fp,sp,pc}
@@ -171,25 +171,25 @@ l00008510	dd	0x00008534
 
 l00008514:
 	ldr	r0,[fp,-#&10]
-	bl	$00008434
+	bl	frobulate
 	b	$0000854C
 
 l00008520:
 	ldr	r3,[fp,-#&10]
 	sub	r3,r3,#3
 	mov	r0,r3
-	bl	$00008434
+	bl	frobulate
 	b	$0000854C
 
 l00008534:
 	ldr	r0,[fp,-#&10]
 	ldr	r1,[fp,-#&10]
-	bl	$00008470
+	bl	bazulate
 
 l00008540:
 	mov	r0,#0
 	mov	r1,#0
-	bl	$00008470
+	bl	bazulate
 
 l0000854C:
 	ldr	r3,[fp,-#&10]
@@ -206,7 +206,7 @@ main proc
 	str	r0,[fp,-#&10]
 	str	r1,[fp,-#&14]
 	ldr	r0,[fp,-#&10]
-	bl	$000084D4
+	bl	switcheroo
 	mov	r3,#0
 	mov	r0,r3
 	ldmdb	fp,{fp,sp,pc}
@@ -308,7 +308,7 @@ l00008624:
 
 l00008628:
 	push	lr
-	bl	$00008638
+	bl	__div0
 	mov	r0,#0
 	pop	pc
 
@@ -332,7 +332,7 @@ __libc_csu_init proc
 	mov	r4,#0
 	ldr	r10,[000086A4]                                         ; [pc,#&40]
 	add	r10,pc,r10
-	bl	$000082F0
+	bl	_init
 	ldr	r3,[000086A8]                                          ; [pc,#&38]
 	ldr	r2,[000086AC]                                          ; [pc,#&38]
 	ldr	r1,[r10,r3]
@@ -373,7 +373,7 @@ l000086E0:
 
 l000086F8:
 	pop	{r4-r5,r10,lr}
-	b	$0000874C
+	b	_fini
 00008700 80 81 00 00 20 00 00 00 24 00 00 00             .... ...$...    
 
 ;; __do_global_ctors_aux: 0000870C

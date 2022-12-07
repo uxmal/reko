@@ -5,5 +5,5 @@
 ;;     000086FC (in __libc_csu_fini)
 _fini proc
 	push	lr
-	bl	$0000839C
+	bl	__do_global_dtors_aux
 	pop	pc

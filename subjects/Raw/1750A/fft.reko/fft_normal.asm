@@ -49,7 +49,7 @@ init_fft proc
 l0132:
 	lr	gp0,gp3
 	st	gp3,1,gp14
-	sjs	gp15,0115
+	sjs	gp15,reverse
 	lr	gp1,gp0
 	sll	gp1,#1
 	ar	gp1,gp0
@@ -92,7 +92,7 @@ l0152:
 	lr	gp2,gp7
 	dlr	gp0,gp5
 	dst	gp8,1,gp14
-	sjs	gp15,0245
+	sjs	gp15,sqrt
 	l	gp8,1,gp14
 	efst	gp0,0x8090,gp8
 	l	gp9,2,gp14
@@ -139,12 +139,12 @@ l0187:
 	lr	gp2,gp5
 	dlr	gp0,gp3
 	efst	gp3,0xD,gp14
-	sjs	gp15,03A0
+	sjs	gp15,cos
 	efst	gp0,4,gp14
 	efl	gp3,0xD,gp14
 	lr	gp2,gp5
 	dlr	gp0,gp3
-	sjs	gp15,037C
+	sjs	gp15,sin
 	efst	gp0,7,gp14
 	l	gp0,3,gp14
 	cisp	gp0,#0x10
@@ -240,9 +240,9 @@ l0202:
 	ble	0202
 
 l020D:
-	sjs	gp15,012E
-	sjs	gp15,016F
-	sjs	gp15,014E
+	sjs	gp15,init_fft
+	sjs	gp15,fft
+	sjs	gp15,compute_output
 	xorr	gp3,gp3
 
 l0214:
@@ -251,7 +251,7 @@ l0214:
 	ar	gp2,gp3
 	efl	gp0,0x8090,gp2
 	st	gp3,1,gp14
-	sjs	gp15,04F6
+	sjs	gp15,pr_fp_num
 	l	gp3,1,gp14
 	aisp	gp3,#1
 	cisp	gp3,#8
@@ -310,7 +310,7 @@ sqrt proc
 
 l024C:
 	lim	gp3,#1,gp14
-	sjs	gp15,0226
+	sjs	gp15,frex
 	lr	gp10,gp2
 	dlr	gp8,gp0
 	lr	gp4,gp10
@@ -414,7 +414,7 @@ l02B2:
 l02B6:
 	lr	gp2,gp7
 	dlr	gp0,gp5
-	sjs	gp15,0273
+	sjs	gp15,auxasin
 	lr	gp10,gp2
 	dlr	gp8,gp0
 	jc	#0xF,02D2
@@ -426,8 +426,8 @@ l02BE:
 	lr	gp2,gp4
 	dlr	gp0,gp0
 	efm	gp0,0x8030
-	sjs	gp15,0245
-	sjs	gp15,0273
+	sjs	gp15,sqrt
+	sjs	gp15,auxasin
 	lr	gp7,gp2
 	dlr	gp5,gp0
 	efar	gp5,gp0
@@ -590,7 +590,7 @@ l0399:
 	da	gp0,0x805F
 
 l039B:
-	sjs	gp15,0311
+	sjs	gp15,sincos
 	lr	gp15,gp14
 	popm	gp14,gp14
 	urs	gp15
@@ -626,7 +626,7 @@ l03B4:
 
 l03B8:
 	da	gp0,0x806C
-	sjs	gp15,0311
+	sjs	gp15,sincos
 	lr	gp15,gp14
 	popm	gp14,gp14
 	urs	gp15
@@ -778,7 +778,7 @@ cvfa proc
 	st	gp0,7,gp11
 	xorr	gp14,gp14
 	lisp	gp1,#6
-	sjs	gp15,043E
+	sjs	gp15,fn043E
 	popm	gp0,gp14
 	urs	gp15
 
@@ -793,7 +793,7 @@ cvea proc
 	xorr	gp0,gp0
 	st	gp0,0xA,gp11
 	lisp	gp1,#0xB
-	sjs	gp15,043E
+	sjs	gp15,fn043E
 	popm	gp0,gp14
 	urs	gp15
 
@@ -965,12 +965,12 @@ l04B2:
 	bez	04BE
 
 l04B5:
-	sjs	gp15,04AC
+	sjs	gp15,putchar
 	llb	gp0,gp11
 	bez	04BE
 
 l04BA:
-	sjs	gp15,04AC
+	sjs	gp15,putchar
 	aisp	gp11,#1
 	br	04B2
 
@@ -996,7 +996,7 @@ l04C8:
 	aim	gp0,#0x37
 
 l04CA:
-	sjs	gp15,04AC
+	sjs	gp15,putchar
 	popm	gp0,gp0
 	urs	gp15
 
@@ -1008,9 +1008,9 @@ pr_hex_byte proc
 	pshm	gp1,gp1
 	lr	gp1,gp0
 	srl	gp0,#4
-	sjs	gp15,04C0
+	sjs	gp15,pr_nibble
 	lr	gp0,gp1
-	sjs	gp15,04C0
+	sjs	gp15,pr_nibble
 	popm	gp1,gp1
 	urs	gp15
 
@@ -1019,9 +1019,9 @@ pr_hex_word proc
 	pshm	gp1,gp1
 	lr	gp1,gp0
 	xbr	gp0
-	sjs	gp15,04CE
+	sjs	gp15,pr_hex_byte
 	lr	gp0,gp1
-	sjs	gp15,04CE
+	sjs	gp15,pr_hex_byte
 	popm	gp1,gp1
 	urs	gp15
 
@@ -1030,8 +1030,8 @@ pr_dec_word proc
 	pshm	gp1,gp1
 	lr	gp1,gp0
 	lim	gp0,#0x806E
-	sjs	gp15,03BF
-	sjs	gp15,04AF
+	sjs	gp15,cvia
+	sjs	gp15,puts
 	popm	gp1,gp1
 	urs	gp15
 
@@ -1040,8 +1040,8 @@ pr_long_word proc
 	pshm	gp0,gp2
 	dlr	gp1,gp0
 	lim	gp0,#0x806E
-	sjs	gp15,03ED
-	sjs	gp15,04AF
+	sjs	gp15,cvla
+	sjs	gp15,puts
 	popm	gp0,gp2
 	urs	gp15
 
@@ -1052,8 +1052,8 @@ pr_fp_num proc
 	pshm	gp0,gp2
 	dlr	gp1,gp0
 	lim	gp0,#0x806E
-	sjs	gp15,0426
-	sjs	gp15,04AF
+	sjs	gp15,cvfa
+	sjs	gp15,puts
 	popm	gp0,gp2
 	urs	gp15
 
@@ -1063,8 +1063,8 @@ pr_efp_num proc
 	lr	gp3,gp2
 	dlr	gp1,gp0
 	lim	gp0,#0x806E
-	sjs	gp15,0432
-	sjs	gp15,04AF
+	sjs	gp15,cvea
+	sjs	gp15,puts
 	popm	gp0,gp3
 	urs	gp15
 050B                0000 0000 0000 9B78 1102       .......x..

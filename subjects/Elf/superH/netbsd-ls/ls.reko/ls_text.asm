@@ -5013,15 +5013,15 @@ __udivsi3 proc
 l004044F0:
 	swap.w	r4,r0
 	shlr16	r4
-	bsr	004044C4
+	bsr	fn004044C4
 	shll16	r5
-	bsr	004044C6
+	bsr	fn004044C6
 	div1	r5,r4
 	xtrct	r4,r0
 	xtrct	r0,r4
-	bsr	004044C4
+	bsr	fn004044C4
 	swap.w	r4,r4
-	bsr	004044C6
+	bsr	fn004044C6
 	div1	r5,r4
 	lds.l	@r15+,pr
 	xtrct	r4,r0
@@ -5034,13 +5034,13 @@ l00404514:
 	mov	#00,r0
 	xtrct	r4,r0
 	xtrct	r0,r4
-	bsr	004044D6
+	bsr	fn004044D6
 	rotcl	r0
-	bsr	004044D6
+	bsr	fn004044D6
 	rotcl	r0
-	bsr	004044D6
+	bsr	fn004044D6
 	rotcl	r0
-	bsr	004044D6
+	bsr	fn004044D6
 	rotcl	r0
 	lds.l	@r15+,pr
 	rts

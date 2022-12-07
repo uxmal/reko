@@ -5,6 +5,6 @@
 ;;     0000000000400660 (in __libc_csu_init)
 _init proc
 	sub	rsp,8h
-	call	40043Ch
+	call	call_gmon_start
 	add	rsp,8h
 	ret
