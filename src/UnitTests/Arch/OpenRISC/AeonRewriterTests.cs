@@ -263,6 +263,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
 
         [Test]
+        public void AeonRw_l_sll__()
+        {
+            Given_HexString("4CAC24");
+            AssertCode(     // l.sll?	r5,r12,r4
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r5 = r12 << r4");
+        }
+
+
+        [Test]
         public void AeonRw_l_slli__()
         {
             Given_HexString("4C6320");
@@ -335,6 +345,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|Mem0[r3 + 8<i32>:word32] = 0<32>");
         }
+
+
+        [Test]
+        public void AeonRw_l_srl__()
+        {
+            Given_HexString("4D6B3D");
+            AssertCode(     // l.srl?	r11,r11,r7
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r11 = r11 >>u r7");
+        }
+
 
         [Test]
         public void AeonRw_l_srli__()
