@@ -152,6 +152,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_lbz()
+        {
+            Given_HexString("F0 C7 1E EC");
+            AssertCode(     // l.lbz?\tr6,0x1EEC(r7)
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = Mem0[r7 + 7916<i32>:byte]",
+                "2|L--|r6 = CONVERT(v3, byte, word32)");
+        }
+
+        [Test]
         public void AeonRw_l_lhz()
         {
             Given_HexString("08C301");
@@ -277,6 +287,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // l.jal?	00100A71
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 00100538 (0)");
+        }
+
+        [Test]
+        public void AeonRw_l_sb()
+        {
+            Given_HexString("F8 EA 36 D8");
+            AssertCode(     // l.sb 0x36D8(r10),r7
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r7, byte, 0)",
+                "2|L--|Mem0[r10 + 14040<i32>:byte] = v3");
         }
 
         [Test]

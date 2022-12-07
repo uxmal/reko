@@ -91,6 +91,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_j: RewriteJ(); break;
                 case Mnemonic.l_jal: RewriteJal(); break;
                 case Mnemonic.l_jr: RewriteJr(); break;
+                case Mnemonic.l_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
                 case Mnemonic.l_lhz: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.l_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
@@ -106,6 +107,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_sfgeu: RewriteSfxx(m.Uge); break;
                 case Mnemonic.l_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
+                case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.l_slli__: RewriteShifti(m.Shl); break;
                 case Mnemonic.l_srai__: RewriteShifti(m.Sar); break;

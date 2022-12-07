@@ -303,21 +303,21 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 decoder4,
                 // XXX: n is probably wrong
-                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),                    // disasm, guess
+                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),         // disasm, guess
                 Nyi("0b0110"),
                 Nyi("0b0111"),
 
                 Nyi("0b1000"),
                 //$REVIEW: what is bit 0 used for?
-                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25),       // guess
+                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
                 decoderA,
                 decoderB,
 
-                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)), // guess
+                Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
                 decoderD,
-                Nyi("0b1110"),
+                Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),        // guess
                 //$REVIEW: signed or unsigned immediate?
-                Instr(Mnemonic.l_addi, R21, R16, uimm0_16));           // chenxing, backtrace
+                Instr(Mnemonic.l_addi, R21, R16, uimm0_16));                            // chenxing, backtrace
 
 
             return new D32BitDecoder(decoder);

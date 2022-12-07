@@ -78,6 +78,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_lbz()
+        {
+            AssertCode("l.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
+        }
+
+        [Test]
         public void AeonDis_l_movi()
         {
             AssertCode("l.movi?\tr6,-0x1", "98 DF");
@@ -93,6 +99,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_nop()
         {
             AssertCode("l.nop", "000000");
+        }
+
+        [Test]
+        public void AeonDis_l_sb()
+        {
+            AssertCode("l.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
         }
 
         [Test]
