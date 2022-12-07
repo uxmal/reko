@@ -225,11 +225,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             return new InstrDecoder<AeonDisassembler, Mnemonic, AeonInstruction>(iclass, mnemonic, mutators);
         }
 
-        private class D16BitDecoder : Decoder
+        private class D24BitDecoder : Decoder
         {
             private readonly Decoder decoder;
 
-            public D16BitDecoder(Decoder decoder)
+            public D24BitDecoder(Decoder decoder)
             {
                 this.decoder = decoder;
             }
@@ -290,10 +290,18 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder110100 = Sparse(0, 3, "  opc=110100", Nyi("110100"),
                 (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
 
+            // opcode 110101
+            var decoder110101 = Sparse(0, 3, "  opc=110101", Nyi("110101"));
+
             // opcode 111001
             var decoder111001 = Mask(0, 1, "  opc=111001",
                 Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
                 Instr(Mnemonic.l_j, InstrClass.Transfer | InstrClass.Call, disp1_25));  // guess
+
+            // opcode 111010
+            var decoder111010 = Mask(0, 1, "  opc=111010",
+                Nyi("0"),
+                Instr(Mnemonic.l_lhz__, R21, Ms(16, 1, 15, 1, PrimitiveType.Word16)));  // guess
 
             // opcode 111011
             var decoder111011 = Mask(0, 2, "  opc=111011",
@@ -342,9 +350,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("0b110011"),
 
                 decoder110100,
-                // opcode 110101
-                // XXX: n is probably wrong
-                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp0_26),         // disasm, guess
+                decoder110101,
                 // opcode 110110
                 Nyi("0b110110"),
                 // opcode 110111
@@ -353,8 +359,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 111000
                 Nyi("0b111000"),
                 decoder111001,
-                // opcode 111010
-                Instr(Mnemonic.l_lhz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
+                decoder111010,
                 decoder111011,
                 // opcode 111100
                 Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
@@ -363,7 +368,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),      // guess
                 // opcode 111111
                 //$REVIEW: signed or unsigned immediate?
-                Instr(Mnemonic.l_addi, R21, R16, uimm0_16));                            // chenxing, backtrace
+                Instr(Mnemonic.l_addi, R21, R16, simm0_16));                            // chenxing, backtrace
 
             return new D32BitDecoder(decoder);
         }
@@ -464,13 +469,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_nop, InstrClass.Linear | InstrClass.Zero | InstrClass.Padding),
                 nyi);
             // opcode 000011
+            var decode03_l_sh = Instr(Mnemonic.l_sh__, Ms(8, 1, 7, 1, PrimitiveType.Word16), R13);
             var decode03 = Mask(0, 2, "  3",
-                // XXX: i might be left shifted by 2 bits
                 Instr(Mnemonic.l_sw, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),    // 000 011 bbbbbaaaaaiiiiii00   // chenxing, backtrace
-                Nyi("0b01"),
+                decode03_l_sh,
                 // XXX: assuming this is l.lwz and not l.lws
                 Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // 000 011 dddddaaaaaiiiiii10   // guess
-                Nyi("0b11"));
+                decode03_l_sh);
             // opcode 001000
             var decode08 = Mask(0, 2, "  8",
                 // branch if reg == imm
@@ -488,12 +493,14 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             // opcode 010000
             var decode10 = Sparse(0, 3, "  10", Nyi("010000"),
-                (0b011, Instr(Mnemonic.l_mul, R13, R8, R3)));               // disasm
+                (0b011, Instr(Mnemonic.l_mul, R13, R8, R3)),                // disasm
+                (0b100, Instr(Mnemonic.l_add__, R13, R8, R3)));             // guess
 
             // opcode 010001
             var decode11 = Sparse(0, 3, "  11", Nyi("010001"),
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
-                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)));              // guess
+                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)),               // guess
+                (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)));             // guess
 
             // opcode 010011
             var decode13 = Sparse(0, 3, "  13", Nyi("010011"),
@@ -513,12 +520,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b01101, Instr(Mnemonic.l_sfne,  R13,R8)),                 // chenxing
                 (0b10111, Instr(Mnemonic.l_sfgeu, R13,R8)));                // chenxing
 
-            return new D16BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
+            return new D24BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode00,
                 // opcode 000001
                 Instr(Mnemonic.l_movhi__, R13, uimm0_13),
                 // opcode 000010
-                Instr(Mnemonic.l_lhz, R13, Ms(8, 2, 6, 1, PrimitiveType.UInt16)),   // chenxing
+                Instr(Mnemonic.l_lhz, R13, Ms(8, 1, 7, 1, PrimitiveType.UInt16)),   // chenxing
                 decode03,
 
                 // opcode 000100
@@ -527,7 +534,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 000101
                 Nyi("0b00101"),
                 // opcode 000110
-                Instr(Mnemonic.l_sw__, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),  // guess
+                Instr(Mnemonic.l_sb__, Ms(8, 0, 8, 0, PrimitiveType.Byte), R13),    // guess
                 // opcode 000111
                 Instr(Mnemonic.l_addi, R13, R8, simm0_8),                           // chenxing, backtrace
 
