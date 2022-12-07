@@ -438,8 +438,10 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decode13 = Sparse(0, 3, "  13", Nyi("13"),
                 (0b000, Instr(Mnemonic.l_slli__, R13, R8, uimm3_5)),        // guess
-                (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)),       // guess
-                (0b010, Instr(Mnemonic.l_srai__, R13, R8, uimm3_5)));       // guess
+                (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)),        // guess
+                (0b010, Instr(Mnemonic.l_srai__, R13, R8, uimm3_5)),        // guess
+                (0b100, Instr(Mnemonic.l_sll__, R13, R8, R3)),
+                (0b101, Instr(Mnemonic.l_srl__, R13, R8, R3)));             // guess
 
             var decode17 = Sparse(0, 5, "  17", Nyi("17"),
                 (0b11011, Instr(Mnemonic.l_sfgtui, R13, uimm5_8)),          // disasm

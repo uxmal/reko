@@ -109,7 +109,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.l_sll__: RewriteShift(m.Shl); break;
                 case Mnemonic.l_slli__: RewriteShifti(m.Shl); break;
+                case Mnemonic.l_srl__: RewriteShift(m.Shr); break;
                 case Mnemonic.l_srai__: RewriteShifti(m.Sar); break;
                 case Mnemonic.l_srli__: RewriteShifti(m.Shr); break;
                 case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
@@ -357,6 +359,14 @@ namespace Reko.Arch.OpenRISC.Aeon
             var left = OpOrZero(0);
             var right = OpOrZero(1);
             var dst = binder.EnsureFlagGroup(Registers.F);
+            m.Assign(dst, fn(left, right));
+        }
+
+        private void RewriteShift(Func<Expression, Expression, Expression> fn)
+        {
+            var left = OpOrZero(1);
+            var right = OpOrZero(2);
+            var dst = Op(0);
             m.Assign(dst, fn(left, right));
         }
 
