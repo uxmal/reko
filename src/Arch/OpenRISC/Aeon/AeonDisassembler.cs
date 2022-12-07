@@ -342,7 +342,6 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         // 24-bit / 3-byte / "BN"?
         Instr(Mnemonic.l_nop",   3, "000000000000000000000000"),                    # chenxing
-        // XXX: top bits of k may be a register, and this is an or?
         Instr(Mnemonic.l_movhi?",3, "000001dddddkkkkkkkkkkkkk", "r%d, %k"),
         Instr(Mnemonic.l_lhz",   3, "000010dddddaaaaa00000001", "r%d, 0(r%a)"),     # chenxing
         // XXX: i might be left shifted by 2 bits
@@ -483,7 +482,6 @@ namespace Reko.Arch.OpenRISC.Aeon
             return new D26BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode00,
                 // opcode 000001
-                // XXX: top bits of k may be a register, and this is an or?
                 Instr(Mnemonic.l_movhi__, R13, uimm0_13),
                 // opcode 000010
                 Instr(Mnemonic.l_lhz, R13, Ms(8, 2, 6, 1, PrimitiveType.UInt16)), // chenxing
