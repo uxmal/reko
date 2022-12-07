@@ -225,11 +225,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             return new InstrDecoder<AeonDisassembler, Mnemonic, AeonInstruction>(iclass, mnemonic, mutators);
         }
 
-        private class D26BitDecoder : Decoder
+        private class D16BitDecoder : Decoder
         {
             private readonly Decoder decoder;
 
-            public D26BitDecoder(Decoder decoder)
+            public D16BitDecoder(Decoder decoder)
             {
                 this.decoder = decoder;
             }
@@ -273,33 +273,36 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoder24,
 
                 decoder16,      // 100
-                decoder32,      // 100
+                decoder32,      // 101
                 decoder32,
                 decoder32);
         }
 
         private static Decoder Create32bitInstructionDecoder()
         {
-            var decoder110000 = Sparse(0, 4, "  opc=0", Nyi("0"),
+            // opcode 110000
+            var decoder110000 = Sparse(0, 4, "  opc=110000", Nyi("110000"),
                 (0x1, Instr(Mnemonic.l_movhi, R21, uimm5_16)),               // chenxing(mod), disasm
                 (0xD, Instr(Mnemonic.l_mtspr, R16, R21, uimm4_12)),          // chenxing
                 (0xF, Instr(Mnemonic.l_mfspr, R21, R16, uimm4_12)));         // chenxing
 
-            var decoder110100 = Sparse(0, 3, "  opc=4", Nyi("4"),
+            // opcode 110100
+            var decoder110100 = Sparse(0, 3, "  opc=110100", Nyi("110100"),
                 (0x6, Instr(Mnemonic.l_blti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));      // guess
 
-            var decoder111010 = Mask(0, 2, "  A",
-                Nyi("0b00"),
-                Nyi("0b01"),
-                Nyi("0b10"),
-                Instr(Mnemonic.l_j, InstrClass.Transfer, disp2_24));                        // chenxing
+            // opcode 111001
+            var decoder111001 = Mask(0, 1, "  opc=111001",
+                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
+                Instr(Mnemonic.l_j, InstrClass.Transfer | InstrClass.Call, disp1_25));  // guess
 
+            // opcode 111011
             var decoder111011 = Mask(0, 2, "  opc=111011",
                 Instr(Mnemonic.l_sw, Ms(16, 2, 14, 0, PrimitiveType.Word32), R21),          // chenxing, backtrace
                 Instr(Mnemonic.l_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),        // guess
                 Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess
                 Instr(Mnemonic.l_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));
 
+            // opcode 111101
             var decoder111101 = Select(Bf((5, 11), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=111101", Nyi("111101"),
                 
@@ -349,17 +352,15 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 // opcode 111000
                 Nyi("0b111000"),
-                // opcode 111001
-                //$REVIEW: what is bit 0 used for?
-                Instr(Mnemonic.l_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
-                decoder111010,
+                decoder111001,
+                // opcode 111010
+                Instr(Mnemonic.l_lhz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
                 decoder111011,
-
                 // opcode 111100
                 Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
                 decoder111101,
                 // opcode 111110
-                Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),        // guess
+                Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),      // guess
                 // opcode 111111
                 //$REVIEW: signed or unsigned immediate?
                 Instr(Mnemonic.l_addi, R21, R16, uimm0_16));                            // chenxing, backtrace
@@ -375,7 +376,6 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         // 24-bit / 3-byte / "BN"?
         Instr(Mnemonic.l_nop",   3, "000000000000000000000000"),                    # chenxing
-        // XXX: top bits of k may be a register, and this is an or?
         Instr(Mnemonic.l_movhi?",3, "000001dddddkkkkkkkkkkkkk", "r%d, %k"),
         Instr(Mnemonic.l_lhz",   3, "000010dddddaaaaa00000001", "r%d, 0(r%a)"),     # chenxing
         // XXX: i might be left shifted by 2 bits
@@ -474,8 +474,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 001000
             var decode08 = Mask(0, 2, "  8",
                 // branch if reg == imm
-                Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),              // wild guess
-                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp2_16),                             // chenxing(mod), disasm
+                Instr(Mnemonic.beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),  // wild guess
+                Instr(Mnemonic.l_bf, InstrClass.ConditionalTransfer, disp2_16),                   // chenxing(mod), disasm
                 Instr(Mnemonic.bnei__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),
                 Instr(Mnemonic.l_bnf__, InstrClass.ConditionalTransfer, disp2_16));
             // opcode 001001
@@ -487,16 +487,16 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("11"));
 
             // opcode 010000
-            var decode10 = Sparse(0, 3, "  10", Nyi("10"),
-                (0b011, Instr(Mnemonic.l_mul, R13, R8, R3)));                   // disasm
+            var decode10 = Sparse(0, 3, "  10", Nyi("010000"),
+                (0b011, Instr(Mnemonic.l_mul, R13, R8, R3)));               // disasm
 
             // opcode 010001
-            var decode11 = Sparse(0, 3, "  11", Nyi("11"),
-                (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),   // chenxing
-                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)));   // guess
+            var decode11 = Sparse(0, 3, "  11", Nyi("010001"),
+                (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
+                (0b101, Instr(Mnemonic.l_or__, R13, R8, R3)));              // guess
 
             // opcode 010011
-            var decode13 = Sparse(0, 3, "  13", Nyi("13"),
+            var decode13 = Sparse(0, 3, "  13", Nyi("010011"),
                 (0b000, Instr(Mnemonic.l_slli__, R13, R8, uimm3_5)),        // guess
                 (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)),        // guess
                 (0b010, Instr(Mnemonic.l_srai__, R13, R8, uimm3_5)),        // guess
@@ -504,7 +504,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b101, Instr(Mnemonic.l_srl__, R13, R8, R3)));             // guess
 
             // opcode 010111
-            var decode17 = Sparse(0, 5, "  17", Nyi("17"),
+            var decode17 = Sparse(0, 5, "  17", Nyi("010111"),
                 (0b11011, Instr(Mnemonic.l_sfgtui, R13, uimm5_8)),          // disasm
                 (0b11000, Instr(Mnemonic.entri__, R13, uimm5_8)),           // backtrace
                 (0b00001, Instr(Mnemonic.l_sfeqi, R13, uimm8_5)),           // chenxing
@@ -513,24 +513,23 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b01101, Instr(Mnemonic.l_sfne,  R13,R8)),                 // chenxing
                 (0b10111, Instr(Mnemonic.l_sfgeu, R13,R8)));                // chenxing
 
-            return new D26BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
+            return new D16BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode00,
                 // opcode 000001
-                // XXX: top bits of k may be a register, and this is an or?
                 Instr(Mnemonic.l_movhi__, R13, uimm0_13),
                 // opcode 000010
-                Instr(Mnemonic.l_lhz, R13, Ms(8, 2, 6, 1, PrimitiveType.UInt16)), // chenxing
+                Instr(Mnemonic.l_lhz, R13, Ms(8, 2, 6, 1, PrimitiveType.UInt16)),   // chenxing
                 decode03,
 
                 // opcode 000100
                 // XXX: assuming this is l.lwz and not l.lws
-                Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)),    // guess
+                Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // guess
                 // opcode 000101
                 Nyi("0b00101"),
                 // opcode 000110
-                Instr(Mnemonic.l_sw__, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13), // guess
+                Instr(Mnemonic.l_sw__, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),  // guess
                 // opcode 000111
-                Instr(Mnemonic.l_addi, R13, R8, simm0_8),           // chenxing, backtrace
+                Instr(Mnemonic.l_addi, R13, R8, simm0_8),                           // chenxing, backtrace
 
                 decode08,
                 decode09,
@@ -542,7 +541,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 001100
                 Nyi("0b01100"),
                 // opcode 001101
-                Instr(Mnemonic.l_movhi__, R13, UnsignedImmediate(0, 13)),         // chenxing
+                Instr(Mnemonic.l_movhi__, R13, UnsignedImmediate(0, 13)),           // chenxing
                 // opcode 001110
                 Nyi("0b01110"),
                 // opcode 001111
@@ -555,7 +554,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode13,
 
                 // opcode 010100
-                Instr(Mnemonic.l_ori, R13, R8, uimm0_8),    // chenxing
+               Instr(Mnemonic.l_ori, R13, R8, uimm0_8),      // chenxing
                 // opcode 010101
                 Instr(Mnemonic.l_andi, R13, R8, uimm0_8),    // guess
                 // opcode 010110
