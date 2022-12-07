@@ -294,8 +294,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("D, non-zero bits"));
             var decoder = Mask(26, 4, "  32-bit instr",
                 decoder0,
-                Instr(Mnemonic.l_andi, R15, R10, uimm0_16),           // chenxing
-                Instr(Mnemonic.l_ori, R15, R10, uimm0_16),           // chenxing
+                Instr(Mnemonic.l_andi, R21, R16, uimm0_16),           // chenxing
+                Instr(Mnemonic.l_ori, R21, R16, uimm0_16),            // chenxing
                 Nyi("0b0011"),
 
                 decoder4,
