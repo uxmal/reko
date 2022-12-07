@@ -107,7 +107,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
                 case Mnemonic.l_nop: RewriteNop(); break;
                 case Mnemonic.l_mul: RewriteArithmetic(m.IMul); break;
-                case Mnemonic.l_or__: RewriteArithmetic(m.Or); break;
+                case Mnemonic.l_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.l_ori: RewriteOri(m.Or); break;
                 case Mnemonic.l_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.l_sfgeu: RewriteSfxx(m.Uge); break;

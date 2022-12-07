@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bt_trap()
         {
-            Given_HexString("8001");
+            Given_HexString("8002");
             AssertCode(     // bt.trap
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|bt_trap()");
@@ -154,7 +154,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_l_invalidate_line()
         {
-            Given_HexString("F4030007");
+            // confirmed with source
+            Given_HexString("F4030027");
             AssertCode(     // l.invalidate.line	(r3)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__invalidate_line(&Mem0[r3:word32], 0<32>)");
@@ -272,10 +273,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_or__()
+        public void AeonRw_l_or()
         {
             Given_HexString("44E325");
-            AssertCode(     // l.or?	r7,r3,r4
+            AssertCode(     // l.or	r7,r3,r4
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r7 = r3 | r4");
         }
@@ -393,6 +394,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "1|L--|Mem0[r1 + 8<i32>:word32] = 0<32>");
         }
 
+        [Test]
+        public void AeonRw_l_sw_32bit()
+        {
+            // confirmed with source
+            Given_HexString("ECA10084");
+            AssertCode(     // l.sw	0x84(r1),r5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[r1 + 132<i32>:word32] = r5");
+        }
 
         [Test]
         public void AeonRw_l_srl__()
@@ -428,6 +438,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("000000");
             AssertCode(     // l.nop
                 "0|L--|00100000(3): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
+        public void AeonRw_l_nop_16bit()
+        {
+            // confirmed with source
+            Given_HexString("8001");
+            AssertCode(     // l.nop
+                "0|L--|00100000(2): 1 instructions",
                 "1|L--|nop");
         }
 
