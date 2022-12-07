@@ -321,7 +321,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteInvalidateLine()
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
-            m.SideEffect(m.Fn(l_invalidate_line_intrinsic, ea));
+            var way = Op(1);
+            m.SideEffect(m.Fn(l_invalidate_line_intrinsic, ea, way));
         }
 
         private void RewriteJ()
@@ -430,6 +431,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private static readonly IntrinsicProcedure l_invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
             .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.UInt32)
             .Void();
         private static readonly IntrinsicProcedure l_mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
             .Param(PrimitiveType.Word32)

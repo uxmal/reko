@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("F4030007");
             AssertCode(     // l.invalidate.line	(r3)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__invalidate_line(&Mem0[r3:word32])");
+                "1|L--|__invalidate_line(&Mem0[r3:word32], 0<32>)");
         }
 
         [Test]
