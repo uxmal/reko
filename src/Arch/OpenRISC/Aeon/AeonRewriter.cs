@@ -321,7 +321,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteInvalidateLine()
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
-            m.SideEffect(m.Fn(l_invalidate_line_intrinsic, ea));
+            var way = Op(1);
+            m.SideEffect(m.Fn(l_invalidate_line_intrinsic, ea, way));
         }
 
         private void RewriteJ()
