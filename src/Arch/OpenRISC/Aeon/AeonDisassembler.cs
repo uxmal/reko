@@ -464,13 +464,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.l_nop, InstrClass.Linear | InstrClass.Zero | InstrClass.Padding),
                 nyi);
             // opcode 000011
+            var decode03_l_sh = Instr(Mnemonic.l_sh__, Ms(8, 1, 7, 1, PrimitiveType.Word16), R13);
             var decode03 = Mask(0, 2, "  3",
-                // XXX: i might be left shifted by 2 bits
                 Instr(Mnemonic.l_sw, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),    // 000 011 bbbbbaaaaaiiiiii00   // chenxing, backtrace
-                Nyi("0b01"),
+                decode03_l_sh,
                 // XXX: assuming this is l.lwz and not l.lws
                 Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // 000 011 dddddaaaaaiiiiii10   // guess
-                Nyi("0b11"));
+                decode03_l_sh);
             // opcode 001000
             var decode08 = Mask(0, 2, "  8",
                 // branch if reg == imm
