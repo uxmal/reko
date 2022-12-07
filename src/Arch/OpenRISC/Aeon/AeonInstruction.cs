@@ -52,6 +52,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             switch (operand)
             {
             case ImmediateOperand imm:
+                if (this.Mnemonic == Mnemonic.Nyi && operand == Operands[0])
+                {
+                    RenderOpcodeToBinary(imm.Value.ToUInt32(), renderer);
+                    return;
+                }
                 if (imm.Value.DataType.Domain == Domain.SignedInt)
                 {
                     var value = imm.Value.ToInt32();
@@ -70,6 +75,15 @@ namespace Reko.Arch.OpenRISC.Aeon
             default:
                 base.RenderOperand(operand, renderer, options);
                 break;
+            }
+        }
+
+        private static void RenderOpcodeToBinary(uint opcode, MachineInstructionRenderer renderer)
+        {
+            for (uint mask = 0b10_0000; mask != 0; mask >>= 1)
+            {
+                char ch = (opcode & mask) != 0 ? '1' : '0';
+                renderer.WriteChar(ch);
             }
         }
     }

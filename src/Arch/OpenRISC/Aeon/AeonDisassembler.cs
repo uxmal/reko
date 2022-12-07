@@ -85,6 +85,16 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         public override AeonInstruction NotYetImplemented(string message)
         {
+            byte[] ReadInstructionBytes(Address addrInstr)
+            {
+                var r2 = rdr.Clone();
+                int len = (int) (r2.Address - addrInstr);
+                r2.Offset -= len;
+                var bytes = r2.ReadBytes(len);
+                return bytes;
+            }
+            var bytes = ReadInstructionBytes(addr);
+
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("AeonDis", addr, rdr, message);
             return new AeonInstruction
@@ -93,6 +103,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 InstructionClass = InstrClass.Linear,
                 //InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Nyi,
+                Operands = new MachineOperand[]
+                {
+                    ImmediateOperand.UInt32((uint)bytes[0] >> 2)
+                }
             };
         }
 
