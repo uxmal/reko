@@ -168,8 +168,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_l_jr()
         {
+            Given_HexString("84E9");
+            AssertCode(     // l.jr	r7
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|goto r7");
+        }
+
+        [Test]
+        public void AeonRw_l_jr_ret()
+        {
             Given_HexString("8529");
-            AssertCode(     // l.jr	r9,r9
+            AssertCode(     // l.jr	r9
                 "0|R--|00100000(2): 1 instructions",
                 "1|R--|return (0,0)");
         }

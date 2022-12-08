@@ -372,15 +372,17 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static Decoder<AeonDisassembler, Mnemonic, AeonInstruction> Create16bitInstructionDecoder()
         {
             // opcode 100000
-            var decoder100000 = Sparse(0, 10, "  decoder 0_0",
-                    Nyi("  decoder100000"),
+            var decoder100000 = Sparse(0, 10, "  opc=100000", Nyi("100000"),
                 (0b0000000001, Instr(Mnemonic.l_nop)),               // disasm
                 (0b0000000010, Instr(Mnemonic.bt_trap)));  //$REVIEW: don't know how to decode // disasm
 
+            // opcode 100001
+            var decoder100001 = Sparse(0, 5, "  opc=100001", Nyi("100001"),
+                (0b01001, Instr(Mnemonic.l_jr, InstrClass.Transfer, R5)));  // disasm
+
             return Mask(10, 3, "  16-bit",
                 decoder100000,
-                // opcode 100001
-                Instr(Mnemonic.l_jr, InstrClass.Transfer, R5, R0),   // disasm
+                decoder100001,
                 // opcode 100010
                 Instr(Mnemonic.mov__, R5, R0),                       // wild guess
                 // opcode 100011

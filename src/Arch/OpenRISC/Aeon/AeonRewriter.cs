@@ -366,8 +366,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteJr()
         {
             var op0 = (Identifier)Op(0);
-            var op1 = (Identifier)Op(1);
-            if ((int)op0.Storage.Domain == 9 && (int)op1.Storage.Domain == 9)
+            if ((int)op0.Storage.Domain == 9)
             {
                 //$REVIEW: this is a weird encoding for a return
                 iclass = InstrClass.Transfer | InstrClass.Return;

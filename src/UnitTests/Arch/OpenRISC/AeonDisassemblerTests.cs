@@ -132,6 +132,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_jr()
+        {
+            AssertCode("l.jr\tr7", "84 E9");
+        }
+
+        [Test]
+        public void AeonDis_l_jr_ret()
+        {
+            // confirmed with source
+            AssertCode("l.jr\tr9", "85 29");
+        }
+
+
+        [Test]
         public void AeonDis_l_lbz()
         {
             AssertCode("l.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
