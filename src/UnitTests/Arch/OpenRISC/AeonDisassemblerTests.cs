@@ -279,6 +279,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_sfltu()
+        {
+            // confirmed with source
+            AssertCode("l.sfltu\tr3,r4", "5C 83 1F");
+        }
+
+        [Test]
         public void AeonDis_l_sfne()
         {
             // confirmed with source

@@ -67,6 +67,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_sfgeu,
         l_sfgtui,
         l_sfleui__,
+        l_sfltu,
         l_sfne,
         l_sfnei__,
         l_sh__,

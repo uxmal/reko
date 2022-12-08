@@ -506,9 +506,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_sfleui__()
         {
             Given_HexString("5C 6E F3");
-            AssertCode(     // l.sfleui?\tr,0x77
+            AssertCode(     // l.sfleui?\tr3,0x77
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 <=u 0x77<32>");
+        }
+
+        [Test]
+        public void AeonDis_l_sfltu()
+        {
+            Given_HexString("5F 47 1F");
+            AssertCode(     // l.sfltu	r7,r26
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|f = r7 <u r26");
         }
 
         [Test]
