@@ -535,14 +535,13 @@ namespace Reko.Arch.Rl78
 
         private void RewriteSkip(ConditionCode cc, Expression flagGroup)
         {
-            var instrNext = dasm.Peek(1);
-            if (instrNext is null)
+            if (!dasm.TryPeek(1, out var instrNext))
             {
                 m.Invalid();
                 iclass = InstrClass.Invalid;
                 return;
             }
-            var addrSkip = instrNext.Address + instrNext.Length;
+            var addrSkip = instrNext!.Address + instrNext.Length;
             m.Branch(m.Test(cc, flagGroup), addrSkip, InstrClass.ConditionalTransfer);
         }
 

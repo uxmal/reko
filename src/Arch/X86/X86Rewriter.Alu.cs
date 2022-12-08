@@ -838,9 +838,8 @@ namespace Reko.Arch.X86
             if (instrCur.Operands[0] is RegisterStorage reg && reg == Registers.cs)
             {
                 // Is it a 'push cs;call near XXXX' sequence that simulates a far call?
-                X86Instruction? p1 = dasm.Peek(1);
-                if (p1 is not null &&
-                    p1.Mnemonic == Mnemonic.call &&
+                if (dasm.TryPeek(1, out X86Instruction? p1) &&
+                    p1!.Mnemonic == Mnemonic.call &&
                     p1.Operands[0].Width.BitSize == 16)
                 {
                     dasm.MoveNext();
@@ -856,16 +855,16 @@ namespace Reko.Arch.X86
                     }
 
                     RewriteCall(targetOperand, targetOperand.Width);
-                    this.len = (byte)(this.len + dasm.Current.Length);
+                    this.len = (byte) (this.len + dasm.Current.Length);
                     return;
                 }
 
-                X86Instruction? p2 = dasm.Peek(2);
-                X86Instruction? p3 = dasm.Peek(3);
-                if (p1 is not null && p2 is not null && p3 is not null &&
+                if (p1 is not null &&
+                    dasm.TryPeek(2, out var p2) &&
+                    dasm.TryPeek(3, out var p3) &&
                     (p1.Mnemonic == Mnemonic.push && (p1.Operands[0] is ImmediateOperand)) &&
-                    (p2.Mnemonic == Mnemonic.push && (p2.Operands[0] is ImmediateOperand)) &&
-                    (p3.Mnemonic == Mnemonic.jmp && (p3.Operands[0] is AddressOperand)))
+                    (p2!.Mnemonic == Mnemonic.push && (p2.Operands[0] is ImmediateOperand)) &&
+                    (p3!.Mnemonic == Mnemonic.jmp && (p3.Operands[0] is AddressOperand)))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
                     RewriteCall(p3.Operands[0], instrCur.Operands[0].Width);
