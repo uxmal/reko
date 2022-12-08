@@ -77,6 +77,12 @@ namespace Reko.Arch.OpenRISC
             return new AeonRewriter(this, rdr, state, binder, host);
         }
 
+        public override CallingConvention? GetCallingConvention(string? name)
+        {
+            return new AeonCallingConvention(this);
+        }
+
+
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
