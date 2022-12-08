@@ -75,6 +75,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.l_add: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_add__: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_addi: RewriteAddi(); break;
                 case Mnemonic.l_addi__: RewriteAddi(); break;
@@ -91,7 +92,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
+                case Mnemonic.l_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.entri__: RewriteUnknown(); break;
+                case Mnemonic.l_flush_line: RewriteFlushLine(); break;
                 case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;
                 case Mnemonic.l_j: RewriteJ(); break;
                 case Mnemonic.l_jal: RewriteJal(); break;
@@ -114,6 +117,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_sfgeu: RewriteSfxx(m.Uge); break;
                 case Mnemonic.l_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.l_sfleui__: RewriteSfxx(m.Ule); break;
+                case Mnemonic.l_sfltu: RewriteSfxx(m.Ult); break;
                 case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_sfnei__: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
@@ -123,9 +127,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_srl__: RewriteShift(m.Shr); break;
                 case Mnemonic.l_srai__: RewriteShifti(m.Sar); break;
                 case Mnemonic.l_srli__: RewriteShifti(m.Shr); break;
-                case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
+                case Mnemonic.l_sub: RewriteArithmetic(m.ISub); break;
                 case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.l_xor__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
@@ -344,6 +349,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(dst, fn(left, m.Word32(right)));
         }
 
+        private void RewriteFlushLine()
+        {
+            var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
+            var way = Op(1);
+            m.SideEffect(m.Fn(l_flush_line_intrinsic, ea, way));
+        }
         private void RewriteInvalidateLine()
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
@@ -462,10 +473,16 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
+        private static readonly IntrinsicProcedure l_flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.UInt32)
+            .Void();
+
         private static readonly IntrinsicProcedure l_invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
             .Param(PrimitiveType.Ptr32)
             .Param(PrimitiveType.UInt32)
             .Void();
+
         private static readonly IntrinsicProcedure l_mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
@@ -476,6 +493,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
+
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)
             .Void();
     }

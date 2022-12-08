@@ -311,9 +311,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Sparse(0, 3, "  opc=111101", Nyi("111101"),
                 
                     // $REVIEW: what's the difference between these? what about bit 5?
-                    (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // chenxing
-                    (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
-                    (0b101, Instr(Mnemonic.l_syncwritebuffer))),                                                // disasm
+                    (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)),  // chenxing
+                    (0b101, Instr(Mnemonic.l_syncwritebuffer)),                                                  // disasm
+                    (0b110, Instr(Mnemonic.l_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)),       // disasm
+                    (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1))), // disasm
                 Nyi("111101, non-zero bits"));
 
             var decoder = Mask(26, 5, "  32-bit instr",
@@ -428,8 +429,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("11"));
 
             var decode010000 = Sparse(0, 3, "  10", Nyi("010000"),
+                (0b001, Instr(Mnemonic.l_divu, R13, R8, R3)),               // disasm
                 (0b011, Instr(Mnemonic.l_mul, R13, R8, R3)),                // disasm
-                (0b100, Instr(Mnemonic.l_add__, R13, R8, R3)));             // guess
+                (0b100, Instr(Mnemonic.l_add, R13, R8, R3)),                // guess, disasm
+                (0b101, Instr(Mnemonic.l_sub, R13, R8, R3)));               // disasm
 
             var decode010001 = Sparse(0, 3, "  11", Nyi("010001"),
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
@@ -449,10 +452,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b11011, Instr(Mnemonic.l_sfgtui, R13, uimm5_8)),          // disasm
                 (0b11000, Instr(Mnemonic.entri__, R13, uimm5_8)),           // backtrace
                 // XXX: might only move (low) 16 bits?
-                (0b00100, Instr(Mnemonic.mov__, R13,R8)),                   // guess
-                (0b01101, Instr(Mnemonic.l_sfne,  R13,R8)),                 // chenxing, disasm
-                // operands are swapped; may share encoding with l.sfltu
-                (0b10111, Instr(Mnemonic.l_sfgeu, R8,R13)));                // chenxing, disasm
+                (0b00100, Instr(Mnemonic.mov__, R13, R8)),                  // guess
+                (0b01101, Instr(Mnemonic.l_sfne, R13, R8)),                 // chenxing, disasm
+                // operands are swapped
+                (0b10111, Instr(Mnemonic.l_sfgeu, R8, R13)),                // chenxing, disasm
+                // operands are swapped
+                (0b11111, Instr(Mnemonic.l_sfltu, R8, R13)));               // disasm
 
             return new D24BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode000000,

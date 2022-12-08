@@ -62,9 +62,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_add___three_operand()
+        public void AeonDis_l_add_three_operand()
         {
-            AssertCode("l.add?\tr7,r6,r4", "40 E6 24");
+            // confirmed with source
+            AssertCode("l.add\tr4,r3,r6", "40 83 34");
         }
 
         [Test]
@@ -109,6 +110,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("l.bf\t000FFFF2", "23 FF C9");
+        }
+
+        [Test]
+        public void AeonDis_l_divu()
+        {
+            // confirmed with source
+            AssertCode("l.divu\tr6,r6,r7", "40 C6 39");
+        }
+
+        [Test]
+        public void AeonDis_l_flush_line()
+        {
+            // confirmed with source
+            AssertCode("l.flush.line\t(r3),0x0", "F4 03 00 06");
         }
 
         [Test]
@@ -264,6 +279,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_sfltu()
+        {
+            // confirmed with source
+            AssertCode("l.sfltu\tr3,r4", "5C 83 1F");
+        }
+
+        [Test]
         public void AeonDis_l_sfne()
         {
             // confirmed with source
@@ -286,6 +308,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_l_srai()
         {
             AssertCode("l.srai?\tr5,r7,0x1", "4C A7 0A");
+        }
+
+        [Test]
+        public void AeonDis_l_sub()
+        {
+            // confirmed with source
+            AssertCode("l.sub\tr6,r6,r5", "40 C6 2D");
         }
 
         [Test]
