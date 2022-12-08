@@ -12,13 +12,13 @@ namespace Reko.Arch.OpenRISC.Aeon
 {
     public class MovhiSequenceFuser : IEnumerable<AeonInstruction>
     {
-        private readonly IEnumerable<AeonInstruction> instructions;
-        private readonly int shiftAmount;
+        private const int ShiftAmount = 16;
 
-        public MovhiSequenceFuser(IEnumerable<AeonInstruction> instructions, int shiftAmount)
+        private readonly IEnumerable<AeonInstruction> instructions;
+
+        public MovhiSequenceFuser(IEnumerable<AeonInstruction> instructions)
         {
             this.instructions = instructions;
-            this.shiftAmount = shiftAmount;
         }
 
         public IEnumerator<AeonInstruction> GetEnumerator()
@@ -105,16 +105,16 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
         }
 
-        private uint AddFullWord(MachineOperand movhiImm, int offset)
+        public static uint AddFullWord(MachineOperand movhiImm, int offset)
         {
             var hiImm = (int)((ImmediateOperand) movhiImm).Value.ToUInt16();
-            return (uint) ((hiImm << shiftAmount) + offset);
+            return (uint) ((hiImm << ShiftAmount) + offset);
         }
 
-        private uint OrFullWord(MachineOperand movhiImm, uint offset)
+        public static uint OrFullWord(MachineOperand movhiImm, uint offset)
         {
             var hiImm = (int) ((ImmediateOperand) movhiImm).Value.ToUInt16();
-            return (uint) ((hiImm << shiftAmount) + offset);
+            return (uint) ((hiImm << ShiftAmount) + offset);
         }
     }
 }

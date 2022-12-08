@@ -236,8 +236,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("F0 C7 1E EC");
             AssertCode(     // l.lbz?\tr6,0x1EEC(r7)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = Mem0[r7 + 7916<i32>:byte]",
-                "2|L--|r6 = CONVERT(v3, byte, word32)");
+                "1|L--|v4 = Mem0[r7 + 7916<i32>:byte]",
+                "2|L--|r6 = CONVERT(v4, byte, word32)");
         }
 
         [Test]
@@ -246,8 +246,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("08C301");
             AssertCode(     // l.lhz	r6,(r3)
                 "0|L--|00100000(3): 2 instructions",
-                "1|L--|v3 = Mem0[r3:uint16]",
-                "2|L--|r6 = CONVERT(v3, uint16, word32)");
+                "1|L--|v4 = Mem0[r3:uint16]",
+                "2|L--|r6 = CONVERT(v4, uint16, word32)");
         }
 
         [Test]
@@ -256,8 +256,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("E8C75CA5");
             AssertCode(     // l.lhz?	r6,0x5CA4(r7)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = Mem0[r7 + 23716<i32>:word16]",
-                "2|L--|r6 = CONVERT(v3, uint16, word32)");
+                "1|L--|v4 = Mem0[r7 + 23716<i32>:word16]",
+                "2|L--|r6 = CONVERT(v4, uint16, word32)");
         }
 
         [Test]
@@ -295,6 +295,64 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r3 = 0x9890000<32>");
         }
+
+        [Test]
+        public void AeonRw_l_movhi_fuse_with_load()
+        {
+            Given_HexString(
+                "C0 C0 0A 41" +
+                "EC E6 3A 3E");
+            AssertCode(
+                // l.movhi\tr6,0x523A3C@hi
+                // l.lwz?\tr7,0x523A3C@lo(r6)
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|r6 = 0x520000<32>",
+                "2|L--|r7 = Mem0[0x00523A3C<p32>:word32]");
+        }
+
+        [Test]
+        public void AeonRw_l_movhi_fuse_with_store()
+        {
+            Given_HexString(
+                "C0 E0 0A 41" +
+                "F8 C7 3A 05");
+            AssertCode(
+                // l.movhi\tr7,0x523A05@hi
+                // l.sb?\t0x523A05@lo(r7),r6
+                "0|L--|00100000(8): 3 instructions",
+                "1|L--|r7 = 0x520000<32>",
+                "2|L--|v4 = SLICE(r6, byte, 0)",
+                "3|L--|Mem0[0x00523A05<p32>:byte] = v4");
+        }
+
+        [Test]
+        public void AeonRw_l_movhi_fuse_with_addi()
+        {
+            Given_HexString(
+                "C1 80 07 41" +
+                "FD 4C 88 F0");
+            AssertCode(
+                // l.movhi\tr12,0x3988F0@hi
+                // l.addi\tr10,r12,0x3988F0@lo
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|r12 = 0x3A0000<32>",
+                "2|L--|r10 = 0x3988F0<32>");
+        }
+
+        [Test]
+        public void AeonRw_l_movhi_fuse_with_ori()
+        {
+            Given_HexString(
+                "C0 CF FF E1" +
+                "C8 C6 FF FF");
+            AssertCode(
+                // l.movhi\tr6,0x7FFFFFFF@hi
+                // l.ori\tr6,r6,0x7FFFFFFF@lo
+                "0|L--|00100000(8): 2 instructions",
+                "1|L--|r6 = 0x7FFF0000<32>",
+                "2|L--|r6 = 0x7FFFFFFF<32>");
+        }
+
 
         [Test]
         public void AeonRw_l_mtspr()
@@ -403,8 +461,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("F8 EA 36 D8");
             AssertCode(     // l.sb 0x36D8(r10),r7
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r7, byte, 0)",
-                "2|L--|Mem0[r10 + 14040<i32>:byte] = v3");
+                "1|L--|v4 = SLICE(r7, byte, 0)",
+                "2|L--|Mem0[r10 + 14040<i32>:byte] = v4");
         }
 
         [Test]
@@ -413,8 +471,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("18 EB 05"); 
             AssertCode(     // l.sb?    0x5(r11),r7
                 "0|L--|00100000(3): 2 instructions",
-                "1|L--|v3 = SLICE(r7, byte, 0)",
-                "2|L--|Mem0[r11 + 5<i32>:byte] = v3");
+                "1|L--|v4 = SLICE(r7, byte, 0)",
+                "2|L--|Mem0[r11 + 5<i32>:byte] = v4");
         }
 
         [Test]
@@ -423,8 +481,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("EC 67 34 5B");
             AssertCode(     // l.sh? 0x345A(r7),r3
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r3, word16, 0)",
-                "2|L--|Mem0[r7 + 13402<i32>:word16] = v3");
+                "1|L--|v4 = SLICE(r3, word16, 0)",
+                "2|L--|Mem0[r7 + 13402<i32>:word16] = v4");
         }
 
         [Test]

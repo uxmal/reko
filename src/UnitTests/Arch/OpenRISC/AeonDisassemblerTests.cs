@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void Aeondis_l_movhi_fuse_with_load()
+        public void AeonDis_l_movhi_fuse_with_load()
         {
             AssertCode(
                 "l.movhi\tr6,0x523A3C@hi",
@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void Aeondis_l_movhi_fuse_with_store()
+        public void AeonDis_l_movhi_fuse_with_store()
         {
             AssertCode(
                 "l.movhi\tr7,0x523A05@hi",
@@ -255,7 +255,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void Aeondis_l_movhi_fuse_with_addi()
+        public void AeonDis_l_movhi_fuse_with_addi()
         {
             AssertCode(
                 "l.movhi\tr12,0x3988F0@hi",
@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void Aeondis_l_movhi_fuse_with_ori()
+        public void AeonDis_l_movhi_fuse_with_ori()
         {
             AssertCode(
                 "l.movhi\tr6,0x7FFFFFFF@hi",
