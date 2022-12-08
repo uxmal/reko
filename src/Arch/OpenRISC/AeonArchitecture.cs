@@ -54,7 +54,8 @@ namespace Reko.Arch.OpenRISC
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Aeon.AeonDisassembler(this, imageReader);
+            var dasm = new Aeon.AeonDisassembler(this, imageReader);
+            return new MovhiSequenceFuser(dasm, 16);
         }
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)

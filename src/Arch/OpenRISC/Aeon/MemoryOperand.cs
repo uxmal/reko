@@ -35,18 +35,26 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         public RegisterStorage? Base { get; set; }
         public int Offset { get; set; }
+        public bool IsFullOffset { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             int o = Offset;
-            if (o < 0)
+            if (IsFullOffset)
             {
-                renderer.WriteChar('-');
-                o = -o;
+                renderer.WriteFormat("0x{0:X}@lo", (uint) o);
             }
-            if (o > 0)
+            else
             {
-                renderer.WriteFormat("0x{0:X}", o);
+                if (o < 0)
+                {
+                    renderer.WriteChar('-');
+                    o = -o;
+                }
+                if (o > 0)
+                {
+                    renderer.WriteFormat("0x{0:X}", o);
+                }
             }
             renderer.WriteChar('(');
             renderer.WriteString(Base?.Name ?? "<null>");

@@ -22,6 +22,8 @@ using NUnit.Framework;
 using Reko.Arch.OpenRISC;
 using Reko.Arch.OpenRISC.Aeon;
 using Reko.Core;
+using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.OpenRISC
 {
@@ -46,6 +48,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             var instr = base.DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExpected, instr.ToString());
+        }
+
+        private void AssertCode(params string[] arguments)
+        {
+            var hexBytes = arguments[^1];
+            byte[] bytes = BytePattern.FromHexBytes(hexBytes);
+            var mem = new ByteMemoryArea(LoadAddress, bytes);
+            var dasm = this.CreateDisassembler(Architecture.CreateImageReader(mem, 0U));
+            var instrs = dasm.Take(arguments.Length - 1).ToArray();
+            for (int i = 0; i < arguments.Length - 1; ++i)
+            {
+                var sInstr = instrs[i].ToString();
+                Assert.AreEqual(arguments[i], sInstr, $"Instruction {i}");
+            }
         }
 
         [Test]
@@ -216,6 +232,46 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("l.movhi\tr7,0xA020", "C0 F4 04 01");
+        }
+
+        [Test]
+        public void Aeondis_l_movhi_fuse_with_load()
+        {
+            AssertCode(
+                "l.movhi\tr6,0x523A3C@hi",
+                "l.lwz?\tr7,0x523A3C@lo(r6)",
+                "C0 C0 0A 41" +
+                "EC E6 3A 3E");
+        }
+
+        [Test]
+        public void Aeondis_l_movhi_fuse_with_store()
+        {
+            AssertCode(
+                "l.movhi\tr7,0x523A05@hi",
+                "l.sb?\t0x523A05@lo(r7),r6",
+                "C0 E0 0A 41" +
+                "F8 C7 3A 05");
+        }
+
+        [Test]
+        public void Aeondis_l_movhi_fuse_with_addi()
+        {
+            AssertCode(
+                "l.movhi\tr12,0x3988F0@hi",
+                "l.addi\tr10,r12,0x3988F0@lo",
+                "C1 80 07 41" +
+                "FD 4C 88 F0");
+        }
+
+        [Test]
+        public void Aeondis_l_movhi_fuse_with_ori()
+        {
+            AssertCode(
+                "l.movhi\tr6,0x7FFFFFFF@hi",
+                "l.ori\tr6,r6,0x7FFFFFFF@lo",
+                "C0 CF FF E1" +
+                "C8 C6 FF FF");
         }
 
         [Test]

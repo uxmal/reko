@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -130,13 +131,14 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator R16 = RegisterFromField(16);
         private static readonly Mutator R21 = RegisterFromField(21);
 
-        private static Mutator UnsignedImmediate(int bitPos, int bitlength)
+        private static Mutator UnsignedImmediate(int bitPos, int bitlength, PrimitiveType? dt = null)
         {
+            dt ??= PrimitiveType.Word32;
             var field = new Bitfield(bitPos, bitlength);
             return (u, d) =>
             {
                 var uImm = field.Read(u);
-                d.ops.Add(ImmediateOperand.Word32(uImm));
+                d.ops.Add(ImmediateOperand.Create(Constant.Create(dt, uImm)));
                 return true;
             };
         }
@@ -146,7 +148,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm0_8 = UnsignedImmediate(0, 8);
         private static readonly Mutator uimm0_10 = UnsignedImmediate(0, 10);
         private static readonly Mutator uimm0_13 = UnsignedImmediate(0, 13);
-        private static readonly Mutator uimm0_16 = UnsignedImmediate(0, 16);
+        private static readonly Mutator uimm0_16_16 = UnsignedImmediate(0, 16, PrimitiveType.UInt16);
         private static readonly Mutator uimm3_5 = UnsignedImmediate(3, 5);
         private static readonly Mutator uimm3_13 = UnsignedImmediate(3, 13);
         private static readonly Mutator uimm4_1 = UnsignedImmediate(4, 1);
@@ -161,19 +163,19 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm18_6 = UnsignedImmediate(18, 6);
         private static readonly Mutator uimm26_6 = UnsignedImmediate(26, 6);
 
-        private static Mutator SignedImmediate(int bitPos, int bitlength)
+        private static Mutator SignedImmediate(int bitPos, int bitlength, PrimitiveType dt)
         {
             var field = new Bitfield(bitPos, bitlength);
             return (u, d) =>
             {
                 var sImm = field.ReadSigned(u);
-                d.ops.Add(ImmediateOperand.Int32(sImm));
+                d.ops.Add(ImmediateOperand.Create(Constant.Create(dt, sImm)));
                 return true;
             };
         }
-        private static readonly Mutator simm0_5 = SignedImmediate(0, 5);
-        private static readonly Mutator simm0_8 = SignedImmediate(0, 8);
-        private static readonly Mutator simm0_16 = SignedImmediate(0, 16);
+        private static readonly Mutator simm0_5 = SignedImmediate(0, 5, PrimitiveType.Int16);
+        private static readonly Mutator simm0_8 = SignedImmediate(0, 8, PrimitiveType.Int16);
+        private static readonly Mutator simm0_16 = SignedImmediate(0, 16, PrimitiveType.Int16);
 
         /// <summary>
         /// Memory access with signed offset
@@ -351,9 +353,9 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 decoder110000,
                 // opcode 110001
-                Instr(Mnemonic.l_andi, R21, R16, uimm0_16),           // chenxing
+                Instr(Mnemonic.l_andi, R21, R16, uimm0_16_16),           // chenxing
                 // opcode 110010
-                Instr(Mnemonic.l_ori, R21, R16, uimm0_16),            // chenxing
+                Instr(Mnemonic.l_ori, R21, R16, uimm0_16_16),            // chenxing
                 // opcode 110011
                 Nyi("0b110011"),
 
