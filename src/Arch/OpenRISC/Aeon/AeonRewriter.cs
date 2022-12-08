@@ -75,6 +75,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.l_add: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_add__: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_addi: RewriteAddi(); break;
                 case Mnemonic.l_addi__: RewriteAddi(); break;
@@ -91,6 +92,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
+                case Mnemonic.l_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.entri__: RewriteUnknown(); break;
                 case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;
                 case Mnemonic.l_j: RewriteJ(); break;
@@ -123,9 +125,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_srl__: RewriteShift(m.Shr); break;
                 case Mnemonic.l_srai__: RewriteShifti(m.Sar); break;
                 case Mnemonic.l_srli__: RewriteShifti(m.Shr); break;
-                case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
+                case Mnemonic.l_sub: RewriteArithmetic(m.ISub); break;
                 case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.l_xor__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:

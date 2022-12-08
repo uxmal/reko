@@ -30,12 +30,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_add___three_operand()
+        public void AeonRw_l_add_three_operand()
         {
-            Given_HexString("40D72C");
-            AssertCode(     // l.add?	r6,r23,r5
+            // confirmed with source
+            Given_HexString("408324");
+            AssertCode(     // l.add	r4,r3,r4
                 "0|L--|00100000(3): 1 instructions",
-                "1|L--|r6 = r23 + r5");
+                "1|L--|r4 = r3 + r4");
         }
 
         [Test]
@@ -135,6 +136,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bt.trap
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|bt_trap()");
+        }
+
+        [Test]
+        public void AeonRw_l_divu()
+        {
+            Given_HexString("408339");
+            AssertCode(     // l.divu	r4,r3,r7
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r4 = r3 /u r7");
         }
 
         [Test]
@@ -498,6 +508,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // l.sfne	r12,r14
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r12 != r14");
+        }
+
+        [Test]
+        public void AeonRw_l_sub()
+        {
+            Given_HexString("40EA1D");
+            AssertCode(     // l.sub	r7,r10,r3
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = r10 - r3");
         }
 
         [Test]

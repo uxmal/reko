@@ -428,8 +428,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("11"));
 
             var decode010000 = Sparse(0, 3, "  10", Nyi("010000"),
+                (0b001, Instr(Mnemonic.l_divu, R13, R8, R3)),               // disasm
                 (0b011, Instr(Mnemonic.l_mul, R13, R8, R3)),                // disasm
-                (0b100, Instr(Mnemonic.l_add__, R13, R8, R3)));             // guess
+                (0b100, Instr(Mnemonic.l_add, R13, R8, R3)),                // guess, disasm
+                (0b101, Instr(Mnemonic.l_sub, R13, R8, R3)));               // disasm
 
             var decode010001 = Sparse(0, 3, "  11", Nyi("010001"),
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
