@@ -311,9 +311,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Sparse(0, 3, "  opc=111101", Nyi("111101"),
                 
                     // $REVIEW: what's the difference between these? what about bit 5?
-                    (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // chenxing
-                    (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
-                    (0b101, Instr(Mnemonic.l_syncwritebuffer))),                                                // disasm
+                    (0b001, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)),  // chenxing
+                    (0b101, Instr(Mnemonic.l_syncwritebuffer)),                                                  // disasm
+                    (0b110, Instr(Mnemonic.l_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)),       // disasm
+                    (0b111, Instr(Mnemonic.l_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1))), // disasm
                 Nyi("111101, non-zero bits"));
 
             var decoder = Mask(26, 5, "  32-bit instr",

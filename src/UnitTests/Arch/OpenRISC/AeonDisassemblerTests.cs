@@ -120,6 +120,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_flush_line()
+        {
+            // confirmed with source
+            AssertCode("l.flush.line\t(r3),0x0", "F4 03 00 06");
+        }
+
+        [Test]
         public void AeonDis_l_invalidate_line()
         {
             // confirmed with source

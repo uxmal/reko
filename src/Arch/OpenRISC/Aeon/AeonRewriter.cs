@@ -94,6 +94,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
                 case Mnemonic.l_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.entri__: RewriteUnknown(); break;
+                case Mnemonic.l_flush_line: RewriteFlushLine(); break;
                 case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;
                 case Mnemonic.l_j: RewriteJ(); break;
                 case Mnemonic.l_jal: RewriteJal(); break;
@@ -347,6 +348,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(dst, fn(left, m.Word32(right)));
         }
 
+        private void RewriteFlushLine()
+        {
+            var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
+            var way = Op(1);
+            m.SideEffect(m.Fn(l_flush_line_intrinsic, ea, way));
+        }
         private void RewriteInvalidateLine()
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
@@ -465,10 +472,16 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
+        private static readonly IntrinsicProcedure l_flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.UInt32)
+            .Void();
+
         private static readonly IntrinsicProcedure l_invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
             .Param(PrimitiveType.Ptr32)
             .Param(PrimitiveType.UInt32)
             .Void();
+
         private static readonly IntrinsicProcedure l_mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
@@ -479,6 +492,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
+
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)
             .Void();
     }

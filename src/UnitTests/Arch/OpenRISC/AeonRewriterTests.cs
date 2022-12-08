@@ -157,11 +157,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_flush_line()
+        {
+            // confirmed with source
+            Given_HexString("F4030016");
+            AssertCode(     // l.flush.line	(r3),0x1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__flush_line(&Mem0[r3:word32], 1<32>)");
+        }
+
+        [Test]
         public void AeonRw_l_invalidate_line()
         {
             // confirmed with source
             Given_HexString("F4030027");
-            AssertCode(     // l.invalidate.line	(r3)
+            AssertCode(     // l.invalidate.line	(r3),0x0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__invalidate_line(&Mem0[r3:word32], 0<32>)");
         }
