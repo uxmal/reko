@@ -39,7 +39,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_add___three_operand()
         public void AeonRw_l_add_three_operand()
         {
             // confirmed with source
@@ -146,6 +145,24 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bt.trap
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|bt_trap()");
+        }
+
+        [Test]
+        public void AeonDis_l_cmov()
+        {
+            Given_HexString("48 E7 00");
+            AssertCode(     // l.cmov\tr3,r3,r0
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = f ? r7 : 0<32>");
+        }
+
+        [Test]
+        public void AeonDis_l_cmovi()
+        {
+            Given_HexString("49 8C 0A");
+            AssertCode(     // l.cmovi\tr12,r12,0x1
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r12 = f ? r12 : 1<32>");
         }
 
         [Test]

@@ -140,6 +140,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 return true;
             };
         }
+        private static readonly Mutator uimm0_3 = UnsignedImmediate(0, 3);
         private static readonly Mutator uimm0_5 = UnsignedImmediate(0, 5);
         private static readonly Mutator uimm0_8 = UnsignedImmediate(0, 8);
         private static readonly Mutator uimm0_10 = UnsignedImmediate(0, 10);
@@ -439,6 +440,16 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b101, Instr(Mnemonic.l_or, R13, R8, R3)),                 // disasm, guess
                 (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)));             // guess
 
+            var decode010010 = Mask(0, 3, "  010010",
+                Instr(Mnemonic.l_cmov____, R13, R8, R3),                    // guess
+                Instr(Mnemonic.l_cmov____, R13, R8, R3, uimm0_3),           // not sure what the last 3 bits are
+                Instr(Mnemonic.l_cmovi____, R13, R8, uimm3_5),              // guess
+                Instr(Mnemonic.l_cmovi____, R13, R8, uimm3_5, uimm0_3),     // not sure what the last 3 bits are
+                Nyi("100"),
+                Nyi("101"),
+                Nyi("110"),
+                Nyi("111"));
+
             var decode010011 = Sparse(0, 3, "  13", Nyi("010011"),
                 (0b000, Instr(Mnemonic.l_slli__, R13, R8, uimm3_5)),        // guess
                 (0b001, Instr(Mnemonic.l_srli__, R13, R8, uimm3_5)),        // guess
@@ -496,7 +507,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode010000,
                 decode010001,
                 // opcode 010010
-                Nyi("0b10010"),
+                decode010010,
                 decode010011,
 
                 // opcode 010100

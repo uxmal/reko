@@ -44,6 +44,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         l_andi__,
         l_bf,
         l_bnf__,
+        l_cmov____,
+        l_cmovi____,
         l_divu,
         l_flush_line,
         l_invalidate_line,

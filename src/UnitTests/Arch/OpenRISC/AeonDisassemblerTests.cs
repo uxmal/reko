@@ -113,6 +113,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_cmov()
+        {
+            // speculative guess.
+            AssertCode("l.cmov??\tr7,r7,r0", "48 E7 00");
+        }
+
+        [Test]
+        public void AeonDis_l_cmovi()
+        {
+            // speculative guess.
+            AssertCode("l.cmovi??\tr12,r12,0x1", "49 8C 0A");
+        }
+
+        [Test]
         public void AeonDis_l_divu()
         {
             // confirmed with source

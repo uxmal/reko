@@ -93,6 +93,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
+                case Mnemonic.l_cmov____: RewriteCmov(); break;
+                case Mnemonic.l_cmovi____: RewriteCmov(); break;
                 case Mnemonic.l_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.entri__: RewriteUnknown(); break;
                 case Mnemonic.l_flush_line: RewriteFlushLine(); break;
@@ -270,6 +272,15 @@ namespace Reko.Arch.OpenRISC.Aeon
             var right = Op(1);
             var target = ((AddressOperand) instr.Operands[2]).Address;
             m.Branch(cmp(left, right), target);
+        }
+
+        private void RewriteCmov()
+        {
+            var cond = binder.EnsureFlagGroup(Registers.F);
+            var thenOp = OpOrZero(1);
+            var elseOp = OpOrZero(2);
+            var dst = Op(0);
+            m.Assign(dst, m.Conditional(dst.DataType, cond, thenOp, elseOp));
         }
 
         private void RewriteLoadZex(PrimitiveType dt)
