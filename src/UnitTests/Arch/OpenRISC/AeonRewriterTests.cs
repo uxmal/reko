@@ -177,10 +177,11 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_entri__()
         {
+            // XXX: no examples known
             Given_HexString("5E9338");
-            AssertCode(     // entri?	r20,0x99
+            AssertCode(     // entri?	0xA,0x99
                 "0|L--|00100000(3): 1 instructions",
-                "1|L--|entri__(r20, 0x99<32>)");
+                "1|L--|entri__(0xA<32>, 0x99<32>)");
         }
 
         [Test]
