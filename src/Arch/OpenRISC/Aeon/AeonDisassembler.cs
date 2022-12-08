@@ -456,7 +456,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decode010001 = Sparse(0, 3, "  11", nyi_3,
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
                 (0b101, Instr(Mnemonic.l_or, R13, R8, R3)),                 // disasm, guess
-                (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)));             // guess
+                (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)),              // guess
+                // XXX: could also be nor
+                (0b111, Instr(Mnemonic.l_nand__, R13, R8, R3)));            // guess
 
             var decode010010 = Mask(0, 3, "  010010",
                 Instr(Mnemonic.l_cmov____, R13, R8, R3),                    // guess

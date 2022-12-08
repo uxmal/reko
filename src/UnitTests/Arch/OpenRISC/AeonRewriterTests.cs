@@ -494,6 +494,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_nand__()
+        {
+            Given_HexString("44EA57");
+            AssertCode(     // l.nand?	r7,r10,r10
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = ~r10");
+        }
+
+        [Test]
         public void AeonRw_l_nop()
         {
             Given_HexString("000000");

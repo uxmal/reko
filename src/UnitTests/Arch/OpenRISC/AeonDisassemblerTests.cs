@@ -233,6 +233,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_l_nand__()
+        {
+            // confirmed with source
+            AssertCode("l.nand?\tr6,r4,r4", "44 C4 27");
+        }
+
+        [Test]
         public void AeonDis_l_nop()
         {
             AssertCode("l.nop", "000000");
