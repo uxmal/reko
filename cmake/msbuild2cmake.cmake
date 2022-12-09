@@ -130,7 +130,7 @@ function(invoke_cmake)
 		set(CMAKE_ARGS "${CMAKE_ARGS};${proj_EXTRA_ARGUMENTS}")
 	endif()
 
-	#message(STATUS "CMake args: ${CMAKE_ARGS}")
+	message(STATUS "CMake args: ${CMAKE_ARGS}")
 
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}

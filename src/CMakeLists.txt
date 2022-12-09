@@ -322,11 +322,6 @@ endfunction()
 
 set(GUI_BASEDIR ${REKO_SRC}/Gui)
 
-if(NOT REKO_COMPILER)
-	# no-op to silence warning (Manually-specified variables were not used by the project)
-	# we only use REKO_COMPILER for NativeProxy
-endif()
-
 if("${TARGET}" STREQUAL "run_hdrgen")
 	# 
 	# we need to obtain the path where Reko.Core.dll will be built, 
