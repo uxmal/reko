@@ -71,7 +71,7 @@ endfunction()
 # This is controlled by the `TARGET` parameter
 #
 function(invoke_cmake)
-	cmake_parse_arguments(proj "QUICK_CONFIGURE" "DIRECTORY;BUILD_DIR;GENERATOR;TARGET;PLATFORM" "PASS_VARIABLES;EXTRA_ARGUMENTS" ${ARGN})
+	cmake_parse_arguments(proj "QUICK_CONFIGURE" "DIRECTORY;BUILD_DIR;GENERATOR;TARGET" "PASS_VARIABLES;EXTRA_ARGUMENTS" ${ARGN})
 	
 	## Beginning of the "configuration" phase
 

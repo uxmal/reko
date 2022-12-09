@@ -8,7 +8,6 @@ invoke_cmake(
 	DIRECTORY ${REKO_SRC}/../
 	TARGET ${TARGET}
 	GENERATOR ${REKO_COMPILER}
-	PLATFORM ${REKO_PLATFORM}
 	# variables needed by CMakeLists.txt, that must be forwarded
 	EXTRA_ARGUMENTS
 		-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
