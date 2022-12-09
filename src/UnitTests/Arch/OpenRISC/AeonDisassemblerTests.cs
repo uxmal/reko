@@ -150,17 +150,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_flush_line()
+        public void AeonDis_bg_flush_line()
         {
             // confirmed with source
-            AssertCode("l.flush.line\t(r3),0x0", "F4 03 00 06");
+            AssertCode("bg.flush.line\t(r3),0x0", "F4 03 00 06");
         }
 
         [Test]
-        public void AeonDis_l_invalidate_line()
+        public void AeonDis_bg_invalidate_line()
         {
             // confirmed with source
-            AssertCode("l.invalidate.line\t(r3),0x1", "F4 03 00 37");
+            AssertCode("bg.invalidate.line\t(r3),0x1", "F4 03 00 37");
         }
 
         [Test]
@@ -171,22 +171,22 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_jal()
+        public void AeonDis_bg_jal()
         {
-            AssertCode("l.jal\t000F17F9", "E7 FE 2F F2");
+            AssertCode("bg.jal\t000F17F9", "E7 FE 2F F2");
         }
 
         [Test]
-        public void AeonDis_l_jr()
+        public void AeonDis_bt_jr()
         {
-            AssertCode("l.jr\tr7", "84 E9");
+            AssertCode("bt.jr\tr7", "84 E9");
         }
 
         [Test]
-        public void AeonDis_l_jr_ret()
+        public void AeonDis_bt_jr_ret()
         {
             // confirmed with source
-            AssertCode("l.jr\tr9", "85 29");
+            AssertCode("bt.jr\tr9", "85 29");
         }
 
 
@@ -216,15 +216,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_mov__()
+        public void AeonDis_bt_mov__()
         {
-            AssertCode("mov?\tr10,r3", "89 43");
+            AssertCode("bt.mov?\tr10,r3", "89 43");
         }
 
         [Test]
-        public void AeonDis_l_movi()
+        public void AeonDis_bt_movi()
         {
-            AssertCode("l.movi?\tr6,-0x1", "98 DF");
+            AssertCode("bt.movi?\tr6,-0x1", "98 DF");
         }
 
         [Test]
@@ -275,17 +275,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_mfspr()
+        public void AeonDis_bg_mfspr()
         {
             // confirmed with source
-            AssertCode("l.mfspr\tr3,r0,0x11", "C0 60 01 1F");
+            AssertCode("bg.mfspr\tr3,r0,0x11", "C0 60 01 1F");
         }
 
         [Test]
-        public void AeonDis_l_mtspr()
+        public void AeonDis_bg_mtspr()
         {
             // confirmed with source
-            AssertCode("l.mtspr\tr0,r3,0x11", "C0 60 01 1D");
+            AssertCode("bg.mtspr\tr0,r3,0x11", "C0 60 01 1D");
         }
 
         [Test]
@@ -335,31 +335,31 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_sfeqi()
+        public void AeonDis_bn_sfeqi()
         {
             // confirmed with source
-            AssertCode("l.sfeqi\tr3,0x0", "5C 60 01");
+            AssertCode("bn.sfeqi\tr3,0x0", "5C 60 01");
         }
 
         [Test]
-        public void AeonDis_l_sfgeu()
+        public void AeonDis_bn_sfgeu()
         {
             // confirmed with source
-            AssertCode("l.sfgeu\tr3,r4", "5C 83 17");
+            AssertCode("bn.sfgeu\tr3,r4", "5C 83 17");
         }
         
 
         [Test]
-        public void AeonDis_l_sfleui__()
+        public void AeonDis_bn_sfleui__()
         {
-            AssertCode("l.sfleui?\tr3,0x77", "5C 6E F3");
+            AssertCode("bn.sfleui?\tr3,0x77", "5C 6E F3");
         }
 
         [Test]
-        public void AeonDis_l_sfltu()
+        public void AeonDis_bn_sfltu()
         {
             // confirmed with source
-            AssertCode("l.sfltu\tr3,r4", "5C 83 1F");
+            AssertCode("bn.sfltu\tr3,r4", "5C 83 1F");
         }
 
         [Test]

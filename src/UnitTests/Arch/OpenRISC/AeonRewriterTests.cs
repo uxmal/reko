@@ -181,25 +181,25 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("5E9338");
             AssertCode(     // bn.entri?	0xA,0x99
                 "0|L--|00100000(3): 1 instructions",
-                "1|L--|entri__(0xA<32>, 0x99<32>)");
+                "1|L--|bn_entri__(0xA<32>, 0x99<32>)");
         }
 
         [Test]
-        public void AeonRw_l_flush_line()
+        public void AeonRw_bg_flush_line()
         {
             // confirmed with source
             Given_HexString("F4030016");
-            AssertCode(     // l.flush.line	(r3),0x1
+            AssertCode(     // bg.flush.line	(r3),0x1
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__flush_line(&Mem0[r3:word32], 1<32>)");
         }
 
         [Test]
-        public void AeonRw_l_invalidate_line()
+        public void AeonRw_bg_invalidate_line()
         {
             // confirmed with source
             Given_HexString("F4030027");
-            AssertCode(     // l.invalidate.line	(r3),0x0
+            AssertCode(     // bg.invalidate.line	(r3),0x0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__invalidate_line(&Mem0[r3:word32], 0<32>)");
         }
@@ -214,28 +214,28 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
        [Test]
-        public void AeonRw_l_jal()
+        public void AeonRw_bg_jal()
         {
             Given_HexString("E4000A70");
-            AssertCode(     // l.jal?	00100A70
+            AssertCode(     // bg.jal	00100A70
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|call 00100538 (0)");
         }
 
         [Test]
-        public void AeonRw_l_jr()
+        public void AeonRw_bt_jr()
         {
             Given_HexString("84E9");
-            AssertCode(     // l.jr	r7
+            AssertCode(     // bt.jr	r7
                 "0|T--|00100000(2): 1 instructions",
                 "1|T--|goto r7");
         }
 
         [Test]
-        public void AeonRw_l_jr_ret()
+        public void AeonRw_bt_jr_ret()
         {
             Given_HexString("8529");
-            AssertCode(     // l.jr	r9
+            AssertCode(     // bt.jr	r9
                 "0|R--|00100000(2): 1 instructions",
                 "1|R--|return (0,0)");
         }
@@ -280,10 +280,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_mfspr()
+        public void AeonRw_bg_mfspr()
         {
             Given_HexString("C0A4000F");
-            AssertCode(     // l.mfspr	r5,r4,0x0
+            AssertCode(     // bg.mfspr	r5,r4,0x0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r5 = __move_from_spr(r4, 0<32>)");
         }
@@ -365,37 +365,37 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
 
         [Test]
-        public void AeonRw_l_mtspr()
+        public void AeonRw_bg_mtspr()
         {
             Given_HexString("C060011D");
-            AssertCode(     // l.mtspr	r0,r3,0x11
+            AssertCode(     // bg.mtspr	r0,r3,0x11
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__move_to_spr(0<32>, r3, 0x11<32>)");
         }
 
         [Test]
-        public void AeonRw_mov__()
+        public void AeonRw_bt_mov__()
         {
             Given_HexString("8AE5");
-            AssertCode(     // mov?	r23,r5
+            AssertCode(     // bt.mov?	r23,r5
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r23 = r5");
         }
 
         [Test]
-        public void AeonRw_movi__()
+        public void AeonRw_bt_movi__()
         {
             Given_HexString("98 DF");
-            AssertCode(     // l.movi? r6,0x1F
+            AssertCode(     // bt.movi? r6,0x1F
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r6 = 0xFFFFFFFF<32>");
         }
 
         [Test]
-        public void AeonRw_l_mul()
+        public void AeonRw_bn_mul()
         {
             Given_HexString("408323");
-            AssertCode(     // l.mul	r4,r3,r4
+            AssertCode(     // bn.mul	r4,r3,r4
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r4 = r3 * r4");
         }
@@ -486,46 +486,46 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_sfeqi()
+        public void AeonRw_bn_sfeqi()
         {
             Given_HexString("5C8A21");
-            AssertCode(     // l.sfeqi	r4,0xA
+            AssertCode(     // bn.sfeqi	r4,0xA
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r4 == 0xA<32>");
         }
 
         [Test]
-        public void AeonRw_l_sfgeu()
+        public void AeonRw_bn_sfgeu()
         {
             Given_HexString("5E2717");
-            AssertCode(     // l.sfgeu	r17,r7
+            AssertCode(     // bn.sfgeu	r17,r7
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r7 >=u r17");
         }
 
         [Test]
-        public void AeonRw_l_sfgtui()
+        public void AeonRw_bn_sfgtui()
         {
             Given_HexString("5C641B");
-            AssertCode(     // l.sfgtui	r3,0x20
+            AssertCode(     // bn.sfgtui	r3,0x20
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 >u 0x20<32>");
         }
 
         [Test]
-        public void AeonDis_l_sfleui__()
+        public void AeonDis_bn_sfleui__()
         {
             Given_HexString("5C 6E F3");
-            AssertCode(     // l.sfleui?\tr3,0x77
+            AssertCode(     // bn.sfleui?\tr3,0x77
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 <=u 0x77<32>");
         }
 
         [Test]
-        public void AeonDis_l_sfltu()
+        public void AeonDis_bn_sfltu()
         {
             Given_HexString("5F 47 1F");
-            AssertCode(     // l.sfltu	r7,r26
+            AssertCode(     // bn.sfltu	r7,r26
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r7 <u r26");
         }
