@@ -20,7 +20,10 @@
 			"presentation": {
 				"reveal": "silent"
 			},
-			"problemMatcher": "$msCompile"
+			"problemMatcher": "$msCompile",
+			"options": {
+				"cwd": "${workspaceFolder}/src"
+			}
 		},
 		{
 			"label": "clean",
@@ -40,7 +43,7 @@
             "command":"dotnet",
             "args": [
                 "test",
-                "UnitTests/bin/x64/Debug/Reko.UnitTests.dll",
+                "src/UnitTests/bin/x64/Debug/Reko.UnitTests.dll",
             ]
 		}
 	]
