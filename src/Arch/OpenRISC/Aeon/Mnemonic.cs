@@ -50,6 +50,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_cmov____,
         bn_cmovi____,
         bn_divu,
+        bn_ff1__,
         bg_flush_line,
         bg_invalidate_line,
         bt_j,

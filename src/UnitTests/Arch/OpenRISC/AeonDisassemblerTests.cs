@@ -150,6 +150,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_ff1__()
+        {
+            AssertCode("bn.ff1?\tr6,r7", "5C C7 08");
+        }
+
+        [Test]
         public void AeonDis_bg_flush_line()
         {
             // confirmed with source

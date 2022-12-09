@@ -486,6 +486,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b11000, Instr(Mnemonic.bn_entri__, uimm14_4, uimm5_9)),   // backtrace
                 // XXX: might only move (low) 16 bits?
                 (0b00100, Instr(Mnemonic.l_add____, R13,R8)),               // guess
+                (0b01000, Instr(Mnemonic.bn_ff1__, R13, R8)),               // guess
                 (0b01101, Instr(Mnemonic.bn_sfne, R13, R8)),                // chenxing, disasm
                 // operands are swapped
                 (0b10111, Instr(Mnemonic.bn_sfgeu, R8, R13)),               // chenxing, disasm
