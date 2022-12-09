@@ -188,10 +188,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonRw_bn_exthz()
         {
             Given_HexString("5D 47 04");
-            AssertCode(     // bn.exthz  r7,r7
+            AssertCode(     // bn.exthz  r10,r7
                 "0|L--|00100000(3): 2 instructions",
                 "1|L--|v2 = SLICE(r7, uint16, 0)",
-                "2|L--|ry = CONVERT(v2, uint16, uint32)");
+                "2|L--|r10 = CONVERT(v2, uint16, uint32)");
         }
 
         [Test]
