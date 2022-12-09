@@ -113,10 +113,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal: RewriteJal(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
-                case Mnemonic.l_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
-                case Mnemonic.l_lhz: RewriteLoadZex(PrimitiveType.UInt16); break;
-                case Mnemonic.l_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
-                case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
+                case Mnemonic.bg_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
+                case Mnemonic.bn_lhz:
+                case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
+                case Mnemonic.bn_lwz__:
+                case Mnemonic.bg_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.bg_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
@@ -136,16 +137,19 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfltu: RewriteSfxx(m.Ult); break;
                 case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.bg_sfnei__: RewriteSfxx(m.Ne); break;
-                case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
-                case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.bn_sb__:
+                case Mnemonic.bg_sb__: RewriteStore(PrimitiveType.Byte); break;
+                case Mnemonic.bn_sh__: 
+                case Mnemonic.bg_sh__: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.bn_sll__: RewriteShift(m.Shl); break;
                 case Mnemonic.bn_slli__: RewriteShifti(m.Shl); break;
                 case Mnemonic.bn_srl__: RewriteShift(m.Shr); break;
                 case Mnemonic.bn_srai__: RewriteShifti(m.Sar); break;
                 case Mnemonic.bn_srli__: RewriteShifti(m.Shr); break;
                 case Mnemonic.bn_sub: RewriteArithmetic(m.ISub); break;
-                case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
-                case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.bn_sw:
+                case Mnemonic.bg_sw:
+                case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.bn_xor__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
@@ -356,10 +360,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             {
                 switch (lowInstr!.Mnemonic)
                 {
-                case Mnemonic.l_lbz__:
-                case Mnemonic.l_lhz:
-                case Mnemonic.l_lhz__:
-                case Mnemonic.l_lwz__:
+                case Mnemonic.bg_lbz__:
+                case Mnemonic.bn_lhz:
+                case Mnemonic.bg_lhz__:
+                case Mnemonic.bn_lwz__:
+                case Mnemonic.bg_lwz__:
                     var memLd = (MemoryOperand) lowInstr.Operands[1];
                     if (memLd.Base != regHi)
                         return;
@@ -369,10 +374,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                     var ea = Address.Ptr32(uFullWord);
                     MaybeZeroExtend(memLd.Width, Op(0), m.Mem(memLd.Width, ea));
                     break;
-                case Mnemonic.l_sb__:
-                case Mnemonic.l_sh__:
-                case Mnemonic.l_sw:
-                case Mnemonic.l_sw__:
+                case Mnemonic.bn_sb__:
+                case Mnemonic.bg_sb__:
+                case Mnemonic.bn_sh__:
+                case Mnemonic.bg_sh__:
+                case Mnemonic.bn_sw:
+                case Mnemonic.bg_sw:
+                case Mnemonic.bg_sw__:
                     var memSt = (MemoryOperand) lowInstr.Operands[0];
                     if (memSt.Base != regHi)
                         return;

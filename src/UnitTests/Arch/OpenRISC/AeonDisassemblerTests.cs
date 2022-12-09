@@ -191,28 +191,28 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
 
         [Test]
-        public void AeonDis_l_lbz()
+        public void AeonDis_bg_lbz__()
         {
-            AssertCode("l.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
+            AssertCode("bg.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
         }
 
         [Test]
-        public void AeonDis_l_lhz_24bit()
+        public void AeonDis_bn_lhz()
         {
-            AssertCode("l.lhz\tr5,0x8(r11)", "08 AB 09");
+            AssertCode("bn.lhz\tr5,0x8(r11)", "08 AB 09");
         }
 
         [Test]
-        public void AeonDis_l_lhz_0_24bit()
+        public void AeonDis_bn_lhz_0()
         {
             // confirmed with source
-            AssertCode("l.lhz\tr3,(r5)", "08 65 01");
+            AssertCode("bn.lhz\tr3,(r5)", "08 65 01");
         }
 
         [Test]
-        public void AeonDis_l_lhz___32bit()
+        public void AeonDis_bg_lhz__()
         {
-            AssertCode("l.lhz?\tr3,0x3A46(r7)", "E8 67 3A 47");
+            AssertCode("bg.lhz?\tr3,0x3A46(r7)", "E8 67 3A 47");
         }
 
         [Test]
@@ -235,21 +235,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_movhi_fuse_with_load()
+        public void AeonDis_bg_movhi_fuse_with_load()
         {
             AssertCode(
                 "l.movhi\tr6,0x523A3C@hi",
-                "l.lwz?\tr7,0x523A3C@lo(r6)",
+                "bg.lwz?\tr7,0x523A3C@lo(r6)",
                 "C0 C0 0A 41" +
                 "EC E6 3A 3E");
         }
 
         [Test]
-        public void AeonDis_l_movhi_fuse_with_store()
+        public void AeonDis_bg_movhi_fuse_with_store()
         {
             AssertCode(
                 "l.movhi\tr7,0x523A05@hi",
-                "l.sb?\t0x523A05@lo(r7),r6",
+                "bg.sb?\t0x523A05@lo(r7),r6",
                 "C0 E0 0A 41" +
                 "F8 C7 3A 05");
         }
@@ -323,15 +323,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_sb()
+        public void AeonDis_bn_sb__()
         {
-            AssertCode("l.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
+            AssertCode("bn.sb?\t0x7(r1),r0", "18 01 07");
         }
 
         [Test]
-        public void AeonDis_l_sb_24bit()
+        public void AeonDis_bg_sb__()
         {
-            AssertCode("l.sb?\t0x7(r1),r0", "18 01 07");
+            AssertCode("bg.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
         }
 
         [Test]
@@ -376,9 +376,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_sh()
+        public void AeonDis_bg_sh__()
         {
-            AssertCode("l.sh?\t0x345A(r7),r3", "EC 67 34 5B");
+            AssertCode("bg.sh?\t0x345A(r7),r3", "EC 67 34 5B");
         }
 
         [Test]
@@ -395,17 +395,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_sw_24bit()
+        public void AeonDis_bn_sw()
         {
             // confirmed with source
-            AssertCode("l.sw\t(r3),r0", "0C 03 00");
+            AssertCode("bn.sw\t(r3),r0", "0C 03 00");
         }
 
         [Test]
-        public void AeonDis_l_sw_32bit()
+        public void AeonDis_bg_sw()
         {
             // confirmed with source
-            AssertCode("l.sw\t0x88(r1),r5", "EC A1 00 88");
+            AssertCode("bg.sw\t0x88(r1),r5", "EC A1 00 88");
         }
 
         [Test]

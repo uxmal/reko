@@ -314,13 +314,13 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decoder111010 = Mask(0, 1, "  opc=111010",
                 Nyi("0"),
-                Instr(Mnemonic.l_lhz__, R21, Ms(16, 1, 15, 1, PrimitiveType.Word16)));  // guess
+                Instr(Mnemonic.bg_lhz__, R21, Ms(16, 1, 15, 1, PrimitiveType.Word16)));  // guess
 
             var decoder111011 = Mask(0, 2, "  opc=111011",
-                Instr(Mnemonic.l_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),          // chenxing, backtrace
-                Instr(Mnemonic.l_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),        // guess
-                Instr(Mnemonic.l_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess
-                Instr(Mnemonic.l_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));       // guess
+                Instr(Mnemonic.bg_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),         // chenxing, backtrace
+                Instr(Mnemonic.bg_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),       // guess
+                Instr(Mnemonic.bg_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),      // guess
+                Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
 
             var decoder111101 = Select(Bf((6, 10), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=111101", nyi_3,
@@ -374,13 +374,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoder111010,
                 decoder111011,
                 // opcode 111100
-                Instr(Mnemonic.l_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),     // guess
+                Instr(Mnemonic.bg_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),    // guess
                 decoder111101,
                 // opcode 111110
-                Instr(Mnemonic.l_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),      // guess
+                Instr(Mnemonic.bg_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),     // guess
                 // opcode 111111
                 //$REVIEW: signed or unsigned immediate?
-                Instr(Mnemonic.bg_addi, R21, R16, simm0_16));                            // chenxing, backtrace
+                Instr(Mnemonic.bg_addi, R21, R16, simm0_16));                           // chenxing, backtrace
 
             return new D32BitDecoder(decoder);
         }
@@ -427,13 +427,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bn_nop, InstrClass.Linear | InstrClass.Zero | InstrClass.Padding),
                 nyi_5);
 
-            var decode000011_l_sh = Instr(Mnemonic.l_sh__, Ms(8, 1, 7, 1, PrimitiveType.Word16), R13);
+            var decode000011_bn_sh = Instr(Mnemonic.bn_sh__, Ms(8, 1, 7, 1, PrimitiveType.Word16), R13);
             var decode000011 = Mask(0, 2, "  3",
-                Instr(Mnemonic.l_sw, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),    // 000 011 bbbbbaaaaaiiiiii00   // chenxing, backtrace
-                decode000011_l_sh,
+                Instr(Mnemonic.bn_sw, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),    // 000 011 bbbbbaaaaaiiiiii00   // chenxing, backtrace
+                decode000011_bn_sh,
                 // XXX: assuming this is l.lwz and not l.lws
-                Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // 000 011 dddddaaaaaiiiiii10   // guess
-                decode000011_l_sh);
+                Instr(Mnemonic.bn_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // 000 011 dddddaaaaaiiiiii10   // guess
+                decode000011_bn_sh);
             
             var decode001000 = Mask(0, 2, "  8",
                 // branch if reg == imm
@@ -497,16 +497,16 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 000001
                 Instr(Mnemonic.l_movhi__, R13, uimm0_13),
                 // opcode 000010
-                Instr(Mnemonic.l_lhz, R13, Ms(8, 1, 7, 1, PrimitiveType.UInt16)),   // chenxing
+                Instr(Mnemonic.bn_lhz, R13, Ms(8, 1, 7, 1, PrimitiveType.UInt16)),  // chenxing
                 decode000011,
 
                 // opcode 000100
                 // XXX: assuming this is l.lwz and not l.lws
-                Instr(Mnemonic.l_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // guess
+                Instr(Mnemonic.bn_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // guess
                 // opcode 000101
                 Nyi("0b00101"),
                 // opcode 000110
-                Instr(Mnemonic.l_sb__, Ms(8, 0, 8, 0, PrimitiveType.Byte), R13),    // guess
+                Instr(Mnemonic.bn_sb__, Ms(8, 0, 8, 0, PrimitiveType.Byte), R13),    // guess
                 // opcode 000111
                 Instr(Mnemonic.bn_addi, R13, R8, simm0_8),                           // chenxing, backtrace
 

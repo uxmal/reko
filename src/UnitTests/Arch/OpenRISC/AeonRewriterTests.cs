@@ -241,40 +241,40 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_lbz()
+        public void AeonRw_bg_lbz__()
         {
             Given_HexString("F0 C7 1E EC");
-            AssertCode(     // l.lbz?\tr6,0x1EEC(r7)
+            AssertCode(     // bg.lbz?	r6,0x1EEC(r7)
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = Mem0[r7 + 7916<i32>:byte]",
                 "2|L--|r6 = CONVERT(v4, byte, word32)");
         }
 
         [Test]
-        public void AeonRw_l_lhz()
+        public void AeonRw_bn_lhz()
         {
             Given_HexString("08C301");
-            AssertCode(     // l.lhz	r6,(r3)
+            AssertCode(     // bn.lhz	r6,(r3)
                 "0|L--|00100000(3): 2 instructions",
                 "1|L--|v4 = Mem0[r3:uint16]",
                 "2|L--|r6 = CONVERT(v4, uint16, word32)");
         }
 
         [Test]
-        public void AeonRw_l_lhz___32bit()
+        public void AeonRw_bg_lhz__()
         {
             Given_HexString("E8C75CA5");
-            AssertCode(     // l.lhz?	r6,0x5CA4(r7)
+            AssertCode(     // bg.lhz?	r6,0x5CA4(r7)
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = Mem0[r7 + 23716<i32>:word16]",
                 "2|L--|r6 = CONVERT(v4, uint16, word32)");
         }
 
         [Test]
-        public void AeonRw_l_lwz__()
+        public void AeonRw_bn_lwz__()
         {
             Given_HexString("0CE302");
-            AssertCode(     // l.lwz?	r7,(r3)
+            AssertCode(     // bn.lwz?	r7,(r3)
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r7 = Mem0[r3:word32]");
         }
@@ -466,23 +466,23 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_sb()
-        {
-            Given_HexString("F8 EA 36 D8");
-            AssertCode(     // l.sb 0x36D8(r10),r7
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(r7, byte, 0)",
-                "2|L--|Mem0[r10 + 14040<i32>:byte] = v4");
-        }
-
-        [Test]
-        public void AeonRw_l_sb___24bit()
+        public void AeonRw_bn_sb__()
         {
             Given_HexString("18 EB 05"); 
-            AssertCode(     // l.sb?    0x5(r11),r7
+            AssertCode(     // bn.sb?    0x5(r11),r7
                 "0|L--|00100000(3): 2 instructions",
                 "1|L--|v4 = SLICE(r7, byte, 0)",
                 "2|L--|Mem0[r11 + 5<i32>:byte] = v4");
+        }
+
+        [Test]
+        public void AeonRw_bg_sb__()
+        {
+            Given_HexString("F8 EA 36 D8");
+            AssertCode(     // bg.sb? 0x36D8(r10),r7
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(r7, byte, 0)",
+                "2|L--|Mem0[r10 + 14040<i32>:byte] = v4");
         }
 
         [Test]
@@ -549,10 +549,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_sh()
+        public void AeonRw_bg_sh__()
         {
             Given_HexString("EC 67 34 5B");
-            AssertCode(     // l.sh? 0x345A(r7),r3
+            AssertCode(     // bg.sh? 0x345A(r7),r3
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = SLICE(r3, word16, 0)",
                 "2|L--|Mem0[r7 + 13402<i32>:word16] = v4");
@@ -613,29 +613,29 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_sw()
+        public void AeonRw_bn_sw()
         {
             Given_HexString("0D41FC");
-            AssertCode(     // l.sw	-0x4(r1),r10
+            AssertCode(     // bn.sw	-0x4(r1),r10
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|Mem0[r1 - 4<i32>:word32] = r10");
         }
 
         [Test]
-        public void AeonRw_l_sw__0()
+        public void AeonRw_bn_sw__0()
         {
             Given_HexString("0C0108");
-            AssertCode(     // l.sw?	0x8(r1),r0
+            AssertCode(     // bn.sw?	0x8(r1),r0
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|Mem0[r1 + 8<i32>:word32] = 0<32>");
         }
 
         [Test]
-        public void AeonRw_l_sw_32bit()
+        public void AeonRw_bg_sw()
         {
             // confirmed with source
             Given_HexString("ECA10084");
-            AssertCode(     // l.sw	0x84(r1),r5
+            AssertCode(     // bg.sw	0x84(r1),r5
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r1 + 132<i32>:word32] = r5");
         }
