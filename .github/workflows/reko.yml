@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master, net6.0 ]
 
+env:
+  MSBUILDDISABLENODEREUSE: 1
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}

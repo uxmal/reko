@@ -97,7 +97,7 @@ function(invoke_cmake)
 	
 	# append -G <generator> if specified or previously set
 	if(proj_GENERATOR)
-		list(APPEND CMAKE_ARGS -G ${proj_GENERATOR})
+		list(APPEND CMAKE_ARGS "-G" "${proj_GENERATOR}")
 	endif()
 
 	# This flag skips CMake compiler sanity checks ("Checking if C compiler works"),
@@ -121,6 +121,8 @@ function(invoke_cmake)
 	if(proj_EXTRA_ARGUMENTS)
 		set(CMAKE_ARGS "${CMAKE_ARGS};${proj_EXTRA_ARGUMENTS}")
 	endif()
+
+	message(STATUS "CMake args: ${CMAKE_ARGS}")
 
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}
@@ -179,9 +181,3 @@ message("=> Target    : ${TARGET}")
 message("")
 
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR}/../src)
-
-# AnyCPU is not a valid native platform, so we filter it out here
-set(REKO_ACTUAL_PLATFORM "")
-if(NOT REKO_PLATFORM STREQUAL "AnyCPU")
-	set(REKO_ACTUAL_PLATFORM ${REKO_PLATFORM})
-endif()

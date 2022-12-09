@@ -38,6 +38,7 @@ file(MAKE_DIRECTORY ${artifacts_dir})
 # you can specify a path prefix by using `PROJECT_SUBDIR`, which will be prepended to the path
 #
 # The artifacts are assumed to be produced in "bin/<platform>/<configuration>/<framework>"
+# if `PREFER_INTERMEDIATE`, the top level directory used will be "obj" instead of "bin"
 # -  <platform> is obtained from the *global* variable `REKO_PLATFORM`
 # -  <configuration> is obtained from the *global* variable `CMAKE_BUILD_TYPE`
 # -  <framework> is specified by the parameter `FRAMEWORK`
@@ -53,11 +54,11 @@ file(MAKE_DIRECTORY ${artifacts_dir})
 #
 # The final path is stored in the output variable specified by `RESULT`
 function(csproj_output_path)
-	cmake_parse_arguments(asm "LIB;EXE;ANYCPU" "PROJECT_SUBDIR;PROJECT_NAME;FRAMEWORK;OUTPUT_PREFIX;OUTPUT_SUFFIX;RESULT" "" ${ARGN})
+	cmake_parse_arguments(asm "LIB;EXE;ANYCPU;PREFER_INTERMEDIATE" "PROJECT_SUBDIR;PROJECT_NAME;FRAMEWORK;OUTPUT_PREFIX;OUTPUT_SUFFIX;RESULT" "" ${ARGN})
 
 	set(asm_basedir ${REKO_SRC})
 	if(asm_PROJECT_SUBDIR)
-		set(asm_basedir ${asm_basedir}/${asm_PROJECT_SUBDIR})
+		string(APPEND asm_basedir "/${asm_PROJECT_SUBDIR}")
 	endif()
 
 	if(NOT asm_FRAMEWORK)
@@ -84,13 +85,21 @@ function(csproj_output_path)
 
 	set(asm_filename ${asm_OUTPUT_PREFIX}${asm_PROJECT_NAME}${asm_OUTPUT_SUFFIX})
 
-	set(asm_path ${asm_basedir}/${asm_PROJECT_NAME}/bin)
-	if(NOT asm_ANYCPU)
-		set(asm_path ${asm_path}/${REKO_PLATFORM})
-	endif()
-	set(asm_path ${asm_path}/${CMAKE_BUILD_TYPE}/${asm_FRAMEWORK})
+	set(asm_bin_path ${asm_basedir}/${asm_PROJECT_NAME}/bin)
+	set(asm_obj_path ${asm_basedir}/${asm_PROJECT_NAME}/obj)
 
-	set(${asm_RESULT} ${asm_path}/${asm_filename} PARENT_SCOPE)
+	set(asm_binpath_relative "")
+	if(NOT asm_ANYCPU)
+		set(asm_binpath_relative ${REKO_PLATFORM})
+	endif()
+
+	string(APPEND asm_binpath_relative ${CMAKE_BUILD_TYPE}/${asm_FRAMEWORK}/${asm_filename})
+
+	if(asm_PREFER_INTERMEDIATE)
+		set(${asm_RESULT} ${asm_obj_path}/${asm_binpath_relative} PARENT_SCOPE)
+	else()
+		set(${asm_RESULT} ${asm_bin_path}/${asm_binpath_relative} PARENT_SCOPE)
+	endif()
 endfunction()
 
 #
@@ -108,7 +117,7 @@ function(add_copy_target)
 	if(TARGET ${copy_TARGET_NAME})
 		return()
 	endif()
-	
+
 	get_filename_component(dest_dir ${copy_SRC_PATH} DIRECTORY)
 
 	# create a command that will copy this file
@@ -199,8 +208,10 @@ function(add_c2xml_target)
 			PROJECT_NAME "${arch}"
 			OUTPUT_PREFIX "Reko.Arch."
 			RESULT arch_dll
+			PREFER_INTERMEDIATE
 		)
 		message(DEBUG "[arch] ${arch} => ${arch_dll}")
+		
 		list(APPEND file_list ${arch_dll})
 	endforeach()
 
@@ -212,27 +223,38 @@ function(add_c2xml_target)
 			PROJECT_NAME "${env}"
 			OUTPUT_PREFIX "Reko.Environments."
 			RESULT env_dll
+			PREFER_INTERMEDIATE
 		)
 		message(DEBUG "[env] ${env} => ${env_dll}")
 		list(APPEND file_list ${env_dll})
 	endforeach()
 
 	foreach(src_path ${file_list})
-		# use the filename without extension as the copy target name
-		get_filename_component(filename_we "${src_path}" NAME_WE)
-		get_filename_component(filename "${src_path}" NAME)
-
-		set(dest_path ${c2xml_dir}/${filename})
-
-		add_copy_target(
-			SRC_PATH "${src_path}"
-			DEST_PATH "${dest_path}"
-			OUT_TARGET_NAME copy_target_name
+		add_c2xml_copy_target(
+			SRC_PATH ${src_path}
+			DEST_DIR ${c2xml_dir}
+			MAIN_TARGET ${c2xml_TARGET_NAME}
 		)
-
-		# we need to copy the assemblies before we can run c2xml
-		add_dependencies(${c2xml_TARGET_NAME} ${copy_target_name})
 	endforeach()
+endfunction()
+
+function(add_c2xml_copy_target)
+	cmake_parse_arguments(c2xml "" "SRC_PATH;DEST_DIR;MAIN_TARGET" "" ${ARGN})
+
+	# use the filename without extension as the copy target name
+	# get_filename_component(filename_we "${c2xml_SRC_PATH}" NAME_WE)
+	get_filename_component(filename "${c2xml_SRC_PATH}" NAME)
+
+	set(dest_path ${c2xml_DEST_DIR}/${filename})
+
+	add_copy_target(
+		SRC_PATH ${c2xml_SRC_PATH}
+		DEST_PATH ${dest_path}
+		OUT_TARGET_NAME copy_target_name
+	)
+
+	# we need to copy the assemblies before we can run c2xml
+	add_dependencies(${c2xml_MAIN_TARGET} ${copy_target_name})
 endfunction()
 
 #
@@ -389,16 +411,34 @@ elseif("${TARGET}" STREQUAL "nativeproxy_build")
 	# Create a new target to build NativeProxy
 	#
 	add_custom_target(nativeproxy_build
-		COMMENT "Building NativeProxy..."
+		COMMENT "Building NativeProxy ..."
 		WORKING_DIRECTORY ${REKO_SRC}/Native
 		COMMAND ${CMAKE_COMMAND}
 			-DIS_MSYS=${IS_MSYS}
+			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 			-DREKO_SRC=${REKO_SRC}
 			-DREKO_ROOT=${REKO_SRC}/../
 			-DREKO_PLATFORM=${REKO_PLATFORM}
-			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+			-DREKO_COMPILER=${REKO_COMPILER}
 			-P ${REKO_SRC}/Native/reko.cmake
 	)
+elseif("${TARGET}" STREQUAL "git_hash")
+	if(NOT GIT_HASH_OUTPUT)
+		message(FATAL_ERROR "Variable GIT_HASH_OUTPUT is required")
+	endif()
+	#
+	# Update the git hash AssemblyData for Reko.Core
+	#
+	include(${CMAKE_SOURCE_DIR}/cmake/CheckGit.cmake)
+	CheckGitVersion(
+		SCRIPT_FILE ${CMAKE_SOURCE_DIR}/cmake/CheckGit.cmake
+		CACHE_FILE ${CMAKE_BINARY_DIR}/git-state.txt
+		TEMPLATE_FILE ${CMAKE_SOURCE_DIR}/cmake/AssemblyData.Extra.cs.in
+		OUTPUT_FILE ${GIT_HASH_OUTPUT}
+		REPO_DIR ${REKO_SRC}
+	)
+	add_custom_target(git_hash)
+	add_dependencies(git_hash AlwaysCheckGit)
 elseif("${TARGET}" STREQUAL "build_solution")	
 	#
 	# Create a target to build the main solution
