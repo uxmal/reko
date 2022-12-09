@@ -185,6 +185,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_ff1__()
+        {
+            Given_HexString("5C6B08");
+            AssertCode(     // bn.ff1?	r3,r11
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r3 = __find_first_one<word32>(r11)");
+        }
+
+        [Test]
         public void AeonRw_bg_flush_line()
         {
             // confirmed with source

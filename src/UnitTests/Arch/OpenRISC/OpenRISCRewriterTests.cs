@@ -144,6 +144,24 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void OpenRiscRw_ff1()
+        {
+            Given_HexString("E147000F");	// l.ff1	r10,r7
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r10 = __find_first_one<word32>(r7)");
+        }
+
+        [Test]
+        public void OpenRiscRw_fl1()
+        {
+            Given_HexString("E115010F");	// l.fl1	r8,r21
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = __find_last_one<word32>(r21)");
+        }
+
+        [Test]
         public void OpenRiscRw_j_0()
         {
             Given_HexString("00000000");	// l.j	00000000

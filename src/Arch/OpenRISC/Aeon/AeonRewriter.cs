@@ -107,6 +107,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.bn_entri__: RewriteUnknown(); break;
+                case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
                 case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
                 case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
                 case Mnemonic.bt_j:
