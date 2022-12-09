@@ -47,22 +47,22 @@ namespace Reko.UnitTests.Decompiler.Typing
 			eqb = new EquivalenceClassBuilder(factory, store, listener);
 		}
 
+        private TypeVariable TypeVar(Expression e) => store.GetTypeVariable(e);
+
 		[Test]
 		public void EqbSimpleEquivalence()
 		{
-			TypeFactory factory = new TypeFactory();
-			TypeStore store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, listener);
-			Identifier id1 = new Identifier("id2", PrimitiveType.Word32, null);
-			Identifier id2 = new Identifier("id2", PrimitiveType.Word32, null);
-			Assignment ass = new Assignment(id1, id2);
+			Identifier src = new Identifier("src", PrimitiveType.Word32, null);
+			Identifier dst = new Identifier("dst", PrimitiveType.Word32, null);
+			Assignment ass = new Assignment(dst, src);
 			ass.Accept(eqb);
 
-			Assert.IsNotNull(id1);
-			Assert.IsNotNull(id2);
-			Assert.AreEqual(2, id1.TypeVariable.Number, "id1 type number");
-			Assert.AreEqual(2, id1.TypeVariable.Number, "id2 type number");
-			Assert.AreEqual(id1.TypeVariable.Class, id2.TypeVariable.Class);
+			Assert.IsNotNull(src);
+			Assert.IsNotNull(dst);
+			Assert.AreEqual(1, TypeVar(src).Number, "src type number");
+			Assert.AreEqual(2, TypeVar(dst).Number, "dst type number");
+			Assert.AreEqual(TypeVar(src).Class, TypeVar(dst).Class);
 		}
 
 		[Test]
@@ -70,9 +70,9 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
             ArrayAccess e = new ArrayAccess(PrimitiveType.Real32, new Identifier("a", PrimitiveType.Ptr32, null), new Identifier("i", PrimitiveType.Int32, null));
 			e.Accept(eqb);
-			Assert.AreEqual("T_3", e.TypeVariable.ToString());
-			Assert.AreEqual("T_1", e.Array.TypeVariable.ToString());
-			Assert.AreEqual("T_2", e.Index.TypeVariable.ToString());
+			Assert.AreEqual("T_3", TypeVar(e).ToString());
+			Assert.AreEqual("T_1", TypeVar(e.Array).ToString());
+			Assert.AreEqual("T_2", TypeVar(e.Index).ToString());
 		}
 
 		[Test]
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
 			SegmentedAccess mps = new SegmentedAccess(MemoryIdentifier.GlobalMemory, ds, bx, PrimitiveType.Word32);
 			mps.Accept(eqb);
-			Assert.AreEqual("T_3", mps.TypeVariable.Name);
+			Assert.AreEqual("T_3", TypeVar(mps).Name);
 		}
 
         [Test]
@@ -93,8 +93,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
             seg1.Accept(eqb);
             seg2.Accept(eqb);
-            Assert.IsNotNull(seg1.TypeVariable);
-            Assert.AreSame(seg1.TypeVariable, seg2.TypeVariable);
+            Assert.AreSame(TypeVar(seg1), TypeVar(seg2));
         }
 
         [Test(Description = "Fixes a regression test that failed when the new type system cut over.")]
@@ -103,7 +102,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var sig = FunctionType.Action(
                 new Identifier("dwArg00", PrimitiveType.Word32, new StackStorage(0, PrimitiveType.Word32)));
             eqb.EnsureSignatureTypeVariables(sig);
-            Assert.IsNotNull(sig.Parameters[0].TypeVariable);
+            Assert.IsNotNull(store.GetTypeVariable(sig.Parameters[0]));
         }
 
         [Test(Description = "Expressions referring to type references should map to the same TypeVariable.")]
@@ -113,7 +112,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var b = new Identifier("b", new TypeReference("INT", PrimitiveType.Int32), new TemporaryStorage("b", 44, PrimitiveType.Int32));
             a.Accept(eqb);
             b.Accept(eqb);
-            Assert.AreSame(a.TypeVariable.Class, b.TypeVariable.Class);
+            Assert.AreSame(TypeVar(a).Class, TypeVar(b).Class);
         }
 
         [Test]
@@ -130,7 +129,9 @@ namespace Reko.UnitTests.Decompiler.Typing
             eqb.EnsureSegmentTypeVariables(new[] { segment });
             Constant seg1 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
             seg1.Accept(eqb);
-            Assert.AreSame(seg1.TypeVariable.Class, segment.Identifier.TypeVariable.Class);
+            var tvSeg1 = store.GetTypeVariable(seg1);
+            var tvSegment = store.GetTypeVariable(segment.Identifier);
+            Assert.AreSame(tvSeg1.Class, tvSegment.Class);
         }
     }
 }

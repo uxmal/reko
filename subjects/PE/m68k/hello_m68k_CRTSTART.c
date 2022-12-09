@@ -165,9 +165,9 @@ void fn000023F8(Eq_n a5)
 	struct Eq_n * a6_n;
 	Eq_n a5_n = fn00002418(a5, out a6_n);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	a7_n->ptrFFFFFFFC = a6_n->ptr0008;
+	a7_n->tFFFFFFFC = a6_n->t0008;
 	word32 a6_n;
-	Eq_n a5_n = fn0000243C(a5_n, a7_n->ptrFFFFFFFC, out a6_n);
+	Eq_n a5_n = fn0000243C(a5_n, a7_n->tFFFFFFFC, out a6_n);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 	&a7_n->t0000.u0->dw0000 = 0xFF;
 	(*((word32) a5_n - 1288))();
@@ -185,19 +185,19 @@ Eq_n fn00002418(Eq_n a5, ptr32 & a6Out)
 	<anonymous> * a0_n = *((word32) a5_n - 1012);
 	if (a0_n != null)
 		a0_n();
-	ptr32 * a7_n = a7_n - 4;
-	*a7_n = 0xFF;
+	union Eq_n * a7_n = a7_n - 4;
+	*a7_n = (union Eq_n *) (struct Eq_n *) 0xFF;
 	ptr32 * a6_n;
 	Eq_n a5_n = fn0000243C(a5_n, *a7_n, out a6_n);
 	a6Out = *a6_n;
 	return a5_n;
 }
 
-// 0000243C: Register Eq_n fn0000243C(Register Eq_n a5, Stack ptr32 dwArg04, Register out ptr32 a6Out)
+// 0000243C: Register Eq_n fn0000243C(Register Eq_n a5, Stack Eq_n dwArg04, Register out ptr32 a6Out)
 // Called from:
 //      fn000023F8
 //      fn00002418
-Eq_n fn0000243C(Eq_n a5, ptr32 dwArg04, ptr32 & a6Out)
+Eq_n fn0000243C(Eq_n a5, Eq_n dwArg04, ptr32 & a6Out)
 {
 	ptr32 fp;
 	ptr32 * a6_n = fp - 0x04;

@@ -41,6 +41,7 @@ namespace Reko.Typing
     public class TypedExpressionRewriter : InstructionTransformer
     {
         private readonly Program program;
+        private readonly TypeStore store;
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
         private readonly Unifier unifier;
@@ -49,12 +50,13 @@ namespace Reko.Typing
         private Statement? stmCur;
         private readonly DecompilerEventListener eventListener;
 
-        public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
+        public TypedExpressionRewriter(Program program, TypeStore store, DecompilerEventListener eventListener)
         {
             this.program = program;
+            this.store = store;
             this.eventListener = eventListener;
             this.compTypes = new DataTypeComparer();
-            this.tcr = new TypedConstantRewriter(program, eventListener);
+            this.tcr = new TypedConstantRewriter(program, store, eventListener);
             this.unifier = new Unifier();
         }
 
@@ -90,13 +92,13 @@ namespace Reko.Typing
         private void RewriteFormals(FunctionType sig)
         {
             if (!sig.HasVoidReturn)
-                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable!.DataType;
+                sig.ReturnValue.DataType = store.GetTypeVariable(sig.ReturnValue).DataType;
             if (sig.Parameters != null)
             {
                 foreach (Identifier formalArg in sig.Parameters)
                 {
-                    if (formalArg.TypeVariable != null)
-                        formalArg.DataType = formalArg.TypeVariable.DataType;
+                    if (store.TryGetTypeVariable(formalArg, out var tvParameter))
+                        formalArg.DataType = tvParameter.DataType;
                 }
             }
         }
@@ -109,7 +111,7 @@ namespace Reko.Typing
         private Instruction MakeAssignment(Expression dst, Expression src)
         {
             src = src.Accept(this);
-            var tvDst = dst.TypeVariable!;
+            var tvDst = store.GetTypeVariable(dst);
             dst = dst.Accept(this);
             var dtSrc = DataTypeOf(src);
             var dtDst = DataTypeOf(dst);
@@ -122,8 +124,8 @@ namespace Reko.Typing
                     // ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
                     tvDst.DataType = dtDst;
                     tvDst.OriginalDataType = dtSrc;
-                    dst.TypeVariable = tvDst;
-                    var ceb = new ComplexExpressionBuilder(program, null, dst, null, 0);
+                    store.SetTypeVariable(dst, tvDst); //$REVIEW: looks fishy.
+                    var ceb = new ComplexExpressionBuilder(program, store, null, dst, null, 0);
                     dst = ceb.BuildComplex(false);
                 }
                 else if (uSrc != null)
@@ -153,7 +155,7 @@ namespace Reko.Typing
         public override Instruction TransformDeclaration(Declaration decl)
         {
             base.TransformDeclaration(decl);
-            decl.Identifier.DataType = decl.Identifier.TypeVariable!.DataType;
+            decl.Identifier.DataType = store.GetTypeVariable(decl.Identifier).DataType;
             return decl;
         }
 
@@ -187,7 +189,7 @@ namespace Reko.Typing
                 offset += (int) cOther.ToUInt32();
                 index = null;
             }
-            var ceb = new ComplexExpressionBuilder(program, basePtr, complex, index, offset);
+            var ceb = new ComplexExpressionBuilder(program, store, basePtr, complex, index, offset);
             return ceb.BuildComplex(dereferenced);
         }
 
@@ -252,14 +254,18 @@ namespace Reko.Typing
                 OperatorType.Shr => Operator.Sar,
                 _ => binOp,
             };
-            binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, stmCur?.Address, binExp);
-            return binExp;
+            var tvBinExp = store.GetTypeVariable(binExp);
+            var binExpNew = new BinaryExpression(binOp, binExp.DataType, left, right);
+            store.SetTypeVariable(binExpNew, tvBinExp);
+            store.SetTypeVariableExpression(tvBinExp, stmCur?.Address, binExpNew);
+            return binExpNew;
         }
 
-        private static DataType DataTypeOf(Expression exp)
+        private DataType DataTypeOf(Expression exp)
         {
-            return exp.TypeVariable != null ? exp.TypeVariable.DataType : exp.DataType;
+            return store.TryGetTypeVariable(exp, out var tv)
+                ? tv.DataType
+                : exp.DataType;
         }
 
         public override Expression VisitAddress(Address addr)
@@ -313,10 +319,9 @@ namespace Reko.Typing
                 {
                 }
             }
-            return new MkSequence(seq.DataType, newSeq)
-            {
-                TypeVariable = seq.TypeVariable,
-            };
+            var newSeq2 = new MkSequence(seq.DataType, newSeq);
+            store.SetTypeVariable(newSeq2, store.GetTypeVariable(seq));
+            return newSeq2;
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -335,7 +340,7 @@ namespace Reko.Typing
                 this.basePtr = basePtr;
                 result = Rewrite(access.EffectiveAddress, true);
             }
-            result.TypeVariable = access.TypeVariable;
+            store.SetTypeVariable(result, store.GetTypeVariable(access));
             this.basePtr = oldBase;
             return result;
         }
@@ -347,10 +352,9 @@ namespace Reko.Typing
             {
                 //$REVIEW: here we convert SLICE(xxx, yy, 0) to the cast (yy) xxx.
                 // Should SLICE(xxx, yy, nn) be cast to (yy) (xxx >> nn) as well?
-                return new Cast(newSlice.DataType, newSlice.Expression)
-                {
-                    TypeVariable = slice.TypeVariable
-                };
+                var newCast = new Cast(newSlice.DataType, newSlice.Expression);
+                store.SetTypeVariable(newCast, store.GetTypeVariable(slice));
+                return newCast;
             }
             return exp;
         }
@@ -371,8 +375,10 @@ namespace Reko.Typing
         public override Expression VisitUnaryExpression(UnaryExpression unary)
         {
             var uNew = base.VisitUnaryExpression(unary);
-            uNew.TypeVariable = unary.TypeVariable;
-            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, stmCur?.Address, uNew);
+            var tv = store.GetTypeVariable(unary);
+            store.SetTypeVariable(uNew, tv);
+            //$TODO: SetTypeVariableExpression shouldn't be needed, SetTypeVariable should do it.
+            store.SetTypeVariableExpression(tv, stmCur?.Address, uNew);
             return uNew;
         }
     }

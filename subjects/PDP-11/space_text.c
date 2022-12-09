@@ -1569,7 +1569,7 @@ void fn0EF8(struct Eq_n * r4, word16 * r5)
 	struct Eq_n * r3_n = g_ptr5424;
 	struct Eq_n * v13_n = r4->ptr0000;
 	struct Eq_n * v17_n = r3_n->ptr000E;
-	word16 v18_n = r3_n->t0000;
+	Eq_n v18_n = r3_n->t0000;
 	byte v16_n = r3_n->b0074;
 	byte bLoc04_n = v13_n->b0001;
 	r3_n->t0000 = (<anonymous>) 0x00;
@@ -1582,7 +1582,7 @@ void fn0EF8(struct Eq_n * r4, word16 * r5)
 	word16 * r0_n = &v13_n->w0004;
 	word16 * r5_n = r5 + 1;
 	word16 r1_n = v22_n;
-	word16 wLoc04_n = SEQ(bLoc03_n, bLoc04_n);
+	Eq_n wLoc04_n = SEQ(bLoc03_n, bLoc04_n);
 	wLoc04_n = SEQ(bLoc03_n, bLoc04_n);
 	struct Eq_n * wLoc02_n = SEQ(bLoc01_n, bLoc02_n);
 	wLoc02_n = SEQ(bLoc01_n, bLoc02_n);

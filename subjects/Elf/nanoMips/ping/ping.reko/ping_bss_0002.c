@@ -91,7 +91,7 @@ struct Eq_n g_t454490 = // 00454490
 		0,
 		0x00,
 	};
-ptr32 g_ptr454491 = 0x00; // 00454491
+struct Eq_n * g_ptr454491 = null; // 00454491
 struct Eq_n g_t454498 = // 00454498
 	{
 		0,
@@ -125,7 +125,7 @@ Eq_n ident = // 004544C4
 	};
 word32 mark = 0x00; // 004544C8
 word32 nchecksum = 0x00; // 004544CC
-word32 nerrors = 0x00; // 004544D0
+ui32 nerrors = 0x00; // 004544D0
 Eq_n ni_group = // 004544D4
 	{
 		0x00
@@ -134,7 +134,7 @@ Eq_n npackets = // 004544D8
 	{
 		0x00
 	};
-word32 nreceived = 0x00; // 004544DC
+ui32 nreceived = 0x00; // 004544DC
 word32 nrepeats = 0x00; // 004544E0
 Eq_n ntransmitted = // 004544E4
 	{

@@ -133,10 +133,10 @@ namespace Reko.UnitTests.Core.Output
 
         private void CreateSegmentTypeVariable(ImageSegment seg)
         {
-            var store = new TypeStore();
             var factory = new TypeFactory();
-            seg.Identifier.TypeVariable = store.CreateTypeVariable(factory);
-            seg.Identifier.TypeVariable.Class.DataType = seg.Fields;
+            var tv = program.TypeStore.CreateTypeVariable(factory);
+            program.TypeStore.SetTypeVariable(seg.Identifier, tv);
+            tv.Class.DataType = seg.Fields;
         }
 
         [Test]

@@ -159,22 +159,6 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         protected abstract void RunTest(Program program, string outputFile);
 
-		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)
-		{
-			writer.WriteLine("// {0} ////////////////////////////////", proc.Name);
-			DumpSsaTypes(ssa, writer);
-			proc.Write(false, writer);
-			writer.WriteLine();
-		}
-
-		protected void DumpSsaTypes(SsaState ssa, TextWriter writer)
-		{
-			foreach (SsaIdentifier id in ssa.Identifiers)
-			{
-				if (id.Identifier.TypeVariable != null)
-					writer.WriteLine("{0}: {1}", id.Identifier, id.Identifier.TypeVariable);
-			}
-		}
 
 		protected MemoryAccess MemLoad(Identifier id, int offset, DataType size)
 		{

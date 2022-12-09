@@ -463,10 +463,10 @@ void setenv()
 	setenv();
 }
 
-// 0000000100004EEC: void setlocale(Register (ptr64 char) rsi, Register word32 edi)
+// 0000000100004EEC: void setlocale(Register Eq_n rsi, Register word32 edi)
 // Called from:
 //      fn00000001000026A0
-void setlocale(char * rsi, word32 edi)
+void setlocale(Eq_n rsi, word32 edi)
 {
 	word64 rdi;
 	setlocale((int32) rdi, rsi);

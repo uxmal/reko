@@ -91,10 +91,11 @@ namespace Reko.UnitTests.Decompiler.Typing
         private void Given_Program(StructureFieldCollection globalVariables)
         {
             this.program = pb.BuildProgram();
-            program.Globals.TypeVariable = store.CreateTypeVariable(factory);
+            var tvGlobals = store.CreateTypeVariable(factory);
+            store.SetTypeVariable(program.Globals, tvGlobals);
             var globalStructure = new StructureType();
             globalStructure.Fields.AddRange(globalVariables);
-            program.Globals.TypeVariable.Class.DataType = globalStructure;
+            tvGlobals.Class.DataType = globalStructure;
         }
 
         private void When_RunConstantPointerAnalysis()
@@ -105,7 +106,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private void AssertGlobalVariables(string expected)
         {
-            var eqGlobals = program.Globals.TypeVariable.Class;
+            var eqGlobals = store.GetTypeVariable(program.Globals).Class;
             var strGlobals = eqGlobals.ResolveAs<StructureType>();
             var actual = strGlobals.ToString();
             if (actual != expected)

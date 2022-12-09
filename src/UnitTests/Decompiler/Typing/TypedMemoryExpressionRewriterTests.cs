@@ -63,18 +63,18 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private Expression CreateTv(Expression e)
         {
-            store.EnsureExpressionTypeVariable(factory, null, e);
-            e.TypeVariable.DataType = e.DataType;
-            e.TypeVariable.OriginalDataType = e.DataType;
+            var tv = store.EnsureExpressionTypeVariable(factory, null, e);
+            tv.DataType = e.DataType;
+            tv.OriginalDataType = e.DataType;
             return e;
         }
 
         private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
         {
-            store.EnsureExpressionTypeVariable(factory, null, e);
-            e.TypeVariable.DataType = dt;
-            e.TypeVariable.OriginalDataType = dtOrig;
-            return e.TypeVariable;
+            var tv = store.EnsureExpressionTypeVariable(factory, null, e);
+            tv.DataType = dt;
+            tv.OriginalDataType = dtOrig;
+            return tv;
         }
 
 		[Test]
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, new Pointer(point, 32), new Pointer(point, 32));
-            var tmer = new TypedExpressionRewriter(program, null);
+            var tmer = new TypedExpressionRewriter(program, program.TypeStore, null);
             var access = CreateTv(m.Mem32(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
@@ -92,16 +92,16 @@ namespace Reko.UnitTests.Decompiler.Typing
 		public void Tmer_PointerToSecondItemOfPoint()
 		{
 			Identifier ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-			store.EnsureExpressionTypeVariable(factory, null, ptr);
-			EquivalenceClass eqPtr = new EquivalenceClass(ptr.TypeVariable);
+			var tv = store.EnsureExpressionTypeVariable(factory, null, ptr);
+			EquivalenceClass eqPtr = new EquivalenceClass(tv);
 			eqPtr.DataType = point;
-			ptr.TypeVariable.OriginalDataType = new Pointer(point, 32);
-			ptr.TypeVariable.DataType = new Pointer(eqPtr, 32);
+			tv.OriginalDataType = new Pointer(point, 32);
+			tv.DataType = new Pointer(eqPtr, 32);
 
 			var c = CreateTv(Constant.Word32(4));
 			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
             var mem = CreateTv(new MemoryAccess(bin, PrimitiveType.Word32));
-			var tmer = new TypedExpressionRewriter(program, null);
+			var tmer = new TypedExpressionRewriter(program, store, null);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}

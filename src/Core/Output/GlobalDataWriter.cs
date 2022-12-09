@@ -57,14 +57,21 @@ namespace Reko.Core.Output
             this.cmp = new DataTypeComparer();
             this.codeFormatter = new AbsynCodeFormatter(formatter);
             this.tw = new TypeReferenceFormatter(formatter);
-            var eqGlobalStruct = program.Globals.TypeVariable?.Class;
-            if (eqGlobalStruct != null)
+            if (program.TypeStore.TryGetTypeVariable(program.Globals, out var tvGlobals))
             {
-                var globals = eqGlobalStruct.ResolveAs<StructureType>();
-                if (globals != null)
-                    this.globals = globals;
+                var eqGlobalStruct = tvGlobals.Class;
+                if (eqGlobalStruct is not null)
+                {
+                    var globals = eqGlobalStruct.ResolveAs<StructureType>();
+                    if (globals is not null)
+                        this.globals = globals;
+                    else
+                        this.globals = new StructureType();
+                }
                 else
+                {
                     this.globals = new StructureType();
+                }
             }
             else
             {

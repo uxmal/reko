@@ -335,13 +335,13 @@ byte fn000000014000164C(up32 ecx)
 		word64 rax_n;
 		if (fn0000000140001DC4() != 0x00 && ecx == 0x00)
 		{
-			word64 rax_n = initialize_onexit_table(0x1400035C0);
+			word64 rax_n = initialize_onexit_table(&g_ow400035C0);
 			word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 			if ((word32) rax_n != 0x00)
 				rax_n = SEQ(rax_56_8_n, 0x00);
 			else
 			{
-				word64 rax_n = initialize_onexit_table(0x1400035D8);
+				word64 rax_n = initialize_onexit_table(&g_ow400035D8);
 				rax_n = SEQ(SLICE(rax_n, word56, 8), (int8) ((word32) rax_n == 0x00));
 			}
 		}
@@ -350,7 +350,7 @@ byte fn000000014000164C(up32 ecx)
 			ui64 rdx_n = g_qw40003000;
 			uint64 rax_n = (uint64) ((word32) rdx_n & 0x3F);
 			Eq_n r8_n = __ror<word64,byte>(~0x00, 0x40 - (byte) rax_n) ^ rdx_n;
-			g_t400035C0 = SEQ(r8_n, r8_n);
+			g_ow400035C0 = SEQ(r8_n, r8_n);
 			g_t400035D0 = r8_n;
 			g_ow400035D8 = SEQ(r8_n, r8_n);
 			g_t400035E8 = r8_n;
@@ -372,7 +372,7 @@ word64 fn0000000140001718(<anonymous> ** rcx)
 	{
 		int64 rax_n = (int64) g_dw4000003C;
 		rax_56_8_n = SLICE(rax_n, word56, 8);
-		struct Eq_n * rcx_n = rax_n + 0x140000000;
+		struct Eq_n * rcx_n = &g_w40000000 + rax_n;
 		if (rcx_n->dw0000 == 0x4550)
 		{
 			rax_56_8_n = 0x02;
@@ -380,7 +380,7 @@ word64 fn0000000140001718(<anonymous> ** rcx)
 			{
 				uint64 rax_n = (uint64) rcx_n->w0006;
 				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) rcx_n->w0014;
-				uint64 r8_n = rcx - 0x140000000;
+				uint64 r8_n = rcx - &g_w40000000;
 				word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 				struct Eq_n * r9_n = rdx_n + rax_n;
 				for (; rdx_n != r9_n; rdx_n += 0x28)
@@ -439,10 +439,10 @@ Eq_n fn0000000140001804(Eq_n rcx)
 {
 	word32 eax_n;
 	ui64 rdx_n = g_qw40003000;
-	if (__ror<word64,byte>(rdx_n ^ g_t400035C0, (byte) rdx_n & 0x3F) == ~0x00)
+	if (__ror<word64,byte>(rdx_n ^ g_ow400035C0, (byte) rdx_n & 0x3F) == ~0x00)
 		eax_n = (word32) crt_atexit(rcx);
 	else
-		eax_n = (word32) register_onexit_function(0x1400035C0, rcx);
+		eax_n = (word32) register_onexit_function(&g_ow400035C0, rcx);
 	Eq_n rcx_n = 0x00;
 	if (eax_n == 0x00)
 		rcx_n = rcx;

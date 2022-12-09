@@ -265,7 +265,7 @@ word32 fn000012D0(ptr32 dwArg04)
 		{
 			do
 				++d2_n;
-			while (((word32[]) 16312)[d2_n] != 0x00);
+			while (((<anonymous> *[]) 16312)[d2_n] != null);
 		}
 		int32 d2_n;
 		for (d2_n = d2_n - 0x01; d2_n != 0x00; --d2_n)
@@ -298,7 +298,7 @@ word32 fn0000131C(ptr32 dwArg04)
 void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
 {
 	<anonymous> ** a3_n = (<anonymous> **) 0x3FB0;
-	if (true && *((word32 *) 0x3FB0) != 0x00)
+	if (true && *((<anonymous> **) 0x3FB0) != 0x00)
 	{
 		do
 		{
@@ -460,7 +460,7 @@ void fn00001490(ui32 d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 				}
 				else
 				{
-					a0_n = 0x288D + (SEQ(SLICE(d0, word24, 8), *a2_n) & 0xFF);
+					a0_n = (struct Eq_n *) (g_a288D + (SEQ(SLICE(d0, word24, 8), *a2_n) & 0xFF));
 					uint32 d0_n = (uint32) a0_n->t0000;
 					d0_n = d0_n & 0x04;
 					if ((d0_n & 0x04) != 0x00)
@@ -471,7 +471,7 @@ void fn00001490(ui32 d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 							uint32 d1_n = __swap(0x0A) *32 (word16) d2_n;
 							uint32 d0_n = (word16) d2_n *32 0x0A + SEQ(SLICE(__swap(SEQ(SLICE(d1_n, word16, 16), (word16) d1_n + (word16) __swap(d2_n) * 0x0A)), word16, 16), 0x00);
 							++a2_n;
-							a0_n = 0x288D + (SEQ(SLICE(d0_n, word24, 8), *a2_n) & 0xFF);
+							a0_n = (struct Eq_n *) (g_a288D + (SEQ(SLICE(d0_n, word24, 8), *a2_n) & 0xFF));
 							int32 d1_n = (int32) (int16) *a2_n;
 							uint32 d0_n = (uint32) a0_n->t0000;
 							d1_n = d1_n - 0x30;
@@ -496,7 +496,7 @@ void fn00001490(ui32 d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 					}
 					else
 					{
-						a0_n = 0x288D + (SEQ(SLICE(d0_n, word24, 8), *a2_n) & 0xFF);
+						a0_n = (struct Eq_n *) (g_a288D + (SEQ(SLICE(d0_n, word24, 8), *a2_n) & 0xFF));
 						d5_n.u0 = 0;
 						while (((uint32) a0_n->t0000 & 0x04) != 0x00)
 						{
@@ -504,7 +504,7 @@ void fn00001490(ui32 d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 							uint32 d0_n = (word16) d5_n *32 0x0A + SEQ(SLICE(__swap(SEQ(SLICE(d1_n, word16, 16), (word16) d1_n + (word16) __swap(d5_n) * 0x0A)), word16, 16), 0x00);
 							++a2_n;
 							int32 d1_n = (int32) (int16) *a2_n;
-							a0_n = 0x288D + (SEQ(SLICE(d0_n, word24, 8), *a2_n) & 0xFF);
+							a0_n = (struct Eq_n *) (g_a288D + (SEQ(SLICE(d0_n, word24, 8), *a2_n) & 0xFF));
 							d1_n = d1_n - 0x30;
 							d5_n = d1_n - 0x30 + d0_n;
 						}

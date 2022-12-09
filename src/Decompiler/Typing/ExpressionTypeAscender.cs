@@ -35,6 +35,7 @@ namespace Reko.Typing
     /// </remarks>
     public class ExpressionTypeAscender : ExpressionTypeAscenderBase
     {
+        private readonly ITypeStore store;
         private readonly Unifier unifier;
 
         public ExpressionTypeAscender(
@@ -43,12 +44,13 @@ namespace Reko.Typing
             TypeFactory factory) :
                 base(program, factory)
         {
+            this.store = store;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
         }
 
         protected override DataType RecordDataType(DataType dt, Expression exp)
         {
-            var tv = exp.TypeVariable!;
+            var tv = store.GetTypeVariable(exp);
             tv.DataType = unifier.Unify(tv.DataType, dt)!;
             tv.OriginalDataType = unifier.Unify(tv.OriginalDataType, dt)!;
             return tv.DataType;
@@ -56,8 +58,8 @@ namespace Reko.Typing
 
         protected override DataType EnsureDataType(DataType dt, Expression exp)
         {
-            var tv = exp.TypeVariable!;
-            if (tv.DataType == null)
+            var tv = store.GetTypeVariable(exp);
+            if (tv.DataType is null)
             {
                 tv.DataType = dt;
                 tv.OriginalDataType = dt;

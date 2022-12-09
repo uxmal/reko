@@ -12,9 +12,6 @@ Eq_n g_t000E;
 Eq_n g_t0010;
 Eq_n g_t0018;
 byte g_b001A; // 0000001A
-Eq_n g_t0020;
-<anonymous> g_t0021; // 00000021
-Eq_n g_t002B;
 Eq_n g_t0054;
 Eq_n g_t0069;
 Eq_n g_t0267;
@@ -86,7 +83,5 @@ Eq_n g_tFBEE0054;
 Eq_n g_tFFFFF402;
 Eq_n g_tFFFFF802;
 Eq_n g_tFFFFFC02;
-Eq_n g_tFFFFFFC6;
-Eq_n g_tFFFFFFF2;
 Eq_n g_tFFFFFFFC;
 byte g_bFFFFFFFF; // FFFFFFFF

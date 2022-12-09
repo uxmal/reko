@@ -10,7 +10,7 @@
 void deregister_tm_clones()
 {
 	if (false && 0x00 != 0x00)
-		fn00000000(0x80002724);
+		fn00000000(&g_b80002724);
 }
 
 // 800000AE: void register_tm_clones()
@@ -23,7 +23,7 @@ void register_tm_clones()
 		d0_n = 0x01;
 	int32 d0_n = d0_n >> 0x01;
 	if (d0_n != 0x00 && 0x00 != 0x00)
-		fn00000000(0x80002724, d0_n);
+		fn00000000(&g_b80002724, d0_n);
 }
 
 // 800000E4: void __do_global_dtors_aux()
@@ -67,7 +67,7 @@ void frame_dummy()
 		fn00000000(0x8000065C, 0x8000272A);
 	if (g_dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		fn00000000(0x8000271C);
+		fn00000000(&g_dw8000271C);
 		register_tm_clones();
 	}
 	else
@@ -158,7 +158,7 @@ void __do_global_ctors_aux()
 	ptr32 fp;
 	<anonymous> * a0_n = g_ptr8000270C;
 	ptr32 a6_n = fp - 0x04;
-	ptr32 a2_n = 0x8000270C;
+	<anonymous> ** a2_n = &g_ptr8000270C;
 	while (a0_n != (<anonymous> *) -1)
 	{
 		struct Eq_n * a2_n;

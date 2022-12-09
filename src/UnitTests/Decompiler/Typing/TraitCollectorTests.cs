@@ -557,8 +557,11 @@ T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
 
     public class TestTraitHandler : ITraitHandler
     {
+        private readonly ITypeStore store;
+
         public TestTraitHandler(TypeStore store)
         {
+            this.store = store;
             this.Traits = new TraitMapping(store);
         }
 
@@ -575,49 +578,51 @@ T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
         {
         }
 
+        private TypeVariable TypeVar(Expression e) => store.GetTypeVariable(e);
+
         public DataType DataTypeTrait(Expression exp, DataType p)
         {
             if (p is null)
                 throw new ArgumentNullException(nameof(p));
-            Traits.AddTrait(exp.TypeVariable, new TraitDataType(p));
+            Traits.AddTrait(TypeVar(exp), new TraitDataType(p));
             return p;
         }
 
         public DataType EqualTrait(Expression t1, Expression t2)
         {
             if (t1 != null && t2 != null)
-                Traits.AddTrait(t1.TypeVariable, new TraitEqual(t2.TypeVariable));
+                Traits.AddTrait(TypeVar(t1), new TraitEqual(TypeVar(t2)));
             return null;
         }
 
         public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
         {
-            return Traits.AddTrait(function.TypeVariable, new TraitFunc(function.TypeVariable, funcPtrSize, ret, actuals));
+            return Traits.AddTrait(TypeVar(function), new TraitFunc(TypeVar(function), funcPtrSize, ret, actuals));
         }
 
         public DataType MemAccessArrayTrait(Expression tBase, Expression tStruct, int structPtrSize, int offset, int elementSize, int length, Expression tAccess)
         {
-            return Traits.AddTrait(tStruct.TypeVariable, new TraitMemArray(tBase != null ? tBase.TypeVariable : null, structPtrSize, offset, elementSize, length, tAccess.TypeVariable));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMemArray(tBase != null ? TypeVar(tBase) : null, structPtrSize, offset, elementSize, length, TypeVar(tAccess)));
         }
 
         public DataType MemAccessTrait(Expression tBase, Expression tStruct, int structPtrSize, Expression tField, int offset)
         {
-            return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable: null, structPtrSize, tField.TypeVariable, offset));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMem(tBase != null ? TypeVar(tBase) : null, structPtrSize, TypeVar(tField), offset));
         }
 
         public DataType MemFieldTrait(Expression tBase, Expression tStruct, Expression tField, int offset)
         {
-            return Traits.AddTrait(tStruct.TypeVariable, new TraitMem(tBase != null ? tBase.TypeVariable : null, 0, tField.TypeVariable, offset));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMem(tBase != null ? TypeVar(tBase) : null, 0, TypeVar(tField), offset));
         }
 
         public DataType MemSizeTrait(Expression tBase, Expression tStruct, int size)
         {
-            return Traits.AddTrait(tStruct.TypeVariable, new TraitMemSize(size));
+            return Traits.AddTrait(TypeVar(tStruct), new TraitMemSize(size));
         }
 
         public DataType PointerTrait(Expression tPtr, int ptrSize, Expression tPointee)
         {
-            return Traits.AddTrait(tPtr.TypeVariable, new TraitPointer(tPointee.TypeVariable));
+            return Traits.AddTrait(TypeVar(tPtr), new TraitPointer(TypeVar(tPointee)));
         }
 
         #endregion

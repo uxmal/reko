@@ -7,7 +7,10 @@
 Eq_n g_a0200[] = // 0200
 	{
 	};
-struct Eq_n * pxCurrentTCB = null; // 0202
+Eq_n pxCurrentTCB = // 0202
+	{
+		null
+	};
 word16 uxTasksDeleted = 0x00; // 0204
 word16 uxCurrentNumberOfTasks = 0x00; // 0206
 Eq_n xTickCount = // 0208

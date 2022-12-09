@@ -358,7 +358,7 @@ void fn00401663()
 	tLoc10.dwHighDateTime = (DWORD) 0x00;
 	Eq_n eax_n = g_t403004;
 	if (eax_n != 0xBB40E64E && (eax_n & 0xFFFF0000) != 0x00)
-		g_dw403000 = ~eax_n;
+		g_t403000 = ~eax_n;
 	else
 	{
 		GetSystemTimeAsFileTime(&tLoc10);
@@ -370,7 +370,7 @@ void fn00401663()
 		else if ((ecx_n & 0xFFFF0000) == 0x00)
 			ecx_n |= (ecx_n | 0x4711) << 0x10;
 		g_t403004 = ecx_n;
-		g_dw403000 = ~ecx_n;
+		g_t403000 = ~ecx_n;
 	}
 }
 
@@ -536,7 +536,7 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 	esp_n->dwFFFFFFFC = ebx;
 	esp_n->tFFFFFFF8 = esi;
 	esp_n->tFFFFFFF4 = edi;
-	esp_n->dwFFFFFFF0 = g_t403004 ^ fp + 8;
+	esp_n->tFFFFFFF0 = g_t403004 ^ fp + 8;
 	esp_n->tFFFFFFEC = dwArg00;
 	fs->ptr0000 = fp - 8;
 	return fp + 8;

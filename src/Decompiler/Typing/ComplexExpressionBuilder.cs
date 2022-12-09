@@ -24,6 +24,8 @@ using Reko.Core.Types;
 using Reko.Core.Operators;
 using System.Diagnostics;
 using Reko.Core;
+using Reko.Core.Code;
+using System.Numerics;
 
 namespace Reko.Typing
 {
@@ -45,6 +47,7 @@ namespace Reko.Typing
     public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
     {
         private readonly Program program;
+        private readonly ITypeStore store;
         private Expression? expComplex;         // The expression we wish to convert to high-level code.
         private Expression? index;              // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
         private readonly Expression? basePtr;   // Non-null if x86-style base segment present.
@@ -58,12 +61,14 @@ namespace Reko.Typing
 
         public ComplexExpressionBuilder(
             Program program,
+            ITypeStore store,
             Expression? basePtr,
             Expression complex,
             Expression? index,
             int offset)
         {
             this.program = program;
+            this.store = store;
             this.basePtr = basePtr;
             this.expComplex = complex;
             this.index = index;
@@ -80,14 +85,14 @@ namespace Reko.Typing
         {
             depth = 0; //$DEBUG;
             this.enclosingPtr = null;
-            if (expComplex!.TypeVariable != null)
+            if (store.TryGetTypeVariable(expComplex!, out var tvComplex))
             {
-                this.dtComplex = expComplex.TypeVariable.DataType;
-                this.dtComplexOrig = expComplex.TypeVariable.OriginalDataType;
+                this.dtComplex = tvComplex.DataType;
+                this.dtComplexOrig = tvComplex.OriginalDataType;
             }
             else
             {
-                this.dtComplex = expComplex.DataType;
+                this.dtComplex = expComplex!.DataType;
                 this.dtComplexOrig = expComplex.DataType;
             }
             var dtComplex = this.dtComplex;

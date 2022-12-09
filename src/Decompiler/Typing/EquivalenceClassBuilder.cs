@@ -91,7 +91,7 @@ namespace Reko.Typing
                 var selector = segment.Address.Selector;
                 if (selector.HasValue)
                 {
-                    segment.Identifier!.TypeVariable = null;
+                    store.ClearTypeVariable(segment.Identifier);
                     var tvSelector = store.EnsureExpressionTypeVariable(factory, segment.Address, segment.Identifier);
                     this.segTypevars[selector.Value] = tvSelector;
                     tvSelector.OriginalDataType = factory.CreatePointer(
@@ -153,7 +153,9 @@ namespace Reko.Typing
 				if (sig != null && (!sig.IsVariadic || i < sig.Parameters!.Length))
 				{
 					EnsureTypeVariable(sig.Parameters![i]);
-					store.MergeClasses(appl.Arguments[i].TypeVariable!, sig.Parameters[i].TypeVariable!);
+                    var tvArgument = store.GetTypeVariable(appl.Arguments[i]);
+                    var tvParameter = store.GetTypeVariable(sig.Parameters[i]);
+                    store.MergeClasses(tvArgument, tvParameter);
 				}
 			}
 			EnsureTypeVariable(appl);
@@ -171,14 +173,14 @@ namespace Reko.Typing
 		{
 			a.Src.Accept(this);
 			a.Dst.Accept(this);
-			store.MergeClasses(a.Dst.TypeVariable!, a.Src.TypeVariable!);
+			store.MergeClasses(store.GetTypeVariable(a.Dst), store.GetTypeVariable(a.Src));
 		}
 
 		public override void VisitStore(Store s)
 		{
 			s.Src.Accept(this);
 			s.Dst.Accept(this);
-			store.MergeClasses(s.Dst.TypeVariable!, s.Src.TypeVariable!);
+			store.MergeClasses(store.GetTypeVariable(s.Dst), store.GetTypeVariable(s.Src));
 		}
 
         public override void VisitAddress(Address addr)
@@ -192,8 +194,8 @@ namespace Reko.Typing
 			binExp.Right.Accept(this);
 			if (binExp.Operator is ConditionalOperator)
 			{
-				store.MergeClasses(binExp.Left.TypeVariable!, binExp.Right.TypeVariable!);
-			}			
+				store.MergeClasses(store.GetTypeVariable(binExp.Left), store.GetTypeVariable(binExp.Right));
+			}
 			EnsureTypeVariable(binExp);
 		}
 
@@ -209,13 +211,12 @@ namespace Reko.Typing
             {
                 if (segTypevars.TryGetValue(c.ToUInt16(), out var tv))
                 {
-                    c.TypeVariable = tv;
+                    store.SetTypeVariable(c, tv);
                 }
                 else
                 {
-                    EnsureTypeVariable(c);
-
-                    segTypevars[c.ToUInt16()] = c.TypeVariable!;
+                    tv = EnsureTypeVariable(c)!;
+                    segTypevars[c.ToUInt16()] = tv;
                 }
                 return;
             }
@@ -246,7 +247,7 @@ namespace Reko.Typing
 			if (decl.Expression != null)
 			{
 				decl.Expression.Accept(this);
-				store.MergeClasses(decl.Identifier.TypeVariable!, decl.Expression.TypeVariable!);
+				store.MergeClasses(store.GetTypeVariable(decl.Identifier), store.GetTypeVariable(decl.Expression));
 			}
 		}
 
@@ -305,19 +306,17 @@ namespace Reko.Typing
 
         public override void VisitReturnInstruction(ReturnInstruction ret)
         {
-            if (ret.Expression == null)
+            if (ret.Expression is null)
                 return;
             ret.Expression.Accept(this);
             if (signature != null && !signature.HasVoidReturn)
             {
-                if (signature.ReturnValue.TypeVariable == null)
+                if (!store.TryGetTypeVariable(signature.ReturnValue, out var tvReturn))
                 {
                     trace.Warn("Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur!.Address, stmCur.Block.Procedure.Name);
                     return;
                 }
-                store.MergeClasses(
-                    signature.ReturnValue.TypeVariable,
-                    ret.Expression.TypeVariable!);
+                store.MergeClasses(tvReturn, store.GetTypeVariable(ret.Expression));
             }
         }
 
@@ -332,7 +331,7 @@ namespace Reko.Typing
 		{
 			phi.Src.Accept(this);
 			phi.Dst.Accept(this);
-			store.MergeClasses(phi.Src.TypeVariable!, phi.Dst.TypeVariable!);
+			store.MergeClasses(store.GetTypeVariable(phi.Src), store.GetTypeVariable(phi.Dst));
 		}
 
 		public override void VisitPhiFunction(PhiFunction phi)
@@ -341,7 +340,7 @@ namespace Reko.Typing
 			foreach (var arg in phi.Arguments)
 			{
 				arg.Value.Accept(this);
-				store.MergeClasses(tPhi, arg.Value.TypeVariable!);
+				store.MergeClasses(tPhi, store.GetTypeVariable(arg.Value));
 			}
 		}
 
@@ -351,7 +350,7 @@ namespace Reko.Typing
 			VisitProcedure(pc.Procedure);
 			if (pc.Procedure.Signature.ParametersValid)
 			{
-				store.MergeClasses(pc.TypeVariable!, pc.Procedure.Signature.TypeVariable!);
+				store.MergeClasses(store.GetTypeVariable(pc), pc.Procedure.Signature.TypeVariable!);
 				signature = pc.Procedure.Signature;
 			}
 		}

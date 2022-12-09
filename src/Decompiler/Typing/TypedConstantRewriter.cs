@@ -36,6 +36,7 @@ namespace Reko.Typing
 	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
         private readonly Program program;
+        private readonly ITypeStore store;
         private readonly IPlatform platform;
 		private readonly Identifier globals;
         private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
@@ -45,10 +46,11 @@ namespace Reko.Typing
 		private PrimitiveType? pOrig;
 		private bool dereferenced;
 
-        public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
+        public TypedConstantRewriter(Program program, ITypeStore store, DecompilerEventListener eventListener)
 		{
-            this.eventListener = eventListener;
             this.program = program;
+            this.store = store;
+            this.eventListener = eventListener;
             this.platform = program.Platform;
             this.globals = program.Globals;
             if (program.SegmentMap != null)
@@ -74,19 +76,19 @@ namespace Reko.Typing
             this.c = c;
             this.basePtr = basePtr;
             DataType dtInferred = c.DataType;
-            if (dtInferred == null)
+            if (dtInferred is null)
             {
                 eventListener.Warn(
-                    $"The equivalence class {c.TypeVariable!.Name} has a null data type");
-                dtInferred = c.TypeVariable.DataType;
+                    $"The equivalence class {store.GetTypeVariable(c).Name} has a null data type");
+                dtInferred = store.GetDataTypeOf(c)!;
             }
             else
             {
                 this.pOrig = (c.DataType as PrimitiveType)!;
-                if (c.TypeVariable != null)
+                if (store.TryGetTypeVariable(c, out var tvConst))
                 {
-                    dtInferred = c.TypeVariable.DataType;
-                    this.pOrig = (c.TypeVariable.OriginalDataType as PrimitiveType)!;
+                    dtInferred = tvConst.DataType;
+                    this.pOrig = (tvConst.OriginalDataType as PrimitiveType)!;
                 }
             }
             var dt = dtInferred.ResolveAs<DataType>()!;
@@ -105,7 +107,7 @@ namespace Reko.Typing
                         addr.Selector.Value);
                     return addr;
                 }
-                var ptrSeg = segId.TypeVariable!.DataType.ResolveAs<Pointer>();
+                var ptrSeg = store.GetTypeVariable(segId).DataType.ResolveAs<Pointer>();
                 if (ptrSeg == null)
                 {
                     //$TODO: what should the warning be?
@@ -119,7 +121,7 @@ namespace Reko.Typing
                     return x;
                 }
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>()!;
-                var dt = addr.TypeVariable!.DataType.ResolveAs<Pointer>()!;
+                var dt = store.GetTypeVariable(addr).DataType.ResolveAs<Pointer>()!;
                 this.c = Constant.Create(
                     PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
@@ -141,16 +143,17 @@ namespace Reko.Typing
                 }
                 else
                 {
-                    var un = new UnaryExpression(Operator.AddrOf, addr.TypeVariable!.DataType, ex);
+                    var un = new UnaryExpression(Operator.AddrOf, store.GetTypeVariable(addr).DataType, ex);
                     return un;
                 }
             }
             else
             {
                 this.c = addr.ToConstant();
-                this.c.TypeVariable = addr.TypeVariable;
-                var dtInferred = addr.TypeVariable!.DataType.ResolveAs<DataType>()!;
-                this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
+                var tvAddr = store.GetTypeVariable(addr);
+                store.SetTypeVariable(this.c, tvAddr); //$REVIEW: iffy, we take over the type variable, is this ok?
+                var dtInferred = tvAddr.DataType!.ResolveAs<DataType>()!;
+                this.pOrig = tvAddr.OriginalDataType as PrimitiveType;
                 this.dereferenced = dereferenced;
                 return dtInferred.Accept(this);
             }
@@ -171,9 +174,9 @@ namespace Reko.Typing
 		{
             get
             {
-                if (globals != null && globals.TypeVariable != null)
+                if (globals != null && store.TryGetTypeVariable(globals, out var tvGlobals))
                 {
-                    if (globals.TypeVariable.DataType is Pointer pGlob)
+                    if (tvGlobals.DataType is Pointer pGlob)
                     {
                         return pGlob.Pointee.ResolveAs<StructureType>();
                     }
@@ -279,7 +282,7 @@ namespace Reko.Typing
                     var np = program.Platform.MakeAddressFromConstant(c, false)!;
                     if (np is null)
                         return c;
-                    np.TypeVariable = c.TypeVariable;
+                    store.SetTypeVariable(np, store.GetTypeVariable(c));
                     np.DataType = c.DataType;
                     return np;
                 }
@@ -290,10 +293,8 @@ namespace Reko.Typing
                 if (addr is null || !program.SegmentMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should emit a reinterpret_cast here.
-                    e = new Cast(ptr, c)
-                    {
-                        TypeVariable = c.TypeVariable
-                    };
+                    e = new Cast(ptr, c);
+                    store.SetTypeVariable(e, store.GetTypeVariable(c));
                     if (dereferenced)
                     {
                         e = new Dereference(ptr.Pointee, e);
@@ -414,7 +415,7 @@ namespace Reko.Typing
             if (dereferenced || f.Offset != offset)
             {
                 var ceb = new ComplexExpressionBuilder(
-                    program, null, globals, null, offset);
+                    program, store, null, globals, null, offset);
                 return ceb.BuildComplex(dereferenced);
             }
             //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
@@ -500,8 +501,8 @@ namespace Reko.Typing
 
 		public Expression VisitStructure(StructureType str)
 		{
-            c!.TypeVariable!.DataType = str;
-            return c;
+            store.GetTypeVariable(c!).DataType = str;
+            return c!;
 		}
 
 		public Expression VisitUnion(UnionType ut)
@@ -516,8 +517,8 @@ namespace Reko.Typing
                 //$REVIEW: should emit a warning.
                 a = ut.Alternatives.Values[0];
             }
-			c!.TypeVariable!.DataType = a.DataType;
-            return c;
+			store.GetTypeVariable(c!).DataType = a.DataType;
+            return c!;
 		}
 
         public Expression VisitTypeReference(TypeReference typeref)

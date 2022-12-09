@@ -105,7 +105,7 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 			{
 				word16 v40_n = g_a1758[(int32) (int16) d0_n * 2];
 				word32 d2_n;
-				(0x1758 + (int32) v40_n)();
+				g_a1758[(int32) v40_n]();
 				return;
 			}
 			byte v42_n = *dwArg08_n;

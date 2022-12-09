@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
             e.Accept(exa);
             exd.MeetDataType(e, dt);
-            e.Accept(exd, e.TypeVariable);
+            e.Accept(exd, store.GetTypeVariable(e));
 
             Verify(outputFileName);
         }
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             {
                 var result = t.Item1.Accept(exa);
                 exd.MeetDataType(t.Item1, t.Item2);
-                t.Item1.Accept(exd, t.Item1.TypeVariable);
+                t.Item1.Accept(exd, store.GetTypeVariable(t.Item1));
             }
             Verify(outputFileName);
         }
@@ -246,9 +246,9 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             var sig = FunctionType.Action(new[] { Id("r", PrimitiveType.Real32) });
-            store.EnsureExpressionTypeVariable(factory, null, p);
-            p.TypeVariable.OriginalDataType = PointerTo(sig);
-            p.TypeVariable.DataType = PointerTo(sig);
+            var tv = store.EnsureExpressionTypeVariable(factory, null, p);
+            tv.OriginalDataType = PointerTo(sig);
+            tv.DataType = PointerTo(sig);
             RunTest(
                 "Typing/ExdIndirectCall.txt",
                 (
@@ -275,10 +275,10 @@ namespace Reko.UnitTests.Decompiler.Typing
         public void ExdReferenceToUnknown()
         {
             var p = Id("p", PrimitiveType.Word32);
-            store.EnsureExpressionTypeVariable(factory, null, p);
-            p.TypeVariable.OriginalDataType = PointerTo(
+            var tv = store.EnsureExpressionTypeVariable(factory, null, p);
+            tv.OriginalDataType = PointerTo(
                 new TypeReference("UNKNOWN_TYPE", new UnknownType()));
-            p.TypeVariable.DataType = PointerTo(
+            tv.DataType = PointerTo(
                 new TypeReference("UNKNOWN_TYPE", new UnknownType()));
             RunTest(
                 m.Mem(
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                     m.IAdd(p, m.Word32(4))),
                 PrimitiveType.Word32,
                 "Typing/ExdReferenceToUnknown.txt");
-            var ptr = p.TypeVariable.OriginalDataType as Pointer;
+            var ptr = tv.OriginalDataType as Pointer;
             Assert.IsNotNull(ptr, "Should be pointer");
             var tRef = ptr.Pointee as TypeReference;
             Assert.IsNotNull(tRef, "Should be type reference");

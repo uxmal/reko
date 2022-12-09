@@ -2206,7 +2206,7 @@ int64 fn00000000000182B4(int64 a0, union Eq_n & a3Out, union Eq_n & a4Out)
 // 00000000000182E8: void fn00000000000182E8(Register word64 ra, Register word64 a0, Register word64 a1, Register word64 a2)
 void fn00000000000182E8(word64 ra, word64 a0, word64 a1, word64 a2)
 {
-	int64 s2_n = 106016 - 106008;
+	int64 s2_n = 106016 - &g_ptr19E18;
 	<anonymous> ** s0_n = &g_ptr19E18;
 	int64 s2_n = s2_n >> 0x03;
 	if (s2_n >> 0x03 != 0x00)

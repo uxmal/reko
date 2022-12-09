@@ -20,7 +20,7 @@ void _start(word64 r14)
 //      __do_global_dtors_aux
 void deregister_tm_clones(<anonymous> * r14)
 {
-	if (8303 - 0x2068 > g_qw08C8)
+	if (8303 - &g_b2068 > g_qw08C8)
 	{
 		<anonymous> * r1_n = g_ptr2030;
 		if (r1_n != null)
@@ -40,7 +40,7 @@ void deregister_tm_clones(<anonymous> * r14)
 //      frame_dummy
 void register_tm_clones(<anonymous> * r14)
 {
-	int64 r3_n = 0x2068 - 0x2068;
+	byte * r3_n = &g_b2068 - &g_b2068;
 	if ((r3_n >> 3) + ((r3_n >> 3) >>u 63) >> 1 != 0x00)
 	{
 		<anonymous> * r1_n = g_ptr2050;
@@ -75,7 +75,7 @@ void __do_global_dtors_aux(word64 r11, word64 r12, word64 r13, <anonymous> * r14
 void frame_dummy()
 {
 	ptr64 fp;
-	ptr64 r13_n = 0x08D8;
+	ci8 * r13_n = &g_b08D8;
 	ptr64 r15_n = fp - 320;
 	Eq_n CC_n = g_b08D8 > g_b1E18;
 	if (g_b08D8 == g_b1E18)
@@ -144,7 +144,7 @@ void main(word64 r3)
 void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word64 r11, word64 r13)
 {
 	ptr64 fp;
-	int64 r11_n = 0x1E10 - 7688;
+	int64 r11_n = 0x1E10 - &g_ptr1E08;
 	struct Eq_n * r15_n = fp - 320;
 	word64 r8_n;
 	word64 r9_n;

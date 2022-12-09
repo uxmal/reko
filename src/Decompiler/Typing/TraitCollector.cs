@@ -264,10 +264,10 @@ namespace Reko.Typing
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				appl.Arguments[i].Accept(this);
-				paramTypes[i] = appl.Arguments[i].TypeVariable!;
+				paramTypes[i] = store.GetTypeVariable(appl.Arguments[i]);
 			}
 			var dt = handler.DataTypeTrait(appl, appl.DataType); 
-			handler.FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable!, paramTypes);
+			handler.FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, store.GetTypeVariable(appl), paramTypes);
 
 			BindActualTypesToFormalTypes(appl);
 
@@ -330,7 +330,7 @@ namespace Reko.Typing
 					ivCur = MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
 			} 
 
-			TypeVariable tvExp = binExp.TypeVariable!;
+			TypeVariable tvExp = store.GetTypeVariable(binExp);
             //$BUGBUG: This needs to be redone because the domain of the operation is now in the OPERATOR, not the operands.
 			switch (binExp.Operator.Type)
             {
@@ -553,7 +553,7 @@ namespace Reko.Typing
 		{
             access.BasePointer.Accept(this);
             access.EffectiveAddress.Accept(this);
-			TypeVariable tAccess = access.TypeVariable!;
+			TypeVariable tAccess = store.GetTypeVariable(access);
 			var dt = handler.DataTypeTrait(access, access.DataType);
 			CollectEffectiveAddress(access.BasePointer, access.BasePointer.DataType.BitSize, access, access.EffectiveAddress);
             return dt;
@@ -570,7 +570,7 @@ namespace Reko.Typing
 
 		public DataType VisitPhiFunction(PhiFunction phi)
 		{
-			TypeVariable tPhi = phi.TypeVariable!;
+			TypeVariable tPhi = store.GetTypeVariable(phi);
 			foreach (var arg in phi.Arguments)
 			{
 				arg.Value.Accept(this);
@@ -592,7 +592,7 @@ namespace Reko.Typing
 				argTypes = new DataType[sig.Parameters.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
 				{
-					argTypes[i] = sig.Parameters[i].TypeVariable!;
+					argTypes[i] = store.GetTypeVariable(sig.Parameters[i]);
 				}
 			} 
 			else

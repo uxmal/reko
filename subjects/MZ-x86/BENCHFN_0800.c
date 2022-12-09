@@ -79,14 +79,14 @@ void fn0800-01DA(char * ds_dx, word16 cx)
 void _abort()
 {
 	word16 cx;
-	<unknown> Eq_n::* dx;
+	char Eq_n::* dx;
 	fn0800-01E9(cx, dx);
 }
 
-// 0800:01E9: void fn0800-01E9(Register word16 cx, Register (memptr (ptr16 Eq_n) Eq_n) dx)
+// 0800:01E9: void fn0800-01E9(Register word16 cx, Register (memptr (ptr16 Eq_n) char) dx)
 // Called from:
 //      __setenvp
-void fn0800-01E9(word16 cx, <unknown> Eq_n::* dx)
+void fn0800-01E9(word16 cx, char Eq_n::* dx)
 {
 	fn0800-01DA(SEQ(seg0800->t01F8, dx), cx);
 	__exit();
@@ -234,8 +234,8 @@ void _exit(struct Eq_n * ds, word16 wArg02)
 	__exit();
 }
 
-// 0800:0336: void __setargv(Register (ptr16 Eq_n) ds, Stack word16 wArg00)
-void __setargv(struct Eq_n * ds, word16 wArg00)
+// 0800:0336: void __setargv(Register (ptr16 Eq_n) ds, Stack Eq_n wArg00)
+void __setargv(struct Eq_n * ds, Eq_n wArg00)
 {
 	mp16 fp;
 	struct Eq_n * ss;

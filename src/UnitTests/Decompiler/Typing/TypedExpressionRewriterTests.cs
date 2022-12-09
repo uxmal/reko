@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                ter = new TypedExpressionRewriter(program, eventListener);
+                ter = new TypedExpressionRewriter(program, program.TypeStore, eventListener);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            var ter = new TypedExpressionRewriter(program, eventListener);
+            var ter = new TypedExpressionRewriter(program, program.TypeStore, eventListener);
             try
             {
                 ter.RewriteProgram(program);
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            ter = new TypedExpressionRewriter(program, null);
+            ter = new TypedExpressionRewriter(program, program.TypeStore, null);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -274,9 +274,14 @@ namespace Reko.UnitTests.Decompiler.Typing
             Constant i = Constant.Int32(1);
             Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass = new Assignment(x, r);
-            TypeVariable tvR = r.TypeVariable = program.TypeFactory.CreateTypeVariable();
-            TypeVariable tvI = i.TypeVariable = program.TypeFactory.CreateTypeVariable();
-            TypeVariable tvX = x.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvR = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvI = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvX = program.TypeFactory.CreateTypeVariable();
+
+            program.TypeStore.SetTypeVariable(r, tvR);
+            program.TypeStore.SetTypeVariable(i, tvI);
+            program.TypeStore.SetTypeVariable(x, tvX);
+
             program.TypeStore.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
             UnionType u = program.TypeFactory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
             tvR.OriginalDataType = r.DataType;
@@ -286,7 +291,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             tvI.DataType = u;
             tvX.DataType = u;
             ctn.RenameAllTypes(program.TypeStore);
-            var ter = new TypedExpressionRewriter(program, null);
+            var ter = new TypedExpressionRewriter(program, program.TypeStore, null);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u0 = 3.0F", instr.ToString());
         }

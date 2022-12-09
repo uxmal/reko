@@ -93,7 +93,7 @@ namespace Reko.Typing
 			{
                 if (eventListener.IsCanceled())
                     return false;
-                if (eq != program.Globals.TypeVariable!.Class &&
+                if (eq != store.GetTypeVariable(program.Globals).Class &&
                     (eq.DataType is PrimitiveType ||
                     eq.DataType is VoidType ||
 					eq.DataType is EquivalenceClass ||

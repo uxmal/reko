@@ -76,8 +76,8 @@ namespace Reko.Typing
             if (dtNew == null)
                 return exp.DataType;
 
-            DataType dtCurrent = store.GetDataTypeOf(exp);
-            if (dtCurrent != null)
+            DataType? dtCurrent = store.GetDataTypeOf(exp);
+            if (dtCurrent is not null)
             {
                 var u = unifier.Unify(dtCurrent, dtNew)!;
                 dtNew = u;
@@ -136,7 +136,7 @@ namespace Reko.Typing
 		{
 			var element = factory.CreateStructureType(null, elementSize);
 			if (expField != null)
-				element.Fields.Add(0, expField.TypeVariable!);
+				element.Fields.Add(0, this.store.GetTypeVariable(expField));
             var tvElement = store.CreateTypeVariable(factory);
             tvElement.OriginalDataType = element;
 
@@ -146,13 +146,13 @@ namespace Reko.Typing
 		
 		public DataType MemAccessTrait(Expression? tBase, Expression tStruct, int structPtrBitSize, Expression tField, int offset)
 		{
-			return MemoryAccessCommon(tBase, tStruct, offset, tField.TypeVariable!, structPtrBitSize);
+			return MemoryAccessCommon(tBase, tStruct, offset, store.GetTypeVariable(tField), structPtrBitSize);
 		}
 
 		public DataType MemFieldTrait(Expression? tBase, Expression tStruct, Expression tField, int offset)
         {
             var s = factory.CreateStructureType(null, 0);
-            var field = new StructureField(offset, tField.TypeVariable!);
+            var field = new StructureField(offset, store.GetTypeVariable(tField));
             s.Fields.Add(field);
             return MergeIntoDataType(tStruct, s);
         }
@@ -164,7 +164,7 @@ namespace Reko.Typing
             s.Fields.Add(field);
 
             var pointer = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable!, s, structPtrBitSize)
+                ? (DataType)factory.CreateMemberPointer(store.GetTypeVariable(tBase), s, structPtrBitSize)
                 : (DataType)factory.CreatePointer(s, structPtrBitSize);
             return MergeIntoDataType(tStruct, pointer);
         }
@@ -175,14 +175,14 @@ namespace Reko.Typing
 				throw new ArgumentOutOfRangeException("size must be positive");
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
-                ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable!, s, platform.FramePointerType.Size)
+                ? (DataType)factory.CreateMemberPointer(store.GetTypeVariable(tBase), s, platform.FramePointerType.Size)
 				: (DataType)factory.CreatePointer(s, platform.PointerType.BitSize);
 			return MergeIntoDataType(tStruct, ptr);
 		}
 
 		public DataType PointerTrait(Expression ptrExp, int ptrSize, Expression tPointee)
 		{
-			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee), ptrSize * DataType.BitsPerByte);
+			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee)!, ptrSize * DataType.BitsPerByte);
             return MergeIntoDataType(ptrExp, ptr);
 		}
 		#endregion

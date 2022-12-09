@@ -23,6 +23,7 @@ using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -34,18 +35,45 @@ namespace Reko.Core.Types
     /// </summary>
     public interface ITypeStore
     {
-        DataType GetDataTypeOf(Expression exp);
+        /// <summary>
+        /// Get the inferred data type of <paramref name="exp"/>.
+        /// </summary>
+        DataType? GetDataTypeOf(Expression exp);
         void SetDataTypeOf(Expression exp, DataType dt);
         EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2);
         void Write(bool showExprAddresses, TextWriter writer);
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
         TypeVariable CreateTypeVariable(TypeFactory factory);
+
+        /// <summary>
+        /// Gets the <see cref="TypeVariable" /> associated with the <see cref="Expression"/>
+        /// <paramref name="e""/>.
+        /// </summary>
+        /// <param name="e">Expression whose <see cref="TypeVariable"/> is requested.</param>
+        /// <returns>A <see cref="TypeVariable"/> instance, or null if no type variable
+        /// exists.
+        /// </returns>
+        TypeVariable GetTypeVariable(Expression e);
+
+        /// <summary>
+        /// Sets the type variable corresponding to the expression <paramref name="e"/>.
+        /// </summary>
+        /// <param name="e">Expression whose type variable is to be assigned.</param>
+        /// <param name="tv">The expression's type varaible.</param>
+        void SetTypeVariable(Expression e, TypeVariable tv);
+
+        //$TODO: this is only used temporarily - we eventually want to get rid of this
+        // but it's used in some hacky places.
+        void ClearTypeVariable(Expression expr);
+
+        bool TryGetTypeVariable(Expression expression, [MaybeNullWhen(false)] out TypeVariable tv);
     }
 
     public class TypeStore : ITypeStore
     {
         private readonly SortedList<int, EquivalenceClass> usedClasses;
         private readonly Dictionary<TypeVariable, (Address? uAddr, Expression e)> tvSources;
+        private readonly Dictionary<Expression, TypeVariable> mapExprToTypevar;
 
         public TypeStore()
         {
@@ -53,6 +81,7 @@ namespace Reko.Core.Types
             usedClasses = new SortedList<int, EquivalenceClass>();
             tvSources = new Dictionary<TypeVariable, (Address?,Expression)>();
             SegmentTypes = new Dictionary<ImageSegment, StructureType>();
+            this.mapExprToTypevar = new Dictionary<Expression, TypeVariable>();
         }
 
         /// <summary>
@@ -79,14 +108,14 @@ namespace Reko.Core.Types
 
         public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Address? addr, Expression e, string? name)
         {
-            if (e != null && e.TypeVariable != null)
-                return e.TypeVariable;
+            if (this.TryGetTypeVariable(e, out var tv))
+                return tv;
 
-            TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
+            tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
             AddDebugSource(tv, addr, e!);
             tv.Class = new EquivalenceClass(tv);
             if (e != null)
-                e.TypeVariable = tv;
+                this.SetTypeVariable(e, tv);
             this.TypeVariables.Add(tv);
             this.usedClasses.Add(tv.Class.Number, tv.Class);
             return tv;
@@ -262,25 +291,51 @@ namespace Reko.Core.Types
             writer.WriteLine();
         }
 
-        public DataType GetDataTypeOf(Expression exp)
+        public DataType? GetDataTypeOf(Expression exp)
         {
-            return exp.TypeVariable!.DataType;
+            return this.mapExprToTypevar.TryGetValue(exp, out var tv)
+                ? tv.DataType
+                : null;
+        }
+
+        public TypeVariable GetTypeVariable(Expression expr)
+        {
+            return this.mapExprToTypevar[expr];
+        }
+
+        public bool TryGetTypeVariable(Expression expr, [MaybeNullWhen(false)] out TypeVariable tv)
+        {
+            return this.mapExprToTypevar.TryGetValue(expr, out tv);
         }
 
         public void SetDataTypeOf(Expression expr, DataType dt)
         {
-            expr.TypeVariable!.DataType = dt;
-            expr.TypeVariable.OriginalDataType = dt;
+            var tv = this.mapExprToTypevar[expr];
+            tv.DataType = dt;
+            tv.OriginalDataType = dt;
+        }
+
+        public void SetTypeVariable(Expression expr, TypeVariable tv)
+        {
+            //$TODO: ideally, the type variable of an expression is never updated. 
+            // But this method does get called repeatedly on the same expression
+            // Investigate why.
+            this.mapExprToTypevar[expr] = tv;
+        }
+
+        public void ClearTypeVariable(Expression expr)
+        {
+            mapExprToTypevar.Remove(expr);
         }
 
         public void Clear()
         {
             foreach(var dbg in tvSources.Values)
             {
-                dbg.e.TypeVariable = null;
                 if (dbg.e is ProcedureConstant pc)
                     pc.Procedure.Signature.TypeVariable = null;
             }
+            mapExprToTypevar.Clear();
             TypeVariables.Clear();
             usedClasses.Clear();
             tvSources.Clear();

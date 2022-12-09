@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			Assert.IsNotNull(tv2.Class, "Expected store.EnsureTypeVariable to create equivalence class");
 			tv1.Class.DataType = PrimitiveType.Word32;
 			tv2.Class.DataType = PrimitiveType.Word16;
-            program.Globals.TypeVariable = store.CreateTypeVariable(factory);
+            store.SetTypeVariable(program.Globals, store.CreateTypeVariable(factory));
             program.Globals.DataType = factory.CreateStructureType();
 
             TypeVariable tv3 = store.CreateTypeVariable(factory);

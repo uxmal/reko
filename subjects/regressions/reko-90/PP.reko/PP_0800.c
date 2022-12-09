@@ -14310,14 +14310,14 @@ struct Eq_n * fn0800-9E3E(Eq_n ds)
 	}
 }
 
-// 0800:9E75: Register word16 fn0800-9E75(Register Eq_n ds, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out Eq_n dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut)
+// 0800:9E75: Register word16 fn0800-9E75(Register Eq_n ds, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out Eq_n dxOut, Register out ptr16 bxOut, Register out Eq_n dsOut)
 // Called from:
 //      fn0800-4346
 //      fn0800_A006
 //      fn0800_A080
 //      fn0800_A614
 //      fn0800_BA89
-word16 fn0800-9E75(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, union Eq_n & dxOut, ptr16 & bxOut, struct Eq_n & dsOut)
+word16 fn0800-9E75(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, union Eq_n & dxOut, ptr16 & bxOut, union Eq_n & dsOut)
 {
 	word16 ax;
 	ptr16 bx;
@@ -14331,7 +14331,7 @@ word16 fn0800-9E75(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, union Eq_n & dxOut, ptr1
 		else
 			ax = fn0800-9DA4(wArg04, out bx);
 	}
-	struct Eq_n * ds_n = seg0800->t9D3B;
+	Eq_n ds_n = seg0800->t9D3B;
 	cxOut = cx;
 	dxOut = dx_n;
 	bxOut = bx;
@@ -14368,35 +14368,35 @@ Eq_n fn0800-9E9E(Eq_n ax, union Eq_n & dxOut)
 	}
 }
 
-// 0800:9F02: Register Eq_n fn0800-9F02(Register Eq_n ax, Register out (ptr16 Eq_n) dxOut)
+// 0800:9F02: Register Eq_n fn0800-9F02(Register Eq_n ax, Register out Eq_n dxOut)
 // Called from:
 //      fn0800-9F89
-Eq_n fn0800-9F02(Eq_n ax, struct Eq_n & dxOut)
+Eq_n fn0800-9F02(Eq_n ax, union Eq_n & dxOut)
 {
 	byte ah_n = SLICE(ax, byte, 8);
 	Eq_n ds_n = seg0800->t9D3B;
-	struct Eq_n * dx_n;
+	Eq_n dx_n;
 	cui16 ax_n = fn0800_A215(ds_n, SEQ((uint16) ah_n >> 0x04, ax << 0x04), out dx_n);
 	if (ax_n != ~0x00)
 	{
 		if ((ax_n & 0x0F) == 0x00)
 		{
 l0800_nF25:
-			word16 cx_n = seg0800->t9D37;
-			seg0800->t9D37 = (<unknown>) dx_n;
-			dx_n->t0000 = ax;
-			dx_n->w0002 = cx_n;
+			Eq_n cx_n = seg0800->t9D37;
+			seg0800->t9D37 = dx_n;
+			*dx_n = ax;
+			*((word32) dx_n + 2) = cx_n;
 			dxOut = dx_n;
 			return 0x04;
 		}
 		word16 dx_n;
 		if (fn0800_A215(ds_n, (uint32) (-(ax_n & 0x0F) + 0x10), out dx_n) != ~0x00)
 		{
-			dx_n = (struct Eq_n *) ((char *) &dx_n->t0000 + 1);
+			dx_n = (word32) dx_n + 1;
 			goto l0800_nF25;
 		}
 	}
-	dxOut = 0x00;
+	dxOut.u0 = 0x00;
 	return 0x00;
 }
 
@@ -14452,11 +14452,11 @@ word16 fn0800-9F89(Eq_n ds, Eq_n dwArg02, ptr16 & dxOut, ptr16 & bpOut, ptr16 & 
 	return ax_n;
 }
 
-// 0800:9F92: Register word16 fn0800-9F92(Sequence Eq_n dx_ax, Register Eq_n ds, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// 0800:9F92: Register word16 fn0800-9F92(Sequence Eq_n dx_ax, Register Eq_n ds, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
 // Called from:
 //      fn0800-9F7F
 //      fn0800-9F89
-word16 fn0800-9F92(Eq_n dx_ax, Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
+word16 fn0800-9F92(Eq_n dx_ax, Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	ptr16 si;
 	ptr16 di;
@@ -14466,7 +14466,7 @@ word16 fn0800-9F92(Eq_n dx_ax, Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & si
 	seg0800->t9D3B = ds;
 	if (dx_ax == 0x00)
 	{
-		struct Eq_n * ds_n = seg0800->t9D3B;
+		Eq_n ds_n = seg0800->t9D3B;
 		dxOut = dx;
 		bpOut = wArg00;
 		siOut = si;
@@ -14478,7 +14478,7 @@ word16 fn0800-9F92(Eq_n dx_ax, Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & si
 	{
 		ptr16 bp_n;
 		ptr16 di_n;
-		struct Eq_n * ds_n;
+		Eq_n ds_n;
 		ptr16 dx_n;
 		ptr16 si_n;
 		word16 ax_n = fn0800-9F9F(dx_ax, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
@@ -14491,11 +14491,11 @@ word16 fn0800-9F92(Eq_n dx_ax, Eq_n ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & si
 	}
 }
 
-// 0800:9F9F: Register cu16 fn0800-9F9F(Sequence Eq_n dx_ax, Register out Eq_n dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+// 0800:9F9F: Register cu16 fn0800-9F9F(Sequence Eq_n dx_ax, Register out Eq_n dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
 // Called from:
 //      fn0800-9F89
 //      fn0800-9F92
-cu16 fn0800-9F9F(Eq_n dx_ax, union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
+cu16 fn0800-9F9F(Eq_n dx_ax, union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	ptr16 wArg00;
 	ptr16 wArg02;
@@ -14541,7 +14541,7 @@ cu16 fn0800-9F9F(Eq_n dx_ax, union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, p
 		dx_n.u0 = 0x00;
 	}
 l0800_nFFD:
-	struct Eq_n * ds_n = seg0800->t9D3B;
+	Eq_n ds_n = seg0800->t9D3B;
 	dxOut = dx_n;
 	bpOut = wArg04;
 	siOut = wArg02;

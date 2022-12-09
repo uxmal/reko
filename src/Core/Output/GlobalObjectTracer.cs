@@ -52,7 +52,8 @@ namespace Reko.Core.Output
 
         private StructureFieldCollection GlobalFields(Program program)
         {
-            if (program.Globals.TypeVariable?.DataType is Pointer ptr)
+            if (program.TypeStore.TryGetTypeVariable(program.Globals, out var tvGlobals) &&
+                tvGlobals.DataType is Pointer ptr)
             {
                 var str = ptr.Pointee.ResolveAs<StructureType>();
                 if (str != null)

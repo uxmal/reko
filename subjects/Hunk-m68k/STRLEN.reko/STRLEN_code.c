@@ -264,7 +264,7 @@ void fn000012D0(word32 dwArg04)
 		{
 			do
 				++d2_n;
-			while (((word32[]) 0x1404)[d2_n] != 0x00);
+			while (((<anonymous> *[]) 0x1404)[d2_n] != null);
 		}
 		int32 d2_n;
 		for (d2_n = d2_n - 0x01; d2_n != 0x00; --d2_n)
@@ -294,7 +294,7 @@ void fn0000131C(word32 dwArg04)
 void fn00001354(int32 dwArg04, struct Eq_n * dwArg08)
 {
 	<anonymous> ** a3_n = (<anonymous> **) 0x1400;
-	if (true && *((word32 *) 0x1400) != 0x00)
+	if (true && *((<anonymous> **) 0x1400) != 0x00)
 	{
 		do
 		{

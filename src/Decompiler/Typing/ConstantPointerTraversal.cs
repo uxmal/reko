@@ -60,7 +60,7 @@ namespace Reko.Typing
         public ConstantPointerTraversal(Program program) 
         {
             this.arch = program.Architecture;
-            var ptr = (Pointer) program.Globals.TypeVariable!.DataType;
+            var ptr = (Pointer) program.TypeStore.GetTypeVariable(program.Globals).DataType;
             this.globalStr = (StructureType)((EquivalenceClass) ptr.Pointee).DataType;
             this.segmentMap = program.SegmentMap;
             this.Discoveries = new List<StructureField>();

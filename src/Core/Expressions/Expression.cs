@@ -24,8 +24,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace Reko.Core.Expressions
 {
     /// <summary>
@@ -48,14 +46,6 @@ namespace Reko.Core.Expressions
         /// Data type of this expression.
         /// </summary>
         public DataType DataType { get; set; }
-
-        /// <summary>
-        /// Type variable for the expression.
-        /// </summary>
-        /// <remarks>
-        ///$REVIEW: TypeVariable is nullable because it is only used during type inference. It might be better to store it in
-        /// the TypeStore.
-        public TypeVariable? TypeVariable { get; set; } 		// index to high-level type of this expression.
 
         /// <summary>
         /// Returns true if the expression evaluates to a constant zero.

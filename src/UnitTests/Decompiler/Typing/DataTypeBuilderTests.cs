@@ -71,6 +71,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             Verify(program, outputFile);
         }
 
+        private TypeVariable TypeVar(Expression e) => store.GetTypeVariable(e);
+
         private void Verify(string outputFile)
         {
             Verify(null, outputFile);
@@ -138,10 +140,10 @@ namespace Reko.UnitTests.Decompiler.Typing
             Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
-            store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
+            store.MergeClasses(TypeVar(id1), TypeVar(id2));
 
-            dtb.DataTypeTrait(id1.TypeVariable, id1.DataType);
-            dtb.DataTypeTrait(id2.TypeVariable, id2.DataType);
+            dtb.DataTypeTrait(TypeVar(id1), id1.DataType);
+            dtb.DataTypeTrait(TypeVar(id2), id2.DataType);
             dtb.BuildEquivalenceClassDataTypes();
 
             IList<EquivalenceClass> used = store.UsedEquivalenceClasses;
@@ -156,13 +158,13 @@ namespace Reko.UnitTests.Decompiler.Typing
             Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
-            store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
+            store.MergeClasses(TypeVar(id1), TypeVar(id2));
 
-            dtb.DataTypeTrait(id1.TypeVariable, id1.DataType);
-            dtb.DataTypeTrait(id2.TypeVariable, id2.DataType);
+            dtb.DataTypeTrait(TypeVar(id1), id1.DataType);
+            dtb.DataTypeTrait(TypeVar(id2), id2.DataType);
             dtb.BuildEquivalenceClassDataTypes();
 
-            EquivalenceClass e = id1.TypeVariable.Class;
+            EquivalenceClass e = TypeVar(id1).Class;
             PrimitiveType p = (PrimitiveType) e.DataType;
             Assert.AreEqual(PrimitiveType.Real32, p);
 
@@ -313,7 +315,7 @@ namespace Reko.UnitTests.Decompiler.Typing
         {
             Expression e1 = Constant.Word32(42);
             e1.Accept(eqb);
-            dtb.DataTypeTrait(e1.TypeVariable, e1.DataType);
+            dtb.DataTypeTrait(TypeVar(e1), e1.DataType);
             dtb.BuildEquivalenceClassDataTypes();
             Verify("Typing/DtbTypeVariable.txt");
         }
@@ -325,13 +327,13 @@ namespace Reko.UnitTests.Decompiler.Typing
             Identifier id2 = new Identifier("bar", PrimitiveType.Real32, null);
             id1.Accept(eqb);
             id2.Accept(eqb);
-            store.MergeClasses(id1.TypeVariable, id2.TypeVariable);
+            store.MergeClasses(TypeVar(id1), TypeVar(id2));
 
-            dtb.DataTypeTrait(id1.TypeVariable, id1.DataType);
-            dtb.DataTypeTrait(id2.TypeVariable, id2.DataType);
+            dtb.DataTypeTrait(TypeVar(id1), id1.DataType);
+            dtb.DataTypeTrait(TypeVar(id2), id2.DataType);
             dtb.BuildEquivalenceClassDataTypes();
 
-            UnionType u = (UnionType) id1.TypeVariable.Class.DataType;
+            UnionType u = (UnionType) TypeVar(id1).Class.DataType;
             Assert.AreEqual(2, u.Alternatives.Count);
         }
 

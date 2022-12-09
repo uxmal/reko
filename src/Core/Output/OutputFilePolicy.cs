@@ -87,7 +87,10 @@ namespace Reko.Core.Output
 
         public IEnumerable<(StructureField, Address)> MakeGlobalWorkItems()
         {
-            var globals = program.Globals.TypeVariable?.DataType ?? program.Globals.DataType;
+            var globals = program.TypeStore.TryGetTypeVariable(program.Globals, out var tvGlobals) &&
+                tvGlobals.DataType is not null
+                ? tvGlobals.DataType
+                : program.Globals.DataType;
             if (globals is Pointer pt)
             {
                 var strGlobals = pt.Pointee.ResolveAs<StructureType>();
@@ -103,11 +106,14 @@ namespace Reko.Core.Output
 
         public IEnumerable<(StructureField, Address)> MakeSegmentWorkitems()
         {
+            var typeStore = program.TypeStore;
             foreach (var segment in program.SegmentMap.Segments.Values)
             {
                 if (!segment.Address.Selector.HasValue)
                     continue;
-                if (segment.Identifier?.TypeVariable?.Class.DataType is StructureType strType)
+                if (segment.Identifier is not null && 
+                    typeStore.TryGetTypeVariable(segment.Identifier, out var tvSegment) &&
+                    tvSegment.Class.DataType is StructureType strType)
                 {
                     foreach (var field in strType.Fields)
                     {

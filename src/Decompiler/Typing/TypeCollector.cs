@@ -148,7 +148,7 @@ namespace Reko.Typing
             if (address.Selector.HasValue)
             {
                 if (program.SegmentMap.TryFindSegment(address, out var seg) &&
-                    program.TypeStore.SegmentTypes.TryGetValue(seg, out var structureType))
+                    store.SegmentTypes.TryGetValue(seg, out var structureType))
                 {
                     var f = new StructureField((int) address.Offset, dtField, name);
                     structureType.Fields.Add(f);
@@ -158,7 +158,7 @@ namespace Reko.Typing
             {
                 var offset = (int) address.ToLinear();
                 var f = new StructureField(offset, dtField, name);
-                var ptrGlobals = (Pointer) program.Globals.TypeVariable!.OriginalDataType;
+                var ptrGlobals = (Pointer) store.GetTypeVariable(program.Globals).OriginalDataType;
                 ((StructureType)ptrGlobals.Pointee).Fields.Add(f);
             }
         }
@@ -186,19 +186,19 @@ namespace Reko.Typing
         {
             var dtSrc = ass.Src.Accept(asc);
             desc.MeetDataType(ass.Src, dtSrc);
-            ass.Src.Accept(desc, ass.Src.TypeVariable!);
+            ass.Src.Accept(desc, store.GetTypeVariable(ass.Src));
 
             var dtDst = ass.Dst.Accept(asc);
             desc.MeetDataType(ass.Dst, dtDst);
             desc.MeetDataType(ass.Dst, dtSrc);
-            ass.Dst.Accept(desc, ass.Dst.TypeVariable!);
+            ass.Dst.Accept(desc, store.GetTypeVariable(ass.Dst));
         }
 
         public void VisitBranch(Branch branch)
         {
             branch.Condition.Accept(asc);
             desc.MeetDataType(branch.Condition, PrimitiveType.Bool);
-            branch.Condition.Accept(desc, branch.Condition.TypeVariable!);
+            branch.Condition.Accept(desc, store.GetTypeVariable(branch.Condition));
         }
 
         public void VisitCallInstruction(CallInstruction call)
@@ -209,7 +209,7 @@ namespace Reko.Typing
                           new Pointer(
                               new CodeType(),
                               program.Platform.PointerType.BitSize));
-            call.Callee.Accept(desc, call.Callee.TypeVariable!);
+            call.Callee.Accept(desc, store.GetTypeVariable(call.Callee));
         }
 
         public void VisitComment(CodeComment comment)
@@ -224,11 +224,11 @@ namespace Reko.Typing
             {
                 dtExp = decl.Expression.Accept(asc);
                 desc.MeetDataType(decl.Expression, dtExp);
-                decl.Expression.Accept(desc, decl.Expression.TypeVariable!);
+                decl.Expression.Accept(desc, store.GetTypeVariable(decl.Expression));
             }
             var dt = decl.Identifier.Accept(asc);
             desc.MeetDataType(decl.Identifier, dt);
-            decl.Identifier.Accept(desc, decl.Identifier.TypeVariable!);
+            decl.Identifier.Accept(desc, store.GetTypeVariable(decl.Identifier));
             if (dtExp != null)
             {
                 // OK to do this as this is the _declaration_
@@ -245,7 +245,7 @@ namespace Reko.Typing
         {
             var dt = g.Target.Accept(asc);
             desc.MeetDataType(g.Target, dt);
-            g.Target.Accept(desc, g.Target.TypeVariable!);
+            g.Target.Accept(desc, store.GetTypeVariable(g.Target));
         }
 
         public void VisitPhiAssignment(PhiAssignment phi)
@@ -266,7 +266,7 @@ namespace Reko.Typing
             {
                 var dt = ret.Expression.Accept(asc);
                 desc.MeetDataType(ret.Expression, dt);
-                ret.Expression.Accept(desc, ret.Expression.TypeVariable!);
+                ret.Expression.Accept(desc, store.GetTypeVariable(ret.Expression));
             }
         }
 
@@ -274,32 +274,32 @@ namespace Reko.Typing
         {
             var dt = side.Expression.Accept(asc);
             desc.MeetDataType(side.Expression, dt);
-            side.Expression.Accept(desc, side.Expression.TypeVariable!);
+            side.Expression.Accept(desc, store.GetTypeVariable(side.Expression));
         }
 
         public void VisitStore(Store store)
         {
             var dt = store.Src.Accept(asc);
             desc.MeetDataType(store.Src, dt);
-            store.Src.Accept(desc, store.Src.TypeVariable!);
+            store.Src.Accept(desc, this.store.GetTypeVariable(store.Src));
 
             dt = store.Dst.Accept(asc);
             desc.MeetDataType(store.Dst, dt);
-            store.Dst.Accept(desc, store.Dst.TypeVariable!);
+            store.Dst.Accept(desc, this.store.GetTypeVariable(store.Dst));
         }
 
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             var dt = si.Expression.Accept(asc);
             desc.MeetDataType(si.Expression, dt);
-            si.Expression.Accept(desc, si.Expression.TypeVariable!);
+            si.Expression.Accept(desc, store.GetTypeVariable(si.Expression));
         }
 
         public void VisitUseInstruction(UseInstruction use)
         {
             var dt = use.Expression.Accept(asc);
             desc.MeetDataType(use.Expression, dt);
-            use.Expression.Accept(desc, use.Expression.TypeVariable!);
+            use.Expression.Accept(desc, store.GetTypeVariable(use.Expression));
         }
     }
 }

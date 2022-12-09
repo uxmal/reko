@@ -2946,7 +2946,7 @@ void fn0000D0D6(word32 ap)
 		struct Eq_n * sp_n;
 		word32 ap_n;
 		(g_ptr192B0 + 2)();
-		sp_n->ptrFFFFFFFC = ~0x7B27;
+		sp_n->ptrFFFFFFFC = (struct Eq_n *) ~0x7B27;
 		struct Eq_n * sp_n;
 		struct Eq_n * ap_n;
 		word32 r3_n;

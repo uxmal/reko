@@ -69,7 +69,7 @@ namespace Reko.Typing
         }
 
         protected virtual TypeVariable TypeVar(Expression exp)
-            => exp.TypeVariable!;
+            => store.GetTypeVariable(exp);
         
         public bool VisitAddress(Address addr, TypeVariable tv)
         {
@@ -123,7 +123,6 @@ namespace Reko.Typing
                 if (!sig.IsVariadic || i < parameters.Length)
                 {
                     MeetDataType(appl.Arguments[i], parameters[i].DataType);
-                    parameters[i].Accept(this, TypeVar(parameters[i]));
                 }
             }
         }

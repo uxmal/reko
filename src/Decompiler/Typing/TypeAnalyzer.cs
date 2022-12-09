@@ -80,13 +80,13 @@ namespace Reko.Typing
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store, eventListener);
             tyco = new TypeCollector(
-                program.TypeFactory, program.TypeStore, program,
+                program.TypeFactory, store, program,
                 eventListener);
             //dpa = new DerivedPointerAnalysis(factory, store, program.Architecture);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,program, eventListener);
             ctn = new ComplexTypeNamer();
-            ter = new TypedExpressionRewriter(program, eventListener);
+            ter = new TypedExpressionRewriter(program, store, eventListener);
             
             RestrictProcedures(program, 0, 0, false);
             Time("Normalizing expressions", () => aen.Transform(program));

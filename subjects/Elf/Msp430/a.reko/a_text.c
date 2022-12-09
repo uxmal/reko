@@ -321,19 +321,19 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 	struct Eq_n * fp;
 	Eq_n r10_n;
 	Eq_n v15_n = fp->t0002;
-	struct Eq_n ** v16_n = fp->ptr0004;
-	struct Eq_n * r15_n;
+	union Eq_n * v16_n = fp->ptr0004;
+	Eq_n r15_n;
 	ui20 sr_n = prvAllocateTCBAndStack(sr, r13, out r15_n);
-	if (r15_n != null)
+	if (r15_n != 0x00)
 	{
 		prvInitialiseTCBVariables(v15_n, r14, r13, r15_n);
-		r15_n->ptr0000 = (struct Eq_n *) pxPortInitialiseStack(r12, r15, *((char *) &r15_n->ptr0000 + 2) + ((&r15_n->w001A)[5] *20 0x02) /20 28 - 0x02);
+		*r15_n = pxPortInitialiseStack(r12, r15, (word24) *((word24) r15_n + 2) + *((word24) r15_n + 36) *20 0x02 - 0x02);
 		++usCriticalNesting;
 		++uxCurrentNumberOfTasks;
 		sr_n &= ~0x08;
 		if (uxCurrentNumberOfTasks != 0x01)
 		{
-			if (xSchedulerRunning == 0x00 && v15_n < pxCurrentTCB->t0006)
+			if (xSchedulerRunning == 0x00 && v15_n < *((word24) pxCurrentTCB + 6))
 				pxCurrentTCB = r15_n;
 		}
 		else
@@ -341,15 +341,15 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 			pxCurrentTCB = r15_n;
 			prvInitialiseTaskLists();
 		}
-		Eq_n v28_n = r15_n->t0006;
+		Eq_n v28_n = *((word24) r15_n + 6);
 		if (uxTopUsedPriority >= v28_n)
 			uxTopUsedPriority = v28_n;
-		*((char *) &r15_n->ptr0000 + 4) = (struct Eq_n *) uxTaskNumber.0;
+		*((word24) r15_n + 4) = uxTaskNumber.0;
 		++uxTaskNumber.0;
-		r15_n->t0008 = 0x00;
+		*((word24) r15_n + 8) = 0x00;
 		if (uxTopReadyPriority >= v28_n)
 			uxTopReadyPriority = v28_n;
-		vListInsertEnd(&r15_n->t0008, v28_n *20 0x10 + 0x0222);
+		vListInsertEnd((word24) r15_n + 8, v28_n *20 0x10 + 0x0222);
 		r10_n.u0 = 0x01;
 		if (usCriticalNesting != 0x00)
 		{
@@ -364,8 +364,8 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 	if (r10_n == 0x01)
 	{
 		if (v16_n != null)
-			*v16_n = (struct Eq_n **) r15_n;
-		if (xSchedulerRunning != 0x00 && pxCurrentTCB->t0006 >= v15_n)
+			*v16_n = (union Eq_n *) r15_n;
+		if (xSchedulerRunning != 0x00 && *((word24) pxCurrentTCB + 6) >= v15_n)
 		{
 			word20 r9_n;
 			word20 r11_n;
@@ -377,18 +377,18 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 	return sr_n;
 }
 
-// 45B6: void vTaskDelete(Register ui20 sr, Register (ptr20 Eq_n) r15)
-void vTaskDelete(ui20 sr, struct Eq_n * r15)
+// 45B6: void vTaskDelete(Register ui20 sr, Register Eq_n r15)
+void vTaskDelete(ui20 sr, Eq_n r15)
 {
 	++usCriticalNesting;
 	ui20 sr_n = sr & ~0x08;
-	struct Eq_n * r11_n = r15;
-	if (r15 == null)
+	Eq_n r11_n = r15;
+	if (r15 == 0x00)
 		r11_n = pxCurrentTCB;
-	Eq_n r10_n = &r11_n->t0008;
+	Eq_n r10_n = (word24) r11_n + 8;
 	vListRemove(r10_n);
-	if (r11_n->w001A != 0x00)
-		vListRemove((char *) &r11_n->t0008 + 0x0A);
+	if (*((word24) r11_n + 26) != 0x00)
+		vListRemove((word24) r11_n + 18);
 	vListInsertEnd(r10_n, 662);
 	++uxTasksDeleted;
 	if (usCriticalNesting != 0x00)
@@ -398,7 +398,7 @@ void vTaskDelete(ui20 sr, struct Eq_n * r15)
 		if (v15_n == ~0x00)
 			sr_n = sr & ~0x08 | 0x08;
 	}
-	if (r15 == null)
+	if (r15 == 0x00)
 	{
 		word20 r9_n;
 		word20 r10_n;
@@ -436,16 +436,16 @@ l00004640:
 	{
 		struct Eq_n * r14_n;
 		Eq_n r15_n;
-		vListRemove(&pxCurrentTCB->t0008);
-		pxCurrentTCB->t0008 = r11_n;
+		vListRemove((word24) pxCurrentTCB + 8);
+		*((word24) pxCurrentTCB + 8) = r11_n;
 		if (r11_n >= xTickCount)
 		{
-			r14_n = (struct Eq_n *) &pxCurrentTCB->t0008;
+			r14_n = (word24) pxCurrentTCB + 8;
 			r15_n = pxOverflowDelayedTaskList;
 		}
 		else
 		{
-			r14_n = (struct Eq_n *) &pxCurrentTCB->t0008;
+			r14_n = (word24) pxCurrentTCB + 8;
 			r15_n = pxDelayedTaskList;
 		}
 		vListInsert(r14_n, r15_n);
@@ -473,16 +473,16 @@ void vTaskDelay(ui20 sr, word20 r15)
 		Eq_n r15_n;
 		ui20 sr_n = vTaskSuspendAll(sr);
 		Eq_n r11_n = (word24) xTickCount + r15;
-		vListRemove(&pxCurrentTCB->t0008);
-		pxCurrentTCB->t0008 = r11_n;
+		vListRemove((word24) pxCurrentTCB + 8);
+		*((word24) pxCurrentTCB + 8) = r11_n;
 		if (r11_n >= xTickCount)
 		{
-			r14_n = (struct Eq_n *) &pxCurrentTCB->t0008;
+			r14_n = (word24) pxCurrentTCB + 8;
 			r15_n = pxOverflowDelayedTaskList;
 		}
 		else
 		{
-			r14_n = (struct Eq_n *) &pxCurrentTCB->t0008;
+			r14_n = (word24) pxCurrentTCB + 8;
 			r15_n = pxDelayedTaskList;
 		}
 		vListInsert(r14_n, r15_n);
@@ -503,7 +503,7 @@ void vTaskDelay(ui20 sr, word20 r15)
 //      fn00004000
 void vTaskStartScheduler(ui20 sr)
 {
-	if (pxCurrentTCB != null)
+	if (pxCurrentTCB != 0x00)
 	{
 		Eq_n r15_n;
 		xTaskCreate(sr, 0x00, 0x32, 18172, 18860, out r15_n);
@@ -581,7 +581,7 @@ ui20 xTaskResumeAll(ui20 sr, union Eq_n & r15Out)
 			if (uxTopReadyPriority >= v18_n)
 				uxTopReadyPriority = v18_n;
 			vListInsertEnd(r10_n, v18_n *20 0x10 + 0x0222);
-			if (pxCurrentTCB->t0006 >= *((word16) r11_n.u0 + 6))
+			if (*((word24) pxCurrentTCB + 6) >= *((word16) r11_n.u0 + 6))
 				r9_n.u1 = 0x01;
 		}
 		if (uxMissedTicks != 0x00)
@@ -660,7 +660,7 @@ void vTaskIncrementTick()
 	if (uxSchedulerSuspended == 0x00)
 	{
 		Eq_n v8_n = xTickCount;
-		xTickCount = (word24) v8_n + 1;
+		xTickCount = (word16) v8_n.u0 + 1;
 		if (v8_n == 0x01)
 		{
 			Eq_n v9_n = pxDelayedTaskList;
@@ -700,18 +700,18 @@ void vTaskPlaceOnEventList(Eq_n r14, Eq_n r15)
 {
 	struct Eq_n * r14_n;
 	Eq_n r15_n;
-	vListInsert((char *) &pxCurrentTCB->t0008 + 0x0A, r15);
+	vListInsert((word24) pxCurrentTCB + 18, r15);
 	word20 r11_n = r14 + Mem5[0x0208<p16>:word16];
-	vListRemove(&pxCurrentTCB->t0008);
-	pxCurrentTCB->t0008 = r11_n;
+	vListRemove((word24) pxCurrentTCB + 8);
+	*((word24) pxCurrentTCB + 8) = r11_n;
 	if (r11_n >= xTickCount)
 	{
-		r14_n = (struct Eq_n *) &pxCurrentTCB->t0008;
+		r14_n = (word24) pxCurrentTCB + 8;
 		r15_n = pxOverflowDelayedTaskList;
 	}
 	else
 	{
-		r14_n = (struct Eq_n *) &pxCurrentTCB->t0008;
+		r14_n = (word24) pxCurrentTCB + 8;
 		r15_n = pxDelayedTaskList;
 	}
 	vListInsert(r14_n, r15_n);
@@ -749,7 +749,7 @@ Eq_n xTaskRemoveFromEventList(Eq_n r15)
 	}
 	Eq_n r15_n;
 	vListInsertEnd(r14_n, r15_n);
-	if (pxCurrentTCB->t0006 >= *((word24) r10_n + 6))
+	if (*((word24) pxCurrentTCB + 6) >= *((word24) r10_n + 6))
 		r15_n.u0 = 0x01;
 	else
 		r15_n.u0 = 0x00;
@@ -773,23 +773,23 @@ void prvIdleTask(ui20 sr)
 	}
 }
 
-// 49BE: void prvInitialiseTCBVariables(Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register (ptr20 Eq_n) r15)
+// 49BE: void prvInitialiseTCBVariables(Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15)
 // Called from:
 //      xTaskCreate
-void prvInitialiseTCBVariables(Eq_n r12, Eq_n r13, Eq_n r14, struct Eq_n * r15)
+void prvInitialiseTCBVariables(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 {
-	(&r15->w001A)[5] = (word16) r14;
-	strncpy(0x08, r13, &r15->w001A + 1);
-	*((char *) &r15->w001A + 9) = (struct Eq_n *) 0x00;
+	*((word24) r15 + 36) = r14;
+	strncpy(0x08, r13, (word24) r15 + 28);
+	*((word24) r15 + 35) = 0x00;
 	Eq_n r10_n = r12;
 	if (r12 < 0x04)
 		r10_n.u0 = 0x03;
-	r15->t0006 = r10_n;
-	vListInitialiseItem(&r15->t0008);
-	vListInitialiseItem((char *) &r15->t0008 + 0x0A);
-	*((char *) &r15->t0008 + 6) = r15;
-	*((char *) &r15->t0008 + 0x0A) = (struct Eq_n *) (0x04 - r10_n);
-	*((char *) &r15->t0008 + 16) = r15;
+	*((word24) r15 + 6) = r10_n;
+	vListInitialiseItem((word24) r15 + 8);
+	vListInitialiseItem((word24) r15 + 18);
+	*((word24) r15 + 0x0E) = r15;
+	*((word24) r15 + 18) = 0x04 - r10_n;
+	*((word24) r15 + 24) = r15;
 }
 
 // 4A12: void prvInitialiseTaskLists()
@@ -897,7 +897,7 @@ void vTaskSwitchContext()
 		(word24) r13_n + uxTopReadyPriority *20 0x10 + 4 = (ui20) ((word24) r13_n + uxTopReadyPriority *20 0x10 + 4 + 2);
 		if ((word24) r13_n + uxTopReadyPriority *20 0x10 + 4 == ((word24) r13_n + uxTopReadyPriority *20 0x10) + 2)
 			g_a0226[uxTopReadyPriority] = (struct Eq_n) g_a0226[uxTopReadyPriority].ptr0000->w0002;
-		pxCurrentTCB = (struct Eq_n *) (&g_a0226[uxTopReadyPriority].ptr0000->w0002)[2];
+		pxCurrentTCB = (&g_a0226[uxTopReadyPriority].ptr0000->w0002)[2];
 	}
 }
 
@@ -1463,7 +1463,7 @@ struct Eq_n * pxPortInitialiseStack(Eq_n r13, Eq_n r14, struct Eq_n * r15)
 void xPortStartScheduler()
 {
 	prvSetupTimerInterrupt();
-	usCriticalNesting = pxCurrentTCB->ptr0000->w0000;
+	usCriticalNesting = (word16) **pxCurrentTCB;
 }
 
 // 5238: void vPortEndScheduler()
@@ -1487,9 +1487,9 @@ void vPortEndScheduler()
 ui20 vPortYield(ui20 sr, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out)
 {
 	ptr16 fp;
-	pxCurrentTCB->ptr0000 = fp - 28;
+	*pxCurrentTCB = fp - 28;
 	vTaskSwitchContext();
-	struct Eq_n * v20_n = pxCurrentTCB->ptr0000;
+	struct Eq_n * v20_n = *pxCurrentTCB;
 	usCriticalNesting = v20_n->w0000;
 	Eq_n r11_n = v20_n->t000A;
 	Eq_n r10_n = v20_n->t000C;
@@ -1519,10 +1519,10 @@ void prvSetupTimerInterrupt()
 void prvTickISR()
 {
 	ptr16 fp;
-	pxCurrentTCB->ptr0000 = fp - 26;
+	*pxCurrentTCB = fp - 26;
 	vTaskIncrementTick();
 	vTaskSwitchContext();
-	usCriticalNesting = pxCurrentTCB->ptr0000->w0000;
+	usCriticalNesting = (word16) **pxCurrentTCB;
 }
 
 // 5308: void printf(Register Eq_n r8)

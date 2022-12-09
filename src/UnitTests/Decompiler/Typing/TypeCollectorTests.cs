@@ -62,7 +62,8 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private void Then_GlobalFieldsAre(Program program, params string[] sExpected)
         {
-            var fields = ((StructureType) ((Pointer) program.Globals.TypeVariable.OriginalDataType).Pointee).Fields.ToArray();
+            var tvGlobals = program.TypeStore.GetTypeVariable(program.Globals);
+            var fields = ((StructureType) ((Pointer) tvGlobals.OriginalDataType).Pointee).Fields.ToArray();
             var c = Math.Min(fields.Length, sExpected.Length);
             for (int i = 0; i < fields.Length; ++i)
             {

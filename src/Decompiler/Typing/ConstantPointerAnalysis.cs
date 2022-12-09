@@ -39,6 +39,7 @@ namespace Reko.Typing
 	public class ConstantPointerAnalysis : InstructionVisitorBase
 	{
 		private readonly TypeFactory factory;
+        private readonly TypeStore store;
 		private readonly Program program;
 		private Identifier? globals;
 		private readonly Unifier unifier;
@@ -46,6 +47,7 @@ namespace Reko.Typing
 		public ConstantPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
 			this.factory = factory;
+            this.store = store;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
             this.program = program;
 		}
@@ -118,7 +120,7 @@ namespace Reko.Typing
 		{
             if (!c.IsValid || c is BigConstant)
                 return;
-			DataType dt = c.TypeVariable!.DataType;
+			DataType dt = store.GetTypeVariable(c).DataType;
             int? offset = StructureField.ToOffset(c);
             if (offset == null)
                 return;
@@ -136,7 +138,7 @@ namespace Reko.Typing
                     //$TODO: these are getting merged earlier, perhaps this is the right place to do those merges?
                     return;
                 }
-                var strGlobals = Globals.TypeVariable!.Class.ResolveAs<StructureType>();
+                var strGlobals = store.GetTypeVariable(Globals).Class.ResolveAs<StructureType>();
                 if (strGlobals!.Fields.AtOffset(offset.Value) == null)
                 {
                     if (!IsInsideArray(strGlobals, offset.Value, pointee) &&

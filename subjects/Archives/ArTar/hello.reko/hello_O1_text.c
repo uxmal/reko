@@ -19,7 +19,7 @@ void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (0x4048 == 0x4048 || _ITM_deregisterTMCloneTable == null)
+	if (&g_b4048 == &g_b4048 || _ITM_deregisterTMCloneTable == null)
 		return;
 	_ITM_deregisterTMCloneTable();
 }
@@ -29,7 +29,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	Eq_n rsi_n = 0x4048 - 0x4048;
+	Eq_n rsi_n = &g_b4048 - &g_b4048;
 	if ((rsi_n >>u 0x3F) + (rsi_n >> 0x03) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
 	_ITM_registerTMCloneTable();
@@ -95,7 +95,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word64 rdi;
 	word32 edi = (word32) rdi;
 	_init();
-	int64 rbp_n = 0x3DE0 - 0x3DD8;
+	int64 rbp_n = 0x3DE0 - g_a3DD8;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n = 0x00;
