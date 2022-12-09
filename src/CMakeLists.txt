@@ -38,6 +38,7 @@ file(MAKE_DIRECTORY ${artifacts_dir})
 # you can specify a path prefix by using `PROJECT_SUBDIR`, which will be prepended to the path
 #
 # The artifacts are assumed to be produced in "bin/<platform>/<configuration>/<framework>"
+# if `PREFER_INTERMEDIATE`, the top level directory used will be "obj" instead of "bin"
 # -  <platform> is obtained from the *global* variable `REKO_PLATFORM`
 # -  <configuration> is obtained from the *global* variable `CMAKE_BUILD_TYPE`
 # -  <framework> is specified by the parameter `FRAMEWORK`
@@ -52,10 +53,8 @@ file(MAKE_DIRECTORY ${artifacts_dir})
 # -  <suffix> is controlled by `LIB` (which adds '.dll') or `EXE` (which adds '.exe' only on Windows). 
 #
 # The final path is stored in the output variable specified by `RESULT`
-# `RESULT_OBJ`, if provided, is filled with the intermediate assembly path
-# if `PREFER_INTERMEDIATE` is provided, `RESULT` and `RESULT_OBJ` will be swapped
 function(csproj_output_path)
-	cmake_parse_arguments(asm "LIB;EXE;ANYCPU;PREFER_INTERMEDIATE" "PROJECT_SUBDIR;PROJECT_NAME;FRAMEWORK;OUTPUT_PREFIX;OUTPUT_SUFFIX;RESULT;RESULT_OBJ" "" ${ARGN})
+	cmake_parse_arguments(asm "LIB;EXE;ANYCPU;PREFER_INTERMEDIATE" "PROJECT_SUBDIR;PROJECT_NAME;FRAMEWORK;OUTPUT_PREFIX;OUTPUT_SUFFIX;RESULT" "" ${ARGN})
 
 	set(asm_basedir ${REKO_SRC})
 	if(asm_PROJECT_SUBDIR)
@@ -97,29 +96,20 @@ function(csproj_output_path)
 	string(APPEND asm_binpath_relative ${CMAKE_BUILD_TYPE}/${asm_FRAMEWORK}/${asm_filename})
 
 	if(asm_PREFER_INTERMEDIATE)
-		set(bin_output_var ${asm_RESULT})
-		set(int_output_var ${asm_RESULT_OBJ})
+		set(${asm_RESULT} ${asm_obj_path}/${asm_binpath_relative} PARENT_SCOPE)
 	else()
-		set(bin_output_var ${asm_RESULT_OBJ})
-		set(int_output_var ${asm_RESULT})
-	endif()
-
-	set(${bin_output_var} ${asm_bin_path}/${asm_binpath_relative} PARENT_SCOPE)
-
-	if(int_output_var)
-		set(${int_output_var} ${asm_obj_path}/${asm_binpath_relative} PARENT_SCOPE)
+		set(${asm_RESULT} ${asm_bin_path}/${asm_binpath_relative} PARENT_SCOPE)
 	endif()
 endfunction()
 
 #
 # This function creates a new target that will copy (at build time)
 # the file specified by `SRC_PATH` to a destination specified by `DEST_PATH`
-# if the file specified by `SRC_PATH` cannot be found, and `FALLBACK_PATH` is provided, it's used as replacement
 # the target name is generated automatically from `SRC_PATH`,
 # and stored in the variable name indicated by `OUT_TARGET_NAME`
 #
 function(add_copy_target)
-	cmake_parse_arguments(copy "" "SRC_PATH;FALLBACK_PATH;DEST_PATH;OUT_TARGET_NAME" "" ${ARGN})
+	cmake_parse_arguments(copy "" "SRC_PATH;DEST_PATH;OUT_TARGET_NAME" "" ${ARGN})
 
 	string(MD5 copy_TARGET_NAME "${copy_SRC_PATH}_${copy_DEST_PATH}")
 	set(${copy_OUT_TARGET_NAME} ${copy_TARGET_NAME} PARENT_SCOPE)
@@ -127,16 +117,15 @@ function(add_copy_target)
 	if(TARGET ${copy_TARGET_NAME})
 		return()
 	endif()
-	
+
+	get_filename_component(dest_dir ${copy_SRC_PATH} DIRECTORY)
+
 	# create a command that will copy this file
 	add_custom_command(
 		OUTPUT ${copy_DEST_PATH}
 		COMMENT "Copying ${copy_SRC_PATH} -> ${copy_DEST_PATH}"
-		COMMAND ${CMAKE_COMMAND}
-			-DCOPY_SOURCE_PATH=${copy_SRC_PATH}
-			-DCOPY_FALLBACK_PATH=${copy_FALLBACK_PATH}
-			-DCOPY_DEST_PATH=${copy_DEST_PATH}
-			-P ${CMAKE_SOURCE_DIR}/cmake/CopyFile.cmake
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${dest_dir}
+		COMMAND ${CMAKE_COMMAND} -E copy ${copy_SRC_PATH} ${copy_DEST_PATH}
 	)
 
 	# create a target that will run the copy command if the destination file is out of date
@@ -211,12 +200,6 @@ function(add_c2xml_target)
 	## start off with reko.config
 	set(file_list "${REKO_SRC}/Drivers/reko.config")
 
-	set(arch_dll_bin_list "")
-	set(arch_dll_int_list "")
-	
-	set(env_dll_bin_list "")
-	set(env_dll_int_list "")
-
 	## collect arch dlls
 	foreach(arch ${c2xml_REQUIRED_ARCHITECTURES})
 		csproj_output_path(
@@ -225,14 +208,11 @@ function(add_c2xml_target)
 			PROJECT_NAME "${arch}"
 			OUTPUT_PREFIX "Reko.Arch."
 			RESULT arch_dll
-			RESULT_OBJ arch_dll_int
-			# RESULT will hold `obj`, RESULT_OBJ will hold `bin`
 			PREFER_INTERMEDIATE
 		)
 		message(DEBUG "[arch] ${arch} => ${arch_dll}")
 		
-		list(APPEND arch_dll_bin_list ${arch_dll})
-		list(APPEND arch_dll_int_list ${arch_dll_int})
+		list(APPEND file_list ${arch_dll})
 	endforeach()
 
 	## collect env dlls
@@ -243,40 +223,10 @@ function(add_c2xml_target)
 			PROJECT_NAME "${env}"
 			OUTPUT_PREFIX "Reko.Environments."
 			RESULT env_dll
-			RESULT_OBJ env_dll_int
-			# RESULT will hold `obj`, RESULT_OBJ will hold `bin`
 			PREFER_INTERMEDIATE
 		)
 		message(DEBUG "[env] ${env} => ${env_dll}")
-		list(APPEND env_dll_bin_list ${env_dll})
-		list(APPEND env_dll_int_list ${env_dll_int})
-	endforeach()
-
-	list(LENGTH arch_dll_bin_list num_arch_dll)
-	list(LENGTH env_dll_bin_list num_env_dll)
-	math(EXPR arch_dll_last_index ${num_arch_dll}-1)
-	math(EXPR env_dll_last_index ${num_env_dll}-1)
-
-	foreach(i RANGE 0 ${arch_dll_last_index})
-		list(GET arch_dll_bin_list ${i} src_path)
-		list(GET arch_dll_int_list ${i} fallback_path)
-		add_c2xml_copy_target(
-			SRC_PATH ${src_path}
-			FALLBACK_PATH ${fallback_path}
-			DEST_DIR ${c2xml_dir}
-			MAIN_TARGET ${c2xml_TARGET_NAME}
-		)
-	endforeach()
-
-	foreach(i RANGE 0 ${env_dll_last_index})
-		list(GET env_dll_bin_list ${i} src_path)
-		list(GET env_dll_int_list ${i} fallback_path)
-		add_c2xml_copy_target(
-			SRC_PATH ${src_path}
-			FALLBACK_PATH ${fallback_path}
-			DEST_DIR ${c2xml_dir}
-			MAIN_TARGET ${c2xml_TARGET_NAME}
-		)
+		list(APPEND file_list ${env_dll})
 	endforeach()
 
 	foreach(src_path ${file_list})
@@ -289,7 +239,7 @@ function(add_c2xml_target)
 endfunction()
 
 function(add_c2xml_copy_target)
-	cmake_parse_arguments(c2xml "" "SRC_PATH;FALLBACK_PATH;DEST_DIR;MAIN_TARGET" "" ${ARGN})
+	cmake_parse_arguments(c2xml "" "SRC_PATH;DEST_DIR;MAIN_TARGET" "" ${ARGN})
 
 	# use the filename without extension as the copy target name
 	# get_filename_component(filename_we "${c2xml_SRC_PATH}" NAME_WE)
@@ -299,7 +249,6 @@ function(add_c2xml_copy_target)
 
 	add_copy_target(
 		SRC_PATH ${c2xml_SRC_PATH}
-		FALLBACK_PATH ${c2xml_FALLBACK_PATH}
 		DEST_PATH ${dest_path}
 		OUT_TARGET_NAME copy_target_name
 	)
