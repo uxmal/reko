@@ -503,6 +503,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_l_nand__different()
+        {
+            // not from actual binary
+            Given_HexString("44221F");
+            AssertCode(     // l.nand?	r1,r2,r3
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r1 = ~(r2 & r3)");
+        }
+
+        [Test]
         public void AeonRw_l_nop()
         {
             Given_HexString("000000");
