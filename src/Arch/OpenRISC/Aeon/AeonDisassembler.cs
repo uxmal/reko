@@ -520,7 +520,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 001100
                 Nyi("0b01100"),
                 // opcode 001101
-                Instr(Mnemonic.l_movhi__, R13, UnsignedImmediate(0, 13)),           // chenxing
+                Instr(Mnemonic.l_movhi__, R13, uimm0_13),           // chenxing
                 // opcode 001110
                 Nyi("0b01110"),
                 // opcode 001111
