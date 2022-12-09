@@ -155,10 +155,12 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm4_12 = UnsignedImmediate(4, 12);
         private static readonly Mutator uimm5_5 = UnsignedImmediate(5, 5);
         private static readonly Mutator uimm5_8 = UnsignedImmediate(5, 8);
+        private static readonly Mutator uimm5_9 = UnsignedImmediate(5, 9);
         private static readonly Mutator uimm5_16 = UnsignedImmediate(5, 16);
         private static readonly Mutator uimm8_5 = UnsignedImmediate(8, 5);
         private static readonly Mutator uimm10_3 = UnsignedImmediate(10, 3);
         private static readonly Mutator uimm10_6 = UnsignedImmediate(10, 6);
+        private static readonly Mutator uimm14_4 = UnsignedImmediate(14, 4);
         private static readonly Mutator uimm16_5 = UnsignedImmediate(16, 5);
         private static readonly Mutator uimm18_6 = UnsignedImmediate(18, 6);
         private static readonly Mutator uimm26_6 = UnsignedImmediate(26, 6);
@@ -456,7 +458,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decode010001 = Sparse(0, 3, "  11", nyi_3,
                 (0b100, Instr(Mnemonic.l_and, R13, R8, R3)),                // chenxing
                 (0b101, Instr(Mnemonic.l_or, R13, R8, R3)),                 // disasm, guess
-                (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)));             // guess
+                (0b110, Instr(Mnemonic.l_xor__, R13, R8, R3)),              // guess
+                // XXX: could also be nor
+                (0b111, Instr(Mnemonic.l_nand__, R13, R8, R3)));            // guess
 
             var decode010010 = Mask(0, 3, "  010010",
                 Instr(Mnemonic.l_cmov____, R13, R8, R3),                    // guess
@@ -479,7 +483,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b00001, Instr(Mnemonic.l_sfeqi, R13, uimm8_5)),           // chenxing
                 (0b10011, Instr(Mnemonic.l_sfleui__, R13, uimm5_8)),        // guess
                 (0b11011, Instr(Mnemonic.l_sfgtui, R13, uimm5_8)),          // disasm
-                (0b11000, Instr(Mnemonic.entri__, R13, uimm5_8)),           // backtrace
+                (0b11000, Instr(Mnemonic.entri__, uimm14_4, uimm5_9)),      // backtrace
                 // XXX: might only move (low) 16 bits?
                 (0b00100, Instr(Mnemonic.l_add____, R13,R8)),               // guess
                 (0b01101, Instr(Mnemonic.l_sfne, R13, R8)),                 // chenxing, disasm

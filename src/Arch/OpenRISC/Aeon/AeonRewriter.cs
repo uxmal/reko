@@ -119,6 +119,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.l_movhi: RewriteMovhi(); break;
                 case Mnemonic.l_movhi__: RewriteMovhi(); break;
                 case Mnemonic.l_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
+                case Mnemonic.l_nand__: RewriteNand(); break;
                 case Mnemonic.l_nop: RewriteNop(); break;
                 case Mnemonic.l_mul: RewriteArithmetic(m.IMul); break;
                 case Mnemonic.l_or: RewriteArithmetic(m.Or); break;
@@ -401,6 +402,21 @@ namespace Reko.Arch.OpenRISC.Aeon
                     break;
                 }
             }
+        }
+
+        private void RewriteNand()
+        {
+            var left = OpOrZero(1);
+            var right = OpOrZero(2);
+            var dst = Op(0);
+            Expression exp;
+            if (left == right)
+            {
+                exp = left;
+            } else {
+                exp = m.And(left, right);
+            }
+            m.Assign(dst, m.Comp(exp));
         }
 
         private void RewriteNop()

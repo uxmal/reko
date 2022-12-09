@@ -177,10 +177,11 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_entri__()
         {
+            // XXX: no examples known
             Given_HexString("5E9338");
-            AssertCode(     // entri?	r20,0x99
+            AssertCode(     // entri?	0xA,0x99
                 "0|L--|00100000(3): 1 instructions",
-                "1|L--|entri__(r20, 0x99<32>)");
+                "1|L--|entri__(0xA<32>, 0x99<32>)");
         }
 
         [Test]
@@ -548,6 +549,25 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // l.mul	r4,r3,r4
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r4 = r3 * r4");
+        }
+
+        [Test]
+        public void AeonRw_l_nand__()
+        {
+            Given_HexString("44EA57");
+            AssertCode(     // l.nand?	r7,r10,r10
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = ~r10");
+        }
+
+        [Test]
+        public void AeonRw_l_nand__different()
+        {
+            // not from actual binary
+            Given_HexString("44221F");
+            AssertCode(     // l.nand?	r1,r2,r3
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r1 = ~(r2 & r3)");
         }
 
         [Test]
