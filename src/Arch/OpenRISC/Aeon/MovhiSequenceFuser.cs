@@ -27,7 +27,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;
-                if (instr.Mnemonic != Mnemonic.l_movhi && instr.Mnemonic != Mnemonic.l_movhi__)
+                if (instr.Mnemonic != Mnemonic.bg_movhi && instr.Mnemonic != Mnemonic.bn_movhi__)
                 {
                     yield return instr;
                     continue;
@@ -98,7 +98,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
                 instr.Operands[2] = ImmediateOperand.Word32(uFullWord);
                 break;
-            case Mnemonic.l_ori:
+            case Mnemonic.bn_ori:
+            case Mnemonic.bg_ori:
                 var orReg = (RegisterStorage) instr.Operands[1];
                 if (orReg != regHi)
                     return;

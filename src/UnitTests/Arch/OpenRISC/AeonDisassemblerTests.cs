@@ -129,17 +129,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_cmov()
+        public void AeonDis_bn_cmov____()
         {
             // speculative guess.
-            AssertCode("l.cmov??\tr7,r7,r0", "48 E7 00");
+            AssertCode("bn.cmov??\tr7,r7,r0", "48 E7 00");
         }
 
         [Test]
-        public void AeonDis_l_cmovi()
+        public void AeonDis_bn_cmovi____()
         {
             // speculative guess.
-            AssertCode("l.cmovi??\tr12,r12,0x1", "49 8C 0A");
+            AssertCode("bn.cmovi??\tr12,r12,0x1", "49 8C 0A");
         }
 
         [Test]
@@ -228,17 +228,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_movhi_32bit()
+        public void AeonDis_bg_movhi()
         {
             // confirmed with source
-            AssertCode("l.movhi\tr7,0xA020", "C0 F4 04 01");
+            AssertCode("bg.movhi\tr7,0xA020", "C0 F4 04 01");
         }
 
         [Test]
         public void AeonDis_bg_movhi_fuse_with_load()
         {
             AssertCode(
-                "l.movhi\tr6,0x523A3C@hi",
+                "bg.movhi\tr6,0x523A3C@hi",
                 "bg.lwz?\tr7,0x523A3C@lo(r6)",
                 "C0 C0 0A 41" +
                 "EC E6 3A 3E");
@@ -248,28 +248,28 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bg_movhi_fuse_with_store()
         {
             AssertCode(
-                "l.movhi\tr7,0x523A05@hi",
+                "bg.movhi\tr7,0x523A05@hi",
                 "bg.sb?\t0x523A05@lo(r7),r6",
                 "C0 E0 0A 41" +
                 "F8 C7 3A 05");
         }
 
         [Test]
-        public void AeonDis_l_movhi_fuse_with_addi()
+        public void AeonDis_bg_movhi_fuse_with_addi()
         {
             AssertCode(
-                "l.movhi\tr12,0x3988F0@hi",
+                "bg.movhi\tr12,0x3988F0@hi",
                 "bg.addi\tr10,r12,0x3988F0@lo",
                 "C1 80 07 41" +
                 "FD 4C 88 F0");
         }
 
         [Test]
-        public void AeonDis_l_movhi_fuse_with_ori()
+        public void AeonDis_bg_movhi_fuse_with_ori()
         {
             AssertCode(
-                "l.movhi\tr6,0x7FFFFFFF@hi",
-                "l.ori\tr6,r6,0x7FFFFFFF@lo",
+                "bg.movhi\tr6,0x7FFFFFFF@hi",
+                "bg.ori\tr6,r6,0x7FFFFFFF@lo",
                 "C0 CF FF E1" +
                 "C8 C6 FF FF");
         }
@@ -316,10 +316,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_ori()
+        public void AeonDis_bg_ori()
         {
             // confirmed with source
-            AssertCode("l.ori\tr5,r7,0x2400", "C8 A7 24 00");
+            AssertCode("bg.ori\tr5,r7,0x2400", "C8 A7 24 00");
         }
 
         [Test]

@@ -148,19 +148,19 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_cmov()
+        public void AeonDis_bn_cmov____()
         {
             Given_HexString("48 E7 00");
-            AssertCode(     // l.cmov\tr3,r3,r0
+            AssertCode(     // bn.cmov??	r3,r3,r0
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r7 = f ? r7 : 0<32>");
         }
 
         [Test]
-        public void AeonDis_l_cmovi()
+        public void AeonDis_bn_cmovi____()
         {
             Given_HexString("49 8C 0A");
-            AssertCode(     // l.cmovi\tr12,r12,0x1
+            AssertCode(     // bn.cmovi??	r12,r12,0x1
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r12 = f ? r12 : 1<32>");
         }
@@ -289,21 +289,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_movhi()
+        public void AeonRw_bn_movhi__()
         {
-            Given_HexString("C0EFFFE1");
-            AssertCode(     // l.movhi	r7,0x7FFF
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = 0x7FFF0000<32>");
+            Given_HexString("046989");
+            AssertCode(     // bn.movhi?	r3,0x989
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r3 = 0x9890000<32>");
         }
 
         [Test]
-        public void AeonRw_l_movhi__()
+        public void AeonRw_bg_movhi()
         {
-            Given_HexString("046989");
-            AssertCode(     // l.movhi?	r3,0x989
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|r3 = 0x9890000<32>");
+            Given_HexString("C0EFFFE1");
+            AssertCode(     // bg.movhi	r7,0x7FFF
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = 0x7FFF0000<32>");
         }
 
         [Test]
@@ -350,14 +350,14 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_movhi_fuse_with_ori()
+        public void AeonRw_bg_movhi_fuse_with_ori()
         {
             Given_HexString(
                 "C0 CF FF E1" +
                 "C8 C6 FF FF");
             AssertCode(
-                // l.movhi\tr6,0x7FFFFFFF@hi
-                // l.ori\tr6,r6,0x7FFFFFFF@lo
+                // bg.movhi\tr6,0x7FFFFFFF@hi
+                // bg.ori\tr6,r6,0x7FFFFFFF@lo
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r6 = 0x7FFF0000<32>",
                 "2|L--|r6 = 0x7FFFFFFF<32>");
@@ -448,19 +448,19 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_l_ori()
+        public void AeonRw_bn_ori()
         {
             Given_HexString("506401");
-            AssertCode(     // l.ori	r3,r4,0x1
+            AssertCode(     // bn.ori	r3,r4,0x1
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r3 = r4 | 1<32>");
         }
 
         [Test]
-        public void AeonRw_l_ori_zero()
+        public void AeonRw_bn_ori_zero()
         {
             Given_HexString("506001");
-            AssertCode(     // l.ori	r3,r0,0x1
+            AssertCode(     // bn.ori	r3,r0,0x1
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r3 = 1<32>");
         }

@@ -103,8 +103,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bn_bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
-                case Mnemonic.l_cmov____: RewriteCmov(); break;
-                case Mnemonic.l_cmovi____: RewriteCmov(); break;
+                case Mnemonic.bn_cmov____: RewriteCmov(); break;
+                case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.bn_entri__: RewriteUnknown(); break;
                 case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
@@ -121,15 +121,16 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
-                case Mnemonic.l_movhi: RewriteMovhi(); break;
-                case Mnemonic.l_movhi__: RewriteMovhi(); break;
+                case Mnemonic.bn_movhi__:
+                case Mnemonic.bg_movhi: RewriteMovhi(); break;
                 case Mnemonic.bg_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop: 
                 case Mnemonic.bn_nop: RewriteNop(); break;
                 case Mnemonic.bn_mul: RewriteArithmetic(m.IMul); break;
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
-                case Mnemonic.l_ori: RewriteOri(m.Or); break;
+                case Mnemonic.bn_ori:
+                case Mnemonic.bg_ori: RewriteOri(m.Or); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu: RewriteSfxx(m.Uge); break;
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
@@ -403,7 +404,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                     uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
                     m.Assign(Op(0), m.Word32(uFullWord));
                     break;
-                case Mnemonic.l_ori:
+                case Mnemonic.bn_ori:
+                case Mnemonic.bg_ori:
                     var orReg = (RegisterStorage) lowInstr.Operands[1];
                     if (orReg != regHi)
                         return;

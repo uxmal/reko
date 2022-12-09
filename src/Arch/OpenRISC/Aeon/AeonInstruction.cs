@@ -71,7 +71,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 {
                     renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
                 }
-                if ((this.Mnemonic == Mnemonic.l_ori ||
+                if ((this.Mnemonic == Mnemonic.bn_ori ||
+                    this.Mnemonic == Mnemonic.bg_ori ||
                     this.Mnemonic == Mnemonic.bt_addi__ ||
                     this.Mnemonic == Mnemonic.bn_addi ||
                     this.Mnemonic == Mnemonic.bg_addi) && 
@@ -81,7 +82,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 }
                 break;
             case AddressOperand addr:
-                if (this.Mnemonic == Mnemonic.l_movhi || this.Mnemonic == Mnemonic.l_movhi__)
+                if (this.Mnemonic == Mnemonic.bg_movhi || this.Mnemonic == Mnemonic.bn_movhi__)
                 {
                     var uAddr = addr.Address.ToUInt32();
                     renderer.WriteAddress($"0x{uAddr:X}@hi", addr.Address);

@@ -296,7 +296,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16);
 
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
-                (0b0001, Instr(Mnemonic.l_movhi, R21, uimm5_16)),               // chenxing(mod), disasm
+                (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing
                 (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing
@@ -357,7 +357,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 110001
                 Instr(Mnemonic.bg_andi, R21, R16, uimm0_16_16),           // chenxing
                 // opcode 110010
-                Instr(Mnemonic.l_ori, R21, R16, uimm0_16_16),            // chenxing
+                Instr(Mnemonic.bg_ori, R21, R16, uimm0_16_16),            // chenxing
                 // opcode 110011
                 Nyi("0b110011"),
 
@@ -463,10 +463,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b111, Instr(Mnemonic.bn_nand__, R13, R8, R3)));           // guess
 
             var decode010010 = Mask(0, 3, "  010010",
-                Instr(Mnemonic.l_cmov____, R13, R8, R3),                    // guess
-                Instr(Mnemonic.l_cmov____, R13, R8, R3, uimm0_3),           // not sure what the last 3 bits are
-                Instr(Mnemonic.l_cmovi____, R13, R8, uimm3_5),              // guess
-                Instr(Mnemonic.l_cmovi____, R13, R8, uimm3_5, uimm0_3),     // not sure what the last 3 bits are
+                Instr(Mnemonic.bn_cmov____, R13, R8, R3),                   // guess
+                Instr(Mnemonic.bn_cmov____, R13, R8, R3, uimm0_3),          // not sure what the last 3 bits are
+                Instr(Mnemonic.bn_cmovi____, R13, R8, uimm3_5),             // guess
+                Instr(Mnemonic.bn_cmovi____, R13, R8, uimm3_5, uimm0_3),    // not sure what the last 3 bits are
                 nyi_3,
                 nyi_3,
                 nyi_3,
@@ -495,7 +495,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             return new D24BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode000000,
                 // opcode 000001
-                Instr(Mnemonic.l_movhi__, R13, uimm0_13),
+                Instr(Mnemonic.bn_movhi__, R13, uimm0_13),
                 // opcode 000010
                 Instr(Mnemonic.bn_lhz, R13, Ms(8, 1, 7, 1, PrimitiveType.UInt16)),  // chenxing
                 decode000011,
@@ -520,7 +520,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 001100
                 Nyi("0b01100"),
                 // opcode 001101
-                Instr(Mnemonic.l_movhi__, R13, uimm0_13),           // chenxing
+                Instr(Mnemonic.bn_movhi__, R13, uimm0_13),           // chenxing
                 // opcode 001110
                 Nyi("0b01110"),
                 // opcode 001111
@@ -533,7 +533,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode010011,
 
                 // opcode 010100
-                Instr(Mnemonic.l_ori, R13, R8, uimm0_8),      // chenxing
+                Instr(Mnemonic.bn_ori, R13, R8, uimm0_8),     // chenxing
                 // opcode 010101
                 Instr(Mnemonic.bn_andi, R13, R8, uimm0_8),    // guess
                 // opcode 010110
