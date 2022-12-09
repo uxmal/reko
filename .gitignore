@@ -54,4 +54,6 @@ TestResults
 /src/Installers/Runtime/Runtime.nuspec
 /src/Installers/WixInstaller/Components.wxi
 
-.vscode/
+.vscode/*
+!/.vscode/launch.json
+!/.vscode/tasks.json
