@@ -85,47 +85,47 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_addi()
+        public void AeonDis_bt_addi__()
         {
-            AssertCode("l.addi\tr3,r13,0x0", "fc 6d 00 00");
+            AssertCode("bt.addi?\tr1,-0x4", "9C 3C");
         }
 
         [Test]
-        public void AeonDis_l_addi_negative()
-        {
-            AssertCode("l.addi\tr6,r6,-0x767C", "FC C6 89 84");
-        }
-
-        [Test]
-        public void AeonDis_l_addi_two_operand()
-        {
-            AssertCode("l.addi?\tr1,-0x4", "9C 3C");
-        }
-
-        [Test]
-        public void AeonDis_l_addi_24bit()
+        public void AeonDis_bn_addi()
         {
             // confirmed with source
-            AssertCode("l.addi\tr3,r3,0x10", "1C 63 10");
+            AssertCode("bn.addi\tr3,r3,0x10", "1C 63 10");
         }
 
         [Test]
-        public void AeonDis_beqi__()
+        public void AeonDis_bg_addi()
         {
-            AssertCode("beqi?\tr3,0x0,00100011", "20 60 44");
+            AssertCode("bg.addi\tr3,r13,0x0", "fc 6d 00 00");
         }
 
         [Test]
-        public void AeonDis_l_blti__()
+        public void AeonDis_bg_addi_negative()
         {
-            AssertCode("l.blti?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+            AssertCode("bg.addi\tr6,r6,-0x767C", "FC C6 89 84");
         }
 
         [Test]
-        public void AeonDis_l_bf_24bit()
+        public void AeonDis_bn_beqi__()
+        {
+            AssertCode("bn.beqi?\tr3,0x0,00100011", "20 60 44");
+        }
+
+        [Test]
+        public void AeonDis_bg_blti__()
+        {
+            AssertCode("bg.blti?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+        }
+
+        [Test]
+        public void AeonDis_bn_bf()
         {
             // confirmed with source
-            AssertCode("l.bf\t000FFFF2", "23 FF C9");
+            AssertCode("bn.bf\t000FFFF2", "23 FF C9");
         }
 
         [Test]
@@ -143,10 +143,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_divu()
+        public void AeonDis_bn_divu()
         {
             // confirmed with source
-            AssertCode("l.divu\tr6,r6,r7", "40 C6 39");
+            AssertCode("bn.divu\tr6,r6,r7", "40 C6 39");
         }
 
         [Test]
@@ -259,7 +259,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             AssertCode(
                 "l.movhi\tr12,0x3988F0@hi",
-                "l.addi\tr10,r12,0x3988F0@lo",
+                "bg.addi\tr10,r12,0x3988F0@lo",
                 "C1 80 07 41" +
                 "FD 4C 88 F0");
         }
@@ -289,23 +289,23 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_nand__()
+        public void AeonDis_bn_nand__()
         {
             // confirmed with source
-            AssertCode("l.nand?\tr6,r4,r4", "44 C4 27");
+            AssertCode("bn.nand?\tr6,r4,r4", "44 C4 27");
         }
 
         [Test]
-        public void AeonDis_l_nop()
+        public void AeonDis_bt_nop()
         {
-            AssertCode("l.nop", "000000");
+            // confirmed with source
+            AssertCode("bt.nop", "8001");
         }
 
         [Test]
-        public void AeonDis_l_nop_16bit()
+        public void AeonDis_bn_nop()
         {
-            // confirmed with source
-            AssertCode("l.nop", "8001");
+            AssertCode("bn.nop", "000000");
         }
 
         [Test]
@@ -382,16 +382,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_srai()
+        public void AeonDis_bn_srai()
         {
-            AssertCode("l.srai?\tr5,r7,0x1", "4C A7 0A");
+            AssertCode("bn.srai?\tr5,r7,0x1", "4C A7 0A");
         }
 
         [Test]
-        public void AeonDis_l_sub()
+        public void AeonDis_bn_sub()
         {
             // confirmed with source
-            AssertCode("l.sub\tr6,r6,r5", "40 C6 2D");
+            AssertCode("bn.sub\tr6,r6,r5", "40 C6 2D");
         }
 
         [Test]
@@ -409,9 +409,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_xor__()
+        public void AeonDis_bn_xor__()
         {
-            AssertCode("l.xor?\tr7,r4,r3", "44 E4 1E");
+            AssertCode("bn.xor?\tr7,r4,r3", "44 E4 1E");
         }
     }
 }

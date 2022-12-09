@@ -83,8 +83,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 memSt.IsFullOffset = true;
                 memSt.Offset = (int) uFullWord;
                 break;
-            case Mnemonic.l_addi:
-            case Mnemonic.l_addi__:
+            case Mnemonic.bt_addi__:
+            case Mnemonic.bn_addi:
+            case Mnemonic.bg_addi:
                 var addReg = (RegisterStorage) instr.Operands[1];
                 if (addReg != regHi)
                     return;

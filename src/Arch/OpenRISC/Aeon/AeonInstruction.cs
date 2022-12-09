@@ -72,8 +72,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                     renderer.WriteFormat("0x{0:X}", imm.Value.ToUInt32());
                 }
                 if ((this.Mnemonic == Mnemonic.l_ori ||
-                    this.Mnemonic == Mnemonic.l_addi ||
-                    this.Mnemonic == Mnemonic.l_addi) && 
+                    this.Mnemonic == Mnemonic.bt_addi__ ||
+                    this.Mnemonic == Mnemonic.bn_addi ||
+                    this.Mnemonic == Mnemonic.bg_addi) && 
                     imm.Width.BitSize == 32)
                 {
                     renderer.WriteString("@lo");
