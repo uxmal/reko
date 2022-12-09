@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
         public AeonDisassemblerTests()
         {
-            // Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new AeonArchitecture(CreateServiceContainer(), "aeon", new());
             this.addrLoad = Address.Ptr32(0x00100000);
         }
@@ -147,6 +147,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bn.divu\tr6,r6,r7", "40 C6 39");
+        }
+
+        [Test]
+        public void AeonDis_bn_exthz()
+        {
+            AssertCode("bn.exthz?\tr10,r7", "5D 47 04");
         }
 
         [Test]
@@ -376,7 +382,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_sfnei__()
+        public void AeonDis_bn_sfnei_3_byte()
+        {
+            AssertCode("bn.sfnei?\tr7,0x7", "5C E7 49");
+        }
+
+        [Test]
+        public void AeonDis_bg_sfnei_4_byte()
         {
             AssertCode("bg.sfnei?\tr6,0x3E8", "C0 C0 7D 04");
         }

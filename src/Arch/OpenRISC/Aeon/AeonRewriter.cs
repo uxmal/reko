@@ -84,7 +84,6 @@ namespace Reko.Arch.OpenRISC.Aeon
                     break;
                 case Mnemonic.bt_add__:
                 case Mnemonic.bn_add: RewriteArithmetic(m.IAdd); break;
-                case Mnemonic.l_add____: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.bt_addi__:
                 case Mnemonic.bn_addi:
                 case Mnemonic.bg_addi: RewriteAddi(); break;
@@ -107,6 +106,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.bn_entri__: RewriteUnknown(); break;
+                case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
                 case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
                 case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
@@ -138,7 +138,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
                 case Mnemonic.bn_sfltu: RewriteSfxx(m.Ult); break;
                 case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
-                case Mnemonic.bg_sfnei__: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bg_sfnei__:
+                case Mnemonic.bn_sfnei__: RewriteSfxx(m.Ne); break;
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.bn_sh__: 
@@ -327,6 +328,13 @@ namespace Reko.Arch.OpenRISC.Aeon
             var elseOp = OpOrZero(2);
             var dst = Op(0);
             m.Assign(dst, m.Conditional(dst.DataType, cond, thenOp, elseOp));
+        }
+
+        private void RewriteExt(PrimitiveType dtFrom, PrimitiveType dtTo)
+        {
+            var tmp = binder.CreateTemporary(dtFrom);
+            m.Assign(tmp, m.Slice(OpOrZero(1), dtFrom));
+            m.Assign(Op(0), m.Convert(tmp, dtFrom, dtTo));
         }
 
         private void RewriteLoadZex(PrimitiveType dt)

@@ -185,6 +185,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_exthz()
+        {
+            Given_HexString("5D 47 04");
+            AssertCode(     // bn.exthz  r7,r7
+                "0|L--|00100000(3): 2 instructions",
+                "1|L--|v2 = SLICE(r7, uint16, 0)",
+                "2|L--|ry = CONVERT(v2, uint16, uint32)");
+        }
+
+        [Test]
         public void AeonRw_bn_ff1__()
         {
             Given_HexString("5C6B08");
@@ -466,7 +476,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_ori_zero()
+        public void AeonRw_bn_ori_zero() 
         {
             Given_HexString("506001");
             AssertCode(     // bn.ori	r3,r0,0x1
@@ -555,6 +565,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bg.sfnei? r6,0x3E8
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f = r6 != 0x3E8<32>");
+        }
+
+        [Test]
+        public void AeonDis_bn_sfnei_3_byte()
+        {
+            Given_HexString("5C E7 49");
+            AssertCode(     // bn.sfnei?\tr7,0x7,
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|f = r7 != 7<32>");
         }
 
         [Test]
