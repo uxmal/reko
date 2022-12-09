@@ -400,6 +400,23 @@ elseif("${TARGET}" STREQUAL "nativeproxy_build")
 			-DREKO_COMPILER=${REKO_COMPILER}
 			-P ${REKO_SRC}/Native/reko.cmake
 	)
+elseif("${TARGET}" STREQUAL "git_hash")
+	if(NOT GIT_HASH_OUTPUT)
+		message(FATAL_ERROR "Variable GIT_HASH_OUTPUT is required")
+	endif()
+	#
+	# Update the git hash AssemblyData for Reko.Core
+	#
+	include(${CMAKE_SOURCE_DIR}/cmake/CheckGit.cmake)
+	CheckGitVersion(
+		SCRIPT_FILE ${CMAKE_SOURCE_DIR}/cmake/CheckGit.cmake
+		CACHE_FILE ${CMAKE_BINARY_DIR}/git-state.txt
+		TEMPLATE_FILE ${CMAKE_SOURCE_DIR}/cmake/AssemblyData.Extra.cs.in
+		OUTPUT_FILE ${GIT_HASH_OUTPUT}
+		REPO_DIR ${REKO_SRC}
+	)
+	add_custom_target(git_hash)
+	add_dependencies(git_hash AlwaysCheckGit)
 elseif("${TARGET}" STREQUAL "build_solution")	
 	#
 	# Create a target to build the main solution
