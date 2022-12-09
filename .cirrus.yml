@@ -52,7 +52,8 @@ linux_x64_task:
 
 darwin_x64_task:
   macos_instance:
-    image: big-sur-xcode-12.4
+    image: ghcr.io/cirruslabs/macos-ventura-base:latest
+    #image: big-sur-xcode-12.4
 
   env:
     PATH: $HOME/.dotnet:$PATH
