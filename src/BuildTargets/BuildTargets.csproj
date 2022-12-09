@@ -11,6 +11,11 @@
     <CMakeFlags Include="-DREKO_SRC=$(ProjectDir)../" />
   </ItemGroup>
 
+
+  <ItemGroup Condition="'$(OS)'=='Windows_NT'">
+    <CMakeFlags Include="-DREKO_COMPILER=&quot;Visual Studio 17 2022&quot;" />
+  </ItemGroup>
+
   <PropertyGroup>
     <!-- this is needed to have a consistent and normalized path (or it will not work on Unix) -->
     <RekoCMake>$([System.IO.Path]::Combine($(ProjectDir), ..\reko.cmake))</RekoCMake>

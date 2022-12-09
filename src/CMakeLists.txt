@@ -322,6 +322,11 @@ endfunction()
 
 set(GUI_BASEDIR ${REKO_SRC}/Gui)
 
+if(NOT REKO_COMPILER)
+	# no-op to silence warning (Manually-specified variables were not used by the project)
+	# we only use REKO_COMPILER for NativeProxy
+endif()
+
 if("${TARGET}" STREQUAL "run_hdrgen")
 	# 
 	# we need to obtain the path where Reko.Core.dll will be built, 
@@ -389,14 +394,15 @@ elseif("${TARGET}" STREQUAL "nativeproxy_build")
 	# Create a new target to build NativeProxy
 	#
 	add_custom_target(nativeproxy_build
-		COMMENT "Building NativeProxy..."
+		COMMENT "Building NativeProxy ..."
 		WORKING_DIRECTORY ${REKO_SRC}/Native
 		COMMAND ${CMAKE_COMMAND}
 			-DIS_MSYS=${IS_MSYS}
+			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 			-DREKO_SRC=${REKO_SRC}
 			-DREKO_ROOT=${REKO_SRC}/../
 			-DREKO_PLATFORM=${REKO_PLATFORM}
-			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+			-DREKO_COMPILER=${REKO_COMPILER}
 			-P ${REKO_SRC}/Native/reko.cmake
 	)
 elseif("${TARGET}" STREQUAL "build_solution")	

@@ -71,7 +71,7 @@ endfunction()
 # This is controlled by the `TARGET` parameter
 #
 function(invoke_cmake)
-	cmake_parse_arguments(proj "QUICK_CONFIGURE" "DIRECTORY;BUILD_DIR;GENERATOR;TARGET" "PASS_VARIABLES;EXTRA_ARGUMENTS" ${ARGN})
+	cmake_parse_arguments(proj "QUICK_CONFIGURE" "DIRECTORY;BUILD_DIR;GENERATOR;TARGET;PLATFORM" "PASS_VARIABLES;EXTRA_ARGUMENTS" ${ARGN})
 	
 	## Beginning of the "configuration" phase
 
@@ -97,7 +97,15 @@ function(invoke_cmake)
 	
 	# append -G <generator> if specified or previously set
 	if(proj_GENERATOR)
-		list(APPEND CMAKE_ARGS -G ${proj_GENERATOR})
+		list(APPEND CMAKE_ARGS "-G" "${proj_GENERATOR}")
+	endif()
+
+	if(WIN32)
+		if(proj_PLATFORM STREQUAL "x64")
+			 list(APPEND CMAKE_ARGS "-A" "x64")
+		elseif(proj_PLATFORM STREQUAL "x86")
+			list(APPEND CMAKE_ARGS "-A" "Win32")
+		endif()
 	endif()
 
 	# This flag skips CMake compiler sanity checks ("Checking if C compiler works"),
@@ -121,6 +129,8 @@ function(invoke_cmake)
 	if(proj_EXTRA_ARGUMENTS)
 		set(CMAKE_ARGS "${CMAKE_ARGS};${proj_EXTRA_ARGUMENTS}")
 	endif()
+
+	#message(STATUS "CMake args: ${CMAKE_ARGS}")
 
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}

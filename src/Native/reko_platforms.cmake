@@ -36,8 +36,6 @@ elseif(NOT DEFINED REKO_PLATFORM)
 	else()
 		set(REKO_PLATFORM_X86 ON)
 	endif()
-else()
-	message(FATAL_ERROR "Unknown platform '${REKO_PLATFORM}'")
 endif()
 
 if(REKO_PLATFORM_X86 AND NOT MSVC)
