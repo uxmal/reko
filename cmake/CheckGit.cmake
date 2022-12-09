@@ -60,13 +60,9 @@ function(CheckGitVersion)
         file(MAKE_DIRECTORY ${output_dir})
     endif ()
 
-    if (NOT DEFINED GIT_HASH_CACHE)
-        set(GIT_HASH_CACHE "INVALID")
-    endif ()
-
     # Only update the output file if the hash has changed. This will
     # prevent us from rebuilding the project more than we need to.
-    if (NOT ${GIT_HASH} STREQUAL ${GIT_HASH_CACHE} OR NOT EXISTS ${git_OUTPUT_FILE})
+    if (NOT "${GIT_HASH}" STREQUAL "${GIT_HASH_CACHE}" OR NOT EXISTS ${git_OUTPUT_FILE})
         # Set che GIT_HASH_CACHE variable the next build won't have
         # to regenerate the source file.
         CheckGitWrite(${git_CACHE_FILE} ${GIT_HASH})
