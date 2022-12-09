@@ -90,17 +90,20 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_and: RewriteArithmetic(m.And); break;
                 case Mnemonic.bn_andi:
                 case Mnemonic.bg_andi: RewriteLogicalImm(m.And); break;
+                case Mnemonic.bg_beq__:
                 case Mnemonic.bn_beqi__:
                 case Mnemonic.bg_beqi__: RewriteBxxi(m.Eq); break;
                 case Mnemonic.bn_bf:
                 case Mnemonic.bg_bf: RewriteBf(true); break;
+                case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bgtu__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bgtui__: RewriteBxxi(m.Gt); break;
                 case Mnemonic.bn_ble__i__: RewriteBxxi(m.Le); break;
                 case Mnemonic.bg_bltsi__: RewriteBxxi(m.Lt); break;
-                case Mnemonic.bn_bnf__: RewriteBf(false); break;
-                case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
+                case Mnemonic.bne__:
+                case Mnemonic.bg_bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bn_bnei__: RewriteBxxi(m.Ne); break;
+                case Mnemonic.bn_bnf__: RewriteBf(false); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
                 case Mnemonic.bn_cmov____: RewriteCmov(); break;
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
@@ -114,7 +117,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal: RewriteJal(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
-                case Mnemonic.bg_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
+                case Mnemonic.bg_lbz__: 
+                case Mnemonic.bn_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.bn_lwz__:
@@ -371,6 +375,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 switch (lowInstr!.Mnemonic)
                 {
                 case Mnemonic.bg_lbz__:
+                case Mnemonic.bn_lbz__:
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__:
                 case Mnemonic.bn_lwz__:

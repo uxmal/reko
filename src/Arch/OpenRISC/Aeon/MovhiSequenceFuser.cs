@@ -60,6 +60,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             switch (instr.Mnemonic)
             {
             case Mnemonic.bg_lbz__:
+            case Mnemonic.bn_lbz__:
             case Mnemonic.bn_lhz:
             case Mnemonic.bg_lhz__:
             case Mnemonic.bn_lwz__:
