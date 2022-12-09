@@ -121,10 +121,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_blti__()
+        public void AeonRw_bg_bltsi__()
         {
             Given_HexString("D0 88 FF 3E");
-            AssertCode(     // bg.blti? r4,0x8,002F4942
+            AssertCode(     // bg.bltsi? r4,0x8,002F4942
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|if (r4 < 8<32>) branch 000FFFE7");
         }

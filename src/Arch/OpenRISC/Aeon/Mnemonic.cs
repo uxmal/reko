@@ -30,7 +30,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bgtu__,
         bgtui__,
         bn_ble__i__,
-        bg_blti__,
+        bg_bltsi__,
         bne__,
         bn_bnei__,
         bt_trap,

@@ -116,9 +116,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_blti__()
+        public void AeonDis_bg_bltsi__()
         {
-            AssertCode("bg.blti?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+            AssertCode("bg.bltsi?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
         }
 
         [Test]
