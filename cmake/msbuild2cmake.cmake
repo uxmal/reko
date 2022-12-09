@@ -100,14 +100,6 @@ function(invoke_cmake)
 		list(APPEND CMAKE_ARGS "-G" "${proj_GENERATOR}")
 	endif()
 
-	if(WIN32)
-		if(proj_PLATFORM STREQUAL "x64")
-			 list(APPEND CMAKE_ARGS "-A" "x64")
-		elseif(proj_PLATFORM STREQUAL "x86")
-			list(APPEND CMAKE_ARGS "-A" "Win32")
-		endif()
-	endif()
-
 	# This flag skips CMake compiler sanity checks ("Checking if C compiler works"),
 	# which typically involve compiling small dummy programs
 	# it can be used to speedup the initial generation phase at the expense of safety
@@ -189,9 +181,3 @@ message("=> Target    : ${TARGET}")
 message("")
 
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR}/../src)
-
-# AnyCPU is not a valid native platform, so we filter it out here
-set(REKO_ACTUAL_PLATFORM "")
-if(NOT REKO_PLATFORM STREQUAL "AnyCPU")
-	set(REKO_ACTUAL_PLATFORM ${REKO_PLATFORM})
-endif()
