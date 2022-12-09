@@ -60,6 +60,10 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("T")
             .Param("T")
             .Returns("T");
+        public static readonly IntrinsicProcedure FindLastOne = new IntrinsicBuilder("__find_last_one", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
         public static readonly IntrinsicProcedure InvertBit = new IntrinsicBuilder("__invert_bit", false)
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")

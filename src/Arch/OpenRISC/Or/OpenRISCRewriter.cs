@@ -85,6 +85,8 @@ namespace Reko.Arch.OpenRISC.Or
                 case Mnemonic.l_bnf: RewriteBranch(true); break;
                 case Mnemonic.l_cmov: RewriteCmov(); break;
                 case Mnemonic.l_csync: RewriteCsync(); break;
+                case Mnemonic.l_ff1: RewriteIntrinsicRegs(CommonOps.FindFirstOne); break;
+                case Mnemonic.l_fl1: RewriteIntrinsicRegs(CommonOps.FindLastOne); break;
                 case Mnemonic.l_j: RewriteJ(); break;
                 case Mnemonic.l_jal: RewriteJal(); break;
                 case Mnemonic.l_jalr: RewriteJalr(); break;
@@ -210,6 +212,16 @@ namespace Reko.Arch.OpenRISC.Or
             return ((ImmediateOperand) op).Value;
         }
 
+        private void RewriteIntrinsicRegs(IntrinsicProcedure intrinsic)
+        {
+            var dst = Reg(instrCur.Operands[0]);
+            var args = new List<Expression> { };
+            for (int iop = 1; iop < instrCur.Operands.Length; ++iop)
+            {
+                args.Add(Reg0(instrCur.Operands[iop]));
+            }
+            m.Assign(dst, m.Fn(intrinsic, args.ToArray()));
+        }
 
         private void CV(Identifier dst)
         {
