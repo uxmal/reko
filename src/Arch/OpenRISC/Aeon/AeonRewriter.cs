@@ -82,67 +82,77 @@ namespace Reko.Arch.OpenRISC.Aeon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.l_add: RewriteArithmetic(m.IAdd); break;
-                case Mnemonic.l_add__: RewriteArithmetic(m.IAdd); break;
+                case Mnemonic.bt_add__:
+                case Mnemonic.bn_add: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_add____: RewriteArithmetic(m.IAdd); break;
-                case Mnemonic.l_addi: RewriteAddi(); break;
-                case Mnemonic.l_addi__: RewriteAddi(); break;
-                case Mnemonic.l_and: RewriteArithmetic(m.And); break;
-                case Mnemonic.l_andi: RewriteLogicalImm(m.And); break;
-                case Mnemonic.l_andi__: RewriteUnknown(); break;
-                case Mnemonic.beqi__: RewriteBxxi(m.Eq); break;
-                case Mnemonic.l_bf: RewriteBf(true); break;
+                case Mnemonic.bt_addi__:
+                case Mnemonic.bn_addi:
+                case Mnemonic.bg_addi: RewriteAddi(); break;
+                case Mnemonic.bn_and: RewriteArithmetic(m.And); break;
+                case Mnemonic.bn_andi:
+                case Mnemonic.bg_andi: RewriteLogicalImm(m.And); break;
+                case Mnemonic.bn_beqi__:
+                case Mnemonic.bg_beqi__: RewriteBxxi(m.Eq); break;
+                case Mnemonic.bn_bf:
+                case Mnemonic.bg_bf: RewriteBf(true); break;
                 case Mnemonic.bgtu__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bgtui__: RewriteBxxi(m.Gt); break;
-                case Mnemonic.ble__i__: RewriteBxxi(m.Le); break;
-                case Mnemonic.l_blti__: RewriteBxxi(m.Lt); break;
-                case Mnemonic.l_bnf__: RewriteBf(false); break;
+                case Mnemonic.bn_ble__i__: RewriteBxxi(m.Le); break;
+                case Mnemonic.bg_bltsi__: RewriteBxxi(m.Lt); break;
+                case Mnemonic.bn_bnf__: RewriteBf(false); break;
                 case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
-                case Mnemonic.bnei__: RewriteBxxi(m.Ne); break;
+                case Mnemonic.bn_bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bt_trap: RewriteUnknown(); break;
-                case Mnemonic.l_cmov____: RewriteCmov(); break;
-                case Mnemonic.l_cmovi____: RewriteCmov(); break;
-                case Mnemonic.l_divu: RewriteArithmetic(m.UDiv); break;
-                case Mnemonic.entri__: RewriteUnknown(); break;
-                case Mnemonic.l_flush_line: RewriteFlushLine(); break;
-                case Mnemonic.l_invalidate_line: RewriteInvalidateLine(); break;
-                case Mnemonic.l_j: RewriteJ(); break;
-                case Mnemonic.l_jal: RewriteJal(); break;
-                case Mnemonic.l_jr: RewriteJr(); break;
-                case Mnemonic.l_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
-                case Mnemonic.l_lhz: RewriteLoadZex(PrimitiveType.UInt16); break;
-                case Mnemonic.l_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
-                case Mnemonic.l_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
-                case Mnemonic.l_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
-                case Mnemonic.mov__: RewriteMov(); break;
-                case Mnemonic.l_movi__: RewriteMovi(); break;
-                case Mnemonic.l_movhi: RewriteMovhi(); break;
-                case Mnemonic.l_movhi__: RewriteMovhi(); break;
-                case Mnemonic.l_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
-                case Mnemonic.l_nand__: RewriteNand(); break;
-                case Mnemonic.l_nop: RewriteNop(); break;
-                case Mnemonic.l_mul: RewriteArithmetic(m.IMul); break;
-                case Mnemonic.l_or: RewriteArithmetic(m.Or); break;
-                case Mnemonic.l_ori: RewriteOri(m.Or); break;
-                case Mnemonic.l_sfeqi: RewriteSfxx(m.Eq); break;
-                case Mnemonic.l_sfgeu: RewriteSfxx(m.Uge); break;
-                case Mnemonic.l_sfgtui: RewriteSfxx(m.Ugt); break;
-                case Mnemonic.l_sfleui__: RewriteSfxx(m.Ule); break;
-                case Mnemonic.l_sfltu: RewriteSfxx(m.Ult); break;
-                case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
-                case Mnemonic.l_sfnei__: RewriteSfxx(m.Ne); break;
-                case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
-                case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
-                case Mnemonic.l_sll__: RewriteShift(m.Shl); break;
-                case Mnemonic.l_slli__: RewriteShifti(m.Shl); break;
-                case Mnemonic.l_srl__: RewriteShift(m.Shr); break;
-                case Mnemonic.l_srai__: RewriteShifti(m.Sar); break;
-                case Mnemonic.l_srli__: RewriteShifti(m.Shr); break;
-                case Mnemonic.l_sub: RewriteArithmetic(m.ISub); break;
-                case Mnemonic.l_sw: RewriteStore(PrimitiveType.Word32); break;
-                case Mnemonic.l_sw__: RewriteStore(PrimitiveType.Word32); break;
-                case Mnemonic.l_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
-                case Mnemonic.l_xor__: RewriteArithmetic(m.Xor); break;
+                case Mnemonic.bn_cmov____: RewriteCmov(); break;
+                case Mnemonic.bn_cmovi____: RewriteCmov(); break;
+                case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
+                case Mnemonic.bn_entri__: RewriteUnknown(); break;
+                case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
+                case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
+                case Mnemonic.bt_j:
+                case Mnemonic.bg_j: RewriteJ(); break;
+                case Mnemonic.bg_jal: RewriteJal(); break;
+                case Mnemonic.bt_jr: RewriteJr(); break;
+                case Mnemonic.bg_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
+                case Mnemonic.bn_lhz:
+                case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
+                case Mnemonic.bn_lwz__:
+                case Mnemonic.bg_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
+                case Mnemonic.bg_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
+                case Mnemonic.bt_mov__: RewriteMov(); break;
+                case Mnemonic.bt_movi__: RewriteMovi(); break;
+                case Mnemonic.bn_movhi__:
+                case Mnemonic.bg_movhi: RewriteMovhi(); break;
+                case Mnemonic.bg_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
+                case Mnemonic.bn_nand__: RewriteNand(); break;
+                case Mnemonic.bt_nop: 
+                case Mnemonic.bn_nop: RewriteNop(); break;
+                case Mnemonic.bn_mul: RewriteArithmetic(m.IMul); break;
+                case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
+                case Mnemonic.bn_ori:
+                case Mnemonic.bg_ori: RewriteOri(m.Or); break;
+                case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
+                case Mnemonic.bn_sfgeu: RewriteSfxx(m.Uge); break;
+                case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
+                case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
+                case Mnemonic.bn_sfltu: RewriteSfxx(m.Ult); break;
+                case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bg_sfnei__: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bn_sb__:
+                case Mnemonic.bg_sb__: RewriteStore(PrimitiveType.Byte); break;
+                case Mnemonic.bn_sh__: 
+                case Mnemonic.bg_sh__: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.bn_sll__: RewriteShift(m.Shl); break;
+                case Mnemonic.bn_slli__: RewriteShifti(m.Shl); break;
+                case Mnemonic.bn_srl__: RewriteShift(m.Shr); break;
+                case Mnemonic.bn_srai__: RewriteShifti(m.Sar); break;
+                case Mnemonic.bn_srli__: RewriteShifti(m.Shr); break;
+                case Mnemonic.bn_sub: RewriteArithmetic(m.ISub); break;
+                case Mnemonic.bn_sw:
+                case Mnemonic.bg_sw:
+                case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
+                case Mnemonic.bn_xor__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
                     instr.Operands = Array.Empty<MachineOperand>();
@@ -351,10 +361,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             {
                 switch (lowInstr!.Mnemonic)
                 {
-                case Mnemonic.l_lbz__:
-                case Mnemonic.l_lhz:
-                case Mnemonic.l_lhz__:
-                case Mnemonic.l_lwz__:
+                case Mnemonic.bg_lbz__:
+                case Mnemonic.bn_lhz:
+                case Mnemonic.bg_lhz__:
+                case Mnemonic.bn_lwz__:
+                case Mnemonic.bg_lwz__:
                     var memLd = (MemoryOperand) lowInstr.Operands[1];
                     if (memLd.Base != regHi)
                         return;
@@ -364,10 +375,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                     var ea = Address.Ptr32(uFullWord);
                     MaybeZeroExtend(memLd.Width, Op(0), m.Mem(memLd.Width, ea));
                     break;
-                case Mnemonic.l_sb__:
-                case Mnemonic.l_sh__:
-                case Mnemonic.l_sw:
-                case Mnemonic.l_sw__:
+                case Mnemonic.bn_sb__:
+                case Mnemonic.bg_sb__:
+                case Mnemonic.bn_sh__:
+                case Mnemonic.bg_sh__:
+                case Mnemonic.bn_sw:
+                case Mnemonic.bg_sw:
+                case Mnemonic.bg_sw__:
                     var memSt = (MemoryOperand) lowInstr.Operands[0];
                     if (memSt.Base != regHi)
                         return;
@@ -377,8 +391,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                     ea = Address.Ptr32(uFullWord);
                     MaybeSlice(memSt.Width, m.Mem(memSt.Width, ea), Op(1));
                     break;
-                case Mnemonic.l_addi:
-                case Mnemonic.l_addi__:
+                case Mnemonic.bt_addi__:
+                case Mnemonic.bn_addi:
+                case Mnemonic.bg_addi:
                     var addReg = (RegisterStorage) lowInstr.Operands[1];
                     if (addReg != regHi)
                         return;
@@ -389,7 +404,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                     uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
                     m.Assign(Op(0), m.Word32(uFullWord));
                     break;
-                case Mnemonic.l_ori:
+                case Mnemonic.bn_ori:
+                case Mnemonic.bg_ori:
                     var orReg = (RegisterStorage) lowInstr.Operands[1];
                     if (orReg != regHi)
                         return;

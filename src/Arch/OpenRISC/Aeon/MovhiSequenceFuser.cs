@@ -27,7 +27,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;
-                if (instr.Mnemonic != Mnemonic.l_movhi && instr.Mnemonic != Mnemonic.l_movhi__)
+                if (instr.Mnemonic != Mnemonic.bg_movhi && instr.Mnemonic != Mnemonic.bn_movhi__)
                 {
                     yield return instr;
                     continue;
@@ -59,10 +59,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             var regHi = (RegisterStorage) movhi.Operands[0];
             switch (instr.Mnemonic)
             {
-            case Mnemonic.l_lbz__:
-            case Mnemonic.l_lhz:
-            case Mnemonic.l_lhz__:
-            case Mnemonic.l_lwz__:
+            case Mnemonic.bg_lbz__:
+            case Mnemonic.bn_lhz:
+            case Mnemonic.bg_lhz__:
+            case Mnemonic.bn_lwz__:
+            case Mnemonic.bg_lwz__:
                 var memLd = (MemoryOperand) instr.Operands[1];
                 if (memLd.Base != regHi)
                     return;
@@ -71,10 +72,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 memLd.IsFullOffset = true;
                 memLd.Offset = (int) uFullWord;
                 break;
-            case Mnemonic.l_sb__:
-            case Mnemonic.l_sh__:
-            case Mnemonic.l_sw:
-            case Mnemonic.l_sw__:
+            case Mnemonic.bn_sb__:
+            case Mnemonic.bg_sb__:
+            case Mnemonic.bn_sh__:
+            case Mnemonic.bg_sh__:
+            case Mnemonic.bn_sw:
+            case Mnemonic.bg_sw:
+            case Mnemonic.bg_sw__:
                 var memSt = (MemoryOperand) instr.Operands[0];
                 if (memSt.Base != regHi)
                     return;
@@ -83,8 +87,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 memSt.IsFullOffset = true;
                 memSt.Offset = (int) uFullWord;
                 break;
-            case Mnemonic.l_addi:
-            case Mnemonic.l_addi__:
+            case Mnemonic.bt_addi__:
+            case Mnemonic.bn_addi:
+            case Mnemonic.bg_addi:
                 var addReg = (RegisterStorage) instr.Operands[1];
                 if (addReg != regHi)
                     return;
@@ -93,7 +98,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
                 instr.Operands[2] = ImmediateOperand.Word32(uFullWord);
                 break;
-            case Mnemonic.l_ori:
+            case Mnemonic.bn_ori:
+            case Mnemonic.bg_ori:
                 var orReg = (RegisterStorage) instr.Operands[1];
                 if (orReg != regHi)
                     return;
