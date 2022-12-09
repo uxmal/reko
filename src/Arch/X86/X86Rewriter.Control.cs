@@ -93,9 +93,8 @@ namespace Reko.Arch.X86
                 {
                     // Calling the following address. Is the call followed by a 
                     // pop?
-                    var next = dasm.Peek(1);
-                    if (next is not null &&
-                        next.Mnemonic == Mnemonic.pop && 
+                    if (dasm.TryPeek(1, out var next) &&
+                        next!.Mnemonic == Mnemonic.pop && 
                         next.Operands.Length > 0 &&
                         next.Operands[0] is RegisterStorage reg)
                     {

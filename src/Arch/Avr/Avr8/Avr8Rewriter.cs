@@ -400,9 +400,7 @@ namespace Reko.Arch.Avr.Avr8
 
         private void SkipIf(Func<Expression, Expression,Expression> cond)
         {
-            //$BUG: may boom if there is no next instruction.
-            var nextInstr = dasm.Peek(1);
-            if (nextInstr is null)
+            if (!dasm.TryPeek(1, out var nextInstr))
             {
                 m.Invalid();
                 iclass = InstrClass.Invalid;
@@ -411,7 +409,7 @@ namespace Reko.Arch.Avr.Avr8
             var left = RewriteOp(0);
             var right = RewriteOp(1);
             iclass = InstrClass.ConditionalTransfer;
-            m.Branch(cond(left,right), nextInstr.Address + nextInstr.Length, iclass);
+            m.Branch(cond(left,right), nextInstr!.Address + nextInstr.Length, iclass);
         }
 
         private Expression Sbrc(Expression a, Expression b)

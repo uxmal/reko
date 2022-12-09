@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
@@ -30,9 +32,11 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.AccessControl;
+using System.Text.RegularExpressions;
 
 namespace Reko.Arch.OpenRISC.Aeon
 {
@@ -43,10 +47,11 @@ namespace Reko.Arch.OpenRISC.Aeon
         private readonly ProcessorState state;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
-        private readonly IEnumerator<AeonInstruction> dasm;
+        private readonly LookaheadEnumerator<AeonInstruction> dasm;
         private readonly List<RtlInstruction> rtls;
         private readonly RtlEmitter m;
         private AeonInstruction instr;
+        private Address addrInstr;
         private InstrClass iclass;
 
         public AeonRewriter(AeonArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -56,17 +61,19 @@ namespace Reko.Arch.OpenRISC.Aeon
             this.state = state;
             this.binder = binder;
             this.host = host;
-            dasm = new AeonDisassembler(arch, rdr).GetEnumerator();
+            dasm = new LookaheadEnumerator<AeonInstruction>(new AeonDisassembler(arch, rdr));
             rtls = new List<RtlInstruction>();
             m = new RtlEmitter(rtls);
             instr = default!;
+            addrInstr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
             while (dasm.MoveNext())
             {
-                instr = dasm.Current;
+                this.instr = dasm.Current;
+                this.addrInstr = instr.Address;
                 iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -142,7 +149,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                     RewriteUnknown();
                     break;
                 }
-                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                // Account for instruction fused into l.movhi
+                var instrLength = (int) ((instr.Address - addrInstr) + instr.Length);
+                yield return m.MakeCluster(addrInstr, instrLength, iclass);
                 rtls.Clear();
             }
         }
@@ -163,6 +172,31 @@ namespace Reko.Arch.OpenRISC.Aeon
                 ea = m.AddSubSignedInt(ea, mem.Offset);
             }
             return ea;
+        }
+
+        private void MaybeSlice(DataType dt, Expression dst, Expression src)
+        {
+            if (dt.BitSize < src.DataType.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(src, dt));
+                src = tmp;
+            }
+            m.Assign(dst, src);
+        }
+
+        private void MaybeZeroExtend(DataType dt, Expression dst, Expression src)
+        {
+            if (src.DataType.BitSize < 32)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, src);
+                m.Assign(dst, m.Convert(tmp, tmp.DataType, dst.DataType));
+            }
+            else
+            {
+                m.Assign(dst, src);
+            }
         }
 
         private Expression Op(int iop)
@@ -287,18 +321,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         private void RewriteLoadZex(PrimitiveType dt)
         {
             var src = Op(1);
-            if (src.DataType.BitSize < 32)
-            {
-                var tmp = binder.CreateTemporary(dt);
-                m.Assign(tmp, src);
-                var dst = Op(0);
-                m.Assign(dst, m.Convert(tmp, tmp.DataType, dst.DataType));
-            }
-            else
-            {
-                var dst = Op(0);
-                m.Assign(dst, src);
-            }
+            var dst = Op(0);
+            MaybeZeroExtend(dt, dst, src);
         }
 
         private void RewriteMov()
@@ -317,9 +341,67 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private void RewriteMovhi()
         {
-            var src = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
-            var dst = Op(0);
-            m.Assign(dst, m.Word32(src << 16));
+            var movhi = this.instr;
+            var immHi = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+            var regHi = (RegisterStorage) instr.Operands[0];
+            var dst = binder.EnsureRegister(regHi);
+            m.Assign(dst, m.Word32(immHi << 16));
+
+            if (dasm.TryPeek(1, out var lowInstr))
+            {
+                switch (lowInstr!.Mnemonic)
+                {
+                case Mnemonic.l_lbz__:
+                case Mnemonic.l_lhz:
+                case Mnemonic.l_lhz__:
+                case Mnemonic.l_lwz__:
+                    var memLd = (MemoryOperand) lowInstr.Operands[1];
+                    if (memLd.Base != regHi)
+                        return;
+                    dasm.MoveNext();
+                    this.instr = dasm.Current;
+                    uint uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], memLd.Offset);
+                    var ea = Address.Ptr32(uFullWord);
+                    MaybeZeroExtend(memLd.Width, Op(0), m.Mem(memLd.Width, ea));
+                    break;
+                case Mnemonic.l_sb__:
+                case Mnemonic.l_sh__:
+                case Mnemonic.l_sw:
+                case Mnemonic.l_sw__:
+                    var memSt = (MemoryOperand) lowInstr.Operands[0];
+                    if (memSt.Base != regHi)
+                        return;
+                    dasm.MoveNext();
+                    this.instr = dasm.Current;
+                    uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], memSt.Offset);
+                    ea = Address.Ptr32(uFullWord);
+                    MaybeSlice(memSt.Width, m.Mem(memSt.Width, ea), Op(1));
+                    break;
+                case Mnemonic.l_addi:
+                case Mnemonic.l_addi__:
+                    var addReg = (RegisterStorage) lowInstr.Operands[1];
+                    if (addReg != regHi)
+                        return;
+                    dasm.MoveNext();
+                    this.instr = dasm.Current;
+                    var iop = lowInstr.Operands.Length == 2 ? 1 : 2;
+                    var addImm = (ImmediateOperand) lowInstr.Operands[iop];
+                    uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
+                    m.Assign(Op(0), m.Word32(uFullWord));
+                    break;
+                case Mnemonic.l_ori:
+                    var orReg = (RegisterStorage) lowInstr.Operands[1];
+                    if (orReg != regHi)
+                        return;
+                    dasm.MoveNext();
+                    this.instr = dasm.Current;
+                    iop = lowInstr.Operands.Length == 2 ? 1 : 2;
+                    var orImm = (ImmediateOperand) lowInstr.Operands[iop];
+                    uFullWord = MovhiSequenceFuser.OrFullWord(movhi.Operands[1], orImm.Value.ToUInt32());
+                    m.Assign(Op(0), m.Word32(uFullWord));
+                    break;
+                }
+            }
         }
 
         private void RewriteNand()
@@ -460,18 +542,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(Op(0), m.Fn(intrinsic, args.ToArray()));
         }
 
-
         private void RewriteStore(PrimitiveType dt)
         {
             var src = OpOrZero(1);
-            if (dt.BitSize < src.DataType.BitSize)
-            {
-                var tmp = binder.CreateTemporary(dt);
-                m.Assign(tmp, m.Slice(src, dt));
-                src = tmp;
-            }
             var dst = Op(0);
-            m.Assign(dst, src);
+            MaybeSlice(dt, dst, src);
         }
 
         //$TODO: remove this once all instructions are known. It

@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Core.Collections
@@ -48,7 +49,15 @@ namespace Reko.Core.Collections
 
         #region IEnumerator<T> Members
 
-        public T Current => Peek(0) ?? throw new InvalidOperationException();
+        public T Current
+        {
+            get
+            {
+                if (!this.TryPeek(0, out var result))
+                    throw new InvalidOperationException();
+                return result!;
+            }
+        }
 
         public void Dispose()
         {
@@ -82,27 +91,42 @@ namespace Reko.Core.Collections
 
         #endregion
 
-        public T? Peek(int ahead)
+        /// <summary>
+        /// Attempt to peek <see cref="ahead"/> items forward in the enumeration.
+        /// </summary>
+        /// <param name="ahead">Number of steps ahead to peek.</param>
+        /// <param name="result">If the peek was successful, the peeked
+        /// item.</param>
+        /// <returns>True if the peek was successful, false if not.</returns>
+        public bool TryPeek(int ahead, [MaybeNullWhen(false)] out T? result)
         {
+            if (ahead < 0)
+                throw new ArgumentOutOfRangeException("Parameter must be non-negative.", nameof(ahead));
             int itemsInBuffer = peeked.Count - iCur;
             Debug.Assert(itemsInBuffer >= 0);
             if (itemsInBuffer == 0 && ahead == 0)
             {
-                return e.Current;
+                result = e.Current;
+                return true;
             }
             if (ahead < itemsInBuffer)
             {
-                return peeked[iCur + ahead];
+                result = peeked[iCur + ahead];
+                return true;
             }
             if (itemsInBuffer == 0)
                 peeked.Add(e.Current);
             for (int i = 0; i < ahead; ++i)
             {
                 if (!e.MoveNext())
-                    return default;
+                {
+                    result = default;
+                    return false;
+                }
                 peeked.Add(e.Current);
             }
-            return peeked[ahead];
+            result = peeked[ahead];
+            return true;
         }
 
         public void Skip(int skip)

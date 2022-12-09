@@ -54,7 +54,8 @@ namespace Reko.Arch.OpenRISC
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Aeon.AeonDisassembler(this, imageReader);
+            var dasm = new Aeon.AeonDisassembler(this, imageReader);
+            return new MovhiSequenceFuser(dasm);
         }
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
@@ -76,6 +77,12 @@ namespace Reko.Arch.OpenRISC
         {
             return new AeonRewriter(this, rdr, state, binder, host);
         }
+
+        public override CallingConvention? GetCallingConvention(string? name)
+        {
+            return new AeonCallingConvention(this);
+        }
+
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {

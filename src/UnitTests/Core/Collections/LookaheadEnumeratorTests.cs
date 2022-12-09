@@ -27,6 +27,13 @@ namespace Reko.UnitTests.Core.Collections
     [TestFixture]
     public class LookaheadEnumeratorTests
     {
+        private bool PeekSucceeds(LookaheadEnumerator<char> e, int ahead, char expected)
+        {
+            Assert.That(e.TryPeek(ahead, out var result));
+            Assert.AreEqual(expected, result);
+            return true;
+        }
+
         [Test]
         public void EmptySequence()
         {
@@ -56,7 +63,8 @@ namespace Reko.UnitTests.Core.Collections
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
-            Assert.AreEqual('a', e.Peek(0));
+            Assert.That(e.TryPeek(0, out var result));
+            Assert.AreEqual('a', result);
         }
 
         [Test]
@@ -64,7 +72,8 @@ namespace Reko.UnitTests.Core.Collections
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
-            Assert.AreEqual('b', e.Peek(1));
+            Assert.That(e.TryPeek(1, out var result));
+            Assert.AreEqual('b', result);
             Assert.AreEqual('a', e.Current);
         }
 
@@ -73,18 +82,18 @@ namespace Reko.UnitTests.Core.Collections
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
-            Assert.AreEqual('b', e.Peek(1));
+            Assert.That(e.TryPeek(1, out var result));
+            Assert.AreEqual('b', result);
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual('b', e.Current);
         }
 
         [Test]
-        public void Peek2ShouldReturnNull()
+        public void Peek2ShouldReturnFalse()
         {
             var e = new LookaheadEnumerator<string>(new List<string> { "ab", "bc" }.GetEnumerator());
             e.MoveNext();
-            var nonExistent = e.Peek(2);
-            Assert.IsNull(nonExistent);
+            Assert.That(!e.TryPeek(2, out var nonExistent));
         }
 
         [Test]
@@ -93,7 +102,7 @@ namespace Reko.UnitTests.Core.Collections
             var e = new LookaheadEnumerator<char>("abc".GetEnumerator());
             e.MoveNext();
             Assert.AreEqual('a', e.Current);
-            Assert.AreEqual('b', e.Peek(1));
+            Assert.That(PeekSucceeds(e, 1, 'b'));
             e.MoveNext();
             Assert.AreEqual('b', e.Current);
             e.MoveNext();
@@ -105,8 +114,8 @@ namespace Reko.UnitTests.Core.Collections
         {
             var e = new LookaheadEnumerator<char>("abc".GetEnumerator());
             e.MoveNext();
-            Assert.AreEqual('c', e.Peek(2));
-            Assert.IsTrue(e.MoveNext());
+            Assert.That(PeekSucceeds(e, 2, 'c'));
+            Assert.That(e.MoveNext());
             Assert.AreEqual('b', e.Current);
             Assert.IsTrue(e.MoveNext());
             Assert.AreEqual('c', e.Current);
@@ -118,14 +127,14 @@ namespace Reko.UnitTests.Core.Collections
         {
             var e = new LookaheadEnumerator<char>("abcd".GetEnumerator());
             e.MoveNext();
-            Assert.AreEqual('b', e.Peek(1));
-            Assert.AreEqual('b', e.Peek(1));
-            Assert.AreEqual('b', e.Peek(1));
-            Assert.AreEqual('b', e.Peek(1));
-            Assert.AreEqual('c', e.Peek(2));
-            Assert.AreEqual('c', e.Peek(2));
-            Assert.AreEqual('d', e.Peek(3));
-            Assert.AreEqual('d', e.Peek(3));
+            Assert.That(PeekSucceeds(e, 1, 'b'));
+            Assert.That(PeekSucceeds(e, 1, 'b'));
+            Assert.That(PeekSucceeds(e, 1, 'b'));
+            Assert.That(PeekSucceeds(e, 1, 'b'));
+            Assert.That(PeekSucceeds(e, 2, 'c'));
+            Assert.That(PeekSucceeds(e, 2, 'c'));
+            Assert.That(PeekSucceeds(e, 3, 'd'));
+            Assert.That(PeekSucceeds(e, 3, 'd'));
         }
     }
 }
