@@ -72,16 +72,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_add___two_operand()
+        public void AeonDis_bt_add__()
         {
-            AssertCode("l.add?\tr7,r6", "8C E6");
+            AssertCode("bt.add?\tr7,r6", "8C E6");
         }
 
         [Test]
-        public void AeonDis_l_add_three_operand()
+        public void AeonDis_bn_add()
         {
             // confirmed with source
-            AssertCode("l.add\tr4,r3,r6", "40 83 34");
+            AssertCode("bn.add\tr4,r3,r6", "40 83 34");
         }
 
         [Test]
@@ -164,10 +164,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_j_16bit()
+        public void AeonDis_bt_j()
         {
             // confirmed with source
-            AssertCode("l.j\t000FFFF4", "93 F4");
+            AssertCode("bt.j\t000FFFF4", "93 F4");
         }
 
         [Test]
@@ -309,10 +309,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_or()
+        public void AeonDis_bn_or()
         {
             // confirmed with source
-            AssertCode("l.or\tr3,r0,r1", "44 60 0D");
+            AssertCode("bn.or\tr3,r0,r1", "44 60 0D");
         }
 
         [Test]
@@ -363,16 +363,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_l_sfne()
+        public void AeonDis_bn_sfne()
         {
             // confirmed with source
-            AssertCode("l.sfne\tr3,r4", "5C 64 0D");
+            AssertCode("bn.sfne\tr3,r4", "5C 64 0D");
         }
 
         [Test]
-        public void AeonDis_l_sfnei__()
+        public void AeonDis_bg_sfnei__()
         {
-            AssertCode("l.sfnei?\tr6,0x3E8", "C0 C0 7D 04");
+            AssertCode("bg.sfnei?\tr6,0x3E8", "C0 C0 7D 04");
         }
 
         [Test]

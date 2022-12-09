@@ -82,22 +82,22 @@ namespace Reko.Arch.OpenRISC.Aeon
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.l_add: RewriteArithmetic(m.IAdd); break;
-                case Mnemonic.l_add__: RewriteArithmetic(m.IAdd); break;
+                case Mnemonic.bt_add__:
+                case Mnemonic.bn_add: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.l_add____: RewriteArithmetic(m.IAdd); break;
                 case Mnemonic.bt_addi__:
                 case Mnemonic.bn_addi:
                 case Mnemonic.bg_addi: RewriteAddi(); break;
-                case Mnemonic.l_and: RewriteArithmetic(m.And); break;
-                case Mnemonic.l_andi: RewriteLogicalImm(m.And); break;
-                case Mnemonic.l_andi__: RewriteUnknown(); break;
+                case Mnemonic.bn_and: RewriteArithmetic(m.And); break;
+                case Mnemonic.bn_andi:
+                case Mnemonic.bg_andi: RewriteLogicalImm(m.And); break;
                 case Mnemonic.bn_beqi__:
                 case Mnemonic.bg_beqi__: RewriteBxxi(m.Eq); break;
                 case Mnemonic.bn_bf:
                 case Mnemonic.bg_bf: RewriteBf(true); break;
                 case Mnemonic.bgtu__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bgtui__: RewriteBxxi(m.Gt); break;
-                case Mnemonic.ble__i__: RewriteBxxi(m.Le); break;
+                case Mnemonic.bn_ble__i__: RewriteBxxi(m.Le); break;
                 case Mnemonic.bg_blti__: RewriteBxxi(m.Lt); break;
                 case Mnemonic.bn_bnf__: RewriteBf(false); break;
                 case Mnemonic.bne__: RewriteBxxi(m.Ne); break;
@@ -109,7 +109,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_entri__: RewriteUnknown(); break;
                 case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
                 case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
-                case Mnemonic.l_j: RewriteJ(); break;
+                case Mnemonic.bt_j:
+                case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal: RewriteJal(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
                 case Mnemonic.l_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
@@ -126,15 +127,15 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bt_nop: 
                 case Mnemonic.bn_nop: RewriteNop(); break;
                 case Mnemonic.bn_mul: RewriteArithmetic(m.IMul); break;
-                case Mnemonic.l_or: RewriteArithmetic(m.Or); break;
+                case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.l_ori: RewriteOri(m.Or); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu: RewriteSfxx(m.Uge); break;
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
                 case Mnemonic.bn_sfltu: RewriteSfxx(m.Ult); break;
-                case Mnemonic.l_sfne: RewriteSfxx(m.Ne); break;
-                case Mnemonic.l_sfnei__: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
+                case Mnemonic.bg_sfnei__: RewriteSfxx(m.Ne); break;
                 case Mnemonic.l_sb__: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.l_sh__: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.bn_sll__: RewriteShift(m.Shl); break;
