@@ -306,7 +306,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b110, Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));     // guess
 
             var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_disp,
-                (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)));
+                (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
+                (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),   //$REVIEW: could displacement be larger?
+                (0b110, Instr(Mnemonic.bg_bne__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)));             // guess
 
             var decoder111001 = Mask(0, 1, "  opc=111001",
                 Instr(Mnemonic.bg_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
@@ -447,7 +449,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // branch if reg <= imm XXX: signed/unsigned?
                 Instr(Mnemonic.bn_ble__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8), // wild guess
                 nyi_2,
-                nyi_2);
+                Instr(Mnemonic.bn_bgt__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8)); // wild guess
 
             var decode010000 = Sparse(0, 3, "  10", nyi_3,
                 (0b001, Instr(Mnemonic.bn_divu, R13, R8, R3)),              // disasm
@@ -504,7 +506,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 // opcode 000100
                 // XXX: assuming this is l.lwz and not l.lws
-                Instr(Mnemonic.bn_lwz__, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // guess
+                Instr(Mnemonic.bn_lbz__, R13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),  // guess
                 // opcode 000101
                 Nyi("0b00101"),
                 // opcode 000110

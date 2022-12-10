@@ -110,15 +110,34 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_beq__()
+        {
+            AssertCode("bg.beq?\tr7,r3,000FFFF1", "D4 E3 FF 8A");
+        }
+
+
+        [Test]
         public void AeonDis_bn_beqi__()
         {
             AssertCode("bn.beqi?\tr3,0x0,00100011", "20 60 44");
         }
 
         [Test]
+        public void AeonDis_bn_bgti__()
+        {
+            AssertCode("bn.bgt?i?\tr5,0x3,000FFFF0", "24 AF C3");
+        }
+
+        [Test]
         public void AeonDis_bg_bltsi__()
         {
             AssertCode("bg.bltsi?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+        }
+
+        [Test]
+        public void AeonDis_bg_bne__()
+        {
+            AssertCode("bg.bne?\tr6,r7,0010000D", "D4 C7 00 6E");
         }
 
         [Test]
@@ -201,11 +220,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode("bt.jr\tr9", "85 29");
         }
 
-
         [Test]
         public void AeonDis_bg_lbz__()
         {
             AssertCode("bg.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
+        }
+
+        [Test]
+        public void AeonDis_bn_lbz()
+        {
+            AssertCode("bn.lbz?\tr3,(r4)", "10 64 00");
         }
 
         [Test]

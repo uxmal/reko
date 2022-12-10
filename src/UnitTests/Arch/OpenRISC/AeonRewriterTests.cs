@@ -94,6 +94,24 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_beq()
+        {
+            Given_HexString("D4 E3 FF 8A");
+            AssertCode(     // b.beq?\tr7,r3,00384D75
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 == r3) branch 000FFFF1");
+        }
+
+        [Test]
+        public void AeonRw_bn_beqi__()
+        {
+            Given_HexString("2061E0");
+            AssertCode(     // bn.beqi?	r3,0x0,00100078
+                "0|T--|00100000(3): 1 instructions",
+                "1|T--|if (r3 == 0<32>) branch 00100078");
+        }
+
+        [Test]
         public void AeonRw_bn_bf()
         {
             Given_HexString("2003E9");
@@ -121,12 +139,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_beqi__()
+        public void AeonRw_bn_bgti__()
         {
-            Given_HexString("2061E0");
-            AssertCode(     // bn.beqi?	r3,0x0,00100078
+            Given_HexString("24 AF C3");
+            AssertCode(     // bg.bne?\tr6,r7,42
                 "0|T--|00100000(3): 1 instructions",
-                "1|T--|if (r3 == 0<32>) branch 00100078");
+                "1|T--|if (r5 > 3<32>) branch 000FFFF0");
+        }
+
+        [Test]
+        public void AeonRw_bg_bne__()
+        {
+            Given_HexString("D4 C7 00 6E");
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r6 != r7) branch 0010000D");
         }
 
         [Test]
@@ -248,6 +275,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bt.jr	r9
                 "0|R--|00100000(2): 1 instructions",
                 "1|R--|return (0,0)");
+        }
+
+        [Test]
+        public void AeonDis_bn_lbz()
+        {
+            Given_HexString("10 64 00");
+            AssertCode(     // bn.lbz?\tr3,(r4)
+                "0|L--|00100000(3): 2 instructions",
+                "1|L--|v4 = Mem0[r4:byte]",
+                "2|L--|r3 = CONVERT(v4, byte, word32)");
         }
 
         [Test]
