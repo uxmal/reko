@@ -163,6 +163,12 @@ function(add_c2xml_target)
 		PROJECT_NAME "c2xml"
 		RESULT c2xml_exe
 	)
+
+	## Workaround for 'You must install .NET to run this application.'
+	if(APPLE)
+		set(c2xml_exe dotnet ${c2xml_exe}.dll)
+	endif()
+
 	get_filename_component(c2xml_dir "${c2xml_exe}" DIRECTORY)
 
 	add_custom_command(
