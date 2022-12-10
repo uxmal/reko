@@ -217,6 +217,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         }
         private static readonly Mutator disp0_26 = DisplacementFromPc(0, 26);
         private static readonly Mutator disp0_10 = DisplacementFromPc(0, 10);
+        private static readonly Mutator disp0_18 = DisplacementFromPc(0, 18);
         private static readonly Mutator disp1_25 = DisplacementFromPc(1, 25);
         private static readonly Mutator disp2_8 = DisplacementFromPc(2, 8);
         private static readonly Mutator disp2_16 = DisplacementFromPc(2, 16);
@@ -306,11 +307,12 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decoder110100 = Sparse(0, 3, "  opc=110100", nyi_3_imm_disp, 
                 (0b010, Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)),       // guess
+                (0b101, Instr(Mnemonic.bg_bgtui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)),      // guess
                 (0b110, Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));     // guess
 
             var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_reg_disp,
                 (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
-                // $REVIEW: could displacement be larger?
+                // $REVIEW: could displacement be larger? There are 5 bits left over
                 (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),                   // disasm
                 (0b110, Instr(Mnemonic.bg_bne__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)));     // guess
 
@@ -525,9 +527,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode001000,
                 decode001001,
                 // opcode 001010
-                Nyi("0b01010"),
+                nyi_3,
                 // opcode 001011
-                Nyi("0b01011"),
+                Instr(Mnemonic.bn_j____, InstrClass.Transfer, disp0_18),
 
                 // opcode 001100
                 Nyi("0b01100"),

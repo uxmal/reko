@@ -97,7 +97,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bf: RewriteBf(true); break;
                 case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bgtu__: RewriteBxx(m.Gt); break;
-                case Mnemonic.bgtui__: RewriteBxxi(m.Gt); break;
+                case Mnemonic.bgtui__: 
+                case Mnemonic.bg_bgtui__: RewriteBxxi(m.Ugt); break;
                 case Mnemonic.bn_ble__i__: RewriteBxxi(m.Le); break;
                 case Mnemonic.bg_bltsi__: RewriteBxxi(m.Lt); break;
                 case Mnemonic.bne__:
@@ -114,6 +115,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
                 case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
                 case Mnemonic.bt_j:
+                case Mnemonic.bn_j____:
                 case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal: RewriteJal(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;

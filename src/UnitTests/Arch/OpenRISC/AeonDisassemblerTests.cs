@@ -155,6 +155,14 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_bgtui__()
+        {
+            // This is being used in unsigned comparisons
+            // swtich (...) statements.
+            AssertCode("bg.bgtui?\tr3,0xD,00100016", "D0 6D 00 B5");
+        }
+
+        [Test]
         public void AeonDis_bg_bltsi__()
         {
             AssertCode("bg.bltsi?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
@@ -236,6 +244,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bt.j\t000FFFF4", "93 F4");
+        }
+
+        [Test]
+        public void AeonDis_bn_j____()
+        {
+            // Found in switch statements
+            AssertCode("bn.j??\t000FF17E", "2F F1 7E");
         }
 
         [Test]

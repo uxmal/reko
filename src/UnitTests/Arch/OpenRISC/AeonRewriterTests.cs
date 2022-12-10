@@ -175,6 +175,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_bgtui__()
+        {
+            // This is being used in unsigned comparisons
+            // swtich (...) statements.
+            Given_HexString("D0 6D 00 B5");
+            AssertCode(     // bg.bgtui?\tr3,0x0D....."
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r3 >u 0xD<32>) branch 00100016");
+        }
+
+        [Test]
         public void AeonRw_bg_bne__()
         {
             Given_HexString("D4 C7 00 6E");
@@ -304,7 +315,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|T--|00100000(2): 1 instructions",
                 "1|T--|goto 000FFFC5");
         }
-    
+
+        [Test]
+        public void AeonRw_bn_j____()
+        {
+            // Found in switch statements
+            Given_HexString("2F F1 7E");
+            AssertCode(     // bn.j 
+                "0|T--|00100000(3): 1 instructions",
+                "1|T--|goto 000FF17E");
+        }
+
         [Test]
         public void AeonRw_bg_j()
         {
