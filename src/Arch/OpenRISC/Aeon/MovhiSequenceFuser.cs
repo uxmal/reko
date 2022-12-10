@@ -90,13 +90,15 @@ namespace Reko.Arch.OpenRISC.Aeon
             case Mnemonic.bt_addi__:
             case Mnemonic.bn_addi:
             case Mnemonic.bg_addi:
-                var addReg = (RegisterStorage) instr.Operands[1];
+                var addRegIndex = instr.Operands.Length == 2 ? 0 : 1;
+                var addImmIndex = addRegIndex + 1;
+                var addReg = (RegisterStorage) instr.Operands[addRegIndex];
                 if (addReg != regHi)
                     return;
-                var addImm = (ImmediateOperand) instr.Operands[2];
+                var addImm = (ImmediateOperand) instr.Operands[addImmIndex];
                 uFullWord = AddFullWord(movhi.Operands[1], addImm.Value.ToInt32());
                 movhi.Operands[1] = AddressOperand.Ptr32(uFullWord);
-                instr.Operands[2] = ImmediateOperand.Word32(uFullWord);
+                instr.Operands[addImmIndex] = ImmediateOperand.Word32(uFullWord);
                 break;
             case Mnemonic.bn_ori:
             case Mnemonic.bg_ori:

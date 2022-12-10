@@ -403,7 +403,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bt_addi__:
                 case Mnemonic.bn_addi:
                 case Mnemonic.bg_addi:
-                    var addReg = (RegisterStorage) lowInstr.Operands[1];
+                    var addRegIndex = lowInstr.Operands.Length == 2 ? 0 : 1;
+                    var addReg = (RegisterStorage) lowInstr.Operands[addRegIndex];
                     if (addReg != regHi)
                         return;
                     dasm.MoveNext();

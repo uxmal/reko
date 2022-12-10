@@ -346,7 +346,22 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_movhi_fuse_with_addi()
+        public void AeonRw_bg_movhi_fuse_with_bt_addi()
+        {
+            // haven't seen examples of this
+            Given_HexString(
+                "C0 E2 08 41" +
+                "9C F0");
+            AssertCode(
+                // bg.movhi	r7,0x1041FFF0@hi
+                // bt.addi?	r7,0x1041FFF0@lo
+                "0|L--|00100000(6): 2 instructions",
+                "1|L--|r7 = 0x10420000<32>",
+                "2|L--|r7 = 0x1041FFF0<32>");
+        }
+
+        [Test]
+        public void AeonRw_bg_movhi_fuse_with_bg_addi()
         {
             Given_HexString(
                 "C1 80 07 41" +
@@ -360,7 +375,35 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_movhi_fuse_with_ori()
+        public void AeonRw_bn_movhi_fuse_with_bg_ori()
+        {
+            Given_HexString(
+                "07 00 7F" +
+                "CB 18 FF FF");
+            AssertCode(
+                // bn.movhi?	r24,0x7FFFFF@hi
+	            // bg.ori	r24,r24,0x7FFFFF@lo
+                "0|L--|00100000(7): 2 instructions",
+                "1|L--|r24 = 0x7F0000<32>",
+                "2|L--|r24 = 0x7FFFFF<32>");
+        }
+
+        [Test]
+        public void AeonRw_bg_movhi_fuse_with_bn_ori()
+        {
+            Given_HexString(
+                "C1 50 00 E1" +
+                "51 4A 57");
+            AssertCode(
+                // bg.movhi	r10,0x80070057@hi
+	            // bn.ori	r10,r10,0x80070057@lo
+                "0|L--|00100000(7): 2 instructions",
+                "1|L--|r10 = 0x80070000<32>",
+                "2|L--|r10 = 0x80070057<32>");
+        }
+
+        [Test]
+        public void AeonRw_bg_movhi_fuse_with_bg_ori()
         {
             Given_HexString(
                 "C0 CF FF E1" +
@@ -372,7 +415,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "1|L--|r6 = 0x7FFF0000<32>",
                 "2|L--|r6 = 0x7FFFFFFF<32>");
         }
-
 
         [Test]
         public void AeonRw_bg_mtspr()
