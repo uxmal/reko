@@ -140,7 +140,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
-                case Mnemonic.bn_sfgeu: RewriteSfxx(m.Uge); break;
+                case Mnemonic.bn_sfgeu:
+                case Mnemonic.bn_sfgeui__: RewriteSfxx(m.Uge); break;
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
                 case Mnemonic.bn_sfltu: RewriteSfxx(m.Ult); break;

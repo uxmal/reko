@@ -448,7 +448,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
             // confirmed with source
             AssertCode("bn.sfgeu\tr3,r4", "5C 83 17");
         }
-        
+
+        [Test]
+        public void AeonDis_bg_sfgeui()
+        {
+            AssertCode("bn.sfgeui?\tr4,0xFF" , "C0 80 1F E0");
+        }
 
         [Test]
         public void AeonDis_bn_sfleui__()

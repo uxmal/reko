@@ -713,6 +713,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_sfgeui()
+        {
+            Given_HexString("C0 80 1F E0");
+            AssertCode(     // bn.sfgeui\tr4,0xFF
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f = r4 >=u 0xFF<32>");
+        }
+
+        [Test]
         public void AeonRw_bn_sfgtui()
         {
             Given_HexString("5C641B");
