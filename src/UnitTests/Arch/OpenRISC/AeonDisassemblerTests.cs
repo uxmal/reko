@@ -389,6 +389,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_ori()
+        {
+            // confirmed with source
+            AssertCode("bn.ori\tr5,r0,0x11", "50 A0 11");
+        }
+
+        [Test]
         public void AeonDis_bg_ori()
         {
             // confirmed with source

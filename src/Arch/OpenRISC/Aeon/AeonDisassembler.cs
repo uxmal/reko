@@ -146,6 +146,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm0_3 = UnsignedImmediate(0, 3);
         private static readonly Mutator uimm0_5 = UnsignedImmediate(0, 5);
         private static readonly Mutator uimm0_8 = UnsignedImmediate(0, 8);
+        private static readonly Mutator uimm0_8_16 = UnsignedImmediate(0, 8, PrimitiveType.UInt16);
         private static readonly Mutator uimm0_10 = UnsignedImmediate(0, 10);
         private static readonly Mutator uimm0_13 = UnsignedImmediate(0, 13);
         private static readonly Mutator uimm0_16_16 = UnsignedImmediate(0, 16, PrimitiveType.UInt16);
@@ -542,7 +543,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode010011,
 
                 // opcode 010100
-                Instr(Mnemonic.bn_ori, R13, R8, uimm0_8),     // chenxing
+                Instr(Mnemonic.bn_ori, R13, R8, uimm0_8_16),  // chenxing
                 // opcode 010101
                 Instr(Mnemonic.bn_andi, R13, R8, uimm0_8),    // guess
                 // opcode 010110
