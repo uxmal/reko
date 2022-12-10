@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_bg_addi()
         {
-            AssertCode("bg.addi\tr3,r13,0x0", "fc 6d 00 00");
+            AssertCode("bg.addi\tr3,r13,0x0", "FC 6D 00 00");
         }
 
         [Test]
@@ -110,16 +110,42 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_andi()
+        {
+            // confirmed with source
+            AssertCode("bg.andi\tr3,r3,0x8000", "C4 63 80 00");
+        }
+
+        [Test]
         public void AeonDis_bg_beq__()
         {
             AssertCode("bg.beq?\tr7,r3,000FFFF1", "D4 E3 FF 8A");
         }
 
-
         [Test]
         public void AeonDis_bn_beqi__()
         {
             AssertCode("bn.beqi?\tr3,0x0,00100011", "20 60 44");
+        }
+
+        [Test]
+        public void AeonDis_bg_beqi__()
+        {
+            AssertCode("bg.beqi?\tr10,0x1,00100095", "D1 41 04 AA");
+        }
+
+        [Test]
+        public void AeonDis_bn_bf()
+        {
+            // confirmed with source
+            AssertCode("bn.bf\t000FFFF2", "23 FF C9");
+        }
+
+        [Test]
+        public void AeonDis_bg_bf()
+        {
+            // confirmed with source
+            AssertCode("bg.bf\t00100DDD", "D4 00 6E EB");
         }
 
         [Test]
@@ -141,10 +167,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_bf()
+        public void AeonDis_bn_bnei__()
         {
-            // confirmed with source
-            AssertCode("bn.bf\t000FFFF2", "23 FF C9");
+            AssertCode("bn.bnei?\tr6,0x0,00100017", "20 C0 5E");
+        }
+
+        [Test]
+        public void AeonDis_bn_bnf__()
+        {
+            AssertCode("bn.bnf?\t001004C2", "20 13 0B");
         }
 
         [Test]
@@ -169,7 +200,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_exthz()
+        public void AeonDis_bn_extbz__()
+        {
+            AssertCode("bn.extbz?\tr3,r4", "5C 64 00");
+        }
+
+        [Test]
+        public void AeonDis_bn_exthz__()
         {
             AssertCode("bn.exthz?\tr10,r7", "5D 47 04");
         }
@@ -352,6 +389,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_ori()
+        {
+            // confirmed with source
+            AssertCode("bn.ori\tr5,r0,0x11", "50 A0 11");
+        }
+
+        [Test]
         public void AeonDis_bg_ori()
         {
             // confirmed with source
@@ -368,6 +412,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bg_sb__()
         {
             AssertCode("bg.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
+        }
+
+        [Test]
+        public void AeonDis_bn_sfeq__()
+        {
+            AssertCode("bn.sfeq?\tr6,r7", "5C C7 05");
         }
 
         [Test]
@@ -406,13 +456,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_sfnei_3_byte()
+        public void AeonDis_bn_sfnei__()
         {
             AssertCode("bn.sfnei?\tr7,0x7", "5C E7 49");
         }
 
         [Test]
-        public void AeonDis_bg_sfnei_4_byte()
+        public void AeonDis_bg_sfnei__()
         {
             AssertCode("bg.sfnei?\tr6,0x3E8", "C0 C0 7D 04");
         }
@@ -424,9 +474,33 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_srai()
+        public void AeonDis_bn_sll__()
+        {
+            AssertCode("bn.sll?\tr6,r3,r18", "4C C3 94");
+        }
+
+        [Test]
+        public void AeonDis_bn_slli__()
+        {
+            AssertCode("bn.slli?\tr7,r10,0x3", "4C EA 18");
+        }
+
+        [Test]
+        public void AeonDis_bn_srai__()
         {
             AssertCode("bn.srai?\tr5,r7,0x1", "4C A7 0A");
+        }
+
+        [Test]
+        public void AeonDis_bn_srl__()
+        {
+            AssertCode("bn.srl?\tr6,r15,r5", "4C CF 2D");
+        }
+
+        [Test]
+        public void AeonDis_bn_srli__()
+        {
+            AssertCode("bn.srli?\tr7,r24,0x3", "4C F8 19");
         }
 
         [Test]
@@ -448,6 +522,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bg.sw\t0x88(r1),r5", "EC A1 00 88");
+        }
+
+        [Test]
+        public void AeonDis_bg_syncwritebuffer()
+        {
+            // confirmed with source
+            AssertCode("bg.syncwritebuffer", "F4 00 00 05");
         }
 
         [Test]
