@@ -307,8 +307,9 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_disp,
                 (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
-                (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),   //$REVIEW: could displacement be larger?
-                (0b110, Instr(Mnemonic.bg_bne__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)));             // guess
+                // $REVIEW: could displacement be larger?
+                (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),                   // disasm
+                (0b110, Instr(Mnemonic.bg_bne__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)));     // guess
 
             var decoder111001 = Mask(0, 1, "  opc=111001",
                 Instr(Mnemonic.bg_jal, InstrClass.Transfer | InstrClass.Call, disp1_25), // guess
