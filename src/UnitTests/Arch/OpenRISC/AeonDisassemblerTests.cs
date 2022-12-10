@@ -169,7 +169,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_exthz()
+        public void AeonDis_bn_extbz__()
+        {
+            AssertCode("bn.extbz?\tr3,r4", "5C 64 00");
+        }
+
+        [Test]
+        public void AeonDis_bn_exthz__()
         {
             AssertCode("bn.exthz?\tr10,r7", "5D 47 04");
         }
@@ -368,6 +374,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bg_sb__()
         {
             AssertCode("bg.sb?\t0x36D8(r10),r7", "F8 EA 36 D8");
+        }
+
+        [Test]
+        public void AeonDis_bn_sfeq__()
+        {
+            AssertCode("bn.sfeq?\tr6,r7", "5C C7 05");
         }
 
         [Test]

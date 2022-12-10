@@ -109,6 +109,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.bn_entri__: RewriteUnknown(); break;
+                case Mnemonic.bn_extbz__: RewriteExt(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
                 case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
@@ -136,6 +137,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
+                case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu: RewriteSfxx(m.Uge); break;
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
