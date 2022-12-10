@@ -149,6 +149,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_bgeu()
+        {
+            AssertCode("bg.bgeu?\tr3,r11,00100097", "D4 6B 04 B9");
+        }
+
+        [Test]
         public void AeonDis_bn_bgti__()
         {
             AssertCode("bn.bgt?i?\tr5,0x3,000FFFF0", "24 AF C3");
@@ -363,6 +369,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_movhi_fuse_with_ori()
+        {
+            AssertCode(
+                "bt.movhi?\tr10,0x103126@hi",
+                "bg.ori\tr3,r10,0x103126@lo",
+                "95 50" +
+                "C8 6A 31 26");
+        }
+
+        [Test]
         public void AeonDis_bg_mfspr()
         {
             // confirmed with source
@@ -459,6 +475,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_sfleui__()
         {
             AssertCode("bn.sfleui?\tr3,0x77", "5C 6E F3");
+        }
+
+        [Test]
+        public void AeonDis_bg_sfleui__()
+        {
+            AssertCode("bg.sfleui?\tr11,0x1FE", "C1 60 3F CE");
         }
 
         [Test]

@@ -304,6 +304,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing
+                (0b1110, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
                 (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing
 
             var decoder110100 = Sparse(0, 3, "  opc=110100", nyi_3_imm_disp, 
@@ -312,6 +313,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b110, Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));     // guess
 
             var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_reg_disp,
+                (0b001, Instr(Mnemonic.bg_bgeu__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
                 (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
                 // $REVIEW: could displacement be larger? There are 5 bits left over
                 (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),                   // disasm
@@ -422,7 +424,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 100100
                 Instr(Mnemonic.bt_j, InstrClass.Transfer, disp0_10), // chenxing
                 // opcode 100101
-                Instr(Mnemonic.Nyi, uimm10_6, R5, R0),
+                Instr(Mnemonic.bt_movhi__, R5, uimm0_5),             // guess
                 // opcode 100110
                 Instr(Mnemonic.bt_movi__, R5, simm0_5),              // disasm, guess
                 // opcode 100111

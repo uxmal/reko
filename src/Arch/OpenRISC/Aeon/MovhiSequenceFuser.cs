@@ -27,7 +27,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;
-                if (instr.Mnemonic != Mnemonic.bg_movhi && instr.Mnemonic != Mnemonic.bn_movhi__)
+                if (instr.Mnemonic != Mnemonic.bg_movhi &&
+                    instr.Mnemonic != Mnemonic.bn_movhi__ &&
+                    instr.Mnemonic != Mnemonic.bt_movhi__)
                 {
                     yield return instr;
                     continue;
