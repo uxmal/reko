@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("8002");
             AssertCode(     // bt.trap
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|bt_trap()");
+                "1|L--|__trap(1<32>)");
         }
 
         [Test]
