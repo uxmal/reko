@@ -156,7 +156,6 @@ endfunction()
 function(add_c2xml_target)
 	cmake_parse_arguments(c2xml "" "REKO_ARCH;REKO_ENV;DIALECT;OUTPUT;TARGET_NAME;HEADER" "REQUIRED_ARCHITECTURES;REQUIRED_ENVIRONMENTS" ${ARGN})
 
-	set(c2xml_exe ${c2xml_dir}/c2xml)
 	csproj_output_path(
 		EXE ANYCPU
 		PROJECT_SUBDIR "tools"
@@ -164,12 +163,12 @@ function(add_c2xml_target)
 		RESULT c2xml_exe
 	)
 
+	get_filename_component(c2xml_dir "${c2xml_exe}" DIRECTORY)
+
 	## Workaround for 'You must install .NET to run this application.'
 	if(APPLE)
 		set(c2xml_exe dotnet ${c2xml_exe}.dll)
 	endif()
-
-	get_filename_component(c2xml_dir "${c2xml_exe}" DIRECTORY)
 
 	add_custom_command(
 		OUTPUT ${c2xml_OUTPUT}
