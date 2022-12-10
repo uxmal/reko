@@ -148,12 +148,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_bgeu()
+        public void AeonRw_bg_bges()
         {
             Given_HexString("D4 6B 04 B9");
             AssertCode(     // bg.bgeu?\r3,r11,00100097
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (r3 >=u r11) branch 00100097");
+                "1|T--|if (r3 >= r11) branch 00100097");
+        }
+
+        [Test]
+        public void AeonRw_bg_bgeu()
+        {
+            Given_HexString("D4 E5 FF 1D");
+            AssertCode(     // bg.bgeu?\tr7,r5,000FFFE3
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 >=u r5) branch 000FFFE3");
         }
 
         [Test]

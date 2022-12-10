@@ -149,9 +149,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_bgeu()
+        public void AeonDis_bg_bges__()
         {
-            AssertCode("bg.bgeu?\tr3,r11,00100097", "D4 6B 04 B9");
+            AssertCode("bg.bges?\tr3,r11,00100097", "D4 6B 04 B9");
+        }
+
+        [Test]
+        public void AeonDis_bg_bgeu__()
+        {
+            AssertCode("bg.bgeu?\tr7,r5,000FFFE3", "D4 E5 FF 1D");
         }
 
         [Test]
@@ -578,5 +584,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             AssertCode("bn.xor?\tr7,r4,r3", "44 E4 1E");
         }
+
     }
 }

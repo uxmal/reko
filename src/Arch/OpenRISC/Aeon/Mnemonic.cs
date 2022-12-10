@@ -40,6 +40,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_beqi__,
         bn_bf,
         bg_bf,
+        bg_bges__,
         bg_bgeu__,
         bn_bgt__i__,
         bgtu__,

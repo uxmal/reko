@@ -297,6 +297,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, uimm3_13);
             var nyi_3_imm_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, disp3_13);
             var nyi_3_reg_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13);
+            var nyi_3_reg_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13, uimm0_3);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16);
 
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
@@ -312,11 +313,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b101, Instr(Mnemonic.bg_bgtui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)),      // guess
                 (0b110, Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));     // guess
 
-            var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_reg_disp,
-                (0b001, Instr(Mnemonic.bg_bgeu__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
-                (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
+            var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_reg_disp_3,
+                (0b001, Instr(Mnemonic.bg_bges__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),     // guess
+                (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),      // guess
                 // $REVIEW: could displacement be larger? There are 5 bits left over
                 (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),                   // disasm
+                (0b101, Instr(Mnemonic.bg_bgeu__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),     // guess
                 (0b110, Instr(Mnemonic.bg_bne__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)));     // guess
 
             var decoder111001 = Mask(0, 1, "  opc=111001",
