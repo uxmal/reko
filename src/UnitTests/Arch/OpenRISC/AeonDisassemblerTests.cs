@@ -67,8 +67,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_bt_trap()
         {
-            // XXX: actually "bt.trap 1"
-            AssertCode("bt.trap", "8002");
+            // confirmed with source
+            AssertCode("bt.trap\t0x1", "80 02");
         }
 
         [Test]
@@ -372,13 +372,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bt_nop()
         {
             // confirmed with source
-            AssertCode("bt.nop", "8001");
+            AssertCode("bt.nop\t0x0", "80 01");
         }
 
         [Test]
         public void AeonDis_bn_nop()
         {
-            AssertCode("bn.nop", "000000");
+            AssertCode("bn.nop", "00 00 00");
         }
 
         [Test]

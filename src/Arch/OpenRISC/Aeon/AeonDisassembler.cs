@@ -150,6 +150,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm0_10 = UnsignedImmediate(0, 10);
         private static readonly Mutator uimm0_13 = UnsignedImmediate(0, 13);
         private static readonly Mutator uimm0_16_16 = UnsignedImmediate(0, 16, PrimitiveType.UInt16);
+        private static readonly Mutator uimm1_4 = UnsignedImmediate(1, 4);
         private static readonly Mutator uimm3_5 = UnsignedImmediate(3, 5);
         private static readonly Mutator uimm3_13 = UnsignedImmediate(3, 13);
         private static readonly Mutator uimm4_1 = UnsignedImmediate(4, 1);
@@ -293,7 +294,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static Decoder Create32bitInstructionDecoder()
         {
             var nyi_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, uimm3_13);
-            var nyi_3_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, disp3_13);
+            var nyi_3_imm_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, disp3_13);
+            var nyi_3_reg_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16);
 
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
@@ -302,11 +304,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing
                 (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing
 
-            var decoder110100 = Sparse(0, 3, "  opc=110100", nyi_3_disp, 
+            var decoder110100 = Sparse(0, 3, "  opc=110100", nyi_3_imm_disp, 
                 (0b010, Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)),       // guess
                 (0b110, Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)));     // guess
 
-            var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_disp,
+            var decoder110101 = Sparse(0, 3, "  opc=110101", nyi_3_reg_disp,
                 (0b010, Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13)),
                 // $REVIEW: could displacement be larger?
                 (0b011, Instr(Mnemonic.bg_bf, InstrClass.ConditionalTransfer, disp3_13)),                   // disasm
@@ -326,14 +328,15 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bg_lwz__, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),      // guess
                 Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
 
+            var instr_inv_line = Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1);
             var decoder111101 = Select(Bf((6, 10), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=111101", nyi_3,
                 
                     // $REVIEW: what's the difference between these? what about bit 5?
-                    (0b001, Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)),  // chenxing
-                    (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                                  // disasm
-                    (0b110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)),       // disasm
-                    (0b111, Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1))), // disasm
+                    (0b001, instr_inv_line),                                                               // chenxing
+                    (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                            // disasm
+                    (0b110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
+                    (0b111, instr_inv_line)),                                                              // disasm
                 Nyi("111101, non-zero bits"));
 
             var decoder = Mask(26, 5, "  32-bit instr",
@@ -396,10 +399,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 100000
             var decoder100000 = Select((5, 5), u => u == 0,
                 // rD is r0: special instructions
-                Sparse(0, 5, "  opc=100000", nyi_5,
-                    (0b00001, Instr(Mnemonic.bt_nop)),               // disasm
-                    // $REVIEW: don't know how to decode (this is "bt.trap 1")
-                    (0b00010, Instr(Mnemonic.bt_trap))),             // disasm
+                Mask(0, 1, "  opc=100000",
+                    Instr(Mnemonic.bt_trap, uimm1_4),                // disasm
+                    Instr(Mnemonic.bt_nop, uimm1_4)),                // disasm
                 Instr(Mnemonic.bt_sw__, uimm10_6, R5, simm0_5));
 
             // opcode 100001

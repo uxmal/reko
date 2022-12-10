@@ -104,7 +104,6 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bn_bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bn_bnf__: RewriteBf(false); break;
-                case Mnemonic.bt_trap: RewriteUnknown(); break;
                 case Mnemonic.bn_cmov____: RewriteCmov(); break;
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
@@ -124,12 +123,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.bn_lwz__:
                 case Mnemonic.bg_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
-                case Mnemonic.bg_mfspr: RewriteIntrinsic(l_mfspr_intrinsic); break;
+                case Mnemonic.bg_mfspr: RewriteIntrinsic(mfspr_intrinsic); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
                 case Mnemonic.bn_movhi__:
                 case Mnemonic.bg_movhi: RewriteMovhi(); break;
-                case Mnemonic.bg_mtspr: RewriteSideEffect(l_mtspr_intrinsic); break;
+                case Mnemonic.bg_mtspr: RewriteSideEffect(mtspr_intrinsic); break;
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop: 
                 case Mnemonic.bn_nop: RewriteNop(); break;
@@ -160,6 +159,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_sw:
                 case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
+                case Mnemonic.bt_trap: RewriteSideEffect(trap_intrinsic); break;
                 case Mnemonic.bn_xor__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
@@ -457,7 +457,6 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Nop();
         }
 
-
         private void RewriteOri(Func<Expression, Expression, Expression> fn)
         {
             Expression left;
@@ -496,13 +495,13 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
             var way = Op(1);
-            m.SideEffect(m.Fn(l_flush_line_intrinsic, ea, way));
+            m.SideEffect(m.Fn(flush_line_intrinsic, ea, way));
         }
         private void RewriteInvalidateLine()
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
             var way = Op(1);
-            m.SideEffect(m.Fn(l_invalidate_line_intrinsic, ea, way));
+            m.SideEffect(m.Fn(invalidate_line_intrinsic, ea, way));
         }
 
         private void RewriteJ()
@@ -609,28 +608,32 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
-        private static readonly IntrinsicProcedure l_flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
+        private static readonly IntrinsicProcedure flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
             .Param(PrimitiveType.Ptr32)
             .Param(PrimitiveType.UInt32)
             .Void();
 
-        private static readonly IntrinsicProcedure l_invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
+        private static readonly IntrinsicProcedure invalidate_line_intrinsic = new IntrinsicBuilder("__invalidate_line", true)
             .Param(PrimitiveType.Ptr32)
             .Param(PrimitiveType.UInt32)
             .Void();
 
-        private static readonly IntrinsicProcedure l_mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
+        private static readonly IntrinsicProcedure mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
 
-        private static readonly IntrinsicProcedure l_mtspr_intrinsic = new IntrinsicBuilder("__move_to_spr", true)
+        private static readonly IntrinsicProcedure mtspr_intrinsic = new IntrinsicBuilder("__move_to_spr", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
 
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure trap_intrinsic = new IntrinsicBuilder("__trap", true)
+            .Param(PrimitiveType.Word32)
             .Void();
     }
 }
