@@ -576,7 +576,7 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private void RewriteJalr()
         {
-            var target = (Identifier)Op(0);
+            var target = Op(0);
             m.Call(target, 0);
         }
 
