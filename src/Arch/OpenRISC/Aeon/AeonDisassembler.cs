@@ -418,7 +418,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 100001
             var decoder100001 = Sparse(0, 5, "  opc=100001", nyi_5,
                 (0b00000, decoder100001_sub0),
-                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, R5))); // disasm
+                (0b01000, Instr(Mnemonic.bt_jalr__, InstrClass.Transfer, R5)),  // guess
+                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, R5)));     // disasm
 
             return Mask(10, 3, "  16-bit",
                 decoder100000,

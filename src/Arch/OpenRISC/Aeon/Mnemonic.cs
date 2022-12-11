@@ -64,6 +64,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_j____,
         bg_j,
         bg_jal,
+        bt_jalr__,
         bt_jr,
         bg_lbz__,
         bn_lbz__,

@@ -120,6 +120,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_j____:
                 case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal: RewriteJal(); break;
+                case Mnemonic.bt_jalr__: RewriteJalr(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
                 case Mnemonic.bg_lbz__: 
                 case Mnemonic.bn_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
@@ -566,13 +567,17 @@ namespace Reko.Arch.OpenRISC.Aeon
             var op0 = (Identifier)Op(0);
             if ((int)op0.Storage.Domain == 9)
             {
-                //$REVIEW: this is a weird encoding for a return
                 iclass = InstrClass.Transfer | InstrClass.Return;
                 m.Return(0, 0);
                 return;
             }
-            //$REVIEW: could be a call, r9 seems to be used as a link register.
             m.Goto(op0);
+        }
+
+        private void RewriteJalr()
+        {
+            var target = (Identifier)Op(0);
+            m.Call(target, 0);
         }
 
         private void RewriteRfe()

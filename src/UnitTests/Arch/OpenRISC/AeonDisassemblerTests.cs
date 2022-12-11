@@ -272,6 +272,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_jalr__()
+        {
+            AssertCode("bt.jalr?\tr7", "84 E8");
+        }
+
+        [Test]
         public void AeonDis_bt_jr()
         {
             AssertCode("bt.jr\tr7", "84 E9");

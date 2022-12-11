@@ -362,6 +362,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "1|T--|call 00100538 (0)");
         }
 
+       [Test]
+        public void AeonRw_bg_jalr__()
+        {
+            Given_HexString("8628");
+            AssertCode(     // bg.jalr?	r17
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|call r17 (0)");
+        }
+
         [Test]
         public void AeonRw_bt_jr()
         {
