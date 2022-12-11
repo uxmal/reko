@@ -141,6 +141,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
+                case Mnemonic.bt_rfe: RewriteRfe(); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu:
@@ -537,6 +538,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Goto(op0);
         }
 
+        private void RewriteRfe()
+        {
+            // TODO: model the effects of this: PC <- EPCR, SR <- ESR
+            m.SideEffect(m.Fn(rfe_intrinsic));
+        }
+
         private void RewriteSfxx(Func<Expression, Expression, Expression> fn) 
         {
             var left = OpOrZero(0);
@@ -634,6 +641,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
+            .Void();
+
+        private static readonly IntrinsicProcedure rfe_intrinsic = new IntrinsicBuilder("__rfe", true)
             .Void();
 
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)

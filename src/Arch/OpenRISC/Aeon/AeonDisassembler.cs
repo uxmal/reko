@@ -403,16 +403,21 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var nyi_5 = Instr(Mnemonic.Nyi, uimm10_6, uimm5_5, uimm0_5);
 
+            // when rD is r0, the instruction has a different function
+            var decoder100000_special = Mask(0, 1, "  opc=100000",
+                Instr(Mnemonic.bt_trap, uimm1_4),                   // disasm
+                Instr(Mnemonic.bt_nop, uimm1_4));                   // disasm
             // opcode 100000
             var decoder100000 = Select((5, 5), u => u == 0,
-                // rD is r0: special instructions
-                Mask(0, 1, "  opc=100000",
-                    Instr(Mnemonic.bt_trap, uimm1_4),                // disasm
-                    Instr(Mnemonic.bt_nop, uimm1_4)),                // disasm
-                Instr(Mnemonic.bt_sw__, uimm10_6, R5, simm0_5));
+                decoder100000_special,
+                Instr(Mnemonic.bt_sw__, uimm10_6, R5, simm0_5));    // guess
 
+            var decoder100001_sub0 = Select((5, 5), u => u == 0,
+                Instr(Mnemonic.bt_rfe, InstrClass.Transfer | InstrClass.Return), // disasm
+                nyi_5);
             // opcode 100001
             var decoder100001 = Sparse(0, 5, "  opc=100001", nyi_5,
+                (0b00000, decoder100001_sub0),
                 (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, R5))); // disasm
 
             return Mask(10, 3, "  16-bit",

@@ -708,6 +708,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bt_rfe()
+        {
+            // confirmed with source
+            Given_HexString("8400");
+            AssertCode(     // bt.rfe
+                "0|R--|00100000(2): 1 instructions",
+                "1|L--|__rfe()");
+        }
+
+        [Test]
         public void AeonRw_bn_sb__()
         {
             Given_HexString("18 EB 05"); 

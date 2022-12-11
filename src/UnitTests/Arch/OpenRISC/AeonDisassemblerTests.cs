@@ -466,6 +466,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_rfe()
+        {
+            // confirmed with source
+            AssertCode("bt.rfe", "84 00");
+        }
+
+        [Test]
         public void AeonDis_bn_sb__()
         {
             AssertCode("bn.sb?\t0x7(r1),r0", "18 01 07");
