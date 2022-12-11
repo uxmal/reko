@@ -65,15 +65,15 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Registers.SpecialRegisters.Add(64 + i, sprFactory.Reg32($"ESR_{i}"));
             }
 
-            sr = Registers.SpecialRegisters[17];
-            epcr = Registers.SpecialRegisters[32];
-            eear = Registers.SpecialRegisters[48];
-            esr = Registers.SpecialRegisters[64];
-            maclo = Registers.SpecialRegisters[(5 << 11) + 1];
-            machi = Registers.SpecialRegisters[(5 << 11) + 2];
-            machi2 = Registers.SpecialRegisters[(5 << 11) + 3];
+            SR = Registers.SpecialRegisters[17];
+            EPCR = Registers.SpecialRegisters[32];
+            EEAR = Registers.SpecialRegisters[48];
+            ESR = Registers.SpecialRegisters[64];
+            MACLO = Registers.SpecialRegisters[(5 << 11) + 1];
+            MACHI = Registers.SpecialRegisters[(5 << 11) + 2];
+            MACHI2 = Registers.SpecialRegisters[(5 << 11) + 3];
 
-            F = new FlagGroupStorage(sr, (uint) FlagSR.F, "f", PrimitiveType.Bool);
+            F = new FlagGroupStorage(SR, (uint) FlagSR.F, "f", PrimitiveType.Bool);
             Registers.ByDomain = Registers.GpRegisters
                 .Concat(Registers.SpecialRegisters.Values)
                 .ToDictionary(r => r.Domain);
@@ -87,13 +87,13 @@ namespace Reko.Arch.OpenRISC.Aeon
         public static RegisterStorage[] GpRegisters { get; }
         public static Dictionary<int, RegisterStorage> SpecialRegisters  { get; }
 
-        public static RegisterStorage sr { get; }
-        public static RegisterStorage epcr { get; }
-        public static RegisterStorage eear { get; }
-        public static RegisterStorage esr { get; }
-        public static RegisterStorage maclo { get; }
-        public static RegisterStorage machi { get; }
-        public static RegisterStorage machi2 { get; }
+        public static RegisterStorage SR { get; }
+        public static RegisterStorage EPCR { get; }
+        public static RegisterStorage EEAR { get; }
+        public static RegisterStorage ESR { get; }
+        public static RegisterStorage MACLO { get; }
+        public static RegisterStorage MACHI { get; }
+        public static RegisterStorage MACHI2 { get; }
 
         public static FlagGroupStorage F { get; }
     }

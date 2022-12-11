@@ -540,8 +540,10 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private void RewriteRfe()
         {
-            // TODO: model the effects of this: PC <- EPCR, SR <- ESR
-            m.SideEffect(m.Fn(rfe_intrinsic));
+            var epcr = binder.EnsureRegister(Registers.EPCR);
+            var esr = binder.EnsureRegister(Registers.ESR);
+            m.SideEffect(m.Fn(restore_exception_state, epcr, esr));
+            m.Return(0, 0);
         }
 
         private void RewriteSfxx(Func<Expression, Expression, Expression> fn) 
@@ -643,7 +645,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             .Param(PrimitiveType.Word32)
             .Void();
 
-        private static readonly IntrinsicProcedure rfe_intrinsic = new IntrinsicBuilder("__rfe", true)
+        // used in implementation of bt.rfe
+        private static readonly IntrinsicProcedure restore_exception_state = new IntrinsicBuilder("__restore_exception_state", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
             .Void();
 
         private static readonly IntrinsicProcedure syncwritebuffer_intrinsic = new IntrinsicBuilder("__syncwritebuffer", true)

@@ -713,8 +713,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
             // confirmed with source
             Given_HexString("8400");
             AssertCode(     // bt.rfe
-                "0|R--|00100000(2): 1 instructions",
-                "1|L--|__rfe()");
+                "0|R--|00100000(2): 2 instructions",
+                "1|L--|__restore_exception_state(EPCR_0, ESR_0)",
+                "2|R--|return (0,0)");
         }
 
         [Test]
