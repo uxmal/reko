@@ -65,8 +65,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             case Mnemonic.bn_lbz__:
             case Mnemonic.bn_lhz:
             case Mnemonic.bg_lhz__:
-            case Mnemonic.bn_lwz__:
-            case Mnemonic.bg_lwz__:
+            case Mnemonic.bn_lwz:
+            case Mnemonic.bg_lwz:
                 var memLd = (MemoryOperand) instr.Operands[1];
                 if (memLd.Base != regHi)
                     return;

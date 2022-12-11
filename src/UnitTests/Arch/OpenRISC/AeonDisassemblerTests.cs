@@ -316,6 +316,32 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_lwz()
+        {
+            // confirmed with source
+            AssertCode("bn.lwz\tr6,0x18(r1)", "0C C1 1A");
+        }
+
+        [Test]
+        public void AeonDis_bn_lwz_0()
+        {
+            AssertCode("bn.lwz\tr30,(r21)", "0F D5 02");
+        }
+
+        [Test]
+        public void AeonDis_bg_lwz()
+        {
+            // confirmed with source
+            AssertCode("bg.lwz\tr4,0x90(r1)", "EC 81 00 92");
+        }
+
+        [Test]
+        public void AeonDis_bg_lwz_0()
+        {
+            AssertCode("bg.lwz\tr29,(r16)", "EF B0 00 02");
+        }
+
+        [Test]
         public void AeonDis_bt_mov__()
         {
             AssertCode("bt.mov?\tr10,r3", "89 43");
@@ -339,7 +365,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             AssertCode(
                 "bg.movhi\tr6,0x523A3C@hi",
-                "bg.lwz?\tr7,0x523A3C@lo(r6)",
+                "bg.lwz\tr7,0x523A3C@lo(r6)",
                 "C0 C0 0A 41" +
                 "EC E6 3A 3E");
         }

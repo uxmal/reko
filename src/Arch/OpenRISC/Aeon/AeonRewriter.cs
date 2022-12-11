@@ -125,8 +125,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
-                case Mnemonic.bn_lwz__:
-                case Mnemonic.bg_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
+                case Mnemonic.bn_lwz:
+                case Mnemonic.bg_lwz: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.bg_mfspr: RewriteIntrinsic(mfspr_intrinsic); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
@@ -387,8 +387,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_lbz__:
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__:
-                case Mnemonic.bn_lwz__:
-                case Mnemonic.bg_lwz__:
+                case Mnemonic.bn_lwz:
+                case Mnemonic.bg_lwz:
                     var memLd = (MemoryOperand) lowInstr.Operands[1];
                     if (memLd.Base != regHi)
                         return;

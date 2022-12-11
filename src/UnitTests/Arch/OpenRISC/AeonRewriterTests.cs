@@ -424,7 +424,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonRw_bn_lwz__()
         {
             Given_HexString("0CE302");
-            AssertCode(     // bn.lwz?	r7,(r3)
+            AssertCode(     // bn.lwz	r7,(r3)
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r7 = Mem0[r3:word32]");
         }
@@ -433,7 +433,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonRw_bg_lwz__()
         {
             Given_HexString("EEF2F312");
-            AssertCode(     // bg.lwz?	r23,-0xCF0(r18)
+            AssertCode(     // bg.lwz	r23,-0xCF0(r18)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r23 = Mem0[r18 - 3312<i32>:word32]");
         }
@@ -482,7 +482,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "EC E6 3A 3E");
             AssertCode(
                 // bg.movhi\tr6,0x523A3C@hi
-                // bg.lwz?\tr7,0x523A3C@lo(r6)
+                // bg.lwz\tr7,0x523A3C@lo(r6)
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r6 = 0x520000<32>",
                 "2|L--|r7 = Mem0[0x00523A3C<p32>:word32]");
