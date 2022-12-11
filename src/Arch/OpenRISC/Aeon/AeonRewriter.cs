@@ -120,6 +120,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_j____:
                 case Mnemonic.bg_j: RewriteJ(); break;
                 case Mnemonic.bg_jal: RewriteJal(); break;
+                case Mnemonic.bt_jalr__: RewriteJalr(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
                 case Mnemonic.bg_lbz__: 
                 case Mnemonic.bn_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
@@ -127,13 +128,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
                 case Mnemonic.bn_lwz:
                 case Mnemonic.bg_lwz: RewriteLoadZex(PrimitiveType.Word32); break;
-                case Mnemonic.bg_mfspr: RewriteIntrinsic(mfspr_intrinsic); break;
+                case Mnemonic.bg_mfspr: RewriteMfspr(); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
                 case Mnemonic.bn_movhi__:
                 case Mnemonic.bg_movhi:
                 case Mnemonic.bt_movhi__: RewriteMovhi(); break;
-                case Mnemonic.bg_mtspr: RewriteSideEffect(mtspr_intrinsic); break;
+                case Mnemonic.bg_mtspr: RewriteMtspr(); break;
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop: 
                 case Mnemonic.bn_nop: RewriteNop(); break;
@@ -149,7 +150,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bg_sfleui__:
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
-                case Mnemonic.bn_sfltu: RewriteSfxx(m.Ult); break;
+                case Mnemonic.bn_sfgtu: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.bg_sfnei__:
                 case Mnemonic.bn_sfnei__: RewriteSfxx(m.Ne); break;
@@ -358,6 +359,42 @@ namespace Reko.Arch.OpenRISC.Aeon
             MaybeZeroExtend(dt, dst, src);
         }
 
+        private void RewriteMfspr()
+        {
+            var dst = OpOrZero(0);
+            var sprReg = (RegisterStorage) instr.Operands[1];
+            var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
+            Expression spr;
+
+            if (sprReg.Number == 0) {
+                spr = sprImm;
+            } else if (sprImm.IsZero) {
+                spr = binder.EnsureRegister(sprReg);
+            } else {
+                spr = m.Or(binder.EnsureRegister(sprReg), sprImm);
+            }
+
+            m.Assign(dst, m.Fn(mfspr_intrinsic, spr));
+        }
+
+        private void RewriteMtspr()
+        {
+            var sprReg = (RegisterStorage) instr.Operands[0];
+            var value = OpOrZero(1);
+            var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
+            Expression spr;
+
+            if (sprReg.Number == 0) {
+                spr = sprImm;
+            } else if (sprImm.IsZero) {
+                spr = binder.EnsureRegister(sprReg);
+            } else {
+                spr = m.Or(binder.EnsureRegister(sprReg), sprImm);
+            }
+
+            m.SideEffect(m.Fn(mtspr_intrinsic, spr, value));
+        }
+
         private void RewriteMov()
         {
             var src = OpOrZero(1);
@@ -505,6 +542,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var way = Op(1);
             m.SideEffect(m.Fn(flush_line_intrinsic, ea, way));
         }
+
         private void RewriteInvalidateLine()
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
@@ -529,13 +567,17 @@ namespace Reko.Arch.OpenRISC.Aeon
             var op0 = (Identifier)Op(0);
             if ((int)op0.Storage.Domain == 9)
             {
-                //$REVIEW: this is a weird encoding for a return
                 iclass = InstrClass.Transfer | InstrClass.Return;
                 m.Return(0, 0);
                 return;
             }
-            //$REVIEW: could be a call, r9 seems to be used as a link register.
             m.Goto(op0);
+        }
+
+        private void RewriteJalr()
+        {
+            var target = Op(0);
+            m.Call(target, 0);
         }
 
         private void RewriteRfe()
@@ -636,11 +678,9 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private static readonly IntrinsicProcedure mfspr_intrinsic = new IntrinsicBuilder("__move_from_spr", true)
             .Param(PrimitiveType.Word32)
-            .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
 
         private static readonly IntrinsicProcedure mtspr_intrinsic = new IntrinsicBuilder("__move_to_spr", true)
-            .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();

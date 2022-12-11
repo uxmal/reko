@@ -362,6 +362,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "1|T--|call 00100538 (0)");
         }
 
+       [Test]
+        public void AeonRw_bg_jalr__()
+        {
+            Given_HexString("8628");
+            AssertCode(     // bg.jalr?	r17
+                "0|T--|00100000(2): 1 instructions",
+                "1|T--|call r17 (0)");
+        }
+
         [Test]
         public void AeonRw_bt_jr()
         {
@@ -441,10 +450,28 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bg_mfspr()
         {
+            Given_HexString("C030011F");
+            AssertCode(     // bg.mfspr	r1,r16,0x11
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = __move_from_spr(r16 | 0x11<32>)");
+        }
+
+        [Test]
+       public void AeonRw_bg_mfspr_only_reg()
+        {
             Given_HexString("C0A4000F");
             AssertCode(     // bg.mfspr	r5,r4,0x0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = __move_from_spr(r4, 0<32>)");
+                "1|L--|r5 = __move_from_spr(r4)");
+        }
+
+        [Test]
+        public void AeonRw_bg_mfspr_only_imm()
+        {
+            Given_HexString("C220F01F");
+            AssertCode(     // bg.mfspr	r17,r0,0xF01
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r17 = __move_from_spr(0xF01<32>)");
         }
 
         [Test]
@@ -591,10 +618,28 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bg_mtspr()
         {
+            Given_HexString("C218821D");
+            AssertCode(     // bg.mtspr	r24,r16,0x821
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__move_to_spr(r24 | 0x821<32>, r16)");
+        }
+
+        [Test]
+        public void AeonRw_bg_mtspr_only_reg()
+        {
+            Given_HexString("C268000D");
+            AssertCode(     // bg.mtspr	r8,r19,0x0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__move_to_spr(r8, r19)");
+        }
+
+        [Test]
+        public void AeonRw_bg_mtspr_only_imm()
+        {
             Given_HexString("C060011D");
             AssertCode(     // bg.mtspr	r0,r3,0x11
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__move_to_spr(0<32>, r3, 0x11<32>)");
+                "1|L--|__move_to_spr(0x11<32>, r3)");
         }
 
         [Test]
@@ -774,6 +819,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_sfgtu()
+        {
+            Given_HexString("5F 47 1F");
+            AssertCode(     // bn.sfgtu	r26,r7
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|f = r26 >u r7");
+        }
+
+        [Test]
         public void AeonRw_bn_sfgtui()
         {
             Given_HexString("5C641B");
@@ -798,15 +852,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.sfleui?	r3,0x77
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 <=u 0x77<32>");
-        }
-
-        [Test]
-        public void AeonRw_bn_sfltu()
-        {
-            Given_HexString("5F 47 1F");
-            AssertCode(     // bn.sfltu	r7,r26
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|f = r7 <u r26");
         }
 
         [Test]

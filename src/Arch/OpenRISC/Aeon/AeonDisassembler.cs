@@ -304,9 +304,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0000, Instr(Mnemonic.bn_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
-                (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing
+                (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing, disasm
                 (0b1110, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
-                (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing
+                (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing, disasm
 
             var decoder110100 = Sparse(0, 3, "  opc=110100", nyi_3_imm_disp, 
                 (0b010, Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)),       // guess
@@ -418,7 +418,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 100001
             var decoder100001 = Sparse(0, 5, "  opc=100001", nyi_5,
                 (0b00000, decoder100001_sub0),
-                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, R5))); // disasm
+                (0b01000, Instr(Mnemonic.bt_jalr__, InstrClass.Transfer, R5)),  // guess
+                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, R5)));     // disasm
 
             return Mask(10, 3, "  16-bit",
                 decoder100000,
@@ -512,8 +513,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b10111, Instr(Mnemonic.bn_sfgeu, R8, R13)),               // chenxing, disasm
                 (0b11000, Instr(Mnemonic.bn_entri__, uimm14_4, uimm5_9)),   // backtrace
                 (0b11011, Instr(Mnemonic.bn_sfgtui, R13, uimm5_8)),         // disasm
-                // operands are swapped
-                (0b11111, Instr(Mnemonic.bn_sfltu, R8, R13)));              // disasm
+                // used for bn.sfltu with operands swapped
+                (0b11111, Instr(Mnemonic.bn_sfgtu, R13, R8)));              // disasm
 
             return new D24BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode000000,
