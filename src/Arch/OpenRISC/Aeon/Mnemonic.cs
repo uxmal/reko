@@ -95,7 +95,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_sfgtui,
         bg_sfleui__,
         bn_sfleui__,
-        bn_sfltu,
+        bn_sfgtu,
         bn_sfne,
         bg_sfnei__,
         bn_sfnei__,

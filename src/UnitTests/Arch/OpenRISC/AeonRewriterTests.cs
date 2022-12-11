@@ -810,6 +810,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_sfgtu()
+        {
+            Given_HexString("5F 47 1F");
+            AssertCode(     // bn.sfgtu	r26,r7
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|f = r26 >u r7");
+        }
+
+        [Test]
         public void AeonRw_bn_sfgtui()
         {
             Given_HexString("5C641B");
@@ -834,15 +843,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.sfleui?	r3,0x77
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 <=u 0x77<32>");
-        }
-
-        [Test]
-        public void AeonRw_bn_sfltu()
-        {
-            Given_HexString("5F 47 1F");
-            AssertCode(     // bn.sfltu	r7,r26
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|f = r7 <u r26");
         }
 
         [Test]

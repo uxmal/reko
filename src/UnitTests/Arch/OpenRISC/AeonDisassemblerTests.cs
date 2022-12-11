@@ -511,6 +511,14 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_sfgtu()
+        {
+            // confirmed with source
+            // in source: bn.sfltu r3,r4
+            AssertCode("bn.sfgtu\tr4,r3", "5C 83 1F");
+        }
+
+        [Test]
         public void AeonDis_bn_sfleui__()
         {
             AssertCode("bn.sfleui?\tr3,0x77", "5C 6E F3");
@@ -520,13 +528,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bg_sfleui__()
         {
             AssertCode("bg.sfleui?\tr11,0x1FE", "C1 60 3F CE");
-        }
-
-        [Test]
-        public void AeonDis_bn_sfltu()
-        {
-            // confirmed with source
-            AssertCode("bn.sfltu\tr3,r4", "5C 83 1F");
         }
 
         [Test]
