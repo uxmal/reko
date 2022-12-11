@@ -125,8 +125,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
-                case Mnemonic.bn_lwz__:
-                case Mnemonic.bg_lwz__: RewriteLoadZex(PrimitiveType.Word32); break;
+                case Mnemonic.bn_lwz:
+                case Mnemonic.bg_lwz: RewriteLoadZex(PrimitiveType.Word32); break;
                 case Mnemonic.bg_mfspr: RewriteIntrinsic(mfspr_intrinsic); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
@@ -141,6 +141,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
+                case Mnemonic.bt_rfe: RewriteRfe(); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu:
@@ -387,8 +388,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_lbz__:
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__:
-                case Mnemonic.bn_lwz__:
-                case Mnemonic.bg_lwz__:
+                case Mnemonic.bn_lwz:
+                case Mnemonic.bg_lwz:
                     var memLd = (MemoryOperand) lowInstr.Operands[1];
                     if (memLd.Base != regHi)
                         return;
@@ -537,6 +538,14 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Goto(op0);
         }
 
+        private void RewriteRfe()
+        {
+            var epcr = binder.EnsureRegister(Registers.EPCR);
+            var esr = binder.EnsureRegister(Registers.ESR);
+            m.SideEffect(m.Fn(restore_exception_state, epcr, esr));
+            m.Return(0, 0);
+        }
+
         private void RewriteSfxx(Func<Expression, Expression, Expression> fn) 
         {
             var left = OpOrZero(0);
@@ -632,6 +641,12 @@ namespace Reko.Arch.OpenRISC.Aeon
 
         private static readonly IntrinsicProcedure mtspr_intrinsic = new IntrinsicBuilder("__move_to_spr", true)
             .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+
+        // used in implementation of bt.rfe
+        private static readonly IntrinsicProcedure restore_exception_state = new IntrinsicBuilder("__restore_exception_state", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();

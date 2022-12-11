@@ -69,9 +69,10 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_lbz__,
         bn_lhz,
         bg_lhz__,
-        bn_lwz__,
-        bg_lwz__,
+        bn_lwz,
+        bg_lwz,
         bg_mfspr,
+        bt_mov__,
         bt_movhi__,
         bn_movhi__,
         bg_movhi,
@@ -84,6 +85,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_or,
         bn_ori,
         bg_ori,
+        bt_rfe,
         bn_sb__,
         bg_sb__,
         bn_sfeq__,
@@ -111,6 +113,5 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_sw__,
         bg_syncwritebuffer,
         bn_xor__,
-        bt_mov__,
     }
 }

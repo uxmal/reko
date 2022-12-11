@@ -87,7 +87,7 @@ namespace Reko.Arch.OpenRISC
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.Status, grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(Registers.SR, grf, GrfToString(flagRegister, "", grf), dt);
             return fl;
         }
 
@@ -114,7 +114,7 @@ namespace Reko.Arch.OpenRISC
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             StringBuilder s = new StringBuilder();
-            if (flagRegister == Registers.Status)
+            if (flagRegister == Registers.SR)
             {
                 if ((grf & Registers.F.FlagGroupBits) != 0) s.Append(Registers.F.Name);
             }
