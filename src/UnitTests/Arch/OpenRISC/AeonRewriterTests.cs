@@ -269,11 +269,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bn_entri__()
         {
-            // XXX: no examples known
-            Given_HexString("5E9338");
-            AssertCode(     // bn.entri?	0xA,0x99
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|bn_entri__(0xA<32>, 0x99<32>)");
+            Given_HexString("5C8058");
+            AssertCode(     // bn.entri?	0x2,0x2
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|Mem0[r1:word32] = r9",
+	            "2|L--|Mem0[r1 - 4<i32>:word32] = r10",
+	            "3|L--|r1 = r1 - 0x10<32>");
         }
 
         [Test]
@@ -761,6 +762,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|R--|00100000(2): 2 instructions",
                 "1|L--|__restore_exception_state(EPCR_0, ESR_0)",
                 "2|R--|return (0,0)");
+        }
+
+        [Test]
+        public void AeonRw_bn_rtnei__()
+        {
+            Given_HexString("5C805C");
+            AssertCode(     // bn.rteni?	0x2,0x2
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r9 = Mem0[r1 + 12<i32>:word32]",
+	            "2|L--|r10 = Mem0[r1 + 8<i32>:word32]",
+	            "3|L--|r1 = r1 + 0x10<32>");
         }
 
         [Test]

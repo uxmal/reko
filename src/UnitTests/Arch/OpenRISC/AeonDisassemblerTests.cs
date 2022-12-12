@@ -220,6 +220,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_entri__()
+        {
+            AssertCode("bn.entri?\t0x1,0x3", "5C 40 78");
+        }
+
+        [Test]
         public void AeonDis_bn_extbz__()
         {
             AssertCode("bn.extbz?\tr3,r4", "5C 64 00");
@@ -288,6 +294,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bt.jr\tr9", "85 29");
+        }
+
+        [Test]
+        public void AeonDis_bn_rtnei__()
+        {
+            AssertCode("bn.rtnei?\t0x1,0x3", "5C 40 7C");
         }
 
         [Test]

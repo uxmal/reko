@@ -26,7 +26,6 @@ namespace Reko.Arch.OpenRISC.Aeon
         Nyi,
 
         bt_trap,
-        bn_entri__,
         bn_add,
         bt_add__,
         bt_addi__,
@@ -55,6 +54,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_cmov____,
         bn_cmovi____,
         bn_divu,
+        bn_entri__,
         bn_extbz__,
         bn_exthz__,
         bn_ff1__,
@@ -87,6 +87,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_ori,
         bg_ori,
         bt_rfe,
+        bn_rtnei__,
         bn_sb__,
         bg_sb__,
         bn_sfeq__,

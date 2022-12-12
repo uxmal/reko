@@ -512,6 +512,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // operands are swapped
                 (0b10111, Instr(Mnemonic.bn_sfgeu, R8, R13)),               // chenxing, disasm
                 (0b11000, Instr(Mnemonic.bn_entri__, uimm14_4, uimm5_9)),   // backtrace
+                (0b11100, Instr(Mnemonic.bn_rtnei__, uimm14_4, uimm5_9)),   // backtrace
                 (0b11011, Instr(Mnemonic.bn_sfgtui, R13, uimm5_8)),         // disasm
                 // used for bn.sfltu with operands swapped
                 (0b11111, Instr(Mnemonic.bn_sfgtu, R13, R8)));              // disasm

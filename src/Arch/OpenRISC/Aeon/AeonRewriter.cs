@@ -110,7 +110,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_cmov____: RewriteCmov(); break;
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
-                case Mnemonic.bn_entri__: RewriteUnknown(); break;
+                case Mnemonic.bn_entri__: RewriteEntri(); break;
                 case Mnemonic.bn_extbz__: RewriteExt(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
@@ -143,6 +143,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
                 case Mnemonic.bt_rfe: RewriteRfe(); break;
+                case Mnemonic.bn_rtnei__: RewriteRtnei(); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu:
@@ -610,6 +611,46 @@ namespace Reko.Arch.OpenRISC.Aeon
             var right = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dst = Op(0);
             m.Assign(dst, fn(left, m.Int32(right)));
+        }
+
+        private void RewriteEntri()
+        {
+            // F/I in docs
+            var pushRegs = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            // N/J in docs
+            var stackSlots = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+
+            // r1 is stack pointer
+            var stackPtr = binder.EnsureRegister(Registers.GpRegisters[1]);
+
+            for (int i = 0; i < pushRegs; i++) {
+                var ea = m.AddSubSignedInt(stackPtr, i * -4);
+                var reg = binder.EnsureRegister(Registers.GpRegisters[9 + i]);
+                m.Assign(m.Mem32(ea), reg);
+            }
+
+            var newStackPtr = m.ISub(stackPtr, (pushRegs + stackSlots) * 4);
+            m.Assign(stackPtr, newStackPtr);
+        }
+
+        private void RewriteRtnei()
+        {
+            // F/I in docs
+            var popRegs = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            // N/J in docs
+            var stackSlots = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+
+            // r1 is stack pointer
+            var stackPtr = binder.EnsureRegister(Registers.GpRegisters[1]);
+
+            for (int i = 0; i < popRegs; i++) {
+                var ea = m.AddSubSignedInt(stackPtr, (popRegs - i - 1 + stackSlots) * 4);
+                var reg = binder.EnsureRegister(Registers.GpRegisters[9 + i]);
+                m.Assign(reg, m.Mem32(ea));
+            }
+
+            var newStackPtr = m.IAdd(stackPtr, (popRegs + stackSlots) * 4);
+            m.Assign(stackPtr, newStackPtr);
         }
 
         private void RewriteSideEffect(IntrinsicProcedure intrinsic)
