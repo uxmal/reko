@@ -459,7 +459,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_lwz__()
+        public void AeonRw_bn_lwz()
         {
             Given_HexString("0CE302");
             AssertCode(     // bn.lwz	r7,(r3)
@@ -468,7 +468,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_lwz__()
+        public void AeonRw_bg_lwz()
         {
             Given_HexString("EEF2F312");
             AssertCode(     // bg.lwz	r23,-0xCF0(r18)
@@ -850,10 +850,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_sfgeui()
+        public void AeonRw_bg_sfgeui__()
         {
             Given_HexString("C0 80 1F E0");
-            AssertCode(     // bn.sfgeui\tr4,0xFF
+            AssertCode(     // bg.sfgeui?	r4,0xFF
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f = r4 >=u 0xFF<32>");
         }

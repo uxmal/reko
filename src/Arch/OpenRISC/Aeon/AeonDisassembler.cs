@@ -300,10 +300,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_3_imm_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, disp3_13, uimm0_3);
             var nyi_3_reg_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13);
             var nyi_3_reg_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13, uimm0_3);
-            var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16);
+            var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16, uimm0_5);
 
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
-                (0b0000, Instr(Mnemonic.bn_sfgeui__, R21, uimm5_16)),           // guess
+                (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing, disasm
@@ -313,10 +313,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder110100 = Mask(0, 3, "  opc=110100",
                 Instr(Mnemonic.bg_blesi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),  // guess
-                Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),       // guess
+                Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),   // guess
                 Instr(Mnemonic.bg_b011i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_b100i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
-                Instr(Mnemonic.bg_bgtui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),      // guess
+                Instr(Mnemonic.bg_bgtui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_bltui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_b111i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)); // guess
 
@@ -342,7 +342,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder111011 = Mask(0, 2, "  opc=111011",
                 Instr(Mnemonic.bg_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),         // chenxing, backtrace
                 Instr(Mnemonic.bg_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),       // guess
-                Instr(Mnemonic.bg_lwz, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),      // guess, disasm
+                Instr(Mnemonic.bg_lwz, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),        // guess, disasm
                 Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
 
             var instr_inv_line = Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1);
@@ -350,10 +350,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Sparse(0, 3, "  opc=111101", nyi_3,
                 
                     // $REVIEW: what's the difference between these? what about bit 5?
-                    (0b001, instr_inv_line),                                                               // chenxing
+                    (0b001, instr_inv_line),                                                                // chenxing
                     (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                            // disasm
                     (0b110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
-                    (0b111, instr_inv_line)),                                                              // disasm
+                    (0b111, instr_inv_line)),                                                               // disasm
                 Nyi("111101, non-zero bits"));
 
             var decoder = Mask(26, 5, "  32-bit instr",

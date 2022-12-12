@@ -298,6 +298,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_j()
+        {
+            AssertCode("bg.j\t000FFFF3", "E7 FF FF E7");
+        }
+
+        [Test]
         public void AeonDis_bg_jal()
         {
             AssertCode("bg.jal\t000F17F9", "E7 FE 2F F2");
@@ -469,6 +475,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_mul()
+        {
+            // confirmed with source
+            AssertCode("bn.mul\tr7,r3,r6", "40 E3 33");
+        }
+
+        [Test]
         public void AeonDis_bn_nand__()
         {
             // confirmed with source
@@ -549,9 +562,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bg_sfgeui()
+        public void AeonDis_bg_sfgeui__()
         {
-            AssertCode("bn.sfgeui?\tr4,0xFF" , "C0 80 1F E0");
+            AssertCode("bg.sfgeui?\tr4,0xFF" , "C0 80 1F E0");
         }
 
         [Test]
