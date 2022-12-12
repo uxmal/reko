@@ -70,7 +70,7 @@ namespace Reko.Arch.OpenRISC
 
         public override ProcessorState CreateProcessorState()
         {
-            return new DefaultProcessorState(this);
+            return new AeonProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -82,7 +82,6 @@ namespace Reko.Arch.OpenRISC
         {
             return new AeonCallingConvention(this);
         }
-
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
@@ -109,6 +108,15 @@ namespace Reko.Arch.OpenRISC
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            if (flags == Registers.F)
+            {
+                return new[] { flags }; 
+            }
+            return Array.Empty<FlagGroupStorage>();
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
