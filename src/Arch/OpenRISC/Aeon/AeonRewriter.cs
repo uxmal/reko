@@ -92,29 +92,26 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_andi: RewriteLogicalImm(m.And); break;
                 case Mnemonic.bg_beq__:
                 case Mnemonic.bn_beqi__:
-                case Mnemonic.bg_beqi__: RewriteBxxi(m.Eq); break;
+                case Mnemonic.bg_beqi__: RewriteBxx(m.Eq); break;
                 case Mnemonic.bn_bf:
                 case Mnemonic.bg_bf: RewriteBf(true); break;
                 case Mnemonic.bg_bges__: RewriteBxx(m.Ge); break;
                 case Mnemonic.bg_bgeu__: RewriteBxx(m.Uge); break;
                 case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
-                case Mnemonic.bgtu__: RewriteBxx(m.Ugt); break;
-                case Mnemonic.bgtui__: 
-                case Mnemonic.bg_bgtui__: RewriteBxxi(m.Ugt); break;
-                case Mnemonic.bn_ble__i__: RewriteBxxi(m.Le); break;
-                case Mnemonic.bg_blesi__: RewriteBxxi(m.Le); break;
-                case Mnemonic.bg_bltsi__: RewriteBxxi(m.Lt); break;
-                case Mnemonic.bg_bltui__: RewriteBxxi(m.Ult); break;
-                case Mnemonic.bne__:
-                case Mnemonic.bg_bne__: RewriteBxxi(m.Ne); break;
-                case Mnemonic.bn_bnei__: RewriteBxxi(m.Ne); break;
+                case Mnemonic.bg_bgtui__: RewriteBxx(m.Ugt); break;
+                case Mnemonic.bn_ble__i__: RewriteBxx(m.Le); break;
+                case Mnemonic.bg_blesi__: RewriteBxx(m.Le); break;
+                case Mnemonic.bg_bltsi__: RewriteBxx(m.Lt); break;
+                case Mnemonic.bg_bltui__: RewriteBxx(m.Ult); break;
+                case Mnemonic.bg_bne__: RewriteBxx(m.Ne); break;
+                case Mnemonic.bn_bnei__: RewriteBxx(m.Ne); break;
                 case Mnemonic.bn_bnf__: RewriteBf(false); break;
                 case Mnemonic.bn_cmov____: RewriteCmov(); break;
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
                 case Mnemonic.bn_divs__: RewriteArithmetic(m.SDiv); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
-                case Mnemonic.bn_entri__: RewriteUnknown(); break;
+                case Mnemonic.bn_entri__: RewriteEntri(); break;
                 case Mnemonic.bn_extbz__: RewriteExt(PrimitiveType.Byte, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
@@ -147,10 +144,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
                 case Mnemonic.bt_rfe: RewriteRfe(); break;
+                case Mnemonic.bn_rtnei__: RewriteRtnei(); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfgeu:
-                case Mnemonic.bn_sfgeui__: RewriteSfxx(m.Uge); break;
+                case Mnemonic.bg_sfgeui__: RewriteSfxx(m.Uge); break;
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bg_sfleui__:
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
@@ -328,14 +326,6 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             var left = OpOrZero(0);
             var right = OpOrZero(1);
-            var target = ((AddressOperand) instr.Operands[2]).Address;
-            m.Branch(cmp(left, right), target);
-        }
-
-        private void RewriteBxxi(Func<Expression, Expression, Expression> cmp)
-        {
-            var left = OpOrZero(0);
-            var right = Op(1);
             var target = ((AddressOperand) instr.Operands[2]).Address;
             m.Branch(cmp(left, right), target);
         }
@@ -614,6 +604,46 @@ namespace Reko.Arch.OpenRISC.Aeon
             var right = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dst = Op(0);
             m.Assign(dst, fn(left, m.Int32(right)));
+        }
+
+        private void RewriteEntri()
+        {
+            // F/I in docs
+            var pushRegs = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            // N/J in docs
+            var stackSlots = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+
+            // r1 is stack pointer
+            var stackPtr = binder.EnsureRegister(Registers.GpRegisters[1]);
+
+            for (int i = 0; i < pushRegs; i++) {
+                var ea = m.AddSubSignedInt(stackPtr, i * -4);
+                var reg = binder.EnsureRegister(Registers.GpRegisters[9 + i]);
+                m.Assign(m.Mem32(ea), reg);
+            }
+
+            var newStackPtr = m.ISub(stackPtr, (pushRegs + stackSlots) * 4);
+            m.Assign(stackPtr, newStackPtr);
+        }
+
+        private void RewriteRtnei()
+        {
+            // F/I in docs
+            var popRegs = ((ImmediateOperand) instr.Operands[0]).Value.ToUInt32();
+            // N/J in docs
+            var stackSlots = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt32();
+
+            // r1 is stack pointer
+            var stackPtr = binder.EnsureRegister(Registers.GpRegisters[1]);
+
+            for (int i = 0; i < popRegs; i++) {
+                var ea = m.AddSubSignedInt(stackPtr, (popRegs - i - 1 + stackSlots) * 4);
+                var reg = binder.EnsureRegister(Registers.GpRegisters[9 + i]);
+                m.Assign(reg, m.Mem32(ea));
+            }
+
+            var newStackPtr = m.IAdd(stackPtr, (popRegs + stackSlots) * 4);
+            m.Assign(stackPtr, newStackPtr);
         }
 
         private void RewriteSideEffect(IntrinsicProcedure intrinsic)

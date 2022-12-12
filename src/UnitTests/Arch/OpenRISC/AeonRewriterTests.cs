@@ -297,11 +297,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bn_entri__()
         {
-            // XXX: no examples known
-            Given_HexString("5E9338");
-            AssertCode(     // bn.entri?	0xA,0x99
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|bn_entri__(0xA<32>, 0x99<32>)");
+            Given_HexString("5C8058");
+            AssertCode(     // bn.entri?	0x2,0x2
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|Mem0[r1:word32] = r9",
+	            "2|L--|Mem0[r1 - 4<i32>:word32] = r10",
+	            "3|L--|r1 = r1 - 0x10<32>");
         }
 
         [Test]
@@ -458,7 +459,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_lwz__()
+        public void AeonRw_bn_lwz()
         {
             Given_HexString("0CE302");
             AssertCode(     // bn.lwz	r7,(r3)
@@ -467,7 +468,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_lwz__()
+        public void AeonRw_bg_lwz()
         {
             Given_HexString("EEF2F312");
             AssertCode(     // bg.lwz	r23,-0xCF0(r18)
@@ -792,6 +793,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_rtnei__()
+        {
+            Given_HexString("5C805C");
+            AssertCode(     // bn.rteni?	0x2,0x2
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r9 = Mem0[r1 + 12<i32>:word32]",
+	            "2|L--|r10 = Mem0[r1 + 8<i32>:word32]",
+	            "3|L--|r1 = r1 + 0x10<32>");
+        }
+
+        [Test]
         public void AeonRw_bn_sb__()
         {
             Given_HexString("18 EB 05"); 
@@ -838,10 +850,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_sfgeui()
+        public void AeonRw_bg_sfgeui__()
         {
             Given_HexString("C0 80 1F E0");
-            AssertCode(     // bn.sfgeui\tr4,0xFF
+            AssertCode(     // bg.sfgeui?	r4,0xFF
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f = r4 >=u 0xFF<32>");
         }
