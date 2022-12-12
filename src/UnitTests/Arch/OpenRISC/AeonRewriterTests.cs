@@ -175,12 +175,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bg_bltsi__()
+        public void AeonRw_bg_bltui__()
         {
             Given_HexString("D0 88 FF 3E");
-            AssertCode(     // bg.bltsi? r4,0x8,002F4942
+            AssertCode(     // bg.bltui? r4,0x8,002F4942
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (r4 < 8<32>) branch 000FFFE7");
+                "1|T--|if (r4 <u 8<32>) branch 000FFFE7");
         }
 
         [Test]
@@ -193,14 +193,32 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_bgts()
+        {
+            Given_HexString("D6 E5 FF 94");
+            AssertCode(     // bg.bgts?\tr23,r5,000FFFF2
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r23 > r5) branch 000FFFF2");
+        }
+
+        [Test]
         public void AeonRw_bg_bgtui__()
         {
             // This is being used in unsigned comparisons
             // swtich (...) statements.
             Given_HexString("D0 6D 00 B5");
-            AssertCode(     // bg.bgtui?\tr3,0x0D....."
+            AssertCode(     // bg.bgtui?\tr3,0x0D,00100016
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|if (r3 >u 0xD<32>) branch 00100016");
+        }
+
+        [Test]
+        public void AeonRw_bg_blesi__()
+        {
+            Given_HexString("D1 5F 05 88");
+            AssertCode(     // bg.blesi? r10,-0x1,001000B1"
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r10 <= -1<i32>) branch 001000B1");
         }
 
         [Test]
@@ -255,6 +273,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.cmovi??	r12,r12,0x1
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r12 = f ? r12 : 1<32>");
+        }
+
+        [Test]
+        public void AeonRw_bn_divs()
+        {
+            //$REVIEW: this might be bn.divu 
+            Given_HexString("40 E7 30");
+            AssertCode(     // bn.divs\tr7,r7,r6
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = r7 / r6");
         }
 
         [Test]
