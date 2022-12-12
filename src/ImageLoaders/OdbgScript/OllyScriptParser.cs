@@ -429,7 +429,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return false;
         }
 
-        private static Constant MkString(Token token)
+        private static StringConstant MkString(Token token)
         {
             return Constant.String((string) token.Value!, StringType.NullTerminated(PrimitiveType.Char));
         }

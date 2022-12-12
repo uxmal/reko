@@ -599,6 +599,11 @@ namespace Reko.Core.Output
             writer.Write(", {0})", slice.Offset);
         }
 
+        void IExpressionVisitor.VisitStringConstant(StringConstant str)
+        {
+            throw new NotImplementedException();
+        }
+
         void IExpressionVisitor.VisitTestCondition(TestCondition tc)
         {
             Method("Test");

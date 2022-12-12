@@ -625,7 +625,13 @@ namespace Reko.Typing
 			return handler.DataTypeTrait(slice, slice.DataType);
 		}
 
-		public DataType VisitTestCondition(TestCondition tc)
+        public DataType VisitStringConstant(StringConstant str)
+        {
+            var dt = handler.DataTypeTrait(str, str.DataType);
+            return dt;
+        }
+
+        public DataType VisitTestCondition(TestCondition tc)
 		{
 			tc.Expression.Accept(this);
             return handler.DataTypeTrait(tc, tc.DataType);

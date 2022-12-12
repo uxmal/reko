@@ -204,6 +204,14 @@ namespace Reko.Core.Expressions
             return new Slice(slice.DataType, exp, slice.Offset);
         }
 
+        public Expression VisitStringConstant(StringConstant str)
+        {
+            if (cmp.Equals(str, original))
+                return replacement;
+            else
+                return str;
+        }
+
         public Expression VisitTestCondition(TestCondition tc)
         {
             throw new NotImplementedException();

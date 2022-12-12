@@ -20,11 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Evaluation
 {
@@ -217,6 +214,11 @@ namespace Reko.Evaluation
             if (exp is InvalidConstant)
                 return exp;
             return new Slice(slice.DataType, exp, slice.Offset);
+        }
+
+        public Expression VisitStringConstant(StringConstant str)
+        {
+            return str;
         }
 
         public Expression VisitTestCondition(TestCondition tc)

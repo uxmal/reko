@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             ccc = new CompoundConditionCoalescer(proc);
         }
 
-        private static Constant Sz(string str)
+        private static StringConstant Sz(string str)
         {
             return Constant.String(str, StringType.NullTerminated(PrimitiveType.Char));
         }

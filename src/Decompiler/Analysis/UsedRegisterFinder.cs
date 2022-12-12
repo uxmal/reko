@@ -505,6 +505,11 @@ namespace Reko.Analysis
             return useSlice;
         }
 
+        public BitRange VisitStringConstant(StringConstant str)
+        {
+            return BitRange.Empty;
+        }
+
         public BitRange VisitTestCondition(TestCondition tc)
         {
             var use = tc.Expression.Accept(this);

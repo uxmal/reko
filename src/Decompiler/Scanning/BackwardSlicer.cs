@@ -1077,6 +1077,15 @@ namespace Reko.Scanning
             return slice.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
         }
 
+        public SlicerResult VisitStringConstant(StringConstant str, BackwardSlicerContext ctx)
+        {
+            return new SlicerResult
+            {
+                LiveExprs = new Dictionary<Expression, BackwardSlicerContext>(),
+                SrcExpr = str,
+            };
+        }
+
         public SlicerResult? VisitSwitch(RtlSwitch rtlSwitch)
         {
             return null;

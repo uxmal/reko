@@ -189,12 +189,14 @@ namespace Reko.Core.Code
         public bool VisitSlice(Slice slice) =>
             slice.Expression.Accept(this);
 
+        public bool VisitStringConstant(StringConstant str) => false;
+        
         public bool VisitTestCondition(TestCondition test) =>
             test.Expression.Accept(this);
 
         public bool VisitUnaryExpression(UnaryExpression unary) =>
             unary.Expression.Accept(this);
 
-		#endregion
-	}
+        #endregion
+    }
 }

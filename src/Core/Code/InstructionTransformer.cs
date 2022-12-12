@@ -281,6 +281,11 @@ namespace Reko.Core.Code
 			return new Slice(slice.DataType, e, slice.Offset);
 		}
 
+        public virtual Expression VisitStringConstant(StringConstant str)
+        {
+            return str;
+        }
+
         public virtual Expression VisitTestCondition(TestCondition tc)
         {
             var e = tc.Expression.Accept(this);

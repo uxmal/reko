@@ -102,13 +102,6 @@ namespace Reko.Analysis
                 return true;
             }
 
-            public bool VisitBinaryExpression(BinaryExpression binExp)
-            {
-                bool dead = binExp.Left.Accept(this);
-                dead &= binExp.Right.Accept(this);
-                return dead;
-            }
-
             public bool VisitAddress(Address addr)
             {
                 return true;
@@ -127,6 +120,13 @@ namespace Reko.Analysis
             {
                 var dead = acc.Array.Accept(this);
                 dead &= acc.Index.Accept(this);
+                return dead;
+            }
+
+            public bool VisitBinaryExpression(BinaryExpression binExp)
+            {
+                bool dead = binExp.Left.Accept(this);
+                dead &= binExp.Right.Accept(this);
                 return dead;
             }
 
@@ -220,6 +220,11 @@ namespace Reko.Analysis
             public bool VisitSlice(Slice slice)
             {
                 return slice.Expression.Accept(this);
+            }
+
+            public bool VisitStringConstant(StringConstant str)
+            {
+                return true;
             }
 
             public bool VisitTestCondition(TestCondition tc)

@@ -870,6 +870,12 @@ namespace Reko.Typing
             return false;
         }
 
+        public bool VisitStringConstant(StringConstant str, TypeVariable tv)
+        {
+            MeetDataType(str, tv.DataType);
+            return false;
+        }
+
         public bool VisitTestCondition(TestCondition tc, TypeVariable tv)
         {
             MeetDataType(tc, tc.DataType);

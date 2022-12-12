@@ -287,6 +287,10 @@ namespace Reko.Core.Code
 			slice.Expression.Accept(this);
 		}
 
+        public virtual void VisitStringConstant(StringConstant str)
+        {
+        }
+
 		public virtual void VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);

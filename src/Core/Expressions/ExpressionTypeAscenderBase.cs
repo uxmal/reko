@@ -338,7 +338,7 @@ namespace Reko.Core.Expressions
             return RecordDataType(dt, c);
         }
 
-        private DataType? ExistingGlobalField(Constant c)
+        private DataType? ExistingGlobalField(Expression c)
         {
             if ((c.DataType.Domain & Domain.Pointer) == 0)
                 return null;
@@ -464,6 +464,11 @@ namespace Reko.Core.Expressions
         {
             slice.Expression.Accept(this);
             return RecordDataType(slice.DataType, slice);
+        }
+
+        public DataType VisitStringConstant(StringConstant str)
+        {
+            return RecordDataType(str.DataType, str);
         }
 
         public DataType VisitTestCondition(TestCondition tc)

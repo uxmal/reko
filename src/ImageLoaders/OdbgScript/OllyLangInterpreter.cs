@@ -847,6 +847,8 @@ namespace Reko.ImageLoaders.OdbgScript
                     return false;
 
                 var line = Script.Lines[script_pos];
+                if (line.LineNumber == 4)
+                    _ = this; //$DEBUG
 
                 script_pos_next = script_pos + 1;
 
@@ -1112,6 +1114,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 value = c.ToString();
                 if (hex8forExec && !char.IsDigit(value[0]))
                     value = '0' + value;
+                return true;
+            }
+            else if (op is StringConstant str)
+            {
+                value = str.ToString();
                 return true;
             }
             else if (op is Application app && app.Procedure is ProcedureConstant pc)
@@ -1930,7 +1937,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return new Identifier(id, unk, MemoryStorage.Instance);
         }
 
-        private Constant MkString(string s)
+        private StringConstant MkString(string s)
         {
             return Constant.String(s, StringType.NullTerminated(PrimitiveType.Char));
         }

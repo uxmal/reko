@@ -435,6 +435,11 @@ namespace Reko.Scanning
             return vs.ZeroExtend(slice.DataType);
         }
 
+        public ValueSet VisitStringConstant(StringConstant str, BitRange bitRange)
+        {
+            return new ConcreteValueSet(str.DataType, str);
+        }
+
         public ValueSet VisitTestCondition(TestCondition tc, BitRange bitRange)
         {
             throw new NotImplementedException();

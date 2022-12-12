@@ -163,7 +163,8 @@ namespace Reko.Environments.MacOS.Classic
 
         public Constant VisitStringLiteral(StringLiteral str)
         {
-            return Constant.String(str.String, Core.Types.StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte));
+            throw new NotSupportedException();
+            //return Constant.String(str.String, Core.Types.StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte));
         }
 
         public Constant VisitStringType(Core.Hll.Pascal.StringType strType)

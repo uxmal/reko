@@ -322,14 +322,19 @@ namespace Reko.Typing
 			handler.DataTypeTrait(pc, program.Platform.PointerType);
 		}
 
-		public void VisitSlice(Slice slice)
+        public void VisitScopeResolution(ScopeResolution scope)
+        {
+        }
+
+        public void VisitSlice(Slice slice)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void VisitScopeResolution(ScopeResolution scope)
-		{
-		}
+        public void VisitStringConstant(StringConstant str)
+        {
+            throw new NotImplementedException();
+        }
 
 		public void VisitTestCondition(TestCondition test)
 		{

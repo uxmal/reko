@@ -310,6 +310,11 @@ namespace Reko.Scanning
                 slice.Offset);
         }
 
+        public Expression VisitStringConstant(StringConstant str)
+        {
+            return str.CloneExpression();
+        }
+
         public Expression VisitTestCondition(TestCondition tc)
         {
             return new TestCondition(

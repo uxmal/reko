@@ -35,7 +35,7 @@ namespace Reko.Core.Expressions
     /// Models a constant value.
     /// </summary>
 	public abstract class Constant : Expression // , IFormattable
-	{
+    {
         protected Constant(DataType t)
             : base(t)
         {
@@ -60,14 +60,14 @@ namespace Reko.Core.Expressions
             case 5:
             case 6:
             case 7:
-                value &= (long)Bits.Mask(0, bitSize);
+                value &= (long) Bits.Mask(0, bitSize);
                 goto case 8;
             case 8:
                 switch (dt.Domain)
                 {
                 case Domain.Boolean: return new ConstantBool(dt, value != 0);
                 case Domain.SignedInt: return new ConstantSByte(dt, (sbyte) value);
-                case Domain.Character: return new ConstantChar(dt,(char) (byte) value);
+                case Domain.Character: return new ConstantChar(dt, (char) (byte) value);
                 default: return new ConstantByte(dt, (byte) value);
                 }
             case 9:
@@ -77,7 +77,7 @@ namespace Reko.Core.Expressions
             case 13:
             case 14:
             case 15:
-                value &= (long)Bits.Mask(0, bitSize);
+                value &= (long) Bits.Mask(0, bitSize);
                 goto case 16;
             case 16:
                 switch (dt.Domain)
@@ -101,7 +101,7 @@ namespace Reko.Core.Expressions
             case 29:
             case 30:
             case 31:
-                value &= (long)Bits.Mask(0, bitSize);
+                value &= (long) Bits.Mask(0, bitSize);
                 goto case 32;
             case 32:
                 switch (dt.Domain)
@@ -114,7 +114,7 @@ namespace Reko.Core.Expressions
             case 40:
             case 48:
             case 56:
-                value &= (long)Bits.Mask(0, bitSize);
+                value &= (long) Bits.Mask(0, bitSize);
                 goto case 64;
             case 64:
                 switch (dt.Domain)
@@ -127,7 +127,7 @@ namespace Reko.Core.Expressions
             case 128:
                 switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new BigConstant(dt, (long)value);
+                case Domain.SignedInt: return new BigConstant(dt, (long) value);
                 default: return BigConstant.CreateUnsigned(dt, value);
                 }
             case 136:
@@ -137,8 +137,8 @@ namespace Reko.Core.Expressions
             case 256:
                 switch (dt.Domain)
                 {
-                case Domain.SignedInt: return new BigConstant(dt, (long)value);
-                default: return BigConstant.CreateUnsigned(dt, (ulong)value);
+                case Domain.SignedInt: return new BigConstant(dt, (long) value);
+                default: return BigConstant.CreateUnsigned(dt, (ulong) value);
                 }
             default:
                 //$TODO: if we encounter less common bit sizes, do them in a cascading if statement.
@@ -185,9 +185,9 @@ namespace Reko.Core.Expressions
         }
 
         public override void Accept(IExpressionVisitor v)
-		{
-			v.VisitConstant(this);
-		}
+        {
+            v.VisitConstant(this);
+        }
 
         public static Constant Byte(byte c)
         {
@@ -204,7 +204,7 @@ namespace Reko.Core.Expressions
         /// <param name="bits"></param>
         /// <returns></returns>
 		public static Constant RealFromBitpattern(PrimitiveType dt, Constant bits)
-		{
+        {
             if (dt == PrimitiveType.Real80)
             {
                 var rawBits = bits.ToBigInteger();
@@ -212,54 +212,54 @@ namespace Reko.Core.Expressions
                 var mantissa = rawBits & ((BigInteger.One << 64) - BigInteger.One);
                 return ConstantReal.Real80(new Float80((ushort) exponent, (ulong) mantissa));
             }
-			if (dt == PrimitiveType.Real32)
-				return FloatFromBitpattern(bits.ToInt64());
-			else if (dt == PrimitiveType.Real64)
-				return DoubleFromBitpattern(bits.ToInt64());
-			else
-				throw new ArgumentException(string.Format("Data type {0} is not a floating point type.", dt));
-		}
+            if (dt == PrimitiveType.Real32)
+                return FloatFromBitpattern(bits.ToInt64());
+            else if (dt == PrimitiveType.Real64)
+                return DoubleFromBitpattern(bits.ToInt64());
+            else
+                throw new ArgumentException(string.Format("Data type {0} is not a floating point type.", dt));
+        }
 
-		public static Constant FloatFromBitpattern(long bits)
-		{
-            return ConstantReal32.CreateFromBits(PrimitiveType.Real32, (int)bits);
-		}
+        public static Constant FloatFromBitpattern(long bits)
+        {
+            return ConstantReal32.CreateFromBits(PrimitiveType.Real32, (int) bits);
+        }
 
         public static Constant DoubleFromBitpattern(long bits)
-		{
+        {
             return Constant.Real64(BitConverter.Int64BitsToDouble(bits));
-		}
+        }
 
-		public static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)
-		{
-			if (exponent == 0)
-			{
-				// denormalised number.
-			}
-			else
-			{
-				mantissa |= 1L << mantissaSize; // implicit 1 for normal 
-			}
+        public static double MakeReal(int exponent, int expBias, long mantissa, int mantissaSize)
+        {
+            if (exponent == 0)
+            {
+                // denormalised number.
+            }
+            else
+            {
+                mantissa |= 1L << mantissaSize; // implicit 1 for normal 
+            }
 
-			exponent -= (expBias + mantissaSize);
+            exponent -= (expBias + mantissaSize);
 
-			double m;
-			if (exponent < 0)
-			{
-				m = 0.5;
-				exponent = -exponent;
-			}
-			else
-			{
-				m = 2.0;
-			}
-			return mantissa * IntPow(m, exponent);
-		}
+            double m;
+            if (exponent < 0)
+            {
+                m = 0.5;
+                exponent = -exponent;
+            }
+            else
+            {
+                m = 2.0;
+            }
+            return mantissa * IntPow(m, exponent);
+        }
 
-		public static Constant False()
-		{
-			return new ConstantBool(PrimitiveType.Bool, false);
-		}
+        public static Constant False()
+        {
+            return new ConstantBool(PrimitiveType.Bool, false);
+        }
 
         public override IEnumerable<Expression> Children
         {
@@ -289,38 +289,38 @@ namespace Reko.Core.Expressions
 
         //$REVIEW: move to Reko.Core.Lib?
         public static double IntPow(double b, int e)
-		{
-			double acc = 1.0;
+        {
+            double acc = 1.0;
             bool negativeExp = e < 0;
             if (negativeExp)
                 e = -e;
-			while (e != 0)
-			{
-				if ((e & 1) == 1)
-				{
-					acc *= b;
-					--e;
-				}
-				else
-				{
-					b *= b;
-					e >>= 1;
-				}
-			}
-			return negativeExp ? 1.0 / acc : acc;
-		}
+            while (e != 0)
+            {
+                if ((e & 1) == 1)
+                {
+                    acc *= b;
+                    --e;
+                }
+                else
+                {
+                    b *= b;
+                    e >>= 1;
+                }
+            }
+            return negativeExp ? 1.0 / acc : acc;
+        }
 
         public override bool IsZero => IsIntegerZero;
 
-		public virtual bool IsIntegerZero
-		{
-			get 
-			{
+        public virtual bool IsIntegerZero
+        {
+            get
+            {
                 if (DataType.Domain == Domain.Real)
                     return false;
                 return ToInt64() == 0;
-			}
-		}
+            }
+        }
 
         public virtual bool IsIntegerOne
         {
@@ -337,13 +337,13 @@ namespace Reko.Core.Expressions
                 var mask = Bits.Mask(0, DataType.BitSize);
                 return (this.ToUInt64() & mask) == mask;
             }
-        } 
+        }
 
-		public virtual bool IsNegative
-		{
-			get 
-			{
-				PrimitiveType p = (PrimitiveType) DataType;
+        public virtual bool IsNegative
+        {
+            get
+            {
+                PrimitiveType p = (PrimitiveType) DataType;
                 if (p.Domain == Domain.SignedInt)
                     return Convert.ToInt64(GetValue()) < 0;
                 else if (p == PrimitiveType.Real32)
@@ -353,9 +353,9 @@ namespace Reko.Core.Expressions
                 else if (p.Domain == Domain.Pointer)
                     return false;
                 else
-					throw new InvalidOperationException(string.Format("Type {0} can't be negative", DataType));
-			}
-		}
+                    throw new InvalidOperationException(string.Format("Type {0} can't be negative", DataType));
+            }
+        }
 
         public bool IsReal => DataType.Domain == Domain.Real;
 
@@ -366,7 +366,7 @@ namespace Reko.Core.Expressions
         /// the bits of this Constant.
         /// </summary>
         public abstract Constant Complement();
- 
+
         public Constant DepositBits(Constant newBits, int bitOffset)
         {
             if (bitOffset < 0 || newBits.DataType.BitSize + bitOffset > this.DataType.BitSize)
@@ -377,28 +377,28 @@ namespace Reko.Core.Expressions
         }
 
         public virtual Constant Negate()
-		{
-			PrimitiveType p = (PrimitiveType) DataType;
+        {
+            PrimitiveType p = (PrimitiveType) DataType;
             var c = GetValue();
-			if ((p.Domain & (Domain.SignedInt|Domain.UnsignedInt)) != 0)
-			{
+            if ((p.Domain & (Domain.SignedInt | Domain.UnsignedInt)) != 0)
+            {
                 p = PrimitiveType.Create(Domain.SignedInt, p.BitSize);
-				if (p.BitSize <= 8)				
-					return Constant.Create(p, (sbyte) -Convert.ToInt32(c));
-				if (p.BitSize <= 16)
+                if (p.BitSize <= 8)
+                    return Constant.Create(p, (sbyte) -Convert.ToInt32(c));
+                if (p.BitSize <= 16)
                     return Constant.Create(p, -Convert.ToInt32(c) & 0xFFFF);
-				if (p.BitSize <= 32)
+                if (p.BitSize <= 32)
                     return Constant.Create(p, -Convert.ToInt64(c) & -1);
                 return Constant.Create(p, -Convert.ToInt64(c));
-			}
-			else 
-				throw new InvalidOperationException($"Type {p} doesn't support negation.");
-		}
+            }
+            else
+                throw new InvalidOperationException($"Type {p} doesn't support negation.");
+        }
 
-		public static Constant Pi()
-		{
+        public static Constant Pi()
+        {
             return Constant.Real64(Math.PI);
-		}
+        }
 
         public static Constant Lg10()
         {
@@ -452,25 +452,25 @@ namespace Reko.Core.Expressions
         public abstract BigInteger ToBigInteger();
 
 
-		public double ToDouble()
-		{
-			return Convert.ToDouble(GetValue());
-		}
+        public double ToDouble()
+        {
+            return Convert.ToDouble(GetValue());
+        }
 
-		public virtual float ToFloat()
-		{
-			return Convert.ToSingle(GetValue());
-		}
+        public virtual float ToFloat()
+        {
+            return Convert.ToSingle(GetValue());
+        }
 
         public virtual double ToReal64()
         {
             return Convert.ToDouble(GetValue());
         }
 
-		public static Constant True()
-		{
-			return new ConstantBool(PrimitiveType.Bool, true);
-		}
+        public static Constant True()
+        {
+            return new ConstantBool(PrimitiveType.Bool, true);
+        }
 
         public static Constant Bool(bool f)
         {
@@ -514,7 +514,7 @@ namespace Reko.Core.Expressions
         {
             return new ConstantReal32(PrimitiveType.Real32, f);
         }
-   
+
         public static Constant Real64(double d)
         {
             return new ConstantReal64(PrimitiveType.Real64, d);
@@ -546,10 +546,10 @@ namespace Reko.Core.Expressions
             return new ConstantUInt16(PrimitiveType.Word16, n);
         }
 
-		public static Constant Word32(int n)
-		{
-			return new ConstantUInt32(PrimitiveType.Word32, (uint) n); 
-		}
+        public static Constant Word32(int n)
+        {
+            return new ConstantUInt32(PrimitiveType.Word32, (uint) n);
+        }
 
         public static Constant Word32(uint n)
         {
@@ -581,12 +581,12 @@ namespace Reko.Core.Expressions
             return Constant.Create(dataType, 0);
         }
 
-        public static Constant String(string str, StringType strType)
+        public static StringConstant String(string str, StringType strType)
         {
             return new StringConstant(strType, str);
         }
 
-		//public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
+        //public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
         //public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
 
         //public abstract string ToString(string format, IFormatProvider formatProvider)
@@ -636,12 +636,12 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return value ? (byte)1 : (byte)0;
+            return value ? (byte) 1 : (byte) 0;
         }
 
         public override ushort ToUInt16()
         {
-            return value ? (ushort)1u : (ushort)0u;
+            return value ? (ushort) 1u : (ushort) 0u;
         }
 
         public override uint ToUInt32()
@@ -656,7 +656,7 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return value ? (short)1 : (short)0;
+            return value ? (short) 1 : (short) 0;
         }
 
         public override int ToInt32()
@@ -689,7 +689,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Complement()
         {
-            return new ConstantSByte(DataType, (sbyte)~value);
+            return new ConstantSByte(DataType, (sbyte) ~value);
         }
 
         public override object GetValue()
@@ -704,22 +704,22 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
         {
-            return (ushort)(short)value;
+            return (ushort) (short) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)(int)value;
+            return (uint) (int) value;
         }
 
         public override ulong ToUInt64()
         {
-            return (ulong)(long)value;
+            return (ulong) (long) value;
         }
 
         public override short ToInt16()
@@ -757,7 +757,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Complement()
         {
-            return new ConstantChar(DataType, (char)~value);
+            return new ConstantChar(DataType, (char) ~value);
         }
 
         public override object GetValue()
@@ -772,37 +772,37 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
         {
-            return (ushort)value;
+            return (ushort) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return (uint) value;
         }
 
         public override ulong ToUInt64()
         {
-            return (ulong)value;
+            return (ulong) value;
         }
 
         public override short ToInt16()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override int ToInt32()
         {
-            return (int)value;
+            return (int) value;
         }
 
         public override long ToInt64()
         {
-            return (long)value;
+            return (long) value;
         }
 
         public override BigInteger ToBigInteger() => value;
@@ -826,7 +826,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Complement()
         {
-            return new ConstantByte(DataType, (byte)~value);
+            return new ConstantByte(DataType, (byte) ~value);
         }
 
 
@@ -847,12 +847,12 @@ namespace Reko.Core.Expressions
 
         public override ushort ToUInt16()
         {
-            return (ushort)value;
+            return (ushort) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return (uint) value;
         }
 
         public override ulong ToUInt64()
@@ -862,17 +862,17 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return (sbyte)value;
+            return (sbyte) value;
         }
 
         public override int ToInt32()
         {
-            return (sbyte)value;
+            return (sbyte) value;
         }
 
         public override long ToInt64()
         {
-            return (sbyte)value;
+            return (sbyte) value;
         }
 
         public override BigInteger ToBigInteger() => value;
@@ -896,7 +896,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Complement()
         {
-            return new ConstantInt16(DataType, (short)~value);
+            return new ConstantInt16(DataType, (short) ~value);
         }
 
         public override object GetValue()
@@ -911,17 +911,17 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
         {
-            return (ushort)value;
+            return (ushort) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return (uint) value;
         }
 
         public override ulong ToUInt64()
@@ -965,7 +965,7 @@ namespace Reko.Core.Expressions
 
         public override Constant Complement()
         {
-            return new ConstantUInt16(DataType, (ushort)~value);
+            return new ConstantUInt16(DataType, (ushort) ~value);
         }
 
         public override object GetValue()
@@ -980,7 +980,7 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
@@ -1000,17 +1000,17 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override int ToInt32()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override long ToInt64()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override BigInteger ToBigInteger() => value;
@@ -1049,17 +1049,17 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
         {
-            return (ushort)value;
+            return (ushort) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return (uint) value;
         }
 
         public override ulong ToUInt64()
@@ -1069,7 +1069,7 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override int ToInt32()
@@ -1119,7 +1119,7 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
@@ -1139,17 +1139,17 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override int ToInt32()
         {
-            return (int)value;
+            return (int) value;
         }
 
         public override long ToInt64()
         {
-            return (int)value;
+            return (int) value;
         }
 
         public override BigInteger ToBigInteger() => value;
@@ -1190,17 +1190,17 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
         {
-            return (ushort)value;
+            return (ushort) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return (uint) value;
         }
 
         public override ulong ToUInt64()
@@ -1210,12 +1210,12 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override int ToInt32()
         {
-            return (int)value;
+            return (int) value;
         }
 
         public override long ToInt64()
@@ -1264,17 +1264,17 @@ namespace Reko.Core.Expressions
 
         public override byte ToByte()
         {
-            return (byte)value;
+            return (byte) value;
         }
 
         public override ushort ToUInt16()
         {
-            return (ushort)value;
+            return (ushort) value;
         }
 
         public override uint ToUInt32()
         {
-            return (uint)value;
+            return (uint) value;
         }
 
         public override ulong ToUInt64()
@@ -1284,12 +1284,12 @@ namespace Reko.Core.Expressions
 
         public override short ToInt16()
         {
-            return (short)value;
+            return (short) value;
         }
 
         public override int ToInt32()
         {
-            return (int)value;
+            return (int) value;
         }
 
         public override long ToInt64()
@@ -1313,7 +1313,7 @@ namespace Reko.Core.Expressions
             switch (dt.BitSize)
             {
             case 16: return new ConstantReal16(pt, value);
-            case 32: return new ConstantReal32(pt, (float)value);
+            case 32: return new ConstantReal32(pt, (float) value);
             case 48: return new ConstantReal64(pt, value);
             case 64: return new ConstantReal64(pt, value);
             }
@@ -1453,7 +1453,7 @@ namespace Reko.Core.Expressions
 
         protected override Constant DoSlice(DataType dt, int offset)
         {
-            var bits = (uint)BitConverter.SingleToInt32Bits(this.value);
+            var bits = (uint) BitConverter.SingleToInt32Bits(this.value);
             var mask = Bits.Mask(0, dt.BitSize);
             return Constant.Create(dt, bits >> offset);
         }
@@ -1680,93 +1680,5 @@ namespace Reko.Core.Expressions
 
         public override BigInteger ToBigInteger() => throw new InvalidCastException();
 
-    }
-
-    public class StringConstant : Constant
-    {
-        private readonly string str;
-
-        public StringConstant(DataType type, string str)
-            : base(type)
-        {
-            this.str = str;
-        }
-
-        public int Length => str.Length;
-
-        public override Expression CloneExpression()
-        {
-            return new StringConstant(DataType, str);
-        }
-
-        public override Constant Complement()
-        {
-            throw new NotSupportedException("Cannot complement a string value.");
-        }
-
-        protected override Constant DoSlice(DataType dt, int offset)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override object GetValue()
-        {
-            return str;
-        }
-
-        public override int GetHashOfValue()
-        {
-            return str.GetHashCode();
-        }
-
-        public override bool IsIntegerOne => false;
-
-        public override Constant Negate()
-        {
-            throw new NotSupportedException("Cannot negate a string value.");
-        }
-
-        public override byte ToByte()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override ushort ToUInt16()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override uint ToUInt32()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override ulong ToUInt64()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override short ToInt16()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override int ToInt32()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override long ToInt64()
-        {
-            throw new InvalidCastException();
-        }
-
-        public override BigInteger ToBigInteger() => throw new InvalidCastException();
-
-
-        public override string ToString()
-        {
-            return str;
-        }
     }
 }

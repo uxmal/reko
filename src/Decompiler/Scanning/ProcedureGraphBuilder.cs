@@ -480,6 +480,12 @@ namespace Reko.Scanning
             return new Slice(slice.DataType, exp, slice.Offset);
         }
 
+        Expression ExpressionVisitor<Expression, Procedure>.VisitStringConstant(StringConstant s, Procedure ctx)
+        {
+            return s;
+        }
+
+
         Expression ExpressionVisitor<Expression, Procedure>.VisitTestCondition(TestCondition tc, Procedure ctx)
         {
             var exp = tc.Expression.Accept(this, ctx);

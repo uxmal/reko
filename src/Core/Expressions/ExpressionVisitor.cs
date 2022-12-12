@@ -50,9 +50,9 @@ namespace Reko.Core.Expressions
 		void VisitProcedureConstant(ProcedureConstant pc);
 		void VisitScopeResolution(ScopeResolution scopeResolution);
 		void VisitSegmentedAccess(SegmentedAccess access);
-
         void VisitSlice(Slice slice);
-		void VisitTestCondition(TestCondition tc);
+        void VisitStringConstant(StringConstant str);
+        void VisitTestCondition(TestCondition tc);
         void VisitConversion(Conversion conversion);
         void VisitUnaryExpression(UnaryExpression unary);
     }
@@ -81,6 +81,7 @@ namespace Reko.Core.Expressions
         T VisitScopeResolution(ScopeResolution scopeResolution);
         T VisitSegmentedAccess(SegmentedAccess access);
         T VisitSlice(Slice slice);
+        T VisitStringConstant(StringConstant str);
         T VisitTestCondition(TestCondition tc);
         T VisitUnaryExpression(UnaryExpression unary);
     }
@@ -109,6 +110,7 @@ namespace Reko.Core.Expressions
         T VisitScopeResolution(ScopeResolution scopeResolution, C ctx);
         T VisitSegmentedAccess(SegmentedAccess access, C ctx);
         T VisitSlice(Slice slice, C ctx);
+        T VisitStringConstant(StringConstant str, C ctx);
         T VisitTestCondition(TestCondition tc, C ctx);
         T VisitUnaryExpression(UnaryExpression unary, C ctx);
     }
@@ -245,6 +247,10 @@ namespace Reko.Core.Expressions
 			slice.Expression.Accept(this);
 		}
 
+        public void VisitStringConstant(StringConstant str)
+        {
+        }
+
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			unary.Expression.Accept(this);
@@ -365,6 +371,11 @@ namespace Reko.Core.Expressions
         }
 
         public virtual T VisitSlice(Slice slice)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T VisitStringConstant(StringConstant str)
         {
             throw new NotImplementedException();
         }

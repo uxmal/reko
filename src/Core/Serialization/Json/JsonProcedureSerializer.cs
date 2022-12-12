@@ -375,6 +375,11 @@ namespace Reko.Core.Serialization.Json
             throw new NotImplementedException();
         }
 
+        public void VisitStringConstant(StringConstant str)
+        {
+            throw new NotImplementedException();
+        }
+
         public void VisitStore(Store store)
         {
             w.Write('[');

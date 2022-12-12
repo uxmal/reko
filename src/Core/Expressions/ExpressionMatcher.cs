@@ -271,6 +271,19 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitStringConstant(StringConstant s, ExpressionMatch m)
+        {
+            if (m.Pattern is WildConstant anyC)
+            {
+                if (!string.IsNullOrEmpty(anyC.Label))
+                    m.Capture(anyC.Label, s);
+                return true;
+            }
+            if (m.Pattern is not StringConstant sP)
+                return false;
+            return (s.ToString() == sP.ToString());
+        }
+
         bool ExpressionVisitor<bool, ExpressionMatch>.VisitTestCondition(TestCondition tc, ExpressionMatch m)
         {
             if (m.Pattern is not TestCondition tp)

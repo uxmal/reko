@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Numerics;
 
 namespace Reko.Core.Output
@@ -266,16 +267,6 @@ namespace Reko.Core.Output
             if (!c.IsValid && (c is InvalidConstant || pt is null || pt.Domain != Domain.Real))
             {
                 InnerFormatter.Write("<invalid>");
-                return;
-            }
-            if (c is StringConstant s)
-            {
-                InnerFormatter.Write('"');
-                foreach (var ch in (string) s.GetValue())
-                {
-                    WriteEscapedCharacter(ch);
-                }
-                InnerFormatter.Write('"');
                 return;
             }
 
@@ -736,9 +727,20 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(" = ");
 			WriteExpression(store.Src);
 			InnerFormatter.Terminate();
-		}
+        }
 
-		public void VisitSwitchInstruction(SwitchInstruction si)
+        public void VisitStringConstant(StringConstant s)
+        {
+            InnerFormatter.Write('"');
+            foreach (var ch in s.ToString())
+            {
+                WriteEscapedCharacter(ch);
+            }
+            InnerFormatter.Write('"');
+            return;
+        }
+
+        public void VisitSwitchInstruction(SwitchInstruction si)
 		{
 			InnerFormatter.Indent();
 			InnerFormatter.WriteKeyword("switch");

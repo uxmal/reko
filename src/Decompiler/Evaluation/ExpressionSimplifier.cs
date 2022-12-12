@@ -1674,6 +1674,11 @@ namespace Reko.Evaluation
             return (slice, changed);
         }
 
+        public virtual (Expression, bool) VisitStringConstant(StringConstant str)
+        {
+            return (str, false);
+        }
+
         private Slice? SlicedSlice(Slice outerSlice)
         {
             if (outerSlice.Expression is Slice innerSlice &&

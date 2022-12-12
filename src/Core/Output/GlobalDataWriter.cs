@@ -377,7 +377,7 @@ namespace Reko.Core.Output
             var offset = rdr.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
             //$TODO: appropriate prefix for UTF16-encoded strings.
-            codeFormatter.VisitConstant(s);
+            codeFormatter.VisitStringConstant(s);
             if (str.Length > 0)
             {
                 rdr.Offset = offset + str.Length * str.ElementType.Size;
