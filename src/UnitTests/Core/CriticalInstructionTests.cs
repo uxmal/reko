@@ -104,7 +104,11 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TestCallInstruction()
 		{
-			Assert.IsTrue(CriticalInstruction.IsCritical(new CallInstruction(new ProcedureConstant(PrimitiveType.Ptr32, null), new CallSite(0, 0))));
+            var someFn = new ExternalProcedure("someFn", new FunctionType());
+			Assert.IsTrue(CriticalInstruction.IsCritical(
+                new CallInstruction(
+                    new ProcedureConstant(PrimitiveType.Ptr32, someFn), 
+                    new CallSite(0, 0))));
 		}
 
 		[Test]

@@ -333,7 +333,7 @@ namespace Reko.Core.Types
             foreach(var dbg in tvSources.Values)
             {
                 if (dbg.e is ProcedureConstant pc)
-                    pc.Procedure.Signature.TypeVariable = null;
+                    pc.Signature.TypeVariable = null;
             }
             mapExprToTypevar.Clear();
             TypeVariables.Clear();

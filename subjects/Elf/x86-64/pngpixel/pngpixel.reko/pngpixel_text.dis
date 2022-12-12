@@ -137,7 +137,7 @@ l0000000000400EE7:
 	return SLICE(rax_100, word32, 0)
 component_exit:
 l0000000000400EC1:
-	fprintf(Mem70[0x0000000000602100<p64>:word64], 0x401808<u64>, ecx)
+	fprintf(Mem70[0x0000000000602100<p64>:word64], "pngpixel: invalid bit depth %u\n", ecx)
 	exit(1<i32>)
 
 
@@ -161,9 +161,9 @@ l0000000000400EE9:
 l0000000000400F4C:
 	switch (eax_67) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
 l000000000040122A:
-	printf(0x401926<u64>, component(eax_49, 0<32>, ecx, rdx, 4<32>), component(eax_49, 1<32>, ecx, rdx, 4<32>), component(eax_49, 2<32>, ecx, rdx, 4<32>), component(eax_49, 3<32>, ecx, rdx, 4<32>))
+	printf("RGBA %u %u %u %u\n", component(eax_49, 0<32>, ecx, rdx, 4<32>), component(eax_49, 1<32>, ecx, rdx, 4<32>), component(eax_49, 2<32>, ecx, rdx, 4<32>), component(eax_49, 3<32>, ecx, rdx, 4<32>))
 l00000000004011D2:
-	printf(0x401914<u64>, component(eax_49, 0<32>, ecx, rdx, 2<32>), component(eax_49, 1<32>, ecx, rdx, 2<32>))
+	printf("GRAY+ALPHA %u %u\n", component(eax_49, 0<32>, ecx, rdx, 2<32>), component(eax_49, 1<32>, ecx, rdx, 2<32>))
 l0000000000400F8D:
 	word32 eax_275 = component(eax_49, 0<32>, ecx, rdx, 1<32>)
 	png_get_PLTE(fp - 80<i64>, rdi, fp - 64<i64>, rsi, 0<32>, eax_275, 0<64>)
@@ -173,7 +173,7 @@ l0000000000400FE1:
 l0000000000400FEC:
 	branch true l0000000000401137
 l0000000000401137:
-	printf(0x4018EA<u64>, eax_275)
+	printf("INDEXED %u = invalid index\n", eax_275)
 l0000000000400FF9:
 	branch (SLICE(png_get_tRNS(0<u64>, fp - 76<i64>, rdi, fp - 56<i64>, rsi, 0<32>, 0<64>), word32, 0) & 0x10<32>) == 0<32> l00000000004010D1
 l0000000000401031:
@@ -181,7 +181,7 @@ l0000000000401031:
 l000000000040103C:
 	branch true l00000000004010D1
 l00000000004010D1:
-	printf(0x4018D3<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32))
+	printf("INDEXED %u = %d %d %d\n", eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32))
 l0000000000401049:
 	word32 esi_463
 	branch eax_275 >=u 0<32> l0000000000401063
@@ -190,14 +190,14 @@ l0000000000401063:
 l0000000000401051:
 	esi_463 = CONVERT(Mem321[CONVERT(eax_275, word32, uint64):byte], byte, word32) (alias)
 l0000000000401068:
-	printf(0x4018B9<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32), esi_463)
+	printf("INDEXED %u = %d %d %d %d\n", eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<i64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<i64>:byte], byte, int32), esi_463)
 l0000000000401150:
 l0000000000401155:
-	printf(0x401906<u64>, component(eax_49, 0<32>, ecx, rdx, 3<32>), component(eax_49, 1<32>, ecx, rdx, 3<32>), component(eax_49, 2<32>, ecx, rdx, 3<32>))
+	printf("RGB %u %u %u\n", component(eax_49, 0<32>, ecx, rdx, 3<32>), component(eax_49, 1<32>, ecx, rdx, 3<32>), component(eax_49, 2<32>, ecx, rdx, 3<32>))
 l00000000004012C9:
 	png_error(rdi, 0x401938<u64>)
 l0000000000400F58:
-	printf(0x4018B0<u64>, component(eax_49, 0<32>, ecx, rdx, 1<32>))
+	printf("GRAY %u\n", component(eax_49, 0<32>, ecx, rdx, 1<32>))
 l00000000004012DA:
 	branch (rax_27 ^ Mem624[fs:0x28<32>:word64]) == 0<64> l00000000004012EE
 l00000000004012EE:
@@ -233,7 +233,7 @@ l0000000000401337:
 	word64 rax_52 = fopen(Mem45[rsi + 0x18<64>:word64], 0x401990<u64>)
 	branch rax_52 == 0<64> l0000000000401716
 l0000000000401716:
-	fprintf(Mem54[0x0000000000602100<p64>:word64], 0x401A48<u64>, Mem54[rsi + 0x18<64>:word64])
+	fprintf(Mem54[0x0000000000602100<p64>:word64], "pngpixel: %s: could not open file\n", Mem54[rsi + 0x18<64>:word64])
 l000000000040139D:
 	word64 rax_78 = png_create_read_struct(0<u64>, 0x401993<u64>, 0<u64>, 0<u64>)
 	branch rax_78 == 0<64> l00000000004016F6

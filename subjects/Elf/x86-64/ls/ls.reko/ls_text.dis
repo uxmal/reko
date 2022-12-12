@@ -8895,7 +8895,7 @@ l0000000000411C93:
 	branch eax_179 != 0xFFFFFFFF<32> l0000000000411AB0
 l0000000000411ADF:
 	ungetc(edi_161, rax_138)
-	branch fscanf(rax_138, 0x417012<u64>, &bLocB8, &bLoc78) <= 1<32> l0000000000411C9C
+	branch fscanf(rax_138, "%50s %50s", &bLocB8, &bLoc78) <= 1<32> l0000000000411C9C
 l0000000000411B07:
 	word64 rdx_209 = &bLocB8
 l0000000000411B0A:

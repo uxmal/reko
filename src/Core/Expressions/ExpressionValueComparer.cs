@@ -386,9 +386,20 @@ namespace Reko.Core.Expressions
                 {
                     Slice s = (Slice) obj;
                     return GetHashCodeImpl(s.Expression) ^ s.Offset * 47 ^ s.DataType.GetHashCode() * 23;
-                }); 
+                });
 
-
+            Add(typeof(StringConstant),
+                (sa, sb) =>
+                {
+                    var a = (StringConstant) sa;
+                    var b = (StringConstant) sb;
+                    return a.DataType == b.DataType;
+                },
+                obj =>
+                {
+                    var s = (StringConstant) obj;
+                    return s.ToString().GetHashCode();
+                });
             Add(
                 typeof(TestCondition),
                 delegate(Expression x, Expression y)
@@ -462,8 +473,6 @@ namespace Reko.Core.Expressions
 
         private static int GetHashCodeImpl(Expression obj)
         {
-            if (obj == null)
-                throw new ArgumentNullException();
             var tc = typeof(Constant);
             Type t = obj.GetType();
             if (tc.IsAssignableFrom(t))

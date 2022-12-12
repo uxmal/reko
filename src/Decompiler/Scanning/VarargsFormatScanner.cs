@@ -41,8 +41,11 @@ namespace Reko.Scanning
     {
         private readonly IReadOnlyProgram program;
         private readonly IProcessorArchitecture arch;
+        private readonly EvaluationContext ctx;
         private readonly ExpressionSimplifier eval;
         private readonly IServiceProvider services;
+        private Address? addFormatString;
+        private StringConstant? formatString;
 
         public VarargsFormatScanner(
             IReadOnlyProgram program,
@@ -53,6 +56,7 @@ namespace Reko.Scanning
             this.program = program;
             this.arch = arch;
             this.services = services;
+            this.ctx = ctx;
             this.eval = new ExpressionSimplifier(
                 program.SegmentMap,
                 ctx,
@@ -61,13 +65,39 @@ namespace Reko.Scanning
 
         public Instruction BuildInstruction(
             Expression callee,
+            FunctionType originalSig,
             FunctionType expandedSig,
             ProcedureCharacteristics? chr,
             ApplicationBuilder ab)
         {
             if (callee is ProcedureConstant pc)
-                pc.Procedure.Signature = expandedSig;
-            return ab.CreateInstruction(expandedSig, chr);
+            {
+                pc.Signature = expandedSig;
+            }
+            int iFormatArg = originalSig.Parameters!.Length - 1;
+            var instr = ab.CreateInstruction(expandedSig, chr);
+            ReplaceFormatArgumentWithFormatString(instr, iFormatArg);
+            return instr;
+        }
+
+        private void ReplaceFormatArgumentWithFormatString(
+            Instruction instr,
+            int iFormatArg)
+        {
+            Expression? eFnCall = instr switch
+            {
+                Assignment ass => ass.Src,
+                SideEffect side => side.Expression,
+                _ => null,
+            };
+            if (eFnCall is not Application fnCall)
+                return;
+            var formatArg = fnCall.Arguments[iFormatArg];
+            if (formatArg is Identifier idFormat)
+            {
+                this.ctx.RemoveIdentifierUse(idFormat);
+                fnCall.Arguments[iFormatArg] = this.formatString!;
+            }
         }
 
         public bool TryScan(
@@ -76,22 +106,29 @@ namespace Reko.Scanning
             FunctionType sig,
             ProcedureCharacteristics? chr,
             ApplicationBuilder ab,
-            [MaybeNullWhen(false)] out FunctionType expandedSig)
+            [MaybeNullWhen(false)] out VarargsResult result)
         {
             if (sig is null || !sig.IsVariadic ||
                 chr is null || !VarargsParserSet(chr))
             {
-                expandedSig = null;
+                result = null;
                 return false;
             }
-            var format = ReadVarargsFormat(addrInstr, callee, sig, ab);
-            if (format is null)
+            var addrFormatString = ReadVarargsFormat(addrInstr, callee, sig, ab);
+            if (addrFormatString is null)
             {
-                expandedSig = null;
+                result = null;
                 return false;
             }
-            var argTypes = ParseVarargsFormat(chr.VarargsParserClass!, addrInstr, chr, format);
-            expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
+            this.formatString = ReadCString(PrimitiveType.Char, addrFormatString);
+            if (formatString is null)
+            {
+                result = null;
+                return false;
+            }
+            var argTypes = ParseVarargsFormat(chr.VarargsParserClass!, addrInstr, chr);
+            var extendedSig = ReplaceVarargs(program.Platform, sig, argTypes);
+            result = new VarargsResult(extendedSig, addrFormatString, formatString);
             return true;
         }
 
@@ -101,7 +138,7 @@ namespace Reko.Scanning
             return e;
         }
 
-        private string? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig, ApplicationBuilder ab)
+        private Address? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig, ApplicationBuilder ab)
         {
             var formatIndex = sig.Parameters!.Length - 1;
             if (formatIndex < 0)
@@ -112,9 +149,7 @@ namespace Reko.Scanning
                 var stackAccess = ab.BindInStackArg(stackStorage, 0);
                 if (stackAccess is { } && GetValue(stackAccess) is Constant c && c.IsValid)
                 {
-                    var str = ReadCString(c);
-                    if (str is not null)
-                        return str;
+                    return program.Platform.MakeAddressFromConstant(c, false)!;
                 }
             }
             else
@@ -123,16 +158,11 @@ namespace Reko.Scanning
                 switch (GetValue(reg))
                 {
                 case Address addrFormat:
-                    var str = ReadCString(addrFormat);
-                    if (str != null)
-                        return str;
-                    break;
+                    return addrFormat;
                 case Constant c:
                     if (c.IsValid)
                     {
-                        str = ReadCString(c);
-                        if (str is not null)
-                            return str;
+                        return program.Platform.MakeAddressFromConstant(c, false)!;
                     }
                     break;
                 }
@@ -151,21 +181,20 @@ namespace Reko.Scanning
                 callee);
         }
 
-        private string? ReadCString(Constant cAddr)
-        {
-            var addr = program.Platform.MakeAddressFromConstant(cAddr, false)!;
-            return ReadCString(addr);
-        }
-
-        private string? ReadCString(Address addr)
+        private StringConstant? ReadCString(PrimitiveType charType, Address addr)
         {
             if (!program.SegmentMap.IsValidAddress(addr))
             {
                 return null;
             }
             var rdr = program.CreateImageReader(arch, addr);
-            var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
-            return c.ToString();
+            //$BUG: what about wsprintf? Be sure to use an appropriate 
+            // Unicode encoding
+            var c = rdr.ReadCString(charType, program.TextEncoding);
+            // Because the string is going to be used as a parameter to a function,
+            // we "decay" it to a pointer to a character.
+            c.DataType = new Pointer(charType, addr.DataType.BitSize);
+            return c;
         }
 
         private static bool VarargsParserSet(ProcedureCharacteristics chr)
@@ -176,8 +205,7 @@ namespace Reko.Scanning
         private IEnumerable<DataType> ParseVarargsFormat(
             string varargsParserTypename,
             Address addrInstr,
-            ProcedureCharacteristics chr,
-            string format)
+            ProcedureCharacteristics chr)
         {
             var svc = services.RequireService<IPluginLoaderService>();
             var type = svc.GetType(varargsParserTypename);
@@ -190,7 +218,7 @@ namespace Reko.Scanning
                 type,
                 program,
                 addrInstr,
-                format,
+                formatString!.ToString(),
                 services)!;
             varargsParser.Parse();
             return varargsParser.ArgumentTypes;

@@ -546,6 +546,15 @@ namespace Reko.Core
         /// <returns></returns>
         public ImageMapItem AddUserGlobalItem(IProcessorArchitecture arch, Address address, DataType dataType)
         {
+            ImageMapItem item = AddGlobalItem(arch, address, dataType);
+
+            this.User.Globals.Add(address, new UserGlobal(address, UserGlobal.GenerateDefaultName(address), dataType.Accept(new Serialization.DataTypeSerializer())));
+
+            return item;
+        }
+
+        public ImageMapItem AddGlobalItem(IProcessorArchitecture arch, Address address, DataType dataType)
+        {
             //$TODO: if user enters a segmented address, we need to 
             // place the item in the respective globals struct.
             var size = GetDataSize(arch, address, dataType);
@@ -558,9 +567,6 @@ namespace Reko.Core
                 this.ImageMap.AddItemWithSize(address, item);
             else
                 this.ImageMap.AddItem(address, item);
-
-            this.User.Globals.Add(address, new UserGlobal(address, UserGlobal.GenerateDefaultName(address), dataType.Accept(new Serialization.DataTypeSerializer())));
-
             return item;
         }
 
@@ -783,7 +789,7 @@ namespace Reko.Core
             BuildImageMap();
         }
 
-        private void AddGlobalField(Address address, DataType dt, string name)
+        public void AddGlobalField(Address address, DataType dt, string name)
         {
             int offset;
             StructureFieldCollection fields;

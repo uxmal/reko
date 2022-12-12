@@ -208,7 +208,6 @@ Eq_1: (struct "Globals"
 		(416E38 (arr (ptr64 code)) a416E38)
 		(416FE8 (str char) str416FE8)
 		(417002 (str char) str417002)
-		(417012 (str char) str417012)
 		(619FF8 (ptr64 code) __gmon_start___GOT)
 		(61A018 (ptr64 code) __ctype_toupper_loc_GOT)
 		(61A020 (ptr64 code) __uflow_GOT)
@@ -65476,7 +65475,7 @@ T_14755: (in ungetc(edi_161, rax_138) @ 0000000000411AE2 : int32)
 T_14756: (in fscanf @ 0000000000411B01 : ptr64)
   Class: Eq_14756
   DataType: (ptr64 Eq_14756)
-  OrigDataType: (ptr64 (fn T_14765 (T_14696, T_14762, T_14763, T_14764)))
+  OrigDataType: (ptr64 (fn T_14765 (T_14696, T_14760, T_14761, T_14763)))
 T_14757: (in signature of fscanf : void)
   Class: Eq_14756
   DataType: (ptr64 Eq_14756)
@@ -65489,26 +65488,26 @@ T_14759: (in format @ 0000000000411B01 : (ptr64 char))
   Class: Eq_14759
   DataType: (ptr64 char)
   OrigDataType: 
-T_14760: (in  @ 0000000000411B01 : (ptr64 char))
-  Class: Eq_14760
-  DataType: (ptr64 char)
-  OrigDataType: 
-T_14761: (in  @ 0000000000411B01 : (ptr64 char))
-  Class: Eq_14761
-  DataType: (ptr64 char)
-  OrigDataType: 
-T_14762: (in 0x417012<u64> @ 0000000000411B01 : uint64)
+T_14760: (in %50s %50s @ 0000000000411B01 : (ptr64 char))
   Class: Eq_14759
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_14763: (in &bLocB8 @ 0000000000411B01 : (ptr64 char))
-  Class: Eq_14760
-  DataType: (ptr64 char)
-  OrigDataType: (ptr64 char)
-T_14764: (in &bLoc78 @ 0000000000411B01 : (ptr64 char))
+T_14761: (in &bLocB8 @ 0000000000411B01 : (ptr64 char))
   Class: Eq_14761
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
+T_14762: (in  @ 0000000000411B01 : (ptr64 char))
+  Class: Eq_14761
+  DataType: (ptr64 char)
+  OrigDataType: 
+T_14763: (in &bLoc78 @ 0000000000411B01 : (ptr64 char))
+  Class: Eq_14763
+  DataType: (ptr64 char)
+  OrigDataType: (ptr64 char)
+T_14764: (in  @ 0000000000411B01 : (ptr64 char))
+  Class: Eq_14763
+  DataType: (ptr64 char)
+  OrigDataType: 
 T_14765: (in fscanf(rax_138, "%50s %50s", &bLocB8, &bLoc78) @ 0000000000411B01 : int32)
   Class: Eq_14765
   DataType: int32
@@ -67684,7 +67683,6 @@ struct Globals {
 	<anonymous> * a416E38[];	// 416E38
 	char str416FE8[];	// 416FE8
 	char str417002[];	// 417002
-	char str417012[];	// 417012
 	<anonymous> * __gmon_start___GOT;	// 619FF8
 	<anonymous> * __ctype_toupper_loc_GOT;	// 61A018
 	<anonymous> * __uflow_GOT;	// 61A020

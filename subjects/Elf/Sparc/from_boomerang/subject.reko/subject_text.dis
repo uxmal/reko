@@ -186,7 +186,7 @@ l00010B70_ds_f:
 l00010B74:
 	o1_49 = 0x10AEC<32>
 l00010B84:
-	bool v24_217
+	bool v24_215
 	word32 i1_114
 	branch o0_20 == 0<32> l00010B88_ds_t
 l00010B88_ds_t:
@@ -223,20 +223,20 @@ l00010BC0:
 l00010BD0_ds_t:
 l00010BE0:
 	i1_114 = 0<32>
-	v24_217 = true
+	v24_215 = true
 l00010BD0_ds_f:
 l00010BD4:
 	i1_114 = 1<32>
 l00010C40:
-	v24_217 = i1_114 == 0<32>
+	v24_215 = i1_114 == 0<32>
 l00010C44:
-	branch v24_217 l00010C48_ds_t
+	branch v24_215 l00010C48_ds_t
 l00010C48_ds_t:
 l00010C5C:
-	printf(0x10D00<32>)
+	printf("Failed!\n")
 l00010C48_ds_f:
 l00010C4C:
-	printf(0x10CF8<32>)
+	printf("Pass\n")
 l00010C6C:
 	branch i1_114 == 0<32> l00010C74_ds_t
 l00010C74_ds_t:

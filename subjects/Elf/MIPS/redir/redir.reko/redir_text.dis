@@ -3361,9 +3361,9 @@ l0040628C:
 l004062C0:
 	branch CONVERT(Mem15[r4:int8], int8, word32) == 0<32> l00406304
 l00406304:
-	printf(0x0040A6BC<p32>)
+	printf("Usage: redir -h ")
 l004062D8:
-	printf(0x0040A6AC<p32>, r4)
+	printf("Usage: %s -h ", r4)
 l00406328:
 	word32 dwLoc18_226 = 0<32>
 l0040632C:

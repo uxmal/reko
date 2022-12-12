@@ -26,12 +26,27 @@ namespace Reko.Core.Expressions
 {
 	public class ProcedureConstant : Expression
 	{
+        private FunctionType sig;
+
 		public ProcedureConstant(DataType ptrType, ProcedureBase proc) : base(ptrType)
 		{
             this.Procedure = proc;
+            this.sig = proc.Signature;
 		}
 
+        public ProcedureConstant(DataType ptrType, FunctionType sig, ProcedureBase proc) : base(ptrType)
+        {
+            this.Procedure = proc;
+            this.sig = sig;
+        }
+
         public ProcedureBase Procedure { get; }
+
+        public FunctionType Signature
+        {
+            get => this.sig ?? Procedure.Signature;
+            set => this.sig = value;
+        }
 
         public override IEnumerable<Expression> Children
         {

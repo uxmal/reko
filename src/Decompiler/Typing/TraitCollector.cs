@@ -78,10 +78,10 @@ namespace Reko.Typing
         {
             if (!(appl.Procedure is ProcedureConstant pc))
                 throw new NotImplementedException("Indirect call.");
-            if (pc.Procedure.Signature == null)
+            FunctionType sig = pc.Signature;
+            if (sig is null)
                 return;
 
-            FunctionType sig = pc.Procedure.Signature;
             if (appl.Arguments.Length != sig.Parameters!.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
@@ -585,7 +585,7 @@ namespace Reko.Typing
 
 		public DataType? VisitProcedureConstant(ProcedureConstant pc)
 		{
-			FunctionType sig = pc.Procedure.Signature;
+			FunctionType sig = pc.Signature;
 			DataType []? argTypes = null;
 			if (sig != null && sig.Parameters != null)
 			{

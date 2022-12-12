@@ -63,8 +63,8 @@ word32 component(Eq_n ecx, word32 edx, uint32 esi, word64 rdi, int32 r8d)
 {
 	word64 rcx;
 	Eq_n ecx = (word32) rcx;
-	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s ecx;
-	struct Eq_n * v16_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s ecx) << 0x03) + (uint64) (eax_n >> 0x03);
+	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s32 ecx;
+	struct Eq_n * v16_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s32 ecx) << 0x03) + (uint64) (eax_n >> 0x03);
 	if (ecx > 0x10)
 	{
 l0000000000400EC1:
@@ -133,7 +133,7 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 			printf("RGB %u %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x03), component(eax_n, 0x01, ecx, rdx, 0x03), component(eax_n, 0x02, ecx, rdx, 0x03));
 			break;
 		case 0x03:
-			uint32 eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
+			Eq_n eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
 			png_get_PLTE(fp - 80, rdi, fp - 64, rsi, 0x00, eax_n, 0x00);
 			if (((word32) rax_n & 0x08) != 0x00 && (false && false))
 			{
@@ -188,10 +188,10 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
 	char * rax_n = rsi->ptr0010;
 	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
-	FILE * rax_n = fopen(rsi->ptr0018, "rb");
+	FILE * rax_n = fopen(rsi->t0018, "rb");
 	if (rax_n == null)
 	{
-		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->ptr0018);
+		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->t0018);
 		goto l000000000040175D;
 	}
 	word64 rax_n = png_create_read_struct(0x00, 0x00401993, 0x00, 0x00);

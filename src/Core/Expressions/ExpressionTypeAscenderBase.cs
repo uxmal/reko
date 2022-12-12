@@ -72,10 +72,13 @@ namespace Reko.Core.Expressions
         private DataType RecordApplicationReturnType(Expression pfn, Application appl)
         {
             var dt = RecordDataType(appl.DataType, appl);
-            if (pfn is ProcedureConstant pc && 
-                pc.Procedure.Signature.ParametersValid)
+            if (pfn is ProcedureConstant pc)
             {
-                dt = RecordDataType(pc.Procedure.Signature.ReturnValue!.DataType, appl);
+                var sig = pc.Signature;
+                if (sig.ParametersValid)
+                {
+                    dt = RecordDataType(sig.ReturnValue!.DataType, appl);
+                }
             }
             return dt;
         }

@@ -599,7 +599,7 @@ namespace Reko.Scanning
 
             if (call.Target is ProcedureConstant procCallee)
             {
-                sig = procCallee.Procedure.Signature;
+                sig = procCallee.Signature;
                 chr = procCallee.Procedure.Characteristics;
                 EmitCall(procCallee, sig, chr, site);
                 return OnAfterCall(sig, chr);
@@ -707,9 +707,9 @@ namespace Reko.Scanning
             CallSite site)
         {
             var ab = arch.CreateFrameApplicationBuilder(frame!, site, callee);
-            if (vaScanner!.TryScan(ric!.Address, callee, sig, chr, ab, out var newSig))
+            if (vaScanner!.TryScan(ric!.Address, callee, sig, chr, ab, out var varargs))
             {
-                Emit(vaScanner.BuildInstruction(callee, newSig, chr, ab));
+                Emit(vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab));
             }
             else if (sig != null && sig.ParametersValid)
             {

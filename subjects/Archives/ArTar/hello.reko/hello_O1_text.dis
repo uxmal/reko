@@ -147,15 +147,15 @@ void main(word64 rsi)
 main_entry:
 	word32 dwLoc20
 l00000000000011E0:
-	printf(0x0000000000002008<p64>, Mem6[rsi + 8<i64>:word64])
+	printf("Hello %s, I'm inside an archive.\n", Mem6[rsi + 8<i64>:word64])
 	puts(0x0000000000002030<p64>)
-	word64 rdi_18 = Mem6[rsi + 16<i64>:word64]
-	word128 xmm0_21 = SEQ(0<96>, strtof(rdi_18, 0<u64>))
-	real32 rLoc10_61 = strtof(rdi_18, 0<u64>)
-	real32 rLoc0C_63 = SLICE(Q_rsqrt(xmm0_21, dwLoc20), real32, 0)
-	real32 rLoc10_64 = SLICE(lib_rsqrt(SEQ(0<96>, rLoc10_61)), real32, 0)
-	printf(0x0000000000002051<p64>, CONVERT(rLoc0C_63, real32, real64))
-	printf(0x0000000000002062<p64>, CONVERT(rLoc10_64, real32, real64))
+	word64 rdi_17 = Mem6[rsi + 16<i64>:word64]
+	word128 xmm0_20 = SEQ(0<96>, strtof(rdi_17, 0<u64>))
+	real32 rLoc10_59 = strtof(rdi_17, 0<u64>)
+	real32 rLoc0C_61 = SLICE(Q_rsqrt(xmm0_20, dwLoc20), real32, 0)
+	real32 rLoc10_62 = SLICE(lib_rsqrt(SEQ(0<96>, rLoc10_59)), real32, 0)
+	printf("    Quick:   %g\n", CONVERT(rLoc0C_61, real32, real64))
+	printf("    Library: %g\n", CONVERT(rLoc10_62, real32, real64))
 	return
 main_exit:
 

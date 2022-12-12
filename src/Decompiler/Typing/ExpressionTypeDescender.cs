@@ -104,7 +104,7 @@ namespace Reko.Typing
         private FunctionType? ExtractSignature(Expression proc)
         {
             if (proc is ProcedureConstant pc)
-                return pc.Procedure.Signature;
+                return pc.Signature;
             return MatchFunctionPointer(TypeVar(proc).DataType);
         }
 

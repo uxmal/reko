@@ -130,9 +130,9 @@ namespace Reko.Analysis
             (ci.Callee, changed) = ci.Callee.Accept(eval);
             if (ci.Callee is ProcedureConstant pc)
             {
-                if (pc.Procedure.Signature.ParametersValid)
+                var sig = pc.Procedure.Signature;
+                if (sig.ParametersValid)
                 {
-                    var sig = pc.Procedure.Signature;
                     var chr = pc.Procedure.Characteristics;
                     RewriteCall(stmCur, ci, sig, chr);
                     return (stmCur.Instruction, true);
@@ -250,9 +250,12 @@ namespace Reko.Analysis
                 -sig.FpuStackDelta);
             ssa.RemoveUses(stm);
             var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
-            if (va.TryScan(stmCur!.Address, ci.Callee, sig, chr, ab, out var expandedSig))
+            if (va.TryScan(stmCur!.Address, ci.Callee, sig, chr, ab, out var result))
             {
-                stm.Instruction = va.BuildInstruction(ci.Callee, expandedSig, chr, ab);
+                //$TODO: we found a string, record it in globals.
+                // We can't do it immediately becaus we're inside a SCC. So hang 
+                // onto the string information and merge it in as a final pass.
+                stm.Instruction = va.BuildInstruction(ci.Callee, sig, result.Signature, chr, ab);
             }
             else
             { 

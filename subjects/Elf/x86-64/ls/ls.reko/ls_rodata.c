@@ -197,4 +197,3 @@ char g_str416DC8[] = "xstrtoul"; // 0000000000416DC8
 	};
 char g_str416FE8[] = "xstrtoumax"; // 0000000000416FE8
 char g_str417002[] = "CHARSETALIASDIR"; // 0000000000417002
-char g_str417012[] = "%50s %50s"; // 0000000000417012

@@ -241,8 +241,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_StackString(4, "%d %f");
             var c = Constant.Word32(666);
             var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), c);
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr, ab, out var newsig));
-            var instr = vafs.BuildInstruction(c, newsig, printfChr, ab);
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86PrintfSig, printfChr, ab, out var result));
+            var instr = vafs.BuildInstruction(c, x86PrintfSig, result.Signature, printfChr, ab);
             Assert.AreEqual(
                 "0x29A<32>(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:int32], " +
                            "Mem0[esp + 8<i32>:real64])",
@@ -257,17 +257,20 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var ep = new ExternalProcedure("sprintf", x86SprintfSig);
             var pc = new ProcedureConstant(new CodeType(), ep);
             var ab = win32.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), pc);
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86SprintfSig, printfChr, ab, out var newsig));
-            var instr = vafs.BuildInstruction(pc, newsig, printfChr, ab);
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, x86SprintfSig, printfChr, ab, out var result));
+            var instr = vafs.BuildInstruction(pc, x86SprintfSig, result.Signature, printfChr, ab);
             Assert.AreEqual(
                 "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:(ptr32 char)], " +
                         "Mem0[esp + 8<i32>:char])",
                 instr.ToString());
             var appl = (Application)((SideEffect)instr).Expression;
-            var sig = ((ProcedureConstant)appl.Procedure).Procedure.Signature;
+            var sig = ((ProcedureConstant)appl.Procedure).Signature;
             Assert.AreEqual(
                 "(fn void ((ptr32 char), (ptr32 char), char))",
                 sig.ToString());
+            Assert.AreEqual(
+                "(fn void ((ptr32 char), (ptr32 char)))",
+                ep.Signature.ToString(), "VarargsFormatScanner mutated signature");
         }
 
         [Test]
@@ -278,10 +281,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var c = Constant.Word32(666);
             var ab = win_x86_64.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(8, 0), c);
 
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, win_x86_64PrintfSig, printfChr, ab, out var newsig));
-            var instr = vafs.BuildInstruction(c, newsig, printfChr, ab);
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, win_x86_64PrintfSig, printfChr, ab, out var result));
+            var instr = vafs.BuildInstruction(c, win_x86_64PrintfSig, result.Signature, printfChr, ab);
             Assert.AreEqual(
-                "0x29A<32>(rcx, SLICE(rdx, int32, 0), SLICE(xmm2, real64, 0), r9, Mem0[rsp + 32<i64>:uint32], Mem0[rsp + 40<i64>:uint32])",
+                "0x29A<32>(\"%d %f %s %u %x\", SLICE(rdx, int32, 0), SLICE(xmm2, real64, 0), r9, Mem0[rsp + 32<i64>:uint32], Mem0[rsp + 40<i64>:uint32])",
                 instr.ToString());
         }
 
@@ -293,10 +296,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var c = Constant.Word32(0x123);
             var ab = sysV_ppc.Architecture.CreateFrameApplicationBuilder(frame, new CallSite(0, 0), c);
 
-            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, ppcPrintfSig, printfChr, ab, out var newsig));
-            var instr = vafs.BuildInstruction(c, newsig, printfChr, ab);
+            Assert.IsTrue(vafs.TryScan(addrInstr, dummyPc, ppcPrintfSig, printfChr, ab, out var result));
+            var instr = vafs.BuildInstruction(c, ppcPrintfSig, result.Signature, printfChr, ab);
             Assert.AreEqual(
-                "0x123<32>(r3, r4, r5)",
+                "0x123<32>(\"%d%d\", r4, r5)",
                 instr.ToString());
         }
 

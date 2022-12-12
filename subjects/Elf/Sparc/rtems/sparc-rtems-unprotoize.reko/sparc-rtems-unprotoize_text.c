@@ -802,7 +802,7 @@ l00011DA0:
 	}
 	else
 		o0_n = (ui32) *i0_n;
-	l1_n->u0 = (byte) o0_n;
+	*l1_n = (byte) o0_n;
 	i0_n = (word32) i0_n + 1;
 	++l1_n;
 l00011EB8:
@@ -819,7 +819,7 @@ l00011EC8:
 			line_buf.78 = o2_n;
 			l1_n = o2_n + (l1_n - o2_n);
 		}
-		l1_n->u0 = 0x0A;
+		*l1_n = 0x0A;
 		word32 l1_n = l1_n + 0x01;
 		if (i1_n == 0x00)
 			*l1_n = 0x00;
@@ -1089,7 +1089,7 @@ l00012238:
 			while (o0_n * 0x02 - (l1_n + 0x03) >u 0x00)
 			{
 				l2_n = (struct Eq_n *) ((char *) l2_n - 1);
-				l1_n->u0 = 0x2E;
+				*l1_n = 0x2E;
 				struct Eq_n * l1_n = (word32) l1_n + 1;
 				l1_n->b0000 = 0x2E;
 				l1_n->b0001 = 0x2F;
@@ -1109,7 +1109,7 @@ l000122B8:
 		while (o0_n * 0x02 - l1_n > 0x00)
 		{
 			ui32 o0_n = (ui32) *i0_n;
-			l1_n->u0 = (byte) o0_n;
+			*l1_n = (byte) o0_n;
 			i0_n = (word32) i0_n + 1;
 			if (o0_n << 0x18 == 0x00)
 			{
@@ -1654,12 +1654,12 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 		{
 			char * l2_n = errno;
 			fprintf(&g_t2B640, "%s: ", l0_n->ptr0150);
-			fprintf(&g_t2B640, i6_n->ptrFFFFFFEC, 0x00);
+			fprintf(&g_t2B640, i6_n->ptrFFFFFFEC, null);
 			xstrerror(l2_n);
 			fprintf(&g_t2B640, ": %s\n", l2_n);
 			ptr32 i2_n;
 			ptr32 i6_n;
-			Eq_n i0_n = pwait(g_str17270, out i2_n, out i6_n);
+			Eq_n i0_n = pwait(&g_dw17270, out i2_n, out i6_n);
 			l0Out = 0x00017270;
 			l1Out = (struct stat *) &g_t2B640;
 			l4Out = l4_n;
@@ -1878,7 +1878,7 @@ Eq_n identify_lineno(Eq_n o0)
 		while (true)
 		{
 			if (g2_n == 0x0A)
-				o0_n.u0 = (byte) o0_n.u0 + 1;
+				o0_n = (byte) o0_n.u0 + 1;
 			g3_n = (word32) g3_n + 1;
 			if (g3_n - o0 > 0x00)
 				break;
@@ -4231,7 +4231,7 @@ l00016AEC:
 			struct Eq_n * i6_n;
 			o0_n();
 			fprintf(&g_t2B640, "%s: ", i6_n->ptr004C);
-			fprintf(&g_t2B640, install_error_msg, 0x00);
+			fprintf(&g_t2B640, install_error_msg, null);
 			char * o0_n = errno;
 			xstrerror(o0_n);
 			fprintf(&g_t2B640, ": %s\n", o0_n);
@@ -4325,7 +4325,7 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 				if (l3_n + 0x01 - l5_n > 0x00)
 				{
 					*l4_n = SEQ(o2_n, o3_n + 7777);
-					i0_n->u0 = 0x00;
+					*i0_n = 0x00;
 					goto l00016E58;
 				}
 				*l4_n = SEQ(o2_n, o3_n + 7777);
