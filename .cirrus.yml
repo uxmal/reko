@@ -6,14 +6,8 @@ linux_arm64_task:
   arm_container:
     cpu: 4
     memory: 4G
-    image: mcr.microsoft.com/dotnet/sdk:6.0
+    dockerfile: .ci/linux_arm64/Dockerfile
 
-  install_script:
-    - apt-get -qq update
-    - apt-get install -y build-essential gcc g++ cmake libcapstone-dev pkg-config p7zip-full
-
-  prepare_script:
-    - dotnet nuget locals all --clear
   build_script:
     - dotnet msbuild -p:Platform=ARM64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
   test_script:
@@ -34,8 +28,6 @@ linux_x64_task:
     memory: 4G
     dockerfile: .ci/linux/Dockerfile
 
-  prepare_script:
-    - dotnet nuget locals all --clear
   build_script:
     - dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
   test_script:

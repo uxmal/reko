@@ -156,24 +156,16 @@ endfunction()
 function(add_c2xml_target)
 	cmake_parse_arguments(c2xml "" "REKO_ARCH;REKO_ENV;DIALECT;OUTPUT;TARGET_NAME;HEADER" "REQUIRED_ARCHITECTURES;REQUIRED_ENVIRONMENTS" ${ARGN})
 
-	set(c2xml_dir ${CMAKE_BINARY_DIR}/c2xml/${REKO_EXE_FRAMEWORK})
-	set(c2xml_exe ${c2xml_dir}/c2xml)
+	csproj_output_path(
+		EXE ANYCPU
+		PROJECT_SUBDIR "tools"
+		PROJECT_NAME "c2xml"
+		RESULT c2xml_exe
+	)
 
-	# 
-	# To speedup c2xml invocations, we use "dotnet" just once
-	# for subsequent runs, we'll reuse the path of the previously built binary
-	#
-	if(NOT TARGET build_c2xml)
-		ADD_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
-			NETCOREAPP
-			CONFIG ${CMAKE_BUILD_TYPE}
-			PLATFORM ${REKO_PLATFORM}
-			SOURCES ${c2xml_HEADER}
-			TARGET_NAME "build_c2xml"
-		)
-	endif()
+	get_filename_component(c2xml_dir "${c2xml_exe}" DIRECTORY)
 
-	# for some reason, dotnet build doesn't seem to produce a native executable on macOS
+	## Workaround for 'You must install .NET to run this application.'
 	if(APPLE)
 		set(c2xml_exe dotnet ${c2xml_exe}.dll)
 	endif()
@@ -193,9 +185,6 @@ function(add_c2xml_target)
 		COMMENT "c2xml ${c2xml_HEADER} -> ${c2xml_OUTPUT}"
 		DEPENDS ${c2xml_OUTPUT}
 	)
-
-	# run c2xml only after it has been built
-	add_dependencies(${c2xml_TARGET_NAME} build_c2xml)
 
 	## start off with reko.config
 	set(file_list "${REKO_SRC}/Drivers/reko.config")

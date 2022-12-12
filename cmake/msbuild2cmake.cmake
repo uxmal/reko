@@ -163,16 +163,6 @@ function(invoke_cmake)
 	endif()
 endfunction()
 
-function(process_project name path)
-	set(BUILD_DIR ${path}/build/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE})
-
-	if(ACTION STREQUAL "clean")
-		clean_project(${name} ${path} ${BUILD_DIR})
-	else()
-		invoke_cmake(${name} ${path} ${BUILD_DIR})
-	endif()
-endfunction()
-
 message("== Configuration ==")
 message("=> Build Type: ${CMAKE_BUILD_TYPE}")
 message("=> Generator : ${REKO_COMPILER}")

@@ -98,17 +98,21 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bges__: RewriteBxx(m.Ge); break;
                 case Mnemonic.bg_bgeu__: RewriteBxx(m.Uge); break;
                 case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
-                case Mnemonic.bgtu__: RewriteBxx(m.Gt); break;
+                case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
+                case Mnemonic.bgtu__: RewriteBxx(m.Ugt); break;
                 case Mnemonic.bgtui__: 
                 case Mnemonic.bg_bgtui__: RewriteBxxi(m.Ugt); break;
                 case Mnemonic.bn_ble__i__: RewriteBxxi(m.Le); break;
+                case Mnemonic.bg_blesi__: RewriteBxxi(m.Le); break;
                 case Mnemonic.bg_bltsi__: RewriteBxxi(m.Lt); break;
+                case Mnemonic.bg_bltui__: RewriteBxxi(m.Ult); break;
                 case Mnemonic.bne__:
                 case Mnemonic.bg_bne__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bn_bnei__: RewriteBxxi(m.Ne); break;
                 case Mnemonic.bn_bnf__: RewriteBf(false); break;
                 case Mnemonic.bn_cmov____: RewriteCmov(); break;
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
+                case Mnemonic.bn_divs__: RewriteArithmetic(m.SDiv); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.bn_entri__: RewriteEntri(); break;
                 case Mnemonic.bn_extbz__: RewriteExt(PrimitiveType.Byte, PrimitiveType.UInt32); break;

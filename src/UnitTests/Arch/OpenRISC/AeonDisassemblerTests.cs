@@ -167,6 +167,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_bgts()
+        {
+            AssertCode("bg.bgts?\tr23,r5,000FFFF2", "D6 E5 FF 94 ");
+        }
+
+        [Test]
         public void AeonDis_bg_bgtui__()
         {
             // This is being used in unsigned comparisons
@@ -175,9 +181,22 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_blesi__()
+        {
+            AssertCode("bg.blesi?\tr10,-0x1,001000B1", "D1 5F 05 88");
+        }
+
+        [Test]
         public void AeonDis_bg_bltsi__()
         {
-            AssertCode("bg.bltsi?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
+            AssertCode("bg.bltsi?\tr3,0x6,0010003E", "D0 66 01 F1");
+        }
+
+        [Test]
+        public void AeonDis_bg_bltui__()
+        {
+            // seen in comparing u16 return value of a procedure.
+            AssertCode("bg.bltui?\tr4,0x8,000FFFE7", "D0 88 FF 3E");
         }
 
         [Test]
@@ -210,6 +229,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // speculative guess.
             AssertCode("bn.cmovi??\tr12,r12,0x1", "49 8C 0A");
+        }
+
+        [Test]
+        public void AeonDis_bn_divs()
+        {
+            //$REVIEW: this might be bn.divu 
+            AssertCode("bn.divs?\tr7,r7,r6", "40 E7 30");
         }
 
         [Test]
