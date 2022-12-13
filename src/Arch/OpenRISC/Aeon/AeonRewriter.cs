@@ -123,12 +123,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_jal: RewriteJal(); break;
                 case Mnemonic.bt_jalr__: RewriteJalr(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
-                case Mnemonic.bg_lbz__: 
-                case Mnemonic.bn_lbz__: RewriteLoadZex(PrimitiveType.Byte); break;
+                case Mnemonic.bg_lbs__: RewriteLoadExt(PrimitiveType.SByte); break;
+                case Mnemonic.bn_lbz__: 
+                case Mnemonic.bg_lbz__: RewriteLoadExt(PrimitiveType.Byte); break;
                 case Mnemonic.bn_lhz:
-                case Mnemonic.bg_lhz__: RewriteLoadZex(PrimitiveType.UInt16); break;
+                case Mnemonic.bg_lhz__: RewriteLoadExt(PrimitiveType.UInt16); break;
                 case Mnemonic.bn_lwz:
-                case Mnemonic.bg_lwz: RewriteLoadZex(PrimitiveType.Word32); break;
+                case Mnemonic.bg_lwz: RewriteLoadExt(PrimitiveType.Word32); break;
                 case Mnemonic.bg_mfspr: RewriteMfspr(); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
@@ -152,6 +153,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bg_sfleui__:
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
+                case Mnemonic.bn_sflesi__: RewriteSfxx(m.Le); break;
                 case Mnemonic.bn_sfgtu: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bn_sfne: RewriteSfxx(m.Ne); break;
                 case Mnemonic.bg_sfnei__:
@@ -213,8 +215,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
             m.Assign(dst, src);
         }
-
-        private void MaybeZeroExtend(DataType dt, Expression dst, Expression src)
+        private void MaybeExtend(DataType dt, Expression dst, Expression src)
         {
             if (src.DataType.BitSize < 32)
             {
@@ -227,7 +228,6 @@ namespace Reko.Arch.OpenRISC.Aeon
                 m.Assign(dst, src);
             }
         }
-
         private Expression Op(int iop)
         {
             var op = instr.Operands[iop];
@@ -346,11 +346,11 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(Op(0), m.Convert(tmp, dtFrom, dtTo));
         }
 
-        private void RewriteLoadZex(PrimitiveType dt)
+        private void RewriteLoadExt(PrimitiveType dt)
         {
             var src = Op(1);
             var dst = Op(0);
-            MaybeZeroExtend(dt, dst, src);
+            MaybeExtend(dt, dst, src);
         }
 
         private void RewriteMfspr()
@@ -415,8 +415,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             {
                 switch (lowInstr!.Mnemonic)
                 {
-                case Mnemonic.bg_lbz__:
+                case Mnemonic.bg_lbs__:
                 case Mnemonic.bn_lbz__:
+                case Mnemonic.bg_lbz__:
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__:
                 case Mnemonic.bn_lwz:
@@ -428,7 +429,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     this.instr = dasm.Current;
                     uint uFullWord = MovhiSequenceFuser.AddFullWord(movhi.Operands[1], memLd.Offset);
                     var ea = Address.Ptr32(uFullWord);
-                    MaybeZeroExtend(memLd.Width, Op(0), m.Mem(memLd.Width, ea));
+                    MaybeExtend(memLd.Width, Op(0), m.Mem(memLd.Width, ea));
                     break;
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__:
