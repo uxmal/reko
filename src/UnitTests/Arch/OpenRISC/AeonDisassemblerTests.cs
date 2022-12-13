@@ -335,6 +335,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_lbs__()
+        {
+            AssertCode("bg.lbs?\tr17,-0x3900(r3)", "F6 23 C7 00");
+        }
+
+        [Test]
         public void AeonDis_bg_lbz__()
         {
             AssertCode("bg.lbz?\tr6,0x1EEC(r7)", "F0 C7 1E EC");
@@ -418,6 +424,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "bg.lwz\tr7,0x523A3C@lo(r6)",
                 "C0 C0 0A 41" +
                 "EC E6 3A 3E");
+        }
+
+        [Test]
+        public void AeonDis_bg_movhi_fuse_with_bg_lbs__()
+        {
+            AssertCode(
+                "bg.movhi\tr7,0x550A4B@hi",
+                "bg.lbs?\tr7,0x550A4B@lo(r7)",
+                "C0 E0 0A A1" +
+                "F4 E7 0A 4B");
         }
 
         [Test]
@@ -562,17 +578,23 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_sfgtu()
+        {
+            // confirmed with source
+            // in source: bn.sfltu r3,r4
+            AssertCode("bn.sfgtu\tr4,r3", "5C 83 1F");
+        }
+
+        [Test]
         public void AeonDis_bg_sfgeui__()
         {
             AssertCode("bg.sfgeui?\tr4,0xFF" , "C0 80 1F E0");
         }
 
         [Test]
-        public void AeonDis_bn_sfgtu()
+        public void AeonDis_bn_sflesi__()
         {
-            // confirmed with source
-            // in source: bn.sfltu r3,r4
-            AssertCode("bn.sfgtu\tr4,r3", "5C 83 1F");
+            AssertCode("bn.sflesi?\tr6,-0x1", "5C DF F1");
         }
 
         [Test]

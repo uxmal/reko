@@ -61,8 +61,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             var regHi = (RegisterStorage) movhi.Operands[0];
             switch (instr.Mnemonic)
             {
-            case Mnemonic.bg_lbz__:
+            case Mnemonic.bg_lbs__:
             case Mnemonic.bn_lbz__:
+            case Mnemonic.bg_lbz__:
             case Mnemonic.bn_lhz:
             case Mnemonic.bg_lhz__:
             case Mnemonic.bn_lwz:

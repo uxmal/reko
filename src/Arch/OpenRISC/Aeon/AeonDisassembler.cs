@@ -180,6 +180,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator simm0_5 = SignedImmediate(0, 5, PrimitiveType.Int16);
         private static readonly Mutator simm0_8 = SignedImmediate(0, 8, PrimitiveType.Int16);
         private static readonly Mutator simm0_16 = SignedImmediate(0, 16, PrimitiveType.Int16);
+        private static readonly Mutator simm5_8 = SignedImmediate(5, 8, PrimitiveType.Int16);
         private static readonly Mutator simm16_5 = SignedImmediate(16, 5, PrimitiveType.Int32);
 
         /// <summary>
@@ -354,7 +355,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                            // disasm
                     (0b110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
                     (0b111, instr_inv_line)),                                                               // disasm
-                Nyi("111101, non-zero bits"));
+                Instr(Mnemonic.bg_lbs__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)));
 
             var decoder = Mask(26, 5, "  32-bit instr",
                 Nyi("0b100000"),
@@ -520,6 +521,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b01000, Instr(Mnemonic.bn_ff1__, R13, R8)),               // guess
                 (0b01001, Instr(Mnemonic.bn_sfnei__, R13, uimm8_5)),        // guess
                 (0b01101, Instr(Mnemonic.bn_sfne, R13, R8)),                // chenxing, disasm
+                (0b10001, Instr(Mnemonic.bn_sflesi__, R13, simm5_8)),       // guess
                 (0b10011, Instr(Mnemonic.bn_sfleui__, R13, uimm5_8)),       // guess
                 // operands are swapped
                 (0b10111, Instr(Mnemonic.bn_sfgeu, R8, R13)),               // chenxing, disasm
