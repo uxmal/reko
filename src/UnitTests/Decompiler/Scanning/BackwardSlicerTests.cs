@@ -948,9 +948,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
         }
 
-
         [Test(Description = "MIPS switches are guarded by have explicit comparisons")]
-        [Ignore("Get this working soon")]
         public void Bwslc_MipsBranch()
         {
             /*
@@ -960,29 +958,35 @@ namespace Reko.UnitTests.Decompiler.Scanning
             00404790 537F lwxs r7,r7(r6)
             00404792 D8E0 jrc r7
 */
-            var l00404786 = Given_Block(0x00404786);
-            Given_Instrs(l00404786, m =>
-            {
-                //m.Assign(r7, m.Assign)
-            });
-            var l0040478C = Given_Block(0x0040478C);
-            Given_Instrs(l0040478C, m =>
-            {
-            });
-            /*
-             */
-            //            +       [1] { r7 = r7 & 0xFF < 32 >}
-            //            Reko.Core.Statement
-            //+       [2] { branch r7 >= u 0xA < 32 > l00404752}
-            //            Reko.Core.Statement
+
+            var r6 = binder.EnsureRegister(new RegisterStorage("r6", 6, 0, PrimitiveType.Word32));
+            var r7 = binder.EnsureRegister(new RegisterStorage("r7", 7, 0, PrimitiveType.Word32));
 
 
-            //+       [0] { r6 = 0x0040B568 < p32 >}
-            //            Reko.Core.Statement
-            //+       [1] { r7 = Mem0[r6 + r7 * 4 < 32 >:word32]}
-            //            Reko.Core.Statement
-            //            { goto r7}
+            var l1000 = Given_Block(0x1000);
+            var l1008 = Given_Block(0x1008);
+            var l1020 = Given_Block(0x1020);
+            Given_Instrs(l1000,
+                m => m.Assign(r7, m.And(r7, 0xFF)),
+                m => m.Branch(m.Uge(r7, 10), l1020.Address));
+            Given_Instrs(l1008,
+                m => m.Assign(r6, m.Word32(0x00123400)),
+                m => m.Assign(r7, m.Mem32(m.IAdd(r6, m.IMul(r7, 4)))),
+                m => m.Goto(r7));
+            graph.Nodes.Add(l1000);
+            graph.Nodes.Add(l1008);
+            graph.Nodes.Add(l1020);
+            graph.AddEdge(l1000, l1008);
+            graph.AddEdge(l1000, l1020);
 
+            var bwslc = new BackwardSlicer(host, l1000, processorState);
+            Assert.IsTrue(bwslc.Start(l1008, 2, Target(l1008)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("Mem0[r7 * 4<32> + 0x123400<32>:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("r7", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("1[0,9]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
         }
 
         [Test]
@@ -1049,7 +1053,60 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Assert.AreEqual("1[0,4]", bwslc.JumpTableIndexInterval.ToString());
             Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
         }
+
+        [Test]
+        public void Bwslc_SignedLeComparison()
+        {
+            /*
+            guard:
+                bg.lwz	r7,0x34C(r10)
+                bg.bltsi?	r7,0x6,_switch
+
+            default:
+                ...
+            _switch:
+                bn.slli?	r7,r7,0x2
+                bg.movhi	r6,0x391A42@hi
+                bg.addi	r6,r6,0x391A42@lo
+                bt.add?	r7,r6
+                bn.lwz	r7,(r7)
+                bt.jr	r7
+            */
+            var r6 = binder.EnsureRegister(new RegisterStorage("r6", 6, 0, PrimitiveType.Word32));
+            var r7 = binder.EnsureRegister(new RegisterStorage("r7", 7, 0, PrimitiveType.Word32));
+            var r10 = binder.EnsureRegister(new RegisterStorage("r10", 10, 0, PrimitiveType.Word32));
+
+            var l1000 = Given_Block(0x1000);
+            var l1008 = Given_Block(0x1008);
+            var l1010 = Given_Block(0x1010);
+            graph.Nodes.Add(l1000);
+            graph.Nodes.Add(l1008);
+            graph.Nodes.Add(l1010);
+            graph.AddEdge(l1000, l1008);
+            graph.AddEdge(l1000, l1010);
+
+            Given_Instrs(l1000,
+                m => m.Assign(r7, m.Mem32(m.AddSubSignedInt(r10, 844))),
+                m => m.Branch(m.Le(r7, 6), l1010.Address));
+            Given_Instrs(l1010,
+                m => m.Assign(r7, m.Shl(r7, 2)),
+                m => m.Assign(r6, m.Word32(0x391AA0)),
+                m => m.Assign(r7, m.IAdd(r7, r6)),
+                m => m.Assign(r7, m.Mem32(r7)),
+                m => m.Goto(r7));
+
+            var bwslc = new BackwardSlicer(host, l1000, processorState);
+            Assert.IsTrue(bwslc.Start(l1010, 4, Target(l1010)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("Mem0[(r7 << 2<8>) + 0x391AA0<32>:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("r7", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("1[0,6]", bwslc.JumpTableIndexInterval.ToString());
+            Assert.AreEqual("00001004", bwslc.GuardInstrAddress.ToString());
+        }
     }
+
+
 
     // Test cases
     // A one-level jump table from MySQL. JTT represents the jump table.

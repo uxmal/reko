@@ -97,6 +97,8 @@ namespace Reko.Scanning
 
         public TableExtent? DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, DecompilerEventListener listener)
         {
+            if (addrSwitch.Offset == 0x00303B2A)
+                _ = this; //$DEBUG
             if (!Start(rtlBlock, host.BlockInstructionCount(rtlBlock) - 1, xfer.Target))
             {
                 // No registers were found, so we can't trace back. 
@@ -522,6 +524,8 @@ namespace Reko.Scanning
 
         public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
         {
+            if (block.Address.Offset == 0x00303B1A)
+                _ = this; //$DEBUG
             this.slicer = slicer;
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray()!;
@@ -831,16 +835,38 @@ namespace Reko.Scanning
             case OperatorType.Ugt:
                 if (this.invertCondition)
                 {
-                    this.JumpTableIndex = binExp.Left;
-                    this.JumpTableIndexToUse = binExp.Left;
-                    this.ccNext = ConditionCode.UGT;
-                    this.JumpTableIndexInterval = MakeInterval_ISub(binExp.Left, binExp.Right as Constant);
-                    BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", binExp.Left, JumpTableIndexInterval);
-                    return new SlicerResult
-                    {
-                        SrcExpr = binExp,
-                        Stop = true
-                    };
+                    return FoundBoundaryCheck(binExp, ConditionCode.UGT);
+                }
+                break;
+            case OperatorType.Uge:
+                if (this.invertCondition)
+                {
+                    return FoundBoundaryCheck(binExp, ConditionCode.UGE);
+                }
+                break;
+            case OperatorType.Ult:
+                if (!this.invertCondition)
+                {
+                    return FoundBoundaryCheck(binExp, ConditionCode.ULT);
+                }
+                break;
+            case OperatorType.Ule:
+                if (!this.invertCondition)
+                {
+                    return FoundBoundaryCheck(binExp, ConditionCode.ULE);
+                }
+                break;
+
+            case OperatorType.Lt:
+                if (!this.invertCondition)
+                {
+                    return FoundBoundaryCheck(binExp, ConditionCode.LT);
+                }
+                break;
+            case OperatorType.Le:
+                if (!this.invertCondition)
+                {
+                    return FoundBoundaryCheck(binExp, ConditionCode.LE);
                 }
                 break;
             }
@@ -855,6 +881,20 @@ namespace Reko.Scanning
                 SrcExpr = binExp,
             };
             return se;
+        }
+
+        private SlicerResult FoundBoundaryCheck(BinaryExpression binExp, ConditionCode cc)
+        {
+            this.JumpTableIndex = binExp.Left;
+            this.JumpTableIndexToUse = binExp.Left;
+            this.ccNext = cc;
+            this.JumpTableIndexInterval = MakeInterval_ISub(binExp.Left, binExp.Right as Constant);
+            BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", binExp.Left, JumpTableIndexInterval);
+            return new SlicerResult
+            {
+                SrcExpr = binExp,
+                Stop = true
+            };
         }
 
         private bool IsBoundaryCheck(BinaryExpression binExp, StorageDomain domLeft, Expression liveKey)
@@ -883,13 +923,13 @@ namespace Reko.Scanning
 
         public SlicerResult? VisitBranch(RtlBranch branch)
         {
-            var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
             if (branch.Target is not Address addrTarget)
                 throw new NotImplementedException();    //$REVIEW: do we ever see this?
             if (this.addrSucc! != addrTarget)
             {
                 this.invertCondition = !this.invertCondition;
             }
+            var se = branch.Condition.Accept(this, BackwardSlicerContext.Cond(new BitRange(0, 0)));
             return se;
         }
 
