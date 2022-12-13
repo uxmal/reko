@@ -54,7 +54,7 @@ namespace Reko.Scanning
     /// </remarks>
     public class BackwardSlicer
     {
-        internal static readonly TraceSwitch trace = new TraceSwitch(nameof(BackwardSlicer), "Traces the backward slicer") { Level = TraceLevel.Warning };
+        public static readonly TraceSwitch trace = new TraceSwitch(nameof(BackwardSlicer), "Traces the backward slicer") { Level = TraceLevel.Warning };
 
         internal IBackWalkHost<RtlBlock, RtlInstruction> host;
         private readonly RtlBlock rtlBlock;
@@ -779,45 +779,47 @@ namespace Reko.Scanning
             if (seLeft == null && seRight == null)
                 return null;
             //$TODO: addOrSub
-            if ((opType == OperatorType.ISub || opType == OperatorType.IAdd) && 
-                this.Live != null && (ctx.Type & ContextType.Condition) != 0)
+            switch (opType)
             {
-                var domLeft = DomainOf(seLeft!.SrcExpr);
-
-                if (Live.Count > 0)
+            case OperatorType.ISub:
+            case OperatorType.IAdd:
+                if (this.Live != null && (ctx.Type & ContextType.Condition) != 0)
                 {
-                    foreach (var live in Live)
+                    var domLeft = DomainOf(seLeft!.SrcExpr);
+                    if (Live.Count > 0)
                     {
-                        if (live.Value.Type != ContextType.Jumptable)
-                            continue;
-                        if (IsBoundaryCheck(binExp, domLeft, live.Key))
+                        foreach (var live in Live)
                         {
-                            return FoundBoundaryCheck(binExp, live.Key);
+                            if (live.Value.Type != ContextType.Jumptable)
+                                continue;
+                            if (IsBoundaryCheck(binExp, domLeft, live.Key))
+                            {
+                                return FoundBoundaryCheck(binExp, live.Key);
+                            }
+                        }
+                        if (IsBoundaryCheck(binExp, domLeft, this.assignLhs!))
+                        {
+                            return FoundBoundaryCheck(binExp, this.assignLhs!);
                         }
                     }
-                    if (IsBoundaryCheck(binExp, domLeft, this.assignLhs!))
+                    else
                     {
-                        return FoundBoundaryCheck(binExp, this.assignLhs!);
+                        // We have no live variables, which means this subtraction instruction
+                        // is both computing the jumptable index and also performing the 
+                        // comparison.
+                        this.JumpTableIndex = assignLhs;
+                        this.JumpTableIndexToUse = assignLhs;
+                        this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs!, binExp.Right as Constant);
+                        BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", assignLhs!, JumpTableIndexInterval);
+                        return new SlicerResult
+                        {
+                            SrcExpr = null,     // the jump table expression already has the correct shape.
+                            Stop = true
+                        };
                     }
                 }
-                else
-                {
-                    // We have no live variables, which means this subtraction instruction
-                    // is both computing the jumptable index and also performing the 
-                    // comparison.
-                    this.JumpTableIndex = assignLhs;
-                    this.JumpTableIndexToUse = assignLhs;
-                    this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs!, binExp.Right as Constant);
-                    BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", assignLhs!, JumpTableIndexInterval);
-                    return new SlicerResult
-                    {
-                        SrcExpr = null,     // the jump table expression already has the correct shape.
-                        Stop = true
-                    };
-                }
-            }
-            else if (binExp.Operator.Type == OperatorType.And)
-            {
+                break;
+            case OperatorType.And:
                 this.JumpTableIndex = binExp.Left;
                 this.JumpTableIndexToUse = binExp.Left;
                 this.JumpTableIndexInterval = MakeInterval_And(binExp.Left, binExp.Right as Constant);
@@ -826,6 +828,21 @@ namespace Reko.Scanning
                     SrcExpr = binExp,
                     Stop = true,
                 };
+            case OperatorType.Ugt:
+                if (this.invertCondition)
+                {
+                    this.JumpTableIndex = binExp.Left;
+                    this.JumpTableIndexToUse = binExp.Left;
+                    this.ccNext = ConditionCode.UGT;
+                    this.JumpTableIndexInterval = MakeInterval_ISub(binExp.Left, binExp.Right as Constant);
+                    BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", binExp.Left, JumpTableIndexInterval);
+                    return new SlicerResult
+                    {
+                        SrcExpr = binExp,
+                        Stop = true
+                    };
+                }
+                break;
             }
             IEnumerable<KeyValuePair<Expression,BackwardSlicerContext>> liveExpr = seLeft!.LiveExprs;
             if (seRight != null)
@@ -871,7 +888,7 @@ namespace Reko.Scanning
                 throw new NotImplementedException();    //$REVIEW: do we ever see this?
             if (this.addrSucc! != addrTarget)
             {
-                this.invertCondition = true;
+                this.invertCondition = !this.invertCondition;
             }
             return se;
         }
@@ -1101,6 +1118,10 @@ namespace Reko.Scanning
         public SlicerResult? VisitUnaryExpression(UnaryExpression unary, BackwardSlicerContext ctx)
         {
             var sr = unary.Expression.Accept(this, ctx);
+            if (unary.Operator.Type == OperatorType.Not)
+            {
+                this.invertCondition = !invertCondition;
+            }
             return sr;
         }
 
