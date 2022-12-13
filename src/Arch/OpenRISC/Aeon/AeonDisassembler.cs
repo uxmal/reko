@@ -308,7 +308,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing, disasm
-                (0b1110, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
+                (0b1110, Instr(Mnemonic.bg_sfgtui__, R21, uimm5_16)),           // guess
                 (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing, disasm
 
             var decoder110100 = Mask(0, 3, "  opc=110100",

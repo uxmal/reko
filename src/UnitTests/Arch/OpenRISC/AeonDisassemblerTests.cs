@@ -592,6 +592,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_sfgtui__()
+        {
+            // Found as a guard statement to a switch statement
+            AssertCode("bg.sfgtui?\tr3,0x8C", "C0 60 11 8E");
+        }
+
+        [Test]
         public void AeonDis_bn_sflesi__()
         {
             AssertCode("bn.sflesi?\tr6,-0x1", "5C DF F1");
@@ -601,12 +608,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_sfleui__()
         {
             AssertCode("bn.sfleui?\tr3,0x77", "5C 6E F3");
-        }
-
-        [Test]
-        public void AeonDis_bg_sfleui__()
-        {
-            AssertCode("bg.sfleui?\tr11,0x1FE", "C1 60 3F CE");
         }
 
         [Test]
