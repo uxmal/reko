@@ -54,7 +54,7 @@ namespace Reko.Scanning
         Block? FindExactBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
 
-        Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
+        Block CreateCallRetThunk(Address addrFrom, Procedure procOld, ProcessorState state, Procedure procNew);
         void SetProcedureStackDelta(
             Procedure proc, int stackDelta, Address address);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);

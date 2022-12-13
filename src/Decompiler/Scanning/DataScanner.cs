@@ -125,7 +125,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        Block IScannerServices.CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
+        Block IScannerServices.CreateCallRetThunk(Address addrFrom, Procedure procOld, ProcessorState state, Procedure procNew)
         {
             throw new NotImplementedException();
         }

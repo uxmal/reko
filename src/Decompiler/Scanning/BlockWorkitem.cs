@@ -171,7 +171,7 @@ namespace Reko.Scanning
                 procOther != blockCur!.Procedure)
             {
                 // Fell into another procedure. 
-                var block = scanner.CreateCallRetThunk(addrInstr, blockCur.Procedure, procOther);
+                var block = scanner.CreateCallRetThunk(addrInstr, blockCur.Procedure, state, procOther);
                 return block;
             }
             return null;

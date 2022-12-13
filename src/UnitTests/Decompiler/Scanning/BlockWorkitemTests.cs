@@ -927,6 +927,7 @@ testProc_exit:
             scanner.Setup(s => s.CreateCallRetThunk(
                 It.IsAny<Address>(),
                 It.IsAny<Procedure>(),
+                It.IsAny<ProcessorState>(),
                 It.IsAny<Procedure>()))
                 .Returns(blockCallRet);
             var frame = program.Architecture.CreateFrame();

@@ -247,7 +247,8 @@ namespace Reko.Scanning
             {
                 if (program.Procedures.TryGetValue(addr, out var procCallee))
                 {
-                    var thunk = CreateCallRetThunk(ctx.Cluster.Address, ctx.Procedure, procCallee);
+                    var state = ctx.Procedure.Architecture.CreateProcessorState();
+                    var thunk = CreateCallRetThunk(ctx.Cluster.Address, ctx.Procedure, state, procCallee);
                     ctx.Procedure.ControlGraph.AddEdge(ctx.Block, thunk);
                     return null!;
                 }
@@ -267,7 +268,7 @@ namespace Reko.Scanning
         /// <param name="procOld"></param>
         /// <param name="procNew"></param>
         /// <returns></returns>
-        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
+        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, ProcessorState state, Procedure procNew)
         {
             //$BUG: ReturnAddressOnStack property needs to be properly set, the
             // EvenOdd sample shows how this doesn't work currently. 
@@ -286,6 +287,7 @@ namespace Reko.Scanning
                 new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
                     new CallSite(0, 0)));
+            //$TODO: look at what is being done in Scanner.CreateCallRetThunk.
             program.CallGraph.AddEdge(stmLast, procNew);
 
             callRetThunkBlock.Statements.Add(addrFrom, new ReturnInstruction());

@@ -122,7 +122,8 @@ namespace Reko.Scanning
                 if (inb.Statements.Count > 0)
                 {
                     var lastAddress = GetAddressOfLastInstruction(inb);
-                    var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inb.Procedure, ProcNew);
+                    var state = inb.Procedure.Architecture.CreateProcessorState();
+                    var callRetThunkBlock = Scanner.CreateCallRetThunk(lastAddress, inb.Procedure, state, ProcNew);
                     ReplaceSuccessorsWith(inb, blockToPromote, callRetThunkBlock);
                     callRetThunkBlock.Pred.Add(inb);
                 }
@@ -166,7 +167,8 @@ namespace Reko.Scanning
                 {
                     // s is the first block of a (different) procedure
                     var lastAddress = GetAddressOfLastInstruction(block);
-                    var retCallThunkBlock = Scanner.CreateCallRetThunk(lastAddress, block.Procedure, s.Procedure);
+                    var state = block.Procedure.Architecture.CreateProcessorState();
+                    var retCallThunkBlock = Scanner.CreateCallRetThunk(lastAddress, block.Procedure, state, s.Procedure);
                     block.Succ[i] = retCallThunkBlock;
                     retCallThunkBlock.Pred.Add(block);
                     s.Pred.Remove(block);

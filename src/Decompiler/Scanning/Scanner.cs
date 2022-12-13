@@ -35,6 +35,7 @@ using System.Linq;
 using System.Threading;
 using Reko.Core.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ConstrainedExecution;
 
 namespace Reko.Scanning
 {
@@ -322,7 +323,7 @@ namespace Reko.Scanning
                     block.Procedure.RemoveBlock(block);
                     procDest = Program.EnsureProcedure(block.Procedure.Architecture, addrDest, null);
                     EnqueueProcedure(block.Procedure.Architecture, addrDest);
-                    var blockThunk = CreateCallRetThunk(addrSrc, proc, procDest);
+                    var blockThunk = CreateCallRetThunk(addrSrc, proc, state, procDest);
                     var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                     procQueue.Enqueue(PriorityBlockPromote, wi);
                     block = blockThunk;
@@ -344,7 +345,7 @@ namespace Reko.Scanning
                     else
                     {
                         // We jumped to the entry of a different procedure.
-                        block = CreateCallRetThunk(addrSrc, proc, procDest);
+                        block = CreateCallRetThunk(addrSrc, proc, state, procDest);
                     }
                 }
                 else
@@ -362,7 +363,7 @@ namespace Reko.Scanning
                         // procedure which was hairy enough that we need to 
                         // promote the block to a new procedure.
                         procDest = Program.EnsureProcedure(proc.Architecture, addrDest, null);
-                        var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
+                        var blockNew = CreateCallRetThunk(addrSrc, proc, state, procDest);
                         EstablishInitialState(addrDest, Program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
                         InjectProcedureEntryInstructions(addrDest, procDest);
@@ -455,7 +456,7 @@ namespace Reko.Scanning
         /// <param name="procOld"></param>
         /// <param name="procNew"></param>
         /// <returns></returns>
-        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
+        public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, ProcessorState state, Procedure procNew)
         {
             //$BUG: ReturnAddressOnStack property needs to be properly set, the
             // EvenOdd sample shows how this doesn't work currently. 
@@ -469,11 +470,8 @@ namespace Reko.Scanning
             if (Program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
                 callRetThunkBlock.UserLabel = userLabel;
 
-            var stmLast = callRetThunkBlock.Statements.Add(
-                addrFrom,
-                new CallInstruction(
-                    new ProcedureConstant(Program.Platform.PointerType, procNew),
-                    new CallSite(0, 0)));
+            var call = CreateCall(procOld, addrFrom, procNew, state, new CallSite(0, 0));
+            var stmLast = callRetThunkBlock.Statements.Add(addrFrom, call);
             Program.CallGraph.AddEdge(stmLast, procNew);
 
             callRetThunkBlock.Statements.Add(addrFrom, new ReturnInstruction());
@@ -485,6 +483,39 @@ namespace Reko.Scanning
             }
             SetProcedureStackDelta(procOld, procNew.Signature.StackDelta, addrFrom);
             return callRetThunkBlock;
+        }
+
+        private Instruction CreateCall(
+            Procedure procCaller, 
+            Address addrCall, 
+            Procedure procNew, 
+            ProcessorState state,
+            CallSite site)
+        {
+            //$TODO: this is almost identical to BlockWorkItem.EmitCall.
+            // In ScannerV2, these 2 fns should merge. The existing 
+            // Scanner/ BlockWorkItem are too interdependent to 
+            // easily reuse the function.
+
+            var callee = new ProcedureConstant(Program.Platform.PointerType, procNew);
+            var sig = procNew.Signature;
+            var chr = procNew.Characteristics;
+
+            var ab = procCaller.Architecture.CreateFrameApplicationBuilder(procCaller.Frame, site, callee);
+            var vaScanner = new VarargsFormatScanner(Program, procCaller.Architecture, state, Services);
+            if (vaScanner!.TryScan(addrCall, callee, sig, chr, ab, out var varargs))
+            {
+                return vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab);
+            }
+            else if (sig != null && sig.ParametersValid)
+            {
+                return ab.CreateInstruction(sig, chr);
+            }
+            else
+            {
+                return new CallInstruction(callee, site);
+            }
+
         }
 
         /// <summary>
