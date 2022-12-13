@@ -895,8 +895,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bg_sfgtui__()
         {
-            Given_HexString("C1 60 3F CE");
-            AssertCode(     // bg.sfleui?	r11,r3,0x20
+            Given_HexString("C1603FCE");
+            AssertCode(     // bg.sfgtui?	r11,0x1FE
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f = r11 >u 0x1FE<32>");
         }
