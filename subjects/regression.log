@@ -559,12 +559,12 @@ l000000000040D92D: warning: Non-integral switch expression
 000000000061B040: warning: Expected sizes of arrays to have been determined by now
 
 *** Elf\AVR32\ls
-0000F196: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
+0000F240: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -826,14 +826,13 @@ fn0000000100003AA8: error: An error occurred while rewriting procedure to high-l
 
 *** Raw\MicroBlaze\MicroBlaze
 0000CDB8: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-000257A4: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-0001E734: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-0001E3F0: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 fn0001B1D0: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B1F8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0001B2AC: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
+       at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at Reko.Core.Block.get_ThenBlock() in d:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -901,95 +900,39 @@ fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Pleas
 *** Microchip\C18\PIC18\PIC18Legacy
 00013A: error: PIC Hardware stack underflow.
 
-*** Elf\nanoMips\ping\ping
+=== Elf\nanoMips\ping\ping
 004008F8: warning: Call target address 00000000 is invalid.
 00400912: warning: Call target address 00000000 is invalid.
 004008DC: warning: Call target address 00000000 is invalid.
-__isoc99_vfscanf: error: An internal error occurred while building the expressions of __isoc99_vfscanf
-    Dominator graph calculation timed out.
-       at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 233
-   at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 162
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
-l0040D4D6: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
-Warning: Recursion too deep in PtrPrimitiveReplacer
+l00401628: warning: Non-integral switch expression
+l00401614: warning: Non-integral switch expression
+l0040478C: warning: Non-integral switch expression
+l00408E46: warning: Non-integral switch expression
+l00408E12: warning: Non-integral switch expression
+l0040D5B8: warning: Non-integral switch expression
 00412060: warning: Expected sizes of arrays to have been determined by now
-00412170: warning: Expected sizes of arrays to have been determined by now
-004122D0: warning: Expected sizes of arrays to have been determined by now
-00412304: warning: Expected sizes of arrays to have been determined by now
 00412340: warning: Expected sizes of arrays to have been determined by now
 00412368: warning: Expected sizes of arrays to have been determined by now
 00412E1C: warning: Expected sizes of arrays to have been determined by now
-00412EF8: warning: Expected sizes of arrays to have been determined by now
-00412F40: warning: Expected sizes of arrays to have been determined by now
+00413020: warning: Expected sizes of arrays to have been determined by now
+00413040: warning: Expected sizes of arrays to have been determined by now
 00413220: warning: Expected sizes of arrays to have been determined by now
 00413240: warning: Expected sizes of arrays to have been determined by now
 00413370: warning: Expected sizes of arrays to have been determined by now
-0041343C: warning: Expected sizes of arrays to have been determined by now
 00413454: warning: Expected sizes of arrays to have been determined by now
-0041353C: warning: Expected sizes of arrays to have been determined by now
 00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
 00412060: warning: Expected sizes of arrays to have been determined by now
-00412170: warning: Expected sizes of arrays to have been determined by now
-004122D0: warning: Expected sizes of arrays to have been determined by now
-00412304: warning: Expected sizes of arrays to have been determined by now
 00412340: warning: Expected sizes of arrays to have been determined by now
 00412368: warning: Expected sizes of arrays to have been determined by now
 00412E1C: warning: Expected sizes of arrays to have been determined by now
-00412EF8: warning: Expected sizes of arrays to have been determined by now
-00412F40: warning: Expected sizes of arrays to have been determined by now
+00413020: warning: Expected sizes of arrays to have been determined by now
+00413040: warning: Expected sizes of arrays to have been determined by now
 00413220: warning: Expected sizes of arrays to have been determined by now
 00413240: warning: Expected sizes of arrays to have been determined by now
 00413370: warning: Expected sizes of arrays to have been determined by now
-0041343C: warning: Expected sizes of arrays to have been determined by now
 00413454: warning: Expected sizes of arrays to have been determined by now
-0041353C: warning: Expected sizes of arrays to have been determined by now
 00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
@@ -1925,7 +1868,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -1933,7 +1876,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -1988,4 +1931,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 87 binaries in 74.95 seconds.
+Decompiled 87 binaries in 68.71 seconds.

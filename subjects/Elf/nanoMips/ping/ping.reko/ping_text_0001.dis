@@ -2,7 +2,7 @@ word32 __fixunsdfsi(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn00409170
+//      printf_core
 // MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r4
 // Trashed: r25 r4 r5 r6 r7 r8 r9
@@ -36,7 +36,7 @@ word32 __floatsidf(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn00409170
+//      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
 // LiveOut: r4
@@ -77,7 +77,7 @@ word32 __floatunsidf(word32 r4, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
-//      fn00409170
+//      printf_core
 //      __floatscan
 // MayUse:  r4:[0..31]
 // LiveOut: r4 r5
@@ -110,14 +110,14 @@ l004101F6:
 __floatunsidf_exit:
 
 
-word32 __truncdfsf2(word32 r4, word32 r5, ptr32 & r9Out, ptr32 & r10Out)
+void __truncdfsf2(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      strtof_l
 //      __isoc99_vfscanf
 // MayUse:  r4:[0..31] r5:[0..31]
-// LiveOut: r10 r8 r9
+// LiveOut:
 // Trashed: r10 r25 r4 r5 r6 r7 r8 r9
 // Preserved: r11 sp
 __truncdfsf2_entry:
@@ -125,52 +125,47 @@ l00410220:
 	word32 r8_16
 	word32 r7_15
 	word32 r9_5 = __ext<word32,word32>(r5, 0<32>, 0x14<32>)
-	word32 r10_42 = __ext<word32,word32>(r5, 4<32>, 0xB<32>)
+	word32 r10_6 = __ext<word32,word32>(r5, 4<32>, 0xB<32>)
 	word32 r9_10 = r4 >>u 0x1D<32> | r9_5 << 3<32>
-	branch (r10_42 + 1<32> & 0x7FF<32>) < 2<32> l004102D4
+	branch (r10_6 + 1<32> & 0x7FF<32>) < 2<32> l004102D4
 l004102D4:
 	r7_15 = r9_10 | r4 << 3<32>
-	branch r10_42 != 0<32> l004102E2
+	branch r10_6 != 0<32> l004102E2
 l004102E2:
 	r8_16 = 0xFF<32>
 	branch r7_15 == 0<32> l004102FC
 l004102E8:
-	r9_10 = r9_10 << 3<32>
 	r7_15 = r9_10 << 3<32> | 0x20000000<32>
 l004102DC:
 	r7_15 = CONVERT(r7_15 >u 0<32>, bool, word32)
 l00410246:
-	r8_16 = r10_42 + 0xFFFFFC80<32>
-	branch r10_42 > 0xFFFFFB82<32> l004102F6
+	r8_16 = r10_6 + 0xFFFFFC80<32>
+	branch r10_6 > 0xFFFFFB82<32> l004102F6
 l004102F6:
 	r7_15 = 0<32>
 	r8_16 = 0xFF<32>
 l00410252:
-	branch r10_42 > 0xFFFFFC80<32> l004102B6
+	branch r10_6 > 0xFFFFFC80<32> l004102B6
 l004102B6:
 	r7_15 = r9_10 << 3<32> | ((r4 << 3<32>) >>u 0x1D<32> | CONVERT(r4 << 6<32> >u 0<32>, bool, word32))
 l00410256:
-	branch r10_42 < 0xFFFFFC97<32> l00410332
+	branch r10_6 < 0xFFFFFC97<32> l00410332
 l00410332:
 	r7_15 = 1<32>
 	r8_16 = 0<32>
 l0041025E:
-	word32 r4_36 = 0x1E<32> - (r10_42 + 0xFFFFFC80<32>)
-	r9_10 = r9_10 | 0x8000000<32>
+	word32 r4_36 = 0x1E<32> - (r10_6 + 0xFFFFFC80<32>)
 	branch r4_36 >= 0x20<32> l0041028E
 l0041028E:
 	word32 r11_39 = 0<32>
-	word32 r8_41 = (r9_10 | 0x8000000<32>) >>u 0xFFFFFFFE<32> - (r10_42 + 0xFFFFFC80<32>)
+	word32 r8_41 = (r9_10 | 0x8000000<32>) >>u 0xFFFFFFFE<32> - (r10_6 + 0xFFFFFC80<32>)
 	branch r4_36 == 0x20<32> l004102A8
 l004102A0:
-	r10_42 = r10_42 + 0xFFFFFCA2<32>
-	r11_39 = (r9_10 | 0x8000000<32>) << r10_42 + 0xFFFFFCA2<32>
+	r11_39 = (r9_10 | 0x8000000<32>) << r10_6 + 0xFFFFFCA2<32>
 l004102A8:
 	r7_15 = r8_41 | CONVERT((r11_39 | r4 << 3<32>) >u 0<32>, bool, word32)
 l00410270:
-	r9_10 = (r9_10 | 0x8000000<32>) << r10_42 + 0xFFFFFC82<32>
-	r10_42 = r10_42 + 0xFFFFFC82<32>
-	r7_15 = CONVERT(r4 << 3<32> << r10_42 + 0xFFFFFC82<32> >u 0<32>, bool, word32) | r9_10 | (r4 << 3<32>) >>u r4_36
+	r7_15 = CONVERT(r4 << 3<32> << r10_6 + 0xFFFFFC82<32> >u 0<32>, bool, word32) | (r9_10 | 0x8000000<32>) << r10_6 + 0xFFFFFC82<32> | (r4 << 3<32>) >>u r4_36
 l0041028A:
 	r8_16 = 0<32>
 l004102C8:
@@ -197,9 +192,7 @@ l0041031C:
 	r7_74 = r7_74 | 0x4000000<32>
 l00410322:
 	__ins<word32,word32>(__ins<word32,word32>(__ins<word32,word32>(0<32>, r7_74, 0<32>, 1<32>), r8_16, 7<32>, 1<32>), r5 >>u 0x1F<32>, 0xF<32>, 1<32>)
-	r9Out = r9_10
-	r10Out = r10_42
-	return r8_16
+	return
 __truncdfsf2_exit:
 
 

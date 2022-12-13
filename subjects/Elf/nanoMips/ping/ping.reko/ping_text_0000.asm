@@ -129,12 +129,21 @@ l004001D0:
 l004001D4:
 	li	r7,0000000A
 	bc	004001F2
-004001D8                         E9 34 94 9B AB 60 0E 2D         .4...`.-
-004001E0 01 00 81 04 DE 06 00 2A 06 82                   .......*..      
+
+l004001D8:
+	lw	r17,0024(sp)
+	beqzc	r7,004001F0
+
+l004001DC:
+	lwpc	r5,00412EF0
+	addiupc	r4,000106DE
+	balc	fputs_unlocked
 
 l004001EA:
 	li	r4,00000002
 	balc	exit
+
+l004001F0:
 	li	r7,00000002
 
 l004001F2:
@@ -148,8 +157,15 @@ l004001F2:
 00400240 20 0A EC A5 08 BA 0F 60 F0 42 05 00 63 1B A1 04  ......`.B..c...
 00400250 D2 06 20 0A DA A5 81 D3 0C 9A A1 04 D2 06 20 0A .. ........... .
 00400260 CE A5 0A BA 83 D3 EF 60 D0 42 05 00 43 1B AB 60 .......`.B..C..`
-00400270 7C 2C 01 00 81 04 C4 06 6D 1B E9 34 E0 88 55 3F |,......m..4..U?
-00400280 5B 1B 8B 60 60 42 05 00 00 2A BE 31 8F 60 2A 42 [..``B...*.1.`*B
+00400270 7C 2C 01 00 81 04 C4 06 6D 1B                   |,......m.      
+
+l0040027A:
+	lw	r17,0024(sp)
+	beqc	r0,r7,004001D4
+
+l00400280:
+	bc	004001DC
+00400282       8B 60 60 42 05 00 00 2A BE 31 8F 60 2A 42   .``B...*.1.`*B
 00400290 05 00 00 2A 1A 47 C0 17 8C BB EB 60 1C 42 05 00 ...*.G.....`.B..
 004002A0 E0 80 C0 E4 96 9B CB 60 3C 42 05 00 A1 04 A4 06 .......`<B......
 
@@ -1752,6 +1768,7 @@ fn00401284 proc
 ;;     00401416 (in pr_options)
 ;;     004014B0 (in pr_options)
 ;;     004014F6 (in pr_options)
+;;     004016E6 (in pr_icmph)
 ;;     00401906 (in ping4_receive_error_msg)
 ;;     00401976 (in ping4_parse_reply)
 ;;     004019BC (in ping4_parse_reply)
@@ -2200,12 +2217,17 @@ fn00401590 proc
 ;;     004015C2 (in pr_iph)
 ;;     004015D2 (in pr_iph)
 ;;     004015E4 (in pr_iph)
+;;     00401650 (in pr_icmph)
+;;     004016C6 (in pr_icmph)
+;;     004016CE (in pr_icmph)
 ;;     0040175E (in pr_icmph)
 ;;     00401918 (in ping4_receive_error_msg)
 fn00401594 proc
 	bc	printf
 
 ;; pr_iph: 00401598
+;;   Called from:
+;;     00401662 (in pr_icmph)
 pr_iph proc
 	save	00000010,ra,00000004
 	move	r16,r4
@@ -2272,37 +2294,239 @@ l00401614:
 	addiupc	r7,00010B58
 	lwxs	r7,r4(r7)
 	jrc	r7
-0040161C                                     80 04 94 F7             ....
-00401620 40 39 23 1F AC C8 80 80 E1 04 90 0B DF 53 E0 D8 @9#..........S..
-00401630 80 04 8C F7 2C 39 1A 18 80 04 A0 F7 F7 1B 80 04 ....,9..........
-00401640 BA F7 F1 1B 80 04 D8 F7 EB 1B B1 10 80 04 F0 F7 ................
-00401650 43 3B 00 8A 0A 01 EB 60 90 2E 05 00 E4 C8 00 41 C;.....`.......A
-00401660 02 92 35 3B 23 1F 80 04 FA F7 C9 1B 80 04 08 F8 ..5;#...........
-00401670 C3 1B 80 04 1A F8 BD 1B 80 04 30 F8 B7 1B 80 04 ..........0.....
-00401680 42 F8 B1 1B 80 04 58 F8 AB 1B 80 04 6E F8 A5 1B B.....X.....n...
-00401690 80 04 98 F8 9F 1B 80 04 C6 F8 99 1B 80 04 D0 F8 ................
-004016A0 93 1B 80 04 E2 F8 8D 1B 80 04 F0 F8 A3 1B 80 04 ................
-004016B0 0A F9 81 1B A0 C8 3A 08 90 9A A0 C8 3A 10 A0 C8 ......:.....:...
-004016C0 3C 18 80 04 76 F9 CD 3A 06 18 80 04 FE F8 C5 3A <...v..:.......:
-004016D0 82 D3 00 B4 02 B4 FD 84 00 50 03 B4 02 98 81 14 .........P......
-004016E0 90 D2 9D 10 21 B6 FF 2B 9F FB A4 10 80 04 64 F9 ....!..+......d.
-004016F0 5F 1B 80 04 EA F8 D7 1B 80 04 F4 F8 D1 1B 80 04 _...............
-00401700 16 F9 CB 1B 80 04 60 F9 17 1B 8A 9A A0 C8 0C 08 ......`.........
-00401710 80 04 9C F9 3B 1B 80 04 5E F9 19 1B 80 04 70 F9 ....;...^.....p.
-00401720 13 1B 08 98 01 16 14 3A 24 82 58 C0 B1 10 80 04 .......:$.X.....
-00401730 9E F9 1D 1B 80 04 BC F9 E7 1A 80 04 C2 F9 E1 1A ................
-00401740 80 04 CC F9 DB 1A 80 04 DA F9 D5 1A 80 04 E8 F9 ................
-00401750 CF 1A 80 04 FA F9 C9 1A                         ........        
+
+l0040161C:
+	addiupc	r4,0000F794
+
+l00401620:
+	balc	fn00401762
+	restore.jrc	00000020,ra,00000003
+
+l00401624:
+	bgeiuc	r5,00000010,004016A8
+
+l00401628:
+	addiupc	r7,00010B90
+	lwxs	r7,r5(r7)
+	jrc	r7
+
+l00401630:
+	addiupc	r4,0000F78C
+
+l00401634:
+	balc	fn00401762
+	bc	00401652
+
+l00401638:
+	addiupc	r4,0000F7A0
+	bc	00401634
+
+l0040163E:
+	addiupc	r4,0000F7BA
+	bc	00401634
+
+l00401644:
+	addiupc	r4,0000F7D8
+	bc	00401634
+
+l0040164A:
+	move	r5,r17
+	addiupc	r4,0000F7F0
+
+l00401650:
+	balc	fn00401594
+
+l00401652:
+	beqc	r0,r16,00401760
+
+l00401656:
+	lwpc	r7,004544EC
+	bbeqzc	r7,00000008,00401760
+
+l00401660:
+	addiu	r4,r16,00000008
+	balc	pr_iph
+	restore.jrc	00000020,ra,00000003
+
+l00401666:
+	addiupc	r4,0000F7FA
+	bc	00401634
+
+l0040166C:
+	addiupc	r4,0000F808
+	bc	00401634
+
+l00401672:
+	addiupc	r4,0000F81A
+	bc	00401634
+
+l00401678:
+	addiupc	r4,0000F830
+	bc	00401634
+
+l0040167E:
+	addiupc	r4,0000F842
+	bc	00401634
+
+l00401684:
+	addiupc	r4,0000F858
+	bc	00401634
+
+l0040168A:
+	addiupc	r4,0000F86E
+	bc	00401634
+
+l00401690:
+	addiupc	r4,0000F898
+	bc	00401634
+
+l00401696:
+	addiupc	r4,0000F8C6
+	bc	00401634
+
+l0040169C:
+	addiupc	r4,0000F8D0
+	bc	00401634
+
+l004016A2:
+	addiupc	r4,0000F8E2
+	bc	00401634
+
+l004016A8:
+	addiupc	r4,0000F8F0
+	bc	00401650
+
+l004016AE:
+	addiupc	r4,0000F90A
+	bc	00401634
+
+l004016B4:
+	beqic	r5,00000001,004016F2
+
+l004016B8:
+	beqzc	r5,004016CA
+
+l004016BA:
+	beqic	r5,00000002,004016F8
+
+l004016BE:
+	beqic	r5,00000003,004016FE
+
+l004016C2:
+	addiupc	r4,0000F976
+	balc	fn00401594
+	bc	004016D0
+
+l004016CA:
+	addiupc	r4,0000F8FE
+
+l004016CE:
+	balc	fn00401594
+
+l004016D0:
+	li	r7,00000002
+	sw	r0,0000(sp)
+	sw	r0,0008(sp)
+	sh	r7,0000(sp)
+	sw	r0,000C(sp)
+	beqzc	r16,004016E0
+
+l004016DE:
+	lw	r17,0004(r16)
+
+l004016E0:
+	li	r5,00000010
+	move	r4,sp
+	sw	r17,0004(sp)
+	balc	pr_addr
+	move	r5,r4
+	addiupc	r4,0000F964
+	bc	00401650
+
+l004016F2:
+	addiupc	r4,0000F8EA
+	bc	004016CE
+
+l004016F8:
+	addiupc	r4,0000F8F4
+	bc	004016CE
+
+l004016FE:
+	addiupc	r4,0000F916
+	bc	004016CE
+
+l00401704:
+	addiupc	r4,0000F960
+	bc	00401620
+
+l0040170A:
+	beqzc	r5,00401716
+
+l0040170C:
+	beqic	r5,00000001,0040171C
+
+l00401710:
+	addiupc	r4,0000F99C
+	bc	00401650
+
+l00401716:
+	addiupc	r4,0000F95E
+	bc	00401634
+
+l0040171C:
+	addiupc	r4,0000F970
+	bc	00401634
+
+l00401722:
+	beqzc	r16,0040172C
+
+l00401724:
+	lw	r4,0004(r16)
+	balc	fn0040193C
+	srl	r17,r4,00000018
+
+l0040172C:
+	move	r5,r17
+	addiupc	r4,0000F99E
+	bc	00401650
+
+l00401734:
+	addiupc	r4,0000F9BC
+	bc	00401620
+
+l0040173A:
+	addiupc	r4,0000F9C2
+	bc	00401620
+
+l00401740:
+	addiupc	r4,0000F9CC
+	bc	00401620
+
+l00401746:
+	addiupc	r4,0000F9DA
+	bc	00401620
+
+l0040174C:
+	addiupc	r4,0000F9E8
+	bc	00401620
+
+l00401752:
+	addiupc	r4,0000F9FA
+	bc	00401620
 
 l00401758:
 	move	r5,r4
 	addiupc	r4,0000FA06
 	balc	fn00401594
+
+l00401760:
 	restore.jrc	00000020,ra,00000003
 
 ;; fn00401762: 00401762
 ;;   Called from:
 ;;     004015A6 (in pr_iph)
+;;     00401620 (in pr_icmph)
+;;     00401634 (in pr_icmph)
 ;;     00401B3C (in ping4_parse_reply)
 fn00401762 proc
 	bc	puts
@@ -2559,6 +2783,7 @@ l00401938:
 
 ;; fn0040193C: 0040193C
 ;;   Called from:
+;;     00401726 (in pr_icmph)
 ;;     00401AEE (in ping4_parse_reply)
 ;;     00401B46 (in ping4_parse_reply)
 fn0040193C proc
@@ -5334,7 +5559,9 @@ l00402E3E:
 	addiupc	r7,0000F48E
 	lwxs	r7,r16(r7)
 	jrc	r7
-00402E46                   80 04 EE E9                         ....      
+
+l00402E46:
+	addiupc	r4,0000E9EE
 
 l00402E4A:
 	balc	fn0040309C
@@ -5342,8 +5569,22 @@ l00402E4A:
 l00402E4C:
 	move	r4,r0
 	restore.jrc	00000010,ra,00000003
-00402E50 80 04 F0 E9 F5 1B 80 04 06 EA EF 1B 80 04 20 EA .............. .
-00402E60 E9 1B 80 04 2E EA E3 1B                         ........        
+
+l00402E50:
+	addiupc	r4,0000E9F0
+	bc	00402E4A
+
+l00402E56:
+	addiupc	r4,0000EA06
+	bc	00402E4A
+
+l00402E5C:
+	addiupc	r4,0000EA20
+	bc	00402E4A
+
+l00402E62:
+	addiupc	r4,0000EA2E
+	bc	00402E4A
 
 l00402E68:
 	move	r5,r16
@@ -8073,10 +8314,10 @@ l0040432A:
 
 ;; __muldf3: 00404330
 ;;   Called from:
-;;     00409260 (in fn00409170)
-;;     004093CC (in fn00409170)
-;;     00409426 (in fn00409170)
-;;     00409470 (in fn00409170)
+;;     00409260 (in printf_core)
+;;     004093CC (in printf_core)
+;;     00409426 (in printf_core)
+;;     00409470 (in printf_core)
 ;;     0040B5FA (in decfloat)
 ;;     0040B82E (in decfloat)
 ;;     0040B9BC (in decfloat)
@@ -8364,22 +8605,54 @@ l00404588:
 	move	r7,r6
 	movep	r4,r5,r9,r7
 	jrc	ra
-0040459E                                           8B 20               . 
-004045A0 90 22 E8 E0 00 00 78 52 E0 60 FF FF 0F 00 80 20 ."....xR.`..... 
-004045B0 10 2E 87 20 10 5E FF D3 45 10 87 20 10 46 E8 E0 ... .^..E.. .F..
-004045C0 00 00 EB 20 90 3A                               ... .:          
+
+l0040459E:
+	or	r4,r11,r4
+	lui	r7,00000080
+	and	r4,r4,r7
+	li	r7,000FFFFF
+	movn	r5,r0,r4
+
+l004045B2:
+	movn	r11,r7,r4
+
+l004045B6:
+	li	r7,FFFFFFFF
+	move	r2,r5
+	movn	r8,r7,r4
+
+l004045BE:
+	lui	r7,00000080
+	or	r7,r11,r7
 
 l004045C6:
 	addiu	r5,r0,000007FF
 	bc	00404588
-004045CC                                     45 10 A0 C9             E...
-004045D0 AA 10 A0 C9 E9 1F B0 C9 69 0F                   ........i.      
+
+l004045CC:
+	move	r2,r5
+
+l004045CE:
+	beqic	r13,00000002,0040467C
+
+l004045D2:
+	beqic	r13,00000003,004045BE
+
+l004045D6:
+	bneiuc	r13,00000001,00404542
 
 l004045DA:
 	movep	r7,r8,r0,r0
 	bc	00404642
-004045DE                                           4E 10               N.
-004045E0 64 11 09 11 A3 11 E7 1B                         d.......        
+
+l004045DE:
+	move	r2,r14
+
+l004045E0:
+	move	r11,r4
+	move	r8,r9
+	move	r13,r3
+	bc	004045CE
 
 l004045E8:
 	move	r12,r6
@@ -8448,8 +8721,12 @@ l0040465E:
 	sltu	r8,r0,r8
 	or	r8,r6,r8
 	bc	00404616
-0040466E                                           60 61               `a
-00404670 FF FF 0F 00 00 81 01 80 40 10 43 1B             ........@.C.    
+
+l0040466E:
+	li	r11,000FFFFF
+	addiu	r8,r0,FFFFFFFF
+	move	r2,r0
+	bc	004045BE
 
 l0040467C:
 	movep	r7,r8,r0,r0
@@ -8488,7 +8765,7 @@ l004046BE:
 
 ;; __fixdfsi: 004046C0
 ;;   Called from:
-;;     00409230 (in fn00409170)
+;;     00409230 (in printf_core)
 __fixdfsi proc
 	ext	r6,r5,00000004,0000000B
 	addiu	r7,r0,000003FE
@@ -8594,10 +8871,11 @@ l0040478C:
 
 l00404794:
 	lui	r4,00000020
-
-l00404798:
 	bc	00404752
-0040479A                               80 00 00 80 B3 1B           ......
+
+l0040479A:
+	addiu	r4,r0,00008000
+	bc	00404752
 
 l004047A0:
 	addiupc	r7,0004FC8C
@@ -8921,8 +9199,9 @@ __libc_start_main proc
 ;;     00408024 (in __sigaction)
 ;;     0040804E (in sigprocmask)
 ;;     0040863A (in perror)
-;;     00408D3A (in fn00408B86)
-;;     00408D8E (in fn00408D8E)
+;;     00408D3A (in printf_core)
+;;     00408D8E (in printf_core)
+;;     0040903C (in printf_core)
 ;;     00409B64 (in vsnprintf)
 ;;     0040B06C (in __setxid)
 ;;     0040B652 (in decfloat)
@@ -9001,6 +9280,7 @@ l004049E6:
 ;;     00401856 (in ping4_receive_error_msg)
 ;;     00402FD4 (in ping6_receive_error_msg)
 ;;     00408640 (in perror)
+;;     00409042 (in printf_core)
 strerror proc
 	rdhwr	r3,0000001D,00000000
 	lw	r5,-0038(r3)
@@ -11992,13 +12272,7 @@ l00405FD0:
 	addiu	r4,r6,00000004
 	li	r6,00000004
 
-;; fn00405FD4: 00405FD4
-;;   Called from:
-;;     00405FD2 (in copy_addr)
-;;     00406000 (in fn00405FFE)
-;;     00406008 (in copy_addr)
-;;     00406014 (in copy_addr)
-fn00405FD4 proc
+l00405FD4:
 	bltuc	r8,r6,00405FE0
 
 l00405FD8:
@@ -12021,36 +12295,27 @@ l00405FF0:
 	andi	r6,r6,000000C0
 	beqc	r6,r10,00406018
 
-;; fn00405FFE: 00405FFE
-;;   Called from:
-;;     00405FD4 (in fn00405FD4)
-;;     00405FFA (in copy_addr)
-;;     0040601C (in fn0040601C)
-fn00405FFE proc
+l00405FFE:
 	li	r6,00000010
-	bc	fn00405FD4
+	bc	00405FD4
 
 l00406002:
 	addiu	r11,r0,000000FF
 	li	r6,00000010
-	bnec	r10,r11,fn00405FD4
+	bnec	r10,r11,00405FD4
 
 l0040600C:
 	lbu	r10,0001(r7)
 	andi	r10,r10,0000000F
-	bneiuc	r10,00000002,fn00405FD4
+	bneiuc	r10,00000002,00405FD4
 
 l00406018:
 	sw	r9,0018(r16)
-
-;; fn0040601C: 0040601C
-;;   Called from:
-;;     00406018 (in copy_addr)
-;;     004075B6 (in __netlink_enumerate)
-fn0040601C proc
-	bc	fn00405FFE
+	bc	00405FFE
 
 ;; netlink_msg_to_ifaddr: 0040601E
+;;   Called from:
+;;     004075B6 (in __netlink_enumerate)
 netlink_msg_to_ifaddr proc
 	save	00000030,ra,00000008
 	movep	r19,r17,r4,r5
@@ -13839,7 +14104,7 @@ l00406C58:
 	addiu	r8,r0,00000080
 	li	r4,00000002
 	andi	r5,r5,000000C0
-	beqc	r5,r8,fn00406CA8
+	beqc	r5,r8,00406CA8
 
 l00406C68:
 	lw	r5,0000(r7)
@@ -13868,12 +14133,12 @@ l00406C80:
 l00406C86:
 	lbu	r5,000F(r7)
 	li	r4,00000002
-	beqic	r5,00000001,fn00406CA8
+	beqic	r5,00000001,00406CA8
 
 l00406C90:
 	addiu	r5,r0,000000FE
 	li	r4,0000000E
-	bnec	r5,r6,fn00406CA8
+	bnec	r5,r6,00406CA8
 
 l00406C98:
 	lbu	r7,0001(r7)
@@ -13882,23 +14147,17 @@ l00406C98:
 	xori	r7,r7,000000C0
 	movz	r4,r6,r7
 
-;; fn00406CA8: 00406CA8
+l00406CA8:
+	jrc	ra
+
+;; addrcmp: 00406CAA
 ;;   Called from:
-;;     00406C64 (in scopeof)
-;;     00406C8C (in scopeof)
-;;     00406C96 (in scopeof)
-;;     00406CA4 (in scopeof)
-;;     00406CA4 (in scopeof)
 ;;     00409CDE (in sift)
 ;;     00409D18 (in sift)
 ;;     00409D20 (in sift)
 ;;     00409DA0 (in trinkle)
 ;;     00409DFE (in trinkle)
 ;;     00409E06 (in trinkle)
-fn00406CA8 proc
-	jrc	ra
-
-;; addrcmp: 00406CAA
 addrcmp proc
 	lw	r4,0018(r4)
 	lw	r7,0018(r5)
@@ -14294,15 +14553,9 @@ l00406F40:
 fn00406F46 proc
 	bc	__isspace
 
-;; fn00406F48: 00406F48
-;;   Called from:
-;;     0040D1AE (in __dns_parse)
-fn00406F48 proc
-	movep	r7,r7,r4,r5
-
 ;; dns_parse_callback: 00406F4A
 ;;   Called from:
-;;     00406F48 (in fn00406F48)
+;;     0040D1AE (in __dns_parse)
 dns_parse_callback proc
 	save	00000110,ra,00000002
 	movep	r16,r9,r4,r5
@@ -17294,6 +17547,7 @@ l004083DA:
 
 ;; fputs_unlocked: 004083F0
 ;;   Called from:
+;;     004001E6 (in main)
 ;;     00400B5A (in fn00400B5A)
 ;;     00400F96 (in ping4_run)
 ;;     00402126 (in fn00402126)
@@ -18018,7 +18272,8 @@ __isoc99_sscanf proc
 
 ;; fmt_u: 004088E0
 ;;   Called from:
-;;     004091F8 (in fn00409170)
+;;     00408F72 (in printf_core)
+;;     004091F8 (in printf_core)
 ;;     004099EA (in fn004099EA)
 fmt_u proc
 	save	00000010,ra,00000004
@@ -18064,8 +18319,8 @@ l00408920:
 
 ;; getint: 00408924
 ;;   Called from:
-;;     00408D84 (in fn00408B86)
-;;     00408DD6 (in fn00408B86)
+;;     00408D84 (in printf_core)
+;;     00408DD6 (in printf_core)
 getint proc
 	move	r7,r0
 	bc	0040892E
@@ -18107,20 +18362,23 @@ l0040895E:
 ;;   Called from:
 ;;     00408B5A (in pad)
 ;;     00408B6A (in pad)
-;;     00408C08 (in fn00408B86)
-;;     00408FEA (in fn00408B86)
-;;     0040900C (in fn00408B86)
-;;     004092E2 (in fn00409170)
-;;     004092FA (in fn00409170)
-;;     00409310 (in fn00409170)
-;;     00409802 (in fn00409170)
-;;     0040983C (in fn00409170)
-;;     004098E0 (in fn00409170)
-;;     00409908 (in fn00409170)
-;;     00409940 (in fn00409170)
-;;     0040996C (in fn00409170)
-;;     0040997C (in fn00409170)
-;;     004099A2 (in fn00409170)
+;;     00408C08 (in printf_core)
+;;     00408FEA (in printf_core)
+;;     0040900C (in printf_core)
+;;     004090FA (in printf_core)
+;;     004092E2 (in printf_core)
+;;     004092FA (in printf_core)
+;;     00409310 (in printf_core)
+;;     00409386 (in printf_core)
+;;     0040938E (in printf_core)
+;;     00409802 (in printf_core)
+;;     0040983C (in printf_core)
+;;     004098E0 (in printf_core)
+;;     00409908 (in printf_core)
+;;     00409940 (in printf_core)
+;;     0040996C (in printf_core)
+;;     0040997C (in printf_core)
+;;     004099A2 (in printf_core)
 out proc
 	move	r7,r4
 	move	r4,r5
@@ -18137,8 +18395,8 @@ l00408974:
 
 ;; pop_arg: 00408976
 ;;   Called from:
-;;     00408E0E (in fn00408B86)
-;;     004099BE (in fn00408B86)
+;;     00408E0E (in printf_core)
+;;     004099BE (in printf_core)
 pop_arg proc
 	bgeiuc	r5,0000001D,00408A76
 
@@ -18151,53 +18409,271 @@ l00408982:
 	lwxs	r5,r5(r7)
 	lb	r7,000C(r6)
 	jrc	r5
-0040898E                                           E0 88               ..
-00408990 1A 80 A7 80 04 80 A5 20 08 00 A6 84 0C 10 05 A8 ....... ........
-004089A0 0A 80 61 17 EF B3 F0 17 C0 97 E0 DB E0 17 F1 92 ..a.............
-004089B0 E0 96 F3 1B E0 88 1E 80 A7 80 04 80 A5 20 08 00 ............. ..
-004089C0 A6 84 0C 10 05 A8 0E 80 61 17 EF B3 F0 7F C0 97 ........a.......
-004089D0 E7 80 9F C0 9E 18 E0 17 F1 92 E0 96 EF 1B E0 88 ................
-004089E0 1C 80 A7 80 04 80 A5 20 08 00 A6 84 0C 10 05 A8 ....... ........
-004089F0 0C 80 61 17 EF B3 F8 7F C0 97 41 94 E0 DB E0 17 ..a.......A.....
-00408A00 F1 92 E0 96 F1 1B E0 88 18 80 A7 80 04 80 A5 20 ............... 
-00408A10 08 00 A6 84 0C 10 05 A8 08 80 61 17 EF B3 F0 5F ..........a...._
-00408A20 AD 1B E0 17 F1 92 E0 96 F5 1B E0 88 18 80 A7 80 ................
-00408A30 04 80 A5 20 08 00 A6 84 0C 10 05 A8 08 80 61 17 ... ..........a.
-00408A40 EF B3 F8 5F B3 1B E0 17 F1 92 E0 96 F5 1B E0 88 ..._............
-00408A50 26 80 E0 80 80 E0 A7 80 08 80 07 11 A5 20 08 00 &............ ..
-00408A60 A6 84 0C 10 05 A8 10 80 E1 17 07 21 D0 39 C7 A4 ...........!.9..
-00408A70 00 24 40 97 C1 97                               .$@...          
+
+l0040898E:
+	bgec	r0,r7,004089AC
+
+l00408992:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,004089AC
+
+l004089A2:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l004089A6:
+	lw	r7,0000(r7)
+	sw	r7,0000(sp)
+	jrc	ra
+
+l004089AC:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	004089A6
+
+l004089B4:
+	bgec	r0,r7,004089D6
+
+l004089B8:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,004089D6
+
+l004089C8:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l004089CC:
+	lh	r7,0000(r7)
+
+l004089CE:
+	sw	r7,0000(sp)
+	sra	r7,r7,0000001F
+	bc	00408A74
+
+l004089D6:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	004089CC
+
+l004089DE:
+	bgec	r0,r7,004089FE
+
+l004089E2:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,004089FE
+
+l004089F2:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l004089F6:
+	lhu	r7,0000(r7)
+
+l004089F8:
+	sw	r7,0000(sp)
+	sw	r0,0004(sp)
+	jrc	ra
+
+l004089FE:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	004089F6
+
+l00408A06:
+	bgec	r0,r7,00408A22
+
+l00408A0A:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408A22
+
+l00408A1A:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l00408A1E:
+	lb	r7,0000(r7)
+	bc	004089CE
+
+l00408A22:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	00408A1E
+
+l00408A2A:
+	bgec	r0,r7,00408A46
+
+l00408A2E:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408A46
+
+l00408A3E:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l00408A42:
+	lbu	r7,0000(r7)
+	bc	004089F8
+
+l00408A46:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	00408A42
+
+l00408A4E:
+	bgec	r0,r7,00408A78
+
+l00408A52:
+	ins	r7,r0,00000000,00000001
+	addiu	r5,r7,FFFFFFF8
+	move	r8,r7
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408A78
+
+l00408A68:
+	lw	r7,0004(r6)
+	subu	r7,r7,r8
+
+l00408A6E:
+	lwm	r6,0000(r7),00000002
+	sw	r6,0000(sp)
+
+l00408A74:
+	sw	r7,0004(sp)
 
 l00408A76:
 	jrc	ra
-00408A78                         E0 17 EF 90 E0 80 80 E0         ........
-00408A80 F2 92 E0 96 E9 1B E0 88 18 80 A7 80 04 80 A5 20 ............... 
-00408A90 08 00 A6 84 0C 10 05 A8 08 80 61 17 EF B3 F0 17 ..........a.....
-00408AA0 2D 1B E0 17 F1 92 E0 96 F5 1B E0 88 18 80 A7 80 -...............
-00408AB0 04 80 A5 20 08 00 A6 84 0C 10 05 A8 08 80 61 17 ... ..........a.
-00408AC0 EF B3 F0 17 33 1B E0 17 F1 92 E0 96 F5 1B E0 88 ....3...........
-00408AD0 42 80 E0 80 80 E0 A7 80 08 80 07 11 A5 20 08 00 B............ ..
-00408AE0 A6 84 0C 10 05 A8 2C 80 E1 17 07 21 D0 39 C7 A4 ......,....!.9..
-00408AF0 00 24 40 97 7F 1B E0 88 1A 80 E0 80 80 E0 A7 80 .$@.............
-00408B00 08 80 A5 20 08 00 A6 84 0C 10 05 A8 06 80 61 17 ... ..........a.
-00408B10 EF B3 DB 1B E0 17 EF 90 E0 80 80 E0 F2 92 E0 96 ................
-00408B20 CD 1B                                           ..              
+
+l00408A78:
+	lw	r7,0000(r6)
+	addiu	r7,r7,00000007
+	ins	r7,r0,00000000,00000001
+	addiu	r5,r7,00000008
+	sw	r5,0000(sp)
+	bc	00408A6E
+
+l00408A86:
+	bgec	r0,r7,00408AA2
+
+l00408A8A:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408AA2
+
+l00408A9A:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l00408A9E:
+	lw	r7,0000(r7)
+	bc	004089CE
+
+l00408AA2:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	00408A9E
+
+l00408AAA:
+	bgec	r0,r7,00408AC6
+
+l00408AAE:
+	addiu	r5,r7,FFFFFFFC
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408AC6
+
+l00408ABE:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+
+l00408AC2:
+	lw	r7,0000(r7)
+	bc	004089F8
+
+l00408AC6:
+	lw	r7,0000(r6)
+	addiu	r5,r7,00000004
+	sw	r5,0000(sp)
+	bc	00408AC2
+
+l00408ACE:
+	bgec	r0,r7,00408B14
+
+l00408AD2:
+	ins	r7,r0,00000000,00000001
+	addiu	r5,r7,FFFFFFF8
+	move	r8,r7
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408B14
+
+l00408AE8:
+	lw	r7,0004(r6)
+	subu	r7,r7,r8
+
+l00408AEE:
+	lwm	r6,0000(r7),00000002
+	sw	r6,0000(sp)
+	bc	00408A74
+
+l00408AF6:
+	bgec	r0,r7,00408B14
+
+l00408AFA:
+	ins	r7,r0,00000000,00000001
+	addiu	r5,r7,FFFFFFF8
+	seb	r5,r5
+	sb	r5,000C(r6)
+	bltc	r5,r0,00408B14
+
+l00408B0E:
+	lw	r6,0004(r6)
+	subu	r7,r6,r7
+	bc	00408AEE
+
+l00408B14:
+	lw	r7,0000(r6)
+	addiu	r7,r7,00000007
+	ins	r7,r0,00000000,00000001
+	addiu	r5,r7,00000008
+	sw	r5,0000(sp)
+	bc	00408AEE
 
 ;; pad: 00408B22
 ;;   Called from:
-;;     00408FE4 (in fn00408B86)
-;;     00408FFC (in fn00408B86)
-;;     00409006 (in fn00408B86)
-;;     0040901C (in fn00408B86)
-;;     004090D0 (in fn00409170)
-;;     004092DA (in fn00409170)
-;;     004092F4 (in fn00409170)
-;;     00409308 (in fn00409170)
-;;     00409322 (in fn00409170)
-;;     004097FA (in fn00409170)
-;;     00409814 (in fn00409170)
-;;     00409850 (in fn00409170)
-;;     00409934 (in fn00409170)
+;;     00408FE4 (in printf_core)
+;;     00408FFC (in printf_core)
+;;     00409006 (in printf_core)
+;;     0040901C (in printf_core)
+;;     004090B8 (in printf_core)
+;;     004090D0 (in printf_core)
+;;     004092DA (in printf_core)
+;;     004092F4 (in printf_core)
+;;     00409308 (in printf_core)
+;;     00409322 (in printf_core)
+;;     0040937E (in printf_core)
+;;     004093A0 (in printf_core)
+;;     004097FA (in printf_core)
+;;     00409814 (in printf_core)
+;;     00409850 (in printf_core)
+;;     00409934 (in printf_core)
 pad proc
 	save	00000110,ra,00000004
 	move	r17,r4
@@ -18254,16 +18730,11 @@ printf_core proc
 	sw	r7,0028(sp)
 	sw	r5,004C(sp)
 
-;; fn00408B86: 00408B86
-;;   Called from:
-;;     00408B84 (in printf_core)
-;;     00408D8E (in fn00408D8E)
-;;     00409332 (in fn00409170)
-fn00408B86 proc
+l00408B86:
 	lw	r17,0004(sp)
 	li	r7,7FFFFFFF
 	subu	r7,r7,r6
-	bltc	r7,r22,fn00408D8E
+	bltc	r7,r22,00408D8E
 
 l00408B94:
 	lw	r5,004C(sp)
@@ -18332,7 +18803,7 @@ l00408BEE:
 	subu	r22,r22,r21
 	subu	r7,r20,r7
 	sw	r7,0008(sp)
-	bltc	r7,r22,fn00408D8E
+	bltc	r7,r22,00408D8E
 
 l00408C04:
 	beqzc	r16,00408C0C
@@ -18342,7 +18813,7 @@ l00408C06:
 	move.balc	r4,r16,out
 
 l00408C0C:
-	bnec	r0,r22,fn00408B86
+	bnec	r0,r22,00408B86
 
 l00408C10:
 	lw	r17,004C(sp)
@@ -18485,7 +18956,7 @@ l00408D1A:
 	bnec	r0,r16,00408E12
 
 l00408D1E:
-	bc	fn00408B86
+	bc	00408B86
 
 l00408D20:
 	addiu	r7,r7,00000001
@@ -18511,6 +18982,8 @@ l00408D3A:
 
 l00408D40:
 	sw	r7,0000(sp)
+
+l00408D42:
 	li	r7,FFFFFFFF
 	bc	004099CC
 
@@ -18557,22 +19030,7 @@ l00408D82:
 	sw	r4,0000(sp)
 	bgec	r4,r0,00408C96
 
-;; fn00408D8E: 00408D8E
-;;   Called from:
-;;     00408B90 (in fn00408B86)
-;;     00408BA2 (in fn00408B86)
-;;     00408C00 (in fn00408B86)
-;;     00408D3E (in fn00408B86)
-;;     00408D8A (in fn00408B86)
-;;     00408E02 (in fn00408B86)
-;;     00408FDA (in fn00408B86)
-;;     004092B2 (in fn00409170)
-;;     004097C0 (in fn00409170)
-;;     004097D8 (in fn00409170)
-;;     004097EC (in fn00409170)
-;;     004098A2 (in fn00409170)
-;;     004099CA (in fn00408B86)
-fn00408D8E proc
+l00408D8E:
 	balc	__errno_location
 	li	r7,0000004B
 	bc	00408D40
@@ -18685,31 +19143,206 @@ l00408E3A:
 	addiupc	r6,0000A102
 	lwxs	r7,r7(r6)
 	jrc	r7
-00408E42       EC CA 41 45 E0 04 D6 A1 F7 20 47 3C E0 D8   ..AE..... G<..
-00408E50 F6 34 DD 84 04 60 71 7F 2D 19 F6 34 DD 84 04 20 .4...`q.-..4... 
-00408E60 74 5F 23 19 F6 34 C1 34 70 97 1B 19 F6 34 C1 34 t_#..4.4p....4.4
-00408E70 70 97 C6 80 9F C0 71 97 0D 19 88 D3 D2 80 08 50 p.....q........P
-00408E80 C7 20 10 96 FC 50 F8 D1 D6 34 13 81 20 20 F7 36 . ...P...4..  .6
-00408E90 BD 02 B8 00 E6 10 B7 10 A7 20 90 22 2A BA E6 22 ......... ."*.."
-00408EA0 90 32 E0 04 4E 91 E7 12 10 9B 24 CA 0C 18 73 82 .2..N.....$...s.
-00408EB0 84 C0 C0 02 02 00 67 22 50 B9 C0 8B C8 00 12 A8 ......g"P.......
-00408EC0 CD BE 20 82 10 E4 C2 18 7F F2 40 05 72 A1 44 21 .. .......@.r.D!
-00408ED0 07 21 BF 92 FC 33 88 20 90 22 95 84 00 10 85 80 .!...3. ."......
-00408EE0 1C C0 CC 53 DC 32 B1 1B BD 02 B8 00 D6 34 B7 34 ...S.2.......4.4
-00408EF0 F5 10 A6 20 90 22 1E BA E0 06 F8 90 24 CA BB 1F ... ."......$...
-00408F00 A7 22 D0 B1 77 12 56 22 50 B3 ED 92 D3 22 10 BE ."..w.V"P...."..
-00408F10 D6 82 01 50 A5 1B 67 F2 BF 92 84 00 30 00 6B 33 ...P..g.....0.k3
-00408F20 95 84 00 10 85 80 1D C0 4C 53 DB 32 C5 1B DD A4 ........LS.2....
-00408F30 58 24 07 88 1C 80 C0 20 D0 31 E0 20 D0 39 C0 20 X$..... .1. .9. 
-00408F40 90 2B C0 02 01 00 FF B2 DD A4 58 2C E0 06 A4 90 .+........X,....
-00408F50 1A 18 34 CA 24 58 E0 04 9A 90 F1 82 01 20 67 02 ..4.$X....... g.
-00408F60 02 00 E0 22 90 B3 E7 22 10 9A F3 12 6E 73 9D A4 ..."..."....ns..
-00408F70 58 24 FF 2B 6B F9 A4 12 41 1B C0 02 01 00 E3 62 X$.+k...A......b
-00408F80 71 90 00 00 E7 1B 12 88 39 BF DD A4 58 24 7C 53 q.......9...X$|S
-00408F90 EE 73 04 BB 40 8A 14 0A C6 80 01 50 A7 22 D0 39 .s..@......P.".9
-00408FA0 7E B3 EE 71 F2 20 50 33 C7 20 10 96 B3 22 D0 99 ~..q. P3. ..."..
-00408FB0 E0 60 FF FF FF 7F 72 22 50 F3 C7 22 D0 39 D3 23 .`....r"P..".9.#
-00408FC0 10 96 D2 13 47 AA C7 BD                         ....G...        
+
+l00408E42:
+	bgeiuc	r23,00000008,00408B86
+
+l00408E46:
+	addiupc	r7,0000A1D6
+	lwxs	r7,r23(r7)
+	jrc	r7
+
+l00408E50:
+	lw	r17,0058(sp)
+	lhu	r6,0004(sp)
+	sh	r6,0000(r7)
+	bc	00408B86
+
+l00408E5A:
+	lw	r17,0058(sp)
+	lbu	r6,0004(sp)
+	sb	r6,0000(r7)
+	bc	00408B86
+
+l00408E64:
+	lw	r17,0058(sp)
+	lw	r17,0004(sp)
+	sw	r6,0040(sp)
+	bc	00408B86
+
+l00408E6C:
+	lw	r17,0058(sp)
+	lw	r17,0004(sp)
+	sw	r6,0040(sp)
+	sra	r6,r6,0000001F
+	sw	r6,0044(sp)
+	bc	00408B86
+
+l00408E7A:
+	li	r7,00000008
+	sltiu	r6,r18,00000008
+	movn	r18,r7,r6
+
+l00408E84:
+	or	r17,r17,r7
+	li	r19,00000078
+
+l00408E88:
+	lw	r17,0058(sp)
+	andi	r8,r19,00000020
+	lw	r5,005C(sp)
+	addiu	r21,sp,000000B8
+	move	r7,r6
+	move	r5,r23
+
+l00408E98:
+	or	r4,r7,r5
+	bnezc	r4,00408EC8
+
+l00408E9E:
+	or	r6,r6,r23
+	addiupc	r7,0000914E
+	move	r23,r7
+	beqzc	r6,00408EBA
+
+l00408EAA:
+	bbeqzc	r17,00000003,00408EBA
+
+l00408EAE:
+	sra	r19,r19,00000004
+	addiu	r22,r0,00000002
+	addu	r23,r7,r19
+
+l00408EBA:
+	beqc	r0,r30,00408F86
+
+l00408EBE:
+	bltc	r18,r0,00408D8E
+
+l00408EC2:
+	ins	r17,r0,00000000,00000001
+	bc	00408F8A
+
+l00408EC8:
+	andi	r4,r7,0000000F
+	addiupc	r10,0000A172
+	lbux	r4,r4(r10)
+	addiu	r21,r21,FFFFFFFF
+	srl	r7,r7,00000004
+	or	r4,r8,r4
+	sb	r4,0000(r21)
+	sll	r4,r5,0000001C
+	or	r7,r7,r4
+	srl	r5,r5,00000004
+	bc	00408E98
+
+l00408EE8:
+	addiu	r21,sp,000000B8
+	lw	r17,0058(sp)
+	lw	r17,005C(sp)
+	move	r7,r21
+
+l00408EF2:
+	or	r4,r6,r5
+	bnezc	r4,00408F16
+
+l00408EF8:
+	addiupc	r23,000090F8
+	bbeqzc	r17,00000003,00408EBA
+
+l00408F00:
+	subu	r22,r7,r21
+	move	r19,r23
+	slt	r22,r22,r18
+	addiu	r23,r23,00000005
+	movn	r23,r19,r22
+
+l00408F10:
+	sltiu	r22,r22,00000001
+	bc	00408EBA
+
+l00408F16:
+	andi	r4,r6,00000007
+	addiu	r21,r21,FFFFFFFF
+	addiu	r4,r4,00000030
+	srl	r6,r6,00000003
+	sb	r4,0000(r21)
+	sll	r4,r5,0000001D
+	or	r6,r6,r4
+	srl	r5,r5,00000003
+	bc	00408EF2
+
+l00408F2E:
+	lwm	r6,0058(sp),00000002
+	bgec	r7,r0,00408F52
+
+l00408F36:
+	subu	r6,r0,r6
+	subu	r7,r0,r7
+	sltu	r5,r0,r6
+	addiu	r22,r0,00000001
+	subu	r7,r7,r5
+	swm	r6,0058(sp),00000002
+
+l00408F4C:
+	addiupc	r23,000090A4
+	bc	00408F6C
+
+l00408F52:
+	bbnezc	r17,0000000B,00408F7A
+
+l00408F56:
+	addiupc	r7,0000909A
+	andi	r23,r17,00000001
+	addiu	r19,r7,00000002
+	sltu	r22,r0,r23
+	movz	r19,r7,r23
+
+l00408F6A:
+	move	r23,r19
+
+l00408F6C:
+	addiu	r6,sp,000000B8
+	lwm	r4,0058(sp),00000002
+	balc	fmt_u
+	move	r21,r4
+	bc	00408EBA
+
+l00408F7A:
+	addiu	r22,r0,00000001
+	addiupc	r23,00009071
+	bc	00408F6C
+
+l00408F86:
+	bgec	r18,r0,00408EC2
+
+l00408F8A:
+	lwm	r6,0058(sp),00000002
+	or	r6,r6,r7
+	addiu	r7,sp,000000B8
+	bnezc	r6,00408F98
+
+l00408F94:
+	beqc	r0,r18,004099AC
+
+l00408F98:
+	sltiu	r6,r6,00000001
+	subu	r7,r7,r21
+	addu	r7,r7,r6
+	addiu	r19,sp,000000B8
+	slt	r6,r18,r7
+	movn	r18,r7,r6
+
+l00408FAC:
+	subu	r19,r19,r21
+	li	r7,7FFFFFFF
+	slt	r30,r18,r19
+	subu	r7,r7,r22
+	movn	r18,r19,r30
+
+l00408FC2:
+	move	r30,r18
+	bltc	r7,r18,00408D8E
 
 l00408FC8:
 	lw	r17,0000(sp)
@@ -18720,7 +19353,7 @@ l00408FC8:
 
 l00408FD8:
 	lw	r17,0008(sp)
-	bltc	r7,r18,fn00408D8E
+	bltc	r7,r18,00408D8E
 
 l00408FDE:
 	movep	r7,r8,r20,r17
@@ -18746,18 +19379,95 @@ l00408FDE:
 	li	r5,00000020
 	movep	r6,r7,r18,r20
 	move.balc	r4,r16,pad
-	bc	fn00408B86
-00409024             F6 34 20 82 10 E4 E0 06 C6 8F 01 D1     .4 .........
-00409030 EE 71 BD 02 B7 00 FD 84 B7 10 71 1B FF 2B 71 B9 .q........q..+q.
-00409040 40 16 FF 2B A5 B9 A4 12 B2 80 00 40 E0 60 FF FF @..+.......@.`..
-00409050 FF 7F B2 20 10 3A F5 BC 00 2A E4 18 95 20 50 99 ... .:...*... P.
-00409060 12 88 06 80 B8 5F E0 A8 25 3D 44 12 20 82 10 E4 ....._..%=D. ...
-00409070 E0 06 80 8F 37 1B B6 36 E0 04 84 8F A7 22 10 AA ....7..6....."..
-00409080 C7 1B F6 34 7F D1 1A B4 F9 B4 D9 73 F6 B4 96 36 ...4.......s...6
-00409090 60 12 53 8A 16 C0 B4 74 92 9A 54 72 8C 92 00 2A `.S....t..Tr...*
-004090A0 4E 3F 04 A8 9D BC AF B1 87 88 34 C0 13 A8 DF BC N?........4.....
-004090B0 C0 34 A0 D2 3B BF 80 12 1F 0A 67 FA B6 36 74 AA .4..;.....g..6t.
-004090C0 22 C0                                           ".              
+	bc	00408B86
+
+l00409024:
+	lw	r17,0058(sp)
+	ins	r17,r0,00000000,00000001
+	addiupc	r23,00008FC6
+	li	r18,00000001
+	addiu	r19,sp,000000B8
+	addiu	r21,sp,000000B7
+	sb	r7,00B7(sp)
+	bc	00408FAC
+
+l0040903C:
+	balc	__errno_location
+	lw	r4,0000(r4)
+	balc	strerror
+	move	r21,r4
+
+l00409048:
+	slti	r5,r18,00000000
+	li	r7,7FFFFFFF
+	movz	r7,r18,r5
+
+l00409056:
+	movep	r4,r5,r21,r7
+	balc	strnlen
+	addu	r19,r21,r4
+	bgec	r18,r0,0040906A
+
+l00409064:
+	lbu	r7,0000(r19)
+	bnec	r0,r7,00408D8E
+
+l0040906A:
+	move	r18,r4
+	ins	r17,r0,00000000,00000001
+	addiupc	r23,00008F80
+	bc	00408FAC
+
+l00409076:
+	lw	r5,0058(sp)
+	addiupc	r7,00008F84
+	movz	r21,r7,r21
+
+l00409080:
+	bc	00409048
+
+l00409082:
+	lw	r17,0058(sp)
+	li	r18,FFFFFFFF
+	sw	r0,0068(sp)
+	sw	r7,0064(sp)
+	addiu	r7,sp,00000064
+	sw	r7,0058(sp)
+
+l0040908E:
+	lw	r5,0058(sp)
+	move	r19,r0
+
+l00409092:
+	bgeuc	r19,r18,004090AC
+
+l00409096:
+	lw	r5,0000(r20)
+	beqzc	r5,004090AC
+
+l0040909A:
+	addiu	r4,sp,00000050
+	addiu	r20,r20,00000004
+	balc	wctomb
+	bltc	r4,r0,00408D42
+
+l004090A6:
+	subu	r7,r18,r19
+	bgeuc	r7,r4,004090E0
+
+l004090AC:
+	bltc	r19,r0,00408D8E
+
+l004090B0:
+	lw	r17,0000(sp)
+	li	r5,00000020
+	movep	r7,r8,r19,r17
+	move	r20,r0
+	move.balc	r4,r16,pad
+	lw	r5,0058(sp)
+
+l004090BE:
+	bltuc	r20,r19,004090E4
 
 l004090C2:
 	addiu	r8,r0,00002000
@@ -18772,18 +19482,84 @@ l004090C2:
 
 l004090DE:
 	bc	00409330
-004090E0 36 B2 AF 1B B5 74 DB 9A 54 72 AC 92 00 2A 00 3F 6....t..Tr...*.?
-004090F0 84 3E C4 10 93 AA CB FF D4 72 1F 0A 65 F8 BF 1B .>.......r..e...
-00409100 C0 8B 04 00 12 A8 87 BC F7 34 B6 36 C7 80 5F C0 .........4.6.._.
-00409110 15 B4 C4 B4 0E 9B E1 60 00 00 00 80 C0 04 E8 8E .......`........
-00409120 C6 B4 1C 18 34 CA 0E 5A 91 F2 A0 20 90 33 C4 B4 ....4..Z... .3..
-00409130 C3 60 D3 8E 00 00 86 00 05 00 A6 20 10 22 86 B4 .`......... ."..
-00409140 C7 80 80 F7 A0 60 FF FF EF 7F C5 A8 F4 C1 55 73 .....`........Us
-00409150 F5 BC 00 2A DA 3D AC BC 00 2A 64 5E 6B BC E4 12 ...*.=...*d^k...
-00409160 C5 13 95 FE 00 2A 08 69 80 A8 4C 02 F3 80 20 00 .....*.i..L... .
 
-;; fn00409170: 00409170
-fn00409170 proc
+l004090E0:
+	addu	r19,r19,r4
+	bc	00409092
+
+l004090E4:
+	lw	r5,0000(r21)
+	beqzc	r5,004090C2
+
+l004090E8:
+	addiu	r4,sp,00000050
+	addiu	r21,r21,00000004
+	balc	wctomb
+	addu	r20,r20,r4
+	move	r6,r4
+	bltuc	r19,r20,004090C2
+
+l004090F8:
+	addiu	r5,sp,00000050
+	move.balc	r4,r16,out
+	bc	004090BE
+
+l00409100:
+	beqc	r0,r30,00409108
+
+l00409104:
+	bltc	r18,r0,00408D8E
+
+l00409108:
+	lw	r17,005C(sp)
+	lw	r5,0058(sp)
+	srl	r6,r7,0000001F
+	sw	r0,0054(sp)
+	sw	r6,0010(sp)
+	beqzc	r6,00409124
+
+l00409116:
+	addiu	r7,r7,80000000
+	addiupc	r6,00008EE8
+
+l00409120:
+	sw	r6,0018(sp)
+	bc	00409140
+
+l00409124:
+	bbnezc	r17,0000000B,00409336
+
+l00409128:
+	andi	r5,r17,00000001
+	sltu	r6,r0,r5
+	sw	r6,0010(sp)
+	addiupc	r6,00008ED3
+	addiu	r4,r6,00000005
+	movz	r4,r6,r5
+
+l0040913E:
+	sw	r4,0018(sp)
+
+l00409140:
+	ext	r6,r7,00000000,0000001F
+	li	r5,7FEFFFFF
+	bltuc	r5,r6,00409342
+
+l0040914E:
+	addiu	r6,sp,00000054
+	movep	r4,r5,r21,r7
+	balc	frexpl
+	movep	r6,r7,r4,r5
+	balc	__adddf3
+	movep	r6,r7,r0,r0
+	move	r23,r4
+	move	r30,r5
+	movep	r21,r20,r4,r5
+	balc	__nedf2
+	bnec	r0,r4,004093B8
+
+l0040916C:
+	ori	r7,r19,00000020
 	sw	r7,0024(sp)
 	bneiuc	r7,00000021,00409400
 
@@ -18926,7 +19702,7 @@ l0040929E:
 	li	r7,7FFFFFFD
 	subu	r7,r7,r23
 	subu	r7,r7,r6
-	bltc	r7,r18,fn00408D8E
+	bltc	r7,r18,00408D8E
 
 l004092B6:
 	subu	r19,r19,r22
@@ -18978,16 +19754,70 @@ l004092CE:
 
 l00409330:
 	move	r22,r7
-	bc	fn00408B86
-00409336                   01 D3 C4 B4 C3 60 CB 8C 00 00       .....`....
-00409340 DF 19 F5 BC C0 04 D4 8C 73 82 20 20 80 06 D0 8C ........s.  ....
-00409350 B6 FE 66 22 10 A6 AC BC B6 BE 00 2A 12 67 0C 9A ..f".......*.g..
-00409360 E0 04 C0 8C 80 06 C0 8C 67 22 10 A6 E4 34 11 11 ........g"...4..
-00409370 C0 34 00 81 10 E4 67 02 03 00 A0 D2 F3 10 1F 0A .4....g.........
-00409380 A1 F7 C4 34 A6 34 1F 0A D9 F5 03 D3 90 BE FF 2B ...4.4.........+
-00409390 D1 F5 00 01 00 20 C0 34 F3 10 11 21 10 43 A0 D2 ..... .4...!.C..
-004093A0 1F 0A 7F F7 E0 34 67 22 50 B3 D3 22 10 3E C7 12 .....4g"P..".>..
-004093B0 07 88 D3 B7 FF 29 D7 F9 F5 34 FF 90 F5 B4 AD 19 .....)...4......
+	bc	00408B86
+
+l00409336:
+	li	r6,00000001
+	sw	r6,0010(sp)
+	addiupc	r6,00008CCB
+	bc	00409120
+
+l00409342:
+	movep	r4,r5,r21,r7
+	addiupc	r6,00008CD4
+	andi	r19,r19,00000020
+	addiupc	r20,00008CD0
+	movep	r22,r21,r4,r5
+	movn	r20,r6,r19
+
+l00409356:
+	movep	r6,r7,r4,r5
+	movep	r4,r5,r22,r21
+	balc	__nedf2
+	beqzc	r4,0040936C
+
+l00409360:
+	addiupc	r7,00008CC0
+	addiupc	r20,00008CC0
+	movn	r20,r7,r19
+
+l0040936C:
+	lw	r17,0010(sp)
+	move	r8,r17
+	lw	r17,0000(sp)
+	ins	r8,r0,00000000,00000001
+	addiu	r19,r7,00000003
+	li	r5,00000020
+	move	r7,r19
+	move.balc	r4,r16,pad
+	lw	r17,0010(sp)
+	lw	r17,0018(sp)
+	move.balc	r4,r16,out
+	li	r6,00000003
+	movep	r4,r5,r16,r20
+	balc	out
+	addiu	r8,r0,00002000
+	lw	r17,0000(sp)
+	move	r7,r19
+	xor	r8,r17,r8
+	li	r5,00000020
+	move.balc	r4,r16,pad
+	lw	r17,0000(sp)
+	slt	r22,r7,r19
+	movn	r7,r19,r22
+
+l004093AE:
+	move	r22,r7
+	bgec	r7,r0,00408B86
+
+l004093B4:
+	bc	00408D8E
+
+l004093B8:
+	lw	r17,0054(sp)
+	addiu	r7,r7,FFFFFFFF
+	sw	r7,0054(sp)
+	bc	0040916C
 
 l004093C0:
 	lw	r17,0024(sp)
@@ -19536,7 +20366,7 @@ l004097B4:
 l004097B8:
 	li	r7,7FFFFFFE
 	subu	r5,r7,r6
-	bltc	r5,r18,fn00408D8E
+	bltc	r5,r18,00408D8E
 
 l004097C4:
 	addiu	r22,r18,00000001
@@ -19547,7 +20377,7 @@ l004097C4:
 	bneiuc	r20,00000026,0040985C
 
 l004097D8:
-	bltc	r7,r21,fn00408D8E
+	bltc	r7,r21,00408D8E
 
 l004097DC:
 	bgec	r0,r21,004097E2
@@ -19559,7 +20389,7 @@ l004097E2:
 	lw	r17,0010(sp)
 	li	r7,7FFFFFFF
 	subu	r7,r7,r6
-	bltc	r7,r22,fn00408D8E
+	bltc	r7,r22,00408D8E
 
 l004097F0:
 	addu	r19,r6,r22
@@ -19650,7 +20480,7 @@ l00409892:
 	subu	r8,r8,r6
 	sb	r21,-0001(r4)
 	sw	r6,002C(sp)
-	bltc	r7,r8,fn00408D8E
+	bltc	r7,r8,00408D8E
 
 l004098A6:
 	addu	r22,r22,r8
@@ -19804,8 +20634,11 @@ l0040999E:
 	move.balc	r4,r16,out
 	subu	r18,r18,r20
 	bc	00409924
-004099AC                                     A7 12 67 12             ..g.
-004099B0 FF 29 F9 F5                                     .)..            
+
+l004099AC:
+	move	r21,r7
+	move	r19,r7
+	bc	00408FAC
 
 l004099B4:
 	lw	r17,0028(sp)
@@ -19838,10 +20671,10 @@ l004099E4:
 
 ;; fn004099EA: 004099EA
 ;;   Called from:
-;;     00409874 (in fn00409170)
-;;     004098BA (in fn00409170)
-;;     004098F0 (in fn00409170)
-;;     00409950 (in fn00409170)
+;;     00409874 (in printf_core)
+;;     004098BA (in printf_core)
+;;     004098F0 (in printf_core)
+;;     00409950 (in printf_core)
 fn004099EA proc
 	bc	fmt_u
 
@@ -20978,7 +21811,7 @@ l0040A12A:
 ;;     0040590C (in realloc)
 ;;     00405EBA (in getaddrinfo)
 ;;     00405F74 (in getaddrinfo)
-;;     00405FDA (in fn00405FD4)
+;;     00405FDA (in copy_addr)
 ;;     00406104 (in netlink_msg_to_ifaddr)
 ;;     00406280 (in netlink_msg_to_ifaddr)
 ;;     0040628E (in fn0040628E)
@@ -22105,6 +22938,7 @@ strncpy proc
 ;;     00406DF0 (in is_valid_hostname)
 ;;     00406FE4 (in __lookup_name)
 ;;     004076A6 (in res_mkquery)
+;;     00409058 (in printf_core)
 strnlen proc
 	save	00000010,ra,00000003
 	movep	r17,r16,r4,r5
@@ -27409,6 +28243,8 @@ fmodl proc
 0040CF24             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
 ;; frexpl: 0040CF30
+;;   Called from:
+;;     00409152 (in printf_core)
 frexpl proc
 	bc	frexp
 0040CF34             00 00 00 00 00 00 00 00 00 00 00 00     ............
@@ -27511,6 +28347,9 @@ mbstowcs proc
 0040CFEE                                           00 00               ..
 
 ;; wctomb: 0040CFF0
+;;   Called from:
+;;     0040909E (in printf_core)
+;;     004090EC (in printf_core)
 wctomb proc
 	beqzc	r4,0040CFF8
 
@@ -28152,8 +28991,21 @@ l0040D418:
 	addiupc	r8,00006020
 	lwxs	r5,r5(r8)
 	jrc	r5
-0040D422       44 5F E0 DB 41 7F E0 DB 40 97 E0 DB C4 A4   D_..A...@.....
-0040D430 00 2C                                           .,              
+
+l0040D422:
+	sb	r6,0000(r4)
+	jrc	ra
+
+l0040D426:
+	sh	r6,0000(r4)
+	jrc	ra
+
+l0040D42A:
+	sw	r6,0000(sp)
+	jrc	ra
+
+l0040D42E:
+	swm	r6,0000(r4),00000002
 
 l0040D432:
 	jrc	ra
@@ -28458,11 +29310,16 @@ l0040D620:
 	addiu	r7,r7,FFFFFFD0
 	sw	r7,000C(sp)
 	move	r7,r5
-
-l0040D630:
 	bc	0040D588
-0040D632       79 5F A0 82 01 80 D3 C8 08 40 07 02 02 00   y_.......@....
-0040D640 A0 82 02 80                                     ....            
+
+l0040D632:
+	lbu	r6,0001(r7)
+	addiu	r21,r0,FFFFFFFF
+	bneiuc	r6,00000028,0040D644
+
+l0040D63C:
+	addiu	r16,r7,00000002
+	addiu	r21,r0,FFFFFFFE
 
 l0040D644:
 	lbu	r17,0000(r16)
@@ -28554,27 +29411,30 @@ l0040D6E8:
 	sw	r7,0008(sp)
 	bc	0040DBC8
 
-l0040D6F0:
-	addiupc	r6,FFF65F78
-0040D6F2       79 5F A0 02 01 00 D3 C8 49 67               y_......Ig    
+l0040D6F2:
+	lbu	r6,0001(r7)
+	addiu	r21,r0,00000001
+	bneiuc	r6,0000002C,0040D644
 
 l0040D6FC:
 	addiu	r16,r7,00000002
 
 l0040D700:
 	addiu	r21,r0,00000003
-
-l0040D704:
 	bc	0040D644
-0040D706                   A0 02 02 00 39 1B                   ....9.    
+
+l0040D706:
+	addiu	r21,r0,00000002
+	bc	0040D644
 
 l0040D70C:
 	move	r16,r7
 	move	r21,r0
-
-l0040D710:
 	bc	0040D644
-0040D712       A0 02 01 00 2D 1B                           ....-.        
+
+l0040D712:
+	addiu	r21,r0,00000001
+	bc	0040D644
 
 l0040D718:
 	lw	r17,000C(sp)
@@ -31277,7 +32137,7 @@ __pthread_testcancel proc
 
 ;; __ashldi3: 0040EA50
 ;;   Called from:
-;;     004095B2 (in fn00409170)
+;;     004095B2 (in printf_core)
 ;;     0040E1CC (in fmod)
 ;;     0040E1F4 (in fmod)
 __ashldi3 proc
@@ -31325,7 +32185,7 @@ l0040EAA2:
 ;;   Called from:
 ;;     00404822 (in sysconf)
 ;;     00408900 (in fmt_u)
-;;     004095DE (in fn00409170)
+;;     004095DE (in printf_core)
 ;;     0040B774 (in decfloat)
 ;;     0040C8B0 (in __intscan)
 __udivdi3 proc
@@ -31636,7 +32496,7 @@ l0040ED40:
 ;; __umoddi3: 0040ED50
 ;;   Called from:
 ;;     004088EE (in fmt_u)
-;;     004095CC (in fn00409170)
+;;     004095CC (in printf_core)
 ;;     0040B784 (in decfloat)
 __umoddi3 proc
 	movep	r9,r11,r6,r7
@@ -31921,9 +32781,10 @@ l0040EF9C:
 
 ;; __adddf3: 0040EFC0
 ;;   Called from:
-;;     004091DA (in fn00409170)
-;;     004093E2 (in fn00409170)
-;;     004096BC (in fn00409170)
+;;     00409158 (in printf_core)
+;;     004091DA (in printf_core)
+;;     004093E2 (in printf_core)
+;;     004096BC (in printf_core)
 ;;     0040B99A (in decfloat)
 ;;     0040B9D4 (in decfloat)
 ;;     0040BA48 (in decfloat)
@@ -33011,7 +33872,7 @@ l0040F84A:
 	sltu	r2,r2,r5
 	subu	r6,r9,r2
 	addiu	r9,r0,FFFFFFFF
-	beqc	r4,r6,fn0040F91A
+	beqc	r4,r6,0040F91A
 
 l0040F862:
 	divu	r14,r6,r12
@@ -33071,7 +33932,7 @@ l0040F8DE:
 	bnec	r6,r2,0040F916
 
 l0040F8E4:
-	beqc	r0,r3,fn0040F91A
+	beqc	r0,r3,0040F91A
 
 l0040F8E8:
 	addu	r6,r4,r6
@@ -33099,22 +33960,12 @@ l0040F90E:
 	bnec	r6,r2,0040F916
 
 l0040F912:
-	beqc	r3,r7,fn0040F91A
+	beqc	r3,r7,0040F91A
 
 l0040F916:
 	ori	r9,r9,00000001
 
-;; fn0040F91A: 0040F91A
-;;   Called from:
-;;     0040F85E (in __divdf3)
-;;     0040F8E4 (in __divdf3)
-;;     0040F912 (in __divdf3)
-;;     0040F916 (in __divdf3)
-;;     0040F9A4 (in fn0040F9A4)
-;;     0040F9BA (in __isoc99_vfscanf)
-;;     0040F9BE (in fn0040F9BE)
-;;     0040FA5A (in fn0040FA5A)
-fn0040F91A proc
+l0040F91A:
 	addiu	r6,r11,000003FF
 	bgec	r0,r6,0040F9C8
 
@@ -33141,7 +33992,7 @@ l0040F940:
 
 l0040F948:
 	addiu	r7,r0,000007FE
-	bltc	r7,r6,fn0040FA5A
+	bltc	r7,r6,0040FA5A
 
 l0040F950:
 	sll	r7,r8,0000001D
@@ -33183,45 +34034,26 @@ l0040F99C:
 	lui	r7,00000080
 	or	r8,r8,r7
 
-;; fn0040F9A4: 0040F9A4
-;;   Called from:
-;;     0040F95C (in fn0040F91A)
-;;     0040F9A0 (in __isoc99_vfscanf)
-;;     0040FA22 (in fn0040F9BE)
-;;     0040FA5E (in fn0040FA5A)
-;;     0040FA66 (in fn0040F91A)
-fn0040F9A4 proc
+l0040F9A4:
 	addiu	r6,r0,000007FF
-
-;; fn0040F9A8: 0040F9A8
-;;   Called from:
-;;     0040D5BE (in __isoc99_vfscanf)
-;;     0040D5BE (in __isoc99_vfscanf)
-;;     0040D5BE (in __isoc99_vfscanf)
-;;     0040F9A4 (in fn0040F9A4)
-fn0040F9A8 proc
 	bc	0040F960
-0040F9AA                               4D 11 04 11 27 11           M...'.
-0040F9B0 83 11                                           ..              
+
+l0040F9AA:
+	move	r10,r13
+	move	r8,r4
+	move	r9,r7
+	move	r12,r3
 
 l0040F9B2:
-	beqic	r12,00000002,fn0040FA5A
+	beqic	r12,00000002,0040FA5A
 
 l0040F9B6:
 	beqic	r12,00000003,0040F99C
 
 l0040F9BA:
-	bneiuc	r12,00000001,fn0040F91A
+	bneiuc	r12,00000001,0040F91A
 
-l0040F9BC:
-	illegal
-
-;; fn0040F9BE: 0040F9BE
-;;   Called from:
-;;     0040F9BA (in __isoc99_vfscanf)
-;;     0040F9CC (in fn0040F91A)
-;;     0040FA1C (in fn0040F91A)
-fn0040F9BE proc
+l0040F9BE:
 	move	r8,r0
 	move	r9,r0
 	bc	0040FA20
@@ -33233,7 +34065,7 @@ l0040F9C4:
 l0040F9C8:
 	li	r5,00000001
 	subu	r5,r5,r6
-	bgeic	r5,00000039,fn0040F9BE
+	bgeic	r5,00000039,0040F9BE
 
 l0040F9D0:
 	bgeic	r5,00000020,0040FA24
@@ -33298,18 +34130,12 @@ l0040FA4C:
 	li	r8,000FFFFF
 	addiu	r9,r0,FFFFFFFF
 	move	r10,r0
-
-l0040FA58:
 	bc	0040F99C
 
-;; fn0040FA5A: 0040FA5A
-;;   Called from:
-;;     0040F94C (in fn0040F91A)
-;;     0040F9B2 (in __isoc99_vfscanf)
-fn0040FA5A proc
+l0040FA5A:
 	move	r8,r0
 	move	r9,r0
-	bc	fn0040F9A4
+	bc	0040F9A4
 
 l0040FA60:
 	move	r8,r0
@@ -33320,11 +34146,13 @@ l0040FA60:
 
 ;; __nedf2: 0040FA70
 ;;   Called from:
-;;     00409278 (in fn00409170)
-;;     00409296 (in fn00409170)
-;;     0040940E (in fn00409170)
-;;     0040947C (in fn00409170)
-;;     004096CA (in fn00409170)
+;;     00409164 (in printf_core)
+;;     00409278 (in printf_core)
+;;     00409296 (in printf_core)
+;;     0040935A (in printf_core)
+;;     0040940E (in printf_core)
+;;     0040947C (in printf_core)
+;;     004096CA (in printf_core)
 ;;     0040BA6E (in decfloat)
 ;;     0040BC98 (in decfloat)
 ;;     0040C3FC (in __floatscan)
@@ -33392,10 +34220,10 @@ l0040FAD2:
 
 ;; __subdf3: 0040FAE0
 ;;   Called from:
-;;     004091CE (in fn00409170)
-;;     00409252 (in fn00409170)
-;;     004093EE (in fn00409170)
-;;     00409460 (in fn00409170)
+;;     004091CE (in printf_core)
+;;     00409252 (in printf_core)
+;;     004093EE (in printf_core)
+;;     00409460 (in printf_core)
 ;;     0040BA92 (in decfloat)
 ;;     0040BB7E (in decfloat)
 ;;     0040C364 (in __floatscan)

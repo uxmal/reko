@@ -7,7 +7,7 @@ l004100FE:
 
 ;; __fixunsdfsi: 00410110
 ;;   Called from:
-;;     0040944C (in fn00409170)
+;;     0040944C (in printf_core)
 __fixunsdfsi proc
 	ext	r6,r5,00000004,0000000B
 	addiu	r7,r0,000003FE
@@ -57,7 +57,7 @@ l0041016E:
 
 ;; __floatsidf: 00410170
 ;;   Called from:
-;;     00409248 (in fn00409170)
+;;     00409248 (in printf_core)
 ;;     0040B5A2 (in decfloat)
 ;;     0040B5EC (in decfloat)
 ;;     0040B828 (in decfloat)
@@ -119,7 +119,7 @@ l004101C4:
 
 ;; __floatunsidf: 004101D0
 ;;   Called from:
-;;     00409456 (in fn00409170)
+;;     00409456 (in printf_core)
 ;;     0040B5F2 (in decfloat)
 ;;     0040B994 (in decfloat)
 ;;     0040B9CE (in decfloat)

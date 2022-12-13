@@ -40,6 +40,8 @@ namespace Reko.Typing
 
         public bool Find(DataType dt)
         {
+            if (dt is null) 
+                return false;
             if (dt == dtCandidate)
                 return true;
             return dt.Accept(this);

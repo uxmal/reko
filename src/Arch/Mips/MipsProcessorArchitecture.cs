@@ -52,6 +52,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage hi;
         public RegisterStorage lo;
         public RegisterStorage pc;
+        protected ulong uCodeAddressMask;
         private string? instructionSetEncoding;
         private Decoder<MipsDisassembler, Mnemonic, MipsInstruction>? rootDecoder;
 
@@ -85,6 +86,7 @@ namespace Reko.Arch.Mips
                 .Concat(ccRegs)
                 .Concat(new[] { hi, lo })
                 .ToDictionary(k => k.Name);
+            uCodeAddressMask = ~3ul;
 
             LoadUserOptions(options);
             if (this.Intrinsics is null)
@@ -220,9 +222,11 @@ namespace Reko.Arch.Mips
                 case "mips16e":
                 case "nano":
                     this.InstructionBitSize = 16;
+                    this.uCodeAddressMask = ~1ul;
                     break;
                 default:
                     this.InstructionBitSize = 32;
+                    this.uCodeAddressMask = ~3ul;
                     break;
                 }
             }
@@ -316,7 +320,7 @@ namespace Reko.Arch.Mips
         {
             var uAddr = c.ToUInt32();
             if (codeAlign)
-                uAddr &= ~3u;
+                uAddr &= (uint)base.uCodeAddressMask;
             return Address.Ptr32(uAddr);
         }
     }
@@ -332,7 +336,7 @@ namespace Reko.Arch.Mips
         {
             var uAddr = c.ToUInt32();
             if (codeAlign)
-                uAddr &= ~3u;
+                uAddr &= (uint)base.uCodeAddressMask;
             return Address.Ptr32(uAddr);
         }
     }
@@ -348,7 +352,7 @@ namespace Reko.Arch.Mips
         {
             var uAddr = c.ToUInt64();
             if (codeAlign)
-                uAddr &= ~3u;
+                uAddr &= base.uCodeAddressMask;
             return Address.Ptr64(uAddr);
         }
     }
@@ -364,7 +368,7 @@ namespace Reko.Arch.Mips
         {
             var uAddr = c.ToUInt64();
             if (codeAlign)
-                uAddr &= ~3u;
+                uAddr &= base.uCodeAddressMask;
             return Address.Ptr64(uAddr);
         }
     }

@@ -7,15 +7,15 @@
 word32 once.5593 = 0x00; // 0045451C
 Eq_n last_salen.5581 = // 00454520
 	{
-		0x00
+		0
 	};
 Eq_n old_rrlen.5543 = // 00454524
 	{
-		0x00
+		0
 	};
 Eq_n device = // 00454528
 	{
-		0x00
+		0
 	};
 word32 broadcast_pings = 0x00; // 0045452C
 word32 settos = 0x00; // 00454530
@@ -24,11 +24,11 @@ int32 nroute = 0; // 00454538
 word32 ts_type = 0x00; // 0045453C
 Eq_n oom_count.5339 = // 00454540
 	{
-		0x00
+		0
 	};
 Eq_n tokens.5340 = // 00454544
 	{
-		0x00
+		0
 	};
 int32 waittime.5325 = 0; // 00454548
 word32 once.5585 = 0x00; // 0045454C
