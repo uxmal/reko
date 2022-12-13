@@ -65,7 +65,7 @@ namespace Reko.Environments.SysV.ArchSpecific
 
         private void SetReturnRegister( DataType dtRet, ICallingConventionEmitter ccr)
         {
-            var reg = arch.GetRegister((StorageDomain) 11, default)!;
+            var reg = arch.GetRegister((StorageDomain) 3, default)!;
             ccr.RegReturn(reg);
         }
 

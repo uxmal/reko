@@ -52,6 +52,8 @@ namespace Reko.Arch.OpenRISC
             base.WordWidth = PrimitiveType.Word32;
         }
 
+        public override int ReturnAddressOnStack => 0;
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             var dasm = new Aeon.AeonDisassembler(this, imageReader);
