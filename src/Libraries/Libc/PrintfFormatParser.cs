@@ -179,6 +179,7 @@ namespace Reko.Libraries.Libc
                 domain = Domain.Pointer;
                 break;
             case 's':
+            case 'b':
                 return program.TypeFactory.CreatePointer(
                     size == PrintfSize.Long ? PrimitiveType.WChar : PrimitiveType.Char,
                     this.pointerSize);
