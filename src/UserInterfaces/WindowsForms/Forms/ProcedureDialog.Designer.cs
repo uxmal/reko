@@ -57,12 +57,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.label4 = new System.Windows.Forms.Label();
             this.txtSignature = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkIsAlloca = new System.Windows.Forms.CheckBox();
             this.chkTerminates = new System.Windows.Forms.CheckBox();
             this.chkDecompile = new System.Windows.Forms.CheckBox();
             this.chkMalloc = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtComment = new System.Windows.Forms.TextBox();
-            this.chkIsAlloca = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabProcedure.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -124,12 +124,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             // tabProcedure
             // 
-            this.tabProcedure.Controls.Add(this.label4);
             this.tabProcedure.Controls.Add(this.txtSignature);
             this.tabProcedure.Controls.Add(this.groupBox1);
-            this.tabProcedure.Controls.Add(this.label3);
             this.tabProcedure.Controls.Add(this.txtComment);
             this.tabProcedure.Controls.Add(this.txtName);
+            this.tabProcedure.Controls.Add(this.label4);
+            this.tabProcedure.Controls.Add(this.label3);
             this.tabProcedure.Controls.Add(this.label1);
             this.tabProcedure.Location = new System.Drawing.Point(4, 24);
             this.tabProcedure.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -173,6 +173,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "C&haracteristics";
+            // 
+            // chkIsAlloca
+            // 
+            this.chkIsAlloca.AutoSize = true;
+            this.chkIsAlloca.Location = new System.Drawing.Point(8, 102);
+            this.chkIsAlloca.Name = "chkIsAlloca";
+            this.chkIsAlloca.Size = new System.Drawing.Size(215, 19);
+            this.chkIsAlloca.TabIndex = 9;
+            this.chkIsAlloca.Text = "&Allocates stack memory (like alloca)";
+            this.chkIsAlloca.UseVisualStyleBackColor = true;
             // 
             // chkTerminates
             // 
@@ -225,16 +235,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.txtComment.Name = "txtComment";
             this.txtComment.Size = new System.Drawing.Size(460, 51);
             this.txtComment.TabIndex = 5;
-            // 
-            // chkIsAlloca
-            // 
-            this.chkIsAlloca.AutoSize = true;
-            this.chkIsAlloca.Location = new System.Drawing.Point(8, 102);
-            this.chkIsAlloca.Name = "chkIsAlloca";
-            this.chkIsAlloca.Size = new System.Drawing.Size(215, 19);
-            this.chkIsAlloca.TabIndex = 9;
-            this.chkIsAlloca.Text = "&Allocates stack memory (like alloca)";
-            this.chkIsAlloca.UseVisualStyleBackColor = true;
             // 
             // ProcedureDialog
             // 

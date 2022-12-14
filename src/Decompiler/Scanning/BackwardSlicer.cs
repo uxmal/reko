@@ -522,8 +522,6 @@ namespace Reko.Scanning
 
         public SliceState(BackwardSlicer slicer, RtlBlock block, int iInstr)
         {
-            if (block.Address.Offset == 0x00303B1A)
-                _ = this; //$DEBUG
             this.slicer = slicer;
             this.block = block;
             this.instrs = slicer.host.GetBlockInstructions(block).ToArray()!;
