@@ -97,8 +97,6 @@ namespace Reko.Scanning
 
         public TableExtent? DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, DecompilerEventListener listener)
         {
-            if (addrSwitch.Offset == 0x00303B2A)
-                _ = this; //$DEBUG
             if (!Start(rtlBlock, host.BlockInstructionCount(rtlBlock) - 1, xfer.Target))
             {
                 // No registers were found, so we can't trace back. 
@@ -651,6 +649,7 @@ namespace Reko.Scanning
             var cc = this.ccNext;
             if (this.invertCondition)
                 cc = cc.Invert();
+            long hi;
             switch (cc)
             {
             // NOTE: GE and GT should really be modeled with the semi-open range
@@ -661,7 +660,11 @@ namespace Reko.Scanning
             // NOTE: LE and LT should really be modeled with the semi-open range
             // (inf,right] and the open range (inf,right). However, typically compilers
             // make the mistake and use LE/LT for boundary checking in indirect transfers.
-            case ConditionCode.LE: return StridedInterval.Create(1, 0, right.ToInt64());
+            case ConditionCode.LE:
+                hi = right.ToInt64();
+                if (hi < 0)
+                    return StridedInterval.Empty;
+                return StridedInterval.Create(1, 0, right.ToInt64());
             case ConditionCode.LT: return StridedInterval.Create(1, 0, right.ToInt64() - 1);
             case ConditionCode.ULE: return StridedInterval.Create(1, 0, (long) right.ToUInt64());
             case ConditionCode.ULT: return StridedInterval.Create(1, 0, (long) right.ToUInt64() - 1);

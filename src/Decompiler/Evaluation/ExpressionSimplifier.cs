@@ -752,7 +752,10 @@ namespace Reko.Evaluation
                     binInner.Right is Constant cInnerRight &&
                     cmp.Equals(cRight, cInnerRight))
                 {
-                    var dtSlice = PrimitiveType.CreateWord(binInner.Left.DataType.BitSize - cRight.ToInt32());
+                    var sliceBits = binInner.Left.DataType.BitSize - cRight.ToInt32();
+                    if (sliceBits <= 0)
+                        return Constant.Zero(dtConvert);
+                    var dtSlice = PrimitiveType.CreateWord(sliceBits);
                     var slice = new Slice(dtSlice, binInner.Left, 0);
                     return new Conversion(slice, slice.DataType, dtConvert);
                 }
