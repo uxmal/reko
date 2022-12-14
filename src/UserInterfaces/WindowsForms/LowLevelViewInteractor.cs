@@ -394,10 +394,13 @@ namespace Reko.UserInterfaces.WindowsForms
         private void typeMarker_TextAccepted(string text)
         {
             var item = SetTypeAtAddressRange(GetSelectedAddressRange().Begin, text);
-            if (item == null)
+            if (item is null)
                 return;
             // Advance selection to beyond item.
             this.SelectedAddress = item.Address + item.Size;
+
+            // Github #1219: need to reestablish focus after TypeMarker window is closed.
+            this.Control.MemoryView.Focus();
         }
 
         private bool ValidSelection()
