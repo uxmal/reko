@@ -180,7 +180,9 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator simm0_5 = SignedImmediate(0, 5, PrimitiveType.Int16);
         private static readonly Mutator simm0_8 = SignedImmediate(0, 8, PrimitiveType.Int16);
         private static readonly Mutator simm0_16 = SignedImmediate(0, 16, PrimitiveType.Int16);
+        private static readonly Mutator simm3_5 = SignedImmediate(3, 5, PrimitiveType.Int32);
         private static readonly Mutator simm5_8 = SignedImmediate(5, 8, PrimitiveType.Int16);
+        private static readonly Mutator simm10_3 = SignedImmediate(10, 3, PrimitiveType.Int32);
         private static readonly Mutator simm16_5 = SignedImmediate(16, 5, PrimitiveType.Int32);
 
         /// <summary>
@@ -307,6 +309,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
+                (0b1010, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing, disasm
                 (0b1110, Instr(Mnemonic.bg_sfgtui__, R21, uimm5_16)),           // guess
                 (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing, disasm
@@ -478,7 +481,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 nyi_2,
                 // branch if reg <= imm XXX: signed/unsigned?
                 Instr(Mnemonic.bn_ble__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8), // wild guess
-                nyi_2,
+                Instr(Mnemonic.bn_blesi__, InstrClass.ConditionalTransfer, R13, simm10_3, disp2_8), // guess,
                 Instr(Mnemonic.bn_bgt__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8)); // wild guess
 
             var decode010000 = Sparse(0, 3, "  10", nyi_3,
@@ -499,7 +502,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decode010010 = Mask(0, 3, "  010010",
                 Instr(Mnemonic.bn_cmov____, R13, R8, R3),                   // guess
                 Instr(Mnemonic.bn_cmov____, R13, R8, R3, uimm0_3),          // not sure what the last 3 bits are
-                Instr(Mnemonic.bn_cmovi____, R13, R8, uimm3_5),             // guess
+                Instr(Mnemonic.bn_cmovsi__, R13, R8, simm3_5),             // guess
                 Instr(Mnemonic.bn_cmovi____, R13, R8, uimm3_5, uimm0_3),    // not sure what the last 3 bits are
                 nyi_3,
                 nyi_3,
@@ -543,7 +546,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // XXX: assuming this is l.lwz and not l.lws
                 Instr(Mnemonic.bn_lbz__, R13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),  // guess
                 // opcode 000101
-                Nyi("0b00101"),
+                Instr(Mnemonic.bn_lbs__, R13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),   // guess
                 // opcode 000110
                 Instr(Mnemonic.bn_sb__, Ms(8, 0, 8, 0, PrimitiveType.Byte), R13),    // guess
                 // opcode 000111

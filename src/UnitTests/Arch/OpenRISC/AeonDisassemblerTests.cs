@@ -187,6 +187,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_blesi__()
+        {
+            AssertCode("bn.blesi?\tr3,0x0,000FFFCD", "24 63 36");
+        }
+
+        [Test]
         public void AeonDis_bg_bltsi__()
         {
             AssertCode("bg.bltsi?\tr3,0x6,0010003E", "D0 66 01 F1");
@@ -225,10 +231,17 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_cmovi____()
+        public void AeonDis_bn_cmovsi__negative()
         {
             // speculative guess.
-            AssertCode("bn.cmovi??\tr12,r12,0x1", "49 8C 0A");
+            AssertCode("bn.cmovsi?\tr6,r0,-0x1", "48 C0 FA");
+        }
+
+        [Test]
+        public void AeonDis_bn_cmovsi__positive()
+        {
+            // speculative guess.
+            AssertCode("bn.cmovsi?\tr12,r12,0x1", "49 8C 0A");
         }
 
         [Test]
@@ -605,9 +618,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_sfleui__()
+        {
+            AssertCode("bg.sfleui?\tr7,0xC8", "C0 E0 19 0A");
+        }
+
+        [Test]
         public void AeonDis_bn_sfleui__()
         {
             AssertCode("bn.sfleui?\tr3,0x77", "5C 6E F3");
+        }
+
+        [Test]
+        public void AeonDis_bn_lbs__()
+        {
+            AssertCode("bn.lbs?\tr15,0x3(r3)", "15 E3 03");
         }
 
         [Test]

@@ -101,7 +101,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgtui__: RewriteBxx(m.Ugt); break;
                 case Mnemonic.bn_ble__i__: RewriteBxx(m.Le); break;
-                case Mnemonic.bg_blesi__: RewriteBxx(m.Le); break;
+                case Mnemonic.bg_blesi__:
+                case Mnemonic.bn_blesi__: RewriteBxx(m.Le); break;
                 case Mnemonic.bg_bltsi__: RewriteBxx(m.Lt); break;
                 case Mnemonic.bg_bltui__: RewriteBxx(m.Ult); break;
                 case Mnemonic.bg_bne__: RewriteBxx(m.Ne); break;
@@ -109,6 +110,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_bnf__: RewriteBf(false); break;
                 case Mnemonic.bn_cmov____: RewriteCmov(); break;
                 case Mnemonic.bn_cmovi____: RewriteCmov(); break;
+                case Mnemonic.bn_cmovsi__: RewriteCmov(); break;
                 case Mnemonic.bn_divs__: RewriteArithmetic(m.SDiv); break;
                 case Mnemonic.bn_divu: RewriteArithmetic(m.UDiv); break;
                 case Mnemonic.bn_entri__: RewriteEntri(); break;
@@ -123,8 +125,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_jal: RewriteJal(); break;
                 case Mnemonic.bt_jalr__: RewriteJalr(); break;
                 case Mnemonic.bt_jr: RewriteJr(); break;
-                case Mnemonic.bg_lbs__: RewriteLoadExt(PrimitiveType.SByte); break;
-                case Mnemonic.bn_lbz__: 
+                case Mnemonic.bg_lbs__:
+                case Mnemonic.bn_lbs__: RewriteLoadExt(PrimitiveType.SByte); break;
+                case Mnemonic.bn_lbz__:
                 case Mnemonic.bg_lbz__: RewriteLoadExt(PrimitiveType.Byte); break;
                 case Mnemonic.bn_lhz:
                 case Mnemonic.bg_lhz__: RewriteLoadExt(PrimitiveType.UInt16); break;
@@ -161,7 +164,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfnei__: RewriteSfxx(m.Ne); break;
                 case Mnemonic.bn_sb__:
                 case Mnemonic.bg_sb__: RewriteStore(PrimitiveType.Byte); break;
-                case Mnemonic.bn_sh__: 
+                case Mnemonic.bn_sh__:
                 case Mnemonic.bg_sh__: RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.bn_sll__: RewriteShift(m.Shl); break;
                 case Mnemonic.bn_slli__: RewriteShifti(m.Shl); break;

@@ -216,9 +216,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonRw_bg_blesi__()
         {
             Given_HexString("D1 5F 05 88");
-            AssertCode(     // bg.blesi? r10,-0x1,001000B1"
+            AssertCode(     // bg.blesi? r10,-0x1,001000B1
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|if (r10 <= -1<i32>) branch 001000B1");
+        }
+
+        [Test]
+        public void AeonRw_bn_blesi__()
+        {
+            Given_HexString("24 63 36");
+            AssertCode(     // bn.blesi? r3,0x0,000FFFCD
+                "0|T--|00100000(3): 1 instructions",
+                "1|T--|if (r3 <= 0<i32>) branch 000FFFCD");
         }
 
         [Test]
@@ -267,12 +276,22 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_cmovi____()
+        public void AeonRw_bn_cmovis__positive()
         {
             Given_HexString("49 8C 0A");
-            AssertCode(     // bn.cmovi??	r12,r12,0x1
+            AssertCode(     // bn.cmovis?	r12,r12,0x1
                 "0|L--|00100000(3): 1 instructions",
-                "1|L--|r12 = f ? r12 : 1<32>");
+                "1|L--|r12 = f ? r12 : 1<i32>");
+        }
+
+        [Test]
+        public void AeonRw_bn_cmovis__negative()
+        {
+            Given_HexString("48 C0 FA");
+            // speculative guess.
+            AssertCode(    // bn.cmovis?\tr6,r0,-0x1
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r6 = f ? 0<32> : -1<i32>");
         }
 
         [Test]
@@ -963,6 +982,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
                 "0|L--|00100000(3): 2 instructions",
                 "1|L--|v4 = SLICE(r5, word16, 0)",
                 "2|L--|Mem0[r28 - 56<i32>:word16] = v4");
+        }
+
+        [Test]
+        public void AeonRw_bn_lbz____()
+        {
+            Given_HexString("15 E3 03");
+            AssertCode(     // bn.lbz??\t  0x3(r3)",
+                "0|L--|00100000(3): 2 instructions",
+                "1|L--|v4 = Mem0[r3 + 3<i32>:byte]",
+                "2|L--|r15 = CONVERT(v4, int8, word32)");
         }
 
         [Test]
