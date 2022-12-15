@@ -176,6 +176,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_srli__: RewriteShifti(m.Shr); break;
                 case Mnemonic.bn_sub: RewriteAddSub(m.ISub); break;
                 case Mnemonic.bn_subb__: RewriteAddSub(Subb); break;
+                case Mnemonic.bt_swst____:
                 case Mnemonic.bn_sw:
                 case Mnemonic.bg_sw:
                 case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;

@@ -130,7 +130,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_srli__,
         bn_sub,
         bn_subb__,
-        bt_sw__,
+        bt_swst____,
         bn_sw,
         bg_sw,
         bg_sw__,
