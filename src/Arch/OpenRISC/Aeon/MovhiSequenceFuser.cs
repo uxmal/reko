@@ -80,6 +80,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             case Mnemonic.bg_sb__:
             case Mnemonic.bn_sh__:
             case Mnemonic.bg_sh__:
+            case Mnemonic.bt_swst____:
             case Mnemonic.bn_sw:
             case Mnemonic.bg_sw:
             case Mnemonic.bg_sw__:

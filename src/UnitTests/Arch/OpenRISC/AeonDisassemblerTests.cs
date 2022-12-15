@@ -746,6 +746,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bt_swst____()
+        {
+            AssertCode("bt.swst??\t0x1C(r1),r15", "81 EE");
+        }
+
+        [Test]
         public void AeonDis_bg_syncwritebuffer()
         {
             // confirmed with source

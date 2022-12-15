@@ -209,6 +209,27 @@ namespace Reko.Arch.OpenRISC.Aeon
             };
         }
 
+        /// <summary>
+        /// Memory access with implicit r1 (stack) register base and unsigned
+        /// offset access with signed offset
+        /// </summary>
+        /// <returns></returns>
+        private static Mutator MuStack(
+            int bitposOffset,
+            int lengthOffset,
+            int offsetScale,
+            PrimitiveType dt)
+        {
+            var offsetField = new Bitfield(bitposOffset, lengthOffset);
+            return (u, d) =>
+            {
+                var baseReg = Registers.GpRegisters[1];
+                var offset = offsetField.Read(u) << offsetScale;
+                d.ops.Add(new MemoryOperand(dt) { Base = baseReg, Offset = (int)offset });
+                return true;
+            };
+        }
+
         private static Mutator DisplacementFromPc(int bitpos, int length)
         {
             var displacementField = new Bitfield(bitpos, length);
@@ -353,7 +374,6 @@ namespace Reko.Arch.OpenRISC.Aeon
             var instr_inv_line = Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1);
             var decoder111101 = Select(Bf((6, 10), (21, 5)), u => u == 0,
                 Sparse(0, 3, "  opc=111101", nyi_3,
-                
                     // $REVIEW: what's the difference between these? what about bit 5?
                     (0b001, instr_inv_line),                                                                // chenxing
                     (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                            // disasm
@@ -425,7 +445,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             // opcode 100000
             var decoder100000 = Select((5, 5), u => u == 0,
                 decoder100000_special,
-                Instr(Mnemonic.bt_sw__, uimm10_6, R5, simm0_5));    // guess
+                Instr(Mnemonic.bt_swst____, MuStack(0, 5, 1, PrimitiveType.Word32), R5));    // guess
 
             var decoder100001_sub0 = Select((5, 5), u => u == 0,
                 Instr(Mnemonic.bt_rfe, InstrClass.Transfer | InstrClass.Return), // disasm

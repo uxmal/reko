@@ -1133,6 +1133,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bt_swst____()
+        {
+            Given_HexString("80FE");
+            AssertCode(     // bt.swst??	0x3C(r1),r7
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|Mem0[r1 + 60<i32>:word32] = r7");
+        }
+
+        [Test]
         public void AeonRw_bg_syncwritebuffer()
         {
             Given_HexString("F4000005");
