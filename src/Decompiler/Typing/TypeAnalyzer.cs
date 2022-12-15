@@ -123,7 +123,7 @@ namespace Reko.Typing
         /// procedures starting at index <paramref name="start" /> and ending at 
         /// index <paramref name="end" />.
         /// </summary>
-        //[Conditional("DEBUG")]
+        [Conditional("DEBUG")]
         private void RestrictProcedures(Program program, int start, int end, bool dumpProcedures)
         {
             if (program.DebugProcedureRange.Item1 != 0 || program.DebugProcedureRange.Item2 != 0)
@@ -138,14 +138,16 @@ namespace Reko.Typing
             int count = Math.Max(end - start, 0);
             eventListener.Info(new NullCodeLocation("TypeAnalysis"), "Filtering procedures to {0}:{1}", start, end);
             var procs = program.Procedures.Values.Skip(start).Take(count).ToArray();
-            using (var tw = File.CreateText("d:/tmp/tmp.txt"))
-            {
-                for (int i = start; i < end; ++i)
-                {
-                    var procedure = procs[i];
-                    tw.WriteLine("{0}:{1} {2}", i, procedure.EntryAddress, procedure.Name);
-                }
-            }
+            // Use the below commented-out code to get the names of the procedures that 
+            // are being selected for type analysis.
+            //using (var tw = File.CreateText("d:/tmp/tmp.txt"))
+            //{
+            //    for (int i = start; i < end; ++i)
+            //    {
+            //        var procedure = procs[i];
+            //        tw.WriteLine("{0}:{1} {2}", i, procedure.EntryAddress, procedure.Name);
+            //    }
+            //}
             program.Procedures.Clear();
             for (int i = 0; i < procs.Length; ++i)
             {
