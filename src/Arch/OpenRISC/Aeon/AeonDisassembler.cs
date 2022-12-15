@@ -182,6 +182,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator simm0_16 = SignedImmediate(0, 16, PrimitiveType.Int16);
         private static readonly Mutator simm3_5 = SignedImmediate(3, 5, PrimitiveType.Int32);
         private static readonly Mutator simm5_8 = SignedImmediate(5, 8, PrimitiveType.Int16);
+        private static readonly Mutator simm8_5 = SignedImmediate(8, 5, PrimitiveType.Int32);
         private static readonly Mutator simm10_3 = SignedImmediate(10, 3, PrimitiveType.Int32);
         private static readonly Mutator simm16_5 = SignedImmediate(16, 5, PrimitiveType.Int32);
 
@@ -484,13 +485,16 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bn_blesi__, InstrClass.ConditionalTransfer, R13, simm10_3, disp2_8), // guess,
                 Instr(Mnemonic.bn_bgt__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8)); // wild guess
 
-            var decode010000 = Sparse(0, 3, "  10", nyi_3,
+            var decode010000 = Mask(0, 3, "  10",
                 //$REVIEW: divs and divu may be mixed up
-                (0b000, Instr(Mnemonic.bn_divs__, R13, R8, R3)),            // disasm
-                (0b001, Instr(Mnemonic.bn_divu, R13, R8, R3)),              // disasm
-                (0b011, Instr(Mnemonic.bn_mul, R13, R8, R3)),               // disasm
-                (0b100, Instr(Mnemonic.bn_add, R13, R8, R3)),               // guess, disasm
-                (0b101, Instr(Mnemonic.bn_sub, R13, R8, R3)));              // disasm
+                Instr(Mnemonic.bn_divs__, R13, R8, R3),            // disasm
+                Instr(Mnemonic.bn_divu, R13, R8, R3),              // disasm
+                nyi_3,      //$REVIEW: signed,unsigned mul?
+                Instr(Mnemonic.bn_mul, R13, R8, R3),               // disasm
+                Instr(Mnemonic.bn_add, R13, R8, R3),               // guess, disasm
+                Instr(Mnemonic.bn_sub, R13, R8, R3),               // disasm
+                Instr(Mnemonic.bn_subb__, R13, R8, R3),            // disasm
+                Instr(Mnemonic.bn_addc__, R13, R8, R3));
 
             var decode010001 = Sparse(0, 3, "  11", nyi_3,
                 (0b100, Instr(Mnemonic.bn_and, R13, R8, R3)),               // chenxing
@@ -501,9 +505,9 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decode010010 = Mask(0, 3, "  010010",
                 Instr(Mnemonic.bn_cmov____, R13, R8, R3),                   // guess
-                Instr(Mnemonic.bn_cmov____, R13, R8, R3, uimm0_3),          // not sure what the last 3 bits are
-                Instr(Mnemonic.bn_cmovsi__, R13, R8, simm3_5),             // guess
-                Instr(Mnemonic.bn_cmovi____, R13, R8, uimm3_5, uimm0_3),    // not sure what the last 3 bits are
+                Instr(Mnemonic.bn_cmov____, R13, R8, R3),                   // guess
+                Instr(Mnemonic.bn_cmovsi__, R13, R8, simm3_5),              // guess
+                Instr(Mnemonic.bn_cmovi____, R13, simm8_5, simm3_5),        // guess
                 nyi_3,
                 nyi_3,
                 nyi_3,
@@ -524,10 +528,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b01000, Instr(Mnemonic.bn_ff1__, R13, R8)),               // guess
                 (0b01001, Instr(Mnemonic.bn_sfnei__, R13, uimm8_5)),        // guess
                 (0b01101, Instr(Mnemonic.bn_sfne, R13, R8)),                // chenxing, disasm
+                (0b01111, Instr(Mnemonic.bn_sfges____, R13, R8)),           // guess, could be sfgeu
                 (0b10001, Instr(Mnemonic.bn_sflesi__, R13, simm5_8)),       // guess
                 (0b10011, Instr(Mnemonic.bn_sfleui__, R13, uimm5_8)),       // guess
                 // operands are swapped
                 (0b10111, Instr(Mnemonic.bn_sfgeu, R8, R13)),               // chenxing, disasm
+                (0b10101, Instr(Mnemonic.bn_sfges__, R13, R8)),              // guess
                 (0b11000, Instr(Mnemonic.bn_entri__, uimm14_4, uimm5_9)),   // backtrace
                 (0b11100, Instr(Mnemonic.bn_rtnei__, uimm14_4, uimm5_9)),   // backtrace
                 (0b11011, Instr(Mnemonic.bn_sfgtui, R13, uimm5_8)),         // disasm

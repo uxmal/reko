@@ -25,8 +25,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("8CE5");
             AssertCode(     // bt.add?	r7,r5
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r7 = r7 + r5");
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|r7 = r7 + r5",
+                "2|L--|cy = cond(r7)",
+                "3|L--|ov = cond(r7)");
         }
 
         [Test]
@@ -35,8 +37,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
             // confirmed with source
             Given_HexString("408324");
             AssertCode(     // bn.add	r4,r3,r4
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|r4 = r3 + r4");
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r4 = r3 + r4",
+                "2|L--|cy = cond(r4)",
+                "3|L--|ov = cond(r4)");
+        }
+
+        [Test]
+        public void AeonRw_bn_addc__()
+        {
+            Given_HexString("40 84 47");
+            AssertCode(     // bn.addc?\tr4,r4,r8
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r4 = r4 + r8 + cy",
+                "2|L--|cy = cond(r4)",
+                "3|L--|ov = cond(r4)");
         }
 
         [Test]
@@ -44,17 +59,21 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("9C3C");
             AssertCode(     // bt.addi?	r1,-0x4
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = r1 - 4<i32>");
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|r1 = r1 - 4<i32>",
+                "2|L--|cy = cond(r1)",
+                "3|L--|ov = cond(r1)");
         }
 
         [Test]
-        public void AeonRw_bn_addi()
+        public void AeonRw_bn_addi_negative_immediate()
         {
             Given_HexString("1C21EC");
             AssertCode(     // bn.addi	r1,r1,-0x14
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|r1 = r1 - 20<i32>");
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r1 = r1 - 20<i32>",
+                "2|L--|cy = cond(r1)",
+                "3|L--|ov = cond(r1)");
         }
 
         [Test]
@@ -62,8 +81,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("FC8A026C");
             AssertCode(     // bg.addi	r4,r10,0x26C
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r10 + 620<i32>");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r4 = r10 + 620<i32>",
+                "2|L--|cy = cond(r4)",
+                "3|L--|ov = cond(r4)");
         }
 
         [Test]
@@ -71,8 +92,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("FCC0829F");
             AssertCode(     // bg.addi	r6,r0,-0x0x7D61
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = -32097<i32>");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|r6 = -32097<i32>",
+                "2|L--|cy = cond(r6)",
+                "3|L--|ov = cond(r6)");
         }
 
         [Test]
@@ -273,6 +296,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.cmov??	r3,r3,r0
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r7 = f ? r7 : 0<32>");
+        }
+
+        [Test]
+        public void AeonRw_bn_cmovii__()
+        {
+            Given_HexString("48 E1 FB");
+            AssertCode(     // bn.cmovi??\tr7,0x1,-0x1
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r7 = f ? 1<i32> : -1<i32>");
         }
 
         [Test]
@@ -1054,8 +1086,22 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("40EA1D");
             AssertCode(     // bn.sub	r7,r10,r3
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|r7 = r10 - r3");
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r7 = r10 - r3",
+                "2|L--|cy = cond(r7)",
+                "3|L--|ov = cond(r7)");
+        }
+
+        [Test]
+        public void AeonRw_bn_subb__()
+        {
+            Given_HexString("41 AD 36");
+            // Always found right after a sub
+            AssertCode(     // bn.subb?\tr13,r13,r6
+                "0|L--|00100000(3): 3 instructions",
+                "1|L--|r13 = r13 - r6 + cy",
+                "2|L--|cy = cond(r13)",
+                "3|L--|ov = cond(r13)");
         }
 
         [Test]

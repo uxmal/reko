@@ -74,6 +74,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             MACHI2 = Registers.SpecialRegisters[(5 << 11) + 3];
 
             F = new FlagGroupStorage(SR, (uint) FlagSR.F, "f", PrimitiveType.Bool);
+            CY = new FlagGroupStorage(SR, (uint) FlagSR.CY, "cy", PrimitiveType.Bool);
+            OV = new FlagGroupStorage(SR, (uint) FlagSR.OV, "ov", PrimitiveType.Bool);
             Registers.ByDomain = Registers.GpRegisters
                 .Concat(Registers.SpecialRegisters.Values)
                 .ToDictionary(r => r.Domain);
@@ -96,9 +98,13 @@ namespace Reko.Arch.OpenRISC.Aeon
         public static RegisterStorage MACHI2 { get; }
 
         public static FlagGroupStorage F { get; }
+        public static FlagGroupStorage CY { get; }
+        public static FlagGroupStorage OV { get; }
     }
 
-    // Supervision Register flags
+    /// <summary>
+    /// Supervision Register flags
+    /// </summary>
     [Flags]
     public enum FlagSR : uint
     {

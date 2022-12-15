@@ -85,6 +85,20 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_addc__()
+        {
+            // Always found right after an add.
+            AssertCode("bn.addc?\tr4,r4,r8", "40 84 47");
+        }
+
+        [Test]
+        public void AeonDis_bn_subb__()
+        {
+            // Always found right after a sub
+            AssertCode("bn.subb?\tr13,r13,r6", "41 AD 36");
+        }
+
+        [Test]
         public void AeonDis_bt_addi__()
         {
             AssertCode("bt.addi?\tr1,-0x4", "9C 3C");
@@ -245,6 +259,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_cmovii__()
+        {
+            // really looks like a cmov of two signed constants
+            AssertCode("bn.cmovi??\tr7,0x1,-0x1", "48 E1 FB");
+        }
+
+        [Test]
         public void AeonDis_bn_divs()
         {
             //$REVIEW: this might be bn.divu 
@@ -363,6 +384,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_lbz()
         {
             AssertCode("bn.lbz?\tr3,(r4)", "10 64 00");
+        }
+
+
+        [Test]
+        public void AeonDis_bn_lhs()
+        {
+            AssertCode("bn.lhs\tr7,0x4(r3)");
         }
 
         [Test]
@@ -581,6 +609,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bn.sfeqi\tr3,0x0", "5C 60 01");
+        }
+
+        [Test]
+        public void AeonDis_bn_sfges__()
+        {
+            AssertCode("bn.sfges?\tr11,r7", "5D 67 15");
         }
 
         [Test]

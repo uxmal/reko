@@ -83,7 +83,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                     m.Invalid();
                     break;
                 case Mnemonic.bt_add__:
-                case Mnemonic.bn_add: RewriteArithmetic(m.IAdd); break;
+                case Mnemonic.bn_add: RewriteAddSub(m.IAdd); break;
+                case Mnemonic.bn_addc__: RewriteAddSub(Addc); break;
                 case Mnemonic.bt_addi__:
                 case Mnemonic.bn_addi:
                 case Mnemonic.bg_addi: RewriteAddi(); break;
@@ -141,7 +142,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bt_movhi__: RewriteMovhi(); break;
                 case Mnemonic.bg_mtspr: RewriteMtspr(); break;
                 case Mnemonic.bn_nand__: RewriteNand(); break;
-                case Mnemonic.bt_nop: 
+                case Mnemonic.bt_nop:
                 case Mnemonic.bn_nop: RewriteNop(); break;
                 case Mnemonic.bn_mul: RewriteArithmetic(m.IMul); break;
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
@@ -151,6 +152,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_rtnei__: RewriteRtnei(); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
+                case Mnemonic.bn_sfges____:
+                case Mnemonic.bn_sfges__: RewriteSfxx(m.Ge); break;
                 case Mnemonic.bn_sfgeu:
                 case Mnemonic.bg_sfgeui__: RewriteSfxx(m.Uge); break;
                 case Mnemonic.bg_sfgtui__:
@@ -171,7 +174,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_srl__: RewriteShift(m.Shr); break;
                 case Mnemonic.bn_srai__: RewriteShifti(m.Sar); break;
                 case Mnemonic.bn_srli__: RewriteShifti(m.Shr); break;
-                case Mnemonic.bn_sub: RewriteArithmetic(m.ISub); break;
+                case Mnemonic.bn_sub: RewriteAddSub(m.ISub); break;
+                case Mnemonic.bn_subb__: RewriteAddSub(Subb); break;
                 case Mnemonic.bn_sw:
                 case Mnemonic.bg_sw:
                 case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
@@ -198,6 +202,17 @@ namespace Reko.Arch.OpenRISC.Aeon
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
             testgenSvc?.ReportMissingRewriter("AeonRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
+
+        private Expression Addc(Expression a, Expression b)
+        {
+            return m.IAdd(m.IAdd(a, b), binder.EnsureFlagGroup(Registers.CY));
+        }
+
+        private Expression Subb(Expression a, Expression b)
+        {
+            return m.IAdd(m.ISub(a, b), binder.EnsureFlagGroup(Registers.CY));
+        }
+
 
         private Expression EffectiveAddress(MemoryOperand mem)
         {
@@ -295,7 +310,30 @@ namespace Reko.Arch.OpenRISC.Aeon
             {
                 src = m.AddSubSignedInt(left, right);
             }
-            m.Assign(Op(0), src);
+            var dst = Op(0);
+            m.Assign(dst, src);
+            m.Assign(binder.EnsureFlagGroup(Registers.CY), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(dst));
+        }
+
+        private void RewriteAddSub(Func<Expression, Expression, Expression> fn)
+        {
+            Expression left;
+            Expression right;
+            if (instr.Operands.Length == 2)
+            {
+                left = Op(0);
+                right = OpOrZero(1);
+            }
+            else
+            {
+                left = OpOrZero(1);
+                right = OpOrZero(2);
+            }
+            var dst = Op(0);
+            m.Assign(dst, fn(left, right));
+            m.Assign(binder.EnsureFlagGroup(Registers.CY), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.OV), m.Cond(dst));
         }
 
         private void RewriteArithmetic(Func<Expression, Expression, Expression> fn)
