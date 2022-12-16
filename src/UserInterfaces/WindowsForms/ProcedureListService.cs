@@ -96,6 +96,11 @@ namespace Reko.Gui
 
         private void ShowProcedures(IEnumerable<ProgramProcedure> sProcs)
         {
+            var searchText = txtProcedureFilter.Text.Trim();
+            if (!showHelpText && !string.IsNullOrEmpty(searchText))
+            {
+                sProcs = sProcs.Where(sItem => FilterProcedure(searchText, sItem));
+            }
             var items = sProcs.Select(CreateListItem).ToArray();
             if (items.Length == 0)
             {
@@ -288,12 +293,7 @@ namespace Reko.Gui
         {
             if (showHelpText)
                 return;
-            var searchText = txtProcedureFilter.Text.Trim();
             IEnumerable<ProgramProcedure> procs = this.procs;
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                procs = procs.Where(sItem => FilterProcedure(searchText, sItem));
-            }
             ShowProcedures(procs);
         }
 
