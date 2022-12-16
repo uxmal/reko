@@ -168,7 +168,7 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.ActionMarkProcedure, cmdSet = Reko, text = "Mark _Procedure Entry" },
             new CmdDefinition { id = CmdIds.ActionCallTerminates, cmdSet = Reko, container = GroupIds.GrpDisassemblerEdit, text = "Mark call as _terminating" },
             new CmdDefinition { id = CmdIds.ActionScanHeuristically, cmdSet = Reko, text = "Scan _heuristically" },
-            new CmdDefinition { id = CmdIds.ActionEditSignature, cmdSet = Reko, text = "Edit _Signature..." },
+            new CmdDefinition { id = CmdIds.ActionEditSignature, cmdSet = Reko, text = "Edit Procedure _Signature..." },
             new CmdDefinition { id = CmdIds.ActionMarkType, cmdSet = Reko, text = "Mark _Type" },
             new CmdDefinition { id = CmdIds.ActionMarkStrings, cmdSet = Reko, text = "Mark selection as _strings" },
             new CmdDefinition { id = CmdIds.ActionAssumeRegisterValues, cmdSet = Reko, text = "_Register values..." },
@@ -230,6 +230,7 @@ namespace Reko.Gui
             new Placement { item=(int)CmdIds.ViewGoToAddress, container=GroupIds.GrpMemoryControl },
             new Placement { item=(int)CmdIds.ActionMarkProcedure, container=GroupIds.GrpMemoryControl },
             new Placement { item=(int)CmdIds.ActionMarkType, container=GroupIds.GrpMemoryControl },
+            new Placement { item=(int)CmdIds.ActionEditSignature, container=GroupIds.GrpMemoryControl },
             new Placement { item=(int)CmdIds.ViewFindPattern, container=GroupIds.GrpMemoryControl },
             new Placement { item=(int)CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpMemoryControl },
 

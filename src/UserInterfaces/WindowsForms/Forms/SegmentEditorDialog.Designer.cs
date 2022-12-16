@@ -74,6 +74,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.memView.BytesPerRow = ((uint)(16u));
             this.memView.Encoding = ((System.Text.Encoding)(resources.GetObject("memView.Encoding")));
             this.memView.ImageMap = null;
+            this.memView.Procedures = null;
             this.memView.Location = new System.Drawing.Point(0, 14);
             this.memView.Name = "memView";
             this.memView.SegmentMap = null;

@@ -33,6 +33,7 @@ using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -74,6 +75,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (value != null)
             {
                 control.MemoryView.ImageMap = value.ImageMap;
+                control.MemoryView.Procedures = value.Procedures;
                 control.MemoryView.SegmentMap = value.SegmentMap;
                 control.MemoryView.Architecture = value.Architecture;
                 control.DisassemblyView.Program = value;
@@ -185,6 +187,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (Control.MemoryView.Focused)
             {
+                var addrSelStart = Control.MemoryView.SelectedAddress;
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch ((CmdIds) cmdId.ID)
@@ -194,10 +197,16 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.ViewFindWhatPointsHere:
                     case CmdIds.ActionMarkProcedure:
                     case CmdIds.TextEncodingChoose:
-                        status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
+                        status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                        return true;
                     case CmdIds.EditCopy:
                     case CmdIds.ViewFindPattern:
                         status.Status = ValidSelection()
+                            ? MenuStatus.Visible | MenuStatus.Enabled
+                            : MenuStatus.Visible;
+                        return true;
+                    case CmdIds.ActionEditSignature:
+                        status.Status = IsProcedureStart(addrSelStart)
                             ? MenuStatus.Visible | MenuStatus.Enabled
                             : MenuStatus.Visible;
                         return true;
@@ -267,6 +276,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.ViewGoToAddress: GotoAddress(); return true;
                     case CmdIds.ActionMarkType: return MarkType();
                     case CmdIds.ActionMarkProcedure: await MarkAndScanProcedure(); return true;
+                    case CmdIds.ActionEditSignature: await EditProcedureSignature(); return true;
                     case CmdIds.ViewFindWhatPointsHere: return await ViewWhatPointsHere();
                     case CmdIds.ViewFindPattern: return await ViewFindPattern();
                     case CmdIds.TextEncodingChoose: return await ChooseTextEncoding();
@@ -325,6 +335,18 @@ namespace Reko.UserInterfaces.WindowsForms
                 return ValueTask.CompletedTask;
             var address = new ProgramAddress(program, addrRange.Begin);
             return services.RequireService<ICommandFactory>().MarkProcedure(address).DoAsync();
+        }
+
+        public async ValueTask EditProcedureSignature()
+        {
+            var addr = this.Control.MemoryView.SelectedAddress;
+            if (addr is null || program is null)
+                return;
+            if (!program.Procedures.TryGetValue(addr, out var proc))
+                return;
+            await services.RequireService<ICommandFactory>().EditSignature(
+                program, proc , proc.EntryAddress).DoAsync();
+            control.Invalidate();
         }
 
         private bool TryGetSelectedAddressRange(out AddressRange addrRange)
@@ -401,6 +423,11 @@ namespace Reko.UserInterfaces.WindowsForms
 
             // Github #1219: need to reestablish focus after TypeMarker window is closed.
             this.Control.MemoryView.Focus();
+        }
+
+        private bool IsProcedureStart(Address addr)
+        {
+            return this.program.Procedures.ContainsKey(addr);
         }
 
         private bool ValidSelection()

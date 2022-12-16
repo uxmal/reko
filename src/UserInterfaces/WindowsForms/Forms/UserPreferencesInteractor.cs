@@ -280,6 +280,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             dlg.MemoryControl.Services = sc;
             dlg.MemoryControl.SegmentMap = program.SegmentMap;
             dlg.MemoryControl.ImageMap = program.ImageMap;
+            dlg.MemoryControl.Procedures = program.Procedures;
             dlg.MemoryControl.Architecture = program.Architecture;
             dlg.MemoryControl.SelectedAddress = program.SegmentMap.BaseAddress;
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);

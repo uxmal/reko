@@ -170,6 +170,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.memCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             //this.memCtrl.Encoding = ((System.Text.Encoding)(resources.GetObject("memCtrl.Encoding")));
             this.memCtrl.ImageMap = null;
+            this.memCtrl.Procedures = null;
             this.memCtrl.Location = new System.Drawing.Point(0, 18);
             this.memCtrl.Name = "memCtrl";
             this.memCtrl.SegmentMap = null;
