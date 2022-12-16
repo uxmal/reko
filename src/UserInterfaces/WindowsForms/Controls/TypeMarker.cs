@@ -74,7 +74,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 e.Handled = true;
                 break;
             case Keys.Enter:
-                accept(text.Text);
+                if (!string.IsNullOrEmpty(text.Text))
+                {
+                    accept(text.Text);
+                }
                 HideControls();
                 e.SuppressKeyPress = true;
                 e.Handled = true;
