@@ -333,6 +333,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
+                (0b1000, Instr(Mnemonic.bg_sflesi__, R21, simm5_16)),           // guess
                 (0b1010, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
                 (0b1100, Instr(Mnemonic.bg_sfgesi__, R21, simm5_16)),           // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing, disasm
@@ -344,13 +345,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),   // guess
                 Instr(Mnemonic.bg_b011i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
-                Instr(Mnemonic.bg_b100i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
+                Instr(Mnemonic.bg_b__bitseti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_bgtui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_bltui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_b111i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13)); // guess
 
             var decoder110101 = Mask(0, 3, "  opc=110101",
-                Instr(Mnemonic.bg_b000__, InstrClass.ConditionalTransfer, R21, R16, disp3_13),     // guess
+                Instr(Mnemonic.bg_bleu__, InstrClass.ConditionalTransfer, R21, R16, disp3_13),     // guess
                 Instr(Mnemonic.bg_bges__, InstrClass.ConditionalTransfer, R21, R16, disp3_13),     // guess
                 Instr(Mnemonic.bg_beq__, InstrClass.ConditionalTransfer, R21, R16, disp3_13),      // guess
                 // $REVIEW: could displacement be larger? There are 5 bits left over

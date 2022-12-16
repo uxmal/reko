@@ -92,6 +92,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_and: RewriteArithmetic(m.And); break;
                 case Mnemonic.bn_andi:
                 case Mnemonic.bg_andi: RewriteLogicalImm(m.And); break;
+                case Mnemonic.bg_b__bitseti__: Rewrite_b_bitset(); break;
                 case Mnemonic.bg_beq__:
                 case Mnemonic.bn_beqi__:
                 case Mnemonic.bg_beqi__:
@@ -99,7 +100,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_bf:
                 case Mnemonic.bg_bf: RewriteBf(true); break;
                 case Mnemonic.bg_bges__: RewriteBxx(m.Ge); break;
-                case Mnemonic.bg_bgeu__: RewriteBxx(m.Uge); break;
+                case Mnemonic.bg_bgeu__:
+                case Mnemonic.bg_bgeu____: RewriteBxx(m.Uge); break;
                 case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgtui__: RewriteBxx(m.Ugt); break;
@@ -107,6 +109,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_blesi__:
                 case Mnemonic.bn_blesi____:
                 case Mnemonic.bn_blesi__: RewriteBxx(m.Le); break;
+                case Mnemonic.bg_bleu__: RewriteBxx(m.Ule); break;
                 case Mnemonic.bg_bltsi__: RewriteBxx(m.Lt); break;
                 case Mnemonic.bg_bltui__: RewriteBxx(m.Ult); break;
                 case Mnemonic.bg_bne__: RewriteBxx(m.Ne); break;
@@ -169,6 +172,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_sfgtui: RewriteSfxx(m.Ugt); break;
                 case Mnemonic.bg_sfleui__:
                 case Mnemonic.bn_sfleui__: RewriteSfxx(m.Ule); break;
+                case Mnemonic.bg_sflesi__:
                 case Mnemonic.bn_sflesi__: RewriteSfxx(m.Le); break;
                 case Mnemonic.bn_sflts__: RewriteSfxx(m.Lt); break;
                 case Mnemonic.bn_sfgtu: RewriteSfxx(m.Ugt); break;
@@ -369,6 +373,14 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
             var dst = Op(0);
             m.Assign(dst, fn(left, right));
+        }
+
+        private void Rewrite_b_bitset()
+        {
+            var exp = OpOrZero(0);
+            var bit = Op(1);
+            var target = ((AddressOperand) instr.Operands[2]).Address;
+            m.Branch(m.Fn(CommonOps.Bit, exp, bit), target);
         }
 
         private void RewriteBf(bool condition)

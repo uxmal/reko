@@ -131,6 +131,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_b__bitset__()
+        {
+            AssertCode("bg.b?bitseti?\tr3,0x1F,000FFF6F", "D0 7F FB 7C");
+        }
+
+        [Test]
         public void AeonDis_bg_beq__()
         {
             AssertCode("bg.beq?\tr7,r3,000FFFF1", "D4 E3 FF 8A");
@@ -171,6 +177,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_bg_bgeu__()
         {
+            // for-loop with unsigned limits.
             AssertCode("bg.bgeu?\tr7,r5,000FFFE3", "D4 E5 FF 1D");
         }
 
@@ -210,6 +217,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_blesi__()
         {
             AssertCode("bn.blesi??\tr3,0x0,000FFFCD", "24 63 36");
+        }
+
+        [Test]
+        public void AeonDis_bg_bleu__()
+        {
+            AssertCode("bg.bleu?\tr7,r5,000FFFE6", "D4 E5 FF 30");
         }
 
         [Test]
@@ -684,6 +697,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // Found as a guard statement to a switch statement
             AssertCode("bg.sfgtui?\tr3,0x8C", "C0 60 11 8E");
+        }
+
+        [Test]
+        public void AeonDis_bg_sflesi__()
+        {
+            AssertCode("bg.sflesi?\tr3,0x700", "C0 60 E0 08");
         }
 
         [Test]

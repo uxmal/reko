@@ -38,13 +38,12 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_andi,
 
         // These have not been reversed yet.
-        bg_b000__,
         bg_b111__,
 
         bg_b011i__,
-        bg_b100i__,
         bg_b111i__,
 
+        bg_b__bitseti__,
         bg_beq__,
         bg_beqi__,
         bn_beqi__,
@@ -53,6 +52,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_bf,
         bg_bges__,
         bg_bgeu__,
+        bg_bgeu____,
         bn_bgt__i__,
         bg_bgts__,
         bg_bgtui__,
@@ -60,6 +60,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_blesi__,
         bn_blesi__,
         bn_blesi____,
+        bg_bleu__,
         bg_bltsi__,
         bg_bltui__,
         bg_bne__,
@@ -122,8 +123,9 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_sfgeu,
         bg_sfgeui__,
         bn_sfgtu,
-        bn_sfgtui,
         bg_sfgtui__,
+        bn_sfgtui,
+        bg_sflesi__,
         bn_sflesi__,
         bn_sfleui__,
         bg_sfleui__,

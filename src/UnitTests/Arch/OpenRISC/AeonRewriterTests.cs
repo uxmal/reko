@@ -137,6 +137,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_b__bitset__()
+        {
+            Given_HexString("D0 7F FB 7C");
+            AssertCode(     // bg.b?bitset?\tr3,0x1F,000FFF6F
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (__bit<word32,word32>(r3, 0x1F<32>)) branch 000FFF6F");
+        }
+
+        [Test]
         public void AeonRw_bg_beq()
         {
             Given_HexString("D4E3FF8A");
@@ -206,6 +215,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.ble?i?	r4,0x1,00354F36
                 "0|T--|00100000(3): 1 instructions",
                 "1|T--|if (r4 <= 1<32>) branch 00100005");
+        }
+
+        [Test]
+        public void AeonRw_bg_bleu__()
+        {
+            Given_HexString("D4 E5 FF 30");
+            AssertCode(     // bg.bleu?\tr7,r5,xxx
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r7 <=u r5) branch 000FFFE6");
         }
 
         [Test]
@@ -483,7 +501,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_jal__()
+        public void AeonRw_bn_jal__()
         {
             Given_HexString("2B FF 2A");
             AssertCode(     // bn.jal?\t000FFF2A
@@ -1036,6 +1054,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.sfgtui	r3,0x20
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|f = r3 >u 0x20<32>");
+        }
+
+        [Test]
+        public void AeonRw_bg_sflesi__()
+        {
+            Given_HexString("C0 60 E0 08");
+            AssertCode(     // bg.sflesi?\tr3,0x700
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f = r3 <= 1792<i32>");
         }
 
         [Test]
