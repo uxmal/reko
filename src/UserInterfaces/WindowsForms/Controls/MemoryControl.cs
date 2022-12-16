@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Services;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -58,6 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private MemoryArea mem;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
+        private IDictionary<Address, Procedure> procedureMap;
         private Encoding encoding;
         private IServiceProvider services;
         private ISelectionService selSvc;
@@ -447,6 +449,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
         [Browsable(false)]
+        public IDictionary<Address, Procedure> Procedures
+        {
+            get { return procedureMap; }
+            set
+            {
+                this.procedureMap = value;
+                Invalidate();
+            }
+        }
+
+        [Browsable(false)]
         public SegmentMap SegmentMap
         {
             get { return segmentMap; }
@@ -775,25 +788,38 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     ulong linearEndSelection = Math.Max(linearSelected, linearAnchor);
 
                     mcp.ctrl.ImageMap.TryFindItem(addUnit, out var item);
+                    bool isProcEntry = mcp.ctrl.Procedures?.ContainsKey(addUnit) ?? false;
                     bool isSelected = linearBeginSelection <= addUnit.ToLinear() && addUnit.ToLinear() <= linearEndSelection;
                     bool isCursor = addUnit.ToLinear() == linearSelected;
 
                     var theme = mcp.GetBrushTheme(item, isSelected);
                     g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
                     if (!isSelected &&
-                        theme.StartMarker != null &&
-                        item != null &&
-                        addUnit.ToLinear() == item.Address.ToLinear())
+                        theme.StartMarker != null)
                     {
-                        var pts = new Point[]
+                        if (item != null &&
+                        addUnit.ToLinear() == item.Address.ToLinear())
                         {
+                            var pts = new Point[]
+                            {
                             rc.Location,
                             rc.Location,
                             rc.Location,
-                        };
-                        pts[1].Offset(4, 0);
-                        pts[2].Offset(0, 4);
-                        g.FillClosedCurve(theme.StartMarker, pts);
+                            };
+                            pts[1].Offset(4, 0);
+                            pts[2].Offset(0, 4);
+                            g.FillClosedCurve(theme.StartMarker, pts);
+                        }
+                        if (isProcEntry)
+                        {
+                            var pts = new Point[]
+                            {
+                                new Point(rc.Left,rc.Bottom),
+                                new Point(rc.Left+4,rc.Bottom),
+                                new Point(rc.Left, rc.Bottom-4)
+                            };
+                            g.FillClosedCurve(theme.StartMarker, pts);
+                        }
                     }
                     g.DrawString(s, mcp.ctrl.Font, theme.Foreground, rc.Left + mcp.cellSize.Width / 2, rc.Top, StringFormat.GenericTypographic);
                     if (isCursor)
