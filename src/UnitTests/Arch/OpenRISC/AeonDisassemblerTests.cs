@@ -92,10 +92,10 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_subb__()
+        public void AeonDis_bg_addci__()
         {
-            // Always found right after a sub
-            AssertCode("bn.subb?\tr13,r13,r6", "41 AD 36");
+            // Always found right after an addi.
+            AssertCode("bg.addci?\tr8,r8,-0x1", "DD 08 FF FF");
         }
 
         [Test]
@@ -201,9 +201,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_blesi__2()
+        {
+            AssertCode("bn.blesi?\tr23,0x0,00100017", "26 E0 5C");
+        }
+
+        [Test]
         public void AeonDis_bn_blesi__()
         {
-            AssertCode("bn.blesi?\tr3,0x0,000FFFCD", "24 63 36");
+            AssertCode("bn.blesi??\tr3,0x0,000FFFCD", "24 63 36");
         }
 
         [Test]
@@ -292,6 +298,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_exths__()
+        {
+            AssertCode("bn.exths?\tr27,r7", "5F 67 06");
+        }
+
+        [Test]
+        public void AeonDis_bn_extbs__()
+        {
+            AssertCode("bn.extbs?\tr5,r5", "5C A5 02");
+        }
+
+        [Test]
         public void AeonDis_bn_exthz__()
         {
             AssertCode("bn.exthz?\tr10,r7", "5D 47 04");
@@ -329,6 +347,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // Found in switch statements
             AssertCode("bn.j??\t000FF17E", "2F F1 7E");
+        }
+
+        [Test]
+        public void AeonDis_bn_jal__()
+        {
+            AssertCode("bn.jal?\t000FFF2A", "2B FF 2A");
         }
 
         [Test]
@@ -386,6 +410,11 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode("bn.lbz?\tr3,(r4)", "10 64 00");
         }
 
+        [Test]
+        public void AeonDis_bg_lhs()
+        {
+            AssertCode("bg.lhs?\tr7,-0x5A7E(r6)", "E8 E6 A5 82");
+        }
 
         [Test]
         public void AeonDis_bn_lhs()
@@ -618,6 +647,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_sfgesi__()
+        {
+            AssertCode("bg.sfgesi?\tr10,0x85", "C1 40 10 AC");
+        }
+
+        [Test]
+        public void AeonDis_bn_sfgesi__()
+        {
+            AssertCode("bn.sfgesi?\tr10,-0x1", "5D 5F F9");
+        }
+
+        [Test]
         public void AeonDis_bn_sfgeu()
         {
             // confirmed with source
@@ -664,6 +705,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_sflts__()
+        {
+            AssertCode("bn.sflts?\tr6,r7", "5C C7 1D");
+        }
+
+        [Test]
         public void AeonDis_bn_lbs__()
         {
             AssertCode("bn.lbs?\tr15,0x3(r3)", "15 E3 03");
@@ -679,7 +726,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_bn_sfnei__()
         {
-            AssertCode("bn.sfnei?\tr7,0x7", "5C E7 49");
+            AssertCode("bn.sfnei?\tr7,0x3A", "5C E7 49");
         }
 
         [Test]
@@ -707,6 +754,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_sra__()
+        {
+            AssertCode("bn.sra?\tr7,r11,r27", "4C EB DE");
+        }
+
+        [Test]
         public void AeonDis_bn_srai__()
         {
             AssertCode("bn.srai?\tr5,r7,0x1", "4C A7 0A");
@@ -729,6 +782,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bn.sub\tr6,r6,r5", "40 C6 2D");
+        }
+
+        [Test]
+        public void AeonDis_bn_subb__()
+        {
+            // Always found right after a sub
+            AssertCode("bn.subb?\tr13,r13,r6", "41 AD 36");
         }
 
         [Test]
