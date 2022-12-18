@@ -42,7 +42,8 @@ namespace Reko.Arch.OpenRISC
             : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
             this.LoadUserOptions(options);
-            FramePointerType = PrimitiveType.Ptr32;
+            this.CarryFlagMask = (uint) FlagSR.CY;
+            this.FramePointerType = PrimitiveType.Ptr32;
             base.InstructionBitSize = 8;    // GCD of 24 and 32-bit instuctions
             base.MemoryGranularity = 8;
             base.PointerType = PrimitiveType.Ptr32;
