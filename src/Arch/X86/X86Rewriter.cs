@@ -82,8 +82,6 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                if (addr.Offset == 0x8D1)
-                    _ = this; //$DEBUG
                 this.iclass = instrCur.InstructionClass;
                 switch (instrCur.Mnemonic)
                 {

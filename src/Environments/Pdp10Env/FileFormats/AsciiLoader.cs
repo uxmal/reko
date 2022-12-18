@@ -53,10 +53,14 @@ namespace Reko.Environments.Pdp10Env.FileFormats
         {
             var arch = new Pdp10Architecture(Services, "pdp10", new Dictionary<string, object>());
             var platform = new Pdp10Platform(Services, arch);
-            return LoadProgram(address!, arch, platform);
+            return LoadProgram(address!, arch, platform, new());
         }
 
-        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(
+            Address addrLoad, 
+            IProcessorArchitecture arch, 
+            IPlatform platform,
+            List<UserSegment> userSegments)
         {
             var words = new List<ulong>();
             int f = 0;

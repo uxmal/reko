@@ -232,7 +232,7 @@ namespace Reko.Core.Serialization
         [XmlAttribute("name")]
         public string? Name;
 
-        [XmlAttribute("Offset")]
+        [XmlAttribute("offset")]
         public string? Offset;
 
         [XmlAttribute("length")]

@@ -73,8 +73,6 @@ namespace Reko.Scanning
             var offset = rdr.Offset;
             while (rdr.TryReadUInt32(out uint v))
             {
-                if (offset == 0x300)
-                    _ = this; //$DEBUG
                 pointers.Add(v);
                 offset = offset + alignment;
                 rdr.Offset = offset;

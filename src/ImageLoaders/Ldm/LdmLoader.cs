@@ -427,7 +427,11 @@ namespace Reko.ImageLoaders.Ldm
         public override Program LoadProgram(Address? addrLoad) => throw new NotSupportedException();
 
         /* load file in TLD or XTC Load Module format */
-        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(
+            Address addrLoad,
+            IProcessorArchitecture arch, 
+            IPlatform platform,
+            List<UserSegment> userSegments)
         {
             linecnt = 0;
             var loadfile_type = TLD_LDM;

@@ -19,12 +19,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Loading
 {
     /// <summary>
     /// Abstract base class for image loaders that load <see cref="Program"/>s.
-    /// These examine a raw image, and generate a Program after carrying out
+    /// These examine a raw image, and generate a Program instance after carrying out
     /// relocations, resolving external symbols etc.
     /// </summary>
     public abstract class ProgramImageLoader : ImageLoader
@@ -61,7 +62,12 @@ namespace Reko.Core.Loading
         /// <param name="arch"></param>
         /// <param name="platform"></param>
         /// <returns></returns>
-        public virtual Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public virtual Program LoadProgram(
+            //$REVIEW: this is just LoadDetails all over again
+            Address addrLoad,
+            IProcessorArchitecture arch,
+            IPlatform platform,
+            List<UserSegment> userSegments)
         {
             throw new NotSupportedException(
                 $"Image loader {GetType().FullName} doesn't support overriding the processor architecture or platform.");

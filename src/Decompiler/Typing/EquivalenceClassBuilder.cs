@@ -118,8 +118,6 @@ namespace Reko.Typing
 
         public TypeVariable EnsureTypeVariable(Expression e)
 		{
-            if (stmCur is not null && stmCur.Address.Offset == 0x10001016)
-                _ = this; //$DEBUG
             var tv = store.EnsureExpressionTypeVariable(factory, stmCur?.Address, e);
             var typeref = e.DataType.ResolveAs<TypeReference>();
             if (typeref != null)
@@ -149,8 +147,6 @@ namespace Reko.Typing
 					throw new InvalidOperationException("Parameter count must match.");
 			}
 
-            if (appl.ToString().Contains("Hello %s"))
-                _ = this;   //$DEBUG
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				appl.Arguments[i].Accept(this);

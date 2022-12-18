@@ -291,7 +291,8 @@ namespace Reko.Loading
             }
 
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, details.Location, image);
-            var program = imgLoader.LoadProgram(addrLoad!, arch, platform);
+            var userSegs = details.Segments ?? new();
+            var program = imgLoader.LoadProgram(addrLoad!, arch, platform, userSegs);
             if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address? addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));

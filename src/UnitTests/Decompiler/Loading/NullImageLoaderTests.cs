@@ -45,11 +45,33 @@ namespace Reko.UnitTests.Decompiler.Loading
             platform.Setup(p => p.CreateAbsoluteMemoryMap()).Returns(mmap);
 
             var ldr = new NullImageLoader(null, ImageLocation.FromUri("foo.exe"), new byte[0x1000]);
-            var segMap = ldr.CreatePlatformSegmentMap(platform.Object, Address.Ptr16(0x0100), new byte[] { 0x50 });
+            var segMap = ldr.CreatePlatformSegmentMap(platform.Object, Address.Ptr16(0x0100), new(), new byte[] { 0x50 });
             Assert.AreEqual(2, segMap.Segments.Count);
             var bmemProg = (ByteMemoryArea) segMap.Segments.Values.ElementAt(1).MemoryArea;
             Assert.AreEqual(1, bmemProg.Length);
             Assert.AreEqual((byte)0x50, bmemProg.Bytes[0]);
+        }
+
+        [Test]
+        public void Nil_UserSegments()
+        {
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
+
+            var img = new byte[0x1000];
+            var ldr = new NullImageLoader(null, ImageLocation.FromUri("foo.exe"), img);
+            var segMap = ldr.CreatePlatformSegmentMap(
+                platform.Object,
+                Address.Ptr16(0x1000),
+                new List<UserSegment>
+                {
+                    new UserSegment { Name = ".text", Address = Address.Ptr16(0x1000), Length=0x800 },
+                    new UserSegment { Name = ".data", Address = Address.Ptr16(0x1800), Length=0x800}
+                },
+                img);
+            Assert.AreEqual(2, segMap.Segments.Count);
+            var dataSeg = segMap.Segments.Values.ElementAt(1);
+
         }
     }
 }

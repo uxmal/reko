@@ -180,7 +180,11 @@ namespace Reko.ImageLoaders.IntelHex
         /// <returns>
         /// A <see cref="Program"/> instance.
         /// </returns>
-        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(
+            Address addrLoad,
+            IProcessorArchitecture arch,
+            IPlatform platform,
+            List<UserSegment> segments)
         {
             listener = Services.RequireService<DecompilerEventListener>();
             var memChunks = new MemoryChunksList();

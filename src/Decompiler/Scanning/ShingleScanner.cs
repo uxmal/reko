@@ -176,8 +176,6 @@ namespace Reko.Scanning
             ImageSegment segment, 
             BTreeDictionary<Address, RtlBlock> sortedBlocks)
         {
-            if (segment.Address.Offset == 0x610)
-                _ = this; //$DEBUG
             long Align(long value, int alignment)
             {
                 return alignment * ((value + (alignment - 1)) / alignment);

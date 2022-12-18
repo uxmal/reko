@@ -21,6 +21,7 @@
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Scripts;
+using Reko.Core.Serialization;
 using System.Collections.Generic;
 
 namespace Reko.Core.Loading
@@ -176,5 +177,10 @@ namespace Reko.Core.Loading
         /// Entry point of the program.
         /// </summary>
         public EntryPointDefinition? EntryPoint;
+
+        /// <summary>
+        /// Zero or more user defined segments.
+        /// </summary>
+        public List<UserSegment>? Segments { get; set; }
     }
 }

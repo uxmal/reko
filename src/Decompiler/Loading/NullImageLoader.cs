@@ -23,6 +23,7 @@ using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Loading
@@ -59,12 +60,16 @@ namespace Reko.Loading
             if (addrLoad is null)
                 addrLoad = PreferredBaseAddress;
             var platform = Platform ?? new DefaultPlatform(Services, Architecture);
-            return LoadProgram(addrLoad, Architecture, platform);
+            return LoadProgram(addrLoad, Architecture, platform, new());
         }
 
-        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(
+            Address addrLoad,
+            IProcessorArchitecture arch,
+            IPlatform platform,
+            List<UserSegment> userSegments)
         {
-            var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, imageBytes);
+            var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, userSegments, imageBytes);
             var program = new Program(
                 segmentMap,
                 arch,
@@ -72,11 +77,31 @@ namespace Reko.Loading
             return program;
         }
 
-        public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte[] rawBytes)
+        public SegmentMap CreatePlatformSegmentMap(
+            IPlatform platform,
+            Address loadAddr,
+            List<UserSegment> userSegments,
+            byte[] rawBytes)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);
             var mem = new ByteMemoryArea(loadAddr, rawBytes);
-            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
+            if (userSegments.Any(us => us.Address is not null))
+            {
+                foreach (var useg in userSegments)
+                {
+                    //$TODO: warning?
+                    if (useg.Address is null)
+                        continue;
+                    var name = useg.Name ?? useg.Address.GenerateName("seg", "");
+                    var seg = new ImageSegment(name, useg.Address, mem, useg.AccessMode);
+                    seg.Size = useg.Length;
+                    segmentMap.AddSegment(seg);
+                }
+            }
+            else
+            {
+                segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
+            }
             return segmentMap;
         }
     }

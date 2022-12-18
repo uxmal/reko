@@ -261,6 +261,12 @@ namespace Reko.Core.Serialization
             };
             var address = LoadAddress(sUser, this.arch!);
             var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
+            var userSegments = sUser.Segments is null
+                ? new List<UserSegment>()
+                : sUser.Segments
+                    .Select(s => LoadUserSegment(s))
+                    .Where(s => s != null)
+                    .ToList()!;
             Program program;
             if (!string.IsNullOrEmpty(sUser.Loader))
             {
@@ -277,6 +283,7 @@ namespace Reko.Core.Serialization
                     ArchitectureOptions = archOptions,
                     PlatformName = platform,
                     LoadAddress = sUser.LoadAddress,
+                    Segments = userSegments,
                 });
             }
             else
@@ -348,7 +355,7 @@ namespace Reko.Core.Serialization
         /// <param name="user"></param>
         public void LoadUserData(UserData_v4 sUser, Program program, UserData user, ImageLocation projectLocation)
         {
-            if (sUser == null)
+            if (sUser is null)
                 return;
             user.OnLoadedScript = sUser.OnLoadedScript;
             if (sUser.Processor != null)
@@ -439,7 +446,7 @@ namespace Reko.Core.Serialization
             if (sUser.Segments != null)
             {
                 program.User.Segments = sUser.Segments
-                    .Select(s => LoadUserSegment_v4(s))
+                    .Select(s => LoadUserSegment(s))
                     .Where(s => s != null)
                     .ToList()!;
             }
@@ -583,7 +590,7 @@ namespace Reko.Core.Serialization
             });
         }
 
-        public UserSegment? LoadUserSegment_v4(Segment_v4 sSegment)
+        public UserSegment? LoadUserSegment(Segment_v4 sSegment)
         {
             if (!platform!.TryParseAddress(sSegment.Address, out Address? addr))
                 return null;

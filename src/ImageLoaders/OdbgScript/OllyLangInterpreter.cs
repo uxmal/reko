@@ -847,8 +847,6 @@ namespace Reko.ImageLoaders.OdbgScript
                     return false;
 
                 var line = Script.Lines[script_pos];
-                if (line.LineNumber == 4)
-                    _ = this; //$DEBUG
 
                 script_pos_next = script_pos + 1;
 

@@ -62,6 +62,7 @@ namespace Reko.Core
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
         public AnnotationList Annotations { get; set; }
         public List<UserSegment> Segments { get; set; }
+
         //$BUG: this should be Address => string.
         public Dictionary<string, string> BlockLabels { get; set; }
         
