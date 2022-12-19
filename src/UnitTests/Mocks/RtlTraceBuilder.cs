@@ -55,12 +55,14 @@ namespace Reko.UnitTests.Mocks
     {
         private Address addr;
         private List<RtlInstructionCluster> clusters;
+        private InstrClass iclassOption;
 
-        public RtlTrace(uint addr)
+        public RtlTrace(uint addr, InstrClass iclassOption = 0)
         {
             this.addr = Address.Ptr32(addr);
             this.StartAddress = this.addr;
             this.clusters = new List<RtlInstructionCluster>();
+            this.iclassOption = iclassOption;
         }
 
         public Address StartAddress { get; private set; }
@@ -77,7 +79,7 @@ namespace Reko.UnitTests.Mocks
             var artls = rtls.ToArray();
             clusters.Add(new RtlInstructionCluster(addr, byteSize, artls)
             {
-                Class = artls[^1].Class,
+                Class = artls[^1].Class | iclassOption,
             });
             addr += byteSize;
         }

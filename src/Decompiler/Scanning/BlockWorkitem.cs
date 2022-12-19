@@ -61,6 +61,7 @@ namespace Reko.Scanning
         private int extraLabels;
         private Identifier? stackReg;
         private VarargsFormatScanner? vaScanner;
+        private readonly InstrClass rejectMask;
 
         public BlockWorkitem(
             IScannerServices scanner,
@@ -79,6 +80,12 @@ namespace Reko.Scanning
                 scanner.Services.RequireService<DecompilerEventListener>());
             this.addrStart = addr;
             this.blockCur = null;
+            this.rejectMask = program.User.Heuristics.Contains(ScannerHeuristics.Unlikely)
+                ? InstrClass.Unlikely
+                : 0;
+            this.rejectMask |= program.User.Heuristics.Contains(ScannerHeuristics.UserMode)
+                ? InstrClass.Privileged
+                : 0;
         }
 
         /// <summary>
@@ -134,6 +141,8 @@ namespace Reko.Scanning
         {
             state.InstructionPointer = ric.Address;
             SetAssumedRegisterValues(ric.Address);
+            if ((ric.Class & this.rejectMask) != 0)
+                return false;
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;

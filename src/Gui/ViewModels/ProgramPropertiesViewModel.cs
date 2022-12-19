@@ -35,16 +35,16 @@ namespace Reko.Gui.ViewModels
             this.ScanHeuristics = new ObservableCollection<ScanHeuristic>
             {
                 new ScanHeuristic(
-                    "shingle",
+                    Scanning.ScannerHeuristics.Shingle,
                     "Shingle heuristic",
                     "Tries to discover basic blocks of executable code in regions not reached by " +
                         "ordinary recursive scanning."),
                 new ScanHeuristic(
-                    "usermode",
+                    Scanning.ScannerHeuristics.UserMode,
                     "Only allow user mode instructions",
                     "Treats privileged or system instructions as invalid when scanning."),
                 new ScanHeuristic(
-                    "unlikely",
+                    Scanning.ScannerHeuristics.Unlikely,
                     "Treat 'unlikely' instructions as invalid",
                     "Treats validly dcode machine instructions as invalid if they are considered " +
                         "'unlikely'. For example, performing multiplications involving the stack register " +

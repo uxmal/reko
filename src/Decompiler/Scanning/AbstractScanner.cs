@@ -52,6 +52,7 @@ namespace Reko.Scanning
         protected readonly DecompilerEventListener listener;
         protected readonly ConcurrentDictionary<Address, Address> blockStarts;
         protected readonly ConcurrentDictionary<Address, Address> blockEnds;
+        protected readonly InstrClass rejectMask;
         private readonly IRewriterHost host;
 
         protected AbstractScanner(
@@ -68,6 +69,13 @@ namespace Reko.Scanning
             this.listener = listener;
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
             this.blockEnds = new ConcurrentDictionary<Address, Address>();
+
+            this.rejectMask = program.User.Heuristics.Contains(ScannerHeuristics.Unlikely)
+                ? InstrClass.Unlikely
+                : 0;
+            this.rejectMask |= program.User.Heuristics.Contains(ScannerHeuristics.UserMode)
+                ? InstrClass.Privileged
+                : 0;
         }
 
         /// <summary>

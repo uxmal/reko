@@ -884,5 +884,30 @@ l00001100: // l:8; ft:00001108
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_Unlikely()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000, InstrClass.Unlikely)
+            {
+                m => m.Assign(r2, m.IAdd(r2, r2)),
+                m => m.Return(0, 0)
+            });
+            program.User.Heuristics.Add(ScannerHeuristics.Unlikely);
+
+            var sExpected =
+            #region Expected
+@"
+define fn00001000
+l00001000: // l:4; ft:00001004 (INVALID)
+    // pred:
+    <invalid>
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
     }
 }

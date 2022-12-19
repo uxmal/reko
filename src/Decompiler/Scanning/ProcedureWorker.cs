@@ -50,8 +50,9 @@ namespace Reko.Scanning
             RecursiveScanner scanner,
             Proc proc,
             ProcessorState state,
+            InstrClass rejectMask,
             DecompilerEventListener listener)
-            : base(scanner, listener)
+            : base(scanner, rejectMask, listener)
         {
             this.recScanner = scanner;
             this.proc = proc;
@@ -97,7 +98,7 @@ namespace Reko.Scanning
 
         public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
-            var worker = new BlockWorker(recScanner, this, addr, trace, state);
+            var worker = base.CreateBlockWorker(recScanner, this, addr, trace, state);
             this.workList.Add(worker);
             return worker;
         }

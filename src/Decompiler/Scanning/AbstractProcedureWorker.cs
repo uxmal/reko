@@ -46,13 +46,15 @@ namespace Reko.Scanning
         };
 
         private readonly AbstractScanner scanner;
+        private readonly InstrClass rejectMask;
         private readonly DecompilerEventListener listener;
         private readonly IStorageBinder binder;
         private readonly Dictionary<Address, List<Address>> miniCfg;
 
-        protected AbstractProcedureWorker(AbstractScanner scanner, DecompilerEventListener listener)
+        protected AbstractProcedureWorker(AbstractScanner scanner, InstrClass rejectMask, DecompilerEventListener listener)
         {
             this.scanner = scanner;
+            this.rejectMask = rejectMask;
             this.listener = listener;
             this.binder = new StorageBinder();
             this.miniCfg = new Dictionary<Address, List<Address>>();
@@ -206,6 +208,16 @@ namespace Reko.Scanning
                 throw new NotImplementedException();
             }
             return result;
+        }
+
+        protected BlockWorker CreateBlockWorker(
+            AbstractScanner scanner,
+            AbstractProcedureWorker worker,
+            Address addr,
+            IEnumerator<RtlInstructionCluster> trace,
+            ProcessorState state)
+        {
+            return new BlockWorker(scanner, worker, addr, trace, state, this.rejectMask);
         }
 
         /// <summary>

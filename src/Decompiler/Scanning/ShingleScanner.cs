@@ -219,6 +219,7 @@ namespace Reko.Scanning
                 program.Architecture,
                 addr,
                 (int) length,
+                base.rejectMask,
                 listener);
         }
 

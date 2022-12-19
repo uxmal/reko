@@ -128,7 +128,7 @@ namespace Reko.Scanning
             if (sr.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = seed.Value.ProcessorState ?? seed.Value.Architecture.CreateProcessorState();
-                return new ProcedureWorker(this, proc, state, listener);
+                return new ProcedureWorker(this, proc, state, rejectMask, listener);
             }
             else
             {
@@ -144,7 +144,7 @@ namespace Reko.Scanning
             if (sr.Procedures.TryAdd(proc.Address, proc))
             {
                 var state = proc.Architecture.CreateProcessorState();
-                return new ProcedureWorker(this, proc, state, listener);
+                return new ProcedureWorker(this, proc, state, rejectMask, listener);
             }
             else
             {
@@ -180,7 +180,7 @@ namespace Reko.Scanning
             }
             while (!this.activeWorkers.TryGetValue(addrProc, out worker))
             {
-                worker = new ProcedureWorker(this, proc, state, listener);
+                worker = new ProcedureWorker(this, proc, state, rejectMask, listener);
                 if (activeWorkers.TryAdd(addrProc, worker))
                 {
                     wl.Add(worker);

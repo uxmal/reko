@@ -44,13 +44,16 @@ namespace Reko.Scanning
         private readonly AbstractProcedureWorker worker;
         private readonly ProcessorState state;
         private readonly ExpressionSimplifier eval;
+        private readonly InstrClass rejectMask; // Instruction class bits, which when present cause 
+            // an exception to happen.
 
         public BlockWorker(
             AbstractScanner scanner,
             AbstractProcedureWorker worker,
             Address address,
             IEnumerator<RtlInstructionCluster> trace,
-            ProcessorState state)
+            ProcessorState state,
+            InstrClass rejectMask)
         {
             this.scanner = scanner;
             this.worker = worker;
@@ -58,6 +61,7 @@ namespace Reko.Scanning
             this.Trace = trace;
             this.state = state;
             this.eval = scanner.CreateEvaluator(state);
+            this.rejectMask = rejectMask;
         }
 
         /// <summary>
@@ -107,6 +111,12 @@ namespace Reko.Scanning
                     log.Verbose("    Fell through to {0}, stopping", cluster.Address);
                     var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
                     return (block, state);
+                }
+                if ((cluster.Class & this.rejectMask) != 0)
+                {
+                    instrs.Add(new RtlInstructionCluster(cluster.Address, cluster.Length, new RtlInvalid()));
+                    var size = addrLast - this.Address + cluster.Length;
+                    return (MakeInvalidBlock(instrs, size), state);
                 }
                 foreach (var rtl in cluster.Instructions)
                 {

@@ -46,8 +46,9 @@ namespace Reko.Scanning
             IProcessorArchitecture arch,
             Address addrStart,
             int chunkUnits,
+            InstrClass rejectMask,
             DecompilerEventListener listener)
-            : base(scanner, listener)
+            : base(scanner, rejectMask, listener)
         {
             this.shScanner = scanner;
             this.Architecture = arch;
@@ -118,12 +119,12 @@ namespace Reko.Scanning
                 fallThroughJob = null;
                 return job;
             }
-            return new BlockWorker(shScanner, this, addr, trace, state);
+            return base.CreateBlockWorker(shScanner, this, addr, trace, state);
         }
 
         public override BlockWorker AddFallthroughJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
         {
-            this.fallThroughJob = new BlockWorker(shScanner, this, addr, trace, state);
+            this.fallThroughJob = base.CreateBlockWorker(shScanner, this, addr, trace, state);
             return fallThroughJob;
         }
 
