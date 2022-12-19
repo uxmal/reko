@@ -42,6 +42,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
+        private InstrClass iclassModifier;
 
         public AeonDisassembler(AeonArchitecture arch, EndianImageReader rdr)
         {
@@ -64,11 +65,13 @@ namespace Reko.Arch.OpenRISC.Aeon
         public override AeonInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
-            // Instructions are 16, 24 or 32 bits.
+
+            // Instructions are 16, 24 or 32 bits. Read the high 16 bits first.
             if (!rdr.TryReadBeUInt16(out ushort us))
                 return null;
             var instr = rootDecoder.Decode(us, this);
             ops.Clear();
+            this.iclassModifier = 0;
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
             return instr;
@@ -78,7 +81,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         {
             return new AeonInstruction
             {
-                InstructionClass = iclass,
+                InstructionClass = iclass | iclassModifier,
                 Mnemonic = mnemonic,
                 Operands = ops.ToArray(),
             };
@@ -143,6 +146,26 @@ namespace Reko.Arch.OpenRISC.Aeon
             };
         }
         private static readonly Mutator Reg0 = Register(Registers.GpRegisters[0]);
+
+        /// A register encoded at position <paramref name="bitpos" />. However
+        /// r0 is not expected; instructions containing such references will
+        /// be marked as "Unlikely".
+        /// </summary>
+        private static Mutator RegisterFromField_unlikely_r0(int bitpos)
+        {
+            var field = new Bitfield(bitpos, 5);
+            return (u, d) =>
+            {
+                var ireg = field.Read(u);
+                d.ops.Add(Registers.GpRegisters[ireg]);
+                if (ireg == 0)
+                {
+                    d.iclassModifier |= InstrClass.Unlikely;
+                }
+                return true;
+            };
+        }
+        private static readonly Mutator Ru21 = RegisterFromField_unlikely_r0(21);
 
         private static Mutator UnsignedImmediate(int bitPos, int bitlength, PrimitiveType? dt = null)
         {
@@ -387,7 +410,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder111011 = Mask(0, 2, "  opc=111011",
                 Instr(Mnemonic.bg_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),         // chenxing, backtrace
                 Instr(Mnemonic.bg_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),       // guess
-                Instr(Mnemonic.bg_lwz, R21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),        // guess, disasm
+                Instr(Mnemonic.bg_lwz, Ru21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),        // guess, disasm
                 Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
 
             var instr_inv_line = Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1);
