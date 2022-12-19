@@ -1329,15 +1329,15 @@ namespace Reko.Core.Expressions
 
     public class ConstantReal16 : ConstantReal
     {
-        private readonly Float16 value;
+        private readonly Half value;
 
         public ConstantReal16(DataType dt, double value)
             : base(dt)
         {
-            this.value = new Float16(value);
+            this.value = (Half) value;
         }
 
-        public ConstantReal16(DataType dt, Float16 value)
+        public ConstantReal16(DataType dt, Half value)
            : base(dt)
         {
             this.value = value;
@@ -1368,12 +1368,11 @@ namespace Reko.Core.Expressions
             return value.GetHashCode();
         }
 
-        public override bool IsValid => !Float16.IsNaN(value);
-
+        public override bool IsValid => !Half.IsNaN(value);
 
         public override Constant Negate()
         {
-            return new ConstantReal16(this.DataType, -value);
+            return new ConstantReal16(this.DataType, -((float)value));
         }
 
         public override byte ToByte()
@@ -1418,7 +1417,7 @@ namespace Reko.Core.Expressions
 
         public override double ToReal64()
         {
-            return value.ToDouble(CultureInfo.InvariantCulture);
+            return (double) value;
         }
 
         public override BigInteger ToBigInteger() => throw new InvalidCastException();

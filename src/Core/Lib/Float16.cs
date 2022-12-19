@@ -30,6 +30,7 @@ namespace Reko.Core.Lib
     /// <summary>
     /// Used to represent IEEE 754-2008 16-bit floating point numbers.
     /// </summary>
+    [Obsolete("Use System.Half", true)]
     public struct Float16 : IFormattable, IConvertible
     {
         private readonly ushort value;

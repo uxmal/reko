@@ -1134,7 +1134,7 @@ namespace Reko.Arch.Arm.AArch64
             hi ^= 1;                                // Toggle 'b'
             w &= 0x3FFF;                            // clear high 2 bits
             w |= hi << 14;                          // set the high 2 bits.
-            return new ConstantReal16(PrimitiveType.Real16, new Float16((ushort)w));
+            return new ConstantReal16(PrimitiveType.Real16, BitConverter.UInt16BitsToHalf((ushort) w));
         }
 
         /// <summary>
