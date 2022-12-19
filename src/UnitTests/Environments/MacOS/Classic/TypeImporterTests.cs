@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         private void Given_TypeImporter()
         {
             var tldser = new TypeLibraryDeserializer(platform.Object, false, typelib);
-            this.typeimporter = new TypeImporter(platform.Object, tldser, new Dictionary<string, Constant>(), typelib);
+            this.typeimporter = new TypeImporter(platform.Object, tldser, new Dictionary<string, Expression>(), typelib);
         }
 
         [Test]

@@ -36,12 +36,12 @@ namespace Reko.Environments.MacOS.Classic
     /// </summary>
     public class InlineCodeInterpreter
     {
-        private IDictionary<string, Constant> constants;
+        private IDictionary<string, Expression> constants;
         private ushort[] uOpcodes;
         private List<SerializedRegValue> regValues;
         private Stack<(int, string?)> stackValues;
 
-        public InlineCodeInterpreter(IDictionary<string, Constant> constants)
+        public InlineCodeInterpreter(IDictionary<string, Expression> constants)
         {
             this.constants = constants;
             this.uOpcodes = null!;
@@ -307,7 +307,7 @@ namespace Reko.Environments.MacOS.Classic
             if (exp is Id id)
             {
                 var n = constants[id.Name];
-                return (ushort) n.ToInt64();
+                return (ushort) ((Constant)n).ToInt64();
             }
             if (exp is NumericLiteral num)
             {

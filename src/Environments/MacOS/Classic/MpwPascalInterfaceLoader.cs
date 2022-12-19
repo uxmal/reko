@@ -63,7 +63,7 @@ namespace Reko.Environments.MacOS.Classic
         private void LoadServices(
             List<Declaration> declarations, 
             TypeImporter typeImporter,
-            IDictionary<string, Constant> constants,
+            IDictionary<string, Expression> constants,
             IPlatform platform,
             TypeLibrary typelib)
         {
@@ -128,9 +128,9 @@ namespace Reko.Environments.MacOS.Classic
             throw new NotImplementedException();
         }
 
-        private Dictionary<string,Constant> EvaluateConstants(IEnumerable<Declaration> decls)
+        private Dictionary<string,Expression> EvaluateConstants(IEnumerable<Declaration> decls)
         {
-            var evaluated = new Dictionary<string, Constant>
+            var evaluated = new Dictionary<string, Expression>
             {
                 { "nil", Constant.Word32(0) }
             };

@@ -33,12 +33,12 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
     [TestFixture]
     public class InlineCodeInterpreterTests
     {
-        private Dictionary<string, Constant> constants;
+        private Dictionary<string, Expression> constants;
 
         [SetUp]
         public void Setup()
         {
-            this.constants = new Dictionary<string, Constant>();
+            this.constants = new Dictionary<string, Expression>();
         }
 
         private Exp Exp(int n)

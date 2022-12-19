@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System.Diagnostics;
 using TypeSizer = Reko.Core.Hll.C.TypeSizer;
+using System.ComponentModel;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -37,7 +38,7 @@ namespace Reko.Environments.MacOS.Classic
     public class TypeImporter : IPascalSyntaxVisitor<SerializedType>
     {
         private readonly TypeSizer sizer;
-        private readonly IDictionary<string, Constant> constants;
+        private readonly IDictionary<string, Expression> constants;
         private readonly IDictionary<string, SerializedType> namedTypes;
         private readonly IDictionary<string, int> sizes;
         private readonly ConstantEvaluator ceval;
@@ -45,7 +46,7 @@ namespace Reko.Environments.MacOS.Classic
         private readonly TypeLibraryDeserializer tldser;
         private readonly TypeLibrary typelib;
 
-        public TypeImporter(IPlatform platform, TypeLibraryDeserializer tldser, Dictionary<string, Constant> constants, TypeLibrary typelib)
+        public TypeImporter(IPlatform platform, TypeLibraryDeserializer tldser, Dictionary<string, Expression> constants, TypeLibrary typelib)
         {
             this.tldser = tldser;
             this.typelib = typelib;
@@ -74,11 +75,11 @@ namespace Reko.Environments.MacOS.Classic
                         continue;
                     }
                 }
-                var lo = dim.Low.Accept(ceval);
+                var lo = (Constant) dim.Low.Accept(ceval);
                 if (dim.High != null)
                 {
                     // Range a..b size is (b-a)+1
-                    var hi = dim.High.Accept(ceval);
+                    var hi = (Constant)dim.High.Accept(ceval);
                     dt = new ArrayType_v1
                     {
                         ElementType = dt,
@@ -255,8 +256,8 @@ namespace Reko.Environments.MacOS.Classic
 
         public SerializedType VisitRangeType(RangeType rangeType)
         {
-            var low = rangeType.Low.Accept(ceval).ToInt64();
-            var hi = rangeType.High.Accept(ceval).ToInt64();
+            var low = ((Constant)rangeType.Low.Accept(ceval)).ToInt64();
+            var hi = ((Constant)rangeType.High.Accept(ceval)).ToInt64();
             var delta = hi - low + 1;
             if (delta < 0)
                 throw new NotImplementedException("Range overflow.");

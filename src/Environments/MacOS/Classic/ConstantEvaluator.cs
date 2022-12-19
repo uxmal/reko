@@ -27,30 +27,37 @@ using System.Collections.Generic;
 
 namespace Reko.Environments.MacOS.Classic
 {
-    public class ConstantEvaluator : IPascalSyntaxVisitor<Constant>
+    /// <summary>
+    /// Evaluates a Pascal expression to a Reko IR constant.
+    /// </summary>
+    public class ConstantEvaluator : IPascalSyntaxVisitor<Expression>
     {
         private IDictionary<string, Exp> constDefinitions;
-        private Dictionary<string, Constant> evaluated;
+        private Dictionary<string, Expression> evaluated;
 
-        public ConstantEvaluator(IDictionary<string, Exp> constDefinitions, Dictionary<string, Constant> evaluated)
+        public ConstantEvaluator(IDictionary<string, Exp> constDefinitions, Dictionary<string, Expression> evaluated)
         {
             this.constDefinitions = constDefinitions;
             this.evaluated = evaluated;
         }
 
-        public Constant VisitArrayType(Core.Hll.Pascal.Array array)
+        public Expression VisitArrayType(Core.Hll.Pascal.Array array)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitBinExp(BinExp binExp)
+        public Expression VisitBinExp(BinExp binExp)
         {
-            var cLeft = binExp.Left.Accept(this);
+            var eLeft = binExp.Left.Accept(this);
+            if (eLeft is not Constant cLeft)    //$TODO: string concatenation?
+                return InvalidConstant.Create(eLeft.DataType);
             if (!cLeft.IsValid)
                 return cLeft;
-            var cRight = binExp.Right.Accept(this);
+            var eRight = binExp.Right.Accept(this);
+            if (eRight is not Constant cRight)
+                return InvalidConstant.Create(eLeft.DataType);  // eLeft is intentional to handle shifts
             if (!cRight.IsValid)
-                return cRight;
+                return InvalidConstant.Create(eLeft.DataType);  // eLeft is intentional to handle shifts
             return binExp.Op switch
             {
                 TokenType.Plus => Operator.ISub.ApplyConstants(cLeft, cRight),
@@ -61,46 +68,46 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        public Constant VisitBooleanLiteral(BooleanLiteral boolLiteral)
+        public Expression VisitBooleanLiteral(BooleanLiteral boolLiteral)
         {
             return Constant.Bool(boolLiteral.Value);
         }
 
-        public Constant VisitCallableDeclaration(CallableDeclaration cd)
+        public Expression VisitCallableDeclaration(CallableDeclaration cd)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitCallableType(CallableType ct)
+        public Expression VisitCallableType(CallableType ct)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitConstantDeclaration(ConstantDeclaration cd)
+        public Expression VisitConstantDeclaration(ConstantDeclaration cd)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitEnumType(Core.Hll.Pascal.EnumType enumType)
+        public Expression VisitEnumType(Core.Hll.Pascal.EnumType enumType)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitFile(Core.Hll.Pascal.File file)
+        public Expression VisitFile(Core.Hll.Pascal.File file)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitIdentifier(Id id)
+        public Expression VisitIdentifier(Id id)
         {
-            if (!this.evaluated.TryGetValue(id.Name, out Constant? c))
+            if (!this.evaluated.TryGetValue(id.Name, out Expression? e))
             {
                 this.evaluated.Add(id.Name, InvalidConstant.Create(PrimitiveType.Word32));
                 if (constDefinitions.TryGetValue(id.Name, out Exp? def))
                 {
-                    c = def.Accept(this);
-                    this.evaluated[id.Name] = c;
-                    return c;
+                    e = def.Accept(this);
+                    this.evaluated[id.Name] = e;
+                    return e;
                 }
                 else
                 {
@@ -109,82 +116,85 @@ namespace Reko.Environments.MacOS.Classic
             }
             else
             {
-                if (c.IsValid)
-                    return c;
+                if (e is Constant c && c.IsValid)
+                    return e;
+                else if (e is StringConstant)
+                    return e;
                 else
-                    throw new InvalidOperationException(string.Format("Recursive constant definition of {0}.", id.Name));
+                    throw new InvalidOperationException($"Recursive constant definition of {id.Name}.");
             }
             throw new NotImplementedException();
         }
 
-        public Constant VisitInlineMachineCode(InlineMachineCode code)
+        public Expression VisitInlineMachineCode(InlineMachineCode code)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitNumericLiteral(NumericLiteral number)
+        public Expression VisitNumericLiteral(NumericLiteral number)
         {
             return Constant.Create(PrimitiveType.Int64, number.Value);
         }
-        public Constant VisitPointerType(Core.Hll.Pascal.Pointer pointer)
+        public Expression VisitPointerType(Core.Hll.Pascal.Pointer pointer)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitObject(Core.Hll.Pascal.ObjectType pointer)
+        public Expression VisitObject(Core.Hll.Pascal.ObjectType pointer)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitPrimitiveType(Primitive primitive)
+        public Expression VisitPrimitiveType(Primitive primitive)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitRangeType(RangeType rangeType)
+        public Expression VisitRangeType(RangeType rangeType)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitRealLiteral(RealLiteral realLiteral)
+        public Expression VisitRealLiteral(RealLiteral realLiteral)
         {
             return Constant.Real64(realLiteral.Value);
         }
 
-        public Constant VisitRecord(Record record)
+        public Expression VisitRecord(Record record)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitSetType(SetType setType)
+        public Expression VisitSetType(SetType setType)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitStringLiteral(StringLiteral str)
+        public Expression VisitStringLiteral(StringLiteral str)
         {
-            throw new NotSupportedException();
-            //return Constant.String(str.String, Core.Types.StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte));
+            return Constant.String(str.String, Core.Types.StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte));
         }
 
-        public Constant VisitStringType(Core.Hll.Pascal.StringType strType)
+        public Expression VisitStringType(Core.Hll.Pascal.StringType strType)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitTypeDeclaration(TypeDeclaration td)
+        public Expression VisitTypeDeclaration(TypeDeclaration td)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitTypeReference(Core.Hll.Pascal.TypeReference typeref)
+        public Expression VisitTypeReference(Core.Hll.Pascal.TypeReference typeref)
         {
             throw new NotImplementedException();
         }
 
-        public Constant VisitUnaryExp(UnaryExp unaryExp)
+        public Expression VisitUnaryExp(UnaryExp unaryExp)
         {
-            var c = unaryExp.exp.Accept(this);
+            var e = unaryExp.exp.Accept(this);
+            if (e is not Constant c)
+                return InvalidConstant.Create(e.DataType);
             if (!c.IsValid)
                 return c;
             if (unaryExp.op == TokenType.Minus)
