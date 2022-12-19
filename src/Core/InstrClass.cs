@@ -57,6 +57,7 @@ namespace Reko.Core
         Padding =     0x0400,   // Instruction _could_ be used as alignment padding between procedures.
         Invalid =     0x0800,   // The instruction is invalid
         Zero =        0x1000,   // The instruction's first "unit" was zero.
+        Unlikely =    0x2000,   // The instruction is valid, but unlikely to exist in a real program.
 
         ConditionalTransfer = Conditional | Transfer,
     }
