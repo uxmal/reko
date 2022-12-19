@@ -144,13 +144,15 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_lhz__: RewriteLoadExt(PrimitiveType.UInt16); break;
                 case Mnemonic.bn_lwz:
                 case Mnemonic.bg_lwz: RewriteLoadExt(PrimitiveType.Word32); break;
-                case Mnemonic.bg_mfspr: RewriteMfspr(); break;
+                case Mnemonic.bg_mfspr1__: RewriteMfspr(true); break;
+                case Mnemonic.bg_mfspr: RewriteMfspr(false); break;
                 case Mnemonic.bt_mov__: RewriteMov(); break;
                 case Mnemonic.bt_movi__: RewriteMovi(); break;
                 case Mnemonic.bn_movhi__:
                 case Mnemonic.bg_movhi:
                 case Mnemonic.bt_movhi__: RewriteMovhi(); break;
-                case Mnemonic.bg_mtspr: RewriteMtspr(); break;
+                case Mnemonic.bg_mtspr1__: RewriteMtspr(true); break;
+                case Mnemonic.bg_mtspr: RewriteMtspr(false); break;
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop:
                 case Mnemonic.bn_nop: RewriteNop(); break;
@@ -424,39 +426,49 @@ namespace Reko.Arch.OpenRISC.Aeon
             MaybeExtend(dt, dst, src);
         }
 
-        private void RewriteMfspr()
+        private void RewriteMfspr(bool twoOperands)
         {
             var dst = OpOrZero(0);
-            var sprReg = (RegisterStorage) instr.Operands[1];
-            var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
             Expression spr;
-
-            if (sprReg.Number == 0) {
-                spr = sprImm;
-            } else if (sprImm.IsZero) {
-                spr = binder.EnsureRegister(sprReg);
+            if (twoOperands) {
+                spr = ((ImmediateOperand) instr.Operands[1]).Value;
             } else {
-                spr = m.Or(binder.EnsureRegister(sprReg), sprImm);
+                var sprReg = (RegisterStorage) instr.Operands[1];
+                var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
+
+                if (sprReg.Number == 0) {
+                    spr = sprImm;
+                } else if (sprImm.IsZero) {
+                    spr = binder.EnsureRegister(sprReg);
+                } else {
+                    spr = m.Or(binder.EnsureRegister(sprReg), sprImm);
+                }
             }
 
             m.Assign(dst, m.Fn(mfspr_intrinsic, spr));
         }
 
-        private void RewriteMtspr()
+        private void RewriteMtspr(bool twoOperands)
         {
-            var sprReg = (RegisterStorage) instr.Operands[0];
-            var value = OpOrZero(1);
-            var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
             Expression spr;
-
-            if (sprReg.Number == 0) {
-                spr = sprImm;
-            } else if (sprImm.IsZero) {
-                spr = binder.EnsureRegister(sprReg);
+            Expression value;
+            if (twoOperands) {
+                value = OpOrZero(0);
+                spr = ((ImmediateOperand) instr.Operands[1]).Value;
             } else {
-                spr = m.Or(binder.EnsureRegister(sprReg), sprImm);
+                var sprReg = (RegisterStorage) instr.Operands[0];
+                value = OpOrZero(1);
+                var sprImm = ((ImmediateOperand) instr.Operands[2]).Value;
+    
+                if (sprReg.Number == 0) {
+                    spr = sprImm;
+                } else if (sprImm.IsZero) {
+                    spr = binder.EnsureRegister(sprReg);
+                } else {
+                    spr = m.Or(binder.EnsureRegister(sprReg), sprImm);
+                }
             }
-
+    
             m.SideEffect(m.Fn(mtspr_intrinsic, spr, value));
         }
 
