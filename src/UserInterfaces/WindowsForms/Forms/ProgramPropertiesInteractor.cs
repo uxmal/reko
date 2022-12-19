@@ -33,7 +33,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private Dictionary<string, string> heuristicDescriptions = new Dictionary<string, string>
         {
             { "shingle", "Shingle heuristic" },
-            { "usermode", "Only allow user mode instructions" }
+            { "usermode", "Only allow user mode instructions" },
+            { "unlikely", "Treat 'unlikely' instructions as invalid" }
         };
 
         public void Attach(ProgramPropertiesDialog dlg)
@@ -58,16 +59,32 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 dlg.EnableScript.Checked = loadedScript.Enabled;
                 dlg.LoadScript.Text = loadedScript.Script;
             }
-            dlg.Heuristics.Items.AddRange(new object[]
-                {
-                    "(None)",
-                    "Shingle heuristic"
-                });
-            if (dlg.Program.User.Heuristics.Count == 0)
-                dlg.Heuristics.SelectedIndex = 0;
-            else
-                dlg.Heuristics.SelectedItem = heuristicDescriptions[dlg.Program.User.Heuristics.First()];
+            dlg.Heuristics.Items.AddRange(
+                heuristicDescriptions
+                .Values
+                .OrderBy(x => x)
+                .Cast<object>()
+                .ToArray());
 
+
+            if (dlg.Program.User.Heuristics.Count == 0)
+            {
+                dlg.Heuristics.SelectedIndex = 0;
+            }
+            else
+            {
+                for (int j = 0; j < dlg.Heuristics.Items.Count; ++j)
+                {
+                    var item = dlg.Heuristics.Items[j];
+                    foreach (var sItem in dlg.Program.User.Heuristics)
+                    {
+                        if ((string) item == heuristicDescriptions[sItem])
+                        {
+                            dlg.Heuristics.SetItemCheckState(j, System.Windows.Forms.CheckState.Checked);
+                        }
+                    }
+                }
+            }
             dlg.OutputPolicies.Items.Add(new ListOption("Separate file per segment", Program.SegmentFilePolicy));
             dlg.OutputPolicies.Items.Add(new ListOption("Single file per program", Program.SingleFilePolicy));
             var i = dlg.OutputPolicies.Items.Cast<ListOption>().ToList().FindIndex(x => (string)((ListOption)x).Value == dlg.Program.User.OutputFilePolicy);
@@ -84,6 +101,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 Enabled = dlg.EnableScript.Checked,
                 Script = dlg.LoadScript.Text,
             };
+            dlg.Program.User.Heuristics.Clear();
+            foreach (var item in heuristicDescriptions)
+            {
+                foreach (string sItem in dlg.Heuristics.CheckedItems)
+                {
+                    if (item.Value == sItem)
+                        dlg.Program.User.Heuristics.Add(item.Key);
+                }
+            }
             if (dlg.Heuristics.SelectedIndex != 0)
             {
                 var item = heuristicDescriptions.First(

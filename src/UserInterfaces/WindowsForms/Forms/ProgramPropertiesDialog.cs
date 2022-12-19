@@ -35,7 +35,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     {
         public ProgramPropertiesDialog() : this(new ProgramPropertiesInteractor())
         {
-
         }
 
         public ProgramPropertiesDialog(ProgramPropertiesInteractor interactor)
@@ -50,11 +49,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public TextBox LoadScript { get { return txtScript; } }
         public CheckBox EnableScript { get { return chkRunScript; } }
-        public ListBox Heuristics { get { return listHeuristics; } }
+        public CheckedListBox Heuristics { get { return listHeuristics; } }
         public Button OkButton { get { return btnOk; } }
-
         public ComboBox OutputPolicies { get { return ddlOutputPolicies; } }
-
         public CheckBox AggressiveBranchRemoval {  get { return chkAggressiveBranchRemoval; } }
     }
 }

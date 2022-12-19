@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     partial class ProgramPropertiesDialog
     {
@@ -39,7 +39,7 @@
             this.tabLoading = new System.Windows.Forms.TabPage();
             this.tabScanning = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listHeuristics = new System.Windows.Forms.ListBox();
+            this.listHeuristics = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabAnalysis = new System.Windows.Forms.TabPage();
             this.chkAggressiveBranchRemoval = new System.Windows.Forms.CheckBox();
@@ -259,7 +259,7 @@
         private System.Windows.Forms.TabPage tabScanning;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ListBox listHeuristics;
+        private System.Windows.Forms.CheckedListBox listHeuristics;
         private System.Windows.Forms.ComboBox ddlOutputPolicies;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabPage tabAnalysis;
