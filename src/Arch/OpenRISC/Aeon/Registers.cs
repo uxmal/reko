@@ -45,13 +45,22 @@ namespace Reko.Arch.OpenRISC.Aeon
                 ( 6, "ICCFGR"), //Instruction Cache Configuration register
                 ( 7, "DCFGR"), //Debug Configuration register
                 ( 8, "PCCFGR"), // Performance Counters Configuration register
+                ( 9, "CPUID"), // CPU Identification register
                 ( 16, "NPC"), // R/W PC mapped to SPR space (next PC)
-                ( 17, "SR"),// R/W Supervision register 
+                ( 17, "SR"), // R/W Supervision register 
                 ( 18, "PPC"),// R PC mapped to SPR space (previous PC)
+                ( 19, "UR"), // User register
 
                 ( (5 << 11) + 1, "MACLO" ), // low word of MAC (multiply/accumulate reigster)
                 ( (5 << 11) + 2, "MACHI" ), // high word of MAC
                 ( (5 << 11) + 3, "MACHI2" ), // highest? word of MAC
+                ( (5 << 11) + 9, "MACR_a0_low" ), // low word of a0
+                ( (5 << 11) + 10, "MACR_a0_high" ), // high word of a0
+                ( (5 << 11) + 11, "MACR_a1_low" ), // low word of a1
+                ( (5 << 11) + 12, "MACR_a1_high" ), // high word of a1
+                ( (5 << 11) + 13, "AMACCFG" ), // (A?)MAC config
+                ( (5 << 11) + 33, "MACR_a2_low" ), // low word of a2?
+                ( (5 << 11) + 35, "MACR_a3_low" ), // low word of a3?
             }.ToDictionary(e => e.Item1, e => sprFactory.Reg32(e.Item2));
 
             for (int i = 0; i < 16; i++) {

@@ -567,10 +567,23 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_mfspr1__()
+        {
+            AssertCode("bg.mfspr1?\tr30,0x2808", "C3 C5 01 07");
+        }
+
+        [Test]
         public void AeonDis_bg_mtspr()
         {
             // confirmed with source
             AssertCode("bg.mtspr\tr0,r3,0x11", "C0 60 01 1D");
+        }
+
+        [Test]
+        public void AeonDis_bg_mtspr1__()
+        {
+            // XXX: assumed; need to find examples
+            AssertCode("bg.mtspr1?\tr2,0x8001", "C0 50 00 25");
         }
 
         [Test]

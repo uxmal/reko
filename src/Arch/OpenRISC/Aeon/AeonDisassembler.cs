@@ -135,6 +135,18 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator R21 = RegisterFromField(21);
 
         /// <summary>
+        /// Hard-coded reference to a specific register.
+        /// </summary>
+        private static Mutator<AeonDisassembler> Register(RegisterStorage reg)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(reg);
+                return true;
+            };
+        }
+        private static readonly Mutator Reg0 = Register(Registers.GpRegisters[0]);
+
         /// A register encoded at position <paramref name="bitpos" />. However
         /// r0 is not expected; instructions containing such references will
         /// be marked as "Unlikely".
@@ -357,6 +369,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
+                (0b0101, Instr(Mnemonic.bg_mtspr1__, R21, uimm5_16)),           // guess! (not seen)
+                (0b0111, Instr(Mnemonic.bg_mfspr1__, R21, uimm5_16)),           // guess
                 (0b1000, Instr(Mnemonic.bg_sflesi__, R21, simm5_16)),           // guess
                 (0b1010, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
                 (0b1100, Instr(Mnemonic.bg_sfgesi__, R21, simm5_16)),           // guess

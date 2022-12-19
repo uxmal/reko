@@ -651,6 +651,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_mfspr1__()
+        {
+            Given_HexString("C2700B47");
+            AssertCode(     // bg.mfspr1?	r19,0x805A
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r19 = __move_from_spr(0x805A<32>)");
+        }
+
+        [Test]
         public void AeonRw_bn_movhi__()
         {
             Given_HexString("046989");
@@ -831,6 +840,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bg.mtspr	r0,r3,0x11
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__move_to_spr(0x11<32>, r3)");
+        }
+
+        [Test]
+        public void AeonRw_bg_mtspr1__()
+        {
+            Given_HexString("C2500425");
+            AssertCode(     // bg.mtspr1?	r18,0x8021
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__move_to_spr(0x8021<32>, r18)");
         }
 
         [Test]
