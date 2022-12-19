@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Reko.Gui.ViewModels"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.ProgramPropertiesDialog"
+		x:DataType="vm:ProgramPropertiesViewModel"
+		x:CompileBindings="True"
+		ShowInTaskbar="False"
+        Title="Program Properties">
+	<Grid ColumnDefinitions="*" RowDefinitions="*,30">
+		<TabControl Grid.Row="0" Grid.Column="0">
+			<TabItem Header="Scanning">
+				<StackPanel>
+				<Label>Heuristics to use when scanning for executable code:</Label>
+				<ListBox
+					Items="{Binding ScanHeuristics}"
+					SelectionMode="Multiple"
+					SelectionChanged="ScanningHeuristics_SelectionChanged">
+					<DataTemplates>
+						<DataTemplate DataType="vm:ScanHeuristic">
+							<CheckBox IsChecked="{Binding IsChecked}"><TextBlock Text="{Binding Text}" /></CheckBox>
+						</DataTemplate>
+					</DataTemplates>
+				</ListBox>
+				<TextBlock Text="{Binding ScanHeuristicDescription}" />
+				</StackPanel>
+			</TabItem>
+			
+			<TabItem Header="General">
+				<StackPanel HorizontalAlignment="Stretch">
+					<Label>_Output files</Label>
+					<ComboBox Items="{Binding OutputFileDispositions}" />
+				</StackPanel>
+			</TabItem>
+			<TabItem Header="Loading">
+
+			</TabItem>
+
+			<TabItem Header="Analysis">
+
+			</TabItem>
+		</TabControl>
+		<StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal">
+			<Button>OK</Button>
+			<Button>Cancel</Button>
+		</StackPanel>
+	</Grid>
+</Window>

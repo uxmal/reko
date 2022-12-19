@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.Views;
 using System;
@@ -127,7 +128,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)
         {
-            throw new NotImplementedException();
+            var viewModel = new ProgramPropertiesViewModel(program.User.Heuristics);
+            var dlg = new ProgramPropertiesDialog()
+            {
+                DataContext = viewModel,
+            };
+            return dlg;
         }
 
         public IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture architecture, List<UserRegisterValue> regValues)
