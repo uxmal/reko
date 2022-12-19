@@ -1,17 +1,17 @@
 {
+  "profiles": {
+    "CmdLine": {
+      "commandName": "Project",
+      "commandLineArgs": "--data \"8b550C6A346A0052E85449F8FF83C40C5D\" --arch x86-protected-64\r\n--base 0 --scan-only",
+      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\TLCS\\90"
+    }
+  },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:53053/",
       "sslPort": 0
-    }
-  },
-  "profiles": {
-    "CmdLine": {
-      "commandName": "Project",
-      "commandLineArgs": "decompile.exe --heuristic shingle  --arch tlcs-90 --base 0000 --entry 0000 TLCS-90.corpus",
-      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\TLCS\\90"
     }
   }
 }

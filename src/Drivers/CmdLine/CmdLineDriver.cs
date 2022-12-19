@@ -263,7 +263,7 @@ namespace Reko.CmdLine
             try
             {
                 var arch = config.GetArchitecture((string) pArgs["--arch"]);
-                if (arch == null)
+                if (arch is null)
                     throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
                 if (pArgs.TryGetValue("--arch-options", out var oArchOptions))
                 {
@@ -272,19 +272,27 @@ namespace Reko.CmdLine
                 }
                 pArgs.TryGetValue("--env", out object sEnv);
 
-                if (!arch.TryParseAddress((string) pArgs["--base"], out Address addrBase))
-                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-                pArgs.TryGetValue("--entry", out object oAddrEntry);
+                if (!pArgs.TryGetValue("--base", out var oAddrBase))
+                    oAddrBase = "0";
+                if (!arch.TryParseAddress(oAddrBase.ToString(), out Address addrBase))
+                    throw new ApplicationException($"'{oAddrBase}' doesn't appear to be a valid address.");
+
+                if (!pArgs.TryGetValue("--entry", out object oAddrEntry))
+                    oAddrEntry = oAddrBase;
+                else if (!arch.TryParseAddress(oAddrEntry.ToString(), out _))
+                    throw new ApplicationException($"'{oAddrEntry}' doesn't appear to be a valid address.");
 
                 pArgs.TryGetValue("--loader", out object sLoader);
                 var loadDetails = new LoadDetails
                 {
-                    Location = ImageLocation.FromUri((string) pArgs["filename"]),
+                    Location = pArgs.ContainsKey("filename")
+                        ? ImageLocation.FromUri((string) pArgs["filename"])
+                        : null,
                     LoaderName = (string) sLoader,
                     ArchitectureName = (string) pArgs["--arch"],
                     ArchitectureOptions = null, //$TODO: How do we handle options for command line?
                     PlatformName = (string) sEnv,
-                    LoadAddress = (string) pArgs["--base"],
+                    LoadAddress = oAddrBase.ToString(),
                     EntryPoint = new EntryPointDefinition { Address = (string) oAddrEntry }
                 };
                 var program = LoadProgram(pArgs, loadDetails);
@@ -303,10 +311,13 @@ namespace Reko.CmdLine
                         oAggressiveBranchRemoval is bool flag && flag;
                 }
                 decompiler.ScanPrograms();
-                decompiler.AnalyzeDataFlow();
-                decompiler.ReconstructTypes();
-                decompiler.StructureProgram();
-                decompiler.WriteDecompilerProducts();
+                if (!pArgs.ContainsKey("scan-only"))
+                {
+                    decompiler.AnalyzeDataFlow();
+                    decompiler.ReconstructTypes();
+                    decompiler.StructureProgram();
+                    decompiler.WriteDecompilerProducts();
+                }
             }
             catch (Exception ex)
             {
