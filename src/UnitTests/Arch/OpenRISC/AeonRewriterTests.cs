@@ -615,6 +615,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_lwz_unlikely()
+        {
+            Given_HexString("EC12F312");
+            AssertCode(     // bg.lwz	r23,-0xCF0(r18)
+                "0|U--|00100000(4): 1 instructions",
+                "1|L--|r0 = Mem0[r18 - 3312<i32>:word32]");
+        }
+
+        [Test]
         public void AeonRw_bg_mfspr()
         {
             Given_HexString("C030011F");

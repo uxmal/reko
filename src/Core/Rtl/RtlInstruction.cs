@@ -67,7 +67,7 @@ namespace Reko.Core.Rtl
             switch (rtlClass & (InstrClass.Transfer | InstrClass.Linear | InstrClass.Return  | InstrClass.Terminates | InstrClass.Privileged))
             {
             case InstrClass.Linear:
-                sb.Append('L'); break;
+                sb.Append((rtlClass & InstrClass.Unlikely) != 0 ? 'U':'L'); break;
             case InstrClass.Transfer:
             case InstrClass.Transfer | InstrClass.Linear:
                 sb.Append('T'); break;
