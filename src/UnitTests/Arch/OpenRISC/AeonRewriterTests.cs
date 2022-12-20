@@ -457,7 +457,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonRw_bg_invalidate_line()
         {
             // confirmed with source
-            Given_HexString("F4030027");
+            Given_HexString("F4030007");
             AssertCode(     // bg.invalidate.line	(r3),0x0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__invalidate_line(&Mem0[r3:word32], 0<32>)");

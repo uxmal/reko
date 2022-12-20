@@ -345,7 +345,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bg_invalidate_line()
         {
             // confirmed with source
-            AssertCode("bg.invalidate.line\t(r3),0x1", "F4 03 00 37");
+            AssertCode("bg.invalidate.line\t(r3),0x1", "F4 03 00 17");
         }
 
         [Test]
@@ -582,8 +582,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonDis_bg_mtspr1__()
         {
-            // XXX: assumed; need to find examples
-            AssertCode("bg.mtspr1?\tr2,0x8001", "C0 50 00 25");
+            AssertCode("bg.mtspr1?\tr7,0x11", "C0 E0 02 25");
         }
 
         [Test]
