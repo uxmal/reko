@@ -366,6 +366,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_3_reg_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13);
             var nyi_3_reg_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13, uimm0_3);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16, uimm0_5);
+            var nyi_16s = Instr(Mnemonic.Nyi, uimm26_6, Ru21, R16, simm0_16);
 
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
@@ -452,7 +453,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 110010
                 Instr(Mnemonic.bg_ori, Ru21, R16, uimm0_16_16),           // chenxing
                 // opcode 110011
-                nyi,
+                nyi_16s,
 
                 decoder110100,
                 decoder110101,
