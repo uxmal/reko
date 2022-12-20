@@ -182,6 +182,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         }
         private static readonly Mutator uimm0_2 = UnsignedImmediate(0, 2);
         private static readonly Mutator uimm0_3 = UnsignedImmediate(0, 3);
+        private static readonly Mutator uimm0_4 = UnsignedImmediate(0, 4);
         private static readonly Mutator uimm0_5 = UnsignedImmediate(0, 5);
         private static readonly Mutator uimm0_8 = UnsignedImmediate(0, 8);
         private static readonly Mutator uimm0_8_16 = UnsignedImmediate(0, 8, PrimitiveType.UInt16);
@@ -191,7 +192,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator uimm1_4 = UnsignedImmediate(1, 4);
         private static readonly Mutator uimm3_5 = UnsignedImmediate(3, 5);
         private static readonly Mutator uimm3_13 = UnsignedImmediate(3, 13);
-        private static readonly Mutator uimm4_1 = UnsignedImmediate(4, 1);
+        private static readonly Mutator uimm4_2 = UnsignedImmediate(4, 2);
         private static readonly Mutator uimm4_12 = UnsignedImmediate(4, 12);
         private static readonly Mutator uimm5_5 = UnsignedImmediate(5, 5);
         private static readonly Mutator uimm5_8 = UnsignedImmediate(5, 8);
@@ -365,6 +366,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_3_imm_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, uimm16_5, disp3_13, uimm0_3);
             var nyi_3_reg_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13);
             var nyi_3_reg_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13, uimm0_3);
+            var nyi_4 = Instr(Mnemonic.Nyi, uimm26_6, Ms(16, 6, 10, 0, PrimitiveType.Word32), uimm4_2, uimm0_4);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16, uimm0_5);
             var nyi_16s = Instr(Mnemonic.Nyi, uimm26_6, Ru21, R16, simm0_16);
 
@@ -416,14 +418,12 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bg_lwz, Ru21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess, disasm
                 Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
 
-            var instr_inv_line = Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1);
-            var decoder111101 = Select(Bf((6, 10), (21, 5)), u => u == 0,
-                Sparse(0, 3, "  opc=111101", nyi_3,
-                    // $REVIEW: what's the difference between these? what about bit 5?
-                    (0b001, instr_inv_line),                                                                // chenxing
-                    (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                            // disasm
-                    (0b110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
-                    (0b111, instr_inv_line)),                                                               // disasm
+            var decoder111101 = Select(Bf((21, 5)), u => u == 0,
+                Sparse(0, 4, "  opc=111101", nyi_4,
+                    // XXX: chenxing had 0b0001 as invalidate_line
+                    (0b0101, Instr(Mnemonic.bg_syncwritebuffer)),                                             // disasm
+                    (0b0110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 10, 0, PrimitiveType.Word32), uimm4_2)), // disasm
+                    (0b0111, Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 10, 0, PrimitiveType.Word32), uimm4_2))),                                                                // disasm
                 Instr(Mnemonic.bg_lbs__, Ru21, Ms(16, 0, 16, 0, PrimitiveType.Byte)));
 
             var decoder = Mask(26, 5, "  32-bit instr",
