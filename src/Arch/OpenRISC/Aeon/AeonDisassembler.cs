@@ -165,6 +165,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 return true;
             };
         }
+        private static readonly Mutator Ru5 = RegisterFromField_unlikely_r0(5);
+        private static readonly Mutator Ru13 = RegisterFromField_unlikely_r0(13);
         private static readonly Mutator Ru21 = RegisterFromField_unlikely_r0(21);
 
         private static Mutator UnsignedImmediate(int bitPos, int bitlength, PrimitiveType? dt = null)
@@ -364,19 +366,20 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_3_reg_disp = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13);
             var nyi_3_reg_disp_3 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, disp3_13, uimm0_3);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16, uimm0_5);
+            var nyi_16s = Instr(Mnemonic.Nyi, uimm26_6, Ru21, R16, simm0_16);
 
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
-                (0b0001, Instr(Mnemonic.bg_movhi, R21, uimm5_16)),              // chenxing(mod), disasm
+                (0b0001, Instr(Mnemonic.bg_movhi, Ru21, uimm5_16)),             // chenxing(mod), disasm
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
                 (0b0101, Instr(Mnemonic.bg_mtspr1__, R21, uimm5_16)),           // guess! (not seen)
-                (0b0111, Instr(Mnemonic.bg_mfspr1__, R21, uimm5_16)),           // guess
+                (0b0111, Instr(Mnemonic.bg_mfspr1__, Ru21, uimm5_16)),          // guess
                 (0b1000, Instr(Mnemonic.bg_sflesi__, R21, simm5_16)),           // guess
                 (0b1010, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
                 (0b1100, Instr(Mnemonic.bg_sfgesi__, R21, simm5_16)),           // guess
                 (0b1101, Instr(Mnemonic.bg_mtspr, R16, R21, uimm4_12)),         // chenxing, disasm
                 (0b1110, Instr(Mnemonic.bg_sfgtui__, R21, uimm5_16)),           // guess
-                (0b1111, Instr(Mnemonic.bg_mfspr, R21, R16, uimm4_12)));        // chenxing, disasm
+                (0b1111, Instr(Mnemonic.bg_mfspr, Ru21, R16, uimm4_12)));       // chenxing, disasm
 
             var decoder110100 = Mask(0, 3, "  opc=110100",
                 Instr(Mnemonic.bg_blesi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),  // guess
@@ -404,13 +407,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bg_j, InstrClass.Transfer, disp1_25));                    // guess
 
             var decoder111010 = Mask(0, 1, "  opc=111010",
-                Instr(Mnemonic.bg_lhs__, R21, Ms(16, 1, 15, 1, PrimitiveType.Int16)),  // guess
-                Instr(Mnemonic.bg_lhz__, R21, Ms(16, 1, 15, 1, PrimitiveType.Word16)));  // guess
+                Instr(Mnemonic.bg_lhs__, Ru21, Ms(16, 1, 15, 1, PrimitiveType.Int16)),   // guess
+                Instr(Mnemonic.bg_lhz__, Ru21, Ms(16, 1, 15, 1, PrimitiveType.Word16))); // guess
 
             var decoder111011 = Mask(0, 2, "  opc=111011",
                 Instr(Mnemonic.bg_sw, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),         // chenxing, backtrace
                 Instr(Mnemonic.bg_sw__, Ms(16, 2, 14, 2, PrimitiveType.Word32), R21),       // guess
-                Instr(Mnemonic.bg_lwz, Ru21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),        // guess, disasm
+                Instr(Mnemonic.bg_lwz, Ru21, Ms(16, 2, 14, 2, PrimitiveType.Word32)),       // guess, disasm
                 Instr(Mnemonic.bg_sh__, Ms(16, 1, 15, 1, PrimitiveType.Word16), R21));      // guess
 
             var instr_inv_line = Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1);
@@ -421,7 +424,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                     (0b101, Instr(Mnemonic.bg_syncwritebuffer)),                                            // disasm
                     (0b110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 4, 0, PrimitiveType.Word32), uimm4_1)), // disasm
                     (0b111, instr_inv_line)),                                                               // disasm
-                Instr(Mnemonic.bg_lbs__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)));
+                Instr(Mnemonic.bg_lbs__, Ru21, Ms(16, 0, 16, 0, PrimitiveType.Byte)));
 
             var decoder = Mask(26, 5, "  32-bit instr",
                 Nyi("0b100000"),
@@ -446,18 +449,18 @@ namespace Reko.Arch.OpenRISC.Aeon
 
                 decoder110000,
                 // opcode 110001
-                Instr(Mnemonic.bg_andi, R21, R16, uimm0_16_16),           // chenxing
+                Instr(Mnemonic.bg_andi, Ru21, R16, uimm0_16_16),          // chenxing
                 // opcode 110010
-                Instr(Mnemonic.bg_ori, R21, R16, uimm0_16_16),            // chenxing
+                Instr(Mnemonic.bg_ori, Ru21, R16, uimm0_16_16),           // chenxing
                 // opcode 110011
-                nyi,
+                nyi_16s,
 
                 decoder110100,
                 decoder110101,
                 // opcode 110110
                 nyi,
                 // opcode 110111
-                Instr(Mnemonic.bg_addci__, R21, R16, simm0_16),
+                Instr(Mnemonic.bg_addci__, Ru21, R16, simm0_16),
 
                 // opcode 111000
                 nyi,
@@ -466,13 +469,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoder111011,
 
                 // opcode 111100
-                Instr(Mnemonic.bg_lbz__, R21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),    // guess
+                Instr(Mnemonic.bg_lbz__, Ru21, Ms(16, 0, 16, 0, PrimitiveType.Byte)),   // guess
                 decoder111101,
                 // opcode 111110
                 Instr(Mnemonic.bg_sb__, Ms(16, 0, 16, 0, PrimitiveType.Byte), R21),     // guess
                 // opcode 111111
                 //$REVIEW: signed or unsigned immediate?
-                Instr(Mnemonic.bg_addi, R21, R16, simm0_16));                           // chenxing, backtrace
+                Instr(Mnemonic.bg_addi, Ru21, R16, simm0_16));                          // chenxing, backtrace
 
             return new D32BitDecoder(decoder);
         }
@@ -496,25 +499,25 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decoder100001 = Sparse(0, 5, "  opc=100001", nyi_5,
                 (0b00000, decoder100001_sub0),
-                (0b01000, Instr(Mnemonic.bt_jalr__, InstrClass.Transfer, R5)),  // guess
-                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, R5)));     // disasm
+                (0b01000, Instr(Mnemonic.bt_jalr__, InstrClass.Transfer, Ru5)), // guess
+                (0b01001, Instr(Mnemonic.bt_jr, InstrClass.Transfer, Ru5)));    // disasm
 
             return Mask(10, 3, "  16-bit",
                 decoder100000,
                 decoder100001,
                 // opcode 100010
-                Instr(Mnemonic.bt_mov__, R5, R0),                    // wild guess
+                Instr(Mnemonic.bt_mov__, Ru5, R0),                   // guess
                 // opcode 100011
-                Instr(Mnemonic.bt_add__, R5, R0),                    // guess
+                Instr(Mnemonic.bt_add__, Ru5, R0),                   // guess
 
                 // opcode 100100
                 Instr(Mnemonic.bt_j, InstrClass.Transfer, disp0_10), // chenxing
                 // opcode 100101
-                Instr(Mnemonic.bt_movhi__, R5, uimm0_5),             // guess
+                Instr(Mnemonic.bt_movhi__, Ru5, uimm0_5),            // guess
                 // opcode 100110
-                Instr(Mnemonic.bt_movi__, R5, simm0_5),              // disasm, guess
+                Instr(Mnemonic.bt_movi__, Ru5, simm0_5),             // disasm, guess
                 // opcode 100111
-                Instr(Mnemonic.bt_addi__, R5, simm0_5));             // backtrace, guess
+                Instr(Mnemonic.bt_addi__, Ru5, simm0_5));            // backtrace, guess
         }
 
         private static Decoder<AeonDisassembler, Mnemonic, AeonInstruction> Create24bitInstructionDecoder()
@@ -532,12 +535,12 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decode000011 = Mask(0, 2, "  3",
                 Instr(Mnemonic.bn_sw, Ms(8, 2, 6, 2, PrimitiveType.Word32), R13),    // 000 011 bbbbbaaaaaiiiiii00   // chenxing, backtrace
                 decode000011_bn_sh,
-                Instr(Mnemonic.bn_lwz, R13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // 000 011 dddddaaaaaiiiiii10   // guess, disasm
+                Instr(Mnemonic.bn_lwz, Ru13, Ms(8, 2, 6, 2, PrimitiveType.Word32)), // 000 011 dddddaaaaaiiiiii10   // guess, disasm
                 decode000011_bn_sh);
             
             var decode001000 = Mask(0, 2, "  8",
                 // branch if reg == imm
-                Instr(Mnemonic.bn_beqi__, InstrClass.ConditionalTransfer,  R13, uimm10_3, disp2_8),  // wild guess
+                Instr(Mnemonic.bn_beqi__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),   // guess
                 Instr(Mnemonic.bn_bf, InstrClass.ConditionalTransfer, disp2_16),                     // chenxing(mod), disasm
                 Instr(Mnemonic.bn_bnei__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),
                 Instr(Mnemonic.bn_bnf__, InstrClass.ConditionalTransfer, disp2_16));
@@ -551,50 +554,50 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decode010000 = Mask(0, 3, "  10",
                 //$REVIEW: divs and divu may be mixed up
-                Instr(Mnemonic.bn_divs__, R13, R8, R3),            // disasm
-                Instr(Mnemonic.bn_divu, R13, R8, R3),              // disasm
+                Instr(Mnemonic.bn_divs__, Ru13, R8, R3),           // disasm
+                Instr(Mnemonic.bn_divu, Ru13, R8, R3),             // disasm
                 nyi_3,      //$REVIEW: signed,unsigned mul?
-                Instr(Mnemonic.bn_mul, R13, R8, R3),               // disasm
-                Instr(Mnemonic.bn_add, R13, R8, R3),               // guess, disasm
-                Instr(Mnemonic.bn_sub, R13, R8, R3),               // disasm
-                Instr(Mnemonic.bn_subb__, R13, R8, R3),            // disasm
-                Instr(Mnemonic.bn_addc__, R13, R8, R3));
+                Instr(Mnemonic.bn_mul, Ru13, R8, R3),              // disasm
+                Instr(Mnemonic.bn_add, Ru13, R8, R3),              // guess, disasm
+                Instr(Mnemonic.bn_sub, Ru13, R8, R3),              // disasm
+                Instr(Mnemonic.bn_subb__, Ru13, R8, R3),           // disasm
+                Instr(Mnemonic.bn_addc__, Ru13, R8, R3));
 
             var decode010001 = Sparse(0, 3, "  11", nyi_3,
-                (0b100, Instr(Mnemonic.bn_and, R13, R8, R3)),               // chenxing
-                (0b101, Instr(Mnemonic.bn_or, R13, R8, R3)),                // disasm, guess
-                (0b110, Instr(Mnemonic.bn_xor__, R13, R8, R3)),             // guess
+                (0b100, Instr(Mnemonic.bn_and, Ru13, R8, R3)),              // chenxing
+                (0b101, Instr(Mnemonic.bn_or, Ru13, R8, R3)),               // disasm, guess
+                (0b110, Instr(Mnemonic.bn_xor__, Ru13, R8, R3)),            // guess
                 // XXX: could also be nor
-                (0b111, Instr(Mnemonic.bn_nand__, R13, R8, R3)));           // guess
+                (0b111, Instr(Mnemonic.bn_nand__, Ru13, R8, R3)));          // guess
 
             var decode010010 = Mask(0, 3, "  010010",
-                Instr(Mnemonic.bn_cmov____, R13, R8, R3),                   // guess
-                Instr(Mnemonic.bn_cmov____, R13, R8, R3),                   // guess
-                Instr(Mnemonic.bn_cmovsi__, R13, R8, simm3_5),              // guess
-                Instr(Mnemonic.bn_cmovi____, R13, simm8_5, simm3_5),        // guess
+                Instr(Mnemonic.bn_cmov____, Ru13, R8, R3),                  // guess
+                Instr(Mnemonic.bn_cmov____, Ru13, R8, R3),                  // guess
+                Instr(Mnemonic.bn_cmovsi__, Ru13, R8, simm3_5),             // guess
+                Instr(Mnemonic.bn_cmovi____, Ru13, simm8_5, simm3_5),       // guess
                 nyi_3,
                 nyi_3,
                 nyi_3,
                 nyi_3);
 
             var decode010011 = Mask(0, 3, "  010011",
-                Instr(Mnemonic.bn_slli__, R13, R8, uimm3_5),        // guess
-                Instr(Mnemonic.bn_srli__, R13, R8, uimm3_5),        // guess
-                Instr(Mnemonic.bn_srai__, R13, R8, uimm3_5),        // guess
+                Instr(Mnemonic.bn_slli__, Ru13, R8, uimm3_5),       // guess
+                Instr(Mnemonic.bn_srli__, Ru13, R8, uimm3_5),       // guess
+                Instr(Mnemonic.bn_srai__, Ru13, R8, uimm3_5),       // guess
                 nyi_3,
-                Instr(Mnemonic.bn_sll__, R13, R8, R3),
-                Instr(Mnemonic.bn_srl__, R13, R8, R3),              // guess
-                Instr(Mnemonic.bn_sra__, R13, R8, R3),              // guess
+                Instr(Mnemonic.bn_sll__, Ru13, R8, R3),
+                Instr(Mnemonic.bn_srl__, Ru13, R8, R3),             // guess
+                Instr(Mnemonic.bn_sra__, Ru13, R8, R3),             // guess
                 nyi_3);
 
             var decode010111 = Sparse(0, 5, "  17", nyi_5,
-                (0b00000, Instr(Mnemonic.bn_extbz__, R13, R8)),             // guess
-                (0b00010, Instr(Mnemonic.bn_extbs__, R13, R8)),             // guess
+                (0b00000, Instr(Mnemonic.bn_extbz__, Ru13, R8)),            // guess
+                (0b00010, Instr(Mnemonic.bn_extbs__, Ru13, R8)),            // guess
                 (0b00001, Instr(Mnemonic.bn_sfeqi, R13, uimm5_8)),          // chenxing
-                (0b00100, Instr(Mnemonic.bn_exthz__, R13, R8)),             // guess
-                (0b00110, Instr(Mnemonic.bn_exths__, R13, R8)),             // guess
+                (0b00100, Instr(Mnemonic.bn_exthz__, Ru13, R8)),            // guess
+                (0b00110, Instr(Mnemonic.bn_exths__, Ru13, R8)),            // guess
                 (0b00101, Instr(Mnemonic.bn_sfeq__, R13, R8)),              // chenxing
-                (0b01000, Instr(Mnemonic.bn_ff1__, R13, R8)),               // guess
+                (0b01000, Instr(Mnemonic.bn_ff1__, Ru13, R8)),              // guess
                 (0b01001, Instr(Mnemonic.bn_sfnei__, R13, uimm5_8)),        // guess
                 (0b01101, Instr(Mnemonic.bn_sfne, R13, R8)),                // chenxing, disasm
                 (0b01111, Instr(Mnemonic.bn_sfges____, R13, R8)),           // guess, could be sfgeu
@@ -607,27 +610,26 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b11001, Instr(Mnemonic.bn_sfgesi__, R13, simm5_8)),       // guess
                 (0b11011, Instr(Mnemonic.bn_sfgtui, R13, uimm5_8)),         // disasm
                 (0b11100, Instr(Mnemonic.bn_rtnei__, uimm14_4, uimm5_9)),   // backtrace
-                (0b11101, Instr(Mnemonic.bn_sflts__, R13, R8)),        // disasm
+                (0b11101, Instr(Mnemonic.bn_sflts__, R13, R8)),             // guess
                 // used for bn.sfltu with operands swapped
                 (0b11111, Instr(Mnemonic.bn_sfgtu, R13, R8)));              // disasm
 
             return new D24BitDecoder(Mask(18, 5, "  24-bit instr",  // bit 23 is always 0
                 decode000000,
                 // opcode 000001
-                Instr(Mnemonic.bn_movhi__, R13, uimm0_13),
+                Instr(Mnemonic.bn_movhi__, Ru13, uimm0_13),
                 // opcode 000010
-                Instr(Mnemonic.bn_lhz, R13, Ms(8, 1, 7, 1, PrimitiveType.UInt16)),  // chenxing
+                Instr(Mnemonic.bn_lhz, Ru13, Ms(8, 1, 7, 1, PrimitiveType.UInt16)), // chenxing
                 decode000011,
 
                 // opcode 000100
-                // XXX: assuming this is l.lwz and not l.lws
-                Instr(Mnemonic.bn_lbz__, R13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),  // guess
+                Instr(Mnemonic.bn_lbz__, Ru13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),  // guess
                 // opcode 000101
-                Instr(Mnemonic.bn_lbs__, R13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),   // guess
+                Instr(Mnemonic.bn_lbs__, Ru13, Ms(8, 0, 8, 0, PrimitiveType.Byte)),  // guess
                 // opcode 000110
                 Instr(Mnemonic.bn_sb__, Ms(8, 0, 8, 0, PrimitiveType.Byte), R13),    // guess
                 // opcode 000111
-                Instr(Mnemonic.bn_addi, R13, R8, simm0_8),                           // chenxing, backtrace
+                Instr(Mnemonic.bn_addi, Ru13, R8, simm0_8),                          // chenxing, backtrace
 
                 decode001000,
                 decode001001,
@@ -639,7 +641,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 001100
                 nyi,
                 // opcode 001101
-                Instr(Mnemonic.bn_movhi__, R13, uimm0_13),           // chenxing
+                Instr(Mnemonic.bn_movhi__, Ru13, uimm0_13),          // chenxing
                 // opcode 001110
                 nyi,
                 // opcode 001111
@@ -652,9 +654,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode010011,
 
                 // opcode 010100
-                Instr(Mnemonic.bn_ori, R13, R8, uimm0_8_16),  // chenxing
+                Instr(Mnemonic.bn_ori, Ru13, R8, uimm0_8_16), // chenxing
                 // opcode 010101
-                Instr(Mnemonic.bn_andi, R13, R8, uimm0_8),    // guess
+                Instr(Mnemonic.bn_andi, Ru13, R8, uimm0_8),   // guess
                 // opcode 010110
                 nyi,
                 decode010111,
