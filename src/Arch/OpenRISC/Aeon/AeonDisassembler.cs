@@ -424,6 +424,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder111101 = Select(Bf((21, 5)), u => u == 0,
                 Sparse(0, 4, "  opc=111101", nyi_4,
                     // XXX: chenxing had 0b0001 as invalidate_line
+                    // XXX: possible/necessary to ensure unused bits are 0?
+                    (0b0100, Instr(Mnemonic.bg_flush_invalidate, Ms(16, 6, 10, 0, PrimitiveType.Word32))),    // source
                     (0b0101, Instr(Mnemonic.bg_syncwritebuffer)),                                             // source
                     (0b0110, Instr(Mnemonic.bg_flush_line, Ms(16, 6, 10, 0, PrimitiveType.Word32), uimm4_2)), // source
                     (0b0111, Instr(Mnemonic.bg_invalidate_line, Ms(16, 6, 10, 0, PrimitiveType.Word32), uimm4_2))),                                                                // source

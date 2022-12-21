@@ -444,6 +444,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_flush_invalidate()
+        {
+            Given_HexString("F4033C04");
+            AssertCode(     // bg.flush.invalidate	0xF0(r3)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__flush_invalidate(&Mem0[r3 + 240<i32>:word32])");
+        }
+
+        [Test]
         public void AeonRw_bg_flush_line()
         {
             // confirmed with source

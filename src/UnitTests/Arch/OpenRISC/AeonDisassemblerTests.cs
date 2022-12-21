@@ -335,6 +335,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_flush_invalidate()
+        {
+            // confirmed with source (mostly)
+            AssertCode("bg.flush.invalidate\t(r3)", "F4 03 00 04");
+        }
+
+        [Test]
         public void AeonDis_bg_flush_line()
         {
             // confirmed with source

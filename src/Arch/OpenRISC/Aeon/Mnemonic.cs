@@ -77,6 +77,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_exths__,
         bn_exthz__,
         bn_ff1__,
+        bg_flush_invalidate,
         bg_flush_line,
         bg_invalidate_line,
         bt_j,

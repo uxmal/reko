@@ -126,8 +126,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_exths__: RewriteExt(PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
-                case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
-                case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
+                case Mnemonic.bg_flush_invalidate: RewriteCache(flush_invalidate_intrinsic, false); break;
+                case Mnemonic.bg_flush_line: RewriteCache(flush_line_intrinsic, true); break;
+                case Mnemonic.bg_invalidate_line: RewriteCache(invalidate_line_intrinsic, true); break;
                 case Mnemonic.bt_j:
                 case Mnemonic.bn_j____:
                 case Mnemonic.bg_j: RewriteJ(); break;
@@ -614,18 +615,17 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(dst, fn(left, m.Word32(right)));
         }
 
-        private void RewriteFlushLine()
+        private void RewriteCache(IntrinsicProcedure intrinsic, bool usesWay)
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
-            var way = Op(1);
-            m.SideEffect(m.Fn(flush_line_intrinsic, ea, way));
-        }
+            var args = new List<Expression> { ea };
 
-        private void RewriteInvalidateLine()
-        {
-            var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
-            var way = Op(1);
-            m.SideEffect(m.Fn(invalidate_line_intrinsic, ea, way));
+            if (usesWay) {
+                var way = Op(1);
+                args.Add(way);
+            }
+
+            m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
         private void RewriteJ()
@@ -783,6 +783,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
+
+        private static readonly IntrinsicProcedure flush_invalidate_intrinsic = new IntrinsicBuilder("__flush_invalidate", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
 
         private static readonly IntrinsicProcedure flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
             .Param(PrimitiveType.Ptr32)
