@@ -370,6 +370,8 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16, uimm0_5);
             var nyi_16s = Instr(Mnemonic.Nyi, uimm26_6, Ru21, R16, simm0_16);
 
+            var nyi_unlikely = Instr(Mnemonic.Nyi, InstrClass.Unlikely, uimm26_6);
+
             var decoder110000 = Sparse(0, 4, "  opc=110000", nyi_5, //$REVIEW: maybe the sub-opcode is 5 bits?
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, Ru21, uimm5_16)),             // chenxing(mod), source
@@ -438,15 +440,23 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Nyi("0b100110"),
                 Nyi("0b100111"),
 
-                Nyi("0b101000"),
-                Nyi("0b101001"),
-                Nyi("0b101010"),
-                Nyi("0b101011"),
+                // opcode 101000
+                nyi_unlikely,
+                // opcode 101001
+                nyi_unlikely,
+                // opcode 101010
+                nyi_unlikely,
+                // opcode 101011
+                nyi_unlikely,
 
-                Nyi("0b101100"),
-                Nyi("0b101101"),
-                Nyi("0b101110"),
-                Nyi("0b101111"),
+                // opcode 101100
+                nyi_unlikely,
+                // opcode 101101
+                nyi_unlikely,
+                // opcode 101110
+                nyi_unlikely,
+                // opcode 101111
+                nyi_unlikely,
 
                 decoder110000,
                 // opcode 110001
@@ -527,6 +537,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_2 = Instr(Mnemonic.Nyi, uimm18_6, R13, uimm10_3, disp2_8, uimm0_2);
             var nyi_3 = Instr(Mnemonic.Nyi, uimm18_6, R13, R8, R3, uimm0_3);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm18_6, R13, R8, uimm0_5);
+            var nyi_unlikely = Instr(Mnemonic.Nyi, InstrClass.Unlikely, uimm26_6);
 
             var decode000000 = Select(u => u == 0,
                 Instr(Mnemonic.bn_nop, InstrClass.Linear | InstrClass.Zero | InstrClass.Padding),
@@ -664,22 +675,22 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decode010111,
 
                 // opcode 011000
-                nyi,
+                nyi_unlikely,
                 // opcode 011001
-                nyi,
+                nyi_unlikely,
                 // opcode 011010
-                nyi,
+                nyi_unlikely,
                 // opcode 011011
-                nyi,
+                nyi_unlikely,
 
                 // opcode 011100
-                nyi,
+                nyi_unlikely,
                 // opcode 011101
-                nyi,
+                nyi_unlikely,
                 // opcode 011110
-                nyi,
+                nyi_unlikely,
                 // opcode 011111
-                nyi));
+                nyi_unlikely));
         }
     }
 }
