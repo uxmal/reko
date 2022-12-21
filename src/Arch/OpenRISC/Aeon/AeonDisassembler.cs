@@ -374,7 +374,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 (0b0000, Instr(Mnemonic.bg_sfgeui__, R21, uimm5_16)),           // guess
                 (0b0001, Instr(Mnemonic.bg_movhi, Ru21, uimm5_16)),             // chenxing(mod), source
                 (0b0100, Instr(Mnemonic.bg_sfnei__, R21, uimm5_16)),            // guess
-                (0b0101, Instr(Mnemonic.bg_mtspr1__, R21, uimm5_16)),           // guess! (not seen)
+                (0b0101, Instr(Mnemonic.bg_mtspr1__, R21, uimm5_16)),           // guess
                 (0b0111, Instr(Mnemonic.bg_mfspr1__, Ru21, uimm5_16)),          // guess
                 (0b1000, Instr(Mnemonic.bg_sflesi__, R21, simm5_16)),           // guess
                 (0b1010, Instr(Mnemonic.bg_sfleui__, R21, uimm5_16)),           // guess
@@ -555,14 +555,14 @@ namespace Reko.Arch.OpenRISC.Aeon
 
             var decode010000 = Mask(0, 3, "  10",
                 //$REVIEW: divs and divu may be mixed up
-                Instr(Mnemonic.bn_divs__, Ru13, R8, R3),           // source
+                Instr(Mnemonic.bn_divs__, Ru13, R8, R3),           // guess
                 Instr(Mnemonic.bn_divu, Ru13, R8, R3),             // source
                 //$REVIEW: signed,unsigned mul?
                 Instr(Mnemonic.bn_unk_arith____, Ru13, R8, R3),
                 Instr(Mnemonic.bn_mul, Ru13, R8, R3),              // source
                 Instr(Mnemonic.bn_add, Ru13, R8, R3),              // guess, source
                 Instr(Mnemonic.bn_sub, Ru13, R8, R3),              // source
-                Instr(Mnemonic.bn_subb__, Ru13, R8, R3),           // source
+                Instr(Mnemonic.bn_subb__, Ru13, R8, R3),           // guess
                 Instr(Mnemonic.bn_addc__, Ru13, R8, R3));
 
             var decode010001 = Sparse(0, 3, "  11", nyi_3,
