@@ -369,6 +369,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_4 = Instr(Mnemonic.Nyi, uimm26_6, Ms(16, 6, 10, 0, PrimitiveType.Word32), uimm4_2, uimm0_4);
             var nyi_5 = Instr(Mnemonic.Nyi, uimm26_6, R21, R16, uimm5_16, uimm0_5);
             var nyi_16s = Instr(Mnemonic.Nyi, uimm26_6, Ru21, R16, simm0_16);
+            var nyi_16u = Instr(Mnemonic.Nyi, uimm26_6, Ru21, R16, uimm0_16_16);
 
             var nyi_unlikely = Instr(Mnemonic.Nyi, InstrClass.Unlikely, uimm26_6);
 
@@ -469,7 +470,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoder110100,
                 decoder110101,
                 // opcode 110110
-                nyi,
+                nyi_16u,
                 // opcode 110111
                 Instr(Mnemonic.bg_addci__, Ru21, R16, simm0_16),
 
