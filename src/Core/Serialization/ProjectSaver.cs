@@ -218,8 +218,8 @@ namespace Reko.Core.Serialization
             return new Segment_v4
             {
                 Address = segment.Address?.ToString(),
-                Offset = segment.Offset.ToString(),
-                Length = segment.Length.ToString(),
+                Offset = segment.Offset.ToString("X"),
+                Length = segment.Length.ToString("X"),
                 Name = segment.Name,
                 Architecture = segment.Architecture?.ToString(),
                 Access = access,
