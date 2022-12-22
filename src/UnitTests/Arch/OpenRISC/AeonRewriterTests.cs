@@ -209,12 +209,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_ble__i__()
+        public void AeonRw_bn_bleui__()
         {
             Given_HexString("248415");
-            AssertCode(     // bn.ble?i?	r4,0x1,00354F36
+            AssertCode(     // bn.bleui?	r4,0x1,00354F36
                 "0|T--|00100000(3): 1 instructions",
-                "1|T--|if (r4 <= 1<32>) branch 00100005");
+                "1|T--|if (r4 <=u 1<32>) branch 00100005");
         }
 
         [Test]
@@ -236,12 +236,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonRw_bn_bgt__i__()
+        public void AeonRw_bn_bgtui__()
         {
             Given_HexString("24AFC3");
-            AssertCode(     // bn.bgt?i?	r5,0x3,000FFFF0
+            AssertCode(     // bn.bgtui?	r5,0x3,000FFFF0
                 "0|T--|00100000(3): 1 instructions",
-                "1|T--|if (r5 > 3<32>) branch 000FFFF0");
+                "1|T--|if (r5 >u 3<32>) branch 000FFFF0");
         }
 
         [Test]

@@ -563,9 +563,9 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decode001001 = Mask(0, 2, "  9",
                 Instr(Mnemonic.bn_blesi__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),
                 // branch if reg <= imm XXX: signed/unsigned?
-                Instr(Mnemonic.bn_ble__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8), // wild guess
-                Instr(Mnemonic.bn_blesi____, InstrClass.ConditionalTransfer, R13, simm10_3, disp2_8), // guess,
-                Instr(Mnemonic.bn_bgt__i__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8)); // wild guess
+                Instr(Mnemonic.bn_bleui__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8), // wild guess
+                Instr(Mnemonic.bn_blesi____, InstrClass.ConditionalTransfer, R13, simm10_3, disp2_8), // guess
+                Instr(Mnemonic.bn_bgtui__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8)); // wild guess
 
             var decode010000 = Mask(0, 3, "  10",
                 //$REVIEW: divs and divu may be mixed up

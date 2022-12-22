@@ -182,9 +182,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_bgti__()
+        public void AeonDis_bn_bgtui__()
         {
-            AssertCode("bn.bgt?i?\tr5,0x3,000FFFF0", "24 AF C3");
+            AssertCode("bn.bgtui?\tr5,0x3,000FFFF0", "24 AF C3");
         }
 
         [Test]

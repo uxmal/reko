@@ -102,10 +102,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bges__: RewriteBxx(m.Ge); break;
                 case Mnemonic.bg_bgeu__:
                 case Mnemonic.bg_bgeu____: RewriteBxx(m.Uge); break;
-                case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
+                case Mnemonic.bn_bgtui__: RewriteBxx(m.Ugt); break;
                 case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgtui__: RewriteBxx(m.Ugt); break;
-                case Mnemonic.bn_ble__i__: RewriteBxx(m.Le); break;
+                case Mnemonic.bn_bleui__: RewriteBxx(m.Ule); break;
                 case Mnemonic.bg_blesi__:
                 case Mnemonic.bn_blesi____:
                 case Mnemonic.bn_blesi__: RewriteBxx(m.Le); break;
