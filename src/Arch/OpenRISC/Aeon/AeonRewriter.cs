@@ -157,7 +157,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop:
                 case Mnemonic.bn_nop: RewriteNop(); break;
-                case Mnemonic.bn_mul: RewriteArithmetic(m.IMul); break;
+                case Mnemonic.bn_mul:
+                case Mnemonic.bg_muli__: RewriteArithmetic(m.IMul); break;
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;

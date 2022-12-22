@@ -888,6 +888,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bg_muli__()
+        {
+            Given_HexString("CCECFFE0");
+            AssertCode(     // bg.muli?	r7,r12,-0x20
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r7 = r12 * -32<i32>");
+        }
+
+        [Test]
         public void AeonRw_bn_nand__()
         {
             Given_HexString("44EA57");

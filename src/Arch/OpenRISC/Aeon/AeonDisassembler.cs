@@ -219,6 +219,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         private static readonly Mutator simm0_5 = SignedImmediate(0, 5, PrimitiveType.Int16);
         private static readonly Mutator simm0_8 = SignedImmediate(0, 8, PrimitiveType.Int16);
         private static readonly Mutator simm0_16 = SignedImmediate(0, 16, PrimitiveType.Int16);
+        private static readonly Mutator simm0_16_32 = SignedImmediate(0, 16, PrimitiveType.Int32);
         private static readonly Mutator simm3_5 = SignedImmediate(3, 5, PrimitiveType.Int32);
         private static readonly Mutator simm5_8 = SignedImmediate(5, 8, PrimitiveType.Int32);
         private static readonly Mutator simm5_16 = SignedImmediate(5, 16, PrimitiveType.Int32);
@@ -467,7 +468,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 // opcode 110010
                 Instr(Mnemonic.bg_ori, Ru21, R16, uimm0_16_16),           // chenxing
                 // opcode 110011
-                nyi_16s,
+                Instr(Mnemonic.bg_muli__, Ru21, R16, simm0_16_32),        // guess
 
                 decoder110100,
                 decoder110101,

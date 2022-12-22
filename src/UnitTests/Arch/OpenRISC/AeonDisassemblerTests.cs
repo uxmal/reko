@@ -600,6 +600,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_muli__()
+        {
+            AssertCode("bg.muli?\tr3,r4,0x48", "CC 64 00 48");
+        }
+
+        [Test]
         public void AeonDis_bn_nand__()
         {
             // confirmed with source

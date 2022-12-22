@@ -107,6 +107,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_mtspr,
         bg_mtspr1__,
         bn_mul,
+        bg_muli__,
         bn_nand__,
         bt_nop,
         bn_nop,
