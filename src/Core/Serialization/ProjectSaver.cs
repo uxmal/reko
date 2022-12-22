@@ -97,6 +97,7 @@ namespace Reko.Core.Serialization
                     RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
                     ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
+                    Segments = program.User.Segments.Select(SerializeSegment).ToList(),
                     ExtractResources = program.User.ExtractResources,
                     OutputFilePolicy = program.User.OutputFilePolicy,
                     AggressiveBranchRemoval = program.User.AggressiveBranchRemoval,
@@ -206,6 +207,22 @@ namespace Reko.Core.Serialization
                 Comment = global.Comment,
                 DataType = global.DataType,
                 Name  = global.Name,
+            };
+        }
+
+        private Segment_v4 SerializeSegment(UserSegment segment)
+        {
+            string access = ((segment.AccessMode & AccessMode.Read) != 0 ? "r" : "") +
+                            ((segment.AccessMode & AccessMode.Write) != 0 ? "w" : "") +
+                            ((segment.AccessMode & AccessMode.Execute) != 0 ? "x" : "");
+            return new Segment_v4
+            {
+                Address = segment.Address?.ToString(),
+                Offset = segment.Offset.ToString(),
+                Length = segment.Length.ToString(),
+                Name = segment.Name,
+                Architecture = segment.Architecture?.ToString(),
+                Access = access,
             };
         }
 
