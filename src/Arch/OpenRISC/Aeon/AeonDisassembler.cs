@@ -600,11 +600,11 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bn_slli__, Ru13, R8, uimm3_5),       // guess
                 Instr(Mnemonic.bn_srli__, Ru13, R8, uimm3_5),       // guess
                 Instr(Mnemonic.bn_srai__, Ru13, R8, uimm3_5),       // guess
-                nyi_3,
+                Instr(Mnemonic.bn_rori__, Ru13, R8, uimm3_5),       // guess
                 Instr(Mnemonic.bn_sll__, Ru13, R8, R3),
                 Instr(Mnemonic.bn_srl__, Ru13, R8, R3),             // guess
                 Instr(Mnemonic.bn_sra__, Ru13, R8, R3),             // guess
-                nyi_3);
+                Instr(Mnemonic.bn_ror__, Ru13, R8, R3));            // guess
 
             var decode010111 = Sparse(0, 5, "  17", nyi_5,
                 (0b00000, Instr(Mnemonic.bn_extbz__, Ru13, R8)),            // guess

@@ -991,10 +991,28 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_ror__()
+        {
+            Given_HexString("4D B0 FF");
+            AssertCode(     // bn.ror?	r13,r16,r31
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r13 = __ror<word32,word32>(r16, r31)");
+        }
+
+        [Test]
+        public void AeonRw_bn_rori__()
+        {
+            Given_HexString("4D0433");
+            AssertCode(     // bn.rori?	r8,r4,0x6
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|r8 = __ror<word32,word32>(r4, 6<32>)");
+        }
+
+        [Test]
         public void AeonRw_bn_rtnei__()
         {
             Given_HexString("5C805C");
-            AssertCode(     // bn.rteni?	0x2,0x2
+            AssertCode(     // bn.rtnei?	0x2,0x2
                 "0|L--|00100000(3): 3 instructions",
                 "1|L--|r9 = Mem0[r1 + 12<i32>:word32]",
 	            "2|L--|r10 = Mem0[r1 + 8<i32>:word32]",

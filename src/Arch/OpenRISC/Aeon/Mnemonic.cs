@@ -115,6 +115,8 @@ namespace Reko.Arch.OpenRISC.Aeon
         bn_ori,
         bg_ori,
         bt_rfe,
+        bn_ror__,
+        bn_rori__,
         bn_rtnei__,
         bn_sb__,
         bg_sb__,

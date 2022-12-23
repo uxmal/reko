@@ -654,6 +654,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_ror__()
+        {
+            AssertCode("bn.ror?\tr5,r5,r7", "4C A5 3F");
+        }
+
+        [Test]
+        public void AeonDis_bn_rori__()
+        {
+            AssertCode("bn.rori?\tr10,r4,0x19", "4D 44 CB");
+        }
+
+        [Test]
         public void AeonDis_bn_sb__()
         {
             AssertCode("bn.sb?\t0x7(r1),r0", "18 01 07");
