@@ -655,7 +655,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 Instr(Mnemonic.bn_j____, InstrClass.Transfer, disp0_18),
 
                 // opcode 001100
-                nyi,
+                nyi_5,
                 // opcode 001101
                 Instr(Mnemonic.bn_movhi__, Ru13, uimm0_13),          // chenxing
                 // opcode 001110
