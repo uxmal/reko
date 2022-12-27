@@ -606,6 +606,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_mulu____()
+        {
+            AssertCode("bn.mulu??\tr7,r14,r20", "40 EE A2");
+        }
+
+        [Test]
         public void AeonDis_bn_nand__()
         {
             // confirmed with source

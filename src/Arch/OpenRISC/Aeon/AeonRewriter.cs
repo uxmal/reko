@@ -157,8 +157,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop:
                 case Mnemonic.bn_nop: RewriteNop(); break;
-                case Mnemonic.bn_mul:
-                case Mnemonic.bg_muli__: RewriteArithmetic(m.IMul); break;
+                case Mnemonic.bn_mul: RewriteMul32x32(m.SMul); break;
+                //$REVIEW: determine whether this is signed (it probably is)
+                case Mnemonic.bg_muli__: RewriteMul32x32(m.IMul); break;
+                case Mnemonic.bn_mulu____: RewriteMul32x32(m.UMul); break;
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
@@ -562,6 +564,22 @@ namespace Reko.Arch.OpenRISC.Aeon
                     break;
                 }
             }
+        }
+
+        private void RewriteMul32x32(Func<Expression, Expression, Expression> fn)
+        {
+            var src1 = OpOrZero(1);
+            var src2 = OpOrZero(2);
+            var mul = fn(src1, src2);
+            mul.DataType = PrimitiveType.Word64;
+            var product = binder.CreateTemporary(mul.DataType);
+            m.Assign(product, mul);
+            // upper 32 bits of product appear to be stored in SPR 0x2808
+            var hi = Registers.SpecialRegisters[0x2808];
+            var dstReg = (RegisterStorage) instr.Operands[0];
+            var hi_lo = binder.EnsureSequence(mul.DataType, hi, dstReg);
+
+            m.Assign(hi_lo, product);
         }
 
         private void RewriteNand()

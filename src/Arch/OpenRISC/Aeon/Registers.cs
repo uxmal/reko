@@ -48,12 +48,13 @@ namespace Reko.Arch.OpenRISC.Aeon
                 ( 9, "CPUID"), // CPU Identification register
                 ( 16, "NPC"), // R/W PC mapped to SPR space (next PC)
                 ( 17, "SR"), // R/W Supervision register 
-                ( 18, "PPC"),// R PC mapped to SPR space (previous PC)
+                ( 18, "PPC"), // R PC mapped to SPR space (previous PC)
                 ( 19, "UR"), // User register
 
                 ( (5 << 11) + 1, "MACLO" ), // low word of MAC (multiply/accumulate reigster)
                 ( (5 << 11) + 2, "MACHI" ), // high word of MAC
                 ( (5 << 11) + 3, "MACHI2" ), // highest? word of MAC
+                ( (5 << 11) + 8, "MULHI" ), // high word of multiplication product???
                 ( (5 << 11) + 9, "MACR_a0_low" ), // low word of a0
                 ( (5 << 11) + 10, "MACR_a0_high" ), // high word of a0
                 ( (5 << 11) + 11, "MACR_a1_low" ), // low word of a1

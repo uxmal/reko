@@ -108,6 +108,7 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_mtspr1__,
         bn_mul,
         bg_muli__,
+        bn_mulu____,
         bn_nand__,
         bt_nop,
         bn_nop,
@@ -155,6 +156,5 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_sw__,
         bg_syncwritebuffer,
         bn_xor__,
-        bn_unk_arith____,
     }
 }

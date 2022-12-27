@@ -883,8 +883,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("408323");
             AssertCode(     // bn.mul	r4,r3,r4
-                "0|L--|00100000(3): 1 instructions",
-                "1|L--|r4 = r3 * r4");
+                "0|L--|00100000(3): 2 instructions",
+                "1|L--|v4 = r3 *s64 r4",
+                "2|L--|MULHI_r4 = v4");
         }
 
         [Test]
@@ -892,8 +893,19 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("CCECFFE0");
             AssertCode(     // bg.muli?	r7,r12,-0x20
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = r12 * -32<i32>");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = r12 *64 -32<i32>",
+                "2|L--|MULHI_r7 = v3");
+        }
+
+        [Test]
+        public void AeonRw_bn_mulu____()
+        {
+            Given_HexString("42FFA2");
+            AssertCode(     // bn.mulu??	r23,r31,r20
+                "0|L--|00100000(3): 2 instructions",
+                "1|L--|v4 = r31 *u64 r20",
+                "2|L--|MULHI_r23 = v4");
         }
 
         [Test]

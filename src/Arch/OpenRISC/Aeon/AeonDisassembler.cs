@@ -571,8 +571,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 //$REVIEW: divs and divu may be mixed up
                 Instr(Mnemonic.bn_divs__, Ru13, R8, R3),           // guess
                 Instr(Mnemonic.bn_divu, Ru13, R8, R3),             // source
-                //$REVIEW: signed,unsigned mul?
-                Instr(Mnemonic.bn_unk_arith____, Ru13, R8, R3),
+                Instr(Mnemonic.bn_mulu____, Ru13, R8, R3),         // wild guess
                 Instr(Mnemonic.bn_mul, Ru13, R8, R3),              // source
                 Instr(Mnemonic.bn_add, Ru13, R8, R3),              // guess, source
                 Instr(Mnemonic.bn_sub, Ru13, R8, R3),              // source
