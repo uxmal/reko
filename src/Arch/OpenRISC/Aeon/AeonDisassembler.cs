@@ -473,7 +473,7 @@ namespace Reko.Arch.OpenRISC.Aeon
                 decoder110100,
                 decoder110101,
                 // opcode 110110
-                nyi_16u,
+                Instr(Mnemonic.bg_xori__, Ru21, R16, uimm0_16_16),        // wild guess
                 // opcode 110111
                 Instr(Mnemonic.bg_addci__, Ru21, R16, simm0_16),
 

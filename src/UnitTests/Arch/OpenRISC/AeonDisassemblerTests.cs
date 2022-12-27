@@ -880,5 +880,11 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode("bn.xor?\tr7,r4,r3", "44 E4 1E");
         }
 
+        [Test]
+        public void AeonDis_bg_xori__()
+        {
+            AssertCode("bg.xori?\tr4,r4,0x8", "D8 84 00 08");
+        }
+
     }
 }

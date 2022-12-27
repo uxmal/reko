@@ -156,5 +156,6 @@ namespace Reko.Arch.OpenRISC.Aeon
         bg_sw__,
         bg_syncwritebuffer,
         bn_xor__,
+        bg_xori__,
     }
 }

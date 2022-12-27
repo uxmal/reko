@@ -205,7 +205,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.bt_trap: RewriteSideEffect(trap_intrinsic); break;
-                case Mnemonic.bn_xor__: RewriteArithmetic(m.Xor); break;
+                case Mnemonic.bn_xor__:
+                case Mnemonic.bg_xori__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
                     instr.Operands = Array.Empty<MachineOperand>();

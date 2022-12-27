@@ -1345,6 +1345,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(     // bn.xor? r7,r7,r6
                 "0|L--|00100000(3): 1 instructions",
                 "1|L--|r7 = r7 ^ r6");
-        } 
+        }
+
+        [Test]
+        public void AeonRw_bg_xori__()
+        {
+            Given_HexString("DA9F9001");
+            AssertCode(     // bg.xori? r20,r31,0x9001
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r20 = r31 ^ 0x9001<u16>");
+        }
     }
 }
