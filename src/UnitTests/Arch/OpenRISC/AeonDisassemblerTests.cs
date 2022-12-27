@@ -625,12 +625,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode("bt.nop\t0x0", "80 01");
         }
 
-        /*[Test]
-        public void AeonDis_bn_nop()
-        {
-            AssertCode("bn.nop", "00 00 00");
-        }*/
-
         [Test]
         public void AeonDis_bn_or()
         {
