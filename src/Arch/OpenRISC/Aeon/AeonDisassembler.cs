@@ -544,7 +544,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var nyi_unlikely = Instr(Mnemonic.Nyi, InstrClass.Unlikely, uimm26_6);
 
             // was bn.nop, but evidence for its existence is scarce
-            var decode000000 = nyi_unlikely;
+            var decode000000 = Instr(Mnemonic.Nyi, InstrClass.Zero | InstrClass.Unlikely, uimm26_6);
 
             var decode000011_bn_sh = Instr(Mnemonic.bn_sh__, Ms(8, 1, 7, 1, PrimitiveType.Word16), R13);
             var decode000011 = Mask(0, 2, "  3",
