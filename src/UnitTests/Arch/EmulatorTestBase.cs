@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Arch
 {
     public abstract class EmulatorTestBase
     {
-        private readonly ServiceContainer sc;
         private readonly IProcessorArchitecture arch;
         private readonly Address addrBase;
 
