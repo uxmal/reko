@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 2018-2022 Stefano Moioli <smxdev4@gmail.com>.
+ * Copyright (C) 2018-2023 Stefano Moioli <smxdev4@gmail.com>.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

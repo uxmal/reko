@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (c) 2017-2022 Christian Hostelet.
+ * Copyright (c) 2017-2023 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2022 John Källén.
+ * Copyright (C) 1999-2023 John Källén.
  *
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License), or the GPL v2, or (at your option)

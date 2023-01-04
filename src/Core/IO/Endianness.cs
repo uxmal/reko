@@ -1,6 +1,6 @@
 #region License
 /*
- * Copyright (C) 2018-2022 Stefano Moioli <smxdev4@gmail.com>.
+ * Copyright (C) 2018-2023 Stefano Moioli <smxdev4@gmail.com>.
  * 
  * This software is provided 'as-is', without any express or implied warranty.
  * In no event will the authors be held liable for any damages

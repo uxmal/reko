@@ -13,7 +13,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Runtime components for the Reko decompiler toolchain.</description>
     <releaseNotes>Reko has a new GUI driver, based on Avalonia.</releaseNotes>
-    <copyright>Copyright (C) 1999-2022 John Källén</copyright>
+    <copyright>Copyright (C) 1999-2023 John Källén</copyright>
     <tags>decompiler disassembler</tags>
     <dependencies>
       <group targetFramework="net6.0" />
