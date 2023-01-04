@@ -20,6 +20,7 @@
 
 using Reko.Arch.OpenRISC.Aeon;
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
@@ -57,6 +58,11 @@ namespace Reko.Arch.OpenRISC
         {
             var dasm = new Aeon.AeonDisassembler(this, imageReader);
             return new MovhiSequenceFuser(dasm);
+        }
+
+        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            return new Aeon.AeonEmulator(this, segmentMap, envEmulator);
         }
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)

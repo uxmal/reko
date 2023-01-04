@@ -534,7 +534,7 @@ namespace Reko.Core
         
         public virtual IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
-            throw new NotImplementedException("Emulation has been implemented for this processor architecture yet.");
+            throw new NotImplementedException("Emulation has not been implemented for this processor architecture yet.");
         }
 
         public virtual CallingConvention? GetCallingConvention(string? name)

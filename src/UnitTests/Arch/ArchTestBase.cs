@@ -35,7 +35,7 @@ using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch
 {
-    public abstract class ArchTestBase 
+    public abstract class ArchTestBase
     {
         public abstract IProcessorArchitecture Architecture { get; }
 
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Arch
 
             public void Error(Address address, string message, params object[] args)
             {
-                throw new Exception(string.Format("{0}: {1}", address, 
+                throw new Exception(string.Format("{0}: {1}", address,
                     string.Format(message, args)));
             }
 
