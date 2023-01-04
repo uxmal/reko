@@ -102,10 +102,10 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_bges__: RewriteBxx(m.Ge); break;
                 case Mnemonic.bg_bgeu__:
                 case Mnemonic.bg_bgeu____: RewriteBxx(m.Uge); break;
-                case Mnemonic.bn_bgt__i__: RewriteBxx(m.Gt); break;
+                case Mnemonic.bn_bgtui__: RewriteBxx(m.Ugt); break;
                 case Mnemonic.bg_bgts__: RewriteBxx(m.Gt); break;
                 case Mnemonic.bg_bgtui__: RewriteBxx(m.Ugt); break;
-                case Mnemonic.bn_ble__i__: RewriteBxx(m.Le); break;
+                case Mnemonic.bn_bleui__: RewriteBxx(m.Ule); break;
                 case Mnemonic.bg_blesi__:
                 case Mnemonic.bn_blesi____:
                 case Mnemonic.bn_blesi__: RewriteBxx(m.Le); break;
@@ -126,8 +126,9 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_exths__: RewriteExt(PrimitiveType.Int16, PrimitiveType.Int32); break;
                 case Mnemonic.bn_exthz__: RewriteExt(PrimitiveType.UInt16, PrimitiveType.UInt32); break;
                 case Mnemonic.bn_ff1__: RewriteIntrinsic(CommonOps.FindFirstOne); break;
-                case Mnemonic.bg_flush_line: RewriteFlushLine(); break;
-                case Mnemonic.bg_invalidate_line: RewriteInvalidateLine(); break;
+                case Mnemonic.bg_flush_invalidate: RewriteCache(flush_invalidate_intrinsic, false); break;
+                case Mnemonic.bg_flush_line: RewriteCache(flush_line_intrinsic, true); break;
+                case Mnemonic.bg_invalidate_line: RewriteCache(invalidate_line_intrinsic, true); break;
                 case Mnemonic.bt_j:
                 case Mnemonic.bn_j____:
                 case Mnemonic.bg_j: RewriteJ(); break;
@@ -156,11 +157,16 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bn_nand__: RewriteNand(); break;
                 case Mnemonic.bt_nop:
                 case Mnemonic.bn_nop: RewriteNop(); break;
-                case Mnemonic.bn_mul: RewriteArithmetic(m.IMul); break;
+                case Mnemonic.bn_mul: RewriteMul32x32(m.SMul); break;
+                //$REVIEW: determine whether this is signed (it probably is)
+                case Mnemonic.bg_muli__: RewriteMul32x32(m.IMul); break;
+                case Mnemonic.bn_mulu____: RewriteMul32x32(m.UMul); break;
                 case Mnemonic.bn_or: RewriteArithmetic(m.Or); break;
                 case Mnemonic.bn_ori:
                 case Mnemonic.bg_ori: RewriteOri(m.Or); break;
                 case Mnemonic.bt_rfe: RewriteRfe(); break;
+                case Mnemonic.bn_ror__:
+                case Mnemonic.bn_rori__: RewriteIntrinsic(CommonOps.Ror); break;
                 case Mnemonic.bn_rtnei__: RewriteRtnei(); break;
                 case Mnemonic.bn_sfeq__: RewriteSfxx(m.Eq); break;
                 case Mnemonic.bn_sfeqi: RewriteSfxx(m.Eq); break;
@@ -199,7 +205,8 @@ namespace Reko.Arch.OpenRISC.Aeon
                 case Mnemonic.bg_sw__: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.bg_syncwritebuffer: RewriteSideEffect(syncwritebuffer_intrinsic); break;
                 case Mnemonic.bt_trap: RewriteSideEffect(trap_intrinsic); break;
-                case Mnemonic.bn_xor__: RewriteArithmetic(m.Xor); break;
+                case Mnemonic.bn_xor__:
+                case Mnemonic.bg_xori__: RewriteArithmetic(m.Xor); break;
                     //$TODO: when all instructions are known this code can be removed.
                 case Mnemonic.Nyi:
                     instr.Operands = Array.Empty<MachineOperand>();
@@ -560,6 +567,22 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
         }
 
+        private void RewriteMul32x32(Func<Expression, Expression, Expression> fn)
+        {
+            var src1 = OpOrZero(1);
+            var src2 = OpOrZero(2);
+            var mul = fn(src1, src2);
+            mul.DataType = PrimitiveType.Word64;
+            var product = binder.CreateTemporary(mul.DataType);
+            m.Assign(product, mul);
+            // upper 32 bits of product appear to be stored in SPR 0x2808
+            var hi = Registers.SpecialRegisters[0x2808];
+            var dstReg = (RegisterStorage) instr.Operands[0];
+            var hi_lo = binder.EnsureSequence(mul.DataType, hi, dstReg);
+
+            m.Assign(hi_lo, product);
+        }
+
         private void RewriteNand()
         {
             var left = OpOrZero(1);
@@ -614,18 +637,17 @@ namespace Reko.Arch.OpenRISC.Aeon
             m.Assign(dst, fn(left, m.Word32(right)));
         }
 
-        private void RewriteFlushLine()
+        private void RewriteCache(IntrinsicProcedure intrinsic, bool usesWay)
         {
             var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
-            var way = Op(1);
-            m.SideEffect(m.Fn(flush_line_intrinsic, ea, way));
-        }
+            var args = new List<Expression> { ea };
 
-        private void RewriteInvalidateLine()
-        {
-            var ea = m.AddrOf(PrimitiveType.Ptr32, Op(0));
-            var way = Op(1);
-            m.SideEffect(m.Fn(invalidate_line_intrinsic, ea, way));
+            if (usesWay) {
+                var way = Op(1);
+                args.Add(way);
+            }
+
+            m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
 
         private void RewriteJ()
@@ -783,6 +805,10 @@ namespace Reko.Arch.OpenRISC.Aeon
             }
             m.SideEffect(m.Fn(intrinsic, args.ToArray()));
         }
+
+        private static readonly IntrinsicProcedure flush_invalidate_intrinsic = new IntrinsicBuilder("__flush_invalidate", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
 
         private static readonly IntrinsicProcedure flush_line_intrinsic = new IntrinsicBuilder("__flush_line", true)
             .Param(PrimitiveType.Ptr32)

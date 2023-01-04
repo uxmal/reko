@@ -1524,7 +1524,7 @@ namespace Reko.Evaluation
         ///    x = phi(a, b)
         /// IdBinIdc rule class processes y as 'used in phi' and prevents propagation.
         /// This method could be used to do such simplification (y + const ==> x)
-        /// </summary
+        /// </summary>
         private (Expression, bool) SimplifyPhiArg(Expression arg)
         {
             if (!(arg is BinaryExpression bin &&

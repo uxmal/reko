@@ -182,9 +182,9 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
-        public void AeonDis_bn_bgti__()
+        public void AeonDis_bn_bgtui__()
         {
-            AssertCode("bn.bgt?i?\tr5,0x3,000FFFF0", "24 AF C3");
+            AssertCode("bn.bgtui?\tr5,0x3,000FFFF0", "24 AF C3");
         }
 
         [Test]
@@ -332,6 +332,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_ff1__()
         {
             AssertCode("bn.ff1?\tr6,r7", "5C C7 08");
+        }
+
+        [Test]
+        public void AeonDis_bg_flush_invalidate()
+        {
+            // confirmed with source (mostly)
+            AssertCode("bg.flush.invalidate\t(r3)", "F4 03 00 04");
         }
 
         [Test]
@@ -593,6 +600,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bg_muli__()
+        {
+            AssertCode("bg.muli?\tr3,r4,0x48", "CC 64 00 48");
+        }
+
+        [Test]
+        public void AeonDis_bn_mulu____()
+        {
+            AssertCode("bn.mulu??\tr7,r14,r20", "40 EE A2");
+        }
+
+        [Test]
         public void AeonDis_bn_nand__()
         {
             // confirmed with source
@@ -604,12 +623,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bt.nop\t0x0", "80 01");
-        }
-
-        [Test]
-        public void AeonDis_bn_nop()
-        {
-            AssertCode("bn.nop", "00 00 00");
         }
 
         [Test]
@@ -638,6 +651,18 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             // confirmed with source
             AssertCode("bt.rfe", "84 00");
+        }
+
+        [Test]
+        public void AeonDis_bn_ror__()
+        {
+            AssertCode("bn.ror?\tr5,r5,r7", "4C A5 3F");
+        }
+
+        [Test]
+        public void AeonDis_bn_rori__()
+        {
+            AssertCode("bn.rori?\tr10,r4,0x19", "4D 44 CB");
         }
 
         [Test]
@@ -853,6 +878,12 @@ namespace Reko.UnitTests.Arch.OpenRISC
         public void AeonDis_bn_xor__()
         {
             AssertCode("bn.xor?\tr7,r4,r3", "44 E4 1E");
+        }
+
+        [Test]
+        public void AeonDis_bg_xori__()
+        {
+            AssertCode("bg.xori?\tr4,r4,0x8", "D8 84 00 08");
         }
 
     }
