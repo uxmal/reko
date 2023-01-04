@@ -70,6 +70,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86dis_blsr()
+        {
+            AssertCode32("blsr\teax,eax", "c4 e2 78 f3 c8");
+        }
+
+        [Test]
         public void X86dis_bsf()
         {
             AssertCode32("bsf\teax,[edx+42h]", 0x0F, 0xBC, 0x42, 0x42);

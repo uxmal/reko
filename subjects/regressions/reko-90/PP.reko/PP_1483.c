@@ -475,37 +475,6 @@ l1483_nDBF:
 	goto l1483_nDBF;
 }
 
-// 1483:1104: void fn1483-1104(Register byte al, Register byte dl, Register (memptr (ptr16 Eq_n) Eq_n) bx, Register (memptr (ptr16 Eq_n) Eq_n) bp, Register int16 si, Register int16 di, Register (ptr16 Eq_n) es, Register (ptr16 Eq_n) ds)
-void fn1483-1104(byte al, byte dl, struct Eq_n Eq_n::* bx, struct Eq_n Eq_n::* bp, int16 si, int16 di, struct Eq_n * es, struct Eq_n * ds)
-{
-	struct Eq_n Eq_n::* fp;
-	uint16 ax;
-	struct Eq_n * ss;
-	struct Eq_n Eq_n::* sp_n = fp;
-	Eq_n Top_n = 0;
-	cu8 al_n = SLICE(SEQ((byte) __aam((byte) ax - 151), ax) - 7691671, byte, 16);
-	while (true)
-	{
-		(ss->*bp).w450F = (ss->*bp).w450F + si + (word16) (al_n < 0x00);
-		struct Eq_n Eq_n::* sp_n = sp_n - 2;
-		(ss->*sp_n).ptr0000 = es;
-		word16 dx_n = SEQ(0x34, dl);
-		((char *) bp + 94)[si] = dx_n;
-		(&(ds->*(ds->*bx).a675E))[di] -= 0x7D;
-		(ss->*sp_n).wFFFFFFFE = dx_n;
-		*((word32) Top_n + 1) *= lg2(*Top_n + 1.0);
-		Eq_n es_bx_n = ds->t9F59;
-		Top_n = (word32) Top_n + 1;
-		*Top_n = scalbn(*Top_n, *((word32) Top_n + 1));
-		(ss->*bp).w1EC4 = bp + (ss->*bp).w1EC4 /16 0x00004511;
-		sp_n = sp_n;
-		si = ~0x60A6;
-		es = SLICE(es_bx_n, selector, 16);
-		bx = (word16) es_bx_n;
-		di = 49092;
-	}
-}
-
 // 1483:1777: void fn1483-1777(Register byte al, Register byte bl, Register byte bh, Register Eq_n si, Register (ptr16 Eq_n) ds)
 void fn1483-1777(byte al, byte bl, byte bh, Eq_n si, struct Eq_n * ds)
 {

@@ -65,7 +65,7 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
-        /// Decodes an instruction that has a different mnemonic when using an EVER or VEX prefix.
+        /// Decodes an instruction that has a different mnemonic when using an EVEX or VEX prefix.
         /// </summary>
         public class EvexInstructionDecoder : Decoder
         {
@@ -236,6 +236,41 @@ namespace Reko.Arch.X86
                     return disasm.CreateInvalidInstruction();
 
                 var decoder = ((modRm & 0xC0) == 0xC0)
+                    ? regDecoder
+                    : memDecoder;
+                return decoder.Decode(op, disasm);
+            }
+        }
+
+        /// <summary>
+        /// Different decoding depending on whether the next byte has its high two bits set
+        /// (corresponding to a ModRM byte reg access) or not (correspondong to a memory
+        /// access).
+        /// </summary>
+        /// <remarks>
+        /// This looks identical to <see cref="MemRegDecoder"/> but there is a subtle 
+        /// difference. In this class we cannot assume the bits we are testing are 
+        /// part of the modRm byte.
+        /// </remarks>
+        public class C0Decoder : Decoder
+        {
+            private readonly Decoder memDecoder;
+            private readonly Decoder regDecoder;
+
+            public C0Decoder(
+                Decoder memDecoder,
+                Decoder regDecoder)
+            {
+                this.memDecoder = memDecoder;
+                this.regDecoder = regDecoder;
+            }
+
+            public override X86Instruction Decode(uint op, X86Disassembler disasm)
+            {
+                if (!disasm.rdr.TryPeekByte(0, out byte bNext))
+                    return disasm.CreateInvalidInstruction();
+
+                var decoder = ((bNext & 0xC0) == 0xC0)
                     ? regDecoder
                     : memDecoder;
                 return decoder.Decode(op, disasm);
@@ -856,8 +891,5 @@ namespace Reko.Arch.X86
                 }
             }
         }
-
     }
-
-
 }

@@ -541,43 +541,6 @@ l1483_0DBF:
 fn1483_0D3F_exit:
 
 
-void fn1483_1104(byte al, byte dl, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  ax:[0..7] bp:[0..15] bx:[0..15] di:[0..15] dl:[0..7] ds:[0..15] es:[0..15] si:[0..15] ss:[0..15]
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn1483_1104_exit:
-fn1483_1104_entry:
-	mp16 fp
-	word16 ax
-	selector ss
-	word16 sp_2 = fp
-	int8 Top_3 = 0<i8>
-l1483_1104:
-	byte al_12 = SLICE(SEQ(SLICE(__aam(SLICE(ax, byte, 0) - 0x97<8>), byte, 0), ax) - 0x755D97<24>, byte, 16)
-l1483_110D:
-	Mem22[ss:bp + 0x450F<16>:word16] = Mem18[ss:bp + 0x450F<16>:word16] + si + CONVERT(al_12 <u 0<8>, bool, word16)
-	word16 sp_27 = sp_2 - 2<i16>
-	Mem29[ss:sp_27:word16] = es
-	word16 dx_32 = SEQ(0x34<8>, dl)
-	Mem33[ss:bp + 94<i16> + si:word16] = dx_32
-	Mem38[ds:bx + 0x675E<16> + di:word16] = Mem33[ds:bx + 0x675E<16> + di:word16] - 0x7D<16>
-	Mem46[ss:sp_27 - 2<i16>:word16] = dx_32
-	ST51[Top_3 + 1<i8>:real64] = ST50[Top_3 + 1<i8>:real64] * lg2(ST50[Top_3:real64] + 1.0)
-	ptr32 es_bx_65 = Mem46[ds:0x9F59<16>:segptr32]
-	Top_3 = Top_3 + 1<i8>
-	ST67[Top_3:real64] = scalbn(ST51[Top_3:real64], ST51[Top_3 + 1<i8>:real64])
-	Mem70[ss:bp + 0x1EC4<16>:word16] = Mem46[ss:bp + 0x1EC4<16>:word16] + bp
-	sp_2 = sp_27
-	si = 0x9F59<16>
-	es = SLICE(es_bx_65, selector, 16) (alias)
-	bx = SLICE(es_bx_65, word16, 0) (alias)
-	di = 0xBFC4<16>
-
-
 void fn1483_1777(byte al, byte bl, byte bh, word16 si, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 

@@ -320,11 +320,15 @@ namespace Reko.Arch.X86
 				d[0xC1] = Instr286(new GroupDecoder(Grp2, Ev,Ib));
 				d[0xC2] = Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, Iw);
 				d[0xC3] = Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return);
-				d[0xC4] = Amd64Instr(
-                    Instr(Mnemonic.les,	Gv,Mp),
+                d[0xC4] = Amd64Instr(
+                    new C0Decoder(
+                        Instr(Mnemonic.les, Gv, Mp),
+                        new VexDecoder3(decoders0F, s_decoders0F38, s_decoders0F3A)),
                     new VexDecoder3(decoders0F, s_decoders0F38, s_decoders0F3A));
-				d[0xC5] = Amd64Instr(
-                    Instr(Mnemonic.lds,	Gv,Mp),
+                d[0xC5] = Amd64Instr(
+                    new C0Decoder(
+                        Instr(Mnemonic.lds, Gv,Mp),
+                        new VexDecoder2(decoders0F)),
                     new VexDecoder2(decoders0F));
                 d[0xC6] = Amd64Instr(
                     Instr(Mnemonic.mov, Eb,Ib),

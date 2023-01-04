@@ -658,43 +658,11 @@ l1483_0EEE:
 1483:10D0 5D A8 51 3F 5D 01 2F 4F 92 F7 EF B5 F5 52 B5 4B ].Q?]./O.....R.K
 1483:10E0 3E BF B6 F9 7E AF B6 22 11 EA B6 1E 3A B6 20 FE >...~.."....:. .
 1483:10F0 1D 87 B6 1E 8C 5E 20 F4 37 B6 C3 03 25 E9 A2 D5 .....^ .7...%...
-1483:1100 B6 36 BA B6                                     .6..            
-
-;; fn1483_1104: 1483:1104
-fn1483_1104 proc
-	sub	ax,5D97h
-	mov	dh,26h
-	aam	0B6h
-	sbb	al,75h
-
-l1483_110D:
-	mov	dh,34h
-	std
-	adc	[bp+450Fh],si
-	add	ax,bp
-	inc	ax
-	push	es
-	mov	cl,1Ch
-	mov	[bp+si+5Eh],dx
-	sub	word ptr [bx+di+675Eh],7Dh
-	sbb	ax,0CA22h
-	add	bl,[bp-20h]
-	push	dx
-	pop	si
-	fyl2xp1	st(1),st(0)
-	adc	bl,[bp+7Dh]
-	mov	si,9F59h
-	sbb	al,2h
-	xlat
-	les	bx,[si]
-	cmc
-	add	al,0C4h
-	fscale	st(5),st(0)
-	test	sp,99FEh
-	mov	di,0BFC4h
-	add	[bp+1EC4h],bp
-	jmp	110Dh
-1483:1149                            D8 FA 0A C4 C9 FE 1C          .......
+1483:1100 B6 36 BA B6 2D 97 5D B6 26 D4 B6 1C 75 B6 34 FD .6..-.].&...u.4.
+1483:1110 11 B6 0F 45 01 E8 40 06 B1 1C 89 52 5E 83 A9 5E ...E..@....R^..^
+1483:1120 67 7D 1D 22 CA 02 5E E0 52 5E D9 F9 12 5E 7D BE g}."..^.R^...^}.
+1483:1130 59 9F 1C 02 D7 C4 1C F5 04 C4 D9 FD F7 C4 FE 99 Y...............
+1483:1140 BF C4 BF 01 AE C4 1E EB C4 D8 FA 0A C4 C9 FE 1C ................
 1483:1150 85 C4 4D 43 36 38 BA C5 32 2E 48 E7 7B FF FF 41 ..MC68..2.H.{..A
 1483:1160 FA 02 30 4F EF FE 80 24 4F 20 18 47 E8 00 0A 4B ..0O...$O .G...K
 1483:1170 FA FF EA 4D F5 AA 18 0D 49 F3 05 70 00 03 10 2B ...M....I..p...+
