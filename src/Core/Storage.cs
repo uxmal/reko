@@ -34,15 +34,14 @@ namespace Reko.Core
     /// </summary>
     public abstract class Storage
     {
-        public Storage(string storageKind, StorageDomain domain, string name, DataType dataType)
+        public Storage(StorageDomain domain, string name, DataType dataType)
         {
-            this.Kind = storageKind;
             this.Domain = domain;
             this.DataType = dataType;
             this.Name = name;
         }
 
-        public string Kind { get; }
+        public abstract string Kind { get; }
 
         /// <summary>
         /// The storage domain for this storage. 
@@ -69,6 +68,11 @@ namespace Reko.Core
         /// </summary>
         public string Name { get; }
 
+
+        public abstract T Accept<T>(StorageVisitor<T> visitor);
+        public abstract T Accept<T, C>(StorageVisitor<T, C> visitor, C context);
+
+
         /// <summary>
         /// Returns the bit offset of <paramref name="storage"/> within this 
         /// storage, or -1 if <paramref name="storage"/> is not a part of 
@@ -77,8 +81,6 @@ namespace Reko.Core
         /// <param name="storage"></param>
         /// <returns>The offset in bits, or -1.</returns>
         public abstract int OffsetOf(Storage storage);
-        public abstract T Accept<T>(StorageVisitor<T> visitor);
-        public abstract T Accept<T, C>(StorageVisitor<T, C> visitor, C context);
 
         /// <summary>
         /// Returns true if the Storage <paramref name="that"/> overlaps with this
@@ -93,13 +95,11 @@ namespace Reko.Core
         /// For instance, the x86 register 'eax' covers the 'ah' register,
         /// but the 'ah' register doesn't cover 'eax'.
         /// </summary>
-        /// <param name="that"></param>
-        /// <returns></returns>
         public abstract bool Covers(Storage that);
 
         public virtual bool Exceeds(Storage that)
         {
-            throw new NotImplementedException(string.Format("Exceeds not implemented for {0}.", that.GetType().Name));
+            throw new NotImplementedException($"Exceeds() not implemented for {this.GetType().Name}.");
         }
 
         public virtual BitRange GetBitRange()
@@ -109,7 +109,7 @@ namespace Reko.Core
 
         public virtual SerializedKind Serialize()
         {
-            throw new NotImplementedException(this.GetType().Name + ".Serialize not implemented.");
+            throw new NotImplementedException(this.GetType().Name + ".Serialize() not implemented.");
         }
 
         public override string ToString()
@@ -171,12 +171,14 @@ namespace Reko.Core
 	public class FlagGroupStorage : Storage, MachineOperand
     {
         public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) 
-            : base("FlagGroup", freg.Domain, name, dataType)
+            : base(freg.Domain, name, dataType)
         {
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
             this.BitSize = (uint)dataType.BitSize;
         }
+
+        public override string Kind => "FlagGroup";
 
         public DataType Width
         {
@@ -293,7 +295,6 @@ namespace Reko.Core
     {
         public FpuStackStorage(int depth, DataType dataType) 
             : base(
-                  "FpuStack",
                   StorageDomain.FpuStack + depth,
                   MakeName(depth),
                   dataType)
@@ -301,6 +302,8 @@ namespace Reko.Core
             this.FpuStackOffset = depth;
             MakeName(depth);
         }
+
+        public override string Kind => "FpuStack";
 
         private static string MakeName(int depth)
         {
@@ -384,11 +387,13 @@ namespace Reko.Core
     /// </summary>
     public class MemoryStorage : Storage
     {
-        public MemoryStorage(string name, StorageDomain domain) : base(name, domain, name, null!)
+        public MemoryStorage(string name, StorageDomain domain) : base(domain, name, null!)
         {
             this.BitAddress = 0;
             this.BitSize = 1;
         }
+
+        public override string Kind => Name;
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -439,10 +444,12 @@ namespace Reko.Core
     public class OutArgumentStorage : Storage
     {
         public OutArgumentStorage(Identifier originalId) 
-            : base("out", originalId.Storage.Domain, $"out_{originalId.Name}", originalId.DataType)
+            : base(originalId.Storage.Domain, $"out_{originalId.Name}", originalId.DataType)
         {
             this.OriginalIdentifier = originalId;
         }
+
+        public override string Kind => "out";
 
         public Identifier OriginalIdentifier { get; }
 
@@ -501,7 +508,7 @@ namespace Reko.Core
 	public class RegisterStorage : Storage, MachineOperand, IComparable<RegisterStorage>
     {
         public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType)
-            : base("Register", StorageDomain.Register + number, regName, dataType)
+            : base(StorageDomain.Register + number, regName, dataType)
         {
             this.Number = number;
             this.BitAddress = bitAddress;
@@ -515,6 +522,8 @@ namespace Reko.Core
                 BitMask = ((1ul << bitSize) - 1) << (int) bitAddress;
             }
         }
+
+        public override string Kind => "Register";
 
         public bool IsSystemRegister
         {
@@ -546,7 +555,10 @@ namespace Reko.Core
             return new RegisterStorage(name, number, bitOffset, PrimitiveType.Word64);
         }
 
-        // Create a system register.
+        /// <summary>
+        /// Creates a system register named <paramref name="name"/>, whose number is 
+        /// <paramref name="number"/> and whose size is <paramref name="size"/>.
+        /// </summary>
         public static RegisterStorage Sysreg(string name, int number, PrimitiveType size)
         {
             return new RegisterStorage(name, number + (int) StorageDomain.SystemRegister, 0, size);
@@ -742,13 +754,15 @@ namespace Reko.Core
         }
 
         public SequenceStorage(string name, DataType dt, params Storage [] elements)
-            : base("Sequence", StorageDomain.None, name, dt)
+            : base(StorageDomain.None, name, dt)
         {
             this.Elements = elements;
             this.BitSize = (ulong) dt.BitSize;
         }
 
         public Storage[] Elements { get; }
+
+        public override string Kind => "Sequence";
 
         public DataType Width
         {
@@ -875,11 +889,13 @@ namespace Reko.Core
     public class StackStorage : Storage
     {
         public StackStorage(int offset, DataType dt)
-            : base("Stack", StorageDomain.Stack + offset, "stack", dt)
+            : base(StorageDomain.Stack + offset, "stack", dt)
         {
             this.StackOffset = offset;
             this.BitSize = (uint)dt.BitSize;
         }
+
+        public override string Kind => "Stack";
 
         /// <summary>
         /// Offset from stack pointer as it was when the procedure was entered.
@@ -980,10 +996,12 @@ namespace Reko.Core
 	public class TemporaryStorage : Storage
     {
         protected TemporaryStorage(string name, StorageDomain domain, DataType dt)
-            : base("Temporary", domain, name, dt)
+            : base(domain, name, dt)
         {
             BitSize = (uint)dt.BitSize;
         }
+
+        public override string Kind => "Temporary";
 
         public TemporaryStorage(string name, int number, DataType dt)
             : this(name, StorageDomain.Temporary + number, dt)

@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private Identifier Id(string name, int regno)
         {
-            return new Identifier(name, PrimitiveType.Word32, new RegisterStorage(name, regno, 0, PrimitiveType.Word32));
+            return new Identifier(name, PrimitiveType.Word32, RegisterStorage.Reg32(name, regno));
         }
 
 		[Test]

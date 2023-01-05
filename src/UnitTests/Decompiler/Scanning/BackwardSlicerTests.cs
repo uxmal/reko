@@ -959,9 +959,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             00404792 D8E0 jrc r7
 */
 
-            var r6 = binder.EnsureRegister(new RegisterStorage("r6", 6, 0, PrimitiveType.Word32));
-            var r7 = binder.EnsureRegister(new RegisterStorage("r7", 7, 0, PrimitiveType.Word32));
-
+            var r6 = binder.EnsureRegister(RegisterStorage.Reg32("r6", 6));
+            var r7 = binder.EnsureRegister(RegisterStorage.Reg32("r7", 7));
 
             var l1000 = Given_Block(0x1000);
             var l1008 = Given_Block(0x1008);
@@ -1011,10 +1010,10 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var b1000 = this.Given_Block(0x1000);
             var b100C = this.Given_Block(0x100C);
             var b1010 = this.Given_Block(0x1010);
-            var r6 = binder.EnsureRegister(new RegisterStorage("r6", 6, 0, PrimitiveType.Word32));
-            var r7 = binder.EnsureRegister(new RegisterStorage("r7", 7, 0, PrimitiveType.Word32));
+            var r6 = binder.EnsureRegister(RegisterStorage.Reg32("r6", 6));
+            var r7 = binder.EnsureRegister(RegisterStorage.Reg32("r7", 7));
             var tmp = binder.CreateTemporary(PrimitiveType.UInt16);
-            var sr = binder.EnsureRegister(new RegisterStorage("sr", (int) StorageDomain.SystemRegister, 0, PrimitiveType.Word32));
+            var sr = binder.EnsureRegister(RegisterStorage.Sysreg("sr", 0, PrimitiveType.Word32));
             var f = binder.EnsureFlagGroup((RegisterStorage) sr.Storage, 1 << 9, "f", PrimitiveType.Bool);
 
             Given_Instrs(b1000, m =>
@@ -1072,9 +1071,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 bn.lwz	r7,(r7)
                 bt.jr	r7
             */
-            var r6 = binder.EnsureRegister(new RegisterStorage("r6", 6, 0, PrimitiveType.Word32));
-            var r7 = binder.EnsureRegister(new RegisterStorage("r7", 7, 0, PrimitiveType.Word32));
-            var r10 = binder.EnsureRegister(new RegisterStorage("r10", 10, 0, PrimitiveType.Word32));
+            var r6 = binder.EnsureRegister(RegisterStorage.Reg32("r6", 6));
+            var r7 = binder.EnsureRegister(RegisterStorage.Reg32("r7", 7));
+            var r10 = binder.EnsureRegister(RegisterStorage.Reg32("r10", 10));
 
             var l1000 = Given_Block(0x1000);
             var l1008 = Given_Block(0x1008);

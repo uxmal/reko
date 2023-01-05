@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Mocks
 			registers = new RegisterStorage[RegisterCount];
 			for (int i = 0; i < registers.Length; ++i)
 			{
-				registers[i] = new RegisterStorage("r" + i, i, 0, PrimitiveType.Word32);
+				registers[i] = RegisterStorage.Reg32("r" + i, i);
 			}
 		}
 

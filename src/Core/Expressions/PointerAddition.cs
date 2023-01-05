@@ -31,8 +31,8 @@ namespace Reko.Core.Expressions
 			Pointer = expr; this.Offset = offset;
 		}
 
-        public Expression Pointer { get; private set; }
-        public int Offset { get; private set; }
+        public Expression Pointer { get; }
+        public int Offset { get; }
 
         public override IEnumerable<Expression> Children
         {
