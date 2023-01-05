@@ -88,9 +88,9 @@ namespace Reko.Core.Assemblers
         public void Align(int skip, int alignment)
         {
             if (skip < 0)
-                throw new ArgumentException(nameof(skip), "Argument must be >= 0.");
+                throw new ArgumentException("Argument must be >= 0.", nameof(skip));
             if ((alignment & (alignment - 1)) != 0 || alignment <= 0)
-                throw new ArgumentException(nameof(alignment), "Alignment must be a power of 2 larger than 0.");
+                throw new ArgumentException("Alignment must be a power of 2 larger than 0.", nameof(alignment));
             EmitBytes(0, skip);
 
             var mask = alignment - 1;

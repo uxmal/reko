@@ -36,7 +36,7 @@ namespace Reko.Core.Code
         }
 
         public Expression Condition { get; set; }
-        public override bool IsControlFlow { get { return true; } }
+        public override bool IsControlFlow => true;
 
         public Block Target { get; set; }
 

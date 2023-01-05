@@ -20,13 +20,11 @@
 
 using Reko.Core.Assemblers;
 using Reko.Core.Code;
-using Reko.Core.Configuration;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -42,12 +40,92 @@ namespace Reko.Core
 	public interface IProcessorArchitecture
 	{
         /// <summary>
+        /// Used when building large adds/subs when carry flag is used.
+        /// </summary>
+        uint CarryFlagMask { get; }
+
+        /// <summary>
+        /// Preferred base used to render numbers.
+        /// </summary>
+        int DefaultBase { get; }
+
+        /// <summary>
+        /// Longer description used to refer to architecture. Typically loaded
+        /// from app.config
+        /// </summary>
+        string? Description { get; set; }
+
+        /// <summary>
+        /// The endianness of this processor architecture.
+        /// </summary>
+        EndianServices Endianness { get; }
+
+        /// <summary>
+        /// FPU stack pointer used by this machine, or null if none exists.
+        /// </summary>
+        RegisterStorage FpuStackRegister { get; }
+
+        /// <summary>
+        /// Size of a pointer into the stack frame (near pointer in x86 real mode)
+        /// </summary>
+        PrimitiveType FramePointerType { get; }
+
+        /// <summary>
+        /// Instruction "granularity" or alignment.
+        /// </summary>
+        int InstructionBitSize { get; }
+
+        /// <summary>
+        /// Size of the smallest addressable memory unit, in bits
+        /// </summary>
+        /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
+        /// </remarks>
+        int MemoryGranularity { get; }
+
+        /// <summary>
+        /// Short name used to refer to an architecture.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// Pointer size that reaches anywhere in the address space (far
+        /// pointer in x86 real mode )
+        /// </summary>
+        PrimitiveType PointerType { get; }
+
+        /// <summary>
+        /// Byte patterns that match procedure prologs on this platform.
+        /// </summary>
+        MaskedPattern[] ProcedurePrologs { get; }
+
+        /// <summary>
+        /// The size of the return address (in bytes) if pushed on stack.
+        /// </summary>
+        int ReturnAddressOnStack { get; }
+
+        /// <summary>
+        /// Access to services from the Reko process.
+        /// </summary>
+        IServiceProvider Services { get; }
+
+        /// <summary>
+        /// Stack pointer used by this machine.
+        /// </summary>
+        RegisterStorage StackRegister { get; set; }
+
+        /// <summary>
+        /// Processor's native word size.
+        /// </summary>
+        PrimitiveType WordWidth { get; }
+
+        /// <summary>
         /// Creates an IEnumerable of disassembled <see cref="MachineInstruction" />s which consumes 
         /// its input from the provided <paramref name="imageReader"/>.
         /// </summary>
         /// <remarks>The IEnumerable lets us use Linq expressions
         /// like Take() on a stream of disassembled instructions.</remarks>
-        /// <param name="imageReader"></param>
+        /// <param name="imageReader">The <see cref="EndianImageReader" /> from
+        /// which to read machine code.</param>
         /// <returns>
         /// An <see cref="IEnumerable{MachineInstruction}"/>, which can be 
         /// viewed as a stream of disassembled instructions.
@@ -64,26 +142,33 @@ namespace Reko.Core
         /// <summary>
         /// Returns a stream of machine-independent instructions, which it
         /// generates by successively disassembling machine-specific instructions
-        /// and rewriting them into one or more machine-independent RtlInstructions
-        /// codes. These are then returned as clusters of RtlInstructions.
+        /// and rewriting them into one or more machine-independent <see cref="RtlInstruction" />
+        /// codes. These are then returned as <see cref="RtlInstructionCluster"/>.
         /// </summary>
-        IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
+        IEnumerable<RtlInstructionCluster> CreateRewriter(
+            EndianImageReader rdr,
+            ProcessorState state,
+            IStorageBinder binder,
+            IRewriterHost host);
 
         /// <summary>
         /// Given a set of addresses, returns a set of address where something
         /// is referring to one of those addresses. The referent may be a
         /// machine instruction calling or jumping to the address, or a 
         /// reference to the address stored in memory.
-        /// reference
         /// </summary>
         /// <param name="rdr"></param>
         /// <param name="knownAddresses"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        IEnumerable<Address> CreatePointerScanner(
+            SegmentMap map,
+            EndianImageReader rdr,
+            IEnumerable<Address> knownAddresses,
+            PointerScannerFlags flags);
 
         /// <summary>
-        /// Creates a Frame instance appropriate for this architecture type.
+        /// Creates a <see cref="Frame" /> instance appropriate for this architecture type.
         /// </summary>
         /// <returns></returns>
         Frame CreateFrame();
@@ -93,7 +178,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr);
 
         /// <summary>
@@ -102,8 +187,8 @@ namespace Reko.Core
         /// </summary>
         /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <param name="cbBytes">Number of memory units after which stop reading.</param>
-        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <param name="cbUnits">Number of memory units after which stop reading.</param>
+        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr, long cbUnits);
 
         /// <summary>
@@ -114,7 +199,7 @@ namespace Reko.Core
         /// <param name="memoryArea">Memory area from which to read.</param>
         /// <param name="offsetBegin">Starting offset within the memory area.</param>
         /// <param name="offsetEnd">Ending offset within the memory area.</param>
-        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea memoryArea, long offsetBegin, long offsetEnd);
 
         /// <summary>
@@ -122,9 +207,9 @@ namespace Reko.Core
         /// endianness of the processor.
         /// </summary>
         /// <param name="memoryArea">Program image to read</param>
-        /// <param name="addr">offset from the start of the image</param>
-        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea memoryArea, long off);
+        /// <param name="offset">offset from the start of the image</param>
+        /// <returns>An <see cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, long offset);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -151,7 +236,7 @@ namespace Reko.Core
         /// <param name="asmDialect">On some processors there are many "dialects" of assembly
         /// language. This parameter allows the caller to select a dialect. Passing null
         /// uses the default, manufacturer dialect.</param>
-        /// <returns></returns>
+        /// <returns>An instance implementing the <see cref="IAssembler"/> interface.</returns>
         IAssembler CreateAssembler(string? asmDialect);
 
         /// <summary>
@@ -346,47 +431,16 @@ namespace Reko.Core
 
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
 
-        IServiceProvider Services { get; }                  // Access to services from the Reko process.
-        string Name { get; }                                // Short name used to refer to an architecture.
-        string? Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
-        PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
-        PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
-        PrimitiveType WordWidth { get; }                    // Processor's native word size
-        int DefaultBase { get; }                            // Base used to render numbers.
-        /// <summary>
-        /// The size of the return address (in bytes) if pushed on stack.
-        /// </summary>
-        int ReturnAddressOnStack { get; }
-        int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
-        
-        /// <summary>
-        /// Size of the smallest addressable memory unit, in bits
-        /// </summary>
-        /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
-        /// </remarks>
-        int MemoryGranularity { get; }
-        
-        RegisterStorage StackRegister { get; set; }        // Stack pointer used by this machine.
-        RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
-        uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
-        
-        /// <summary>
-        /// The endianness of this processor architecture.
-        /// </summary>
-        EndianServices Endianness { get; }
-        
-        /// <summary>
-        /// Byte patterns that match procedure prologs on this platform.
-        /// </summary>
-        MaskedPattern[] ProcedurePrologs { get; }
-
         /// <summary>
         /// Parses an address according to the preferred base of the 
         /// architecture.
         /// </summary>
-        /// <param name="txtAddr"></param>
-        /// <param name="addr"></param>
-        /// <returns></returns>
+        /// <param name="txtAddr">String representation of the address.</param>
+        /// <param name="addr">Resulting <see cref="Address"/> if <paramref name="txtAddr"/>
+        /// is a valid textual representation of an address.</param>
+        /// <returns>Returns true if <paramref name="txtAddr"/> is a valid textual
+        /// representation of an address, false if not.
+        /// </returns>
         bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
 
         /// <summary>
@@ -547,7 +601,7 @@ namespace Reko.Core
         public virtual RegisterStorage? GetRegister(string name)
         {
             if (regsByName is null)
-                throw new NotImplementedException("Need to provide regsByDomain.");
+                throw new NotImplementedException("Need to provide regsByName.");
             if (regsByName.TryGetValue(name, out var reg))
                 return reg;
             else

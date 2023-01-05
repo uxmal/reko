@@ -31,7 +31,7 @@ namespace Reko.Core
 	/// <summary>
 	/// Describes the contents of the image in terms of regions. The image map
     /// is two-tier: Segments lie on the first level, and under these, we find
-    /// the procedures.
+    /// the <see cref="ImageMapItem"/>s.
 	/// </summary>
 	public class ImageMap
 	{

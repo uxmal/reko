@@ -34,7 +34,7 @@ namespace Reko.Core.Rtl
         /// <summary>
         /// The class of this instruction.
         /// </summary>
-        public virtual InstrClass Class { get; set; }
+        public InstrClass Class { get; set; }
 
         public abstract T Accept<T>(RtlInstructionVisitor<T> visitor);
         public abstract T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context);

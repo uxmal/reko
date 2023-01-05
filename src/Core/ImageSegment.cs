@@ -38,14 +38,15 @@ namespace Reko.Core
         private uint ctSize;
 
         /// <summary>
-        /// Use this constructor when the segment shares the MemoryArea with
+        /// Use this constructor when the segment shares the <see cref="MemoryArea" /> with
         /// other segments.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="addr"></param>
-        /// <param name="mem"></param>
-        /// <param name="access"></param>
-		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access) : base() 
+        /// <param name="name">The name of the segment.</param>
+        /// <param name="addr">The address of the segment.</param>
+        /// <param name="mem">The <see cref="Core.Memory.MemoryArea"/>, possibly
+        /// shared with other <see cref="ImageSegment"/>s.</param>
+        /// <param name="access">Access mode of this segment.</param>
+		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access)
 		{
             this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
@@ -55,25 +56,16 @@ namespace Reko.Core
             this.Identifier = CreateIdentifier(Address);
         }
 
-		public ImageSegment(string name, Address addr, uint size, AccessMode access)
-		{
-            this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
-            this.Size = size;
-            this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
-            this.MemoryArea = new ByteMemoryArea(addr, new byte[size]);
-			this.Access = access;
-            this.Fields = CreateFields((int)size);
-            this.Identifier = CreateIdentifier(Address);
-        }
-
         /// <summary>
         /// Use this constructor when the segment's memory area is completely 
         /// disjoint from other segments. This is usually the case in PE or ELF
         /// binaries.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="mem"></param>
-        /// <param name="access"></param>
+        /// <param name="name">The name of the segment.</param>
+        /// <param name="addr">The address of the segment.</param>
+        /// <param name="mem">The <see cref="Core.Memory.MemoryArea"/>, which 
+        /// is not shared with other <see cref="ImageSegment"/>s.</param>
+        /// <param name="access">Access mode of this segment.</param>
         public ImageSegment(string name, MemoryArea mem, AccessMode access)
         {
             this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
@@ -86,9 +78,9 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Start address of the segment
+        /// Start address of the segment.
         /// </summary>
-        public Address Address { get; private set; }
+        public Address Address { get; }
 
         /// <summary>
         /// The offset within a file other other source of data from
@@ -107,7 +99,7 @@ namespace Reko.Core
         /// The memory loaded into this segment.
         /// </summary>
         /// <remarks>
-        /// Imageloaders are responsible for providing the MemoryArea for each
+        /// Imageloaders are responsible for providing the <see cref="MemoryArea" /> for each
         /// segment being loaded.
         /// </remarks>
         public MemoryArea MemoryArea { get; set; }
@@ -123,10 +115,13 @@ namespace Reko.Core
         public StructureType Fields { get; }
 
         /// <summary>
-        /// Optional designer
+        /// Optional designer.
         /// </summary>
         public ImageSegmentRenderer? Designer { get; set; }
 
+        /// <summary>
+        /// Name of this image segment.
+        /// </summary>
 		public string Name { get; set; }
 
         //$TODO: remove this property. EndAddress becomes undefined when
@@ -202,8 +197,8 @@ namespace Reko.Core
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.
         /// </summary>
-        /// <param name="platform"></param>
-        /// <returns></returns>
+        /// <param name="arch"></param>
+        /// <returns>The created <see cref="EndianImageReader"/>.</returns>
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch)
         {
             var offsetBegin = Math.Max(this.Address - this.MemoryArea.BaseAddress, 0);
@@ -224,7 +219,7 @@ namespace Reko.Core
 
         public override string ToString()
 		{
-			return string.Format("Segment {0} at {1}, {2} / {3} bytes", Name, Address.ToString(), ContentSize, Size);
+			return $"Segment {Name} at {Address}, {ContentSize} / {Size} bytes";
 		}
 
         private static Identifier CreateIdentifier(Address addr)

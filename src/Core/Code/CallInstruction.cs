@@ -57,7 +57,7 @@ namespace Reko.Core.Code
         /// </summary> 
         public HashSet<CallBinding> Definitions { get; }
 
-        public override bool IsControlFlow { get { return false; } }
+        public override bool IsControlFlow => false;
 
         public override Instruction Accept(InstructionTransformer xform)
         {

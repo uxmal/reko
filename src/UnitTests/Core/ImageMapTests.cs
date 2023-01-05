@@ -120,8 +120,12 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_CreateItem_AtExistingRange()
         {
-            var segmentMap = new SegmentMap(addrBase,
-                new ImageSegment("code", addrBase, 0x100, AccessMode.ReadWrite));
+            var segmentMap = new SegmentMap(
+                addrBase,
+                new ImageSegment(
+                    "code", 
+                    new ByteMemoryArea(addrBase, new byte[0x100]),
+                    AccessMode.ReadWrite));
             var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase,
@@ -137,8 +141,12 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_RemoveItem()
         {
-            var segmentMap = new SegmentMap(addrBase,
-                new ImageSegment("code", addrBase, 0x100, AccessMode.ReadWrite));
+            var segmentMap = new SegmentMap(
+                addrBase,
+                new ImageSegment(
+                    "code", 
+                    new ByteMemoryArea(addrBase, new byte[0x100]),
+                    AccessMode.ReadWrite));
             var map = segmentMap.CreateImageMap();
 
             var itemAddress1 = addrBase;

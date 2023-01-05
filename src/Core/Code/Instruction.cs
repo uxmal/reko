@@ -44,11 +44,11 @@ namespace Reko.Core.Code
 
 		public override string ToString()
 		{
-			StringWriter sw = new StringWriter();
-            TextFormatter f = new TextFormatter(sw);
+			var sw = new StringWriter();
+            var f = new TextFormatter(sw);
 			f.Terminator = "";
 			f.Indentation = 0;
-			CodeFormatter fmt = new CodeFormatter(f);
+			var fmt = new CodeFormatter(f);
 			Accept(fmt);
 			return sw.ToString();
 		}
@@ -87,13 +87,9 @@ namespace Reko.Core.Code
 
         public Identifier Identifier { get; set; }
 
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
+        public override bool IsControlFlow => false;
+	}
 
-	}	
-	
 	public class ReturnInstruction : Instruction
 	{
         public ReturnInstruction()
@@ -107,7 +103,8 @@ namespace Reko.Core.Code
         }
 
         public Expression? Expression { get; set; }
-        public override bool IsControlFlow { get { return true; } }
+
+        public override bool IsControlFlow => true;
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{
@@ -128,7 +125,6 @@ namespace Reko.Core.Code
 		{
 			v.VisitReturnInstruction(this);
 		}
-
 	}
 
 	/// <summary>
@@ -148,7 +144,7 @@ namespace Reko.Core.Code
 		}
 
         public Expression Expression { get; set; }
-        public override bool IsControlFlow { get { return false; } }
+        public override bool IsControlFlow => false;
         public Identifier? OutArgument { get; set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
@@ -171,5 +167,4 @@ namespace Reko.Core.Code
 			v.VisitUseInstruction(this);
 		}
 	}
-
 }

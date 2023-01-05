@@ -56,6 +56,6 @@ namespace Reko.Core.Code
 			v.VisitSideEffect(this);
 		}
 
-		public override bool IsControlFlow { get { return false; } }
+		public override bool IsControlFlow => false;
 	}
 }

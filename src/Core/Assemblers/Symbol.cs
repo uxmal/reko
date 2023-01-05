@@ -29,7 +29,6 @@ namespace Reko.Core.Assemblers
 {
 	public class Symbol
 	{
-			
 		public Symbol(string s)
 		{
 			Name = s;
@@ -143,7 +142,9 @@ namespace Reko.Core.Assemblers
 			Equates = new Dictionary<string,int>();
 		}
 
-		public Symbol CreateSymbol(string s)
+        public Dictionary<string, int> Equates { get; }
+
+        public Symbol CreateSymbol(string s)
 		{
             if (!symbols.TryGetValue(s, out Symbol? sym))
             {
@@ -173,11 +174,9 @@ namespace Reko.Core.Assemblers
 			return sym;
 		}
 
-        public Dictionary<string, int> Equates { get; }
-
         public Symbol [] GetUndefinedSymbols()
 		{
-            List<Symbol> undef = new List<Symbol>();
+            var undef = new List<Symbol>();
 			foreach (Symbol sym in symbols.Values)
 			{
 				if (!sym.IsResolved)

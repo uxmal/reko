@@ -134,7 +134,7 @@ namespace Reko.Core
         /// <summary>
         /// Takes the effective address <paramref name="ea"/>
         /// and wraps it in a memory access expression. The resulting expression
-        /// is used to generate the l-value of a `Store` instruction.
+        /// is used to generate the l-value of a <see cref="Store" /> instruction.
         /// </summary>
         /// <param name="ea">Effective address to be wrapped.</param>
         /// <param name="src">R-Value.</param>

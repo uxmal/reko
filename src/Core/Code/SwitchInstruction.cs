@@ -39,7 +39,7 @@ namespace Reko.Core.Code
         }
 
         public Expression Expression { get; set; }
-        public override bool IsControlFlow { get { return true; } }
+        public override bool IsControlFlow => true;
         public Block[] Targets { get; set; }
 
         public override Instruction Accept(InstructionTransformer xform)
@@ -61,6 +61,5 @@ namespace Reko.Core.Code
         {
             v.VisitSwitchInstruction(this);
         }
-
     }
 }

@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System.IO;
 
 namespace Reko.Core.Code
 {
@@ -64,9 +63,6 @@ namespace Reko.Core.Code
 			v.VisitPhiAssignment(this);
 		}
 
-		public override bool IsControlFlow
-		{
-			get { return false; }
-		}
+        public override bool IsControlFlow => false;
 	}
 }

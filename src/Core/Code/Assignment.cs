@@ -36,8 +36,8 @@ namespace Reko.Core.Code
 
         public Identifier Dst { get; set; }
         public Expression Src { get; set; }
-        public virtual bool IsAlias { get { return false; } }
-        public override bool IsControlFlow { get { return false; } }
+        public virtual bool IsAlias => false;
+        public override bool IsControlFlow => false;
         
         public override Instruction Accept(InstructionTransformer xform)
 		{
@@ -76,7 +76,7 @@ namespace Reko.Core.Code
 
         public Expression Src { get; set; }
 
-        public override bool IsControlFlow { get { return false; } }
+        public override bool IsControlFlow => false;
         
         public override Instruction Accept(InstructionTransformer xform)
 		{
@@ -97,7 +97,6 @@ namespace Reko.Core.Code
 		{
 			v.VisitStore(this);
 		}
-
     }
 
     /// <summary>
@@ -111,9 +110,6 @@ namespace Reko.Core.Code
         {
         }
 
-        public override bool IsAlias
-        {
-            get { return true; }
-        }
+        public override bool IsAlias => true;
     }
 }

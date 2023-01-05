@@ -25,6 +25,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -154,8 +155,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 Address.Ptr32(0x0000),
                 new ImageSegment(
                     ".text",
-                    Address.Ptr32(0),
-                    0x40000,
+                    new ByteMemoryArea(
+                        Address.Ptr32(0),
+                        new byte[0x40000]),
                     AccessMode.ReadWriteExecute));
 
             var writer = new StringWriter();
