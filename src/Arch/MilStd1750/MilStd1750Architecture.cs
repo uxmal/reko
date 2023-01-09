@@ -60,15 +60,10 @@ namespace Reko.Arch.MilStd1750
             return new MilStd1750Disassembler(this, rdr);
         }
 
-        public override MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        public override MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
         {
             // NOTE: assumes the bytes are provided in big-endian form.
-            var words = new ushort[bytes.Length / 2];
-            for (int i = 0; i < words.Length; ++i)
-            {
-                words[i] = (ushort)((bytes[i * 2] << 8) | bytes[i * 2 + 1]); 
-            }
-            return new Word16MemoryArea(addr, words);
+            return Word16MemoryArea.CreateFromBeBytes(addr, bytes);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

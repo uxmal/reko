@@ -42,9 +42,10 @@ namespace Reko.Arch.H8
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
+          var gpregs = Registers.GpRegisters;
             renderer.WriteFormat("({0}-{1})",
-                Registers.GpRegisters[RegisterNumber],
-                Registers.GpRegisters[RegisterNumber + Count - 1]);
+                gpregs[RegisterNumber],
+                gpregs[(RegisterNumber + Count - 1) % gpregs.Length]);
         }
     }
 }

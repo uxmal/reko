@@ -84,7 +84,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 var bytes = BytePattern.FromHexBytes(control.HexBytes.Text);
                 if (bytes.Length > 0)
                 {
-                    var mem = arch.CreateMemoryArea(addr, bytes);
+                    var mem = arch.CreateCodeMemoryArea(addr, bytes);
                     var dumper = new Dumper(new Program())
                     {
                         ShowAddresses = true,

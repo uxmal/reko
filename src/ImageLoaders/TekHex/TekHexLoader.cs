@@ -238,7 +238,7 @@ namespace Reko.ImageLoaders.TekHex
                     throw new BadImageFormatException($"Unable to find a memory area for section {section.name} at {section.uAddrBase:X4}.");
                 var addrMem = mems.Keys[iSection];
                 var bytes = mems.Values[iSection];
-                var mem = arch.CreateMemoryArea(addrMem, bytes.ToArray());
+                var mem = arch.CreateCodeMemoryArea(addrMem, bytes.ToArray());
                 if (addrMem < addrBase)
                 {
                     var stubSeg = new ImageSegment($"seg{addrMem.ToLinear():X4}", addrMem, mem, AccessMode.ReadWriteExecute);

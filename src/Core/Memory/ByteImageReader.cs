@@ -116,7 +116,8 @@ namespace Reko.Core.Memory
         public ByteImageReader(byte[] img, long off) : this(img, off, img.Length) { }
 
         public Address Address { get { return addrStart! + (off - offStart); } }
-        public byte[] Bytes { get { return bytes; } }
+        public byte[] Bytes => bytes;
+        public int CellBitSize => 8;
         public long Offset { get { return off; } set { off = value; } }
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }

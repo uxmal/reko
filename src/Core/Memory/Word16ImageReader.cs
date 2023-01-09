@@ -50,6 +50,8 @@ namespace Reko.Core.Memory
 
         public Address Address => mem.BaseAddress + Offset;
 
+        public int CellBitSize => 16;
+
         public bool IsValid => (ulong) Offset < (ulong) endOffset;
 
         public long Offset { get; set; }
@@ -232,6 +234,11 @@ namespace Reko.Core.Memory
             return mem.TryReadLeUInt32(this.Offset + offset, out value);
         }
 
+        public bool TryPeekLeUInt64(int offset, out ulong value)
+        {
+            return mem.TryReadLeUInt64(this.Offset + offset, out value);
+        }
+
         public bool TryReadBe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
             switch (dataType.BitSize)
@@ -310,10 +317,46 @@ namespace Reko.Core.Memory
 
         public bool TryReadLe(DataType dataType, [MaybeNullWhen(false)] out Constant value)
         {
+            switch (dataType.BitSize)
+            {
+            case 8:
+                if (!TryReadLeUInt16(out ushort us))
+                {
+                    value = default;
+                    return false;
+                }
+                value = Constant.Byte((byte)us);
+                return true;
+            case 16: 
+                if (!TryReadLeUInt16(out  us))
+                {
+                    value = default;
+                    return false;
+                }
+                value = Constant.Word16(us);
+                return true;
+            }
             throw new NotImplementedException();
         }
 
         public bool TryReadLeInt16(out short value)
+        {
+            if (!IsValidOffset(0))
+            {
+                value = 0;
+                return false;
+            }
+            value = (short) mem.Words[Offset];
+            ++Offset;
+            return true;
+        }
+
+        public bool TryReadLeInt32(out int value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryReadLeInt64(out long value)
         {
             throw new NotImplementedException();
         }
@@ -325,12 +368,26 @@ namespace Reko.Core.Memory
 
         public bool TryReadLeUInt16(out ushort value)
         {
-            throw new NotImplementedException();
+            if (!IsValidOffset(0))
+            {
+                value = 0;
+                return false;
+            }
+            value = mem.Words[Offset];
+            ++Offset;
+            return true;
         }
 
         public bool TryReadLeUInt32(out uint value)
         {
-            throw new NotImplementedException();
+            if (!TryReadLeUInt16(out ushort low) ||
+                !TryReadLeUInt16(out ushort high))
+            {
+                value = 0;
+                return false;
+            }
+            value = ((uint) high << 16) | low;
+            return true;
         }
 
         public bool TryReadLeUInt64(out ulong value)

@@ -58,7 +58,7 @@ namespace Reko.Environments.AtariTOS
             var platform = env.Load(Services, arch);
 
             var bytes = new byte[hdr.TextSize + hdr.DataSize + hdr.BssSize];
-            var mem = arch.CreateMemoryArea(addrLoad, bytes);
+            var mem = arch.CreateCodeMemoryArea(addrLoad, bytes);
             int cRead = rdr.ReadBytes(bytes, 0, hdr.TextSize + hdr.DataSize);
             if (cRead != hdr.TextSize + hdr.DataSize)
                 throw new BadImageFormatException();

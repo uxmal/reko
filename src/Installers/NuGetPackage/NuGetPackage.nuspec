@@ -137,6 +137,7 @@
 <file src="../../Arch/Mos6502/bin/$Configuration$/net6.0/Reko.Arch.Mos6502.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/MSP430/bin/$Configuration$/net6.0/Reko.Arch.MSP430.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/OpenRISC/bin/$Configuration$/net6.0/Reko.Arch.OpenRISC.dll" target="lib\netstandard2.0" />
+<file src="../../Arch/Padauk/bin/$Configuration$/net6.0/Reko.Arch.Padauk.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/PaRisc/bin/$Configuration$/net6.0/Reko.Arch.PaRisc.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/Pdp/bin/$Configuration$/net6.0/Reko.Arch.Pdp.dll" target="lib\netstandard2.0" />
 <file src="../../Arch/PowerPC/bin/$Configuration$/net6.0/Reko.Arch.PowerPC.dll" target="lib\netstandard2.0" />

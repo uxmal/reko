@@ -1,0 +1,18 @@
+void fn0000(byte f)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  f:[0..7]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000_exit:
+fn0000_entry:
+l0000:
+	Mem3[0x0001<p16>:byte] = 0<8>
+	__out(2<8>, 0xBC<8>)
+	fn004F()
+l0006_thunk_fn0012:
+	fn0012(f)
+
+

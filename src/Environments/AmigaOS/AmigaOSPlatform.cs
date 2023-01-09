@@ -102,7 +102,7 @@ namespace Reko.Environments.AmigaOS
                 Address.Ptr32(0),
                 new ImageSegment(
                     "interrupts",
-                    Architecture.CreateMemoryArea(Address.Ptr32(0), new byte[0x100]),
+                    Architecture.CreateCodeMemoryArea(Address.Ptr32(0), new byte[0x100]),
                     AccessMode.Read));
             //$TODO: once we're guaranteed the correct Kickstart version
             // has been loaded, we can execute the below.

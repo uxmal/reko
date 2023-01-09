@@ -57,6 +57,8 @@ namespace Reko.Core.Memory
 
         public Address Address => mem.BaseAddress + Offset;
 
+        public int CellBitSize => 64;
+
         public bool IsValid => (ulong) Offset < (ulong) endOffset; 
 
         public long Offset { get; set; }

@@ -139,7 +139,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
                 var bytes = BytePattern.FromHexBytes(HexBytes);
                 if (bytes.Length > 0)
                 {
-                    var mem = arch.CreateMemoryArea(addr, bytes);
+                    var mem = arch.CreateCodeMemoryArea(addr, bytes);
                     var dumper = new Dumper(new Program())
                     {
                         ShowAddresses = true,

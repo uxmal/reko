@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>padauk</arch>
+  <input>
+    <location>adctest_pfs173.ihx</location>
+    <asmDir>adctest_pfs173.reko</asmDir>
+    <srcDir>adctest_pfs173.reko</srcDir>
+    <includeDir>adctest_pfs173.reko</includeDir>
+    <resources>adctest_pfs173.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>IntelHex</loader>
+      <processor name="padauk">
+        <item key="ISA">PDK15</item>
+      </processor>
+      <platform name="default" />
+      <procedure name="fn0000">
+        <address>0000</address>
+      </procedure>
+      <procedure name="fn0012">
+        <address>0012</address>
+      </procedure>
+      <procedure name="fn0068">
+        <address>0068</address>
+      </procedure>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

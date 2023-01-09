@@ -46,25 +46,25 @@ namespace Reko.UnitTests.Arch
 
         protected void Given_Bytes(params byte[] bytes)
         {
-            this.mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
+            this.mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
         }
 
         public void Given_HexString(string hexbytes)
         {
             var bytes = BytePattern.FromHexBytes(hexbytes);
-            this.mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
+            this.mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
         }
 
         public void Given_OctalBytes(string octalBytes)
         {
             var bytes = OctalStringToBytes(octalBytes);
-            this.mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
+            this.mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
         }
 
         public void Given_UInt16s(params ushort[] opcodes)
         {
             byte[] bytes = new byte[opcodes.Length * 2];
-            var mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
+            var mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
             var writer = Architecture.CreateImageWriter(mem, mem.BaseAddress);
             foreach (ushort opcode in opcodes)
             {
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Arch
         public void Given_UInt32s(params uint[] opcodes)
         {
             byte[] bytes = new byte[opcodes.Length * 4];
-            var mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
+            var mem = Architecture.CreateCodeMemoryArea(LoadAddress, bytes);
             var writer = Architecture.CreateImageWriter(mem, mem.BaseAddress);
             foreach (uint opcode in opcodes)
             {

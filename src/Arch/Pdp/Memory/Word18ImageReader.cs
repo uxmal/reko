@@ -49,6 +49,8 @@ namespace Reko.Arch.Pdp.Memory
 
         public Address Address => mem.BaseAddress + Offset;
 
+        public int CellBitSize => 36;
+
         public bool IsValid => (ulong) Offset < (ulong) endOffset;
 
         public long Offset { get; set; }

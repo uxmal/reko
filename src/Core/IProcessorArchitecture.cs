@@ -76,6 +76,16 @@ namespace Reko.Core
         int InstructionBitSize { get; }
 
         /// <summary>
+        /// Size of the smallest addressable memory unit where machine code is stored, in bits.
+        /// </summary>
+        /// <remarks>
+        /// Most modern CPU:s have byte addressability, so this will typically be 8, but
+        /// some architectures define separate memory areas for their machine code instructions
+        /// with wider word sizes.
+        /// </remarks>
+        int CodeMemoryGranularity { get; }
+
+        /// <summary>
         /// Size of the smallest addressable memory unit, in bits
         /// </summary>
         /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
@@ -283,9 +293,10 @@ namespace Reko.Core
             Expression callee);
 
         /// <summary>
-        /// Create a <see cref="MemoryArea"/> appropriate for this processor.
+        /// Create a <see cref="MemoryArea"/> appropriate for storing the
+        /// machine code for this processor.
         /// </summary>
-        MemoryArea CreateMemoryArea(Address baseAddress, byte[] bytes);
+        MemoryArea CreateCodeMemoryArea(Address baseAddress, byte[] bytes);
 
         /// <summary>
         /// Reinterprets a string of raw bits as a floating point number appropriate
@@ -516,6 +527,7 @@ namespace Reko.Core
             this.Name = archId;
             this.Options = options;
             this.MemoryGranularity = 8; // Most architectures are byte-addressable.
+            this.CodeMemoryGranularity = 8; // Most architectures are byte-addressable.
             this.DefaultBase = 16;      // Most architectures display hexadecimal.
             this.regsByName = regsByName;
             this.regsByDomain = regsByDomain;
@@ -529,6 +541,7 @@ namespace Reko.Core
         public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public int MemoryGranularity { get; protected set; }
+        public int CodeMemoryGranularity { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public MaskedPattern[] ProcedurePrologs { get; internal set; }
         public PrimitiveType WordWidth { get; protected set; }
@@ -629,7 +642,7 @@ namespace Reko.Core
             return new FrameApplicationBuilder(this, binder, site, callee);
         }
 
-        public virtual MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        public virtual MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
         {
             // Most CPU's -- but not all -- are byte-addressed.
             return new ByteMemoryArea(addr, bytes);
@@ -698,7 +711,7 @@ namespace Reko.Core
                 8 => (bitSize + 2) / 3,
                 _ => throw new NotSupportedException($"Unsupported numeric base {this.DefaultBase}.")
             };
-            var units = (instr.Length * this.MemoryGranularity) / this.InstructionBitSize;
+            var units = (instr.Length * rdr.CellBitSize) / this.InstructionBitSize;
             for (int i = 0; i < units; ++i)
             {
                 if (rdr.TryRead(instrSize, out var v))

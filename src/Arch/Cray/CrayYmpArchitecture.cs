@@ -84,7 +84,7 @@ namespace Reko.Arch.Cray
             return new YmpInstructionSet();
         }
 
-        public override MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        public override MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)
         {
             // NOTE: assumes the bytes are provided in big-endian form.
             var words = new ulong[bytes.Length / 8];

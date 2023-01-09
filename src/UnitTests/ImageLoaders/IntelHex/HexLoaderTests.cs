@@ -221,6 +221,5 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
             Assert.AreEqual(6, bmem4.Length);
             Assert.AreEqual(0x0F, bmem4.Bytes[0]);
         }
-
     }
 }

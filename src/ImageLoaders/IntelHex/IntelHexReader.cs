@@ -34,6 +34,7 @@ namespace Reko.ImageLoaders.IntelHex
         #region Locals
 
         private readonly StreamReader streamReader;
+        private readonly int bytesPerCodeUnit;
         private int lineNum;
         private bool IsSegmented = false;
         private bool IsLinear = false;
@@ -47,13 +48,14 @@ namespace Reko.ImageLoaders.IntelHex
         /// </summary>
         /// <param name="str">The source stream of the hex file.</param>
         /// <param name="addressBase">The default base address to use.</param>
+        /// <param name="bytesPerCodeUnit">Number of bytes consumed by each memory unit.</param>
         /// <exception cref="ArgumentNullException">If the <paramref name="str" /> is null.</exception>
         public IntelHexReader(Stream str, Address addressBase)
         {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             streamReader = new StreamReader(str);
-            AddressBase = addressBase; 
+            AddressBase = addressBase;
             lineNum = 0;
         }
 
@@ -137,7 +139,6 @@ namespace Reko.ImageLoaders.IntelHex
                     data = hexRecord.Data!.ToArray();
                 return true;
             }
-
             return false;
         }
 
@@ -145,44 +146,47 @@ namespace Reko.ImageLoaders.IntelHex
         {
             switch (hexRecord.RecordType)
             {
-                case IntelHexRecordType.Data:
-                    return AddressBase + hexRecord.Address;
+            case IntelHexRecordType.Data:
+                return AddressBase + hexRecord.Address;
 
-                case IntelHexRecordType.ExtendedSegmentAddress:
-                    if (IsLinear)
-                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
-                    IsSegmented = true;
-                    var seg = ((uint) hexRecord.Data![0] << 8) | hexRecord.Data[1];
-                    AddressBase = Address.SegPtr((ushort)seg, 0);
-                    return AddressBase;
+            case IntelHexRecordType.ExtendedSegmentAddress:
+                if (IsLinear)
+                    throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
+                IsSegmented = true;
+                var seg = ((uint) hexRecord.Data![0] << 8) | hexRecord.Data[1];
+                AddressBase = Address.SegPtr((ushort) seg, 0);
+                return AddressBase;
 
-                case IntelHexRecordType.ExtendedLinearAddress:
-                    if (IsSegmented)
-                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
-                    IsLinear = true;
+            case IntelHexRecordType.ExtendedLinearAddress:
+                if (IsSegmented)
+                    throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
+                IsLinear = true;
                 AddressBase = Address.Ptr32((((uint) hexRecord.Data![0] << 8) | hexRecord.Data[1]) << 16);
-                    return AddressBase;
+                return AddressBase;
 
-                case IntelHexRecordType.StartSegmentAddress:
-                    if (IsLinear)
-                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
-                    IsSegmented = true;
-                    StartAddress = Address.SegPtr((ushort)((hexRecord.Data![0] << 8) | hexRecord.Data[1]),
-                                                  (ushort)((hexRecord.Data![2] << 8) | hexRecord.Data[3]));
-                    return AddressBase;
+            case IntelHexRecordType.StartSegmentAddress:
+                if (IsLinear)
+                    throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
+                IsSegmented = true;
+                StartAddress = Address.SegPtr(
+                    (ushort) ((hexRecord.Data![0] << 8) | hexRecord.Data[1]),
+                    (ushort) ((hexRecord.Data![2] << 8) | hexRecord.Data[3]));
+                return AddressBase;
 
-                case IntelHexRecordType.StartLinearAddress:
-                    if (IsSegmented)
-                        throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
-                    IsLinear = true;
-                    StartAddress = Address.Ptr32(((uint)hexRecord.Data![0] << 24) | ((uint)hexRecord.Data[1] << 16) |
-                                           ((uint)hexRecord.Data[2] << 8) | hexRecord.Data[3]);
-                    return AddressBase;
+            case IntelHexRecordType.StartLinearAddress:
+                if (IsSegmented)
+                    throw new IntelHexException($"Mixed segmented/linear address.", lineNum);
+                IsLinear = true;
+                StartAddress = Address.Ptr32(
+                    ((uint) hexRecord.Data![0] << 24) |
+                    ((uint) hexRecord.Data[1] << 16) |
+                    ((uint) hexRecord.Data[2] << 8) 
+                    | hexRecord.Data[3]);
+                return AddressBase;
 
-                default:
-                    throw new IntelHexException($"Unknown value read for [{nameof(hexRecord.RecordType)}]", lineNum);
+            default:
+                throw new IntelHexException($"Unknown value read for [{nameof(hexRecord.RecordType)}]", lineNum);
             }
-
         }
 
         #endregion

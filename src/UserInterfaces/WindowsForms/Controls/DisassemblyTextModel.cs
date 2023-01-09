@@ -85,7 +85,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
-                var addr = Align(addrStart + offset);
+                var addr = Align(addrStart + offset, program.Architecture.CodeMemoryGranularity);
                 if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg) &&
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
@@ -95,7 +95,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             ? MachineInstructionRendererFlags.None
                             : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
                     var arch = GetArchitectureForAddress(addr);
-                    var dasm = program.CreateDisassembler(arch, Align(addrStart + offset)).GetEnumerator();
+                    var cellBitSize = seg.MemoryArea.CellBitSize;
+                    var dasm = program.CreateDisassembler(arch, addr).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
                         var instr = dasm.Current;
@@ -143,10 +144,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return new LineSpan(position, addr, line.ToArray());
         }
 
-        private Address Align(Address addr)
+        private Address Align(Address addr, int bitGranularity)
         {
             var arch = program.Architecture;
-            uint addrAlign = (uint)Math.Max(arch.InstructionBitSize / arch.MemoryGranularity, 1);
+            uint addrAlign = (uint)Math.Max(arch.InstructionBitSize / bitGranularity, 1);
             ulong linear = addr.ToLinear();
             var rem = linear % addrAlign;
             return addr - (int)rem;

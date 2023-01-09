@@ -259,7 +259,7 @@ namespace Reko.Core.Serialization
                 ExtractResources = true,
                 OutputFilePolicy = Program.SingleFilePolicy,
             };
-            var address = LoadAddress(sUser, this.arch!);
+            var address = LoadAddress(sUser, this.arch);
             var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
             var userSegments = sUser.Segments is null
                 ? new List<UserSegment>()
@@ -324,7 +324,7 @@ namespace Reko.Core.Serialization
                 ExtractResources = true,
                 OutputFilePolicy = Program.SingleFilePolicy,
             };
-            var address = LoadAddress(sUser, this.arch!);
+            var address = LoadAddress(sUser, this.arch);
             Program program = LoadProgram(project.Location, sInput);
             LoadUserData(sUser, program, program.User, project.Location);
             program.Location = binAbsLocation;
@@ -338,7 +338,7 @@ namespace Reko.Core.Serialization
             return program;
         }
 
-        private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
+        private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture? arch)
         {
             if (user is null || arch is null || user.LoadAddress is null)
                 return null;

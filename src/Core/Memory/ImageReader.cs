@@ -37,6 +37,12 @@ namespace Reko.Core.Memory
     public interface ImageReader
     {
         Address Address { get; }
+
+        /// <summary>
+        /// Size of an individual addressable cell, in bits.
+        /// </summary>
+        int CellBitSize { get; }
+
         bool IsValid { get; }
         long Offset { get; set; }
 

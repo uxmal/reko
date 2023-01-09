@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Reko.Core;
 using Reko.Core.Memory;
@@ -80,7 +81,6 @@ namespace Reko.ImageLoaders.IntelHex
 
             var rdr = new ByteImageReader(hexData.ToArray());
             var datasize = rdr.ReadByte();
-
             var newRecord = new IntelHexRecord
             {
                 ByteCount = datasize,
@@ -89,6 +89,7 @@ namespace Reko.ImageLoaders.IntelHex
                 Data = rdr.ReadBytes(datasize).ToList(),
                 CheckSum = rdr.ReadByte()
             };
+            Debug.WriteLine($"Addr: {newRecord.Address:X4} Type: {newRecord.RecordType}");
             return newRecord;
         }
     }

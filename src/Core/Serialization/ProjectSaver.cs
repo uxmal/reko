@@ -240,15 +240,15 @@ namespace Reko.Core.Serialization
             if (architecture is null)
                 return null;
             var options = architecture.SaveUserOptions();
-            if (string.IsNullOrEmpty(user.Processor) && options == null)
+            if (string.IsNullOrEmpty(user.Processor) && options is null)
                 return null;
             else
             {
                 var doc = new XmlDocument();
                 var xml = SerializeValue(options, doc);
-                var elems = xml != null
+                var elems = xml is not null
                     ? xml.ChildNodes.OfType<XmlElement>().ToArray()
-                    : new XmlElement[0];
+                    : Array.Empty<XmlElement>();
                 return new ProcessorOptions_v4 {
                     Name = user.Processor,
                     Options = elems
@@ -258,10 +258,10 @@ namespace Reko.Core.Serialization
 
         private PlatformOptions_v4? SerializePlatformOptions(UserData user, IPlatform platform)
         {
-            if (platform == null)
+            if (platform is null)
                 return null;
             var dictionary = platform.SaveUserOptions();
-            if (dictionary == null)
+            if (dictionary is null)
             {
                 if (string.IsNullOrEmpty(user.Environment))
                     return null;

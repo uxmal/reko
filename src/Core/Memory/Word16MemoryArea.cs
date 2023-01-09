@@ -23,6 +23,7 @@ using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Core.Memory
@@ -38,6 +39,36 @@ namespace Reko.Core.Memory
             this.Words = words;
         }
 
+        public static MemoryArea CreateFromBeBytes(Address address, byte[] bytes)
+        {
+            static ushort[] CreateFromBeBytes(byte[] bytes)
+            {
+                var words = new ushort[bytes.Length / 2];
+                for (int i = 0; i < words.Length; ++i)
+                {
+                    words[i] = (ushort) ((bytes[i * 2] << 8) | bytes[i * 2 + 1]);
+                }
+                return words;
+            }
+            var words = CreateFromBeBytes(bytes);
+            return new Word16MemoryArea(address, words);
+        }
+
+        public static MemoryArea CreateFromLeBytes(Address address, byte[] bytes)
+        {
+            static ushort[] CreateFromLeBytes(byte[] bytes)
+            {
+                var words = new ushort[bytes.Length / 2];
+                for (int i = 0; i < words.Length; ++i)
+                {
+                    words[i] = (ushort) ((bytes[i * 2 + 1] << 8) | bytes[i * 2]);
+                }
+                return words;
+            }
+            var words = CreateFromLeBytes(bytes);
+            return new Word16MemoryArea(address, words);
+        }
+
         /// <summary>
         /// The words of this memory area.
         /// </summary>
@@ -50,12 +81,10 @@ namespace Reko.Core.Memory
         public override BeImageWriter CreateBeWriter(Address addr) => throw new NotImplementedException();
         public override BeImageWriter CreateBeWriter(long offset) => throw new NotImplementedException();
 
-        //$TODO: none of the architectures that use 16-bit memory units are little-endian.
-        public override EndianImageReader CreateLeReader(Address addr) => throw new NotImplementedException();
-        public override EndianImageReader CreateLeReader(Address addr, long cUnits) => throw new NotImplementedException();
-
-        public override EndianImageReader CreateLeReader(long offset) => throw new NotImplementedException();
-        public override EndianImageReader CreateLeReader(long beginOffset, long endOffset) => throw new NotImplementedException();
+        public override EndianImageReader CreateLeReader(Address addr) => new Word16LeImageReader(this, addr);
+        public override EndianImageReader CreateLeReader(Address addr, long cUnits) => new Word16LeImageReader(this, addr, cUnits);
+        public override EndianImageReader CreateLeReader(long offset) => new Word16LeImageReader(this, offset);
+        public override EndianImageReader CreateLeReader(long beginOffset, long endOffset) => new Word16LeImageReader(this, beginOffset, endOffset);
         public override LeImageWriter CreateLeWriter(Address addr) => throw new NotImplementedException();
         public override LeImageWriter CreateLeWriter(long offset) => throw new NotImplementedException();
 
@@ -107,8 +136,27 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
+        public override bool TryReadLe(long imageOffset, DataType type, [MaybeNullWhen(false)] out Constant c)
         {
+            switch (type.BitSize)
+            {
+            case 8:
+                if (!TryReadLeUInt16(imageOffset, out var us))
+                {
+                    c = default;
+                    return false;
+                }
+                c = Constant.Create(type, us);
+                return true;
+            case 16:
+                if (!TryReadLeUInt16(imageOffset, out us))
+                {
+                    c = default;
+                    return false;
+                }
+                c = Constant.Create(type, us);
+                return true;
+            }
             throw new NotImplementedException();
         }
 
@@ -119,7 +167,13 @@ namespace Reko.Core.Memory
 
         public override bool TryReadLeUInt16(long off, out ushort retvalue)
         {
-            throw new NotImplementedException();
+            if (off >= Words.Length)
+            {
+                retvalue = 0;
+                return false;
+            }
+            retvalue = Words[off];
+            return true;
         }
 
         public override bool TryReadLeUInt32(long off, out uint retvalue)

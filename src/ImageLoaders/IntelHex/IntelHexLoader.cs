@@ -99,10 +99,10 @@ namespace Reko.ImageLoaders.IntelHex
             /// <param name="data">The binary bytes contained in the IHex32 record.</param>
             public void AddData(Address address, byte[] data)
             {
-                if (data == null || data.Length < 1)
+                if (data is null || data.Length < 1)
                     return;
 
-                if (currAddr == null)
+                if (currAddr is null)
                 {
                     currAddr = address;
                     currMemChunk = new MemoryChunk(currAddr);
@@ -114,7 +114,7 @@ namespace Reko.ImageLoaders.IntelHex
                     if (nextAddr != currAddr)
                     {
                         currMemChunk = GetPredChunk(currAddr);
-                        if (currMemChunk == null)
+                        if (currMemChunk is null)
                         {
                             currMemChunk = new MemoryChunk(currAddr);
                             memChunks.Add(currAddr, currMemChunk);
@@ -216,11 +216,15 @@ namespace Reko.ImageLoaders.IntelHex
 
             var segs = new SegmentMap(PreferredBaseAddress);
 
-            // Generate the image segments with fake names.
+            // Generate the image segments with symnthesized names.
+            uint bytesPerCodeUnit = (uint)arch.CodeMemoryGranularity / 8;
             int i = 0;
             foreach (var mchk in memChunks)
             {
-                var mem = arch.CreateMemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
+                var offset = mchk.BaseAddress.Offset / bytesPerCodeUnit;
+                var addr = mchk.BaseAddress.NewOffset(offset);
+
+                var mem = arch.CreateCodeMemoryArea(addr, mchk.Datum.ToArray());
                 var seg = new ImageSegment($"CODE_{i:d2}", mem, AccessMode.ReadExecute);
                 ++i;
                 segs.AddSegment(seg);

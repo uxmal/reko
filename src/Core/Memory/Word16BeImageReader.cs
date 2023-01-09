@@ -21,7 +21,6 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -74,8 +73,8 @@ namespace Reko.Core.Memory
         }
 
         public ushort ReadUInt16() => ReadBeUInt16();
-        public uint ReadUInt32() => ReadUInt32();
-        public ulong ReadUInt64() => ReadUInt64();
+        public uint ReadUInt32() => ReadBeUInt32();
+        public ulong ReadUInt64() => ReadBeUInt64();
 
         public bool TryPeekUInt32(int offset, out uint value) => TryPeekBeUInt32(offset, out value);
         public bool TryPeekUInt64(int offset, out ulong value) => TryPeekBeUInt64(offset, out value);

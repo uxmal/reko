@@ -1384,6 +1384,18 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an integer two's complement subtraction-with-carry expression.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <param name="carry">Carry flag</param>
+        /// <returns>A binary expression for the subtract-with-carry.</returns>
+        public BinaryExpression ISubC(Expression left, Expression right, Expression carry)
+        {
+            return ISub(ISub(left, right), carry);
+        }
+
+        /// <summary>
         /// Convenience method to generate an integer subtraction expression. 
         /// The subtrahend is converted to a signed integer Constant of the same 
         /// size as the minuend.
