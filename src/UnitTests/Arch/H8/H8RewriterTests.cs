@@ -336,7 +336,7 @@ namespace Reko.UnitTests.Arch.H8
         [Test]
         public void H8Rw_ldm_l()
         {
-            Given_HexString("0130D777");
+            Given_HexString("01306D77");
             AssertCode( // ldm.l\t@sp+,(er4-sp)
                 "0|L--|8000(4): 8 instructions",
                 "1|L--|sp = Mem0[sp:word32]",

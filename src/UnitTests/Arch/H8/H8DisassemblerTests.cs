@@ -21,11 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.H8;
 using Reko.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.H8
 {
@@ -37,6 +33,7 @@ namespace Reko.UnitTests.Arch.H8
 
         public H8DisassemblerTests()
         {
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             this.arch = new H8Architecture(CreateServiceContainer(), "h8", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr16(0x8000);
         }
@@ -264,9 +261,9 @@ namespace Reko.UnitTests.Arch.H8
         [Test]
         public void H8Dis_ldm_l()
         {
-            AssertCode("ldm.l\t@sp+,(er4-er5)", "0110D775");
-            AssertCode("ldm.l\t@sp+,(er4-er6)", "0120D776");
-            AssertCode("ldm.l\t@sp+,(er4-sp)", "0130D777");
+            AssertCode("ldm.l\t@sp+,(er4-er5)", "01106D75");
+            AssertCode("ldm.l\t@sp+,(er4-er6)", "01206D76");
+            AssertCode("ldm.l\t@sp+,(er4-sp)", "01306D77");
         }
 
         [Test]
@@ -527,6 +524,12 @@ namespace Reko.UnitTests.Arch.H8
         public void H8Dis_sleep()
         {
             AssertCode("sleep", "0180");
+        }
+
+        [Test]
+        public void H8Dis_sub()
+        {
+            AssertCode("sub.l\ter0,er0", "1A80");
         }
 
         [Test]

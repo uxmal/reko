@@ -657,22 +657,25 @@ namespace Reko.Arch.H8
                     (0xA, Instr(Mnemonic.mov, l, rl3, aa32))))));
 
             var decoder011 = Select((0, 4), Is0,
-                Next(Sparse(8, 8, "  0110", Nyi("0110"),
-                    (0x6D, Instr(Mnemonic.stm, l, RegisterList(2, 0), SpPre)),     //$TODO: H8S/2000 
-                    (0xD7, Instr(Mnemonic.ldm, l, SpPost, RegisterList(2, 1))))),   //$TODO: H8S/2000
-                Nyi("0110"));
+                Next(Sparse(8, 8, "  0110", invalid,
+                    (0x6D, Sparse(4, 4, invalid,
+                        (0x7, Instr(Mnemonic.ldm, l, SpPost, RegisterList(2, 1))),      //$TODO: H8S/2000
+                        (0xF, Instr(Mnemonic.stm, l, RegisterList(2, 0), SpPre)))))),   //$TODO: H8S/2000 
+                invalid);
 
             var decoder012 = Select((0, 4), Is0,
-                Next(Sparse(8, 8, "  0120", Nyi("0120"),
-                    (0x6D, Instr(Mnemonic.stm, l, RegisterList(3, 0), SpPre)),     //$TODO: H8S/2000
-                    (0xD7, Instr(Mnemonic.ldm, l, SpPost, RegisterList(3, 2))))),   //$TODO: H8S/2000
-                Nyi("0120"));
+                Next(Sparse(8, 8, "  0120", invalid,
+                    (0x6D, Sparse(4, 4, invalid,
+                        (0x7, Instr(Mnemonic.ldm, l, SpPost, RegisterList(3, 2))),      //$TODO: H8S/2000
+                        (0xF, Instr(Mnemonic.stm, l, RegisterList(3, 0), SpPre)))))),   //$TODO: H8S/2000 
+                invalid);
 
             var decoder013 = Select((0, 4), Is0,
-                Next(Sparse(8, 8, "  0130", Nyi("0130"),
-                    (0x6D, Instr(Mnemonic.stm, l, RegisterList(4, 0), SpPre)),     //$TODO: H8S/2000
-                    (0xD7, Instr(Mnemonic.ldm, l, SpPost, RegisterList(4, 3))))),   //$TODO: H8S/2000
-                Nyi("0130"));
+                Next(Sparse(8, 8, "  0130", invalid,
+                    (0x6D, Sparse(4, 4, invalid,
+                        (0x7, Instr(Mnemonic.ldm, l, SpPost, RegisterList(4, 3))),      //$TODO: H8S/2000
+                        (0xF, Instr(Mnemonic.stm, l, RegisterList(4, 0), SpPre)))))),   //$TODO: H8S/2000 
+                invalid);
 
             var decoder014 = Select((0, 4), Is0,
                 Next(Sparse(8, 8, "  ldc/stc", invalid,
@@ -861,14 +864,14 @@ namespace Reko.Arch.H8
                 Instr(Mnemonic.sub, w, rh, rl),
                 Sparse(4, 4, "  1A", invalid,
                     (0, Instr(Mnemonic.dec, b, rl)),
-                    (0x8, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0x9, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0xA, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0xB, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0xC, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0xD, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0xE, Instr(Mnemonic.sub, l, rh, rl)),
-                    (0xF, Instr(Mnemonic.sub, l, rh, rl))),
+                    (0x8, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0x9, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0xA, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0xB, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0xC, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0xD, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0xE, Instr(Mnemonic.sub, l, rh3, rl3)),
+                    (0xF, Instr(Mnemonic.sub, l, rh3, rl3))),
                 Sparse(4, 4, "  1B", invalid,
                     (0, Instr(Mnemonic.subs, Imm32(1), rgpl)),
                     (8, Instr(Mnemonic.subs, Imm32(2), rgpl)),
