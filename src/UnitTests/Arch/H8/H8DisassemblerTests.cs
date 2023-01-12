@@ -202,6 +202,18 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_divxs_b()
+        {
+            AssertCode("divxs.b\tr7l,e3", "01D051FB");
+        }
+
+        [Test]
+        public void H8Dis_divxs_w()
+        {
+            AssertCode("divxs.w\te0,er5", "01D05385");
+        }
+
+        [Test]
         public void H8Dis_divxu_b()
         {
             AssertCode("divxu.b\tr7l,e3", "51FB");
@@ -248,6 +260,22 @@ namespace Reko.UnitTests.Arch.H8
         {
             AssertCode("ldc.w\t@(-2:16,er3),ccr", "01406F30FFFE");
         }
+
+        [Test]
+        public void H8Dis_ldm_l()
+        {
+            AssertCode("ldm.l\t@sp+,(er4-er5)", "0110D775");
+            AssertCode("ldm.l\t@sp+,(er4-er6)", "0120D776");
+            AssertCode("ldm.l\t@sp+,(er4-sp)", "0130D777");
+        }
+
+        [Test]
+        public void H8Dis_ldmac()
+        {
+            AssertCode("ldmac\ter1,mach", "0321");
+            AssertCode("ldmac\ter1,macl", "0331");
+        }
+
 
         [Test]
         public void H8Dis_mac()
@@ -412,6 +440,30 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_movfpe()
+        {
+            AssertCode("movfpe\t@0x123:16,r3h", "6A430123");
+        }
+
+        [Test]
+        public void H8Dis_movtpe()
+        {
+            AssertCode("movtpe\tr3h,@0x123:16", "6AC30123");
+        }
+
+        [Test]
+        public void H8Dis_mulxs_b()
+        {
+            AssertCode("mulxs.b\tr3h,r4", "01C05034");
+        }
+
+        [Test]
+        public void H8Dis_mulxs_w()
+        {
+            AssertCode("mulxs.w\tr3,er4", "01C05234");
+        }
+
+        [Test]
         public void H8Dis_mulxu_b()
         {
             AssertCode("mulxu.b\tr1h,r2h", "5012");
@@ -484,6 +536,21 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_stm_l()
+        {
+            AssertCode("stm.l\t(er4-er5),@-sp", "01106DF4");
+            AssertCode("stm.l\t(er4-er6),@-sp", "01206DF4");
+            AssertCode("stm.l\t(er4-sp),@-sp", "01306DF4");
+        }
+
+        [Test]
+        public void H8Dis_stmac()
+        {
+            AssertCode("stmac\tmach,er1", "0221");
+            AssertCode("stmac\tmacl,er1", "0231");
+        }
+
+        [Test]
         public void H8Dis_sub_w_regs()
         {
             AssertCode("sub.w\tr1,r2", "1912");
@@ -524,7 +591,6 @@ namespace Reko.UnitTests.Arch.H8
         {
             AssertCode("xorc\t#0xDC,ccr", "05DC");
         }
-
 
 #if BORED
         [Test]

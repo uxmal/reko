@@ -122,14 +122,21 @@ namespace Reko.Arch.H8
 
                 case Mnemonic.cmp: RewriteCmp(instr); break;
                 case Mnemonic.dec: RewriteIncDec(instr, m.ISub); break;
+                case Mnemonic.divxs: RewriteDivx(instr, m.SDiv, m.SMod); break;
+                case Mnemonic.divxu: RewriteDivx(instr, m.UDiv, m.UMod); break;
                 case Mnemonic.exts: RewriteExt(instr, Domain.SignedInt); break;
                 case Mnemonic.extu: RewriteExt(instr, Domain.UnsignedInt); break;
                 case Mnemonic.inc: RewriteIncDec(instr, m.IAdd); break;
                 case Mnemonic.jmp: RewriteJmp(instr); break;
                 case Mnemonic.jsr: RewriteJsr(instr); break;
                 case Mnemonic.ldc: RewriteLdc(instr); break;
+                case Mnemonic.ldm: RewriteLdm(instr); break;
+                case Mnemonic.ldmac: RewriteLdmac(instr); break;
                 case Mnemonic.mov: RewriteMov(instr); break;
-                case Mnemonic.mulxu: RewriteMulxu(instr); break;
+                case Mnemonic.movfpe: RewriteMovfpe(instr); break;
+                case Mnemonic.movtpe: RewriteMovtpe(instr); break;
+                case Mnemonic.mulxs: RewriteMulx(instr, m.SMul, true); break;
+                case Mnemonic.mulxu: RewriteMulx(instr, m.UMul, false); break;
                 case Mnemonic.nop: RewriteNop(); break;
                 case Mnemonic.neg: RewriteNeg(instr); break;
                 case Mnemonic.not: RewriteUnaryLogical(instr, m.Comp); break;
@@ -144,7 +151,10 @@ namespace Reko.Arch.H8
                 case Mnemonic.shar: RewriteShift(instr, m.Sar); break;
                 case Mnemonic.shll: RewriteShift(instr, m.Shl); break;
                 case Mnemonic.shlr: RewriteShift(instr, m.Shr); break;
+                case Mnemonic.sleep: RewriteSleep(instr); break;
                 case Mnemonic.stc: RewriteStc(instr); break;
+                case Mnemonic.stm: RewriteStm(instr); break;
+                case Mnemonic.stmac: RewriteStmac(instr); break;
                 case Mnemonic.sub: RewriteSub(instr); break;
                 case Mnemonic.subs: RewriteSubs(instr); break;
                 case Mnemonic.subx: RewriteAddxSubx(instr, m.ISub); break;
@@ -349,6 +359,29 @@ namespace Reko.Arch.H8
             EmitCond(NZVC, m.ISub(left, right));
         }
 
+        private void RewriteDivx(
+            H8Instruction instr, 
+            Func<Expression,Expression, Expression> div,
+            Func<Expression,Expression, Expression> mod)
+        {
+            var dividend = OpSrc(instr.Operands[1]);
+            var divisor = OpSrc(instr.Operands[0]);
+            var quo = binder.CreateTemporary(divisor.DataType);
+            var rem = binder.CreateTemporary(divisor.DataType);
+
+            var d = div(dividend, divisor);
+            d.DataType = divisor.DataType;
+            m.Assign(quo, d);
+
+            var r = mod(dividend, divisor);
+            r.DataType = divisor.DataType;
+            m.Assign(rem, r);
+
+            EmitCond(Z, divisor);
+            EmitCond(N, quo);
+            m.Assign(dividend, m.Seq(rem, quo));
+        }
+
         private void RewriteExt(H8Instruction instr, Domain domain)
         {
             var dstRange = new BitRange(0, instr.Size!.BitSize);
@@ -386,6 +419,26 @@ namespace Reko.Arch.H8
         private void RewriteLdc(H8Instruction instr)
         {
             m.Assign(binder.EnsureFlagGroup(NZVC), OpSrc(instr.Operands[0]));
+        }
+
+        private void RewriteLdm(H8Instruction instr)
+        {
+            var regs = (RegisterListOperand) instr.Operands[1];
+            var sp = binder.EnsureRegister(Registers.GpRegisters[7]);
+            for (int iReg = regs.Count-1; iReg >= 0; --iReg)
+            {
+                var reg = Registers.GpRegisters[iReg + regs.RegisterNumber];
+                m.Assign(
+                    binder.EnsureRegister(reg),
+                    m.Mem32(sp));
+                m.Assign(sp, m.IAddS(sp, 4));
+            }
+        }
+
+        private void RewriteLdmac(H8Instruction instr)
+        {
+            var src = OpSrc(instr.Operands[0]);
+            var dst = OpDst(instr.Operands[1], src, (d, s) => s);
         }
 
         private void RewriteBset(H8Instruction instr, Expression value)
@@ -437,16 +490,40 @@ namespace Reko.Arch.H8
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
 
-        private void RewriteMulxu(H8Instruction instr)
+        private void RewriteMovfpe(H8Instruction instr)
+        {
+            var mem = (MemoryOperand) instr.Operands[0];
+            m.Assign(
+                OpSrc(instr.Operands[1]),
+                m.Fn(movfpe_intrinsic, Constant.UInt16((ushort) mem.Offset)));
+        }
+
+        private void RewriteMovtpe(H8Instruction instr)
+        {
+            var mem = (MemoryOperand) instr.Operands[1];
+            m.SideEffect(m.Fn(
+                movtpe_intrinsic,
+                Constant.UInt16((ushort) mem.Offset),
+                OpSrc(instr.Operands[0])));
+        }
+
+        private void RewriteMulx(
+            H8Instruction instr,
+            Func<Expression, Expression, Expression> mul,
+            bool setCc)
         {
             var right = OpSrc(instr.Operands[0]);
             var left = (Identifier) OpSrc(instr.Operands[1]);
             var dst = binder.EnsureRegister(arch.GetRegister(
                 left.Storage.Domain,
                 new BitRange(0, left.DataType.BitSize * 2))!);
-            var umul = m.UMul(left, right);
-            umul.DataType = dst.DataType;
-            m.Assign(dst, umul);
+            var product = mul(left, right);
+            product.DataType = dst.DataType;
+            m.Assign(dst, product);
+            if (setCc)
+            {
+                EmitCond(NZ, dst);
+            }
         }
 
         private void RewriteNeg(H8Instruction instr)
@@ -494,11 +571,36 @@ namespace Reko.Arch.H8
             EmitCond(NZVC, src);
         }
 
+        private void RewriteSleep(H8Instruction instr)
+        {
+            m.SideEffect(m.Fn(sleep_intrinsic));
+        }
+
         private void RewriteStc(H8Instruction instr)
         {
             var src = OpSrc(instr.Operands[0]);
             var dst = OpSrc(instr.Operands[1]);
             m.Assign(dst, src);
+        }
+
+        private void RewriteStm(H8Instruction instr)
+        {
+            var regs = (RegisterListOperand) instr.Operands[0];
+            var sp = binder.EnsureRegister(Registers.GpRegisters[7]);
+            for (int iReg = 0; iReg < regs.Count; ++iReg)
+            {
+                m.Assign(sp, m.ISubS(sp, 4));
+                var reg = Registers.GpRegisters[iReg + regs.RegisterNumber];
+                m.Assign(
+                    m.Mem32(sp),
+                    binder.EnsureRegister(reg));
+            }
+        }
+
+        private void RewriteStmac(H8Instruction instr)
+        {
+            var src = OpSrc(instr.Operands[0]);
+            var dst = OpDst(instr.Operands[1], src, (d, s) => s);
         }
 
         private void RewriteSub(H8Instruction instr)
@@ -533,5 +635,14 @@ namespace Reko.Arch.H8
             .Param("TValue")
             .Param("TPos")
             .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure movfpe_intrinsic = new IntrinsicBuilder("__move_from_peripheral", true)
+            .Param(PrimitiveType.UInt16)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure movtpe_intrinsic = new IntrinsicBuilder("__move_to_peripheral", true)
+            .Param(PrimitiveType.UInt16)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure sleep_intrinsic = new IntrinsicBuilder("__sleep", true)
+            .Void();
     }
 }

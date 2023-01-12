@@ -246,6 +246,33 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_divxs_b()
+        {
+            Given_HexString("01D051FB");
+            AssertCode( // divxs.b\tr7l,e3
+                "0|L--|8000(4): 5 instructions",
+                "1|L--|v4 = e3 /8 r7l",
+                "2|L--|v5 = e3 %s r7l",
+                "3|L--|Z = cond(r7l)",
+                "4|L--|N = cond(v4)",
+                "5|L--|e3 = SEQ(v5, v4)" +
+                "");
+        }
+
+        [Test]
+        public void H8Dis_divxs_w()
+        {
+            Given_HexString("01D05385");
+            AssertCode( // divxs.w\te0,er5
+                "0|L--|8000(4): 5 instructions",
+                "1|L--|v4 = er5 /16 e0",
+                "2|L--|v5 = er5 %s e0",
+                "3|L--|Z = cond(e0)",
+                "4|L--|N = cond(v4)",
+                "5|L--|er5 = SEQ(v5, v4)");
+        }
+
+        [Test]
         public void H8Rw_exts()
         {
             Given_HexString("17D8");
@@ -307,6 +334,40 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_ldm_l()
+        {
+            Given_HexString("0130D777");
+            AssertCode( // ldm.l\t@sp+,(er4-sp)
+                "0|L--|8000(4): 8 instructions",
+                "1|L--|sp = Mem0[sp:word32]",
+                "2|L--|sp = sp + 4<i32>",
+                "3|L--|er6 = Mem0[sp:word32]",
+                "4|L--|sp = sp + 4<i32>",
+                "5|L--|er5 = Mem0[sp:word32]",
+                "6|L--|sp = sp + 4<i32>",
+                "7|L--|er4 = Mem0[sp:word32]",
+                "8|L--|sp = sp + 4<i32>");
+        }
+
+        [Test]
+        public void H8Rw_ldmac_h()
+        {
+            Given_HexString("0321");
+            AssertCode( // ldmac\ter1,mach",
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|mach = er1");
+        }
+
+        [Test]
+        public void H8Rw_ldmac_l()
+        {
+            Given_HexString("0331");
+            AssertCode( // ldmac\ter1,macl
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|macl = er1");
+        }
+
+        [Test]
         public void H8Rw_mov_push()
         {
             Given_HexString("6DF0");
@@ -316,6 +377,44 @@ namespace Reko.UnitTests.Arch.H8
                 "2|L--|Mem0[sp:word16] = r0",
                 "3|L--|NZ = cond(r0)",
                 "4|L--|V = false");
+        }
+
+        [Test]
+        public void H8Rw_movfpe()
+        {
+            Given_HexString("6A430123");
+            AssertCode(     // movfpe\t@aa,r3
+                "0|L--|8000(4): 1 instructions",
+                "1|L--|r3h = __move_from_peripheral(0x123<u16>)");
+        }
+
+        [Test]
+        public void H8Rw_movtpe()
+        {
+            Given_HexString("6AC30123");
+            AssertCode(     // movtpe\tr3,@aa
+                "0|L--|8000(4): 1 instructions",
+                "1|L--|__move_to_peripheral(0x123<u16>, r3h)");
+        }
+
+        [Test]
+        public void H8Rw_mulxs_b()
+        {
+            Given_HexString("01C05034");
+            AssertCode(     // mulxs.b\tr3l,r4", 
+                "0|L--|8000(4): 2 instructions",
+                "1|L--|er4 = r4 *s32 r3h",
+                "2|L--|NZ = cond(er4)");
+        }
+
+        [Test]
+        public void H8Rw_mulxs_w()
+        {
+            Given_HexString("01C05234");
+            AssertCode(     // mulxs.w\tr3l,r4", 
+                "0|L--|8000(4): 2 instructions",
+                "1|L--|er4 = er4 *s32 r3",
+                "2|L--|NZ = cond(er4)");
         }
 
         [Test]
@@ -442,12 +541,55 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_sleep()
+        {
+            Given_HexString("0180");
+            AssertCode(     // sleep
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|__sleep()");
+        }
+
+        [Test]
         public void H8Rw_stc()
         {
             Given_HexString("0209");
             AssertCode(     // stc.b	ccr,r1l
                 "0|L--|8000(2): 1 instructions",
                 "1|L--|r1l = ccr");
+        }
+
+        [Test]
+        public void H8Rw_stm()
+        {
+            Given_HexString("01306DF4");
+            AssertCode(     // stm.l\ter4-er7,@-sp
+                "0|L--|8000(4): 8 instructions",
+                "1|L--|sp = sp - 4<i32>",
+                "2|L--|Mem0[sp:word32] = er4",
+                "3|L--|sp = sp - 4<i32>",
+                "4|L--|Mem0[sp:word32] = er5",
+                "5|L--|sp = sp - 4<i32>",
+                "6|L--|Mem0[sp:word32] = er6",
+                "7|L--|sp = sp - 4<i32>",
+                "8|L--|Mem0[sp:word32] = sp");
+        }
+
+        [Test]
+        public void H8Rw_stmac_h()
+        {
+            Given_HexString("0221");
+            AssertCode( // stmac\tmach,er1
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|er1 = mach");
+        }
+
+        [Test]
+        public void H8Rw_stmac_l()
+        {
+            Given_HexString("0231");
+            AssertCode( // stmac\tmacl,er1
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|er1 = macl");
         }
 
         [Test]

@@ -23,6 +23,8 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 
 namespace Reko.Arch.H8
 {
@@ -42,14 +44,20 @@ namespace Reko.Arch.H8
 
             PcRegister = factory.Reg32("pc");
             CcRegister = factory.Reg("ccr", PrimitiveType.Byte);
-
+            Mac = factory.Reg64("mac");
+            Mach = new RegisterStorage("mach", Mac.Number, 32, PrimitiveType.Word32);
+            Macl = new RegisterStorage("macl", Mac.Number, 0, PrimitiveType.Word32);
             ByName = GpRegisters
                 .Concat(Gp16Registers)
                 .Concat(Gp8Registers)
                 .Concat(new[]
                 {
                     PcRegister,
-                    CcRegister
+                    CcRegister,
+                    Mac,
+                    Mach,
+                    Macl,
+
                 })
                 .ToDictionary(r => r.Name);
         }
@@ -64,6 +72,11 @@ namespace Reko.Arch.H8
 
         public static RegisterStorage PcRegister { get; }
         public static RegisterStorage CcRegister { get; }
+
+        public static RegisterStorage Mac { get; }
+        public static RegisterStorage Mach { get; }
+        public static RegisterStorage Macl { get; }
+
         public static Dictionary<string, RegisterStorage> ByName { get; }
     }
 
