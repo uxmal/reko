@@ -43,7 +43,7 @@
         <var id="var.Mos6502.TargetPath" >$SolutionDir$/Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
         <var id="var.Msp430.TargetPath" >$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.Msp430.dll</var>
         <var id="var.OpenRISC.TargetPath" >$SolutionDir$/Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
-        <var id="var.Padauk.TargetPath" >$SolutionDir$/Arch/PaRisc/$TargetDir$/Reko.Arch.Padauk.dll</var>
+        <var id="var.Padauk.TargetPath" >$SolutionDir$/Arch/Padauk/$TargetDir$/Reko.Arch.Padauk.dll</var>
         <var id="var.PaRisc.TargetPath" >$SolutionDir$/Arch/PaRisc/$TargetDir$/Reko.Arch.PaRisc.dll</var>
         <var id="var.Pdp.TargetPath" >$SolutionDir$/Arch/Pdp/$TargetDir$/Reko.Arch.Pdp.dll</var>
         <var id="var.PowerPC.Design.TargetPath" >$SolutionDir$/Arch/PowerPC.Design/$TargetFwkWindowsDir$/Reko.Arch.PowerPC.Design.dll</var>
