@@ -46,6 +46,7 @@ namespace Reko.Analysis
     {
         private static readonly TraceSwitch trace = new(nameof(ValuePropagator), "Traces value propagation");
 
+        private readonly IReadOnlyProgram program;
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;
         private readonly IReadOnlyCallGraph callGraph;
@@ -63,6 +64,7 @@ namespace Reko.Analysis
             IDynamicLinker dynamicLinker,
             IServiceProvider services)
         {
+            this.program = program;
             this.ssa = ssa;
             this.callGraph = program.CallGraph;
             this.arch = ssa.Procedure.Architecture;
@@ -77,12 +79,22 @@ namespace Reko.Analysis
 
         public void Transform()
         {
+            const int MaxIterations = 10_000;
+
             bool changed;
+            int iterations = 0;
             do
             {
                 //$PERFORMANCE: consider changing this to a work list, where 
-                // every time we process the 
+                // every time we process an assignment of the form a = XXX
+                // and XXX changes, add all uses of a to the work list.
                 changed = false;
+                if (++iterations >= MaxIterations)
+                {
+                    eventListener.Warn(
+                        eventListener.CreateProcedureNavigator(program, ssa.Procedure),
+                        "Stopping value propagation after iterating {0} times.", iterations);
+                }
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
                     if (eventListener.IsCanceled())
