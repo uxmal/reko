@@ -154,7 +154,8 @@ namespace Reko.Arch.H8
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            return Address.Ptr16(c.ToUInt16());
+            //$REVIEW: depends on CPU model; could be 16-bit ptrs
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

@@ -110,6 +110,15 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_bclr_imm_ind()
+        {
+            Given_HexString("7D007240");
+            AssertCode(
+                "0|L--|8000(4): 1 instructions",
+                "1|L--|Mem0[er0:byte] = __clear_bit<byte,byte>(Mem0[er0:byte], 4<8>)");
+        }
+
+        [Test]
         public void H8Rw_beq()
         {
             Given_HexString("470A");
@@ -200,6 +209,15 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_bsr()
+        {
+            Given_HexString("5588");
+            AssertCode(     // bsr	00000B46
+                "0|T--|8000(2): 1 instructions",
+                "1|T--|call 7F88 (2)");
+        }
+
+        [Test]
         public void H8Rw_bst()
         {
             Given_HexString("670A");
@@ -227,12 +245,41 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_clrmac()
+        {
+            Given_HexString("01A0");
+            AssertCode(     // clrmac
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|mac = 0<64>");
+        }
+
+        [Test]
         public void H8Rw_cmp()
         {
             Given_HexString("1D32");
             AssertCode(     // cmp.w	r3,r2
                 "0|L--|8000(2): 1 instructions",
                 "1|L--|NZVC = cond(r2 - r3)");
+        }
+
+        [Test]
+        public void H8Rw_daa()
+        {
+            Given_HexString("0F02");
+            AssertCode(     // daa	r2h
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|r2h = __decimal_adjust_add(r2h, C, H)",
+                "2|L--|HNZVC = cond(r2h)");
+        }
+
+        [Test]
+        public void H8Rw_das()
+        {
+            Given_HexString("1F02");
+            AssertCode(     // das	r2h
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|r2h = __decimal_adjust_subtract(r2h, C, H)",
+                "2|L--|HNZVC = cond(r2h)");
         }
 
         [Test]
@@ -307,7 +354,26 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_inc_w_2()
+        {
+            Given_HexString("0BD0");
+            AssertCode(     // inc.w\t#2,r0
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|r0 = r0 + 2<16>",
+                "2|L--|NZV = cond(r0)");
+        }
+
+        [Test]
         public void H8Rw_jmp()
+        {
+            Given_HexString("5A01 1C48");
+            AssertCode(
+                "0|T--|8000(4): 1 instructions",
+                "1|T--|goto 00011C48");
+        }
+
+        [Test]
+        public void H8Rw_jmp_to_register()
         {
             Given_HexString("5900");
             AssertCode(     // jmp	@er0
@@ -321,7 +387,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("5E009AF8");
             AssertCode(     // jsr	@0x9AF8:24
                 "0|T--|8000(4): 1 instructions",
-                "1|T--|call 9AF8 (2)");
+                "1|T--|call 00009AF8 (2)");
         }
 
         [Test]
@@ -512,6 +578,16 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_rte()
+        {
+            Given_HexString("5670");
+            AssertCode(     // rte
+                "0|R--|8000(2): 2 instructions",
+                "1|L--|__return_from_exception()",
+                "2|R--|return (2,0)");
+        }
+
+        [Test]
         public void H8Rw_rts()
         {
             Given_HexString("5470");
@@ -531,13 +607,23 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
-        public void H8Rw_shll()
+        public void H8Rw_shll_l()
         {
-            Given_HexString("1000");
-            AssertCode(     // shll.b	r0h
+            Given_HexString("1031");
+            AssertCode(     // shll.l	#1,er1
                 "0|L--|8000(2): 2 instructions",
-                "1|L--|r0h = r0h << 1<i32>",
-                "2|L--|NZVC = cond(r0h)");
+                "1|L--|er1 = er1 << 1<i32>",
+                "2|L--|NZVC = cond(er1)");
+        }
+
+        [Test]
+        public void H8Rw_shll_l_2()
+        {
+            Given_HexString("1071");
+            AssertCode( // shll.l  #2,er1
+                "0|L--|8000(2): 2 instructions",
+                "1|L--|er1 = er1 << 2<i32>",
+                "2|L--|NZVC = cond(er1)");
         }
 
         [Test]
@@ -612,6 +698,15 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_trapa()
+        {
+            Given_HexString("57F2");
+            AssertCode(     // trapa	#0x03
+                "0|L--|8000(2): 1 instructions",
+                "1|L--|__syscall<byte>(3<8>)");
+        }
+
+        [Test]
         public void H8Rw_xor()
         {
             Given_HexString("652C");
@@ -630,5 +725,24 @@ namespace Reko.UnitTests.Arch.H8
                 "0|L--|8000(2): 1 instructions",
                 "1|L--|ccr = ccr ^ 0x1D<8>");
         }
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

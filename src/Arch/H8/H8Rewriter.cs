@@ -35,6 +35,8 @@ namespace Reko.Arch.H8
     public class H8Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private static readonly FlagGroupStorage C = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+        private static readonly FlagGroupStorage H = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.HF, "H", PrimitiveType.Bool);
+        private static readonly FlagGroupStorage HNZVC = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.HF|FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), "HNZVC", PrimitiveType.Byte);
         private static readonly FlagGroupStorage N = new FlagGroupStorage(Registers.CcRegister, (uint) FlagM.NF, "N", PrimitiveType.Bool);
         private static readonly FlagGroupStorage NV = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF | FlagM.VF), "NV", PrimitiveType.Byte);
         private static readonly FlagGroupStorage NZ = new FlagGroupStorage(Registers.CcRegister, (uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Byte);
@@ -100,6 +102,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.bor: RewriteLogicalB(instr, m.Or); break;
                 case Mnemonic.bset: RewriteBset(instr, Constant.True()); break;
                 case Mnemonic.bst: RewriteBset(instr, binder.EnsureFlagGroup(C)); break;
+                case Mnemonic.bsr: RewriteBsr(instr); break;
                 case Mnemonic.btst: RewriteBtst(instr, Z); break;
                 case Mnemonic.bxor: RewriteLogicalB(instr, m.Xor); break;
 
@@ -120,7 +123,10 @@ namespace Reko.Arch.H8
                 case Mnemonic.bgt: RewriteBranch(instr, ConditionCode.GT, NZV); break;
                 case Mnemonic.ble: RewriteBranch(instr, ConditionCode.LE, NZV); break;
 
+                case Mnemonic.clrmac: RewriteClrmac(instr); break;
                 case Mnemonic.cmp: RewriteCmp(instr); break;
+                case Mnemonic.daa: RewriteDaaDas(instr, daa_intrinsic); break;
+                case Mnemonic.das: RewriteDaaDas(instr, das_intrinsic); break;
                 case Mnemonic.dec: RewriteIncDec(instr, m.ISub); break;
                 case Mnemonic.divxs: RewriteDivx(instr, m.SDiv, m.SMod); break;
                 case Mnemonic.divxu: RewriteDivx(instr, m.UDiv, m.UMod); break;
@@ -146,6 +152,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.rotr: RewriteRotation(instr, CommonOps.Ror); break;
                 case Mnemonic.rotxl: RewriteRotationX(instr, CommonOps.RolC); break;
                 case Mnemonic.rotxr: RewriteRotationX(instr, CommonOps.RorC); break;
+                case Mnemonic.rte: RewriteRte(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.shal: RewriteShift(instr, m.Shl); break;
                 case Mnemonic.shar: RewriteShift(instr, m.Sar); break;
@@ -158,6 +165,7 @@ namespace Reko.Arch.H8
                 case Mnemonic.sub: RewriteSub(instr); break;
                 case Mnemonic.subs: RewriteSubs(instr); break;
                 case Mnemonic.subx: RewriteAddxSubx(instr, m.ISub); break;
+                case Mnemonic.trapa: RewriteTrapa(instr); break;
                 case Mnemonic.xor: RewriteLogical(instr, m.Xor); break;
                 case Mnemonic.xorc: RewriteLogicalC(instr, m.Xor); break;
                 }
@@ -181,6 +189,8 @@ namespace Reko.Arch.H8
                 return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
+            case AddressOperand addr:
+                return addr.Address;
             case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base != null)
@@ -201,9 +211,13 @@ namespace Reko.Arch.H8
                         ea = m.AddSubSignedInt(regBase, mem.Offset);
                     }
                 }
-                else
+                else if (mem.AddressWidth is not null && mem.AddressWidth.BitSize == 16)
                 {
                     ea = Address.Ptr16((ushort) mem.Offset);
+                }
+                else
+                {
+                    ea = Address.Ptr32((uint) mem.Offset);
                 }
                 return m.Mem(mem.Width ?? (DataType) VoidType.Instance, ea);
             }
@@ -352,11 +366,26 @@ namespace Reko.Arch.H8
             m.Branch(test, ((AddressOperand) instr.Operands[0]).Address);
         }
 
+        private void RewriteClrmac(H8Instruction instr)
+        {
+            var mac = binder.EnsureRegister(Registers.Mac);
+            m.Assign(mac, 0);
+        }
+
         private void RewriteCmp(H8Instruction instr)
         {
             var right = OpSrc(instr.Operands[0]);
             var left = OpSrc(instr.Operands[1]);
             EmitCond(NZVC, m.ISub(left, right));
+        }
+
+        private void RewriteDaaDas(H8Instruction instr, IntrinsicProcedure fn)
+        {
+            var reg = OpSrc(instr.Operands[0]);
+            var C = binder.EnsureFlagGroup(H8Rewriter.C);
+            var H = binder.EnsureFlagGroup(H8Rewriter.H);
+            m.Assign(reg, m.Fn(fn, reg, C, H));
+            EmitCond(HNZVC, reg);
         }
 
         private void RewriteDivx(
@@ -399,8 +428,19 @@ namespace Reko.Arch.H8
 
         private void RewriteIncDec(H8Instruction instr, Func<Expression, Expression, Expression> fn)
         {
-            var reg = (Identifier) OpSrc(instr.Operands[0]);
-            m.Assign(reg, fn(reg, Constant.Create(reg.DataType, 1)));
+            Identifier reg;
+            Expression incr;
+            if (instr.Operands.Length == 1)
+            {
+                reg = (Identifier) OpSrc(instr.Operands[0]);
+                incr = Constant.Create(reg.DataType, 1);
+            }
+            else
+            {
+                reg = (Identifier) OpSrc(instr.Operands[1]);
+                incr = OpSrc(instr.Operands[0]);
+            }
+            m.Assign(reg, fn(reg, incr));
             EmitCond(NZV, reg);
         }
         
@@ -446,6 +486,11 @@ namespace Reko.Arch.H8
             var pos = OpSrc(instr.Operands[0]);
             var dst = OpSrc(instr.Operands[1]);
             m.Assign(dst, m.Fn(bset_intrinsic.MakeInstance(dst.DataType, pos.DataType), dst, value, pos));
+        }
+
+        private void RewriteBsr(H8Instruction instr)
+        {
+            m.Call(OpSrc(instr.Operands[0]), 2);
         }
 
         private void RewriteBtst(H8Instruction instr, FlagGroupStorage flag)
@@ -559,6 +604,12 @@ namespace Reko.Arch.H8
             m.Assign(binder.EnsureFlagGroup(V), Constant.False());
         }
 
+        private void RewriteRte()
+        {
+            m.SideEffect(m.Fn(rte_intrinsic));
+            m.Return(2, 0);
+        }
+
         private void RewriteRts()
         {
             m.Return(2, 0);
@@ -566,8 +617,19 @@ namespace Reko.Arch.H8
 
         private void RewriteShift(H8Instruction instr, Func<Expression, Expression, Expression> fn)
         {
-            var src = OpSrc(instr.Operands[0]);
-            m.Assign(src, fn(src, Constant.Int32(1)));
+            int shift;
+            Expression src;
+            if (instr.Operands.Length == 2)
+            {
+                shift = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+                src = OpSrc(instr.Operands[1]);
+            }
+            else
+            {
+                shift = 1;
+                src = OpSrc(instr.Operands[0]);
+            }
+            m.Assign(src, fn(src, Constant.Int32(shift)));
             EmitCond(NZVC, src);
         }
 
@@ -616,6 +678,15 @@ namespace Reko.Arch.H8
             var dst = OpDst(instr.Operands[1], src, m.ISub);
         }
 
+        private void RewriteTrapa(H8Instruction instr)
+        {
+            var vector = OpSrc(instr.Operands[0]);
+            m.SideEffect(
+                m.Fn(
+                    CommonOps.Syscall_1.MakeInstance(vector.DataType),
+                    vector));
+        }
+
         private void RewriteUnaryLogical(H8Instruction instr, Func<Expression, Expression> fn)
         {
             var src = OpSrc(instr.Operands[0]);
@@ -635,6 +706,18 @@ namespace Reko.Arch.H8
             .Param("TValue")
             .Param("TPos")
             .Returns(PrimitiveType.Bool);
+
+        private static readonly IntrinsicProcedure daa_intrinsic = new IntrinsicBuilder("__decimal_adjust_add", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .Param(PrimitiveType.Bool)
+            .Returns(PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure das_intrinsic = new IntrinsicBuilder("__decimal_adjust_subtract", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .Param(PrimitiveType.Bool)
+            .Returns(PrimitiveType.Byte);
+
         private static readonly IntrinsicProcedure movfpe_intrinsic = new IntrinsicBuilder("__move_from_peripheral", true)
             .Param(PrimitiveType.UInt16)
             .Returns(PrimitiveType.Byte);
@@ -642,6 +725,10 @@ namespace Reko.Arch.H8
             .Param(PrimitiveType.UInt16)
             .Param(PrimitiveType.Byte)
             .Void();
+
+        private static readonly IntrinsicProcedure rte_intrinsic = new IntrinsicBuilder("__return_from_exception", true)
+            .Void();
+
         private static readonly IntrinsicProcedure sleep_intrinsic = new IntrinsicBuilder("__sleep", true)
             .Void();
     }

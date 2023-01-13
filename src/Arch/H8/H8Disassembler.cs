@@ -48,6 +48,7 @@ namespace Reko.Arch.H8
         private Address addr;
         private PrimitiveType? dataSize;
         private RegisterStorage[] regs;
+        private uint word;                  // used in some addressing modes
 
         public H8Disassembler(H8Architecture arch, EndianImageReader rdr)
         {
@@ -65,6 +66,7 @@ namespace Reko.Arch.H8
                 return null;
             ops.Clear();
             dataSize = null;
+            word = 0;
             var instr = rootDecoder.Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - this.addr);
@@ -229,6 +231,7 @@ namespace Reko.Arch.H8
         private static readonly Bitfield r4_3 = new Bitfield(4, 3);
         private static readonly Bitfield r4_4 = new Bitfield(4, 4);
         private static readonly Bitfield r8_4 = new Bitfield(8, 4);
+        private static readonly Bitfield r20_4 = new Bitfield(20, 4);
 
         /// <summary>
         /// 8-bit register encoded in 4 bits at bit position 0
@@ -236,6 +239,16 @@ namespace Reko.Arch.H8
         private static bool rb0(uint uInstr, H8Disassembler dasm)
         {
             var iReg = r0_4.Read(uInstr);
+            dasm.ops.Add(Registers.Gp8Registers[iReg]);
+            return true;
+        }
+
+        /// <summary>
+        /// 8-bit register encoded in 4 bits at bit position 4
+        /// </summary>
+        private static bool rb4(uint uInstr, H8Disassembler dasm)
+        {
+            var iReg = r4_4.Read(uInstr);
             dasm.ops.Add(Registers.Gp8Registers[iReg]);
             return true;
         }
@@ -288,6 +301,15 @@ namespace Reko.Arch.H8
             return true;
         }
 
+        private static Mutator<H8Disassembler> Imm16(int n)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(ImmediateOperand.Word16((ushort)n));
+                return true;
+            };
+        }
+
         /// <summary>
         /// Immediate 32-bit number encoded in next 32 bits.
         /// </summary>
@@ -331,6 +353,13 @@ namespace Reko.Arch.H8
         {
             var iBaseReg = hi3.Read(uInstr);
             dasm.ops.Add(MemoryOperand.BaseOffset(dasm.dataSize!, 0, PrimitiveType.Ptr16, Registers.GpRegisters[iBaseReg]));
+            return true;
+        }
+
+        private static bool Mind_20(uint uInstr, H8Disassembler dasm)
+        {
+            var iBaseReg = bf20_3.Read(uInstr);
+            dasm.ops.Add(MemoryOperand.BaseOffset(PrimitiveType.Byte, 0, PrimitiveType.Ptr16, Registers.GpRegisters[iBaseReg]));
             return true;
         }
 
@@ -457,6 +486,16 @@ namespace Reko.Arch.H8
         }
 
         /// <summary>
+        /// 8-bit absolute memory access, stored starting at bit 16 of this instruction.
+        /// </summary>
+        private static bool aa8_16(uint uInstr, H8Disassembler dasm)
+        {
+            uint uAddr = (uInstr >> 16) & 0xFF;
+            dasm.ops.Add(MemoryOperand.Abs(dasm.dataSize!, uAddr, PrimitiveType.Byte));
+            return true;
+        }
+
+        /// <summary>
         /// Deferred 8-bit absolute memory access, stored in the low 8 bits of this instruction.
         /// </summary>
         private static bool Def_aa8(uint uInstr, H8Disassembler dasm)
@@ -523,6 +562,15 @@ namespace Reko.Arch.H8
         private static readonly Bitfield bf20_3 = new Bitfield(20, 3);
 
         /// <summary>
+        /// Decode a 32-bit absolute memory access, stored in the 'word' variable.
+        /// </summary>
+        private static bool aa32_word(uint uInstr, H8Disassembler dasm)
+        {
+            dasm.ops.Add(MemoryOperand.Abs(dasm.dataSize!, dasm.word, PrimitiveType.Ptr32));
+            return true;
+        }
+
+        /// <summary>
         /// Encodes a register list.
         /// </summary>
         private static Mutator<H8Disassembler> RegisterList(int nRegs, int nAdjustment)
@@ -559,6 +607,27 @@ namespace Reko.Arch.H8
             }
         }
 
+        private class Next32Decoder : Decoder<H8Disassembler, Mnemonic, H8Instruction>
+        { 
+            private Decoder<H8Disassembler, Mnemonic, H8Instruction> subdecoder;
+
+            public Next32Decoder(Decoder subdecoder)
+            {
+                this.subdecoder = subdecoder;
+            }
+
+            public override H8Instruction Decode(uint wInstr, H8Disassembler dasm)
+            {
+                if (!dasm.rdr.TryReadUInt32(out uint u))
+                    return dasm.CreateInvalidInstruction();
+                if (!dasm.rdr.TryReadBeUInt16(out ushort uInstr))
+                    return dasm.CreateInvalidInstruction();
+                dasm.word = u;
+                return subdecoder.Decode((wInstr << 16) | uInstr, dasm);
+            }
+        }
+
+
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<H8Disassembler>[] mutators)
         {
             return new InstrDecoder<H8Disassembler, Mnemonic, H8Instruction>(InstrClass.Linear, mnemonic, mutators);
@@ -572,6 +641,14 @@ namespace Reko.Arch.H8
         private static Decoder Next(Decoder decoder)
         {
             return new NextDecoder(decoder);
+        }
+
+        /// <summary>
+        /// Read a 32-bit word into the word buffer, then another opcode.
+        /// </summary>
+        private static Decoder Read32Next(Decoder decoder)
+        {
+            return new Next32Decoder(decoder);
         }
 
         private static Decoder Cond(
@@ -640,7 +717,7 @@ namespace Reko.Arch.H8
                         Instr(Mnemonic.mov, l, Md16, rl3),
                         Instr(Mnemonic.mov, l, rl3, Md16)))),
                 (0x78, Cond(0, 8, IsMask8FZero, "  mov.l disp32",
-                    Next(Cond(4, 12, u => u == 0x6AA, "  mov.l disp32 second word",
+                    Next(Cond(4, 12, u => u == 0x6B2, "  mov.l disp32 second word",
                         Instr(Mnemonic.mov, l, Md32_20, rl3),
                         If(4, 12, u => u == 0x6BA,
                         Instr(Mnemonic.mov, l, rl3, Md32_20)))),
@@ -707,11 +784,11 @@ namespace Reko.Arch.H8
             var tas = Next(Select(u => (u & 0xFF8F) == 0x7B0C,
                 Instr(Mnemonic.tas, Mind), invalid));
 
-            var decoder01C0 = Next(Sparse(8, 8, Nyi("01 C0"),
+            var decoder01C0 = Next(Sparse(8, 8, invalid,
                 (0x50, Instr(Mnemonic.mulxs, b, rh, w, rl, b)),
                 (0x52, Instr(Mnemonic.mulxs, w, rh, l, rl, w))));
 
-            var decoder01D0 = Next(Sparse(8, 8, Nyi("01 D0"),
+            var decoder01D0 = Next(Sparse(8, 8, invalid,
                 (0x51, Instr(Mnemonic.divxs, b, rh, w, rl, b)),
                 (0x53, Instr(Mnemonic.divxs, w, rh, l, rl, w))));
 
@@ -748,6 +825,20 @@ namespace Reko.Arch.H8
                 Instr(Mnemonic.bgt, InstrClass.ConditionalTransfer, disp16),
                 Instr(Mnemonic.ble, InstrClass.ConditionalTransfer, disp16)));
 
+            var decoder6A3 = Sparse(0, 4, "  6A3x", invalid,
+                (0, Read32Next(Sparse(8, 8, "  6A30", invalid,
+                   (0x63, Instr(Mnemonic.btst, rbh, aa32_word)),
+                   (0x73, Instr(Mnemonic.btst, Bit, aa32_word))))),
+                (8, Read32Next(Sparse(8, 8, "  6A38", invalid,
+                   (0x60, Instr(Mnemonic.bset, rbh, aa32_word)),
+                   (0x61, Instr(Mnemonic.bnot, rbh, aa32_word)),
+                   (0x62, Instr(Mnemonic.bclr, rbh, aa32_word)),
+                   (0x67, Instr(Mnemonic.bist, Bit, aa32_word)),
+
+                   (0x70, Instr(Mnemonic.bset, Bit, aa32_word)),
+                   (0x71, Instr(Mnemonic.bnot, Bit, aa32_word)),
+                   (0x72, Instr(Mnemonic.bclr, Bit, aa32_word))))));
+
             rootDecoder = Mask(8, 8, "H8", new Decoder<H8Disassembler, Mnemonic, H8Instruction>[256] {
                 Select((0, 8), Is0, " 00",
                     Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
@@ -770,11 +861,12 @@ namespace Reko.Arch.H8
                         invalid)),
                     (0xE, Select((0,4), Is0, tas, invalid)),    //$TODO: H8S/2000
                     (0xF, decoder01F)),
-                Sparse(4, 4, "  02", Nyi("02"),
+                Sparse(4, 4, "  02", invalid,
                     (0x0, Instr(Mnemonic.stc, b, ccr, rl)),
                     (0x2, Instr(Mnemonic.stmac, mach, rgpl)),  //$TODO: H8S/2600
-                    (0x3, Instr(Mnemonic.stmac, macl, rgpl))), //$TODO: H8S/2600
-                Sparse(4, 4, "  03", Nyi("03"),
+                    (0x3, Instr(Mnemonic.stmac, macl, rgpl)),  //$TODO: H8S/2600
+                    (0x4, invalid)),
+                Sparse(4, 4, "  03", invalid,
                     (0x0, Instr(Mnemonic.ldc, b, rl, ccr)),
                     (0x2, Instr(Mnemonic.ldmac, rgpl, mach)),  //$TODO: H8S/2600
                     (0x3, Instr(Mnemonic.ldmac, rgpl, macl))), //$TODO: H8S/2600
@@ -797,9 +889,13 @@ namespace Reko.Arch.H8
                     (0xE, add_l),
                     (0xF, add_l)),
                 Sparse(4, 4, "  0B", invalid,
-                    (0, Instr(Mnemonic.adds, Imm32(1), rgpl)),
-                    (8, Instr(Mnemonic.adds, Imm32(2), rgpl)),
-                    (9, Instr(Mnemonic.adds, Imm32(3), rgpl))),
+                    (0x0, Instr(Mnemonic.adds, Imm32(1), rgpl)),
+                    (0x5, Instr(Mnemonic.inc, w, Imm16(1), rl)),
+                    (0x7, Instr(Mnemonic.inc, l, Imm32(1), rl)),
+                    (0x8, Instr(Mnemonic.adds, Imm32(2), rgpl)),
+                    (0x9, Instr(Mnemonic.adds, Imm32(4), rgpl)),
+                    (0xD, Instr(Mnemonic.inc, w, Imm16(2), rl)),
+                    (0xF, Instr(Mnemonic.inc, l, Imm32(2), rl))),
 
                 Instr(Mnemonic.mov, b, rh,rl),
                 Instr(Mnemonic.mov, w, rh,rl),
@@ -808,19 +904,31 @@ namespace Reko.Arch.H8
 
                 // 10
                 Sparse(4, 4, "  10", invalid,
-                    (0x0, Instr(Mnemonic.shll, b,rl)),
-                    (0x1, Instr(Mnemonic.shll, w,rl)),
-                    (0x3, Instr(Mnemonic.shll, l,rl)),
-                    (0x8, Instr(Mnemonic.shal, b,rl)),
-                    (0x9, Instr(Mnemonic.shal, w,rl)),
-                    (0xB, Instr(Mnemonic.shal, l,rl))),
+                    (0x0, Instr(Mnemonic.shll, b, rl)),
+                    (0x1, Instr(Mnemonic.shll, w, rl)),
+                    (0x3, Instr(Mnemonic.shll, l, rl)),
+                    (0x4, Instr(Mnemonic.shll, b, Imm16(2), rl)),
+                    (0x5, Instr(Mnemonic.shll, w, Imm16(2), rl)),
+                    (0x7, Instr(Mnemonic.shll, l, Imm16(2), rl)),
+                    (0x8, Instr(Mnemonic.shal, b, rl)),
+                    (0x9, Instr(Mnemonic.shal, w, rl)),
+                    (0xB, Instr(Mnemonic.shal, l, rl)),
+                    (0xC, Instr(Mnemonic.shal, b, Imm16(2), rl)),
+                    (0xD, Instr(Mnemonic.shal, w, Imm16(2), rl)),
+                    (0xF, Instr(Mnemonic.shal, l, Imm16(2), rl))),
                 Sparse(4, 4, "  11", invalid,
                     (0x0, Instr(Mnemonic.shlr, b,rl)),
                     (0x1, Instr(Mnemonic.shlr, w,rl)),
                     (0x3, Instr(Mnemonic.shlr, l,rl)),
+                    (0x4, Instr(Mnemonic.shlr, b, Imm16(2), rl)),
+                    (0x5, Instr(Mnemonic.shlr, w, Imm16(2), rl)),
+                    (0x7, Instr(Mnemonic.shlr, l, Imm16(2), rl)),
                     (0x8, Instr(Mnemonic.shar, b,rl)),
                     (0x9, Instr(Mnemonic.shar, w,rl)),
-                    (0xB, Instr(Mnemonic.shar, l,rl))),
+                    (0xB, Instr(Mnemonic.shar, l,rl)),
+                    (0xC, Instr(Mnemonic.shar, b, Imm16(2), rl)),
+                    (0xD, Instr(Mnemonic.shar, w, Imm16(2), rl)),
+                    (0xF, Instr(Mnemonic.shar, l, Imm16(2), rl))),
                 Sparse(4, 4, "  12", invalid,
                     (0x0, Instr(Mnemonic.rotxl, b,rl)),
                     (0x1, Instr(Mnemonic.rotxl, w,rl)),
@@ -873,9 +981,13 @@ namespace Reko.Arch.H8
                     (0xE, Instr(Mnemonic.sub, l, rh3, rl3)),
                     (0xF, Instr(Mnemonic.sub, l, rh3, rl3))),
                 Sparse(4, 4, "  1B", invalid,
-                    (0, Instr(Mnemonic.subs, Imm32(1), rgpl)),
-                    (8, Instr(Mnemonic.subs, Imm32(2), rgpl)),
-                    (9, Instr(Mnemonic.subs, Imm32(3), rgpl))),
+                    (0x0, Instr(Mnemonic.subs, Imm32(1), rgpl)),
+                    (0x5, Instr(Mnemonic.dec, w, Imm16(1), rl)),
+                    (0x7, Instr(Mnemonic.dec, l, Imm32(1), rl)),
+                    (0x8, Instr(Mnemonic.subs, Imm32(2), rgpl)),
+                    (0x9, Instr(Mnemonic.subs, Imm32(4), rgpl)),
+                    (0xD, Instr(Mnemonic.dec, w, Imm16(2), rl)),
+                    (0xF, Instr(Mnemonic.dec, l, Imm32(2), rl))),
 
                 Instr(Mnemonic.cmp, b, rh,rl),
                 Instr(Mnemonic.cmp, w, rh,rl),
@@ -961,7 +1073,7 @@ namespace Reko.Arch.H8
                 Instr(Mnemonic.divxu, w, rh, l, rl, w),
 
                 If(0, 8, u => u == 0x70, Instr(Mnemonic.rts, InstrClass.Transfer|InstrClass.Return)),
-                Instr(Mnemonic.bsr, Cdisp8),
+                Instr(Mnemonic.bsr, InstrClass.Transfer|InstrClass.Call, Cdisp8),
                 If(0, 8, u => u == 0x70, Instr(Mnemonic.rte, InstrClass.Transfer|InstrClass.Return)),
                 If(u => (u & 0xC) == 0, Instr(Mnemonic.trapa, TrapNo)),
 
@@ -996,16 +1108,17 @@ namespace Reko.Arch.H8
                     Instr(Mnemonic.mov, w, rl, Mind)),
                 Sparse(4, 4, "  6A", invalid,
                     (0x0, Instr(Mnemonic.mov, b, aa16, rl)),
-                    (0x2, Instr(Mnemonic.mov, b, aa24, rl)),
+                    (0x2, Instr(Mnemonic.mov, b, aa32, rl)),
+                    (0x3, decoder6A3),
                     (0x4, Instr(Mnemonic.movfpe, aa16, rbl)),
                     (0x8, Instr(Mnemonic.mov, b, rl, aa16)),
-                    (0xA, Instr(Mnemonic.mov, b, rl, aa24)),
+                    (0xA, Instr(Mnemonic.mov, b, rl, aa32)),
                     (0xC, Instr(Mnemonic.movtpe, rbl, aa16))),
                 Sparse(4, 4, "  6B", invalid,
                     (0x0, Instr(Mnemonic.mov, w, aa16, rl)),
-                    (0x2, Instr(Mnemonic.mov, w, aa24, rl)),
+                    (0x2, Instr(Mnemonic.mov, w, aa32, rl)),
                     (0x8, Instr(Mnemonic.mov, w, rl, aa16)),
-                    (0xA, Instr(Mnemonic.mov, w, rl, aa24))),
+                    (0xA, Instr(Mnemonic.mov, w, rl, aa32))),
 
                 Mask(7, 1, "  6C",
                     Instr(Mnemonic.mov, b, PostEh, rl),
@@ -1041,8 +1154,9 @@ namespace Reko.Arch.H8
 
                 Next(Select((4, 16), u => u == 0x06A2, Instr(Mnemonic.mov, b, Md32_20, rl),
                      Select((4, 16), u => u == 0x06AA, Instr(Mnemonic.mov, b, rl, Md32_20),
+                     Select((4, 16), u => u == 0x06B2, Instr(Mnemonic.mov, w, Md32_20, rl),
                      Select((4, 16), u => u == 0x06BA, Instr(Mnemonic.mov, b, rl, Md32_20),
-                     invalid)))),
+                     invalid))))),
                 Sparse(4, 4, "  79", invalid,
                     (0, Instr(Mnemonic.mov, w,I16, rl)),
                     (1, Instr(Mnemonic.add, w,I16, rl)),
@@ -1064,39 +1178,39 @@ namespace Reko.Arch.H8
 
                 Next(Select(u => (u & 0xFFF00) == 0x06300, Nyi("btst"),
                      If(u => (u & 0xFF000) == 0x07000, Sparse(8, 4, "  7Cr07", invalid,
-                     (3, Nyi("btst")),
+                     (3, Instr(Mnemonic.btst, Bit, Mind_20)),
                      (4, Nyi("bor/bior")),
                      (5, Nyi("bxor/bixor")),
                      (6, Nyi("band/biand")),
                      (7, Nyi("bld/bild"))))
                      )),
                 Next(Select(u => (u & 0xFF000) == 0x06000, Sparse(8, 4, "  7Dr06", invalid,
-                         (0, Nyi("bset")),
-                         (1, Nyi("bnot")),
-                         (2, Nyi("bclr")),
+                        (0, Nyi("bset")),
+                        (1, Nyi("bnot")),
+                        (2, Instr(Mnemonic.bclr, rb4, Mind_20)),
+                        (7, Nyi("bst/bist"))),
+                    If(u => (u & 0xFF000) == 0x07000, Sparse(8, 4, "  7Dr07", invalid,
+                        (0, Instr(Mnemonic.bset, Bit, Mind_20)),
+                        (1, Nyi("bnot")),
+                        (2, Instr(Mnemonic.bclr, Bit, Mind_20))))
+                    )),
+                Next(Sparse(8, 8, "  7E", invalid,
+                     (0x63, Instr(Mnemonic.btst, rb4, aa8_16)),
+                     (0x73, Instr(Mnemonic.btst, Bit, aa8_16)),
+                     (0x74, Nyi("bor/bior")),
+                     (0x75, Nyi("bxor/bixor")),
+                     (0x76, Nyi("band/biand")),
+                     (0x77, Instr(Mnemonic.bild, Bit, aa8_16)))),
+                Next(Select(u => (u & 0xF000) == 0x6000, Sparse(8, 4, "  7Fr06", invalid,
+                         (0, Instr(Mnemonic.bset, rb4, aa8_16)),
+                         (1, Instr(Mnemonic.bnot, rb4, aa8_16)),
+                         (2, Instr(Mnemonic.bclr, rb4, aa8_16)),
                          (7, Nyi("bst/bist"))),
-                     If(u => (u & 0xFF000) == 0x07000, Sparse(8, 4, "  7Dr07", invalid,
-                         (0, Nyi("bset")),
-                         (1, Nyi("bnot")),
-                         (2, Nyi("bclr"))))
-                     )),
-                Next(Select(u => (u & 0xFFF00) == 0x06300, Nyi("btst"),
-                     If(u => (u & 0xFF000) == 0x07000, Sparse(8, 4, "  7Er07", invalid,
-                     (3, Nyi("btst")),
-                     (4, Nyi("bor/bior")),
-                     (5, Nyi("bxor/bixor")),
-                     (6, Nyi("band/biand")),
-                     (7, Nyi("bld/bild"))))
-                     )),
-                Next(Select(u => (u & 0xFF000) == 0x06000, Sparse(8, 4, "  7Fr06", invalid,
-                         (0, Nyi("bset")),
-                         (1, Nyi("bnot")),
-                         (2, Nyi("bclr")),
-                         (7, Nyi("bst/bist"))),
-                     If(u => (u & 0xFF000) == 0x07000, Sparse(8, 4, "  7Fr07", invalid,
-                         (0, Nyi("bset")),
-                         (1, Nyi("bnot")),
-                         (2, Nyi("bclr")))))),
+                     If(u => (u & 0xF000) == 0x7000, Sparse(8, 4, "  7Fr07", invalid,
+                         (0, Instr(Mnemonic.bset, Bit, aa8_16)),
+                         (1, Instr(Mnemonic.bnot, Bit, aa8_16)),
+                         (2, Instr(Mnemonic.bclr, Bit, aa8_16)),
+                         (9, invalid))))),
                 // 80
                 add_b_imm,
                 add_b_imm,
@@ -1263,8 +1377,10 @@ namespace Reko.Arch.H8
                 mov_b_imm,
                 mov_b_imm,
                 mov_b_imm,
-                mov_b_imm
-            }); ;
+                Select(u => u == 0xFFFF,
+                    Instr(Mnemonic.mov, InstrClass.Linear|InstrClass.Padding, b, I8, rb8),
+                    mov_b_imm)
+            });
         }
     }
 }
