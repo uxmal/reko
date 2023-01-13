@@ -4,9 +4,6 @@
 
 #include "ls.h"
 
-<anonymous> * g_a411F40[] = // 0000000000411F40
-	{
-	};
 word32 g_a412C00[] = // 0000000000412C00
 	{
 	};
@@ -172,28 +169,16 @@ real80 g_r415F90 = // 0000000000415F90
 void g_v415FA0 = ??void??; // 0000000000415FA0
 cu8 g_b415FD8 = 0x2F; // 0000000000415FD8
 cu8 g_b415FE0 = 0x6C; // 0000000000415FE0
-<anonymous> * g_a416068[] = // 0000000000416068
-	{
-	};
 word32 g_a416460[] = // 0000000000416460
 	{
 	};
 Eq_n g_a416480[] = // 0000000000416480
 	{
 	};
-<anonymous> * g_a4164E8[] = // 00000000004164E8
-	{
-	};
 char g_str416919[] = ""; // 0000000000416919
 <anonymous> * g_ptr416B48 = &g_t410800; // 0000000000416B48
 char g_str416BE0[] = "lib/xstrtol.c"; // 0000000000416BE0
 char g_str416BF0[] = "0 <= strtol_base && strtol_base <= 36"; // 0000000000416BF0
-<anonymous> * g_a416C18[] = // 0000000000416C18
-	{
-	};
 char g_str416DC8[] = "xstrtoul"; // 0000000000416DC8
-<anonymous> * g_a416E38[] = // 0000000000416E38
-	{
-	};
 char g_str416FE8[] = "xstrtoumax"; // 0000000000416FE8
 char g_str417002[] = "CHARSETALIASDIR"; // 0000000000417002

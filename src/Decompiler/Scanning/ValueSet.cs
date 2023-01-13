@@ -122,8 +122,11 @@ namespace Reko.Scanning
                     StridedInterval.Empty);
             }
             long v = right.ToInt64();
+            var dt = this.DataType.BitSize >= right.DataType.BitSize
+                ? this.DataType
+                : right.DataType;
             return new IntervalValueSet(
-                this.DataType,
+                dt,
                 StridedInterval.Create(
                     SI.Stride,
                     SI.Low + v,

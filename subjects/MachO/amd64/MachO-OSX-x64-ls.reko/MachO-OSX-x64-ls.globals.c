@@ -6,7 +6,6 @@
 
 Eq_n g_t0014;
 Eq_n g_t0018;
-word32 g_a238C[];
 word32 g_a2684[];
 <anonymous> g_t30C8; // 00000000000030C8
 void g_t319B(int32 rdi); // 000000000000319B

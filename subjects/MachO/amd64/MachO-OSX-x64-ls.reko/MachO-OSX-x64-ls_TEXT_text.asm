@@ -245,14 +245,40 @@ l0000000100001D40:
 	movsxd	rax,dword ptr [rcx+rax*4]
 	add	rax,rcx
 	jmp	rax
-0000000100001D52       48 C7 85 28 FF FF FF 00 00 00 00 48 C7 85   H..(.......H..
-0000000100001D60 48 FF FF FF 00 00 00 00 48 C7 85 38 FF FF FF 00 H.......H..8....
-0000000100001D70 00 00 00 C7 85 1C FF FF FF 00 00 00 00 C7 85 20 ............... 
-0000000100001D80 FF FF FF 00 00 00 00 C7 85 24 FF FF FF 00 00 00 .........$......
-0000000100001D90 00 48 C7 85 50 FF FF FF 00 00 00 00 48 C7 85 40 .H..P.......H..@
-0000000100001DA0 FF FF FF 00 00 00 00 48 C7 85 30 FF FF FF 00 00 .......H..0.....
-0000000100001DB0 00 00 48 8D 05 AB 47 00 00 83 38 00 75 0D 48 8D ..H...G...8.u.H.
-0000000100001DC0 05 BB 47 00 00 C7 00 00 00 00 00                ..G........     
+
+l0000000100001D52:
+	mov	qword ptr [rbp-0D8h],+0h
+
+l0000000100001D5D:
+	mov	qword ptr [rbp-0B8h],+0h
+
+l0000000100001D68:
+	mov	qword ptr [rbp-0C8h],+0h
+
+l0000000100001D73:
+	mov	dword ptr [rbp-0E4h],0h
+
+l0000000100001D7D:
+	mov	dword ptr [rbp-0E0h],0h
+
+l0000000100001D87:
+	mov	dword ptr [rbp-0DCh],0h
+
+l0000000100001D91:
+	mov	qword ptr [rbp-0B0h],+0h
+
+l0000000100001D9C:
+	mov	qword ptr [rbp-0C0h],+0h
+
+l0000000100001DA7:
+	mov	qword ptr [rbp-0D0h],+0h
+	lea	rax,[0000000100006564]                                 ; [rip+000047AB]
+	cmp	dword ptr [rax],0h
+	jnz	100001DCBh
+
+l0000000100001DBE:
+	lea	rax,[0000000100006580]                                 ; [rip+000047BB]
+	mov	dword ptr [rax],0h
 
 l0000000100001DCB:
 	mov	rax,[rbp-0D8h]
@@ -744,9 +770,16 @@ l0000000100002379:
 	pop	r15
 	pop	rbp
 	ret
-000000010000238B                                  90 C6 F9 FF FF            .....
-0000000100002390 D1 F9 FF FF DC F9 FF FF E7 F9 FF FF F1 F9 FF FF ................
-00000001000023A0 FB F9 FF FF 05 FA FF FF 10 FA FF FF 1B FA FF FF ................
+000000010000238B                                  90                        .    
+l000000010000238C	dd	0xFFFFF9C6
+l0000000100002390	dd	0xFFFFF9D1
+l0000000100002394	dd	0xFFFFF9DC
+l0000000100002398	dd	0xFFFFF9E7
+l000000010000239C	dd	0xFFFFF9F1
+l00000001000023A0	dd	0xFFFFF9FB
+l00000001000023A4	dd	0xFFFFFA05
+l00000001000023A8	dd	0xFFFFFA10
+l00000001000023AC	dd	0xFFFFFA1B
 
 ;; fn00000001000023B0: 00000001000023B0
 ;;   Called from:
