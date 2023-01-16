@@ -268,14 +268,14 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 	}
 }
 
-// 00000190: Register Eq_n xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
+// 00000190: Register Eq_n xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
 // Called from:
 //      xQueueGiveMutexRecursive
 //      xQueueCreateMutex
 //      MPU_xQueueGenericSend
-Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
+Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
-	up32 tLoc2C;
+	word32 tLoc2C;
 	Eq_n tLoc28;
 	tLoc2C = r2;
 	word32 r5_n = 0x00;
@@ -369,13 +369,13 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 		__msr(cpsr, r5_n);
 }
 
-// 000002D8: Register Eq_n xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr, Register out Eq_n lrOut)
+// 000002D8: Register Eq_n xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr, Register out Eq_n lrOut)
 // Called from:
 //      xQueueTakeMutexRecursive
 //      MPU_xQueueGenericReceive
-Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr, union Eq_n & lrOut)
+Eq_n xQueueGenericReceive(Eq_n r0, Eq_n r1, word32 r2, word32 r3, Eq_n lr, ptr32 cpsr, union Eq_n & lrOut)
 {
-	up32 tLoc2C;
+	word32 tLoc2C;
 	Eq_n tLoc28;
 	tLoc2C = r2;
 	word32 r5_n = 0x00;
@@ -617,10 +617,10 @@ void xQueueGetMutexHolder(word32 * r0, ptr32 cpsr)
 		vPortExitCritical(cpsr);
 }
 
-// 000005D4: void xQueueTakeMutexRecursive(Register Eq_n r0, Register up32 r1, Register Eq_n lr, Register ptr32 cpsr)
+// 000005D4: void xQueueTakeMutexRecursive(Register Eq_n r0, Register word32 r1, Register Eq_n lr, Register ptr32 cpsr)
 // Called from:
 //      MPU_xQueueTakeMutexRecursive
-void xQueueTakeMutexRecursive(Eq_n r0, up32 r1, Eq_n lr, ptr32 cpsr)
+void xQueueTakeMutexRecursive(Eq_n r0, word32 r1, Eq_n lr, ptr32 cpsr)
 {
 	if (*((word32) r0 + 4) == xTaskGetCurrentTaskHandle())
 		*((word32) r0 + 0x0C) = (word32) *((word32) r0 + 0x0C) + 1;
@@ -1530,18 +1530,18 @@ struct Eq_n * g_ptr1140 = &g_t200000C4; // 00001140
 void vTaskSetTimeOutState(struct Eq_n * r0)
 {
 	struct Eq_n * r3_n = g_ptr1154;
-	up32 r3_n = r3_n->dw0080;
+	word32 r3_n = r3_n->dw0080;
 	r0->dw0000 = r3_n->dw0094;
 	r0->dw0004 = r3_n;
 }
 
 struct Eq_n * g_ptr1154 = &g_t200000C4; // 00001154
-// 00001158: Register (ptr32 Eq_n) xTaskCheckForTimeOut(Register (ptr32 Eq_n) r0, Register (ptr32 up32) r1, Register ptr32 cpsr)
+// 00001158: Register (ptr32 Eq_n) xTaskCheckForTimeOut(Register (ptr32 Eq_n) r0, Register (ptr32 word32) r1, Register ptr32 cpsr)
 // Called from:
 //      xQueueGenericSend
 //      xQueueGenericReceive
 //      MPU_xTaskCheckForTimeOut
-struct Eq_n * xTaskCheckForTimeOut(struct Eq_n * r0, up32 * r1, ptr32 cpsr)
+struct Eq_n * xTaskCheckForTimeOut(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr);
 	struct Eq_n * r3_n = g_ptr11A8;

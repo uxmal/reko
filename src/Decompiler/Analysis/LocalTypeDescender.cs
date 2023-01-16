@@ -37,7 +37,7 @@ namespace Reko.Analysis
         public LocalTypeDescender(IReadOnlyProgram program, TypeStore store, TypeFactory factory)
             : base(program, store, factory)
         {
-            this.TypeVariables = new Dictionary<Expression,TypeVariable>();
+            this.TypeVariables = new Dictionary<Expression, TypeVariable>();
         }
 
         public Dictionary<Expression, TypeVariable> TypeVariables { get; }
@@ -95,6 +95,46 @@ namespace Reko.Analysis
         {
             var tv = TypeVar(exp);
             exp.Accept(this, tv);
+        }
+
+        public DataType GetType(Expression e)
+        {
+            return TypeVariables[e].DataType.Accept(new TypeVariableReplacer());
+        }
+
+        /// <summary>
+        /// Traverses all types and replaces references to type variables with
+        /// inferred data type.
+        /// </summary>
+        private class TypeVariableReplacer : DataTypeTransformer
+        {
+            private readonly HashSet<DataType> visitedTypes;
+
+            public TypeVariableReplacer()
+            {
+                this.visitedTypes = new HashSet<DataType>();
+            }
+
+            public override DataType VisitTypeVariable(TypeVariable tv)
+            {
+                return tv.DataType.Accept(this);
+            }
+
+            public override DataType VisitStructure(StructureType str)
+            {
+                if (visitedTypes.Contains(str))
+                    return str;
+                visitedTypes.Add(str);
+                return base.VisitStructure(str);
+            }
+
+            public override DataType VisitUnion(UnionType ut)
+            {
+                if (visitedTypes.Contains(ut))
+                    return ut;
+                visitedTypes.Add(ut);
+                return base.VisitUnion(ut);
+            }
         }
     }
 }

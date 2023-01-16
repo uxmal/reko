@@ -164,7 +164,7 @@ l00410336:
 l004102FC:
 			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{
-				r8_n = (byte) r8_n.u0 + 1;
+				r8_n = (word16) r8_n.u0 + 1;
 				r7_n = __ins<word32,word32>(r7_n, 0x00, 0x0A, 0x01);
 				if (r8_n == 0xFF)
 					r7_n.u0 = 0x00;

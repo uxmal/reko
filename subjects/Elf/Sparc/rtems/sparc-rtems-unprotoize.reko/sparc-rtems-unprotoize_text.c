@@ -7,11 +7,11 @@
 // 00011498: void _start(Register (ptr32 Eq_n) g1, Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
 void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
 {
-	Eq_n tArg44;
+	word32 tArg44;
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
-		_environ = (char *) &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
+		_environ = &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
 		exit(main(&tArg44));
 	}
 	else
@@ -2684,10 +2684,10 @@ void do_processing()
 	visit_each_hash_node(visit_each_hash_node(&g_t28240));
 }
 
-// 00014EA4: Register ui32 main(Register (ptr32 Eq_n) o1)
+// 00014EA4: Register ui32 main(Register (ptr32 word32) o1)
 // Called from:
 //      _start
-ui32 main(union Eq_n * o1)
+ui32 main(word32 * o1)
 {
 	Eq_n o0_n = strrchr(*o1, '/');
 	Eq_n o2_n = (word32) o0_n + 1;

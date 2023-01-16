@@ -503,7 +503,7 @@ DataTypes:
             var sExp = @"
 Used: [r1, [0..31]],[r2, [0..31]]
 DataTypes:
-  r1: (ptr32 (struct (0 (arr T_2) a0000)))
+  r1: (ptr32 (struct (0 (arr (struct 0001 (0 word32 dw0000))) a0000)))
   r2: word32
 ";
             RunSsaTest(sExp, m =>
@@ -558,7 +558,7 @@ DataTypes:
             var sExp = @"
 Used: [r1, [0..31]]
 DataTypes:
-  r1: (ptr32 (struct (0 T_1 t0000) (4 T_3 t0004)))
+  r1: (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004)))
 ";
             RunSsaTest(sExp, m =>
             {

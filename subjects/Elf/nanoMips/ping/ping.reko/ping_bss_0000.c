@@ -6,7 +6,7 @@
 
 Eq_n g_t43148C = // 0043148C
 	{
-		0
+		0x00
 	};
 struct Eq_n g_t431498 = // 00431498
 	{
@@ -16,20 +16,20 @@ struct Eq_n g_t431498 = // 00431498
 	};
 Eq_n in_pr_addr = // 004314C0
 	{
-		0
+		0x00
 	};
 Eq_n confirm = // 004314C4
 	{
-		0
+		0x00
 	};
 word32 deadline = 0x00; // 004314C8
 Eq_n ni_subject_len = // 004314D0
 	{
-		0
+		0x00
 	};
 Eq_n ni_subject = // 004314D4
 	{
-		0
+		0x00
 	};
 ui32 ni_flag = 0x00; // 004314D8
 byte g_b4324DE = 0x00; // 004324DE
@@ -55,7 +55,7 @@ up32 cur.1422 = 0x00; // 00432534
 word32 g_dw432538 = 0x00; // 00432538
 Eq_n end.2906 = // 00432540
 	{
-		0
+		0x00
 	};
 word32 g_dw432548 = 0x00; // 00432548
 word32 g_a432550[] = // 00432550
@@ -63,19 +63,19 @@ word32 g_a432550[] = // 00432550
 	};
 Eq_n g_t432554 = // 00432554
 	{
-		0
+		0x00
 	};
 Eq_n g_t432958 = // 00432958
 	{
-		0
+		0x00
 	};
 Eq_n g_t43295C = // 0043295C
 	{
-		0
+		0x00
 	};
 Eq_n optreset = // 00432960
 	{
-		0
+		0x00
 	};
 word32 unmask_done = 0x00; // 00432988
 word32 dummy = 0x00; // 00432990
@@ -93,25 +93,25 @@ struct Eq_n g_t432DF8 = // 00432DF8
 uint32 mmap_step.1531 = 0x00; // 00432EF0
 Eq_n brk.1530 = // 00432EF4
 	{
-		0
+		0x00
 	};
 Eq_n __block_new_threads = // 00432F00
 	{
-		0
+		0x00
 	};
 struct Eq_n * context = null; // 00432F04
 <anonymous> * callback = null; // 00432F08
 Eq_n target_tid = // 00432F0C
 	{
-		0
+		0x00
 	};
 word32 g_dw432F10 = 0x00; // 00432F10
 Eq_n head = // 00432F18
 	{
-		0
+		0x00
 	};
 word32 internal_state.2719 = 0x00; // 00432F20
 Eq_n __stdin_used = // 00432F30
 	{
-		0
+		0x00
 	};

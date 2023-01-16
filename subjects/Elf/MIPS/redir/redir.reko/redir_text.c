@@ -3434,10 +3434,10 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 {
 	ptr32 fp;
 	ui32 dwLoc14;
-	Eq_n dwLoc28;
+	word32 dwLoc28;
 	word32 dwLoc24;
-	int32 dwLoc20;
-	Eq_n r7;
+	word32 dwLoc20;
+	word32 r7;
 	__unpack_d(fp + -16, fp + -40);
 	__make_fp(dwLoc28, dwLoc24, dwLoc20, r7, ra);
 }
@@ -3452,8 +3452,8 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 //      __make_fp
 void __pack_f(struct Eq_n * r4)
 {
-	Eq_n r3_n = r4->t0000;
-	Eq_n r4_n = r4->t000C;
+	Eq_n r3_n = r4->dw0000;
+	Eq_n r4_n = r4->dw000C;
 	if ((word32) (r3_n < 2) != 0x00)
 		return;
 	if ((r3_n ^ 0x04) == 0x00)
@@ -3558,16 +3558,16 @@ void __unpack_f(uint32 * r4, struct Eq_n * r5)
 	}
 }
 
-// 00409630: void __make_fp(Register Eq_n r4, Register word32 r5, Register int32 r6, Register Eq_n r7, Register word32 ra)
+// 00409630: void __make_fp(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 ra)
 // Called from:
 //      __truncdfsf2
-void __make_fp(Eq_n r4, word32 r5, int32 r6, Eq_n r7, word32 ra)
+void __make_fp(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 {
 	Eq_n tLoc18;
-	tLoc18.t0000 = r4;
+	tLoc18.dw0000 = r4;
 	tLoc18.dw0004 = r5;
 	tLoc18.dw0008 = r6;
-	tLoc18.t000C = r7;
+	tLoc18.dw000C = r7;
 	__pack_f(&tLoc18);
 }
 

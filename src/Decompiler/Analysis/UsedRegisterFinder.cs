@@ -213,8 +213,7 @@ namespace Reko.Analysis
                 }
             }
             typeDescender.MergeDataTypes();
-            return typeDescender.TypeVariables[sidParam.Identifier]
-                .DataType;
+            return typeDescender.GetType(sidParam.Identifier);
         }
 
         public BitRange VisitAssignment(Assignment ass)

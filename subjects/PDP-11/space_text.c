@@ -1060,7 +1060,7 @@ Eq_n g_t09F7 = // 09F7
 		},
 		63305,
 	};
-<anonymous> g_t0A00 = <code>; // 0A00
+char g_str0A00[] = ""; // 0A00
 Eq_n g_t0A15 = // 0A15
 	{
 		0x01,
@@ -1427,19 +1427,19 @@ void fn0CF4(struct Eq_n * r5)
 	if (r5->b0000 == 0x01)
 	{
 		struct Eq_n * r0_n = r5->ptr0002;
-		tLoc08.t0006 = &tLoc08.t0006;
-		tLoc08.t0004 = &tLoc08.t0004;
-		tLoc08.ptr0002 = (struct Eq_n **) &tLoc08.ptr0002;
+		tLoc08.ptr0006 = &tLoc08.ptr0006;
+		tLoc08.ptr0004 = &tLoc08.ptr0004;
+		tLoc08.ptr0002 = &tLoc08.ptr0002;
 		tLoc08.t0000.u1 = 0x03;
 		fn15CC(&tLoc08);
 		struct Eq_n * r1_n = (char *) tLoc08.ptr0002 + (tLoc08.ptr0002 << 1);
-		struct Eq_n * r0_n = fn0D3E(r0_n, tLoc08.t0004);
+		struct Eq_n * r0_n = fn0D3E(r0_n, tLoc08.ptr0004);
 		r0_n->b0000 = 0x2D;
 		r0_n->b0001 = r1_n->b0D4F;
 		r0_n->b0002 = r1_n->b0D50;
 		r0_n->b0003 = r1_n->b0D51;
 		r0_n->b0004 = 0x2D;
-		Eq_n v35_n = tLoc08.t0006;
+		Eq_n v35_n = tLoc08.ptr0006;
 		fn0D3E(&r0_n->b0004 + 1, v35_n);
 	}
 	else
@@ -2275,12 +2275,12 @@ void fn15CC(struct Eq_n * r5)
 		tLoc04.w0002 = &tLoc04;
 		FnSubfn(&tLoc04);
 		__syscall<word16>(0x88FC);
-		<anonymous> * r2_n = &g_t0A00;
+		ptr16 r2_n = 0x0A00;
 		if (true)
-			r2_n = (<anonymous> *) (&t0000.w0036 + 9);
-		*r5->ptr0002 = (struct Eq_n **) (__swab(0x0280) & 0x1F);
-		*r5->t0004 = &t0000.w0010;
-		*r5->t0006 = r2_n;
+			r2_n = 0x48;
+		*r5->ptr0002 = (ptr16) (__swab(0x0280) & 0x1F);
+		*r5->ptr0004 = 0x10;
+		*r5->ptr0006 = r2_n;
 	}
 }
 

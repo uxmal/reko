@@ -236,7 +236,7 @@ uint32 g_dw8298 = 1000000; // 00008298
 //      vParTestToggleLED
 struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 {
-	ui32 tLoc14;
+	word32 tLoc14;
 	struct Eq_n * r4_n = g_ptr82CC;
 	SSIDataPut(r4_n, r0 & 0x0F);
 	SSIDataPut(r4_n, r1);
@@ -398,8 +398,8 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 	__msr(cpsr, 191);
 	__isb_sy();
 	__dsb_sy();
-	Eq_n r2_n = *((word32) r0 + 56);
-	Eq_n r3_n = *((word32) r0 + 60);
+	up32 r2_n = *((word32) r0 + 56);
+	up32 r3_n = *((word32) r0 + 60);
 	Eq_n r0_n = 0x00;
 	bool Z_n = SLICE(cond(r2_n - r3_n), bool, 2);
 	if (r2_n < r3_n)
@@ -545,20 +545,20 @@ void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 	Eq_n lr_n = *((word32) r0 + 64);
 	Eq_n r4_n = *((word32) r0 + 4);
 	word32 r3_n = Mem15[r0 + 0x0C:word32] + lr_n;
-	Eq_n r7_n = *((word32) r0 + 56);
+	word32 r7_n = *((word32) r0 + 56);
 	*((word32) r0 + 0x0C) = r3_n;
 	r3_n = r3_n;
 	if (r3_n >= r4_n)
 		r3_n = *r0;
 	if (r3_n >= r4_n)
 		*((word32) r0 + 0x0C) = r3_n;
-	*((word32) r0 + 56) = (word32) r7_n - 1;
+	*((word32) r0 + 56) = r7_n + ~0x00;
 	struct Eq_n * r4_n;
 	word32 * r5_n;
 	word32 r6_n;
 	word32 r7_n;
 	word32 lr_n;
-	memcpy(r1, r3_n, lr_n, r0, r2, r1, (word32) r7_n - 1, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
+	memcpy(r1, r3_n, lr_n, r0, r2, r1, r7_n + ~0x00, lr_n, out r4_n, out r5_n, out r6_n, out r7_n, out lr_n);
 	if (*r5_n != 0x00 || r4_n->dw0010 == 0x00)
 		return;
 	word32 r0_n;
@@ -1073,8 +1073,8 @@ void MPU_vTaskSetTimeOutState(struct Eq_n * r0, ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008998: void MPU_xTaskCheckForTimeOut(Register (ptr32 Eq_n) r0, Register (ptr32 up32) r1, Register ptr32 cpsr)
-void MPU_xTaskCheckForTimeOut(struct Eq_n * r0, up32 * r1, ptr32 cpsr)
+// 00008998: void MPU_xTaskCheckForTimeOut(Register (ptr32 Eq_n) r0, Register (ptr32 word32) r1, Register ptr32 cpsr)
+void MPU_xTaskCheckForTimeOut(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	xTaskCheckForTimeOut(r0, r1, cpsr);
@@ -1139,10 +1139,10 @@ void MPU_xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008AE4: Register Eq_n MPU_xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
+// 00008AE4: Register Eq_n MPU_xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
 // Called from:
 //      vCheckTask
-Eq_n MPU_xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
+Eq_n MPU_xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	Eq_n lr_n = xQueueGenericSend(r0, r1, r2, r3, lr, cpsr);
@@ -1169,10 +1169,10 @@ void MPU_uxQueueSpacesAvailable(ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008B6C: Register Eq_n MPU_xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr)
+// 00008B6C: Register Eq_n MPU_xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr)
 // Called from:
 //      vPrintTask
-Eq_n MPU_xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr)
+Eq_n MPU_xQueueGenericReceive(Eq_n r0, Eq_n r1, word32 r2, word32 r3, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	Eq_n lr_n;
@@ -1209,8 +1209,8 @@ void MPU_xQueueCreateMutex(Eq_n lr, ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008C20: void MPU_xQueueTakeMutexRecursive(Register Eq_n r0, Register up32 r1, Register Eq_n lr, Register ptr32 cpsr)
-void MPU_xQueueTakeMutexRecursive(Eq_n r0, up32 r1, Eq_n lr, ptr32 cpsr)
+// 00008C20: void MPU_xQueueTakeMutexRecursive(Register Eq_n r0, Register word32 r1, Register Eq_n lr, Register ptr32 cpsr)
+void MPU_xQueueTakeMutexRecursive(Eq_n r0, word32 r1, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	xQueueTakeMutexRecursive(r0, r1, lr, cpsr);
@@ -2411,10 +2411,10 @@ void SSIDataNonBlockingPut(struct Eq_n * r0, word32 r1)
 		r0->dw0008 = r1;
 }
 
-// 00009AB8: void SSIDataGet(Register (ptr32 Eq_n) r0, Register (ptr32 ui32) r1)
+// 00009AB8: void SSIDataGet(Register (ptr32 Eq_n) r0, Register (ptr32 word32) r1)
 // Called from:
 //      PDCWrite
-void SSIDataGet(struct Eq_n * r0, ui32 * r1)
+void SSIDataGet(struct Eq_n * r0, word32 * r1)
 {
 	do
 		;
