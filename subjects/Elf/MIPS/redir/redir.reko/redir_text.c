@@ -817,7 +817,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 ra)
 						}
 						else
 						{
-							<anonymous> * r2_n = dwLoc0158_n.ptr0000->u2.ptr17C4;
+							void (* r2_n)(struct Eq_n *) = dwLoc0158_n.ptr0000->u2.ptr17C4;
 							word32 r25_n;
 							r2_n();
 							r28_n = (struct Eq_n *) 0x10008860;
@@ -825,7 +825,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 ra)
 					}
 					if (dwLoc0158_n != 0x00 && ((((dwLoc0158_n.ptr0000)->u2).t0000).u1 >= 0x00 && ((fp->aFFFFFF50)[(((dwLoc0158_n.ptr0000)->u2).t0000).u1 >> 0x05] >> ((((dwLoc0158_n.ptr0000)->u2).t0000).u1 & 0x1F) & 0x01) != 0x00))
 					{
-						<anonymous> * r2_n = dwLoc0158_n.ptr0000->u2.ptr17C4;
+						void (* r2_n)(struct Eq_n *) = dwLoc0158_n.ptr0000->u2.ptr17C4;
 						word32 r25_n;
 						r2_n();
 						r28_n = (struct Eq_n *) 0x10008860;
@@ -1289,10 +1289,10 @@ void client_copy_reply(struct Eq_n * r4)
 	}
 }
 
-// 00403318: Register int32 client_check_reply_http(Register (ptr32 Eq_n) r4)
+// 00403318: Register word32 client_check_reply_http(Register (ptr32 Eq_n) r4)
 // Called from:
 //      client_parse_reply
-int32 client_check_reply_http(struct Eq_n * r4)
+word32 client_check_reply_http(struct Eq_n * r4)
 {
 	struct Eq_n * dwLoc18_n = r4->ptr1788;
 	int32 dwLoc14_n = r4->dw178C;
