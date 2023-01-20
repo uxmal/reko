@@ -154,9 +154,6 @@ namespace Reko.Gui.Forms
             var cmdFactory = new Commands.CommandFactory(sc);
             sc.AddService<ICommandFactory>(cmdFactory);
 
-            var sbSvc = svcFactory.CreateStatusBarService();
-            sc.AddService<IStatusBarService>(sbSvc);
-
             diagnosticsSvc = svcFactory.CreateDiagnosticsService();
             sc.AddService(typeof(IDiagnosticsService), diagnosticsSvc);
 
@@ -164,6 +161,12 @@ namespace Reko.Gui.Forms
             sc.AddService(typeof(IDecompilerService), decompilerSvc);
 
             sc.AddService(typeof(IDecompilerUIService), uiSvc);
+
+            var selSvc = svcFactory.CreateSelectionService();
+            sc.AddService<ISelectionService>(selSvc);
+
+            var selAddrSvc = svcFactory.CreateSelectedAddressService();
+            sc.AddService<ISelectedAddressService>(selAddrSvc);
 
             var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);
@@ -173,6 +176,9 @@ namespace Reko.Gui.Forms
 
             var segmentViewSvc = svcFactory.CreateImageSegmentService();
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
+
+            var sbSvc = svcFactory.CreateStatusBarService(selAddrSvc);
+            sc.AddService<IStatusBarService>(sbSvc);
 
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
@@ -222,12 +228,6 @@ namespace Reko.Gui.Forms
 
             var symLdrSvc = svcFactory.CreateSymbolLoadingService();
             sc.AddService<ISymbolLoadingService>(symLdrSvc);
-
-            var selSvc = svcFactory.CreateSelectionService();
-            sc.AddService<ISelectionService>(selSvc);
-
-            var selAddrSvc = svcFactory.CreateSelectedAddressService();
-            sc.AddService<ISelectedAddressService>(selAddrSvc);
 
             var testGenSvc = svcFactory.CreateTestGenerationService();
             sc.AddService<ITestGenerationService>(testGenSvc);

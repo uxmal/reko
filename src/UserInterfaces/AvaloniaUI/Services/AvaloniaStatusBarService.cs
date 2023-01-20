@@ -39,8 +39,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         ReactiveObject,
         IStatusBarService
     {
-        public AvaloniaStatusBarService()
+        private readonly ISelectedAddressService selAddrSvc;
+
+        public AvaloniaStatusBarService(ISelectedAddressService selAddrSvc)
         {
+            this.selAddrSvc = selAddrSvc;
+            selAddrSvc.SelectedAddressChanged += selAddrSvc_SelectedAddressChanged;
         }
 
         public bool IsProgressVisible
@@ -71,6 +75,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         }
         private string? subtext;
 
+        public string? SelectedAddressRange
+        {
+            get { return selectedAddressRange; }
+            set { this.RaiseAndSetIfChanged(ref selectedAddressRange, value); }
+        }
+        private string? selectedAddressRange;
+
         public void SetText(string text)
         {
             this.Text = text;
@@ -90,6 +101,19 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public void HideProgress()
         {
             this.IsProgressVisible = false;
+        }
+
+        private void selAddrSvc_SelectedAddressChanged(object? sender, EventArgs e)
+        {
+            var addrRange = selAddrSvc.SelectedAddressRange;
+            if (addrRange is null)
+            {
+                this.SelectedAddressRange = "";
+            }
+            else
+            {
+                this.SelectedAddressRange = addrRange.ToString();
+            }
         }
     }
 }

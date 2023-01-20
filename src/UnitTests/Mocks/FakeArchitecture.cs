@@ -469,10 +469,6 @@ namespace Reko.UnitTests.Mocks
         }
     }
 
-    public class MockMachineRegister : RegisterStorage
-	{
-		public MockMachineRegister(string name, int i, PrimitiveType dt) : base(name, i, 0, dt) { }
-	}
 
 	public class FakeProcessorState : ProcessorState
 	{

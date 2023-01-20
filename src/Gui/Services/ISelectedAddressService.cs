@@ -40,15 +40,11 @@ namespace Reko.Gui.Services
 
         /// <summary>
         /// If not null, indicates the address the user has 
-        /// selected.
-        /// </summary>
-        public Address? SelectedAddress { get; set; }
-
-        /// <summary>
-        /// Indicates the length of the selection the user has 
-        /// made. A length of 0 indicates that only the address
+        /// selected. The property value is the currently selected
+        /// <see cref="ProgramAddressRange"/>.
+        /// A length of 0 indicates that only the address
         /// has been selected, not a range of bytes.
         /// </summary>
-        public long Length { get; }
+        public ProgramAddressRange? SelectedAddressRange { get; set; }
     }
 }

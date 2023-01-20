@@ -190,11 +190,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             return new AvaloniaStackTraceService(services);
         }
 
-        public IStatusBarService CreateStatusBarService()
+        public IStatusBarService CreateStatusBarService(ISelectedAddressService selAddrSvc)
         {
             if (this.mainViewModel.Status is null)
             {
-                mainViewModel.Status = new AvaloniaStatusBarService();
+                mainViewModel.Status = new AvaloniaStatusBarService(selAddrSvc);
             }
             return this.mainViewModel.Status;
         }

@@ -59,7 +59,7 @@ namespace Reko.Gui
         IUiPreferencesService CreateUiPreferencesService();
         ILoader CreateLoader();
         ICallGraphViewService CreateCallGraphViewService();
-        IStatusBarService CreateStatusBarService();
+        IStatusBarService CreateStatusBarService(ISelectedAddressService selAddrSvc);
         IViewImportsService CreateViewImportService();
         ISymbolLoadingService CreateSymbolLoadingService();
         ISelectionService CreateSelectionService();

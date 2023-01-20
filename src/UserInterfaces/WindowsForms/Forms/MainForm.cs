@@ -268,22 +268,18 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             }
         }
 
-        public StatusStrip StatusStrip
-        {
-            get { return statusStrip; }
-        }
+        public ToolStripLabel SelectedAddressLabel => this.statusLblSelection;
 
-        public CallHierarchyView CallHierarchy
-        {
-            get { return callHierarchyView; }
-        }
+        public StatusStrip StatusStrip => statusStrip;
+
+        public CallHierarchyView CallHierarchy => callHierarchyView;
 
         public event KeyEventHandler ProcessCommandKey;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             var eh = ProcessCommandKey;
-            if (eh != null)
+            if (eh is not null)
             {
                 var e = new KeyEventArgs(keyData);
                 eh(this, e);

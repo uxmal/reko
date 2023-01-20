@@ -553,7 +553,8 @@ namespace Reko.UserInterfaces.WindowsForms
                     return;
             }
             var selSvc = services.RequireService<ISelectedAddressService>();
-            selSvc.SelectedAddress = addr;
+            //$TODO: get the length of the selection if many lines are selected.
+            selSvc.SelectedAddressRange = ProgramAddressRange.Create(program, addr, 1);
         }
 
         public void ViewGraph()

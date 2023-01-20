@@ -19,45 +19,35 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public class SelectedAddressService : ISelectedAddressService
+    public abstract class StatusBarService : IStatusBarService
     {
-        public event EventHandler? SelectedAddressChanged;
+        public abstract void HideProgress();
+        public abstract void SetSubtext(string v);
+        public abstract void SetText(string text);
+        public abstract void ShowProgress(int percentDone);
 
-
-        private ProgramAddressRange? addressRange;
-        private long length;
-
-        public SelectedAddressService()
+        protected string RenderAddressSelection(ProgramAddressRange range)
         {
-        }
-
-        public ProgramAddressRange? SelectedAddressRange
-        {
-            get => addressRange;
-            set
+            if (range is null)
+                return "";
+            var numbase = range.Program.Architecture.DefaultBase;
+            if (range.Length > 1)
             {
-                if (addressRange is null)
-                {
-                    if (value is null)
-                        return;
-                }
-                else
-                {
-                    if (value is not null && addressRange == value)
-                        return;
-                }
-                this.addressRange = value;
-                SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
+                return $"{range.Address} (length {Convert.ToString(range.Length, numbase)})";
+            }
+            else
+            {
+                return range.Address.ToString();
             }
         }
+
     }
 }

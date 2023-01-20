@@ -120,6 +120,7 @@
     </Panel>
 	-->
 	  <StackPanel Grid.Row="2" Name="statusbar" Orientation="Horizontal">
+		  <TextBlock Text="{Binding Status.SelectedAddressRange}" MinWidth="100" />
 		  <TextBlock Text="{Binding Status.Text}" MinWidth="100" />
 		  <TextBlock Text="{Binding Status.Subtext}" MinWidth="160" />
 		  <ProgressBar

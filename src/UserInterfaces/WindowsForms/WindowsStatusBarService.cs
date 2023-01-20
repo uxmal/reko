@@ -19,39 +19,55 @@
 #endregion
 
 using System;
+using System.Windows;
 using System.Windows.Forms;
+using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class StatusBarService : IStatusBarService
+    public class WindowsStatusBarService : StatusBarService
     {
-        private StatusStrip statusStrip;
+        private readonly StatusStrip statusStrip;
+        private readonly ToolStripLabel selectedAddressLabel;
+        private readonly ISelectedAddressService selAddrSvc;
 
-        public StatusBarService(StatusStrip statusStrip)
+        public WindowsStatusBarService(
+            StatusStrip statusStrip,
+            ToolStripLabel selectedAddressLabel,
+            ISelectedAddressService selAddrSvc)
         {
             this.statusStrip = statusStrip;
+            this.selectedAddressLabel = selectedAddressLabel;
+            this.selAddrSvc = selAddrSvc;
+            selAddrSvc.SelectedAddressChanged += selAddrSvc_SelectedAddressChanged;
         }
 
-        public void HideProgress()
+        public override void HideProgress()
         {
             throw new NotImplementedException();
         }
 
-        public void SetSubtext(string v)
+        public override void SetSubtext(string v)
         {
             throw new NotImplementedException();
         }
 
-        public void SetText(string text)
+        public override void SetText(string text)
         {
             statusStrip.Items[0].Text = text;
         }
 
-        public void ShowProgress(int percentDone)
+        public override void ShowProgress(int percentDone)
         {
             throw new NotImplementedException();
+        }
+
+        private void selAddrSvc_SelectedAddressChanged(object sender, EventArgs e)
+        {
+            string message = RenderAddressSelection(selAddrSvc.SelectedAddressRange);
+            selectedAddressLabel.Text = message;
         }
     }
 }

@@ -136,7 +136,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     b.Block.Procedure.Architecture,
                     instructions[b], 
                     pos,
-                    this.selSvc?.SelectedAddress);
+                    this.selSvc?.SelectedAddressRange.Address);
             }
             else
             {

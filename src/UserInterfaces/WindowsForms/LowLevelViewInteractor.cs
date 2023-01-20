@@ -65,6 +65,8 @@ namespace Reko.UserInterfaces.WindowsForms
             get { return program; }
             set
             {
+                if (program == value)
+                    return;
                 program = value;
                 OnProgramChanged(value);
             }

@@ -74,8 +74,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     line = lines[p + i];
                     if (line.Tag is ulong uAddr && 
-                        this.selSvc.SelectedAddress is not null &&
-                        uAddr == this.selSvc.SelectedAddress.ToLinear())
+                        this.selSvc.SelectedAddressRange is not null &&
+                        uAddr == this.selSvc.SelectedAddressRange.Address.ToLinear())
                     {
                         line.Style = "mirrored";
                     }

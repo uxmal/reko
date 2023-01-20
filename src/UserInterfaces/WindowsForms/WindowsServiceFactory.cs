@@ -18,9 +18,6 @@
  */
 #endregion
 
-#nullable enable
-
-using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
@@ -144,9 +141,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return new ResourceEditorService(services);
         }
 
-        public IStatusBarService CreateStatusBarService()
+        public IStatusBarService CreateStatusBarService(ISelectedAddressService selAddrSvc)
         {
-            return new StatusBarService(mainForm.StatusStrip);
+            return new WindowsStatusBarService(mainForm.StatusStrip, mainForm.SelectedAddressLabel, selAddrSvc);
         }
 
         public ITabControlHostService CreateTabControlHost()

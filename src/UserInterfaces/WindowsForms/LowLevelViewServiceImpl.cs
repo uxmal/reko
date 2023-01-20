@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
 using System;
@@ -29,10 +30,11 @@ namespace Reko.UserInterfaces.WindowsForms
 {
     public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
     {
-
+        private readonly ISelectedAddressService selAddrSvc;
 
         public LowLevelViewServiceImpl(IServiceProvider sp) : base(sp)
         {
+            this.selAddrSvc = sp.RequireService<ISelectedAddressService>();
         }
 
         #region IMemoryViewService Members
@@ -82,6 +84,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var llvi = (LowLevelViewInteractor) sender;
+            var addrRange = llvi.GetSelectedAddressRange();
+            var par = ProgramAddressRange.Create(llvi.Program, addrRange);
+            selAddrSvc.SelectedAddressRange = par;
         }
     }
 }
