@@ -19,13 +19,11 @@
 #endregion
 
 using Reko.Core.Code;
-using Reko.Core.Operators;
 using Reko.Core.Expressions;
-using Reko.Core.Rtl;
-using Reko.Core.Machine;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using Reko.Core.Types;
 
 namespace Reko.Core
 {
@@ -49,7 +47,7 @@ namespace Reko.Core
         {
             this.linearDerived = new Dictionary<RegisterStorage, Expression>(orig.linearDerived);
             this.stackState = new SortedList<int, Expression>(orig.stackState);
-            this.ErrorListener = this.ErrorListener;
+            this.ErrorListener = orig.ErrorListener;
         }
 #nullable enable
 

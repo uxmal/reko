@@ -23,8 +23,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace Reko.Core.Lib
 {
     public static class SuffixArray

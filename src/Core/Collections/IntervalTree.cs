@@ -6,8 +6,6 @@
 /////////////////////////////////////////////////////////////////////
 #define TREE_WITH_PARENT_POINTERS
 
-#nullable enable
-
 namespace Reko.Core.Collections
 {
     using System;

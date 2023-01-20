@@ -25,8 +25,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Types;
 
-#nullable enable
-
 namespace Reko.Core.Expressions
 {
     /// <summary>

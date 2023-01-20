@@ -77,7 +77,6 @@ namespace Reko.Arch.X86
         private Address ip;
         private bool ignoreRep;
 
-#nullable disable
         public X86Emulator(
             IntelArchitecture arch,
             SegmentMap segmentMap,
@@ -93,8 +92,9 @@ namespace Reko.Arch.X86
             this.Registers = new ulong[40];
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
+            this.dasm = default!;
+            this.ip = default!;
         }
-#nullable enable
 
         public override MachineInstruction CurrentInstruction => dasm.Current;
 

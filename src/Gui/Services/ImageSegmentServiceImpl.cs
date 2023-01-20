@@ -18,15 +18,8 @@
  */
 #endregion
 
-#nullable enable
-
 using Reko.Core;
-using Reko.Gui;
-using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Gui.Services
 {

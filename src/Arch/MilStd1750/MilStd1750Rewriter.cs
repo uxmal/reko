@@ -52,9 +52,7 @@ namespace Reko.Arch.MilStd1750
         private readonly RtlEmitter m;
         private readonly List<RtlInstruction> rtls;
         private InstrClass iclass;
-#nullable disable
         private Instruction instr;
-#nullable enable
 
         public MilStd1750Rewriter(MilStd1750Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -66,6 +64,7 @@ namespace Reko.Arch.MilStd1750
             this.dasm = new MilStd1750Disassembler(this.arch, rdr).GetEnumerator();
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
