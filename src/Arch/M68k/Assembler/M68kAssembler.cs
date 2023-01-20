@@ -105,44 +105,30 @@ namespace Reko.Arch.M68k.Assembler
 
         private int Ea(MachineOperand op)
         {
-            if (op is RegisterStorage rop)
+            switch (op)
             {
-                if (rop is DataRegister dReg)
-                    return (dReg.Number & 7);
-                if (rop is AddressRegister aReg)
-                    return (aReg.Number & 7) | 8;
+            case RegisterStorage rop:
+                if (Registers.IsDataRegister(rop))
+                    return (rop.Number & 7);
+                if (Registers.IsAddressRegister(rop))
+                    return (rop.Number & 7) | 8;
                 throw new NotImplementedException(op.ToString());
-            }
-            if (op is MemoryOperand mop)
-            {
-                var aReg = mop.Base;
-                if (mop.Offset == null || mop.Offset.ToInt32() == 0)
-                    return (aReg.Number & 7 | 0x10);
-                constants.Add((ushort) mop.Offset.ToInt32());
-                return (aReg.Number & 7 | 0x28);
-            }
-
-            var postOp = op as PostIncrementMemoryOperand;
-            if (postOp != null)
-            {
+            case MemoryOperand mop:
+                {
+                    var aReg = mop.Base;
+                    if (mop.Offset == null || mop.Offset.ToInt32() == 0)
+                        return (aReg.Number & 7 | 0x10);
+                    constants.Add((ushort) mop.Offset.ToInt32());
+                    return (aReg.Number & 7 | 0x28);
+                }
+            case PostIncrementMemoryOperand postOp:
                 return (postOp.Register.Number & 7 | 0x18);
-            }
-            var preOp = op as PredecrementMemoryOperand;
-            if (preOp != null)
-            {
+            case PredecrementMemoryOperand preOp:
                 return (preOp.Register.Number & 7 | 0x20);
-            }
-
-            var addrOp = op as M68kAddressOperand;
-            if (addrOp != null)
-            {
+            case M68kAddressOperand addrOp:
                 Imm(addrOp.Width.Size, addrOp.Address.ToUInt32());
                 return 0x39;
-            }
-
-            var immOp = op as M68kImmediateOperand;
-            if (immOp != null)
-            {
+            case M68kImmediateOperand immOp:
                 Imm(immOp.Width.Size, immOp.Constant.ToUInt32());
                 return 0x3C;
             }
@@ -163,17 +149,14 @@ namespace Reko.Arch.M68k.Assembler
             }
         }
 
-        public MachineOperand Mem(RegisterStorage rop)
+        public MachineOperand Mem(RegisterStorage a)
         {
-            var a = (AddressRegister) rop;
             return new MemoryOperand(null!, a);
         }
 
-        public MemoryOperand Mem(int offset, RegisterStorage rop)
+        public MemoryOperand Mem(int offset, RegisterStorage a)
         {
-            var a = (AddressRegister) rop;
             return new MemoryOperand(null!, a, Constant.Int16((short)offset));
-            throw new NotImplementedException();
         }
 
         private int SmallQ(int c)
@@ -194,25 +177,28 @@ namespace Reko.Arch.M68k.Assembler
         private int AReg(MachineOperand op)
         {
             var rop = (RegisterStorage) op;
-            var addr = (AddressRegister) rop;
-            return addr.Number & 7;
+            if (!Registers.IsAddressRegister(rop))
+                throw new ArgumentException("Expected an address register.");
+            return rop.Number & 7;
         }
 
         private int DReg(MachineOperand op)
         {
             var rop = (RegisterStorage) op;
-            var data = (DataRegister) rop;
-            return data.Number & 7;
+            if (!Registers.IsDataRegister(rop))
+                throw new ArgumentException("Expected a data register.");
+            var data =  rop;
+            return rop.Number & 7;
         }
 
         public PostIncrementMemoryOperand Post(RegisterStorage a)
         {
-            return new PostIncrementMemoryOperand(null!, (AddressRegister) a);
+            return new PostIncrementMemoryOperand(null!, a);
         }
 
         public PredecrementMemoryOperand Pre(RegisterStorage a)
         {
-            return new PredecrementMemoryOperand(null!, (AddressRegister) a);
+            return new PredecrementMemoryOperand(null!, a);
         }
 
         private void EmitConstants()

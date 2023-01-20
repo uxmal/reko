@@ -163,7 +163,7 @@ namespace Reko.Arch.M68k.Assembler
                 return;
             if (eaDst is RegisterStorage rDst)
             {
-                if (rDst is AddressRegister)
+                if (Registers.IsAddressRegister(rDst))
                 {
                     Emit(eaSrc, rDst, width, ByteWidthIllegal, asm.Adda_w, asm.Adda_l);
                 }
@@ -212,7 +212,7 @@ namespace Reko.Arch.M68k.Assembler
                 return;
             if (eaDst is RegisterStorage rDst)
             {
-                if (rDst is AddressRegister)
+                if (Registers.IsAddressRegister(rDst))
                 {
                     Emit(eaSrc, rDst, code, ByteWidthIllegal, asm.Cmpa_w, asm.Cmpa_l);
                 }
@@ -376,7 +376,7 @@ namespace Reko.Arch.M68k.Assembler
 
         private MachineOperand? ExpectEffectiveAddress()
         {
-            AddressRegister? aReg;
+            RegisterStorage? aReg;
             int offset;
             var tok = lexer.GetToken();
             switch (tok.Type)
@@ -424,7 +424,7 @@ namespace Reko.Arch.M68k.Assembler
 
         private MachineOperand? ParseAddressExpression(int offset)
         {
-            AddressRegister? aReg;
+            RegisterStorage? aReg;
             var tok = lexer.PeekToken();
             switch (tok.Type)
             {
@@ -468,18 +468,18 @@ namespace Reko.Arch.M68k.Assembler
             return new MemoryOperand(null!, Registers.a0);
         }
 
-        private AddressRegister? ExpectAddressRegister()
+        private RegisterStorage? ExpectAddressRegister()
         {
             var name = Expect(TokenType.ID);
             Debug.Assert(!string.IsNullOrEmpty(name));
             var aReg = AReg(name);
-            if (aReg != null)
+            if (aReg is not null)
                 return aReg;
             Error("Expect address register but saw '{0}.", name);
             return null;
         }
 
-        private AddressRegister? AReg(string name)
+        private RegisterStorage? AReg(string name)
         {
             if (IsAddressRegisterName(name))
             {
@@ -504,11 +504,11 @@ namespace Reko.Arch.M68k.Assembler
             }
         }
 
-        private void Emit_msk_a(RegisterSetOperand mask, AddressRegister aReg,
+        private void Emit_msk_a(RegisterSetOperand mask, RegisterStorage aReg,
             int size,
-            Action<RegisterSetOperand, AddressRegister> b,
-            Action<RegisterSetOperand, AddressRegister> w,
-            Action<RegisterSetOperand, AddressRegister> l)
+            Action<RegisterSetOperand, RegisterStorage> b,
+            Action<RegisterSetOperand, RegisterStorage> w,
+            Action<RegisterSetOperand, RegisterStorage> l)
         {
             switch (size)
             {
@@ -639,7 +639,7 @@ namespace Reko.Arch.M68k.Assembler
             asm.Symbols.CreateSymbol(target).ReferToLe(emitter.Position - 1, PrimitiveType.Byte, emitter);
         }
 
-        public void Move(DataRegister dSrc, DataRegister dDst)
+        public void Move(RegisterStorage dSrc, RegisterStorage dDst)
         {
             int opcode = 0x2000 | dSrc.Number | (dSrc.Number << 9);
             emitter.EmitBeUInt16(opcode);

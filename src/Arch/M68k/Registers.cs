@@ -30,37 +30,37 @@ namespace Reko.Arch.M68k
 {
     public static class Registers
     {
-        public static readonly DataRegister d0;
-        public static readonly DataRegister d1;
-        public static readonly DataRegister d2;
-        public static readonly DataRegister d3;
-        public static readonly DataRegister d4;
-        public static readonly DataRegister d5;
-        public static readonly DataRegister d6;
-        public static readonly DataRegister d7;
+        public static readonly RegisterStorage d0;
+        public static readonly RegisterStorage d1;
+        public static readonly RegisterStorage d2;
+        public static readonly RegisterStorage d3;
+        public static readonly RegisterStorage d4;
+        public static readonly RegisterStorage d5;
+        public static readonly RegisterStorage d6;
+        public static readonly RegisterStorage d7;
 
-        public static readonly AddressRegister a0;
-        public static readonly AddressRegister a1;
-        public static readonly AddressRegister a2;
-        public static readonly AddressRegister a3;
-        public static readonly AddressRegister a4;
-        public static readonly AddressRegister a5;
-        public static readonly AddressRegister a6;
-        public static readonly AddressRegister a7;
+        public static readonly RegisterStorage a0;
+        public static readonly RegisterStorage a1;
+        public static readonly RegisterStorage a2;
+        public static readonly RegisterStorage a3;
+        public static readonly RegisterStorage a4;
+        public static readonly RegisterStorage a5;
+        public static readonly RegisterStorage a6;
+        public static readonly RegisterStorage a7;
 
-        public static readonly FpRegister fp0;
-        public static readonly FpRegister fp1;
-        public static readonly FpRegister fp2;
-        public static readonly FpRegister fp3;
-        public static readonly FpRegister fp4;
-        public static readonly FpRegister fp5;
-        public static readonly FpRegister fp6;
-        public static readonly FpRegister fp7;
+        public static readonly RegisterStorage fp0;
+        public static readonly RegisterStorage fp1;
+        public static readonly RegisterStorage fp2;
+        public static readonly RegisterStorage fp3;
+        public static readonly RegisterStorage fp4;
+        public static readonly RegisterStorage fp5;
+        public static readonly RegisterStorage fp6;
+        public static readonly RegisterStorage fp7;
 
         public static readonly RegisterStorage ccr;
         public static readonly RegisterStorage sr;
         public static readonly RegisterStorage usp;
-        public static readonly AddressRegister pc;
+        public static readonly RegisterStorage pc;
         public static readonly RegisterStorage fpsr;
 
         public static readonly FlagGroupStorage C;
@@ -84,37 +84,37 @@ namespace Reko.Arch.M68k
 
         static Registers()
         {
-            d0 = new DataRegister("d0", 0, PrimitiveType.Word32);
-            d1 = new DataRegister("d1", 1, PrimitiveType.Word32);
-            d2 = new DataRegister("d2", 2, PrimitiveType.Word32);
-            d3 = new DataRegister("d3", 3, PrimitiveType.Word32);
-            d4 = new DataRegister("d4", 4, PrimitiveType.Word32);
-            d5 = new DataRegister("d5", 5, PrimitiveType.Word32);
-            d6 = new DataRegister("d6", 6, PrimitiveType.Word32);
-            d7 = new DataRegister("d7", 7, PrimitiveType.Word32);
+            d0 = RegisterStorage.Reg32("d0", 0);
+            d1 = RegisterStorage.Reg32("d1", 1);
+            d2 = RegisterStorage.Reg32("d2", 2);
+            d3 = RegisterStorage.Reg32("d3", 3);
+            d4 = RegisterStorage.Reg32("d4", 4);
+            d5 = RegisterStorage.Reg32("d5", 5);
+            d6 = RegisterStorage.Reg32("d6", 6);
+            d7 = RegisterStorage.Reg32("d7", 7);
 
-            a0 = new AddressRegister("a0", 8, PrimitiveType.Word32);
-            a1 = new AddressRegister("a1", 9, PrimitiveType.Word32);
-            a2 = new AddressRegister("a2", 10, PrimitiveType.Word32);
-            a3 = new AddressRegister("a3", 11, PrimitiveType.Word32);
-            a4 = new AddressRegister("a4", 12, PrimitiveType.Word32);
-            a5 = new AddressRegister("a5", 13, PrimitiveType.Word32);
-            a6 = new AddressRegister("a6", 14, PrimitiveType.Word32);
-            a7 = new AddressRegister("a7", 15, PrimitiveType.Word32);
+            a0 = RegisterStorage.Reg32("a0", 8);
+            a1 = RegisterStorage.Reg32("a1", 9);
+            a2 = RegisterStorage.Reg32("a2", 10);
+            a3 = RegisterStorage.Reg32("a3", 11);
+            a4 = RegisterStorage.Reg32("a4", 12);
+            a5 = RegisterStorage.Reg32("a5", 13);
+            a6 = RegisterStorage.Reg32("a6", 14);
+            a7 = RegisterStorage.Reg32("a7", 15);
 
-            fp0 = new FpRegister("fp0", 16, PrimitiveType.Real96);
-            fp1 = new FpRegister("fp1", 17, PrimitiveType.Real96);
-            fp2 = new FpRegister("fp2", 18, PrimitiveType.Real96);
-            fp3 = new FpRegister("fp3", 19, PrimitiveType.Real96);
-            fp4 = new FpRegister("fp4", 20, PrimitiveType.Real96);
-            fp5 = new FpRegister("fp5", 21, PrimitiveType.Real96);
-            fp6 = new FpRegister("fp6", 22, PrimitiveType.Real96);
-            fp7 = new FpRegister("fp7", 23, PrimitiveType.Real96);
+            fp0 = new RegisterStorage("fp0", 16, 0, PrimitiveType.Real96);
+            fp1 = new RegisterStorage("fp1", 17, 0, PrimitiveType.Real96);
+            fp2 = new RegisterStorage("fp2", 18, 0, PrimitiveType.Real96);
+            fp3 = new RegisterStorage("fp3", 19, 0, PrimitiveType.Real96);
+            fp4 = new RegisterStorage("fp4", 20, 0, PrimitiveType.Real96);
+            fp5 = new RegisterStorage("fp5", 21, 0, PrimitiveType.Real96);
+            fp6 = new RegisterStorage("fp6", 22, 0, PrimitiveType.Real96);
+            fp7 = new RegisterStorage("fp7", 23, 0, PrimitiveType.Real96);
 
             ccr = RegisterStorage.Reg8("ccr", 24);
             sr = RegisterStorage.Reg16("sr", 25);
             usp = RegisterStorage.Reg32("usp", 26);
-            pc = new AddressRegister("pc", 27, PrimitiveType.Ptr32);
+            pc = RegisterStorage.Reg32("pc", 27);
             fpsr = RegisterStorage.Reg32("fpsr", 28);
 
             C = new FlagGroupStorage(ccr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
@@ -187,14 +187,14 @@ namespace Reko.Arch.M68k
             return regs[reg];
         }
 
-        public static AddressRegister AddressRegister(int reg)
+        public static RegisterStorage AddressRegister(int reg)
         {
-            return (AddressRegister)regs[reg + 8];
+            return regs[reg + 8];
         }
 
-        public static AddressRegister AddressRegister(uint reg)
+        public static RegisterStorage AddressRegister(uint reg)
         {
-            return (AddressRegister) regs[reg + 8];
+            return regs[reg + 8];
         }
 
         public static RegisterStorage FpRegister(int reg)
@@ -210,6 +210,16 @@ namespace Reko.Arch.M68k
             }
             return reg;
         }
+
+        public static bool IsAddressRegister(RegisterStorage rop)
+        {
+            return 8 <= rop.Number && rop.Number < 16;
+        }
+
+        public static bool IsDataRegister(RegisterStorage rop)
+        {
+            return 0 <= rop.Number && rop.Number < 8;
+        }
     }
 
     [Flags]
@@ -223,27 +233,5 @@ namespace Reko.Arch.M68k
 
         CVZN = CF | VF | ZF | NF,
         CVZNX = CF | VF | ZF | NF | XF,
-    }
-
-    public class AddressRegister : RegisterStorage
-    {
-        public AddressRegister(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
-        {
-        }
-    }
-
-    public class DataRegister : RegisterStorage
-    {
-        public DataRegister(string name, int number, PrimitiveType dt) : base(name, number, 0, dt)
-        {
-        }
-    }
-
-    public class FpRegister : RegisterStorage
-    {
-        public FpRegister(string name, int number, PrimitiveType dt)
-            : base(name, number, 0, dt)
-        {
-        }
     }
 }

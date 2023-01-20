@@ -106,16 +106,16 @@ namespace Reko.Arch.M68k
     {
         public const string HexStringFormat = "{0}${1}";
 
-        public AddressRegister Base;
+        public RegisterStorage Base;
         public Constant? Offset;
 
-        public MemoryOperand(PrimitiveType width, AddressRegister baseReg)
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseReg)
             : base(width)
         {
             this.Base = baseReg;
         }
 
-        public MemoryOperand(PrimitiveType width, AddressRegister baseReg, Constant offset)
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseReg, Constant offset)
             : base(width)
         {
             this.Base = baseReg;
@@ -127,22 +127,22 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public static MemoryOperand Indirect(PrimitiveType width, AddressRegister baseReg)
+        public static MemoryOperand Indirect(PrimitiveType width, RegisterStorage baseReg)
         {
             return new MemoryOperand(width, baseReg);
         }
 
-        public static MachineOperand Indirect(PrimitiveType width, AddressRegister baseReg, Constant offset)
+        public static MachineOperand Indirect(PrimitiveType width, RegisterStorage baseReg, Constant offset)
         {
             return new MemoryOperand(width, baseReg, offset);
         }
 
-        public static MachineOperand PreDecrement(PrimitiveType dataWidth, AddressRegister baseReg)
+        public static MachineOperand PreDecrement(PrimitiveType dataWidth, RegisterStorage baseReg)
         {
             return new PredecrementMemoryOperand(dataWidth, baseReg);
         }
 
-        public static MachineOperand PostIncrement(PrimitiveType dataWidth, AddressRegister baseReg)
+        public static MachineOperand PostIncrement(PrimitiveType dataWidth, RegisterStorage baseReg)
         {
             return new PostIncrementMemoryOperand(dataWidth, baseReg);
         }
@@ -161,9 +161,9 @@ namespace Reko.Arch.M68k
 
     public class PredecrementMemoryOperand : M68kOperandImpl
     {
-        public readonly AddressRegister Register;
+        public readonly RegisterStorage Register;
 
-        public PredecrementMemoryOperand(PrimitiveType dataWidth, AddressRegister areg)
+        public PredecrementMemoryOperand(PrimitiveType dataWidth, RegisterStorage areg)
             : base(dataWidth)
         {
             this.Register = areg;

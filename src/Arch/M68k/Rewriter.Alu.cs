@@ -237,7 +237,8 @@ namespace Reko.Arch.M68k
         private void RewriteAddSubq(Func<Expression,Expression,Expression> opGen)
         {
             var opSrc = (Constant) orw.RewriteSrc(instr.Operands[0], instr.Address);
-            if (instr.Operands[1] is AddressRegister regDst)
+            if (instr.Operands[1] is RegisterStorage regDst && 
+                Registers.IsAddressRegister(regDst))
             {
                 opSrc = Constant.Int32(opSrc.ToInt32());
                 var opDst = binder.EnsureRegister(regDst);
