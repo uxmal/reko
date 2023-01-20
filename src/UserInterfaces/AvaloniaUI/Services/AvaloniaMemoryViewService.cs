@@ -19,33 +19,51 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Documents;
 using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    internal class AvaloniaMemoryViewService : ILowLevelViewService
+    public class AvaloniaMemoryViewService : LowLevelViewService
     {
-        private IServiceProvider services;
-
-        public AvaloniaMemoryViewService(IServiceProvider services)
+        public AvaloniaMemoryViewService(IServiceProvider services) :
+            base(services)
         {
-            this.services = services;
         }
 
-        public void ShowMemoryAtAddress(IReadOnlyProgram? program, Address addr)
+        public override ILowLevelViewInteractor CreateMemoryViewInteractor()
         {
-            throw new NotImplementedException();
+            return new Dummy();
         }
 
-        public void ShowWindow(Program program)
+        private class Dummy : Avalonia.Controls.Control, ILowLevelViewInteractor
         {
-            throw new NotImplementedException();
-        }
+            public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
-        public void ViewImage(Program program)
-        {
-            //$TODO
+            public Program? Program { get; set; }
+            public Address? SelectedAddress { get; set; }
+            public IWindowFrame? Frame { get; set; }
+
+
+            public void Close()
+            {
+            }
+
+            public object CreateControl()
+            {
+                throw new NotImplementedException();
+            }
+
+            public AddressRange GetSelectedAddressRange()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetSite(IServiceProvider services)
+            {
+            }
         }
     }
 }

@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 namespace Reko.Gui
 {
     /// <summary>
-    /// Used in search results to navigate to basic blocks. When NavigateTo is invoked, 
+    /// Used in search results to navigate to basic blocks. When <see cref="NavigateTo" /> is invoked,
     /// a code viewer is displayed at the address of the basic block.
     /// </summary>
     public class BlockNavigator : ICodeLocation

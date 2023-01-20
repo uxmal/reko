@@ -27,13 +27,13 @@ using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Documents;
 using Reko.Gui.Visualizers;
 using Reko.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -46,16 +46,21 @@ namespace Reko.UserInterfaces.WindowsForms
     /// <summary>
     /// This class manages user interaction with the LowLevelView control.
     /// </summary>
-    public class LowLevelViewInteractor : IWindowPane, ICommandTarget
+    public class LowLevelViewInteractor : ILowLevelViewInteractor, ICommandTarget
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
         private LowLevelView control;
         private TypeMarker typeMarker;
         private Program program;
         private bool ignoreAddressChange;
         private NavigationInteractor<Address> navInteractor;
+
+        public LowLevelViewInteractor(IServiceProvider services)
+        {
+            this.services = services;
+        }
 
         public LowLevelView Control { get { return control; } }
         public IWindowFrame Frame { get; set; }
@@ -74,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void OnProgramChanged(Program value)
         {
-            if (value != null)
+            if (value is not null)
             {
                 control.MemoryView.ImageMap = value.ImageMap;
                 control.MemoryView.Procedures = value.Procedures;
@@ -82,7 +87,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 control.MemoryView.Architecture = value.Architecture;
                 control.DisassemblyView.Program = value;
                 var seg = program.SegmentMap.Segments.Values.FirstOrDefault();
-                if (seg == null)
+                if (seg is not null)
                     return;
                 control.DisassemblyView.Program = value;
                 control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
@@ -139,9 +144,8 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
 
-        public void SetSite(IServiceProvider sp)
+        public void SetSite(IServiceProvider services)
         {
-            services = sp;
         }
 
         public void Close()
@@ -156,11 +160,11 @@ namespace Reko.UserInterfaces.WindowsForms
             if (txtAddr[0] == 0xFEFF)
             {
                 // Get rid of UTF-16 BOM Windows insists on prepending
-                 txtAddr = txtAddr.Substring(1);
+                 txtAddr = txtAddr[1..];
             }
             txtAddr = txtAddr.Trim();
             if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
-                txtAddr = txtAddr.Substring(2);
+                txtAddr = txtAddr[2..];
             if (!program.Architecture.TryParseAddress(txtAddr, out Address addr))
                 return;
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
@@ -315,7 +319,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void GotoAddress()
         {
             AddressRange addrRange = GetSelectedAddressRange();
-            if (addrRange == null)
+            if (addrRange is null)
                 return;
             var rdr = program.CreateImageReader(program.Architecture, addrRange.Begin);
             if (!rdr.TryRead(program.Platform.PointerType, out var addrDst))

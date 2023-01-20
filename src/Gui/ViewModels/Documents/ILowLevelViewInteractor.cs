@@ -19,36 +19,22 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui.Services
+namespace Reko.Gui.ViewModels.Documents
 {
-    public abstract class StatusBarService : IStatusBarService
+    public interface ILowLevelViewInteractor : IWindowPane
     {
-        public abstract void HideProgress();
-        public abstract void SetSubtext(string v);
-        public abstract void SetText(string text);
-        public abstract void ShowProgress(int percentDone);
+        event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
-        protected string RenderAddressSelection(ProgramAddressRange range)
-        {
-            if (range is null)
-                return "";
-            var numbase = range.Program.Architecture.DefaultBase;
-            if (range.Length > 1)
-            {
-                var sLength = Convert.ToString(range.Length, numbase).ToUpper();
-                return $"{range.Address} (length {sLength})";
-            }
-            else
-            {
-                return range.Address.ToString();
-            }
-        }
+        Program? Program { get; set; }
+        Address? SelectedAddress { get; set; }
 
+        AddressRange GetSelectedAddressRange();
     }
 }

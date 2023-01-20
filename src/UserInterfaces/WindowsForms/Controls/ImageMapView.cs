@@ -65,7 +65,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public ImageMap ImageMap
         {
             get { return imageMap; } 
-            set { 
+            set {
                 if (imageMap != null)
                     imageMap.MapChanged -= imageMap_MapChanged;
                 imageMap = value; 
@@ -96,7 +96,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 
         [Browsable(false)]
-        public Address SelectedAddress { get { return selectedAddress; } set { selectedAddress = value; SelectedAddressChanged?.Invoke(this, EventArgs.Empty); } }
+        public Address SelectedAddress
+        {
+            get { return selectedAddress; } 
+            set {
+                selectedAddress = value; 
+                SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
 
@@ -160,7 +167,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <param name="factor"></param>
         private void Zoom(float factor)
         {
-            if (imageMap == null)
+            if (imageMap is null)
                 return;
             var addr = MapClientPositionToAddress(xLastMouseUp);
             var oldGranularity = Granularity;

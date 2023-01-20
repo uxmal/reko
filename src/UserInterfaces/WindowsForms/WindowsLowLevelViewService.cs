@@ -18,37 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui.Services
+namespace Reko.UserInterfaces.WindowsForms
 {
-    public abstract class StatusBarService : IStatusBarService
+    public class WindowsLowLevelViewService : LowLevelViewService
     {
-        public abstract void HideProgress();
-        public abstract void SetSubtext(string v);
-        public abstract void SetText(string text);
-        public abstract void ShowProgress(int percentDone);
-
-        protected string RenderAddressSelection(ProgramAddressRange range)
+        public WindowsLowLevelViewService(IServiceProvider services) : base(services)
         {
-            if (range is null)
-                return "";
-            var numbase = range.Program.Architecture.DefaultBase;
-            if (range.Length > 1)
-            {
-                var sLength = Convert.ToString(range.Length, numbase).ToUpper();
-                return $"{range.Address} (length {sLength})";
-            }
-            else
-            {
-                return range.Address.ToString();
-            }
         }
 
+        public override ILowLevelViewInteractor CreateMemoryViewInteractor()
+        {
+            return new LowLevelViewInteractor(Services);
+        }
     }
 }

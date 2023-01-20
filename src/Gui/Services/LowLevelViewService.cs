@@ -20,19 +20,18 @@
 
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Gui;
-using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Documents;
 using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui.Services
 {
-    public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
+    public abstract class LowLevelViewService : ViewService, ILowLevelViewService
     {
         private readonly ISelectedAddressService selAddrSvc;
 
-        public LowLevelViewServiceImpl(IServiceProvider sp) : base(sp)
+        public LowLevelViewService(IServiceProvider sp) : base(sp)
         {
             this.selAddrSvc = sp.RequireService<ISelectedAddressService>();
         }
@@ -59,34 +58,33 @@ namespace Reko.UserInterfaces.WindowsForms
             ShowWindowImpl(program);
         }
 
-        public void ShowMemoryAtAddress(IReadOnlyProgram program, Address addr)
+        public void ShowMemoryAtAddress(IReadOnlyProgram? program, Address addr)
         {
+            if (program is null)
+                return;
             var llvi = ShowWindowImpl((Program)program);
             llvi.SelectedAddress = addr;
         }
 
-        private LowLevelViewInteractor ShowWindowImpl(Program program)
+        private ILowLevelViewInteractor ShowWindowImpl(Program program)
         {
             var llvi = CreateMemoryViewInteractor();
             llvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
             var frame = base.ShowWindow(ILowLevelViewService.ViewWindowType, "Memory View", program, llvi);
-            llvi = (LowLevelViewInteractor)frame.Pane ?? llvi;
+            llvi = (ILowLevelViewInteractor)frame.Pane ?? llvi;
             llvi.Program = program;
             return llvi;
         }
 
         #endregion
 
-        public virtual LowLevelViewInteractor CreateMemoryViewInteractor()
-        {
-            return new LowLevelViewInteractor();
-        }
+        public abstract ILowLevelViewInteractor CreateMemoryViewInteractor();
 
-        void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var llvi = (LowLevelViewInteractor) sender;
+            var llvi = (ILowLevelViewInteractor) sender;
             var addrRange = llvi.GetSelectedAddressRange();
-            var par = ProgramAddressRange.Create(llvi.Program, addrRange);
+            var par = ProgramAddressRange.ClosedRange(llvi.Program, addrRange.Begin, addrRange.End);
             selAddrSvc.SelectedAddressRange = par;
         }
     }

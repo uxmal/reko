@@ -32,6 +32,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 
@@ -306,7 +307,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return;
             if (Math.Abs(ptDown.X - e.X) < 3 && Math.Abs(ptDown.Y - e.Y) < 3)
                 return;
-            Debug.Print("We be draggin'");
             isDragging = true;
             Capture = true;
             AffectSelection(e);
@@ -439,6 +439,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return imageMap; }
             set
             {
+                if (this.imageMap == value)
+                    return;
                 if (imageMap != null)
                     imageMap.MapChanged -= imageMap_MapChanged;
                 imageMap = value;
@@ -533,12 +535,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private ImageSegment GetSegmentFromAddress(Address addr)
         {
-            if (ImageMap == null)
+            if (ImageMap is null)
                 return null;
             if (!SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return null;
             return seg;
         }
+
 
         private void UpdateScroll()
         {
@@ -577,7 +580,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var ar = selSvc.GetSelectedComponents()
                 .Cast<AddressRange>()
                 .FirstOrDefault();
-            if (ar == null)
+            if (ar is null)
                 return;
             this.addrAnchor = ar.Begin;
             this.addrSelected = ar.End;
@@ -589,7 +592,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     TopAddress = newTopAddress;
                 }
             }
-
             Invalidate();
         }
 
@@ -612,6 +614,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
+        [SupportedOSPlatform("windows")]
         public class MemoryControlPainter
         {
             private MemoryControl ctrl;
@@ -697,11 +700,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             private class LinePainter : IMemoryFormatterOutput
             {
-                private MemoryControlPainter mcp;
-                private Graphics g;
-                private Rectangle rc;
+                private readonly MemoryControlPainter mcp;
+                private readonly Graphics g;
                 private readonly Point ptAddr;
                 private readonly bool render;
+                private Rectangle rc;
                 private Address addrHit;
 
                 public LinePainter(MemoryControlPainter mcp, Graphics g, Rectangle rc, Point ptAddr, bool render)
@@ -733,7 +736,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     if (addrHit != null)
                         return;
-                    string s = string.Format("{0}", addr);
+                    string s = addr.ToString();
                     int cx = (int) g.MeasureString(s + "X", mcp.ctrl.Font, rc.Width, StringFormat.GenericTypographic).Width;
                     this.rc = new Rectangle(rc.X, rc.Y, cx, rc.Height);
                     if (!render && rc.Contains(mcp.ctrl.ptDown))
@@ -831,16 +834,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
                 public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
                 {
-                    if (render)
-                    {
-                        rc = new Rectangle(rc.Left, rc.Top, mcp.ctrl.Width - rc.Left, rc.Height);
-                        var sb = new StringBuilder();
-                        sb.Append(' ', prePadding);
-                        sb.Append(sBytes);
-                        sb.Append(' ', postPadding);
-                        g.FillRectangle(mcp.defaultTheme.Background, rc);
-                        g.DrawString(sb.ToString(), mcp.ctrl.Font, mcp.defaultTheme.Foreground, rc.X + mcp.cellSize.Width, rc.Top, StringFormat.GenericTypographic);
-                    }
+                    if (!render)
+                        return;
+                    rc = new Rectangle(rc.Left, rc.Top, mcp.ctrl.Width - rc.Left, rc.Height);
+                    var sb = new StringBuilder();
+                    sb.Append(' ', prePadding);
+                    sb.Append(sBytes);
+                    sb.Append(' ', postPadding);
+                    g.FillRectangle(mcp.defaultTheme.Background, rc);
+                    g.DrawString(sb.ToString(), mcp.ctrl.Font, mcp.defaultTheme.Foreground, rc.X + mcp.cellSize.Width, rc.Top, StringFormat.GenericTypographic);
                 }
             }
 

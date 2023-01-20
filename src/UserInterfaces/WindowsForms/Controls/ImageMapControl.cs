@@ -22,13 +22,15 @@ using Reko.Core;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-	/// <summary>
-	/// Displays an image map graphically.
-	/// </summary>
+    /// <summary>
+    /// Displays an image map graphically.
+    /// </summary>
+    [SupportedOSPlatform("windows")]
 	public class ImageMapControl : Control
 	{
 		private SegmentMap map;
@@ -53,13 +55,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 		protected override void OnPaint(PaintEventArgs pea)
 		{
 			base.OnPaint(pea);
-			if (map == null)
+			if (map is null)
 				return;
 
 			ImageSegment [] segs = ExtractSegments();
 			uint imageSize = ImageSize(segs);
 			
-			Matrix m = new Matrix();
+			var m = new Matrix();
 			m.Scale(1.0F, (float)Height / (float) imageSize);
 			pea.Graphics.Transform = m;
 
@@ -90,8 +92,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 		private uint ImageSize(ImageSegment [] segs)
 		{
 			Address addrStart = segs[0].Address;
-			Address addrEnd = segs[segs.Length - 1].Address;
-			return segs[segs.Length - 1].Size + (uint) (addrEnd - addrStart);
+            var segEnd = segs[^1];
+			Address addrEnd = segEnd.Address;
+			return segEnd.Size + (uint) (addrEnd - addrStart);
 		}
 
 		protected override void OnMouseDown(MouseEventArgs me)
@@ -114,10 +117,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
 		protected void OnSelectedItemChanged()
 		{
-			if (SelectedItemChanged != null)
-			{
-				SelectedItemChanged(this, new EventArgs());
-			}
+            SelectedItemChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		public ImageSegment SelectedSegment
@@ -125,6 +125,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 			get { return segSelected; }
 			set 
 			{
+                if (segSelected == value)
+                    return;
 				segSelected = value;
 				Invalidate();
 				OnSelectedItemChanged();
