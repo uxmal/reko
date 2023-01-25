@@ -434,6 +434,19 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Rw_mov_postinc_reg()
+        {
+            Given_HexString("0100 6D05");
+            AssertCode(     // mov.l @er0+, er5
+                "0|L--|8000(4): 5 instructions",
+                "1|L--|v3 = er0",
+                "2|L--|er0 = er0 + 4<i32>",
+                "3|L--|er5 = Mem0[v3:word32]",
+                "4|L--|NZ = cond(er5)",
+                "5|L--|V = false");
+        }
+
+        [Test]
         public void H8Rw_mov_push()
         {
             Given_HexString("6DF0");

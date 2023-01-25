@@ -200,6 +200,7 @@ namespace Reko.Arch.H8
                     {
                         ea = binder.CreateTemporary(regBase.DataType);
                         m.Assign(ea, regBase);
+                        m.Assign(regBase, m.IAddS(regBase, mem.Width.Size));
                     }
                     else if (mem.PreDecrement)
                     {
