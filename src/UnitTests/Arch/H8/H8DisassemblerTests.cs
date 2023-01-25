@@ -108,6 +108,42 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_andc_ccr()
+        {
+            AssertCode("andc\t#0xAA,ccr", "06AA");
+        }
+
+        [Test]
+        public void H8Dis_andc_exr()
+        {
+            AssertCode("andc\t#0xAA,exr", "014106AA");
+        }
+
+        [Test]
+        public void H8Dis_band_imm_aa8()
+        {
+            AssertCode("band\t#0x00,@0xAA:8", "7EAA7600");
+        }
+
+        [Test]
+        public void H8Dis_band_imm_aa16()
+        {
+            AssertCode("band\t#0x00,@0xAAAA:16", "6a10aaaa7600");
+        }
+
+        [Test]
+        public void H8Dis_band_imm_aa32()
+        {
+            AssertCode("band\t#0x01,@0xAAAAAAAA:32", "6a30aaaaaaaa7610");
+        }
+
+        [Test]
+        public void H8Dis_band_ind()
+        {
+            AssertCode("band\t#0x01,@er0", "7c007610");
+        }
+
+        [Test]
         public void H8Dis_bcc()
         {
             AssertCode("bcc\t8070", "446E");
@@ -132,9 +168,45 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_bclr_imm_aa16()
+        {
+            AssertCode("bclr\t#0x01,@0xAAAA:16", "6a18aaaa7210");
+        }
+
+        [Test]
         public void H8Dis_bclr_imm_aa32()
         {
             AssertCode("bclr\t#0x05,@0x20B97E:32", "6A380020B97E7250");
+        }
+
+        [Test]
+        public void H8Dis_bclr_reg_aa16()
+        {
+            AssertCode("bclr\tr0h,@0xAAAA:16", "6a18aaaa6200");
+        }
+
+        [Test]
+        public void H8Dis_biand_imm_aa16()
+        {
+            AssertCode("biand\t#0x00,@0xAAAA:16", "6a10aaaa7680");
+        }
+
+        [Test]
+        public void H8Dis_biand_imm_aa8()
+        {
+            AssertCode("biand\t#0x00,@0xAA:8", "7eaa7680");
+        }
+
+        [Test]
+        public void H8Dis_biand_imm_aa32()
+        {
+            AssertCode("biand\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7680");
+        }
+
+        [Test]
+        public void H8Dis_biand_reg()
+        {
+            AssertCode("biand\t#0x00,@er0", "7c007680");
         }
 
         [Test]
@@ -144,9 +216,93 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
-        public void H8Dis_bist()
+        public void H8Dis_bild_imm_aa16()
+        {
+            AssertCode("bild\t#0x00,@0xAAAA:16", "6a10aaaa7780");
+        }
+
+        [Test]
+        public void H8Dis_bild_imm_aa32()
+        {
+            AssertCode("bild\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7780");
+        }
+
+        [Test]
+        public void H8Dis_bild_ind()
+        {
+            AssertCode("bild\t#0x00,@er0", "7c007780");
+        }
+
+        [Test]
+        public void H8Dis_bior_ind()
+        {
+            AssertCode("bior\t#0x00,@er0", "7c007480");
+        }
+
+        [Test]
+        public void H8Dis_bior_imm_aa8()
+        {
+            AssertCode("bior\t#0x00,@0xAA:8", "7eaa7480");
+        }
+
+        [Test]
+        public void H8Dis_bior_imm_aa16()
+        {
+            AssertCode("bior\t#0x00,@0xAAAA:16", "6a10aaaa7480");
+        }
+
+        [Test]
+        public void H8Dis_bior_imm_aa32()
+        {
+            AssertCode("bior\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7480");
+        }
+
+        [Test]
+        public void H8Dis_bist_imm_aa8()
+        {
+            AssertCode("bist\t#0x00,@0xAA:8", "7faa6780");
+        }
+
+        [Test]
+        public void H8Dis_bist_imm_aa16()
+        {
+            AssertCode("bist\t#0x00,@0xAAAA:16", "6a18aaaa6780");
+        }
+
+        [Test]
+        public void H8Dis_bist_ind()
+        {
+            AssertCode("bist\t#0x00,@er0", "7d006780");
+        }
+
+        [Test]
+        public void H8Dis_bist_reg()
         {
             AssertCode("bist\t#0x00,r2l", "678A");
+        }
+
+        [Test]
+        public void H8Dis_bixor_imm_aa8()
+        {
+            AssertCode("bixor\t#0x00,@0xAA:8", "7eaa7580");
+        }
+
+        [Test]
+        public void H8Dis_bixor_imm_aa16()
+        {
+            AssertCode("bixor\t#0x00,@0xAAAA:16", "6a10aaaa7580");
+        }
+
+        [Test]
+        public void H8Dis_bixor_imm_aa32()
+        {
+            AssertCode("bixor\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7580");
+        }
+
+        [Test]
+        public void H8Dis_bixor_ind()
+        {
+            AssertCode("bixor\t#0x00,@er0", "7c007580");
         }
 
         [Test]
@@ -156,9 +312,75 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
-        public void H8Dis_bnot()
+        public void H8Dis_bld_ind()
+        {
+            AssertCode("bld\t#0x00,@er0", "7c007700");
+        }
+
+        [Test]
+        public void H8Dis_bld_imm_aa16()
+        {
+            AssertCode("bld\t#0x00,@0xAAAA:16", "6a10aaaa7700");
+        }
+
+        [Test]
+        public void H8Dis_bld_imm_aa32()
+        {
+            AssertCode("bld\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7700");
+        }
+
+        [Test]
+        public void H8Dis_bnot_aa8()
         {
             AssertCode("bnot\tr0l,@0x80:8", "7F806180");
+        }
+
+        [Test]
+        public void H8Dis_bnot_imm_aa16()
+        {
+            AssertCode("bnot\t#0x00,@0xAAAA:16", "6a18aaaa7100");
+        }
+
+        [Test]
+        public void H8Dis_bnot_ind()
+        {
+            AssertCode("bnot\t#0x00,@er0", "7d007100");
+        }
+
+        [Test]
+        public void H8Dis_bnot_reg_imm_a16()
+        {
+            AssertCode("bnot\tr0h,@0xAAAA:16", "6a18aaaa6100");
+        }
+
+        [Test]
+        public void H8Dis_bnot_reg_ind()
+        {
+            AssertCode("bnot\tr0h,@er0", "7d006100");
+        }
+
+        [Test]
+        public void H8Dis_bor_ind()
+        {
+            AssertCode("bor\t#0x00,@er0", "7c007400");
+        }
+
+        [Test]
+        public void H8Dis_bor_imm_aa8()
+        {
+            AssertCode("bor\t#0x00,@0xAA:8", "7eaa7400");
+        }
+
+        [Test]
+        public void H8Dis_bor_imm_aa16()
+        {
+            AssertCode("bor\t#0x00,@0xAAAA:16", "6a10aaaa7400");
+        }
+
+        [Test]
+        public void H8Dis_bor_imm_aa32()
+        {
+            AssertCode("bor\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7400");
         }
 
         [Test]
@@ -179,11 +401,16 @@ namespace Reko.UnitTests.Arch.H8
             AssertCode("bset\t#0x05,@0x2051D0:32", "6A38002051D07050");
         }
 
-
         [Test]
         public void H8Dis_bset_imm_abs8()
         {
             AssertCode("bset\t#0x01,@0x60:8", "7F607010");
+        }
+
+        [Test]
+        public void H8Dis_bset_imm_aa16()
+        {
+            AssertCode("bset\t#0x00,@0xAAAA:16", "6a18aaaa7000");
         }
 
         [Test]
@@ -196,6 +423,18 @@ namespace Reko.UnitTests.Arch.H8
         public void H8Dis_bset_reg_reg()
         {
             AssertCode("bset\tr3l,r1h", "60B1");
+        }
+
+        [Test]
+        public void H8Dis_bset_reg_imm_a16()
+        {
+            AssertCode("bset\tr0h,@0xAAAA:16", "6a18aaaa6000");
+        }
+
+        [Test]
+        public void H8Dis_bset_reg_ind()
+        {
+            AssertCode("bset\tr0h,@er0", "7d006000");
         }
 
         [Test]
@@ -229,9 +468,69 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_bst_imm_aa16()
+        {
+            AssertCode("bst\t#0x00,@0xAAAA:16", "6a18aaaa6700");
+        }
+
+        [Test]
+        public void H8Dis_bst_imm_aa8()
+        {
+            AssertCode("bst\t#0x00,@0xAA:8", "7faa6700");
+        }
+
+        [Test]
+        public void H8Dis_bst_ind()
+        {
+            AssertCode("bst\t#0x00,@er0", "7d006700");
+        }
+
+        [Test]
         public void H8Dis_btst()
         {
             AssertCode("btst\t#0x00,r4h", "7304");
+        }
+
+        [Test]
+        public void H8Dis_btst_imm_aa16()
+        {
+            AssertCode("btst\t#0x00,@0xAAAA:16", "6a10aaaa7300");
+        }
+
+        [Test]
+        public void H8Dis_btst_ind()
+        {
+            AssertCode("btst\tr0h,@er0", "7c006300");
+        }
+
+        [Test]
+        public void H8Dis_btst_reg_imm_aa16()
+        {
+            AssertCode("btst\tr0h,@0xAAAA:16", "6a10aaaa6300");
+        }
+
+        [Test]
+        public void H8Dis_bxor_imm_aa8()
+        {
+            AssertCode("bxor\t#0x00,@0xAA:8", "7eaa7500");
+        }
+
+        [Test]
+        public void H8Dis_bxor_imm_aa16()
+        {
+            AssertCode("bxor\t#0x00,@0xAAAA:16", "6a10aaaa7500");
+        }
+
+        [Test]
+        public void H8Dis_bxor_imm_aa32()
+        {
+            AssertCode("bxor\t#0x00,@0xAAAAAAAA:32", "6a30aaaaaaaa7500");
+        }
+
+        [Test]
+        public void H8Dis_bxor_ind()
+        {
+            AssertCode("bxor\t#0x00,@er0", "7c007500");
         }
 
         [Test]
@@ -337,6 +636,48 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_ldc_imm_aa32()
+        {
+            AssertCode("ldc.w\t@0xAAAAAAAA:32,ccr", "01406b20aaaaaaaa");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_imm_aa32()
+        {
+            AssertCode("ldc.w\t@0xAAAAAAAA:32,exr", "01416b20aaaaaaaa");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_imm()
+        {
+            AssertCode("ldc.b\t#0xAA,exr", "014107aa");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_postinc()
+        {
+            AssertCode("ldc.w\t@er0+,exr", "01416d00");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_0()
+        {
+            AssertCode("ldc.b\tr0h,exr", "0310");
+        }
+
+        [Test]
+        public void H8Dis_ldc_imm_aa16()
+        {
+            AssertCode("ldc.w\t@0xAAAA:16,ccr", "01406b00aaaa");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_imm_aa16()
+        {
+            AssertCode("ldc.w\t@0xAAAA:16,exr", "01416b00aaaa");
+        }
+
+        [Test]
         public void H8Dis_ldc_reg()
         {
             AssertCode("ldc.b\tr4l,ccr", "030C");
@@ -346,6 +687,30 @@ namespace Reko.UnitTests.Arch.H8
         public void H8Dis_ldc_disp16()
         {
             AssertCode("ldc.w\t@(-2:16,er3),ccr", "01406F30FFFE");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_reg()
+        {
+            AssertCode("ldc.w\t@er0,exr", "01416900");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_disp16()
+        {
+            AssertCode("ldc.w\t@(-21846:16,er0),exr", "01416f00aaaa");
+        }
+
+        [Test]
+        public void H8Dis_ldc_disp32()
+        {
+            AssertCode("ldc.w\t@(0xAAAAAAAA:32,er0),ccr", "014078006b20aaaaaaaa");
+        }
+
+        [Test]
+        public void H8Dis_ldc_exr_disp32()
+        {
+            AssertCode("ldc.w\t@(0xAAAAAAAA:32,er0),exr", "014178006b20aaaaaaaa");
         }
 
         [Test]
@@ -593,9 +958,51 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
-        public void H8Dis_or()
+        public void H8Dis_or_l()
         {
             AssertCode("or.l\ter4,er2", "01F06442");
+        }
+
+        [Test]
+        public void H8Dis_orc_exr_imm()
+        {
+            AssertCode("orc\t#0xAA,exr", "014104aa");
+        }
+
+        [Test]
+        public void H8Dis_rotl_b()
+        {
+            AssertCode("rotl.b\t#0x0002,r0h", "12c0");
+        }
+
+        [Test]
+        public void H8Dis_rotl_w()
+        {
+            AssertCode("rotl.w\t#0x0002,r0", "12d0");
+        }
+
+        [Test]
+        public void H8Dis_rotl_l()
+        {
+            AssertCode("rotl.l\t#0x0002,er0", "12f0");
+        }
+
+        [Test]
+        public void H8Dis_rotr_b()
+        {
+            AssertCode("rotr.b\t#0x0002,r0h", "13c0");
+        }
+
+        [Test]
+        public void H8Dis_rotr_w()
+        {
+            AssertCode("rotr.w\t#0x0002,r0", "13d0");
+        }
+
+        [Test]
+        public void H8Dis_rotr_l()
+        {
+            AssertCode("rotr.l\t#0x0002,er0", "13f0");
         }
 
         [Test]
@@ -605,9 +1012,45 @@ namespace Reko.UnitTests.Arch.H8
         }
 
         [Test]
+        public void H8Dis_rotxl_b_r0()
+        {
+            AssertCode("rotxl.b\t#0x0002,r0h", "1240");
+        }
+
+        [Test]
+        public void H8Dis_rotxl_w()
+        {
+            AssertCode("rotxl.w\t#0x0002,r0", "1250");
+        }
+
+        [Test]
+        public void H8Dis_rotxl_l()
+        {
+            AssertCode("rotxl.l\t#0x0002,er0", "1270");
+        }
+
+        [Test]
         public void H8Dis_rotxr_b()
         {
             AssertCode("rotxr.b\tr2l", "130A");
+        }
+
+        [Test]
+        public void H8Dis_rotxr_b_imm2()
+        {
+            AssertCode("rotxr.b\t#0x0002,r0h", "1340");
+        }
+
+        [Test]
+        public void H8Dis_rotxr_w()
+        {
+            AssertCode("rotxr.w\t#0x0002,r0", "1350");
+        }
+
+        [Test]
+        public void H8Dis_rotxr_l()
+        {
+            AssertCode("rotxr.l\t#0x0002,er0", "1370");
         }
 
         [Test]
@@ -662,6 +1105,72 @@ namespace Reko.UnitTests.Arch.H8
         public void H8Dis_stc_ind()
         {
             AssertCode("stc.w\tccr,@sp", "014069F0");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_imm_aa16()
+        {
+            AssertCode("stc.w\tccr,@0xAAAA:16", "01406b80aaaa");
+        }
+
+        [Test]
+        public void H8Dis_stc_w_exr_disp32()
+        {
+            AssertCode("stc.w\texr,@(0xAAAAAAAA:32,er0)", "014178006ba0aaaaaaaa");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_exr()
+        {
+            AssertCode("stc.b\texr,r0h", "0210");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_exr_ind()
+        {
+            AssertCode("stc.w\texr,@er0", "01416980");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_exr_disp32()
+        {
+            AssertCode("stc.w\texr,@(-21846:16,er0)", "01416f80aaaa");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_disp32()
+        {
+            AssertCode("stc.w\tccr,@(0xAAAAAAAA:32,er0)", "014078006ba0aaaaaaaa");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_exr_sub_predec()
+        {
+            AssertCode("stc.w\texr,@-er0", "01416d80");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_ind_predec()
+        {
+            AssertCode("stc.w\tccr,@-er0", "01406d80");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_exr_imm_aa16()
+        {
+            AssertCode("stc.w\texr,@0xAAAA:16", "01416b80aaaa");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_imm_aa32()
+        {
+            AssertCode("stc.w\tccr,@0xAAAAAAAA:32", "01406ba0aaaaaaaa");
+        }
+
+        [Test]
+        public void H8Dis_stc_b_exr_imm_aa32()
+        {
+            AssertCode("stc.w\texr,@0xAAAAAAAA:32", "01416ba0aaaaaaaa");
         }
 
         [Test]
@@ -721,5 +1230,10 @@ namespace Reko.UnitTests.Arch.H8
             AssertCode("xorc\t#0xDC,ccr", "05DC");
         }
 
+        [Test]
+        public void H8Dis_xorc_exr()
+        {
+            AssertCode("xorc\t#0xAA,exr", "014105aa");
+        }
     }
 }

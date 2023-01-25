@@ -44,6 +44,7 @@ namespace Reko.Arch.H8
 
             PcRegister = factory.Reg32("pc");
             CcRegister = factory.Reg("ccr", PrimitiveType.Byte);
+            ExrRegister = factory.Reg("exr", PrimitiveType.Byte);
             Mac = factory.Reg64("mac");
             Mach = new RegisterStorage("mach", Mac.Number, 32, PrimitiveType.Word32);
             Macl = new RegisterStorage("macl", Mac.Number, 0, PrimitiveType.Word32);
@@ -54,10 +55,10 @@ namespace Reko.Arch.H8
                 {
                     PcRegister,
                     CcRegister,
+                    ExrRegister,
                     Mac,
                     Mach,
                     Macl,
-
                 })
                 .ToDictionary(r => r.Name);
         }
@@ -72,6 +73,7 @@ namespace Reko.Arch.H8
 
         public static RegisterStorage PcRegister { get; }
         public static RegisterStorage CcRegister { get; }
+        public static RegisterStorage ExrRegister { get; }
 
         public static RegisterStorage Mac { get; }
         public static RegisterStorage Mach { get; }
