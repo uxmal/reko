@@ -87,7 +87,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 control.MemoryView.Architecture = value.Architecture;
                 control.DisassemblyView.Program = value;
                 var seg = program.SegmentMap.Segments.Values.FirstOrDefault();
-                if (seg is not null)
+                if (seg is null)
                     return;
                 control.DisassemblyView.Program = value;
                 control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
