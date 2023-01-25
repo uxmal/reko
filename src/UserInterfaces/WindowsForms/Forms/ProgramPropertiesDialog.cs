@@ -49,9 +49,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public TextBox LoadScript { get { return txtScript; } }
         public CheckBox EnableScript { get { return chkRunScript; } }
-        public CheckedListBox Heuristics { get { return listHeuristics; } }
+        public CheckedListBox ScanHeuristics { get { return scanHeuristics; } }
+        public CheckedListBox AnalysisHeuristics => analysisHeuristics;
         public Button OkButton { get { return btnOk; } }
         public ComboBox OutputPolicies { get { return ddlOutputPolicies; } }
-        public CheckBox AggressiveBranchRemoval {  get { return chkAggressiveBranchRemoval; } }
     }
 }

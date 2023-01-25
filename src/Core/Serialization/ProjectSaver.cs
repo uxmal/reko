@@ -100,7 +100,6 @@ namespace Reko.Core.Serialization
                     Segments = program.User.Segments.Select(SerializeSegment).ToList(),
                     ExtractResources = program.User.ExtractResources,
                     OutputFilePolicy = program.User.OutputFilePolicy,
-                    AggressiveBranchRemoval = program.User.AggressiveBranchRemoval,
                 },
                 DisassemblyDirectory =  ConvertToProjectRelativePath(projectPath, program.DisassemblyDirectory),
                 SourceDirectory =       ConvertToProjectRelativePath(projectPath, program.SourceDirectory),

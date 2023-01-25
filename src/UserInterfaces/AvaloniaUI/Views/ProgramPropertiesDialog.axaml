@@ -11,6 +11,25 @@
         Title="Program Properties">
 	<Grid ColumnDefinitions="*" RowDefinitions="*,30">
 		<TabControl Grid.Row="0" Grid.Column="0">
+			<TabItem Header="Analysis">
+				<StackPanel>
+				<Label>Heuristics to use when performing data flow analysis:</Label>
+				<ListBox
+					Items="{Binding AnalysisHeuristics}"
+					SelectionMode="Multiple"
+					SelectionChanged="AnalysisHeuristics_SelectionChanged">
+					<DataTemplates>
+						<DataTemplate DataType="vm:HeuristicModel">
+							<CheckBox IsChecked="{Binding IsChecked}">
+								<TextBlock Text="{Binding Text}" />
+							</CheckBox>
+						</DataTemplate>
+					</DataTemplates>
+				</ListBox>
+				</StackPanel>
+			</TabItem>
+
+
 			<TabItem Header="Scanning">
 				<StackPanel>
 				<Label>Heuristics to use when scanning for executable code:</Label>
@@ -19,7 +38,7 @@
 					SelectionMode="Multiple"
 					SelectionChanged="ScanningHeuristics_SelectionChanged">
 					<DataTemplates>
-						<DataTemplate DataType="vm:ScanHeuristic">
+						<DataTemplate DataType="vm:HeuristicModel">
 							<CheckBox IsChecked="{Binding IsChecked}"><TextBlock Text="{Binding Text}" /></CheckBox>
 						</DataTemplate>
 					</DataTemplates>
@@ -38,9 +57,6 @@
 
 			</TabItem>
 
-			<TabItem Header="Analysis">
-
-			</TabItem>
 		</TabControl>
 		<StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal">
 			<Button>OK</Button>

@@ -205,8 +205,11 @@ namespace Reko.CmdLine
                 }
                 if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
                 {
-                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
-                        oAggressiveBranchRemoval is bool flag && flag;
+                    // Backwards compatibility hack.
+                    if (oAggressiveBranchRemoval is bool flag && flag)
+                    {
+                        decompiler.Project.Programs[0].User.Heuristics.Add("aggressive-branch-removal");
+                    }
                 }
                 if (pArgs.TryGetValue("debug-types", out var oProcRange))
                 {
@@ -307,8 +310,10 @@ namespace Reko.CmdLine
                 }
                 if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
                 {
-                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
-                        oAggressiveBranchRemoval is bool flag && flag;
+                    if (oAggressiveBranchRemoval is bool flag && flag)
+                    {
+                        decompiler.Project.Programs[0].User.Heuristics.Add("aggressive-branch-removal");
+                    }
                 }
                 decompiler.ScanPrograms();
                 if (!pArgs.ContainsKey("scan-only"))
@@ -632,7 +637,8 @@ namespace Reko.CmdLine
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
             w.WriteLine(" --heuristic <h1>[,<h2>...]  Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
-            w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            w.WriteLine("    shingle               Use shingle assembler to discover more procedures");
+            w.WriteLine("    calls-respect-abi     Assume procedure calls respect the platform ABI");
             w.WriteLine(" --aggressive-branch-removal Be more aggressive in removing unused branches");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
             w.WriteLine(" --scan-only              Only scans the binary to find instructions, forgoing");

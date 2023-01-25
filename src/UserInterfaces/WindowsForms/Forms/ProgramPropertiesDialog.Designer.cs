@@ -39,10 +39,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabLoading = new System.Windows.Forms.TabPage();
             this.tabScanning = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listHeuristics = new System.Windows.Forms.CheckedListBox();
+            this.scanHeuristics = new System.Windows.Forms.CheckedListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabAnalysis = new System.Windows.Forms.TabPage();
-            this.chkAggressiveBranchRemoval = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.analysisHeuristics = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tabLoading.SuspendLayout();
@@ -54,9 +55,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // chkRunScript
             // 
             this.chkRunScript.AutoSize = true;
-            this.chkRunScript.Location = new System.Drawing.Point(8, 6);
+            this.chkRunScript.Location = new System.Drawing.Point(9, 7);
+            this.chkRunScript.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.chkRunScript.Name = "chkRunScript";
-            this.chkRunScript.Size = new System.Drawing.Size(157, 17);
+            this.chkRunScript.Size = new System.Drawing.Size(174, 19);
             this.chkRunScript.TabIndex = 0;
             this.chkRunScript.Text = "Run OllyScript after &loading:";
             this.chkRunScript.UseVisualStyleBackColor = true;
@@ -67,19 +69,21 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtScript.Enabled = false;
-            this.txtScript.Location = new System.Drawing.Point(8, 29);
+            this.txtScript.Location = new System.Drawing.Point(9, 33);
+            this.txtScript.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtScript.Multiline = true;
             this.txtScript.Name = "txtScript";
-            this.txtScript.Size = new System.Drawing.Size(362, 269);
+            this.txtScript.Size = new System.Drawing.Size(422, 310);
             this.txtScript.TabIndex = 1;
             // 
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(218, 336);
+            this.btnOk.Location = new System.Drawing.Point(254, 388);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.Size = new System.Drawing.Size(88, 27);
             this.btnOk.TabIndex = 2;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -88,9 +92,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(299, 336);
+            this.btnCancel.Location = new System.Drawing.Point(349, 388);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(88, 27);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -105,19 +110,21 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabControl1.Controls.Add(this.tabScanning);
             this.tabControl1.Controls.Add(this.tabAnalysis);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(386, 330);
+            this.tabControl1.Size = new System.Drawing.Size(450, 381);
             this.tabControl1.TabIndex = 4;
             // 
             // tabGeneral
             // 
             this.tabGeneral.Controls.Add(this.ddlOutputPolicies);
             this.tabGeneral.Controls.Add(this.label2);
-            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
+            this.tabGeneral.Location = new System.Drawing.Point(4, 24);
+            this.tabGeneral.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGeneral.Size = new System.Drawing.Size(378, 304);
+            this.tabGeneral.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabGeneral.Size = new System.Drawing.Size(442, 353);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
@@ -126,17 +133,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.ddlOutputPolicies.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlOutputPolicies.FormattingEnabled = true;
-            this.ddlOutputPolicies.Location = new System.Drawing.Point(10, 24);
+            this.ddlOutputPolicies.Location = new System.Drawing.Point(12, 28);
+            this.ddlOutputPolicies.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ddlOutputPolicies.Name = "ddlOutputPolicies";
-            this.ddlOutputPolicies.Size = new System.Drawing.Size(360, 21);
+            this.ddlOutputPolicies.Size = new System.Drawing.Size(419, 23);
             this.ddlOutputPolicies.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 7);
+            this.label2.Location = new System.Drawing.Point(8, 8);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.Size = new System.Drawing.Size(72, 15);
             this.label2.TabIndex = 0;
             this.label2.Text = "&Output files:";
             // 
@@ -144,10 +153,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.tabLoading.Controls.Add(this.txtScript);
             this.tabLoading.Controls.Add(this.chkRunScript);
-            this.tabLoading.Location = new System.Drawing.Point(4, 22);
+            this.tabLoading.Location = new System.Drawing.Point(4, 24);
+            this.tabLoading.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabLoading.Name = "tabLoading";
-            this.tabLoading.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLoading.Size = new System.Drawing.Size(378, 304);
+            this.tabLoading.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.tabLoading.Size = new System.Drawing.Size(442, 353);
             this.tabLoading.TabIndex = 1;
             this.tabLoading.Text = "Loading";
             this.tabLoading.UseVisualStyleBackColor = true;
@@ -155,9 +165,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // tabScanning
             // 
             this.tabScanning.Controls.Add(this.groupBox1);
-            this.tabScanning.Location = new System.Drawing.Point(4, 22);
+            this.tabScanning.Location = new System.Drawing.Point(4, 24);
+            this.tabScanning.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabScanning.Name = "tabScanning";
-            this.tabScanning.Size = new System.Drawing.Size(378, 304);
+            this.tabScanning.Size = new System.Drawing.Size(442, 353);
             this.tabScanning.TabIndex = 2;
             this.tabScanning.Text = "Scanning";
             this.tabScanning.UseVisualStyleBackColor = true;
@@ -166,32 +177,36 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.listHeuristics);
+            this.groupBox1.Controls.Add(this.scanHeuristics);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(4, 3);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(367, 189);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox1.Size = new System.Drawing.Size(428, 218);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Heuristic scanning";
             // 
-            // listHeuristics
+            // scanHeuristics
             // 
-            this.listHeuristics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.scanHeuristics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listHeuristics.FormattingEnabled = true;
-            this.listHeuristics.Location = new System.Drawing.Point(7, 78);
-            this.listHeuristics.Name = "listHeuristics";
-            this.listHeuristics.Size = new System.Drawing.Size(354, 95);
-            this.listHeuristics.TabIndex = 2;
+            this.scanHeuristics.FormattingEnabled = true;
+            this.scanHeuristics.Location = new System.Drawing.Point(8, 90);
+            this.scanHeuristics.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.scanHeuristics.Name = "scanHeuristics";
+            this.scanHeuristics.Size = new System.Drawing.Size(412, 94);
+            this.scanHeuristics.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(3, 31);
+            this.label1.Location = new System.Drawing.Point(4, 36);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(358, 43);
+            this.label1.Size = new System.Drawing.Size(418, 50);
             this.label1.TabIndex = 1;
             this.label1.Text = "Heuristic scanning guesses where executable statements are by disassembling the b" +
     "inary and resolving possible conflicts.  Different scanning heuristics give diff" +
@@ -199,34 +214,49 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             // tabAnalysis
             // 
-            this.tabAnalysis.Controls.Add(this.chkAggressiveBranchRemoval);
-            this.tabAnalysis.Location = new System.Drawing.Point(4, 22);
+            this.tabAnalysis.Controls.Add(this.label3);
+            this.tabAnalysis.Controls.Add(this.analysisHeuristics);
+            this.tabAnalysis.Location = new System.Drawing.Point(4, 24);
+            this.tabAnalysis.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabAnalysis.Name = "tabAnalysis";
-            this.tabAnalysis.Size = new System.Drawing.Size(378, 304);
+            this.tabAnalysis.Size = new System.Drawing.Size(442, 353);
             this.tabAnalysis.TabIndex = 3;
             this.tabAnalysis.Text = "Analysis";
             this.tabAnalysis.UseVisualStyleBackColor = true;
             // 
-            // chkAggressiveBranchRemoval
+            // label3
             // 
-            this.chkAggressiveBranchRemoval.AutoSize = true;
-            this.chkAggressiveBranchRemoval.Location = new System.Drawing.Point(8, 3);
-            this.chkAggressiveBranchRemoval.Name = "chkAggressiveBranchRemoval";
-            this.chkAggressiveBranchRemoval.Size = new System.Drawing.Size(154, 17);
-            this.chkAggressiveBranchRemoval.TabIndex = 0;
-            this.chkAggressiveBranchRemoval.Text = "Aggressive branch removal";
-            this.chkAggressiveBranchRemoval.UseVisualStyleBackColor = true;
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Location = new System.Drawing.Point(14, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(413, 25);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Select the heuristics to apply during the data flow analysis:";
+            // 
+            // analysisHeuristics
+            // 
+            this.analysisHeuristics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.analysisHeuristics.FormattingEnabled = true;
+            this.analysisHeuristics.Location = new System.Drawing.Point(14, 44);
+            this.analysisHeuristics.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.analysisHeuristics.Name = "analysisHeuristics";
+            this.analysisHeuristics.Size = new System.Drawing.Size(412, 94);
+            this.analysisHeuristics.TabIndex = 3;
             // 
             // ProgramPropertiesDialog
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(386, 371);
+            this.ClientSize = new System.Drawing.Size(450, 428);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.tabControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProgramPropertiesDialog";
@@ -242,7 +272,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabScanning.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tabAnalysis.ResumeLayout(false);
-            this.tabAnalysis.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -259,10 +288,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.TabPage tabScanning;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckedListBox listHeuristics;
+        private System.Windows.Forms.CheckedListBox scanHeuristics;
         private System.Windows.Forms.ComboBox ddlOutputPolicies;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabPage tabAnalysis;
-        private System.Windows.Forms.CheckBox chkAggressiveBranchRemoval;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckedListBox analysisHeuristics;
     }
 }

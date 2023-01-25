@@ -30,50 +30,81 @@ namespace Reko.Gui.ViewModels
 {
     public class ProgramPropertiesViewModel : ReactiveObject
     {
-        public ProgramPropertiesViewModel(ISet<string> heuristics)
+        public ProgramPropertiesViewModel(
+            ISet<string>? heuristics)
         {
-            this.ScanHeuristics = new ObservableCollection<ScanHeuristic>
+            this.ScanHeuristics = new ObservableCollection<HeuristicModel>
             {
-                new ScanHeuristic(
+                new HeuristicModel(
                     Scanning.ScannerHeuristics.Shingle,
                     "Shingle heuristic",
                     "Tries to discover basic blocks of executable code in regions not reached by " +
                         "ordinary recursive scanning."),
-                new ScanHeuristic(
+                new HeuristicModel(
                     Scanning.ScannerHeuristics.UserMode,
                     "Only allow user mode instructions",
                     "Treats privileged or system instructions as invalid when scanning."),
-                new ScanHeuristic(
+                new HeuristicModel(
                     Scanning.ScannerHeuristics.Unlikely,
                     "Treat 'unlikely' instructions as invalid",
                     "Treats validly dcode machine instructions as invalid if they are considered " +
                         "'unlikely'. For example, performing multiplications involving the stack register " +
                         "would be considered unlikely in most architectures.")
             };
-            foreach (var sch in this.ScanHeuristics)
+
+            this.AnalysisHeuristics = new ObservableCollection<HeuristicModel>
             {
-                sch.IsChecked = heuristics.Contains(sch.Id);
+                new HeuristicModel(
+                    Analysis.AnalysisHeuristics.AggressiveBranchRemoval,
+                    "Aggressive branch removal",
+                    "Aggressively removes branches if their predicates are constant" +
+                    "(either always true or always false)."),
+                new HeuristicModel(
+                    Analysis.AnalysisHeuristics.CallsRespectABI,
+                    "Assumes calls to unknown procedures respect ABI",
+                    "Assumes that calls to external procedures, or indirect calls to " +
+                    "unknown procedures respect the standard ABI of the platform."),
+            };
+
+            if (heuristics is { })
+            {
+                foreach (var sch in this.ScanHeuristics)
+                {
+                    sch.IsChecked = heuristics.Contains(sch.Id);
+                }
+                foreach (var sch in this.AnalysisHeuristics)
+                {
+                    sch.IsChecked = heuristics.Contains(sch.Id);
+                }
             }
             this.scanHeuristicDescription = "";
+            this.analysisHeuristicDescription = "";
         }
 
         //$TODO
         public List<string> OutputFileDispositions { get; set; } = new List<string>();
 
-        public ObservableCollection<ScanHeuristic> ScanHeuristics { get; }
-
+        public ObservableCollection<HeuristicModel> ScanHeuristics { get; }
+        public ObservableCollection<HeuristicModel> AnalysisHeuristics { get; }
 
         public string ScanHeuristicDescription {
             get => scanHeuristicDescription;
             set => this.RaiseAndSetIfChanged(ref scanHeuristicDescription, value);
         }
         private string scanHeuristicDescription;
+
+        public string AnalysisHeuristicDescription
+        {
+            get => analysisHeuristicDescription;
+            set => this.RaiseAndSetIfChanged(ref analysisHeuristicDescription, value);
+        }
+        private string analysisHeuristicDescription;
     }
 
 
-    public class ScanHeuristic : ReactiveObject
+    public class HeuristicModel : ReactiveObject
     {
-        public ScanHeuristic(string id, string text, string description)
+        public HeuristicModel(string id, string text, string description)
         {
             this.Id = id;
             this.text = text;

@@ -200,7 +200,7 @@ namespace Reko.Analysis
                 var ssa = sst.SsaState;
                 try
                 {
-                    if (Program.User.AggressiveBranchRemoval)
+                    if (Program.User.Heuristics.Contains(AnalysisHeuristics.AggressiveBranchRemoval))
                     {
                         // This ends up being very aggressive and doesn't replicate the original
                         // binary code. See discussion on https://github.com/uxmal/reko/issues/932

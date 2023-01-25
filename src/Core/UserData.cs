@@ -123,11 +123,6 @@ namespace Reko.Core
         public string? OutputFilePolicy { get; set; }
 
         /// <summary>
-        /// Makes Reko more aggressive in removing unused branches (like if (false) ...)
-        /// </summary>
-        public bool AggressiveBranchRemoval { get; set; }
-        
-        /// <summary>
         /// For Reko debugging: procedures with these names will be traced.
         /// </summary>
         public HashSet<string> DebugTraceProcedures { get; set; }

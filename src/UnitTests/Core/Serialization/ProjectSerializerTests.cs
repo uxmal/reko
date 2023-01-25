@@ -303,6 +303,11 @@ namespace Reko.UnitTests.Core.Serialization
                                     Location = "115252",
                                     Name = "errorExit",
                                 }
+                            },
+                            AggressiveBranchRemoval = true,
+                            Heuristics =
+                            {
+                                new Heuristic_v3 { Name = "shingle" }
                             }
                         }
                     },
@@ -336,6 +341,9 @@ namespace Reko.UnitTests.Core.Serialization
             var blockLabel = inputFile0.User.BlockLabels["115252"];
             Assert.AreEqual("errorExit", blockLabel);
             Assert.AreEqual(Program.SegmentFilePolicy, inputFile0.User.OutputFilePolicy);
+
+            Assert.IsTrue(inputFile0.User.Heuristics.Contains("aggressive-branch-removal"));
+            Assert.IsTrue(inputFile0.User.Heuristics.Contains("shingle"));
 
             Assert.AreEqual(OsPath.Absolute("tmp","foo","i am positive+.exe"), inputFile1.Location.FilesystemPath);
         }

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Gui;
+using Reko.Gui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,17 +31,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     public class ProgramPropertiesInteractor
     {
         private ProgramPropertiesDialog dlg;
-        private Dictionary<string, string> heuristicDescriptions = new Dictionary<string, string>
-        {
-            { "shingle", "Shingle heuristic" },
-            { "usermode", "Only allow user mode instructions" },
-            { "unlikely", "Treat 'unlikely' instructions as invalid" }
-        };
-
+        private Gui.ViewModels.ProgramPropertiesViewModel programProperties;
         public void Attach(ProgramPropertiesDialog dlg)
         {
             this.dlg = dlg;
             dlg.Load += dlg_Load;
+            this.programProperties = new ProgramPropertiesViewModel(dlg.Program?.User?.Heuristics);
             dlg.EnableScript.CheckedChanged += delegate { EnableControls(); };
             dlg.OkButton.Click += OkButton_Click;
             dlg.OutputPolicies.SelectedIndexChanged += OutputPolicies_SelectedIndexChanged;
@@ -59,32 +55,44 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 dlg.EnableScript.Checked = loadedScript.Enabled;
                 dlg.LoadScript.Text = loadedScript.Script;
             }
-            dlg.Heuristics.Items.AddRange(
-                heuristicDescriptions
-                .Values
-                .OrderBy(x => x)
+            dlg.ScanHeuristics.Items.AddRange(
+                programProperties.ScanHeuristics
+                .Select(h => new ListOption(h.Text, h.Id))
+                .OrderBy(x => x.Text)
+                .Cast<object>()
+                .ToArray());
+            dlg.AnalysisHeuristics.Items.AddRange(
+                programProperties.AnalysisHeuristics
+                .Select(h => new ListOption(h.Text, h.Id))
+                .OrderBy(x => x.Text)
                 .Cast<object>()
                 .ToArray());
 
-
             if (dlg.Program.User.Heuristics.Count == 0)
             {
-                dlg.Heuristics.SelectedIndex = 0;
+                dlg.ScanHeuristics.SelectedIndex = 0;
+                dlg.AnalysisHeuristics.SelectedIndex = 0;
             }
             else
             {
-                for (int j = 0; j < dlg.Heuristics.Items.Count; ++j)
+                for (int j = 0; j < dlg.ScanHeuristics.Items.Count; ++j)
                 {
-                    var item = dlg.Heuristics.Items[j];
-                    foreach (var sItem in dlg.Program.User.Heuristics)
+                    var item = (ListOption) dlg.ScanHeuristics.Items[j];
+                    if (dlg.Program.User.Heuristics.Contains((string) item.Value))
                     {
-                        if ((string) item == heuristicDescriptions[sItem])
-                        {
-                            dlg.Heuristics.SetItemCheckState(j, System.Windows.Forms.CheckState.Checked);
-                        }
+                        dlg.ScanHeuristics.SetItemCheckState(j, System.Windows.Forms.CheckState.Checked);
+                    }
+                }
+                for (int j = 0; j < dlg.AnalysisHeuristics.Items.Count; ++j)
+                {
+                    var item = (ListOption) dlg.AnalysisHeuristics.Items[j];
+                    if (dlg.Program.User.Heuristics.Contains((string) item.Value))
+                    {
+                        dlg.AnalysisHeuristics.SetItemCheckState(j, System.Windows.Forms.CheckState.Checked);
                     }
                 }
             }
+            
             dlg.OutputPolicies.Items.Add(new ListOption("Separate file per segment", Program.SegmentFilePolicy));
             dlg.OutputPolicies.Items.Add(new ListOption("Single file per program", Program.SingleFilePolicy));
             var i = dlg.OutputPolicies.Items.Cast<ListOption>().ToList().FindIndex(x => (string)((ListOption)x).Value == dlg.Program.User.OutputFilePolicy);
@@ -102,30 +110,19 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 Script = dlg.LoadScript.Text,
             };
             dlg.Program.User.Heuristics.Clear();
-            foreach (var item in heuristicDescriptions)
+            foreach (ListOption sItem in dlg.ScanHeuristics.CheckedItems)
             {
-                foreach (string sItem in dlg.Heuristics.CheckedItems)
-                {
-                    if (item.Value == sItem)
-                        dlg.Program.User.Heuristics.Add(item.Key);
-                }
+                dlg.Program.User.Heuristics.Add((string)sItem.Value);
             }
-            if (dlg.Heuristics.SelectedIndex != 0)
+            foreach (ListOption sItem in dlg.AnalysisHeuristics.CheckedItems)
             {
-                var item = heuristicDescriptions.First(
-                    de => de.Value == (string)dlg.Heuristics.SelectedItem);
-                dlg.Program.User.Heuristics.Add(item.Key);
-            }
-            else
-            {
-                dlg.Program.User.Heuristics.Clear();
+                dlg.Program.User.Heuristics.Add((string)sItem.Value);
             }
             var optPolicy = (ListOption) dlg.OutputPolicies.SelectedItem;
             if (optPolicy != null)
             {
                 dlg.Program.User.OutputFilePolicy = (string) optPolicy.Value;
             }
-            dlg.Program.User.AggressiveBranchRemoval = dlg.AggressiveBranchRemoval.Checked;
         }
 
         void OutputPolicies_SelectedIndexChanged(object sender, EventArgs e)

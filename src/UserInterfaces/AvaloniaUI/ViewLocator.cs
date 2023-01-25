@@ -27,17 +27,23 @@ namespace Reko.UserInterfaces.AvaloniaUI
         /// <returns></returns>
         public IControl Build(object data)
         {
-            var name = data.GetType().FullName!.Replace("ViewModel", "View");
-            var type = Type.GetType(name);
+            Type? type = DetermineViewType(data);
 
             if (type is { })
             {
-                return (Control)Activator.CreateInstance(type)!;
+                return (IControl) Activator.CreateInstance(type)!;
             }
             else
             {
-                return new TextBlock { Text = "Not found: " + name };
+                return new TextBlock { Text = $"View not found for {data.GetType()}" };
             }
+        }
+
+        private Type? DetermineViewType(object data)
+        {
+            var name = data.GetType().FullName!.Replace("ViewModel", "View");
+            var type = Type.GetType(name);
+            return type;
         }
 
         public bool Match(object data)

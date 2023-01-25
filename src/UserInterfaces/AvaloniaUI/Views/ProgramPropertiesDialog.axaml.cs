@@ -55,9 +55,20 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
             if (dc is null)
                 return;
             var item = ((ListBox) sender).SelectedItem;
-            if (item is not Control ctrl || ctrl.DataContext is not ScanHeuristic sch)
+            if (item is not Control ctrl || ctrl.DataContext is not HeuristicModel sch)
                 return;
             dc.ScanHeuristicDescription = sch.Description;
+        }
+
+        private void AnalysisHeuristics_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dc = (ProgramPropertiesViewModel?) DataContext;
+            if (dc is null)
+                return;
+            var item = ((ListBox) sender).SelectedItem;
+            if (item is not Control ctrl || ctrl.DataContext is not HeuristicModel sch)
+                return;
+            dc.AnalysisHeuristicDescription = sch.Description;
         }
     }
 }
