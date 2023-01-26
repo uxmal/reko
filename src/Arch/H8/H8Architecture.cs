@@ -26,6 +26,7 @@ using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -34,7 +35,8 @@ namespace Reko.Arch.H8
 {
     public class H8Architecture : ProcessorArchitecture
     {
-        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly ConcurrentDictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly H8CallingConvention cc;
 
         public H8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, null, null)
@@ -45,9 +47,10 @@ namespace Reko.Arch.H8
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr16;
             this.StackRegister = Registers.GpRegisters[7];
-            this.WordWidth = PrimitiveType.Word16;
+            this.WordWidth = PrimitiveType.Word16;      //$TODO: could vary by model.
             this.Ptr24 = PrimitiveType.Create(Domain.Pointer, 24);
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            this.flagGroups = new ConcurrentDictionary<uint, FlagGroupStorage>();
+            this.cc = new H8CallingConvention(WordWidth);
         }
 
         public PrimitiveType Ptr24 { get; }
@@ -77,16 +80,24 @@ namespace Reko.Arch.H8
             return new H8Rewriter(this, rdr, state, binder, host);
         }
 
+        public override CallingConvention? GetCallingConvention(string? name)
+        {
+            return cc;
+        }
+
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagRegister != Registers.CcRegister)
                 throw new ArgumentException($"'{flagRegister.Name}' is not a flag register on this architecture.");
-            if (flagGroups.TryGetValue(grf, out var flags))
-                return flags;
-            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
-            flagGroups.Add(grf, fl);
-            return fl;
+            FlagGroupStorage? flags;
+            while (!flagGroups.TryGetValue(grf, out flags))
+            {
+                PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+                flags = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
+                if (flagGroups.TryAdd(grf, flags))
+                    break;
+            }
+            return flags;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
