@@ -317,8 +317,16 @@ namespace Reko.Core
         IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator);
 
         /// <summary>
-        /// Provide an architecture-defined CallingConvention.
+        /// Provide an architecture-defined <see cref="CallingConvention"/>.
         /// </summary>
+        /// <param name="ccName">The name of the calling convention, if any. Most
+        /// architectures define a default calling convention, which is returned
+        /// by passing 'null' or the empty string.
+        /// </param>
+        /// <returns>Returns an instance of <see cref="CallingConvention"/>, or
+        /// null if no calling convention with the name <paramref name="ccName"/> 
+        /// is known.
+        /// </returns>
         CallingConvention? GetCallingConvention(string? ccName);
 
         /// <summary>
@@ -383,7 +391,16 @@ namespace Reko.Core
         /// <returns></returns>
         FlagGroupStorage[] GetFlags();
 
-        FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
+        /// <summary>
+        /// Returns a <see cref="FlagGroupStorage"/> instance matching the provided 
+        /// combination of bitflags in <paramref name="grf"/>.
+        /// </summary>
+        /// <param name="flagRegister"></param>
+        /// <param name="grf"></param>
+        /// <returns>A <see cref="FlagGroupStorage>"/> instance based on <paramref name="flagRegister"/>
+        /// with the flags in <paramref name="grf"/> set to TRUE.
+        /// </returns>
+        FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
 
         /// <summary>
         /// Given the name of a flag register bit group, returns the corresponding
@@ -674,7 +691,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// For a particular mnemnic, returns its internal (Reko) number.
+        /// For a particular mnemonic, returns its internal (Reko) number.
         /// </summary>
         /// <returns></returns>
         public abstract int? GetMnemonicNumber(string name);

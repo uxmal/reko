@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Mocks
 
         public override CallingConvention GetCallingConvention(string name)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
 

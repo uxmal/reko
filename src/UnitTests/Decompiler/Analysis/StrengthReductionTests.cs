@@ -70,10 +70,14 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void SrtSimpleLoop()
         {
             Procedure proc = BuildSimpleLoop();
+            var program = new Program
+            {
+                Platform = new FakePlatform(null, null)
+            };
 
             var dom = proc.CreateBlockDominatorGraph();
             var sst = new SsaTransform(
-                new Program(),
+                program,
                 proc, 
                 new HashSet<Procedure>(),
                 null,

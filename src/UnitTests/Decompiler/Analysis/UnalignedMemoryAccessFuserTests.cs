@@ -48,7 +48,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
             dynamicLinker = new Mock<IDynamicLinker>().Object;
             listener = new FakeDecompilerEventListener();
             m = new ProcedureBuilder();
-            program = new Program();
+            program = new Program
+            {
+                Platform = new FakePlatform(null, arch.Object)
+            };
         }
 
         private SsaState RunTest(ProcedureBuilder m)

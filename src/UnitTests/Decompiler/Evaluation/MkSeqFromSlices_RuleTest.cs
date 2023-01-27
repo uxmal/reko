@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var program = new Program()
             {
                 Architecture = m.Architecture,
+                Platform = new FakePlatform(m.Architecture.Services, m.Architecture)
             };
             var sst = new SsaTransform(
                 program,

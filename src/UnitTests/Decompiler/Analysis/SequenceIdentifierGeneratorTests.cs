@@ -45,8 +45,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var pb = new ProcedureBuilder();
             builder(pb);
+            var program = new Program
+            {
+                Platform = new FakePlatform(null, new FakeArchitecture())
+            };
             var sst = new SsaTransform(
-                new Program(), 
+                program,
                 pb.Procedure, 
                 new HashSet<Procedure>(),
                 dynamicLinker.Object,

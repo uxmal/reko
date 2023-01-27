@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public LongAddRewriterTests()
         {
             arch = new FakeArchitecture(new ServiceContainer());
+            var platform = new FakePlatform(sc, arch);
             program = new Program()
             {
                 Architecture = arch,

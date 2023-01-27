@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -58,6 +59,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var program = new Program()
             {
                 Architecture = m.Architecture,
+                Platform = new DefaultPlatform(new ServiceContainer(), m.Architecture)
             };
             var sst = new SsaTransform(
                 program,

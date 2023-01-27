@@ -267,6 +267,15 @@ namespace Reko.Analysis
             return IsPreservedRegister(trashedRegisters, id.Storage);
         }
 
+        /// <summary>
+        /// Returns true if the register <paramref name="stg"/> is not
+        /// one of the supplied <paramref name="trashedRegisters"/>.
+        /// The idea is to eliminate registers that are not supposed
+        /// to be modified by the ABI of the processor or platform.
+        /// </summary>
+        /// <param name="trashedRegisters"></param>
+        /// <param name="stg"></param>
+        /// <returns></returns>
         private static bool IsPreservedRegister(
             IReadOnlySet<RegisterStorage> trashedRegisters,
             Storage stg)

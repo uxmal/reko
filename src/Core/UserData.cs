@@ -30,7 +30,7 @@ namespace Reko.Core
     /// <summary>
     /// Oracular information provided by user.
     /// </summary>
-    public class UserData
+    public class UserData : IReadOnlyUserData
     {
         public UserData()
         {
@@ -74,7 +74,7 @@ namespace Reko.Core
         /// <summary>
         /// Scanning heuristics to try.
         /// </summary>
-        public SortedSet<string> Heuristics { get; set; }
+        public ISet<string> Heuristics { get; set; }
 
         /// <summary>
         /// Text encoding to use to interpret strings. If none is specified,

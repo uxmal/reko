@@ -597,6 +597,7 @@ ProcedureBuilder_exit:
             var program = new Program {
                 Architecture = m.Architecture,
                 SegmentMap = segmentMap,
+                Platform = new DefaultPlatform(sc, m.Architecture)
             };
             
             var ssa = new SsaTransform(

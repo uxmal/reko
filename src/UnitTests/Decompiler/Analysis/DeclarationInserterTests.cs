@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Graphs;
+using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,8 +57,12 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
 
+            var program = new Program
+            {
+                Platform = new FakePlatform(null, null)
+            };
             SsaTransform sst = new SsaTransform(
-                new Program(),
+                program,
                 proc,
                 new HashSet<Procedure>(),
                 null,

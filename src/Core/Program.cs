@@ -384,6 +384,8 @@ namespace Reko.Core
         /// </summary>
         public UserData User { get; set; }
 
+        IReadOnlyUserData IReadOnlyProgram.User => this.User;
+
         /// <summary>
         /// Absolute path of the directory into which disassemblies are dumped.
         /// </summary>

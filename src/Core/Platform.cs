@@ -354,7 +354,6 @@ namespace Reko.Core
             this.Name = platformId;
             this.Description = GetType().Name;
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
-            this.TrashedRegisters = new HashSet<RegisterStorage>();
             this.ProcedurePrologs = LoadProcedurePrologs();
             this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters());
         }

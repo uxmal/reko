@@ -64,6 +64,9 @@ namespace Reko.Analysis
         private readonly ExpressionEmitter m;
         private readonly Dictionary<(SsaIdentifier, BitRange), SsaIdentifier> availableSlices;
         private readonly HashSet<SsaIdentifier> sidsToRemove;
+        private readonly IReadOnlySet<RegisterStorage> trashedRegisters;
+        private readonly CallingConvention? defaultCc;
+        private readonly Func<Storage, bool> isTrashed;
         private Block? block;
         private Statement? stmCur;
 
@@ -79,6 +82,11 @@ namespace Reko.Analysis
             this.sccProcs = sccProcs;
             this.dynamicLinker = dynamicLinker;
             this.programFlow = programFlow;
+            this.trashedRegisters = program.Platform?.TrashedRegisters;
+            this.defaultCc = program.Platform.GetCallingConvention(null);
+            this.isTrashed = program.User.Heuristics.Contains(AnalysisHeuristics.CallsRespectABI)
+                ? IsTrashedAbi
+                : IsTrashedGuess;
             this.ssa = new SsaState(proc);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.availableSlices = new Dictionary<(SsaIdentifier, BitRange), SsaIdentifier>();
@@ -706,7 +714,6 @@ namespace Reko.Analysis
             var existingDefs = ci.Definitions
                 .Select(d => d.Storage)
                 .ToHashSet();
-            var trashedRegisters = program.Platform.TrashedRegisters;
             var stackDepth = GetStackDepthAtCall(ssa.Procedure, ci);
             var frame = ssa.Procedure.Frame;
 
@@ -754,7 +761,7 @@ namespace Reko.Analysis
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
                 if (calleeStg is not null &&
                     !existingDefs.Contains(calleeStg) &&
-                    (IsTrashed(trashedRegisters, calleeStg)
+                    (isTrashed(calleeStg)
                     || calleeStg is FlagGroupStorage))
                 {
                     ci.Definitions.Add(new CallBinding(
@@ -860,17 +867,24 @@ namespace Reko.Analysis
             return callerStorage;
         }
 
-        private static bool IsTrashed(
-            IReadOnlySet<RegisterStorage> trashedRegisters,
-            Storage stg)
+        private bool IsTrashedGuess(Storage stg)
         {
-            if (stg is not RegisterStorage || stg is TemporaryStorage)
+            if (stg is not RegisterStorage reg)
                 return false;
             // If the platform has no clue what registers may be affected by call,
             // assume all are.
             if (trashedRegisters.Count == 0)
                 return true;
-            return trashedRegisters.Where(r => r.OverlapsWith(stg)).Any();
+            return trashedRegisters.Where(r => r.OverlapsWith(reg)).Any();
+        }
+
+        private bool IsTrashedAbi(Storage stg)
+        {
+            if (defaultCc is null)
+                return IsTrashedGuess(stg);
+            if (stg is not RegisterStorage reg)
+                return false;
+            return this.defaultCc.IsOutArgument(reg);
         }
 
         private ProcedureBase? GetCalleeProcedure(CallInstruction ci)

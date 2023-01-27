@@ -44,6 +44,7 @@ namespace Reko.Core
         IPlatform Platform { get; }
         IReadOnlySegmentMap SegmentMap { get; }
         Encoding TextEncoding { get; }
+        IReadOnlyUserData User { get; }
 
         EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr);
     }
