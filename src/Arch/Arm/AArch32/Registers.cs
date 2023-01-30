@@ -107,6 +107,17 @@ namespace Reko.Arch.Arm.AArch32
 
         public static readonly HashSet<RegisterStorage> SIMDRegisters;
 
+        public static readonly FlagGroupStorage C =  FlagGroup(FlagM.CF, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = FlagGroup(FlagM.NF, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage NV = FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZCV = FlagGroup(FlagM.NF| FlagM.ZF | FlagM.CF | FlagM.VF, "NZCV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZC = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF, "NZC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZV = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage Q = FlagGroup(FlagM.QF, "Q", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = FlagGroup(FlagM.VF, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = FlagGroup(FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage ZC = FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte);
+
         static Registers()
         {
             ByName = GpRegs
@@ -123,6 +134,11 @@ namespace Reko.Arch.Arm.AArch32
                 .Concat(CoprocessorRegisters)
                 .Concat(QRegs)
                 .ToDictionary(r => r.Domain);
+        }
+
+        private static FlagGroupStorage FlagGroup(FlagM grf, string name, PrimitiveType type)
+        {
+            return new FlagGroupStorage(Registers.cpsr, (uint) grf, name, type);
         }
     }
 }

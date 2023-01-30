@@ -74,13 +74,14 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected void AssertCode(string sExp, string hexBytes)
         {
+            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             var bytes = BytePattern.FromHexBytes(hexBytes);
             var mem = new ByteMemoryArea(Address.Ptr32(0x0010_0000), bytes);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));
             var instr = dasm.First();
 
-            if (sExp != instr.ToString()) // && (instr.MnemonicAsString == "Nyi" || instr.MnemonicAsString == "Invalid"))
+            if (sExp != instr.ToString() && !(instr.MnemonicAsString == "Nyi" || instr.MnemonicAsString == "Invalid"))
             {
                 Assert.AreEqual(sExp, instr.ToString());
             }
@@ -534,6 +535,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_fldmdbx()
+        {
+            AssertCode("fldmdbx\tr2,{d19-d24}", "0D3B62ED");
+        }
+
+        [Test]
+        public void ArmDasm_fldmiax()
+        {
+            AssertCode("fldmiax\tr5,{d15-d18}", "09FBB5EC");
+        }
+
+        [Test]
         public void ArmDasm_rev()
         {
             Disassemble32(0xE6BF2F32);
@@ -823,6 +836,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_vsri()
+        {
+            AssertCode("@@@", "5364D1F3");
+        }
+
+        [Test]
         public void ArmDasm_vstr()
         {
             Disassemble32(0xEDCD0B29);
@@ -978,6 +997,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_vabs()
+        {
+            AssertCode("@@@", "06E7F1F3");
+        }
+
+        [Test]
         public void ArmDasm_vabs_f64()
         {
             Disassemble32(0xEEB09BC9);
@@ -985,9 +1010,28 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_vabd_float()
+        {
+            AssertCode("@@@", "1B3D34F3");
+        }
+
+        [Test]
         public void ArmDasm_vceq_f32()
         {
             AssertCode("vceq.f32\td30,d7,d10", "0AEE47F2");
+        }
+
+        [Test]
+        public void ArmDasm_vclt()
+        {
+            AssertCode("@@@", "0C52F1F3");
+        }
+
+        [Test]
+        public void ArmDasm_vcls()
+        {
+            AssertCode("vcls@@@", "0504B8F3");
+            AssertCode("vcls@@@", "4504B8F3");
         }
 
         [Test]
@@ -1480,6 +1524,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_sha1c()
+        {
+            AssertCode("sha1c\tq13,q10,q13", "EABC44F2");
+        }
+
+        [Test]
+        public void ArmDasm_sha1m()
+        {
+            AssertCode("sha1m\tq1,q3,q4", "093C27F2");
+        }
+
+        [Test]
         public void ArmDasm_shsub8()
         {
             Disassemble32(0xE63D01F8);
@@ -1487,10 +1543,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         // Only present in old ARM models
-        public void ArmDasm_ldc()
+        public void ArmDasm_ldc_postic()
         {
             Disassemble32(0x0CBF140F);
             Expect_Code("ldceq\tp4,cr1,[pc],#&3C");
+        }
+
+        [Test]
+        public void ArmDasm_ldc()
+        {
+            AssertCode("ldcvc\tp15,cr5,[r1,#&1C]", "075F917D");
+        }
+
+        [Test]
+        public void ArmDasm_ldc_postinc()
+        {
+            AssertCode("ldcvc\tp14,cr5,[pc],-#&94", "255E7F7C");
         }
 
         [Test]
@@ -1936,7 +2004,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_F3934620()
+        public void ArmDasm_vrsubhn()
         {
             Disassemble32(0xF3934620);
             Expect_Code("vrsubhn.i32\td4,q1,q8");
@@ -2368,6 +2436,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_vqshrun()
+        {
+            AssertCode("@@@", "1D38AFF3");
+        }
+
+        [Test]
         public void ArmDasm_vqadd_u8()
         {
             Disassemble32(0xF3058010);
@@ -2438,6 +2512,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_vqdmlal()
+        {
+            AssertCode("vqdmlal.s16\tq3,d4,d22", "266994F2");
+        }
+
+        [Test]
+        public void ArmDasm_vqdmlsl()
+        {
+            AssertCode("vqdmlsl.s16\tq6,d6,d4", "04CB96F2");
+        }
+
+        [Test]
         public void ArmDasm_vqdmlsl_scalar()
         {
             AssertCode("vqdmlsl.s16\tq10,d0,d4[2]", "6447D0F2");
@@ -2447,6 +2533,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_vqdmulh()
         {
             AssertCode("vqdmulh.s16\tq12,q8,q1[2]", "E38CD0F2");
+        }
+
+        [Test]
+        public void ArmDasm_vqdmull()
+        {
+            AssertCode("vqdmull.s16\td11,d3,d13", "0DBD93F2");
         }
 
         [Test]

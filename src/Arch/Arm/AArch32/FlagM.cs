@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2023 John Källén.
  *
@@ -19,16 +19,13 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
     [Flags]
     public enum FlagM
     {
+        QF = 0x10,
         NF = 8,
         ZF = 4,
         CF = 2,

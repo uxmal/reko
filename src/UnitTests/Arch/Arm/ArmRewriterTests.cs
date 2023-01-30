@@ -692,6 +692,7 @@ means
             Given_HexString("AC3A6CF4");
             AssertCode(     // vld1.i32	{d19,d20},[ip:128],ip
                 "0|L--|00145D18(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 
@@ -714,6 +715,7 @@ means
             Given_HexString("65F96598");
             AssertCode(     // vld2.i16	{d25-d26},[r5:128],r5
                 "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 
@@ -728,6 +730,18 @@ means
                 "3|L--|d6 = SLICE(v2, word64, 64)",
                 "4|L--|d8 = SLICE(v2, word64, 0)",
                 "5|L--|r2 = r2 + 24<i32>");
+        }
+
+        [Test]
+        public void ArmRw_vld3_multiple_postinc2()
+        {
+            Given_HexString("0212EBF4");
+            AssertCode("0|L--|00100000(4): 5 instructions",
+                "1|L--|v2 = __vld3_multiple<int8>(fp)",
+                "2|L--|d17 = SLICE(v2, word64, 128)",
+                "3|L--|d18 = SLICE(v2, word64, 64)",
+                "4|L--|d19 = SLICE(v2, word64, 0)",
+                "5|L--|fp = fp + r2");
         }
 
         [Test]
@@ -1197,6 +1211,7 @@ means
             Given_HexString("8AB30DF4");
             AssertCode(     // vst2.i32	{d11,d12},[sp],r10
                 "0|L--|0012384C(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 
@@ -1338,7 +1353,16 @@ means
             Given_UInt32s(0xee611ba0);  // vmul.f64 d17, d17, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d17 = __vmul_f64(d17, d16)");
+                "1|L--|d17 = __vmul<real64[1]>(d17, d16)");
+        }
+
+        [Test]
+        public void ArmRw_vmull_poly()
+        {
+            Given_HexString("08DEA6F2");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q6 = __vmull_polynomial<uint64[1],uint128[1]>(d6, d8)");
         }
 
         [Test]
@@ -1668,6 +1692,15 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|d7 = __vadd_f64(d7, d16)");
+        }
+
+        [Test]
+        public void ArmRw_vaddl()
+        {
+            Given_UInt32s(0xF3AF8000);    // vaddl.u32\tq4,d15,d0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q4 = __vaddl<uint32[2],uint64[2]>(d15, d0)");
         }
 
         [Test]
@@ -2276,22 +2309,14 @@ means
 
 
 
-        [Test]
-        public void ArmRw_vaddl()
-        {
-            Given_UInt32s(0xF3AF8000);    // vaddl.u32\tq4,d15,d0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|q4 = __vaddl_u32(d15, d0)");
-        }
 
         [Test]
-        public void ArmRw_vbic()
+        public void ArmRw_vbic_imm()
         {
             Given_UInt32s(0xF2C72B3F); // vbic.i16\td18,0x7F00<16>
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d18 = __vbic_i16(d18, 0x7F007F007F007F00<64>)");
+                "1|L--|d18 = d18 & ~0x7F007F007F007F00<64>");
         }
 
         [Test]
@@ -2481,6 +2506,7 @@ means
             Given_UInt32s(0xF468F191);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 
@@ -2494,6 +2520,7 @@ means
             Given_HexString("2029F2F3");
             AssertCode(     // vtbl.i8	d18,{d2-d3},d16
                 "0|L--|008E222C(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 
@@ -2504,6 +2531,7 @@ means
             Given_HexString("E401FAF3");
             AssertCode(     // vzip.i32	q8,q10
                 "0|L--|000377F8(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 
@@ -2653,6 +2681,7 @@ means
             Given_HexString("776206F4");
             AssertCode(     // vst1.i16	{d6-d9},[r6:256],r7
                 "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@",
                 "1|L--|@@@");
         }
 

@@ -90,7 +90,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.fstmiax:
                 case Mnemonic.mcrr2:
                 case Mnemonic.mrrc2:
-                case Mnemonic.pli:
                 case Mnemonic.sha1c:
                 case Mnemonic.sha1h:
                 case Mnemonic.sha1m:
@@ -122,19 +121,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vpaddl:
                 case Mnemonic.vqdmlal:
                 case Mnemonic.vqdmlsl:
-                case Mnemonic.vqdmulh:
                 case Mnemonic.vqdmull:
                 case Mnemonic.vqmovun:
                 case Mnemonic.vqmovn:
                 case Mnemonic.vqneg:
                 case Mnemonic.vqrdmlah:
-                case Mnemonic.vqrshrn:
                 case Mnemonic.vqrshrun:
-                case Mnemonic.vqshrun:
                 case Mnemonic.vrecpe:
-                case Mnemonic.vrev16:
-                case Mnemonic.vrev32:
-                case Mnemonic.vrev64:
                 case Mnemonic.vrinta:
                 case Mnemonic.vrintn:
                 case Mnemonic.vrintp:
@@ -253,8 +246,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.orr: RewriteLogical(m.Or); break;
                 case Mnemonic.pkhbt: RewritePk("__pkhbt"); break;
                 case Mnemonic.pkhtb: RewritePk("__pkhtb"); break;
-                case Mnemonic.pld: RewritePld("__pld"); break;
-                case Mnemonic.pldw: RewritePld("__pldw"); break;
+                case Mnemonic.pld: RewritePld(pld_intrinsic); break;
+                case Mnemonic.pldw: RewritePld(pldw_intrinsic); break;
+                case Mnemonic.pli: RewritePld(pli_intrinsic); break;
                 case Mnemonic.pop: RewritePop(); break;
                 case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.qadd: RewriteQAddSub(m.IAdd); break;
@@ -426,10 +420,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vacgt: RewriteVectorBinOp(vabs_cgt_intrinsic); break;
                 case Mnemonic.vadd: RewriteVectorBinOp("__vadd_{0}"); break;
                 case Mnemonic.vaddhn: RewriteVectorBinOpNarrow(vaddhn_intrinsic); break;
-                case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
+                case Mnemonic.vaddl: RewriteVectorBinOpWiden(vaddl_intrinsic); break;
                 case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
-                case Mnemonic.vbic: RewriteVbic(); break;
+                case Mnemonic.vbic: RewriteVecBinOp(Bic); break;
                 case Mnemonic.vbsl: RewriteVbsl(); break;
                 case Mnemonic.vcmp: RewriteVcmp(); break;
                 case Mnemonic.vbif: RewriteIntrinsic("__vbif", false, Domain.UnsignedInt); break;
@@ -469,9 +463,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vmlal: RewriteVectorBinOp("__vmlal_{0}"); break;
                 case Mnemonic.vmlsl: RewriteVectorBinOp("__vmlsl_{0}"); break;
                 case Mnemonic.vmrs: RewriteVmrs(); break;
+                case Mnemonic.vmul: RewriteVmul(); break;
+                case Mnemonic.vmull: RewriteVmull(); break;
                 case Mnemonic.vmvn: RewriteVmvn(); break;
-                case Mnemonic.vmul: RewriteVectorBinOp("__vmul_{0}"); break;
-                case Mnemonic.vmull: RewriteVectorBinOp("__vmull_{0}"); break;
                 case Mnemonic.vorr: RewriteVecBinOp(m.Or); break;
                 case Mnemonic.vneg: RewriteVectorUnaryOp("__vneg_{0}"); break;
                 case Mnemonic.vnmla: RewriteVectorBinOp("__vnmla_{0}"); break;
@@ -484,13 +478,19 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vpush: RewriteVpush(); break;
                 case Mnemonic.vqabs: RewriteVectorBinOp("__vqabs_{0}"); break;
                 case Mnemonic.vqadd: RewriteVectorBinOp("__vqadd_{0}"); break;
+                case Mnemonic.vqdmulh: RewriteVectorBinOp(vqdmulh_instrinsic); break;
                 case Mnemonic.vqrshl: RewriteVectorBinOp(vqrshl_intrinsic); break;
+                case Mnemonic.vqrshrn: RewriteVectorBinOpNarrow(vqrshrn_intrinsic); break;
                 case Mnemonic.vqsub: RewriteVectorBinOp(vqsub_intrinsic); break;
                 case Mnemonic.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
                 case Mnemonic.vqshlu: RewriteVectorShift(vqshlu_intrinsic); break;
                 case Mnemonic.vqshrn: RewriteVectorShift(vqshrn_intrinsic); break;
+                case Mnemonic.vqshrun: RewriteVectorShift(vqshrun_intrinsic); break;
                 case Mnemonic.vraddhn: RewriteVectorBinOpNarrow(vraddhn_intrinsic); break;
                 case Mnemonic.vrecps: RewriteVectorUnaryOp("__vrecps_{0}"); break;
+                case Mnemonic.vrev16: RewriteVectorUnaryOp(vrev16_intrinsic); break;
+                case Mnemonic.vrev32: RewriteVectorUnaryOp(vrev32_intrinsic); break;
+                case Mnemonic.vrev64: RewriteVectorUnaryOp(vrev64_intrinsic); break;
                 case Mnemonic.vrhadd: RewriteVectorBinOp(vrhadd_intrinsic); break;
                 case Mnemonic.vrintm: RewriteFloatingPointUnary(FpOps.floorf, FpOps.floor); break;
                 case Mnemonic.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
@@ -562,22 +562,22 @@ namespace Reko.Arch.Arm.AArch32
 
         Expression NZC()
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, 0xE, "NZC", PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.NZC);
         }
 
         Expression NZCV()
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, 0xF, "NZCV", PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(Registers.NZCV);
         }
 
         Expression C()
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            return binder.EnsureFlagGroup(Registers.C);
         }
 
         Expression Q()
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, 0x10, "Q", PrimitiveType.Bool);
+            return binder.EnsureFlagGroup(Registers.Q);
         }
 
         void MaybeUpdateFlags(Expression opDst)
@@ -956,46 +956,51 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        protected Expression? TestCond(ArmCondition cond)
+        protected Expression TestCond(ArmCondition cond)
         {
             switch (cond)
             {
             default:
                 throw new NotImplementedException($"ARM condition code {cond} not implemented.");
             case ArmCondition.HS:
-                return m.Test(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Bool));
+                return m.Test(ConditionCode.UGE, FlagGroup(Registers.C));
             case ArmCondition.LO:
-                return m.Test(ConditionCode.ULT, FlagGroup(FlagM.CF, "C", PrimitiveType.Bool));
+                return m.Test(ConditionCode.ULT, FlagGroup(Registers.C));
             case ArmCondition.EQ:
-                return m.Test(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Bool));
+                return m.Test(ConditionCode.EQ, FlagGroup(Registers.Z));
             case ArmCondition.GE:
-                return m.Test(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+                return m.Test(ConditionCode.GE, FlagGroup(Registers.NZV));
             case ArmCondition.GT:
-                return m.Test(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Byte));
+                return m.Test(ConditionCode.GT, FlagGroup(Registers.NZV));
             case ArmCondition.HI:
-                return m.Test(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+                return m.Test(ConditionCode.UGT, FlagGroup(Registers.ZC));
             case ArmCondition.LE:
-                return m.Test(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", PrimitiveType.Byte));
+                return m.Test(ConditionCode.LE, FlagGroup(Registers.NZV));
             case ArmCondition.LS:
-                return m.Test(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Byte));
+                return m.Test(ConditionCode.ULE, FlagGroup(Registers.ZC));
             case ArmCondition.LT:
-                return m.Test(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Byte));
+                return m.Test(ConditionCode.LT, FlagGroup(Registers.NV));
             case ArmCondition.MI:
-                return m.Test(ConditionCode.LT, FlagGroup(FlagM.NF, "N", PrimitiveType.Bool));
+                return m.Test(ConditionCode.LT, FlagGroup(Registers.N));
             case ArmCondition.PL:
-                return m.Test(ConditionCode.GE, FlagGroup(FlagM.NF, "N", PrimitiveType.Bool));
+                return m.Test(ConditionCode.GE, FlagGroup(Registers.N));
             case ArmCondition.NE:
-                return m.Test(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Bool));
+                return m.Test(ConditionCode.NE, FlagGroup(Registers.Z));
             case ArmCondition.VC:
-                return m.Test(ConditionCode.NO, FlagGroup(FlagM.VF, "V", PrimitiveType.Bool));
+                return m.Test(ConditionCode.NO, FlagGroup(Registers.V));
             case ArmCondition.VS:
-                return m.Test(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Bool));
+                return m.Test(ConditionCode.OV, FlagGroup(Registers.V));
+            case ArmCondition.AL:
+                return Constant.True();
+            case ArmCondition.NV:
+            case ArmCondition.Invalid:
+                return Constant.False(); 
             }
         }
 
-        Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
+        private Identifier FlagGroup(FlagGroupStorage flagGroup)
         {
-            return binder.EnsureFlagGroup(Registers.cpsr, (uint) bits, name, type);
+            return binder.EnsureFlagGroup(flagGroup);
         }
 
         int BitSize(ArmVectorData vec)
@@ -1144,6 +1149,17 @@ namespace Reko.Arch.Arm.AArch32
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure pld_intrinsic = new IntrinsicBuilder("__pld", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure pldw_intrinsic = new IntrinsicBuilder("__pldw", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure pli_intrinsic = new IntrinsicBuilder("__pli", true)
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+
         private static readonly IntrinsicProcedure rbit_intrinsic = new IntrinsicBuilder("__reverse_bits", false)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
@@ -1170,15 +1186,19 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure sev_intrinsic = new IntrinsicBuilder("__send_event", true)
             .Void();
         private static readonly IntrinsicProcedure srsda_intrinsic = new IntrinsicBuilder("__srsda", true)
+            .PtrParam(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void(); 
         private static readonly IntrinsicProcedure srsdb_intrinsic = new IntrinsicBuilder("__srsdb", true)
+            .PtrParam(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
         private static readonly IntrinsicProcedure srsia_intrinsic = new IntrinsicBuilder("__srsiab", true)
+            .PtrParam(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
         private static readonly IntrinsicProcedure srsib_intrinsic = new IntrinsicBuilder("__srsib", true)
+            .PtrParam(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
         private static readonly IntrinsicProcedure ssat16_intrinsic;
@@ -1273,6 +1293,10 @@ namespace Reko.Arch.Arm.AArch32
             .GenericTypes("TArraySrc", "TArrayDst")
             .Params("TArraySrc", "TArraySrc")
             .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vaddl_intrinsic = new IntrinsicBuilder("__vaddl", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Params("TArraySrc", "TArraySrc")
+            .Returns("TArrayDst");
         private static readonly IntrinsicProcedure vbsl_intrinsic = IntrinsicBuilder.GenericBinary("__vbsl");
         private static readonly IntrinsicProcedure vfnma_intrinsic = IntrinsicBuilder.GenericBinary("__vfnma");
         private static readonly IntrinsicProcedure vfnms_intrinsic = IntrinsicBuilder.GenericBinary("__vfnms");
@@ -1296,6 +1320,19 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure vminnm_intrinsic = IntrinsicBuilder.GenericBinary("__vminnm");
         private static readonly IntrinsicProcedure vmla_intrinsic = IntrinsicBuilder.GenericBinary("__vmla");
         private static readonly IntrinsicProcedure vmls_intrinsic = IntrinsicBuilder.GenericBinary("__vmls");
+        private static readonly IntrinsicProcedure vmul_intrinsic = IntrinsicBuilder.GenericBinary("__vmul");
+        private static readonly IntrinsicProcedure vmul_polynomial_intrinsic = IntrinsicBuilder.GenericBinary("__vmul_polynomial");
+        private static readonly IntrinsicProcedure vmull_intrinsic = new IntrinsicBuilder("__vmull", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Param("TArraySrc")
+            .Param("TArraySrc")
+            .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vmull_polynomial_intrinsic = new IntrinsicBuilder("__vmull_polynomial", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Param("TArraySrc")
+            .Param("TArraySrc")
+            .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vqdmulh_instrinsic = IntrinsicBuilder.GenericBinary("__vqdmulh");
         private static readonly IntrinsicProcedure vqshlu_intrinsic = new IntrinsicBuilder("__vqshlu", false)
             .GenericTypes("TArray")
             .Param("TArray")
@@ -1307,13 +1344,26 @@ namespace Reko.Arch.Arm.AArch32
             .Param("TArraySrc")
             .Param(PrimitiveType.Int32)
             .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vqshrun_intrinsic = new IntrinsicBuilder("__vqshrun", false)
+          .GenericTypes("TArraySrc", "TArrayDst")
+          .Param("TArraySrc")
+          .Param(PrimitiveType.UInt32)
+          .Returns("TArrayDst");
         private static readonly IntrinsicProcedure vqrshl_intrinsic = IntrinsicBuilder.GenericBinary("__vqrshl");
+        private static readonly IntrinsicProcedure vqrshrn_intrinsic = new IntrinsicBuilder("__vqrshrn", false)
+            .GenericTypes("TArraySrc", "TArrayDst")
+            .Param("TArraySrc")
+            .Param(PrimitiveType.Int32)
+            .Returns("TArrayDst");
         private static readonly IntrinsicProcedure vqsub_intrinsic = IntrinsicBuilder.GenericBinary("__vqsub");
         private static readonly IntrinsicProcedure vraddhn_intrinsic = new IntrinsicBuilder("__vraddhn", false)
             .GenericTypes("TArraySrc", "TArrayDst")
             .Param("TArraySrc")
             .Param("TArraySrc")
             .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vrev16_intrinsic = IntrinsicBuilder.GenericUnary("__vrev16");
+        private static readonly IntrinsicProcedure vrev32_intrinsic = IntrinsicBuilder.GenericUnary("__vrev32");
+        private static readonly IntrinsicProcedure vrev64_intrinsic = IntrinsicBuilder.GenericUnary("__vrev64");
         private static readonly IntrinsicProcedure vrhadd_intrinsic = IntrinsicBuilder.GenericBinary("__vrhadd");
         private static readonly IntrinsicProcedure vrsqrte_intrinsic = IntrinsicBuilder.GenericBinary("__vrsqrte");
         private static readonly IntrinsicProcedure vrsqrts_intrinsic = IntrinsicBuilder.GenericBinary("__vrsqrts");

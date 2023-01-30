@@ -28,18 +28,6 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
-        private void RewriteVbic()
-        {
-            if (instr.Operands.Length == 3)
-            {
-                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, 0, 1, 2);
-            }
-            else
-            {
-                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, 0, 0, 1);
-            }
-        }
-
         private void RewriteVbsl()
         {
             var src1 = Operand(1);
@@ -235,9 +223,12 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (instr.Writeback)
             {
+                Expression incr;
                 if (opSrc.Index is not null)
-                    throw new NotImplementedException();
-                m.Assign(reg, m.IAddS(reg, nRegs * 8));
+                    incr = m.IAdd(reg, binder.EnsureRegister(opSrc.Index));
+                else
+                    incr = m.IAddS(reg, nRegs * 8);
+                m.Assign(reg, incr); 
             }
         }
 
@@ -312,6 +303,45 @@ namespace Reko.Arch.Arm.AArch32
                 }
             }
             m.Assign(dst, binder.EnsureRegister(sysreg));
+        }
+
+        private void RewriteVmul()
+        {
+            switch (instr.vector_data)
+            {
+            case ArmVectorData.P8:
+                RewriteVectorBinOp(vmul_polynomial_intrinsic, PrimitiveType.UInt8);
+                break;
+            case ArmVectorData.P64:
+                RewriteVectorBinOp(vmul_polynomial_intrinsic, PrimitiveType.UInt64); 
+                break;
+            default:
+                RewriteVectorBinOp(vmul_intrinsic); 
+                break;
+            }
+        }
+
+        private void RewriteVmull()
+        {
+            IntrinsicProcedure intrinsic;
+            PrimitiveType dtSrc;
+            switch (instr.vector_data)
+            {
+            case ArmVectorData.P8:
+                intrinsic = vmull_polynomial_intrinsic;
+                dtSrc = PrimitiveType.UInt8;
+                break;
+            case ArmVectorData.P64:
+                intrinsic = vmull_polynomial_intrinsic;
+                dtSrc = PrimitiveType.UInt64;
+                break;
+            default:
+                intrinsic = vmull_intrinsic;
+                dtSrc = this.VectorElementType(instr.vector_data);
+                break;
+            }
+            var dtDst = PrimitiveType.Create(dtSrc.Domain, dtSrc.BitSize * 2);
+            RewriteVectorBinOp(intrinsic, dtSrc, dtDst, 0, 1, 2);
         }
 
         private void RewriteVmvn()
@@ -497,22 +527,6 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 m.Assign(dst, result);
             }
-        }
-
-        private void RewriteVmul()
-        {
-            var src1 = this.Operand(1);
-            var src2 = this.Operand(2);
-            var dst = this.Operand(0, PrimitiveType.Word32, true);
-            var dstType = dst.DataType;
-            var srcType = src1.DataType;
-            var srcElemSize = Arm32Architecture.VectorElementDataType(instr.vector_data);
-            var celemSrc = srcType.BitSize / srcElemSize.BitSize;
-            var arrSrc = new ArrayType(srcType, celemSrc);
-            var arrDst = new ArrayType(dstType, celemSrc);
-            var fnName = $"__vmul_{VectorElementTypeName(instr.vector_data)}";
-            var intrinsic = host.Intrinsic(fnName, true, arrDst, src1, src2);
-            m.Assign(dst, m.Fn(intrinsic));
         }
 
         private void RewriteVectorUnaryOp(string fnNameFormat)

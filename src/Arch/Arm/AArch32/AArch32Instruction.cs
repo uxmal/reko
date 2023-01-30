@@ -88,7 +88,6 @@ namespace Reko.Arch.Arm.AArch32
 
         public Mnemonic Mnemonic { get; set; }
         public ArmCondition Condition { get; set; }
-
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
@@ -175,7 +174,7 @@ namespace Reko.Arch.Arm.AArch32
                 mem.Offset.ToInt32() == Operands[0].Width.Size;
         }
 
-        private (MachineOperand[], bool) RenderMnemonic(MachineInstructionRenderer renderer)
+        private (MachineOperand[], bool writeback) RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
             string? sMnemonic;

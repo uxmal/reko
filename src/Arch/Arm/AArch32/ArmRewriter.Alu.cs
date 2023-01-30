@@ -204,12 +204,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(0, PrimitiveType.Word32, true);
             var src = Operand(1);
-            var flags = FlagGroup((FlagM)(0x0F), "NZCV", PrimitiveType.Byte);
-            m.Assign(flags, m.Cond(
-                op(dst, src)));
+            var flags = binder.EnsureFlagGroup(Registers.NZCV);
+            m.Assign(flags, m.Cond(op(dst, src)));
         }
 
-        private void RewriteCrc(string  fnName, DataType dt)
+        private void RewriteCrc(string fnName, DataType dt)
         {
             var src1 = this.Operand(1);
             var src2 = this.Operand(2);
@@ -665,14 +664,10 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, host.Intrinsic(name, false, dst.DataType, src1, src2));
         }
 
-        private void RewritePld(string name)
+        private void RewritePld(IntrinsicProcedure intrinsic)
         {
             var dst = ((MemoryAccess) this.Operand(0)).EffectiveAddress;
-               m.SideEffect(host.Intrinsic(
-                   name,
-                   true,
-                   VoidType.Instance,
-                   dst));
+            m.SideEffect(m.Fn(intrinsic, dst));
         }
 
         private void RewritePop()

@@ -475,6 +475,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private static readonly Mutator<A32Disassembler> viBH__18 = ves(Bf((18, 2)), I8, I16, INVALID, INVALID);
         private static readonly Mutator<A32Disassembler> viBHW_18 = ves(Bf((18, 2)), I8, I16, I32, INVALID);
+        private static readonly Mutator<A32Disassembler> visBHS_18 = ves(Bf((20, 2)), S8, S16, S32, INVALID);
 
         private static readonly Mutator<A32Disassembler> vipB_D_ = ves(Bf((20, 2)), P8, INVALID, P64, INVALID);
 
@@ -561,7 +562,9 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
 
-        // register at a 4-bit multiple offset
+        /// <summary>
+        /// register at a 4-bit multiple offset
+        /// </summary>
         private static Mutator<A32Disassembler> r(int offset)
         {
             offset *= 4;
@@ -573,10 +576,13 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         private static readonly Mutator<A32Disassembler> R0 = r(0);
+        private static readonly Mutator<A32Disassembler> R8 = r(2);
         private static readonly Mutator<A32Disassembler> R12 = r(3);
         private static readonly Mutator<A32Disassembler> R16 = r(4);
 
-        // GP register except PC.
+        /// <summary>
+        /// GP register except PC.
+        /// </summary>
         private static Mutator<A32Disassembler> Rnp(int offset)
         {
             var bf = new Bitfield(offset, 4);
@@ -618,7 +624,9 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<A32Disassembler> Rp_0 = rp(0);
         private static readonly Mutator<A32Disassembler> Rp_12 = rp(12);
 
-        // Banked register
+        /// <summary>
+        /// Banked register
+        /// </summary>
         private static Mutator<A32Disassembler> rb(int pos1, int size1, int pos2, int size2, int pos3, int size3)
         {
             var fields = new[]
@@ -641,9 +649,8 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-
         /// <summary>
-        /// Vector register D or Q, whose size is set by q(<bitpos>)
+        /// Vector register D or Q, whose size is set by <see cref="q(int)"/>.
         /// </summary>
         private static Mutator<A32Disassembler> W(int bitpos, int bitsize)
         {
@@ -793,7 +800,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        // offset split in hi-lo nybbles.
+        /// <summary>
+        /// Memory access with offset split in hi-lo nybbles.
+        /// </summary>
         private static Mutator<A32Disassembler> Mh(PrimitiveType dt, bool allowWriteback = true)
         {
             return (u, d) =>
@@ -810,7 +819,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        // Memory access with register offset
+        /// <summary>
+        /// Memory access with register offset
+        /// </summary>
         private static Mutator<A32Disassembler> Mx(PrimitiveType dt)
         {
             return (wInstr, d) =>
@@ -827,7 +838,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        // Memory access with 8-bit immediate offset (possibly shifted)
+        /// <summary>
+        /// Memory access with 8-bit immediate offset (possibly shifted)
+        /// </summary>
         private static Mutator<A32Disassembler> Mi(int offsetBits, int shift, PrimitiveType dt)
         {
             var fieldOffset = new Bitfield(0, offsetBits);
@@ -858,7 +871,9 @@ namespace Reko.Arch.Arm.AArch32
         private static PrimitiveType s4 => PrimitiveType.Int32;
         private static PrimitiveType s8 => PrimitiveType.Int64;
 
-        // Multiple registers
+        /// <summary>
+        /// Multiple registers
+        /// </summary>
         private static Mutator<A32Disassembler> Mr(int pos, int size) {
             var bitfield = new Bitfield(pos, size);
             return (u, d) =>
@@ -871,7 +886,6 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
-
 
         private static Mutator<A32Disassembler> Vel(int count, int step)
         {
@@ -1011,6 +1025,9 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<A32Disassembler> Mve32 = VectorElementAccess(Bf((4, 1)), mve32Alignments);
         private static readonly Mutator<A32Disassembler> Mvea = VectorElementAccess(Bf((4, 1), (6, 2)), mveaAlignments);
 
+        /// <summary>
+        /// Status register
+        /// </summary>
         private static Mutator<A32Disassembler> SR =>
             (u, d) =>
             {
@@ -1019,7 +1036,14 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
 
-        // Single precision register
+        /// <summary>
+        /// Single precision register
+        /// </summary>
+        /// <param name="pos1"></param>
+        /// <param name="size1"></param>
+        /// <param name="pos2"></param>
+        /// <param name="size2"></param>
+        /// <returns></returns>
         private static Mutator<A32Disassembler> S(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
@@ -1034,7 +1058,6 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
-        
         private static readonly Mutator<A32Disassembler> S0_5 = S(0,4,5,1);
         private static readonly Mutator<A32Disassembler> S16_7 = S(16,4,7,1);
         private static readonly Mutator<A32Disassembler> S12_22 = S(12,4,22,1);
@@ -1115,7 +1138,9 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<A32Disassembler> Q7_16 = Q(7, 1, 16, 4);
         private static readonly Mutator<A32Disassembler> Q22_12 = Q(22, 1, 12, 4);
 
-        // Endianness
+        /// <summary>
+        /// Endianness operand
+        /// </summary>
         private static Mutator<A32Disassembler> E(int pos, int size)
         {
             var fields = new[]
@@ -1131,7 +1156,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         /// <summary>
-        /// Immediate value
+        /// Unsigned immediate value
         /// </summary>
         private static Mutator<A32Disassembler> i(int pos, int size)
         {
@@ -1158,6 +1183,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        /// <summary>
+        /// Unsigned immediate value, split into 2 fields.
+        /// </summary>
         private static Mutator<A32Disassembler> i(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
@@ -1173,7 +1201,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        // Add 1 to the immediate at pos:size.
+        /// <summary>
+        /// Add 1 to the immediate at pos:size.
+        /// </summary>
         private static Mutator<A32Disassembler> i_p1(int pos, int size)
         {
             var fields = new[]
@@ -1248,6 +1278,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        /// <summary>
+        /// Vector 32-bit floating-point immediate.
+        /// </summary>
         private static Mutator<A32Disassembler> vfpImm32(int posH, int lenH, int posL, int lenL)
         {
             var fields = new[]
@@ -1265,6 +1298,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        /// <summary>
+        /// Vector 64-bit floating-point immediate.
+        /// </summary>
         private static Mutator<A32Disassembler> vfpImm64(int posH, int lenH, int posL, int lenL)
         {
             var fields = new[]
@@ -1670,6 +1706,7 @@ namespace Reko.Arch.Arm.AArch32
         static A32Disassembler()
         {
             invalid = new InstrDecoder(Mnemonic.Invalid, InstrClass.Invalid, ArmVectorData.INVALID);
+            var reserved = invalid;
             bankedRegisters = new Dictionary<uint, RegisterStorage>
             {
                 { 0b000000, Registers.r8_usr },
@@ -1737,8 +1774,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var SynchronizationPrimitives = Mask(23, 1, "Synchronization primitives",
                 Mask(22, 1,
-                    Instr(Mnemonic.swp, r(3), r(0), M(4,w4)),     //$TODO: deprecated in ARMv6 and later.
-                    Instr(Mnemonic.swpb, r(3), r(0), M(4,w1))),   //$TODO: deprecated in ARMv6 and later.
+                    Instr(Mnemonic.swp, R12, R0, M(4,w4)),     //$TODO: deprecated in ARMv6 and later.
+                    Instr(Mnemonic.swpb, R12, R0, M(4,w1))),   //$TODO: deprecated in ARMv6 and later.
                 Mask(20, 3, 8, 2, "  type:L:ex:ord",
                     Stl,
                     invalid,
@@ -1780,14 +1817,14 @@ namespace Reko.Arch.Arm.AArch32
                     Ldaexh,
                     Ldrexh));
 
-            var Mul = Instr(Mnemonic.mul, s,r(4),r(0),r(2));
-            var Mla = Instr(Mnemonic.mla, s,r(4),r(0),r(2),r(3));
-            var Mls = Instr(Mnemonic.mls, s,r(4),r(0),r(2),r(3));
-            var Umaal = Instr(Mnemonic.umaal, s,r(3),r(4),r(0),r(2));
-            var Umull = Instr(Mnemonic.umull, s,r(3),r(4),r(0),r(2));
-            var Umlal = Instr(Mnemonic.umlal, s,r(3),r(4),r(0),r(2));
-            var Smull = Instr(Mnemonic.smull, s,r(3),r(4),r(0),r(2));
-            var Smlal = Instr(Mnemonic.smlal, s,r(3),r(4),r(0),r(2));
+            var Mul = Instr(Mnemonic.mul, s,R16,R0,R8);
+            var Mla = Instr(Mnemonic.mla, s,R16,R0,R8,R12);
+            var Mls = Instr(Mnemonic.mls, s,R16,R0,R8,R12);
+            var Umaal = Instr(Mnemonic.umaal, s,R12,R16,R0,R8);
+            var Umull = Instr(Mnemonic.umull, s,R12,R16,R0,R8);
+            var Umlal = Instr(Mnemonic.umlal, s,R12,R16,R0,R8);
+            var Smull = Instr(Mnemonic.smull, s,R12,R16,R0,R8);
+            var Smlal = Instr(Mnemonic.smlal, s,R12,R16,R0,R8);
 
             var MultiplyAndAccumulate = Mask(20, 4,
                Mul,
@@ -2836,8 +2873,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var SystemRegister_LdSt = Select("SystemRegister_LdSt", 12, 0xF, n => n != 5, 
                 invalid,
-                Mask(20, 1,         // L (load)
-                    Mask(23, 2, 21, 1, "SystemRegister_LdSt puw",
+                Mask(20, 1, "  Load",        // L (load)
+                    Mask(23, 2, 21, 1, "  SystemRegister_LdSt Store puw",
                         invalid,
                         Instr(Mnemonic.stc, CP(8),CR(12),Mi8(2, w4)),
                         Instr(Mnemonic.stc, CP(8),CR(12),Mi8(2,w4)),
@@ -2849,15 +2886,15 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.stc, CP(8),CR(12),Mi8(2,w4)),
                         nyi("SystemRegister_LdSt puw=110"),
                         nyi("SystemRegister_LdSt puw=111")),
-                    Mask(Bf((23, 2), (21, 1)),
+                    Mask(Bf((23, 2), (21, 1)), "  SystemRegister_LdSt Load puw",
                         invalid,
-                        nyi("SystemRegister_LdSt puw=001"),
+                        Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
                         nyi("SystemRegister_LdSt puw=011"),
 
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
                         Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
-                        nyi("SystemRegister_LdSt puw=110"),
+                        Instr(Mnemonic.ldc, CP(8),CR(12),Mi8(2,w4)),
                         nyi("SystemRegister_LdSt puw=111"))));
 
             var SystemRegister_LdSt_64bitMove = Select(21, 0b1101, n => n == 0,
@@ -3189,8 +3226,8 @@ namespace Reko.Arch.Arm.AArch32
                         FloatingPointMoveSpecialReg),
                     AdvancedSimd_32bitTransfer);
 
-            var fldmdbx = Instr(Mnemonic.fldmdbx, w(21), r(16), x("fldmdbx"));
-            var fldmiax = Instr(Mnemonic.fldmiax, w(21), r(16), x("fldmiax"));
+            var fldmdbx = Instr(Mnemonic.fldmdbx, w(21), R16, Md(1, 7));
+            var fldmiax = Instr(Mnemonic.fldmiax, w(21), R16, Md(1, 7));
 
             var AdvancedSimd_and_floatingpoint_LdSt = Mask(23, 2, 20, 2, "Advanced SIMD and floating-point load/store",
                 invalid,
@@ -3222,9 +3259,9 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(8, 2, "PUWL: 0b0111",
                     invalid,
                     invalid,
-                    Instr(Mnemonic.vldmia, w(21), r(4), Ms(0,16)),
+                    Instr(Mnemonic.vldmia, w(21), R16, Ms(0,16)),
                     Mask(0, 1,
-                        Instr(Mnemonic.vldmia, w(21), r(4), Md(0,16)),
+                        Instr(Mnemonic.vldmia, w(21), R16, Md(0,16)),
                         fldmiax)),
 
                 Mask(8, 2, // size
@@ -3351,17 +3388,17 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.vpadd, I8, viBHW_, D22_12, D7_16, D5_0)),
 
                     Mask(20, 2, "AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100",
-                        Mask(4, 1, "  size=0x",
-                            Instr(Mnemonic.sha1c, x("*")),
+                        Mask(4, 1, "  size=00",
+                            Instr(Mnemonic.sha1c, Q22_12, Q7_16, Q5_0),
                             Vfma),
-                        Mask(4, 1, "  size=0x",
-                            Instr(Mnemonic.sha1p, x("*")),
+                        Mask(4, 1, "  size=01",
+                            Instr(Mnemonic.sha1p, Q22_12, Q7_16, Q5_0),
                             Vfma),
-                        Mask(4, 1, "  size=0x",
-                            Instr(Mnemonic.sha1m, x("*")),
+                        Mask(4, 1, "  size=10",
+                            Instr(Mnemonic.sha1m, Q22_12, Q7_16, Q5_0),
                             Vfms),
-                        Mask(4, 1, "  size=0x",
-                            Instr(Mnemonic.sha1su0, x("*")),
+                        Mask(4, 1, "  size=11",
+                            Instr(Mnemonic.sha1su0, Q22_12, Q5_0),
                             Vfms)),
 
                     Mask(4, 1, "  0b1101",
@@ -3455,16 +3492,18 @@ namespace Reko.Arch.Arm.AArch32
                             If(6,1, Ne0, Instr(Mnemonic.sha256h, Q22_12, Q7_16, Q5_0)),
                             If(6,1, Ne0, Instr(Mnemonic.sha256h2, Q22_12, Q7_16, Q5_0)),
                             If(6,1, Ne0, Instr(Mnemonic.sha256su1, Q22_12, Q7_16, Q5_0)),
-                            nyi("")),
+                            reserved),
                         Mask(20, 2, "  op1=1",
                             invalid,
                             Instr(Mnemonic.vqrdmlsh, S16, q6, W22_12, W7_16, W5_0),
                             Instr(Mnemonic.vqrdmlsh, S32, q6, W22_12, W7_16, W5_0),
                             invalid)),
                     Mask(4, 1, "  0b1101",
-                        Mask(21, 1, "  op1=0",
+                        Mask(20, 2, "  op1=0",
                             Instr(Mnemonic.vpadd, F32, q6, W22_12, W7_16, W5_0),
-                            Instr(Mnemonic.vpadd, F16, q6, W22_12, W7_16, W5_0)),
+                            Instr(Mnemonic.vpadd, F32, q6, W22_12, W7_16, W5_0),
+                            Instr(Mnemonic.vabd, F32, q6, W22_12, W7_16, W5_0),
+                            Instr(Mnemonic.vabd, F16, q6, W22_12, W7_16, W5_0)),
                         Mask(20, 2, "  op1=1",
                             Instr(Mnemonic.vmul, F32, q6, W22_12, W7_16, W5_0),
                             Instr(Mnemonic.vmul, F16, q6, W22_12, W7_16, W5_0),
@@ -3577,18 +3616,18 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.vrsubhn, viHWD_, D22_12, Q7_16, Q5_0)),
                     Instr(Mnemonic.vabdl, viBHW_BHW_, Q22_12, D7_16, D5_0),
 
-                    Instr(Mnemonic.vmlal, viHWD_, Q22_12,D7_16,Q5_0),
+                    Instr(Mnemonic.vmlal, viHWD_, Q22_12,D7_16,D5_0),
                     Mask(24, 1,
-                        Instr(Mnemonic.vqdmlal, x("*")),
+                        Instr(Mnemonic.vqdmlal, vis_HW_, Q22_12, D7_16, D5_0),
                         invalid),
-                    Instr(Mnemonic.vmlsl, viHWD_, Q22_12,D7_16,Q5_0),
+                    Instr(Mnemonic.vmlsl, viHWD_, Q22_12,D7_16,D5_0),
                     Mask(24, 1,
-                        Instr(Mnemonic.vqdmlsl, x("*")),
+                        Instr(Mnemonic.vqdmlsl, vis_HW_, Q22_12, D7_16, D5_0),
                         invalid),
 
                     VmullIntegerPolynomial,
                     Mask(24, 1,
-                        Instr(Mnemonic.vqdmull, x("*")),
+                        Instr(Mnemonic.vqdmull, q6, vis_HW_, W22_12, W7_16, W5_0),
                         invalid),
                     VmullIntegerPolynomial,
                     invalid);
@@ -3701,7 +3740,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Mnemonic.aesmc, x("*")),
                         Instr(Mnemonic.aesimc, x("*"))),
 
-                    Instr(Mnemonic.vcls, x("*")),
+                    Instr(Mnemonic.vcls, visBHW_, q6, W22_12, W5_0),
                     Instr(Mnemonic.vclz, x("*")),
                     Instr(Mnemonic.vcnt, x("*")),
                     Instr(Mnemonic.vmvn, x("(register)")),
@@ -3716,7 +3755,9 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.vceq, x("(immediate 0)")),
                     Instr(Mnemonic.vcle, x("(immediate 0)")),
 
-                    Instr(Mnemonic.vclt, x("(immediate 0)")),
+                    Mask(10, 1,
+                        Instr(Mnemonic.vclt, q6, visBHS_18, W22_12, D5_0),
+                        Instr(Mnemonic.vclt, q6, vf18_HS_, W22_12, D5_0)),
                     Mask(10, 1, "  opc2=x101",
                         Mask(6, 1,
                             invalid,
@@ -4047,6 +4088,7 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("VLD2(single 2 - element structure to all lanes)"),
                     Mask(4, 1, "  N=10 a",
                         nyi("VLD3(single 3 - element structure to all lanes)"),
+                        //  Instr(Mnemonic.vld3, vi10_BHW_, Vmr(3, true), Mvea),
                         invalid),
                     nyi("VLD4(single 4 - element structure to all lanes)")));
 

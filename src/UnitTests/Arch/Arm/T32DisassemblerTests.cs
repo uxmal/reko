@@ -148,6 +148,20 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_ldab()
+        {
+            Given_Instructions(0xE8DC, 0x0081);
+            Expect_Code("ldab\tr0,[ip]");
+        }
+
+        [Test]
+        public void ThumbDis_ldah()
+        {
+            Given_Instructions(0xE8D2, 0x0093);
+            Expect_Code("ldah\tr0,[r2]");
+        }
+
+        [Test]
         public void ThumbDis_ldr()
         {
             var instr = Disassemble16(0x9B00);
@@ -536,6 +550,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ThumbDis_vrev16()
+        {
+            AssertCode("vrev16.u8\td27,d8", "F0FF08B1");
+        }
+
+        [Test]
         public void ThumbDis_vrintp()
         {
             AssertCode("vrintp.f32\td23,d27", "FAFFAB77");
@@ -634,7 +654,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbDis_vceq_register()
         {
-            AssertCode("vceq\td8,d15,d0", "1FEF008E");
+            AssertCode("vceq.f16\td8,d15,d0", "1FEF008E");
         }
 
         [Test]
@@ -698,18 +718,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("Complex")]
-        public void ThumbDis_F7811103()
+        public void ThumbDis_usat()
         {
             Given_Instructions(0xF781, 0x1103);
-            Expect_Code("@@@");
+            Expect_Code("usat\tr1,#4,r1,lsl #4");
         }
 
         [Test]
         public void ThumbDis_stlexh()
         {
             Given_Instructions(0xE8CB, 0xA8D7);
-            Expect_Code("stlexh\tr7,r10,[fp]");
+            Expect_Code("stlexh\tr10,r7,[fp]");
         }
 
         [Test]
@@ -953,6 +972,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instructions(0xF3AF, 0x8000);
             Expect_Code("nop.w");
+        }
+
+        [Test]
+        public void ThumbDis_pli()
+        {
+            //$REVIEW: is this correct?
+            AssertCode("pli\t[sp],-#&1BA", "9DF9BAF1");
         }
 
         [Test]
@@ -1272,20 +1298,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instructions(0xE8C8, 0x0094);
             Expect_Code("stlh\tr0,[r8]");
-        }
-
-        [Test]
-        public void ThumbDis_ldah()
-        {
-            Given_Instructions(0xE8D2, 0x0093);
-            Expect_Code("ldah\tr3,r0,[r2]");
-        }
-
-        [Test]
-        public void ThumbDis_ldab()
-        {
-            Given_Instructions(0xE8DC, 0x0081);
-            Expect_Code("ldab\tr1,r0,[ip]");
         }
 
         [Test]
