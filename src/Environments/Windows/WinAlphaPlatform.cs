@@ -78,7 +78,7 @@ namespace Reko.Environments.Windows
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {
-            if (this.cc == null)
+            if (this.cc is null)
             {
                 this.cc = new AlphaCallingConvention(this.Architecture);
             }

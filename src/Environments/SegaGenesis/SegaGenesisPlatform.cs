@@ -36,11 +36,6 @@ namespace Reko.Environments.SegaGenesis
 
         public override string DefaultCallingConvention => "";
 
-        public override CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             //$TODO: implement some services;

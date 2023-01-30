@@ -44,11 +44,6 @@ namespace Reko.Environments.Snes
             throw new NotImplementedException();
         }
 
-        public override CallingConvention? GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             return null;

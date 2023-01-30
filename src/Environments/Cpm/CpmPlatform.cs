@@ -50,11 +50,6 @@ namespace Reko.Environments.Cpm
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

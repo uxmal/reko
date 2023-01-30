@@ -33,14 +33,9 @@ namespace Reko.Environments.Wii
             //$TODO: find out what registers are always trashed
         }
 
-        public override string DefaultCallingConvention { get { return ""; } }
+        public override string DefaultCallingConvention => "";
 
-        public override CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
-		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap) {
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap) {
 			//$TODO: implement some services;
 			return null;
 		}

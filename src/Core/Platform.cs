@@ -433,11 +433,20 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Creates a CallingConvention that understands the calling convention named
+        /// Obtains an instance of a <see cref="CallingConvention" /> that understands the calling convention named
         /// <paramref name="ccName"/>.
         /// </summary>
-        /// <param name="ccName">Name of the calling convention.</param>
-        public abstract CallingConvention? GetCallingConvention(string? ccName);
+        /// <remarks>
+        /// By default, there is no known calling convention.</remarks>
+        /// <param name="ccName">Name of the calling convention. Specifying a null
+        /// or empty string returns the default calling convention for the platform.
+        /// </param>
+        public virtual CallingConvention? GetCallingConvention(string? ccName)
+        {
+            // The default platform has no idea, so let the architecture decide.
+            // Some architectures define a standard calling procedure.
+            return this.Architecture.GetCallingConvention(ccName);
+        }
 
         /// <summary>
         /// Creates an empty imagemap based on the absolute memory map. It is 
@@ -780,13 +789,6 @@ namespace Reko.Core
         public override string DefaultCallingConvention => "";
 
         public override IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
-
-        public override CallingConvention? GetCallingConvention(string? ccName)
-        {
-            // The default platform has no idea, so let the architecture decide.
-            // Some architectures define a standard calling procedure.
-            return this.Architecture.GetCallingConvention(ccName);
-        }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {

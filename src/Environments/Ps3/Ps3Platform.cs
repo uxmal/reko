@@ -53,11 +53,6 @@ namespace Reko.Environments.Ps3
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();

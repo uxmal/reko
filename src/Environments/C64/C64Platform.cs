@@ -58,11 +58,6 @@ namespace Reko.Environments.C64
             return reg == Registers.s;
         }
 
-        public override CallingConvention GetCallingConvention(string? ccName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
