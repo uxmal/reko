@@ -64,7 +64,7 @@ namespace Reko.Analysis
         private readonly ExpressionEmitter m;
         private readonly Dictionary<(SsaIdentifier, BitRange), SsaIdentifier> availableSlices;
         private readonly HashSet<SsaIdentifier> sidsToRemove;
-        private readonly IReadOnlySet<RegisterStorage> trashedRegisters;
+        private readonly IReadOnlySet<RegisterStorage>? trashedRegisters;
         private readonly CallingConvention? defaultCc;
         private readonly Func<Storage, bool> isTrashed;
         private Block? block;
@@ -83,7 +83,7 @@ namespace Reko.Analysis
             this.dynamicLinker = dynamicLinker;
             this.programFlow = programFlow;
             this.trashedRegisters = program.Platform?.TrashedRegisters;
-            this.defaultCc = program.Platform.GetCallingConvention(null);
+            this.defaultCc = program.Platform?.GetCallingConvention(null);
             this.isTrashed = program.User.Heuristics.Contains(AnalysisHeuristics.CallsRespectABI)
                 ? IsTrashedAbi
                 : IsTrashedGuess;
@@ -873,7 +873,7 @@ namespace Reko.Analysis
                 return false;
             // If the platform has no clue what registers may be affected by call,
             // assume all are.
-            if (trashedRegisters.Count == 0)
+            if (trashedRegisters is null || trashedRegisters.Count == 0)
                 return true;
             return trashedRegisters.Where(r => r.OverlapsWith(reg)).Any();
         }
