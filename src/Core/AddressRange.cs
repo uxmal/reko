@@ -48,6 +48,26 @@ namespace Reko.Core
         /// </summary>
         public bool IsValid => this != Empty; 
 
+        public static bool operator == (AddressRange left, AddressRange right)
+        {
+            return left.Begin == right.Begin && left.End == right.End;
+        }
+
+        public static bool operator != (AddressRange left, AddressRange right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is AddressRange that && this == that;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Begin, End);
+        }
+
         /// <summary>
         /// Gets the empty/null memory range.
         /// </summary>

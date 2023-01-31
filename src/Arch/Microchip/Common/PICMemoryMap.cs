@@ -176,7 +176,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 this.Trait = null!;
                 this.traits = traits;
                 RegionName = sRegion;
-                if (regnAddr != null)
+                if (regnAddr is not null)
                 {
                     LogicalByteAddrRange = regnAddr;
                     PhysicalByteAddrRange = regnAddr;
