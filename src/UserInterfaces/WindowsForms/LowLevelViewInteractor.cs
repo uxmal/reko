@@ -641,6 +641,10 @@ namespace Reko.UserInterfaces.WindowsForms
             if (ignoreAddressChange)
                 return;
             this.ignoreAddressChange = true;
+
+            this.Control.ImageMapView.SelectedAddress = e.AddressRange.Begin;
+            this.control.ImageMapView.SelectedRange = e.AddressRange;
+
             this.Control.DisassemblyView.SelectedObject = e.AddressRange.Begin;
             this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
             this.SelectionChanged?.Invoke(this, e);

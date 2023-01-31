@@ -55,6 +55,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             public ImageSegment Segment;
             public long X;
             public long CxWidth;
+
+            public long AddressToX(Address addrMin, long granularity)
+            {
+                long offset = addrMin - Segment.Address;
+                return X + (offset + granularity - 1) / granularity;
+            }
         }
 
         public long Granularity { get { return granularity; } set { BoundGranularity(value); BoundOffset(cxOffset); OnGranularityChanged(); } }
@@ -100,12 +106,31 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             get { return selectedAddress; } 
             set {
-                selectedAddress = value; 
+                selectedAddress = value;
+                if (value is { })
+                {
+                    SelectedRange = new AddressRange(value, value + 1);
+                }
                 SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
+
+        [Browsable(false)]
+        public AddressRange SelectedRange
+        {
+            get { return this.selectedRange; }
+            set
+            {
+                if (value == this.selectedRange)
+                    return;
+                this.selectedRange = value;
+                Debug.WriteLine($"{nameof(ImageMapView)}: selected range {value}");
+                Invalidate();
+            }
+        }
+        private AddressRange selectedRange = AddressRange.Empty;
 
         public long Offset { get { return cxOffset; } set { BoundOffset(value); OnOffsetChanged(); } }
         public event EventHandler OffsetChanged;
@@ -267,7 +292,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            Debug.Print("KeyDown: {0}", e.KeyData);
+            Debug.WriteLine($"{nameof(ImageMapView)} KeyDown: {e.KeyData}");
             switch (e.KeyData)
             {
             case Keys.Add:

@@ -300,7 +300,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var ar = selSvc.GetSelectedComponents()
                .Cast<AddressRange>()
                .FirstOrDefault();
-            if (ar == null)
+            if (ar is null)
                 return;
             if (!program.SegmentMap.TryFindSegment(ar.Begin, out var seg))
             {

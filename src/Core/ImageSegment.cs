@@ -89,8 +89,12 @@ namespace Reko.Core
         public ulong FileOffset { get; set; }
 
         /// <summary>
-        /// Size of the segment address space (content may be smaller)
+        /// Size of the segment address space in address units.
         /// </summary>
+        /// <remarks>
+        /// The actual content loaded from disk may be smaller, or even zero in the case of 
+        /// .bss segments.
+        /// </remarks>
         public uint Size { get; set; }
 
         public uint ContentSize { get { return (ctSize != 0) ? ctSize : Size; } set { ctSize = value; } }
@@ -206,12 +210,26 @@ namespace Reko.Core
             return arch.CreateImageReader(this.MemoryArea, offsetBegin, offsetEnd);
         }
 
+        /// <summary>
+        /// Determine whether the specified <paramref name="address" /> 
+        /// is located inside the segment.
+        /// </summary>
+        /// <param name="address"><see cref="Address"/> to test.</param>
+        /// <returns>True of the address is inside the segment, false if not.
+        /// </returns>
         public bool IsInRange(Address addr)
         {
             return IsInRange(addr.ToLinear());
         }
 
-        public virtual bool IsInRange(ulong linearAddress)
+        /// <summary>
+        /// Determine whether the specified <paramref name="linearAddress" /> 
+        /// is located inside the segment.
+        /// </summary>
+        /// <param name="linearAddress">Linear address to test.</param>
+        /// <returns>True of the address is inside the segment, false if not.
+        /// </returns>
+        public bool IsInRange(ulong linearAddress)
         {
             ulong linItem = this.Address.ToLinear();
             return (linItem <= linearAddress && linearAddress < linItem + Size);

@@ -27,6 +27,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -34,12 +35,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     {
         public class Painter
         {
-            private SegmentMap segmentMap;
-            private ImageMap imageMap;
+            private const int CxMinSelection = 3;
+            private static readonly Color FocusedSelectionBgColor = Color.FromArgb(0xFF, 0xFF, 0x30);
+            private static readonly Color SelectionBgColor = Color.FromArgb(0x80, 0x80, 0x30);
+
+            private readonly SegmentMap segmentMap;
+            private readonly ImageMap imageMap;
+            private readonly long granularity;
+            private readonly Address addrMin;
+            private readonly Address addrMax;
             public Rectangle rcClient;
             public Rectangle rcBody;
             public List<SegmentLayout> segLayouts;
-            private long granularity;
             private Brush brCode;
             private Brush brBack;
             private Brush brData;
@@ -49,15 +56,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.imageMap = mapView.ImageMap;
                 this.segmentMap = mapView.SegmentMap;
                 this.granularity = mapView.granularity;
-
+                var b = mapView.SelectedRange.Begin;
+                var e = mapView.SelectedRange.End;
+                this.addrMin = Address.Min(b, e);
+                this.addrMax = Address.Max(b, e);
                 segLayouts = new List<SegmentLayout>();
                 long x = 0;
-                long cx = 0;
                 if (imageMap != null && granularity > 0)
                 {
                     foreach (var segment in segmentMap.Segments.Values)
                     {
-                        cx = (segment.Size + granularity - 1) / granularity;
+                        long cx = (segment.Size + granularity - 1) / granularity;
                         segLayouts.Add(new SegmentLayout
                         {
                             Segment = segment,
@@ -84,9 +93,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.brData = new SolidBrush(Color.LightBlue);
                 try
                 {
-                    RenderSelectionBar(g, mapView.Focused);
                     RenderScrollControls(g, mapView);
-                    RenderBody(g, mapView.cxOffset);
+                    RenderBody(g, mapView.cxOffset, mapView.Focused);
                 }
                 finally
                 {
@@ -96,15 +104,23 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
             }
 
-            public void RenderBody(Graphics g, long cxOffset)
+            public void RenderBody(Graphics g, long cxOffset, bool focused)
             {
-                Font fontSeg = new Font("Arial", 7);
+                using Font fontSeg = new Font("Arial", 7);
                 Rectangle rcPaint = rcBody;
                 rcPaint.Width = 0;
                 Brush brNew = null;
+                long? xSelectionBegin = default;
+                long? xSelectionEnd = default;
+                var transparentOverlay = Color.FromArgb(0x60, SystemColors.Highlight);
+                using Brush brOverlay = new SolidBrush(transparentOverlay);
                 //Debug.Print("== RenderBody ==");
                 foreach (var sl in segLayouts)
                 {
+                    if (sl.Segment.IsInRange(addrMin))
+                        xSelectionBegin = sl.AddressToX(addrMin, granularity);
+                    if (sl.Segment.IsInRange(addrMax))
+                        xSelectionEnd = sl.AddressToX(addrMax, granularity);
                     if (sl.X - cxOffset < rcBody.Width && sl.X + sl.CxWidth - cxOffset >= 0)
                     {
                         //Debug.Print("---- Segment {0} ----", sl.Segment.Name);
@@ -123,14 +139,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                                 {
                                     rcPaint.Width = x + CxScroll - rcPaint.X;
                                     g.FillRectangle(brOld, rcPaint);
-                                    //Debug.Print("Paint: {0} {1}", rcPaint, brOld);
-                                    brOld = brNew;
                                     rcPaint.X = x + CxScroll;
                                 }
-                                else
-                                {
-                                    brOld = brNew;
-                                }
+                                brOld = brNew;
                             }
                         }
                         if (brNew != null)
@@ -138,13 +149,37 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             rcPaint.Width = xMax + CxScroll - rcPaint.X;
                             g.FillRectangle(brNew, rcPaint);
                         }
-
+                        RenderSelectionOverlay(g, xSelectionBegin, xSelectionEnd, xMin, xMax, rcBody.Y, rcBody.Height, brOverlay);
                         RenderSegmentName(g, sl, xMin, xMax, fontSeg);
                         RenderSegmentSeparator(g, CxScroll + sl.X + sl.CxWidth - cxOffset);
                     }
+                    if (xSelectionBegin.HasValue && xSelectionEnd.HasValue)
+                    {
+                        RenderSelectionBar(g, xSelectionBegin.Value, xSelectionEnd.Value, focused);
+                    }
                 }
-                fontSeg.Dispose();
-                //Debug.Print("== RenderBody ==");
+            }
+
+            private void RenderSelectionOverlay(
+                Graphics g,
+                long? xSelectionBegin,
+                long? xSelectionEnd,
+                int xMin, int xMax,
+                int y, int height,
+                Brush brOverlay)
+            {
+                if (!xSelectionBegin.HasValue || !xSelectionEnd.HasValue)
+                    return;
+                var xBegin = (int) xSelectionBegin.Value;
+                var xEnd = (int) xSelectionEnd.Value;
+                Debug.WriteLine($"[{xBegin}-{xEnd}): min: {xMin}, max: {xMax}");
+                if (xBegin >= xMax || xEnd < xMin)
+                    return;
+                xBegin = Math.Max(xMin, xBegin);
+                xEnd = Math.Min(xMax, xEnd);
+                (xBegin, xEnd) = NormalizeSelection(xBegin, xEnd);
+                Debug.WriteLine($"Painting overlay: ({xBegin}, {xEnd-xBegin}, {y}, {height})");
+                g.FillRectangle(brOverlay, CxScroll + xBegin, y, xEnd - xBegin, height);
             }
 
             private void RenderSegmentName(Graphics g, SegmentLayout sl, int xMin, int xMax, Font font)
@@ -154,32 +189,24 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 g.DrawString(sl.Segment.Name, font, SystemBrushes.ControlText, rcText);
             }
 
-            /// <summary>
-            /// Returns the layout of the segment that contains the given
-            /// address <paramref name="addr"/>. A missing address yields
-            /// a null value.
-            /// </summary>
-            /// <param name="addr"></param>
-            /// <returns></returns>
-            public SegmentLayout GetSegment(Address addr)
-            {
-                if (addr == null)
-                    return null;
-                return segLayouts.FirstOrDefault(s => s.Segment.IsInRange(addr));
-            }
-
             private void RenderSegmentSeparator(Graphics g, long x)
             {
                 var rc = new Rectangle((int)x, rcBody.Top, CxSegmentBorder, rcBody.Height);
-                g.FillRectangle(Brushes.Black, rc);
+                g.FillRectangle(SystemBrushes.ControlText, rc);
                 //Debug.Print("Separator: {0}", rc);
             }
 
-            private void RenderSelectionBar(Graphics g, bool focused)
+            private void RenderSelectionBar(Graphics g, long xSelectionBegin, long xSelectionEnd, bool focused)
             {
-                Brush br = new SolidBrush(focused ? Color.FromArgb(0xFF, 0xFF, 0x30) : Color.FromArgb(0x80, 0x80, 0x30));
-                g.FillRectangle(br, new Rectangle(0, 1 + rcClient.Height - CySelection,  rcClient.Width, CySelection - 1));
-                br.Dispose();
+                var yTop = 1 + rcClient.Height - CySelection;
+                var cyHeight = CySelection - 1;
+                using Brush brBg = new SolidBrush(focused ? FocusedSelectionBgColor : SelectionBgColor);
+                g.FillRectangle(brBg, new Rectangle(0, yTop, rcClient.Width, cyHeight));
+
+                var (xSelBegin, xSelEnd) = NormalizeSelection((int) xSelectionBegin, (int) xSelectionEnd);
+                var cxSelection = xSelEnd - xSelBegin;
+                var brSel = focused ? SystemBrushes.Highlight : SystemBrushes.InactiveCaption;
+                g.FillRectangle(brSel, CxScroll + xSelBegin, yTop, cxSelection, cyHeight);
             }
 
             private void RenderScrollControls(Graphics g, ImageMapView mapView)
@@ -201,6 +228,39 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     CyScroll,
                     ScrollButton.Right,
                     (mapView.scrollButton == ScrollButton.Left ? ButtonState.Pushed : ButtonState.Normal) | baseState);
+            }
+
+            /// <summary>
+            /// Returns the layout of the segment that contains the given
+            /// address <paramref name="addr"/>. A missing address yields
+            /// a null value.
+            /// </summary>
+            /// <param name="addr"></param>
+            /// <returns></returns>
+            public SegmentLayout GetSegment(Address addr)
+            {
+                if (addr is null)
+                    return null;
+                return segLayouts.FirstOrDefault(s => s.Segment.IsInRange(addr));
+            }
+
+            /// <summary>
+            /// Normalize the selection so that it is at least <see cref="CxMinSelection"/> pixels
+            /// wide.
+            /// </summary>
+            /// <param name="xBegin">Start X coordinate of selection.</param>
+            /// <param name="xEnd">End X coordinate of selection.</param>
+            /// <returns>A tuple consisting of <paramref name="xBegin"/> and <paramref name="xEnd"/>,
+            /// possibly adjusted so that the difference between the values is at least <see cref="CxMinSelection"/>.
+            /// </returns>
+            private (int, int) NormalizeSelection(int xBegin, int xEnd)
+            {
+                if (xEnd - xBegin < CxMinSelection)
+                {
+                    xBegin -= CxMinSelection / 2;
+                    xEnd = xBegin + CxMinSelection;
+                }
+                return (xBegin, xEnd);
             }
 
             private Brush GetColorForOffset(ImageSegment seg, long cbOffset)

@@ -252,9 +252,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     rcTotal.Width, line.Extent.Bottom - rcTotal.Bottom);
             }
 
+            Color color = selected ? SystemColors.HighlightText : fg;
             if (useGdiPlus)
             {
-                var brush = new SolidBrush(selected ? SystemColors.HighlightText : fg);
+                var brush = new SolidBrush(color);
                 graphics.DrawString(
                     text,
                     this.font,
@@ -272,7 +273,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     text,
                     this.font,
                     pt,
-                    selected ? SystemColors.HighlightText : fg,
+                    color,
                     TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
             }
             rcContent.X += rcContent.Width;

@@ -57,10 +57,27 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public IButton ToolbarForwardButton { get { return btnFwdWrapped; } }
         public ITextBox ToolBarAddressTextbox { get { return txtAddressWrapped; } }
         public IButton ToolBarGoButton { get { return btnGoWrapped; } }
+
+        /// <summary>
+        /// The <see cref="ImageMapView"/> across the top of the voew.
+        /// </summary>
         public ImageMapView ImageMapView { get { return imageMapControl1; } }
+
+        /// <summary>
+        /// The "byte viewer"
+        /// </summary>
         public MemoryControl MemoryView { get { return this.memCtrl; } }
+
+        /// <summary>
+        /// The view of disassembled bytes.
+        /// </summary>
         public DisassemblyControl DisassemblyView { get { return this.dasmCtrl; } }
+
+        /// <summary>
+        /// The visualization of memory.
+        /// </summary>
         public VisualizerControl VisualizerControl { get { return this.visualizerControl; } }
+
         public IComboBox VisualizerList { get { return ddlVisualizerWrapped; } }
         IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
         IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
