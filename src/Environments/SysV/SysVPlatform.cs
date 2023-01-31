@@ -97,11 +97,18 @@ namespace Reko.Environments.SysV
             case CBasicType.Float: return 32;
             case CBasicType.Double: return 64;
             case CBasicType.LongDouble:
-                if (Architecture is Reko.Arch.X86.IntelArchitecture &&
-                    Architecture.WordWidth.BitSize == 32)
+                if (Architecture is Reko.Arch.X86.IntelArchitecture)
+                {
+                    // According to section 3.1.2 "Data representation" in 
+                    // System V Application Binary Interface, AMD64 Architecture
+                    // Processor Supplement. __float128 is a different beast.
                     return 80;
+                }
                 else
-                    return 64;      //$REVIEW: should this be 128?
+                {
+                    //$TODO: determine what this is for each ELF platform.
+                    return 64;
+                }
             case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }

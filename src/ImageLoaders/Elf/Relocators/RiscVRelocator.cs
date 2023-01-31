@@ -24,6 +24,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {

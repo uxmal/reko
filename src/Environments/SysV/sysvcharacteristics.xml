@@ -40,25 +40,30 @@
       <terminates>true</terminates>
     </characteristics>
   </entry>
-  <entry name="__printf_chk">
-    <characterictics>
+  <entry name="__fprintf_chk">
+    <characteristics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
-    </characterictics>
+    </characteristics>
+  </entry>
+  <entry name="__printf_chk">
+    <characteristics>
+      <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
+    </characteristics>
   </entry>
   <entry name="__sprintf_chk">
-    <characterictics>
+    <characteristics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
-    </characterictics>
+    </characteristics>
   </entry>
   <entry name="__snprintf_chk">
-    <characterictics>
+    <characteristics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
-    </characterictics>
+    </characteristics>
   </entry>
   <entry name="__asprintf_chk">
-    <characterictics>
+    <characteristics>
       <varargs>Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc</varargs>
-    </characterictics>
+    </characteristics>
   </entry>
   
   <entry name="scanf">

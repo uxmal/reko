@@ -34,7 +34,9 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         private readonly PrimitiveType i8 = PrimitiveType.SByte;
         private readonly PrimitiveType i16 = PrimitiveType.Int16;
         private readonly PrimitiveType i32 = PrimitiveType.Int32;
+        private readonly PrimitiveType i64 = PrimitiveType.Int64;
         private readonly PrimitiveType r64 = PrimitiveType.Real64;
+        private readonly PrimitiveType r80 = PrimitiveType.Real80;
 
         private X86ArchitectureFlat64 arch;
         private X86_64CallingConvention cc;
@@ -92,6 +94,26 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
             Given_CallingConvention();
             cc.Generate(ccr, 8, PrimitiveType.Int16, null, new List<DataType>());
             Assert.AreEqual("Stk: 8 ax ()", ccr.ToString());
+        }
+
+        [Test]
+        public void SvAmdCc_Real80_arg()
+        {
+            Given_CallingConvention();
+            cc.Generate(ccr, 8, null, null, new List<DataType> { i64, r64, r80 });
+            Assert.AreEqual(
+                "Stk: 8 void (rdi, xmm0, Stack +0008)",
+                ccr.ToString());
+        }
+
+        [Test]
+        public void SvAmdCc_return_Real80()
+        {
+            Given_CallingConvention();
+            cc.Generate(ccr, 8, r80, null, new List<DataType> { i32 });
+            Assert.AreEqual(
+                "Stk: 8 Fpu: 1 FPU -1 (rdi)",
+                ccr.ToString());
         }
     }
 }

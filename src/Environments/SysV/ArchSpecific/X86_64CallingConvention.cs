@@ -31,6 +31,8 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class X86_64CallingConvention : CallingConvention
     {
+        private const int LongDoubleBitsize = 80;
+
         private IProcessorArchitecture arch;
         private RegisterStorage[] iregs;
         private RegisterStorage[] fregs;
@@ -79,7 +81,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 var prim = dtParam as PrimitiveType;
                 if (prim != null && prim.Domain == Domain.Real)
                 {
-                    if (fr >= fregs.Length)
+                    if (fr >= fregs.Length || prim.BitSize == LongDoubleBitsize)
                     {
                         ccr.StackParam(dtParam);
                     }
@@ -125,6 +127,11 @@ namespace Reko.Environments.SysV.ArchSpecific
                 if (bitSize <= 64)
                 {
                     ccr.RegReturn(xmm0);
+                    return;
+                }
+                if (bitSize == 80)
+                {
+                    ccr.FpuReturn(-1, pt);
                     return;
                 }
                 if (bitSize <= 128)
