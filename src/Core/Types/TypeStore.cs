@@ -47,7 +47,7 @@ namespace Reko.Core.Types
 
         /// <summary>
         /// Gets the <see cref="TypeVariable" /> associated with the <see cref="Expression"/>
-        /// <paramref name="e""/>.
+        /// <paramref name="e"/>.
         /// </summary>
         /// <param name="e">Expression whose <see cref="TypeVariable"/> is requested.</param>
         /// <returns>A <see cref="TypeVariable"/> instance, or null if no type variable
