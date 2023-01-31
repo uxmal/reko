@@ -295,15 +295,15 @@ namespace Reko.Core.Serialization
         {
             if (value is null)
                 return null;
-            if (value is string sValue)
+            XmlElement el;
+            switch (value)
             {
-                var el = doc.CreateElement("item", SerializedLibrary.Namespace_v5);
+            case string sValue:
+                el = doc.CreateElement("item", SerializedLibrary.Namespace_v5);
                 el.InnerXml = sValue;
                 return el;
-            }
-            if (value is IDictionary dict)
-            {
-                var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v5);
+            case IDictionary dict:
+                el = doc.CreateElement("dict", SerializedLibrary.Namespace_v5);
                 foreach (DictionaryEntry de in dict)
                 {
                     var sub = SerializeValue(de.Value, doc);
@@ -314,17 +314,18 @@ namespace Reko.Core.Serialization
                     }
                 }
                 return el;
-            }
-            if (value is IEnumerable ienum)
-            {
-                var el = doc.CreateElement("list", SerializedLibrary.Namespace_v5);
+            case IEnumerable ienum:
+                el = doc.CreateElement("list", SerializedLibrary.Namespace_v5);
                 foreach (var oValue in ienum)
                 {
                     el.AppendChild(SerializeValue(oValue, doc)!);
                 }
                 return el;
+            default:
+                el = doc.CreateElement("item", SerializedLibrary.Namespace_v5);
+                el.InnerText = Convert.ToString(value, System.Globalization.CultureInfo.InvariantCulture)!;
+                return el;
             }
-            throw new NotSupportedException(value.GetType().Name);
         }
 
         public MetadataFile_v3 VisitMetadataFile(ImageLocation projectLocation, MetadataFile metadata)
