@@ -19,15 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -172,13 +170,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     return;
                 var xBegin = (int) xSelectionBegin.Value;
                 var xEnd = (int) xSelectionEnd.Value;
-                Debug.WriteLine($"[{xBegin}-{xEnd}): min: {xMin}, max: {xMax}");
+                trace.Verbose($"[{xBegin}-{xEnd}): min: {xMin}, max: {xMax}");
                 if (xBegin >= xMax || xEnd < xMin)
                     return;
                 xBegin = Math.Max(xMin, xBegin);
                 xEnd = Math.Min(xMax, xEnd);
                 (xBegin, xEnd) = NormalizeSelection(xBegin, xEnd);
-                Debug.WriteLine($"Painting overlay: ({xBegin}, {xEnd-xBegin}, {y}, {height})");
+                trace.Verbose($"Painting overlay: ({xBegin}, {xEnd-xBegin}, {y}, {height})");
                 g.FillRectangle(brOverlay, CxScroll + xBegin, y, xEnd - xBegin, height);
             }
 

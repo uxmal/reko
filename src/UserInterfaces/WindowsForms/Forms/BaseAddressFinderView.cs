@@ -117,7 +117,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     }
                     break;
                 default:
-                    _ = this;
                     throw new NotImplementedException();
                 }
             });

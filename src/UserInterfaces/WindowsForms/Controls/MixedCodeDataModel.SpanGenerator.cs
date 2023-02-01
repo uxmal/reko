@@ -218,6 +218,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             private readonly MemoryArea mem;
             private readonly ImageMapItem item;
             private readonly List<TextSpan> line;
+            private readonly StringBuilder sbText;
             private ModelPosition position;
 
             public MemSpanifyer(
@@ -231,6 +232,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.item = item;
                 this.position = pos;
                 this.line = new List<TextSpan>();
+                this.sbText = new StringBuilder();
             }
 
             public override (ModelPosition, LineSpan)? GenerateSpan()
@@ -252,6 +254,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             public void BeginLine()
             {
+                sbText.Clear();
+                sbText.Append(' ');
             }
 
             public void RenderAddress(Address addr)
@@ -271,17 +275,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 line.Add(new MemoryTextSpan(new string(' ', nCells), UiStyles.MemoryWindow));
             }
 
-            public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+            public void RenderUnitAsText(Address addr, string sUnit)
             {
-                var sbText = new StringBuilder();
-                sbText.Append(' ', prePadding + 1);
-                sbText.Append(sBytes);
-                sbText.Append(' ', postPadding);
-                line.Add(new MemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
+                sbText.Append(sUnit);
+            }
+
+            public void RenderTextFillerSpan(int padding)
+            {
+                sbText.Append(' ', padding);
             }
 
             public void EndLine(Constant[] bytes)
             {
+                line.Add(new MemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
             }
         }
 

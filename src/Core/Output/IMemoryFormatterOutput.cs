@@ -50,14 +50,21 @@ namespace Reko.Core.Output
         /// <summary>
         /// Render a memory unit corresponding to the address <paramref name="addr"/>.
         /// <param name="addr">The address of the memory unit.</param>
-        /// <param name="sUnit">The string representation of the memory unit.</param>
+        /// <param name="sUnit">The numeric representation of the memory unit.</param>
         void RenderUnit(Address addr, string sUnit);
 
         /// <summary>
-        /// Attempt to render the units as text, with a margin first.
+        /// Render the memory unit as text.
         /// </summary>
-        /// <param name="sBytes"></param>
-        void RenderUnitsAsText(int prePadding, string sBytes, int postPadding);
+        /// <param name="addr">The address of the memory unit.</param>
+        /// <param name="sUnit">The text representation of the unit.</param>
+        void RenderUnitAsText(Address addr, string sUnit);
+
+        /// <summary>
+        /// Render the padding of the memory textual area.
+        /// </summary>
+        /// <param name="padding">Number of character positions to pad with.</param>
+        void RenderTextFillerSpan(int padding);
 
         /// <summary>
         /// Signals the end of the line.

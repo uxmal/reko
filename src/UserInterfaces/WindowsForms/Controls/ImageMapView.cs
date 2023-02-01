@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
     public partial class ImageMapView : Control
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(ImageMapView), "");
+
         private const float ZoomOutFactor = 1.25F;
         private const float ZoomInFactor = 4.0F / 5.0F;
         private const int CySelection = 3;
@@ -126,7 +129,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 if (value == this.selectedRange)
                     return;
                 this.selectedRange = value;
-                Debug.WriteLine($"{nameof(ImageMapView)}: selected range {value}");
+                trace.Inform($"{nameof(ImageMapView)}: selected range {value}");
                 Invalidate();
             }
         }
@@ -292,7 +295,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            Debug.WriteLine($"{nameof(ImageMapView)} KeyDown: {e.KeyData}");
+            trace.Inform($"{nameof(ImageMapView)} KeyDown: {e.KeyData}");
             switch (e.KeyData)
             {
             case Keys.Add:

@@ -25,14 +25,14 @@ namespace Reko.Gui.Services
 {
     public class SelectionChangedEventArgs : EventArgs
     {
-        private AddressRange range;
-
-        public SelectionChangedEventArgs(AddressRange range)
+        public SelectionChangedEventArgs(Address addrAnchor, Address addrEnd)
         {
-            this.range = range;
+            this.Anchor = addrAnchor;
+            this.End = addrEnd;
         }
 
-        public AddressRange AddressRange { get { return range; } }
+        public Address Anchor { get; }
+        public Address End { get; }
     }
 
     /// <summary>

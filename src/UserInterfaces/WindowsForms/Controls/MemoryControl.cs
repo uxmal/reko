@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Output;
@@ -28,10 +29,8 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
@@ -51,8 +50,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     public class MemoryControl : Control
     {
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(MemoryControl), "Memory control painting operations");
+        private static readonly TraceSwitch tracePaint = new TraceSwitch(nameof(MemoryControlPainter), "Memory control painting operations");
 
-        private MemoryControlPainter mcp;
+        private readonly MemoryControlPainter mcp;
         private Address addrTopVisible;     // address of topmost visible row.
         private uint wordSize;
         private uint cbRow;
@@ -63,7 +64,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private IDictionary<Address, Procedure> procedureMap;
         private Encoding encoding;
         private IServiceProvider services;
-        private ISelectionService selSvc;
         private Address addrSelected;
         private Address addrAnchor;
         private Address addrMin;
@@ -96,34 +96,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (this.selSvc != null)
-                {
-                    this.selSvc.SelectionChanged -= SelSvc_SelectionChanged;
-                }
-            }
             base.Dispose(disposing);
         }
 
         public IServiceProvider Services {
             get { return services; }
-            set {
-                if (selSvc != null)
-                {
-                    this.selSvc.SelectionChanged -= SelSvc_SelectionChanged;
-                    this.selSvc = null;
-                }
-                this.services = value;
-                if (value != null)
-                {
-                    this.selSvc = value.GetService<ISelectionService>();
-                    if (selSvc != null)
-                    {
-                        selSvc.SelectionChanged += SelSvc_SelectionChanged;
-                    }
-                }
-            }
+            set { this.services = value; }
         }
 
         /// <summary>
@@ -132,29 +110,21 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public AddressRange GetAddressRange()
         {
-            if (addrSelected == null || addrAnchor == null)
+            if (SelectedAddress == null || addrAnchor == null)
             {
                 return AddressRange.Empty;
             }
             else
             {
-                if (addrSelected <= addrAnchor)
+                if (SelectedAddress <= addrAnchor)
                 {
-                    return new AddressRange(addrSelected, addrAnchor);
+                    return new AddressRange(SelectedAddress, addrAnchor);
                 }
                 else
                 {
-                    return new AddressRange(addrAnchor, addrSelected);
+                    return new AddressRange(addrAnchor, SelectedAddress);
                 }
             }
-        }
-
-        public void SetAddressRange(Address addrAnchor, Address addrSelected)
-        {
-            this.addrAnchor = addrAnchor;
-            this.addrSelected = addrSelected;
-            Invalidate();
-            OnSelectionChanged();
         }
 
         public uint BytesPerRow
@@ -240,7 +210,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 addrAnchor = addr;
             }
-            addrSelected = addr;
+            SelectedAddress = addr;
             Invalidate();
             OnSelectionChanged();
         }
@@ -248,7 +218,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            //            Debug.WriteLine(string.Format("K: {0}, D: {1}, M: {2}", e.KeyCode, e.KeyData, e.Modifiers));
+            //            trace.Verbose(string.Format("K: {0}, D: {1}, M: {2}", e.KeyCode, e.KeyData, e.Modifiers));
             switch (e.KeyCode)
             {
             case Keys.Down:
@@ -342,16 +312,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             using (Graphics g = this.CreateGraphics())
             {
                 var addrClicked = mcp.PaintWindow(g, cellSize, new Point(e.X, e.Y), false);
+                trace.Verbose($"AffectSelection: {addrClicked}");
                 if (ShouldChangeSelection(e, addrClicked))
                 {
                     if (!isDragging || addrClicked != null)
-                        addrSelected = addrClicked;
+                        this.addrSelected = addrClicked;
                     if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift &&
                         !isDragging)
                     {
-                        addrAnchor = addrSelected;
+                        addrAnchor = addrClicked;
                     }
-                    Debug.Print("Selection: {0}-{1}", addrAnchor, addrSelected);
+                    trace.Inform("AffectSelection: {0}-{1}", addrAnchor, SelectedAddress);
                     Invalidate();
                     OnSelectionChanged();
                 }
@@ -370,11 +341,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private bool IsAddressInSelection(Address addr)
         {
-            if (addr == null || addrAnchor == null || addrSelected == null)
+            if (addr == null || addrAnchor == null || SelectedAddress == null)
                 return false;
             var linAddr = addr.ToLinear();
             var linAnch = addrAnchor.ToLinear();
-            var linSel = addrSelected.ToLinear();
+            var linSel = SelectedAddress.ToLinear();
             if (linAnch <= linSel)
             {
                 return linAnch <= linAddr && linAddr <= linSel;
@@ -387,14 +358,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnPaint(PaintEventArgs pea)
         {
-            if (mem == null || segmentMap == null || imageMap == null || arch == null)
+            if (mem is null || segmentMap is null || imageMap is null || arch is null)
             {
                 pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
             }
             else
             {
                 CacheCellSize();
+                trace.Inform($"OnPaint: addrAnchor: {addrAnchor} addrSel: {SelectedAddress}");
+                var sw = new Stopwatch();
+                sw.Start();
                 mcp.PaintWindow(pea.Graphics, cellSize, ptDown, true);
+                sw.Stop();
+                trace.Inform($"OnPaint: {sw.ElapsedMilliseconds}ms");
             }
         }
 
@@ -406,8 +382,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         protected virtual void OnSelectionChanged()
         {
             var ar = GetAddressRange();
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(ar));
-            this.selSvc?.SetSelectedComponents(new[] { ar });
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addrAnchor, SelectedAddress));
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -503,17 +478,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         [Browsable(false)]
         public Address SelectedAddress
         {
-            get { return addrSelected; }
+            get { return this.addrSelected; }
             set
             {
-                addrSelected = value;
+                if (this.addrSelected == value)
+                    return;
+                trace.Verbose($"Setting SelectedAddress to {value}");
+                this.addrSelected = value;
                 addrAnchor = value;
                 var seg = GetSegmentFromAddress(value);
                 if (seg != null)
                 {
                     ChangeMemoryArea(seg);
                 }
-                if (IsVisible(value) || IsVisible(addrSelected))
+                if (IsVisible(value) || IsVisible(this.addrSelected))
                     Invalidate();
                 OnSelectionChanged();
             }
@@ -525,6 +503,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             get { return addrTopVisible; }
             set
             {
+                if (addrTopVisible == value)
+                    return;
+                trace.Inform($"TopAddress: new value {TopAddress}");
                 addrTopVisible = value;
                 if (value != null)
                     addrTopVisible -= (int)(value.ToLinear() % cbRow);
@@ -545,7 +526,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void UpdateScroll()
         {
-            if (addrTopVisible == null || mem == null || CellSize.Height <= 0)
+            if (this.TopAddress is null || mem is null || CellSize.Height <= 0)
             {
                 vscroller.Enabled = false;
                 return;
@@ -560,7 +541,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             cyPage = Math.Max((Height / CellSize.Height) - 1, 1);
             vscroller.LargeChange = cyPage;
             vscroller.Maximum = cRows;
-            int newValue = (int)((addrTopVisible.ToLinear() - this.addrMin.ToLinear()) / cbRow);
+            int newValue = (int)((TopAddress.ToLinear() - this.addrMin.ToLinear()) / cbRow);
             vscroller.Value = Math.Max(Math.Min(newValue, vscroller.Maximum), vscroller.Minimum);
         }
 
@@ -575,28 +556,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        private void SelSvc_SelectionChanged(object sender, EventArgs e)
-        {
-            var ar = selSvc.GetSelectedComponents()
-                .Cast<AddressRange>()
-                .FirstOrDefault();
-            if (ar is null)
-                return;
-            this.addrAnchor = ar.Begin;
-            this.addrSelected = ar.End;
-            if (mem != null && !IsVisible(addrAnchor))
-            {
-                Address newTopAddress = addrAnchor.Align((int)cbRow);
-                if (mem.IsValidAddress(newTopAddress))
-                {
-                    TopAddress = newTopAddress;
-                }
-            }
-            Invalidate();
-        }
-
-
-        public void imageMap_MapChanged(object sender, EventArgs e)
+        private void imageMap_MapChanged(object sender, EventArgs e)
         {
             if (InvokeRequired)
                 BeginInvoke(new Action(Invalidate));
@@ -644,9 +604,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 // Enumerate all segments visible on screen.
 
                 ulong laEnd = ctrl.addrMin.ToLinear() + ctrl.memSize;
-                if (ctrl.addrTopVisible.ToLinear() >= laEnd)
+                if (ctrl.TopAddress.ToLinear() >= laEnd)
                     return null;
-                var addrStart = Address.Max(ctrl.addrTopVisible, ctrl.mem.BaseAddress);
+                var addrStart = Address.Max(ctrl.TopAddress, ctrl.mem.BaseAddress);
                 EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, addrStart);
                 Rectangle rcClient = ctrl.ClientRectangle;
                 Rectangle rc = rcClient;
@@ -656,7 +616,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 ulong laSegEnd = 0;
                 while (rc.Top < ctrl.Height && (laEnd == 0 || rdr.Address.ToLinear() < laEnd))
                 {
-                    if (ctrl.SegmentMap.TryFindSegment(ctrl.addrTopVisible, out ImageSegment seg))
+                    if (ctrl.SegmentMap.TryFindSegment(ctrl.TopAddress, out ImageSegment seg))
                     {
                         if (rdr.Address.ToLinear() >= laSegEnd)
                         {
@@ -706,6 +666,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 private readonly bool render;
                 private Rectangle rc;
                 private Address addrHit;
+                private int prepadding;
 
                 public LinePainter(MemoryControlPainter mcp, Graphics g, Rectangle rc, Point ptAddr, bool render)
                 {
@@ -714,6 +675,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     this.rc = rc;
                     this.ptAddr = ptAddr;
                     this.render = render;
+                    tracePaint.Verbose($"MemoryControl..ctor: {rc}");
                 }
 
                 public Address Paint(MemoryFormatter fmt, EndianImageReader rdr, Encoding enc)
@@ -726,10 +688,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     rc.X = 0;
                     addrHit = null;
+                    prepadding = 1;
                 }
 
                 public void EndLine(Constant[] bytes)
                 {
+                    tracePaint.Verbose($"MemoryControl.EndLine {rc}");
+                    g.FillRectangle(mcp.defaultTheme.Background, rc);
                 }
 
                 public void RenderAddress(Address addr)
@@ -738,16 +703,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         return;
                     string s = addr.ToString();
                     int cx = (int) g.MeasureString(s + "X", mcp.ctrl.Font, rc.Width, StringFormat.GenericTypographic).Width;
-                    this.rc = new Rectangle(rc.X, rc.Y, cx, rc.Height);
-                    if (!render && rc.Contains(mcp.ctrl.ptDown))
+                    var rcAddr = new Rectangle(rc.X, rc.Y, cx, rc.Height);
+                    if (!render && rcAddr.Contains(mcp.ctrl.ptDown))
                     {
                         this.addrHit = addr;
                         return;
                     }
-                    g.FillRectangle(mcp.defaultTheme.Background, rc.X, rc.Y, cx, rc.Height);
-                    g.DrawString(s, mcp.ctrl.Font, mcp.defaultTheme.Foreground, rc.X, rc.Y, StringFormat.GenericTypographic);
+                    g.FillRectangle(mcp.defaultTheme.Background, rcAddr);
+                    g.DrawString(s, mcp.ctrl.Font, mcp.defaultTheme.Foreground, rcAddr.X, rcAddr.Y, StringFormat.GenericTypographic);
                     cx -= mcp.cellSize.Width / 2;
                     rc = new Rectangle(cx, rc.Top, rc.Width - cx, rc.Height);
+                    tracePaint.Verbose($"MemoryControl.RenderAddress: {rc}");
                 }
 
                 public void RenderFillerSpan(int nChunks, int cellsPerChunk)
@@ -766,6 +732,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var theme = mcp.GetBrushTheme(null, false);
                     g.FillRectangle(theme.Background, rcFiller);
                     rc = new Rectangle(rc.X + rcFiller.Width, rc.Y, rc.Width - rcFiller.Width, rc.Height);
+                    tracePaint.Verbose($"MemoryControl.RenderFillerSpan: {rc}");
                 }
 
                 public void RenderUnit(Address addUnit, string s)
@@ -774,7 +741,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         return;
 
                     int cx = mcp.cellSize.Width * (s.Length + 1);
-                    var rcUnit = new Rectangle(
+                    var rcUnit = new RectangleF(
                         rc.Left,
                         rc.Top,
                         cx,
@@ -785,18 +752,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         return;
                     }
 
-                    ulong linearSelected = mcp.ctrl.addrSelected != null ? mcp.ctrl.addrSelected.ToLinear() : ~0UL;
+                    ulong linearSelected = mcp.ctrl.SelectedAddress != null ? mcp.ctrl.SelectedAddress.ToLinear() : ~0UL;
                     ulong linearAnchor = mcp.ctrl.addrAnchor != null ? mcp.ctrl.addrAnchor.ToLinear() : ~0UL;
                     ulong linearBeginSelection = Math.Min(linearSelected, linearAnchor);
                     ulong linearEndSelection = Math.Max(linearSelected, linearAnchor);
-
                     mcp.ctrl.ImageMap.TryFindItem(addUnit, out var item);
                     bool isProcEntry = mcp.ctrl.Procedures?.ContainsKey(addUnit) ?? false;
                     bool isSelected = linearBeginSelection <= addUnit.ToLinear() && addUnit.ToLinear() <= linearEndSelection;
                     bool isCursor = addUnit.ToLinear() == linearSelected;
 
                     var theme = mcp.GetBrushTheme(item, isSelected);
-                    g.FillRectangle(theme.Background, rc.Left, rc.Top, cx, rc.Height);
+                    g.FillRectangle(theme.Background, rcUnit);
                     if (!isSelected &&
                         theme.StartMarker != null)
                     {
@@ -830,19 +796,32 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                         ControlPaint.DrawFocusRectangle(g, rc);
                     }
                     rc = new Rectangle(rc.X + cx, rc.Y, rc.Width - cx, rc.Height);
+                    tracePaint.Verbose($"MemoryControl.RenderUnit: {rc}");
                 }
 
-                public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+                public void RenderUnitAsText(Address addr, string sUnit)
                 {
-                    if (!render)
-                        return;
-                    rc = new Rectangle(rc.Left, rc.Top, mcp.ctrl.Width - rc.Left, rc.Height);
-                    var sb = new StringBuilder();
-                    sb.Append(' ', prePadding);
-                    sb.Append(sBytes);
-                    sb.Append(' ', postPadding);
-                    g.FillRectangle(mcp.defaultTheme.Background, rc);
-                    g.DrawString(sb.ToString(), mcp.ctrl.Font, mcp.defaultTheme.Foreground, rc.X + mcp.cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+                    if (!render) return;
+                    var cx = sUnit.Length * mcp.cellSize.Width;
+                    var rcUnit = new Rectangle(
+                        rc.Left,
+                        rc.Top,
+                        cx,
+                        rc.Height);
+                    g.FillRectangle(mcp.defaultTheme.Background, rcUnit);
+                    g.DrawString(sUnit, mcp.ctrl.Font, mcp.defaultTheme.Foreground, rcUnit.X, rcUnit.Top, StringFormat.GenericTypographic);
+                    rc = new Rectangle(rc.X + cx, rc.Top, rc.Width - cx, rc.Height);
+                    tracePaint.Verbose($"RenderUnitAsText: {rc}");
+                }
+
+                public void RenderTextFillerSpan(int padding)
+                {
+                    var cx = (padding + prepadding) * mcp.cellSize.Width;
+                    var rcPadding = new Rectangle(rc.Left, rc.Top, cx, rc.Height);
+                    g.FillRectangle(mcp.defaultTheme.Background, rcPadding);
+                    prepadding = 0;
+                    rc = new Rectangle(rc.X + cx, rc.Top, rc.Width - cx, rc.Height);
+                    tracePaint.Verbose($"RenderTextFillerSpan: {rc}");
                 }
             }
 

@@ -35,6 +35,7 @@ namespace Reko.UnitTests.Arch.Pdp.Memory
         private class TestOutputDevice : IMemoryFormatterOutput
         {
             private readonly StringBuilder sb;
+            private int prepadding;
 
             public TestOutputDevice()
             {
@@ -45,6 +46,7 @@ namespace Reko.UnitTests.Arch.Pdp.Memory
 
             public void BeginLine()
             {
+                prepadding = 1;
             }
 
             public void EndLine(Constant[] bytes)
@@ -68,11 +70,15 @@ namespace Reko.UnitTests.Arch.Pdp.Memory
                 sb.Append(sUnit);
             }
 
-            public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+            public void RenderTextFillerSpan(int padding)
             {
-                sb.Append(' ', prePadding + 1);
-                sb.Append(sBytes);
-                sb.Append(' ', postPadding);
+                sb.Append(' ', padding + prepadding);
+                prepadding = 0;
+            }
+
+            public void RenderUnitAsText(Address addr, string sUnit)
+            {
+                sb.Append(sUnit);
             }
         }
 

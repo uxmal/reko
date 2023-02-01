@@ -144,14 +144,12 @@ namespace Reko.Core.Output
             var offSaved = rdr.Offset;
             var cb = offSaved - offStart;
             rdr.Offset = offStart;
-            var sBytes = DoRenderAsText(rdr, (int)cb, enc);
-            rdr.Offset = offSaved;
-            output.RenderUnitsAsText(
-                prePaddingChunks * this.charsPerTextChunk,
-                sBytes, 
-                postPaddingChunks * this.charsPerTextChunk);
-
+            output.RenderTextFillerSpan(prePaddingChunks * this.charsPerTextChunk);
+            DoRenderAsText(rdr, (int)cb, enc, output);
+            output.RenderTextFillerSpan(postPaddingChunks * this.charsPerTextChunk);
             output.EndLine(chunksRead);
+            
+            rdr.Offset = offSaved;
             return moreData && rdr.IsValid;
         }
 
@@ -170,21 +168,25 @@ namespace Reko.Core.Output
         /// render.</param>
         /// <param name="enc">The <see cref="Encoding"/> used to convert raw
         /// memory to text.</param>
-        /// <returns>The resulting converted text.</returns>
-        protected virtual string DoRenderAsText(
+        /// <param name="output">The instance of <see cref="IMemoryFormatterOutput"/>
+        /// that renders the text chunks.</param>
+        protected virtual void DoRenderAsText(
             ImageReader rdr,
             int cUnits,
-            Encoding enc)
+            Encoding enc,
+            IMemoryFormatterOutput output)
         {
+            var addr = rdr.Address;
             var bytes = rdr.ReadBytes(cUnits);
-            var chars = enc.GetChars(bytes);
-            for (int i = 0; i < chars.Length; ++i)
+            for (int i = 0; i < bytes.Length; ++i)
             {
-                char ch = chars[i];
+                char[] s = enc.GetChars(bytes, i, 1);
+                char ch = s[0];
                 if (char.IsControl(ch) || char.IsSurrogate(ch) || (0xE000 <= ch && ch <= 0xE0FF))
-                    chars[i] = '.';
+                    s[0] = '.';
+                output.RenderUnitAsText(addr, new string(s));
+                addr = addr + 1;
             }
-            return new string(chars);
         }
 
         private static ulong Align(ulong ul, uint alignment)

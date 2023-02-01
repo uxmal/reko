@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     partial class UserPreferencesDialog
     {

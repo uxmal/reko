@@ -44,12 +44,13 @@ namespace Reko.Arch.Pdp.Output
             output.RenderUnit(addr, sUnit);
         }
 
-        protected override string DoRenderAsText(ImageReader reader, int cUnits, Encoding enc)
+        protected override void DoRenderAsText(ImageReader reader, int cUnits, Encoding enc, IMemoryFormatterOutput output )
         {
             var rdr = (Word36ImageReader) reader;
             var sb = new StringBuilder();
             for (int i = 0; i < cUnits; ++i)
             {
+                var addr = rdr.Address;
                 if (rdr.TryReadBeUInt36(out ulong value))
                 {
                     int shift = 4 * 7;
@@ -61,9 +62,10 @@ namespace Reko.Arch.Pdp.Output
                         sb.Append(c);
                         shift -= 7;
                     }
+                    output.RenderUnitAsText(addr, sb.ToString());
+                    sb.Clear();
                 }
             }
-            return sb.ToString();
         }
     }
 }

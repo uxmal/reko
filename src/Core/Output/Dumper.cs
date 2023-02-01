@@ -229,11 +229,14 @@ namespace Reko.Core.Output
                 sbHex.Append(sUnit);
             }
 
-            public void RenderUnitsAsText(int prePadding, string sBytes, int postPadding)
+            public void RenderUnitAsText(Address addr, string sUnit)
             {
-                sb.Append(' ', prePadding + 1);
-                sb.Append(sBytes);
-                sb.Append(' ', postPadding);
+                sb.Append(sUnit);
+            }
+
+            public void RenderTextFillerSpan(int padding)
+            {
+                sb.Append(' ', padding);
             }
 
             public void EndLine(Constant [] chunks)
@@ -241,6 +244,7 @@ namespace Reko.Core.Output
                 if (!HaveSameZeroBytes(prevLine, chunks))
                 {
                     stm.Write(sbHex.ToString());
+                    stm.Write(' ');
                     stm.WriteLine(sb.ToString());
                     showEllipsis = true;
                 }

@@ -367,7 +367,7 @@ namespace Reko.UserInterfaces.WindowsForms
             else if (control.DisassemblyView.Focused)
             {
                 var addr = control.DisassemblyView.SelectedObject as Address;
-                if (addr == null)
+                if (addr is null)
                     return false;
                 addrRange = new AddressRange(addr, addr);
                 return true;
@@ -631,7 +631,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }
-            this.SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
+            this.SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(addr, addr));
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
             this.ignoreAddressChange = false;
         }
@@ -642,11 +642,16 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             this.ignoreAddressChange = true;
 
-            this.Control.ImageMapView.SelectedAddress = e.AddressRange.Begin;
-            this.control.ImageMapView.SelectedRange = e.AddressRange;
+            this.Control.ImageMapView.SelectedAddress = e.End;
+            if (e.End is { } && e.Anchor is { })
+            {
+                this.control.ImageMapView.SelectedRange = new AddressRange(
+                    Address.Min(e.End, e.Anchor),
+                    Address.Max(e.End, e.Anchor));
+            }
 
-            this.Control.DisassemblyView.SelectedObject = e.AddressRange.Begin;
-            this.Control.DisassemblyView.TopAddress = e.AddressRange.Begin;
+            this.Control.DisassemblyView.SelectedObject = e.End;
+            this.Control.DisassemblyView.TopAddress = e.End;
             this.SelectionChanged?.Invoke(this, e);
             this.ignoreAddressChange = false;
         }
