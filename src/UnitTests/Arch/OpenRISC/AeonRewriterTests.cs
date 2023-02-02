@@ -938,6 +938,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonRw_bn_nop()
+        {
+            // confirmed with source
+            Given_HexString("000000");
+            AssertCode(     // bn.nop
+                "0|L--|00100000(3): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
         public void AeonRw_bn_or()
         {
             Given_HexString("44E325");
