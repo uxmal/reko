@@ -626,6 +626,13 @@ namespace Reko.UnitTests.Arch.OpenRISC
         }
 
         [Test]
+        public void AeonDis_bn_nop()
+        {
+            // confirmed with source
+            AssertCode("bn.nop", "00 00 00");
+        }
+
+        [Test]
         public void AeonDis_bn_or()
         {
             // confirmed with source
