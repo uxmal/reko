@@ -39,6 +39,7 @@ Eq_n g_t0955;
 Eq_n g_t0959;
 Eq_n g_t0B90;
 Eq_n g_tF4240;
+Eq_n g_t147AE14;
 Eq_n g_t4120000;
 Eq_n g_t4120220;
 Eq_n g_t4120224;
@@ -62,11 +63,11 @@ Eq_n g_t4120288;
 Eq_n g_t412028C;
 Eq_n g_t4120290;
 Eq_n g_t4120294;
-struct Eq_n * g_ptr4120298; // 04120298
+union Eq_n * g_ptr4120298; // 04120298
 ptr32 g_ptr412029C; // 0412029C
-struct Eq_n * g_ptr41202A0; // 041202A0
+union Eq_n * g_ptr41202A0; // 041202A0
 ptr32 g_ptr41202A4; // 041202A4
-struct Eq_n * g_ptr41202A8; // 041202A8
+union Eq_n * g_ptr41202A8; // 041202A8
 ptr32 g_ptr41202AC; // 041202AC
 Eq_n g_t41202B0;
 Eq_n g_t41202B4;

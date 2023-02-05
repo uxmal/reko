@@ -53,10 +53,10 @@ void task_idle(ui20 sr, Eq_n r8)
 // 4096: void task_n(Register ui20 sr)
 void task_n(ui20 sr)
 {
-	word16 tLoc02;
+	Eq_n tLoc02;
 	Eq_n r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
-	tLoc02 = (word16) r15_n;
+	tLoc02.t0000 = r15_n;
 	while (true)
 	{
 		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x01;
@@ -68,10 +68,10 @@ void task_n(ui20 sr)
 // 40BC: void task_n(Register ui20 sr)
 void task_n(ui20 sr)
 {
-	word16 tLoc02;
+	Eq_n tLoc02;
 	Eq_n r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
-	tLoc02 = (word16) r15_n;
+	tLoc02.t0000 = r15_n;
 	while (true)
 	{
 		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x02;
@@ -83,10 +83,10 @@ void task_n(ui20 sr)
 // 40E2: void task_n(Register ui20 sr)
 void task_n(ui20 sr)
 {
-	word16 tLoc02;
+	Eq_n tLoc02;
 	Eq_n r15_n;
 	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
-	tLoc02 = (word16) r15_n;
+	tLoc02.t0000 = r15_n;
 	while (true)
 	{
 		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x04;
@@ -304,7 +304,7 @@ void vRxISR(ui20 sr)
 void vTxISR(ui20 sr)
 {
 	ptr16 fp;
-	word16 tLoc0C;
+	Eq_n tLoc0C;
 	Eq_n bLoc0A;
 	if (xQueueReceiveFromISR(sr, &tLoc0C, fp - 0x0A, xCharsForTx) != 0x01)
 		sTHREEmpty = 0x01;
@@ -408,15 +408,15 @@ void vTaskDelete(ui20 sr, Eq_n r15)
 	}
 }
 
-// 461A: Register ui20 vTaskDelayUntil(Register ui20 sr, Register Eq_n r14, Register (ptr20 word16) r15)
+// 461A: Register ui20 vTaskDelayUntil(Register ui20 sr, Register Eq_n r14, Register (ptr20 Eq_n) r15)
 // Called from:
 //      task_n
 //      task_n
 //      task_n
-ui20 vTaskDelayUntil(ui20 sr, Eq_n r14, word16 * r15)
+ui20 vTaskDelayUntil(ui20 sr, Eq_n r14, struct Eq_n * r15)
 {
 	ui20 sr_n = vTaskSuspendAll(sr);
-	Eq_n v8_n = *r15;
+	Eq_n v8_n = r15->t0000;
 	Eq_n r10_n = 0x00;
 	word20 r11_n = r14 + v8_n;
 	if (xTickCount >= v8_n)
@@ -431,7 +431,7 @@ ui20 vTaskDelayUntil(ui20 sr, Eq_n r14, word16 * r15)
 l0000463E:
 	r10_n.u1 = 0x01;
 l00004640:
-	*r15 = (word16) r11_n;
+	r15->t0000 = r11_n;
 	if (r10_n != 0x00)
 	{
 		struct Eq_n * r14_n;

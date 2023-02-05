@@ -65,10 +65,10 @@ Eq_1: (struct "Globals"
 		(405120 (ptr32 code) __imp___memcpy)
 		(405124 (ptr32 code) __imp___printf))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (struct "Eq_2" (0 word32 dw0000) (4 word32 dw0004))
+Eq_2: (struct "Eq_2" 0008 (0 word32 dw0000) (4 ptr32 ptr0004))
 	T_2 (in dwArg04 : (ptr32 Eq_2))
 	T_5 (in dwArg04 @ 00401071 : (ptr32 Eq_2))
-	T_70 (in &tLoc0C @ 004011CE : (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004))))
+	T_70 (in &tLoc0C @ 004011CE : (ptr32 (struct 0008)))
 Eq_3: (fn void ((ptr32 Eq_2)))
 	T_3 (in fn004011FC @ 00401071 : ptr32)
 	T_4 (in signature of fn004011FC @ 004011FC : void)
@@ -101,7 +101,7 @@ Eq_33: (segment "Eq_33" (2C (ptr32 (arr word32)) ptr002C))
 Eq_43: (fn int32 ((ptr32 char)))
 	T_43 (in printf @ 00401170 : ptr32)
 	T_44 (in signature of printf : void)
-Eq_50: (struct "Eq_50" (0 word32 dw0000) (4 word32 dw0004))
+Eq_50: (struct "Eq_50" 0008)
 	T_50 (in tLoc0C @ 004011B0 : Eq_50)
 Eq_54: (fn (ptr32 void) ((ptr32 void), (ptr32 void), Eq_58))
 	T_54 (in memcpy @ 004011E9 : ptr32)
@@ -116,8 +116,8 @@ Eq_59: (fn (ptr32 void) ())
 Eq_64: (fn void ())
 	T_64 (in _InitTermAndUnexPtrs @ 004011F1 : ptr32)
 	T_65 (in signature of _InitTermAndUnexPtrs : void)
-Eq_72: (struct "Eq_72" (0 word32 dw0000) (4 word32 dw0004))
-	T_72 (in &tLoc0C @ 004011D4 : (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004))))
+Eq_72: (struct "Eq_72" 0008 (4 (ptr32 void) ptr0004))
+	T_72 (in &tLoc0C @ 004011D4 : (ptr32 (struct 0008)))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -318,7 +318,7 @@ T_49: (in dwArg04 @ 00401180 : (ptr32 void))
 T_50: (in tLoc0C @ 004011B0 : Eq_50)
   Class: Eq_50
   DataType: Eq_50
-  OrigDataType: (struct (0 word32 dw0000) (4 word32 dw0004))
+  OrigDataType: (struct 0008)
 T_51: (in ebx_12 @ 004011B7 : (ptr32 void))
   Class: Eq_49
   DataType: (ptr32 void)
@@ -395,26 +395,26 @@ T_69: (in fn004011FC @ 004011CE : ptr32)
   Class: Eq_3
   DataType: (ptr32 Eq_3)
   OrigDataType: (ptr32 (fn T_71 (T_70)))
-T_70: (in &tLoc0C @ 004011CE : (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004))))
+T_70: (in &tLoc0C @ 004011CE : (ptr32 (struct 0008)))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
-  OrigDataType: (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004)))
+  OrigDataType: (ptr32 (struct 0008))
 T_71: (in fn004011FC(&tLoc0C) @ 004011CE : void)
   Class: Eq_6
   DataType: void
   OrigDataType: void
-T_72: (in &tLoc0C @ 004011D4 : (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004))))
+T_72: (in &tLoc0C @ 004011D4 : (ptr32 (struct 0008)))
   Class: Eq_72
   DataType: (ptr32 Eq_72)
-  OrigDataType: (ptr32 (struct (0 word32 dw0000) (4 word32 dw0004)))
+  OrigDataType: (ptr32 (struct 0008 (4 T_75 t0004)))
 T_73: (in 4<i32> @ 004011D4 : int32)
   Class: Eq_73
   DataType: int32
   OrigDataType: int32
 T_74: (in &tLoc0C + 4<i32> @ 004011D4 : word32)
   Class: Eq_74
-  DataType: (ptr32 word32)
-  OrigDataType: (ptr32 word32)
+  DataType: ptr32
+  OrigDataType: ptr32
 T_75: (in Mem27[&tLoc0C + 4<i32>:word32] @ 004011D4 : word32)
   Class: Eq_49
   DataType: (ptr32 void)
@@ -658,9 +658,9 @@ typedef struct Globals {
 	<anonymous> * __imp___printf;	// 405124
 } Eq_1;
 
-typedef struct Eq_2 {
+typedef struct Eq_2 {	// size: 8 8
 	word32 dw0000;	// 0
-	word32 dw0004;	// 4
+	ptr32 ptr0004;	// 4
 } Eq_2;
 
 typedef void (Eq_3)(Eq_2 *);
@@ -687,9 +687,7 @@ typedef struct Eq_33 {
 
 typedef int32 (Eq_43)(char *);
 
-typedef struct Eq_50 {
-	word32 dw0000;	// 0
-	word32 dw0004;	// 4
+typedef struct Eq_50 {	// size: 8 8
 } Eq_50;
 
 typedef void (Eq_54)(void, void, size_t);
@@ -700,8 +698,7 @@ typedef void (Eq_59)();
 
 typedef void (Eq_64)();
 
-typedef struct Eq_72 {
-	word32 dw0000;	// 0
-	word32 dw0004;	// 4
+typedef struct Eq_72 {	// size: 8 8
+	void * ptr0004;	// 4
 } Eq_72;
 

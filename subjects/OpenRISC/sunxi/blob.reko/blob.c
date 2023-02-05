@@ -4132,10 +4132,10 @@ word32 fn0000AF54()
 	return dwLoc08;
 }
 
-// 0000B034: Register int32 fn0000B034(Register Eq_n r3, Register (ptr32 word32) r4, Register (ptr32 word32) r5)
+// 0000B034: Register int32 fn0000B034(Register Eq_n r3, Register (ptr32 int32) r4, Register (ptr32 Eq_n) r5)
 // Called from:
 //      fn0000B0B8
-int32 fn0000B034(Eq_n r3, word32 * r4, word32 * r5)
+int32 fn0000B034(Eq_n r3, int32 * r4, union Eq_n * r5)
 {
 	int32 r11_n;
 	if (r3 > 0x10)
@@ -4165,14 +4165,14 @@ int32 fn0000B034(Eq_n r3, word32 * r4, word32 * r5)
 			r6_n = -3;
 			r3_n = (word32) r3 - 7;
 		}
-		*r5 = (word32) (r3_n >> r6_n);
+		*r5 = (union Eq_n *) (r3_n >> r6_n);
 		r11_n = 0;
 		return r11_n;
 	}
 	else
 	{
 		*r4 = 0;
-		*r5 = (word32) r3;
+		*r5 = (union Eq_n *) r3;
 		r11_n = 0x00;
 		return r11_n;
 	}
@@ -4186,8 +4186,8 @@ int32 fn0000B034(Eq_n r3, word32 * r4, word32 * r5)
 //      fn00010570
 void fn0000B0B8(Eq_n r3, Eq_n r4)
 {
-	word32 tLoc14;
-	word32 tLoc10;
+	Eq_n tLoc14;
+	Eq_n tLoc10;
 	if (r3 == 0x03)
 	{
 		struct Eq_n * r3_n = g_ptr13948;
@@ -4197,10 +4197,10 @@ void fn0000B0B8(Eq_n r3, Eq_n r4)
 	{
 		if (r3 == 0x14)
 		{
-			tLoc10 = (word32) *(union Eq_n *) 0x01C20050;
-			tLoc10 &= ~0x03;
-			tLoc10 = r4 - 1 & 0x03 | tLoc10;
-			*(union Eq_n *) 0x01C20050 = tLoc10;
+			tLoc10.t0000 = *(union Eq_n *) 0x01C20050;
+			tLoc10 = (Eq_n) (tLoc10 & ~0x03);
+			tLoc10 = (Eq_n) (r4 - 1 & 0x03 | tLoc10);
+			*(union Eq_n *) 0x01C20050 = tLoc10.t0000;
 		}
 		else
 		{
@@ -6452,12 +6452,12 @@ void fn0000ECA8(word32 * r3, word32 * r4)
 	*r4 = g_dw4004;
 }
 
-// 0000ECC8: void fn0000ECC8(Register (ptr32 word32) r3, Register (ptr32 word32) r4)
+// 0000ECC8: void fn0000ECC8(Register (ptr32 (ptr32 Eq_n)) r3, Register (ptr32 word32) r4)
 // Called from:
 //      fn00010570
-void fn0000ECC8(word32 * r3, word32 * r4)
+void fn0000ECC8(union Eq_n ** r3, word32 * r4)
 {
-	*r3 = g_ptr4008;
+	*r3 = (union Eq_n **) g_ptr4008;
 	*r4 = g_dw400C;
 }
 
@@ -7476,8 +7476,8 @@ word32 fn000103C0(Eq_n r15, uint32 VR, ptr32 & r9Out, ptr32 & r18Out, ptr32 & r2
 int32 fn00010570(union Eq_n * r3, Eq_n r9, Eq_n r15, uint32 VR)
 {
 	word32 fp;
-	word32 tLoc70;
-	word32 tLoc6C;
+	Eq_n tLoc70;
+	Eq_n tLoc6C;
 	struct Eq_n * dwLoc18;
 	int32 r11_n;
 	fn0000AEDC(0xF3F31000);

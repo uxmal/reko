@@ -56,7 +56,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word6
 				goto l00000000000153DC;
 			}
 			word64 a6_n;
-			byte * a4_n;
+			Eq_n a4_n;
 			int64 a0_n;
 			Eq_n a5_n;
 			FILE * a0_n;
@@ -161,8 +161,8 @@ l0000000000015CB0:
 			}
 			if (s1_n != 0x00)
 			{
-				tLoc0188.qw0000 = (word64) ((byte) qwLoc0190 & 0x01 | 252);
-				if (fn00000000000164D0((char *) &tLoc0188.qw0000 + 1, 0x0F) >= 0x00 && inet_ntop(0x0A, &tLoc0188, &bLocB8, 64) != null)
+				tLoc0188.b0000 = (byte) qwLoc0190 & 0x01 | 252;
+				if (fn00000000000164D0((char *) &tLoc0188 + 1, 0x0F) >= 0x00 && inet_ntop(0x0A, &tLoc0188, &bLocB8, 64) != null)
 					goto l00000000000154DC;
 				goto l0000000000015CB0;
 			}
@@ -260,7 +260,7 @@ l00000000000153D8:
 			if ((uint64) isatty(1) != 0x00)
 			{
 				gp->dw0810 = 0x01;
-				a4_n = (byte *) 1;
+				a4_n.u0 = 1;
 			}
 			if ((s0_n & 8) == 0x00)
 			{
@@ -280,7 +280,7 @@ l00000000000153D8:
 					__printf_chk(1, "MAXADDR=%s\n", 0x00);
 				if (s0_n << 0x32 < 0x00)
 				{
-					char * s2_n = tLoc0188.qw00B8;
+					char * s2_n = tLoc0188.ptr00B8;
 					if (s2_n != null)
 					{
 						if (strchr(s2_n, ' ') != null)
@@ -291,7 +291,7 @@ l00000000000153D8:
 				}
 				if (s0_n << 0x33 < 0x00)
 				{
-					if (strchr(&tLoc0188.b0060, ' ') != null)
+					if (strchr((char *) &tLoc0188 + 96, ' ') != null)
 						__printf_chk(1, "ADDRESSES=\"%s\"\n", 0x00);
 					else
 						__printf_chk(1, "ADDRESSES=%s\n", 0x00);
@@ -325,23 +325,23 @@ l00000000000153D8:
 				}
 				goto l00000000000153DC;
 			}
-			byte * a4_n;
+			Eq_n a4_n;
 			Eq_n a5_n;
 			int64 s0_n;
 			char * a3_n;
 			Eq_n a5_n;
 			int64 s4_n;
 			char * a3_n;
-			byte * s2_n = (int64) tLoc0188.dw00A0;
+			Eq_n s2_n = (int64) tLoc0188.dw00A0;
 			if ((int64) qwLoc01A8.dw0004 == 0x00)
 			{
 				a5_n.u0 = 32;
-				if (s2_n != (byte *) 32)
+				if (s2_n != 32)
 					goto l0000000000015660;
 				goto l0000000000015914;
 			}
 			a5_n.u0 = 0x0080;
-			if (s2_n == (byte *) 0x0080)
+			if (s2_n == 0x0080)
 			{
 l0000000000015914:
 				a3_n = tLoc0188.ptr0008;
@@ -351,7 +351,7 @@ l0000000000015914:
 					goto l0000000000015880;
 				}
 				word64 a5_n;
-				gp = fn000000000001654C(gp, tLoc0188.qw0000, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
+				gp = fn000000000001654C(gp, tLoc0188.ptr0000, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
 				goto l00000000000158B8;
 			}
 l0000000000015660:
@@ -360,8 +360,8 @@ l0000000000015660:
 l0000000000015664:
 				goto l0000000000015668;
 			}
-			char * s3_n = tLoc0188.qw0000;
-			if ((uint64) strcmp(tLoc0188.qw0020, s3_n) == 0x00)
+			char * s3_n = tLoc0188.ptr0000;
+			if ((uint64) strcmp(tLoc0188.ptr0020, s3_n) == 0x00)
 				goto l0000000000015664;
 			a3_n = tLoc0188.ptr0008;
 			s4_n = 0;
@@ -369,43 +369,43 @@ l0000000000015664:
 			{
 				word64 a4_n;
 				gp = fn000000000001654C(gp, s3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
-				s2_n = (int64) tLoc0188.dw00A0;
+				s2_n.u0 = (int64) tLoc0188.dw00A0;
 				goto l0000000000015668;
 			}
 l0000000000015880:
-			byte * a4_n;
+			Eq_n a4_n;
 			Eq_n a5_n;
 			word64 a6_n;
 			word64 a7_n;
-			gp = fn000000000001654C(fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7_n), tLoc0188.qw0000, a4_n, a5_n, a6_n, a7_n, out a4_n, out a5_n, out a6_n, out a7);
+			gp = fn000000000001654C(fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7_n), tLoc0188.ptr0000, a4_n, a5_n, a6_n, a7_n, out a4_n, out a5_n, out a6_n, out a7);
 			if (s4_n != 0x00)
 			{
 l00000000000158B8:
 				a5_n.u0 = 0x00010008;
 				if ((s0_n & 0x00010008) != 0x00010008)
 					goto l00000000000158C8;
-				a3_n = tLoc0188.qw0018;
+				a3_n = tLoc0188.ptr0018;
 				s0_n = 1;
 				if (a3_n == null)
 					goto l00000000000158C8;
 				goto l0000000000015C2C;
 			}
-			s2_n = (int64) tLoc0188.dw00A0;
+			s2_n.u0 = (int64) tLoc0188.dw00A0;
 l0000000000015668:
 			char * a3_n = tLoc0188.ptr0010;
 			if (a3_n != null)
 			{
 				word64 a4_n;
 				gp = fn000000000001654C(gp, a3_n, s2_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
-				s2_n = (int64) tLoc0188.dw00A0;
+				s2_n.u0 = (int64) tLoc0188.dw00A0;
 			}
 			Eq_n a5_n;
 			word64 a6_n;
 			word64 a7_n;
 			Eq_n a5_n;
 			word64 a4_n;
-			gp = fn000000000001654C(fn000000000001654C(gp, tLoc0188.qw0020, s2_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7_n), tLoc0188.qw0030, (int64) tLoc0188.dw00A0, a5_n, a6_n, a7_n, out a4_n, out a5_n, out a6_n, out a7);
-			char * a3_n = tLoc0188.qw0028;
+			gp = fn000000000001654C(fn000000000001654C(gp, tLoc0188.ptr0020, s2_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7_n), tLoc0188.ptr0030, (int64) tLoc0188.dw00A0, a5_n, a6_n, a7_n, out a4_n, out a5_n, out a6_n, out a7);
+			char * a3_n = tLoc0188.ptr0028;
 			if (a3_n != null)
 			{
 				word64 a5_n;
@@ -414,7 +414,7 @@ l0000000000015668:
 			a5_n.u0 = 0x00010008;
 			if ((s0_n & 0x00010008) == 0x00010008)
 			{
-				a3_n = tLoc0188.qw0018;
+				a3_n = tLoc0188.ptr0018;
 				if (a3_n == null)
 					goto l00000000000156FC;
 				s0_n = 0;
@@ -423,10 +423,10 @@ l0000000000015C2C:
 				if (s0_n == 0x00)
 					goto l00000000000156FC;
 l00000000000158C8:
-				char * a3_n = tLoc0188.qw00B8;
+				char * a3_n = tLoc0188.ptr00B8;
 				if (a3_n != null)
 					gp = fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
-				char * a3_n = tLoc0188.qw00C0;
+				char * a3_n = tLoc0188.ptr00C0;
 				if (a3_n != null)
 				{
 					word64 a5_n;
@@ -436,16 +436,16 @@ l00000000000158C8:
 			}
 l00000000000156FC:
 			putchar(0x0A);
-			char * a3_n = tLoc0188.qw00B8;
+			char * a3_n = tLoc0188.ptr00B8;
 			if (a3_n != null)
 				gp = fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
-			char * a3_n = tLoc0188.qw00C0;
+			char * a3_n = tLoc0188.ptr00C0;
 			if (a3_n != null)
 				gp = fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
-			char * a3_n = tLoc0188.qw00A8;
+			char * a3_n = tLoc0188.ptr00A8;
 			if (a3_n != null)
 				gp = fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
-			char * a3_n = tLoc0188.qw00B0;
+			char * a3_n = tLoc0188.ptr00B0;
 			if (a3_n != null)
 			{
 				word64 a5_n;
@@ -455,17 +455,17 @@ l00000000000156FC:
 			if (a5_n != 0x00)
 			{
 				a5_n.u0 = (int64) tLoc0188.dw00A0;
-				a4_n = (byte *) 111;
+				a4_n.u0 = 111;
 				if (a5_n > 111)
 					goto l00000000000157A0;
 				word64 a5_n;
-				gp = fn000000000001654C(gp, (int64) (0x80 - (word32) a5_n), &tLoc0188.b0060, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
+				gp = fn000000000001654C(gp, (int64) (0x80 - (word32) a5_n), (char *) &tLoc0188 + 96, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
 			}
 			else
 			{
 l00000000000157A0:
 				word64 a5_n;
-				gp = fn000000000001654C(gp, &tLoc0188.b0060, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
+				gp = fn000000000001654C(gp, (char *) &tLoc0188 + 96, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7);
 			}
 l00000000000157BC:
 			Eq_n a5_n = tLoc0188.t0040;
@@ -680,10 +680,10 @@ word64 * fn00000000000164D0(word64 * a0, Eq_n a1)
 	return a0_n;
 }
 
-// 000000000001654C: Register (ptr64 Eq_n) fn000000000001654C(Register (ptr64 Eq_n) gp, Register (ptr64 char) a3, Register (ptr64 byte) a4, Register Eq_n a5, Register word64 a6, Register word64 a7, Register out Eq_n a4Out, Register out Eq_n a5Out, Register out ptr64 a6Out, Register out ptr64 a7Out)
+// 000000000001654C: Register (ptr64 Eq_n) fn000000000001654C(Register (ptr64 Eq_n) gp, Register (ptr64 char) a3, Register Eq_n a4, Register Eq_n a5, Register word64 a6, Register word64 a7, Register out Eq_n a4Out, Register out Eq_n a5Out, Register out ptr64 a6Out, Register out ptr64 a7Out)
 // Called from:
 //      fn0000000000015180
-struct Eq_n * fn000000000001654C(struct Eq_n * gp, char * a3, byte * a4, Eq_n a5, word64 a6, word64 a7, union Eq_n & a4Out, union Eq_n & a5Out, ptr64 & a6Out, ptr64 & a7Out)
+struct Eq_n * fn000000000001654C(struct Eq_n * gp, char * a3, Eq_n a4, Eq_n a5, word64 a6, word64 a7, union Eq_n & a4Out, union Eq_n & a5Out, ptr64 & a6Out, ptr64 & a7Out)
 {
 	ptr64 fp;
 	Eq_n t3_n = gp->tFFFFF870;
@@ -1180,7 +1180,7 @@ l0000000000016E24:
 	}
 	if (inet_ntop(2, &qwLoc01B8, &bLoc0188, 47) != null)
 	{
-		a2->qw0000 = (word64) __strdup(&bLoc0188);
+		a2->t0000 = __strdup(&bLoc0188);
 		qwLoc01B0 = (word64) (word32) fn0000000000016830(gp, s5_n);
 		bLoc0188 = (char) 0x00;
 		if (inet_ntop(2, &qwLoc01B0, &bLoc0188, 16) == null)
@@ -1188,7 +1188,7 @@ l0000000000016E24:
 			a0_n = gp->ptrFFFFF880;
 			goto l00000000000172C4;
 		}
-		a2->qw0030 = (word64) __strdup(&bLoc0188);
+		a2->t0030 = __strdup(&bLoc0188);
 		int64 s0_n = (int64) qwLoc01B8;
 		a2->dw00A0 = (word32) s5_n;
 		qwLoc01A0 = (word64) (word32) (~fn0000000000016830(gp, s5_n) | s0_n);
@@ -1198,7 +1198,7 @@ l0000000000016E24:
 			a0_n = gp->ptrFFFFF880;
 			goto l00000000000172C4;
 		}
-		a2->qw0028 = (word64) __strdup(&bLoc0188);
+		a2->t0028 = __strdup(&bLoc0188);
 		int64 s0_n = (int64) qwLoc01B8;
 		ui64 a0_n = fn0000000000016830(gp, s5_n);
 		int64 a3_n = (int64) qwLoc01A0;
@@ -1214,7 +1214,7 @@ l0000000000016E24:
 		word64 a5_n;
 		Eq_n a0_n = __strdup(&bLoc0188);
 		int64 s0_n = (int64) qwLoc01A8;
-		a2->qw0020 = (word64) a0_n;
+		a2->t0020 = a0_n;
 		a2->qw00B8 = fn0000000000016B68(s0_n);
 		word64 a3_n;
 		word64 a4_n;
@@ -1243,8 +1243,8 @@ l0000000000016E24:
 		a2->qw00C0 = a5_n;
 		if (s5_n == 32)
 		{
-			a2->qw00A8 = (word64) a0_n;
-			a2->qw00B0 = (word64) a0_n;
+			a2->t00A8 = a0_n;
+			a2->t00B0 = a0_n;
 			a5_n = &g_t11780;
 			goto l000000000001716C;
 		}
@@ -1256,7 +1256,7 @@ l0000000000016E24:
 			{
 				Eq_n a0_n = __strdup(&bLoc0188);
 				int64 a5_n = (int64) qwLoc01B0;
-				a2->qw00A8 = (word64) a0_n;
+				a2->t00A8 = a0_n;
 				word64 a4_n;
 				word64 a3_n;
 				word64 a3_n;
@@ -1264,7 +1264,7 @@ l0000000000016E24:
 				ptrLoc0190 = (char *) (word32) fn00000000000182B4((int64) ((word32) fn00000000000182B4(~a5_n | (int64) qwLoc01A8, out a3_n, out a4_n) + -1), out a3_n, out a4_n);
 				if (inet_ntop(2, &ptrLoc0190, &bLoc0188, 47) != null)
 				{
-					a2->qw00B0 = (word64) __strdup(&bLoc0188);
+					a2->t00B0 = __strdup(&bLoc0188);
 					__snprintf_chk(&a2->b0060, (size_t) 64, 1, (size_t) 64, "%u", 0x00);
 					goto l000000000001717C;
 				}
@@ -1281,11 +1281,11 @@ l00000000000172C4:
 		Eq_n a0_n = __strdup(&bLoc0188);
 		int64 a5_n = (int64) qwLoc01B0;
 		int64 a4_n = (int64) qwLoc01A8;
-		a2->qw00A8 = (word64) a0_n;
+		a2->t00A8 = a0_n;
 		ptrLoc0190 = (char *) (word32) (~a5_n | a4_n);
 		if (inet_ntop(2, &ptrLoc0190, &bLoc0188, 47) != null)
 		{
-			a2->qw00B0 = (word64) __strdup(&bLoc0188);
+			a2->t00B0 = __strdup(&bLoc0188);
 			a5_n = &g_t12660;
 l000000000001716C:
 			a2->b0060 = a5_n->b0000;
@@ -1452,7 +1452,7 @@ l0000000000017768:
 	}
 	else
 	{
-		a2->qw0000 = (word64) __strdup(&bLoc0168);
+		a2->t0000 = __strdup(&bLoc0168);
 		Eq_n s5_n = 0x0080;
 		if (a1 <= 0x0080)
 		{
@@ -1461,8 +1461,8 @@ l0000000000017768:
 			else
 				s2_n.u0 = 0x0080;
 			a2->dw00A0 = (word32) s5_n;
-			word64 a0_n = fn000000000001730C(gp, s5_n, &qwLoc0188);
-			a2->qw0030 = a0_n;
+			Eq_n a0_n = fn000000000001730C(gp, s5_n, &qwLoc0188);
+			a2->t0030 = a0_n;
 			if (a0_n != 0x00)
 			{
 				union Eq_n * s8_n = &qwLoc0178;
@@ -1479,18 +1479,18 @@ l0000000000017768:
 				} while (&qwLoc0188 != a5_n);
 				if (inet_ntop(0x0A, &qwLoc0178, &bLoc0168, 0x00FA) != null)
 				{
-					a2->qw0020 = (word64) __strdup(&bLoc0168);
+					a2->t0020 = __strdup(&bLoc0168);
 					a2->qw0010 = fn00000000000163B0(gp);
 					a2->qw00B8 = fn00000000000173D4(&qwLoc0178, s2_n);
 					a2->qw0018 = fn0000000000018118(gp, &qwLoc0178, s5_n);
 					if (s2_n == 0x0080)
 					{
-						Eq_n a5_n = a2->qw0020;
-						a2->qw00A8 = (word64) a5_n;
-						a2->qw00B0 = (word64) a5_n;
+						Eq_n a5_n = a2->t0020;
+						a2->t00A8 = a5_n;
+						a2->t00B0 = a5_n;
 						goto l0000000000017728;
 					}
-					a2->qw00A8 = (word64) __strdup(&bLoc0168);
+					a2->t00A8 = __strdup(&bLoc0168);
 					do
 					{
 						s8_n = (union Eq_n *) ((char *) s8_n + 1);
@@ -1499,7 +1499,7 @@ l0000000000017768:
 					} while (&bLoc0168 != s8_n);
 					if (inet_ntop(0x0A, &qwLoc0178, &bLoc0168, 0x00FA) != null)
 					{
-						a2->qw00B0 = (word64) __strdup(&bLoc0168);
+						a2->t00B0 = __strdup(&bLoc0168);
 						if ((int64) (0x80 - (word32) s2_n) == 0x0080)
 							goto l0000000000017740;
 l0000000000017740:

@@ -175,9 +175,13 @@ Eq_60: (union "Eq_60" (word20 u0) (word16 u1))
 Eq_65: (union "Eq_65" (ci16 u0) (word20 u1))
 	T_65 (in r10_20 - r15_27 @ 4068 : word20)
 	T_66 (in 1<16> @ 4068 : word16)
+Eq_69: (struct "Eq_69" 0002)
+	T_69 (in tLoc02 @ 4096 : Eq_69)
 Eq_70: (union "Eq_70" (word20 u0) (word16 u1))
 	T_70 (in r15_6 @ 4098 : Eq_70)
 	T_78 (in Mem12[&tLoc02 + 0<20>:word16] @ 409C : word16)
+Eq_75: (struct "Eq_75" 0002 (0 Eq_70 t0000))
+	T_75 (in &tLoc02 @ 409C : (ptr20 (struct 0002)))
 Eq_80: (union "Eq_80" (ui8 u0) (word16 u1))
 	T_80 (in Mem13[0x0031<p16>:byte] @ 40A0 : byte)
 	T_82 (in *(union Eq_80 *) 0x31<u16> ^ 1<8> @ 40A0 : byte)
@@ -190,7 +194,7 @@ Eq_80: (union "Eq_80" (ui8 u0) (word16 u1))
 	T_139 (in Mem16[0x0031<p16>:byte] @ 40EC : byte)
 	T_165 (in 7<16> @ 4168 : word16)
 	T_166 (in Mem7[0x0031<p16>:byte] @ 4168 : byte)
-Eq_85: (fn ui20 (ui20, Eq_88, (ptr20 word16)))
+Eq_85: (fn ui20 (ui20, Eq_88, (ptr20 Eq_89)))
 	T_85 (in vTaskDelayUntil @ 40B2 : ptr16)
 	T_86 (in signature of vTaskDelayUntil @ 461A : void)
 	T_117 (in vTaskDelayUntil @ 40D8 : ptr16)
@@ -200,6 +204,11 @@ Eq_88: (union "Eq_88" (word20 u0) (word16 u1))
 	T_98 (in 0x1F4<16> @ 40B2 : word16)
 	T_122 (in 0xFA<16> @ 40D8 : word16)
 	T_146 (in 0x19<16> @ 40FE : word16)
+Eq_89: (struct "Eq_89" 0002 (0 Eq_49 t0000))
+	T_89 (in r15 @ 40B2 : (ptr20 Eq_89))
+	T_99 (in &tLoc02 @ 40B2 : (ptr20 (struct 0002)))
+	T_123 (in &tLoc02 @ 40D8 : (ptr20 (struct 0002)))
+	T_147 (in &tLoc02 @ 40FE : (ptr20 (struct 0002)))
 Eq_90: (fn ui20 (ui20, Eq_93, Eq_94))
 	T_90 (in putchar @ 40B2 : ptr16)
 	T_91 (in signature of putchar @ 43A2 : void)
@@ -234,12 +243,20 @@ Eq_94: (union "Eq_94" (ui40 u0) (ptr16 u1) (word20 u2))
 	T_3258 (in out r15_r14_2099 @ 56AE : ptr16)
 	T_3704 (in out r13_r12_131 @ 00005B2A : ptr16)
 	T_3705 (in out r15_r14_132 @ 00005B2A : ptr16)
+Eq_102: (struct "Eq_102" 0002)
+	T_102 (in tLoc02 @ 40BC : Eq_102)
 Eq_103: (union "Eq_103" (word20 u0) (word16 u1))
 	T_103 (in r15_6 @ 40BE : Eq_103)
 	T_111 (in Mem12[&tLoc02 + 0<20>:word16] @ 40C2 : word16)
+Eq_108: (struct "Eq_108" 0002 (0 Eq_103 t0000))
+	T_108 (in &tLoc02 @ 40C2 : (ptr20 (struct 0002)))
+Eq_126: (struct "Eq_126" 0002)
+	T_126 (in tLoc02 @ 40E2 : Eq_126)
 Eq_127: (union "Eq_127" (word20 u0) (word16 u1))
 	T_127 (in r15_6 @ 40E4 : Eq_127)
 	T_135 (in Mem12[&tLoc02 + 0<20>:word16] @ 40E8 : word16)
+Eq_132: (struct "Eq_132" 0002 (0 Eq_127 t0000))
+	T_132 (in &tLoc02 @ 40E8 : (ptr20 (struct 0002)))
 Eq_149: (fn void (ptr16))
 	T_149 (in __set_stackpointer @ 414C : ptr32)
 	T_150 (in signature of __set_stackpointer : void)
@@ -690,6 +707,8 @@ Eq_538: (union "Eq_538" (ptr16 u0) ((ptr20 Eq_3828) u1))
 	T_2246 (in out r11_120 @ 00004FE6 : ptr16)
 	T_2663 (in r11_79 @ 0000527C : Eq_538)
 	T_2666 (in Mem64[v20_59 + 10<i16>:word16] @ 0000527C : word16)
+Eq_546: (struct "Eq_546" 0002)
+	T_546 (in tLoc0C @ 4480 : Eq_546)
 Eq_548: (fn Eq_558 (ui20, (ptr20 word16), Eq_400, Eq_317))
 	T_548 (in xQueueReceiveFromISR @ 449A : ptr16)
 	T_549 (in signature of xQueueReceiveFromISR @ 4FF6 : void)
@@ -2434,10 +2453,10 @@ T_68: (in sr @ 4068 : ui20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
-T_69: (in tLoc02 @ 4096 : word16)
+T_69: (in tLoc02 @ 4096 : Eq_69)
   Class: Eq_69
-  DataType: word16
-  OrigDataType: (struct (0 word16 w0000))
+  DataType: Eq_69
+  OrigDataType: (struct 0002)
 T_70: (in r15_6 @ 4098 : Eq_70)
   Class: Eq_70
   DataType: Eq_70
@@ -2458,18 +2477,18 @@ T_74: (in xTaskGetTickCount(sr, out r15_6) @ 4098 : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
-T_75: (in &tLoc02 @ 409C : (ptr20 (struct (0 word16 w0000))))
+T_75: (in &tLoc02 @ 409C : (ptr20 (struct 0002)))
   Class: Eq_75
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  DataType: (ptr20 Eq_75)
+  OrigDataType: (ptr20 (struct 0002 (0 T_78 t0000)))
 T_76: (in 0<20> @ 409C : word20)
   Class: Eq_76
   DataType: word20
   OrigDataType: word20
 T_77: (in &tLoc02 + 0<20> @ 409C : word20)
   Class: Eq_77
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 word16)
+  DataType: ptr20
+  OrigDataType: ptr20
 T_78: (in Mem12[&tLoc02 + 0<20>:word16] @ 409C : word16)
   Class: Eq_70
   DataType: Eq_70
@@ -2514,9 +2533,9 @@ T_88: (in r14 @ 40B2 : Eq_88)
   Class: Eq_88
   DataType: Eq_88
   OrigDataType: word20
-T_89: (in r15 @ 40B2 : (ptr20 word16))
+T_89: (in r15 @ 40B2 : (ptr20 Eq_89))
   Class: Eq_89
-  DataType: (ptr20 word16)
+  DataType: (ptr20 Eq_89)
   OrigDataType: (ptr20 (struct (0 T_783 t0000)))
 T_90: (in putchar @ 40B2 : ptr16)
   Class: Eq_90
@@ -2554,10 +2573,10 @@ T_98: (in 0x1F4<16> @ 40B2 : word16)
   Class: Eq_88
   DataType: word20
   OrigDataType: (union (word20 u1) (word16 u0))
-T_99: (in &tLoc02 @ 40B2 : (ptr20 (struct (0 word16 w0000))))
+T_99: (in &tLoc02 @ 40B2 : (ptr20 (struct 0002)))
   Class: Eq_89
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  DataType: (ptr20 Eq_89)
+  OrigDataType: (ptr20 (struct 0002))
 T_100: (in vTaskDelayUntil(putchar(sr_19, 0x58<16>, out r11_46), 0x1F4<16>, &tLoc02) @ 40B2 : word20)
   Class: Eq_2
   DataType: ui20
@@ -2566,10 +2585,10 @@ T_101: (in sr @ 40B2 : ui20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
-T_102: (in tLoc02 @ 40BC : word16)
+T_102: (in tLoc02 @ 40BC : Eq_102)
   Class: Eq_102
-  DataType: word16
-  OrigDataType: (struct (0 word16 w0000))
+  DataType: Eq_102
+  OrigDataType: (struct 0002)
 T_103: (in r15_6 @ 40BE : Eq_103)
   Class: Eq_103
   DataType: Eq_103
@@ -2590,18 +2609,18 @@ T_107: (in xTaskGetTickCount(sr, out r15_6) @ 40BE : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
-T_108: (in &tLoc02 @ 40C2 : (ptr20 (struct (0 word16 w0000))))
+T_108: (in &tLoc02 @ 40C2 : (ptr20 (struct 0002)))
   Class: Eq_108
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  DataType: (ptr20 Eq_108)
+  OrigDataType: (ptr20 (struct 0002 (0 T_111 t0000)))
 T_109: (in 0<20> @ 40C2 : word20)
   Class: Eq_109
   DataType: word20
   OrigDataType: word20
 T_110: (in &tLoc02 + 0<20> @ 40C2 : word20)
   Class: Eq_110
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 word16)
+  DataType: ptr20
+  OrigDataType: ptr20
 T_111: (in Mem12[&tLoc02 + 0<20>:word16] @ 40C2 : word16)
   Class: Eq_103
   DataType: Eq_103
@@ -2650,10 +2669,10 @@ T_122: (in 0xFA<16> @ 40D8 : word16)
   Class: Eq_88
   DataType: word20
   OrigDataType: (union (word20 u1) (word16 u0))
-T_123: (in &tLoc02 @ 40D8 : (ptr20 (struct (0 word16 w0000))))
+T_123: (in &tLoc02 @ 40D8 : (ptr20 (struct 0002)))
   Class: Eq_89
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  DataType: (ptr20 Eq_89)
+  OrigDataType: (ptr20 (struct 0002))
 T_124: (in vTaskDelayUntil(putchar(sr_19, 0x59<16>, out r11_46), 0xFA<16>, &tLoc02) @ 40D8 : word20)
   Class: Eq_2
   DataType: ui20
@@ -2662,10 +2681,10 @@ T_125: (in sr @ 40D8 : ui20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
-T_126: (in tLoc02 @ 40E2 : word16)
+T_126: (in tLoc02 @ 40E2 : Eq_126)
   Class: Eq_126
-  DataType: word16
-  OrigDataType: (struct (0 word16 w0000))
+  DataType: Eq_126
+  OrigDataType: (struct 0002)
 T_127: (in r15_6 @ 40E4 : Eq_127)
   Class: Eq_127
   DataType: Eq_127
@@ -2686,18 +2705,18 @@ T_131: (in xTaskGetTickCount(sr, out r15_6) @ 40E4 : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
-T_132: (in &tLoc02 @ 40E8 : (ptr20 (struct (0 word16 w0000))))
+T_132: (in &tLoc02 @ 40E8 : (ptr20 (struct 0002)))
   Class: Eq_132
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  DataType: (ptr20 Eq_132)
+  OrigDataType: (ptr20 (struct 0002 (0 T_135 t0000)))
 T_133: (in 0<20> @ 40E8 : word20)
   Class: Eq_133
   DataType: word20
   OrigDataType: word20
 T_134: (in &tLoc02 + 0<20> @ 40E8 : word20)
   Class: Eq_134
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 word16)
+  DataType: ptr20
+  OrigDataType: ptr20
 T_135: (in Mem12[&tLoc02 + 0<20>:word16] @ 40E8 : word16)
   Class: Eq_127
   DataType: Eq_127
@@ -2746,10 +2765,10 @@ T_146: (in 0x19<16> @ 40FE : word16)
   Class: Eq_88
   DataType: word20
   OrigDataType: (union (word20 u1) (word16 u0))
-T_147: (in &tLoc02 @ 40FE : (ptr20 (struct (0 word16 w0000))))
+T_147: (in &tLoc02 @ 40FE : (ptr20 (struct 0002)))
   Class: Eq_89
-  DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  DataType: (ptr20 Eq_89)
+  OrigDataType: (ptr20 (struct 0002))
 T_148: (in vTaskDelayUntil(putchar(sr_19, 0x5A<16>, out r11_46), 0x19<16>, &tLoc02) @ 40FE : word20)
   Class: Eq_2
   DataType: ui20
@@ -4350,10 +4369,10 @@ T_545: (in fp @ 4480 : ptr16)
   Class: Eq_545
   DataType: ptr16
   OrigDataType: ptr16
-T_546: (in tLoc0C @ 4480 : word16)
+T_546: (in tLoc0C @ 4480 : Eq_546)
   Class: Eq_546
-  DataType: word16
-  OrigDataType: (struct (0 word16 w0000))
+  DataType: Eq_546
+  OrigDataType: (struct 0002)
 T_547: (in bLoc0A @ 4480 : Eq_93)
   Class: Eq_93
   DataType: Eq_93
@@ -4389,10 +4408,10 @@ T_553: (in r15 @ 449A : Eq_317)
 		(28 T_2299 t0028)
 		(2C T_2309 t002C)
 		(2E T_2332 t002E)))
-T_554: (in &tLoc0C @ 449A : (ptr20 (struct (0 word16 w0000))))
+T_554: (in &tLoc0C @ 449A : (ptr20 (struct 0002)))
   Class: Eq_551
   DataType: (ptr20 word16)
-  OrigDataType: (ptr20 (struct (0 word16 w0000)))
+  OrigDataType: (ptr20 (struct 0002))
 T_555: (in 0xA<32> @ 449A : uipr32)
   Class: Eq_555
   DataType: ui16
@@ -17798,22 +17817,33 @@ typedef union Eq_65 {
 	word20 u1;
 } Eq_65;
 
+typedef struct Eq_69 {	// size: 2 2
+} Eq_69;
+
 typedef union Eq_70 {
 	word20 u0;
 	word16 u1;
 } Eq_70;
+
+typedef struct Eq_75 {	// size: 2 2
+	Eq_70 t0000;	// 0
+} Eq_75;
 
 typedef union Eq_80 {
 	ui8 u0;
 	word16 u1;
 } Eq_80;
 
-typedef ui20 (Eq_85)(ui20, Eq_88, word16 *);
+typedef ui20 (Eq_85)(ui20, Eq_88, Eq_89 *);
 
 typedef union Eq_88 {
 	word20 u0;
 	word16 u1;
 } Eq_88;
+
+typedef struct Eq_89 {	// size: 2 2
+	Eq_49 t0000;	// 0
+} Eq_89;
 
 typedef ui20 (Eq_90)(ui20, Eq_93, Eq_94);
 
@@ -17829,15 +17859,29 @@ typedef union Eq_94 {
 	word20 u2;
 } Eq_94;
 
+typedef struct Eq_102 {	// size: 2 2
+} Eq_102;
+
 typedef union Eq_103 {
 	word20 u0;
 	word16 u1;
 } Eq_103;
 
+typedef struct Eq_108 {	// size: 2 2
+	Eq_103 t0000;	// 0
+} Eq_108;
+
+typedef struct Eq_126 {	// size: 2 2
+} Eq_126;
+
 typedef union Eq_127 {
 	word20 u0;
 	word16 u1;
 } Eq_127;
+
+typedef struct Eq_132 {	// size: 2 2
+	Eq_127 t0000;	// 0
+} Eq_132;
 
 typedef void (Eq_149)(ptr16);
 
@@ -18141,6 +18185,9 @@ typedef union Eq_538 {
 	ptr16 u0;
 	struct Eq_3828 * u1;
 } Eq_538;
+
+typedef struct Eq_546 {	// size: 2 2
+} Eq_546;
 
 typedef Eq_558 (Eq_548)(ui20, word16 *, Eq_400, Eq_317);
 

@@ -64,7 +64,7 @@ void fn004011B0(void * dwArg04)
 	if (dwArg04 == null && dwArg04 == null)
 	{
 		fn004011FC(&tLoc0C);
-		ebx_n = tLoc0C.dw0004;
+		ebx_n = tLoc0C.ptr0004;
 	}
 	memcpy(fn00401158(), ebx_n, 0x9C);
 	_InitTermAndUnexPtrs();
@@ -78,6 +78,6 @@ void fn004011FC(struct Eq_n * dwArg04)
 {
 	g_dw4020F8 = (char *) fn00401158() + 28;
 	dwArg04->dw0000 = 0x82727349;
-	dwArg04->dw0004 = 0x004020E4;
+	dwArg04->ptr0004 = 0x004020E4;
 }
 

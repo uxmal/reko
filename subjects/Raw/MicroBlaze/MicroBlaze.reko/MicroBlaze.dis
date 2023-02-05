@@ -84,6 +84,7 @@ word32 fn00000248(word32 r0, word32 r3, word32 r26, word32 r27, word32 r28, word
 // Trashed: r0 r1 r10 r11 r12 r15 r18 r19 r20 r21 r22 r23 r24 r3 r4 r5 r6 r7 r8 r9
 // Preserved:
 fn00000248_entry:
+	struct <anonymous> tLoc34
 l00000248:
 	fn00018150()
 	fn0001889C()
@@ -96,7 +97,7 @@ l000002AC_thunk_fn000002CC:
 	word32 r3_50
 	word32 r5_52
 	word32 r6_53
-	word32 r0_38 = fn000002CC(r0, r3, 0x199D8<32>, r26, r27, r28, r29, r30, out r3_50, out r5_52, out r6_53, out r15_42, out r19_44, out r21_46, out r22_47, out r23_48)
+	word32 r0_38 = fn000002CC(r0, r3, 0x199D8<32>, r26, r27, r28, r29, r30, tLoc34, out r3_50, out r5_52, out r6_53, out r15_42, out r19_44, out r21_46, out r22_47, out r23_48)
 	r3Out = r3_50
 	r5Out = r5_52
 	r6Out = r6_53
@@ -119,34 +120,34 @@ void fn00000284(word32 r0, word32 r3, word32 r6, word32 r26, word32 r27, word32 
 // Trashed: r0 r1 r10 r11 r12 r15 r18 r19 r20 r21 r22 r23 r24 r3 r4 r5 r6 r7 r8 r9
 // Preserved:
 fn00000284_entry:
+	struct <anonymous> tLoc18
 l00000284:
 l000002AC_thunk_fn000002CC:
-	word32 r3_54
-	word32 r5_55
-	word32 r6_56
-	word32 r15_57
-	word32 r19_58
-	word32 r21_59
-	word32 r22_60
-	word32 r23_61
-	fn000002CC(r0, r3, r6, r26, r27, r28, r29, r30, out r3_54, out r5_55, out r6_56, out r15_57, out r19_58, out r21_59, out r22_60, out r23_61)
+	word32 r3_55
+	word32 r5_56
+	word32 r6_57
+	word32 r15_58
+	word32 r19_59
+	word32 r21_60
+	word32 r22_61
+	word32 r23_62
+	fn000002CC(r0, r3, r6, r26, r27, r28, r29, r30, tLoc18, out r3_55, out r5_56, out r6_57, out r15_58, out r19_59, out r21_60, out r22_61, out r23_62)
 	return
 fn00000284_exit:
 
 
-word32 fn000002CC(word32 r0, word32 r3, word32 r22, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r15Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out)
+word32 fn000002CC(word32 r0, word32 r3, word32 r22, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, struct <anonymous> tArg401C, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r15Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn00000248
 //      fn00000284
-// MayUse:  r0:[0..31] r22:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
+// MayUse:  r0:[0..31] r22:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] Stack +401C:[0..31]
 // LiveOut: r0 r15 r19 r21 r22 r23 r3 r5 r6
 // Trashed: r0 r10 r11 r12 r15 r18 r19 r20 r21 r22 r23 r24 r3 r4 r5 r6 r7 r8 r9
 // Preserved: r1
 fn000002CC_entry:
 	ptr32 fp
-	struct <anonymous> tArg401C
 	word32 dwArg00
 	word32 dwArg4020
 	r3_14 = r3

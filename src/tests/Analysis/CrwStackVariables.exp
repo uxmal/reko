@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // MayUse:  ds:[0..15] Stack +0004:[0..31]
 // DataTypes: 
-//   ds: (ptr16 (segment (200 word16 w0200)))
+//   ds: (ptr16 (segment 0202))
 //   Stack +0004: segptr32
 // LiveOut:
 // Trashed: SCZO ax bx es Top
@@ -47,7 +47,7 @@ fn0C00_0000_exit:
 Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // MayUse:  Stack +0002:[0..31]
 // DataTypes: 
-//   Stack +0002: (ptr32 (struct (4 word16 w0004)))
+//   Stack +0002: (ptr32 (struct 0006))
 // LiveOut: ax
 // Trashed: ax bx es Top
 // Preserved: bp sp
@@ -78,7 +78,7 @@ fn0C00_0020_exit:
 Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // MayUse:  Stack +0002:[0..31] Stack +0006:[0..15]
 // DataTypes: 
-//   Stack +0002: (ptr32 (struct (6 word16 w0006)))
+//   Stack +0002: (ptr32 (struct 0008))
 //   Stack +0006: word16
 // LiveOut: ax
 // Trashed: SCZO ax bx es Top

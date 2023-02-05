@@ -3452,8 +3452,8 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 //      __make_fp
 void __pack_f(struct Eq_n * r4)
 {
-	Eq_n r3_n = r4->dw0000;
-	Eq_n r4_n = r4->dw000C;
+	Eq_n r3_n = r4->t0000;
+	Eq_n r4_n = r4->t000C;
 	if ((word32) (r3_n < 2) != 0x00)
 		return;
 	if ((r3_n ^ 0x04) == 0x00)

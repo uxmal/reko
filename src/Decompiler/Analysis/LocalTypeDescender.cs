@@ -122,6 +122,17 @@ namespace Reko.Analysis
 
             public override DataType VisitStructure(StructureType str)
             {
+                // Do not transform user-defined structures
+                if (str.UserDefined)
+                    return str;
+                int size = str.MeasureSize();
+                if (size > 0)
+                {
+                    return new StructureType(size)
+                    {
+                        IsSegment = str.IsSegment,
+                    };
+                }
                 if (visitedTypes.Contains(str))
                     return str;
                 visitedTypes.Add(str);

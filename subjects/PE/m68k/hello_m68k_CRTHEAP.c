@@ -584,9 +584,9 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 {
 	ptr32 fp;
 	ptr32 a6;
-	word32 tLoc1C;
-	word32 tLoc08;
-	tLoc1C = fp + ~0x17;
+	Eq_n tLoc1C;
+	Eq_n tLoc08;
+	tLoc1C = (Eq_n) (fp + ~0x17);
 	struct Eq_n * a0_n;
 	if (fn0000273C(fp + ~0x17, a5, out a0_n) != null)
 	{
@@ -607,8 +607,8 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 			}
 			else
 			{
-				a3_n = tLoc1C + 0x00;
-				tLoc1C += 0x04;
+				a3_n = (struct Eq_n *) *tLoc1C;
+				tLoc1C = (Eq_n) ((word32) tLoc1C + 4);
 			}
 			a3_n->t0004 = dwArg04;
 			Eq_n d1_n;
@@ -639,11 +639,11 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 					if (d0_n - a5->dwFFFFFAD8 > 0x00)
 						a5->dwFFFFFAD8 = d0_n;
 				}
-				fn00002E18(a3_n, dwArg08, tLoc08 + 0x00, &tLoc1C);
+				fn00002E18(a3_n, dwArg08, *tLoc08, &tLoc1C);
 				struct Eq_n * a0_n = tLoc08;
-				word32 d0_n = tLoc08 + 0x00 + 4;
+				word32 d0_n = *((word32) *tLoc08 + 4);
 				Eq_n d1_n = a0_n->t0004;
-				word32 * dwLoc28_n = &tLoc1C;
+				struct Eq_n *** dwLoc28_n = &tLoc1C;
 				up32 d0_n = SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03);
 				fn00002E18(a0_n, d0_n, a3_n, dwLoc28_n);
 				Eq_n d0_n = a5->ptrFFFFFACC->t0004;
@@ -661,11 +661,11 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 		}
 	}
 l00002DE8:
-	while (tLoc1C + 0x00 != 0x00)
+	while (*tLoc1C != 0x00)
 	{
-		tLoc1C + 0x00 + 0x00 = a5->ptrFFFFFAD0;
-		a5->ptrFFFFFAD0 = tLoc1C + 0x00;
-		tLoc1C += 0x04;
+		**tLoc1C = (Eq_n) a5->ptrFFFFFAD0;
+		a5->ptrFFFFFAD0 = (struct Eq_n *) *tLoc1C;
+		tLoc1C = (Eq_n) ((word32) tLoc1C + 4);
 	}
 	a5Out = a5;
 	a6Out = a6;
@@ -675,10 +675,10 @@ l00002DE8:
 word16 g_a2C58[] = // 00002C58
 	{
 	};
-// 00002E18: void fn00002E18(Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Stack (ptr32 Eq_n) dwArg0C, Stack (ptr32 word32) dwArg10)
+// 00002E18: void fn00002E18(Stack (ptr32 Eq_n) dwArg04, Stack up32 dwArg08, Stack (ptr32 Eq_n) dwArg0C, Stack (ptr32 (ptr32 (ptr32 Eq_n))) dwArg10)
 // Called from:
 //      fn00002BB4
-void fn00002E18(struct Eq_n * dwArg04, up32 dwArg08, struct Eq_n * dwArg0C, word32 * dwArg10)
+void fn00002E18(struct Eq_n * dwArg04, up32 dwArg08, struct Eq_n * dwArg0C, struct Eq_n *** dwArg10)
 {
 	Eq_n d2_n = dwArg04->t0004;
 	struct Eq_n * a2_n = dwArg04;
@@ -702,7 +702,7 @@ void fn00002E18(struct Eq_n * dwArg04, up32 dwArg08, struct Eq_n * dwArg0C, word
 		{
 			struct Eq_n ** a0_n = *dwArg10;
 			struct Eq_n * v32_n = *a0_n;
-			*dwArg10 = (char *) a0_n + 4;
+			*dwArg10 = (struct Eq_n ***) ((char *) a0_n + 4);
 			v32_n->t0004 = d2_n;
 			Eq_n d2_n;
 			__bclr<word32>(d2_n, 0x00, out d2_n);
@@ -716,10 +716,10 @@ void fn00002E18(struct Eq_n * dwArg04, up32 dwArg08, struct Eq_n * dwArg0C, word
 	a2_n->dw0000 = dwArg0C;
 }
 
-// 00002EA8: Register int32 fn00002EA8(Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04, Stack (ptr32 word32) dwArg08)
+// 00002EA8: Register int32 fn00002EA8(Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04, Stack (ptr32 (ptr32 Eq_n)) dwArg08)
 // Called from:
 //      fn00002BB4
-int32 fn00002EA8(struct Eq_n * a5, Eq_n dwArg04, word32 * dwArg08)
+int32 fn00002EA8(struct Eq_n * a5, Eq_n dwArg04, struct Eq_n ** dwArg08)
 {
 	if ((char *) &a5->ptrFFFFFAD0 + 4 - a5->ptrFFFFFAC8 == 0x00)
 		return -3;
@@ -738,7 +738,7 @@ int32 fn00002EA8(struct Eq_n * a5, Eq_n dwArg04, word32 * dwArg08)
 			break;
 		a1_n = a0_n;
 	}
-	*dwArg08 = a1_n;
+	*dwArg08 = (struct Eq_n **) a1_n;
 	Eq_n d1_n = a1_n->t0004;
 	int32 d0_n = 0;
 	if (SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - dwArg04 != 0x00)
