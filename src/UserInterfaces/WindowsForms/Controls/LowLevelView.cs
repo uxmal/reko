@@ -46,6 +46,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public LowLevelView()
         {
             InitializeComponent();
+            UiTools.AddSelectAllHandler(txtAddress);
             txtAddressWrapped = new ToolStripTextBoxWrapper(txtAddress);
             btnBackWrapped = new ToolStripButtonWrapper(btnBack);
             btnFwdWrapped = new ToolStripButtonWrapper(btnForward);
