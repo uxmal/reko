@@ -2,7 +2,7 @@ void fn0C00_0000(Register byte al, Register selector ds)
 // MayUse:  al:[0..7] ds:[0..15]
 // DataTypes: 
 //   al: byte
-//   ds: (ptr16 (segment (300 T_4 t0300)))
+//   ds: (ptr16 (segment 0301))
 // LiveOut:
 // Trashed: SCZO al Top
 // Preserved: sp

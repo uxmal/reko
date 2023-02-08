@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // DataTypes: 
-//   ds: (ptr16 (segment (300 T_2 t0300) (304 T_6 t0304) (308 T_15 t0308) (30C T_13 t030C)))
+//   ds: (ptr16 (segment 0310))
 // LiveOut:
 // Trashed: SCZO ax bx FPU -1 FPU -2 Top
 // Preserved: sp
@@ -48,7 +48,7 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg
 //   ds: (ptr16 (segment))
 //   FPU +0: real64
 //   FPU +1: real64
-//   Stack +0002: (memptr T_4 (struct (0 T_3 t0000) (4 T_8 t0004)))
+//   Stack +0002: (memptr (ptr16 (segment)) (struct 0008))
 // LiveOut:
 // Trashed: bx Top
 // Preserved: bp sp
@@ -84,7 +84,7 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // MayUse:  ds:[0..15] Stack +0002:[0..15]
 // DataTypes: 
 //   ds: (ptr16 (segment))
-//   Stack +0002: (memptr T_3 (struct (0 T_2 t0000)))
+//   Stack +0002: (memptr (ptr16 (segment)) (struct 0004))
 // LiveOut: FPU -1
 // Trashed: bx FPU -1 Top
 // Preserved: bp sp

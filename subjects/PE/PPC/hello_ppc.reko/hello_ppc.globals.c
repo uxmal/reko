@@ -8,7 +8,7 @@ Eq_n g_t0001;
 word32 g_dw0003; // 00000003
 Eq_n g_t0016;
 ui32 g_dw0120; // 00000120
-Eq_n g_t0910;
+word32 g_dw0910; // 00000910
 word32 g_dw092C; // 0000092C
 byte g_b0BFF; // 00000BFF
 Eq_n g_t1000;
