@@ -236,7 +236,7 @@ uint32 g_dw8298 = 1000000; // 00008298
 //      vParTestToggleLED
 struct Eq_n * PDCWrite(struct Eq_n * r0, ui32 r1)
 {
-	ui32 tLoc14;
+	Eq_n tLoc14;
 	struct Eq_n * r4_n = g_ptr82CC;
 	SSIDataPut(r4_n, r0 & 0x0F);
 	SSIDataPut(r4_n, r1);
@@ -1139,10 +1139,10 @@ void MPU_xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008AE4: Register Eq_n MPU_xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
+// 00008AE4: Register Eq_n MPU_xQueueGenericSend(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register Eq_n r3, Register Eq_n lr, Register ptr32 cpsr)
 // Called from:
 //      vCheckTask
-Eq_n MPU_xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
+Eq_n MPU_xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	Eq_n lr_n = xQueueGenericSend(r0, r1, r2, r3, lr, cpsr);
@@ -1169,10 +1169,10 @@ void MPU_uxQueueSpacesAvailable(ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008B6C: Register Eq_n MPU_xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register up32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr)
+// 00008B6C: Register Eq_n MPU_xQueueGenericReceive(Register Eq_n r0, Register Eq_n r1, Register word32 r2, Register word32 r3, Register Eq_n lr, Register ptr32 cpsr)
 // Called from:
 //      vPrintTask
-Eq_n MPU_xQueueGenericReceive(Eq_n r0, Eq_n r1, up32 r2, word32 r3, Eq_n lr, ptr32 cpsr)
+Eq_n MPU_xQueueGenericReceive(Eq_n r0, Eq_n r1, word32 r2, word32 r3, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	Eq_n lr_n;
@@ -1209,8 +1209,8 @@ void MPU_xQueueCreateMutex(Eq_n lr, ptr32 cpsr)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008C20: void MPU_xQueueTakeMutexRecursive(Register Eq_n r0, Register up32 r1, Register Eq_n lr, Register ptr32 cpsr)
-void MPU_xQueueTakeMutexRecursive(Eq_n r0, up32 r1, Eq_n lr, ptr32 cpsr)
+// 00008C20: void MPU_xQueueTakeMutexRecursive(Register Eq_n r0, Register word32 r1, Register Eq_n lr, Register ptr32 cpsr)
+void MPU_xQueueTakeMutexRecursive(Eq_n r0, word32 r1, Eq_n lr, ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	xQueueTakeMutexRecursive(r0, r1, lr, cpsr);

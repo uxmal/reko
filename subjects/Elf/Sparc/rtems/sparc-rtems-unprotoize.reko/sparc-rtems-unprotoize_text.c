@@ -4,14 +4,13 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-// 00011498: void _start(Register (ptr32 Eq_n) g1, Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
-void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7)
+// 00011498: void _start(Register (ptr32 Eq_n) g1, Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7, Stack Eq_n tArg44)
+void _start(void (* g1)(), word32 o3, word32 o4, word32 o5, word32 o7, Eq_n tArg44)
 {
-	Eq_n tArg44;
 	if (g1 == null)
 	{
 		atexit(&g_t16EE4);
-		_environ = (char *) &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04);
+		_environ = &tArg44 + ((_init(o3, o4, o5, o7) << 0x02) + 0x04) / 4;
 		exit(main(&tArg44));
 	}
 	else

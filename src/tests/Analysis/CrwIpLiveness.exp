@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:[0..15]
 // DataTypes: 
-//   ds: (ptr16 (segment (100 T_1 t0100) (102 T_11 t0102) (104 T_21 t0104)))
+//   ds: (ptr16 (segment 0106))
 // LiveOut:
 // Trashed: SCZO ax bx di si Top
 // Preserved: sp
@@ -89,7 +89,7 @@ fn0C00_0026_exit:
 Register word16 fn0C00_0033(Sequence segptr32 ds_si)
 // MayUse:  Sequence ds:si:[0..31]
 // DataTypes: 
-//   Sequence ds:si: (ptr32 (struct (0 T_1 t0000)))
+//   Sequence ds:si: (ptr32 (struct 0002))
 // LiveOut: ax
 // Trashed: SCZO ax Top
 // Preserved: sp

@@ -1,14 +1,13 @@
-void _start(word32 g1, word32 o3, word32 o4, word32 o5, word32 o7)
+void _start(word32 g1, word32 o3, word32 o4, word32 o5, word32 o7, struct <anonymous> tArg44)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  g1:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
+// MayUse:  g1:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31] Stack +0044:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved: sp
 // Terminates process
 _start_exit:
 _start_entry:
-	struct <anonymous> tArg44
 l00011498:
 	branch g1 == 0<32> l000114B0_ds_t
 l000114B0_ds_t:
