@@ -196,7 +196,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(0, PrimitiveType.Word32, true);
             var opSrc = this.Operand(1);
-            var intrinsic = host.Intrinsic("__clz", false, PrimitiveType.Int32, opSrc);
+            var intrinsic = m.Fn(CommonOps.CountLeadingZeros, opSrc);
             m.Assign(opDst, intrinsic);
         }
 
@@ -208,7 +208,7 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(flags, m.Cond(op(dst, src)));
         }
 
-        private void RewriteCrc(string fnName, DataType dt)
+        private void RewriteCrc(IntrinsicProcedure intrinsic, DataType dt)
         {
             var src1 = this.Operand(1);
             var src2 = this.Operand(2);
@@ -217,8 +217,8 @@ namespace Reko.Arch.Arm.AArch32
                 src2 = EmitNarrowingSlice(src2, dt);
             }
             var dst = this.Operand(0);
-            var intrinsic = host.Intrinsic(fnName, false, PrimitiveType.UInt32, src1, src2);
-            m.Assign(dst, intrinsic);
+            var src = m.Fn(intrinsic.MakeInstance(dt), src1, src2);
+            m.Assign(dst, src);
         }
 
 
@@ -453,6 +453,27 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(1);
             var src2 = Operand(2);
             m.Assign(dst, m.ISub(src1, src2));
+        }
+
+        private void RewriteSwp(PrimitiveType type)
+        {
+            var src1 = Operand(1);
+            if (src1.DataType.BitSize > type.BitSize)
+            {
+                src1 = EmitNarrowingSlice(src1, type);
+            }
+            Expression result = m.Fn(
+                AtomicOps.atomic_exchange.MakeInstance(32, type),
+                m.AddrOf(new Pointer(type, 32), Operand(2)),
+                src1);
+            var dst = Operand(0, PrimitiveType.Word32, true);
+            if (dst.DataType.BitSize > type.BitSize)
+            {
+                var tmp = binder.CreateTemporary(type);
+                m.Assign(tmp, result);
+                result = m.Convert(tmp, type, dst.DataType);
+            }
+            m.Assign(dst, result);
         }
 
         private void RewriteMultiplyAccumulate(Func<Expression, Expression, Expression> op)
@@ -706,26 +727,14 @@ namespace Reko.Arch.Arm.AArch32
                 m.Cond(dst));
         }
 
-        private void RewriteQasx(string name)
-        {
-            var src1 = Operand(1);
-            var src2 = Operand(2);
-            var dst = Operand(0);
-            var dtArray = new ArrayType(PrimitiveType.Int16, 2);
-            var qasx = host.Intrinsic(name, false, dtArray, src1, src2);
-            m.Assign(dst, qasx);
-        }
-
-        private void RewriteQDAddSub(Func<Expression, Expression, Expression> op)
+        private void RewriteQDAddSub(IntrinsicProcedure  op)
         {
             var dst = Operand(0, PrimitiveType.Word32, true);
-            var src2 = m.SMul(Operand(2), m.Int32(2));
-            var sat = host.Intrinsic("__signed_sat_32", false, PrimitiveType.Int32, src2);
-            src2 = sat;
+            var sat = m.Fn(CommonOps.SatMul.MakeInstance(PrimitiveType.Int32), Operand(2), m.Int32(2));
+            Expression src2 = sat;
             var src1 = Operand(1);
-            var sum = op(src1, src2);
-            sat = host.Intrinsic("__signed_sat_32", false, PrimitiveType.Int32, sum);
-            m.Assign(dst, sat);
+            var sum = m.Fn(op.MakeInstance(PrimitiveType.Int32), src1, src2);
+            m.Assign(dst, sum);
             m.Assign(
                 Q(),
                 m.Cond(dst));

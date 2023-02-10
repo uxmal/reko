@@ -109,6 +109,11 @@ namespace Reko.Core.Intrinsics
             .Param("T")
             .Returns(PrimitiveType.Bool);
 
+        // Saturated arithmetic
+        public static readonly IntrinsicProcedure SatAdd = IntrinsicBuilder.GenericBinary("__sat_add");
+        public static readonly IntrinsicProcedure SatSub = IntrinsicBuilder.GenericBinary("__sat_sub");
+        public static readonly IntrinsicProcedure SatMul = IntrinsicBuilder.GenericBinary("__sat_mul");
+
         // Halt the processor
         public static readonly IntrinsicProcedure Halt = new IntrinsicBuilder(
             "__halt", true, new ProcedureCharacteristics

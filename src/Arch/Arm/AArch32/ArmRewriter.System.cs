@@ -34,20 +34,20 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (instr.Operands.Length > 0)
             {
-                m.SideEffect(host.Intrinsic("__breakpoint", true, VoidType.Instance, Operand(0)));
+                m.SideEffect(m.Fn(bkpt_arg_intrinsic, Operand(0)));
             }
             else
             {
-                m.SideEffect(host.Intrinsic("__breakpoint", true, VoidType.Instance));
+                m.SideEffect(m.Fn(bkpt_intrinsic));
             }
         }
 
-        private void RewriteCdp(string name)
+        private void RewriteCdp(IntrinsicProcedure intrinsic)
         {
             var ops = Enumerable.Range(0, instr.Operands.Length)
                 .Select(i => Operand(i))
                 .ToArray();
-            m.SideEffect(host.Intrinsic("__cdp", true, VoidType.Instance, ops));
+            m.SideEffect(m.Fn(intrinsic, ops));
         }
 
         private void RewriteClrex()
@@ -87,7 +87,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteHvc()
         {
             var n = Operand(0);
-            m.SideEffect(host.Intrinsic("__hypervisor", true, VoidType.Instance, n));
+            m.SideEffect(m.Fn(hvc_intrinsic, n));
         }
 
         private void RewriteIsb()
@@ -97,16 +97,16 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
         }
 
-        private void RewriteLdc(string fnName)
+        private void RewriteLdc(IntrinsicProcedure intrinsic)
         {
             var src2 = Operand(2);
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
             m.Assign(tmp, src2);
-            var  intrinsic = host.Intrinsic(fnName, false, PrimitiveType.Word32, 
+            var src= m.Fn(intrinsic, 
                 Operand(1),
                 tmp);
             var dst = Operand(0, PrimitiveType.Word32, true);
-            m.Assign(dst, intrinsic);
+            m.Assign(dst, src);
         }
 
         private void RewriteMcr(IntrinsicProcedure intrinsic)

@@ -36,6 +36,12 @@ namespace Reko.Core.Intrinsics
             .Param("T")
             .Param("T")
             .Returns(PrimitiveType.Bool);
+        public static readonly IntrinsicProcedure atomic_exchange = new IntrinsicBuilder("std::atomic_exchange", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Returns("T");
+
         public static readonly IntrinsicProcedure atomic_test_and_set = new IntrinsicBuilder("atomic_test_and_set", true)
             .GenericTypes("T")
             .PtrParam("T")

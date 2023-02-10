@@ -92,7 +92,7 @@ namespace Reko.Arch.Arm.AArch32
                 var aDst = new ArrayType(dstType, cElems);
                 var tmpSrc = binder.CreateTemporary(aSrc);
                 m.Assign(tmpSrc, src);
-                m.Assign(dst, host.Intrinsic($"__vcvt_{vectorConversionNames[instr.vector_data]}", true, aDst, tmpSrc));
+                m.Assign(dst, m.Fn(vcvt_intrinsic.MakeInstance(aSrc, aDst), tmpSrc));
             }
         }
 
@@ -549,21 +549,23 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
+        [Obsolete("", true)]
         private void RewriteVectorBinOp(string fnNameFormat)
         {
             RewriteVectorBinOp(fnNameFormat, instr.vector_data, 0, 1, 2);
         }
 
+        [Obsolete("", true)]
         private void RewriteVectorBinOp(string fnNameFormat, ArmVectorData elemType)
         {
             RewriteVectorBinOp(fnNameFormat, elemType, 0, 1, 2);
         }
 
         private void RewriteVectorBinOp(
-            string fnNameFormat, 
-            ArmVectorData elemType, 
-            int iopDst, 
-            int iopSrc1, 
+            string fnNameFormat,
+            ArmVectorData elemType,
+            int iopDst,
+            int iopSrc1,
             int iopSrc2)
         {
             var src1 = this.Operand(iopSrc1);
@@ -584,6 +586,12 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteVectorBinOp(IntrinsicProcedure intrinsic)
         {
             var srcElemType = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            RewriteVectorBinOp(intrinsic, srcElemType, srcElemType, 0, 1, 2);
+        }
+
+        private void RewriteVectorBinOp(IntrinsicProcedure intrinsic, ArmVectorData elemType)
+        {
+            var srcElemType = Arm32Architecture.VectorElementDataType(elemType);
             RewriteVectorBinOp(intrinsic, srcElemType, srcElemType, 0, 1, 2);
         }
 

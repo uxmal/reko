@@ -41,7 +41,6 @@ namespace Reko.Arch.Arm
 #if NATIVE
         private INativeArchitecture native;
 #endif
-        private readonly Dictionary<string, RegisterStorage> regsByName;
         private readonly Dictionary<int, RegisterStorage> regsByNumber;
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
@@ -61,9 +60,8 @@ namespace Reko.Arch.Arm
             GetRegistersFromNative();
 #else
             this.regsByNumber = Registers.GpRegs.ToDictionary(r => r.Number);
-            this.regsByName = regsByNumber.ToDictionary(r => r.Value.Name, r => r.Value);
 #endif
-            StackRegister = regsByName["sp"];
+            StackRegister = Registers.ByName["sp"];
         }
 
 #if NATIVE

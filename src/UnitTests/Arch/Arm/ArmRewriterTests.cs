@@ -103,12 +103,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmRw_bkpt()
+        public void ArmRw_bkpt_arg()
         {
             Given_UInt32s(0xE1262B70);        // bkpt\t#&62B0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__breakpoint(0x62B0<32>)");
+                "1|L--|__breakpoint_arg(0x62B0<32>)");
         }
 
         [Test]
@@ -285,7 +285,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = SLICE(r8, uint8, 0)",
-                "2|L--|r4 = __crc32cb(ip, v4)");
+                "2|L--|r4 = __crc32c<uint8>(ip, v4)");
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE1408245);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __crc32cw(r0, r5)");
+                "1|L--|r8 = __crc32c<uint32>(r0, r5)");
         }
 
         [Test]
@@ -304,7 +304,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v4 = SLICE(fp, uint16, 0)",
-                "2|L--|r8 = __crc32h(r4, v4)");
+                "2|L--|r8 = __crc32<uint16>(r4, v4)");
         }
 
         [Test]
@@ -313,7 +313,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE14A8040);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __crc32w(r10, r0)");
+                "1|L--|r8 = __crc32<uint32>(r10, r0)");
         }
 
         [Test]
@@ -529,7 +529,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE16F4F13);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __clz(r3)");
+                "1|L--|r4 = __count_leading_zeros<word32>(r3)");
         }
 
         [Test]
@@ -664,14 +664,13 @@ means
                 "1|L--|r1 = r2 - r4 * r3");
         }
 
-
         [Test]
         public void ArmRw_vbit()
         {
             Given_UInt32s(0xF324F19E);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d15 = __vbit(d20, d14)");
+                "1|L--|d15 = __vbit<word64>(d20, d14)");
         }
 
         [Test]
@@ -778,7 +777,7 @@ means
             Given_HexString("011F20F2");
             AssertCode(     // vmin.f32\td1,d0,d1
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d1 = __vmin_f32(d0, d1)");
+                "1|L--|d1 = __vmin<real32[2]>(d0, d1)");
         }
 
         [Test]
@@ -1049,12 +1048,12 @@ means
         }
 
         [Test]
-        public void ArmRw_swpeq()
+        public void ArmRw_swp()
         {
-            Given_UInt32s(0xE10ea598);	// swp sl, r8, [lr]
+            Given_UInt32s(0xE10EA598);	// swp sl, r8, [lr]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = std::atomic_exchange<int32_t>(r8, Mem0[lr:word32])");
+                "1|L--|r10 = std::atomic_exchange<word32>(&Mem0[lr:word32], r8)");
         }
 
         [Test]
@@ -1082,11 +1081,9 @@ means
             Given_UInt32s(0xE168da50);	// qdsub sp, r0, r8
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|sp = __signed_sat_32(r0 - __signed_sat_32(r8 *s 2<i32>))",
+                "1|L--|sp = __sat_sub<int32>(r0, __sat_mul<int32>(r8, 2<i32>))",
                 "2|L--|Q = cond(sp)");
         }
-
-
 
         [Test]
         public void ArmRw_smultt()
@@ -1113,7 +1110,7 @@ means
             Given_UInt32s(0xE6208D59);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __qsax(r0, r9)");
+                "1|L--|r8 = __qsax<int16[2]>(r0, r9)");
         }
 
         [Test]
@@ -1133,7 +1130,7 @@ means
             AssertCode(     // qsub8lo	ip,lr,sp
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|ip = __qsub_s8(lr, sp)");
+                "2|L--|ip = __qsub<int8[4]>(lr, sp)");
         }
 
         [Test]
@@ -1341,10 +1338,10 @@ means
         [Test]
         public void ArmRw_vsub_f64()
         {
-            Given_UInt32s(0xee711be0);  // vsub.f64 d17, d17, d16
+            Given_UInt32s(0xEE711BE0);  // vsub.f64 d17, d17, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d17 = __vsub_f64(d17, d16)");
+                "1|L--|d17 = __vsub<real64[1]>(d17, d16)");
         }
 
         [Test]
@@ -1398,7 +1395,7 @@ means
             Given_UInt32s(0xee567a87);  // vnmls.f32 s15, s13, s14
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|s15 = __vnmls_f32(s13, s14)");
+                "1|L--|s15 = __vnmls<real32[1]>(s13, s14)");
         }
 
         [Test]
@@ -1413,7 +1410,7 @@ means
         [Test]
         public void ArmRw_ldrbtgt()
         {
-            Given_UInt32s(0xc47a0000);  // ldrbtgt r0, [sl], #-0
+            Given_UInt32s(0xC47A0000);  // ldrbtgt r0, [sl], #-0
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
                 "1|T--|if (Test(LE,NZV)) branch 00100004",
@@ -1425,19 +1422,19 @@ means
         [Test]
         public void ArmRw_vmax_s32()
         {
-            Given_UInt32s(0xf26006e2);  // vmax.s32 q8, q8, q9
+            Given_UInt32s(0xF26006E2);  // vmax.s32 q8, q8, q9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q8 = __vmax_s32(q8, q9)");
+                "1|L--|q8 = __vmax<int32[4]>(q8, q9)");
         }
 
         [Test]
         public void ArmRw_vmin_s32()
         {
-            Given_UInt32s(0xf26446f0);  // vmin.s32 q10, q10, q8
+            Given_UInt32s(0xF26446F0);  // vmin.s32 q10, q10, q8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q10 = __vmin_s32(q10, q8)");
+                "1|L--|q10 = __vmin<int32[4]>(q10, q8)");
         }
 
         [Test]
@@ -1455,7 +1452,7 @@ means
             Given_UInt32s(0xf2600aa0);  // vpmax.s32 d16, d16, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = __vpmax_s32(d16, d16)");
+                "1|L--|d16 = __vpmax<int32[2]>(d16, d16)");
         }
 
         [Test]
@@ -1464,7 +1461,7 @@ means
             Given_UInt32s(0xf2644ab4);  // vpmin.s32 d20, d20, d20
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d20 = __vpmin_s32(d20, d20)");
+                "1|L--|d20 = __vpmin<int32[2]>(d20, d20)");
         }
 
         [Test]
@@ -1535,23 +1532,22 @@ means
                 "6|L--|ip = ip - 20<i32>");
         }
 
-
         [Test]
         public void ArmRw_vneg_f64()
         {
-            Given_UInt32s(0xeef10b60);  // vneg.f64 d16, d16
+            Given_UInt32s(0xEEF10B60);  // vneg.f64 d16, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = __vneg_f64(d16)");
+                "1|L--|d16 = __vneg<real64[1]>(d16)");
         }
 
         [Test]
         public void ArmRw_vnmul_f64()
         {
-            Given_UInt32s(0xee680b60);  // vnmul.f64 d16, d8, d16
+            Given_UInt32s(0xEE680B60);  // vnmul.f64 d16, d8, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = __vnmul_f64(d8, d16)");
+                "1|L--|d16 = __vnmul<real64[1]>(d8, d16)");
         }
 
         // Only present in old ARM models
@@ -1570,7 +1566,7 @@ means
             Given_UInt32s(0xf2622bb2);  // vpadd.i32 d18, d18, d18
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d18 = __vpadd_i32(d18, d18)");
+                "1|L--|d18 = __vpadd<int32[2]>(d18, d18)");
         }
 
         [Test]
@@ -1636,7 +1632,7 @@ means
             Given_UInt32s(0xF36424E2);  // vshl.u32 q9, q9, q10
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q9 = __vshl_u32(q9, q10)");
+                "1|L--|q9 = __vshl<uint32[4]>(q9, q10)");
         }
 
         [Test]
@@ -1691,7 +1687,7 @@ means
             Given_UInt32s(0xee377b20);  // vadd.f64 d7, d7, d16
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d7 = __vadd_f64(d7, d16)");
+                "1|L--|d7 = __vadd<real64[1]>(d7, d16)");
         }
 
         [Test]
@@ -1768,7 +1764,7 @@ means
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|r8 = __signed_sat_32(r0 + __signed_sat_32(r0 *s 2<i32>))");
+                "2|L--|r8 = __sat_add<int32>(r0, __sat_mul<int32>(r0, 2<i32>))");
         }
 
         [Test]
@@ -1785,8 +1781,10 @@ means
         {
             Given_UInt32s(0xE1409190);  // swpb sb, r0, [r0]
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = std::atomic_exchange<byte>(r0, Mem0[r0:byte])");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r0, byte, 0)",
+                "2|L--|v5 = std::atomic_exchange<byte>(&Mem0[r0:byte], v3)",
+                "3|L--|r9 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -2204,7 +2202,7 @@ means
             Given_UInt32s(0xE6664F3A);        // uqasx\tr4,r6,r10
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __uqasx_u16(r6, r10)");
+                "1|L--|r4 = __uqasx<uint16[2]>(r6, r10)");
         }
 
         [Test]
@@ -2213,7 +2211,7 @@ means
             Given_UInt32s(0xE6694478);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __uqsub_u16(r9, r8)");
+                "1|L--|r4 = __uqsub<uint16[2]>(r9, r8)");
         }
 
         [Test]
@@ -2222,7 +2220,7 @@ means
             Given_UInt32s(0xE615A034);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = __sasx(r5, r4)");
+                "1|L--|r10 = __sasx<int16[2]>(r5, r4)");
         }
 
         [Test]
@@ -2231,7 +2229,7 @@ means
             Given_HexString("F48F46F2");
             AssertCode(     // vrecps.f32	q12,q11,q10
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q12 = __vrecps_f32(q11)");
+                "1|L--|q12 = __vrecps<real32[4]>(q11)");
         }
         
         [Test]
@@ -2240,7 +2238,7 @@ means
             Given_UInt32s(0xE6294630);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __qasx(r9, r0)");
+                "1|L--|r4 = __qasx<int16[2]>(r9, r0)");
         }
 
         [Test]
@@ -2249,7 +2247,7 @@ means
             Given_UInt32s(0xE6206174);        // qsub16\tr6,r0,r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = __qsub_s16(r0, r4)");
+                "1|L--|r6 = __qsub<int16[2]>(r0, r4)");
         }
 
         [Test]
@@ -2258,13 +2256,8 @@ means
             Given_UInt32s(0xE668985B);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = __uqsax_u16(r8, fp)");
+                "1|L--|r9 = __uqsax<uint16[2]>(r8, fp)");
         }
-
-
-
-
-
 
         [Test]
         public void ArmRw_uhsax()
@@ -2284,7 +2277,7 @@ means
             Given_UInt32s(0xE6689EFD);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = __uqsub_u8(r8, sp)");
+                "1|L--|r9 = __uqsub<byte[4]>(r8, sp)");
         }
 
         [Test]
@@ -2293,22 +2286,8 @@ means
             Given_UInt32s(0xE6688E91);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = __uqadd_u8(r8, r1)");
+                "1|L--|r8 = __uqadd<byte[4]>(r8, r1)");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         [Test]
         public void ArmRw_vbic_imm()
@@ -2444,7 +2423,7 @@ means
             Given_UInt32s(0xF2EF4665);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q10 = __vmlsl_s32(d15, d5[1<i32>])");
+                "1|L--|q10 = __vmlsl<int32[2]>(d15, d5[1<i32>])");
         }
 
         [Test]
@@ -2462,7 +2441,7 @@ means
             Given_UInt32s(0xF3B2F393);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d15 = __vrsra_i64(d3, 14<i32>)");
+                "1|L--|d15 = __vrsra<int64[1]>(d3, 14<i32>)");
         }
 
         [Test]
@@ -2471,7 +2450,7 @@ means
             Given_UInt32s(0xF3934620);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d4 = __vrsubhn_i32(q1, q8)");
+                "1|L--|d4 = __vrsubhn<int32[4]>(q1, q8)");
         }
 
         [Test]

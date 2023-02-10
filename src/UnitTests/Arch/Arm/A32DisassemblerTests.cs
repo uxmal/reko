@@ -74,7 +74,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected void AssertCode(string sExp, string hexBytes)
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
             var bytes = BytePattern.FromHexBytes(hexBytes);
             var mem = new ByteMemoryArea(Address.Ptr32(0x0010_0000), bytes);
             var arch = CreateArchitecture();
