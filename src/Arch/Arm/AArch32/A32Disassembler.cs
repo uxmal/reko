@@ -2057,8 +2057,8 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.crc32cw, Rnp12, Rnp16, Rnp0)),
                 invalid);
 
-            var Qadd = Instr(Mnemonic.qadd, r(3),r(0),r(4));
-            var Qsub = Instr(Mnemonic.qsub, r(3),r(0),r(4));
+            var Qadd = Instr(Mnemonic.qadd, Rnp12, Rnp0, Rnp16);
+            var Qsub = Instr(Mnemonic.qsub, Rnp12, Rnp0, Rnp16);
             var Qdadd = Instr(Mnemonic.qdadd, r(3),r(0),r(4));
             var Qdsub = Instr(Mnemonic.qdsub, r(3),r(0),r(4));
             var IntegerSaturatingArithmetic = Mask(21, 2,

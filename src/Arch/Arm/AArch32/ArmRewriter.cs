@@ -244,21 +244,21 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.mvn: RewriteUnaryOp(m.Comp); break;
                 case Mnemonic.orn: RewriteLogical((a, b) => m.Or(a, m.Comp(b))); break;
                 case Mnemonic.orr: RewriteLogical(m.Or); break;
-                case Mnemonic.pkhbt: RewritePk("__pkhbt"); break;
-                case Mnemonic.pkhtb: RewritePk("__pkhtb"); break;
+                case Mnemonic.pkhbt: RewritePk(pkhbt_intrinsic); break;
+                case Mnemonic.pkhtb: RewritePk(pkhtb_intrinsic); break;
                 case Mnemonic.pld: RewritePld(pld_intrinsic); break;
                 case Mnemonic.pldw: RewritePld(pldw_intrinsic); break;
                 case Mnemonic.pli: RewritePld(pli_intrinsic); break;
                 case Mnemonic.pop: RewritePop(); break;
-                case Mnemonic.push: RewritePush(); break;
-                case Mnemonic.qadd: RewriteQAddSub(m.IAdd); break;
+                case Mnemonic.push: RewritePush(); break; 
+                case Mnemonic.qadd: RewriteQAddSub(CommonOps.SatAdd); break;
                 case Mnemonic.qadd16: RewriteVectorBinOp(qadd_intrinsic, ArmVectorData.S16); break;
                 case Mnemonic.qadd8: RewriteVectorBinOp(qadd_intrinsic, ArmVectorData.S8); break;
                 case Mnemonic.qdadd: RewriteQDAddSub(CommonOps.SatAdd); break;
                 case Mnemonic.qasx: RewriteVectorBinOp(qasx_intrinsic, PrimitiveType.Int16); break;
                 case Mnemonic.qdsub: RewriteQDAddSub(CommonOps.SatSub); break;
                 case Mnemonic.qsax: RewriteVectorBinOp(qsax_intrinsic, PrimitiveType.Int16); break;
-                case Mnemonic.qsub: RewriteQAddSub(m.ISub); break;
+                case Mnemonic.qsub: RewriteQAddSub(CommonOps.SatSub); break;
                 case Mnemonic.qsub16: RewriteVectorBinOp(qsub_intrinsic, ArmVectorData.S16); break;
                 case Mnemonic.qsub8: RewriteVectorBinOp(qsub_intrinsic, ArmVectorData.S8); break;
                 case Mnemonic.rbit: RewriteIntrinsic(rbit_intrinsic); break;
@@ -910,6 +910,17 @@ namespace Reko.Arch.Arm.AArch32
             return MaybeShiftExpression(exp, sh, instr.ShiftType);
         }
 
+        private Expression MaybeSlice(Expression exp, DataType dt)
+        {
+            if (dt.BitSize < exp.DataType.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(exp, dt));
+                exp = tmp;
+            }
+            return exp;
+        }
+
         private Expression MaybeShiftExpression(Expression exp, Expression sh, Mnemonic shiftType)
         {
             switch (shiftType)
@@ -1157,6 +1168,12 @@ namespace Reko.Arch.Arm.AArch32
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Void();
+        private static readonly IntrinsicProcedure mcrr_intrinsic = new IntrinsicBuilder("__mcrr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
         private static readonly IntrinsicProcedure mcr2_intrinsic = new IntrinsicBuilder("__mcr2", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
@@ -1179,7 +1196,28 @@ namespace Reko.Arch.Arm.AArch32
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure mrrc_intrinsic = new IntrinsicBuilder("__mrrc", true)
+            .GenericTypes("TReturn")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns("TReturn");
+        private static readonly IntrinsicProcedure mrs_intrinsic = new IntrinsicBuilder("__mrs", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure msr_intrinsic = new IntrinsicBuilder("__msr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
 
+        private static readonly IntrinsicProcedure pkhbt_intrinsic = new IntrinsicBuilder("__pkhbt", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure pkhtb_intrinsic = new IntrinsicBuilder("__pkhtb", false)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
         private static readonly IntrinsicProcedure pld_intrinsic = new IntrinsicBuilder("__pld", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
@@ -1223,6 +1261,13 @@ namespace Reko.Arch.Arm.AArch32
             .Void();
         private static readonly IntrinsicProcedure sev_intrinsic = new IntrinsicBuilder("__send_event", true)
             .Void();
+        private static readonly IntrinsicProcedure setend_intrinsic = new IntrinsicBuilder("__set_bigendian", true)
+            .Param(PrimitiveType.Bool)
+            .Void();
+        private static readonly IntrinsicProcedure smc_intrinsic = new IntrinsicBuilder("__smc", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
         private static readonly IntrinsicProcedure srsda_intrinsic = new IntrinsicBuilder("__srsda", true)
             .PtrParam(PrimitiveType.Word32)
             .Param(PrimitiveType.Word32)
@@ -1243,6 +1288,10 @@ namespace Reko.Arch.Arm.AArch32
             .Param(PrimitiveType.Int32)
             .Param(new ArrayType(PrimitiveType.Int16, 2))
             .Returns(new ArrayType(PrimitiveType.Int16, 2));
+        private static readonly IntrinsicProcedure ssat_intrinsic = new IntrinsicBuilder("__ssat", false)
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Int32)
+            .Returns(PrimitiveType.Int32);
         private static readonly IntrinsicProcedure ssub_intrinsic = IntrinsicBuilder.GenericBinary("__ssub");
         private static readonly IntrinsicProcedure stc_intrinsic = new IntrinsicBuilder("__stc", true)
             .Param(PrimitiveType.Word32)
@@ -1298,6 +1347,7 @@ namespace Reko.Arch.Arm.AArch32
             .Returns(new ArrayType(PrimitiveType.Int16, 2));
 
         private static readonly IntrinsicProcedure uadd_intrinsic = IntrinsicBuilder.GenericBinary("__uadd");
+        private static readonly IntrinsicProcedure usada8_intrinsic = IntrinsicBuilder.GenericBinary("__usada8");
         private static readonly IntrinsicProcedure usat_intrinsic = new IntrinsicBuilder("__usat", false)
             .Param(PrimitiveType.Int32)
             .Param(PrimitiveType.Int32)
@@ -1362,11 +1412,22 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure vcgt_intrinsic = IntrinsicBuilder.GenericBinary("__vcgt", false);
         private static readonly IntrinsicProcedure vcle_intrinsic = IntrinsicBuilder.GenericBinary("__vcle", false);
         private static readonly IntrinsicProcedure vclt_intrinsic = IntrinsicBuilder.GenericBinary("__vclt", false);
-
         private static readonly IntrinsicProcedure vcvt_intrinsic = new IntrinsicBuilder("__vcvt", false)
             .GenericTypes("TArraySrc", "TArrayDst")
             .Param("TArraySrc")
             .Returns("TArrayDst");
+
+        private static readonly IntrinsicProcedure vdup_intrinsic = new IntrinsicBuilder("__vdup", false)
+            .GenericTypes("TSrc", "TArrayDst")
+            .Param("TSrc")
+            .Returns("TArrayDst");
+
+        private static readonly IntrinsicProcedure vext_intrinsic = new IntrinsicBuilder("__vext", false)
+            .GenericTypes("TArray")
+            .Param("TArray")
+            .Param("TArray")
+            .Param(PrimitiveType.Int32)
+            .Returns("TArray");
         private static readonly IntrinsicProcedure vfnma_intrinsic = IntrinsicBuilder.GenericBinary("__vfnma");
         private static readonly IntrinsicProcedure vfnms_intrinsic = IntrinsicBuilder.GenericBinary("__vfnms");
 
@@ -1394,6 +1455,7 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly IntrinsicProcedure vmaxnm_intrinsic = IntrinsicBuilder.GenericBinary("__vmaxnm");
         private static readonly IntrinsicProcedure vmin_intrinsic = IntrinsicBuilder.GenericBinary("__vmin");
         private static readonly IntrinsicProcedure vminnm_intrinsic = IntrinsicBuilder.GenericBinary("__vminnm");
+        private static readonly IntrinsicProcedure vmov_intrinsic = IntrinsicBuilder.GenericUnary("__vmov");
         private static readonly IntrinsicProcedure vmla_intrinsic = IntrinsicBuilder.GenericBinary("__vmla");
         private static readonly IntrinsicProcedure vmlal_intrinsic = IntrinsicBuilder.GenericBinary("__vmlal");
         private static readonly IntrinsicProcedure vmls_intrinsic = IntrinsicBuilder.GenericBinary("__vmls");
@@ -1410,6 +1472,8 @@ namespace Reko.Arch.Arm.AArch32
             .Param("TArraySrc")
             .Param("TArraySrc")
             .Returns("TArrayDst");
+        private static readonly IntrinsicProcedure vmvn_intrinsic = IntrinsicBuilder.GenericUnary("__vmvn");
+        private static readonly IntrinsicProcedure vmvn_imm_intrinsic = IntrinsicBuilder.GenericUnary("__vmvn_imm");
 
         private static readonly IntrinsicProcedure vneg_intrinsic = IntrinsicBuilder.GenericUnary("__vneg");
         private static readonly IntrinsicProcedure vnmla_intrinsic = IntrinsicBuilder.GenericBinary("__vnmla");
@@ -1536,6 +1600,8 @@ namespace Reko.Arch.Arm.AArch32
             .Returns(new ArrayType(PrimitiveType.Byte, 8));
         private static readonly IntrinsicProcedure vtst_intrinsic = IntrinsicBuilder.GenericBinary("__vtst", false);
 
+        private static readonly IntrinsicProcedure wfi_intrinsic = new IntrinsicBuilder("__wait_for_interrupt", true)
+            .Void();
         private static readonly IntrinsicProcedure wfe_intrinsic = new IntrinsicBuilder("__wait_for_event", true)
             .Void();
 

@@ -437,12 +437,14 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt32s(0xE6EF2071);
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = CONVERT(SLICE(r1, byte, 0), byte, uint32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(r1, byte, 0)",
+                "2|L--|r2 = CONVERT(v4, byte, uint32)");
             Given_UInt32s(0xE6EF2471);
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = CONVERT(SLICE(__ror<word32,int32>(r1, 8<i32>), byte, 0), byte, uint32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(__ror<word32,int32>(r1, 8<i32>), byte, 0)",
+                "2|L--|r2 = CONVERT(v4, byte, uint32)");
         }
 
         [Test]
@@ -632,8 +634,9 @@ means
         {
             Given_UInt32s(0xE6AF1472);
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = CONVERT(SLICE(__ror<word32,int32>(r2, 8<i32>), int8, 0), int8, int32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(__ror<word32,int32>(r2, 8<i32>), int8, 0)",
+                "2|L--|r1 = CONVERT(v4, int8, int32)");
         }
 
         [Test]
@@ -641,8 +644,9 @@ means
         {
             Given_UInt32s(0xE6FF1472);
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = CONVERT(SLICE(__ror<word32,int32>(r2, 8<i32>), uint16, 0), uint16, uint32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(__ror<word32,int32>(r2, 8<i32>), uint16, 0)",
+                "2|L--|r1 = CONVERT(v4, uint16, uint32)");
         }
 
         [Test]
@@ -901,8 +905,9 @@ means
         {
             Given_UInt32s(0xE6E10070);  // uxtab r0, r1, r0
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r1 + CONVERT(SLICE(r0, byte, 0), byte, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r0, byte, 0)",
+                "2|L--|r0 = r1 + CONVERT(v3, byte, word32)");
         }
 
         [Test]
@@ -910,8 +915,9 @@ means
         {
             Given_UInt32s(0xE6A55078);  // sxtab r5, r5, r8
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r5 + CONVERT(SLICE(r8, int8, 0), int8, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(r8, int8, 0)",
+                "2|L--|r5 = r5 + CONVERT(v4, int8, word32)");
         }
 
         [Test]
@@ -919,8 +925,9 @@ means
         {
             Given_UInt32s(0xE6B6A07A);  // sxtah r10,r6,r10
             AssertCode(
-             "0|L--|00100000(4): 1 instructions",
-             "1|L--|r10 = r6 + CONVERT(SLICE(r10, int16, 0), int16, word32)");
+             "0|L--|00100000(4): 2 instructions",
+             "1|L--|v3 = SLICE(r10, int16, 0)",
+             "2|L--|r10 = r6 + CONVERT(v3, int16, word32)");
         }
 
         [Test]
@@ -928,8 +935,10 @@ means
         {
             Given_UInt32s(0x16BF9077);  //  sxthne r9,r7
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 00100004");
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00100004",
+                "2|L--|v5 = SLICE(r7, int16, 0)",
+                "3|L--|r9 = CONVERT(v5, int16, int32)");
         }
 
         [Test]
@@ -937,8 +946,9 @@ means
         {
             Given_UInt32s(0xE6F30072);  // uxtah r0,r3,r2
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r3 + CONVERT(SLICE(r2, uint16, 0), uint16, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(r2, uint16, 0)",
+                "2|L--|r0 = r3 + CONVERT(v4, uint16, word32)");
         }
 
         [Test]
@@ -1043,8 +1053,10 @@ means
         {
             Given_UInt32s(0xE0e051b0);	// strht r5, [r0], #0x10
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r0:word16] = SLICE(r5, uint16, 0)");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r5, uint16, 0)",
+                "2|L--|Mem0[r0:word16] = v3",
+                "3|L--|r0 = r0 + 16<i32>");
         }
 
         [Test]
@@ -1097,10 +1109,10 @@ means
         [Test]
         public void ArmRw_qadd()
         {
-            Given_UInt32s(0xE10fb85c);	// qadd fp, ip, pc
+            Given_UInt32s(0xE103b85c);	// qadd fp, ip, r3
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|fp = __signed_sat_32(ip + 0x00100008<p32>)",
+                "1|L--|fp = __sat_add<int32>(ip, r3)",
                 "2|L--|Q = cond(fp)");
         }
 
@@ -1119,7 +1131,7 @@ means
             Given_UInt32s(0xE12d6650);	// qsube r6, r0, sp
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r6 = __signed_sat_32(r0 - sp)",
+                "1|L--|r6 = __sat_sub<int32>(r0, sp)",
                 "2|L--|Q = cond(r6)");
         }
 
@@ -1574,9 +1586,10 @@ means
         {
             Given_UInt32s(0xE6666666);  // strbt r6, [r6], -r6, ror #12
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r6:byte] = SLICE(r6, byte, 0)",
-                "2|L--|r6 = r6 - __ror<word32,int32>(r6, 12<i32>)");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r6, byte, 0)",
+                "2|L--|Mem0[r6:byte] = v3",
+                "3|L--|r6 = r6 - __ror<word32,int32>(r6, 12<i32>)");
         }
 
         [Test]
@@ -1614,7 +1627,7 @@ means
             Given_UInt32s(0xeea02b90);	// vdup.32 q8, r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q8 = __vdup_32(r2)");
+                "1|L--|q8 = __vdup<int32,word32[4]>(r2)");
         }
 
         [Test]
@@ -1623,7 +1636,7 @@ means
             Given_UInt32s(0xf2c04077);  // vmvn.i32 q10, #7
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q10 = __vmvn_imm_i32(0x700000007<64>)");
+                "1|L--|q10 = __vmvn_imm<int32[2]>(0x700000007<64>)");
         }
 
         [Test]
@@ -1852,7 +1865,7 @@ means
             Given_UInt32s(0xEF001234); // svc 0x1234<16>
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|L--|__syscall(0x1234<32>)");
+                "1|L--|__syscall<word32>(0x1234<32>)");
         }
 
         [Test]
@@ -2039,8 +2052,9 @@ means
         {
             Given_UInt32s(0xE1C320B0);        // strh\tr2,[r3]
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r3:word16] = SLICE(r2, uint16, 0)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r2, uint16, 0)",
+                "2|L--|Mem0[r3:word16] = v3");
         }
 
         [Test]
@@ -2048,9 +2062,10 @@ means
         {
             Given_UInt32s(0xE16230B2);        // strh\tr3,[r2,-#&2]!
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r2 = r2 - 2<i32>",
-                "2|L--|Mem0[r2:word16] = SLICE(r3, uint16, 0)");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r3, uint16, 0)",
+                "2|L--|r2 = r2 - 2<i32>",
+                "3|L--|Mem0[r2:word16] = v3");
         }
 
         [Test]
@@ -2116,7 +2131,7 @@ means
             Given_UInt32s(0xE167C970);        // smc\t#0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__smc(0<32>)");
+                "1|L--|__smc<word32>(0<32>)");
         }
 
         [Test]
@@ -2386,7 +2401,7 @@ means
             Given_UInt32s(0xF2F068E2);	// vext.64 q11, q8, q9, #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|q11 = __vext(q8, q9, 8<32>)");
+                "1|L--|q11 = __vext<word128>(q8, q9, 8<32>)");
         }
 
         [Test]

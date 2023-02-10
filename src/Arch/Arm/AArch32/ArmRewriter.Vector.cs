@@ -122,7 +122,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(2);
             var src3 = Operand(3);
             var dst = Operand(0, PrimitiveType.Word32, true);
-            var intrinsic = host.Intrinsic("__vext", true, dst.DataType, src1, src2, src3);
+            var intrinsic = m.Fn(vext_intrinsic.MakeInstance(src1.DataType), src1, src2, src3);
             m.Assign(dst, intrinsic);
         }
 
@@ -212,7 +212,7 @@ namespace Reko.Arch.Arm.AArch32
             var reg = binder.EnsureRegister(opSrc.BaseRegister);
 
             int nRegs = regs.Length;
-             m.Assign(tmp, m.Fn(intrinsic.MakeInstance(32, dt), reg));
+            m.Assign(tmp, m.Fn(intrinsic.MakeInstance(32, dt), reg));
             int bitOffset = 64 * (nRegs - 1);
             foreach (var dreg in regs)
             {
@@ -263,8 +263,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
  
                 var fname = $"__vmov_{VectorElementTypeName(instr.vector_data)}";
-                var intrinsic = host.Intrinsic(fname, true, dstType, src);
-                m.Assign(dst, m.Fn(intrinsic));
+                m.Assign(dst, m.Fn(vmov_intrinsic.MakeInstance(arrDst), src));
             }
             else
             {
@@ -348,11 +347,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (instr.Operands[1] is ImmediateOperand)
             {
-                RewriteVectorUnaryOp("__vmvn_imm_{0}");
+                RewriteVectorUnaryOp(vmvn_imm_intrinsic);
             }
             else
             {
-                RewriteVectorUnaryOp("__vmvn_{0}");
+                RewriteVectorUnaryOp(vmvn_intrinsic);
             }
         }
 
@@ -482,16 +481,14 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteVdup()
         {
-            var src = this.Operand(1);
+            var  dtElem = Arm32Architecture.VectorElementDataType(instr.vector_data);
+            var src = MaybeSlice(this.Operand(1), dtElem);
             var dst = this.Operand(0, PrimitiveType.Word32, true);
             var dstType = dst.DataType;
             var srcType = src.DataType;
-            int elemBitSize = BitSize(instr.vector_data);
-            var celem = dstType.BitSize / elemBitSize;
+            var celem = dstType.BitSize / dtElem.BitSize;
             var arrType = new ArrayType(srcType, celem);
-            var fnName = $"__vdup_{elemBitSize}";
-            var intrinsic = host.Intrinsic(fnName, true, arrType, src);
-            m.Assign(dst, intrinsic);
+            m.Assign(dst, m.Fn(vdup_intrinsic.MakeInstance(dtElem, arrType), src));
         }
 
         private void RewriteVfmas(string intrinsicName, Func<Expression,Expression,Expression> scalar)
@@ -500,13 +497,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var op = instr.Operands[iOp];
                 var reg = binder.EnsureRegister((RegisterStorage)op);
-                if (reg.DataType.BitSize > dt.BitSize)
-                {
-                    var tmp = binder.CreateTemporary(dt);
-                    m.Assign(tmp, m.Slice(reg, dt, 0));
-                    return tmp;
-                }
-                return reg;
+                return MaybeSlice(reg, dt);
             }
             var dt = VectorElementType(instr.vector_data);
             if (dt.BitSize > instr.Operands[1].Width.BitSize)
@@ -529,12 +520,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteVectorUnaryOp(string fnNameFormat)
-        {
-            RewriteVectorUnaryOp(fnNameFormat, instr.vector_data);
-        }
-
-        private void RewriteVectorUnaryOp(string fnNameFormat, ArmVectorData elemType)
+        private void RewriteVectorUnaryOp(IntrinsicProcedure intrinsic, ArmVectorData elemType)
         {
             var src1 = this.Operand(1);
             var dst = this.Operand(0, PrimitiveType.Word32, true);
@@ -542,45 +528,10 @@ namespace Reko.Arch.Arm.AArch32
             var srcType = src1.DataType;
             var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
-            var arrSrc = new ArrayType(srcType, celemSrc);
+            var arrSrc = new ArrayType(srcElemSize, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
-            var fnName = string.Format(fnNameFormat, VectorElementTypeName(elemType));
-            var intrinsic = host.Intrinsic(fnName, true, arrDst, src1);
-            m.Assign(dst, intrinsic);
-        }
-
-        [Obsolete("", true)]
-        private void RewriteVectorBinOp(string fnNameFormat)
-        {
-            RewriteVectorBinOp(fnNameFormat, instr.vector_data, 0, 1, 2);
-        }
-
-        [Obsolete("", true)]
-        private void RewriteVectorBinOp(string fnNameFormat, ArmVectorData elemType)
-        {
-            RewriteVectorBinOp(fnNameFormat, elemType, 0, 1, 2);
-        }
-
-        private void RewriteVectorBinOp(
-            string fnNameFormat,
-            ArmVectorData elemType,
-            int iopDst,
-            int iopSrc1,
-            int iopSrc2)
-        {
-            var src1 = this.Operand(iopSrc1);
-            var src2 = this.Operand(iopSrc2);
-            var dst = this.Operand(iopDst, PrimitiveType.Word32, true);
-            var dstType = dst.DataType;
-            var srcType = src1.DataType;
-            var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
-            //$BUG: some instructions are returned with srcElemnSize == 0!
-            var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
-            var arrSrc = new ArrayType(srcType, celemSrc);
-            var arrDst = new ArrayType(dstType, celemSrc);
-            var fnName = string.Format(fnNameFormat, VectorElementTypeName(elemType));
-            var intrinsic = host.Intrinsic(fnName, true, arrDst, src1, src2);
-            m.Assign(dst, intrinsic);
+            intrinsic = intrinsic.MakeInstance(arrSrc);
+            m.Assign(dst, m.Fn(intrinsic, src1));
         }
 
         private void RewriteVectorBinOp(IntrinsicProcedure intrinsic)

@@ -129,7 +129,7 @@ namespace Reko.Arch.Arm.AArch32
             var rlo = (RegisterStorage) instr.Operands[3];
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
             var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
-            m.Assign(rseq, host.Intrinsic("__mcrr", true, VoidType.Instance, cop, cmd, cr, rseq));
+            m.Assign(rseq, m.Fn(mcrr_intrinsic, cop, cmd, cr, rseq));
         }
 
         private void RewriteMrc(IntrinsicProcedure intrinsic)
@@ -164,19 +164,17 @@ namespace Reko.Arch.Arm.AArch32
             var rlo = (RegisterStorage) instr.Operands[3];
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
             var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
-            m.Assign(rseq, host.Intrinsic("__mrrc", true, rseq.DataType, cop, cmd, cr));
+            m.Assign(rseq, m.Fn(mrrc_intrinsic.MakeInstance(rseq.DataType), cop, cmd, cr));
         }
 
         private void RewriteMrs()
         {
-            var intrinsic = host.Intrinsic("__mrs", true, PrimitiveType.Word32, Operand(1));
-            m.Assign(Operand(0), intrinsic);
+            m.Assign(Operand(0), m.Fn(mrs_intrinsic, Operand(1)));
         }
 
         private void RewriteMsr()
         {
-            var intrinsic = host.Intrinsic("__msr", true, PrimitiveType.Word32, Operand(0), Operand(1));
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(msr_intrinsic, Operand(0), Operand(1)));
         }
 
         private void RewriteRfe(IntrinsicProcedure intrinsic)
@@ -188,14 +186,14 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteSetend()
         {
             var endianness = (EndiannessOperand)instr.Operands[0];
-            var intrisic = host.Intrinsic("__set_bigendian", true, VoidType.Instance, Constant.Bool(endianness.BigEndian));
+            var intrisic = m.Fn(setend_intrinsic, Constant.Bool(endianness.BigEndian));
             m.SideEffect(intrisic);
         }
 
         private void RewriteSmc()
         {
             var n = Operand(0);
-            m.SideEffect(host.Intrinsic("__smc", true, VoidType.Instance, n));
+            m.SideEffect(m.Fn(smc_intrinsic, n));
         }
 
         private void RewriteStc(IntrinsicProcedure intrinsic)
@@ -209,7 +207,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteSvc()
         {
-            var intrinsic = host.Intrinsic("__syscall", true, VoidType.Instance, Operand(0));
+            var intrinsic = m.Fn(CommonOps.Syscall_1, Operand(0));
             m.SideEffect(intrinsic);
         }
 
@@ -227,14 +225,13 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteUdf()
         {
             var trapNo = ((ImmediateOperand)instr.Operands[0]).Value;
-            var intrinsic = host.Intrinsic("__syscall", true, PrimitiveType.Word32, trapNo);
+            var intrinsic = m.Fn(CommonOps.Syscall_1, trapNo);
             m.SideEffect(intrinsic);
         }
 
         private void RewriteWfi()
         {
-            var intrinsic = host.Intrinsic("__wait_for_interrupt", true, VoidType.Instance);
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(wfi_intrinsic));
         }
 
         /*

@@ -1312,8 +1312,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_qadd()
         {
-            Disassemble32(0xE10FB85C);
-            Expect_Code("qadd\tfp,ip,pc");
+            Disassemble32(0xE103B85C);
+            Expect_Code("qadd\tfp,ip,r3");
         }
 
         [Test]

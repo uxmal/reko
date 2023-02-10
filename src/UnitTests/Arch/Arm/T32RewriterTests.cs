@@ -5701,7 +5701,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xDEFE);  // __debugbreak
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|__syscall(0xFE<32>)");
+                "1|L--|__syscall<word32>(0xFE<32>)");
         }
 
         [Test]
@@ -5773,8 +5773,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt16s(0x7013);  // strb        r3,[r2]
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r2:byte] = SLICE(r3, byte, 0)");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v3 = SLICE(r3, byte, 0)",
+                "2|L--|Mem0[r2:byte] = v3");
         }
 
         [Test]
@@ -5896,7 +5897,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4EDF");	// svc #0x4e
             AssertCode(
                 "0|T--|00100000(2): 1 instructions",
-                "1|L--|__syscall(0x4E<32>)");
+                "1|L--|__syscall<word32>(0x4E<32>)");
         }
 
         [Test]
@@ -5904,8 +5905,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt16s(0x800B);  // strh        r3,[r1]
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|Mem0[r1:word16] = SLICE(r3, uint16, 0)");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v3 = SLICE(r3, uint16, 0)",
+                "2|L--|Mem0[r1:word16] = v3");
         }
 
         [Test]
@@ -5922,8 +5924,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("E8B2");	// uxtb r0, r5
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = CONVERT(SLICE(r5, byte, 0), byte, uint32)");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v4 = SLICE(r5, byte, 0)",
+                "2|L--|r0 = CONVERT(v4, byte, uint32)");
         }
 
         [Test]
@@ -5931,8 +5934,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt16s(0xB2A9);  // uxth        r1,r5
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = CONVERT(SLICE(r5, uint16, 0), uint16, uint32)");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v4 = SLICE(r5, uint16, 0)",
+                "2|L--|r1 = CONVERT(v4, uint16, uint32)");
         }
 
         [Test]
@@ -5941,7 +5945,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xDEFB);  // __fastfail
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|__syscall(0xFB<32>)");
+                "1|L--|__syscall<word32>(0xFB<32>)");
         }
 
         public void ThumbRw_ldrb_preIndex()
@@ -5997,9 +6001,10 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt16s(0xF801, 0x0F01);  // strb.w r0, [r1, #1]!
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1 = r1 + 1<i32>",
-                "2|L--|Mem0[r1:byte] = SLICE(r0, byte, 0)");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r0, byte, 0)",
+                "2|L--|r1 = r1 + 1<i32>",
+                "3|L--|Mem0[r1:byte] = v3");
         }
 
         [Test]
@@ -6007,9 +6012,10 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt16s(0xF802, 0x3B01);  // strb        r3,[r2],#1
             AssertCode(
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|Mem0[r2:byte] = SLICE(r3, byte, 0)",
-                "2|L--|r2 = r2 + 1<i32>");
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r3, byte, 0)",
+                "2|L--|Mem0[r2:byte] = v3",
+                "3|L--|r2 = r2 + 1<i32>");
         }
 
         [Test]
@@ -6462,8 +6468,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("59B2");	// sxtb r1, r3
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = CONVERT(SLICE(r3, int8, 0), int8, int32)");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v4 = SLICE(r3, int8, 0)",
+                "2|L--|r1 = CONVERT(v4, int8, int32)");
         }
 
         [Test]
@@ -6471,8 +6478,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("08B2");	// sxth r0, r1
             AssertCode(
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = CONVERT(SLICE(r1, int16, 0), int16, int32)");
+                "0|L--|00100000(2): 2 instructions",
+                "1|L--|v4 = SLICE(r1, int16, 0)",
+                "2|L--|r0 = CONVERT(v4, int16, int32)");
         }
 
         [Test]
@@ -6609,8 +6617,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("5BFA94F8");	// uxtab r8, fp, r4, ror #8
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = fp + CONVERT(SLICE(__ror<word32,int32>(r4, 8<i32>), byte, 0), byte, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(__ror<word32,int32>(r4, 8<i32>), byte, 0)",
+                "2|L--|r8 = fp + CONVERT(v4, byte, word32)");
         }
 
         [Test]
@@ -6618,8 +6627,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("11FAFEF7");	// uxtah r7, r1, lr, ror #24
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = r1 + CONVERT(SLICE(__ror<word32,int32>(lr, 24<i32>), uint16, 0), uint16, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(__ror<word32,int32>(lr, 24<i32>), uint16, 0)",
+                "2|L--|r7 = r1 + CONVERT(v4, uint16, word32)");
         }
 
         [Test]
@@ -6827,7 +6837,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("82FF3146");	// vmvn.i32 d4, #0xa1000000<32>
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d4 = __vmvn_imm_i32(0xA1000000A1000000<64>)");
+                "1|L--|d4 = __vmvn_imm<int32[2]>(0xA1000000A1000000<64>)");
         }
 
         [Test]
@@ -7150,7 +7160,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v5 = r7",
                 "2|L--|v6 = r0",
-                "3|L--|r0 = __usada8(v5, v6)");
+                "3|L--|r0 = __usada8<byte[4]>(v5, v6)");
         }
 
         [Test]
@@ -7299,8 +7309,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("42FA83F1");	// sxtab r1, r2, r3
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = r2 + CONVERT(SLICE(r3, int8, 0), int8, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(r3, int8, 0)",
+                "2|L--|r1 = r2 + CONVERT(v4, int8, word32)");
         }
 
         [Test]
@@ -7308,8 +7319,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("00FAFEFF");	// sxtah pc, r0, lr, ror #24
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|pc = r0 + CONVERT(SLICE(__ror<word32,int32>(lr, 24<i32>), int16, 0), int16, word32)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = SLICE(__ror<word32,int32>(lr, 24<i32>), int16, 0)",
+                "2|L--|pc = r0 + CONVERT(v4, int16, word32)");
         }
 
         [Test]
@@ -7835,8 +7847,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("23F8236E");	// strht r6, [r3, #0x23]
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r3 + 35<i32>:word16] = SLICE(r6, uint16, 0)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r6, uint16, 0)",
+                "2|L--|Mem0[r3 + 35<i32>:word16] = v3");
         }
 
         [Test]
@@ -7844,8 +7857,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("08F8031E");	// strbt r1, [r8, #3]
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r8 + 3<i32>:byte] = SLICE(r1, byte, 0)");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(r1, byte, 0)",
+                "2|L--|Mem0[r8 + 3<i32>:byte] = v3");
         }
 
         [Test]
@@ -7864,7 +7878,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FFFF2BFC");	// vdup.8 d31, d27[7]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|d31 = __vdup_8(d27[7<i32>])");
+                "1|L--|d31 = __vdup<int8,int8[8]>(d27[7<i32>])");
         }
 
         [Test]

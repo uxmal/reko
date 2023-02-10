@@ -2129,7 +2129,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xDAC01002);
             AssertCode(     // clz\tx2,x0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|x2 = __clz(x0)");
+                "1|L--|x2 = __count_leading_zeros<word64>(x0)");
         }
 
         [Test]
@@ -3339,7 +3339,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v2 = d1",
                 "2|L--|v3 = d0",
-                "3|L--|d17 = __sqdmulh_i16(v2, v3)");
+                "3|L--|d17 = __sqdmulh_vec<int16[4]>(v2, v3)");
         }
 
         [Test]
@@ -3348,7 +3348,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("BFC95D5F");
             AssertCode(     // sqdmulh	h31,h13,v13.h[5]
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|h31 = __sqdmulh(h13, d13[5<i32>])");
+                "1|L--|h31 = __sqdmulh<word16>(h13, d13[5<i32>])");
         }
 
         [Test]

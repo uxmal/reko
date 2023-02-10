@@ -59,7 +59,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBrk()
         {
-            m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance, RewriteOp(0)));
+            m.SideEffect(m.Fn(brk_intrinsic, RewriteOp(0)));
         }
 
         private void RewriteCb(Func<Expression, Expression> fn)

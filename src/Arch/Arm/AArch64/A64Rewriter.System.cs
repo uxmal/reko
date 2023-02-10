@@ -46,7 +46,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteMrs()
         {
             var intrinsic = host.Intrinsic("__mrs", true, PrimitiveType.Word32, RewriteOp(instr.Operands[1]));
-            m.Assign(RewriteOp(instr.Operands[0]), intrinsic);
+            m.Assign(RewriteOp(0), intrinsic);
         }
 
         private void RewriteMsr()
