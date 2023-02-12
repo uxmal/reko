@@ -68,7 +68,7 @@ l000080:
 	while (true)
 	{
 		__tblrd(TBLPTR, 0x01);
-		*FSR0 = TABLAT;
+		*FSR0.u1 = TABLAT;
 		--g_b00C3;
 		++FSR0;
 		v23_n = g_b00C3 != 0x00;
@@ -113,13 +113,13 @@ void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, cu8 PRODL, Eq_n FSR0)
 {
 	while (FSR0H < WREG)
 	{
-		*FSR0 = 0x00;
-		FSR0 = (word32) FSR0 + 1;
+		*FSR0.u1 = 0x00;
+		FSR0.u1 = (word32) FSR0 + 1;
 	}
 	while (FSR0L < PRODL)
 	{
-		*FSR0 = 0x00;
-		FSR0 = (word32) FSR0 + 1;
+		*FSR0.u1 = 0x00;
+		FSR0.u1 = (word32) FSR0 + 1;
 	}
 }
 

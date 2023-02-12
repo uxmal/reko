@@ -23,7 +23,7 @@ l0000A630:
 			do
 			{
 				Mem101[r5_n + r3_n:byte] = Mem97[r1 + r3_n:byte];
-				r3_n = (word32) r3_n + 1;
+				&r3_n.u1->t0000.u0 = (word32) r3_n + 1;
 			} while (r3_n != r2);
 l0000A63C:
 			ptr32 r4_n;
@@ -42,19 +42,19 @@ l0000A63C:
 		}
 		Eq_n r4_n = r1;
 		Eq_n r3_n = r0;
-		Eq_n r5_n = (word32) r0 + ((r2 - 0x10 >> 4) + 0x01 << 4);
+		Eq_n r5_n = r0.u1 + ((r2 - 0x10 >> 4) + 0x01 << 4) / 4;
 		do
 		{
-			*r3_n = *r4_n;
-			*((word32) r3_n + 4) = *((word32) r4_n + 4);
-			*((word32) r3_n + 8) = *((word32) r4_n + 8);
-			*((word32) r3_n + 0x0C) = *((word32) r4_n + 0x0C);
-			r3_n = (word32) r3_n + 16;
-			r4_n = (word32) r4_n + 16;
+			r3_n.u1->t0000.u0 = r4_n.u1->t0000.u0;
+			r3_n.u2->u0.dw0004 = r4_n.u2->u0.dw0004;
+			r3_n.u2->u0.dw0008 = r4_n.u2->u0.dw0008;
+			r3_n.u2->u0.dw000C = r4_n.u2->u0.dw000C;
+			&r3_n.u1->t0000.u0 = &r3_n.u2->u1.dw0010;
+			&r4_n.u1->t0000.u0 = &r4_n.u2->u1.dw0010;
 		} while (r5_n != r3_n);
 		ui32 r6_n = r2 - 0x10 & ~0x0F;
-		r5_n = (word32) r0 + (r6_n + 0x10);
-		r1 = (word32) r1 + (r6_n + 0x10);
+		&r5_n.u1->t0000.u0 = r0.u1 + (r6_n + 0x10) / 4;
+		&r1.u1->t0000.u0 = r1.u1 + (r6_n + 0x10) / 4;
 		if ((r2 & 0x0F) > 0x03)
 		{
 			uint32 r6_n = (r2 & 0x0F) - 0x04;
@@ -62,7 +62,7 @@ l0000A63C:
 			uint32 r4_n = (r6_n >> 2) + 0x01;
 			do
 			{
-				*((word32) r5_n + r3_n) = *((word32) r1 + r3_n);
+				r5_n.u1[r3_n / 4] = r1.u1[r3_n / 4];
 				r3_n += 0x04;
 			} while (r3_n != r4_n << 2);
 			union Eq_n * r3_n = (r6_n & ~0x03) + 0x04;

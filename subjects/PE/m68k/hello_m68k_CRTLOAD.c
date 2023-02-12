@@ -94,11 +94,11 @@ l00001556:
 					a3_n += 4;
 					d0_n = SEQ(SLICE(SEQ(SLICE(v29_n, word16, 8), (word16) SEQ(v29_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
-					a2_n = (union Eq_n *) ((char *) a2_n + d0_n);
-					if (dwArg02 != 0x00 && *a2_n >= 0x00)
-						*a2_n = (union Eq_n *) ((char *) *a2_n + dwArg02)[2];
+					a2_n = &a2_n->u0 + d0_n;
+					if (dwArg02 != 0x00 && a2_n->u0 >= 0x00)
+						a2_n->u0 = (a2_n->u0 + dwArg02)->t0002.u0;
 					else
-						*a2_n = (union Eq_n *) ((char *) *a2_n + dwLoc02_n);
+						a2_n->u0 = (int32) (a2_n->u0 + dwLoc02_n);
 					goto l00001556;
 				}
 l0000159A:

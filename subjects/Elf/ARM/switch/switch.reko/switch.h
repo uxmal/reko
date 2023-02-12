@@ -121,7 +121,7 @@ Eq_116: (struct "Eq_116" (FFFFFFE8 Eq_103 tFFFFFFE8) (0 word32 dw0000) (4 word32
 	T_116 (in fp_24 @ 00008498 : (ptr32 Eq_116))
 	T_119 (in frobulate(r0, r1) @ 00008498 : word32)
 	T_130 (in fp_48 @ 000084B4 : (ptr32 Eq_116))
-	T_135 (in frobulate(r0_47, *sp_29) @ 000084B4 : word32)
+	T_135 (in frobulate(r0_47, sp_29->u0) @ 000084B4 : word32)
 	T_143 (in fp_36 @ 000084D4 : (ptr32 Eq_116))
 	T_147 (in frobulate(r0, r0) @ 00008518 : word32)
 	T_152 (in bazulate(0<32>, 0<32>) @ 00008548 : word32)
@@ -714,7 +714,7 @@ T_134: (in Mem19[sp_29 + 0<32>:word32] @ 000084B4 : word32)
   Class: Eq_103
   DataType: Eq_103
   OrigDataType: word32
-T_135: (in frobulate(r0_47, *sp_29) @ 000084B4 : word32)
+T_135: (in frobulate(r0_47, sp_29->u0) @ 000084B4 : word32)
   Class: Eq_116
   DataType: (ptr32 Eq_116)
   OrigDataType: word32

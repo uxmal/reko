@@ -25,7 +25,7 @@ void __start(word32 r2, word32 dwArg00)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (g_t10AA4 == 68228)
+	if (g_t10AA4.u0 == 68228)
 		return;
 	<anonymous> * r25_n = g_ptr10AE4;
 	if (r25_n == null)
@@ -38,7 +38,7 @@ void deregister_tm_clones()
 //      frame_dummy
 void register_tm_clones()
 {
-	Eq_n r5_n = g_t10AA4 - 68228 >> 0x02;
+	Eq_n r5_n = g_t10AA4.u0 - 68228 >> 0x02;
 	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_n = g_ptr10AD4;
@@ -57,16 +57,16 @@ void __do_global_dtors_aux()
 			word32 * r2_n = g_ptr10AAC;
 			__cxa_finalize(*r2_n);
 		}
-		Eq_n r2_n = dtor_idx.6258;
+		Eq_n r2_n = dtor_idx.6258.u0;
 		Eq_n r16_n = (g_dw10AB0 - 68200 >> 0x02) + -1;
 		while ((word32) (r2_n < r16_n) != 0x00)
 		{
 			Eq_n r2_n = (word32) r2_n + 1;
-			dtor_idx.6258 = r2_n;
+			dtor_idx.6258.u0 = (int32) r2_n;
 			<anonymous> ** r2_n = (r2_n << 0x02) + 68200;
 			word32 r4_n;
 			(*r2_n)();
-			r2_n = dtor_idx.6258;
+			r2_n.u0 = dtor_idx.6258.u0;
 		}
 		deregister_tm_clones();
 		g_b10AF0 = 0x01;
@@ -87,7 +87,7 @@ void main()
 	byte bLoc10;
 	memset(&dwLoc14, 0x00, (size_t) 5);
 	struct Eq_n * r2_n = calloc((size_t) 1, (size_t) 5);
-	r2_n->t0000.u1 = dwLoc14;
+	r2_n->t0000.u0 = (byte) dwLoc14;
 	r2_n->b0004 = bLoc10;
 	r2_n->t0000.u0 = 0x0C;
 	r2_n->dw0001 = 0x00;

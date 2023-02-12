@@ -205,7 +205,7 @@ l1000147A:
 			ebp_n->dwFFFFFFFC = ~0x01;
 			fn10001493();
 			Eq_n eax_n = ebp_n->tFFFFFFE4;
-			fn1000182D(ebp_n, esp_n->tFFFFFFFC);
+			fn1000182D(ebp_n, esp_n->tFFFFFFFC.u0);
 			return eax_n;
 		}
 		struct Eq_n * esp_n = esp_n - 4;
@@ -380,7 +380,7 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 	struct Eq_n * fs;
 	word32 dwArg08;
 	fs->dw0000 = ebp->dwFFFFFFF0;
-	ebp->t0000 = dwArg00;
+	ebp->t0000.u0 = (ui32) dwArg00;
 	return dwArg08;
 }
 
@@ -401,7 +401,7 @@ void fn10001864()
 		GetSystemTimeAsFileTime(&tLoc0C);
 		ui32 esi_n = tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
 		QueryPerformanceCounter(&tLoc14);
-		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ tLoc14);
+		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ (tLoc14.u).LowPart);
 		if (esi_n == 0xBB40E64E)
 			esi_n = ~0x44BF19B0;
 		else if ((esi_n & 0xFFFF0000) == 0x00)

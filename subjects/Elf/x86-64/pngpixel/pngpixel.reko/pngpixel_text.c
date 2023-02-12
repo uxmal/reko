@@ -188,10 +188,10 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
 	char * rax_n = rsi->ptr0010;
 	uint64 rax_n = SEQ(SLICE(rax_n, word32, 32), atol(rax_n));
-	FILE * rax_n = fopen(rsi->t0018, "rb");
+	FILE * rax_n = fopen(rsi->t0018.u0, "rb");
 	if (rax_n == null)
 	{
-		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->t0018);
+		fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->t0018.u0);
 		goto l000000000040175D;
 	}
 	word64 rax_n = png_create_read_struct(0x00, 0x00401993, 0x00, 0x00);

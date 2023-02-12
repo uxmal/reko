@@ -2962,7 +2962,7 @@ T_585: (in 8<8> @ 0000065A : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_586: (in __bit<word32,byte>(a15_8->tF000001C, 8<8>) @ 0000065A : bool)
+T_586: (in __bit<word32,byte>(a15_8->tF000001C.u0, 8<8>) @ 0000065A : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
@@ -2997,7 +2997,7 @@ T_593: (in a15_8 + 0xF000001C<32> @ 00000660 : word32)
 T_594: (in Mem14[a15_8 + 0xF000001C<32>:word32] @ 00000660 : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: bool
+  OrigDataType: word32
 T_595: (in 1<32> @ 0000065E : word32)
   Class: Eq_571
   DataType: word32
@@ -3101,7 +3101,7 @@ T_619: (in a15_8 + 0xF000001C<32> @ 000006A0 : word32)
 T_620: (in Mem10[a15_8 + 0xF000001C<32>:word32] @ 000006A0 : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: bool
+  OrigDataType: word32
 T_621: (in d2_14 @ 000006A4 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -3630,11 +3630,11 @@ T_752: (in 0xB<16> @ 00000714 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_753: (in __bit<word32,word16>(a15_8->tF000001C, 0xB<16>) @ 00000714 : bool)
+T_753: (in __bit<word32,word16>(a15_8->tF000001C.u0, 0xB<16>) @ 00000714 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_754: (in !__bit<word32,word16>(a15_8->tF000001C, 0xB<16>) @ 00000714 : bool)
+T_754: (in !__bit<word32,word16>(a15_8->tF000001C.u0, 0xB<16>) @ 00000714 : bool)
   Class: Eq_754
   DataType: bool
   OrigDataType: bool
@@ -3954,11 +3954,11 @@ T_833: (in 4<8> @ 000007A4 : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_834: (in __bit<word32,byte>(a15_8->tF000001C, 4<8>) @ 000007A4 : bool)
+T_834: (in __bit<word32,byte>(a15_8->tF000001C.u0, 4<8>) @ 000007A4 : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
-T_835: (in !__bit<word32,byte>(a15_8->tF000001C, 4<8>) @ 000007A4 : bool)
+T_835: (in !__bit<word32,byte>(a15_8->tF000001C.u0, 4<8>) @ 000007A4 : bool)
   Class: Eq_835
   DataType: bool
   OrigDataType: bool
@@ -3985,7 +3985,7 @@ T_840: (in a15_8 + 0xF000001C<32> @ 000007AA : word32)
 T_841: (in Mem14[a15_8 + 0xF000001C<32>:word32] @ 000007AA : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: bool
+  OrigDataType: word32
 T_842: (in d4 @ 000007AA : ui32)
   Class: Eq_842
   DataType: ui32
@@ -4278,7 +4278,7 @@ T_914: (in 40<i32> @ 00000844 : int32)
   Class: Eq_914
   DataType: int32
   OrigDataType: int32
-T_915: (in a15_22->tF000001C << 40<i32> @ 00000844 : word32)
+T_915: (in a15_22->tF000001C.u0 << 40<i32> @ 00000844 : word32)
   Class: Eq_909
   DataType: ui32
   OrigDataType: ui32
@@ -4321,7 +4321,7 @@ T_924: (in a15_22 + 0xF000001C<32> @ 00000850 : word32)
 T_925: (in Mem41[a15_22 + 0xF000001C<32>:word32] @ 00000850 : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: bool
+  OrigDataType: word32
 T_926: (in d4 @ 00000850 : (ptr32 Eq_926))
   Class: Eq_926
   DataType: (ptr32 Eq_926)
@@ -4477,7 +4477,7 @@ T_963: (in a15_22 + 0xF000001C<32> @ 000008FE : word32)
 T_964: (in Mem26[a15_22 + 0xF000001C<32>:word32] @ 000008FE : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: bool
+  OrigDataType: word32
 T_965: (in d15_17 != d3_24 @ 00000908 : bool)
   Class: Eq_965
   DataType: bool
@@ -4498,7 +4498,7 @@ T_969: (in 40<i32> @ 00000910 : int32)
   Class: Eq_969
   DataType: int32
   OrigDataType: int32
-T_970: (in a15_22->tF000001C << 40<i32> @ 00000910 : word32)
+T_970: (in a15_22->tF000001C.u0 << 40<i32> @ 00000910 : word32)
   Class: Eq_960
   DataType: ui32
   OrigDataType: ui32
@@ -4546,11 +4546,11 @@ T_981: (in 4<8> @ 00000918 : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_982: (in __bit<word32,byte>(a15_22->tF000001C, 4<8>) @ 00000918 : bool)
+T_982: (in __bit<word32,byte>(a15_22->tF000001C.u0, 4<8>) @ 00000918 : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
-T_983: (in !__bit<word32,byte>(a15_22->tF000001C, 4<8>) @ 00000918 : bool)
+T_983: (in !__bit<word32,byte>(a15_22->tF000001C.u0, 4<8>) @ 00000918 : bool)
   Class: Eq_983
   DataType: bool
   OrigDataType: bool
@@ -4613,7 +4613,7 @@ T_997: (in a15_22 + 0xF000001C<32> @ 0000091E : word32)
 T_998: (in Mem77[a15_22 + 0xF000001C<32>:word32] @ 0000091E : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: bool
+  OrigDataType: word32
 T_999: (in __load_upper_context @ 00000920 : ptr32)
   Class: Eq_508
   DataType: (ptr32 Eq_508)
@@ -5034,7 +5034,7 @@ T_1103: (in 0<16> @ 000009FA : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1104: (in __bit<word32,word16>(*a4, 0<16>) @ 000009FA : bool)
+T_1104: (in __bit<word32,word16>(a4->u0, 0<16>) @ 000009FA : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
@@ -5058,7 +5058,7 @@ T_1109: (in 2<8> @ 000009F0 : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_1110: (in __bit<word32,byte>(*a4, 2<8>) @ 000009F0 : bool)
+T_1110: (in __bit<word32,byte>(a4->u0, 2<8>) @ 000009F0 : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
@@ -5082,11 +5082,11 @@ T_1115: (in 3<16> @ 000009F4 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1116: (in __bit<word32,word16>(*a4, 3<16>) @ 000009F4 : bool)
+T_1116: (in __bit<word32,word16>(a4->u0, 3<16>) @ 000009F4 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_1117: (in !__bit<word32,word16>(*a4, 3<16>) @ 000009F4 : bool)
+T_1117: (in !__bit<word32,word16>(a4->u0, 3<16>) @ 000009F4 : bool)
   Class: Eq_1117
   DataType: bool
   OrigDataType: bool
@@ -5110,7 +5110,7 @@ T_1122: (in 0<8> @ 000009EC : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_1123: (in __bit<word32,byte>(*a4, 0<8>) @ 000009EC : bool)
+T_1123: (in __bit<word32,byte>(a4->u0, 0<8>) @ 000009EC : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
@@ -5134,7 +5134,7 @@ T_1128: (in 2<16> @ 00000A00 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1129: (in __bit<word32,word16>(*a4, 2<16>) @ 00000A00 : bool)
+T_1129: (in __bit<word32,word16>(a4->u0, 2<16>) @ 00000A00 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
@@ -5158,7 +5158,7 @@ T_1134: (in 3<16> @ 00000A06 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1135: (in __bit<word32,word16>(*a4, 3<16>) @ 00000A06 : bool)
+T_1135: (in __bit<word32,word16>(a4->u0, 3<16>) @ 00000A06 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
@@ -7739,7 +7739,7 @@ T_1777: (in a2_14 + 0<32> @ 00001CD6 : word32)
   OrigDataType: ui32
 T_1778: (in Mem23[a2_14 + 0<32>:byte] @ 00001CD6 : byte)
   Class: Eq_1775
-  DataType: Eq_1737
+  DataType: byte
   OrigDataType: byte
 T_1779: (in 1<i32> @ 00001CD6 : int32)
   Class: Eq_1779

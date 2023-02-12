@@ -5087,7 +5087,7 @@ T_1043: (in Mem129[sp_125 + 0<16>:byte] @ 0BD8 : byte)
   Class: Eq_694
   DataType: Eq_694
   OrigDataType: (union (byte u1) (word16 u0))
-T_1044: (in fn0C90(sp_125->wFFFFFFFE, sp_125->t0000) @ 0BD8 : void)
+T_1044: (in fn0C90(sp_125->wFFFFFFFE, sp_125->t0000.u0) @ 0BD8 : void)
   Class: Eq_696
   DataType: void
   OrigDataType: void

@@ -667,7 +667,7 @@ T_155: (in 1<32> @ 80000608 : word32)
   Class: Eq_155
   DataType: word32
   OrigDataType: word32
-T_156: (in Mem94[tArg14 + 0<32>:word32] + 1<32> @ 80000608 : word32)
+T_156: (in *tArg14.u0 + 1<32> @ 80000608 : word32)
   Class: Eq_154
   DataType: word32
   OrigDataType: word32
@@ -681,7 +681,7 @@ T_158: (in tArg14 + 0<32> @ 80000608 : word32)
   OrigDataType: (union ((ptr32 word32) u1) ((ref int32) u0))
 T_159: (in Mem101[tArg14 + 0<32>:word32] @ 80000608 : word32)
   Class: Eq_154
-  DataType: Eq_137
+  DataType: word32
   OrigDataType: word32
 T_160: (in v18_53 @ 8000055E : word32)
   Class: Eq_160

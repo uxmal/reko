@@ -144,7 +144,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 	real64 rLoc14_n = 1.0;
 	while ((real64) ((real96) rLoc0C_n /96 rLoc14_n) >= rArg0C)
 	{
-		*tArg14 = (word32) *tArg14 + 1;
+		++*tArg14.u0;
 		word32 v18_n = dwLoc20_n + 0x00;
 		rLoc0C_n = (real64) ((real96) rLoc0C_n *96 v9_n *96 v9_n);
 		dwLoc20_n = v18_n + 0x03;

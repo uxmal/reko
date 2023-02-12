@@ -67,9 +67,9 @@ void fn000022C4(word32 a2, ptr32 a5)
 {
 	fn000023B4(a5 + -744, a5 + -740);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	a7_n->t0004 = a5 + -748;
-	a7_n->t0000 = a5 + -752;
-	struct Eq_n * a6_n = fn000023B4(a7_n->t0000, a7_n->t0004);
+	a7_n->t0004.u0 = (struct Eq_n *) (a5 + -748);
+	a7_n->t0000.u0 = (struct Eq_n *) (a5 + -752);
+	struct Eq_n * a6_n = fn000023B4(a7_n->t0000.u0, a7_n->t0004.u0);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 	a7_n->w0002 = ~0x5760;
 	a7_n->b0001 = 0x01;
@@ -105,23 +105,23 @@ word32 fn00002354(struct Eq_n * a5, int32 dwArg08, byte bArg0F)
 	ptr32 a7_n = fp - 0x04;
 	if (dwArg08 == 0x00)
 	{
-		if (a5->tFFFFFD3C != 0x00)
+		if (a5->tFFFFFD3C.u0 != 0x00)
 		{
-			fn000023B4(a5->tFFFFFD3C, a5->tFFFFFD38);
+			fn000023B4(a5->tFFFFFD3C.u0, a5->tFFFFFD38.u0);
 			struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-			a7_n = &a7_n->t0008;
+			a7_n = &a7_n->t0008.u0;
 		}
 		struct Eq_n * a7_n = a7_n - 4;
-		a7_n->t0000 = (char *) &a5->ptrFFFFFAA0 + 0x0288;
-		a7_n->tFFFFFFFC = (char *) &a5->ptrFFFFFAA0 + 640;
-		fn000023B4(a7_n->tFFFFFFFC, a7_n->t0000);
+		a7_n->t0000.u0 = (struct Eq_n *) ((char *) &a5->ptrFFFFFAA0 + 0x0288);
+		a7_n->tFFFFFFFC.u0 = (struct Eq_n *) ((char *) &a5->ptrFFFFFAA0 + 640);
+		fn000023B4(a7_n->tFFFFFFFC.u0, a7_n->t0000.u0);
 		struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-		a7_n = &a7_n->t0008;
+		a7_n = &a7_n->t0008.u0;
 	}
 	struct Eq_n * a7_n = a7_n - 4;
-	a7_n->t0000 = (char *) &a5->ptrFFFFFAA0 + 656;
-	a7_n->tFFFFFFFC = (char *) &a5->ptrFFFFFAA0 + 652;
-	struct Eq_n * a6_n = fn000023B4(a7_n->tFFFFFFFC, a7_n->t0000);
+	a7_n->t0000.u0 = (struct Eq_n *) ((char *) &a5->ptrFFFFFAA0 + 656);
+	a7_n->tFFFFFFFC.u0 = (struct Eq_n *) ((char *) &a5->ptrFFFFFAA0 + 652);
+	struct Eq_n * a6_n = fn000023B4(a7_n->tFFFFFFFC.u0, a7_n->t0000.u0);
 	if (a6_n->dw0010 == 0x00)
 	{
 		if (a5->ptrFFFFFAA0 != null)
@@ -146,14 +146,14 @@ word32 fn000023B4(Eq_n dwArg04, Eq_n dwArg08)
 	{
 		do
 		{
-			<anonymous> * d0_n = *d3_n;
+			<anonymous> * d0_n = d3_n.u0->dw0000;
 			if (d0_n != null && d0_n - d5_n != 0x00)
 			{
 				word32 a0_n;
 				word32 d0_n;
 				d0_n();
 			}
-			d3_n = (word32) d3_n + 4;
+			&d3_n.u0->dw0000 = (word32) d3_n + 4;
 		} while (d4_n - d3_n > 0x00);
 	}
 	return *a6_n;
@@ -165,12 +165,12 @@ void fn000023F8(Eq_n a5)
 	struct Eq_n * a6_n;
 	Eq_n a5_n = fn00002418(a5, out a6_n);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	a7_n->tFFFFFFFC = a6_n->t0008;
+	a7_n->tFFFFFFFC.u0 = a6_n->t0008.u0;
 	word32 a6_n;
-	Eq_n a5_n = fn0000243C(a5_n, a7_n->tFFFFFFFC, out a6_n);
+	Eq_n a5_n = fn0000243C(a5_n, a7_n->tFFFFFFFC.u0, out a6_n);
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-	&a7_n->t0000.u0->dw0000 = 0xFF;
-	(*((word32) a5_n - 1288))();
+	a7_n->t0000.u0 = 0xFF;
+	a5_n.u0->ptrFFFFFAF8();
 }
 
 // 00002418: Register Eq_n fn00002418(Register Eq_n a5, Register out ptr32 a6Out)
@@ -181,14 +181,14 @@ Eq_n fn00002418(Eq_n a5, ptr32 & a6Out)
 	struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 	word32 a6_n;
 	Eq_n a5_n = fn0000243C(a5, 252, out a6_n);
-	word32 a7_n = &a7_n->t0004;
-	<anonymous> * a0_n = *((word32) a5_n - 1012);
+	word32 a7_n = &a7_n->t0004.u0;
+	<anonymous> * a0_n = a5_n.u0->ptrFFFFFC0C;
 	if (a0_n != null)
 		a0_n();
 	union Eq_n * a7_n = a7_n - 4;
-	*a7_n = (union Eq_n *) (struct Eq_n *) 0xFF;
+	a7_n->u0 = (struct Eq_n *) 0xFF;
 	ptr32 * a6_n;
-	Eq_n a5_n = fn0000243C(a5_n, *a7_n, out a6_n);
+	Eq_n a5_n = fn0000243C(a5_n, a7_n->u0, out a6_n);
 	a6Out = *a6_n;
 	return a5_n;
 }
@@ -202,7 +202,7 @@ Eq_n fn0000243C(Eq_n a5, Eq_n dwArg04, ptr32 & a6Out)
 	ptr32 fp;
 	ptr32 * a6_n = fp - 0x04;
 	int32 d1_n = 0;
-	struct Eq_n * d2_n = (word32) a5 - 0x044C;
+	struct Eq_n * d2_n = &a5.u0->aFFFFFBB4->dw0000;
 	while (dwArg04 - d2_n->dw0000 != 0x00)
 	{
 		++d2_n;
@@ -210,7 +210,7 @@ Eq_n fn0000243C(Eq_n a5, Eq_n dwArg04, ptr32 & a6Out)
 		if (d2_n - (a5 + -1012) >=u 0x00)
 			break;
 	}
-	if (dwArg04 - *((word32) a5 + (d1_n * 8 - 0x044C)) == 0x00)
+	if (dwArg04 - (((a5.u0)->aFFFFFBB4))[d1_n].dw0000 == 0x00)
 	{
 		byte * a0_n = *((word32) a5 + (d1_n * 8 - 0x0448));
 		byte * a1_n = a0_n;

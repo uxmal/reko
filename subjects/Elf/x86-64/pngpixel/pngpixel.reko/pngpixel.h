@@ -236,7 +236,7 @@ Eq_399: (fn int32 ((ptr64 char)))
 	T_410 (in atol @ 0000000000401367 : ptr64)
 Eq_413: FILE
 	T_413 (in rax_52 @ 0000000000401381 : (ptr64 Eq_413))
-	T_422 (in fopen(rsi->t0018, "rb") @ 0000000000401381 : (ptr64 FILE))
+	T_422 (in fopen(rsi->t0018.u0, "rb") @ 0000000000401381 : (ptr64 FILE))
 	T_423 (in 0<64> @ 0000000000401397 : word64)
 Eq_414: (fn (ptr64 Eq_413) (Eq_66, (ptr64 char)))
 	T_414 (in fopen @ 0000000000401381 : ptr64)
@@ -1990,7 +1990,7 @@ T_421: (in 0x401990<u64> @ 0000000000401381 : uint64)
   Class: Eq_417
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_422: (in fopen(rsi->t0018, "rb") @ 0000000000401381 : (ptr64 FILE))
+T_422: (in fopen(rsi->t0018.u0, "rb") @ 0000000000401381 : (ptr64 FILE))
   Class: Eq_413
   DataType: (ptr64 Eq_413)
   OrigDataType: (ptr64 FILE)
@@ -2031,7 +2031,7 @@ T_431: (in  @ 0000000000401738 : (ptr64 char))
   Class: Eq_66
   DataType: Eq_66
   OrigDataType: 
-T_432: (in fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->t0018) @ 0000000000401738 : int32)
+T_432: (in fprintf(stderr, "pngpixel: %s: could not open file\n", rsi->t0018.u0) @ 0000000000401738 : int32)
   Class: Eq_102
   DataType: int32
   OrigDataType: int32

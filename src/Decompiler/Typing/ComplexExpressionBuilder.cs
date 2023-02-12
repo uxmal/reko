@@ -337,7 +337,11 @@ namespace Reko.Typing
         public Expression VisitUnion(UnionType ut)
         {
             UnionAlternative? alt = ut.FindAlternative(dtComplexOrig!);
-            if (alt == null)
+            if (alt is null)
+            {
+                alt = UnionAlternativeChooser.Choose(ut, enclosingPtr is not null, offset);
+            }
+            if (alt is null)
             {
                 Debug.Print("Unable to find {0} in {1} (Offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
                 return FallbackExpression();

@@ -97,8 +97,8 @@ word32 bazulate(Eq_n r0, Eq_n r1)
 	struct Eq_n * fp_n = frobulate(r0, r1);
 	word32 r0_n = __divsi3(r0 + r1, r0);
 	union Eq_n * sp_n = (union Eq_n *) <invalid>;
-	Eq_n r0_n = fp_n->tFFFFFFE8;
-	struct Eq_n * fp_n = frobulate(r0_n, *sp_n);
+	Eq_n r0_n = fp_n->tFFFFFFE8.u0;
+	struct Eq_n * fp_n = frobulate(r0_n, sp_n->u0);
 	__divsi3(r0_n, r0_n);
 	return fp_n->dw0000;
 }

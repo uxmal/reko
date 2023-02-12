@@ -56,7 +56,7 @@ Eq_8: (union "Eq_8" (int32 u0) (size_t u1))
 	T_264 (in Mem35[sp_3 + 0x18<32>:word32] @ 000115BC : word32)
 	T_267 (in Mem35[sp_3 + 0x24<32>:word32] @ 000115BC : word32)
 	T_317 (in Mem35[sp_3 + 0x18<32>:word32] @ 000115F0 : word32)
-	T_319 (in sp_3->t0018 << 1<8> @ 000115F0 : word32)
+	T_319 (in sp_3->t0018.u0 << 1<8> @ 000115F0 : word32)
 	T_322 (in Mem42[sp_3 + 0x20<32>:word32] @ 000115F0 : word32)
 	T_325 (in Mem42[sp_3 + 0x18<32>:word32] @ 000115FC : word32)
 	T_326 (in 513<i32> @ 000115FC : int32)
@@ -65,7 +65,7 @@ Eq_8: (union "Eq_8" (int32 u0) (size_t u1))
 	T_376 (in Mem49[sp_3 + 0x18<32>:word32] @ 0001161C : word32)
 	T_379 (in Mem49[sp_3 + 0x20<32>:word32] @ 0001161C : word32)
 	T_386 (in Mem42[sp_3 + 0x18<32>:word32] @ 0001160C : word32)
-	T_388 (in Mem42[sp_3 + 0x18<32>:word32] + 512<i32> @ 0001160C : word32)
+	T_388 (in sp_3->t0018.u0 + 512<i32> @ 0001160C : word32)
 	T_391 (in Mem47[sp_3 + 0x20<32>:word32] @ 0001160C : word32)
 	T_400 (in _Size @ 00011634 : size_t)
 	T_406 (in Mem49[sp_3 + 0x20<32>:word32] @ 00011634 : word32)
@@ -1253,7 +1253,7 @@ T_267: (in Mem35[sp_3 + 0x24<32>:word32] @ 000115BC : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: up32
-T_268: (in sp_3->t0018 < sp_3->t0024 @ 000115BC : bool)
+T_268: (in sp_3->t0018.u0 < (sp_3->t0024).u0 @ 000115BC : bool)
   Class: Eq_268
   DataType: bool
   OrigDataType: bool
@@ -1265,7 +1265,7 @@ T_270: (in 0<32> @ 000115BC : word32)
   Class: Eq_269
   DataType: word32
   OrigDataType: word32
-T_271: (in (word32) (sp_3->t0018 < sp_3->t0024) == 0<32> @ 000115BC : bool)
+T_271: (in (word32) (sp_3->t0018.u0 < (sp_3->t0024).u0) == 0<32> @ 000115BC : bool)
   Class: Eq_271
   DataType: bool
   OrigDataType: bool
@@ -1457,7 +1457,7 @@ T_318: (in 1<8> @ 000115F0 : byte)
   Class: Eq_318
   DataType: byte
   OrigDataType: byte
-T_319: (in sp_3->t0018 << 1<8> @ 000115F0 : word32)
+T_319: (in sp_3->t0018.u0 << 1<8> @ 000115F0 : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: ui32
@@ -1489,7 +1489,7 @@ T_326: (in 513<i32> @ 000115FC : int32)
   Class: Eq_8
   DataType: int32
   OrigDataType: (union (int32 u0) (up32 u1))
-T_327: (in sp_3->t0018 < 513<i32> @ 000115FC : bool)
+T_327: (in sp_3->t0018.u0 < 513<i32> @ 000115FC : bool)
   Class: Eq_327
   DataType: bool
   OrigDataType: bool
@@ -1501,7 +1501,7 @@ T_329: (in 0<32> @ 000115FC : word32)
   Class: Eq_328
   DataType: word32
   OrigDataType: word32
-T_330: (in (word32) (sp_3->t0018 < 513<i32>) != 0<32> @ 000115FC : bool)
+T_330: (in (word32) (sp_3->t0018.u0 < 513<i32>) != 0<32> @ 000115FC : bool)
   Class: Eq_330
   DataType: bool
   OrigDataType: bool
@@ -1701,7 +1701,7 @@ T_379: (in Mem49[sp_3 + 0x20<32>:word32] @ 0001161C : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: up32
-T_380: (in sp_3->t0018 < sp_3->t0020 @ 0001161C : bool)
+T_380: (in sp_3->t0018.u0 < (sp_3->t0020).u0 @ 0001161C : bool)
   Class: Eq_380
   DataType: bool
   OrigDataType: bool
@@ -1713,7 +1713,7 @@ T_382: (in 0<32> @ 0001161C : word32)
   Class: Eq_381
   DataType: word32
   OrigDataType: word32
-T_383: (in (word32) (sp_3->t0018 < sp_3->t0020) == 0<32> @ 0001161C : bool)
+T_383: (in (word32) (sp_3->t0018.u0 < (sp_3->t0020).u0) == 0<32> @ 0001161C : bool)
   Class: Eq_383
   DataType: bool
   OrigDataType: bool
@@ -1733,7 +1733,7 @@ T_387: (in 512<i32> @ 0001160C : int32)
   Class: Eq_387
   DataType: int32
   OrigDataType: (union (int32 u0) (up32 u1))
-T_388: (in Mem42[sp_3 + 0x18<32>:word32] + 512<i32> @ 0001160C : word32)
+T_388: (in sp_3->t0018.u0 + 512<i32> @ 0001160C : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: up32
@@ -1748,7 +1748,7 @@ T_390: (in sp_3 + 0x20<32> @ 0001160C : word32)
 T_391: (in Mem47[sp_3 + 0x20<32>:word32] @ 0001160C : word32)
   Class: Eq_8
   DataType: Eq_8
-  OrigDataType: word32
+  OrigDataType: up32
 T_392: (in 0x14<32> @ 0001163C : word32)
   Class: Eq_392
   DataType: word32
@@ -1809,7 +1809,7 @@ T_406: (in Mem49[sp_3 + 0x20<32>:word32] @ 00011634 : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: size_t
-T_407: (in realloc(sp_3->ptr001C, sp_3->t0020) @ 00011634 : (ptr32 void))
+T_407: (in realloc(sp_3->ptr001C, sp_3->t0020.u0) @ 00011634 : (ptr32 void))
   Class: Eq_150
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 void)
@@ -1849,7 +1849,7 @@ T_416: (in Mem58[sp_3 + 0x24<32>:word32] @ 00011650 : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: up32
-T_417: (in sp_3->t0018 < sp_3->t0024 @ 00011650 : bool)
+T_417: (in sp_3->t0018.u0 < (sp_3->t0024).u0 @ 00011650 : bool)
   Class: Eq_417
   DataType: bool
   OrigDataType: bool
@@ -1861,7 +1861,7 @@ T_419: (in 0<32> @ 00011650 : word32)
   Class: Eq_418
   DataType: word32
   OrigDataType: word32
-T_420: (in (word32) (sp_3->t0018 < sp_3->t0024) == 0<32> @ 00011650 : bool)
+T_420: (in (word32) (sp_3->t0018.u0 < (sp_3->t0024).u0) == 0<32> @ 00011650 : bool)
   Class: Eq_420
   DataType: bool
   OrigDataType: bool
@@ -1893,7 +1893,7 @@ T_427: (in Mem58[sp_3 + 0x24<32>:word32] @ 00011668 : word32)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: size_t
-T_428: (in realloc(sp_3->ptr001C, sp_3->t0024) @ 00011668 : (ptr32 void))
+T_428: (in realloc(sp_3->ptr001C, sp_3->t0024.u0) @ 00011668 : (ptr32 void))
   Class: Eq_150
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 void)

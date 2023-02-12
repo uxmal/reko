@@ -181,7 +181,7 @@ Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi,
 	ptr32 fp;
 	word32 dwLoc0C;
 	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
-	Eq_n ebx_n = ebp_n->t0008;
+	Eq_n ebx_n = ebp_n->t0008.u0;
 	ebp_n->tFFFFFFE4 = 0x01;
 	ebp_n->dwFFFFFFFC = 0x00;
 	g_t10003008 = (Eq_n) edx;
@@ -205,14 +205,14 @@ l1000147A:
 			ebp_n->dwFFFFFFFC = ~0x01;
 			fn10001493();
 			Eq_n eax_n = ebp_n->tFFFFFFE4;
-			fn1000182D(ebp_n, esp_n->tFFFFFFFC);
+			fn1000182D(ebp_n, esp_n->tFFFFFFFC.u0);
 			return eax_n;
 		}
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = ecx;
 		esp_n->tFFFFFFFC = edx;
-		esp_n->tFFFFFFF8 = ebx_n;
-		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
+		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
+		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
 		ebp_n->tFFFFFFE4 = eax_n;
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (eax_n == 0x00)
@@ -221,20 +221,20 @@ l1000147A:
 	struct Eq_n * esp_n = esp_n - 4;
 	esp_n->t0000 = edi_n;
 	esp_n->tFFFFFFFC = esi_n;
-	esp_n->tFFFFFFF8 = ebx_n;
-	Eq_n eax_n = fn100017C6(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC);
+	esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
+	Eq_n eax_n = fn100017C6(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC);
 	ebp_n->tFFFFFFE4 = eax_n;
 	esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 	if (esi_n == 0x01 && eax_n == 0x00)
 	{
 		esp_n->t0000 = edi_n;
 		esp_n->tFFFFFFFC = eax_n;
-		esp_n->tFFFFFFF8 = ebx_n;
-		fn100017C6(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC);
+		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
+		fn100017C6(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC);
 		esp_n->t0000 = edi_n;
 		esp_n->tFFFFFFFC = 0x00;
-		esp_n->tFFFFFFF8 = ebx_n;
-		fn100011E9(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
+		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
+		fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (g_dw100020CC != 0x00)
 			fn00000000(ebx_n, 0x00, edi_n);
@@ -244,11 +244,11 @@ l1000147A:
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = edi_n;
 		esp_n->tFFFFFFFC = esi_n;
-		esp_n->tFFFFFFF8 = ebx_n;
+		esp_n->tFFFFFFF8.u0 = (_onexit_t) ebx_n;
 		word32 ebx_n;
 		word32 esi_n;
 		word32 edi_n;
-		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
+		Eq_n eax_n = fn100011E9(esp_n->tFFFFFFF8.u0, esp_n->tFFFFFFFC, esp_n->t0000, out ebx_n, out esi_n, out edi_n);
 		esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 		if (eax_n == 0x00)
 			ebp_n->tFFFFFFE4 &= eax_n;
@@ -291,7 +291,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 	ebp_n->tFFFFFFE4 = eax_n;
 	if (eax_n == ~0x00)
 	{
-		eax_n = _onexit(ebp_n->t0008);
+		eax_n = _onexit(ebp_n->t0008.u0);
 		esp_n = fp - 8;
 	}
 	else
@@ -303,16 +303,16 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->ptr0000);
 		void * v15_n = g_ptr100033B0;
 		ebp_n->tFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
-		Eq_n v16_n = ebp_n->t0008;
-		ebp_n->tFFFFFFDC = __dllonexit(esp_n->tFFFFFFF0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
+		Eq_n v16_n = ebp_n->t0008.u0;
+		ebp_n->tFFFFFFDC.u0 = (_onexit_t) __dllonexit(esp_n->tFFFFFFF0.u0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
 		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v16_n, ebp_n - 28, ebp_n - 32, v15_n, v14_n);
 		g_ptr100033B0 = encode_pointer(ebp_n->tFFFFFFE0);
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
 		esp_n = esp_n + 0x1C;
-		eax_n = ebp_n->tFFFFFFDC;
+		eax_n = Mem83[ebp_n + -36:word32];
 	}
-	fn1000182D(ebp_n, esp_n->tFFFFFFFC);
+	fn1000182D(ebp_n, esp_n->tFFFFFFFC.u0);
 	return eax_n;
 }
 
@@ -394,7 +394,7 @@ ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 &
 	Eq_n dwLoc0C_n = 0x10000000;
 	if (fn100016D0(&g_t10000000) != 0x00)
 	{
-		Eq_n eax_n = ebp_n->t0008;
+		Eq_n eax_n = ebp_n->t0008.u0;
 		dwLoc0C_n = eax_n - 0x10000000;
 		struct Eq_n * eax_n = fn10001700(&g_t10000000, eax_n - 0x10000000);
 		if (eax_n != null)
@@ -450,7 +450,7 @@ word32 fn1000182D(struct Eq_n * ebp, Eq_n dwArg00)
 	struct Eq_n * fs;
 	word32 dwArg08;
 	fs->dw0000 = ebp->dwFFFFFFF0;
-	ebp->t0000 = dwArg00;
+	ebp->t0000.u0 = (ui32) dwArg00;
 	return dwArg08;
 }
 
@@ -471,7 +471,7 @@ void fn10001864()
 		GetSystemTimeAsFileTime(&tLoc0C);
 		ui32 esi_n = tLoc0C.dwHighDateTime ^ tLoc0C.dwLowDateTime ^ GetCurrentProcessId() ^ GetCurrentThreadId() ^ GetTickCount();
 		QueryPerformanceCounter(&tLoc14);
-		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ tLoc14);
+		ui32 esi_n = esi_n ^ (tLoc14.dw0004 ^ (tLoc14.u).LowPart);
 		if (esi_n == 0xBB40E64E)
 			esi_n = ~0x44BF19B0;
 		else if ((esi_n & 0xFFFF0000) == 0x00)

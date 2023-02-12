@@ -3537,7 +3537,7 @@ T_334: (in Mem76[ss:bp_36 + -4<i16>:word16] @ 0800:02B7 : word16)
   Class: Eq_270
   DataType: Eq_270
   OrigDataType: cup16
-T_335: (in ax_78 <= (ss->*bp_36).tFFFFFFFC @ 0800:02B7 : bool)
+T_335: (in ax_78 <= ((ss->*bp_36).tFFFFFFFC).u0 @ 0800:02B7 : bool)
   Class: Eq_335
   DataType: bool
   OrigDataType: bool
@@ -5237,7 +5237,7 @@ T_759: (in Mem25[ds:0x628<16>:word16] @ 0800:04DE : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_760: (in ds->t0628 != wArg02 @ 0800:04DE : bool)
+T_760: (in ds->t0628.u0 != wArg02 @ 0800:04DE : bool)
   Class: Eq_760
   DataType: bool
   OrigDataType: bool
@@ -5541,7 +5541,7 @@ T_835: (in 0<16> @ 0800:0594 : word16)
   Class: Eq_709
   DataType: cup16
   OrigDataType: word16
-T_836: (in ds->t062C != 0<16> @ 0800:0594 : bool)
+T_836: (in ds->t062C.u0 != 0<16> @ 0800:0594 : bool)
   Class: Eq_836
   DataType: bool
   OrigDataType: bool
@@ -5661,7 +5661,7 @@ T_865: (in Mem14[ds:0x62A<16>:word16] @ 0800:05D6 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_866: (in si_29 != ds->t062A @ 0800:05D6 : bool)
+T_866: (in si_29 != (ds->t062A).u0 @ 0800:05D6 : bool)
   Class: Eq_866
   DataType: bool
   OrigDataType: bool
@@ -5789,7 +5789,7 @@ T_897: (in CONVERT(Mem7[ds:0x9E<16>:word16], word16, uint32) @ 0800:0614 : uint3
   Class: Eq_897
   DataType: uint32
   OrigDataType: uint32
-T_898: (in dwArg02 + (uint32) ds->t009E @ 0800:0614 : ui32)
+T_898: (in dwArg02 + (uint32) (ds->t009E).u0 @ 0800:0614 : ui32)
   Class: Eq_894
   DataType: ui32
   OrigDataType: word32
@@ -7744,7 +7744,7 @@ T_1384: (in Mem73[ds:wArg02 + 8<i16>:word16] @ 0800:0970 : word16)
   Class: Eq_639
   DataType: Eq_639
   OrigDataType: word16
-T_1385: (in _free(ds, (ds->*wArg02).t0008) @ 0800:0970 : void)
+T_1385: (in _free(ds, (ds->*wArg02).t0008.u0) @ 0800:0970 : void)
   Class: Eq_1385
   DataType: void
   OrigDataType: void
@@ -9981,7 +9981,7 @@ T_1938: (in wArg02 + 5<16> @ 0800:0E07 : word16)
 		(8 T_1909 t0008)
 		(A T_1912 t000A)
 		(E T_1881 t000E)))
-T_1939: (in (ds->*wArg02).t000A != &wArg02->b0004 + 1<i32> @ 0800:0E07 : bool)
+T_1939: (in (ds->*wArg02).t000A.u0 != &wArg02->b0004 + 1<i32> @ 0800:0E07 : bool)
   Class: Eq_1939
   DataType: bool
   OrigDataType: bool
@@ -10019,7 +10019,7 @@ T_1944: (in wArg02 + 5<16> @ 0800:0DF7 : word16)
 		(8 T_1909 t0008)
 		(A T_1534 t000A)
 		(E T_1881 t000E)))
-T_1945: (in (ds->*wArg02).t000A != &wArg02->b0004 + 1<i32> @ 0800:0DF7 : bool)
+T_1945: (in (ds->*wArg02).t000A.u0 != &wArg02->b0004 + 1<i32> @ 0800:0DF7 : bool)
   Class: Eq_1945
   DataType: bool
   OrigDataType: bool
@@ -13190,7 +13190,7 @@ T_2728: (in Mem453[ss:sp_415 + 0<16>:word16] @ 0800:1303 : word16)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word16
-T_2729: (in __LONGTOA(ds, (ss->*sp_415).tFFFFFFF6, (ss->*sp_415).tFFFFFFF8, (ss->*sp_415).tFFFFFFFA, (ss->*sp_415).ptrFFFFFFFC, (ss->*sp_415).wFFFFFFFE, (ss->*sp_415).t0000) @ 0800:1303 : void)
+T_2729: (in __LONGTOA(ds, (ss->*sp_415).tFFFFFFF6.u0, (ss->*sp_415).tFFFFFFF8.u0, (ss->*sp_415).tFFFFFFFA.u0, (ss->*sp_415).ptrFFFFFFFC, (ss->*sp_415).wFFFFFFFE, (ss->*sp_415).t0000.u0) @ 0800:1303 : void)
   Class: Eq_2729
   DataType: void
   OrigDataType: void
@@ -14541,7 +14541,7 @@ T_3064: (in Mem304[ss:sp_267 + 0<16>:word16] @ 0800:1344 : word16)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word16
-T_3065: (in fn0800_1048(SEQ(es_305, di_307), ds, (ss->*sp_267).t0000) @ 0800:1344 : word16)
+T_3065: (in fn0800_1048(SEQ(es_305, di_307), ds, (ss->*sp_267).t0000.u0) @ 0800:1344 : word16)
   Class: Eq_3065
   DataType: (memptr Eq_3 byte)
   OrigDataType: word16
@@ -14685,7 +14685,7 @@ T_3100: (in Mem283[ss:sp_267 + -2<i16>:word16] @ 0800:133C : word16)
   Class: Eq_3
   DataType: Eq_3
   OrigDataType: word16
-T_3101: (in fn0800_1048(SEQ(es_284, fp - 0x8A<16>), ds, (ss->*sp_267).tFFFFFFFE) @ 0800:133C : word16)
+T_3101: (in fn0800_1048(SEQ(es_284, fp - 0x8A<16>), ds, (ss->*sp_267).tFFFFFFFE.u0) @ 0800:133C : word16)
   Class: Eq_3065
   DataType: (memptr Eq_3 byte)
   OrigDataType: word16
@@ -15466,7 +15466,7 @@ T_3290: (in 0<16> @ 0800:15A3 : word16)
   Class: Eq_709
   DataType: cup16
   OrigDataType: word16
-T_3291: (in ds->t062A == 0<16> @ 0800:15A3 : bool)
+T_3291: (in ds->t062A.u0 == 0<16> @ 0800:15A3 : bool)
   Class: Eq_3291
   DataType: bool
   OrigDataType: bool
@@ -15650,7 +15650,7 @@ T_3336: (in Mem21[ds:0x628<16>:word16] @ 0800:15E6 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3337: (in ds->t0628 != wArg04 @ 0800:15E6 : bool)
+T_3337: (in ds->t0628.u0 != wArg04 @ 0800:15E6 : bool)
   Class: Eq_3337
   DataType: bool
   OrigDataType: bool
@@ -15718,7 +15718,7 @@ T_3353: (in Mem7[ds:0x628<16>:word16] @ 0800:160E : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3354: (in ds->t062C != ds->t0628 @ 0800:160E : bool)
+T_3354: (in ds->t062C.u0 != (ds->t0628).u0 @ 0800:160E : bool)
   Class: Eq_3354
   DataType: bool
   OrigDataType: bool
@@ -15790,7 +15790,7 @@ T_3371: (in Mem7[ds:0x62C<16>:word16] @ 0800:1614 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3372: (in _brk(ds, ds->t062C) @ 0800:1614 : void)
+T_3372: (in _brk(ds, ds->t062C.u0) @ 0800:1614 : void)
   Class: Eq_3372
   DataType: void
   OrigDataType: void
@@ -15830,7 +15830,7 @@ T_3381: (in Mem7[ds:0x628<16>:word16] @ 0800:1655 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3382: (in _brk(ds, ds->t0628) @ 0800:1655 : void)
+T_3382: (in _brk(ds, ds->t0628.u0) @ 0800:1655 : void)
   Class: Eq_3372
   DataType: void
   OrigDataType: void
@@ -15858,7 +15858,7 @@ T_3388: (in Mem31[ds:0x62C<16>:word16] @ 0800:1638 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3389: (in si_13 != ds->t062C @ 0800:1638 : bool)
+T_3389: (in si_13 != (ds->t062C).u0 @ 0800:1638 : bool)
   Class: Eq_3389
   DataType: bool
   OrigDataType: bool
@@ -16042,7 +16042,7 @@ T_3434: (in Mem22[ds:0x62C<16>:word16] @ 0800:1680 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3435: (in wArg02 == ds->t062C @ 0800:1680 : bool)
+T_3435: (in wArg02 == (ds->t062C).u0 @ 0800:1680 : bool)
   Class: Eq_3435
   DataType: bool
   OrigDataType: bool
@@ -16162,7 +16162,7 @@ T_3464: (in Mem11[ds:0x628<16>:word16] @ 0800:16C5 : word16)
   Class: Eq_709
   DataType: Eq_709
   OrigDataType: word16
-T_3465: (in (word16) wArg02 + 65532<i32> != ds->t0628 @ 0800:16C5 : bool)
+T_3465: (in (word16) wArg02 + 65532<i32> != (ds->t0628).u0 @ 0800:16C5 : bool)
   Class: Eq_3465
   DataType: bool
   OrigDataType: bool

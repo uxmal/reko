@@ -181,19 +181,19 @@ word32 fn0001152C()
 			msize();
 			sp_n = fp + ~0x33;
 		}
-		if ((word32) (sp_n->t0018 < sp_n->t0024) != 0x00)
+		if ((word32) (sp_n->t0018.u0 < (sp_n->t0024).u0) != 0x00)
 		{
 			if (sp_n->ptr001C == null)
 				sp_n->ptr0014 = malloc(16);
 			else
 			{
-				sp_n->t0020 = sp_n->t0018 << 0x01;
-				if ((word32) (sp_n->t0018 < 513) == 0x00)
-					sp_n->t0020 = (word32) sp_n->t0018 + 0x0200;
-				if ((word32) (sp_n->t0018 < sp_n->t0020) != 0x00)
-					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0020);
-				if (sp_n->ptr0014 == null && (word32) (sp_n->t0018 < sp_n->t0024) != 0x00)
-					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0024);
+				sp_n->t0020.u0 = (int32) (sp_n->t0018.u0 << 0x01);
+				if ((word32) (sp_n->t0018.u0 < 513) == 0x00)
+					sp_n->t0020.u0 = (int32) (sp_n->t0018.u0 + 0x0200);
+				if ((word32) (sp_n->t0018.u0 < (sp_n->t0020).u0) != 0x00)
+					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0020.u0);
+				if (sp_n->ptr0014 == null && (word32) ((sp_n->t0018).u0 < (sp_n->t0024).u0) != 0x00)
+					sp_n->ptr0014 = realloc(sp_n->ptr001C, sp_n->t0024.u0);
 			}
 			if (sp_n->ptr0014 == null)
 			{
