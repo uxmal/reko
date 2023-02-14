@@ -638,7 +638,7 @@ struct Eq_n * g_ptr8560 = &g_t200000C4; // 00008560
 word32 xPortRaisePrivilege(ptr32 cpsr)
 {
 	(__mrs(cpsr) & 0x01) == 0x00;
-	__syscall(0x02);
+	__syscall<word32>(0x02);
 	return 0x01;
 }
 
@@ -846,7 +846,7 @@ word32 * g_ptr86E4 = &g_dw200000C0; // 000086E4
 void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
 	ptr32 fp;
-	bool v20_n;
+	bool v23_n;
 	Eq_n r0_n;
 	word32 r0_n;
 	up32 r3_n = (word32) r0->w0034;
@@ -861,16 +861,16 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 c
 		}
 		else if (r3_n != 0x00)
 			return;
-		v20_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
-		if (v20_n)
+		v23_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
+		if (v23_n)
 		{
 			r0->w0034 = 0x0182;
 			return;
 		}
 	}
 	else
-		v20_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
-	if (v20_n)
+		v23_n = xQueueCRSend(*g_ptr877C, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
+	if (v23_n)
 	{
 		r0->w0034 = 0x0183;
 		return;

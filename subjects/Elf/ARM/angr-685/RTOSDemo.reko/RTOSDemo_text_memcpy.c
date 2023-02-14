@@ -22,7 +22,7 @@ l0000A630:
 			Eq_n r3_n = 0x00;
 			do
 			{
-				Mem100[r5_n + r3_n:byte] = Mem97[r1 + r3_n:byte];
+				Mem101[r5_n + r3_n:byte] = Mem97[r1 + r3_n:byte];
 				r3_n = (word32) r3_n + 1;
 			} while (r3_n != r2);
 l0000A63C:

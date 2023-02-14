@@ -57,14 +57,24 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure TanhGeneric = IntrinsicBuilder.GenericUnary("tanh");
         public static readonly IntrinsicProcedure TruncGeneric = IntrinsicBuilder.GenericUnary("trunc");
         //$REVIEW: math.h
+        public static readonly IntrinsicProcedure ceil = IntrinsicBuilder.Unary("ceil", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure ceilf = IntrinsicBuilder.Unary("ceilf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure fabs = IntrinsicBuilder.Unary("fabs", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure fabsf = IntrinsicBuilder.Unary("fabsf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure floor = IntrinsicBuilder.Unary("floor", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure floorf = IntrinsicBuilder.Unary("floorf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure fmax = IntrinsicBuilder.Binary("fmax", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure fmaxf = IntrinsicBuilder.Binary("fmaxf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure fmin = IntrinsicBuilder.Binary("fmin", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure fminf = IntrinsicBuilder.Binary("fminf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure rint = IntrinsicBuilder.Unary("rint", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure rintf = IntrinsicBuilder.Unary("rintf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure round = IntrinsicBuilder.Unary("round", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure roundf = IntrinsicBuilder.Unary("roundf", PrimitiveType.Real32);
         public static readonly IntrinsicProcedure sqrt = IntrinsicBuilder.Unary("sqrt", PrimitiveType.Real64);
         public static readonly IntrinsicProcedure sqrtf = IntrinsicBuilder.Unary("sqrtf", PrimitiveType.Real32);
+        public static readonly IntrinsicProcedure trunc = IntrinsicBuilder.Unary("trunc", PrimitiveType.Real64);
+        public static readonly IntrinsicProcedure truncf = IntrinsicBuilder.Unary("truncf", PrimitiveType.Real32);
 
     }
 }

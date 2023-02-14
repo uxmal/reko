@@ -66,13 +66,13 @@ namespace Reko.Arch.Arm.AArch64
         /// </summary>
         private void RewriteMaybeSimdBinary(
             Func<Expression, Expression, Expression> fn,
-            string simdFormat, 
-            Domain domain = Domain.None, 
+            IntrinsicProcedure intrinsic,
+            Domain domain = Domain.None,
             Action<Expression>? setFlags = null)
         {
             if (instr.VectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
             {
-                RewriteSimdBinary(simdFormat, domain, setFlags);
+                RewriteSimdBinary(intrinsic, domain, setFlags);
             }
             else
             {
@@ -80,17 +80,15 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteMaybeSimdBinary(Domain domain = Domain.None)
+        private void RewriteMaybeSimdBinary(IntrinsicPair intrinsic, Domain domain = Domain.None)
         {
             if (instr.VectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
             {
-                var sIntrinsic = $"__{instr.Mnemonic}_{{0}}";
-                RewriteSimdBinary(sIntrinsic, domain, null);
+                RewriteSimdBinary(intrinsic.Vector, domain, null);
             }
             else
             {
-                var sIntrinsic = $"__{instr.Mnemonic}";
-                RewriteBinary(sIntrinsic);
+                RewriteBinary(intrinsic.Scalar);
             }
         }
 
@@ -110,22 +108,6 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteMaybeSimdUnary(
-            Func<Expression, Expression> fn,
-            string simdFormat,
-            Domain domain = Domain.None)
-        {
-            if (instr.VectorData != VectorData.Invalid || 
-                (instr.Operands[0] is VectorRegisterOperand vr && vr.Index < 0))
-            {
-                RewriteSimdUnary(simdFormat, domain);
-            }
-            else
-            {
-                RewriteUnary(fn);
-            }
-        }
-
         private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression>? setFlags = null)
         {
             var dst = RewriteOp(instr.Operands[0]);
@@ -138,7 +120,7 @@ namespace Reko.Arch.Arm.AArch64
             setFlags?.Invoke(m.Cond(dst));
         }
 
-        private void RewriteBinary(string sIntrinsic, Action<Expression>? setFlags = null)
+        private void RewriteBinary(IntrinsicProcedure intrinsic, Action<Expression>? setFlags = null)
         {
             var dst = RewriteOp(instr.Operands[0]);
             var left = RewriteOp(instr.Operands[1], true);
@@ -146,9 +128,21 @@ namespace Reko.Arch.Arm.AArch64
 
             var toBitSize = left.DataType.BitSize;
             right = MaybeExtendExpression(right, toBitSize);
-            var intrinsic = host.Intrinsic(sIntrinsic, false, dst.DataType, left, right);
-            m.Assign(dst, intrinsic);
+            var src = m.Fn(intrinsic.MakeInstance(left.DataType), left, right);
+            m.Assign(dst, src);
             setFlags?.Invoke(m.Cond(dst));
+        }
+
+        private Expression MaybeExtend(Expression expr, DataType dt)
+        {
+            if (expr.DataType.BitSize < dt.BitSize)
+            {
+                return m.Convert(expr, expr.DataType, dt);
+            }
+            else
+            {
+                return expr;
+            }
         }
 
         private Expression MaybeExtendExpression(Expression right, int toBitSize)
@@ -191,11 +185,11 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBfm()
         {
-            var src1 = RewriteOp(instr.Operands[1]);
-            var src2 = RewriteOp(instr.Operands[2]);
-            var src3 = RewriteOp(instr.Operands[3]);
-            var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__bfm", false, dst.DataType, src1, src2, src3));
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(2);
+            var src3 = RewriteOp(3);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(bfm_intrinsic.MakeInstance(src1.DataType), dst, src1, src2, src3));
         }
 
         private void RewriteCcmn()
@@ -228,15 +222,15 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteClz()
         {
-            var src = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__clz", false, MakeInteger(Domain.SignedInt, dst.DataType), src));
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(CommonOps.CountLeadingZeros, src));
         }
 
         private void RewriteCmp()
         {
-            var left = RewriteOp(instr.Operands[0]);
-            var right = RewriteOp(instr.Operands[1]);
+            var left = RewriteOp(0);
+            var right = RewriteOp(1);
             right = MaybeExtendExpression(right, left.DataType.BitSize);
             var nzcv = NZCV();
             m.Assign(nzcv, m.Cond(m.ISub(left, right)));
@@ -299,21 +293,14 @@ namespace Reko.Arch.Arm.AArch64
             m.SideEffect(host.Intrinsic($"__dmb_{instr.Operands[0]}", true, VoidType.Instance));
         }
 
-        private void RewriteLoadAcquire(string nameFormat, DataType dtDst)
+        private void RewriteLoadAcquire(IntrinsicProcedure intrinsic, DataType dtDst)
         {
             var mem = (MemoryOperand) instr.Operands[1];
             var ptr = new Pointer(dtDst, (int)mem.Base!.BitSize);
             var ea = m.AddrOf(ptr, m.Mem(dtDst, binder.EnsureRegister(mem.Base)));
-            var value = host.Intrinsic(string.Format(nameFormat, dtDst.Name), true, dtDst, ea);
+            var value = m.Fn(intrinsic.MakeInstance(64, dtDst), ea);
             var dst = RewriteOp(0);
-            if (dst.DataType.BitSize > dtDst.BitSize)
-            {
-                m.Assign(dst, m.Convert(value, value.DataType, dst.DataType));
-            }
-            else
-            {
-                m.Assign(dst, value);
-            }
+            m.Assign(dst, MaybeExtend(value, dst.DataType));
         }
 
         private void RewriteLoadStorePair(bool load, DataType? dtDst = null, DataType? dtCast = null)
@@ -421,15 +408,8 @@ namespace Reko.Arch.Arm.AArch64
             dst.DataType = dt;
             var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
             m.Assign(tmp, m.AddrOf(tmp.DataType, src));
-            var value = host.Intrinsic($"__load_exclusive_{dt.Name}", true, dt, tmp);
-            if (value.DataType.BitSize < dst.DataType.BitSize)
-            {
-                m.Assign(dst, m.Convert(value, value.DataType, dst.DataType));
-            }
-            else
-            {
-                m.Assign(dst, value);
-            }
+            var value = m.Fn(load_exclusive_intrinsic.MakeInstance(64, dt), tmp);
+            m.Assign(dst, this.MaybeExtend(value, dt));
         }
 
         private void RewriteLogical(Func<Expression, Expression, Expression> fn)
@@ -529,11 +509,14 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Slice(mul(op1, op2), dtTo, 64));
         }
 
-        private void RewriteMull(PrimitiveType dtFrom,  PrimitiveType dtTo, Func<Expression, Expression, Expression> mul)
+        private void RewriteMull(
+            PrimitiveType dtFrom,
+            PrimitiveType dtTo, 
+            Func<Expression, Expression, Expression> mul)
         {
             if (instr.Operands[1] is VectorRegisterOperand)
             {
-                RewriteSimdBinary("__mull_{0}", Domain.Integer);
+                RewriteSimdBinaryWiden(mull_intrinsic, Domain.Integer);
                 return;
             }
             var op1 = RewriteOp(1);
@@ -651,14 +634,14 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
                 throw new AddressCorrelatedException(instr.Address, "Expected an address as the second operand of prfm.");
-            m.SideEffect(host.Intrinsic("__prfm", true, VoidType.Instance, imm, ea));
+            m.SideEffect(m.Fn(prfm_intrinsic.MakeInstance(64, imm.DataType), imm, ea));
         }
 
         private void RewriteRbit()
         {
             var src = RewriteOp(1);
             var dst = RewriteOp(0);
-            m.Assign(dst, host.Intrinsic($"__rbit_{dst.DataType.BitSize}", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(CommonOps.ReverseBits, src));
         }
 
         private void RewriteRev()
@@ -666,7 +649,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(1);
             var dst = RewriteOp(0);
             var bitSize = dst.DataType.BitSize;
-            m.Assign(dst, host.Intrinsic($"__rev_{bitSize}", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(CommonOps.ReverseBytes, src));
         }
 
 
@@ -674,14 +657,14 @@ namespace Reko.Arch.Arm.AArch64
         {
             var src = RewriteOp(1);
             var dst = RewriteOp(0);
-            m.Assign(dst, host.Intrinsic($"__rev32", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(CommonOps.ReverseWords, src));
         }
 
         private void RewriteRev16()
         {
             RewriteMaybeSimdUnary(
-                n => host.Intrinsic("__rev16", false, n.DataType, n),
-                "__rev16_{0}");
+                n => m.Fn(CommonOps.ReverseHalfwords, n),
+                rev16_intrinsic);
         }
 
         private void RewriteRor()

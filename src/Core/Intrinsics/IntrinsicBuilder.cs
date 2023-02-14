@@ -192,6 +192,11 @@ namespace Reko.Core.Intrinsics
             return proc;
         }
 
+        public static IntrinsicBuilder Pure(string name)
+        {
+            return new IntrinsicBuilder(name, false);
+        }
+
         public static IntrinsicProcedure GenericTernary(string name)
         {
             return new IntrinsicBuilder(name, false)

@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 00 8C 03");	// set1	[038Ch].0
             AssertCode(
                 "0|L--|00001000(4): 1 instructions",
-                "1|L--|__set_bit(Mem0[0x0000038C<p32>:byte], 0<8>, true)");
+                "1|L--|__set_bit<byte>(Mem0[0x0000038C<p32>:byte], 0<8>, true)");
         }
 
         [Test]
@@ -429,7 +429,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 74 0D 05");	// bf	[0FFE2Dh].7,000000EA
             AssertCode(
                 "0|T--|00001000(4): 1 instructions",
-                "1|T--|if (!__bit(Mem0[0x000FFE2D<p32>:byte], 7<8>)) branch 00001009"); //$LIT
+                "1|T--|if (!__bit<byte,byte>(Mem0[0x000FFE2D<p32>:byte], 7<8>)) branch 00001009"); //$LIT
         }
 
         [Test]
@@ -438,7 +438,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 23 30");	// clr1	[0FFE50h].2
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|__set_bit(Mem0[0x000FFE50<p32>:byte], 2<8>, false)");
+                "1|L--|__set_bit<byte>(Mem0[0x000FFE50<p32>:byte], 2<8>, false)");
         }
 
         [Test]
@@ -488,7 +488,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 23 03");	// bt	a.2,000002FF
             AssertCode(
                 "0|T--|00001000(3): 1 instructions",
-                "1|T--|if (__bit(a, 2<8>)) branch 00001006");
+                "1|T--|if (__bit<byte,byte>(a, 2<8>)) branch 00001006");
         }
 
         [Test]
@@ -515,8 +515,8 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 00 FC D6");	// btclr	[0FFF1Ch].0,00000690
             AssertCode(
                 "0|T--|00001000(4): 3 instructions",
-                "1|T--|if (!__bit(Mem0[0x000FFF1C<p32>:byte], 0<8>)) branch 00001004",
-                "2|L--|__set_bit(Mem0[0x000FFF1C<p32>:byte], 0<8>, false)",
+                "1|T--|if (!__bit<byte,byte>(Mem0[0x000FFF1C<p32>:byte], 0<8>)) branch 00001004",
+                "2|L--|__set_bit<byte>(Mem0[0x000FFF1C<p32>:byte], 0<8>, false)",
                 "3|T--|goto 00000FDA");
         }
 
@@ -535,7 +535,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 8C");	// mov1	cy,a.0
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|cy = __bit(a, 0<8>)");
+                "1|L--|cy = __bit<byte,byte>(a, 0<8>)");
         }
 
         [Test]
@@ -554,16 +554,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 2E 8F");	// or1	cy,[0FFF8Fh].2
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|cy = cy | __bit(Mem0[0x000FFF8F<p32>:byte], 2<8>)");
-        }
-
-        [Test]
-        public void Rl78Rw_xor1()
-        {
-            Given_HexString("71 2F EE");	// xor1	cy,[0FFFEEh].2
-            AssertCode(
-                "0|L--|00001000(3): 1 instructions",
-                "1|L--|cy = cy ^ __bit(Mem0[0x000FFFEE<p32>:byte], 2<8>)");
+                "1|L--|cy = cy | __bit<byte,byte>(Mem0[0x000FFF8F<p32>:byte], 2<8>)");
         }
 
         [Test]
@@ -659,7 +650,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 A5");	// and1	cy,[hl].2
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|cy = cy & __bit(Mem0[hl:byte], 2<8>)");
+                "1|L--|cy = cy & __bit<byte,byte>(Mem0[hl:byte], 2<8>)");
         }
 
         [Test]
@@ -681,14 +672,13 @@ namespace Reko.UnitTests.Arch.Rl78
                 "1|T--|if (Test(UGT,CZ)) branch 0000102A");
         }
 
-
-
-
-
-
-
-
-
-
+        [Test]
+        public void Rl78Rw_xor1()
+        {
+            Given_HexString("71 2F EE");	// xor1	cy,[0FFFEEh].2
+            AssertCode(
+                "0|L--|00001000(3): 1 instructions",
+                "1|L--|cy = cy ^ __bit<byte,byte>(Mem0[0x000FFFEE<p32>:byte], 2<8>)");
+        }
     }
 }

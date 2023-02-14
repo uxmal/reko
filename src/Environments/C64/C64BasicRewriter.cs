@@ -602,9 +602,7 @@ namespace Reko.Environments.C64
             if (lValue is null)
                 return;
             iclass = InstrClass.Linear;
-            m.SideEffect(host.Intrinsic("__InputStm", true, VoidType.Instance,
-                logFileNo!,
-                m.Out(PrimitiveType.Ptr16, lValue)));
+            m.SideEffect(m.Fn(inputStm_intrinsic, logFileNo!, m.Out(PrimitiveType.Ptr16, lValue)));
             while (EatSpaces() && PeekAndDiscard((byte)','))
             {
                 lValue = ExpectLValue()!;
@@ -813,6 +811,10 @@ namespace Reko.Environments.C64
             .Void();
         private static readonly IntrinsicProcedure end_intrinsic = new IntrinsicBuilder(
             "__End", true, new ProcedureCharacteristics { Terminates = true })
+            .Void();
+        private static readonly IntrinsicProcedure inputStm_intrinsic = new IntrinsicBuilder("__InputStm", true)
+            .Param(PrimitiveType.Int16)
+            .OutParam(PrimitiveType.Ptr16)
             .Void();
         private static readonly IntrinsicProcedure get_intrinsic = new IntrinsicBuilder("__Get", true)
             .OutParam(strType)

@@ -58,16 +58,16 @@ l000083B0:
 	word32 r2_16 = Mem8[Mem8[r4_14:word32]:word32]
 	branch r2_16 == 0<32> l000083E8
 l000083E8:
-	Mem20[r5_10:byte] = 1<8>
+	Mem21[r5_10:byte] = 1<8>
 	return
 l000083C4:
-	word32 r3_25 = Mem8[r4_14:word32]
-	Mem27[r4_14:word32] = r3_25 + 4<32>
-	word32 pc_33
-	word32 r2_35
+	word32 r3_26 = Mem8[r4_14:word32]
+	Mem28[r4_14:word32] = r3_26 + 4<32>
+	word32 pc_34
+	word32 r2_36
 	call r2_16 (retsize: 0;)
-		uses: lr:0x000083D8<p32>,pc:pc_33,r2:r2_35,r3:r3_25 + 4<32>,r4:r4_14,r5:r5_10
-		defs: pc:pc_33,r2:r2_35
+		uses: lr:0x000083D8<p32>,pc:pc_34,r2:r2_36,r3:r3_26 + 4<32>,r4:r4_14,r5:r5_10
+		defs: pc:pc_34,r2:r2_36
 	return
 l000083AC_1:
 	return
@@ -325,10 +325,10 @@ void __div0(word32 r0)
 // Preserved: r1 sp
 __div0_entry:
 l00008638:
-	__syscall(0x900014<32>)
+	__syscall<word32>(0x900014<32>)
 	branch r0 <u 0x3E8<32> l00008648
 l00008648:
-	__syscall(0x900025<32>)
+	__syscall<word32>(0x900025<32>)
 	return
 l00008644_1:
 	return

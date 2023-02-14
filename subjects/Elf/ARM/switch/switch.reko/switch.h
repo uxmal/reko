@@ -158,9 +158,9 @@ Eq_234: (union "Eq_234" (int32 u0) (uint32 u1))
 Eq_243: (union "Eq_243" (int32 u0) (uint32 u1))
 	T_243 (in r1_10 >> 3<i32> @ 00008600 : word32)
 Eq_264: (fn void (word32))
-	T_264 (in __syscall @ 0000863C : ptr32)
+	T_264 (in __syscall<word32> @ 0000863C : ptr32)
 	T_265 (in signature of __syscall : void)
-	T_271 (in __syscall @ 0000864C : ptr32)
+	T_271 (in __syscall<word32> @ 0000864C : ptr32)
 Eq_275: (union "Eq_275" (int32 u0) (uint32 u1))
 	T_275 (in r4_23 @ 00008664 : Eq_275)
 	T_279 (in _init(out r10_20) @ 00008664 : word32)
@@ -482,11 +482,11 @@ T_76: (in r5_10 + 0<32> @ 000083EC : word32)
   Class: Eq_76
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
-T_77: (in Mem20[r5_10 + 0<32>:byte] @ 000083EC : byte)
+T_77: (in Mem21[r5_10 + 0<32>:byte] @ 000083EC : byte)
   Class: Eq_58
   DataType: byte
   OrigDataType: byte
-T_78: (in r3_25 @ 000083C4 : (ptr32 (ptr32 code)))
+T_78: (in r3_26 @ 000083C4 : (ptr32 (ptr32 code)))
   Class: Eq_68
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_71 t0000)))
@@ -506,7 +506,7 @@ T_82: (in 4<32> @ 000083CC : word32)
   Class: Eq_82
   DataType: int32
   OrigDataType: int32
-T_83: (in r3_25 + 4<32> @ 000083CC : word32)
+T_83: (in r3_26 + 4<32> @ 000083CC : word32)
   Class: Eq_68
   DataType: (ptr32 (ptr32 code))
   OrigDataType: ptr32
@@ -518,15 +518,15 @@ T_85: (in r4_14 + 0<32> @ 000083CC : word32)
   Class: Eq_85
   DataType: (ptr32 (ptr32 (ptr32 code)))
   OrigDataType: (ptr32 (ptr32 (struct (0 T_71 t0000))))
-T_86: (in Mem27[r4_14 + 0<32>:word32] @ 000083CC : word32)
+T_86: (in Mem28[r4_14 + 0<32>:word32] @ 000083CC : word32)
   Class: Eq_68
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_71 t0000)))
-T_87: (in pc_33 @ 000083D4 : word32)
+T_87: (in pc_34 @ 000083D4 : word32)
   Class: Eq_87
   DataType: word32
   OrigDataType: word32
-T_88: (in r2_35 @ 000083D4 : word32)
+T_88: (in r2_36 @ 000083D4 : word32)
   Class: Eq_88
   DataType: word32
   OrigDataType: word32
@@ -1230,7 +1230,7 @@ T_263: (in r1_10 >> 4<i32> @ 00008610 : word32)
   Class: Eq_103
   DataType: Eq_103
   OrigDataType: uint32
-T_264: (in __syscall @ 0000863C : ptr32)
+T_264: (in __syscall<word32> @ 0000863C : ptr32)
   Class: Eq_264
   DataType: (ptr32 Eq_264)
   OrigDataType: (ptr32 (fn T_268 (T_267)))
@@ -1238,7 +1238,7 @@ T_265: (in signature of __syscall : void)
   Class: Eq_264
   DataType: (ptr32 Eq_264)
   OrigDataType: 
-T_266: (in  @ 0000863C : word32)
+T_266: (in p1 @ 0000863C : word32)
   Class: Eq_266
   DataType: word32
   OrigDataType: 
@@ -1246,7 +1246,7 @@ T_267: (in 0x900014<32> @ 0000863C : word32)
   Class: Eq_266
   DataType: word32
   OrigDataType: word32
-T_268: (in __syscall(0x900014<32>) @ 0000863C : void)
+T_268: (in __syscall<word32>(0x900014<32>) @ 0000863C : void)
   Class: Eq_268
   DataType: void
   OrigDataType: void
@@ -1258,7 +1258,7 @@ T_270: (in r0 < 0x3E8<32> @ 00008644 : bool)
   Class: Eq_270
   DataType: bool
   OrigDataType: bool
-T_271: (in __syscall @ 0000864C : ptr32)
+T_271: (in __syscall<word32> @ 0000864C : ptr32)
   Class: Eq_264
   DataType: (ptr32 Eq_264)
   OrigDataType: (ptr32 (fn T_273 (T_272)))
@@ -1266,7 +1266,7 @@ T_272: (in 0x900025<32> @ 0000864C : word32)
   Class: Eq_266
   DataType: word32
   OrigDataType: word32
-T_273: (in __syscall(0x900025<32>) @ 0000864C : void)
+T_273: (in __syscall<word32>(0x900025<32>) @ 0000864C : void)
   Class: Eq_268
   DataType: void
   OrigDataType: void

@@ -1485,7 +1485,7 @@ void vTaskSwitchContext()
 	{
 		struct Eq_n * r1_n;
 		r2_n->dw0090 = r3_n;
-		struct Eq_n * r0_n = r2_n + ((0x1F - (uint32) ((byte) __clz(r2_n->dw007C))) * 0x14) / 0x0094;
+		struct Eq_n * r0_n = r2_n + ((0x1F - (uint32) ((byte) __count_leading_zeros<word32>(r2_n->dw007C))) * 0x14) / 0x0094;
 		struct Eq_n * r1_n = r0_n->ptr000C->ptr0004;
 		r0_n->ptr000C = r1_n;
 		r1_n = r1_n;
@@ -1867,7 +1867,7 @@ l000014AE:
 	__cps();
 	__dsb_sy();
 	__isb_sy();
-	__syscall(0x00);
+	__syscall<word32>(0x00);
 }
 
 ui32 * g_ptr14E8 = &g_dwE000ED20; // 000014E8

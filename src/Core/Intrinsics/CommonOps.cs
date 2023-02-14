@@ -68,6 +68,7 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")
             .Returns("TData");
+        public static readonly IntrinsicProcedure ReverseBits = IntrinsicBuilder.GenericUnary("__reverse_bits");
         public static readonly IntrinsicProcedure SetBit = new IntrinsicBuilder("__set_bit", false)
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")
@@ -79,6 +80,8 @@ namespace Reko.Core.Intrinsics
 
         // Byte manipulations
         public static readonly IntrinsicProcedure ReverseBytes = IntrinsicBuilder.GenericUnary("__reverse_bytes");
+        public static readonly IntrinsicProcedure ReverseHalfwords = IntrinsicBuilder.GenericUnary("__reverse_word16s");
+        public static readonly IntrinsicProcedure ReverseWords = IntrinsicBuilder.GenericUnary("__reverse_word32s");
 
         // Integer math
         public static readonly IntrinsicProcedure Abs = IntrinsicBuilder.GenericUnary("abs"); //$REVIEW: math.h

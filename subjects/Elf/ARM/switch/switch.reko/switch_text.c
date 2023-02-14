@@ -243,10 +243,10 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 //      __divsi3
 void __div0(Eq_n r0)
 {
-	__syscall(0x00900014);
+	__syscall<word32>(0x00900014);
 	if (r0 >= 1000)
 		return;
-	__syscall(0x00900025);
+	__syscall<word32>(0x00900025);
 }
 
 // 00008654: void __libc_csu_init()

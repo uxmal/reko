@@ -32,8 +32,6 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
 
         public PadaukRewriter_PDK15Tests()
         {
-            Reko.Core.Machine.Decoder.trace.Level = System.Diagnostics.TraceLevel.Verbose;
-
             this.arch = new PadaukArchitecture(
                 CreateServiceContainer(),
                 "padauk",

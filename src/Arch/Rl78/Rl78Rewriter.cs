@@ -77,7 +77,7 @@ namespace Reko.Arch.Rl78
                     m.Invalid();
                     break;
                 case Mnemonic.add: RewriteAdd(); break;
-                case Mnemonic.addc: RewriteAddcSubc(m.IAdd); break;
+                case Mnemonic.addc: RewriteAddcSubc(AddC); break;
                 case Mnemonic.addw: RewriteAddw(); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
                 case Mnemonic.and1: RewriteLogical1(m.And); break;
@@ -141,7 +141,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.sknz: RewriteSkip(ConditionCode.NE, Z()); break;
                 case Mnemonic.skz: RewriteSkip(ConditionCode.EQ, Z()); break;
                 case Mnemonic.sub: RewriteSub(); break;
-                case Mnemonic.subc: RewriteAddcSubc(m.ISub); break;
+                case Mnemonic.subc: RewriteAddcSubc(SubC); break;
                 case Mnemonic.subw: RewriteSubw(); break;
                 case Mnemonic.xch: RewriteXch(); break;
                 case Mnemonic.xchw: RewriteXch(); break;
@@ -179,6 +179,9 @@ namespace Reko.Arch.Rl78
             return binder.EnsureFlagGroup(Registers.Z);
         }
 
+        private Expression AddC(Expression a, Expression b) => m.IAddC(a, b, C());
+        private Expression SubC(Expression a, Expression b) => m.ISubC(a, b, C());
+        
         private Expression RewriteSrc(MachineOperand op)
         {
             switch (op)
@@ -211,10 +214,8 @@ namespace Reko.Arch.Rl78
                 return m.Mem(op.Width, ea);
             case BitOperand bit:
                 var bitSrc = RewriteSrc(bit.Operand);
-                return host.Intrinsic(
-                    "__bit",
-                    false,
-                    PrimitiveType.Bool,
+                return m.Fn(
+                    CommonOps.Bit.MakeInstance(bitSrc.DataType, PrimitiveType.Byte),
                     bitSrc,
                     Constant.Byte((byte) bit.BitPosition));
             case FlagGroupStorage fop:
@@ -261,16 +262,14 @@ namespace Reko.Arch.Rl78
                 return tmp;
             case BitOperand bit:
                 var left = RewriteSrc(bit.Operand);
-                m.SideEffect(host.Intrinsic(
-                    "__set_bit",
-                    true,
-                    VoidType.Instance,
+                m.SideEffect(m.Fn(
+                    set_bit_intrinsic.MakeInstance(left.DataType),
                     left,
                     Constant.Byte((byte) bit.BitPosition),
                     fn(left, src)));
                 return left;
             default:
-                throw new NotImplementedException($"Rl87Rewriter: operand type {op.GetType().Name} not implemented yet.");
+                throw new NotImplementedException($"R78Rewriter: operand type {op.GetType().Name} not implemented yet.");
             }
         }
 
@@ -289,7 +288,7 @@ namespace Reko.Arch.Rl78
         private void RewriteAddcSubc(Func<Expression, Expression, Expression> fn)
         {
             var src = RewriteSrc(instr.Operands[1]);
-            var dst = RewriteDst(instr.Operands[0], src, (a, b) => fn(fn(a, b), C()));
+            var dst = RewriteDst(instr.Operands[0], src, fn);
             EmitCond(dst, CZ());
         }
 
@@ -511,7 +510,7 @@ namespace Reko.Arch.Rl78
         private void RewriteSel()
         {
             var bank = (RegisterBankOperand) instr.Operands[0];
-            m.SideEffect(host.Intrinsic("__select_register_bank", true, VoidType.Instance, Constant.Byte((byte) bank.Bank)));
+            m.SideEffect(m.Fn(sel_intrinsic, Constant.Byte((byte) bank.Bank)));
         }
 
         private void RewriteSet1()
@@ -585,5 +584,15 @@ namespace Reko.Arch.Rl78
             m.Assign(op1, op2);
             m.Assign(op2, tmp);
         }
+
+        private readonly IntrinsicProcedure sel_intrinsic = new IntrinsicBuilder("__select_register_bank", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private readonly IntrinsicProcedure set_bit_intrinsic = new IntrinsicBuilder("__set_bit", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .Void();
     }
 }

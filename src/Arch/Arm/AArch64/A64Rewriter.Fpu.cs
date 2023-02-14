@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -102,14 +103,9 @@ namespace Reko.Arch.Arm.AArch64
             var dtDst = MakeReal(dst.DataType);
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, src);
-            var fn = dtSrc.BitSize == 32 ? "fabsf" : "fabs";
-            m.Assign(dst, host.Intrinsic(fn, false, dtDst, tmp));
+            var fn = dtSrc.BitSize == 32 ? FpOps.fabsf : FpOps.fabs;
+            m.Assign(dst, m.Fn(fn,tmp));
 
-        }
-
-        private void RewriteFadd()
-        {
-            RewriteMaybeSimdBinary(m.FAdd, "__fadd_{0}", Domain.Real);
         }
 
         private void RewriteFcmp()
@@ -141,14 +137,17 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Convert(src, dtSrc, dtDst));
         }
 
-        private Expression RewriteFcvt(Expression src, Domain domain, string f32name, string f64name)
+        private void RewriteFcvt_Obsolete()
         {
-            //$TODO: #include <math.h>
+            if (instr.Operands[0] is VectorRegisterOperand)
+            {
+                throw new NotImplementedException();
+            }
+            var dst = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(instr.Operands[1]);
+            var dtDst = MakeReal(dst.DataType);
             var dtSrc = MakeReal(src.DataType);
-            var dtDst = MakeInteger(domain, instr.Operands[0].Width);
-            var fn = dtSrc.BitSize == 32 ? f32name : f64name;
-            src = host.Intrinsic(fn, false, dtSrc, src);
-            return m.Convert(src, dtSrc, dtDst);
+            m.Assign(dst, m.Convert(src, dtSrc, dtDst));
         }
 
         private Expression RewriteFcvt(
@@ -179,61 +178,65 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteFcvta(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, domain, "roundf", "round"),
-                "__round_{0}",
+                n => RewriteFcvt(n, domain, FpOps.roundf, FpOps.round),
+                round_intrinsic,
                 Domain.Real);
         }
 
         private void RewriteFcvtm(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, domain, "floorf", "floor"),
-                "__floor_{0}",
+                n => RewriteFcvt(n, domain, FpOps.floorf, FpOps.floor),
+                floor_intrinsic,
                 Domain.Real);
         }
 
         private void RewriteFcvtn(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, domain, "roundf", "round"),
-                "__nearest_{0}",
+                n => RewriteFcvt(n, domain, FpOps.roundf, FpOps.round),
+                nearest_intrinsic,
                 Domain.Real);
         }
 
         private void RewriteFcvtp(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, domain, "ceilf", "ceil"),
-                "__ceil_{0}", Domain.Real);
+                n => RewriteFcvt(n, domain, FpOps.ceilf, FpOps.ceil),
+                ceil_intrinsic, Domain.Real);
         }
 
         private void RewriteFcvtz(Domain domain)
         {
             RewriteMaybeSimdUnary(
-                n => RewriteFcvt(n, domain, "truncf", "trunc"),
-                "__trunc_{0}", Domain.Real);
+                n => RewriteFcvt(n, domain, FpOps.truncf, FpOps.trunc),
+                trunc_intrinsic, Domain.Real);
         }
 
-        private void RewriteIntrinsicFBinary(string name32, string name64)
+        private void RewriteIntrinsicFBinary(
+            IntrinsicProcedure fn32,
+            IntrinsicProcedure fn64,
+            IntrinsicProcedure simd)
         {
             RewriteMaybeSimdBinary(
                 (a,b) =>
                 {
                     DataType dt;
-                    string fname;
+                    IntrinsicProcedure intrinsic;
                     if (instr.Operands[0].Width.BitSize == 64)
                     {
                         dt = PrimitiveType.Real64;
-                        fname = name64;
+                        intrinsic = fn64;
                     }
                     else
                     {
                         dt = PrimitiveType.Real32;
-                        fname = name32;
+                        intrinsic = fn32;
                     }
-                    return host.Intrinsic(fname, false, dt, a, b);
+                    return m.Fn(intrinsic, a, b);
                 },
-                "__max_{0}", Domain.Real);
+                simd,
+                Domain.Real);
         }
 
         private void RewriteIntrinsicFTernary(IntrinsicProcedure intrinsic)
@@ -260,15 +263,19 @@ namespace Reko.Arch.Arm.AArch64
             {
                 RewriteVectorElementStore(v);
             }
+            else if (instr.Operands[1] is ImmediateOperand)
+            {
+                RewriteSimdUnaryWithScalar(fmov_intrinsic, Domain.Real);
+            }
             else
             {
-                RewriteMaybeSimdUnary(n => n, "__fmov_{0}", Domain.Real);
+                RewriteMaybeSimdUnary(n => n, fmov_intrinsic, Domain.Real);
             }
         }
 
         private void RewriteFmul()
         {
-            RewriteMaybeSimdBinary(m.FMul, "__fmul_{0}", Domain.Real);
+            RewriteMaybeSimdBinary(m.FMul, Simd.FMul, Domain.Real);
         }
 
         private void RewriteFnmul()
@@ -282,8 +289,8 @@ namespace Reko.Arch.Arm.AArch64
             var src = binder.CreateTemporary(MakeReal(instr.Operands[1].Width));
             var dst = RewriteOp(instr.Operands[0]);
             m.Assign(src, RewriteOp(instr.Operands[1]));
-            var fn = src.DataType.BitSize == 32 ? "sqrtf" : "sqrt";
-            m.Assign(dst, host.Intrinsic(fn, false, src.DataType, src));
+            var fn = src.DataType.BitSize == 32 ? FpOps.sqrtf : FpOps.sqrt;
+            m.Assign(dst, m.Fn(fn, src));
         }
     }
 }

@@ -12,12 +12,12 @@ bool memcpy(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, wo
 // Preserved: sp
 memcpy_entry:
 l0000A5C4:
-	word32 r5_146 = r0
+	word32 r5_147 = r0
 	branch r2 <=u 0xF<32> l0000A62C
 l0000A5CC:
 	branch (r1 | r0) << 30<i32> != 0<32> l0000A642
 l0000A642:
-	r5_146 = r0
+	r5_147 = r0
 l0000A5D4:
 	word32 r4_27 = r1
 	word32 r3_28 = r0
@@ -32,7 +32,7 @@ l0000A5E4:
 	branch r5_35 != r3_28 l0000A5E4
 l0000A5FC:
 	word32 r6_54 = r2 - 0x10<32> & 0xFFFFFFF0<32>
-	r5_146 = r0 + (r6_54 + 0x10<32>)
+	r5_147 = r0 + (r6_54 + 0x10<32>)
 	r1 = r1 + (r6_54 + 0x10<32>)
 	branch (r2 & 0xF<32>) <=u 3<32> l0000A646
 l0000A646:
@@ -42,38 +42,38 @@ l0000A60C:
 	word32 r3_66 = 0<32>
 	word32 r4_68 = (r6_65 >>u 2<i32>) + 1<32>
 l0000A616:
-	Mem77[r5_146 + r3_66:word32] = Mem74[r1 + r3_66:word32]
+	Mem77[r5_147 + r3_66:word32] = Mem74[r1 + r3_66:word32]
 	r3_66 = r3_66 + 4<32>
 	branch r3_66 != r4_68 << 2<i32> l0000A616
 l0000A620:
 	word32 r3_85 = (r6_65 & 0xFFFFFFFC<32>) + 4<32>
 	r2 = r2 & 3<32>
 	r1 = r1 + r3_85
-	r5_146 = r5_146 + r3_85
+	r5_147 = r5_147 + r3_85
 l0000A62C:
 	branch r2 == 0<32> l0000A63C
 l0000A630:
-	word32 r3_101 = 0<32>
+	word32 r3_102 = 0<32>
 l0000A632:
-	Mem100[r5_146 + r3_101:byte] = Mem97[r1 + r3_101:byte]
-	r3_101 = r3_101 + 1<32>
-	branch r3_101 != r2 l0000A632
+	Mem101[r5_147 + r3_102:byte] = Mem97[r1 + r3_102:byte]
+	r3_102 = r3_102 + 1<32>
+	branch r3_102 != r2 l0000A632
 l0000A63C:
-	word32 r4_133
-	word32 r5_134
-	word32 r6_135
-	word32 r7_136
-	word32 lr_137
-	byte NZCV_142
+	word32 r4_134
+	word32 r5_135
+	word32 r6_136
+	word32 r7_137
+	word32 lr_138
+	byte NZCV_143
 	call lr (retsize: 0;)
-		uses: lr:lr,r0:r0,r1:lr,r2:r2_131,r4:r4,r5:r5,r6:r6,r7:r7
-		defs: lr:lr_137,NZCV:NZCV_142,r4:r4_133,r5:r5_134,r6:r6_135,r7:r7_136
-	r4Out = r4_133
-	r5Out = r5_134
-	r6Out = r6_135
-	r7Out = r7_136
-	lrOut = lr_137
-	return SLICE(NZCV_142, bool, 2)
+		uses: lr:lr,r0:r0,r1:lr,r2:r2_132,r4:r4,r5:r5,r6:r6,r7:r7
+		defs: lr:lr_138,NZCV:NZCV_143,r4:r4_134,r5:r5_135,r6:r6_136,r7:r7_137
+	r4Out = r4_134
+	r5Out = r5_135
+	r6Out = r6_136
+	r7Out = r7_137
+	lrOut = lr_138
+	return SLICE(NZCV_143, bool, 2)
 memcpy_exit:
 
 

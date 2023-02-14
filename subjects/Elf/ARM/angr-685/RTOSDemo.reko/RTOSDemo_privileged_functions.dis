@@ -11,48 +11,48 @@ void prvUnlockQueue(word32 r0, word32 cpsr)
 prvUnlockQueue_entry:
 l00000058:
 	vPortEnterCritical(cpsr)
-	word32 r4_133 = CONVERT(Mem11[r0 + 69<i32>:byte], byte, int32)
-	branch r4_133 <= 0<32> l00000098
+	word32 r4_145 = CONVERT(Mem11[r0 + 69<i32>:byte], byte, int32)
+	branch r4_145 <= 0<32> l00000098
 l0000006A:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l00000098
 l0000006E:
 l00000080:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) == 0<32> l00000074
 l00000074:
-	word32 r3_41 = CONVERT(SLICE(r4_133, byte, 0) - 1<8>, byte, uint32)
-	r4_133 = CONVERT(SLICE(r3_41, int8, 0), int8, int32)
-	branch r3_41 == 0<32> l00000098
+	word32 r3_43 = CONVERT(SLICE(r4_145, byte, 0) - 1<8>, byte, uint32)
+	r4_145 = CONVERT(SLICE(r3_43, int8, 0), int8, int32)
+	branch r3_43 == 0<32> l00000098
 l0000008A:
 	vTaskMissedYield()
-	word32 r3_47 = CONVERT(SLICE(r4_133, byte, 0) - 1<8>, byte, uint32)
-	r4_133 = CONVERT(SLICE(r3_47, int8, 0), int8, int32)
-	branch r3_47 != 0<32> l0000007C
+	word32 r3_51 = CONVERT(SLICE(r4_145, byte, 0) - 1<8>, byte, uint32)
+	r4_145 = CONVERT(SLICE(r3_51, int8, 0), int8, int32)
+	branch r3_51 != 0<32> l0000007C
 l0000007C:
 	branch Mem11[r0 + 36<i32>:word32] == 0<32> l00000098
 l00000098:
-	Mem58[r0 + 69<i32>:byte] = 0xFF<8>
+	Mem64[r0 + 69<i32>:byte] = 0xFF<8>
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
-	word32 r4_101 = CONVERT(Mem58[r0 + 68<i32>:byte], byte, int32)
-	branch r4_101 <= 0<32> l000000DE
+	word32 r4_104 = CONVERT(Mem64[r0 + 68<i32>:byte], byte, int32)
+	branch r4_104 <= 0<32> l000000DE
 l000000B0:
-	branch Mem58[r0 + 16<i32>:word32] == 0<32> l000000DE
+	branch Mem64[r0 + 16<i32>:word32] == 0<32> l000000DE
 l000000B4:
 l000000C6:
 	branch xTaskRemoveFromEventList(r0 + 0x10<32>) == 0<32> l000000BA
 l000000BA:
-	word32 r3_94 = CONVERT(SLICE(r4_101, byte, 0) - 1<8>, byte, uint32)
-	r4_101 = CONVERT(SLICE(r3_94, int8, 0), int8, int32)
-	branch r3_94 == 0<32> l000000DE
+	word32 r3_102 = CONVERT(SLICE(r4_104, byte, 0) - 1<8>, byte, uint32)
+	r4_104 = CONVERT(SLICE(r3_102, int8, 0), int8, int32)
+	branch r3_102 == 0<32> l000000DE
 l000000D0:
 	vTaskMissedYield()
-	word32 r3_100 = CONVERT(SLICE(r4_101, byte, 0) - 1<8>, byte, uint32)
-	r4_101 = CONVERT(SLICE(r3_100, int8, 0), int8, int32)
-	branch r3_100 != 0<32> l000000C2
+	word32 r3_110 = CONVERT(SLICE(r4_104, byte, 0) - 1<8>, byte, uint32)
+	r4_104 = CONVERT(SLICE(r3_110, int8, 0), int8, int32)
+	branch r3_110 != 0<32> l000000C2
 l000000C2:
-	branch Mem58[r0 + 16<i32>:word32] == 0<32> l000000DE
+	branch Mem64[r0 + 16<i32>:word32] == 0<32> l000000DE
 l000000DE:
-	Mem111[r0 + 68<i32>:byte] = 0xFF<8>
+	Mem123[r0 + 68<i32>:byte] = 0xFF<8>
 l000000E8_thunk_vPortExitCritical:
 	vPortExitCritical(cpsr)
 	return
@@ -220,8 +220,8 @@ l00000204:
 l00000246:
 	word32 lr_57
 	word32 r0_58
-	word32 r7_409
-	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_58, out r7_409, out lr_57)
+	word32 r7_411
+	prvCopyDataToQueue(r0, r1, r3, r3, lr, out r0_58, out r7_411, out lr_57)
 	branch Mem40[r0 + 36<i32>:word32] != 0<32> l00000290
 l00000290:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) != 0<32> l00000256
@@ -250,11 +250,11 @@ l000001A8:
 	vPortEnterCritical(cpsr)
 	branch CONVERT(Mem40[r0 + 68<i32>:byte], byte, word32) != 0xFF<32> l000001C0
 l000001BC_1:
-	Mem158[r0 + 68<i32>:byte] = 0<8>
+	Mem159[r0 + 68<i32>:byte] = 0<8>
 l000001C0:
-	branch CONVERT(Mem160[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l000001CC
+	branch CONVERT(Mem161[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l000001CC
 l000001C8_1:
-	Mem165[r0 + 69<i32>:byte] = 0<8>
+	Mem167[r0 + 69<i32>:byte] = 0<8>
 l000001CC:
 	vPortExitCritical(cpsr)
 	branch xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) != 0<32> l0000027E
@@ -265,14 +265,14 @@ l0000027E:
 xQueueGenericSend_exit:
 l000001DC:
 	vPortEnterCritical(cpsr)
-	branch Mem208[r0 + 56<i32>:word32] == Mem208[r0 + 60<i32>:word32] l00000218
+	branch Mem210[r0 + 56<i32>:word32] == Mem210[r0 + 60<i32>:word32] l00000218
 l00000218:
 	vPortExitCritical(cpsr)
-	vTaskPlaceOnEventList(r0 + 0x10<32>, Mem208[&tLoc2C:word32])
+	vTaskPlaceOnEventList(r0 + 0x10<32>, Mem210[&tLoc2C:word32])
 	prvUnlockQueue(r0, cpsr)
 	branch xTaskResumeAll(cpsr) != 0<32> l000001F6
 l00000234:
-	Mem267[r9_31:word32] = 0x10000000<32>
+	Mem269[r9_31:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 l000001E8:
@@ -338,8 +338,8 @@ l000003B0:
 	word32 lr_51
 	word32 r5_56
 	word32 r6_57
-	word32 r7_490
-	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12<i32>:word32], r6_41, 0<32>, lr, out r5_56, out r6_57, out r7_490, out lr_51)
+	word32 r7_492
+	word32 r4_55 = prvCopyDataFromQueue(r0, r1, r0, Mem40[r0 + 12<i32>:word32], r6_41, 0<32>, lr, out r5_56, out r6_57, out r7_492, out lr_51)
 	branch r3 != 0<32> l000003E8
 l000003E8:
 	word32 r3_62 = Mem40[r4_55 + 36<i32>:word32]
@@ -378,30 +378,30 @@ l0000031E:
 	vPortEnterCritical(cpsr)
 	branch CONVERT(Mem40[r0 + 68<i32>:byte], byte, word32) != 0xFF<32> l00000336
 l00000332_1:
-	Mem165[r0 + 68<i32>:byte] = 0<8>
+	Mem166[r0 + 68<i32>:byte] = 0<8>
 l00000336:
-	branch CONVERT(Mem167[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l00000342
+	branch CONVERT(Mem168[r0 + 69<i32>:byte], byte, word32) != 0xFF<32> l00000342
 l0000033E_1:
-	Mem172[r0 + 69<i32>:byte] = 0<8>
+	Mem174[r0 + 69<i32>:byte] = 0<8>
 l00000342:
 	vPortExitCritical(cpsr)
 	branch xTaskCheckForTimeOut(&tLoc28, &tLoc2C, cpsr) == 0<32> l000002F0
 l000002F0:
 	vPortEnterCritical(cpsr)
-	branch Mem203[r0 + 56<i32>:word32] == 0<32> l0000036A
+	branch Mem205[r0 + 56<i32>:word32] == 0<32> l0000036A
 l0000036A:
 	vPortExitCritical(cpsr)
-	branch Mem203[r0:word32] == 0<32> l000003D8
+	branch Mem205[r0:word32] == 0<32> l000003D8
 l000003D8:
 	vPortEnterCritical(cpsr)
-	vTaskPriorityInherit(Mem203[r0 + 4<i32>:word32])
+	vTaskPriorityInherit(Mem205[r0 + 4<i32>:word32])
 	vPortExitCritical(cpsr)
 l00000372:
-	vTaskPlaceOnEventList(r0 + 0x24<32>, Mem203[&tLoc2C:word32])
+	vTaskPlaceOnEventList(r0 + 0x24<32>, Mem205[&tLoc2C:word32])
 	prvUnlockQueue(r0, cpsr)
 	branch xTaskResumeAll(cpsr) != 0<32> l00000308
 l0000038A:
-	Mem273[r8_31:word32] = 0x10000000<32>
+	Mem275[r8_31:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 l000002FA:
@@ -412,7 +412,7 @@ l00000352:
 	prvUnlockQueue(r0, cpsr)
 	xTaskResumeAll(cpsr)
 	vPortEnterCritical(cpsr)
-	branch Mem203[r0 + 56<i32>:word32] == 0<32> l000003A4
+	branch Mem205[r0 + 56<i32>:word32] == 0<32> l000003A4
 l000003A4:
 	vPortExitCritical(cpsr)
 	lrOut = lr
@@ -494,21 +494,21 @@ l00000458:
 l00000476:
 	branch r3 == 2<32> l00000482
 l00000482:
-	word32 r4_32 = CONVERT(Mem15[r0 + 69<i32>:byte], byte, int32)
-	word32 r7_44
-	word32 r0_167
-	word32 lr_168
-	branch prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_167, out r7_44, out lr_168) l000004A6
+	word32 r4_33 = CONVERT(Mem15[r0 + 69<i32>:byte], byte, int32)
+	word32 r7_45
+	word32 r0_170
+	word32 lr_171
+	branch prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_170, out r7_45, out lr_171) l000004A6
 l000004A6:
 	branch Mem15[r0 + 36<i32>:word32] == 0<32> l0000049E
 l000004AC:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) == 0<32> l0000049E
 l000004B8:
-	branch r7_44 == 0<32> l0000049E
+	branch r7_45 == 0<32> l0000049E
 l000004BC:
-	Mem66[r7_44:word32] = 1<32>
+	Mem67[r7_45:word32] = 1<32>
 l00000496:
-	Mem70[r0 + 69<i32>:byte] = SLICE(r4_32, int8, 0) + 1<i8>
+	Mem73[r0 + 69<i32>:byte] = SLICE(r4_33, int8, 0) + 1<i8>
 l0000049E:
 	__msr(cpsr, r6_17)
 	return
@@ -538,19 +538,19 @@ l00000500:
 	__msr(cpsr, r4_13)
 	return
 l000004E2:
-	word32 r3_29 = CONVERT(Mem11[r0 + 69<i32>:byte], byte, int32)
-	Mem30[r0 + 56<i32>:word32] = r2_16 + 1<32>
+	word32 r3_30 = CONVERT(Mem11[r0 + 69<i32>:byte], byte, int32)
+	Mem31[r0 + 56<i32>:word32] = r2_16 + 1<32>
 	branch r2_16 == 1<32> l00000508
 l00000508:
-	branch Mem30[r0 + 36<i32>:word32] == 0<32> l000004F8
+	branch Mem31[r0 + 36<i32>:word32] == 0<32> l000004F8
 l0000050E:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) == 0<32> l000004F8
 l0000051A:
 	branch r1 == 0<32> l000004F8
 l0000051E:
-	Mem52[r1:word32] = 1<32>
+	Mem53[r1:word32] = 1<32>
 l000004F0:
-	Mem56[r0 + 69<i32>:byte] = SLICE(r3_29, int8, 0) + 1<i8>
+	Mem59[r0 + 69<i32>:byte] = SLICE(r3_30, int8, 0) + 1<i8>
 l000004F8:
 l000004FA:
 	__msr(cpsr, r4_13)
@@ -574,22 +574,22 @@ l00000524:
 	word32 r4_20 = Mem15[r0 + 56<i32>:word32]
 	branch r4_20 != 0<32> l0000054A
 l0000054A:
-	word32 r5_33
-	word32 r7_35
-	word32 lr_154
-	word32 r4_32 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(Mem15[r0 + 68<i32>:byte], byte, int32), r6_17, r0, lr, out r5_33, out r6_17, out r7_35, out lr_154)
-	Mem39[r7_35 + 56<i32>:word32] = r4_32 - 1<32>
-	branch r4_32 == 1<32> l00000572
+	word32 r5_34
+	word32 r7_36
+	word32 lr_157
+	word32 r4_33 = prvCopyDataFromQueue(r0, r1, r4_20, CONVERT(Mem15[r0 + 68<i32>:byte], byte, int32), r6_17, r0, lr, out r5_34, out r6_17, out r7_36, out lr_157)
+	Mem40[r7_36 + 56<i32>:word32] = r4_33 - 1<32>
+	branch r4_33 == 1<32> l00000572
 l00000572:
-	branch Mem39[r7_35 + 16<i32>:word32] == 0<32> l00000568
+	branch Mem40[r7_36 + 16<i32>:word32] == 0<32> l00000568
 l00000578:
-	branch xTaskRemoveFromEventList(r7_35 + 0x10<32>) == 0<32> l00000568
+	branch xTaskRemoveFromEventList(r7_36 + 0x10<32>) == 0<32> l00000568
 l00000584:
 	branch r2 == 0<32> l00000568
 l0000058A:
-	Mem57[r2:word32] = 1<32>
+	Mem58[r2:word32] = 1<32>
 l00000560:
-	Mem61[r7_35 + 68<i32>:byte] = SLICE(r5_33, int8, 0) + 1<i8>
+	Mem64[r7_36 + 68<i32>:byte] = SLICE(r5_34, int8, 0) + 1<i8>
 l00000568:
 	__msr(cpsr, r6_17)
 	return
@@ -730,10 +730,10 @@ l00000630:
 	word32 r0_27 = Mem11[r0:word32]
 	Mem33[r0 + 56<i32>:word32] = 0<32>
 	Mem34[r0 + 4<i32>:word32] = r2_28 + r0_27
-	Mem35[r0 + 68<i32>:byte] = 0xFF<8>
-	Mem36[r0 + 12<i32>:word32] = r2_28 - r3_25 + r0_27
-	Mem37[r0 + 8<i32>:word32] = r0_27
-	Mem38[r0 + 69<i32>:byte] = 0xFF<8>
+	Mem36[r0 + 68<i32>:byte] = 0xFF<8>
+	Mem37[r0 + 12<i32>:word32] = r2_28 - r3_25 + r0_27
+	Mem38[r0 + 8<i32>:word32] = r0_27
+	Mem40[r0 + 69<i32>:byte] = 0xFF<8>
 	branch r1 != 0<32> l00000690
 l00000690:
 	vListInitialise(r0 + 0x10<32>)
@@ -741,11 +741,11 @@ l00000690:
 	vPortExitCritical(cpsr)
 	return
 l00000660:
-	branch Mem38[r0 + 16<i32>:word32] != 0<32> l0000066C
+	branch Mem40[r0 + 16<i32>:word32] != 0<32> l0000066C
 l0000066C:
 	branch xTaskRemoveFromEventList(r0 + 0x10<32>) == 0<32> l00000664
 l00000678:
-	Mem72[Mem38[0x000006A8<p32>:word32]:word32] = 0x10000000<32>
+	Mem74[Mem40[0x000006A8<p32>:word32]:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 	vPortExitCritical(cpsr)
@@ -825,10 +825,10 @@ l00000700:
 	word32 r0_41 = dwArg08 + 0x54<32>
 	word32 r2_42 = dwArg00 & 0x7FFFFFFF<32>
 l0000072E:
-	Mem47[r0_41:byte] = Mem44[r3_36 + 0<i32>:byte]
+	Mem48[r0_41:byte] = Mem44[r3_36 + 0<i32>:byte]
 	r3_36 = r3_36 + 1<i32>
 	r0_41 = r0_41 + 1<i32>
-	branch CONVERT(Mem47[r3_36:byte], byte, word32) == 0<32> l0000073E
+	branch CONVERT(Mem48[r3_36:byte], byte, word32) == 0<32> l0000073E
 l0000073A:
 	branch r3_36 != r1 + 2<32> l0000072E
 l0000073E:
@@ -836,23 +836,23 @@ l0000073E:
 l00000742_1:
 	r2_42 = 1<32>
 l00000744:
-	Mem65[dwArg08 + 76<i32>:word32] = r2_42
-	Mem66[dwArg08 + 88<i32>:word32] = r2_42
-	Mem68[dwArg08 + 86<i32>:byte] = 0<8>
-	Mem69[dwArg08 + 92<i32>:word32] = 0<32>
+	Mem66[dwArg08 + 76<i32>:word32] = r2_42
+	Mem67[dwArg08 + 88<i32>:word32] = r2_42
+	Mem70[dwArg08 + 86<i32>:byte] = 0<8>
+	Mem71[dwArg08 + 92<i32>:word32] = 0<32>
 	vListInitialiseItem(dwArg08 + 0x24<32>)
 	vListInitialiseItem(dwArg08 + 0x38<32>)
-	Mem74[dwArg08 + 56<i32>:word32] = 2<32> - r2_42
-	word32 r2_75 = Mem74[dwArg08 + 80<i32>:word32]
-	Mem85[dwArg08 + 48<i32>:word32] = dwArg08
-	Mem86[dwArg08 + 68<i32>:word32] = dwArg08
-	vPortStoreTaskMPUSettings(dwArg08 + 4<32>, dwArg0C, r2_75, r2)
-	Mem95[dwArg08 + 96<i32>:word32] = 0<32>
-	Mem100[dwArg08 + 100<i32>:byte] = 0<8>
-	Mem122[dwArg08:word32] = pxPortInitialiseStack(r5_32 & 0xFFFFFFF8<32>, r0, r3, dwArg00 >> 0x1F<u32>)
+	Mem76[dwArg08 + 56<i32>:word32] = 2<32> - r2_42
+	word32 r2_77 = Mem76[dwArg08 + 80<i32>:word32]
+	Mem87[dwArg08 + 48<i32>:word32] = dwArg08
+	Mem88[dwArg08 + 68<i32>:word32] = dwArg08
+	vPortStoreTaskMPUSettings(dwArg08 + 4<32>, dwArg0C, r2_77, r2)
+	Mem97[dwArg08 + 96<i32>:word32] = 0<32>
+	Mem103[dwArg08 + 100<i32>:byte] = 0<8>
+	Mem125[dwArg08:word32] = pxPortInitialiseStack(r5_32 & 0xFFFFFFF8<32>, r0, r3, dwArg00 >> 0x1F<u32>)
 	branch dwArg04 == 0<32> l00000792
 l00000790:
-	Mem123[dwArg04:word32] = dwArg08
+	Mem126[dwArg04:word32] = dwArg08
 l00000792:
 	return
 prvInitialiseNewTask_exit:
@@ -973,20 +973,20 @@ l000008B4:
 l00000904:
 	return 0xFFFFFFFF<32>
 l000008CA:
-	word32 r0_133
+	word32 r0_134
 	word32 r0_53 = pvPortMalloc(0x68<32>, cpsr)
 	branch r0_53 == 0<32> l0000090E
 l0000090E:
 	vPortFree()
-	r0_133 = 0xFFFFFFFF<32>
+	r0_134 = 0xFFFFFFFF<32>
 l000008D6:
 	Mem65[r0_53 + 80<i32>:word32] = r0_32
-	Mem67[r0_53 + 101<i32>:byte] = 0<8>
+	Mem68[r0_53 + 101<i32>:byte] = 0<8>
 	prvInitialiseNewTask(r0, r1, r2, r3, dwArg00, dwArg04, r0_53, 0<32>)
 	prvAddNewTaskToReadyList(r0_53, cpsr)
-	r0_133 = 1<32>
+	r0_134 = 1<32>
 l000008FE:
-	return r0_133
+	return r0_134
 xTaskCreate_exit:
 
 
@@ -1010,12 +1010,12 @@ l00000920:
 l00000964:
 l00000932:
 	word32 r1_35 = Mem17[r0 + 20<i32>:word32]
-	Mem36[r0_24 + 101<i32>:byte] = 1<8>
-	word32 r3_37 = Mem36[r0 + 12<i32>:word32]
-	word32 r2_38 = CONVERT(Mem36[r0 + 8<i32>:word16], word16, word32)
-	word32 lr_39 = Mem36[r0 + 16<i32>:word32]
-	Mem40[r0_24 + 80<i32>:word32] = r1_35
-	prvInitialiseNewTask(Mem43[r0:word32], Mem40[r0 + 4<i32>:word32], r2_38, r3_37, lr_39, r1, r0_24, r0 + 24<i32>)
+	Mem37[r0_24 + 101<i32>:byte] = 1<8>
+	word32 r3_38 = Mem37[r0 + 12<i32>:word32]
+	word32 r2_39 = CONVERT(Mem37[r0 + 8<i32>:word16], word16, word32)
+	word32 lr_40 = Mem37[r0 + 16<i32>:word32]
+	Mem41[r0_24 + 80<i32>:word32] = r1_35
+	prvInitialiseNewTask(Mem44[r0:word32], Mem41[r0 + 4<i32>:word32], r2_39, r3_38, lr_40, r1, r0_24, r0 + 24<i32>)
 	prvAddNewTaskToReadyList(r0_24, cpsr)
 l00000960:
 	return
@@ -1197,32 +1197,32 @@ l00000A68:
 	Mem31[r3:word32] = Mem15[r0 + 96<i32>:word32]
 l00000A6C:
 	word32 r4_35 = CONVERT(Mem34[r0 + 100<i32>:byte], byte, word32)
-	Mem38[r0 + 100<i32>:byte] = 2<8>
-	word32 r4_39 = CONVERT(SLICE(r4_35, byte, 0), byte, uint32)
+	Mem39[r0 + 100<i32>:byte] = 2<8>
+	word32 r4_41 = CONVERT(SLICE(r4_35, byte, 0), byte, uint32)
 	branch r2 >u 4<32> l00000A8C
 l00000A7E:
 	switch (r2 - 1<32>) { l00000AF6 l00000A9A l00000A8A l00000A86 }
 l00000A86:
-	branch r4_39 == 2<32> l00000AFE
+	branch r4_41 == 2<32> l00000AFE
 l00000AFE:
 l00000A8A:
-	Mem49[r0 + 96<i32>:word32] = r1
+	Mem51[r0 + 96<i32>:word32] = r1
 l00000A9A:
-	Mem53[r0 + 96<i32>:word32] = Mem38[r0 + 96<i32>:word32] + 1<32>
-	branch r4_39 != 1<32> l00000A90
+	Mem55[r0 + 96<i32>:word32] = Mem39[r0 + 96<i32>:word32] + 1<32>
+	branch r4_41 != 1<32> l00000A90
 l00000AF6:
-	Mem58[r0 + 96<i32>:word32] = r1 | Mem38[r0 + 96<i32>:word32]
+	Mem60[r0 + 96<i32>:word32] = r1 | Mem39[r0 + 96<i32>:word32]
 l00000A8C:
-	branch r4_39 == 1<32> l00000AA6
+	branch r4_41 == 1<32> l00000AA6
 l00000AA6:
-	word32 r5_68 = Mem66[0x00000B04<p32>:word32]
+	word32 r5_70 = Mem68[0x00000B04<p32>:word32]
 	uxListRemove(r0 + 0x24<32>)
-	word32 r0_78 = Mem66[r0 + 76<i32>:word32]
-	Mem87[r5_68 + 124<i32>:word32] = r4_39 << r0_78 | Mem66[r5_68 + 124<i32>:word32]
-	vListInsertEnd(r5_68 + 8<32> + r0_78 * 0x14<32>, r0 + 0x24<32>)
-	branch Mem87[r0 + 76<i32>:word32] <=u Mem87[Mem87[r5_68 + 4<i32>:word32] + 76<i32>:word32] l00000A90
+	word32 r0_80 = Mem68[r0 + 76<i32>:word32]
+	Mem89[r5_70 + 124<i32>:word32] = r4_41 << r0_80 | Mem68[r5_70 + 124<i32>:word32]
+	vListInsertEnd(r5_70 + 8<32> + r0_80 * 0x14<32>, r0 + 0x24<32>)
+	branch Mem89[r0 + 76<i32>:word32] <=u Mem89[Mem89[r5_70 + 4<i32>:word32] + 76<i32>:word32] l00000A90
 l00000ADE:
-	Mem101[Mem87[0x00000B08<p32>:word32]:word32] = 0x10000000<32>
+	Mem103[Mem89[0x00000B08<p32>:word32]:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 	vPortExitCritical(cpsr)
@@ -1252,41 +1252,41 @@ l00000B26:
 	Mem22[r3:word32] = Mem15[r0 + 96<i32>:word32]
 l00000B2A:
 	word32 r4_26 = CONVERT(Mem25[r0 + 100<i32>:byte], byte, word32)
-	Mem30[r0 + 100<i32>:byte] = 2<8>
-	word32 r4_31 = CONVERT(SLICE(r4_26, byte, 0), byte, uint32)
+	Mem31[r0 + 100<i32>:byte] = 2<8>
+	word32 r4_33 = CONVERT(SLICE(r4_26, byte, 0), byte, uint32)
 	branch r2 >u 4<32> l00000B4A
 l00000B3C:
 	switch (r2 - 1<32>) { l00000B94 l00000B58 l00000B48 l00000B44 }
 l00000B44:
-	branch r4_31 == 2<32> l00000BC4
+	branch r4_33 == 2<32> l00000BC4
 l00000BC4:
 l00000B48:
-	Mem42[r0 + 96<i32>:word32] = r1
+	Mem44[r0 + 96<i32>:word32] = r1
 l00000B58:
-	Mem46[r0 + 96<i32>:word32] = Mem30[r0 + 96<i32>:word32] + 1<32>
-	branch r4_31 != 1<32> l00000B4E
+	Mem48[r0 + 96<i32>:word32] = Mem31[r0 + 96<i32>:word32] + 1<32>
+	branch r4_33 != 1<32> l00000B4E
 l00000B94:
-	Mem51[r0 + 96<i32>:word32] = r1 | Mem30[r0 + 96<i32>:word32]
+	Mem53[r0 + 96<i32>:word32] = r1 | Mem31[r0 + 96<i32>:word32]
 l00000B4A:
-	branch r4_31 == 1<32> l00000B64
+	branch r4_33 == 1<32> l00000B64
 l00000B64:
-	word32 r6_58 = Mem56[0x00000BD0<p32>:word32]
-	branch Mem56[r6_58 + 140<i32>:word32] == 0<32> l00000B9C
+	word32 r6_60 = Mem58[0x00000BD0<p32>:word32]
+	branch Mem58[r6_60 + 140<i32>:word32] == 0<32> l00000B9C
 l00000B9C:
 	uxListRemove(r0 + 0x24<32>)
-	word32 r0_73 = Mem56[r0 + 76<i32>:word32]
-	Mem83[r6_58 + 124<i32>:word32] = r4_31 << r0_73 | Mem56[r6_58 + 124<i32>:word32]
-	vListInsertEnd(r6_58 + 8<32> + r0_73 * 0x14<32>, r0 + 0x24<32>)
+	word32 r0_75 = Mem58[r0 + 76<i32>:word32]
+	Mem85[r6_60 + 124<i32>:word32] = r4_33 << r0_75 | Mem58[r6_60 + 124<i32>:word32]
+	vListInsertEnd(r6_60 + 8<32> + r0_75 * 0x14<32>, r0 + 0x24<32>)
 l00000B6E:
-	vListInsertEnd(r6_58 + 0x58<32>, r0 + 0x38<32>)
+	vListInsertEnd(r6_60 + 0x58<32>, r0 + 0x38<32>)
 l00000B7A:
-	branch Mem99[r0 + 76<i32>:word32] <=u Mem99[Mem99[r6_58 + 4<i32>:word32] + 76<i32>:word32] l00000B4E
+	branch Mem101[r0 + 76<i32>:word32] <=u Mem101[Mem101[r6_60 + 4<i32>:word32] + 76<i32>:word32] l00000B4E
 l00000B84:
 	branch dwArg00 == 0<32> l00000BC8
 l00000BC8:
-	Mem113[r6_58 + 144<i32>:word32] = 1<32>
+	Mem115[r6_60 + 144<i32>:word32] = 1<32>
 l00000B8A:
-	Mem114[dwArg00:word32] = 1<32>
+	Mem116[dwArg00:word32] = 1<32>
 	__msr(cpsr, r5_17)
 	return
 l00000B4E:
@@ -1313,11 +1313,11 @@ l00000BD4:
 l00000BF0:
 	word32 r1_37 = Mem15[r4_16 + 4<i32>:word32]
 	Mem40[r1_37 + 96<i32>:word32] = Mem15[r1_37 + 96<i32>:word32] & ~r0
-	Mem42[Mem40[r4_16 + 4<i32>:word32] + 100<i32>:byte] = 1<8>
+	Mem43[Mem40[r4_16 + 4<i32>:word32] + 100<i32>:byte] = 1<8>
 	branch r3 != 0<32> l00000C3C
 l00000C3C:
 	prvAddCurrentTaskToDelayedList.isra.0(r3)
-	Mem54[Mem42[0x00000C5C<p32>:word32]:word32] = 0x10000000<32>
+	Mem55[Mem43[0x00000C5C<p32>:word32]:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 l00000C04:
@@ -1325,15 +1325,15 @@ l00000C04:
 	vPortEnterCritical(cpsr)
 	branch r2 == 0<32> l00000C14
 l00000C0E:
-	Mem73[r2:word32] = Mem70[Mem70[r4_16 + 4<i32>:word32] + 96<i32>:word32]
+	Mem74[r2:word32] = Mem71[Mem71[r4_16 + 4<i32>:word32] + 96<i32>:word32]
 l00000C14:
-	branch CONVERT(Mem75[Mem75[r4_16 + 4<i32>:word32] + 100<i32>:byte], byte, word32) == 1<32> l00000C54
+	branch CONVERT(Mem76[Mem76[r4_16 + 4<i32>:word32] + 100<i32>:byte], byte, word32) == 1<32> l00000C54
 l00000C54:
 l00000C1E:
-	word32 r3_82 = Mem75[r4_16 + 4<i32>:word32]
-	Mem87[r3_82 + 96<i32>:word32] = Mem75[r3_82 + 96<i32>:word32] & ~r1
+	word32 r3_83 = Mem76[r4_16 + 4<i32>:word32]
+	Mem88[r3_83 + 96<i32>:word32] = Mem76[r3_83 + 96<i32>:word32] & ~r1
 l00000C2A:
-	Mem92[Mem90[r4_16 + 4<i32>:word32] + 100<i32>:byte] = 0<8>
+	Mem94[Mem91[r4_16 + 4<i32>:word32] + 100<i32>:byte] = 0<8>
 	vPortExitCritical(cpsr)
 	return
 xTaskNotifyWait_exit:
@@ -1353,28 +1353,28 @@ l00000C60:
 	__isb_sy()
 	__dsb_sy()
 	word32 r5_25 = CONVERT(Mem19[r0 + 100<i32>:byte], byte, word32)
-	Mem26[r0 + 100<i32>:byte] = 2<8>
-	Mem31[r0 + 96<i32>:word32] = Mem26[r0 + 96<i32>:word32] + 1<32>
-	word32 r5_28 = CONVERT(SLICE(r5_25, byte, 0), byte, uint32)
-	branch r5_28 == 1<32> l00000C96
+	Mem27[r0 + 100<i32>:byte] = 2<8>
+	Mem33[r0 + 96<i32>:word32] = Mem27[r0 + 96<i32>:word32] + 1<32>
+	word32 r5_30 = CONVERT(SLICE(r5_25, byte, 0), byte, uint32)
+	branch r5_30 == 1<32> l00000C96
 l00000C96:
-	word32 r7_33 = Mem31[0x00000CFC<p32>:word32]
-	branch Mem31[r7_33 + 140<i32>:word32] == 0<32> l00000CCC
+	word32 r7_35 = Mem33[0x00000CFC<p32>:word32]
+	branch Mem33[r7_35 + 140<i32>:word32] == 0<32> l00000CCC
 l00000CCC:
 	uxListRemove(r0 + 0x24<32>)
-	word32 r0_48 = Mem31[r0 + 76<i32>:word32]
-	Mem57[r7_33 + 124<i32>:word32] = r5_28 << r0_48 | Mem31[r7_33 + 124<i32>:word32]
-	vListInsertEnd(r7_33 + 8<32> + r0_48 * 0x14<32>, r0 + 0x24<32>)
+	word32 r0_50 = Mem33[r0 + 76<i32>:word32]
+	Mem59[r7_35 + 124<i32>:word32] = r5_30 << r0_50 | Mem33[r7_35 + 124<i32>:word32]
+	vListInsertEnd(r7_35 + 8<32> + r0_50 * 0x14<32>, r0 + 0x24<32>)
 l00000CA2:
-	vListInsertEnd(r7_33 + 0x58<32>, r0 + 0x38<32>)
+	vListInsertEnd(r7_35 + 0x58<32>, r0 + 0x38<32>)
 l00000CAE:
-	branch Mem73[r0 + 76<i32>:word32] <=u Mem73[Mem73[r7_33 + 4<i32>:word32] + 76<i32>:word32] l00000C8E
+	branch Mem75[r0 + 76<i32>:word32] <=u Mem75[Mem75[r7_35 + 4<i32>:word32] + 76<i32>:word32] l00000C8E
 l00000CB8:
 	branch r1 == 0<32> l00000CF4
 l00000CF4:
-	Mem84[r7_33 + 144<i32>:word32] = 1<32>
+	Mem86[r7_35 + 144<i32>:word32] = 1<32>
 l00000CC0:
-	Mem85[r1:word32] = 1<32>
+	Mem87[r1:word32] = 1<32>
 	__msr(cpsr, r6_21)
 	return
 l00000C8E:
@@ -1398,26 +1398,26 @@ l00000D00:
 	vPortEnterCritical(cpsr)
 	branch Mem11[Mem11[r4_12 + 4<i32>:word32] + 96<i32>:word32] != 0<32> l00000D1C
 l00000D12:
-	Mem28[Mem11[r4_12 + 4<i32>:word32] + 100<i32>:byte] = 1<8>
+	Mem29[Mem11[r4_12 + 4<i32>:word32] + 100<i32>:byte] = 1<8>
 	branch r1 != 0<32> l00000D4A
 l00000D4A:
 	prvAddCurrentTaskToDelayedList.isra.0(r1)
-	Mem40[Mem28[0x00000D68<p32>:word32]:word32] = 0x10000000<32>
+	Mem41[Mem29[0x00000D68<p32>:word32]:word32] = 0x10000000<32>
 	__dsb_sy()
 	__isb_sy()
 l00000D1C:
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
-	word32 r5_57 = Mem55[Mem55[r4_12 + 4<i32>:word32] + 96<i32>:word32]
-	branch r5_57 == 0<32> l00000D32
+	word32 r5_58 = Mem56[Mem56[r4_12 + 4<i32>:word32] + 96<i32>:word32]
+	branch r5_58 == 0<32> l00000D32
 l00000D2A:
 	branch r0 != 0<32> l00000D42
 l00000D42:
-	Mem61[Mem55[r4_12 + 4<i32>:word32] + 96<i32>:word32] = 0<32>
+	Mem62[Mem56[r4_12 + 4<i32>:word32] + 96<i32>:word32] = 0<32>
 l00000D2C:
-	Mem64[Mem55[r4_12 + 4<i32>:word32] + 96<i32>:word32] = r5_57 - 1<32>
+	Mem65[Mem56[r4_12 + 4<i32>:word32] + 96<i32>:word32] = r5_58 - 1<32>
 l00000D32:
-	Mem69[Mem67[r4_12 + 4<i32>:word32] + 100<i32>:byte] = 0<8>
+	Mem71[Mem68[r4_12 + 4<i32>:word32] + 100<i32>:byte] = 0<8>
 	vPortExitCritical(cpsr)
 	return
 ulTaskNotifyTake_exit:
@@ -1769,22 +1769,22 @@ l00001112:
 	Mem7[r2_4 + 144<i32>:word32] = 1<32>
 	return
 l000010E0:
-	word32 r1_23
+	word32 r1_24
 	Mem8[r2_4 + 144<i32>:word32] = r3_5
-	word32 r0_15 = r2_4 + (0x1F<32> - CONVERT(SLICE(__clz(Mem8[r2_4 + 124<i32>:word32]), byte, 0), byte, uint32)) * 0x14<32>
-	word32 r1_19 = Mem8[Mem8[r0_15 + 12<i32>:word32] + 4<i32>:word32]
-	Mem21[r0_15 + 12<i32>:word32] = r1_19
-	r1_23 = r1_19
-	branch r1_19 != r0_15 + 0x10<32> l00001108
+	word32 r0_16 = r2_4 + (0x1F<32> - CONVERT(SLICE(__count_leading_zeros<word32>(Mem8[r2_4 + 124<i32>:word32]), byte, 0), byte, uint32)) * 0x14<32>
+	word32 r1_20 = Mem8[Mem8[r0_16 + 12<i32>:word32] + 4<i32>:word32]
+	Mem22[r0_16 + 12<i32>:word32] = r1_20
+	r1_24 = r1_20
+	branch r1_20 != r0_16 + 0x10<32> l00001108
 l00001106_1:
-	r1_23 = Mem21[r1_19 + 4<i32>:word32]
+	r1_24 = Mem22[r1_20 + 4<i32>:word32]
 l00001108:
-	word32 r3_26 = Mem21[r1_23 + 12<i32>:word32]
-	branch r1_19 != r0_15 + 0x10<32> l0000110E
+	word32 r3_27 = Mem22[r1_24 + 12<i32>:word32]
+	branch r1_20 != r0_16 + 0x10<32> l0000110E
 l0000110C_1:
-	Mem29[r0_15 + 12<i32>:word32] = r1_23
+	Mem30[r0_16 + 12<i32>:word32] = r1_24
 l0000110E:
-	Mem33[r2_4 + 4<i32>:word32] = r3_26
+	Mem34[r2_4 + 4<i32>:word32] = r3_27
 	return
 vTaskSwitchContext_exit:
 
@@ -2239,7 +2239,7 @@ l000013CE:
 	__cps()
 	__dsb_sy()
 	__isb_sy()
-	__syscall(0<32>)
+	__syscall<word32>(0<32>)
 	return
 xPortStartScheduler_exit:
 

@@ -57,15 +57,12 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteSmc()
         {
-            var intrinsic = host.Intrinsic("__secure_monitor_call", true, VoidType.Instance, RewriteOp(instr.Operands[0]));
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(smc_intrinsic, RewriteOp(0)));
         }
 
         private void RewriteSvc()
         {
-            var intrinsic = host.Intrinsic("__supervisor_call", true, VoidType.Instance, RewriteOp(instr.Operands[0]));
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(svc_intrinsic, RewriteOp(0)));
         }
-
     }
 }
