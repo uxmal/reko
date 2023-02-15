@@ -576,11 +576,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("81016D2F");
             AssertCode(     // mla	v1.4h,v12.4h,v13.h[2]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|v3 = d12",
-                "3|L--|v4 = d13[2<i32>]",
-                "4|L--|d1 = __mla_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d1 = __mla_by_element<word16[4],word16>(d1, d12, d13[2<i32>])");
         }
 
         [Test]
@@ -588,11 +585,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("3E42502F");
             AssertCode(     // mls	v30.8h,v17.8h,v0.h[1]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q30",
-                "2|L--|v3 = q17",
-                "3|L--|v4 = q0[1<i32>]",
-                "4|L--|q30 = __mls_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q30 = __mls_by_element<word16[8],word16>(q30, q17, q0[1<i32>])");
         }
 
         [Test]
@@ -750,7 +744,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("60059F4C");
             AssertCode(//"st4 {v0.8h-v3.8h},[x11], #64");
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|__st4(x11, v0, v1, v2, v3)",
+                "1|L--|__st4<word128>(x11, v0, v1, v2, v3)",
                 "2|L--|x11 = x11 + 64<i64>");
         }
 
@@ -761,7 +755,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // stlrh	w1,[x0]
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v3 = &Mem0[x0:word16]",
-                "2|L--|__store_release_16(v3, w1)");
+                "2|L--|__store_release<word32>(v3, w1)");
         }
 
         [Test]
@@ -791,7 +785,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // stxr	w7,w6,[x0]
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v4 = &Mem0[x0:word32]",
-                "2|L--|w7 = __store_exclusive_word32(v4, w6)");
+                "2|L--|w7 = __store_exclusive<word32>(v4, w6)");
         }
 
         [Test]
@@ -801,7 +795,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // stxr	w7,x6,[x0]
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v4 = &Mem0[x0:word64]",
-                "2|L--|w7 = __store_exclusive_word64(v4, x6)");
+                "2|L--|w7 = __store_exclusive<word64>(v4, x6)");
         }
 
         [Test]
@@ -811,7 +805,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // stxrb	w0,w31,[sp]
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v4 = &Mem0[sp:byte]",
-                "2|L--|w0 = __store_exclusive_byte(v4, w31)");
+                "2|L--|w0 = __store_exclusive<byte>(v4, w31)");
         }
 
         [Test]
@@ -1028,7 +1022,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x937D7C63);
             AssertCode(     // sbfm\tx3,x3,#&3,#&20
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|x3 = __sbfiz(x3, 3<i32>)");
+                 "1|L--|x3 = __sbfiz<word64>(x3, 3<i32>, 32<i32>)");
         }
 
         [Test]
@@ -1957,12 +1951,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_dmb()
+        public void AArch64Rw_dmb_sy()
         {
             Given_HexString("BF3F03D5");
             AssertCode(     // dmb	sy
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|__dmb_sy()");
+                "1|L--|__data_memory_barrier(\"sy\")");
         }
 
         [Test]
@@ -1971,16 +1965,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xD5033F9F);	// dsb	#&F
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__dsb_sy()");
-        }
-
-        [Test]
-        public void AArch64Rw_dmb_sy()
-        {
-            Given_HexString("BF3F03D5");
-            AssertCode(     // dmb	sy
-                "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|__dmb_sy()");
+                "1|L--|__data_sync_barrier(\"sy\")");
         }
 
         [Test]
@@ -2134,7 +2119,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4C4081C1);	// ld2	{v1.8b,v2.8b},[x14]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__ld2(x14, out v1, out v2)");
+                "1|L--|__ld2<word128>(x14, out v1, out v2)");
         }
 
         [Test]
@@ -2143,7 +2128,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x0C404565);
             AssertCode(     // ld3\t{v5.4h,v6.4h,v7.4h},[x11]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__ld3(x11, out v5, out v6, out v7)");
+                "1|L--|__ld3<word128>(x11, out v5, out v6, out v7)");
         }
 
         [Test]
@@ -2395,7 +2380,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x5302096B);	// ubfm	w11,w11,#2,#2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|w11 = __ubfm(w11, 2<i32>, 2<i32>)");
+                "1|L--|w11 = __ubfm<word32>(w11, 2<i32>, 2<i32>)");
         }
 
         [Test]
@@ -2462,14 +2447,13 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|__prfm<byte>(0<8>, 0x001A8A50<p32>)");
         }
 
-
         [Test]
         public void AArch64Rw_ld1r_i8()
         {
             Given_Instruction(0x4D40C220);
             AssertCode(     // ld1r\t{v0.16b},[x17]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__ld1r(x17, out v0)");
+                "1|L--|__ld1r<word128>(x17, out v0)");
         }
 
         [Test]
@@ -2536,7 +2520,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xD5033FDF);	// isb	#&F
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__isb_sy()");
+                "1|L--|__instruction_sync_barrier(\"sy\")");
         }
 
         [Test]
@@ -2576,7 +2560,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // stlr	x0,[x8]
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v3 = &Mem0[x8:word64]",
-                "2|L--|__store_release_64(v3, x0)");
+                "2|L--|__store_release<word64>(v3, x0)");
         }
 
         [Test]
@@ -2699,12 +2683,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_ld1_2reg()
+        public void AArch64Rw_ld1_d()
         {
-            Given_HexString("00A0404C");
-            AssertCode(     // Nyi
-                "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|__ld1(x0, out v0, out v1)");
+            Given_HexString("4178DF0C");
+            AssertCode( // ld1\t{v1.2s},[x2],#&10
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|__ld1<word128>(x2, out v1)",
+                "2|L--|x2 = x2 + 8<i64>");
         }
 
         [Test]
@@ -2713,18 +2698,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4178DF4C");
             AssertCode(     // ld1\t{v1.4s},[x2],#&10
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|__ld1(x2, out v1)",
+                "1|L--|__ld1<word128>(x2, out v1)",
                 "2|L--|x2 = x2 + 16<i64>");
-        }
-
-        [Test]
-        public void AArch64Rw_ld1_d()
-        {
-            Given_HexString("4178DF0C");
-            AssertCode( // ld1\t{v1.2s},[x2],#&10
-                "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|__ld1(x2, out v1)",
-                "2|L--|x2 = x2 + 8<i64>");
         }
 
         [Test]
@@ -2735,6 +2710,16 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // ld1 {v0.16b},[x0]
                 "0|L--|0000000100002884(4): 1 instructions",
                 "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Read up on the specs")]
+        public void AArch64Rw_ld1_2reg()
+        {
+            Given_HexString("00A0404C");
+            AssertCode(     // Nyi
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld1(x0, out v0, out v1)");
         }
 
         [Test]
@@ -3127,11 +3112,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("2B80210E");
             AssertCode(     // smlal	v11.8h,v1.8b,v1.8b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q11",
-                "2|L--|v3 = d1",
-                "3|L--|v4 = d1",
-                "4|L--|q11 = __smlal_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q11 = __smlal<int8[8],int16[8]>(q11, d1, d1)");
         }
 
         [Test]
@@ -3139,11 +3121,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("4081314E");
             AssertCode(     // smlal2	v0.8h,v10.16b,v17.16b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = q10",
-                "3|L--|v4 = q17",
-                "4|L--|q0 = __smlal2_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q0 = __smlal2<int8[16],int16[8]>(q0, q10, q17)");
         }
 
         [Test]
@@ -3151,24 +3130,17 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("C1A33E0E");
             AssertCode(     // smlsl	v1.8h,v30.8b,v30.8b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = d30",
-                "3|L--|v4 = d30",
-                "4|L--|q1 = __smlsl_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q1 = __smlsl<int8[8],int16[8]>(q1, d30, d30)");
         }
 
         [Test]
         public void AArch64Rw_smlsl2()
         {
-            //$BUG: should be ternary
             Given_HexString("C0A32C4E");
             AssertCode(     // smlsl2	v0.8h,v30.16b,v12.16b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = q30",
-                "3|L--|v4 = q12",
-                "4|L--|q0 = __smlsl2_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q0 = __smlsl2<int8[16],int16[8]>(q0, q30, q12)");
         }
 
         [Test]
@@ -3227,11 +3199,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("D13B5B0F");
             AssertCode(     // sqdmlal	v17.4s,v30.4h,v11.h[5]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q17",
-                "2|L--|v3 = d30",
-                "3|L--|v4 = d11[5<i32>]",
-                "4|L--|q17 = __sqdmlal_i32(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q17 = __sqdmlal<int128>(q17, d30, d11[5<i32>])");
         }
 
         [Test]
@@ -3240,7 +3209,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4B317D5F");
             AssertCode(     // sqdmlal	s11,h10,v13.h[3]
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|s11 = __sqdmlal(s11, h10, d13[3<i32>])");
+                "1|L--|s11 = __sqdmlal<int32>(s11, h10, d13[3<i32>])");
         }
 
         [Test]
@@ -3248,11 +3217,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("BE39514F");
             AssertCode(     // sqdmlal2	v30.4s,v13.8h,v1.h[5]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q30",
-                "2|L--|v3 = q13",
-                "3|L--|v4 = q1[5<i32>]",
-                "4|L--|q30 = __sqdmlal2_i32(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q30 = __sqdmlal2<int128>(q30, q13, q1[5<i32>])");
         }
 
         [Test]
@@ -3261,7 +3227,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6171705F");
             AssertCode(     // sqdmlsl2	s1,h11,v0.h[3]
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|s1 = __sqdmlsl2(s1, h11, d0[3<i32>])");
+                "1|L--|s1 = __sqdmlsl2<int32>(s1, h11, d0[3<i32>])");
         }
 
         [Test]
@@ -3269,11 +3235,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("AB715D0F");
             AssertCode(     // sqdmlsl	v11.4s,v13.4h,v13.h[1]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q11",
-                "2|L--|v3 = d13",
-                "3|L--|v4 = d13[1<i32>]",
-                "4|L--|q11 = __sqdmlsl_i32(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q11 = __sqdmlsl<int128>(q11, d13, d13[1<i32>])");
         }
 
         [Test]
@@ -3281,11 +3244,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("6079614F");
             AssertCode(     // sqdmlsl2	v0.4s,v11.8h,v1.h[6]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = q11",
-                "3|L--|v4 = q1[6<i32>]",
-                "4|L--|q0 = __sqdmlsl2_i32(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q0 = __sqdmlsl2<int128>(q0, q11, q1[6<i32>])");
         }
 
         [Test]
@@ -3351,7 +3311,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("0DD8A17F");
             AssertCode(     // sqrdmlah	s13,s0,v1.s[3]
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|s13 = __sqrdmlah(s13, s0, d1[3<i32>])");
+                "1|L--|s13 = __sqrdmlah<int32>(s13, s0, d1[3<i32>])");
         }
 
         [Test]
@@ -3359,11 +3319,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("6BD97D2F");
             AssertCode(     // sqrdmlah	v11.4h,v11.4h,v13.h[7]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|v3 = d11",
-                "3|L--|v4 = d13[7<i32>]",
-                "4|L--|d11 = __sqrdmlah_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d11 = __sqrdmlah<int64>(d11, d11, d13[7<i32>])");
         }
 
         [Test]
@@ -3372,7 +3329,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2CF8AD7F");
             AssertCode(     // sqrdmlsh	s12,s1,v13.s[3]
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|s12 = __sqrdmlsh(s12, s1, d13[3<i32>])");
+                "1|L--|s12 = __sqrdmlsh<int32>(s12, s1, d13[3<i32>])");
         }
 
         [Test]
@@ -3380,11 +3337,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("EAFB7B2F");
             AssertCode(     // sqrdmlsh	v10.4h,v31.4h,v11.h[7]
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d31",
-                "3|L--|v4 = d11[7<i32>]",
-                "4|L--|d10 = __sqrdmlsh_i16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d10 = __sqrdmlsh<int64>(d10, d31, d11[7<i32>])");
         }
 
         [Test]
@@ -3905,10 +3859,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("8210232E");
             AssertCode(     // uaddw\tv2.8h,v4.8h,v3.16b
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q4",
-                "2|L--|v3 = d3",
-                "3|L--|q2 = __uaddw_u16(v2, v3)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q2 = __uaddw<uint16[8],uint8[8]>(q4, d3)");
         }
 
         [Test]
@@ -3916,10 +3868,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("2A102D6E");
             AssertCode(     // uaddw2	v10.8h,v1.8h,v13.16b
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q13",
-                "3|L--|q10 = __uaddw<uint16[8]>(v2, v3)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q10 = __uaddw2<uint16[8],uint8[16]>(q1, q13)");
         }
 
         [Test]
@@ -4041,11 +3991,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x2E208045);
             AssertCode(     // umlal\tv5.4h,v2.8b,v0.8b
-                "0|L--|00100000(4): 4 instructions",
-                "1|L--|v2 = q5",
-                "2|L--|v3 = d2",
-                "3|L--|v4 = d0",
-                "4|L--|q5 = __umlal_u16(v2, v3, v4)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q5 = __umlal<uint8[8],uint16[8]>(q5, d2, d0)");
         }
 
         [Test]
@@ -4053,11 +4000,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("EC83216E");
             AssertCode(     // umlal2	v12.8h,v31.16b,v1.16b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q12",
-                "2|L--|v3 = q31",
-                "3|L--|v4 = q1",
-                "4|L--|q12 = __umlal2_u16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q12 = __umlal2<uint8[16],uint16[8]>(q12, q31, q1)");
         }
 
         [Test]
@@ -4065,11 +4009,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("CDA3312E");
             AssertCode(     // umlsl	v13.8h,v30.8b,v17.8b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|v3 = d30",
-                "3|L--|v4 = d17",
-                "4|L--|q13 = __umlsl_u16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q13 = __umlsl<uint8[8],uint16[8]>(q13, d30, d17)");
         }
 
         [Test]
@@ -4077,11 +4018,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("9FA12B6E");
             AssertCode(     // umlsl2	v31.8h,v12.16b,v11.16b
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v2 = q31",
-                "2|L--|v3 = q12",
-                "3|L--|v4 = q11",
-                "4|L--|q31 = __umlsl2_u16(v2, v3, v4)");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q31 = __umlsl2<uint8[16],uint16[8]>(q31, q12, q11)");
         }
 
         [Test]

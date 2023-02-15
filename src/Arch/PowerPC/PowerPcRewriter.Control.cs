@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
@@ -326,7 +327,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSc()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, arch.WordWidth));
+            m.SideEffect(m.Fn(CommonOps.Syscall_0));
         }
     }
 }

@@ -230,8 +230,8 @@ l00000254:
 	branch r0_58 == 0<32> l00000266
 l00000256:
 	Mem82[Mem40[0x000002A0<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l00000266:
 	vPortExitCritical(cpsr)
 	return lr_57
@@ -273,8 +273,8 @@ l00000218:
 	branch xTaskResumeAll(cpsr) != 0<32> l000001F6
 l00000234:
 	Mem269[r9_31:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l000001E8:
 	vPortExitCritical(cpsr)
 	prvUnlockQueue(r0, cpsr)
@@ -296,8 +296,8 @@ xQueuePeekFromISR_entry:
 l000002A4:
 	word32 r5_13 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	branch Mem11[r0 + 56<i32>:word32] != 0<32> l000002C6
 l000002C6:
 	word32 r5_27
@@ -359,8 +359,8 @@ l0000040E:
 	branch xTaskRemoveFromEventList(r4_55 + 0x10<32>) != 0<32> l000003FC
 l000003FC:
 	Mem105[Mem103[0x00000424<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l0000041A:
 l000003CC:
 	vPortExitCritical(cpsr)
@@ -402,8 +402,8 @@ l00000372:
 	branch xTaskResumeAll(cpsr) != 0<32> l00000308
 l0000038A:
 	Mem275[r8_31:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l000002FA:
 	vPortExitCritical(cpsr)
 	prvUnlockQueue(r0, cpsr)
@@ -488,8 +488,8 @@ xQueueGenericSendFromISR_entry:
 l00000458:
 	word32 r6_17 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	branch Mem15[r0 + 56<i32>:word32] <u Mem15[r0 + 60<i32>:word32] l00000482
 l00000476:
 	branch r3 == 2<32> l00000482
@@ -530,8 +530,8 @@ xQueueGiveFromISR_entry:
 l000004C4:
 	word32 r4_13 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	word32 r2_16 = Mem11[r0 + 56<i32>:word32]
 	branch r2_16 >=u Mem11[r0 + 60<i32>:word32] l00000500
 l00000500:
@@ -569,8 +569,8 @@ xQueueReceiveFromISR_entry:
 l00000524:
 	word32 r6_17 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	word32 r4_20 = Mem15[r0 + 56<i32>:word32]
 	branch r4_20 != 0<32> l0000054A
 l0000054A:
@@ -746,8 +746,8 @@ l0000066C:
 	branch xTaskRemoveFromEventList(r0 + 0x10<32>) == 0<32> l00000664
 l00000678:
 	Mem74[Mem40[0x000006A8<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	vPortExitCritical(cpsr)
 	return
 l00000664:
@@ -908,8 +908,8 @@ l000007E2:
 	branch Mem96[Mem96[r4_16 + 4<i32>:word32] + 76<i32>:word32] >=u Mem96[r0 + 76<i32>:word32] l000007FC
 l000007EC:
 	Mem120[Mem96[0x00000858<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l000007FC:
 	return
 prvAddNewTaskToReadyList_exit:
@@ -1062,8 +1062,8 @@ l00000990:
 	branch r0_19 == 1<32> l000009B6
 l000009B6:
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	Mem32[r4_9 + 132<i32>:word32] = 0xFFFFFFFF<32>
 	Mem33[r4_9 + 116<i32>:word32] = r0_19
 	Mem34[r4_9 + 128<i32>:word32] = 0<32>
@@ -1085,8 +1085,8 @@ void vTaskEndScheduler(word32 cpsr)
 vTaskEndScheduler_entry:
 l000009EC:
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	Mem8[Mem0[0x00000A08<p32>:word32] + 116<i32>:word32] = 0<32>
 l00000A02_thunk_vPortEndScheduler:
 	vPortEndScheduler()
@@ -1223,8 +1223,8 @@ l00000AA6:
 	branch Mem89[r0 + 76<i32>:word32] <=u Mem89[Mem89[r5_70 + 4<i32>:word32] + 76<i32>:word32] l00000A90
 l00000ADE:
 	Mem103[Mem89[0x00000B08<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	vPortExitCritical(cpsr)
 	return
 l00000A90:
@@ -1245,8 +1245,8 @@ xTaskGenericNotifyFromISR_entry:
 l00000B0C:
 	word32 r5_17 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	branch r3 == 0<32> l00000B2A
 l00000B26:
 	Mem22[r3:word32] = Mem15[r0 + 96<i32>:word32]
@@ -1318,8 +1318,8 @@ l00000BF0:
 l00000C3C:
 	prvAddCurrentTaskToDelayedList.isra.0(r3)
 	Mem55[Mem43[0x00000C5C<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l00000C04:
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
@@ -1350,8 +1350,8 @@ vTaskNotifyGiveFromISR_entry:
 l00000C60:
 	word32 r6_21 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	word32 r5_25 = CONVERT(Mem19[r0 + 100<i32>:byte], byte, word32)
 	Mem27[r0 + 100<i32>:byte] = 2<8>
 	Mem33[r0 + 96<i32>:word32] = Mem27[r0 + 96<i32>:word32] + 1<32>
@@ -1403,8 +1403,8 @@ l00000D12:
 l00000D4A:
 	prvAddCurrentTaskToDelayedList.isra.0(r1)
 	Mem41[Mem29[0x00000D68<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l00000D1C:
 	vPortExitCritical(cpsr)
 	vPortEnterCritical(cpsr)
@@ -1567,8 +1567,8 @@ l00000F26:
 	return 0<32>
 l00000F0A:
 	Mem147[Mem115[0x00000F44<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	vPortExitCritical(cpsr)
 	return 1<32>
 xTaskResumeAll_exit:
@@ -1595,8 +1595,8 @@ l00000F76:
 	return
 l00000F4C:
 	Mem39[Mem37[0x00000F78<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	return
 vTaskDelay_exit:
 
@@ -1635,8 +1635,8 @@ l00000FD0:
 	return
 l00000FA6:
 	Mem78[Mem76[0x00000FD8<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	return
 vTaskDelayUntil_exit:
 
@@ -2070,8 +2070,8 @@ l00001334:
 	branch r3_6 == 1<32> l00001360
 l00001360:
 	Mem11[Mem0[0x00001378<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	return
 l0000133E:
 	branch r3_6 <u 1<32> l00001354
@@ -2237,8 +2237,8 @@ l000013CE:
 	__msr(cpsr, Mem146[Mem146[Mem146[0x00001724<p32>:word32]:word32]:word32])
 	__cps()
 	__cps()
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 	__syscall<word32>(0<32>)
 	return
 xPortStartScheduler_exit:
@@ -2444,8 +2444,8 @@ xPortSysTickHandler_entry:
 l000016E4:
 	word32 r4_9 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	branch xTaskIncrementTick() == 0<32> l00001708
 l00001700:
 	Mem19[Mem7[0x00001710<p32>:word32]:word32] = 0x10000000<32>
@@ -2622,8 +2622,8 @@ l0000180C:
 	branch xTaskResumeAll(cpsr) != 0<32> l0000182C
 l0000181C:
 	Mem86[Mem15[0x00001870<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l0000182C:
 	branch uxTaskResetEventItemValue() << 6<i32> >= 0<32> l00001844
 l00001844:
@@ -2750,8 +2750,8 @@ l00001928:
 	branch xTaskResumeAll(cpsr) != 0<32> l0000194A
 l0000193A:
 	Mem71[Mem15[0x00001984<p32>:word32]:word32] = 0x10000000<32>
-	__dsb_sy()
-	__isb_sy()
+	__data_sync_barrier("sy")
+	__instruction_sync_barrier("sy")
 l0000194A:
 	branch uxTaskResetEventItemValue() << 6<i32> >= 0<32> l00001968
 l00001968:
@@ -2784,8 +2784,8 @@ xEventGroupGetBitsFromISR_entry:
 l00001988:
 	word32 r3_4 = __mrs(cpsr)
 	__msr(cpsr, 0xBF<32>)
-	__isb_sy()
-	__dsb_sy()
+	__instruction_sync_barrier("sy")
+	__data_sync_barrier("sy")
 	__msr(cpsr, r3_4)
 	return
 xEventGroupGetBitsFromISR_exit:

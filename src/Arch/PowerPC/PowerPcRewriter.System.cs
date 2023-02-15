@@ -33,13 +33,15 @@ namespace Reko.Arch.PowerPC
     {
         private void RewriteDcbf()
         {
-            m.SideEffect(host.Intrinsic("__dcbf", true, VoidType.Instance,
+            m.SideEffect(m.Fn(
+                dcbf.MakeInstance(arch.PointerType),
                 EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteDcbi()
         {
-            m.SideEffect(host.Intrinsic("__dcbi", true, VoidType.Instance,
+            m.SideEffect(m.Fn(
+                dcbi.MakeInstance(arch.PointerType),
                 EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
@@ -52,31 +54,33 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteDcbst()
         {
-            m.SideEffect(host.Intrinsic("__dcbst", true, VoidType.Instance,
+            m.SideEffect(m.Fn(
+                dcbst.MakeInstance(arch.PointerType),
                 EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteIcbi()
         {
-            m.SideEffect(host.Intrinsic("__icbi", true, VoidType.Instance,
+            m.SideEffect(m.Fn(
+                icbi.MakeInstance(arch.PointerType),
                 EffectiveAddress_r0(instr.Operands[0], instr.Operands[1])));
         }
 
         private void RewriteIsync()
         {
-            m.SideEffect(host.Intrinsic("__isync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(isync));
         }
 
         private void RewriteMfmsr()
         {
-            var dst = RewriteOperand(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__read_msr", true, PrimitiveType.Word32));
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(mfmsr.MakeInstance(dst.DataType)));
         }
 
         private void RewriteMfspr()
         {
-            var spr = RewriteOperand(instr.Operands[0]);
-            var reg = RewriteOperand(instr.Operands[1]);
+            var reg = RewriteOperand(1);
+            var spr = RewriteOperand(0);
             if (spr is Identifier id)
             {
                 m.Assign(reg, id);
@@ -85,27 +89,27 @@ namespace Reko.Arch.PowerPC
             {
                 m.Assign(
                     reg,
-                    host.Intrinsic("__read_spr", true, PrimitiveType.Word32, spr));
+                    m.Fn(mfspr.MakeInstance(reg.DataType), spr));
             }
         }
 
         private void RewriteMtmsr(PrimitiveType dt)
         {
-            var src = RewriteOperand(instr.Operands[0]);
-            m.SideEffect(host.Intrinsic("__write_msr", true, VoidType.Instance, src));
+            var src = RewriteOperand(0);
+            m.SideEffect(m.Fn(mtmsr.MakeInstance(dt), src));
         }
 
         private void RewriteMtspr()
         {
-            var spr = RewriteOperand(instr.Operands[0]);
-            var reg = RewriteOperand(instr.Operands[1]);
+            var reg = RewriteOperand(1);
+            var spr = RewriteOperand(0);
             if (spr is Identifier id)
             {
                 m.Assign(id, reg);
             }
             else
             {
-                m.SideEffect(host.Intrinsic("__write_spr", true, PrimitiveType.Word32, spr, reg));
+                m.SideEffect(m.Fn(mtspr.MakeInstance(reg.DataType), spr, reg)); // host.Intrinsic("__write_spr", true, PrimitiveType.Word32, spr, reg));
             }
         }
 
@@ -113,19 +117,19 @@ namespace Reko.Arch.PowerPC
         {
             var srr0 = binder.EnsureRegister(arch.SpRegisters[26]);
             var srr1 = binder.EnsureRegister(arch.SpRegisters[27]);
-            m.SideEffect(host.Intrinsic("__write_msr", true, PrimitiveType.Word32, srr1));
+            m.SideEffect(m.Fn(mtmsr.MakeInstance(srr1.DataType), srr1)); // host.Intrinsic("__write_msr", true, PrimitiveType.Word32, srr1));
             m.Goto(srr0);
         }
 
         private void RewriteTlbie()
         {
-            var src = RewriteOperand(instr.Operands[0]);
-            m.SideEffect(host.Intrinsic("__tlbie", true, VoidType.Instance, src));
+            var src = RewriteOperand(0);
+            m.SideEffect(m.Fn(tlbie.MakeInstance(arch.PointerType), src));
         }
 
         private void RewriteTlbsync()
         {
-            m.SideEffect(host.Intrinsic("__tlbie", true, VoidType.Instance));
+            m.SideEffect(m.Fn(tlbsync));
         }
     }
 }

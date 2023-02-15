@@ -957,7 +957,7 @@ means
             Given_UInt32s(0xF57FF05F);  // dmb
             AssertCode(
              "0|L--|00100000(4): 1 instructions",
-             "1|L--|__dmb_sy()");
+             "1|L--|__data_memory_barrier(\"sy\")");
         }
 
         [Test]

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,30 +30,38 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
+        private static readonly StringType labelType = StringType.NullTerminated(PrimitiveType.Byte);
+
+        private void RewriteDmb()
+        {
+            var memBarrier = (BarrierOperand) instr.Operands[0];
+            var label = memBarrier.Option.ToString().ToLower();
+            m.SideEffect(m.Fn(dmb_intrinsic, Constant.String(label, labelType)));
+        }
+
+
         private void RewriteDsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
-            var name = $"__dsb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
+            var label = memBarrier.Option.ToString().ToLower();
+            m.SideEffect(m.Fn(dsb_intrinsic, Constant.String(label, labelType)));
         }
 
         private void RewriteIsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
-            var name = $"__isb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
+            var label = memBarrier.Option.ToString().ToLower();
+            m.SideEffect(m.Fn(isb_intrinsic, Constant.String(label, labelType)));
         }
 
         private void RewriteMrs()
         {
-            var intrinsic = host.Intrinsic("__mrs", true, PrimitiveType.Word32, RewriteOp(instr.Operands[1]));
-            m.Assign(RewriteOp(0), intrinsic);
+            m.Assign(RewriteOp(0), m.Fn(mrs_intrinsic, RewriteOp(1)));
         }
 
         private void RewriteMsr()
         {
-            var intrinsic = host.Intrinsic("__msr", true, PrimitiveType.Word32, RewriteOp(instr.Operands[0]), RewriteOp(instr.Operands[1]));
-            m.SideEffect(intrinsic);
+            m.SideEffect(m.Fn(msr_intrinsic, RewriteOp(0), RewriteOp(1)));
         }
 
         private void RewriteSmc()

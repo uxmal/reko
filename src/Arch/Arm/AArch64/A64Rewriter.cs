@@ -143,7 +143,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.fcmp: RewriteFcmp(); break;
                     case Mnemonic.fcmpe: RewriteFcmp(); break;  //$REVIEW: this leaves out the 'e'xception part. 
                     case Mnemonic.fcsel: RewriteFcsel(); break;
-                    case Mnemonic.fcvt: RewriteFcvt_Obsolete(); break;
+                    case Mnemonic.fcvt: RewriteFcvt(); break;
                     case Mnemonic.fcvtas: RewriteFcvta(Domain.SignedInt); break;
                     case Mnemonic.fcvtau: RewriteFcvta(Domain.UnsignedInt); break;
                     case Mnemonic.fcvtms: RewriteFcvtm(Domain.SignedInt); break;
@@ -169,11 +169,11 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.fsub: RewriteMaybeSimdBinary(m.FSub, Simd.FSub, Domain.Real); break;
                     case Mnemonic.hlt: RewriteHlt(); break;
                     case Mnemonic.isb: RewriteIsb(); break;
-                    case Mnemonic.ld1: RewriteLdN("__ld1"); break;
-                    case Mnemonic.ld1r: RewriteLdNr("__ld1r"); break;
-                    case Mnemonic.ld2: RewriteLdN("__ld2"); break;
-                    case Mnemonic.ld3: RewriteLdN("__ld3"); break;
-                    case Mnemonic.ld4: RewriteLdN("__ld4"); break;
+                    case Mnemonic.ld1: RewriteLdN(ld1_intrinsic); break;
+                    case Mnemonic.ld1r: RewriteLdNr(ld1r_intrinsic); break;
+                    case Mnemonic.ld2: RewriteLdN(ld2_intrinsic); break;
+                    case Mnemonic.ld3: RewriteLdN(ld3_intrinsic); break;
+                    case Mnemonic.ld4: RewriteLdN(ld4_intrinsic); break;
                     case Mnemonic.ldnp: RewriteLoadStorePair(true); break;
                     case Mnemonic.ldp: RewriteLoadStorePair(true); break;
                     case Mnemonic.ldarh: RewriteLoadAcquire(load_acquire_intrinsic, PrimitiveType.Word16); break;
@@ -197,8 +197,8 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.lsl: RewriteBinary(m.Shl); break;
                     case Mnemonic.lsr: RewriteBinary(m.Shr); break;
                     case Mnemonic.madd: RewriteMaddSub(m.IAdd); break;
-                    case Mnemonic.mla: RewriteSimdTernary(Domain.None); break;
-                    case Mnemonic.mls: RewriteSimdTernary(Domain.None); break;
+                    case Mnemonic.mla: RewriteMla(mla_intrinsic, mla_by_element_intrinsic, Domain.None); break;
+                    case Mnemonic.mls: RewriteMla(mls_intrinsic, mls_by_element_intrinsic, Domain.None); break;
                     case Mnemonic.mneg: RewriteBinary((a, b) => m.Neg(m.IMul(a, b))); break;
                     case Mnemonic.mov: RewriteMov(); break;
                     case Mnemonic.movi: RewriteMovi(); break;
@@ -250,7 +250,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.sbc: RewriteAdcSbc(m.ISub); break;
                     case Mnemonic.sbcs: RewriteAdcSbc(m.ISub, NZCV); break;
                     case Mnemonic.sbfiz: RewriteSbfiz(); break;
-                    case Mnemonic.sbfm: RewriteUSbfm("__sbfm"); break;
+                    case Mnemonic.sbfm: RewriteUSbfm(sbfm_intrinsic); break;
                     case Mnemonic.scvtf: RewriteIcvtf("s", Domain.SignedInt); break;
                     case Mnemonic.sdiv: RewriteBinary(m.SDiv); break;
                     case Mnemonic.shadd: RewriteSimdBinary(shadd_intrinsic, Domain.SignedInt); break;
@@ -269,10 +269,10 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.smin: RewriteSimdBinary(smin_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.sminp: RewriteSimdBinary(sminp_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.sminv: RewriteSimdUnary(sminv_intrinsic, Domain.SignedInt); break;
-                    case Mnemonic.smlal: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.smlal2: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.smlsl: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.smlsl2: RewriteSimdTernary(Domain.SignedInt); break;
+                    case Mnemonic.smlal: RewriteSimdTernaryWiden(smlal_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.smlal2: RewriteSimdTernaryWiden(smlal2_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.smlsl: RewriteSimdTernaryWiden(smlsl_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.smlsl2: RewriteSimdTernaryWiden(smlsl2_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.smov: RewriteVectorElementToScalar(Domain.SignedInt); break;
                     case Mnemonic.smsubl: RewriteSmsubl(); break;
                     case Mnemonic.smull: RewriteMull(PrimitiveType.Int32, PrimitiveType.Int64, m.SMul); break;
@@ -283,13 +283,13 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.sqdmulh: RewriteMaybeSimdBinary(sqdmulh_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.sqdmull: RewriteSqdmull(sqdmull_intrinsic); break;
                     case Mnemonic.sqdmull2: RewriteSqdmull(sqdmull2_intrinsic); break;
-                    case Mnemonic.sqdmlal: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.sqdmlal2: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.sqdmlsl: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.sqdmlsl2: RewriteSimdTernary(Domain.SignedInt); break;
+                    case Mnemonic.sqdmlal: RewriteTernary(sqdmlal_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.sqdmlal2: RewriteTernary(sqdmlal2_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.sqdmlsl: RewriteTernary(sqdmlsl_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.sqdmlsl2: RewriteTernary(sqdmlsl2_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.sqneg: RewriteSimdUnary(sqneg_intrinsic, Domain.SignedInt); break;
-                    case Mnemonic.sqrdmlah: RewriteSimdTernary(Domain.SignedInt); break;
-                    case Mnemonic.sqrdmlsh: RewriteSimdTernary(Domain.SignedInt); break;
+                    case Mnemonic.sqrdmlah: RewriteTernary(sqrdmlah_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.sqrdmlsh: RewriteTernary(sqrdmlsh_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.sqrdmulh: RewriteBinary(sqrdmulh_intrinsic); break;
                     case Mnemonic.sqrshl: RewriteSimdBinary(sqrshl_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.sqrshrn: RewriteSimdBinary(sqrshrn_intrinsic, Domain.SignedInt); break;
@@ -319,13 +319,10 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.ssubl2: RewriteSimdBinary(ssubl2_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.ssubw: RewriteSimdBinary(ssubw_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.ssubw2: RewriteSimdBinary(ssubw2_intrinsic, Domain.SignedInt); break;
-                    case Mnemonic.subhn: RewriteSimdBinary(subhn_intrinsic, Domain.SignedInt); break;
-                    case Mnemonic.subhn2: RewriteSimdBinaryWiden(subhn2_intrinsic, Domain.SignedInt); break;
-                    case Mnemonic.suqadd: RewriteSimdBinary(suqadd_intrinsic, Domain.SignedInt); break;
-                    case Mnemonic.st1: RewriteStN("__st1"); break;
-                    case Mnemonic.st2: RewriteStN("__st2"); break;
-                    case Mnemonic.st3: RewriteStN("__st3"); break;
-                    case Mnemonic.st4: RewriteStN("__st4"); break;
+                    case Mnemonic.st1: RewriteStN(st1_intrinsic); break;
+                    case Mnemonic.st2: RewriteStN(st2_intrinsic); break;
+                    case Mnemonic.st3: RewriteStN(st3_intrinsic); break;
+                    case Mnemonic.st4: RewriteStN(st4_intrinsic); break;
                     case Mnemonic.stlr: RewriteStlr(instr.Operands[0].Width); break;
                     case Mnemonic.stlrh: RewriteStlr(PrimitiveType.Word16); break;
                     case Mnemonic.stnp: RewriteLoadStorePair(false); break; //$REVIEW: does the non-temporality matter?
@@ -339,6 +336,9 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.stxr: RewriteStx(instr.Operands[1].Width); break;
                     case Mnemonic.stxrb: RewriteStx(PrimitiveType.Byte); break;
                     case Mnemonic.sub: RewriteBinary(m.ISub); break;
+                    case Mnemonic.subhn: RewriteSimdBinary(subhn_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.subhn2: RewriteSimdBinaryWiden(subhn2_intrinsic, Domain.SignedInt); break;
+                    case Mnemonic.suqadd: RewriteSimdBinary(suqadd_intrinsic, Domain.SignedInt); break;
                     case Mnemonic.subs: RewriteBinary(m.ISub, NZCV); break;
                     case Mnemonic.svc: RewriteSvc(); break;
                     case Mnemonic.sxtb: RewriteUSxt(Domain.SignedInt, 8); break;
@@ -363,9 +363,9 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.uaddl2: RewriteSimdBinaryWiden(uaddl2_intrinsic, Domain.UnsignedInt); break;
                     case Mnemonic.uaddlp: RewriteSimdBinary(uaddlp_intrinsic, Domain.UnsignedInt); break;
                     case Mnemonic.uaddlv: RewriteSimdUnary(uaddlv_intrinsic, Domain.UnsignedInt); break;
-                    case Mnemonic.uaddw: RewriteUaddw(); break;
-                    case Mnemonic.uaddw2: RewriteSimdBinary(uaddw_intrinsic, Domain.UnsignedInt); break;
-                    case Mnemonic.ubfm: RewriteUSbfm("__ubfm"); break;
+                    case Mnemonic.uaddw: RewriteSimdBinaryWideNarrow(uaddw_intrinsic, Domain.UnsignedInt); break;
+                    case Mnemonic.uaddw2: RewriteSimdBinaryWideNarrow(uaddw2_intrinsic, Domain.UnsignedInt); break;
+                    case Mnemonic.ubfm: RewriteUSbfm(ubfm_intrinsic); break;
                     case Mnemonic.ucvtf: RewriteIcvtf("u", Domain.UnsignedInt); break;
                     case Mnemonic.udiv: RewriteBinary(m.UDiv); break;
                     case Mnemonic.uhadd: RewriteSimdBinary(uhadd_intrinsic, Domain.UnsignedInt); break;
@@ -377,10 +377,10 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.umin: RewriteSimdBinary(umin_intrinsic, Domain.UnsignedInt); break;
                     case Mnemonic.uminp: RewriteSimdBinary(uminp_intrinsic, Domain.UnsignedInt); break;
                     case Mnemonic.uminv: RewriteSimdUnary(uminv_intrinsic, Domain.UnsignedInt); break;
-                    case Mnemonic.umlal: RewriteSimdTernary(Domain.UnsignedInt); break;
-                    case Mnemonic.umlal2: RewriteSimdTernary(Domain.UnsignedInt); break;
-                    case Mnemonic.umlsl: RewriteSimdTernary(Domain.UnsignedInt); break;
-                    case Mnemonic.umlsl2: RewriteSimdTernary(Domain.UnsignedInt); break;
+                    case Mnemonic.umlal: RewriteSimdTernaryWiden(umlal_intrinsic, Domain.UnsignedInt); break;
+                    case Mnemonic.umlal2: RewriteSimdTernaryWiden(umlal2_intrinsic, Domain.UnsignedInt); break;
+                    case Mnemonic.umlsl: RewriteSimdTernaryWiden(umlsl_intrinsic, Domain.UnsignedInt); break;
+                    case Mnemonic.umlsl2: RewriteSimdTernaryWiden(umlsl2_intrinsic, Domain.UnsignedInt); break;
                     case Mnemonic.umov: RewriteVectorElementToScalar(Domain.UnsignedInt); break;
                     case Mnemonic.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
                     case Mnemonic.umull: RewriteMull(PrimitiveType.UInt32, PrimitiveType.UInt64, m.UMul); break;
@@ -665,11 +665,19 @@ namespace Reko.Arch.Arm.AArch64
             .Param(PrimitiveType.Int32)
             .Returns("TDst");
 
+        private static readonly IntrinsicProcedure dmb_intrinsic = new IntrinsicBuilder("__data_memory_barrier", true)
+            .Param(new UnknownType())
+            .Void();
+        private static readonly IntrinsicProcedure dsb_intrinsic = new IntrinsicBuilder("__data_sync_barrier", true)
+            .Param(new UnknownType())
+            .Void();
         public static readonly IntrinsicProcedure dup_intrinsic = IntrinsicBuilder.Pure("__dup")
             .GenericTypes("TSrc", "TDst")
             .Param("TSrc")
             .Returns("TDst");
 
+        private static readonly IntrinsicProcedure eret_intrinsic = new IntrinsicBuilder("__eret", true)
+            .Void();
         private static readonly IntrinsicProcedure ext_intrinsic = IntrinsicBuilder.Pure("__ext")
             .GenericTypes("T")
             .Param("T")
@@ -687,6 +695,41 @@ namespace Reko.Arch.Arm.AArch64
         private static readonly IntrinsicProcedure __fnmadd = IntrinsicBuilder.GenericTernary("__fnmadd");
         private static readonly IntrinsicProcedure __fnmsub = IntrinsicBuilder.GenericTernary("__fnmsub");
 
+        private static readonly IntrinsicProcedure isb_intrinsic = new IntrinsicBuilder("__instruction_sync_barrier", true)
+            .Param(new UnknownType())
+            .Void();
+
+        private static readonly IntrinsicProcedure ld1_intrinsic = IntrinsicBuilder.Pure("__ld1")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .OutParam("T")
+            .Void();
+        private static readonly IntrinsicProcedure ld1r_intrinsic = IntrinsicBuilder.Pure("__ld1r")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .OutParam("T")
+            .Void();
+        private static readonly IntrinsicProcedure ld2_intrinsic = IntrinsicBuilder.Pure("__ld2")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .OutParam("T")
+            .OutParam("T")
+            .Void();
+        private static readonly IntrinsicProcedure ld3_intrinsic = IntrinsicBuilder.Pure("__ld3")
+              .GenericTypes("T")
+              .PtrParam("T")
+              .OutParam("T")
+              .OutParam("T")
+              .OutParam("T")
+              .Void();
+        private static readonly IntrinsicProcedure ld4_intrinsic = IntrinsicBuilder.Pure("__ld4")
+              .GenericTypes("T")
+              .PtrParam("T")
+              .OutParam("T")
+              .OutParam("T")
+              .OutParam("T")
+              .OutParam("T")
+              .Void();
         private static readonly IntrinsicProcedure load_acquire_intrinsic = new IntrinsicBuilder("__load_acquire", true)
             .GenericTypes("T")
             .PtrParam("T")
@@ -699,6 +742,24 @@ namespace Reko.Arch.Arm.AArch64
             .GenericTypes("T")
             .PtrParam("T")
             .Returns("T");
+
+        private static readonly IntrinsicProcedure mla_intrinsic = IntrinsicBuilder.GenericTernary("__mla");
+        private static readonly IntrinsicProcedure mla_by_element_intrinsic = IntrinsicBuilder.Pure("__mla_by_element")
+            .GenericTypes("TArray", "TElem")
+            .Params("TArray", "TArray", "TElem")
+            .Returns("TArray");
+        private static readonly IntrinsicProcedure mls_intrinsic = IntrinsicBuilder.GenericTernary("__mls");
+        private static readonly IntrinsicProcedure mls_by_element_intrinsic = IntrinsicBuilder.Pure("__mls_by_element")
+            .GenericTypes("TArray", "TElem")
+            .Params("TArray", "TArray", "TElem")
+            .Returns("TArray");
+        private static readonly IntrinsicProcedure mrs_intrinsic = new IntrinsicBuilder("__mrs", true)
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word64);
+        private static readonly IntrinsicProcedure msr_intrinsic = new IntrinsicBuilder("__msr", true)
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word64)
+            .Void();
 
         private static readonly IntrinsicProcedure mull_intrinsic = IntrinsicBuilder.Pure("__mull")
             .GenericTypes("TSrc", "TDst")
@@ -775,6 +836,18 @@ namespace Reko.Arch.Arm.AArch64
             .Params("TWide")
             .Params("TNarrow")
             .Returns("TWide");
+        private static readonly IntrinsicProcedure sbfiz_intrinsic = IntrinsicBuilder.Pure("__sbfiz")
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Int32)
+            .Returns("T");
+        private static readonly IntrinsicProcedure sbfm_intrinsic = IntrinsicBuilder.Pure("__sbfm")
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Int32)
+            .Returns("T");
         private static readonly IntrinsicProcedure __sha1c = new IntrinsicBuilder("__sha1c", false)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Word128)
@@ -803,12 +876,42 @@ namespace Reko.Arch.Arm.AArch64
         private static readonly IntrinsicProcedure smin_intrinsic = IntrinsicBuilder.GenericBinary("__smin");
         private static readonly IntrinsicProcedure sminp_intrinsic = IntrinsicBuilder.GenericBinary("__sminp");
         private static readonly IntrinsicProcedure sminv_intrinsic = IntrinsicBuilder.GenericUnary("__sminv");
+        private static readonly IntrinsicProcedure smlal_intrinsic = IntrinsicBuilder.Pure("__smlal")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure smlal2_intrinsic = IntrinsicBuilder.Pure("__smlal2")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure smlsl_intrinsic = IntrinsicBuilder.Pure("__smlsl")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure smlsl2_intrinsic = IntrinsicBuilder.Pure("__smlsl2")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
         private static readonly IntrinsicProcedure smull2_intrinsic = IntrinsicBuilder.GenericBinary("__smull2");
         private static readonly IntrinsicProcedure sqabs_intrinsic = IntrinsicBuilder.GenericUnary("__sqabs");
         private static readonly IntrinsicProcedure sqadd_intrinsic = IntrinsicBuilder.GenericBinary("__sqadd");
         private static readonly IntrinsicPair sqdmulh_intrinsic = new(
             IntrinsicBuilder.GenericBinary("__sqdmulh"),
             IntrinsicBuilder.GenericBinary("__sqdmulh_vec"));
+        private static readonly IntrinsicProcedure sqdmlal_intrinsic = IntrinsicBuilder.GenericTernary("__sqdmlal");
+        private static readonly IntrinsicProcedure sqdmlal2_intrinsic = IntrinsicBuilder.GenericTernary("__sqdmlal2");
+        private static readonly IntrinsicProcedure sqdmlsl_intrinsic = IntrinsicBuilder.GenericTernary("__sqdmlsl");
+        private static readonly IntrinsicProcedure sqdmlsl2_intrinsic = IntrinsicBuilder.GenericTernary("__sqdmlsl2");
+        private static readonly IntrinsicProcedure sqdmlah_intrinsic = IntrinsicBuilder.GenericTernary("__sqdmlah");
+        private static readonly IntrinsicProcedure sqdmlsh_intrinsic = IntrinsicBuilder.GenericTernary("__sqdmlsh");
         private static readonly IntrinsicProcedure sqdmull_intrinsic = IntrinsicBuilder.Pure("__sqdmull")
             .GenericTypes("TSrc", "TDst")
             .Params("TSrc")
@@ -820,6 +923,8 @@ namespace Reko.Arch.Arm.AArch64
             .Params("TSrc")
             .Returns("TDst");
         private static readonly IntrinsicProcedure sqneg_intrinsic = IntrinsicBuilder.GenericUnary("__sqneg");
+        private static readonly IntrinsicProcedure sqrdmlah_intrinsic = IntrinsicBuilder.GenericTernary("__sqrdmlah");
+        private static readonly IntrinsicProcedure sqrdmlsh_intrinsic = IntrinsicBuilder.GenericTernary("__sqrdmlsh");
         private static readonly IntrinsicProcedure sqrdmulh_intrinsic = IntrinsicBuilder.GenericBinary("__sqrdmulh");
         private static readonly IntrinsicProcedure sqrshl_intrinsic = IntrinsicBuilder.GenericBinary("__sqrshl");
         private static readonly IntrinsicProcedure sqrshrn_intrinsic = IntrinsicBuilder.GenericBinary("__sqrshrn");
@@ -873,6 +978,42 @@ namespace Reko.Arch.Arm.AArch64
         private static readonly IntrinsicProcedure ssubl2_intrinsic = IntrinsicBuilder.GenericBinary("__ssubl2");
         private static readonly IntrinsicProcedure ssubw_intrinsic = IntrinsicBuilder.GenericBinary("__ssubw");
         private static readonly IntrinsicProcedure ssubw2_intrinsic = IntrinsicBuilder.GenericBinary("__ssubw2");
+        private static readonly IntrinsicProcedure st1_intrinsic = IntrinsicBuilder.Pure("__st1")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure st2_intrinsic = IntrinsicBuilder.Pure("__st2")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure st3_intrinsic = IntrinsicBuilder.Pure("__st3")
+              .GenericTypes("T")
+              .PtrParam("T")
+              .Param("T")
+              .Param("T")
+              .Param("T")
+              .Void();
+        private static readonly IntrinsicProcedure st4_intrinsic = IntrinsicBuilder.Pure("__st4")
+              .GenericTypes("T")
+              .PtrParam("T")
+              .Param("T")
+              .Param("T")
+              .Param("T")
+              .Param("T")
+              .Void();
+        private static readonly IntrinsicProcedure stlr_intrinsic = new IntrinsicBuilder("__store_release", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Void();
+        private static readonly IntrinsicProcedure stx_intrinsic = new IntrinsicBuilder("__store_exclusive", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param("T")
+            .Returns(PrimitiveType.Int32);
         private static readonly IntrinsicProcedure subhn_intrinsic = IntrinsicBuilder.GenericBinary("__subhn");
         private static readonly IntrinsicProcedure subhn2_intrinsic = IntrinsicBuilder.Pure("__subhn2")
             .GenericTypes("TSrc", "TDst")
@@ -924,7 +1065,22 @@ namespace Reko.Arch.Arm.AArch64
             .Returns("TDst");
         private static readonly IntrinsicProcedure uaddlp_intrinsic = IntrinsicBuilder.GenericBinary("__uaddlp");
         private static readonly IntrinsicProcedure uaddlv_intrinsic = IntrinsicBuilder.GenericUnary("__uaddlv");
-        private static readonly IntrinsicProcedure uaddw_intrinsic = IntrinsicBuilder.GenericBinary("__uaddw");
+        private static readonly IntrinsicProcedure uaddw_intrinsic = IntrinsicBuilder.Pure("__uaddw")
+            .GenericTypes("TWide", "TNarrow")
+            .Params("TWide")
+            .Params("TNarrow")
+            .Returns("TWide");
+        private static readonly IntrinsicProcedure uaddw2_intrinsic = IntrinsicBuilder.Pure("__uaddw2")
+            .GenericTypes("TWide", "TNarrow")
+            .Params("TWide")
+            .Params("TNarrow")
+            .Returns("TWide");
+        private static readonly IntrinsicProcedure ubfm_intrinsic = IntrinsicBuilder.Pure("__ubfm")
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Int32)
+            .Returns("T");
         private static readonly IntrinsicProcedure uhadd_intrinsic = IntrinsicBuilder.GenericBinary("__uhadd");
         private static readonly IntrinsicProcedure uhsub_intrinsic = IntrinsicBuilder.GenericBinary("__uhsub");
         private static readonly IntrinsicProcedure umax_intrinsic = IntrinsicBuilder.GenericBinary("__umax");
@@ -933,6 +1089,30 @@ namespace Reko.Arch.Arm.AArch64
         private static readonly IntrinsicProcedure umin_intrinsic = IntrinsicBuilder.GenericBinary("__umin");
         private static readonly IntrinsicProcedure uminp_intrinsic = IntrinsicBuilder.GenericBinary("__uminp");
         private static readonly IntrinsicProcedure uminv_intrinsic = IntrinsicBuilder.GenericUnary("__uminv");
+        private static readonly IntrinsicProcedure umlal_intrinsic = IntrinsicBuilder.Pure("__umlal")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure umlal2_intrinsic = IntrinsicBuilder.Pure("__umlal2")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure umlsl_intrinsic = IntrinsicBuilder.Pure("__umlsl")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
+        private static readonly IntrinsicProcedure umlsl2_intrinsic = IntrinsicBuilder.Pure("__umlsl2")
+            .GenericTypes("TSrc", "TDst")
+            .Params("TDst")
+            .Params("TSrc")
+            .Params("TSrc")
+            .Returns("TDst");
         private static readonly IntrinsicProcedure umull2_intrinsic = IntrinsicBuilder.GenericBinary("__umull2");
         private static readonly IntrinsicProcedure uqadd_intrinsic = IntrinsicBuilder.GenericBinary("__uqadd");
         private static readonly IntrinsicProcedure uqrshl_intrinsic = IntrinsicBuilder.GenericBinary("__uqrshl");

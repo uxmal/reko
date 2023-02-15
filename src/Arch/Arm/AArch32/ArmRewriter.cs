@@ -1126,6 +1126,13 @@ namespace Reko.Arch.Arm.AArch32
             .Param("T")
             .Returns(PrimitiveType.UInt32);
 
+        private static readonly IntrinsicProcedure dmb_intrinsic = new IntrinsicBuilder("__data_memory_barrier", true)
+            .Param(new UnknownType())
+            .Void();
+        private static readonly IntrinsicProcedure dsb_intrinsic = new IntrinsicBuilder("__data_sync_barrier", true)
+            .Param(new UnknownType())
+            .Void();
+
         private static readonly IntrinsicProcedure hadd_intrinsic = new IntrinsicBuilder("__hadd", false)
             .GenericTypes("TArray")
             .Params("TArray")
@@ -1138,6 +1145,10 @@ namespace Reko.Arch.Arm.AArch32
             .Returns("TArray");
         private static readonly IntrinsicProcedure hvc_intrinsic = new IntrinsicBuilder("__hypervisor", true)
             .Param(PrimitiveType.UInt32)
+            .Void();
+
+        private static readonly IntrinsicProcedure isb_intrinsic = new IntrinsicBuilder("__instruction_sync_barrier", true)
+            .Param(new UnknownType())
             .Void();
 
         private static readonly IntrinsicProcedure lda_sig = new IntrinsicBuilder("__load_acquire", true)

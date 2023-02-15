@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -31,8 +32,8 @@ namespace Reko.Arch.Sparc
         private void RewriteAddxSubx(Func<Expression,Expression,Expression> op, bool emitCc)
         {
             var dst = RewriteRegister(2);
-            var src1 = RewriteOp(0)!;
-            var src2 = RewriteOp(1)!;
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
             var C = binder.EnsureFlagGroup(arch.Registers.C);
             m.Assign(
                 dst,
@@ -46,8 +47,8 @@ namespace Reko.Arch.Sparc
         private void RewriteAlu(Func<Expression,Expression,Expression> op, bool negateOp2)
         {
             var dst = RewriteRegister(2);
-            var src1 = RewriteOp(0)!;
-            var src2 = RewriteOp(1)!;
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
             if (negateOp2)
             {
                 src2 = m.Comp(src2);
@@ -62,9 +63,13 @@ namespace Reko.Arch.Sparc
             EmitCc(arch.Registers.NZVC, m.Cond(dst));
         }
 
-        private void RewriteDLoad(PrimitiveType size)
+        private void RewriteBinaryCc(IntrinsicProcedure intrinsic)
         {
-            throw new NotImplementedException();
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
+            m.Assign(dst, m.Fn(intrinsic.MakeInstance(src1.DataType), src1, src2));
+            EmitCc(arch.Registers.NZVC, m.Cond(dst));
         }
 
         private void RewriteLdd()
@@ -73,7 +78,7 @@ namespace Reko.Arch.Sparc
             var rDstHi = (RegisterStorage) instrCur.Operands[1];
             var rDstLo = arch.Registers.GetRegister((uint)rDstHi.Number + 1);
             var dst = binder.EnsureSequence(size, rDstHi, rDstLo);
-            var src = RewriteMemOp(instrCur.Operands[0], size)!;
+            var src = RewriteMemOp(instrCur.Operands[0], size);
             //$TODO: what about sparc64? Instruction is deprecated there...
             if (size.Size < dst.DataType.Size)
             {
@@ -85,20 +90,21 @@ namespace Reko.Arch.Sparc
 
         private void RewriteLdstub()
         {
-            var mem = (MemoryAccess)RewriteOp(0)!;
-            var dst = RewriteOp(1)!;
+            var mem = (MemoryAccess)RewriteOp(0);
+            var dst = RewriteOp(1);
             var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
-            var intrinsic = host.Intrinsic("__ldstub", true, bTmp.DataType, m.AddrOf(arch.PointerType, mem));
-            m.Assign(bTmp, intrinsic);
+            m.Assign(bTmp, m.Fn(
+                ldstub_intrinsic.MakeInstance(arch.PointerType.BitSize, bTmp.DataType),
+                m.AddrOf(arch.PointerType, mem)));
             m.Assign(tmpHi, m.Slice(dst, tmpHi.DataType, bTmp.DataType.BitSize));
             m.Assign(dst, m.Seq(tmpHi, bTmp));
         }
 
         private void RewriteLoad(PrimitiveType size)
         {
-            var dst = RewriteOp(instrCur.Operands[1])!;
-            var src = RewriteMemOp(instrCur.Operands[0], size)!;
+            var dst = RewriteOp(instrCur.Operands[1]);
+            var src = RewriteMemOp(instrCur.Operands[0], size);
             if (size.Size < dst.DataType.Size)
             {
                 size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
@@ -109,8 +115,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteLoada(PrimitiveType size)
         {
-            var dst = RewriteOp(instrCur.Operands[1])!;
-            var src = RewriteMemOp(instrCur.Operands[0], size)!;
+            var dst = RewriteOp(instrCur.Operands[1]);
+            var src = RewriteMemOp(instrCur.Operands[0], size);
             src = m.Fn(
                 loada_intrinsic.MakeInstance(arch.PointerType.BitSize, size), 
                 m.AddrOf(arch.PointerType, src));
@@ -135,20 +141,20 @@ namespace Reko.Arch.Sparc
 
         private void RewriteMulscc()
         {
-            var dst = RewriteOp(instrCur.Operands[2])!;
-            var src1 = RewriteOp(instrCur.Operands[0])!;
-            var src2 = RewriteOp(instrCur.Operands[1])!;
+            var dst = RewriteOp(2);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
             m.Assign(
                 dst,
-                host.Intrinsic("__mulscc", false, PrimitiveType.Int32, src1, src2));
+                m.Fn(mulscc_intrinsic.MakeInstance(PrimitiveType.Int32), src1, src2));
             EmitCc(arch.Registers.NZVC, m.Cond(dst));
         }
 
         private void RewriteRestore()
         {
-            var dst = RewriteOp(instrCur.Operands[2])!;
-            var src1 = RewriteOp(instrCur.Operands[0])!;
-            var src2 = RewriteOp(instrCur.Operands[1])!;
+            var dst = RewriteOp(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
             RestoreRegisterWindow(dst, src1, src2);
         }
 
@@ -173,9 +179,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSave()
         {
-            var dst = RewriteOp(2)!;
-            var src1 = RewriteOp(0)!;
-            var src2 = RewriteOp(1)!;
+            var dst = RewriteOp(2);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
             Identifier? tmp = null;
             if (dst is Identifier)
             {
@@ -234,7 +240,7 @@ namespace Reko.Arch.Sparc
 
         private void RewriteStore(PrimitiveType size)
         {
-            var src = RewriteOp(instrCur.Operands[0])!;
+            var src = RewriteOp(instrCur.Operands[0]);
             var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
             {
@@ -252,5 +258,12 @@ namespace Reko.Arch.Sparc
                 dst, 
                 m.AddrOf(arch.PointerType, src)));
         }
+
+        private static IntrinsicProcedure ldstub_intrinsic = new IntrinsicBuilder("__ldstub", true)
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure mulscc_intrinsic = IntrinsicBuilder.GenericBinary("__mulscc");
+        private static readonly IntrinsicProcedure taddcc_intrinsic = IntrinsicBuilder.GenericBinary("__taddcc");
     }
 }

@@ -132,7 +132,7 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Fn(intrinsic, src1, src2));
         }
 
-        private void RewriteSimdTernary(Domain domain)
+        private void RewriteSimdTernary(IntrinsicProcedure intrinsic, Domain domain)
         {
             // Ternary operations mutate the first argument.
             if (instr.Operands[0] is VectorRegisterOperand)
@@ -153,17 +153,27 @@ namespace Reko.Arch.Arm.AArch64
                 var op3 = RewriteOp(2);
                 m.Assign(tmp3, op3);
 
-                var name = GenerateSimdIntrinsicName($"__{instr.Mnemonic}_{{0}}", (PrimitiveType) array1.ElementType);
-                m.Assign(op1, host.Intrinsic(name, false, op1.DataType, tmp1, tmp2, tmp3));
+                m.Assign(op1, m.Fn(intrinsic, tmp1, tmp2, tmp3));
             }
             else
             {
-                var op1 = RewriteOp(instr.Operands[0]);
-                var op2 = RewriteOp(instr.Operands[1]);
-                var op3 = RewriteOp(instr.Operands[2]);
+                var op1 = RewriteOp(0);
+                var op2 = RewriteOp(1);
+                var op3 = RewriteOp(2);
 
-                m.Assign(op1, host.Intrinsic($"__{instr.Mnemonic}", false, op1.DataType, op1, op2, op3));
+                m.Assign(op1, m.Fn(intrinsic, op1, op2, op3));
             }
+        }
+
+        private void RewriteSimdTernaryWiden(IntrinsicProcedure intrinsic, Domain domain)
+        {
+            var arraySrc = MakeArrayType(instr.Operands[1], domain);
+            var arrayDst = MakeArrayType(instr.Operands[0], domain);
+            var src1 = RewriteOp(0, true);
+            var src2 = RewriteOp(1, true);
+            var src3 = RewriteOp(2, true);
+            var dst = RewriteOp(0);
+            m.Assign(dst, m.Fn(intrinsic.MakeInstance(arraySrc, arrayDst), src1, src2, src3));
         }
 
         private void RewriteSimdTernaryWithScalar(IntrinsicProcedure intrinsic, Domain domain)
@@ -326,7 +336,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteLdN(string fnName)
+        private void RewriteLdN(IntrinsicProcedure intrinsic)
         {
             Expression? postIndex = null;
             var mem = (MemoryOperand) instr.Operands[1];
@@ -342,7 +352,7 @@ namespace Reko.Arch.Arm.AArch64
                 var args = new List<Expression> { ea };
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-                m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, args.ToArray()));
+                m.SideEffect(m.Fn(intrinsic.MakeInstance(64, args[1].DataType), args.ToArray()));
             }
             else
             {
@@ -354,14 +364,30 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteLdNr(string fnName)
+        private void RewriteLdNr(IntrinsicProcedure intrinsic)
         {
             var (ea, _) = RewriteEffectiveAddress((MemoryOperand)instr.Operands[1]);
             var vec = ((VectorMultipleRegisterOperand)instr.Operands[0]);
             var args = new List<Expression> { ea };
             args.AddRange(vec.GetRegisters()
                 .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-            m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, args.ToArray()));
+            m.SideEffect(m.Fn(intrinsic.MakeInstance(64, args[1].DataType), args.ToArray()));
+        }
+
+        private void RewriteMla(IntrinsicProcedure intrinsic, IntrinsicProcedure intrinsicByElement, Domain domain)
+        {
+            if (instr.Operands[^1] is VectorRegisterOperand vr && vr.Index >= 0)
+            {
+                var dtSrc = this.MakeArrayType(instr.Operands[1]);
+                m.Assign(RewriteOp(0), m.Fn(intrinsicByElement.MakeInstance(dtSrc, dtSrc.ElementType),
+                    RewriteOp(0),
+                    RewriteOp(1),
+                    RewriteOp(2)));
+            }
+            else
+            {
+                EmitUnitTest(" mla vector");
+            }
         }
 
         private void RewriteSmsubl()
@@ -375,7 +401,7 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.ISub(s, product));
         }
 
-        private void RewriteStN(string fnName)
+        private void RewriteStN(IntrinsicProcedure procedure)
         {
             Expression? postIndex = null;
             var mem = (MemoryOperand) instr.Operands[1];
@@ -391,7 +417,7 @@ namespace Reko.Arch.Arm.AArch64
                 var args = new List<Expression> { ea };
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression)binder.EnsureRegister(r)));
-                m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, args.ToArray()));
+                m.SideEffect(m.Fn(procedure.MakeInstance(64, args[1].DataType), args.ToArray()));
             }
             else
             {
@@ -504,31 +530,6 @@ namespace Reko.Arch.Arm.AArch64
             }
             args.Add(tmpSrc);
             m.Assign(dst, host.Intrinsic($"__tbx_{idxs.Repeat}", true, arrayDst, args.ToArray()));
-        }
-
-
-        private void RewriteUaddw()
-        {
-            if (instr.VectorData != VectorData.Invalid || instr.Operands[1] is VectorRegisterOperand)
-            {
-                var domain = Domain.UnsignedInt;
-                var arrayLeft = MakeArrayType(instr.Operands[1], domain);
-                var arrayRight = MakeArrayType(instr.Operands[2], domain);
-                var arrayDst = MakeArrayType(instr.Operands[0], domain);
-                var tmpLeft = binder.CreateTemporary(arrayLeft);
-                var tmpRight = binder.CreateTemporary(arrayRight);
-                var left = RewriteOp(instr.Operands[1], true);
-                var right = RewriteOp(instr.Operands[2], true);
-                var dst = RewriteOp(instr.Operands[0]);
-                var name = GenerateSimdIntrinsicName("__uaddw_{0}", (PrimitiveType)arrayLeft.ElementType);
-                m.Assign(tmpLeft, left);
-                m.Assign(tmpRight, right);
-                m.Assign(dst, host.Intrinsic(name, true, arrayDst, tmpLeft, tmpRight));
-            }
-            else
-            {
-                NotImplementedYet();
-            }
         }
     }
 }

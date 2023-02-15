@@ -227,7 +227,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.tn: RewriteTrap(Constant.False()); break;
                 case Mnemonic.tne: RewriteTrap(m.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
                 case Mnemonic.te: RewriteTrap(m.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
-
+                case Mnemonic.taddcc: RewriteBinaryCc(taddcc_intrinsic); break;
                 case Mnemonic.udiv: RewriteAlu(m.UDiv, false); break;
                 case Mnemonic.udivcc: RewriteAluCc(m.UDiv, false); break;
                 case Mnemonic.umul: RewriteAlu(m.UMul, false); break;

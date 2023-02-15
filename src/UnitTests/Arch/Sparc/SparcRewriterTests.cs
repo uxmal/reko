@@ -172,33 +172,22 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore("")]
         public void SparcRw_taddcc()
         {
             Given_UInt32s(0x8B006001);
-            AssertCode("taddcc\t%g1,0x00000001<32>,%g5");
+            AssertCode(         // taddcc\t%g1,0x00000001<32>,%g5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|g5 = __taddcc(g1, 1<32>)",
+                "2|L--|NZVC = cond(g5)");
         }
 
         [Test]
-        [Ignore("")]
         public void SparcRw_mulscc()
         {
-            host.Setup(h => h.Intrinsic(
-                "__mulscc",
-                false,
-                VoidType.Instance,
-                It.IsNotNull<Expression[]>()))
-                .Returns(new Application(
-                     new ProcedureConstant(
-                        PrimitiveType.Ptr32,
-                        new IntrinsicProcedure("__mulscc", false, PrimitiveType.Int32, 2)),
-                VoidType.Instance,
-                Constant.Word32(0x19)));
-
             Given_UInt32s(0x8B204009);  // mulscc  %g1,%o1,%g5
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|g5 = __mulscc(g1, o1)",
+                "1|L--|g5 = __mulscc<int32>(g1, o1)",
                 "2|L--|NZVC = cond(g5)");
         }
 

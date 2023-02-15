@@ -30,6 +30,8 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
+        private static readonly StringType labelType = StringType.NullTerminated(PrimitiveType.Byte);
+
         private void RewriteBkpt()
         {
             if (instr.Operands.Length > 0)
@@ -63,15 +65,15 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteDmb()
         {
             var memBarrier = (BarrierOperand)instr.Operands[0];
-            var name = $"__dmb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
+            var label = memBarrier.Option.ToString().ToLower();
+            m.SideEffect(m.Fn(dmb_intrinsic, Constant.String(label, labelType)));
         }
 
         private void RewriteDsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
-            var name = $"__dsb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
+            var label = memBarrier.Option.ToString().ToLower();
+            m.SideEffect(m.Fn(dsb_intrinsic, Constant.String(label, labelType)));
         }
 
         private void RewriteEret()
@@ -93,8 +95,8 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteIsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
-            var name = $"__isb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
+            var label = memBarrier.Option.ToString().ToLower();
+            m.SideEffect(m.Fn(isb_intrinsic, Constant.String(label, labelType)));
         }
 
         private void RewriteLdc(IntrinsicProcedure intrinsic)

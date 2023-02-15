@@ -36,36 +36,34 @@ namespace Reko.Arch.PowerPC
     {
         private void RewriteDcbtst()
         {
-            var ra = RewriteOperand(instr.Operands[0], true);
-            var rb = RewriteOperand(instr.Operands[1]);
+            var ra = RewriteOperand(0, true);
+            var rb = RewriteOperand(1);
             if (!ra.IsZero)
             {
                 rb = m.IAdd(ra, rb);
             }
-            m.SideEffect(
-                host.Intrinsic("__dcbtst", true, VoidType.Instance, rb));
+            m.SideEffect(m.Fn(dcbtst.MakeInstance(rb.DataType), rb));
         }
 
         private void RewriteDcbz()
         {
-            var ra = RewriteOperand(instr.Operands[0], true);
-            var rb = RewriteOperand(instr.Operands[1]);
+            var ra = RewriteOperand(0, true);
+            var rb = RewriteOperand(1);
             if (!ra.IsZero)
             {
                 rb = m.IAdd(ra, rb);
             }
-            m.SideEffect(
-                host.Intrinsic("__dcbz", true, VoidType.Instance, rb));
+            m.SideEffect(m.Fn(dcbz.MakeInstance(rb.DataType), rb));
         }
 
         private void RewriteEieio()
         {
-            m.SideEffect(host.Intrinsic("__eieio", true, VoidType.Instance));
+            m.SideEffect(m.Fn(eieio));
         }
 
         private void RewriteLfd()
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
+            var op1 = RewriteOperand(0);
             var ea = EffectiveAddress(dasm.Current.Operands[1], m);
             m.Assign(op1, m.Mem(PrimitiveType.Real64, ea));
         }
@@ -121,7 +119,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLfs()
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
+            var op1 = RewriteOperand(0);
             var ea = EffectiveAddress(dasm.Current.Operands[1], m);
             m.Assign(op1, m.Convert(
                 m.Mem(PrimitiveType.Real32, ea),
@@ -131,23 +129,23 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLa(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
+            var op1 = RewriteOperand(0);
             var ea = EffectiveAddress_r0(1);
             m.Assign(op1, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
         }
 
         private void RewriteLax(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
+            var op1 = RewriteOperand(0);
             var ea = m.IAdd(
-                RewriteOperand(instr.Operands[1], true),
-                RewriteOperand(instr.Operands[2]));
+                RewriteOperand(1, true),
+                RewriteOperand(2));
             m.Assign(op1, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
         }
 
         private void RewriteLau(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opD = RewriteOperand(0);
             var opA = EffectiveAddress(instr.Operands[1], m);
             var ea = opA;
             m.Assign(opD, m.Convert(m.Mem(dtSrc, ea), dtSrc, dtDst));
@@ -170,11 +168,11 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLhbrx()
         {
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opD = RewriteOperand(0);
             var ea = EffectiveAddress_r0(instr.Operands[1], instr.Operands[2]);
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(tmp, m.Mem16(ea));
-            var swap = host.Intrinsic("__swap16", false, tmp.DataType, tmp);
+            var swap = m.Fn(swap16, tmp);
             m.Assign(opD, m.Convert(swap, PrimitiveType.Word16, opD.DataType));
         }
 
@@ -285,18 +283,20 @@ namespace Reko.Arch.PowerPC
             m.Assign(vrt, m.Fn(intrinsic, rb));
         }
 
-        private void RewriteLarx(string intrinsic, PrimitiveType dt)
+        private void RewriteLarx(PrimitiveType dt)
         {
-            var dst = RewriteOperand(instr.Operands[0]);
-            var ra = RewriteOperand(instr.Operands[1], true);
-            var rb = RewriteOperand(instr.Operands[2]);
+            var ra = RewriteOperand(1, true);
+            var rb = RewriteOperand(2);
+            var dst = RewriteOperand(0);
             if (!ra.IsZero)
             {
                 rb = m.IAdd(ra, rb);
             }
             m.Assign(
                 dst,
-                host.Intrinsic(intrinsic, true, dt, m.AddrOf(arch.PointerType, m.Mem(dt, rb))));
+                m.Fn(
+                    larx.MakeInstance(arch.PointerType.BitSize, dt),
+                    m.AddrOf(arch.PointerType, m.Mem(dt, rb))));
         }
 
         private void RewriteLwa()
@@ -310,18 +310,16 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLwbrx()
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1], true);
-            var b = RewriteOperand(instr.Operands[2]);
+            var op1 = RewriteOperand(0);
+            var a = RewriteOperand(1, true);
+            var b = RewriteOperand(2);
             var ea = (a.IsZero)
                 ? b
                 : m.IAdd(a, b);
             m.Assign(
                 op1,
-                host.Intrinsic(
-                    "__reverse_bytes_32",
-                    false,
-                    PrimitiveType.Word32,
+                m.Fn(
+                    CommonOps.ReverseBytes.MakeInstance(PrimitiveType.Word32),
                     m.Mem(PrimitiveType.Word32, ea)));
         }
 
@@ -352,9 +350,9 @@ namespace Reko.Arch.PowerPC
         
         private void RewriteLzux(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1]);
-            var b = RewriteOperand(instr.Operands[2]);
+            var op1 = RewriteOperand(0);
+            var a = RewriteOperand(1);
+            var b = RewriteOperand(2);
             var ea = m.IAdd(a, b);
             Expression src = m.Mem(dtSrc, ea);
             if (dtDst != dtSrc)
@@ -367,9 +365,9 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLzx(PrimitiveType dtSrc, PrimitiveType dtDst)
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1], true);
-            var b = RewriteOperand(instr.Operands[2]);
+            var op1 = RewriteOperand(0);
+            var a = RewriteOperand(1, true);
+            var b = RewriteOperand(2);
             var ea = (a.IsZero)
                 ? b
                 : m.IAdd(a, b);
@@ -383,7 +381,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSt(PrimitiveType dataType)
         {
-            var s = RewriteOperand(instr.Operands[0]);
+            var s = RewriteOperand(0);
             var ea = EffectiveAddress_r0(instr.Operands[1]);
             m.Assign(m.Mem(dataType, ea), MaybeNarrow(dataType, s));
         }
@@ -471,7 +469,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteStu(PrimitiveType dataType)
         {
-            var s = RewriteOperand(instr.Operands[0]);
+            var s = RewriteOperand(0);
             var ea = EffectiveAddress(instr.Operands[1], m);
             m.Assign(m.Mem(dataType, ea), MaybeNarrow(dataType, s));
             m.Assign(((BinaryExpression)ea).Left, EffectiveAddress(instr.Operands[1], m));
@@ -498,28 +496,11 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteStux(PrimitiveType dataType)
         {
-            var s = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1]);
-            var b = RewriteOperand(instr.Operands[2]);
+            var s = RewriteOperand(0);
+            var a = RewriteOperand(1);
+            var b = RewriteOperand(2);
             m.Assign(m.Mem(dataType, m.IAdd(a, b)), MaybeNarrow(dataType, s));
             m.Assign(a, m.IAdd(a, b));
-        }
-
-        private void RewriteStwbrx()
-        {
-            var op1 = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1], true);
-            var b = RewriteOperand(instr.Operands[2]);
-            var ea = (a.IsZero)
-                ? b
-                : m.IAdd(a, b);
-            m.Assign(
-                m.Mem(PrimitiveType.Word32, ea),
-                host.Intrinsic(
-                    "__stwbrx",
-                    true,
-                    PrimitiveType.Word32,
-                    op1));
         }
 
         private void RewriteStcx(PrimitiveType dataType)
@@ -542,13 +523,16 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteStwcix(PrimitiveType dataType)
         {
-            var s = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1], true);
-            var b = RewriteOperand(instr.Operands[2]);
+            var s = RewriteOperand(0);
+            var a = RewriteOperand(1, true);
+            var b = RewriteOperand(2);
             var ea = (a.IsZero)
                 ? b
                 : m.IAdd(a, b);
-            m.SideEffect(host.Intrinsic("__stwcix", true, VoidType.Instance, m.Mem(dataType, ea), MaybeNarrow(dataType, s)));
+            m.SideEffect(m.Fn(
+                stwcix.MakeInstance(arch.PointerType.BitSize, dataType),
+                m.AddrOf(arch.PointerType, m.Mem(dataType, ea)),
+                MaybeNarrow(dataType, s)));
         }
 
         private void RewriteStx(PrimitiveType dataType)
@@ -564,14 +548,14 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSync()
         {
-            m.SideEffect(host.Intrinsic("__sync", true, VoidType.Instance));
+            m.SideEffect(m.Fn(sync_intrinsic));
         }
 
         private void RewriteTrap(PrimitiveType size)
         {
-            var c = (Constant) RewriteOperand(instr.Operands[0]);
-            var ra = RewriteOperand(instr.Operands[1]);
-            var rb = RewriteOperand(instr.Operands[2]);
+            var c = (Constant) RewriteOperand(0);
+            var ra = RewriteOperand(1);
+            var rb = RewriteOperand(2);
             Func<Expression,Expression,Expression>? op = null;
             switch (c.ToInt32())
             {
@@ -586,11 +570,7 @@ namespace Reko.Arch.PowerPC
             case 0x14: op = m.Le; break;
             case 0x18: op = m.Ne; break;
             case 0x1F:
-                m.SideEffect(
-                    host.Intrinsic(
-                        "__trap",
-                        true,
-                        VoidType.Instance));
+                m.SideEffect(m.Fn(trap_intrinsic));
                 return;
             default:
                 host.Warn(
@@ -604,11 +584,7 @@ namespace Reko.Arch.PowerPC
                 op(ra, rb).Invert(),
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
-            m.SideEffect(
-                host.Intrinsic(
-                    "__trap",
-                    true,
-                    VoidType.Instance));
+            m.SideEffect(m.Fn(trap_intrinsic));
         }
     }
 }

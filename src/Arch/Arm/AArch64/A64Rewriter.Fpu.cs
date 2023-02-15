@@ -137,19 +137,6 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Convert(src, dtSrc, dtDst));
         }
 
-        private void RewriteFcvt_Obsolete()
-        {
-            if (instr.Operands[0] is VectorRegisterOperand)
-            {
-                throw new NotImplementedException();
-            }
-            var dst = RewriteOp(instr.Operands[0]);
-            var src = RewriteOp(instr.Operands[1]);
-            var dtDst = MakeReal(dst.DataType);
-            var dtSrc = MakeReal(src.DataType);
-            m.Assign(dst, m.Convert(src, dtSrc, dtDst));
-        }
-
         private Expression RewriteFcvt(
             Expression src, 
             Domain domain,

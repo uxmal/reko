@@ -478,7 +478,7 @@ namespace Reko.Environments.C64
                 step = Constant.Int32(1);
             }
             iclass = InstrClass.Linear;
-            m.SideEffect(host.Intrinsic("__For", true, VoidType.Instance,
+            m.SideEffect(m.Fn(for_intrinsic, 
                 m.Out(PrimitiveType.Ptr16, id),
                 start!,
                 end!,
@@ -582,15 +582,14 @@ namespace Reko.Environments.C64
                     SyntaxError();
                     return;
                 }
-                var fnName = "__PrintLine";
+                var intrinsic = printLine_intrinsic;
                 if (PeekAndDiscard((byte)';'))
-                    fnName = "__Print";
-                m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, str));
+                    intrinsic = print_intrinsic;
+                m.SideEffect(m.Fn(intrinsic, str));
             }
             Expression lValue = ExpectLValue()!;
             iclass = InstrClass.Linear;
-            m.SideEffect(host.Intrinsic("__Input", true, VoidType.Instance,
-                m.Out(PrimitiveType.Ptr16, lValue)));
+            m.SideEffect(m.Fn(input_intrinsic, m.Out(PrimitiveType.Ptr16, lValue)));
         }
 
         private void RewriteInput_hash()
@@ -606,7 +605,7 @@ namespace Reko.Environments.C64
             while (EatSpaces() && PeekAndDiscard((byte)','))
             {
                 lValue = ExpectLValue()!;
-                m.SideEffect(host.Intrinsic("__InputStm", true, VoidType.Instance,
+                m.SideEffect(m.Fn(inputStm_intrinsic,
                     logFileNo,
                     m.Out(PrimitiveType.Ptr16, lValue)));
             }
@@ -615,7 +614,7 @@ namespace Reko.Environments.C64
         private void RewriteNext()
         {
             GetIdentifier(out Identifier id); // The variable name is redundant.
-            m.SideEffect(host.Intrinsic("__Next", true, VoidType.Instance));
+            m.SideEffect(m.Fn(next_intrinsic));
         }
 
         private void RewriteOpen()
@@ -748,9 +747,7 @@ namespace Reko.Environments.C64
                 if (expr == null)
                     break;
                 m.SideEffect(
-                    host.Intrinsic("__PrintStm", 
-                        true,
-                        VoidType.Instance,
+                    m.Fn(printStm_intrinsic,
                         Constant.Int32(stm),
                         expr));
             }
@@ -812,6 +809,15 @@ namespace Reko.Environments.C64
         private static readonly IntrinsicProcedure end_intrinsic = new IntrinsicBuilder(
             "__End", true, new ProcedureCharacteristics { Terminates = true })
             .Void();
+        private static readonly IntrinsicProcedure for_intrinsic = new IntrinsicBuilder("__For", true)
+            .OutParam(new UnknownType())
+            .Param(new UnknownType())
+            .Param(new UnknownType())
+            .Param(new UnknownType())
+            .Void();
+        private static readonly IntrinsicProcedure input_intrinsic = new IntrinsicBuilder("__Input", true)
+            .OutParam(PrimitiveType.Ptr16)
+            .Void();
         private static readonly IntrinsicProcedure inputStm_intrinsic = new IntrinsicBuilder("__InputStm", true)
             .Param(PrimitiveType.Int16)
             .OutParam(PrimitiveType.Ptr16)
@@ -825,12 +831,24 @@ namespace Reko.Environments.C64
             .Param(PrimitiveType.Int16)
             .Param(strType)
             .Void();
+        private static readonly IntrinsicProcedure next_intrinsic = new IntrinsicBuilder("__Next", true)
+            .Void();
         private static readonly IntrinsicProcedure peek_intrinsic = new IntrinsicBuilder("__Peek", true)
             .Param(PrimitiveType.Int16)
             .Returns(PrimitiveType.Int16);
         private static readonly IntrinsicProcedure poke_intrinsic = new IntrinsicBuilder("__Poke", true)
             .Param(PrimitiveType.Int16)
             .Param(PrimitiveType.Int16)
+            .Void();
+        private static readonly IntrinsicProcedure print_intrinsic = new IntrinsicBuilder("__Print", true)
+            .Param(new UnknownType())
+            .Void();
+        private static readonly IntrinsicProcedure printLine_intrinsic = new IntrinsicBuilder("__PrintLine", true)
+            .Param(new UnknownType())
+            .Void();
+        private static readonly IntrinsicProcedure printStm_intrinsic = new IntrinsicBuilder("__PrintStm", true)
+            .Param(PrimitiveType.Int16)
+            .Param(new UnknownType())
             .Void();
         private static readonly IntrinsicProcedure spc_intrinsic = new IntrinsicBuilder("__Spc", false)
             .Param(PrimitiveType.Int16)

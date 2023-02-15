@@ -80,12 +80,12 @@ namespace Reko.Arch.Tms7000
                 case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.clr: RewriteClr(); break;
                 case Mnemonic.tsta: RewriteTst(arch.a); break;
-                case Mnemonic.dac: RewriteDacDsb("__dac"); break;
+                case Mnemonic.dac: RewriteDacDsb(dac_intrinsic); break;
                 case Mnemonic.dec: RewriteIncDec(m.ISub); break;
                 case Mnemonic.decd: RewriteIncdDecd(m.ISub); break;
                 case Mnemonic.dint: RewriteDint(); break;
                 case Mnemonic.djnz: RewriteDjnz(); break;
-                case Mnemonic.dsb: RewriteDacDsb("__dsb"); break;
+                case Mnemonic.dsb: RewriteDacDsb(dsb_intrinsic); break;
                 case Mnemonic.eint: RewriteEint(); break;
                 case Mnemonic.idle: RewriteIdle(); break;
                 case Mnemonic.inc: RewriteIncDec(m.IAdd); break;
@@ -267,16 +267,13 @@ namespace Reko.Arch.Tms7000
             m.Call(ea, 2);
         }
 
-        private void RewriteDacDsb(string intrinsicName)
+        private void RewriteDacDsb(IntrinsicProcedure intrinsic)
         {
             var opLeft = Operand(instr.Operands[0]);
             var opRight = Operand(instr.Operands[0]);
 
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
-            m.Assign(c, host.Intrinsic(
-                intrinsicName,
-                true,
-                PrimitiveType.Bool,
+            m.Assign(c, m.Fn(
                 opLeft,
                 opRight,
                 c,
@@ -295,7 +292,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteDint()
         {
-            m.SideEffect(host.Intrinsic("__dint", true, VoidType.Instance));
+            m.SideEffect(m.Fn(dint_intrinsic));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF)), Constant.False());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.NF)), Constant.False());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.ZF)), Constant.False());
@@ -304,7 +301,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteEint()
         {
-            m.SideEffect(host.Intrinsic("__eint", true, VoidType.Instance));
+            m.SideEffect(m.Fn(eint_intrinsic));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF)), Constant.True());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.NF)), Constant.True());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.ZF)), Constant.True());
@@ -338,7 +335,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteIdle()
         {
-            m.SideEffect(host.Intrinsic("__idle", true, VoidType.Instance));
+            m.SideEffect(m.Fn(idle_intrinsic));
         }
 
         private void RewriteInv()
@@ -492,17 +489,13 @@ namespace Reko.Arch.Tms7000
         private void RewriteSwap()
         {
             var op = Operand(instr.Operands[0]);
-            m.Assign(op, host.Intrinsic("__swap_nybbles", false, op.DataType, op));
+            m.Assign(op, m.Fn(swap_nybbles_intrinsic, op));
             CNZ(op);
         }
 
         private void RewriteTrap(int n)
         {
-            m.SideEffect(host.Intrinsic(
-                "__trap",
-                true,
-                VoidType.Instance,
-                Constant.Byte((byte)n)));
+            m.SideEffect(m.Fn(trap_intrinsic, Constant.Byte((byte)n)));
         }
 
         private void RewriteXchb()
@@ -514,5 +507,35 @@ namespace Reko.Arch.Tms7000
             m.Assign(dst, src);
             m.Assign(src, tmp);
         }
+
+        private static readonly IntrinsicProcedure dac_intrinsic = IntrinsicBuilder.Pure("__dac")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .OutParam(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure dsb_intrinsic = IntrinsicBuilder.Pure("__dsb")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .OutParam(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
+
+        private static readonly IntrinsicProcedure dint_intrinsic = new IntrinsicBuilder("__dint", true)
+            .Void();
+        
+        private static readonly IntrinsicProcedure eint_intrinsic = new IntrinsicBuilder("__idle", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure idle_intrinsic = new IntrinsicBuilder("__idle", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure swap_nybbles_intrinsic = IntrinsicBuilder.Pure("__swap_nybbles")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure trap_intrinsic = new IntrinsicBuilder("__trap", true)
+            .Param(PrimitiveType.Byte)
+            .Void();
     }
 }

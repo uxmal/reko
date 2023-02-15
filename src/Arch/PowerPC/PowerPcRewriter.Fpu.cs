@@ -41,25 +41,24 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteFabs()
         {
-            //$TODO: require <math.h>
-            var opS = RewriteOperand(instr.Operands[1]);
-            var opD = RewriteOperand(instr.Operands[0]);
-            m.Assign(opD, host.Intrinsic("fabs", true, PrimitiveType.Real64, opS));
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
+            m.Assign(opD, m.Fn(FpOps.fabs, opS));
         }
 
         public void RewriteFadd()
         {
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.FAdd(opL, opR));
             MaybeEmitCr1(opD);
         }
 
         public void RewriteFcfid()
         {
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
+            var dst = RewriteOperand(0);
+            var src = RewriteOperand(1);
             var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
             m.Assign(dst, m.Convert(src, dtSrc, PrimitiveType.Real64));
         }
@@ -68,44 +67,41 @@ namespace Reko.Arch.PowerPC
         {
             //$TODO: How to deal with the "orderered" part, i.e. 
             // if there are NaNs involved.
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.Cond(m.FSub(opL, opR)));
         }
 
         public void RewriteFcmpu()
         {
-            var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
-            var opD = RewriteOperand(instr.Operands[0]);
+            var opL = RewriteOperand(1);
+            var opR = RewriteOperand(2);
+            var opD = RewriteOperand(0);
             m.Assign(opD, m.Cond(m.FSub(opL, opR)));
         }
 
-
         private void RewriteFctid()
         {
-            //$TODO: require <math.h>
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("round", true, PrimitiveType.Real64, src));
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(FpOps.round, src));
         }
 
         private void RewriteFctidz()
         {
-            //$TODO: require <math.h>
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("trunc", true, PrimitiveType.Real64, src));
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(FpOps.trunc, src));
         }
 
         private void RewriteFctiw()
         {
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
             var tmp = binder.CreateTemporary(PrimitiveType.Real64);
             m.Assign(tmp, src);
-            m.Assign(dst, host.Intrinsic("__fctiw", true, PrimitiveType.Int32, tmp));
+            m.Assign(dst, m.Fn(fctiw, tmp));
         }
 
         private void RewriteFctiwz()
@@ -240,9 +236,7 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(
-                dst,
-                host.Intrinsic("__frsqrte", true, PrimitiveType.Real64, src));
+            m.Assign(dst, m.Fn(frsqrte, src));
         }
 
         public void RewriteFsub()
@@ -271,13 +265,11 @@ namespace Reko.Arch.PowerPC
         private void RewriteMtfsf()
         {
             var op1 = ((ImmediateOperand)instr.Operands[0]).Value;
-            var op2 = RewriteOperand(instr.Operands[1]);
+            var op2 = RewriteOperand(1);
             m.SideEffect(
-                host.Intrinsic("__mtfsf",
-                    true,
-                    VoidType.Instance,
-                    op2,
-                    op1));
+                m.Fn(mtfsf.MakeInstance(op2.DataType),
+                op2,
+                op1));
             MaybeEmitCr1(op1);
         }
     }

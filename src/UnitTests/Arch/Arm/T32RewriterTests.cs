@@ -6591,7 +6591,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("BFF34F8F");	// dsb sy
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__dsb_sy()");
+                "1|L--|__data_sync_barrier(\"sy\")");
         }
 
         [Test]

@@ -373,8 +373,8 @@ struct Eq_n * uxListRemove(struct Eq_n * r0)
 bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union Eq_n & r0Out)
 {
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	vPortEnterCritical(cpsr);
 	if (*((word32) r0 + 56) == *((word32) r0 + 60))
 	{
@@ -396,8 +396,8 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 	vPortExitCritical(cpsr);
 	__msr(cpsr, 0x00);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	Eq_n r2_n = *((word32) r0 + 56);
 	Eq_n r3_n = *((word32) r0 + 60);
 	Eq_n r0_n = 0x00;
@@ -439,8 +439,8 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 {
 	bool Z;
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	Eq_n r5_n = *((word32) r0 + 56);
 	if (r5_n == 0x00)
 	{
@@ -468,8 +468,8 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 	Eq_n r0_n;
 	__msr(cpsr, 0x00);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	Eq_n r2_n = *((word32) r0 + 56);
 	if (r2_n != 0x00)
 	{
@@ -667,8 +667,8 @@ void vPortEnterCritical(ptr32 cpsr)
 {
 	ui32 r0_n = xPortRaisePrivilege(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	word32 * r2_n = g_ptr85AC;
 	++*r2_n;
 	if (r0_n != 0x01)
@@ -1396,8 +1396,8 @@ word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 	while (r5_n->dw0054 != 0x00)
 	{
 		__msr(cpsr, 191);
-		__isb_sy();
-		__dsb_sy();
+		__instruction_sync_barrier("sy");
+		__data_sync_barrier("sy");
 		struct Eq_n * r4_n = r5_n->ptr0060->ptr000C;
 		uxListRemove((char *) r4_n + 24);
 		__msr(cpsr, 0x00);
@@ -1437,8 +1437,8 @@ l00008F94:
 		do
 		{
 			__msr(cpsr, 191);
-			__isb_sy();
-			__dsb_sy();
+			__instruction_sync_barrier("sy");
+			__data_sync_barrier("sy");
 			struct Eq_n * r6_n = &r4_n->dw0004;
 			uxListRemove(r6_n);
 			struct Eq_n * r0_n = &r4_n->dw0004 + 5;

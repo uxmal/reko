@@ -70,7 +70,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteEret()
         {
-            m.SideEffect(host.Intrinsic("__eret", true, VoidType.Instance));
+            m.SideEffect(m.Fn(eret_intrinsic));
             m.Return(0, 0);
         }
 

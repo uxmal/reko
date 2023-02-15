@@ -321,8 +321,8 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr
 			if (xTaskResumeAll(cpsr) == 0x00)
 			{
 				*r9_n = 0x10000000;
-				__dsb_sy();
-				__isb_sy();
+				__data_sync_barrier("sy");
+				__instruction_sync_barrier("sy");
 			}
 		}
 		r5_n = 0x01;
@@ -339,8 +339,8 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, word32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr
 	else if (xTaskRemoveFromEventList((word32) r0 + 36) == 0x00)
 		goto l00000266;
 	*g_ptr02A0 = 0x10000000;
-	__dsb_sy();
-	__isb_sy();
+	__data_sync_barrier("sy");
+	__instruction_sync_barrier("sy");
 l00000266:
 	vPortExitCritical(cpsr);
 	return lr_n;
@@ -354,8 +354,8 @@ void xQueuePeekFromISR(Eq_n r0, Eq_n r1, Eq_n r7, Eq_n lr, ptr32 cpsr)
 {
 	Eq_n r5_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	if (*((word32) r0 + 56) != 0x00)
 	{
 		Eq_n r5_n;
@@ -435,8 +435,8 @@ l000003A4:
 				if (xTaskResumeAll(cpsr) == 0x00)
 				{
 					*r8_n = 0x10000000;
-					__dsb_sy();
-					__isb_sy();
+					__data_sync_barrier("sy");
+					__instruction_sync_barrier("sy");
 				}
 			}
 		}
@@ -469,8 +469,8 @@ l000003CC:
 			goto l000003CC;
 	}
 	*g_ptr0424 = 0x10000000;
-	__dsb_sy();
-	__isb_sy();
+	__data_sync_barrier("sy");
+	__instruction_sync_barrier("sy");
 	goto l000003CC;
 }
 
@@ -508,8 +508,8 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 {
 	Eq_n r6_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	if (*((word32) r0 + 56) < *((word32) r0 + 60) || r3 == 0x02)
 	{
 		int32 r4_n = (int32) *((word32) r0 + 69);
@@ -537,8 +537,8 @@ void xQueueGiveFromISR(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 {
 	Eq_n r4_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	up32 r2_n = r0->dw0038;
 	if (r2_n >= r0->dw003C)
 	{
@@ -564,8 +564,8 @@ void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, Eq_n lr, ptr32 cpsr)
 {
 	Eq_n r6_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	Eq_n r4_n = *((word32) r0 + 56);
 	if (r4_n != 0x00)
 	{
@@ -671,8 +671,8 @@ void xQueueGenericReset(struct Eq_n * r0, word32 r1, ptr32 cpsr)
 	else if (r0->ptr0010 != null && xTaskRemoveFromEventList(&r0->ptr0010) != 0x00)
 	{
 		*g_ptr06A8 = 0x10000000;
-		__dsb_sy();
-		__isb_sy();
+		__data_sync_barrier("sy");
+		__instruction_sync_barrier("sy");
 		vPortExitCritical(cpsr);
 	}
 	else
@@ -795,8 +795,8 @@ l000007BA:
 	if (r4_n->dw0074 != 0x00 && (r4_n->ptr0004)->dw004C < r0->dw004C)
 	{
 		*g_ptr0858 = 0x10000000;
-		__dsb_sy();
-		__isb_sy();
+		__data_sync_barrier("sy");
+		__instruction_sync_barrier("sy");
 	}
 }
 
@@ -906,8 +906,8 @@ void vTaskStartScheduler(ptr32 cpsr)
 	if (r0_n != 0x01)
 		return;
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	r4_n->dw0084 = ~0x00;
 	r4_n->dw0074 = r0_n;
 	r4_n->dw0080 = 0x00;
@@ -921,8 +921,8 @@ ui32 g_dw09E8 = 34093; // 000009E8
 void vTaskEndScheduler(ptr32 cpsr)
 {
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	g_ptr0A08->dw0074 = 0x00;
 	vPortEndScheduler();
 }
@@ -1017,8 +1017,8 @@ l00000AA6:
 		if (r0->dw004C > (r5_n->ptr0004)->dw004C)
 		{
 			*g_ptr0B08 = 0x10000000;
-			__dsb_sy();
-			__isb_sy();
+			__data_sync_barrier("sy");
+			__instruction_sync_barrier("sy");
 			vPortExitCritical(cpsr);
 			return;
 		}
@@ -1035,8 +1035,8 @@ void xTaskGenericNotifyFromISR(struct Eq_n * r0, ui32 r1, up32 r2, ui32 * r3, pt
 {
 	Eq_n r5_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	if (r3 != null)
 		*r3 = r0->dw0060;
 	word32 r4_n = (word32) r0->b0064;
@@ -1112,8 +1112,8 @@ void xTaskNotifyWait(word32 r0, word32 r1, ui32 * r2, up32 r3, ptr32 cpsr)
 		{
 			prvAddCurrentTaskToDelayedList.isra.0(r3);
 			*g_ptr0C5C = 0x10000000;
-			__dsb_sy();
-			__isb_sy();
+			__data_sync_barrier("sy");
+			__instruction_sync_barrier("sy");
 		}
 	}
 	vPortExitCritical(cpsr);
@@ -1136,8 +1136,8 @@ void vTaskNotifyGiveFromISR(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 {
 	Eq_n r6_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	word32 r5_n = (word32) r0->b0064;
 	r0->b0064 = 0x02;
 	++r0->dw0060;
@@ -1183,8 +1183,8 @@ void ulTaskNotifyTake(word32 r0, up32 r1, ptr32 cpsr)
 		{
 			prvAddCurrentTaskToDelayedList.isra.0(r1);
 			*g_ptr0D68 = 0x10000000;
-			__dsb_sy();
-			__isb_sy();
+			__data_sync_barrier("sy");
+			__instruction_sync_barrier("sy");
 		}
 	}
 	vPortExitCritical(cpsr);
@@ -1323,8 +1323,8 @@ word32 xTaskResumeAll(ptr32 cpsr)
 		if (r4_n->dw0090 != 0x00)
 		{
 			*g_ptr0F44 = 0x10000000;
-			__dsb_sy();
-			__isb_sy();
+			__data_sync_barrier("sy");
+			__instruction_sync_barrier("sy");
 			vPortExitCritical(cpsr);
 			return 0x01;
 		}
@@ -1349,8 +1349,8 @@ void vTaskDelay(up32 r0, ptr32 cpsr)
 			return;
 	}
 	*g_ptr0F78 = 0x10000000;
-	__dsb_sy();
-	__isb_sy();
+	__data_sync_barrier("sy");
+	__instruction_sync_barrier("sy");
 }
 
 word32 * g_ptr0F78 = &g_dwE000ED04; // 00000F78
@@ -1387,8 +1387,8 @@ l00000FC0:
 		return;
 l00000FA6:
 	*g_ptr0FD8 = 0x10000000;
-	__dsb_sy();
-	__isb_sy();
+	__data_sync_barrier("sy");
+	__instruction_sync_barrier("sy");
 }
 
 struct Eq_n * g_ptr0FD4 = &g_t200000C4; // 00000FD4
@@ -1713,8 +1713,8 @@ void prvSVCHandler(Eq_n r0, ptr32 cpsr)
 	if (r3_n == 0x01)
 	{
 		*g_ptr1378 = 0x10000000;
-		__dsb_sy();
-		__isb_sy();
+		__data_sync_barrier("sy");
+		__instruction_sync_barrier("sy");
 	}
 	else if (r3_n < 0x01)
 	{
@@ -1865,8 +1865,8 @@ l000014AE:
 	__msr(cpsr, **g_ptr1724);
 	__cps();
 	__cps();
-	__dsb_sy();
-	__isb_sy();
+	__data_sync_barrier("sy");
+	__instruction_sync_barrier("sy");
 	__syscall<word32>(0x00);
 }
 
@@ -2110,8 +2110,8 @@ void xPortSysTickHandler(ptr32 cpsr)
 {
 	Eq_n r4_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	if (xTaskIncrementTick() != 0x00)
 		*g_ptr1710 = 0x10000000;
 	__msr(cpsr, r4_n);
@@ -2259,8 +2259,8 @@ l000017E8:
 	if (xTaskResumeAll(cpsr) == 0x00)
 	{
 		*g_ptr1870 = 0x10000000;
-		__dsb_sy();
-		__isb_sy();
+		__data_sync_barrier("sy");
+		__instruction_sync_barrier("sy");
 	}
 	if (uxTaskResetEventItemValue() << 6 < 0x00)
 		return;
@@ -2353,8 +2353,8 @@ void xEventGroupSync(struct Eq_n * r0, ui32 r1, ui32 r2, up32 r3, ptr32 cpsr)
 			if (xTaskResumeAll(cpsr) == 0x00)
 			{
 				*g_ptr1984 = 0x10000000;
-				__dsb_sy();
-				__isb_sy();
+				__data_sync_barrier("sy");
+				__instruction_sync_barrier("sy");
 			}
 			if (uxTaskResetEventItemValue() << 6 >= 0x00)
 			{
@@ -2379,8 +2379,8 @@ void xEventGroupGetBitsFromISR(ptr32 cpsr)
 {
 	Eq_n r3_n = __mrs(cpsr);
 	__msr(cpsr, 191);
-	__isb_sy();
-	__dsb_sy();
+	__instruction_sync_barrier("sy");
+	__data_sync_barrier("sy");
 	__msr(cpsr, r3_n);
 }
 

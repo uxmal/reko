@@ -180,21 +180,20 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteBcdadd()
         {
-            var d = RewriteOperand(instr.Operands[0]);
-            var a = RewriteOperand(instr.Operands[1]);
-            var b = RewriteOperand(instr.Operands[2]);
+            var a = RewriteOperand(1);
+            var b = RewriteOperand(2);
+            var d = RewriteOperand(0);
             m.Assign(
                 d,
-                host.Intrinsic("__bcdadd", false, d.DataType, a, b));
+                m.Fn(bcdadd, a, b));
         }
 
         private void RewriteCmp()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
-            m.Assign(cr, m.Cond(
-                m.ISub(r, i)));
+            var r = RewriteOperand(1);
+            var i = RewriteOperand(2);
+            var cr = RewriteOperand(0);
+            m.Assign(cr, m.Cond(m.ISub(r, i)));
         }
 
         private void RewriteCmpi()
@@ -244,39 +243,31 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteCmpwi()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
+            var r = RewriteOperand(1);
+            var i = RewriteOperand(2);
+            var cr = RewriteOperand(0);
             m.Assign(cr, m.Cond(
                 m.ISub(r, i)));
         }
 
-        private void RewriteCntlz(string name, DataType dt)
+        private void RewriteCntlz(DataType dt)
         {
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = RewriteOperand(instr.Operands[1]);
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
             if (dt.Size < arch.WordWidth.Size)
             {
                 src = m.Convert(src, src.DataType, dt);
             }
-            m.Assign(dst, host.Intrinsic(name, false, PrimitiveType.UInt32, src));
+            m.Assign(dst, m.Fn(CommonOps.CountLeadingZeros, src));
         }
 
         //$TODO: improve this.
         private void RewriteCrLogical(IntrinsicProcedure intrinsic)
         {
-            var cr = ImmOperand(instr.Operands[0]);
             var r = ImmOperand(instr.Operands[1]);
             var i = ImmOperand(instr.Operands[2]);
+            var cr = ImmOperand(instr.Operands[0]);
             m.SideEffect(m.Fn(intrinsic, cr, r, i));
-        }
-
-        private void RewriteCrLogical(string intrinsic)
-        {
-            var cr = ImmOperand(instr.Operands[0]);
-            var r = ImmOperand(instr.Operands[1]);
-            var i = ImmOperand(instr.Operands[2]);
-            m.SideEffect(host.Intrinsic(intrinsic, false, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteDivd(Func<Expression,Expression,Expression> div)
@@ -347,9 +338,8 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteMftb()
         {
-            var dst = RewriteOperand(instr.Operands[0]);
-            var src = host.Intrinsic("__mftb", false, dst.DataType);
-            m.Assign(dst, src);
+            var dst = RewriteOperand(0);
+            m.Assign(dst, m.Fn(mftb.MakeInstance(dst.DataType)));
         }
 
         private void RewriteMflr()
@@ -363,7 +353,7 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.SideEffect(host.Intrinsic("__mtcrf", false, VoidType.Instance, dst, src));
+            m.SideEffect(m.Fn(mtcrf.MakeInstance(dst.DataType), dst, src));
         }
 
         private void RewriteMtctr()
@@ -504,18 +494,16 @@ namespace Reko.Arch.PowerPC
 
         void RewriteRlwimi()
         {
-            var src = RewriteOperand(instr.Operands[1]);
-            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(1);
+            var dst = RewriteOperand(0);
             m.Assign(
                 dst,
-                host.Intrinsic(
-                    "__rlwimi",
-                    false,
-                    PrimitiveType.Word32,
+                m.Fn(
+                    rlwimi.MakeInstance(src.DataType),
                     src,
-                    ImmOperand(instr.Operands[2]),
-                    ImmOperand(instr.Operands[3]),
-                    ImmOperand(instr.Operands[4]))
+                    ImmOperand(2),
+                    ImmOperand(3),
+                    ImmOperand(4))
                 );
         }
 
@@ -909,10 +897,8 @@ namespace Reko.Arch.PowerPC
             {
                 //$TODO: yeah, this one is hard...
                 m.Assign(rd,
-                    host.Intrinsic(
-                        "__rlwinm",
-                        false,
-                        PrimitiveType.Word32,
+                    m.Fn(
+                        rlwinm.MakeInstance(PrimitiveType.Word32),
                         rs,
                         Constant.Byte(sh),
                         Constant.Byte(mb),
