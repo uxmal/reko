@@ -32,6 +32,8 @@ namespace Reko.Arch.M68k
 {
     public partial class Rewriter
     {
+        private static readonly StringType labelType = StringType.NullTerminated(PrimitiveType.Byte);
+
         private void RewriteBkpt()
         {
             iclass = InstrClass.Invalid;
@@ -41,26 +43,32 @@ namespace Reko.Arch.M68k
         
         private void RewriteCinva()
         {
-            m.SideEffect(host.Intrinsic($"__invalidate_cache_all_{instr.Operands[0]}", true, VoidType.Instance));
+            m.SideEffect(m.Fn(cinva_intrinsic, Constant.String(instr.Operands[0].ToString()!, labelType)));
         }
 
         private void RewriteCinvp()
         {
             var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
-            m.SideEffect(host.Intrinsic($"__invalidate_cache_page_{instr.Operands[0]}", true, VoidType.Instance, src.EffectiveAddress));
+            m.SideEffect(m.Fn(
+                cinvp_intrinsic,
+                Constant.String(instr.Operands[0].ToString()!, labelType),
+                src.EffectiveAddress));
         }
 
         private void RewriteCinvl()
         {
             var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
-            m.SideEffect(host.Intrinsic($"@@@__invalidate_cache_line_{instr.Operands[0]}", true, VoidType.Instance, src.EffectiveAddress));
+            m.SideEffect(m.Fn(
+                cinvl_intrinsic,
+                Constant.String(instr.Operands[0].ToString()!, labelType),
+                src.EffectiveAddress));
         }
 
         private void RewriteMovec()
         {
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth!, src, (s, d) =>
-                host.Intrinsic("__movec", true, VoidType.Instance, s));
+                m.Fn(movec_intrinsic, s));
         }
 
         private void RewriteMoves()
@@ -74,20 +82,20 @@ namespace Reko.Arch.M68k
         {
             var src1 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             var src2 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(host.Intrinsic("__pload", true, VoidType.Instance, src1, src2));
+            m.SideEffect(m.Fn(pload_intrinsic, src1, src2));
         }
 
         private void RewritePflushr()
         {
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(host.Intrinsic("__pflushr", true, VoidType.Instance, src));
+            m.SideEffect(m.Fn(pflushr_intrinsic, src));
         }
 
         private void RewritePtest()
         {
             var src1 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
             var src2 = ((MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address)).EffectiveAddress;
-            m.SideEffect(host.Intrinsic("__ptest", true, VoidType.Instance, src2, src1));
+            m.SideEffect(m.Fn(ptest_intrinsic, src2, src1));
         }
 
         private void RewriteReset()

@@ -357,7 +357,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F4D8");
             AssertCode(     // cinva	bc
                 "0|S--|00010000(2): 1 instructions",
-                "1|L--|__invalidate_cache_all_bc()");
+                "1|L--|__invalidate_cache_all(\"bc\")");
         }
 
 
@@ -367,7 +367,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_HexString("F4D0");
             AssertCode(     // cinvp	bc,(a0)
                 "0|S--|00010000(2): 1 instructions",
-                "1|L--|__invalidate_cache_page_bc(a0)");
+                "1|L--|__invalidate_cache_page(\"bc\", a0)");
         }
 
         [Test]

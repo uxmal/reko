@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("7EA46412");
             AssertCode(     // lbue	r3,0064(r30)
                 "0|S--|00100000(4): 1 instructions",
-                "1|L--|r3 = CONVERT(__load_ub_EVA(&Mem0[r30 + 0x64<32>:byte]), byte, word32)");
+                "1|L--|r3 = CONVERT(__load_ub_EVA<byte>(&Mem0[r30 + 0x64<32>:byte]), byte, word32)");
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("848008D6");
             AssertCode(     // rotx	r4,r4,00000018,00000008
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = __rotx(r4, 0x18<32>, 8<32>, 0<32>)");
+                "1|L--|r4 = __rotx<word32>(r4, 0x18<32>, 8<32>, 0<32>)");
         }
 
         [Test]

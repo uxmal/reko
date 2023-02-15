@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("110000 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __load_linked_32(Mem0[r10 - 0x38<32>:word32])");
+                "1|L--|r21 = __load_linked<word32>(&Mem0[r10 - 0x38<32>:word32])");
         }
         [Test]
         public void MipsRw_lld()
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("110100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x38<64>:word64])");
+                "1|L--|r21 = __load_linked<word64>(&Mem0[r10 - 0x38<64>:word64])");
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("111000 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional_32(Mem0[r10 - 0x38<32>:word32], r21)");
+                "1|L--|r21 = __store_conditional<word32>(&Mem0[r10 - 0x38<32>:word32], r21)");
         }
         [Test]
         public void MipsRw_scd()
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_BitStrings("111100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional_64(Mem0[r10 - 0x38<64>:word64], r21)");
+                "1|L--|r21 = __store_conditional<word64>(&Mem0[r10 - 0x38<64>:word64], r21)");
         }
 
         [Test]
@@ -336,7 +336,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
                 "0|TD-|00100000(4): 2 instructions",
                 "1|T--|if (r7 < r16) branch 00100004",
-                "2|L--|__trap_code(3<16>)");
+                "2|L--|__syscall<word16>(3<16>)");
         }
 
         [Test]
@@ -521,7 +521,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x34, // teq zero, zero	 
                 "0|TD-|00100000(4): 1 instructions",
-                "1|L--|__trap_code(0<16>)");
+                "1|L--|__syscall<word16>(0<16>)");
         }
 
         [Test]
@@ -755,7 +755,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x060E1701,   // tnei	r16,+00001701
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (r16 == 5889<i32>) branch 00100004",
-                "2|L--|__trap()");
+                "2|L--|__syscall()");
         }
 
         [Test]
@@ -773,7 +773,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x06CA6351,   // tlti	r22,+00006351
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (r22 >= 25425<i32>) branch 00100004",
-                "2|L--|__trap()");
+                "2|L--|__syscall()");
         }
 
         [Test]
@@ -782,7 +782,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x06096086,   // tgeiu	r16,+00006086
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (r16 <u 24710<i32>) branch 00100004",
-                "2|L--|__trap()");
+                "2|L--|__syscall()");
         }
 
         [Test]
@@ -1029,7 +1029,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("20E45B3F");   // clz	r7,r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = __clz(r4)");
+                "1|L--|r7 = __count_leading_zeros<word32>(r4)");
         }
 
         [Test]
@@ -1304,7 +1304,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x04080420,   // tgei	r0,+00000420
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (r0 < 1056<i32>) branch 00100004",
-                "2|L--|__trap()");
+                "2|L--|__syscall()");
         }
 
         [Test]
@@ -1336,7 +1336,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xFBB8BB46,   // sdc2	r24,-44BA(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp - 0x44BA<32>:word64] = __read_cpr2(0x18<8>)");
+                "1|L--|Mem0[sp - 0x44BA<32>:word64] = __read_cpr2<word64>(0x18<8>)");
         }
 
         [Test]
@@ -1344,7 +1344,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xE8BCCD9A,   // swc2	r28,-3266(r5)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r5 - 0x3266<32>:word32] = __read_cpr2(0x1C<8>)");
+                "1|L--|Mem0[r5 - 0x3266<32>:word32] = __read_cpr2<word32>(0x1C<8>)");
         }
 
         [Test]
@@ -1353,7 +1353,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x054BF6A4,   // tltiu	r10,-0000095C
                 "0|T--|00100000(4): 2 instructions",
                 "1|T--|if (r10 >=u -2396<i32>) branch 00100004",
-                "2|L--|__trap()");
+                "2|L--|__syscall()");
         }
 
         [Test]
@@ -1378,7 +1378,7 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x058CF428,   // teqi	r12,-00000BD8
                 "0|TD-|00100000(4): 2 instructions",
                 "1|T--|if (r12 != -3032<i32>) branch 00100004",
-                "2|L--|__trap()");
+                "2|L--|__syscall()");
         }
 
         [Test]
@@ -1402,7 +1402,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x73E0C9A1,   // clo	r25,ra
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r25 = __clo(ra)");
+                "1|L--|r25 = __count_leading_ones<word32>(ra)");
         }
 
         [Test]
@@ -1442,7 +1442,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x7C1490A0, // wsbh r18,r20
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r18 = __word_swap_bytes_in_halfwords(r20)");
+                "1|L--|r18 = __word_swap_bytes_in_halfwords<word32>(r20)");
         }
     }
 }

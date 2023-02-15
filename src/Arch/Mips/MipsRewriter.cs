@@ -189,8 +189,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.lhxs: RewriteLoadIndexed(instr, PrimitiveType.Int16, PrimitiveType.Int32, 2); break;
                 case Mnemonic.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
                 case Mnemonic.lhuxs: RewriteLoadIndexed(instr, PrimitiveType.Word16, PrimitiveType.Word32, 2); break;
-                case Mnemonic.ll: RewriteLoadLinked32(instr); break;
-                case Mnemonic.lld: RewriteLoadLinked64(instr); break;
+                case Mnemonic.ll: RewriteLoadLinked(instr, PrimitiveType.Word32); break;
+                case Mnemonic.lld: RewriteLoadLinked(instr, PrimitiveType.Word64); break;
                 case Mnemonic.lui: RewriteLui(instr); break;
                 case Mnemonic.lw: RewriteLoad(instr, PrimitiveType.Word32, PrimitiveType.Int32); break;
                 case Mnemonic.lwc1: RewriteLcpr1(instr); break;
@@ -234,8 +234,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.pref:
                 case Mnemonic.prefx: RewritePrefx(instr); break;
                 case Mnemonic.sb: RewriteStore(instr); break;
-                case Mnemonic.sc: RewriteStoreConditional32(instr); break;
-                case Mnemonic.scd: RewriteStoreConditional64(instr); break;
+                case Mnemonic.sc: RewriteStoreConditional(instr, PrimitiveType.Word32); break;
+                case Mnemonic.scd: RewriteStoreConditional(instr, PrimitiveType.Word64); break;
                 case Mnemonic.sd: RewriteStore(instr); break;
                 case Mnemonic.sdc1: RewriteStore(instr); break;
                 case Mnemonic.sdc2: RewriteSdc2(instr); break;
@@ -320,7 +320,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.jalrc: RewriteJalr(instr); break;
                 case Mnemonic.jalrc_hb: RewriteJalr_hb(instr); break;
                 case Mnemonic.jrc: RewriteJr(instr); break;
-                case Mnemonic.lbue: RewriteLe(instr, PrimitiveType.Byte, "__load_ub_EVA"); break;
+                case Mnemonic.lbue: RewriteLe(instr, PrimitiveType.Byte); break;
                 case Mnemonic.lbux: RewriteLx(instr, PrimitiveType.Byte, 1); break;
                 case Mnemonic.lwx: RewriteLx(instr, PrimitiveType.Word32, 1); break;
                 case Mnemonic.lwpc: RewriteLwpc(instr); break;

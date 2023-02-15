@@ -405,6 +405,19 @@ VS Overflow Set 1001 V
             .Param("T")
             .Param("T")
             .Returns(PrimitiveType.Bool);
+
+        static readonly IntrinsicProcedure cinva_intrinsic = new IntrinsicBuilder("__invalidate_cache_all", true)
+            .Param(new UnknownType())
+            .Void();
+        static readonly IntrinsicProcedure cinvp_intrinsic = new IntrinsicBuilder("__invalidate_cache_page", true)
+            .Param(new UnknownType())
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        static readonly IntrinsicProcedure cinvl_intrinsic = new IntrinsicBuilder("__invalidate_cache_line", true)
+            .Param(new UnknownType())
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+
         static readonly IntrinsicProcedure fabs_intrinsic = IntrinsicBuilder.GenericUnary("__fabs");
         static readonly IntrinsicProcedure fgetexp_intrinsic = IntrinsicBuilder.GenericUnary("fgetexp");
         static readonly IntrinsicProcedure fgetman_intrinsic = IntrinsicBuilder.GenericUnary("fgetman");
@@ -417,6 +430,9 @@ VS Overflow Set 1001 V
             .GenericTypes("T")
             .Param("T")
             .Returns(PrimitiveType.Bool);
+        static readonly IntrinsicProcedure movec_intrinsic = new IntrinsicBuilder("__movec", true)
+            .GenericTypes("T")
+            .Void();
         static readonly IntrinsicProcedure movep_intrinsic = new IntrinsicBuilder("__movep", true)
             .GenericTypes("T")
             .Param("T")
@@ -430,6 +446,19 @@ VS Overflow Set 1001 V
             .Param(PrimitiveType.UInt16)
             .Param(PrimitiveType.UInt16)
             .Returns(PrimitiveType.Byte);
+        static readonly IntrinsicProcedure pflushr_intrinsic = new IntrinsicBuilder("__flushr", true)
+            .GenericTypes("T")
+            .Param("T")
+            .Void();
+        static readonly IntrinsicProcedure pload_intrinsic = new IntrinsicBuilder("__pload", true)
+            .GenericTypes("T1", "T2")
+            .Params("T1", "T2")
+            .Void();
+        static readonly IntrinsicProcedure ptest_intrinsic = new IntrinsicBuilder("__ptest", true)
+            .GenericTypes("T1", "T2")
+            .Params("T1", "T2")
+            .Void();
+
         static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true)
             .Void();
         static readonly IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true)

@@ -34,7 +34,6 @@ namespace Reko.ImageLoaders.IntelHex
         #region Locals
 
         private readonly StreamReader streamReader;
-        private readonly int bytesPerCodeUnit;
         private int lineNum;
         private bool IsSegmented = false;
         private bool IsLinear = false;

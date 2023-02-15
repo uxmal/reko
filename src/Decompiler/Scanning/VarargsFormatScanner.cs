@@ -44,7 +44,6 @@ namespace Reko.Scanning
         private readonly EvaluationContext ctx;
         private readonly ExpressionSimplifier eval;
         private readonly IServiceProvider services;
-        private Address? addFormatString;
         private StringConstant? formatString;
 
         public VarargsFormatScanner(
