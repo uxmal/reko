@@ -429,7 +429,7 @@ T_80: (in signature of __ei : void)
   Class: Eq_79
   DataType: (ptr32 Eq_79)
   OrigDataType: 
-T_81: (in  @ 002000DB : byte)
+T_81: (in p1 @ 002000DB : byte)
   Class: Eq_81
   DataType: byte
   OrigDataType: 
@@ -1897,7 +1897,7 @@ T_447: (in signature of __ldf : void)
   Class: Eq_446
   DataType: (ptr32 Eq_446)
   OrigDataType: 
-T_448: (in  @ 002005F6 : byte)
+T_448: (in p1 @ 002005F6 : byte)
   Class: Eq_448
   DataType: byte
   OrigDataType: 

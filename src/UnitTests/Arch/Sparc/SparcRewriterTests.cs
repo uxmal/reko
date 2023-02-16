@@ -176,8 +176,8 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             Given_UInt32s(0x8B006001);
             AssertCode(         // taddcc\t%g1,0x00000001<32>,%g5
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|g5 = __taddcc(g1, 1<32>)",
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|g5 = __taddcc<word32>(g1, 1<32>)",
                 "2|L--|NZVC = cond(g5)");
         }
 

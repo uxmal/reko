@@ -18,14 +18,18 @@ Eq_1: (struct "Globals"
 		(C9 byte b00C9)
 		(CA byte b00CA))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_12: (fn void (cu8, Eq_15, word24))
+Eq_12: (fn void (cu8, Eq_15, Eq_16))
 	T_12 (in fn00000E @ 000146 : ptr32)
 	T_13 (in signature of fn00000E @ 00000E : void)
 Eq_15: (union "Eq_15" (word16 u0) ((ptr32 byte) u1))
 	T_15 (in FSR0 @ 000146 : Eq_15)
 	T_17 (in 0<16> @ 000146 : word16)
 	T_114 (in FSR0 + 1<16> @ 00008A : word16)
-Eq_20: (fn void (word24, byte))
+Eq_16: (union "Eq_16" (ptr16 u0) (word24 u1))
+	T_16 (in TBLPTR @ 000146 : Eq_16)
+	T_18 (in 0<24> @ 000146 : word24)
+	T_22 (in p1 @ 00001C : ptr16)
+Eq_20: (fn void (Eq_16, byte))
 	T_20 (in __tblrd @ 00001C : ptr32)
 	T_21 (in signature of __tblrd : void)
 	T_28 (in __tblrd @ 000022 : ptr32)
@@ -121,10 +125,10 @@ T_15: (in FSR0 @ 000146 : Eq_15)
   Class: Eq_15
   DataType: Eq_15
   OrigDataType: (union ((ptr32 (struct 0001 (0 byte b0000))) u0) ((ptr32 byte) u1))
-T_16: (in TBLPTR @ 000146 : word24)
+T_16: (in TBLPTR @ 000146 : Eq_16)
   Class: Eq_16
-  DataType: word24
-  OrigDataType: word24
+  DataType: Eq_16
+  OrigDataType: (union (ptr16 u0) (word24 u1))
 T_17: (in 0<16> @ 000146 : word16)
   Class: Eq_15
   DataType: word16
@@ -145,11 +149,11 @@ T_21: (in signature of __tblrd : void)
   Class: Eq_20
   DataType: (ptr32 Eq_20)
   OrigDataType: 
-T_22: (in  @ 00001C : word24)
+T_22: (in p1 @ 00001C : ptr16)
   Class: Eq_16
-  DataType: word24
+  DataType: Eq_16
   OrigDataType: 
-T_23: (in  @ 00001C : byte)
+T_23: (in p2 @ 00001C : byte)
   Class: Eq_23
   DataType: byte
   OrigDataType: 
@@ -885,14 +889,19 @@ typedef struct Globals {
 	byte b00CA;	// CA
 } Eq_1;
 
-typedef void (Eq_12)(cu8, Eq_15, word24);
+typedef void (Eq_12)(cu8, Eq_15, Eq_16);
 
 typedef union Eq_15 {
 	word16 u0;
 	byte * u1;
 } Eq_15;
 
-typedef void (Eq_20)(word24, byte);
+typedef union Eq_16 {
+	ptr16 u0;
+	word24 u1;
+} Eq_16;
+
+typedef void (Eq_20)(Eq_16, byte);
 
 typedef union Eq_137 {
 	bool u0;

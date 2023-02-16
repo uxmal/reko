@@ -212,10 +212,10 @@ l0804D336:
 	r11_209 = r12_116
 	r13_11 = r10_14
 l0804D548:
-	word32 r7_218 = __clz(r4_207)
+	word32 r7_218 = __count_leading_zeros<word32>(r4_207)
 	branch r4_207 != 0<32> l0804D556
 l0804D54E:
-	r7_218 = __clz(r11_209) + 0x20<32>
+	r7_218 = __count_leading_zeros<word32>(r11_209) + 0x20<32>
 l0804D556:
 	word32 r8_227
 	word32 r10_223 = r7_218 + 0xFFFFFFF8<32>

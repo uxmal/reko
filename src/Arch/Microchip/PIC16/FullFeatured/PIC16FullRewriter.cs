@@ -146,7 +146,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_ASRF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.Intrinsic("__asrf", false, PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(asrf_intrinsic, srcmem));
             SetStatusFlags(dstmem);
         }
 
@@ -178,14 +178,14 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_LSLF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.Intrinsic("__lslf", false, PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(lslf_intrinsic, srcmem));
             SetStatusFlags(dstmem);
         }
 
         private void Rewrite_LSRF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.Intrinsic("__lsrf", false, PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(lsrf_intrinsic, srcmem));
             SetStatusFlags(dstmem);
         }
 

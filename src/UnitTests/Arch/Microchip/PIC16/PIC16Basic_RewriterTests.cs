@@ -411,11 +411,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x0D08),
             "0|L--|000200(2): 1 instructions",
-                "1|L--|WREG = __rlf(Data[BSR:8<8>:byte])()"
+                "1|L--|WREG = __rlf(Data[BSR:8<8>:byte])"
             );
             ExecTest(Words(0x0D88),
             "0|L--|000200(2): 1 instructions",
-                "1|L--|Data[BSR:8<8>:byte] = __rlf(Data[BSR:8<8>:byte])()"
+                "1|L--|Data[BSR:8<8>:byte] = __rlf(Data[BSR:8<8>:byte])"
             );
         }
 
@@ -424,11 +424,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x0C08),
             "0|L--|000200(2): 1 instructions",
-                "1|L--|WREG = __rrf(Data[BSR:8<8>:byte])()"
+                "1|L--|WREG = __rrf(Data[BSR:8<8>:byte])"
             );
             ExecTest(Words(0x0C88),
             "0|L--|000200(2): 1 instructions",
-                "1|L--|Data[BSR:8<8>:byte] = __rrf(Data[BSR:8<8>:byte])()"
+                "1|L--|Data[BSR:8<8>:byte] = __rrf(Data[BSR:8<8>:byte])"
             );
         }
 
@@ -481,11 +481,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         {
             ExecTest(Words(0x0E33),
             "0|L--|000200(2): 1 instructions",
-                "1|L--|WREG = __swapf(Data[BSR:0x33<8>:byte])()"
+                "1|L--|WREG = __swapf(Data[BSR:0x33<8>:byte])"
             );
             ExecTest(Words(0x0EB3),
             "0|L--|000200(2): 1 instructions",
-                "1|L--|Data[BSR:0x33<8>:byte] = __swapf(Data[BSR:0x33<8>:byte])()"
+                "1|L--|Data[BSR:0x33<8>:byte] = __swapf(Data[BSR:0x33<8>:byte])"
             );
         }
 

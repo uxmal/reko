@@ -1034,6 +1034,15 @@ namespace Reko.Arch.Arm.AArch64
             .Param("TSrc")
             .Returns("TDst");
 
+        private static readonly IntrinsicProcedure tbl_intrinsic = IntrinsicBuilder.Pure("__tbl")
+            .GenericTypes("T")
+            .Param(PrimitiveType.Int32)
+            .Returns("T");
+        private static readonly IntrinsicProcedure tbx_intrinsic = IntrinsicBuilder.Pure("__tbx")
+            .GenericTypes("T")
+            .Param(PrimitiveType.Int32)
+            .Returns("T");
+
         private static readonly IntrinsicProcedure trn1_intrinsic = IntrinsicBuilder.GenericBinary("__trn1");
         private static readonly IntrinsicProcedure trn2_intrinsic = IntrinsicBuilder.GenericBinary("__trn2");
         private static readonly IntrinsicProcedure trunc_intrinsic = IntrinsicBuilder.GenericUnary("__trunc");

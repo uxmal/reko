@@ -401,9 +401,9 @@ l0804D332:
 		r11_n = r12_n;
 		r13_n = r10_n;
 l0804D548:
-		int32 r7_n = __clz(r4_n);
+		word32 r7_n = __count_leading_zeros<word32>(r4_n);
 		if (r4_n == 0x00)
-			r7_n = __clz(r11_n) + 0x20;
+			r7_n = __count_leading_zeros<word32>(r11_n) + 0x20;
 		Eq_n r8_n;
 		Eq_n r10_n = r7_n + ~0x07;
 		if (r10_n < 0x20)

@@ -6051,7 +6051,7 @@ l00403F24:
 	r11_102 = 0<32>
 	r7_101 = 0<32>
 l00403E48:
-	word32 r13_38 = __clz(r12_23)
+	word32 r13_38 = __count_leading_zeros<word32>(r12_23)
 	branch r13_38 != 0<32> l00403E60
 l00403E60:
 	word32 r9_41 = 0x20<32> - r13_38
@@ -6116,7 +6116,7 @@ l00403D94:
 	branch r8_18 != 0<32> l00403D9E
 l00403D98:
 l00403D9E:
-	word32 r7_111 = __clz(r8_18)
+	word32 r7_111 = __count_leading_zeros<word32>(r8_18)
 	branch r7_111 != 0<32> l00403DAE
 l00403DAE:
 	r9_113 = r8_18 << r7_111
@@ -6158,7 +6158,7 @@ l00403DA4:
 	r7_165 = r5 - r8_18
 	r11_102 = 1<32>
 l00403CF4:
-	word32 r6_170 = __clz(r8_18)
+	word32 r6_170 = __count_leading_zeros<word32>(r8_18)
 	branch r6_170 == 0<32> l00403D10
 l00403CFA:
 	r9_113 = r8_18 << r6_170
@@ -6242,7 +6242,7 @@ l00403F62:
 l004040BA:
 	branch r5 <u r10_21 l00403FEA
 l004040BE:
-	word32 r3_33 = __clz(r10_21)
+	word32 r3_33 = __count_leading_zeros<word32>(r10_21)
 	branch r3_33 != 0<32> l004040E0
 l004040E0:
 	word32 r9_36 = 0x20<32> - r3_33
@@ -6307,7 +6307,7 @@ l00404000:
 l00404004:
 l0040400A:
 	word32 r5_187
-	word32 r2_145 = __clz(r2_18)
+	word32 r2_145 = __count_leading_zeros<word32>(r2_18)
 	branch r2_145 != 0<32> l00404046
 l00404046:
 	r9_147 = r2_18 << r2_145
@@ -6359,7 +6359,7 @@ l00404040:
 l00404042:
 	r7_213 = r7_208 - r6_200
 l00403F6E:
-	word32 r2_214 = __clz(r2_18)
+	word32 r2_214 = __count_leading_zeros<word32>(r2_18)
 	branch r2_214 == 0<32> l00403F8C
 l00403F76:
 	r5 = r4 >>u -r2_214
@@ -6583,10 +6583,10 @@ l00404420:
 	r10_102 = 0<32>
 	r13_109 = 1<32>
 l004043C6:
-	word32 r9_15 = __clz(r11_12)
+	word32 r9_15 = __count_leading_zeros<word32>(r11_12)
 	branch r11_12 != 0<32> l004043D6
 l004043CE:
-	r9_15 = __clz(r4) + 0x20<32>
+	r9_15 = __count_leading_zeros<word32>(r4) + 0x20<32>
 l004043D6:
 	word32 r6_19 = r9_15 + 0xFFFFFFF5<32>
 	branch r6_19 >= 0x1D<32> l00404404
@@ -6631,10 +6631,10 @@ l00404492:
 	r6_100 = 0<32>
 	r3_114 = 1<32>
 l0040443A:
-	word32 r2_65 = __clz(r4_139)
+	word32 r2_65 = __count_leading_zeros<word32>(r4_139)
 	branch r4_139 != 0<32> l00404448
 l00404440:
-	r2_65 = __clz(r6) + 0x20<32>
+	r2_65 = __count_leading_zeros<word32>(r6) + 0x20<32>
 l00404448:
 	word32 r6_69 = r2_65 + 0xFFFFFFF5<32>
 	branch r6_69 >= 0x1D<32> l00404476
@@ -7141,7 +7141,7 @@ l00404966:
 __init_libc_exit:
 l00404938:
 	Mem132[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 l00404940:
 	Mem134[0x00432520<p32>:word32] = r16_102
 l00404946:
@@ -7337,7 +7337,7 @@ l00404A00:
 	raise()
 	__block_all_sigs()
 	Mem26[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 	__reserved_instruction(0<32>)
 
 
@@ -7454,7 +7454,7 @@ __syscall_entry:
 	word32 r9
 	word32 r10
 l00404A50:
-	__syscall(0<32>)
+	__syscall<word32>(0<32>)
 	r4Out = r5
 	r5Out = r6
 	r6Out = r7
@@ -7682,8 +7682,8 @@ l00404B9E:
 l00404C12:
 	__sync(0<32>)
 l00404C16:
-	word32 r6_64 = __load_linked_32(Mem39[r16_61:word32])
-	branch __store_conditional_32(Mem39[r16_61:word32], 1<32>) == 0<32> l00404C16
+	word32 r6_64 = __load_linked<word32>(&Mem39[r16_61:word32])
+	branch __store_conditional<word32>(&Mem39[r16_61:word32], 1<32>) == 0<32> l00404C16
 l00404C22:
 l00404C02:
 	__sync(0<32>)
@@ -7733,7 +7733,7 @@ l00404D0A:
 l00404D14:
 	__sync(0<32>)
 l00404D1C:
-	branch __store_conditional_32(Mem116[0x554<32>:word32], __load_linked_32(Mem116[0x554<32>:word32]) & r4_143) == 0<32> l00404D1C
+	branch __store_conditional<word32>(&Mem116[0x554<32>:word32], __load_linked<word32>(&Mem116[0x554<32>:word32]) & r4_143) == 0<32> l00404D1C
 l00404D30:
 	__sync(0<32>)
 l00404D34:
@@ -7741,7 +7741,7 @@ l00404D34:
 l00404D38:
 	__sync(0<32>)
 l00404D3C:
-	branch __store_conditional_32(Mem116[0x00432554<p32>:word32], __load_linked_32(Mem116[0x00432554<p32>:word32]) & r7_140) == 0<32> l00404D3C
+	branch __store_conditional<word32>(&Mem116[0x00432554<p32>:word32], __load_linked<word32>(&Mem116[0x00432554<p32>:word32]) & r7_140) == 0<32> l00404D3C
 l00404D48:
 	__sync(0<32>)
 l00404D4C:
@@ -7879,8 +7879,8 @@ l00404D72:
 l00404DE6:
 	__sync(0<32>)
 l00404DEA:
-	word32 r6_64 = __load_linked_32(Mem39[r16_61:word32])
-	branch __store_conditional_32(Mem39[r16_61:word32], 1<32>) == 0<32> l00404DEA
+	word32 r6_64 = __load_linked<word32>(&Mem39[r16_61:word32])
+	branch __store_conditional<word32>(&Mem39[r16_61:word32], 1<32>) == 0<32> l00404DEA
 l00404DF6:
 l00404DD6:
 	__sync(0<32>)
@@ -7928,7 +7928,7 @@ l00404EE6:
 l00404EF0:
 	__sync(0<32>)
 l00404EF8:
-	branch __store_conditional_32(Mem119[0x554<32>:word32], __load_linked_32(Mem119[0x554<32>:word32]) & r4_146) == 0<32> l00404EF8
+	branch __store_conditional<word32>(&Mem119[0x554<32>:word32], __load_linked<word32>(&Mem119[0x554<32>:word32]) & r4_146) == 0<32> l00404EF8
 l00404F0C:
 	__sync(0<32>)
 l00404F10:
@@ -7936,7 +7936,7 @@ l00404F10:
 l00404F14:
 	__sync(0<32>)
 l00404F18:
-	branch __store_conditional_32(Mem119[0x00432554<p32>:word32], __load_linked_32(Mem119[0x00432554<p32>:word32]) & r7_143) == 0<32> l00404F18
+	branch __store_conditional<word32>(&Mem119[0x00432554<p32>:word32], __load_linked<word32>(&Mem119[0x00432554<p32>:word32]) & r7_143) == 0<32> l00404F18
 l00404F24:
 	__sync(0<32>)
 l00404F28:
@@ -8053,7 +8053,7 @@ l00404F46:
 	branch __bit<word32,word32>(r7_26, 0<32>) l00404F6E
 l00404F54:
 	Mem34[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 l00404F5C:
 	word32 r18_39 = r4 + 0xFFFFFFF8<32> + r22_29
 	branch Mem37[r4 + 0xFFFFFFF8<32> + r22_29:word32] == r7_26 l00404F76
@@ -8096,8 +8096,8 @@ l00404FBA:
 l004050B4:
 	__sync(0<32>)
 l004050B8:
-	word32 r6_95 = __load_linked_32(Mem86[r23_92:word32])
-	branch __store_conditional_32(Mem86[r23_92:word32], 1<32>) == 0<32> l004050B8
+	word32 r6_95 = __load_linked<word32>(&Mem86[r23_92:word32])
+	branch __store_conditional<word32>(&Mem86[r23_92:word32], 1<32>) == 0<32> l004050B8
 l004050C4:
 l004050A0:
 	__sync(0<32>)
@@ -8116,8 +8116,8 @@ l00404FCE:
 l00405086:
 	__sync(0<32>)
 l0040508A:
-	word32 r6_139 = __load_linked_32(Mem134[0x00432958<p32>:word32])
-	branch __store_conditional_32(Mem134[0x00432958<p32>:word32], 1<32>) == 0<32> l0040508A
+	word32 r6_139 = __load_linked<word32>(&Mem134[0x00432958<p32>:word32])
+	branch __store_conditional<word32>(&Mem134[0x00432958<p32>:word32], 1<32>) == 0<32> l0040508A
 l0040509E:
 l0040506E:
 	__sync(0<32>)
@@ -8166,7 +8166,7 @@ l0040522E:
 l00405232:
 	__sync(0<32>)
 l00405236:
-	branch __store_conditional_32(Mem134[0x555<32>:word32], __load_linked_32(Mem134[0x555<32>:word32]) | r5_207) == 0<32> l00405236
+	branch __store_conditional<word32>(&Mem134[0x555<32>:word32], __load_linked<word32>(&Mem134[0x555<32>:word32]) | r5_207) == 0<32> l00405236
 l0040524A:
 	__sync(0<32>)
 l0040524E:
@@ -8174,7 +8174,7 @@ l0040524E:
 l00405252:
 	__sync(0<32>)
 l00405256:
-	branch __store_conditional_32(Mem134[0x00432554<p32>:word32], __load_linked_32(Mem134[0x00432554<p32>:word32]) | r7_204) == 0<32> l00405256
+	branch __store_conditional<word32>(&Mem134[0x00432554<p32>:word32], __load_linked<word32>(&Mem134[0x00432554<p32>:word32]) | r7_204) == 0<32> l00405256
 l00405262:
 	__sync(0<32>)
 l0040517E:
@@ -8338,7 +8338,7 @@ l0040506A:
 	r18_39 = r18_39 + r7_582
 l00404F66:
 	Mem600[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 l00404F6E:
 l00404F72_thunk_munmap:
 	word32 r3_616
@@ -8485,8 +8485,8 @@ l004052FC:
 l0040543E:
 	__sync(0<32>)
 l00405442:
-	word32 r6_185 = __load_linked_32(Mem163[r30_182:word32])
-	branch __store_conditional_32(Mem163[r30_182:word32], 1<32>) == 0<32> l00405442
+	word32 r6_185 = __load_linked<word32>(&Mem163[r30_182:word32])
+	branch __store_conditional<word32>(&Mem163[r30_182:word32], 1<32>) == 0<32> l00405442
 l0040544E:
 l00405428:
 	__sync(0<32>)
@@ -8562,7 +8562,7 @@ l0040574C:
 l00405756:
 	__sync(0<32>)
 l0040575A:
-	branch __store_conditional_32(Mem163[0x555<32>:word32], __load_linked_32(Mem163[0x555<32>:word32]) & r5_284) == 0<32> l0040575A
+	branch __store_conditional<word32>(&Mem163[0x555<32>:word32], __load_linked<word32>(&Mem163[0x555<32>:word32]) & r5_284) == 0<32> l0040575A
 l0040576E:
 	__sync(0<32>)
 l00405772:
@@ -8570,7 +8570,7 @@ l00405772:
 l00405776:
 	__sync(0<32>)
 l0040577A:
-	branch __store_conditional_32(Mem163[0x00432554<p32>:word32], __load_linked_32(Mem163[0x00432554<p32>:word32]) & r7_281) == 0<32> l0040577A
+	branch __store_conditional<word32>(&Mem163[0x00432554<p32>:word32], __load_linked<word32>(&Mem163[0x00432554<p32>:word32]) & r7_281) == 0<32> l0040577A
 l00405786:
 	__sync(0<32>)
 l0040578A:
@@ -8648,8 +8648,8 @@ l00405370:
 l004055B4:
 	__sync(0<32>)
 l004055B8:
-	word32 r6_511 = __load_linked_32(Mem507[0x545<32>:word32])
-	branch __store_conditional_32(Mem507[0x545<32>:word32], 1<32>) == 0<32> l004055B8
+	word32 r6_511 = __load_linked<word32>(&Mem507[0x545<32>:word32])
+	branch __store_conditional<word32>(&Mem507[0x545<32>:word32], 1<32>) == 0<32> l004055B8
 l004055CC:
 l0040559C:
 	__sync(0<32>)
@@ -8890,7 +8890,7 @@ l00405868:
 	branch Mem49[r4 + 0xFFFFFFF8<32> + r17_53:word32] == r7_50 l0040587A
 l00405872:
 	Mem57[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 l0040587A:
 	word32 r7_150
 	branch r17_53 <u r19_156 l004058C4
@@ -9041,7 +9041,7 @@ l0040585A:
 	return r2_201
 l0040581A:
 	Mem315[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 l00405822:
 	r8_101 = r8 (alias)
 	r6_155 = r5 + 0xFFFFFFFF<32> (alias)
@@ -10750,7 +10750,7 @@ word32 htonl(word32 r4)
 // Preserved: sp
 htonl_entry:
 l004066F0:
-	return __rotx(r4, 8<32>, 0x18<32>, 0<32>)
+	return __rotx<word32>(r4, 8<32>, 0x18<32>, 0<32>)
 htonl_exit:
 
 
@@ -10770,7 +10770,7 @@ word32 htons(word32 r4)
 // Preserved: sp
 htons_entry:
 l00406700:
-	return __rotx(r4, 0x18<32>, 8<32>, 0<32>) & 0xFFFF<32>
+	return __rotx<word32>(r4, 0x18<32>, 8<32>, 0<32>) & 0xFFFF<32>
 htons_exit:
 
 
@@ -12577,7 +12577,7 @@ word32 ntohl(word32 r4)
 // Preserved: sp
 ntohl_entry:
 l00407620:
-	return __rotx(r4, 8<32>, 0x18<32>, 0<32>)
+	return __rotx<word32>(r4, 8<32>, 0x18<32>, 0<32>)
 ntohl_exit:
 
 
@@ -12595,7 +12595,7 @@ word32 ntohs(word32 r4)
 // Preserved: sp
 ntohs_entry:
 l00407630:
-	return __rotx(r4, 0x18<32>, 8<32>, 0<32>) & 0xFFFF<32>
+	return __rotx<word32>(r4, 0x18<32>, 8<32>, 0<32>) & 0xFFFF<32>
 ntohs_exit:
 
 
@@ -13943,7 +13943,7 @@ l00407F4C:
 	word32 r6_24 = 0x00432980<p32> + ((r4 + 0xFFFFFFFF<32> >>u 5<32>) << 2<8>)
 	word32 r5_26 = 1<32> << r4 + 0xFFFFFFFF<32>
 l00407F64:
-	branch __store_conditional_32(Mem11[r6_24:word32], __load_linked_32(Mem11[r6_24:word32]) | r5_26) == 0<32> l00407F64
+	branch __store_conditional<word32>(&Mem11[r6_24:word32], __load_linked<word32>(&Mem11[r6_24:word32]) | r5_26) == 0<32> l00407F64
 l00407F70:
 	__sync(0<32>)
 	branch Mem11[0x00454434<p32>:word32] != 0<32> l00407FA4
@@ -14741,10 +14741,10 @@ l00408494:
 l0040849A:
 	__sync(0<32>)
 l004084A2:
-	word32 r4_18 = __load_linked_32(Mem13[r4 + 0x4C<32>:word32])
+	word32 r4_18 = __load_linked<word32>(&Mem13[r4 + 0x4C<32>:word32])
 	branch r4_18 != 0<32> l004084B0
 l004084A8:
-	branch __store_conditional_32(Mem13[r4 + 0x4C<32>:word32], r8_9) == 0<32> l004084A2
+	branch __store_conditional<word32>(&Mem13[r4 + 0x4C<32>:word32], r8_9) == 0<32> l004084A2
 l004084B0:
 	__sync(0<32>)
 	branch r4_18 != 0<32> l0040847A
@@ -20118,8 +20118,8 @@ l0040AD30:
 l0040AD46:
 	__sync(0<32>)
 l0040AD4A:
-	word32 r5_15 = __load_linked_32(Mem7[r4:word32])
-	branch __store_conditional_32(Mem7[r4:word32], 1<32>) == 0<32> l0040AD4A
+	word32 r5_15 = __load_linked<word32>(&Mem7[r4:word32])
+	branch __store_conditional<word32>(&Mem7[r4:word32], 1<32>) == 0<32> l0040AD4A
 l0040AD58:
 	__sync(0<32>)
 	branch r5_15 != 0<32> l0040AD3E
@@ -20280,7 +20280,7 @@ l0040ADC8:
 l0040ADD6:
 	__sync(0<32>)
 l0040ADDA:
-	branch __store_conditional_32(Mem13[r5:word32], __load_linked_32(Mem13[r5:word32]) + 1<32>) == 0<32> l0040ADDA
+	branch __store_conditional<word32>(&Mem13[r5:word32], __load_linked<word32>(&Mem13[r5:word32]) + 1<32>) == 0<32> l0040ADDA
 l0040ADE6:
 	__sync(0<32>)
 l0040ADEE:
@@ -20299,7 +20299,7 @@ l0040ADF2:
 l0040ADF4:
 	__sync(0<32>)
 l0040ADF8:
-	branch __store_conditional_32(Mem13[r5:word32], __load_linked_32(Mem13[r5:word32]) + 0xFFFFFFFF<32>) == 0<32> l0040ADF8
+	branch __store_conditional<word32>(&Mem13[r5:word32], __load_linked<word32>(&Mem13[r5:word32]) + 0xFFFFFFFF<32>) == 0<32> l0040ADF8
 l0040AE04:
 	__sync(0<32>)
 l0040AE08:
@@ -20448,9 +20448,9 @@ l0040AEB0:
 	word32 r4_19 = __vdsosym(0x00412044<p32>, 0x0041202C<p32>)
 	__sync(0<32>)
 l0040AECA:
-	branch 0x0040AEB0<p32> != __load_linked_32(Mem9[0x004303A0<p32>:word32]) l0040AEE0
+	branch 0x0040AEB0<p32> != __load_linked<word32>(&Mem9[0x004303A0<p32>:word32]) l0040AEE0
 l0040AED4:
-	branch __store_conditional_32(Mem9[0x004303A0<p32>:word32], r4_19) == 0<32> l0040AECA
+	branch __store_conditional<word32>(&Mem9[0x004303A0<p32>:word32], r4_19) == 0<32> l0040AECA
 l0040AEE0:
 	__sync(0<32>)
 	branch r4_19 != 0<32> l0040AEEC
@@ -21040,7 +21040,7 @@ l0040B20E:
 	branch __init_tp(__copy_tls(r4_58)) >= 0<32> l0040B222
 l0040B21A:
 	Mem102[r0:byte] = 0<8>
-	__trap_code(0<32>)
+	__syscall<word32>(0<32>)
 l0040B222:
 	return
 __init_tls_exit:
@@ -21669,19 +21669,19 @@ l0040B6A4:
 	r7_1507 = 0<32>
 	branch r16_1504 != r0 l0040B6B8
 l0040B6B4_1:
-	__trap_code(7<32>)
+	__syscall<word32>(7<32>)
 l0040B6B8:
 l0040B6C0:
 	word32 r4_633 = Mem632[fp - 0x230<32> + r7_1507 * 4<32>:word32]
 	branch r16_1504 != r0 l0040B6CC
 l0040B6C8_1:
-	__trap_code(7<32>)
+	__syscall<word32>(7<32>)
 l0040B6CC:
 	word32 r6_641 = fp - 0x230<32> + r5_606
 	word32 r5_644 = r4_633 %u r16_1504
 	branch r16_1504 != r0 l0040B6D6
 l0040B6D2_1:
-	__trap_code(7<32>)
+	__syscall<word32>(7<32>)
 l0040B6D6:
 	Mem657[fp - 0x230<32> + r7_1507 * 4<32>:word32] = r6_641
 	r5_606 = r5_644 *s r19_136
@@ -24216,7 +24216,7 @@ l0040CDC0:
 l0040CDC2:
 	branch r5 != r0 l0040CDCC
 l0040CDC8_1:
-	__trap_code(7<32>)
+	__syscall<word32>(7<32>)
 l0040CDCC:
 	branch r7 <u r4 l0040CDD6
 l0040CDD6:
@@ -24844,7 +24844,7 @@ void __restore(word32 r4)
 // Preserved: sp
 __restore_entry:
 l0040D1C0:
-	__syscall(0<32>)
+	__syscall<word32>(0<32>)
 l0040D1CC_thunk___lockfile:
 	word32 r3_15
 	word32 r4_16
@@ -24887,10 +24887,10 @@ l0040D1D0:
 l0040D1F0:
 	__sync(0<32>)
 l0040D1F8:
-	word32 r6_21 = __load_linked_32(Mem9[r4 + 0x4C<32>:word32])
+	word32 r6_21 = __load_linked<word32>(&Mem9[r4 + 0x4C<32>:word32])
 	branch r6_21 != 0<32> l0040D206
 l0040D1FE:
-	branch __store_conditional_32(Mem9[r4 + 0x4C<32>:word32], r17_16) == 0<32> l0040D1F8
+	branch __store_conditional<word32>(&Mem9[r4 + 0x4C<32>:word32], r17_16) == 0<32> l0040D1F8
 l0040D206:
 	__sync(0<32>)
 	branch r6_21 != 0<32> l0040D1E6
@@ -26229,10 +26229,10 @@ l0040DD62:
 	__sync(0<32>)
 l0040DD6E:
 	word32 r7_43 = 0x00432F18<p32>
-	word32 r6_45 = __load_linked_32(Mem42[0x00432F18<p32>:word32])
+	word32 r6_45 = __load_linked<word32>(&Mem42[0x00432F18<p32>:word32])
 	branch r5_40 != r6_45 l0040DD84
 l0040DD78:
-	r7_43 = __store_conditional_32(Mem42[0x00432F18<p32>:word32], fp - 0x38<32>)
+	r7_43 = __store_conditional<word32>(&Mem42[0x00432F18<p32>:word32], fp - 0x38<32>)
 	branch r7_43 == 0<32> l0040DD6E
 l0040DD84:
 	__sync(0<32>)
@@ -26241,10 +26241,10 @@ l0040DD8E:
 	__sync(0<32>)
 l0040DD94:
 	word32 r7_57 = 0x00432F0C<p32>
-	word32 r6_59 = __load_linked_32(Mem42[0x00432F0C<p32>:word32])
+	word32 r6_59 = __load_linked<word32>(&Mem42[0x00432F0C<p32>:word32])
 	branch r5_40 == r6_59 l0040DDE4
 l0040DDE4:
-	r7_57 = __store_conditional_32(Mem42[0x00432F0C<p32>:word32], 0<32>)
+	r7_57 = __store_conditional<word32>(&Mem42[0x00432F0C<p32>:word32], 0<32>)
 	branch r7_57 == 0<32> l0040DD94
 l0040DDF0:
 l0040DDA0:
@@ -27383,10 +27383,10 @@ l0040E7EE:
 	__sync(0<32>)
 	word32 r5_19 = r7_14 + 1<32> + (r7_14 >>u 0x1F<32>)
 l0040E7FC:
-	word32 r8_22 = __load_linked_32(Mem7[r4:word32])
+	word32 r8_22 = __load_linked<word32>(&Mem7[r4:word32])
 	branch r7_14 != r8_22 l0040E80C
 l0040E804:
-	branch __store_conditional_32(Mem7[r4:word32], r5_19) == 0<32> l0040E7FC
+	branch __store_conditional<word32>(&Mem7[r4:word32], r5_19) == 0<32> l0040E7FC
 l0040E80C:
 	__sync(0<32>)
 	branch r7_14 != r8_22 l0040E7D6
@@ -27480,7 +27480,7 @@ cleanup_entry:
 l0040E890:
 	__sync(0<32>)
 l0040E894:
-	branch __store_conditional_32(Mem0[r4:word32], __load_linked_32(Mem0[r4:word32]) + 0xFFFFFFFF<32>) == 0<32> l0040E894
+	branch __store_conditional<word32>(&Mem0[r4:word32], __load_linked<word32>(&Mem0[r4:word32]) + 0xFFFFFFFF<32>) == 0<32> l0040E894
 l0040E8A0:
 	__sync(0<32>)
 	return
@@ -27516,14 +27516,14 @@ l0040E8CC:
 l0040E8D2:
 	__sync(0<32>)
 l0040E8D8:
-	branch __store_conditional_32(Mem11[r4 + 4<32>:word32], __load_linked_32(Mem11[r4 + 4<32>:word32]) + 1<32>) == 0<32> l0040E8D8
+	branch __store_conditional<word32>(&Mem11[r4 + 4<32>:word32], __load_linked<word32>(&Mem11[r4 + 4<32>:word32]) + 1<32>) == 0<32> l0040E8D8
 l0040E8E4:
 	__sync(0<32>)
 	__sync(0<32>)
 l0040E8EC:
-	branch __load_linked_32(Mem11[r4:word32]) != 0<32> l0040E8FA
+	branch __load_linked<word32>(&Mem11[r4:word32]) != 0<32> l0040E8FA
 l0040E8F2:
-	branch __store_conditional_32(Mem11[r4:word32], 0xFFFFFFFF<32>) == 0<32> l0040E8EC
+	branch __store_conditional<word32>(&Mem11[r4:word32], 0xFFFFFFFF<32>) == 0<32> l0040E8EC
 l0040E8FA:
 	__sync(0<32>)
 	_pthread_cleanup_push(&tLoc1C, 0x0040E890<p32>, r4 + 4<32>)
@@ -27562,10 +27562,10 @@ l0040E954:
 	__sync(0<32>)
 	word32 r5_16 = r7_9 + 0xFFFFFFFF<32> - r6_11
 l0040E95A:
-	word32 r8_19 = __load_linked_32(Mem5[r4:word32])
+	word32 r8_19 = __load_linked<word32>(&Mem5[r4:word32])
 	branch r7_9 != r8_19 l0040E96A
 l0040E962:
-	branch __store_conditional_32(Mem5[r4:word32], r5_16) == 0<32> l0040E95A
+	branch __store_conditional<word32>(&Mem5[r4:word32], r5_16) == 0<32> l0040E95A
 l0040E96A:
 	__sync(0<32>)
 	branch r7_9 != r8_19 l0040E932
@@ -27798,7 +27798,7 @@ l0040ED3A:
 	r5_11 = 0<32>
 	r7_14 = 0<32>
 l0040EC5E:
-	r3 = __clz(r7)
+	r3 = __count_leading_zeros<word32>(r7)
 	branch r3 != 0<32> l0040EC76
 l0040EC76:
 	word32 r5_18 = 0x20<32> - r3
@@ -27868,7 +27868,7 @@ l0040EB4C:
 l0040EB50:
 l0040EB56:
 	word32 r8_142
-	word32 r6_90 = __clz(r6)
+	word32 r6_90 = __count_leading_zeros<word32>(r6)
 	branch r6_90 != 0<32> l0040EBCA
 l0040EBCA:
 	r9_147 = r6 << r6_90
@@ -27942,7 +27942,7 @@ l0040EBC0:
 l0040EBC4:
 	r4_187 = r3 + 0xFFFFFFFE<32>
 l0040EAC0:
-	word32 r7_192 = __clz(r6)
+	word32 r7_192 = __count_leading_zeros<word32>(r6)
 	branch r7_192 == 0<32> l0040EADE
 l0040EAC6:
 	r9_147 = r6 << r7_192
@@ -28018,7 +28018,7 @@ l0040ED50:
 l0040EEA8:
 	branch r5 <u r7 l0040EDDC
 l0040EEAC:
-	r12 = __clz(r7)
+	r12 = __count_leading_zeros<word32>(r7)
 	branch r12 != 0<32> l0040EECE
 l0040EECE:
 	word32 r9_15 = 0x20<32> - r12
@@ -28093,7 +28093,7 @@ l0040EDDE:
 l0040EDE2:
 l0040EDE8:
 	word32 r5_164
-	r11_122 = __clz(r6)
+	r11_122 = __count_leading_zeros<word32>(r6)
 	branch r11_122 != 0<32> l0040EE2E
 l0040EE2E:
 	r9_124 = r6 << r11_122
@@ -28146,7 +28146,7 @@ l0040EE20:
 	r6_193 = (r7_183 - r6_175) %u r10_169
 	r4_195 = r4_168 *s r5_181
 l0040ED5C:
-	r11_122 = __clz(r6)
+	r11_122 = __count_leading_zeros<word32>(r6)
 	branch r11_122 == 0<32> l0040ED7C
 l0040ED64:
 	r9_124 = r6 << r11_122
@@ -28407,10 +28407,10 @@ l0040F2F6:
 	r11_100 = r12_116
 	r13_11 = r10_14
 l0040F508:
-	word32 r7_218 = __clz(r4_207)
+	word32 r7_218 = __count_leading_zeros<word32>(r4_207)
 	branch r4_207 != 0<32> l0040F516
 l0040F50E:
-	r7_218 = __clz(r11_100) + 0x20<32>
+	r7_218 = __count_leading_zeros<word32>(r11_100) + 0x20<32>
 l0040F516:
 	word32 r8_227
 	word32 r10_223 = r7_218 + 0xFFFFFFF8<32>
@@ -28703,10 +28703,10 @@ l0040F6CE:
 	r2_104 = 0<32>
 	r12_113 = 1<32>
 l0040F672:
-	word32 r11_14 = __clz(r10_6)
+	word32 r11_14 = __count_leading_zeros<word32>(r10_6)
 	branch r10_6 != 0<32> l0040F682
 l0040F67A:
-	r11_14 = __clz(r4) + 0x20<32>
+	r11_14 = __count_leading_zeros<word32>(r4) + 0x20<32>
 l0040F682:
 	word32 r2_18 = r11_14 + 0xFFFFFFF5<32>
 	branch r2_18 >= 0x1D<32> l0040F6B0
@@ -28753,10 +28753,10 @@ l0040F740:
 	r6_101 = 0<32>
 	r3_102 = 1<32>
 l0040F6E8:
-	word32 r11_67 = __clz(r4_100)
+	word32 r11_67 = __count_leading_zeros<word32>(r4_100)
 	branch r4_100 != 0<32> l0040F6F6
 l0040F6EE:
-	r11_67 = __clz(r6) + 0x20<32>
+	r11_67 = __count_leading_zeros<word32>(r6) + 0x20<32>
 l0040F6F6:
 	word32 r3_71 = r11_67 + 0xFFFFFFF5<32>
 	branch r3_71 >= 0x1D<32> l0040F724
@@ -29344,10 +29344,10 @@ l0040FE22:
 	r11_228 = r3_135
 	r13_17 = r10_13
 l00410034:
-	word32 r7_237 = __clz(r4_226)
+	word32 r7_237 = __count_leading_zeros<word32>(r4_226)
 	branch r4_226 != 0<32> l00410042
 l0041003A:
-	r7_237 = __clz(r11_228) + 0x20<32>
+	r7_237 = __count_leading_zeros<word32>(r11_228) + 0x20<32>
 l00410042:
 	word32 r8_246
 	word32 r10_242 = r7_237 + 0xFFFFFFF8<32>

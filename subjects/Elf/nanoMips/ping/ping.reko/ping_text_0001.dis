@@ -56,7 +56,7 @@ l004101C4:
 	r8_10 = 0<32>
 l00410172:
 	word32 r4_13 = (r4 ^ r4 >> 0x1F<32>) - (r4 >> 0x1F<32>)
-	word32 r9_15 = __clz(r4_13)
+	word32 r9_15 = __count_leading_zeros<word32>(r4_13)
 	r6_16 = 0x41E<32> - r9_15
 	r8_10 = r4 >>u 0x1F<32>
 	word32 r5_17 = 0x433<32> - r6_16
@@ -94,7 +94,7 @@ l00410218:
 	r4_16 = 0<32>
 	r6_10 = 0<32>
 l004101D2:
-	word32 r8_8 = __clz(r4)
+	word32 r8_8 = __count_leading_zeros<word32>(r4)
 	r6_10 = 0x41E<32> - r8_8
 	word32 r5_12 = 0x433<32> - r6_10
 	branch r5_12 >= 0x20<32> l0041020A

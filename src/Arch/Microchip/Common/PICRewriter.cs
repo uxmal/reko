@@ -29,6 +29,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Reko.Core.Lib;
+using Reko.Core.Intrinsics;
+using Reko.Core.Serialization;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -416,6 +418,51 @@ namespace Reko.Arch.MicrochipPIC.Common
             return (indMode, memPtr);
         }
 
+        protected static readonly IntrinsicProcedure asrf_intrinsic = IntrinsicBuilder.Pure("__asrf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure callw_intrinsic = IntrinsicBuilder.Pure("__callw")
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Word16)
+            .Returns(PrimitiveType.Word16);
+        protected static readonly IntrinsicProcedure daw_intrinsic = IntrinsicBuilder.Pure("__daw")
+            .Param(PrimitiveType.Word16)
+            .Param(PrimitiveType.Bool)
+            .Param(PrimitiveType.Bool)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure lslf_intrinsic = IntrinsicBuilder.Pure("__lslf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure lsrf_intrinsic = IntrinsicBuilder.Pure("__lsrf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true, new()
+            {
+                Terminates = true,
+            })
+            .Void();
+        protected static readonly IntrinsicProcedure rlf_intrinsic = IntrinsicBuilder.Pure("__rlf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure rrf_intrinsic = IntrinsicBuilder.Pure("__rrf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure rlcf_intrinsic = IntrinsicBuilder.Pure("__rlcf")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure rlncf_intrinsic = IntrinsicBuilder.Pure("__rlncf")
+             .Param(PrimitiveType.Byte)
+             .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure rrcf_intrinsic = IntrinsicBuilder.Pure("__rrcf")
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Bool)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure rrncf_intrinsic = IntrinsicBuilder.Pure("__rrncf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+        protected static readonly IntrinsicProcedure swapf_intrinsic = IntrinsicBuilder.Pure("__swapf")
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
     }
-
 }

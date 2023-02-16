@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -310,5 +311,21 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("Tlcs900_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
-        }
+
+        private static readonly IntrinsicProcedure bs1b_intrinsic = IntrinsicBuilder.Unary("__bs1b", PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure daa_intrinsic = IntrinsicBuilder.Unary("__daa", PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure decf_intrinsic = IntrinsicBuilder.SideEffect("__decf")
+            .Void();
+        private static readonly IntrinsicProcedure incf_intrinsic = IntrinsicBuilder.SideEffect("__incf")
+            .Void();
+        private static readonly IntrinsicProcedure ldf_intrinsic = IntrinsicBuilder.SideEffect("__ldf")
+            .Param(PrimitiveType.Byte)
+            .Void();
+
+        private static readonly IntrinsicProcedure ei_intrinsic = IntrinsicBuilder.SideEffect("__ei")
+            .Param(PrimitiveType.Byte)
+            .Void();
+    }
+
 }

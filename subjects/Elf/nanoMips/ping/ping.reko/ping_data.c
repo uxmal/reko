@@ -72,7 +72,4 @@ Eq_n __stdout_used = // 00430300
 	{
 		8
 	};
-Eq_n vdso_func = // 004303A0
-	{
-		-80
-	};
+<anonymous> * vdso_func = cgt_init; // 004303A0

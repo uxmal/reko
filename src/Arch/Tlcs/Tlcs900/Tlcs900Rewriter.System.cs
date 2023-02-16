@@ -38,12 +38,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteDecf()
         {
             //$TODO: model this as an explicit bank switch?
-            m.SideEffect(host.Intrinsic("__decf", true, VoidType.Instance));
+            m.SideEffect(m.Fn(decf_intrinsic));
         }
 
         private void RewriteEi()
         {
-            var intrinsic = host.Intrinsic("__ei", true, VoidType.Instance, RewriteSrc(instr.Operands[0]));
+            var intrinsic = m.Fn(ei_intrinsic, RewriteSrc(instr.Operands[0]));
             m.SideEffect(intrinsic);
         }
 
@@ -55,13 +55,13 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteIncf()
         {
             //$TODO: model this as an explicit bank switch?
-            m.SideEffect(host.Intrinsic("__incf", true, VoidType.Instance));
+            m.SideEffect(m.Fn(incf_intrinsic));
         }
 
         private void RewriteLdf()
         {
             //$TODO: model this as an explicit bank switch?
-            m.SideEffect(host.Intrinsic("__ldf", true, VoidType.Instance, RewriteSrc(instr.Operands[0])));
+            m.SideEffect(m.Fn(ldf_intrinsic, RewriteSrc(instr.Operands[0])));
         }
 
         private void RewriteSwi()

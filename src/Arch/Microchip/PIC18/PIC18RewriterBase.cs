@@ -31,6 +31,7 @@ using System;
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
     using Common;
+    using Reko.Core.Intrinsics;
 
     /// <summary>
     /// The PIC18 instructions rewriter base. Must be inherited.
@@ -553,11 +554,10 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteCALLW()
         {
-
             iclass = InstrClass.Transfer | InstrClass.Call;
 
             var pclat = binder.EnsureRegister(PIC18Registers.PCLAT);
-            var target = m.Fn(host.Intrinsic("__callw", true, VoidType.Instance, Wreg, pclat));
+            var target = m.Fn(callw_intrinsic, Wreg, pclat);
             var retaddr = instrCurr.Address + instrCurr.Length;
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
@@ -655,7 +655,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var C = FlagGroup(FlagM.C);
             var DC = FlagGroup(FlagM.DC);
-            Expression res = m.Fn(host.Intrinsic("__daw", true, PrimitiveType.Byte, Wreg, C, DC));
+            Expression res = m.Fn(daw_intrinsic, Wreg, C, DC);
             m.Assign(Wreg, res);
             SetStatusFlags(Wreg);
         }
@@ -951,7 +951,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
             var stkptr = binder.EnsureRegister(arch.StackRegister);
             m.Assign(stkptr, Constant.Byte(0));
-            m.SideEffect(host.Intrinsic("__reset", true, VoidType.Instance));
+            m.SideEffect(m.Fn(reset_intrinsic));
         }
 
         private void RewriteRETFIE()
@@ -1002,26 +1002,26 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
-            ArithAssignIndirect(dst, m.Fn(host.Intrinsic("__rlcf", true, PrimitiveType.Byte, memExpr, carry)), indMode, memPtr);
+            ArithAssignIndirect(dst, m.Fn(rlcf_intrinsic, memExpr, carry), indMode, memPtr);
         }
 
         private void RewriteRLNCF()
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
-            ArithAssignIndirect(dst, m.Fn(host.Intrinsic("__rlncf", true, PrimitiveType.Byte, memExpr)), indMode, memPtr);
+            ArithAssignIndirect(dst, m.Fn(rlncf_intrinsic, memExpr), indMode, memPtr);
         }
 
         private void RewriteRRCF()
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
             var carry = FlagGroup(FlagM.C);
-            ArithAssignIndirect(dst, m.Fn(host.Intrinsic("__rrcf", true, PrimitiveType.Byte, memExpr, carry)), indMode, memPtr);
+            ArithAssignIndirect(dst, m.Fn(rrcf_intrinsic, memExpr, carry), indMode, memPtr);
         }
 
         private void RewriteRRNCF()
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
-            ArithAssignIndirect(dst, m.Fn(host.Intrinsic("__rrncf", true, PrimitiveType.Byte, memExpr)), indMode, memPtr);
+            ArithAssignIndirect(dst, m.Fn(rrncf_intrinsic, memExpr), indMode, memPtr);
         }
 
         private void RewriteSETF()
@@ -1105,21 +1105,21 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteSWAPF()
         {
             var (indMode, memPtr) = GetBinaryPtrs(out Expression memExpr, out Expression dst);
-            ArithAssignIndirect(dst, m.Fn(host.Intrinsic("__swapf", true, PrimitiveType.Byte, memExpr)), indMode, memPtr);
+            ArithAssignIndirect(dst, m.Fn(swapf_intrinsic, memExpr), indMode, memPtr);
         }
 
         private void RewriteTBLRD()
         {
             var tblmode = instrCurr.Operands[0] as PICOperandTBLRW ?? throw new InvalidOperationException($"Invalid TBLRD mode operand: {instrCurr.Operands[0]}.");
             var tblptr = binder.EnsureRegister(PIC18Registers.TBLPTR);
-            m.SideEffect(host.Intrinsic("__tblrd", true, VoidType.Instance, tblptr, tblmode.TBLIncrMode));
+            m.SideEffect(m.Fn(tblrd_intrinsic, tblptr, tblmode.TBLIncrMode));
         }
 
         private void RewriteTBLWT()
         {
             var tblmode = instrCurr.Operands[0] as PICOperandTBLRW ?? throw new InvalidOperationException($"Invalid TBLRD mode operand: {instrCurr.Operands[0]}.");
             var tblptr = binder.EnsureRegister(PIC18Registers.TBLPTR);
-            m.SideEffect(host.Intrinsic("__tblwt", true, VoidType.Instance, tblptr, tblmode.TBLIncrMode));
+            m.SideEffect(m.Fn(tblwt_intrinsic, tblptr, tblmode.TBLIncrMode));
         }
 
         private void RewriteTSTFSZ()
@@ -1142,6 +1142,15 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         }
 
         #endregion
+
+        private static readonly IntrinsicProcedure tblrd_intrinsic = IntrinsicBuilder.SideEffect("__tblrd")
+            .Param(PrimitiveType.Ptr16)
+            .Param(PrimitiveType.Byte)
+            .Void();
+        private static readonly IntrinsicProcedure tblwt_intrinsic = IntrinsicBuilder.SideEffect("__tblwt")
+            .Param(PrimitiveType.Ptr16)
+            .Param(PrimitiveType.Byte)
+            .Void();
 
     }
 

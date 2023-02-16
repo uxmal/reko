@@ -3834,9 +3834,9 @@ l00404424:
 l004044BE:
 	return
 l0040442C:
-	word32 r3_10 = 0<32> - CONVERT(__div0s(r4, 0<32>), bool, word32)
-	__div0s(r3_10, r5)
-	__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(r3_10, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5)
+	word32 r3_10 = 0<32> - CONVERT(__div0s<word32>(r4, 0<32>), bool, word32)
+	__div0s<word32>(r3_10, r5)
+	__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r3_10, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5)
 	return
 __sdivsi3_exit:
 
@@ -3852,7 +3852,7 @@ word32 fn004044C4(word32 r4, word32 r5)
 // Preserved: r15
 fn004044C4_entry:
 l004044C4:
-	return __div1(__div1(__div1(__div1(__div1(__div1(__div1(r4, r5), r5), r5), r5), r5), r5), r5)
+	return __div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r4, r5), r5), r5), r5), r5), r5), r5)
 fn004044C4_exit:
 
 
@@ -3867,7 +3867,7 @@ word32 fn004044C6(word32 r4, word32 r5)
 // Preserved: r15
 fn004044C6_entry:
 l004044C6:
-	return __div1(__div1(__div1(__div1(__div1(__div1(r4, r5), r5), r5), r5), r5), r5)
+	return __div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r4, r5), r5), r5), r5), r5), r5)
 fn004044C6_exit:
 
 
@@ -3883,11 +3883,11 @@ word32 fn004044D6(word32 r0, word32 r4, word32 r5, ptr32 & r4Out)
 fn004044D6_entry:
 	bool T
 l004044D6:
-	word32 r4_5 = __div1(r4, r5)
+	word32 r4_5 = __div1<word32>(r4, r5)
 	word32 r0_8 = __rcl<word32,byte>(r0, 1<8>, T)
-	word32 r4_9 = __div1(r4_5, r5)
+	word32 r4_9 = __div1<word32>(r4_5, r5)
 	word32 r0_10 = __rcl<word32,byte>(r0_8, 1<8>, T)
-	word32 r4_11 = __div1(r4_9, r5)
+	word32 r4_11 = __div1<word32>(r4_9, r5)
 	word32 r0_12 = __rcl<word32,byte>(r0_10, 1<8>, T)
 	r4Out = r4_11
 	return r0_12
@@ -3907,19 +3907,19 @@ l004044E6:
 l004044EE_ds_t:
 	bool T_9 = __div0u()
 l00404514:
-	word32 r0_12 = __xtrct(0<32>, r4)
+	word32 r0_12 = __xtrct<word32,word32>(0<32>, r4)
 	word32 r4_16
 	word32 r4_19
 	word32 r4_22
 	word32 r4_55
-	fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9), r4_22, r5, out r4_55)
+	fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_12, 1<8>, T_9), __xtrct<word32,word32>(r4, r0_12), r5, out r4_16), 1<8>, T_9), r4_16, r5, out r4_19), 1<8>, T_9), r4_19, r5, out r4_22), 1<8>, T_9), r4_22, r5, out r4_55)
 	return
 l004044EE_ds_f:
 	__div0u()
 l004044F0:
-	word32 r0_30 = __swap_w(r4)
-	word32 r4_35 = fn004044C6(__div1(fn004044C4(r4 >>u 16<i32>, r5 << 16<i32>), r5 << 16<i32>), r5 << 16<i32>)
-	fn004044C6(__div1(fn004044C4(__swap_w(__xtrct(r4_35, __xtrct(r0_30, r4_35))), r5 << 16<i32>), r5 << 16<i32>), r5 << 16<i32>)
+	word32 r0_30 = __swap_w<word32>(r4)
+	word32 r4_35 = fn004044C6(__div1<word32>(fn004044C4(r4 >>u 16<i32>, r5 << 16<i32>), r5 << 16<i32>), r5 << 16<i32>)
+	fn004044C6(__div1<word32>(fn004044C4(__swap_w<word32>(__xtrct<word32,word32>(r4_35, __xtrct<word32,word32>(r0_30, r4_35))), r5 << 16<i32>), r5 << 16<i32>), r5 << 16<i32>)
 	return
 __udivsi3_exit:
 

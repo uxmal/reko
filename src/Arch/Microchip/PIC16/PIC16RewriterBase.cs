@@ -402,13 +402,13 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_RLF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.Intrinsic("__rlf", false, PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(rlf_intrinsic, srcMem));
         }
 
         private void Rewrite_RRF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.Intrinsic("__rrf", false, PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(rrf_intrinsic, srcMem));
         }
 
         private void Rewrite_SLEEP()
@@ -433,7 +433,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_SWAPF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.Intrinsic("__swapf", false, PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(swapf_intrinsic, srcMem));
         }
 
         private void Rewrite_XORLW()

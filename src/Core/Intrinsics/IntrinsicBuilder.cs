@@ -197,6 +197,11 @@ namespace Reko.Core.Intrinsics
             return new IntrinsicBuilder(name, false);
         }
 
+        public static IntrinsicBuilder SideEffect(string name)
+        {
+            return new IntrinsicBuilder(name, true);
+        }
+
         public static IntrinsicProcedure GenericTernary(string name)
         {
             return new IntrinsicBuilder(name, false)

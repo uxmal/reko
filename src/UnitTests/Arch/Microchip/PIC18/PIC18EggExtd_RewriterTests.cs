@@ -547,7 +547,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                     "1|L--|STKPTR = STKPTR + 1<8>",
                     "2|L--|Stack[STKPTR] = 000202",
                     "3|L--|TOS = 000202",
-                    "4|T--|call __callw(WREG, PCLAT)() (0)"
+                    "4|T--|call __callw(WREG, PCLAT) (0)"
                 );
 
         }
@@ -738,7 +738,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x0007),
                 "0|L--|000200(2): 2 instructions",
-                "1|L--|WREG = __daw(WREG, C, DC)()"
+                "1|L--|WREG = __daw(WREG, C, DC)"
                 );
         }
 
@@ -1544,52 +1544,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3400),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[FSR2 + 0<8>:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[FSR2 + 0<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3401),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[FSR2 + 1<8>:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[FSR2 + 1<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x34C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(ADRESL, C)()",
+                    "1|L--|WREG = __rlcf(ADRESL, C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3500),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[BSR:0<8>:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[BSR:0<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3501),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[BSR:1<8>:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[BSR:1<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x35C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlcf(Data[BSR:0xC3<8>:byte], C)()",
+                    "1|L--|WREG = __rlcf(Data[BSR:0xC3<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3601),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = __rlcf(Data[FSR2 + 1<8>:byte], C)()",
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __rlcf(Data[FSR2 + 1<8>:byte], C)",
                     "2|L--|CZN = cond(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x36C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = __rlcf(ADRESL, C)()",
+                    "1|L--|ADRESL = __rlcf(ADRESL, C)",
                     "2|L--|CZN = cond(ADRESL)"
                 );
             ExecTest(Words(0x3701),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = __rlcf(Data[BSR:1<8>:byte], C)()",
+                    "1|L--|Data[BSR:1<8>:byte] = __rlcf(Data[BSR:1<8>:byte], C)",
                     "2|L--|CZN = cond(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x37C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = __rlcf(Data[BSR:0xC3<8>:byte], C)()",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __rlcf(Data[BSR:0xC3<8>:byte], C)",
                     "2|L--|CZN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -1599,52 +1599,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x4400),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[FSR2 + 0<8>:byte])()",
+                    "1|L--|WREG = __rlncf(Data[FSR2 + 0<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4401),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[FSR2 + 1<8>:byte])()",
+                    "1|L--|WREG = __rlncf(Data[FSR2 + 1<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x44C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(ADRESL)()",
+                    "1|L--|WREG = __rlncf(ADRESL)",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4500),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[BSR:0<8>:byte])()",
+                    "1|L--|WREG = __rlncf(Data[BSR:0<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4501),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[BSR:1<8>:byte])()",
+                    "1|L--|WREG = __rlncf(Data[BSR:1<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x45C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rlncf(Data[BSR:0xC3<8>:byte])()",
+                    "1|L--|WREG = __rlncf(Data[BSR:0xC3<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4601),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = __rlncf(Data[FSR2 + 1<8>:byte])()",
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __rlncf(Data[FSR2 + 1<8>:byte])",
                     "2|L--|ZN = cond(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x46C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = __rlncf(ADRESL)()",
+                    "1|L--|ADRESL = __rlncf(ADRESL)",
                     "2|L--|ZN = cond(ADRESL)"
                 );
             ExecTest(Words(0x4701),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = __rlncf(Data[BSR:1<8>:byte])()",
+                    "1|L--|Data[BSR:1<8>:byte] = __rlncf(Data[BSR:1<8>:byte])",
                     "2|L--|ZN = cond(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x47C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = __rlncf(Data[BSR:0xC3<8>:byte])()",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __rlncf(Data[BSR:0xC3<8>:byte])",
                     "2|L--|ZN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -1654,52 +1654,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3000),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[FSR2 + 0<8>:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[FSR2 + 0<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3001),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[FSR2 + 1<8>:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[FSR2 + 1<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x30C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(ADRESL, C)()",
+                    "1|L--|WREG = __rrcf(ADRESL, C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3100),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[BSR:0<8>:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[BSR:0<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3101),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[BSR:1<8>:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[BSR:1<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x31C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrcf(Data[BSR:0xC3<8>:byte], C)()",
+                    "1|L--|WREG = __rrcf(Data[BSR:0xC3<8>:byte], C)",
                     "2|L--|CZN = cond(WREG)"
                 );
             ExecTest(Words(0x3201),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = __rrcf(Data[FSR2 + 1<8>:byte], C)()",
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __rrcf(Data[FSR2 + 1<8>:byte], C)",
                     "2|L--|CZN = cond(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x32C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = __rrcf(ADRESL, C)()",
+                    "1|L--|ADRESL = __rrcf(ADRESL, C)",
                     "2|L--|CZN = cond(ADRESL)"
                 );
             ExecTest(Words(0x3301),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = __rrcf(Data[BSR:1<8>:byte], C)()",
+                    "1|L--|Data[BSR:1<8>:byte] = __rrcf(Data[BSR:1<8>:byte], C)",
                     "2|L--|CZN = cond(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x33C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = __rrcf(Data[BSR:0xC3<8>:byte], C)()",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __rrcf(Data[BSR:0xC3<8>:byte], C)",
                     "2|L--|CZN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -1709,52 +1709,52 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x4000),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[FSR2 + 0<8>:byte])()",
+                    "1|L--|WREG = __rrncf(Data[FSR2 + 0<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4001),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[FSR2 + 1<8>:byte])()",
+                    "1|L--|WREG = __rrncf(Data[FSR2 + 1<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x40C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(ADRESL)()",
+                    "1|L--|WREG = __rrncf(ADRESL)",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4100),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[BSR:0<8>:byte])()",
+                    "1|L--|WREG = __rrncf(Data[BSR:0<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4101),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[BSR:1<8>:byte])()",
+                    "1|L--|WREG = __rrncf(Data[BSR:1<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x41C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|WREG = __rrncf(Data[BSR:0xC3<8>:byte])()",
+                    "1|L--|WREG = __rrncf(Data[BSR:0xC3<8>:byte])",
                     "2|L--|ZN = cond(WREG)"
                 );
             ExecTest(Words(0x4201),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = __rrncf(Data[FSR2 + 1<8>:byte])()",
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __rrncf(Data[FSR2 + 1<8>:byte])",
                     "2|L--|ZN = cond(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x42C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|ADRESL = __rrncf(ADRESL)()",
+                    "1|L--|ADRESL = __rrncf(ADRESL)",
                     "2|L--|ZN = cond(ADRESL)"
                 );
             ExecTest(Words(0x4301),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = __rrncf(Data[BSR:1<8>:byte])()",
+                    "1|L--|Data[BSR:1<8>:byte] = __rrncf(Data[BSR:1<8>:byte])",
                     "2|L--|ZN = cond(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x43C3),
                 "0|L--|000200(2): 2 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = __rrncf(Data[BSR:0xC3<8>:byte])()",
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __rrncf(Data[BSR:0xC3<8>:byte])",
                     "2|L--|ZN = cond(Data[BSR:0xC3<8>:byte])"
                 );
         }
@@ -2002,43 +2002,43 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         {
             ExecTest(Words(0x3800),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[FSR2 + 0<8>:byte])()"
+                    "1|L--|WREG = __swapf(Data[FSR2 + 0<8>:byte])"
                 );
             ExecTest(Words(0x3801),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[FSR2 + 1<8>:byte])()"
+                    "1|L--|WREG = __swapf(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x38C3),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(ADRESL)()"
+                    "1|L--|WREG = __swapf(ADRESL)"
                 );
             ExecTest(Words(0x3900),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[BSR:0<8>:byte])()"
+                    "1|L--|WREG = __swapf(Data[BSR:0<8>:byte])"
                 );
             ExecTest(Words(0x3901),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[BSR:1<8>:byte])()"
+                    "1|L--|WREG = __swapf(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x39C3),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|WREG = __swapf(Data[BSR:0xC3<8>:byte])()"
+                    "1|L--|WREG = __swapf(Data[BSR:0xC3<8>:byte])"
                 );
             ExecTest(Words(0x3A01),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|Data[FSR2 + 1<8>:byte] = __swapf(Data[FSR2 + 1<8>:byte])()"
+                    "1|L--|Data[FSR2 + 1<8>:byte] = __swapf(Data[FSR2 + 1<8>:byte])"
                 );
             ExecTest(Words(0x3AC3),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|ADRESL = __swapf(ADRESL)()"
+                    "1|L--|ADRESL = __swapf(ADRESL)"
                 );
             ExecTest(Words(0x3B01),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|Data[BSR:1<8>:byte] = __swapf(Data[BSR:1<8>:byte])()"
+                    "1|L--|Data[BSR:1<8>:byte] = __swapf(Data[BSR:1<8>:byte])"
                 );
             ExecTest(Words(0x3BC3),
                 "0|L--|000200(2): 1 instructions",
-                    "1|L--|Data[BSR:0xC3<8>:byte] = __swapf(Data[BSR:0xC3<8>:byte])()"
+                    "1|L--|Data[BSR:0xC3<8>:byte] = __swapf(Data[BSR:0xC3<8>:byte])"
                 );
         }
 

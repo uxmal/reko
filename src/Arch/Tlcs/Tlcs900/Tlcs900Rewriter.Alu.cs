@@ -59,7 +59,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var a = binder.EnsureRegister(Registers.a);
             var src = RewriteSrc(instr.Operands[1]);
             var v = binder.EnsureFlagGroup(Registers.V);
-            m.Assign(a, host.Intrinsic("__bs1b", true, PrimitiveType.SByte, src));
+            m.Assign(a, m.Fn(bs1b_intrinsic, src));
             m.Assign(v, m.Eq0(src));
         }
 
@@ -86,8 +86,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteDaa(string flags)
         {
             var src = RewriteSrc(this.instr.Operands[0]);
-            var fn = host.Intrinsic("__daa", false, PrimitiveType.Byte, src);
-            m.Assign(src, fn);
+            m.Assign(src, m.Fn(daa_intrinsic, src));
             EmitCc(src, flags);
         }
 

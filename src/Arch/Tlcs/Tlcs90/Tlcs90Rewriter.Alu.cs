@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -70,7 +71,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.a);
-            m.Assign(a, host.Intrinsic("__daa", false, PrimitiveType.Byte, a));
+            m.Assign(a, m.Fn(daa_intrinsic, a));
             EmitCc(a, "**-**P-*");
         }
 
@@ -315,5 +316,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var dst = RewriteDst(op, src, (a, b) => fn(b, Constant.SByte(1)));
             EmitCc(dst, "**-0XP0*");
         }
+
+        private static readonly IntrinsicProcedure daa_intrinsic =
+            IntrinsicBuilder.Unary("__daa", PrimitiveType.Byte);
     }
 }

@@ -116,7 +116,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.Transfer | InstrClass.Call;
 
             var pclat = binder.EnsureRegister(PIC18Registers.PCLAT);
-            var target = m.Fn(host.Intrinsic("__callw", true, VoidType.Instance, Wreg, pclat));
+            var target = m.Fn(callw_intrinsic, Wreg, pclat);
             var retaddr = instrCurr.Address + instrCurr.Length;
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 

@@ -313,5 +313,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("Tlcs90_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
+
+        private static readonly IntrinsicProcedure di_intrinsic = IntrinsicBuilder.SideEffect("__disable_interrupts")
+            .Void();
+        private static readonly IntrinsicProcedure ei_intrinsic = IntrinsicBuilder.SideEffect("__enable_interrupts")
+            .Void();
     }
 }

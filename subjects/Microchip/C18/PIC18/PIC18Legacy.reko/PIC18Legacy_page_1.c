@@ -13,10 +13,10 @@ void fn00000000(cu8 TABLAT)
 }
 
 byte g_b0001 = ~0x10; // 00000001
-// 00000E: void fn00000E(Register cu8 TABLAT, Register Eq_n FSR0, Register word24 TBLPTR)
+// 00000E: void fn00000E(Register cu8 TABLAT, Register Eq_n FSR0, Register Eq_n TBLPTR)
 // Called from:
 //      fn00000000
-void fn00000E(cu8 TABLAT, Eq_n FSR0, word24 TBLPTR)
+void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 {
 	__tblrd(TBLPTR, 0x01);
 	g_b00C5 = TABLAT;

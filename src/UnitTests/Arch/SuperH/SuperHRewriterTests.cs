@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("4723"); // div0s\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|T = __div0s(r3, r4)");
+                "1|L--|T = __div0s<word32>(r3, r4)");
         }
 
         [Test]
@@ -293,7 +293,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("4433"); // div1\tr4,r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r3 = __div1(r3, r4)");
+                "1|L--|r3 = __div1<word32>(r3, r4)");
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("5DFF"); // fabs\tfr15
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|fr15 = fabs(fr15)");
+                "1|L--|fr15 = fabsf(fr15)");
         }
 
         [Test]
@@ -853,7 +853,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("4960");  // "swap.w\tr4,r0"
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __swap_w(r4)");
+                "1|L--|r0 = __swap_w<word32>(r4)");
         }
 
         [Test]
@@ -880,7 +880,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("4D20");  // "xtrct\tr4,r0"
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r0 = __xtrct(r0, r4)");
+                "1|L--|r0 = __xtrct<word32,word32>(r0, r4)");
         }
 
         [Test]
@@ -1010,7 +1010,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r13 = Mem0[0x00100004<p32>:word32]",
                 "2|L--|00100002(2): 1 instructions",
-                "3|L--|r3 = __div1(r3, r4)",
+                "3|L--|r3 = __div1<word32>(r3, r4)",
                 "4|L--|00100004(2): 1 instructions",
                 "5|L--|Mem0[r1 + 8<i32>:word32] = r2");
         }

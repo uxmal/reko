@@ -43,7 +43,7 @@ Eq_n __floatsidf(Eq_n r4)
 	if (r4 != 0x00)
 	{
 		Eq_n r4_n = (r4 ^ r4 >> 0x1F) - (r4 >> 0x1F);
-		Eq_n r9_n = __clz(r4_n);
+		Eq_n r9_n = __count_leading_zeros<word32>(r4_n);
 		r6_n = 0x041E - r9_n;
 		r8_n = r4 >> 0x1F;
 		int32 r5_n = 0x0433 - r6_n;
@@ -80,7 +80,7 @@ Eq_n __floatunsidf(Eq_n r4, union Eq_n & r5Out)
 	Eq_n r7_n;
 	if (r4 != 0x00)
 	{
-		Eq_n r8_n = __clz(r4);
+		Eq_n r8_n = __count_leading_zeros<word32>(r4);
 		r6_n = 0x041E - r8_n;
 		int32 r5_n = 0x0433 - r6_n;
 		if (r5_n < 0x20)

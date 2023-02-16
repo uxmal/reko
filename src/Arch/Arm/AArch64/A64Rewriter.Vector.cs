@@ -505,12 +505,13 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(tmpSrc, src);
             var dst = RewriteOp(0);
             var args = new List<Expression>();
+            args.Add(Constant.Int32(n));
             foreach (var reg in idxs.GetRegisters())
             {
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            m.Assign(dst, host.Intrinsic($"__tbl_{idxs.Repeat}", true, arrayDst, args.ToArray()));
+            m.Assign(dst, m.FnVariadic(tbl_intrinsic.MakeInstance(arrayDst), args.ToArray()));
         }
 
         private void RewriteTbx()
@@ -524,12 +525,13 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(tmpSrc, src);
             var dst = RewriteOp(0);
             var args = new List<Expression>();
+            args.Add(Constant.Int32(n));
             foreach (var reg in idxs.GetRegisters())
             {
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            m.Assign(dst, host.Intrinsic($"__tbx_{idxs.Repeat}", true, arrayDst, args.ToArray()));
+            m.Assign(dst, m.FnVariadic(tbx_intrinsic.MakeInstance(arrayDst), args.ToArray()));
         }
     }
 }

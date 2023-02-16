@@ -26,6 +26,8 @@ using System;
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
+    using Reko.Core.Intrinsics;
+    using Reko.Core.Types;
 
     public class PIC16BasicRewriter : PIC16RewriterBase
     {

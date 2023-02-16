@@ -215,7 +215,7 @@ namespace Reko.Arch.Mos6502
 
         private void Brk()
         {
-            m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance));
+            m.SideEffect(m.Fn(brk_intrinsic));
         }
 
         private void Cmp(RegisterStorage r)
@@ -462,5 +462,14 @@ namespace Reko.Arch.Mos6502
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("Rw6502", instr, instr.Mnemonic.ToString(), rdr, "");
         }
+
+        private static readonly IntrinsicProcedure brk_intrinsic = new IntrinsicBuilder(
+            "__brk",
+            true,
+            new Core.Serialization.ProcedureCharacteristics
+            {
+                Terminates = true,
+            })
+            .Void();
     }
 }

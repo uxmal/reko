@@ -3688,7 +3688,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // tbl	v17.8b,{v10.8b},v17.8b
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v2 = d1",
-                "2|L--|d17 = __tbl_1(v10, v2)");
+                "2|L--|d17 = __tbl<byte[8]>(1<i32>, v10, v2)");
         }
 
         [Test]
@@ -3698,7 +3698,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // tbl	v10.8b,{v10.8b-v12.8b},v1.8b
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v2 = d1",
-                "2|L--|d10 = __tbl_3(v10, v11, v12, v2)");
+                "2|L--|d10 = __tbl<byte[8]>(3<i32>, v10, v11, v12, v2)");
         }
 
         [Test]
@@ -3708,7 +3708,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // tbx	v30.8b,{v10.16b},v10.8b
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v2 = d10",
-                "2|L--|d30 = __tbx_1(v10, v2)");
+                "2|L--|d30 = __tbx<byte[8]>(1<i32>, v10, v2)");
         }
 
         [Test]

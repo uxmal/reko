@@ -17,9 +17,9 @@ Eq_n g_t0069;
 Eq_n g_t0267;
 Eq_n g_t026B;
 Eq_n g_t03FF;
-Eq_n g_t0545;
-Eq_n g_t0554;
-Eq_n g_t0555;
+word32 g_dw0545; // 00000545
+word32 g_dw0554; // 00000554
+word32 g_dw0555; // 00000555
 byte g_b07C0; // 000007C0
 Eq_n g_t07C7;
 byte g_b083B; // 0000083B

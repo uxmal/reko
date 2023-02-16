@@ -238,10 +238,10 @@ Eq_104: (fn Eq_2 (Eq_2, Eq_2, word32, word32))
 	T_323 (in __ins<word32,word32> @ 0804D0AA : ptr32)
 	T_530 (in __ins<word32,word32> @ 0804D0E0 : ptr32)
 	T_655 (in __ins<word32,word32> @ 0804D272 : ptr32)
-Eq_150: (fn int32 (Eq_2))
-	T_150 (in __clz @ 0804D548 : ptr32)
-	T_151 (in signature of __clz : void)
-	T_172 (in __clz @ 0804D552 : ptr32)
+Eq_150: (fn word32 (Eq_2))
+	T_150 (in __count_leading_zeros<word32> @ 0804D548 : ptr32)
+	T_151 (in signature of __count_leading_zeros : void)
+	T_172 (in __count_leading_zeros<word32> @ 0804D552 : ptr32)
 Eq_207: (fn bool (Eq_2, word32))
 	T_207 (in __bit<word32,word32> @ 0804D332 : ptr32)
 	T_208 (in signature of __bit : void)
@@ -845,15 +845,15 @@ T_148: (in __ext<word32,word32>(r8_12, 0<32>, 0x17<32>) @ 0804D336 : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_149: (in r7_218 @ 0804D548 : int32)
+T_149: (in r7_218 @ 0804D548 : word32)
   Class: Eq_149
-  DataType: int32
-  OrigDataType: int32
-T_150: (in __clz @ 0804D548 : ptr32)
+  DataType: word32
+  OrigDataType: word32
+T_150: (in __count_leading_zeros<word32> @ 0804D548 : ptr32)
   Class: Eq_150
   DataType: (ptr32 Eq_150)
   OrigDataType: (ptr32 (fn T_153 (T_57)))
-T_151: (in signature of __clz : void)
+T_151: (in signature of __count_leading_zeros : void)
   Class: Eq_150
   DataType: (ptr32 Eq_150)
   OrigDataType: 
@@ -861,10 +861,10 @@ T_152: (in p1 @ 0804D548 : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: 
-T_153: (in __clz(r4_207) @ 0804D548 : int32)
+T_153: (in __count_leading_zeros<word32>(r4_207) @ 0804D548 : word32)
   Class: Eq_149
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_154: (in 0<32> @ 0804D54C : word32)
   Class: Eq_2
   DataType: int32
@@ -928,7 +928,7 @@ T_168: (in 0xFFFFFFF8<32> @ 0804D556 : word32)
 T_169: (in r7_218 + 0xFFFFFFF8<32> @ 0804D556 : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: int32
+  OrigDataType: word32
 T_170: (in 0x20<32> @ 0804D55A : word32)
   Class: Eq_2
   DataType: int32
@@ -937,22 +937,22 @@ T_171: (in r10_223 >= 0x20<32> @ 0804D55A : bool)
   Class: Eq_171
   DataType: bool
   OrigDataType: bool
-T_172: (in __clz @ 0804D552 : ptr32)
+T_172: (in __count_leading_zeros<word32> @ 0804D552 : ptr32)
   Class: Eq_150
   DataType: (ptr32 Eq_150)
   OrigDataType: (ptr32 (fn T_173 (T_56)))
-T_173: (in __clz(r11_209) @ 0804D552 : int32)
+T_173: (in __count_leading_zeros<word32>(r11_209) @ 0804D552 : word32)
   Class: Eq_149
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_174: (in 0x20<32> @ 0804D552 : word32)
   Class: Eq_174
   DataType: word32
   OrigDataType: word32
-T_175: (in __clz(r11_209) + 0x20<32> @ 0804D552 : word32)
+T_175: (in __count_leading_zeros<word32>(r11_209) + 0x20<32> @ 0804D552 : word32)
   Class: Eq_149
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_176: (in r4 << 3<32> @ 0804D102 : word32)
   Class: Eq_176
   DataType: ui32
@@ -1111,8 +1111,8 @@ T_214: (in 0xFFFFFFD8<32> @ 0804D5B6 : word32)
   OrigDataType: word32
 T_215: (in r7_218 + 0xFFFFFFD8<32> @ 0804D5B6 : word32)
   Class: Eq_215
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_216: (in r11_209 << r7_218 + 0xFFFFFFD8<32> @ 0804D5B6 : word32)
   Class: Eq_2
   DataType: Eq_2
@@ -3338,7 +3338,7 @@ typedef Eq_2 (Eq_7)(Eq_2, word32, word32);
 
 typedef Eq_2 (Eq_104)(Eq_2, Eq_2, word32, word32);
 
-typedef int32 (Eq_150)(Eq_2);
+typedef word32 (Eq_150)(Eq_2);
 
 typedef bool (Eq_207)(Eq_2, word32);
 

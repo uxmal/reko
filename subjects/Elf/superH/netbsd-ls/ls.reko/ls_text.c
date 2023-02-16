@@ -3343,9 +3343,9 @@ void __sdivsi3(Eq_n r4, uint32 r5)
 {
 	if (r5 == 0x00)
 		return;
-	Eq_n r3_n = 0x00 - (word32) __div0s(r4, 0x00);
-	__div0s(r3_n, r5);
-	__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(__div1(r3_n, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5);
+	Eq_n r3_n = 0x00 - (word32) __div0s<word32>(r4, 0x00);
+	__div0s<word32>(r3_n, r5);
+	__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r3_n, r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5), r5);
 }
 
 // 004044C4: Register Eq_n fn004044C4(Register Eq_n r4, Register uint32 r5)
@@ -3353,7 +3353,7 @@ void __sdivsi3(Eq_n r4, uint32 r5)
 //      __udivsi3
 Eq_n fn004044C4(Eq_n r4, uint32 r5)
 {
-	return __div1(__div1(__div1(__div1(__div1(__div1(__div1(r4, r5), r5), r5), r5), r5), r5), r5);
+	return __div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r4, r5), r5), r5), r5), r5), r5), r5);
 }
 
 // 004044C6: Register Eq_n fn004044C6(Register Eq_n r4, Register uint32 r5)
@@ -3361,7 +3361,7 @@ Eq_n fn004044C4(Eq_n r4, uint32 r5)
 //      __udivsi3
 Eq_n fn004044C6(Eq_n r4, uint32 r5)
 {
-	return __div1(__div1(__div1(__div1(__div1(__div1(r4, r5), r5), r5), r5), r5), r5);
+	return __div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(__div1<word32>(r4, r5), r5), r5), r5), r5), r5);
 }
 
 // 004044D6: Register Eq_n fn004044D6(Register Eq_n r0, Register Eq_n r4, Register uint32 r5, Register out Eq_n r4Out)
@@ -3370,11 +3370,11 @@ Eq_n fn004044C6(Eq_n r4, uint32 r5)
 Eq_n fn004044D6(Eq_n r0, Eq_n r4, uint32 r5, union Eq_n & r4Out)
 {
 	bool T;
-	Eq_n r4_n = __div1(r4, r5);
+	Eq_n r4_n = __div1<word32>(r4, r5);
 	Eq_n r0_n = __rcl<word32,byte>(r0, 0x01, T);
-	Eq_n r4_n = __div1(r4_n, r5);
+	Eq_n r4_n = __div1<word32>(r4_n, r5);
 	Eq_n r0_n = __rcl<word32,byte>(r0_n, 0x01, T);
-	Eq_n r4_n = __div1(r4_n, r5);
+	Eq_n r4_n = __div1<word32>(r4_n, r5);
 	Eq_n r0_n = __rcl<word32,byte>(r0_n, 0x01, T);
 	r4Out = r4_n;
 	return r0_n;
@@ -3386,19 +3386,19 @@ void __udivsi3(Eq_n r4, uint32 r5)
 	if (!((uint32) (uint16) r5 == r5))
 	{
 		bool T_n = __div0u();
-		Eq_n r0_n = __xtrct(0x00, r4);
+		Eq_n r0_n = __xtrct<word32,word32>(0x00, r4);
 		Eq_n r4_n;
 		Eq_n r4_n;
 		Eq_n r4_n;
 		word32 r4_n;
-		fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_n, 0x01, T_n), __xtrct(r4, r0_n), r5, out r4_n), 0x01, T_n), r4_n, r5, out r4_n), 0x01, T_n), r4_n, r5, out r4_n), 0x01, T_n), r4_n, r5, out r4_n);
+		fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(fn004044D6(__rcl<word32,byte>(r0_n, 0x01, T_n), __xtrct<word32,word32>(r4, r0_n), r5, out r4_n), 0x01, T_n), r4_n, r5, out r4_n), 0x01, T_n), r4_n, r5, out r4_n), 0x01, T_n), r4_n, r5, out r4_n);
 	}
 	else
 	{
 		__div0u();
-		Eq_n r0_n = __swap_w(r4);
-		Eq_n r4_n = fn004044C6(__div1(fn004044C4(r4 >> 16, r5 << 16), r5 << 16), r5 << 16);
-		fn004044C6(__div1(fn004044C4(__swap_w(__xtrct(r4_n, __xtrct(r0_n, r4_n))), r5 << 16), r5 << 16), r5 << 16);
+		Eq_n r0_n = __swap_w<word32>(r4);
+		Eq_n r4_n = fn004044C6(__div1<word32>(fn004044C4(r4 >> 16, r5 << 16), r5 << 16), r5 << 16);
+		fn004044C6(__div1<word32>(fn004044C4(__swap_w<word32>(__xtrct<word32,word32>(r4_n, __xtrct<word32,word32>(r0_n, r4_n))), r5 << 16), r5 << 16), r5 << 16);
 	}
 }
 

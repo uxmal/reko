@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Reko.Arch.SuperH
 {
@@ -415,7 +416,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBrk()
         {
-            m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance));
+            m.SideEffect(m.Fn(brk_intrinsic));
         }
 
         private void RewriteBsr()
@@ -476,7 +477,7 @@ namespace Reko.Arch.SuperH
             var t = binder.EnsureFlagGroup(Registers.T);
             var left = SrcOp(instr.Operands[1]);
             var right = SrcOp(instr.Operands[0]);
-            m.Assign(t, host.Intrinsic("__cmp_str", true, PrimitiveType.Bool, left, right));
+            m.Assign(t, m.Fn(cmp_str_intrinsic, left, right));
         }
 
 
@@ -485,13 +486,13 @@ namespace Reko.Arch.SuperH
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(t, host.Intrinsic("__div0s", true, PrimitiveType.Bool, dst, src));
+            m.Assign(t, m.Fn(div0s_intrinsic.MakeInstance(src.DataType), dst, src));
         }
 
         private void RewriteDiv0u()
         {
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(t, host.Intrinsic("__div0u", true, PrimitiveType.Bool));
+            m.Assign(t, m.Fn(div0u_intrinsic));
         }
 
 
@@ -500,7 +501,7 @@ namespace Reko.Arch.SuperH
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
             var t = binder.EnsureFlagGroup(Registers.T);
-            m.Assign(dst, host.Intrinsic("__div1", true, PrimitiveType.Bool, dst, src));
+            m.Assign(dst, m.Fn(div1_intrinsic.MakeInstance(src.DataType), dst, src));
         }
 
         private void RewriteDivs()
@@ -538,8 +539,15 @@ namespace Reko.Arch.SuperH
 
         private void RewriteFabs()
         {
+            Expression select_fabs(Expression a)
+            {
+                var intrinsic = (a.DataType.BitSize == 32)
+                    ? FpOps.fabsf
+                    : FpOps.fabs;
+                return m.Fn(intrinsic, a);
+            }
             var src = SrcOp(instr.Operands[0], null);
-            var dst = DstOp(instr.Operands[0], src, (a, b) => host.Intrinsic("fabs", false, src.DataType, b));
+            var dst = DstOp(instr.Operands[0], src, select_fabs);
         }
 
         private void RewriteFldi(float f)
@@ -572,15 +580,16 @@ namespace Reko.Arch.SuperH
                 Expression e;
                 if (s.DataType.BitSize == 64)
                 {
-                    e = host.Intrinsic("trunc", true, PrimitiveType.Real64, s);
+                    e = m.Fn(FpOps.trunc, s);
                 }
                 else
                 {
-                    e = host.Intrinsic("truncf", true, PrimitiveType.Real32, s);
+                    e = m.Fn(FpOps.truncf, s);
                 }
                 return m.Convert(e, e.DataType, PrimitiveType.Int32);
             });
         }
+
         private void RewriteJmp()
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
@@ -725,7 +734,7 @@ namespace Reko.Arch.SuperH
         {
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("__swap_w", false, dst.DataType, src));
+            m.Assign(dst, m.Fn(swap_w_intrinsic, src));
         }
 
         private void RewriteTas(PrimitiveType dt)
@@ -755,27 +764,59 @@ namespace Reko.Arch.SuperH
         {
             var src = SrcOp(instr.Operands[0]);
             var dst = SrcOp(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("__xtrct", false, dst.DataType, dst, src));
+            m.Assign(dst, m.Fn(xtrct_intrinsic, dst, src));
         }
 
-        private static IntrinsicProcedure ldtlb_intrinsic = new IntrinsicBuilder("__load_tlb", true)
+
+        private static readonly IntrinsicProcedure brk_intrinsic = new IntrinsicBuilder("__brk", true, new()
+        {
+             Terminates = true,
+        })
             .Void();
-        private static IntrinsicProcedure movca_intrinsic = new IntrinsicBuilder("__move_with_cache_block_allocation", true)
+        private static readonly IntrinsicProcedure cmp_str_intrinsic = new IntrinsicBuilder("__cmp_str", false)
+            .Param(PrimitiveType.Byte)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure div0s_intrinsic = new IntrinsicBuilder("__div0s", true)
+            .GenericTypes("T")
+            .Params("T", "T")
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure div0u_intrinsic = new IntrinsicBuilder("__div0u", true)
+            .Returns(PrimitiveType.Bool);
+        private static readonly IntrinsicProcedure div1_intrinsic = new IntrinsicBuilder("__div1", true)
+            .GenericTypes("T")
+            .Params("T", "T")
+            .Returns(PrimitiveType.Bool);
+
+        private static readonly IntrinsicProcedure ldtlb_intrinsic = new IntrinsicBuilder("__load_tlb", true)
+            .Void();
+        private static readonly IntrinsicProcedure movca_intrinsic = new IntrinsicBuilder("__move_with_cache_block_allocation", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Ptr32)
             .Void();
-        private static IntrinsicProcedure movco_intrinsic = new IntrinsicBuilder("__move_conditional", true)
+        private static readonly IntrinsicProcedure movco_intrinsic = new IntrinsicBuilder("__move_conditional", true)
             .Param(PrimitiveType.Word32)
             .Param(PrimitiveType.Ptr32)
             .Returns(PrimitiveType.Bool);
 
 
-        private static IntrinsicProcedure ocbi_intrinsic = new IntrinsicBuilder("__operand_cache_block_invalidate", true)
+        private static readonly IntrinsicProcedure ocbi_intrinsic = new IntrinsicBuilder("__operand_cache_block_invalidate", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
-        private static IntrinsicProcedure ocbp_intrinsic = new IntrinsicBuilder("__operand_cache_block_purge", true)
+        private static readonly IntrinsicProcedure ocbp_intrinsic = new IntrinsicBuilder("__operand_cache_block_purge", true)
             .Param(PrimitiveType.Ptr32)
             .Void();
+
+        private static readonly IntrinsicProcedure swap_w_intrinsic = IntrinsicBuilder.Pure("__swap_w")
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
+
+        private static readonly IntrinsicProcedure xtrct_intrinsic = IntrinsicBuilder.Pure("__xtrct")
+            .GenericTypes("T1", "T2")
+            .Params("T1", "T2")
+            .Returns("T2");
+
 
     }
 }
