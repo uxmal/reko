@@ -49,15 +49,6 @@ namespace Reko.WindowsItp
                 return intrinsic;
             }
 
-            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-            {
-                var intrinsic = EnsureIntrinsic(name, hasSideEffect, returnType, args.Length);
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
-                    returnType,
-                    args);
-            }
-
             public IProcessorArchitecture GetArchitecture(string archLabel)
             {
                 throw new NotImplementedException();

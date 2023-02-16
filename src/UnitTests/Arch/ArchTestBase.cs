@@ -83,15 +83,6 @@ namespace Reko.UnitTests.Arch
                 return p;
             }
 
-            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-            {
-                var intrinsic = EnsureIntrinsic(name, hasSideEffect, returnType, args.Length);
-                return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
-                    returnType,
-                    args);
-            }
-
             public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 return null;

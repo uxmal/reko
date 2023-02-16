@@ -35,15 +35,6 @@ namespace Reko.Core
         IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity);
 
         /// <summary>
-        /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="returnType"></param>
-        /// <param name="args"></param>
-        /// <returns>An Application expression.</returns>
-        Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
-
-        /// <summary>
         /// Obtain a reference to the processor architecture with the name <paramref name="archMoniker"/>.
         /// </summary>
         /// <param name="archMoniker">The name of the desired architecture.</param>
@@ -102,11 +93,6 @@ namespace Reko.Core
         public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {
             return null;
-        }
-
-        public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-        {
-            throw new NotSupportedException();
         }
 
         public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, [MaybeNullWhen(false)] out Constant value)

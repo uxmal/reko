@@ -49,12 +49,6 @@ namespace Reko.UnitTests.Arch.Arm
                 return new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
             }
 
-            [Obsolete("", true)]
-            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-            {
-                throw new NotImplementedException();
-            }
-
             public IProcessorArchitecture GetArchitecture(string archLabel)
             {
                 throw new NotImplementedException();

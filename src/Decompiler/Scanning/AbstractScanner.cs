@@ -538,25 +538,6 @@ namespace Reko.Scanning
                 return intrinsic;
             }
 
-            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-            {
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-                return new Application(
-                    new ProcedureConstant(program.Architecture.PointerType, intrinsic),
-                    returnType,
-                    args);
-            }
-
-            public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
-            {
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-                intrinsic.Characteristics = c;
-                return new Application(
-                    new ProcedureConstant(program.Architecture.PointerType, intrinsic),
-                    returnType,
-                    args);
-            }
-
             public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
             {
                 if (!this.program.SegmentMap.TryFindSegment(addr, out var segment))

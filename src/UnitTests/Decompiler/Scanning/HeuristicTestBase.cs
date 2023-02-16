@@ -73,19 +73,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
         protected void Given_RewriterHost()
         {
             host = new Mock<IRewriterHost>();
-            host.Setup(h => h.Intrinsic(
-                It.IsAny<string>(),
-                It.IsAny<bool>(),
-                It.IsAny<DataType>(),
-                It.IsAny<Expression[]>()))
-               .Returns((string n, bool i, DataType dt, Expression[] a) =>
-                {
-                    var fn = new FunctionType();
-                    var intrinsic = new IntrinsicProcedure(n, i, fn);
-                    return new Application(new ProcedureConstant(fn, intrinsic),
-                        dt,
-                        a);
-            });
         }
 
         protected void Given_Image32(uint addr, string sBytes)
