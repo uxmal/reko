@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -28,6 +29,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 
 namespace Reko.Arch.Qualcomm
@@ -107,10 +109,10 @@ namespace Reko.Arch.Qualcomm
                 switch (instr.Mnemonic)
                 {
                 default:
+                    EmitUnitTest(packet, instr.Mnemonic.ToString());
                     host.Error(
                         instr.Address,
                         string.Format("Hexagon instruction '{0}' is not supported yet.", instr));
-                    EmitUnitTest(packet, instr.Mnemonic.ToString());
                     break;
                 case Mnemonic.ASSIGN: RewriteAssign(instr.Operands[0], instr.Operands[1]); break;
                 case Mnemonic.ADDEQ: RewriteAugmentedAssign(instr.Operands[0], m.IAdd, instr.Operands[1]); break;
@@ -119,21 +121,20 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.SUBEQ: RewriteAugmentedAssign(instr.Operands[0], m.ISub, instr.Operands[1]); break;
                 case Mnemonic.XOREQ: RewriteAugmentedAssign(instr.Operands[0], m.Xor, instr.Operands[1]); break;
                 case Mnemonic.SIDEEFFECT: RewriteSideEffect(instr.InstructionClass, instr.Operands[0]); break;
+                case Mnemonic.brkpt: m.SideEffect(m.Fn(brkpt_intrinsic)); break;
                 case Mnemonic.call: RewriteCall(instr); break;
                 case Mnemonic.callr: RewriteCall(instr); break;
                 case Mnemonic.deallocframe: RewriteDeallocFrame(); break;
                 case Mnemonic.dealloc_return: RewriteDeallocReturn(); break;
+                case Mnemonic.dckill: m.SideEffect(m.Fn(dckill_intrinsic)); break;
+                case Mnemonic.ickill: m.SideEffect(m.Fn(ickill_intrinsic)); break;
+                case Mnemonic.isync: m.SideEffect(m.Fn(isync_intrinsic)); break;
+                case Mnemonic.l2kill: m.SideEffect(m.Fn(l2kill_intrinsic)); break;
                 case Mnemonic.jump: RewriteJump(instr, instr.Operands[0]); break;
                 case Mnemonic.jumpr: RewriteJumpr(instr.Operands[0]); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.rte: RewriteRte(); break;
-                case Mnemonic.brkpt:
-                case Mnemonic.dckill:
-                case Mnemonic.ickill:
-                case Mnemonic.isync:
-                case Mnemonic.l2kill:
-                case Mnemonic.syncht:
-                    m.SideEffect(RewriteIntrinsic(instr.Mnemonic.ToString(), true, VoidType.Instance)); break;
+                case Mnemonic.syncht: m.SideEffect(m.Fn(syncht_intrinsic)); break;
                 }
                 m.Instructions.Last().Class = this.iclass;
             }
@@ -217,11 +218,17 @@ namespace Reko.Arch.Qualcomm
                 }
                 break;
             case ApplicationOperand app:
-                var appOps = app.Operands.Select(OperandSrc).Concat(new[] { src }).ToArray();
-                m.SideEffect(host.Intrinsic(app.Mnemonic.ToString(), true, VoidType.Instance, appOps!));
+                switch (app.Mnemonic)
+                {
+                case Mnemonic.memd_locked:
+                    RewriteMemLockedDst(app, PrimitiveType.Word64, src); return;
+                case Mnemonic.memw_locked:
+                    RewriteMemLockedDst(app, PrimitiveType.Word32, src); return;
+                }
+                m.Assign(RewriteApplication(app)!, src);
                 return;
             }
-            throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} not implemented yet.");
+            throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} {op} not implemented yet.");
         }
 
         private Expression? RewriteApplication(ApplicationOperand app)
@@ -230,14 +237,23 @@ namespace Reko.Arch.Qualcomm
             var dt = app.Width;
             switch (app.Mnemonic)
             {
+            case Mnemonic.abs: return m.Fn(CommonOps.Abs.MakeInstance(PrimitiveType.Int32), ops);
             case Mnemonic.add: return m.IAdd(ops[0], ops[1]);
             case Mnemonic.addasl: return RewriteAddAsl(ops[0], ops[1], ops[2]);
             case Mnemonic.allocframe: RewriteAllocFrame(app.Operands[0]); return null;
             case Mnemonic.and: return m.And(ops[0], ops[1]);
+            case Mnemonic.any8: return m.Fn(any8_intrinsic, ops);
             case Mnemonic.asl: return m.Shl(ops[0], ops[1]);
             case Mnemonic.aslh: return m.Shl(ops[0], 16);
             case Mnemonic.asr: return m.Sar(ops[0], ops[1]);
             case Mnemonic.asrh: return m.Sar(ops[0], 16);
+            case Mnemonic.bitsclr: return m.Fn(bitsclr_intrinsic, ops);
+            case Mnemonic.ciad: return m.Fn(ciad_intrinsic, ops);
+            case Mnemonic.cl0: return m.Fn(CommonOps.CountLeadingZeros, ops);
+            case Mnemonic.cl1: return m.Fn(CommonOps.CountLeadingOnes, ops);
+            case Mnemonic.clb: return m.Fn(clb_intrinsic, ops);
+            case Mnemonic.clrbit: return m.Fn(CommonOps.ClearBit, ops);
+            case Mnemonic.cswi: return m.Fn(cswih_intrinsic, ops);
             case Mnemonic.cmp__eq: return m.Eq(ops[0], ops[1]);
             case Mnemonic.cmp__gt: return m.Gt(ops[0], ops[1]);
             case Mnemonic.cmp__gtu: return m.Ugt(ops[0], ops[1]);
@@ -249,18 +265,34 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.cmph__gtu: return RewriteCmp(PrimitiveType.Word16, m.Ugt, ops[0], ops[1]);
             case Mnemonic.dfcmp__eq: return m.FEq(ops[0], ops[1]);
             case Mnemonic.dfcmp__ge: return m.FGe(ops[0], ops[1]);
-            case Mnemonic.dfcmp__uo: return host.Intrinsic("isunordered", false, PrimitiveType.Bool, ops[0], ops[1]);
+            case Mnemonic.dfcmp__uo: return m.Fn(FpOps.IsUnordered_f32, ops);
             case Mnemonic.combine: return RewriteCombine(ops[0], ops[1]);
             case Mnemonic.convert_d2df: return m.Convert(ops[0], PrimitiveType.Int64, PrimitiveType.Real64);
             case Mnemonic.convert_df2sf: return m.Convert(ops[0], PrimitiveType.Real64, PrimitiveType.Real32);
             case Mnemonic.convert_sf2df: return m.Convert(ops[0], PrimitiveType.Real32, PrimitiveType.Real64);
+            case Mnemonic.crswap: return m.Fn(crswap_intrinsic, ops);
+            case Mnemonic.ct0: return m.Fn(CommonOps.CountTrailingZeros, ops);
+            case Mnemonic.ct1: return m.Fn(CommonOps.CountTrailingOnes, ops);
+            case Mnemonic.dccleana: return m.Fn(dccleana_intrinsic, ops);
+            case Mnemonic.dccleaninva: return m.Fn(dccleaninva_intrinsic, ops);
+            case Mnemonic.dcfetch: return m.Fn(dcfetch_intrinsic, ops);
+            case Mnemonic.dcinva: return m.Fn(dcinva_intrinsic, ops);
+            case Mnemonic.dczeroa: return m.Fn(dczeroa_intrinsic, ops);
+            case Mnemonic.dfclass: return m.Fn(dfclass_intrinsic, ops);
             case Mnemonic.EQ: return m.Eq(ops[0], ops[1]);
             case Mnemonic.extract: return RewriteExtract(Domain.SignedInt, ops[0], app.Operands);
             case Mnemonic.extractu: return RewriteExtract(Domain.UnsignedInt, ops[0], app.Operands);
+            case Mnemonic.fastcorner9: return m.Fn(fastcorner9_intrinsic, ops); 
+            case Mnemonic.insert: return m.FnVariadic(insert_intrinsic, ops); 
             case Mnemonic.loop0: RewriteLoop(0, ops); return null;
             case Mnemonic.loop1: RewriteLoop(1, ops); return null;
             case Mnemonic.lsl: return m.Shl(ops[0], ops[1]);
             case Mnemonic.lsr: return m.Shr(ops[0], ops[1]);
+            case Mnemonic.max: return m.Fn(CommonOps.Max.MakeInstance(PrimitiveType.Int32), ops);
+            case Mnemonic.maxu: return m.Fn(CommonOps.Max.MakeInstance(PrimitiveType.UInt32), ops);
+            case Mnemonic.memw_locked: return m.Fn(memw_locked_intrinsic, ops);
+            case Mnemonic.min: return m.Fn(CommonOps.Min.MakeInstance(PrimitiveType.Int32), ops);
+            case Mnemonic.minu: return m.Fn(CommonOps.Min.MakeInstance(PrimitiveType.UInt32), ops);
             case Mnemonic.mpy: return RewriteMpy(ops[0], ops[1]);
             case Mnemonic.mpyi: return RewriteMpyi(ops[0], ops[1]);
             case Mnemonic.mpyu: return RewriteMpyu(app.Width, ops[0], ops[1]);
@@ -269,67 +301,39 @@ namespace Reko.Arch.Qualcomm
             case Mnemonic.neg: return m.Neg(ops[0]);
             case Mnemonic.not: return m.Not(ops[0]);
             case Mnemonic.or: return m.Or(ops[0], ops[1]);
+            case Mnemonic.setbit: return m.Fn(CommonOps.SetBit, ops);
+            case Mnemonic.start: return m.Fn(start_intrinsic, ops);
+            case Mnemonic.stop:  return m.Fn(stop_intrinsic, ops);
             case Mnemonic.sub: return m.ISub(ops[0], ops[1]);
             case Mnemonic.sxtb: return RewriteExt(ops[0], PrimitiveType.SByte, PrimitiveType.Int32);
             case Mnemonic.sxth: return RewriteExt(ops[0], PrimitiveType.Int16, PrimitiveType.Int32);
+            case Mnemonic.tlbp: return m.Fn(tlbp_intrinsic, ops);
+            case Mnemonic.tlbw: return m.Fn(tlbw_intrinsic, ops);
+            case Mnemonic.togglebit: return m.Fn(CommonOps.InvertBit, ops);
+            case Mnemonic.trap0: return m.Fn(trap0_intrinsic, ops);
+            case Mnemonic.trap1: return m.Fn(trap1_intrinsic, ops);
+            case Mnemonic.tstbit: return m.Fn(CommonOps.Bit, ops);
             case Mnemonic.xor: return m.Xor(ops[0], ops[1]);
             case Mnemonic.zxtb: return RewriteExt(ops[0], PrimitiveType.Byte, PrimitiveType.UInt32);
             case Mnemonic.zxth: return RewriteExt(ops[0], PrimitiveType.UInt16, PrimitiveType.UInt32);
 
-            case Mnemonic.abs: dt = PrimitiveType.Int32; goto intrinsicFunc;
-            case Mnemonic.max: dt = PrimitiveType.Int32; goto intrinsicFunc;
-            case Mnemonic.maxu: dt = PrimitiveType.UInt32; goto intrinsicFunc;
-            case Mnemonic.min: dt = PrimitiveType.Int32; goto intrinsicFunc;
-            case Mnemonic.minu: dt = PrimitiveType.UInt32; goto intrinsicFunc;
-
             case Mnemonic.all8:
-            case Mnemonic.any8:
-            case Mnemonic.bitsclr:
             case Mnemonic.bitsplit:
             case Mnemonic.bitsset:
-            case Mnemonic.ciad:
-            case Mnemonic.cl0:
-            case Mnemonic.cl1:
-            case Mnemonic.clb:
-            case Mnemonic.clrbit:
-            case Mnemonic.crswap:
-            case Mnemonic.cswi:
-            case Mnemonic.ct0:
-            case Mnemonic.dfclass:
-            case Mnemonic.fastcorner9:
-            case Mnemonic.insert:   //$BUG: like DPB?
-            case Mnemonic.memw_locked:
-            case Mnemonic.setbit:
-            case Mnemonic.start:
-            case Mnemonic.stop:
-            case Mnemonic.tlbw:
-            case Mnemonic.tlbp:
-            case Mnemonic.trap0:
-            case Mnemonic.trap1:
-            case Mnemonic.togglebit:
-            case Mnemonic.tstbit:
-                intrinsicFunc:
-                return RewriteIntrinsic(app.Mnemonic.ToString(), true, dt, ops);
+                break;
 
-            case Mnemonic.dccleana:
-            case Mnemonic.dccleaninva:
-            case Mnemonic.dcfetch:
-            case Mnemonic.dcinva:
-            case Mnemonic.dczeroa:
-                return RewriteIntrinsic(app.Mnemonic.ToString(), true, VoidType.Instance, ops);
-
-            case Mnemonic.vavgh: return RewriteVectorIntrinsic(app.Mnemonic, false, PrimitiveType.Word16, ops);
-            case Mnemonic.vcmpb__eq: return RewriteVectorIntrinsic(app.Mnemonic, false, PrimitiveType.Byte, ops);
-            case Mnemonic.vmux: return RewriteVectorIntrinsic(app.Mnemonic, false, PrimitiveType.Byte, ops);
-            case Mnemonic.vsplatb: return RewriteVectorIntrinsic(app.Mnemonic, false, PrimitiveType.Byte, ops);
-            case Mnemonic.vsubh: return RewriteVectorIntrinsic(app.Mnemonic, false, PrimitiveType.Int16, ops);
+            case Mnemonic.vavgh: return RewriteVectorIntrinsic(vavgh_intrinsic, PrimitiveType.Word16, ops);
+            case Mnemonic.vcmpb__eq: return RewriteVectorIntrinsic(vcmp__eq_intrinsic, PrimitiveType.Byte, ops);
+            case Mnemonic.vmux: return RewriteVectorIntrinsic(vmux_intrinsic, PrimitiveType.Byte, 1, ops);
+            case Mnemonic.vsplatb: return RewriteVectorIntrinsic(vsplatb_intrinsic, PrimitiveType.Byte, ops);
+            case Mnemonic.vsubh: return RewriteVectorIntrinsic(Simd.Sub, PrimitiveType.Int16, ops);
             }
             throw new ArgumentException($"Hexagon rewriter for {app.Mnemonic} not implemented yet.", app.Mnemonic.ToString());
         }
 
-        private Expression RewriteIntrinsic(string name, bool hasSideEffect, DataType dt, params Expression[] ops)
+        private void RewriteMemLockedDst(ApplicationOperand app, PrimitiveType dt, Expression src)
         {
-            return host.Intrinsic(name, hasSideEffect, dt, ops);
+            m.SideEffect(m.Fn(mem_locked_dst_intrinsic.MakeInstance(32, dt), app.Operands.Select(OperandSrc).ToArray()!));
         }
 
         private Expression RewriteMemoryOperand(MemoryOperand mem)
@@ -525,7 +529,13 @@ namespace Reko.Arch.Qualcomm
 
         private void RewriteLoop(int n, Expression [] args)
         {
-            m.SideEffect(host.Intrinsic($"__nyi_loop{n}", true, VoidType.Instance, args));
+            m.SideEffect(m.Fn(
+                loop_intrinsic,
+                new Expression[]
+                {
+                    Constant.Int32(n)
+                }.Concat(args)
+                .ToArray()));
         }
 
         private Expression RewriteMpy(Expression a, Expression b)
@@ -558,7 +568,7 @@ namespace Reko.Arch.Qualcomm
         }
         private void RewriteRte()
         {
-            m.SideEffect(host.Intrinsic("rte", true, VoidType.Instance));
+            m.SideEffect(m.Fn(rte_intrinsic));
             m.Return(0, 0);
         }
 
@@ -571,13 +581,126 @@ namespace Reko.Arch.Qualcomm
                 m.SideEffect(e);
             }
         }
- 
-        private Expression RewriteVectorIntrinsic(Mnemonic mnemonic, bool hasSideEffect, PrimitiveType dtElem, Expression[] ops)
+
+        private Expression RewriteVectorIntrinsic(IntrinsicProcedure intrinsic, PrimitiveType dtElem, Expression[] ops)
+            => RewriteVectorIntrinsic(intrinsic, dtElem, 0, ops);
+
+        private Expression RewriteVectorIntrinsic(IntrinsicProcedure intrinsic, PrimitiveType dtElem, int iopDt, Expression[] ops)
         {
-            var cElem = ops[0].DataType.Size / dtElem.Size;
+            var cElem = ops[iopDt].DataType.Size / dtElem.Size;
             var dtVector = new ArrayType(dtElem, cElem);
-            return host.Intrinsic(mnemonic.ToString(), hasSideEffect, dtVector, ops);
+            return m.Fn(intrinsic.MakeInstance(dtVector), ops);
         }
 
+        private static readonly IntrinsicProcedure any8_intrinsic = IntrinsicBuilder.Predicate("__any8", PrimitiveType.Byte);
+        private static readonly IntrinsicProcedure bitsclr_intrinsic = IntrinsicBuilder.Predicate("__bitsclr", PrimitiveType.Word32, PrimitiveType.UInt32);
+        private static readonly IntrinsicProcedure brkpt_intrinsic = new IntrinsicBuilder("__brkpt", true)
+            .Void();
+
+        private static readonly IntrinsicProcedure ciad_intrinsic = IntrinsicBuilder.SideEffect("__ciad")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure clb_intrinsic = new IntrinsicBuilder("__count_leading_bits", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure cswih_intrinsic = IntrinsicBuilder.SideEffect("__cswi")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure crswap_intrinsic = IntrinsicBuilder.SideEffect("__crswap")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure dccleana_intrinsic = IntrinsicBuilder.SideEffect("__dccleana")
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure dccleaninva_intrinsic = IntrinsicBuilder.SideEffect("__dccleaninva")
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure dcfetch_intrinsic = IntrinsicBuilder.SideEffect("__dcfetch")
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure dcinva_intrinsic = IntrinsicBuilder.SideEffect("__dcinva")
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure dckill_intrinsic = IntrinsicBuilder.SideEffect("__dckill")
+            .Void();
+        private static readonly IntrinsicProcedure dczeroa_intrinsic = IntrinsicBuilder.SideEffect("__dczeroa")
+            .Param(PrimitiveType.Ptr32)
+            .Void();
+        private static readonly IntrinsicProcedure dfclass_intrinsic = IntrinsicBuilder.SideEffect("__dfclass")
+            .Param(PrimitiveType.Real32)
+            .Param(PrimitiveType.Int32)
+            .Returns(PrimitiveType.Int32);
+
+        private static readonly IntrinsicProcedure fastcorner9_intrinsic = IntrinsicBuilder.Predicate(
+            "__fastcorner9", PrimitiveType.Byte, PrimitiveType.Byte);
+
+        private static readonly IntrinsicProcedure ickill_intrinsic = IntrinsicBuilder.SideEffect("__ickill")
+            .Void();
+        private static readonly IntrinsicProcedure isync_intrinsic = IntrinsicBuilder.SideEffect("__isync")
+            .Void();
+        private static readonly IntrinsicProcedure insert_intrinsic = IntrinsicBuilder.Pure("__insert")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Int32)
+            .Returns(PrimitiveType.Word32);
+
+        private static readonly IntrinsicProcedure l2kill_intrinsic = IntrinsicBuilder.SideEffect("__l2kill")
+            .Void();
+        private static readonly IntrinsicProcedure loop_intrinsic = IntrinsicBuilder.SideEffect("__loop")
+            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.Ptr32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+
+        private static readonly IntrinsicProcedure memw_locked_intrinsic = new IntrinsicBuilder("__memw_locked", true)
+            .Param(PrimitiveType.Ptr32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure mem_locked_dst_intrinsic = IntrinsicBuilder.SideEffect("__mem_locked_write")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Param(PrimitiveType.Bool)
+            .Void();
+
+        private static readonly IntrinsicProcedure rte_intrinsic = IntrinsicBuilder.SideEffect("__rte")
+            .Void();
+
+        private static readonly IntrinsicProcedure start_intrinsic = IntrinsicBuilder.SideEffect("__start")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure stop_intrinsic = IntrinsicBuilder.SideEffect("__stop")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure syncht_intrinsic = IntrinsicBuilder.SideEffect("__syncht")
+            .Void();
+
+        private static readonly IntrinsicProcedure tlbp_intrinsic = IntrinsicBuilder.SideEffect("__tlbp")
+            .Param(PrimitiveType.Word32)
+            .Returns(PrimitiveType.Word32);
+        private static readonly IntrinsicProcedure tlbw_intrinsic = IntrinsicBuilder.SideEffect("__tlbw")
+            .Param(PrimitiveType.Word32)
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure trap0_intrinsic = IntrinsicBuilder.SideEffect("__trap0")
+            .Param(PrimitiveType.Word32)
+            .Void();
+        private static readonly IntrinsicProcedure trap1_intrinsic = IntrinsicBuilder.SideEffect("__trap1")
+            .Param(PrimitiveType.Word32)
+            .Void();
+
+        private static readonly IntrinsicProcedure vavgh_intrinsic = IntrinsicBuilder.GenericBinary("vavgh");
+        private static readonly IntrinsicProcedure vcmp__eq_intrinsic = IntrinsicBuilder.GenericBinary("vcmp__eq");
+        private static readonly IntrinsicProcedure vmux_intrinsic = IntrinsicBuilder.Pure("__vmux")
+            .GenericTypes("T")
+            .Param(PrimitiveType.Bool)
+            .Param("T")
+            .Param("T")
+            .Returns("T");
+        private static readonly IntrinsicProcedure vsplatb_intrinsic = IntrinsicBuilder.Pure("__vsplatb")
+            .GenericTypes("T")
+            .Param(PrimitiveType.Byte)
+            .Returns("T");
     }
 }
