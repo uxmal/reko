@@ -547,7 +547,7 @@ namespace Reko.Core.Expressions
         /// <param name="intrinsic">The instrinsic function to apply.</param>
         /// <param name="args">The arguments of the function.</param>
         /// <returns>A function application</returns>
-        public Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
+        public Application Fn(IntrinsicProcedure intrinsic,  params Expression[] args)
         {
             if (intrinsic.IsGeneric && !intrinsic.IsConcreteGeneric)
             {
@@ -564,6 +564,33 @@ namespace Reko.Core.Expressions
                     $"Parameter count for {intrinsic.Name} must match argument count. " +
                     $"Expected: {sig.Parameters.Length}. " +
                     $"But was: {args.Length}.");
+            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
+        }
+
+        /// <summary>
+        /// Generates a function application that applies the intrinsic 
+        /// procedure <paramref name="intrinsic"/> to
+        /// the arguments <paramref name="args" /> and returns a value of the
+        /// return type of the external procedure. Use this when modelling
+        /// processor-specific intrinsic functions that cannot be expressed
+        /// in RTL any other way. The called procedure <paramref name="intrinsic"/>
+        /// is considered variadic, so no attempt is made to validate the number
+        /// of parameters.
+        /// </summary>
+        /// <param name="intrinsic">The instrinsic function to apply.</param>
+        /// <param name="args">The arguments of the function.</param>
+        /// <returns>A function application</returns>
+        public Application FnVariadic(IntrinsicProcedure intrinsic, params Expression[] args)
+        {
+            if (intrinsic.IsGeneric && !intrinsic.IsConcreteGeneric)
+            {
+                var types = new DataType[args.Length];
+                for (int i = 0; i < types.Length; ++i)
+                {
+                    types[i] = args[i].DataType;
+                }
+                intrinsic = intrinsic.MakeInstance(types);
+            }
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
         }
 
