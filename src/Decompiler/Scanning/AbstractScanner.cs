@@ -531,13 +531,6 @@ namespace Reko.Scanning
                 return ep;
             }
 
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-            {
-                var args = Enumerable.Range(0, arity).Select(i => Constant.Create(program.Architecture.WordWidth, 0)).ToArray();
-                var intrinsic = program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-                return intrinsic;
-            }
-
             public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
             {
                 if (!this.program.SegmentMap.TryFindSegment(addr, out var segment))

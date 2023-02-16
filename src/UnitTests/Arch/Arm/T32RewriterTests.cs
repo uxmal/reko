@@ -44,11 +44,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             public Constant GlobalRegisterValue => null;
 
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-            {
-                return new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
-            }
-
             public IProcessorArchitecture GetArchitecture(string archLabel)
             {
                 throw new NotImplementedException();

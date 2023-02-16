@@ -40,15 +40,6 @@ namespace Reko.WindowsItp
 
             public Constant GlobalRegisterValue => null;
 
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-            {
-                if (intrinsics.TryGetValue(name, out var intrinsic))
-                    return intrinsic;
-                intrinsic = new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
-                intrinsics.Add(name, intrinsic);
-                return intrinsic;
-            }
-
             public IProcessorArchitecture GetArchitecture(string archLabel)
             {
                 throw new NotImplementedException();

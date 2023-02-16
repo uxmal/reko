@@ -74,15 +74,6 @@ namespace Reko.UnitTests.Arch
 
             public Constant GlobalRegisterValue => null;
 
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-            {
-                if (intrinsics.TryGetValue(name, out var p))
-                    return p;
-                p = new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
-                intrinsics.Add(name, p);
-                return p;
-            }
-
             public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 return null;

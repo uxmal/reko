@@ -124,9 +124,9 @@ namespace Reko.Arch.Arm
         public HExpr EnsureIntrinsicProcedure(string name, int hasSideEffect, BaseType dt, int arity)
         {
             throw new NotImplementedException("This method is deprecated. ");
-            var exp = host.EnsureIntrinsic(name, hasSideEffect != 0, ntf.GetRekoType((HExpr) dt), arity);
-            var pc = new ProcedureConstant(PrimitiveType.Ptr32, exp);
-            return m.MapToHandle(pc);
+            //var exp = host.EnsureIntrinsic(name, hasSideEffect != 0, ntf.GetRekoType((HExpr) dt), arity);
+            //var pc = new ProcedureConstant(PrimitiveType.Ptr32, exp);
+            //return m.MapToHandle(pc);
         }
     }
 }

@@ -878,13 +878,6 @@ namespace Reko.Scanning
             }
         }
 
-        public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-        {
-            var args = Enumerable.Range(0, arity).Select(i => Constant.Create(Program.Architecture.WordWidth, 0)).ToArray();
-            var intrinsic = Program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
-            return intrinsic;
-        }
-
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
         {
             if (!Program.User.Procedures.TryGetValue(addr, out var userProc) ||

@@ -257,10 +257,5 @@ namespace Reko.UnitTests.Arch.X86
         {
             throw new NotImplementedException();
         }
-
-        public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

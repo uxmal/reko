@@ -104,16 +104,6 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             public Constant GlobalRegisterValue => null;
 
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-            {
-                if (!pprocs.TryGetValue(name, out IntrinsicProcedure p))
-                {
-                    p = new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
-                    pprocs.Add(name, p);
-                }
-                return p;
-            }
-
             public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, FunctionType signature)
             {
                 sigs.Add(addrCallInstruction.ToLinear(), signature);
