@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var svp = new SparseValuePropagation(ssa, program, new FakeDecompilerEventListener());
             svp.Transform();
             var sw = new StringWriter();
+            sw.WriteLine();
             svp.Write(sw);
             ssa.Procedure.Write(false, sw);
             var sActual = sw.ToString();
@@ -62,7 +64,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var sExp =
             #region Expected
-@"r1_1: 0x42<32>
+@"
+r1_1: 0x42<32>
 r2_2: 0x42<32>
 // SsaProcedureBuilder
 // Return size: 0
@@ -71,7 +74,7 @@ SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r1_1 = 0x42<32>
-	r2_2 = r1_1
+	r2_2 = 0x42<32>
 	return
 	// succ:  SsaProcedureBuilder_exit
 SsaProcedureBuilder_exit:
@@ -89,23 +92,25 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Svp_Phi()
         {
             var sExp =
             #region Expected
-@"r1_1: 0x42<32>
+@"
+r1_1: 0x42<32>
 r2_2: 0x42<32>
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
-	// succ:  l1
-l1:
+	// succ:  m1
+m1:
 	r1_1 = 0x42<32>
-	r2_2 = r1_1
-	return
-	// succ:  SsaProcedureBuilder_exit
+	// succ:  m2
+m2:
+	r2_2 = 0x42<32>
+	goto m2
+	// succ:  m2
 SsaProcedureBuilder_exit:
 ";
             #endregion
@@ -113,15 +118,73 @@ SsaProcedureBuilder_exit:
             RunTest(sExp, m =>
             {
                 var r1_1 = m.Reg32("r1_1");
-                var r1_2 = m.Reg32("r1_2");
+                var r2_2 = m.Reg32("r2_2");
 
                 m.Label("m1");
                 m.Assign(r1_1, m.Word32(0x42));
 
                 m.Label("m2");
-                m.Phi(r1_2, (r1_1, "m1"), (r1_2, "m2"));
+                m.Phi(r2_2, (r1_1, "m1"), (r2_2, "m2"));
                 m.Goto("m2");
             });
         }
+
+        [Test]
+        [Ignore("WIP")]
+        public void Svp_Slices()
+        {
+            var sExp =
+            #region Expected
+@"
+r1_1: 0x42<32>
+r2_2: 0x42<32>
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  m1
+m1:
+	r1_1 = 0x42<32>
+	// succ:  m2
+m2:
+	r2_2 = 0x42<32>
+	goto m2
+	// succ:  m2
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var d3 = m.Reg32("r1");
+                var d3_1 = m.Reg32("d3_1");
+                var d3_2 = m.Reg32("d3_2");
+                var sp_04_3 = m.Local16("sp_04");
+                var v1 = m.Temp(PrimitiveType.Word16, "v1");
+                var v2 = m.Temp(PrimitiveType.Word16, "v2");
+                var v3 = m.Temp(PrimitiveType.Word16, "v3");
+                var v4 = m.Temp(PrimitiveType.Word16, "v4");
+                var v5 = m.Temp(PrimitiveType.Word16, "v5");
+
+                m.AddDefToEntryBlock(d3);
+
+                m.Label("m1");
+                m.Assign(v1, m.Slice(d3, PrimitiveType.Word16));
+                m.Assign(sp_04_3, v1);
+
+                m.Assign(v4, m.Slice(d3, PrimitiveType.Word16, 16));
+                m.Assign(d3_1, m.Seq(v4, m.Word16(0x02)));
+                m.Assign(v5, m.Slice(d3, PrimitiveType.Word16));
+                m.MStore(m.Word32(0x00123400), v5);
+
+                m.Assign(v2, sp_04_3);
+                m.Assign(v3, m.Slice(d3, PrimitiveType.Word16, 16));
+                m.Assign(d3_2, m.Seq(v3, v2));
+                m.Return();
+
+                m.AddUseToExitBlock(d3);
+            });
+        }
+
     }
 }

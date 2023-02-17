@@ -35,6 +35,29 @@ namespace Reko.Analysis
     /// <summary>
     /// An algorithm derived from the sparse constant propagation algorithm.
     /// </summary>
+    /// <remarks>
+    /// The algorithm works as follows:
+    /// Evaluate expressions involving constants only and assign
+    ///   the value(c) to variable on LHS
+    ///  If an expression can not be evaluated at compile time, assign
+    ///     it the BOTTOM value.
+    ///  Else(for expression contains variables)
+    ///     assign TOP
+    ///  Initialize worklist WL with SSA edges whose def is not TOP
+    /// 
+    /// Iterate until WL is empty:
+    ///     Take an SSA edge E out of WL
+    ///     Take meet of the value at def end and the use end of E for
+    ///        the variable defined at def end
+    ///     If the meet value is different from use value, replace the
+    ///        use by the meet
+    ///     Take special care of phi functions.
+    ///     Recompute the def d at the use end of E
+    ///     If the recomputed value is lower than the stored value, add
+    ///         all SSA edges originating at d to the WL
+    ///         
+    /// This is a linear algorithm for most sane graphs.
+    /// </remarks>
     public class SparseValuePropagation
     {
         private readonly SsaState ssa;
@@ -51,7 +74,7 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.listener = listener;
             this.cmp = new ExpressionValueComparer();
-            this.ctx = new SparseEvaluationContext(ssa.Procedure.Architecture);
+            this.ctx = new SparseEvaluationContext(ssa);
             this.eval = new Evaluation.ExpressionSimplifier(program.SegmentMap, ctx, listener);
         }
 
@@ -69,7 +92,7 @@ namespace Reko.Analysis
                 var newValue = Evaluate(sid);
                 if (!cmp.Equals(oldValue, newValue))
                 {
-                    ctx.SetValue(sid.Identifier, newValue);
+                    ctx.SetValue(sid.Identifier, newValue!);
                     foreach (var use in sid.Uses)
                     {
                         var uc = new InstructionUseCollector();
@@ -78,33 +101,89 @@ namespace Reko.Analysis
                     }
                 }
             }
+            PerformReplacements();
         }
 
         private void SetInitialValues()
         {
             foreach (var sid in ssa.Identifiers)
             {
-                ctx.SetValue(sid.Identifier, Evaluate(sid));
+                var value = EvaluateInitial(sid);
+                if (value is { })
+                {
+                    ctx.SetValue(sid.Identifier, value);
+                }
             }
         }
 
-        private Expression Evaluate(SsaIdentifier sid)
+        private Expression? EvaluateInitial(SsaIdentifier sid)
         {
-            Expression e;
+            if (sid.DefStatement!.Instruction is PhiAssignment)
+                return null;
+            return Evaluate(sid);
+        }
+
+        private Expression? Evaluate(SsaIdentifier sid)
+        {
+            Expression? e;
             switch (sid.DefStatement!.Instruction)
             {
             case Assignment ass:
                 (e, _) = ass.Src.Accept(eval);
                 return e;
             case PhiAssignment phi:
+                e = null;
                 foreach (var phiArg in phi.Src.Arguments)
                 {
-                    throw new NotImplementedException();
+                    var p = ctx.GetValue((Identifier)phiArg.Value);
+                    e = Meet(e, p);
+                    if (e is InvalidConstant)
+                        return e;
                 }
-                return InvalidConstant.Create(sid.Identifier.DataType);
+                return e;
             default:
                 return InvalidConstant.Create(sid.Identifier.DataType);
             }
+        }
+
+        private void PerformReplacements()
+        {
+            var ssam = new SsaMutator(ssa);
+            foreach (var sid in ssa.Identifiers)
+            {
+                var value = ctx.GetValue(sid.Identifier);
+                if (value is null || value is InvalidConstant)
+                    continue;
+                switch (sid.DefStatement!.Instruction)
+                {
+                case AliasAssignment:
+                    ssam.ReplaceAssigment(sid, new AliasAssignment(sid.Identifier, value));
+                    break;
+                case Assignment:
+                    ssam.ReplaceAssigment(sid, new Assignment(sid.Identifier, value));
+                    break;
+                case PhiAssignment:
+                    ssam.ReplaceAssigment(sid, new Assignment(sid.Identifier, value));
+                    break;
+                }
+            }
+        }
+
+        private Expression? Meet(Expression? e, Expression p)
+        {
+            if (e is null)
+                return p;
+            if (e is InvalidConstant)
+                return e;
+            if (p is null)
+                return e;
+            if (p is InvalidConstant)
+                return p;
+            if (!cmp.Equals(e, p))
+            {
+                return InvalidConstant.Create(e.DataType);
+            }
+            return p;
         }
 
         public void Write(TextWriter writer)
@@ -114,12 +193,14 @@ namespace Reko.Analysis
 
         private class SparseEvaluationContext : EvaluationContext
         {
+            private readonly SsaState ssa;
             private readonly IProcessorArchitecture arch;
             private readonly Dictionary<Identifier, Expression> values;
 
-            public SparseEvaluationContext(IProcessorArchitecture arch)
+            public SparseEvaluationContext(SsaState ssa)
             {
-                this.arch = arch;
+                this.ssa = ssa;
+                this.arch = ssa.Procedure.Architecture;
                 this.values = new Dictionary<Identifier, Expression>();
             }
 
@@ -129,6 +210,7 @@ namespace Reko.Analysis
 
             public Expression GetDefiningExpression(Identifier id)
             {
+                return ssa.Identifiers[id].DefExpression!;
                 return values[id];
             }
 
@@ -139,7 +221,9 @@ namespace Reko.Analysis
 
             public Expression GetValue(Identifier id)
             {
-                return values[id];
+                return values.TryGetValue(id, out var result)
+                    ? result
+                    : null!;
             }
 
             public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)

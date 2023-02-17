@@ -73,17 +73,21 @@ namespace Reko.Core
         Expression? GetDefiningExpression(Identifier id);
 
         /// <summary>
-        /// Given an identifier <paramref name="id"/>, finds all the reaching definitions
-        /// of id. If the operation is not supported, returns an empty list.
+        /// Given an identifier <paramref name="id"/>, finds all the reaching
+        /// definitions of id. If the operation is not supported, returns an
+        /// empty list.
         /// </summary>
         /// <remarks>
-        /// The intent is to travers backward from uses to definitions and locate all reaching
-        /// definitions. This can only be done efficiently on the SSA graph, so non-SSA implementations
-        /// of ths interface will just return an empty list. On the SSA graph, we compute the closure
-        /// by following the sources of copy assignments and the arguments of phi assignments.
+        /// The intent is to traverse backward from uses to definitions and
+        /// locate all reaching definitions. This can only be done efficiently
+        /// on the SSA graph, so non-SSA implementations of ths interface will
+        /// just return an empty list. On the SSA graph, we compute the
+        /// closure by following the sources of copy assignments and the
+        /// arguments of phi assignments.
         /// </remarks>
         /// <param name="id">Identifier whose closure we want to obtain.</param>
-        /// <returns>A list of statements whose definitions reach the identifier's use.
+        /// <returns>A list of statements whose definitions reach the
+        /// identifier's use.
         /// </returns>
         List<Statement> GetDefiningStatementClosure(Identifier id);
         void RemoveIdentifierUse(Identifier id);
