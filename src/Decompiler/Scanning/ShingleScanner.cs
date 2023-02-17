@@ -54,6 +54,8 @@ namespace Reko.Scanning
         {
         }
 
+        protected override ProvenanceType Provenance => ProvenanceType.Heuristic;
+
         public ScanResultsV2 ScanProgram()
         {
             var chunks = MakeScanChunks();

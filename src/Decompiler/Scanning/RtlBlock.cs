@@ -35,6 +35,7 @@ namespace Reko.Scanning
             string id,
             int length,
             Address addrFallThrough,
+            ProvenanceType provenance,
             List<RtlInstructionCluster> instructions)
         {
             this.Architecture = arch;
@@ -42,6 +43,7 @@ namespace Reko.Scanning
             this.Address = addr;
             this.Length = length;
             this.FallThrough = addrFallThrough;
+            this.Provenance = provenance;
             this.Instructions = instructions;
             this.IsValid = true;
         }
@@ -52,6 +54,7 @@ namespace Reko.Scanning
             id,
             0,
             default!,
+            ProvenanceType.None,
             new List<RtlInstructionCluster>())
         {
         }
@@ -89,6 +92,11 @@ namespace Reko.Scanning
         /// Invariant identifier used for this block.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// The provenance of this block; i.e. how it was found.
+        /// </summary>
+        public ProvenanceType Provenance { get; set; }
 
         /// <summary>
         /// The instructions this block consists of.</param>

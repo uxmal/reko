@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 new RtlInstructionCluster(addr, length,
                     new RtlAssignment(r2, r1))
             };
-            var block = new RtlBlock(program.Architecture, addr, id, length, addrFallThrough, instrs);
+            var block = new RtlBlock(program.Architecture, addr, id, length, addrFallThrough, ProvenanceType.None, instrs);
             cfg.Blocks.TryAdd(addr, block);
         }
 
@@ -171,6 +171,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var addr = Address.Ptr32(uAddr);
             var id = program.NamingPolicy.BlockName(addr);
             cfg.Blocks.TryAdd(addr, new RtlBlock(arch, addr, id, len, addr + len,
+                ProvenanceType.None,
                 new List<RtlInstructionCluster>()));
         }
 

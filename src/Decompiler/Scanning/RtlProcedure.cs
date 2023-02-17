@@ -28,15 +28,37 @@ namespace Reko.Scanning
         public RtlProcedure(
             IProcessorArchitecture arch,
             Address addr,
+            string name,
+            ProvenanceType provenance,
             ISet<RtlBlock> blocks)
         {
             this.Architecture = arch;
             this.Address = addr;
+            this.Name = name;
+            this.Provenance = provenance;
             this.Blocks = blocks;
         }
 
         public IProcessorArchitecture Architecture { get; }
-        public Address Address { get; }    // entry address.
+
+        /// <summary>
+        /// Entry address of the procedure.
+        /// </summary>
+        public Address Address { get; }
+        
+        /// <summary>
+        /// The name of the procedure.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// How this procedure was discovered.
+        /// </summary>
+        public ProvenanceType Provenance { get; }
+
+        /// <summary>
+        /// The blocks the procedure consists of.
+        /// </summary>
         public ISet<RtlBlock> Blocks { get; }
 
 

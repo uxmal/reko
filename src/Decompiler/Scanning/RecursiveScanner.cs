@@ -66,6 +66,8 @@ namespace Reko.Scanning
             this.procReturnStatus = new();
         }
 
+        protected override ProvenanceType Provenance => ProvenanceType.Scanning;
+        
         public ScanResultsV2 ScanProgram()
         {
             var seeds = CollectSeeds();

@@ -84,7 +84,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var entry = sr.Blocks[Address.Ptr32(uAddrs[0])];
             var blocks = uAddrs.Select(u => sr.Blocks[Address.Ptr32(u)]).ToHashSet();
-            var proc = new RtlProcedure(entry.Architecture, entry.Address, blocks);
+            var name = NamingPolicy.Instance.ProcedureName(entry.Address);
+            var proc = new RtlProcedure(entry.Architecture, entry.Address, name, ProvenanceType.None, blocks);
             this.procs.Add(proc);
         }
 
@@ -110,6 +111,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 id,
                 (int) (addr - addrBlock),
                 addr,
+                ProvenanceType.None,
                 clusters);
             sr.Blocks.TryAdd(addrBlock, block);
         }

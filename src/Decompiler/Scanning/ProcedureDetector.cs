@@ -25,6 +25,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -415,7 +416,8 @@ namespace Reko.Scanning
             else
             {
                 var entryBlock = cluster.Entries.First();
-                var rtlProc = new RtlProcedure(entryBlock.Architecture, entryBlock.Address, cluster.Blocks);
+                var name = NamingPolicy.Instance.ProcedureName(entryBlock.Address); //$TODO: what about user procs, symbols? Needs a method in `Program`.
+                var rtlProc = new RtlProcedure(entryBlock.Architecture, entryBlock.Address, name, entryBlock.Provenance, cluster.Blocks);
                 return new List<RtlProcedure> { rtlProc };
             }
         }
@@ -493,6 +495,8 @@ namespace Reko.Scanning
                 .Select(e => new RtlProcedure(
                     e.Key.Architecture,
                     e.Key.Address,
+                    e.Key.Name,
+                    e.Key.Provenance,
                     e.Value))
                 .ToList();
         }
