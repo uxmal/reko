@@ -162,5 +162,18 @@ namespace Reko.Arch.OpenRISC
         {
             return Address.TryParse32(txtAddr, out addr);
         }
+        /*
+Abi registers
+* #define sp r1
+#define lr r9
+#define fp r10
+
+#define p0 r3
+#define p1 r4
+#define p2 r5
+#define p3 r6
+#define p4 r7
+#define p5 r8
+        */
     }
 }
