@@ -118,7 +118,7 @@ namespace Reko.Analysis
         {
             (Identifier?, int) noMatch = (null, 0);
             var sid = ssa.Identifiers[sp];
-            var def = sid.DefStatement!;
+            var def = sid.DefStatement;
             if (def is null || def.Instruction is not Assignment ass)
                 return noMatch;
             if (ass.Src is not BinaryExpression bin)
@@ -146,7 +146,7 @@ namespace Reko.Analysis
         /// <param name="frameOffset"></param>
         private void ReplaceStackDefinition(Identifier sp, Identifier spPrev, int frameOffset)
         {
-            var spDef = ssa.Identifiers[sp].DefStatement!;
+            var spDef = ssa.Identifiers[sp].DefStatement;
             if (spDef.Instruction is Assignment ass)
             {
                 var fp = ssa.Procedure.Frame.FramePointer;

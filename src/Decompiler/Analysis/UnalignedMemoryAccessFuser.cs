@@ -184,7 +184,7 @@ namespace Reko.Analysis
             {
                 var memId = ((MemoryAccess)((Store)pair.Item2.stm!.Instruction).Dst).MemoryId;
                 var sidMem = ssa.Identifiers[memId];
-                sidMem.DefStatement = null;
+                sidMem.DefStatement = null!;
                 stmR.Instruction = new Store(
                     pair.Item1.mem!,
                     pair.Item1.value!);

@@ -219,9 +219,9 @@ namespace Reko.Analysis
         /// <param name="ass">The new definition.</param>
         public void ReplaceAssigment(SsaIdentifier sid, Assignment ass)
         {
-            var stm = sid.DefStatement!;
+            var stm = sid.DefStatement;
             ssa.RemoveUses(stm);
-            sid.DefStatement!.Instruction = ass;
+            sid.DefStatement.Instruction = ass;
             ssa.AddUses(stm);
         }
     }

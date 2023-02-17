@@ -181,14 +181,14 @@ namespace Reko.Analysis
             }
             var sidOrig = ssa.Identifiers[idOrig!];
             var sidDst = ssa.Identifiers[idDst!];
-            sidOrig.Uses.Remove(sidDst.DefStatement!);
+            sidOrig.Uses.Remove(sidDst.DefStatement);
             var ass = new Assignment(
                 idDst!,
                 m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
 
-            sidDst.DefStatement!.Instruction = ass;
+            sidDst.DefStatement.Instruction = ass;
             return ass;
         }
     }

@@ -76,7 +76,7 @@ namespace Reko.Analysis
             {
                 if (listener.IsCanceled())
                     return;
-                if (sid.DefStatement!.Instruction is not CallInstruction ci)
+                if (sid.DefStatement.Instruction is not CallInstruction ci)
                     continue;
                 var callStm = sid.DefStatement;
                 // If FPU stack variable was not used after call then assume

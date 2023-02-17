@@ -118,7 +118,7 @@ namespace Reko.Analysis
 
         private Expression? EvaluateInitial(SsaIdentifier sid)
         {
-            if (sid.DefStatement!.Instruction is PhiAssignment)
+            if (sid.DefStatement.Instruction is PhiAssignment)
                 return null;
             return Evaluate(sid);
         }
@@ -126,7 +126,7 @@ namespace Reko.Analysis
         private Expression? Evaluate(SsaIdentifier sid)
         {
             Expression? e;
-            switch (sid.DefStatement!.Instruction)
+            switch (sid.DefStatement.Instruction)
             {
             case Assignment ass:
                 (e, _) = ass.Src.Accept(eval);
@@ -154,7 +154,7 @@ namespace Reko.Analysis
                 var value = ctx.GetValue(sid.Identifier);
                 if (value is null || value is InvalidConstant)
                     continue;
-                switch (sid.DefStatement!.Instruction)
+                switch (sid.DefStatement.Instruction)
                 {
                 case AliasAssignment:
                     ssam.ReplaceAssigment(sid, new AliasAssignment(sid.Identifier, value));

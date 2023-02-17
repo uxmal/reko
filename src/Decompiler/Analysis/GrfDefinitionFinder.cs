@@ -54,7 +54,7 @@ namespace Reko.Analysis
 		{
 			this.sid = sid;
 			negated = false;
-			stm = sid.DefStatement!;
+			stm = sid.DefStatement;
 			if (stm != null)
 			{
 				defExpr = null;

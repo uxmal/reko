@@ -38,7 +38,7 @@ namespace Reko.Analysis
 		{
             this.Identifier = id ?? throw new ArgumentNullException(nameof(id));
 			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException(nameof(idOrig));
-			this.DefStatement = stmDef;
+			this.DefStatement = stmDef!;
             this.IsSideEffect = isSideEffect;
 			this.Uses = new List<Statement>();
 		}
@@ -46,7 +46,7 @@ namespace Reko.Analysis
         /// <summary>
         /// Statement that defines the identifier
         /// </summary>
-        public Statement? DefStatement { get; set; }        //$TODO: want this to be not-nullable
+        public Statement DefStatement { get; set; }        //$TODO: want this to be not-nullable
 
         /// <summary>
         /// The Identifier itself

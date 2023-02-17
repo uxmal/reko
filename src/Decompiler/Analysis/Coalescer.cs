@@ -62,7 +62,7 @@ namespace Reko.Analysis
 
         private void SetDefStatement(Statement stm, SsaIdentifier sid)
         {
-            if (defsByStatement.TryGetValue(sid.DefStatement!, out var sids))
+            if (defsByStatement.TryGetValue(sid.DefStatement, out var sids))
             {
                 sids.Remove(sid);
             }

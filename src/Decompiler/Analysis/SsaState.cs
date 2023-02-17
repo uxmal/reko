@@ -353,7 +353,7 @@ namespace Reko.Analysis
 			foreach (var sid in Identifiers)
 			{
 				if (sid.DefStatement == stmOld)
-					sid.DefStatement = stmNew;
+					sid.DefStatement = stmNew!;
 			}
 		}
 

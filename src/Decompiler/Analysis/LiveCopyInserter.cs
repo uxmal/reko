@@ -154,7 +154,7 @@ namespace Reko.Analysis
 
 				foreach (Statement stm in sidOld.Uses)
 				{
-					if (domGraph.DominatesStrictly(sidOld.DefStatement!, stm))
+					if (domGraph.DominatesStrictly(sidOld.DefStatement, stm))
 					{
 						stm.Instruction = stm.Instruction.Accept(this);
 					}

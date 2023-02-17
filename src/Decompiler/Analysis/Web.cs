@@ -76,7 +76,7 @@ namespace Reko.Analysis
 					sid.InductionVariable = InductionVariable ;
 				}
 			}
-			Definitions.Add(sid.DefStatement!);
+			Definitions.Add(sid.DefStatement);
 			foreach (Statement u in sid.Uses)
 				Uses.Add(u);
 		}

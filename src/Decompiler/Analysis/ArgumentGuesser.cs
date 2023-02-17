@@ -277,7 +277,7 @@ namespace Reko.Analysis
                 foreach (var stackslot in gargs.Value.StackSlots.Values.OrderBy(s => s.Offset))
                 {
                     ssa.RemoveUses(stackslot.stm);
-                    ssa.Identifiers[stackslot.Dst.MemoryId].DefStatement = null;
+                    ssa.Identifiers[stackslot.Dst.MemoryId].DefStatement = null!;
                     var idTmp = binder.CreateTemporary(stackslot.Dst.DataType);
                     var sidTmp = ssa.Identifiers.Add(idTmp, stackslot.stm, false);
                     stackslot.stm.Instruction = new Assignment(sidTmp.Identifier, stackslot.src);

@@ -68,7 +68,7 @@ namespace Reko.Analysis
         private readonly CallingConvention? defaultCc;
         private readonly Func<Storage, bool> isTrashed;
         private Block? block;
-        private Statement? stmCur;
+        private Statement stmCur;
 
         public SsaTransform(
             IReadOnlyProgram program,
@@ -94,6 +94,7 @@ namespace Reko.Analysis
             this.incompletePhis = new HashSet<SsaIdentifier>();
             this.sidsToRemove = new HashSet<SsaIdentifier>();
             this.m = new ExpressionEmitter();
+            this.stmCur = default!;
         }
 
         /// <summary>
@@ -165,7 +166,7 @@ namespace Reko.Analysis
         {
             foreach (var sid in sidsToRemove.Where(s => s.Uses.Count == 0))
             {
-                sid.DefStatement = null;
+                sid.DefStatement = null!;
                 ssa.Identifiers.Remove(sid);
             }
         }
@@ -347,7 +348,7 @@ namespace Reko.Analysis
         {
             foreach (var phi in scc)
             {
-                var stm = ssa.Identifiers[phi.Dst].DefStatement!;
+                var stm = ssa.Identifiers[phi.Dst].DefStatement;
                 ssa.RemoveUses(stm);
                 stm.Instruction = new AliasAssignment(phi.Dst, value);
                 ssa.AddUses(stm);
@@ -932,14 +933,14 @@ namespace Reko.Analysis
                     }
                     ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
                     ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur!);
-                    ssa.Identifiers[acc.MemoryId].DefStatement = null;
+                    ssa.Identifiers[acc.MemoryId].DefStatement = null!;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
                     var idDst = NewDef(idFrame, src, false);
                     return idDst;
                 }
                 else if (this.RenameFrameAccesses && IsConstFpuStackAccess(acc))
                 {
-                    ssa.Identifiers[acc.MemoryId].DefStatement = null;
+                    ssa.Identifiers[acc.MemoryId].DefStatement = null!;
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
                     var idDst = NewDef(idFrame, src, false);
                     return idDst;
@@ -1215,8 +1216,8 @@ namespace Reko.Analysis
                 return sidAlias;
             var e = m.Slice(sidSrc.Identifier, idSlice.DataType, range.Lsb - (int)sidSrc.Identifier.Storage.BitAddress);
             var ass = new AliasAssignment(idSlice, e);
-            sidAlias = this.ssa.InsertAfterDefinition(sidSrc.DefStatement!, ass);
-            sidSrc.Uses.Add(sidAlias.DefStatement!);
+            sidAlias = this.ssa.InsertAfterDefinition(sidSrc.DefStatement, ass);
+            sidSrc.Uses.Add(sidAlias.DefStatement);
             this.availableSlices.Add((sidSrc, range), sidAlias);
             return sidAlias;
         }
@@ -1229,7 +1230,7 @@ namespace Reko.Analysis
                 incompletePhis.Clear();
                 foreach (var phi in work)
                 {
-                    var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement!);
+                    var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
                     x.AddPhiOperands(phi);
                 }
             }

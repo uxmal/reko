@@ -192,7 +192,7 @@ namespace Reko.Analysis
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
                 ? sid1 : sid0;
-            if (sid.DefStatement!.Instruction is not Assignment ass)
+            if (sid.DefStatement.Instruction is not Assignment ass)
                 return null;
 
             if (ass.Dst != sid.Identifier)

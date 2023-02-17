@@ -179,8 +179,8 @@ namespace Reko.Analysis
             {
                 var sidHead = ssa.Identifiers[idHead];
                 var sidTail = ssa.Identifiers[idTail];
-                if (sidHead.DefStatement!.Instruction is DefInstruction &&
-                    sidTail.DefStatement!.Instruction is DefInstruction)
+                if (sidHead.DefStatement.Instruction is DefInstruction &&
+                    sidTail.DefStatement.Instruction is DefInstruction)
                 {
                     return ReplaceMkSequence(seq, stmCur!, sidHead, sidTail);
                 }

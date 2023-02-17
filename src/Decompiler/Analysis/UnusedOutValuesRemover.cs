@@ -401,7 +401,7 @@ namespace Reko.Analysis
                     if (deadStgs.Contains(id.Storage))
                     {
                         var sidDef = ssa.Identifiers[id];
-                        sidDef.DefStatement = null;
+                        sidDef.DefStatement = null!;
                         return true;
                     }
                 }

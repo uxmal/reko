@@ -87,7 +87,7 @@ namespace Reko.Analysis
                 sidGrf = s;
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
                     continue;
-                if (sidGrf.DefStatement!.Instruction is AliasAssignment)
+                if (sidGrf.DefStatement.Instruction is AliasAssignment)
                     continue;
                 var uses = new HashSet<Statement>();
                 this.aliases.Clear();
@@ -284,7 +284,7 @@ namespace Reko.Analysis
             // Create a dummy PHI node to stop recursion.
             var idNew = ssa.Procedure.Frame.CreateTemporary(new UnknownType());
             var tmpPhi = new PhiAssignment(idNew);
-            var stmPhi = mutator.InsertStatementAfter(tmpPhi, sidDef.DefStatement!);
+            var stmPhi = mutator.InsertStatementAfter(tmpPhi, sidDef.DefStatement);
             var sidPhi = ssaIds.Add(idNew, stmPhi, false);
             tmpPhi.Dst = sidPhi.Identifier;
             generatedIds.Add((sidDef.Identifier, cc), sidPhi);
@@ -312,7 +312,7 @@ namespace Reko.Analysis
                 return existingId.Identifier;
             var idNew = ssa.Procedure.Frame.CreateTemporary(newCond.DataType);
             var ass = new Assignment(idNew, newCond);
-            var stm = mutator.InsertStatementAfter(ass, sid.DefStatement!);
+            var stm = mutator.InsertStatementAfter(ass, sid.DefStatement);
             var sidNew = ssaIds.Add(idNew, stm, false);
             ass.Dst = sidNew.Identifier;
             Use(newCond, stm);
@@ -434,33 +434,33 @@ namespace Reko.Analysis
             var expRorSrc = rolc.Arguments[0];
 
             // Discard the use of the carry that tied the SHL and ROLC together.
-            sidCarryUsedInRolc.Uses.Remove(sidOrigHi.DefStatement!);
+            sidCarryUsedInRolc.Uses.Remove(sidOrigHi.DefStatement);
 
             var tmpLo = ssa.Procedure.Frame.CreateTemporary(expShlSrc.DataType);
-            var sidTmpLo = mutator.InsertAssignmentBefore(tmpLo, expShlSrc, sidOrigLo.DefStatement!);
+            var sidTmpLo = mutator.InsertAssignmentBefore(tmpLo, expShlSrc, sidOrigLo.DefStatement);
 
             var tmpHi = ssa.Procedure.Frame.CreateTemporary(rolc.Arguments[0].DataType);
-            var sidTmpHi = mutator.InsertAssignmentAfter(tmpHi, rolc.Arguments[0], sidTmpLo.DefStatement!);
+            var sidTmpHi = mutator.InsertAssignmentAfter(tmpHi, rolc.Arguments[0], sidTmpLo.DefStatement);
 
             var dt = PrimitiveType.Create(Domain.Integer, expShlSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shl(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
-            var sidTmp = mutator.InsertAssignmentAfter(tmp, expMkLongword, sidTmpHi.DefStatement!);
+            var sidTmp = mutator.InsertAssignmentAfter(tmp, expMkLongword, sidTmpHi.DefStatement);
 
-            ssa.RemoveUses(sidOrigLo.DefStatement!);
+            ssa.RemoveUses(sidOrigLo.DefStatement);
             var expNewLo = m.Slice(
                 sidTmp.Identifier,
                 PrimitiveType.CreateWord(tmpHi.DataType.BitSize));
             sidOrigLo.DefStatement!.Instruction = new Assignment(sidOrigLo.Identifier, expNewLo);
             sidTmp.Uses.Add(sidOrigLo.DefStatement!);
 
-            ssa.RemoveUses(sidOrigHi.DefStatement!);
+            ssa.RemoveUses(sidOrigHi.DefStatement);
             var expNewHi = m.Slice(
                 sidTmp.Identifier,
                 PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 tmpHi.DataType.BitSize);
-            sidOrigHi.DefStatement!.Instruction = new Assignment(sidOrigHi.Identifier, expNewHi);
-            sidTmp.Uses.Add(sidOrigHi.DefStatement!);
+            sidOrigHi.DefStatement.Instruction = new Assignment(sidOrigHi.Identifier, expNewHi);
+            sidTmp.Uses.Add(sidOrigHi.DefStatement);
             return sidOrigHi.DefStatement.Instruction;
         }
 
@@ -532,7 +532,7 @@ namespace Reko.Analysis
             var sidTmp = ssam.InsertAssignmentBefore(
                 tmp,
                 m.Shr(m.Seq(expShrSrc, expRorSrc), shift.Right),
-                sidOrigHi.DefStatement!);
+                sidOrigHi.DefStatement);
 
             // Replace the 'hi = SHR(...)' with 'hi = SLICE(...)'
             var expHi = m.Slice(sidTmp.Identifier, sidOrigHi.Identifier.DataType, expRorSrc.DataType.BitSize);
@@ -541,7 +541,7 @@ namespace Reko.Analysis
             // Replace the 'lo = SHR(...)' with 'lo = SLICE(...)'
             var expLo = m.Slice(sidTmp.Identifier, sidOrigLo.Identifier.DataType, 0);
             ssam.ReplaceAssigment(sidOrigLo, new Assignment(sidOrigLo.Identifier, expLo));
-            return sidOrigLo.DefStatement!.Instruction;
+            return sidOrigLo.DefStatement.Instruction;
         }
 
         public override Expression VisitTestCondition(TestCondition tc)

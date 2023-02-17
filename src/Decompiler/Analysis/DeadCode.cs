@@ -65,7 +65,7 @@ namespace Reko.Analysis
 							if (ssa.Identifiers[id].Uses.Count == 0)
 							{
 								stm.Instruction = new SideEffect(app);
-								ssa.Identifiers[id].DefStatement = null;
+								ssa.Identifiers[id].DefStatement = null!;
 							}
 						}
 					}
@@ -122,7 +122,7 @@ namespace Reko.Analysis
                 var sid = ssa.Identifiers[id];
                 if (sid.Uses.Count == 0)
                 {
-                    sid.DefStatement = null;
+                    sid.DefStatement = null!;
                     return true;
                 }
                 else
@@ -178,7 +178,7 @@ namespace Reko.Analysis
             {
                 sid.Uses.RemoveAll(u => !marks.Contains(u));
                 if (sid.DefStatement != null && !marks.Contains(sid.DefStatement))
-                    sid.DefStatement = null;
+                    sid.DefStatement = null!;
             }
 			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{

@@ -194,13 +194,14 @@ namespace Reko.Analysis
     {
         private readonly SsaState ssa;
         private readonly ArgumentTransformer argumentTransformer;
-        private Statement? stm;
+        private Statement stm;
         private CallInstruction? call;
 
         public SsaIdentifierTransformer(SsaState ssa)
         {
             this.ssa = ssa;
             this.argumentTransformer = new ArgumentTransformer(this);
+            this.stm = default!;
         }
 
         public void Transform(Statement stm, CallInstruction call)
@@ -328,7 +329,7 @@ namespace Reko.Analysis
             {
                 var sid = outer.ssa.Identifiers.Add(
                     id, outer.stm, false);
-                sid.DefStatement = null;
+                sid.DefStatement = null!;
                 sid.Uses.Add(outer.stm!);
                 return sid.Identifier;
             }
