@@ -427,5 +427,15 @@ namespace Reko.UnitTests.Decompiler.Typing
             var ceb = CreateBuilder(null, a, m.SMul(i, 8));
             Assert.AreEqual("a[i].dw0000", ceb.BuildComplex(true).ToString());
         }
+
+        [Test]
+        public void CEB_ArrayOfPtrsToStruct()
+        {
+            var array = new ArrayType(ptrPoint, 0);
+            var a = new Identifier("a", Ptr32(array), null);
+            CreateTv(a, Ptr32(array), Ptr32(array));
+            var ceb = CreateBuilder(null, a, null, 8);
+            Assert.AreEqual("a[2<i32>]", ceb.BuildComplex(true).ToString());
+        }
     }
 }
