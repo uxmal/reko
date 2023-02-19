@@ -59,7 +59,7 @@ namespace Reko.Analysis
                 b.Address,
                 null!,
                 b);
-            SsaIdentifier sidNew = ssaIds.Add((Identifier)ssaIds[idOld].OriginalIdentifier, stm, idOld, false);
+            SsaIdentifier sidNew = ssaIds.Add((Identifier)ssaIds[idOld].OriginalIdentifier, stm, false);
 			stm.Instruction = new Assignment(sidNew.Identifier, idOld);
 			b.Statements.Insert(i, stm);
 			return sidNew.Identifier;

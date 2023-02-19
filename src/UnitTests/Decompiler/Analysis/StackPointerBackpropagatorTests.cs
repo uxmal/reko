@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var m = new SsaProcedureBuilder(nameof(Spbp_LinearProcedure));
 
-            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, false).Identifier;
             Given_StackPointer(m);
             var sp_1 = m.Reg("sp_1", m.Architecture.StackRegister);
             var sp_2 = m.Reg("sp_2", m.Architecture.StackRegister);
@@ -192,7 +192,7 @@ Spbp_TwoExits_exit:
 
         private void Given_FramePointer(SsaProcedureBuilder m)
         {
-            this.fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+            this.fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, false).Identifier;
         }
 
         [Test]
@@ -200,7 +200,7 @@ Spbp_TwoExits_exit:
         {
             var m = new SsaProcedureBuilder(nameof(Spbp_SpaceOnStack));
 
-            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+            var fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, false).Identifier;
             Given_StackPointer(m);
             var sp_1 = m.Reg("sp_1", sp);
             var sp_2 = m.Reg("sp_2", sp);

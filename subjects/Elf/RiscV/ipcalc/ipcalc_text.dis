@@ -612,8 +612,8 @@ void fn0000000000015F94(word64 ra)
 
 // MayUse:  ra:[0..63]
 // LiveOut:
-// Trashed: a0 a1 a5 t1
-// Preserved: ra sp
+// Trashed: a0 a1 a5 ra t1
+// Preserved: sp
 fn0000000000015F94_entry:
 l0000000000015F94:
 	branch Mem0[0x19E28<64>:word64] != 0<64> l0000000000015FA8

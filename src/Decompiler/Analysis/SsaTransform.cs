@@ -166,7 +166,6 @@ namespace Reko.Analysis
             foreach (var sid in sidsToRemove.Where(s => s.Uses.Count == 0))
             {
                 sid.DefStatement = null;
-                sid.DefExpression = null;
                 ssa.Identifiers.Remove(sid);
             }
         }
@@ -891,7 +890,7 @@ namespace Reko.Analysis
         {
             if (ci.Callee is Identifier id)
             {
-                if (ssa.Identifiers[id].DefExpression is ProcedureConstant pc)
+                if (ssa.Identifiers[id].GetDefiningExpression() is ProcedureConstant pc)
                     return pc.Procedure;
             }
             else if (ci.Callee is ProcedureConstant pc2)
@@ -971,7 +970,7 @@ namespace Reko.Analysis
         {
             if (u.OutArgument != null && !RenameFrameAccesses)
             {
-                var sidOut = ssa.Identifiers.Add(u.OutArgument, null, null, false);
+                var sidOut = ssa.Identifiers.Add(u.OutArgument, null, false);
                 sidOut.DefStatement = stmCur;
                 u.OutArgument = sidOut.Identifier;
             }
@@ -989,7 +988,6 @@ namespace Reko.Analysis
                     var idOut = NewDef(id, appl, true);
                     outArg = new OutArgument(outArg.DataType, idOut);
                     args[i] = outArg;
-                    ssa.Identifiers[idOut].DefExpression = outArg;
                 }
                 else
                 {
@@ -1066,7 +1064,7 @@ namespace Reko.Analysis
                     return sidOld.Identifier;
                 }
             }
-            var sid = ssa.Identifiers.Add(idOld, stmCur, src, isSideEffect);
+            var sid = ssa.Identifiers.Add(idOld, stmCur, isSideEffect);
             var bs = blockstates[block!];
             var x = factory.Create(idOld, stmCur!);
             return x.WriteVariable(bs, sid);
@@ -1111,8 +1109,9 @@ namespace Reko.Analysis
                 bin.Right is Constant c)
             {
                 var sid = ssa.Identifiers[id];
-                if (sid.DefExpression is Constant cOther)
+                if (sid.GetDefiningExpression() is Constant cOther)
                 {
+                    //$HEURKAPETE
                     // Replace id + c  where id = cOther with c
                     c = bin.Operator.ApplyConstants(cOther, c);
                     sid.Uses.Remove(stmCur!);
@@ -1167,7 +1166,7 @@ namespace Reko.Analysis
         {
             if (storing)
             {
-                var sid = ssa.Identifiers.Add(memId, this.stmCur!, null, false);
+                var sid = ssa.Identifiers.Add(memId, this.stmCur!, false);
                 var ss = new RegisterTransformer(memId, stmCur!, this);
                 return (MemoryIdentifier)ss.WriteVariable(blockstates[block!], sid);
             }

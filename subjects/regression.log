@@ -619,8 +619,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -1247,7 +1247,7 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 00027EA8: warning: Unable to resolve imported reference __urem64.
 00011F6C: error: An error occurred while processing the statement word32 sp_37 = fp + 0xFFFFFF90<32> - (CONVERT(strlen(i0_25) + strlen(o1), size_t, size_t) + 9<32> & 0xFFFFFFF8<32>).
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
-       at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 141
+       at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 127
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 131
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 100
@@ -1961,4 +1961,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 88 binaries in 90.01 seconds.
+Decompiled 88 binaries in 90.24 seconds.

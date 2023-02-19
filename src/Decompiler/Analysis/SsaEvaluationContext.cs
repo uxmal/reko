@@ -97,7 +97,7 @@ namespace Reko.Analysis
 
         public Expression? GetDefiningExpression(Identifier id)
         {
-            return ssaIds[id].DefExpression;
+            return ssaIds[id].GetDefiningExpression();
         }
 
         public List<Statement> GetDefiningStatementClosure(Identifier id)

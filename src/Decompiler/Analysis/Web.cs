@@ -34,14 +34,12 @@ namespace Reko.Analysis
 			this.Members = new HashSet<SsaIdentifier>();
 			this.Definitions = new HashSet<Statement>();
 			this.Uses = new HashSet<Statement>();
-            this.DefExprs = new List<Expression>();
 		}
 
         public Identifier? Identifier { get; private set; }
         public HashSet<SsaIdentifier> Members { get; private set; }
         public HashSet<Statement> Uses { get; private set; }
         public HashSet<Statement> Definitions { get; private set; }
-        public List<Expression> DefExprs { get; private set; }
 
         public void Add(SsaIdentifier sid)
 		{
@@ -79,7 +77,6 @@ namespace Reko.Analysis
 				}
 			}
 			Definitions.Add(sid.DefStatement!);
-            DefExprs.Add(sid.DefExpression!);
 			foreach (Statement u in sid.Uses)
 				Uses.Add(u);
 		}

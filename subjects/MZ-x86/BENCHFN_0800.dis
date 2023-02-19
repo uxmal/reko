@@ -3270,7 +3270,7 @@ l0800_1CEF:
 	wLoc06_538 = wLoc06_538 + 1<16>
 	sp_115 = sp_327 + 2<i16>
 	ax_294 = ax_329
-	branch fn0800_1B9E(SLICE(wArg08, byte, 0), Mem322[ss_278:bp_279 + 4<16>:byte]) l0800_1CD9
+	branch fn0800_1B9E(SLICE(wArg08, byte, 0), SLICE(wArg02, byte, 0)) l0800_1CD9
 l0800_1CD9:
 	int32 dx_ax_360 = wArg08 *u32 di_125
 	ui32 ax_si_531 = SEQ(SLICE(dx_ax_360, word16, 0), ax_329) + wArg08 *u32 si_123

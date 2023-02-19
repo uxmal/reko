@@ -146,7 +146,7 @@ namespace Reko.Analysis
                     iStm++,
                     addr,
                     CreateMkSeq(left, hiCandidate.Left, loCandidate.Left));
-                left = ReplaceDstWithSsaIdentifier(left, null!, stmMkLeft);
+                left = ReplaceDstWithSsaIdentifier(left, stmMkLeft);
             }
 
             Statement? stmMkRight = null;
@@ -156,13 +156,13 @@ namespace Reko.Analysis
                     iStm++,
                     addr,
                     CreateMkSeq(right, hiCandidate.Right, loCandidate.Right));
-                right = ReplaceDstWithSsaIdentifier(right, null!, stmMkRight);
+                right = ReplaceDstWithSsaIdentifier(right, stmMkRight);
             }
 
             var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
             Instruction instr = Assign(dst, expSum);
             var stmLong = stmts.Insert(iStm++, addr, instr);
-            this.dst = ReplaceDstWithSsaIdentifier(this.dst, expSum, stmLong);
+            this.dst = ReplaceDstWithSsaIdentifier(this.dst, stmLong);
 
             var sidDst = GetSsaIdentifierOf(dst);
             //var sidLeft = GetSsaIdentifierOf(left);
@@ -180,7 +180,6 @@ namespace Reko.Analysis
                 var stmCastLo = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstLo.Identifier, cast));
                 var stmDeadLo = sidDstLo.DefStatement;
-                sidDstLo.DefExpression = cast;
                 sidDstLo.DefStatement = stmCastLo;
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
@@ -188,7 +187,6 @@ namespace Reko.Analysis
                 var stmSliceHi = stmts.Insert(iStm++, addr, new AliasAssignment(
                     sidDstHi!.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;
-                sidDstHi.DefExpression = slice;
                 sidDstHi.DefStatement = stmSliceHi;
 
                 if (sidDstLo != null)
@@ -223,10 +221,10 @@ namespace Reko.Analysis
             return iStm;
         }
 
-        private Expression ReplaceDstWithSsaIdentifier(Expression dst, BinaryExpression src, Statement stmLong)
+        private Expression ReplaceDstWithSsaIdentifier(Expression dst, Statement stmLong)
         {
             if (stmLong.Instruction is Assignment ass) {
-                var sid = ssa.Identifiers.Add(ass.Dst, stmLong, src, false);
+                var sid = ssa.Identifiers.Add(ass.Dst, stmLong, false);
                 ass.Dst = sid.Identifier;
                 return ass.Dst;
             }

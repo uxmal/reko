@@ -179,7 +179,7 @@ namespace Reko.Analysis
                     stmNew = block.Statements.Insert(i + 1, addr, ass);
                 }
 
-                var sidTo = ssaIds.Add(ass.Dst, stmNew, ass.Src, false);
+                var sidTo = ssaIds.Add(ass.Dst, stmNew, false);
                 ass.Dst = sidTo.Identifier;
                 return sidTo;
             }
@@ -196,7 +196,7 @@ namespace Reko.Analysis
                 var phiAss = new PhiAssignment(id);
                 var stm = new Statement(b.Address, phiAss, b);
                 b.Statements.Insert(0, stm);
-                var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
+                var sid = ssaIds.Add(phiAss.Dst, stm, false);
                 phiAss.Dst = sid.Identifier;
                 return sid;
             }
@@ -353,9 +353,8 @@ namespace Reko.Analysis
                 {
                     var copy = new Assignment(id, param);
                     var stmCopy = b.Statements.Add(b.Address, copy);
-                    var sidCopy = ssaIds.Add(id, stmCopy, null, false);
+                    var sidCopy = ssaIds.Add(id, stmCopy, false);
                     copy.Dst = sidCopy.Identifier;
-                    sidCopy.DefExpression = param;
 
                     outer.ssa.AddUses(stmCopy);
                     return sidCopy;
@@ -1083,7 +1082,7 @@ namespace Reko.Analysis
                     var stm = sids[0].DefStatement!.Block.Statements.Add(
                         sids[0].DefStatement!.Address,
                         ass);
-                    var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                    var sidTo = ssaIds.Add(ass.Dst, stm, false);
                     ass.Dst = sidTo.Identifier;
                     foreach (var sid in sids)
                     {
@@ -1116,7 +1115,7 @@ namespace Reko.Analysis
                 var ass = new AliasAssignment(this.id, seq);
                 var iStm = this.stm.Block.Statements.IndexOf(this.stm);
                 var stm = this.stm.Block.Statements.Insert(iStm, this.stm.Address, ass);
-                var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                var sidTo = ssaIds.Add(ass.Dst, stm, false);
                 ass.Dst = sidTo.Identifier;
                 foreach (var sid in sids)
                 {

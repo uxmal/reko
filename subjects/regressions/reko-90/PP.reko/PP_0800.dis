@@ -15154,7 +15154,7 @@ l0800_95EA:
 	sp_119 = sp_340 + 4<i16>
 	ax_305 = bx_356
 	word16 bx_356
-	branch fn0800_9485(SLICE(wArg0A, byte, 0), Mem336[ss_288:bp_289 + 4<16>:byte], out bx_356) l0800_95D4
+	branch fn0800_9485(SLICE(wArg0A, byte, 0), SLICE(wArg02, byte, 0), out bx_356) l0800_95D4
 l0800_95D4:
 	int32 dx_ax_376 = wArg0A *u32 di_129
 	ui32 ax_si_534 = SEQ(SLICE(dx_ax_376, word16, 0), bx_356) + wArg0A *u32 si_127

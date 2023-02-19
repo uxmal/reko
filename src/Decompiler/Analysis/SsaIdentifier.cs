@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
@@ -33,20 +34,14 @@ namespace Reko.Analysis
     /// </summary>
 	public class SsaIdentifier
 	{
-		public SsaIdentifier(Identifier id, Identifier idOrig, Statement? stmDef, Expression? exprDef, bool isSideEffect)
+		public SsaIdentifier(Identifier id, Identifier idOrig, Statement? stmDef, bool isSideEffect)
 		{
             this.Identifier = id ?? throw new ArgumentNullException(nameof(id));
 			this.OriginalIdentifier = idOrig ?? throw new ArgumentNullException(nameof(idOrig));
 			this.DefStatement = stmDef;
-            this.DefExpression = exprDef;
             this.IsSideEffect = isSideEffect;
 			this.Uses = new List<Statement>();
 		}
-
-        /// <summary>
-        /// Expression that defines the identifier.
-        /// </summary>
-        public Expression? DefExpression { get; set; }
 
         /// <summary>
         /// Statement that defines the identifier
@@ -88,7 +83,22 @@ namespace Reko.Analysis
         /// </summary>
         public List<Statement> Uses { get; private set; }
 
-		public void Write(TextWriter writer)
+
+        /// <summary>
+        /// Find the expression that defines the identifier.
+        /// </summary>
+        public Expression? GetDefiningExpression()
+        {
+            switch (this.DefStatement?.Instruction)
+            {
+            case Assignment ass: return ass.Src;
+            case PhiAssignment phi: return phi.Src;
+            case CallInstruction call: return call.Callee;
+            }
+            return null;
+        }
+
+        public void Write(TextWriter writer)
 		{
 			if (IsOriginal)
 			{

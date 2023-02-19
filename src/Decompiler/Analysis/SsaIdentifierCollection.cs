@@ -32,7 +32,7 @@ namespace Reko.Analysis
         private readonly Dictionary<Identifier, SsaIdentifier> sids = new();
         private int serialNumber = 0;
 
-		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, Expression? exprDef, bool isSideEffect)
+		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, bool isSideEffect)
 		{
 			int i = ++serialNumber;
 			Identifier idNew;
@@ -46,7 +46,7 @@ namespace Reko.Analysis
 			{
 				idNew = idOld;
 			}
-			var sid = new SsaIdentifier(idNew, idOld, stmDef, exprDef, isSideEffect);
+			var sid = new SsaIdentifier(idNew, idOld, stmDef, isSideEffect);
 			sids.Add(idNew, sid);
 			return sid;
 		}

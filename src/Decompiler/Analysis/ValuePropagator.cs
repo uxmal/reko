@@ -123,7 +123,6 @@ namespace Reko.Analysis
             (a.Src, changed) = a.Src.Accept(eval);
             var (src, changed2) = ReplaceIndirectCallToImport(a.Src);
             a.Src = src;
-            ssa.Identifiers[a.Dst].DefExpression = a.Src;
             return (a, changed|changed2);
         }
 

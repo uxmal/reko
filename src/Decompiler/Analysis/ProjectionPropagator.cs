@@ -386,7 +386,7 @@ namespace Reko.Analysis
 
                 // Add a def for the wide register, placing it "above" or "before"
                 // the narrow 'defs', which will be mutated to slices.
-                var sidWide = ssa.Identifiers.Add(idWide, null, null, false);
+                var sidWide = ssa.Identifiers.Add(idWide, null, false);
                 sidWide.DefStatement = ssa.Procedure.EntryBlock.Statements.Insert(
                     0,
                     ssa.Procedure.EntryAddress,
@@ -440,7 +440,7 @@ namespace Reko.Analysis
                     widePhiArgs.Add(new PhiArgument(pred, sidPred.Identifier));
                 }
 
-                var sidDst = ssa.Identifiers.Add(idWide, stmPhi, null, false);
+                var sidDst = ssa.Identifiers.Add(idWide, stmPhi, false);
                 stmPhi.Instruction = new PhiAssignment(
                     sidDst.Identifier,
                     widePhiArgs.ToArray());
@@ -488,7 +488,7 @@ namespace Reko.Analysis
                 }
 
                 var stmPred = AddStatementToEndOfBlock(pred, sids[0].DefStatement!.Address, null!);
-                sidPred = ssa.Identifiers.Add(idWide, stmPred, null, false);
+                sidPred = ssa.Identifiers.Add(idWide, stmPred, false);
                 var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
                 stmPred.Instruction =
                     new AliasAssignment(
@@ -535,7 +535,7 @@ namespace Reko.Analysis
 
                 // Create an SSA ID for the fused identifier and replace the
                 // definitions of its parts with a single definition of the fused identifier
-                var sidDst = ssa.Identifiers.Add(idWide, callStm, null, false);
+                var sidDst = ssa.Identifiers.Add(idWide, callStm, false);
                 foreach (var sid in sids)
                 {
                     call.Definitions.RemoveWhere(cb => cb.Expression == sid.Identifier);

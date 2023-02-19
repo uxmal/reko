@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 			m.SideEffect(ds);
             var def = m.Block.Statements[0];
             var use = m.Block.Statements[1];
-			SsaIdentifier sid_ds = ssa.Add(ds, def, c, false);
+			SsaIdentifier sid_ds = ssa.Add(ds, def, false);
             var ass = (Assignment)def.Instruction;
             ass.Dst = sid_ds.Identifier;
             ((SideEffect)use.Instruction).Expression = sid_ds.Identifier;

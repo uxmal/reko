@@ -92,7 +92,6 @@ namespace Reko.Analysis
             var ass = new Assignment(defRegId, src);
             var defSid = ssa.Identifiers[defRegId];
             var adjustRegStm = InsertStatementAfter(ass, stm);
-            defSid.DefExpression = src;
             defSid.DefStatement = adjustRegStm;
             call.Definitions.Remove(defRegBinding);
             ssa.AddUses(adjustRegStm);
@@ -135,7 +134,7 @@ namespace Reko.Analysis
             var stmts = stmAfter.Block.Statements;
             var iPos = stmts.IndexOf(stmAfter);
             var stm = stmts.Insert(iPos + 1, stmAfter.Address, null!);
-            var sid = ssa.Identifiers.Add(dst, stm, src, false);
+            var sid = ssa.Identifiers.Add(dst, stm, false);
             stm.Instruction = new Assignment(sid.Identifier, src);
             ssa.AddUses(stm);
             return sid;
@@ -162,7 +161,7 @@ namespace Reko.Analysis
             var stmts = stmBefore.Block.Statements;
             var iPos = stmts.IndexOf(stmBefore);
             var stm =  stmts.Insert(iPos, stmBefore.Address, null!);
-            var sid = ssa.Identifiers.Add(dst, stm, src, false);
+            var sid = ssa.Identifiers.Add(dst, stm, false);
             stm.Instruction = new Assignment(sid.Identifier, src);
             ssa.AddUses(stm);
             return sid;
@@ -199,7 +198,6 @@ namespace Reko.Analysis
             var value = InvalidConstant.Create(sid.Identifier.DataType);
             var ass = new Assignment(sid.Identifier, value);
             var newStm = this.InsertStatementAfter(ass, stm);
-            sid.DefExpression = value;
             sid.DefStatement = newStm;
         }
 

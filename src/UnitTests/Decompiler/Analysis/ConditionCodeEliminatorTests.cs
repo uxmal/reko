@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Word32);
             var id = new Identifier(name, PrimitiveType.Word32, mr);
-            return ssaIds.Add(id, null, null, false).Identifier;
+            return ssaIds.Add(id, null, false).Identifier;
         }
 
         private Identifier FlagGroup(string name)
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 name,
                 PrimitiveType.Word32,
                 new FlagGroupStorage(freg, 1U, "C", PrimitiveType.Byte));
-            return ssaIds.Add(id, null, null, false).Identifier;
+            return ssaIds.Add(id, null, false).Identifier;
         }
 
         private Expression RorC(Expression expr, Expression count, Expression carry)

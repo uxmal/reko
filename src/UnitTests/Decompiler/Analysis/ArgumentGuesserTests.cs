@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
         private void Given_FramePointer(SsaProcedureBuilder m)
         {
-            this.fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, null, false).Identifier;
+            this.fp = m.Ssa.Identifiers.Add(m.Frame.FramePointer, null, false).Identifier;
         }
 
         private void RunTest(string sExpected, Action<SsaProcedureBuilder> builder)

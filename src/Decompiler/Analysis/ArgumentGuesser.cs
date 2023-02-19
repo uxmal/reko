@@ -279,7 +279,7 @@ namespace Reko.Analysis
                     ssa.RemoveUses(stackslot.stm);
                     ssa.Identifiers[stackslot.Dst.MemoryId].DefStatement = null;
                     var idTmp = binder.CreateTemporary(stackslot.Dst.DataType);
-                    var sidTmp = ssa.Identifiers.Add(idTmp, stackslot.stm, stackslot.src, false);
+                    var sidTmp = ssa.Identifiers.Add(idTmp, stackslot.stm, false);
                     stackslot.stm.Instruction = new Assignment(sidTmp.Identifier, stackslot.src);
                     ssa.AddUses(stackslot.stm, stackslot.src);
                     args.Add(sidTmp.Identifier);

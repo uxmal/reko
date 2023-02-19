@@ -208,10 +208,9 @@ namespace Reko.Analysis
 
             public int MemoryGranularity => arch.MemoryGranularity;
 
-            public Expression GetDefiningExpression(Identifier id)
+            public Expression? GetDefiningExpression(Identifier id)
             {
-                return ssa.Identifiers[id].DefExpression!;
-                return values[id];
+                return ssa.Identifiers[id].GetDefiningExpression();
             }
 
             public List<Statement> GetDefiningStatementClosure(Identifier id)

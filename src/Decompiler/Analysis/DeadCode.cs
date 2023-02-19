@@ -122,7 +122,6 @@ namespace Reko.Analysis
                 var sid = ssa.Identifiers[id];
                 if (sid.Uses.Count == 0)
                 {
-                    sid.DefExpression = null;
                     sid.DefStatement = null;
                     return true;
                 }

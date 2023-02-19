@@ -114,7 +114,7 @@ namespace Reko.Analysis
             {
                 // This out variable is dead, but we need to create a dummy identifier
                 // for it to maintain the consistency of the SSA graph.
-                var sid = ssaCaller.Identifiers.Add(arg.OriginalIdentifier, stmCall, null, true);
+                var sid = ssaCaller.Identifiers.Add(arg.OriginalIdentifier, stmCall, true);
                 return sid.Identifier;
             }
         }
@@ -158,7 +158,7 @@ namespace Reko.Analysis
             {
                 // No available identifier, so synthesize one.
                 var idSeq = ssaCaller.Procedure.Frame.EnsureSequence(seq.DataType, seq.Elements);
-                var sidSeq = ssaCaller.Identifiers.Add(idSeq, this.stmCall, null, true);
+                var sidSeq = ssaCaller.Identifiers.Add(idSeq, this.stmCall, true);
                 int bitOffset = seq.DataType.BitSize;
                 foreach (var stg in seq.Elements)
                 {
@@ -252,7 +252,7 @@ namespace Reko.Analysis
         private Identifier FallbackArgument(string name, DataType dt)
         {
             var id = ssaCaller.Procedure.Frame.CreateTemporary(name, dt);
-            var sid = ssaCaller.Identifiers.Add(id, null, null, false);
+            var sid = ssaCaller.Identifiers.Add(id, null, false);
             DefineUninitializedIdentifier(stmCall, sid);
             sid.Uses.Add(stmCall);
             return sid.Identifier;
@@ -265,7 +265,6 @@ namespace Reko.Analysis
             var value = InvalidConstant.Create(sid.Identifier.DataType);
             var ass = new Assignment(sid.Identifier, value);
             var newStm = InsertStatementBefore(ass, stm);
-            sid.DefExpression = value;
             sid.DefStatement = newStm;
             var comment =
 @"Failed to bind call argument.

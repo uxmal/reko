@@ -157,14 +157,14 @@ namespace Reko.UnitTests.Mocks
 
         public Identifier FramePointer()
         {
-            var sidFp = Ssa.Identifiers.Add(Frame.FramePointer, null, null, false);
+            var sidFp = Ssa.Identifiers.Add(Frame.FramePointer, null, false);
             return sidFp.Identifier;
         }
 
         private Identifier MakeSsaIdentifier(Identifier id, string name)
         {
             var idNew = new Identifier(name, id.DataType, id.Storage);
-            var sid = new SsaIdentifier(idNew, id, null, null, false);
+            var sid = new SsaIdentifier(idNew, id, null, false);
             Ssa.Identifiers.Add(idNew, sid);
             return sid.Identifier;
         }
@@ -175,18 +175,15 @@ namespace Reko.UnitTests.Mocks
             {
             case Assignment ass:
                 Ssa.Identifiers[ass.Dst].DefStatement = stm;
-                Ssa.Identifiers[ass.Dst].DefExpression = ass.Src;
                 break;
             case PhiAssignment phiAss:
                 Ssa.Identifiers[phiAss.Dst].DefStatement = stm;
-                Ssa.Identifiers[phiAss.Dst].DefExpression = phiAss.Src;
                 break;
             case Store store:
                 if (store.Dst is MemoryAccess access)
                 {
                     var memId = AddMemIdToSsa(access.MemoryId);
                     Ssa.Identifiers[memId].DefStatement = stm;
-                    Ssa.Identifiers[memId].DefExpression = null;
                     var ea = access.EffectiveAddress;
                     var dt = access.DataType;
                     if (store.Dst is SegmentedAccess sa)
@@ -205,12 +202,10 @@ namespace Reko.UnitTests.Mocks
                 {
                     var id = (Identifier) def.Expression;
                     Ssa.Identifiers[id].DefStatement = stm;
-                    Ssa.Identifiers[id].DefExpression = call.Callee;
                 }
                 break;
             case DefInstruction def:
                 Ssa.Identifiers[def.Identifier].DefStatement = stm;
-                Ssa.Identifiers[def.Identifier].DefExpression = null;
                 break;
             }
             Ssa.AddUses(stm);
@@ -259,7 +254,7 @@ namespace Reko.UnitTests.Mocks
                     idOld.DataType,
                     idOld.Storage);
             }
-            var sid = new SsaIdentifier(idNew, idOld, null, null, false);
+            var sid = new SsaIdentifier(idNew, idOld, null, false);
             Ssa.Identifiers.Add(idNew, sid);
             return idNew;
         }

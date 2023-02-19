@@ -51,7 +51,6 @@ namespace Reko.Analysis
         public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
-            ssaIds[a.Dst].DefExpression = a.Src;
             if (replaceDefinitions)
             {
                 a.Dst = (Identifier)a.Dst.Accept(this);

@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             ssaIds = new SsaIdentifierCollection();
             foreach (Identifier i in m.Frame.Identifiers)
             {
-                ssaIds.Add(i, null, null, false);
+                ssaIds.Add(i, null, false);
             }
             ctx = new SsaEvaluationContext(null, ssaIds, null);
         }

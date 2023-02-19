@@ -13404,7 +13404,7 @@ l0800_n:
 							sp_n = sp_n + 4;
 							ax_n = bx_n;
 							uint16 bx_n;
-							if (!fn0800-9485((byte) wArg0A, (ss_n->*bp_n).b0004, out bx_n))
+							if (!fn0800-9485((byte) wArg0A, (byte) wArg02, out bx_n))
 								goto l0800_n;
 							Eq_n dx_ax_n = wArg0A *32 di_n;
 							uint32 ax_si_n = SEQ((word16) dx_ax_n, bx_n) + wArg0A *32 si_n;

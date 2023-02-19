@@ -207,7 +207,7 @@ namespace Reko.Analysis
             {
                 var b = ssa.Procedure.EntryBlock;
                 var def = b.Statements.Add(b.Address, null!);    //$REFACTOR this to SsaState.AddDefineStatement
-                sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
+                sidSeq = ssa.Identifiers.Add(idSeq, null, false);
                 sidSeq.DefStatement = def;
                 def.Instruction = new DefInstruction(sidSeq.Identifier);
             }

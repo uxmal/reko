@@ -109,7 +109,7 @@ namespace Reko.Analysis
         {
             if (Identifiers.TryGetValue(id, out var sid))
                 return sid;
-            sid = Identifiers.Add(id, null, null, false);
+            sid = Identifiers.Add(id, null, false);
             var stm = new Statement(
                 b.Address,
                 new DefInstruction(id),
@@ -306,7 +306,7 @@ namespace Reko.Analysis
             var stm = new Statement(stmBefore.Address, ass, b);
             b.Statements.Insert(i + 1, stm);
 
-            var sidTo = this.Identifiers.Add(ass.Dst, stm, ass.Src, false);
+            var sidTo = this.Identifiers.Add(ass.Dst, stm, false);
             ass.Dst = sidTo.Identifier;
             return sidTo;
         }
@@ -370,7 +370,6 @@ namespace Reko.Analysis
             {
                 if (Identifiers.TryGetValue(id, out var sid))
                 {
-                    sid.DefExpression = null;
                     sid.DefStatement = stm;
                 }
             }

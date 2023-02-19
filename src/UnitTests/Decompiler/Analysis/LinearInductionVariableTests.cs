@@ -209,9 +209,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             Identifier id0 = new Identifier("foo", PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
             Identifier id1 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", 1, PrimitiveType.Word32));
             Identifier phi = new Identifier("i_3", PrimitiveType.Word32, null);
-			ssa.Identifiers.Add(id0, new SsaIdentifier(id0, id0, null, null, false));
-			ssa.Identifiers.Add(id1, new SsaIdentifier(id1, id1, null, null, false));
-            ssa.Identifiers.Add(phi, new SsaIdentifier(phi, phi, null, null, false));
+			ssa.Identifiers.Add(id0, new SsaIdentifier(id0, id0, null, false));
+			ssa.Identifiers.Add(id1, new SsaIdentifier(id1, id1, null, false));
+            ssa.Identifiers.Add(phi, new SsaIdentifier(phi, phi, null, false));
 			var liv = new LinearInductionVariableFinder(ssa, null);
 			liv.Context.PhiStatement = new Statement(Address.Ptr32(0), null, null);
             liv.Context.PhiIdentifier = phi;
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			liv.Context.InitialValue = Constant.Word32(0);
 			liv.Context.PhiStatement = new Statement(Address.Ptr32(0), null, null);
 			liv.Context.PhiIdentifier = new Identifier("foo_0", PrimitiveType.Word32, null);
-            ssa.Identifiers.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
+            ssa.Identifiers.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
 			liv.Context.DeltaStatement = new Statement(Address.Ptr32(0), new Assignment(new Identifier("foo_1", PrimitiveType.Word32, null), 
 				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
@@ -403,9 +403,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
 			}
 		}
 
+        //$TODO: remove expr
 		private void SsaId(Identifier id, Statement stm, Expression expr, bool isSideEffect)
 		{
-			ssa.Identifiers.Add(id, new SsaIdentifier(id, id, stm, expr, isSideEffect));
+			ssa.Identifiers.Add(id, new SsaIdentifier(id, id, stm, isSideEffect));
 		}
 	}
 }

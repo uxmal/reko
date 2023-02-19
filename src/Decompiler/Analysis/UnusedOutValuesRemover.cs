@@ -402,7 +402,6 @@ namespace Reko.Analysis
                     {
                         var sidDef = ssa.Identifiers[id];
                         sidDef.DefStatement = null;
-                        sidDef.DefExpression = null;
                         return true;
                     }
                 }

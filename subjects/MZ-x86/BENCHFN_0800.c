@@ -2678,7 +2678,7 @@ l0800_nD0F:
 								++wLoc06_n;
 								sp_n = sp_n + 2;
 								ax_n = ax_n;
-								if (!fn0800-1B9E((byte) wArg08, (ss_n->*bp_n).b0004))
+								if (!fn0800-1B9E((byte) wArg08, (byte) wArg02))
 									goto l0800_nD03;
 								Eq_n dx_ax_n = wArg08 *32 di_n;
 								uint32 ax_si_n = SEQ((word16) dx_ax_n, ax_n) + wArg08 *32 si_n;

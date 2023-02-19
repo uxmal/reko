@@ -114,7 +114,7 @@ namespace Reko.Analysis
                 var id = ssa.Procedure.Frame.CreateTemporary(
                     name,
                     stg.DataType);
-                var fpuDefSid = ssa.Identifiers.Add(id, null, null, false);
+                var fpuDefSid = ssa.Identifiers.Add(id, null, false);
                 var fpuDefId = fpuDefSid.Identifier;
                 fpuDefs.Add(new CallBinding(stg, fpuDefId));
             }
@@ -131,7 +131,6 @@ namespace Reko.Analysis
             {
                 var fpuDefId = (Identifier)fpuDef.Expression;
                 var fpuDefSid = ssa.Identifiers[fpuDefId];
-                fpuDefSid.DefExpression = ci.Callee;
                 fpuDefSid.DefStatement = stm;
             }
         }

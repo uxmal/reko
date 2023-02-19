@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         private SsaIdentifier AddSid(string name)
         {
             Identifier id = new Identifier(name, null, null);
-            SsaIdentifier sid = sids.Add(id, new Statement(Address.Ptr32(0), new DefInstruction(id), null), null, false);
+            SsaIdentifier sid = sids.Add(id, new Statement(Address.Ptr32(0), new DefInstruction(id), null), false);
             return sid;
         }
 

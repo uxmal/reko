@@ -200,7 +200,7 @@ namespace Reko.Analysis
             var stg = sid.OriginalIdentifier.Storage;
             if (stg is FlagGroupStorage)
                 return true;
-            return (sid.DefExpression is ConditionOf);
+            return (sid.GetDefiningExpression() is ConditionOf);
 		}
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Reko.Analysis
             var idNew = ssa.Procedure.Frame.CreateTemporary(new UnknownType());
             var tmpPhi = new PhiAssignment(idNew);
             var stmPhi = mutator.InsertStatementAfter(tmpPhi, sidDef.DefStatement!);
-            var sidPhi = ssaIds.Add(idNew, stmPhi, null, false);
+            var sidPhi = ssaIds.Add(idNew, stmPhi, false);
             tmpPhi.Dst = sidPhi.Identifier;
             generatedIds.Add((sidDef.Identifier, cc), sidPhi);
 
@@ -302,7 +302,6 @@ namespace Reko.Analysis
             var phiNew = new PhiAssignment(sidPhi.Identifier, newArgs.ToArray());
             stmPhi.Instruction = phiNew;
             sidPhi.Identifier.DataType = newArgs[0].Value.DataType;
-            sidPhi.DefExpression = phiNew.Src;
             Use(phiNew.Src, stmPhi);
             return sidPhi.Identifier;
         }
@@ -314,7 +313,7 @@ namespace Reko.Analysis
             var idNew = ssa.Procedure.Frame.CreateTemporary(newCond.DataType);
             var ass = new Assignment(idNew, newCond);
             var stm = mutator.InsertStatementAfter(ass, sid.DefStatement!);
-            var sidNew = ssaIds.Add(idNew, stm, ass.Src, false);
+            var sidNew = ssaIds.Add(idNew, stm, false);
             ass.Dst = sidNew.Identifier;
             Use(newCond, stm);
             generatedIds.Add((sid.Identifier, cc), sidNew);
@@ -344,11 +343,11 @@ namespace Reko.Analysis
             case Conversion conv when conv.Expression == this.sidGrf?.Identifier:
                 if (conv.SourceDataType == PrimitiveType.Bool)
                 {
-                    if (sidGrf.DefExpression is not ConditionOf cof)
+                    if (sidGrf.GetDefiningExpression() is not ConditionOf cof)
                         return a;
                     if (cof.Expression is not Identifier id)
                         return a;
-                    if (ssaIds[id].DefExpression is BinaryExpression bin && 
+                    if (ssaIds[id].GetDefiningExpression() is BinaryExpression bin && 
                         bin.Operator.Type == OperatorType.Shr &&
                         bin.Right is Constant shift && 
                         shift.ToInt32() == 1)
@@ -423,12 +422,12 @@ namespace Reko.Analysis
             var sidCarry = defStatements.First();
             if (sidCarry.Uses.Count != 1)
                 return assRolc;
-            if (sidCarry.DefExpression is not ConditionOf cond)
+            if (sidCarry.GetDefiningExpression() is not ConditionOf cond)
                 return assRolc;
             if (cond.Expression is not Identifier condId)
                 return assRolc;
             var sidOrigLo = ssaIds[condId];
-            if (sidOrigLo.DefExpression is not BinaryExpression shift || shift.Operator.Type != OperatorType.Shl)
+            if (sidOrigLo.GetDefiningExpression() is not BinaryExpression shift || shift.Operator.Type != OperatorType.Shl)
                 return assRolc;
 
             var expShlSrc = shift.Left;
@@ -453,7 +452,6 @@ namespace Reko.Analysis
                 sidTmp.Identifier,
                 PrimitiveType.CreateWord(tmpHi.DataType.BitSize));
             sidOrigLo.DefStatement!.Instruction = new Assignment(sidOrigLo.Identifier, expNewLo);
-            sidOrigLo.DefExpression = expNewLo;
             sidTmp.Uses.Add(sidOrigLo.DefStatement!);
 
             ssa.RemoveUses(sidOrigHi.DefStatement!);
@@ -462,7 +460,6 @@ namespace Reko.Analysis
                 PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 tmpHi.DataType.BitSize);
             sidOrigHi.DefStatement!.Instruction = new Assignment(sidOrigHi.Identifier, expNewHi);
-            sidOrigHi.DefExpression = expNewHi;
             sidTmp.Uses.Add(sidOrigHi.DefStatement!);
             return sidOrigHi.DefStatement.Instruction;
         }
@@ -487,7 +484,7 @@ namespace Reko.Analysis
             // defining the carry flag is found.
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
             var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
-            while (sidCarry.DefExpression is Slice slice)
+            while (sidCarry.GetDefiningExpression() is Slice slice)
             {
                 if (slice.Expression is not Identifier idSliced)
                 {
@@ -499,23 +496,23 @@ namespace Reko.Analysis
                     sidsToKill.Add(sidCarry);
                 }
             }
-            if (sidCarry.DefExpression is not ConditionOf cond)
+            if (sidCarry.GetDefiningExpression() is not ConditionOf cond)
             {
-                if (sidCarry.DefExpression is not Identifier idTmp)
+                if (sidCarry.GetDefiningExpression() is not Identifier idTmp)
                     return a;
                 var sidT = ssaIds[idTmp];
-                if (sidT.DefExpression is not ConditionOf cond2)
+                if (sidT.GetDefiningExpression() is not ConditionOf cond2)
                     return a;
                 cond = cond2;
             }
             if (cond.Expression is not Identifier condId)
                 return a;
             var sidOrigHi = ssaIds[condId];
-            if (sidOrigHi.DefExpression is Slice slice2)
+            if (sidOrigHi.GetDefiningExpression() is Slice slice2)
             {
                 sidOrigHi = ssaIds[(Identifier) slice2.Expression];
             }
-            if (sidOrigHi.DefExpression is not BinaryExpression shift)
+            if (sidOrigHi.GetDefiningExpression() is not BinaryExpression shift)
                 return a;
             Domain domain;
             if (shift.Operator.Type == OperatorType.Shr)
@@ -540,12 +537,10 @@ namespace Reko.Analysis
             // Replace the 'hi = SHR(...)' with 'hi = SLICE(...)'
             var expHi = m.Slice(sidTmp.Identifier, sidOrigHi.Identifier.DataType, expRorSrc.DataType.BitSize);
             ssam.ReplaceAssigment(sidOrigHi, new Assignment(sidOrigHi.Identifier, expHi));
-            sidOrigHi.DefExpression = expHi;
 
             // Replace the 'lo = SHR(...)' with 'lo = SLICE(...)'
             var expLo = m.Slice(sidTmp.Identifier, sidOrigLo.Identifier.DataType, 0);
             ssam.ReplaceAssigment(sidOrigLo, new Assignment(sidOrigLo.Identifier, expLo));
-            sidOrigLo.DefExpression = expLo;
             return sidOrigLo.DefStatement!.Instruction;
         }
 

@@ -218,7 +218,7 @@ namespace Reko.Analysis
             var dst = (Identifier?) FindDefinedId(call!, a.Dst.Storage);
             if (dst is null)
                 return new SideEffect(src);
-            DefId(dst, src);
+            DefId(dst);
             return new Assignment(dst, src);
         }
 
@@ -260,11 +260,10 @@ namespace Reko.Analysis
             return id;
         }
 
-        private void DefId(Identifier id, Expression defExp)
+        private void DefId(Identifier id)
         {
             if (ssa.Identifiers.TryGetValue(id, out var sid))
             {
-                sid.DefExpression = defExp;
                 sid.DefStatement = stm;
             }
         }
@@ -328,7 +327,7 @@ namespace Reko.Analysis
             public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
             {
                 var sid = outer.ssa.Identifiers.Add(
-                    id, outer.stm, null, false);
+                    id, outer.stm, false);
                 sid.DefStatement = null;
                 sid.Uses.Add(outer.stm!);
                 return sid.Identifier;
@@ -348,7 +347,7 @@ namespace Reko.Analysis
             public override Expression VisitMemoryIdentifier(MemoryIdentifier id)
             {
                 var sid = outer.ssa.Identifiers.Add(
-                    id, outer.stm, null, false);
+                    id, outer.stm, false);
                 return sid.Identifier;
             }
         }

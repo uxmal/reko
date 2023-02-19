@@ -208,7 +208,7 @@ namespace Reko.Analysis
                         !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
                     {
                         // Ensure there are SSA identifiers for 'out' registers.
-                        ssa.Identifiers.Add(regOut, null, null, false);
+                        ssa.Identifiers.Add(regOut, null, false);
                     }
                 }
             }
