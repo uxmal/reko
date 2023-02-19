@@ -374,7 +374,6 @@ namespace Reko.Typing
             arrayIndex = CreateOffsetExpression(offset, arrayIndex);
             if (dereferenced)
             {
-                enclosingPtr = null;
                 dereferenceGenerated = true;
                 return new ArrayAccess(dtPointee, e, arrayIndex);
             }
