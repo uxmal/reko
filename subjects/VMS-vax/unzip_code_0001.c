@@ -4538,7 +4538,7 @@ int32 fn0001878E(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r3Out, ptr32 & 
 {
 	word32 r3_n;
 	if (ap[1] > 0x0100)
-		r3_n = *((byte) &ap->ptr0004[0x00AA].b0000 + 4);
+		r3_n = (word32) (&ap->ptr0004[0x00AA].b0000)[4];
 	else
 		r3_n = 0x10;
 	struct Eq_n * sp_n;

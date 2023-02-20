@@ -6778,7 +6778,7 @@ T_901: (in 0<32> @ 00011D14 : word32)
   Class: Eq_797
   DataType: (struct "Eq_797" 000C (0 (ptr32 Eq_8368) ptr0000))
   OrigDataType: word32
-T_902: (in (&(&(&(&(&i0_120.ptr0000->a0000[0<i32>].ptr0000.a0000)[0<i32>].ptr0000.a0000)[0<i32>].ptr0000.a0000)[0<i32>].ptr0000.a0000)[0<i32>].ptr0000.a0000)[0<i32>].ptr0000 != 0<32> @ 00011D14 : bool)
+T_902: (in i0_120.ptr0000->a0000[0<i32>].ptr0000 != 0<32> @ 00011D14 : bool)
   Class: Eq_902
   DataType: bool
   OrigDataType: bool

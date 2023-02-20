@@ -647,7 +647,7 @@ struct Eq_n * visit_each_hash_node(struct Eq_n * o0)
 //      lookup
 Eq_n add_symbol(Eq_n o0, Eq_n o1, ptr32 & i1Out, ptr32 & i6Out)
 {
-	(&(&(&(&(&o0.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000 = (struct Eq_n *) 0x00;
+	o0.ptr0000->a0000[0].ptr0000 = (struct Eq_n *) 0x00;
 	Eq_n i0_n;
 	ptr32 i1_n;
 	ptr32 i6_n;
@@ -692,12 +692,12 @@ Eq_n lookup(Eq_n o0, Eq_n o1, struct Eq_n & l1Out, union Eq_n & i1Out)
 			goto l00011D34;
 		if (o0.ptr0000[o3_n * 0x0C / 8] != 0x00)
 		{
-			i0_n = (Eq_n) (&(&(&(&(&i0_n.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000;
+			i0_n = (Eq_n) i0_n.ptr0000->a0000[0].ptr0000;
 			while (strcmp(i0_n.ptr0000->t0004, o1) != 0x00)
 			{
-				if ((&(&(&(&(&i0_n.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000 == 0x00)
+				if (i0_n.ptr0000->a0000[0].ptr0000 == 0x00)
 					goto l00011D1C;
-				i0_n = (Eq_n) (&(&(&(&(&i0_n.ptr0000->a0000[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000.a0000)[0].ptr0000;
+				i0_n = (Eq_n) i0_n.ptr0000->a0000[0].ptr0000;
 			}
 l00011D34:
 			l1Out = o0;

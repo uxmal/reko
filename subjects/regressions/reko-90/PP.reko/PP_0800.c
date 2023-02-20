@@ -395,11 +395,11 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 	if (ax_n != *((word32) ds + 9882))
 	{
 		Eq_n ptrLoc06_n;
-		if (SEQ(ds, *((word32) ds + 9884))[ax_n].b0000 + 0x00 == 0x2D)
+		if (SEQ(ds, *((word32) ds + 9884))[ax_n]->b0000 == 0x2D)
 			ptrLoc06_n = ptrLoc06;
 		else
 		{
-			if (SEQ(ds, *((word32) ds + 9884))[*((word32) ds + 0x00002A27)].b0000 + 0x00 != 0x2F)
+			if (SEQ(ds, *((word32) ds + 9884))[*((word32) ds + 0x00002A27)]->b0000 != 0x2F)
 			{
 				bpOut = bp;
 				dsOut = ds;
@@ -407,11 +407,11 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 			}
 			ptrLoc06_n = ptrLoc06;
 		}
-		while (SEQ(ds, *((word32) ds + 9884))[*((word32) ds + 0x00002A27)].b0000 + 0x00 == 0x2D || (SEQ(ds, *((word32) ds + 9884)))[*((word32) ds + 0x00002A27)].b0000 + 0x00 == 0x2F)
+		while (SEQ(ds, *((word32) ds + 9884))[*((word32) ds + 0x00002A27)]->b0000 == 0x2D || (SEQ(ds, *((word32) ds + 9884)))[*((word32) ds + 0x00002A27)]->b0000 == 0x2F)
 		{
 			byte cl_n;
 			word16 bx_n;
-			Eq_n ax_n = fn0800-0C29(ds, SEQ(ds, 0x0838), SEQ(ds, *((word32) ds + 9884))[*((word32) ds + 0x00002A27)].b0000 + 1, out cl_n, out dx, out bx_n);
+			Eq_n ax_n = fn0800-0C29(ds, SEQ(ds, 0x0838), SEQ(ds, *((word32) ds + 9884))[*((word32) ds + 0x00002A27)]->t0001, out cl_n, out dx, out bx_n);
 			Eq_n si_n = ax_n;
 			if (ax_n >= 11)
 			{
