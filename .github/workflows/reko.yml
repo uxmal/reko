@@ -35,7 +35,7 @@ jobs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo apt-get install libcapstone-dev
         elif [ "$RUNNER_OS" == "macOS" ]; then
-          brew install capstone
+          brew install capstone pkg-config
         fi
     - name: Clear Nuget Cache
       shell: bash
