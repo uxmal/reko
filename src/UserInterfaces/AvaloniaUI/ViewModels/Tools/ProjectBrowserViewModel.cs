@@ -90,9 +90,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         public event EventHandler? AfterSelect;
         public event EventHandler<TreeViewEventArgs>? AfterExpand;
         public event EventHandler<TreeViewEventArgs>? BeforeExpand;
-        public event DragEventHandler? DragEnter;
-        public event DragEventHandler? DragOver;
-        public event DragEventHandler? DragDrop;
         public event EventHandler? DragLeave;
         public event MouseEventHandler? MouseWheel;
         public event EventHandler? GotFocus;

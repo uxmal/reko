@@ -40,11 +40,6 @@ namespace Reko.Gui
     {
         private static readonly TraceSwitch trace = new(nameof(ProjectBrowserService), "");
 
-        /// <summary>
-        /// This event is raised when a file is dropped on the browser service.
-        /// </summary>
-        public event EventHandler<FileDropEventArgs>? FileDropped;
-
         private readonly ITabPage tabPage;
         protected readonly ITreeView tree;
         private Project? project;
@@ -123,11 +118,6 @@ namespace Reko.Gui
                 obj = des.Parent.Component;
             }
             return null;
-        }
-
-        protected virtual void OnFileDropped(FileDropEventArgs e)
-        {
-            FileDropped?.Invoke(this, e);
         }
 
         void TypeLibraries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -233,5 +223,8 @@ namespace Reko.Gui
                 }
             }
         }
+
+
+
     }
 }

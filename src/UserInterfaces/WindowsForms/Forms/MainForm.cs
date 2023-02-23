@@ -69,6 +69,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.ToolBar.ItemClicked += toolBar_ItemClicked;
             this.ProjectBrowserToolbar.ItemClicked += toolBar_ItemClicked;
 
+            this.treeBrowser.DragEnter += projectBrowser_DragEnter;
+            this.treeBrowser.DragOver += projectBrowser_DragOver;
+            this.treeBrowser.DragDrop += projectBrowser_DragDrop;
+
             interactor.Attach(this);
         }
 
@@ -294,6 +298,43 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public void CloseAllDocumentWindows()
         {
             DocumentWindows.Clear();
+        }
+
+        private void projectBrowser_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & System.Windows.Forms.DragDropEffects.Copy;
+            else
+                e.Effect = System.Windows.Forms.DragDropEffects.None;
+        }
+
+        private void projectBrowser_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = e.AllowedEffect & System.Windows.Forms.DragDropEffects.Copy;
+            else
+                e.Effect = System.Windows.Forms.DragDropEffects.None;
+        }
+
+        private async void projectBrowser_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var o = e.Data.GetData(DataFormats.FileDrop);
+                var filenames = (string[]) o;
+                if (filenames is null || filenames.Length == 0)
+                    return;
+                await interactor.OpenBinary(filenames[0]);
+                System.Diagnostics.Debug.WriteLine("Done");
+            }
+        }
+
+        private void tree_MouseWheel(object sender, Gui.Controls.MouseEventArgs e)
+        {
+            //model.MoveTo(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
+            //RecomputeLayout();
+            //OnScroll();
+            //tree,Invalidate();
         }
 
         private class DocumentWindowCollection : ICollection<IWindowFrame>

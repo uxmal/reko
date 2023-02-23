@@ -34,7 +34,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         {
             InitializeComponent();
             this.tree = this.FindControl<TreeView>("projectItems");
-            tree.AddHandler(DragDrop.DragEnterEvent, tree_DragEnter);
+            //$TODO: these should start working in Avalonia 11.0
+            tree.AddHandler(DragDrop.DragEnterEvent, projectItems_DragEnter);
+            tree.AddHandler(DragDrop.DragEnterEvent, projectItems_DragOver);
+            tree.AddHandler(DragDrop.DragEnterEvent, projectItems_DragLeave);
+            tree.AddHandler(DragDrop.DragEnterEvent, projectItems_Drop);
             tree.AddHandler(Control.GotFocusEvent, tree_GotFocus);
             tree.AddHandler(Control.LostFocusEvent, tree_LostFocus);
         }
@@ -42,11 +46,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-        }
-
-        protected void tree_DragEnter(object? sender, DragEventArgs e)
-        {
-            //$TODO: handle dropping files.
         }
 
         protected void tree_GotFocus(object? sender, EventArgs e)
@@ -64,5 +63,28 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
                 viewModel.TreeView.Focused = false;
             }
         }
+
+        protected void projectItems_DragEnter(object? sender, DragEventArgs e)
+        {
+        }
+
+        protected void projectItems_DragOver(object? sender, DragEventArgs e)
+        {
+        }
+
+        protected void projectItems_DragLeave(object? sender, DragEventArgs e)
+        {
+        }
+
+        protected void projectItems_Drop(object? sender, DragEventArgs e)
+        {
+            //$TODO:
+            // await interactor.OpenBinary(filenames[0]);
+        }
+
+
+
     }
+
+
 }

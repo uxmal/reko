@@ -28,8 +28,6 @@ namespace Reko.Gui.Services
 {
     public interface IProjectBrowserService : ICommandTarget
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
-
         Program? CurrentProgram { get; }
         bool ContainsFocus { get; }
 

@@ -286,6 +286,26 @@ namespace Reko.Gui.Forms
             }
         }
 
+        public async ValueTask OpenBinary(string fileName)
+        {
+            try
+            {
+                await CloseProject();
+                await SwitchInteractor(DecompilerPhases.Initial);
+                if (!await DecompilerPhases.Initial.OpenBinary(fileName))
+                    return;
+                RememberFilenameInMru(fileName);
+                if (fileName.EndsWith(Project_v5.FileExtension))
+                {
+                    ProjectFileName = fileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                await uiSvc.ShowError(ex, "An error occured openning the file {0}.", fileName);
+            }
+        }
+
         private void RememberFilenameInMru(string fileName)
         {
             mru.Use(fileName);

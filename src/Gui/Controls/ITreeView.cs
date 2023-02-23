@@ -32,10 +32,6 @@ namespace Reko.Gui.Controls
         event EventHandler<TreeViewEventArgs> AfterExpand;
         event EventHandler<TreeViewEventArgs> BeforeExpand;
 
-        event DragEventHandler DragEnter;
-        event DragEventHandler DragOver;
-        event DragEventHandler DragDrop;
-        event EventHandler DragLeave;
         event MouseEventHandler MouseWheel;
 
         bool Focused { get; }
@@ -71,39 +67,7 @@ namespace Reko.Gui.Controls
         void Remove();
     }
 
-    public delegate void DragEventHandler(object sender, DragEventArgs e);
     public delegate void MouseEventHandler(object sender, MouseEventArgs e);
-
-    public class DragEventArgs : EventArgs
-    {
-        public DragEventArgs(object data, int keyState, int x, int y, DragDropEffects allowedEffect, DragDropEffects effect)
-        {
-            this.Data = data;
-            this.KeyState = keyState;
-            this.X = x;
-            this.Y = y;
-            this.AllowedEffect = allowedEffect;
-            this.Effect = effect;
-        }
-
-        public object Data { get; }
-        public int KeyState { get; }
-        public int X { get; }
-        public int Y { get; }
-        public DragDropEffects AllowedEffect { get; }
-        public DragDropEffects Effect { get; set; }
-    }
-
-    [Flags]
-    public enum DragDropEffects
-    {
-        Scroll = int.MinValue,
-        All = -2147483645,
-        None = 0,
-        Copy = 1,
-        Move = 2,
-        Link = 4
-    }
 
     public class MouseEventArgs : EventArgs
     {
