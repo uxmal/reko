@@ -39,7 +39,7 @@ namespace Reko.UserInterfaces.AvaloniaUI
     {
         public override void Initialize()
         {
-            Styles.Insert(0, App.FluentLight);
+            //Styles.Insert(0, App.FluentLight);
 
             AvaloniaXamlLoader.Load(this);
         }
@@ -97,6 +97,7 @@ namespace Reko.UserInterfaces.AvaloniaUI
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
+        /*
         public static readonly Styles FluentDark = new Styles
         {
             new StyleInclude(new Uri("avares://Reko.UserInterfaces.AvaloniaUI/Styles"))
@@ -128,5 +129,6 @@ namespace Reko.UserInterfaces.AvaloniaUI
                 Source = new Uri("avares://Reko.UserInterfaces.AvaloniaUI/Themes/DefaultDark.axaml")
             },
         };
+        */
     }
 }

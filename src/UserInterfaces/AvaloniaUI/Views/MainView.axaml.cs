@@ -49,6 +49,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 
         private void InitializeThemes()
         {
+            /*
             var themes = this.Find<ComboBox>("Themes");
 
             themes.SelectionChanged += (_, _) =>
@@ -62,6 +63,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
                     _ => throw new Exception("Not support theme.")
                 };
             };
+            */
         }
 
         private void InitializeMenu()
