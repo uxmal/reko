@@ -11,6 +11,7 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
@@ -72,7 +73,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         private EndianServices endianness;
         private int cbLine;
         private int cbCellStride;
-        private bool vScroll;
 
         private class RenderedLine
         {
@@ -146,14 +146,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             var typeface = new Typeface(FontFamily);
             var txt = new FormattedText(
                 "AB",
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
                 typeface,
                 FontSize,
-                TextAlignment.Center,
-                TextWrapping.NoWrap,
-                Size.Infinity);
+                Foreground);
 
 
-            context.DrawText(Foreground, new Point(0, 0), txt);
+            context.DrawText(txt, new Point(0, 0));
 
             foreach (var span in spans)
             {
@@ -229,12 +229,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         {
             var txt = new FormattedText(
                 "X",
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
                 new Typeface(FontFamily),
                 FontSize,
-                TextAlignment.Center,
-                TextWrapping.NoWrap,
-                Size.Infinity);
-            var bounds = txt.Bounds;
+                null);
+            var bounds = new Rect(0, 0, txt.Width, txt.Height);
             return bounds;
         }
 
@@ -283,7 +283,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             }
         }
 
-        public event EventHandler ScrollInvalidated;
+        //public event EventHandler? ScrollInvalidated;
 
 
 #if LOGICAL_SCROLLABLE

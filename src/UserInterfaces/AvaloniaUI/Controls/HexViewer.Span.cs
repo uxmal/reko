@@ -57,7 +57,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 var tx = new TextLayout(this.Text, font, size, fg);
                 using (dc.PushPostTransform(Matrix.CreateTranslation(Bounds.Left, Bounds.Top)))
                 {
-                    tx.Draw(dc);
+                    tx.Draw(dc, new Point(0, 0));
                 }
             }
 
@@ -68,7 +68,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 var tx = new TextLayout(this.Text, font, size, fg);
                 using (dc.PushPostTransform(Matrix.CreateTranslation(Bounds.Left, Bounds.Top)))
                 {
-                    tx.Draw(dc);
+                    tx.Draw(dc, new Point(0, 0));
                 }
             }
         }

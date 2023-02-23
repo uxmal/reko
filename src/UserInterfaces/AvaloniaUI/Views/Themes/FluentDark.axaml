@@ -12,7 +12,7 @@
     <Color x:Key="RegionColor">#FF212121</Color>
     <Color x:Key="AcrylicFallbackColor">#1F1F1F</Color>
   </Styles.Resources>
-  <FluentTheme Mode="Dark" />
+  <!-- <FluentTheme Mode="Dark" /> -->
   <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
   <Style Selector="idc|ToolChromeControl">
     <Setter Property="Background" Value="Transparent" />

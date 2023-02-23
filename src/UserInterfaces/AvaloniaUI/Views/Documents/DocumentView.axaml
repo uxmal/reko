@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
+             xmlns:rep="clr-namespace:Avalonia.Controls.Repeater"
              xmlns:ctxt="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
              xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
              mc:Ignorable="d"
@@ -16,8 +17,8 @@
       <TextBlock Text="{Binding Context}" Padding="2" />
 
       <ScrollViewer Width="200">
-        <ItemsRepeater Items="{Binding Procedures}">
-          <ItemsRepeater.ItemTemplate>
+        <ItemsControl Items="{Binding Procedures}">
+          <ItemsControl.ItemTemplate>
             <DataTemplate>
               <Border Classes="procViewBorder">
                 <StackPanel>
@@ -32,10 +33,9 @@
                 </StackPanel>
               </Border>
             </DataTemplate>
-          </ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
       </ScrollViewer>
-
     </StackPanel>
   </Grid>
 </UserControl>

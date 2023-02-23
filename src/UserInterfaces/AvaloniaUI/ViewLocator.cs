@@ -25,13 +25,15 @@ namespace Reko.UserInterfaces.AvaloniaUI
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public IControl Build(object data)
+        public Control? Build(object? data)
         {
+            if (data is null)
+                return null;
             Type? type = DetermineViewType(data);
 
             if (type is { })
             {
-                return (IControl) Activator.CreateInstance(type)!;
+                return (Control) Activator.CreateInstance(type)!;
             }
             else
             {
@@ -39,14 +41,16 @@ namespace Reko.UserInterfaces.AvaloniaUI
             }
         }
 
-        private Type? DetermineViewType(object data)
+        private Type? DetermineViewType(object? data)
         {
+            if (data is null)
+                return null;
             var name = data.GetType().FullName!.Replace("ViewModel", "View");
             var type = Type.GetType(name);
             return type;
         }
 
-        public bool Match(object data)
+        public bool Match(object? data)
         {
             return data is ViewModelBase || data is IDockable || data is IWindowPane;
         }

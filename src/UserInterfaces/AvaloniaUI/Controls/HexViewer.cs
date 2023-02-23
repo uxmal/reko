@@ -8,6 +8,7 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Controls
 {
@@ -118,14 +119,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             var typeface = new Typeface(FontFamily);
             var txt = new FormattedText(
                 "AB",
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
                 typeface,
                 FontSize,
-                TextAlignment.Center,
-                TextWrapping.NoWrap,
-                Size.Infinity);
+                Foreground);
 
 
-            context.DrawText(Foreground, new Point(0, 0), txt);
+            context.DrawText(txt, new Point(0, 0));
 
             foreach (var span in spans)
             {
@@ -138,16 +139,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
             var typeface = new Typeface(FontFamily);
             var txt = new FormattedText(
                 "X",
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
                 typeface,
                 FontSize,
-                TextAlignment.Center,
-                TextWrapping.NoWrap,
-                Size.Infinity);
+                null);
             // We want 16* that formatted text, plus 15 paddings bet
-            var b = txt.Bounds;
-            var c = txt.Constraint;
-            var wantedWidth = 16 * b.Width + 15 * b.Width;
-            var wantedHeight = b.Height * Math.Ceiling(((ByteMemoryArea)mem!).Bytes.Length / 16.0);
+            var h = txt.Width;
+            var w = txt.Width;
+            var wantedWidth = 16 * w + 15 * w;
+            var wantedHeight = h * Math.Ceiling(((ByteMemoryArea)mem!).Bytes.Length / 16.0);
             return new Size(wantedWidth, wantedHeight);
         }
 
@@ -171,13 +172,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 return;
             var txt = new FormattedText(
                 "X",
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
                 new Typeface(FontFamily),
                 FontSize,
-                TextAlignment.Center,
-                TextWrapping.NoWrap,
-                Size.Infinity);
-            double dyLine = txt.Bounds.Height;
-            double dxChar = txt.Bounds.Width;
+                null);
+            double dyLine = txt.Height;
+            double dxChar = txt.Width;
             if (dyLine <= 0)
                 return;
             double controlHeight = this.Bounds.Height;

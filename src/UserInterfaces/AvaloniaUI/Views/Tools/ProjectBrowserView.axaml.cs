@@ -33,7 +33,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
         public ProjectBrowserView()
         {
             InitializeComponent();
-            this.tree = this.FindControl<TreeView>("projectItems");
+            this.tree = this.FindControl<TreeView>("projectItems")!;
             //$TODO: these should start working in Avalonia 11.0
             tree.AddHandler(DragDrop.DragEnterEvent, projectItems_DragEnter);
             tree.AddHandler(DragDrop.DragEnterEvent, projectItems_DragOver);
