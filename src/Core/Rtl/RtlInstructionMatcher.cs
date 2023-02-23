@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
-    public class RtlInstructionMatcher : RtlInstructionVisitor<bool, ExpressionMatch>
+    public class RtlInstructionMatcher : IRtlInstructionVisitor<bool, ExpressionMatch>
     {
         private RtlInstruction pattern;
         private readonly ExpressionMatcher matcher;

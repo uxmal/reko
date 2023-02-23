@@ -657,9 +657,10 @@ namespace Reko.Analysis
 
             //$REFACTOR: this is common code with BlockWorkItem; find
             // a way to reuse it
-            if (fpuStackDelta != 0)
+            var fpuStackRegister = arch.FpuStackRegister;
+            if (fpuStackDelta != 0 && fpuStackRegister is not null)
             {
-                var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(arch.FpuStackRegister);
+                var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(fpuStackRegister);
                 var src = m.AddSubSignedInt(fpuStackReg, fpuStackDelta);
                 var iCur = stmCur!.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(iCur + 1,

@@ -173,7 +173,7 @@ namespace Reko.Environments.SysV
             case "x86-protected-32":
             case "x86-protected-64":
                 m.Assign(
-                    proc.Frame.EnsureRegister(Architecture.FpuStackRegister),
+                    proc.Frame.EnsureRegister(Architecture.FpuStackRegister!),
                     0);
                 break;
             case "zSeries":

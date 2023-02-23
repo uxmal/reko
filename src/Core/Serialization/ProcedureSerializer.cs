@@ -293,7 +293,7 @@ namespace Reko.Core.Serialization
         public Identifier? DeserializeArgument(Argument_v1 arg, string? convention)
         {
             var kind = arg.Kind;
-            if (kind == null)
+            if (kind is null)
             {
                 kind = new StackVariable_v1();
             }

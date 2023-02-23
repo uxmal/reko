@@ -38,7 +38,7 @@ namespace Reko.Scanning
     /// <see cref="Procedure"/>s, and builds up the program's <see cref="CallGraph"/>.
     /// </summary>
     public class ProcedureGraphBuilder :
-        RtlInstructionVisitor<Instruction, ProcedureGraphBuilder.Context>, 
+        IRtlInstructionVisitor<Instruction, ProcedureGraphBuilder.Context>, 
         ExpressionVisitor<Expression, Procedure>
     {
         private readonly ScanResultsV2 sr;

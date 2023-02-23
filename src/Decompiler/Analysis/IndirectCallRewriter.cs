@@ -113,11 +113,15 @@ namespace Reko.Analysis
                 call,
                 ssa.Procedure.Architecture.StackRegister,
                 ft.StackDelta - call.CallSite.SizeOfReturnAddressOnStack);
-            ssam.AdjustRegisterAfterCall(
-                stm,
-                call,
-                program.Architecture.FpuStackRegister,
-                -ft.FpuStackDelta);
+            var fpuStackReg = proc.Architecture.FpuStackRegister;
+            if (fpuStackReg is not null)
+            {
+                ssam.AdjustRegisterAfterCall(
+                    stm,
+                    call,
+                    fpuStackReg,
+                    -ft.FpuStackDelta);
+            }
             var ab = program.Architecture.CreateFrameApplicationBuilder(
                  proc.Frame, call.CallSite, call.Callee);
             ssa.RemoveUses(stm);

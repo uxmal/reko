@@ -731,7 +731,7 @@ namespace Reko.Core.Output
         {
             writer.Write("new Pointer(");
             ptr.Pointee.Accept(this);
-            writer.Write(", {0})", ptr.Size);
+            writer.Write(", {0})", ptr.BitSize);
             return 0;
         }
 

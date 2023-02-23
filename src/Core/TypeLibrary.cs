@@ -35,7 +35,17 @@ namespace Reko.Core
 	{
         private bool isCaseInsensitive;
 
-        public TypeLibrary(bool caseInsensitive = false) : this(
+        public TypeLibrary() : this(
+            false,
+            new Dictionary<string, DataType>(),
+            new Dictionary<string, FunctionType>(Comparer(false)),
+            new Dictionary<string, ProcedureCharacteristics>(
+                Comparer(false)),
+            new Dictionary<string, DataType>())
+        {
+        }
+   
+        public TypeLibrary(bool caseInsensitive) : this(
             caseInsensitive,
             new Dictionary<string, DataType>(),
             new Dictionary<string, FunctionType>(Comparer(caseInsensitive)),

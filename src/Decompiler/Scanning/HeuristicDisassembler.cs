@@ -201,9 +201,9 @@ namespace Reko.Scanning
             var addrNextInstr = instr.Address + instr.Length;
             if (!isAddrValid(addrNextInstr))
                 return true;
-            if (!program.ImageMap.TryFindItem(addrNextInstr, out var item))
+            if (!program.ImageMap.TryFindItem(addrNextInstr, out ImageMapItem? item))
                 return false;
-            return item.DataType is not UnknownType;
+            return item!.DataType is not UnknownType;
         }
 
         /// <summary>

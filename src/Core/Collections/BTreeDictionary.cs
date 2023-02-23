@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -507,8 +508,7 @@ namespace Reko.Core.Collections
             throw new NotImplementedException();
         }
 
-        //$TODO: .NET 5
-        public bool TryGetValue(TKey key, /*[NotNullWhen(returnValue: true)]*/ out TValue value)
+        public bool TryGetValue(TKey key, [NotNullWhen(returnValue: true)] out TValue value)
         {
             if (root == null)
             {

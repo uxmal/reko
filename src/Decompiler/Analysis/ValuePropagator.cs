@@ -254,11 +254,15 @@ namespace Reko.Analysis
                 ci,
                 this.arch.StackRegister,
                 sig.StackDelta - ci.CallSite.SizeOfReturnAddressOnStack);
-            ssam.AdjustRegisterAfterCall(
-                stm,
-                ci,
-                this.arch.FpuStackRegister,
-                -sig.FpuStackDelta);
+            var fpuStackReg = this.arch.FpuStackRegister;
+            if (fpuStackReg is not null)
+            {
+                ssam.AdjustRegisterAfterCall(
+                    stm,
+                    ci,
+                    fpuStackReg,
+                    -sig.FpuStackDelta);
+            }
             ssa.RemoveUses(stm);
             var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
             if (va.TryScan(stmCur!.Address, ci.Callee, sig, chr, ab, out var result))

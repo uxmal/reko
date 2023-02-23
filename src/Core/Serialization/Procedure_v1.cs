@@ -102,7 +102,7 @@ namespace Reko.Core.Serialization
         // Optional address; if not specified, use parent context
         // (e.g. address of user-provided procedure)
         [XmlAttribute("addr")]
-        public string? Address;  
+        public string? Address;
 
         [XmlAttribute("reg")]
         public string? Register;

@@ -51,7 +51,7 @@ namespace Reko.Core.Rtl
             return visitor.VisitReturn(this);
         }
 
-        public override T Accept<T, C>(RtlInstructionVisitor<T, C> visitor, C context)
+        public override T Accept<T, C>(IRtlInstructionVisitor<T, C> visitor, C context)
         {
             return visitor.VisitReturn(this, context);
         }

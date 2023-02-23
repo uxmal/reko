@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -640,8 +641,7 @@ namespace Reko.Core.Collections
             throw new NotImplementedException();
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public bool TryGetValue(TKey key, out TValue value)
+        public bool TryGetValue(TKey key, [NotNullWhen(returnValue: true)] out TValue value)
         {
             if (root == null)
             {
@@ -653,8 +653,7 @@ namespace Reko.Core.Collections
             return found;
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public bool TryGetLowerBound(TKey key, out TValue value)
+        public bool TryGetLowerBound(TKey key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             var snapshot = this.root;
             var cmp = this.Comparer;
@@ -690,8 +689,7 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
-        public bool TryGetUpperBound(TKey key, out TValue value)
+        public bool TryGetUpperBound(TKey key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             var snapshot = this.root;
             var cmp = this.Comparer;
@@ -727,7 +725,6 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetLowerBoundKey(TKey key, out TKey closestKey)
         {
             var snapshot = this.root;
@@ -764,7 +761,6 @@ namespace Reko.Core.Collections
             return set;
         }
 
-        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public bool TryGetUpperBoundKey(TKey key, out TKey closestKey)
         {
             var snapshot = this.root;

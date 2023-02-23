@@ -63,7 +63,7 @@ namespace Reko.Core
         /// <summary>
         /// FPU stack pointer used by this machine, or null if none exists.
         /// </summary>
-        RegisterStorage FpuStackRegister { get; }
+        RegisterStorage? FpuStackRegister { get; }
 
         /// <summary>
         /// Size of a pointer into the stack frame (near pointer in x86 real mode)
@@ -521,8 +521,8 @@ namespace Reko.Core
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
         private RegisterStorage? regStack;
-        protected Dictionary<string, RegisterStorage> regsByName;
-        protected Dictionary<StorageDomain, RegisterStorage> regsByDomain;
+        protected Dictionary<string, RegisterStorage>? regsByName;
+        protected Dictionary<StorageDomain, RegisterStorage>? regsByDomain;
 
         /// <summary>
         /// Create an instance of the class.
@@ -532,14 +532,21 @@ namespace Reko.Core
         /// <param name="options">A dictionary of architecture options to apply (e.g. processor endianness,
         /// word size, or processor features.)
         /// </param>
-#nullable disable
         public ProcessorArchitecture(
             IServiceProvider services,
             string archId, 
             Dictionary<string, object> options,
-            Dictionary<string, RegisterStorage> regsByName,
-            Dictionary<StorageDomain, RegisterStorage> regsByDomain)
+            Dictionary<string, RegisterStorage>? regsByName,
+            Dictionary<StorageDomain, RegisterStorage>? regsByDomain)
         {
+            //$REVIEW: consider exposing these 4 properties in the constructor,
+            // as nothing can work without these values.
+            this.Endianness = default!;
+            this.FramePointerType = default!;
+            this.PointerType = default!;
+            this.WordWidth = default!;
+
+            this.ProcedurePrologs = Array.Empty<MaskedPattern>();
             this.Services = services;
             this.Name = archId;
             this.Options = options;
@@ -549,7 +556,6 @@ namespace Reko.Core
             this.regsByName = regsByName;
             this.regsByDomain = regsByDomain;
         }
-#nullable enable
 
         public IServiceProvider Services { get; }
         public string Name { get; }
@@ -597,7 +603,7 @@ namespace Reko.Core
             set { this.regStack = value; }
         }
 
-        public RegisterStorage FpuStackRegister { get; protected set; }
+        public RegisterStorage? FpuStackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");

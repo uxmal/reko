@@ -20,6 +20,9 @@
 
 #nullable disable
 
+#pragma warning disable RS0041
+#pragma warning disable RS0036
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

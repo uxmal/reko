@@ -63,10 +63,7 @@ namespace Reko.Core
             return obj is AddressRange that && this == that;
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Begin, End);
-        }
+        public override int GetHashCode() => HashCode.Combine(Begin, End);
 
         /// <summary>
         /// Gets the empty/null memory range.

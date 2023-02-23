@@ -92,12 +92,9 @@ namespace Reko.Core
             var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr).ToArray();
             Expression appl = new Application(callee, dtOut, actuals);
 
-            //$TODO: refactor to 'switch' statement.
-            if (expOut == null)
+            switch (expOut)
             {
-                return new SideEffect(appl);
-            }
-            else if (expOut is Identifier idOut)
+            case Identifier idOut:
             {
                 int extraBits = idOut.DataType.BitSize - sigCallee.ReturnValue.DataType.BitSize;
                 if (extraBits > 0)
@@ -111,12 +108,11 @@ namespace Reko.Core
                 }
                 return new Assignment(idOut, appl);
             }
-            else if (expOut is MkSequence seq)
-            {
+            case MkSequence seq:
                 return new Store(seq, appl);
-            }
-            else
-            {
+            case null:
+                return new SideEffect(appl);
+            default:
                 return new Store(expOut, appl);
             }
         }

@@ -125,6 +125,8 @@ namespace Reko.Arch.RiscV
 
         public RegisterStorage? GetRegister(int i)
         {
+            if (regsByDomain is null)
+                return null;
             return regsByDomain.TryGetValue((StorageDomain) i, out var reg)
                 ? reg
                 : null;
@@ -520,6 +522,11 @@ namespace Reko.Arch.RiscV
 
         public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
         {
+            if (regsByName is null)
+            {
+                reg = null!;
+                return false;
+            }
             return regsByName.TryGetValue(name, out reg);
         }
 

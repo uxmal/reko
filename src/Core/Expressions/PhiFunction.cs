@@ -70,7 +70,7 @@ namespace Reko.Core.Expressions
     /// The phi function arguments need to keep track of both the SSA identifier 
     /// and the predecessor block from which the identifier came.
     /// </summary>
-    public struct PhiArgument
+    public readonly struct PhiArgument
     {
         public readonly Expression Value;
         public readonly Block Block;

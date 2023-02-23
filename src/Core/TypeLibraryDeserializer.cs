@@ -453,7 +453,7 @@ namespace Reko.Core
             };
         }
 
-        public DataType VisitTemplate(SerializedTemplate sTemplate)
+        DataType ISerializedTypeVisitor<DataType>.VisitTemplate(SerializedTemplate sTemplate)
         {
             //$TODO: Reko's type system doesn't encompass templated / generic
             // types yet, so we fake a template instance.

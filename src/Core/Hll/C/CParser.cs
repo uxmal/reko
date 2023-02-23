@@ -428,7 +428,7 @@ IGNORE tab + cr + lf
                 {
                     if (IsDecl())
                     {
-                        statements.Add(grammar.DeclStat(Parse_Decl()));
+                        statements.Add(grammar.DeclStat(Parse_Decl()!));
                     }
                     else
                     {

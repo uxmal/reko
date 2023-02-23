@@ -32,9 +32,9 @@ namespace Reko.Core.Output
     /// </summary>
     public class ProcedureFormatter
     {
-        private CodeFormatter formatter;
-        private BlockDecorator decorator;
-        private Procedure proc;
+        private readonly CodeFormatter formatter;
+        private readonly BlockDecorator decorator;
+        private readonly Procedure proc;
 
         public ProcedureFormatter(Procedure procedure, CodeFormatter formatter)
         {

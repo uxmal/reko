@@ -31,7 +31,7 @@ namespace Reko.Core.Hll.C
         {
         }
 
-        public static string? GetName(IEnumerable<DeclSpec> declspecs, Declarator declarator, ParserState state)
+        public static string? GetName(IEnumerable<DeclSpec> declspecs, Declarator? declarator, ParserState state)
         {
             var ndte = new NameExtractor();
             if (declarator != null)

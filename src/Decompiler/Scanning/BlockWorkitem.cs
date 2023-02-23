@@ -808,7 +808,7 @@ namespace Reko.Scanning
                         op = Operator.IAdd;
                         dd = -sigCallee.FpuStackDelta;
                     }
-                    var fpuStackReg = frame!.EnsureRegister(arch.FpuStackRegister);
+                    var fpuStackReg = frame!.EnsureRegister(arch.FpuStackRegister!);
                     var d = Constant.Create(fpuStackReg.DataType, dd);
                     this.Emit(new Assignment(
                         fpuStackReg,

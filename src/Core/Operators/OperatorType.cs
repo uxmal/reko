@@ -39,6 +39,7 @@ namespace Reko.Core.Operators
         IMod,
         SMod,
         UMod,
+
         FAdd,
         FSub,
         FMul,
@@ -48,11 +49,11 @@ namespace Reko.Core.Operators
 
         And,
         Or,
+        Xor,
+        
         Shr,
         Sar,
-
         Shl,
-        Xor,
 
         Cand,
         Cor,

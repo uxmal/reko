@@ -63,7 +63,7 @@ namespace Reko.Core.Configuration
         /// If non-empty, provides a fixed list of available values for the option.
         /// This list is typically displayed in a drop down list.
         /// </summary>
-        public ListOption_v1[] Choices { get; set; } = new ListOption_v1[0];
+        public ListOption_v1[] Choices { get; set; } = Array.Empty<ListOption_v1>();
 
         public override string ToString()
         {

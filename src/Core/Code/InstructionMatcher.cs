@@ -97,8 +97,7 @@ namespace Reko.Core.Code
 
         public bool VisitPhiAssignment(PhiAssignment phi, ExpressionMatch m)
         {
-            var defPat = pattern as PhiAssignment;
-            if (defPat == null)
+            if (pattern is not PhiAssignment defPat)
                 return false;
             throw new NotImplementedException();
         }

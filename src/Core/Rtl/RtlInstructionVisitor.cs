@@ -40,7 +40,7 @@ namespace Reko.Core.Rtl
         T VisitSwitch(RtlSwitch sw);
     }
 
-    public interface RtlInstructionVisitor<T, C>
+    public interface IRtlInstructionVisitor<T, C>
     {
         T VisitAssignment(RtlAssignment ass, C ctx);
         T VisitBranch(RtlBranch branch, C ctx);

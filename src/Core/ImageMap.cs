@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -62,7 +63,7 @@ namespace Reko.Core
         public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
 		{
 			itemNew.Address = addr;
-            if (!TryFindItem(addr, out ImageMapItem item))
+            if (!TryFindItem(addr, out ImageMapItem? item))
             {
                 // Outside of range.
                 Items.Add(itemNew.Address, itemNew);
@@ -71,7 +72,7 @@ namespace Reko.Core
             }
             else
             {
-                long delta = addr - item.Address;
+                long delta = addr - item!.Address;
                 Debug.Assert(delta >= 0, "TryFindItem is supposed to find a block whose address is <= the supplied address");
                 if (delta > 0)
                 {
@@ -122,7 +123,7 @@ namespace Reko.Core
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
             }
             // Do not split items with known data.
-            if (!(item.DataType is UnknownType || item.DataType is CodeType))
+            if (!(item!.DataType is UnknownType || item.DataType is CodeType))
                 return;
             long delta = addr - item.Address;
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
@@ -207,9 +208,9 @@ namespace Reko.Core
 
         public void TerminateItem(Address addr)
         {
-            if (!TryFindItem(addr, out ImageMapItem item))
+            if (!TryFindItem(addr, out ImageMapItem? item))
                 return;
-            long delta = addr - item.Address;
+            long delta = addr - item!.Address;
             if (delta == 0)
                 return;
 
@@ -234,7 +235,7 @@ namespace Reko.Core
             ImageMapItem mergedItem = item;
 
             // Merge with previous item
-            if (Items.TryGetLowerBound((addr - 1), out ImageMapItem prevItem) &&
+            if (Items.TryGetLowerBound((addr - 1), out ImageMapItem? prevItem) &&
                 prevItem.DataType is UnknownType &&
                 prevItem.DataType.Size == 0 &&
                 prevItem.EndAddress.Equals(item.Address))
@@ -247,7 +248,7 @@ namespace Reko.Core
 
             // Merge with next item
             
-            if (Items.TryGetUpperBound((addr + 1), out ImageMapItem nextItem) &&
+            if (Items.TryGetUpperBound((addr + 1), out ImageMapItem? nextItem) &&
                 nextItem.DataType is UnknownType &&
                 nextItem.DataType.Size == 0 &&
                 mergedItem.EndAddress.Equals(nextItem.Address))
@@ -265,7 +266,7 @@ namespace Reko.Core
         /// <param name="addr"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-		public bool TryFindItem(Address addr, out ImageMapItem item)
+		public bool TryFindItem(Address addr, [MaybeNullWhen(false)] out ImageMapItem? item)
 		{
 			return Items.TryGetLowerBound(addr, out item);
 		}
