@@ -76,7 +76,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 	struct Eq_n * a7_n;
 	word32 a6_n;
 	ptr32 a5_n;
-	(a5 + 0x00C2)();
+	(*((word32) a5 + 0x00C2))();
 	word32 v7_n = a7_n->dw0000;
 	a7_n->wFFFFFFFE = 0xA1AD;
 	0x00 = 0x00;
@@ -85,7 +85,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 	word32 a2_n;
 	struct Eq_n * a5_n;
 	word32 a0_n;
-	(a5_n + 0x00C2)();
+	(*((word32) a5_n + 0x00C2))();
 	if (a2_n - *a7_n != 0x00)
 	{
 		__syscall<word16>(0xA1AD);

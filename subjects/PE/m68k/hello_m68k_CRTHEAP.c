@@ -570,7 +570,7 @@ void fn00002B18(struct Eq_n * a5, struct Eq_n * dwArg04)
 		a2_n->t0004 = d0_n;
 		if (a5->tFFFFFAE4 != -1 && d0_n - (a5->ptrFFFFFACC)->t0004 < 0x00)
 		{
-			word32 d1_n = a2_n->dw0000 + 4;
+			word32 d1_n = *((word32) a2_n->dw0000 + 4);
 			if (SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - 0x04 - a5->tFFFFFAE4 >= 0x00)
 				a5->ptrFFFFFACC = a2_n;
 		}
@@ -649,7 +649,7 @@ int32 fn00002BB4(struct Eq_n * a5, Eq_n dwArg04, up32 dwArg08, struct Eq_n & a5O
 				Eq_n d0_n = a5->ptrFFFFFACC->t0004;
 				if (SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - dwArg04 > 0x00)
 				{
-					word32 d0_n = a3_n->dw0000 + 4;
+					word32 d0_n = *((word32) a3_n->dw0000 + 4);
 					Eq_n d1_n = a3_n->t0004;
 					if (SEQ(SLICE(d0_n, word16, 16), (word16) d0_n & ~0x03) - SEQ(SLICE(d1_n, word16, 16), (word16) d1_n & ~0x03) - 0x04 - a5->tFFFFFAE4 >= 0x00)
 						a5->ptrFFFFFACC = a3_n;

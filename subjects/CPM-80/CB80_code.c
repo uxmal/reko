@@ -205,7 +205,7 @@ word16 fn0534(char c)
 	word16 bc;
 	char c = (byte) bc;
 	g_b166B = c;
-	g_ptr14BC + g_w14BE = (char *) g_b166B;
+	*((word16) g_ptr14BC + g_w14BE) = (ptr16) g_b166B;
 	int16 hl_n = g_w14BE;
 	g_w14BE = hl_n + 0x01;
 	word16 bc_n = bc;

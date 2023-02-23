@@ -8180,7 +8180,7 @@ T_1487: (in 4<i16> @ 00004B6A : int16)
   Class: Eq_1487
   DataType: int16
   OrigDataType: int16
-T_1488: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> @ 00004B6A : word20)
+T_1488: (in Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16> @ 00004B6A : word20)
   Class: Eq_1488
   DataType: ui20
   OrigDataType: ui20
@@ -8192,7 +8192,7 @@ T_1490: (in 2<i16> @ 00004B6A : int16)
   Class: Eq_1490
   DataType: int16
   OrigDataType: int16
-T_1491: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> + 2<i16> @ 00004B6A : word20)
+T_1491: (in Mem30[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] + 2<i16> @ 00004B6A : word20)
   Class: Eq_1491
   DataType: word16
   OrigDataType: word16
@@ -8220,7 +8220,7 @@ T_1497: (in 4<i16> @ 00004B6A : int16)
   Class: Eq_1497
   DataType: int16
   OrigDataType: int16
-T_1498: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> @ 00004B6A : word20)
+T_1498: (in Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16> @ 00004B6A : word20)
   Class: Eq_1498
   DataType: ui20
   OrigDataType: ui20
@@ -8248,7 +8248,7 @@ T_1504: (in 4<i16> @ 00004B96 : int16)
   Class: Eq_1504
   DataType: int16
   OrigDataType: int16
-T_1505: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> @ 00004B96 : word20)
+T_1505: (in Mem48[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16> @ 00004B96 : word20)
   Class: Eq_1505
   DataType: ui20
   OrigDataType: ui20
@@ -8276,7 +8276,7 @@ T_1511: (in 2<i16> @ 00004B96 : int16)
   Class: Eq_1511
   DataType: int16
   OrigDataType: int16
-T_1512: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 2<i16> @ 00004B96 : word20)
+T_1512: (in Mem48[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 2<i16> @ 00004B96 : word20)
   Class: Eq_1512
   DataType: ui20
   OrigDataType: ui20
@@ -8284,7 +8284,7 @@ T_1513: (in Mem48[Mem48[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 2<i16>:word1
   Class: Eq_1506
   DataType: word16
   OrigDataType: word16
-T_1514: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> == ((word24) r13_29 + uxTopReadyPriority *20 0x10<20>) + 2<i16> @ 00004B96 : bool)
+T_1514: (in *((word24) ((word24) r13_29 + uxTopReadyPriority *20 0x10<20>) + 4<i32>) == *((word24) ((word24) r13_29 + uxTopReadyPriority *20 0x10<20>) + 2<i32>) @ 00004B96 : bool)
   Class: Eq_1514
   DataType: bool
   OrigDataType: bool

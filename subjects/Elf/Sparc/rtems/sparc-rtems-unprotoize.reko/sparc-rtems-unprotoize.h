@@ -31647,7 +31647,7 @@ T_7074: (in 1<i32> @ 000163EC : int32)
   Class: Eq_7074
   DataType: int32
   OrigDataType: int32
-T_7075: (in i1_156[o0_616] + 1<i32> @ 000163EC : word32)
+T_7075: (in i1_156[o0_616 * 4<32>] + 1<i32> @ 000163EC : word32)
   Class: Eq_7075
   DataType: word32
   OrigDataType: word32
@@ -31663,7 +31663,7 @@ T_7078: (in 0x2D<32> @ 000163EC : word32)
   Class: Eq_7077
   DataType: int32
   OrigDataType: word32
-T_7079: (in (int32) (i1_156[o0_616] + 1<i32>) == 0x2D<32> @ 000163EC : bool)
+T_7079: (in (int32) *((word32) i1_156[o0_616] + 1<i32>) == 0x2D<32> @ 000163EC : bool)
   Class: Eq_7079
   DataType: bool
   OrigDataType: bool
@@ -35509,7 +35509,7 @@ T_8037: (in __urem64(SLICE(l0_l1_77, word32, 32), (word32) l0_l1_77, 0<32>, 0x3E
   Class: Eq_8037
   DataType: void
   OrigDataType: void
-T_8038: (in l2_112 @ 00016D28 : word32)
+T_8038: (in l2_112 @ 00016D28 : ptr32)
   Class: Eq_8038
   DataType: ptr32
   OrigDataType: ptr32
@@ -35589,7 +35589,7 @@ T_8057: (in __urem64(0<32>, 0x3E<32>) @ 00016D4C : void)
   Class: Eq_8057
   DataType: void
   OrigDataType: void
-T_8058: (in l2_174 @ 00016D58 : word32)
+T_8058: (in l2_174 @ 00016D58 : ptr32)
   Class: Eq_8058
   DataType: ptr32
   OrigDataType: ptr32
@@ -35669,7 +35669,7 @@ T_8077: (in __urem64(0<32>, 0x3E<32>) @ 00016D7C : void)
   Class: Eq_8077
   DataType: void
   OrigDataType: void
-T_8078: (in l2_236 @ 00016D88 : word32)
+T_8078: (in l2_236 @ 00016D88 : ptr32)
   Class: Eq_8078
   DataType: ptr32
   OrigDataType: ptr32
@@ -35749,7 +35749,7 @@ T_8097: (in __urem64(0<32>, 0x3E<32>) @ 00016DAC : void)
   Class: Eq_8097
   DataType: void
   OrigDataType: void
-T_8098: (in l2_298 @ 00016DB8 : word32)
+T_8098: (in l2_298 @ 00016DB8 : ptr32)
   Class: Eq_8098
   DataType: ptr32
   OrigDataType: ptr32
@@ -35829,7 +35829,7 @@ T_8117: (in __urem64(0<32>, 0x3E<32>) @ 00016DDC : void)
   Class: Eq_8117
   DataType: void
   OrigDataType: void
-T_8118: (in l2_360 @ 00016DE8 : word32)
+T_8118: (in l2_360 @ 00016DE8 : ptr32)
   Class: Eq_8118
   DataType: ptr32
   OrigDataType: ptr32
@@ -35909,7 +35909,7 @@ T_8137: (in __urem64(__udiv64(l0_357, l1_356, 0<32>, 0x3E<32>), 0<32>, 0x3E<32>)
   Class: Eq_8137
   DataType: void
   OrigDataType: void
-T_8138: (in l2_420 @ 00016E10 : word32)
+T_8138: (in l2_420 @ 00016E10 : ptr32)
   Class: Eq_8138
   DataType: ptr32
   OrigDataType: ptr32

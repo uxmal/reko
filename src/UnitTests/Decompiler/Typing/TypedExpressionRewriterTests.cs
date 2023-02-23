@@ -1276,7 +1276,7 @@ l000000000040EC40:
 	word32 (** rax_22)[] = (word32 (**)[]) 0x10000040<64>
 	// succ:  l000000000040EC50
 l000000000040EC50:
-	rdi[rbx_18] = (byte) *((char *) *rax_22 + (uint64) ((word32) (rsi + rbx_18)) * 4<64>)
+	rdi[rbx_18] = (byte) *((char *) *rax_22 + (uint64) ((word32) (*((word64) rsi + rbx_18))) * 4<64>)
 	rbx_18 = rbx_18 - 1<64>
 	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
 	// succ:  l000000000040EC69 l000000000040EC50

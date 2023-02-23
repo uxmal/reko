@@ -15674,7 +15674,7 @@ T_3342: (in 2<i16> @ 0800:15F8 : int16)
   Class: Eq_3342
   DataType: int16
   OrigDataType: int16
-T_3343: (in (word16) wArg04 + ds->*wArg04 + 2<i16> @ 0800:15F8 : word16)
+T_3343: (in Mem21[ds:wArg04 + 0<16>:word16] + wArg04 + 2<i16> @ 0800:15F8 : word16)
   Class: Eq_3343
   DataType: word16
   OrigDataType: word16

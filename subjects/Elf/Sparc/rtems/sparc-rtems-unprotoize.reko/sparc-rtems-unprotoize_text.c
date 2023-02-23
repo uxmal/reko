@@ -3800,7 +3800,7 @@ l0001640C:
 									goto l00016978;
 								}
 								ptr32 * o0_n = optind;
-								if ((int32) (i1_n[o0_n] + 1) == 0x2D)
+								if ((int32) *((word32) i1_n[o0_n] + 1) == 0x2D)
 									goto l0001640C;
 								Eq_n o2_n = g_t2B2C0;
 								if (my_index(i2_n, (int32) *o2_n) == null)
@@ -4299,21 +4299,21 @@ Eq_n mkstemps(Eq_n o0, Eq_n o1)
 			{
 				word64 l0_l1_n = *l4_n;
 				__urem64(SLICE(l0_l1_n, word32, 32), (word32) l0_l1_n, 0x00, 0x3E);
-				*i1_n = (byte) (l2_n + o1_n);
+				*i1_n = (byte) *((word32) l2_n + o1_n);
 				__udiv64(l0_n, l1_n, 0x00, 0x3E);
 				__urem64(0x00, 0x3E);
-				i1_n->b0001 = (byte) (l2_n + o1_n);
+				i1_n->b0001 = (byte) *((word32) l2_n + o1_n);
 				__udiv64(l0_n, l1_n, 0x00, 0x3E);
 				__urem64(0x00, 0x3E);
-				i1_n->b0002 = (byte) (l2_n + o1_n);
+				i1_n->b0002 = (byte) *((word32) l2_n + o1_n);
 				__udiv64(l0_n, l1_n, 0x00, 0x3E);
 				__urem64(0x00, 0x3E);
-				i1_n->b0003 = (byte) (l2_n + o1_n);
+				i1_n->b0003 = (byte) *((word32) l2_n + o1_n);
 				__udiv64(l0_n, l1_n, 0x00, 0x3E);
 				__urem64(0x00, 0x3E);
-				i1_n->b0004 = (byte) (l2_n + o1_n);
+				i1_n->b0004 = (byte) *((word32) l2_n + o1_n);
 				__urem64(__udiv64(l0_n, l1_n, 0x00, 0x3E), 0x00, 0x3E);
-				i1_n->b0005 = (byte) (l2_n + o1_n);
+				i1_n->b0005 = (byte) *((word32) l2_n + o1_n);
 				Eq_n o0_n = open(i0_n, 0x0502);
 				if (o0_n >= 0x00)
 					break;

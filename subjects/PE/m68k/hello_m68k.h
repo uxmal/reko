@@ -14519,7 +14519,7 @@ T_3343: (in 4<i32> @ 00002B5E : int32)
   Class: Eq_3343
   DataType: int32
   OrigDataType: int32
-T_3344: (in a2_17->dw0000 + 4<i32> @ 00002B5E : word32)
+T_3344: (in Mem41[a2_17 + 0<32>:word32] + 4<i32> @ 00002B5E : word32)
   Class: Eq_3344
   DataType: word32
   OrigDataType: word32
@@ -15695,7 +15695,7 @@ T_3637: (in 4<i32> @ 00002DBE : int32)
   Class: Eq_3637
   DataType: int32
   OrigDataType: int32
-T_3638: (in a3_77->dw0000 + 4<i32> @ 00002DBE : word32)
+T_3638: (in Mem219[a3_77 + 0<32>:word32] + 4<i32> @ 00002DBE : word32)
   Class: Eq_3638
   DataType: word32
   OrigDataType: word32

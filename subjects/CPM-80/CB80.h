@@ -2251,7 +2251,7 @@ T_352: (in Mem5[0x14BE<16>:word16] @ 0543 : word16)
   Class: Eq_352
   DataType: int16
   OrigDataType: int16
-T_353: (in g_ptr14BC + g_w14BE @ 0543 : word16)
+T_353: (in Mem5[0x14BC<16>:word16] + Mem5[0x14BE<16>:word16] @ 0543 : word16)
   Class: Eq_353
   DataType: (ptr16 char)
   OrigDataType: (ptr16 (struct (0 T_354 t0000)))

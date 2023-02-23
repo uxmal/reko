@@ -1779,7 +1779,7 @@ void fn0800-15CF(struct Eq_n * ds, Eq_n wArg02, Eq_n wArg04)
 	if (ds->t0628 == wArg04)
 		ds->t0628 = wArg02;
 	else
-		(word16) wArg04 + ds->*wArg04 + 2 = wArg02;
+		ds->*((word16) ((word16) wArg04 + ds->*wArg04) + 2) = wArg02;
 	___pull_free_block(ds, wArg04);
 }
 

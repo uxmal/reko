@@ -1901,7 +1901,7 @@ void IntRegister(ui32 r0, word32 r1)
 		struct Eq_n * r3_n = r4_n;
 		do
 		{
-			r3_n->a0000[0] = r3_n - r4_n;
+			r3_n->a0000[0] = *(r3_n - r4_n);
 			++r3_n;
 		} while (r3_n != r4_n + 46);
 		*g_ptr9530 = (struct Eq_n **) r4_n;

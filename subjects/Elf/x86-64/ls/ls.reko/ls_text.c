@@ -1881,7 +1881,7 @@ void fn0000000000405090(byte sil, Eq_n rdi)
 				Eq_n rax_n = fn000000000040A390(r15_n);
 				if (*rax_n == 0x2E)
 				{
-					byte al_n = (word64) rax_n + 1 + (uint64) ((int8) (*((word64) rax_n + 1) == 0x2E));
+					byte al_n = *((word64) ((word64) rax_n + 1) + (uint64) ((int8) (*((word64) rax_n + 1) == 0x2E)));
 					if (al_n != 0x2F && al_n != 0x00)
 						goto l00000000004050D8;
 					goto l0000000000405100;
@@ -3893,7 +3893,7 @@ l000000000040862A:
 									if (rax_n != 0x00)
 									{
 										Eq_n rax_n = fn0000000000410C40((word64) strlen(r13_n) + (rax_n + 2));
-										strcpy(stpncpy(rax_n, r12_n, rax_n + (uint64) ((int8) ((r12_n - 1) + rax_n != 0x2F))), r13_n);
+										strcpy(stpncpy(rax_n, r12_n, rax_n + (uint64) ((int8) (*((word64) (r12_n - 1) + rax_n) != 0x2F))), r13_n);
 										r13_n = rax_n;
 									}
 									else
@@ -4570,7 +4570,7 @@ struct Eq_n * fn000000000040A630(ptr64 * rdx, Eq_n rsi, Eq_n rdi)
 	Eq_n r14_n = 0x00;
 	Eq_n rsi_n = rax_n - rdi + rax_n;
 	if (rax_n != 0x00)
-		r14_n.u1 = (uint64) (int8) (rax_n - 1 + rax_n != 0x2F);
+		r14_n.u1 = (uint64) (int8) (*((word64) (rax_n - 1) + rax_n) != 0x2F);
 	Eq_n rbx_n = rsi;
 	if (*rsi == 0x2F)
 	{

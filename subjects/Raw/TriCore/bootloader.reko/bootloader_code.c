@@ -908,7 +908,7 @@ void fn00001F20()
 		ptr32 a12_n = 0xC0001F64;
 		while (true)
 		{
-			<anonymous> * a15_n = a12_n + d15_n;
+			<anonymous> * a15_n = *((word32) a12_n + d15_n);
 			if (a15_n == (<anonymous> *) ~0x00)
 				break;
 			__store_upper_context();
