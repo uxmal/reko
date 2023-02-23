@@ -362,7 +362,7 @@ T_46: (in Mem6[0x00008398<p32>:word32] @ 0000837C : word32)
   Class: Eq_46
   DataType: int32
   OrigDataType: int32
-T_47: (in r10_10 + g_dw8398 @ 0000837C : word32)
+T_47: (in r10_10 + Mem6[0x00008398<p32>:word32] @ 0000837C : word32)
   Class: Eq_47
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_48 t0000)))
@@ -1306,7 +1306,7 @@ T_282: (in Mem12[0x000086A8<p32>:word32] @ 00008670 : word32)
   Class: Eq_282
   DataType: int32
   OrigDataType: int32
-T_283: (in r10_20 + g_dw86A8 @ 00008670 : word32)
+T_283: (in r10_20 + Mem12[0x000086A8<p32>:word32] @ 00008670 : word32)
   Class: Eq_283
   DataType: (ptr32 (ptr32 (arr (ptr32 code))))
   OrigDataType: (ptr32 (struct (0 T_284 t0000)))
@@ -1326,7 +1326,7 @@ T_287: (in Mem12[0x000086AC<p32>:word32] @ 00008678 : word32)
   Class: Eq_287
   DataType: int32
   OrigDataType: int32
-T_288: (in r10_20 + g_dw86AC @ 00008678 : word32)
+T_288: (in r10_20 + Mem12[0x000086AC<p32>:word32] @ 00008678 : word32)
   Class: Eq_288
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_289 t0000)))
@@ -1334,7 +1334,7 @@ T_289: (in Mem12[r10_20 + Mem12[0x000086AC<p32>:word32]:word32] @ 00008678 : wor
   Class: Eq_289
   DataType: word32
   OrigDataType: word32
-T_290: (in r10_20 + g_dw86AC - r1_30 @ 00008678 : word32)
+T_290: (in *((word32) r10_20 + g_dw86AC) - r1_30 @ 00008678 : word32)
   Class: Eq_285
   DataType: int32
   OrigDataType: word32
@@ -1394,7 +1394,7 @@ T_304: (in Mem10[0x00008704<p32>:word32] @ 000086C4 : word32)
   Class: Eq_304
   DataType: int32
   OrigDataType: int32
-T_305: (in r10_15 + g_dw8704 @ 000086C4 : word32)
+T_305: (in r10_15 + Mem10[0x00008704<p32>:word32] @ 000086C4 : word32)
   Class: Eq_305
   DataType: (ptr32 (ptr32 (arr (ptr32 code))))
   OrigDataType: (ptr32 (struct (0 T_306 t0000)))
@@ -1414,7 +1414,7 @@ T_309: (in Mem10[0x00008708<p32>:word32] @ 000086CC : word32)
   Class: Eq_309
   DataType: int32
   OrigDataType: int32
-T_310: (in r10_15 + g_dw8708 @ 000086CC : word32)
+T_310: (in r10_15 + Mem10[0x00008708<p32>:word32] @ 000086CC : word32)
   Class: Eq_310
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_311 t0000)))
@@ -1422,7 +1422,7 @@ T_311: (in Mem10[r10_15 + Mem10[0x00008708<p32>:word32]:word32] @ 000086CC : wor
   Class: Eq_311
   DataType: word32
   OrigDataType: word32
-T_312: (in r10_15 + g_dw8708 - r1_16 @ 000086CC : word32)
+T_312: (in *((word32) r10_15 + g_dw8708) - r1_16 @ 000086CC : word32)
   Class: Eq_307
   DataType: int32
   OrigDataType: word32

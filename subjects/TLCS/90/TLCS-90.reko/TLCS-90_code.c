@@ -930,7 +930,7 @@ void fn22A6(word16 bc, struct Eq_n * ix, word16 wArg05, ptr16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
-	byte v15_n = wArg10 + (wArg05 + 1);
+	byte v15_n = *((word16) wArg10 + (wArg05 + 1));
 	struct Eq_n * hl_n = (uint16) v15_n * 0x08 + (uint16) v15_n + bc;
 	ix->bFFFFFFF8 = hl_n->b0002;
 	ix->bFFFFFFF9 = hl_n->b0003;
@@ -942,7 +942,7 @@ void fn3E2D(word16 bc, struct Eq_n * ix, word16 wArg05, ptr16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
-	byte v15_n = wArg10 + (wArg05 + 1);
+	byte v15_n = *((word16) wArg10 + (wArg05 + 1));
 	struct Eq_n * hl_n = (uint16) v15_n * 0x08 + (uint16) v15_n + bc;
 	ix->bFFFFFFF8 = hl_n->b0002;
 	ix->bFFFFFFF9 = hl_n->b0003;

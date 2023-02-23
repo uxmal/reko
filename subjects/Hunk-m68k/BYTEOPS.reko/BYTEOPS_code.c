@@ -737,7 +737,7 @@ l00001974:
 					do
 					{
 						--a3_n;
-						*a3_n = (byte) (a6_n + fn00002648(d6_d7_n, SEQ(dwLoc44_n >> 31, dwLoc44_n)));
+						*a3_n = (byte) *((word32) a6_n + fn00002648(d6_d7_n, SEQ(dwLoc44_n >> 31, dwLoc44_n)));
 						int64 d0_d1_n = fn000023F8(SLICE(d6_d7_n, word32, 32), (word32) d6_d7_n, dwLoc44_n >> 31, dwLoc44_n, out a0_n);
 						d3_n = (word32 *) ((char *) d3_n + 1);
 						d6_d7_n = d0_d1_n;

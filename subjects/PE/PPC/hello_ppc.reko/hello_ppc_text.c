@@ -765,7 +765,7 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 					*r2->ptr007C = 0x2A;
 					return;
 				}
-				r3 + r3_n = (int8 *) (int8) r11_n;
+				*((word32) r3 + r3_n) = (ptr32) (int8) r11_n;
 				++r4;
 				if ((word32) *r4 == 0x00)
 					return;

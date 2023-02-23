@@ -239,6 +239,10 @@ namespace Reko.Typing
                 {
                     return RewriteComplexExpression(right, left, 0, dereferenced);
                 }
+                if (dereferenced)
+                {
+                    return RewriteComplexExpression(left, right, 0, dereferenced);
+                }
             }
             var binOp = binExp.Operator;
             binOp = binOp.Type switch
@@ -258,6 +262,8 @@ namespace Reko.Typing
             var binExpNew = new BinaryExpression(binOp, binExp.DataType, left, right);
             store.SetTypeVariable(binExpNew, tvBinExp);
             store.SetTypeVariableExpression(tvBinExp, stmCur?.Address, binExpNew);
+            if (dereferenced)
+                return RewriteComplexExpression(binExpNew, null, 0, dereferenced);
             return binExpNew;
         }
 

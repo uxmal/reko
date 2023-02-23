@@ -20,7 +20,7 @@ word32 call_gmon_start()
 {
 	word32 r10;
 	ptr32 r10_n = 0x8380 + g_dw8394;
-	<anonymous> * r3_n = r10_n + g_dw8398;
+	<anonymous> * r3_n = *((word32) r10_n + g_dw8398);
 	if (r3_n == null)
 		return r10;
 	word32 r10_n;
@@ -254,8 +254,8 @@ void __libc_csu_init()
 {
 	ptr32 r10_n;
 	Eq_n r4_n = _init(out r10_n);
-	<anonymous> * r1_n[] = r10_n + g_dw86A8;
-	int32 r3_n = r10_n + g_dw86AC - r1_n;
+	<anonymous> * r1_n[] = *((word32) r10_n + g_dw86A8);
+	int32 r3_n = *((word32) r10_n + g_dw86AC) - r1_n;
 	if (r4_n >= r3_n >> 2)
 		return;
 	r1_n[r4_n]();
@@ -267,8 +267,8 @@ int32 g_dw86AC = 28; // 000086AC
 void __libc_csu_fini()
 {
 	ptr32 r10_n = 0x86C8 + g_dw8700;
-	<anonymous> * r1_n[] = r10_n + g_dw8704;
-	int32 r3_n = r10_n + g_dw8708 - r1_n;
+	<anonymous> * r1_n[] = *((word32) r10_n + g_dw8704);
+	int32 r3_n = *((word32) r10_n + g_dw8708) - r1_n;
 	int32 r4_n = (r3_n >> 2) - 0x01;
 	if (r3_n >> 2 == 0x00)
 		_fini();

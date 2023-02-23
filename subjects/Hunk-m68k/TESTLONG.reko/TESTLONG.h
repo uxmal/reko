@@ -22736,7 +22736,7 @@ T_5173: (in -42<i32> @ 00003014 : int32)
   Class: Eq_5173
   DataType: int32
   OrigDataType: int32
-T_5174: (in fp + -42<i32> @ 00003014 : word32)
+T_5174: (in fp + -42<i32> @ 00003014 : ptr32)
   Class: Eq_5174
   DataType: ptr32
   OrigDataType: ptr32
@@ -23080,7 +23080,7 @@ T_5259: (in -42<i32> @ 00003098 : int32)
   Class: Eq_5259
   DataType: int32
   OrigDataType: int32
-T_5260: (in fp + -42<i32> @ 00003098 : word32)
+T_5260: (in fp + -42<i32> @ 00003098 : ptr32)
   Class: Eq_5260
   DataType: ptr32
   OrigDataType: ptr32

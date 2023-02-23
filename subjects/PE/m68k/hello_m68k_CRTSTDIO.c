@@ -13,7 +13,7 @@ void fn000015E8(word32 d3, word32 a2, ptr32 a5, word32 a6, word32 dwArg04)
 	word32 d0_n;
 	struct Eq_n * a5_n;
 	struct Eq_n * a2_n;
-	(a5 + 0x0082)();
+	(*((word32) a5 + 0x0082))();
 	if (d0_n == 0x00)
 		return;
 	int32 d3_n;
@@ -682,7 +682,7 @@ int32 fn00002068(Eq_n d3, struct Eq_n * a5, struct Eq_n * dwArg04, union Eq_n & 
 			int32 d0_n;
 			word32 d2_n;
 			word32 d1_n;
-			(a5_n + 0x00A2)();
+			(*((word32) a5_n + 0x00A2))();
 			a7_n = (struct Eq_n *) (a7_n + 1);
 			if (d0_n < 0x00)
 				d3_n = -1;
@@ -707,7 +707,7 @@ int32 fn00002068(Eq_n d3, struct Eq_n * a5, struct Eq_n * dwArg04, union Eq_n & 
 					*a7_n = a2_n->dw001C;
 					word32 a7_n;
 					word32 d1_n;
-					(a5_n + 122)();
+					(*((word32) a5_n + 122))();
 					a2_n->dw001C = 0;
 					a7_n = a7_n + 4;
 				}
@@ -745,7 +745,7 @@ word32 fn000020F0(ptr32 a5, Eq_n dwArg04, ptr32 & a5Out, ptr32 & a6Out)
 	{
 		word32 a7_n;
 		struct Eq_n * a2_n;
-		(a5 + 122)();
+		(*((word32) a5 + 122))();
 		__bclr<byte>(a2_n->b000F, 0x03, out a2_n->b000F);
 		a2_n->dw0000 = 0;
 		a2_n->dw0008 = 0;

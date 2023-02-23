@@ -2501,7 +2501,7 @@ word16 fn1900(struct Eq_n * r3, struct Eq_n * r4, struct Eq_n & r3Out, struct Eq
 	ptr16 fp;
 	word16 r2;
 	byte NZVC_n;
-	(fp - 0x04)();
+	(*(fp - 0x04))();
 	if ((bool) NZVC_n)
 	{
 		fn18FE();

@@ -778,7 +778,7 @@ l000019D0:
 					do
 					{
 						--a3_n;
-						*a3_n = (byte) (a6_n + fn0000279C(d6_d7_n, SEQ(dwLoc44_n >> 31, dwLoc44_n)));
+						*a3_n = (byte) *((word32) a6_n + fn0000279C(d6_d7_n, SEQ(dwLoc44_n >> 31, dwLoc44_n)));
 						int64 d0_d1_n = fn00002454(SLICE(d6_d7_n, word32, 32), (word32) d6_d7_n, dwLoc44_n >> 31, dwLoc44_n, out a0_n);
 						d3_n = (word32) d3_n + 1;
 						d6_d7_n = d0_d1_n;
@@ -2563,7 +2563,7 @@ l0000392E:
 						int32 d4_n = (word32) d4_n + 1;
 						if (dwLoc4C_n != ~0x00)
 						{
-							d1 = (uint32) (fp + -42 + fn000026E4(d2_n, dwLoc4C_n, 0x08));
+							d1 = (uint32) *((word32) (fp + -42) + fn000026E4(d2_n, dwLoc4C_n, 0x08));
 							d0 = 1 << (dwLoc4C_n & 7) & d1;
 							if (d0 != 0x00 && d6_n - d3_n >= 0x00)
 							{
@@ -2597,7 +2597,7 @@ l0000392E:
 									++d4_n;
 									if (d1 == ~0x00)
 										break;
-									d1 = (uint32) (fp + -42 + fn000026E4(d2_n, d1, 0x08));
+									d1 = (uint32) *((word32) (fp + -42) + fn000026E4(d2_n, d1, 0x08));
 									d0 = 1 << (d1 & 7) & d1;
 								} while (d0 != 0x00 && d6_n - d3_n >= 0x00);
 							}

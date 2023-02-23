@@ -894,8 +894,8 @@ void vTaskSwitchContext()
 		while ((&g_w0222)[uxTopReadyPriority *16 0x10] == 0x00)
 			uxTopReadyPriority = (word24) uxTopReadyPriority + 0x0000FFFF;
 		Eq_n r13_n = 0x0222;
-		(word24) r13_n + uxTopReadyPriority *20 0x10 + 4 = (ui20) ((word24) r13_n + uxTopReadyPriority *20 0x10 + 4 + 2);
-		if ((word24) r13_n + uxTopReadyPriority *20 0x10 + 4 == ((word24) r13_n + uxTopReadyPriority *20 0x10) + 2)
+		*((word24) ((word24) r13_n + uxTopReadyPriority *20 0x10) + 4) = *((word24) *((word24) ((word24) r13_n + uxTopReadyPriority *20 0x10) + 4) + 2);
+		if (*((word24) ((word24) r13_n + uxTopReadyPriority *20 0x10) + 4) == *((word24) ((word24) r13_n + uxTopReadyPriority *20 0x10) + 2))
 			g_a0226[uxTopReadyPriority] = (struct Eq_n) g_a0226[uxTopReadyPriority].ptr0000->w0002;
 		pxCurrentTCB = (&g_a0226[uxTopReadyPriority].ptr0000->w0002)[2];
 	}
