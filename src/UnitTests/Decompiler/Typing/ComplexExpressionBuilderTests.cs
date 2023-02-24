@@ -38,6 +38,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		private Pointer ptrUnion;
         private Pointer ptrInt;
         private Pointer ptrWord;
+        private Pointer ptrDouble;
         private Identifier globals;
         private ExpressionEmitter m;
 
@@ -82,6 +83,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
             ptrInt = new Pointer(PrimitiveType.Int32, 32);
             ptrWord = new Pointer(PrimitiveType.Word32, 32);
+            ptrDouble = new Pointer(PrimitiveType.Real64, 32);
             m = new ExpressionEmitter();
 		}
 
@@ -443,6 +445,57 @@ namespace Reko.UnitTests.Decompiler.Typing
             var ceb = CreateBuilder(null, a, null, 8);
             var e = ceb.BuildComplex(PrimitiveType.Ptr32);
             Assert.AreEqual("a[2<i32>]", e.ToString());
+        }
+
+        [Test]
+        public void CEB_ChooseUnionAlternative_Real64()
+        {
+            var u = new UnionType("PointR64", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("point", ptrPoint, 0),
+                    new UnionAlternative("r64", ptrDouble, 1),
+                }
+            };
+            var a = new Identifier("a", PrimitiveType.Ptr32, null);
+            CreateTv(a, u, PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, a, null, 0);
+            var e = ceb.BuildComplex(PrimitiveType.Real64);
+            Assert.AreEqual("*a.r64", e.ToString());
+        }
+
+        [Test]
+        public void CEB_ChooseUnionAlternative_dw0000()
+        {
+            var u = new UnionType("PointR64", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("point", ptrPoint, 0),
+                    new UnionAlternative("r64", ptrDouble, 1),
+                }
+            };
+            var a = new Identifier("a", PrimitiveType.Ptr32, null);
+            CreateTv(a, u, PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, a, null, 0);
+            var e = ceb.BuildComplex(PrimitiveType.Int32);
+            Assert.AreEqual("a.point->dw0000", e.ToString());
+        }
+
+        [Test]
+        public void CEB_ChooseUnionAlternative_dw0004()
+        {
+            var u = new UnionType("PointR64", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("point", ptrPoint, 0),
+                    new UnionAlternative("r64", ptrDouble, 1),
+                }
+            };
+            var a = new Identifier("a", PrimitiveType.Ptr32, null);
+            CreateTv(a, u, PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, a, null, 4);
+            var e = ceb.BuildComplex(PrimitiveType.Int32);
+            Assert.AreEqual("a.point->dw0004", e.ToString());
         }
     }
 }
