@@ -566,5 +566,12 @@ namespace Reko.UnitTests.Core.Hll.C
             AssertToken(CTokenType.Id, "b");
             AssertToken(CTokenType.EOF);
         }
+
+        [Test]
+        public void CLexer_Negative_HexLiteral()
+        {
+            Lex("  -0x4");
+            AssertToken(CTokenType.NumericLiteral, -4);
+        }
     }
 }

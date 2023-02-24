@@ -157,7 +157,7 @@ namespace Reko.Core.Hll.C
             bool wideLiteral = false;
             var state = State.Start;
 
-            ClearBuffer();
+            sb.Clear();
             for (;;)
             {
                 int c = rdr.Peek();
@@ -251,7 +251,7 @@ namespace Reko.Core.Hll.C
                     case 'x':
                     case 'X':
                         rdr.Read();
-                        ClearBuffer();
+                        sb.Remove(sb.Length - 1, 1);    // Remove the '0', but keep any sign before it.
                         state = State.HexNumber;
                         break;
                     case '.':
@@ -417,7 +417,7 @@ namespace Reko.Core.Hll.C
                     }
                 case State.HexNumber:
                     if (c < 0)
-                        return Tok(CTokenType.NumericLiteral, Convert.ToInt32(sb.ToString(), 16));
+                        return Tok(CTokenType.NumericLiteral, ConvertHexToInt32(sb.ToString()));
                     if (IsIntegerSuffix(ch))
                     {
                         rdr.Read();
@@ -862,14 +862,16 @@ namespace Reko.Core.Hll.C
             }
         }
 
+        private int ConvertHexToInt32(string s)
+        {
+            if (s[0] != '-')
+                return int.Parse(s, NumberStyles.AllowHexSpecifier);
+            return -int.Parse(s[1..], NumberStyles.AllowHexSpecifier);
+        }
+
         private void Nyi(State state, char ch)
         {
             throw new NotImplementedException($"State {state}, ch: {ch} (U+{(int)ch:X4}) on line {LineNumber}.");
-        }
-
-        private void ClearBuffer()
-        {
-            sb.Clear();
         }
 
         private CToken Tok(CTokenType type)
