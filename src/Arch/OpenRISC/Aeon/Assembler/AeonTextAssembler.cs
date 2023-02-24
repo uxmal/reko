@@ -92,58 +92,28 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Expect(lex, CTokenType.Dot);
             var tMnemonic = Expect(lex, CTokenType.Id);
             var mnemonic = (string) tMnemonic.Value!;
-            RegisterStorage rsrc1;
-            RegisterStorage rsrc2;
-            RegisterStorage rdst;
-            MemoryOperand mop;
-            ImmediateOperand immop;
-            ImmediateOperand disp;
             switch (prefix)
             {
             case "bg":
                 switch (mnemonic)
                 {
                 case "andi":
-                    rdst = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    rsrc1 = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    immop = ParseUImmediateOperand(lex);
-                    asm.bg_andi(rdst, rsrc1, immop);
+                    R_R_UImm(lex, asm, 0, asm.bg_andi);
                     break;
                 case "beqi":
-                    rsrc1 = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    immop = ParseUImmediateOperand(lex);
-                    Expect(lex, CTokenType.Comma);
-                    disp = ParseDisplacement(lex, asm, AeonAssembler.RT_AEON_BG_DISP13_3);
-                    asm.bg_beqi(rsrc1, immop, disp);
+                    R_I_Disp(lex, asm, AeonAssembler.RT_AEON_BG_DISP13_3, asm.bg_beqi);
                     break;
                 case "sb":
-                    mop = ParseMemOperand(lex, PrimitiveType.Byte);
-                    Expect(lex, CTokenType.Comma);
-                    rsrc1 = ExpectRegister(lex);
-                    asm.bg_sb(mop, rsrc1);
+                    M_R(lex, asm, 0, asm.bg_sb);
                     break;
                 case "lbz":
-                    rdst = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    mop = ParseMemOperand(lex, PrimitiveType.Byte);
-                    asm.bg_lbz(rdst, mop);
+                    R_M(lex, asm, 0, asm.bg_lbz);
                     break;
                 case "ori":
-                    rdst = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    rsrc1 = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    immop = ParseUImmediateOperand(lex);
-                    asm.bg_ori(rdst, rsrc1, immop);
+                    R_R_UImm(lex, asm, 0, asm.bg_ori);
                     break;
                 case "movhi":
-                    rdst = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    immop = ParseUImmediateOperand(lex);
-                    asm.bg_movhi(rdst, immop);
+                    R_UImm(lex, asm, 0, asm.bg_movhi);
                     break;
                 default:
                     throw new NotImplementedException(mnemonic);
@@ -153,37 +123,23 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 switch (mnemonic)
                 {
                 case "bnei":
-                    rsrc1 = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    immop = ParseUImmediateOperand(lex);
-                    Expect(lex, CTokenType.Comma);
-                    disp = ParseDisplacement(lex, asm, AeonAssembler.RT_AEON_BN_DISP8_2);
-                    asm.bn_bnei(rsrc1, immop, disp);
+                    R_I_Disp(lex, asm, AeonAssembler.RT_AEON_BN_DISP8_2, asm.bn_bnei);
                     break;
                 case "j":
-                    disp = ParseDisplacement(lex, asm, AeonAssembler.RT_AEON_BN_DISP18);
-                    asm.bn_j(disp);
+                    Disp(lex, asm, AeonAssembler.RT_AEON_BN_DISP18, asm.bn_j);
                     break;
                 case "xor":
-                    rdst = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    rsrc1 = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    rsrc2 = ExpectRegister(lex);
-                    asm.bn_xor(rdst, rsrc1, rsrc2);
+                    R_R_R(lex, asm, asm.bn_xor);
                     break;
                 default:
-                throw new NotImplementedException($"{prefix}.{mnemonic}");
+                    throw new NotImplementedException($"{prefix}.{mnemonic}");
                 }
                 break;
             case "bt":
                 switch (mnemonic)
                 {
                 case "addi":
-                    rdst = ExpectRegister(lex);
-                    Expect(lex, CTokenType.Comma);
-                    immop = this.ParseSImmediateOperand(lex);
-                    asm.bt_addi(rdst, immop);
+                    R_SImm(lex, asm, 0, asm.bt_addi);
                     break;
                 default:
                     throw new NotImplementedException($"{prefix}.{mnemonic}");
@@ -196,6 +152,92 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             default:
                 throw new NotImplementedException(prefix);
             }
+        }
+
+        private void R_SImm(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            int relocationType,
+            Action<RegisterStorage, ImmediateOperand> assemble)
+        {
+            var rdst = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var immop = this.ParseSImmediateOperand(lex);
+            assemble(rdst, immop);
+        }
+
+        private void R_UImm(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            int relocationType,
+            Action<RegisterStorage, ImmediateOperand> bg_movhi)
+        {
+            var rdst = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var immop = ParseUImmediateOperand(lex);
+            asm.bg_movhi(rdst, immop);
+        }
+
+        private void R_M(CDirectiveLexer lex, AeonAssembler asm, int relocationType, Action<RegisterStorage, MemoryOperand> bg_lbz)
+        {
+            var rdst = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var mop = ParseMemOperand(lex, PrimitiveType.Byte);
+            asm.bg_lbz(rdst, mop);
+        }
+
+        private void M_R(CDirectiveLexer lex, AeonAssembler asm, int relocationType, Action<MemoryOperand, RegisterStorage> assemble)
+        {
+            var mop = ParseMemOperand(lex, PrimitiveType.Byte);
+            Expect(lex, CTokenType.Comma);
+            var rs = ExpectRegister(lex);
+            assemble(mop, rs);
+        }
+
+        private void R_R_UImm(
+            CDirectiveLexer lex, 
+            AeonAssembler asm,
+            int relocationType, Action<RegisterStorage, RegisterStorage, ImmediateOperand> assemble)
+        {
+            var rdst = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var rsrc1 = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var immop = ParseUImmediateOperand(lex);
+            assemble(rdst, rsrc1, immop);
+        }
+
+        private void R_R_R(
+            CDirectiveLexer lex, 
+            AeonAssembler asm, 
+            Action<RegisterStorage, RegisterStorage, RegisterStorage> assemble)
+        {
+            var rdst = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var rsrc1 = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var rsrc2 = ExpectRegister(lex);
+            assemble(rdst, rsrc1, rsrc2);
+        }
+
+        private void Disp(CDirectiveLexer lex, AeonAssembler asm, int relocationType, Action<ImmediateOperand> assemble)
+        {
+            var disp = ParseDisplacement(lex, asm, relocationType);
+            assemble(disp);
+        }
+
+        private void R_I_Disp(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            int relocationType,
+            Action<RegisterStorage, ImmediateOperand, ImmediateOperand> assemble)
+        {
+            var rsrc1 = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var immop = ParseUImmediateOperand(lex);
+            Expect(lex, CTokenType.Comma);
+            var disp = ParseDisplacement(lex, asm, relocationType);
+            assemble(rsrc1, immop, disp);
         }
 
         private bool PeekAndDiscard(CDirectiveLexer lex, CTokenType tokenType)
