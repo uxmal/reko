@@ -51,11 +51,18 @@ namespace Reko.Core.Assemblers
         byte[] GetBytes();
         void PatchBe(int offsetPatch, int offsetRef, DataType width);
         void PatchLe(int offsetPatch, int offsetRef, DataType width);
+
+        uint ReadBeUInt32(int offset);
+        byte ReadByte(int offset);
+
         void Reserve(int delta);
+
+        void WriteBeUInt32(int offset, uint value);
+        void WriteByte(int offset, int value);
     }
-    
-	public class Emitter : IEmitter
-	{
+
+    public class Emitter : IEmitter
+    {
         private readonly MemoryStream stmOut;
 
         public Emitter()
@@ -98,73 +105,76 @@ namespace Reko.Core.Assemblers
                 stmOut.WriteByte(0);
         }
 
-		public void EmitByte(int b)
-		{
-			stmOut.WriteByte((byte) b);
-		}
+        public void EmitByte(int b)
+        {
+            stmOut.WriteByte((byte) b);
+        }
 
-		public void EmitBytes(int b, int count)
-		{
-			byte by = (byte) b;
-			for (int i = 0; i < count; ++i)
-			{
-				stmOut.WriteByte(by);
-			}
-		}
+        public void EmitBytes(int b, int count)
+        {
+            byte by = (byte) b;
+            for (int i = 0; i < count; ++i)
+            {
+                stmOut.WriteByte(by);
+            }
+        }
 
-		public void EmitLeUInt32(uint l)
-		{
-			stmOut.WriteByte((byte)(l));
-			l >>= 8;
-			stmOut.WriteByte((byte)(l));
-			l >>= 8;
-			stmOut.WriteByte((byte)(l));
-			l >>= 8;
-			stmOut.WriteByte((byte)(l));
-		}
+        public void EmitLeUInt32(uint l)
+        {
+            stmOut.WriteByte((byte) (l));
+            l >>= 8;
+            stmOut.WriteByte((byte) (l));
+            l >>= 8;
+            stmOut.WriteByte((byte) (l));
+            l >>= 8;
+            stmOut.WriteByte((byte) (l));
+        }
 
-		public void EmitLeImmediate(Constant c, DataType dt)
-		{
-			switch (dt.Size)
-			{
-			case 1: EmitByte(c.ToInt32()); return;
-			case 2: EmitLeUInt16(c.ToInt32()); return;
-			case 4: EmitLeUInt32(c.ToUInt32()); return;
-			default: throw new NotSupportedException(string.Format("Unsupported type: {0}", dt));
-			}
-		}
+        public void EmitLeImmediate(Constant c, DataType dt)
+        {
+            switch (dt.Size)
+            {
+            case 1: EmitByte(c.ToInt32()); return;
+            case 2: EmitLeUInt16(c.ToInt32()); return;
+            case 4: EmitLeUInt32(c.ToUInt32()); return;
+            default: throw new NotSupportedException(string.Format("Unsupported type: {0}", dt));
+            }
+        }
 
-		public void EmitLe(DataType vt, int v)
-		{
-			switch (vt.Size)
-			{
-			case 1: EmitByte(v); return;
-			case 2: EmitLeUInt16(v); return;
-			case 4: EmitLeUInt32((uint) v); return;
-			default: throw new ArgumentException();
-			}
-		}
+        public void EmitLe(DataType vt, int v)
+        {
+            switch (vt.Size)
+            {
+            case 1: EmitByte(v); return;
+            case 2: EmitLeUInt16(v); return;
+            case 4: EmitLeUInt32((uint) v); return;
+            default: throw new ArgumentException();
+            }
+        }
 
-		public void EmitString(string pstr, Encoding encoding)
-		{
+        public void EmitString(string pstr, Encoding encoding)
+        {
             var bytes = encoding.GetBytes(pstr);
-			for (int i = 0; i != bytes.Length; ++i)
-			{
-				EmitByte(bytes[i]);
-			}
-		}
+            for (int i = 0; i != bytes.Length; ++i)
+            {
+                EmitByte(bytes[i]);
+            }
+        }
 
         public void EmitLeUInt16(int s)
-		{
-			stmOut.WriteByte((byte)(s & 0xFF));
-			stmOut.WriteByte((byte)(s >> 8));
-		}
+        {
+            stmOut.WriteByte((byte) (s & 0xFF));
+            stmOut.WriteByte((byte) (s >> 8));
+        }
 
         public void EmitBeUInt16(int s)
         {
-            stmOut.WriteByte((byte)(s >> 8));
-            stmOut.WriteByte((byte)(s & 0xFF));
+            stmOut.WriteByte((byte) (s >> 8));
+            stmOut.WriteByte((byte) (s & 0xFF));
         }
+
+        public void EmitBeUInt16(uint s) => EmitBeUInt16((int) s);
+
 
         public void EmitBeUInt32(int s)
         {
@@ -221,52 +231,72 @@ namespace Reko.Core.Assemblers
             stmOut.Position = posOrig;
         }
 
-		/// <summary>
-		/// Patches a little-endian value by fetching it from the stream and adding an offset.
-		/// </summary>
-		/// <param name="offsetPatch"></param>
-		/// <param name="offsetRef"></param>
-		/// <param name="width"></param>
-		public void PatchLe(int offsetPatch, int offsetRef, DataType width)
-		{
-			Debug.Assert(offsetPatch < stmOut.Length);
-			long posOrig = stmOut.Position;
-			stmOut.Position = offsetPatch;
-			int patchVal;
-			switch (width.Size)
-			{
-			default:
-				throw new ApplicationException("unexpected");
-			case 1:
-				patchVal = stmOut.ReadByte() + offsetRef;
-				stmOut.Position = offsetPatch;
-				stmOut.WriteByte((byte) patchVal);
-				break;
-			case 2:
-				patchVal = stmOut.ReadByte();
-				patchVal |= stmOut.ReadByte() << 8;
-				patchVal += offsetRef;
-				stmOut.Position = offsetPatch;
-				stmOut.WriteByte((byte) patchVal);
-				stmOut.WriteByte((byte) (patchVal >> 8));
-				break;
-			case 4:
-				patchVal = stmOut.ReadByte();
-				patchVal |= stmOut.ReadByte() << 8;
-				patchVal |= stmOut.ReadByte() << 16;
-				patchVal |= stmOut.ReadByte() << 24;
-				patchVal += offsetRef;
-				stmOut.Position = offsetPatch;
-				stmOut.WriteByte((byte) patchVal);
-				stmOut.WriteByte((byte) (patchVal >>= 8));
-				stmOut.WriteByte((byte) (patchVal >>= 8));
-				stmOut.WriteByte((byte) (patchVal >>= 8));
-				break;
-			}
-			stmOut.Position = posOrig;
-		}
+        /// <summary>
+        /// Patches a little-endian value by fetching it from the stream and adding an offset.
+        /// </summary>
+        /// <param name="offsetPatch"></param>
+        /// <param name="offsetRef"></param>
+        /// <param name="width"></param>
+        public void PatchLe(int offsetPatch, int offsetRef, DataType width)
+        {
+            Debug.Assert(offsetPatch < stmOut.Length);
+            long posOrig = stmOut.Position;
+            stmOut.Position = offsetPatch;
+            int patchVal;
+            switch (width.Size)
+            {
+            default:
+                throw new ApplicationException("unexpected");
+            case 1:
+                patchVal = stmOut.ReadByte() + offsetRef;
+                stmOut.Position = offsetPatch;
+                stmOut.WriteByte((byte) patchVal);
+                break;
+            case 2:
+                patchVal = stmOut.ReadByte();
+                patchVal |= stmOut.ReadByte() << 8;
+                patchVal += offsetRef;
+                stmOut.Position = offsetPatch;
+                stmOut.WriteByte((byte) patchVal);
+                stmOut.WriteByte((byte) (patchVal >> 8));
+                break;
+            case 4:
+                patchVal = stmOut.ReadByte();
+                patchVal |= stmOut.ReadByte() << 8;
+                patchVal |= stmOut.ReadByte() << 16;
+                patchVal |= stmOut.ReadByte() << 24;
+                patchVal += offsetRef;
+                stmOut.Position = offsetPatch;
+                stmOut.WriteByte((byte) patchVal);
+                stmOut.WriteByte((byte) (patchVal >>= 8));
+                stmOut.WriteByte((byte) (patchVal >>= 8));
+                stmOut.WriteByte((byte) (patchVal >>= 8));
+                break;
+            }
+            stmOut.Position = posOrig;
+        }
 
+        public uint ReadBeUInt32(int offset)
+        {
+            var pos = stmOut.Position;
+            stmOut.Position = offset;
+            uint u0 = (byte) stmOut.ReadByte();
+            uint u1 = (byte) stmOut.ReadByte();
+            uint u2 = (byte) stmOut.ReadByte();
+            uint u3 = (byte) stmOut.ReadByte();
+            uint value = (u0 << 24) | (u1 << 16) | (u2 << 8) | u3;
+            stmOut.Position = pos;
+            return value;
+        }
 
+        public byte ReadByte(int offset)
+        {
+            var pos = stmOut.Position;
+            stmOut.Position = offset;
+            byte value = (byte) stmOut.ReadByte();
+            stmOut.Position = pos;
+            return value;
+        }
 
         public void Reserve(int size)
         {
@@ -276,6 +306,25 @@ namespace Reko.Core.Assemblers
                 stmOut.WriteByte(0);
                 --size;
             }
+        }
+
+        public void WriteBeUInt32(int offset, uint value)
+        {
+            var pos = stmOut.Position;
+            stmOut.Position = offset;
+            stmOut.WriteByte((byte) (value >> 24));
+            stmOut.WriteByte((byte) (value >> 16));
+            stmOut.WriteByte((byte) (value >> 8));
+            stmOut.WriteByte((byte) value);
+            stmOut.Position = pos;
+        }
+
+        public void WriteByte(int offset, int value)
+        {
+            var pos = stmOut.Position;
+            stmOut.Position = offset;
+            stmOut.WriteByte((byte)value);
+            stmOut.Position = pos;
         }
     }
 }

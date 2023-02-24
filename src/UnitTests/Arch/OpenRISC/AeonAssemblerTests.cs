@@ -26,23 +26,55 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.OpenRISC
 {
     [TestFixture]
     public class AeonAssemblerTests
     {
+        private Program program;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.program = null;
+        }
+
+        private void Asm(string asmSrc)
+        {
+            var arch = new AeonArchitecture(new ServiceContainer(), "aeon", new Dictionary<string, object>());
+            var asm = arch.CreateAssembler(null);
+            var program = asm.AssembleFragment(Address.Ptr32(0x10_0000), asmSrc);
+            var bmem = (ByteMemoryArea) program.SegmentMap.Segments.Values.First().MemoryArea;
+            this.program = program;
+        }
+
         private void AssertAsm(string asmSrc, string hexBytesExpected)
         {
             var arch = new AeonArchitecture(new ServiceContainer(), "aeon", new Dictionary<string, object>());
             var asm = arch.CreateAssembler(null);
             var program = asm.AssembleFragment(Address.Ptr32(0x10_0000), asmSrc);
             var bmem = (ByteMemoryArea) program.SegmentMap.Segments.Values.First().MemoryArea;
-            var bytesExpected = BytePattern.FromHexBytes(hexBytesExpected);
-            Assert.AreEqual(bytesExpected, bmem.Bytes);
+            var bytesExpected = hexBytesExpected.Replace(" ", "");
+            var sActual = string.Join("", bmem.Bytes.Select(b => $"{b:X2}"));
+            Assert.AreEqual(bytesExpected, sActual);
         }
+
+        private void RoundTrip(string asmSrc, string asmExpected)
+        {
+            var arch = new AeonArchitecture(new ServiceContainer(), "aeon", new Dictionary<string, object>());
+            var asm = arch.CreateAssembler(null);
+            var program = asm.AssembleFragment(Address.Ptr32(0x10_0000), asmSrc);
+            var bmem = (ByteMemoryArea) program.SegmentMap.Segments.Values.First().MemoryArea;
+            var dasm = arch.CreateDisassembler(bmem.CreateBeReader(0));
+            var nl = Environment.NewLine;
+            var sResult =
+                nl +
+                string.Join(nl, dasm.Select(i => $"{i.Address} {i}"))
+                    .Replace('\t', ' ');
+            Assert.AreEqual(asmExpected, sResult);
+        }
+
 
         [Test]
         public void AeonAsm_bg_andi()
@@ -81,10 +113,86 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertAsm("bg.sb\t0x36D8(r10),r7", "F8 EA 36 D8");
         }
 
-        /*
-beqi
-lbz
-andi
-        */
+        [Test]
+        public void AeonAsm_bn_bnei()
+        {
+            AssertAsm("bn.bnei\tr6,0x0,0x00100017", "20 C0 5E");
+        }
+
+        [Test]
+        public void AeonAsm_bn_j()
+        {
+            AssertAsm("bn.j\t0x000FF17E", "2F F1 7E");
+        }
+
+        [Test]
+        public void AeonAsm_bn_xor()
+        {
+            AssertAsm("bn.xor\tr7,r4,r3", "44 E4 1E");
+        }
+
+        [Test]
+        public void AeonAsm_bt_addi__()
+        {
+            AssertAsm("bt.addi\tr1,-0x4", "9C 3C");
+        }
+
+        [Test]
+        public void AeonAsm_labels()
+        {
+            Asm(@"
+    bn.xor r2,r2,r2
+label:
+        ");
+            var label = this.program.ImageSymbols.Values.First(s => s.Name == "label");
+            Assert.AreEqual(0x10_0003u, label.Address.ToUInt32());
+        }
+
+        [Test]
+        public void AeonAsm_Relocate_RT_AEON_BN_DISP8_2()
+        {
+            RoundTrip(@"
+    bg.ori r1,r0,3
+label:
+        bg.sb (r3),r1
+        bt.addi r3,1
+        bt.addi r1,-1
+        bn.bnei r1,0,label
+        ",
+        @"
+00100000 bg.ori r1,r0,0x3
+00100004 bg.sb? (r3),r1
+00100008 bt.addi? r3,0x1
+0010000A bt.addi? r1,-0x1
+0010000C bn.bnei? r1,0x0,00100004");
+        }
+
+        [Test]
+        public void AeonAsm_Relocate_RT_AEON_BN_DISP18()
+        {
+            RoundTrip(@"
+// Comment
+label:
+        bt.addi r3,1
+        bn.j label
+        ",
+        @"
+00100000 bt.addi? r3,0x1
+00100002 bn.j?? 00100000");
+        }
+
+        [Test]
+        public void AeonAsm_Relocate_RT_AEON_BG_DISP13_3()
+        {
+            RoundTrip(@"
+// Comment
+label:
+        bt.addi r3,1
+        bg.beqi r3,0x0,label
+        ",
+        @"
+00100000 bt.addi? r3,0x1
+00100002 bg.beqi? r3,0x0,00100000");
+        }
     }
 }

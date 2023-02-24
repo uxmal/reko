@@ -66,7 +66,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 ProcessLine(directiveLexer, asm);
             }
 
-            asm.ReportUnresolvedSymbols();
+            asm.PerformRelocations();
             //addrStart = addrBase;
             return asm.GetImage(baseAddress);
         }
@@ -77,14 +77,23 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             if (Peek(lex).Type == CTokenType.EOF || curLine != lex.LineNumber)
                 return;
 
-            //$TODO: label.
+            // Eat any labels
             var tPrefix = Expect(lex, CTokenType.Id);
             var prefix = (string) tPrefix.Value!;
+            while (PeekAndDiscard(lex, CTokenType.Colon))
+            {
+                asm.RegisterSymbol(prefix);
+                if (Peek(lex).Type != CTokenType.Id)
+                    return;
+                tPrefix = Read(lex);
+                prefix = (string) tPrefix.Value!;
+            }
+
             Expect(lex, CTokenType.Dot);
             var tMnemonic = Expect(lex, CTokenType.Id);
             var mnemonic = (string) tMnemonic.Value!;
             RegisterStorage rsrc1;
-            //RegisterStorage rsrc2;
+            RegisterStorage rsrc2;
             RegisterStorage rdst;
             MemoryOperand mop;
             ImmediateOperand immop;
@@ -107,7 +116,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                     Expect(lex, CTokenType.Comma);
                     immop = ParseUImmediateOperand(lex);
                     Expect(lex, CTokenType.Comma);
-                    disp = ParseDisplacement(lex, asm);
+                    disp = ParseDisplacement(lex, asm, AeonAssembler.RT_AEON_BG_DISP13_3);
                     asm.bg_beqi(rsrc1, immop, disp);
                     break;
                 case "sb":
@@ -137,25 +146,94 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                     asm.bg_movhi(rdst, immop);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(mnemonic);
                 }
                 break;
+            case "bn":
+                switch (mnemonic)
+                {
+                case "bnei":
+                    rsrc1 = ExpectRegister(lex);
+                    Expect(lex, CTokenType.Comma);
+                    immop = ParseUImmediateOperand(lex);
+                    Expect(lex, CTokenType.Comma);
+                    disp = ParseDisplacement(lex, asm, AeonAssembler.RT_AEON_BN_DISP8_2);
+                    asm.bn_bnei(rsrc1, immop, disp);
+                    break;
+                case "j":
+                    disp = ParseDisplacement(lex, asm, AeonAssembler.RT_AEON_BN_DISP18);
+                    asm.bn_j(disp);
+                    break;
+                case "xor":
+                    rdst = ExpectRegister(lex);
+                    Expect(lex, CTokenType.Comma);
+                    rsrc1 = ExpectRegister(lex);
+                    Expect(lex, CTokenType.Comma);
+                    rsrc2 = ExpectRegister(lex);
+                    asm.bn_xor(rdst, rsrc1, rsrc2);
+                    break;
+                default:
+                throw new NotImplementedException($"{prefix}.{mnemonic}");
+                }
+                break;
+            case "bt":
+                switch (mnemonic)
+                {
+                case "addi":
+                    rdst = ExpectRegister(lex);
+                    Expect(lex, CTokenType.Comma);
+                    immop = this.ParseSImmediateOperand(lex);
+                    asm.bt_addi(rdst, immop);
+                    break;
+                default:
+                    throw new NotImplementedException($"{prefix}.{mnemonic}");
+                }
+                break;
+            case "b":
+                // Idea: try first with "bg", but if we can make it fit,  try again with smaller 
+                // "bn" or "bt" instructions.
+                goto case "bg";
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException(prefix);
             }
         }
 
-
-
-        private ImmediateOperand ParseDisplacement(CDirectiveLexer lex, AeonAssembler asm)
+        private bool PeekAndDiscard(CDirectiveLexer lex, CTokenType tokenType)
         {
-            //$TODO: symbols.
-            var tAddress= Expect(lex, CTokenType.NumericLiteral);
-            var address = Convert.ToUInt32(tAddress.Value);
+            var t = Peek(lex);
+            if (t.Type != tokenType)
+                return false;
+            Read(lex);
+            return true;
+        }
 
-            var uAddrCur = asm.BaseAddress.ToUInt32() + (uint) asm.Emitter.Size;
-            var displacement = (long)address - uAddrCur;
-            return ImmediateOperand.Int32((int) displacement);
+        private ImmediateOperand ParseDisplacement(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            int relocationType)
+        {
+            var tAddress = Read(lex);
+            long displacement;
+            if (tAddress.Type == CTokenType.Id)
+            {
+                // A symbol. Generate a relocation and leave a 0 displacement.
+                var symbol = (string) tAddress.Value!;
+                var reloc = new Relocation(asm.CurrentAddress, symbol, relocationType);
+                asm.AddRelocation(in reloc);
+                displacement = 0;
+            }
+            else if (tAddress.Type == CTokenType.NumericLiteral)
+            {
+                // Absolute address
+                uint address = Convert.ToUInt32(tAddress.Value);
+                var uAddrCur = asm.CurrentAddress;
+                displacement = (long) address - uAddrCur.ToUInt32();
+            }
+            else
+            {
+                throw new ApplicationException($"Unexpected jump target {tAddress}.");
+            }
+            return ImmediateOperand.Int32((int)displacement);
         }
 
         private ImmediateOperand ParseUImmediateOperand(CDirectiveLexer lex)
@@ -163,6 +241,13 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             var tOffset = Expect(lex, CTokenType.NumericLiteral);
             uint offset = Convert.ToUInt32(tOffset.Value);
             return ImmediateOperand.UInt32(offset);
+        }
+
+        private ImmediateOperand ParseSImmediateOperand(CDirectiveLexer lex)
+        {
+            var tOffset = Expect(lex, CTokenType.NumericLiteral);
+            int offset = Convert.ToInt32(tOffset.Value);
+            return ImmediateOperand.Int32(offset);
         }
 
         private MemoryOperand ParseMemOperand(CDirectiveLexer lex, PrimitiveType dt)
@@ -190,11 +275,6 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             if (!arch.TryGetRegister(sReg, out var reg))
                 throw new ApplicationException($"Expected a register but found '{sReg}'.");
             return reg;
-        }
-
-        private void ParseMemOperands(CDirectiveLexer directiveLexer, List<ParsedOperand> ops)
-        {
-            throw new NotImplementedException();
         }
 
         private CToken Expect(CDirectiveLexer directiveLexer, CTokenType expectedType)
