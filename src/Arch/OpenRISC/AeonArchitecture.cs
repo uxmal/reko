@@ -20,6 +20,7 @@
 
 using Reko.Arch.OpenRISC.Aeon;
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -53,6 +54,11 @@ namespace Reko.Arch.OpenRISC
         }
 
         public override int ReturnAddressOnStack => 0;
+
+        public override IAssembler CreateAssembler(string? asmDialect)
+        {
+            return new Aeon.Assembler.AeonTextAssembler(this);
+        }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {

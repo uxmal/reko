@@ -174,6 +174,8 @@ namespace Reko.Core.Assemblers
             stmOut.WriteByte((byte) (s & 0xFF));
         }
 
+        public void EmitBeUInt32(uint s) => EmitBeUInt32((int) s);
+
         /// <summary>
         /// Patches a big-endian value by fetching it from the stream and adding an offset.
         /// </summary>

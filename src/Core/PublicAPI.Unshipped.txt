@@ -701,6 +701,7 @@ override Reko.Core.TemporaryStorage.Kind.get -> string!
 override Reko.Core.Trampoline.ToString() -> string!
 readonly Reko.Core.FrameApplicationBuilder.arch -> Reko.Core.IProcessorArchitecture!
 readonly Reko.Core.FrameApplicationBuilder.binder -> Reko.Core.IStorageBinder!
+Reko.Core.Assemblers.Emitter.EmitBeUInt32(uint s) -> void
 Reko.Core.Assemblers.Symbol.IsResolved.get -> bool
 Reko.Core.Assemblers.Symbol.IsResolved.set -> void
 Reko.Core.Assemblers.Symbol.Name.get -> string!
