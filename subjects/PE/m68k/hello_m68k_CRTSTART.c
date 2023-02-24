@@ -210,7 +210,7 @@ Eq_n fn0000243C(Eq_n a5, Eq_n dwArg04, ptr32 & a6Out)
 		if (d2_n - (a5 + -1012) >=u 0x00)
 			break;
 	}
-	if (dwArg04 - (((a5.u0)->aFFFFFBB4))[d1_n].dw0000 == 0x00)
+	if (dwArg04 - *((word32) a5 + (d1_n * 8 - 0x044C)) == 0x00)
 	{
 		byte * a0_n = *((word32) a5 + (d1_n * 8 - 0x0448));
 		byte * a1_n = a0_n;

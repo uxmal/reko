@@ -920,7 +920,7 @@ Eq_1010: (union "Eq_1010" (int8 u0) (int32 u1) (uint32 u2))
 	T_3238 (in -1<i32> @ 00403B08 : int32)
 	T_3260 (in -1<i32> @ 00403BCC : int32)
 	T_3380 (in Mem39[r4 + 0<32>:word32] @ 00403E9C : word32)
-	T_3382 (in r4.ptr0000->u0 + -1<i32> @ 00403E9C : word32)
+	T_3382 (in r4.ptr0000->u2.t0000.u1 + -1<i32> @ 00403E9C : word32)
 	T_3385 (in Mem45[r4 + 0<32>:word32] @ 00403E9C : word32)
 	T_3478 (in 0<8> @ 004042C8 : byte)
 	T_3481 (in Mem28[r2_20 + 0<32>:byte] @ 004042C8 : byte)
@@ -940,14 +940,14 @@ Eq_1010: (union "Eq_1010" (int8 u0) (int32 u1) (uint32 u2))
 	T_5307 (in -1<i32> @ 00407070 : int32)
 	T_5310 (in Mem29[r4 + 0<32>:word32] @ 00407070 : word32)
 	T_5378 (in Mem32[r4 + 0<32>:word32] @ 004072B0 : word32)
-	T_5380 (in r4.ptr0000->u0 + 1<i32> @ 004072B0 : word32)
+	T_5380 (in r4.ptr0000->u2.t0000.u1 + 1<i32> @ 004072B0 : word32)
 	T_5383 (in Mem38[r4 + 0<32>:word32] @ 004072B0 : word32)
 	T_5386 (in Mem38[r4 + 4<32>:word32] @ 004072CC : word32)
 	T_5389 (in Mem38[r4 + 0<32>:word32] @ 004072CC : word32)
 	T_5408 (in Mem38[r4 + 0<32>:word32] @ 004072E8 : word32)
 	T_5411 (in Mem47[r4 + 4<32>:word32] @ 004072E8 : word32)
 	T_5442 (in Mem39[r4 + 0<32>:word32] @ 004073EC : word32)
-	T_5444 (in r4.ptr0000->u0 + -1<i32> @ 004073EC : word32)
+	T_5444 (in r4.ptr0000->u2.t0000.u1 + -1<i32> @ 004073EC : word32)
 	T_5447 (in Mem45[r4 + 0<32>:word32] @ 004073EC : word32)
 	T_7861
 	T_7867
@@ -7268,7 +7268,7 @@ T_1259: (in Mem474[r28_1010 + -32560<i32>:word32] @ 00400F40 : word32)
 T_1260: (in dwLoc0160_1284 @ 00400F30 : Eq_1010)
   Class: Eq_1010
   DataType: Eq_1010
-  OrigDataType: int8
+  OrigDataType: Eq_921
 T_1261: (in 0<32> @ 00400F30 : word32)
   Class: Eq_1010
   DataType: int8
@@ -7545,15 +7545,15 @@ T_1329: (in 0x1F<32> @ 00401080 : word32)
   Class: Eq_1329
   DataType: ui32
   OrigDataType: ui32
-T_1330: (in dwLoc0150_1300.ptr0000->u0 & 0x1F<32> @ 00401080 : word32)
+T_1330: (in dwLoc0150_1300.ptr0000->u2.t0000.u1 & 0x1F<32> @ 00401080 : word32)
   Class: Eq_1330
   DataType: ui32
   OrigDataType: ui32
-T_1331: (in 1<i32> << ((dwLoc0150_1300.ptr0000)->u0 & 0x1F<32>) @ 00401080 : word32)
+T_1331: (in 1<i32> << ((((dwLoc0150_1300.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 00401080 : word32)
   Class: Eq_1331
   DataType: ui32
   OrigDataType: ui32
-T_1332: (in fp->aFFFFFED0[r2_527 >> 5<8>] | 1<i32> << ((dwLoc0150_1300.ptr0000)->u0 & 0x1F<32>) @ 00401080 : word32)
+T_1332: (in fp->aFFFFFED0[r2_527 >> 5<8>] | 1<i32> << ((((dwLoc0150_1300.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 00401080 : word32)
   Class: Eq_1274
   DataType: int32
   OrigDataType: ui32
@@ -7593,7 +7593,7 @@ T_1341: (in Mem544[dwLoc0150_1300 + 0<32>:word32] @ 00401098 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: (union (int32 u0) (uint32 u1))
-T_1342: (in dwLoc0160_1284 < (dwLoc0150_1300.ptr0000)->u0 @ 00401098 : bool)
+T_1342: (in dwLoc0160_1284 < (((dwLoc0150_1300.ptr0000)->u2).t0000).u1 @ 00401098 : bool)
   Class: Eq_1342
   DataType: bool
   OrigDataType: bool
@@ -7605,7 +7605,7 @@ T_1344: (in 0<32> @ 00401098 : word32)
   Class: Eq_1343
   DataType: word32
   OrigDataType: word32
-T_1345: (in (word32) (dwLoc0160_1284 < (dwLoc0150_1300.ptr0000)->u0) == 0<32> @ 00401098 : bool)
+T_1345: (in (word32) (dwLoc0160_1284 < (((dwLoc0150_1300.ptr0000)->u2).t0000).u1) == 0<32> @ 00401098 : bool)
   Class: Eq_1345
   DataType: bool
   OrigDataType: bool
@@ -7661,7 +7661,7 @@ T_1358: (in 0<32> @ 00401108 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1359: (in dwLoc0158_1311.ptr0000->u0 < 0<32> @ 00401108 : bool)
+T_1359: (in dwLoc0158_1311.ptr0000->u2.t0000.u1 < 0<32> @ 00401108 : bool)
   Class: Eq_1359
   DataType: bool
   OrigDataType: bool
@@ -7917,7 +7917,7 @@ T_1422: (in 0<32> @ 0040122C : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1423: (in (&dwLoc0158_1311.ptr0000->u2.a0004)[0<i32>].u0 < 0<32> @ 0040122C : bool)
+T_1423: (in *((char *) dwLoc0158_1311.ptr0000 + 4<i32>) < 0<32> @ 0040122C : bool)
   Class: Eq_1423
   DataType: bool
   OrigDataType: bool
@@ -7933,7 +7933,7 @@ T_1426: (in Mem561[dwLoc0158_1311 + 0<32>:word32] @ 00401124 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_1427: (in dwLoc0160_1284 < (dwLoc0158_1311.ptr0000)->u0 @ 00401124 : bool)
+T_1427: (in dwLoc0160_1284 < (((dwLoc0158_1311.ptr0000)->u2).t0000).u1 @ 00401124 : bool)
   Class: Eq_1427
   DataType: bool
   OrigDataType: bool
@@ -7945,7 +7945,7 @@ T_1429: (in 0<32> @ 00401124 : word32)
   Class: Eq_1428
   DataType: word32
   OrigDataType: word32
-T_1430: (in (word32) (dwLoc0160_1284 < (dwLoc0158_1311.ptr0000)->u0) == 0<32> @ 00401124 : bool)
+T_1430: (in (word32) (dwLoc0160_1284 < (((dwLoc0158_1311.ptr0000)->u2).t0000).u1) == 0<32> @ 00401124 : bool)
   Class: Eq_1430
   DataType: bool
   OrigDataType: bool
@@ -8005,7 +8005,7 @@ T_1444: (in Mem615[dwLoc0158_1311 + 4<32>:word32] @ 00401248 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_1445: (in dwLoc0160_1284 < ((&((dwLoc0158_1311.ptr0000)->u2).a0004))[0<i32>].u0 @ 00401248 : bool)
+T_1445: (in dwLoc0160_1284 < *((char *) dwLoc0158_1311.ptr0000 + 4<i32>) @ 00401248 : bool)
   Class: Eq_1445
   DataType: bool
   OrigDataType: bool
@@ -8017,7 +8017,7 @@ T_1447: (in 0<32> @ 00401248 : word32)
   Class: Eq_1446
   DataType: word32
   OrigDataType: word32
-T_1448: (in (word32) (dwLoc0160_1284 < ((&((dwLoc0158_1311.ptr0000)->u2).a0004))[0<i32>].u0) == 0<32> @ 00401248 : bool)
+T_1448: (in (word32) (dwLoc0160_1284 < *((char *) dwLoc0158_1311.ptr0000 + 4<i32>)) == 0<32> @ 00401248 : bool)
   Class: Eq_1448
   DataType: bool
   OrigDataType: bool
@@ -8117,15 +8117,15 @@ T_1472: (in 0x1F<32> @ 00401218 : word32)
   Class: Eq_1472
   DataType: ui32
   OrigDataType: ui32
-T_1473: (in dwLoc0158_1311.ptr0000->u0 & 0x1F<32> @ 00401218 : word32)
+T_1473: (in dwLoc0158_1311.ptr0000->u2.t0000.u1 & 0x1F<32> @ 00401218 : word32)
   Class: Eq_1473
   DataType: ui32
   OrigDataType: ui32
-T_1474: (in 1<i32> << ((dwLoc0158_1311.ptr0000)->u0 & 0x1F<32>) @ 00401218 : word32)
+T_1474: (in 1<i32> << ((((dwLoc0158_1311.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 00401218 : word32)
   Class: Eq_1474
   DataType: ui32
   OrigDataType: ui32
-T_1475: (in fp->aFFFFFF50[r2_577 >> 5<8>] | 1<i32> << ((dwLoc0158_1311.ptr0000)->u0 & 0x1F<32>) @ 00401218 : word32)
+T_1475: (in fp->aFFFFFF50[r2_577 >> 5<8>] | 1<i32> << ((((dwLoc0158_1311.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 00401218 : word32)
   Class: Eq_1302
   DataType: int32
   OrigDataType: ui32
@@ -8217,15 +8217,15 @@ T_1497: (in 0x1F<32> @ 004011B4 : word32)
   Class: Eq_1497
   DataType: ui32
   OrigDataType: ui32
-T_1498: (in dwLoc0158_1311.ptr0000->u0 & 0x1F<32> @ 004011B4 : word32)
+T_1498: (in dwLoc0158_1311.ptr0000->u2.t0000.u1 & 0x1F<32> @ 004011B4 : word32)
   Class: Eq_1498
   DataType: ui32
   OrigDataType: ui32
-T_1499: (in 1<i32> << ((dwLoc0158_1311.ptr0000)->u0 & 0x1F<32>) @ 004011B4 : word32)
+T_1499: (in 1<i32> << ((((dwLoc0158_1311.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 004011B4 : word32)
   Class: Eq_1499
   DataType: ui32
   OrigDataType: ui32
-T_1500: (in fp->aFFFFFED0[r2_596 >> 5<8>] | 1<i32> << ((dwLoc0158_1311.ptr0000)->u0 & 0x1F<32>) @ 004011B4 : word32)
+T_1500: (in fp->aFFFFFED0[r2_596 >> 5<8>] | 1<i32> << ((((dwLoc0158_1311.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 004011B4 : word32)
   Class: Eq_1274
   DataType: int32
   OrigDataType: ui32
@@ -8325,15 +8325,15 @@ T_1524: (in 0x1F<32> @ 0040133C : word32)
   Class: Eq_1524
   DataType: ui32
   OrigDataType: ui32
-T_1525: (in (&dwLoc0158_1311.ptr0000->u2.a0004)[0<i32>].u0 & 0x1F<32> @ 0040133C : word32)
+T_1525: (in *((char *) dwLoc0158_1311.ptr0000 + 4<i32>) & 0x1F<32> @ 0040133C : word32)
   Class: Eq_1525
   DataType: ui32
   OrigDataType: ui32
-T_1526: (in 1<i32> << (((&((dwLoc0158_1311.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) @ 0040133C : word32)
+T_1526: (in 1<i32> << (*((char *) dwLoc0158_1311.ptr0000 + 4<i32>) & 0x1F<32>) @ 0040133C : word32)
   Class: Eq_1526
   DataType: ui32
   OrigDataType: ui32
-T_1527: (in fp->aFFFFFF50[r2_630 >> 5<8>] | 1<i32> << (((&((dwLoc0158_1311.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) @ 0040133C : word32)
+T_1527: (in fp->aFFFFFF50[r2_630 >> 5<8>] | 1<i32> << (*((char *) dwLoc0158_1311.ptr0000 + 4<i32>) & 0x1F<32>) @ 0040133C : word32)
   Class: Eq_1302
   DataType: int32
   OrigDataType: ui32
@@ -8425,15 +8425,15 @@ T_1549: (in 0x1F<32> @ 004012D8 : word32)
   Class: Eq_1549
   DataType: ui32
   OrigDataType: ui32
-T_1550: (in (&dwLoc0158_1311.ptr0000->u2.a0004)[0<i32>].u0 & 0x1F<32> @ 004012D8 : word32)
+T_1550: (in *((char *) dwLoc0158_1311.ptr0000 + 4<i32>) & 0x1F<32> @ 004012D8 : word32)
   Class: Eq_1550
   DataType: ui32
   OrigDataType: ui32
-T_1551: (in 1<i32> << (((&((dwLoc0158_1311.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) @ 004012D8 : word32)
+T_1551: (in 1<i32> << (*((char *) dwLoc0158_1311.ptr0000 + 4<i32>) & 0x1F<32>) @ 004012D8 : word32)
   Class: Eq_1551
   DataType: ui32
   OrigDataType: ui32
-T_1552: (in fp->aFFFFFED0[r2_649 >> 5<8>] | 1<i32> << (((&((dwLoc0158_1311.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) @ 004012D8 : word32)
+T_1552: (in fp->aFFFFFED0[r2_649 >> 5<8>] | 1<i32> << (*((char *) dwLoc0158_1311.ptr0000 + 4<i32>) & 0x1F<32>) @ 004012D8 : word32)
   Class: Eq_1274
   DataType: int32
   OrigDataType: ui32
@@ -8485,7 +8485,7 @@ T_1564: (in 5<8> @ 004014C4 : byte)
   Class: Eq_1564
   DataType: byte
   OrigDataType: byte
-T_1565: (in dwLoc0150_1341.ptr0000->u0 >> 5<8> @ 004014C4 : word32)
+T_1565: (in dwLoc0150_1341.ptr0000->u2.t0000.u1 >> 5<8> @ 004014C4 : word32)
   Class: Eq_1565
   DataType: uint32
   OrigDataType: uint32
@@ -8493,7 +8493,7 @@ T_1566: (in 4<32> @ 004014C4 : ui32)
   Class: Eq_1566
   DataType: ui32
   OrigDataType: ui32
-T_1567: (in (dwLoc0150_1341.ptr0000->u0 >> 5<8>) * 4<32> @ 004014C4 : word32)
+T_1567: (in (dwLoc0150_1341.ptr0000->u2.t0000.u1 >> 5<8>) * 4<32> @ 004014C4 : word32)
   Class: Eq_1567
   DataType: ui32
   OrigDataType: ui32
@@ -8517,11 +8517,11 @@ T_1572: (in 0x1F<32> @ 004014C4 : word32)
   Class: Eq_1572
   DataType: ui32
   OrigDataType: ui32
-T_1573: (in dwLoc0150_1341.ptr0000->u0 & 0x1F<32> @ 004014C4 : word32)
+T_1573: (in dwLoc0150_1341.ptr0000->u2.t0000.u1 & 0x1F<32> @ 004014C4 : word32)
   Class: Eq_1573
   DataType: ui32
   OrigDataType: ui32
-T_1574: (in fp->aFFFFFED0[dwLoc0150_1341.ptr0000->u0 >> 5<8>] >> ((dwLoc0150_1341.ptr0000)->u0 & 0x1F<32>) @ 004014C4 : word32)
+T_1574: (in fp->aFFFFFED0[dwLoc0150_1341.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0150_1341.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 004014C4 : word32)
   Class: Eq_1574
   DataType: int32
   OrigDataType: int32
@@ -8529,7 +8529,7 @@ T_1575: (in 1<32> @ 004014C4 : word32)
   Class: Eq_1575
   DataType: ui32
   OrigDataType: ui32
-T_1576: (in fp->aFFFFFED0[dwLoc0150_1341.ptr0000->u0 >> 5<8>] >> ((dwLoc0150_1341.ptr0000)->u0 & 0x1F<32>) & 1<32> @ 004014C4 : word32)
+T_1576: (in fp->aFFFFFED0[dwLoc0150_1341.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0150_1341.ptr0000)->u2).t0000).u1 & 0x1F<32>) & 1<32> @ 004014C4 : word32)
   Class: Eq_1576
   DataType: ui32
   OrigDataType: ui32
@@ -8537,7 +8537,7 @@ T_1577: (in 0<32> @ 004014C4 : word32)
   Class: Eq_1576
   DataType: ui32
   OrigDataType: word32
-T_1578: (in (fp->aFFFFFED0[dwLoc0150_1341.ptr0000->u0 >> 5<8>] >> ((dwLoc0150_1341.ptr0000)->u0 & 0x1F<32>) & 1<32>) == 0<32> @ 004014C4 : bool)
+T_1578: (in (fp->aFFFFFED0[dwLoc0150_1341.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0150_1341.ptr0000)->u2).t0000).u1 & 0x1F<32>) & 1<32>) == 0<32> @ 004014C4 : bool)
   Class: Eq_1578
   DataType: bool
   OrigDataType: bool
@@ -8617,7 +8617,7 @@ T_1595: (in 0<32> @ 00401600 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1596: (in dwLoc0158_1348.ptr0000->u0 < 0<32> @ 00401600 : bool)
+T_1596: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 < 0<32> @ 00401600 : bool)
   Class: Eq_1596
   DataType: bool
   OrigDataType: bool
@@ -8645,7 +8645,7 @@ T_1602: (in 5<8> @ 0040164C : byte)
   Class: Eq_1602
   DataType: byte
   OrigDataType: byte
-T_1603: (in dwLoc0158_1348.ptr0000->u0 >> 5<8> @ 0040164C : word32)
+T_1603: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8> @ 0040164C : word32)
   Class: Eq_1603
   DataType: uint32
   OrigDataType: uint32
@@ -8653,7 +8653,7 @@ T_1604: (in 4<32> @ 0040164C : ui32)
   Class: Eq_1604
   DataType: ui32
   OrigDataType: ui32
-T_1605: (in (dwLoc0158_1348.ptr0000->u0 >> 5<8>) * 4<32> @ 0040164C : word32)
+T_1605: (in (dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>) * 4<32> @ 0040164C : word32)
   Class: Eq_1605
   DataType: ui32
   OrigDataType: ui32
@@ -8677,11 +8677,11 @@ T_1610: (in 0x1F<32> @ 0040164C : word32)
   Class: Eq_1610
   DataType: ui32
   OrigDataType: ui32
-T_1611: (in dwLoc0158_1348.ptr0000->u0 & 0x1F<32> @ 0040164C : word32)
+T_1611: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 & 0x1F<32> @ 0040164C : word32)
   Class: Eq_1611
   DataType: ui32
   OrigDataType: ui32
-T_1612: (in fp->aFFFFFED0[dwLoc0158_1348.ptr0000->u0 >> 5<8>] >> ((dwLoc0158_1348.ptr0000)->u0 & 0x1F<32>) @ 0040164C : word32)
+T_1612: (in fp->aFFFFFED0[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0158_1348.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 0040164C : word32)
   Class: Eq_1612
   DataType: int32
   OrigDataType: int32
@@ -8689,7 +8689,7 @@ T_1613: (in 1<32> @ 0040164C : word32)
   Class: Eq_1613
   DataType: ui32
   OrigDataType: ui32
-T_1614: (in fp->aFFFFFED0[dwLoc0158_1348.ptr0000->u0 >> 5<8>] >> ((dwLoc0158_1348.ptr0000)->u0 & 0x1F<32>) & 1<32> @ 0040164C : word32)
+T_1614: (in fp->aFFFFFED0[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0158_1348.ptr0000)->u2).t0000).u1 & 0x1F<32>) & 1<32> @ 0040164C : word32)
   Class: Eq_1614
   DataType: ui32
   OrigDataType: ui32
@@ -8697,7 +8697,7 @@ T_1615: (in 0<32> @ 0040164C : word32)
   Class: Eq_1614
   DataType: ui32
   OrigDataType: word32
-T_1616: (in (fp->aFFFFFED0[dwLoc0158_1348.ptr0000->u0 >> 5<8>] >> ((dwLoc0158_1348.ptr0000)->u0 & 0x1F<32>) & 1<32>) == 0<32> @ 0040164C : bool)
+T_1616: (in (fp->aFFFFFED0[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0158_1348.ptr0000)->u2).t0000).u1 & 0x1F<32>) & 1<32>) == 0<32> @ 0040164C : bool)
   Class: Eq_1616
   DataType: bool
   OrigDataType: bool
@@ -8805,7 +8805,7 @@ T_1642: (in 0<32> @ 00401698 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1643: (in dwLoc0158_1348.ptr0000->u0 < 0<32> @ 00401698 : bool)
+T_1643: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 < 0<32> @ 00401698 : bool)
   Class: Eq_1643
   DataType: bool
   OrigDataType: bool
@@ -8825,7 +8825,7 @@ T_1647: (in Mem878[dwLoc0158_1348 + 0<32>:word32] @ 004016B4 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_1648: (in close(dwLoc0158_1348.ptr0000->u0) @ 004016B4 : int32)
+T_1648: (in close(dwLoc0158_1348.ptr0000->u2.t0000.u1) @ 004016B4 : int32)
   Class: Eq_1012
   DataType: int32
   OrigDataType: int32
@@ -9033,7 +9033,7 @@ T_1699: (in 0<32> @ 00401744 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1700: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 < 0<32> @ 00401744 : bool)
+T_1700: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) < 0<32> @ 00401744 : bool)
   Class: Eq_1700
   DataType: bool
   OrigDataType: bool
@@ -9061,7 +9061,7 @@ T_1706: (in 5<8> @ 00401790 : byte)
   Class: Eq_1706
   DataType: byte
   OrigDataType: byte
-T_1707: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8> @ 00401790 : word32)
+T_1707: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8> @ 00401790 : word32)
   Class: Eq_1707
   DataType: uint32
   OrigDataType: uint32
@@ -9069,7 +9069,7 @@ T_1708: (in 4<32> @ 00401790 : ui32)
   Class: Eq_1708
   DataType: ui32
   OrigDataType: ui32
-T_1709: (in ((&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>) * 4<32> @ 00401790 : word32)
+T_1709: (in (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>) * 4<32> @ 00401790 : word32)
   Class: Eq_1709
   DataType: ui32
   OrigDataType: ui32
@@ -9093,11 +9093,11 @@ T_1714: (in 0x1F<32> @ 00401790 : word32)
   Class: Eq_1714
   DataType: ui32
   OrigDataType: ui32
-T_1715: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 & 0x1F<32> @ 00401790 : word32)
+T_1715: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32> @ 00401790 : word32)
   Class: Eq_1715
   DataType: ui32
   OrigDataType: ui32
-T_1716: (in fp->aFFFFFED0[(&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>] >> (((&((dwLoc0158_1348.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) @ 00401790 : word32)
+T_1716: (in fp->aFFFFFED0[*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>] >> (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32>) @ 00401790 : word32)
   Class: Eq_1716
   DataType: int32
   OrigDataType: int32
@@ -9105,7 +9105,7 @@ T_1717: (in 1<32> @ 00401790 : word32)
   Class: Eq_1717
   DataType: ui32
   OrigDataType: ui32
-T_1718: (in fp->aFFFFFED0[(&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>] >> (((&((dwLoc0158_1348.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) & 1<32> @ 00401790 : word32)
+T_1718: (in fp->aFFFFFED0[*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>] >> (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32>) & 1<32> @ 00401790 : word32)
   Class: Eq_1718
   DataType: ui32
   OrigDataType: ui32
@@ -9113,7 +9113,7 @@ T_1719: (in 0<32> @ 00401790 : word32)
   Class: Eq_1718
   DataType: ui32
   OrigDataType: word32
-T_1720: (in (fp->aFFFFFED0[(&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>] >> (((&((dwLoc0158_1348.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) & 1<32>) == 0<32> @ 00401790 : bool)
+T_1720: (in (fp->aFFFFFED0[*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>] >> (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32>) & 1<32>) == 0<32> @ 00401790 : bool)
   Class: Eq_1720
   DataType: bool
   OrigDataType: bool
@@ -9193,7 +9193,7 @@ T_1739: (in 0<32> @ 004017DC : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1740: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 < 0<32> @ 004017DC : bool)
+T_1740: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) < 0<32> @ 004017DC : bool)
   Class: Eq_1740
   DataType: bool
   OrigDataType: bool
@@ -9213,7 +9213,7 @@ T_1744: (in Mem952[dwLoc0158_1348 + 4<32>:word32] @ 004017F8 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_1745: (in close((&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0) @ 004017F8 : int32)
+T_1745: (in close(*((char *) dwLoc0158_1348.ptr0000 + 4<i32>)) @ 004017F8 : int32)
   Class: Eq_1012
   DataType: int32
   OrigDataType: int32
@@ -9261,7 +9261,7 @@ T_1756: (in 0<32> @ 0040186C : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1757: (in dwLoc0158_1348.ptr0000->u0 < 0<32> @ 0040186C : bool)
+T_1757: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 < 0<32> @ 0040186C : bool)
   Class: Eq_1757
   DataType: bool
   OrigDataType: bool
@@ -9289,7 +9289,7 @@ T_1763: (in 5<8> @ 004018B8 : byte)
   Class: Eq_1763
   DataType: byte
   OrigDataType: byte
-T_1764: (in dwLoc0158_1348.ptr0000->u0 >> 5<8> @ 004018B8 : word32)
+T_1764: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8> @ 004018B8 : word32)
   Class: Eq_1764
   DataType: uint32
   OrigDataType: uint32
@@ -9297,7 +9297,7 @@ T_1765: (in 4<32> @ 004018B8 : ui32)
   Class: Eq_1765
   DataType: ui32
   OrigDataType: ui32
-T_1766: (in (dwLoc0158_1348.ptr0000->u0 >> 5<8>) * 4<32> @ 004018B8 : word32)
+T_1766: (in (dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>) * 4<32> @ 004018B8 : word32)
   Class: Eq_1766
   DataType: ui32
   OrigDataType: ui32
@@ -9321,11 +9321,11 @@ T_1771: (in 0x1F<32> @ 004018B8 : word32)
   Class: Eq_1771
   DataType: ui32
   OrigDataType: ui32
-T_1772: (in dwLoc0158_1348.ptr0000->u0 & 0x1F<32> @ 004018B8 : word32)
+T_1772: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 & 0x1F<32> @ 004018B8 : word32)
   Class: Eq_1772
   DataType: ui32
   OrigDataType: ui32
-T_1773: (in fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u0 >> 5<8>] >> ((dwLoc0158_1348.ptr0000)->u0 & 0x1F<32>) @ 004018B8 : word32)
+T_1773: (in fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0158_1348.ptr0000)->u2).t0000).u1 & 0x1F<32>) @ 004018B8 : word32)
   Class: Eq_1773
   DataType: int32
   OrigDataType: int32
@@ -9333,7 +9333,7 @@ T_1774: (in 1<32> @ 004018B8 : word32)
   Class: Eq_1774
   DataType: ui32
   OrigDataType: ui32
-T_1775: (in fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u0 >> 5<8>] >> ((dwLoc0158_1348.ptr0000)->u0 & 0x1F<32>) & 1<32> @ 004018B8 : word32)
+T_1775: (in fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0158_1348.ptr0000)->u2).t0000).u1 & 0x1F<32>) & 1<32> @ 004018B8 : word32)
   Class: Eq_1775
   DataType: ui32
   OrigDataType: ui32
@@ -9341,7 +9341,7 @@ T_1776: (in 0<32> @ 004018B8 : word32)
   Class: Eq_1775
   DataType: ui32
   OrigDataType: word32
-T_1777: (in (fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u0 >> 5<8>] >> ((dwLoc0158_1348.ptr0000)->u0 & 0x1F<32>) & 1<32>) == 0<32> @ 004018B8 : bool)
+T_1777: (in (fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((dwLoc0158_1348.ptr0000)->u2).t0000).u1 & 0x1F<32>) & 1<32>) == 0<32> @ 004018B8 : bool)
   Class: Eq_1777
   DataType: bool
   OrigDataType: bool
@@ -9393,7 +9393,7 @@ T_1789: (in 0<32> @ 00401910 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1790: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 < 0<32> @ 00401910 : bool)
+T_1790: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) < 0<32> @ 00401910 : bool)
   Class: Eq_1790
   DataType: bool
   OrigDataType: bool
@@ -9421,7 +9421,7 @@ T_1796: (in 5<8> @ 0040195C : byte)
   Class: Eq_1796
   DataType: byte
   OrigDataType: byte
-T_1797: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8> @ 0040195C : word32)
+T_1797: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8> @ 0040195C : word32)
   Class: Eq_1797
   DataType: uint32
   OrigDataType: uint32
@@ -9429,7 +9429,7 @@ T_1798: (in 4<32> @ 0040195C : ui32)
   Class: Eq_1798
   DataType: ui32
   OrigDataType: ui32
-T_1799: (in ((&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>) * 4<32> @ 0040195C : word32)
+T_1799: (in (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>) * 4<32> @ 0040195C : word32)
   Class: Eq_1799
   DataType: ui32
   OrigDataType: ui32
@@ -9453,11 +9453,11 @@ T_1804: (in 0x1F<32> @ 0040195C : word32)
   Class: Eq_1804
   DataType: ui32
   OrigDataType: ui32
-T_1805: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 & 0x1F<32> @ 0040195C : word32)
+T_1805: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32> @ 0040195C : word32)
   Class: Eq_1805
   DataType: ui32
   OrigDataType: ui32
-T_1806: (in fp->aFFFFFF50[(&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>] >> (((&((dwLoc0158_1348.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) @ 0040195C : word32)
+T_1806: (in fp->aFFFFFF50[*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>] >> (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32>) @ 0040195C : word32)
   Class: Eq_1806
   DataType: int32
   OrigDataType: int32
@@ -9465,7 +9465,7 @@ T_1807: (in 1<32> @ 0040195C : word32)
   Class: Eq_1807
   DataType: ui32
   OrigDataType: ui32
-T_1808: (in fp->aFFFFFF50[(&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>] >> (((&((dwLoc0158_1348.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) & 1<32> @ 0040195C : word32)
+T_1808: (in fp->aFFFFFF50[*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>] >> (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32>) & 1<32> @ 0040195C : word32)
   Class: Eq_1808
   DataType: ui32
   OrigDataType: ui32
@@ -9473,7 +9473,7 @@ T_1809: (in 0<32> @ 0040195C : word32)
   Class: Eq_1808
   DataType: ui32
   OrigDataType: word32
-T_1810: (in (fp->aFFFFFF50[(&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >> 5<8>] >> (((&((dwLoc0158_1348.ptr0000)->u2).a0004))[0<i32>].u0 & 0x1F<32>) & 1<32>) == 0<32> @ 0040195C : bool)
+T_1810: (in (fp->aFFFFFF50[*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >> 5<8>] >> (*((char *) dwLoc0158_1348.ptr0000 + 4<i32>) & 0x1F<32>) & 1<32>) == 0<32> @ 0040195C : bool)
   Class: Eq_1810
   DataType: bool
   OrigDataType: bool
@@ -9517,7 +9517,7 @@ T_1820: (in 0<32> @ 004019A0 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1821: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >= 0<32> @ 004019A0 : bool)
+T_1821: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >= 0<32> @ 004019A0 : bool)
   Class: Eq_1821
   DataType: bool
   OrigDataType: bool
@@ -9537,7 +9537,7 @@ T_1825: (in 0<32> @ 004019D0 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1826: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 >= 0<32> @ 004019D0 : bool)
+T_1826: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) >= 0<32> @ 004019D0 : bool)
   Class: Eq_1826
   DataType: bool
   OrigDataType: bool
@@ -9557,7 +9557,7 @@ T_1830: (in 0<32> @ 004019B8 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1831: (in dwLoc0158_1348.ptr0000->u0 < 0<32> @ 004019B8 : bool)
+T_1831: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 < 0<32> @ 004019B8 : bool)
   Class: Eq_1831
   DataType: bool
   OrigDataType: bool
@@ -9597,7 +9597,7 @@ T_1840: (in 0<32> @ 00401A18 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1841: (in dwLoc0158_1348.ptr0000->u0 >= 0<32> @ 00401A18 : bool)
+T_1841: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 >= 0<32> @ 00401A18 : bool)
   Class: Eq_1841
   DataType: bool
   OrigDataType: bool
@@ -9617,7 +9617,7 @@ T_1845: (in 0<32> @ 004019E8 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1846: (in dwLoc0158_1348.ptr0000->u0 < 0<32> @ 004019E8 : bool)
+T_1846: (in dwLoc0158_1348.ptr0000->u2.t0000.u1 < 0<32> @ 004019E8 : bool)
   Class: Eq_1846
   DataType: bool
   OrigDataType: bool
@@ -9697,7 +9697,7 @@ T_1865: (in 0<32> @ 00401A30 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1866: (in (&dwLoc0158_1348.ptr0000->u2.a0004)[0<i32>].u0 < 0<32> @ 00401A30 : bool)
+T_1866: (in *((char *) dwLoc0158_1348.ptr0000 + 4<i32>) < 0<32> @ 00401A30 : bool)
   Class: Eq_1866
   DataType: bool
   OrigDataType: bool
@@ -10096,7 +10096,7 @@ T_1959: (in 0<32> @ 00401D40 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_1960: (in (&r2_29.ptr0000->u2.a0004)[0<i32>].u0 >= 0<32> @ 00401D40 : bool)
+T_1960: (in *((char *) r2_29.ptr0000 + 4<i32>) >= 0<32> @ 00401D40 : bool)
   Class: Eq_1960
   DataType: bool
   OrigDataType: bool
@@ -10524,7 +10524,7 @@ T_2066: (in Mem247[r2_29 + 0<32>:word32] @ 00401DA8 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_2067: (in close(r2_29.ptr0000->u0) @ 00401DA8 : int32)
+T_2067: (in close(r2_29.ptr0000->u2.t0000.u1) @ 00401DA8 : int32)
   Class: Eq_1012
   DataType: int32
   OrigDataType: int32
@@ -10776,7 +10776,7 @@ T_2129: (in 16<i32> @ 00402084 : int32)
   Class: Eq_2129
   DataType: int32
   OrigDataType: int32
-T_2130: (in getsockopt(r4.ptr0000->u0, 0<32>, 80<i32>, &r4.ptr0000->u2.w1798, fp + -24<i32>, 0x10008860<32>, 16<i32>) @ 00402084 : void)
+T_2130: (in getsockopt(r4.ptr0000->u2.t0000.u1, 0<32>, 80<i32>, &r4.ptr0000->u2.w1798, fp + -24<i32>, 0x10008860<32>, 16<i32>) @ 00402084 : void)
   Class: Eq_2130
   DataType: void
   OrigDataType: void
@@ -13420,7 +13420,7 @@ T_2790: (in 0<32> @ 00402F8C : word32)
   Class: Eq_2790
   DataType: word32
   OrigDataType: word32
-T_2791: (in send((&r4.ptr0000->u2.a0004)[0<i32>].u0, r4.ptr0000->u2.ptr0FB0, r4, r4.ptr0000->u2.dw0FAC, 0<32>) @ 00402F8C : word32)
+T_2791: (in send(*((char *) r4.ptr0000 + 4<i32>), r4.ptr0000->u2.ptr0FB0, r4, r4.ptr0000->u2.dw0FAC, 0<32>) @ 00402F8C : word32)
   Class: Eq_1433
   DataType: int32
   OrigDataType: word32
@@ -14048,7 +14048,7 @@ T_2947: (in 10<i32> @ 00403384 : int32)
   Class: Eq_2946
   DataType: int32
   OrigDataType: int32
-T_2948: (in (word32) dwLoc18_180->t0000.u0 == 10<i32> @ 00403384 : bool)
+T_2948: (in (word32) dwLoc18_180->t0000.u1 == 10<i32> @ 00403384 : bool)
   Class: Eq_2948
   DataType: bool
   OrigDataType: bool
@@ -14088,7 +14088,7 @@ T_2957: (in 13<i32> @ 0040339C : int32)
   Class: Eq_2956
   DataType: int32
   OrigDataType: int32
-T_2958: (in (word32) dwLoc18_180->t0000.u0 == 13<i32> @ 0040339C : bool)
+T_2958: (in (word32) dwLoc18_180->t0000.u1 == 13<i32> @ 0040339C : bool)
   Class: Eq_2958
   DataType: bool
   OrigDataType: bool
@@ -14224,7 +14224,7 @@ T_2991: (in 10<i32> @ 0040347C : int32)
   Class: Eq_2990
   DataType: int32
   OrigDataType: int32
-T_2992: (in (word32) dwLoc18_180->t0000.u0 == 10<i32> @ 0040347C : bool)
+T_2992: (in (word32) dwLoc18_180->t0000.u1 == 10<i32> @ 0040347C : bool)
   Class: Eq_2992
   DataType: bool
   OrigDataType: bool
@@ -14248,7 +14248,7 @@ T_2997: (in 13<i32> @ 00403494 : int32)
   Class: Eq_2996
   DataType: int32
   OrigDataType: int32
-T_2998: (in (word32) dwLoc18_180->t0000.u0 != 13<i32> @ 00403494 : bool)
+T_2998: (in (word32) dwLoc18_180->t0000.u1 != 13<i32> @ 00403494 : bool)
   Class: Eq_2998
   DataType: bool
   OrigDataType: bool
@@ -14296,7 +14296,7 @@ T_3009: (in 10<i32> @ 004034F0 : int32)
   Class: Eq_3008
   DataType: int32
   OrigDataType: int32
-T_3010: (in (word32) dwLoc18_180->t0000.u0 == 10<i32> @ 004034F0 : bool)
+T_3010: (in (word32) dwLoc18_180->t0000.u1 == 10<i32> @ 004034F0 : bool)
   Class: Eq_3010
   DataType: bool
   OrigDataType: bool
@@ -14344,7 +14344,7 @@ T_3021: (in 13<i32> @ 00403508 : int32)
   Class: Eq_3020
   DataType: int32
   OrigDataType: int32
-T_3022: (in (word32) dwLoc18_180->t0000.u0 == 13<i32> @ 00403508 : bool)
+T_3022: (in (word32) dwLoc18_180->t0000.u1 == 13<i32> @ 00403508 : bool)
   Class: Eq_3022
   DataType: bool
   OrigDataType: bool
@@ -14636,7 +14636,7 @@ T_3094: (in 0<32> @ 00403700 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_3095: (in r4.ptr0000->u0 < 0<32> @ 00403700 : bool)
+T_3095: (in r4.ptr0000->u2.t0000.u1 < 0<32> @ 00403700 : bool)
   Class: Eq_3095
   DataType: bool
   OrigDataType: bool
@@ -14656,7 +14656,7 @@ T_3099: (in 0<32> @ 00403748 : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_3100: (in (&r4.ptr0000->u2.a0004)[0<i32>].u0 < 0<32> @ 00403748 : bool)
+T_3100: (in *((char *) r4.ptr0000 + 4<i32>) < 0<32> @ 00403748 : bool)
   Class: Eq_3100
   DataType: bool
   OrigDataType: bool
@@ -14676,7 +14676,7 @@ T_3104: (in Mem15[r4 + 0<32>:word32] @ 0040371C : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_3105: (in close(r4.ptr0000->u0) @ 0040371C : int32)
+T_3105: (in close(r4.ptr0000->u2.t0000.u1) @ 0040371C : int32)
   Class: Eq_1012
   DataType: int32
   OrigDataType: int32
@@ -14712,7 +14712,7 @@ T_3113: (in Mem31[r4 + 4<32>:word32] @ 00403764 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_3114: (in close((&r4.ptr0000->u2.a0004)[0<i32>].u0) @ 00403764 : int32)
+T_3114: (in close(*((char *) r4.ptr0000 + 4<i32>)) @ 00403764 : int32)
   Class: Eq_1012
   DataType: int32
   OrigDataType: int32
@@ -15784,7 +15784,7 @@ T_3381: (in -1<i32> @ 00403E9C : int32)
   Class: Eq_3381
   DataType: int32
   OrigDataType: int32
-T_3382: (in r4.ptr0000->u0 + -1<i32> @ 00403E9C : word32)
+T_3382: (in r4.ptr0000->u2.t0000.u1 + -1<i32> @ 00403E9C : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: word32
@@ -17980,7 +17980,7 @@ T_3926: (in 32<i32> @ 00404DE0 : int32)
   Class: Eq_3925
   DataType: int32
   OrigDataType: int32
-T_3927: (in (word32) dwLoc18_192->u0 == 32<i32> @ 00404DE0 : bool)
+T_3927: (in (word32) dwLoc18_192->u1 == 32<i32> @ 00404DE0 : bool)
   Class: Eq_3927
   DataType: bool
   OrigDataType: bool
@@ -18012,7 +18012,7 @@ T_3934: (in 9<i32> @ 00404DF8 : int32)
   Class: Eq_3933
   DataType: int32
   OrigDataType: int32
-T_3935: (in (word32) dwLoc18_192->u0 == 9<i32> @ 00404DF8 : bool)
+T_3935: (in (word32) dwLoc18_192->u1 == 9<i32> @ 00404DF8 : bool)
   Class: Eq_3935
   DataType: bool
   OrigDataType: bool
@@ -18400,7 +18400,7 @@ T_4031: (in 32<i32> @ 004050B0 : int32)
   Class: Eq_4030
   DataType: int32
   OrigDataType: int32
-T_4032: (in (word32) dwLoc18_184->u0 == 32<i32> @ 004050B0 : bool)
+T_4032: (in (word32) dwLoc18_184->u1 == 32<i32> @ 004050B0 : bool)
   Class: Eq_4032
   DataType: bool
   OrigDataType: bool
@@ -18432,7 +18432,7 @@ T_4039: (in 9<i32> @ 004050C8 : int32)
   Class: Eq_4038
   DataType: int32
   OrigDataType: int32
-T_4040: (in (word32) dwLoc18_184->u0 == 9<i32> @ 004050C8 : bool)
+T_4040: (in (word32) dwLoc18_184->u1 == 9<i32> @ 004050C8 : bool)
   Class: Eq_4040
   DataType: bool
   OrigDataType: bool
@@ -19736,7 +19736,7 @@ T_4365: (in (Mem293[0x10000A40<32>:word32] + 4<i32>)[dwLoc014C_568 * 0x98<32>] @
   Class: Eq_4358
   DataType: Eq_4358
   OrigDataType: (ptr32 char)
-T_4366: (in strcasecmp(r2_212, g_ptr10000A40->a0004[dwLoc014C_568].t0000.u0) @ 00405A68 : int32)
+T_4366: (in strcasecmp(r2_212, g_ptr10000A40->a0004[dwLoc014C_568].t0000.u1) @ 00405A68 : int32)
   Class: Eq_4366
   DataType: int32
   OrigDataType: int32
@@ -19744,7 +19744,7 @@ T_4367: (in 0<32> @ 00405A68 : word32)
   Class: Eq_4366
   DataType: int32
   OrigDataType: word32
-T_4368: (in strcasecmp(r2_212, g_ptr10000A40->a0004[dwLoc014C_568].t0000.u0) != 0<32> @ 00405A68 : bool)
+T_4368: (in strcasecmp(r2_212, g_ptr10000A40->a0004[dwLoc014C_568].t0000.u1) != 0<32> @ 00405A68 : bool)
   Class: Eq_4368
   DataType: bool
   OrigDataType: bool
@@ -19932,7 +19932,7 @@ T_4414: (in Mem367[r2_266 + 0<32>:int8] @ 00405C28 : int8)
   Class: Eq_4265
   DataType: Eq_4265
   OrigDataType: (union (char u1) (int8 u0))
-T_4415: (in strchr("1yY", r2_266->u0) @ 00405C28 : (ptr32 char))
+T_4415: (in strchr("1yY", r2_266->u1) @ 00405C28 : (ptr32 char))
   Class: Eq_4261
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
@@ -19940,11 +19940,11 @@ T_4416: (in 0<32> @ 00405C28 : word32)
   Class: Eq_4261
   DataType: (ptr32 char)
   OrigDataType: up32
-T_4417: (in strchr("1yY", r2_266->u0) > null @ 00405C28 : bool)
+T_4417: (in strchr("1yY", r2_266->u1) > null @ 00405C28 : bool)
   Class: Eq_4417
   DataType: bool
   OrigDataType: bool
-T_4418: (in CONVERT(strchr("1yY", r2_266->u0) >u 0<32>, bool, word32) @ 00405C28 : word32)
+T_4418: (in CONVERT(strchr("1yY", r2_266->u1) >u 0<32>, bool, word32) @ 00405C28 : word32)
   Class: Eq_4418
   DataType: word32
   OrigDataType: word32
@@ -20080,7 +20080,7 @@ T_4451: (in 32<i32> @ 00405A04 : int32)
   Class: Eq_4450
   DataType: int32
   OrigDataType: int32
-T_4452: (in (word32) (g_ptr10000A40 + (dwLoc014C_568 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0 == 32<i32> @ 00405A04 : bool)
+T_4452: (in (word32) (g_ptr10000A40 + (dwLoc014C_568 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000 == 32<i32> @ 00405A04 : bool)
   Class: Eq_4452
   DataType: bool
   OrigDataType: bool
@@ -20144,7 +20144,7 @@ T_4465: (in 45<i32> @ 00405D48 : int32)
   Class: Eq_4464
   DataType: int32
   OrigDataType: int32
-T_4466: (in (word32) r5[dwLoc28_364].ptr0000->u0 != 45<i32> @ 00405D48 : bool)
+T_4466: (in (word32) r5[dwLoc28_364].ptr0000->u1 != 45<i32> @ 00405D48 : bool)
   Class: Eq_4466
   DataType: bool
   OrigDataType: bool
@@ -20628,11 +20628,11 @@ T_4586: (in CONVERT(Mem116[Mem116[0x10000A40<32>:word32] + (dwLoc24_383 * 0x98<3
   Class: Eq_4586
   DataType: word32
   OrigDataType: word32
-T_4587: (in toupper((word32) (g_ptr10000A40 + (dwLoc24_383 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0) @ 00405FF4 : word32)
+T_4587: (in toupper((word32) (g_ptr10000A40 + (dwLoc24_383 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000) @ 00405FF4 : word32)
   Class: Eq_4568
   DataType: word32
   OrigDataType: word32
-T_4588: (in r2_206 == toupper((word32) ((((g_ptr10000A40 + (dwLoc24_383 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000).u0) @ 00405FF4 : bool)
+T_4588: (in r2_206 == toupper((word32) (((g_ptr10000A40 + (dwLoc24_383 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000) @ 00405FF4 : bool)
   Class: Eq_4588
   DataType: bool
   OrigDataType: bool
@@ -21076,7 +21076,7 @@ T_4698: (in 0<32> @ 004062D0 : word32)
   Class: Eq_4697
   DataType: word32
   OrigDataType: word32
-T_4699: (in (word32) *r4.u0 == 0<32> @ 004062D0 : bool)
+T_4699: (in (word32) *r4 == 0<32> @ 004062D0 : bool)
   Class: Eq_4699
   DataType: bool
   OrigDataType: bool
@@ -21240,7 +21240,7 @@ T_4739: (in  @ 004065AC : (ptr32 char))
   Class: Eq_4358
   DataType: Eq_4358
   OrigDataType: 
-T_4740: (in printf("-%c %s ", (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0, g_ptr10000A40->a0004[dwLoc18_226].t0000.u0) @ 004065AC : int32)
+T_4740: (in printf("-%c %s ", (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000, g_ptr10000A40->a0004[dwLoc18_226].t0000.u1) @ 004065AC : int32)
   Class: Eq_4740
   DataType: int32
   OrigDataType: int32
@@ -21316,7 +21316,7 @@ T_4758: (in 2<32> @ 00406414 : ui32)
   Class: Eq_4758
   DataType: ui32
   OrigDataType: ui32
-T_4759: (in (word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0 * 2<32> @ 00406414 : word32)
+T_4759: (in (word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000 * 2<32> @ 00406414 : word32)
   Class: Eq_4759
   DataType: ui32
   OrigDataType: ui32
@@ -21332,7 +21332,7 @@ T_4762: (in 1<32> @ 00406414 : word32)
   Class: Eq_4762
   DataType: ui32
   OrigDataType: ui32
-T_4763: (in (word32) *((char *) *g_ptr10000A6C + (word32) ((((g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000).u0 * 2<32>) & 1<32> @ 00406414 : word32)
+T_4763: (in (word32) *((char *) *g_ptr10000A6C + (word32) (((g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000 * 2<32>) & 1<32> @ 00406414 : word32)
   Class: Eq_4763
   DataType: ui32
   OrigDataType: ui32
@@ -21340,7 +21340,7 @@ T_4764: (in 0xFFFF<32> @ 00406414 : word32)
   Class: Eq_4764
   DataType: ui32
   OrigDataType: ui32
-T_4765: (in (word32) *((char *) *g_ptr10000A6C + (word32) ((((g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000).u0 * 2<32>) & 1<32> & 0xFFFF<32> @ 00406414 : word32)
+T_4765: (in (word32) *((char *) *g_ptr10000A6C + (word32) (((g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000 * 2<32>) & 1<32> & 0xFFFF<32> @ 00406414 : word32)
   Class: Eq_4765
   DataType: ui32
   OrigDataType: ui32
@@ -21348,7 +21348,7 @@ T_4766: (in 0<32> @ 00406414 : word32)
   Class: Eq_4765
   DataType: ui32
   OrigDataType: word32
-T_4767: (in ((word32) *((char *) *g_ptr10000A6C + (word32) ((((g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000).u0 * 2<32>) & 1<32> & 0xFFFF<32>) == 0<32> @ 00406414 : bool)
+T_4767: (in ((word32) *((char *) *g_ptr10000A6C + (word32) (((g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004))[0<i32>].t0000 * 2<32>) & 1<32> & 0xFFFF<32>) == 0<32> @ 00406414 : bool)
   Class: Eq_4767
   DataType: bool
   OrigDataType: bool
@@ -21404,7 +21404,7 @@ T_4780: (in CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32>
   Class: Eq_4780
   DataType: word32
   OrigDataType: word32
-T_4781: (in toupper((word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0) @ 004064C4 : word32)
+T_4781: (in toupper((word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000) @ 004064C4 : word32)
   Class: Eq_4741
   DataType: word32
   OrigDataType: word32
@@ -21460,7 +21460,7 @@ T_4794: (in CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32>
   Class: Eq_4794
   DataType: word32
   OrigDataType: word32
-T_4795: (in tolower((word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0) @ 0040646C : word32)
+T_4795: (in tolower((word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000) @ 0040646C : word32)
   Class: Eq_4741
   DataType: word32
   OrigDataType: word32
@@ -21524,7 +21524,7 @@ T_4810: (in  @ 00406518 : char)
   Class: Eq_4358
   DataType: Eq_4358
   OrigDataType: 
-T_4811: (in printf("-%c|%c ", (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0, (char) dwLoc14_229) @ 00406518 : int32)
+T_4811: (in printf("-%c|%c ", (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000, (char) dwLoc14_229) @ 00406518 : int32)
   Class: Eq_4740
   DataType: int32
   OrigDataType: int32
@@ -21584,7 +21584,7 @@ T_4825: (in 32<i32> @ 00406364 : int32)
   Class: Eq_4824
   DataType: int32
   OrigDataType: int32
-T_4826: (in (word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000.u0 != 32<i32> @ 00406364 : bool)
+T_4826: (in (word32) (g_ptr10000A40 + (dwLoc18_226 * 0x98<32> + 8<i32>) / 1686<i32>)->a0004[0<i32>].t0000 != 32<i32> @ 00406364 : bool)
   Class: Eq_4826
   DataType: bool
   OrigDataType: bool
@@ -21728,7 +21728,7 @@ T_4861: (in 0<32> @ 00406724 : word32)
   Class: Eq_4860
   DataType: word32
   OrigDataType: word32
-T_4862: (in (word32) g_ptr100008A0->ptr0000->u0 == 0<32> @ 00406724 : bool)
+T_4862: (in (word32) g_ptr100008A0->ptr0000->u1 == 0<32> @ 00406724 : bool)
   Class: Eq_4862
   DataType: bool
   OrigDataType: bool
@@ -21844,7 +21844,7 @@ T_4890: (in 45<i32> @ 00406744 : int32)
   Class: Eq_4889
   DataType: int32
   OrigDataType: int32
-T_4891: (in (word32) g_ptr100008A0->ptr0000->u0 == 45<i32> @ 00406744 : bool)
+T_4891: (in (word32) g_ptr100008A0->ptr0000->u1 == 45<i32> @ 00406744 : bool)
   Class: Eq_4891
   DataType: bool
   OrigDataType: bool
@@ -22084,7 +22084,7 @@ T_4950: (in 0<32> @ 004068A4 : word32)
   Class: Eq_4949
   DataType: word32
   OrigDataType: word32
-T_4951: (in (word32) g_ptr100008A0->ptr0000->u0 == 0<32> @ 004068A4 : bool)
+T_4951: (in (word32) g_ptr100008A0->ptr0000->u1 == 0<32> @ 004068A4 : bool)
   Class: Eq_4951
   DataType: bool
   OrigDataType: bool
@@ -22140,7 +22140,7 @@ T_4964: (in 45<i32> @ 004068C4 : int32)
   Class: Eq_4963
   DataType: int32
   OrigDataType: int32
-T_4965: (in (word32) g_ptr100008A0->ptr0000->u0 == 45<i32> @ 004068C4 : bool)
+T_4965: (in (word32) g_ptr100008A0->ptr0000->u1 == 45<i32> @ 004068C4 : bool)
   Class: Eq_4965
   DataType: bool
   OrigDataType: bool
@@ -23276,7 +23276,7 @@ T_5244: (in Mem30[r4 + 4<32>:word32] @ 00406F2C : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: word32
-T_5245: (in listen(r2_26, (&r4.ptr0000->u2.a0004)[0<i32>].u0) @ 00406F2C : word32)
+T_5245: (in listen(r2_26, *((char *) r4.ptr0000 + 4<i32>)) @ 00406F2C : word32)
   Class: Eq_5245
   DataType: int32
   OrigDataType: int32
@@ -23284,7 +23284,7 @@ T_5246: (in 0<32> @ 00406F2C : word32)
   Class: Eq_5245
   DataType: int32
   OrigDataType: int32
-T_5247: (in listen(r2_26, (&r4.ptr0000->u2.a0004)[0<i32>].u0) >= 0<32> @ 00406F2C : bool)
+T_5247: (in listen(r2_26, *((char *) r4.ptr0000 + 4<i32>)) >= 0<32> @ 00406F2C : bool)
   Class: Eq_5247
   DataType: bool
   OrigDataType: bool
@@ -23500,7 +23500,7 @@ T_5300: (in 0<32> @ 0040703C : word32)
   Class: Eq_1010
   DataType: int32
   OrigDataType: int32
-T_5301: (in r4.ptr0000->u0 <= 0<32> @ 0040703C : bool)
+T_5301: (in r4.ptr0000->u2.t0000.u1 <= 0<32> @ 0040703C : bool)
   Class: Eq_5301
   DataType: bool
   OrigDataType: bool
@@ -23520,7 +23520,7 @@ T_5305: (in Mem15[r4 + 0<32>:word32] @ 00407058 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_5306: (in close(r4.ptr0000->u0) @ 00407058 : int32)
+T_5306: (in close(r4.ptr0000->u2.t0000.u1) @ 00407058 : int32)
   Class: Eq_1012
   DataType: int32
   OrigDataType: int32
@@ -23816,7 +23816,7 @@ T_5379: (in 1<i32> @ 004072B0 : int32)
   Class: Eq_5379
   DataType: int32
   OrigDataType: int32
-T_5380: (in r4.ptr0000->u0 + 1<i32> @ 004072B0 : word32)
+T_5380: (in r4.ptr0000->u2.t0000.u1 + 1<i32> @ 004072B0 : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: word32
@@ -23856,7 +23856,7 @@ T_5389: (in Mem38[r4 + 0<32>:word32] @ 004072CC : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: int32
-T_5390: (in (&r4.ptr0000->u2.a0004)[0<i32>].u0 < (r4.ptr0000)->u0 @ 004072CC : bool)
+T_5390: (in *((char *) r4.ptr0000 + 4<i32>) < (((r4.ptr0000)->u2).t0000).u1 @ 004072CC : bool)
   Class: Eq_5390
   DataType: bool
   OrigDataType: bool
@@ -23868,7 +23868,7 @@ T_5392: (in 0<32> @ 004072CC : word32)
   Class: Eq_5391
   DataType: word32
   OrigDataType: word32
-T_5393: (in (word32) ((&r4.ptr0000->u2.a0004)[0<i32>].u0 < (r4.ptr0000)->u0) == 0<32> @ 004072CC : bool)
+T_5393: (in (word32) (*((char *) r4.ptr0000 + 4<i32>) < (((r4.ptr0000)->u2).t0000).u1) == 0<32> @ 004072CC : bool)
   Class: Eq_5393
   DataType: bool
   OrigDataType: bool
@@ -24072,7 +24072,7 @@ T_5443: (in -1<i32> @ 004073EC : int32)
   Class: Eq_5443
   DataType: int32
   OrigDataType: int32
-T_5444: (in r4.ptr0000->u0 + -1<i32> @ 004073EC : word32)
+T_5444: (in r4.ptr0000->u2.t0000.u1 + -1<i32> @ 004073EC : word32)
   Class: Eq_1010
   DataType: Eq_1010
   OrigDataType: word32

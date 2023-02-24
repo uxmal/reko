@@ -139,7 +139,7 @@ l0000000100001F1A:
 							else
 							{
 								fflagstostr();
-								if (&g_t6568 != 0x00 && g_t6568.u0 == 0x00)
+								if (&g_t6568 != 0x00 && g_t6568.u1 == 0x00)
 								{
 									free(&g_t6568);
 									rax_n = strdup("-");
@@ -160,7 +160,7 @@ l0000000100001F1A:
 							Eq_n rax_n = malloc((word64) rax_n.u1 + 36);
 							if (rax_n == 0x00)
 								goto l0000000100002337;
-							rax_n.u0->b0000 = (char) ((word64) rax_n + 24);
+							&rax_n->u0->b0000 = (word64) rax_n + 24;
 							strcpy(qwLoc0100_n, (word64) rax_n + 24);
 							Eq_n rdi_n = rax_n.u0 + ((word64) rax_n + 25);
 							rax_n.u0[8] = (struct _acl) rdi_n;
@@ -231,7 +231,7 @@ l0000000100001F1A:
 		struct Eq_n * rax_n;
 		if (r14b_n == 0x3A)
 		{
-			rax_n.u0->b0000 = (char) 0x3A30;
+			&rax_n->u0->b0000 = 0x3A30;
 			rax_n.u0[2] = (struct _acl) 0x00;
 			rax_n = (struct Eq_n *) (rax_n.u0 + 2);
 		}
@@ -739,7 +739,7 @@ l0000000100002A22:
 			case 115:
 				&rax_n.u0->b0000 = &g_t6598;
 l00000001000029DA:
-				rax_n.u0->b0000 = (char) 0x01;
+				&rax_n->u0->b0000 = 0x01;
 				break;
 			case 116:
 				dwLoc064C_n = 0x01;
@@ -748,7 +748,7 @@ l00000001000029DA:
 				g_dw6558 = 0x01;
 				&rax_n.u0->b0000 = &g_dw6560;
 l0000000100002878:
-				rax_n.u0->b0000 = (char) 0x00;
+				&rax_n->u0->b0000 = 0x00;
 				&rax_n.u0->b0000 = &g_t65A4;
 				goto l0000000100002A9C;
 			case 118:
@@ -761,7 +761,7 @@ l0000000100002A88:
 l0000000100002A95:
 				&rax_n.u0->b0000 = &g_t658C;
 l0000000100002A9C:
-				rax_n.u0->b0000 = (char) 0x00;
+				&rax_n->u0->b0000 = 0x00;
 				break;
 			case 0x78:
 				rax_n = &g_dw65A0;

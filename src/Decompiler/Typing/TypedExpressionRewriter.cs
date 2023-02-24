@@ -45,7 +45,7 @@ namespace Reko.Typing
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
         private readonly Unifier unifier;
-        private bool dereferenced;
+        private DataType? dereferencedType;
         private Expression? basePtr;
         private Statement? stmCur;
         private readonly DecompilerEventListener eventListener;
@@ -82,7 +82,7 @@ namespace Reko.Typing
                         Debug.Print("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}",
                             proc, ex.Message, ex.StackTrace);
                         // reset flags after error
-                        dereferenced = false;
+                        dereferencedType = null;
                         basePtr = null;
                     }
                 }
@@ -126,7 +126,7 @@ namespace Reko.Typing
                     tvDst.OriginalDataType = dtSrc;
                     store.SetTypeVariable(dst, tvDst); //$REVIEW: looks fishy.
                     var ceb = new ComplexExpressionBuilder(program, store, null, dst, null, 0);
-                    dst = ceb.BuildComplex(false);
+                    dst = ceb.BuildComplex(null);
                 }
                 else if (uSrc != null)
                 {
@@ -148,7 +148,7 @@ namespace Reko.Typing
 
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
-            var exp = Rewrite(ci.Callee, true);
+            var exp = Rewrite(ci.Callee, VoidType.Instance);
             return new SideEffect(new Application(exp, VoidType.Instance));
         }
 
@@ -170,16 +170,16 @@ namespace Reko.Typing
             return instr;
         }
 
-        public Expression Rewrite(Expression expression, bool dereferenced)
+        public Expression Rewrite(Expression expression, DataType? dereferencedType)
         {
-            var oldDereferenced = this.dereferenced;
-            this.dereferenced = dereferenced;
+            var oldDereferenced = this.dereferencedType;
+            this.dereferencedType = dereferencedType;
             var exp = expression.Accept(this);
-            this.dereferenced = oldDereferenced;
+            this.dereferencedType = oldDereferenced;
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression? index, int offset, bool dereferenced)
+        public Expression RewriteComplexExpression(Expression complex, Expression? index, int offset, DataType? dereferencedType)
         {
             if (index is Constant cOther)
             {
@@ -190,7 +190,7 @@ namespace Reko.Typing
                 index = null;
             }
             var ceb = new ComplexExpressionBuilder(program, store, basePtr, complex, index, offset);
-            return ceb.BuildComplex(dereferenced);
+            return ceb.BuildComplex(dereferencedType);
         }
 
         public override Expression VisitApplication(Application appl)
@@ -205,23 +205,25 @@ namespace Reko.Typing
                 bin.Right is Constant c)
             {
                 // (x + C)[...]
-                var arrayPtr = Rewrite(bin.Left, false);
-                var index = Rewrite(acc.Index, false);
-                return RewriteComplexExpression(arrayPtr, index, c.ToInt32(), true);
+                var arrayPtr = Rewrite(bin.Left, null);
+                var index = Rewrite(acc.Index, null);
+                return RewriteComplexExpression(
+                    arrayPtr, index, c.ToInt32(), acc.DataType);
             }
             else
             {
                 // (x)[...]
-                var arrayPtr = Rewrite(acc.Array, false);
-                var index = Rewrite(acc.Index, false);
-                return RewriteComplexExpression(arrayPtr, index, 0, true);
+                var arrayPtr = Rewrite(acc.Array, null);
+                var index = Rewrite(acc.Index, null);
+                return RewriteComplexExpression(
+                    arrayPtr, index, 0, acc.DataType);
             }
         }
 
         public override Expression VisitBinaryExpression(BinaryExpression binExp)
         {
-            var left = Rewrite(binExp.Left, false);
-            var right = Rewrite(binExp.Right, false);
+            var left = Rewrite(binExp.Left, null);
+            var right = Rewrite(binExp.Right, null);
 
             if (binExp.Operator.Type == OperatorType.IAdd)
             {
@@ -233,15 +235,15 @@ namespace Reko.Typing
                             Environment.NewLine, binExp,
                             DataTypeOf(left),
                             DataTypeOf(right));
-                    return RewriteComplexExpression(left, right, 0, dereferenced);
+                    return RewriteComplexExpression(left, right, 0, dereferencedType);
                 }
                 else if (DataTypeOf(right).IsComplex)
                 {
-                    return RewriteComplexExpression(right, left, 0, dereferenced);
+                    return RewriteComplexExpression(right, left, 0, dereferencedType);
                 }
-                if (dereferenced)
+                if (dereferencedType is not null)
                 {
-                    return RewriteComplexExpression(left, right, 0, dereferenced);
+                    return RewriteComplexExpression(left, right, 0, dereferencedType);
                 }
             }
             var binOp = binExp.Operator;
@@ -262,8 +264,8 @@ namespace Reko.Typing
             var binExpNew = new BinaryExpression(binOp, binExp.DataType, left, right);
             store.SetTypeVariable(binExpNew, tvBinExp);
             store.SetTypeVariableExpression(tvBinExp, stmCur?.Address, binExpNew);
-            if (dereferenced)
-                return RewriteComplexExpression(binExpNew, null, 0, dereferenced);
+            if (dereferencedType is not null)
+                return RewriteComplexExpression(binExpNew, null, 0, dereferencedType);
             return binExpNew;
         }
 
@@ -276,26 +278,26 @@ namespace Reko.Typing
 
         public override Expression VisitAddress(Address addr)
         {
-            return tcr.Rewrite(addr, basePtr, dereferenced);
+            return tcr.Rewrite(addr, basePtr, dereferencedType);
         }
 
         public override Expression VisitConstant(Constant c)
         {
-            return tcr.Rewrite(c, basePtr, this.dereferenced);
+            return tcr.Rewrite(c, basePtr, dereferencedType);
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
             var oldBase = this.basePtr;
             this.basePtr = null;
-            var ea = Rewrite(access.EffectiveAddress, true);
+            var ea = Rewrite(access.EffectiveAddress, access.DataType);
             this.basePtr = oldBase;
             return ea;
         }
 
         public override Expression VisitMkSequence(MkSequence seq)
         {
-            var newSeq = seq.Expressions.Select(e => Rewrite(e, false)).ToArray();
+            var newSeq = seq.Expressions.Select(e => Rewrite(e, null)).ToArray();
             if (newSeq.Length == 2)
             {
                 var head = newSeq[0];
@@ -306,7 +308,7 @@ namespace Reko.Typing
                     if (seq.Expressions[1] is Constant c)
                     {
                         // reg:CCCC => reg->fldCCCC
-                        return RewriteComplexExpression(head, null, c.ToInt32(), dereferenced);
+                        return RewriteComplexExpression(head, null, c.ToInt32(), dereferencedType);
                     }
                     else
                     {
@@ -316,7 +318,7 @@ namespace Reko.Typing
                             tail,
                             null,
                             0,
-                            dereferenced);
+                            dereferencedType);
                         this.basePtr = oldBase;
                         return exp;
                     }
@@ -334,17 +336,18 @@ namespace Reko.Typing
         {
             var oldBase = this.basePtr;
             this.basePtr = null;
-            var basePtr = Rewrite(access.BasePointer, false);
+            var basePtr = Rewrite(access.BasePointer, null);
             Expression result;
             if (access.EffectiveAddress is Constant cEa)
             {
                 uint uOffset = cEa.ToUInt32();
-                result = RewriteComplexExpression(basePtr, Constant.UInt32(uOffset), 0, true);
+                result = RewriteComplexExpression(
+                    basePtr, Constant.UInt32(uOffset), 0, access.DataType);
             }
             else
             {
                 this.basePtr = basePtr;
-                result = Rewrite(access.EffectiveAddress, true);
+                result = Rewrite(access.EffectiveAddress, access.DataType);
             }
             store.SetTypeVariable(result, store.GetTypeVariable(access));
             this.basePtr = oldBase;

@@ -1134,7 +1134,7 @@ word32 fn00009C8A(word32 r3, struct Eq_n * r6, struct Eq_n * r7, struct Eq_n * f
 {
 	word24 v8_n = SLICE(r3, word24, 8);
 	ptr32 r3_n = SEQ(v8_n, 0x01);
-	if ((r7->ptr05E7->t0014.u0 & 0x08) == 0x00 && r7->dw000C == 0x00)
+	if ((r7->ptr05E7->t0014.u1 & 0x08) == 0x00 && r7->dw000C == 0x00)
 		r3_n = SEQ(v8_n, 0x00);
 	ptr32 r5_n;
 	int32 v16_n = (int32) (int8) r3_n;
@@ -1301,7 +1301,7 @@ void fn0000A5B2(word32 r2, struct Eq_n * r5, struct Eq_n * r6, struct Eq_n * r7,
 			r6->ptr10181 = &r6->ptr10175;
 			r6->ptr10190 = &r6->ptr10175;
 			if (r3_n > 0x06)
-				vax_subp4(0x00, 0x11, 0x2A, r5->ptr1750->u0);
+				vax_subp4(0x00, 0x11, 0x2A, r5->ptr1750->u1);
 			else
 			{
 				word32 r8_n;
@@ -1372,7 +1372,7 @@ void fn0000A8D6(word32 r0, word32 r6, word32 r7, struct Eq_n * r9, struct Eq_n *
 			word32 r6_n;
 			Eq_n (* r10_n)[];
 			(*((word32) g_ptr19290 + 2))();
-			if (r0 != 0x00 || ((r10_n)[(int32) (fp->bFFFFFFF2 & 0x7F) / 4].u0 & 0x03) != 0x00)
+			if (r0 != 0x00 || ((r10_n)[(int32) (fp->bFFFFFFF2 & 0x7F) / 4].u1 & 0x03) != 0x00)
 				break;
 			sp_n->dwFFFFFFFC = (int32) fp->bFFFFFFF2;
 			ptr32 r3_n;
@@ -1822,7 +1822,7 @@ void fn0000B192(struct Eq_n * r2, struct Eq_n * ap, ptr32 * pc)
 	sp_n->qw0000 = 0x00;
 	sp_n->dwFFFFFFFC = 0x00;
 	sp_n->dwFFFFFFF8 = r2->dw101F8;
-	sp_n->tFFFFFFF4.u0 = ap->t0008.u0;
+	sp_n->tFFFFFFF4.u1 = ap->t0008.u1;
 	sp_n->dwFFFFFFF0 = ap->dw0004;
 	sp_n->qwFFFFFFE8 = 0x00;
 	sp_n->ptrFFFFFFE4 = &r2->w101FC;
@@ -3511,7 +3511,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 			struct Eq_n * fp_n;
 			Eq_n r6_n;
 			ptr32 r9_n;
-			byte v27_n = *r3_n.u0;
+			byte v27_n = r3_n.u1->b0000;
 			r7 = SEQ(SLICE(r7, word24, 8), (int8) r1_n);
 			r6.u0 = (int32) v27_n;
 			if ((r8_n[r6 & 0x7F] & 0x01) != 0x00)
@@ -3546,7 +3546,7 @@ int32 fn0000E2EA(struct Eq_n * ap, struct Eq_n * fp, union Eq_n & r6Out, ptr32 &
 				else
 					r1_n = r6_n;
 				Eq_n r5_n;
-				byte v38_n = *r3_n.u0;
+				byte v38_n = r3_n.u1->b0000;
 				ptr32 r7_n = SEQ(SLICE(r7, word24, 8), (int8) r1_n);
 				Eq_n r6_n = (int32) v38_n;
 				if ((r8_n[r6_n & 0x7F] & 0x01) != 0x00)

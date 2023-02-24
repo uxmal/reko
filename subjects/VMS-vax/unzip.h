@@ -17634,7 +17634,7 @@ T_3089: (in 8<32> @ 00009CAC : word32)
   Class: Eq_3089
   DataType: ui32
   OrigDataType: ui32
-T_3090: (in r7->ptr05E7->t0014.u0 & 8<32> @ 00009CAC : word32)
+T_3090: (in r7->ptr05E7->t0014.u1 & 8<32> @ 00009CAC : word32)
   Class: Eq_3090
   DataType: ui32
   OrigDataType: ui32
@@ -17642,7 +17642,7 @@ T_3091: (in 0<32> @ 00009CAC : word32)
   Class: Eq_3090
   DataType: ui32
   OrigDataType: word32
-T_3092: (in (r7->ptr05E7->t0014.u0 & 8<32>) != 0<32> @ 00009CAC : bool)
+T_3092: (in (r7->ptr05E7->t0014.u1 & 8<32>) != 0<32> @ 00009CAC : bool)
   Class: Eq_3092
   DataType: bool
   OrigDataType: bool
@@ -19552,7 +19552,7 @@ T_3563: (in Mem46[Mem46[r5 + 5968<i32>:word32] + 0<32>:ptr32] @ 0000A67E : ptr32
   Class: Eq_3554
   DataType: Eq_3554
   OrigDataType: ptr32
-T_3564: (in vax_subp4(0<16>, 0x11<8>, 0x2A<16>, r5->ptr1750->u0) @ 0000A67E : byte)
+T_3564: (in vax_subp4(0<16>, 0x11<8>, 0x2A<16>, r5->ptr1750->u1) @ 0000A67E : byte)
   Class: Eq_3564
   DataType: byte
   OrigDataType: byte
@@ -19756,7 +19756,7 @@ T_3614: (in 3<8> @ 0000A963 : byte)
   Class: Eq_3614
   DataType: byte
   OrigDataType: byte
-T_3615: (in r10_129[(int32) (fp->bFFFFFFF2 & 0x7F<8>) / 4<i32>].u0 & 3<8> @ 0000A963 : byte)
+T_3615: (in r10_129[(int32) (fp->bFFFFFFF2 & 0x7F<8>) / 4<i32>].u1 & 3<8> @ 0000A963 : byte)
   Class: Eq_3615
   DataType: byte
   OrigDataType: byte
@@ -19764,7 +19764,7 @@ T_3616: (in 0<8> @ 0000A963 : byte)
   Class: Eq_3615
   DataType: byte
   OrigDataType: byte
-T_3617: (in (r10_129[(int32) (fp->bFFFFFFF2 & 0x7F<8>) / 4<i32>].u0 & 3<8>) != 0<8> @ 0000A963 : bool)
+T_3617: (in (r10_129[(int32) (fp->bFFFFFFF2 & 0x7F<8>) / 4<i32>].u1 & 3<8>) != 0<8> @ 0000A963 : bool)
   Class: Eq_3617
   DataType: bool
   OrigDataType: bool
@@ -90860,7 +90860,7 @@ T_21276: (in 0<32> @ 0001873A : word32)
   Class: Eq_21275
   DataType: word32
   OrigDataType: word32
-T_21277: (in r3->tC81D.u0 == 0<32> @ 0001873A : bool)
+T_21277: (in r3->tC81D.u1 == 0<32> @ 0001873A : bool)
   Class: Eq_21277
   DataType: bool
   OrigDataType: bool

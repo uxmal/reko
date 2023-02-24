@@ -31,40 +31,46 @@ namespace Reko.Typing
     {
         private int offset;
         private bool isEnclosingPtr;
-        private HashSet<DataType> visitedTypes;
+        private readonly HashSet<DataType> visitedTypes;
+        private readonly DataType? dtResult;
+        private readonly Unifier unifier;
 
         private UnionAlternativeChooser(
-            int offset, bool isEnclosingPtr, HashSet<DataType> visitedTypes)
+            DataType? dtResult, int offset, bool isEnclosingPtr,
+            HashSet<DataType> visitedTypes)
         {
+            this.dtResult = dtResult;
             this.offset = offset;
             this.isEnclosingPtr = isEnclosingPtr;
             this.visitedTypes = visitedTypes;
+            this.unifier = new Unifier();
         }
 
         public static UnionAlternative? Choose(
-            UnionType ut, bool isEnclosingPtr, int offset)
+            UnionType ut, DataType? dtResult, bool isEnclosingPtr, int offset)
         {
-            return Choose(ut, isEnclosingPtr, offset, new HashSet<DataType>());
+            return Choose(
+                ut, dtResult, isEnclosingPtr, offset, new HashSet<DataType>());
         }
 
         public bool VisitArray(ArrayType at)
         {
-            return IsValidState();
+            return IsValidState(at);
         }
 
         public bool VisitClass(ClassType ct)
         {
-            return IsValidState();
+            return IsValidState(ct);
         }
 
         public bool VisitCode(CodeType c)
         {
-            return IsValidState();
+            return IsValidState(c);
         }
 
         public bool VisitEnum(EnumType e)
         {
-            return IsValidState();
+            return IsValidState(e);
         }
 
         public bool VisitEquivalenceClass(EquivalenceClass eq)
@@ -74,35 +80,35 @@ namespace Reko.Typing
 
         public bool VisitFunctionType(FunctionType ft)
         {
-            return IsValidState();
+            return IsValidState(ft);
         }
 
         public bool VisitMemberPointer(MemberPointer memptr)
         {
-            return IsValidState();
+            return IsValidState(memptr);
         }
 
         public bool VisitPointer(Pointer ptr)
         {
             if (this.isEnclosingPtr)
-                return IsValidState();
+                return IsValidState(ptr);
             this.isEnclosingPtr = true;
             return ptr.Pointee.Accept(this);
         }
 
-        public bool VisitPrimitive(PrimitiveType pt)
+        public bool VisitPrimitive(PrimitiveType ptr)
         {
-            return IsValidState();
+            return IsValidState(ptr);
         }
 
         public bool VisitReference(ReferenceTo refTo)
         {
-            return IsValidState();
+            return IsValidState(refTo);
         }
 
         public bool VisitString(StringType str)
         {
-            return IsValidState();
+            return IsValidState(str);
         }
 
         public bool VisitStructure(StructureType str)
@@ -126,7 +132,7 @@ namespace Reko.Typing
 
         public bool VisitTypeVariable(TypeVariable tv)
         {
-            return IsValidState();
+            return IsValidState(tv);
         }
 
         public bool VisitUnion(UnionType ut)
@@ -139,26 +145,29 @@ namespace Reko.Typing
 
         public bool VisitUnknownType(UnknownType ut)
         {
-            return IsValidState();
+            return IsValidState(ut);
         }
 
         public bool VisitVoidType(VoidType voidType)
         {
-            return IsValidState();
+            return IsValidState(voidType);
         }
 
-        private bool IsValidState()
+        private bool IsValidState(DataType dt)
         {
-            return offset == 0 && this.isEnclosingPtr;
+            return
+                offset == 0 && this.isEnclosingPtr &&
+                (dtResult is null || unifier.AreCompatible(dt, dtResult));
         }
 
         private UnionAlternative? Choose(UnionType ut)
         {
-            return Choose(ut, isEnclosingPtr, offset, visitedTypes);
+            return Choose(ut, dtResult, isEnclosingPtr, offset, visitedTypes);
         }
 
         private static UnionAlternative? Choose(
             UnionType ut,
+            DataType? dtResult,
             bool isEnclosingPtr,
             int offset,
             HashSet<DataType> visitedTypes)
@@ -166,7 +175,7 @@ namespace Reko.Typing
             foreach (var alt in ut.Alternatives.Values)
             {
                 var chooser = new UnionAlternativeChooser(
-                    offset, isEnclosingPtr, visitedTypes);
+                    dtResult, offset, isEnclosingPtr, visitedTypes);
                 if (alt.DataType.Accept(chooser))
                     return alt;
             }

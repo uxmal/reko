@@ -684,7 +684,7 @@ void fn0B06(int16 r3, struct Eq_n * r4, word16 * r5)
 	}
 l0BD0:
 	struct Eq_n * sp_n = sp_n - 0x02;
-	sp_n->t0000.u0 = (byte) 0x01;
+	sp_n->t0000.u1 = 0x01;
 	sp_n->wFFFFFFFE = g_w0078;
 	fn0C90(sp_n->wFFFFFFFE, sp_n->t0000.u0);
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;

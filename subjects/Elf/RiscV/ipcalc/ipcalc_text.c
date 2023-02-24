@@ -1594,13 +1594,13 @@ int64 fn0000000000017924(struct Eq_n * gp, FILE & a1Out, union Eq_n & a2Out, uni
 					gp->dw0818 = 0x00;
 				else
 				{
-					a6.u0 = g_t12B50.u0;
+					a6.u1 = g_t12B50.u1;
 					word64 a0_n = g_qw12B58;
 					a1 = g_ptr12B60;
 					a2.u0 = g_t12B68.u0;
 					a3.u0 = g_t12B70.u0;
 					a4.u0 = (int64) g_dw12B78;
-					gp->tFFFFFCE0.u0 = (byte) a6;
+					gp->tFFFFFCE0.u1 = (ptr64) a6;
 					gp->qwFFFFFCE8 = a0_n;
 					gp->ptrFFFFFCF0 = a1;
 					gp->tFFFFFCF8.u0 = (int64) a2;

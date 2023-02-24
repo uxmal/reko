@@ -156,7 +156,7 @@ struct Eq_n * fn00011C0A(struct Eq_n * r0, word32 r1, struct Eq_n * r4, struct E
 		r1_n = SEQ(SLICE(r1, word24, 8), r2_n->bC659);
 	else
 		r1_n = SEQ(SLICE(r1, word24, 8), 0x12);
-	r0_n->t000C.u0 = (int32) (uint32) (byte) r1_n;
+	r0_n->t000C.u1 = (uint32) (byte) r1_n;
 	struct Eq_n * ap_n = r2_n->dw05E7;
 	ap_n->b0014 &= ~0x10;
 	if (r2_n[0x0A] != 0x00)
@@ -543,7 +543,7 @@ void fn00012616(word32 r8)
 		r9_n = r8_n + 0x0F;
 	} while (sp_n->ptr0000[(r2_n - 0x01) / 4].u0 != 0x0A);
 	Eq_n r3_n[] = ap_n->ptr0008;
-	r3_n[(r2_n - 0x01) / 4].u0 = 0x00;
+	r3_n[(r2_n - 0x01) / 4].u1 = (word32) 0x00;
 	sp_n->dwFFFFFFFC = r6_n;
 	(*((word32) g_ptr19250 + 2))();
 }
@@ -4345,11 +4345,11 @@ void fn00017DEE(struct Eq_n * r3, struct Eq_n * r6, struct Eq_n * ap, union Eq_n
 			++r2_n;
 		}
 		for (; r0_n < 0x0100; ++r0_n)
-			(&fp->u0.aFFFFFB7C)[r0_n] = 0x09;
+			*((char *) fp + (r0_n * 4 - 0x0484)) = 0x09;
 		for (; r0_n < 0x0118; ++r0_n)
-			(&fp->u0.aFFFFFB7C)[r0_n] = 0x07;
+			*((char *) fp + (r0_n * 4 - 0x0484)) = 0x07;
 		for (; r0_n < 288; ++r0_n)
-			(&fp->u0.aFFFFFB7C)[r0_n] = 0x08;
+			*((char *) fp + (r0_n * 4 - 0x0484)) = 0x08;
 		r3->dwC825 = 0x07;
 		struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 		struct Eq_n * ap_n;
@@ -4492,7 +4492,7 @@ void fn0001872A(word32 r0, struct Eq_n * r3)
 {
 	ptr32 fp;
 	struct Eq_n * sp_n = fp - 0x0C;
-	if (r3->tC81D.u0 != 0x00)
+	if (r3->tC81D.u1 != 0x00)
 	{
 		word32 r4_n = r3->dwC821;
 		word32 ap_n = r4_n;
@@ -4510,7 +4510,7 @@ void fn0001872A(word32 r0, struct Eq_n * r3)
 				ap_n = r2_n;
 			} while (r2_n != 0x00);
 		}
-		Eq_n r4_n = r3->tC81D.u0;
+		Eq_n r4_n = r3->tC81D.u1;
 		Eq_n ap_n = r4_n;
 		if (r4_n != 0x00)
 		{
@@ -4766,12 +4766,12 @@ int32 fn0001878E(struct Eq_n * ap, union Eq_n * fp, union Eq_n & r3Out, ptr32 & 
 								else
 									r5_n = SEQ(SLICE(r5_n, word24, 8), 0x0F);
 								fp_n->bFFFFFA6A = (byte) r5_n;
-								fp_n->tFFFFFA6C.u0 = r8_n[0].u0;
+								fp_n->tFFFFFA6C.u1 = r8_n[0].u1;
 							}
 							else
 							{
 								fp_n->bFFFFFA6A = ap_n->ptr0014[r4_n - r0_n].b0000;
-								fp_n->tFFFFFA6C.u0 = ap_n->ptr0010[r8_n[0].u0 - r0_n].t0000.u0;
+								fp_n->tFFFFFA6C.u1 = ap_n->ptr0010[r8_n[0].u0 - r0_n].t0000.u1;
 							}
 						}
 						sp_n[0x0D] = (struct Eq_n) __ashift<word32,word32>(0x01, r9_n - r6_n);

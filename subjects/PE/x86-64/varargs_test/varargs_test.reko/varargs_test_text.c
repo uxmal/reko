@@ -261,7 +261,7 @@ void fn0000000140001550(Eq_n rcx, Eq_n tArg08)
 {
 	ptr64 fp;
 	RtlCaptureContext(rcx);
-	Eq_n rsi_n = rcx->t00F8.u0;
+	Eq_n rsi_n = rcx->t00F8.u1;
 	uint64 rdi_n = 0x00;
 	do
 	{
@@ -351,9 +351,9 @@ byte fn000000014000164C(up32 ecx)
 			uint64 rax_n = (uint64) ((word32) rdx_n & 0x3F);
 			Eq_n r8_n = __ror<word64,byte>(~0x00, 0x40 - (byte) rax_n) ^ rdx_n;
 			g_ow400035C0 = SEQ(r8_n, r8_n);
-			g_t400035D0.u0 = (uint64) r8_n;
+			g_t400035D0.u1 = (real64) r8_n;
 			g_ow400035D8 = SEQ(r8_n, r8_n);
-			g_t400035E8.u0 = (uint64) r8_n;
+			g_t400035E8.u1 = (real64) r8_n;
 			rax_n = SEQ(SLICE(rax_n, word56, 8), 0x01);
 		}
 		return (byte) rax_n;
@@ -471,7 +471,7 @@ word64 fn000000014000186C(Eq_n tArg18)
 		GetSystemTimeAsFileTime(&tArg10);
 		Eq_n v14_n = tArg10.dwLowDateTime ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
 		QueryPerformanceCounter(&tArg18);
-		ui64 rax_n = (uint64) tArg18.u.LowPart << 0x20 ^ (tArg18.u).LowPart ^ v14_n ^ fp + 8;
+		ui64 rax_n = (uint64) tArg18.u.LowPart << 0x20 ^ tArg18.QuadPart ^ v14_n ^ fp + 8;
 		rax_n = rax_n & 0xFFFFFFFFFFFF;
 		if ((rax_n & 0xFFFFFFFFFFFF) == 0x2B992DDFA232)
 			rax_n = 0x2B992DDFA233;
@@ -565,7 +565,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, Eq_n tArg10, struct _EXCEP
 		g_dw40003610 = 0x00;
 		memset(&tLoc04D8, 0, 0x04D0);
 		RtlCaptureContext(&tLoc04D8);
-		Eq_n rbx_n = tLoc04D8.t00F8.u0;
+		Eq_n rbx_n = tLoc04D8.t00F8.u1;
 		Eq_n rax_n = RtlLookupFunctionEntry(rbx_n, &tArg10, null);
 		if (rax_n != null)
 			KERNEL32.dll!RtlVirtualUnwind(0x00, 0x00, rbx_n, rax_n, fp + 24, fp + 32, &tLoc04D8, 0x00, tArg10, &tLoc04D8, fp + 32, fp + 24, 0x00);

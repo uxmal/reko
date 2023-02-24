@@ -23,7 +23,7 @@ l1:
 	x = i
 	x = r
 	ptr->t0000.u0 = (int32) i
-	ptr->t0004.u0 = (int32) r
+	ptr->t0004.u1 = (real32) r
 	return
 	// succ:  UnionIntRealMock_exit
 UnionIntRealMock_exit:

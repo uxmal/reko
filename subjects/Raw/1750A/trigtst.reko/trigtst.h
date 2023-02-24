@@ -263,9 +263,9 @@ Eq_544: (union "Eq_544" (real32 u0) (real48 u1))
 	T_599 (in Mem46[0x060D<p16>:real48] @ 00000417 : real48)
 	T_603 (in Mem46[0x060A<p16>:real48] @ 0000040D : real48)
 	T_606 (in Mem46[0x060A<p16>:real48] @ 0000040E : real48)
-	T_607 (in gp12_gp13_311 /48 g_t060A.u0 @ 0000040E : real48)
+	T_607 (in gp12_gp13_311 / g_t060A.u1 @ 0000040E : real48)
 	T_611 (in Mem46[0x060A<p16>:real48] @ 00000419 : real48)
-	T_612 (in gp12_gp13_311 *48 g_t060A.u0 @ 00000419 : real48)
+	T_612 (in gp12_gp13_311 * g_t060A.u1 @ 00000419 : real48)
 	T_701 (in Mem147[0x060A<p16>:real48] @ 00000441 : real48)
 Eq_626: (union "Eq_626" (ui32 u0) (word16 u1))
 	T_626 (in gp2_96 @ 00000428 : Eq_626)
@@ -2700,7 +2700,7 @@ T_599: (in Mem46[0x060D<p16>:real48] @ 00000417 : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: (union (real32 u0) (real48 u1))
-T_600: (in gp12_gp13_311 >= g_t060D.u0 @ 00000417 : bool)
+T_600: (in gp12_gp13_311 >= g_t060D.u1 @ 00000417 : bool)
   Class: Eq_600
   DataType: bool
   OrigDataType: bool
@@ -2716,7 +2716,7 @@ T_603: (in Mem46[0x060A<p16>:real48] @ 0000040D : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: (union (real32 u0) (real48 u1))
-T_604: (in gp12_gp13_311 < g_t060A.u0 @ 0000040D : bool)
+T_604: (in gp12_gp13_311 < g_t060A.u1 @ 0000040D : bool)
   Class: Eq_604
   DataType: bool
   OrigDataType: bool
@@ -2728,7 +2728,7 @@ T_606: (in Mem46[0x060A<p16>:real48] @ 0000040E : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: (union (real32 u1) (real48 u0))
-T_607: (in gp12_gp13_311 /48 g_t060A.u0 @ 0000040E : real48)
+T_607: (in gp12_gp13_311 / g_t060A.u1 @ 0000040E : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: real48
@@ -2748,7 +2748,7 @@ T_611: (in Mem46[0x060A<p16>:real48] @ 00000419 : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: real48
-T_612: (in gp12_gp13_311 *48 g_t060A.u0 @ 00000419 : real48)
+T_612: (in gp12_gp13_311 * g_t060A.u1 @ 00000419 : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: real48
@@ -3108,7 +3108,7 @@ T_701: (in Mem147[0x060A<p16>:real48] @ 00000441 : real48)
   Class: Eq_544
   DataType: Eq_544
   OrigDataType: real48
-T_702: (in gp12_gp13_gp14_130 *48 g_t060A.u0 @ 00000441 : real48)
+T_702: (in gp12_gp13_gp14_130 * g_t060A.u1 @ 00000441 : real48)
   Class: Eq_700
   DataType: real48
   OrigDataType: real48

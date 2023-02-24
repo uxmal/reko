@@ -150,17 +150,17 @@ namespace Reko.UnitTests.Decompiler.Typing
 
         private Expression RewritePointer(Address addr)
         {
-            return tcr.Rewrite(addr, null, false);
+            return tcr.Rewrite(addr, null, null);
         }
 
         private Expression RewritePointer(Constant c)
         {
-            return tcr.Rewrite(c, null, false);
+            return tcr.Rewrite(c, null, null);
         }
 
-        private Expression RewriteDereferenced(Constant c)
+        private Expression RewriteDereferenced(Constant c, DataType dtResult)
         {
-            return tcr.Rewrite(c, null, true);
+            return tcr.Rewrite(c, null, dtResult);
         }
 
         [Test]
@@ -261,7 +261,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var tv = store.EnsureExpressionTypeVariable(factory, null, c);
             tv.DataType = new Pointer(PrimitiveType.Word32, 32);
             tv.OriginalDataType = PrimitiveType.Word32;
-            var e = RewriteDereferenced(c);
+            var e = RewriteDereferenced(c, PrimitiveType.Int32);
             Assert.AreEqual("g_t100100.dw0000", e.ToString());
         }
 
@@ -392,7 +392,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
 
-            var e = RewriteDereferenced(c);
+            var e = RewriteDereferenced(c, PrimitiveType.Real64);
 
             Assert.AreEqual("12.75", e.ToString());
         }
@@ -406,7 +406,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
 
-            var e = RewriteDereferenced(c);
+            var e = RewriteDereferenced(c, PrimitiveType.Real64);
 
             Assert.AreEqual("g_dw100000", e.ToString());
         }
@@ -420,7 +420,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real32, 32));
 
-            var e = RewriteDereferenced(c);
+            var e = RewriteDereferenced(c, PrimitiveType.Real32);
 
             Assert.AreEqual("12.75F", e.ToString());
         }

@@ -19388,7 +19388,7 @@ T_3614: (in a4 @ 0000000000017924 : Eq_162)
 T_3615: (in a6 @ 0000000000017924 : Eq_163)
   Class: Eq_163
   DataType: Eq_163
-  OrigDataType: byte
+  OrigDataType: ptr64
 T_3616: (in s0_107 @ 0000000000017924 : int64)
   Class: Eq_3610
   DataType: int64

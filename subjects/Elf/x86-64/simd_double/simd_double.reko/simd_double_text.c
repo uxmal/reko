@@ -93,7 +93,7 @@ void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], word64 rdi)
 	uint64 rax_n = (uint64) ((uint128) rdi /u double_size.21529);
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < rax_n; ++qwLoc28_n)
-		rsi[qwLoc28_n].u0 = (real64) __addp<real64[4]>(rdx[qwLoc28_n].u0, rcx[qwLoc28_n].u0);
+		rsi[qwLoc28_n].u1.u0 = (word256) __addp<real64[4]>(rdx[qwLoc28_n].u1.u0, rcx[qwLoc28_n].u1.u0);
 }
 
 // 0000000000000898: void main()

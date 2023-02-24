@@ -87,7 +87,7 @@ void main()
 	byte bLoc10;
 	memset(&dwLoc14, 0x00, (size_t) 5);
 	struct Eq_n * r2_n = calloc((size_t) 1, (size_t) 5);
-	r2_n->t0000.u0 = (byte) dwLoc14;
+	r2_n->t0000.u1 = dwLoc14;
 	r2_n->b0004 = bLoc10;
 	r2_n->t0000.u0 = 0x0C;
 	r2_n->dw0001 = 0x00;

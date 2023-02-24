@@ -1148,7 +1148,7 @@ word32 fn00009370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, 
 	word16 sp_16_16_n = SLICE(fp, word16, 16);
 	struct Eq_n * sp_n = SEQ(sp_16_16_n, r7_n - 0x06);
 	sp_n->wFFFFFFFE = r4;
-	sp_n->tFFFFFFFC.u0 = (ptr32) r5;
+	sp_n->tFFFFFFFC.u1 = (word16) r5;
 	sp_n->tFFFFFFFA.u0 = (int16) r6;
 	sp_n->w0004 = ~0x00;
 	sp_n->w0002 = 0x00;
@@ -1209,7 +1209,7 @@ word32 fn00009370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, 
 		er2_n = SEQ(er2_16_n, 0x04);
 	} while (sp_n->w0002 == 0x00);
 	Eq_n r6_n = sp_n->tFFFFFFFA.u0;
-	Eq_n r5_n = sp_n->tFFFFFFFC.u0;
+	Eq_n r5_n = sp_n->tFFFFFFFC.u1;
 	word32 er0_n = SEQ(er0_16_n, sp_n->w0004);
 	ptr32 er4_n = SEQ(er4_16_16_n, sp_n->wFFFFFFFE);
 	er1Out = er1_n;

@@ -2962,7 +2962,7 @@ T_585: (in 8<8> @ 0000065A : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_586: (in __bit<word32,byte>(a15_8->tF000001C.u0, 8<8>) @ 0000065A : bool)
+T_586: (in __bit<word32,byte>(a15_8->tF000001C.u1, 8<8>) @ 0000065A : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
@@ -3630,11 +3630,11 @@ T_752: (in 0xB<16> @ 00000714 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_753: (in __bit<word32,word16>(a15_8->tF000001C.u0, 0xB<16>) @ 00000714 : bool)
+T_753: (in __bit<word32,word16>(a15_8->tF000001C.u1, 0xB<16>) @ 00000714 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_754: (in !__bit<word32,word16>(a15_8->tF000001C.u0, 0xB<16>) @ 00000714 : bool)
+T_754: (in !__bit<word32,word16>(a15_8->tF000001C.u1, 0xB<16>) @ 00000714 : bool)
   Class: Eq_754
   DataType: bool
   OrigDataType: bool
@@ -3954,11 +3954,11 @@ T_833: (in 4<8> @ 000007A4 : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_834: (in __bit<word32,byte>(a15_8->tF000001C.u0, 4<8>) @ 000007A4 : bool)
+T_834: (in __bit<word32,byte>(a15_8->tF000001C.u1, 4<8>) @ 000007A4 : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
-T_835: (in !__bit<word32,byte>(a15_8->tF000001C.u0, 4<8>) @ 000007A4 : bool)
+T_835: (in !__bit<word32,byte>(a15_8->tF000001C.u1, 4<8>) @ 000007A4 : bool)
   Class: Eq_835
   DataType: bool
   OrigDataType: bool
@@ -4278,7 +4278,7 @@ T_914: (in 40<i32> @ 00000844 : int32)
   Class: Eq_914
   DataType: int32
   OrigDataType: int32
-T_915: (in a15_22->tF000001C.u0 << 40<i32> @ 00000844 : word32)
+T_915: (in a15_22->tF000001C.u1 << 40<i32> @ 00000844 : word32)
   Class: Eq_909
   DataType: ui32
   OrigDataType: ui32
@@ -4498,7 +4498,7 @@ T_969: (in 40<i32> @ 00000910 : int32)
   Class: Eq_969
   DataType: int32
   OrigDataType: int32
-T_970: (in a15_22->tF000001C.u0 << 40<i32> @ 00000910 : word32)
+T_970: (in a15_22->tF000001C.u1 << 40<i32> @ 00000910 : word32)
   Class: Eq_960
   DataType: ui32
   OrigDataType: ui32
@@ -4546,11 +4546,11 @@ T_981: (in 4<8> @ 00000918 : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_982: (in __bit<word32,byte>(a15_22->tF000001C.u0, 4<8>) @ 00000918 : bool)
+T_982: (in __bit<word32,byte>(a15_22->tF000001C.u1, 4<8>) @ 00000918 : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
-T_983: (in !__bit<word32,byte>(a15_22->tF000001C.u0, 4<8>) @ 00000918 : bool)
+T_983: (in !__bit<word32,byte>(a15_22->tF000001C.u1, 4<8>) @ 00000918 : bool)
   Class: Eq_983
   DataType: bool
   OrigDataType: bool
@@ -5034,7 +5034,7 @@ T_1103: (in 0<16> @ 000009FA : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1104: (in __bit<word32,word16>(a4->u0, 0<16>) @ 000009FA : bool)
+T_1104: (in __bit<word32,word16>(a4->u1, 0<16>) @ 000009FA : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
@@ -5058,7 +5058,7 @@ T_1109: (in 2<8> @ 000009F0 : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_1110: (in __bit<word32,byte>(a4->u0, 2<8>) @ 000009F0 : bool)
+T_1110: (in __bit<word32,byte>(a4->u1, 2<8>) @ 000009F0 : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
@@ -5082,11 +5082,11 @@ T_1115: (in 3<16> @ 000009F4 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1116: (in __bit<word32,word16>(a4->u0, 3<16>) @ 000009F4 : bool)
+T_1116: (in __bit<word32,word16>(a4->u1, 3<16>) @ 000009F4 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_1117: (in !__bit<word32,word16>(a4->u0, 3<16>) @ 000009F4 : bool)
+T_1117: (in !__bit<word32,word16>(a4->u1, 3<16>) @ 000009F4 : bool)
   Class: Eq_1117
   DataType: bool
   OrigDataType: bool
@@ -5110,7 +5110,7 @@ T_1122: (in 0<8> @ 000009EC : byte)
   Class: Eq_543
   DataType: byte
   OrigDataType: byte
-T_1123: (in __bit<word32,byte>(a4->u0, 0<8>) @ 000009EC : bool)
+T_1123: (in __bit<word32,byte>(a4->u1, 0<8>) @ 000009EC : bool)
   Class: Eq_545
   DataType: bool
   OrigDataType: bool
@@ -5134,7 +5134,7 @@ T_1128: (in 2<16> @ 00000A00 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1129: (in __bit<word32,word16>(a4->u0, 2<16>) @ 00000A00 : bool)
+T_1129: (in __bit<word32,word16>(a4->u1, 2<16>) @ 00000A00 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
@@ -5158,7 +5158,7 @@ T_1134: (in 3<16> @ 00000A06 : word16)
   Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_1135: (in __bit<word32,word16>(a4->u0, 3<16>) @ 00000A06 : bool)
+T_1135: (in __bit<word32,word16>(a4->u1, 3<16>) @ 00000A06 : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool

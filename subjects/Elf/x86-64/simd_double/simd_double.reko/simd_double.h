@@ -91,7 +91,7 @@ Eq_130: (union "Eq_130" (word256 u0) ((arr real64 4) u1))
 	T_131 (in p2 @ 0000000000000878 : (arr real64 4))
 	T_134 (in rdx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
 	T_137 (in rcx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
-	T_138 (in __addp<real64[4]>(rdx[qwLoc28_100].u0, rcx[qwLoc28_100].u0) @ 0000000000000878 : (arr real64 4))
+	T_138 (in __addp<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
 	T_141 (in rsi[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
 Eq_146: (fn (ptr64 (arr Eq_292)) (uint64, Eq_82))
 	T_146 (in _mm_malloc @ 00000000000008B8 : ptr64)
@@ -696,7 +696,7 @@ T_137: (in rcx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
   Class: Eq_130
   DataType: Eq_130
   OrigDataType: (union (word256 u0) ((arr real64 4) u1))
-T_138: (in __addp<real64[4]>(rdx[qwLoc28_100].u0, rcx[qwLoc28_100].u0) @ 0000000000000878 : (arr real64 4))
+T_138: (in __addp<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
   Class: Eq_130
   DataType: Eq_130
   OrigDataType: (arr real64 4)

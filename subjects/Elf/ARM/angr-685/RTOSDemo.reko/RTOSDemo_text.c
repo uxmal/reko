@@ -79,7 +79,7 @@ void vPrintTask(Eq_n lr, ptr32 cpsr)
 	union Eq_n * r5_n = g_ptr8064;
 	while (true)
 	{
-		lr = MPU_xQueueGenericReceive(r5_n->u0, fp - 20, ~0x00, 0x00, lr, cpsr);
+		lr = MPU_xQueueGenericReceive(r5_n->u1, fp - 20, ~0x00, 0x00, lr, cpsr);
 		OSRAMClear();
 		++r4_n;
 		OSRAMStringDraw(dwLoc14, r4_n & 0x3F, r4_n & 0x01);
@@ -96,7 +96,7 @@ void vCheckTask(Eq_n lr, ptr32 cpsr)
 	while (true)
 	{
 		MPU_vTaskDelayUntil(fp - 24, 5000, cpsr);
-		lr = MPU_xQueueGenericSend(r5_n->u0, fp - 20, ~0x00, 0x00, lr, cpsr);
+		lr = MPU_xQueueGenericSend(r5_n->u1, fp - 20, ~0x00, 0x00, lr, cpsr);
 	}
 }
 
@@ -130,7 +130,7 @@ void vUART_ISR(word32 r4, word32 r5, word32 r6, Eq_n lr, ptr32 cpsr)
 	tLoc15.dw0005 = r4;
 	tLoc15.dw0009 = r5;
 	tLoc15.dw000D = r6;
-	tLoc15.t0011.u0 = (byte) lr;
+	tLoc15.t0011.u1 = (struct Eq_n *) lr;
 	struct Eq_n * r5_n = g_ptr8174;
 	tLoc15.dw0001 = 0x00;
 	Eq_n r0_n = UARTIntStatus(r5_n, 0x01);
@@ -150,7 +150,7 @@ void vUART_ISR(word32 r4, word32 r5, word32 r6, Eq_n lr, ptr32 cpsr)
 			struct Eq_n * r1_n = r1_n << 26;
 			if (r1_n << 26 >= 0x00)
 				r1_n = g_ptr8174;
-			r1_n->t0000.u0 = (byte) r3_n;
+			r1_n->t0000.u1 = (up32) r3_n;
 			*r2_n = (byte) r3_n + 0x01;
 		}
 	}
@@ -474,14 +474,14 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 	if (r2_n != 0x00)
 	{
 		Eq_n r1_n;
-		Eq_n r2_n = r0.u2->u1.t0040.u0;
+		Eq_n r2_n = r0.u2->u1.t0040.u1;
 		Eq_n r3_n = r0.u2->u0.dw0004;
 		Eq_n r1_n = r2_n.u1 + ((r0.u2)->u0).dw000C / 4;
 		Eq_n r3_n = *((word32) r0 + 56);
 		r0.u2->u0.dw000C = (word32) r1_n;
 		r1_n = r1_n;
 		if (r1_n >= r3_n)
-			r1_n.u0 = r0.u1->t0000.u0;
+			&r1_n.u1->t0000.u0 = r0.u1->t0000.u1;
 		&((word32) r0 + 56)->u1->t0000.u0 = (word32) r3_n - 1;
 		if (r1_n >= r3_n)
 			r0.u2->u0.dw000C = (word32) r1_n;
@@ -542,14 +542,14 @@ void xQueueCRReceiveFromISR(Eq_n r0, Eq_n r1, Eq_n r2)
 	if (*((word32) r0 + 56) == 0x00)
 		return;
 	Eq_n r3_n;
-	Eq_n lr_n = r0.u2->u1.t0040.u0;
+	Eq_n lr_n = r0.u2->u1.t0040.u1;
 	Eq_n r4_n = r0.u2->u0.dw0004;
 	Eq_n r3_n = lr_n.u1 + ((r0.u2)->u0).dw000C / 4;
 	Eq_n r7_n = *((word32) r0 + 56);
 	r0.u2->u0.dw000C = (word32) r3_n;
 	r3_n = r3_n;
 	if (r3_n >= r4_n)
-		r3_n.u0 = r0.u1->t0000.u0;
+		&r3_n.u1->t0000.u0 = r0.u1->t0000.u1;
 	if (r3_n >= r4_n)
 		r0.u2->u0.dw000C = (word32) r3_n;
 	&((word32) r0 + 56)->u1->t0000.u0 = (word32) r7_n - 1;
@@ -786,7 +786,7 @@ void prvFlashCoRoutine(struct Eq_n * r0, Eq_n r7, Eq_n lr, ptr32 cpsr)
 		r5_n = g_ptr86E0;
 		r6_n = fp - 20;
 l00008696:
-		bool Z_n = xQueueCRReceive(r5_n->u0, r6_n, ~0x00, r6_n, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr);
+		bool Z_n = xQueueCRReceive(r5_n->u1, r6_n, ~0x00, r6_n, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr);
 		if (Z_n)
 		{
 			r0->w0034 = 0x01C2;
@@ -808,7 +808,7 @@ l00008690:
 	else
 	{
 		r5_n = g_ptr86E0;
-		if (xQueueCRReceive(r5_n->u0, fp - 20, 0x00, fp - 20, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr))
+		if (xQueueCRReceive(r5_n->u1, fp - 20, 0x00, fp - 20, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr))
 			goto l000086AA;
 	}
 	r0->w0034 = 0x01C3;
@@ -861,7 +861,7 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 c
 		}
 		else if (r3_n != 0x00)
 			return;
-		v23_n = xQueueCRSend(g_ptr877C->u0, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
+		v23_n = xQueueCRSend(g_ptr877C->u1, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
 		if (v23_n)
 		{
 			r0->w0034 = 0x0182;
@@ -869,7 +869,7 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 c
 		}
 	}
 	else
-		v23_n = xQueueCRSend(g_ptr877C->u0, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
+		v23_n = xQueueCRSend(g_ptr877C->u1, fp - 0x0C, 0x00, r7, lr, cpsr, out r0_n);
 	if (v23_n)
 	{
 		r0->w0034 = 0x0183;
@@ -878,7 +878,7 @@ void prvFixedDelayCoRoutine(struct Eq_n * r0, ui32 r1, Eq_n r7, Eq_n lr, ptr32 c
 	if (r0_n != 0x01)
 	{
 		*g_ptr8780 = 0x00;
-		r0_n.u0 = g_ptr8778[r1].u0;
+		&r0_n.u1->t0000.u0 = g_ptr8778[r1].u1;
 		if (r0_n == 0x00)
 		{
 l0000870C:
@@ -890,7 +890,7 @@ l0000875E:
 		goto l0000870C;
 	}
 l00008702:
-	r0_n.u0 = g_ptr8778[r1].u0;
+	&r0_n.u1->t0000.u0 = g_ptr8778[r1].u1;
 	if (r0_n == 0x00)
 		goto l0000870C;
 	goto l0000875E;
@@ -2963,7 +2963,7 @@ struct Eq_n * UARTIntStatus(struct Eq_n * r0, word32 r1)
 //      vUART_ISR
 void UARTIntClear(struct Eq_n * r0, Eq_n r1)
 {
-	r0->t0044.u0 = (byte) r1;
+	r0->t0044.u1 = (struct Eq_n *) r1;
 }
 
 // 0000A0DC: void CPUcpsie()

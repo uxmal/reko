@@ -128,11 +128,11 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, union Eq_n 
 	bool Z_n;
 	Eq_n r5_n;
 	Eq_n r4_n = r0;
-	Eq_n r0_n = r0.u2->u1.t0040.u0;
+	Eq_n r0_n = r0.u2->u1.t0040.u1;
 	Eq_n r5_n = *((word32) r0 + 56);
 	if (r0_n == 0x00)
 	{
-		Eq_n r6_n = r0.u1->t0000.u0;
+		Eq_n r6_n = r0.u1->t0000.u1;
 		if (r6_n != 0x00)
 		{
 			&r5_n.u1->t0000.u0 = (word32) r5_n + 1;
@@ -180,7 +180,7 @@ bool prvCopyDataToQueue(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, union Eq_n 
 		word32 r6_n;
 		memcpy(r0.u2->u0.dw000C, r1, r0_n, r0, r5_n, r2, r7, lr, out r4_n, out r5_n, out r6_n, out r7, out lr);
 		Eq_n r3_n = r4_n.u2->u0.dw000C;
-		Eq_n r1_n = r4_n.u1->t0000.u0;
+		Eq_n r1_n = r4_n.u1->t0000.u1;
 		r4_n.u2->u0.dw000C = (word32) r3_n;
 		if (r3_n < r1_n)
 			r4_n.u2->u0.dw000C = r4_n.u2->u0.dw0004;
@@ -237,7 +237,7 @@ Eq_n g_t00FF = // 000000FF
 //      xQueueReceiveFromISR
 Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n lr, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & lrOut)
 {
-	Eq_n r2_n = r0.u2->u1.t0040.u0;
+	Eq_n r2_n = r0.u2->u1.t0040.u1;
 	if (r2_n == 0x00)
 	{
 		r5Out = r5;
@@ -252,7 +252,7 @@ Eq_n prvCopyDataFromQueue(Eq_n r0, Eq_n r1, Eq_n r4, Eq_n r5, Eq_n r6, Eq_n r7, 
 		Eq_n r1_n = r2_n.u1 + ((r0.u2)->u0).dw000C / 4;
 		r0.u2->u0.dw000C = (word32) r1_n;
 		if (r1_n >= r4_n)
-			r1_n.u0 = r0.u1->t0000.u0;
+			&r1_n.u1->t0000.u0 = r0.u1->t0000.u1;
 		r0.u2->u0.dw000C = (word32) r1_n;
 		Eq_n lr_n;
 		Eq_n r4_n;
@@ -424,7 +424,7 @@ l000003A4:
 			else
 			{
 				vPortExitCritical(cpsr);
-				if (r0.u1->t0000.u0 == 0x00)
+				if (r0.u1->t0000.u1 == 0x00)
 				{
 					vPortEnterCritical(cpsr);
 					vTaskPriorityInherit(r0.u2->u0.dw0004);
@@ -1698,7 +1698,7 @@ void prvRestoreContextOfFirstTask(ptr32 cpsr)
 	r2_n->dw0014 = r9_n;
 	r2_n->dw0018 = r10_n;
 	r2_n->dw001C = fp_n;
-	__msr(cpsr, r0_n->u0);
+	__msr(cpsr, r0_n->u1);
 	__msr(cpsr, (char *) r0_n + 36);
 	__msr(cpsr, 0x00);
 }
@@ -2043,7 +2043,7 @@ void xPortPendSVHandler(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, w
 	Eq_n r0_n = __mrs(cpsr);
 	struct Eq_n ** r3_n = g_ptr16E0;
 	struct Eq_n * r2_n = *r3_n;
-	r0_n.u2->u1.tFFFFFFDC.u0 = (byte) __mrs(cpsr);
+	r0_n.u2->u1.tFFFFFFDC.u1 = (struct Eq_n *) __mrs(cpsr);
 	r0_n.u2->u1.dwFFFFFFE0 = r4;
 	r0_n.u2->u1.dwFFFFFFE4 = r5;
 	r0_n.u2->u1.dwFFFFFFE8 = r6;
@@ -2074,7 +2074,7 @@ void xPortPendSVHandler(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, w
 	r2_n->dw0014 = r9_n;
 	r2_n->dw0018 = r10_n;
 	r2_n->dw001C = fp_n;
-	__msr(cpsr, r0_n->u0);
+	__msr(cpsr, r0_n->u1);
 	__msr(cpsr, (char *) r0_n + 36);
 }
 

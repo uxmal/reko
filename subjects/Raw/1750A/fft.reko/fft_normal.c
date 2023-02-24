@@ -38,7 +38,7 @@ int16 init_fft(ptr16 & gp4Out)
 		ui16 gp0_n = reverse(gp3_n, out gp14_n);
 		Eq_n gp3_n = gp14_n[1];
 		g_aFFFF8030[gp0_n] = (struct Eq_n) (&g_tFFFF8000)[gp3_n *16 0x03];
-		real48 gp4_gp5_gp6_n = g_tFFFF8000.t0000.u0;
+		real48 gp4_gp5_gp6_n = g_tFFFF8000.t0000;
 		g_aFFFF8060[gp0_n] = (struct Eq_n) gp4_gp5_gp6_n;
 		ptr16 gp4_n = SLICE(gp4_gp5_gp6_n, word16, 32);
 		gp3_n = (word16) gp3_n.u0 + 1;
@@ -173,7 +173,7 @@ real48 sqrt(int32 gp0_gp1, word16 gp2, struct Eq_n & gp14Out)
 	if (gp0_gp1 >= 0x00)
 	{
 		word16 gp1_n = frex(gp1, (struct Eq_n **) 0x01);
-		real48 gp2_gp3_gp4_n = g_rFFFF8012 - g_rFFFF800F / (SEQ(gp0, gp1_n, gp2) + (g_tFFFF800C.t0000).u0);
+		real48 gp2_gp3_gp4_n = g_rFFFF8012 - g_rFFFF800F / (SEQ(gp0, gp1_n, gp2) + g_tFFFF800C.t0000);
 		real48 gp2_gp3_gp4_n = (gp2_gp3_gp4_n + SEQ(gp0, gp1_n, gp2) / gp2_gp3_gp4_n) *48 *((char *) (&g_rFFFF8012) + 3);
 		real48 gp2_gp3_gp4_n = (gp2_gp3_gp4_n + SEQ(gp0, gp1_n, gp2) / gp2_gp3_gp4_n) *48 *((char *) (&g_rFFFF8012) + 3);
 		real48 gp0_gp1_gp2_n = SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) * rLoc02;
@@ -200,7 +200,7 @@ word32 auxasin(Eq_n gp0_gp1_gp2, ptr16 & gp2Out, ptr16 & gp14Out)
 	ptr16 fp;
 	real48 gp5_gp6_gp7_n = gp0_gp1_gp2 * gp0_gp1_gp2;
 	word16 gp7_n = (word16) gp5_gp6_gp7_n;
-	real48 gp0_gp1_gp2_n = gp0_gp1_gp2 * ((SEQ((word32) gp5_gp6_gp7_n, gp7_n) *48 (g_tFFFF801B.t0000).u0) / ((SEQ((word32) gp5_gp6_gp7_n, gp7_n) + g_rFFFF801E) + g_rFFFF8024 / (gp5_gp6_gp7_n + *((char *) (&g_rFFFF801E) + 3))) + *((char *) (&g_rFFFF8024) + 3));
+	real48 gp0_gp1_gp2_n = gp0_gp1_gp2 * ((SEQ((word32) gp5_gp6_gp7_n, gp7_n) *48 g_tFFFF801B.t0000) / ((SEQ((word32) gp5_gp6_gp7_n, gp7_n) + g_rFFFF801E) + g_rFFFF8024 / (gp5_gp6_gp7_n + *((char *) (&g_rFFFF801E) + 3))) + *((char *) (&g_rFFFF8024) + 3));
 	gp2Out = (word16) gp0_gp1_gp2_n;
 	gp14Out = fp - 0x03;
 	return SLICE(gp0_gp1_gp2_n, word32, 16);
@@ -493,7 +493,7 @@ cui16 fn043E(Eq_n gp12_gp13_gp14, cui16 gp0, word16 gp1, struct Eq_n * gp11)
 l0458:
 		word16 gp14_n;
 		word16 gp0_n;
-		gp11->t0000.u0 = (byte) gp0_n;
+		gp11->t0000.u1 = gp0_n;
 		int16 gp2_n = 0x00;
 		gp12_gp13_n = gp12_gp13_gp14;
 		Eq_n gp12_gp13_n = gp12_gp13_gp14;
@@ -502,9 +502,9 @@ l0458:
 			while (true)
 			{
 				gp14_n = (word16) gp12_gp13_n;
-				if (gp12_gp13_n < g_t0579.u0)
+				if (gp12_gp13_n < g_t0579.u1)
 					break;
-				gp12_gp13_n /= g_t0579.u0;
+				gp12_gp13_n /= g_t0579.u1;
 				++gp2_n;
 			}
 			gp0_n = 17707;
@@ -514,9 +514,9 @@ l0458:
 			while (true)
 			{
 				gp14_n = (word16) gp12_gp13_n;
-				if (gp12_gp13_n >= g_t057C.u0)
+				if (gp12_gp13_n >= g_t057C.u1)
 					break;
-				gp12_gp13_n *= g_t0579.u0;
+				gp12_gp13_n *= g_t0579.u1;
 				++gp2_n;
 			}
 			gp0_n = 17709;
@@ -532,13 +532,13 @@ l0458:
 		else
 			gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
 		int32 gp2_gp3_n = (int32) SEQ(gp12_gp13_n, gp14_n);
-		gp11->t0000.u0 = (byte) SEQ(gp11->t0000.u0, (byte) gp2_gp3_n + 0x30);
+		gp11->t0000.u1 = SEQ(gp11->t0000.u0, (byte) gp2_gp3_n + 0x30);
 		gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
 		cui16 gp7_n = 0x00;
 		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) gp2_gp3_n;
 		do
 		{
-			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n *48 g_t0579.u0;
+			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n * g_t0579.u1;
 			int32 gp2_gp3_n = (int32) SEQ((word32) gp12_gp13_gp14_n, (word16) gp12_gp13_gp14_n);
 			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) gp2_gp3_n;
 			word16 gp3_n = (word16) gp2_gp3_n;

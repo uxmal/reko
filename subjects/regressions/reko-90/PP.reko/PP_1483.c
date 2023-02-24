@@ -606,7 +606,7 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, 
 				Eq_n stackArg0 = <invalid>;
 				byte SCZO_n = fn1483-1B91(al_n, bx_n, 0x02FC, ds, stackArg0);
 				__cli();
-				es.u0->t02FB.u0.u1 = 0x0A0D;
+				es.u0->t02FB.u1.u1 = 0x0A0D;
 				struct Eq_n Eq_n::* sp_n = sp_n + 2;
 				word16 ax_n = sp_n[0x0E];
 				Eq_n di_n = (ss->*sp_n).ptr0000;

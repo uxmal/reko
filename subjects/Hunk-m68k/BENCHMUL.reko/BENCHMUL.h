@@ -2271,7 +2271,7 @@ T_14: (in 0x24<16> @ 0000101E : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_15: (in a6_9->t0014.u0 >= 0x24<16> @ 0000101E : bool)
+T_15: (in a6_9->t0014.u1 >= 0x24<16> @ 0000101E : bool)
   Class: Eq_15
   DataType: bool
   OrigDataType: bool
@@ -3079,7 +3079,7 @@ T_214: (in 0x24<16> @ 00001170 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_215: (in g_ptr40FC->t0014.u0 < 0x24<16> @ 00001170 : bool)
+T_215: (in g_ptr40FC->t0014.u1 < 0x24<16> @ 00001170 : bool)
   Class: Eq_215
   DataType: bool
   OrigDataType: bool
@@ -12559,7 +12559,7 @@ T_2584: (in 0x27<16> @ 00002404 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_2585: (in g_ptr40FC->t0014.u0 < 0x27<16> @ 00002404 : bool)
+T_2585: (in g_ptr40FC->t0014.u1 < 0x27<16> @ 00002404 : bool)
   Class: Eq_2585
   DataType: bool
   OrigDataType: bool
@@ -12879,7 +12879,7 @@ T_2664: (in 0x27<16> @ 0000249C : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_2665: (in a0_111->t0014.u0 < 0x27<16> @ 0000249C : bool)
+T_2665: (in a0_111->t0014.u1 < 0x27<16> @ 0000249C : bool)
   Class: Eq_2665
   DataType: bool
   OrigDataType: bool
@@ -13587,7 +13587,7 @@ T_2841: (in 0x27<16> @ 000025C0 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_2842: (in a0_17->t0014.u0 < 0x27<16> @ 000025C0 : bool)
+T_2842: (in a0_17->t0014.u1 < 0x27<16> @ 000025C0 : bool)
   Class: Eq_2842
   DataType: bool
   OrigDataType: bool
@@ -13787,7 +13787,7 @@ T_2891: (in 0x27<16> @ 0000262C : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_2892: (in g_ptr40FC->t0014.u0 < 0x27<16> @ 0000262C : bool)
+T_2892: (in g_ptr40FC->t0014.u1 < 0x27<16> @ 0000262C : bool)
   Class: Eq_2892
   DataType: bool
   OrigDataType: bool
@@ -24641,7 +24641,7 @@ T_5604: (in fp + -42<i32> + d1_748 @ 000031E6 : word32)
   OrigDataType: (ptr32 (struct (0 T_5605 t0000)))
 T_5605: (in Mem766[fp + -42<i32> + d1_748:byte] @ 000031E6 : byte)
   Class: Eq_5601
-  DataType: byte
+  DataType: Eq_548
   OrigDataType: byte
 T_5606: (in 1<32> @ 000031EA : word32)
   Class: Eq_5606

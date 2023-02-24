@@ -2010,7 +2010,7 @@ T_14: (in 0x24<16> @ 0000101E : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_15: (in a6_9->t0014.u0 >= 0x24<16> @ 0000101E : bool)
+T_15: (in a6_9->t0014.u1 >= 0x24<16> @ 0000101E : bool)
   Class: Eq_15
   DataType: bool
   OrigDataType: bool
@@ -2818,7 +2818,7 @@ T_214: (in 0x24<16> @ 00001170 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_215: (in g_ptr3D94->t0014.u0 < 0x24<16> @ 00001170 : bool)
+T_215: (in g_ptr3D94->t0014.u1 < 0x24<16> @ 00001170 : bool)
   Class: Eq_215
   DataType: bool
   OrigDataType: bool
@@ -11536,7 +11536,7 @@ T_2393: (in fp + -42<i32> + d1_748 @ 000017C2 : word32)
   OrigDataType: (ptr32 (struct (0 T_2394 t0000)))
 T_2394: (in Mem766[fp + -42<i32> + d1_748:byte] @ 000017C2 : byte)
   Class: Eq_2390
-  DataType: byte
+  DataType: Eq_528
   OrigDataType: byte
 T_2395: (in 1<32> @ 000017C6 : word32)
   Class: Eq_2395
@@ -14634,7 +14634,7 @@ T_3168: (in 0x27<16> @ 00002868 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_3169: (in g_ptr3D94->t0014.u0 < 0x27<16> @ 00002868 : bool)
+T_3169: (in g_ptr3D94->t0014.u1 < 0x27<16> @ 00002868 : bool)
   Class: Eq_3169
   DataType: bool
   OrigDataType: bool
@@ -14954,7 +14954,7 @@ T_3248: (in 0x27<16> @ 00002900 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_3249: (in a0_111->t0014.u0 < 0x27<16> @ 00002900 : bool)
+T_3249: (in a0_111->t0014.u1 < 0x27<16> @ 00002900 : bool)
   Class: Eq_3249
   DataType: bool
   OrigDataType: bool
@@ -15662,7 +15662,7 @@ T_3425: (in 0x27<16> @ 00002A24 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_3426: (in a0_17->t0014.u0 < 0x27<16> @ 00002A24 : bool)
+T_3426: (in a0_17->t0014.u1 < 0x27<16> @ 00002A24 : bool)
   Class: Eq_3426
   DataType: bool
   OrigDataType: bool
@@ -15862,7 +15862,7 @@ T_3475: (in 0x27<16> @ 00002A90 : word16)
   Class: Eq_13
   DataType: cup16
   OrigDataType: cup16
-T_3476: (in g_ptr3D94->t0014.u0 < 0x27<16> @ 00002A90 : bool)
+T_3476: (in g_ptr3D94->t0014.u1 < 0x27<16> @ 00002A90 : bool)
   Class: Eq_3476
   DataType: bool
   OrigDataType: bool

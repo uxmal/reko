@@ -95,31 +95,31 @@ l00401177:
 			ebx_n = SEQ(ebx_24_8_n, 0x01);
 		}
 		struct Eq_n * esp_n = esp_n - 4;
-		esp_n->t0000.u0 = ebp_n->tFFFFFFDC.u0;
+		esp_n->t0000.u1 = ebp_n->tFFFFFFDC.u1;
 		fn004015CE(esp_n->t0000.u0);
 		struct Eq_n * esp_n = (char *) &esp_n->t0000 + 4;
 		Eq_n eax_n = fn00401768();
 		Eq_n edi_n = 0x00;
-		if (eax_n.u1->t0000.u0 != 0x00)
+		if (eax_n.u1->t0000.u1 != 0x00)
 		{
-			esp_n->t0000.u0 = (byte) eax_n;
+			esp_n->t0000.u1 = (struct Eq_n *) eax_n;
 			esp_n = (struct Eq_n *) ((char *) &esp_n->t0000 + 4);
 			<anonymous> ** esi_n;
 			word32 edx_n;
 			if (fn00401544(ebx_n, eax_n, 0x00, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n) != 0x00)
 			{
-				esp_n->t0000.u0 = (byte) edi_n;
+				esp_n->t0000.u1 = (struct Eq_n *) edi_n;
 				esp_n->dwFFFFFFFC = 0x02;
-				esp_n->tFFFFFFF8.u0 = (byte) edi_n;
+				esp_n->tFFFFFFF8.u1 = (struct Eq_n *) edi_n;
 				<anonymous> * esi_n = *esi_n;
 				fn00401976();
 				esi_n();
 			}
 		}
 		Eq_n eax_n = fn0040176E();
-		if (eax_n.u1->t0000.u0 != edi_n)
+		if (eax_n.u1->t0000.u1 != edi_n)
 		{
-			esp_n->tFFFFFFFC.u0 = (byte) eax_n;
+			esp_n->tFFFFFFFC.u1 = (struct Eq_n *) eax_n;
 			word32 * esi_n;
 			word32 edx_n;
 			word32 edi_n;
@@ -142,7 +142,7 @@ l00401177:
 		if (bl_n == 0x00)
 			cexit();
 		struct Eq_n * esp_n = esp_n - 4;
-		esp_n->t0000.u0 = (byte) 0x00;
+		esp_n->t0000.u1 = 0x00;
 		esp_n->dwFFFFFFFC = 0x01;
 		fn004015EB(esp_n->t0000.u0);
 		ebp_n->dwFFFFFFFC = ~0x01;
@@ -238,7 +238,7 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 		}
 		else
 		{
-			ui32 eax_n = __ror<word32,byte>(~0x00, 0x20 - (g_t403004.u0 & 0x1F)) ^ g_t403004.u0;
+			ui32 eax_n = __ror<word32,byte>(~0x00, 0x20 - (g_t403004.u1 & 0x1F)) ^ g_t403004.u0;
 			g_dw40333C = eax_n;
 			g_dw403340 = eax_n;
 			g_dw403344 = eax_n;
@@ -534,9 +534,9 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, Eq_n dwArg00, ui32 dwArg08)
 	struct Eq_n * fs;
 	struct Eq_n * esp_n = fp - 8 - dwArg08;
 	esp_n->dwFFFFFFFC = ebx;
-	esp_n->tFFFFFFF8.u0 = (byte) esi;
-	esp_n->tFFFFFFF4.u0 = (byte) edi;
-	esp_n->tFFFFFFF0.u0 = (ui8) (g_t403004.u0 ^ fp + 8);
+	esp_n->tFFFFFFF8.u1 = (struct Eq_n *) esi;
+	esp_n->tFFFFFFF4.u1 = (struct Eq_n *) edi;
+	esp_n->tFFFFFFF0.u1 = (word32) (g_t403004.u0 ^ fp + 8);
 	esp_n->tFFFFFFEC.u0 = (ui32) dwArg00;
 	fs->ptr0000 = fp - 8;
 	return fp + 8;

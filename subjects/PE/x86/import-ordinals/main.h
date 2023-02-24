@@ -1597,7 +1597,7 @@ T_267: (in 0<32> @ 004011FC : word32)
   Class: Eq_92
   DataType: byte
   OrigDataType: word32
-T_268: (in eax_117.u1->t0000.u0 == 0<32> @ 004011FC : bool)
+T_268: (in eax_117.u1->t0000.u1 == 0<32> @ 004011FC : bool)
   Class: Eq_268
   DataType: bool
   OrigDataType: bool
@@ -1629,7 +1629,7 @@ T_275: (in Mem167[eax_165 + 0<32>:word32] @ 00401221 : word32)
   Class: Eq_92
   DataType: Eq_92
   OrigDataType: word32
-T_276: (in eax_165.u1->t0000.u0 == edi_119 @ 00401221 : bool)
+T_276: (in eax_165.u1->t0000.u1 == edi_119 @ 00401221 : bool)
   Class: Eq_276
   DataType: bool
   OrigDataType: bool

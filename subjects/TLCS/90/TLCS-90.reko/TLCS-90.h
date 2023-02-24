@@ -787,11 +787,11 @@ T_29: (in Mem0[ix + -6<i16>:ui16] @ 031C : ui16)
   Class: Eq_29
   DataType: Eq_29
   OrigDataType: ui16
-T_30: (in SEQ(b, c) ^ (ix->tFFFFFFFA).u0 @ 031C : ui16)
+T_30: (in SEQ(b, c) ^ (ix->tFFFFFFFA).u1 @ 031C : ui16)
   Class: Eq_30
   DataType: ui16
   OrigDataType: ui16
-T_31: (in SEQ(v22_40, ix->tFFFFFFF6.u0) + (SEQ(b, c) ^ (ix->tFFFFFFFA).u0) @ 031C : ui16)
+T_31: (in SEQ(v22_40, ix->tFFFFFFF6.u0) + (SEQ(b, c) ^ (ix->tFFFFFFFA).u1) @ 031C : ui16)
   Class: Eq_20
   DataType: ui16
   OrigDataType: ui16
@@ -1767,7 +1767,7 @@ T_266: (in wArg24 @ 03B0 : Eq_149)
 T_267: (in ixOut @ 03B0 : Eq_267)
   Class: Eq_267
   DataType: Eq_267
-  OrigDataType: ptr32
+  OrigDataType: word16
 T_268: (in SEQ(h, l, b, c) @ 03B0 : word32)
   Class: Eq_262
   DataType: uint32
@@ -1980,11 +1980,11 @@ T_320: (in Mem0[ix + -6<i16>:ui16] @ 03F0 : ui16)
   Class: Eq_29
   DataType: Eq_29
   OrigDataType: ui16
-T_321: (in a_a_183 ^ (ix->tFFFFFFFA).u0 @ 03F0 : ui16)
+T_321: (in a_a_183 ^ (ix->tFFFFFFFA).u1 @ 03F0 : ui16)
   Class: Eq_321
   DataType: ui16
   OrigDataType: ui16
-T_322: (in SEQ(v27_70, ix->tFFFFFFF2.u0) + (a_a_183 ^ (ix->tFFFFFFFA).u0) @ 03F0 : ui16)
+T_322: (in SEQ(v27_70, ix->tFFFFFFF2.u0) + (a_a_183 ^ (ix->tFFFFFFFA).u1) @ 03F0 : ui16)
   Class: Eq_312
   DataType: ui16
   OrigDataType: ui16
@@ -4644,11 +4644,11 @@ T_973: (in Mem50[ix + -4<i16>:ui16] @ 068E : ui16)
   Class: Eq_885
   DataType: Eq_885
   OrigDataType: byte
-T_974: (in a_a_258 ^ (ix->tFFFFFFFC).u0 @ 068E : ui16)
+T_974: (in a_a_258 ^ (ix->tFFFFFFFC).u1 @ 068E : ui16)
   Class: Eq_974
   DataType: ui16
   OrigDataType: ui16
-T_975: (in SEQ(v41_127, ix->bFFFFFFE6) - (a_a_258 ^ (ix->tFFFFFFFC).u0) @ 068E : ui16)
+T_975: (in SEQ(v41_127, ix->bFFFFFFE6) - (a_a_258 ^ (ix->tFFFFFFFC).u1) @ 068E : ui16)
   Class: Eq_965
   DataType: ui16
   OrigDataType: ui16
@@ -6916,11 +6916,11 @@ T_1532: (in Mem222[ix + -6<i16>:ui16] @ 0A3D : ui16)
   Class: Eq_29
   DataType: Eq_29
   OrigDataType: byte
-T_1533: (in a_a_633 ^ (ix->tFFFFFFFA).u0 @ 0A3D : ui16)
+T_1533: (in a_a_633 ^ (ix->tFFFFFFFA).u1 @ 0A3D : ui16)
   Class: Eq_1533
   DataType: ui16
   OrigDataType: ui16
-T_1534: (in SEQ(v67_299, ix->tFFFFFFF6.u0) + (a_a_633 ^ (ix->tFFFFFFFA).u0) @ 0A3D : ui16)
+T_1534: (in SEQ(v67_299, ix->tFFFFFFF6.u0) + (a_a_633 ^ (ix->tFFFFFFFA).u1) @ 0A3D : ui16)
   Class: Eq_1524
   DataType: ui16
   OrigDataType: ui16
@@ -7968,11 +7968,11 @@ T_1795: (in Mem427[ix + -6<i16>:ui16] @ 0B11 : ui16)
   Class: Eq_29
   DataType: Eq_29
   OrigDataType: byte
-T_1796: (in a_a_645 ^ (ix->tFFFFFFFA).u0 @ 0B11 : ui16)
+T_1796: (in a_a_645 ^ (ix->tFFFFFFFA).u1 @ 0B11 : ui16)
   Class: Eq_1796
   DataType: ui16
   OrigDataType: ui16
-T_1797: (in SEQ(v103_504, ix->tFFFFFFF2.u0) + (a_a_645 ^ (ix->tFFFFFFFA).u0) @ 0B11 : ui16)
+T_1797: (in SEQ(v103_504, ix->tFFFFFFF2.u0) + (a_a_645 ^ (ix->tFFFFFFFA).u1) @ 0B11 : ui16)
   Class: Eq_1787
   DataType: ui16
   OrigDataType: ui16
@@ -9901,11 +9901,11 @@ T_2263: (in Mem0[ix + -4<i16>:ui16] @ 0CDB : ui16)
   Class: Eq_885
   DataType: Eq_885
   OrigDataType: ui16
-T_2264: (in SEQ(b, c) ^ (ix->tFFFFFFFC).u0 @ 0CDB : ui16)
+T_2264: (in SEQ(b, c) ^ (ix->tFFFFFFFC).u1 @ 0CDB : ui16)
   Class: Eq_2264
   DataType: ui16
   OrigDataType: ui16
-T_2265: (in SEQ(v21_35, ix->tFFFFFFDE.u0) - (SEQ(b, c) ^ (ix->tFFFFFFFC).u0) @ 0CDB : ui16)
+T_2265: (in SEQ(v21_35, ix->tFFFFFFDE.u0) - (SEQ(b, c) ^ (ix->tFFFFFFFC).u1) @ 0CDB : ui16)
   Class: Eq_2254
   DataType: ui16
   OrigDataType: ui16
@@ -10933,11 +10933,11 @@ T_2521: (in Mem162[ix + -4<i16>:ui16] @ 0DAF : ui16)
   Class: Eq_885
   DataType: Eq_885
   OrigDataType: ui16
-T_2522: (in a_a_330 ^ (ix->tFFFFFFFC).u0 @ 0DAF : ui16)
+T_2522: (in a_a_330 ^ (ix->tFFFFFFFC).u1 @ 0DAF : ui16)
   Class: Eq_2522
   DataType: ui16
   OrigDataType: ui16
-T_2523: (in SEQ(v62_239, ix->bFFFFFFE6) - (a_a_330 ^ (ix->tFFFFFFFC).u0) @ 0DAF : ui16)
+T_2523: (in SEQ(v62_239, ix->bFFFFFFE6) - (a_a_330 ^ (ix->tFFFFFFFC).u1) @ 0DAF : ui16)
   Class: Eq_2513
   DataType: ui16
   OrigDataType: ui16
@@ -12021,7 +12021,7 @@ T_2793: (in Mem11[ix + -4<i16>:ui16] @ 1675 : ui16)
   Class: Eq_35
   DataType: Eq_35
   OrigDataType: ui16
-T_2794: (in ix->tFFFFFFF8.u0 - (ix->tFFFFFFFC).u0 @ 1675 : ui16)
+T_2794: (in ix->tFFFFFFF8.u1 - (ix->tFFFFFFFC).u1 @ 1675 : ui16)
   Class: Eq_2787
   DataType: ui16
   OrigDataType: ui16

@@ -18,14 +18,12 @@
  */
 #endregion
 
-using System;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Operators;
-using System.Diagnostics;
 using Reko.Core;
-using Reko.Core.Code;
-using System.Numerics;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
+using System;
+using System.Diagnostics;
 
 namespace Reko.Typing
 {
@@ -55,7 +53,7 @@ namespace Reko.Typing
         private DataType? dtComplexOrig;        // DataType of only this expression.
         private int offset;                     // constant offset from expComplex.
         private DataType? enclosingPtr;
-        private bool dereferenced;          // True if expComplex was dereferenced (Mem0[expComplex])
+        private DataType? dtResult;         // DataType of resulting expression. Defined if expComplex was dereferenced (Mem0[expComplex])
         private bool dereferenceGenerated;  // True if a dereferencing expression has been emitted (field access or the like.
         private int depth;
 
@@ -75,13 +73,16 @@ namespace Reko.Typing
             this.offset = offset;
         }
 
+        private bool Dereferenced => dtResult is not null;
+
         /// <summary>
         /// Build the complex expression.
         /// </summary>
-        /// <param name="dereferenced">True if this is being executed
+        /// <param name="dtResult">DataType of resulting expression.
+        /// Defined if this is being executed
         /// in the context of a MemAccess or SegmentedMemAccess.</param>
         /// <returns>The rewritten expression.</returns>
-        public Expression BuildComplex(bool dereferenced)
+        public Expression BuildComplex(DataType? dtResult)
         {
             depth = 0; //$DEBUG;
             this.enclosingPtr = null;
@@ -96,14 +97,14 @@ namespace Reko.Typing
                 this.dtComplexOrig = expComplex.DataType;
             }
             var dtComplex = this.dtComplex;
-            this.dereferenced = dereferenced;
+            this.dtResult = dtResult;
             var exp = this.dtComplex.Accept(this);
-            if (!dereferenced && dereferenceGenerated)
+            if (!Dereferenced && dereferenceGenerated)
             {
                 var ptr = new Pointer(exp.DataType, dtComplex.BitSize);
                 exp = new UnaryExpression(Operator.AddrOf, ptr, exp);
             }
-            if (dereferenced && !dereferenceGenerated)
+            if (Dereferenced && !dereferenceGenerated)
             {
                 exp = CreateDereference(dtComplex, exp);
             }
@@ -249,7 +250,7 @@ namespace Reko.Typing
             {
                 if (offset == 0 && index == null)
                 {
-                    if (dereferenced)
+                    if (Dereferenced)
                     {
                         if (!dereferenceGenerated)
                         {
@@ -339,7 +340,8 @@ namespace Reko.Typing
             UnionAlternative? alt = ut.FindAlternative(dtComplexOrig!);
             if (alt is null)
             {
-                alt = UnionAlternativeChooser.Choose(ut, enclosingPtr is not null, offset);
+                alt = UnionAlternativeChooser.Choose(
+                    ut, dtResult, enclosingPtr is not null, offset);
             }
             if (alt is null)
             {
@@ -372,11 +374,11 @@ namespace Reko.Typing
 
         private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression? arrayIndex)
         {
-            if (offset == 0 && arrayIndex == null && !dereferenced)
+            if (offset == 0 && arrayIndex == null && !Dereferenced)
                 return expComplex!;
             var e = CreateAddressOf(expComplex!);
             arrayIndex = CreateOffsetExpression(offset, arrayIndex);
-            if (dereferenced)
+            if (Dereferenced)
             {
                 dereferenceGenerated = true;
                 return new ArrayAccess(dtPointee, e, arrayIndex);
