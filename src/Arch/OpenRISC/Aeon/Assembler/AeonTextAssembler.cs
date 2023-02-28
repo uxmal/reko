@@ -26,10 +26,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.OpenRISC.Aeon.Assembler
 {
@@ -78,15 +74,28 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 return;
 
             // Eat any labels
-            var tPrefix = Expect(lex, CTokenType.Id);
-            var prefix = (string) tPrefix.Value!;
+            if (PeekAndDiscard(lex, CTokenType.Dot))
+            {
+                ParseDirective(lex, asm);
+                return;
+            }
+            var t = Expect(lex, CTokenType.Id);
+            var prefix = (string) t.Value!;
             while (PeekAndDiscard(lex, CTokenType.Colon))
             {
                 asm.RegisterSymbol(prefix);
                 if (Peek(lex).Type != CTokenType.Id)
+                {
+                    if (PeekAndDiscard(lex, CTokenType.Dot))
+                    {
+                        // .word and friends
+                        ParseDirective(lex, asm);
+                        return;
+                    }
                     return;
-                tPrefix = Read(lex);
-                prefix = (string) tPrefix.Value!;
+                }
+                t = Read(lex);
+                prefix = (string) t.Value!;
             }
 
             Expect(lex, CTokenType.Dot);
@@ -98,22 +107,25 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 switch (mnemonic)
                 {
                 case "andi":
-                    R_R_UImm(lex, asm, 0, asm.bg_andi);
+                    R_R_UImm(lex, asm, 0, AeonAssembler.RT_AEON_BG_LO16_0, asm.bg_andi);
                     break;
                 case "beqi":
                     R_I_Disp(lex, asm, AeonAssembler.RT_AEON_BG_DISP13_3, asm.bg_beqi);
                     break;
                 case "sb":
-                    M_R(lex, asm, 0, asm.bg_sb);
+                    M_R(lex, asm, PrimitiveType.Byte, AeonAssembler.RT_AEON_BG_LO16_0, asm.bg_sb);
                     break;
                 case "lbz":
-                    R_M(lex, asm, 0, asm.bg_lbz);
+                    R_M(lex, asm, PrimitiveType.Byte, AeonAssembler.RT_AEON_BG_LO16_0, asm.bg_lbz);
+                    break;
+                case "lwz":
+                    R_M(lex, asm, PrimitiveType.Word32, AeonAssembler.RT_AEON_BG_LO14_2, asm.bg_lwz);
                     break;
                 case "ori":
-                    R_R_UImm(lex, asm, 0, asm.bg_ori);
+                    R_R_UImm(lex, asm, 0, AeonAssembler.RT_AEON_BG_LO16_0, asm.bg_ori);
                     break;
                 case "movhi":
-                    R_UImm(lex, asm, 0, asm.bg_movhi);
+                    R_UImm(lex, asm, AeonAssembler.RT_AEON_BG_HI16_5, 0, asm.bg_movhi);
                     break;
                 default:
                     throw new NotImplementedException(mnemonic);
@@ -141,6 +153,9 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 case "addi":
                     R_SImm(lex, asm, 0, asm.bt_addi);
                     break;
+                case "jr":
+                    R(lex, asm, asm.bt_jr);
+                    break;
                 default:
                     throw new NotImplementedException($"{prefix}.{mnemonic}");
                 }
@@ -152,6 +167,33 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             default:
                 throw new NotImplementedException(prefix);
             }
+        }
+
+        private void ParseDirective(CDirectiveLexer lex, AeonAssembler asm)
+        {
+            // We just saw a '.' -- now get the directive name.
+            var directive = Expect(lex, CTokenType.Id);
+            switch ((string) directive.Value!)
+            {
+            case "word":
+                var op = ParseUImmediateOperand(lex, asm, 0, 0);
+                asm.EmitWord32(op.Value.ToUInt32());
+                return;
+            case "half":
+                op = ParseUImmediateOperand(lex, asm, 0, 0);
+                asm.EmitWord16(op.Value.ToUInt16());
+                return;
+            }
+            throw new NotImplementedException();
+        }
+
+        private void R(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            Action<RegisterStorage> assemble)
+        {
+            var r = ExpectRegister(lex);
+            assemble(r);
         }
 
         private void R_SImm(
@@ -169,26 +211,37 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         private void R_UImm(
             CDirectiveLexer lex,
             AeonAssembler asm,
+            int relocationTypeHi,
+            int relocationTypeLo,
+            Action<RegisterStorage, ImmediateOperand> assemble)
+        {
+            var rdst = ExpectRegister(lex);
+            Expect(lex, CTokenType.Comma);
+            var immop = ParseUImmediateOperand(lex, asm, relocationTypeHi, relocationTypeLo);
+            assemble(rdst, immop);
+        }
+
+        private void R_M(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            PrimitiveType dt, 
             int relocationType,
-            Action<RegisterStorage, ImmediateOperand> bg_movhi)
+            Action<RegisterStorage, MemoryOperand> assemble)
         {
             var rdst = ExpectRegister(lex);
             Expect(lex, CTokenType.Comma);
-            var immop = ParseUImmediateOperand(lex);
-            asm.bg_movhi(rdst, immop);
+            var mop = ParseMemOperand(lex, asm, dt, relocationType);
+            assemble(rdst, mop);
         }
 
-        private void R_M(CDirectiveLexer lex, AeonAssembler asm, int relocationType, Action<RegisterStorage, MemoryOperand> bg_lbz)
+        private void M_R(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            PrimitiveType dt,
+            int relocationType,
+            Action<MemoryOperand, RegisterStorage> assemble)
         {
-            var rdst = ExpectRegister(lex);
-            Expect(lex, CTokenType.Comma);
-            var mop = ParseMemOperand(lex, PrimitiveType.Byte);
-            asm.bg_lbz(rdst, mop);
-        }
-
-        private void M_R(CDirectiveLexer lex, AeonAssembler asm, int relocationType, Action<MemoryOperand, RegisterStorage> assemble)
-        {
-            var mop = ParseMemOperand(lex, PrimitiveType.Byte);
+            var mop = ParseMemOperand(lex, asm, dt, relocationType);
             Expect(lex, CTokenType.Comma);
             var rs = ExpectRegister(lex);
             assemble(mop, rs);
@@ -197,13 +250,15 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         private void R_R_UImm(
             CDirectiveLexer lex, 
             AeonAssembler asm,
-            int relocationType, Action<RegisterStorage, RegisterStorage, ImmediateOperand> assemble)
+            int relocationTypeHi, 
+            int relocationTypeLo,
+            Action<RegisterStorage, RegisterStorage, ImmediateOperand> assemble)
         {
             var rdst = ExpectRegister(lex);
             Expect(lex, CTokenType.Comma);
             var rsrc1 = ExpectRegister(lex);
             Expect(lex, CTokenType.Comma);
-            var immop = ParseUImmediateOperand(lex);
+            var immop = ParseUImmediateOperand(lex, asm, relocationTypeHi, relocationTypeLo);
             assemble(rdst, rsrc1, immop);
         }
 
@@ -234,7 +289,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         {
             var rsrc1 = ExpectRegister(lex);
             Expect(lex, CTokenType.Comma);
-            var immop = ParseUImmediateOperand(lex);
+            var immop = ParseUImmediateOperand(lex, asm, 0, 0);
             Expect(lex, CTokenType.Comma);
             var disp = ParseDisplacement(lex, asm, relocationType);
             assemble(rsrc1, immop, disp);
@@ -278,11 +333,52 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             return ImmediateOperand.Int32((int)displacement);
         }
 
-        private ImmediateOperand ParseUImmediateOperand(CDirectiveLexer lex)
+        private ImmediateOperand ParseUImmediateOperand(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            int hiRelocationType,
+            int loRelocationType)
         {
-            var tOffset = Expect(lex, CTokenType.NumericLiteral);
-            uint offset = Convert.ToUInt32(tOffset.Value);
-            return ImmediateOperand.UInt32(offset);
+            var t = Read(lex);
+            if (t.Type == CTokenType.Id)
+            {
+                // Check for hi and low.
+                var id = (string) t.Value!;
+                if (id == "hi")
+                {
+                    ParseHiLoExpression(lex, asm, hiRelocationType);
+                }
+                else if (id == "lo")
+                {
+                    ParseHiLoExpression(lex, asm, loRelocationType);
+                }
+                else
+                {
+                    throw new NotImplementedException("Constants NYI.");
+                }
+                return ImmediateOperand.UInt32(0);
+            }
+            else if (t.Type == CTokenType.NumericLiteral)
+            {
+                uint offset = Convert.ToUInt32(t.Value);
+                return ImmediateOperand.UInt32(offset);
+            }
+            else
+            {
+                throw new NotImplementedException($"Unexpected token {t}.");
+            }
+        }
+
+        private void ParseHiLoExpression(CDirectiveLexer lex, AeonAssembler asm, int relocationType)
+        {
+            if (relocationType == 0)
+                throw new ApplicationException("Unexpected hi or lo for this instruction.");
+            Expect(lex, CTokenType.LParen);
+            //$TODO expressions
+            var tSymbol = Expect(lex, CTokenType.Id);
+            Expect(lex, CTokenType.RParen);
+            var reloc = new Relocation(asm.CurrentAddress, (string) tSymbol.Value!, relocationType);
+            asm.AddRelocation(reloc);
         }
 
         private ImmediateOperand ParseSImmediateOperand(CDirectiveLexer lex)
@@ -292,13 +388,40 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             return ImmediateOperand.Int32(offset);
         }
 
-        private MemoryOperand ParseMemOperand(CDirectiveLexer lex, PrimitiveType dt)
+        private MemoryOperand ParseMemOperand(
+            CDirectiveLexer lex,
+            AeonAssembler asm,
+            PrimitiveType dt,
+            int relocationType)
         {
             int offset = 0;
             if (Peek(lex).Type != CTokenType.LParen)
             {
-                var tOffset = Expect(lex, CTokenType.NumericLiteral);
-                offset = (int) tOffset.Value!;
+                var tOffset = Read(lex);
+                switch (tOffset.Type)
+                {
+                case CTokenType.NumericLiteral:
+                    offset = (int) tOffset.Value!;
+                    break;
+                case CTokenType.Id:
+                    // Check for hi and low.
+                    var id = (string) tOffset.Value!;
+                    if (id == "hi")
+                    {
+                        throw new NotSupportedException("hi() is not supported in memory operands.");
+                    }
+                    else if (id == "lo")
+                    {
+                        // This relcation is incorrect for lbz, lhz
+                        ParseHiLoExpression(lex, asm, relocationType);
+                        offset = 0;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("Constants NYI.");
+                    }
+                    break; 
+                }
             }
             Expect(lex, CTokenType.LParen);
             var regBase = ExpectRegister(lex);
@@ -315,7 +438,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             var tReg = Expect(lex, CTokenType.Id);
             var sReg = (string) tReg.Value!;
             if (!arch.TryGetRegister(sReg, out var reg))
-                throw new ApplicationException($"Expected a register but found '{sReg}'.");
+                throw new ApplicationException($"Expected a register but found '{sReg}' on line {lex.LineNumber}.");
             return reg;
         }
 
@@ -347,7 +470,6 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
                 this.token = directiveLexer.Read();
             }
             return this.token.Value;
-            throw new NotImplementedException();
         }
 
         public int AssembleAt(Program program, Address address, TextReader reader)

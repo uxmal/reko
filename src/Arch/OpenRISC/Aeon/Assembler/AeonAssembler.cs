@@ -36,12 +36,15 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         public const int RT_AEON_BG_DISP13_3 = 1;
         public const int RT_AEON_BN_DISP18 = 2;
         public const int RT_AEON_BN_DISP8_2 = 3;
+        public const int RT_AEON_BG_HI16_5 = 4;
+        public const int RT_AEON_BG_LO16_0 = 5;
+        public const int RT_AEON_BG_LO14_2 = 6;
 
         private AeonArchitecture arch;
         private List<ImageSymbol> entryPoints;
         private Dictionary<string, ImageSymbol> symbolsByName;
         private List<Relocation> relocations;
-
+        private Relocation? hiReloc;
 
         public AeonAssembler(
             AeonArchitecture arch,
@@ -106,6 +109,15 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Emitter.EmitBeUInt32(opcode);
         }
 
+        public void bg_lwz(RegisterStorage rdst, MemoryOperand mop)
+        {
+            var opcode = (0b111011u << 26) | 0b10u;
+            opcode |= R(rdst, 21);
+            opcode |= R(mop.Base, 16);
+            opcode |= S16(mop.Offset, 0);
+            Emitter.EmitBeUInt32(opcode);
+        }
+
         public void bg_sb(MemoryOperand mop, RegisterStorage rs)
         {
             var opcode = 0b111110u << 26;
@@ -148,11 +160,17 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Emitter.EmitBeUInt16(opcode);
         }
 
+        public void bt_jr(RegisterStorage reg)
+        {
+            var opcode = (0b100001u << 10) | 0b01001u;
+            opcode |= R(reg, 5);
+            Emitter.EmitBeUInt16(opcode);
+        }
+
         public void AddRelocation(in Relocation reloc)
         {
             this.relocations.Add(reloc);
         }
-
 
         private void EmitUInt24(uint u)
         {
@@ -220,6 +238,16 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             }
         }
 
+        public void EmitWord16(uint halfword)
+        {
+            Emitter.EmitBeUInt16((ushort)halfword);
+        }
+
+        public void EmitWord32(uint word)
+        {
+            Emitter.EmitBeUInt32(word);
+        }
+
         private uint ReadBeUInt24(Address address)
         {
             int offset = (int) (address - this.BaseAddress);
@@ -263,9 +291,43 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             case RT_AEON_BN_DISP8_2:
                 Relocate24(reloc, displacement, 2, 8);
                 break;
+            case RT_AEON_BG_HI16_5:
+                this.hiReloc = reloc;
+                return;
+            case RT_AEON_BG_LO16_0:
+                if (!hiReloc.HasValue)
+                    throw new ApplicationException($"Expected a high relocation before this one {reloc}.");
+                RelocateHiLo(hiReloc.Value, reloc, symbol, 0xFFFFu);
+                break;
+            case RT_AEON_BG_LO14_2:
+                if (!hiReloc.HasValue)
+                    throw new ApplicationException($"Expected a high relocation before this one {reloc}.");
+                RelocateHiLo(hiReloc.Value, reloc, symbol, 0xFFFCu);
+                break;
             default:
                 throw new NotImplementedException($"Relocation type {reloc.RelocationType}");
             }
+            hiReloc = null;
+        }
+
+        private void RelocateHiLo(
+            in Relocation hiReloc, 
+            in Relocation loReloc,
+            ImageSymbol symbol,
+            uint maskLo)
+        {
+            uint instrHi = ReadBeUInt32(hiReloc.Address);
+            uint instrLo = ReadBeUInt32(loReloc.Address);
+            var maskHi = (uint) Bits.Mask(5, 16);
+            uint hi = (instrHi & maskHi) >> 5;
+            uint lo = (instrLo & maskLo);
+            uint relocatedValue = ((hi << 16) | lo) + symbol.Address.ToUInt32();
+            hi = relocatedValue >> 16;
+            lo = relocatedValue & 0xFFFFu;
+            instrHi = (instrHi & ~maskHi) | (hi << 5);
+            instrLo = (instrLo & ~maskLo) | lo;
+            WriteBeUInt32(hiReloc.Address, instrHi);
+            WriteBeUInt32(loReloc.Address, instrLo);
         }
 
         private void Relocate24(in Relocation reloc, long displacement, int bitPos, int bitLength)

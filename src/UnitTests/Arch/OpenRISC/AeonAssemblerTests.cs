@@ -194,5 +194,43 @@ label:
 00100000 bt.addi? r3,0x1
 00100002 bg.beqi? r3,0x0,00100000");
         }
+
+        [Test]
+        public void AeonAsm_Relocate_32bitconstant()
+        {
+            // Test for a relocation being split across two
+            // locations.
+            RoundTrip(@"
+    bg.movhi r1,hi(variable)
+    bg.ori r1,r1,lo(variable)
+    bt.jr r2
+variable:
+        .word 0x42
+",
+            @"
+00100000 bg.movhi r1,0x10000A@hi
+00100004 bg.ori r1,r1,0x10000A@lo
+00100008 bt.jr r2
+0010000A bn.nop");
+        }
+
+        [Test]
+        public void AeonAsm_Relocate_Load()
+        {
+            RoundTrip(@"
+    bg.movhi r1,hi(variable)
+    bg.lwz r3,lo(variable)(r1)
+    bt.jr r2
+    .half 0x42 // Padding to align
+variable:
+    .word 0x42
+",
+            @"
+00100000 bg.movhi r1,0x10000C@hi
+00100004 bg.lwz r3,0x10000C@lo(r1)
+00100008 bt.jr r2
+0010000A Nyi 000000
+0010000D Nyi 000000");
+        }
     }
 }
