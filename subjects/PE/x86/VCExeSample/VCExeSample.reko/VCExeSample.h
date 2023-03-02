@@ -335,7 +335,7 @@ T_19: (in 0<32> @ 00401023 : word32)
 T_20: (in printf @ 0040104D : ptr32)
   Class: Eq_20
   DataType: (ptr32 Eq_20)
-  OrigDataType: (ptr32 (fn T_33 (T_23, T_24, T_26, T_28, T_31)))
+  OrigDataType: (ptr32 (fn T_33 (T_27, T_28, T_29, T_30, T_32)))
 T_21: (in signature of printf : void)
   Class: Eq_20
   DataType: (ptr32 Eq_20)
@@ -344,46 +344,46 @@ T_22: (in ptrArg04 @ 0040104D : (ptr32 char))
   Class: Eq_22
   DataType: (ptr32 char)
   OrigDataType: 
-T_23: (in 0x4020D0<32> @ 0040104D : word32)
+T_23: (in  @ 0040104D : (ptr32 char))
+  Class: Eq_23
+  DataType: (ptr32 char)
+  OrigDataType: 
+T_24: (in  @ 0040104D : int32)
+  Class: Eq_24
+  DataType: int32
+  OrigDataType: 
+T_25: (in  @ 0040104D : (ptr32 char))
+  Class: Eq_25
+  DataType: (ptr32 char)
+  OrigDataType: 
+T_26: (in  @ 0040104D : real64)
+  Class: Eq_26
+  DataType: real64
+  OrigDataType: 
+T_27: (in 0x4020D0<32> @ 0040104D : word32)
   Class: Eq_22
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_24: (in arg1 @ 0040104D : (ptr32 char))
-  Class: Eq_24
+T_28: (in arg1 @ 0040104D : (ptr32 char))
+  Class: Eq_23
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_25: (in  @ 0040104D : (ptr32 char))
+T_29: (in arg2 @ 0040104D : int32)
   Class: Eq_24
-  DataType: (ptr32 char)
-  OrigDataType: 
-T_26: (in arg2 @ 0040104D : int32)
-  Class: Eq_26
   DataType: int32
   OrigDataType: int32
-T_27: (in  @ 0040104D : int32)
-  Class: Eq_26
-  DataType: int32
-  OrigDataType: 
-T_28: (in arg3 @ 0040104D : (ptr32 char))
-  Class: Eq_28
+T_30: (in arg3 @ 0040104D : (ptr32 char))
+  Class: Eq_25
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_29: (in  @ 0040104D : (ptr32 char))
-  Class: Eq_28
-  DataType: (ptr32 char)
-  OrigDataType: 
-T_30: (in arg4 @ 0040104D : real32)
-  Class: Eq_30
+T_31: (in arg4 @ 0040104D : real32)
+  Class: Eq_31
   DataType: real32
   OrigDataType: real32
-T_31: (in CONVERT(arg4, real32, real64) @ 0040104D : real64)
-  Class: Eq_31
+T_32: (in CONVERT(arg4, real32, real64) @ 0040104D : real64)
+  Class: Eq_26
   DataType: real64
   OrigDataType: real64
-T_32: (in  @ 0040104D : real64)
-  Class: Eq_31
-  DataType: real64
-  OrigDataType: 
 T_33: (in printf("%s %d %s %f", arg1, arg2, arg3, (real64) arg4) @ 0040104D : int32)
   Class: Eq_33
   DataType: int32

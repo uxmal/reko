@@ -6,7 +6,7 @@
 
 Eq_n g_t27ED0 = // 00027ED0
 	{
-		'\0'
+		0x00
 	};
 word32 errors = 0x00; // 00027F20
 word32 compiler_file_name = 0x00017098; // 00027F24
@@ -22,22 +22,19 @@ ui32 aux_info_file_name_index = 0x00; // 00027F48
 ui32 n_base_source_files = 0x00; // 00027F4C
 Eq_n line_buf.78 = // 00027F50
 	{
-		'\0'
+		0x00
 	};
 char * line_buf_size.79 = null; // 00027F54
 Eq_n g_t28000 = // 00028000
 	{
 		null,
 	};
-Eq_n version_string = // 00028028
-	{
-		'\0'
-	};
+char * version_string = &g_str178B0; // 00028028
 <anonymous> * obstack_alloc_failed_handler = print_and_abort; // 0002802C
 int32 obstack_exit_failure = 1; // 00028030
 Eq_n optarg = // 00028064
 	{
-		'\0'
+		0x00
 	};
 ptr32 * optind = &g_ptr0001; // 00028068
 word32 __getopt_initialized = 0x00; // 0002806C

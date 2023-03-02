@@ -1653,7 +1653,7 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 		{
 			char * l2_n = errno;
 			fprintf(&g_t2B640, "%s: ", l0_n->ptr0150);
-			fprintf(&g_t2B640, i6_n->ptrFFFFFFEC, null);
+			fprintf(&g_t2B640, i6_n->ptrFFFFFFEC, 0x00);
 			xstrerror(l2_n);
 			fprintf(&g_t2B640, ": %s\n", l2_n);
 			ptr32 i2_n;
@@ -1877,7 +1877,7 @@ Eq_n identify_lineno(Eq_n o0)
 		while (true)
 		{
 			if (g2_n == 0x0A)
-				o0_n.u1 = (byte) o0_n.u0 + 1;
+				o0_n.u0 = (byte) o0_n.u0 + 1;
 			&g3_n.u1->b0000 = g3_n.u1 + 1;
 			if (g3_n - o0 > 0x00)
 				break;
@@ -2782,7 +2782,7 @@ ui32 main(union Eq_n * o1)
 					exit(o1_n);
 				}
 				else
-					fprintf(&g_t2B640, "%s: %s\n", g_t28150.u1, version_string.u1);
+					fprintf(&g_t2B640, "%s: %s\n", g_t28150.u1, version_string);
 			}
 			else
 				usage();
@@ -4230,7 +4230,7 @@ l00016AEC:
 			struct Eq_n * i6_n;
 			o0_n();
 			fprintf(&g_t2B640, "%s: ", i6_n->ptr004C);
-			fprintf(&g_t2B640, install_error_msg, null);
+			fprintf(&g_t2B640, install_error_msg, 0x00);
 			char * o0_n = errno;
 			xstrerror(o0_n);
 			fprintf(&g_t2B640, ": %s\n", o0_n);
