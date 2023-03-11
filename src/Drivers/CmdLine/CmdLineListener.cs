@@ -23,11 +23,6 @@ using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using static Microsoft.Scripting.Hosting.Shell.ConsoleHostOptions;
 
 namespace Reko.CmdLine
 {

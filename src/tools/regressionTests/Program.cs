@@ -17,7 +17,7 @@ namespace Reko.Tools.regressionTests
 	class Program
     {
         private const int MaxDeleteAttempts = 5;
-        private const string DecompilerExecutableName = "decompile";
+        private const string DecompilerExecutableName = "reko";
         private static readonly string[] OUTPUT_EXTENSIONS = new string[] { ".asm", ".c", ".dis", ".h" };
         private static readonly string[] SOURCE_EXTENSIONS = new string[] { ".c" };
         private const string WeightsFilename = "subject_weights.txt";
@@ -357,7 +357,7 @@ namespace Reko.Tools.regressionTests
             // queue all .dcproject for execution
             foreach (var proj in dcProjects)
             {
-                jobs.Add(new Job(GetFilePrefix(proj), dir, proj));
+                jobs.Add(new Job(GetFilePrefix(proj), dir, "decompile " + proj));
             }
 
             if (hasSubjectCmd)
@@ -375,10 +375,10 @@ namespace Reko.Tools.regressionTests
             foreach (var line in lines)
             {
                 string args = line;
-                if (line.StartsWith("decompile.exe"))
+                if (line.StartsWith("reko.exe"))
                 {
                     // remove the exe name from the arguments string
-                    args = args.Remove(0, "decompile.exe".Length + 1);
+                    args = args.Remove(0, "reko.exe".Length + 1);
                 }
 
                 if (!string.IsNullOrWhiteSpace(args))

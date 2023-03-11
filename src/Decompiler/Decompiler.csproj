@@ -6,7 +6,7 @@
   -->
 	<PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>Reko</AssemblyName>
+    <AssemblyName>Reko.Decompiler</AssemblyName>
     <RootNamespace>Reko</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
