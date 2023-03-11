@@ -10,7 +10,7 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
     <RootNamespace>Reko.CmdLine</RootNamespace>
-    <AssemblyName>Reko.CmdLine</AssemblyName>
+    <AssemblyName>reko</AssemblyName>
     <Platforms>x86;x64;ARM64</Platforms>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
@@ -25,12 +25,10 @@
 
   <Import Project="$(ProjectDir)..\PreBuild.targets" />
 
-  <Target Name="CopyToDecompileExe" AfterTargets="CoreBuild">
-    <Copy SourceFiles="$(TargetDir)Reko.CmdLine.exe" DestinationFiles="$(TargetDir)reko.exe" />
-    <Copy SourceFiles="$(TargetDir)Reko.CmdLine.dll" DestinationFiles="$(TargetDir)reko.dll" />
-    <Copy SourceFiles="$(TargetDir)Reko.CmdLine.exe" DestinationFiles="$(TargetDir)decompile.exe" />
-    <Copy SourceFiles="$(TargetDir)Reko.CmdLine.dll" DestinationFiles="$(TargetDir)decompile.dll" />
-    <Copy SourceFiles="$(TargetDir)Reko.CmdLine.runtimeconfig.json" DestinationFiles="$(TargetDir)reko.runtimeconfig.json" />
-    <Copy SourceFiles="$(TargetDir)Reko.CmdLine.runtimeconfig.json" DestinationFiles="$(TargetDir)decompile.runtimeconfig.json" />
+  <Target Name="CopyToRekoExe" AfterTargets="CoreBuild">
+    <!-- //$TODO: remove this, once a few releases have been done -->
+    <Copy SourceFiles="$(TargetDir)reko.exe" DestinationFiles="$(TargetDir)decompile.exe" />
+    <Copy SourceFiles="$(TargetDir)reko.dll" DestinationFiles="$(TargetDir)decompile.dll" />
+    <Copy SourceFiles="$(TargetDir)reko.runtimeconfig.json" DestinationFiles="$(TargetDir)decompile.runtimeconfig.json" />
   </Target>
 </Project>

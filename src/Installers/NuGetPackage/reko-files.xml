@@ -4,7 +4,7 @@
         <var id="var.SolutionDir">$SolutionDir$/</var>
         <var id="var.Core.TargetPath">$SolutionDir$/Core/$TargetDir$/Reko.Core.dll</var>
         <var id="var.Decompiler.ProjectDir">$SolutionDir$/Decompiler/</var>
-        <var id="var.Decompiler.TargetPath">$SolutionDir$/Decompiler/$TargetDir$/Reko.dll</var>
+        <var id="var.Decompiler.TargetPath">$SolutionDir$/Decompiler/$TargetDir$/Reko.Decompiler.dll</var>
         <var id="var.Gui.TargetDir">$SolutionDir$/Gui/</var>
         <var id="var.Gui.TargetPath">$SolutionDir$/Gui/$TargetDir$/Reko.Gui.dll</var>
         <var id="var.CmdLine.TargetDir">$SolutionDir$/Drivers/CmdLine/$TargetDir_x64$/</var>
@@ -158,6 +158,11 @@
       <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.runtimeconfig.json" Id="F_WindowsDecompilerRuntimeConfig" />
       <File Source="$(var.WindowsDecompiler.TargetDir)ReactiveUI.dll" />
 
+      <File Source="$(var.CmdLine.TargetDir)reko.exe" />
+      <File Source="$(var.CmdLine.TargetDir)reko.dll" />
+      <File Source="$(var.CmdLine.TargetDir)reko.runtimeconfig.json" />
+      
+      <!-- //$TODO: deprecate these -->
       <File Source="$(var.CmdLine.TargetDir)decompile.exe" />
       <File Source="$(var.CmdLine.TargetDir)decompile.dll" />
       <File Source="$(var.CmdLine.TargetDir)decompile.runtimeconfig.json" />

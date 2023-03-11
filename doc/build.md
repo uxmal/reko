@@ -44,7 +44,7 @@ The Reko solution consists of the following projects:
 * `Decompiler.csproj` -- the decompiler implementation.
 * `Gui.csproj` -- support for graphical user interface
 * Front end drivers (in `src/Drivers`)
-  - `CmdLine.csproj` -- the command line front end, which generates a `decompiler.exe` executable
+  - `CmdLine.csproj` -- the command line front end, which generates a `reko.exe` executable
   - `WindowsDecompiler.csproj` -- Windows Forms front end
 * Plugins, supporting the various processor architectures, operating environment platforms, and executable
   image formats supported by Reko. These can be written in C# or C++.

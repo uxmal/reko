@@ -31,7 +31,7 @@
 <!-- Caution! Do not edit these values, they are generated automatically
      by a script. Edit reko-files.xml instead. -->
 <file src="../../Core/bin/$Configuration$/net6.0/Reko.Core.dll" target="lib\netstandard2.0" />
-<file src="../../Decompiler/bin/$Configuration$/net6.0/Reko.dll" target="lib\netstandard2.0" />
+<file src="../../Decompiler/bin/$Configuration$/net6.0/Reko.Decompiler.dll" target="lib\netstandard2.0" />
 <file src="../../Drivers/WindowsDecompiler/..\reko.config" target="contentFiles/any/any/reko" />
 <file src="../../ImageLoaders/BinHex/bin/$Configuration$/net6.0/Reko.ImageLoaders.BinHex.dll" target="lib\netstandard2.0" />
 <file src="../../ImageLoaders/Coff/bin/$Configuration$/net6.0/Reko.ImageLoaders.Coff.dll" target="lib\netstandard2.0" />
