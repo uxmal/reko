@@ -1,1 +1,1 @@
-decompile.exe switch
+reko.exe decompile switch

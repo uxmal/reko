@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle ping
+reko.exe decompile --heuristic shingle ping

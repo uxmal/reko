@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle ls
+reko.exe decompile --heuristic shingle ls

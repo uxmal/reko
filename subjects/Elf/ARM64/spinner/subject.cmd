@@ -3,4 +3,4 @@
 # This regression test is disabled until a better solution
 # is implemented.
 
-# decompile.exe --heuristic shingle spinner
+# reko.exe decompile --heuristic shingle spinner

@@ -1,1 +1,1 @@
-decompile.exe reko_array.dll
+reko.exe decompile reko_array.dll

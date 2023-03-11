@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle  pngpixel
+reko.exe decompile --heuristic shingle  pngpixel

@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle  --heuristic shingle redir
+reko.exe decompile --heuristic shingle  --heuristic shingle redir

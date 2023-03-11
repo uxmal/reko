@@ -23,6 +23,7 @@ using Reko.Core.Collections;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Loading;
 using Reko.Services;
@@ -86,7 +87,7 @@ namespace Reko.CmdLine
         public void Execute(string[] args)
         {
             var pArgs = ProcessArguments(Console.Out, args);
-            if (pArgs == null)
+            if (pArgs is null)
                 return;
 
             if(pArgs.TryGetValue("--locale", out var localeName)){
@@ -100,6 +101,10 @@ namespace Reko.CmdLine
 
             StartTimer(pArgs);
 
+            if (pArgs.ContainsKey("assemble"))
+            {
+                Assemble(pArgs);
+            }
             if (OverridesRequested(pArgs))
             {
                 DecompileRawImage(pArgs);
@@ -222,7 +227,7 @@ namespace Reko.CmdLine
                 }
                 decompiler.ExtractResources();
                 decompiler.ScanPrograms();
-                if (!pArgs.ContainsKey("scan-only"))
+                if (!pArgs.ContainsKey("disassemble"))
                 {
                     decompiler.AnalyzeDataFlow();
                     decompiler.ReconstructTypes();
@@ -234,6 +239,55 @@ namespace Reko.CmdLine
             {
                 listener.Error(ex, "An error occurred during decompilation.");
             }
+        }
+
+        private void Assemble(Dictionary<string, object> pArgs)
+        {
+            if (!pArgs.TryGetValue("filename", out var oFilename))
+            {
+                listener.Error("You must provide a file name.");
+                return;
+            }
+            var filename = (string) oFilename;
+            if (!pArgs.TryGetValue("--arch", out var oArch) ||
+                oArch is not string)
+            {
+                listener.Error("You must specify a processor architecture.");
+                return;
+            }
+            string sArch = (string) oArch;
+
+            string syntax = null;
+            if (pArgs.TryGetValue("--syntax", out var oSyntax) &&
+                oSyntax is string sSyntax)
+            {
+                syntax = sSyntax;
+            }
+            var arch = config.GetArchitecture(sArch);
+            if (arch is null)
+            {
+                listener.Error($"Unknown architecture moniker {sArch}.");
+                return;
+            }
+            Address addrBase = Address.Ptr64(0);
+            if (pArgs.TryGetValue("--base", out var oAddrBase) &&
+                oAddrBase is string sAddrBase)
+            {
+                if (!arch.TryParseAddress(sAddrBase, out addrBase))
+                {
+                    listener.Error($"'{sAddrBase} couldn't be recognized as an address.");
+                    return;
+                }
+            }
+            var asm = arch.CreateAssembler(syntax);
+            using (TextReader rdr = new StreamReader(filename))
+            {
+                var program = asm.Assemble(addrBase, rdr);
+                var seg = program.SegmentMap.Segments.Values.First();
+                var binPath = Path.ChangeExtension(filename, ".bin");
+                File.WriteAllBytes(binPath, ((ByteMemoryArea) seg.MemoryArea).Bytes);
+            }
+
         }
 
         /// <summary>
@@ -374,7 +428,30 @@ namespace Reko.CmdLine
                 return null;
             }
             var parsedArgs = new Dictionary<string, object>();
-            for (int i = 0; i < args.Length; ++i)
+
+            // Eat major commands
+            int i = 0;
+            switch (args[0])
+            {
+            case "asm":
+            case "assemble":
+                parsedArgs["assemble"] = true;
+                ++i;
+                break;
+            case "decompile":
+                parsedArgs["decompile"] = true;
+                ++i;
+                break;
+            case "dasm":
+            case "disassemble":
+                parsedArgs["disassemble"] = true;
+                ++i;
+                break;
+            }
+            // Now eat options
+            // With major commands we now have the possibility
+            // to have specific options for each major command.
+            for (; i < args.Length; ++i)
             {
                 if (string.IsNullOrEmpty(args[i]))
                     continue;
@@ -497,7 +574,7 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--scan-only")
                 {
-                    parsedArgs["scan-only"] = true;
+                    parsedArgs["disassemble"] = true;
                 }
                 else if (args[i] == "--extract-resources")
                 {
@@ -607,7 +684,10 @@ namespace Reko.CmdLine
 
         private void Usage(TextWriter w)
         {
-            w.WriteLine("usage: decompile [options] <filename>");
+            w.WriteLine("Usage:");
+            w.WriteLine("  reko decompile [options] <filename>");
+            w.WriteLine("  reko disassemble [options] <filename>");
+            w.WriteLine("  reko assemble [options] <filename>");
             w.WriteLine("    <filename> can be either an executable file or a project file.");
             w.WriteLine();
             w.WriteLine("Options:");

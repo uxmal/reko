@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle --dasm-bytes --dasm-address subject.exe
+reko.exe decompile --heuristic shingle --dasm-bytes --dasm-address subject.exe

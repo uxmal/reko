@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle --dasm-bytes RTOSDemo.axf
+reko.exe decompile --heuristic shingle --dasm-bytes RTOSDemo.axf

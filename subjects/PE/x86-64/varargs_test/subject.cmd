@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle  varargs_test.exe
+reko.exe decompile --heuristic shingle  varargs_test.exe

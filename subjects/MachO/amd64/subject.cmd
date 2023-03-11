@@ -1,2 +1,2 @@
-decompile.exe --heuristic shingle const.o
-decompile.exe --heuristic shingle MachO-OSX-x64-ls
+reko.exe decompile --heuristic shingle const.o
+reko.exe decompile --heuristic shingle MachO-OSX-x64-ls

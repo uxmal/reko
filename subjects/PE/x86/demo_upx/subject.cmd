@@ -1,1 +1,1 @@
-decompile.exe Demo.exe
+reko.exe decompile Demo.exe

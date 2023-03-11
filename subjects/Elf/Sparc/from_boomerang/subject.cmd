@@ -1,1 +1,1 @@
-decompile.exe subject.exe
+reko.exe decompile subject.exe

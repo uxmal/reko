@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle  Executable.exe
+reko.exe decompile --heuristic shingle  Executable.exe

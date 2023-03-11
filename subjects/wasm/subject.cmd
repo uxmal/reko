@@ -1,4 +1,4 @@
-decompile.exe sample.wasm
-decompile.exe hello.wasm
-decompile.exe life.wasm
-decompile.exe nbody.wasm
+reko.exe decompile sample.wasm
+reko.exe decompile hello.wasm
+reko.exe decompile life.wasm
+reko.exe decompile nbody.wasm

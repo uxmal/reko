@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle test
+reko.exe decompile --heuristic shingle test

@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle ais3_crackme
+reko.exe decompile --heuristic shingle ais3_crackme

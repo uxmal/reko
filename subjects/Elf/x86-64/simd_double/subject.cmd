@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle simd_double
+reko.exe decompile --heuristic shingle simd_double

@@ -1,2 +1,2 @@
-decompile.exe --heuristic shingle  spcinv.sav
-decompile.exe --heuristic shingle  lunar.lda
+reko.exe decompile --heuristic shingle  spcinv.sav
+reko.exe decompile --heuristic shingle  lunar.lda

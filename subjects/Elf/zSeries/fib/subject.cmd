@@ -1,1 +1,1 @@
-decompile.exe example
+reko.exe decompile example

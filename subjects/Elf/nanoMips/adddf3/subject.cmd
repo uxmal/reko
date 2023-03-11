@@ -1,1 +1,1 @@
-decompile.exe --base 08048000 adddf3.o
+reko.exe decompile --base 08048000 adddf3.o

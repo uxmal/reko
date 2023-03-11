@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle elf-Linux-ia64-bash
+reko.exe decompile --heuristic shingle elf-Linux-ia64-bash

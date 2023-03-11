@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle  a.out
+reko.exe decompile --heuristic shingle  a.out

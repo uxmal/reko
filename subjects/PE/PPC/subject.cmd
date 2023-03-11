@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle hello_ppc.exe
+reko.exe decompile --heuristic shingle hello_ppc.exe

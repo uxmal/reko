@@ -1,1 +1,1 @@
-decompile.exe --heuristic shingle  flags
+reko.exe decompile --heuristic shingle  flags

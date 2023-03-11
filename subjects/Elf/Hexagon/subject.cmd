@@ -1,1 +1,1 @@
-decompile.exe --scan-only factorial_example.elf
+reko.exe disassemble factorial_example.elf
