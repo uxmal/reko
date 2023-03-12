@@ -27,7 +27,8 @@
 
   <Target Name="CopyToRekoExe" AfterTargets="CoreBuild">
     <!-- //$TODO: remove this, once a few releases have been done -->
-    <Copy SourceFiles="$(TargetDir)reko.exe" DestinationFiles="$(TargetDir)decompile.exe" />
+    <!-- It appears reko.exe is only compiled on Windows -->
+    <Copy Condition="'$(OS)' == 'Windows_NT'" SourceFiles="$(TargetDir)reko.exe" DestinationFiles="$(TargetDir)decompile.exe" />
     <Copy SourceFiles="$(TargetDir)reko.dll" DestinationFiles="$(TargetDir)decompile.dll" />
     <Copy SourceFiles="$(TargetDir)reko.runtimeconfig.json" DestinationFiles="$(TargetDir)decompile.runtimeconfig.json" />
   </Target>
