@@ -90,7 +90,7 @@ namespace Reko.CmdLine
             if (pArgs is null)
                 return;
 
-            if(pArgs.TryGetValue("--locale", out var localeName)){
+            if (pArgs.TryGetValue("--locale", out var localeName)){
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo((string)localeName);
             }
 
@@ -227,7 +227,7 @@ namespace Reko.CmdLine
                 }
                 decompiler.ExtractResources();
                 decompiler.ScanPrograms();
-                if (!pArgs.ContainsKey("disassemble"))
+                if ((string)pArgs["majorCommand"] != "disassemble")
                 {
                     decompiler.AnalyzeDataFlow();
                     decompiler.ReconstructTypes();
@@ -360,17 +360,17 @@ namespace Reko.CmdLine
                 var state = CreateInitialState(arch, program.SegmentMap, pArgs);
                 if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
-                    decompiler.Project.Programs[0].User.Heuristics = ((string[]) oHeur).ToSortedSet();
+                    program.User.Heuristics = ((string[]) oHeur).ToSortedSet();
                 }
                 if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
                 {
                     if (oAggressiveBranchRemoval is bool flag && flag)
                     {
-                        decompiler.Project.Programs[0].User.Heuristics.Add("aggressive-branch-removal");
+                        program.User.Heuristics.Add("aggressive-branch-removal");
                     }
                 }
                 decompiler.ScanPrograms();
-                if (!pArgs.ContainsKey("scan-only"))
+                if ((string) pArgs["majorCommand"] != "disassemble")
                 {
                     decompiler.AnalyzeDataFlow();
                     decompiler.ReconstructTypes();
@@ -412,9 +412,11 @@ namespace Reko.CmdLine
             foreach (var regValue in regs.Where(r => !string.IsNullOrEmpty(r)))
             {
                 var rr = regValue.Split(':');
-                if (rr == null || rr.Length != 2)
+                if (rr is null || rr.Length != 2)
                     continue;
                 var reg = arch.GetRegister(rr[0]);
+                if (reg is null)
+                    continue;
                 state.SetRegister(reg, Constant.Create(reg.DataType, Convert.ToInt64(rr[1], 16)));
             }
             return state;
@@ -429,22 +431,24 @@ namespace Reko.CmdLine
             }
             var parsedArgs = new Dictionary<string, object>();
 
-            // Eat major commands
+            // Eat major commands. The default major command is
+            // "decompile".
+            parsedArgs["majorCommand"] = "decompile";
             int i = 0;
             switch (args[0])
             {
             case "asm":
             case "assemble":
-                parsedArgs["assemble"] = true;
+                parsedArgs["majorCommand"] = "assemble";
                 ++i;
                 break;
             case "decompile":
-                parsedArgs["decompile"] = true;
+                parsedArgs["majorCommand"] = "decompile";
                 ++i;
                 break;
             case "dasm":
             case "disassemble":
-                parsedArgs["disassemble"] = true;
+                parsedArgs["majorCommand"] = "disassemble";
                 ++i;
                 break;
             }
@@ -574,7 +578,8 @@ namespace Reko.CmdLine
                 }
                 else if (args[i] == "--scan-only")
                 {
-                    parsedArgs["disassemble"] = true;
+                    //$TODO: deprecate this command
+                    parsedArgs["majorCommand"] = "disassemble";
                 }
                 else if (args[i] == "--extract-resources")
                 {
@@ -672,7 +677,7 @@ namespace Reko.CmdLine
             if (attrs.Length < 1)
                 return;
             var attr = (AssemblyFileVersionAttribute)attrs[0];
-            w.Write("Decompile.exe version {0}", attr.Version);
+            w.Write("Reko decompiler version {0}", attr.Version);
             var githashAttr = typeof(AssemblyMetadata).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
                 .FirstOrDefault(a => a.Key == "GitHash");
             if (githashAttr != null)
@@ -721,8 +726,6 @@ namespace Reko.CmdLine
             w.WriteLine("    calls-respect-abi     Assume procedure calls respect the platform ABI");
             w.WriteLine(" --aggressive-branch-removal Be more aggressive in removing unused branches");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
-            w.WriteLine(" --scan-only              Only scans the binary to find instructions, forgoing");
-            w.WriteLine("                          full decompilation.");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
             w.WriteLine(" --debug-trace-proc <p1>[,<p2>...]  Debug: trace Reko analysis phases of the");
             w.WriteLine("                          given procedure names p1, p2 etc.");
