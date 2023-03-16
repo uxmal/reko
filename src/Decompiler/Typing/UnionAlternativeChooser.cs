@@ -119,7 +119,7 @@ namespace Reko.Typing
             if (!this.isEnclosingPtr)
                 return false;
             var field = str.Fields.LowerBound(this.offset);
-            if (field == null)
+            if (field is null)
                 return false;
             this.offset -= field.Offset;
             return field.DataType.Accept(this);
@@ -140,7 +140,7 @@ namespace Reko.Typing
             if (visitedTypes.Contains(ut))
                 return false;
             visitedTypes.Add(ut);
-            return Choose(ut) != null;
+            return Choose(ut) is not null;
         }
 
         public bool VisitUnknownType(UnknownType ut)
