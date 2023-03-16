@@ -473,8 +473,8 @@ T_102: (in FSR0 + 0<16> @ 00008A : word16)
   OrigDataType: word16
 T_103: (in Data77[FSR0 + 0<16>:byte] @ 00008A : byte)
   Class: Eq_2
-  DataType: Eq_10
-  OrigDataType: cu8
+  DataType: cu8
+  OrigDataType: byte
 T_104: (in Data77[0x00C3<p16>:byte] @ 00008C : byte)
   Class: Eq_2
   DataType: cu8
@@ -785,7 +785,7 @@ T_180: (in FSR0 + 0<16> @ 00012C : word16)
   OrigDataType: word16
 T_181: (in Data6[FSR0 + 0<16>:byte] @ 00012C : byte)
   Class: Eq_178
-  DataType: Eq_176
+  DataType: byte
   OrigDataType: byte
 T_182: (in 1<16> @ 00012C : word16)
   Class: Eq_182
@@ -809,7 +809,7 @@ T_186: (in FSR0 + 0<16> @ 000136 : word16)
   OrigDataType: (union (word16 u2) ((ptr32 byte) u1))
 T_187: (in Data16[FSR0 + 0<16>:byte] @ 000136 : byte)
   Class: Eq_184
-  DataType: Eq_176
+  DataType: byte
   OrigDataType: byte
 T_188: (in 1<16> @ 000136 : word16)
   Class: Eq_188

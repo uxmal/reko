@@ -280,9 +280,9 @@ l00000406:
 			while (true)
 			{
 				gp14_n = (word16) gp12_gp13_n;
-				if (gp12_gp13_n < g_t060A)
+				if (gp12_gp13_n < g_t060A.u1)
 					break;
-				gp12_gp13_n /= g_t060A;
+				gp12_gp13_n /= g_t060A.u1;
 				++gp2_n;
 			}
 			gp0_n = 17707;
@@ -292,9 +292,9 @@ l00000406:
 			while (true)
 			{
 				gp14_n = (word16) gp12_gp13_n;
-				if (gp12_gp13_n >= g_t060D)
+				if (gp12_gp13_n >= g_t060D.u1)
 					break;
-				gp12_gp13_n *= g_t060A;
+				gp12_gp13_n *= g_t060A.u1;
 				++gp2_n;
 			}
 			gp0_n = 17709;
@@ -310,13 +310,13 @@ l00000406:
 		else
 			gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
 		int32 gp2_gp3_n = (int32) SEQ(gp12_gp13_n, gp14_n);
-		gp11->t0000.u1 = SEQ(gp11->t0000, (byte) gp2_gp3_n + 0x30);
+		gp11->t0000.u1 = SEQ(gp11->t0000.u0, (byte) gp2_gp3_n + 0x30);
 		gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
 		cui16 gp7_n = 0x00;
 		real48 gp12_gp13_gp14_n = SEQ(gp12_gp13_n, gp14_n) - (real48) gp2_gp3_n;
 		do
 		{
-			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n * g_t060A;
+			real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n * g_t060A.u1;
 			int32 gp2_gp3_n = (int32) SEQ((word32) gp12_gp13_gp14_n, (word16) gp12_gp13_gp14_n);
 			gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) gp2_gp3_n;
 			word16 gp3_n = (word16) gp2_gp3_n;

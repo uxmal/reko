@@ -430,7 +430,7 @@ word32 fn00008584(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 	struct Eq_n * sp_n = SEQ(sp_16_16_n, r7_n - 0x0A);
 	sp_n->wFFFFFFFE = r4;
 	sp_n->wFFFFFFFC = r5;
-	sp_n->tFFFFFFFA = r6;
+	sp_n->tFFFFFFFA.u0 = (int16) r6;
 	sp_n->w0006 = 0x00;
 	sp_n->w0008 = 0x00;
 	do
@@ -568,7 +568,7 @@ word32 fn00008584(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 	word32 er0_n = SEQ(er0_16_n, sp_n->w0006);
 	ptr32 er4_n = SEQ(er4_16_n, sp_n->wFFFFFFFE);
 	ptr32 er5_n = SEQ(er5_16_n, sp_n->wFFFFFFFC);
-	ptr32 er6_n = SEQ(er6_16_n, sp_n->tFFFFFFFA);
+	ptr32 er6_n = SEQ(er6_16_n, sp_n->tFFFFFFFA.u0);
 	er1Out = er1_n;
 	er2Out = er2_n;
 	er3Out = SEQ(er3_16_n, 0x0A);
@@ -591,7 +591,7 @@ word16 * fn00008866(word16 * er0, word16 r1, word16 er1_16_n, word16 r2, word16 
 	struct Eq_n * sp_n = SEQ(sp_16_16_n, r7_n - 0x18);
 	sp_n->wFFFFFFFE = r4;
 	sp_n->wFFFFFFFC = r5;
-	sp_n->tFFFFFFFA = r6;
+	sp_n->tFFFFFFFA.u0 = (int16) r6;
 	sp_n->w0012 = r0;
 	sp_n->w0010 = r1;
 	sp_n->w000E = r2;
@@ -824,7 +824,7 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 {
 	word16 r4 = (word16) er4;
 	ptr32 er4_n = er4;
-	if (g_uFFFF9E36 != r1)
+	if (g_uFFFF9E36.u0 != r1)
 	{
 		word16 er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_n, 0x1A4E), 0x2000, 0x01, r6, 0x07), word16, 16);
 		do
@@ -836,7 +836,7 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 		word16 er0_16_16_n;
 		er0_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2000, 0x03, r6, 0x07), word16, 16);
 		g_wFFFF9E34 = ~0x00;
-		Eq_n r2_n = g_uFFFF9E36;
+		Eq_n r2_n = g_uFFFF9E36.u0;
 		if (r2_n >= r1)
 		{
 			er4_n = SEQ(er4_16_16_n, 0x07);
@@ -844,7 +844,7 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 				goto l00008DA2;
 			er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_n, 0x1A4E), 0x2002, 0x02, r6, 0x07), word16, 16);
 			er4_n = SEQ(er4_16_16_n, 0x07);
-			if (g_uFFFF9E36 > r1)
+			if (g_uFFFF9E36.u0 > r1)
 			{
 				r6.u0 = 0x0A;
 				do
@@ -859,7 +859,7 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 					{
 						g_wFFFF9E7E = 200;
 						er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 12924), 0x1773, 2000, 0x0A, 0x0A), word16, 16);
-						--g_uFFFF9E36;
+						g_uFFFF9E36.u0 = (int16) (g_uFFFF9E36.u0 - 0x01);
 						r3_n = g_wFFFF9E7E;
 					}
 					er4_n = SEQ(er4_16_16_n, r4_n);
@@ -872,14 +872,14 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 							er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 12924), 0x1773, 440, 0x0A, 0x0A), word16, 16);
 						}
 					}
-				} while (g_uFFFF9E36 > r1);
+				} while (g_uFFFF9E36.u0 > r1);
 			}
 		}
 		else
 		{
 			er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_n, 0x1A4E), 0x2002, 0x01, r6, 0x07), word16, 16);
 			er4_n = SEQ(er4_16_16_n, 0x07);
-			if (g_uFFFF9E36 < r1)
+			if (g_uFFFF9E36.u0 < r1)
 			{
 				r6.u0 = 0x0A;
 				do
@@ -894,7 +894,7 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 					{
 						g_wFFFF9E7E = 200;
 						er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 12924), 0x1773, 2000, 0x0A, 0x0A), word16, 16);
-						g_uFFFF9E36 = (word32) g_uFFFF9E36 + 1;
+						g_uFFFF9E36.u0 = (int16) (g_uFFFF9E36.u0 + 0x01);
 						r3_n = g_wFFFF9E7E;
 					}
 					er4_n = SEQ(er4_16_16_n, r4_n);
@@ -907,7 +907,7 @@ word32 fn00008BB0(int16 r0, word16 er0_16_n, Eq_n r1, ptr32 er4, Eq_n r6, ptr32 
 							er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 12924), 0x1773, 440, 0x0A, 0x0A), word16, 16);
 						}
 					}
-				} while (g_uFFFF9E36 < r1);
+				} while (g_uFFFF9E36.u0 < r1);
 			}
 		}
 		er0_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x03, r6, 0x07), word16, 16);
@@ -1148,8 +1148,8 @@ word32 fn00009370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, 
 	word16 sp_16_16_n = SLICE(fp, word16, 16);
 	struct Eq_n * sp_n = SEQ(sp_16_16_n, r7_n - 0x06);
 	sp_n->wFFFFFFFE = r4;
-	sp_n->tFFFFFFFC = r5;
-	sp_n->tFFFFFFFA = r6;
+	sp_n->tFFFFFFFC.u1 = (word16) r5;
+	sp_n->tFFFFFFFA.u0 = (int16) r6;
 	sp_n->w0004 = ~0x00;
 	sp_n->w0002 = 0x00;
 	sp_n->w0000 = ~0x610F;
@@ -1208,8 +1208,8 @@ word32 fn00009370(word16 er0_16_n, word16 er2_16_n, word16 er3_16_n, uint16 r4, 
 			break;
 		er2_n = SEQ(er2_16_n, 0x04);
 	} while (sp_n->w0002 == 0x00);
-	Eq_n r6_n = sp_n->tFFFFFFFA;
-	Eq_n r5_n = sp_n->tFFFFFFFC;
+	Eq_n r6_n = sp_n->tFFFFFFFA.u0;
+	Eq_n r5_n = sp_n->tFFFFFFFC.u1;
 	word32 er0_n = SEQ(er0_16_n, sp_n->w0004);
 	ptr32 er4_n = SEQ(er4_16_16_n, sp_n->wFFFFFFFE);
 	er1Out = er1_n;
@@ -1391,7 +1391,7 @@ l00009584:
 					ui16 r3_n = *er0_n;
 					*er0_n = r3_n - 0x01;
 					word16 er3_16_16_n = SLICE(SEQ(er3_16_16_n, r3_n) - 0x01, word16, 16);
-					SEQ(er3_16_16_n, (r3_n - 0x01) * 0x02 + r0_n * 0x0C)->tFFFF9EB0 = r6;
+					SEQ(er3_16_16_n, (r3_n - 0x01) * 0x02 + r0_n * 0x0C)->tFFFF9EB0.u0 = (int16) r6;
 					word32 er1_n;
 					word32 er2_n;
 					word32 er3_n;
@@ -1482,14 +1482,14 @@ l0000966A:
 					word16 r6_n;
 					word32 er5_n;
 					word16 er0_16_16_n = SLICE(fn00008866(SEQ(er0_16_16_n, r7_n + 0x0A), r7_n + 0x0C, er1_16_n, 0x01, er2_16_16_n, er3_16_n, 0x04, er4_16_16_n, r5_n, er5_16_n, r6, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out r6_n), word16, 16);
-					int16 r0_n = *((word32) sp_n + 0x0A);
+					int16 r0_n = sp_n.u2->w000A;
 					word32 er6_n = <invalid>;
 					word16 r1_n = SEQ(SLICE(er2_n, word16, 16), r0_n * 0x02)->wFFFF9EF0;
 					Eq_n r6_n = (word16) er6_n;
 					word32 er4_n;
 					word32 er2_n;
 					word16 er0_16_16_n = SLICE(fn00008AEA(SLICE(fn00008BB0(r0_n, er0_16_16_n, r1_n - 0x01, er4_n, r6_n, out er4_n), word16, 16), SLICE(er4_n, word16, 16), r6_n, out er2_n), word16, 16);
-					int16 r1_n = *((word32) sp_n + 0x0A);
+					int16 r1_n = sp_n.u2->w000A;
 					int16 r5_n = r1_n * 0x02 + ~0x610F;
 					ui16 * er0_n = SEQ(er0_16_16_n, r5_n);
 					ui16 r3_n = *er0_n;
@@ -1549,12 +1549,12 @@ l00009740:
 					word32 er6_n;
 					word32 er2_n;
 					word32 er0_n = fn00008584(SLICE(er0_n, word16, 16), SLICE(er1_n, word16, 16), SLICE(er2_n, word16, 16), SLICE(er3_n, word16, 16), (word16) er4_n, (word16) er5_n, (word16) er6_n, out er1_n, out er2_n, out er3_n, out er4_n, out er5_n, out er6_n);
-					*((word32) sp_n + 2) = 0x3002;
+					sp_n.u2->w0002 = 0x3002;
 					r6 = (word16) er6_n;
 					er3_16_n = SLICE(er3_n, word16, 16);
 					er1_16_n = SLICE(er1_n, word16, 16);
 					er5_16_n = SLICE(er5_n, word16, 16);
-					er0_16_16_n = SLICE(fn00009B90(SEQ(SLICE(fn00009BB6(SEQ(SLICE(er0_n, word16, 16), 0x1FF2), 0x3001, (word16) er0_n, r6, *((word32) sp_n + 2)), word16, 16), 10184), r6), word16, 16);
+					er0_16_16_n = SLICE(fn00009B90(SEQ(SLICE(fn00009BB6(SEQ(SLICE(er0_n, word16, 16), 0x1FF2), 0x3001, (word16) er0_n, r6, sp_n.u2->w0002), word16, 16), 10184), r6), word16, 16);
 					sp_n = (word32) sp_n + 4;
 				}
 				word32 er4_n;
@@ -1567,7 +1567,7 @@ l00009740:
 				word16 er0_16_16_n = SLICE(fn00009C18(SEQ(SLICE(fn00009BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x02, r6, *sp_n), word16, 16), 300), SEQ(SLICE(er4_n, word16, 16), 0x07), r6, out er2_n, out er4_n), word16, 16);
 				*sp_n = r4_n;
 				word16 er0_16_16_n = SLICE(fn00009BB6(SEQ(er0_16_16_n, 0x1A4E), 0x2002, 0x03, r6, *sp_n), word16, 16);
-				g_uFFFF9E36 = r6;
+				g_uFFFF9E36.u0 = (int16) r6;
 				er4_16_n = SLICE(er4_n, word16, 16);
 				er0_16_16_n = SLICE(fn00009DDC(SLICE(fn00009B9A(SEQ(SLICE(fn00009BA6(SEQ(er0_16_16_n, 0x299A), 0x4004, 0x00, r6), word16, 16), 6596), 0x1000, r6), word16, 16), r6), word16, 16);
 				continue;

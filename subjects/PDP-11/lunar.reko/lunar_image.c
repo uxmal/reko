@@ -686,7 +686,7 @@ l0BD0:
 	struct Eq_n * sp_n = sp_n - 0x02;
 	sp_n->t0000.u1 = 0x01;
 	sp_n->wFFFFFFFE = g_w0078;
-	fn0C90(sp_n->wFFFFFFFE, sp_n->t0000);
+	fn0C90(sp_n->wFFFFFFFE, sp_n->t0000.u0);
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	word16 * r3_n = &g_w0030;
 	if ((g_w0070 & 0x01) == 0x00)
@@ -1690,7 +1690,7 @@ void fn13AA(Eq_n ptrArg00)
 {
 	ci16 r0_n;
 	g_w25C0 = 0xF700;
-	ci16 r0_n = *ptrArg00;
+	ci16 r0_n = *ptrArg00.u1;
 	cu16 r1_n = g_w0070;
 	r0_n = r0_n;
 	if (r0_n <= 0x00)

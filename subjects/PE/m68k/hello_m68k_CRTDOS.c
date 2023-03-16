@@ -14,7 +14,7 @@ void fn00003340(struct Eq_n * a5, word16 wArg06)
 	{
 		if (wArg06 - d0_n->w0000 == 0x00)
 		{
-			a5->tFFFFF93C.u1 = (uint32) a5->aFFFFFAFE[d2_n].w0000;
+			a5->tFFFFF93C.u0 = (int32) (uint32) a5->aFFFFFAFE[d2_n].w0000;
 			return;
 		}
 		++d0_n;

@@ -47,7 +47,7 @@ Eq_47: (union "Eq_47" (int32 u0) (ptr32 u1))
 	T_57 (in Mem0[0x10AA4<32>:word32] @ 000006C4 : word32)
 Eq_55: (union "Eq_55" (int32 u0) (uint32 u1))
 	T_55 (in r5_12 @ 000006C4 : Eq_55)
-	T_61 (in g_t10AA4 - 0x00010A84<p32> >> 2<8> @ 000006C4 : word32)
+	T_61 (in g_t10AA4.u0 - 0x00010A84<p32> >> 2<8> @ 000006C4 : word32)
 Eq_58: (union "Eq_58" (int32 u0) (ptr32 u1))
 	T_58 (in 0x00010A84<p32> @ 000006C4 : ptr32)
 Eq_63: (union "Eq_63" (int32 u0) (uint32 u1))
@@ -305,7 +305,7 @@ T_48: (in 0x00010A84<p32> @ 00000688 : ptr32)
   Class: Eq_47
   DataType: ptr32
   OrigDataType: ptr32
-T_49: (in g_t10AA4 == 0x00010A84<p32> @ 00000688 : bool)
+T_49: (in g_t10AA4.u0 == 0x00010A84<p32> @ 00000688 : bool)
   Class: Eq_49
   DataType: bool
   OrigDataType: bool
@@ -345,7 +345,7 @@ T_58: (in 0x00010A84<p32> @ 000006C4 : ptr32)
   Class: Eq_58
   DataType: int32
   OrigDataType: (union (int32 u0) (ptr32 u1))
-T_59: (in g_t10AA4 - 0x00010A84<p32> @ 000006C4 : word32)
+T_59: (in g_t10AA4.u0 - 0x00010A84<p32> @ 000006C4 : word32)
   Class: Eq_59
   DataType: int32
   OrigDataType: int32
@@ -353,7 +353,7 @@ T_60: (in 2<8> @ 000006C4 : byte)
   Class: Eq_60
   DataType: byte
   OrigDataType: byte
-T_61: (in g_t10AA4 - 0x00010A84<p32> >> 2<8> @ 000006C4 : word32)
+T_61: (in g_t10AA4.u0 - 0x00010A84<p32> >> 2<8> @ 000006C4 : word32)
   Class: Eq_55
   DataType: Eq_55
   OrigDataType: int32
@@ -444,7 +444,7 @@ T_82: (in __cxa_finalize == 0<32> @ 0000072C : bool)
 T_83: (in r2_40 @ 0000075C : Eq_83)
   Class: Eq_83
   DataType: Eq_83
-  OrigDataType: up32
+  OrigDataType: int32
 T_84: (in 0x00010AF4<p32> @ 0000075C : ptr32)
   Class: Eq_84
   DataType: (ptr32 Eq_83)
@@ -804,7 +804,7 @@ T_172: (in r2_38 + 0<32> @ 0000087C : word32)
 T_173: (in Mem51[r2_38 + 0<32>:byte] @ 0000087C : byte)
   Class: Eq_163
   DataType: Eq_163
-  OrigDataType: byte
+  OrigDataType: word32
 T_174: (in 0<32> @ 00000888 : word32)
   Class: Eq_174
   DataType: word32

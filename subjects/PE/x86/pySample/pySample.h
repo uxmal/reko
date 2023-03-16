@@ -2401,7 +2401,7 @@ T_460: (in Mem256[esp_100 + -4<i32>:word32] @ 1000148D : word32)
   Class: Eq_457
   DataType: Eq_457
   OrigDataType: word32
-T_461: (in fn1000182D(ebp_13, esp_100->tFFFFFFFC) @ 1000148D : word32)
+T_461: (in fn1000182D(ebp_13, esp_100->tFFFFFFFC.u0) @ 1000148D : word32)
   Class: Eq_376
   DataType: ptr32
   OrigDataType: word32
@@ -4165,11 +4165,11 @@ T_901: (in Mem49[&tLoc14 + 0<32>:word32] @ 100018CD : word32)
   Class: Eq_901
   DataType: word32
   OrigDataType: word32
-T_902: (in tLoc14.dw0004 ^ tLoc14 @ 100018CD : word32)
+T_902: (in tLoc14.dw0004 ^ (tLoc14.u).LowPart @ 100018CD : word32)
   Class: Eq_902
   DataType: ui32
   OrigDataType: ui32
-T_903: (in esi_46 ^ (tLoc14.dw0004 ^ tLoc14) @ 100018CD : word32)
+T_903: (in esi_46 ^ (tLoc14.dw0004 ^ (tLoc14.u).LowPart) @ 100018CD : word32)
   Class: Eq_819
   DataType: ui32
   OrigDataType: ui32

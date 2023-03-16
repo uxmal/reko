@@ -222,12 +222,12 @@ Eq_151: (union "Eq_151" (_onexit_t u0) (HMODULE u1))
 	T_730 (in Mem56[ebp_13 + 8<i32>:word32] @ 10001628 : word32)
 	T_733 (in func @ 10001630 : _onexit_t)
 	T_738 (in Mem59[esp_30 + -16<i32>:_onexit_t] @ 10001630 : _onexit_t)
-	T_745 (in __dllonexit(esp_30->tFFFFFFF0, esp_30->ptrFFFFFFF4, esp_30->ptrFFFFFFF8) @ 10001630 : _onexit_t)
+	T_745 (in __dllonexit(esp_30->tFFFFFFF0.u0, esp_30->ptrFFFFFFF4, esp_30->ptrFFFFFFF8) @ 10001630 : _onexit_t)
 	T_748 (in Mem61[ebp_13 + -36<i32>:word32] @ 10001630 : word32)
 	T_778 (in Mem83[ebp_13 + -36<i32>:word32] @ 1000165C : word32)
 	T_781 (in _Func @ 100015F5 : _onexit_t)
 	T_784 (in Mem25[ebp_13 + 8<i32>:word32] @ 100015F5 : word32)
-	T_785 (in _onexit(ebp_13->t0008) @ 100015F5 : _onexit_t)
+	T_785 (in _onexit(ebp_13->t0008.u0) @ 100015F5 : _onexit_t)
 	T_907 (in eax_36 @ 10001762 : Eq_151)
 	T_910 (in Mem24[ebp_13 + 8<i32>:word32] @ 10001762 : word32)
 	T_944 (in hLibModule @ 100017DA : HMODULE)
@@ -265,7 +265,7 @@ Eq_152: DWORD
 	T_480 (in eax_115 @ 100013FD : Eq_152)
 	T_484 (in dwArg08 @ 100013FD : Eq_152)
 	T_490 (in Mem114[esp_106 + -4<i32>:word32] @ 100013FD : word32)
-	T_491 (in fn100017C6(esp_106->tFFFFFFF8, esp_106->tFFFFFFFC) @ 100013FD : word32)
+	T_491 (in fn100017C6(esp_106->tFFFFFFF8.u0, esp_106->tFFFFFFFC) @ 100013FD : word32)
 	T_494 (in Mem122[ebp_13 + -28<i32>:word32] @ 10001402 : word32)
 	T_497 (in 1<32> @ 10001408 : word32)
 	T_501 (in Mem76[ebp_13 + -28<i32>:word32] @ 100013E1 : word32)
@@ -275,22 +275,22 @@ Eq_152: DWORD
 	T_518 (in Mem85[esp_80 + -4<i32>:word32] @ 100013E8 : word32)
 	T_522 (in eax_90 @ 100013EA : Eq_152)
 	T_530 (in Mem88[esp_80 + -4<i32>:word32] @ 100013EA : word32)
-	T_537 (in fn100011E9(esp_80->tFFFFFFF8, esp_80->tFFFFFFFC, esp_80->t0000, out ebx_113, out esi_110, out edi_107) @ 100013EA : word32)
+	T_537 (in fn100011E9(esp_80->tFFFFFFF8.u0, esp_80->tFFFFFFFC, esp_80->t0000, out ebx_113, out esi_110, out edi_107) @ 100013EA : word32)
 	T_540 (in Mem101[ebp_13 + -28<i32>:word32] @ 100013EF : word32)
 	T_543 (in 0<32> @ 100013F4 : word32)
 	T_545 (in 0<32> @ 10001430 : word32)
 	T_547 (in 0<32> @ 1000140C : word32)
 	T_554 (in Mem131[esp_106 + -4<i32>:word32] @ 1000140F : word32)
 	T_564 (in Mem133[esp_106 + -4<i32>:word32] @ 10001411 : word32)
-	T_565 (in fn100017C6(esp_106->tFFFFFFF8, esp_106->tFFFFFFFC) @ 10001411 : word32)
+	T_565 (in fn100017C6(esp_106->tFFFFFFF8.u0, esp_106->tFFFFFFFC) @ 10001411 : word32)
 	T_569 (in 0<32> @ 10001417 : word32)
 	T_572 (in Mem143[esp_106 + -4<i32>:word32] @ 10001417 : word32)
 	T_582 (in Mem145[esp_106 + -4<i32>:word32] @ 1000141A : word32)
-	T_589 (in fn100011E9(esp_106->tFFFFFFF8, esp_106->tFFFFFFFC, esp_106->t0000, out ebx_113, out esi_110, out edi_107) @ 1000141A : word32)
+	T_589 (in fn100011E9(esp_106->tFFFFFFF8.u0, esp_106->tFFFFFFFC, esp_106->t0000, out ebx_113, out esi_110, out edi_107) @ 1000141A : word32)
 	T_607 (in Mem190[esp_184 + -4<i32>:word32] @ 10001438 : word32)
 	T_614 (in eax_197 @ 1000143A : Eq_152)
 	T_621 (in Mem194[esp_184 + -4<i32>:word32] @ 1000143A : word32)
-	T_628 (in fn100011E9(esp_184->tFFFFFFF8, esp_184->tFFFFFFFC, esp_184->t0000, out ebx_198, out esi_200, out edi_201) @ 1000143A : word32)
+	T_628 (in fn100011E9(esp_184->tFFFFFFF8.u0, esp_184->tFFFFFFFC, esp_184->t0000, out ebx_198, out esi_200, out edi_201) @ 1000143A : word32)
 	T_631 (in 0<32> @ 10001441 : word32)
 	T_633 (in 3<32> @ 10001435 : word32)
 	T_637 (in Mem218[ebp_13 + -28<i32>:word32] @ 1000144A : word32)
@@ -2486,7 +2486,7 @@ T_460: (in Mem256[esp_100 + -4<i32>:word32] @ 1000148D : word32)
   Class: Eq_457
   DataType: Eq_457
   OrigDataType: word32
-T_461: (in fn1000182D(ebp_13, esp_100->tFFFFFFFC) @ 1000148D : word32)
+T_461: (in fn1000182D(ebp_13, esp_100->tFFFFFFFC.u0) @ 1000148D : word32)
   Class: Eq_376
   DataType: ptr32
   OrigDataType: word32
@@ -2606,7 +2606,7 @@ T_490: (in Mem114[esp_106 + -4<i32>:word32] @ 100013FD : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
-T_491: (in fn100017C6(esp_106->tFFFFFFF8, esp_106->tFFFFFFFC) @ 100013FD : word32)
+T_491: (in fn100017C6(esp_106->tFFFFFFF8.u0, esp_106->tFFFFFFFC) @ 100013FD : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
@@ -2790,7 +2790,7 @@ T_536: (in out edi_107 @ 100013EA : ptr32)
   Class: Eq_156
   DataType: ptr32
   OrigDataType: ptr32
-T_537: (in fn100011E9(esp_80->tFFFFFFF8, esp_80->tFFFFFFFC, esp_80->t0000, out ebx_113, out esi_110, out edi_107) @ 100013EA : word32)
+T_537: (in fn100011E9(esp_80->tFFFFFFF8.u0, esp_80->tFFFFFFFC, esp_80->t0000, out ebx_113, out esi_110, out edi_107) @ 100013EA : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
@@ -2902,7 +2902,7 @@ T_564: (in Mem133[esp_106 + -4<i32>:word32] @ 10001411 : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
-T_565: (in fn100017C6(esp_106->tFFFFFFF8, esp_106->tFFFFFFFC) @ 10001411 : word32)
+T_565: (in fn100017C6(esp_106->tFFFFFFF8.u0, esp_106->tFFFFFFFC) @ 10001411 : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
@@ -2998,7 +2998,7 @@ T_588: (in out edi_107 @ 1000141A : ptr32)
   Class: Eq_156
   DataType: ptr32
   OrigDataType: ptr32
-T_589: (in fn100011E9(esp_106->tFFFFFFF8, esp_106->tFFFFFFFC, esp_106->t0000, out ebx_113, out esi_110, out edi_107) @ 1000141A : word32)
+T_589: (in fn100011E9(esp_106->tFFFFFFF8.u0, esp_106->tFFFFFFFC, esp_106->t0000, out ebx_113, out esi_110, out edi_107) @ 1000141A : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
@@ -3154,7 +3154,7 @@ T_627: (in out edi_201 @ 1000143A : ptr32)
   Class: Eq_156
   DataType: ptr32
   OrigDataType: ptr32
-T_628: (in fn100011E9(esp_184->tFFFFFFF8, esp_184->tFFFFFFFC, esp_184->t0000, out ebx_198, out esi_200, out edi_201) @ 1000143A : word32)
+T_628: (in fn100011E9(esp_184->tFFFFFFF8.u0, esp_184->tFFFFFFFC, esp_184->t0000, out ebx_198, out esi_200, out edi_201) @ 1000143A : word32)
   Class: Eq_152
   DataType: Eq_152
   OrigDataType: word32
@@ -3361,7 +3361,7 @@ T_678: (in dwLoc0C @ 100015CF : word32)
 T_679: (in eax_111 @ 100015CF : Eq_151)
   Class: Eq_151
   DataType: Eq_151
-  OrigDataType: (union (_onexit_t u1))
+  OrigDataType: _onexit_t
 T_680: (in esp_80 @ 100015CF : (ptr32 Eq_680))
   Class: Eq_680
   DataType: (ptr32 Eq_680)
@@ -3622,7 +3622,7 @@ T_744: (in Mem59[esp_30 + -8<i32>:(ptr32 (ptr32 PVFV))] @ 10001630 : (ptr32 (ptr
   Class: Eq_735
   DataType: (ptr32 (ptr32 Eq_735))
   OrigDataType: (ptr32 (ptr32 PVFV))
-T_745: (in __dllonexit(esp_30->tFFFFFFF0, esp_30->ptrFFFFFFF4, esp_30->ptrFFFFFFF8) @ 10001630 : _onexit_t)
+T_745: (in __dllonexit(esp_30->tFFFFFFF0.u0, esp_30->ptrFFFFFFF4, esp_30->ptrFFFFFFF8) @ 10001630 : _onexit_t)
   Class: Eq_151
   DataType: Eq_151
   OrigDataType: _onexit_t
@@ -3782,7 +3782,7 @@ T_784: (in Mem25[ebp_13 + 8<i32>:word32] @ 100015F5 : word32)
   Class: Eq_151
   DataType: Eq_151
   OrigDataType: _onexit_t
-T_785: (in _onexit(ebp_13->t0008) @ 100015F5 : _onexit_t)
+T_785: (in _onexit(ebp_13->t0008.u0) @ 100015F5 : _onexit_t)
   Class: Eq_151
   DataType: Eq_151
   OrigDataType: _onexit_t
@@ -3810,7 +3810,7 @@ T_791: (in Mem95[esp_80 + -4<i32>:word32] @ 1000165F : word32)
   Class: Eq_457
   DataType: Eq_457
   OrigDataType: word32
-T_792: (in fn1000182D(ebp_13, esp_80->tFFFFFFFC) @ 1000165F : word32)
+T_792: (in fn1000182D(ebp_13, esp_80->tFFFFFFFC.u0) @ 1000165F : word32)
   Class: Eq_376
   DataType: ptr32
   OrigDataType: word32
@@ -4826,11 +4826,11 @@ T_1045: (in Mem49[&tLoc14 + 0<32>:word32] @ 100018CD : word32)
   Class: Eq_1045
   DataType: word32
   OrigDataType: word32
-T_1046: (in tLoc14.dw0004 ^ tLoc14 @ 100018CD : word32)
+T_1046: (in tLoc14.dw0004 ^ (tLoc14.u).LowPart @ 100018CD : word32)
   Class: Eq_1046
   DataType: ui32
   OrigDataType: ui32
-T_1047: (in esi_46 ^ (tLoc14.dw0004 ^ tLoc14) @ 100018CD : word32)
+T_1047: (in esi_46 ^ (tLoc14.dw0004 ^ (tLoc14.u).LowPart) @ 100018CD : word32)
   Class: Eq_963
   DataType: ui32
   OrigDataType: ui32

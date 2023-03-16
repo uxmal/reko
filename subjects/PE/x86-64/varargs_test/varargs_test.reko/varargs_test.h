@@ -3994,7 +3994,7 @@ T_819: (in 0x20<64> @ 00000001400018DB : word64)
   Class: Eq_819
   DataType: word64
   OrigDataType: word64
-T_820: (in (uint64) tArg18 << 0x20<64> @ 00000001400018DB : word64)
+T_820: (in (uint64) tArg18.u.LowPart << 0x20<64> @ 00000001400018DB : word64)
   Class: Eq_820
   DataType: ui64
   OrigDataType: ui64
@@ -4014,11 +4014,11 @@ T_824: (in Mem31[&tArg18 + 0<64>:word64] @ 00000001400018DB : word64)
   Class: Eq_824
   DataType: word64
   OrigDataType: word64
-T_825: (in (uint64) tArg18 << 0x20<64> ^ tArg18 @ 00000001400018DB : word64)
+T_825: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart @ 00000001400018DB : word64)
   Class: Eq_825
   DataType: ui64
   OrigDataType: ui64
-T_826: (in (uint64) tArg18 << 0x20<64> ^ tArg18 ^ v14_30 @ 00000001400018DB : word64)
+T_826: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart ^ v14_30 @ 00000001400018DB : word64)
   Class: Eq_826
   DataType: ui64
   OrigDataType: ui64
@@ -4030,7 +4030,7 @@ T_828: (in fp + 8<i64> @ 00000001400018DB : word64)
   Class: Eq_828
   DataType: ptr64
   OrigDataType: ptr64
-T_829: (in (uint64) tArg18 << 0x20<64> ^ tArg18 ^ v14_30 ^ fp + 8<i64> @ 00000001400018DB : word64)
+T_829: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart ^ v14_30 ^ fp + 8<i64> @ 00000001400018DB : word64)
   Class: Eq_813
   DataType: ui64
   OrigDataType: ui64

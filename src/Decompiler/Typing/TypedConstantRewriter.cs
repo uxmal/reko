@@ -44,7 +44,7 @@ namespace Reko.Typing
         private Constant? c;
         private Expression? basePtr;
 		private PrimitiveType? pOrig;
-		private bool dereferenced;
+        private DataType? dtResult;
 
         public TypedConstantRewriter(Program program, ITypeStore store, DecompilerEventListener eventListener)
 		{
@@ -65,13 +65,15 @@ namespace Reko.Typing
             }
         }
 
+        private bool Dereferenced => dtResult is not null;
+
         /// <summary>
         /// Rewrites a machine word constant depending on its data type.
         /// </summary>
         /// <param name="c"></param>
         /// <param name="dereferenced"></param>
         /// <returns></returns>
-        public Expression Rewrite(Constant c, Expression? basePtr, bool dereferenced)
+        public Expression Rewrite(Constant c, Expression? basePtr, DataType? dtResult)
         {
             this.c = c;
             this.basePtr = basePtr;
@@ -92,12 +94,13 @@ namespace Reko.Typing
                 }
             }
             var dt = dtInferred.ResolveAs<DataType>()!;
-            this.dereferenced = dereferenced;
+            this.dtResult = dtResult;
             return dt.Accept(this);
         }
 
-        public Expression Rewrite(Address addr, Expression? basePtr, bool dereferenced)
+        public Expression Rewrite(Address addr, Expression? basePtr, DataType? dtResult)
         {
+            this.dtResult = dtResult;
             if (addr.Selector.HasValue)
             {
                 if (!TryGetIdentifierForSelector(addr.Selector.Value, out Identifier? segId))
@@ -114,7 +117,7 @@ namespace Reko.Typing
                     //$BUG: create a fake field for now.
                     var field = new StructureField((int)addr.Offset, new UnknownType());
                     Expression x = new FieldAccess(new UnknownType(), new Dereference(segId.DataType, segId), field);
-                    if (!dereferenced)
+                    if (!Dereferenced)
                     {
                         x = new UnaryExpression(Operator.AddrOf, addr.DataType, x);
                     }
@@ -137,7 +140,7 @@ namespace Reko.Typing
 
                 var f = EnsureFieldAtOffset(baseType, pointee, c.ToInt32());
                 Expression ex = new FieldAccess(f.DataType, new Dereference(ptrSeg, segId), f);
-                if (dereferenced || pointee is ArrayType)
+                if (Dereferenced || pointee is ArrayType)
                 {
                     return ex;
                 }
@@ -154,7 +157,6 @@ namespace Reko.Typing
                 store.SetTypeVariable(this.c, tvAddr); //$REVIEW: iffy, we take over the type variable, is this ok?
                 var dtInferred = tvAddr.DataType!.ResolveAs<DataType>()!;
                 this.pOrig = tvAddr.OriginalDataType as PrimitiveType;
-                this.dereferenced = dereferenced;
                 return dtInferred.Accept(this);
             }
         }
@@ -247,7 +249,7 @@ namespace Reko.Typing
             var dt = memptr.Pointee.ResolveAs<DataType>()!;
             var f = EnsureFieldAtOffset(baseType, dt, c!.ToInt32());
             Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f);
-			if (dereferenced)
+			if (Dereferenced)
 			{
 				ex.DataType = memptr.Pointee;
 			}
@@ -295,7 +297,7 @@ namespace Reko.Typing
                     //$TODO: probably should emit a reinterpret_cast here.
                     e = new Cast(ptr, c);
                     store.SetTypeVariable(e, store.GetTypeVariable(c));
-                    if (dereferenced)
+                    if (Dereferenced)
                     {
                         e = new Dereference(ptr.Pointee, e);
                     }
@@ -310,7 +312,7 @@ namespace Reko.Typing
                     var rdr = program.CreateImageReader(program.Architecture, addr);
                     return rdr.ReadCString(charType, program.TextEncoding);
                 }
-                if (dereferenced &&
+                if (Dereferenced &&
                     TryReadReal(addr, dt, out var cReal) &&
                     IsPtrToReadonlySection(addr))
                 {
@@ -412,11 +414,11 @@ namespace Reko.Typing
                 f = new StructureField(offset, dt);
                 GlobalVars.Fields.Add(f);
             }
-            if (dereferenced || f.Offset != offset)
+            if (Dereferenced || f.Offset != offset)
             {
                 var ceb = new ComplexExpressionBuilder(
                     program, store, null, globals, null, offset);
-                return ceb.BuildComplex(dereferenced);
+                return ceb.BuildComplex(dtResult);
             }
             //$REVIEW: We can't use ComplexExpresionBuilder to rewrite pointers to
             // global variable. It's too aggressive now
@@ -428,7 +430,7 @@ namespace Reko.Typing
 
         private Expression CreateAddrOf(Expression e, DataType dt)
         {
-            if (dereferenced)
+            if (Dereferenced)
             {
                 e.DataType = dt;
                 return e;

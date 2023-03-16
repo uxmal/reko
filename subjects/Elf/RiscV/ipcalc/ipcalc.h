@@ -5466,7 +5466,7 @@ T_147: (in Mem1336[gp + -1936<i64>:word64] @ 00000000000153E8 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_148: (in a5_7 != gp->tFFFFF870 @ 00000000000153E8 : bool)
+T_148: (in a5_7 != (gp->tFFFFF870).u0 @ 00000000000153E8 : bool)
   Class: Eq_148
   DataType: bool
   OrigDataType: bool
@@ -7976,7 +7976,7 @@ T_763: (in fn000000000001654C(gp, a3_1048, a4_1004, a5_1005, a6_1006, a7, out a4
 T_764: (in a5_1204 @ 00000000000157BC : Eq_521)
   Class: Eq_521
   DataType: Eq_521
-  OrigDataType: word64
+  OrigDataType: int64
 T_765: (in &tLoc0188 @ 00000000000157BC : (ptr64 (struct 00C8)))
   Class: Eq_765
   DataType: (ptr64 Eq_765)
@@ -11909,7 +11909,7 @@ T_1747: (in Mem76[gp + -1936<i64>:word64] @ 0000000000016480 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_1748: (in a5_27 != gp->tFFFFF870 @ 0000000000016480 : bool)
+T_1748: (in a5_27 != (gp->tFFFFF870).u0 @ 0000000000016480 : bool)
   Class: Eq_1748
   DataType: bool
   OrigDataType: bool
@@ -12713,7 +12713,7 @@ T_1948: (in Mem45[gp + -1936<i64>:word64] @ 00000000000166A4 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_1949: (in a5_7 != gp->tFFFFF870 @ 00000000000166A4 : bool)
+T_1949: (in a5_7 != (gp->tFFFFF870).u0 @ 00000000000166A4 : bool)
   Class: Eq_1949
   DataType: bool
   OrigDataType: bool
@@ -13141,7 +13141,7 @@ T_2055: (in Mem102[gp + -1936<i64>:word64] @ 00000000000167FC : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_2056: (in a5_7 != gp->tFFFFF870 @ 00000000000167FC : bool)
+T_2056: (in a5_7 != (gp->tFFFFF870).u0 @ 00000000000167FC : bool)
   Class: Eq_2056
   DataType: bool
   OrigDataType: bool
@@ -13309,7 +13309,7 @@ T_2097: (in Mem23[gp + -1936<i64>:word64] @ 0000000000016870 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_2098: (in a5_7 != gp->tFFFFF870 @ 0000000000016870 : bool)
+T_2098: (in a5_7 != (gp->tFFFFF870).u0 @ 0000000000016870 : bool)
   Class: Eq_2098
   DataType: bool
   OrigDataType: bool
@@ -13925,7 +13925,7 @@ T_2251: (in Mem61[gp + -1936<i64>:word64] @ 000000000001691C : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_2252: (in a4_7 != gp->tFFFFF870 @ 000000000001691C : bool)
+T_2252: (in a4_7 != (gp->tFFFFF870).u0 @ 000000000001691C : bool)
   Class: Eq_2252
   DataType: bool
   OrigDataType: bool
@@ -14225,7 +14225,7 @@ T_2324: (in Mem32[gp + -1936<i64>:word64] @ 0000000000016AB4 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_2325: (in a5_7 != gp->tFFFFF870 @ 0000000000016AB4 : bool)
+T_2325: (in a5_7 != (gp->tFFFFF870).u0 @ 0000000000016AB4 : bool)
   Class: Eq_2325
   DataType: bool
   OrigDataType: bool
@@ -15405,7 +15405,7 @@ T_2619: (in Mem452[gp + -1936<i64>:word64] @ 0000000000016E2C : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_2620: (in a5_7 != gp->tFFFFF870 @ 0000000000016E2C : bool)
+T_2620: (in a5_7 != (gp->tFFFFF870).u0 @ 0000000000016E2C : bool)
   Class: Eq_2620
   DataType: bool
   OrigDataType: bool
@@ -17609,7 +17609,7 @@ T_3170: (in Mem60[gp + -1936<i64>:word64] @ 00000000000173A4 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_3171: (in a4_7 != gp->tFFFFF870 @ 00000000000173A4 : bool)
+T_3171: (in a4_7 != (gp->tFFFFF870).u0 @ 00000000000173A4 : bool)
   Class: Eq_3171
   DataType: bool
   OrigDataType: bool
@@ -18409,7 +18409,7 @@ T_3370: (in Mem107[a3_105 + 0<64>:byte] @ 00000000000176B0 : byte)
   Class: Eq_3370
   DataType: byte
   OrigDataType: byte
-T_3371: (in *a5_102 & *a3_105 @ 00000000000176B0 : byte)
+T_3371: (in a5_102->u0 & a3_105->u0 @ 00000000000176B0 : byte)
   Class: Eq_3371
   DataType: byte
   OrigDataType: byte
@@ -18861,7 +18861,7 @@ T_3483: (in Mem312[gp + -1936<i64>:word64] @ 000000000001777C : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_3484: (in a5_7 != gp->tFFFFF870 @ 000000000001777C : bool)
+T_3484: (in a5_7 != (gp->tFFFFF870).u0 @ 000000000001777C : bool)
   Class: Eq_3484
   DataType: bool
   OrigDataType: bool
@@ -18997,7 +18997,7 @@ T_3517: (in CONVERT(Mem162[s9_103 + 0<64>:byte], byte, word64) @ 000000000001789
   Class: Eq_3517
   DataType: word64
   OrigDataType: word64
-T_3518: (in ~(word64) *s9_103 @ 0000000000017890 : word64)
+T_3518: (in ~(word64) s9_103->u0 @ 0000000000017890 : word64)
   Class: Eq_3518
   DataType: word64
   OrigDataType: word64
@@ -19017,7 +19017,7 @@ T_3522: (in Mem162[s8_101 + 0<64>:byte] @ 0000000000017890 : byte)
   Class: Eq_3522
   DataType: byte
   OrigDataType: byte
-T_3523: (in (byte) ~(word64) *s9_103 | *s8_101 @ 0000000000017890 : byte)
+T_3523: (in (byte) ~(word64) s9_103->u0 | s8_101->u0 @ 0000000000017890 : byte)
   Class: Eq_3523
   DataType: byte
   OrigDataType: byte
@@ -19388,7 +19388,7 @@ T_3614: (in a4 @ 0000000000017924 : Eq_162)
 T_3615: (in a6 @ 0000000000017924 : Eq_163)
   Class: Eq_163
   DataType: Eq_163
-  OrigDataType: word64
+  OrigDataType: ptr64
 T_3616: (in s0_107 @ 0000000000017924 : int64)
   Class: Eq_3610
   DataType: int64
@@ -19497,7 +19497,7 @@ T_3642: (in 0<64> @ 0000000000017968 : word64)
   Class: Eq_3641
   DataType: word64
   OrigDataType: word64
-T_3643: (in (word64) gp->tFFFFFCE0 != 0<64> @ 0000000000017968 : bool)
+T_3643: (in (word64) gp->tFFFFFCE0.u0 != 0<64> @ 0000000000017968 : bool)
   Class: Eq_3643
   DataType: bool
   OrigDataType: bool
@@ -19525,7 +19525,7 @@ T_3649: (in gp + -800<i64> @ 00000000000179B0 : word64)
   Class: Eq_1841
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_3650: (in fputs(&gp->tFFFFFCE0, a1) @ 00000000000179B0 : int32)
+T_3650: (in fputs(&gp->tFFFFFCE0.u0, a1) @ 00000000000179B0 : int32)
   Class: Eq_1847
   DataType: int32
   OrigDataType: int32
@@ -19621,7 +19621,7 @@ T_3673: (in 0<32> @ 0000000000017B34 : word32)
   Class: Eq_2943
   DataType: word32
   OrigDataType: word32
-T_3674: (in __snprintf_chk(&gp->tFFFFFCE0, (size_t) 256<i64>, 1<i32>, (size_t) 256<i64>, "ipcalc: could not open %s\n", 0<32>) @ 0000000000017B34 : int32)
+T_3674: (in __snprintf_chk(&gp->tFFFFFCE0.u0, (size_t) 256<i64>, 1<i32>, (size_t) 256<i64>, "ipcalc: could not open %s\n", 0<32>) @ 0000000000017B34 : int32)
   Class: Eq_2944
   DataType: int32
   OrigDataType: int32
@@ -22741,7 +22741,7 @@ T_4453: (in Mem29[gp + -1936<i64>:word64] @ 0000000000017F90 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_4454: (in a5_7 != gp->tFFFFF870 @ 0000000000017F90 : bool)
+T_4454: (in a5_7 != (gp->tFFFFF870).u0 @ 0000000000017F90 : bool)
   Class: Eq_4454
   DataType: bool
   OrigDataType: bool
@@ -23149,7 +23149,7 @@ T_4555: (in Mem132[gp + -1936<i64>:word64] @ 0000000000018250 : word64)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: word64
-T_4556: (in a5_7 != gp->tFFFFF870 @ 0000000000018250 : bool)
+T_4556: (in a5_7 != (gp->tFFFFF870).u0 @ 0000000000018250 : bool)
   Class: Eq_4556
   DataType: bool
   OrigDataType: bool

@@ -38,6 +38,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		private Pointer ptrUnion;
         private Pointer ptrInt;
         private Pointer ptrWord;
+        private Pointer ptrDouble;
         private Identifier globals;
         private ExpressionEmitter m;
 
@@ -82,6 +83,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 
             ptrInt = new Pointer(PrimitiveType.Int32, 32);
             ptrWord = new Pointer(PrimitiveType.Word32, 32);
+            ptrDouble = new Pointer(PrimitiveType.Real64, 32);
             m = new ExpressionEmitter();
 		}
 
@@ -155,7 +157,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
 			var id = new Identifier("id", PrimitiveType.Word32, null);
             var ceb = new ComplexExpressionBuilder(program, store, null, id, null, 0);
-			Assert.AreEqual("id", ceb.BuildComplex(false).ToString());
+			Assert.AreEqual("id", ceb.BuildComplex(null).ToString());
 		}
 
 		[Test]
@@ -164,7 +166,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrPoint, Ptr32(PrimitiveType.Word32));
 			var ceb = new ComplexExpressionBuilder(program, store,null, ptr, null, 0);
-			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex(false).ToString());
+			Assert.AreEqual("&ptr->dw0000", ceb.BuildComplex(null).ToString());
 		}
 
 		[Test]
@@ -173,7 +175,8 @@ namespace Reko.UnitTests.Decompiler.Typing
 			var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrPoint, Ptr32(PrimitiveType.Word32));
             var ceb = new ComplexExpressionBuilder(program, store,null, ptr, null, 0);
-			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Word32);
+			Assert.AreEqual("ptr->dw0000", e.ToString());
 		}
 
         [Test]
@@ -183,7 +186,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var addrOf = m.AddrOf(PrimitiveType.Ptr32, id);
             CreateTv(addrOf, Ptr32(Ptr32(PrimitiveType.Int32)), Ptr32(PrimitiveType.Word32));
             var ceb = CreateBuilder(null, addrOf);
-            Assert.AreEqual("&id", ceb.BuildComplex(false).ToString());
+            Assert.AreEqual("&id", ceb.BuildComplex(null).ToString());
         }
 
         [Test]
@@ -193,7 +196,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             var addrOf = m.AddrOf(PrimitiveType.Ptr32, id);
             CreateTv(addrOf, Ptr32(Ptr32(PrimitiveType.Int32)), Ptr32(PrimitiveType.Word32));
             var ceb = CreateBuilder(null, addrOf);
-            Assert.AreEqual("id", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Word32);
+            Assert.AreEqual("id", e.ToString());
         }
 
         [Test]
@@ -202,7 +206,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var id = new Identifier("id", PrimitiveType.Word32, null);
             CreateTv(id, Ptr32(VoidType.Instance), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 4);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) id + 4<i32>", e.ToString());
         }
 
@@ -213,7 +217,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var index = new Identifier("index", PrimitiveType.Word32, null);
             CreateTv(id, Ptr32(new UnknownType()), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, index, 0);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) id + index", e.ToString());
         }
 
@@ -225,7 +229,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var index = m.IMul(indexId, 16);
             CreateTv(id, Ptr32(new CodeType()), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, index, -4);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual(
                 "(char *) id + (index * 0x10<32> - 4<i32>)",
                 e.ToString());
@@ -238,7 +242,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var index = new Identifier("index", PrimitiveType.Word32, null);
             CreateTv(id, Ptr32(Ptr32(PrimitiveType.Int32)), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, index, -8);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) id + (index - 8<i32>)", e.ToString());
         }
 
@@ -249,7 +253,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var str = Struct(Fld(4, PrimitiveType.Int32));
             CreateTv(id, Ptr32(str), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 6);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) &id->dw0004 + 2<i32>", e.ToString());
         }
 
@@ -260,7 +264,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var str = Struct(Fld(4, PrimitiveType.Int32));
             CreateTv(id, Ptr32(str), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 8);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("&id->dw0004 + 1<i32>", e.ToString());
         }
 
@@ -274,7 +278,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var str = Struct(Fld(4, nestedStr));
             CreateTv(id, Ptr32(str), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 8);
-            var e = ceb.BuildComplex(true);
+            var e = ceb.BuildComplex(PrimitiveType.Real32);
             Assert.AreEqual("id->t0004.r0004", e.ToString());
         }
 
@@ -284,7 +288,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var id = new Identifier("id", PrimitiveType.Word32, null);
             CreateTv(id, Ptr32(PrimitiveType.Int32), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 6);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) id + 6<i32>", e.ToString());
         }
 
@@ -294,7 +298,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var id = new Identifier("id", PrimitiveType.Word32, null);
             CreateTv(id, ptrUnion.Pointee, PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 2);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(word32) id.w + 2<i32>", e.ToString());
         }
 
@@ -304,7 +308,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var id = new Identifier("id", PrimitiveType.Word32, null);
             CreateTv(id, ptrUnion.Pointee, PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, -2);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(word32) id.w - 2<i32>", e.ToString());
         }
 
@@ -315,7 +319,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var str = Struct(Fld(8, PrimitiveType.Int32));
             CreateTv(id, Ptr32(str), PrimitiveType.Word32);
             var ceb = CreateBuilder(null, id, null, 4);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) id + 4<i32>", e.ToString());
         }
 
@@ -325,7 +329,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             var id = new Identifier("id", PrimitiveType.Word32, null);
             CreateTv(id, ptrUnion, PrimitiveType.Real64);
             var ceb = CreateBuilder(null, id, null, 2);
-            var e = ceb.BuildComplex(false);
+            var e = ceb.BuildComplex(null);
             Assert.AreEqual("(char *) id + 2<i32>", e.ToString());
         }
 
@@ -335,7 +339,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
             CreateTv(ptr, ptrUnion, Ptr32(PrimitiveType.Real32));
             var ceb = new ComplexExpressionBuilder(program, store,null, ptr, null, 0);
-            Assert.AreEqual("ptr->r", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Real32);
+            Assert.AreEqual("ptr->r", e.ToString());
         }
 
         [Test]
@@ -349,7 +354,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             CreateTv(globals, Ptr32(str), Ptr32(PrimitiveType.Byte));
             CreateTv(i, PrimitiveType.Int32, PrimitiveType.Word32);
             var ceb = CreateBuilder(null, globals, i, 0x800);
-            Assert.AreEqual("g_a0800[i]", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Byte);
+            Assert.AreEqual("g_a0800[i]", e.ToString());
 		}
 
         [Test]
@@ -363,7 +369,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             CreateTv(globals, Ptr32(str), Ptr32(PrimitiveType.Byte));
             CreateTv(i, PrimitiveType.Int32, PrimitiveType.Word32);
             var ceb = CreateBuilder(null, globals, i, 0x1000);
-            Assert.AreEqual("g_a1000 + i", ceb.BuildComplex(false).ToString());
+            Assert.AreEqual("g_a1000 + i", ceb.BuildComplex(null).ToString());
         }
 
         [Test]
@@ -395,7 +401,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             CreateTv(ds, Ptr16(Segment()), ds.DataType);
             CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
             var ceb = CreateBuilder(ds, bx);
-            Assert.AreEqual("ds->*bx", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Word16);
+            Assert.AreEqual("ds->*bx", e.ToString());
         }
 
         [Test]
@@ -407,7 +414,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             CreateTv(ds, dtPseg, ds.DataType);
             CreateTv(bx, MemPtr(dtPseg, PrimitiveType.Real32), MemPtr(new TypeVariable(43), PrimitiveType.Real32));
             var ceb = CreateBuilder(ds, bx);
-            Assert.AreEqual("&(ds->*bx)", ceb.BuildComplex(false).ToString());
+            Assert.AreEqual("&(ds->*bx)", ceb.BuildComplex(null).ToString());
         }
 
         [Test]
@@ -425,7 +432,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             var i = new Identifier("i", PrimitiveType.Int32, null);
             CreateTv(a, array, array);
             var ceb = CreateBuilder(null, a, m.SMul(i, 8));
-            Assert.AreEqual("a[i].dw0000", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Word32);
+            Assert.AreEqual("a[i].dw0000", e.ToString());
         }
 
         [Test]
@@ -435,7 +443,59 @@ namespace Reko.UnitTests.Decompiler.Typing
             var a = new Identifier("a", Ptr32(array), null);
             CreateTv(a, Ptr32(array), Ptr32(array));
             var ceb = CreateBuilder(null, a, null, 8);
-            Assert.AreEqual("a[2<i32>]", ceb.BuildComplex(true).ToString());
+            var e = ceb.BuildComplex(PrimitiveType.Ptr32);
+            Assert.AreEqual("a[2<i32>]", e.ToString());
+        }
+
+        [Test]
+        public void CEB_ChooseUnionAlternative_Real64()
+        {
+            var u = new UnionType("PointR64", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("point", ptrPoint, 0),
+                    new UnionAlternative("r64", ptrDouble, 1),
+                }
+            };
+            var a = new Identifier("a", PrimitiveType.Ptr32, null);
+            CreateTv(a, u, PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, a, null, 0);
+            var e = ceb.BuildComplex(PrimitiveType.Real64);
+            Assert.AreEqual("*a.r64", e.ToString());
+        }
+
+        [Test]
+        public void CEB_ChooseUnionAlternative_dw0000()
+        {
+            var u = new UnionType("PointR64", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("point", ptrPoint, 0),
+                    new UnionAlternative("r64", ptrDouble, 1),
+                }
+            };
+            var a = new Identifier("a", PrimitiveType.Ptr32, null);
+            CreateTv(a, u, PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, a, null, 0);
+            var e = ceb.BuildComplex(PrimitiveType.Int32);
+            Assert.AreEqual("a.point->dw0000", e.ToString());
+        }
+
+        [Test]
+        public void CEB_ChooseUnionAlternative_dw0004()
+        {
+            var u = new UnionType("PointR64", null)
+            {
+                Alternatives = {
+                    new UnionAlternative("point", ptrPoint, 0),
+                    new UnionAlternative("r64", ptrDouble, 1),
+                }
+            };
+            var a = new Identifier("a", PrimitiveType.Ptr32, null);
+            CreateTv(a, u, PrimitiveType.Ptr32);
+            var ceb = CreateBuilder(null, a, null, 4);
+            var e = ceb.BuildComplex(PrimitiveType.Int32);
+            Assert.AreEqual("a.point->dw0004", e.ToString());
         }
     }
 }

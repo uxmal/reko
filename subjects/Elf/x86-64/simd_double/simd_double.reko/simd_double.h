@@ -91,7 +91,7 @@ Eq_130: (union "Eq_130" (word256 u0) ((arr real64 4) u1))
 	T_131 (in p2 @ 0000000000000878 : (arr real64 4))
 	T_134 (in rdx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
 	T_137 (in rcx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
-	T_138 (in __addp<real64[4]>(rdx[qwLoc28_100], rcx[qwLoc28_100]) @ 0000000000000878 : (arr real64 4))
+	T_138 (in __addp<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
 	T_141 (in rsi[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
 Eq_146: (fn (ptr64 (arr Eq_292)) (uint64, Eq_82))
 	T_146 (in _mm_malloc @ 00000000000008B8 : ptr64)
@@ -696,7 +696,7 @@ T_137: (in rcx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
   Class: Eq_130
   DataType: Eq_130
   OrigDataType: (union (word256 u0) ((arr real64 4) u1))
-T_138: (in __addp<real64[4]>(rdx[qwLoc28_100], rcx[qwLoc28_100]) @ 0000000000000878 : (arr real64 4))
+T_138: (in __addp<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
   Class: Eq_130
   DataType: Eq_130
   OrigDataType: (arr real64 4)
@@ -710,8 +710,8 @@ T_140: (in qwLoc28_100 * 0x20<64> @ 0000000000000878 : word64)
   OrigDataType: ui64
 T_141: (in rsi[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
   Class: Eq_130
-  DataType: Eq_292
-  OrigDataType: Eq_130
+  DataType: Eq_130
+  OrigDataType: word256
 T_142: (in 1<64> @ 000000000000087C : word64)
   Class: Eq_142
   DataType: word64
@@ -1094,7 +1094,7 @@ T_236: (in qwLoc20_216 * 8<64> @ 00000000000009C3 : word64)
   OrigDataType: ui64
 T_237: (in rax_42[qwLoc20_216 * 8<64>] @ 00000000000009C3 : real64)
   Class: Eq_234
-  DataType: Eq_292
+  DataType: real64
   OrigDataType: real64
 T_238: (in 1<64> @ 00000000000009C7 : word64)
   Class: Eq_238
@@ -1169,7 +1169,7 @@ T_255: (in  @ 0000000000000A23 : real64)
   Class: Eq_234
   DataType: real64
   OrigDataType: 
-T_256: (in printf("%g\n", rax_42[qwLoc28_225 * 8<64> /64 32<i32>]) @ 0000000000000A23 : int32)
+T_256: (in printf("%g\n", rax_42[qwLoc28_225 * 8<64> /64 32<i32>].u0) @ 0000000000000A23 : int32)
   Class: Eq_256
   DataType: int32
   OrigDataType: int32
