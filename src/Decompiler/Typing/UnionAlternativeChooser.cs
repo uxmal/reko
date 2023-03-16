@@ -27,6 +27,11 @@ using System.Threading.Tasks;
 
 namespace Reko.Typing
 {
+    /// <summary>
+    /// Chooses apropriate union alternative. It test each alternative by
+    /// doing recursive search at types graph to find any data type at
+    /// specified offset which is compatible with specified result data type.
+    /// </summary>
     public class UnionAlternativeChooser : IDataTypeVisitor<bool>
     {
         private int offset;
