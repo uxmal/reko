@@ -43,19 +43,11 @@ class RekoEvents:
         return RekoEventHandlers(self._reko_handlers, event)
 
     def __setattr__(self, name, value):
-        if name in self.__slots__:
-            super().__setattr__(name, value)
+        # Allow '<handlers> += <new-handler>' statement.
+        # Do not raise exception in this case. Just ignore.
+        if isinstance(value, RekoEventHandlers):
             return
-        # Do not allow overwriting of event handlers attribute
-        if self._reko_handlers.GetEventByName(name) is not None:
-            # Allow '<handlers> += <new-handler>' statement.
-            # Do not raise exception in this case. Just ignore.
-            if isinstance(value, RekoEventHandlers):
-                return
-            raise AttributeError("Readonly attribute '{}'".format(name))
-        raise AttributeError(
-            "'{}' object has no attribute '{}'".format(
-                self.__class__.__name__, name))
+        super().__setattr__(name, value)
 
 class Reko:
     __slots__ = '_events'
