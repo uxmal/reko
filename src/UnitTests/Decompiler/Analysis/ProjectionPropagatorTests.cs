@@ -533,7 +533,6 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void Prprj_ReturnedRegisterPair()
         {
             string sExp =
@@ -542,12 +541,13 @@ SsaProcedureBuilder_exit:
 	def ds
 l1:
 	es_ax_1 = Mem4[ds:0x1234<16>:word32]
-	ax_2 = (word16) es_ax_1 (alias)
+	ax_2 = SLICE(es_ax_1, word16, 0) (alias)
 	es_3 = SLICE(es_ax_1, word16, 16) (alias)
 	return
 SsaProcedureBuilder_exit:
 	use ax_2
-	use es_3";
+	use es_3
+";
             #endregion
             Given_X86_16_Arch();
             RunTest(sExp, arch, m =>

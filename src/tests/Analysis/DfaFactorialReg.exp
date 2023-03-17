@@ -10,7 +10,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem14[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	Mem13[ds:0x64<16>:word16] = fn0C00_000B(5<16>)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -28,14 +28,14 @@ fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
 	word16 ax_11
-	branch cx <= 0x0001 l0C00_001C
+	branch cx <= 1<16> l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_11 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
+	ax_11 = cx *s fn0C00_000B(cx - 1<16>) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax_11 = 0x0001
+	ax_11 = 1<16>
 	// succ:  l0C00_001F
 l0C00_001F:
 	return ax_11

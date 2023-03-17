@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature>
   <return name="es_bx">
-    <prim domain="SignedInt UnsignedInt Integer Real Pointer SegPointer" size="4" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <prim domain="SignedInt UnsignedInt Integer Real Pointer SegPointer" size="4" xmlns="http://schemata.jklnet.org/Reko/v5" />
     <seq>
       <reg>es</reg>
       <reg>bx</reg>

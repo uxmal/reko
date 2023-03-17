@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		/// Test that self-recursive functions are handled correctly.
 		/// </summary>
 		[Test]
-        [Ignore(Categories.FailedTests)]
+        [Category(Categories.IntegrationTests)]
         public void RlFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/RlFactorialReg.txt");

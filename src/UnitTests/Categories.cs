@@ -71,10 +71,6 @@ namespace Reko.UnitTests
         // running again.
         public const string AnalysisDevelopment = "AnalysisDevelopment";
 
-        // Tests that are failing because of the bug reported in
-        // https://github.com/dotnet/runtime/issues/43675
-        public const string DotNetBug = "DotNetBug";
-
         // Tests that may fail due to work in progress
         public const string WorkInProgress = "WIP";
     }

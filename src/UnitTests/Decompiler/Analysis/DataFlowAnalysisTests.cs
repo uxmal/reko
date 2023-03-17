@@ -118,8 +118,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.FailedTests)]
-        public void DfaFactorialReg()
+        [Category(Categories.IntegrationTests)]
+        public void DfaFactorWialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/DfaFactorialReg.txt");
 		}

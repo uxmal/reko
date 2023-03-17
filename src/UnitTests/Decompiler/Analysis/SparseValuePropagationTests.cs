@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 Console.WriteLine(sActual);
                 Assert.AreEqual(sExpected, sActual);
             }
+            ssa.Validate(s => Assert.Fail(s));
         }
 
         [Test]
@@ -130,27 +131,41 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        [Ignore("WIP")]
         public void Svp_Slices()
         {
             var sExp =
             #region Expected
 @"
-r1_1: 0x42<32>
-r2_2: 0x42<32>
+d3_1: SEQ(v4, 2<16>)
+d3_2: r1
+Mem9: <invalid>
+r1: <invalid>
+sp_04: v1
+v1: SLICE(r1, word16, 0)
+v2: v1
+v3: SLICE(r1, word16, 16)
+v4: SLICE(r1, word16, 16)
+v5: SLICE(r1, word16, 0)
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
+	def r1
 	// succ:  m1
 m1:
-	r1_1 = 0x42<32>
-	// succ:  m2
-m2:
-	r2_2 = 0x42<32>
-	goto m2
-	// succ:  m2
+	v1 = SLICE(r1, word16, 0)
+	sp_04 = v1
+	v4 = SLICE(r1, word16, 16)
+	d3_1 = SEQ(v4, 2<16>)
+	v5 = SLICE(r1, word16, 0)
+	Mem9[0x123400<32>:word16] = v5
+	v2 = v1
+	v3 = SLICE(r1, word16, 16)
+	d3_2 = r1
+	return
+	// succ:  SsaProcedureBuilder_exit
 SsaProcedureBuilder_exit:
+	use r1
 ";
             #endregion
 

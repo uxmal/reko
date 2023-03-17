@@ -9,9 +9,9 @@ fn0C00_0000_entry:
 	def ds
 l0C00_0000:
 	call fn0C00_000B (retsize: 2;)
-		uses: cx:0x0005
+		uses: cx:5<16>
 		defs: ax:ax_5
-	Mem14[ds:0x0064:word16] = ax_5
+	Mem13[ds:0x64<16>:word16] = ax_5
 	return
 fn0C00_0000_exit:
 // fn0C00_000B /////////////////////
@@ -24,17 +24,17 @@ define fn0C00_000B
 fn0C00_000B_entry:
 	def cx
 l0C00_000B:
-	branch cx <= 0x0001 l0C00_001C
+	branch cx <= 1<16> l0C00_001C
 l0C00_0011:
 	call fn0C00_000B (retsize: 2;)
-		uses: cx:cx - 0x0001
-		defs: ax:ax_18
-	dx_ax_21 = cx *s ax_18
-	ax_23 = SLICE(dx_ax_21, word16, 0) (alias)
+		uses: cx:cx - 1<16>
+		defs: ax:ax_17
+	dx_ax_20 = cx *s32 ax_17
+	ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
 l0C00_001C:
-	ax_11 = 0x0001
+	ax_11 = 1<16>
 l0C00_001F:
-	ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
+	ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
 	return
 fn0C00_000B_exit:
-	use ax_32
+	use ax_31

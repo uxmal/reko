@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SerializedSignature>
   <return name="ax">
-    <prim domain="Character SignedInt UnsignedInt Integer Real Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <prim domain="Character SignedInt UnsignedInt Integer Real Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Reko/v5" />
     <reg>ax</reg>
   </return>
   <arg name="bx">
-    <prim domain="Character SignedInt UnsignedInt Integer Real Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <prim domain="Character SignedInt UnsignedInt Integer Real Pointer Offset Selector" size="2" xmlns="http://schemata.jklnet.org/Reko/v5" />
     <reg>bx</reg>
   </arg>
   <arg name="cl">
-    <prim domain="Boolean Character SignedInt UnsignedInt" size="1" xmlns="http://schemata.jklnet.org/Decompiler" />
+    <prim domain="Boolean Character SignedInt UnsignedInt" size="1" xmlns="http://schemata.jklnet.org/Reko/v5" />
     <reg>cl</reg>
   </arg>
 </SerializedSignature>

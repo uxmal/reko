@@ -257,7 +257,6 @@ namespace Reko.Analysis
 
             public void RemoveExpressionUse(Expression expr)
             {
-                throw new NotImplementedException();
             }
 
             public void RemoveIdentifierUse(Identifier id)
@@ -281,7 +280,6 @@ namespace Reko.Analysis
 
             public void UseExpression(Expression expr)
             {
-                throw new NotImplementedException();
             }
 
             public void Write(TextWriter w)

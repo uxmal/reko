@@ -502,7 +502,6 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        [Ignore(Categories.DotNetBug)]
         public void SudLoadProgramOptions()
         {
             var sProject = new Project_v4
@@ -517,7 +516,7 @@ namespace Reko.UnitTests.Core.Serialization
                         User = new UserData_v4
                         {
                             Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } },
-                            TextEncoding = "windows-1251",
+                            TextEncoding = "utf-16",
                             Calls =
                             {
                                 new SerializedCall_v1
@@ -544,9 +543,8 @@ namespace Reko.UnitTests.Core.Serialization
             var loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadFileBytes(It.IsAny<string>()))
                 .Returns(new byte[10]);
-            loader.Setup(l => l.LoadBinaryImage(
+            loader.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
-                It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>()))
                 .Returns(new Program
@@ -558,24 +556,23 @@ namespace Reko.UnitTests.Core.Serialization
             var ploader = new ProjectLoader(sc, loader.Object, location, new FakeDecompilerEventListener());
             var project = ploader.LoadProject(sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
-            Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
+            Assert.AreEqual("utf-16", project.Programs[0].User.TextEncoding.WebName);
             Assert.AreEqual(1, project.Programs[0].User.RegisterValues.Count);
             Assert.AreEqual(2, project.Programs[0].User.RegisterValues[Address.Ptr32(0x00443210)].Count);
         }
 
         [Test]
-        [Ignore(Categories.DotNetBug)]
         public void SudSaveProgramOptions()
         {
             var program = new Program();
             program.User.Heuristics.Add("shingle");
-            program.User.TextEncoding = Encoding.GetEncoding("windows-1251");
+            program.User.TextEncoding = Encoding.GetEncoding("utf-8");
         
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram(ImageLocation.FromUri("file:foo.proj"), program);
             var ip = (DecompilerInput_v5)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
-            Assert.AreEqual("windows-1251", ip.User.TextEncoding);
+            Assert.AreEqual("utf-8", ip.User.TextEncoding);
         }
 
         private void When_SaveToTextWriter(Program program, TextWriter sw)

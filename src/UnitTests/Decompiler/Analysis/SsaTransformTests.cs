@@ -4602,23 +4602,23 @@ proc1_exit:
         }
 
         [Test]
-        [Ignore("Finish register work first")]
         public void Ssa_StackSlicesInDifferentBlocks()
         {
             var sExp =
             #region Expected
-@"SsaLocalStackSlice_entry:
+@"Ssa_StackSlicesInDifferentBlocks_entry:
 	def Mem0
 	def fp
 l1:
 	dwLoc04_6 = Mem0[0x123400<32>:word32]
 	bLoc03_7 = SLICE(dwLoc04_6, byte, 8) (alias)
-	wLoc04_9 = SLICE(dwLoc04_6, word, 0) (alias)
+	bLoc04_8 = SLICE(dwLoc04_6, byte, 0) (alias)
 m1:
 	Mem4[0x123408<32>:byte] = bLoc03_7
+	wLoc04_9 = SEQ(bLoc03_7, bLoc04_8) (alias)
 	Mem5[0x12340C<32>:word16] = wLoc04_9
 	return
-SsaLocalStackSlice_exit:
+Ssa_StackSlicesInDifferentBlocks_exit:
 ";
             #endregion
             Given_X86_32_Architecture();

@@ -275,7 +275,11 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             assemble(rdst, rsrc1, rsrc2);
         }
 
-        private void Disp(CDirectiveLexer lex, AeonAssembler asm, int relocationType, Action<ImmediateOperand> assemble)
+        private void Disp(
+            CDirectiveLexer lex,
+            AeonAssembler asm, 
+            int relocationType,
+            Action<ImmediateOperand> assemble)
         {
             var disp = ParseDisplacement(lex, asm, relocationType);
             assemble(disp);

@@ -1,40 +1,30 @@
 = sum ========================
 ah_1: orig: ah
-    def:  ah_1 = 0x00
-    uses: ax_13 = DPB(ax, ah_1, 8) (alias)
+    def:  ah_1 = 0<8>
+    uses: ax_7 = SEQ(ah_1, al_4) (alias)
 al_4: orig: al
     def:  al_4 = Mem0[si:byte]
-    uses: ax_7 = DPB(ax_6, al_4, 0) (alias)
+    uses: ax_7 = SEQ(ah_1, al_4) (alias)
 dx_5: orig: dx
-    def:  dx_5 = PHI(dx, dx_8)
+    def:  dx_5 = PHI((dx, l1), (dx_8, m1))
     uses: dx_8 = dx_5 + ax_7
-ax_6: orig: ax
-    def:  ax_6 = PHI(ax_13, ax_7)
-    uses: ax_7 = DPB(ax_6, al_4, 0) (alias)
 ax_7: orig: ax
-    def:  ax_7 = DPB(ax_6, al_4, 0) (alias)
+    def:  ax_7 = SEQ(ah_1, al_4) (alias)
     uses: dx_8 = dx_5 + ax_7
-          ax_6 = PHI(ax_13, ax_7)
 dx_8: orig: dx
     def:  dx_8 = dx_5 + ax_7
-    uses: dx_5 = PHI(dx, dx_8)
+    uses: dx_5 = PHI((dx, l1), (dx_8, m1))
 si:si
     def:  def si
-    uses: branch Mem0[si:byte] == 0x00 m3done
+    uses: branch Mem0[si:byte] == 0<8> m3done
           al_4 = Mem0[si:byte]
 Mem0:Mem
     def:  def Mem0
-    uses: branch Mem0[si:byte] == 0x00 m3done
+    uses: branch Mem0[si:byte] == 0<8> m3done
           al_4 = Mem0[si:byte]
 dx:dx
     def:  def dx
-    uses: dx_5 = PHI(dx, dx_8)
-ax:ax
-    def:  def ax
-    uses: ax_13 = DPB(ax, ah_1, 8) (alias)
-ax_13: orig: ax
-    def:  ax_13 = DPB(ax, ah_1, 8) (alias)
-    uses: ax_6 = PHI(ax_13, ax_7)
+    uses: dx_5 = PHI((dx, l1), (dx_8, m1))
 // sum
 // Return size: 0
 define sum
@@ -42,20 +32,17 @@ sum_entry:
 	def si
 	def Mem0
 	def dx
-	def ax
 	// succ:  l1
 l1:
-	ah_1 = 0x00
-	ax_13 = DPB(ax, ah_1, 8) (alias)
+	ah_1 = 0<8>
 	// succ:  m0
 m0:
-	ax_6 = PHI(ax_13, ax_7)
-	dx_5 = PHI(dx, dx_8)
-	branch Mem0[si:byte] == 0x00 m3done
+	dx_5 = PHI((dx, l1), (dx_8, m1))
+	branch Mem0[si:byte] == 0<8> m3done
 	// succ:  m1 m3done
 m1:
 	al_4 = Mem0[si:byte]
-	ax_7 = DPB(ax_6, al_4, 0) (alias)
+	ax_7 = SEQ(ah_1, al_4) (alias)
 	dx_8 = dx_5 + ax_7
 	goto m0
 	// succ:  m0
@@ -65,40 +52,30 @@ m3done:
 sum_exit:
 
 ah_1: orig: ah
-    def:  ah_1 = 0x00
+    def:  ah_1 = 0<8>
 al_4: orig: al
     def:  al_4 = Mem0[si:byte]
-    uses: ax_7 = DPB(ax_6, al_4, 0) (alias)
+    uses: ax_7 = CONVERT(al_4, byte, uint16) (alias)
 dx_5: orig: dx
-    def:  dx_5 = PHI(dx, dx_8)
+    def:  dx_5 = PHI((dx, l1), (dx_8, m1))
     uses: dx_8 = dx_5 + ax_7
-ax_6: orig: ax
-    def:  ax_6 = PHI(ax_13, ax_7)
-    uses: ax_7 = DPB(ax_6, al_4, 0) (alias)
 ax_7: orig: ax
-    def:  ax_7 = DPB(ax_6, al_4, 0) (alias)
+    def:  ax_7 = CONVERT(al_4, byte, uint16) (alias)
     uses: dx_8 = dx_5 + ax_7
-          ax_6 = PHI(ax_13, ax_7)
 dx_8: orig: dx
     def:  dx_8 = dx_5 + ax_7
-    uses: dx_5 = PHI(dx, dx_8)
+    uses: dx_5 = PHI((dx, l1), (dx_8, m1))
 si:si
     def:  def si
-    uses: branch Mem0[si:byte] == 0x00 m3done
+    uses: branch Mem0[si:byte] == 0<8> m3done
           al_4 = Mem0[si:byte]
 Mem0:Mem
     def:  def Mem0
-    uses: branch Mem0[si:byte] == 0x00 m3done
+    uses: branch Mem0[si:byte] == 0<8> m3done
           al_4 = Mem0[si:byte]
 dx:dx
     def:  def dx
-    uses: dx_5 = PHI(dx, dx_8)
-ax:ax
-    def:  def ax
-    uses: ax_13 = DPB(ax, 0x00, 8) (alias)
-ax_13: orig: ax
-    def:  ax_13 = DPB(ax, 0x00, 8) (alias)
-    uses: ax_6 = PHI(ax_13, ax_7)
+    uses: dx_5 = PHI((dx, l1), (dx_8, m1))
 // sum
 // Return size: 0
 define sum
@@ -106,20 +83,17 @@ sum_entry:
 	def si
 	def Mem0
 	def dx
-	def ax
 	// succ:  l1
 l1:
-	ah_1 = 0x00
-	ax_13 = DPB(ax, 0x00, 8) (alias)
+	ah_1 = 0<8>
 	// succ:  m0
 m0:
-	ax_6 = PHI(ax_13, ax_7)
-	dx_5 = PHI(dx, dx_8)
-	branch Mem0[si:byte] == 0x00 m3done
+	dx_5 = PHI((dx, l1), (dx_8, m1))
+	branch Mem0[si:byte] == 0<8> m3done
 	// succ:  m1 m3done
 m1:
 	al_4 = Mem0[si:byte]
-	ax_7 = (uint16) al_4 (alias)
+	ax_7 = CONVERT(al_4, byte, uint16) (alias)
 	dx_8 = dx_5 + ax_7
 	goto m0
 	// succ:  m0

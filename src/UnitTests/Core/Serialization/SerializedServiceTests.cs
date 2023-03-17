@@ -74,7 +74,6 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
-        [Ignore(Categories.DotNetBug)]
 		public void SserSerialize()
 		{
 			StringWriter sw = new StringWriter();
