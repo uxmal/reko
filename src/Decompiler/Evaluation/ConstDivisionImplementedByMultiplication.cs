@@ -23,16 +23,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Expressions;
 
 namespace Reko.Evaluation
 {
     class ConstDivisionImplementedByMultiplication
     {
-        private EvaluationContext ctx;
-
-        public ConstDivisionImplementedByMultiplication(EvaluationContext ctx)
+        public Expression? Match(EvaluationContext ctx)
         {
-            this.ctx = ctx;
+            return null;
         }
     }
 }

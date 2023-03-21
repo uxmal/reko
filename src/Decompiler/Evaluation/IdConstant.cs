@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Typing;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Evaluation
 {
@@ -34,49 +35,35 @@ namespace Reko.Evaluation
 	/// </summary>
     public class IdConstant
     {
-        private EvaluationContext ctx;
-        private readonly Unifier unifier;
-        private readonly DecompilerEventListener listener;
-        private Expression? src;
-        private Identifier? idDst;
-        private DataType? dt;
-        private PrimitiveType? pt;
-        private Pointer? ptr;
-
-        public IdConstant(EvaluationContext ctx, Unifier u, DecompilerEventListener listener)
+        public IdConstant()
         {
-            this.ctx = ctx;
-            this.unifier = u;
-            this.listener = listener;
         }
 
-        public bool Match(Identifier id)
+        public Expression? Match(Identifier id, EvaluationContext ctx, Unifier unifier, DecompilerEventListener listener)
         {
-            this.src = ctx.GetValue(id);
+            var src = ctx.GetValue(id);
             var cSrc = src as Constant;
-            if (cSrc == null || !cSrc.IsValid)
+            if (cSrc is null || !cSrc.IsValid)
             {
-                if (!(src is Address))
-                    return false;
+                if (src is not Address)
+                    return null;
             }
-            idDst = id;
-            this.dt = unifier.Unify(src!.DataType, idDst.DataType);
-            this.pt = dt!.ResolveAs<PrimitiveType>();
-            this.ptr = dt.ResolveAs<Pointer>();
-            return pt != null || this.ptr != null;
-        }
-
-        public Expression Transform()
-        {
-            if (this.pt != null)
+            var idDst = id;
+            Debug.Assert(src is not null);
+            var dt = unifier.Unify(src.DataType, idDst.DataType);
+            var pt = dt?.ResolveAs<PrimitiveType>();
+            var ptr = dt?.ResolveAs<Pointer>();
+            if (pt == null && ptr == null)
+                return null;
+            if (pt != null)
             {
-                ctx.RemoveIdentifierUse(idDst!);
-                var pt = idDst!.DataType.ResolveAs<PrimitiveType>();
+                ctx.RemoveIdentifierUse(idDst);
+                var ptDst = idDst.DataType.ResolveAs<PrimitiveType>();
                 var cNew = src!.CloneExpression();
                 if (src.DataType.IsWord &&
-                    src is Constant cSrc &&
-                    pt is not null &&
-                    pt.Domain == Domain.Real)
+                    cSrc is not null &&
+                    ptDst is not null &&
+                    ptDst.Domain == Domain.Real)
                 {
                     // Raw bitvector assigned to an real-valued register. We need to interpret the bitvector
                     // as a floating-point constant.
@@ -85,18 +72,18 @@ namespace Reko.Evaluation
                 cNew.DataType = dt!;
                 return cNew;
             }
-            if (this.ptr != null)
+            if (ptr != null)
             {
-                if (src is Constant cSrc)
+                if (cSrc is not null)
                 {
-                    ctx.RemoveIdentifierUse(idDst!);
+                    ctx.RemoveIdentifierUse(idDst);
                     var addr = Address.Create(ptr, cSrc.ToUInt64());
                     addr.DataType = ptr;
                     return addr;
                 }
                 if (src is Address)
                 {
-                    ctx.RemoveIdentifierUse(idDst!);
+                    ctx.RemoveIdentifierUse(idDst);
                     var addr = src.CloneExpression();
                     addr.DataType = ptr;
                     return addr;
@@ -105,7 +92,7 @@ namespace Reko.Evaluation
             listener.Warn(
                 "Constant propagation failed. Resulting type is {0}, which isn't supported yet.", 
                 dt!);
-            return idDst!;
+            return idDst;
         }
     }
 }

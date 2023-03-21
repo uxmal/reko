@@ -42,44 +42,35 @@ namespace Reko.Evaluation
     /// </summary>
     public class LogicalNotFromArithmeticSequenceRule
     {
-        private DataType? dataType;
-        private Expression? expression;
-
-        public bool Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type != OperatorType.IAdd)
-                return false;
+                return null;
 
             //$TODO: use Integer.IsIntegerOne
             if (binExp.Right is BigConstant bigR && bigR.Value != BigInteger.One)
-                return false;
+                return null;
             if (binExp.Right is not Constant rightConstant || rightConstant.ToInt64() != 1)
-                return false;
+                return null;
 
             if (binExp.Left is not BinaryExpression leftExpression || 
                 leftExpression.Operator.Type != OperatorType.ISub)
-                return false;
+                return null;
 
             if (!leftExpression.Left.IsZero)
-                return false;
+                return null;
             var middleExpression = ExtractComparison(leftExpression.Right);
             if (middleExpression is null)
-                return false;
+                return null;
             if (!middleExpression.Right.IsZero)
-                return false;
+                return null;
 
-            expression = middleExpression.Left;
+            var expression = middleExpression.Left;
             if (expression is UnaryExpression un && un.Operator.Type == OperatorType.Neg)
                 expression = un.Expression;
 
-            dataType = binExp.DataType;
-
-            return true;
-        }
-
-        public Expression Transform()
-        {
-            return new UnaryExpression(Operator.Not, dataType!, expression!);
+            var dataType = binExp.DataType;
+            return new UnaryExpression(Operator.Not, dataType, expression);
         }
 
         private static BinaryExpression? ExtractComparison(Expression e)

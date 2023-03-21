@@ -31,42 +31,32 @@ namespace Reko.Evaluation
 {
     public class MkSeqFromSlices_Rule
     {
-        private readonly EvaluationContext ctx;
-        private Identifier? idHi;
-        private Identifier? idLo;
-        private Identifier? idOrig;
-
-        public MkSeqFromSlices_Rule(EvaluationContext ctx)
+        public MkSeqFromSlices_Rule()
         {
-            this.ctx = ctx;
         }
 
-        public bool Match(MkSequence seq)
+        public Expression? Match(MkSequence seq, EvaluationContext ctx)
         {
             if (seq.Expressions.Length != 2)
-                return false;   //$TODO: handle sequences of any length?
-            this.idHi = seq.Expressions[0] as Identifier;
-            this.idLo = seq.Expressions[1] as Identifier;
-            if (idHi == null || idLo == null)
-                return false;
-            var defHi = ctx.GetDefiningExpression(idHi) as Slice;
-            var defLo = ctx.GetDefiningExpression(idLo) as Slice;
-            if (defHi == null || defLo == null)
-                return false;
+                return null;   //$TODO: handle sequences of any length?
+            if (seq.Expressions[0] is not Identifier idHi ||
+                seq.Expressions[1] is not Identifier idLo)
+                return null;
+            if (ctx.GetDefiningExpression(idHi) is not Slice defHi ||
+                ctx.GetDefiningExpression(idLo) is not Slice defLo)
+                return null;
 
             if (defHi.Expression != defLo.Expression)
-                return false;
+                return null;
 
-            this.idOrig = defHi.Expression as Identifier;
-            return idOrig != null;
-        }
+            var idOrig = defHi.Expression as Identifier;
+            if (idOrig is null)
+                return null;
 
-        public Expression Transform()
-        {
-            ctx.RemoveIdentifierUse(this.idHi!);
-            ctx.RemoveIdentifierUse(this.idLo!);
-            ctx.UseExpression(idOrig!);
-            return idOrig!;
+            ctx.RemoveIdentifierUse(idHi);
+            ctx.RemoveIdentifierUse(idLo);
+            ctx.UseExpression(idOrig);
+            return idOrig;
         }
     }
 }

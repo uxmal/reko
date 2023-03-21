@@ -31,48 +31,37 @@ namespace Reko.Evaluation
 {
     public class Shl_add_Rule
     {
-        private readonly EvaluationContext ctx;
-        private DataType? dt;
-        private Identifier? id;
-        private Constant? c;
-        private Operator? op;
-        private int factor;
-
-        public Shl_add_Rule(EvaluationContext ctx)
+        public Shl_add_Rule()
         {
-            this.ctx = ctx;
         }
 
         // (x << c) + x ==> x * ((1<<c) + 1)
         // (x << c) - x ==> x * ((1<<c) - 1)
-        public bool Match(BinaryExpression b)
+        public Expression? Match(BinaryExpression b, EvaluationContext ctx)
         {
-            this.op = b.Operator;
+            var op = b.Operator;
+            int factor;
             if (op.Type == OperatorType.IAdd)
                 factor = 1;
             else if (op.Type == OperatorType.ISub)
                 factor = -1;
             else
-                return false;
+                return null;
             var bin = b.Left as BinaryExpression;
-            id = b.Right as Identifier;
+            var id = b.Right as Identifier;
             if (bin == null || id == null)
             {
                 bin = b.Right as BinaryExpression;
                 id = b.Left as Identifier;
             }
             if (bin is null || bin.Left != id || bin.Operator.Type != OperatorType.Shl)
-                return false;
-            this.c = bin.Right as Constant;
-            this.dt = b.DataType;
-            return c != null;
-        }
-
-        public Expression Transform()
-        {
-            ctx.RemoveIdentifierUse(id!);
-            var cc = Constant.Create(id!.DataType, (1 << c!.ToInt32()) + factor);
-            return new BinaryExpression(Operator.IMul, dt!, id, cc);
+                return null;
+            if (bin.Right is not Constant c)
+                return null;
+            var dt = b.DataType;
+            ctx.RemoveIdentifierUse(id);
+            var cc = Constant.Create(id.DataType, (1 << c.ToInt32()) + factor);
+            return new BinaryExpression(Operator.IMul, dt, id, cc);
         }
     }
 }

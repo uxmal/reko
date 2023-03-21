@@ -31,26 +31,18 @@ namespace Reko.Evaluation
     /// </summary>
     class LogicalNotFollowedByNegRule
     {
-        private DataType? dataType;
-        private Expression? expression;
-
-        public bool Match(UnaryExpression unary)
+        public Expression? Match(UnaryExpression unary)
         {
             if (unary.Operator.Type != OperatorType.Not)
-                return false;
+                return null;
 
-            if (!(unary.Expression is UnaryExpression subExpression) || subExpression.Operator.Type != OperatorType.Neg)
-                return false;
+            if (unary.Expression is not UnaryExpression subExpression || subExpression.Operator.Type != OperatorType.Neg)
+                return null;
 
-            dataType = unary.DataType;
-            expression = subExpression.Expression;
-         
-            return true;
-        }
-
-        public Expression Transform()
-        {
-            return new UnaryExpression(Operator.Not, dataType!, expression!);
+            return new UnaryExpression(
+                Operator.Not,
+                unary.DataType,
+                subExpression.Expression);
         }
     }
 }

@@ -30,30 +30,21 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class IdBinIdc_Rule
 	{
-		private EvaluationContext ctx;
-		private BinaryExpression? bin;
-		private Identifier? id;
-
-		public IdBinIdc_Rule(EvaluationContext ctx)
+		public IdBinIdc_Rule()
 		{
-            this.ctx = ctx;
 		}
 
-		public bool Match(Identifier id)
+		public Expression? Match(Identifier id, EvaluationContext ctx)
 		{
-            this.id = id;
-            bin = ctx.GetValue(id) as BinaryExpression;
-			if (bin == null)
-				return false;
+            if (ctx.GetValue(id) is not BinaryExpression bin)
+                return null;
             if (ctx.IsUsedInPhi(id))
-                return false;
-			return (bin.Left is Identifier) && (bin.Right is Constant);
-		}
+                return null;
+            if (bin.Left is not Identifier || bin.Right is not Constant)
+                return null;
 
-		public Expression Transform()
-		{
-            ctx.RemoveIdentifierUse(id!);
-            ctx.UseExpression(bin!);
+            ctx.RemoveIdentifierUse(id);
+            ctx.UseExpression(bin);
             return bin!;
 		}
 	}

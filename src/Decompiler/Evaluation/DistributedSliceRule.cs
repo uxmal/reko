@@ -32,17 +32,11 @@ namespace Reko.Evaluation
 {
     public class DistributedSliceRule
     {
-        private DataType? dt;
-        private Expression? eLeft;
-        private Expression? eRight;
-        private Operator? op;
-        private int offset;
-
         public DistributedSliceRule()
         {
         }
 
-        public bool Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type.IsAddOrSub())
             {
@@ -51,28 +45,22 @@ namespace Reko.Evaluation
                     if (slLeft.DataType == slRight.DataType && 
                         slLeft.Offset == slRight.Offset)
                     {
-                        this.dt = slLeft.DataType;
-                        this.eLeft = slLeft.Expression;
-                        this.eRight = slRight.Expression;
-                        this.op = binExp.Operator;
-                        this.offset = slLeft.Offset;
-                        return true;
+                        var dt = slLeft.DataType;
+                        var eLeft = slLeft.Expression;
+                        var eRight = slRight.Expression;
+                        var op = binExp.Operator;
+                        return new Slice(
+                            dt,
+                            new BinaryExpression(
+                                op,
+                                eLeft.DataType,
+                                eLeft,
+                                eRight),
+                            slLeft.Offset);
                     }
                 }
             }
-            return false;
-        }
-
-        public Expression Transform(EvaluationContext ctx)
-        {
-            return new Slice(
-                dt!, 
-                new BinaryExpression(
-                    this.op!, 
-                    this.eLeft!.DataType, 
-                    this.eLeft!, 
-                    this.eRight!),
-                this.offset);
+            return null;
         }
     }
 }

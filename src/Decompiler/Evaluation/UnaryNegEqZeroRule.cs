@@ -31,29 +31,20 @@ namespace Reko.Evaluation
     /// </summary>
     public class UnaryNegEqZeroRule
     {
-        private Expression? expression;
-        private Expression? zero;
-
-        public bool Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type != OperatorType.Eq)
-                return false;
+                return null;
 
             if (!binExp.Right.IsZero)
-                return false;
+                return null;
 
             if (binExp.Left is not UnaryExpression unary || unary.Operator.Type != OperatorType.Neg)
-                return false;
+                return null;
 
-            expression = unary.Expression;
-            zero = binExp.Right;
-
-            return true;
-        }
-
-        public Expression Transform()
-        {
-            return new BinaryExpression(Operator.Eq, expression!.DataType, expression!, zero!);
+            var expression = unary.Expression;
+            var zero = binExp.Right;
+            return new BinaryExpression(Operator.Eq, expression.DataType, expression, zero);
         }
     }
 }

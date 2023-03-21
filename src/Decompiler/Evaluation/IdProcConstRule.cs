@@ -25,26 +25,21 @@ namespace Reko.Evaluation
 {
     public class IdProcConstRule
     {
-        private readonly EvaluationContext ctx;
-        private Identifier? id;
-        private ProcedureConstant? pc;
-
-        public IdProcConstRule(EvaluationContext ctx)
+        public IdProcConstRule()
         {
-            this.ctx = ctx;
         }
 
-        public bool Match(Identifier id)
+        public Expression? Match(Identifier id, EvaluationContext ctx)
         {
-            this.id = id;
-            this.pc = ctx.GetValue(id) as ProcedureConstant;
-            return pc != null;
-        }
-
-        public ProcedureConstant Transform()
-        {
-            ctx.RemoveIdentifierUse(id!);
-            return pc!;
+            if (ctx.GetValue(id) is ProcedureConstant pc)
+            {
+                ctx.RemoveIdentifierUse(id);
+                return pc!;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

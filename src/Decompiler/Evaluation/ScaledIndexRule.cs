@@ -30,24 +30,16 @@ namespace Reko.Evaluation
 {
     public class ScaledIndexRule
     {
-        private readonly EvaluationContext ctx;
-        private BinaryExpression? binEaLeft;
-        private BinaryExpression? binEaRight;
-        private Identifier? idEa;
-        private Expression? defIndex;
-        public ScaledIndexRule(EvaluationContext ctx)
+        public ScaledIndexRule()
         {
-            this.ctx = ctx;
         }
 
-        public bool Match(Expression ea)
+        public Expression? Match(Expression ea, EvaluationContext ctx)
         {
-            //$REFACTOR: this is mutable shared state. Rewrite this to
-            // use the (Expression newExpr, bool changed) pattern used
-            // elsewhere in ExpressionSimplifier. 
-            this.binEaLeft = null;
-            this.binEaRight = null;
-            this.idEa = null;
+            BinaryExpression? binEaLeft = null;
+            BinaryExpression? binEaRight = null;
+            Identifier? idEa = null;
+            Expression? defIndex = null;
 
             if (ea is BinaryExpression bin)
             {
@@ -55,33 +47,31 @@ namespace Reko.Evaluation
                 {
                     if (bin.Left is Identifier idLeft)
                     {
-                        this.defIndex = ctx.GetDefiningExpression(idLeft);
+                        defIndex = ctx.GetDefiningExpression(idLeft);
                         if (IsScaled(defIndex))
                         {
-                            this.binEaLeft = bin;
-                            return true;
+                            binEaLeft = bin;
+                            return Transform(binEaLeft, binEaRight, idEa, defIndex, ctx);
                         }
                     }
                     if (bin.Right is Identifier idRight)
                     {
-                        this.defIndex = ctx.GetDefiningExpression(idRight);
+                        defIndex = ctx.GetDefiningExpression(idRight);
                         if (IsScaled(defIndex))
                         {
-                            this.binEaRight = bin;
-                            return true;
+                            return Transform(binEaLeft, bin, idEa, defIndex, ctx);
                         }
                     }
                 }
             } else if (ea is Identifier id)
             {
-                this.defIndex = ctx.GetDefiningExpression(id);
+                defIndex = ctx.GetDefiningExpression(id);
                 if (IsScaled(defIndex))
                 {
-                    idEa = id;
-                    return true;
+                    return Transform(binEaLeft, binEaRight, id, defIndex, ctx);
                 }
             }
-            return false;
+            return null;
         }
 
         private bool IsScaled(Expression? defIndex)
@@ -91,8 +81,14 @@ namespace Reko.Evaluation
                  (bin.Operator is IMulOperator || bin.Operator is ShlOperator));
         }
 
-        public Expression Transform()
+        public Expression Transform(
+            BinaryExpression? binEaLeft,
+            BinaryExpression? binEaRight,
+            Identifier? idEa,
+            Expression? defIndex,
+            EvaluationContext ctx)
         {
+            //$REFACTOR: this can be reduced into the Match method
             Expression eaNew;
             if (binEaLeft != null)
             {

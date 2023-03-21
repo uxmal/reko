@@ -26,53 +26,45 @@ namespace Reko.Evaluation
 {
     public class ConvertConvertRule
     {
-        private EvaluationContext ctx;
-        private Expression? origExp;
-        private Conversion? innerConv;
-        private PrimitiveType? ptC;
-        private PrimitiveType? ptInner;
-        private PrimitiveType? ptExp;
-
-        public ConvertConvertRule(EvaluationContext ctx)
+        public ConvertConvertRule()
         {
-            this.ctx = ctx;
         }
 
-        public bool Match(Conversion c)
+        public Expression? Match(Conversion c)
         {
             if (c.Expression is not Conversion innerC)
-                return false;
-            this.origExp = innerC.Expression;
-            this.innerConv = innerC;
+                return null;
+            var origExp = innerC.Expression;
+            var innerConv = innerC;
 
-            this.ptC = c.DataType as PrimitiveType;
-            this.ptInner = innerC.DataType as PrimitiveType;
-            this.ptExp = origExp.DataType as PrimitiveType;
+            var ptC = c.DataType as PrimitiveType;
+            var ptInner = innerC.DataType as PrimitiveType;
+            var ptExp = origExp.DataType as PrimitiveType;
             if (ptC == null || ptInner == null || ptExp == null)
-                return false;
+                return null;
 
             // If the cast is identical, we don't have to do it twice.
             if (ptC == ptInner)
             {
-                this.origExp = innerC;
-                return true;
+                origExp = innerC;
             }
-            // Only match widening / narrowing. 
-            return ptC.IsWord || ptInner.IsWord ||
-                (ptC.Domain == ptInner.Domain && ptC.Domain == ptExp.Domain);
-        }
-
-        public Expression Transform()
-        {
+            else
+            {
+                // Only match widening / narrowing. 
+                if (!ptC.IsWord && !ptInner.IsWord &&
+                    (ptC.Domain != ptInner.Domain || ptC.Domain != ptExp.Domain))
+                    return null;
+            }
+            
             // ptExp <= ptInner <= ptC
-            if (ptExp!.BitSize <= ptInner!.BitSize && ptInner.BitSize <= ptC!.BitSize)
+            if (ptExp.BitSize <= ptInner.BitSize && ptInner.BitSize <= ptC.BitSize)
             {
                 if (ptExp.BitSize == ptC.BitSize)
-                    return this.origExp!;
+                    return origExp;
                 else
-                    return new Conversion(this.origExp!, this.innerConv!.SourceDataType, ptC);
+                    return new Conversion(origExp, innerConv.SourceDataType, ptC);
             }
-            return this.origExp!;
+            return origExp!;
         }
     }
 }

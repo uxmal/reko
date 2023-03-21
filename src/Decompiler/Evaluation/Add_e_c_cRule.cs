@@ -32,43 +32,32 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class Add_e_c_cRule
 	{
-		private EvaluationContext ctx;
-		private BinaryExpression? bin;
-		private BinaryExpression? binLeft;
-		private Constant? cLeftRight;
-		private Constant? cRight;
 
-        public Add_e_c_cRule(EvaluationContext ctx)
+        public Add_e_c_cRule()
 		{
-			this.ctx = ctx;
 		}
 
-		public bool Match(BinaryExpression binExp, Expression left, Expression right)
+		public Expression? Match(BinaryExpression binExp, Expression left, Expression right)
 		{
-			bin = binExp;
-			binLeft = left as BinaryExpression;
-			if (binLeft == null)
-				return false;
-			cLeftRight = binLeft.Right as Constant;
-			if (cLeftRight == null)
-				return false;
-			cRight = right as Constant;
-			if (cRight == null)
-				return false;
-			if (!binExp.Operator.Type.IsAddOrSub())
-				return false;
-			return (!cRight.IsReal && !cRight.IsReal);
-		}
+			var bin = binExp;
+            if (left is not BinaryExpression binLeft)
+                return null;
+            if (binLeft.Right is not Constant cLeftRight)
+                return null;
+            if (right is not Constant cRight)
+                return null;
+            if (!binExp.Operator.Type.IsAddOrSub())
+				return null;
+            if (cRight.IsReal || cRight.IsReal)
+                return null;
 
-		public Expression Transform(Statement stm)
-		{
-			if (binLeft!.Operator.Type == OperatorType.ISub)
+			if (binLeft.Operator.Type == OperatorType.ISub)
 				cLeftRight = cLeftRight!.Negate();
-			if (bin!.Operator.Type == OperatorType.ISub)
-				cRight = cRight!.Negate();
+			if (bin.Operator.Type == OperatorType.ISub)
+				cRight = cRight.Negate();
 
 			BinaryOperator op = Operator.IAdd;
-			Constant c = op.ApplyConstants(cLeftRight!, cRight!);
+			Constant c = op.ApplyConstants(cLeftRight, cRight);
 			if (c.IsNegative)
 			{
 				c = c.Negate();

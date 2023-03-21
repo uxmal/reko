@@ -27,42 +27,30 @@ namespace Reko.Evaluation
 {
 	public class ShiftShift_c_c_Rule
 	{
-		private Constant? c1;
-		private Constant? c2;
-		private Expression? e;
-		private Operator? op;
-
-		public ShiftShift_c_c_Rule(EvaluationContext ctx)
+		public ShiftShift_c_c_Rule()
 		{
 			
 		}
 
-		public bool Match(BinaryExpression b)
+		public Expression? Match(BinaryExpression b)
 		{
-			op = b.Operator;
+			var op = b.Operator;
 			if (!op.Type.IsShift())
-				return false;
-			c1 = b.Right as Constant;
-			if (c1 == null)
-				return false;
+				return null;
+            if (b.Right is not Constant c1)
+                return null;
             if (b.Left is not BinaryExpression b2)
-                return false;
+                return null;
             if (op != b2.Operator)
-				return false;
-			c2 = b2.Right as Constant;
-			if (c2 == null)
-				return false;
-			e = b2.Left;
-			return true;
-		}
-
-		public Expression Transform()
-		{
+				return null;
+            if (b2.Right is not Constant c2)
+                return null;
+            var e = b2.Left;
 			return new BinaryExpression(
-				op!,
-				e!.DataType,
-				e!,
-				Operator.IAdd.ApplyConstants(c1!, c2!));
+				op,
+				e.DataType,
+				e,
+				Operator.IAdd.ApplyConstants(c1, c2));
 		}
 	}
 }

@@ -77,13 +77,13 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             });
 
-            var rule = new MkSeqFromSlices_Rule(ctx);
+            var rule = new MkSeqFromSlices_Rule();
             ctx.Statement = ssa.Procedure.EntryBlock.Succ[0].Statements[2];
             var ass = (Assignment)ctx.Statement.Instruction;
             var mkseq = (MkSequence)ass.Src;
-            Assert.IsTrue(rule.Match(mkseq));
-            ass.Src = rule.Transform();
-            Assert.AreEqual("r1", ass.Src.ToString());
+            var e = rule.Match(mkseq, ctx);
+            Assert.IsNotNull(e);
+            Assert.AreEqual("r1", e.ToString());
         }
     }
 }

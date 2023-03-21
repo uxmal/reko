@@ -32,17 +32,12 @@ namespace Reko.Evaluation
 {
     public class DistributedConversionRule
     {
-        private DataType? dt;
-        private DataType? dtSrc;
-        private Expression? eLeft;
-        private Expression? eRight;
-        private Operator? op;
 
         public DistributedConversionRule()
         {
         }
 
-        public bool Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type.IsAddOrSub())
             {
@@ -51,24 +46,19 @@ namespace Reko.Evaluation
                     if (cLeft.DataType == cRight.DataType && 
                         cLeft.SourceDataType.BitSize == cRight.SourceDataType.BitSize)
                     {
-                        this.dt = cLeft.Expression.DataType;
-                        this.dtSrc = cLeft.SourceDataType;
-                        this.eLeft = cLeft.Expression;
-                        this.eRight = cRight.Expression;
-                        this.op = binExp.Operator;
-                        return true;
+                        var dt = cLeft.Expression.DataType;
+                        var dtSrc = cLeft.SourceDataType;
+                        var eLeft = cLeft.Expression;
+                        var eRight = cRight.Expression;
+                        var op = binExp.Operator;
+                        return new Conversion(
+                            new BinaryExpression(op, dt, eLeft, eRight),
+                            dtSrc,
+                            dt);
                     }
                 }
             }
-            return false;
-        }
-
-        public Expression Transform(EvaluationContext ctx)
-        {
-            return new Conversion(
-                new BinaryExpression(this.op!, this.dt!, this.eLeft!, this.eRight!),
-                dtSrc!,
-                dt!);
+            return null;
         }
     }
 }

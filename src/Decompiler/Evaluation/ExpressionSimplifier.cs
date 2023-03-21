@@ -41,80 +41,65 @@ namespace Reko.Evaluation
     /// </summary>
     public class ExpressionSimplifier : ExpressionVisitor<(Expression, bool)>
     {
+        private static readonly IdConstant idConst;
+        private static readonly ComparisonConstOnLeft constOnLeft;
+        private static readonly AddTwoIdsRule add2ids;
+        private static readonly Add_e_c_cRule addEcc;
+        private static readonly Add_mul_id_c_id_Rule addMici;
+        private static readonly ConstConstBin_Rule constConstBin;
+        private static readonly IdCopyPropagationRule idCopyPropagation;
+        private static readonly IdBinIdc_Rule idBinIdc;
+        private static readonly SliceConstant_Rule sliceConst;
+        private static readonly SliceMem_Rule sliceMem;
+        private static readonly SliceSegmentedPointer_Rule sliceSegPtr;
+        private static readonly SliceShift sliceShift;
+        private static readonly Shl_add_Rule shAdd;
+        private static readonly Shl_mul_e_Rule shMul;
+        private static readonly ShiftShift_c_c_Rule shiftShift;
+        private static readonly NegSub_Rule negSub;
+        private static readonly Mps_Constant_Rule mpsRule;
+        private static readonly BinOpWithSelf_Rule binopWithSelf;
+        private static readonly ConstDivisionImplementedByMultiplication constDiv;
+        private static readonly IdProcConstRule idProcConstRule;
+        private static readonly ConvertConvertRule convertConvertRule;
+        private static readonly DistributedCastRule distributedCast;
+        private static readonly DistributedConversionRule distributedConvert;
+        private static readonly DistributedSliceRule distributedSlice;
+        private static readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
+        private static readonly SliceConvert sliceConvert;
+        private static readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
+        private static readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
+        private static readonly UnaryNegEqZeroRule unaryNegEqZero;
+        private static readonly ScaledIndexRule scaledIndexRule;
+
         private readonly IReadOnlySegmentMap segmentMap;
         private readonly EvaluationContext ctx;
         private readonly ExpressionValueComparer cmp;
         private readonly ExpressionEmitter m;
         private readonly Unifier unifier;
+        private readonly DecompilerEventListener listener;
 
-        private readonly AddTwoIdsRule add2ids;
-        private readonly Add_e_c_cRule addEcc;
-        private readonly Add_mul_id_c_id_Rule addMici;
-        private readonly ConstConstBin_Rule constConstBin;
-        private readonly IdConstant idConst;
-        private readonly IdCopyPropagationRule idCopyPropagation;
-        private readonly IdBinIdc_Rule idBinIdc;
-        private readonly SliceConstant_Rule sliceConst;
-        private readonly SliceMem_Rule sliceMem;
-        private readonly SliceSegmentedPointer_Rule sliceSegPtr;
-        private readonly SliceShift sliceShift;
-        private readonly Shl_add_Rule shAdd;
-        private readonly Shl_mul_e_Rule shMul;
-        private readonly ShiftShift_c_c_Rule shiftShift;
-        private readonly NegSub_Rule negSub;
-        private readonly Mps_Constant_Rule mpsRule;
-        private readonly BinOpWithSelf_Rule binopWithSelf;
-        private readonly ConstDivisionImplementedByMultiplication constDiv;
-        private readonly IdProcConstRule idProcConstRule;
-        private readonly ConvertConvertRule convertConvertRule;
-        private readonly DistributedCastRule distributedCast;
-        private readonly DistributedConversionRule distributedConvert;
-        private readonly DistributedSliceRule distributedSlice;
-        private readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
-        private readonly ComparisonConstOnLeft constOnLeft;
-        private readonly SliceConvert sliceConvert;
-        private readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
-        private readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
-        private readonly UnaryNegEqZeroRule unaryNegEqZero;
-        private readonly ScaledIndexRule scaledIndexRule;
+
 
         public ExpressionSimplifier(IReadOnlySegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
+            : this(segmentMap, ctx, new Unifier(), listener)
+        {
+            // Creating the unifier is slow, so we provide a constructor
+            // where the unifier is passed in.
+        }
+
+        public ExpressionSimplifier(
+            IReadOnlySegmentMap segmentMap,
+            EvaluationContext ctx,
+            Unifier unifier,
+            DecompilerEventListener listener)
         {
             this.segmentMap = segmentMap ?? throw new ArgumentNullException(nameof(segmentMap));
             this.ctx = ctx;
+            this.unifier = unifier;
+            this.listener = listener;
             this.cmp = new ExpressionValueComparer();
             this.m = new ExpressionEmitter();
-            this.unifier = new Unifier();
-            this.add2ids = new AddTwoIdsRule(ctx);
-            this.addEcc = new Add_e_c_cRule(ctx);
-            this.addMici = new Add_mul_id_c_id_Rule(ctx);
-            this.idConst = new IdConstant(ctx, unifier, listener);
-            this.idCopyPropagation = new IdCopyPropagationRule(ctx);
-            this.idBinIdc = new IdBinIdc_Rule(ctx);
-            this.sliceConst = new SliceConstant_Rule();
-            this.sliceMem = new SliceMem_Rule(ctx);
-            this.sliceSegPtr = new SliceSegmentedPointer_Rule(ctx);
-            this.negSub = new NegSub_Rule();
-            this.constConstBin = new ConstConstBin_Rule();
-            this.shAdd = new Shl_add_Rule(ctx);
-            this.shMul = new Shl_mul_e_Rule(ctx);
-            this.shiftShift = new ShiftShift_c_c_Rule(ctx);
-            this.mpsRule = new Mps_Constant_Rule(ctx);
-            this.sliceShift = new SliceShift(ctx);
-            this.binopWithSelf = new BinOpWithSelf_Rule();
-            this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
-            this.idProcConstRule = new IdProcConstRule(ctx);
-            this.convertConvertRule = new ConvertConvertRule(ctx);
-            this.distributedConvert = new DistributedConversionRule();
-            this.distributedCast = new DistributedCastRule();
-            this.distributedSlice = new DistributedSliceRule();
-            this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
-            this.constOnLeft = new ComparisonConstOnLeft();
-            this.sliceConvert = new SliceConvert();
-            this.logicalNotFollowedByNeg = new LogicalNotFollowedByNegRule();
-            this.logicalNotFromBorrow = new LogicalNotFromArithmeticSequenceRule();
-            this.unaryNegEqZero = new UnaryNegEqZeroRule();
-            this.scaledIndexRule = new ScaledIndexRule(ctx);
         }
 
         //$REVIEW: consider moving these predicates to OperatorTypeExtensions
@@ -355,7 +340,7 @@ namespace Reko.Evaluation
             {
                 cRight = cLeft; left = right; right = cLeft;
             }
-
+            Expression? e;
             //$TODO: operands to binary operations appear to be
             // mismatched in some processors. Change the ctor
             // of BinaryExpression to catch this later.
@@ -409,7 +394,7 @@ namespace Reko.Evaluation
                     }
                     if (cRight.IsMaxUnsigned && sameBitsize)
                     {
-                        var (e, _) = new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
+                        (e, _) = new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
                         return (e, true);
                     }
                 }
@@ -420,7 +405,7 @@ namespace Reko.Evaluation
                         if (left is UnaryExpression u &&
                             u.Operator.Type == OperatorType.Comp)
                         {
-                            var (e, _) = m.Neg(u.Expression).Accept(this);
+                            (e, _) = m.Neg(u.Expression).Accept(this);
                             return (e, true);
                         }
                     }
@@ -432,9 +417,10 @@ namespace Reko.Evaluation
                 return (InvalidConstant.Create(binExp.DataType), lChanged | rChanged);
 
             binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
-            if (constConstBin.Match(binExp))
+            e = constConstBin.Match(binExp);
+            if (e is not null)
             {
-                return (constConstBin.Transform(), true);
+                return (e, true);
             }
 
             Identifier? idLeft = left as Identifier;
@@ -574,29 +560,33 @@ namespace Reko.Evaluation
                 return (dwordIdiom, true);
 
             // (rel C non-C) => (trans(rel) non-C C)
-            if (constOnLeft.Match(binExp))
+            e = constOnLeft.Match(binExp);
+            if (e is not null)
             {
-                var (e, _) = constOnLeft.Transform().Accept(this);
+                (e, _) = e.Accept(this);
                 return (e, true);
             }
-            if (addMici.Match(binExp))
+            e = addMici.Match(binExp, ctx);
+            if (e is not null)
             {
-                return (addMici.Transform(), true);
+                return (e, true);
+            }
+            e = shAdd.Match(binExp, ctx);
+            if (e is not null)
+            {
+                return (e, true);
             }
 
-            if (shAdd.Match(binExp))
+            e = shMul.Match(binExp);
+            if (e is not null)
             {
-                return (shAdd.Transform(), true);
+                return (e, true);
             }
 
-            if (shMul.Match(binExp))
+            e = shiftShift.Match(binExp);
+            if (e is not null)
             {
-                return (shMul.Transform(), true);
-            }
-
-            if (shiftShift.Match(binExp))
-            {
-                return (shiftShift.Transform(), true);
+                return (e, true);
             }
 
             var eNew = ShiftLeftShiftRight(binExp, cRight);
@@ -611,19 +601,21 @@ namespace Reko.Evaluation
                 return (eNew, true);
 
             // (e * c1) + (e * c2) => e * (c1 + c2)
-            eNew = SumDiffProducts(binExp);
-            if (eNew is not null)
-                return (eNew, true);
+            e = SumDiffProducts(binExp);
+            if (e is not null)
+                return (e, true);
 
             // (-exp == 0) => (exp == 0)
-            if (unaryNegEqZero.Match(binExp))
+            e = unaryNegEqZero.Match(binExp);
+            if (e is not null)
             {
-                return (unaryNegEqZero.Transform(), true);
+                return (e, true);
             }
 
-            if (logicalNotFromBorrow.Match(binExp))
+            e = logicalNotFromBorrow.Match(binExp);
+            if (e is not null)
             {
-                return (logicalNotFromBorrow.Transform(), true);
+                return (e, true);
             }
             return (binExp, changed);
         }
@@ -688,37 +680,42 @@ namespace Reko.Evaluation
         private (Expression, bool) PreVisitBinaryExpression(BinaryExpression binExp)
         {
             // (+ id1 id1) ==> (* id1 2)
-            if (add2ids.Match(binExp))
+            var e = add2ids.Match(binExp, ctx);
+            if (e is not null)
             {
-                var (e, _)= add2ids.Transform().Accept(this);
+                (e, _)= e.Accept(this);
                 return (e, true);
             }
-            if (binopWithSelf.Match(binExp))
+            e = binopWithSelf.Match(binExp, ctx);
+            if (e is not null)
             {
-                var (e, _) = binopWithSelf.Transform(ctx).Accept(this);
+                (e, _) = e.Accept(this);
                 return (e, true);
             }
-            if (distributedConvert.Match(binExp))
-            {
-                var (e, _) = distributedConvert.Transform(ctx).Accept(this);
+            e = distributedConvert.Match(binExp);
+            if (e is not null)
+            { 
+                (e, _) = e.Accept(this);
                 return (e, true);
             }
-            if (distributedSlice.Match(binExp))
+            e = distributedSlice.Match(binExp);
+            if (e is not null)
             {
-                var (e, _) = distributedSlice.Transform(ctx).Accept(this);
+                (e, _) = e.Accept(this);
                 return (e, true);
             }
-            if (distributedCast.Match(binExp))
+            e = distributedCast.Match(binExp);
+            if (e is not null)
             {
-                var (e, _) = distributedCast.Transform(ctx).Accept(this);
+                (e, _) = e.Accept(this);
                 return (e, true);
             }
 
             // (exp >> n) << n => __align(exp, 1<<n)
-            var eNew = ShiftRightShiftLeft(binExp);
-            if (eNew != null)
+            e = ShiftRightShiftLeft(binExp);
+            if (e is not null)
             {
-                return (eNew, true);
+                return (e, true);
             }
             return (binExp, false);
         }
@@ -937,9 +934,10 @@ namespace Reko.Evaluation
                 }
                 conversion = new Conversion(exp, exp.DataType, conversion.DataType);
             }
-            if (convertConvertRule.Match(conversion))
+            exp = convertConvertRule.Match(conversion);
+            if (exp is not null)
             {
-                return (convertConvertRule.Transform(), true);
+                return (exp, true);
             }
             return (conversion, changed);
         }
@@ -1026,23 +1024,27 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitIdentifier(Identifier id)
         {
-            if (idConst.Match(id))
+            var e = idConst.Match(id, this.ctx, unifier, listener);
+            if (e is not null)
             {
-                return (idConst.Transform(), true);
+                return (e, true);
             }
-            if (idProcConstRule.Match(id))
+            e = idProcConstRule.Match(id, ctx);
+            if (e is not null)
             {
-                return (idProcConstRule.Transform(), true);
+                return (e, true);
             }
             // jkl: Copy propagation causes real problems when used during trashed register analysis.
             // If needed in other passes, it should be an option for expression e
-            if (idCopyPropagation.Match(id))
+            e = idCopyPropagation.Match(id, ctx);
+            if (e is not null)
             {
-                return (idCopyPropagation.Transform(), true);
+                return (e, true);
             }
-            if (idBinIdc.Match(id))
+            e = idBinIdc.Match(id, ctx);
+            if (e is not null)
             {
-                return (idBinIdc.Transform(), true);
+                return (e, true);
             }
             return (id, false);
         }
@@ -1066,10 +1068,11 @@ namespace Reko.Evaluation
         public virtual (Expression, bool) VisitMemoryAccess(MemoryAccess access)
         {
             var (offset, changed) = access.EffectiveAddress.Accept(this);
-            if (this.scaledIndexRule.Match(offset))
+            var e = scaledIndexRule.Match(offset, ctx);
+            if (e is not null)
             {
                 changed = true;
-                (offset, _) = scaledIndexRule.Transform().Accept(this);
+                (offset, _) = e.Accept(this);
             }
             var value = new MemoryAccess(
                 access.MemoryId,
@@ -1562,10 +1565,11 @@ namespace Reko.Evaluation
             var (basePtr, bChanged) = segMem.BasePointer.Accept(this);
             var (offset, oChanged) = segMem.EffectiveAddress.Accept(this);
             bool changed = bChanged | oChanged;
-            if (this.scaledIndexRule.Match(offset))
+            var e = scaledIndexRule.Match(offset, ctx);
+            if (e is not null)
             {
                 changed = true;
-                (offset, _) = scaledIndexRule.Transform().Accept(this);
+                (offset, _) = e.Accept(this);
             }
             if (basePtr is Constant cBase && offset is Constant cOffset)
             {
@@ -1574,9 +1578,10 @@ namespace Reko.Evaluation
                 return (ctx.GetValue(mem, segmentMap), true);
             }
             var value = new SegmentedAccess(segMem.MemoryId, basePtr, offset, segMem.DataType);
-            if (sliceSegPtr.Match(value))
+            e = sliceSegPtr.Match(value, ctx);
+            if (e is not null)
             {
-                return (sliceSegPtr.Transform(), true);
+                return (e, true);
             }
             var newVal = ctx.GetValue(value, segmentMap);
             if (newVal != value)
@@ -1618,19 +1623,22 @@ namespace Reko.Evaluation
             if (slice.Offset == 0 && slice.DataType.BitSize == e.DataType.BitSize)
                 return (e, true);
             slice = new Slice(slice.DataType, e, slice.Offset);
-            if (sliceConst.Match(slice))
+            e = sliceConst.Match(slice);
+            if (e is not null)
             {
-                return (sliceConst.Transform(), true);
+                return (e, true);
             }
-            if (sliceMem.Match(slice))
+            e = sliceMem.Match(slice, ctx);
+            if (e is not null)
             {
-                return (sliceMem.Transform(), true);
+                return (e, true);
             }
 
             // (slice (shl e n) n) ==> e
-            if (sliceShift.Match(slice))
+            e = sliceShift.Match(slice, ctx);
+            if (e is not null)
             {
-                return (sliceShift.Transform(), true);
+                return (e, true);
             }
             if (IsSequence(ctx, slice.Expression, out var seq))
             {
@@ -1642,10 +1650,11 @@ namespace Reko.Evaluation
                     return (eNew, true);
                 }
             }
-            
-            if (sliceConvert.Match(slice))
+
+            e = sliceConvert.Match(slice);
+            if (e is not null)
             {
-                return (sliceConvert.Transform(), true);
+                return (e, true);
             }
             var innerSlice = SlicedSlice(slice);
             if (innerSlice is not null)
@@ -1728,15 +1737,17 @@ namespace Reko.Evaluation
             var (e, changed) = unary.Expression.Accept(this);
             if (changed)
                 unary = new UnaryExpression(unary.Operator, unary.DataType, e);
-            if (negSub.Match(unary))
+            e = negSub.Match(unary);
+            if (e is not null)
             {
-                return (negSub.Transform(), true);
+                return (e, true);
             }
 
             // (!-exp) >= (!exp)
-            if (logicalNotFollowedByNeg.Match(unary))
+            e = logicalNotFollowedByNeg.Match(unary);
+            if (e is not null)
             {
-                return (logicalNotFollowedByNeg.Transform(), true);
+                return (e, true);
             }
 
             if (unary.Expression is Constant c && c.IsValid && unary.Operator.Type != OperatorType.AddrOf)
@@ -1813,6 +1824,40 @@ namespace Reko.Evaluation
             }
             extBin = null;
             return false;
+        }
+
+        static ExpressionSimplifier()
+        {
+            idConst = new IdConstant();
+            constOnLeft = new ComparisonConstOnLeft();
+            add2ids = new AddTwoIdsRule();
+            addEcc = new Add_e_c_cRule();
+            addMici = new Add_mul_id_c_id_Rule();
+            idCopyPropagation = new IdCopyPropagationRule();
+            idBinIdc = new IdBinIdc_Rule();
+            sliceConst = new SliceConstant_Rule();
+            sliceMem = new SliceMem_Rule();
+            sliceSegPtr = new SliceSegmentedPointer_Rule();
+            negSub = new NegSub_Rule();
+            constConstBin = new ConstConstBin_Rule();
+            shAdd = new Shl_add_Rule();
+            shMul = new Shl_mul_e_Rule();
+            shiftShift = new ShiftShift_c_c_Rule();
+            mpsRule = new Mps_Constant_Rule();
+            sliceShift = new SliceShift();
+            binopWithSelf = new BinOpWithSelf_Rule();
+            constDiv = new ConstDivisionImplementedByMultiplication();
+            idProcConstRule = new IdProcConstRule();
+            convertConvertRule = new ConvertConvertRule();
+            distributedConvert = new DistributedConversionRule();
+            distributedCast = new DistributedCastRule();
+            distributedSlice = new DistributedSliceRule();
+            mkSeqFromSlicesRule = new MkSeqFromSlices_Rule();
+            sliceConvert = new SliceConvert();
+            logicalNotFollowedByNeg = new LogicalNotFollowedByNegRule();
+            logicalNotFromBorrow = new LogicalNotFromArithmeticSequenceRule();
+            unaryNegEqZero = new UnaryNegEqZeroRule();
+            scaledIndexRule = new ScaledIndexRule();
         }
     }
 }

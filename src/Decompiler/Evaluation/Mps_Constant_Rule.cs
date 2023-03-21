@@ -29,11 +29,11 @@ namespace Reko.Evaluation
 	{
 		private MemberPointerSelector? mps;
 
-		public Mps_Constant_Rule(EvaluationContext ctx)
+		public Mps_Constant_Rule()
 		{
 		}
 
-		public bool Match(MemberPointerSelector mps)
+		public bool Match(MemberPointerSelector mps, EvaluationContext ctx)
 		{
 //			c = mps.MemberPtr as Constant;
 			this.mps = mps;

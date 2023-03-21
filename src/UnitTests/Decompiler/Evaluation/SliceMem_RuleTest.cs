@@ -46,9 +46,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 			var s = new Slice(PrimitiveType.Byte,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory, 
 				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 16);
-			var r = new SliceMem_Rule(ctx.Object);
-			Assert.IsTrue(r.Match(s));
-			var e = r.Transform();
+			var r = new SliceMem_Rule();
+			var e = r.Match(s, ctx.Object);
+            Assert.IsNotNull(e);
 			Assert.AreEqual("Mem0[ptr + 2<32>:byte]", e.ToString());
 		}
 
@@ -58,9 +58,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 			var s = new Slice(PrimitiveType.Word16,
 				new MemoryAccess(MemoryIdentifier.GlobalMemory,
 				new Identifier("ptr", PrimitiveType.Word32, null), PrimitiveType.Word32), 0);
-			var r = new SliceMem_Rule(ctx.Object);
-			Assert.IsTrue(r.Match(s));
-			var e = r.Transform();
+			var r = new SliceMem_Rule();
+			var e = r.Match(s, ctx.Object);
+            Assert.IsNotNull(e);
 			Assert.AreEqual("Mem0[ptr + 0<32>:word16]", e.ToString());
 		}
 	}

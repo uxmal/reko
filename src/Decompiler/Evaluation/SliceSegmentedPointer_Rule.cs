@@ -41,78 +41,47 @@ namespace Reko.Evaluation
     /// </summary>
     public class SliceSegmentedPointer_Rule
     {
-        private EvaluationContext ctx;
-        private SegmentedAccess? segMem;
-        private Identifier? seg;
-        private Identifier? idOff;
-        private Identifier? segPtr;
-
-        public SliceSegmentedPointer_Rule(EvaluationContext ctx)
+        public SliceSegmentedPointer_Rule()
         {
-            this.ctx = ctx;
         }
 
-        public bool Match(SegmentedAccess segMem)
+        public Expression? Match(SegmentedAccess segMem, EvaluationContext ctx)
         {
-            this.segMem = segMem;
-            this.seg = segMem.BasePointer as Identifier;
-            if (seg == null)
-                return false;
+            if (segMem.BasePointer is not Identifier seg)
+                return null;
 
-            this.segPtr = null;
+            Identifier? segPtr = null;
             var off = segMem.EffectiveAddress;
-            this.idOff = off as Identifier;
-            if (idOff != null)
+            if (off is Identifier idOff)
             {
                 // [seg:idOff] => [seg_idOff]
-                segPtr = SlicedSegPointer(seg, idOff);
+                segPtr = SlicedSegPointer(seg, idOff, ctx);
             }
-            else 
+            else
             {
-                var binOff = off as BinaryExpression;
-                if (binOff == null)
-                    return false;
-                idOff = binOff.Left as Identifier;
-                if (idOff != null)
+                if (off is not BinaryExpression binOff)
+                    return null;
+                var idOff2 = binOff.Left as Identifier;
+                if (idOff2 != null)
                 {
                     // [seg:idOff +/- C] => [seg_idOff + C]
-                    segPtr = SlicedSegPointer(seg, idOff);
+                    segPtr = SlicedSegPointer(seg, idOff2, ctx);
                 }
+                idOff = idOff2!;
             }
-            return segPtr != null;
-        }
-
-        /// <summary>
-        /// Try to find an original 32-bit segmented pointer that may have 
-        /// been SLICE'd to a segment and offset register.
-        /// </summary>
-        /// <param name="seg"></param>
-        /// <param name="off"></param>
-        /// <returns></returns>
-        private Identifier? SlicedSegPointer(Identifier seg, Identifier off)
-        {
-            var defSeg = ctx.GetDefiningExpression(seg) as Slice;
-            var defOff = ctx.GetDefiningExpression(off) as Slice;
-            if (defSeg == null || defOff == null)
+            if (segPtr is null)
                 return null;
-            if (defSeg.Expression == defOff.Expression)
-                return defSeg.Expression as Identifier;
-            else
-                return null;
-        }
 
-        public Expression Transform()
-        {
-            ctx.RemoveIdentifierUse(seg!);
+            ctx.RemoveIdentifierUse(seg);
             ctx.RemoveIdentifierUse(idOff!);
             Expression ea;
             if (segMem!.EffectiveAddress == idOff)
             {
-                ea = segPtr!;
+                ea = segPtr;
             }
             else
             {
-                var bin = (BinaryExpression)segMem.EffectiveAddress;
+                var bin = (BinaryExpression) segMem.EffectiveAddress;
                 if (bin.Left == idOff)
                 {
                     ea = new BinaryExpression(bin.Operator, segPtr!.DataType, segPtr!, bin.Right);
@@ -122,6 +91,25 @@ namespace Reko.Evaluation
             }
             ctx.UseExpression(segPtr!);
             return new MemoryAccess(segMem.MemoryId, ea, segMem.DataType);
+        }
+
+        /// <summary>
+        /// Try to find an original 32-bit segmented pointer that may have 
+        /// been SLICE'd to a segment and offset register.
+        /// </summary>
+        /// <param name="seg"></param>
+        /// <param name="off"></param>
+        /// <returns></returns>
+        private Identifier? SlicedSegPointer(Identifier seg, Identifier off, EvaluationContext ctx)
+        {
+            var defSeg = ctx.GetDefiningExpression(seg) as Slice;
+            var defOff = ctx.GetDefiningExpression(off) as Slice;
+            if (defSeg == null || defOff == null)
+                return null;
+            if (defSeg.Expression == defOff.Expression)
+                return defSeg.Expression as Identifier;
+            else
+                return null;
         }
     }
 }

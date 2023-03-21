@@ -28,44 +28,30 @@ using System;
 namespace Reko.Evaluation
 {
 	public class Shl_mul_e_Rule
-	{
-		private Constant? cShift;
-		private Constant? cMul;
-		private Operator? op;
-		private Expression? e;
-        private DataType? dt;
-
-		public Shl_mul_e_Rule(EvaluationContext ctx)
+    {
+		public Shl_mul_e_Rule()
 		{
 		}
 
-		public bool Match(BinaryExpression b)
-		{
+		public Expression? Match(BinaryExpression b)
+        {
 			if (b.Operator.Type != OperatorType.Shl)
-				return false;
-			cShift = b.Right as Constant;
-			if (cShift == null)
-				return false;
+				return null;
+            if (b.Right is not Constant cShift)
+                return null;
 
             if (b.Left is not BinaryExpression bLeft)
-                return false;
+                return null;
 
-            //$TODO: make an OperatorTypeExtensions.IsIntMultiplication
             if (!bLeft.Operator.Type.IsIntMultiplication())
-				return false;
-			op = bLeft.Operator;
-			cMul = bLeft.Right as Constant;
-			if (cMul == null)
-				return false;
+				return null;
+			var op = bLeft.Operator;
+            if (bLeft.Right is not Constant cMul)
+                return null;
 
-			e = bLeft.Left;
-            dt = b.DataType;
-			return true;
-		}
-
-		public Expression Transform()
-		{
-			return new BinaryExpression(op!, dt!, e!, Operator.Shl.ApplyConstants(cMul!, cShift!));
+            var e = bLeft.Left;
+            var dt = b.DataType;
+			return new BinaryExpression(op, dt, e, Operator.Shl.ApplyConstants(cMul, cShift));
 		}
 	}
 }

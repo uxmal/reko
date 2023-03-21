@@ -27,22 +27,19 @@ namespace Reko.Evaluation
 {
 	public class NegSub_Rule
 	{
-		private BinaryExpression? bin;
-
-		public bool Match(UnaryExpression unary)
+		public Expression? Match(UnaryExpression unary)
 		{
-			if (unary.Operator.Type == OperatorType.Neg)
-			{
-				bin = unary.Expression as BinaryExpression;
-				if (bin != null && bin.Operator.Type == OperatorType.ISub)
-					return true;
-			}
-			return false;
-		}
-
-		public Expression Transform()
-		{
-			return new BinaryExpression(bin!.Operator, bin.DataType, bin.Right, bin.Left);
+            if (unary.Operator.Type == OperatorType.Neg &&
+                unary.Expression is BinaryExpression bin &&
+                bin.Operator.Type == OperatorType.ISub)
+            {
+                return new BinaryExpression(
+                    bin.Operator,
+                    bin.DataType,
+                    bin.Right,
+                    bin.Left);
+            }
+			return null;
 		}
 	}
 }

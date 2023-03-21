@@ -30,26 +30,14 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class IdCopyPropagationRule
 	{
-        private EvaluationContext ctx;
-        private Identifier? idOld;
-		private Identifier? idNew;
-
-        public IdCopyPropagationRule(EvaluationContext ctx)
+        public Expression? Match(Identifier id, EvaluationContext ctx)
         {
-            this.ctx = ctx;
-        }
+            var idOld = id;
+            if (ctx.GetValue(id) is not Identifier idNew || idNew == idOld)
+                return null;
 
-        public bool Match(Identifier id)
-        {
-            idOld = id;
-            idNew = ctx.GetValue(id) as Identifier;
-            return idNew != null && idNew != idOld;
-        }
-
-        public Expression Transform()
-        {
-            ctx.RemoveIdentifierUse(idOld!);
-            ctx.UseExpression(idNew!);
+            ctx.RemoveIdentifierUse(idOld);
+            ctx.UseExpression(idNew);
             return idNew!;
         }
 	}

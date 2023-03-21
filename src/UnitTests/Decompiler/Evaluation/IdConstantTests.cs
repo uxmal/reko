@@ -67,9 +67,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             ((SideEffect)use.Instruction).Expression = sid_ds.Identifier;
 			sid_ds.Uses.Add(use);
 
-			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa, null), new Unifier(null, null), listener);
-            Assert.IsTrue(ic.Match(sid_ds.Identifier));
-			Expression e = ic.Transform();
+			IdConstant ic = new IdConstant();
+            var e = ic.Match(sid_ds.Identifier, new SsaEvaluationContext(null, ssa, null), new Unifier(null, null), listener);
+            Assert.That(e, Is.Not.Null);
 			Assert.AreEqual("selector", e.DataType.ToString());
 		}
 
@@ -82,9 +82,10 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var ctx = new Mock<EvaluationContext>();
             ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Int32(321));
 
-            IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
-            Assert.IsTrue(ic.Match(edx));
-            Expression e = ic.Transform();
+            IdConstant ic = new IdConstant();
+            
+            Expression e = ic.Match(edx, ctx.Object, new Unifier(null, null), listener);
+            Assert.That(e, Is.Not.Null);
             Assert.AreEqual("321<i32>", e.ToString());
             Assert.AreEqual("DWORD", e.DataType.ToString());
         }
@@ -98,9 +99,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var ctx = new Mock<EvaluationContext>();
             ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Int32(0x567));
 
-            IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
-            Assert.IsTrue(ic.Match(edx));
-            Expression e = ic.Transform();
+            IdConstant ic = new IdConstant(); 
+            var e = ic.Match(edx, ctx.Object, new Unifier(null, null), listener);
+            Assert.That(e, Is.Not.Null);
             Assert.AreEqual("00000567", e.ToString());
             Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
@@ -114,9 +115,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var ctx = new Mock<EvaluationContext>();
             ctx.Setup(c => c.GetValue(edx)).Returns(Address.Ptr32(0x00123400));
 
-            IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
-            Assert.IsTrue(ic.Match(edx));
-            Expression e = ic.Transform();
+            IdConstant ic = new IdConstant();
+            var e = ic.Match(edx, ctx.Object, new Unifier(null, null), listener);
+            Assert.That(e, Is.Not.Null);
             Assert.AreEqual("00123400", e.ToString());
             Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
@@ -129,9 +130,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var ctx = new Mock<EvaluationContext>();
             ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Word32(0x3E400000));
 
-            var ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
-            Assert.IsTrue(ic.Match(edx));
-            var e = ic.Transform();
+            IdConstant ic = new IdConstant();
+            var e = ic.Match(edx, ctx.Object, new Unifier(null, null), listener);
+            Assert.That(e, Is.Not.Null);
             AssertTypedExpression("0.1875F<real32>", e);
         }
 
@@ -146,13 +147,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var c = Constant.Word64(0x4028000000000000); // 12.0
             ctx.Setup(c => c.GetValue(r64)).Returns(c);
 
-            var ic = new IdConstant(
-                ctx.Object,
-                new Unifier(null, null),
-                listener);
-            Assert.IsTrue(ic.Match(r64));
-            var e = ic.Transform();
-
+            IdConstant ic = new IdConstant();
+            var e = ic.Match(r64, ctx.Object, new Unifier(null, null), listener);
+            Assert.That(e, Is.Not.Null);
             AssertTypedExpression("12.0<DOUBLE>", e);
         }
     }

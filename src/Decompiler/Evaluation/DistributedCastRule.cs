@@ -32,16 +32,11 @@ namespace Reko.Evaluation
 {
     public class DistributedCastRule
     {
-        private DataType? dt;
-        private Expression? eLeft;
-        private Expression? eRight;
-        private Operator? op;
-
         public DistributedCastRule()
         {
         }
 
-        public bool Match(BinaryExpression binExp)
+        public Expression? Match(BinaryExpression binExp)
         {
             if (binExp.Operator.Type.IsAddOrSub())
             {
@@ -49,21 +44,16 @@ namespace Reko.Evaluation
                 {
                     if (cLeft.DataType == cRight.DataType)
                     {
-                        this.dt = cLeft.DataType;
-                        this.eLeft = cLeft.Expression;
-                        this.eRight = cRight.Expression;
-                        this.op = binExp.Operator;
-                        return true;
+                        var dt = cLeft.DataType;
+                        var eLeft = cLeft.Expression;
+                        var eRight = cRight.Expression;
+                        var op = binExp.Operator;
+                        return new Cast(dt, new BinaryExpression(
+                            op, dt, eLeft, eRight));
                     }
                 }
             }
-            return false;
-        }
-
-        public Expression Transform(EvaluationContext ctx)
-        {
-            return new Cast(dt!, new BinaryExpression(
-                this.op!, this.dt!, this.eLeft!, this.eRight!));
+            return null;
         }
     }
 }

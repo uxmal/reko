@@ -52,10 +52,11 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             ssaIds[id].Uses.Add(stm);
 
             ctx.Statement = stm;
-            Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule(ctx);
-            Assert.IsTrue(rule.Match(b));
             Assert.AreEqual(2, ssaIds[id].Uses.Count);
-            ass.Src = rule.Transform();
+            Add_mul_id_c_id_Rule rule = new Add_mul_id_c_id_Rule();
+            var e = rule.Match(b, ctx);
+            Assert.IsNotNull(e);
+            ass.Src = e;
             Assert.AreEqual("x = id *s 5<32>", ass.ToString());
             Assert.AreEqual(1, ssaIds[id].Uses.Count);
         }
@@ -68,9 +69,12 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         {
             BinaryExpression b = m.IAdd(id, m.UMul(id, 5));
             Assignment ass = new Assignment(x, b);
-            var rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(null, ssaIds, null));
-            Assert.IsTrue(rule.Match(b));
-            ass.Src = rule.Transform();
+            var rule = new Add_mul_id_c_id_Rule();
+            
+            var e = rule.Match(b, new SsaEvaluationContext(null, ssaIds, null));
+
+            Assert.IsNotNull(e);
+            ass.Src = e;
             Assert.AreEqual("x = id *u 6<32>", ass.ToString());
         }
 

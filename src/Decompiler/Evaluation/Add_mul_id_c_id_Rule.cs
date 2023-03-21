@@ -21,37 +21,24 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Analysis;
-using System;
 using Reko.Core.Types;
 
 namespace Reko.Evaluation
 {
-	/// <summary>
-	/// Rule that matches:
+    /// <summary>
+    /// Rule that matches:
     ///     (+ (* id c) id) yielding (* id (+ c 1))
     ///     (- (* id c) id) yielding (* id (- c 1))
-	/// </summary>
-	public class Add_mul_id_c_id_Rule
+    /// </summary>
+    public class Add_mul_id_c_id_Rule
 	{
-		private EvaluationContext ctx;
-		private BinaryExpression? bin;
-		private Identifier? id;
-		private Constant? cInner;
-        private Constant? cOne;
-        private bool swapped;
-
-		public Add_mul_id_c_id_Rule(EvaluationContext ctx)
-		{
-			this.ctx = ctx;
-		}
-
-		public bool Match(BinaryExpression exp)
+		public Expression? Match(BinaryExpression exp, EvaluationContext ctx)
 		{
             var dt = exp.DataType.ResolveAs<PrimitiveType>();
             if (dt is null)
-                return false;
+                return null;
             var opType = exp.Operator.Type;
+            Constant cOne;
             if (opType== OperatorType.IAdd)
             {
                 cOne = Constant.Create(dt, 1);
@@ -62,46 +49,40 @@ namespace Reko.Evaluation
             }
             else
             {
-                return false;
+                return null;
             }
 
-            swapped = false;
-			id = exp.Left as Identifier;
-			bin = exp.Right as BinaryExpression;
-			if (id == null || bin == null)
+            bool swapped = false;
+			var id = exp.Left as Identifier;
+			var bin = exp.Right as BinaryExpression;
+			if (id is null || bin is null)
 			{
                 // Swap the operands.
 				id = exp.Right as Identifier;
 				bin = exp.Left as BinaryExpression;
                 swapped = true;
 			}
-			if (id == null || bin == null)
-				return false;
+			if (id is null || bin is null)
+				return null;
 
 			if (bin.Operator.Type != OperatorType.SMul &&
                 bin.Operator.Type != OperatorType.UMul &&
                 bin.Operator.Type != OperatorType.IMul)
-				return false;
+				return null;
 
-            cInner = bin.Right as Constant;
-            if (bin.Left is not Identifier idInner || cInner == null)
-				return false;
+            if (bin.Left is not Identifier idInner || bin.Right is not Constant cInner)
+                return null;
 
-			if (idInner != id)
-				return false;
+            if (idInner != id)
+				return null;
 
-			return true;
-		}
-
-		public Expression Transform()
-		{
-            ctx.RemoveIdentifierUse(id!);
+            ctx.RemoveIdentifierUse(id);
             var op = Operator.IAdd;
             var c = swapped
-                ? op.ApplyConstants(cOne!, cInner!)
-                : op.ApplyConstants(cInner!, cOne!);
+                ? op.ApplyConstants(cOne, cInner)
+                : op.ApplyConstants(cInner, cOne);
 
-            return new BinaryExpression(bin!.Operator, id!.DataType, id, c);
+            return new BinaryExpression(bin.Operator, id.DataType, id, c);
 		}
 	}
 }

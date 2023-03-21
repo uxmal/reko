@@ -30,27 +30,19 @@ namespace Reko.Evaluation
 {
     public class ComparisonConstOnLeft
     {
-        private Expression? bin;
-
-        public bool Match(BinaryExpression bin)
+        public Expression? Match(BinaryExpression bin)
         {
-            if (!(bin.Operator is ConditionalOperator cond))
-                return false;
-            if (!(bin.Left is Constant cLeft))
-                return false;
+            if (bin.Operator is not ConditionalOperator cond)
+                return null;
+            if (bin.Left is not Constant cLeft)
+                return null;
             if (bin.Right is Constant)
-                return false;
-            this.bin = new BinaryExpression(
+                return null;
+            return new BinaryExpression(
                 cond.Negate(),
                 bin.DataType,
                 bin.Right,
                 cLeft);
-            return true;
-        }
-
-        public Expression Transform()
-        {
-            return bin!;
         }
     }
 }

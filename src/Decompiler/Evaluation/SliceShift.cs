@@ -34,20 +34,14 @@ namespace Reko.Evaluation
     /// </summary>
     public class SliceShift
     {
-        private EvaluationContext ctx;
-        private Expression? expr;
-        private DataType? dt;
-        private Identifier? id;
-
-        public SliceShift(EvaluationContext ctx)
+        public SliceShift()
         {
-            this.ctx = ctx;
         }
 
-        public bool Match(Slice slice)
+        public Expression? Match(Slice slice, EvaluationContext ctx)
         {
             BinaryExpression? shift;
-            id = slice.Expression as Identifier;
+            var id = slice.Expression as Identifier;
             if (id != null)
             {
                 shift = ctx.GetValue(id) as BinaryExpression;
@@ -57,27 +51,22 @@ namespace Reko.Evaluation
                 shift = slice.Expression as BinaryExpression;
             }
             if (shift == null)
-                return false;
+                return null;
             if (shift.Operator != BinaryOperator.Shl)
-                return false;
-            if (!(shift.Right is Constant c))
-                return false;
+                return null;
+            if (shift.Right is not Constant c)
+                return null;
             if (c.ToInt32() != slice.Offset)
-                return false;
+                return null;
 
-            expr = shift.Left;
-            dt = slice.DataType;
-            return true;
-        }
-
-        public Expression Transform()
-        {
+            var expr = shift.Left;
+            var dt = slice.DataType;
             if (id != null)
             {
                 ctx.RemoveIdentifierUse(id);
-                ctx.UseExpression(expr!);
+                ctx.UseExpression(expr);
             }
-            expr!.DataType = dt!;
+            expr.DataType = dt;
             return expr;
         }
     }

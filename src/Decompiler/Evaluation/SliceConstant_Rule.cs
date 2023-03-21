@@ -28,35 +28,22 @@ namespace Reko.Evaluation
 {
 	public class SliceConstant_Rule
 	{
-		private Constant? c;
-		private Slice? slice;
-        private PrimitiveType? pt;
-
-		public bool Match(Slice slice)
+		public Expression? Match(Slice slice)
 		{
             var pt = slice.DataType.ResolveAs<PrimitiveType>();
             if (pt is null)
-                return false;
-			this.slice = slice;
-            if (slice.Expression is Constant c && !(c is InvalidConstant))
+                return null;
+            if (slice.Expression is Constant c && c is not InvalidConstant)
             {
                 var ct = c.DataType.ResolveAs<PrimitiveType>();
                 if (ct != null && pt.BitSize <= ct.BitSize)
                 {
-                    this.slice = slice;
-                    this.c = c;
-                    this.pt = pt;
-                    return true;
+                    var cSliced = c.Slice(pt, slice.Offset);
+                    cSliced.DataType = slice.DataType;
+                    return cSliced;
                 }
             }
-            return false;
+             return null;
         }
-
-		public Expression Transform()
-		{
-            var cSliced = this.c!.Slice(pt!, slice!.Offset);
-            cSliced.DataType = slice.DataType;
-            return cSliced;
-		}
 	}
 }

@@ -30,20 +30,16 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class SliceMem_Rule
 	{
-        private readonly EvaluationContext ctx;
-		private Expression? b;
-
-		public SliceMem_Rule(EvaluationContext ctx)
+		public SliceMem_Rule()
 		{
-            this.ctx = ctx;
         }
 
-		public bool Match(Slice slice)
+		public Expression? Match(Slice slice, EvaluationContext ctx)
 		{
-            if (!(slice.Expression is MemoryAccess acc))
-                return false;
+            if (slice.Expression is not MemoryAccess acc)
+                return null;
 
-            b = acc.EffectiveAddress;
+            var b = acc.EffectiveAddress;
 			Constant offset = Constant.Create(b.DataType, 0);
 			BinaryOperator op = Operator.IAdd;
             if (b is BinaryExpression ea)
@@ -73,14 +69,9 @@ namespace Reko.Evaluation
                 {
                     b = new MemoryAccess(acc.MemoryId, newEa, slice.DataType);
                 }
-                return true;
+                return b;
 			}
-			return false;
-		}
-
-		public Expression Transform()
-		{
-			return b!;
+			return null;
 		}
 	}
 }

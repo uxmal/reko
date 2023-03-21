@@ -30,30 +30,16 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class AddTwoIdsRule
 	{
-        private readonly EvaluationContext ctx;
-		private Identifier? idLeft;
-		private Identifier? idRight;
-
-        public AddTwoIdsRule(EvaluationContext ctx)
-        {
-            this.ctx = ctx;
-        }
-
-		public bool Match(BinaryExpression binExp)
+		public Expression? Match(BinaryExpression binExp, EvaluationContext ctx)
 		{
-			idLeft = binExp.Left as Identifier;
-			if (idLeft == null)
-				return false;
-			idRight = binExp.Right as Identifier;
-			if (idRight == null)
-				return false;
-			return (idLeft == idRight && binExp.Operator.Type == OperatorType.IAdd);
-		}
-
-        public Expression Transform()
-        {
-            ctx.RemoveIdentifierUse(idLeft!);
-            return new BinaryExpression(Operator.IMul, idLeft!.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
+            if (binExp.Left is not Identifier idLeft)
+                return null;
+            if (binExp.Right is not Identifier idRight)
+                return null;
+            if (idLeft != idRight || binExp.Operator.Type != OperatorType.IAdd)
+                return null;
+            ctx.RemoveIdentifierUse(idLeft);
+            return new BinaryExpression(Operator.IMul, idLeft.DataType, idLeft, Constant.Create(idLeft.DataType, 2));
         }
 	}
 }

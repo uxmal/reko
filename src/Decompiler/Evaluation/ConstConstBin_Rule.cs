@@ -31,23 +31,19 @@ namespace Reko.Evaluation
 	/// </summary>
 	public class ConstConstBin_Rule
 	{
-		private Constant? cLeft;
-		private Constant? cRight;
-		private Operator? op;
-        private Address? addr;
-        private DataType? dtResult;
-
-		public bool Match(BinaryExpression binExp)
+		public Expression? Match(BinaryExpression binExp)
 		{
-            addr = null;
-			cLeft = binExp.Left as Constant; 
-			cRight = binExp.Right as Constant;
-            dtResult = binExp.DataType;
-			op = binExp.Operator;
-			if (cLeft != null && cRight != null)
+            Constant? cRight = binExp.Right as Constant;
+            DataType dtResult = binExp.DataType;
+			var op = binExp.Operator;
+			if (binExp.Left is Constant cLeft && cRight != null)
 			{
                 if (op is ConditionalOperator)
-                    return true;
+                {
+                    var result = op.ApplyConstants(cLeft!, cRight);
+                    result.DataType = dtResult!;
+                    return result;
+                }
 				if (!cLeft.IsReal && !cRight.IsReal)
 				{
                     if (cLeft.DataType.IsPointer)
@@ -58,32 +54,20 @@ namespace Reko.Evaluation
                     {
                         dtResult = cRight.DataType;
                     }
-					return true;
-				}
-			}
+                    var result = op!.ApplyConstants(cLeft, cRight);
+                    result.DataType = dtResult!;
+                    return result;
+                }
+            }
             if (binExp.Left is Address a && cRight != null &&
                 op.Type.IsAddOrSub())
             {
-                addr = a;
-                dtResult = a.DataType;
-                return true;
-            }
-			return false;
-		}
+                var addr = a + cRight.ToInt64();
+                addr.DataType = a.DataType;
+                return addr;
 
-		public Expression Transform()
-		{
-            Expression result;
-            if (addr is null)
-            {
-                result = op!.ApplyConstants(cLeft!, cRight!);
             }
-            else
-            {
-                result = addr + cRight!.ToInt32();
-            }
-            result.DataType = dtResult!;
-            return result;
+            return null;
 		}
 	}
 }

@@ -26,34 +26,32 @@ namespace Reko.Evaluation
 {
     public class SliceConvert
     {
-        private Expression? result;
-
         public SliceConvert()
         {
         }
 
-        public bool Match(Slice slice)
+        public Expression? Match(Slice slice)
         {
             if (slice.Offset != 0)
-                return false;
-            result = null;
+                return null;
+            Expression result;
             if (slice.Expression is Conversion conv)
             {
                 if (IsUselessIntegralExtension(slice, conv))
                 {
-                    this.result = slice.DataType.BitSize == conv.SourceDataType.BitSize
+                    result = slice.DataType.BitSize == conv.SourceDataType.BitSize
                         ? conv.Expression
                         : new Slice(slice.DataType, conv.Expression, 0);
-                    return true;
+                    return result;
                 }
                 if (CanSliceConversion(slice, conv))
                 {
-                    this.result = new Conversion(
+                    result = new Conversion(
                         conv.Expression, conv.SourceDataType, slice.DataType);
-                    return true;
+                    return result;
                 }
             }
-            return false;
+            return null;
         }
 
         private static bool CanSliceConversion(Slice slice, Conversion conv)
@@ -83,11 +81,6 @@ namespace Reko.Evaluation
             if (dataType.IsWord || dataType.IsIntegral)
                 return true;
             return (dataType.Domain.HasFlag(Domain.Character));
-        }
-
-        public Expression Transform()
-        {
-            return result!;
         }
     }
 }
