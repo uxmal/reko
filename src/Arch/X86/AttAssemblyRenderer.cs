@@ -121,9 +121,9 @@ namespace Reko.Arch.X86
             }
         }
 
-        private bool IsFar(MachineOperand op)
+        private static bool IsFar(MachineOperand op)
         {
-            return ((PrimitiveType) op.Width).Domain == Domain.SegPointer;
+            return op.Width.Domain == Domain.SegPointer;
         }
 
         protected override string ExplicitOperandPrefix(DataType width)
