@@ -58,5 +58,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             return new SegmentListViewInteractor(program);
         }
+
+        public IWindowPane CreateStructureEditorPane(Program program)
+        {
+            var vm = new StructureEditorViewModel(services, program);
+            return new StructureEditorView
+            {
+                ViewModel = vm,
+                Dock = System.Windows.Forms.DockStyle.Fill
+            };
+        }
     }
 }

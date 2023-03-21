@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
+		xmlns:gvm="using:Reko.Gui.ViewModels.Documents"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.StructureEditorDocumentView"
+		x:CompileBindings="True"
+		VerticalAlignment="Stretch"
+		x:DataType="vm:StructureEditorDocumentViewModel">
+	<StackPanel VerticalAlignment="Stretch">
+		<ComboBox Items="{Binding ViewModel.DataTypes}" />
+		<TextBox Text="{Binding ViewModel.StructureName}" />
+		<Grid ColumnDefinitions="*,4,*" RowDefinitions="*" VerticalAlignment="Stretch">
+			<DataGrid Items="{Binding ViewModel.StructFields}"
+					  AutoGenerateColumns="False"
+					  VerticalAlignment="Stretch">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Offset" x:DataType="gvm:StructField" Binding="{Binding Offset}" />
+					<DataGridTextColumn Header="Name" x:DataType="gvm:StructField" Binding="{Binding Name}" />
+					<DataGridTextColumn Header="DataType" x:DataType="gvm:StructField" Binding="{Binding DataType}" />
+					<DataGridTextColumn Header="Description" x:DataType="gvm:StructField" Binding="{Binding Description}" />
+				</DataGrid.Columns>
+			</DataGrid>
+			<GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+			<StackPanel Grid.Column="2">
+				<TextBlock Text="{Binding ViewModel.RenderedType}"
+						   VerticalAlignment="Stretch"
+						   Padding="4,0,0,0"/>
+				<CheckBox IsChecked="{Binding ViewModel.ShowPadding}">Show _padding</CheckBox>
+			</StackPanel>
+		</Grid>
+		<StackPanel Orientation="Horizontal">
+			<Button Click="btnAddField_Click">_Add field</Button>
+			<Button IsEnabled="{Binding	ViewModel.IsDeletable}" Click="btnAddField_Click">_Create</Button>
+		</StackPanel>
+	</StackPanel>
+</UserControl>

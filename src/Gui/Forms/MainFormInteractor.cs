@@ -249,6 +249,9 @@ namespace Reko.Gui.Forms
 
             var bafSvc = svcFactory.CreateBaseAddressFinderService();
             sc.AddService<IBaseAddressFinderService>(bafSvc);
+
+            var seSvc = svcFactory.CreateStructureEditorService();
+            sc.AddService<IStructureEditorService>(seSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -740,6 +743,19 @@ namespace Reko.Gui.Forms
             cgvSvc.ShowCallgraph(program, title);
         }
 
+        public void EditStructures()
+        {
+            var editStructSvc = sc.RequireService<IStructureEditorService>();
+            var programs = decompilerSvc.Decompiler?.Project?.Programs;
+            if (programs is { } && programs.Count > 0)
+            {
+                //$BUG: many programs? We need a "ActiveProgram" that is updated
+                // whenver a document or tool window is selected. Maybe on 
+                // selection service?
+                editStructSvc.Show(programs[0]);
+            }
+        }
+
         public void ToolsHexDisassembler()
         {
             var hexDasmSvc = sc.RequireService<IHexDisassemblerService>();
@@ -926,6 +942,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileSave:
                 case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
+                case CmdIds.EditStructures:
                 case CmdIds.ViewCallGraph:
                 case CmdIds.ViewFindAllProcedures:
                 case CmdIds.ViewFindStrings:
@@ -996,6 +1013,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ActionFinishDecompilation: await FinishDecompilation(); retval = true; break;
 
                 case CmdIds.EditFind: await EditFind(); retval = true; break;
+                case CmdIds.EditStructures: EditStructures(); retval = true; break;
 
                 case CmdIds.ViewProjectBrowser: ViewProjectBrowser(); retval = true; break;
                 case CmdIds.ViewProcedureList: ViewProcedureList(); retval = true; break;

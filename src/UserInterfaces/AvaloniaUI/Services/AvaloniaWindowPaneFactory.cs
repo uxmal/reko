@@ -55,5 +55,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             return new SegmentListViewModel(program);
         }
+
+        public IWindowPane CreateStructureEditorPane(Program program)
+        {
+            var seVm = new StructureEditorViewModel(services, program);
+            return new StructureEditorDocumentViewModel(seVm);
+        }
     }
 }

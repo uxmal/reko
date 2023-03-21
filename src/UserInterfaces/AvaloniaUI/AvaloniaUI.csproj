@@ -39,6 +39,9 @@
     <Compile Update="Views\Documents\BaseAddressFinderDocumentView.axaml.cs">
       <DependentUpon>BaseAddressFinderDocumentView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Documents\StructureEditorDocumentView.axaml.cs">
+      <DependentUpon>StructureEditorDocumentView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

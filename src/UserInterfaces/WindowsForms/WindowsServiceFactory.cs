@@ -261,5 +261,10 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new BaseAddressFinderService(this.services);
         }
+
+        public IStructureEditorService CreateStructureEditorService()
+        {
+            return new StructureEditorService(this.services);
+        }
     }
 }

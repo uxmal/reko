@@ -253,5 +253,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             return new BaseAddressFinderService(this.services);
         }
+
+        public IStructureEditorService CreateStructureEditorService()
+        {
+            return new StructureEditorService(this.services);
+        }
     }
 }

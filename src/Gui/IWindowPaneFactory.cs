@@ -37,5 +37,6 @@ namespace Reko.Gui
         IWindowPane CreateBaseAddressFinderPane(Program program);
         IWindowPane CreateHexDisassemblerPane();
         IWindowPane CreateSegmentListPane(Program program);
+        IWindowPane CreateStructureEditorPane(Program program);
     }
 }

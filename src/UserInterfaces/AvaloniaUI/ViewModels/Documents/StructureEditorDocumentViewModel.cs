@@ -20,44 +20,41 @@
 
 using Dock.Model.ReactiveUI.Controls;
 using Reko.Gui;
+using Reko.Gui.ViewModels.Documents;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
 {
-    /// <summary>
-    /// Avalonia specific implementation of the <see cref="IWindowFrame"/> 
-    /// interface for "documents"; that is, views that live in the document
-    /// dock.
-    /// </summary>
-    public class DocumentFrameViewModel : Document, IWindowFrame
+    public class StructureEditorDocumentViewModel : Document, IWindowPane
     {
-        public DocumentFrameViewModel(string documentType, IWindowPane pane, string title)
+        //$TODO: this looks like BaseAddressFinderDocumentViewModel, make a generic
+        // adapter class.
+        public StructureEditorDocumentViewModel(StructureEditorViewModel viewModel)
         {
-            this.DocumentType = documentType;
-            this.Pane = pane;
-            this.Title = title;
+            this.ViewModel = viewModel;
         }
 
-        public DocumentFrameViewModel(string documentType, object docItem, IWindowPane pane, string title)
-        {
-            this.DocumentType = documentType;
-            this.DocumentItem = docItem;
-            this.Pane = pane;
-            this.Title = title;
-        }
+        public StructureEditorViewModel ViewModel { get; set; }
 
-        public object? DocumentItem { get; }
-        
-        public string DocumentType { get; }
-
-        public IWindowPane Pane { get; }
+        public IWindowFrame? Frame { get; set; }
 
         public void Close()
         {
+            throw new NotImplementedException();
         }
 
-        public void Show()
+        public object CreateControl()
         {
+            throw new NotImplementedException();
+        }
+
+        public void SetSite(IServiceProvider services)
+        {
+            throw new NotImplementedException();
         }
     }
 }

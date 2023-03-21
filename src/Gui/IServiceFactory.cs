@@ -74,5 +74,6 @@ namespace Reko.Gui
         IHexDisassemblerService CreateHexDisassemblerService();
         ISegmentListService CreateSegmentListService();
         IBaseAddressFinderService CreateBaseAddressFinderService();
+        IStructureEditorService CreateStructureEditorService();
     }
 }

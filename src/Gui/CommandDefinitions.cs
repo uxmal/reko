@@ -126,6 +126,7 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.EditCopy, cmdSet = Reko, text = "_Copy" },
             new CmdDefinition { id = CmdIds.EditCopyAll, cmdSet = Reko, text = "_Copy All" },
             new CmdDefinition { id = CmdIds.EditRename, cmdSet = Reko, container = GroupIds.GrpEdit, text = "_Rename" },
+            new CmdDefinition { id = CmdIds.EditStructures, cmdSet = Reko, container = GroupIds.GrpEdit, text = "_Structures"},
             new CmdDefinition { id = CmdIds.EditRegisterValues, cmdSet = Reko, container = GroupIds.GrpEdit, text = "Re_gister Values" },
             new CmdDefinition { id = CmdIds.EditAnnotation, cmdSet = Reko, container = GroupIds.GrpEdit, text = "Co_mment" },
 
