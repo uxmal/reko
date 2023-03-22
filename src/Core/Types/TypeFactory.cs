@@ -28,25 +28,10 @@ namespace Reko.Core.Types
 	public class TypeFactory
 	{
 		private int typeVars;
-		private readonly Dictionary<PrimitiveType,PrimitiveType> primitives = new Dictionary<PrimitiveType,PrimitiveType>();
 
 		public TypeFactory()
 		{
 			typeVars = 0;
-		
-			primitives[PrimitiveType.Bool] = PrimitiveType.Bool;
-			primitives[PrimitiveType.Char] = PrimitiveType.Char;
-			primitives[PrimitiveType.SByte] = PrimitiveType.SByte;
-			primitives[PrimitiveType.Word16] = PrimitiveType.Word16;
-			primitives[PrimitiveType.Int16] = PrimitiveType.Int16;
-			primitives[PrimitiveType.UInt16] = PrimitiveType.UInt16;
-			primitives[PrimitiveType.Word32] = PrimitiveType.Word32;
-			primitives[PrimitiveType.Int32] = PrimitiveType.Int32;
-			primitives[PrimitiveType.UInt32] = PrimitiveType.UInt32;
-			primitives[PrimitiveType.Real32] = PrimitiveType.Real32;
-			primitives[PrimitiveType.Real64] = PrimitiveType.Real64;
-			primitives[PrimitiveType.Bool] = PrimitiveType.Bool;
-			primitives[PrimitiveType.Byte] = PrimitiveType.Byte;
 		}
 
 		private int AllocateTypeVariable()
