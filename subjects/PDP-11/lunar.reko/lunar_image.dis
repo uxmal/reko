@@ -718,7 +718,7 @@ l0B06:
 	// Please report this issue at https://github.com/uxmal/reko
 	ptr16 stackArg0 = <invalid>
 	fn13AA(stackArg0)
-	0x0B0C<p16> = 0x0B0D<p16>
+	0x0B0C<p16> = 0x0B0B<p16>
 	branch 0x0B0C<p16> != 0x0000<p16> l0B0A_thunk_fn0A94
 l0B0A_thunk_fn0A94:
 	fn0A94(r3, r4, r5)

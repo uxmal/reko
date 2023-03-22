@@ -14,7 +14,7 @@ l0000269C:
 	word32 pc_30
 	byte VNZC_31
 	call Mem14[r6_16 + 480<i32>:word32] (retsize: 0;)
-		uses: lr:0<32>,r10:fp + 4<i32>,r11:dwArg00,r12:0x00005574<p32>,r4:r4,r5:r5,r6:r6_16,r7:0<32>,r8:Mem14[r6_16 + 456<i32>:word32],r9:0x000026D8<p32>,Stack +0000:r12,Stack +0004:fp + 4<i32>
+		uses: lr:0<32>,r10:fp + 4<i32>,r11:dwArg00,r12:0x00005574<p32>,r4:r4,r5:r5,r6:r6_16,r7:0<32>,r8:Mem14[r6_16 + 456<i32>:word32],r9:0x00002680<p32>,Stack +0000:r12,Stack +0004:fp + 4<i32>
 		defs: lr:lr_23,pc:pc_30,r7:r7_22,VNZC:VNZC_31
 	branch SLICE(VNZC_31, bool, 3) l000026BC_thunk_fn000026C0
 l000026BC_thunk_fn000026C0:

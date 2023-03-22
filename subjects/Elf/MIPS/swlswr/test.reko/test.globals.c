@@ -4,9 +4,4 @@
 
 #include "test.h"
 
-<anonymous> * g_ptr20A24; // 00020A24
-ptr32 g_ptr20A4C; // 00020A4C
-word32 g_dw20A60; // 00020A60
-word32 g_dw20A64; // 00020A64
-word32 g_dw20A68; // 00020A68
 <anonymous> g_tFFFFFFFF; // FFFFFFFF

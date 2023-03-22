@@ -9,7 +9,7 @@
 //      calloc
 void _fini()
 {
-	ptr32 r25_n = *(ptr32 *) 0x00020A4C;
+	ptr32 r25_n = g_ptr10AB4;
 	(*((word32) r25_n + 0x06F4))();
 }
 

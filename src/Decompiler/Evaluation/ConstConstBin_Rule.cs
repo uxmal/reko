@@ -62,10 +62,12 @@ namespace Reko.Evaluation
             if (binExp.Left is Address a && cRight != null &&
                 op.Type.IsAddOrSub())
             {
-                var addr = a + cRight.ToInt64();
+                var addend = cRight.ToInt64();
+                if (op.Type != OperatorType.IAdd)
+                    addend = -addend;
+                var addr = a + addend;
                 addr.DataType = a.DataType;
                 return addr;
-
             }
             return null;
 		}

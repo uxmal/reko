@@ -9,7 +9,7 @@ void _fini()
 // Preserved: ra sp
 _fini_entry:
 l00000A10:
-	word32 r25_15 = Mem10[0x00020A4C<p32>:word32]
+	word32 r25_15 = Mem10[0x00010AB4<p32>:word32]
 	call r25_15 + 1780<i32> (retsize: 0;)
 		uses: r25:r25_15 + 1780<i32>,Stack +0010:0x18A80<32>
 	return

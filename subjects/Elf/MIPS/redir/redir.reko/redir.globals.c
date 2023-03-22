@@ -6,6 +6,4 @@
 
 Eq_n g_t0695;
 Eq_n g_t10008860;
-word32 g_dw100107A0; // 100107A0
-<anonymous> * g_ptr100107F8; // 100107F8
 <anonymous> g_tFFFFFFFF; // FFFFFFFF

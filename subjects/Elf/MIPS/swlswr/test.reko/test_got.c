@@ -13,6 +13,7 @@ Eq_n g_t10AA4 = // 00010AA4
 	};
 word32 * g_ptr10AAC = &g_dw10AEC; // 00010AAC
 int32 g_dw10AB0 = 68204; // 00010AB0
+ptr32 g_ptr10AB4 = 0x00; // 00010AB4
 <anonymous> * _init_GOT = _init; // 00010AB8
 <anonymous> ** g_ptr10ABC = &g_ptr10A60; // 00010ABC
 <anonymous> * calloc_GOT = calloc; // 00010AD0

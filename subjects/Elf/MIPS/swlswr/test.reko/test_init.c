@@ -11,9 +11,9 @@ void _init()
 {
 	if (__gmon_start__ == 0x00)
 	{
-		ptr32 r25_n = *(ptr32 *) 0x00020A4C;
+		ptr32 r25_n = g_ptr10AB4;
 		(*((word32) r25_n + 2004))();
-		ptr32 r25_n = *(ptr32 *) 0x00020A4C;
+		ptr32 r25_n = g_ptr10AB4;
 		(*((word32) r25_n + 0x0970))();
 	}
 	else

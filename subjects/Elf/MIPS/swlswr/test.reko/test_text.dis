@@ -10,14 +10,14 @@ __start_exit:
 __start_entry:
 	ptr32 fp
 l00000610:
-	word32 r4_12 = Mem0[0x00020A68<p32>:word32]
+	word32 r4_12 = Mem0[0x00010A98<p32>:word32]
 	word32 sp_17 = (fp & -8<i32>) + -32<i32>
-	word32 r7_18 = Mem0[0x00020A64<p32>:word32]
-	word32 r8_19 = Mem0[0x00020A60<p32>:word32]
+	word32 r7_18 = Mem0[0x00010A9C<p32>:word32]
+	word32 r8_19 = Mem0[0x00010AA0<p32>:word32]
 	Mem20[sp_17 + 0x10<32>:word32] = r8_19
 	Mem22[sp_17 + 0x14<32>:word32] = r2
 	Mem23[sp_17 + 0x18<32>:word32] = sp_17
-	call Mem23[0x00020A24<p32>:word32] (retsize: 0;)
+	call Mem23[0x00010ADC<p32>:word32] (retsize: 0;)
 		uses: r2:r2,r4:r4_12,r5:dwArg00,r6:fp + 4<i32>,r7:r7_18,r8:r8_19
 l00000664:
 

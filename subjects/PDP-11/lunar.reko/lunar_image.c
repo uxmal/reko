@@ -658,7 +658,7 @@ void fn0B06(int16 r3, struct Eq_n * r4, word16 * r5)
 	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n stackArg0 = <invalid>;
 	fn13AA(stackArg0);
-	2828 = 0x0B0D;
+	2828 = 0x0B0B;
 	if (2828 != 0x00)
 	{
 		fn0A94(r3, r4, r5);

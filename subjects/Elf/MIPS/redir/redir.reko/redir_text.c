@@ -8,8 +8,8 @@
 void __start(word32 dwArg00)
 {
 	ptr32 fp;
-	word32 r2_n = *(word32 *) 0x100107A0;
-	(*(<anonymous> **) 0x100107F8)();
+	word32 r2_n = _fini_GOT;
+	__uClibc_start_main_GOT();
 	while (true)
 		;
 }

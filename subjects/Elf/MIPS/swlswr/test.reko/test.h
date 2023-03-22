@@ -15,6 +15,7 @@ Eq_1: (struct "Globals"
 		(10AA4 Eq_47 t10AA4)
 		(10AAC (ptr32 word32) ptr10AAC)
 		(10AB0 int32 dw10AB0)
+		(10AB4 ptr32 ptr10AB4)
 		(10AB8 (ptr32 code) _init_GOT)
 		(10ABC (ptr32 (ptr32 code)) ptr10ABC)
 		(10AD0 (ptr32 code) calloc_GOT)
@@ -26,12 +27,7 @@ Eq_1: (struct "Globals"
 		(10AE8 (ptr32 code) __cxa_finalize_GOT)
 		(10AEC word32 dw10AEC)
 		(10AF0 byte b10AF0)
-		(10AF4 Eq_83 dtor_idx.6258)
-		(20A24 (ptr32 code) ptr20A24)
-		(20A4C ptr32 ptr20A4C)
-		(20A60 word32 dw20A60)
-		(20A64 word32 dw20A64)
-		(20A68 word32 dw20A68))
+		(10AF4 Eq_83 dtor_idx.6258))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_15: (fn void ())
 	T_15 (in __gmon_start__ @ 000005B0 : ptr32)
@@ -137,11 +133,11 @@ T_6: (in r25_16 @ 000005CC : ptr32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_7: (in 00020A4C @ 000005CC : ptr32)
+T_7: (in 00010AB4 @ 000005CC : ptr32)
   Class: Eq_7
   DataType: (ptr32 ptr32)
   OrigDataType: (ptr32 (struct (0 T_6 t0000)))
-T_8: (in Mem10[0x00020A4C<p32>:word32] @ 000005CC : word32)
+T_8: (in Mem10[0x00010AB4<p32>:word32] @ 000005CC : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: word32
@@ -157,7 +153,7 @@ T_11: (in r25_24 @ 000005F0 : ptr32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_12: (in Mem10[0x00020A4C<p32>:word32] @ 000005F0 : word32)
+T_12: (in Mem10[0x00010AB4<p32>:word32] @ 000005F0 : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: word32
@@ -197,11 +193,11 @@ T_21: (in r4_12 @ 0000062C : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_22: (in 00020A68 @ 0000062C : ptr32)
+T_22: (in 00010A98 @ 0000062C : ptr32)
   Class: Eq_22
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_23 t0000)))
-T_23: (in Mem0[0x00020A68<p32>:word32] @ 0000062C : word32)
+T_23: (in Mem0[0x00010A98<p32>:word32] @ 0000062C : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
@@ -229,11 +225,11 @@ T_29: (in r7_18 @ 00000644 : word32)
   Class: Eq_29
   DataType: word32
   OrigDataType: word32
-T_30: (in 00020A64 @ 00000644 : ptr32)
+T_30: (in 00010A9C @ 00000644 : ptr32)
   Class: Eq_30
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_31 t0000)))
-T_31: (in Mem0[0x00020A64<p32>:word32] @ 00000644 : word32)
+T_31: (in Mem0[0x00010A9C<p32>:word32] @ 00000644 : word32)
   Class: Eq_29
   DataType: word32
   OrigDataType: word32
@@ -241,11 +237,11 @@ T_32: (in r8_19 @ 00000648 : word32)
   Class: Eq_32
   DataType: word32
   OrigDataType: word32
-T_33: (in 00020A60 @ 00000648 : ptr32)
+T_33: (in 00010AA0 @ 00000648 : ptr32)
   Class: Eq_33
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_34 t0000)))
-T_34: (in Mem0[0x00020A60<p32>:word32] @ 00000648 : word32)
+T_34: (in Mem0[0x00010AA0<p32>:word32] @ 00000648 : word32)
   Class: Eq_32
   DataType: word32
   OrigDataType: word32
@@ -285,11 +281,11 @@ T_43: (in Mem23[sp_17 + 0x18<32>:word32] @ 00000654 : word32)
   Class: Eq_24
   DataType: (ptr32 Eq_24)
   OrigDataType: word32
-T_44: (in 00020A24 @ 0000065C : ptr32)
+T_44: (in 00010ADC @ 0000065C : ptr32)
   Class: Eq_44
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_45 t0000)))
-T_45: (in Mem23[0x00020A24<p32>:word32] @ 0000065C : word32)
+T_45: (in Mem23[0x00010ADC<p32>:word32] @ 0000065C : word32)
   Class: Eq_45
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -1125,7 +1121,7 @@ T_253: (in r25_15 @ 00000A3C : ptr32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_254: (in Mem10[0x00020A4C<p32>:word32] @ 00000A3C : word32)
+T_254: (in Mem10[0x00010AB4<p32>:word32] @ 00000A3C : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
@@ -1157,6 +1153,7 @@ typedef struct Globals {
 	Eq_47 t10AA4;	// 10AA4
 	word32 * ptr10AAC;	// 10AAC
 	int32 dw10AB0;	// 10AB0
+	ptr32 ptr10AB4;	// 10AB4
 	<anonymous> * _init_GOT;	// 10AB8
 	<anonymous> ** ptr10ABC;	// 10ABC
 	<anonymous> * calloc_GOT;	// 10AD0
@@ -1169,11 +1166,6 @@ typedef struct Globals {
 	word32 dw10AEC;	// 10AEC
 	byte b10AF0;	// 10AF0
 	Eq_83 dtor_idx.6258;	// 10AF4
-	<anonymous> * ptr20A24;	// 20A24
-	ptr32 ptr20A4C;	// 20A4C
-	word32 dw20A60;	// 20A60
-	word32 dw20A64;	// 20A64
-	word32 dw20A68;	// 20A68
 } Eq_1;
 
 typedef void (Eq_15)();

@@ -183,9 +183,7 @@ Eq_1: (struct "Globals"
 		(10000AA4 (ptr32 code) strcpy_GOT)
 		(10000AA8 word32 logfile)
 		(10000AAC word32 log_file)
-		(10008860 Eq_1240 t10008860)
-		(100107A0 word32 dw100107A0)
-		(100107F8 (ptr32 code) ptr100107F8))
+		(10008860 Eq_1240 t10008860))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_11: (struct "Eq_11" (FFFF8010 (ptr32 code) ptrFFFF8010))
 	T_11 (in r28 @ 00400278 : (ptr32 Eq_11))
@@ -2257,19 +2255,19 @@ T_6: (in r2_17 @ 00400264 : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in 100107A0 @ 00400264 : ptr32)
+T_7: (in 10000920 @ 00400264 : ptr32)
   Class: Eq_7
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_8 t0000)))
-T_8: (in Mem0[0x100107A0<p32>:word32] @ 00400264 : word32)
+T_8: (in Mem0[0x10000920<p32>:word32] @ 00400264 : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_9: (in 100107F8 @ 00400278 : ptr32)
+T_9: (in 100008C8 @ 00400278 : ptr32)
   Class: Eq_9
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_10 t0000)))
-T_10: (in Mem18[0x100107F8<p32>:word32] @ 00400278 : word32)
+T_10: (in Mem18[0x100008C8<p32>:word32] @ 00400278 : word32)
   Class: Eq_10
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
@@ -34182,8 +34180,6 @@ typedef struct Globals {
 	word32 logfile;	// 10000AA8
 	word32 log_file;	// 10000AAC
 	Eq_1240 t10008860;	// 10008860
-	word32 dw100107A0;	// 100107A0
-	<anonymous> * ptr100107F8;	// 100107F8
 } Eq_1;
 
 typedef struct Eq_11 {

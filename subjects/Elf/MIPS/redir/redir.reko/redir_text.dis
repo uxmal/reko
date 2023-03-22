@@ -10,9 +10,9 @@ __start_exit:
 __start_entry:
 	ptr32 fp
 l00400230:
-	word32 r2_17 = Mem0[0x100107A0<p32>:word32]
-	call Mem18[0x100107F8<p32>:word32] (retsize: 0;)
-		uses: r2:r2_17,r4:dwArg00,r5:fp + 4<i32>,r6:(dwArg00 + 1<i32> << 2<8>) + (fp + 4<i32>),r7:Mem0[0x100106D8<p32>:word32],Stack +0010:r2_17,Stack +0018:dwArg00
+	word32 r2_17 = Mem0[0x10000920<p32>:word32]
+	call Mem18[0x100008C8<p32>:word32] (retsize: 0;)
+		uses: r2:r2_17,r4:dwArg00,r5:fp + 4<i32>,r6:(dwArg00 + 1<i32> << 2<8>) + (fp + 4<i32>),r7:Mem0[0x100009E8<p32>:word32],Stack +0010:r2_17,Stack +0018:dwArg00
 l00400284:
 
 

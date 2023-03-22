@@ -8,14 +8,14 @@
 void __start(word32 r2, word32 dwArg00)
 {
 	Eq_n fp;
-	word32 r4_n = *(word32 *) 133736;
+	word32 r4_n = main_GOT;
 	struct Eq_n * sp_n = (fp & -8) + -32;
-	word32 r7_n = *(word32 *) 133732;
-	word32 r8_n = *(word32 *) 0x00020A60;
+	word32 r7_n = __libc_csu_init_GOT;
+	word32 r8_n = __libc_csu_fini_GOT;
 	sp_n->dw0010 = r8_n;
 	sp_n->dw0014 = r2;
 	sp_n->ptr0018 = sp_n;
-	(*(<anonymous> **) 0x00020A24)();
+	__libc_start_main_GOT();
 	while (true)
 		;
 }

@@ -1057,7 +1057,19 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("foo_1 *s 0x13<32>", result.ToString());
             Assert.IsTrue(changed);
+        }
 
+        [Test]
+        public void Exs_addr_minus_value()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.ISub(
+                Address.SegPtr(0x1234, 0x5678),
+                4);
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("1234:5674", result.ToString());
+            Assert.IsTrue(changed);
         }
     }
 }

@@ -4931,7 +4931,7 @@ T_1004: (in fn13AA(stackArg0) @ 0B06 : void)
   Class: Eq_1004
   DataType: void
   OrigDataType: void
-T_1005: (in 0B0D @ 0B0A : ptr16)
+T_1005: (in 0B0B @ 0B0A : ptr16)
   Class: Eq_1005
   DataType: ptr16
   OrigDataType: ptr16
