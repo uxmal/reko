@@ -754,8 +754,10 @@ Eq_961: (fn Eq_964 (int32, Eq_964))
 Eq_964: sighandler_t
 	T_964 (in handler @ 0040092C : sighandler_t)
 	T_966 (in handle_stop @ 0040092C : ptr32)
+	T_967 (in signature of handle_stop @ 004007B0 : void)
 	T_968 (in signal(2<i32>, handle_stop) @ 0040092C : sighandler_t)
 	T_971 (in handle_log_rotate @ 0040094C : ptr32)
+	T_972 (in signature of handle_log_rotate @ 0040083C : void)
 	T_973 (in signal(1<i32>, handle_log_rotate) @ 0040094C : sighandler_t)
 Eq_974: (fn void (Eq_921, Eq_921, word32))
 	T_974 (in properties_load @ 00400974 : ptr32)
@@ -1142,6 +1144,20 @@ Eq_1688: (fn Eq_921 (Eq_921, word32))
 	T_1688 (in client_destroy @ 0040158C : ptr32)
 	T_1689 (in signature of client_destroy @ 00403794 : void)
 	T_3431 (in client_destroy @ 0040404C : ptr32)
+Eq_1730: (fn void ((ptr32 Eq_2081)))
+	T_1730 (in r2_986 @ 00401824 : (ptr32 Eq_1730))
+	T_1733 (in Mem952[dwLoc0158_1348 + 0x17C4<32>:word32] @ 00401824 : word32)
+	T_1778 (in r2_1032 @ 004018C8 : (ptr32 Eq_1730))
+	T_1781 (in Mem1015[dwLoc0158_1348 + 0x17C4<32>:word32] @ 004018C8 : word32)
+	T_2079 (in client_copy_reply @ 00401FA8 : ptr32)
+	T_2080 (in signature of client_copy_reply @ 004031DC : void)
+	T_2084 (in Mem213[r2_29 + 0x17C4<32>:word32] @ 00401FA8 : word32)
+	T_2093 (in client_parse_reply @ 00401FD0 : ptr32)
+	T_2094 (in signature of client_parse_reply @ 00403140 : void)
+	T_2099 (in Mem221[r2_29 + 0x17C4<32>:word32] @ 00401FD0 : word32)
+	T_2869 (in client_copy_reply @ 004031B8 : ptr32)
+	T_2966 (in client_copy_reply @ 00403420 : ptr32)
+	T_2969 (in Mem67[r4 + 0x17C4<32>:word32] @ 00403420 : word32)
 Eq_1877: (struct "Eq_1877" (2 uint16 w0002) (4 word32 dw0004))
 	T_1877 (in r4 @ 004015D0 : (ptr32 Eq_1877))
 Eq_1878: (struct "Eq_1878" (2 uint16 w0002) (4 word32 dw0004))
@@ -1213,10 +1229,7 @@ Eq_2068: (fn void (Eq_921))
 	T_4259 (in free @ 00405738 : ptr32)
 	T_5328 (in free @ 00407124 : ptr32)
 	T_5525 (in free @ 00407710 : ptr32)
-Eq_2080: (fn void ((ptr32 Eq_2081)))
-	T_2080 (in signature of client_copy_reply @ 004031DC : void)
-	T_2869 (in client_copy_reply @ 004031B8 : ptr32)
-Eq_2081: (struct "Eq_2081" (0 word32 dw0000) (1788 (ptr32 Eq_2427) ptr1788) (178C int32 dw178C) (17C4 ptr32 ptr17C4) (17D0 Eq_2033 t17D0))
+Eq_2081: (struct "Eq_2081" (0 word32 dw0000) (1788 (ptr32 Eq_2427) ptr1788) (178C int32 dw178C) (17C4 (ptr32 Eq_1730) ptr17C4) (17D0 Eq_2033 t17D0))
 	T_2081 (in r4 @ 00401FA8 : (ptr32 Eq_2081))
 	T_2095 (in r4 @ 00401FD0 : (ptr32 Eq_2081))
 	T_2865 (in r4 @ 0040319C : (ptr32 Eq_2081))
@@ -2208,7 +2221,7 @@ Eq_7919: (struct "Eq_7919"
 		(17B8 Eq_921 t17B8)
 		(17BC Eq_921 t17BC)
 		(17C0 (ptr32 code) ptr17C0)
-		(17C4 (ptr32 code) ptr17C4)
+		(17C4 (ptr32 Eq_1730) ptr17C4)
 		(17C8 Eq_2033 t17C8)
 		(17CC Eq_2033 t17CC)
 		(17D0 Eq_2033 t17D0))
@@ -6085,8 +6098,8 @@ T_966: (in handle_stop @ 0040092C : ptr32)
   DataType: Eq_964
   OrigDataType: sighandler_t
 T_967: (in signature of handle_stop @ 004007B0 : void)
-  Class: Eq_967
-  DataType: Eq_967
+  Class: Eq_964
+  DataType: Eq_964
   OrigDataType: 
 T_968: (in signal(2<i32>, handle_stop) @ 0040092C : sighandler_t)
   Class: Eq_964
@@ -6105,8 +6118,8 @@ T_971: (in handle_log_rotate @ 0040094C : ptr32)
   DataType: Eq_964
   OrigDataType: sighandler_t
 T_972: (in signature of handle_log_rotate @ 0040083C : void)
-  Class: Eq_972
-  DataType: Eq_972
+  Class: Eq_964
+  DataType: Eq_964
   OrigDataType: 
 T_973: (in signal(1<i32>, handle_log_rotate) @ 0040094C : sighandler_t)
   Class: Eq_964
@@ -9153,9 +9166,9 @@ T_1729: (in dwLoc0158_1348.ptr0000->u2.dw178C > 0<32> @ 004017C4 : bool)
   Class: Eq_1729
   DataType: bool
   OrigDataType: bool
-T_1730: (in r2_986 @ 00401824 : (ptr32 code))
+T_1730: (in r2_986 @ 00401824 : (ptr32 Eq_1730))
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: (ptr32 code)
 T_1731: (in 0x17C4<32> @ 00401824 : word32)
   Class: Eq_1731
@@ -9167,7 +9180,7 @@ T_1732: (in dwLoc0158_1348 + 0x17C4<32> @ 00401824 : word32)
   OrigDataType: ptr32
 T_1733: (in Mem952[dwLoc0158_1348 + 0x17C4<32>:word32] @ 00401824 : word32)
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: word32
 T_1734: (in r25_990 @ 0040183C : word32)
   Class: Eq_1734
@@ -9345,9 +9358,9 @@ T_1777: (in (fp->aFFFFFF50[dwLoc0158_1348.ptr0000->u2.t0000.u1 >> 5<8>] >> ((((d
   Class: Eq_1777
   DataType: bool
   OrigDataType: bool
-T_1778: (in r2_1032 @ 004018C8 : (ptr32 code))
+T_1778: (in r2_1032 @ 004018C8 : (ptr32 Eq_1730))
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: (ptr32 code)
 T_1779: (in 0x17C4<32> @ 004018C8 : word32)
   Class: Eq_1779
@@ -9359,7 +9372,7 @@ T_1780: (in dwLoc0158_1348 + 0x17C4<32> @ 004018C8 : word32)
   OrigDataType: (ptr32 word32)
 T_1781: (in Mem1015[dwLoc0158_1348 + 0x17C4<32>:word32] @ 004018C8 : word32)
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: word32
 T_1782: (in r25_1040 @ 004018E0 : word32)
   Class: Eq_1782
@@ -10549,8 +10562,8 @@ T_2072: (in client_parse_request @ 00401F98 : ptr32)
   DataType: (ptr32 code)
   OrigDataType: ptr32
 T_2073: (in signature of client_parse_request @ 00402244 : void)
-  Class: Eq_2073
-  DataType: Eq_2073
+  Class: Eq_1626
+  DataType: (ptr32 code)
   OrigDataType: 
 T_2074: (in r4 @ 00401F98 : Eq_921)
   Class: Eq_921
@@ -10574,11 +10587,11 @@ T_2078: (in Mem210[r2_29 + 0x17C0<32>:word32] @ 00401F98 : word32)
   OrigDataType: word32
 T_2079: (in client_copy_reply @ 00401FA8 : ptr32)
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: ptr32
 T_2080: (in signature of client_copy_reply @ 004031DC : void)
-  Class: Eq_2080
-  DataType: (ptr32 Eq_2080)
+  Class: Eq_1730
+  DataType: (ptr32 Eq_1730)
   OrigDataType: 
 T_2081: (in r4 @ 00401FA8 : (ptr32 Eq_2081))
   Class: Eq_2081
@@ -10594,7 +10607,7 @@ T_2083: (in r2_29 + 0x17C4<32> @ 00401FA8 : word32)
   OrigDataType: ptr32
 T_2084: (in Mem213[r2_29 + 0x17C4<32>:word32] @ 00401FA8 : word32)
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: word32
 T_2085: (in 1<i32> @ 00401F7C : int32)
   Class: Eq_1880
@@ -10609,8 +10622,8 @@ T_2087: (in client_copy_request @ 00401FC0 : ptr32)
   DataType: (ptr32 code)
   OrigDataType: ptr32
 T_2088: (in signature of client_copy_request @ 004021A0 : void)
-  Class: Eq_2088
-  DataType: Eq_2088
+  Class: Eq_1626
+  DataType: (ptr32 code)
   OrigDataType: 
 T_2089: (in r4 @ 00401FC0 : (ptr32 Eq_2089))
   Class: Eq_2089
@@ -10630,11 +10643,11 @@ T_2092: (in Mem218[r2_29 + 0x17C0<32>:word32] @ 00401FC0 : word32)
   OrigDataType: word32
 T_2093: (in client_parse_reply @ 00401FD0 : ptr32)
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: ptr32
 T_2094: (in signature of client_parse_reply @ 00403140 : void)
-  Class: Eq_2094
-  DataType: Eq_2094
+  Class: Eq_1730
+  DataType: (ptr32 Eq_1730)
   OrigDataType: 
 T_2095: (in r4 @ 00401FD0 : (ptr32 Eq_2081))
   Class: Eq_2081
@@ -10654,7 +10667,7 @@ T_2098: (in r2_29 + 0x17C4<32> @ 00401FD0 : word32)
   OrigDataType: (ptr32 word32)
 T_2099: (in Mem221[r2_29 + 0x17C4<32>:word32] @ 00401FD0 : word32)
   Class: Eq_1730
-  DataType: (ptr32 code)
+  DataType: (ptr32 Eq_1730)
   OrigDataType: word32
 T_2100: (in r6_227 @ 00401FE0 : word32)
   Class: Eq_2100
@@ -13733,8 +13746,8 @@ T_2868: (in client_check_reply_http(r4) == 0<32> @ 0040319C : bool)
   DataType: bool
   OrigDataType: bool
 T_2869: (in client_copy_reply @ 004031B8 : ptr32)
-  Class: Eq_2080
-  DataType: (ptr32 Eq_2080)
+  Class: Eq_1730
+  DataType: (ptr32 Eq_1730)
   OrigDataType: (ptr32 (fn T_2870 (T_2095)))
 T_2870: (in client_copy_reply(r4) @ 004031B8 : void)
   Class: Eq_2870
@@ -13968,9 +13981,9 @@ T_2927: (in Mem68[r4 + 0x178C<32>:word32] @ 004032B0 : word32)
   Class: Eq_2860
   DataType: int32
   OrigDataType: int32
-T_2928: (in r2 @ 004032B0 : int32)
+T_2928: (in r2 @ 004032B0 : word32)
   Class: Eq_2928
-  DataType: int32
+  DataType: word32
   OrigDataType: word32
 T_2929: (in dwLoc18_180 @ 0040334C : (ptr32 Eq_2427))
   Class: Eq_2427
@@ -14005,7 +14018,7 @@ T_2936: (in Mem18[r4 + 0x178C<32>:word32] @ 00403360 : word32)
   DataType: int32
   OrigDataType: word32
 T_2937: (in r2_153 @ 004033D0 : int32)
-  Class: Eq_2928
+  Class: Eq_2937
   DataType: int32
   OrigDataType: int32
 T_2938: (in 5<i32> @ 004033DC : int32)
@@ -14093,7 +14106,7 @@ T_2958: (in (word32) dwLoc18_180->t0000.u1 == 13<i32> @ 0040339C : bool)
   DataType: bool
   OrigDataType: bool
 T_2959: (in 0<32> @ 004036A4 : word32)
-  Class: Eq_2928
+  Class: Eq_2937
   DataType: int32
   OrigDataType: word32
 T_2960: (in strncasecmp @ 0040340C : ptr32)
@@ -14121,8 +14134,8 @@ T_2965: (in strncasecmp(dwLoc18_180, "HTTP", 4<i32>) != 0<32> @ 0040340C : bool)
   DataType: bool
   OrigDataType: bool
 T_2966: (in client_copy_reply @ 00403420 : ptr32)
-  Class: Eq_2966
-  DataType: ptr32
+  Class: Eq_1730
+  DataType: (ptr32 Eq_1730)
   OrigDataType: ptr32
 T_2967: (in 0x17C4<32> @ 00403420 : word32)
   Class: Eq_2967
@@ -14133,8 +14146,8 @@ T_2968: (in r4 + 0x17C4<32> @ 00403420 : word32)
   DataType: ptr32
   OrigDataType: ptr32
 T_2969: (in Mem67[r4 + 0x17C4<32>:word32] @ 00403420 : word32)
-  Class: Eq_2966
-  DataType: ptr32
+  Class: Eq_1730
+  DataType: (ptr32 Eq_1730)
   OrigDataType: word32
 T_2970: (in 0<32> @ 00403464 : word32)
   Class: Eq_2860
@@ -14181,7 +14194,7 @@ T_2980: (in Mem166[r4 + 0x178C<32>:word32] @ 00403450 : word32)
   DataType: int32
   OrigDataType: word32
 T_2981: (in 1<i32> @ 00403454 : int32)
-  Class: Eq_2928
+  Class: Eq_2937
   DataType: int32
   OrigDataType: int32
 T_2982: (in 2<i32> @ 004034D8 : int32)
@@ -14561,7 +14574,7 @@ T_3075: (in Mem152[r4 + 0x178C<32>:word32] @ 00403698 : word32)
   DataType: int32
   OrigDataType: int32
 T_3076: (in 1<i32> @ 0040369C : int32)
-  Class: Eq_2928
+  Class: Eq_2937
   DataType: int32
   OrigDataType: int32
 T_3077: (in 3<i32> @ 00403660 : int32)
@@ -14605,7 +14618,7 @@ T_3086: (in Mem159[r4 + 0x178C<32>:word32] @ 00403670 : word32)
   DataType: int32
   OrigDataType: int32
 T_3087: (in 0<32> @ 00403674 : word32)
-  Class: Eq_2928
+  Class: Eq_2937
   DataType: int32
   OrigDataType: word32
 T_3088: (in r4 @ 00403674 : Eq_921)
@@ -34546,6 +34559,8 @@ typedef word32 (Eq_1665)(Eq_1128 *, Eq_921, ptr32);
 
 typedef Eq_921 (Eq_1688)(Eq_921, word32);
 
+typedef void (Eq_1730)(Eq_2081 *);
+
 typedef struct Eq_1877 {
 	uint16 w0002;	// 2
 	word32 dw0004;	// 4
@@ -34580,13 +34595,11 @@ typedef time_t Eq_2033;
 
 typedef void (Eq_2068)(Eq_921);
 
-typedef void (Eq_2080)(Eq_2081 *);
-
 typedef struct Eq_2081 {
 	word32 dw0000;	// 0
 	struct Eq_2427 * ptr1788;	// 1788
 	int32 dw178C;	// 178C
-	ptr32 ptr17C4;	// 17C4
+	void (* ptr17C4)(struct Eq_2081 *);	// 17C4
 	Eq_2033 t17D0;	// 17D0
 } Eq_2081;
 
@@ -35510,7 +35523,7 @@ typedef struct Eq_7919 {
 	Eq_921 t17B8;	// 17B8
 	Eq_921 t17BC;	// 17BC
 	<anonymous> * ptr17C0;	// 17C0
-	<anonymous> * ptr17C4;	// 17C4
+	void (* ptr17C4)(struct Eq_2081 *);	// 17C4
 	Eq_2033 t17C8;	// 17C8
 	Eq_2033 t17CC;	// 17CC
 	Eq_2033 t17D0;	// 17D0

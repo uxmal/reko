@@ -26,12 +26,12 @@ namespace Reko.Core.Expressions
 {
 	public class ProcedureConstant : Expression
 	{
-        private FunctionType sig;
+        private FunctionType? sig;
 
 		public ProcedureConstant(DataType ptrType, ProcedureBase proc) : base(ptrType)
 		{
             this.Procedure = proc;
-            this.sig = proc.Signature;
+            this.sig = null;
 		}
 
         public ProcedureConstant(DataType ptrType, FunctionType sig, ProcedureBase proc) : base(ptrType)
@@ -42,6 +42,7 @@ namespace Reko.Core.Expressions
 
         public ProcedureBase Procedure { get; }
 
+        //$TODO: make this property immutable
         public FunctionType Signature
         {
             get => this.sig ?? Procedure.Signature;
