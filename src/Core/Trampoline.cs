@@ -31,6 +31,14 @@ namespace Reko.Core
     /// procedure via an indirect CTI. It is typically used to implement
     /// dynamically linked procedures.
     /// </summary>
+    /// <remarks>
+    /// Typically, it will be a short linear of sequence ending in an indirect
+    /// goto:
+    /// <code>
+    /// mov r1,g0(got_plt_offset)
+    /// jmp r1
+    /// </code>
+    /// </remarks>
     public class Trampoline
     {
         public Trampoline(Address addrStub, ProcedureBase procedure)
@@ -39,7 +47,14 @@ namespace Reko.Core
             this.Procedure = procedure;
         }
 
+        /// <summary>
+        /// The address of the beginning of the trampoline.
+        /// </summary>
         public Address StubAddress { get; }
+
+        /// <summary>
+        /// The procedure reached by calling the stub.
+        /// </summary>
         public ProcedureBase Procedure { get; }
 
         public override string ToString()

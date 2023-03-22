@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Pointer(0x16E, 0xFF0142);
 
             var ppf = new ProcedurePrologFinder(arch.Object, prologPatterns, mem);
-            var results = ppf.Run(new CancellationToken());
+            var results = ppf.Run(new CancellationTokenSource().Token);
             Assert.AreEqual(0xFF0000, results[0].Address);
         }
     }
