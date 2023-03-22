@@ -267,6 +267,16 @@ namespace Reko.Arch.X86.Assembler
 				return ParsePtrOperand(PrimitiveType.Word64);
 			case Token.ST:
 				return new ParsedOperand(ParseFpuOperand(), null);
+            case Token.STRINGLITERAL:
+                if (this.DataWidth is null || string.IsNullOrEmpty(lexer.StringLiteral))
+                    OnError("Unexpected string literal");
+                if (this.DataWidth!.BitSize == 8)
+                {
+                    totalInt = (byte) lexer.StringLiteral[0];
+                    return IntegerCommon();
+                }
+                OnError("Unexpected string literal");
+                return null;
 			}
 		}
 
