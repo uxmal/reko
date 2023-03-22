@@ -433,5 +433,12 @@ ProcedureBuilder_exit:
         {
             RunFileTest_x86_real("Fragments/multiple/regpair_return.asm", "Analysis/DfaRegPairReturn.txt");
         }
+
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void DfaRemoveSpaces()
+        {
+            RunFileTest_x86_real("Fragments/multiple/remove_spaces.asm", "Analysis/DfaRemoveSpaces.txt");
+        }
     }
 }

@@ -1,0 +1,83 @@
+// void fn0C00_0000(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  cs:[0..15] ds:[0..15]
+// LiveOut:
+// Trashed: SCZO ax cx di es si sp Top
+// Preserved:
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	selector cs
+	// succ:  l0C00_0000
+l0C00_0000:
+	fn0C00_0015(SEQ(cs, 0x46<16>))
+	Mem31[ds:0x63<16>:word16] = fn0C00_002F(SEQ(cs, 0x46<16>))
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// void fn0C00_0015(Stack segptr32 ptrArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  Stack +0002:[0..31]
+// LiveOut:
+// Trashed: SCZO di es si Top
+// Preserved: bp ds sp
+// fn0C00_0015
+// Return size: 0
+void fn0C00_0015(segptr32 ptrArg02)
+fn0C00_0015_entry:
+	// succ:  l0C00_0015
+l0C00_0015:
+	selector ds_35 = SLICE(ptrArg02, selector, 16)
+	word16 si_15 = SLICE(ptrArg02, word16, 0)
+	selector es_37 = SLICE(ptrArg02, selector, 16)
+	word16 di_32 = SLICE(ptrArg02, word16, 0)
+	// succ:  l0C00_001F
+l0C00_001F:
+	byte al_17 = Mem16[ds_35:si_15:byte]
+	si_15 = si_15 + 1<i16>
+	branch al_17 == 0<8> l0C00_002C
+	// succ:  l0C00_0024 l0C00_002C
+l0C00_0024:
+	branch al_17 == 0x20<8> l0C00_001F
+	// succ:  l0C00_0028 l0C00_001F
+l0C00_0028:
+	Mem33[es_37:di_32:byte] = al_17
+	di_32 = di_32 + 1<i16>
+	goto l0C00_001F
+	// succ:  l0C00_001F
+l0C00_002C:
+	return
+	// succ:  fn0C00_0015_exit
+fn0C00_0015_exit:
+
+// Register word16 fn0C00_002F(Stack segptr32 ptrArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  Stack +0002:[0..31]
+// LiveOut: ax
+// Trashed: SCZO ax cx si Top
+// Preserved: bp ds sp
+// fn0C00_002F
+// Return size: 0
+word16 fn0C00_002F(segptr32 ptrArg02)
+fn0C00_002F_entry:
+	// succ:  l0C00_002F
+l0C00_002F:
+	selector ds_35 = SLICE(ptrArg02, selector, 16)
+	word16 si_17 = SLICE(ptrArg02, word16, 0)
+	word16 cx_13 = 0<16>
+	// succ:  l0C00_0038
+l0C00_0038:
+	si_17 = si_17 + 1<i16>
+	branch Mem11[ds_35:si_17:byte] == 0<8> l0C00_0041
+	// succ:  l0C00_003D l0C00_0041
+l0C00_003D:
+	cx_13 = cx_13 + 1<16>
+	goto l0C00_0038
+	// succ:  l0C00_0038
+l0C00_0041:
+	return cx_13
+	// succ:  fn0C00_002F_exit
+fn0C00_002F_exit:
+
