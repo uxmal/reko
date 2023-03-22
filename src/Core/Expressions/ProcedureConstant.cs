@@ -42,6 +42,7 @@ namespace Reko.Core.Expressions
 
         public ProcedureBase Procedure { get; }
 
+        //$TODO: make this property immutable
         public FunctionType Signature
         {
             get => this.sig ?? Procedure.Signature;
