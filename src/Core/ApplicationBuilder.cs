@@ -31,8 +31,11 @@ namespace Reko.Core
     /// <summary>
     /// Builds a function application from a call site and a callee.
     /// </summary>
-    /// <summary>
     /// <remarks>
+    /// The principal purpose of this class is to bind <see cref="Identifier"/>s 
+    /// in the caller's frame to the <see cref="Storage"/>s  in the callee's
+    /// procedure signature.
+    /// 
     /// liveIn registers that are passed in and out are marked as 'out arguments'
     ///
     /// If there is only one 'out' argument, then it is returned as the return value of the
@@ -44,7 +47,6 @@ namespace Reko.Core
     public abstract class ApplicationBuilder 
 	{
         protected CallSite site;
-        protected Expression callee;
         protected FunctionType? sigCallee;
 
         /// <summary>
@@ -54,10 +56,9 @@ namespace Reko.Core
         /// <param name="site">The call site of the calling instruction.</param>
         /// <param name="callee">The procedure being called.</param>
         /// <param name="sigCallee">The signature of the procedure being called.</param>
-        public ApplicationBuilder(CallSite site, Expression callee)
+        public ApplicationBuilder(CallSite site)
         {
             this.site = site;
-            this.callee = callee;
         }
 
         public abstract Expression? BindInArg(Storage stg);
@@ -66,15 +67,28 @@ namespace Reko.Core
         public abstract Expression? BindReturnValue(Storage? stg);
 
         /// <summary>
-        /// Creates an instruction:
+        /// Creates an <see cref="Application"/> expression, and a hosting
+        /// instruction:
         ///     a = foo(b)
         /// or 
         ///     foo(b)
-        ///  depending on whether the signature returns a value or is of
-        /// type 'void'
+        /// depending on whether the <paramref name="sigCallee"/> returns a
+        /// value or is of type 'void'.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="callee">The expression denoting the procedure to call.
+        /// For direct calls, this is typically a <see cref="ProcedureConstant"/>,
+        /// but for indirect calls it can be any <see cref="Expression"/>.
+        /// </param>
+        /// <param name="sigCallee">The <see cref="FunctionType"/> to use when 
+        /// constructing the parameters of the application.
+        /// </param>
+        /// <param name="chr">Optional <see cref="ProcedureCharacteristics"/>
+        /// that may influence the result of this method call.
+        /// </param>
+        /// <returns>The resulting <see cref="Assignment"/> or 
+        /// <see cref="SideEffect"/> instruction.</returns>
         public Instruction CreateInstruction(
+            Expression callee,
             FunctionType sigCallee,
             ProcedureCharacteristics? chr)
         {

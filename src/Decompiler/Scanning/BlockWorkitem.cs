@@ -208,8 +208,8 @@ namespace Reko.Scanning
 
         private Instruction BuildApplication(Expression fn, FunctionType sig, ProcedureCharacteristics? c, CallSite site)
         {
-            var ab = arch.CreateFrameApplicationBuilder(frame!, site, fn);
-            return ab.CreateInstruction(sig, c);
+            var ab = arch.CreateFrameApplicationBuilder(frame!, site);
+            return ab.CreateInstruction(fn, sig, c);
         }
 
         public Expression GetValue(Expression op)
@@ -679,6 +679,10 @@ namespace Reko.Scanning
         private Address? CallTargetAsAddress(RtlCall call)
         {
             var (callTarget, _) = call.Target.Accept(eval);
+
+            if (call.Target is Address addr)
+                return addr;
+
             if (callTarget is Constant c)
             {
                 if (c.IsValid)
@@ -690,12 +694,7 @@ namespace Reko.Scanning
                     return null;
                 }
             }
-            var addr = call.Target as Address;
-            if (addr == null)
-            {
-               addr = program.Platform.ResolveIndirectCall(call);
-            }
-            return addr;
+            return program.Platform.ResolveIndirectCall(call);
         }
 
         private bool GenerateCallToOutsideProcedure(CallSite site, Address addr)
@@ -715,14 +714,14 @@ namespace Reko.Scanning
             ProcedureCharacteristics? chr,
             CallSite site)
         {
-            var ab = arch.CreateFrameApplicationBuilder(frame!, site, callee);
+            var ab = arch.CreateFrameApplicationBuilder(frame!, site);
             if (vaScanner!.TryScan(ric!.Address, callee, sig, chr, ab, out var varargs))
             {
                 Emit(vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab));
             }
             else if (sig != null && sig.ParametersValid)
             {
-                Emit(ab.CreateInstruction(sig, chr));
+                Emit(ab.CreateInstruction(callee, sig, chr));
             }
             else
             {
@@ -917,8 +916,8 @@ namespace Reko.Scanning
             if (svc.Signature != null)
             {
                 var site = state.OnBeforeCall(stackReg!, svc.Signature.ReturnAddressOnStack);
-                var ab = arch.CreateFrameApplicationBuilder(frame!, site, fn);
-                Emit(ab.CreateInstruction(ep.Signature, ep.Characteristics));
+                var ab = arch.CreateFrameApplicationBuilder(frame!, site);
+                Emit(ab.CreateInstruction(fn, ep.Signature, ep.Characteristics));
                 if (svc.Characteristics != null && svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur!, ric!.Address + ric.Length);
@@ -957,10 +956,10 @@ namespace Reko.Scanning
             {
                 this.scanner.Warn(ric!.Address, $"An alloca function must have exactly one parameter, but {impProc.Name} has {sig.Parameters.Length}.");
             }
+            var callee = new ProcedureConstant(program.Platform.PointerType, impProc);
             var ab = arch.CreateFrameApplicationBuilder(
                 frame!,
-                site,
-                new ProcedureConstant(program.Platform.PointerType, impProc));
+                site);
             var target = ab.BindInArg(sig.Parameters[0].Storage);
             if (target is not Identifier id)
             {
@@ -969,11 +968,13 @@ namespace Reko.Scanning
             }
             if (state.GetValue(id) is Constant c && c.IsValid)
             {
+                // Replace constant call to alloca with a stack adjustment
+                //$TODO: should grow to higher addresses on PA-RISC.
                 Emit(new Assignment(stackReg!, new BinaryExpression(Operator.ISub, stackReg!.DataType, stackReg, c)));
             }
             else
             {
-                Emit(ab.CreateInstruction(impProc.Signature, impProc.Characteristics));
+                Emit(ab.CreateInstruction(callee, impProc.Signature, impProc.Characteristics));
             }
             return true;
         }

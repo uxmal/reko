@@ -84,10 +84,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(s => s.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(s => s.CreateFrameApplicationBuilder(
                 It.IsAny<IStorageBinder>(),
-                It.IsAny<CallSite>(),
-                It.IsAny<Expression>()))
-                .Returns((IStorageBinder frame, CallSite site, Expression callee) =>
-                    new FrameApplicationBuilder(arch.Object, frame, site, callee));
+                It.IsAny<CallSite>()))
+                .Returns((IStorageBinder frame, CallSite site) =>
+                    new FrameApplicationBuilder(arch.Object, frame, site));
             scanner.Setup(s => s.Services).Returns(sc);
             sc.AddService<DecompilerEventListener>(listener.Object);
         }

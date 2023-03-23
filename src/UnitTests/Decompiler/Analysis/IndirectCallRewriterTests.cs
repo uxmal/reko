@@ -315,10 +315,10 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             var architecture = (FakeArchitecture)m.Architecture;
             architecture.Test_CreateFrameApplicationBuilder =
-                (arch, binder, site, callee) =>
+                (arch, binder, site) =>
                 {
                     var ab = new FakeFrameApplicationBuilder(
-                        null, binder, site, callee);
+                        null, binder, site);
                     var (ret, value) = returnBinder(m.Ssa.Procedure.Frame);
                     ab.Test_AddReturnValue(ret.Storage, value);
                     return ab;

@@ -37,18 +37,21 @@ namespace Reko.Analysis
     /// </summary>
     /// <remarks>
     /// </remarks>
-    public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression?, (BindingDictionary map, ApplicationBindingType bindUses)>
+    public class CallApplicationBuilder :
+        ApplicationBuilder,
+        StorageVisitor<Expression?, (BindingDictionary map, ApplicationBindingType bindUses)>
     {
         private readonly SsaState ssaCaller;
         private readonly Statement stmCall;
         private readonly SsaMutator mutator;
         private readonly IProcessorArchitecture arch;
-        private readonly Dictionary<Storage, CallBinding> defs;
-        private readonly Dictionary<Storage, CallBinding> uses;
+        private readonly BindingDictionary defs;
+        private readonly BindingDictionary uses;
         private readonly MemIdentifierFinder midFinder;
         private readonly bool guessStackArgs;
 
-        public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee, bool guessStackArgs) : base(call.CallSite, callee)
+        public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, bool guessStackArgs)
+            : base(call.CallSite)
         {
             this.ssaCaller = ssaCaller;
             this.stmCall = stmCall;
@@ -88,11 +91,13 @@ namespace Reko.Analysis
 
         public Expression? VisitFpuStackStorage(FpuStackStorage fpu, (BindingDictionary map, ApplicationBindingType bindUses) ctx)
         {
-            foreach (var de in ctx.map.Values
-              .Where(d => d.Storage is FpuStackStorage))
+            foreach (var de in ctx.map.Values)
             {
-                if (((FpuStackStorage) de.Storage).FpuStackOffset == fpu.FpuStackOffset)
+                if (de.Storage is FpuStackStorage fpuStg &&
+                    fpuStg.FpuStackOffset == fpu.FpuStackOffset)
+                {
                     return de.Expression;
+                }
             }
             if (ctx.bindUses != ApplicationBindingType.In)
                 return null;

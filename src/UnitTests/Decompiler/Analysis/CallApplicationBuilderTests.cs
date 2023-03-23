@@ -65,9 +65,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Ssa,
                 stmCall,
                 (CallInstruction) stmCall.Instruction,
-                callee, 
                 false);
-            var instr = cab.CreateInstruction(sigCallee, null);
+            var instr = cab.CreateInstruction(callee, sigCallee, null);
 
             Assert.AreEqual("callee(r2_r3_4)", instr.ToString());
             m.Ssa.Validate(s => Assert.Fail(s));
@@ -98,9 +97,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Ssa,
                 stmCall,
                 (CallInstruction) stmCall.Instruction,
-                callee,
                 false);
-            var instr = cab.CreateInstruction(sigCallee, null);
+            var instr = cab.CreateInstruction(callee, sigCallee, null);
 
             Assert.AreEqual("callee(SEQ(r2_1, r3_2))", instr.ToString());
             m.Ssa.Validate(s => Assert.Fail(s)); 
@@ -134,9 +132,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Ssa,
                 stmCall,
                 (CallInstruction) stmCall.Instruction,
-                callee,
                 true);
-            var instr = cab.CreateInstruction(sigCallee, null);
+            var instr = cab.CreateInstruction(callee, sigCallee, null);
 
             Assert.AreEqual("callee(Mem4[sp:word32], Mem4[sp + 4<i32>:word32])", instr.ToString());
             m.Ssa.Validate(s => Assert.Fail(s));

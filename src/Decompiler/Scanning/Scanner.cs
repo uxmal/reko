@@ -501,7 +501,7 @@ namespace Reko.Scanning
             var sig = procNew.Signature;
             var chr = procNew.Characteristics;
 
-            var ab = procCaller.Architecture.CreateFrameApplicationBuilder(procCaller.Frame, site, callee);
+            var ab = procCaller.Architecture.CreateFrameApplicationBuilder(procCaller.Frame, site);
             var vaScanner = new VarargsFormatScanner(Program, procCaller.Architecture, state, Services);
             if (vaScanner!.TryScan(addrCall, callee, sig, chr, ab, out var varargs))
             {
@@ -509,7 +509,7 @@ namespace Reko.Scanning
             }
             else if (sig != null && sig.ParametersValid)
             {
-                return ab.CreateInstruction(sig, chr);
+                return ab.CreateInstruction(callee, sig, chr);
             }
             else
             {

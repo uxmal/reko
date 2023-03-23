@@ -546,8 +546,9 @@ namespace Reko.Analysis
                 // Signature is known: build the application immediately,
                 // after removing all uses of the old call.
                 ssa.RemoveUses(stmCur!);
-                var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci);
-                var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
+                var pc = new ProcedureConstant(ci.Callee.DataType, callee);
+                var ab = CreateApplicationBuilder(ci.Callee.DataType, ci);
+                var instr = ab.CreateInstruction(pc, callee.Signature, callee.Characteristics);
                 return instr.Accept(this);
             }
             if (callee is Procedure proc &&
@@ -566,11 +567,9 @@ namespace Reko.Analysis
             return ci;
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallInstruction call)
+        private ApplicationBuilder CreateApplicationBuilder(DataType dt, CallInstruction call)
         {
-            var pc = new ProcedureConstant(dt, eCallee);
-            var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, call.CallSite, pc);
-            return ab;
+            return  arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, call.CallSite);
         }
 
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow calleeFlow)
@@ -591,7 +590,7 @@ namespace Reko.Analysis
             else
             {
                 fpuStackDelta = calleeFlow.GetFpuStackDelta(arch);
-                var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
+                var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite);
                 foreach (var stgUse in calleeFlow.BitsUsed.Keys)
                 {
                     Expression e;

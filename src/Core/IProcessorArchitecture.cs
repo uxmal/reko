@@ -284,13 +284,10 @@ namespace Reko.Core
         /// </summary>
         /// <param name="binder"></param>
         /// <param name="site"></param>
-        /// <param name="callee"></param>
-        /// <param name="ensureVariables"></param>
         /// <returns></returns>
         FrameApplicationBuilder CreateFrameApplicationBuilder(
             IStorageBinder binder,
-            CallSite site,
-            Expression callee);
+            CallSite site);
 
         /// <summary>
         /// Create a <see cref="MemoryArea"/> appropriate for storing the
@@ -659,10 +656,9 @@ namespace Reko.Core
 
         public virtual FrameApplicationBuilder CreateFrameApplicationBuilder(
             IStorageBinder binder,
-            CallSite site,
-            Expression callee)
+            CallSite site)
         {
-            return new FrameApplicationBuilder(this, binder, site, callee);
+            return new FrameApplicationBuilder(this, binder, site);
         }
 
         public virtual MemoryArea CreateCodeMemoryArea(Address addr, byte[] bytes)

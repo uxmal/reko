@@ -354,11 +354,6 @@ namespace Reko.Analysis
 			return false;
 		}
 
-        private static ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, Expression fn)
-        {
-            return new CallApplicationBuilder(ssaCaller, stmCaller, call, fn, false);
-        }
-
         public void RemoveStatementsFromExitBlock(SsaState ssa)
         {
             foreach (var stm in ssa.Procedure.ExitBlock.Statements.ToList())
@@ -393,9 +388,9 @@ namespace Reko.Analysis
                 if (sigCallee is null || !sigCallee.ParametersValid)
                     return false;
                 var fn = new ProcedureConstant(platform.PointerType, procCallee);
-                ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
+                var ab = new CallApplicationBuilder(ssaCaller, stm, call, false);
                 ssaCaller.RemoveUses(stm);
-                var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
+                var instr = ab.CreateInstruction(fn, sigCallee, procCallee.Characteristics);
                 stm.Instruction = instr;
                 var ssam = new SsaMutator(ssaCaller);
                 ssam.AdjustSsa(stm, call);

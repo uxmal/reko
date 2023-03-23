@@ -36,8 +36,7 @@ namespace Reko.UnitTests.Mocks
         public FakeFrameApplicationBuilder(
             IProcessorArchitecture arch,
             IStorageBinder binder,
-            CallSite site,
-            Expression callee) : base(arch, binder, site, callee)
+            CallSite site) : base(arch, binder, site)
         {
             this.returnValues = new Dictionary<Storage, Expression>();
         }

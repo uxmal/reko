@@ -123,9 +123,9 @@ namespace Reko.Analysis
                     -ft.FpuStackDelta);
             }
             var ab = program.Architecture.CreateFrameApplicationBuilder(
-                 proc.Frame, call.CallSite, call.Callee);
+                 proc.Frame, call.CallSite);
             ssa.RemoveUses(stm);
-            stm.Instruction = ab.CreateInstruction(ft, null);
+            stm.Instruction = ab.CreateInstruction(call.Callee, ft, null);
             ssaIdTransformer.Transform(stm, call);
             ssam.DefineUninitializedIdentifiers(stm, call);
         }

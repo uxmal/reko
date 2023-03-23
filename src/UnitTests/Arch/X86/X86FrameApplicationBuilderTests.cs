@@ -54,8 +54,7 @@ namespace Reko.UnitTests.Arch.X86
             this.fab = new X86FrameApplicationBuilder(
                 arch,
                 frame,
-                site,
-                callee);
+                site);
         }
 
         [Test(Description = "TOP + 0 is the first FPU argument to a function")]
@@ -69,7 +68,7 @@ namespace Reko.UnitTests.Arch.X86
                     "arg",
                     PrimitiveType.Real64,
                     new FpuStackStorage(0, PrimitiveType.Real64)));
-            var instr = fab.CreateInstruction(sigCallee, new ProcedureCharacteristics());
+            var instr = fab.CreateInstruction(callee, sigCallee, new ProcedureCharacteristics());
             Assert.AreEqual("eax(ST[Top:real64])", instr.ToString());
         }
 
@@ -88,7 +87,7 @@ namespace Reko.UnitTests.Arch.X86
                     "arg1",
                     PrimitiveType.Real64,
                     new FpuStackStorage(1, PrimitiveType.Real64)));
-            var instr = fab.CreateInstruction(sigCallee, new ProcedureCharacteristics());
+            var instr = fab.CreateInstruction(callee, sigCallee, new ProcedureCharacteristics());
             Assert.AreEqual("eax(ST[Top:real64], ST[Top + 1<i8>:real64])", instr.ToString());
         }
 
@@ -104,7 +103,7 @@ namespace Reko.UnitTests.Arch.X86
                     PrimitiveType.Real64,
                     new FpuStackStorage(-1, PrimitiveType.Real64)));
             sigCallee.FpuStackDelta = 1;
-            var instr = fab.CreateInstruction(sigCallee, new ProcedureCharacteristics());
+            var instr = fab.CreateInstruction(callee, sigCallee, new ProcedureCharacteristics());
             // Top below refers to the value of Top _before_ the call.
             // Rewriters must remember to emit an instruction to adjust  Top
             // _after_ the call.

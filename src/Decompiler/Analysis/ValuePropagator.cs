@@ -264,17 +264,17 @@ namespace Reko.Analysis
                     -sig.FpuStackDelta);
             }
             ssa.RemoveUses(stm);
-            var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
+            var ab = new CallApplicationBuilder(this.ssa, stm, ci, true);
             if (va.TryScan(stmCur!.Address, ci.Callee, sig, chr, ab, out var result))
             {
                 //$TODO: we found a string, record it in globals.
-                // We can't do it immediately becaus we're inside a SCC. So hang 
+                // We can't do it immediately because we're inside a SCC. So hang 
                 // onto the string information and merge it in as a final pass.
                 stm.Instruction = va.BuildInstruction(ci.Callee, sig, result.Signature, chr, ab);
             }
             else
             { 
-                stm.Instruction = ab.CreateInstruction(sig, chr);
+                stm.Instruction = ab.CreateInstruction(ci.Callee, sig, chr);
             }
             ssam.AdjustSsa(stm, ci);
         }

@@ -344,14 +344,14 @@ namespace Reko.UnitTests.Mocks
         }
 
         public Func<
-            IProcessorArchitecture, IStorageBinder, CallSite, Expression,
+            IProcessorArchitecture, IStorageBinder, CallSite,
             FrameApplicationBuilder>
                 Test_CreateFrameApplicationBuilder =
-                    (arch, binder, site, callee) =>
-                    new FrameApplicationBuilder(arch, binder, site, callee);
-        public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
+                    (arch, binder, site) =>
+                    new FrameApplicationBuilder(arch, binder, site);
+        public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site)
         {
-            return Test_CreateFrameApplicationBuilder(this, binder, site, callee);
+            return Test_CreateFrameApplicationBuilder(this, binder, site);
         }
 
         public override Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)

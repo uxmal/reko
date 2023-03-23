@@ -71,10 +71,10 @@ namespace Reko.Scanning
         {
             if (callee is ProcedureConstant pc)
             {
-                pc.Signature = expandedSig;
+                callee = new ProcedureConstant(pc.DataType, expandedSig, pc.Procedure);
             }
             int iFormatArg = originalSig.Parameters!.Length - 1;
-            var instr = ab.CreateInstruction(expandedSig, chr);
+            var instr = ab.CreateInstruction(callee, expandedSig, chr);
             ReplaceFormatArgumentWithFormatString(instr, iFormatArg);
             return instr;
         }

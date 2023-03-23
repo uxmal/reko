@@ -34,9 +34,8 @@ namespace Reko.Arch.X86
         public X86FrameApplicationBuilder(
             IntelArchitecture arch,
             IStorageBinder binder, 
-            CallSite site,
-            Expression callee)
-            : base(arch, binder, site, callee)
+            CallSite site)
+            : base(arch, binder, site)
         {
         }
 

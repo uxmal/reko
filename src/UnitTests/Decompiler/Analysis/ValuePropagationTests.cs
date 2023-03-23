@@ -918,10 +918,9 @@ ProcedureBuilder_exit:
                     m.Mem(dt, m.IAdd(f.EnsureRegister((RegisterStorage)sp.Storage), off)));
             arch.Setup(s => s.CreateFrameApplicationBuilder(
                 It.IsAny<IStorageBinder>(),
-                It.IsAny<CallSite>(),
-                It.IsAny<Expression>()))
-                .Returns((IStorageBinder binder, CallSite site, Expression c) =>
-                    new FrameApplicationBuilder(arch.Object, binder, site, c));
+                It.IsAny<CallSite>()))
+                .Returns((IStorageBinder binder, CallSite site) =>
+                    new FrameApplicationBuilder(arch.Object, binder, site));
 
             var ssa = RunTest(m);
             var sExp =

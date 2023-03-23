@@ -37,16 +37,13 @@ namespace Reko.Core
         /// <param name="arch">The processor architecture to use.</param>
         /// <param name="binder">The <see cref="IStorageBinder"/> of the calling procedure.</param>
         /// <param name="site">The call site of the calling instruction.</param>
-        /// <param name="callee">The procedure being called.</param>
         public FrameApplicationBuilder(
             IProcessorArchitecture arch,
             IStorageBinder binder,
-            CallSite site,
-            Expression callee) : base(site, callee)
+            CallSite site) : base(site)
         {
             this.arch = arch;
             this.binder = binder;
-            this.callee = callee;
         }
 
         public override Expression BindInArg(Storage stg)

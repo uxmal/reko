@@ -95,6 +95,5 @@ namespace Reko.Core
 		{
 			return FunctionType.Create(ret, args.ToArray());
 		}
-
     }
 }

@@ -214,7 +214,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
+            public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site)
             {
                 throw new NotImplementedException();
             }
