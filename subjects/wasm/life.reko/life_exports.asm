@@ -1,4 +1,5 @@
 ;;; Segment .exports (000A0000)
-000A0000 04 06 6D 65 6D 6F 72 79 02 00 0F 63 6F 75 6E 74 ..memory...count
-000A0010 5F 6E 65 69 67 68 62 6F 72 73 00 00 0A 75 70 64 _neighbors...upd
-000A0020 61 74 65 5F 67 65 6E 00 01 04 6D 61 69 6E 00 02 ate_gen...main..
+; (export "memory" (memory 0))
+; (export "count_neighbors" (func 0))
+; (export "update_gen" (func 1))
+; (export "main" (func 2))

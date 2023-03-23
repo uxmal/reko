@@ -1,8 +1,9 @@
 ;;; Segment .exports (000B0000)
-000B0000 08 04 5F 72 75 6E 00 04 12 5F 5F 70 6F 73 74 5F .._run...__post_
-000B0010 69 6E 73 74 61 6E 74 69 61 74 65 00 06 0B 72 75 instantiate...ru
-000B0020 6E 50 6F 73 74 53 65 74 73 00 05 07 5F 65 6E 65 nPostSets..._ene
-000B0030 72 67 79 00 01 06 5F 73 74 61 72 74 00 03 10 5F rgy..._start..._
-000B0040 6F 66 66 73 65 74 5F 6D 6F 6D 65 6E 74 75 6D 00 offset_momentum.
-000B0050 02 08 5F 61 64 76 61 6E 63 65 00 00 07 5F 62 6F .._advance..._bo
-000B0060 64 69 65 73 03 04                               dies..          
+; (export "_run" (func 4))
+; (export "__post_instantiate" (func 6))
+; (export "runPostSets" (func 5))
+; (export "_energy" (func 1))
+; (export "_start" (func 3))
+; (export "_offset_momentum" (func 2))
+; (export "_advance" (func 0))
+; (export "_bodies" (global 4))

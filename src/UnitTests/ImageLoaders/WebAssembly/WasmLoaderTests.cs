@@ -44,6 +44,12 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Create_Loader(BytePattern.FromHexBytes(hexBytes));
         }
 
+        private void Given_Section(params byte[] bytes)
+        {
+            var rdr = new WasmImageReader(bytes);
+            ldr.LoadSection(rdr);
+        }
+
         [Test]
         public void WasmLdr_Header()
         {
@@ -93,7 +99,8 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var imps = (ImportSection)section;
             Assert.AreEqual(1, imps.Imports.Count);
             Assert.AreEqual("env", imps.Imports[0].Module);
-            Assert.AreEqual("puts", imps.Imports[0].Field);
+            Assert.AreEqual("puts", imps.Imports[0].Name);
+            Assert.AreEqual(SymbolType.ExternalProcedure, imps.Imports[0].Type);
             Assert.AreEqual(0x42, imps.Imports[0].Index);
         }
 

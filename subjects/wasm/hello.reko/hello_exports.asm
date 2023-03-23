@@ -1,59 +1,54 @@
 ;;; Segment .exports (00090000)
-00090000 35 05 5F 73 62 72 6B 00 B9 06 10 5F 5F 5F 63 78 5._sbrk....___cx
-00090010 61 5F 63 61 6E 5F 63 61 74 63 68 00 B2 06 05 5F a_can_catch...._
-00090020 66 72 65 65 00 C4 01 05 5F 6D 61 69 6E 00 60 16 free...._main.`.
-00090030 5F 5F 5F 63 78 61 5F 69 73 5F 70 6F 69 6E 74 65 ___cxa_is_pointe
-00090040 72 5F 74 79 70 65 00 B3 06 08 5F 6D 65 6D 6D 6F r_type...._memmo
-00090050 76 65 00 BA 06 0D 5F 70 74 68 72 65 61 64 5F 73 ve...._pthread_s
-00090060 65 6C 66 00 BC 06 07 5F 6D 65 6D 73 65 74 00 B5 elf...._memset..
-00090070 06 15 5F 70 74 68 72 65 61 64 5F 6D 75 74 65 78 .._pthread_mutex
-00090080 5F 75 6E 6C 6F 63 6B 00 BB 06 07 5F 6D 61 6C 6C _unlock...._mall
-00090090 6F 63 00 C3 01 13 5F 70 74 68 72 65 61 64 5F 6D oc...._pthread_m
-000900A0 75 74 65 78 5F 6C 6F 63 6B 00 B6 06 07 5F 6D 65 utex_lock...._me
-000900B0 6D 63 70 79 00 B8 06 07 5F 66 66 6C 75 73 68 00 mcpy...._fflush.
-000900C0 AC 01 17 5F 70 74 68 72 65 61 64 5F 63 6F 6E 64 ..._pthread_cond
-000900D0 5F 62 72 6F 61 64 63 61 73 74 00 B7 06 11 5F 5F _broadcast....__
-000900E0 5F 65 72 72 6E 6F 5F 6C 6F 63 61 74 69 6F 6E 00 _errno_location.
-000900F0 6E 12 5F 5F 47 4C 4F 42 41 4C 5F 5F 49 5F 30 30 n.__GLOBAL__I_00
-00090100 30 31 30 31 00 90 02 19 5F 5F 47 4C 4F 42 41 4C 0101....__GLOBAL
-00090110 5F 5F 73 75 62 5F 49 5F 68 65 6C 6C 6F 5F 63 70 __sub_I_hello_cp
-00090120 70 00 69 1C 5F 5F 47 4C 4F 42 41 4C 5F 5F 73 75 p.i.__GLOBAL__su
-00090130 62 5F 49 5F 69 6F 73 74 72 65 61 6D 5F 63 70 70 b_I_iostream_cpp
-00090140 00 91 02 0B 72 75 6E 50 6F 73 74 53 65 74 73 00 ....runPostSets.
-00090150 B4 06 0A 73 74 61 63 6B 41 6C 6C 6F 63 00 57 09 ...stackAlloc.W.
-00090160 73 74 61 63 6B 53 61 76 65 00 58 0C 73 74 61 63 stackSave.X.stac
-00090170 6B 52 65 73 74 6F 72 65 00 59 13 65 73 74 61 62 kRestore.Y.estab
-00090180 6C 69 73 68 53 74 61 63 6B 53 70 61 63 65 00 5A lishStackSpace.Z
-00090190 08 73 65 74 54 68 72 65 77 00 5B 0B 73 65 74 54 .setThrew.[.setT
-000901A0 65 6D 70 52 65 74 30 00 5C 0B 67 65 74 54 65 6D empRet0.\.getTem
-000901B0 70 52 65 74 30 00 5D 10 64 79 6E 43 61 6C 6C 5F pRet0.].dynCall_
-000901C0 69 69 69 69 69 69 69 69 00 BD 06 0E 64 79 6E 43 iiiiiiii....dynC
-000901D0 61 6C 6C 5F 76 69 69 69 69 69 00 BE 06 0F 64 79 all_viiiii....dy
-000901E0 6E 43 61 6C 6C 5F 69 69 69 69 69 69 64 00 BF 06 nCall_iiiiiid...
-000901F0 0A 64 79 6E 43 61 6C 6C 5F 76 69 00 C0 06 0B 64 .dynCall_vi....d
-00090200 79 6E 43 61 6C 6C 5F 76 69 69 00 C1 06 0F 64 79 ynCall_vii....dy
-00090210 6E 43 61 6C 6C 5F 69 69 69 69 69 69 69 00 C2 06 nCall_iiiiiii...
-00090220 0A 64 79 6E 43 61 6C 6C 5F 69 69 00 C3 06 0E 64 .dynCall_ii....d
-00090230 79 6E 43 61 6C 6C 5F 76 69 69 6A 69 69 00 F9 06 ynCall_viijii...
-00090240 14 64 79 6E 43 61 6C 6C 5F 69 69 69 69 69 69 69 .dynCall_iiiiiii
-00090250 69 69 69 69 69 00 C5 06 0C 64 79 6E 43 61 6C 6C iiiii....dynCall
-00090260 5F 69 69 69 69 00 C6 06 18 64 79 6E 43 61 6C 6C _iiii....dynCall
-00090270 5F 76 69 69 69 69 69 69 69 69 69 69 69 69 69 69 _viiiiiiiiiiiiii
-00090280 69 00 C7 06 0F 64 79 6E 43 61 6C 6C 5F 76 69 69 i....dynCall_vii
-00090290 69 69 69 69 00 C8 06 0C 64 79 6E 43 61 6C 6C 5F iiii....dynCall_
-000902A0 66 69 69 69 00 C9 06 10 64 79 6E 43 61 6C 6C 5F fiii....dynCall_
-000902B0 76 69 69 69 69 69 69 69 00 CA 06 13 64 79 6E 43 viiiiiii....dynC
-000902C0 61 6C 6C 5F 76 69 69 69 69 69 69 69 69 69 69 00 all_viiiiiiiiii.
-000902D0 CB 06 0B 64 79 6E 43 61 6C 6C 5F 69 69 69 00 CC ...dynCall_iii..
-000902E0 06 0E 64 79 6E 43 61 6C 6C 5F 69 69 69 69 69 69 ..dynCall_iiiiii
-000902F0 00 CD 06 0C 64 79 6E 43 61 6C 6C 5F 64 69 69 69 ....dynCall_diii
-00090300 00 CE 06 09 64 79 6E 43 61 6C 6C 5F 69 00 CF 06 ....dynCall_i...
-00090310 0D 64 79 6E 43 61 6C 6C 5F 6A 69 69 69 69 00 FA .dynCall_jiiii..
-00090320 06 0D 64 79 6E 43 61 6C 6C 5F 69 69 69 69 69 00 ..dynCall_iiiii.
-00090330 D1 06 0E 64 79 6E 43 61 6C 6C 5F 69 69 69 69 69 ...dynCall_iiiii
-00090340 6A 00 FB 06 0C 64 79 6E 43 61 6C 6C 5F 76 69 69 j....dynCall_vii
-00090350 69 00 D3 06 09 64 79 6E 43 61 6C 6C 5F 76 00 D4 i....dynCall_v..
-00090360 06 11 64 79 6E 43 61 6C 6C 5F 69 69 69 69 69 69 ..dynCall_iiiiii
-00090370 69 69 69 00 D5 06 0E 64 79 6E 43 61 6C 6C 5F 69 iii....dynCall_i
-00090380 69 69 69 69 64 00 D6 06 0D 64 79 6E 43 61 6C 6C iiiid....dynCall
-00090390 5F 76 69 69 69 69 00 D7 06                      _viiii...       
+; (export "_sbrk" (func 825))
+; (export "___cxa_can_catch" (func 818))
+; (export "_free" (func 196))
+; (export "_main" (func 96))
+; (export "___cxa_is_pointer_type" (func 819))
+; (export "_memmove" (func 826))
+; (export "_pthread_self" (func 828))
+; (export "_memset" (func 821))
+; (export "_pthread_mutex_unlock" (func 827))
+; (export "_malloc" (func 195))
+; (export "_pthread_mutex_lock" (func 822))
+; (export "_memcpy" (func 824))
+; (export "_fflush" (func 172))
+; (export "_pthread_cond_broadcast" (func 823))
+; (export "___errno_location" (func 110))
+; (export "__GLOBAL__I_000101" (func 272))
+; (export "__GLOBAL__sub_I_hello_cpp" (func 105))
+; (export "__GLOBAL__sub_I_iostream_cpp" (func 273))
+; (export "runPostSets" (func 820))
+; (export "stackAlloc" (func 87))
+; (export "stackSave" (func 88))
+; (export "stackRestore" (func 89))
+; (export "establishStackSpace" (func 90))
+; (export "setThrew" (func 91))
+; (export "setTempRet0" (func 92))
+; (export "getTempRet0" (func 93))
+; (export "dynCall_iiiiiiii" (func 829))
+; (export "dynCall_viiiii" (func 830))
+; (export "dynCall_iiiiiid" (func 831))
+; (export "dynCall_vi" (func 832))
+; (export "dynCall_vii" (func 833))
+; (export "dynCall_iiiiiii" (func 834))
+; (export "dynCall_ii" (func 835))
+; (export "dynCall_viijii" (func 889))
+; (export "dynCall_iiiiiiiiiiii" (func 837))
+; (export "dynCall_iiii" (func 838))
+; (export "dynCall_viiiiiiiiiiiiiii" (func 839))
+; (export "dynCall_viiiiii" (func 840))
+; (export "dynCall_fiii" (func 841))
+; (export "dynCall_viiiiiii" (func 842))
+; (export "dynCall_viiiiiiiiii" (func 843))
+; (export "dynCall_iii" (func 844))
+; (export "dynCall_iiiiii" (func 845))
+; (export "dynCall_diii" (func 846))
+; (export "dynCall_i" (func 847))
+; (export "dynCall_jiiii" (func 890))
+; (export "dynCall_iiiii" (func 849))
+; (export "dynCall_iiiiij" (func 891))
+; (export "dynCall_viii" (func 851))
+; (export "dynCall_v" (func 852))
+; (export "dynCall_iiiiiiiii" (func 853))
+; (export "dynCall_iiiiid" (func 854))
+; (export "dynCall_viiii" (func 855))

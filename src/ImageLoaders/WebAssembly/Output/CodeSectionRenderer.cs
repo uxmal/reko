@@ -27,44 +27,43 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 
-namespace Reko.ImageLoaders.WebAssembly
+namespace Reko.ImageLoaders.WebAssembly.Output
 {
     public class CodeSectionRenderer : ImageSegmentRenderer
     {
         private readonly WasmArchitecture arch;
         private readonly CodeSection codeSection;
-        private readonly List<Section> sections;
+        private readonly WasmFile file;
         private readonly TypeSection? typeSection;
         private readonly FunctionSection? funcSection;
         private readonly TableSection? tableSection;
 
-        public CodeSectionRenderer(WasmArchitecture arch, CodeSection section, List<Section> sections)
+        public CodeSectionRenderer(WasmArchitecture arch, CodeSection section, WasmFile file)
         {
             this.arch = arch;
             this.codeSection = section;
-            this.sections = sections;
-            this.typeSection = sections.OfType<TypeSection>().FirstOrDefault();
-            this.funcSection = sections.OfType<FunctionSection>().FirstOrDefault();
-            this.tableSection = sections.OfType<TableSection>().FirstOrDefault();
+            this.file = file;
+            this.typeSection = file.Sections.OfType<TypeSection>().FirstOrDefault();
+            this.funcSection = file.Sections.OfType<FunctionSection>().FirstOrDefault();
+            this.tableSection = file.Sections.OfType<TableSection>().FirstOrDefault();
         }
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             formatter.WriteComment("WASM functions");
-            int iFunc = -1;
             foreach (var func in codeSection.Functions)
             {
-                ++iFunc;
                 formatter.WriteLine();
-                RenderFunction(iFunc, func, formatter);
+                RenderFunction(func, formatter);
             }
         }
 
-        public void RenderFunction(int ifunc, FunctionDefinition function, Formatter formatter)
+        public void RenderFunction(FunctionDefinition function, Formatter formatter)
         {
-            var name = GetFunctionName(ifunc);
-            formatter.WriteLine("(func {0} (; {1} ;) retval??", name, ifunc);
+            var name = GetFunctionName(function.FunctionIndex);
+            formatter.WriteLine("(func {0} (; {1} ;) retval??", name, function.FunctionIndex);
             // Address doesn't matter, we don't display it.
             var mem = new ByteMemoryArea(Address.Ptr32(0x1_0000), codeSection.Bytes);
             var rdr = new LeImageReader(mem, function.Start, function.End);
@@ -141,18 +140,14 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.call:
                     if (typeSection is null)
                         throw new BadImageFormatException("Missing type section.");
-                    if (funcSection is null)
-                        throw new BadImageFormatException("Missung function section.");
                     var ifuncCall = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
-                    if (ifuncCall > funcSection.Declarations.Count)
+                    if (ifuncCall >= file.FunctionIndex.Count ||this.funcSection == null)
                     {
-                        Debug.Print("*** Unknown function {0:X}", ifunc);
+                        Debug.Print("*** Unknown function {0:X}", ifuncCall);
+                        break;
                     }
-                    else
-                    {
-                        var funcDecl = (int) funcSection.Declarations[ifuncCall];
-                        HandleCall(typeSection.Types[funcDecl], dataStack);
-                    }
+                    var funcDecl = (int) this.file.FunctionIndex[ifuncCall].TypeIndex;
+                    HandleCall(typeSection.Types[funcDecl], dataStack);
                     break;
                 case Mnemonic.call_indirect:
                     if (typeSection is null)
@@ -376,12 +371,12 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private string GetFunctionName(int ifunc)
         {
-            var exports = sections.OfType<ExportSection>().FirstOrDefault();
-            if (exports is not null)
+            string? name;
+            if (0 <= ifunc && ifunc < file.FunctionIndex.Count)
             {
-                var funcExport = exports.ExportEntries.Where(e => e.Kind == ExportEntry.Func && e.Index == ifunc).FirstOrDefault();
-                if (funcExport != null && !string.IsNullOrEmpty(funcExport.Field))
-                    return funcExport.Field;
+                name = file.FunctionIndex[ifunc].Name;
+                if (name is not null)
+                    return name;
             }
             return $"fn{ifunc:000000}";
         }

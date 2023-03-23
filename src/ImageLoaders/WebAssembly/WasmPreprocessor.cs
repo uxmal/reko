@@ -30,20 +30,20 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         private const int WasmPageSize = 0x1_0000;
 
-        private readonly List<Section> sections;
         private readonly WasmArchitecture arch;
-        private readonly DefaultPlatform platform;
+        private readonly WasmPlatform platform;
+        private readonly WasmFile wasmFile;
 
-        public WasmPreprocessor(List<Section> sections, WasmArchitecture arch, DefaultPlatform platform)
+        public WasmPreprocessor(WasmArchitecture arch, WasmPlatform platform, WasmFile wasmFile)
         {
-            this.sections = sections;
             this.arch = arch;
             this.platform = platform;
+            this.wasmFile = wasmFile;
         }
 
         public Program Preprocess()
         {
-            var segmentMap = BuildSegmentMap(sections);
+            var segmentMap = BuildSegmentMap(wasmFile.Sections);
             var program = new Program(segmentMap, arch, platform);
             GenerateProcedures(program);
             return program;
@@ -53,6 +53,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
         }
 
+
         private SegmentMap BuildSegmentMap(List<Section> sections)
         {
             var segments = new List<ImageSegment>();
@@ -60,7 +61,7 @@ namespace Reko.ImageLoaders.WebAssembly
             var addr = Address.Ptr32(0x1_0000); // Wasm pages are 64k
             foreach (var section in sections)
             {
-                var designer = section.CreateDesigner(arch, sections);
+                var designer = section.CreateDesigner(arch, wasmFile);
                 var segment = new ImageSegment(
                     section.Name,
                     new ByteMemoryArea(addr, section.Bytes),

@@ -19,39 +19,35 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Output;
-using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.ImageLoaders.WebAssembly
+namespace Reko.ImageLoaders.WebAssembly.Output
 {
-    internal class FunctionSectionRenderer : ImageSegmentRenderer
+    public class ExportSectionRenderer : ImageSegmentRenderer
     {
-        private readonly WasmArchitecture wasm;
-        private readonly FunctionSection functionSection;
-        private readonly List<Section> sections;
-        private readonly TypeSection? typeSection;
+        private readonly WasmArchitecture arch;
+        private readonly ExportSection section;
+        private readonly WasmFile wasmFile;
 
-        public FunctionSectionRenderer(WasmArchitecture wasm, FunctionSection functionSection, List<Section> sections)
+        public ExportSectionRenderer(WasmArchitecture arch, ExportSection section, WasmFile wasmFile)
         {
-            this.wasm = wasm;
-            this.functionSection = functionSection;
-            this.sections = sections;
-            this.typeSection = sections.OfType<TypeSection>().FirstOrDefault();
+            this.arch = arch;
+            this.section = section;
+            this.wasmFile = wasmFile;
         }
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
-            if (typeSection is null)
-                return;
-
-            int ifunc = -1;
-            foreach (var itype in this.functionSection.Declarations)
+            foreach (var entry in section.ExportEntries)
             {
-                ++ifunc;
-                var sig = typeSection.Types[(int) itype];
-                formatter.WriteLine("  func 0x{0:X}: {1}", ifunc, sig);
+                formatter.Write(entry.ToString());
+                formatter.WriteLine();
             }
         }
     }

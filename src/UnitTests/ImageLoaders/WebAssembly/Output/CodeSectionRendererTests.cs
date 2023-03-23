@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Output;
 using Reko.ImageLoaders.WebAssembly;
+using Reko.ImageLoaders.WebAssembly.Output;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -30,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.ImageLoaders.WebAssembly
+namespace Reko.UnitTests.ImageLoaders.WebAssembly.Output
 {
     [TestFixture]
     public class CodeSectionRendererTests
@@ -66,7 +67,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 .Select(f => new FunctionDefinition(f.Item2, f.Item3, f.Item1, sectionBytes))
                 .ToList();
             var section = new CodeSection(".text", sectionBytes, functions);
-            this.csr = new CodeSectionRenderer(arch, section, sections);
+            sections.Add(section);
+            var wasmFile = new WasmFile(sections);
+            this.csr = new CodeSectionRenderer(arch, section, wasmFile);
         }
 
         private void AssertCode(string sExpected, StringWriter sw)

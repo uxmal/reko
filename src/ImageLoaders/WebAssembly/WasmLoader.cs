@@ -19,15 +19,15 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
-using Reko.Core.Memory;
 using Reko.Core.Types;
+using Reko.ImageLoaders.WebAssembly.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -36,14 +36,6 @@ namespace Reko.ImageLoaders.WebAssembly
     /// </summary>
     public class WasmLoader : ProgramImageLoader
     {
-        internal static string[] ExportKinds =
-        {
-            "func",
-            "table",
-            "memory",
-            "global",
-        };
-
         public WasmLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
             : base(services, imageLocation, imgRaw)
         {
@@ -56,9 +48,10 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             var rdr = LoadHeader();
             var sections = LoadSections(rdr);
-            var arch = new WasmArchitecture(Services, "wasm", new Dictionary<string, object>());
-            var platform = new DefaultPlatform(Services, arch);
-            var preprocessor = new WasmPreprocessor(sections, arch, platform);
+            var wasmFile = new WasmFile(sections);
+            var arch = new WasmArchitecture(Services, "wasm", new());
+            var platform = new WasmPlatform(Services, arch, wasmFile);
+            var preprocessor = new WasmPreprocessor(arch, platform, wasmFile);
             return preprocessor.Preprocess();
         }
 
@@ -68,7 +61,7 @@ namespace Reko.ImageLoaders.WebAssembly
             for (;;)
             {
                 var s = LoadSection(rdr);
-                if (s == null)
+                if (s is null)
                     break;
                 sections.Add(s);
             }
@@ -141,7 +134,9 @@ namespace Reko.ImageLoaders.WebAssembly
             return new CustomSection(name, bytes);
         }
 
-        // The type section declares all function signatures that will be used in the module.
+        /// <summary>
+        /// The type section declares all function signatures that will be used in the module.
+        /// </summary>
         private Section? LoadTypeSection(WasmImageReader rdr)
         {
             if (!rdr.TryReadVarUInt32(out uint count))
@@ -176,15 +171,15 @@ namespace Reko.ImageLoaders.WebAssembly
                 switch (external_kind)
                 {
                 case 0:
-                    uint function_index;
-                    if (!rdr.TryReadVarUInt32(out function_index))
+                    uint type_index;
+                    if (!rdr.TryReadVarUInt32(out type_index))
                         return null;
                     imps.Add(new Import
                     {
                         Type = SymbolType.ExternalProcedure,
                         Module = module,
-                        Field = field,
-                        Index = function_index,
+                        Name = field,
+                        Index = type_index,
                     });
                     break;
                 case 1:
@@ -195,7 +190,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     {
                         Type = SymbolType.Table,
                         Module = module,
-                        Field = field,
+                        Name = field,
                         TableType = table,
                     });
                     break;
@@ -207,7 +202,7 @@ namespace Reko.ImageLoaders.WebAssembly
                     {
                         Type = SymbolType.AddressSpace,
                         Module = module,
-                        Field = field,
+                        Name = field,
                         MemoryType = memory_type.Value,
                     });
                     break;
@@ -219,22 +214,13 @@ namespace Reko.ImageLoaders.WebAssembly
                     {
                         Type = SymbolType.Data,
                         Module = module,
-                        Field = field,
+                        Name = field,
                         GlobalType = global_type.Value,
                     });
                     break;
                 default:
                     throw new NotImplementedException();
                 }
-
-                /*
-
-    0 indicating a Function import or definition
-    1 indicating a Table import or definition
-    2 indicating a Memory import or definition
-    3 indicating a Global import or definition
-                 * 
-                 */
             }
             return new ImportSection(".imports", rdr.Bytes, imps);
         }
@@ -358,15 +344,22 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 if (!rdr.TryReadVarUInt32(out uint len))
                     return null;
-                var field = Encoding.UTF8.GetString(rdr.ReadBytes(len));
+                var name = Encoding.UTF8.GetString(rdr.ReadBytes(len));
                 if (!rdr.TryReadByte(out byte kind))
                     return null;
                 if (!rdr.TryReadVarUInt32(out uint index))
                     return null;
                 exports.Add(new ExportEntry
                 {
-                    Field = field,
-                    Kind = kind,
+                    Name = name,
+                    Type = kind switch
+                    {
+                        0 => SymbolType.Procedure,
+                        1 => SymbolType.Table,
+                        2 => SymbolType.AddressSpace,
+                        3 => SymbolType.Data,
+                        _ => SymbolType.Unknown,
+                    },
                     Index = index,
                 });
             }
@@ -583,7 +576,7 @@ namespace Reko.ImageLoaders.WebAssembly
         /// Optionally creates an <see cref="ImageSegmentRenderer"/>
         /// </summary>
         /// <returns></returns>
-        public virtual ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, List<Section> sections) => null;
+        public virtual ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, WasmFile wasmFile) => null;
 
         public override string ToString() => Name;
     }
@@ -607,7 +600,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public List<FunctionType> Types { get; }
 
-        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, List<Section> sections)
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, WasmFile wasmFile)
             => new TypeSectionRenderer(this);
         
         public override string ToString()
@@ -632,7 +625,7 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         public SymbolType Type;
         public string? Module;
-        public string? Field;
+        public string? Name;
         public uint Index = ~0u;
         public (DataType, bool) GlobalType;
         public (uint, uint) MemoryType;
@@ -641,7 +634,7 @@ namespace Reko.ImageLoaders.WebAssembly
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("(import \"{0}\", \"{1}\" (", Module, Field);
+            sb.AppendFormat("(import \"{0}\", \"{1}\" (", Module, Name);
             switch (Type)
             {
             case SymbolType.Data:
@@ -672,8 +665,8 @@ namespace Reko.ImageLoaders.WebAssembly
             this.Declarations = declarations;
         }
 
-        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, List<Section> sections)
-            => new FunctionSectionRenderer(wasm, this, sections);
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture wasm, WasmFile wasmFile)
+            => new FunctionSectionRenderer(wasm, this, wasmFile);
         
         public List<uint> Declarations { get; }
     }
@@ -739,22 +732,42 @@ namespace Reko.ImageLoaders.WebAssembly
             this.ExportEntries = exports;
         }
         public List<ExportEntry> ExportEntries { get; }
+
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture arch, WasmFile wasmFile)
+        {
+            return new ExportSectionRenderer(arch, this, wasmFile);
+        }
+    }
+
+    public enum ExportEntryKind
+    {
+        Function = 0,
+        Table = 1,
+        Memory = 2,
+        Global = 3,
     }
 
     public class ExportEntry
     {
         public const byte Func = 0;
 
-        public string? Field;
-        public byte Kind;
+        public string? Name;
+        public SymbolType Type;
         public uint Index;
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("(export \"{0}\" (", Field);
+            sb.AppendFormat("(export \"{0}\" (", Name);
             sb.AppendFormat("{0} {1}))",
-                WasmLoader.ExportKinds[Kind],
+                Type switch
+                {
+                    SymbolType.Procedure => "func",
+                    SymbolType.Table => "table",
+                    SymbolType.Data => "global",
+                    SymbolType.AddressSpace => "memory",
+                    _ => "???"
+                },
                 Index);
             return sb.ToString();
         }
@@ -770,9 +783,9 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public List<FunctionDefinition> Functions { get; }
 
-        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture arch, List<Section> sections)
+        public override ImageSegmentRenderer? CreateDesigner(WasmArchitecture arch, WasmFile wasmFile)
         {
-            return new CodeSectionRenderer(arch, this, sections);
+            return new CodeSectionRenderer(arch, this, wasmFile);
         }
     }
 
@@ -786,6 +799,9 @@ namespace Reko.ImageLoaders.WebAssembly
             this.ByteCode = bytes;
         }
 
+        public string? Name;
+        public int FunctionIndex;
+        public uint TypeIndex;
         public int Start;
         public int End;
         public LocalVariable[] Locals;

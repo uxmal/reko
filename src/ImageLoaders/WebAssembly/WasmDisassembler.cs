@@ -24,12 +24,8 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -101,6 +97,7 @@ namespace Reko.ImageLoaders.WebAssembly
                         if (blockType != -0x40L)
                         {
                             // byte: signals a valtype
+                            //$TODO: add TypeOperand
                             ops.Add(ImmediateOperand.Byte((byte) (blockType & 0x7F)));
                         }
                     }
