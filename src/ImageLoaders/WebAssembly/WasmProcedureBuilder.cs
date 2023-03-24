@@ -26,6 +26,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly List<ControlEntry> controlStack;
         private readonly List<Identifier> locals;
         private Block block;
+        private WasmInstruction instr;
 
         public WasmProcedureBuilder(
             FunctionDefinition func, 
@@ -43,6 +44,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.controlStack = new List<ControlEntry>();
             this.locals = new List<Identifier>();
             this.block = proc.AddBlock(proc.EntryAddress, NamingPolicy.Instance.BlockName(proc.EntryAddress));
+            this.instr = default!;
         }
 
         public Procedure GenerateProcedure()
@@ -55,6 +57,17 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void GenerateLocals()
         {
+            Identifier Loc(LocalVariable lv, int i)
+            {
+                return proc.Frame.CreateTemporary($"loc{i}", lv.DataType);
+            }
+
+            var parameters = proc.Signature.Parameters;
+            if (parameters is not null)
+            {
+                locals.AddRange(parameters);
+            }
+            locals.AddRange(func.Locals.Select(Loc));
         }
 
 
@@ -71,14 +84,15 @@ namespace Reko.ImageLoaders.WebAssembly
             var m = new ExpressionEmitter();
             while (dasm.MoveNext())
             {
-                var instr = dasm.Current;
+                this.instr = dasm.Current;
                 Identifier id;
+                Identifier local;
                 switch (instr.Mnemonic)
                 {
                 case Mnemonic.end:
                     if (rdr.Offset == this.func.End)
                     {
-                        Return(instr);
+                        Return();
                     }
                     else
                     {
@@ -86,10 +100,17 @@ namespace Reko.ImageLoaders.WebAssembly
                         throw new NotImplementedException();
                     }
                     break;
+                case Mnemonic.get_local:
+                    local = this.locals[OpAsInt(0)];
+                    id = PushValue(local.DataType);
+                    Assign(id, local);
+                    break;
+                case Mnemonic.i32_add: RewriteBinary(m.IAdd); break;
+                case Mnemonic.i32_sub: RewriteBinary(m.ISub); break;
                 case Mnemonic.i32_const:
                     var imm = (ImmediateOperand) instr.Operands[0];
                     id = PushValue(imm.Width);
-                    Assign(instr, id, imm.Value);
+                    Assign(id, imm.Value);
                     break;
                 default:
                     EmitUnitTest(dasm, rdr);
@@ -99,13 +120,27 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private void Assign(WasmInstruction instr, Identifier id, Expression value)
+        private int OpAsInt(int v)
+        {
+            return ((ImmediateOperand) instr.Operands[v]).Value.ToInt32();
+        }
+
+        private void Assign(Identifier id, Expression value)
         {
             var ass = new Assignment(id, value);
             block.Statements.Add(instr.Address, ass);
         }
 
-        private void Return(WasmInstruction instr)
+        private void RewriteBinary(Func<Expression,Expression,Expression> fn)
+        {
+            var arg2 = PopValue();
+            var arg1 = PopValue();
+            var e = fn(arg1, arg2);
+            var id = PushValue(e.DataType);
+            Assign(id, e);
+        }
+
+        private void Return()
         {
             Debug.Assert(wasmFile.TypeSection is not null);
             var fnType = wasmFile.TypeSection.Types[(int) func.TypeIndex];
@@ -116,7 +151,7 @@ namespace Reko.ImageLoaders.WebAssembly
             }
             else
             {
-                var value = PopValue(instr);
+                var value = PopValue();
                 ret = new ReturnInstruction(value);
             }
             block.Statements.Add(instr.Address, ret);
@@ -129,7 +164,7 @@ namespace Reko.ImageLoaders.WebAssembly
             return id;
         }
 
-        private Identifier PopValue(WasmInstruction instr)
+        private Identifier PopValue()
         {
             if (valueStack.Count == 0)
                 throw new AddressCorrelatedException(instr.Address, "Exhaused value stack.");

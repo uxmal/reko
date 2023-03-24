@@ -110,7 +110,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             var sExp = @"
 // fn00000
 // Return size: 0
-define fn00000
+word32 fn00000(word32 param0)
 fn00000_entry:
 l00000000:
 	v2 = 1<32>
@@ -122,6 +122,33 @@ fn00000_exit:
                 new byte[]
                 {
                     65,1,
+                    11
+                }));
+        }
+
+        [Test]
+        public void Waspb_i32_sub()
+        {
+            Given_FuncType(new[] { 127 }, 127);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+l00000000:
+	v2 = param0
+	v3 = 0xFFFFFFD6<32>
+	v4 = v2 - v3
+	return v4
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+                    32, 0,
+                    65, 86,
+                    107,
                     11
                 }));
         }

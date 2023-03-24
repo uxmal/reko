@@ -87,7 +87,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly.Output
         {
             Given_Function(
                 0,
-                "41 42",            // const 0x42
+                "41 2A",            // const 0x42
                 "0F");              // return
             Given_CodeSectionRenderer();
 
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly.Output
             #region Expected
 @"WASM functions
 (func fn000000 (; 0 ;) retval??
-    i32.const 0x42
+    i32.const 0x2A
     return
 )
 ";

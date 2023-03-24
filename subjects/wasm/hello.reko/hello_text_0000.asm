@@ -11,7 +11,7 @@
 ; 		get_global 0xA
 ; 		i32.const 0xF
 ; 		i32.add
-; 		i32.const 0x70
+; 		i32.const 0xFFFFFFF0
 ; 		i32.and
 ; 		set_global 0xA
 ; 		get_global 0xA
@@ -226,7 +226,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x4
 ; get_local 0x4
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
@@ -459,7 +459,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x61
 ; get_local 0x61
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x62
 ; get_local 0x62
@@ -495,7 +495,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6C
 ; get_local 0x6C
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x6D
 ; get_local 0x6D
@@ -555,7 +555,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x7F
 ; get_local 0x7F
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x80
 ; get_local 0x80
@@ -571,7 +571,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x85
 ; get_local 0x85
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x86
 ; get_local 0x86
@@ -843,7 +843,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1E
 ; get_local 0x1E
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1F
 ; get_local 0x1F
@@ -1000,7 +1000,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x37
 ; get_local 0x37
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x38
 ; get_local 0x38
@@ -1173,7 +1173,7 @@
 ; set_local 0xA4
 ; get_local 0x90
 ; set_local 0x8E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x8F
 ; get_local 0x8E
 ; set_local 0xA5
@@ -1330,7 +1330,7 @@
 ; if
 ; get_local 0x77
 ; set_local 0x75
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x76
 ; get_local 0x75
 ; set_local 0x12
@@ -1587,7 +1587,7 @@
 ; if
 ; get_local 0x80
 ; set_local 0x7E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x7F
 ; get_local 0x7E
 ; set_local 0x43
@@ -1706,7 +1706,7 @@
 ; if
 ; get_local 0x88
 ; set_local 0x86
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x87
 ; get_local 0x86
 ; set_local 0x60
@@ -1826,7 +1826,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -2097,7 +2097,7 @@
 ; i32.add
 ; set_local 0x31
 ; get_local 0x4
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x32
 ; get_local 0x6
@@ -2349,9 +2349,9 @@
 ; get_local 0x9
 ; if
 ; get_local 0x4
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xA
 ; else
 ; get_local 0x4
@@ -2372,7 +2372,7 @@
 ; get_global 0xA
 ; set_local 0x6
 ; get_local 0x0
-; i32.const 0x3000
+; i32.const 0xFFFFF000
 ; i32.gt_u
 ; set_local 0x2
 ; get_local 0x2
@@ -2386,7 +2386,7 @@
 ; get_local 0x4
 ; get_local 0x3
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; else
 ; get_local 0x0
@@ -2719,7 +2719,7 @@
 ; i32.load8_s 0x0,0x0
 ; set_local 0x27
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x28
 ; get_local 0x1
@@ -2849,7 +2849,7 @@
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store8 0x0,0x0
 ; end
 ; end
@@ -2886,7 +2886,7 @@
 ; get_local 0x0
 ; get_local 0x1
 ; get_local 0x2
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; call 0x76
 ; set_local 0x5
 ; get_local 0x5
@@ -2938,7 +2938,7 @@
 ; set_local 0x12
 ; get_local 0x11
 ; if 0x7F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; else
 ; get_local 0x12
 ; end
@@ -2955,7 +2955,7 @@
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0xE
 ; i32.const 0x0
@@ -3402,7 +3402,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xC0
 ; get_local 0xC0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC1
 ; get_local 0xBB
@@ -3432,7 +3432,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xC3
 ; get_local 0xC3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC4
 ; get_local 0xBB
@@ -3495,7 +3495,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xCC
 ; get_local 0xCC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xCD
 ; get_local 0xBB
@@ -3527,7 +3527,7 @@
 ; get_local 0xCF
 ; if
 ; get_local 0xA
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0xD0
 ; get_local 0xD0
@@ -3586,7 +3586,7 @@
 ; set_local 0x11
 ; end
 ; get_local 0x11
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0xDE
 ; get_local 0xDE
@@ -3627,7 +3627,7 @@
 ; set_local 0x12
 ; end
 ; get_local 0x12
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0xE2
 ; get_local 0xE2
@@ -3652,7 +3652,7 @@
 ; i64.extend_s/i32
 ; set_local 0x111
 ; get_local 0x111
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.xor
 ; set_local 0x112
 ; get_local 0x110
@@ -3709,7 +3709,7 @@
 ; set_local 0x13
 ; end
 ; get_local 0x13
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x21
 ; get_local 0x21
@@ -3785,7 +3785,7 @@
 ; i32.eq
 ; if
 ; get_local 0xE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x25
 ; get_local 0x25
@@ -3944,7 +3944,7 @@
 ; get_local 0x32
 ; i64.extend_u/i32
 ; set_local 0xFF
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; get_local 0xFF
 ; i64.shr_u
 ; set_local 0x100
@@ -4204,7 +4204,7 @@
 ; set_local 0x70
 ; get_local 0x70
 ; if
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; get_local 0x104
 ; call 0x78
 ; set_local 0x105
@@ -4242,7 +4242,7 @@
 ; i64.extend_u/i32
 ; set_local 0x107
 ; get_local 0x107
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.xor
 ; set_local 0x108
 ; get_local 0x106
@@ -4475,7 +4475,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x96
 ; get_local 0x96
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x97
 ; get_local 0xBB
@@ -4514,7 +4514,7 @@
 ; i32.const 0x22
 ; i32.store 0x2,0x0
 ; get_local 0x3
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.add
 ; set_local 0x10C
 ; get_local 0x10C
@@ -4674,7 +4674,7 @@
 ; set_local 0x30
 ; else
 ; get_local 0x10
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x14
 ; get_local 0xB
@@ -4755,7 +4755,7 @@
 ; set_local 0x24
 ; end
 ; get_local 0x24
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x23
 ; get_local 0x23
@@ -4797,7 +4797,7 @@
 ; get_local 0x2F
 ; i32.const 0x0
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; end
 ; get_local 0x1
@@ -4814,7 +4814,7 @@
 ; i32.eq
 ; set_local 0x1
 ; get_local 0x0
-; i32.const 0x77
+; i32.const 0xFFFFFFF7
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -4876,7 +4876,7 @@
 ; i32.const 0x3
 ; set_local 0xE
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; end
 ; else
@@ -4920,7 +4920,7 @@
 ; get_local 0x5
 ; set_local 0x1
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; end
 ; end
@@ -5061,7 +5061,7 @@
 ; set_local 0xE
 ; get_local 0xE
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; else
 ; get_local 0x9
@@ -5071,7 +5071,7 @@
 ; get_local 0x0
 ; get_local 0xF
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; end
 ; end
@@ -5388,7 +5388,7 @@
 ; i64.load 0x2,0x0
 ; i64.store 0x2,0x0
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1A
 ; get_local 0x1A
@@ -5415,7 +5415,7 @@
 ; get_local 0x1D
 ; i32.const 0x4B
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; end
 ; else
@@ -5432,7 +5432,7 @@
 ; if
 ; get_local 0x6
 ; set_local 0x8
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; get_local 0x8
 ; i32.sub
 ; set_local 0x9
@@ -5605,7 +5605,7 @@
 ; set_local 0x2B
 ; get_local 0x2B
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; else
 ; get_local 0x0
@@ -5616,7 +5616,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x7
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x8
 ; get_local 0x8
@@ -5655,7 +5655,7 @@
 ; get_local 0xE
 ; if
 ; get_local 0xA
-; i32.const 0x5F
+; i32.const 0xFFFFFFDF
 ; i32.and
 ; set_local 0xF
 ; get_local 0x0
@@ -5755,7 +5755,7 @@
 ; set_local 0x20
 ; get_local 0x20
 ; if 0x7F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; else
 ; get_local 0x1A
 ; end
@@ -5804,7 +5804,7 @@
 ; if 0x7F
 ; get_local 0x5
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x6
 ; get_local 0x21
@@ -5929,7 +5929,7 @@
 ; get_local 0x113
 ; i32.sub
 ; set_local 0x13F
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; get_local 0x113
 ; i32.sub
 ; set_local 0x149
@@ -5962,7 +5962,7 @@
 ; loop
 ; block
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x185
 ; block
@@ -5983,7 +5983,7 @@
 ; get_local 0x19D
 ; i32.const 0x4B
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4F
 ; br 0x2
 ; else
@@ -6208,7 +6208,7 @@
 ; i32.shr_s
 ; set_local 0x27E
 ; get_local 0x27E
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x363
 ; get_local 0x363
@@ -6254,7 +6254,7 @@
 ; if 0x7F
 ; get_local 0x363
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x364
 ; get_local 0x84
@@ -6269,7 +6269,7 @@
 ; get_local 0x84
 ; set_local 0x37C
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x22
 ; get_local 0x28
 ; set_local 0x55
@@ -6285,7 +6285,7 @@
 ; i32.shr_s
 ; set_local 0x2B5
 ; get_local 0x2B5
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.add
 ; set_local 0x2CA
 ; get_local 0x2CA
@@ -6334,7 +6334,7 @@
 ; i32.shr_s
 ; set_local 0x30A
 ; get_local 0x30A
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.add
 ; set_local 0x321
 ; i32.const 0x1
@@ -6359,7 +6359,7 @@
 ; i32.shr_s
 ; set_local 0x32F
 ; get_local 0x32F
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.add
 ; set_local 0x330
 ; get_local 0x330
@@ -6422,7 +6422,7 @@
 ; i32.shr_s
 ; set_local 0x337
 ; get_local 0x337
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x368
 ; get_local 0x368
@@ -6467,7 +6467,7 @@
 ; i32.shr_s
 ; set_local 0x33D
 ; get_local 0x33D
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x33E
 ; get_local 0x3
@@ -6513,7 +6513,7 @@
 ; get_local 0x343
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x4
 ; end
@@ -6562,7 +6562,7 @@
 ; i32.sub
 ; set_local 0x359
 ; get_local 0x359
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x358
 ; get_local 0x345
@@ -6635,7 +6635,7 @@
 ; i32.shr_s
 ; set_local 0xC3
 ; get_local 0xC3
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x369
 ; get_local 0x369
@@ -6674,7 +6674,7 @@
 ; i32.shr_s
 ; set_local 0xC9
 ; get_local 0xC9
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x365
 ; get_local 0x365
@@ -6701,7 +6701,7 @@
 ; set_local 0xCB
 ; get_local 0xCB
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x4
 ; else
@@ -6766,7 +6766,7 @@
 ; i32.shr_s
 ; set_local 0xE5
 ; get_local 0xE5
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x36A
 ; get_local 0x36A
@@ -6811,7 +6811,7 @@
 ; i32.shr_s
 ; set_local 0xEC
 ; get_local 0xEC
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x366
 ; get_local 0x366
@@ -6850,7 +6850,7 @@
 ; i32.shr_s
 ; set_local 0xD2
 ; get_local 0xD2
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x367
 ; get_local 0x367
@@ -6895,7 +6895,7 @@
 ; i32.shr_s
 ; set_local 0xD9
 ; get_local 0xD9
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0xDA
 ; get_local 0x3
@@ -6928,7 +6928,7 @@
 ; get_local 0xDE
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x3
 ; end
@@ -6964,7 +6964,7 @@
 ; i32.sub
 ; set_local 0x353
 ; get_local 0x353
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x352
 ; get_local 0xE1
@@ -6994,7 +6994,7 @@
 ; set_local 0xA4
 ; end
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x23
 ; get_local 0x90
 ; set_local 0xA4
@@ -7016,7 +7016,7 @@
 ; i32.shr_s
 ; set_local 0xEE
 ; get_local 0xEE
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.add
 ; set_local 0xEF
 ; get_local 0xEF
@@ -7025,7 +7025,7 @@
 ; set_local 0xF0
 ; get_local 0xF0
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x3
 ; end
@@ -7049,7 +7049,7 @@
 ; i32.and
 ; set_local 0xF4
 ; get_local 0xF4
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xF6
 ; get_local 0xF6
@@ -7078,7 +7078,7 @@
 ; set_local 0xF8
 ; get_local 0xF8
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x1
 ; end
@@ -7091,7 +7091,7 @@
 ; i32.eq
 ; set_local 0xF9
 ; get_local 0x22
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xFA
 ; block
@@ -7099,7 +7099,7 @@
 ; if
 ; get_local 0xFA
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x3
 ; else
@@ -7193,7 +7193,7 @@
 ; i32.and
 ; set_local 0x371
 ; get_local 0xFE
-; i32.const 0x5F
+; i32.const 0xFFFFFFDF
 ; i32.and
 ; set_local 0x103
 ; get_local 0x371
@@ -7212,7 +7212,7 @@
 ; i32.eq
 ; set_local 0x105
 ; get_local 0x53
-; i32.const 0x1EFFFF
+; i32.const 0xFFFEFFFF
 ; i32.and
 ; set_local 0x106
 ; get_local 0x105
@@ -7510,7 +7510,7 @@
 ; i32.and
 ; set_local 0x127
 ; get_local 0x47
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x128
 ; get_local 0x128
@@ -7770,7 +7770,7 @@
 ; get_local 0x33F
 ; get_local 0xCA
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x8E
 ; get_local 0xCA
 ; set_local 0x32A
@@ -7922,7 +7922,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x187
 ; get_local 0x187
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x188
 ; get_local 0x2B4
@@ -7991,7 +7991,7 @@
 ; loop
 ; block
 ; get_local 0x5E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x194
 ; get_local 0x3AB
@@ -8116,7 +8116,7 @@
 ; i32.and
 ; set_local 0x1A3
 ; get_local 0x39
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1A4
 ; get_local 0x1A4
@@ -8131,7 +8131,7 @@
 ; i32.and
 ; set_local 0x1A6
 ; get_local 0x39
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.add
 ; set_local 0x1A8
 ; get_local 0x1A8
@@ -8444,7 +8444,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1D4
 ; get_local 0x1D4
-; i32.const 0x64
+; i32.const 0xFFFFFFE4
 ; i32.add
 ; set_local 0x1D5
 ; get_local 0x2B4
@@ -8543,7 +8543,7 @@
 ; end
 ; set_local 0x1DE
 ; get_local 0x5D
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x32
 ; get_local 0x32
@@ -8600,7 +8600,7 @@
 ; i32.wrap/i64
 ; set_local 0x1E3
 ; get_local 0x33
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x31
 ; get_local 0x31
@@ -8630,7 +8630,7 @@
 ; br 0x2
 ; end
 ; get_local 0x5A
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x1E7
 ; get_local 0x1E7
@@ -8654,7 +8654,7 @@
 ; br 0x1
 ; end
 ; get_local 0x7C
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x1E9
 ; get_local 0x1E9
@@ -8729,7 +8729,7 @@
 ; get_local 0x1F0
 ; i32.const 0x9
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x1F2
 ; get_local 0x1F2
@@ -8775,7 +8775,7 @@
 ; i32.shl
 ; set_local 0x1FE
 ; get_local 0x1FE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1FF
 ; i32.const 0x3B9ACA00
@@ -9096,7 +9096,7 @@
 ; i32.mul
 ; set_local 0x230
 ; get_local 0x230
-; i32.const 0x77
+; i32.const 0xFFFFFFF7
 ; i32.add
 ; set_local 0x231
 ; get_local 0x22C
@@ -9116,11 +9116,11 @@
 ; get_local 0x235
 ; i32.const 0x9
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x236
 ; get_local 0x236
-; i32.const 0x3C00
+; i32.const 0xFFFFFC00
 ; i32.add
 ; set_local 0x237
 ; get_local 0x234
@@ -9132,7 +9132,7 @@
 ; get_local 0x235
 ; i32.const 0x9
 ; call 0x53
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x239
 ; get_local 0x239
@@ -9187,7 +9187,7 @@
 ; get_local 0x23C
 ; get_local 0x66
 ; call 0x54
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x23D
 ; get_local 0x23D
@@ -9219,7 +9219,7 @@
 ; get_local 0x23C
 ; get_local 0x66
 ; call 0x55
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x242
 ; get_local 0x242
@@ -9240,7 +9240,7 @@
 ; get_local 0x66
 ; i32.const 0x2
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x245
 ; get_local 0x23D
@@ -9360,7 +9360,7 @@
 ; loop
 ; block
 ; get_local 0x7B
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x251
 ; get_local 0x7B
@@ -9373,7 +9373,7 @@
 ; get_local 0x253
 ; if
 ; get_local 0x9E
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x254
 ; get_local 0x254
@@ -9540,7 +9540,7 @@
 ; br 0x1
 ; end
 ; get_local 0xAB
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x266
 ; get_local 0x266
@@ -9582,7 +9582,7 @@
 ; i32.gt_s
 ; set_local 0x26C
 ; get_local 0xA0
-; i32.const 0x7B
+; i32.const 0xFFFFFFFB
 ; i32.gt_s
 ; set_local 0x26D
 ; get_local 0x26C
@@ -9592,11 +9592,11 @@
 ; get_local 0x379
 ; if
 ; get_local 0x18
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x26E
 ; get_local 0x99
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB1
 ; get_local 0xB1
@@ -9609,11 +9609,11 @@
 ; set_local 0x78
 ; else
 ; get_local 0x18
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.add
 ; set_local 0x270
 ; get_local 0x99
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x271
 ; get_local 0x270
@@ -9644,7 +9644,7 @@
 ; get_local 0xAF
 ; if
 ; get_local 0xAB
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x275
 ; get_local 0x275
@@ -9663,7 +9663,7 @@
 ; get_local 0x276
 ; i32.const 0xA
 ; call 0x54
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x278
 ; get_local 0x278
@@ -9694,7 +9694,7 @@
 ; get_local 0x276
 ; get_local 0x27A
 ; call 0x54
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x27C
 ; get_local 0x27C
@@ -9743,7 +9743,7 @@
 ; i32.mul
 ; set_local 0x284
 ; get_local 0x284
-; i32.const 0x77
+; i32.const 0xFFFFFFF7
 ; i32.add
 ; set_local 0x285
 ; get_local 0x280
@@ -9906,7 +9906,7 @@
 ; loop
 ; block
 ; get_local 0x60
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x29C
 ; get_local 0x29C
@@ -9955,7 +9955,7 @@
 ; i32.and
 ; set_local 0x2A4
 ; get_local 0x5F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2A5
 ; get_local 0x2A5
@@ -9966,7 +9966,7 @@
 ; i32.and
 ; set_local 0x2A6
 ; get_local 0x5F
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.add
 ; set_local 0x2A7
 ; get_local 0x2A7
@@ -10113,7 +10113,7 @@
 ; loop
 ; block
 ; get_local 0x2D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2BB
 ; get_local 0x2BB
@@ -10260,7 +10260,7 @@
 ; loop
 ; block
 ; get_local 0x2C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2D3
 ; get_local 0x2D3
@@ -10318,7 +10318,7 @@
 ; i32.add
 ; set_local 0x2DB
 ; get_local 0x92
-; i32.const 0x77
+; i32.const 0xFFFFFFF7
 ; i32.add
 ; set_local 0x2DC
 ; get_local 0x2DB
@@ -10374,7 +10374,7 @@
 ; end
 ; set_local 0xAA
 ; get_local 0x88
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x2E3
 ; get_local 0x2E3
@@ -10511,7 +10511,7 @@
 ; loop
 ; block
 ; get_local 0x68
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2EB
 ; get_local 0x2EB
@@ -10581,7 +10581,7 @@
 ; i32.lt_u
 ; set_local 0x300
 ; get_local 0x2FD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x301
 ; get_local 0x300
@@ -10877,7 +10877,7 @@
 ; i32.and
 ; set_local 0x11C
 ; get_local 0x44
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x11E
 ; get_local 0x11E
@@ -11132,7 +11132,7 @@
 ; set_local 0x15D
 ; get_local 0x15D
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x6
 ; end
@@ -11287,11 +11287,11 @@
 ; i32.const 0x0
 ; set_local 0x382
 ; get_local 0x70
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x138
 ; get_local 0x8F
-; i32.const 0x1EFFFF
+; i32.const 0xFFFEFFFF
 ; i32.and
 ; set_local 0x139
 ; get_local 0x138
@@ -11584,7 +11584,7 @@
 ; get_local 0x329
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; br 0x6
 ; end
@@ -11729,7 +11729,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x14
 ; block
@@ -11756,7 +11756,7 @@
 ; br 0x4
 ; end
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x16
 ; get_local 0x0
@@ -11929,7 +11929,7 @@
 ; i32.sub
 ; set_local 0x4F
 ; get_local 0x4F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x4E
 ; get_local 0x29
@@ -11986,7 +11986,7 @@
 ; i32.sub
 ; set_local 0x56
 ; get_local 0x56
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x55
 ; get_local 0x5
@@ -12046,7 +12046,7 @@
 ; i32.sub
 ; set_local 0x5D
 ; get_local 0x5D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x5C
 ; get_local 0xA
@@ -12106,7 +12106,7 @@
 ; i32.sub
 ; set_local 0x64
 ; get_local 0x64
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x63
 ; get_local 0xF
@@ -12163,7 +12163,7 @@
 ; i32.sub
 ; set_local 0x6B
 ; get_local 0x6B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x6A
 ; get_local 0x13
@@ -12231,7 +12231,7 @@
 ; i32.sub
 ; set_local 0x72
 ; get_local 0x72
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x71
 ; get_local 0x1A
@@ -12295,7 +12295,7 @@
 ; i32.sub
 ; set_local 0x79
 ; get_local 0x79
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x78
 ; get_local 0x20
@@ -12363,7 +12363,7 @@
 ; i32.sub
 ; set_local 0x80
 ; get_local 0x80
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x7F
 ; get_local 0x26
@@ -12427,7 +12427,7 @@
 ; i32.sub
 ; set_local 0x87
 ; get_local 0x87
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x86
 ; get_local 0x2C
@@ -12484,7 +12484,7 @@
 ; i32.sub
 ; set_local 0x8E
 ; get_local 0x8E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x8D
 ; get_local 0x30
@@ -12551,7 +12551,7 @@
 ; i32.and
 ; set_local 0xF
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x10
 ; get_local 0x10
@@ -12608,7 +12608,7 @@
 ; get_local 0x3
 ; i32.const 0xA
 ; call 0x54
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x8
 ; get_local 0x8
@@ -12620,7 +12620,7 @@
 ; i32.and
 ; set_local 0xA
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB
 ; get_local 0xB
@@ -12629,7 +12629,7 @@
 ; get_local 0x3
 ; i32.const 0xA
 ; call 0x55
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0xC
 ; get_local 0x3
@@ -12768,7 +12768,7 @@
 ; end
 ; end
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x8
 ; get_local 0x8
@@ -12866,7 +12866,7 @@
 ; i32.add
 ; set_local 0x13
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x14
 ; get_local 0x13
@@ -12993,7 +12993,7 @@
 ; i32.xor
 ; set_local 0x1F
 ; get_local 0x1F
-; i32.const 0xEFEFEFF
+; i32.const 0xFEFEFEFF
 ; i32.add
 ; set_local 0x20
 ; get_local 0x1F
@@ -13022,7 +13022,7 @@
 ; i32.add
 ; set_local 0x25
 ; get_local 0xC
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x27
 ; get_local 0x27
@@ -13112,7 +13112,7 @@
 ; i32.add
 ; set_local 0x2C
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2D
 ; get_local 0x2D
@@ -13256,7 +13256,7 @@
 ; set_local 0x12
 ; end
 ; get_local 0x6
-; i32.const 0x3F00
+; i32.const 0xFFFFFF00
 ; i32.add
 ; set_local 0xF
 ; get_local 0xF
@@ -13409,7 +13409,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x5
 ; get_local 0x5
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.add
 ; set_local 0x6
 ; get_local 0x15
@@ -13445,7 +13445,7 @@
 ; i32.and
 ; set_local 0x7
 ; get_local 0x7
-; i32.const 0x3C02
+; i32.const 0xFFFFFC02
 ; i32.add
 ; set_local 0x3
 ; get_local 0x1
@@ -13551,7 +13551,7 @@
 ; i32.lt_u
 ; set_local 0x8
 ; get_local 0x1
-; i32.const 0x2000
+; i32.const 0xFFFFE000
 ; i32.and
 ; set_local 0x9
 ; get_local 0x9
@@ -13626,7 +13626,7 @@
 ; br 0x2
 ; end
 ; get_local 0x1
-; i32.const 0x1F0000
+; i32.const 0xFFFF0000
 ; i32.add
 ; set_local 0x17
 ; get_local 0x17
@@ -13724,7 +13724,7 @@
 ; get_local 0x2C
 ; i32.const 0x54
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x3
 ; br 0x2
 ; end
@@ -13845,7 +13845,7 @@
 ; get_local 0x0
 ; get_local 0x3
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; end
 ; get_local 0x1
@@ -13986,7 +13986,7 @@
 ; get_global 0xA
 ; set_local 0x9
 ; get_local 0x0
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -13998,7 +13998,7 @@
 ; i32.or
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x3F9F
+; i32.const 0xFFFFFF9F
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -14046,7 +14046,7 @@
 ; br_table 0x0 0x1 0x20x3
 ; end
 ; block
-; i32.const 0x3F6B
+; i32.const 0xFFFFFF6B
 ; set_local 0xC
 ; i32.const 0x18
 ; set_local 0xD
@@ -14056,7 +14056,7 @@
 ; end
 ; end
 ; block
-; i32.const 0x3BCE
+; i32.const 0xFFFFFBCE
 ; set_local 0xC
 ; i32.const 0x35
 ; set_local 0xD
@@ -14066,7 +14066,7 @@
 ; end
 ; end
 ; block
-; i32.const 0x3BCE
+; i32.const 0xFFFFFBCE
 ; set_local 0xC
 ; i32.const 0x35
 ; set_local 0xD
@@ -14572,7 +14572,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x26B
 ; get_local 0x26B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x26C
 ; get_local 0x19B
@@ -14620,7 +14620,7 @@
 ; set_local 0x276
 ; end
 ; get_local 0x276
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x275
 ; get_local 0x275
@@ -14628,7 +14628,7 @@
 ; i32.lt_u
 ; set_local 0x277
 ; get_local 0x276
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.add
 ; set_local 0x278
 ; get_local 0x278
@@ -14643,7 +14643,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x276
-; i32.const 0x3F9F
+; i32.const 0xFFFFFF9F
 ; i32.add
 ; set_local 0x27A
 ; get_local 0x27A
@@ -14697,7 +14697,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x94
 ; get_local 0x94
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x95
 ; get_local 0x19B
@@ -14734,7 +14734,7 @@
 ; end
 ; loop
 ; get_local 0x87
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x98
 ; get_local 0x93
@@ -14744,7 +14744,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x99
 ; get_local 0x99
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x9B
 ; get_local 0x19B
@@ -14840,7 +14840,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x129
 ; get_local 0x129
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x12A
 ; get_local 0x19B
@@ -15060,7 +15060,7 @@
 ; set_local 0xD1
 ; end
 ; get_local 0x29B
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.add
 ; set_local 0x2B2
 ; get_local 0xD1
@@ -15119,7 +15119,7 @@
 ; loop
 ; block
 ; get_local 0x4D
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0xD2
 ; get_local 0xD2
@@ -15136,7 +15136,7 @@
 ; set_local 0x296
 ; else
 ; get_local 0x8B
-; i32.const 0x3F9F
+; i32.const 0xFFFFFF9F
 ; i32.add
 ; set_local 0xD4
 ; get_local 0xD4
@@ -15203,7 +15203,7 @@
 ; i32.gt_s
 ; set_local 0xD8
 ; get_local 0x8B
-; i32.const 0x3FA9
+; i32.const 0xFFFFFFA9
 ; i32.add
 ; set_local 0xD9
 ; get_local 0xD8
@@ -15423,7 +15423,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xED
 ; get_local 0xED
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xEE
 ; get_local 0x19B
@@ -15447,7 +15447,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xF0
 ; get_local 0xF0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xF1
 ; get_local 0x19B
@@ -15461,7 +15461,7 @@
 ; i32.eqz
 ; if
 ; get_local 0xF0
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.add
 ; set_local 0xF3
 ; get_local 0x19B
@@ -15583,7 +15583,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x100
 ; get_local 0x100
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x101
 ; get_local 0x19B
@@ -15613,7 +15613,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x104
 ; get_local 0x104
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x105
 ; get_local 0x19B
@@ -15628,7 +15628,7 @@
 ; i64.shl
 ; set_local 0x2B6
 ; get_local 0x2B6
-; i64.const 0x60
+; i64.const 0xFFFFFFFFFFFFFFE0
 ; i64.add
 ; set_local 0x2B7
 ; get_local 0x2B7
@@ -15686,7 +15686,7 @@
 ; br 0xA
 ; end
 ; get_local 0xC
-; i32.const 0x3F96
+; i32.const 0xFFFFFF96
 ; i32.add
 ; set_local 0x10C
 ; get_local 0x10C
@@ -15719,7 +15719,7 @@
 ; br 0xA
 ; end
 ; get_local 0x62
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x10E
 ; get_local 0x10E
@@ -15769,11 +15769,11 @@
 ; f64.add
 ; set_local 0x2E1
 ; get_local 0x2A5
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.add
 ; set_local 0x2BB
 ; get_local 0x114
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x115
 ; get_local 0x115
@@ -16133,7 +16133,7 @@
 ; loop
 ; block
 ; get_local 0x2A3
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.add
 ; set_local 0x2C0
 ; get_local 0x19B
@@ -16208,7 +16208,7 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; get_local 0x4E
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x147
 ; get_local 0x147
@@ -16365,7 +16365,7 @@
 ; set_local 0x294
 ; else
 ; get_local 0x6A
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x153
 ; get_local 0x152
@@ -16460,7 +16460,7 @@
 ; set_local 0x5D
 ; end
 ; get_local 0x5D
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x165
 ; get_local 0x165
@@ -16596,7 +16596,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x5E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x174
 ; get_local 0x174
@@ -16673,7 +16673,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x172
 ; get_local 0x172
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x173
 ; get_local 0x19B
@@ -16736,7 +16736,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x178
 ; get_local 0x178
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x179
 ; get_local 0x19B
@@ -16873,9 +16873,9 @@
 ; end
 ; end
 ; get_local 0xC
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x183
 ; get_local 0x183
@@ -16908,7 +16908,7 @@
 ; br 0x3
 ; end
 ; get_local 0xC
-; i32.const 0x3F96
+; i32.const 0xFFFFFF96
 ; i32.add
 ; set_local 0x187
 ; get_local 0x187
@@ -17095,7 +17095,7 @@
 ; br 0x5
 ; end
 ; get_local 0x192
-; i32.const 0x7D
+; i32.const 0xFFFFFFFD
 ; i32.mul
 ; set_local 0x88
 ; get_local 0xD
@@ -17138,7 +17138,7 @@
 ; f64.mul
 ; set_local 0x316
 ; get_local 0x192
-; i32.const 0x76
+; i32.const 0xFFFFFFF6
 ; i32.add
 ; set_local 0x1A5
 ; i32.const 0x18F0
@@ -17166,7 +17166,7 @@
 ; get_local 0x192
 ; i32.const 0x9
 ; call 0x53
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x1A8
 ; get_local 0x1A8
@@ -17185,7 +17185,7 @@
 ; set_local 0x59
 ; else
 ; get_local 0x192
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x1AB
 ; get_local 0x1A8
@@ -17228,7 +17228,7 @@
 ; i32.const 0x3B9ACA00
 ; get_local 0x1B0
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x1B2
 ; i32.const 0x0
@@ -17253,13 +17253,13 @@
 ; get_local 0x1B4
 ; get_local 0x1B0
 ; call 0x54
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x1B6
 ; get_local 0x1B4
 ; get_local 0x1B0
 ; call 0x55
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x1B7
 ; get_local 0x1B7
@@ -17294,7 +17294,7 @@
 ; i32.and
 ; set_local 0x1BD
 ; get_local 0x30
-; i32.const 0x77
+; i32.const 0xFFFFFFF7
 ; i32.add
 ; set_local 0x1BE
 ; get_local 0x289
@@ -17559,7 +17559,7 @@
 ; end
 ; set_local 0x66
 ; get_local 0x7D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1D8
 ; get_local 0x1D6
@@ -17577,7 +17577,7 @@
 ; end
 ; end
 ; get_local 0x2D
-; i32.const 0x63
+; i32.const 0xFFFFFFE3
 ; i32.add
 ; set_local 0x1D9
 ; get_local 0x42
@@ -17868,7 +17868,7 @@
 ; i32.shl
 ; set_local 0x1FB
 ; get_local 0x1FB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1FE
 ; i32.const 0x3B9ACA00
@@ -17934,7 +17934,7 @@
 ; i32.and
 ; set_local 0x20A
 ; get_local 0x81
-; i32.const 0x77
+; i32.const 0xFFFFFFF7
 ; i32.add
 ; set_local 0x20B
 ; get_local 0x28B
@@ -18066,7 +18066,7 @@
 ; get_local 0x21D
 ; if
 ; get_local 0x220
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x221
 ; get_local 0x141
@@ -18396,7 +18396,7 @@
 ; i32.const 0x7FFFFFFF
 ; i32.and
 ; set_local 0x240
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; get_local 0x295
 ; i32.sub
 ; set_local 0x241
@@ -18533,7 +18533,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA1
 ; get_local 0x19B
@@ -18574,7 +18574,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1DB
 ; get_local 0x1DB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1E6
 ; get_local 0x19B
@@ -18606,7 +18606,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x208
 ; get_local 0x208
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x213
 ; get_local 0x19B
@@ -18614,7 +18614,7 @@
 ; i32.store 0x2,0x0
 ; end
 ; get_local 0x3B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x21E
 ; get_local 0x21E
@@ -18758,7 +18758,7 @@
 ; set_local 0x18
 ; end
 ; get_local 0x18
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x17
 ; get_local 0x17
@@ -18793,7 +18793,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1D
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1E
 ; get_local 0x15
@@ -18821,7 +18821,7 @@
 ; end
 ; end
 ; get_local 0x4
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x1F
 ; get_local 0x1F
@@ -18846,7 +18846,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x24
 ; get_local 0x24
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x25
 ; get_local 0x15
@@ -18867,7 +18867,7 @@
 ; i32.mul
 ; set_local 0x26
 ; get_local 0x6
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x27
 ; get_local 0x27
@@ -18910,7 +18910,7 @@
 ; set_local 0x5
 ; end
 ; get_local 0x5
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x31
 ; get_local 0x31
@@ -18941,7 +18941,7 @@
 ; i64.extend_s/i32
 ; set_local 0x63
 ; get_local 0x5
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x35
 ; get_local 0x35
@@ -18964,7 +18964,7 @@
 ; i64.extend_s/i32
 ; set_local 0x5E
 ; get_local 0x5E
-; i64.const 0x50
+; i64.const 0xFFFFFFFFFFFFFFD0
 ; i64.add
 ; set_local 0x5F
 ; get_local 0x5F
@@ -19007,7 +19007,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x42
 ; get_local 0x42
@@ -19045,7 +19045,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x38
 ; get_local 0x38
@@ -19092,7 +19092,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x4E
 ; get_local 0x4E
@@ -19122,7 +19122,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x52
 ; get_local 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x54
 ; get_local 0x15
@@ -19167,7 +19167,7 @@
 ; f64.mul
 ; set_local 0x19
 ; get_local 0x1
-; i32.const 0x3C01
+; i32.const 0xFFFFFC01
 ; i32.add
 ; set_local 0xB
 ; get_local 0xB
@@ -19175,7 +19175,7 @@
 ; i32.gt_s
 ; set_local 0xC
 ; get_local 0x1
-; i32.const 0x3802
+; i32.const 0xFFFFF802
 ; i32.add
 ; set_local 0xD
 ; get_local 0xC
@@ -19207,7 +19207,7 @@
 ; end
 ; else
 ; get_local 0x1
-; i32.const 0x3C02
+; i32.const 0xFFFFFC02
 ; i32.lt_s
 ; set_local 0xF
 ; get_local 0xF
@@ -19221,7 +19221,7 @@
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
-; i32.const 0x3C02
+; i32.const 0xFFFFFC02
 ; i32.lt_s
 ; set_local 0x6
 ; get_local 0x1
@@ -19235,12 +19235,12 @@
 ; f64.mul
 ; set_local 0x16
 ; get_local 0x7
-; i32.const 0x3C02
+; i32.const 0xFFFFFC02
 ; i32.lt_s
 ; set_local 0x8
 ; get_local 0x8
 ; if 0x7F
-; i32.const 0x3C02
+; i32.const 0xFFFFFC02
 ; else
 ; get_local 0x7
 ; end
@@ -19435,7 +19435,7 @@
 ; i64.shl
 ; set_local 0x3F
 ; get_local 0x3F
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.gt_s
 ; set_local 0x15
 ; get_local 0x15
@@ -19447,7 +19447,7 @@
 ; loop
 ; block
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x16
 ; get_local 0x31
@@ -19455,7 +19455,7 @@
 ; i64.shl
 ; set_local 0x40
 ; get_local 0x40
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.gt_s
 ; set_local 0x17
 ; get_local 0x17
@@ -19516,7 +19516,7 @@
 ; i64.shl
 ; set_local 0x46
 ; get_local 0x46
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.gt_s
 ; set_local 0x1A
 ; get_local 0x1A
@@ -19528,7 +19528,7 @@
 ; loop
 ; block
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1B
 ; get_local 0x33
@@ -19536,7 +19536,7 @@
 ; i64.shl
 ; set_local 0x47
 ; get_local 0x47
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.gt_s
 ; set_local 0x1C
 ; get_local 0x1C
@@ -19595,7 +19595,7 @@
 ; i64.sub
 ; set_local 0x4D
 ; get_local 0x4D
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.gt_s
 ; set_local 0x1F
 ; block
@@ -19633,7 +19633,7 @@
 ; i64.shl
 ; set_local 0x4F
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x21
 ; get_local 0x21
@@ -19645,7 +19645,7 @@
 ; i64.sub
 ; set_local 0x50
 ; get_local 0x50
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.gt_s
 ; set_local 0x24
 ; get_local 0x23
@@ -19730,7 +19730,7 @@
 ; i64.shl
 ; set_local 0x51
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x27
 ; get_local 0x51
@@ -19766,7 +19766,7 @@
 ; get_local 0x29
 ; if
 ; get_local 0x36
-; i64.const 0xF00000
+; i64.const 0xFF00000000F00000
 ; i64.add
 ; set_local 0x53
 ; get_local 0xA
@@ -19851,7 +19851,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -19955,7 +19955,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xA
 ; get_local 0xA
-; i32.const 0xEFEFEFF
+; i32.const 0xFEFEFEFF
 ; i32.add
 ; set_local 0xB
 ; get_local 0xA
@@ -20119,7 +20119,7 @@
 ; set_local 0xE
 ; get_local 0xE
 ; if
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; set_local 0x5
 ; else
 ; get_local 0x34
@@ -20140,7 +20140,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x12
 ; get_local 0x12
@@ -20165,7 +20165,7 @@
 ; br 0x4
 ; end
 ; get_local 0x11
-; i32.const 0x3F3E
+; i32.const 0xFFFFFF3E
 ; i32.add
 ; set_local 0x15
 ; get_local 0x15
@@ -20192,7 +20192,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x19
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1A
 ; get_local 0x1A
@@ -20240,7 +20240,7 @@
 ; i32.shr_u
 ; set_local 0x1E
 ; get_local 0x1E
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.add
 ; set_local 0x1F
 ; get_local 0x7
@@ -20289,7 +20289,7 @@
 ; i32.and
 ; set_local 0x26
 ; get_local 0x26
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x28
 ; get_local 0x28
@@ -20297,7 +20297,7 @@
 ; i32.or
 ; set_local 0x29
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2A
 ; get_local 0x29
@@ -20323,7 +20323,7 @@
 ; i32.load8_s 0x0,0x0
 ; set_local 0x2F
 ; get_local 0x2F
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x30
 ; get_local 0x30
@@ -20331,7 +20331,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x31
 ; get_local 0x31
@@ -20370,7 +20370,7 @@
 ; get_local 0x4
 ; get_local 0xC
 ; i32.store 0x2,0x0
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; set_local 0x5
 ; end
 ; end
@@ -20387,7 +20387,7 @@
 ; get_local 0x32
 ; i32.const 0x54
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; end
 ; get_local 0x39
@@ -20402,7 +20402,7 @@
 ; get_global 0xA
 ; set_local 0x6
 ; get_local 0x0
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x4
 ; get_local 0x4
@@ -20609,7 +20609,7 @@
 ; loop
 ; block
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7
 ; get_local 0x4
@@ -20708,7 +20708,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x34
 ; get_local 0x34
@@ -20733,7 +20733,7 @@
 ; br 0x4
 ; end
 ; get_local 0x33
-; i32.const 0x3F3E
+; i32.const 0xFFFFFF3E
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -20767,7 +20767,7 @@
 ; i32.mul
 ; set_local 0xD
 ; get_local 0xD
-; i32.const 0x7A
+; i32.const 0xFFFFFFFA
 ; i32.add
 ; set_local 0xE
 ; i32.const 0x80000000
@@ -20800,7 +20800,7 @@
 ; i32.shr_u
 ; set_local 0x14
 ; get_local 0x14
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.add
 ; set_local 0x15
 ; get_local 0xB
@@ -20827,7 +20827,7 @@
 ; i32.shl
 ; set_local 0x1B
 ; get_local 0x13
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x1C
 ; get_local 0x1C
@@ -20860,7 +20860,7 @@
 ; i32.and
 ; set_local 0x21
 ; get_local 0x21
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x22
 ; get_local 0x22
@@ -20904,7 +20904,7 @@
 ; i32.and
 ; set_local 0x2A
 ; get_local 0x2A
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x2B
 ; get_local 0x2B
@@ -20939,7 +20939,7 @@
 ; get_local 0x30
 ; i32.const 0x54
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; end
 ; end
@@ -21010,7 +21010,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xD
 ; get_local 0xD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xE
 ; get_local 0xE
@@ -21106,7 +21106,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1D
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x1E
 ; get_local 0x1E
@@ -21196,7 +21196,7 @@
 ; set_local 0x15
 ; get_local 0x15
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; else
 ; i32.const 0x3
@@ -21419,7 +21419,7 @@
 ; i32.add
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x3
 ; i32.const 0x54
@@ -21495,7 +21495,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x189
 ; get_local 0x189
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x58
 ; get_local 0x58
@@ -21653,7 +21653,7 @@
 ; i32.and
 ; set_local 0x17C
 ; get_local 0x17C
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x1AB
 ; get_local 0x1AB
@@ -21723,7 +21723,7 @@
 ; i32.sub
 ; set_local 0x1A3
 ; get_local 0x1A3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x1A2
 ; get_local 0x183
@@ -21743,7 +21743,7 @@
 ; get_local 0x196
 ; i32.store 0x2,0x0
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x187
 ; get_local 0x181
@@ -21797,7 +21797,7 @@
 ; i32.sub
 ; set_local 0x19D
 ; get_local 0x19D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x19C
 ; get_local 0x18B
@@ -21831,7 +21831,7 @@
 ; i32.and
 ; set_local 0x190
 ; get_local 0x190
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x1AD
 ; get_local 0x1AD
@@ -21853,7 +21853,7 @@
 ; i32.mul
 ; set_local 0x191
 ; get_local 0x191
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x192
 ; get_local 0x192
@@ -21872,7 +21872,7 @@
 ; i32.and
 ; set_local 0x5C
 ; get_local 0x5C
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x1AC
 ; get_local 0x1AC
@@ -22021,9 +22021,9 @@
 ; set_local 0x2F
 ; get_local 0x65
 ; if 0x7F
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x30
 ; get_local 0x30
@@ -22262,7 +22262,7 @@
 ; block
 ; block
 ; get_local 0x5
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.sub
 ; br_table 0x0 0x1 0x2 0x3 0x5 0x40x5
 ; end
@@ -22455,7 +22455,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x81
 ; get_local 0x81
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x82
 ; get_local 0x83
@@ -22549,7 +22549,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x94
 ; get_local 0x94
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x95
 ; get_local 0x83
@@ -22611,7 +22611,7 @@
 ; i32.eq
 ; set_local 0x9A
 ; get_local 0xDB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.const 0x100
 ; call 0x335
 ; drop
@@ -22831,7 +22831,7 @@
 ; nop
 ; end
 ; get_local 0x40
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xAB
 ; get_local 0xAB
@@ -23085,7 +23085,7 @@
 ; block
 ; block
 ; get_local 0xD2
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.sub
 ; br_table 0x1 0x00x2
 ; end
@@ -23568,7 +23568,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x116
 ; get_local 0x116
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x117
 ; get_local 0x83
@@ -23897,7 +23897,7 @@
 ; get_local 0x0
 ; get_local 0xB
 ; i32.const 0x0
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; call 0x79
 ; set_local 0x1B8
 ; get_local 0x99
@@ -23980,7 +23980,7 @@
 ; block
 ; block
 ; get_local 0x5
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.sub
 ; br_table 0x0 0x1 0x2 0x3 0x5 0x40x5
 ; end
@@ -24313,7 +24313,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x158
 ; get_local 0x158
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x159
 ; get_local 0x83
@@ -24409,7 +24409,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x176
 ; get_local 0x176
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x177
 ; get_local 0x83
@@ -24417,7 +24417,7 @@
 ; i32.store 0x2,0x0
 ; end
 ; get_local 0x172
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x178
 ; get_local 0x14
@@ -24482,7 +24482,7 @@
 ; set_local 0x1A
 ; get_local 0x1D
 ; set_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2B
 ; get_local 0x46
 ; set_local 0x49
@@ -24788,7 +24788,7 @@
 ; call 0xB6
 ; set_local 0x1F
 ; get_local 0x1F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x20
 ; get_local 0x20
@@ -24875,7 +24875,7 @@
 ; set_local 0x18
 ; get_local 0xB
 ; set_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xD
 ; get_local 0x1E
 ; set_local 0xE
@@ -24969,7 +24969,7 @@
 ; i32.add
 ; set_local 0x34
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x35
 ; get_local 0x10
@@ -25013,12 +25013,12 @@
 ; block
 ; block
 ; get_local 0x2E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.sub
 ; br_table 0x0 0x10x2
 ; end
 ; block
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x14
 ; br 0x6
 ; br 0x3
@@ -25188,7 +25188,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA2
 ; get_local 0xA2
@@ -25230,7 +25230,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xA8
 ; get_local 0xA8
-; i32.const 0xEFEFEFF
+; i32.const 0xFEFEFEFF
 ; i32.add
 ; set_local 0xA9
 ; get_local 0xA9
@@ -25322,7 +25322,7 @@
 ; get_local 0xBC
 ; i32.store 0x2,0x0
 ; get_local 0x20
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0xBE
 ; get_local 0xBE
@@ -25411,7 +25411,7 @@
 ; i32.and
 ; set_local 0xC0
 ; get_local 0xC0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x30
 ; get_local 0x30
@@ -25435,7 +25435,7 @@
 ; get_local 0xC0
 ; i32.store 0x2,0x0
 ; get_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x34
 ; get_local 0x34
@@ -25461,7 +25461,7 @@
 ; end
 ; end
 ; get_local 0xC0
-; i32.const 0x3F3E
+; i32.const 0xFFFFFF3E
 ; i32.add
 ; set_local 0x36
 ; get_local 0x36
@@ -25525,7 +25525,7 @@
 ; i32.and
 ; set_local 0x45
 ; get_local 0x45
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x50
 ; get_local 0x50
@@ -25550,7 +25550,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6A
 ; get_local 0x6A
-; i32.const 0xEFEFEFF
+; i32.const 0xFEFEFEFF
 ; i32.add
 ; set_local 0x6B
 ; get_local 0x6B
@@ -25582,14 +25582,14 @@
 ; i32.add
 ; set_local 0x70
 ; get_local 0xE
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x71
 ; get_local 0x70
 ; i32.load 0x2,0x0
 ; set_local 0x72
 ; get_local 0x72
-; i32.const 0xEFEFEFF
+; i32.const 0xFEFEFEFF
 ; i32.add
 ; set_local 0x73
 ; get_local 0x73
@@ -25655,7 +25655,7 @@
 ; i32.and
 ; set_local 0x78
 ; get_local 0x78
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7A
 ; get_local 0x7A
@@ -25672,7 +25672,7 @@
 ; i32.add
 ; set_local 0x7C
 ; get_local 0x12
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7D
 ; get_local 0x7C
@@ -25683,7 +25683,7 @@
 ; end
 ; end
 ; get_local 0x78
-; i32.const 0x3F3E
+; i32.const 0xFFFFFF3E
 ; i32.add
 ; set_local 0x7E
 ; get_local 0x7E
@@ -25743,7 +25743,7 @@
 ; i32.shr_u
 ; set_local 0x86
 ; get_local 0x86
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.add
 ; set_local 0x87
 ; get_local 0x11
@@ -25789,7 +25789,7 @@
 ; i32.load8_s 0x0,0x0
 ; set_local 0x91
 ; get_local 0x91
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x92
 ; get_local 0x92
@@ -25797,7 +25797,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x93
 ; get_local 0x93
@@ -25828,7 +25828,7 @@
 ; i32.load8_s 0x0,0x0
 ; set_local 0x99
 ; get_local 0x99
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x9A
 ; get_local 0x9A
@@ -25836,7 +25836,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x9B
 ; get_local 0x9B
@@ -25855,7 +25855,7 @@
 ; end
 ; end
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x9E
 ; get_local 0x1B
@@ -25884,7 +25884,7 @@
 ; i32.shr_u
 ; set_local 0x3E
 ; get_local 0x3E
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.add
 ; set_local 0x3F
 ; get_local 0x18
@@ -25918,7 +25918,7 @@
 ; i32.add
 ; set_local 0x47
 ; get_local 0x3D
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x48
 ; get_local 0x48
@@ -25939,7 +25939,7 @@
 ; i32.and
 ; set_local 0x4C
 ; get_local 0x4C
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x4D
 ; get_local 0x4D
@@ -25978,7 +25978,7 @@
 ; i32.and
 ; set_local 0x56
 ; get_local 0x56
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.add
 ; set_local 0x57
 ; get_local 0x57
@@ -26027,7 +26027,7 @@
 ; get_local 0x1F
 ; i32.store 0x2,0x0
 ; get_local 0x28
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x5F
 ; get_local 0x5E
@@ -26051,7 +26051,7 @@
 ; i32.eq
 ; if
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x8D
 ; get_local 0x8D
@@ -26070,7 +26070,7 @@
 ; i32.eq
 ; if
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x94
 ; get_local 0x94
@@ -26089,7 +26089,7 @@
 ; i32.eq
 ; if
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x9C
 ; get_local 0x9C
@@ -26118,7 +26118,7 @@
 ; i32.eq
 ; if
 ; get_local 0x29
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x44
 ; get_local 0x44
@@ -26137,7 +26137,7 @@
 ; i32.eq
 ; if
 ; get_local 0x29
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x4F
 ; get_local 0x4F
@@ -26152,7 +26152,7 @@
 ; i32.eq
 ; if
 ; get_local 0x29
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x59
 ; get_local 0x59
@@ -26256,13 +26256,13 @@
 ; set_local 0x67
 ; get_local 0x67
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; else
 ; get_local 0x1
 ; get_local 0xC
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; end
 ; end
@@ -26390,7 +26390,7 @@
 ; call 0xB8
 ; set_local 0x1E
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1F
 ; get_local 0x1F
@@ -26475,7 +26475,7 @@
 ; set_local 0x18
 ; get_local 0xB
 ; set_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xD
 ; get_local 0x1D
 ; set_local 0xE
@@ -26563,7 +26563,7 @@
 ; get_local 0x33
 ; i32.store 0x2,0x0
 ; get_local 0x11
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x34
 ; get_local 0x13
@@ -26622,7 +26622,7 @@
 ; get_local 0x10
 ; set_local 0x14
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x14
 ; end
 ; else
@@ -26706,12 +26706,12 @@
 ; call 0x90
 ; set_local 0x19
 ; get_local 0x19
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1A
 ; get_local 0x1A
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x6
 ; else
@@ -26777,7 +26777,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1F
 ; get_local 0x1F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x21
 ; get_local 0x21
@@ -26800,12 +26800,12 @@
 ; call 0x90
 ; set_local 0x25
 ; get_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x26
 ; get_local 0x26
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x7
 ; end
@@ -26836,7 +26836,7 @@
 ; get_local 0x29
 ; i32.store8 0x0,0x0
 ; get_local 0xC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2B
 ; get_local 0x1
@@ -26922,7 +26922,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x2F
 ; get_local 0x2F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x31
 ; get_local 0x31
@@ -26947,12 +26947,12 @@
 ; call 0x90
 ; set_local 0x36
 ; get_local 0x36
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x37
 ; get_local 0x37
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x6
 ; end
@@ -27001,7 +27001,7 @@
 ; get_local 0x3D
 ; i32.store8 0x0,0x0
 ; get_local 0x10
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x3F
 ; get_local 0x1
@@ -27136,7 +27136,7 @@
 ; i32.const 0x4
 ; set_local 0x1B
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; end
 ; else
@@ -27235,7 +27235,7 @@
 ; get_local 0x13
 ; set_local 0x2
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; end
 ; end
@@ -27274,7 +27274,7 @@
 ; block
 ; get_local 0xD
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x3
 ; else
 ; get_local 0x2
@@ -27329,7 +27329,7 @@
 ; set_local 0x6
 ; get_local 0x6
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x3
 ; else
 ; get_local 0xE
@@ -27348,7 +27348,7 @@
 ; set_local 0x9
 ; get_local 0x9
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x3
 ; else
 ; get_local 0x8
@@ -27375,13 +27375,13 @@
 ; get_global 0xA
 ; set_local 0x1B
 ; get_local 0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xD
 ; block
 ; get_local 0xD
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; else
 ; get_local 0x1
@@ -27392,7 +27392,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x14
 ; get_local 0x14
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x15
 ; get_local 0x15
@@ -27454,7 +27454,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x8
 ; get_local 0x8
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.add
 ; set_local 0x9
 ; get_local 0x6
@@ -27468,7 +27468,7 @@
 ; i32.and
 ; set_local 0xE
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xF
 ; get_local 0x5
@@ -27481,7 +27481,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x10
 ; get_local 0x10
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.and
 ; set_local 0x11
 ; get_local 0x1
@@ -27510,12 +27510,12 @@
 ; set_local 0xB
 ; get_local 0xB
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; else
 ; get_local 0x1
 ; call 0x70
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; end
 ; end
@@ -27738,7 +27738,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xB
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xC
 ; get_local 0xC
@@ -27786,7 +27786,7 @@
 ; get_local 0x6
 ; get_local 0x1
 ; call 0x55
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x7
 ; get_local 0x7
@@ -28030,7 +28030,7 @@
 ; i32.add
 ; set_local 0xE
 ; get_local 0xE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0xC
 ; i32.const 0x2C
@@ -28044,7 +28044,7 @@
 ; i32.add
 ; set_local 0x10
 ; get_local 0x10
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0xC
 ; i32.const 0x0
@@ -28140,7 +28140,7 @@
 ; loop
 ; block
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x6
 ; get_local 0x4
@@ -28206,7 +28206,7 @@
 ; loop
 ; block
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x16
 ; get_local 0x1
@@ -28255,7 +28255,7 @@
 ; loop
 ; block
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB
 ; get_local 0x3
@@ -28330,7 +28330,7 @@
 ; i32.add
 ; set_local 0x1D5
 ; get_local 0x1D5
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x244
 ; get_local 0x166
@@ -28410,7 +28410,7 @@
 ; i32.shl
 ; set_local 0x10E
 ; get_local 0x10E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x119
 ; get_local 0x391
@@ -28542,7 +28542,7 @@
 ; i32.and
 ; set_local 0x218
 ; get_local 0x218
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x223
 ; get_local 0x223
@@ -28661,7 +28661,7 @@
 ; i32.shl
 ; set_local 0x35A
 ; get_local 0x35A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x365
 ; get_local 0x391
@@ -28890,7 +28890,7 @@
 ; i32.and
 ; set_local 0x96
 ; get_local 0x96
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x97
 ; get_local 0x97
@@ -28990,7 +28990,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xB1
 ; get_local 0xB1
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0xB2
 ; get_local 0xB2
@@ -29048,7 +29048,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xBD
 ; get_local 0xBD
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0xBE
 ; get_local 0xBE
@@ -29331,7 +29331,7 @@
 ; i32.shl
 ; set_local 0xEA
 ; get_local 0xEA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0xEB
 ; get_local 0x92
@@ -29688,12 +29688,12 @@
 ; end
 ; else
 ; get_local 0x0
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.gt_u
 ; set_local 0x129
 ; get_local 0x129
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xF
 ; else
 ; get_local 0x0
@@ -29701,7 +29701,7 @@
 ; i32.add
 ; set_local 0x12A
 ; get_local 0x12A
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x12B
 ; i32.const 0x4668
@@ -29902,7 +29902,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x155
 ; get_local 0x155
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x156
 ; get_local 0x156
@@ -30080,7 +30080,7 @@
 ; i32.and
 ; set_local 0x16F
 ; get_local 0x16F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x170
 ; get_local 0x170
@@ -30215,7 +30215,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x18C
 ; get_local 0x18C
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x18D
 ; get_local 0x18D
@@ -30569,7 +30569,7 @@
 ; i32.shl
 ; set_local 0x1C4
 ; get_local 0x1C4
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x1C5
 ; get_local 0x12C
@@ -31139,7 +31139,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x232
 ; get_local 0x232
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x233
 ; get_local 0x233
@@ -31502,10 +31502,10 @@
 ; i32.const 0x1000
 ; i32.store 0x2,0x0
 ; i32.const 0x4848
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x484C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x4850
 ; i32.const 0x0
@@ -31516,7 +31516,7 @@
 ; get_local 0x50
 ; set_local 0x26D
 ; get_local 0x26D
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x26E
 ; get_local 0x26E
@@ -31729,7 +31729,7 @@
 ; get_local 0x2AE
 ; if
 ; get_local 0x2AA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2AF
 ; get_local 0x2AF
@@ -31763,7 +31763,7 @@
 ; call 0x339
 ; set_local 0x28E
 ; get_local 0x28E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x28F
 ; get_local 0x28F
@@ -31775,7 +31775,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x291
 ; get_local 0x291
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x293
 ; get_local 0x293
@@ -31899,7 +31899,7 @@
 ; i32.sub
 ; set_local 0x2B0
 ; get_local 0x30
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0x2B1
 ; get_local 0x31
@@ -31950,7 +31950,7 @@
 ; call 0x339
 ; set_local 0x2BC
 ; get_local 0x2BC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2BD
 ; get_local 0x2BD
@@ -31978,7 +31978,7 @@
 ; end
 ; end
 ; get_local 0x30
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2C0
 ; get_local 0x2C0
@@ -32028,11 +32028,11 @@
 ; call 0x339
 ; set_local 0x2C5
 ; get_local 0x2C4
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0x2C6
 ; get_local 0x2C5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0x2C7
 ; get_local 0x2C6
@@ -32151,7 +32151,7 @@
 ; get_local 0x2D8
 ; i32.store 0x2,0x0
 ; i32.const 0x4684
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x0
 ; set_local 0xA
@@ -32200,7 +32200,7 @@
 ; end
 ; end
 ; get_local 0x40
-; i32.const 0x58
+; i32.const 0xFFFFFFD8
 ; i32.add
 ; set_local 0x2DE
 ; get_local 0x41
@@ -32733,7 +32733,7 @@
 ; get_local 0x34C
 ; if
 ; get_local 0x34A
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x34D
 ; get_local 0x34A
@@ -32816,7 +32816,7 @@
 ; i32.shl
 ; set_local 0x35F
 ; get_local 0x35F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x360
 ; i32.const 0x4664
@@ -33113,7 +33113,7 @@
 ; i32.shl
 ; set_local 0x38E
 ; get_local 0x38E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x38F
 ; i32.const 0x4668
@@ -33303,7 +33303,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x3B0
 ; get_local 0x3B0
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0x3B1
 ; get_local 0x3AF
@@ -33666,7 +33666,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x3F8
 ; get_local 0x3F8
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x3F9
 ; get_local 0x3F9
@@ -33885,7 +33885,7 @@
 ; end
 ; end
 ; get_local 0x415
-; i32.const 0x51
+; i32.const 0xFFFFFFD1
 ; i32.add
 ; set_local 0x41A
 ; get_local 0x41A
@@ -33945,7 +33945,7 @@
 ; i32.add
 ; set_local 0x428
 ; get_local 0x40
-; i32.const 0x58
+; i32.const 0xFFFFFFD8
 ; i32.add
 ; set_local 0x429
 ; get_local 0x41
@@ -34098,7 +34098,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x442
 ; get_local 0x442
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0x444
 ; get_local 0x43A
@@ -34448,7 +34448,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6B
 ; get_local 0x6B
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x6C
 ; get_local 0x6C
@@ -34695,7 +34695,7 @@
 ; return
 ; end
 ; get_local 0x0
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.add
 ; set_local 0x85
 ; i32.const 0x4674
@@ -34710,7 +34710,7 @@
 ; call 0x37
 ; end
 ; get_local 0x0
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x11F
 ; get_local 0x11F
@@ -34729,7 +34729,7 @@
 ; call 0x37
 ; end
 ; get_local 0x12A
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x14B
 ; get_local 0x85
@@ -34815,7 +34815,7 @@
 ; get_local 0x64
 ; i32.store 0x2,0x0
 ; get_local 0x1E
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0x21
 ; get_local 0x1D
@@ -34918,7 +34918,7 @@
 ; i32.shl
 ; set_local 0x10F
 ; get_local 0x10F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x110
 ; i32.const 0x4664
@@ -35221,7 +35221,7 @@
 ; i32.shl
 ; set_local 0x13E
 ; get_local 0x13E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x13F
 ; i32.const 0x4668
@@ -35541,7 +35541,7 @@
 ; return
 ; end
 ; get_local 0x28
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x3E
 ; get_local 0x3E
@@ -35629,7 +35629,7 @@
 ; i32.shl
 ; set_local 0x51
 ; get_local 0x51
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x52
 ; i32.const 0x4664
@@ -35928,7 +35928,7 @@
 ; i32.shl
 ; set_local 0x83
 ; get_local 0x83
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x84
 ; i32.const 0x4668
@@ -36130,7 +36130,7 @@
 ; end
 ; else
 ; get_local 0x28
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0xA8
 ; get_local 0x27
@@ -36491,7 +36491,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xEE
 ; get_local 0xEE
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0xEF
 ; get_local 0xEF
@@ -36654,7 +36654,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x107
 ; get_local 0x107
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x108
 ; i32.const 0x4684
@@ -36695,7 +36695,7 @@
 ; end
 ; end
 ; i32.const 0x4684
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; return
 ; end
@@ -36731,7 +36731,7 @@
 ; get_local 0x9
 ; get_local 0x0
 ; call 0x55
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0xC
 ; get_local 0xC
@@ -36742,7 +36742,7 @@
 ; if 0x7F
 ; get_local 0x9
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x2
 ; get_local 0x2
@@ -36765,7 +36765,7 @@
 ; return
 ; end
 ; get_local 0xE
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x4
 ; get_local 0x4
@@ -36813,7 +36813,7 @@
 ; return
 ; end
 ; get_local 0x1
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.gt_u
 ; set_local 0x14
 ; get_local 0x14
@@ -36837,7 +36837,7 @@
 ; i32.add
 ; set_local 0x17
 ; get_local 0x17
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x18
 ; get_local 0x16
@@ -36848,7 +36848,7 @@
 ; end
 ; set_local 0x19
 ; get_local 0x0
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.add
 ; set_local 0x3
 ; get_local 0x3
@@ -36886,14 +36886,14 @@
 ; return
 ; end
 ; get_local 0x0
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x9
 ; get_local 0x9
 ; i32.load 0x2,0x0
 ; set_local 0xA
 ; get_local 0xA
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0xB
 ; get_local 0xA
@@ -36952,7 +36952,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6B
 ; get_local 0x6B
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x76
 ; get_local 0x0
@@ -37301,7 +37301,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x8E
 ; get_local 0x8E
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0x8F
 ; get_local 0x8D
@@ -37378,7 +37378,7 @@
 ; return
 ; end
 ; get_local 0x8
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x9A
 ; get_local 0x9A
@@ -37478,7 +37478,7 @@
 ; i32.shl
 ; set_local 0xAE
 ; get_local 0xAE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0xAF
 ; i32.const 0x4664
@@ -37768,7 +37768,7 @@
 ; i32.shl
 ; set_local 0x2D
 ; get_local 0x2D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x2E
 ; i32.const 0x4668
@@ -38139,7 +38139,7 @@
 ; get_local 0x2B
 ; i32.store 0x2,0x0
 ; get_local 0x18
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0x1B
 ; get_local 0x17
@@ -38242,7 +38242,7 @@
 ; i32.shl
 ; set_local 0xFB
 ; get_local 0xFB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0xFC
 ; i32.const 0x4664
@@ -38545,7 +38545,7 @@
 ; i32.shl
 ; set_local 0x12A
 ; get_local 0x12A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x12B
 ; i32.const 0x4668
@@ -38855,7 +38855,7 @@
 ; return
 ; end
 ; get_local 0x23
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0x37
 ; get_local 0x37
@@ -38940,7 +38940,7 @@
 ; i32.shl
 ; set_local 0x48
 ; get_local 0x48
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x49
 ; i32.const 0x4664
@@ -39230,7 +39230,7 @@
 ; i32.shl
 ; set_local 0x77
 ; get_local 0x77
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; set_local 0x79
 ; i32.const 0x4668
@@ -39432,7 +39432,7 @@
 ; end
 ; else
 ; get_local 0x23
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.and
 ; set_local 0x9C
 ; get_local 0x22
@@ -39793,7 +39793,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xE2
 ; get_local 0xE2
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.and
 ; set_local 0xE3
 ; get_local 0xE3
@@ -40072,7 +40072,7 @@
 ; br 0x1
 ; end
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC
 ; get_local 0x9
@@ -40204,7 +40204,7 @@
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.store 0x3,0x0
 ; return
 ; end
@@ -40222,7 +40222,7 @@
 ; i32.add
 ; set_local 0x4
 ; get_local 0x4
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.store 0x3,0x0
 ; return
 ; end
@@ -40317,7 +40317,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x9
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA
 ; get_local 0xA
@@ -40358,7 +40358,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -40386,12 +40386,12 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7
 ; get_local 0x7
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; else
 ; get_local 0x0
@@ -40427,7 +40427,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -40499,7 +40499,7 @@
 ; call_indirect 0x3,0x0
 ; set_local 0xB
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xC
 ; get_local 0xC
@@ -40594,7 +40594,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -40664,7 +40664,7 @@
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.store 0x3,0x0
 ; return
 ; end
@@ -40682,7 +40682,7 @@
 ; i32.add
 ; set_local 0x4
 ; get_local 0x4
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; i64.store 0x3,0x0
 ; return
 ; end
@@ -40777,7 +40777,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x9
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA
 ; get_local 0xA
@@ -40815,7 +40815,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -40843,12 +40843,12 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x5
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x6
 ; get_local 0x6
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x1
 ; else
 ; get_local 0x0
@@ -40880,7 +40880,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -41007,7 +41007,7 @@
 ; call_indirect 0x3,0x0
 ; set_local 0x9
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA
 ; get_local 0xA
@@ -41038,7 +41038,7 @@
 ; block 0x7F
 ; get_global 0xA
 ; set_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; )
@@ -41107,7 +41107,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41135,7 +41135,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41189,7 +41189,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41217,7 +41217,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41271,7 +41271,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41299,7 +41299,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41353,7 +41353,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41381,7 +41381,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
@@ -41918,7 +41918,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xD
 ; get_local 0xD
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x18
 ; get_local 0x18
@@ -41987,7 +41987,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -42032,7 +42032,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x10
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x13
 ; get_local 0x13
@@ -42044,7 +42044,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x14
 ; get_local 0x14
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x15
 ; get_local 0x15
@@ -42109,7 +42109,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x22
 ; get_local 0x22
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x24
 ; get_local 0x24
@@ -42194,7 +42194,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -42258,7 +42258,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x17
 ; get_local 0x17
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x22
 ; get_local 0x22
@@ -42326,7 +42326,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xB
 ; get_local 0xB
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0xD
 ; get_local 0xD
@@ -42371,7 +42371,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x19
 ; get_local 0x19
@@ -42386,7 +42386,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1B
 ; get_local 0x1B
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1C
 ; get_local 0x1C
@@ -42529,7 +42529,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xD
 ; get_local 0xD
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x18
 ; get_local 0x18
@@ -42598,7 +42598,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -42643,7 +42643,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x10
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x13
 ; get_local 0x13
@@ -42655,7 +42655,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x14
 ; get_local 0x14
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x15
 ; get_local 0x15
@@ -42720,7 +42720,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x22
 ; get_local 0x22
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x24
 ; get_local 0x24
@@ -42805,7 +42805,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -42869,7 +42869,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x17
 ; get_local 0x17
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x22
 ; get_local 0x22
@@ -42937,7 +42937,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0xB
 ; get_local 0xB
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0xD
 ; get_local 0xD
@@ -42982,7 +42982,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x19
 ; get_local 0x19
@@ -42997,7 +42997,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1B
 ; get_local 0x1B
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1C
 ; get_local 0x1C
@@ -43160,7 +43160,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x8
 ; get_local 0x8
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x9
 ; get_local 0x9
@@ -43209,7 +43209,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x10
 ; get_local 0x10
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x11
 ; get_local 0x11
@@ -43234,7 +43234,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x18
 ; get_local 0x18
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x19
 ; block
@@ -43389,7 +43389,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x32
 ; get_local 0x32
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x34
 ; get_local 0x34
@@ -43470,7 +43470,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x43
 ; get_local 0x43
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x44
 ; get_local 0x44
@@ -43604,7 +43604,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x37
 ; get_local 0x37
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x38
 ; get_local 0x38
@@ -43700,7 +43700,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x19
 ; get_local 0x19
@@ -43720,7 +43720,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1B
 ; get_local 0x1B
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1C
 ; get_local 0x1C
@@ -43795,7 +43795,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x29
 ; get_local 0x29
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2A
 ; get_local 0x2A
@@ -43934,7 +43934,7 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x48AC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x4B40
 ; get_local 0x1
@@ -43978,7 +43978,7 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x4904
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0xBFC
 ; i32.load 0x2,0x0
@@ -44022,7 +44022,7 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x4958
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x4BB8
 ; get_local 0x2
@@ -44063,7 +44063,7 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x49AC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0xB14
 ; i32.load 0x2,0x0
@@ -44107,13 +44107,13 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x4A00
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x49B0
 ; i32.load 0x2,0x0
 ; set_local 0x11
 ; get_local 0x11
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x12
 ; get_local 0x12
@@ -44165,7 +44165,7 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x4AA8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x4C28
 ; get_local 0xB
@@ -44206,13 +44206,13 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x4A54
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x4A04
 ; i32.load 0x2,0x0
 ; set_local 0x20
 ; get_local 0x20
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x21
 ; get_local 0x21
@@ -44264,13 +44264,13 @@
 ; i32.const 0x0
 ; i32.store 0x2,0x0
 ; i32.const 0x4AFC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x4858
 ; i32.load 0x2,0x0
 ; set_local 0x2B
 ; get_local 0x2B
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x2C
 ; get_local 0x2C
@@ -44291,7 +44291,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x31
 ; get_local 0x31
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x32
 ; get_local 0x32
@@ -44312,7 +44312,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x36
 ; get_local 0x36
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x37
 ; get_local 0x37
@@ -44340,7 +44340,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x3E
 ; get_local 0x3E
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x3F
 ; get_local 0x3F
@@ -44368,7 +44368,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x46
 ; get_local 0x46
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x47
 ; get_local 0x47
@@ -44389,7 +44389,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x4B
 ; get_local 0x4B
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x4C
 ; get_local 0x4C
@@ -44561,7 +44561,7 @@
 ; i32.add
 ; set_local 0xC
 ; get_local 0xC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x0
 ; i32.const 0x34
@@ -44664,7 +44664,7 @@
 ; i32.add
 ; set_local 0xC
 ; get_local 0xC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x0
 ; i32.const 0x34
@@ -45144,7 +45144,7 @@
 ; get_local 0xC
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; br 0x1
 ; end
@@ -45160,7 +45160,7 @@
 ; br 0x2
 ; end
 ; block
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; br 0x3
 ; br 0x2
@@ -45266,7 +45266,7 @@
 ; call_indirect 0x3,0x0
 ; set_local 0xA
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xB
 ; get_local 0xB
@@ -45342,7 +45342,7 @@
 ; get_local 0x2D
 ; set_local 0x27
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x28
 ; block
@@ -45395,7 +45395,7 @@
 ; set_local 0x2C
 ; br 0x3
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x3
 ; end
@@ -45582,7 +45582,7 @@
 ; i32.const 0xD
 ; i32.eq
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x3
 ; end
@@ -45780,7 +45780,7 @@
 ; get_local 0xC
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; br 0x1
 ; end
@@ -45796,7 +45796,7 @@
 ; br 0x2
 ; end
 ; block
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; br 0x3
 ; br 0x2
@@ -45906,7 +45906,7 @@
 ; call_indirect 0x3,0x0
 ; set_local 0xB
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xC
 ; get_local 0xC
@@ -45982,7 +45982,7 @@
 ; get_local 0x2E
 ; set_local 0x28
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x29
 ; block
@@ -46039,7 +46039,7 @@
 ; set_local 0x2D
 ; br 0x3
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x3
 ; end
@@ -46226,7 +46226,7 @@
 ; i32.const 0xD
 ; i32.eq
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x3
 ; end
@@ -46410,7 +46410,7 @@
 ; get_local 0x2A
 ; set_local 0x24
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x25
 ; get_local 0x0
@@ -46433,7 +46433,7 @@
 ; if
 ; get_local 0x28
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; else
 ; get_local 0x0
@@ -46444,7 +46444,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0x7
 ; get_local 0x7
@@ -46582,7 +46582,7 @@
 ; br 0x1
 ; end
 ; get_local 0x1B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1D
 ; get_local 0x1A
@@ -46605,7 +46605,7 @@
 ; call 0xBB
 ; set_local 0x21
 ; get_local 0x21
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x22
 ; get_local 0x22
@@ -46620,7 +46620,7 @@
 ; br 0x3
 ; end
 ; end
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; br 0x3
 ; else
@@ -46739,12 +46739,12 @@
 ; call 0xBE
 ; set_local 0x12
 ; get_local 0x12
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x13
 ; get_local 0x13
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; br 0x1
 ; end
@@ -46895,7 +46895,7 @@
 ; call 0xBE
 ; set_local 0x2C
 ; get_local 0x2C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2D
 ; get_local 0x2D
@@ -46941,7 +46941,7 @@
 ; i32.const 0x11
 ; i32.eq
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x8
 ; br 0x3
 ; end
@@ -47005,7 +47005,7 @@
 ; br 0x1
 ; end
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x33
 ; get_local 0x15
@@ -47029,12 +47029,12 @@
 ; call 0xBB
 ; set_local 0x39
 ; get_local 0x39
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x3A
 ; get_local 0x3A
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x8
 ; br 0x4
 ; else
@@ -47067,7 +47067,7 @@
 ; get_local 0x1
 ; if
 ; get_local 0x40
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x3D
 ; i32.const 0x0
@@ -47242,7 +47242,7 @@
 ; get_local 0x2B
 ; set_local 0x25
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x26
 ; get_local 0x0
@@ -47265,7 +47265,7 @@
 ; if
 ; get_local 0x29
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; else
 ; get_local 0x0
@@ -47276,7 +47276,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0x7
 ; get_local 0x7
@@ -47418,7 +47418,7 @@
 ; br 0x1
 ; end
 ; get_local 0x1C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1E
 ; get_local 0x1A
@@ -47441,7 +47441,7 @@
 ; call 0xBB
 ; set_local 0x22
 ; get_local 0x22
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x23
 ; get_local 0x23
@@ -47456,7 +47456,7 @@
 ; br 0x3
 ; end
 ; end
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x2
 ; br 0x3
 ; else
@@ -47575,12 +47575,12 @@
 ; call 0xBE
 ; set_local 0x12
 ; get_local 0x12
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x13
 ; get_local 0x13
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; br 0x1
 ; end
@@ -47731,7 +47731,7 @@
 ; call 0xBE
 ; set_local 0x2B
 ; get_local 0x2B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2C
 ; get_local 0x2C
@@ -47771,7 +47771,7 @@
 ; i32.const 0x11
 ; i32.eq
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x8
 ; br 0x3
 ; end
@@ -47831,7 +47831,7 @@
 ; br 0x1
 ; end
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x31
 ; get_local 0x15
@@ -47853,12 +47853,12 @@
 ; call 0xBB
 ; set_local 0x37
 ; get_local 0x37
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x38
 ; get_local 0x38
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x8
 ; br 0x5
 ; else
@@ -47898,7 +47898,7 @@
 ; get_local 0x1
 ; if
 ; get_local 0x41
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x3E
 ; i32.const 0x0
@@ -47994,7 +47994,7 @@
 ; set_local 0xE
 ; get_local 0xE
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; br 0x1
 ; end
@@ -48018,7 +48018,7 @@
 ; set_local 0x11
 ; get_local 0x11
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; br 0x1
 ; end
@@ -48175,7 +48175,7 @@
 ; i32.sub
 ; set_local 0x14
 ; get_local 0x14
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.gt_u
 ; set_local 0x15
 ; get_local 0x15
@@ -48208,7 +48208,7 @@
 ; i32.add
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x7
 ; get_local 0x7
@@ -48334,7 +48334,7 @@
 ; set_local 0xE
 ; get_local 0xE
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; br 0x1
 ; end
@@ -48350,7 +48350,7 @@
 ; set_local 0x11
 ; get_local 0x11
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x5
 ; br 0x1
 ; end
@@ -48535,7 +48535,7 @@
 ; i32.add
 ; set_local 0x8
 ; get_local 0x8
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.and
 ; set_local 0x9
 ; get_local 0x9
@@ -48736,7 +48736,7 @@
 ; get_local 0x15
 ; if
 ; get_local 0x41
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x0
 ; i32.load 0x2,0x0
@@ -49026,7 +49026,7 @@
 ; loop
 ; block
 ; get_local 0x43
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x42
 ; get_local 0x42
@@ -49070,7 +49070,7 @@
 ; loop
 ; block
 ; get_local 0x3F
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x3E
 ; get_local 0x3E
@@ -49918,7 +49918,7 @@
 ; i32.and
 ; set_local 0x80
 ; get_local 0x80
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC8
 ; get_local 0xC8
@@ -50060,7 +50060,7 @@
 ; br 0x3
 ; end
 ; get_local 0x93
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x96
 ; get_local 0x96
@@ -50163,7 +50163,7 @@
 ; br 0x3
 ; end
 ; get_local 0xA3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA7
 ; get_local 0xA7
@@ -50296,7 +50296,7 @@
 ; i32.and
 ; set_local 0xB7
 ; get_local 0xB7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC9
 ; get_local 0xC9
@@ -50707,7 +50707,7 @@
 ; br 0x6
 ; end
 ; get_local 0x58
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5C
 ; get_local 0x5C
@@ -50790,7 +50790,7 @@
 ; br 0x8
 ; end
 ; get_local 0x69
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x6C
 ; get_local 0x6C
@@ -51190,7 +51190,7 @@
 ; set_local 0x30
 ; get_local 0x30
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; else
 ; block
@@ -51213,7 +51213,7 @@
 ; get_local 0x31
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
@@ -51230,7 +51230,7 @@
 ; if
 ; get_local 0x10
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
@@ -51249,12 +51249,12 @@
 ; get_local 0x36
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x37
 ; get_local 0x37
@@ -51271,7 +51271,7 @@
 ; get_local 0x39
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
@@ -51523,7 +51523,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x6
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7
 ; get_local 0x7
@@ -51548,7 +51548,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x9
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA
 ; get_local 0xC
@@ -51893,7 +51893,7 @@
 ; i32.and
 ; set_local 0x6A
 ; get_local 0x6A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -52041,7 +52041,7 @@
 ; br 0x3
 ; end
 ; get_local 0x7D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -52144,7 +52144,7 @@
 ; br 0x3
 ; end
 ; get_local 0x8C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -52277,7 +52277,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -52718,7 +52718,7 @@
 ; br 0x4
 ; end
 ; get_local 0x4C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4F
 ; get_local 0x4F
@@ -52800,7 +52800,7 @@
 ; br 0x5
 ; end
 ; get_local 0x5C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5F
 ; get_local 0x5F
@@ -53141,7 +53141,7 @@
 ; set_local 0x15
 ; get_local 0x15
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; else
 ; get_local 0x1
@@ -53308,7 +53308,7 @@
 ; set_local 0x31
 ; get_local 0x31
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; br 0x4
 ; end
@@ -53422,7 +53422,7 @@
 ; set_local 0x40
 ; get_local 0x40
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; else
 ; i32.const 0x37AB
@@ -53457,7 +53457,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x43
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x45
 ; get_local 0x45
@@ -53489,7 +53489,7 @@
 ; get_local 0x4C
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; br 0x9
 ; end
@@ -53866,7 +53866,7 @@
 ; loop
 ; block
 ; get_local 0x5
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0xD
 ; get_local 0x8
@@ -53929,7 +53929,7 @@
 ; i32.add
 ; set_local 0x16
 ; get_local 0x2
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x17
 ; get_local 0x16
@@ -54048,7 +54048,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x26
 ; get_local 0x26
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x27
 ; get_local 0x27
@@ -54199,7 +54199,7 @@
 ; i32.and
 ; set_local 0x6A
 ; get_local 0x6A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -54347,7 +54347,7 @@
 ; br 0x3
 ; end
 ; get_local 0x7D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -54450,7 +54450,7 @@
 ; br 0x3
 ; end
 ; get_local 0x8C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -54583,7 +54583,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -55024,7 +55024,7 @@
 ; br 0x4
 ; end
 ; get_local 0x4C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4F
 ; get_local 0x4F
@@ -55106,7 +55106,7 @@
 ; br 0x5
 ; end
 ; get_local 0x5C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5F
 ; get_local 0x5F
@@ -55420,7 +55420,7 @@
 ; i32.and
 ; set_local 0x6A
 ; get_local 0x6A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -55568,7 +55568,7 @@
 ; br 0x3
 ; end
 ; get_local 0x7D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -55671,7 +55671,7 @@
 ; br 0x3
 ; end
 ; get_local 0x8C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -55804,7 +55804,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -56246,7 +56246,7 @@
 ; br 0x4
 ; end
 ; get_local 0x4C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4F
 ; get_local 0x4F
@@ -56328,7 +56328,7 @@
 ; br 0x5
 ; end
 ; get_local 0x5C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5F
 ; get_local 0x5F
@@ -56632,7 +56632,7 @@
 ; i32.and
 ; set_local 0x63
 ; get_local 0x63
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB6
 ; get_local 0xB6
@@ -56774,7 +56774,7 @@
 ; br 0x3
 ; end
 ; get_local 0x76
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x79
 ; get_local 0x79
@@ -56877,7 +56877,7 @@
 ; br 0x3
 ; end
 ; get_local 0x85
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x88
 ; get_local 0x88
@@ -57010,7 +57010,7 @@
 ; i32.and
 ; set_local 0x99
 ; get_local 0x99
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB7
 ; get_local 0xB7
@@ -57432,7 +57432,7 @@
 ; br 0x4
 ; end
 ; get_local 0x46
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x49
 ; get_local 0x49
@@ -57514,7 +57514,7 @@
 ; br 0x5
 ; end
 ; get_local 0x57
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5A
 ; get_local 0x5A
@@ -57952,7 +57952,7 @@
 ; get_local 0x2
 ; i32.const 0x4
 ; i32.store 0x2,0x0
-; i64.const 0x7F
+; i64.const 0xFFFFFFFFFFFFFFFF
 ; set_local 0x12
 ; else
 ; get_local 0x14
@@ -58096,7 +58096,7 @@
 ; i32.and
 ; set_local 0x64
 ; get_local 0x64
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB7
 ; get_local 0xB7
@@ -58238,7 +58238,7 @@
 ; br 0x3
 ; end
 ; get_local 0x77
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7A
 ; get_local 0x7A
@@ -58341,7 +58341,7 @@
 ; br 0x3
 ; end
 ; get_local 0x86
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x89
 ; get_local 0x89
@@ -58474,7 +58474,7 @@
 ; i32.and
 ; set_local 0x9A
 ; get_local 0x9A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB8
 ; get_local 0xB8
@@ -58896,7 +58896,7 @@
 ; br 0x4
 ; end
 ; get_local 0x47
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4A
 ; get_local 0x4A
@@ -58978,7 +58978,7 @@
 ; br 0x5
 ; end
 ; get_local 0x58
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5B
 ; get_local 0x5B
@@ -59170,7 +59170,7 @@
 ; get_local 0x2
 ; i32.const 0x4
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x2
 ; else
@@ -59320,7 +59320,7 @@
 ; i32.and
 ; set_local 0x64
 ; get_local 0x64
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB7
 ; get_local 0xB7
@@ -59462,7 +59462,7 @@
 ; br 0x3
 ; end
 ; get_local 0x77
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7A
 ; get_local 0x7A
@@ -59565,7 +59565,7 @@
 ; br 0x3
 ; end
 ; get_local 0x86
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x89
 ; get_local 0x89
@@ -59698,7 +59698,7 @@
 ; i32.and
 ; set_local 0x9A
 ; get_local 0x9A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB8
 ; get_local 0xB8
@@ -60120,7 +60120,7 @@
 ; br 0x4
 ; end
 ; get_local 0x47
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4A
 ; get_local 0x4A
@@ -60202,7 +60202,7 @@
 ; br 0x5
 ; end
 ; get_local 0x58
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5B
 ; get_local 0x5B
@@ -60394,7 +60394,7 @@
 ; get_local 0x2
 ; i32.const 0x4
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x2
 ; else
@@ -60544,7 +60544,7 @@
 ; i32.and
 ; set_local 0x64
 ; get_local 0x64
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB7
 ; get_local 0xB7
@@ -60686,7 +60686,7 @@
 ; br 0x3
 ; end
 ; get_local 0x77
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7A
 ; get_local 0x7A
@@ -60789,7 +60789,7 @@
 ; br 0x3
 ; end
 ; get_local 0x86
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x89
 ; get_local 0x89
@@ -60922,7 +60922,7 @@
 ; i32.and
 ; set_local 0x9A
 ; get_local 0x9A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB8
 ; get_local 0xB8
@@ -61344,7 +61344,7 @@
 ; br 0x4
 ; end
 ; get_local 0x47
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4A
 ; get_local 0x4A
@@ -61426,7 +61426,7 @@
 ; br 0x5
 ; end
 ; get_local 0x58
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5B
 ; get_local 0x5B
@@ -61618,7 +61618,7 @@
 ; get_local 0x2
 ; i32.const 0x4
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x4
 ; br 0x2
 ; else
@@ -61770,7 +61770,7 @@
 ; i32.and
 ; set_local 0x63
 ; get_local 0x63
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB6
 ; get_local 0xB6
@@ -61912,7 +61912,7 @@
 ; br 0x3
 ; end
 ; get_local 0x76
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x79
 ; get_local 0x79
@@ -62015,7 +62015,7 @@
 ; br 0x3
 ; end
 ; get_local 0x85
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x88
 ; get_local 0x88
@@ -62148,7 +62148,7 @@
 ; i32.and
 ; set_local 0x99
 ; get_local 0x99
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB7
 ; get_local 0xB7
@@ -62570,7 +62570,7 @@
 ; br 0x4
 ; end
 ; get_local 0x46
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x49
 ; get_local 0x49
@@ -62652,7 +62652,7 @@
 ; br 0x5
 ; end
 ; get_local 0x57
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5A
 ; get_local 0x5A
@@ -62968,7 +62968,7 @@
 ; i32.and
 ; set_local 0x64
 ; get_local 0x64
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB7
 ; get_local 0xB7
@@ -63110,7 +63110,7 @@
 ; br 0x3
 ; end
 ; get_local 0x77
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7A
 ; get_local 0x7A
@@ -63213,7 +63213,7 @@
 ; br 0x3
 ; end
 ; get_local 0x86
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x89
 ; get_local 0x89
@@ -63346,7 +63346,7 @@
 ; i32.and
 ; set_local 0x9A
 ; get_local 0x9A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xB8
 ; get_local 0xB8
@@ -63768,7 +63768,7 @@
 ; br 0x4
 ; end
 ; get_local 0x47
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4A
 ; get_local 0x4A
@@ -63850,7 +63850,7 @@
 ; br 0x5
 ; end
 ; get_local 0x58
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5B
 ; get_local 0x5B
@@ -64026,7 +64026,7 @@
 ; end
 ; else
 ; get_local 0x16
-; i64.const 0x80000000
+; i64.const 0xFFFFFFF880000000
 ; i64.lt_s
 ; set_local 0xB
 ; get_local 0xB
@@ -64106,7 +64106,7 @@
 ; get_local 0x2B
 ; i32.const 0xC
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x36
 ; get_local 0x36
@@ -64233,7 +64233,7 @@
 ; i32.const 0x2
 ; i32.store8 0x0,0x0
 ; get_local 0xE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x9D
 ; get_local 0xD
@@ -64344,7 +64344,7 @@
 ; br 0x4
 ; end
 ; get_local 0xAB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xAE
 ; get_local 0xAE
@@ -64436,7 +64436,7 @@
 ; br 0x3
 ; end
 ; get_local 0xBB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xBE
 ; get_local 0xBE
@@ -64719,7 +64719,7 @@
 ; i32.const 0x0
 ; i32.store8 0x0,0x0
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x5F
 ; get_local 0x14
@@ -64767,7 +64767,7 @@
 ; get_local 0x5B
 ; if
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x5D
 ; get_local 0x1D
@@ -64991,7 +64991,7 @@
 ; set_local 0x22
 ; else
 ; get_local 0x21
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x80
 ; get_local 0x19
@@ -65087,7 +65087,7 @@
 ; i32.eqz
 ; if
 ; get_local 0xCD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xD0
 ; get_local 0xD0
@@ -65183,7 +65183,7 @@
 ; br 0x5
 ; end
 ; get_local 0xDD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xE0
 ; get_local 0xE0
@@ -65504,7 +65504,7 @@
 ; get_local 0x15
 ; if
 ; get_local 0x41
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x0
 ; i32.load 0x2,0x0
@@ -65794,7 +65794,7 @@
 ; loop
 ; block
 ; get_local 0x43
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x42
 ; get_local 0x42
@@ -65838,7 +65838,7 @@
 ; loop
 ; block
 ; get_local 0x3F
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x3E
 ; get_local 0x3E
@@ -66686,7 +66686,7 @@
 ; i32.and
 ; set_local 0x85
 ; get_local 0x85
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xCD
 ; get_local 0xCD
@@ -66840,7 +66840,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x9C
 ; get_local 0x9C
@@ -66933,7 +66933,7 @@
 ; set_local 0xB
 ; end
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xAD
 ; get_local 0xAD
@@ -67066,7 +67066,7 @@
 ; i32.and
 ; set_local 0xBD
 ; get_local 0xBD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xCE
 ; get_local 0xCE
@@ -67479,7 +67479,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x60
 ; get_local 0x60
@@ -67563,7 +67563,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x6F
 ; get_local 0x6F
@@ -67917,7 +67917,7 @@
 ; set_local 0x31
 ; get_local 0x31
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; else
 ; block
@@ -67940,7 +67940,7 @@
 ; get_local 0x32
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
@@ -67957,7 +67957,7 @@
 ; if
 ; get_local 0x10
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
@@ -67976,12 +67976,12 @@
 ; get_local 0x37
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x38
 ; get_local 0x38
@@ -67998,7 +67998,7 @@
 ; get_local 0x3A
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0xE
 ; br 0x7
 ; end
@@ -68198,7 +68198,7 @@
 ; i32.and
 ; set_local 0x6F
 ; get_local 0x6F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC1
 ; get_local 0xC1
@@ -68358,7 +68358,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x86
 ; get_local 0x86
@@ -68451,7 +68451,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x96
 ; get_local 0x96
@@ -68584,7 +68584,7 @@
 ; i32.and
 ; set_local 0xA6
 ; get_local 0xA6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC2
 ; get_local 0xC2
@@ -69027,7 +69027,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x53
 ; get_local 0x53
@@ -69111,7 +69111,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x62
 ; get_local 0x62
@@ -69446,7 +69446,7 @@
 ; set_local 0x14
 ; get_local 0x14
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; else
 ; get_local 0x1
@@ -69605,7 +69605,7 @@
 ; set_local 0x30
 ; get_local 0x30
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; br 0x4
 ; end
@@ -69717,7 +69717,7 @@
 ; set_local 0x40
 ; get_local 0x40
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; else
 ; i32.const 0x37AB
@@ -69752,7 +69752,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x43
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x45
 ; get_local 0x45
@@ -69784,7 +69784,7 @@
 ; get_local 0x4C
 ; i32.eqz
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x10
 ; br 0x9
 ; end
@@ -70115,7 +70115,7 @@
 ; i32.and
 ; set_local 0x6F
 ; get_local 0x6F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC1
 ; get_local 0xC1
@@ -70275,7 +70275,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x86
 ; get_local 0x86
@@ -70368,7 +70368,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x96
 ; get_local 0x96
@@ -70501,7 +70501,7 @@
 ; i32.and
 ; set_local 0xA6
 ; get_local 0xA6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC2
 ; get_local 0xC2
@@ -70944,7 +70944,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x53
 ; get_local 0x53
@@ -71028,7 +71028,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x62
 ; get_local 0x62
@@ -71246,7 +71246,7 @@
 ; i32.and
 ; set_local 0x6F
 ; get_local 0x6F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC1
 ; get_local 0xC1
@@ -71406,7 +71406,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x86
 ; get_local 0x86
@@ -71499,7 +71499,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x96
 ; get_local 0x96
@@ -71632,7 +71632,7 @@
 ; i32.and
 ; set_local 0xA6
 ; get_local 0xA6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xC2
 ; get_local 0xC2
@@ -72076,7 +72076,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x53
 ; get_local 0x53
@@ -72160,7 +72160,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x62
 ; get_local 0x62
@@ -72368,7 +72368,7 @@
 ; i32.and
 ; set_local 0x68
 ; get_local 0x68
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBB
 ; get_local 0xBB
@@ -72522,7 +72522,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7F
 ; get_local 0x7F
@@ -72615,7 +72615,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x8F
 ; get_local 0x8F
@@ -72748,7 +72748,7 @@
 ; i32.and
 ; set_local 0x9F
 ; get_local 0x9F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -73172,7 +73172,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4D
 ; get_local 0x4D
@@ -73256,7 +73256,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5D
 ; get_local 0x5D
@@ -73656,7 +73656,7 @@
 ; i32.and
 ; set_local 0x69
 ; get_local 0x69
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -73810,7 +73810,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -73903,7 +73903,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -74036,7 +74036,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -74460,7 +74460,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4E
 ; get_local 0x4E
@@ -74544,7 +74544,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5E
 ; get_local 0x5E
@@ -74752,7 +74752,7 @@
 ; i32.and
 ; set_local 0x69
 ; get_local 0x69
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -74906,7 +74906,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -74999,7 +74999,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -75132,7 +75132,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -75556,7 +75556,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4E
 ; get_local 0x4E
@@ -75640,7 +75640,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5E
 ; get_local 0x5E
@@ -75848,7 +75848,7 @@
 ; i32.and
 ; set_local 0x69
 ; get_local 0x69
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -76002,7 +76002,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -76095,7 +76095,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -76228,7 +76228,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -76652,7 +76652,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4E
 ; get_local 0x4E
@@ -76736,7 +76736,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5E
 ; get_local 0x5E
@@ -76944,7 +76944,7 @@
 ; i32.and
 ; set_local 0x68
 ; get_local 0x68
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBB
 ; get_local 0xBB
@@ -77098,7 +77098,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7F
 ; get_local 0x7F
@@ -77191,7 +77191,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x8F
 ; get_local 0x8F
@@ -77324,7 +77324,7 @@
 ; i32.and
 ; set_local 0x9F
 ; get_local 0x9F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -77748,7 +77748,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4D
 ; get_local 0x4D
@@ -77832,7 +77832,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5D
 ; get_local 0x5D
@@ -78040,7 +78040,7 @@
 ; i32.and
 ; set_local 0x69
 ; get_local 0x69
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBC
 ; get_local 0xBC
@@ -78194,7 +78194,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x80
 ; get_local 0x80
@@ -78287,7 +78287,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x90
 ; get_local 0x90
@@ -78420,7 +78420,7 @@
 ; i32.and
 ; set_local 0xA0
 ; get_local 0xA0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xBD
 ; get_local 0xBD
@@ -78844,7 +78844,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4E
 ; get_local 0x4E
@@ -78928,7 +78928,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5E
 ; get_local 0x5E
@@ -79044,7 +79044,7 @@
 ; get_local 0x2F
 ; i32.const 0xC
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x3A
 ; get_local 0x3A
@@ -79175,7 +79175,7 @@
 ; i32.const 0x2
 ; i32.store8 0x0,0x0
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA6
 ; get_local 0x14
@@ -79296,7 +79296,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xB8
 ; get_local 0xB8
@@ -79396,7 +79396,7 @@
 ; set_local 0xB
 ; end
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xC7
 ; get_local 0xC7
@@ -79665,7 +79665,7 @@
 ; i32.const 0x0
 ; i32.store8 0x0,0x0
 ; get_local 0x22
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x65
 ; get_local 0xF
@@ -79713,7 +79713,7 @@
 ; get_local 0x61
 ; if
 ; get_local 0x22
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x63
 ; get_local 0x21
@@ -79941,7 +79941,7 @@
 ; set_local 0x26
 ; else
 ; get_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x88
 ; get_local 0x1D
@@ -80048,7 +80048,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xDC
 ; get_local 0xDC
@@ -80151,7 +80151,7 @@
 ; set_local 0xC
 ; end
 ; get_local 0xC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xEB
 ; get_local 0xEB
@@ -80742,7 +80742,7 @@
 ; br 0x3
 ; end
 ; get_local 0x3D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x40
 ; get_local 0x40
@@ -84169,7 +84169,7 @@
 ; set_local 0xF
 ; loop
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1D
 ; get_local 0xF
@@ -84341,7 +84341,7 @@
 ; end
 ; set_local 0x46
 ; get_local 0x46
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x48
 ; get_local 0xB
@@ -84474,7 +84474,7 @@
 ; set_local 0x10
 ; loop
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x30
 ; get_local 0x10
@@ -85337,7 +85337,7 @@
 ; set_local 0xB
 ; loop
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x74
 ; get_local 0xB
@@ -85508,7 +85508,7 @@
 ; end
 ; set_local 0x21
 ; get_local 0x21
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x23
 ; get_local 0xD
@@ -85650,7 +85650,7 @@
 ; loop
 ; block
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x87
 ; get_local 0xC
@@ -86105,7 +86105,7 @@
 ; set_local 0x6
 ; end
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x41
 ; get_local 0x41
@@ -89238,7 +89238,7 @@
 ; set_local 0xF
 ; loop
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1D
 ; get_local 0xF
@@ -89399,7 +89399,7 @@
 ; end
 ; set_local 0x44
 ; get_local 0x44
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x45
 ; get_local 0xB
@@ -89536,7 +89536,7 @@
 ; set_local 0x10
 ; loop
 ; get_local 0xA
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x30
 ; get_local 0x10
@@ -90248,7 +90248,7 @@
 ; set_local 0xB
 ; loop
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x71
 ; get_local 0xB
@@ -90408,7 +90408,7 @@
 ; end
 ; set_local 0x1E
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1F
 ; get_local 0xD
@@ -90551,7 +90551,7 @@
 ; end
 ; loop
 ; get_local 0xA
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x84
 ; get_local 0xC
@@ -93896,7 +93896,7 @@
 ; loop
 ; block
 ; get_local 0x2
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1
 ; get_local 0x1
@@ -93928,7 +93928,7 @@
 ; loop
 ; block
 ; get_local 0x2
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1
 ; get_local 0x1
@@ -93960,7 +93960,7 @@
 ; loop
 ; block
 ; get_local 0x2
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1
 ; get_local 0x1
@@ -94062,13 +94062,13 @@
 ; get_local 0xD
 ; i32.const 0xC
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0xF
 ; get_local 0xF
 ; i32.const 0x7
 ; call 0x53
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x10
 ; get_local 0x1
@@ -94164,13 +94164,13 @@
 ; get_local 0xE
 ; i32.const 0xC
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x10
 ; get_local 0x10
 ; i32.const 0xC
 ; call 0x53
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x11
 ; get_local 0x1
@@ -94343,7 +94343,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x94
 ; get_local 0x94
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x95
 ; get_local 0x95
@@ -94428,7 +94428,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0xA3
 ; get_local 0xA3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA4
 ; get_local 0xA4
@@ -94519,7 +94519,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xDC
 ; get_local 0xDC
@@ -94880,7 +94880,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xDD
 ; get_local 0xDD
@@ -94986,7 +94986,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x1C
 ; get_local 0x1C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1D
 ; get_local 0x1D
@@ -95074,7 +95074,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x2B
 ; get_local 0x2B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2C
 ; get_local 0x2C
@@ -95189,7 +95189,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xDE
 ; get_local 0xDE
@@ -95438,7 +95438,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x75
 ; get_local 0x75
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x76
 ; get_local 0x76
@@ -95513,7 +95513,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x83
 ; get_local 0x83
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x84
 ; get_local 0x84
@@ -95616,7 +95616,7 @@
 ; i32.eq
 ; set_local 0x9
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -95774,7 +95774,7 @@
 ; i32.eq
 ; set_local 0x9
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -95942,7 +95942,7 @@
 ; get_local 0x10
 ; if
 ; get_local 0xE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA
 ; get_local 0x1
@@ -96102,7 +96102,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0xF
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x10
 ; get_local 0x10
@@ -96195,7 +96195,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x1D
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1E
 ; get_local 0x1E
@@ -96299,7 +96299,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x5D
 ; get_local 0x5D
@@ -96454,7 +96454,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x49
 ; get_local 0x49
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4A
 ; get_local 0x4A
@@ -96532,7 +96532,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x57
 ; get_local 0x57
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x58
 ; get_local 0x58
@@ -97039,7 +97039,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x3894
+; i32.const 0xFFFFF894
 ; i32.add
 ; set_local 0xF
 ; get_local 0x1
@@ -97104,7 +97104,7 @@
 ; get_local 0x8
 ; if
 ; get_local 0xC
-; i32.const 0x3894
+; i32.const 0xFFFFF894
 ; i32.add
 ; set_local 0x9
 ; get_local 0x1
@@ -97173,7 +97173,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0xF
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x10
 ; get_local 0x10
@@ -97254,7 +97254,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x1D
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1E
 ; get_local 0x1E
@@ -97530,7 +97530,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x4C
 ; get_local 0x4C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4D
 ; get_local 0x4D
@@ -97608,7 +97608,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x5A
 ; get_local 0x5A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5B
 ; get_local 0x5B
@@ -97710,7 +97710,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x48
 ; get_local 0x48
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x53
 ; get_local 0x53
@@ -97791,7 +97791,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x63
 ; get_local 0x63
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x64
 ; get_local 0x64
@@ -97916,7 +97916,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xAF
 ; get_local 0xAF
@@ -98055,11 +98055,11 @@
 ; loop
 ; block
 ; get_local 0x8
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x5
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x9
 ; get_local 0x0
@@ -98114,7 +98114,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x9A
 ; get_local 0x9A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x9B
 ; get_local 0x9B
@@ -98193,7 +98193,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0xA9
 ; get_local 0xA9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xAA
 ; get_local 0xAA
@@ -98302,7 +98302,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xB0
 ; get_local 0xB0
@@ -98504,7 +98504,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x43
 ; get_local 0x43
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x44
 ; get_local 0x44
@@ -98582,7 +98582,7 @@
 ; call_indirect 0x0,0x0
 ; set_local 0x51
 ; get_local 0x51
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x52
 ; get_local 0x52
@@ -101981,7 +101981,7 @@
 ; loop
 ; block
 ; get_local 0x2
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1
 ; get_local 0x1
@@ -102013,7 +102013,7 @@
 ; loop
 ; block
 ; get_local 0x2
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1
 ; get_local 0x1
@@ -102045,7 +102045,7 @@
 ; loop
 ; block
 ; get_local 0x2
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x1
 ; get_local 0x1
@@ -102147,13 +102147,13 @@
 ; get_local 0xD
 ; i32.const 0xC
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0xF
 ; get_local 0xF
 ; i32.const 0x7
 ; call 0x53
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x10
 ; get_local 0x1
@@ -102249,13 +102249,13 @@
 ; get_local 0xE
 ; i32.const 0xC
 ; call 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x10
 ; get_local 0x10
 ; i32.const 0xC
 ; call 0x53
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.and
 ; set_local 0x11
 ; get_local 0x1
@@ -102435,7 +102435,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x96
 ; get_local 0x96
@@ -102523,7 +102523,7 @@
 ; set_local 0xC
 ; end
 ; get_local 0xC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA4
 ; get_local 0xA4
@@ -103033,7 +103033,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xDB
 ; get_local 0xDB
@@ -103112,7 +103112,7 @@
 ; set_local 0xD
 ; end
 ; get_local 0xD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2F
 ; get_local 0x2F
@@ -103453,7 +103453,7 @@
 ; set_local 0xB
 ; end
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x75
 ; get_local 0x75
@@ -103533,7 +103533,7 @@
 ; set_local 0xE
 ; end
 ; get_local 0xE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x83
 ; get_local 0x83
@@ -103638,7 +103638,7 @@
 ; i32.eq
 ; set_local 0x9
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -103796,7 +103796,7 @@
 ; i32.eq
 ; set_local 0x9
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7
 ; get_local 0x7
@@ -103964,7 +103964,7 @@
 ; get_local 0x10
 ; if
 ; get_local 0xE
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA
 ; get_local 0x1
@@ -104129,7 +104129,7 @@
 ; set_local 0x6
 ; end
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x14
 ; get_local 0x14
@@ -104215,7 +104215,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x21
 ; get_local 0x21
@@ -104449,7 +104449,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x49
 ; get_local 0x49
@@ -104532,7 +104532,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x57
 ; get_local 0x57
@@ -105045,7 +105045,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x3894
+; i32.const 0xFFFFF894
 ; i32.add
 ; set_local 0xF
 ; get_local 0x1
@@ -105110,7 +105110,7 @@
 ; get_local 0x8
 ; if
 ; get_local 0xC
-; i32.const 0x3894
+; i32.const 0xFFFFF894
 ; i32.add
 ; set_local 0x9
 ; get_local 0x1
@@ -105188,7 +105188,7 @@
 ; set_local 0x6
 ; end
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x15
 ; get_local 0x15
@@ -105274,7 +105274,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x22
 ; get_local 0x22
@@ -105553,7 +105553,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x50
 ; get_local 0x50
@@ -105636,7 +105636,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x5D
 ; get_local 0x5D
@@ -105749,7 +105749,7 @@
 ; set_local 0x7
 ; end
 ; get_local 0x7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x57
 ; get_local 0x57
@@ -105835,7 +105835,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x64
 ; get_local 0x64
@@ -106081,11 +106081,11 @@
 ; loop
 ; block
 ; get_local 0xE
-; i32.const 0x50
+; i32.const 0xFFFFFFD0
 ; i32.add
 ; set_local 0x5
 ; get_local 0x10
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xF
 ; get_local 0x0
@@ -106149,7 +106149,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x96
 ; get_local 0x96
@@ -106236,7 +106236,7 @@
 ; set_local 0xB
 ; end
 ; get_local 0xB
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA5
 ; get_local 0xA5
@@ -106523,7 +106523,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x41
 ; get_local 0x41
@@ -106606,7 +106606,7 @@
 ; set_local 0xC
 ; end
 ; get_local 0xC
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x4F
 ; get_local 0x4F
@@ -106807,7 +106807,7 @@
 ; call_indirect 0x3,0x0
 ; set_local 0x1B
 ; get_local 0x1B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1C
 ; get_local 0x1C
@@ -107168,7 +107168,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1C
 ; get_local 0x1C
@@ -107358,7 +107358,7 @@
 ; end
 ; end
 ; get_local 0xD
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1C
 ; get_local 0x1C
@@ -108915,7 +108915,7 @@
 ; br 0x5
 ; end
 ; get_local 0x91
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x94
 ; get_local 0x94
@@ -109008,7 +109008,7 @@
 ; br 0x5
 ; end
 ; get_local 0x27
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2B
 ; get_local 0x2B
@@ -109519,7 +109519,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x52
 ; get_local 0x52
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x53
 ; get_local 0x51
@@ -109657,7 +109657,7 @@
 ; br 0x5
 ; end
 ; get_local 0x67
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x6B
 ; get_local 0x6B
@@ -109749,7 +109749,7 @@
 ; br 0x5
 ; end
 ; get_local 0x79
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x7C
 ; get_local 0x7C
@@ -110417,7 +110417,7 @@
 ; br 0x4
 ; end
 ; get_local 0x2C8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2E9
 ; get_local 0x2E9
@@ -110522,7 +110522,7 @@
 ; br 0x3
 ; end
 ; get_local 0x378
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x399
 ; get_local 0x399
@@ -110675,7 +110675,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x3BC
 ; get_local 0x3BC
@@ -111886,7 +111886,7 @@
 ; set_local 0x1CF
 ; else
 ; get_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x188
 ; get_local 0x97
@@ -111944,7 +111944,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x3C0
 ; get_local 0x3C0
@@ -112261,7 +112261,7 @@
 ; br 0xB
 ; end
 ; get_local 0x1C7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1CA
 ; get_local 0x1CA
@@ -112367,7 +112367,7 @@
 ; br 0xA
 ; end
 ; get_local 0x1D9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1DC
 ; get_local 0x1DC
@@ -112736,7 +112736,7 @@
 ; br 0xA
 ; end
 ; get_local 0x21C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x21F
 ; get_local 0x21F
@@ -112842,7 +112842,7 @@
 ; br 0x9
 ; end
 ; get_local 0x22D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x231
 ; get_local 0x231
@@ -112973,7 +112973,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x3BF
 ; get_local 0x3BF
@@ -113426,7 +113426,7 @@
 ; br 0xA
 ; end
 ; get_local 0x293
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x296
 ; get_local 0x296
@@ -113516,7 +113516,7 @@
 ; br 0xA
 ; end
 ; get_local 0x2A3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2A6
 ; get_local 0x2A6
@@ -113797,7 +113797,7 @@
 ; br 0xB
 ; end
 ; get_local 0x2D7
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2DA
 ; get_local 0x2DA
@@ -113903,7 +113903,7 @@
 ; br 0xA
 ; end
 ; get_local 0x2E8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2EC
 ; get_local 0x2EC
@@ -114034,7 +114034,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x3BE
 ; get_local 0x3BE
@@ -114204,7 +114204,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x31F
 ; get_local 0x31F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x321
 ; get_local 0xEF
@@ -114385,7 +114385,7 @@
 ; br 0x7
 ; end
 ; get_local 0x8A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x8E
 ; get_local 0x8E
@@ -114491,7 +114491,7 @@
 ; br 0x6
 ; end
 ; get_local 0x9C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x9F
 ; get_local 0x9F
@@ -114622,7 +114622,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x3BD
 ; get_local 0x3BD
@@ -115149,7 +115149,7 @@
 ; br 0x4
 ; end
 ; get_local 0x34A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x34E
 ; get_local 0x34E
@@ -115242,7 +115242,7 @@
 ; br 0x4
 ; end
 ; get_local 0x35C
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x35F
 ; get_local 0x35F
@@ -115751,7 +115751,7 @@
 ; i32.and
 ; set_local 0x8
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x28
 ; get_local 0x28
@@ -117209,7 +117209,7 @@
 ; if 0x7F
 ; get_local 0x7
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x4
 ; get_local 0x4
@@ -117376,7 +117376,7 @@
 ; if 0x7F
 ; get_local 0x7
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x4
 ; get_local 0x4
@@ -118121,7 +118121,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x9C
 ; get_local 0x9C
@@ -118220,7 +118220,7 @@
 ; set_local 0xA
 ; end
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2F
 ; get_local 0x2F
@@ -118737,7 +118737,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x57
 ; get_local 0x57
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x58
 ; get_local 0x56
@@ -118877,7 +118877,7 @@
 ; set_local 0x8
 ; end
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x71
 ; get_local 0x71
@@ -118975,7 +118975,7 @@
 ; set_local 0x9
 ; end
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x81
 ; get_local 0x81
@@ -119659,7 +119659,7 @@
 ; set_local 0x12
 ; end
 ; get_local 0x12
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x327
 ; get_local 0x327
@@ -119758,7 +119758,7 @@
 ; set_local 0x1E
 ; end
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x3B3
 ; get_local 0x3B3
@@ -121028,7 +121028,7 @@
 ; set_local 0x1DF
 ; else
 ; get_local 0x33
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x18C
 ; get_local 0xA9
@@ -121476,7 +121476,7 @@
 ; set_local 0x17
 ; end
 ; get_local 0x17
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1DC
 ; get_local 0x1DC
@@ -121574,7 +121574,7 @@
 ; set_local 0x23
 ; end
 ; get_local 0x23
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1ED
 ; get_local 0x1ED
@@ -121939,7 +121939,7 @@
 ; set_local 0x16
 ; end
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x22F
 ; get_local 0x22F
@@ -122037,7 +122037,7 @@
 ; set_local 0x22
 ; end
 ; get_local 0x22
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x23F
 ; get_local 0x23F
@@ -122592,7 +122592,7 @@
 ; set_local 0x15
 ; end
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2A4
 ; get_local 0x2A4
@@ -122688,7 +122688,7 @@
 ; set_local 0x21
 ; end
 ; get_local 0x21
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2B3
 ; get_local 0x2B3
@@ -122964,7 +122964,7 @@
 ; set_local 0x14
 ; end
 ; get_local 0x14
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2E6
 ; get_local 0x2E6
@@ -123062,7 +123062,7 @@
 ; set_local 0x20
 ; end
 ; get_local 0x20
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x2F6
 ; get_local 0x2F6
@@ -123333,7 +123333,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x325
 ; get_local 0x325
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x326
 ; get_local 0x101
@@ -123524,7 +123524,7 @@
 ; set_local 0x13
 ; end
 ; get_local 0x13
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xA0
 ; get_local 0xA0
@@ -123622,7 +123622,7 @@
 ; set_local 0x1F
 ; end
 ; get_local 0x1F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0xB0
 ; get_local 0xB0
@@ -124278,7 +124278,7 @@
 ; set_local 0x11
 ; end
 ; get_local 0x11
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x356
 ; get_local 0x356
@@ -124377,7 +124377,7 @@
 ; set_local 0x1D
 ; end
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x366
 ; get_local 0x366
@@ -124873,7 +124873,7 @@
 ; i32.and
 ; set_local 0x8
 ; get_local 0x8
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2A
 ; get_local 0x2A
@@ -126356,7 +126356,7 @@
 ; if 0x7F
 ; get_local 0x7
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; end
 ; set_local 0x4
 ; get_local 0x4
@@ -130082,7 +130082,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xB0
 ; get_local 0xB0
@@ -130159,7 +130159,7 @@
 ; br 0x1
 ; end
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x9C
 ; get_local 0x9C
@@ -130179,7 +130179,7 @@
 ; get_local 0x9D
 ; i32.store8 0x0,0x0
 ; get_local 0x1B
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA0
 ; get_local 0xA0
@@ -130243,7 +130243,7 @@
 ; get_local 0xA8
 ; i32.store8 0x0,0x0
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA9
 ; get_local 0xA9
@@ -130331,7 +130331,7 @@
 ; set_local 0x2E
 ; get_local 0x2E
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; i32.const 0x0
 ; set_local 0x18
@@ -130464,7 +130464,7 @@
 ; set_local 0x43
 ; get_local 0x42
 ; if 0x7F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; else
 ; get_local 0x43
 ; end
@@ -130492,7 +130492,7 @@
 ; set_local 0x20
 ; end
 ; get_local 0x23
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x44
 ; get_local 0x44
@@ -130545,7 +130545,7 @@
 ; set_local 0x17
 ; loop
 ; get_local 0x13
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x4B
 ; get_local 0x17
@@ -134439,7 +134439,7 @@
 ; br 0x1
 ; end
 ; get_local 0x1E
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x9D
 ; get_local 0x9D
@@ -134459,7 +134459,7 @@
 ; get_local 0x9E
 ; i32.store 0x2,0x0
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xA1
 ; get_local 0xA1
@@ -134522,7 +134522,7 @@
 ; get_local 0xA9
 ; i32.store 0x2,0x0
 ; get_local 0x1D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0xAA
 ; get_local 0xAA
@@ -134616,7 +134616,7 @@
 ; set_local 0x2D
 ; get_local 0x2D
 ; if
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x11
 ; i32.const 0x0
 ; set_local 0x19
@@ -134725,7 +134725,7 @@
 ; set_local 0x3D
 ; get_local 0x3C
 ; if 0x7F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; else
 ; get_local 0x3D
 ; end
@@ -134759,7 +134759,7 @@
 ; set_local 0x41
 ; end
 ; get_local 0x23
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x3E
 ; get_local 0x3E
@@ -134811,7 +134811,7 @@
 ; set_local 0x18
 ; loop
 ; get_local 0x13
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x45
 ; get_local 0x18
@@ -135072,7 +135072,7 @@
 ; get_local 0xA
 ; set_local 0xB
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0xC
 ; get_local 0xC
@@ -135243,7 +135243,7 @@
 ; i32.eq
 ; if
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x1A
 ; get_local 0x2
@@ -135254,7 +135254,7 @@
 ; set_local 0x1C
 ; get_local 0x1A
 ; if 0x7F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; else
 ; get_local 0x1C
 ; end
@@ -135517,7 +135517,7 @@
 ; get_local 0xA
 ; set_local 0xB
 ; get_local 0xA
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.ne
 ; set_local 0xC
 ; get_local 0xC
@@ -135870,7 +135870,7 @@
 ; i32.eq
 ; if
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x46
 ; get_local 0x2
@@ -135881,7 +135881,7 @@
 ; set_local 0x48
 ; get_local 0x46
 ; if 0x7F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; else
 ; get_local 0x48
 ; end
@@ -136519,7 +136519,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.eq
 ; set_local 0x1A
 ; get_local 0x1A
@@ -136536,7 +136536,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBB
+; i32.const 0xFFFFFFBB
 ; i32.eq
 ; set_local 0x23
 ; get_local 0x23
@@ -136553,7 +136553,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.eq
 ; set_local 0x26
 ; get_local 0x0
@@ -136623,7 +136623,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x2C
 ; block
@@ -136789,13 +136789,13 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x10x2
 ; end
 ; block
 ; get_local 0x44
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x48
 ; get_local 0x48
@@ -136803,7 +136803,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FA0
+; i32.const 0xFFFFFFA0
 ; i32.eq
 ; set_local 0x49
 ; get_local 0x49
@@ -136818,7 +136818,7 @@
 ; end
 ; block
 ; get_local 0x44
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x4C
 ; get_local 0x4C
@@ -136826,7 +136826,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x4D
 ; get_local 0x4D
@@ -136841,7 +136841,7 @@
 ; end
 ; block
 ; get_local 0x44
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x50
 ; get_local 0x50
@@ -136849,7 +136849,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x51
 ; get_local 0x51
@@ -136990,7 +136990,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x10x2
 ; end
@@ -137021,7 +137021,7 @@
 ; end
 ; block
 ; get_local 0x69
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x71
 ; get_local 0x71
@@ -137029,7 +137029,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x72
 ; get_local 0x72
@@ -137044,7 +137044,7 @@
 ; end
 ; block
 ; get_local 0x69
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x76
 ; get_local 0x76
@@ -137052,7 +137052,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x77
 ; get_local 0x77
@@ -137330,7 +137330,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.eq
 ; set_local 0x1F
 ; get_local 0x1F
@@ -137347,7 +137347,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBB
+; i32.const 0xFFFFFFBB
 ; i32.eq
 ; set_local 0x22
 ; get_local 0x22
@@ -137364,7 +137364,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.eq
 ; set_local 0x25
 ; get_local 0x25
@@ -137437,7 +137437,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x2D
 ; block
@@ -137611,13 +137611,13 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x10x2
 ; end
 ; block
 ; get_local 0x45
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x48
 ; get_local 0x48
@@ -137625,7 +137625,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FA0
+; i32.const 0xFFFFFFA0
 ; i32.eq
 ; set_local 0x49
 ; get_local 0x49
@@ -137640,7 +137640,7 @@
 ; end
 ; block
 ; get_local 0x45
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x4A
 ; get_local 0x4A
@@ -137648,7 +137648,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x4B
 ; get_local 0x4B
@@ -137663,7 +137663,7 @@
 ; end
 ; block
 ; get_local 0x45
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x4C
 ; get_local 0x4C
@@ -137671,7 +137671,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x4D
 ; get_local 0x4D
@@ -137815,7 +137815,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x10x2
 ; end
@@ -137846,7 +137846,7 @@
 ; end
 ; block
 ; get_local 0x61
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x67
 ; get_local 0x67
@@ -137854,7 +137854,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x68
 ; get_local 0x68
@@ -137869,7 +137869,7 @@
 ; end
 ; block
 ; get_local 0x61
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x69
 ; get_local 0x69
@@ -137877,7 +137877,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x6B
 ; get_local 0x6B
@@ -138070,7 +138070,7 @@
 ; get_local 0xE
 ; i32.store 0x2,0x0
 ; get_local 0x3
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.store8 0x0,0x0
 ; get_local 0x5
 ; i32.load 0x2,0x0
@@ -138083,7 +138083,7 @@
 ; get_local 0x10
 ; i32.store 0x2,0x0
 ; get_local 0xF
-; i32.const 0x3FBB
+; i32.const 0xFFFFFFBB
 ; i32.store8 0x0,0x0
 ; get_local 0x5
 ; i32.load 0x2,0x0
@@ -138096,7 +138096,7 @@
 ; get_local 0x12
 ; i32.store 0x2,0x0
 ; get_local 0x11
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.store8 0x0,0x0
 ; i32.const 0x4
 ; set_local 0x5D
@@ -138128,7 +138128,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x15
 ; get_local 0x15
-; i32.const 0x3800
+; i32.const 0xFFFFF800
 ; i32.and
 ; set_local 0x16
 ; get_local 0x16
@@ -138798,7 +138798,7 @@
 ; block
 ; block
 ; get_local 0x31
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.sub
 ; br_table 0x0 0x10x2
 ; end
@@ -138913,7 +138913,7 @@
 ; end
 ; end
 ; get_local 0x5F
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x6F
 ; get_local 0x6F
@@ -138979,7 +138979,7 @@
 ; get_local 0x78
 ; i32.store8 0x0,0x0
 ; get_local 0x9
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x7B
 ; get_local 0x77
@@ -139196,7 +139196,7 @@
 ; end
 ; end
 ; get_local 0x46
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x55
 ; get_local 0x55
@@ -139590,7 +139590,7 @@
 ; end
 ; end
 ; get_local 0x28
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.eq
 ; set_local 0x37
 ; get_local 0x37
@@ -139939,7 +139939,7 @@
 ; block
 ; block
 ; get_local 0x3E
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.sub
 ; br_table 0x1 0x0 0x20x3
 ; end
@@ -140327,7 +140327,7 @@
 ; block
 ; block
 ; get_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.sub
 ; br_table 0x1 0x00x2
 ; end
@@ -140341,7 +140341,7 @@
 ; end
 ; block
 ; get_local 0x25
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x16
 ; get_local 0x4
@@ -140398,7 +140398,7 @@
 ; get_local 0x1D
 ; i32.store8 0x0,0x0
 ; get_local 0x6
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x20
 ; get_local 0x1C
@@ -140620,7 +140620,7 @@
 ; end
 ; end
 ; else
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; set_local 0x23
 ; end
 ; get_local 0x23
@@ -140759,7 +140759,7 @@
 ; block
 ; block
 ; get_local 0xE
-; i32.const 0x7E
+; i32.const 0xFFFFFFFE
 ; i32.sub
 ; br_table 0x0 0x1 0x20x3
 ; end
@@ -141262,7 +141262,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.eq
 ; set_local 0x18
 ; get_local 0x18
@@ -141279,7 +141279,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBB
+; i32.const 0xFFFFFFBB
 ; i32.eq
 ; set_local 0x27
 ; get_local 0x27
@@ -141296,7 +141296,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.eq
 ; set_local 0x2A
 ; get_local 0x0
@@ -141376,7 +141376,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x31
 ; block
@@ -141537,13 +141537,13 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x10x2
 ; end
 ; block
 ; get_local 0x48
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x4C
 ; get_local 0x4C
@@ -141551,7 +141551,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FA0
+; i32.const 0xFFFFFFA0
 ; i32.eq
 ; set_local 0x4D
 ; get_local 0x4D
@@ -141566,7 +141566,7 @@
 ; end
 ; block
 ; get_local 0x48
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x50
 ; get_local 0x50
@@ -141574,7 +141574,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x51
 ; get_local 0x51
@@ -141589,7 +141589,7 @@
 ; end
 ; block
 ; get_local 0x48
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x54
 ; get_local 0x54
@@ -141597,7 +141597,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x55
 ; get_local 0x55
@@ -141752,7 +141752,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x10x2
 ; end
@@ -141783,7 +141783,7 @@
 ; end
 ; block
 ; get_local 0x6F
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x78
 ; get_local 0x78
@@ -141791,7 +141791,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x79
 ; get_local 0x79
@@ -141806,7 +141806,7 @@
 ; end
 ; block
 ; get_local 0x6F
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x7C
 ; get_local 0x7C
@@ -141814,7 +141814,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x7D
 ; get_local 0x7D
@@ -142098,7 +142098,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.eq
 ; set_local 0x3A
 ; get_local 0x3A
@@ -142115,7 +142115,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBB
+; i32.const 0xFFFFFFBB
 ; i32.eq
 ; set_local 0x3D
 ; get_local 0x3D
@@ -142132,7 +142132,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.eq
 ; set_local 0x40
 ; get_local 0x40
@@ -142217,7 +142217,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x4A
 ; block
@@ -142389,13 +142389,13 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x2 0x10x2
 ; end
 ; block
 ; get_local 0x63
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x66
 ; get_local 0x66
@@ -142403,7 +142403,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3FA0
+; i32.const 0xFFFFFFA0
 ; i32.eq
 ; set_local 0x67
 ; get_local 0x67
@@ -142418,7 +142418,7 @@
 ; end
 ; block
 ; get_local 0x63
-; i32.const 0x60
+; i32.const 0xFFFFFFE0
 ; i32.and
 ; set_local 0x68
 ; get_local 0x68
@@ -142426,7 +142426,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x69
 ; get_local 0x69
@@ -142441,7 +142441,7 @@
 ; end
 ; block
 ; get_local 0x63
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x6A
 ; get_local 0x6A
@@ -142449,7 +142449,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x6B
 ; get_local 0x6B
@@ -142597,7 +142597,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.sub
 ; br_table 0x0 0x2 0x2 0x2 0x10x2
 ; end
@@ -142628,7 +142628,7 @@
 ; end
 ; block
 ; get_local 0x80
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x87
 ; get_local 0x87
@@ -142636,7 +142636,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x88
 ; get_local 0x88
@@ -142651,7 +142651,7 @@
 ; end
 ; block
 ; get_local 0x80
-; i32.const 0x40
+; i32.const 0xFFFFFFC0
 ; i32.and
 ; set_local 0x89
 ; get_local 0x89
@@ -142659,7 +142659,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x3F80
+; i32.const 0xFFFFFF80
 ; i32.eq
 ; set_local 0x8A
 ; get_local 0x8A
@@ -142953,7 +142953,7 @@
 ; get_local 0x2C
 ; i32.store 0x2,0x0
 ; get_local 0x3
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.store8 0x0,0x0
 ; get_local 0x5
 ; i32.load 0x2,0x0
@@ -142966,7 +142966,7 @@
 ; get_local 0x36
 ; i32.store 0x2,0x0
 ; get_local 0x35
-; i32.const 0x3FBB
+; i32.const 0xFFFFFFBB
 ; i32.store8 0x0,0x0
 ; get_local 0x5
 ; i32.load 0x2,0x0
@@ -142979,7 +142979,7 @@
 ; get_local 0x38
 ; i32.store 0x2,0x0
 ; get_local 0x37
-; i32.const 0x3FBF
+; i32.const 0xFFFFFFBF
 ; i32.store8 0x0,0x0
 ; i32.const 0x4
 ; set_local 0x8D
@@ -143767,7 +143767,7 @@
 ; br 0x1
 ; end
 ; get_local 0x6
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x7
 ; get_local 0x4
@@ -143875,7 +143875,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x8
 ; get_local 0x8
@@ -143934,7 +143934,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xD
 ; get_local 0xD
@@ -143992,7 +143992,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x8
 ; get_local 0x8
@@ -144053,7 +144053,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xD
 ; get_local 0xD
@@ -144164,7 +144164,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0x4
 ; get_local 0x4
@@ -144205,7 +144205,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xC
 ; get_local 0xC
@@ -145302,7 +145302,7 @@
 ; get_global 0xA
 ; set_local 0x62
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x11
 ; get_local 0x0
@@ -145405,7 +145405,7 @@
 ; br 0x1
 ; end
 ; get_local 0xA
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0xB
 ; get_local 0x8
@@ -146418,7 +146418,7 @@
 ; get_global 0xA
 ; set_local 0xB
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x2
 ; get_local 0x0
@@ -146515,7 +146515,7 @@
 ; get_global 0xA
 ; set_local 0xC
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x3
 ; get_local 0x0
@@ -146608,7 +146608,7 @@
 ; get_global 0xA
 ; set_local 0xC
 ; get_local 0x1
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x3
 ; get_local 0x0
@@ -147162,7 +147162,7 @@
 ; br 0x4
 ; end
 ; get_local 0x6
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x7
 ; get_local 0x8
@@ -147318,7 +147318,7 @@
 ; get_local 0x15
 ; i32.store 0x2,0x0
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x16
 ; get_local 0x16
@@ -147384,7 +147384,7 @@
 ; get_local 0x7
 ; i32.store 0x2,0x0
 ; get_local 0x2
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x8
 ; get_local 0x8
@@ -147676,7 +147676,7 @@
 ; br 0x1
 ; end
 ; get_local 0x9
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0xA
 ; get_local 0x7
@@ -148093,7 +148093,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x3
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x4
 ; get_local 0x2
@@ -148225,7 +148225,7 @@
 ; i32.eqz
 ; if
 ; get_local 0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; i32.const 0x0
 ; set_global 0x10
@@ -148796,7 +148796,7 @@
 ; get_global 0xA
 ; set_local 0x12
 ; get_local 0x2
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.gt_u
 ; set_local 0xA
 ; get_local 0xA
@@ -148841,7 +148841,7 @@
 ; i32.add
 ; set_local 0xC
 ; get_local 0xC
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0xD
 ; get_local 0xD
@@ -148901,7 +148901,7 @@
 ; get_global 0xA
 ; set_local 0x12
 ; get_local 0x1
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.gt_u
 ; set_local 0xA
 ; get_local 0xA
@@ -148946,7 +148946,7 @@
 ; i32.add
 ; set_local 0xC
 ; get_local 0xC
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0xD
 ; get_local 0xD
@@ -149065,7 +149065,7 @@
 ; i32.and
 ; set_local 0x16
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x18
 ; get_local 0x18
@@ -149187,7 +149187,7 @@
 ; block
 ; get_global 0xA
 ; set_local 0x2B
-; i32.const 0x6E
+; i32.const 0xFFFFFFEE
 ; get_local 0x1
 ; i32.sub
 ; set_local 0x27
@@ -149260,7 +149260,7 @@
 ; i32.add
 ; set_local 0x12
 ; get_local 0x12
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x13
 ; get_local 0x11
@@ -149273,7 +149273,7 @@
 ; get_local 0x29
 ; set_local 0x14
 ; else
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; set_local 0x14
 ; end
 ; get_local 0x14
@@ -149397,7 +149397,7 @@
 ; get_global 0xA
 ; set_local 0x39
 ; get_local 0x1
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; i32.gt_u
 ; set_local 0x1A
 ; get_local 0x1A
@@ -149434,7 +149434,7 @@
 ; i32.and
 ; set_local 0x34
 ; get_local 0x34
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x36
 ; get_local 0x0
@@ -149478,11 +149478,11 @@
 ; i32.add
 ; set_local 0x15
 ; get_local 0x15
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x16
 ; get_local 0x16
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x37
 ; get_local 0x14
@@ -149869,7 +149869,7 @@
 ; i32.and
 ; set_local 0x1E
 ; get_local 0x1E
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1F
 ; get_local 0x0
@@ -150006,7 +150006,7 @@
 ; block
 ; get_global 0xA
 ; set_local 0x25
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; get_local 0x1
 ; i32.sub
 ; set_local 0x20
@@ -150079,7 +150079,7 @@
 ; i32.add
 ; set_local 0x10
 ; get_local 0x10
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x11
 ; get_local 0xF
@@ -150092,7 +150092,7 @@
 ; get_local 0x23
 ; set_local 0x12
 ; else
-; i32.const 0x6F
+; i32.const 0xFFFFFFEF
 ; set_local 0x12
 ; end
 ; get_local 0x12
@@ -150209,7 +150209,7 @@
 ; i32.and
 ; set_local 0x1A
 ; get_local 0x1A
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x1C
 ; get_local 0x0
@@ -150385,7 +150385,7 @@
 ; i32.and
 ; set_local 0x17
 ; get_local 0x17
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x18
 ; get_local 0x0
@@ -150431,7 +150431,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xA
 ; get_local 0xA
@@ -150553,7 +150553,7 @@
 ; i32.add
 ; set_local 0x11
 ; get_local 0x11
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.and
 ; set_local 0x12
 ; get_local 0x12
@@ -150667,7 +150667,7 @@
 ; i32.add
 ; set_local 0x11
 ; get_local 0x11
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.and
 ; set_local 0x12
 ; get_local 0x12
@@ -150832,7 +150832,7 @@
 ; i32.and
 ; set_local 0x15
 ; get_local 0x15
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x17
 ; get_local 0x17
@@ -151051,7 +151051,7 @@
 ; i32.add
 ; set_local 0x13
 ; get_local 0x13
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.and
 ; set_local 0x14
 ; get_local 0x12
@@ -151254,7 +151254,7 @@
 ; i32.and
 ; set_local 0x33
 ; get_local 0x33
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x35
 ; get_local 0x0
@@ -151298,11 +151298,11 @@
 ; i32.add
 ; set_local 0xE
 ; get_local 0xE
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.and
 ; set_local 0xF
 ; get_local 0xF
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x36
 ; get_local 0xD
@@ -151666,7 +151666,7 @@
 ; i32.add
 ; set_local 0x11
 ; get_local 0x11
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.and
 ; set_local 0x12
 ; get_local 0x10
@@ -151821,7 +151821,7 @@
 ; i32.and
 ; set_local 0x17
 ; get_local 0x17
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x18
 ; get_local 0x0
@@ -151867,7 +151867,7 @@
 ; i32.shl
 ; i32.const 0x18
 ; i32.shr_s
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.gt_s
 ; set_local 0xA
 ; get_local 0xA
@@ -152548,7 +152548,7 @@
 ; i64.load 0x3,0x0
 ; set_local 0x24
 ; get_local 0x24
-; i64.const 0x3F00
+; i64.const 0xFFFFFFFFFFFFFF00
 ; i64.and
 ; set_local 0x25
 ; get_local 0x25
@@ -152911,7 +152911,7 @@
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.store 0x2,0x0
 ; get_local 0x10
 ; i32.const 0x30
@@ -153516,7 +153516,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x2E
 ; get_local 0x2E
-; i32.const 0x78
+; i32.const 0xFFFFFFF8
 ; i32.add
 ; set_local 0x2F
 ; get_local 0x2F
@@ -153527,7 +153527,7 @@
 ; i32.add
 ; set_local 0x31
 ; get_local 0x2E
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x32
 ; get_local 0x32
@@ -154417,7 +154417,7 @@
 ; i64.load 0x3,0x0
 ; set_local 0xF
 ; get_local 0xF
-; i64.const 0x3F00
+; i64.const 0xFFFFFFFFFFFFFF00
 ; i64.and
 ; set_local 0x10
 ; get_local 0x10
@@ -154652,21 +154652,21 @@
 ; i32.load 0x2,0x0
 ; set_local 0x1
 ; get_local 0x1
-; i32.const 0x7C
+; i32.const 0xFFFFFFFC
 ; i32.add
 ; set_local 0x2
 ; get_local 0x2
 ; i32.load 0x2,0x0
 ; set_local 0x3
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x4
 ; get_local 0x2
 ; get_local 0x4
 ; i32.store 0x2,0x0
 ; get_local 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.add
 ; set_local 0x5
 ; get_local 0x5
@@ -154679,7 +154679,7 @@
 ; i32.load 0x2,0x0
 ; set_local 0x7
 ; get_local 0x7
-; i32.const 0x74
+; i32.const 0xFFFFFFF4
 ; i32.add
 ; set_local 0x8
 ; get_local 0x8
@@ -156298,7 +156298,7 @@
 ; set_local 0x4
 ; get_local 0x3
 ; i32.const 0x3
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; i32.xor
 ; i32.and
 ; set_local 0x5
@@ -156522,7 +156522,7 @@
 ; get_local 0x0
 ; i32.const 0xF
 ; i32.add
-; i32.const 0x70
+; i32.const 0xFFFFFFF0
 ; i32.and
 ; set_local 0x0
 ; get_global 0xC
@@ -156548,7 +156548,7 @@
 ; drop
 ; i32.const 0xC
 ; call 0x3D
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; get_global 0xC
@@ -156569,7 +156569,7 @@
 ; get_global 0xC
 ; get_local 0x1
 ; i32.store 0x2,0x0
-; i32.const 0x7F
+; i32.const 0xFFFFFFFF
 ; return
 ; end
 ; end

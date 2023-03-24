@@ -27,20 +27,44 @@ T_5: (in arg2 : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in arg0 : word32)
-  Class: Eq_6
+T_6: (in v4 @ 000C0000 : word32)
+  Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_7: (in  : word32)
+T_7: (in 0x2710<32> @ 000C0002 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in 0x2A<32> @ 000C0153 : word32)
+T_8: (in v5 @ 000C0002 : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_9: (in v2 @ 000C0153 : word32)
-  Class: Eq_7
+T_9: (in arg0 @ 000C0002 : word32)
+  Class: Eq_9
+  DataType: word32
+  OrigDataType: word32
+T_10: (in v15 @ 000C0060 : word32)
+  Class: Eq_9
+  DataType: word32
+  OrigDataType: word32
+T_11: (in 0x2710<32> @ 000C0062 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_12: (in v16 @ 000C0062 : word32)
+  Class: Eq_11
+  DataType: word32
+  OrigDataType: word32
+T_13: (in  @ 000C0062 : word32)
+  Class: Eq_13
+  DataType: word32
+  OrigDataType: word32
+T_14: (in 0x2A<32> @ 000C0153 : word32)
+  Class: Eq_13
+  DataType: word32
+  OrigDataType: word32
+T_15: (in v2 @ 000C0153 : word32)
+  Class: Eq_13
   DataType: word32
   OrigDataType: word32
 */

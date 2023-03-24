@@ -2167,6 +2167,15 @@ _pthread_self_exit:
 word32 dynCall_iiiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7)
 dynCall_iiiiiiii_entry:
 l0011F1F9:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg7
+	v9 = arg0
+	v10 = 0x1FF<32>
 dynCall_iiiiiiii_exit:
 
 
@@ -2175,6 +2184,13 @@ dynCall_iiiiiiii_exit:
 void dynCall_viiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
 dynCall_viiiii_entry:
 l0011F215:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg0
+	v8 = 0x1FF<32>
 dynCall_viiiii_exit:
 
 
@@ -2183,6 +2199,14 @@ dynCall_viiiii_exit:
 word32 dynCall_iiiiiid(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, real64 arg6)
 dynCall_iiiiiid_entry:
 l0011F22D:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg0
+	v9 = 0xFF<32>
 dynCall_iiiiiid_exit:
 
 
@@ -2191,6 +2215,9 @@ dynCall_iiiiiid_exit:
 void dynCall_vi(word32 arg0, word32 arg1)
 dynCall_vi_entry:
 l0011F248:
+	v2 = arg1
+	v3 = arg0
+	v4 = 0x1FF<32>
 dynCall_vi_exit:
 
 
@@ -2199,6 +2226,10 @@ dynCall_vi_exit:
 void dynCall_vii(word32 arg0, word32 arg1, word32 arg2)
 dynCall_vii_entry:
 l0011F258:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg0
+	v5 = 0x1FF<32>
 dynCall_vii_exit:
 
 
@@ -2207,6 +2238,14 @@ dynCall_vii_exit:
 word32 dynCall_iiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6)
 dynCall_iiiiiii_entry:
 l0011F26A:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg0
+	v9 = 0x1FF<32>
 dynCall_iiiiiii_exit:
 
 
@@ -2215,6 +2254,9 @@ dynCall_iiiiiii_exit:
 word32 dynCall_ii(word32 arg0, word32 arg1)
 dynCall_ii_entry:
 l0011F285:
+	v2 = arg1
+	v3 = arg0
+	v4 = 0x1FF<32>
 dynCall_ii_exit:
 
 
@@ -2223,6 +2265,13 @@ dynCall_ii_exit:
 void fn0011F296(word32 arg0, word32 arg1, word32 arg2, word64 arg3, word32 arg4, word32 arg5)
 fn0011F296_entry:
 l0011F296:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg0
+	v8 = 0x1F<32>
 fn0011F296_exit:
 
 
@@ -2231,6 +2280,19 @@ fn0011F296_exit:
 word32 dynCall_iiiiiiiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10, word32 arg11)
 dynCall_iiiiiiiiiiii_entry:
 l0011F2AD:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg7
+	v9 = arg8
+	v10 = arg9
+	v11 = arg10
+	v12 = arg11
+	v13 = arg0
+	v14 = 0x1FF<32>
 dynCall_iiiiiiiiiiii_exit:
 
 
@@ -2239,6 +2301,11 @@ dynCall_iiiiiiiiiiii_exit:
 word32 dynCall_iiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
 dynCall_iiii_entry:
 l0011F2D2:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg0
+	v6 = 0x1FF<32>
 dynCall_iiii_exit:
 
 
@@ -2247,6 +2314,23 @@ dynCall_iiii_exit:
 void dynCall_viiiiiiiiiiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10, word32 arg11, word32 arg12, word32 arg13, word32 arg14, word32 arg15)
 dynCall_viiiiiiiiiiiiiii_entry:
 l0011F2E7:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg7
+	v9 = arg8
+	v10 = arg9
+	v11 = arg10
+	v12 = arg11
+	v13 = arg12
+	v14 = arg13
+	v15 = arg14
+	v16 = arg15
+	v17 = arg0
+	v18 = 0x1FF<32>
 dynCall_viiiiiiiiiiiiiii_exit:
 
 
@@ -2255,6 +2339,14 @@ dynCall_viiiiiiiiiiiiiii_exit:
 void dynCall_viiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6)
 dynCall_viiiiii_entry:
 l0011F313:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg0
+	v9 = 0x1FF<32>
 dynCall_viiiiii_exit:
 
 
@@ -2263,6 +2355,11 @@ dynCall_viiiiii_exit:
 real32 dynCall_fiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
 dynCall_fiii_entry:
 l0011F32D:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg0
+	v6 = 0x1FF<32>
 dynCall_fiii_exit:
 
 
@@ -2271,6 +2368,15 @@ dynCall_fiii_exit:
 void dynCall_viiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7)
 dynCall_viiiiiii_entry:
 l0011F342:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg7
+	v9 = arg0
+	v10 = 0x1FF<32>
 dynCall_viiiiiii_exit:
 
 
@@ -2279,6 +2385,18 @@ dynCall_viiiiiii_exit:
 void dynCall_viiiiiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10)
 dynCall_viiiiiiiiii_entry:
 l0011F35E:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg7
+	v9 = arg8
+	v10 = arg9
+	v11 = arg10
+	v12 = arg0
+	v13 = 0x1FF<32>
 dynCall_viiiiiiiiii_exit:
 
 
@@ -2287,6 +2405,10 @@ dynCall_viiiiiiiiii_exit:
 word32 dynCall_iii(word32 arg0, word32 arg1, word32 arg2)
 dynCall_iii_entry:
 l0011F380:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg0
+	v5 = 0x1FF<32>
 dynCall_iii_exit:
 
 
@@ -2295,6 +2417,13 @@ dynCall_iii_exit:
 word32 dynCall_iiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
 dynCall_iiiiii_entry:
 l0011F393:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg0
+	v8 = 0x1FF<32>
 dynCall_iiiiii_exit:
 
 
@@ -2303,6 +2432,11 @@ dynCall_iiiiii_exit:
 real64 dynCall_diii(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
 dynCall_diii_entry:
 l0011F3AC:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg0
+	v6 = 0x1FF<32>
 dynCall_diii_exit:
 
 
@@ -2311,6 +2445,8 @@ dynCall_diii_exit:
 word32 dynCall_i(word32 arg0)
 dynCall_i_entry:
 l0011F3C1:
+	v2 = arg0
+	v3 = 0x1FF<32>
 dynCall_i_exit:
 
 
@@ -2319,6 +2455,12 @@ dynCall_i_exit:
 word64 fn0011F3D1(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
 fn0011F3D1_entry:
 l0011F3D1:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg0
+	v7 = 0x1FF<32>
 fn0011F3D1_exit:
 
 
@@ -2327,6 +2469,12 @@ fn0011F3D1_exit:
 word32 dynCall_iiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
 dynCall_iiiii_entry:
 l0011F3E9:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg0
+	v7 = 0x1FF<32>
 dynCall_iiiii_exit:
 
 
@@ -2335,6 +2483,13 @@ dynCall_iiiii_exit:
 word32 fn0011F401(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word64 arg5)
 fn0011F401_entry:
 l0011F401:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg0
+	v8 = 0xFF<32>
 fn0011F401_exit:
 
 
@@ -2343,6 +2498,11 @@ fn0011F401_exit:
 void dynCall_viii(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
 dynCall_viii_entry:
 l0011F41B:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg0
+	v6 = 0x1FF<32>
 dynCall_viii_exit:
 
 
@@ -2351,6 +2511,8 @@ dynCall_viii_exit:
 void dynCall_v(word32 arg0)
 dynCall_v_entry:
 l0011F430:
+	v2 = arg0
+	v3 = 0x1FF<32>
 dynCall_v_exit:
 
 
@@ -2359,6 +2521,16 @@ dynCall_v_exit:
 word32 dynCall_iiiiiiiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8)
 dynCall_iiiiiiiii_entry:
 l0011F43F:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg6
+	v8 = arg7
+	v9 = arg8
+	v10 = arg0
+	v11 = 0x1FF<32>
 dynCall_iiiiiiiii_exit:
 
 
@@ -2367,6 +2539,13 @@ dynCall_iiiiiiiii_exit:
 word32 dynCall_iiiiid(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, real64 arg5)
 dynCall_iiiiid_entry:
 l0011F45F:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg5
+	v7 = arg0
+	v8 = 0xFF<32>
 dynCall_iiiiid_exit:
 
 
@@ -2375,6 +2554,12 @@ dynCall_iiiiid_exit:
 void dynCall_viiii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
 dynCall_viiii_entry:
 l0011F479:
+	v2 = arg1
+	v3 = arg2
+	v4 = arg3
+	v5 = arg4
+	v6 = arg0
+	v7 = 0x1FF<32>
 dynCall_viiii_exit:
 
 
@@ -2442,6 +2627,7 @@ fn0011F4C0_exit:
 word32 fn0011F4CB(word32 arg0)
 fn0011F4CB_entry:
 l0011F4CB:
+	v2 = arg0
 fn0011F4CB_exit:
 
 
@@ -2450,6 +2636,7 @@ fn0011F4CB_exit:
 word32 fn0011F4D2(word32 arg0)
 fn0011F4D2_entry:
 l0011F4D2:
+	v2 = arg0
 fn0011F4D2_exit:
 
 
@@ -2458,6 +2645,7 @@ fn0011F4D2_exit:
 word32 fn0011F4D9(word32 arg0)
 fn0011F4D9_entry:
 l0011F4D9:
+	v2 = arg0
 fn0011F4D9_exit:
 
 
@@ -2600,6 +2788,9 @@ fn0011F571_exit:
 void fn0011F576(word32 arg0, word32 arg1, word32 arg2)
 fn0011F576_entry:
 l0011F576:
+	v2 = arg0
+	v3 = arg1
+	v4 = arg2
 fn0011F576_exit:
 
 
@@ -2658,6 +2849,10 @@ fn0011F5A0_exit:
 void dynCall_viijii(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6)
 dynCall_viijii_entry:
 l0011F5A5:
+	v2 = arg0
+	v3 = arg1
+	v4 = arg2
+	v5 = arg3
 dynCall_viijii_exit:
 
 
@@ -2674,6 +2869,12 @@ dynCall_jiiii_exit:
 word32 dynCall_iiiiij(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6)
 dynCall_iiiiij_entry:
 l0011F5DB:
+	v2 = arg0
+	v3 = arg1
+	v4 = arg2
+	v5 = arg3
+	v6 = arg4
+	v7 = arg5
 dynCall_iiiiij_exit:
 
 
@@ -2682,6 +2883,11 @@ dynCall_iiiiij_exit:
 word64 fn0011F5F3(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
 fn0011F5F3_entry:
 l0011F5F3:
+	v2 = arg0
+	v3 = arg1
+	v4 = arg2
+	v5 = arg3
+	v6 = arg4
 fn0011F5F3_exit:
 
 

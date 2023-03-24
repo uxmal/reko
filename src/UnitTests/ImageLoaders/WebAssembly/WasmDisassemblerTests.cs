@@ -65,5 +65,11 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         {
             AssertCode("block\t0x1", "0201");
         }
+
+        [Test]
+        public void WasmDis_i32_const_negative()
+        {
+            AssertCode("i32.const\t0xFFFFFFFF", "417F");
+        }
     }
 }

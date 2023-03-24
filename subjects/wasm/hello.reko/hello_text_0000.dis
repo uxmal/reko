@@ -19,6 +19,7 @@ stackSave_exit:
 void stackRestore(word32 arg0)
 stackRestore_entry:
 l000D002C:
+	v2 = arg0
 stackRestore_exit:
 
 
@@ -43,6 +44,7 @@ setThrew_exit:
 void setTempRet0(word32 arg0)
 setTempRet0_entry:
 l000D004E:
+	v2 = arg0
 setTempRet0_exit:
 
 
@@ -267,6 +269,7 @@ fn000D1767_exit:
 word64 fn000D17F5(word64 arg0, word64 arg1)
 fn000D17F5_entry:
 l000D17F5:
+	v2 = arg1
 fn000D17F5_exit:
 
 
@@ -363,6 +366,7 @@ fn000D2BD4_exit:
 word64 fn000D2E1D(word64 arg0, word64 arg1)
 fn000D2E1D_entry:
 l000D2E1D:
+	v2 = arg1
 fn000D2E1D_exit:
 
 

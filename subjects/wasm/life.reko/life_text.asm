@@ -8,7 +8,7 @@
 ; 	i32.add
 ; 	tee_local 0x0
 ; 	get_local 0x2
-; 	i32.const 0x7F
+; 	i32.const 0xFFFFFFFF
 ; 	i32.add
 ; 	i32.const 0x64
 ; 	i32.rem_s
@@ -17,7 +17,7 @@
 ; 	i32.add
 ; 	tee_local 0x3
 ; 	get_local 0x1
-; 	i32.const 0x7F
+; 	i32.const 0xFFFFFFFF
 ; 	i32.add
 ; 	i32.const 0x64
 ; 	i32.rem_s
@@ -86,7 +86,7 @@
 ; 	select
 ; 	set_local 0x5
 ; 	get_local 0x0
-; 	i32.const 0x7F
+; 	i32.const 0xFFFFFFFF
 ; 	i32.add
 ; 	i32.const 0x64
 ; 	i32.rem_s
@@ -122,7 +122,7 @@
 ; 				i32.load8_u 0x0,0x0
 ; 				get_local 0xA
 ; 				get_local 0x0
-; 				i32.const 0x7F
+; 				i32.const 0xFFFFFFFF
 ; 				i32.add
 ; 				i32.const 0x64
 ; 				i32.rem_s
