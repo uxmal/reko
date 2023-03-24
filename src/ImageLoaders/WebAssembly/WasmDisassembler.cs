@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -29,12 +30,16 @@ using System.Diagnostics;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
+    using Decoder = Decoder<WasmDisassembler, Mnemonic, WasmInstruction>;
+    using Mutator = Mutator<WasmDisassembler>;
+
     public class WasmDisassembler : DisassemblerBase<WasmInstruction, Mnemonic>
     {
         private static readonly Decoder[] decoders;
 
         private readonly WasmArchitecture arch;
         private readonly WasmImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private Address addr;
 
         public WasmDisassembler(WasmArchitecture arch, WasmImageReader rdr)
@@ -42,6 +47,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.arch = arch;
             this.addr = rdr.Address;
             this.rdr = rdr;
+            this.ops = new List<MachineOperand>();
         }
 
         public override WasmInstruction? DisassembleInstruction()
@@ -52,115 +58,18 @@ namespace Reko.ImageLoaders.WebAssembly
                 return null;
             }
             var instr = decoders[b].Decode(b, this);
+            ops.Clear();
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
             return instr;
         }
 
-        private WasmInstruction DecodeInstruction(InstrDecoder decoder)
+        public override WasmInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
-            var ops = new List<MachineOperand>();
-            int i = 0;
-            uint u;
-            ulong ul;
-            var fmt = decoder.OperandFormat;
-            while (i < fmt.Length)
+            return new WasmInstruction(mnemonic)
             {
-                switch (fmt[i++])
-                {
-                case ',': continue;
-                case 'v':
-                    if (!rdr.TryReadVarUInt32(out u))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    ops.Add(ImmediateOperand.Word32(u));
-                    break;
-                case 'V':
-                    if (!rdr.TryReadVarUInt64(out ul))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    ops.Add(ImmediateOperand.Word64(ul));
-                    break;
-                case 'b':
-                    if (!rdr.TryReadVarInt64(out long blockType))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    if (blockType < 0)
-                    {
-                        if (blockType != -0x40L)
-                        {
-                            // byte: signals a valtype
-                            //$TODO: add TypeOperand
-                            ops.Add(ImmediateOperand.Byte((byte) (blockType & 0x7F)));
-                        }
-                    }
-                    else
-                    {
-                        // uint32: signals type index.
-                        ops.Add(ImmediateOperand.UInt32((uint) blockType));
-                    }
-                    break;
-                case 'r':
-                    if (!rdr.TryReadUInt32(out u))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    ops.Add(new ImmediateOperand(Constant.FloatFromBitpattern(u)));
-                    break;
-                case 'R':
-                    if (!rdr.TryReadUInt64(out ul))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    ops.Add(new ImmediateOperand(Constant.DoubleFromBitpattern((long)ul)));
-                    break;
-                case 'm':
-                    if (!rdr.TryReadVarUInt32(out uint alignment) ||
-                        !rdr.TryReadVarUInt32(out uint offset))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    Debug.Assert(decoder.DataType is not null, $"Missing data type for {decoder.Mnemonic}");
-                    ops.Add(new MemoryOperand(decoder.DataType, alignment, offset));
-                    break;
-                case 't':
-                    if (!rdr.TryReadVarUInt32(out uint tableidx))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    ops.Add(ImmediateOperand.UInt32(tableidx));
-                    break;
-                case 'T':
-                    if (!rdr.TryReadVarUInt32(out uint cLabels))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    var labels = new uint[cLabels];
-                    for (i = 0; i < (int)cLabels; ++i)
-                    {
-                        if (!rdr.TryReadVarUInt32(out labels[i]))
-                            return CreateInvalidInstruction();
-                    }
-                    if (!rdr.TryReadVarUInt32(out uint defaultLabel))
-                    {
-                        return CreateInvalidInstruction();
-                    }
-                    ops.Add(new BranchTableOperand(labels, defaultLabel));
-                    break;
-                default:
-                    return this.NotYetImplemented($"Wasm format '{fmt[i - 1]}'.");
-                }
-            }
-
-            var instr = new WasmInstruction(decoder.Mnemonic)
-            {
-                Address = addr,
-                Operands = ops.ToArray(),
+                Operands = ops.ToArray()
             };
-            return instr;
         }
 
         public override WasmInstruction CreateInvalidInstruction()
@@ -180,87 +89,163 @@ namespace Reko.ImageLoaders.WebAssembly
             return CreateInvalidInstruction();
         }
 
-        private abstract class Decoder
+        private static bool i32(uint uInstr, WasmDisassembler dasm)
         {
-            public abstract WasmInstruction Decode(uint uInstr, WasmDisassembler dasm);
+            if (!dasm.rdr.TryReadVarInt64(out var i32))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word32((uint) i32));
+            return true;
         }
 
-        private class InstrDecoder : Decoder
+        private static bool u32(uint uInstr, WasmDisassembler dasm)
         {
-            public readonly Mnemonic Mnemonic;
-            public readonly InstrClass InstrClass;
-            public readonly PrimitiveType? DataType;
-            public readonly string OperandFormat;
-
-            public InstrDecoder(Mnemonic mnemonic, InstrClass iclass, PrimitiveType? dataType, string operandFormat)
+            if (!dasm.rdr.TryReadVarUInt64(out var u32))
+                return false;
+            if (uint.MinValue <= u32 && u32 <= uint.MaxValue)
             {
-                this.Mnemonic = mnemonic;
-                this.InstrClass = iclass;
-                this.DataType = dataType;
-                this.OperandFormat = operandFormat;
+                dasm.ops.Add(ImmediateOperand.Word32((uint) u32));
+                return true;
             }
-
-            public override WasmInstruction Decode(uint uInstr, WasmDisassembler dasm)
-            {
-                return dasm.DecodeInstruction(this);
-            }
+            return false;
         }
 
-        private class SparseDecoder : Decoder
+        private static bool i64(uint uInstr, WasmDisassembler dasm)
         {
-            private readonly Dictionary<uint, InstrDecoder> decoders;
-            private readonly InstrDecoder defaultDecoder;
+            if (!dasm.rdr.TryReadVarInt64(out var i64))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word64(i64));
+            return true;
+        }
 
-            public SparseDecoder(InstrDecoder defaultDecoder, params (uint, InstrDecoder)[] sparseDecoders)
+        private static bool u64(uint uInstr, WasmDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadVarUInt64(out var u64))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word64(u64));
+            return true;
+        }
+
+        private static bool b(uint uInstr, WasmDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadVarInt64(out long blockType))
+                return false;
+
+            if (blockType < 0)
             {
-                this.decoders = new Dictionary<uint, InstrDecoder>();
-                this.defaultDecoder = defaultDecoder;
-                foreach (var (u, decoder) in sparseDecoders)
+                if (blockType != -0x40L)
                 {
-                    decoders.Add(u, decoder);
+                    // byte: signals a valtype
+                    //$TODO: add TypeOperand
+                    dasm.ops.Add(ImmediateOperand.Byte((byte) (blockType & 0x7F)));
                 }
             }
-
-            public override WasmInstruction Decode(uint uInstr, WasmDisassembler dasm)
+            else
             {
-                if (dasm.rdr.TryReadVarUInt32(out uint u) &&
-                    decoders.TryGetValue(u, out var decoder))
+                // uint32: signals type index.
+                dasm.ops.Add(ImmediateOperand.UInt32((uint) blockType));
+            }
+            return true;
+        }
+
+        private static bool f32(uint uInstr, WasmDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadUInt32(out uint u))
+            {
+                return false;
+            }
+            dasm.ops.Add(new ImmediateOperand(Constant.FloatFromBitpattern(u)));
+            return true;
+        }
+
+        private static bool f64(uint uInstr, WasmDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadUInt64(out ulong u))
+            {
+                return false;
+            }
+            dasm.ops.Add(new ImmediateOperand(Constant.DoubleFromBitpattern((long) u)));
+            return true;
+        }
+
+        public static Mutator m(PrimitiveType dt)
+        {
+            return (uint uInstr, WasmDisassembler dasm) =>
+            {
+                if (!dasm.rdr.TryReadVarUInt32(out uint alignment) ||
+                    !dasm.rdr.TryReadVarUInt32(out uint offset))
                 {
-                    return decoder.Decode(u, dasm);
+                    return false;
                 }
-                else
-                {
+                dasm.ops.Add(new MemoryOperand(dt, alignment, offset));
+                return true;
+            };
+        }
+        private static readonly Mutator m128 = m(PrimitiveType.Word128);
+
+        private static bool T(uint uInstr, WasmDisassembler dasm)
+        {
+            if (!dasm.rdr.TryReadVarUInt32(out uint cLabels))
+            {
+                return false;
+            }
+            var labels = new uint[cLabels];
+            for (int i = 0; i < (int) cLabels; ++i)
+            {
+                if (!dasm.rdr.TryReadVarUInt32(out labels[i]))
+                    return false;
+            }
+            if (!dasm.rdr.TryReadVarUInt32(out uint defaultLabel))
+            {
+                return false;
+            }
+            dasm.ops.Add(new BranchTableOperand(labels, defaultLabel));
+            return true;
+
+        }
+
+        private static bool vtypes(uint uInstr, WasmDisassembler dasm)
+        {
+            return false; //$TODO
+        }
+
+        private class NextDecoder : Decoder<WasmDisassembler, Mnemonic, WasmInstruction>
+        {
+            private readonly Decoder<WasmDisassembler, Mnemonic, WasmInstruction> next;
+
+            public NextDecoder(Decoder<WasmDisassembler, Mnemonic, WasmInstruction> next)
+            {
+                this.next = next;
+            }
+
+            public override WasmInstruction Decode(uint wInstr, WasmDisassembler dasm)
+            {
+                if (!dasm.rdr.TryReadByte(out byte nextByte))
                     return dasm.CreateInvalidInstruction();
-                }
+                return next.Decode(nextByte, dasm);
             }
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic)
+        public static InstrDecoder<WasmDisassembler, Mnemonic, WasmInstruction> Instr(Mnemonic mnemonic, params Mutator<WasmDisassembler>[] mutators)
         {
-            return new InstrDecoder(mnemonic, InstrClass.Linear, null, "");
+            return new InstrDecoder<WasmDisassembler, Mnemonic, WasmInstruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, string operandFormat)
+        private static InstrDecoder<WasmDisassembler, Mnemonic, WasmInstruction> Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator[] mutators)
         {
-            return new InstrDecoder(mnemonic, InstrClass.Linear, null, operandFormat);
+            return new InstrDecoder<WasmDisassembler, Mnemonic, WasmInstruction>(iclass, mnemonic, mutators);
         }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, PrimitiveType dt, string operandFormat)
-        {
-            return new InstrDecoder(mnemonic, InstrClass.Linear, dt, operandFormat);
-        }
 
-        private static InstrDecoder Instr(Mnemonic mnemonic, InstrClass iclass)
+        private static NextDecoder Next(Decoder<WasmDisassembler, Mnemonic, WasmInstruction> next)
         {
-            return new InstrDecoder(mnemonic, iclass, null, "");
+            return new NextDecoder(next);
         }
-
 
         static WasmDisassembler()
         {
             var invalid = Instr(Mnemonic.unreachable, InstrClass.Invalid);
 
-            var fc_decoders = new SparseDecoder(invalid,
+            var fc_decoders = Sparse(0, 8, "  0xFC decoders", invalid,
                 (0, Instr(Mnemonic.i32_trunc_sat_f32_s)),
                 (1, Instr(Mnemonic.i32_trunc_sat_f32_u)),
                 (2, Instr(Mnemonic.i32_trunc_sat_f64_s)),
@@ -270,68 +255,67 @@ namespace Reko.ImageLoaders.WebAssembly
                 (6, Instr(Mnemonic.i64_trunc_sat_f64_s)),
                 (7, Instr(Mnemonic.i64_trunc_sat_f64_u)),
 
-                (8, Instr(Mnemonic.memory_init, "d")), // 0x00 
-                (9, Instr(Mnemonic.data_drop, "d")),
-                (10, Instr(Mnemonic.memory_copy, "")), // 0x00 0x00
-                (11, Instr(Mnemonic.memory_fill, "")), // 0x00 ⇒ m
+                (8, Instr(Mnemonic.memory_init, u32, u32)), // 0x00 
+                (9, Instr(Mnemonic.data_drop, u32)),
+                (10, Instr(Mnemonic.memory_copy, u32, u32)), // 0x00 0x00
+                (11, Instr(Mnemonic.memory_fill, u32)), // 0x00 ⇒ m
 
+                (12, Instr(Mnemonic.table_init, u32,u32)),
+                (13, Instr(Mnemonic.elem_drop, u32)),
+                (14, Instr(Mnemonic.table_copy, u32, u32)),
+                (15, Instr(Mnemonic.table_grow, u32)),
+                (16, Instr(Mnemonic.table_size, u32)),
+                (17, Instr(Mnemonic.table_fill, u32)));
 
-                (12, Instr(Mnemonic.table_init, "e,t,S")),
-                (13, Instr(Mnemonic.elem_drop, "e")),
-                (14, Instr(Mnemonic.table_copy, "t,t")),
-                (15, Instr(Mnemonic.table_grow, "t")),
-                (16, Instr(Mnemonic.table_size, "t")),
-                (17, Instr(Mnemonic.table_fill, "t")));
-
-            var fd_decoders = new SparseDecoder(invalid,
-                (0, Instr(Mnemonic.v128_load, PrimitiveType.Word128, "m")),
-                (1, Instr(Mnemonic.v128_load8x8_s, "m")),
-                (2, Instr(Mnemonic.v128_load8x8_u, "m")),
-                (3, Instr(Mnemonic.v128_load16x4_s, "m")),
-                (4, Instr(Mnemonic.v128_load16x4_u, "m")),
-                (5, Instr(Mnemonic.v128_load32x2_s, "m")),
-                (6, Instr(Mnemonic.v128_load32x2_u, "m")),
-                (7, Instr(Mnemonic.v128_load8_splat, "m")),
-                (8, Instr(Mnemonic.v128_load16_splat, "m")),
-                (9, Instr(Mnemonic.v128_load32_splat, "m")),
-                (10, Instr(Mnemonic.v128_load64_splat, "m")),
-                (92, Instr(Mnemonic.v128_load32_zero, "m")),
-                (93, Instr(Mnemonic.v128_load64_zero, "m")),
-                (11, Instr(Mnemonic.v128_store, "m")),
-                (84, Instr(Mnemonic.v128_load8_lane, "m,l")),
-                (85, Instr(Mnemonic.v128_load16_lane, "m,l")),
-                (86, Instr(Mnemonic.v128_load32_lane, "m,l")),
-                (87, Instr(Mnemonic.v128_load64_lane, "m,l")),
-                (88, Instr(Mnemonic.v128_store8_lane, "m,l")),
-                (89, Instr(Mnemonic.v128_store16_lane, "m,l")),
-                (90, Instr(Mnemonic.v128_store32_lane, "m,l")),
-                (91, Instr(Mnemonic.v128_store64_lane, "m,l")));
+            var fd_decoders = Sparse(0, 8, "  0xFD decoders", invalid,
+                (0, Instr(Mnemonic.v128_load, m128)),
+                (1, Instr(Mnemonic.v128_load8x8_s, m128)),
+                (2, Instr(Mnemonic.v128_load8x8_u, m128)),
+                (3, Instr(Mnemonic.v128_load16x4_s, m128)),
+                (4, Instr(Mnemonic.v128_load16x4_u, m128)),
+                (5, Instr(Mnemonic.v128_load32x2_s, m128)),
+                (6, Instr(Mnemonic.v128_load32x2_u, m128)),
+                (7, Instr(Mnemonic.v128_load8_splat, m128)),
+                (8, Instr(Mnemonic.v128_load16_splat, m128)),
+                (9, Instr(Mnemonic.v128_load32_splat, m128)),
+                (10, Instr(Mnemonic.v128_load64_splat, m128)),
+                (92, Instr(Mnemonic.v128_load32_zero, m128)),
+                (93, Instr(Mnemonic.v128_load64_zero, m128)),
+                (11, Instr(Mnemonic.v128_store, m128)),
+                (84, Instr(Mnemonic.v128_load8_lane, m128,u32)),
+                (85, Instr(Mnemonic.v128_load16_lane, m128,u32)),
+                (86, Instr(Mnemonic.v128_load32_lane, m128,u32)),
+                (87, Instr(Mnemonic.v128_load64_lane, m128,u32)),
+                (88, Instr(Mnemonic.v128_store8_lane, m128,u32)),
+                (89, Instr(Mnemonic.v128_store16_lane, m128,u32)),
+                (90, Instr(Mnemonic.v128_store32_lane, m128,u32)),
+                (91, Instr(Mnemonic.v128_store64_lane, m128,u32)));
 
             decoders = new Decoder[256] {
                 // 00
-                Instr(Mnemonic.unreachable, ""),
-                Instr(Mnemonic.nop, ""),
-                Instr(Mnemonic.block, "b"),
-                Instr(Mnemonic.loop, "b"),
+                Instr(Mnemonic.unreachable),
+                Instr(Mnemonic.nop),
+                Instr(Mnemonic.block, b),
+                Instr(Mnemonic.loop, b),
 
-                Instr(Mnemonic.@if, "b"),
-                Instr(Mnemonic.@else, ""),
+                Instr(Mnemonic.@if, b),
+                Instr(Mnemonic.@else),
                 invalid,
                 invalid,
 
                 invalid,
                 invalid,
                 invalid,
-                Instr(Mnemonic.end, ""),
+                Instr(Mnemonic.end),
 
-                Instr(Mnemonic.br, "v"),
-                Instr(Mnemonic.br_if, "v"),
-                Instr(Mnemonic.br_table, "T"),
-                Instr(Mnemonic.@return, ""),
+                Instr(Mnemonic.br, u32),
+                Instr(Mnemonic.br_if, u32),
+                Instr(Mnemonic.br_table, T),
+                Instr(Mnemonic.@return),
 
                 // 10
-                Instr(Mnemonic.call, "v"),
-                Instr(Mnemonic.call_indirect, "v,v"),
+                Instr(Mnemonic.call, u32),
+                Instr(Mnemonic.call_indirect, u32, u32),
                 invalid,
                 invalid,
 
@@ -342,231 +326,231 @@ namespace Reko.ImageLoaders.WebAssembly
 
                 invalid,
                 invalid,
-                Instr(Mnemonic.drop, ""),
-                Instr(Mnemonic.select, ""),
+                Instr(Mnemonic.drop),
+                Instr(Mnemonic.select),
 
-                Instr(Mnemonic.select, "t*"),
+                Instr(Mnemonic.select, vtypes),
                 invalid,
                 invalid,
                 invalid,
 
                 // 20
-                Instr(Mnemonic.get_local, "v"),
-                Instr(Mnemonic.set_local, "v"),
-                Instr(Mnemonic.tee_local, "v"),
-                Instr(Mnemonic.get_global, "v"),
+                Instr(Mnemonic.get_local, u32),
+                Instr(Mnemonic.set_local, u32),
+                Instr(Mnemonic.tee_local, u32),
+                Instr(Mnemonic.get_global, u32),
 
-                Instr(Mnemonic.set_global, "v"),
-                Instr(Mnemonic.table_get, "t"),
-                Instr(Mnemonic.table_set, "t"),
+                Instr(Mnemonic.set_global, u32),
+                Instr(Mnemonic.table_get, u32),
+                Instr(Mnemonic.table_set, u32),
                 invalid,
 
-                Instr(Mnemonic.i32_load, PrimitiveType.Word32, "m"),
-                Instr(Mnemonic.i64_load, PrimitiveType.Word64, "m"),
-                Instr(Mnemonic.f32_load, PrimitiveType.Real32, "m"),
-                Instr(Mnemonic.f64_load, PrimitiveType.Real64, "m"),
+                Instr(Mnemonic.i32_load, m(PrimitiveType.Word32)),
+                Instr(Mnemonic.i64_load, m(PrimitiveType.Word64)),
+                Instr(Mnemonic.f32_load, m(PrimitiveType.Real32)),
+                Instr(Mnemonic.f64_load, m(PrimitiveType.Real64)),
 
-                Instr(Mnemonic.i32_load8_s, PrimitiveType.Int8, "m"),
-                Instr(Mnemonic.i32_load8_u, PrimitiveType.Byte, "m"),
-                Instr(Mnemonic.i32_load16_s, PrimitiveType.Int16, "m"),
-                Instr(Mnemonic.i32_load16_u, PrimitiveType.Word16, "m"),
+                Instr(Mnemonic.i32_load8_s, m(PrimitiveType.Int8)),
+                Instr(Mnemonic.i32_load8_u, m(PrimitiveType.Byte)),
+                Instr(Mnemonic.i32_load16_s, m(PrimitiveType.Int16)),
+                Instr(Mnemonic.i32_load16_u, m(PrimitiveType.Word16)),
 
                 // 30
-                Instr(Mnemonic.i64_load8_s, PrimitiveType.Int8, "m"),
-                Instr(Mnemonic.i64_load8_u, PrimitiveType.Byte, "m"),
-                Instr(Mnemonic.i64_load16_s, PrimitiveType.Int16, "m"),
-                Instr(Mnemonic.i64_load16_u, PrimitiveType.Word16, "m"),
+                Instr(Mnemonic.i64_load8_s, m(PrimitiveType.Int8)),
+                Instr(Mnemonic.i64_load8_u, m(PrimitiveType.Byte)),
+                Instr(Mnemonic.i64_load16_s, m(PrimitiveType.Int16)),
+                Instr(Mnemonic.i64_load16_u, m(PrimitiveType.Word16)),
 
-                Instr(Mnemonic.i64_load32_s, PrimitiveType.Int32, "m"),
-                Instr(Mnemonic.i64_load32_u, PrimitiveType.Word32,"m"),
-                Instr(Mnemonic.i32_store, PrimitiveType.Word32, "m"),
-                Instr(Mnemonic.i64_store, PrimitiveType.Word64, "m"),
+                Instr(Mnemonic.i64_load32_s, m(PrimitiveType.Int32)),
+                Instr(Mnemonic.i64_load32_u, m(PrimitiveType.Word32)),
+                Instr(Mnemonic.i32_store, m(PrimitiveType.Word32)),
+                Instr(Mnemonic.i64_store, m(PrimitiveType.Word64)),
 
-                Instr(Mnemonic.f32_store, PrimitiveType.Word32, "m"),
-                Instr(Mnemonic.f64_store, PrimitiveType.Word64, "m"),
-                Instr(Mnemonic.i32_store8, PrimitiveType.Byte, "m"),
-                Instr(Mnemonic.i32_store16, PrimitiveType.Word16, "m"),
+                Instr(Mnemonic.f32_store, m(PrimitiveType.Word32)),
+                Instr(Mnemonic.f64_store, m(PrimitiveType.Word64)),
+                Instr(Mnemonic.i32_store8, m(PrimitiveType.Byte)),
+                Instr(Mnemonic.i32_store16, m(PrimitiveType.Word16)),
 
-                Instr(Mnemonic.i64_store8, PrimitiveType.Byte, "m"),
-                Instr(Mnemonic.i64_store16, PrimitiveType.Word16, "m"),
-                Instr(Mnemonic.i64_store32, PrimitiveType.Word32, "m"),
-                Instr(Mnemonic.current_memory, "v"),    //$ expect 0 in byte stream
+                Instr(Mnemonic.i64_store8, m(PrimitiveType.Byte)),
+                Instr(Mnemonic.i64_store16, m(PrimitiveType.Word16)),
+                Instr(Mnemonic.i64_store32, m(PrimitiveType.Word32)),
+                Instr(Mnemonic.current_memory, i32),    //$ expect 0 in byte stream
 
                 // 40
-                Instr(Mnemonic.grow_memory, "v"),       //$ expect 0 in byte stream
-                Instr(Mnemonic.i32_const, "v"),
-                Instr(Mnemonic.i64_const, "V"),
-                Instr(Mnemonic.f32_const, "r"),
+                Instr(Mnemonic.grow_memory, i32),       //$ expect 0 in byte stream
+                Instr(Mnemonic.i32_const, i32),
+                Instr(Mnemonic.i64_const, i64),
+                Instr(Mnemonic.f32_const, f32),
 
-                Instr(Mnemonic.f64_const, "R"),
-                Instr(Mnemonic.i32_eqz, ""),
-                Instr(Mnemonic.i32_eq, ""),
-                Instr(Mnemonic.i32_ne, ""),
+                Instr(Mnemonic.f64_const, f64),
+                Instr(Mnemonic.i32_eqz),
+                Instr(Mnemonic.i32_eq),
+                Instr(Mnemonic.i32_ne),
 
-                Instr(Mnemonic.i32_lt_s, ""),
-                Instr(Mnemonic.i32_lt_u, ""),
-                Instr(Mnemonic.i32_gt_s, ""),
-                Instr(Mnemonic.i32_gt_u, ""),
+                Instr(Mnemonic.i32_lt_s),
+                Instr(Mnemonic.i32_lt_u),
+                Instr(Mnemonic.i32_gt_s),
+                Instr(Mnemonic.i32_gt_u),
 
-                Instr(Mnemonic.i32_le_s, ""),
-                Instr(Mnemonic.i32_le_u, ""),
-                Instr(Mnemonic.i32_ge_s, ""),
-                Instr(Mnemonic.i32_ge_u, ""),
+                Instr(Mnemonic.i32_le_s),
+                Instr(Mnemonic.i32_le_u),
+                Instr(Mnemonic.i32_ge_s),
+                Instr(Mnemonic.i32_ge_u),
 
                 // 50
-                Instr(Mnemonic.i64_eqz, ""),
-                Instr(Mnemonic.i64_eq, ""),
-                Instr(Mnemonic.i64_ne, ""),
-                Instr(Mnemonic.i64_lt_s, ""),
+                Instr(Mnemonic.i64_eqz),
+                Instr(Mnemonic.i64_eq),
+                Instr(Mnemonic.i64_ne),
+                Instr(Mnemonic.i64_lt_s),
 
-                Instr(Mnemonic.i64_lt_u, ""),
-                Instr(Mnemonic.i64_gt_s, ""),
-                Instr(Mnemonic.i64_gt_u, ""),
-                Instr(Mnemonic.i64_le_s, ""),
+                Instr(Mnemonic.i64_lt_u),
+                Instr(Mnemonic.i64_gt_s),
+                Instr(Mnemonic.i64_gt_u),
+                Instr(Mnemonic.i64_le_s),
 
-                Instr(Mnemonic.i64_le_u, ""),
-                Instr(Mnemonic.i64_ge_s, ""),
-                Instr(Mnemonic.i64_ge_u, ""),
-                Instr(Mnemonic.f32_eq, ""),
+                Instr(Mnemonic.i64_le_u),
+                Instr(Mnemonic.i64_ge_s),
+                Instr(Mnemonic.i64_ge_u),
+                Instr(Mnemonic.f32_eq),
 
-                Instr(Mnemonic.f32_ne, ""),
-                Instr(Mnemonic.f32_lt, ""),
-                Instr(Mnemonic.f32_gt, ""),
-                Instr(Mnemonic.f32_le, ""),
+                Instr(Mnemonic.f32_ne),
+                Instr(Mnemonic.f32_lt),
+                Instr(Mnemonic.f32_gt),
+                Instr(Mnemonic.f32_le),
 
                 // 60
-                Instr(Mnemonic.f32_ge, ""),
-                Instr(Mnemonic.f64_eq, ""),
-                Instr(Mnemonic.f64_ne, ""),
-                Instr(Mnemonic.f64_lt, ""),
+                Instr(Mnemonic.f32_ge),
+                Instr(Mnemonic.f64_eq),
+                Instr(Mnemonic.f64_ne),
+                Instr(Mnemonic.f64_lt),
 
-                Instr(Mnemonic.f64_gt, ""),
-                Instr(Mnemonic.f64_le, ""),
-                Instr(Mnemonic.f64_ge, ""),
-                Instr(Mnemonic.i32_clz, ""),
+                Instr(Mnemonic.f64_gt),
+                Instr(Mnemonic.f64_le),
+                Instr(Mnemonic.f64_ge),
+                Instr(Mnemonic.i32_clz),
 
-                Instr(Mnemonic.i32_ctz, ""),
-                Instr(Mnemonic.i32_popcnt, ""),
-                Instr(Mnemonic.i32_add, ""),
-                Instr(Mnemonic.i32_sub, ""),
+                Instr(Mnemonic.i32_ctz),
+                Instr(Mnemonic.i32_popcnt),
+                Instr(Mnemonic.i32_add),
+                Instr(Mnemonic.i32_sub),
 
-                Instr(Mnemonic.i32_mul, ""),
-                Instr(Mnemonic.i32_div_s, ""),
-                Instr(Mnemonic.i32_div_u, ""),
-                Instr(Mnemonic.i32_rem_s, ""),
+                Instr(Mnemonic.i32_mul),
+                Instr(Mnemonic.i32_div_s),
+                Instr(Mnemonic.i32_div_u),
+                Instr(Mnemonic.i32_rem_s),
 
                 // 70
-                Instr(Mnemonic.i32_rem_u, ""),
-                Instr(Mnemonic.i32_and, ""),
-                Instr(Mnemonic.i32_or, ""),
-                Instr(Mnemonic.i32_xor, ""),
+                Instr(Mnemonic.i32_rem_u),
+                Instr(Mnemonic.i32_and),
+                Instr(Mnemonic.i32_or),
+                Instr(Mnemonic.i32_xor),
 
-                Instr(Mnemonic.i32_shl, ""),
-                Instr(Mnemonic.i32_shr_s, ""),
-                Instr(Mnemonic.i32_shr_u, ""),
-                Instr(Mnemonic.i32_rotl, ""),
+                Instr(Mnemonic.i32_shl),
+                Instr(Mnemonic.i32_shr_s),
+                Instr(Mnemonic.i32_shr_u),
+                Instr(Mnemonic.i32_rotl),
 
-                Instr(Mnemonic.i32_rotr, ""),
-                Instr(Mnemonic.i64_clz, ""),
-                Instr(Mnemonic.i64_ctz, ""),
-                Instr(Mnemonic.i64_popcnt, ""),
+                Instr(Mnemonic.i32_rotr),
+                Instr(Mnemonic.i64_clz),
+                Instr(Mnemonic.i64_ctz),
+                Instr(Mnemonic.i64_popcnt),
 
-                Instr(Mnemonic.i64_add, ""),
-                Instr(Mnemonic.i64_sub, ""),
-                Instr(Mnemonic.i64_mul, ""),
-                Instr(Mnemonic.i64_div_s, ""),
+                Instr(Mnemonic.i64_add),
+                Instr(Mnemonic.i64_sub),
+                Instr(Mnemonic.i64_mul),
+                Instr(Mnemonic.i64_div_s),
 
                 // 80
-                Instr(Mnemonic.i64_div_u, ""),
-                Instr(Mnemonic.i64_rem_s, ""),
-                Instr(Mnemonic.i64_rem_u, ""),
-                Instr(Mnemonic.i64_and, ""),
+                Instr(Mnemonic.i64_div_u),
+                Instr(Mnemonic.i64_rem_s),
+                Instr(Mnemonic.i64_rem_u),
+                Instr(Mnemonic.i64_and),
 
-                Instr(Mnemonic.i64_or, ""),
-                Instr(Mnemonic.i64_xor, ""),
-                Instr(Mnemonic.i64_shl, ""),
-                Instr(Mnemonic.i64_shr_s, ""),
+                Instr(Mnemonic.i64_or),
+                Instr(Mnemonic.i64_xor),
+                Instr(Mnemonic.i64_shl),
+                Instr(Mnemonic.i64_shr_s),
 
-                Instr(Mnemonic.i64_shr_u, ""),
-                Instr(Mnemonic.i64_rotl, ""),
-                Instr(Mnemonic.i64_rotr, ""),
-                Instr(Mnemonic.f32_abs, ""),
+                Instr(Mnemonic.i64_shr_u),
+                Instr(Mnemonic.i64_rotl),
+                Instr(Mnemonic.i64_rotr),
+                Instr(Mnemonic.f32_abs),
 
-                Instr(Mnemonic.f32_neg, ""),
-                Instr(Mnemonic.f32_ceil, ""),
-                Instr(Mnemonic.f32_floor, ""),
-                Instr(Mnemonic.f32_trunc, ""),
+                Instr(Mnemonic.f32_neg),
+                Instr(Mnemonic.f32_ceil),
+                Instr(Mnemonic.f32_floor),
+                Instr(Mnemonic.f32_trunc),
 
                 // 90
-                Instr(Mnemonic.f32_nearest, ""),
-                Instr(Mnemonic.f32_sqrt, ""),
-                Instr(Mnemonic.f32_add, ""),
-                Instr(Mnemonic.f32_sub, ""),
+                Instr(Mnemonic.f32_nearest),
+                Instr(Mnemonic.f32_sqrt),
+                Instr(Mnemonic.f32_add),
+                Instr(Mnemonic.f32_sub),
 
-                Instr(Mnemonic.f32_mul, ""),
-                Instr(Mnemonic.f32_div, ""),
-                Instr(Mnemonic.f32_min, ""),
-                Instr(Mnemonic.f32_max, ""),
+                Instr(Mnemonic.f32_mul),
+                Instr(Mnemonic.f32_div),
+                Instr(Mnemonic.f32_min),
+                Instr(Mnemonic.f32_max),
 
-                Instr(Mnemonic.f32_copysign, ""),
-                Instr(Mnemonic.f64_abs, ""),
-                Instr(Mnemonic.f64_neg, ""),
-                Instr(Mnemonic.f64_ceil, ""),
+                Instr(Mnemonic.f32_copysign),
+                Instr(Mnemonic.f64_abs),
+                Instr(Mnemonic.f64_neg),
+                Instr(Mnemonic.f64_ceil),
 
-                Instr(Mnemonic.f64_floor, ""),
-                Instr(Mnemonic.f64_trunc, ""),
-                Instr(Mnemonic.f64_nearest, ""),
-                Instr(Mnemonic.f64_sqrt, ""),
+                Instr(Mnemonic.f64_floor),
+                Instr(Mnemonic.f64_trunc),
+                Instr(Mnemonic.f64_nearest),
+                Instr(Mnemonic.f64_sqrt),
 
                 // A0
-                Instr(Mnemonic.f64_add, ""),
-                Instr(Mnemonic.f64_sub, ""),
-                Instr(Mnemonic.f64_mul, ""),
-                Instr(Mnemonic.f64_div, ""),
+                Instr(Mnemonic.f64_add),
+                Instr(Mnemonic.f64_sub),
+                Instr(Mnemonic.f64_mul),
+                Instr(Mnemonic.f64_div),
 
-                Instr(Mnemonic.f64_min, ""),
-                Instr(Mnemonic.f64_max, ""),
-                Instr(Mnemonic.f64_copysign, ""),
-                Instr(Mnemonic.i32_wrap_i64, ""),
+                Instr(Mnemonic.f64_min),
+                Instr(Mnemonic.f64_max),
+                Instr(Mnemonic.f64_copysign),
+                Instr(Mnemonic.i32_wrap_i64),
 
-                Instr(Mnemonic.i32_trunc_s_f32, ""),
-                Instr(Mnemonic.i32_trunc_u_f32, ""),
-                Instr(Mnemonic.i32_trunc_s_f64, ""),
-                Instr(Mnemonic.i32_trunc_u_f64, ""),
+                Instr(Mnemonic.i32_trunc_s_f32),
+                Instr(Mnemonic.i32_trunc_u_f32),
+                Instr(Mnemonic.i32_trunc_s_f64),
+                Instr(Mnemonic.i32_trunc_u_f64),
 
-                Instr(Mnemonic.i64_extend_s_i32, ""),
-                Instr(Mnemonic.i64_extend_u_i32, ""),
-                Instr(Mnemonic.i64_trunc_s_f32, ""),
-                Instr(Mnemonic.i64_trunc_u_f32, ""),
+                Instr(Mnemonic.i64_extend_s_i32),
+                Instr(Mnemonic.i64_extend_u_i32),
+                Instr(Mnemonic.i64_trunc_s_f32),
+                Instr(Mnemonic.i64_trunc_u_f32),
 
                 // B0
-                Instr(Mnemonic.i64_trunc_s_f64, ""),
-                Instr(Mnemonic.i64_trunc_u_f64, ""),
-                Instr(Mnemonic.f32_convert_s_i32, ""),
-                Instr(Mnemonic.f32_convert_u_i32, ""),
+                Instr(Mnemonic.i64_trunc_s_f64),
+                Instr(Mnemonic.i64_trunc_u_f64),
+                Instr(Mnemonic.f32_convert_s_i32),
+                Instr(Mnemonic.f32_convert_u_i32),
 
-                Instr(Mnemonic.f32_convert_s_i64, ""),
-                Instr(Mnemonic.f32_convert_u_i64, ""),
-                Instr(Mnemonic.f32_demote_f64, ""),
-                Instr(Mnemonic.f64_convert_s_i32, ""),
+                Instr(Mnemonic.f32_convert_s_i64),
+                Instr(Mnemonic.f32_convert_u_i64),
+                Instr(Mnemonic.f32_demote_f64),
+                Instr(Mnemonic.f64_convert_s_i32),
 
-                Instr(Mnemonic.f64_convert_u_i32, ""),
-                Instr(Mnemonic.f64_convert_s_i64, ""),
-                Instr(Mnemonic.f64_convert_u_i64, ""),
-                Instr(Mnemonic.f64_promote_f32, ""),
+                Instr(Mnemonic.f64_convert_u_i32),
+                Instr(Mnemonic.f64_convert_s_i64),
+                Instr(Mnemonic.f64_convert_u_i64),
+                Instr(Mnemonic.f64_promote_f32),
 
-                Instr(Mnemonic.i32_reinterpret_f32, ""),
-                Instr(Mnemonic.i64_reinterpret_f64, ""),
-                Instr(Mnemonic.f32_reinterpret_i32, ""),
-                Instr(Mnemonic.f64_reinterpret_i64, ""),
+                Instr(Mnemonic.i32_reinterpret_f32),
+                Instr(Mnemonic.i64_reinterpret_f64),
+                Instr(Mnemonic.f32_reinterpret_i32),
+                Instr(Mnemonic.f64_reinterpret_i64),
 
                 // C0
-                Instr(Mnemonic.i32_extend8_s  , ""),
-                Instr(Mnemonic.i32_extend16_s , ""),
-                Instr(Mnemonic.i64_extend8_s  , ""),
-                Instr(Mnemonic.i64_extend16_s , ""),
+                Instr(Mnemonic.i32_extend8_s  ),
+                Instr(Mnemonic.i32_extend16_s ),
+                Instr(Mnemonic.i64_extend8_s  ),
+                Instr(Mnemonic.i64_extend16_s ),
 
-                Instr(Mnemonic.i64_extend32_s , ""),
+                Instr(Mnemonic.i64_extend32_s ),
                 invalid,
                 invalid,
                 invalid,
@@ -639,8 +623,8 @@ namespace Reko.ImageLoaders.WebAssembly
                 invalid,
                 invalid,
 
-                fc_decoders,
-                fd_decoders,
+                Next(fc_decoders),
+                Next(fd_decoders),
                 invalid,
                 invalid,
         };

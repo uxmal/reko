@@ -141,7 +141,7 @@ namespace Reko.ImageLoaders.WebAssembly.Output
                     if (typeSection is null)
                         throw new BadImageFormatException("Missing type section.");
                     var ifuncCall = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
-                    if (ifuncCall >= file.FunctionIndex.Count ||this.funcSection == null)
+                    if (ifuncCall >= file.FunctionIndex.Count || this.funcSection == null)
                     {
                         Debug.Print("*** Unknown function {0:X}", ifuncCall);
                         break;
@@ -191,7 +191,7 @@ namespace Reko.ImageLoaders.WebAssembly.Output
                 case Mnemonic.f32_ge:
                 case Mnemonic.f32_gt:
                 case Mnemonic.f32_ne:
-                
+
                 case Mnemonic.f64_eq:
                 case Mnemonic.f64_ge:
                 case Mnemonic.f64_gt:
