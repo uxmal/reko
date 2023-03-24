@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -43,9 +44,14 @@ namespace Reko.ImageLoaders.WebAssembly
             this.InstructionBitSize = 8;
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new WasmDisassembler(this, imageReader);
+            var bytes = ((ByteImageReader) rdr).Bytes;
+            var wrdr = new WasmImageReader(new ByteMemoryArea(rdr.Address - rdr.Offset, bytes))
+            {
+                Offset = rdr.Offset
+            };
+            return new WasmDisassembler(this, wrdr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -65,7 +71,12 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new WasmRewriter(this, rdr, binder);
+            var bytes = ((ByteImageReader) rdr).Bytes;
+            var wrdr = new WasmImageReader(new ByteMemoryArea(rdr.Address - rdr.Offset, bytes))
+            {
+                Offset = rdr.Offset
+            };
+            return new WasmRewriter(this, wrdr, binder);
         }
 
         public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)

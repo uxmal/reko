@@ -1,0 +1,1288 @@
+// _free
+// Return size: 0
+void _free(word32 arg0)
+_free_entry:
+l000E2C2B:
+_free_exit:
+
+
+// fn000E3D5D
+// Return size: 0
+word32 fn000E3D5D(word32 arg0, word32 arg1)
+fn000E3D5D_entry:
+l000E3D5D:
+fn000E3D5D_exit:
+
+
+// fn000E3E00
+// Return size: 0
+word32 fn000E3E00(word32 arg0, word32 arg1)
+fn000E3E00_entry:
+l000E3E00:
+fn000E3E00_exit:
+
+
+// fn000E3F06
+// Return size: 0
+word32 fn000E3F06(word32 arg0, word32 arg1)
+fn000E3F06_entry:
+l000E3F06:
+fn000E3F06_exit:
+
+
+// fn000E47CC
+// Return size: 0
+void fn000E47CC(word32 arg0, word32 arg1)
+fn000E47CC_entry:
+l000E47CC:
+fn000E47CC_exit:
+
+
+// fn000E5815
+// Return size: 0
+void fn000E5815(word32 arg0)
+fn000E5815_entry:
+l000E5815:
+fn000E5815_exit:
+
+
+// fn000E5823
+// Return size: 0
+void fn000E5823(word32 arg0)
+fn000E5823_entry:
+l000E5823:
+fn000E5823_exit:
+
+
+// fn000E58BC
+// Return size: 0
+void fn000E58BC(word32 arg0, word32 arg1)
+fn000E58BC_entry:
+l000E58BC:
+fn000E58BC_exit:
+
+
+// fn000E594A
+// Return size: 0
+void fn000E594A(word32 arg0)
+fn000E594A_entry:
+l000E594A:
+fn000E594A_exit:
+
+
+// fn000E595D
+// Return size: 0
+void fn000E595D(word32 arg0)
+fn000E595D_entry:
+l000E595D:
+fn000E595D_exit:
+
+
+// fn000E596B
+// Return size: 0
+void fn000E596B(word32 arg0)
+fn000E596B_entry:
+l000E596B:
+fn000E596B_exit:
+
+
+// fn000E5988
+// Return size: 0
+void fn000E5988(word32 arg0)
+fn000E5988_entry:
+l000E5988:
+fn000E5988_exit:
+
+
+// fn000E59AA
+// Return size: 0
+void fn000E59AA(word32 arg0, word32 arg1)
+fn000E59AA_entry:
+l000E59AA:
+fn000E59AA_exit:
+
+
+// fn000E59B3
+// Return size: 0
+word32 fn000E59B3(word32 arg0, word32 arg1, word32 arg2)
+fn000E59B3_entry:
+l000E59B3:
+fn000E59B3_exit:
+
+
+// fn000E59BE
+// Return size: 0
+void fn000E59BE(word32 arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
+fn000E59BE_entry:
+l000E59BE:
+fn000E59BE_exit:
+
+
+// fn000E59DC
+// Return size: 0
+void fn000E59DC(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000E59DC_entry:
+l000E59DC:
+fn000E59DC_exit:
+
+
+// fn000E59FA
+// Return size: 0
+word32 fn000E59FA(word32 arg0)
+fn000E59FA_entry:
+l000E59FA:
+fn000E59FA_exit:
+
+
+// fn000E5A05
+// Return size: 0
+word32 fn000E5A05(word32 arg0)
+fn000E5A05_entry:
+l000E5A05:
+fn000E5A05_exit:
+
+
+// fn000E5A10
+// Return size: 0
+word32 fn000E5A10(word32 arg0, word32 arg1, word32 arg2)
+fn000E5A10_entry:
+l000E5A10:
+fn000E5A10_exit:
+
+
+// fn000E5AD9
+// Return size: 0
+word32 fn000E5AD9(word32 arg0)
+fn000E5AD9_entry:
+l000E5AD9:
+fn000E5AD9_exit:
+
+
+// fn000E5AE4
+// Return size: 0
+word32 fn000E5AE4(word32 arg0)
+fn000E5AE4_entry:
+l000E5AE4:
+fn000E5AE4_exit:
+
+
+// fn000E5B55
+// Return size: 0
+word32 fn000E5B55(word32 arg0, word32 arg1)
+fn000E5B55_entry:
+l000E5B55:
+fn000E5B55_exit:
+
+
+// fn000E5B60
+// Return size: 0
+word32 fn000E5B60(word32 arg0, word32 arg1, word32 arg2)
+fn000E5B60_entry:
+l000E5B60:
+fn000E5B60_exit:
+
+
+// fn000E5C83
+// Return size: 0
+word32 fn000E5C83(word32 arg0, word32 arg1)
+fn000E5C83_entry:
+l000E5C83:
+fn000E5C83_exit:
+
+
+// fn000E5C8E
+// Return size: 0
+void fn000E5C8E(word32 arg0)
+fn000E5C8E_entry:
+l000E5C8E:
+fn000E5C8E_exit:
+
+
+// fn000E5CAB
+// Return size: 0
+void fn000E5CAB(word32 arg0)
+fn000E5CAB_entry:
+l000E5CAB:
+fn000E5CAB_exit:
+
+
+// fn000E5CCD
+// Return size: 0
+void fn000E5CCD(word32 arg0, word32 arg1)
+fn000E5CCD_entry:
+l000E5CCD:
+fn000E5CCD_exit:
+
+
+// fn000E5CD6
+// Return size: 0
+word32 fn000E5CD6(word32 arg0, word32 arg1, word32 arg2)
+fn000E5CD6_entry:
+l000E5CD6:
+fn000E5CD6_exit:
+
+
+// fn000E5CE1
+// Return size: 0
+void fn000E5CE1(word32 arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
+fn000E5CE1_entry:
+l000E5CE1:
+fn000E5CE1_exit:
+
+
+// fn000E5CFF
+// Return size: 0
+void fn000E5CFF(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000E5CFF_entry:
+l000E5CFF:
+fn000E5CFF_exit:
+
+
+// fn000E5D1D
+// Return size: 0
+word32 fn000E5D1D(word32 arg0)
+fn000E5D1D_entry:
+l000E5D1D:
+fn000E5D1D_exit:
+
+
+// fn000E5D28
+// Return size: 0
+word32 fn000E5D28(word32 arg0)
+fn000E5D28_entry:
+l000E5D28:
+fn000E5D28_exit:
+
+
+// fn000E5D33
+// Return size: 0
+word32 fn000E5D33(word32 arg0, word32 arg1, word32 arg2)
+fn000E5D33_entry:
+l000E5D33:
+fn000E5D33_exit:
+
+
+// fn000E5DF5
+// Return size: 0
+word32 fn000E5DF5(word32 arg0)
+fn000E5DF5_entry:
+l000E5DF5:
+fn000E5DF5_exit:
+
+
+// fn000E5E00
+// Return size: 0
+word32 fn000E5E00(word32 arg0)
+fn000E5E00_entry:
+l000E5E00:
+fn000E5E00_exit:
+
+
+// fn000E5E69
+// Return size: 0
+word32 fn000E5E69(word32 arg0, word32 arg1)
+fn000E5E69_entry:
+l000E5E69:
+fn000E5E69_exit:
+
+
+// fn000E5E74
+// Return size: 0
+word32 fn000E5E74(word32 arg0, word32 arg1, word32 arg2)
+fn000E5E74_entry:
+l000E5E74:
+fn000E5E74_exit:
+
+
+// fn000E5F86
+// Return size: 0
+word32 fn000E5F86(word32 arg0, word32 arg1)
+fn000E5F86_entry:
+l000E5F86:
+fn000E5F86_exit:
+
+
+// fn000E5F91
+// Return size: 0
+word32 fn000E5F91(word32 arg0, word32 arg1, word32 arg2)
+fn000E5F91_entry:
+l000E5F91:
+fn000E5F91_exit:
+
+
+// fn000E5FBC
+// Return size: 0
+void fn000E5FBC(word32 arg0)
+fn000E5FBC_entry:
+l000E5FBC:
+fn000E5FBC_exit:
+
+
+// fn000E5FD1
+// Return size: 0
+void fn000E5FD1(word32 arg0)
+fn000E5FD1_entry:
+l000E5FD1:
+fn000E5FD1_exit:
+
+
+// fn000E5FEB
+// Return size: 0
+void fn000E5FEB(word32 arg0)
+fn000E5FEB_entry:
+l000E5FEB:
+fn000E5FEB_exit:
+
+
+// fn000E601C
+// Return size: 0
+void fn000E601C(word32 arg0)
+fn000E601C_entry:
+l000E601C:
+fn000E601C_exit:
+
+
+// fn000E6046
+// Return size: 0
+void fn000E6046(word32 arg0)
+fn000E6046_entry:
+l000E6046:
+fn000E6046_exit:
+
+
+// fn000E605B
+// Return size: 0
+void fn000E605B(word32 arg0)
+fn000E605B_entry:
+l000E605B:
+fn000E605B_exit:
+
+
+// fn000E6075
+// Return size: 0
+void fn000E6075(word32 arg0)
+fn000E6075_entry:
+l000E6075:
+fn000E6075_exit:
+
+
+// fn000E60A6
+// Return size: 0
+void fn000E60A6(word32 arg0)
+fn000E60A6_entry:
+l000E60A6:
+fn000E60A6_exit:
+
+
+// fn000E60D0
+// Return size: 0
+void fn000E60D0(word32 arg0)
+fn000E60D0_entry:
+l000E60D0:
+fn000E60D0_exit:
+
+
+// fn000E60E5
+// Return size: 0
+void fn000E60E5(word32 arg0)
+fn000E60E5_entry:
+l000E60E5:
+fn000E60E5_exit:
+
+
+// fn000E60FF
+// Return size: 0
+void fn000E60FF(word32 arg0)
+fn000E60FF_entry:
+l000E60FF:
+fn000E60FF_exit:
+
+
+// fn000E6130
+// Return size: 0
+void fn000E6130(word32 arg0)
+fn000E6130_entry:
+l000E6130:
+fn000E6130_exit:
+
+
+// fn000E615A
+// Return size: 0
+void fn000E615A(word32 arg0)
+fn000E615A_entry:
+l000E615A:
+fn000E615A_exit:
+
+
+// fn000E616F
+// Return size: 0
+void fn000E616F(word32 arg0)
+fn000E616F_entry:
+l000E616F:
+fn000E616F_exit:
+
+
+// fn000E6189
+// Return size: 0
+void fn000E6189(word32 arg0)
+fn000E6189_entry:
+l000E6189:
+fn000E6189_exit:
+
+
+// fn000E61BA
+// Return size: 0
+void fn000E61BA(word32 arg0)
+fn000E61BA_entry:
+l000E61BA:
+fn000E61BA_exit:
+
+
+// fn000E61E4
+// Return size: 0
+void fn000E61E4(word32 arg0)
+fn000E61E4_entry:
+l000E61E4:
+fn000E61E4_exit:
+
+
+// fn000E61F2
+// Return size: 0
+void fn000E61F2(word32 arg0)
+fn000E61F2_entry:
+l000E61F2:
+fn000E61F2_exit:
+
+
+// fn000E6205
+// Return size: 0
+void fn000E6205(word32 arg0)
+fn000E6205_entry:
+l000E6205:
+fn000E6205_exit:
+
+
+// fn000E6213
+// Return size: 0
+word32 fn000E6213(word32 arg0)
+fn000E6213_entry:
+l000E6213:
+fn000E6213_exit:
+
+
+// fn000E6220
+// Return size: 0
+void fn000E6220(word32 arg0, word32 arg1, word32 arg2)
+fn000E6220_entry:
+l000E6220:
+fn000E6220_exit:
+
+
+// fn000E626A
+// Return size: 0
+void fn000E626A(word32 arg0, word32 arg1)
+fn000E626A_entry:
+l000E626A:
+fn000E626A_exit:
+
+
+// fn000E6375
+// Return size: 0
+word32 fn000E6375()
+fn000E6375_entry:
+l000E6375:
+fn000E6375_exit:
+
+
+// fn000E63C8
+// Return size: 0
+void fn000E63C8(word32 arg0, word32 arg1, word32 arg2)
+fn000E63C8_entry:
+l000E63C8:
+fn000E63C8_exit:
+
+
+// fn000E641C
+// Return size: 0
+void fn000E641C(word32 arg0, word32 arg1)
+fn000E641C_entry:
+l000E641C:
+fn000E641C_exit:
+
+
+// fn000E64CA
+// Return size: 0
+word32 fn000E64CA(word32 arg0)
+fn000E64CA_entry:
+l000E64CA:
+fn000E64CA_exit:
+
+
+// fn000E6505
+// Return size: 0
+void fn000E6505(word32 arg0)
+fn000E6505_entry:
+l000E6505:
+fn000E6505_exit:
+
+
+// fn000E6544
+// Return size: 0
+void fn000E6544(word32 arg0)
+fn000E6544_entry:
+l000E6544:
+fn000E6544_exit:
+
+
+// fn000E6583
+// Return size: 0
+word32 fn000E6583(word32 arg0)
+fn000E6583_entry:
+l000E6583:
+fn000E6583_exit:
+
+
+// fn000E6790
+// Return size: 0
+void fn000E6790(word32 arg0, word32 arg1)
+fn000E6790_entry:
+l000E6790:
+fn000E6790_exit:
+
+
+// fn000E680D
+// Return size: 0
+void fn000E680D(word32 arg0)
+fn000E680D_entry:
+l000E680D:
+fn000E680D_exit:
+
+
+// fn000E69B2
+// Return size: 0
+void fn000E69B2(word32 arg0)
+fn000E69B2_entry:
+l000E69B2:
+fn000E69B2_exit:
+
+
+// fn000E69FB
+// Return size: 0
+word32 fn000E69FB(word32 arg0)
+fn000E69FB_entry:
+l000E69FB:
+fn000E69FB_exit:
+
+
+// fn000E6C08
+// Return size: 0
+void fn000E6C08(word32 arg0, word32 arg1)
+fn000E6C08_entry:
+l000E6C08:
+fn000E6C08_exit:
+
+
+// fn000E6C85
+// Return size: 0
+void fn000E6C85(word32 arg0)
+fn000E6C85_entry:
+l000E6C85:
+fn000E6C85_exit:
+
+
+// fn000E6E2A
+// Return size: 0
+word32 fn000E6E2A(word32 arg0, word32 arg1)
+fn000E6E2A_entry:
+l000E6E2A:
+fn000E6E2A_exit:
+
+
+// fn000E71A1
+// Return size: 0
+word32 fn000E71A1(word32 arg0, word32 arg1)
+fn000E71A1_entry:
+l000E71A1:
+fn000E71A1_exit:
+
+
+// __GLOBAL__I_000101
+// Return size: 0
+void __GLOBAL__I_000101()
+__GLOBAL__I_000101_entry:
+l000E7404:
+__GLOBAL__I_000101_exit:
+
+
+// __GLOBAL__sub_I_iostream_cpp
+// Return size: 0
+void __GLOBAL__sub_I_iostream_cpp()
+__GLOBAL__sub_I_iostream_cpp_entry:
+l000E741E:
+__GLOBAL__sub_I_iostream_cpp_exit:
+
+
+// fn000E7427
+// Return size: 0
+void fn000E7427(word32 arg0)
+fn000E7427_entry:
+l000E7427:
+fn000E7427_exit:
+
+
+// fn000E7931
+// Return size: 0
+void fn000E7931(word32 arg0)
+fn000E7931_entry:
+l000E7931:
+fn000E7931_exit:
+
+
+// fn000E79F6
+// Return size: 0
+void fn000E79F6(word32 arg0, word32 arg1, word32 arg2)
+fn000E79F6_entry:
+l000E79F6:
+fn000E79F6_exit:
+
+
+// fn000E7ABF
+// Return size: 0
+void fn000E7ABF(word32 arg0, word32 arg1, word32 arg2)
+fn000E7ABF_entry:
+l000E7ABF:
+fn000E7ABF_exit:
+
+
+// fn000E7B88
+// Return size: 0
+void fn000E7B88(word32 arg0, word32 arg1, word32 arg2)
+fn000E7B88_entry:
+l000E7B88:
+fn000E7B88_exit:
+
+
+// fn000E7C82
+// Return size: 0
+void fn000E7C82(word32 arg0, word32 arg1, word32 arg2)
+fn000E7C82_entry:
+l000E7C82:
+fn000E7C82_exit:
+
+
+// fn000E7D7C
+// Return size: 0
+void fn000E7D7C(word32 arg0)
+fn000E7D7C_entry:
+l000E7D7C:
+fn000E7D7C_exit:
+
+
+// fn000E7D8F
+// Return size: 0
+void fn000E7D8F(word32 arg0, word32 arg1)
+fn000E7D8F_entry:
+l000E7D8F:
+fn000E7D8F_exit:
+
+
+// fn000E7E11
+// Return size: 0
+word32 fn000E7E11(word32 arg0)
+fn000E7E11_entry:
+l000E7E11:
+fn000E7E11_exit:
+
+
+// fn000E7F2E
+// Return size: 0
+word32 fn000E7F2E(word32 arg0, word32 arg1, word32 arg2)
+fn000E7F2E_entry:
+l000E7F2E:
+fn000E7F2E_exit:
+
+
+// fn000E7FF3
+// Return size: 0
+word32 fn000E7FF3(word32 arg0, word32 arg1)
+fn000E7FF3_entry:
+l000E7FF3:
+fn000E7FF3_exit:
+
+
+// fn000E8219
+// Return size: 0
+void fn000E8219(word32 arg0)
+fn000E8219_entry:
+l000E8219:
+fn000E8219_exit:
+
+
+// fn000E822C
+// Return size: 0
+void fn000E822C(word32 arg0, word32 arg1)
+fn000E822C_entry:
+l000E822C:
+fn000E822C_exit:
+
+
+// fn000E82AE
+// Return size: 0
+word32 fn000E82AE(word32 arg0)
+fn000E82AE_entry:
+l000E82AE:
+fn000E82AE_exit:
+
+
+// fn000E83CB
+// Return size: 0
+word32 fn000E83CB(word32 arg0, word32 arg1, word32 arg2)
+fn000E83CB_entry:
+l000E83CB:
+fn000E83CB_exit:
+
+
+// fn000E8498
+// Return size: 0
+word32 fn000E8498(word32 arg0, word32 arg1)
+fn000E8498_entry:
+l000E8498:
+fn000E8498_exit:
+
+
+// fn000E86C6
+// Return size: 0
+void fn000E86C6(word32 arg0, word32 arg1)
+fn000E86C6_entry:
+l000E86C6:
+fn000E86C6_exit:
+
+
+// fn000E8778
+// Return size: 0
+void fn000E8778(word32 arg0)
+fn000E8778_entry:
+l000E8778:
+fn000E8778_exit:
+
+
+// fn000E878B
+// Return size: 0
+word32 fn000E878B(word32 arg0)
+fn000E878B_entry:
+l000E878B:
+fn000E878B_exit:
+
+
+// fn000E879F
+// Return size: 0
+word32 fn000E879F(word32 arg0)
+fn000E879F_entry:
+l000E879F:
+fn000E879F_exit:
+
+
+// fn000E87B3
+// Return size: 0
+word32 fn000E87B3(word32 arg0, word32 arg1)
+fn000E87B3_entry:
+l000E87B3:
+fn000E87B3_exit:
+
+
+// fn000E89AB
+// Return size: 0
+word32 fn000E89AB(word32 arg0, word32 arg1)
+fn000E89AB_entry:
+l000E89AB:
+fn000E89AB_exit:
+
+
+// fn000E8CDC
+// Return size: 0
+void fn000E8CDC(word32 arg0, word32 arg1)
+fn000E8CDC_entry:
+l000E8CDC:
+fn000E8CDC_exit:
+
+
+// fn000E8D8E
+// Return size: 0
+void fn000E8D8E(word32 arg0)
+fn000E8D8E_entry:
+l000E8D8E:
+fn000E8D8E_exit:
+
+
+// fn000E8DA1
+// Return size: 0
+word32 fn000E8DA1(word32 arg0)
+fn000E8DA1_entry:
+l000E8DA1:
+fn000E8DA1_exit:
+
+
+// fn000E8DB5
+// Return size: 0
+word32 fn000E8DB5(word32 arg0)
+fn000E8DB5_entry:
+l000E8DB5:
+fn000E8DB5_exit:
+
+
+// fn000E8DC9
+// Return size: 0
+word32 fn000E8DC9(word32 arg0, word32 arg1)
+fn000E8DC9_entry:
+l000E8DC9:
+fn000E8DC9_exit:
+
+
+// fn000E8FC9
+// Return size: 0
+word32 fn000E8FC9(word32 arg0, word32 arg1)
+fn000E8FC9_entry:
+l000E8FC9:
+fn000E8FC9_exit:
+
+
+// fn000E92F6
+// Return size: 0
+void fn000E92F6(word32 arg0)
+fn000E92F6_entry:
+l000E92F6:
+fn000E92F6_exit:
+
+
+// fn000E92FF
+// Return size: 0
+void fn000E92FF(word32 arg0)
+fn000E92FF_entry:
+l000E92FF:
+fn000E92FF_exit:
+
+
+// fn000E930D
+// Return size: 0
+void fn000E930D(word32 arg0)
+fn000E930D_entry:
+l000E930D:
+fn000E930D_exit:
+
+
+// fn000E9347
+// Return size: 0
+word32 fn000E9347(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000E9347_entry:
+l000E9347:
+fn000E9347_exit:
+
+
+// fn000E9400
+// Return size: 0
+void fn000E9400(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000E9400_entry:
+l000E9400:
+fn000E9400_exit:
+
+
+// fn000E9423
+// Return size: 0
+word32 fn000E9423(word32 arg0, word32 arg1, word32 arg2)
+fn000E9423_entry:
+l000E9423:
+fn000E9423_exit:
+
+
+// fn000E949A
+// Return size: 0
+void fn000E949A(word32 arg0, word32 arg1, word32 arg2)
+fn000E949A_entry:
+l000E949A:
+fn000E949A_exit:
+
+
+// fn000E958C
+// Return size: 0
+void fn000E958C(word32 arg0)
+fn000E958C_entry:
+l000E958C:
+fn000E958C_exit:
+
+
+// fn000E9595
+// Return size: 0
+void fn000E9595(word32 arg0)
+fn000E9595_entry:
+l000E9595:
+fn000E9595_exit:
+
+
+// fn000E95A3
+// Return size: 0
+word32 fn000E95A3(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000E95A3_entry:
+l000E95A3:
+fn000E95A3_exit:
+
+
+// fn000E9644
+// Return size: 0
+void fn000E9644(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000E9644_entry:
+l000E9644:
+fn000E9644_exit:
+
+
+// fn000E9667
+// Return size: 0
+word32 fn000E9667(word32 arg0, word32 arg1, word32 arg2)
+fn000E9667_entry:
+l000E9667:
+fn000E9667_exit:
+
+
+// fn000E96D4
+// Return size: 0
+void fn000E96D4(word32 arg0, word32 arg1, word32 arg2)
+fn000E96D4_entry:
+l000E96D4:
+fn000E96D4_exit:
+
+
+// fn000E9814
+// Return size: 0
+void fn000E9814(word32 arg0)
+fn000E9814_entry:
+l000E9814:
+fn000E9814_exit:
+
+
+// fn000E981D
+// Return size: 0
+void fn000E981D(word32 arg0)
+fn000E981D_entry:
+l000E981D:
+fn000E981D_exit:
+
+
+// fn000E982B
+// Return size: 0
+word32 fn000E982B(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E982B_entry:
+l000E982B:
+fn000E982B_exit:
+
+
+// fn000E9B8F
+// Return size: 0
+word32 fn000E9B8F(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9B8F_entry:
+l000E9B8F:
+fn000E9B8F_exit:
+
+
+// fn000E9C0B
+// Return size: 0
+word32 fn000E9C0B(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9C0B_entry:
+l000E9C0B:
+fn000E9C0B_exit:
+
+
+// fn000E9C87
+// Return size: 0
+word32 fn000E9C87(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9C87_entry:
+l000E9C87:
+fn000E9C87_exit:
+
+
+// fn000E9D03
+// Return size: 0
+word32 fn000E9D03(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9D03_entry:
+l000E9D03:
+fn000E9D03_exit:
+
+
+// fn000E9D7F
+// Return size: 0
+word32 fn000E9D7F(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9D7F_entry:
+l000E9D7F:
+fn000E9D7F_exit:
+
+
+// fn000E9DFB
+// Return size: 0
+word32 fn000E9DFB(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9DFB_entry:
+l000E9DFB:
+fn000E9DFB_exit:
+
+
+// fn000E9E77
+// Return size: 0
+word32 fn000E9E77(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9E77_entry:
+l000E9E77:
+fn000E9E77_exit:
+
+
+// fn000E9EF3
+// Return size: 0
+word32 fn000E9EF3(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9EF3_entry:
+l000E9EF3:
+fn000E9EF3_exit:
+
+
+// fn000E9F6F
+// Return size: 0
+word32 fn000E9F6F(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9F6F_entry:
+l000E9F6F:
+fn000E9F6F_exit:
+
+
+// fn000E9FEB
+// Return size: 0
+word32 fn000E9FEB(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000E9FEB_entry:
+l000E9FEB:
+fn000E9FEB_exit:
+
+
+// fn000EA9F7
+// Return size: 0
+word32 fn000EA9F7(word32 arg0, word32 arg1)
+fn000EA9F7_entry:
+l000EA9F7:
+fn000EA9F7_exit:
+
+
+// fn000EAA19
+// Return size: 0
+word32 fn000EAA19(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
+fn000EAA19_entry:
+l000EAA19:
+fn000EAA19_exit:
+
+
+// fn000EAD0D
+// Return size: 0
+word32 fn000EAD0D()
+fn000EAD0D_entry:
+l000EAD0D:
+fn000EAD0D_exit:
+
+
+// fn000EAD98
+// Return size: 0
+word32 fn000EAD98(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EAD98_entry:
+l000EAD98:
+fn000EAD98_exit:
+
+
+// fn000EAE12
+// Return size: 0
+word32 fn000EAE12(word32 arg0)
+fn000EAE12_entry:
+l000EAE12:
+fn000EAE12_exit:
+
+
+// fn000EAEAB
+// Return size: 0
+word32 fn000EAEAB(word32 arg0, word32 arg1)
+fn000EAEAB_entry:
+l000EAEAB:
+fn000EAEAB_exit:
+
+
+// fn000EAEFC
+// Return size: 0
+word32 fn000EAEFC(word32 arg0, word32 arg1)
+fn000EAEFC_entry:
+l000EAEFC:
+fn000EAEFC_exit:
+
+
+// fn000EAF62
+// Return size: 0
+void fn000EAF62(word32 arg0)
+fn000EAF62_entry:
+l000EAF62:
+fn000EAF62_exit:
+
+
+// fn000EAF99
+// Return size: 0
+void fn000EAF99(word32 arg0)
+fn000EAF99_entry:
+l000EAF99:
+fn000EAF99_exit:
+
+
+// fn000EB025
+// Return size: 0
+word32 fn000EB025(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000EB025_entry:
+l000EB025:
+fn000EB025_exit:
+
+
+// fn000EB941
+// Return size: 0
+void fn000EB941(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000EB941_entry:
+l000EB941:
+fn000EB941_exit:
+
+
+// fn000EBAF2
+// Return size: 0
+word32 fn000EBAF2(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10, word32 arg11)
+fn000EBAF2_entry:
+l000EBAF2:
+fn000EBAF2_exit:
+
+
+// fn000EBF56
+// Return size: 0
+real64 fn000EBF56(word32 arg0, word32 arg1, word32 arg2)
+fn000EBF56_entry:
+l000EBF56:
+fn000EBF56_exit:
+
+
+// fn000EC01D
+// Return size: 0
+void fn000EC01D(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EC01D_entry:
+l000EC01D:
+fn000EC01D_exit:
+
+
+// fn000EC1F8
+// Return size: 0
+word32 fn000EC1F8(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000EC1F8_entry:
+l000EC1F8:
+fn000EC1F8_exit:
+
+
+// fn000ECB14
+// Return size: 0
+real64 fn000ECB14(word32 arg0, word32 arg1, word32 arg2)
+fn000ECB14_entry:
+l000ECB14:
+fn000ECB14_exit:
+
+
+// fn000ECBDB
+// Return size: 0
+word32 fn000ECBDB(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000ECBDB_entry:
+l000ECBDB:
+fn000ECBDB_exit:
+
+
+// fn000ED4F8
+// Return size: 0
+real32 fn000ED4F8(word32 arg0, word32 arg1, word32 arg2)
+fn000ED4F8_entry:
+l000ED4F8:
+fn000ED4F8_exit:
+
+
+// fn000ED5B7
+// Return size: 0
+word32 fn000ED5B7(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000ED5B7_entry:
+l000ED5B7:
+fn000ED5B7_exit:
+
+
+// fn000EDE83
+// Return size: 0
+word32 fn000EDE83(word32 arg0)
+fn000EDE83_entry:
+l000EDE83:
+fn000EDE83_exit:
+
+
+// fn000EDF31
+// Return size: 0
+void fn000EDF31(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EDF31_entry:
+l000EDF31:
+fn000EDF31_exit:
+
+
+// fn000EE0A5
+// Return size: 0
+word64 fn000EE0A5(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EE0A5_entry:
+l000EE0A5:
+fn000EE0A5_exit:
+
+
+// fn000EE188
+// Return size: 0
+word32 fn000EE188(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000EE188_entry:
+l000EE188:
+fn000EE188_exit:
+
+
+// fn000EEA53
+// Return size: 0
+word32 fn000EEA53(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EEA53_entry:
+l000EEA53:
+fn000EEA53_exit:
+
+
+// fn000EEB54
+// Return size: 0
+word32 fn000EEB54(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000EEB54_entry:
+l000EEB54:
+fn000EEB54_exit:
+
+
+// fn000EF41F
+// Return size: 0
+word32 fn000EF41F(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EF41F_entry:
+l000EF41F:
+fn000EF41F_exit:
+
+
+// fn000EF520
+// Return size: 0
+word32 fn000EF520(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000EF520_entry:
+l000EF520:
+fn000EF520_exit:
+
+
+// fn000EFDEB
+// Return size: 0
+word32 fn000EFDEB(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000EFDEB_entry:
+l000EFDEB:
+fn000EFDEB_exit:
+
+
+// fn000EFEEF
+// Return size: 0
+word32 fn000EFEEF(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000EFEEF_entry:
+l000EFEEF:
+fn000EFEEF_exit:
+
+

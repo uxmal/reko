@@ -1,0 +1,872 @@
+// stackAlloc
+// Return size: 0
+word32 stackAlloc(word32 arg0)
+stackAlloc_entry:
+l000D0000:
+stackAlloc_exit:
+
+
+// stackSave
+// Return size: 0
+word32 stackSave()
+stackSave_entry:
+l000D0028:
+stackSave_exit:
+
+
+// stackRestore
+// Return size: 0
+void stackRestore(word32 arg0)
+stackRestore_entry:
+l000D002C:
+stackRestore_exit:
+
+
+// establishStackSpace
+// Return size: 0
+void establishStackSpace(word32 arg0, word32 arg1)
+establishStackSpace_entry:
+l000D0031:
+establishStackSpace_exit:
+
+
+// setThrew
+// Return size: 0
+void setThrew(word32 arg0, word32 arg1)
+setThrew_entry:
+l000D003D:
+setThrew_exit:
+
+
+// setTempRet0
+// Return size: 0
+void setTempRet0(word32 arg0)
+setTempRet0_entry:
+l000D004E:
+setTempRet0_exit:
+
+
+// getTempRet0
+// Return size: 0
+word32 getTempRet0()
+getTempRet0_entry:
+l000D0053:
+getTempRet0_exit:
+
+
+// fn000D0057
+// Return size: 0
+word32 fn000D0057()
+fn000D0057_entry:
+l000D0057:
+fn000D0057_exit:
+
+
+// fn000D0082
+// Return size: 0
+void fn000D0082()
+fn000D0082_entry:
+l000D0082:
+fn000D0082_exit:
+
+
+// _main
+// Return size: 0
+word32 _main()
+_main_entry:
+l000D0098:
+_main_exit:
+
+
+// fn000D00FD
+// Return size: 0
+word32 fn000D00FD(word32 arg0, word32 arg1)
+fn000D00FD_entry:
+l000D00FD:
+fn000D00FD_exit:
+
+
+// fn000D0143
+// Return size: 0
+word32 fn000D0143(word32 arg0)
+fn000D0143_entry:
+l000D0143:
+fn000D0143_exit:
+
+
+// fn000D0290
+// Return size: 0
+word32 fn000D0290(word32 arg0, word32 arg1, word32 arg2)
+fn000D0290_entry:
+l000D0290:
+fn000D0290_exit:
+
+
+// fn000D0843
+// Return size: 0
+word32 fn000D0843(word32 arg0)
+fn000D0843_entry:
+l000D0843:
+fn000D0843_exit:
+
+
+// fn000D0874
+// Return size: 0
+word32 fn000D0874(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
+fn000D0874_entry:
+l000D0874:
+fn000D0874_exit:
+
+
+// fn000D0E65
+// Return size: 0
+void fn000D0E65(word32 arg0)
+fn000D0E65_entry:
+l000D0E65:
+fn000D0E65_exit:
+
+
+// fn000D0E75
+// Return size: 0
+word32 fn000D0E75(word32 arg0, word32 arg1)
+fn000D0E75_entry:
+l000D0E75:
+fn000D0E75_exit:
+
+
+// fn000D0EAE
+// Return size: 0
+word32 fn000D0EAE()
+fn000D0EAE_entry:
+l000D0EAE:
+fn000D0EAE_exit:
+
+
+// __GLOBAL__sub_I_hello_cpp
+// Return size: 0
+void __GLOBAL__sub_I_hello_cpp()
+__GLOBAL__sub_I_hello_cpp_entry:
+l000D0EB9:
+__GLOBAL__sub_I_hello_cpp_exit:
+
+
+// fn000D0EC4
+// Return size: 0
+word32 fn000D0EC4(word32 arg0)
+fn000D0EC4_entry:
+l000D0EC4:
+fn000D0EC4_exit:
+
+
+// fn000D0F0D
+// Return size: 0
+word32 fn000D0F0D(word32 arg0, word32 arg1, word32 arg2)
+fn000D0F0D_entry:
+l000D0F0D:
+fn000D0F0D_exit:
+
+
+// fn000D120B
+// Return size: 0
+word32 fn000D120B(word32 arg0, word32 arg1, word32 arg2)
+fn000D120B_entry:
+l000D120B:
+fn000D120B_exit:
+
+
+// fn000D12B7
+// Return size: 0
+word32 fn000D12B7(word32 arg0)
+fn000D12B7_entry:
+l000D12B7:
+fn000D12B7_exit:
+
+
+// ___errno_location
+// Return size: 0
+word32 ___errno_location()
+___errno_location_entry:
+l000D12EA:
+___errno_location_exit:
+
+
+// fn000D1329
+// Return size: 0
+void fn000D1329(word32 arg0)
+fn000D1329_entry:
+l000D1329:
+fn000D1329_exit:
+
+
+// fn000D1351
+// Return size: 0
+void fn000D1351(word32 arg0)
+fn000D1351_entry:
+l000D1351:
+fn000D1351_exit:
+
+
+// fn000D135A
+// Return size: 0
+word32 fn000D135A(word32 arg0, word32 arg1, word32 arg2)
+fn000D135A_entry:
+l000D135A:
+fn000D135A_exit:
+
+
+// fn000D157C
+// Return size: 0
+void fn000D157C(word32 arg0)
+fn000D157C_entry:
+l000D157C:
+fn000D157C_exit:
+
+
+// fn000D15A4
+// Return size: 0
+word32 fn000D15A4(word32 arg0, word32 arg1, word32 arg2)
+fn000D15A4_entry:
+l000D15A4:
+fn000D15A4_exit:
+
+
+// fn000D165D
+// Return size: 0
+word64 fn000D165D(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000D165D_entry:
+l000D165D:
+fn000D165D_exit:
+
+
+// fn000D1672
+// Return size: 0
+word64 fn000D1672(word32 arg0, word32 arg1, word32 arg2)
+fn000D1672_entry:
+l000D1672:
+fn000D1672_exit:
+
+
+// fn000D1689
+// Return size: 0
+word64 fn000D1689(word32 arg0, word32 arg1, word32 arg2, word64 arg3)
+fn000D1689_entry:
+l000D1689:
+fn000D1689_exit:
+
+
+// fn000D1767
+// Return size: 0
+void fn000D1767(word32 arg0, word32 arg1)
+fn000D1767_entry:
+l000D1767:
+fn000D1767_exit:
+
+
+// fn000D17F5
+// Return size: 0
+word64 fn000D17F5(word64 arg0, word64 arg1)
+fn000D17F5_entry:
+l000D17F5:
+fn000D17F5_exit:
+
+
+// fn000D1804
+// Return size: 0
+word64 fn000D1804(word32 arg0, word32 arg1, word32 arg2, word64 arg3)
+fn000D1804_entry:
+l000D1804:
+fn000D1804_exit:
+
+
+// fn000D2493
+// Return size: 0
+word32 fn000D2493(word32 arg0)
+fn000D2493_entry:
+l000D2493:
+fn000D2493_exit:
+
+
+// fn000D2665
+// Return size: 0
+word32 fn000D2665(word32 arg0)
+fn000D2665_entry:
+l000D2665:
+fn000D2665_exit:
+
+
+// fn000D2693
+// Return size: 0
+word32 fn000D2693(word32 arg0)
+fn000D2693_entry:
+l000D2693:
+fn000D2693_exit:
+
+
+// fn000D2742
+// Return size: 0
+word32 fn000D2742(word32 arg0)
+fn000D2742_entry:
+l000D2742:
+fn000D2742_exit:
+
+
+// fn000D285D
+// Return size: 0
+word64 fn000D285D(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000D285D_entry:
+l000D285D:
+fn000D285D_exit:
+
+
+// fn000D2872
+// Return size: 0
+word64 fn000D2872(word32 arg0, word32 arg1, word32 arg2)
+fn000D2872_entry:
+l000D2872:
+fn000D2872_exit:
+
+
+// fn000D2892
+// Return size: 0
+real64 fn000D2892(real64 arg0, real64 arg1)
+fn000D2892_entry:
+l000D2892:
+fn000D2892_exit:
+
+
+// fn000D28D3
+// Return size: 0
+word32 fn000D28D3(word32 arg0, word32 arg1)
+fn000D28D3_entry:
+l000D28D3:
+fn000D28D3_exit:
+
+
+// fn000D29A3
+// Return size: 0
+word32 fn000D29A3(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000D29A3_entry:
+l000D29A3:
+fn000D29A3_exit:
+
+
+// fn000D2BD4
+// Return size: 0
+word32 fn000D2BD4(word32 arg0, word32 arg1, word32 arg2)
+fn000D2BD4_entry:
+l000D2BD4:
+fn000D2BD4_exit:
+
+
+// fn000D2E1D
+// Return size: 0
+word64 fn000D2E1D(word64 arg0, word64 arg1)
+fn000D2E1D_entry:
+l000D2E1D:
+fn000D2E1D_exit:
+
+
+// fn000D2E2C
+// Return size: 0
+word32 fn000D2E2C(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000D2E2C_entry:
+l000D2E2C:
+fn000D2E2C_exit:
+
+
+// fn000D61F1
+// Return size: 0
+word32 fn000D61F1(word32 arg0)
+fn000D61F1_entry:
+l000D61F1:
+fn000D61F1_exit:
+
+
+// fn000D61FC
+// Return size: 0
+word32 fn000D61FC(word32 arg0, word32 arg1, word32 arg2)
+fn000D61FC_entry:
+l000D61FC:
+fn000D61FC_exit:
+
+
+// fn000D63BF
+// Return size: 0
+void fn000D63BF(word32 arg0, word32 arg1, word32 arg2)
+fn000D63BF_entry:
+l000D63BF:
+fn000D63BF_exit:
+
+
+// fn000D68BF
+// Return size: 0
+word32 fn000D68BF(word64 arg0, word32 arg1)
+fn000D68BF_entry:
+l000D68BF:
+fn000D68BF_exit:
+
+
+// fn000D69BF
+// Return size: 0
+word32 fn000D69BF(word32 arg0)
+fn000D69BF_entry:
+l000D69BF:
+fn000D69BF_exit:
+
+
+// fn000D6AC0
+// Return size: 0
+word32 fn000D6AC0(word32 arg0, word32 arg1, word32 arg2)
+fn000D6AC0_entry:
+l000D6AC0:
+fn000D6AC0_exit:
+
+
+// fn000D6D47
+// Return size: 0
+void fn000D6D47(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000D6D47_entry:
+l000D6D47:
+fn000D6D47_exit:
+
+
+// fn000D6E73
+// Return size: 0
+word32 fn000D6E73(word32 arg0, word32 arg1)
+fn000D6E73_entry:
+l000D6E73:
+fn000D6E73_exit:
+
+
+// fn000D6E9E
+// Return size: 0
+real64 fn000D6E9E(real64 arg0, word32 arg1)
+fn000D6E9E_entry:
+l000D6E9E:
+fn000D6E9E_exit:
+
+
+// fn000D6EB2
+// Return size: 0
+real64 fn000D6EB2(real64 arg0, word32 arg1)
+fn000D6EB2_entry:
+l000D6EB2:
+fn000D6EB2_exit:
+
+
+// fn000D779F
+// Return size: 0
+word32 fn000D779F(word32 arg0, word32 arg1, word32 arg2)
+fn000D779F_entry:
+l000D779F:
+fn000D779F_exit:
+
+
+// fn000D799D
+// Return size: 0
+word32 fn000D799D(word32 arg0)
+fn000D799D_entry:
+l000D799D:
+fn000D799D_exit:
+
+
+// fn000D7A7D
+// Return size: 0
+word32 fn000D7A7D(word32 arg0, word32 arg1, word32 arg2)
+fn000D7A7D_entry:
+l000D7A7D:
+fn000D7A7D_exit:
+
+
+// fn000D7AE1
+// Return size: 0
+word32 fn000D7AE1()
+fn000D7AE1_entry:
+l000D7AE1:
+fn000D7AE1_exit:
+
+
+// fn000D7AED
+// Return size: 0
+word32 fn000D7AED()
+fn000D7AED_entry:
+l000D7AED:
+fn000D7AED_exit:
+
+
+// fn000D7AF9
+// Return size: 0
+word32 fn000D7AF9()
+fn000D7AF9_entry:
+l000D7AF9:
+fn000D7AF9_exit:
+
+
+// fn000D7B05
+// Return size: 0
+word32 fn000D7B05(word32 arg0)
+fn000D7B05_entry:
+l000D7B05:
+fn000D7B05_exit:
+
+
+// fn000D7B53
+// Return size: 0
+word32 fn000D7B53(word32 arg0)
+fn000D7B53_entry:
+l000D7B53:
+fn000D7B53_exit:
+
+
+// fn000D7B90
+// Return size: 0
+real64 fn000D7B90(word32 arg0, word32 arg1, word32 arg2)
+fn000D7B90_entry:
+l000D7B90:
+fn000D7B90_exit:
+
+
+// fn000DA625
+// Return size: 0
+word64 fn000DA625(word32 arg0, word32 arg1)
+fn000DA625_entry:
+l000DA625:
+fn000DA625_exit:
+
+
+// fn000DA9E1
+// Return size: 0
+real64 fn000DA9E1(real64 arg0, word32 arg1)
+fn000DA9E1_entry:
+l000DA9E1:
+fn000DA9E1_exit:
+
+
+// fn000DAAEE
+// Return size: 0
+real64 fn000DAAEE(real64 arg0, real64 arg1)
+fn000DAAEE_entry:
+l000DAAEE:
+fn000DAAEE_exit:
+
+
+// fn000DAB02
+// Return size: 0
+real64 fn000DAB02(real64 arg0, word32 arg1)
+fn000DAB02_entry:
+l000DAB02:
+fn000DAB02_exit:
+
+
+// fn000DAB16
+// Return size: 0
+real64 fn000DAB16(real64 arg0, real64 arg1)
+fn000DAB16_entry:
+l000DAB16:
+fn000DAB16_exit:
+
+
+// fn000DAB2A
+// Return size: 0
+real64 fn000DAB2A(real64 arg0, real64 arg1)
+fn000DAB2A_entry:
+l000DAB2A:
+fn000DAB2A_exit:
+
+
+// fn000DAF01
+// Return size: 0
+word32 fn000DAF01(word32 arg0)
+fn000DAF01_entry:
+l000DAF01:
+fn000DAF01_exit:
+
+
+// fn000DAF0C
+// Return size: 0
+word32 fn000DAF0C(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000DAF0C_entry:
+l000DAF0C:
+fn000DAF0C_exit:
+
+
+// fn000DAF17
+// Return size: 0
+word32 fn000DAF17(word32 arg0, word32 arg1)
+fn000DAF17_entry:
+l000DAF17:
+fn000DAF17_exit:
+
+
+// fn000DAF22
+// Return size: 0
+void fn000DAF22(word32 arg0)
+fn000DAF22_entry:
+l000DAF22:
+fn000DAF22_exit:
+
+
+// fn000DAF30
+// Return size: 0
+word32 fn000DAF30(word32 arg0)
+fn000DAF30_entry:
+l000DAF30:
+fn000DAF30_exit:
+
+
+// fn000DB07F
+// Return size: 0
+word32 fn000DB07F(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000DB07F_entry:
+l000DB07F:
+fn000DB07F_exit:
+
+
+// fn000DB2F6
+// Return size: 0
+word32 fn000DB2F6(word32 arg0, word32 arg1)
+fn000DB2F6_entry:
+l000DB2F6:
+fn000DB2F6_exit:
+
+
+// fn000DB316
+// Return size: 0
+word32 fn000DB316(word32 arg0, word32 arg1)
+fn000DB316_entry:
+l000DB316:
+fn000DB316_exit:
+
+
+// fn000DB328
+// Return size: 0
+word32 fn000DB328(word32 arg0, word32 arg1, word32 arg2)
+fn000DB328_entry:
+l000DB328:
+fn000DB328_exit:
+
+
+// fn000DB3DF
+// Return size: 0
+word32 fn000DB3DF(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000DB3DF_entry:
+l000DB3DF:
+fn000DB3DF_exit:
+
+
+// fn000DB419
+// Return size: 0
+word32 fn000DB419(word32 arg0)
+fn000DB419_entry:
+l000DB419:
+fn000DB419_exit:
+
+
+// fn000DB44C
+// Return size: 0
+word32 fn000DB44C(word32 arg0, word32 arg1, word32 arg2)
+fn000DB44C_entry:
+l000DB44C:
+fn000DB44C_exit:
+
+
+// fn000DB4B6
+// Return size: 0
+word32 fn000DB4B6(word32 arg0, word32 arg1, word32 arg2)
+fn000DB4B6_entry:
+l000DB4B6:
+fn000DB4B6_exit:
+
+
+// _fflush
+// Return size: 0
+word32 _fflush(word32 arg0)
+_fflush_entry:
+l000DB6D6:
+_fflush_exit:
+
+
+// fn000DB84B
+// Return size: 0
+word32 fn000DB84B(word32 arg0)
+fn000DB84B_entry:
+l000DB84B:
+fn000DB84B_exit:
+
+
+// fn000DB950
+// Return size: 0
+word32 fn000DB950(word32 arg0, word32 arg1, word32 arg2)
+fn000DB950_entry:
+l000DB950:
+fn000DB950_exit:
+
+
+// fn000DB988
+// Return size: 0
+word32 fn000DB988(word32 arg0, word32 arg1, word32 arg2)
+fn000DB988_entry:
+l000DB988:
+fn000DB988_exit:
+
+
+// fn000DBA85
+// Return size: 0
+word32 fn000DBA85(word32 arg0, word32 arg1, word32 arg2)
+fn000DBA85_entry:
+l000DBA85:
+fn000DBA85_exit:
+
+
+// fn000DBA9B
+// Return size: 0
+word32 fn000DBA9B(word32 arg0, word32 arg1, word32 arg2)
+fn000DBA9B_entry:
+l000DBA9B:
+fn000DBA9B_exit:
+
+
+// fn000DD5A3
+// Return size: 0
+word32 fn000DD5A3(word32 arg0)
+fn000DD5A3_entry:
+l000DD5A3:
+fn000DD5A3_exit:
+
+
+// fn000DD5D8
+// Return size: 0
+word32 fn000DD5D8(word32 arg0, word32 arg1, word32 arg2)
+fn000DD5D8_entry:
+l000DD5D8:
+fn000DD5D8_exit:
+
+
+// fn000DD675
+// Return size: 0
+word32 fn000DD675(word32 arg0, word32 arg1, word32 arg2)
+fn000DD675_entry:
+l000DD675:
+fn000DD675_exit:
+
+
+// fn000DD6A2
+// Return size: 0
+word32 fn000DD6A2(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000DD6A2_entry:
+l000DD6A2:
+fn000DD6A2_exit:
+
+
+// fn000DD983
+// Return size: 0
+word32 fn000DD983(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000DD983_entry:
+l000DD983:
+fn000DD983_exit:
+
+
+// fn000DE31D
+// Return size: 0
+word32 fn000DE31D(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
+fn000DE31D_entry:
+l000DE31D:
+fn000DE31D_exit:
+
+
+// fn000DE5D1
+// Return size: 0
+word32 fn000DE5D1(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000DE5D1_entry:
+l000DE5D1:
+fn000DE5D1_exit:
+
+
+// fn000DE8FC
+// Return size: 0
+word32 fn000DE8FC(word32 arg0, word32 arg1)
+fn000DE8FC_entry:
+l000DE8FC:
+fn000DE8FC_exit:
+
+
+// fn000DEA30
+// Return size: 0
+word32 fn000DEA30(word32 arg0, word32 arg1, word32 arg2)
+fn000DEA30_entry:
+l000DEA30:
+fn000DEA30_exit:
+
+
+// fn000DEB18
+// Return size: 0
+word32 fn000DEB18(word32 arg0, word32 arg1)
+fn000DEB18_entry:
+l000DEB18:
+fn000DEB18_exit:
+
+
+// fn000DEC35
+// Return size: 0
+word32 fn000DEC35(word32 arg0, word32 arg1)
+fn000DEC35_entry:
+l000DEC35:
+fn000DEC35_exit:
+
+
+// fn000DEDA6
+// Return size: 0
+word32 fn000DEDA6(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
+fn000DEDA6_entry:
+l000DEDA6:
+fn000DEDA6_exit:
+
+
+// fn000DEE2E
+// Return size: 0
+word32 fn000DEE2E(word32 arg0)
+fn000DEE2E_entry:
+l000DEE2E:
+fn000DEE2E_exit:
+
+
+// fn000DEF2C
+// Return size: 0
+real64 fn000DEF2C(word32 arg0, word32 arg1, word32 arg2)
+fn000DEF2C_entry:
+l000DEF2C:
+fn000DEF2C_exit:
+
+
+// fn000DF086
+// Return size: 0
+real64 fn000DF086(word32 arg0, word32 arg1, word32 arg2)
+fn000DF086_entry:
+l000DF086:
+fn000DF086_exit:
+
+
+// fn000DF09C
+// Return size: 0
+word32 fn000DF09C(word32 arg0, word32 arg1, word32 arg2)
+fn000DF09C_entry:
+l000DF09C:
+fn000DF09C_exit:
+
+
+// fn000DF0F0
+// Return size: 0
+word32 fn000DF0F0(word32 arg0, word32 arg1, word32 arg2)
+fn000DF0F0_entry:
+l000DF0F0:
+fn000DF0F0_exit:
+
+
+// _malloc
+// Return size: 0
+word32 _malloc(word32 arg0)
+_malloc_entry:
+l000DF1CB:
+_malloc_exit:
+
+

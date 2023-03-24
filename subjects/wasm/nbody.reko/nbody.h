@@ -11,6 +11,50 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in arg0 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_3: (in arg1 : word32)
+  Class: Eq_3
+  DataType: word32
+  OrigDataType: word32
+T_4: (in arg2 : real64)
+  Class: Eq_4
+  DataType: real64
+  OrigDataType: real64
+T_5: (in  : real64)
+  Class: Eq_5
+  DataType: real64
+  OrigDataType: real64
+T_6: (in arg0 : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7: (in arg1 : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_8: (in arg0 : word32)
+  Class: Eq_8
+  DataType: word32
+  OrigDataType: word32
+T_9: (in arg1 : word32)
+  Class: Eq_9
+  DataType: word32
+  OrigDataType: word32
+T_10: (in  : real64)
+  Class: Eq_10
+  DataType: real64
+  OrigDataType: real64
+T_11: (in  : real64)
+  Class: Eq_11
+  DataType: real64
+  OrigDataType: real64
+T_12: (in arg0 : word32)
+  Class: Eq_12
+  DataType: word32
+  OrigDataType: word32
 */
 typedef struct Globals {
 } Eq_1;

@@ -31,16 +31,17 @@ namespace Reko.ImageLoaders.WebAssembly
         public WasmFile(List<Section> sections)
         {
             this.Sections = sections;
+            this.TypeSection = sections.OfType<TypeSection>().FirstOrDefault();
             this.ImportSection = sections.OfType<ImportSection>().FirstOrDefault();
             this.ExportSection = sections.OfType<ExportSection>().FirstOrDefault();
             this.FunctionSection = sections.OfType<FunctionSection>().FirstOrDefault();
             this.CodeSection = sections.OfType<CodeSection>().FirstOrDefault();
             this.FunctionIndex = BuildFunctionsIndex();
             this.GlobalIndex = BuildGlobalsIndex();
-
         }
 
         public List<Section> Sections { get; }
+        public TypeSection? TypeSection { get; }
         public ImportSection? ImportSection { get; }
         public ExportSection? ExportSection { get; }
         public FunctionSection? FunctionSection { get; }

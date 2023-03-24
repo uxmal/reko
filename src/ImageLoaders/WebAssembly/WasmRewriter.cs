@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private WasmInstruction instr;
         private InstrClass iclass;
 
-        public WasmRewriter(WasmArchitecture arch, EndianImageReader rdr, IStorageBinder binder)
+        public WasmRewriter(WasmArchitecture arch, WasmImageReader rdr, IStorageBinder binder)
         {
             this.arch = arch;
             this.dasm = new WasmDisassembler(arch, rdr).GetEnumerator();

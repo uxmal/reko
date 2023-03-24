@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.ImageLoaders.WebAssembly
@@ -33,6 +34,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmArchitecture arch;
         private readonly WasmPlatform platform;
         private readonly WasmFile wasmFile;
+        private ImageSegment? codeSegment;
 
         public WasmPreprocessor(WasmArchitecture arch, WasmPlatform platform, WasmFile wasmFile)
         {
@@ -51,8 +53,30 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void GenerateProcedures(Program program)
         {
+            if (wasmFile.CodeSection is null)
+                return;
+            var funidxToProc = GenerateFuncIdxToProcedureMap();
+            foreach (var func in wasmFile.CodeSection.Functions)
+            {
+                var procBuilder = new WasmProcedureBuilder(func, arch, wasmFile, funidxToProc);
+                var proc = procBuilder.GenerateProcedure();
+                program.Procedures.Add(proc.EntryAddress, proc);
+            }
         }
 
+        private Dictionary<int, ProcedureBase> GenerateFuncIdxToProcedureMap()
+        {
+            Debug.Assert(wasmFile.CodeSection is not null, "If there are functions there must be a code segment.");
+            Debug.Assert(codeSegment is not null, "If there are functions there must be a code segment.");
+            Address addrProc = codeSegment.Address;
+            var result = new Dictionary<int, ProcedureBase>();
+            foreach (var func in wasmFile.CodeSection.Functions)
+            {
+                result.Add(func.FunctionIndex, Procedure.Create(arch, func.Name, addrProc, arch.CreateFrame()));
+                addrProc += (func.End - func.Start);
+            }
+            return result;
+        }
 
         private SegmentMap BuildSegmentMap(List<Section> sections)
         {
@@ -68,6 +92,8 @@ namespace Reko.ImageLoaders.WebAssembly
                     AccessMode.ReadExecute);
                 segment.Designer = designer;
                 segments.Add(segment);
+                if (section is CodeSection)
+                    this.codeSegment = segment;
                 addr = (addr + section.Bytes.Length + WasmPageSize - 1).Align(WasmPageSize);
             }
 

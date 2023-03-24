@@ -1,0 +1,26 @@
+// count_neighbors
+// Return size: 0
+word32 count_neighbors(word32 arg0, word32 arg1, word32 arg2)
+count_neighbors_entry:
+l000C0000:
+count_neighbors_exit:
+
+
+// update_gen
+// Return size: 0
+void update_gen(word32 arg0)
+update_gen_entry:
+l000C0060:
+update_gen_exit:
+
+
+// main
+// Return size: 0
+word32 main()
+main_entry:
+l000C0153:
+	v2 = 0x2A<32>
+	return v2
+main_exit:
+
+

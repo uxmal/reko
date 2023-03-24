@@ -11,6 +11,14 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in 0x10<32> @ 000D0000 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
+T_3: (in v2 @ 000D0000 : word32)
+  Class: Eq_2
+  DataType: word32
+  OrigDataType: word32
 */
 typedef struct Globals {
 } Eq_1;

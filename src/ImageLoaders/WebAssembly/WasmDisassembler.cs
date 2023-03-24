@@ -37,15 +37,11 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmImageReader rdr;
         private Address addr;
 
-        public WasmDisassembler(WasmArchitecture arch, EndianImageReader rdr)
+        public WasmDisassembler(WasmArchitecture arch, WasmImageReader rdr)
         {
             this.arch = arch;
             this.addr = rdr.Address;
-            var bytes = ((ByteImageReader) rdr).Bytes;
-            this.rdr = new WasmImageReader(new ByteMemoryArea(rdr.Address - rdr.Offset, bytes))
-            {
-                Offset = rdr.Offset
-            };
+            this.rdr = rdr;
         }
 
         public override WasmInstruction? DisassembleInstruction()

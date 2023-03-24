@@ -100,8 +100,7 @@ namespace Reko.ImageLoaders.WebAssembly
             int shift = 0;
             long u = 0;
             int size = 64;
-            byte b;
-            while (TryReadByte(out b))
+            while (TryReadByte(out byte b))
             {
                 u |= ((b & 0x7Fu) << shift);
                 shift += 7;
