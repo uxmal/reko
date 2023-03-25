@@ -1161,70 +1161,70 @@ Unhandled mnemonic block.
 Unhandled mnemonic block.
 Unhandled mnemonic return.
 Unhandled mnemonic return.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
-Unhandled mnemonic i32_and.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
+Unhandled mnemonic call_indirect.
 Unhandled mnemonic block.
-Unhandled mnemonic call.
+Unhandled mnemonic f32_neg.
 Unhandled mnemonic block.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
-Unhandled mnemonic block.
-Unhandled mnemonic block.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
+Unhandled mnemonic i64_shl.
+Unhandled mnemonic f32_neg.
 Unhandled mnemonic block.
 Unhandled mnemonic block.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
+Unhandled mnemonic return.
+Unhandled mnemonic return.
+Unhandled mnemonic return.
+Unhandled mnemonic f32_neg.
 Unhandled mnemonic block.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
 Unhandled mnemonic block.
+Unhandled mnemonic i64_shl.
+Unhandled mnemonic f32_trunc.
 Unhandled mnemonic block.
+Unhandled mnemonic i64_shl.
+Unhandled mnemonic f32_neg.
 Unhandled mnemonic block.
 Unhandled mnemonic block.
 Unhandled mnemonic block.
 Unhandled mnemonic block.
 Unhandled mnemonic block.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
-Unhandled mnemonic call.
 Unhandled mnemonic block.
 Unhandled mnemonic block.
-Unhandled mnemonic call.
-Unhandled mnemonic i64_extend_u_i32.
+Unhandled mnemonic i64_rotr.
+Unhandled mnemonic i64_shl.
+Unhandled mnemonic i64_or.
+Unhandled mnemonic i64_or.
+Unhandled mnemonic f32_neg.
 Unhandled mnemonic block.
-Unhandled mnemonic i64_extend_u_i32.
-Unhandled mnemonic call.
+Unhandled mnemonic block.
+Unhandled mnemonic f64_abs.
+Unhandled mnemonic i64_const.
+Unhandled mnemonic block.
+Unhandled mnemonic i64_const.
+Unhandled mnemonic get_global.
 d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm: error: An internal error occurred while analyzing d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm.
     Unknown node Stack word32 stackAlloc(Stack word32 arg0).
        at Reko.Core.Graphs.DirectedGraphImpl`1.CreateEdgeCollectionCore(T o, Boolean fSuccessors) in d:\dev\uxmal\reko\master\src\Core\Graphs\DirectedGraphImpl.cs:line 160
@@ -1361,8 +1361,8 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 === i8051\reko-825\ledwith8051
 
 *** wasm\life
-Unhandled mnemonic i32_mul.
-Unhandled mnemonic i32_mul.
+Unhandled mnemonic tee_local.
+Unhandled mnemonic tee_local.
 d:\dev\uxmal\reko\master\subjects\wasm\life.wasm: error: An internal error occurred while analyzing d:\dev\uxmal\reko\master\subjects\wasm\life.wasm.
     Unknown node Stack word32 count_neighbors(Stack word32 arg0, Stack word32 arg1, Stack word32 arg2).
        at Reko.Core.Graphs.DirectedGraphImpl`1.CreateEdgeCollectionCore(T o, Boolean fSuccessors) in d:\dev\uxmal\reko\master\src\Core\Graphs\DirectedGraphImpl.cs:line 160
@@ -2021,7 +2021,6 @@ Signature of 'Borland C++ for Win32 1999' detected.
 0040127E: warning: Unable to guess parameters of CC3260.DLL!___CRTL_TLS_ExitThread.
 
 *** wasm\sample
-Unhandled mnemonic call.
 d:\dev\uxmal\reko\master\subjects\wasm\sample.wasm: error: An internal error occurred while analyzing d:\dev\uxmal\reko\master\subjects\wasm\sample.wasm.
     Unknown node void hello().
        at Reko.Core.Graphs.DirectedGraphImpl`1.CreateEdgeCollectionCore(T o, Boolean fSuccessors) in d:\dev\uxmal\reko\master\src\Core\Graphs\DirectedGraphImpl.cs:line 160
@@ -2109,7 +2108,7 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 00027EA8: warning: Unable to resolve imported reference __urem64.
 00011F6C: error: An error occurred while processing the statement word32 sp_37 = fp + 0xFFFFFF90<32> - (CONVERT(strlen(i0_25) + strlen(o1), size_t, size_t) + 9<32> & 0xFFFFFFF8<32>).
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
-       at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 141
+       at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 127
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 131
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 100
@@ -2823,4 +2822,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 88 binaries in 104.85 seconds.
+Decompiled 88 binaries in 77.12 seconds.

@@ -68,8 +68,21 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             Debug.Assert(wasmFile.CodeSection is not null, "If there are functions there must be a code segment.");
             Debug.Assert(codeSegment is not null, "If there are functions there must be a code segment.");
-            Address addrProc = codeSegment.Address;
             var result = new Dictionary<int, ProcedureBase>();
+            if (wasmFile.ImportSection != null)
+            {
+                int iProc = 0;
+                foreach (var func in wasmFile.ImportSection.Imports)
+                {
+                    if (func.Type == SymbolType.ExternalProcedure)
+                    {
+                        var exp = new ExternalProcedure(func.Name ?? "???", new Core.Types.FunctionType());
+                        result.Add(iProc, exp);
+                        ++iProc;
+                    }
+                }   
+            }
+            Address addrProc = codeSegment.Address;
             foreach (var func in wasmFile.CodeSection.Functions)
             {
                 result.Add(func.FunctionIndex, Procedure.Create(arch, func.Name, addrProc, arch.CreateFrame()));

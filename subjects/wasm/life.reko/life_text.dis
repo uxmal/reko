@@ -5,6 +5,9 @@ count_neighbors_entry:
 l000C0000:
 	v4 = arg0
 	v5 = 0x2710<32>
+	v6 = v4 * v5
+	v7 = 0x10<32>
+	v8 = v6 + v7
 count_neighbors_exit:
 
 
@@ -15,6 +18,7 @@ update_gen_entry:
 l000C0060:
 	v15 = arg0
 	v16 = 0x2710<32>
+	v17 = v15 * v16
 update_gen_exit:
 
 

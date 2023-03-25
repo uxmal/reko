@@ -6,6 +6,8 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_4: (fn word32 (word32))
+	T_4 (in puts @ 000D0002 : ptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -19,7 +21,21 @@ T_3: (in v2 @ 000D0000 : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
+T_4: (in puts @ 000D0002 : ptr32)
+  Class: Eq_4
+  DataType: (ptr32 Eq_4)
+  OrigDataType: (ptr32 (fn T_6 (T_3)))
+T_5: (in signature of puts : void)
+  Class: Eq_5
+  DataType: Eq_5
+  OrigDataType: 
+T_6: (in puts(v2) @ 000D0002 : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
 */
 typedef struct Globals {
 } Eq_1;
+
+typedef word32 (Eq_4)(word32);
 

@@ -4,6 +4,8 @@ void hello()
 hello_entry:
 l000D0000:
 	v2 = 0x10<32>
+	puts(v2)
+	return
 hello_exit:
 
 

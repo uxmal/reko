@@ -38,6 +38,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
     {
         private readonly WasmArchitecture arch;
         private List<FunctionType> funcTypes;
+        private List<FunctionDefinition> funcindex;
         private Dictionary<int, ProcedureBase> mpFunidxToProc;
 
         public WasmProcedureBuilderTests()
@@ -49,6 +50,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         public void Setup()
         {
             this.funcTypes = new List<FunctionType>();
+            this.funcindex = new List<FunctionDefinition>();
             this.mpFunidxToProc = new Dictionary<int, ProcedureBase>();
         }
 
@@ -57,8 +59,11 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             switch (valType)
             {
             case 127: return PrimitiveType.Word32;
+            case 126: return PrimitiveType.Word64;
+            case 125: return PrimitiveType.Real32;
+            case 124: return PrimitiveType.Real64;
             default:
-                throw new NotImplementedException();
+                throw new NotImplementedException($"Unknown value type {valType:X}.");
             }
         }
 
@@ -78,10 +83,28 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             funcTypes.Add(ft);
         }
 
-        private FunctionDefinition FnDef(LocalVariable[] localVariables, params byte[] bytes)
+        private void Given_ImportFunc(string env, string name, uint typeIndex)
         {
-            mpFunidxToProc.Add(0, Procedure.Create(arch, "fn00000", Address.Ptr32(0), arch.CreateFrame()));
-            return new FunctionDefinition(0, bytes.Length, localVariables, bytes);
+            var def = new FunctionDefinition(-1, -1, Array.Empty<LocalVariable>(), Array.Empty<byte>())
+            {
+                Name = name,
+                TypeIndex = typeIndex
+            };
+            mpFunidxToProc.Add(funcindex.Count, new ExternalProcedure(name, this.funcTypes[(int)typeIndex]));
+            funcindex.Add(def);
+        }
+
+        private FunctionDefinition FnDef(uint typeIndex, LocalVariable[] localVariables, params byte[] bytes)
+        {
+            int idxFunc = funcindex.Count;
+            mpFunidxToProc.Add(idxFunc, Procedure.Create(arch, "fn00000", Address.Ptr32(0), arch.CreateFrame()));
+            var fnDef = new FunctionDefinition(0, bytes.Length, localVariables, bytes)
+            {
+                TypeIndex = typeIndex,
+                FunctionIndex = idxFunc,
+            };
+            funcindex.Add(fnDef);
+            return fnDef;
         }
 
         private void RunTest(string sExpected, FunctionDefinition fnDef)
@@ -90,6 +113,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             {
                 new TypeSection(".types", Array.Empty<byte>(), this.funcTypes)
             });
+            wasmFile.FunctionIndex.AddRange(this.funcindex);
             var pb = new WasmProcedureBuilder(fnDef, arch, wasmFile, mpFunidxToProc);
             var proc = pb.GenerateProcedure();
             var sw = new StringWriter();
@@ -118,6 +142,7 @@ l00000000:
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
+                0,
                 Array.Empty<LocalVariable>(),
                 new byte[]
                 {
@@ -143,6 +168,7 @@ l00000000:
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
+                0,
                 Array.Empty<LocalVariable>(),
                 new byte[]
                 {
@@ -150,6 +176,98 @@ fn00000_exit:
                     65, 86,
                     107,
                     11
+                }));
+        }
+
+        [Test]
+        public void Waspb_i64_eq()
+        {
+            Given_FuncType(new[] { 127 }, 127);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+l00000000:
+	v2 = param0
+	v3 = 0xFFFFFFD6<32>
+	v4 = v2 == v3
+	return v4
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+                    32, 0,
+                    65, 86,
+                    81,
+                    11
+                }));
+        }
+
+        [Test]
+        public void Waspb_i64_extend_u()
+        {
+            Given_FuncType(new[] { 127 }, 126);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word64 fn00000(word32 param0)
+fn00000_entry:
+l00000000:
+	v2 = param0
+	v3 = 0xFFFFFFD6<32>
+	v4 = v2 - v3
+	v5 = CONVERT(v4, word32, uint64)
+	return v5
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+                    32, 0,
+                    65, 86,
+                    107,
+                    173,
+                    11
+                }));
+        }
+
+        [Test]
+        public void Waspb_call_with_float_constant()
+        {
+            Given_FuncType(new[] { 127, 125 }, 127);
+            Given_FuncType(new[] { 127 }, 127);
+            Given_ImportFunc("env", "extfun", 1);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+l00000000:
+	v2 = param0
+	v3 = 1<32>
+	v4 = v2 + v3
+	v5 = 3.14F
+	v6 = extfun(v5)
+	return v6
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                1,
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+                    32,0,           // get.local 0
+                    65,1,           // i32.const 1
+                    106,            // i32.add
+                    67,0xC3,0xF5,0x48,0x40, // f32.const 3.14F
+                    16,0,           // call 0
+                    11              // end
                 }));
         }
     }

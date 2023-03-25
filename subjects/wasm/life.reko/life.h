@@ -15,9 +15,9 @@ T_2: (in  : word32)
   Class: Eq_2
   DataType: word32
   OrigDataType: word32
-T_3: (in arg0 : word32)
+T_3: (in arg0 : ui32)
   Class: Eq_3
-  DataType: word32
+  DataType: ui32
   OrigDataType: word32
 T_4: (in arg1 : word32)
   Class: Eq_4
@@ -29,42 +29,74 @@ T_5: (in arg2 : word32)
   OrigDataType: word32
 T_6: (in v4 @ 000C0000 : word32)
   Class: Eq_3
-  DataType: word32
-  OrigDataType: word32
+  DataType: ui32
+  OrigDataType: ui32
 T_7: (in 0x2710<32> @ 000C0002 : word32)
   Class: Eq_7
-  DataType: word32
+  DataType: ui32
   OrigDataType: word32
 T_8: (in v5 @ 000C0002 : word32)
   Class: Eq_7
-  DataType: word32
-  OrigDataType: word32
-T_9: (in arg0 @ 000C0002 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_9: (in v4 * v5 @ 000C0006 : word32)
   Class: Eq_9
-  DataType: word32
-  OrigDataType: word32
-T_10: (in v15 @ 000C0060 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_10: (in v6 @ 000C0006 : word32)
   Class: Eq_9
-  DataType: word32
-  OrigDataType: word32
-T_11: (in 0x2710<32> @ 000C0062 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_11: (in 0x10<32> @ 000C0007 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
-T_12: (in v16 @ 000C0062 : word32)
+T_12: (in v7 @ 000C0007 : word32)
   Class: Eq_11
   DataType: word32
   OrigDataType: word32
-T_13: (in  @ 000C0062 : word32)
+T_13: (in v6 + v7 @ 000C0009 : word32)
   Class: Eq_13
+  DataType: ui32
+  OrigDataType: ui32
+T_14: (in v8 @ 000C0009 : word32)
+  Class: Eq_13
+  DataType: ui32
+  OrigDataType: ui32
+T_15: (in arg0 @ 000C0009 : ui32)
+  Class: Eq_15
+  DataType: ui32
+  OrigDataType: word32
+T_16: (in v15 @ 000C0060 : word32)
+  Class: Eq_15
+  DataType: ui32
+  OrigDataType: ui32
+T_17: (in 0x2710<32> @ 000C0062 : word32)
+  Class: Eq_17
+  DataType: ui32
+  OrigDataType: word32
+T_18: (in v16 @ 000C0062 : word32)
+  Class: Eq_17
+  DataType: ui32
+  OrigDataType: ui32
+T_19: (in v15 * v16 @ 000C0066 : word32)
+  Class: Eq_19
+  DataType: ui32
+  OrigDataType: ui32
+T_20: (in v17 @ 000C0066 : word32)
+  Class: Eq_19
+  DataType: ui32
+  OrigDataType: ui32
+T_21: (in  @ 000C0066 : word32)
+  Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_14: (in 0x2A<32> @ 000C0153 : word32)
-  Class: Eq_13
+T_22: (in 0x2A<32> @ 000C0153 : word32)
+  Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_15: (in v2 @ 000C0153 : word32)
-  Class: Eq_13
+T_23: (in v2 @ 000C0153 : word32)
+  Class: Eq_21
   DataType: word32
   OrigDataType: word32
 */

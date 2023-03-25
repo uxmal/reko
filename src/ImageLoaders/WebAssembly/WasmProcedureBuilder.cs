@@ -3,15 +3,12 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -25,6 +22,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly List<Identifier> valueStack;
         private readonly List<ControlEntry> controlStack;
         private readonly List<Identifier> locals;
+        private readonly ExpressionEmitter m;
         private Block block;
         private WasmInstruction instr;
 
@@ -43,6 +41,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.valueStack = new List<Identifier>();
             this.controlStack = new List<ControlEntry>();
             this.locals = new List<Identifier>();
+            this.m = new ExpressionEmitter();
             this.block = proc.AddBlock(proc.EntryAddress, NamingPolicy.Instance.BlockName(proc.EntryAddress));
             this.instr = default!;
         }
@@ -81,7 +80,6 @@ namespace Reko.ImageLoaders.WebAssembly
             var rdr = new WasmImageReader(mem);
             rdr.Offset = func.Start;
             var dasm = new WasmDisassembler(arch, rdr).GetEnumerator();
-            var m = new ExpressionEmitter();
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
@@ -89,6 +87,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 Identifier local;
                 switch (instr.Mnemonic)
                 {
+                case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.end:
                     if (rdr.Offset == this.func.End)
                     {
@@ -105,13 +104,14 @@ namespace Reko.ImageLoaders.WebAssembly
                     id = PushValue(local.DataType);
                     Assign(id, local);
                     break;
-                case Mnemonic.i32_add: RewriteBinary(m.IAdd); break;
-                case Mnemonic.i32_sub: RewriteBinary(m.ISub); break;
+                case Mnemonic.i32_add: RewriteBinary(m.IAdd, PrimitiveType.Word32); break;
+                case Mnemonic.i32_and: RewriteBinary(m.And, PrimitiveType.Word32); break;
+                case Mnemonic.i32_mul: RewriteBinary(m.IMul, PrimitiveType.Word32); break;
+                case Mnemonic.i32_sub: RewriteBinary(m.ISub, PrimitiveType.Word32); break;
                 case Mnemonic.i32_const:
-                    var imm = (ImmediateOperand) instr.Operands[0];
-                    id = PushValue(imm.Width);
-                    Assign(id, imm.Value);
-                    break;
+                case Mnemonic.f32_const: RewriteConst(); break;
+                case Mnemonic.i64_eq: RewriteCmp(m.Eq); break;
+                case Mnemonic.i64_extend_u_i32: RewriteExtend(PrimitiveType.Word32, PrimitiveType.UInt64);break;
                 default:
                     EmitUnitTest(dasm, rdr);
                     Console.WriteLine($"Unhandled mnemonic {instr.Mnemonic}.");
@@ -131,12 +131,56 @@ namespace Reko.ImageLoaders.WebAssembly
             block.Statements.Add(instr.Address, ass);
         }
 
-        private void RewriteBinary(Func<Expression,Expression,Expression> fn)
+        private void RewriteBinary(Func<Expression,Expression,Expression> fn, DataType dt)
         {
             var arg2 = PopValue();
             var arg1 = PopValue();
             var e = fn(arg1, arg2);
-            var id = PushValue(e.DataType);
+            var id = PushValue(dt);
+            Assign(id, e);
+        }
+
+        private void RewriteCall()
+        {
+            var idxFunc = OpAsInt(0);
+            var callee = this.wasmFile.FunctionIndex[idxFunc];
+            var procCallee = mpFunidxToProc[idxFunc];
+            var sig = this.wasmFile.TypeSection!.Types[(int)callee.TypeIndex];
+            var args = PopValues(sig.Parameters!.Length);
+            var pc = new ProcedureConstant(PrimitiveType.Ptr32, procCallee);
+            var application = m.Fn(pc, args);
+            if (sig.HasVoidReturn)
+            {
+                SideEffect(application);
+            }
+            else
+            {
+                var id = PushValue(sig.ReturnValue.DataType);
+                Assign(id, application);
+            }
+        }
+
+        private void RewriteConst()
+        {
+            var imm = (ImmediateOperand) instr.Operands[0];
+            var id = PushValue(imm.Width);
+            Assign(id, imm.Value);
+        }
+
+        private void RewriteCmp(Func<Expression, Expression, Expression> fn)
+        {
+            var arg2 = PopValue();
+            var arg1 = PopValue();
+            var e = fn(arg1, arg2);
+            var id = PushValue(PrimitiveType.Bool);
+            Assign(id, e);
+        }
+
+        private void RewriteExtend(DataType dtFrom, DataType dtTo)
+        {
+            var arg1 = PopValue();
+            var e = m.Convert(arg1, dtFrom, dtTo);
+            var id = PushValue(PrimitiveType.Bool);
             Assign(id, e);
         }
 
@@ -157,6 +201,12 @@ namespace Reko.ImageLoaders.WebAssembly
             block.Statements.Add(instr.Address, ret);
         }
 
+        private void SideEffect(Expression e)
+        {
+            var s = new SideEffect(e);
+            block.Statements.Add(instr.Address, s);
+        }
+
         private Identifier PushValue(DataType dt)
         {
             var id  = proc.Frame.CreateTemporary(dt);
@@ -166,12 +216,26 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private Identifier PopValue()
         {
-            if (valueStack.Count == 0)
-                throw new AddressCorrelatedException(instr.Address, "Exhaused value stack.");
             int iTop = this.valueStack.Count - 1;
+            if (iTop < 0)
+                throw new AddressCorrelatedException(instr.Address, "Exhausted value stack.");
             var id = this.valueStack[iTop];
             this.valueStack.RemoveAt(iTop);
             return id;
+        }
+
+        private Expression[] PopValues(int cValues)
+        {
+            int iTop = this.valueStack.Count - cValues;
+            if (iTop < 0)
+                throw new AddressCorrelatedException(instr.Address, "Exhausted value stack.");
+            var exps = new Expression[cValues];
+            for (int i = 0; i < cValues; i++)
+            {
+                exps[i] = this.valueStack[iTop + i];
+            }
+            this.valueStack.RemoveRange(iTop, cValues);
+            return exps;
         }
 
         private void EmitUnitTest(IEnumerator<WasmInstruction> dasm, EndianImageReader rdr)
