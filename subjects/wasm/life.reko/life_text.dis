@@ -2,6 +2,7 @@
 // Return size: 0
 word32 count_neighbors(word32 arg0, word32 arg1, word32 arg2)
 count_neighbors_entry:
+	// succ:  l000C0000
 l000C0000:
 	v4 = arg0
 	v5 = 0x2710<32>
@@ -15,6 +16,7 @@ count_neighbors_exit:
 // Return size: 0
 void update_gen(word32 arg0)
 update_gen_entry:
+	// succ:  l000C0060
 l000C0060:
 	v15 = arg0
 	v16 = 0x2710<32>
@@ -26,6 +28,7 @@ update_gen_exit:
 // Return size: 0
 word32 main()
 main_entry:
+	// succ:  l000C0153
 l000C0153:
 	v2 = 0x2A<32>
 	return v2

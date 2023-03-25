@@ -136,6 +136,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
 // Return size: 0
 word32 fn00000(word32 param0)
 fn00000_entry:
+	// succ:  l00000000
 l00000000:
 	v2 = 1<32>
 	return v2
@@ -160,6 +161,7 @@ fn00000_exit:
 // Return size: 0
 word32 fn00000(word32 param0)
 fn00000_entry:
+	// succ:  l00000000
 l00000000:
 	v2 = param0
 	v3 = 0xFFFFFFD6<32>
@@ -188,6 +190,7 @@ fn00000_exit:
 // Return size: 0
 word32 fn00000(word32 param0)
 fn00000_entry:
+	// succ:  l00000000
 l00000000:
 	v2 = param0
 	v3 = 0xFFFFFFD6<32>
@@ -216,6 +219,7 @@ fn00000_exit:
 // Return size: 0
 word64 fn00000(word32 param0)
 fn00000_entry:
+	// succ:  l00000000
 l00000000:
 	v2 = param0
 	v3 = 0xFFFFFFD6<32>
@@ -248,6 +252,7 @@ fn00000_exit:
 // Return size: 0
 word32 fn00000(word32 param0)
 fn00000_entry:
+	// succ:  l00000000
 l00000000:
 	v2 = param0
 	v3 = 1<32>

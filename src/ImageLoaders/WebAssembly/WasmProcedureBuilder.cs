@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -42,7 +43,8 @@ namespace Reko.ImageLoaders.WebAssembly
             this.controlStack = new List<ControlEntry>();
             this.locals = new List<Identifier>();
             this.m = new ExpressionEmitter();
-            this.block = proc.AddBlock(proc.EntryAddress, NamingPolicy.Instance.BlockName(proc.EntryAddress));
+            this.block = MakeBlock(proc.EntryAddress);
+            proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             this.instr = default!;
         }
 
@@ -87,18 +89,9 @@ namespace Reko.ImageLoaders.WebAssembly
                 Identifier local;
                 switch (instr.Mnemonic)
                 {
+                case Mnemonic.block: RewriteBlock(); break;
                 case Mnemonic.call: RewriteCall(); break;
-                case Mnemonic.end:
-                    if (rdr.Offset == this.func.End)
-                    {
-                        Return();
-                    }
-                    else
-                    {
-                        //$TODO: Pop controlstack?
-                        throw new NotImplementedException();
-                    }
-                    break;
+                case Mnemonic.end: RewriteEnd(rdr); break;
                 case Mnemonic.get_local:
                     local = this.locals[OpAsInt(0)];
                     id = PushValue(local.DataType);
@@ -120,15 +113,9 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private int OpAsInt(int v)
+        private Block MakeBlock(Address addr)
         {
-            return ((ImmediateOperand) instr.Operands[v]).Value.ToInt32();
-        }
-
-        private void Assign(Identifier id, Expression value)
-        {
-            var ass = new Assignment(id, value);
-            block.Statements.Add(instr.Address, ass);
+            return proc.AddBlock(addr, NamingPolicy.Instance.BlockName(addr));
         }
 
         private void RewriteBinary(Func<Expression,Expression,Expression> fn, DataType dt)
@@ -138,6 +125,33 @@ namespace Reko.ImageLoaders.WebAssembly
             var e = fn(arg1, arg2);
             var id = PushValue(dt);
             Assign(id, e);
+        }
+
+        private void RewriteBlock()
+        {
+            if (block.Statements.Count != 0)
+            {
+                var blockOld = block;
+                block = MakeBlock(instr.Address);
+                proc.ControlGraph.AddEdge(blockOld, block);
+            }
+            PushControl(Mnemonic.block, Array.Empty<Identifier>(), null, false);
+        }
+
+        private void RewriteEnd(WasmImageReader rdr)
+        {
+            if (rdr.Offset == this.func.End)
+            {
+                if (controlStack.Count != 0)
+                    throw new BadImageFormatException("Control stack unbalanced at end of function.");
+                Return();
+            }
+            else
+            {
+                if (controlStack.Count == 0)
+                    throw new BadImageFormatException("Control stack unbalanced at end of function.");
+                var ctrl = PopControl();
+            }
         }
 
         private void RewriteCall()
@@ -201,10 +215,34 @@ namespace Reko.ImageLoaders.WebAssembly
             block.Statements.Add(instr.Address, ret);
         }
 
+        private int OpAsInt(int v)
+        {
+            return ((ImmediateOperand) instr.Operands[v]).Value.ToInt32();
+        }
+
+        private void Assign(Identifier id, Expression value)
+        {
+            var ass = new Assignment(id, value);
+            block.Statements.Add(instr.Address, ass);
+        }
+
         private void SideEffect(Expression e)
         {
             var s = new SideEffect(e);
             block.Statements.Add(instr.Address, s);
+        }
+
+        private ControlEntry PopControl()
+        {
+            var iTop = this.controlStack.Count - 1;
+            var ctrl = this.controlStack[iTop];
+            this.controlStack.RemoveAt(iTop);
+            return ctrl;
+        }
+
+        private void PushControl(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, bool isUnreachable)
+        {
+            this.controlStack.Add(new ControlEntry(mnemonic, inputs, output, valueStack.Count, isUnreachable));
         }
 
         private Identifier PushValue(DataType dt)
@@ -245,6 +283,20 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private class ControlEntry
         {
+            public ControlEntry(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, int blockDepth, bool isUnreachable)
+            {
+                this.Mnemonic = mnemonic;
+                this.Inputs = inputs;
+                this.Output = output;
+                this.BlockDepth = blockDepth;
+                this.IsUnreachable = isUnreachable;
+            }
+
+            public Mnemonic Mnemonic { get; }
+            public Identifier[] Inputs { get; }
+            public Identifier? Output { get; }
+            public int BlockDepth { get; }
+            public bool IsUnreachable { get; }
         }
 
     }
