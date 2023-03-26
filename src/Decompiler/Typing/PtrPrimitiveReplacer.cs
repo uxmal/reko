@@ -131,7 +131,12 @@ namespace Reko.Typing
         public override DataType VisitArray(ArrayType at)
         {
             if (nestCount > 90)
-                throw new TypeInferenceException("PprPrimitiveReplacer found a cycle in type graph.");
+            {
+                eventListener.Error(
+                    new NullCodeLocation("TypeAnalysis"),
+                    "PprPrimitiveReplacer found a cycle in type graph.");
+                return new UnknownType();
+            }
             ++this.nestCount;
             var dt = base.VisitArray(at);
             --this.nestCount;
