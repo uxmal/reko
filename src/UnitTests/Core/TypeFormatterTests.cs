@@ -341,13 +341,16 @@ private:
         [Test]
         public void TyfoEnum()
         {
-            var e = new EnumType("myEnum");
-            e.Members = new SortedList<string, long>
-            {
-                { "FALSE", 0 },
-                { "TRUE", 1 },
-                { "FILE_NOT_FOUND", 2 }
-            };
+            var e = new EnumType(
+                "myEnum",
+                4,
+                new SortedList<string, long>
+                {
+                    { "FALSE", 0 },
+                    { "TRUE", 1 },
+                    { "FILE_NOT_FOUND", 2 }
+                }
+            );
 
             tyfo.Write(e, null);
             var sExp =

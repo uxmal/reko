@@ -24,25 +24,24 @@ namespace Reko.Core.Types
 {
     public class EnumType : DataType
     {
-        public EnumType()
-            : base(Domain.Enum)
-        {
-            this.Members = new SortedList<string, long>();
-        }
+        private readonly int size;
 
-        public EnumType(string name)
+        public EnumType(
+            string name, int size, IDictionary<string, long> members
+        )
             : base(Domain.Enum, name)
         {
-            this.Members = new SortedList<string, long>();
+            this.size = size;
+            this.Members = new SortedList<string, long>(members);
         }
 
-        public EnumType(EnumType other) : this(other.Name)
+        public override int Size
         {
-            this.Members = new SortedList<string, long>(other.Members);
+            get { return size; }
+            set { ThrowBadSize(); }
         }
 
-        public override int Size { get; set; }
-        public SortedList<string, long> Members { get; set; }
+        public readonly IReadOnlyDictionary<string, long> Members;
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -56,10 +55,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
-            return new EnumType(this)
-            {
-                Qualifier = this.Qualifier
-            };
+            return this;
         }
     }
 }
