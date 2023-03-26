@@ -4,8 +4,11 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals")
+Eq_1: (struct "Globals" (100000 word32 dw100000) (100008 word32 dw100008) (10000C word32 dw10000C))
 	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_44: (fn word32 ())
+	T_44 (in runPostSets @ 000E0784 : ptr32)
+	T_45 (in signature of runPostSets @ 000E076E : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -83,27 +86,120 @@ T_19: (in  @ 000E032D : real64)
   Class: Eq_19
   DataType: real64
   OrigDataType: real64
-T_20: (in  @ 000E032D : real64)
+T_20: (in 00100000 @ 000E0407 : ptr32)
   Class: Eq_20
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 (struct (0 T_21 t0000)))
+T_21: (in Mem0[0x00100000<p32>:word32] @ 000E0407 : word32)
+  Class: Eq_21
+  DataType: word32
+  OrigDataType: word32
+T_22: (in v11 @ 000E0407 : word32)
+  Class: Eq_21
+  DataType: word32
+  OrigDataType: word32
+T_23: (in  @ 000E0407 : real64)
+  Class: Eq_23
   DataType: real64
   OrigDataType: real64
-T_21: (in arg0 @ 000E032D : word32)
+T_24: (in arg0 @ 000E0407 : word32)
+  Class: Eq_24
+  DataType: word32
+  OrigDataType: word32
+T_25: (in v9 @ 000E0620 : word32)
+  Class: Eq_24
+  DataType: word32
+  OrigDataType: word32
+T_26: (in 1<32> @ 000E0622 : word32)
+  Class: Eq_26
+  DataType: word32
+  OrigDataType: word32
+T_27: (in v10 @ 000E0622 : word32)
+  Class: Eq_26
+  DataType: word32
+  OrigDataType: word32
+T_28: (in Mem0[0x00100000<p32>:word32] @ 000E0772 : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_22: (in v9 @ 000E0620 : word32)
+T_29: (in v2 @ 000E0772 : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_23: (in 1<32> @ 000E0622 : word32)
-  Class: Eq_23
+T_30: (in 0x120<32> @ 000E0774 : word32)
+  Class: Eq_30
   DataType: word32
   OrigDataType: word32
-T_24: (in v10 @ 000E0622 : word32)
-  Class: Eq_23
+T_31: (in v3 @ 000E0774 : word32)
+  Class: Eq_30
+  DataType: word32
+  OrigDataType: word32
+T_32: (in v2 + v3 @ 000E0777 : word32)
+  Class: Eq_32
+  DataType: word32
+  OrigDataType: word32
+T_33: (in v4 @ 000E0777 : word32)
+  Class: Eq_32
+  DataType: word32
+  OrigDataType: word32
+T_34: (in 00100008 @ 000E0778 : ptr32)
+  Class: Eq_34
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 (struct (0 T_32 t0000)))
+T_35: (in Mem0[0x00100008<p32>:word32] @ 000E0778 : word32)
+  Class: Eq_32
+  DataType: word32
+  OrigDataType: word32
+T_36: (in Mem0[0x00100008<p32>:word32] @ 000E077A : word32)
+  Class: Eq_32
+  DataType: word32
+  OrigDataType: word32
+T_37: (in v5 @ 000E077A : word32)
+  Class: Eq_32
+  DataType: word32
+  OrigDataType: word32
+T_38: (in 0x500000<32> @ 000E077C : word32)
+  Class: Eq_38
+  DataType: word32
+  OrigDataType: word32
+T_39: (in v6 @ 000E077C : word32)
+  Class: Eq_38
+  DataType: word32
+  OrigDataType: word32
+T_40: (in v5 + v6 @ 000E0781 : word32)
+  Class: Eq_40
+  DataType: word32
+  OrigDataType: word32
+T_41: (in v7 @ 000E0781 : word32)
+  Class: Eq_40
+  DataType: word32
+  OrigDataType: word32
+T_42: (in 0010000C @ 000E0782 : ptr32)
+  Class: Eq_42
+  DataType: (ptr32 word32)
+  OrigDataType: (ptr32 (struct (0 T_43 t0000)))
+T_43: (in Mem0[0x0010000C<p32>:word32] @ 000E0782 : word32)
+  Class: Eq_40
+  DataType: word32
+  OrigDataType: word32
+T_44: (in runPostSets @ 000E0784 : ptr32)
+  Class: Eq_44
+  DataType: (ptr32 Eq_44)
+  OrigDataType: (ptr32 (fn T_46 ()))
+T_45: (in signature of runPostSets @ 000E076E : void)
+  Class: Eq_44
+  DataType: (ptr32 Eq_44)
+  OrigDataType: 
+T_46: (in runPostSets() @ 000E0784 : word32)
+  Class: Eq_46
   DataType: word32
   OrigDataType: word32
 */
 typedef struct Globals {
+	word32 dw100000;	// 100000
+	word32 dw100008;	// 100008
+	word32 dw10000C;	// 10000C
 } Eq_1;
+
+typedef word32 (Eq_44)();
 

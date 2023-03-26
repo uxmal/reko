@@ -19,6 +19,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmArchitecture arch;
         private readonly WasmFile wasmFile;
         private readonly Dictionary<int, ProcedureBase> mpFunidxToProc;
+        private readonly Dictionary<int, Address> mpGlobidxToAddr;
         private readonly Procedure proc;
         private readonly List<Identifier> valueStack;
         private readonly List<ControlEntry> controlStack;
@@ -31,12 +32,14 @@ namespace Reko.ImageLoaders.WebAssembly
             FunctionDefinition func, 
             WasmArchitecture arch, 
             WasmFile wasmFile,
-            Dictionary<int, ProcedureBase> mpFunidxToProc)
+            Dictionary<int, ProcedureBase> mpFunidxToProc,
+            Dictionary<int, Address> mpGlobidxToAddr)
         {
             this.func = func;
             this.arch = arch;
             this.wasmFile = wasmFile;
             this.mpFunidxToProc = mpFunidxToProc;
+            this.mpGlobidxToAddr = mpGlobidxToAddr;
             this.proc = (Procedure) mpFunidxToProc[func.FunctionIndex];
             this.proc.Signature = wasmFile.TypeSection!.Types[(int)func.TypeIndex];
             this.valueStack = new List<Identifier>();
@@ -92,6 +95,12 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.block: RewriteBlock(); break;
                 case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.end: RewriteEnd(rdr); break;
+                case Mnemonic.get_global:
+                    var idxGlob = OpAsInt(0);
+                    var global = wasmFile.GlobalIndex[idxGlob];
+                    id = PushValue(global.Type.Item1);
+                    Assign(id, m.Mem(id.DataType, this.mpGlobidxToAddr[idxGlob]));
+                    break;
                 case Mnemonic.get_local:
                     local = this.locals[OpAsInt(0)];
                     id = PushValue(local.DataType);
@@ -105,6 +114,12 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f32_const: RewriteConst(); break;
                 case Mnemonic.i64_eq: RewriteCmp(m.Eq); break;
                 case Mnemonic.i64_extend_u_i32: RewriteExtend(PrimitiveType.Word32, PrimitiveType.UInt64);break;
+                case Mnemonic.set_global:
+                    idxGlob = OpAsInt(0);
+                    global = wasmFile.GlobalIndex[idxGlob];
+                    id = PopValue();
+                    Store(m.Mem(id.DataType, this.mpGlobidxToAddr[idxGlob]), id);
+                    break;
                 default:
                     EmitUnitTest(dasm, rdr);
                     Console.WriteLine($"Unhandled mnemonic {instr.Mnemonic}.");
@@ -230,6 +245,12 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             var s = new SideEffect(e);
             block.Statements.Add(instr.Address, s);
+        }
+
+        private void Store(Expression dst, Expression value)
+        {
+            var store = new Store(dst, value);
+            block.Statements.Add(instr.Address, store);
         }
 
         private ControlEntry PopControl()

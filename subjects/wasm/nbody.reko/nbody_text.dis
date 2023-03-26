@@ -37,6 +37,7 @@ real64 _start()
 _start_entry:
 	// succ:  l000E0405
 l000E0405:
+	v11 = Mem0[0x00100000<p32>:word32]
 _start_exit:
 
 
@@ -66,6 +67,16 @@ void __post_instantiate()
 __post_instantiate_entry:
 	// succ:  l000E0770
 l000E0770:
+	v2 = Mem0[0x00100000<p32>:word32]
+	v3 = 0x120<32>
+	v4 = v2 + v3
+	Mem0[0x00100008<p32>:word32] = v4
+	v5 = Mem0[0x00100008<p32>:word32]
+	v6 = 0x500000<32>
+	v7 = v5 + v6
+	Mem0[0x0010000C<p32>:word32] = v7
+	runPostSets()
+	return
 __post_instantiate_exit:
 
 

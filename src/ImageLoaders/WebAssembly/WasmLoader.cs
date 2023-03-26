@@ -849,6 +849,9 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         public object? InitExpr { get; set; }
         public (DataType, bool) Type { get; set; }
+
+        public int GlobalIndex { get; set; }
+        public string? Name { get; set; }
     }
 
     public class ElementSegment

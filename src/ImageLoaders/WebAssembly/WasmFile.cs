@@ -34,6 +34,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.TypeSection = sections.OfType<TypeSection>().FirstOrDefault();
             this.ImportSection = sections.OfType<ImportSection>().FirstOrDefault();
             this.ExportSection = sections.OfType<ExportSection>().FirstOrDefault();
+            this.GlobalSection = sections.OfType<GlobalSection>().FirstOrDefault();
             this.FunctionSection = sections.OfType<FunctionSection>().FirstOrDefault();
             this.CodeSection = sections.OfType<CodeSection>().FirstOrDefault();
             this.FunctionIndex = BuildFunctionsIndex();
@@ -44,6 +45,7 @@ namespace Reko.ImageLoaders.WebAssembly
         public TypeSection? TypeSection { get; }
         public ImportSection? ImportSection { get; }
         public ExportSection? ExportSection { get; }
+        public GlobalSection? GlobalSection { get; }
         public FunctionSection? FunctionSection { get; }
         public CodeSection? CodeSection { get; }
         public List<FunctionDefinition> FunctionIndex { get; }
@@ -100,8 +102,34 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private List<GlobalEntry> BuildGlobalsIndex()
         {
-            //$NYI
-            return new();
+            var result = new List<GlobalEntry>();
+
+            // First the imported globals...
+            if (ImportSection is not null)
+            {
+                foreach (var entry in ImportSection.Imports)
+                {
+                    if (entry.Type == SymbolType.Data)
+                    {
+                        result.Add(new GlobalEntry
+                        {
+                            Type = entry.GlobalType,
+                            GlobalIndex = result.Count,
+                            Name = entry.Name,
+                        });
+                    }
+                }
+            }
+            // ...then the local globals.
+            if (this.GlobalSection is not null)
+            {
+                foreach (var entry in GlobalSection.Globals)
+                {
+                    entry.GlobalIndex = result.Count;
+                    result.Add(entry);
+                }
+            }
+            return result;
         }
     }
 }

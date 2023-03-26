@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using ReactiveUI;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -39,7 +40,10 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         private readonly WasmArchitecture arch;
         private List<FunctionType> funcTypes;
         private List<FunctionDefinition> funcindex;
+        private List<GlobalEntry> globals;
+        private Address addrGlobal;
         private Dictionary<int, ProcedureBase> mpFunidxToProc;
+        private Dictionary<int, Address> mpGlobIdxToAddr;
 
         public WasmProcedureBuilderTests()
         {
@@ -51,7 +55,10 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         {
             this.funcTypes = new List<FunctionType>();
             this.funcindex = new List<FunctionDefinition>();
+            this.globals = new List<GlobalEntry>();
             this.mpFunidxToProc = new Dictionary<int, ProcedureBase>();
+            this.mpGlobIdxToAddr = new Dictionary<int, Address>();
+            this.addrGlobal = Address.Ptr32(0x2000);
         }
 
         private static DataType DataTypeFromValType(int valType)
@@ -81,6 +88,18 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 : null;
             var ft = new FunctionType(retvalue, parameters);
             funcTypes.Add(ft);
+        }
+
+        private void Given_Global(int valType, bool mutable)
+        {
+            int idxGlobal = globals.Count;
+            var ge = new GlobalEntry
+            {
+                 Type= (DataTypeFromValType(valType), mutable),
+            };
+            globals.Add(ge);
+            mpGlobIdxToAddr.Add(idxGlobal, addrGlobal);
+            addrGlobal += ge.Type.Item1.Size;
         }
 
         private void Given_ImportFunc(string env, string name, uint typeIndex)
@@ -114,7 +133,8 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 new TypeSection(".types", Array.Empty<byte>(), this.funcTypes)
             });
             wasmFile.FunctionIndex.AddRange(this.funcindex);
-            var pb = new WasmProcedureBuilder(fnDef, arch, wasmFile, mpFunidxToProc);
+            wasmFile.GlobalIndex.AddRange(this.globals);
+            var pb = new WasmProcedureBuilder(fnDef, arch, wasmFile, mpFunidxToProc, mpGlobIdxToAddr);
             var proc = pb.GenerateProcedure();
             var sw = new StringWriter();
             sw.WriteLine();
@@ -275,5 +295,39 @@ fn00000_exit:
                     11              // end
                 }));
         }
+
+        [Test]
+        public void Waspb_get_set_global()
+        {
+            Given_FuncType(new[] { 127 }, 0);
+            Given_Global(127, true);
+            Given_Global(127, true);
+            var sExp = @"
+// fn00000
+// Return size: 0
+void fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = Mem0[0x00002000<p32>:word32]
+	v3 = param0
+	v4 = v2 + v3
+	Mem0[0x00002004<p32>:word32] = v4
+	return
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+                    35,0,       // get.global 0
+                    32,0,       // get.local 0
+                    106,        // i32.add
+                    36,1,       // set.global 1
+                    11          // end
+                }));
+        }
+
     }
 }

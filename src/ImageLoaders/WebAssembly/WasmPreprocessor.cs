@@ -35,6 +35,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly WasmPlatform platform;
         private readonly WasmFile wasmFile;
         private ImageSegment? codeSegment;
+        private ImageSegment? dataSegment;
 
         public WasmPreprocessor(WasmArchitecture arch, WasmPlatform platform, WasmFile wasmFile)
         {
@@ -56,9 +57,10 @@ namespace Reko.ImageLoaders.WebAssembly
             if (wasmFile.CodeSection is null)
                 return;
             var funidxToProc = GenerateFuncIdxToProcedureMap();
+            var globidxToAddr = GenerateGlobalIdxToAddressMap();
             foreach (var func in wasmFile.CodeSection.Functions)
             {
-                var procBuilder = new WasmProcedureBuilder(func, arch, wasmFile, funidxToProc);
+                var procBuilder = new WasmProcedureBuilder(func, arch, wasmFile, funidxToProc, globidxToAddr);
                 var proc = procBuilder.GenerateProcedure();
                 program.Procedures.Add(proc.EntryAddress, proc);
             }
@@ -91,6 +93,26 @@ namespace Reko.ImageLoaders.WebAssembly
             return result;
         }
 
+        private Dictionary<int, Address> GenerateGlobalIdxToAddressMap()
+        {
+            var result = new Dictionary<int, Address>();
+            if (dataSegment is null)
+                return result;
+            Debug.Assert(wasmFile.GlobalSection is not null, "If there are globals there must be a data segment.");
+            Debug.Assert(dataSegment is not null, "If there are globals there must be a datasegment.");
+            var addr = dataSegment.Address;
+            //$BUG: until semantics are clear we allocate slots for each imported
+            // global even if that's strictly incorrect.
+            foreach (var entry in wasmFile.GlobalIndex)
+            {
+                var dt = entry.Type.Item1;
+                result.Add(entry.GlobalIndex, addr);
+                //$BUG: we don't take alignment into account here.
+                addr += dt.Size;
+            }
+            return result;
+        }
+
         private SegmentMap BuildSegmentMap(List<Section> sections)
         {
             var segments = new List<ImageSegment>();
@@ -107,6 +129,8 @@ namespace Reko.ImageLoaders.WebAssembly
                 segments.Add(segment);
                 if (section is CodeSection)
                     this.codeSegment = segment;
+                else if (section is DataSection)
+                    this.dataSegment = segment;
                 addr = (addr + section.Bytes.Length + WasmPageSize - 1).Align(WasmPageSize);
             }
 
