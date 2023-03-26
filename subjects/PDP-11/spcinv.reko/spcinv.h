@@ -194,7 +194,7 @@ Eq_52: sys_info_FD
 	T_306 (in 0x1166<16> @ 0402 : word16)
 	T_323 (in 0x1166<16> @ 03E4 : word16)
 	T_1880 (in 0x1166<16> @ 0C16 : word16)
-Eq_59: (union "Eq_59" (byte u0) ((ptr16 Eq_2117) u1))
+Eq_59: (union "Eq_59" (byte u0) ((ptr16 Eq_2116) u1))
 	T_59 (in 0<16> @ 0264 : word16)
 	T_61 (in Mem58[0x0B5E<p16>:word16] @ 0264 : word16)
 	T_110 (in r0_106 @ 0310 : Eq_59)
@@ -430,7 +430,7 @@ Eq_272: (struct "Eq_272" 0002 (EF0 byte b0EF0) (EF3 byte b0EF3))
 	T_1711 (in r5_11 @ 0AB6 : (ptr16 Eq_272))
 	T_1751 (in out r5_29 @ 0B06 : ptr16)
 	T_1767 (in out r5_32 @ 0B2C : ptr16)
-Eq_344: (union "Eq_344" (byte u0) ((ptr16 Eq_2121) u1))
+Eq_344: (union "Eq_344" (byte u0) ((ptr16 Eq_2119) u1))
 	T_344 (in Mem240[0x0F02<p16>:word16] @ 039E : word16)
 	T_345 (in 0<16> @ 039E : word16)
 	T_421 (in r5_10 @ 04AA : Eq_344)
@@ -614,7 +614,7 @@ Eq_688: (fn Eq_59 (Eq_59, (ptr16 byte), ptr16))
 Eq_709: (fn (ptr16 byte) ((ptr16 byte), (ptr16 Eq_712)))
 	T_709 (in fn0B1A @ 056A : ptr16)
 	T_710 (in signature of fn0B1A @ 0B1A : void)
-Eq_712: (struct "Eq_712" 0002 (EF0 Eq_2122 t0EF0) (EF3 byte b0EF3))
+Eq_712: (struct "Eq_712" 0002 (EF0 Eq_2120 t0EF0) (EF3 byte b0EF3))
 	T_712 (in r5Out @ 056A : (ptr16 Eq_712))
 	T_713 (in out r5_10 @ 056A : ptr16)
 	T_1770 (in r5_23 @ 0B30 : (ptr16 Eq_712))
@@ -672,7 +672,7 @@ Eq_1067: (union "Eq_1067" (int16 u0) (cup16 u1))
 	T_1067 (in 4<16> @ 0758 : word16)
 Eq_1068: (union "Eq_1068" (int16 u0) (cup16 u1))
 	T_1068 (in r3_9 - 4<16> @ 0758 : word16)
-Eq_1134: (struct "Eq_1134" 0002 (0 Eq_2123 t0000))
+Eq_1134: (struct "Eq_1134" 0002 (0 Eq_2121 t0000))
 	T_1134 (in r1_146 @ 07F4 : (ptr16 Eq_1134))
 	T_1138 (in Mem91[r2_16 + 0xDAC<16>:word16] @ 07F4 : word16)
 	T_1141 (in r1_27 @ 07C8 : (ptr16 Eq_1134))
@@ -752,7 +752,7 @@ Eq_2033: (struct "Eq_2033" 0002 (0 Eq_529 t0000))
 	T_2095
 Eq_2045: (struct "Eq_2045" 0002 (0 Eq_59 t0000))
 	T_2045
-Eq_2051: (union "Eq_2051" (word16 u0) (Eq_2124 u1))
+Eq_2051: (union "Eq_2051" (word16 u0) (Eq_2122 u1))
 	T_2051
 	T_2055
 	T_2077
@@ -787,23 +787,23 @@ Eq_2115: (struct "sav_header_t" 0200
 		(34 word16 w0034)
 		(36 word16 w0036))
 	T_2115
-Eq_2116: (union "Eq_2116" (cu8 u0) (word16 u1))
+Eq_2116: (struct "Eq_2116" 0002 (0 Eq_2123 t0000) (C byte b000C) (DC4 word16 w0DC4))
 	T_2116
-Eq_2117: (struct "Eq_2117" 0002 (0 Eq_2116 t0000) (C byte b000C) (DC4 word16 w0DC4))
+Eq_2117: (struct "Eq_2117" 0001 (0 byte b0000) (1 byte b0001) (EF0 byte b0EF0) (EF3 byte b0EF3))
 	T_2117
-Eq_2118: (struct "Eq_2118" 0001 (0 byte b0000) (1 byte b0001) (EF0 byte b0EF0) (EF3 byte b0EF3))
+Eq_2118: (struct "Eq_2118" 0002 (EF0 Eq_2124 t0EF0) (EF3 byte b0EF3))
 	T_2118
-Eq_2119: (union "Eq_2119" (ci16 u0) (cu8 u1) (Eq_633 u2) (Eq_642 u3))
+Eq_2119: (union "Eq_2119" (Eq_2117 u0) (Eq_2118 u1))
 	T_2119
-Eq_2120: (struct "Eq_2120" 0002 (EF0 Eq_2119 t0EF0) (EF3 byte b0EF3))
+Eq_2120: (union "Eq_2120" (ci16 u0) (cu8 u1) (Eq_633 u2) (Eq_642 u3))
 	T_2120
-Eq_2121: (union "Eq_2121" (Eq_2118 u0) (Eq_2120 u1))
+Eq_2121: (union "Eq_2121" (wchar_t u0) (byte u1) (Eq_1176 u2) (Eq_1179 u3) (Eq_1310 u4))
 	T_2121
-Eq_2122: (union "Eq_2122" (ci16 u0) (cu8 u1) (Eq_633 u2) (Eq_642 u3))
+Eq_2122: (struct "Eq_2122" 0001 (0 Eq_846 t0000))
 	T_2122
-Eq_2123: (union "Eq_2123" (wchar_t u0) (byte u1) (Eq_1176 u2) (Eq_1179 u3) (Eq_1310 u4))
+Eq_2123: (union "Eq_2123" (cu8 u0) (word16 u1))
 	T_2123
-Eq_2124: (struct "Eq_2124" 0001 (0 Eq_846 t0000))
+Eq_2124: (union "Eq_2124" (ci16 u0) (cu8 u1) (Eq_633 u2) (Eq_642 u3))
 	T_2124
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
@@ -5205,7 +5205,7 @@ T_1099: (in fn0AE8(r0_114, r4_115, &g_ptr077E, out r0_233, out r4_130, out r5_23
 T_1100: (in r0 @ 077A : Eq_59)
   Class: Eq_59
   DataType: Eq_59
-  OrigDataType: (ptr16 Eq_2117)
+  OrigDataType: (ptr16 Eq_2116)
 T_1101: (in fp @ 07A6 : Eq_344)
   Class: Eq_344
   DataType: Eq_344
@@ -9454,7 +9454,7 @@ typedef sys_info_FD Eq_52;
 
 typedef union Eq_59 {
 	byte u0;
-	struct Eq_2117 * u1;
+	struct Eq_2116 * u1;
 } Eq_59;
 
 typedef void (Eq_75)();
@@ -9501,7 +9501,7 @@ typedef struct Eq_272 {	// size: 2 2
 
 typedef union Eq_344 {
 	byte u0;
-	union Eq_2121 * u1;
+	union Eq_2119 * u1;
 } Eq_344;
 
 typedef struct Eq_352 {
@@ -9640,7 +9640,7 @@ typedef Eq_59 (Eq_688)(Eq_59, byte *, ptr16);
 typedef byte * (Eq_709)(byte *, Eq_712 *);
 
 typedef struct Eq_712 {	// size: 2 2
-	Eq_2122 t0EF0;	// EF0
+	Eq_2120 t0EF0;	// EF0
 	byte b0EF3;	// EF3
 } Eq_712;
 
@@ -9697,7 +9697,7 @@ typedef union Eq_1068 {
 } Eq_1068;
 
 typedef struct Eq_1134 {	// size: 2 2
-	Eq_2123 t0000;	// 0
+	Eq_2121 t0000;	// 0
 } Eq_1134;
 
 typedef union Eq_1176 {
@@ -9800,7 +9800,7 @@ typedef struct Eq_2045 {	// size: 2 2
 
 typedef union Eq_2051 {
 	word16 u0;
-	Eq_2124 u1;
+	Eq_2122 u1;
 } Eq_2051;
 
 typedef struct Eq_2057 {	// size: 1 1
@@ -9832,57 +9832,57 @@ typedef struct sav_header_t {	// size: 512 200
 	word16 w0036;	// 36
 } Eq_2115;
 
-typedef union Eq_2116 {
-	cu8 u0;
-	word16 u1;
-} Eq_2116;
-
-typedef struct Eq_2117 {	// size: 2 2
-	Eq_2116 t0000;	// 0
+typedef struct Eq_2116 {	// size: 2 2
+	Eq_2123 t0000;	// 0
 	byte b000C;	// C
 	word16 w0DC4;	// DC4
-} Eq_2117;
+} Eq_2116;
 
-typedef struct Eq_2118 {	// size: 1 1
+typedef struct Eq_2117 {	// size: 1 1
 	byte b0000;	// 0
 	byte b0001;	// 1
 	byte b0EF0;	// EF0
 	byte b0EF3;	// EF3
+} Eq_2117;
+
+typedef struct Eq_2118 {	// size: 2 2
+	Eq_2124 t0EF0;	// EF0
+	byte b0EF3;	// EF3
 } Eq_2118;
 
 typedef union Eq_2119 {
+	Eq_2117 u0;
+	Eq_2118 u1;
+} Eq_2119;
+
+typedef union Eq_2120 {
 	ci16 u0;
 	cu8 u1;
 	Eq_633 u2;
 	Eq_642 u3;
-} Eq_2119;
-
-typedef struct Eq_2120 {	// size: 2 2
-	Eq_2119 t0EF0;	// EF0
-	byte b0EF3;	// EF3
 } Eq_2120;
 
 typedef union Eq_2121 {
-	Eq_2118 u0;
-	Eq_2120 u1;
-} Eq_2121;
-
-typedef union Eq_2122 {
-	ci16 u0;
-	cu8 u1;
-	Eq_633 u2;
-	Eq_642 u3;
-} Eq_2122;
-
-typedef union Eq_2123 {
 	wchar_t u0;
 	byte u1;
 	Eq_1176 u2;
 	Eq_1179 u3;
 	Eq_1310 u4;
+} Eq_2121;
+
+typedef struct Eq_2122 {	// size: 1 1
+	Eq_846 t0000;	// 0
+} Eq_2122;
+
+typedef union Eq_2123 {
+	cu8 u0;
+	word16 u1;
 } Eq_2123;
 
-typedef struct Eq_2124 {	// size: 1 1
-	Eq_846 t0000;	// 0
+typedef union Eq_2124 {
+	ci16 u0;
+	cu8 u1;
+	Eq_633 u2;
+	Eq_642 u3;
 } Eq_2124;
 
