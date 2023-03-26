@@ -1,4 +1,22 @@
-using Microsoft.VisualBasic;
+#region License
+/* Copyright (C) 1999-2023 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -61,15 +79,18 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void GenerateLocals()
         {
+            int cParams = 0;
+
             Identifier Loc(LocalVariable lv, int i)
             {
-                return proc.Frame.CreateTemporary($"loc{i}", lv.DataType);
+                return proc.Frame.CreateTemporary($"loc{i + cParams}", lv.DataType);
             }
 
             var parameters = proc.Signature.Parameters;
             if (parameters is not null)
             {
                 locals.AddRange(parameters);
+                cParams = parameters.Length;
             }
             locals.AddRange(func.Locals.Select(Loc));
         }
@@ -94,7 +115,18 @@ namespace Reko.ImageLoaders.WebAssembly
                 {
                 case Mnemonic.block: RewriteBlock(); break;
                 case Mnemonic.call: RewriteCall(); break;
-                case Mnemonic.end: RewriteEnd(rdr); break;
+                case Mnemonic.end: 
+                    if (RewriteEnd(rdr))
+                        return;
+                    break;
+                case Mnemonic.f32_add: RewriteBinary(m.FAdd, PrimitiveType.Real32); break;
+                case Mnemonic.f32_div: RewriteBinary(m.FDiv, PrimitiveType.Real32); break;
+                case Mnemonic.f32_mul: RewriteBinary(m.FMul, PrimitiveType.Real32); break;
+                case Mnemonic.f32_sub: RewriteBinary(m.FSub, PrimitiveType.Real32); break;
+                case Mnemonic.f64_add: RewriteBinary(m.FAdd, PrimitiveType.Real64); break;
+                case Mnemonic.f64_div: RewriteBinary(m.FDiv, PrimitiveType.Real64); break;
+                case Mnemonic.f64_mul: RewriteBinary(m.FMul, PrimitiveType.Real64); break;
+                case Mnemonic.f64_sub: RewriteBinary(m.FSub, PrimitiveType.Real64); break;
                 case Mnemonic.get_global:
                     var idxGlob = OpAsInt(0);
                     var global = wasmFile.GlobalIndex[idxGlob];
@@ -119,6 +151,16 @@ namespace Reko.ImageLoaders.WebAssembly
                     global = wasmFile.GlobalIndex[idxGlob];
                     id = PopValue();
                     Store(m.Mem(id.DataType, this.mpGlobidxToAddr[idxGlob]), id);
+                    break;
+                case Mnemonic.set_local:
+                    local = this.locals[OpAsInt(0)];
+                    id = PopValue();
+                    Assign(local, id);
+                    break;
+                case Mnemonic.tee_local:
+                    local = this.locals[OpAsInt(0)];
+                    id = PeekValue();
+                    Assign(local, id);
                     break;
                 default:
                     EmitUnitTest(dasm, rdr);
@@ -153,19 +195,21 @@ namespace Reko.ImageLoaders.WebAssembly
             PushControl(Mnemonic.block, Array.Empty<Identifier>(), null, false);
         }
 
-        private void RewriteEnd(WasmImageReader rdr)
+        private bool RewriteEnd(WasmImageReader rdr)
         {
             if (rdr.Offset == this.func.End)
             {
                 if (controlStack.Count != 0)
                     throw new BadImageFormatException("Control stack unbalanced at end of function.");
                 Return();
+                return true;
             }
             else
             {
                 if (controlStack.Count == 0)
                     throw new BadImageFormatException("Control stack unbalanced at end of function.");
                 var ctrl = PopControl();
+                return false;
             }
         }
 
@@ -266,6 +310,14 @@ namespace Reko.ImageLoaders.WebAssembly
             this.controlStack.Add(new ControlEntry(mnemonic, inputs, output, valueStack.Count, isUnreachable));
         }
 
+        private Identifier PeekValue()
+        {
+            int iTop = this.valueStack.Count - 1;
+            if (iTop < 0)
+                throw new AddressCorrelatedException(instr.Address, "Exhausted value stack.");
+            return this.valueStack[iTop];
+        }
+
         private Identifier PushValue(DataType dt)
         {
             var id  = proc.Frame.CreateTemporary(dt);
@@ -277,7 +329,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             int iTop = this.valueStack.Count - 1;
             if (iTop < 0)
-                throw new AddressCorrelatedException(instr.Address, "Exhausted value stack.");
+                throw new AddressCorrelatedException(instr.Address, $"Exhausted value stack when rewriting procedure {proc.Name}.");
             var id = this.valueStack[iTop];
             this.valueStack.RemoveAt(iTop);
             return id;
@@ -287,7 +339,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             int iTop = this.valueStack.Count - cValues;
             if (iTop < 0)
-                throw new AddressCorrelatedException(instr.Address, "Exhausted value stack.");
+                throw new AddressCorrelatedException(instr.Address, $"Exhausted value stack when rewriting procedure {proc.Name}.");
             var exps = new Expression[cValues];
             for (int i = 0; i < cValues; i++)
             {

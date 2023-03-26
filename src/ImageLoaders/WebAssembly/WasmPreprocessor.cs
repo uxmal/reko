@@ -60,9 +60,15 @@ namespace Reko.ImageLoaders.WebAssembly
             var globidxToAddr = GenerateGlobalIdxToAddressMap();
             foreach (var func in wasmFile.CodeSection.Functions)
             {
-                var procBuilder = new WasmProcedureBuilder(func, arch, wasmFile, funidxToProc, globidxToAddr);
-                var proc = procBuilder.GenerateProcedure();
-                program.Procedures.Add(proc.EntryAddress, proc);
+                try
+                {
+                    var procBuilder = new WasmProcedureBuilder(func, arch, wasmFile, funidxToProc, globidxToAddr);
+                    var proc = procBuilder.GenerateProcedure();
+                    program.Procedures.Add(proc.EntryAddress, proc);
+                } catch
+                {
+
+                }
             }
         }
 

@@ -329,5 +329,48 @@ fn00000_exit:
                 }));
         }
 
+        [Test]
+        public void Waspb_dup_tee_set_global()
+        {
+            Given_FuncType(new[] { 125 }, 125);
+            var sExp = @"
+// fn00000
+// Return size: 0
+real32 fn00000(real32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v4 = param0
+	loc1 = v4
+	v5 = loc1
+	v6 = v4 * v5
+	loc2 = v6
+	v7 = loc1
+	v8 = loc2
+	v9 = v7 + v8
+	return v9
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                0,
+                new LocalVariable[]
+                {
+                    new LocalVariable(PrimitiveType.Real32),
+                    new LocalVariable(PrimitiveType.Real32)
+                },
+                new byte[]
+                {
+                    32,0,       // get.local0
+                    34,1,        // tee.local 1
+                    32,1,        // get.local 1
+                    148,         // f32.mul
+                    33,2,        // set.local 2
+                    32,1,        // get.local 1
+                    32,2,        // get.local 2
+                    146,        // f32.add
+                    11          // end
+                }));
+        }
+
     }
 }

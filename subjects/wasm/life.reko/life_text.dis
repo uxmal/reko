@@ -9,6 +9,11 @@ l000C0000:
 	v6 = v4 * v5
 	v7 = 0x10<32>
 	v8 = v6 + v7
+	arg0 = v8
+	v9 = arg2
+	v10 = 0xFFFFFFFF<32>
+	v11 = v9 + v10
+	v12 = 0x64<32>
 count_neighbors_exit:
 
 
@@ -21,6 +26,20 @@ l000C0060:
 	v15 = arg0
 	v16 = 0x2710<32>
 	v17 = v15 * v16
+	loc6 = v17
+	v18 = 0x10<32>
+	v19 = v17 + v18
+	loc1 = v19
+	v20 = 1<32>
+	v21 = arg0
+	v22 = v20 - v21
+	v23 = 0x2710<32>
+	v24 = v22 * v23
+	v25 = 0x10<32>
+	v26 = v24 + v25
+	loc2 = v26
+	v27 = 0<32>
+	arg0 = v27
 update_gen_exit:
 
 
