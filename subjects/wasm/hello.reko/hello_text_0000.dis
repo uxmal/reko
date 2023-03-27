@@ -1304,6 +1304,34 @@ l000D2E47:
 	loc40 = v1041
 	v1042 = arg1
 	loc42 = v1042
+	// succ:  l000D2F31
+l000D2F31:
+	v1043 = loc30
+	v1044 = 0xFFFFFFFF<32>
+	v1045 = v1043 > v1044
+	loc389 = v1045
+	// succ:  l000D2F3B
+l000D2F3B:
+	v1046 = loc389
+	v1046 = v1046
+	// succ:  l000D2F42 l000D2F42
+l000D2F42:
+	v1047 = 0x7FFFFFFF<32>
+	v1048 = loc30
+	v1049 = v1047 - v1048
+	loc398 = v1049
+	v1050 = loc29
+	v1051 = loc398
+	v1052 = v1050 > v1051
+	loc408 = v1052
+	v1053 = loc408
+	v1053 = v1053
+	// succ:  l000D2F5C l000D2F5C
+l000D2F5C:
+	v1054 = ___errno_location()
+	loc413 = v1054
+	v1055 = loc413
+	v1056 = 0x4B<32>
 fn000D2E2C_exit:
 
 
@@ -1386,6 +1414,13 @@ l000D69BF:
 	loc19 = v21
 	v22 = 0<32>
 	loc3 = v22
+	// succ:  l000D69CB
+l000D69CB:
+	v23 = 0x2D75<32>
+	v24 = loc3
+	v25 = v23 + v24
+	loc10 = v25
+	v26 = loc10
 fn000D69BF_exit:
 
 
@@ -1433,6 +1468,9 @@ l000D6AF4:
 	loc6 = v79
 	v80 = arg2
 	loc9 = v80
+	// succ:  l000D6B06
+l000D6B06:
+	v81 = loc6
 fn000D6AC0_exit:
 
 
@@ -1687,6 +1725,9 @@ l000D7B05:
 	loc10 = v12
 	v13 = arg0
 	loc1 = v13
+	// succ:  l000D7B11
+l000D7B11:
+	v14 = loc1
 fn000D7B05_exit:
 
 
@@ -2079,6 +2120,9 @@ l000DAF56:
 	loc4 = v45
 	v46 = loc9
 	loc23 = v46
+	// succ:  l000DAF61
+l000DAF61:
+	v47 = loc4
 fn000DAF30_exit:
 
 
@@ -2247,6 +2291,17 @@ l000DB45E:
 	loc4 = v20
 	v21 = arg0
 	loc5 = v21
+	// succ:  l000DB46C
+l000DB46C:
+	v22 = loc3
+	v23 = 0xFFFFFFFF<32>
+	v24 = v22 + v23
+	loc7 = v24
+	v25 = loc4
+	v26 = 4<32>
+	v27 = v25 + v26
+	loc8 = v27
+	v28 = loc4
 fn000DB44C_exit:
 
 
@@ -2891,6 +2946,18 @@ l000DF0AE:
 	loc3 = v16
 	v17 = arg0
 	loc4 = v17
+	// succ:  l000DF0B8
+l000DF0B8:
+	v18 = loc3
+	v19 = 0xFFFFFFFF<32>
+	v20 = v18 + v19
+	loc6 = v20
+	v21 = loc4
+	v22 = 4<32>
+	v23 = v21 + v22
+	loc7 = v23
+	v24 = loc4
+	v25 = arg1
 fn000DF09C_exit:
 
 
@@ -2933,6 +3000,19 @@ l000DF11E:
 l000DF123:
 	v42 = arg2
 	loc6 = v42
+	// succ:  l000DF129
+l000DF129:
+	v43 = loc6
+	v44 = 0xFFFFFFFF<32>
+	v45 = v43 + v44
+	loc22 = v45
+	v46 = arg1
+	v47 = loc22
+	v48 = 2<32>
+	v49 = v47 << v48
+	v50 = v46 + v49
+	loc7 = v50
+	v51 = loc7
 fn000DF0F0_exit:
 
 

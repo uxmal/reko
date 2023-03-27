@@ -58,6 +58,12 @@ l000E0332:
 	loc5 = v12
 	v13 = 0<32>
 	loc2 = v13
+	v14 = loc5
+	v15 = arg1
+	v16 = loc2
+	v17 = 0x38<32>
+	v18 = v16 * v17
+	v19 = v15 + v18
 _offset_momentum_exit:
 
 
@@ -87,9 +93,45 @@ l000E0627:
 	arg0 = v12
 	v13 = 0.0
 	loc3 = v13
+	goto l000E0672
+	// succ:  l000E0672
 l000E0636:
 	v14 = 1<32>
 	loc1 = v14
+	v15 = 5<32>
+	v16 = Mem0[0x00100000<p32>:word32]
+	v17 = 0.01
+	_advance(v15, v16, v17)
+	v18 = loc1
+	v19 = 1<32>
+	v20 = v18 + v19
+	loc2 = v20
+	v21 = loc1
+	v22 = arg0
+	v23 = v21 == v22
+	branch !v23 l000E0669
+	// succ:  l000E065A l000E0669
+l000E065A:
+	v24 = 0<32>
+	arg0 = v24
+	v25 = 0.0
+	loc3 = v25
+	goto l000E0670
+	// succ:  l000E0670
+l000E0669:
+	v26 = loc2
+	loc1 = v26
+	goto l000E0636
+	// succ:  l000E0636
+l000E0670:
+	// succ:  l000E0672
+l000E0672:
+	v27 = loc3
+	v28 = Mem0[0x00100000<p32>:word32]
+	v29 = arg0
+	v30 = 0x38<32>
+	v31 = v29 * v30
+	v32 = v28 + v31
 _run_exit:
 
 

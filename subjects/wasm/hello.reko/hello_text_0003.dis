@@ -22,45 +22,6 @@ l001000E8:
 fn001000E8_exit:
 
 
-// fn00100180
-// Return size: 0
-void fn00100180(word32 arg0)
-fn00100180_entry:
-	// succ:  l00100180
-l00100180:
-	v7 = Mem0[0x00140030<p32>:word32]
-	loc5 = v7
-	v8 = 0x4E08<32>
-	loc2 = v8
-fn00100180_exit:
-
-
-// fn001001B8
-// Return size: 0
-void fn001001B8(word32 arg0)
-fn001001B8_entry:
-	// succ:  l001001B8
-l001001B8:
-	v7 = Mem0[0x00140030<p32>:word32]
-	loc5 = v7
-	v8 = 0x4F2C<32>
-	loc2 = v8
-fn001001B8_exit:
-
-
-// fn001001F0
-// Return size: 0
-void fn001001F0(word32 arg0)
-fn001001F0_entry:
-	// succ:  l001001F0
-l001001F0:
-	v7 = Mem0[0x00140030<p32>:word32]
-	loc5 = v7
-	v8 = 0x4FD8<32>
-	loc2 = v8
-fn001001F0_exit:
-
-
 // fn00100228
 // Return size: 0
 void fn00100228(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
@@ -385,6 +346,9 @@ l0010129E:
 	v96 = 8<32>
 	v97 = v95 + v96
 	loc49 = v97
+	// succ:  l001012AD
+l001012AD:
+	v98 = arg1
 fn0010129E_exit:
 
 
@@ -1177,45 +1141,6 @@ l001040D7:
 fn001040D7_exit:
 
 
-// fn00104191
-// Return size: 0
-void fn00104191(word32 arg0)
-fn00104191_entry:
-	// succ:  l00104191
-l00104191:
-	v7 = Mem0[0x00140030<p32>:word32]
-	loc5 = v7
-	v8 = 0x5134<32>
-	loc2 = v8
-fn00104191_exit:
-
-
-// fn001041C9
-// Return size: 0
-void fn001041C9(word32 arg0)
-fn001041C9_entry:
-	// succ:  l001041C9
-l001041C9:
-	v7 = Mem0[0x00140030<p32>:word32]
-	loc5 = v7
-	v8 = 0x5258<32>
-	loc2 = v8
-fn001041C9_exit:
-
-
-// fn00104201
-// Return size: 0
-void fn00104201(word32 arg0)
-fn00104201_entry:
-	// succ:  l00104201
-l00104201:
-	v7 = Mem0[0x00140030<p32>:word32]
-	loc5 = v7
-	v8 = 0x5304<32>
-	loc2 = v8
-fn00104201_exit:
-
-
 // fn00104239
 // Return size: 0
 void fn00104239(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
@@ -1536,6 +1461,9 @@ fn00105254_entry:
 l00105254:
 	v95 = Mem0[0x00140030<p32>:word32]
 	loc97 = v95
+	// succ:  l0010525C
+l0010525C:
+	v96 = arg1
 fn00105254_exit:
 
 

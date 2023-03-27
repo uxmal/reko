@@ -1257,68 +1257,6 @@ l00116E53:
 fn00116E53_exit:
 
 
-// fn00116E5E
-// Return size: 0
-word32 fn00116E5E(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7)
-fn00116E5E_entry:
-	// succ:  l00116E5E
-l00116E5E:
-	v123 = Mem0[0x00140030<p32>:word32]
-	loc127 = v123
-	v124 = Mem0[0x00140030<p32>:word32]
-	v125 = 0x10<32>
-	v126 = v124 + v125
-	Mem0[0x00140030<p32>:word32] = v126
-	v127 = Mem0[0x00140030<p32>:word32]
-	v128 = Mem0[0x00140034<p32>:word32]
-	v129 = v127 >= v128
-	branch !v129 l00116E76
-	// succ:  l00116E72 l00116E76
-l00116E72:
-	v130 = 0x10<32>
-	abortStackOverflow(v130)
-	// succ:  l00116E76
-l00116E76:
-	v131 = loc127
-	loc102 = v131
-	v132 = loc127
-	v133 = 8<32>
-	v134 = v132 + v133
-	loc113 = v134
-	v135 = arg2
-	loc10 = v135
-fn00116E5E_exit:
-
-
-// fn0011742D
-// Return size: 0
-word32 fn0011742D(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7)
-fn0011742D_entry:
-	// succ:  l0011742D
-l0011742D:
-	v117 = Mem0[0x00140030<p32>:word32]
-	loc121 = v117
-	v118 = Mem0[0x00140030<p32>:word32]
-	v119 = 0x10<32>
-	v120 = v118 + v119
-	Mem0[0x00140030<p32>:word32] = v120
-	v121 = Mem0[0x00140030<p32>:word32]
-	v122 = Mem0[0x00140034<p32>:word32]
-	v123 = v121 >= v122
-	branch !v123 l00117445
-	// succ:  l00117441 l00117445
-l00117441:
-	v124 = 0x10<32>
-	abortStackOverflow(v124)
-	// succ:  l00117445
-l00117445:
-	v125 = loc121
-	loc94 = v125
-	v126 = arg2
-	loc8 = v126
-fn0011742D_exit:
-
-
 // fn001179EC
 // Return size: 0
 word32 fn001179EC(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
@@ -1374,29 +1312,6 @@ l00117D21:
 	loc2 = v4
 	v5 = 0<32>
 fn00117D21_exit:
-
-
-// fn00117D2C
-// Return size: 0
-word32 fn00117D2C(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
-fn00117D2C_entry:
-	// succ:  l00117D2C
-l00117D2C:
-	v37 = Mem0[0x00140030<p32>:word32]
-	loc39 = v37
-	v38 = arg3
-	loc32 = v38
-	v39 = arg0
-	v40 = 8<32>
-	v41 = v39 + v40
-	loc33 = v41
-	v42 = 0<32>
-	loc5 = v42
-	v43 = 0<32>
-	loc6 = v43
-	v44 = arg2
-	loc7 = v44
-fn00117D2C_exit:
 
 
 // fn00117EC5
@@ -1752,19 +1667,6 @@ l00119509:
 fn001194F2_exit:
 
 
-// fn0011953E
-// Return size: 0
-word32 fn0011953E(word32 arg0, word32 arg1, word32 arg2)
-fn0011953E_entry:
-	// succ:  l0011953E
-l0011953E:
-	v15 = Mem0[0x00140030<p32>:word32]
-	loc15 = v15
-	v16 = arg1
-	loc3 = v16
-fn0011953E_exit:
-
-
 // fn001195BF
 // Return size: 0
 word32 fn001195BF(word32 arg0, word32 arg1)
@@ -1803,19 +1705,6 @@ l001195D6:
 fn001195BF_exit:
 
 
-// fn0011960D
-// Return size: 0
-word32 fn0011960D(word32 arg0, word32 arg1, word32 arg2)
-fn0011960D_entry:
-	// succ:  l0011960D
-l0011960D:
-	v15 = Mem0[0x00140030<p32>:word32]
-	loc15 = v15
-	v16 = arg1
-	loc3 = v16
-fn0011960D_exit:
-
-
 // fn0011968E
 // Return size: 0
 word32 fn0011968E(word32 arg0, word32 arg1)
@@ -1826,21 +1715,6 @@ l0011968E:
 	loc3 = v4
 	v5 = arg1
 fn0011968E_exit:
-
-
-// fn00119699
-// Return size: 0
-word32 fn00119699(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn00119699_entry:
-	// succ:  l00119699
-l00119699:
-	v10 = Mem0[0x00140030<p32>:word32]
-	loc11 = v10
-	v11 = arg3
-	loc4 = v11
-	v12 = arg1
-	loc5 = v12
-fn00119699_exit:
 
 
 // fn001196E6
@@ -1873,21 +1747,6 @@ l00119702:
 	loc3 = v16
 	v17 = loc3
 fn001196E6_exit:
-
-
-// fn0011970A
-// Return size: 0
-word32 fn0011970A(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
-fn0011970A_entry:
-	// succ:  l0011970A
-l0011970A:
-	v12 = Mem0[0x00140030<p32>:word32]
-	loc14 = v12
-	v13 = arg4
-	loc6 = v13
-	v14 = arg1
-	loc7 = v14
-fn0011970A_exit:
 
 
 // fn00119770
@@ -2263,47 +2122,6 @@ l00119A01:
 fn001199EF_exit:
 
 
-// fn00119A3A
-// Return size: 0
-word32 fn00119A3A(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn00119A3A_entry:
-	// succ:  l00119A3A
-l00119A3A:
-	v17 = Mem0[0x00140030<p32>:word32]
-	loc18 = v17
-	v18 = arg3
-	loc4 = v18
-	v19 = arg1
-	loc5 = v19
-fn00119A3A_exit:
-
-
-// fn00119AC5
-// Return size: 0
-word32 fn00119AC5(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn00119AC5_entry:
-	// succ:  l00119AC5
-l00119AC5:
-	v15 = Mem0[0x00140030<p32>:word32]
-	loc16 = v15
-	v16 = arg2
-	loc4 = v16
-fn00119AC5_exit:
-
-
-// fn00119B43
-// Return size: 0
-word32 fn00119B43(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn00119B43_entry:
-	// succ:  l00119B43
-l00119B43:
-	v15 = Mem0[0x00140030<p32>:word32]
-	loc16 = v15
-	v16 = arg2
-	loc4 = v16
-fn00119B43_exit:
-
-
 // fn00119BC7
 // Return size: 0
 word32 fn00119BC7(word32 arg0, word32 arg1)
@@ -2330,19 +2148,6 @@ l00119BD9:
 	loc3 = v19
 	v20 = loc3
 fn00119BC7_exit:
-
-
-// fn00119BFE
-// Return size: 0
-word32 fn00119BFE(word32 arg0, word32 arg1, word32 arg2)
-fn00119BFE_entry:
-	// succ:  l00119BFE
-l00119BFE:
-	v13 = Mem0[0x00140030<p32>:word32]
-	loc13 = v13
-	v14 = arg1
-	loc3 = v14
-fn00119BFE_exit:
 
 
 // fn00119C68
@@ -2373,19 +2178,6 @@ l00119C7A:
 fn00119C68_exit:
 
 
-// fn00119C9F
-// Return size: 0
-word32 fn00119C9F(word32 arg0, word32 arg1, word32 arg2)
-fn00119C9F_entry:
-	// succ:  l00119C9F
-l00119C9F:
-	v13 = Mem0[0x00140030<p32>:word32]
-	loc13 = v13
-	v14 = arg1
-	loc3 = v14
-fn00119C9F_exit:
-
-
 // fn00119D09
 // Return size: 0
 word32 fn00119D09(word32 arg0, word32 arg1)
@@ -2402,21 +2194,6 @@ l00119D09:
 	loc2 = v10
 	v11 = loc2
 fn00119D09_exit:
-
-
-// fn00119D1E
-// Return size: 0
-word32 fn00119D1E(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn00119D1E_entry:
-	// succ:  l00119D1E
-l00119D1E:
-	v11 = Mem0[0x00140030<p32>:word32]
-	loc12 = v11
-	v12 = arg3
-	loc4 = v12
-	v13 = arg1
-	loc5 = v13
-fn00119D1E_exit:
 
 
 // fn00119D75
@@ -2449,33 +2226,6 @@ l00119D94:
 	loc3 = v16
 	v17 = loc3
 fn00119D75_exit:
-
-
-// fn00119D9C
-// Return size: 0
-word32 fn00119D9C(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
-fn00119D9C_entry:
-	// succ:  l00119D9C
-l00119D9C:
-	v18 = Mem0[0x00140030<p32>:word32]
-	loc20 = v18
-	v19 = arg1
-	loc12 = v19
-	v20 = arg2
-	loc13 = v20
-	v21 = loc13
-	v22 = loc12
-	v23 = v21 - v22
-	loc14 = v23
-	v24 = loc14
-	v25 = 2<32>
-	v26 = v24 >>u v25
-	loc15 = v26
-	v27 = arg4
-	loc6 = v27
-	v28 = arg1
-	loc7 = v28
-fn00119D9C_exit:
 
 
 // fn00119E25
@@ -3489,33 +3239,6 @@ l0011B49F:
 	v34 = 0x53A0<32>
 	v35 = _pthread_mutex_lock(v34)
 fn0011B49F_exit:
-
-
-// fn0011B67B
-// Return size: 0
-word32 fn0011B67B(word32 arg0)
-fn0011B67B_entry:
-	// succ:  l0011B67B
-l0011B67B:
-	v11 = Mem0[0x00140030<p32>:word32]
-	loc9 = v11
-	v12 = arg0
-	v13 = 0<32>
-	v14 = v12 == v13
-	loc2 = v14
-	v15 = loc2
-	branch !v15 l0011B68E
-	// succ:  l0011B68C l0011B68E
-l0011B68C:
-	v16 = 1<32>
-	goto l0011B691
-	// succ:  l0011B691
-l0011B68E:
-	v17 = arg0
-	// succ:  l0011B691
-l0011B691:
-	loc1 = v17
-fn0011B67B_exit:
 
 
 // fn0011B709
@@ -5603,63 +5326,6 @@ l0011EF7B:
 runPostSets_exit:
 
 
-// _memset
-// Return size: 0
-word32 _memset(word32 arg0, word32 arg1, word32 arg2)
-_memset_entry:
-	// succ:  l0011EF7D
-l0011EF7D:
-	v6 = arg0
-	v7 = arg2
-	v8 = v6 + v7
-	loc3 = v8
-	v9 = arg2
-	v10 = 0x14<32>
-	v11 = v9 >= v10
-	v11 = v11
-	// succ:  l0011EF8D l0011EF8D
-l0011EF8D:
-	v12 = arg1
-	v13 = 0xFF<32>
-	v14 = v12 & v13
-	arg1 = v14
-	v15 = arg0
-	v16 = 3<32>
-	v17 = v15 & v16
-	loc6 = v17
-	v18 = arg1
-	v19 = arg1
-	v20 = 8<32>
-	v21 = v19 << v20
-	v22 = v18 | v21
-	v23 = arg1
-	v24 = 0x10<32>
-	v25 = v23 << v24
-	v26 = v22 | v25
-	v27 = arg1
-	v28 = 0x18<32>
-	v29 = v27 << v28
-	v30 = v26 | v29
-	loc4 = v30
-	v31 = loc3
-	v32 = 3<32>
-	v33 = 0xFFFFFFFF<32>
-	v34 = v32 ^ v33
-	v35 = v31 & v34
-	loc5 = v35
-	v36 = loc6
-	v36 = v36
-	// succ:  l0011EFC0 l0011EFC0
-l0011EFC0:
-	v37 = arg0
-	v38 = 4<32>
-	v39 = v37 + v38
-	v40 = loc6
-	v41 = v39 - v40
-	loc6 = v41
-_memset_exit:
-
-
 // _pthread_mutex_lock
 // Return size: 0
 word32 _pthread_mutex_lock(word32 arg0)
@@ -5713,37 +5379,6 @@ l0011F11D:
 	arg0 = v10
 	v11 = Mem0[0x00140038<p32>:word32]
 _sbrk_exit:
-
-
-// _memmove
-// Return size: 0
-word32 _memmove(word32 arg0, word32 arg1, word32 arg2)
-_memmove_entry:
-	// succ:  l0011F183
-l0011F183:
-	v3 = arg1
-	v4 = arg0
-	v5 = v3 < v4
-	v6 = arg0
-	v7 = arg1
-	v8 = arg2
-	v9 = v7 + v8
-	v10 = v6 < v9
-	v11 = v5 & v10
-	v11 = v11
-	// succ:  l0011F195 l0011F195
-l0011F195:
-	v12 = arg0
-	loc3 = v12
-	v13 = arg1
-	v14 = arg2
-	v15 = v13 + v14
-	arg1 = v15
-	v16 = arg0
-	v17 = arg2
-	v18 = v16 + v17
-	arg0 = v18
-_memmove_exit:
 
 
 // _pthread_mutex_unlock

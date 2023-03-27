@@ -52,6 +52,15 @@ l000C0060:
 	loc2 = v26
 	v27 = 0<32>
 	arg0 = v27
+	v28 = 0<32>
+	v29 = arg0
+	v30 = 1<32>
+	v31 = v29 + v30
+	loc4 = v31
+	v32 = loc4
+	v33 = 0x64<32>
+	v34 = v32 == v33
+	loc7 = v34
 update_gen_exit:
 
 

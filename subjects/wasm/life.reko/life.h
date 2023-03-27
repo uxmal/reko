@@ -6,6 +6,10 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_82: (union "Eq_82" (bool u0) (word32 u1))
+	T_82 (in v32 == v33 @ 000C0091 : bool)
+	T_83 (in v34 @ 000C0091 : bool)
+	T_84 (in loc7 @ 000C0092 : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -287,19 +291,80 @@ T_70: (in v27 @ 000C007D : word32)
   Class: Eq_43
   DataType: ui32
   OrigDataType: word32
-T_71: (in  @ 000C007F : word32)
+T_71: (in 0<32> @ 000C0083 : word32)
   Class: Eq_71
   DataType: word32
   OrigDataType: word32
-T_72: (in 0x2A<32> @ 000C0153 : word32)
+T_72: (in v28 @ 000C0083 : word32)
   Class: Eq_71
   DataType: word32
   OrigDataType: word32
-T_73: (in v2 @ 000C0153 : word32)
-  Class: Eq_71
+T_73: (in v29 @ 000C0085 : word32)
+  Class: Eq_43
+  DataType: ui32
+  OrigDataType: word32
+T_74: (in 1<32> @ 000C0087 : word32)
+  Class: Eq_74
+  DataType: word32
+  OrigDataType: word32
+T_75: (in v30 @ 000C0087 : word32)
+  Class: Eq_74
+  DataType: word32
+  OrigDataType: word32
+T_76: (in v29 + v30 @ 000C0089 : word32)
+  Class: Eq_76
+  DataType: word32
+  OrigDataType: word32
+T_77: (in v31 @ 000C0089 : word32)
+  Class: Eq_76
+  DataType: word32
+  OrigDataType: word32
+T_78: (in loc4 @ 000C008A : word32)
+  Class: Eq_76
+  DataType: word32
+  OrigDataType: word32
+T_79: (in v32 @ 000C008C : word32)
+  Class: Eq_76
+  DataType: word32
+  OrigDataType: word32
+T_80: (in 0x64<32> @ 000C008E : word32)
+  Class: Eq_76
+  DataType: word32
+  OrigDataType: word32
+T_81: (in v33 @ 000C008E : word32)
+  Class: Eq_76
+  DataType: word32
+  OrigDataType: word32
+T_82: (in v32 == v33 @ 000C0091 : bool)
+  Class: Eq_82
+  DataType: Eq_82
+  OrigDataType: bool
+T_83: (in v34 @ 000C0091 : bool)
+  Class: Eq_82
+  DataType: Eq_82
+  OrigDataType: bool
+T_84: (in loc7 @ 000C0092 : word32)
+  Class: Eq_82
+  DataType: Eq_82
+  OrigDataType: (union (bool u1) (word32 u0))
+T_85: (in  @ 000C0092 : word32)
+  Class: Eq_85
+  DataType: word32
+  OrigDataType: word32
+T_86: (in 0x2A<32> @ 000C0153 : word32)
+  Class: Eq_85
+  DataType: word32
+  OrigDataType: word32
+T_87: (in v2 @ 000C0153 : word32)
+  Class: Eq_85
   DataType: word32
   OrigDataType: word32
 */
 typedef struct Globals {
 } Eq_1;
+
+typedef union Eq_82 {
+	bool u0;
+	word32 u1;
+} Eq_82;
 

@@ -492,5 +492,140 @@ fn00000_exit:
                     11,         // end
                 }));
         }
+
+        [Test]
+        public void Waspb_InfiniteLoop()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+void fn00000()
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = 0x10<32>
+	puts(v2)
+	goto l00000000
+	// succ:  l00000000
+fn00000_exit:
+";
+            Given_FuncType(Array.Empty<int>(), 0);
+            Given_FuncType(new[] { 127 }, 0);
+            Given_ImportFunc("env", "puts", 1);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[] {
+                    3, 64,      // loop,
+                        65, 16, // i32.const
+                        16, 0,  // call
+                        12, 0,  // br 0
+                    11,         // end
+
+                    11
+                }));
+        }
+
+        [Test]
+        public void Waspb_WhileLoop()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+void fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = param0
+	v3 = v2 == 0<32>
+	branch v3 l00000000
+	// succ:  l00000007 l00000000
+l00000007:
+	v4 = 0x10<32>
+	puts(v4)
+	v5 = param0
+	v6 = 0xFFFFFFFF<32>
+	v7 = v5 + v6
+	param0 = v7
+	branch v7 l00000007
+	// succ:  l00000016 l00000007
+l00000016:
+	// succ:  l00000017
+l00000017:
+	return
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { 127 }, 0);
+            Given_ImportFunc("env", "puts", 1);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[] {
+                    2,64,           // block 0
+                
+                        32,0,           // local.get 0
+                        69,             // i32.eqz
+                        13,0,           // br.if 0
+                
+                        3,64,           // loop
+                            65,16,          // i32.const
+                            16,0,           // call
+                
+                            32,0,           // local.get
+                            65,127,         // i32.const 0xFFFFFFFF
+                            106,            // i32.add
+                            34,0,           // local.tee
+                            13,0,           // br.if 0
+                
+                        11,             // end
+                    11,                 
+                    11,
+                }));
+        }
+
+        [Test]
+        public void Waspb_DoWhileLoop()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+void fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = 0x10<32>
+	puts(v2)
+	v3 = param0
+	v4 = 0xFFFFFFFF<32>
+	v5 = v3 + v4
+	param0 = v5
+	branch v5 l00000000
+	// succ:  l0000000F l00000000
+l0000000F:
+	return
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 0);
+            Given_FuncType(new[] { 127 }, 0);
+            Given_ImportFunc("env", "puts", 1);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[] {
+                    3, 64,          // loop
+                        65, 16,     // i32.const
+                        16, 0,      // call
+                        32, 0,      // local.get
+                        65, 127,    // i32.const -1
+                        106,        // i32.add
+                        34, 0,      // local.tee
+                        13, 0,      // br_if 0
+                    11,
+                    11,
+                }));
+        }
     }
 }

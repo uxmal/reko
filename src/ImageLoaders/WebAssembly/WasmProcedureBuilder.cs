@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.WebAssembly
         private readonly List<ControlEntry> controlStack;
         private readonly List<Identifier> locals;
         private readonly ExpressionEmitter m;
-        private Block block;
+        private Block? block;
         private WasmInstruction instr;
 
         public WasmProcedureBuilder(
@@ -114,12 +114,15 @@ namespace Reko.ImageLoaders.WebAssembly
                 switch (instr.Mnemonic)
                 {
                 case Mnemonic.block: RewriteBlock(); break;
+                case Mnemonic.br: RewriteBr(); break;
+                case Mnemonic.br_if: RewriteBrIf(); break;
                 case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.@else: RewriteElse(); break;
                 case Mnemonic.end: 
                     if (RewriteEnd(rdr))
                         return;
                     break;
+                case Mnemonic.loop: RewriteLoop(); break;
                 case Mnemonic.f32_add: RewriteBinary(m.FAdd, PrimitiveType.Real32); break;
                 case Mnemonic.f32_div: RewriteBinary(m.FDiv, PrimitiveType.Real32); break;
                 case Mnemonic.f32_mul: RewriteBinary(m.FMul, PrimitiveType.Real32); break;
@@ -229,6 +232,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteBlock()
         {
+            Debug.Assert(this.block is not null);
             if (block.Statements.Count != 0)
             {
                 var blockOld = block;
@@ -236,6 +240,42 @@ namespace Reko.ImageLoaders.WebAssembly
                 proc.ControlGraph.AddEdge(blockOld, block);
             }
             PushControl(Mnemonic.block, Array.Empty<Identifier>(), null, false);
+        }
+
+        private void RewriteBr()
+        {
+            Debug.Assert(this.block is not null);
+            var cLevelsUp = OpAsInt(0);
+            int iLabel = this.controlStack.Count - cLevelsUp - 1;
+            if (iLabel < 0)
+                throw new BadImageFormatException("Control stack unbalanced at br instruction.");
+            var ctrl = this.controlStack[iLabel];
+            proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+            // The current block is undefined until the next 'end' instruction.
+            this.block = null;
+        }
+
+        private void RewriteBrIf()
+        {
+            Debug.Assert(this.block is not null);
+            var cLevelsUp = OpAsInt(0);
+            int iLabel = this.controlStack.Count - cLevelsUp - 1;
+            if (iLabel < 0)
+                throw new BadImageFormatException("Control stack unbalanced at br instruction.");
+            var ctrl = this.controlStack[iLabel];
+
+            var followBlock = MakeBlock(instr.Address + instr.Length);
+            var predicate = PopValue();
+            block.Statements.Add(instr.Address, new Branch(predicate, ctrl.Block));
+            proc.ControlGraph.AddEdge(this.block, followBlock);
+            proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+            this.block = followBlock;
+        }
+
+        private void RewriteLoop()
+        {
+            //$TODO: if loop has args
+            PushControl(Mnemonic.loop, Array.Empty<Identifier>(), null, false);
         }
 
         private void RewriteElse()
@@ -257,40 +297,46 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 if (controlStack.Count != 0)
                     throw new BadImageFormatException("Control stack unbalanced at end of function.");
-                Return();
+                if (block is not null)
+                {
+                    Return();
+                }
                 return true;
             }
-            else
+            if (controlStack.Count == 0)
+                throw new BadImageFormatException("Control stack unbalanced at end of function.");
+            var ctrl = PopControl();
+            switch (ctrl.Mnemonic)
             {
-                if (controlStack.Count == 0)
-                    throw new BadImageFormatException("Control stack unbalanced at end of function.");
-                var ctrl = PopControl();
-                if (ctrl.Mnemonic == Mnemonic.@if)
-                {
-                    BackpatchIf(ctrl);
-                }
-                else if (ctrl.Mnemonic == Mnemonic.@else)
-                {
-                    Debug.Assert(ctrl.ThenBlock is not null, "Should have been set by the 'else' handler");
-                    var followBlock = MakeBlock(instr.Address);
+            case Mnemonic.@if:
+                BackpatchIf(ctrl);
+                break;
+            case Mnemonic.@else:
+                Debug.Assert(ctrl.ThenBlock is not null, "Should have been set by the 'else' handler");
+                var followBlock = MakeBlock(instr.Address);
+                if (this.block is not null)
                     proc.ControlGraph.AddEdge(this.block, followBlock);
-                    proc.ControlGraph.AddEdge(ctrl.ThenBlock, followBlock);
-                    this.block = followBlock;
-                }
-                else if (ctrl.Mnemonic == Mnemonic.block)
-                {
-                    var followBlock = MakeBlock(instr.Address);
+                proc.ControlGraph.AddEdge(ctrl.ThenBlock, followBlock);
+                this.block = followBlock;
+                break;
+            case Mnemonic.block:
+                followBlock = MakeBlock(instr.Address);
+                if (this.block is not null)
                     proc.ControlGraph.AddEdge(block, followBlock);
-                    this.block = followBlock;
-                }
-                else
-                    throw new NotImplementedException($"Don't know how to end {ctrl.Mnemonic}.");
-                return false;
+                this.block = followBlock;
+                break;
+            case Mnemonic.loop:
+                // Assumes a `br` or `br_if` is the last instruction in the loop.
+                break;
+            default:
+                throw new NotImplementedException($"Don't know how to end {ctrl.Mnemonic}.");
             }
+            return false;
         }
 
         private void BackpatchIf(ControlEntry ctrl)
         {
+            Debug.Assert(this.block is not null);
             var placeholder = ((Assignment) ctrl.Block.Statements[^1].Instruction).Dst;
 
             var followBlock = MakeBlock(instr.Address);
@@ -363,6 +409,7 @@ namespace Reko.ImageLoaders.WebAssembly
             if (instr.Operands.Length > 0)
                 Console.WriteLine($"Unhandled mnemonic if with argument.");
 
+            Debug.Assert(this.block is not null);
             var predicate = PopValue();
             // Can't create the branch instruction yet; the
             // following 'else' or 'end' instruction is responsible for this.
@@ -389,6 +436,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 var value = PopValue();
                 ret = new ReturnInstruction(value);
             }
+            Debug.Assert(this.block is not null);
             block.Statements.Add(instr.Address, ret);
             proc.ControlGraph.AddEdge(block, proc.ExitBlock);
         }
@@ -400,18 +448,21 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void Assign(Identifier id, Expression value)
         {
+            Debug.Assert(this.block is not null);
             var ass = new Assignment(id, value);
             block.Statements.Add(instr.Address, ass);
         }
 
         private void SideEffect(Expression e)
         {
+            Debug.Assert(this.block is not null);
             var s = new SideEffect(e);
             block.Statements.Add(instr.Address, s);
         }
 
         private void Store(Expression dst, Expression value)
         {
+            Debug.Assert(this.block is not null);
             var store = new Store(dst, value);
             block.Statements.Add(instr.Address, store);
         }
@@ -426,6 +477,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private ControlEntry PushControl(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, bool isUnreachable)
         {
+            Debug.Assert(this.block is not null);
             var e = new ControlEntry(mnemonic, block, inputs, output, valueStack.Count, isUnreachable);
             this.controlStack.Add(e);
             return e;

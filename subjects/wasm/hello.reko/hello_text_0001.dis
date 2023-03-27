@@ -332,29 +332,6 @@ l000E5A05:
 fn000E5A05_exit:
 
 
-// fn000E5A10
-// Return size: 0
-word32 fn000E5A10(word32 arg0, word32 arg1, word32 arg2)
-fn000E5A10_entry:
-	// succ:  l000E5A10
-l000E5A10:
-	v23 = Mem0[0x00140030<p32>:word32]
-	loc23 = v23
-	v24 = arg0
-	v25 = 0xC<32>
-	v26 = v24 + v25
-	loc14 = v26
-	v27 = arg0
-	v28 = 0x10<32>
-	v29 = v27 + v28
-	loc15 = v29
-	v30 = 0<32>
-	loc3 = v30
-	v31 = arg1
-	loc4 = v31
-fn000E5A10_exit:
-
-
 // fn000E5AD9
 // Return size: 0
 word32 fn000E5AD9(word32 arg0)
@@ -389,29 +366,6 @@ l000E5B55:
 	loc3 = v4
 	v5 = 0xFFFFFFFF<32>
 fn000E5B55_exit:
-
-
-// fn000E5B60
-// Return size: 0
-word32 fn000E5B60(word32 arg0, word32 arg1, word32 arg2)
-fn000E5B60_entry:
-	// succ:  l000E5B60
-l000E5B60:
-	v33 = Mem0[0x00140030<p32>:word32]
-	loc33 = v33
-	v34 = arg0
-	v35 = 0x18<32>
-	v36 = v34 + v35
-	loc25 = v36
-	v37 = arg0
-	v38 = 0x1C<32>
-	v39 = v37 + v38
-	loc26 = v39
-	v40 = arg1
-	loc3 = v40
-	v41 = 0<32>
-	loc4 = v41
-fn000E5B60_exit:
 
 
 // fn000E5C83
@@ -525,29 +479,6 @@ l000E5D28:
 fn000E5D28_exit:
 
 
-// fn000E5D33
-// Return size: 0
-word32 fn000E5D33(word32 arg0, word32 arg1, word32 arg2)
-fn000E5D33_entry:
-	// succ:  l000E5D33
-l000E5D33:
-	v22 = Mem0[0x00140030<p32>:word32]
-	loc22 = v22
-	v23 = arg0
-	v24 = 0xC<32>
-	v25 = v23 + v24
-	loc13 = v25
-	v26 = arg0
-	v27 = 0x10<32>
-	v28 = v26 + v27
-	loc14 = v28
-	v29 = 0<32>
-	loc3 = v29
-	v30 = arg1
-	loc4 = v30
-fn000E5D33_exit:
-
-
 // fn000E5DF5
 // Return size: 0
 word32 fn000E5DF5(word32 arg0)
@@ -582,29 +513,6 @@ l000E5E69:
 	loc3 = v4
 	v5 = 0xFFFFFFFF<32>
 fn000E5E69_exit:
-
-
-// fn000E5E74
-// Return size: 0
-word32 fn000E5E74(word32 arg0, word32 arg1, word32 arg2)
-fn000E5E74_entry:
-	// succ:  l000E5E74
-l000E5E74:
-	v31 = Mem0[0x00140030<p32>:word32]
-	loc31 = v31
-	v32 = arg0
-	v33 = 0x18<32>
-	v34 = v32 + v33
-	loc23 = v34
-	v35 = arg0
-	v36 = 0x1C<32>
-	v37 = v35 + v36
-	loc24 = v37
-	v38 = arg1
-	loc3 = v38
-	v39 = 0<32>
-	loc4 = v39
-fn000E5E74_exit:
 
 
 // fn000E5F86
@@ -1673,6 +1581,9 @@ l000E7E29:
 	v50 = 0x20<32>
 	v51 = v49 + v50
 	loc20 = v51
+	// succ:  l000E7E57
+l000E7E57:
+	v52 = loc16
 fn000E7E11_exit:
 
 
@@ -1819,6 +1730,9 @@ l000E82C6:
 	v50 = 0x20<32>
 	v51 = v49 + v50
 	loc20 = v51
+	// succ:  l000E82F4
+l000E82F4:
+	v52 = loc16
 fn000E82AE_exit:
 
 
@@ -2261,21 +2175,6 @@ l000E931F:
 fn000E930D_exit:
 
 
-// fn000E9347
-// Return size: 0
-word32 fn000E9347(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
-fn000E9347_entry:
-	// succ:  l000E9347
-l000E9347:
-	v17 = Mem0[0x00140030<p32>:word32]
-	loc19 = v17
-	v18 = arg3
-	loc6 = v18
-	v19 = arg1
-	loc7 = v19
-fn000E9347_exit:
-
-
 // fn000E9400
 // Return size: 0
 void fn000E9400(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
@@ -2287,21 +2186,6 @@ l000E9400:
 	v5 = arg0
 	v6 = 0<64>
 fn000E9400_exit:
-
-
-// fn000E9423
-// Return size: 0
-word32 fn000E9423(word32 arg0, word32 arg1, word32 arg2)
-fn000E9423_entry:
-	// succ:  l000E9423
-l000E9423:
-	v16 = Mem0[0x00140030<p32>:word32]
-	loc16 = v16
-	v17 = 0<32>
-	loc3 = v17
-	v18 = arg1
-	loc4 = v18
-fn000E9423_exit:
 
 
 // fn000E949A
@@ -2377,21 +2261,6 @@ l000E9595:
 fn000E9595_exit:
 
 
-// fn000E95A3
-// Return size: 0
-word32 fn000E95A3(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4)
-fn000E95A3_entry:
-	// succ:  l000E95A3
-l000E95A3:
-	v17 = Mem0[0x00140030<p32>:word32]
-	loc19 = v17
-	v18 = arg3
-	loc6 = v18
-	v19 = arg1
-	loc7 = v19
-fn000E95A3_exit:
-
-
 // fn000E9644
 // Return size: 0
 void fn000E9644(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
@@ -2403,21 +2272,6 @@ l000E9644:
 	v5 = arg0
 	v6 = 0<64>
 fn000E9644_exit:
-
-
-// fn000E9667
-// Return size: 0
-word32 fn000E9667(word32 arg0, word32 arg1, word32 arg2)
-fn000E9667_entry:
-	// succ:  l000E9667
-l000E9667:
-	v15 = Mem0[0x00140030<p32>:word32]
-	loc15 = v15
-	v16 = 0<32>
-	loc3 = v16
-	v17 = arg1
-	loc4 = v17
-fn000E9667_exit:
 
 
 // fn000E96D4
