@@ -160,6 +160,7 @@ fn00000_entry:
 l00000000:
 	v2 = 1<32>
 	return v2
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -187,6 +188,7 @@ l00000000:
 	v3 = 0xFFFFFFD6<32>
 	v4 = v2 - v3
 	return v4
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -216,6 +218,7 @@ l00000000:
 	v3 = 0xFFFFFFD6<32>
 	v4 = v2 == v3
 	return v4
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -246,6 +249,7 @@ l00000000:
 	v4 = v2 - v3
 	v5 = CONVERT(v4, word32, uint64)
 	return v5
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -280,6 +284,7 @@ l00000000:
 	v5 = 3.14F
 	v6 = extfun(v5)
 	return v6
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -314,6 +319,7 @@ l00000000:
 	v4 = v2 + v3
 	Mem0[0x00002004<p32>:word32] = v4
 	return
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -349,6 +355,7 @@ l00000000:
 	v8 = loc2
 	v9 = v7 + v8
 	return v9
+	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
@@ -372,5 +379,118 @@ fn00000_exit:
                 }));
         }
 
+        [Test]
+        public void Waspb_if()
+        {
+            Given_FuncType(new[] { 127 }, 127);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v4 = param0
+	v5 = 0<32>
+	v6 = v4 < v5
+	branch !v6 l0000000E
+	// succ:  l00000007 l0000000E
+l00000007:
+	v7 = 0<32>
+	v8 = param0
+	v9 = v7 - v8
+	param0 = v9
+	// succ:  l0000000E
+l0000000E:
+	v10 = param0
+	return v10
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                0,
+                new LocalVariable[]
+                {
+                    new LocalVariable(PrimitiveType.Real32),
+                    new LocalVariable(PrimitiveType.Real32)
+                },
+                new byte[]
+                {
+                    32,0,       // get.local0
+                    65,0,       // i32.const 0
+                    83,         // i32.lt_s
+                    4,64,       // if
+
+                    65,0,       // i32.const 0
+                    32,0,       // get.local 0
+                    107,        // i32.sub
+                    33,0,        // set.local 0
+                    11,         // end
+
+                    32,0,       // get.local 0
+                    11,         // end
+                }));
+        }
+
+        [Test]
+        public void Waspb_if_else()
+        {
+            Given_FuncType(new[] { 127 }, 127);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v3 = param0
+	v4 = 0<32>
+	v5 = v3 < v4
+	branch !v5 l0000000E
+	// succ:  l00000007 l0000000E
+l00000007:
+	v6 = 0<32>
+	v7 = param0
+	v8 = v6 - v7
+	loc1 = v8
+	goto l00000013
+	// succ:  l00000013
+l0000000E:
+	v9 = param0
+	loc1 = v9
+	// succ:  l00000013
+l00000013:
+	v10 = loc1
+	return v10
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                0,
+                new LocalVariable[]
+                {
+                    new LocalVariable(PrimitiveType.Real32)
+                },
+                new byte[]
+                {
+                    32,0,       // get.local0
+                    65,0,       // i32.const 0
+                    83,         // i32.lt_s
+                    4,64,       // if
+
+                    65,0,       // i32.const 0
+                    32,0,       // get.local 0
+                    107,        // i32.sub
+                    33,1,        // set.local 1
+
+                    5,          // else
+                    32,0,        // get.local 0
+                    33,1,       // set.local 1
+                    11,         // end
+
+                    32,1,       // get.local 1
+                    11,         // end
+                }));
+        }
     }
 }

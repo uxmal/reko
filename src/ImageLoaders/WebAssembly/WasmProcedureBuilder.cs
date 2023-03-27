@@ -115,6 +115,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 {
                 case Mnemonic.block: RewriteBlock(); break;
                 case Mnemonic.call: RewriteCall(); break;
+                case Mnemonic.@else: RewriteElse(); break;
                 case Mnemonic.end: 
                     if (RewriteEnd(rdr))
                         return;
@@ -140,12 +141,54 @@ namespace Reko.ImageLoaders.WebAssembly
                     break;
                 case Mnemonic.i32_add: RewriteBinary(m.IAdd, PrimitiveType.Word32); break;
                 case Mnemonic.i32_and: RewriteBinary(m.And, PrimitiveType.Word32); break;
+                case Mnemonic.i32_eq: RewriteCmp(m.Eq); break;
+                case Mnemonic.i32_eqz: RewriteCmp0(m.Eq, PrimitiveType.Word32); break;
+                case Mnemonic.i32_ge_s: RewriteCmp(m.Ge); break;
+                case Mnemonic.i32_ge_u: RewriteCmp(m.Uge); break;
+                case Mnemonic.i32_gt_s: RewriteCmp(m.Gt); break;
+                case Mnemonic.i32_gt_u: RewriteCmp(m.Ugt); break;
+                case Mnemonic.i32_le_s: RewriteCmp(m.Le); break;
+                case Mnemonic.i32_le_u: RewriteCmp(m.Ule); break;
+                case Mnemonic.i32_lt_s: RewriteCmp(m.Lt); break;
+                case Mnemonic.i32_lt_u: RewriteCmp(m.Ult); break;
+                case Mnemonic.i32_ne: RewriteCmp(m.Ne); break;
                 case Mnemonic.i32_mul: RewriteBinary(m.IMul, PrimitiveType.Word32); break;
                 case Mnemonic.i32_sub: RewriteBinary(m.ISub, PrimitiveType.Word32); break;
+                case Mnemonic.i32_or: RewriteBinary(m.Or, PrimitiveType.Word32); break;
+                case Mnemonic.i32_rem_s: RewriteBinary(m.SMod, PrimitiveType.Word32); break;
+                case Mnemonic.i32_rem_u: RewriteBinary(m.UMod, PrimitiveType.Word32); break;
+                case Mnemonic.i32_shl: RewriteBinary(m.Shl, PrimitiveType.Word32); break;
+                case Mnemonic.i32_shr_s: RewriteBinary(m.Sar, PrimitiveType.Word32); break;
+                case Mnemonic.i32_shr_u: RewriteBinary(m.Shr, PrimitiveType.Word32); break;
+                case Mnemonic.i32_xor: RewriteBinary(m.Xor, PrimitiveType.Word32); break;
                 case Mnemonic.i32_const:
-                case Mnemonic.f32_const: RewriteConst(); break;
+                case Mnemonic.i64_const:
+                case Mnemonic.f32_const:
+                case Mnemonic.f64_const: RewriteConst(); break;
+                case Mnemonic.i64_add: RewriteBinary(m.IAdd, PrimitiveType.Word64); break;
+                case Mnemonic.i64_and: RewriteBinary(m.And, PrimitiveType.Word64); break;
                 case Mnemonic.i64_eq: RewriteCmp(m.Eq); break;
+                case Mnemonic.i64_eqz: RewriteCmp0(m.Eq, PrimitiveType.Word64); break;
+                case Mnemonic.i64_ge_s: RewriteCmp(m.Ge); break;
+                case Mnemonic.i64_ge_u: RewriteCmp(m.Uge); break;
+                case Mnemonic.i64_gt_s: RewriteCmp(m.Gt); break;
+                case Mnemonic.i64_gt_u: RewriteCmp(m.Ugt); break;
+                case Mnemonic.i64_le_s: RewriteCmp(m.Le); break;
+                case Mnemonic.i64_le_u: RewriteCmp(m.Ule); break;
+                case Mnemonic.i64_lt_s: RewriteCmp(m.Lt); break;
+                case Mnemonic.i64_lt_u: RewriteCmp(m.Ult); break;
+                case Mnemonic.i64_ne: RewriteCmp(m.Ne); break;
                 case Mnemonic.i64_extend_u_i32: RewriteExtend(PrimitiveType.Word32, PrimitiveType.UInt64);break;
+                case Mnemonic.i64_mul: RewriteBinary(m.IMul, PrimitiveType.Word64); break;
+                case Mnemonic.i64_sub: RewriteBinary(m.ISub, PrimitiveType.Word64); break;
+                case Mnemonic.i64_or: RewriteBinary(m.Or, PrimitiveType.Word64); break;
+                case Mnemonic.i64_rem_s: RewriteBinary(m.SMod, PrimitiveType.Word64); break;
+                case Mnemonic.i64_rem_u: RewriteBinary(m.UMod, PrimitiveType.Word64); break;
+                case Mnemonic.i64_shl: RewriteBinary(m.Shl, PrimitiveType.Word64); break;
+                case Mnemonic.i64_shr_s: RewriteBinary(m.Sar, PrimitiveType.Word64); break;
+                case Mnemonic.i64_shr_u: RewriteBinary(m.Shr, PrimitiveType.Word64); break;
+                case Mnemonic.i64_xor: RewriteBinary(m.Xor, PrimitiveType.Word64); break;
+                case Mnemonic.@if: RewriteIf(); break;
                 case Mnemonic.set_global:
                     idxGlob = OpAsInt(0);
                     global = wasmFile.GlobalIndex[idxGlob];
@@ -195,6 +238,19 @@ namespace Reko.ImageLoaders.WebAssembly
             PushControl(Mnemonic.block, Array.Empty<Identifier>(), null, false);
         }
 
+        private void RewriteElse()
+        {
+            if (controlStack.Count == 0)
+                throw new BadImageFormatException("Control stack unbalanced at else instruction.");
+            var blockThen = block;
+            var ctrl = PopControl();
+            if (ctrl.Mnemonic != Mnemonic.@if)
+                throw new BadImageFormatException("'else' was not preceded by 'if'.");
+            BackpatchIf(ctrl);
+            ctrl = PushControl(Mnemonic.@else, Array.Empty<Identifier>(), null, false);
+            ctrl.ThenBlock = blockThen;
+        }
+
         private bool RewriteEnd(WasmImageReader rdr)
         {
             if (rdr.Offset == this.func.End)
@@ -209,8 +265,44 @@ namespace Reko.ImageLoaders.WebAssembly
                 if (controlStack.Count == 0)
                     throw new BadImageFormatException("Control stack unbalanced at end of function.");
                 var ctrl = PopControl();
+                if (ctrl.Mnemonic == Mnemonic.@if)
+                {
+                    BackpatchIf(ctrl);
+                }
+                else if (ctrl.Mnemonic == Mnemonic.@else)
+                {
+                    Debug.Assert(ctrl.ThenBlock is not null, "Should have been set by the 'else' handler");
+                    var followBlock = MakeBlock(instr.Address);
+                    proc.ControlGraph.AddEdge(this.block, followBlock);
+                    proc.ControlGraph.AddEdge(ctrl.ThenBlock, followBlock);
+                    this.block = followBlock;
+                }
+                else if (ctrl.Mnemonic == Mnemonic.block)
+                {
+                    var followBlock = MakeBlock(instr.Address);
+                    proc.ControlGraph.AddEdge(block, followBlock);
+                    this.block = followBlock;
+                }
+                else
+                    throw new NotImplementedException($"Don't know how to end {ctrl.Mnemonic}.");
                 return false;
             }
+        }
+
+        private void BackpatchIf(ControlEntry ctrl)
+        {
+            var placeholder = ((Assignment) ctrl.Block.Statements[^1].Instruction).Dst;
+
+            var followBlock = MakeBlock(instr.Address);
+            ctrl.Block.Statements[^1].Instruction = new Branch(m.Not(placeholder), followBlock);
+            ctrl.Block.Succ[1].Pred.RemoveAt(0);
+            ctrl.Block.Succ[1] = followBlock;
+            followBlock.Pred.Add(ctrl.Block);
+            if (this.instr.Mnemonic != Mnemonic.@else)
+            {
+                block.Succ.Add(followBlock);
+            }
+            this.block = followBlock;
         }
 
         private void RewriteCall()
@@ -249,12 +341,38 @@ namespace Reko.ImageLoaders.WebAssembly
             Assign(id, e);
         }
 
+        private void RewriteCmp0(Func<Expression, Expression, Expression> fn, DataType dt)
+        {
+            var arg1 = PopValue();
+            var arg2 = Constant.Zero(dt);
+            var e = fn(arg1, arg2);
+            var id = PushValue(PrimitiveType.Bool);
+            Assign(id, e);
+        }
+
         private void RewriteExtend(DataType dtFrom, DataType dtTo)
         {
             var arg1 = PopValue();
             var e = m.Convert(arg1, dtFrom, dtTo);
             var id = PushValue(PrimitiveType.Bool);
             Assign(id, e);
+        }
+
+        private void RewriteIf()
+        {
+            if (instr.Operands.Length > 0)
+                Console.WriteLine($"Unhandled mnemonic if with argument.");
+
+            var predicate = PopValue();
+            // Can't create the branch instruction yet; the
+            // following 'else' or 'end' instruction is responsible for this.
+            Assign(predicate, predicate);
+            PushControl(Mnemonic.@if, Array.Empty<Identifier>(), null, false);
+
+            var thenBlock = this.MakeBlock(instr.Address + instr.Length);
+            proc.ControlGraph.AddEdge(block, thenBlock);        // Will be replaced when 'else' or 'end' is found.
+            proc.ControlGraph.AddEdge(block, thenBlock);
+            this.block = thenBlock;
         }
 
         private void Return()
@@ -272,6 +390,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 ret = new ReturnInstruction(value);
             }
             block.Statements.Add(instr.Address, ret);
+            proc.ControlGraph.AddEdge(block, proc.ExitBlock);
         }
 
         private int OpAsInt(int v)
@@ -305,9 +424,11 @@ namespace Reko.ImageLoaders.WebAssembly
             return ctrl;
         }
 
-        private void PushControl(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, bool isUnreachable)
+        private ControlEntry PushControl(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, bool isUnreachable)
         {
-            this.controlStack.Add(new ControlEntry(mnemonic, inputs, output, valueStack.Count, isUnreachable));
+            var e = new ControlEntry(mnemonic, block, inputs, output, valueStack.Count, isUnreachable);
+            this.controlStack.Add(e);
+            return e;
         }
 
         private Identifier PeekValue()
@@ -356,9 +477,10 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private class ControlEntry
         {
-            public ControlEntry(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, int blockDepth, bool isUnreachable)
+            public ControlEntry(Mnemonic mnemonic, Block block, Identifier[] inputs, Identifier? output, int blockDepth, bool isUnreachable)
             {
                 this.Mnemonic = mnemonic;
+                this.Block = block;
                 this.Inputs = inputs;
                 this.Output = output;
                 this.BlockDepth = blockDepth;
@@ -366,6 +488,8 @@ namespace Reko.ImageLoaders.WebAssembly
             }
 
             public Mnemonic Mnemonic { get; }
+            public Block Block { get; }
+            public Block? ThenBlock { get; set; } // Only present if an 'else' instruction is encountered.
             public Identifier[] Inputs { get; }
             public Identifier? Output { get; }
             public int BlockDepth { get; }

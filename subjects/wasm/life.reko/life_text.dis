@@ -14,6 +14,18 @@ l000C0000:
 	v10 = 0xFFFFFFFF<32>
 	v11 = v9 + v10
 	v12 = 0x64<32>
+	v13 = v11 %s v12
+	v14 = 0x64<32>
+	v15 = v13 * v14
+	v16 = v8 + v15
+	loc3 = v16
+	v17 = arg1
+	v18 = 0xFFFFFFFF<32>
+	v19 = v17 + v18
+	v20 = 0x64<32>
+	v21 = v19 %s v20
+	loc4 = v21
+	v22 = v16 + v21
 count_neighbors_exit:
 
 
@@ -51,6 +63,7 @@ main_entry:
 l000C0153:
 	v2 = 0x2A<32>
 	return v2
+	// succ:  main_exit
 main_exit:
 
 
