@@ -502,7 +502,7 @@ Eq_402: (segment "Eq_402")
 	T_410 (in es_11 @ 0800:0341 : (ptr16 Eq_402))
 	T_412 (in Mem9[ds:0x90<16>:selector] @ 0800:0341 : selector)
 	T_436 (in Mem9[ds:0x8C<16>:selector] @ 0800:0363 : selector)
-Eq_426: (union "Eq_426" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4764) u3) ((memptr (ptr16 Eq_401) Eq_4765) u4))
+Eq_426: (union "Eq_426" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4763) u3) ((memptr (ptr16 Eq_401) Eq_4764) u4))
 	T_426 (in di_65 @ 0800:0383 : Eq_426)
 	T_432 (in fp - ((ax_16 + 2<16>) + cx_27 & 0xFFFE<16>) @ 0800:0383 : word16)
 	T_433 (in 0<16> @ 0800:0385 : word16)
@@ -511,14 +511,14 @@ Eq_426: (union "Eq_426" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) 
 	T_521 (in si_131 @ 0800:03F9 : Eq_426)
 	T_571 (in Mem144[ss:bp_133 + 0<16>:word16] @ 0800:0409 : word16)
 	T_579 (in si_131 + 1<i16> @ 0800:040F : word16)
-Eq_463: (union "Eq_463" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4767) u3) ((memptr (ptr16 Eq_401) Eq_4768) u4))
+Eq_463: (union "Eq_463" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4765) u3) ((memptr (ptr16 Eq_401) Eq_4766) u4))
 	T_463 (in di_65 + -2<i16> @ 0800:0391 : word16)
-Eq_471: (union "Eq_471" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4769) u3) ((memptr (ptr16 Eq_401) Eq_4770) u4))
+Eq_471: (union "Eq_471" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4767) u3) ((memptr (ptr16 Eq_401) Eq_4768) u4))
 	T_471 (in di_219 + 0<16> @ 0800:0397 : word16)
-Eq_473: (union "Eq_473" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4771) u3) ((memptr (ptr16 Eq_401) Eq_4772) u4))
+Eq_473: (union "Eq_473" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4769) u3) ((memptr (ptr16 Eq_401) Eq_4770) u4))
 	T_473 (in di_88 @ 0800:0397 : Eq_473)
 	T_475 (in di_219 + 1<i16> @ 0800:0397 : word16)
-Eq_474: (union "Eq_474" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4773) u3) ((memptr (ptr16 Eq_401) Eq_4774) u4))
+Eq_474: (union "Eq_474" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4771) u3) ((memptr (ptr16 Eq_401) Eq_4772) u4))
 	T_474 (in 1<i16> @ 0800:0397 : int16)
 Eq_478: (union "Eq_478" (uint16 u0) (ptr16 u1))
 	T_478 (in cx_109 @ 0800:039C : Eq_478)
@@ -530,16 +530,16 @@ Eq_478: (union "Eq_478" (uint16 u0) (ptr16 u1))
 	T_601 (in 0<16> @ 0800:03CF : word16)
 	T_616 (in cx - 1<16> @ 0800:03D2 : word16)
 	T_631 (in cx - 2<16> @ 0800:03E3 : word16)
-Eq_489: (union "Eq_489" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4775) u3) ((memptr (ptr16 Eq_401) Eq_4776) u4))
+Eq_489: (union "Eq_489" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4773) u3) ((memptr (ptr16 Eq_401) Eq_4774) u4))
 	T_489 (in di_219 + 0<16> @ 0800:0393 : word16)
-Eq_493: (union "Eq_493" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4777) u3) ((memptr (ptr16 Eq_401) Eq_4778) u4))
+Eq_493: (union "Eq_493" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4775) u3) ((memptr (ptr16 Eq_401) Eq_4776) u4))
 	T_493 (in 1<i16> @ 0800:0393 : int16)
-Eq_509: (union "Eq_509" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4779) u3) ((memptr (ptr16 Eq_401) Eq_4780) u4))
+Eq_509: (union "Eq_509" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4777) u3) ((memptr (ptr16 Eq_401) Eq_4778) u4))
 	T_509 (in di_65 + -2<i16> @ 0800:03EB : word16)
-Eq_516: (union "Eq_516" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4781) u3) ((memptr (ptr16 Eq_401) Eq_4782) u4))
+Eq_516: (union "Eq_516" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4779) u3) ((memptr (ptr16 Eq_401) Eq_4780) u4))
 	T_516 (in bx_130 @ 0800:03F7 : Eq_516)
 	T_520 (in (bx_100 + 1<16>) * 2<16> @ 0800:03F7 : word16)
-Eq_522: (union "Eq_522" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4783) u3) ((memptr (ptr16 Eq_401) Eq_4784) u4))
+Eq_522: (union "Eq_522" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4781) u3) ((memptr (ptr16 Eq_401) Eq_4782) u4))
 	T_522 (in bp_133 @ 0800:03FD : Eq_522)
 	T_523 (in di_65 - bx_130 @ 0800:03FD : word16)
 	T_524 (in 0<16> @ 0800:03FF : word16)
@@ -557,17 +557,17 @@ Eq_559: (fn void ())
 	T_559 (in _abort @ 0800:03E7 : segptr32)
 	T_560 (in signature of _abort @ 0800:01E2 : void)
 	T_706 (in _abort @ 0800:0454 : segptr32)
-Eq_566: (union "Eq_566" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4785) u3) ((memptr (ptr16 Eq_401) Eq_4786) u4))
+Eq_566: (union "Eq_566" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4783) u3) ((memptr (ptr16 Eq_401) Eq_4784) u4))
 	T_566 (in bp_133 + 0<16> @ 0800:0419 : word16)
-Eq_570: (union "Eq_570" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4787) u3) ((memptr (ptr16 Eq_401) Eq_4788) u4))
+Eq_570: (union "Eq_570" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4785) u3) ((memptr (ptr16 Eq_401) Eq_4786) u4))
 	T_570 (in bp_133 + 0<16> @ 0800:0409 : word16)
-Eq_572: (union "Eq_572" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4789) u3) ((memptr (ptr16 Eq_401) Eq_4790) u4))
+Eq_572: (union "Eq_572" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4787) u3) ((memptr (ptr16 Eq_401) Eq_4788) u4))
 	T_572 (in 2<16> @ 0800:040C : word16)
-Eq_576: (union "Eq_576" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4791) u3) ((memptr (ptr16 Eq_401) Eq_4792) u4))
+Eq_576: (union "Eq_576" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4789) u3) ((memptr (ptr16 Eq_401) Eq_4790) u4))
 	T_576 (in si_131 + 0<16> @ 0800:040F : word16)
-Eq_578: (union "Eq_578" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4793) u3) ((memptr (ptr16 Eq_401) Eq_4794) u4))
+Eq_578: (union "Eq_578" (int16 u0) (cup16 u1) ((memptr (ptr16 Eq_398) byte) u2) ((memptr (ptr16 Eq_401) Eq_4791) u3) ((memptr (ptr16 Eq_401) Eq_4792) u4))
 	T_578 (in 1<i16> @ 0800:040F : int16)
-Eq_639: (union "Eq_639" (int16 u0) ((memptr (ptr16 Eq_337) char) u1) ((memptr (ptr16 Eq_337) Eq_4795) u2) ((memptr (ptr16 Eq_337) Eq_4796) u3))
+Eq_639: (union "Eq_639" (int16 u0) ((memptr (ptr16 Eq_337) char) u1) ((memptr (ptr16 Eq_337) Eq_4793) u2) ((memptr (ptr16 Eq_337) Eq_4794) u3))
 	T_639 (in ax_10 @ 0800:0426 : Eq_639)
 	T_644 (in _malloc(ds, cx_6) @ 0800:0426 : word16)
 	T_646 (in di_107 @ 0800:042A : Eq_639)
@@ -647,7 +647,7 @@ Eq_640: (fn Eq_639 ((ptr16 Eq_337), cu16))
 Eq_649: (segment "Eq_649" (0 (arr byte) a0000))
 	T_649 (in ds_31 @ 0800:0433 : (ptr16 Eq_649))
 	T_651 (in Mem28[ds:0x8C<16>:selector] @ 0800:0433 : selector)
-Eq_709: (union "Eq_709" (cup16 u0) ((memptr (ptr16 Eq_337) int16) u1) ((memptr (ptr16 Eq_337) Eq_4799) u2))
+Eq_709: (union "Eq_709" (cup16 u0) ((memptr (ptr16 Eq_337) int16) u1) ((memptr (ptr16 Eq_337) Eq_4795) u2))
 	T_709 (in wArg02 @ 0800:0454 : Eq_709)
 	T_710 (in ax_17 @ 0800:0499 : Eq_709)
 	T_713 (in Mem14[ds:wArg02 + 6<i16>:word16] @ 0800:0499 : word16)
@@ -1665,7 +1665,7 @@ Eq_3500: (struct "Eq_3500" (0 (arr byte) a0000) (2 Eq_3499 t0002))
 	T_3500 (in fp @ 0800:16F3 : (memptr (ptr16 Eq_3501) Eq_3500))
 Eq_3501: (segment "Eq_3501")
 	T_3501 (in ss @ 0800:16F3 : (ptr16 Eq_3501))
-Eq_3510: (union "Eq_3510" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4800) u3) (Eq_4802 u4))
+Eq_3510: (union "Eq_3510" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4796) u3) (Eq_4798 u4))
 	T_3510 (in wLoc24_1041 @ 0800:178B : Eq_3510)
 	T_3511 (in 0xFFFF<16> @ 0800:178B : word16)
 	T_3618 (in ax_58 - 0x30<16> @ 0800:17F2 : word16)
@@ -1689,7 +1689,7 @@ Eq_3545: (struct "Eq_3545" (FFFFFFFE Eq_237 tFFFFFFFE) (0 Eq_237 t0000))
 	T_3547 (in sp_794 - 2<i16> @ 0800:1767 : word16)
 Eq_3554: (struct "Eq_3554" (2 word16 w0002))
 	T_3554 (in sp_884 @ 0800:176B : (memptr (ptr16 Eq_3501) Eq_3554))
-Eq_3617: (union "Eq_3617" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4803) u3) (Eq_4805 u4))
+Eq_3617: (union "Eq_3617" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4799) u3) (Eq_4801 u4))
 	T_3617 (in 0x30<16> @ 0800:17F2 : word16)
 Eq_3628: (fn void (Eq_3))
 	T_3628 (in __scantod @ 0800:1920 : segptr32)
@@ -1806,11 +1806,11 @@ Eq_3801: (union "Eq_3801" (ui16 u0) (ptr16 u1))
 	T_4672 (in 2<16> @ 0800:1D41 : word16)
 Eq_3824: (struct "Eq_3824" (0 Eq_3499 t0000) (2 Eq_3499 t0002))
 	T_3824 (in es_di_1510 + 2<i16> @ 0800:1889 : segptr32)
-Eq_3853: (union "Eq_3853" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4806) u3) (Eq_4807 u4))
+Eq_3853: (union "Eq_3853" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4802) u3) (Eq_4803 u4))
 	T_3853 (in di + 0<16> @ 0800:19EF : word16)
-Eq_3855: (union "Eq_3855" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4808) u3) (Eq_4809 u4))
+Eq_3855: (union "Eq_3855" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4804) u3) (Eq_4805 u4))
 	T_3855 (in 1<i16> @ 0800:19EF : int16)
-Eq_3857: (union "Eq_3857" (ci16 u0) (uint16 u1) ((memptr Eq_3 Eq_4810) u2))
+Eq_3857: (union "Eq_3857" (ci16 u0) (uint16 u1) ((memptr Eq_3 Eq_4806) u2))
 	T_3857 (in 1<16> @ 0800:19F4 : word16)
 Eq_3862: (fn ptr16 ((ptr32 Eq_3646)))
 	T_3862 (in fn0800_1AFF @ 0800:188F : segptr32)
@@ -1888,13 +1888,13 @@ Eq_4073: (struct "Eq_4073" (2 word16 w0002))
 	T_4073 (in sp_333 + 4<i16> @ 0800:1AC0 : word16)
 Eq_4080: (struct "Eq_4080" (0 (arr byte) a0000) (2 Eq_3499 t0002))
 	T_4080 (in fp - 2<i16> @ 0800:1969 : word16)
-Eq_4087: (union "Eq_4087" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4811) u3) (Eq_4812 u4))
+Eq_4087: (union "Eq_4087" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4807) u3) (Eq_4808 u4))
 	T_4087 (in 1<i16> @ 0800:1A77 : int16)
-Eq_4088: (union "Eq_4088" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4813) u3) (Eq_4814 u4))
+Eq_4088: (union "Eq_4088" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4809) u3) (Eq_4810 u4))
 	T_4088 (in di + 1<i16> @ 0800:1A77 : word16)
-Eq_4092: (union "Eq_4092" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4815) u3) (Eq_4816 u4))
+Eq_4092: (union "Eq_4092" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4811) u3) (Eq_4812 u4))
 	T_4092 (in di + 0<16> @ 0800:1AD5 : word16)
-Eq_4094: (union "Eq_4094" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4817) u3) (Eq_4818 u4))
+Eq_4094: (union "Eq_4094" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4813) u3) (Eq_4814 u4))
 	T_4094 (in 1<i16> @ 0800:1AD5 : int16)
 Eq_4098: (struct "Eq_4098" (0 (arr byte) a0000) (2 Eq_3499 t0002))
 	T_4098 (in fp - 2<i16> @ 0800:1905 : word16)
@@ -1904,9 +1904,9 @@ Eq_4113: (struct "Eq_4113" (0 (arr byte) a0000) (2 Eq_3499 t0002))
 	T_4113 (in fp - 2<i16> @ 0800:1AE3 : word16)
 Eq_4122: (struct "Eq_4122" (0 (arr byte) a0000) (2 Eq_3499 t0002))
 	T_4122 (in fp - 2<i16> @ 0800:1AE8 : word16)
-Eq_4128: (union "Eq_4128" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4819) u3) (Eq_4820 u4))
+Eq_4128: (union "Eq_4128" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4815) u3) (Eq_4816 u4))
 	T_4128 (in ax_58 - 0x30<16> @ 0800:17FE : word16)
-Eq_4129: (union "Eq_4129" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4821) u3) (Eq_4822 u4))
+Eq_4129: (union "Eq_4129" (int16 u0) (uint16 u1) ((memptr (ptr16 Eq_229) byte) u2) ((memptr Eq_3 Eq_4817) u3) (Eq_4818 u4))
 	T_4129 (in wLoc24_1522 * 0xA<16> @ 0800:17FE : word16)
 Eq_4131: (union "Eq_4131" (ptr32 u0) (segptr32 u1) ((memptr Eq_3 <unknown>) u2))
 	T_4131 (in es_di @ 0800:17FE : Eq_4131)
@@ -2064,71 +2064,67 @@ Eq_4761: (union "Eq_4761" (ptr16 u0) ((memptr (ptr16 Eq_229) Eq_4760) u1))
 	T_4761
 Eq_4762: (struct "Eq_4762" (1DA byte b01DA))
 	T_4762
-Eq_4763: (union "Eq_4763" (byte u0) (word16 u1) (Eq_426 u2))
+Eq_4763: (struct "Eq_4763" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4819 t0000))
 	T_4763
-Eq_4764: (struct "Eq_4764" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4763 t0000))
+Eq_4764: (struct "Eq_4764" 0002)
 	T_4764
-Eq_4765: (struct "Eq_4765" 0002)
+Eq_4765: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4765
-Eq_4766: (union "Eq_4763" (byte u0) (word16 u1) (Eq_426 u2))
+Eq_4766: (struct "Eq_4764" 0002)
 	T_4766
-Eq_4767: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4767: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4767
-Eq_4768: (struct "Eq_4765" 0002)
+Eq_4768: (struct "Eq_4764" 0002)
 	T_4768
-Eq_4769: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4769: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4769
-Eq_4770: (struct "Eq_4765" 0002)
+Eq_4770: (struct "Eq_4764" 0002)
 	T_4770
-Eq_4771: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4771: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4771
-Eq_4772: (struct "Eq_4765" 0002)
+Eq_4772: (struct "Eq_4764" 0002)
 	T_4772
-Eq_4773: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4773: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4773
-Eq_4774: (struct "Eq_4765" 0002)
+Eq_4774: (struct "Eq_4764" 0002)
 	T_4774
-Eq_4775: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4775: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4775
-Eq_4776: (struct "Eq_4765" 0002)
+Eq_4776: (struct "Eq_4764" 0002)
 	T_4776
-Eq_4777: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4777: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4777
-Eq_4778: (struct "Eq_4765" 0002)
+Eq_4778: (struct "Eq_4764" 0002)
 	T_4778
-Eq_4779: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4779: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4779
-Eq_4780: (struct "Eq_4765" 0002)
+Eq_4780: (struct "Eq_4764" 0002)
 	T_4780
-Eq_4781: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4781: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4781
-Eq_4782: (struct "Eq_4765" 0002)
+Eq_4782: (struct "Eq_4764" 0002)
 	T_4782
-Eq_4783: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4783: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4783
-Eq_4784: (struct "Eq_4765" 0002)
+Eq_4784: (struct "Eq_4764" 0002)
 	T_4784
-Eq_4785: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4785: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4785
-Eq_4786: (struct "Eq_4765" 0002)
+Eq_4786: (struct "Eq_4764" 0002)
 	T_4786
-Eq_4787: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4787: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4787
-Eq_4788: (struct "Eq_4765" 0002)
+Eq_4788: (struct "Eq_4764" 0002)
 	T_4788
-Eq_4789: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4789: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4789
-Eq_4790: (struct "Eq_4765" 0002)
+Eq_4790: (struct "Eq_4764" 0002)
 	T_4790
-Eq_4791: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
+Eq_4791: (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))
 	T_4791
-Eq_4792: (struct "Eq_4765" 0002)
+Eq_4792: (struct "Eq_4764" 0002)
 	T_4792
-Eq_4793: (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))
-	T_4793
-Eq_4794: (struct "Eq_4765" 0002)
-	T_4794
-Eq_4795: (struct "Eq_4795"
+Eq_4793: (struct "Eq_4793"
 		(FFFFFFFF byte bFFFFFFFF)
 		(0 ci16 w0000)
 		(2 cui16 w0002)
@@ -2137,60 +2133,64 @@ Eq_4795: (struct "Eq_4795"
 		(8 Eq_639 t0008)
 		(A Eq_639 t000A)
 		(E (memptr (ptr16 Eq_337) Eq_928) ptr000E))
+	T_4793
+Eq_4794: (union "Eq_4794" (byte u0) (word16 u1))
+	T_4794
+Eq_4795: (struct "Eq_4795" (0 Eq_4821 t0000) (2 Eq_709 t0002) (4 Eq_4822 t0004) (6 Eq_709 t0006))
 	T_4795
-Eq_4796: (union "Eq_4796" (byte u0) (word16 u1))
+Eq_4796: (struct "Eq_4796" (55A byte b055A))
 	T_4796
-Eq_4797: (union "Eq_4797" (cui16 u0) (Eq_737 u1))
+Eq_4797: (struct "Eq_4760" 0001)
 	T_4797
-Eq_4798: (union "Eq_4798" ((memptr (ptr16 Eq_337) Eq_717) u0) (Eq_709 u1))
+Eq_4798: (union "Eq_4798" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4797) u1))
 	T_4798
-Eq_4799: (struct "Eq_4799" (0 Eq_4797 t0000) (2 Eq_709 t0002) (4 Eq_4798 t0004) (6 Eq_709 t0006))
+Eq_4799: (struct "Eq_4799" (55A byte b055A))
 	T_4799
-Eq_4800: (struct "Eq_4800" (55A byte b055A))
+Eq_4800: (struct "Eq_4760" 0001)
 	T_4800
-Eq_4801: (struct "Eq_4760" 0001)
+Eq_4801: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4801
-Eq_4802: (union "Eq_4802" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4801) u1))
+Eq_4802: (struct "Eq_4799" (55A byte b055A))
 	T_4802
-Eq_4803: (struct "Eq_4803" (55A byte b055A))
+Eq_4803: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4803
-Eq_4804: (struct "Eq_4760" 0001)
+Eq_4804: (struct "Eq_4799" (55A byte b055A))
 	T_4804
-Eq_4805: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4805: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4805
-Eq_4806: (struct "Eq_4803" (55A byte b055A))
+Eq_4806: (struct "Eq_4806" (55A byte b055A))
 	T_4806
-Eq_4807: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4807: (struct "Eq_4799" (55A byte b055A))
 	T_4807
-Eq_4808: (struct "Eq_4803" (55A byte b055A))
+Eq_4808: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4808
-Eq_4809: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4809: (struct "Eq_4799" (55A byte b055A))
 	T_4809
-Eq_4810: (struct "Eq_4810" (55A byte b055A))
+Eq_4810: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4810
-Eq_4811: (struct "Eq_4803" (55A byte b055A))
+Eq_4811: (struct "Eq_4799" (55A byte b055A))
 	T_4811
-Eq_4812: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4812: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4812
-Eq_4813: (struct "Eq_4803" (55A byte b055A))
+Eq_4813: (struct "Eq_4799" (55A byte b055A))
 	T_4813
-Eq_4814: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4814: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4814
-Eq_4815: (struct "Eq_4803" (55A byte b055A))
+Eq_4815: (struct "Eq_4799" (55A byte b055A))
 	T_4815
-Eq_4816: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4816: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4816
-Eq_4817: (struct "Eq_4803" (55A byte b055A))
+Eq_4817: (struct "Eq_4799" (55A byte b055A))
 	T_4817
-Eq_4818: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4818: (union "Eq_4801" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4800) u1))
 	T_4818
-Eq_4819: (struct "Eq_4803" (55A byte b055A))
+Eq_4819: (union "Eq_4819" (byte u0) (word16 u1) (Eq_426 u2))
 	T_4819
-Eq_4820: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4820: (union "Eq_4819" (byte u0) (word16 u1) (Eq_426 u2))
 	T_4820
-Eq_4821: (struct "Eq_4803" (55A byte b055A))
+Eq_4821: (union "Eq_4821" (cui16 u0) (Eq_737 u1))
 	T_4821
-Eq_4822: (union "Eq_4805" (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) Eq_4804) u1))
+Eq_4822: (union "Eq_4822" ((memptr (ptr16 Eq_337) Eq_717) u0) (Eq_709 u1))
 	T_4822
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -4052,7 +4052,7 @@ T_462: (in -2<i16> @ 0800:0391 : int16)
 T_463: (in di_65 + -2<i16> @ 0800:0391 : word16)
   Class: Eq_463
   DataType: Eq_463
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_464: (in Mem79[ss:di_65 + -2<i16>:word16] @ 0800:0391 : word16)
   Class: Eq_420
   DataType: word16
@@ -4084,7 +4084,7 @@ T_470: (in 0<16> @ 0800:0397 : word16)
 T_471: (in di_219 + 0<16> @ 0800:0397 : word16)
   Class: Eq_471
   DataType: Eq_471
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_472: (in Mem87[ss:di_219 + 0<16>:byte] @ 0800:0397 : byte)
   Class: Eq_469
   DataType: byte
@@ -4092,15 +4092,15 @@ T_472: (in Mem87[ss:di_219 + 0<16>:byte] @ 0800:0397 : byte)
 T_473: (in di_88 @ 0800:0397 : Eq_473)
   Class: Eq_473
   DataType: Eq_473
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_474: (in 1<i16> @ 0800:0397 : int16)
   Class: Eq_474
   DataType: int16
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_475: (in di_219 + 1<i16> @ 0800:0397 : word16)
   Class: Eq_473
   DataType: Eq_473
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_476: (in si_103 @ 0800:039A : word16)
   Class: Eq_476
   DataType: word16
@@ -4156,7 +4156,7 @@ T_488: (in 0<16> @ 0800:0393 : word16)
 T_489: (in di_219 + 0<16> @ 0800:0393 : word16)
   Class: Eq_489
   DataType: Eq_489
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_490: (in Mem217[ss:di_219 + 0<16>:byte] @ 0800:0393 : byte)
   Class: Eq_487
   DataType: byte
@@ -4172,11 +4172,11 @@ T_492: (in si_214 + 1<i16> @ 0800:0393 : word16)
 T_493: (in 1<i16> @ 0800:0393 : int16)
   Class: Eq_493
   DataType: int16
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_494: (in di_219 + 1<i16> @ 0800:0393 : word16)
   Class: Eq_426
   DataType: Eq_426
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_495: (in 1<16> @ 0800:0393 : word16)
   Class: Eq_495
   DataType: word16
@@ -4236,7 +4236,7 @@ T_508: (in -2<i16> @ 0800:03EB : int16)
 T_509: (in di_65 + -2<i16> @ 0800:03EB : word16)
   Class: Eq_509
   DataType: Eq_509
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_510: (in Mem87[ss:di_65 + -2<i16>:word16] @ 0800:03EB : word16)
   Class: Eq_420
   DataType: word16
@@ -4264,7 +4264,7 @@ T_515: (in Mem128[ds_126:0x84<16>:word16] @ 0800:03F2 : word16)
 T_516: (in bx_130 @ 0800:03F7 : Eq_516)
   Class: Eq_516
   DataType: Eq_516
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_517: (in 1<16> @ 0800:03F7 : word16)
   Class: Eq_517
   DataType: word16
@@ -4292,7 +4292,7 @@ T_522: (in bp_133 @ 0800:03FD : Eq_522)
 T_523: (in di_65 - bx_130 @ 0800:03FD : word16)
   Class: Eq_522
   DataType: Eq_522
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_524: (in 0<16> @ 0800:03FF : word16)
   Class: Eq_522
   DataType: cup16
@@ -4464,7 +4464,7 @@ T_565: (in 0<16> @ 0800:0419 : word16)
 T_566: (in bp_133 + 0<16> @ 0800:0419 : word16)
   Class: Eq_566
   DataType: Eq_566
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_567: (in Mem165[ss:bp_133 + 0<16>:word16] @ 0800:0419 : word16)
   Class: Eq_564
   DataType: word16
@@ -4480,7 +4480,7 @@ T_569: (in 0<16> @ 0800:0409 : word16)
 T_570: (in bp_133 + 0<16> @ 0800:0409 : word16)
   Class: Eq_570
   DataType: Eq_570
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_571: (in Mem144[ss:bp_133 + 0<16>:word16] @ 0800:0409 : word16)
   Class: Eq_426
   DataType: Eq_426
@@ -4488,11 +4488,11 @@ T_571: (in Mem144[ss:bp_133 + 0<16>:word16] @ 0800:0409 : word16)
 T_572: (in 2<16> @ 0800:040C : word16)
   Class: Eq_572
   DataType: int16
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_573: (in bp_133 + 2<16> @ 0800:040C : word16)
   Class: Eq_522
   DataType: Eq_522
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_574: (in al_150 @ 0800:040F : byte)
   Class: Eq_574
   DataType: byte
@@ -4504,7 +4504,7 @@ T_575: (in 0<16> @ 0800:040F : word16)
 T_576: (in si_131 + 0<16> @ 0800:040F : word16)
   Class: Eq_576
   DataType: Eq_576
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_577: (in Mem144[ds_126:si_131 + 0<16>:byte] @ 0800:040F : byte)
   Class: Eq_574
   DataType: byte
@@ -4512,11 +4512,11 @@ T_577: (in Mem144[ds_126:si_131 + 0<16>:byte] @ 0800:040F : byte)
 T_578: (in 1<i16> @ 0800:040F : int16)
   Class: Eq_578
   DataType: int16
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_579: (in si_131 + 1<i16> @ 0800:040F : word16)
   Class: Eq_426
   DataType: Eq_426
-  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4767" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4766 t0000))) u0) ((memptr T_401 (struct "Eq_4765" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
+  OrigDataType: (union (int16 u2) (cup16 u1) ((memptr T_401 (struct "Eq_4765" 0001 (FFFFFFFE word16 wFFFFFFFE) (0 Eq_4820 t0000))) u0) ((memptr T_401 (struct "Eq_4764" 0002)) u3) ((memptr T_512 (struct 0001 (0 byte b0000))) u4))
 T_580: (in 1<16> @ 0800:0413 : word16)
   Class: Eq_580
   DataType: word16
@@ -16321,7 +16321,7 @@ T_3503: (in bx @ 0800:16F3 : Eq_3487)
 T_3504: (in wLoc04 @ 0800:16F3 : Eq_237)
   Class: Eq_237
   DataType: Eq_237
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3505: (in wLoc28_1038 @ 0800:1700 : Eq_3499)
   Class: Eq_3499
   DataType: Eq_3499
@@ -16345,7 +16345,7 @@ T_3509: (in al_30 == 0x25<8> @ 0800:172D : bool)
 T_3510: (in wLoc24_1041 @ 0800:178B : Eq_3510)
   Class: Eq_3510
   DataType: Eq_3510
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3511: (in 0xFFFF<16> @ 0800:178B : word16)
   Class: Eq_3510
   DataType: int16
@@ -16773,7 +16773,7 @@ T_3616: (in bLoc2B_1042 | 1<8> @ 0800:17E9 : byte)
 T_3617: (in 0x30<16> @ 0800:17F2 : word16)
   Class: Eq_3617
   DataType: int16
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3618: (in ax_58 - 0x30<16> @ 0800:17F2 : word16)
   Class: Eq_3510
   DataType: Eq_3510
@@ -17549,7 +17549,7 @@ T_3810: (in out bx @ 0800:1869 : mp16)
 T_3811: (in out di @ 0800:1869 : mp16)
   Class: Eq_237
   DataType: Eq_237
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3812: (in out es @ 0800:1869 : mp16)
   Class: Eq_237
   DataType: Eq_237
@@ -17717,7 +17717,7 @@ T_3852: (in 0<16> @ 0800:19EF : word16)
 T_3853: (in di + 0<16> @ 0800:19EF : word16)
   Class: Eq_3853
   DataType: Eq_3853
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3854: (in Mem682[es:di + 0<16>:byte] @ 0800:19EF : byte)
   Class: Eq_3499
   DataType: Eq_3499
@@ -17725,19 +17725,19 @@ T_3854: (in Mem682[es:di + 0<16>:byte] @ 0800:19EF : byte)
 T_3855: (in 1<i16> @ 0800:19EF : int16)
   Class: Eq_3855
   DataType: int16
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3856: (in di + 1<i16> @ 0800:19EF : word16)
   Class: Eq_237
   DataType: Eq_237
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_3857: (in 1<16> @ 0800:19F4 : word16)
   Class: Eq_3857
   DataType: ci16
-  OrigDataType: (union (ci16 u1) (uint16 u2) ((memptr T_3482 (struct "Eq_4810" (55A byte b055A))) u0))
+  OrigDataType: (union (ci16 u1) (uint16 u2) ((memptr T_3482 (struct "Eq_4806" (55A byte b055A))) u0))
 T_3858: (in si_644 - 1<16> @ 0800:19F4 : word16)
   Class: Eq_3510
   DataType: Eq_3510
-  OrigDataType: (union (ci16 u1) (uint16 u2) ((memptr T_3482 (struct "Eq_4810" (55A byte b055A))) u0))
+  OrigDataType: (union (ci16 u1) (uint16 u2) ((memptr T_3482 (struct "Eq_4806" (55A byte b055A))) u0))
 T_3859: (in 0<16> @ 0800:19F5 : word16)
   Class: Eq_3510
   DataType: int16
@@ -18653,11 +18653,11 @@ T_4086: (in Mem316[es_di_1521 + 0<32>:byte] @ 0800:1AB3 : byte)
 T_4087: (in 1<i16> @ 0800:1A77 : int16)
   Class: Eq_4087
   DataType: int16
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4088: (in di + 1<i16> @ 0800:1A77 : word16)
   Class: Eq_4088
   DataType: Eq_4088
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4089: (in SEQ(es, di + 1<i16>) @ 0800:1A77 : segptr32)
   Class: Eq_3692
   DataType: (ptr32 Eq_3692)
@@ -18673,7 +18673,7 @@ T_4091: (in 0<16> @ 0800:1AD5 : word16)
 T_4092: (in di + 0<16> @ 0800:1AD5 : word16)
   Class: Eq_4092
   DataType: Eq_4092
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4093: (in Mem365[es:di + 0<16>:byte] @ 0800:1AD5 : byte)
   Class: Eq_4090
   DataType: byte
@@ -18681,11 +18681,11 @@ T_4093: (in Mem365[es:di + 0<16>:byte] @ 0800:1AD5 : byte)
 T_4094: (in 1<i16> @ 0800:1AD5 : int16)
   Class: Eq_4094
   DataType: int16
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4095: (in di + 1<i16> @ 0800:1AD5 : word16)
   Class: Eq_237
   DataType: Eq_237
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4096: (in bp_468 @ 0800:1905 : ptr16)
   Class: Eq_3488
   DataType: ptr16
@@ -18817,15 +18817,15 @@ T_4127: (in SLICE(wLoc24_1522 *u32 0xA<16>, word16, 16) @ 0800:17FC : word16)
 T_4128: (in ax_58 - 0x30<16> @ 0800:17FE : word16)
   Class: Eq_4128
   DataType: Eq_4128
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4129: (in wLoc24_1522 * 0xA<16> @ 0800:17FE : word16)
   Class: Eq_4129
   DataType: Eq_4129
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4130: (in ax_58 - 0x30<16> + wLoc24_1522 *u 0xA<16> @ 0800:17FE : word16)
   Class: Eq_3510
   DataType: Eq_3510
-  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4803" (55A byte b055A))) u5))
+  OrigDataType: (union (int16 u1) (uint16 u4) ((union (ptr16 u0) ((memptr (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 (ptr16 Eq_229)))))))))) (struct "Eq_4760" 0001)) u1)) u2) ((memptr T_3481 (struct 0001 (0 byte b0000))) u3) ((memptr T_3482 (struct "Eq_4799" (55A byte b055A))) u5))
 T_4131: (in es_di @ 0800:17FE : Eq_4131)
   Class: Eq_4131
   DataType: Eq_4131
@@ -21910,40 +21910,40 @@ typedef union Eq_426 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4764 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4763 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_426;
 
 typedef union Eq_463 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_463;
 
 typedef union Eq_471 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_471;
 
 typedef union Eq_473 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_473;
 
 typedef union Eq_474 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_474;
 
 typedef union Eq_478 {
@@ -21955,40 +21955,40 @@ typedef union Eq_489 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_489;
 
 typedef union Eq_493 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_493;
 
 typedef union Eq_509 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_509;
 
 typedef union Eq_516 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_516;
 
 typedef union Eq_522 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_522;
 
 typedef byte (Eq_526)(Eq_528 *, byte *, word16, Eq_478, ptr16, Eq_478, ptr16);
@@ -22004,47 +22004,47 @@ typedef union Eq_566 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_566;
 
 typedef union Eq_570 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_570;
 
 typedef union Eq_572 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_572;
 
 typedef union Eq_576 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_576;
 
 typedef union Eq_578 {
 	int16 u0;
 	cup16 u1;
 	byte Eq_398::* u2;
-	struct Eq_4767 Eq_401::* u3;
-	struct Eq_4765 Eq_401::* u4;
+	struct Eq_4765 Eq_401::* u3;
+	struct Eq_4764 Eq_401::* u4;
 } Eq_578;
 
 typedef union Eq_639 {
 	int16 u0;
 	char Eq_337::* u1;
-	struct Eq_4795 Eq_337::* u2;
-	union Eq_4796 Eq_337::* u3;
+	struct Eq_4793 Eq_337::* u2;
+	union Eq_4794 Eq_337::* u3;
 } Eq_639;
 
 typedef Eq_639 (Eq_640)(Eq_337 *, cu16);
@@ -22056,7 +22056,7 @@ typedef struct Eq_649 {
 typedef union Eq_709 {
 	cup16 u0;
 	int16 Eq_337::* u1;
-	struct Eq_4799 Eq_337::* u2;
+	struct Eq_4795 Eq_337::* u2;
 } Eq_709;
 
 typedef struct Eq_717 {
@@ -23460,8 +23460,8 @@ typedef union Eq_3510 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4800 Eq_3::* u3;
-	Eq_4802 u4;
+	struct Eq_4796 Eq_3::* u3;
+	Eq_4798 u4;
 } Eq_3510;
 
 typedef struct Eq_3514 {
@@ -23487,8 +23487,8 @@ typedef union Eq_3617 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4805 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4801 u4;
 } Eq_3617;
 
 typedef void (Eq_3628)(Eq_3);
@@ -23548,22 +23548,22 @@ typedef union Eq_3853 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4807 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4803 u4;
 } Eq_3853;
 
 typedef union Eq_3855 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4809 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4805 u4;
 } Eq_3855;
 
 typedef union Eq_3857 {
 	ci16 u0;
 	uint16 u1;
-	struct Eq_4810 Eq_3::* u2;
+	struct Eq_4806 Eq_3::* u2;
 } Eq_3857;
 
 typedef ptr16 (Eq_3862)(Eq_3646 *);
@@ -23719,32 +23719,32 @@ typedef union Eq_4087 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4812 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4808 u4;
 } Eq_4087;
 
 typedef union Eq_4088 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4814 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4810 u4;
 } Eq_4088;
 
 typedef union Eq_4092 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4816 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4812 u4;
 } Eq_4092;
 
 typedef union Eq_4094 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4818 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4814 u4;
 } Eq_4094;
 
 typedef struct Eq_4098 {
@@ -23771,16 +23771,16 @@ typedef union Eq_4128 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4820 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4816 u4;
 } Eq_4128;
 
 typedef union Eq_4129 {
 	int16 u0;
 	uint16 u1;
 	byte Eq_229::* u2;
-	struct Eq_4803 Eq_3::* u3;
-	Eq_4822 u4;
+	struct Eq_4799 Eq_3::* u3;
+	Eq_4818 u4;
 } Eq_4129;
 
 typedef union Eq_4131 {
@@ -24026,86 +24026,74 @@ typedef struct Eq_4762 {
 	byte b01DA;	// 1DA
 } Eq_4762;
 
-typedef union Eq_4763 {
-	byte u0;
-	word16 u1;
-	Eq_426 u2;
+typedef struct Eq_4763 {	// size: 1 1
+	word16 wFFFFFFFE;	// FFFFFFFE
+	Eq_4819 t0000;	// 0
 } Eq_4763;
 
-typedef struct Eq_4764 {	// size: 1 1
-	word16 wFFFFFFFE;	// FFFFFFFE
-	Eq_4763 t0000;	// 0
+typedef struct Eq_4764 {	// size: 2 2
 } Eq_4764;
 
-typedef struct Eq_4765 {	// size: 2 2
+typedef struct Eq_4765 {	// size: 1 1
+	word16 wFFFFFFFE;	// FFFFFFFE
+	Eq_4820 t0000;	// 0
 } Eq_4765;
 
-typedef union Eq_4763 {
-	byte u0;
-	word16 u1;
-	Eq_426 u2;
-} Eq_4766;
+typedef struct Eq_4764 Eq_4766;
 
-typedef struct Eq_4767 {	// size: 1 1
-	word16 wFFFFFFFE;	// FFFFFFFE
-	Eq_4766 t0000;	// 0
-} Eq_4767;
+typedef struct Eq_4765 Eq_4767;
 
-typedef struct Eq_4765 Eq_4768;
+typedef struct Eq_4764 Eq_4768;
 
-typedef struct Eq_4767 Eq_4769;
+typedef struct Eq_4765 Eq_4769;
 
-typedef struct Eq_4765 Eq_4770;
+typedef struct Eq_4764 Eq_4770;
 
-typedef struct Eq_4767 Eq_4771;
+typedef struct Eq_4765 Eq_4771;
 
-typedef struct Eq_4765 Eq_4772;
+typedef struct Eq_4764 Eq_4772;
 
-typedef struct Eq_4767 Eq_4773;
+typedef struct Eq_4765 Eq_4773;
 
-typedef struct Eq_4765 Eq_4774;
+typedef struct Eq_4764 Eq_4774;
 
-typedef struct Eq_4767 Eq_4775;
+typedef struct Eq_4765 Eq_4775;
 
-typedef struct Eq_4765 Eq_4776;
+typedef struct Eq_4764 Eq_4776;
 
-typedef struct Eq_4767 Eq_4777;
+typedef struct Eq_4765 Eq_4777;
 
-typedef struct Eq_4765 Eq_4778;
+typedef struct Eq_4764 Eq_4778;
 
-typedef struct Eq_4767 Eq_4779;
+typedef struct Eq_4765 Eq_4779;
 
-typedef struct Eq_4765 Eq_4780;
+typedef struct Eq_4764 Eq_4780;
 
-typedef struct Eq_4767 Eq_4781;
+typedef struct Eq_4765 Eq_4781;
 
-typedef struct Eq_4765 Eq_4782;
+typedef struct Eq_4764 Eq_4782;
 
-typedef struct Eq_4767 Eq_4783;
+typedef struct Eq_4765 Eq_4783;
 
-typedef struct Eq_4765 Eq_4784;
+typedef struct Eq_4764 Eq_4784;
 
-typedef struct Eq_4767 Eq_4785;
+typedef struct Eq_4765 Eq_4785;
 
-typedef struct Eq_4765 Eq_4786;
+typedef struct Eq_4764 Eq_4786;
 
-typedef struct Eq_4767 Eq_4787;
+typedef struct Eq_4765 Eq_4787;
 
-typedef struct Eq_4765 Eq_4788;
+typedef struct Eq_4764 Eq_4788;
 
-typedef struct Eq_4767 Eq_4789;
+typedef struct Eq_4765 Eq_4789;
 
-typedef struct Eq_4765 Eq_4790;
+typedef struct Eq_4764 Eq_4790;
 
-typedef struct Eq_4767 Eq_4791;
+typedef struct Eq_4765 Eq_4791;
 
-typedef struct Eq_4765 Eq_4792;
+typedef struct Eq_4764 Eq_4792;
 
-typedef struct Eq_4767 Eq_4793;
-
-typedef struct Eq_4765 Eq_4794;
-
-typedef struct Eq_4795 {
+typedef struct Eq_4793 {
 	byte bFFFFFFFF;	// FFFFFFFF
 	ci16 w0000;	// 0
 	cui16 w0002;	// 2
@@ -24114,109 +24102,121 @@ typedef struct Eq_4795 {
 	Eq_639 t0008;	// 8
 	Eq_639 t000A;	// A
 	struct Eq_928 Eq_337::* ptr000E;	// E
-} Eq_4795;
+} Eq_4793;
 
-typedef union Eq_4796 {
+typedef union Eq_4794 {
 	byte u0;
 	word16 u1;
+} Eq_4794;
+
+typedef struct Eq_4795 {
+	Eq_4821 t0000;	// 0
+	Eq_709 t0002;	// 2
+	Eq_4822 t0004;	// 4
+	Eq_709 t0006;	// 6
+} Eq_4795;
+
+typedef struct Eq_4796 {
+	byte b055A;	// 55A
 } Eq_4796;
 
-typedef union Eq_4797 {
-	cui16 u0;
-	Eq_737 u1;
-} Eq_4797;
+typedef struct Eq_4760 Eq_4797;
 
 typedef union Eq_4798 {
-	struct Eq_717 Eq_337::* u0;
-	Eq_709 u1;
+	ptr16 u0;
+	struct Eq_4760 Eq_229::* u1;
 } Eq_4798;
 
 typedef struct Eq_4799 {
-	Eq_4797 t0000;	// 0
-	Eq_709 t0002;	// 2
-	Eq_4798 t0004;	// 4
-	Eq_709 t0006;	// 6
+	byte b055A;	// 55A
 } Eq_4799;
 
-typedef struct Eq_4800 {
-	byte b055A;	// 55A
-} Eq_4800;
+typedef struct Eq_4760 Eq_4800;
 
-typedef struct Eq_4760 Eq_4801;
-
-typedef union Eq_4802 {
+typedef union Eq_4801 {
 	ptr16 u0;
 	struct Eq_4760 Eq_229::* u1;
-} Eq_4802;
+} Eq_4801;
 
-typedef struct Eq_4803 {
-	byte b055A;	// 55A
+typedef struct Eq_4799 Eq_4802;
+
+typedef union Eq_4801 {
+	ptr16 u0;
+	struct Eq_4760 Eq_229::* u1;
 } Eq_4803;
 
-typedef struct Eq_4760 Eq_4804;
+typedef struct Eq_4799 Eq_4804;
 
-typedef union Eq_4805 {
+typedef union Eq_4801 {
 	ptr16 u0;
 	struct Eq_4760 Eq_229::* u1;
 } Eq_4805;
 
-typedef struct Eq_4803 Eq_4806;
-
-typedef union Eq_4805 {
-	ptr16 u0;
-	struct Eq_4760 Eq_229::* u1;
-} Eq_4807;
-
-typedef struct Eq_4803 Eq_4808;
-
-typedef union Eq_4805 {
-	ptr16 u0;
-	struct Eq_4760 Eq_229::* u1;
-} Eq_4809;
-
-typedef struct Eq_4810 {
+typedef struct Eq_4806 {
 	byte b055A;	// 55A
+} Eq_4806;
+
+typedef struct Eq_4799 Eq_4807;
+
+typedef union Eq_4801 {
+	ptr16 u0;
+	struct Eq_4760 Eq_229::* u1;
+} Eq_4808;
+
+typedef struct Eq_4799 Eq_4809;
+
+typedef union Eq_4801 {
+	ptr16 u0;
+	struct Eq_4760 Eq_229::* u1;
 } Eq_4810;
 
-typedef struct Eq_4803 Eq_4811;
+typedef struct Eq_4799 Eq_4811;
 
-typedef union Eq_4805 {
+typedef union Eq_4801 {
 	ptr16 u0;
 	struct Eq_4760 Eq_229::* u1;
 } Eq_4812;
 
-typedef struct Eq_4803 Eq_4813;
+typedef struct Eq_4799 Eq_4813;
 
-typedef union Eq_4805 {
+typedef union Eq_4801 {
 	ptr16 u0;
 	struct Eq_4760 Eq_229::* u1;
 } Eq_4814;
 
-typedef struct Eq_4803 Eq_4815;
+typedef struct Eq_4799 Eq_4815;
 
-typedef union Eq_4805 {
+typedef union Eq_4801 {
 	ptr16 u0;
 	struct Eq_4760 Eq_229::* u1;
 } Eq_4816;
 
-typedef struct Eq_4803 Eq_4817;
+typedef struct Eq_4799 Eq_4817;
 
-typedef union Eq_4805 {
+typedef union Eq_4801 {
 	ptr16 u0;
 	struct Eq_4760 Eq_229::* u1;
 } Eq_4818;
 
-typedef struct Eq_4803 Eq_4819;
+typedef union Eq_4819 {
+	byte u0;
+	word16 u1;
+	Eq_426 u2;
+} Eq_4819;
 
-typedef union Eq_4805 {
-	ptr16 u0;
-	struct Eq_4760 Eq_229::* u1;
+typedef union Eq_4819 {
+	byte u0;
+	word16 u1;
+	Eq_426 u2;
 } Eq_4820;
 
-typedef struct Eq_4803 Eq_4821;
+typedef union Eq_4821 {
+	cui16 u0;
+	Eq_737 u1;
+} Eq_4821;
 
-typedef union Eq_4805 {
-	ptr16 u0;
-	struct Eq_4760 Eq_229::* u1;
+typedef union Eq_4822 {
+	struct Eq_717 Eq_337::* u0;
+	Eq_709 u1;
 } Eq_4822;
 

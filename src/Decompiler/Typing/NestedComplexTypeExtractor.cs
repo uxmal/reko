@@ -37,11 +37,16 @@ namespace Reko.Typing
 		private bool changed;
         private int stackDepth; //$HACK until overly deep recursion is fixed.
  
-		public NestedComplexTypeExtractor(TypeFactory factory, TypeStore store)
+		public NestedComplexTypeExtractor(
+            TypeFactory factory,
+            TypeStore store,
+            int stackDepth = 0,
+            HashSet<DataType>? visitedTypes = null)
 		{
 			this.factory = factory;
 			this.store = store;
-            this.visitedTypes = new HashSet<DataType>();
+            this.stackDepth = stackDepth;
+            this.visitedTypes = visitedTypes ?? new HashSet<DataType>();
 		}
 
 		public bool Changed
@@ -78,7 +83,7 @@ namespace Reko.Typing
         {
             if (insideComplexType)
             {
-                var nctr = new NestedComplexTypeExtractor(factory, store);
+                var nctr = CreateNestedComplexTypeExtractor(factory, store);
                 at.Accept(nctr);
                 return at;
             }
@@ -105,9 +110,8 @@ namespace Reko.Typing
 			if (insideComplexType)
 			{
 				changed = true;
-				var nctr = new NestedComplexTypeExtractor(factory, store);
-                nctr.stackDepth = this.stackDepth;
-				str.Accept(nctr);
+				var nctr = CreateNestedComplexTypeExtractor(factory, store);
+                str.Accept(nctr);
                 var dt = CreateEquivalenceClass(str);
                 --this.stackDepth;
                 return dt;
@@ -135,9 +139,8 @@ namespace Reko.Typing
 			{
 
                 changed = true;
-				var nctr = new NestedComplexTypeExtractor(factory, store);
-                nctr.stackDepth = this.stackDepth;
-				ut.Accept(nctr);
+				var nctr = CreateNestedComplexTypeExtractor(factory, store);
+                ut.Accept(nctr);
 				var eq = CreateEquivalenceClass(ut);
                 --this.stackDepth;
                 return eq;
@@ -150,5 +153,12 @@ namespace Reko.Typing
                 return dt;
 			}
 		}
-	}
+
+        private NestedComplexTypeExtractor CreateNestedComplexTypeExtractor(
+            TypeFactory factory, TypeStore store)
+        {
+            return new NestedComplexTypeExtractor(
+                factory, store, stackDepth, visitedTypes);
+        }
+    }
 }

@@ -249,9 +249,9 @@ Eq_250: nested_structs_type
 	T_250 (in 0040301C @ 00401383 : ptr32)
 Eq_253: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_253 (in 00403020 @ 0040138D : ptr32)
-Eq_304: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
+Eq_304: (struct "nested_structs_type" 0010 (0 int32 a) (4 Eq_306 str) (C int32 d))
 	T_304
-Eq_305: (struct "nested_structs_type" 0010 (0 int32 a) (4 Eq_304 str) (C int32 d))
+Eq_305: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_305
 Eq_306: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_306
@@ -1711,15 +1711,15 @@ typedef struct struct_0 {	// size: 8 8
 	int32 c;	// 4
 } Eq_253;
 
+typedef struct nested_structs_type {	// size: 16 10
+	int32 a;	// 0
+	Eq_306 str;	// 4
+	int32 d;	// C
+} Eq_304;
+
 typedef struct struct_0 {	// size: 8 8
 	int32 b;	// 0
 	int32 c;	// 4
-} Eq_304;
-
-typedef struct nested_structs_type {	// size: 16 10
-	int32 a;	// 0
-	Eq_304 str;	// 4
-	int32 d;	// C
 } Eq_305;
 
 typedef struct struct_0 {	// size: 8 8

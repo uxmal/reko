@@ -339,7 +339,7 @@ Eq_572: (fn void (Eq_574, (ptr32 Eq_575)))
 	T_572 (in fn00002BDC @ 000013AC : ptr32)
 	T_573 (in signature of fn00002BDC @ 00002BDC : void)
 	T_589 (in fn00002BDC @ 000013CE : ptr32)
-Eq_574: (union "Eq_574" (byte u0) (word16 u1) ((ptr32 Eq_5754) u2))
+Eq_574: (union "Eq_574" (byte u0) (word16 u1) ((ptr32 Eq_5753) u2))
 	T_574 (in d0 @ 000013AC : Eq_574)
 	T_580 (in fn00003E04(&g_b1438) @ 000013AC : word32)
 	T_592 (in fn00003E04(&g_b1410) @ 000013CE : word32)
@@ -1952,9 +1952,9 @@ Eq_5494: (fn int32 ())
 Eq_5691: (struct "Eq_5691" 0004 (0 byte b0000))
 	T_5691
 	T_5695
-Eq_5753: (struct "Eq_5753" (0 Eq_574 t0000))
+Eq_5753: (struct "Eq_5753" 0004 (0 (ptr32 Eq_5754) ptr0000))
 	T_5753
-Eq_5754: (struct "Eq_5754" 0004 (0 (ptr32 Eq_5753) ptr0000))
+Eq_5754: (struct "Eq_5754" (0 Eq_574 t0000))
 	T_5754
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -12948,7 +12948,7 @@ T_2745: (in SLICE(d5_d6_361, word32, 0) @ 00002646 : word32)
 T_2746: (in d5_181 @ 00002646 : Eq_574)
   Class: Eq_574
   DataType: Eq_574
-  OrigDataType: (ptr32 Eq_5754)
+  OrigDataType: (ptr32 Eq_5753)
 T_2747: (in SLICE(d5_d6_361, word32, 32) @ 00002646 : word32)
   Class: Eq_574
   DataType: Eq_574
@@ -25147,7 +25147,7 @@ typedef void (Eq_572)(Eq_574, Eq_575 *);
 typedef union Eq_574 {
 	byte u0;
 	word16 u1;
-	struct Eq_5754 * u2;
+	struct Eq_5753 * u2;
 } Eq_574;
 
 typedef struct Eq_575 {	// size: 1 1
@@ -26001,11 +26001,11 @@ typedef struct Eq_5691 {	// size: 4 4
 	byte b0000;	// 0
 } Eq_5691;
 
-typedef struct Eq_5753 {
-	Eq_574 t0000;	// 0
+typedef struct Eq_5753 {	// size: 4 4
+	struct Eq_5754 * ptr0000;	// 0
 } Eq_5753;
 
-typedef struct Eq_5754 {	// size: 4 4
-	struct Eq_5753 * ptr0000;	// 0
+typedef struct Eq_5754 {
+	Eq_574 t0000;	// 0
 } Eq_5754;
 
