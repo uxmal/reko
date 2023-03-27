@@ -4,9 +4,9 @@
 
 #include "life.h"
 
-// 000C0000: Stack word32 count_neighbors(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2)
+// 000C0000: Stack word32 count_neighbors(Stack ui32 arg0, Stack int32 arg1, Stack ui32 arg2)
 
-// Exception Unknown node Stack word32 count_neighbors(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2). when writing procedure.
+// Exception Unknown node Stack word32 count_neighbors(Stack ui32 arg0, Stack int32 arg1, Stack ui32 arg2). when writing procedure.
 // 000C0060: void update_gen(Stack ui32 arg0)
 
 // Exception Unknown node void update_gen(Stack ui32 arg0). when writing procedure.

@@ -140,6 +140,92 @@ l000E3F06:
 	v196 = v194 + v195
 	loc96 = v196
 	v197 = loc96
+	v198 = Mem0[v197:word32]
+	loc107 = v198
+	v199 = loc107
+	v200 = 0xFFFFFFF8<32>
+	v201 = v199 & v200
+	loc118 = v201
+	v202 = arg0
+	v203 = loc118
+	v204 = v202 + v203
+	loc129 = v204
+	v205 = 0x4674<32>
+	v206 = Mem0[v205:word32]
+	loc140 = v206
+	v207 = loc107
+	v208 = 3<32>
+	v209 = v207 & v208
+	loc151 = v209
+	v210 = arg0
+	v211 = loc140
+	v212 = v210 >=u v211
+	loc185 = v212
+	v213 = loc151
+	v214 = 1<32>
+	v215 = v213 != v214
+	loc186 = v215
+	v216 = loc186
+	v217 = loc185
+	v218 = v216 & v217
+	loc187 = v218
+	v219 = arg0
+	v220 = loc129
+	v221 = v219 <u v220
+	loc162 = v221
+	v222 = loc187
+	v223 = loc162
+	v224 = v222 & v223
+	loc188 = v224
+	v225 = loc188
+	v226 = v225 == 0<32>
+	branch !v226 l000E3F73
+	// succ:  l000E3F71 l000E3F73
+l000E3F71:
+	_abort()
+	// succ:  l000E3F73
+l000E3F73:
+	v227 = loc129
+	v228 = 4<32>
+	v229 = v227 + v228
+	loc173 = v229
+	v230 = loc173
+	v231 = Mem0[v230:word32]
+	loc8 = v231
+	v232 = loc8
+	v233 = 1<32>
+	v234 = v232 & v233
+	loc19 = v234
+	v235 = loc19
+	v236 = 0<32>
+	v237 = v235 == v236
+	loc30 = v237
+	v238 = loc30
+	branch !v238 l000E3F99
+	// succ:  l000E3F97 l000E3F99
+l000E3F97:
+	_abort()
+	// succ:  l000E3F99
+l000E3F99:
+	v239 = loc151
+	v240 = 0<32>
+	v241 = v239 == v240
+	loc41 = v241
+	v242 = loc41
+	v242 = v242
+	// succ:  l000E3FA6 l000E3FA6
+l000E3FA6:
+	v243 = arg1
+	v244 = 0x100<32>
+	v245 = v243 <u v244
+	loc52 = v245
+	v246 = loc52
+	v246 = v246
+	// succ:  l000E3FB2 l000E3FB2
+l000E3FB2:
+	v247 = 0<32>
+	loc4 = v247
+	v248 = loc4
 fn000E3F06_exit:
 
 
@@ -160,6 +246,37 @@ l000E47CC:
 	v337 = v335 + v336
 	loc242 = v337
 	v338 = loc242
+	v339 = Mem0[v338:word32]
+	loc260 = v339
+	v340 = loc260
+	v341 = 1<32>
+	v342 = v340 & v341
+	loc271 = v342
+	v343 = loc271
+	v344 = 0<32>
+	v345 = v343 == v344
+	loc282 = v345
+	// succ:  l000E47FE
+l000E47FE:
+	v346 = loc282
+	v346 = v346
+	// succ:  l000E4805 l000E4805
+l000E4805:
+	v347 = arg0
+	v348 = Mem0[v347:word32]
+	loc293 = v348
+	v349 = loc260
+	v350 = 3<32>
+	v351 = v349 & v350
+	loc304 = v351
+	v352 = loc304
+	v353 = 0<32>
+	v354 = v352 == v353
+	loc315 = v354
+	v355 = loc315
+	v355 = v355
+	// succ:  l000E4824 l000E4824
+l000E4824:
 fn000E47CC_exit:
 
 
@@ -186,23 +303,76 @@ l000E5823:
 	loc15 = v17
 	v18 = arg0
 	v19 = 0x1920<32>
+	Mem0[v18:word32] = v19
+	v20 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v20
+	v21 = 0x171<32>
+	v22 = arg0
+	v23 = 0<32>
+	invoke_vii(v21, v22, v23)
+	v24 = Mem0[0x00140048<p32>:word32]
+	loc1 = v24
+	v25 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v25
+	v26 = loc1
+	v27 = 1<32>
+	v28 = v26 & v27
+	loc6 = v28
+	v29 = loc6
+	branch !v29 l000E585F
+	// succ:  l000E5851 l000E585F
+l000E5851:
+	v30 = 0<32>
+	v31 = ___cxa_find_matching_catch_3(v30)
+	loc4 = v31
+	v32 = Mem0[0x00140094<p32>:word32]
+	loc5 = v32
+	v33 = loc4
+	fn000D0E65(v33)
+l000E585F:
+	v34 = arg0
+	v35 = 0x1C<32>
+	v36 = v34 + v35
+	loc7 = v36
+	v37 = loc7
+	fn0011B3FB(v37)
+	v38 = arg0
+	v39 = 0x20<32>
+	v40 = v38 + v39
+	loc8 = v40
+	v41 = loc8
+	v42 = Mem0[v41:word32]
+	loc9 = v42
+	v43 = loc9
+	_free(v43)
+	v44 = arg0
+	v45 = 0x24<32>
+	v46 = v44 + v45
+	loc10 = v46
+	v47 = loc10
+	v48 = Mem0[v47:word32]
+	loc11 = v48
+	v49 = loc11
+	_free(v49)
+	v50 = arg0
+	v51 = 0x30<32>
+	v52 = v50 + v51
+	loc12 = v52
+	v53 = loc12
+	v54 = Mem0[v53:word32]
+	loc13 = v54
+	v55 = loc13
+	_free(v55)
+	v56 = arg0
+	v57 = 0x3C<32>
+	v58 = v56 + v57
+	loc2 = v58
+	v59 = loc2
+	v60 = Mem0[v59:word32]
+	loc3 = v60
+	v61 = loc3
+	_free(v61)
 fn000E5823_exit:
-
-
-// fn000E58BC
-// Return size: 0
-void fn000E58BC(word32 arg0, word32 arg1)
-fn000E58BC_entry:
-	// succ:  l000E58BC
-l000E58BC:
-	v17 = Mem0[0x00140030<p32>:word32]
-	loc16 = v17
-	v18 = arg0
-	v19 = 0x28<32>
-	v20 = v18 + v19
-	loc7 = v20
-	v21 = loc7
-fn000E58BC_exit:
 
 
 // fn000E594A
@@ -243,6 +413,13 @@ l000E596B:
 	loc3 = v5
 	v6 = arg0
 	v7 = 0x1930<32>
+	Mem0[v6:word32] = v7
+	v8 = arg0
+	v9 = 4<32>
+	v10 = v8 + v9
+	loc1 = v10
+	v11 = loc1
+	fn0011B3FB(v11)
 fn000E596B_exit:
 
 
@@ -256,6 +433,15 @@ l000E5988:
 	loc3 = v5
 	v6 = arg0
 	v7 = 0x1930<32>
+	Mem0[v6:word32] = v7
+	v8 = arg0
+	v9 = 4<32>
+	v10 = v8 + v9
+	loc1 = v10
+	v11 = loc1
+	fn0011B3FB(v11)
+	v12 = arg0
+	fn0011B709(v12)
 fn000E5988_exit:
 
 
@@ -292,6 +478,14 @@ l000E59BE:
 	loc7 = v5
 	v6 = arg0
 	v7 = 0<64>
+	Mem0[v6:word64] = v7
+	v8 = arg0
+	v9 = 8<32>
+	v10 = v8 + v9
+	loc5 = v10
+	v11 = loc5
+	v12 = 0xFFFFFFFFFFFFFFFF<64>
+	Mem0[v11:word64] = v12
 fn000E59BE_exit:
 
 
@@ -305,6 +499,14 @@ l000E59DC:
 	loc6 = v5
 	v6 = arg0
 	v7 = 0<64>
+	Mem0[v6:word64] = v7
+	v8 = arg0
+	v9 = 8<32>
+	v10 = v8 + v9
+	loc4 = v10
+	v11 = loc4
+	v12 = 0xFFFFFFFFFFFFFFFF<64>
+	Mem0[v11:word64] = v12
 fn000E59DC_exit:
 
 
@@ -353,6 +555,21 @@ l000E5AE4:
 	v15 = Mem0[0x00140030<p32>:word32]
 	loc13 = v15
 	v16 = arg0
+	v17 = Mem0[v16:word32]
+	loc2 = v17
+	v18 = loc2
+	v19 = 0x24<32>
+	v20 = v18 + v19
+	loc4 = v20
+	v21 = loc4
+	v22 = Mem0[v21:word32]
+	loc5 = v22
+	v23 = arg0
+	v24 = loc5
+	v25 = 0x1FF<32>
+	v26 = v24 & v25
+	v27 = 0xB00<32>
+	v28 = v26 + v27
 fn000E5AE4_exit:
 
 
@@ -390,6 +607,13 @@ l000E5C8E:
 	loc3 = v5
 	v6 = arg0
 	v7 = 0x1970<32>
+	Mem0[v6:word32] = v7
+	v8 = arg0
+	v9 = 4<32>
+	v10 = v8 + v9
+	loc1 = v10
+	v11 = loc1
+	fn0011B3FB(v11)
 fn000E5C8E_exit:
 
 
@@ -403,6 +627,15 @@ l000E5CAB:
 	loc3 = v5
 	v6 = arg0
 	v7 = 0x1970<32>
+	Mem0[v6:word32] = v7
+	v8 = arg0
+	v9 = 4<32>
+	v10 = v8 + v9
+	loc1 = v10
+	v11 = loc1
+	fn0011B3FB(v11)
+	v12 = arg0
+	fn0011B709(v12)
 fn000E5CAB_exit:
 
 
@@ -439,6 +672,14 @@ l000E5CE1:
 	loc7 = v5
 	v6 = arg0
 	v7 = 0<64>
+	Mem0[v6:word64] = v7
+	v8 = arg0
+	v9 = 8<32>
+	v10 = v8 + v9
+	loc5 = v10
+	v11 = loc5
+	v12 = 0xFFFFFFFFFFFFFFFF<64>
+	Mem0[v11:word64] = v12
 fn000E5CE1_exit:
 
 
@@ -452,6 +693,14 @@ l000E5CFF:
 	loc6 = v5
 	v6 = arg0
 	v7 = 0<64>
+	Mem0[v6:word64] = v7
+	v8 = arg0
+	v9 = 8<32>
+	v10 = v8 + v9
+	loc4 = v10
+	v11 = loc4
+	v12 = 0xFFFFFFFFFFFFFFFF<64>
+	Mem0[v11:word64] = v12
 fn000E5CFF_exit:
 
 
@@ -500,6 +749,21 @@ l000E5E00:
 	v14 = Mem0[0x00140030<p32>:word32]
 	loc12 = v14
 	v15 = arg0
+	v16 = Mem0[v15:word32]
+	loc2 = v16
+	v17 = loc2
+	v18 = 0x24<32>
+	v19 = v17 + v18
+	loc3 = v19
+	v20 = loc3
+	v21 = Mem0[v20:word32]
+	loc4 = v21
+	v22 = arg0
+	v23 = loc4
+	v24 = 0x1FF<32>
+	v25 = v23 & v24
+	v26 = 0xB00<32>
+	v27 = v25 + v26
 fn000E5E00_exit:
 
 
@@ -606,6 +870,25 @@ l000E5FEB:
 	v9 = Mem0[0x00140030<p32>:word32]
 	loc7 = v9
 	v10 = arg0
+	v11 = Mem0[v10:word32]
+	loc1 = v11
+	v12 = loc1
+	v13 = 0xFFFFFFF4<32>
+	v14 = v12 + v13
+	loc2 = v14
+	v15 = loc2
+	v16 = Mem0[v15:word32]
+	loc3 = v16
+	v17 = arg0
+	v18 = loc3
+	v19 = v17 + v18
+	loc4 = v19
+	v20 = loc4
+	v21 = 8<32>
+	v22 = v20 + v21
+	loc5 = v22
+	v23 = loc5
+	fn000E5823(v23)
 fn000E5FEB_exit:
 
 
@@ -618,6 +901,21 @@ l000E601C:
 	v8 = Mem0[0x00140030<p32>:word32]
 	loc6 = v8
 	v9 = arg0
+	v10 = Mem0[v9:word32]
+	loc1 = v10
+	v11 = loc1
+	v12 = 0xFFFFFFF4<32>
+	v13 = v11 + v12
+	loc2 = v13
+	v14 = loc2
+	v15 = Mem0[v14:word32]
+	loc3 = v15
+	v16 = arg0
+	v17 = loc3
+	v18 = v16 + v17
+	loc4 = v18
+	v19 = loc4
+	fn000E5FD1(v19)
 fn000E601C_exit:
 
 
@@ -666,6 +964,25 @@ l000E6075:
 	v9 = Mem0[0x00140030<p32>:word32]
 	loc7 = v9
 	v10 = arg0
+	v11 = Mem0[v10:word32]
+	loc1 = v11
+	v12 = loc1
+	v13 = 0xFFFFFFF4<32>
+	v14 = v12 + v13
+	loc2 = v14
+	v15 = loc2
+	v16 = Mem0[v15:word32]
+	loc3 = v16
+	v17 = arg0
+	v18 = loc3
+	v19 = v17 + v18
+	loc4 = v19
+	v20 = loc4
+	v21 = 8<32>
+	v22 = v20 + v21
+	loc5 = v22
+	v23 = loc5
+	fn000E5823(v23)
 fn000E6075_exit:
 
 
@@ -678,6 +995,21 @@ l000E60A6:
 	v8 = Mem0[0x00140030<p32>:word32]
 	loc6 = v8
 	v9 = arg0
+	v10 = Mem0[v9:word32]
+	loc1 = v10
+	v11 = loc1
+	v12 = 0xFFFFFFF4<32>
+	v13 = v11 + v12
+	loc2 = v13
+	v14 = loc2
+	v15 = Mem0[v14:word32]
+	loc3 = v15
+	v16 = arg0
+	v17 = loc3
+	v18 = v16 + v17
+	loc4 = v18
+	v19 = loc4
+	fn000E605B(v19)
 fn000E60A6_exit:
 
 
@@ -726,6 +1058,25 @@ l000E60FF:
 	v9 = Mem0[0x00140030<p32>:word32]
 	loc7 = v9
 	v10 = arg0
+	v11 = Mem0[v10:word32]
+	loc1 = v11
+	v12 = loc1
+	v13 = 0xFFFFFFF4<32>
+	v14 = v12 + v13
+	loc2 = v14
+	v15 = loc2
+	v16 = Mem0[v15:word32]
+	loc3 = v16
+	v17 = arg0
+	v18 = loc3
+	v19 = v17 + v18
+	loc4 = v19
+	v20 = loc4
+	v21 = 4<32>
+	v22 = v20 + v21
+	loc5 = v22
+	v23 = loc5
+	fn000E5823(v23)
 fn000E60FF_exit:
 
 
@@ -738,6 +1089,21 @@ l000E6130:
 	v8 = Mem0[0x00140030<p32>:word32]
 	loc6 = v8
 	v9 = arg0
+	v10 = Mem0[v9:word32]
+	loc1 = v10
+	v11 = loc1
+	v12 = 0xFFFFFFF4<32>
+	v13 = v11 + v12
+	loc2 = v13
+	v14 = loc2
+	v15 = Mem0[v14:word32]
+	loc3 = v15
+	v16 = arg0
+	v17 = loc3
+	v18 = v16 + v17
+	loc4 = v18
+	v19 = loc4
+	fn000E60E5(v19)
 fn000E6130_exit:
 
 
@@ -786,6 +1152,25 @@ l000E6189:
 	v9 = Mem0[0x00140030<p32>:word32]
 	loc7 = v9
 	v10 = arg0
+	v11 = Mem0[v10:word32]
+	loc1 = v11
+	v12 = loc1
+	v13 = 0xFFFFFFF4<32>
+	v14 = v12 + v13
+	loc2 = v14
+	v15 = loc2
+	v16 = Mem0[v15:word32]
+	loc3 = v16
+	v17 = arg0
+	v18 = loc3
+	v19 = v17 + v18
+	loc4 = v19
+	v20 = loc4
+	v21 = 4<32>
+	v22 = v20 + v21
+	loc5 = v22
+	v23 = loc5
+	fn000E5823(v23)
 fn000E6189_exit:
 
 
@@ -798,6 +1183,21 @@ l000E61BA:
 	v8 = Mem0[0x00140030<p32>:word32]
 	loc6 = v8
 	v9 = arg0
+	v10 = Mem0[v9:word32]
+	loc1 = v10
+	v11 = loc1
+	v12 = 0xFFFFFFF4<32>
+	v13 = v11 + v12
+	loc2 = v13
+	v14 = loc2
+	v15 = Mem0[v14:word32]
+	loc3 = v15
+	v16 = arg0
+	v17 = loc3
+	v18 = v16 + v17
+	loc4 = v18
+	v19 = loc4
+	fn000E616F(v19)
 fn000E61BA_exit:
 
 
@@ -882,9 +1282,23 @@ l000E6240:
 	v19 = arg1
 	v20 = arg2
 	fn0011D16F(v18, v19, v20)
+	goto l000E6266
+	// succ:  l000E6266
 l000E6249:
 	v21 = arg0
 	v22 = 0<64>
+	Mem0[v21:word64] = v22
+	v23 = arg0
+	v24 = 8<32>
+	v25 = v23 + v24
+	v26 = 0<32>
+	Mem0[v25:word32] = v26
+	v27 = arg0
+	v28 = 0x368A<32>
+	v29 = 0x23<32>
+	fn0011B96D(v27, v28, v29)
+	// succ:  l000E6266
+l000E6266:
 fn000E6220_exit:
 
 
@@ -917,6 +1331,56 @@ l000E6282:
 	v39 = v37 + v38
 	loc19 = v39
 	v40 = loc19
+	v41 = Mem0[v40:word32]
+	loc20 = v41
+	v42 = loc20
+	v43 = 0<32>
+	v44 = v42 == v43
+	loc21 = v44
+	v45 = loc21
+	v46 = 1<32>
+	v47 = v45 & v46
+	loc22 = v47
+	v48 = loc22
+	v49 = arg1
+	v50 = v48 | v49
+	loc2 = v50
+	v51 = arg0
+	v52 = 0x10<32>
+	v53 = v51 + v52
+	loc23 = v53
+	v54 = loc23
+	v55 = loc2
+	Mem0[v54:word32] = v55
+	v56 = loc21
+	v57 = 1<32>
+	v58 = v56 & v57
+	loc24 = v58
+	v59 = loc24
+	v60 = arg1
+	v61 = v59 | v60
+	loc25 = v61
+	v62 = arg0
+	v63 = 0x14<32>
+	v64 = v62 + v63
+	loc6 = v64
+	v65 = loc6
+	v66 = Mem0[v65:word32]
+	loc7 = v66
+	v67 = loc25
+	v68 = loc7
+	v69 = v67 & v68
+	loc8 = v69
+	v70 = loc8
+	v71 = 0<32>
+	v72 = v70 == v71
+	loc9 = v72
+	v73 = loc9
+	v73 = v73
+	// succ:  l000E62E6 l000E62E6
+l000E62E6:
+	v74 = loc27
+	Mem0[0x00140030<p32>:word32] = v74
 fn000E626A_exit:
 
 
@@ -929,6 +1393,40 @@ l000E6375:
 	v8 = Mem0[0x00140030<p32>:word32]
 	loc5 = v8
 	v9 = 0x4388<32>
+	v10 = Mem0[v9:int8]
+	v11 = CONVERT(v10, int8, word32)
+	loc0 = v11
+	v12 = loc0
+	v13 = 0x18<32>
+	v14 = v12 << v13
+	v15 = 0x18<32>
+	v16 = v14 >> v15
+	v17 = 0<32>
+	v18 = v16 == v17
+	loc1 = v18
+	v19 = loc1
+	v19 = v19
+	// succ:  l000E6395 l000E6395
+l000E6395:
+	v20 = 0x4388<32>
+	v21 = fn0011EE46(v20)
+	loc2 = v21
+	v22 = loc2
+	v23 = 0<32>
+	v24 = v22 == v23
+	loc3 = v24
+	v25 = loc3
+	v26 = v25 == 0<32>
+	v26 = v26
+	// succ:  l000E63AA l000E63AA
+l000E63AA:
+	v27 = 0x4854<32>
+	v28 = 0x1A64<32>
+	Mem0[v27:word32] = v28
+	v29 = 0x38<32>
+	v30 = 0x4854<32>
+	v31 = Mem0[0x00140044<p32>:word32]
+	v32 = ___cxa_atexit(v29, v30, v31)
 fn000E6375_exit:
 
 
@@ -961,6 +1459,24 @@ l000E63E0:
 	v18 = loc6
 	loc3 = v18
 	v19 = arg2
+	v20 = Mem0[v19:word64]
+	loc7 = v20
+	v21 = loc3
+	v22 = loc7
+	Mem0[v21:word64] = v22
+	v23 = loc4
+	v24 = loc3
+	v25 = Mem0[v24:word64]
+	Mem0[v23:word64] = v25
+	v26 = arg0
+	v27 = loc4
+	v28 = arg1
+	fn0011D354(v26, v27, v28)
+	v29 = arg0
+	v30 = 0x1A50<32>
+	Mem0[v29:word32] = v30
+	v31 = loc6
+	Mem0[0x00140030<p32>:word32] = v31
 fn000E63C8_exit:
 
 
@@ -978,6 +1494,83 @@ l000E641C:
 	loc3 = v17
 	v18 = loc3
 	v19 = arg1
+	Mem0[v18:word32] = v19
+	v20 = arg1
+	v21 = 0<32>
+	v22 = v20 == v21
+	loc11 = v22
+	v23 = loc11
+	v24 = 1<32>
+	v25 = v23 & v24
+	loc4 = v25
+	v26 = arg0
+	v27 = 0x10<32>
+	v28 = v26 + v27
+	loc5 = v28
+	v29 = loc5
+	v30 = loc4
+	Mem0[v29:word32] = v30
+	v31 = arg0
+	v32 = 0x14<32>
+	v33 = v31 + v32
+	loc6 = v33
+	v34 = loc6
+	v35 = 0<32>
+	Mem0[v34:word32] = v35
+	v36 = arg0
+	v37 = 4<32>
+	v38 = v36 + v37
+	loc7 = v38
+	v39 = loc7
+	v40 = 0x1002<32>
+	Mem0[v39:word32] = v40
+	v41 = arg0
+	v42 = 0xC<32>
+	v43 = v41 + v42
+	loc8 = v43
+	v44 = loc8
+	v45 = 0<32>
+	Mem0[v44:word32] = v45
+	v46 = arg0
+	v47 = 8<32>
+	v48 = v46 + v47
+	loc9 = v48
+	v49 = loc9
+	v50 = 6<32>
+	Mem0[v49:word32] = v50
+	v51 = arg0
+	v52 = 0x20<32>
+	v53 = v51 + v52
+	loc10 = v53
+	v54 = arg0
+	v55 = 0x1C<32>
+	v56 = v54 + v55
+	loc2 = v56
+	v57 = loc10
+	v58 = 0<64>
+	Mem0[v57:word64] = v58
+	v59 = loc10
+	v60 = 8<32>
+	v61 = v59 + v60
+	v62 = 0<64>
+	Mem0[v61:word64] = v62
+	v63 = loc10
+	v64 = 0x10<32>
+	v65 = v63 + v64
+	v66 = 0<64>
+	Mem0[v65:word64] = v66
+	v67 = loc10
+	v68 = 0x18<32>
+	v69 = v67 + v68
+	v70 = 0<64>
+	Mem0[v69:word64] = v70
+	v71 = loc10
+	v72 = 0x20<32>
+	v73 = v71 + v72
+	v74 = 0<64>
+	Mem0[v73:word64] = v74
+	v75 = loc2
+	fn0011B395(v75)
 fn000E641C_exit:
 
 
@@ -1013,6 +1606,11 @@ l000E64E2:
 	v20 = loc2
 	fn0011B3DF(v19, v20)
 	v21 = loc1
+	v22 = Mem0[v21:word32]
+	loc3 = v22
+	v23 = loc5
+	Mem0[0x00140030<p32>:word32] = v23
+	v24 = loc3
 fn000E64CA_exit:
 
 
@@ -1026,6 +1624,30 @@ l000E6505:
 	loc4 = v6
 	v7 = arg0
 	v8 = 0x1930<32>
+	Mem0[v7:word32] = v8
+	v9 = arg0
+	v10 = 4<32>
+	v11 = v9 + v10
+	loc1 = v11
+	v12 = loc1
+	fn0011B395(v12)
+	v13 = arg0
+	v14 = 8<32>
+	v15 = v13 + v14
+	loc2 = v15
+	v16 = loc2
+	v17 = 0<64>
+	Mem0[v16:word64] = v17
+	v18 = loc2
+	v19 = 8<32>
+	v20 = v18 + v19
+	v21 = 0<64>
+	Mem0[v20:word64] = v21
+	v22 = loc2
+	v23 = 0x10<32>
+	v24 = v22 + v23
+	v25 = 0<64>
+	Mem0[v24:word64] = v25
 fn000E6505_exit:
 
 
@@ -1039,35 +1661,31 @@ l000E6544:
 	loc4 = v6
 	v7 = arg0
 	v8 = 0x1970<32>
+	Mem0[v7:word32] = v8
+	v9 = arg0
+	v10 = 4<32>
+	v11 = v9 + v10
+	loc1 = v11
+	v12 = loc1
+	fn0011B395(v12)
+	v13 = arg0
+	v14 = 8<32>
+	v15 = v13 + v14
+	loc2 = v15
+	v16 = loc2
+	v17 = 0<64>
+	Mem0[v16:word64] = v17
+	v18 = loc2
+	v19 = 8<32>
+	v20 = v18 + v19
+	v21 = 0<64>
+	Mem0[v20:word64] = v21
+	v22 = loc2
+	v23 = 0x10<32>
+	v24 = v22 + v23
+	v25 = 0<64>
+	Mem0[v24:word64] = v25
 fn000E6544_exit:
-
-
-// fn000E6583
-// Return size: 0
-word32 fn000E6583(word32 arg0)
-fn000E6583_entry:
-	// succ:  l000E6583
-l000E6583:
-	v55 = Mem0[0x00140030<p32>:word32]
-	loc53 = v55
-	v56 = Mem0[0x00140030<p32>:word32]
-	v57 = 0x10<32>
-	v58 = v56 + v57
-	Mem0[0x00140030<p32>:word32] = v58
-	v59 = Mem0[0x00140030<p32>:word32]
-	v60 = Mem0[0x00140034<p32>:word32]
-	v61 = v59 >= v60
-	branch !v61 l000E659B
-	// succ:  l000E6597 l000E659B
-l000E6597:
-	v62 = 0x10<32>
-	abortStackOverflow(v62)
-	// succ:  l000E659B
-l000E659B:
-	v63 = loc53
-	loc2 = v63
-	v64 = arg0
-fn000E6583_exit:
 
 
 // fn000E6790
@@ -1080,23 +1698,63 @@ l000E6790:
 	loc14 = v15
 	v16 = arg0
 	v17 = 0<32>
+	v18 = SLICE(v17, byte, 0)
+	Mem0[v16:byte] = v18
+	v19 = arg0
+	v20 = 4<32>
+	v21 = v19 + v20
+	loc5 = v21
+	v22 = loc5
+	v23 = arg1
+	Mem0[v22:word32] = v23
+	v24 = arg1
+	v25 = Mem0[v24:word32]
+	loc6 = v25
+	v26 = loc6
+	v27 = 0xFFFFFFF4<32>
+	v28 = v26 + v27
+	loc7 = v28
+	v29 = loc7
+	v30 = Mem0[v29:word32]
+	loc8 = v30
+	v31 = arg1
+	v32 = loc8
+	v33 = v31 + v32
+	loc9 = v33
+	v34 = loc9
+	v35 = 0x10<32>
+	v36 = v34 + v35
+	loc10 = v36
+	v37 = loc10
+	v38 = Mem0[v37:word32]
+	loc11 = v38
+	v39 = loc11
+	v40 = 0<32>
+	v41 = v39 == v40
+	loc12 = v41
+	v42 = loc12
+	v42 = v42
+	// succ:  l000E67E0 l000E67E0
+l000E67E0:
+	v43 = loc9
+	v44 = 0x48<32>
+	v45 = v43 + v44
+	loc2 = v45
+	v46 = loc2
+	v47 = Mem0[v46:word32]
+	loc3 = v47
+	v48 = loc3
+	v49 = 0<32>
+	v50 = v48 == v49
+	loc4 = v50
+	v51 = loc4
+	v52 = v51 == 0<32>
+	v52 = v52
+	// succ:  l000E67FB l000E67FB
+l000E67FB:
+	v53 = loc3
+	v54 = fn000E6583(v53)
 fn000E6790_exit:
-
-
-// fn000E680D
-// Return size: 0
-void fn000E680D(word32 arg0)
-fn000E680D_entry:
-	// succ:  l000E680D
-l000E680D:
-	v51 = Mem0[0x00140030<p32>:word32]
-	loc49 = v51
-	v52 = arg0
-	v53 = 4<32>
-	v54 = v52 + v53
-	loc1 = v54
-	v55 = loc1
-fn000E680D_exit:
 
 
 // fn000E69B2
@@ -1112,35 +1770,35 @@ l000E69B2:
 	v14 = v12 + v13
 	loc1 = v14
 	v15 = loc1
+	v16 = Mem0[v15:word32]
+	loc2 = v16
+	v17 = loc2
+	v18 = 1<32>
+	v19 = v17 | v18
+	loc3 = v19
+	v20 = loc1
+	v21 = loc3
+	Mem0[v20:word32] = v21
+	v22 = arg0
+	v23 = 0x14<32>
+	v24 = v22 + v23
+	loc4 = v24
+	v25 = loc4
+	v26 = Mem0[v25:word32]
+	loc5 = v26
+	v27 = loc5
+	v28 = 1<32>
+	v29 = v27 & v28
+	loc6 = v29
+	v30 = loc6
+	v31 = 0<32>
+	v32 = v30 == v31
+	loc7 = v32
+	v33 = loc7
+	v33 = v33
+	// succ:  l000E69F4 l000E69F4
+l000E69F4:
 fn000E69B2_exit:
-
-
-// fn000E69FB
-// Return size: 0
-word32 fn000E69FB(word32 arg0)
-fn000E69FB_entry:
-	// succ:  l000E69FB
-l000E69FB:
-	v55 = Mem0[0x00140030<p32>:word32]
-	loc53 = v55
-	v56 = Mem0[0x00140030<p32>:word32]
-	v57 = 0x10<32>
-	v58 = v56 + v57
-	Mem0[0x00140030<p32>:word32] = v58
-	v59 = Mem0[0x00140030<p32>:word32]
-	v60 = Mem0[0x00140034<p32>:word32]
-	v61 = v59 >= v60
-	branch !v61 l000E6A13
-	// succ:  l000E6A0F l000E6A13
-l000E6A0F:
-	v62 = 0x10<32>
-	abortStackOverflow(v62)
-	// succ:  l000E6A13
-l000E6A13:
-	v63 = loc53
-	loc2 = v63
-	v64 = arg0
-fn000E69FB_exit:
 
 
 // fn000E6C08
@@ -1153,163 +1811,63 @@ l000E6C08:
 	loc14 = v15
 	v16 = arg0
 	v17 = 0<32>
+	v18 = SLICE(v17, byte, 0)
+	Mem0[v16:byte] = v18
+	v19 = arg0
+	v20 = 4<32>
+	v21 = v19 + v20
+	loc5 = v21
+	v22 = loc5
+	v23 = arg1
+	Mem0[v22:word32] = v23
+	v24 = arg1
+	v25 = Mem0[v24:word32]
+	loc6 = v25
+	v26 = loc6
+	v27 = 0xFFFFFFF4<32>
+	v28 = v26 + v27
+	loc7 = v28
+	v29 = loc7
+	v30 = Mem0[v29:word32]
+	loc8 = v30
+	v31 = arg1
+	v32 = loc8
+	v33 = v31 + v32
+	loc9 = v33
+	v34 = loc9
+	v35 = 0x10<32>
+	v36 = v34 + v35
+	loc10 = v36
+	v37 = loc10
+	v38 = Mem0[v37:word32]
+	loc11 = v38
+	v39 = loc11
+	v40 = 0<32>
+	v41 = v39 == v40
+	loc12 = v41
+	v42 = loc12
+	v42 = v42
+	// succ:  l000E6C58 l000E6C58
+l000E6C58:
+	v43 = loc9
+	v44 = 0x48<32>
+	v45 = v43 + v44
+	loc2 = v45
+	v46 = loc2
+	v47 = Mem0[v46:word32]
+	loc3 = v47
+	v48 = loc3
+	v49 = 0<32>
+	v50 = v48 == v49
+	loc4 = v50
+	v51 = loc4
+	v52 = v51 == 0<32>
+	v52 = v52
+	// succ:  l000E6C73 l000E6C73
+l000E6C73:
+	v53 = loc3
+	v54 = fn000E69FB(v53)
 fn000E6C08_exit:
-
-
-// fn000E6C85
-// Return size: 0
-void fn000E6C85(word32 arg0)
-fn000E6C85_entry:
-	// succ:  l000E6C85
-l000E6C85:
-	v51 = Mem0[0x00140030<p32>:word32]
-	loc49 = v51
-	v52 = arg0
-	v53 = 4<32>
-	v54 = v52 + v53
-	loc1 = v54
-	v55 = loc1
-fn000E6C85_exit:
-
-
-// fn000E6E2A
-// Return size: 0
-word32 fn000E6E2A(word32 arg0, word32 arg1)
-fn000E6E2A_entry:
-	// succ:  l000E6E2A
-l000E6E2A:
-	v85 = Mem0[0x00140030<p32>:word32]
-	loc84 = v85
-	v86 = Mem0[0x00140030<p32>:word32]
-	v87 = 0x20<32>
-	v88 = v86 + v87
-	Mem0[0x00140030<p32>:word32] = v88
-	v89 = Mem0[0x00140030<p32>:word32]
-	v90 = Mem0[0x00140034<p32>:word32]
-	v91 = v89 >= v90
-	branch !v91 l000E6E42
-	// succ:  l000E6E3E l000E6E42
-l000E6E3E:
-	v92 = 0x20<32>
-	abortStackOverflow(v92)
-	// succ:  l000E6E42
-l000E6E42:
-	v93 = loc84
-	v94 = 0x18<32>
-	v95 = v93 + v94
-	loc4 = v95
-	v96 = loc84
-	v97 = 0x14<32>
-	v98 = v96 + v97
-	loc18 = v98
-	v99 = loc84
-	v100 = 0x10<32>
-	v101 = v99 + v100
-	loc29 = v101
-	v102 = loc84
-	v103 = 8<32>
-	v104 = v102 + v103
-	loc40 = v104
-	v105 = loc84
-	loc51 = v105
-	v106 = 0<32>
-	Mem0[0x00140048<p32>:word32] = v106
-	v107 = 0x166<32>
-	v108 = loc40
-	v109 = arg0
-	invoke_vii(v107, v108, v109)
-	v110 = Mem0[0x00140048<p32>:word32]
-	loc62 = v110
-	v111 = 0<32>
-	Mem0[0x00140048<p32>:word32] = v111
-	v112 = loc62
-	v113 = 1<32>
-	v114 = v112 & v113
-	loc73 = v114
-	// succ:  l000E6E7F
-l000E6E7F:
-	v115 = loc73
-	branch !v115 l000E6E9F
-	// succ:  l000E6E85 l000E6E9F
-l000E6E85:
-	v116 = 0<32>
-	v117 = ___cxa_find_matching_catch_3(v116)
-	loc60 = v117
-	v118 = Mem0[0x00140094<p32>:word32]
-	loc61 = v118
-	v119 = loc60
-	loc3 = v119
-	v120 = arg0
-	loc5 = v120
-	v121 = arg0
-	loc7 = v121
-	v122 = 0x13<32>
-	loc83 = v122
-l000E6E9F:
-	v123 = loc40
-fn000E6E2A_exit:
-
-
-// fn000E71A1
-// Return size: 0
-word32 fn000E71A1(word32 arg0, word32 arg1)
-fn000E71A1_entry:
-	// succ:  l000E71A1
-l000E71A1:
-	v60 = Mem0[0x00140030<p32>:word32]
-	loc59 = v60
-	v61 = Mem0[0x00140030<p32>:word32]
-	v62 = 0x10<32>
-	v63 = v61 + v62
-	Mem0[0x00140030<p32>:word32] = v63
-	v64 = Mem0[0x00140030<p32>:word32]
-	v65 = Mem0[0x00140034<p32>:word32]
-	v66 = v64 >= v65
-	branch !v66 l000E71B9
-	// succ:  l000E71B5 l000E71B9
-l000E71B5:
-	v67 = 0x10<32>
-	abortStackOverflow(v67)
-	// succ:  l000E71B9
-l000E71B9:
-	v68 = loc59
-	loc15 = v68
-	v69 = 0<32>
-	Mem0[0x00140048<p32>:word32] = v69
-	v70 = 0x166<32>
-	v71 = loc15
-	v72 = arg0
-	invoke_vii(v70, v71, v72)
-	v73 = Mem0[0x00140048<p32>:word32]
-	loc26 = v73
-	v74 = 0<32>
-	Mem0[0x00140048<p32>:word32] = v74
-	v75 = loc26
-	v76 = 1<32>
-	v77 = v75 & v76
-	loc37 = v77
-	// succ:  l000E71DA
-l000E71DA:
-	v78 = loc37
-	branch !v78 l000E71FA
-	// succ:  l000E71E0 l000E71FA
-l000E71E0:
-	v79 = 0<32>
-	v80 = ___cxa_find_matching_catch_3(v79)
-	loc36 = v80
-	v81 = Mem0[0x00140094<p32>:word32]
-	loc38 = v81
-	v82 = loc36
-	loc2 = v82
-	v83 = arg0
-	loc3 = v83
-	v84 = arg0
-	loc4 = v84
-	v85 = 0xC<32>
-	loc58 = v85
-l000E71FA:
-	v86 = loc15
-fn000E71A1_exit:
 
 
 // __GLOBAL__I_000101
@@ -1349,6 +1907,545 @@ l000E7427:
 	v85 = Mem0[0x00140030<p32>:word32]
 	loc83 = v85
 	v86 = 0xB88<32>
+	v87 = Mem0[v86:word32]
+	loc1 = v87
+	v88 = 0x4B00<32>
+	v89 = loc1
+	v90 = 0x4B38<32>
+	fn000E79F6(v88, v89, v90)
+	v91 = 0x4858<32>
+	v92 = 0x19B4<32>
+	Mem0[v91:word32] = v92
+	v93 = 0x4860<32>
+	v94 = 0x19C8<32>
+	Mem0[v93:word32] = v94
+	v95 = 0x485C<32>
+	v96 = 0<32>
+	Mem0[v95:word32] = v96
+	v97 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v97
+	v98 = 0x176<32>
+	v99 = 0x4860<32>
+	v100 = 0x4B00<32>
+	invoke_vii(v98, v99, v100)
+	v101 = Mem0[0x00140048<p32>:word32]
+	loc12 = v101
+	v102 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v102
+	v103 = loc12
+	v104 = 1<32>
+	v105 = v103 & v104
+	loc23 = v105
+	v106 = loc23
+	branch !v106 l000E7496
+	// succ:  l000E7483 l000E7496
+l000E7483:
+	v107 = ___cxa_find_matching_catch_2()
+	loc34 = v107
+	v108 = Mem0[0x00140094<p32>:word32]
+	loc45 = v108
+	v109 = 0x4860<32>
+	fn000E5815(v109)
+	v110 = loc34
+	___resumeException(v110)
+	// succ:  l000E7496
+l000E7496:
+	v111 = 0x48A8<32>
+	v112 = 0<32>
+	Mem0[v111:word32] = v112
+	v113 = 0x48AC<32>
+	v114 = 0xFFFFFFFF<32>
+	Mem0[v113:word32] = v114
+	v115 = 0x4B40<32>
+	v116 = loc1
+	v117 = 0x4B78<32>
+	fn000E7ABF(v115, v116, v117)
+	v118 = 0x48B0<32>
+	v119 = 0x19DC<32>
+	Mem0[v118:word32] = v119
+	v120 = 0x48B8<32>
+	v121 = 0x19F0<32>
+	Mem0[v120:word32] = v121
+	v122 = 0x48B4<32>
+	v123 = 0<32>
+	Mem0[v122:word32] = v123
+	v124 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v124
+	v125 = 0x176<32>
+	v126 = 0x48B8<32>
+	v127 = 0x4B40<32>
+	invoke_vii(v125, v126, v127)
+	v128 = Mem0[0x00140048<p32>:word32]
+	loc56 = v128
+	v129 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v129
+	v130 = loc56
+	v131 = 1<32>
+	v132 = v130 & v131
+	loc67 = v132
+	v133 = loc67
+	branch !v133 l000E750A
+	// succ:  l000E74F7 l000E750A
+l000E74F7:
+	v134 = ___cxa_find_matching_catch_2()
+	loc78 = v134
+	v135 = Mem0[0x00140094<p32>:word32]
+	loc81 = v135
+	v136 = 0x48B8<32>
+	fn000E595D(v136)
+	v137 = loc78
+	___resumeException(v137)
+	// succ:  l000E750A
+l000E750A:
+	v138 = 0x4900<32>
+	v139 = 0<32>
+	Mem0[v138:word32] = v139
+	v140 = 0x4904<32>
+	v141 = 0xFFFFFFFF<32>
+	Mem0[v140:word32] = v141
+	v142 = 0xBFC<32>
+	v143 = Mem0[v142:word32]
+	loc2 = v143
+	v144 = 0x4B80<32>
+	v145 = loc2
+	v146 = 0x4BB0<32>
+	fn000E7B88(v144, v145, v146)
+	v147 = 0x4908<32>
+	v148 = 0x1A04<32>
+	Mem0[v147:word32] = v148
+	v149 = 0x490C<32>
+	v150 = 0x1A18<32>
+	Mem0[v149:word32] = v150
+	v151 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v151
+	v152 = 0x176<32>
+	v153 = 0x490C<32>
+	v154 = 0x4B80<32>
+	invoke_vii(v152, v153, v154)
+	v155 = Mem0[0x00140048<p32>:word32]
+	loc3 = v155
+	v156 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v156
+	v157 = loc3
+	v158 = 1<32>
+	v159 = v157 & v158
+	loc4 = v159
+	v160 = loc4
+	branch !v160 l000E757D
+	// succ:  l000E756A l000E757D
+l000E756A:
+	v161 = ___cxa_find_matching_catch_2()
+	loc5 = v161
+	v162 = Mem0[0x00140094<p32>:word32]
+	loc6 = v162
+	v163 = 0x490C<32>
+	fn000E5815(v163)
+	v164 = loc5
+	___resumeException(v164)
+	// succ:  l000E757D
+l000E757D:
+	v165 = 0x4954<32>
+	v166 = 0<32>
+	Mem0[v165:word32] = v166
+	v167 = 0x4958<32>
+	v168 = 0xFFFFFFFF<32>
+	Mem0[v167:word32] = v168
+	v169 = 0x4BB8<32>
+	v170 = loc2
+	v171 = 0x4BE8<32>
+	fn000E7C82(v169, v170, v171)
+	v172 = 0x495C<32>
+	v173 = 0x1A2C<32>
+	Mem0[v172:word32] = v173
+	v174 = 0x4960<32>
+	v175 = 0x1A40<32>
+	Mem0[v174:word32] = v175
+	v176 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v176
+	v177 = 0x176<32>
+	v178 = 0x4960<32>
+	v179 = 0x4BB8<32>
+	invoke_vii(v177, v178, v179)
+	v180 = Mem0[0x00140048<p32>:word32]
+	loc7 = v180
+	v181 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v181
+	v182 = loc7
+	v183 = 1<32>
+	v184 = v182 & v183
+	loc8 = v184
+	v185 = loc8
+	branch !v185 l000E75E8
+	// succ:  l000E75D5 l000E75E8
+l000E75D5:
+	v186 = ___cxa_find_matching_catch_2()
+	loc9 = v186
+	v187 = Mem0[0x00140094<p32>:word32]
+	loc10 = v187
+	v188 = 0x4960<32>
+	fn000E595D(v188)
+	v189 = loc9
+	___resumeException(v189)
+	// succ:  l000E75E8
+l000E75E8:
+	v190 = 0x49A8<32>
+	v191 = 0<32>
+	Mem0[v190:word32] = v191
+	v192 = 0x49AC<32>
+	v193 = 0xFFFFFFFF<32>
+	Mem0[v192:word32] = v193
+	v194 = 0xB14<32>
+	v195 = Mem0[v194:word32]
+	loc11 = v195
+	v196 = 0x4BF0<32>
+	v197 = loc11
+	v198 = 0x4C20<32>
+	fn000E7B88(v196, v197, v198)
+	v199 = 0x49B0<32>
+	v200 = 0x1A04<32>
+	Mem0[v199:word32] = v200
+	v201 = 0x49B4<32>
+	v202 = 0x1A18<32>
+	Mem0[v201:word32] = v202
+	v203 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v203
+	v204 = 0x176<32>
+	v205 = 0x49B4<32>
+	v206 = 0x4BF0<32>
+	invoke_vii(v204, v205, v206)
+	v207 = Mem0[0x00140048<p32>:word32]
+	loc13 = v207
+	v208 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v208
+	v209 = loc13
+	v210 = 1<32>
+	v211 = v209 & v210
+	loc14 = v211
+	v212 = loc14
+	branch !v212 l000E765B
+	// succ:  l000E7648 l000E765B
+l000E7648:
+	v213 = ___cxa_find_matching_catch_2()
+	loc15 = v213
+	v214 = Mem0[0x00140094<p32>:word32]
+	loc16 = v214
+	v215 = 0x49B4<32>
+	fn000E5815(v215)
+	v216 = loc15
+	___resumeException(v216)
+	// succ:  l000E765B
+l000E765B:
+	v217 = 0x49FC<32>
+	v218 = 0<32>
+	Mem0[v217:word32] = v218
+	v219 = 0x4A00<32>
+	v220 = 0xFFFFFFFF<32>
+	Mem0[v219:word32] = v220
+	v221 = 0x49B0<32>
+	v222 = Mem0[v221:word32]
+	loc17 = v222
+	v223 = loc17
+	v224 = 0xFFFFFFF4<32>
+	v225 = v223 + v224
+	loc18 = v225
+	v226 = loc18
+	v227 = Mem0[v226:word32]
+	loc19 = v227
+	v228 = 0x49B0<32>
+	v229 = loc19
+	v230 = v228 + v229
+	loc20 = v230
+	v231 = loc20
+	v232 = 0x18<32>
+	v233 = v231 + v232
+	loc21 = v233
+	v234 = loc21
+	v235 = Mem0[v234:word32]
+	loc22 = v235
+	v236 = 0x4A58<32>
+	v237 = 0x1A04<32>
+	Mem0[v236:word32] = v237
+	v238 = 0x4A5C<32>
+	v239 = 0x1A18<32>
+	Mem0[v238:word32] = v239
+	v240 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v240
+	v241 = 0x176<32>
+	v242 = 0x4A5C<32>
+	v243 = loc22
+	invoke_vii(v241, v242, v243)
+	v244 = Mem0[0x00140048<p32>:word32]
+	loc24 = v244
+	v245 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v245
+	v246 = loc24
+	v247 = 1<32>
+	v248 = v246 & v247
+	loc25 = v248
+	v249 = loc25
+	branch !v249 l000E76E5
+	// succ:  l000E76D2 l000E76E5
+l000E76D2:
+	v250 = ___cxa_find_matching_catch_2()
+	loc26 = v250
+	v251 = Mem0[0x00140094<p32>:word32]
+	loc27 = v251
+	v252 = 0x4A5C<32>
+	fn000E5815(v252)
+	v253 = loc26
+	___resumeException(v253)
+	// succ:  l000E76E5
+l000E76E5:
+	v254 = 0x4AA4<32>
+	v255 = 0<32>
+	Mem0[v254:word32] = v255
+	v256 = 0x4AA8<32>
+	v257 = 0xFFFFFFFF<32>
+	Mem0[v256:word32] = v257
+	v258 = 0x4C28<32>
+	v259 = loc11
+	v260 = 0x4C58<32>
+	fn000E7C82(v258, v259, v260)
+	v261 = 0x4A04<32>
+	v262 = 0x1A2C<32>
+	Mem0[v261:word32] = v262
+	v263 = 0x4A08<32>
+	v264 = 0x1A40<32>
+	Mem0[v263:word32] = v264
+	v265 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v265
+	v266 = 0x176<32>
+	v267 = 0x4A08<32>
+	v268 = 0x4C28<32>
+	invoke_vii(v266, v267, v268)
+	v269 = Mem0[0x00140048<p32>:word32]
+	loc28 = v269
+	v270 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v270
+	v271 = loc28
+	v272 = 1<32>
+	v273 = v271 & v272
+	loc29 = v273
+	v274 = loc29
+	branch !v274 l000E7750
+	// succ:  l000E773D l000E7750
+l000E773D:
+	v275 = ___cxa_find_matching_catch_2()
+	loc30 = v275
+	v276 = Mem0[0x00140094<p32>:word32]
+	loc31 = v276
+	v277 = 0x4A08<32>
+	fn000E595D(v277)
+	v278 = loc30
+	___resumeException(v278)
+	// succ:  l000E7750
+l000E7750:
+	v279 = 0x4A50<32>
+	v280 = 0<32>
+	Mem0[v279:word32] = v280
+	v281 = 0x4A54<32>
+	v282 = 0xFFFFFFFF<32>
+	Mem0[v281:word32] = v282
+	v283 = 0x4A04<32>
+	v284 = Mem0[v283:word32]
+	loc32 = v284
+	v285 = loc32
+	v286 = 0xFFFFFFF4<32>
+	v287 = v285 + v286
+	loc33 = v287
+	v288 = loc33
+	v289 = Mem0[v288:word32]
+	loc35 = v289
+	v290 = 0x4A04<32>
+	v291 = loc35
+	v292 = v290 + v291
+	loc36 = v292
+	v293 = loc36
+	v294 = 0x18<32>
+	v295 = v293 + v294
+	loc37 = v295
+	v296 = loc37
+	v297 = Mem0[v296:word32]
+	loc38 = v297
+	v298 = 0x4AAC<32>
+	v299 = 0x1A2C<32>
+	Mem0[v298:word32] = v299
+	v300 = 0x4AB0<32>
+	v301 = 0x1A40<32>
+	Mem0[v300:word32] = v301
+	v302 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v302
+	v303 = 0x176<32>
+	v304 = 0x4AB0<32>
+	v305 = loc38
+	invoke_vii(v303, v304, v305)
+	v306 = Mem0[0x00140048<p32>:word32]
+	loc39 = v306
+	v307 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v307
+	v308 = loc39
+	v309 = 1<32>
+	v310 = v308 & v309
+	loc40 = v310
+	v311 = loc40
+	branch !v311 l000E77DA
+	// succ:  l000E77C7 l000E77DA
+l000E77C7:
+	v312 = ___cxa_find_matching_catch_2()
+	loc41 = v312
+	v313 = Mem0[0x00140094<p32>:word32]
+	loc42 = v313
+	v314 = 0x4AB0<32>
+	fn000E595D(v314)
+	v315 = loc41
+	___resumeException(v315)
+l000E77DA:
+	v316 = 0x4AF8<32>
+	v317 = 0<32>
+	Mem0[v316:word32] = v317
+	v318 = 0x4AFC<32>
+	v319 = 0xFFFFFFFF<32>
+	Mem0[v318:word32] = v319
+	v320 = 0x4858<32>
+	v321 = Mem0[v320:word32]
+	loc43 = v321
+	v322 = loc43
+	v323 = 0xFFFFFFF4<32>
+	v324 = v322 + v323
+	loc44 = v324
+	v325 = loc44
+	v326 = Mem0[v325:word32]
+	loc46 = v326
+	v327 = 0x4858<32>
+	v328 = loc46
+	v329 = v327 + v328
+	loc47 = v329
+	v330 = loc47
+	v331 = 0x48<32>
+	v332 = v330 + v331
+	loc48 = v332
+	v333 = loc48
+	v334 = 0x4908<32>
+	Mem0[v333:word32] = v334
+	v335 = 0x48B0<32>
+	v336 = Mem0[v335:word32]
+	loc49 = v336
+	v337 = loc49
+	v338 = 0xFFFFFFF4<32>
+	v339 = v337 + v338
+	loc50 = v339
+	v340 = loc50
+	v341 = Mem0[v340:word32]
+	loc51 = v341
+	v342 = 0x48B0<32>
+	v343 = loc51
+	v344 = v342 + v343
+	loc52 = v344
+	v345 = loc52
+	v346 = 0x48<32>
+	v347 = v345 + v346
+	loc53 = v347
+	v348 = loc53
+	v349 = 0x495C<32>
+	Mem0[v348:word32] = v349
+	v350 = 0x49B0<32>
+	v351 = Mem0[v350:word32]
+	loc54 = v351
+	v352 = loc54
+	v353 = 0xFFFFFFF4<32>
+	v354 = v352 + v353
+	loc55 = v354
+	v355 = loc55
+	v356 = Mem0[v355:word32]
+	loc57 = v356
+	v357 = 0x49B0<32>
+	v358 = loc57
+	v359 = v357 + v358
+	loc58 = v359
+	v360 = loc58
+	v361 = 4<32>
+	v362 = v360 + v361
+	loc59 = v362
+	v363 = loc59
+	v364 = Mem0[v363:word32]
+	loc60 = v364
+	v365 = loc60
+	v366 = 0x2000<32>
+	v367 = v365 | v366
+	loc61 = v367
+	v368 = loc59
+	v369 = loc61
+	Mem0[v368:word32] = v369
+	v370 = 0x4A04<32>
+	v371 = Mem0[v370:word32]
+	loc62 = v371
+	v372 = loc62
+	v373 = 0xFFFFFFF4<32>
+	v374 = v372 + v373
+	loc63 = v374
+	v375 = loc63
+	v376 = Mem0[v375:word32]
+	loc64 = v376
+	v377 = 0x4A04<32>
+	v378 = loc64
+	v379 = v377 + v378
+	loc65 = v379
+	v380 = loc65
+	v381 = 4<32>
+	v382 = v380 + v381
+	loc66 = v382
+	v383 = loc66
+	v384 = Mem0[v383:word32]
+	loc68 = v384
+	v385 = loc68
+	v386 = 0x2000<32>
+	v387 = v385 | v386
+	loc69 = v387
+	v388 = loc66
+	v389 = loc69
+	Mem0[v388:word32] = v389
+	v390 = 0x49B0<32>
+	v391 = Mem0[v390:word32]
+	loc70 = v391
+	v392 = loc70
+	v393 = 0xFFFFFFF4<32>
+	v394 = v392 + v393
+	loc71 = v394
+	v395 = loc71
+	v396 = Mem0[v395:word32]
+	loc72 = v396
+	v397 = 0x49B0<32>
+	v398 = loc72
+	v399 = v397 + v398
+	loc73 = v399
+	v400 = loc73
+	v401 = 0x48<32>
+	v402 = v400 + v401
+	loc74 = v402
+	v403 = loc74
+	v404 = 0x4908<32>
+	Mem0[v403:word32] = v404
+	v405 = 0x4A04<32>
+	v406 = Mem0[v405:word32]
+	loc75 = v406
+	v407 = loc75
+	v408 = 0xFFFFFFF4<32>
+	v409 = v407 + v408
+	loc76 = v409
+	v410 = loc76
+	v411 = Mem0[v410:word32]
+	loc77 = v411
+	v412 = 0x4A04<32>
+	v413 = loc77
+	v414 = v412 + v413
+	loc79 = v414
+	v415 = loc79
+	v416 = 0x48<32>
+	v417 = v415 + v416
+	loc80 = v417
+	v418 = loc80
+	v419 = 0x495C<32>
+	Mem0[v418:word32] = v419
 fn000E7427_exit:
 
 
@@ -1400,6 +2497,82 @@ l000E7A0E:
 	fn000E6505(v28)
 	v29 = arg0
 	v30 = 0x1B48<32>
+	Mem0[v29:word32] = v30
+	v31 = arg0
+	v32 = 0x20<32>
+	v33 = v31 + v32
+	loc10 = v33
+	v34 = loc10
+	v35 = arg1
+	Mem0[v34:word32] = v35
+	v36 = arg0
+	v37 = 0x28<32>
+	v38 = v36 + v37
+	loc11 = v38
+	v39 = loc11
+	v40 = arg2
+	Mem0[v39:word32] = v40
+	v41 = arg0
+	v42 = 0x30<32>
+	v43 = v41 + v42
+	loc12 = v43
+	v44 = loc12
+	v45 = 0xFFFFFFFF<32>
+	Mem0[v44:word32] = v45
+	v46 = arg0
+	v47 = 0x34<32>
+	v48 = v46 + v47
+	loc13 = v48
+	v49 = loc13
+	v50 = 0<32>
+	v51 = SLICE(v50, byte, 0)
+	Mem0[v49:byte] = v51
+	v52 = arg0
+	v53 = 4<32>
+	v54 = v52 + v53
+	loc14 = v54
+	v55 = loc8
+	v56 = loc14
+	fn0011B3DF(v55, v56)
+	v57 = loc8
+	v58 = Mem0[v57:word32]
+	loc3 = v58
+	v59 = loc9
+	v60 = loc3
+	Mem0[v59:word32] = v60
+	v61 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v61
+	v62 = 0x4F<32>
+	v63 = arg0
+	v64 = loc9
+	invoke_vii(v62, v63, v64)
+	v65 = Mem0[0x00140048<p32>:word32]
+	loc4 = v65
+	v66 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v66
+	v67 = loc4
+	v68 = 1<32>
+	v69 = v67 & v68
+	loc5 = v69
+	v70 = loc5
+	branch !v70 l000E7AB1
+	// succ:  l000E7A9B l000E7AB1
+l000E7A9B:
+	v71 = ___cxa_find_matching_catch_2()
+	loc6 = v71
+	v72 = Mem0[0x00140094<p32>:word32]
+	loc7 = v72
+	v73 = loc9
+	fn0011B3FB(v73)
+	v74 = arg0
+	fn000E596B(v74)
+	v75 = loc6
+	___resumeException(v75)
+l000E7AB1:
+	v76 = loc9
+	fn0011B3FB(v76)
+	v77 = loc16
+	Mem0[0x00140030<p32>:word32] = v77
 fn000E79F6_exit:
 
 
@@ -1435,6 +2608,82 @@ l000E7AD7:
 	fn000E6544(v28)
 	v29 = arg0
 	v30 = 0x1B08<32>
+	Mem0[v29:word32] = v30
+	v31 = arg0
+	v32 = 0x20<32>
+	v33 = v31 + v32
+	loc10 = v33
+	v34 = loc10
+	v35 = arg1
+	Mem0[v34:word32] = v35
+	v36 = arg0
+	v37 = 0x28<32>
+	v38 = v36 + v37
+	loc11 = v38
+	v39 = loc11
+	v40 = arg2
+	Mem0[v39:word32] = v40
+	v41 = arg0
+	v42 = 0x30<32>
+	v43 = v41 + v42
+	loc12 = v43
+	v44 = loc12
+	v45 = 0xFFFFFFFF<32>
+	Mem0[v44:word32] = v45
+	v46 = arg0
+	v47 = 0x34<32>
+	v48 = v46 + v47
+	loc13 = v48
+	v49 = loc13
+	v50 = 0<32>
+	v51 = SLICE(v50, byte, 0)
+	Mem0[v49:byte] = v51
+	v52 = arg0
+	v53 = 4<32>
+	v54 = v52 + v53
+	loc14 = v54
+	v55 = loc8
+	v56 = loc14
+	fn0011B3DF(v55, v56)
+	v57 = loc8
+	v58 = Mem0[v57:word32]
+	loc3 = v58
+	v59 = loc9
+	v60 = loc3
+	Mem0[v59:word32] = v60
+	v61 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v61
+	v62 = 0x4A<32>
+	v63 = arg0
+	v64 = loc9
+	invoke_vii(v62, v63, v64)
+	v65 = Mem0[0x00140048<p32>:word32]
+	loc4 = v65
+	v66 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v66
+	v67 = loc4
+	v68 = 1<32>
+	v69 = v67 & v68
+	loc5 = v69
+	v70 = loc5
+	branch !v70 l000E7B7A
+	// succ:  l000E7B64 l000E7B7A
+l000E7B64:
+	v71 = ___cxa_find_matching_catch_2()
+	loc6 = v71
+	v72 = Mem0[0x00140094<p32>:word32]
+	loc7 = v72
+	v73 = loc9
+	fn0011B3FB(v73)
+	v74 = arg0
+	fn000E5C8E(v74)
+	v75 = loc6
+	___resumeException(v75)
+l000E7B7A:
+	v76 = loc9
+	fn0011B3FB(v76)
+	v77 = loc16
+	Mem0[0x00140030<p32>:word32] = v77
 fn000E7ABF_exit:
 
 
@@ -1470,6 +2719,93 @@ l000E7BA0:
 	fn000E6505(v34)
 	v35 = arg0
 	v36 = 0x1AC8<32>
+	Mem0[v35:word32] = v36
+	v37 = arg0
+	v38 = 0x20<32>
+	v39 = v37 + v38
+	loc16 = v39
+	v40 = loc16
+	v41 = arg1
+	Mem0[v40:word32] = v41
+	v42 = arg0
+	v43 = 4<32>
+	v44 = v42 + v43
+	loc17 = v44
+	v45 = loc14
+	v46 = loc17
+	fn0011B3DF(v45, v46)
+	v47 = loc14
+	v48 = Mem0[v47:word32]
+	loc18 = v48
+	v49 = loc15
+	v50 = loc18
+	Mem0[v49:word32] = v50
+	v51 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v51
+	v52 = 0x164<32>
+	v53 = loc15
+	v54 = 0x5370<32>
+	v55 = invoke_iii(v52, v53, v54)
+	loc19 = v55
+	v56 = Mem0[0x00140048<p32>:word32]
+	loc20 = v56
+	v57 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v57
+	v58 = loc20
+	v59 = 1<32>
+	v60 = v58 & v59
+	loc3 = v60
+	v61 = loc3
+	branch !v61 l000E7C1D
+	// succ:  l000E7C07 l000E7C1D
+l000E7C07:
+	v62 = ___cxa_find_matching_catch_2()
+	loc12 = v62
+	v63 = Mem0[0x00140094<p32>:word32]
+	loc13 = v63
+	v64 = loc15
+	fn0011B3FB(v64)
+	v65 = arg0
+	fn000E596B(v65)
+	v66 = loc12
+	___resumeException(v66)
+l000E7C1D:
+	v67 = arg0
+	v68 = 0x24<32>
+	v69 = v67 + v68
+	loc4 = v69
+	v70 = loc15
+	fn0011B3FB(v70)
+	v71 = loc4
+	v72 = loc19
+	Mem0[v71:word32] = v72
+	v73 = arg0
+	v74 = 0x28<32>
+	v75 = v73 + v74
+	loc5 = v75
+	v76 = loc5
+	v77 = arg2
+	Mem0[v76:word32] = v77
+	v78 = arg0
+	v79 = 0x2C<32>
+	v80 = v78 + v79
+	loc6 = v80
+	v81 = loc19
+	v82 = Mem0[v81:word32]
+	loc7 = v82
+	v83 = loc7
+	v84 = 0x1C<32>
+	v85 = v83 + v84
+	loc8 = v85
+	v86 = loc8
+	v87 = Mem0[v86:word32]
+	loc9 = v87
+	v88 = loc19
+	v89 = loc9
+	v90 = 0x1FF<32>
+	v91 = v89 & v90
+	v92 = 0xB00<32>
+	v93 = v91 + v92
 fn000E7B88_exit:
 
 
@@ -1505,6 +2841,93 @@ l000E7C9A:
 	fn000E6544(v34)
 	v35 = arg0
 	v36 = 0x1A88<32>
+	Mem0[v35:word32] = v36
+	v37 = arg0
+	v38 = 0x20<32>
+	v39 = v37 + v38
+	loc16 = v39
+	v40 = loc16
+	v41 = arg1
+	Mem0[v40:word32] = v41
+	v42 = arg0
+	v43 = 4<32>
+	v44 = v42 + v43
+	loc17 = v44
+	v45 = loc14
+	v46 = loc17
+	fn0011B3DF(v45, v46)
+	v47 = loc14
+	v48 = Mem0[v47:word32]
+	loc18 = v48
+	v49 = loc15
+	v50 = loc18
+	Mem0[v49:word32] = v50
+	v51 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v51
+	v52 = 0x164<32>
+	v53 = loc15
+	v54 = 0x5378<32>
+	v55 = invoke_iii(v52, v53, v54)
+	loc19 = v55
+	v56 = Mem0[0x00140048<p32>:word32]
+	loc20 = v56
+	v57 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v57
+	v58 = loc20
+	v59 = 1<32>
+	v60 = v58 & v59
+	loc3 = v60
+	v61 = loc3
+	branch !v61 l000E7D17
+	// succ:  l000E7D01 l000E7D17
+l000E7D01:
+	v62 = ___cxa_find_matching_catch_2()
+	loc12 = v62
+	v63 = Mem0[0x00140094<p32>:word32]
+	loc13 = v63
+	v64 = loc15
+	fn0011B3FB(v64)
+	v65 = arg0
+	fn000E5C8E(v65)
+	v66 = loc12
+	___resumeException(v66)
+l000E7D17:
+	v67 = arg0
+	v68 = 0x24<32>
+	v69 = v67 + v68
+	loc4 = v69
+	v70 = loc15
+	fn0011B3FB(v70)
+	v71 = loc4
+	v72 = loc19
+	Mem0[v71:word32] = v72
+	v73 = arg0
+	v74 = 0x28<32>
+	v75 = v73 + v74
+	loc5 = v75
+	v76 = loc5
+	v77 = arg2
+	Mem0[v76:word32] = v77
+	v78 = arg0
+	v79 = 0x2C<32>
+	v80 = v78 + v79
+	loc6 = v80
+	v81 = loc19
+	v82 = Mem0[v81:word32]
+	loc7 = v82
+	v83 = loc7
+	v84 = 0x1C<32>
+	v85 = v83 + v84
+	loc8 = v85
+	v86 = loc8
+	v87 = Mem0[v86:word32]
+	loc9 = v87
+	v88 = loc19
+	v89 = loc9
+	v90 = 0x1FF<32>
+	v91 = v89 & v90
+	v92 = 0xB00<32>
+	v93 = v91 + v92
 fn000E7C82_exit:
 
 
@@ -1532,6 +2955,21 @@ l000E7D8F:
 	v15 = Mem0[0x00140030<p32>:word32]
 	loc14 = v15
 	v16 = arg0
+	v17 = Mem0[v16:word32]
+	loc5 = v17
+	v18 = loc5
+	v19 = 0x18<32>
+	v20 = v18 + v19
+	loc6 = v20
+	v21 = loc6
+	v22 = Mem0[v21:word32]
+	loc7 = v22
+	v23 = arg0
+	v24 = loc7
+	v25 = 0x1FF<32>
+	v26 = v24 & v25
+	v27 = 0xB00<32>
+	v28 = v26 + v27
 fn000E7D8F_exit:
 
 
@@ -1584,77 +3022,32 @@ l000E7E29:
 	// succ:  l000E7E57
 l000E7E57:
 	v52 = loc16
+	v53 = Mem0[v52:word32]
+	loc21 = v53
+	v54 = loc17
+	v55 = Mem0[v54:word32]
+	loc22 = v55
+	v56 = loc21
+	v57 = Mem0[v56:word32]
+	loc4 = v57
+	v58 = loc4
+	v59 = 0x14<32>
+	v60 = v58 + v59
+	loc5 = v60
+	v61 = loc5
+	v62 = Mem0[v61:word32]
+	loc6 = v62
+	v63 = loc21
+	v64 = loc22
+	v65 = loc3
+	v66 = loc18
+	v67 = loc14
+	v68 = loc6
+	v69 = 0x1FF<32>
+	v70 = v68 & v69
+	v71 = 0x1D20<32>
+	v72 = v70 + v71
 fn000E7E11_exit:
-
-
-// fn000E7F2E
-// Return size: 0
-word32 fn000E7F2E(word32 arg0, word32 arg1, word32 arg2)
-fn000E7F2E_entry:
-	// succ:  l000E7F2E
-l000E7F2E:
-	v22 = Mem0[0x00140030<p32>:word32]
-	loc22 = v22
-	v23 = arg0
-	v24 = 0x2C<32>
-	v25 = v23 + v24
-	loc14 = v25
-	v26 = loc14
-fn000E7F2E_exit:
-
-
-// fn000E7FF3
-// Return size: 0
-word32 fn000E7FF3(word32 arg0, word32 arg1)
-fn000E7FF3_entry:
-	// succ:  l000E7FF3
-l000E7FF3:
-	v46 = Mem0[0x00140030<p32>:word32]
-	loc45 = v46
-	v47 = Mem0[0x00140030<p32>:word32]
-	v48 = 0x20<32>
-	v49 = v47 + v48
-	Mem0[0x00140030<p32>:word32] = v49
-	v50 = Mem0[0x00140030<p32>:word32]
-	v51 = Mem0[0x00140034<p32>:word32]
-	v52 = v50 >= v51
-	branch !v52 l000E800B
-	// succ:  l000E8007 l000E800B
-l000E8007:
-	v53 = 0x20<32>
-	abortStackOverflow(v53)
-	// succ:  l000E800B
-l000E800B:
-	v54 = loc45
-	v55 = 0x10<32>
-	v56 = v54 + v55
-	loc15 = v56
-	v57 = loc45
-	v58 = 8<32>
-	v59 = v57 + v58
-	loc26 = v59
-	v60 = loc45
-	v61 = 4<32>
-	v62 = v60 + v61
-	loc37 = v62
-	v63 = loc45
-	loc39 = v63
-	v64 = arg1
-	v65 = 0xFFFFFFFF<32>
-	v66 = v64 == v65
-	loc40 = v66
-	// succ:  l000E802C
-l000E802C:
-	v67 = loc40
-	branch !v67 l000E8036
-	// succ:  l000E8032 l000E8036
-l000E8032:
-	v68 = 0xE<32>
-	loc44 = v68
-l000E8036:
-	v69 = loc26
-	v70 = arg1
-fn000E7FF3_exit:
 
 
 // fn000E8219
@@ -1681,6 +3074,21 @@ l000E822C:
 	v15 = Mem0[0x00140030<p32>:word32]
 	loc14 = v15
 	v16 = arg0
+	v17 = Mem0[v16:word32]
+	loc5 = v17
+	v18 = loc5
+	v19 = 0x18<32>
+	v20 = v18 + v19
+	loc6 = v20
+	v21 = loc6
+	v22 = Mem0[v21:word32]
+	loc7 = v22
+	v23 = arg0
+	v24 = loc7
+	v25 = 0x1FF<32>
+	v26 = v24 & v25
+	v27 = 0xB00<32>
+	v28 = v26 + v27
 fn000E822C_exit:
 
 
@@ -1733,81 +3141,32 @@ l000E82C6:
 	// succ:  l000E82F4
 l000E82F4:
 	v52 = loc16
-fn000E82AE_exit:
-
-
-// fn000E83CB
-// Return size: 0
-word32 fn000E83CB(word32 arg0, word32 arg1, word32 arg2)
-fn000E83CB_entry:
-	// succ:  l000E83CB
-l000E83CB:
-	v23 = Mem0[0x00140030<p32>:word32]
-	loc23 = v23
-	v24 = arg0
-	v25 = 0x2C<32>
-	v26 = v24 + v25
-	loc15 = v26
-	v27 = loc15
-fn000E83CB_exit:
-
-
-// fn000E8498
-// Return size: 0
-word32 fn000E8498(word32 arg0, word32 arg1)
-fn000E8498_entry:
-	// succ:  l000E8498
-l000E8498:
-	v47 = Mem0[0x00140030<p32>:word32]
-	loc46 = v47
-	v48 = Mem0[0x00140030<p32>:word32]
-	v49 = 0x20<32>
-	v50 = v48 + v49
-	Mem0[0x00140030<p32>:word32] = v50
-	v51 = Mem0[0x00140030<p32>:word32]
-	v52 = Mem0[0x00140034<p32>:word32]
-	v53 = v51 >= v52
-	branch !v53 l000E84B0
-	// succ:  l000E84AC l000E84B0
-l000E84AC:
-	v54 = 0x20<32>
-	abortStackOverflow(v54)
-	// succ:  l000E84B0
-l000E84B0:
-	v55 = loc46
-	v56 = 0x10<32>
-	v57 = v55 + v56
-	loc15 = v57
-	v58 = loc46
-	v59 = 8<32>
+	v53 = Mem0[v52:word32]
+	loc21 = v53
+	v54 = loc17
+	v55 = Mem0[v54:word32]
+	loc22 = v55
+	v56 = loc21
+	v57 = Mem0[v56:word32]
+	loc4 = v57
+	v58 = loc4
+	v59 = 0x14<32>
 	v60 = v58 + v59
-	loc26 = v60
-	v61 = loc46
-	v62 = 4<32>
-	v63 = v61 + v62
-	loc37 = v63
-	v64 = loc46
-	loc40 = v64
-	v65 = arg1
-	v66 = 0xFFFFFFFF<32>
-	v67 = v65 == v66
-	loc41 = v67
-	// succ:  l000E84D1
-l000E84D1:
-	v68 = loc41
-	branch !v68 l000E84DB
-	// succ:  l000E84D7 l000E84DB
-l000E84D7:
-	v69 = 0xE<32>
-	loc45 = v69
-l000E84DB:
-	v70 = arg1
-	v71 = 0xFF<32>
-	v72 = v70 & v71
-	loc42 = v72
-	v73 = loc26
-	v74 = loc42
-fn000E8498_exit:
+	loc5 = v60
+	v61 = loc5
+	v62 = Mem0[v61:word32]
+	loc6 = v62
+	v63 = loc21
+	v64 = loc22
+	v65 = loc3
+	v66 = loc18
+	v67 = loc14
+	v68 = loc6
+	v69 = 0x1FF<32>
+	v70 = v68 & v69
+	v71 = 0x1D20<32>
+	v72 = v70 + v71
+fn000E82AE_exit:
 
 
 // fn000E86C6
@@ -1828,6 +3187,23 @@ l000E86C6:
 	loc11 = v26
 	v27 = loc11
 	v28 = loc10
+	Mem0[v27:word32] = v28
+	v29 = loc10
+	v30 = Mem0[v29:word32]
+	loc12 = v30
+	v31 = loc12
+	v32 = 0x18<32>
+	v33 = v31 + v32
+	loc13 = v33
+	v34 = loc13
+	v35 = Mem0[v34:word32]
+	loc14 = v35
+	v36 = loc10
+	v37 = loc14
+	v38 = 0x1FF<32>
+	v39 = v37 & v38
+	v40 = 0xB00<32>
+	v41 = v39 + v40
 fn000E86C6_exit:
 
 
@@ -1923,51 +3299,116 @@ l000E87CB:
 	v66 = v64 + v65
 	loc38 = v66
 	v67 = loc38
+	v68 = Mem0[v67:int8]
+	v69 = CONVERT(v68, int8, word32)
+	loc39 = v69
+	v70 = loc39
+	v71 = 0x18<32>
+	v72 = v70 << v71
+	v73 = 0x18<32>
+	v74 = v72 >> v73
+	v75 = 0<32>
+	v76 = v74 != v75
+	loc40 = v76
+	// succ:  l000E8807
+l000E8807:
+	v77 = loc37
+	branch !v77 l000E883E
+	// succ:  l000E880D l000E883E
+l000E880D:
+	v78 = loc40
+	branch !v78 l000E8815
+	// succ:  l000E8811 l000E8815
+l000E8811:
+	v79 = 0xFFFFFFFF<32>
+	loc2 = v79
+	goto l000E883D
+	// succ:  l000E883D
+l000E8815:
+	v80 = arg0
+	v81 = 0x30<32>
+	v82 = v80 + v81
+	loc5 = v82
+	v83 = loc5
+	v84 = Mem0[v83:word32]
+	loc6 = v84
+	v85 = loc6
+	v86 = 0xFFFFFFFF<32>
+	v87 = v85 != v86
+	loc7 = v87
+	v88 = loc7
+	v89 = 1<32>
+	v90 = v88 & v89
+	loc8 = v90
+	v91 = loc38
+	v92 = loc8
+	v93 = SLICE(v92, byte, 0)
+	Mem0[v91:byte] = v93
+	v94 = loc6
+	loc2 = v94
+	// succ:  l000E883D
+l000E883D:
+l000E883E:
+	v95 = loc40
+	v95 = v95
+	// succ:  l000E8845 l000E8845
+l000E8845:
+	v96 = arg0
+	v97 = 0x30<32>
+	v98 = v96 + v97
+	loc9 = v98
+	v99 = loc9
+	v100 = Mem0[v99:word32]
+	loc10 = v100
+	v101 = loc35
+	v102 = loc10
+	Mem0[v101:word32] = v102
+	v103 = arg0
+	v104 = 0x24<32>
+	v105 = v103 + v104
+	loc11 = v105
+	v106 = loc11
+	v107 = Mem0[v106:word32]
+	loc12 = v107
+	v108 = arg0
+	v109 = 0x28<32>
+	v110 = v108 + v109
+	loc13 = v110
+	v111 = loc13
+	v112 = Mem0[v111:word32]
+	loc14 = v112
+	v113 = loc35
+	v114 = 4<32>
+	v115 = v113 + v114
+	loc16 = v115
+	v116 = loc15
+	v117 = 8<32>
+	v118 = v116 + v117
+	loc17 = v118
+	v119 = loc12
+	v120 = Mem0[v119:word32]
+	loc18 = v120
+	v121 = loc18
+	v122 = 0xC<32>
+	v123 = v121 + v122
+	loc19 = v123
+	v124 = loc19
+	v125 = Mem0[v124:word32]
+	loc20 = v125
+	v126 = loc12
+	v127 = loc14
+	v128 = loc35
+	v129 = loc16
+	v130 = loc36
+	v131 = loc15
+	v132 = loc17
+	v133 = loc26
+	v134 = loc20
+	v135 = 0x1FF<32>
+	v136 = v134 & v135
+	v137 = 0x2C20<32>
+	v138 = v136 + v137
 fn000E87B3_exit:
-
-
-// fn000E89AB
-// Return size: 0
-word32 fn000E89AB(word32 arg0, word32 arg1)
-fn000E89AB_entry:
-	// succ:  l000E89AB
-l000E89AB:
-	v68 = Mem0[0x00140030<p32>:word32]
-	loc66 = v68
-	v69 = Mem0[0x00140030<p32>:word32]
-	v70 = 0x20<32>
-	v71 = v69 + v70
-	Mem0[0x00140030<p32>:word32] = v71
-	v72 = Mem0[0x00140030<p32>:word32]
-	v73 = Mem0[0x00140034<p32>:word32]
-	v74 = v72 >= v73
-	branch !v74 l000E89C3
-	// succ:  l000E89BF l000E89C3
-l000E89BF:
-	v75 = 0x20<32>
-	abortStackOverflow(v75)
-	// succ:  l000E89C3
-l000E89C3:
-	v76 = loc66
-	v77 = 0x10<32>
-	v78 = v76 + v77
-	loc21 = v78
-	v79 = loc66
-	v80 = 8<32>
-	v81 = v79 + v80
-	loc32 = v81
-	v82 = loc66
-	v83 = 4<32>
-	v84 = v82 + v83
-	loc42 = v84
-	v85 = loc66
-	loc53 = v85
-	v86 = arg0
-	v87 = 0x34<32>
-	v88 = v86 + v87
-	loc61 = v88
-	v89 = loc61
-fn000E89AB_exit:
 
 
 // fn000E8CDC
@@ -1988,6 +3429,23 @@ l000E8CDC:
 	loc11 = v26
 	v27 = loc11
 	v28 = loc10
+	Mem0[v27:word32] = v28
+	v29 = loc10
+	v30 = Mem0[v29:word32]
+	loc12 = v30
+	v31 = loc12
+	v32 = 0x18<32>
+	v33 = v31 + v32
+	loc13 = v33
+	v34 = loc13
+	v35 = Mem0[v34:word32]
+	loc14 = v35
+	v36 = loc10
+	v37 = loc14
+	v38 = 0x1FF<32>
+	v39 = v37 & v38
+	v40 = 0xB00<32>
+	v41 = v39 + v40
 fn000E8CDC_exit:
 
 
@@ -2083,51 +3541,121 @@ l000E8DE1:
 	v67 = v65 + v66
 	loc39 = v67
 	v68 = loc39
+	v69 = Mem0[v68:int8]
+	v70 = CONVERT(v69, int8, word32)
+	loc40 = v70
+	v71 = loc40
+	v72 = 0x18<32>
+	v73 = v71 << v72
+	v74 = 0x18<32>
+	v75 = v73 >> v74
+	v76 = 0<32>
+	v77 = v75 != v76
+	loc41 = v77
+	// succ:  l000E8E1D
+l000E8E1D:
+	v78 = loc38
+	branch !v78 l000E8E54
+	// succ:  l000E8E23 l000E8E54
+l000E8E23:
+	v79 = loc41
+	branch !v79 l000E8E2B
+	// succ:  l000E8E27 l000E8E2B
+l000E8E27:
+	v80 = 0xFFFFFFFF<32>
+	loc2 = v80
+	goto l000E8E53
+	// succ:  l000E8E53
+l000E8E2B:
+	v81 = arg0
+	v82 = 0x30<32>
+	v83 = v81 + v82
+	loc5 = v83
+	v84 = loc5
+	v85 = Mem0[v84:word32]
+	loc6 = v85
+	v86 = loc6
+	v87 = 0xFFFFFFFF<32>
+	v88 = v86 != v87
+	loc7 = v88
+	v89 = loc7
+	v90 = 1<32>
+	v91 = v89 & v90
+	loc8 = v91
+	v92 = loc39
+	v93 = loc8
+	v94 = SLICE(v93, byte, 0)
+	Mem0[v92:byte] = v94
+	v95 = loc6
+	loc2 = v95
+	// succ:  l000E8E53
+l000E8E53:
+l000E8E54:
+	v96 = loc41
+	v96 = v96
+	// succ:  l000E8E5B l000E8E5B
+l000E8E5B:
+	v97 = arg0
+	v98 = 0x30<32>
+	v99 = v97 + v98
+	loc9 = v99
+	v100 = loc9
+	v101 = Mem0[v100:word32]
+	loc10 = v101
+	v102 = loc10
+	v103 = 0xFF<32>
+	v104 = v102 & v103
+	loc11 = v104
+	v105 = loc36
+	v106 = loc11
+	v107 = SLICE(v106, byte, 0)
+	Mem0[v105:byte] = v107
+	v108 = arg0
+	v109 = 0x24<32>
+	v110 = v108 + v109
+	loc12 = v110
+	v111 = loc12
+	v112 = Mem0[v111:word32]
+	loc13 = v112
+	v113 = arg0
+	v114 = 0x28<32>
+	v115 = v113 + v114
+	loc14 = v115
+	v116 = loc14
+	v117 = Mem0[v116:word32]
+	loc16 = v117
+	v118 = loc36
+	v119 = 1<32>
+	v120 = v118 + v119
+	loc17 = v120
+	v121 = loc15
+	v122 = 8<32>
+	v123 = v121 + v122
+	loc18 = v123
+	v124 = loc13
+	v125 = Mem0[v124:word32]
+	loc19 = v125
+	v126 = loc19
+	v127 = 0xC<32>
+	v128 = v126 + v127
+	loc20 = v128
+	v129 = loc20
+	v130 = Mem0[v129:word32]
+	loc21 = v130
+	v131 = loc13
+	v132 = loc16
+	v133 = loc36
+	v134 = loc17
+	v135 = loc37
+	v136 = loc15
+	v137 = loc18
+	v138 = loc26
+	v139 = loc21
+	v140 = 0x1FF<32>
+	v141 = v139 & v140
+	v142 = 0x2C20<32>
+	v143 = v141 + v142
 fn000E8DC9_exit:
-
-
-// fn000E8FC9
-// Return size: 0
-word32 fn000E8FC9(word32 arg0, word32 arg1)
-fn000E8FC9_entry:
-	// succ:  l000E8FC9
-l000E8FC9:
-	v69 = Mem0[0x00140030<p32>:word32]
-	loc67 = v69
-	v70 = Mem0[0x00140030<p32>:word32]
-	v71 = 0x20<32>
-	v72 = v70 + v71
-	Mem0[0x00140030<p32>:word32] = v72
-	v73 = Mem0[0x00140030<p32>:word32]
-	v74 = Mem0[0x00140034<p32>:word32]
-	v75 = v73 >= v74
-	branch !v75 l000E8FE1
-	// succ:  l000E8FDD l000E8FE1
-l000E8FDD:
-	v76 = 0x20<32>
-	abortStackOverflow(v76)
-	// succ:  l000E8FE1
-l000E8FE1:
-	v77 = loc67
-	v78 = 0x10<32>
-	v79 = v77 + v78
-	loc21 = v79
-	v80 = loc67
-	v81 = 8<32>
-	v82 = v80 + v81
-	loc32 = v82
-	v83 = loc67
-	v84 = 4<32>
-	v85 = v83 + v84
-	loc42 = v85
-	v86 = loc67
-	loc53 = v86
-	v87 = arg0
-	v88 = 0x34<32>
-	v89 = v87 + v88
-	loc62 = v89
-	v90 = loc62
-fn000E8FC9_exit:
 
 
 // fn000E92F6
@@ -2172,6 +3700,21 @@ l000E930D:
 	// succ:  l000E931F l000E931F
 l000E931F:
 	v14 = arg0
+	v15 = Mem0[v14:word32]
+	loc2 = v15
+	v16 = loc2
+	v17 = 4<32>
+	v18 = v16 + v17
+	loc3 = v18
+	v19 = loc3
+	v20 = Mem0[v19:word32]
+	loc4 = v20
+	v21 = arg0
+	v22 = loc4
+	v23 = 0x1FF<32>
+	v24 = v22 & v23
+	v25 = 0x500<32>
+	v26 = v24 + v25
 fn000E930D_exit:
 
 
@@ -2185,56 +3728,17 @@ l000E9400:
 	loc5 = v4
 	v5 = arg0
 	v6 = 0<64>
+	Mem0[v5:word64] = v6
+	v7 = arg0
+	v8 = 8<32>
+	v9 = v7 + v8
+	v10 = 0<32>
+	Mem0[v9:word32] = v10
+	v11 = arg0
+	v12 = arg2
+	v13 = arg3
+	fn000E949A(v11, v12, v13)
 fn000E9400_exit:
-
-
-// fn000E949A
-// Return size: 0
-void fn000E949A(word32 arg0, word32 arg1, word32 arg2)
-fn000E949A_entry:
-	// succ:  l000E949A
-l000E949A:
-	v27 = Mem0[0x00140030<p32>:word32]
-	loc27 = v27
-	v28 = arg1
-	loc18 = v28
-	v29 = arg2
-	loc19 = v29
-	v30 = loc19
-	v31 = loc18
-	v32 = v30 - v31
-	loc20 = v32
-	v33 = loc20
-	v34 = 0xFFFFFFEF<32>
-	v35 = v33 >u v34
-	loc21 = v35
-	v36 = loc21
-	branch !v36 l000E94BF
-	// succ:  l000E94BA l000E94BF
-l000E94BA:
-	v37 = arg0
-	fn0011B8A5(v37)
-	// succ:  l000E94BF
-l000E94BF:
-	v38 = loc20
-	v39 = 0xB<32>
-	v40 = v38 <u v39
-	loc22 = v40
-	v41 = loc22
-	v41 = v41
-	// succ:  l000E94CB l000E94CB
-l000E94CB:
-	v42 = loc20
-	v43 = 0xFF<32>
-	v44 = v42 & v43
-	loc23 = v44
-	v45 = arg0
-	v46 = 0xB<32>
-	v47 = v45 + v46
-	loc24 = v47
-	v48 = loc24
-	v49 = loc23
-fn000E949A_exit:
 
 
 // fn000E958C
@@ -2271,66 +3775,17 @@ l000E9644:
 	loc5 = v4
 	v5 = arg0
 	v6 = 0<64>
+	Mem0[v5:word64] = v6
+	v7 = arg0
+	v8 = 8<32>
+	v9 = v7 + v8
+	v10 = 0<32>
+	Mem0[v9:word32] = v10
+	v11 = arg0
+	v12 = arg2
+	v13 = arg3
+	fn000E96D4(v11, v12, v13)
 fn000E9644_exit:
-
-
-// fn000E96D4
-// Return size: 0
-void fn000E96D4(word32 arg0, word32 arg1, word32 arg2)
-fn000E96D4_entry:
-	// succ:  l000E96D4
-l000E96D4:
-	v33 = Mem0[0x00140030<p32>:word32]
-	loc33 = v33
-	v34 = arg1
-	loc24 = v34
-	v35 = arg2
-	loc25 = v35
-	v36 = loc25
-	v37 = loc24
-	v38 = v36 - v37
-	loc26 = v38
-	v39 = loc26
-	v40 = 2<32>
-	v41 = v39 >> v40
-	loc27 = v41
-	v42 = loc27
-	v43 = 0x3FFFFFEF<32>
-	v44 = v42 >u v43
-	loc28 = v44
-	v45 = loc28
-	branch !v45 l000E9704
-	// succ:  l000E96FF l000E9704
-l000E96FF:
-	v46 = arg0
-	fn0011B8A5(v46)
-	// succ:  l000E9704
-l000E9704:
-	v47 = loc27
-	v48 = 2<32>
-	v49 = v47 <u v48
-	loc29 = v49
-	// succ:  l000E970C
-l000E970C:
-	v50 = loc29
-	v50 = v50
-	// succ:  l000E9712 l000E9712
-l000E9712:
-	v51 = loc27
-	v52 = 0xFF<32>
-	v53 = v51 & v52
-	loc30 = v53
-	v54 = arg0
-	v55 = 8<32>
-	v56 = v54 + v55
-	loc6 = v56
-	v57 = loc6
-	v58 = 3<32>
-	v59 = v57 + v58
-	loc7 = v59
-	v60 = loc7
-	v61 = loc30
-fn000E96D4_exit:
 
 
 // fn000E9814
@@ -2422,6 +3877,66 @@ l000E9845:
 	v110 = v108 + v109
 	loc18 = v110
 	v111 = loc18
+	v112 = Mem0[v111:word32]
+	loc19 = v112
+	v113 = loc19
+	v114 = 1<32>
+	v115 = v113 & v114
+	loc20 = v115
+	v116 = loc20
+	v117 = 0<32>
+	v118 = v116 == v117
+	loc21 = v118
+	// succ:  l000E98A5
+l000E98A5:
+	v119 = loc21
+	v119 = v119
+	// succ:  l000E98AB l000E98AB
+l000E98AB:
+	v120 = loc65
+	v121 = 0xFFFFFFFF<32>
+	Mem0[v120:word32] = v121
+	v122 = arg0
+	v123 = Mem0[v122:word32]
+	loc22 = v123
+	v124 = loc22
+	v125 = 0x10<32>
+	v126 = v124 + v125
+	loc23 = v126
+	v127 = loc23
+	v128 = Mem0[v127:word32]
+	loc24 = v128
+	v129 = arg1
+	v130 = Mem0[v129:word32]
+	loc25 = v130
+	v131 = loc71
+	v132 = loc25
+	Mem0[v131:word32] = v132
+	v133 = arg2
+	v134 = Mem0[v133:word32]
+	loc26 = v134
+	v135 = loc72
+	v136 = loc26
+	Mem0[v135:word32] = v136
+	v137 = loc8
+	v138 = loc71
+	v139 = Mem0[v138:word32]
+	Mem0[v137:word32] = v139
+	v140 = loc9
+	v141 = loc72
+	v142 = Mem0[v141:word32]
+	Mem0[v140:word32] = v142
+	v143 = arg0
+	v144 = loc8
+	v145 = loc9
+	v146 = arg3
+	v147 = arg4
+	v148 = loc65
+	v149 = loc24
+	v150 = 0x1FF<32>
+	v151 = v149 & v150
+	v152 = 0x900<32>
+	v153 = v151 + v152
 fn000E982B_exit:
 
 
@@ -2462,6 +3977,36 @@ l000E9BA7:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000F089A(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9B8F_exit:
 
 
@@ -2502,6 +4047,36 @@ l000E9C23:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000EFEEF(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9C0B_exit:
 
 
@@ -2542,6 +4117,36 @@ l000E9C9F:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000EF520(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9C87_exit:
 
 
@@ -2582,6 +4187,36 @@ l000E9D1B:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000EEB54(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9D03_exit:
 
 
@@ -2622,6 +4257,36 @@ l000E9D97:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000EE188(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9D7F_exit:
 
 
@@ -2662,6 +4327,36 @@ l000E9E13:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000ED5B7(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9DFB_exit:
 
 
@@ -2702,6 +4397,36 @@ l000E9E8F:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000ECBDB(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9E77_exit:
 
 
@@ -2742,6 +4467,36 @@ l000E9F0B:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000EC1F8(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9EF3_exit:
 
 
@@ -2782,68 +4537,37 @@ l000E9F87:
 	v28 = loc14
 	loc10 = v28
 	v29 = arg1
+	v30 = Mem0[v29:word32]
+	loc11 = v30
+	v31 = loc9
+	v32 = loc11
+	Mem0[v31:word32] = v32
+	v33 = arg2
+	v34 = Mem0[v33:word32]
+	loc12 = v34
+	v35 = loc10
+	v36 = loc12
+	Mem0[v35:word32] = v36
+	v37 = loc6
+	v38 = loc9
+	v39 = Mem0[v38:word32]
+	Mem0[v37:word32] = v39
+	v40 = loc7
+	v41 = loc10
+	v42 = Mem0[v41:word32]
+	Mem0[v40:word32] = v42
+	v43 = arg0
+	v44 = loc6
+	v45 = loc7
+	v46 = arg3
+	v47 = arg4
+	v48 = arg5
+	v49 = fn000EB025(v43, v44, v45, v46, v47, v48)
+	loc8 = v49
+	v50 = loc14
+	Mem0[0x00140030<p32>:word32] = v50
+	v51 = loc8
 fn000E9F6F_exit:
-
-
-// fn000E9FEB
-// Return size: 0
-word32 fn000E9FEB(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000E9FEB_entry:
-	// succ:  l000E9FEB
-l000E9FEB:
-	v201 = Mem0[0x00140030<p32>:word32]
-	loc204 = v201
-	v202 = Mem0[0x00140030<p32>:word32]
-	v203 = 0xF0<32>
-	v204 = v202 + v203
-	Mem0[0x00140030<p32>:word32] = v204
-	v205 = Mem0[0x00140030<p32>:word32]
-	v206 = Mem0[0x00140034<p32>:word32]
-	v207 = v205 >= v206
-	branch !v207 l000EA006
-	// succ:  l000EA001 l000EA006
-l000EA001:
-	v208 = 0xF0<32>
-	abortStackOverflow(v208)
-	// succ:  l000EA006
-l000EA006:
-	v209 = loc204
-	loc202 = v209
-	v210 = loc204
-	v211 = 0xD0<32>
-	v212 = v210 + v211
-	loc154 = v212
-	v213 = loc204
-	v214 = 0xC4<32>
-	v215 = v213 + v214
-	loc165 = v215
-	v216 = loc204
-	v217 = 0xC0<32>
-	v218 = v216 + v217
-	loc176 = v218
-	v219 = loc204
-	v220 = 0xB4<32>
-	v221 = v219 + v220
-	loc187 = v221
-	v222 = loc204
-	v223 = 0xB0<32>
-	v224 = v222 + v223
-	loc25 = v224
-	v225 = loc204
-	v226 = 0x10<32>
-	v227 = v225 + v226
-	loc36 = v227
-	v228 = loc204
-	v229 = 8<32>
-	v230 = v228 + v229
-	loc47 = v230
-	v231 = loc204
-	v232 = 4<32>
-	v233 = v231 + v232
-	loc58 = v233
-	v234 = loc165
-	v235 = 0<64>
-fn000E9FEB_exit:
 
 
 // fn000EA9F7
@@ -2855,19 +4579,17 @@ l000EA9F7:
 	v7 = Mem0[0x00140030<p32>:word32]
 	loc6 = v7
 	v8 = arg0
+	v9 = Mem0[v8:word32]
+	loc2 = v9
+	v10 = arg1
+	v11 = fn000EAE12(v10)
+	loc3 = v11
+	v12 = loc2
+	v13 = loc3
+	v14 = fn000EAEAB(v12, v13)
+	loc4 = v14
+	v15 = loc4
 fn000EA9F7_exit:
-
-
-// fn000EAA19
-// Return size: 0
-word32 fn000EAA19(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
-fn000EAA19_entry:
-	// succ:  l000EAA19
-l000EAA19:
-	v61 = Mem0[0x00140030<p32>:word32]
-	loc68 = v61
-	v62 = arg3
-fn000EAA19_exit:
 
 
 // fn000EAD0D
@@ -2879,6 +4601,80 @@ l000EAD0D:
 	v14 = Mem0[0x00140030<p32>:word32]
 	loc11 = v14
 	v15 = 0x4390<32>
+	v16 = Mem0[v15:int8]
+	v17 = CONVERT(v16, int8, word32)
+	loc0 = v17
+	v18 = loc0
+	v19 = 0x18<32>
+	v20 = v18 << v19
+	v21 = 0x18<32>
+	v22 = v20 >> v21
+	v23 = 0<32>
+	v24 = v22 == v23
+	loc1 = v24
+	// succ:  l000EAD29
+l000EAD29:
+	v25 = loc1
+	branch !v25 l000EAD88
+	// succ:  l000EAD2F l000EAD88
+l000EAD2F:
+	v26 = 0x4390<32>
+	v27 = fn0011EE46(v26)
+	loc2 = v27
+	v28 = loc2
+	v29 = 0<32>
+	v30 = v28 == v29
+	loc3 = v30
+	v31 = loc3
+	v32 = v31 == 0<32>
+	branch !v32 l000EAD87
+	// succ:  l000EAD44 l000EAD87
+l000EAD44:
+	v33 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v33
+	v34 = 0x17D<32>
+	v35 = 0x7FFFFFFF<32>
+	v36 = 0x37CF<32>
+	v37 = 0<32>
+	v38 = invoke_iiii(v34, v35, v36, v37)
+	loc4 = v38
+	v39 = Mem0[0x00140048<p32>:word32]
+	loc5 = v39
+	v40 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v40
+	v41 = loc5
+	v42 = 1<32>
+	v43 = v41 & v42
+	loc6 = v43
+	v44 = loc6
+	branch !v44 l000EAD7A
+	// succ:  l000EAD6E l000EAD7A
+l000EAD6E:
+	v45 = ___cxa_find_matching_catch_2()
+	loc8 = v45
+	v46 = Mem0[0x00140094<p32>:word32]
+	loc9 = v46
+	v47 = loc8
+	___resumeException(v47)
+	goto l000EAD86
+	// succ:  l000EAD86
+l000EAD7A:
+	v48 = 0x4C78<32>
+	v49 = loc4
+	Mem0[v48:word32] = v49
+	goto l000EAD29
+	// succ:  l000EAD29
+l000EAD86:
+	// succ:  l000EAD87
+l000EAD87:
+	// succ:  l000EAD88
+l000EAD88:
+	// succ:  l000EAD89
+l000EAD89:
+	v50 = 0x4C78<32>
+	v51 = Mem0[v50:word32]
+	loc7 = v51
+	v52 = loc7
 fn000EAD0D_exit:
 
 
@@ -2908,6 +4704,29 @@ l000EADB0:
 	loc5 = v20
 	v21 = loc5
 	v22 = arg3
+	Mem0[v21:word32] = v22
+	v23 = arg1
+	v24 = fn000DB419(v23)
+	loc6 = v24
+	v25 = arg0
+	v26 = arg2
+	v27 = loc5
+	v28 = fn000DB988(v25, v26, v27)
+	loc7 = v28
+	v29 = loc6
+	v30 = 0<32>
+	v31 = v29 == v30
+	loc8 = v31
+	v32 = loc8
+	v33 = v32 == 0<32>
+	v33 = v33
+	// succ:  l000EADDA l000EADDA
+l000EADDA:
+	v34 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v34
+	v35 = 0x17E<32>
+	v36 = loc6
+	v37 = invoke_ii(v35, v36)
 fn000EAD98_exit:
 
 
@@ -2945,6 +4764,59 @@ l000EAE2A:
 	loc5 = v28
 	v29 = loc5
 	v30 = arg0
+	Mem0[v29:word32] = v30
+	v31 = loc5
+	v32 = 4<32>
+	v33 = v31 + v32
+	loc1 = v33
+	v34 = loc1
+	v35 = 0x17F<32>
+	Mem0[v34:word32] = v35
+	v36 = loc5
+	v37 = 8<32>
+	v38 = v36 + v37
+	loc2 = v38
+	v39 = loc2
+	v40 = 0<32>
+	Mem0[v39:word32] = v40
+	v41 = arg0
+	v42 = Mem0[v41:word32]
+	loc6 = v42
+	v43 = loc6
+	v44 = 0xFFFFFFFF<32>
+	v45 = v43 == v44
+	loc7 = v45
+	v46 = loc7
+	v47 = v46 == 0<32>
+	branch !v47 l000EAE8C
+	// succ:  l000EAE74 l000EAE8C
+l000EAE74:
+	v48 = loc3
+	v49 = loc5
+	Mem0[v48:word32] = v49
+	v50 = loc4
+	v51 = loc3
+	Mem0[v50:word32] = v51
+	v52 = arg0
+	v53 = loc4
+	v54 = 0x180<32>
+	fn0011B49F(v52, v53, v54)
+	// succ:  l000EAE8C
+l000EAE8C:
+	v55 = arg0
+	v56 = 4<32>
+	v57 = v55 + v56
+	loc8 = v57
+	v58 = loc8
+	v59 = Mem0[v58:word32]
+	loc9 = v59
+	v60 = loc9
+	v61 = 0xFFFFFFFF<32>
+	v62 = v60 + v61
+	loc10 = v62
+	v63 = loc12
+	Mem0[0x00140030<p32>:word32] = v63
+	v64 = loc10
 fn000EAE12_exit:
 
 
@@ -2969,6 +4841,18 @@ l000EAEBE:
 	v17 = v15 + v16
 	loc4 = v17
 	v18 = loc4
+	v19 = Mem0[v18:word32]
+	loc5 = v19
+	v20 = loc5
+	v21 = arg1
+	v22 = 2<32>
+	v23 = v21 << v22
+	v24 = v20 + v23
+	loc6 = v24
+	v25 = loc6
+	v26 = Mem0[v25:word32]
+	loc7 = v26
+	v27 = loc7
 fn000EAEAB_exit:
 
 
@@ -2989,6 +4873,52 @@ l000EAEFC:
 	v22 = v20 + v21
 	loc7 = v22
 	v23 = loc7
+	v24 = Mem0[v23:word32]
+	loc8 = v24
+	v25 = loc6
+	v26 = Mem0[v25:word32]
+	loc9 = v26
+	v27 = loc8
+	v28 = loc9
+	v29 = v27 - v28
+	loc10 = v29
+	v30 = loc10
+	v31 = 2<32>
+	v32 = v30 >> v31
+	loc11 = v32
+	v33 = loc11
+	v34 = arg1
+	v35 = v33 >u v34
+	loc12 = v35
+	v36 = loc12
+	branch !v36 l000EAF57
+	// succ:  l000EAF37 l000EAF57
+l000EAF37:
+	v37 = loc9
+	loc13 = v37
+	v38 = loc13
+	v39 = arg1
+	v40 = 2<32>
+	v41 = v39 << v40
+	v42 = v38 + v41
+	loc2 = v42
+	v43 = loc2
+	v44 = Mem0[v43:word32]
+	loc3 = v44
+	v45 = loc3
+	v46 = 0<32>
+	v47 = v45 != v46
+	loc4 = v47
+	v48 = loc4
+	loc5 = v48
+	goto l000EAF5C
+	// succ:  l000EAF5C
+l000EAF57:
+	v49 = 0<32>
+	loc5 = v49
+	// succ:  l000EAF5C
+l000EAF5C:
+	v50 = loc5
 fn000EAEFC_exit:
 
 
@@ -3001,6 +4931,26 @@ l000EAF62:
 	v8 = Mem0[0x00140030<p32>:word32]
 	loc6 = v8
 	v9 = 0x4C7C<32>
+	v10 = Mem0[v9:word32]
+	loc1 = v10
+	v11 = loc1
+	v12 = 1<32>
+	v13 = v11 + v12
+	loc2 = v13
+	v14 = 0x4C7C<32>
+	v15 = loc2
+	Mem0[v14:word32] = v15
+	v16 = loc1
+	v17 = 1<32>
+	v18 = v16 + v17
+	loc3 = v18
+	v19 = arg0
+	v20 = 4<32>
+	v21 = v19 + v20
+	loc4 = v21
+	v22 = loc4
+	v23 = loc3
+	Mem0[v22:word32] = v23
 fn000EAF62_exit:
 
 
@@ -3013,82 +4963,76 @@ l000EAF99:
 	v20 = Mem0[0x00140030<p32>:word32]
 	loc18 = v20
 	v21 = arg0
+	v22 = Mem0[v21:word32]
+	loc5 = v22
+	v23 = loc5
+	v24 = Mem0[v23:word32]
+	loc9 = v24
+	v25 = loc9
+	v26 = 4<32>
+	v27 = v25 + v26
+	loc1 = v27
+	v28 = loc1
+	v29 = Mem0[v28:word32]
+	loc3 = v29
+	v30 = loc9
+	v31 = 8<32>
+	v32 = v30 + v31
+	loc2 = v32
+	v33 = loc2
+	v34 = Mem0[v33:word32]
+	loc4 = v34
+	v35 = loc9
+	v36 = Mem0[v35:word32]
+	loc10 = v36
+	v37 = loc4
+	v38 = 1<32>
+	v39 = v37 >> v38
+	loc11 = v39
+	v40 = loc10
+	v41 = loc11
+	v42 = v40 + v41
+	loc12 = v42
+	v43 = loc4
+	v44 = 1<32>
+	v45 = v43 & v44
+	loc13 = v45
+	v46 = loc13
+	v47 = 0<32>
+	v48 = v46 == v47
+	loc14 = v48
+	v49 = loc14
+	branch !v49 l000EAFF8
+	// succ:  l000EAFF0 l000EAFF8
+l000EAFF0:
+	v50 = loc3
+	loc7 = v50
+	v51 = loc7
+	loc8 = v51
+	goto l000EB012
+	// succ:  l000EB012
+l000EAFF8:
+	v52 = loc12
+	v53 = Mem0[v52:word32]
+	loc15 = v53
+	v54 = loc15
+	v55 = loc3
+	v56 = v54 + v55
+	loc16 = v56
+	v57 = loc16
+	v58 = Mem0[v57:word32]
+	loc6 = v58
+	v59 = loc6
+	loc8 = v59
+	// succ:  l000EB012
+l000EB012:
+	v60 = loc12
+	v61 = loc8
+	v62 = 0x1FF<32>
+	v63 = v61 & v62
+	v64 = 0x500<32>
+	v65 = v63 + v64
 fn000EAF99_exit:
-
-
-// fn000EB025
-// Return size: 0
-word32 fn000EB025(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000EB025_entry:
-	// succ:  l000EB025
-l000EB025:
-	v189 = Mem0[0x00140030<p32>:word32]
-	loc191 = v189
-	v190 = Mem0[0x00140030<p32>:word32]
-	v191 = 0xF0<32>
-	v192 = v190 + v191
-	Mem0[0x00140030<p32>:word32] = v192
-	v193 = Mem0[0x00140030<p32>:word32]
-	v194 = Mem0[0x00140034<p32>:word32]
-	v195 = v193 >= v194
-	branch !v195 l000EB040
-	// succ:  l000EB03B l000EB040
-l000EB03B:
-	v196 = 0xF0<32>
-	abortStackOverflow(v196)
-	// succ:  l000EB040
-l000EB040:
-	v197 = loc191
-	v198 = 0xC8<32>
-	v199 = v197 + v198
-	loc142 = v199
-	v200 = loc191
-	v201 = 0xC7<32>
-	v202 = v200 + v201
-	loc153 = v202
-	v203 = loc191
-	v204 = 0xC6<32>
-	v205 = v203 + v204
-	loc164 = v205
-	v206 = loc191
-	v207 = 0xB8<32>
-	v208 = v206 + v207
-	loc175 = v208
-	v209 = loc191
-	v210 = 0xAC<32>
-	v211 = v209 + v210
-	loc20 = v211
-	v212 = loc191
-	v213 = 0xA8<32>
-	v214 = v212 + v213
-	loc31 = v214
-	v215 = loc191
-	v216 = 8<32>
-	v217 = v215 + v216
-	loc42 = v217
-	v218 = loc191
-	v219 = 4<32>
-	v220 = v218 + v219
-	loc53 = v220
-	v221 = loc191
-	loc63 = v221
-	v222 = loc191
-	v223 = 0xC5<32>
-	v224 = v222 + v223
-	loc74 = v224
-	v225 = loc191
-	v226 = 0xC4<32>
-	v227 = v225 + v226
-	loc85 = v227
-	v228 = loc175
-	v229 = arg3
-	v230 = loc142
-	v231 = loc153
-	v232 = loc164
-	fn000EB941(v228, v229, v230, v231, v232)
-	v233 = loc20
-	v234 = 0<64>
-fn000EB025_exit:
 
 
 // fn000EB941
@@ -3120,37 +5064,48 @@ l000EB959:
 	loc37 = v50
 	v51 = loc36
 	v52 = loc37
+	Mem0[v51:word32] = v52
+	v53 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v53
+	v54 = 0x164<32>
+	v55 = loc36
+	v56 = 0x4C70<32>
+	v57 = invoke_iii(v54, v55, v56)
+	loc38 = v57
+	v58 = Mem0[0x00140048<p32>:word32]
+	loc39 = v58
+	v59 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v59
+	v60 = loc39
+	v61 = 1<32>
+	v62 = v60 & v61
+	loc40 = v62
+	v63 = loc40
+	branch !v63 l000EB994
+	// succ:  l000EB990 l000EB994
+l000EB990:
+	v64 = 8<32>
+	loc41 = v64
+l000EB994:
+	v65 = loc38
+	v66 = Mem0[v65:word32]
+	loc7 = v66
+	v67 = loc7
+	v68 = 0x20<32>
+	v69 = v67 + v68
+	loc8 = v69
+	v70 = loc8
+	v71 = Mem0[v70:word32]
+	loc9 = v71
+	v72 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v72
+	v73 = loc9
+	v74 = loc38
+	v75 = 0x37AB<32>
+	v76 = 0x37CB<32>
+	v77 = arg2
+	v78 = invoke_iiiii(v73, v74, v75, v76, v77)
 fn000EB941_exit:
-
-
-// fn000EBAF2
-// Return size: 0
-word32 fn000EBAF2(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10, word32 arg11)
-fn000EBAF2_entry:
-	// succ:  l000EBAF2
-l000EBAF2:
-	v99 = Mem0[0x00140030<p32>:word32]
-	loc108 = v99
-	v100 = arg0
-	v101 = 0x18<32>
-	v102 = v100 << v101
-	v103 = 0x18<32>
-	v104 = v102 >> v103
-	v105 = arg5
-	v106 = 0x18<32>
-	v107 = v105 << v106
-	v108 = 0x18<32>
-	v109 = v107 >> v108
-	v110 = v104 == v109
-	loc19 = v110
-	// succ:  l000EBB0B
-l000EBB0B:
-	v111 = loc19
-	v111 = v111
-	// succ:  l000EBB11 l000EBB11
-l000EBB11:
-	v112 = arg1
-fn000EBAF2_exit:
 
 
 // fn000EBF56
@@ -3182,103 +5137,97 @@ l000EBF6E:
 	v28 = v26 == v27
 	loc8 = v28
 	v29 = loc8
-	v29 = v29
-	// succ:  l000EBF7E l000EBF7E
+	branch !v29 l000EBF90
+	// succ:  l000EBF7E l000EBF90
 l000EBF7E:
 	v30 = arg2
 	v31 = 4<32>
+	Mem0[v30:word32] = v31
+	v32 = 0.0
+	loc16 = v32
+	goto l000EC013
+	// succ:  l000EC013
+l000EBF90:
+	v33 = ___errno_location()
+	loc9 = v33
+	v34 = loc9
+	v35 = Mem0[v34:word32]
+	loc10 = v35
+	v36 = loc9
+	v37 = 0<32>
+	Mem0[v36:word32] = v37
+	v38 = fn000EAD0D()
+	loc11 = v38
+	v39 = arg0
+	v40 = loc7
+	v41 = loc11
+	v42 = fn000DF086(v39, v40, v41)
+	loc17 = v42
+	v43 = loc9
+	v44 = Mem0[v43:word32]
+	loc12 = v44
+	v45 = loc12
+	v46 = 0<32>
+	v47 = v45 == v46
+	loc3 = v47
+	v48 = loc3
+	branch !v48 l000EBFCC
+	// succ:  l000EBFC5 l000EBFCC
+l000EBFC5:
+	v49 = loc9
+	v50 = loc10
+	Mem0[v49:word32] = v50
+	// succ:  l000EBFCC
+l000EBFCC:
+	v51 = loc7
+	v52 = Mem0[v51:word32]
+	loc4 = v52
+	v53 = loc4
+	v54 = arg1
+	v55 = v53 == v54
+	loc5 = v55
+	v56 = loc5
+	branch !v56 l000EBFFB
+	// succ:  l000EBFDF l000EBFFB
+l000EBFDF:
+	v57 = loc12
+	v58 = 0x22<32>
+	v59 = v57 == v58
+	loc6 = v59
+	v60 = loc6
+	branch !v60 l000EBFF5
+	// succ:  l000EBFEA l000EBFF5
+l000EBFEA:
+	v61 = arg2
+	v62 = 4<32>
+	Mem0[v61:word32] = v62
+	v63 = loc17
+	loc15 = v63
+	goto l000EBFFA
+	// succ:  l000EBFFA
+l000EBFF5:
+	v64 = loc17
+	loc15 = v64
+	// succ:  l000EBFFA
+l000EBFFA:
+	goto l000EC00E
+	// succ:  l000EC00E
+l000EBFFB:
+	v65 = arg2
+	v66 = 4<32>
+	Mem0[v65:word32] = v66
+	v67 = 0.0
+	loc15 = v67
+	// succ:  l000EC00E
+l000EC00E:
+	v68 = loc15
+	loc16 = v68
+	// succ:  l000EC013
+l000EC013:
+	v69 = loc14
+	Mem0[0x00140030<p32>:word32] = v69
+	v70 = loc16
 fn000EBF56_exit:
-
-
-// fn000EC01D
-// Return size: 0
-void fn000EC01D(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn000EC01D_entry:
-	// succ:  l000EC01D
-l000EC01D:
-	v48 = Mem0[0x00140030<p32>:word32]
-	loc49 = v48
-	v49 = arg0
-	v50 = 0xB<32>
-	v51 = v49 + v50
-	loc40 = v51
-	v52 = loc40
-fn000EC01D_exit:
-
-
-// fn000EC1F8
-// Return size: 0
-word32 fn000EC1F8(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000EC1F8_entry:
-	// succ:  l000EC1F8
-l000EC1F8:
-	v189 = Mem0[0x00140030<p32>:word32]
-	loc191 = v189
-	v190 = Mem0[0x00140030<p32>:word32]
-	v191 = 0xF0<32>
-	v192 = v190 + v191
-	Mem0[0x00140030<p32>:word32] = v192
-	v193 = Mem0[0x00140030<p32>:word32]
-	v194 = Mem0[0x00140034<p32>:word32]
-	v195 = v193 >= v194
-	branch !v195 l000EC213
-	// succ:  l000EC20E l000EC213
-l000EC20E:
-	v196 = 0xF0<32>
-	abortStackOverflow(v196)
-	// succ:  l000EC213
-l000EC213:
-	v197 = loc191
-	v198 = 0xC8<32>
-	v199 = v197 + v198
-	loc142 = v199
-	v200 = loc191
-	v201 = 0xC7<32>
-	v202 = v200 + v201
-	loc153 = v202
-	v203 = loc191
-	v204 = 0xC6<32>
-	v205 = v203 + v204
-	loc164 = v205
-	v206 = loc191
-	v207 = 0xB8<32>
-	v208 = v206 + v207
-	loc175 = v208
-	v209 = loc191
-	v210 = 0xAC<32>
-	v211 = v209 + v210
-	loc20 = v211
-	v212 = loc191
-	v213 = 0xA8<32>
-	v214 = v212 + v213
-	loc31 = v214
-	v215 = loc191
-	v216 = 8<32>
-	v217 = v215 + v216
-	loc42 = v217
-	v218 = loc191
-	v219 = 4<32>
-	v220 = v218 + v219
-	loc53 = v220
-	v221 = loc191
-	loc63 = v221
-	v222 = loc191
-	v223 = 0xC5<32>
-	v224 = v222 + v223
-	loc74 = v224
-	v225 = loc191
-	v226 = 0xC4<32>
-	v227 = v225 + v226
-	loc85 = v227
-	v228 = loc175
-	v229 = arg3
-	v230 = loc142
-	v231 = loc153
-	v232 = loc164
-	fn000EB941(v228, v229, v230, v231, v232)
-	v233 = loc20
-	v234 = 0<64>
-fn000EC1F8_exit:
 
 
 // fn000ECB14
@@ -3310,87 +5259,97 @@ l000ECB2C:
 	v28 = v26 == v27
 	loc8 = v28
 	v29 = loc8
-	v29 = v29
-	// succ:  l000ECB3C l000ECB3C
+	branch !v29 l000ECB4E
+	// succ:  l000ECB3C l000ECB4E
 l000ECB3C:
 	v30 = arg2
 	v31 = 4<32>
+	Mem0[v30:word32] = v31
+	v32 = 0.0
+	loc16 = v32
+	goto l000ECBD1
+	// succ:  l000ECBD1
+l000ECB4E:
+	v33 = ___errno_location()
+	loc9 = v33
+	v34 = loc9
+	v35 = Mem0[v34:word32]
+	loc10 = v35
+	v36 = loc9
+	v37 = 0<32>
+	Mem0[v36:word32] = v37
+	v38 = fn000EAD0D()
+	loc11 = v38
+	v39 = arg0
+	v40 = loc7
+	v41 = loc11
+	v42 = fn000DF086(v39, v40, v41)
+	loc17 = v42
+	v43 = loc9
+	v44 = Mem0[v43:word32]
+	loc12 = v44
+	v45 = loc12
+	v46 = 0<32>
+	v47 = v45 == v46
+	loc3 = v47
+	v48 = loc3
+	branch !v48 l000ECB8A
+	// succ:  l000ECB83 l000ECB8A
+l000ECB83:
+	v49 = loc9
+	v50 = loc10
+	Mem0[v49:word32] = v50
+	// succ:  l000ECB8A
+l000ECB8A:
+	v51 = loc7
+	v52 = Mem0[v51:word32]
+	loc4 = v52
+	v53 = loc4
+	v54 = arg1
+	v55 = v53 == v54
+	loc5 = v55
+	v56 = loc5
+	branch !v56 l000ECBB9
+	// succ:  l000ECB9D l000ECBB9
+l000ECB9D:
+	v57 = loc12
+	v58 = 0x22<32>
+	v59 = v57 == v58
+	loc6 = v59
+	v60 = loc6
+	branch !v60 l000ECBB3
+	// succ:  l000ECBA8 l000ECBB3
+l000ECBA8:
+	v61 = arg2
+	v62 = 4<32>
+	Mem0[v61:word32] = v62
+	v63 = loc17
+	loc15 = v63
+	goto l000ECBB8
+	// succ:  l000ECBB8
+l000ECBB3:
+	v64 = loc17
+	loc15 = v64
+	// succ:  l000ECBB8
+l000ECBB8:
+	goto l000ECBCC
+	// succ:  l000ECBCC
+l000ECBB9:
+	v65 = arg2
+	v66 = 4<32>
+	Mem0[v65:word32] = v66
+	v67 = 0.0
+	loc15 = v67
+	// succ:  l000ECBCC
+l000ECBCC:
+	v68 = loc15
+	loc16 = v68
+	// succ:  l000ECBD1
+l000ECBD1:
+	v69 = loc14
+	Mem0[0x00140030<p32>:word32] = v69
+	v70 = loc16
 fn000ECB14_exit:
-
-
-// fn000ECBDB
-// Return size: 0
-word32 fn000ECBDB(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000ECBDB_entry:
-	// succ:  l000ECBDB
-l000ECBDB:
-	v189 = Mem0[0x00140030<p32>:word32]
-	loc191 = v189
-	v190 = Mem0[0x00140030<p32>:word32]
-	v191 = 0xF0<32>
-	v192 = v190 + v191
-	Mem0[0x00140030<p32>:word32] = v192
-	v193 = Mem0[0x00140030<p32>:word32]
-	v194 = Mem0[0x00140034<p32>:word32]
-	v195 = v193 >= v194
-	branch !v195 l000ECBF6
-	// succ:  l000ECBF1 l000ECBF6
-l000ECBF1:
-	v196 = 0xF0<32>
-	abortStackOverflow(v196)
-	// succ:  l000ECBF6
-l000ECBF6:
-	v197 = loc191
-	v198 = 0xC8<32>
-	v199 = v197 + v198
-	loc142 = v199
-	v200 = loc191
-	v201 = 0xC7<32>
-	v202 = v200 + v201
-	loc153 = v202
-	v203 = loc191
-	v204 = 0xC6<32>
-	v205 = v203 + v204
-	loc164 = v205
-	v206 = loc191
-	v207 = 0xB8<32>
-	v208 = v206 + v207
-	loc175 = v208
-	v209 = loc191
-	v210 = 0xAC<32>
-	v211 = v209 + v210
-	loc20 = v211
-	v212 = loc191
-	v213 = 0xA8<32>
-	v214 = v212 + v213
-	loc31 = v214
-	v215 = loc191
-	v216 = 8<32>
-	v217 = v215 + v216
-	loc42 = v217
-	v218 = loc191
-	v219 = 4<32>
-	v220 = v218 + v219
-	loc53 = v220
-	v221 = loc191
-	loc63 = v221
-	v222 = loc191
-	v223 = 0xC5<32>
-	v224 = v222 + v223
-	loc74 = v224
-	v225 = loc191
-	v226 = 0xC4<32>
-	v227 = v225 + v226
-	loc85 = v227
-	v228 = loc175
-	v229 = arg3
-	v230 = loc142
-	v231 = loc153
-	v232 = loc164
-	fn000EB941(v228, v229, v230, v231, v232)
-	v233 = loc20
-	v234 = 0<64>
-fn000ECBDB_exit:
 
 
 // fn000ED4F8
@@ -3422,77 +5381,72 @@ l000ED510:
 	v29 = v27 == v28
 	loc8 = v29
 	v30 = loc8
-	v30 = v30
-	// succ:  l000ED520 l000ED520
+	branch !v30 l000ED52E
+	// succ:  l000ED520 l000ED52E
 l000ED520:
 	v31 = arg2
 	v32 = 4<32>
+	Mem0[v31:word32] = v32
+	v33 = 0.0F
+	loc16 = v33
+l000ED52E:
+	v34 = ___errno_location()
+	loc9 = v34
+	v35 = loc9
+	v36 = Mem0[v35:word32]
+	loc10 = v36
+	v37 = loc9
+	v38 = 0<32>
+	Mem0[v37:word32] = v38
+	v39 = fn000EAD0D()
+	loc11 = v39
+	v40 = arg0
+	v41 = loc7
+	v42 = loc11
+	v43 = fn000DF086(v40, v41, v42)
+	loc18 = v43
+	v44 = loc9
+	v45 = Mem0[v44:word32]
+	loc12 = v45
+	v46 = loc12
+	v47 = 0<32>
+	v48 = v46 == v47
+	loc3 = v48
+	v49 = loc3
+	branch !v49 l000ED56A
+	// succ:  l000ED563 l000ED56A
+l000ED563:
+	v50 = loc9
+	v51 = loc10
+	Mem0[v50:word32] = v51
+	// succ:  l000ED56A
+l000ED56A:
+	v52 = loc7
+	v53 = Mem0[v52:word32]
+	loc4 = v53
+	v54 = loc4
+	v55 = arg1
+	v56 = v54 == v55
+	loc5 = v56
+	v57 = loc5
+	v57 = v57
+	// succ:  l000ED57D l000ED57D
+l000ED57D:
+	v58 = loc12
+	v59 = 0x22<32>
+	v60 = v58 == v59
+	loc6 = v60
+	v61 = loc6
+	branch !v61 l000ED58F
+	// succ:  l000ED588 l000ED58F
+l000ED588:
+	v62 = arg2
+	v63 = 4<32>
+	Mem0[v62:word32] = v63
+	// succ:  l000ED58F
+l000ED58F:
+	v64 = loc18
 fn000ED4F8_exit:
-
-
-// fn000ED5B7
-// Return size: 0
-word32 fn000ED5B7(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000ED5B7_entry:
-	// succ:  l000ED5B7
-l000ED5B7:
-	v183 = Mem0[0x00140030<p32>:word32]
-	loc185 = v183
-	v184 = Mem0[0x00140030<p32>:word32]
-	v185 = 0xE0<32>
-	v186 = v184 + v185
-	Mem0[0x00140030<p32>:word32] = v186
-	v187 = Mem0[0x00140030<p32>:word32]
-	v188 = Mem0[0x00140034<p32>:word32]
-	v189 = v187 >= v188
-	branch !v189 l000ED5D2
-	// succ:  l000ED5CD l000ED5D2
-l000ED5CD:
-	v190 = 0xE0<32>
-	abortStackOverflow(v190)
-	// succ:  l000ED5D2
-l000ED5D2:
-	v191 = loc185
-	v192 = 0xC6<32>
-	v193 = v191 + v192
-	loc137 = v193
-	v194 = loc185
-	v195 = 0xC4<32>
-	v196 = v194 + v195
-	loc148 = v196
-	v197 = loc185
-	v198 = 0xB8<32>
-	v199 = v197 + v198
-	loc159 = v199
-	v200 = loc185
-	v201 = 0xAC<32>
-	v202 = v200 + v201
-	loc170 = v202
-	v203 = loc185
-	v204 = 0xA8<32>
-	v205 = v203 + v204
-	loc20 = v205
-	v206 = loc185
-	v207 = 8<32>
-	v208 = v206 + v207
-	loc31 = v208
-	v209 = loc185
-	v210 = 4<32>
-	v211 = v209 + v210
-	loc42 = v211
-	v212 = loc185
-	loc53 = v212
-	v213 = arg3
-	v214 = fn000EDE83(v213)
-	loc63 = v214
-	v215 = loc159
-	v216 = arg3
-	v217 = loc137
-	v218 = loc148
-	fn000EDF31(v215, v216, v217, v218)
-	v219 = loc170
-	v220 = 0<64>
-fn000ED5B7_exit:
 
 
 // fn000EDE83
@@ -3508,6 +5462,29 @@ l000EDE83:
 	v13 = v11 + v12
 	loc2 = v13
 	v14 = loc2
+	v15 = Mem0[v14:word32]
+	loc3 = v15
+	v16 = loc3
+	v17 = 0x4A<32>
+	v18 = v16 & v17
+	loc4 = v18
+	v19 = loc4
+	v20 = 0xFF<32>
+	v21 = v19 & v20
+	loc5 = v21
+	v22 = loc5
+	v23 = 0x7F<32>
+	v24 = v22 & v23
+	loc6 = v24
+	// succ:  l000EDEAF
+l000EDEAF:
+	v25 = loc6
+	v26 = 0x18<32>
+	v27 = v25 << v26
+	v28 = 0x18<32>
+	v29 = v27 >> v28
+	v30 = 0<32>
+	v31 = v29 - v30
 fn000EDE83_exit:
 
 
@@ -3540,422 +5517,47 @@ l000EDF49:
 	loc29 = v44
 	v45 = loc28
 	v46 = loc29
+	Mem0[v45:word32] = v46
+	v47 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v47
+	v48 = 0x164<32>
+	v49 = loc28
+	v50 = 0x4C70<32>
+	v51 = invoke_iii(v48, v49, v50)
+	loc30 = v51
+	v52 = Mem0[0x00140048<p32>:word32]
+	loc31 = v52
+	v53 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v53
+	v54 = loc31
+	v55 = 1<32>
+	v56 = v54 & v55
+	loc32 = v56
+	v57 = loc32
+	branch !v57 l000EDF84
+	// succ:  l000EDF80 l000EDF84
+l000EDF80:
+	v58 = 7<32>
+	loc34 = v58
+l000EDF84:
+	v59 = loc30
+	v60 = Mem0[v59:word32]
+	loc33 = v60
+	v61 = loc33
+	v62 = 0x20<32>
+	v63 = v61 + v62
+	loc6 = v63
+	v64 = loc6
+	v65 = Mem0[v64:word32]
+	loc7 = v65
+	v66 = 0<32>
+	Mem0[0x00140048<p32>:word32] = v66
+	v67 = loc7
+	v68 = loc30
+	v69 = 0x37AB<32>
+	v70 = 0x37C5<32>
+	v71 = arg2
+	v72 = invoke_iiiii(v67, v68, v69, v70, v71)
 fn000EDF31_exit:
-
-
-// fn000EE0A5
-// Return size: 0
-word64 fn000EE0A5(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn000EE0A5_entry:
-	// succ:  l000EE0A5
-l000EE0A5:
-	v19 = Mem0[0x00140030<p32>:word32]
-	loc17 = v19
-	v20 = Mem0[0x00140030<p32>:word32]
-	v21 = 0x10<32>
-	v22 = v20 + v21
-	Mem0[0x00140030<p32>:word32] = v22
-	v23 = Mem0[0x00140030<p32>:word32]
-	v24 = Mem0[0x00140034<p32>:word32]
-	v25 = v23 >= v24
-	branch !v25 l000EE0BD
-	// succ:  l000EE0B9 l000EE0BD
-l000EE0B9:
-	v26 = 0x10<32>
-	abortStackOverflow(v26)
-	// succ:  l000EE0BD
-l000EE0BD:
-	v27 = loc17
-	loc10 = v27
-	v28 = arg0
-	v29 = arg1
-	v30 = v28 == v29
-	loc11 = v30
-	// succ:  l000EE0C9
-l000EE0C9:
-	v31 = loc11
-	v31 = v31
-	// succ:  l000EE0CF l000EE0CF
-l000EE0CF:
-	v32 = arg2
-	v33 = 4<32>
-fn000EE0A5_exit:
-
-
-// fn000EE188
-// Return size: 0
-word32 fn000EE188(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000EE188_entry:
-	// succ:  l000EE188
-l000EE188:
-	v183 = Mem0[0x00140030<p32>:word32]
-	loc186 = v183
-	v184 = Mem0[0x00140030<p32>:word32]
-	v185 = 0xE0<32>
-	v186 = v184 + v185
-	Mem0[0x00140030<p32>:word32] = v186
-	v187 = Mem0[0x00140030<p32>:word32]
-	v188 = Mem0[0x00140034<p32>:word32]
-	v189 = v187 >= v188
-	branch !v189 l000EE1A3
-	// succ:  l000EE19E l000EE1A3
-l000EE19E:
-	v190 = 0xE0<32>
-	abortStackOverflow(v190)
-	// succ:  l000EE1A3
-l000EE1A3:
-	v191 = loc186
-	v192 = 0xC6<32>
-	v193 = v191 + v192
-	loc138 = v193
-	v194 = loc186
-	v195 = 0xC4<32>
-	v196 = v194 + v195
-	loc149 = v196
-	v197 = loc186
-	v198 = 0xB8<32>
-	v199 = v197 + v198
-	loc160 = v199
-	v200 = loc186
-	v201 = 0xAC<32>
-	v202 = v200 + v201
-	loc171 = v202
-	v203 = loc186
-	v204 = 0xA8<32>
-	v205 = v203 + v204
-	loc20 = v205
-	v206 = loc186
-	v207 = 8<32>
-	v208 = v206 + v207
-	loc31 = v208
-	v209 = loc186
-	v210 = 4<32>
-	v211 = v209 + v210
-	loc42 = v211
-	v212 = loc186
-	loc53 = v212
-	v213 = arg3
-	v214 = fn000EDE83(v213)
-	loc64 = v214
-	v215 = loc160
-	v216 = arg3
-	v217 = loc138
-	v218 = loc149
-	fn000EDF31(v215, v216, v217, v218)
-	v219 = loc171
-	v220 = 0<64>
-fn000EE188_exit:
-
-
-// fn000EEA53
-// Return size: 0
-word32 fn000EEA53(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn000EEA53_entry:
-	// succ:  l000EEA53
-l000EEA53:
-	v22 = Mem0[0x00140030<p32>:word32]
-	loc22 = v22
-	v23 = Mem0[0x00140030<p32>:word32]
-	v24 = 0x10<32>
-	v25 = v23 + v24
-	Mem0[0x00140030<p32>:word32] = v25
-	v26 = Mem0[0x00140030<p32>:word32]
-	v27 = Mem0[0x00140034<p32>:word32]
-	v28 = v26 >= v27
-	branch !v28 l000EEA6B
-	// succ:  l000EEA67 l000EEA6B
-l000EEA67:
-	v29 = 0x10<32>
-	abortStackOverflow(v29)
-	// succ:  l000EEA6B
-l000EEA6B:
-	v30 = loc22
-	loc14 = v30
-	v31 = arg0
-	v32 = arg1
-	v33 = v31 == v32
-	loc15 = v33
-	// succ:  l000EEA77
-l000EEA77:
-	v34 = loc15
-	v34 = v34
-	// succ:  l000EEA7D l000EEA7D
-l000EEA7D:
-	v35 = arg2
-	v36 = 4<32>
-fn000EEA53_exit:
-
-
-// fn000EEB54
-// Return size: 0
-word32 fn000EEB54(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000EEB54_entry:
-	// succ:  l000EEB54
-l000EEB54:
-	v183 = Mem0[0x00140030<p32>:word32]
-	loc186 = v183
-	v184 = Mem0[0x00140030<p32>:word32]
-	v185 = 0xE0<32>
-	v186 = v184 + v185
-	Mem0[0x00140030<p32>:word32] = v186
-	v187 = Mem0[0x00140030<p32>:word32]
-	v188 = Mem0[0x00140034<p32>:word32]
-	v189 = v187 >= v188
-	branch !v189 l000EEB6F
-	// succ:  l000EEB6A l000EEB6F
-l000EEB6A:
-	v190 = 0xE0<32>
-	abortStackOverflow(v190)
-	// succ:  l000EEB6F
-l000EEB6F:
-	v191 = loc186
-	v192 = 0xC6<32>
-	v193 = v191 + v192
-	loc138 = v193
-	v194 = loc186
-	v195 = 0xC4<32>
-	v196 = v194 + v195
-	loc149 = v196
-	v197 = loc186
-	v198 = 0xB8<32>
-	v199 = v197 + v198
-	loc160 = v199
-	v200 = loc186
-	v201 = 0xAC<32>
-	v202 = v200 + v201
-	loc171 = v202
-	v203 = loc186
-	v204 = 0xA8<32>
-	v205 = v203 + v204
-	loc20 = v205
-	v206 = loc186
-	v207 = 8<32>
-	v208 = v206 + v207
-	loc31 = v208
-	v209 = loc186
-	v210 = 4<32>
-	v211 = v209 + v210
-	loc42 = v211
-	v212 = loc186
-	loc53 = v212
-	v213 = arg3
-	v214 = fn000EDE83(v213)
-	loc64 = v214
-	v215 = loc160
-	v216 = arg3
-	v217 = loc138
-	v218 = loc149
-	fn000EDF31(v215, v216, v217, v218)
-	v219 = loc171
-	v220 = 0<64>
-fn000EEB54_exit:
-
-
-// fn000EF41F
-// Return size: 0
-word32 fn000EF41F(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn000EF41F_entry:
-	// succ:  l000EF41F
-l000EF41F:
-	v22 = Mem0[0x00140030<p32>:word32]
-	loc22 = v22
-	v23 = Mem0[0x00140030<p32>:word32]
-	v24 = 0x10<32>
-	v25 = v23 + v24
-	Mem0[0x00140030<p32>:word32] = v25
-	v26 = Mem0[0x00140030<p32>:word32]
-	v27 = Mem0[0x00140034<p32>:word32]
-	v28 = v26 >= v27
-	branch !v28 l000EF437
-	// succ:  l000EF433 l000EF437
-l000EF433:
-	v29 = 0x10<32>
-	abortStackOverflow(v29)
-	// succ:  l000EF437
-l000EF437:
-	v30 = loc22
-	loc14 = v30
-	v31 = arg0
-	v32 = arg1
-	v33 = v31 == v32
-	loc15 = v33
-	// succ:  l000EF443
-l000EF443:
-	v34 = loc15
-	v34 = v34
-	// succ:  l000EF449 l000EF449
-l000EF449:
-	v35 = arg2
-	v36 = 4<32>
-fn000EF41F_exit:
-
-
-// fn000EF520
-// Return size: 0
-word32 fn000EF520(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000EF520_entry:
-	// succ:  l000EF520
-l000EF520:
-	v183 = Mem0[0x00140030<p32>:word32]
-	loc186 = v183
-	v184 = Mem0[0x00140030<p32>:word32]
-	v185 = 0xE0<32>
-	v186 = v184 + v185
-	Mem0[0x00140030<p32>:word32] = v186
-	v187 = Mem0[0x00140030<p32>:word32]
-	v188 = Mem0[0x00140034<p32>:word32]
-	v189 = v187 >= v188
-	branch !v189 l000EF53B
-	// succ:  l000EF536 l000EF53B
-l000EF536:
-	v190 = 0xE0<32>
-	abortStackOverflow(v190)
-	// succ:  l000EF53B
-l000EF53B:
-	v191 = loc186
-	v192 = 0xC6<32>
-	v193 = v191 + v192
-	loc138 = v193
-	v194 = loc186
-	v195 = 0xC4<32>
-	v196 = v194 + v195
-	loc149 = v196
-	v197 = loc186
-	v198 = 0xB8<32>
-	v199 = v197 + v198
-	loc160 = v199
-	v200 = loc186
-	v201 = 0xAC<32>
-	v202 = v200 + v201
-	loc171 = v202
-	v203 = loc186
-	v204 = 0xA8<32>
-	v205 = v203 + v204
-	loc20 = v205
-	v206 = loc186
-	v207 = 8<32>
-	v208 = v206 + v207
-	loc31 = v208
-	v209 = loc186
-	v210 = 4<32>
-	v211 = v209 + v210
-	loc42 = v211
-	v212 = loc186
-	loc53 = v212
-	v213 = arg3
-	v214 = fn000EDE83(v213)
-	loc64 = v214
-	v215 = loc160
-	v216 = arg3
-	v217 = loc138
-	v218 = loc149
-	fn000EDF31(v215, v216, v217, v218)
-	v219 = loc171
-	v220 = 0<64>
-fn000EF520_exit:
-
-
-// fn000EFDEB
-// Return size: 0
-word32 fn000EFDEB(word32 arg0, word32 arg1, word32 arg2, word32 arg3)
-fn000EFDEB_entry:
-	// succ:  l000EFDEB
-l000EFDEB:
-	v22 = Mem0[0x00140030<p32>:word32]
-	loc22 = v22
-	v23 = Mem0[0x00140030<p32>:word32]
-	v24 = 0x10<32>
-	v25 = v23 + v24
-	Mem0[0x00140030<p32>:word32] = v25
-	v26 = Mem0[0x00140030<p32>:word32]
-	v27 = Mem0[0x00140034<p32>:word32]
-	v28 = v26 >= v27
-	branch !v28 l000EFE03
-	// succ:  l000EFDFF l000EFE03
-l000EFDFF:
-	v29 = 0x10<32>
-	abortStackOverflow(v29)
-	// succ:  l000EFE03
-l000EFE03:
-	v30 = loc22
-	loc14 = v30
-	v31 = arg0
-	v32 = arg1
-	v33 = v31 == v32
-	loc15 = v33
-	// succ:  l000EFE0F
-l000EFE0F:
-	v34 = loc15
-	v34 = v34
-	// succ:  l000EFE15 l000EFE15
-l000EFE15:
-	v35 = arg2
-	v36 = 4<32>
-fn000EFDEB_exit:
-
-
-// fn000EFEEF
-// Return size: 0
-word32 fn000EFEEF(word32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5)
-fn000EFEEF_entry:
-	// succ:  l000EFEEF
-l000EFEEF:
-	v183 = Mem0[0x00140030<p32>:word32]
-	loc185 = v183
-	v184 = Mem0[0x00140030<p32>:word32]
-	v185 = 0xE0<32>
-	v186 = v184 + v185
-	Mem0[0x00140030<p32>:word32] = v186
-	v187 = Mem0[0x00140030<p32>:word32]
-	v188 = Mem0[0x00140034<p32>:word32]
-	v189 = v187 >= v188
-	branch !v189 l000EFF0A
-	// succ:  l000EFF05 l000EFF0A
-l000EFF05:
-	v190 = 0xE0<32>
-	abortStackOverflow(v190)
-	// succ:  l000EFF0A
-l000EFF0A:
-	v191 = loc185
-	v192 = 0xC6<32>
-	v193 = v191 + v192
-	loc137 = v193
-	v194 = loc185
-	v195 = 0xC4<32>
-	v196 = v194 + v195
-	loc148 = v196
-	v197 = loc185
-	v198 = 0xB8<32>
-	v199 = v197 + v198
-	loc159 = v199
-	v200 = loc185
-	v201 = 0xAC<32>
-	v202 = v200 + v201
-	loc170 = v202
-	v203 = loc185
-	v204 = 0xA8<32>
-	v205 = v203 + v204
-	loc20 = v205
-	v206 = loc185
-	v207 = 8<32>
-	v208 = v206 + v207
-	loc31 = v208
-	v209 = loc185
-	v210 = 4<32>
-	v211 = v209 + v210
-	loc42 = v211
-	v212 = loc185
-	loc53 = v212
-	v213 = arg3
-	v214 = fn000EDE83(v213)
-	loc63 = v214
-	v215 = loc159
-	v216 = arg3
-	v217 = loc137
-	v218 = loc148
-	fn000EDF31(v215, v216, v217, v218)
-	v219 = loc170
-	v220 = 0<64>
-fn000EFEEF_exit:
 
 

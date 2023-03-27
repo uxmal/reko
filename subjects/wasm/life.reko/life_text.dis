@@ -26,6 +26,42 @@ l000C0000:
 	v21 = v19 %s v20
 	loc4 = v21
 	v22 = v16 + v21
+	v23 = Mem0[v22:byte]
+	v24 = CONVERT(v23, byte, word32)
+	v25 = loc3
+	v26 = arg1
+	v27 = 1<32>
+	v28 = v26 + v27
+	v29 = 0x64<32>
+	v30 = v28 %s v29
+	arg1 = v30
+	v31 = v25 + v30
+	v32 = Mem0[v31:byte]
+	v33 = CONVERT(v32, byte, word32)
+	v34 = v24 + v33
+	v35 = arg0
+	v36 = arg2
+	v37 = 1<32>
+	v38 = v36 + v37
+	v39 = 0x64<32>
+	v40 = v38 %s v39
+	v41 = 0x64<32>
+	v42 = v40 * v41
+	v43 = v35 + v42
+	arg2 = v43
+	v44 = loc4
+	v45 = v43 + v44
+	v46 = Mem0[v45:byte]
+	v47 = CONVERT(v46, byte, word32)
+	v48 = v34 + v47
+	v49 = arg2
+	v50 = arg1
+	v51 = v49 + v50
+	v52 = Mem0[v51:byte]
+	v53 = CONVERT(v52, byte, word32)
+	v54 = v48 + v53
+	return v54
+	// succ:  count_neighbors_exit
 count_neighbors_exit:
 
 

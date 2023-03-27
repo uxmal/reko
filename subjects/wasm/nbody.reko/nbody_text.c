@@ -4,15 +4,15 @@
 
 #include "nbody.h"
 
-// 000E0000: void _advance(Stack int32 arg0, Stack word32 arg1, Stack real64 arg2)
+// 000E0000: void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2)
 
-// Exception Unknown node void _advance(Stack int32 arg0, Stack word32 arg1, Stack real64 arg2). when writing procedure.
+// Exception Unknown node void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2). when writing procedure.
 // 000E020A: Stack real64 _energy(Stack int32 arg0, Stack word32 arg1)
 
 // Exception Unknown node Stack real64 _energy(Stack int32 arg0, Stack word32 arg1). when writing procedure.
-// 000E0329: void _offset_momentum(Stack int32 arg0, Stack word32 arg1)
+// 000E0329: void _offset_momentum(Stack int32 arg0, Stack (ptr32 Eq_n) arg1)
 
-// Exception Unknown node void _offset_momentum(Stack int32 arg0, Stack word32 arg1). when writing procedure.
+// Exception Unknown node void _offset_momentum(Stack int32 arg0, Stack (ptr32 Eq_n) arg1). when writing procedure.
 // 000E0405: Stack real64 _start()
 
 // Exception Unknown node Stack real64 _start(). when writing procedure.

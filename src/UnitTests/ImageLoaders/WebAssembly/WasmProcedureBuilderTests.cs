@@ -95,7 +95,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             int idxGlobal = globals.Count;
             var ge = new GlobalEntry
             {
-                 Type= (DataTypeFromValType(valType), mutable),
+                Type = (DataTypeFromValType(valType), mutable),
             };
             globals.Add(ge);
             mpGlobIdxToAddr.Add(idxGlobal, addrGlobal);
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
                 Name = name,
                 TypeIndex = typeIndex
             };
-            mpFunidxToProc.Add(funcindex.Count, new ExternalProcedure(name, this.funcTypes[(int)typeIndex]));
+            mpFunidxToProc.Add(funcindex.Count, new ExternalProcedure(name, this.funcTypes[(int) typeIndex]));
             funcindex.Add(def);
         }
 
@@ -580,7 +580,7 @@ fn00000_exit:
                             13,0,           // br.if 0
                 
                         11,             // end
-                    11,                 
+                    11,
                     11,
                 }));
         }
@@ -626,6 +626,70 @@ fn00000_exit:
                     11,
                     11,
                 }));
+        }
+
+        [Test]
+        public void Waspb_Store32()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+void fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = param0
+	v3 = param0
+	v4 = Mem0[v3 + 8<u32>:word32]
+	Mem0[v2 + 4<u32>:word32] = v4
+	return
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 0);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[] {
+                32,0,   // local.get
+                32,0,
+                40,2,8, // i32.load
+                54,2,4, // i32.store
+                11
+            }));
+        }
+
+        [Test]
+        public void Waspb_Store8()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+void fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = param0
+	v3 = param0
+	v4 = Mem0[v3 + 8<u32>:byte]
+	v5 = CONVERT(v4, byte, word32)
+	v6 = SLICE(v5, byte, 0)
+	Mem0[v2 + 4<u32>:byte] = v6
+	return
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 0);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[] {
+                32,0,   // local.get
+                32,0,
+                45,2,8, // i32.load8_u
+                58,2,4, // i32.store8
+                11
+            }));
         }
     }
 }
