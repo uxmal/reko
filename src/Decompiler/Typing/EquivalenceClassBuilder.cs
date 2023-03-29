@@ -347,7 +347,7 @@ namespace Reko.Typing
 		public override void VisitProcedureConstant(ProcedureConstant pc)
 		{
 			EnsureTypeVariable(pc);
-			VisitProcedure(pc.Procedure);
+			VisitProcedure(pc.Procedure, pc.Signature);
 			if (pc.Signature.ParametersValid)
 			{
 				store.MergeClasses(store.GetTypeVariable(pc), pc.Signature.TypeVariable ?? pc.Procedure.Signature.TypeVariable!);
@@ -355,23 +355,23 @@ namespace Reko.Typing
 			}
 		}
 
-		public void VisitProcedure(ProcedureBase proc)
+		public void VisitProcedure(ProcedureBase proc, FunctionType sig)
 		{
-			if (proc.Signature.TypeVariable == null)
+            if (sig.TypeVariable == null)
 			{
                 var addr = (proc is Procedure userProc)
                     ? userProc.EntryAddress
                     : null;
 
-				proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
+                sig.TypeVariable = store.EnsureExpressionTypeVariable(
 					factory,
                     addr,
                     new Identifier("signature of " + proc.Name, VoidType.Instance, null!),
 					null);
 			}
-			if (proc.Signature.Parameters != null)
+			if (sig.Parameters != null)
 			{
-				foreach (Identifier id in proc.Signature.Parameters)
+				foreach (Identifier id in sig.Parameters)
 				{
 					id.Accept(this);
 				}

@@ -70,7 +70,7 @@ up32 g_a4136B0[] = // 00000000004136B0
 Eq_n g_a4136C0[] = // 00000000004136C0
 	{
 	};
-Eq_n g_a413700[] = // 0000000000413700
+char * g_a413700[] = // 0000000000413700
 	{
 	};
 byte g_a413728[] = // 0000000000413728
@@ -81,6 +81,7 @@ char g_str413736[] = "src/ls.c"; // 0000000000413736
 char g_str41373F[] = "sort_type != sort_version"; // 000000000041373F
 char g_str413766[] = "%b"; // 0000000000413766
 byte g_b4137B1 = 117; // 00000000004137B1
+char g_str4137FC[] = "GNU coreutils"; // 00000000004137FC
 char g_str413800[] = "coreutils"; // 0000000000413800
 char g_str413807[] = "ls"; // 0000000000413807
 char g_str41380E[] = "vdir"; // 000000000041380E
@@ -99,6 +100,7 @@ byte g_b413C07 = 0x6D; // 0000000000413C07
 char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1"; // 0000000000415BC8
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })"; // 0000000000415C58
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0"; // 0000000000415D68
+char g_str415DF8[] = "8.21"; // 0000000000415DF8
 char g_str415E6A[] = "POSIX"; // 0000000000415E6A
 Eq_n g_t415EE0 = // 0000000000415EE0
 	{

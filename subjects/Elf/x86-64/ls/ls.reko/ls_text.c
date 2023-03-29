@@ -113,7 +113,7 @@ l0000000000402B30:
 				case ~0x82:
 					char * rsi_n;
 					word32 eax_n = g_dw61A56C;
-					Eq_n rcx_n = g_t61A570.u1;
+					char * rcx_n = g_ptr61A570;
 					if (eax_n != 0x01)
 					{
 						rsi_n = (char *) "dir";
@@ -122,7 +122,7 @@ l0000000000402B30:
 					}
 					else
 						rsi_n = (char *) "ls";
-					fn0000000000410B30(0x00, rcx_n, 4274172, rsi_n, stdout);
+					fn0000000000410B30(0x00, rcx_n, "GNU coreutils", rsi_n, stdout);
 					exit(0);
 				case ~0x81:
 					fn0000000000409750(0x00);
@@ -700,8 +700,8 @@ l00000000004038A8:
 						word64 * rbx_n = g_a413700;
 						while (true)
 						{
-							Eq_n rcx_n = *rbx_n;
-							if (rcx_n == 0x00)
+							char * rcx_n = *rbx_n;
+							if (rcx_n == null)
 								break;
 							__fprintf_chk(stderr, 1, "  - [posix-]%s\n", rcx_n);
 							++rbx_n;
@@ -1777,7 +1777,7 @@ void fn0000000000404DD0()
 	}
 	g_t61B1B0.u3 = (char *) 0x00;
 	g_b61B17C = 0x00;
-	g_t61B178.u0 = 0x00;
+	g_dw61B178 = 0x00;
 	g_dw61B174 = 0x00;
 	g_dw61B170 = 0x00;
 	g_dw61B168 = 0x00;
@@ -2153,7 +2153,7 @@ void fn0000000000405630(struct Eq_n * rsi, Eq_n rdi)
 		rsi->b0050 |= 0x02;
 	int64 rcx_n = (int64) rsi->dw0030;
 	Eq_n (* rcx_n)[] = rsi->ptr0020;
-	Eq_n (* rdx_n)[] = (int64) ~(word32) rcx_n & &(rax_n + rcx_n /64 8)->u0;
+	Eq_n (* rdx_n)[] = (int64) ~(word32) rcx_n & &(rax_n + rcx_n /64 8)->dw0000;
 	int64 rax_n = rsi->qw0008;
 	rsi->ptr0018 = rdx_n;
 	if (rdx_n - rax_n > rcx_n - rax_n)
@@ -2163,7 +2163,7 @@ void fn0000000000405630(struct Eq_n * rsi, Eq_n rdi)
 	uint64 rbx_n = 0x00;
 	do
 	{
-		__printf_chk(1, " %lu", rbp_n[rbx_n].u0);
+		__printf_chk(1, " %lu", rbp_n[rbx_n].dw0000);
 		++rbx_n;
 	} while (r12_n > rbx_n);
 	FILE * rdi_n = stdout;
@@ -2352,7 +2352,7 @@ Eq_n fn0000000000405D50(Eq_n rdi, Eq_n r12, struct Eq_n * fs)
 	if (g_b61B114 != 0x00)
 	{
 		if (g_dw61B150 != 0x04)
-			rbx_n = (int64) g_t61B178.u0 + 0x01;
+			rbx_n = (int64) g_dw61B178 + 0x01;
 		else
 			rbx_n = (word64) strlen(fn000000000040CD70(&tLoc02B8, *((word64) rdi + 24))) + 1;
 	}
@@ -2549,7 +2549,7 @@ word32 fn00000000004061B0(uint64 rdi, struct Eq_n * fs)
 {
 	ptr64 fp;
 	char bLoc38;
-	Eq_n edi = (word32) rdi;
+	uint32 edi = (word32) rdi;
 	uint64 rdx_n;
 	word64 rax_n = fs->qw0028;
 	if (g_b61B145 == 0x00)
@@ -3013,7 +3013,7 @@ l0000000000406BF7:
 					if (rdi_n != 0x00)
 						fn000000000040CD70(&tLoc1278, rdi_n);
 				}
-				__sprintf_chk(&bLoc0E88, 1, 3643, "%*s ", g_t61B178.u0);
+				__sprintf_chk(&bLoc0E88, 1, 3643, "%*s ", g_dw61B178);
 				union Eq_n * rdx_n = &bLoc0E88;
 				do
 				{
@@ -3301,7 +3301,7 @@ void fn0000000000407870(Eq_n rsi, Eq_n rdi, struct Eq_n * fs)
 		}
 		uint64 rdx_n = 0x00;
 		if (g_dw61B150 != 0x04)
-			rdx_n = (uint64) g_t61B178.u0;
+			rdx_n = (uint64) g_dw61B178;
 		rax_n.u3 = (uint64) __printf_chk(1, "%*s ", (<unknown>) rdx_n);
 	}
 	if (g_b61B144 != 0x00)
@@ -3969,9 +3969,9 @@ l000000000040873F:
 l00000000004081D2:
 													if (g_b61B114 != 0x00)
 													{
-														Eq_n eax_n = (word32) strlen(fn000000000040CD70(&tLoc02D8, r14_n[3]));
-														if (eax_n > g_t61B178.u0)
-															g_t61B178.u0 = (uint32) eax_n;
+														int32 eax_n = (word32) strlen(fn000000000040CD70(&tLoc02D8, r14_n[3]));
+														if (eax_n > g_dw61B178)
+															g_dw61B178 = eax_n;
 													}
 l00000000004081E1:
 													Eq_n rax_n = fn0000000000410E30(rdi);
@@ -9231,12 +9231,12 @@ Eq_n fn0000000000410600(Eq_n rcx, Eq_n rdx, Eq_n rsi, Eq_n rdi, word32 r8d, Eq_n
 	return fn000000000040ECD0(rdx, rsi, rdi, 0x00, rcx, r8d, fs, r9d);
 }
 
-// 0000000000410630: void fn0000000000410630(Register Eq_n rcx, Register Eq_n rdx, Register (ptr64 char) rsi, Register (ptr64 Eq_n) rdi, Register Eq_n r9)
+// 0000000000410630: void fn0000000000410630(Register (ptr64 char) rcx, Register (ptr64 char) rdx, Register (ptr64 char) rsi, Register (ptr64 Eq_n) rdi, Register (ptr64 char) r9)
 // Called from:
 //      fn0000000000410AC0
-void fn0000000000410630(Eq_n rcx, Eq_n rdx, char * rsi, FILE * rdi, Eq_n r9)
+void fn0000000000410630(char * rcx, char * rdx, char * rsi, FILE * rdi, char * r9)
 {
-	Eq_n r9_n;
+	char * r9_n;
 	if (rsi != null)
 	{
 		__fprintf_chk(rdi, 1, "%s (%s) %s\n", rsi, rdx, rcx);
@@ -9251,20 +9251,20 @@ void fn0000000000410630(Eq_n rcx, Eq_n rdx, char * rsi, FILE * rdi, Eq_n r9)
 	__fprintf_chk(rdi, 1, "Copyright %s %d Free Software Foundation, Inc.", rax_n, 0x07DD);
 	Eq_n rax_n = dcgettext(null, 4286768, 5);
 	fputs_unlocked(rax_n, rdi);
-	if (r9 > 0x09)
+	if (r9 > (char *) 0x09)
 		__fprintf_chk(rdi, 1, dcgettext(null, 4287240, 5), 0x00);
 	else
 		g_ptr416B48();
 }
 
 <anonymous> g_t410800 = <code>; // 0000000000410800
-// 0000000000410AC0: void fn0000000000410AC0(Register Eq_n rcx, Register Eq_n rdx, Register (ptr64 char) rsi, Register (ptr64 Eq_n) rdi, Register (ptr64 Eq_n) r8)
+// 0000000000410AC0: void fn0000000000410AC0(Register (ptr64 char) rcx, Register (ptr64 char) rdx, Register (ptr64 char) rsi, Register (ptr64 Eq_n) rdi, Register (ptr64 Eq_n) r8)
 // Called from:
 //      fn0000000000410B30
-void fn0000000000410AC0(Eq_n rcx, Eq_n rdx, char * rsi, FILE * rdi, struct Eq_n * r8)
+void fn0000000000410AC0(char * rcx, char * rdx, char * rsi, FILE * rdi, struct Eq_n * r8)
 {
 	Eq_n tLoc58;
-	Eq_n r9_n = 0x00;
+	char * r9_n = null;
 	do
 	{
 		up32 eax_n = r8->dw0000;
@@ -9286,15 +9286,15 @@ void fn0000000000410AC0(Eq_n rcx, Eq_n rdx, char * rsi, FILE * rdi, struct Eq_n 
 			if (rax_n == 0x00)
 				break;
 		}
-		r9_n.u1 = (word64) r9_n + 1;
-	} while (r9_n != 0x0A);
+		++r9_n;
+	} while (r9_n != (char *) 0x0A);
 	fn0000000000410630(rcx, rdx, rsi, rdi, r9_n);
 }
 
-// 0000000000410B30: void fn0000000000410B30(Register byte al, Register Eq_n rcx, Register Eq_n rdx, Register (ptr64 char) rsi, Register (ptr64 Eq_n) rdi)
+// 0000000000410B30: void fn0000000000410B30(Register byte al, Register (ptr64 char) rcx, Register (ptr64 char) rdx, Register (ptr64 char) rsi, Register (ptr64 Eq_n) rdi)
 // Called from:
 //      fn00000000004028C0
-void fn0000000000410B30(byte al, Eq_n rcx, Eq_n rdx, char * rsi, FILE * rdi)
+void fn0000000000410B30(byte al, char * rcx, char * rdx, char * rsi, FILE * rdi)
 {
 	ptr64 fp;
 	Eq_n tLocD0;

@@ -1139,7 +1139,7 @@ T_247: (in qwLoc28_225 < 0x400<64> @ 0000000000000A35 : bool)
 T_248: (in printf @ 0000000000000A23 : ptr64)
   Class: Eq_248
   DataType: (ptr64 Eq_248)
-  OrigDataType: (ptr64 (fn T_256 (T_251, T_254)))
+  OrigDataType: (ptr64 (fn T_256 (T_252, T_255)))
 T_249: (in signature of printf : void)
   Class: Eq_248
   DataType: (ptr64 Eq_248)
@@ -1148,27 +1148,27 @@ T_250: (in format @ 0000000000000A23 : (ptr64 char))
   Class: Eq_250
   DataType: (ptr64 char)
   OrigDataType: 
-T_251: (in %g
+T_251: (in  @ 0000000000000A23 : real64)
+  Class: Eq_234
+  DataType: real64
+  OrigDataType: 
+T_252: (in %g
  @ 0000000000000A23 : (ptr64 char))
   Class: Eq_250
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
-T_252: (in 8<64> @ 0000000000000A23 : word64)
-  Class: Eq_252
-  DataType: ui64
-  OrigDataType: ui64
-T_253: (in qwLoc28_225 * 8<64> @ 0000000000000A23 : word64)
+T_253: (in 8<64> @ 0000000000000A23 : word64)
   Class: Eq_253
   DataType: ui64
   OrigDataType: ui64
-T_254: (in rax_42[qwLoc28_225 * 8<64>] @ 0000000000000A23 : word64)
+T_254: (in qwLoc28_225 * 8<64> @ 0000000000000A23 : word64)
+  Class: Eq_254
+  DataType: ui64
+  OrigDataType: ui64
+T_255: (in rax_42[qwLoc28_225 * 8<64>] @ 0000000000000A23 : word64)
   Class: Eq_234
   DataType: real64
   OrigDataType: real64
-T_255: (in  @ 0000000000000A23 : real64)
-  Class: Eq_234
-  DataType: real64
-  OrigDataType: 
 T_256: (in printf("%g\n", rax_42[qwLoc28_225 * 8<64> /64 32<i32>].u0) @ 0000000000000A23 : int32)
   Class: Eq_256
   DataType: int32
@@ -1348,7 +1348,7 @@ T_299:
 T_300:
   Class: Eq_292
   DataType: Eq_292
-  OrigDataType: (struct 0008 (0 T_254 t0000))
+  OrigDataType: (struct 0008 (0 T_255 t0000))
 T_301:
   Class: Eq_301
   DataType: (arr Eq_292)
