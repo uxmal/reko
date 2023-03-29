@@ -1,5 +1,6 @@
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,9 +30,16 @@ namespace Reko.Environments.OS2
             return parser;
         }
 
-        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            throw new NotImplementedException();
+            if (vector == 0x21)
+            {
+                var listener = Services.GetService<DecompilerEventListener>();
+                if (listener is null)
+                    return null;
+                listener.Warn($"{state?.InstructionPointer.ToString() ?? "???"}: No support for protected mode MS-DOS in LE executables yet.");
+            }
+            return null;
         }
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)

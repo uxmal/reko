@@ -212,6 +212,10 @@
       <File Source="$(var.MacOS.ProjectDir)Classic/MacOSClassicInterfaces.p" nuget_target="c:" />
       <File Source="$(var.MorphOS.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Msdos.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Msdos.ProjectDir)bios_kbd.inc" nuget_target="c:" />
+      <File Source="$(var.Msdos.ProjectDir)bios_video.inc" nuget_target="c:" />
+      <File Source="$(var.Msdos.ProjectDir)dpmi.inc" nuget_target="c:" />
+      <File Source="$(var.Msdos.ProjectDir)msdos.inc" nuget_target="c:" />
       <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
       <File Source="$(var.Msdos.Design.TargetPath)" />
       <File Source="$(var.NeoGeo.TargetPath)" nuget_target="f:" />

@@ -630,21 +630,9 @@ Eq_1240: (fn void ())
 	T_1240 (in fn08FD @ 08F3 : ptr16)
 	T_1241 (in signature of fn08FD @ 08FD : void)
 	T_1243 (in fn08FD @ 08FC : ptr16)
-Eq_1258: (fn void (Eq_1260, Eq_1261, Eq_1262, Eq_1263))
+Eq_1258: (fn void (uint8, uint8, uint8, uint8))
 	T_1258 (in S_BDOSVER @ 0935 : ptr16)
 	T_1259 (in signature of S_BDOSVER : void)
-Eq_1260: (union "Eq_1260" (byte u0) ((ptr16 uint8) u1))
-	T_1260 (in sysType_bOut @ 0935 : (ptr16 uint8))
-	T_1264 (in out b_40 @ 0935 : ptr16)
-Eq_1261: (union "Eq_1261" (byte u0) ((ptr16 uint8) u1))
-	T_1261 (in sysType_hOut @ 0935 : (ptr16 uint8))
-	T_1265 (in out h_41 @ 0935 : ptr16)
-Eq_1262: (union "Eq_1262" (byte u0) ((ptr16 uint8) u1))
-	T_1262 (in version_aOut @ 0935 : (ptr16 uint8))
-	T_1266 (in out a_42 @ 0935 : ptr16)
-Eq_1263: (union "Eq_1263" (byte u0) ((ptr16 uint8) u1))
-	T_1263 (in version_lOut @ 0935 : (ptr16 uint8))
-	T_1267 (in out l_43 @ 0935 : ptr16)
 Eq_1294: (fn uint8 (Eq_995))
 	T_1294 (in F_OPEN @ 095E : ptr16)
 	T_1295 (in signature of F_OPEN : void)
@@ -5879,38 +5867,38 @@ T_1259: (in signature of S_BDOSVER : void)
   Class: Eq_1258
   DataType: (ptr16 Eq_1258)
   OrigDataType: 
-T_1260: (in sysType_bOut @ 0935 : (ptr16 uint8))
+T_1260: (in sysType_bOut @ 0935 : uint8)
   Class: Eq_1260
-  DataType: Eq_1260
+  DataType: uint8
   OrigDataType: 
-T_1261: (in sysType_hOut @ 0935 : (ptr16 uint8))
+T_1261: (in sysType_hOut @ 0935 : uint8)
   Class: Eq_1261
-  DataType: Eq_1261
+  DataType: uint8
   OrigDataType: 
-T_1262: (in version_aOut @ 0935 : (ptr16 uint8))
+T_1262: (in version_aOut @ 0935 : uint8)
   Class: Eq_1262
-  DataType: Eq_1262
+  DataType: uint8
   OrigDataType: 
-T_1263: (in version_lOut @ 0935 : (ptr16 uint8))
+T_1263: (in version_lOut @ 0935 : uint8)
   Class: Eq_1263
-  DataType: Eq_1263
+  DataType: uint8
   OrigDataType: 
 T_1264: (in out b_40 @ 0935 : ptr16)
   Class: Eq_1260
-  DataType: Eq_1260
-  OrigDataType: (union (byte u0) ((ptr16 uint8) u1))
+  DataType: uint8
+  OrigDataType: uint8
 T_1265: (in out h_41 @ 0935 : ptr16)
   Class: Eq_1261
-  DataType: Eq_1261
-  OrigDataType: (union (byte u0) ((ptr16 uint8) u1))
+  DataType: uint8
+  OrigDataType: uint8
 T_1266: (in out a_42 @ 0935 : ptr16)
   Class: Eq_1262
-  DataType: Eq_1262
-  OrigDataType: (union (byte u0) ((ptr16 uint8) u1))
+  DataType: uint8
+  OrigDataType: uint8
 T_1267: (in out l_43 @ 0935 : ptr16)
   Class: Eq_1263
-  DataType: Eq_1263
-  OrigDataType: (union (byte u0) ((ptr16 uint8) u1))
+  DataType: uint8
+  OrigDataType: uint8
 T_1268: (in S_BDOSVER(out b_40, out h_41, out a_42, out l_43) @ 0935 : void)
   Class: Eq_1268
   DataType: void
@@ -12254,27 +12242,7 @@ typedef void (Eq_1228)();
 
 typedef void (Eq_1240)();
 
-typedef void (Eq_1258)(Eq_1260, Eq_1261, Eq_1262, Eq_1263);
-
-typedef union Eq_1260 {
-	byte u0;
-	uint8 * u1;
-} Eq_1260;
-
-typedef union Eq_1261 {
-	byte u0;
-	uint8 * u1;
-} Eq_1261;
-
-typedef union Eq_1262 {
-	byte u0;
-	uint8 * u1;
-} Eq_1262;
-
-typedef union Eq_1263 {
-	byte u0;
-	uint8 * u1;
-} Eq_1263;
+typedef void (Eq_1258)(uint8, uint8, uint8, uint8);
 
 typedef uint8 (Eq_1294)(Eq_995);
 

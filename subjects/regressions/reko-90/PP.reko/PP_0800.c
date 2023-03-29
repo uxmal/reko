@@ -12432,11 +12432,11 @@ void fn0800-8E09(Eq_n dwArg02, uint16 wArg06)
 Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, byte bArg08, ptr16 & cxOut, union Eq_n & dxOut)
 {
 	ptr16 wArg06 = SLICE(dwArg04, word16, 16);
-	Eq_n wArg04 = (word16) dwArg04;
 	SEQ(ds, 0x24EA)[wArg02 *16 0x02] &= ~0x0200;
-	Eq_n ax_n = SEQ(66, bArg08);
-	Eq_n dx_n = wArg04;
-	if (msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_n)))
+	Eq_n ax_n = (word16) dx_ax_n;
+	Eq_n dx_n = SLICE(dx_ax_n, word16, 16);
+	int32 * dx_ax_n;
+	if (msdos_set_file_position(wArg02, dwArg04, bArg08, out dx_ax_n))
 	{
 		int32 * dx_ax_n = (int32 *) fn0800-8D2B(ds, ax_n);
 		ax_n = (word16) dx_ax_n;
@@ -14993,12 +14993,12 @@ void fn0800_A57F(byte al, Eq_n ds, Eq_n wArg02)
 		fn0800-8D2B(ds, ax_n);
 }
 
-// 0800:A59D: Register Eq_n fn0800_A59D(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 dxOut)
+// 0800:A59D: Register Eq_n fn0800_A59D(Register Eq_n ds, Stack Eq_n wArg02, Register out Eq_n dxOut)
 // Called from:
 //      fn0800_AED6
-Eq_n fn0800_A59D(Eq_n ds, Eq_n wArg02, ptr16 & dxOut)
+Eq_n fn0800_A59D(Eq_n ds, Eq_n wArg02, union Eq_n & dxOut)
 {
-	ptr16 dx;
+	Eq_n dx;
 	Eq_n wLoc08_n;
 	Eq_n ax_n;
 	if (wArg02 >= *((word32) ds + 9448))
@@ -15024,18 +15024,23 @@ l0800_A610:
 			dxOut = dx;
 			return ax_n;
 		}
-		ax_n.u0 = 0x4201;
-		dx = 0x00;
-		if (!msdos_set_file_position(wArg02, 0x00, 0x01, (int32 *) 0x4201))
+		dx.u4 = SLICE(dx_ax_n, word16, 16);
+		ax_n = (word16) dx_ax_n;
+		int32 * dx_ax_n;
+		if (!msdos_set_file_position(wArg02, 0x00, 0x01, out dx_ax_n))
 		{
-			ax_n.u0 = 0x4202;
-			dx = 0x4201;
-			if (!msdos_set_file_position(wArg02, 0x00, 0x02, (int32 *) 0x4202))
+			ax_n = (word16) dx_ax_n;
+			Eq_n dx_n = SLICE(dx_ax_n, word16, 16);
+			dx = ax_n;
+			int32 * dx_ax_n;
+			if (!msdos_set_file_position(wArg02, 0x00, 0x02, out dx_ax_n))
 			{
-				ax_n.u0 = 0x4200;
-				if (!msdos_set_file_position(wArg02, (int32 *) 0x4201, 0x00, (int32 *) 0x42014200))
+				ax_n = (word16) dx_ax_n;
+				dx.u4 = SLICE(dx_ax_n, word16, 16);
+				int32 * dx_ax_n;
+				if (!msdos_set_file_position(wArg02, dx_ax_n, 0x00, out dx_ax_n))
 				{
-					if (true && (false || true))
+					if (dx >= dx_n && (dx > dx_n || ax_n >= ax_n))
 						goto l0800_A5BF;
 					goto l0800_A608;
 				}

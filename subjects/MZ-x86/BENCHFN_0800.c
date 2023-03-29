@@ -956,11 +956,11 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 //      _tell
 Eq_n _lseek(struct Eq_n * ds, int16 wArg02, int32 * dwArg04, byte bArg08, ptr16 & dxOut)
 {
-	ptr16 wArg04 = (word16) dwArg04;
 	ds->a0482[wArg02] &= ~0x0200;
-	Eq_n ax_n = SEQ(66, bArg08);
-	ptr16 dx_n = wArg04;
-	if (msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_n)))
+	Eq_n ax_n = (word16) dx_ax_n;
+	ptr16 dx_n = SLICE(dx_ax_n, word16, 16);
+	int32 * dx_ax_n;
+	if (msdos_set_file_position(wArg02, dwArg04, bArg08, out dx_ax_n))
 	{
 		int32 * dx_ax_n = (int32 *) __IOERROR(ds, ax_n);
 		ax_n = (word16) dx_ax_n;
@@ -1055,16 +1055,21 @@ l0800_nDBF:
 			ax_n.u0 = 0x00;
 			return ax_n;
 		}
-		ax_n.u0 = 0x4201;
-		if (!msdos_set_file_position(wArg02, 0x00, 0x01, (int32 *) 0x4201))
+		ax_n = (word16) dx_ax_n;
+		int32 * dx_ax_n;
+		if (!msdos_set_file_position(wArg02, 0x00, 0x01, out dx_ax_n))
 		{
-			ax_n.u0 = 0x4202;
-			if (!msdos_set_file_position(wArg02, 0x00, 0x02, (int32 *) 0x4202))
+			ax_n = (word16) dx_ax_n;
+			cup16 dx_n = SLICE(dx_ax_n, word16, 16);
+			int32 * dx_ax_n;
+			if (!msdos_set_file_position(wArg02, 0x00, 0x02, out dx_ax_n))
 			{
-				ax_n.u0 = 0x4200;
-				if (!msdos_set_file_position(wArg02, (int32 *) 0x4201, 0x00, (int32 *) 0x42014200))
+				ax_n = (word16) dx_ax_n;
+				cup16 dx_n = SLICE(dx_ax_n, word16, 16);
+				int32 * dx_ax_n;
+				if (!msdos_set_file_position(wArg02, dx_ax_n, 0x00, out dx_ax_n))
 				{
-					if (true && (false || true))
+					if (dx_n >= dx_n && (dx_n > dx_n || ax_n >= ax_n))
 					{
 						ax_n.u0 = 0x01;
 						return ax_n;

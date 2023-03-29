@@ -72,8 +72,9 @@ namespace Reko.Environments.AmigaOS
                     var ssig = (SerializedSignature?)nt.DataType;
                     if (ssig != null && ssig.ReturnValue != null)
                     {
-                        ssig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
+                        var (kind, _) = ntde.GetArgumentKindFromAttributes(
                             "returns", declaration.attribute_list);
+                        ssig.ReturnValue.Kind = kind;
                     }
                     var sser = new ProcedureSerializer(platform, tldser, platform.DefaultCallingConvention);
                     var sig = sser.Deserialize(ssig, platform.Architecture.CreateFrame());

@@ -1524,7 +1524,7 @@ Eq_4109: (struct "Eq_4109" (0 Eq_4030 t0000) (2 word16 w0002) (4 word16 w0004))
 	T_4109 (in sp_102 + 0<16> @ 47D8 : word16)
 Eq_4117: (struct "Eq_4117" (0 Eq_4030 t0000) (2 word16 w0002) (4 word16 w0004))
 	T_4117 (in sp_102 + 0<16> @ 478E : word16)
-Eq_4119: (fn bool ((ptr16 Eq_3986), (ptr16 Eq_3982), (ptr16 ptr16)))
+Eq_4119: (fn bool ((ptr16 Eq_3986), (ptr16 Eq_3982), ptr16))
 	T_4119 (in FETCH @ 4794 : ptr16)
 	T_4120 (in signature of FETCH : void)
 Eq_4125: (struct "Eq_4125" (0 Eq_4030 t0000) (2 word16 w0002) (4 word16 w0004))
@@ -1542,9 +1542,12 @@ Eq_4176: (struct "Eq_4176" (0 Eq_4030 t0000) (2 word16 w0002) (4 word16 w0004))
 	T_4176 (in sp_102 + 0<16> @ 47DA : word16)
 Eq_4181: (struct "Eq_4181" (0 Eq_4030 t0000) (2 word16 w0002) (4 word16 w0004))
 	T_4181 (in sp_102 + 0<16> @ 47DA : word16)
-Eq_4204: (fn bool ((ptr16 char)))
+Eq_4204: (fn bool (Eq_4206))
 	T_4204 (in TTYIN @ 5A9E : ptr16)
 	T_4205 (in signature of TTYIN : void)
+Eq_4206: (union "Eq_4206" (char u0) (word16 u1))
+	T_4206 (in chOut @ 5A9E : char)
+	T_4207 (in out r0_15 @ 5A9E : ptr16)
 Eq_4211: (struct "Eq_4211" 0004 (0 ui16 w0000) (2 word16 w0002))
 	T_4211
 Eq_4213: (struct "Eq_4213" 0004 (2 word16 w0002))
@@ -18184,9 +18187,9 @@ T_4122: (in dnam @ 4794 : ptr16)
   Class: Eq_3982
   DataType: (ptr16 Eq_3982)
   OrigDataType: 
-T_4123: (in addrOutOut @ 4794 : (ptr16 ptr16))
+T_4123: (in addrOutOut @ 4794 : ptr16)
   Class: Eq_4123
-  DataType: (ptr16 ptr16)
+  DataType: ptr16
   OrigDataType: 
 T_4124: (in 0<16> @ 4794 : word16)
   Class: Eq_4124
@@ -18202,8 +18205,8 @@ T_4126: (in Mem68[sp_102 + 0<16>:ptr16] @ 4794 : ptr16)
   OrigDataType: (ptr16 (struct (0 T_4030 t0000) (2 T_4061 t0002) (4 T_4064 t0004)))
 T_4127: (in out r0_150 @ 4794 : ptr16)
   Class: Eq_4123
-  DataType: (ptr16 ptr16)
-  OrigDataType: (ptr16 ptr16)
+  DataType: ptr16
+  OrigDataType: ptr16
 T_4128: (in FETCH(sp_102->ptr0000, r1, out r0_150) @ 4794 : bool)
   Class: Eq_4128
   DataType: bool
@@ -18516,14 +18519,14 @@ T_4205: (in signature of TTYIN : void)
   Class: Eq_4204
   DataType: (ptr16 Eq_4204)
   OrigDataType: 
-T_4206: (in chOut @ 5A9E : (ptr16 char))
+T_4206: (in chOut @ 5A9E : char)
   Class: Eq_4206
-  DataType: (ptr16 char)
+  DataType: Eq_4206
   OrigDataType: 
 T_4207: (in out r0_15 @ 5A9E : ptr16)
   Class: Eq_4206
-  DataType: (ptr16 char)
-  OrigDataType: (ptr16 char)
+  DataType: Eq_4206
+  OrigDataType: (union (char u1) (word16 u0))
 T_4208: (in TTYIN(out r0_15) @ 5A9E : bool)
   Class: Eq_4208
   DataType: bool
@@ -19476,7 +19479,7 @@ typedef struct Eq_4117 {
 	word16 w0004;	// 4
 } Eq_4117;
 
-typedef bool (Eq_4119)(Eq_3986 *, Eq_3982 *, ptr16 *);
+typedef bool (Eq_4119)(Eq_3986 *, Eq_3982 *, ptr16);
 
 typedef struct Eq_4125 {
 	Eq_4030 t0000;	// 0
@@ -19518,7 +19521,12 @@ typedef struct Eq_4181 {
 	word16 w0004;	// 4
 } Eq_4181;
 
-typedef bool (Eq_4204)(char *);
+typedef bool (Eq_4204)(Eq_4206);
+
+typedef union Eq_4206 {
+	char u0;
+	word16 u1;
+} Eq_4206;
 
 typedef struct Eq_4211 {	// size: 4 4
 	ui16 w0000;	// 0

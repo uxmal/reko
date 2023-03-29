@@ -114,8 +114,9 @@ namespace Reko.Core.Hll.C
                     sSig.Convention ??= GetCallingConventionFromAttributes(decl.attribute_list);
                     if (sSig.ReturnValue != null)
                     {
-                        sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
+                        var (kind, _) = ntde.GetArgumentKindFromAttributes(
                             "returns", decl.attribute_list);
+                        sSig.ReturnValue.Kind = kind;
                     }
                     var sProc = MakeProcedure(nt.Name!, sSig, decl.attribute_list);
                     Procedures.Add(sProc);

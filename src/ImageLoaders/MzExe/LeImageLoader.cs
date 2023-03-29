@@ -20,11 +20,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -44,6 +46,8 @@ namespace Reko.ImageLoaders.MzExe
     /// </remarks>
     public class LeImageLoader : ProgramImageLoader
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(LeImageLoader), nameof(LeImageLoader));
+
         /// <summary>
         ///     Linear Executable signature, "LE"
         /// </summary>
@@ -258,7 +262,8 @@ namespace Reko.ImageLoaders.MzExe
             /// </summary>
             public uint eip_object;
             /// <summary>
-            ///     Entry address of module
+            ///     Entry address of module, relative to the base address of 
+            ///     the object whose index is in <see cref="eip_object" />.
             /// </summary>
             public uint eip;
             /// <summary>
@@ -465,13 +470,17 @@ namespace Reko.ImageLoaders.MzExe
 
             var hdrReader = new StructureReader<LXHeader>(rdr);
             this.hdr = hdrReader.Read();
-
+            DumpHeader(hdr);
             LoadModuleTable();
             var leSegs = LoadSegmentTable();
 
             var segments = MakeSegmentMap(addrLoad, leSegs);
             var platform = MakePlatform();
-            return new Program(segments, arch, platform);
+            var program  = new Program(segments, arch, platform);
+            var eip_module = leSegs[hdr.eip_object - 1].BaseAddress;
+            var addrEntry = Address.Ptr32(eip_module + hdr.eip);
+            program.EntryPoints.Add(addrEntry, ImageSymbol.Procedure(arch, addrEntry, "_le_entry"));
+            return program;
         }
 
         void LoadModuleTable()
@@ -512,7 +521,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     ObjectPageTableEntry16 page16 = objPageTblEntry16Reader.Read();
 
-                    int pageNo = (page16.High << 8) + page16.Low;
+                    int pageNo = page16.High + page16.Low;
 
                     objectPageTableEntries[i] = new ObjectPageTableEntry
                     {
@@ -536,17 +545,32 @@ namespace Reko.ImageLoaders.MzExe
             if (hdr.win_res_len > 0) winrsrcSections = 1;
 
             Segment[] sections = new Segment[objectTableEntries.Length + debugSections + winrsrcSections];
+            int texts = 0;
+            int rsrcs = 0;
+            int rodatas = 0;
+            int bsss = 0;
+            int datas = 0;
+
+            static string SegmentName(string prefix, ref int count)
+            {
+                string name = (count > 0)
+                    ? $"{prefix}{count}"
+                    : prefix;
+                ++count;
+                return name;
+            }
+
             for (int i = 0; i < objectTableEntries.Length; i++)
             {
                 sections[i] = new Segment { Flags = objectTableEntries[i].ObjectFlags };
-                if (objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Resource)) sections[i].Name = ".rsrc";
-                else if (objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Executable)) sections[i].Name = ".text";
-                else if (!objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Writable)) sections[i].Name = ".rodata";
+                if (objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Resource)) sections[i].Name = SegmentName(".rsrc", ref rsrcs);
+                else if (objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Executable)) sections[i].Name = SegmentName(".text", ref texts);
+                else if (!objectTableEntries[i].ObjectFlags.HasFlag(ObjectFlags.Writable)) sections[i].Name = SegmentName(".rodata", ref rodatas);
                 else if (new LeImageReader(objectTableEntries[i].Name).ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString().ToLower() == "bss")
-                    sections[i].Name = ".bss";
+                    sections[i].Name = SegmentName(".bss", ref bsss);
                 else if (!string.IsNullOrWhiteSpace(new LeImageReader(objectTableEntries[i].Name).ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString().Trim()))
                     sections[i].Name = new LeImageReader(objectTableEntries[i].Name).ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString().Trim();
-                else sections[i].Name = ".data";
+                else sections[i].Name = SegmentName(".data", ref datas);
 
                 if (objectTableEntries[i].PageTableEntries == 0 ||
                    objectTableEntries[i].PageTableIndex > objectPageTableEntries.Length)
@@ -615,7 +639,7 @@ namespace Reko.ImageLoaders.MzExe
                 access |= AccessMode.Execute;
 
             //$REVIEW: the address calculation doesn't take into account zero-filled pages. 
-            var mem = new ByteMemoryArea(addrLoad + seg.DataOffset, new byte[seg.DataLength]);
+            var mem = new ByteMemoryArea(Address.Ptr32(seg.BaseAddress), new byte[seg.DataLength]);
             Buffer.BlockCopy(
                 RawImage, (int)seg.DataOffset,
                 mem.Bytes, 0,
@@ -627,29 +651,46 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform MakePlatform()
         {
             string envName;
-            switch (this.hdr.os_type)
+            if (this.hdr.signature == SIGNATURE16)
             {
-            case TargetOS.OS2:
-                envName = "os2-32";
-                break;
-            case TargetOS.Win32:
-                if (hdr.module_flags.HasFlag(ModuleFlags.VirtualDeviceDriver))
+                envName = "ms-dos-386";
+            }
+            else
+            {
+                switch (this.hdr.os_type)
                 {
-                    envName = "win-vmm";
+                case TargetOS.OS2:
+                    envName = "os2-32";
+                    break;
+                case TargetOS.Win32:
+                    if (hdr.module_flags.HasFlag(ModuleFlags.VirtualDeviceDriver))
+                    {
+                        envName = "win-vmm";
+                    }
+                    else
+                    {
+                        envName = "win32";
+                    }
+                    break;
+                case TargetOS.DOS:
+                    envName = "ms-dos-386";
+                    break;
+                default:
+                    listener.Error($"Unsupported operating environment {this.hdr.os_type}.");
+                    return new DefaultPlatform(this.Services, this.arch);
                 }
-                else
-                {
-                    envName = "win32";
-                }
-                break;
-            default:
-                listener.Error($"Unsupported operating environment {this.hdr.os_type}.");
-                return new DefaultPlatform(this.Services, this.arch);
             }
             var platform = Services.RequireService<IConfigurationService>()
                 .GetEnvironment(envName)
                 .Load(Services, arch);
             return platform;
+        }
+
+
+        [Conditional("DEBUG")]
+        private void DumpHeader(in LXHeader hdr)
+        {
+            trace.Inform("== LE/LX image header ======");
         }
     }
 }

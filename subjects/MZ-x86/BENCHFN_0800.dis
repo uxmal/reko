@@ -1269,20 +1269,20 @@ word16 _lseek(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr16 & d
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp sp
 _lseek_entry:
-	word16 wArg04 = SLICE(dwArg04, word16, 0)
 l0800_0C28:
 	Mem13[ds:(wArg02 << 1<16>) + 0x482<16>:word16] = Mem7[ds:(wArg02 << 1<16>) + 0x482<16>:word16] & 0xFDFF<16>
-	word16 ax_21 = SEQ(0x42<8>, bArg08)
-	word16 dx_19 = wArg04
-	branch msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_21)) l0800_0C4A
+	word16 ax_24 = SLICE(dx_ax_21, word16, 0)
+	word16 dx_50 = SLICE(dx_ax_21, word16, 16)
+	int32 * dx_ax_21
+	branch msdos_set_file_position(wArg02, dwArg04, bArg08, out dx_ax_21) l0800_0C4A
 l0800_0C4A:
-	int32 * dx_ax_32 = CONVERT(__IOERROR(ds, ax_21), word16, int32 *)
-	ax_21 = SLICE(dx_ax_32, word16, 0) (alias)
-	dx_19 = SLICE(dx_ax_32, word16, 16) (alias)
+	int32 * dx_ax_32 = CONVERT(__IOERROR(ds, ax_24), word16, int32 *)
+	ax_24 = SLICE(dx_ax_32, word16, 0) (alias)
+	dx_50 = SLICE(dx_ax_32, word16, 16) (alias)
 l0800_0C48:
 l0800_0C51:
-	dxOut = dx_19
-	return ax_21
+	dxOut = dx_50
+	return ax_24
 _lseek_exit:
 
 
@@ -1368,7 +1368,7 @@ word16 _eof(selector ds, word16 wArg02)
 // Preserved: bp sp
 _eof_entry:
 l0800_0D5F:
-	word16 ax_101
+	word16 ax_107
 	branch (Mem7[ds:(wArg02 << 1<16>) + 0x482<16>:word16] & 0x200<16>) == 0<16> l0800_0D78
 l0800_0D78:
 	word16 ax_16 = 0x4400<16>
@@ -1378,30 +1378,35 @@ l0800_0D78:
 l0800_0D82:
 	branch (dl_20 & 0x80<8>) != 0<8> l0800_0DBF
 l0800_0D87:
-	ax_16 = 0x4201<16>
-	branch msdos_set_file_position(wArg02, null, 1<8>, 0x00004201<p32>) l0800_0DC3
+	ax_16 = SLICE(dx_ax_30, word16, 0) (alias)
+	int32 * dx_ax_30
+	branch msdos_set_file_position(wArg02, null, 1<8>, out dx_ax_30) l0800_0DC3
 l0800_0D92:
-	ax_16 = 0x4202<16>
-	branch msdos_set_file_position(wArg02, null, 2<8>, 0x00004202<p32>) l0800_0DC3
+	ax_16 = SLICE(dx_ax_44, word16, 0) (alias)
+	word16 dx_48 = SLICE(dx_ax_44, word16, 16)
+	int32 * dx_ax_44
+	branch msdos_set_file_position(wArg02, null, 2<8>, out dx_ax_44) l0800_0DC3
 l0800_0DA7:
-	ax_16 = 0x4200<16>
-	branch msdos_set_file_position(wArg02, 0x00004201<p32>, 0<8>, 0x42014200<p32>) l0800_0DC3
+	ax_16 = SLICE(dx_ax_57, word16, 0) (alias)
+	word16 dx_72 = SLICE(dx_ax_57, word16, 16)
+	int32 * dx_ax_57
+	branch msdos_set_file_position(wArg02, dx_ax_30, 0<8>, out dx_ax_57) l0800_0DC3
 l0800_0DC3:
-	ax_101 = __IOERROR(ds, ax_16)
+	ax_107 = __IOERROR(ds, ax_16)
 l0800_0DAE:
-	branch false l0800_0DBF
+	branch dx_72 <u dx_48 l0800_0DBF
 l0800_0DB3:
-	branch false l0800_0DBA
+	branch dx_72 >u dx_48 l0800_0DBA
 l0800_0DB5:
-	branch false l0800_0DBF
+	branch ax_16 <u ax_16 l0800_0DBF
 l0800_0DBF:
-	ax_101 = 0<16>
+	ax_107 = 0<16>
 l0800_0DBA:
-	ax_101 = 1<16>
+	ax_107 = 1<16>
 l0800_0D72:
-	ax_101 = 1<16>
+	ax_107 = 1<16>
 l0800_0DC9:
-	return ax_101
+	return ax_107
 _eof_exit:
 
 

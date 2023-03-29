@@ -78,13 +78,23 @@ namespace Reko.Environments.Msdos
         public override TypeLibrary EnsureTypeLibraries(string envName)
         {
             var metadata = base.EnsureTypeLibraries(envName);
-            LoadInterruptServices(Architecture);
+            LoadInterruptServices();
             return metadata;
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
+            if (this.Metadata != null && this.Metadata.Modules.TryGetValue("", out var module))
+            {
+                if (!module.ServicesByVector.TryGetValue(vector, out var services))
+                    return null;
+                foreach (SystemService service in services)
+                {
+                    if (service.SyscallInfo != null && service.SyscallInfo.Matches(vector, state))
+                        return service;
+                }
+            }
             foreach (SystemService svc in interruptServices)
             {
                 if (svc.SyscallInfo!.Matches(vector, state))
@@ -120,7 +130,7 @@ namespace Reko.Environments.Msdos
                 false);
         }
 
-        public void LoadInterruptServices(IProcessorArchitecture arch)
+        public void LoadInterruptServices()
         {
             var prefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var libPath = Path.Combine(prefix, "realmodeintservices.xml");

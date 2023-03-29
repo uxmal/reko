@@ -243,12 +243,13 @@ namespace Reko.Core.Hll.C
                 var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs!, symbolTable, pointerSize);
                 var ntTmp = ntde.GetNameAndType(decl.Declarator!);
                 var nt = ConvertArrayToPointer(ntTmp);
-                var kind = GetArgumentKindFromAttributes("arg", decl.Attributes);
+                var (kind, isOut) = GetArgumentKindFromAttributes("arg", decl.Attributes);
                 return new Argument_v1
                 {
                     Kind = kind,
                     Name = nt.Name,
                     Type = nt.DataType,
+                    OutParameter = isOut,
                 };
             }
         }
@@ -259,11 +260,12 @@ namespace Reko.Core.Hll.C
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public SerializedKind? GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)
+        public (SerializedKind?, bool isOut) GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)
         {
             if (attrs is null)
-                return null;
+                return (null, false);
             SerializedKind? kind = null;
+            bool isOut = false;
             foreach (var attr in attrs)
             {
                 if (attr.Name.Components is null || attr.Name.Components.Length != 2 ||
@@ -271,42 +273,67 @@ namespace Reko.Core.Hll.C
                     continue;
                 if (attr.Tokens is null)
                     continue;
-                if (attr.Tokens[0].Type == CTokenType.Register &&
-                    attr.Tokens[1].Type == CTokenType.Comma)
+                int iTok = 0;
+                int cTok = attr.Tokens.Count;
+                while (iTok < cTok)
                 {
-                    // We have a reko::arg(register, value); get the register.
-                    if (attr.Tokens.Count < 1 ||
-                        attr.Tokens[2].Value is null ||
-                        attr.Tokens[2].Type != CTokenType.StringLiteral)
-                        throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name and a value.");
-                    kind = new Register_v1 { Name = (string) attr.Tokens[2].Value! };
-                }
-                else if (attr.Tokens[0].Type == CTokenType.Id)
-                {
-                    var str = (string) attr.Tokens[0].Value!;
-                    if (str == "seq")
+                    if (iTok + 1 < cTok &&
+                        attr.Tokens[iTok].Type == CTokenType.Register &&
+                        attr.Tokens[iTok + 1].Type == CTokenType.Comma)
                     {
-                        // We have a reko::arg(seq) attribute.
-                        var regs = new List<Register_v1>();
-                        for (int i = 1; i < attr.Tokens.Count; i += 2)
-                        {
-                            if (attr.Tokens[i].Type != CTokenType.Comma)
-                                throw new FormatException("[[reko::arg(seq)]] attribute expectes a comma.");
-                            var aReg = attr.Tokens[i + 1];
-                            if (aReg.Type != CTokenType.StringLiteral)
-                                throw new FormatException("[[reko::arg(seq)]] attribute expects a register name.");
-                            regs.Add(new Register_v1 { Name = (string) aReg.Value! });
-                        }
-                        kind = new SerializedSequence { Registers = regs.ToArray() };
+                        // We have a reko::arg(register, value); get the register.
+                        if (iTok + 2 >= cTok ||
+                            attr.Tokens[iTok + 2].Value is null ||
+                            attr.Tokens[iTok + 2].Type != CTokenType.StringLiteral)
+                            throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name and a value.");
+                        kind = new Register_v1 { Name = (string) attr.Tokens[2].Value! };
+                        iTok += 3;
                     }
-                    else if (str == "fpu")
+                    else if (attr.Tokens[iTok].Type == CTokenType.Id)
                     {
-                        // We have a reko::fpu prefix; mark as FPU
-                        kind = new FpuStackVariable_v1();
+                        var str = (string) attr.Tokens[iTok].Value!;
+                        if (str == "seq")
+                        {
+                            // We have a reko::arg(seq) attribute.
+                            var regs = new List<Register_v1>();
+                            for (iTok = iTok + 1; iTok < cTok; ++iTok)
+                            {
+                                if (attr.Tokens[iTok].Type != CTokenType.Comma)
+                                    throw new FormatException("[[reko::arg(seq)]] attribute expectes a comma.");
+                                var aReg = attr.Tokens[++iTok];
+                                if (aReg.Type != CTokenType.StringLiteral)
+                                    throw new FormatException("[[reko::arg(seq)]] attribute expects a register name.");
+                                regs.Add(new Register_v1 { Name = (string) aReg.Value! });
+                            }
+                            kind = new SerializedSequence { Registers = regs.ToArray() };
+                        }
+                        else if (str == "fpu")
+                        {
+                            // We have a reko::fpu prefix; mark as FPU
+                            kind = new FpuStackVariable_v1();
+                            ++iTok;
+                        }
+                        else if (str == "flag")
+                        {
+                            // We have a reko::arg(flag)
+                            if (iTok + 2 >= cTok ||
+                                attr.Tokens[iTok + 1].Type != CTokenType.Comma ||
+                                attr.Tokens[iTok + 2].Type != CTokenType.StringLiteral)
+                                throw new FormatException("[[reko::arg(flag)]] attribute expects a register name.");
+                            kind = new FlagGroup_v1 { Name = (string) attr.Tokens[iTok + 2].Value! };
+                            iTok += 3;
+                        }
+                        else if (str == "out")
+                        {
+                            isOut = true;
+                            if (++iTok >= cTok || attr.Tokens[iTok].Type != CTokenType.Comma)
+                                throw new FormatException("[[reko::arg(out)]] attribute expectes a comma.");
+                            ++iTok;
+                        }
                     }
                 }
             }
-            return kind;
+            return (kind, isOut);
         }
 
         /// <summary>

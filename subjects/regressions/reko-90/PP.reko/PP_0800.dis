@@ -13996,21 +13996,21 @@ word16 fn0800_8E29(selector ds, word16 wArg02, word32 dwArg04, byte bArg08, ptr1
 // Preserved: bp sp
 fn0800_8E29_entry:
 	word16 wArg06 = SLICE(dwArg04, word16, 16)
-	word16 wArg04 = SLICE(dwArg04, word16, 0)
 l0800_8E29:
 	Mem13[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] = Mem7[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] & 0xFDFF<16>
-	word16 ax_21 = SEQ(0x42<8>, bArg08)
-	word16 dx_19 = wArg04
-	branch msdos_set_file_position(wArg02, dwArg04, bArg08, SEQ(wArg04, ax_21)) l0800_8E4B
+	word16 ax_24 = SLICE(dx_ax_21, word16, 0)
+	word16 dx_50 = SLICE(dx_ax_21, word16, 16)
+	int32 * dx_ax_21
+	branch msdos_set_file_position(wArg02, dwArg04, bArg08, out dx_ax_21) l0800_8E4B
 l0800_8E4B:
-	int32 * dx_ax_32 = CONVERT(fn0800_8D2B(ds, ax_21), word16, int32 *)
-	ax_21 = SLICE(dx_ax_32, word16, 0) (alias)
-	dx_19 = SLICE(dx_ax_32, word16, 16) (alias)
+	int32 * dx_ax_32 = CONVERT(fn0800_8D2B(ds, ax_24), word16, int32 *)
+	ax_24 = SLICE(dx_ax_32, word16, 0) (alias)
+	dx_50 = SLICE(dx_ax_32, word16, 16) (alias)
 l0800_8E49:
 l0800_8E50:
 	cxOut = wArg06
-	dxOut = dx_19
-	return ax_21
+	dxOut = dx_50
+	return ax_24
 fn0800_8E29_exit:
 
 
@@ -17007,8 +17007,8 @@ word16 fn0800_A59D(selector ds, word16 wArg02, ptr16 & dxOut)
 fn0800_A59D_entry:
 	word16 dx
 l0800_A59D:
-	word16 wLoc08_109
-	word16 ax_118
+	word16 wLoc08_115
+	word16 ax_124
 	branch wArg02 <u Mem7[ds:0x24E8<16>:word16] l0800_A5B2
 l0800_A5B2:
 	branch (Mem7[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] & 0x200<16>) == 0<16> l0800_A5C4
@@ -17019,36 +17019,41 @@ l0800_A5C4:
 l0800_A5CE:
 	branch (dl_23 & 0x80<8>) != 0<8> l0800_A608
 l0800_A5D3:
-	ax_19 = 0x4201<16>
-	dx = 0<16>
-	branch msdos_set_file_position(wArg02, null, 1<8>, 0x00004201<p32>) l0800_A60C
+	dx = SLICE(dx_ax_33, word16, 16) (alias)
+	ax_19 = SLICE(dx_ax_33, word16, 0) (alias)
+	int32 * dx_ax_33
+	branch msdos_set_file_position(wArg02, null, 1<8>, out dx_ax_33) l0800_A60C
 l0800_A5DE:
-	ax_19 = 0x4202<16>
-	dx = 0x4201<16>
-	branch msdos_set_file_position(wArg02, null, 2<8>, 0x00004202<p32>) l0800_A60C
+	ax_19 = SLICE(dx_ax_47, word16, 0) (alias)
+	word16 dx_51 = SLICE(dx_ax_47, word16, 16)
+	dx = ax_19
+	int32 * dx_ax_47
+	branch msdos_set_file_position(wArg02, null, 2<8>, out dx_ax_47) l0800_A60C
 l0800_A5F3:
-	ax_19 = 0x4200<16>
-	branch msdos_set_file_position(wArg02, 0x00004201<p32>, 0<8>, 0x42014200<p32>) l0800_A60C
+	ax_19 = SLICE(dx_ax_60, word16, 0) (alias)
+	dx = SLICE(dx_ax_60, word16, 16) (alias)
+	int32 * dx_ax_60
+	branch msdos_set_file_position(wArg02, dx_ax_33, 0<8>, out dx_ax_60) l0800_A60C
 l0800_A60C:
-	wLoc08_109 = ax_19
+	wLoc08_115 = ax_19
 l0800_A5FA:
-	branch false l0800_A608
+	branch dx <u dx_51 l0800_A608
 l0800_A5FF:
-	branch false l0800_A606
+	branch dx >u dx_51 l0800_A606
 l0800_A601:
-	branch false l0800_A608
+	branch ax_19 <u ax_19 l0800_A608
 l0800_A608:
-	ax_118 = 0<16>
+	ax_124 = 0<16>
 l0800_A606:
 l0800_A5BF:
-	ax_118 = 1<16>
+	ax_124 = 1<16>
 l0800_A5AC:
-	wLoc08_109 = 6<16>
+	wLoc08_115 = 6<16>
 l0800_A60D:
-	ax_118 = fn0800_8D2B(ds, wLoc08_109)
+	ax_124 = fn0800_8D2B(ds, wLoc08_115)
 l0800_A610:
 	dxOut = dx
-	return ax_118
+	return ax_124
 fn0800_A59D_exit:
 
 

@@ -32,6 +32,7 @@ int fscanf(FILE * fp, char * format,...);
 size_t fread(void *buffer, size_t size, size_t count, FILE *stream);
 int fclose(FILE * fp);
 int _mkdir(const char *dirname);
+
 [[reko::returns(fpu)]] double _CIpow([[reko::arg(fpu)]]double, [[reko::arg(fpu)]] double); 
 [[reko::returns(fpu)]] double _CIacos([[reko::arg(fpu)]]double);
 [[reko::returns(fpu)]] double _CIasin([[reko::arg(fpu)]]double);
@@ -53,10 +54,13 @@ int __getmainargs(int *, char ***, char ***, int);
 void __setusermatherr(_HANDLE_MATH_ERROR pf);
 void exit(int code);
 void _assert(char cond, char * file, int line);
+
+
 void (__cdecl *signal(  
    int sig,   
    void (__cdecl *func ) (int, ...)))   
    (int);  
+
 
 void _amsg_exit(int n);
 void _initterm(PVFV * fStart, PVFV * fEnd);

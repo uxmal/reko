@@ -180,6 +180,10 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\C64\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Cpm\cpm_map.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Dreamcast\vmu.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\bios_kbd.inc" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\bios_video.inc" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\dpmi.inc" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\msdos.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml" />

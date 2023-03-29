@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
             var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
-            var kind = ndte.GetArgumentKindFromAttributes("arg", null);
+            var (kind, _) = ndte.GetArgumentKindFromAttributes("arg", null);
             Assert.IsNull(kind);
         }
 
@@ -183,7 +183,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
             var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
-            var kind = ndte.GetArgumentKindFromAttributes(
+            var (kind, _) = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
                 {
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
             var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
-            var kind = ndte.GetArgumentKindFromAttributes(
+            var (kind, _) = ndte.GetArgumentKindFromAttributes(
                 "arg", 
                 new List<CAttribute>
                 {
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_x87_fpu()
         {
             var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
-            var kind = ndte.GetArgumentKindFromAttributes(
+            var (kind, _) = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
                 {
@@ -239,7 +239,7 @@ namespace Reko.UnitTests.Core.Hll.C
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_seq()
         {
             var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
-            var kind = ndte.GetArgumentKindFromAttributes(
+            var (kind, isOut) = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
                 {
@@ -379,6 +379,35 @@ namespace Reko.UnitTests.Core.Hll.C
                     }));
             var sig = (SerializedSignature) nt.DataType;
             Assert.AreEqual(2, sig.ReturnAddressOnStack);
+        }
+
+        [Test(Description = "Handle the presence of [[reko::arg(out,seq,'dx','ax')]]")]
+        public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_seq_out()
+        {
+            var ndte = new NamedDataTypeExtractor(platform, Array.Empty<DeclSpec>(), symbolTable, platform.PointerType.Size);
+            var (kind, isOutParameter) = ndte.GetArgumentKindFromAttributes(
+                "arg",
+                new List<CAttribute>
+                {
+                    new CAttribute {
+                         Name = new QualifiedName("reko", "arg"),
+                         Tokens = new List<CToken> {
+                             new CToken(CTokenType.Id, "out"),
+                             new CToken(CTokenType.Comma),
+                             new CToken(CTokenType.Id, "seq"),
+                             new CToken(CTokenType.Comma),
+                             new CToken(CTokenType.StringLiteral, "dx"),
+                             new CToken(CTokenType.Comma),
+                             new CToken(CTokenType.StringLiteral, "ax"),
+                         }
+                    }
+                });
+            Assert.IsNotNull(kind);
+            Assert.IsInstanceOf<SerializedSequence>(kind);
+            var seq = (SerializedSequence) kind;
+            Assert.AreEqual("dx", seq.Registers[0].Name);
+            Assert.AreEqual("ax", seq.Registers[1].Name);
+            Assert.IsTrue(isOutParameter);
         }
     }
 }
