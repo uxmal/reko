@@ -40,12 +40,15 @@
 // 000D0143: Stack word32 fn000D0143(Stack Eq_n arg0)
 
 // Exception Unknown node Stack word32 fn000D0143(Stack Eq_n arg0). when writing procedure.
+// 000D0290: Stack word32 fn000D0290(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+
+// Exception Unknown node Stack word32 fn000D0290(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000D0843: Stack word32 fn000D0843(Stack Eq_n arg0)
 
 // Exception Unknown node Stack word32 fn000D0843(Stack Eq_n arg0). when writing procedure.
-// 000D0874: Stack word32 fn000D0874(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack (ptr32 Eq_n) arg4, Stack Eq_n arg5)
+// 000D0874: Stack word32 fn000D0874(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 
-// Exception Unknown node Stack word32 fn000D0874(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack (ptr32 Eq_n) arg4, Stack Eq_n arg5). when writing procedure.
+// Exception Unknown node Stack word32 fn000D0874(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
 // 000D0E65: void fn000D0E65(Stack Eq_n arg0)
 
 // Exception Unknown node void fn000D0E65(Stack Eq_n arg0). when writing procedure.
@@ -61,6 +64,9 @@
 // 000D0EC4: Stack word32 fn000D0EC4(Stack Eq_n arg0)
 
 // Exception Unknown node Stack word32 fn000D0EC4(Stack Eq_n arg0). when writing procedure.
+// 000D0F0D: Stack word32 fn000D0F0D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+
+// Exception Unknown node Stack word32 fn000D0F0D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000D120B: Stack word32 fn000D120B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 
 // Exception Unknown node Stack word32 fn000D120B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
@@ -100,6 +106,9 @@
 // 000D17F5: Stack uint64 fn000D17F5(Stack uint64 arg0, Stack uint64 arg1)
 
 // Exception Unknown node Stack uint64 fn000D17F5(Stack uint64 arg0, Stack uint64 arg1). when writing procedure.
+// 000D1804: Stack word64 fn000D1804(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word64 arg3)
+
+// Exception Unknown node Stack word64 fn000D1804(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word64 arg3). when writing procedure.
 // 000D2493: Stack word32 fn000D2493(Stack Eq_n arg0)
 
 // Exception Unknown node Stack word32 fn000D2493(Stack Eq_n arg0). when writing procedure.
@@ -214,6 +223,9 @@
 // 000DB419: Stack word32 fn000DB419(Stack Eq_n arg0)
 
 // Exception Unknown node Stack word32 fn000DB419(Stack Eq_n arg0). when writing procedure.
+// 000DB4B6: Stack word32 fn000DB4B6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+
+// Exception Unknown node Stack word32 fn000DB4B6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000DB84B: Stack word32 fn000DB84B(Stack Eq_n arg0)
 
 // Exception Unknown node Stack word32 fn000DB84B(Stack Eq_n arg0). when writing procedure.
@@ -238,6 +250,24 @@
 // 000DD675: Stack word32 fn000DD675(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 
 // Exception Unknown node Stack word32 fn000DD675(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
+// 000DD6A2: Stack Eq_n fn000DD6A2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+
+// Exception Unknown node Stack Eq_n fn000DD6A2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4). when writing procedure.
+// 000DE31D: Stack Eq_n fn000DE31D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+
+// Exception Unknown node Stack Eq_n fn000DE31D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4). when writing procedure.
+// 000DE8FC: Stack word32 fn000DE8FC(Stack Eq_n arg0, Stack Eq_n arg1)
+
+// Exception Unknown node Stack word32 fn000DE8FC(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
+// 000DEA30: Stack word32 fn000DEA30(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+
+// Exception Unknown node Stack word32 fn000DEA30(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
+// 000DEB18: Stack word32 fn000DEB18(Stack Eq_n arg0, Stack Eq_n arg1)
+
+// Exception Unknown node Stack word32 fn000DEB18(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
+// 000DEC35: Stack word32 fn000DEC35(Stack Eq_n arg0, Stack Eq_n arg1)
+
+// Exception Unknown node Stack word32 fn000DEC35(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000DEDA6: Stack word32 fn000DEDA6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 
 // Exception Unknown node Stack word32 fn000DEDA6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.

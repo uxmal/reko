@@ -20,6 +20,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
@@ -95,7 +96,6 @@ namespace Reko.ImageLoaders.WebAssembly
             locals.AddRange(func.Locals.Select(Loc));
         }
 
-
         private void GenerateControlFlow()
         {
         }
@@ -128,6 +128,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f32_load: RewriteLoad(PrimitiveType.Real32); break;
                 case Mnemonic.f32_mul: RewriteBinary(m.FMul, PrimitiveType.Real32); break;
                 case Mnemonic.f32_neg: RewriteUnary(m.FNeg, PrimitiveType.Real32); break;
+                case Mnemonic.f32_sqrt: RewriteIntrinsic(FpOps.sqrtf); break;
                 case Mnemonic.f32_store: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.f32_sub: RewriteBinary(m.FSub, PrimitiveType.Real32); break;
                 case Mnemonic.f64_add: RewriteBinary(m.FAdd, PrimitiveType.Real64); break;
@@ -135,6 +136,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f64_load: RewriteLoad(PrimitiveType.Real64); break;
                 case Mnemonic.f64_mul: RewriteBinary(m.FMul, PrimitiveType.Real64); break;
                 case Mnemonic.f64_neg: RewriteUnary(m.FNeg, PrimitiveType.Real64); break;
+                case Mnemonic.f64_sqrt: RewriteIntrinsic(FpOps.sqrt); break;
                 case Mnemonic.f64_store: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.f64_sub: RewriteBinary(m.FSub, PrimitiveType.Real64); break;
                 case Mnemonic.get_global:
@@ -246,11 +248,6 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private Block MakeBlock(Address addr)
-        {
-            return proc.AddBlock(addr, NamingPolicy.Instance.BlockName(addr));
-        }
-
         private void RewriteBinary(Func<Expression,Expression,Expression> fn, DataType dt)
         {
             var arg2 = PopValue();
@@ -280,7 +277,15 @@ namespace Reko.ImageLoaders.WebAssembly
             if (iLabel < 0)
                 throw new BadImageFormatException("Control stack unbalanced at br instruction.");
             var ctrl = this.controlStack[iLabel];
-            proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+            if (ctrl.Mnemonic == Mnemonic.loop)
+            {
+                // branches to loop continuation can always be done.
+                proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+            }
+            else
+            {
+                ctrl.IncompleteBranches.Add((this.block, null));
+            }
             // The current block is undefined until the next 'end' instruction.
             this.block = null;
         }
@@ -294,31 +299,49 @@ namespace Reko.ImageLoaders.WebAssembly
                 throw new BadImageFormatException("Control stack unbalanced at br instruction.");
             var ctrl = this.controlStack[iLabel];
 
-            var followBlock = MakeBlock(instr.Address + instr.Length);
+            var followBlock = MakeFollowBlock();
             var predicate = PopValue();
-            block.Statements.Add(instr.Address, new Branch(predicate, ctrl.Block));
-            proc.ControlGraph.AddEdge(this.block, followBlock);
-            proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+            if (ctrl.Mnemonic == Mnemonic.loop)
+            {
+                // Branches to loops are "continue"s.
+                block.Statements.Add(instr.Address, new Branch(predicate, ctrl.Block));
+                proc.ControlGraph.AddEdge(this.block, followBlock);
+                proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+            }
+            else
+            {
+                // Emit a placeholder instruction
+                Assign(predicate, predicate);
+                proc.ControlGraph.AddEdge(this.block, followBlock);
+                ctrl.IncompleteBranches.Add((this.block, predicate));
+            }
             this.block = followBlock;
         }
 
         private void RewriteLoop()
         {
-            //$TODO: if loop has args
+            if (instr.Operands.Length > 0)
+            {
+                //$TODO: if loop has args
+                Console.WriteLine("WASM loop instruction with operands not handled yet.");
+            }
             PushControl(Mnemonic.loop, Array.Empty<Identifier>(), null, false);
         }
 
         private void RewriteElse()
         {
+            Debug.Assert(this.block is not null);
             if (controlStack.Count == 0)
                 throw new BadImageFormatException("Control stack unbalanced at else instruction.");
             var blockThen = block;
             var ctrl = PopControl();
             if (ctrl.Mnemonic != Mnemonic.@if)
                 throw new BadImageFormatException("'else' was not preceded by 'if'.");
-            BackpatchIf(ctrl);
+            var followBlock = MakeFollowBlock();
+            BackpatchIf(ctrl, followBlock);
             ctrl = PushControl(Mnemonic.@else, Array.Empty<Identifier>(), null, false);
             ctrl.ThenBlock = blockThen;
+            this.block = followBlock;
         }
 
         private bool RewriteEnd(WasmImageReader rdr)
@@ -339,11 +362,19 @@ namespace Reko.ImageLoaders.WebAssembly
             switch (ctrl.Mnemonic)
             {
             case Mnemonic.@if:
-                BackpatchIf(ctrl);
+                var followBlock = MakeFollowBlock();
+                BackpatchIf(ctrl, followBlock);
+                if (this.instr.Mnemonic != Mnemonic.@else)
+                {
+                    if (this.block is not null)
+                        this.block.Succ.Add(followBlock);
+                }
+                CompleteBranches(ctrl, followBlock);
+                this.block = followBlock;
                 break;
             case Mnemonic.@else:
+                followBlock = MakeBlock(instr.Address);
                 Debug.Assert(ctrl.ThenBlock is not null, "Should have been set by the 'else' handler");
-                var followBlock = MakeBlock(instr.Address);
                 if (this.block is not null)
                     proc.ControlGraph.AddEdge(this.block, followBlock);
                 proc.ControlGraph.AddEdge(ctrl.ThenBlock, followBlock);
@@ -351,12 +382,20 @@ namespace Reko.ImageLoaders.WebAssembly
                 break;
             case Mnemonic.block:
                 followBlock = MakeBlock(instr.Address);
+                CompleteBranches(ctrl, followBlock);
                 if (this.block is not null)
                     proc.ControlGraph.AddEdge(block, followBlock);
                 this.block = followBlock;
                 break;
             case Mnemonic.loop:
                 // Assumes a `br` or `br_if` is the last instruction in the loop.
+                CompleteBranches(ctrl, ctrl.Block);
+                if (this.block is not null && this.block.Statements.Count > 0)
+                {
+                    followBlock = MakeFollowBlock();
+                    proc.ControlGraph.AddEdge(this.block, followBlock);
+                    this.block = followBlock;
+                }
                 break;
             default:
                 throw new NotImplementedException($"Don't know how to end {ctrl.Mnemonic}.");
@@ -364,21 +403,26 @@ namespace Reko.ImageLoaders.WebAssembly
             return false;
         }
 
-        private void BackpatchIf(ControlEntry ctrl)
+        private void CompleteBranches(ControlEntry ctrl, Block followBlock)
         {
-            Debug.Assert(this.block is not null);
+            foreach (var (block, predicate) in ctrl.IncompleteBranches)
+            {
+                if (predicate is not null)
+                {
+                    block.Statements[^1].Instruction = new Branch(predicate, followBlock);
+                }
+                proc.ControlGraph.AddEdge(block, followBlock);
+            }
+        }
+
+        private void BackpatchIf(ControlEntry ctrl, Block followBlock)
+        {
             var placeholder = ((Assignment) ctrl.Block.Statements[^1].Instruction).Dst;
 
-            var followBlock = MakeBlock(instr.Address);
             ctrl.Block.Statements[^1].Instruction = new Branch(m.Not(placeholder), followBlock);
             ctrl.Block.Succ[1].Pred.RemoveAt(0);
             ctrl.Block.Succ[1] = followBlock;
             followBlock.Pred.Add(ctrl.Block);
-            if (this.instr.Mnemonic != Mnemonic.@else)
-            {
-                block.Succ.Add(followBlock);
-            }
-            this.block = followBlock;
         }
 
         private void RewriteCall()
@@ -446,10 +490,19 @@ namespace Reko.ImageLoaders.WebAssembly
             Assign(predicate, predicate);
             PushControl(Mnemonic.@if, Array.Empty<Identifier>(), null, false);
 
-            var thenBlock = this.MakeBlock(instr.Address + instr.Length);
+            var thenBlock = this.MakeFollowBlock();
             proc.ControlGraph.AddEdge(block, thenBlock);        // Will be replaced when 'else' or 'end' is found.
             proc.ControlGraph.AddEdge(block, thenBlock);
             this.block = thenBlock;
+        }
+
+        private void RewriteIntrinsic(IntrinsicProcedure intrinsic)
+        {
+            var parameters = intrinsic.Signature.Parameters;
+            Debug.Assert(parameters is not null);
+            var args = PopValues(parameters.Length);
+            var ret = PushValue(intrinsic.ReturnType);
+            Assign(ret, m.Fn(intrinsic, args));
         }
 
         private void RewriteLoad(PrimitiveType dt)
@@ -545,6 +598,17 @@ namespace Reko.ImageLoaders.WebAssembly
             block.Statements.Add(instr.Address, store);
         }
 
+        private Block MakeBlock(Address addr)
+        {
+            return proc.AddBlock(addr, NamingPolicy.Instance.BlockName(addr));
+        }
+
+        private Block MakeFollowBlock()
+        {
+            var addrFollow = instr.Address + instr.Length;
+            return MakeBlock(addrFollow);
+        }
+
         private MemoryAccess MakeMemoryAccess(PrimitiveType dt)
         {
             Expression ea = PopValue();
@@ -626,6 +690,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 this.Output = output;
                 this.BlockDepth = blockDepth;
                 this.IsUnreachable = isUnreachable;
+                this.IncompleteBranches = new();
             }
 
             public Mnemonic Mnemonic { get; }
@@ -635,6 +700,7 @@ namespace Reko.ImageLoaders.WebAssembly
             public Identifier? Output { get; }
             public int BlockDepth { get; }
             public bool IsUnreachable { get; }
+            public List<(Block, Expression? predicate)> IncompleteBranches { get; }
         }
 
     }

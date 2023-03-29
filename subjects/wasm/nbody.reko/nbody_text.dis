@@ -8,12 +8,12 @@ l000E0000:
 	v19 = 0<32>
 	v20 = v18 > v19
 	loc9 = v20
-	branch !v20 l000E000F
-	// succ:  l000E000B l000E000F
+	branch !v20 l000E0010
+	// succ:  l000E000B l000E0010
 l000E000B:
 	v21 = 0<32>
 	loc3 = v21
-l000E000F:
+l000E0010:
 _advance_exit:
 
 
@@ -26,14 +26,14 @@ l000E020A:
 	v9 = arg0
 	v10 = 0<32>
 	v11 = v9 > v10
-	branch !v11 l000E0222
-	// succ:  l000E0213 l000E0222
+	branch !v11 l000E0223
+	// succ:  l000E0213 l000E0223
 l000E0213:
 	v12 = 0<32>
 	loc2 = v12
 	v13 = 0.0
 	loc4 = v13
-l000E0222:
+l000E0223:
 	v14 = 0.0
 _energy_exit:
 
@@ -47,8 +47,8 @@ l000E0329:
 	v7 = arg0
 	v8 = 0<32>
 	v9 = v7 > v8
-	branch !v9 l000E03AA
-	// succ:  l000E0332 l000E03AA
+	branch !v9 l000E03AB
+	// succ:  l000E0332 l000E03AB
 l000E0332:
 	v10 = 0.0
 	loc3 = v10
@@ -108,7 +108,7 @@ l000E0332:
 l000E03A9:
 	goto l000E03CC
 	// succ:  l000E03CC
-l000E03AA:
+l000E03AB:
 	v54 = 0.0
 	loc3 = v54
 	v55 = 0.0
@@ -286,8 +286,8 @@ l000E0405:
 	loc1 = v129
 	v130 = 5<32>
 	v131 = v129 < v130
-	v131 = v131
-	// succ:  l000E054C l000E054C
+	branch !v131 l000E05D7
+	// succ:  l000E054C l000E05D7
 l000E054C:
 	v132 = Mem0[0x00100000<p32>:word32]
 	v133 = loc0
@@ -356,6 +356,65 @@ l000E054C:
 	v189 = loc2
 	v190 = v188 * v189
 	v191 = v180 + v190
+	v192 = sqrt(v191)
+	v193 = v159 / v192
+	v194 = v151 - v193
+	loc2 = v194
+	v195 = loc0
+	v196 = 1<32>
+	v197 = v195 + v196
+	loc0 = v197
+	v198 = 5<32>
+	v199 = v197 != v198
+	branch v199 l000E054C
+	// succ:  l000E05D5 l000E054C
+l000E05D5:
+	// succ:  l000E05D7
+l000E05D7:
+	v200 = loc1
+	v201 = 5<32>
+	v202 = v200 != v201
+	branch !v202 l000E0619
+	// succ:  l000E05DE l000E0619
+l000E05DE:
+	v203 = loc1
+	loc0 = v203
+	v204 = Mem0[0x00100000<p32>:word32]
+	v205 = loc1
+	v206 = 0x38<32>
+	v207 = v205 * v206
+	v208 = v204 + v207
+	v209 = Mem0[v208 + 0x30<u32>:real64]
+	loc6 = v209
+	v210 = Mem0[0x00100000<p32>:word32]
+	v211 = loc1
+	v212 = 0x38<32>
+	v213 = v211 * v212
+	v214 = v210 + v213
+	v215 = Mem0[v214 + 0x18<u32>:real64]
+	loc3 = v215
+	v216 = Mem0[0x00100000<p32>:word32]
+	v217 = loc1
+	v218 = 0x38<32>
+	v219 = v217 * v218
+	v220 = v216 + v219
+	v221 = Mem0[v220 + 0x20<u32>:real64]
+	loc4 = v221
+	v222 = Mem0[0x00100000<p32>:word32]
+	v223 = loc1
+	v224 = 0x38<32>
+	v225 = v223 * v224
+	v226 = v222 + v225
+	v227 = Mem0[v226 + 0x28<u32>:real64]
+	loc5 = v227
+	goto l000E0405
+	// succ:  l000E0405
+l000E0619:
+	v228 = loc2
+	// succ:  l000E061C
+l000E061C:
+	return v228
+	// succ:  _start_exit
 _start_exit:
 
 
@@ -368,8 +427,8 @@ l000E061E:
 	v9 = arg0
 	v10 = 1<32>
 	v11 = v9 < v10
-	branch !v11 l000E0636
-	// succ:  l000E0627 l000E0636
+	branch !v11 l000E0637
+	// succ:  l000E0627 l000E0637
 l000E0627:
 	v12 = 0<32>
 	arg0 = v12
@@ -377,7 +436,7 @@ l000E0627:
 	loc3 = v13
 	goto l000E0672
 	// succ:  l000E0672
-l000E0636:
+l000E0637:
 	v14 = 1<32>
 	loc1 = v14
 	v15 = 5<32>
@@ -391,8 +450,8 @@ l000E0636:
 	v21 = loc1
 	v22 = arg0
 	v23 = v21 == v22
-	branch !v23 l000E0669
-	// succ:  l000E065A l000E0669
+	branch !v23 l000E066A
+	// succ:  l000E065A l000E066A
 l000E065A:
 	v24 = 0<32>
 	arg0 = v24
@@ -400,11 +459,11 @@ l000E065A:
 	loc3 = v25
 	goto l000E0670
 	// succ:  l000E0670
-l000E0669:
+l000E066A:
 	v26 = loc2
 	loc1 = v26
-	goto l000E0636
-	// succ:  l000E0636
+	goto l000E0637
+	// succ:  l000E0637
 l000E0670:
 	// succ:  l000E0672
 l000E0672:
@@ -456,8 +515,8 @@ l000E0672:
 	loc1 = v66
 	v67 = 5<32>
 	v68 = v66 < v67
-	v68 = v68
-	// succ:  l000E06D0 l000E06D0
+	branch !v68 l000E075B
+	// succ:  l000E06D0 l000E075B
 l000E06D0:
 	v69 = Mem0[0x00100000<p32>:word32]
 	v70 = arg0
@@ -526,6 +585,37 @@ l000E06D0:
 	v126 = loc3
 	v127 = v125 * v126
 	v128 = v117 + v127
+	v129 = sqrt(v128)
+	v130 = v96 / v129
+	v131 = v88 - v130
+	loc3 = v131
+	v132 = arg0
+	v133 = 1<32>
+	v134 = v132 + v133
+	arg0 = v134
+	v135 = 5<32>
+	v136 = v134 != v135
+	branch v136 l000E06D0
+	// succ:  l000E0759 l000E06D0
+l000E0759:
+	// succ:  l000E075B
+l000E075B:
+	v137 = loc1
+	v138 = 5<32>
+	v139 = v137 != v138
+	branch !v139 l000E0769
+	// succ:  l000E0762 l000E0769
+l000E0762:
+	v140 = loc1
+	arg0 = v140
+	goto l000E0672
+	// succ:  l000E0672
+l000E0769:
+	v141 = loc3
+	// succ:  l000E076C
+l000E076C:
+	return v141
+	// succ:  _run_exit
 _run_exit:
 
 

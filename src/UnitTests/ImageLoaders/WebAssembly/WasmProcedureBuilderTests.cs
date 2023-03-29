@@ -393,15 +393,15 @@ l00000000:
 	v4 = param0
 	v5 = 0<32>
 	v6 = v4 < v5
-	branch !v6 l0000000E
-	// succ:  l00000007 l0000000E
+	branch !v6 l0000000F
+	// succ:  l00000007 l0000000F
 l00000007:
 	v7 = 0<32>
 	v8 = param0
 	v9 = v7 - v8
 	param0 = v9
-	// succ:  l0000000E
-l0000000E:
+	// succ:  l0000000F
+l0000000F:
 	v10 = param0
 	return v10
 	// succ:  fn00000_exit
@@ -446,8 +446,8 @@ l00000000:
 	v3 = param0
 	v4 = 0<32>
 	v5 = v3 < v4
-	branch !v5 l0000000E
-	// succ:  l00000007 l0000000E
+	branch !v5 l0000000F
+	// succ:  l00000007 l0000000F
 l00000007:
 	v6 = 0<32>
 	v7 = param0
@@ -455,7 +455,7 @@ l00000007:
 	loc1 = v8
 	goto l00000013
 	// succ:  l00000013
-l0000000E:
+l0000000F:
 	v9 = param0
 	loc1 = v9
 	// succ:  l00000013
@@ -538,8 +538,8 @@ fn00000_entry:
 l00000000:
 	v2 = param0
 	v3 = v2 == 0<32>
-	branch v3 l00000000
-	// succ:  l00000007 l00000000
+	branch v3 l00000017
+	// succ:  l00000007 l00000017
 l00000007:
 	v4 = 0x10<32>
 	puts(v4)
