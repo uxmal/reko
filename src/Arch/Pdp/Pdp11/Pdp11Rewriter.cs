@@ -274,15 +274,19 @@ namespace Reko.Arch.Pdp.Pdp11
             */
         }
 
-        private Expression RewriteSrc(MachineOperand op)
+        private Expression RewriteSrc(MachineOperand op, bool signExtendByte = false)
         {
             switch (op)
             {
             case RegisterStorage regOp:
                 if (regOp == Registers.pc)
                     return instr.Address + instr.Length;
-                else
-                    return binder.EnsureRegister(regOp);
+                var reg = binder.EnsureRegister(regOp);
+                if (!signExtendByte)
+                    return reg;
+                var tmpb = binder.CreateTemporary(PrimitiveType.Byte);
+                m.Assign(tmpb, m.Slice(reg, tmpb.DataType));
+                return tmpb;
             case ImmediateOperand immOp:
                 if (dasm.Current.DataWidth!.Size == 1)
                 {

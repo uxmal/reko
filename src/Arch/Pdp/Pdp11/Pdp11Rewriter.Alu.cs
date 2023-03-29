@@ -254,7 +254,7 @@ namespace Reko.Arch.Pdp.Pdp11
 
         private void RewriteMov()
         {
-            var src = RewriteSrc(instr.Operands[0]);
+            var src = RewriteSrc(instr.Operands[0], instr.DataWidth!.Size == 1);
             Expression dst;
             if (instr.Operands[1] is RegisterStorage && instr.DataWidth!.Size == 1)
             {

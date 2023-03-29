@@ -242,10 +242,10 @@ void fn03CE(word16 * r0)
 	for (r4_n = 0x0C; r4_n > 0x00; --r4_n)
 	{
 		r5_n->b0000 = *r3_n;
-		int16 * r5_n = &r5_n->b0000 + 1;
-		*r5_n = r2_n;
+		byte * r5_n = &r5_n->b0000 + 1;
+		*r5_n = (byte) r2_n;
 		++r3_n;
-		r5_n = (struct Eq_n *) (r5_n + 4);
+		r5_n = (struct Eq_n *) (r5_n + 7);
 	}
 	++g_w0090;
 	g_w0090 &= 0x03;

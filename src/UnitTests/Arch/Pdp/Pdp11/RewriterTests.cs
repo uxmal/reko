@@ -72,6 +72,18 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         }
 
         [Test]
+        public void Pdp11Rw_movb_to_mem()
+        {
+            Given_UInt16s(0x9035, 0x0EF3);
+            AssertCode(     // movb r0,0EF3(r5)
+                "0|L--|0200(4): 4 instructions",
+                "1|L--|v3 = SLICE(r0, byte, 0)",
+                "2|L--|Mem0[r5 + 0xEF3<16>:byte] = v3", 
+                "3|L--|NZ = cond(v3)",
+                "4|L--|V = false");
+        }
+
+        [Test]
         public void Pdp11Rw_clrb()
         {
             Given_UInt16s(0x8A10);

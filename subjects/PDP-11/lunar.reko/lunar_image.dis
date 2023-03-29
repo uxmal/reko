@@ -191,19 +191,19 @@ l03CE:
 l0408:
 	Mem30[r5_22:byte] = Mem26[r3_23:byte]
 	word16 r5_31 = r5_22 + 1<16>
-	Mem33[r5_31:word16] = r2_16
+	Mem34[r5_31:byte] = SLICE(r2_16, byte, 0)
 	r3_23 = r3_23 + 1<16>
-	r5_22 = r5_31 + 8<16>
+	r5_22 = r5_31 + 7<16>
 	r4_21 = r4_21 - 1<16>
 	branch r4_21 > 0<16> l0408
 l0414:
-	Mem41[0x0090<p16>:word16] = Mem33[0x0090<p16>:word16] + 1<16>
-	Mem43[0x0090<p16>:word16] = Mem41[0x0090<p16>:word16] & 3<16>
-	Mem45[0x008E<p16>:word16] = Mem43[0x008E<p16>:word16] + 0x180<16>
-	Mem48[0x008E<p16>:word16] = Mem45[0x008E<p16>:word16] & 0x380<16>
-	Mem49[0x27A8<p16>:word16] = 0x8C54<16>
-	Mem51[0x27A8<p16>:word16] = Mem49[0x27A8<p16>:word16] | Mem49[0x0090<p16>:word16]
-	Mem53[0x27A8<p16>:word16] = Mem51[0x27A8<p16>:word16] | Mem51[0x008E<p16>:word16]
+	Mem42[0x0090<p16>:word16] = Mem34[0x0090<p16>:word16] + 1<16>
+	Mem44[0x0090<p16>:word16] = Mem42[0x0090<p16>:word16] & 3<16>
+	Mem46[0x008E<p16>:word16] = Mem44[0x008E<p16>:word16] + 0x180<16>
+	Mem49[0x008E<p16>:word16] = Mem46[0x008E<p16>:word16] & 0x380<16>
+	Mem50[0x27A8<p16>:word16] = 0x8C54<16>
+	Mem52[0x27A8<p16>:word16] = Mem50[0x27A8<p16>:word16] | Mem50[0x0090<p16>:word16]
+	Mem54[0x27A8<p16>:word16] = Mem52[0x27A8<p16>:word16] | Mem52[0x008E<p16>:word16]
 l0440_thunk_fn0242:
 	fn0242(0x27A2<16>, r0)
 
