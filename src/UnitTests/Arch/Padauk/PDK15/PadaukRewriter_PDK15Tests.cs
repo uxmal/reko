@@ -334,5 +334,14 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
                 "2|L--|Mem0[0x008A<p16>:byte] = v3",
                 "3|L--|Z = cond(v3)");
         }
+
+        [Test]
+        public void Pdk15Rw_stopexe()
+        {
+            Given_HexString("7700");
+            AssertCode(     // stopexe
+                "0|L--|0100(1): 1 instructions",
+                "1|L--|__stopexe()");
+        }
     }
 }

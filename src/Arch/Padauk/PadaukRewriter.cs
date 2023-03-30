@@ -94,9 +94,10 @@ namespace Reko.Arch.Padauk
                 case Mnemonic.sl: RewriteShift(m.Shl); break;
                 case Mnemonic.slc: RewriteSlc(); break;
                 case Mnemonic.sr: RewriteShift(m.Shr); break;
+                case Mnemonic.stopexe: RewriteStopexe(); break;
                 case Mnemonic.sub: RewriteAddSub(m.ISub); break;
                 case Mnemonic.subc: RewriteAddcSubc(m.ISubC, m.ISub); break;
-                case Mnemonic.swap: RewriteSwap();break;
+                case Mnemonic.swap: RewriteSwap(); break;
                 case Mnemonic.t0sn: RewriteTsn(true); break;
                 case Mnemonic.t1sn: RewriteTsn(false); break;
                 case Mnemonic.xch: RewriteXch(); break;
@@ -332,7 +333,7 @@ namespace Reko.Arch.Padauk
             }
             else
             {
-                var mem = (MemoryOperand)instr.Operands[0];
+                var mem = (MemoryOperand) instr.Operands[0];
                 var tmp = binder.CreateTemporary(PrimitiveType.Byte);
                 var ea = m.Ptr16((ushort) mem.Offset);
                 m.Assign(tmp, m.Mem8(ea));
@@ -345,6 +346,11 @@ namespace Reko.Arch.Padauk
         {
             var dst = EmitAssignment(0, m.Byte(1), shift);
             EmitCc(Registers.C, dst);
+        }
+
+        private void RewriteStopexe()
+        {
+            m.SideEffect(m.Fn(stopexe_instrinsic));
         }
 
         private Expression Rolc(Expression a, Expression b)
@@ -432,6 +438,9 @@ namespace Reko.Arch.Padauk
             .Param(PrimitiveType.Byte)
             .Param(PrimitiveType.Bool)
         .Void();
+
+        private static readonly IntrinsicProcedure stopexe_instrinsic = new IntrinsicBuilder("__stopexe", true)
+            .Void();
 
         private static readonly IntrinsicProcedure swap_intrinsic = new IntrinsicBuilder("__swap_nybbles", false)
             .Param(PrimitiveType.Byte)
