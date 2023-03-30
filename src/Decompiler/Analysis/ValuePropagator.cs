@@ -94,6 +94,7 @@ namespace Reko.Analysis
                     eventListener.Warn(
                         eventListener.CreateProcedureNavigator(program, ssa.Procedure),
                         "Stopping value propagation after iterating {0} times.", iterations);
+                    return;
                 }
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
