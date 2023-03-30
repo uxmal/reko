@@ -48,8 +48,8 @@
 
 
 [[reko::service(vector=0x31,regs={ax:0x0200})]]
-[[reko::returns(seq,"cx","dx")]] bool DPMI_get_real_mode_interrupt_vector(
-	[[reko::arg(register,"bl")]]	 unsigned char interrupt_number); 
+[[reko::returns(seq,"cx","dx")]] unsigned int DPMI_get_real_mode_interrupt_vector(
+	[[reko::arg(register,"bl")]] unsigned char interrupt_number); 
 
 [[reko::service(vector=0x31,regs={ax:0x0501})]]
 [[reko::returns(flag,"C")]] bool DPMI_allocate_memory_block(
