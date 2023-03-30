@@ -1,13 +1,14 @@
-// hello
-// Return size: 0
 void hello()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
 hello_entry:
-	// succ:  l000D0000
 l000D0000:
-	v2 = 0x10<32>
-	puts(v2)
+	puts(0x10<32>)
 	return
-	// succ:  hello_exit
 hello_exit:
 
 

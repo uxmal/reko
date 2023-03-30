@@ -5,23 +5,62 @@
 #include "nbody.h"
 
 // 000E0000: void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2)
+void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
+{
+}
 
-// Exception Unknown node void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2). when writing procedure.
-// 000E020A: Stack real64 _energy(Stack int32 arg0, Stack word32 arg1)
+// 000E020A: Stack real64 _energy(Stack int32 arg0, Stack ptr32 arg1)
+real64 _energy(int32 arg0, ptr32 arg1)
+{
+}
 
-// Exception Unknown node Stack real64 _energy(Stack int32 arg0, Stack word32 arg1). when writing procedure.
 // 000E0329: void _offset_momentum(Stack int32 arg0, Stack (ptr32 Eq_n) arg1)
+void _offset_momentum(int32 arg0, struct Eq_n * arg1)
+{
+	real64 loc3_n;
+	real64 loc4_n;
+	real64 loc5_n;
+	if (arg0 > 0x00)
+	{
+		do
+		{
+			real64 v26_n = arg1->r0030;
+			loc5_n = arg1->r0018 * v26_n + 0.0;
+			loc4_n = v26_n * arg1->r0020 + 0.0;
+			loc3_n = v26_n * arg1->r0028 + 0.0;
+		} while (arg0 != 0x01);
+	}
+	else
+	{
+		loc3_n = 0.0;
+		loc4_n = 0.0;
+		loc5_n = 0.0;
+	}
+	arg1->r0018 = -loc5_n / 39.47841760435743;
+	arg1->r0020 = -loc4_n / 39.47841760435743;
+	arg1->r0028 = -loc3_n / 39.47841760435743;
+}
 
-// Exception Unknown node void _offset_momentum(Stack int32 arg0, Stack (ptr32 Eq_n) arg1). when writing procedure.
 // 000E0405: Stack real64 _start()
+real64 _start()
+{
+}
 
-// Exception Unknown node Stack real64 _start(). when writing procedure.
 // 000E061E: Stack real64 _run(Stack int32 arg0)
+real64 _run(int32 arg0)
+{
+}
 
-// Exception Unknown node Stack real64 _run(Stack int32 arg0). when writing procedure.
 // 000E076E: void runPostSets()
+void runPostSets()
+{
+}
 
-// Exception Unknown node void runPostSets(). when writing procedure.
 // 000E0770: void __post_instantiate()
+void __post_instantiate()
+{
+	g_ptr100008 = &g_ptr100000->r0110 + 2;
+	g_dw10000C = g_ptr100008 + 0x00500000;
+	runPostSets();
+}
 
-// Exception Unknown node void __post_instantiate(). when writing procedure.

@@ -116,15 +116,29 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.block: RewriteBlock(); break;
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.br_if: RewriteBrIf(); break;
+                case Mnemonic.br_table: RewriteBrTable(); break;
                 case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.@else: RewriteElse(); break;
                 case Mnemonic.end: 
                     if (RewriteEnd(rdr))
                         return;
                     break;
+                case Mnemonic.@if: RewriteIf(); break;
                 case Mnemonic.loop: RewriteLoop(); break;
+                case Mnemonic.nop: break;
+                case Mnemonic.@return: RewriteReturn(); break;
+
+                case Mnemonic.drop: RewriteDrop(); break;
                 case Mnemonic.f32_add: RewriteBinary(m.FAdd, PrimitiveType.Real32); break;
+                case Mnemonic.f32_demote_f64: RewriteConversion(PrimitiveType.Real64, PrimitiveType.Real32); break;
+                case Mnemonic.f32_reinterpret_i32: RewriteIntrinsic(CommonOps.ReinterpretCast.MakeInstance(PrimitiveType.Real32)); break;
                 case Mnemonic.f32_div: RewriteBinary(m.FDiv, PrimitiveType.Real32); break;
+                case Mnemonic.f32_eq: RewriteCmp(m.FEq); break;
+                case Mnemonic.f32_ne: RewriteCmp(m.FNe); break;
+                case Mnemonic.f32_ge: RewriteCmp(m.FGe); break;
+                case Mnemonic.f32_gt: RewriteCmp(m.FGt); break;
+                case Mnemonic.f32_le: RewriteCmp(m.FLe); break;
+                case Mnemonic.f32_lt: RewriteCmp(m.FLt); break;
                 case Mnemonic.f32_load: RewriteLoad(PrimitiveType.Real32); break;
                 case Mnemonic.f32_mul: RewriteBinary(m.FMul, PrimitiveType.Real32); break;
                 case Mnemonic.f32_neg: RewriteUnary(m.FNeg, PrimitiveType.Real32); break;
@@ -133,9 +147,16 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.f32_sub: RewriteBinary(m.FSub, PrimitiveType.Real32); break;
                 case Mnemonic.f64_add: RewriteBinary(m.FAdd, PrimitiveType.Real64); break;
                 case Mnemonic.f64_div: RewriteBinary(m.FDiv, PrimitiveType.Real64); break;
+                case Mnemonic.f64_eq: RewriteCmp(m.FEq); break;
+                case Mnemonic.f64_ne: RewriteCmp(m.FNe); break;
+                case Mnemonic.f64_ge: RewriteCmp(m.FGe); break;
+                case Mnemonic.f64_gt: RewriteCmp(m.FGt); break;
+                case Mnemonic.f64_le: RewriteCmp(m.FLe); break;
+                case Mnemonic.f64_lt: RewriteCmp(m.FLt); break;
                 case Mnemonic.f64_load: RewriteLoad(PrimitiveType.Real64); break;
                 case Mnemonic.f64_mul: RewriteBinary(m.FMul, PrimitiveType.Real64); break;
                 case Mnemonic.f64_neg: RewriteUnary(m.FNeg, PrimitiveType.Real64); break;
+                case Mnemonic.f64_reinterpret_i64: RewriteIntrinsic(CommonOps.ReinterpretCast.MakeInstance(PrimitiveType.Real64)); break;
                 case Mnemonic.f64_sqrt: RewriteIntrinsic(FpOps.sqrt); break;
                 case Mnemonic.f64_store: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.f64_sub: RewriteBinary(m.FSub, PrimitiveType.Real64); break;
@@ -202,7 +223,8 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.i64_lt_s: RewriteCmp(m.Lt); break;
                 case Mnemonic.i64_lt_u: RewriteCmp(m.Ult); break;
                 case Mnemonic.i64_ne: RewriteCmp(m.Ne); break;
-                case Mnemonic.i64_extend_u_i32: RewriteExtend(PrimitiveType.Word32, PrimitiveType.UInt64);break;
+                case Mnemonic.i64_extend_s_i32: RewriteConversion(PrimitiveType.Word32, PrimitiveType.Int64);break;
+                case Mnemonic.i64_extend_u_i32: RewriteConversion(PrimitiveType.Word32, PrimitiveType.UInt64);break;
                 case Mnemonic.i64_load: RewriteLoad(PrimitiveType.Word64); break;
                 case Mnemonic.i64_load8_s: RewriteLoadWiden(PrimitiveType.SByte, PrimitiveType.Word64); break;
                 case Mnemonic.i64_load8_u: RewriteLoadWiden(PrimitiveType.Byte, PrimitiveType.Word64); break;
@@ -213,6 +235,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.i64_mul: RewriteBinary(m.IMul, PrimitiveType.Word64); break;
                 case Mnemonic.i64_sub: RewriteBinary(m.ISub, PrimitiveType.Word64); break;
                 case Mnemonic.i64_or: RewriteBinary(m.Or, PrimitiveType.Word64); break;
+                case Mnemonic.i64_reinterpret_f64: RewriteIntrinsic(CommonOps.ReinterpretCast.MakeInstance(PrimitiveType.UInt64)); break;
                 case Mnemonic.i64_rem_s: RewriteBinary(m.SMod, PrimitiveType.Word64); break;
                 case Mnemonic.i64_rem_u: RewriteBinary(m.UMod, PrimitiveType.Word64); break;
                 case Mnemonic.i64_shl: RewriteBinary(m.Shl, PrimitiveType.Word64); break;
@@ -223,7 +246,8 @@ namespace Reko.ImageLoaders.WebAssembly
                 case Mnemonic.i64_store16: RewriteStoreNarrow(PrimitiveType.Word16); break;
                 case Mnemonic.i64_store32: RewriteStoreNarrow(PrimitiveType.Word32); break;
                 case Mnemonic.i64_xor: RewriteBinary(m.Xor, PrimitiveType.Word64); break;
-                case Mnemonic.@if: RewriteIf(); break;
+
+                case Mnemonic.select: RewriteSelect(); break;
                 case Mnemonic.set_global:
                     idxGlob = OpAsInt(0);
                     global = wasmFile.GlobalIndex[idxGlob];
@@ -260,6 +284,11 @@ namespace Reko.ImageLoaders.WebAssembly
         private void RewriteBlock()
         {
             Debug.Assert(this.block is not null);
+            if (instr.Operands.Length > 0)
+            {
+                //$TODO: if block has args
+                Console.WriteLine("WASM block instruction with operands not handled yet.");
+            }
             if (block.Statements.Count != 0)
             {
                 var blockOld = block;
@@ -273,6 +302,31 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             Debug.Assert(this.block is not null);
             var cLevelsUp = OpAsInt(0);
+            EmitBranchReference(this.block, cLevelsUp, null);
+            // The current block is undefined until the next 'end' instruction.
+            this.block = null;
+        }
+
+        private void RewriteBrTable()
+        {
+            Debug.Assert(this.block is not null);
+            var brTable = (BranchTableOperand) instr.Operands[0];
+            var swTargets = new Block[brTable.Targets.Length];
+            for (uint i = 0; i <brTable.Targets.Length; ++i)
+            {
+                var cLevelsUp = (int) brTable.Targets[i];
+                var blockTarget = EmitBranchReference(this.block, cLevelsUp, Constant.UInt32(i));
+                swTargets[i] = blockTarget!;
+            }
+            var value = PopValue();
+            block.Statements.Add(instr.Address, new SwitchInstruction(value, swTargets));
+            // The current block is undefined until the next 'end' instruction.
+            this.block = null;
+        }
+
+
+        private Block? EmitBranchReference(Block block, int cLevelsUp, Expression? placeHolder)
+        {
             int iLabel = this.controlStack.Count - cLevelsUp - 1;
             if (iLabel < 0)
                 throw new BadImageFormatException("Control stack unbalanced at br instruction.");
@@ -280,14 +334,14 @@ namespace Reko.ImageLoaders.WebAssembly
             if (ctrl.Mnemonic == Mnemonic.loop)
             {
                 // branches to loop continuation can always be done.
-                proc.ControlGraph.AddEdge(this.block, ctrl.Block);
+                proc.ControlGraph.AddEdge(block, ctrl.Block);
+                return ctrl.Block;
             }
             else
             {
-                ctrl.IncompleteBranches.Add((this.block, null));
+                ctrl.IncompleteBranches.Add((block, placeHolder));
+                return null;
             }
-            // The current block is undefined until the next 'end' instruction.
-            this.block = null;
         }
 
         private void RewriteBrIf()
@@ -326,6 +380,14 @@ namespace Reko.ImageLoaders.WebAssembly
                 Console.WriteLine("WASM loop instruction with operands not handled yet.");
             }
             PushControl(Mnemonic.loop, Array.Empty<Identifier>(), null, false);
+        }
+
+        private void RewriteReturn()
+        {
+            //$TODO: what if the block we're leaving has variables on stack.
+            Debug.Assert(this.block is not null);
+            Return();
+            this.block = null;
         }
 
         private void RewriteElse()
@@ -409,7 +471,17 @@ namespace Reko.ImageLoaders.WebAssembly
             {
                 if (predicate is not null)
                 {
-                    block.Statements[^1].Instruction = new Branch(predicate, followBlock);
+                    var lastStm = block.Statements[^1];
+                    if (lastStm.Instruction is SwitchInstruction sw)
+                    {
+                        var c = (Constant) predicate;
+
+                        sw.Targets[c.ToUInt32()] = followBlock;
+                    }
+                    else
+                    {
+                        lastStm.Instruction = new Branch(predicate, followBlock);
+                    }
                 }
                 proc.ControlGraph.AddEdge(block, followBlock);
             }
@@ -445,6 +517,13 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
+        private void RewriteIndirectCall()
+        {
+            //$TODO: this is not correct yet.
+            var idxTable = OpAsInt(0);
+            var idxFunc = OpAsInt(1);
+        }
+
         private void RewriteConst()
         {
             var imm = (ImmediateOperand) instr.Operands[0];
@@ -470,11 +549,16 @@ namespace Reko.ImageLoaders.WebAssembly
             Assign(id, e);
         }
 
-        private void RewriteExtend(DataType dtFrom, DataType dtTo)
+        private void RewriteDrop()
+        {
+            PopValue();
+        }
+
+        private void RewriteConversion(DataType dtFrom, DataType dtTo)
         {
             var arg1 = PopValue();
             var e = m.Convert(arg1, dtFrom, dtTo);
-            var id = PushValue(PrimitiveType.Bool);
+            var id = PushValue(dtTo);
             Assign(id, e);
         }
 
@@ -519,6 +603,15 @@ namespace Reko.ImageLoaders.WebAssembly
             Assign(tmp, mm);
             var val = PushValue(dtWiden);
             Assign(val, m.Convert(tmp, dtFrom, dtWiden));
+        }
+
+        private void RewriteSelect()
+        {
+            var predicate = PopValue();
+            var val2 = PopValue();
+            var val1 = PopValue();
+            var result = PushValue(val1.DataType);
+            Assign(result, m.Conditional(val1.DataType, predicate, val1, val2));
         }
 
         private void RewriteStore(PrimitiveType dt)

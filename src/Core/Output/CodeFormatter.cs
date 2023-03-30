@@ -749,7 +749,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(") { ");
 			foreach (Block b in si.Targets)
 			{
-				InnerFormatter.Write("{0} ", b.DisplayName);
+				InnerFormatter.Write("{0} ", b?.DisplayName ?? "<null>");
 			}
 			InnerFormatter.Write("}");
 			InnerFormatter.Terminate();

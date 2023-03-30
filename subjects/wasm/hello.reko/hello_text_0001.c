@@ -4,441 +4,2036 @@
 
 #include "hello.h"
 
-// 000E2C2B: void _free(Stack Eq_n arg0)
+// 000E3D5D: Stack Eq_n fn000E3D5D(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E3D5D(Eq_n arg0, Eq_n arg1)
+{
+	&v18.u2->t0000.u0 = g_t140030.u2;
+	loc17 = v18;
+	v19 = arg0;
+	v20.u0 = 0x00;
+	v21 = v19 == v20;
+	loc8 = v21;
+	v22 = loc8;
+	if (v22)
+	{
+		v23.u0 = 0x00;
+		loc3 = v23;
+	}
+	else
+	{
+		v24 = arg1;
+		v25 = arg0;
+		v26 = v24 * v25;
+		loc9 = v26;
+		v27 = arg1;
+		v28 = arg0;
+		v29 = v27 | v28;
+		loc10 = v29;
+		v30 = loc10;
+		v31 = 0xFFFF;
+		v32 = v30 > v31;
+		loc11 = v32;
+		v33 = loc11;
+		if (v33)
+		{
+			v34 = loc9;
+			v35 = arg0;
+			v36 = i32u-div(v34, v35);
+			v37 = ~0x00;
+			v38 = v36 & v37;
+			loc12 = v38;
+			v39 = loc12;
+			v40 = arg1;
+			v41 = v39 == v40;
+			loc13 = v41;
+			v42 = loc13;
+			if (v42)
+				v43 = loc9;
+			else
+				v44.u0 = ~0x00;
+			loc2 = v44;
+			v45 = loc2;
+			loc3 = v45;
+		}
+		else
+		{
+			v46 = loc9;
+			loc3 = v46;
+		}
+	}
+	v47 = loc3;
+	v48 = _malloc(v47);
+	loc14 = v48;
+	v49 = loc14;
+	v50.u0 = 0x00;
+	v51 = v49 == v50;
+	loc15 = v51;
+	v52 = loc15;
+	if (!v52)
+	{
+		v54 = loc14;
+		v55 = ~0x03;
+		v56 = (ui32 *) (v54.u2 + v55 / 112);
+		loc4 = v56;
+		v57 = loc4;
+		v58 = *v57;
+		loc5 = v58;
+		v59 = loc5;
+		v60 = 0x03;
+		v61 = v59 & v60;
+		loc6 = v61;
+		v62 = loc6;
+		v63 = 0x00;
+		v64 = v62 == v63;
+		loc7 = v64;
+		v65 = loc7;
+		if (!v65)
+		{
+			v67 = loc14;
+			v68.u0 = 0x00;
+			v69 = loc3;
+			v70 = _memset(v67, v68, v69);
+			v71 = loc14;
+			return v71;
+		}
+		else
+		{
+			v66 = loc14;
+			return v66;
+		}
+	}
+	else
+	{
+		v53 = loc14;
+		return v53;
+	}
+}
 
-// Exception Unknown node void _free(Stack Eq_n arg0). when writing procedure.
-// 000E3D5D: Stack word32 fn000E3D5D(Stack Eq_n arg0, Stack Eq_n arg1)
+// 000E3E00: Stack Eq_n fn000E3E00(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E3E00(Eq_n arg0, Eq_n arg1)
+{
+	&v28.u2->t0000.u0 = g_t140030.u2;
+	loc27 = v28;
+	v29 = arg0;
+	v30.u0 = 0x00;
+	v31 = v29 == v30;
+	loc13 = v31;
+	v32 = loc13;
+	if (!v32)
+	{
+		v37 = arg1;
+		v38.u0 = ~0x40;
+		v39 = v37 > v38;
+		loc20 = v39;
+		v40 = loc20;
+		if (!v40)
+		{
+			v46 = arg1;
+			v47.u0 = 11;
+			v48 = v46 < v47;
+			loc22 = v48;
+			v49 = arg1;
+			v50 = 11;
+			v51 = v49.u2 + v50 / 112;
+			loc23 = v51;
+			v52 = loc23;
+			v53 = ~0x07;
+			v54 = v52 & v53;
+			loc24 = v54;
+			v55 = loc22;
+			if (v55)
+				v56 = 0x10;
+			else
+				v57 = loc24;
+			loc25 = v57;
+			v58 = arg0;
+			v59 = ~0x07;
+			&v60.u2->t0000.u0 = v58.u2 + v59 / 112;
+			loc3 = v60;
+			v61 = loc3;
+			v62 = loc25;
+			v63 = fn000E3F06(v61, v62);
+			loc4 = v63;
+			v64 = loc4;
+			v65.u0 = 0x00;
+			v66 = v64 == v65;
+			loc5 = v66;
+			v67 = loc5;
+			v68 = v67 == 0x00;
+			if (!v68)
+			{
+				v74 = arg1;
+				v75 = _malloc(v74);
+				loc7 = v75;
+				v76 = loc7;
+				v77.u0 = 0x00;
+				v78 = v76 == v77;
+				loc8 = v78;
+				v79 = loc8;
+				if (!v79)
+				{
+					v82 = arg0;
+					v83 = ~0x03;
+					v84 = (ui32 *) (v82.u2 + v83 / 112);
+					loc9 = v84;
+					v85 = loc9;
+					v86 = *v85;
+					loc10 = v86;
+					v87 = loc10;
+					v88 = ~0x07;
+					v89 = v87 & v88;
+					loc11 = v89;
+					v90 = loc10;
+					v91 = 0x03;
+					v92 = v90 & v91;
+					loc12 = v92;
+					v93 = loc12;
+					v94 = 0x00;
+					v95 = v93 == v94;
+					loc14 = v95;
+					v96 = loc14;
+					if (v96)
+						v97 = 0x08;
+					else
+						v98 = 0x04;
+					loc15 = v98;
+					v99 = loc11;
+					v100 = loc15;
+					v101 = v99 - v100;
+					loc16 = v101;
+					v102 = loc16;
+					v103 = arg1;
+					v104 = v102 < v103;
+					loc17 = v104;
+					v105 = loc17;
+					if (v105)
+						v106 = loc16;
+					else
+						v107 = arg1;
+					loc18 = v107;
+					v108 = loc7;
+					v109 = arg0;
+					v110 = loc18;
+					v111 = _memcpy(v108, v109, v110);
+					v112 = arg0;
+					_free(v112);
+					v113 = loc7;
+					loc2 = v113;
+					v114 = loc2;
+					return v114;
+				}
+				else
+				{
+					v80.u0 = 0x00;
+					loc2 = v80;
+					v81 = loc2;
+					return v81;
+				}
+			}
+			else
+			{
+				v69 = loc4;
+				v70 = 0x08;
+				&v71.u2->t0000.u0 = v69.u2 + v70 / 112;
+				loc6 = v71;
+				v72 = loc6;
+				loc2 = v72;
+				v73 = loc2;
+				return v73;
+			}
+		}
+		else
+		{
+			v41 = ___errno_location();
+			loc21 = v41;
+			v42 = loc21;
+			v43.u0 = 0x0C;
+			v42.u2->t0000.u2 = (struct Eq_n *) v43;
+			v44.u0 = 0x00;
+			loc2 = v44;
+			v45 = loc2;
+			return v45;
+		}
+	}
+	else
+	{
+		v33 = arg1;
+		v34 = _malloc(v33);
+		loc19 = v34;
+		v35 = loc19;
+		loc2 = v35;
+		v36 = loc2;
+		return v36;
+	}
+}
 
-// Exception Unknown node Stack word32 fn000E3D5D(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E3E00: Stack word32 fn000E3E00(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E3E00(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E3F06: Stack word32 fn000E3F06(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E3F06(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E47CC: void fn000E47CC(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node void fn000E47CC(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E5815: void fn000E5815(Stack Eq_n arg0)
+void fn000E5815(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E5823(v5);
+}
 
-// Exception Unknown node void fn000E5815(Stack Eq_n arg0). when writing procedure.
 // 000E5823: void fn000E5823(Stack Eq_n arg0)
+void fn000E5823(Eq_n arg0)
+{
+	&v17.u2->t0000.u0 = g_t140030.u2;
+	loc15 = v17;
+	v18 = arg0;
+	v19.u0 = 0x1920;
+	v18.u2->t0000.u2 = (struct Eq_n *) v19;
+	v20.u0 = 0x00;
+	g_t140048.u2 = (struct Eq_n *) v20;
+	v21 = 0x0171;
+	v22 = arg0;
+	v23 = 0x00;
+	invoke_vii(v21, v22, v23);
+	&v24.u2->t0000.u0 = g_t140048.u2;
+	loc1 = v24;
+	v25.u0 = 0x00;
+	g_t140048.u2 = (struct Eq_n *) v25;
+	v26 = loc1;
+	v27 = 0x01;
+	v28 = v26 & v27;
+	loc6 = v28;
+	v29 = loc6;
+	if (!v29)
+	{
+		v34 = arg0;
+		v35 = 0x1C;
+		&v36.u2->t0000.u0 = v34.u2 + v35 / 112;
+		loc7 = v36;
+		v37 = loc7;
+		fn0011B3FB(v37);
+		v38 = arg0;
+		v39 = 0x20;
+		v40 = (union Eq_n *) (v38.u2 + v39 / 112);
+		loc8 = v40;
+		v41 = loc8;
+		&v42.u2->t0000.u0 = v41->u2;
+		loc9 = v42;
+		v43 = loc9;
+		_free(v43);
+		v44 = arg0;
+		v45 = 0x24;
+		v46 = (union Eq_n *) (v44.u2 + v45 / 112);
+		loc10 = v46;
+		v47 = loc10;
+		&v48.u2->t0000.u0 = v47->u2;
+		loc11 = v48;
+		v49 = loc11;
+		_free(v49);
+		v50 = arg0;
+		v51 = 0x30;
+		v52 = (union Eq_n *) (v50.u2 + v51 / 112);
+		loc12 = v52;
+		v53 = loc12;
+		&v54.u2->t0000.u0 = v53->u2;
+		loc13 = v54;
+		v55 = loc13;
+		_free(v55);
+		v56 = arg0;
+		v57 = 0x3C;
+		v58 = (union Eq_n *) (v56.u2 + v57 / 112);
+		loc2 = v58;
+		v59 = loc2;
+		&v60.u2->t0000.u0 = v59->u2;
+		loc3 = v60;
+		v61 = loc3;
+		_free(v61);
+	}
+	else
+	{
+		v30 = 0x00;
+		v31 = ___cxa_find_matching_catch_n(v30);
+		loc4 = v31;
+		&v32.u2->t0000.u0 = g_t140094.u2;
+		loc5 = v32;
+		v33 = loc4;
+		fn000D0E65(v33);
+	}
+}
 
-// Exception Unknown node void fn000E5823(Stack Eq_n arg0). when writing procedure.
 // 000E58BC: void fn000E58BC(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E58BC(Eq_n arg0, Eq_n arg1)
+{
+	&v17.u2->t0000.u0 = g_t140030.u2;
+	loc16 = v17;
+	v18 = arg0;
+	v19 = 0x28;
+	v20 = (word32 *) (v18.u2 + v19 / 112);
+	loc7 = v20;
+	v21 = loc7;
+	v22 = *v21;
+	loc8 = v22;
+	v23 = arg0;
+	v24 = 0x20;
+	v25 = (word32 *) (v23.u2 + v24 / 112);
+	loc9 = v25;
+	v26 = arg0;
+	v27 = 0x24;
+	v28 = (word32 *) (v26.u2 + v27 / 112);
+	loc10 = v28;
+	v29 = loc8;
+	loc2 = v29;
+	v30 = loc2;
+	v31 = 0x00;
+	v32 = v30 == v31;
+	loc11 = v32;
+	v33 = loc11;
+	if (!v33)
+	{
+		v34 = loc2;
+		v35 = ~0x00;
+		v36 = v34 + v35;
+		loc12 = v36;
+		v37 = loc9;
+		v38 = *v37;
+		loc13 = v38;
+		v39 = loc13;
+		v40 = loc12;
+		v41 = 0x02;
+		v42 = v40 << v41;
+		v43 = v39 + v42;
+		loc14 = v43;
+		v44 = loc14;
+		v45 = *v44;
+		loc3 = v45;
+		v46 = loc10;
+		v47 = *v46;
+		loc4 = v47;
+		v48 = loc4;
+		v49 = loc12;
+		v50 = 0x02;
+		v51 = v49 << v50;
+		v52 = v48 + v51;
+		loc5 = v52;
+		v53 = loc5;
+		v54 = *v53;
+		loc6 = v54;
+		v55 = arg1;
+		v56 = arg0;
+		v57 = loc6;
+		v58 = loc3;
+		v59 = 0x01FF;
+		v60 = v58 & v59;
+		v61 = 0x2820;
+		v62 = v60 + v61;
+	}
+}
 
-// Exception Unknown node void fn000E58BC(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E594A: void fn000E594A(Stack Eq_n arg0)
+void fn000E594A(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E5823(v5);
+	v6 = arg0;
+	fn0011B709(v6);
+}
 
-// Exception Unknown node void fn000E594A(Stack Eq_n arg0). when writing procedure.
 // 000E595D: void fn000E595D(Stack Eq_n arg0)
+void fn000E595D(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E5823(v5);
+}
 
-// Exception Unknown node void fn000E595D(Stack Eq_n arg0). when writing procedure.
 // 000E596B: void fn000E596B(Stack Eq_n arg0)
+void fn000E596B(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7.u0 = 6448;
+	v6.u2->t0000.u2 = (struct Eq_n *) v7;
+	v8 = arg0;
+	v9 = 0x04;
+	&v10.u2->t0000.u0 = v8.u2 + v9 / 112;
+	loc1 = v10;
+	v11 = loc1;
+	fn0011B3FB(v11);
+}
 
-// Exception Unknown node void fn000E596B(Stack Eq_n arg0). when writing procedure.
 // 000E5988: void fn000E5988(Stack Eq_n arg0)
+void fn000E5988(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7.u0 = 6448;
+	v6.u2->t0000.u2 = (struct Eq_n *) v7;
+	v8 = arg0;
+	v9 = 0x04;
+	&v10.u2->t0000.u0 = v8.u2 + v9 / 112;
+	loc1 = v10;
+	v11 = loc1;
+	fn0011B3FB(v11);
+	v12 = arg0;
+	fn0011B709(v12);
+}
 
-// Exception Unknown node void fn000E5988(Stack Eq_n arg0). when writing procedure.
 // 000E59AA: void fn000E59AA(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E59AA(Eq_n arg0, Eq_n arg1)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v4;
+}
 
-// Exception Unknown node void fn000E59AA(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E59B3: Stack word32 fn000E59B3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E59B3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E59BE: void fn000E59BE(Stack (ptr32 word64) arg0, Stack word32 arg1, Stack word64 arg2, Stack word32 arg3, Stack word32 arg4)
+void fn000E59BE(word64 * arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v5;
+	v6 = arg0;
+	v7 = 0x00;
+	*v6 = v7;
+	v8 = arg0;
+	v9 = 0x08;
+	v10 = v8 + v9;
+	loc5 = v10;
+	v11 = loc5;
+	v12 = ~0x00;
+	*v11 = v12;
+}
 
-// Exception Unknown node void fn000E59BE(Stack (ptr32 word64) arg0, Stack word32 arg1, Stack word64 arg2, Stack word32 arg3, Stack word32 arg4). when writing procedure.
 // 000E59DC: void fn000E59DC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000E59DC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v5;
+	v6 = arg0;
+	v7.u1 = 0x00;
+	v6.u2->t0000.u1 = (word64) v7;
+	v8 = arg0;
+	v9 = 0x08;
+	v10 = (word64 *) (v8.u2 + v9 / 112);
+	loc4 = v10;
+	v11 = loc4;
+	v12 = ~0x00;
+	*v11 = v12;
+}
 
-// Exception Unknown node void fn000E59DC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000E59FA: Stack word32 fn000E59FA(Stack Eq_n arg0)
+// 000E5A10: Stack Eq_n fn000E5A10(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000E5A10(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	&v23.u2->t0000.u0 = g_t140030.u2;
+	loc23 = v23;
+	v24 = arg0;
+	v25 = 0x0C;
+	v26 = (int8 **) (v24.u2 + v25 / 112);
+	loc14 = v26;
+	v27 = arg0;
+	v28 = 0x10;
+	v29 = (int8 **) (v27.u2 + v28 / 112);
+	loc15 = v29;
+	v30.u0 = 0x00;
+	loc3 = v30;
+	v31 = arg1;
+	loc4 = v31;
+	v32 = loc3;
+	v33 = arg2;
+	v34 = v32 < v33;
+	loc16 = v34;
+	v35 = loc16;
+	v36 = v35 == 0x00;
+	if (!v36)
+	{
+		v37 = loc14;
+		v38 = (int8 *) *v37;
+		loc17 = v38;
+		v39 = loc15;
+		v40 = (int8 *) *v39;
+		loc18 = v40;
+		v41 = loc17;
+		v42 = loc18;
+		v43 = v41 < v42;
+		loc19 = v43;
+		v44 = loc19;
+		if (!v44)
+		{
+			v54 = arg0;
+			&v55.u2->t0000.u0 = v54.u2->t0000.u2;
+			loc6 = v55;
+			v56 = loc6;
+			v57 = 0x28;
+			v58 = (ui32 *) (v56.u2 + v57 / 112);
+			loc7 = v58;
+			v59 = loc7;
+			v60 = *v59;
+			loc8 = v60;
+			v61 = arg0;
+			v62 = loc8;
+			v63 = 0x01FF;
+			v64 = v62 & v63;
+			v65 = 0x0B00;
+			v66 = v64 + v65;
+		}
+		else
+		{
+			v45 = loc17;
+			v46 = 0x01;
+			v47 = v45 + v46;
+			loc20 = v47;
+			v48 = loc14;
+			v49 = loc20;
+			*v48 = (int8 **) v49;
+			v50 = loc17;
+			v51 = *v50;
+			v52 = (word32) v51;
+			loc5 = v52;
+			v53 = loc5;
+			loc21 = v53;
+		}
+	}
+}
 
-// Exception Unknown node Stack word32 fn000E59FA(Stack Eq_n arg0). when writing procedure.
-// 000E5A05: Stack word32 fn000E5A05(Stack Eq_n arg0)
+// 000E5AE4: Stack Eq_n fn000E5AE4(Stack Eq_n arg0)
+Eq_n fn000E5AE4(Eq_n arg0)
+{
+	&v15.u2->t0000.u0 = g_t140030.u2;
+	loc13 = v15;
+	v16 = arg0;
+	&v17.u2->t0000.u0 = v16.u2->t0000.u2;
+	loc2 = v17;
+	v18 = loc2;
+	v19 = 0x24;
+	v20 = (ui32 *) (v18.u2 + v19 / 112);
+	loc4 = v20;
+	v21 = loc4;
+	v22 = *v21;
+	loc5 = v22;
+	v23 = arg0;
+	v24 = loc5;
+	v25 = 0x01FF;
+	v26 = v24 & v25;
+	v27 = 0x0B00;
+	v28 = v26 + v27;
+}
 
-// Exception Unknown node Stack word32 fn000E5A05(Stack Eq_n arg0). when writing procedure.
-// 000E5A10: Stack word32 fn000E5A10(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+// 000E5B60: Stack Eq_n fn000E5B60(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000E5B60(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	&v33.u2->t0000.u0 = g_t140030.u2;
+	loc33 = v33;
+	v34 = arg0;
+	v35 = 0x18;
+	v36 = (up32 *) (v34.u2 + v35 / 112);
+	loc25 = v36;
+	v37 = arg0;
+	v38 = 0x1C;
+	v39 = (up32 *) (v37.u2 + v38 / 112);
+	loc26 = v39;
+	v40 = arg1;
+	loc3 = v40;
+	v41.u0 = 0x00;
+	loc4 = v41;
+	v42 = loc4;
+	v43 = arg2;
+	v44 = v42 < v43;
+	loc27 = v44;
+	v45 = loc27;
+	v46 = v45 == 0x00;
+	if (v46)
+		;
+	v47 = loc25;
+	v48 = *v47;
+	loc28 = v48;
+	v49 = loc26;
+	v50 = *v49;
+	loc29 = v50;
+	v51 = loc28;
+	v52 = loc29;
+	v53 = v51 < v52;
+	loc30 = v53;
+	v54 = loc30;
+	v55 = v54 == 0x00;
+	v55 = v55;
+}
 
-// Exception Unknown node Stack word32 fn000E5A10(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
-// 000E5AD9: Stack word32 fn000E5AD9(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E5AD9(Stack Eq_n arg0). when writing procedure.
-// 000E5AE4: Stack word32 fn000E5AE4(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E5AE4(Stack Eq_n arg0). when writing procedure.
-// 000E5B55: Stack word32 fn000E5B55(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E5B55(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E5B60: Stack word32 fn000E5B60(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E5B60(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
-// 000E5C83: Stack word32 fn000E5C83(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E5C83(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E5C8E: void fn000E5C8E(Stack Eq_n arg0)
+void fn000E5C8E(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7.u0 = 0x1970;
+	v6.u2->t0000.u2 = (struct Eq_n *) v7;
+	v8 = arg0;
+	v9 = 0x04;
+	&v10.u2->t0000.u0 = v8.u2 + v9 / 112;
+	loc1 = v10;
+	v11 = loc1;
+	fn0011B3FB(v11);
+}
 
-// Exception Unknown node void fn000E5C8E(Stack Eq_n arg0). when writing procedure.
 // 000E5CAB: void fn000E5CAB(Stack Eq_n arg0)
+void fn000E5CAB(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7.u0 = 0x1970;
+	v6.u2->t0000.u2 = (struct Eq_n *) v7;
+	v8 = arg0;
+	v9 = 0x04;
+	&v10.u2->t0000.u0 = v8.u2 + v9 / 112;
+	loc1 = v10;
+	v11 = loc1;
+	fn0011B3FB(v11);
+	v12 = arg0;
+	fn0011B709(v12);
+}
 
-// Exception Unknown node void fn000E5CAB(Stack Eq_n arg0). when writing procedure.
 // 000E5CCD: void fn000E5CCD(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E5CCD(Eq_n arg0, Eq_n arg1)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v4;
+}
 
-// Exception Unknown node void fn000E5CCD(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E5CD6: Stack word32 fn000E5CD6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E5CD6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E5CE1: void fn000E5CE1(Stack (ptr32 word64) arg0, Stack word32 arg1, Stack word64 arg2, Stack word32 arg3, Stack word32 arg4)
+void fn000E5CE1(word64 * arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v5;
+	v6 = arg0;
+	v7 = 0x00;
+	*v6 = v7;
+	v8 = arg0;
+	v9 = 0x08;
+	v10 = v8 + v9;
+	loc5 = v10;
+	v11 = loc5;
+	v12 = ~0x00;
+	*v11 = v12;
+}
 
-// Exception Unknown node void fn000E5CE1(Stack (ptr32 word64) arg0, Stack word32 arg1, Stack word64 arg2, Stack word32 arg3, Stack word32 arg4). when writing procedure.
 // 000E5CFF: void fn000E5CFF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000E5CFF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v5;
+	v6 = arg0;
+	v7.u1 = 0x00;
+	v6.u2->t0000.u1 = (word64) v7;
+	v8 = arg0;
+	v9 = 0x08;
+	v10 = (word64 *) (v8.u2 + v9 / 112);
+	loc4 = v10;
+	v11 = loc4;
+	v12 = ~0x00;
+	*v11 = v12;
+}
 
-// Exception Unknown node void fn000E5CFF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000E5D1D: Stack word32 fn000E5D1D(Stack Eq_n arg0)
+// 000E5D33: Stack Eq_n fn000E5D33(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000E5D33(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	&v22.u2->t0000.u0 = g_t140030.u2;
+	loc22 = v22;
+	v23 = arg0;
+	v24 = 0x0C;
+	v25 = (word32 **) (v23.u2 + v24 / 112);
+	loc13 = v25;
+	v26 = arg0;
+	v27 = 0x10;
+	v28 = (word32 **) (v26.u2 + v27 / 112);
+	loc14 = v28;
+	v29.u0 = 0x00;
+	loc3 = v29;
+	v30 = arg1;
+	loc4 = v30;
+	v31 = loc3;
+	v32 = arg2;
+	v33 = v31 < v32;
+	loc15 = v33;
+	v34 = loc15;
+	v35 = v34 == 0x00;
+	if (!v35)
+	{
+		v36 = loc13;
+		v37 = *v36;
+		loc16 = v37;
+		v38 = loc14;
+		v39 = *v38;
+		loc17 = v39;
+		v40 = loc16;
+		v41 = loc17;
+		v42 = v40 < v41;
+		loc18 = v42;
+		v43 = loc18;
+		if (!v43)
+		{
+			v52 = arg0;
+			&v53.u2->t0000.u0 = v52.u2->t0000.u2;
+			loc6 = v53;
+			v54 = loc6;
+			v55 = 0x28;
+			v56 = (ui32 *) (v54.u2 + v55 / 112);
+			loc7 = v56;
+			v57 = loc7;
+			v58 = *v57;
+			loc8 = v58;
+			v59 = arg0;
+			v60 = loc8;
+			v61 = 0x01FF;
+			v62 = v60 & v61;
+			v63 = 0x0B00;
+			v64 = v62 + v63;
+		}
+		else
+		{
+			v44 = loc16;
+			v45 = 0x04;
+			v46 = v44 + v45;
+			loc19 = v46;
+			v47 = loc13;
+			v48 = loc19;
+			*v47 = v48;
+			v49 = loc16;
+			v50 = *v49;
+			loc5 = v50;
+			v51 = loc5;
+			loc20 = v51;
+		}
+	}
+}
 
-// Exception Unknown node Stack word32 fn000E5D1D(Stack Eq_n arg0). when writing procedure.
-// 000E5D28: Stack word32 fn000E5D28(Stack Eq_n arg0)
+// 000E5E00: Stack Eq_n fn000E5E00(Stack Eq_n arg0)
+Eq_n fn000E5E00(Eq_n arg0)
+{
+	&v14.u2->t0000.u0 = g_t140030.u2;
+	loc12 = v14;
+	v15 = arg0;
+	&v16.u2->t0000.u0 = v15.u2->t0000.u2;
+	loc2 = v16;
+	v17 = loc2;
+	v18 = 0x24;
+	v19 = (ui32 *) (v17.u2 + v18 / 112);
+	loc3 = v19;
+	v20 = loc3;
+	v21 = *v20;
+	loc4 = v21;
+	v22 = arg0;
+	v23 = loc4;
+	v24 = 0x01FF;
+	v25 = v23 & v24;
+	v26 = 0x0B00;
+	v27 = v25 + v26;
+}
 
-// Exception Unknown node Stack word32 fn000E5D28(Stack Eq_n arg0). when writing procedure.
-// 000E5D33: Stack word32 fn000E5D33(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+// 000E5E74: Stack Eq_n fn000E5E74(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000E5E74(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	while (true)
+	{
+		&v31.u2->t0000.u0 = g_t140030.u2;
+		loc31 = v31;
+		v32 = arg0;
+		v33 = 0x18;
+		v34 = (union Eq_n *) (v32.u2 + v33 / 112);
+		loc23 = v34;
+		v35 = arg0;
+		v36 = 0x1C;
+		v37 = (union Eq_n *) (v35.u2 + v36 / 112);
+		loc24 = v37;
+		v38 = arg1;
+		loc3 = v38;
+		v39.u0 = 0x00;
+		loc4 = v39;
+		v40 = loc4;
+		v41 = arg2;
+		v42 = v40 < v41;
+		loc25 = v42;
+		v43 = loc25;
+		v44 = v43 == 0x00;
+		if (v44)
+			break;
+		v45 = loc23;
+		&v46.u2->t0000.u0 = v45->u2;
+		loc26 = v46;
+		v47 = loc24;
+		&v48.u2->t0000.u0 = v47->u2;
+		loc27 = v48;
+		v49 = loc26;
+		v50 = loc27;
+		v51 = v49 < v50;
+		loc28 = v51;
+		v52 = loc28;
+		if (!v52)
+		{
+			v93 = arg0;
+			&v94.u2->t0000.u0 = v93.u2->t0000.u2;
+			loc29 = v94;
+			v95 = loc29;
+			v96 = 0x34;
+			v97 = (ui32 *) (v95.u2 + v96 / 112);
+			loc6 = v97;
+			v98 = loc6;
+			v99 = *v98;
+			loc7 = v99;
+			v100 = loc3;
+			&v101.u2->t0000.u0 = v100.u2->t0000.u2;
+			loc8 = v101;
+			v102 = arg0;
+			v103 = loc8;
+			v104 = loc7;
+			v105 = 0x01FF;
+			v106 = v104 & v105;
+			v107 = 6944;
+			v108 = v106 + v107;
+		}
+		v53 = loc26;
+		loc13 = v53;
+		v54 = loc27;
+		loc14 = v54;
+		v55 = loc14;
+		v56 = loc13;
+		v57 = v55 - v56;
+		loc15 = v57;
+		v58 = loc15;
+		v59 = 0x02;
+		v60 = v58 >> v59;
+		loc16 = v60;
+		v61 = arg2;
+		v62 = loc4;
+		v63 = v61 - v62;
+		loc17 = v63;
+		v64 = loc17;
+		v65 = loc16;
+		v66 = v64 < v65;
+		loc18 = v66;
+		v67 = loc18;
+		if (v67)
+			v68 = loc17;
+		else
+			v69 = loc16;
+		loc5 = v69;
+		v70 = loc26;
+		v71 = loc3;
+		v72 = loc5;
+		v73 = fn000E5F91(v70, v71, v72);
+		v74 = loc23;
+		&v75.u2->t0000.u0 = v74->u2;
+		loc19 = v75;
+		v76 = loc19;
+		v77 = loc5;
+		v78 = 0x02;
+		v79 = v77 << v78;
+		&v80.u2->t0000.u0 = v76.u2 + v79 / 112;
+		loc20 = v80;
+		v81 = loc23;
+		v82 = loc20;
+		v81->u2 = (struct Eq_n *) v82;
+		v83 = loc3;
+		v84 = loc5;
+		v85 = 0x02;
+		v86 = v84 << v85;
+		&v87.u2->t0000.u0 = v83.u2 + v86 / 112;
+		loc21 = v87;
+		v88 = loc5;
+		v89 = loc4;
+		v90 = v88 + v89;
+		loc22 = v90;
+		v91 = loc21;
+		loc3 = v91;
+		v92 = loc22;
+		loc4 = v92;
+	}
+}
 
-// Exception Unknown node Stack word32 fn000E5D33(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
-// 000E5DF5: Stack word32 fn000E5DF5(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E5DF5(Stack Eq_n arg0). when writing procedure.
-// 000E5E00: Stack word32 fn000E5E00(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E5E00(Stack Eq_n arg0). when writing procedure.
-// 000E5E69: Stack word32 fn000E5E69(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E5E69(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E5E74: Stack word32 fn000E5E74(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E5E74(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
-// 000E5F86: Stack word32 fn000E5F86(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E5F86(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E5F91: Stack word32 fn000E5F91(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E5F91(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E5FBC: void fn000E5FBC(Stack Eq_n arg0)
+void fn000E5FBC(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x08;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+}
 
-// Exception Unknown node void fn000E5FBC(Stack Eq_n arg0). when writing procedure.
 // 000E5FD1: void fn000E5FD1(Stack Eq_n arg0)
+void fn000E5FD1(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x08;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+	v10 = arg0;
+	fn0011B709(v10);
+}
 
-// Exception Unknown node void fn000E5FD1(Stack Eq_n arg0). when writing procedure.
 // 000E5FEB: void fn000E5FEB(Stack Eq_n arg0)
+void fn000E5FEB(Eq_n arg0)
+{
+	&v9.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v9;
+	v10 = arg0;
+	&v11.u2->t0000.u0 = v10.u2->t0000.u2;
+	loc1 = v11;
+	v12 = loc1;
+	v13 = ~0x0B;
+	v14 = (word32 *) (v12.u2 + v13 / 112);
+	loc2 = v14;
+	v15 = loc2;
+	v16 = *v15;
+	loc3 = v16;
+	v17 = arg0;
+	v18 = loc3;
+	v19 = v17.u2 + v18 / 112;
+	loc4 = v19;
+	v20 = loc4;
+	v21 = 0x08;
+	v22 = v20 + v21;
+	loc5 = v22;
+	v23 = loc5;
+	fn000E5823(v23);
+}
 
-// Exception Unknown node void fn000E5FEB(Stack Eq_n arg0). when writing procedure.
 // 000E601C: void fn000E601C(Stack Eq_n arg0)
+void fn000E601C(Eq_n arg0)
+{
+	&v8.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v8;
+	v9 = arg0;
+	&v10.u2->t0000.u0 = v9.u2->t0000.u2;
+	loc1 = v10;
+	v11 = loc1;
+	v12 = ~0x0B;
+	v13 = (word32 *) (v11.u2 + v12 / 112);
+	loc2 = v13;
+	v14 = loc2;
+	v15 = *v14;
+	loc3 = v15;
+	v16 = arg0;
+	v17 = loc3;
+	&v18.u2->t0000.u0 = v16.u2 + v17 / 112;
+	loc4 = v18;
+	v19 = loc4;
+	fn000E5FD1(v19);
+}
 
-// Exception Unknown node void fn000E601C(Stack Eq_n arg0). when writing procedure.
 // 000E6046: void fn000E6046(Stack Eq_n arg0)
+void fn000E6046(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x08;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+}
 
-// Exception Unknown node void fn000E6046(Stack Eq_n arg0). when writing procedure.
 // 000E605B: void fn000E605B(Stack Eq_n arg0)
+void fn000E605B(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x08;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+	v10 = arg0;
+	fn0011B709(v10);
+}
 
-// Exception Unknown node void fn000E605B(Stack Eq_n arg0). when writing procedure.
 // 000E6075: void fn000E6075(Stack Eq_n arg0)
+void fn000E6075(Eq_n arg0)
+{
+	&v9.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v9;
+	v10 = arg0;
+	&v11.u2->t0000.u0 = v10.u2->t0000.u2;
+	loc1 = v11;
+	v12 = loc1;
+	v13 = ~0x0B;
+	v14 = (word32 *) (v12.u2 + v13 / 112);
+	loc2 = v14;
+	v15 = loc2;
+	v16 = *v15;
+	loc3 = v16;
+	v17 = arg0;
+	v18 = loc3;
+	v19 = v17.u2 + v18 / 112;
+	loc4 = v19;
+	v20 = loc4;
+	v21 = 0x08;
+	v22 = v20 + v21;
+	loc5 = v22;
+	v23 = loc5;
+	fn000E5823(v23);
+}
 
-// Exception Unknown node void fn000E6075(Stack Eq_n arg0). when writing procedure.
 // 000E60A6: void fn000E60A6(Stack Eq_n arg0)
+void fn000E60A6(Eq_n arg0)
+{
+	&v8.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v8;
+	v9 = arg0;
+	&v10.u2->t0000.u0 = v9.u2->t0000.u2;
+	loc1 = v10;
+	v11 = loc1;
+	v12 = ~0x0B;
+	v13 = (word32 *) (v11.u2 + v12 / 112);
+	loc2 = v13;
+	v14 = loc2;
+	v15 = *v14;
+	loc3 = v15;
+	v16 = arg0;
+	v17 = loc3;
+	&v18.u2->t0000.u0 = v16.u2 + v17 / 112;
+	loc4 = v18;
+	v19 = loc4;
+	fn000E605B(v19);
+}
 
-// Exception Unknown node void fn000E60A6(Stack Eq_n arg0). when writing procedure.
 // 000E60D0: void fn000E60D0(Stack Eq_n arg0)
+void fn000E60D0(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x04;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+}
 
-// Exception Unknown node void fn000E60D0(Stack Eq_n arg0). when writing procedure.
 // 000E60E5: void fn000E60E5(Stack Eq_n arg0)
+void fn000E60E5(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x04;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+	v10 = arg0;
+	fn0011B709(v10);
+}
 
-// Exception Unknown node void fn000E60E5(Stack Eq_n arg0). when writing procedure.
 // 000E60FF: void fn000E60FF(Stack Eq_n arg0)
+void fn000E60FF(Eq_n arg0)
+{
+	&v9.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v9;
+	v10 = arg0;
+	&v11.u2->t0000.u0 = v10.u2->t0000.u2;
+	loc1 = v11;
+	v12 = loc1;
+	v13 = ~0x0B;
+	v14 = (word32 *) (v12.u2 + v13 / 112);
+	loc2 = v14;
+	v15 = loc2;
+	v16 = *v15;
+	loc3 = v16;
+	v17 = arg0;
+	v18 = loc3;
+	v19 = v17.u2 + v18 / 112;
+	loc4 = v19;
+	v20 = loc4;
+	v21 = 0x04;
+	v22 = v20 + v21;
+	loc5 = v22;
+	v23 = loc5;
+	fn000E5823(v23);
+}
 
-// Exception Unknown node void fn000E60FF(Stack Eq_n arg0). when writing procedure.
 // 000E6130: void fn000E6130(Stack Eq_n arg0)
+void fn000E6130(Eq_n arg0)
+{
+	&v8.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v8;
+	v9 = arg0;
+	&v10.u2->t0000.u0 = v9.u2->t0000.u2;
+	loc1 = v10;
+	v11 = loc1;
+	v12 = ~0x0B;
+	v13 = (word32 *) (v11.u2 + v12 / 112);
+	loc2 = v13;
+	v14 = loc2;
+	v15 = *v14;
+	loc3 = v15;
+	v16 = arg0;
+	v17 = loc3;
+	&v18.u2->t0000.u0 = v16.u2 + v17 / 112;
+	loc4 = v18;
+	v19 = loc4;
+	fn000E60E5(v19);
+}
 
-// Exception Unknown node void fn000E6130(Stack Eq_n arg0). when writing procedure.
 // 000E615A: void fn000E615A(Stack Eq_n arg0)
+void fn000E615A(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x04;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+}
 
-// Exception Unknown node void fn000E615A(Stack Eq_n arg0). when writing procedure.
 // 000E616F: void fn000E616F(Stack Eq_n arg0)
+void fn000E616F(Eq_n arg0)
+{
+	&v5.u2->t0000.u0 = g_t140030.u2;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = 0x04;
+	&v8.u2->t0000.u0 = v6.u2 + v7 / 112;
+	loc1 = v8;
+	v9 = loc1;
+	fn000E5823(v9);
+	v10 = arg0;
+	fn0011B709(v10);
+}
 
-// Exception Unknown node void fn000E616F(Stack Eq_n arg0). when writing procedure.
 // 000E6189: void fn000E6189(Stack Eq_n arg0)
+void fn000E6189(Eq_n arg0)
+{
+	&v9.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v9;
+	v10 = arg0;
+	&v11.u2->t0000.u0 = v10.u2->t0000.u2;
+	loc1 = v11;
+	v12 = loc1;
+	v13 = ~0x0B;
+	v14 = (word32 *) (v12.u2 + v13 / 112);
+	loc2 = v14;
+	v15 = loc2;
+	v16 = *v15;
+	loc3 = v16;
+	v17 = arg0;
+	v18 = loc3;
+	v19 = v17.u2 + v18 / 112;
+	loc4 = v19;
+	v20 = loc4;
+	v21 = 0x04;
+	v22 = v20 + v21;
+	loc5 = v22;
+	v23 = loc5;
+	fn000E5823(v23);
+}
 
-// Exception Unknown node void fn000E6189(Stack Eq_n arg0). when writing procedure.
 // 000E61BA: void fn000E61BA(Stack Eq_n arg0)
+void fn000E61BA(Eq_n arg0)
+{
+	&v8.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v8;
+	v9 = arg0;
+	&v10.u2->t0000.u0 = v9.u2->t0000.u2;
+	loc1 = v10;
+	v11 = loc1;
+	v12 = ~0x0B;
+	v13 = (word32 *) (v11.u2 + v12 / 112);
+	loc2 = v13;
+	v14 = loc2;
+	v15 = *v14;
+	loc3 = v15;
+	v16 = arg0;
+	v17 = loc3;
+	&v18.u2->t0000.u0 = v16.u2 + v17 / 112;
+	loc4 = v18;
+	v19 = loc4;
+	fn000E616F(v19);
+}
 
-// Exception Unknown node void fn000E61BA(Stack Eq_n arg0). when writing procedure.
 // 000E61E4: void fn000E61E4(Stack Eq_n arg0)
+void fn000E61E4(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn0011D14E(v5);
+}
 
-// Exception Unknown node void fn000E61E4(Stack Eq_n arg0). when writing procedure.
 // 000E61F2: void fn000E61F2(Stack Eq_n arg0)
+void fn000E61F2(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn0011D14E(v5);
+	v6 = arg0;
+	fn0011B709(v6);
+}
 
-// Exception Unknown node void fn000E61F2(Stack Eq_n arg0). when writing procedure.
 // 000E6205: void fn000E6205(Stack Eq_n arg0)
+void fn000E6205(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn0011B709(v5);
+}
 
-// Exception Unknown node void fn000E6205(Stack Eq_n arg0). when writing procedure.
-// 000E6213: Stack word32 fn000E6213(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E6213(Stack Eq_n arg0). when writing procedure.
 // 000E6220: void fn000E6220(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E6220(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	&v7.u2->t0000.u0 = g_t140030.u2;
+	loc7 = v7;
+	v8 = arg2;
+	v9.u0 = 0x01;
+	v10 = v8 != v9;
+	loc3 = v10;
+	v11 = arg2;
+	v12.u0 = 0x0101;
+	v13 = v11 < v12;
+	loc4 = v13;
+	v14 = loc3;
+	v15 = loc4;
+	v16 = v14 & v15;
+	loc5 = v16;
+	v17 = loc5;
+	if (v17)
+	{
+		v18 = arg0;
+		v19 = arg1;
+		v20 = arg2;
+		fn0011D16F(v18, v19, v20);
+	}
+	else
+	{
+		v21 = arg0;
+		v22.u1 = 0x00;
+		v21.u2->t0000.u1 = (word64) v22;
+		v23 = arg0;
+		v24 = 0x08;
+		v25 = (word32 *) (v23.u2 + v24 / 112);
+		v26 = 0x00;
+		*v25 = v26;
+		v27 = arg0;
+		v28.u0 = 0x368A;
+		v29.u0 = 0x23;
+		fn0011B96D(v27, v28, v29);
+	}
+}
 
-// Exception Unknown node void fn000E6220(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E626A: void fn000E626A(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E626A(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node void fn000E626A(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E6375: Stack word32 fn000E6375()
-
-// Exception Unknown node Stack word32 fn000E6375(). when writing procedure.
 // 000E63C8: void fn000E63C8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E63C8(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E63C8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E641C: void fn000E641C(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E641C(Eq_n arg0, Eq_n arg1)
+{
+	&v14.u2->t0000.u0 = g_t140030.u2;
+	loc13 = v14;
+	v15 = arg0;
+	v16 = 0x18;
+	v17 = (union Eq_n *) (v15.u2 + v16 / 112);
+	loc3 = v17;
+	v18 = loc3;
+	v19 = arg1;
+	v18->u2 = (struct Eq_n *) v19;
+	v20 = arg1;
+	v21.u0 = 0x00;
+	v22 = v20 == v21;
+	loc11 = v22;
+	v23 = loc11;
+	v24 = 0x01;
+	v25 = v23 & v24;
+	loc4 = v25;
+	v26 = arg0;
+	v27 = 0x10;
+	v28 = (ui32 *) (v26.u2 + v27 / 112);
+	loc5 = v28;
+	v29 = loc5;
+	v30 = loc4;
+	*v29 = v30;
+	v31 = arg0;
+	v32 = 0x14;
+	v33 = (word32 *) (v31.u2 + v32 / 112);
+	loc6 = v33;
+	v34 = loc6;
+	v35 = 0x00;
+	*v34 = v35;
+	v36 = arg0;
+	v37 = 0x04;
+	v38 = (word32 *) (v36.u2 + v37 / 112);
+	loc7 = v38;
+	v39 = loc7;
+	v40 = 0x1002;
+	*v39 = v40;
+	v41 = arg0;
+	v42 = 0x0C;
+	v43 = (word32 *) (v41.u2 + v42 / 112);
+	loc8 = v43;
+	v44 = loc8;
+	v45 = 0x00;
+	*v44 = v45;
+	v46 = arg0;
+	v47 = 0x08;
+	v48 = (word32 *) (v46.u2 + v47 / 112);
+	loc9 = v48;
+	v49 = loc9;
+	v50 = 0x06;
+	*v49 = v50;
+	v51 = arg0;
+	v52 = 0x20;
+	v53 = (word64 *) (v51.u2 + v52 / 112);
+	loc10 = v53;
+	v54 = arg0;
+	v55 = 0x1C;
+	&v56.u2->t0000.u0 = v54.u2 + v55 / 112;
+	loc2 = v56;
+	v57 = loc10;
+	v58 = 0x00;
+	*v57 = v58;
+	v59 = loc10;
+	v60 = 0x08;
+	v61 = v59 + v60;
+	v62 = 0x00;
+	*v61 = v62;
+	v63 = loc10;
+	v64 = 0x10;
+	v65 = v63 + v64;
+	v66 = 0x00;
+	*v65 = v66;
+	v67 = loc10;
+	v68 = 0x18;
+	v69 = v67 + v68;
+	v70 = 0x00;
+	*v69 = v70;
+	v71 = loc10;
+	v72 = 0x20;
+	v73 = v71 + v72;
+	v74 = 0x00;
+	*v73 = v74;
+	v75 = loc2;
+	fn0011B395(v75);
+}
 
-// Exception Unknown node void fn000E641C(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E64CA: Stack word32 fn000E64CA(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E64CA(Stack Eq_n arg0). when writing procedure.
 // 000E6505: void fn000E6505(Stack Eq_n arg0)
+void fn000E6505(Eq_n arg0)
+{
+	&v6.u2->t0000.u0 = g_t140030.u2;
+	loc4 = v6;
+	v7 = arg0;
+	v8.u0 = 6448;
+	v7.u2->t0000.u2 = (struct Eq_n *) v8;
+	v9 = arg0;
+	v10 = 0x04;
+	&v11.u2->t0000.u0 = v9.u2 + v10 / 112;
+	loc1 = v11;
+	v12 = loc1;
+	fn0011B395(v12);
+	v13 = arg0;
+	v14 = 0x08;
+	v15 = (word64 *) (v13.u2 + v14 / 112);
+	loc2 = v15;
+	v16 = loc2;
+	v17 = 0x00;
+	*v16 = v17;
+	v18 = loc2;
+	v19 = 0x08;
+	v20 = v18 + v19;
+	v21 = 0x00;
+	*v20 = v21;
+	v22 = loc2;
+	v23 = 0x10;
+	v24 = v22 + v23;
+	v25 = 0x00;
+	*v24 = v25;
+}
 
-// Exception Unknown node void fn000E6505(Stack Eq_n arg0). when writing procedure.
 // 000E6544: void fn000E6544(Stack Eq_n arg0)
+void fn000E6544(Eq_n arg0)
+{
+	&v6.u2->t0000.u0 = g_t140030.u2;
+	loc4 = v6;
+	v7 = arg0;
+	v8.u0 = 0x1970;
+	v7.u2->t0000.u2 = (struct Eq_n *) v8;
+	v9 = arg0;
+	v10 = 0x04;
+	&v11.u2->t0000.u0 = v9.u2 + v10 / 112;
+	loc1 = v11;
+	v12 = loc1;
+	fn0011B395(v12);
+	v13 = arg0;
+	v14 = 0x08;
+	v15 = (word64 *) (v13.u2 + v14 / 112);
+	loc2 = v15;
+	v16 = loc2;
+	v17 = 0x00;
+	*v16 = v17;
+	v18 = loc2;
+	v19 = 0x08;
+	v20 = v18 + v19;
+	v21 = 0x00;
+	*v20 = v21;
+	v22 = loc2;
+	v23 = 0x10;
+	v24 = v22 + v23;
+	v25 = 0x00;
+	*v24 = v25;
+}
 
-// Exception Unknown node void fn000E6544(Stack Eq_n arg0). when writing procedure.
-// 000E6583: Stack word32 fn000E6583(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E6583(Stack Eq_n arg0). when writing procedure.
 // 000E6790: void fn000E6790(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E6790(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node void fn000E6790(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E680D: void fn000E680D(Stack Eq_n arg0)
+void fn000E680D(Eq_n arg0)
+{
+}
 
-// Exception Unknown node void fn000E680D(Stack Eq_n arg0). when writing procedure.
-// 000E69B2: void fn000E69B2(Stack Eq_n arg0)
-
-// Exception Unknown node void fn000E69B2(Stack Eq_n arg0). when writing procedure.
-// 000E69FB: Stack word32 fn000E69FB(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000E69FB(Stack Eq_n arg0). when writing procedure.
 // 000E6C08: void fn000E6C08(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E6C08(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node void fn000E6C08(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E6C85: void fn000E6C85(Stack Eq_n arg0)
+void fn000E6C85(Eq_n arg0)
+{
+}
 
-// Exception Unknown node void fn000E6C85(Stack Eq_n arg0). when writing procedure.
-// 000E6E2A: Stack word32 fn000E6E2A(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E6E2A(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E71A1: Stack word32 fn000E71A1(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E71A1(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E7404: void __GLOBAL__I_n()
+void __GLOBAL__I_n()
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc1 = v4;
+	v5.u0 = 0x00;
+	fn000E7427(v5);
+	v6 = 373;
+	v7 = 0x5C10;
+	v8 = g_dw140044;
+	v9 = ___cxa_atexit(v6, v7, v8);
+}
 
-// Exception Unknown node void __GLOBAL__I_n(). when writing procedure.
 // 000E741E: void __GLOBAL__sub_I_iostream_cpp()
+void __GLOBAL__sub_I_iostream_cpp()
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc1 = v4;
+}
 
-// Exception Unknown node void __GLOBAL__sub_I_iostream_cpp(). when writing procedure.
 // 000E7427: void fn000E7427(Stack Eq_n arg0)
+void fn000E7427(Eq_n arg0)
+{
+}
 
-// Exception Unknown node void fn000E7427(Stack Eq_n arg0). when writing procedure.
 // 000E7931: void fn000E7931(Stack Eq_n arg0)
+void fn000E7931(Eq_n arg0)
+{
+}
 
-// Exception Unknown node void fn000E7931(Stack Eq_n arg0). when writing procedure.
 // 000E79F6: void fn000E79F6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E79F6(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E79F6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E7ABF: void fn000E7ABF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E7ABF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E7ABF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E7B88: void fn000E7B88(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E7B88(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E7B88(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E7C82: void fn000E7C82(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E7C82(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E7C82(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E7D7C: void fn000E7D7C(Stack Eq_n arg0)
+void fn000E7D7C(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E5C8E(v5);
+	v6 = arg0;
+	fn0011B709(v6);
+}
 
-// Exception Unknown node void fn000E7D7C(Stack Eq_n arg0). when writing procedure.
 // 000E7D8F: void fn000E7D8F(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E7D8F(Eq_n arg0, Eq_n arg1)
+{
+	&v15.u2->t0000.u0 = g_t140030.u2;
+	loc14 = v15;
+	v16 = arg0;
+	&v17.u2->t0000.u0 = v16.u2->t0000.u2;
+	loc5 = v17;
+	v18 = loc5;
+	v19 = 0x18;
+	v20 = (ui32 *) (v18.u2 + v19 / 112);
+	loc6 = v20;
+	v21 = loc6;
+	v22 = *v21;
+	loc7 = v22;
+	v23 = arg0;
+	v24 = loc7;
+	v25 = 0x01FF;
+	v26 = v24 & v25;
+	v27 = 0x0B00;
+	v28 = v26 + v27;
+}
 
-// Exception Unknown node void fn000E7D8F(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E7E11: Stack word32 fn000E7E11(Stack Eq_n arg0)
+// 000E7E11: Stack Eq_n fn000E7E11(Stack Eq_n arg0)
+Eq_n fn000E7E11(Eq_n arg0)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E7E11(Stack Eq_n arg0). when writing procedure.
-// 000E7F2E: Stack word32 fn000E7F2E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+// 000E7F2E: Stack Eq_n fn000E7F2E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000E7F2E(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	&v22.u2->t0000.u0 = g_t140030.u2;
+	loc22 = v22;
+	v23 = arg0;
+	v24 = 44;
+	v25 = (int8 *) (v23.u2 + v24 / 112);
+	loc14 = v25;
+	v26 = loc14;
+	v27 = *v26;
+	v28 = (word32) v27;
+	loc15 = v28;
+	v29 = loc15;
+	v30 = 0x18;
+	v31 = v29 << v30;
+	v32 = 0x18;
+	v33 = v31 >> v32;
+	v34 = 0x00;
+	v35 = v33 == v34;
+	loc16 = v35;
+	v36 = loc16;
+	v36 = v36;
+}
 
-// Exception Unknown node Stack word32 fn000E7F2E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E8219: void fn000E8219(Stack Eq_n arg0)
+void fn000E8219(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E596B(v5);
+	v6 = arg0;
+	fn0011B709(v6);
+}
 
-// Exception Unknown node void fn000E8219(Stack Eq_n arg0). when writing procedure.
 // 000E822C: void fn000E822C(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E822C(Eq_n arg0, Eq_n arg1)
+{
+	&v15.u2->t0000.u0 = g_t140030.u2;
+	loc14 = v15;
+	v16 = arg0;
+	&v17.u2->t0000.u0 = v16.u2->t0000.u2;
+	loc5 = v17;
+	v18 = loc5;
+	v19 = 0x18;
+	v20 = (ui32 *) (v18.u2 + v19 / 112);
+	loc6 = v20;
+	v21 = loc6;
+	v22 = *v21;
+	loc7 = v22;
+	v23 = arg0;
+	v24 = loc7;
+	v25 = 0x01FF;
+	v26 = v24 & v25;
+	v27 = 0x0B00;
+	v28 = v26 + v27;
+}
 
-// Exception Unknown node void fn000E822C(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E82AE: Stack word32 fn000E82AE(Stack Eq_n arg0)
+// 000E82AE: Stack Eq_n fn000E82AE(Stack Eq_n arg0)
+Eq_n fn000E82AE(Eq_n arg0)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E82AE(Stack Eq_n arg0). when writing procedure.
-// 000E83CB: Stack word32 fn000E83CB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+// 000E83CB: Stack Eq_n fn000E83CB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000E83CB(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	&v23.u2->t0000.u0 = g_t140030.u2;
+	loc23 = v23;
+	v24 = arg0;
+	v25 = 44;
+	v26 = (int8 *) (v24.u2 + v25 / 112);
+	loc15 = v26;
+	v27 = loc15;
+	v28 = *v27;
+	v29 = (word32) v28;
+	loc16 = v29;
+	v30 = loc16;
+	v31 = 0x18;
+	v32 = v30 << v31;
+	v33 = 0x18;
+	v34 = v32 >> v33;
+	v35 = 0x00;
+	v36 = v34 == v35;
+	loc17 = v36;
+	v37 = loc17;
+	v37 = v37;
+}
 
-// Exception Unknown node Stack word32 fn000E83CB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E86C6: void fn000E86C6(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E86C6(Eq_n arg0, Eq_n arg1)
+{
+	&v20.u2->t0000.u0 = g_t140030.u2;
+	loc19 = v20;
+	v21 = arg1;
+	v22.u0 = 0x5378;
+	v23 = fn000EA9F7(v21, v22);
+	loc10 = v23;
+	v24 = arg0;
+	v25 = 0x24;
+	v26 = (union Eq_n *) (v24.u2 + v25 / 112);
+	loc11 = v26;
+	v27 = loc11;
+	v28 = loc10;
+	v27->u2 = (struct Eq_n *) v28;
+	v29 = loc10;
+	&v30.u2->t0000.u0 = v29.u2->t0000.u2;
+	loc12 = v30;
+	v31 = loc12;
+	v32 = 0x18;
+	v33 = (ui32 *) (v31.u2 + v32 / 112);
+	loc13 = v33;
+	v34 = loc13;
+	v35 = *v34;
+	loc14 = v35;
+	v36 = loc10;
+	v37 = loc14;
+	v38 = 0x01FF;
+	v39 = v37 & v38;
+	v40 = 0x0B00;
+	v41 = v39 + v40;
+}
 
-// Exception Unknown node void fn000E86C6(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E8778: void fn000E8778(Stack Eq_n arg0)
+void fn000E8778(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E5C8E(v5);
+	v6 = arg0;
+	fn0011B709(v6);
+}
 
-// Exception Unknown node void fn000E8778(Stack Eq_n arg0). when writing procedure.
-// 000E878B: Stack word32 fn000E878B(Stack Eq_n arg0)
+// 000E87B3: Stack Eq_n fn000E87B3(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E87B3(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E878B(Stack Eq_n arg0). when writing procedure.
-// 000E879F: Stack word32 fn000E879F(Stack Eq_n arg0)
+// 000E89AB: Stack Eq_n fn000E89AB(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E89AB(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E879F(Stack Eq_n arg0). when writing procedure.
-// 000E87B3: Stack word32 fn000E87B3(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E87B3(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E89AB: Stack word32 fn000E89AB(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E89AB(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E8CDC: void fn000E8CDC(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E8CDC(Eq_n arg0, Eq_n arg1)
+{
+	&v20.u2->t0000.u0 = g_t140030.u2;
+	loc19 = v20;
+	v21 = arg1;
+	v22.u0 = 0x5370;
+	v23 = fn000EA9F7(v21, v22);
+	loc10 = v23;
+	v24 = arg0;
+	v25 = 0x24;
+	v26 = (union Eq_n *) (v24.u2 + v25 / 112);
+	loc11 = v26;
+	v27 = loc11;
+	v28 = loc10;
+	v27->u2 = (struct Eq_n *) v28;
+	v29 = loc10;
+	&v30.u2->t0000.u0 = v29.u2->t0000.u2;
+	loc12 = v30;
+	v31 = loc12;
+	v32 = 0x18;
+	v33 = (ui32 *) (v31.u2 + v32 / 112);
+	loc13 = v33;
+	v34 = loc13;
+	v35 = *v34;
+	loc14 = v35;
+	v36 = loc10;
+	v37 = loc14;
+	v38 = 0x01FF;
+	v39 = v37 & v38;
+	v40 = 0x0B00;
+	v41 = v39 + v40;
+}
 
-// Exception Unknown node void fn000E8CDC(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E8D8E: void fn000E8D8E(Stack Eq_n arg0)
+void fn000E8D8E(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn000E596B(v5);
+	v6 = arg0;
+	fn0011B709(v6);
+}
 
-// Exception Unknown node void fn000E8D8E(Stack Eq_n arg0). when writing procedure.
-// 000E8DA1: Stack word32 fn000E8DA1(Stack Eq_n arg0)
+// 000E8DC9: Stack Eq_n fn000E8DC9(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E8DC9(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E8DA1(Stack Eq_n arg0). when writing procedure.
-// 000E8DB5: Stack word32 fn000E8DB5(Stack Eq_n arg0)
+// 000E8FC9: Stack Eq_n fn000E8FC9(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E8FC9(Eq_n arg0, Eq_n arg1)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E8DB5(Stack Eq_n arg0). when writing procedure.
-// 000E8DC9: Stack word32 fn000E8DC9(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E8DC9(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000E8FC9: Stack word32 fn000E8FC9(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000E8FC9(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000E92F6: void fn000E92F6(Stack Eq_n arg0)
+void fn000E92F6(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+}
 
-// Exception Unknown node void fn000E92F6(Stack Eq_n arg0). when writing procedure.
 // 000E92FF: void fn000E92FF(Stack Eq_n arg0)
+void fn000E92FF(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn0011B709(v5);
+}
 
-// Exception Unknown node void fn000E92FF(Stack Eq_n arg0). when writing procedure.
 // 000E930D: void fn000E930D(Stack Eq_n arg0)
+void fn000E930D(Eq_n arg0)
+{
+	&v8.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v8;
+	v9 = arg0;
+	v10.u0 = 0x00;
+	v11 = v9 == v10;
+	loc1 = v11;
+	v12 = loc1;
+	v13 = v12 == 0x00;
+	v13 = v13;
+}
 
-// Exception Unknown node void fn000E930D(Stack Eq_n arg0). when writing procedure.
-// 000E9347: Stack Eq_n fn000E9347(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
-
-// Exception Unknown node Stack Eq_n fn000E9347(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4). when writing procedure.
 // 000E9400: void fn000E9400(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000E9400(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc5 = v4;
+	v5 = arg0;
+	v6.u1 = 0x00;
+	v5.u2->t0000.u1 = (word64) v6;
+	v7 = arg0;
+	v8 = 0x08;
+	v9 = (word32 *) (v7.u2 + v8 / 112);
+	v10 = 0x00;
+	*v9 = v10;
+	v11 = arg0;
+	v12 = arg2;
+	v13 = arg3;
+	fn000E949A(v11, v12, v13);
+}
 
-// Exception Unknown node void fn000E9400(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000E9423: Stack word32 fn000E9423(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E9423(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E949A: void fn000E949A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E949A(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E949A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E958C: void fn000E958C(Stack Eq_n arg0)
+void fn000E958C(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+}
 
-// Exception Unknown node void fn000E958C(Stack Eq_n arg0). when writing procedure.
 // 000E9595: void fn000E9595(Stack Eq_n arg0)
+void fn000E9595(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn0011B709(v5);
+}
 
-// Exception Unknown node void fn000E9595(Stack Eq_n arg0). when writing procedure.
-// 000E95A3: Stack Eq_n fn000E95A3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
-
-// Exception Unknown node Stack Eq_n fn000E95A3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4). when writing procedure.
 // 000E9644: void fn000E9644(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000E9644(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc5 = v4;
+	v5 = arg0;
+	v6.u1 = 0x00;
+	v5.u2->t0000.u1 = (word64) v6;
+	v7 = arg0;
+	v8 = 0x08;
+	v9 = (word32 *) (v7.u2 + v8 / 112);
+	v10 = 0x00;
+	*v9 = v10;
+	v11 = arg0;
+	v12 = arg2;
+	v13 = arg3;
+	fn000E96D4(v11, v12, v13);
+}
 
-// Exception Unknown node void fn000E9644(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000E9667: Stack word32 fn000E9667(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack word32 fn000E9667(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E96D4: void fn000E96D4(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn000E96D4(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
 
-// Exception Unknown node void fn000E96D4(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000E9814: void fn000E9814(Stack Eq_n arg0)
+void fn000E9814(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+}
 
-// Exception Unknown node void fn000E9814(Stack Eq_n arg0). when writing procedure.
 // 000E981D: void fn000E981D(Stack Eq_n arg0)
+void fn000E981D(Eq_n arg0)
+{
+	&v4.u2->t0000.u0 = g_t140030.u2;
+	loc2 = v4;
+	v5 = arg0;
+	fn0011B709(v5);
+}
 
-// Exception Unknown node void fn000E981D(Stack Eq_n arg0). when writing procedure.
-// 000E982B: Stack word32 fn000E982B(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+// 000E982B: Stack (ptr32 word32) fn000E982B(Stack (ptr32 (ptr32 word32)) arg0, Stack (ptr32 word32) arg1, Stack (ptr32 word32) arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5)
+word32 * fn000E982B(word32 ** arg0, word32 * arg1, word32 * arg2, word32 arg3, word32 arg4, word32 arg5)
+{
+}
 
-// Exception Unknown node Stack word32 fn000E982B(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9B8F: Stack word32 fn000E9B8F(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9B8F(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9C0B: Stack word32 fn000E9C0B(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9C0B(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9C87: Stack word32 fn000E9C87(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9C87(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9D03: Stack word32 fn000E9D03(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9D03(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9D7F: Stack word32 fn000E9D7F(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9D7F(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9DFB: Stack word32 fn000E9DFB(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9DFB(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9E77: Stack word32 fn000E9E77(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9E77(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9EF3: Stack word32 fn000E9EF3(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9EF3(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9F6F: Stack word32 fn000E9F6F(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9F6F(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000E9FEB: Stack word32 fn000E9FEB(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-
-// Exception Unknown node Stack word32 fn000E9FEB(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5). when writing procedure.
-// 000EA9F7: Stack word32 fn000EA9F7(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000EA9F7(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000EAD0D: Stack word32 fn000EAD0D()
-
-// Exception Unknown node Stack word32 fn000EAD0D(). when writing procedure.
-// 000EAD98: Stack word32 fn000EAD98(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-
-// Exception Unknown node Stack word32 fn000EAD98(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000EAE12: Stack word32 fn000EAE12(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000EAE12(Stack Eq_n arg0). when writing procedure.
-// 000EAEAB: Stack word32 fn000EAEAB(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000EAEAB(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
-// 000EAEFC: Stack word32 fn000EAEFC(Stack Eq_n arg0, Stack Eq_n arg1)
-
-// Exception Unknown node Stack word32 fn000EAEFC(Stack Eq_n arg0, Stack Eq_n arg1). when writing procedure.
 // 000EAF62: void fn000EAF62(Stack Eq_n arg0)
+void fn000EAF62(Eq_n arg0)
+{
+	&v8.u2->t0000.u0 = g_t140030.u2;
+	loc6 = v8;
+	v9 = (word32 *) 0x4C7C;
+	v10 = *v9;
+	loc1 = v10;
+	v11 = loc1;
+	v12 = 0x01;
+	v13 = v11 + v12;
+	loc2 = v13;
+	v14 = (word32 *) 0x4C7C;
+	v15 = loc2;
+	*v14 = v15;
+	v16 = loc1;
+	v17 = 0x01;
+	v18 = v16 + v17;
+	loc3 = v18;
+	v19 = arg0;
+	v20 = 0x04;
+	v21 = (word32 *) (v19.u2 + v20 / 112);
+	loc4 = v21;
+	v22 = loc4;
+	v23 = loc3;
+	*v22 = v23;
+}
 
-// Exception Unknown node void fn000EAF62(Stack Eq_n arg0). when writing procedure.
 // 000EAF99: void fn000EAF99(Stack Eq_n arg0)
+void fn000EAF99(Eq_n arg0)
+{
+	&v20.u2->t0000.u0 = g_t140030.u2;
+	loc18 = v20;
+	v21 = arg0;
+	&v22.u2->t0000.u0 = v21.u2->t0000.u2;
+	loc5 = v22;
+	v23 = loc5;
+	&v24.u2->t0000.u0 = v23.u2->t0000.u2;
+	loc9 = v24;
+	v25 = loc9;
+	v26 = 0x04;
+	v27 = (ui32 *) (v25.u2 + v26 / 112);
+	loc1 = v27;
+	v28 = loc1;
+	v29 = *v28;
+	loc3 = v29;
+	v30 = loc9;
+	v31 = 0x08;
+	v32 = (int32 *) (v30.u2 + v31 / 112);
+	loc2 = v32;
+	v33 = loc2;
+	v34 = *v33;
+	loc4 = v34;
+	v35 = loc9;
+	&v36.u2->t0000.u0 = v35.u2->t0000.u2;
+	loc10 = v36;
+	v37 = loc4;
+	v38 = 0x01;
+	v39 = v37 >> v38;
+	loc11 = v39;
+	v40 = loc10;
+	v41 = loc11;
+	v42 = (word32 *) (v40.u2 + v41 / 112);
+	loc12 = v42;
+	v43 = loc4;
+	v44 = 0x01;
+	v45 = v43 & v44;
+	loc13 = v45;
+	v46 = loc13;
+	v47 = 0x00;
+	v48 = v46 == v47;
+	loc14 = v48;
+	v49 = loc14;
+	if (v49)
+	{
+		v50 = loc3;
+		loc7 = v50;
+		v51 = loc7;
+		loc8 = v51;
+	}
+	else
+	{
+		v52 = loc12;
+		v53 = *v52;
+		loc15 = v53;
+		v54 = loc15;
+		v55 = loc3;
+		v56 = v54 + v55;
+		loc16 = v56;
+		v57 = loc16;
+		v58 = *v57;
+		loc6 = v58;
+		v59 = loc6;
+		loc8 = v59;
+	}
+	v60 = loc12;
+	v61 = loc8;
+	v62 = 0x01FF;
+	v63 = v61 & v62;
+	v64 = 0x0500;
+	v65 = v63 + v64;
+}
 
-// Exception Unknown node void fn000EAF99(Stack Eq_n arg0). when writing procedure.
 // 000EB941: void fn000EB941(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+void fn000EB941(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+}
 
-// Exception Unknown node void fn000EB941(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4). when writing procedure.
-// 000EBF56: Stack real64 fn000EBF56(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack real64 fn000EBF56(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
 // 000EC01D: void fn000EC01D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000EC01D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
 
-// Exception Unknown node void fn000EC01D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000ECB14: Stack real64 fn000ECB14(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-
-// Exception Unknown node Stack real64 fn000ECB14(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2). when writing procedure.
-// 000ED4F8: Stack real32 fn000ED4F8(Stack Eq_n arg0, Stack Eq_n arg1, Stack (ptr32 word32) arg2)
-
-// Exception Unknown node Stack real32 fn000ED4F8(Stack Eq_n arg0, Stack Eq_n arg1, Stack (ptr32 word32) arg2). when writing procedure.
-// 000EDE83: Stack word32 fn000EDE83(Stack Eq_n arg0)
-
-// Exception Unknown node Stack word32 fn000EDE83(Stack Eq_n arg0). when writing procedure.
 // 000EDF31: void fn000EDF31(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000EDF31(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
 
-// Exception Unknown node void fn000EDF31(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.
-// 000EE0A5: Stack word64 fn000EE0A5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-
-// Exception Unknown node Stack word64 fn000EE0A5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3). when writing procedure.

@@ -5,5 +5,5 @@
 #include "nbody.h"
 
 struct Eq_n * g_ptr100000 = &g_t230001; // 00100000
-word32 g_dw100008 = 0x00; // 00100008
+ptr32 g_ptr100008 = 0x00; // 00100008
 word32 g_dw10000C = 0x00; // 0010000C

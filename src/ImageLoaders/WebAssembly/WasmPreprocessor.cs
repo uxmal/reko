@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -65,9 +67,28 @@ namespace Reko.ImageLoaders.WebAssembly
                     var procBuilder = new WasmProcedureBuilder(func, arch, wasmFile, funidxToProc, globidxToAddr);
                     var proc = procBuilder.GenerateProcedure();
                     program.Procedures.Add(proc.EntryAddress, proc);
-                } catch
+                    program.CallGraph.AddProcedure(proc);
+                } 
+                catch
                 {
 
+                }
+            }
+            CreateCallGraph(program);
+        }
+
+        private void CreateCallGraph(Program program)
+        {
+            foreach (var proc in program.Procedures.Values)
+            {
+                foreach (var stm in proc.Statements)
+                {
+                    if (stm.Instruction is CallInstruction call &&
+                        call.Callee is ProcedureConstant pc &&
+                        pc.Procedure is Procedure procCallee)
+                    {
+                        program.CallGraph.AddEdge(stm, procCallee);
+                    }
                 }
             }
         }

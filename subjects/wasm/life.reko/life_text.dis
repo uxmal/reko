@@ -1,114 +1,60 @@
-// count_neighbors
-// Return size: 0
 word32 count_neighbors(word32 arg0, word32 arg1, word32 arg2)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0000:[0..31] Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut:
+// Trashed: stack
+// Preserved:
 count_neighbors_entry:
-	// succ:  l000C0000
 l000C0000:
-	v4 = arg0
-	v5 = 0x2710<32>
-	v6 = v4 * v5
-	v7 = 0x10<32>
-	v8 = v6 + v7
-	arg0 = v8
-	v9 = arg2
-	v10 = 0xFFFFFFFF<32>
-	v11 = v9 + v10
-	v12 = 0x64<32>
-	v13 = v11 %s v12
-	v14 = 0x64<32>
-	v15 = v13 * v14
-	v16 = v8 + v15
-	loc3 = v16
-	v17 = arg1
-	v18 = 0xFFFFFFFF<32>
-	v19 = v17 + v18
-	v20 = 0x64<32>
-	v21 = v19 %s v20
-	loc4 = v21
-	v22 = v16 + v21
-	v23 = Mem0[v22:byte]
-	v24 = CONVERT(v23, byte, word32)
-	v25 = loc3
-	v26 = arg1
-	v27 = 1<32>
-	v28 = v26 + v27
-	v29 = 0x64<32>
-	v30 = v28 %s v29
-	arg1 = v30
-	v31 = v25 + v30
-	v32 = Mem0[v31:byte]
-	v33 = CONVERT(v32, byte, word32)
-	v34 = v24 + v33
-	v35 = arg0
-	v36 = arg2
-	v37 = 1<32>
-	v38 = v36 + v37
-	v39 = 0x64<32>
-	v40 = v38 %s v39
-	v41 = 0x64<32>
-	v42 = v40 * v41
-	v43 = v35 + v42
-	arg2 = v43
-	v44 = loc4
-	v45 = v43 + v44
-	v46 = Mem0[v45:byte]
-	v47 = CONVERT(v46, byte, word32)
-	v48 = v34 + v47
-	v49 = arg2
-	v50 = arg1
-	v51 = v49 + v50
-	v52 = Mem0[v51:byte]
-	v53 = CONVERT(v52, byte, word32)
-	v54 = v48 + v53
-	return v54
-	// succ:  count_neighbors_exit
+	return <invalid>
 count_neighbors_exit:
 
 
-// update_gen
-// Return size: 0
 void update_gen(word32 arg0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0000:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
 update_gen_entry:
-	// succ:  l000C0060
+	word32 arg0_1 = arg0
 l000C0060:
-	v15 = arg0
-	v16 = 0x2710<32>
-	v17 = v15 * v16
-	loc6 = v17
-	v18 = 0x10<32>
-	v19 = v17 + v18
-	loc1 = v19
-	v20 = 1<32>
-	v21 = arg0
-	v22 = v20 - v21
-	v23 = 0x2710<32>
-	v24 = v22 * v23
-	v25 = 0x10<32>
-	v26 = v24 + v25
-	loc2 = v26
-	v27 = 0<32>
-	arg0 = v27
-	v28 = 0<32>
-	v29 = arg0
-	v30 = 1<32>
-	v31 = v29 + v30
-	loc4 = v31
-	v32 = loc4
-	v33 = 0x64<32>
-	v34 = v32 == v33
-	loc7 = v34
+	word32 v26_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
+	word32 loc7_27 = false
+	word32 loc13_105 = 0<32>
+l000C00AC:
+	arg0_1 = 0<32>
+	word32 v86_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
+	branch v86_91 == 3<32> l000C011F
+l000C011F:
+	loc13_105 = 1<32>
+l000C010C:
+	branch v86_91 != 2<32> l000C0124
+l000C0113:
+	loc13_105 = CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x10<32>:byte], byte, word32)
+l000C0124:
+	Mem114[v26_15:byte] = SLICE(loc13_105, byte, 0)
+	branch true l000C0060
+l000C0137:
+	arg0_1 = 1<32>
+	branch loc7_27 == 0<32> l000C0060
+l000C0151:
+	return
 update_gen_exit:
 
 
-// main
-// Return size: 0
 word32 main()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: stack
+// Preserved:
 main_entry:
-	// succ:  l000C0153
 l000C0153:
-	v2 = 0x2A<32>
-	return v2
-	// succ:  main_exit
+	return <invalid>
 main_exit:
 
 

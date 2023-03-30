@@ -68,6 +68,10 @@ namespace Reko.Core.Intrinsics
             .GenericTypes("TData", "TBit")
             .Param("TData").Param("TBit")
             .Returns("TData");
+        public static readonly IntrinsicProcedure ReinterpretCast = new IntrinsicBuilder("reinterpret_cast", false)
+            .GenericTypes("T")
+            .Param(new UnknownType())
+            .Returns("T");
         public static readonly IntrinsicProcedure ReverseBits = IntrinsicBuilder.GenericUnary("__reverse_bits");
         public static readonly IntrinsicProcedure SetBit = new IntrinsicBuilder("__set_bit", false)
             .GenericTypes("TData", "TBit")

@@ -5,5 +5,8 @@
 #include "sample.h"
 
 // 000D0000: void hello()
+void hello()
+{
+	puts(0x10);
+}
 
-// Exception Unknown node void hello(). when writing procedure.

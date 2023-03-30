@@ -19,7 +19,6 @@
 #endregion
 
 using NUnit.Framework;
-using ReactiveUI;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
@@ -29,8 +28,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.ImageLoaders.WebAssembly
 {
@@ -690,6 +687,267 @@ fn00000_exit:
                 58,2,4, // i32.store8
                 11
             }));
+        }
+
+        [Test]
+        public void Waspb_Select()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = 1<32>
+	v3 = 0xFFFFFFFF<32>
+	v4 = param0
+	v5 = v4 == 0<32>
+	v6 = v5 ? v2 : v3
+	return v6
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 127);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[] {
+                    65,1,   // i32.const
+                    65,127, // i32.const
+                    32,0,   // local.get
+                    69,     // i32.eqz
+                    27,     // select
+                    11
+                }));
+        }
+
+        [Test]
+        [Ignore("for now")]
+        public void Waspb_call_indirect_with_float_constant()
+        {
+            Given_FuncType(new[] { 127, 125 }, 127);
+            Given_FuncType(new[] { 127 }, 127);
+            //Given_Table(new[]
+            //{
+            //    1
+            //});
+            Given_ImportFunc("env", "extfun", 1);
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = param0
+	v3 = 1<32>
+	v4 = v2 + v3
+	v5 = 3.14F
+	v6 = extfun(v5)
+	return v6
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            RunTest(sExp, FnDef(
+                1,
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+                    32,0,           // get.local 0
+                    65,1,           // i32.const 1
+                    106,            // i32.add
+                    67,0xC3,0xF5,0x48,0x40, // f32.const 3.14F
+                    16,0,           // call 0
+                    11              // end
+                }));
+        }
+        /*
+         
+         (module
+ (type $FUNCSIG$ii (func (param i32) (result i32)))
+ (type $FUNCSIG$v (func))
+ (import "env" "foo" (func $foo (param i32) (result i32)))
+ (import "env" "bar" (func $bar (param i32) (result i32)))
+ (table 3 3 anyfunc)
+ (elem (i32.const 0) $__wasm_nullptr $__importThunk_foo $__importThunk_bar)
+ (memory $0 1)
+ (data (i32.const 12) "\01\00\00\00\02\00\00\00")
+ (export "memory" (memory $0))
+ (export "choice" (func $choice))
+ (func $choice (; 2 ;) (param $0 i32) (result i32)
+  (call_indirect (type $FUNCSIG$ii)
+   (get_local $0)
+   (i32.load
+    (i32.add
+     (i32.shl
+      (get_local $0)
+      (i32.const 2)
+     )
+     (i32.const 12)
+    )
+   )
+  )
+ )
+ (func $__wasm_nullptr (; 3 ;) (type $FUNCSIG$v)
+  (unreachable)
+ )
+ (func $__importThunk_foo (; 4 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+  (call $foo
+   (get_local $0)
+  )
+ )
+ (func $__importThunk_bar (; 5 ;) (type $FUNCSIG$ii) (param $0 i32) (result i32)
+  (call $bar
+   (get_local $0)
+  )
+ )
+)
+
+
+0,97,115,109,1,0,0,0,
+1,9,
+    2,
+        96,1,127,1,127,
+        96,0,0,
+2,21,
+    2,
+        3,101,110,118,3,102,111,111,0,0,
+        3,101,110,118,3,98,97,114,0,0,
+3,5,
+    4,0,1,0,0,
+4,5,        // table
+    1,112,1,3,3,
+5,3,
+    1,0,1,
+7,19,
+    2,
+        6,109,101,109,111,114,121,2,0,
+        6,99,104,111,105,99,101,0,2,
+9,9,
+    1,
+        0,65,0,11,3,3,4,5,
+10,38,
+    4,
+        18,
+            0,
+            32,0,
+            32,0,
+            65,2,
+            116,
+            65,12,
+            106,
+            40,2,0,
+            17,0,0,
+            11,
+    3,
+        0,
+            0,
+            11,
+    6,
+        0,
+        32,0,
+        16,0,
+        11,
+    6,
+        0,
+        32,0,
+        16,1,
+        11,
+11,14,
+    1,0,65,12,11,8,1,0,0,0,2,0,0,0]);
+        */
+
+         [Test]
+         public void Waspb_Switch()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0, word32 param1, word32 param2)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = param0
+	v3 = 4<32>
+	v4 = v2 >u v3
+	branch v4 l0000001F
+	// succ:  l0000000F l0000001F
+l0000000F:
+	v5 = param0
+	switch (v5) { l0000001B l0000001B l00000023 l0000002A l00000031 }
+	// succ:  l0000001B l0000001B l00000023 l0000002A l00000031
+l0000001B:
+	v6 = param0
+	return v6
+	// succ:  fn00000_exit
+l0000001F:
+	v7 = 0xFFFFFFFF<32>
+	return v7
+	// succ:  fn00000_exit
+l00000023:
+	v8 = param2
+	v9 = param1
+	v10 = v8 + v9
+	return v10
+	// succ:  fn00000_exit
+l0000002A:
+	v11 = param1
+	v12 = param2
+	v13 = v11 - v12
+	return v13
+	// succ:  fn00000_exit
+l00000031:
+	v14 = param1
+	v15 = param2
+	v16 = v14 - v15
+	v17 = param1
+	v18 = v16 * v17
+	return v18
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127, 127, 127 }, 127);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                new byte[]
+                {
+2,64,                       // block
+    2,64,                   // block
+        2,64,               // block
+            2,64,           // block
+                32,0,       // local.get
+                65,4,       // i32.const
+                75,         // i32.gt_u
+                13,0,       // br_if 0
+                2,64,       // block
+                    32,0,   // local.get
+                    14,5, 0,0,2,3,4, 1, // br_table
+                11,         // end
+                32,0,
+                15,     // return param0;
+            11,
+            65,127,     // return -1
+            15,
+        11,
+        32,2,           // return a + b
+        32,1,
+        106,
+        15,
+    11,
+    32,1,
+    32,2,
+    107,                // return a - b
+    15,
+11,
+32,1,
+32,2,
+107,            // (A - B) * A
+32,1,
+108,
+11 }));
+
         }
     }
 }

@@ -4,16 +4,6 @@
 
 #include "hello.h"
 
-int8 g_b4388; // 00004388
-int8 g_b4390; // 00004390
-int8 g_b4398; // 00004398
-int8 g_b43A0; // 000043A0
-int8 g_b43A8; // 000043A8
-int8 g_b43B0; // 000043B0
-int8 g_b43E8; // 000043E8
-int8 g_b43F0; // 000043F0
-int8 g_b43F8; // 000043F8
-int8 g_b4400; // 00004400
 word32 g_dw4438; // 00004438
 word32 g_dw443C; // 0000443C
 word32 g_dw4440; // 00004440
@@ -70,11 +60,7 @@ word32 g_dw4560; // 00004560
 word32 g_dw4564; // 00004564
 word32 g_dw4568; // 00004568
 word32 g_dw456C; // 0000456C
-int8 g_b4570; // 00004570
-int8 g_b4618; // 00004618
 Eq_n g_t4620;
-Eq_n g_t4674;
-word32 g_dw4854; // 00004854
 word32 g_dw4858; // 00004858
 word32 g_dw485C; // 0000485C
 word32 g_dw4860; // 00004860
@@ -109,17 +95,4 @@ word32 g_dw4AAC; // 00004AAC
 word32 g_dw4AB0; // 00004AB0
 word32 g_dw4AF8; // 00004AF8
 word32 g_dw4AFC; // 00004AFC
-word32 g_dw4C78; // 00004C78
 word32 g_dw4C7C; // 00004C7C
-word64 g_qw4CB8; // 00004CB8
-word64 g_qw4CC4; // 00004CC4
-word64 g_qw4CD0; // 00004CD0
-word64 g_qw4CDC; // 00004CDC
-word64 g_qw4FE4; // 00004FE4
-word64 g_qw4FF0; // 00004FF0
-word64 g_qw4FFC; // 00004FFC
-word64 g_qw5008; // 00005008
-word32 g_dw5390; // 00005390
-Eq_n g_t5398;
-word32 g_dw53F0; // 000053F0
-word32 g_dw53F4; // 000053F4
