@@ -46,7 +46,7 @@ namespace Reko.Core
         /// <summary>
         /// Gets a value indicating whether this memory range is valid.
         /// </summary>
-        public bool IsValid => this != Empty; 
+        public bool IsValid => this.Begin <= this.End; 
 
         public static bool operator == (AddressRange left, AddressRange right)
         {
@@ -68,6 +68,6 @@ namespace Reko.Core
         /// <summary>
         /// Gets the empty/null memory range.
         /// </summary>
-        public static AddressRange Empty { get; } = new AddressRange(Address.Ptr32(0), Address.Ptr32(0)); 
+        public static AddressRange Empty { get; } = new AddressRange(Address.Ptr32(1), Address.Ptr32(0)); 
     }
 }

@@ -111,7 +111,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public AddressRange GetAddressRange()
         {
-            if (SelectedAddress == null || addrAnchor == null)
+            if (SelectedAddress is null || addrAnchor is null)
             {
                 return AddressRange.Empty;
             }

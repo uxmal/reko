@@ -366,8 +366,7 @@ namespace Reko.UserInterfaces.WindowsForms
             }
             else if (control.DisassemblyView.Focused)
             {
-                var addr = control.DisassemblyView.SelectedObject as Address;
-                if (addr is null)
+                if (control.DisassemblyView.SelectedObject is not Address addr)
                     return false;
                 addrRange = new AddressRange(addr, addr);
                 return true;
