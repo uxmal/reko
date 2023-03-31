@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -126,6 +127,11 @@ namespace Reko.Arch.Padauk
                 if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
             }
             return s.ToString();
+        }
+
+        public override void LoadUserOptions(Dictionary<string, object>? options)
+        {
+            this.Options = options ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)

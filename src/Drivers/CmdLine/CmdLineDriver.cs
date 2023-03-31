@@ -318,19 +318,19 @@ namespace Reko.CmdLine
         {
             try
             {
+                var arch = config.GetArchitecture((string) pArgs["--arch"]);
+                if (arch is null)
+                    throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
                 Dictionary<string, object> archOptions;
                 if (pArgs.TryGetValue("--arch-options", out var oArchOptions))
                 {
                     archOptions = (Dictionary<string, object>) oArchOptions;
+                    arch.LoadUserOptions(archOptions);
                 }
                 else
                 {
-                    archOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                    archOptions = new Dictionary<string,object>(StringComparer.OrdinalIgnoreCase);
                 }
-                var arch = config.GetArchitecture((string) pArgs["--arch"], archOptions);
-                if (arch is null)
-                    throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
-
                 pArgs.TryGetValue("--env", out object sEnv);
 
                 if (!pArgs.TryGetValue("--base", out var oAddrBase))

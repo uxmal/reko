@@ -60,7 +60,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Byte;
             this.Options = null!;
-            LoadUserOptions(options);
         }
 
         public PICArchitecture(IServiceProvider services, Dictionary<string, object> options)
