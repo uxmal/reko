@@ -1464,31 +1464,31 @@ fn001016A1: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l001016BA' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010183D: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00101856' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001018CD: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001018E6' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010195D: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00101976' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00101A12: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00101A2B' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00101A8D: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn00101E90: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -1496,98 +1496,98 @@ fn00102734: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0010274D' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00102A6A: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00102A86' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00104239: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00104252' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001042F6: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010430F' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001043BA: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001043D4' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00104EDE: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00104EF7' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00104F75: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00104F8E' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00105005: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010501E' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010509C: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001050B5' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010512D: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00105146' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001051C4: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001051DD' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00105254: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn00105640: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00105659' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001057E3: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001057FC' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00105873: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010588C' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00105903: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010591C' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001059B8: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001059D1' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00105A33: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn00105E65: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
@@ -1595,302 +1595,302 @@ fn00106686: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l001066A1' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn001067BD: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001067D6' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00106868: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001068CB' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010690D: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00106928' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00106A39: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00106A54' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010B494: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010B4B0' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010BEC2: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010BF5A' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0010C004: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0010C0A3' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00110427: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00110443' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00110E8A: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00110F29' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00111F27: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00111F43' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00114190: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001141AC' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00117F62: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00117FD5' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00119357: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001193CF' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011948C: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l001194DC' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn00119EA4: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011A6FD' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011A71F: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011A7A2' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011AC1D: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011ACC1' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011B1AE: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011B1C9' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011B43F: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0011B49F: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011B5A5' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011B96D: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011B984' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011BA32: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011BA49' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011BAF7: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011BB29' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011BC43: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011BC61' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011C22A: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011C248' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011C4AA: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011C5AF' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011C5CF: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011C5EA' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011C6AF: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011C6CA' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011C7BA: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011C7F3' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011C92E: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011C950' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011CDB7: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011CDD9' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011CF35: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D03A' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D084: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D09D' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D1A0: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D1B9' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D441: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D45A' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D654: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D66D' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D6BF: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D6DA' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D812: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D83F' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D842: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D89F' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D98B: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011D9B6' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011D9B9: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011DA66' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011DA6B: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011DBBA' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011DBBE: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011DBD9' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011DEA7: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011DF04' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011E21F: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011E252' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011E2BD: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011E2D6' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011E416: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011E465' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011E4F7: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011E69F' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0011EB84: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011EC45' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 ___cxa_can_catch: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0011EEDF' was not present in the dictionary.
        at Reko.Structure.RegionGraphBuilder.Build() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionGraphBuilder.cs:line 76
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 128
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 
 === PE\x86\import-ordinals\import-ordinals
@@ -2122,8 +2122,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -2391,7 +2391,7 @@ fn0001B2AC: error: An error occurred while rewriting procedure to high-level lan
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 000171BC: warning: Expected sizes of arrays to have been determined by now
@@ -2985,8 +2985,6 @@ Error: Unable to load metadata file windows32.xml.
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 60
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 154
 
-=== Raw\Padauk\ulp_blinker
-
 *** VMS-vax\unzip
 000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.
 00001457: error: Instruction acbf	r6,r2[r5],r7,00005DB0 too complex to rewrite.
@@ -3493,4 +3491,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 89 binaries in 100.79 seconds.
+Decompiled 88 binaries in 75.67 seconds.
