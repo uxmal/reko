@@ -9,6 +9,21 @@ Eq_n fn000F07BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
 }
 
+// 000F089A: Stack Eq_n fn000F089A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F1165: Stack Eq_n fn000F1165(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000F1165(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000F1281: Stack Eq_n fn000F1281(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
+Eq_n fn000F1281(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
+{
+}
+
 // 000F1D53: void fn000F1D53(Stack Eq_n arg0)
 void fn000F1D53(Eq_n arg0)
 {
@@ -75,13 +90,78 @@ Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 {
 }
 
+// 000F252A: Stack Eq_n fn000F252A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F2F51: Stack Eq_n fn000F2F51(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9)
+Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9)
+{
+}
+
+// 000F3224: Stack Eq_n fn000F3224(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
 // 000F3B58: void fn000F3B58(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 }
 
+// 000F3D09: Stack Eq_n fn000F3D09(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10, Stack Eq_n arg11)
+Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10, Eq_n arg11)
+{
+}
+
+// 000F4131: Stack Eq_n fn000F4131(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F4A65: Stack Eq_n fn000F4A65(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F539A: Stack Eq_n fn000F539A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
 // 000F5C88: void fn000F5C88(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000F5DFC: Stack Eq_n fn000F5DFC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F66E9: Stack Eq_n fn000F66E9(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F6FD6: Stack Eq_n fn000F6FD6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F78C3: Stack Eq_n fn000F78C3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F81B1: Stack Eq_n fn000F81B1(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000F8A9E: Stack Eq_n fn000F8A9E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
+Eq_n fn000F8A9E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
 }
 
@@ -126,6 +206,16 @@ Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 }
 
+// 000F9E56: Stack Eq_n fn000F9E56(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+}
+
+// 000FA320: Stack Eq_n fn000FA320(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+}
+
 // 000FA7EA: Stack Eq_n fn000FA7EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
@@ -136,6 +226,520 @@ Eq_n fn000FA95B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 }
 
+// 000FA9D7: Stack Eq_n fn000FA9D7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000FAB19: Stack Eq_n fn000FAB19(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v33.u3 = g_t140030.u3;
+	loc33 = v33;
+	v33 = arg2;
+	v34.u0 = 0x0800;
+	v33 &= v34;
+	loc23 = v33;
+	v33 = loc23;
+	v34.u0 = 0x00;
+	v35 = v33 == v34;
+	loc24 = v35;
+	v33 = loc24;
+	if (v33)
+	{
+		v33 = arg0;
+		loc3 = v33;
+	}
+	else
+	{
+		v33 = arg0;
+		v34.u0 = 0x01;
+		v33 += v34;
+		loc25 = v33;
+		v33 = arg0;
+		v34.u0 = 0x2B;
+		v36 = (byte) v34;
+		*v33.u3 = (word32) v36;
+		v33 = loc25;
+		loc3 = v33;
+	}
+	v33 = arg2;
+	v34.u0 = 0x0400;
+	v33 &= v34;
+	loc26 = v33;
+	v33 = loc26;
+	v34.u0 = 0x00;
+	v35 = v33 == v34;
+	loc27 = v35;
+	v33 = loc27;
+	if (v33)
+	{
+		v33 = loc3;
+		loc6 = v33;
+	}
+	else
+	{
+		v33 = loc3;
+		v34.u0 = 0x01;
+		v33 += v34;
+		loc28 = v33;
+		v33 = loc3;
+		v34.u0 = 0x23;
+		v37 = (byte) v34;
+		*v33.u3 = (word32) v37;
+		v33 = loc28;
+		loc6 = v33;
+	}
+	v33 = arg2;
+	v34.u0 = 0x0104;
+	v33 &= v34;
+	loc29 = v33;
+	v33 = arg2;
+	v34.u0 = 0x0E;
+	v33 >>= v34;
+	loc9 = v33;
+	v33 = loc29;
+	v34.u0 = 0x0104;
+	v35 = v33 == v34;
+	loc10 = v35;
+	v33 = loc10;
+	if (v33)
+	{
+		v33.u0 = 0x00;
+		loc5 = v33;
+		v33 = loc6;
+		loc8 = v33;
+	}
+	else
+	{
+		v33 = loc6;
+		v34.u0 = 0x01;
+		v33 += v34;
+		loc11 = v33;
+		v33 = loc6;
+		v34.u0 = 0x2E;
+		v38 = (byte) v34;
+		*v33.u0 = v38;
+		v33 = loc6;
+		v34.u0 = 0x02;
+		v33 += v34;
+		loc12 = v33;
+		v33 = loc11;
+		v34.u0 = 0x2A;
+		v39 = (byte) v34;
+		*v33.u0 = v39;
+		v33.u0 = 0x01;
+		loc5 = v33;
+		v33 = loc12;
+		loc8 = v33;
+	}
+	while (true)
+	{
+		v33 = arg1;
+		loc4 = v33;
+		v33 = loc8;
+		loc7 = v33;
+		v33 = loc4;
+		v40 = *v33.u0;
+		v33.u3 = (word32) v40;
+		loc13 = v33;
+		v33 = loc13;
+		v34.u0 = 0x18;
+		v33 <<= v34;
+		v34.u0 = 0x18;
+		v33 >>= v34;
+		v34.u0 = 0x00;
+		v35 = v33 == v34;
+		loc14 = v35;
+		v33 = loc14;
+		if (v33)
+			break;
+		v33 = loc4;
+		v34.u0 = 0x01;
+		v33 += v34;
+		loc15 = v33;
+		v33 = loc7;
+		v34.u0 = 0x01;
+		v33 += v34;
+		loc16 = v33;
+		v33 = loc7;
+		v34 = loc13;
+		v41 = (byte) v34;
+		v33.u4->t0000.u0 = (bool) v41;
+		v33 = loc15;
+		loc4 = v33;
+		v33 = loc16;
+		loc7 = v33;
+	}
+	v33 = loc29;
+	v34.u0 = 0xFFFF;
+	v33 &= v34;
+	loc30 = v33;
+	v33 = loc30;
+	v34.u0 = 0x01FF;
+	v33 &= v34;
+	loc31 = v33;
+	v33 = loc31;
+	v34.u0 = 0x10;
+	v33 <<= v34;
+	v34.u0 = 0x10;
+	v33 >>= v34;
+	v34.u0 = 0x04;
+	v33 -= v34;
+	switch (v33)
+	{
+	case 0x00:
+		v33 = loc9;
+		v34.u0 = 0x01;
+		v33 &= v34;
+		loc17 = v33;
+		v33 = loc17;
+		v34.u0 = 0x00;
+		v35 = v33 == v34;
+		loc18 = v35;
+		v33 = loc18;
+		if (v33)
+		{
+			v33 = loc7;
+			v34.u0 = 0x66;
+			v42 = (byte) v34;
+			v33.u4->t0000.u0 = (bool) v42;
+		}
+		else
+		{
+			v33 = loc7;
+			v34.u0 = 0x46;
+			v43 = (byte) v34;
+			v33.u4->t0000.u0 = (bool) v43;
+		}
+		break;
+	case 0x01:
+		v33 = loc9;
+		v34.u0 = 0x01;
+		v33 &= v34;
+		loc19 = v33;
+		v33 = loc19;
+		v34.u0 = 0x00;
+		v35 = v33 == v34;
+		loc20 = v35;
+		v33 = loc20;
+		if (v33)
+		{
+			v33 = loc7;
+			v34.u0 = 101;
+			v44 = (byte) v34;
+			v33.u4->t0000.u0 = (bool) v44;
+		}
+		else
+		{
+			v33 = loc7;
+			v34.u0 = 0x45;
+			v45 = (byte) v34;
+			v33.u4->t0000.u0 = (bool) v45;
+		}
+		break;
+	case 0x02:
+	case 0x03:
+	case 0x04:
+	case 0x05:
+	case 0x06:
+	case 0x07:
+	case 0x08:
+	case 0x09:
+	case 0x0A:
+	case 11:
+	case 0x0C:
+	case 0x0D:
+	case 0x0E:
+	case 0x0F:
+	case 0x10:
+	case 0x11:
+	case 0x12:
+	case 0x13:
+	case 0x14:
+	case 0x15:
+	case 22:
+	case 0x17:
+	case 0x18:
+	case 0x19:
+	case 0x1A:
+	case 0x1B:
+	case 0x1C:
+	case 0x1D:
+	case 0x1E:
+	case 0x1F:
+	case 0x20:
+	case 33:
+	case 0x22:
+	case 0x23:
+	case 0x24:
+	case 0x25:
+	case 0x26:
+	case 0x27:
+	case 0x28:
+	case 0x29:
+	case 0x2A:
+	case 0x2B:
+	case 44:
+	case 0x2D:
+	case 0x2E:
+	case 0x2F:
+	case 0x30:
+	case 0x31:
+	case 0x32:
+	case 0x33:
+	case 0x34:
+	case 0x35:
+	case 0x36:
+	case 55:
+	case 0x38:
+	case 0x39:
+	case 0x3A:
+	case 0x3B:
+	case 0x3C:
+	case 0x3D:
+	case 0x3E:
+	case 0x3F:
+	case 0x40:
+	case 0x41:
+	case 66:
+	case 0x43:
+	case 0x44:
+	case 0x45:
+	case 0x46:
+	case 0x47:
+	case 0x48:
+	case 0x49:
+	case 0x4A:
+	case 0x4B:
+	case 0x4C:
+	case 77:
+	case 0x4E:
+	case 0x4F:
+	case 0x50:
+	case 0x51:
+	case 0x52:
+	case 0x53:
+	case 0x54:
+	case 0x55:
+	case 0x56:
+	case 0x57:
+	case 88:
+	case 0x59:
+	case 0x5A:
+	case 0x5B:
+	case 0x5C:
+	case 0x5D:
+	case 0x5E:
+	case 0x5F:
+	case 0x60:
+	case 0x61:
+	case 0x62:
+	case 99:
+	case 100:
+	case 101:
+	case 0x66:
+	case 0x67:
+	case 0x68:
+	case 0x69:
+	case 0x6A:
+	case 0x6B:
+	case 0x6C:
+	case 0x6D:
+	case 110:
+	case 111:
+	case 0x70:
+	case 113:
+	case 114:
+	case 115:
+	case 116:
+	case 117:
+	case 118:
+	case 0x77:
+	case 0x78:
+	case 121:
+	case 122:
+	case 0x7B:
+	case 0x7C:
+	case 0x7D:
+	case 0x7E:
+	case 0x7F:
+	case 0x80:
+	case 0x81:
+	case 0x82:
+	case 131:
+	case 0x84:
+	case 133:
+	case 0x86:
+	case 0x87:
+	case 0x88:
+	case 0x89:
+	case 0x8A:
+	case 0x8B:
+	case 0x8C:
+	case 141:
+	case 0x8E:
+	case 0x8F:
+	case 0x90:
+	case 0x91:
+	case 0x92:
+	case 0x93:
+	case 0x94:
+	case 0x95:
+	case 0x96:
+	case 151:
+	case 0x98:
+	case 0x99:
+	case 0x9A:
+	case 155:
+	case 0x9C:
+	case 0x9D:
+	case 0x9E:
+	case 0x9F:
+	case 0xA0:
+	case 161:
+	case 0xA2:
+	case 0xA3:
+	case 0xA4:
+	case 0xA5:
+	case 166:
+	case 0xA7:
+	case 0xA8:
+	case 0xA9:
+	case 0xAA:
+	case 171:
+	case 0xAC:
+	case 0xAD:
+	case 0xAE:
+	case 0xAF:
+	case 0xB0:
+	case 177:
+	case 0xB2:
+	case 0xB3:
+	case 0xB4:
+	case 181:
+	case 0xB6:
+	case 0xB7:
+	case 0xB8:
+	case 0xB9:
+	case 0xBA:
+	case 0xBB:
+	case 188:
+	case 0xBD:
+	case 0xBE:
+	case 191:
+	case 0xC0:
+	case 0xC1:
+	case 0xC2:
+	case 0xC3:
+	case 0xC4:
+	case 0xC5:
+	case 0xC6:
+	case 199:
+	case 200:
+	case 0xC9:
+	case 202:
+	case 0xCB:
+	case 0xCC:
+	case 0xCD:
+	case 0xCE:
+	case 0xCF:
+	case 0xD0:
+	case 0xD1:
+	case 0xD2:
+	case 211:
+	case 212:
+	case 0xD5:
+	case 0xD6:
+	case 0xD7:
+	case 0xD8:
+	case 0xD9:
+	case 0xDA:
+	case 0xDB:
+	case 220:
+	case 0xDD:
+	case 222:
+	case 223:
+	case 0xE0:
+	case 225:
+	case 226:
+	case 227:
+	case 228:
+	case 229:
+	case 0xE6:
+	case 0xE7:
+	case 232:
+	case 233:
+	case 0xEA:
+	case 0xEB:
+	case 0xEC:
+	case 0xED:
+	case 0xEE:
+	case 0xEF:
+	case 0xF0:
+	case 0xF1:
+	case 242:
+	case 0xF3:
+	case 244:
+	case 0xF5:
+	case 0xF6:
+	case 0xF7:
+	case 0xF8:
+	case 0xF9:
+	case 0xFA:
+	case 0xFB:
+	case 252:
+		v33 = loc9;
+		v34.u0 = 0x01;
+		v33 &= v34;
+		loc21 = v33;
+		v33 = loc21;
+		v34.u0 = 0x00;
+		v35 = v33 != v34;
+		loc22 = v35;
+		v33 = loc10;
+		if (v33)
+		{
+			v33 = loc22;
+			if (v33)
+			{
+				v33 = loc7;
+				v34.u0 = 0x41;
+				v46 = (byte) v34;
+				v33.u4->t0000.u0 = (bool) v46;
+			}
+			else
+			{
+				v33 = loc7;
+				v34.u0 = 0x61;
+				v47 = (byte) v34;
+				v33.u4->t0000.u0 = (bool) v47;
+			}
+		}
+		else
+		{
+			v33 = loc22;
+			if (v33)
+			{
+				v33 = loc7;
+				v34.u0 = 0x47;
+				v48 = (byte) v34;
+				v33.u4->t0000.u0 = (bool) v48;
+			}
+			else
+			{
+				v33 = loc7;
+				v34.u0 = 0x67;
+				v49 = (byte) v34;
+				v33.u4->t0000.u0 = (bool) v49;
+			}
+		}
+		break;
+	}
+	v33 = loc5;
+	return v33;
+}
+
 // 000FADDC: Stack Eq_n fn000FADDC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
@@ -144,6 +748,229 @@ Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 // 000FAEBB: void fn000FAEBB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+}
+
+// 000FB8CE: void fn000FB8CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v22.u3 = g_t140030.u3;
+	loc23 = v22;
+	v22 = arg3;
+	v23.u0 = 0x0800;
+	v22 &= v23;
+	loc14 = v22;
+	v22 = loc14;
+	v23.u0 = 0x00;
+	v24 = v22 == v23;
+	loc15 = v24;
+	v22 = loc15;
+	if (v22)
+	{
+		v22 = arg0;
+		loc4 = v22;
+	}
+	else
+	{
+		v22 = arg0;
+		v23.u0 = 0x01;
+		v22 += v23;
+		loc16 = v22;
+		v22 = arg0;
+		v23.u0 = 0x2B;
+		v25 = (byte) v23;
+		*v22.u3 = (word32) v25;
+		v22 = loc16;
+		loc4 = v22;
+	}
+	v22 = arg3;
+	v23.u0 = 0x0200;
+	v22 &= v23;
+	loc17 = v22;
+	v22 = loc17;
+	v23.u0 = 0x00;
+	v24 = v22 == v23;
+	loc18 = v24;
+	v22 = loc18;
+	if (v22)
+	{
+		v22 = arg1;
+		loc5 = v22;
+		v22 = loc4;
+		loc6 = v22;
+	}
+	else
+	{
+		v22 = loc4;
+		v23.u0 = 0x01;
+		v22 += v23;
+		loc19 = v22;
+		v22 = loc4;
+		v23.u0 = 0x23;
+		v26 = (byte) v23;
+		*v22.u3 = (word32) v26;
+		v22 = arg1;
+		loc5 = v22;
+		v22 = loc19;
+		loc6 = v22;
+	}
+	while (true)
+	{
+		v22 = loc5;
+		v27.u3 = *v22.u3;
+		v22.u3 = (word32) v27;
+		loc7 = v22;
+		v22 = loc7;
+		v23.u0 = 0x18;
+		v22 <<= v23;
+		v23.u0 = 0x18;
+		v22 >>= v23;
+		v23.u0 = 0x00;
+		v24 = v22 == v23;
+		loc8 = v24;
+		v22 = loc8;
+		if (v22)
+			break;
+		v22 = loc5;
+		v23.u0 = 0x01;
+		v22 += v23;
+		loc9 = v22;
+		v22 = loc6;
+		v23.u0 = 0x01;
+		v22 += v23;
+		loc10 = v22;
+		v22 = loc6;
+		v23 = loc7;
+		v28 = (byte) v23;
+		v22.u4->t0000.u0 = (bool) v28;
+		v22 = loc9;
+		loc5 = v22;
+		v22 = loc10;
+		loc6 = v22;
+	}
+	v22 = arg3;
+	v23.u0 = 0x4A;
+	v22 &= v23;
+	loc11 = v22;
+	v22 = loc11;
+	v23.u0 = 0xFF;
+	v22 &= v23;
+	loc20 = v22;
+	v22 = loc20;
+	v23.u0 = 0x7F;
+	v22 &= v23;
+	loc21 = v22;
+	v22 = loc21;
+	v23.u0 = 0x18;
+	v22 <<= v23;
+	v23.u0 = 0x18;
+	v22 >>= v23;
+	v23.u0 = 0x08;
+	v22 -= v23;
+	switch (v22)
+	{
+	case 0x00:
+		v22 = loc6;
+		v23.u0 = 111;
+		v29 = (byte) v23;
+		v22.u4->t0000.u0 = (bool) v29;
+		break;
+	case 0x01:
+		v22 = arg3;
+		v23.u0 = 0x4000;
+		v22 &= v23;
+		loc12 = v22;
+		v22 = loc12;
+		v23.u0 = 0x00;
+		v24 = v22 == v23;
+		loc13 = v24;
+		v22 = loc13;
+		if (v22)
+		{
+			v22 = loc6;
+			v23.u0 = 0x78;
+			v30 = (byte) v23;
+			v22.u4->t0000.u0 = (bool) v30;
+		}
+		else
+		{
+			v22 = loc6;
+			v23.u0 = 88;
+			v31 = (byte) v23;
+			v22.u4->t0000.u0 = (bool) v31;
+		}
+		break;
+	case 0x02:
+	case 0x03:
+	case 0x04:
+	case 0x05:
+	case 0x06:
+	case 0x07:
+	case 0x08:
+	case 0x09:
+	case 0x0A:
+	case 11:
+	case 0x0C:
+	case 0x0D:
+	case 0x0E:
+	case 0x0F:
+	case 0x10:
+	case 0x11:
+	case 0x12:
+	case 0x13:
+	case 0x14:
+	case 0x15:
+	case 22:
+	case 0x17:
+	case 0x18:
+	case 0x19:
+	case 0x1A:
+	case 0x1B:
+	case 0x1C:
+	case 0x1D:
+	case 0x1E:
+	case 0x1F:
+	case 0x20:
+	case 33:
+	case 0x22:
+	case 0x23:
+	case 0x24:
+	case 0x25:
+	case 0x26:
+	case 0x27:
+	case 0x28:
+	case 0x29:
+	case 0x2A:
+	case 0x2B:
+	case 44:
+	case 0x2D:
+	case 0x2E:
+	case 0x2F:
+	case 0x30:
+	case 0x31:
+	case 0x32:
+	case 0x33:
+	case 0x34:
+	case 0x35:
+	case 0x36:
+	case 55:
+	case 0x38:
+		v22 = arg2;
+		if (v22)
+		{
+			v22 = loc6;
+			v23.u0 = 100;
+			v32 = (byte) v23;
+			v22.u4->t0000.u0 = (bool) v32;
+		}
+		else
+		{
+			v22 = loc6;
+			v23.u0 = 117;
+			v33 = (byte) v23;
+			v22.u4->t0000.u0 = (bool) v33;
+		}
+		break;
+	}
 }
 
 // 000FBA39: void fn000FBA39(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
@@ -189,6 +1016,16 @@ Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 
 // 000FC805: Stack Eq_n fn000FC805(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+}
+
+// 000FC957: Stack Eq_n fn000FC957(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+}
+
+// 000FCE21: Stack Eq_n fn000FCE21(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 }
 
@@ -264,6 +1101,21 @@ Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 
 // 000FEAE3: Stack Eq_n fn000FEAE3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
+{
+}
+
+// 000FF5D5: Stack Eq_n fn000FF5D5(Stack Eq_n arg0)
+Eq_n fn000FF5D5(Eq_n arg0)
+{
+}
+
+// 000FF904: Stack Eq_n fn000FF904(Stack Eq_n arg0)
+Eq_n fn000FF904(Eq_n arg0)
+{
+}
+
+// 000FFDC5: Stack Eq_n fn000FFDC5(Stack Eq_n arg0)
+Eq_n fn000FFDC5(Eq_n arg0)
 {
 }
 

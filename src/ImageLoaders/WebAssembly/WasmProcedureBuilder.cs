@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.WebAssembly
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(WasmProcedureBuilder), nameof(WasmProcedureBuilder))
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         private readonly FunctionDefinition func;
@@ -314,7 +314,14 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteBr()
         {
-            Debug.Assert(this.block is not null);
+            if (this.block is null)
+            {
+                // We see this in some WASM binaries; sequences of consecutive
+                // br statements. But all of the br's after the first one must
+                // be unreachable, so why are they even there?
+                Console.WriteLine($"*** {instr.Address} {instr}: unreachable break");
+                return;
+            }
             var cLevelsUp = OpAsInt(0);
             EmitBranchReference(this.block, cLevelsUp, null);
             // The current block is undefined until the next 'end' instruction.
@@ -406,10 +413,8 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteElse()
         {
-            Debug.Assert(this.block is not null);
             if (controlStack.Count == 0)
                 throw new BadImageFormatException("Control stack unbalanced at else instruction.");
-            var blockThen = block;
             var ctrl = PopControl();
             if (ctrl.Mnemonic != Mnemonic.@if)
                 throw new BadImageFormatException("'else' was not preceded by 'if'.");
@@ -417,9 +422,17 @@ namespace Reko.ImageLoaders.WebAssembly
             this.valueTypeStack.AddRange(ctrl.TypeStack);
             var followBlock = MakeFollowBlock();
             BackpatchIf(ctrl, followBlock);
-            ctrl = PushControl(Mnemonic.@else, ctrl.Inputs, ctrl.Output, false);
-            ctrl.ThenBlock = blockThen;
-            this.block = followBlock;
+            if (this.block is not null)
+            {
+                ctrl = PushControl(Mnemonic.@else, ctrl.Inputs, ctrl.Output, false);
+                ctrl.IncompleteBranches.Add((this.block, null));
+                this.block = followBlock;
+            }
+            else
+            {
+                this.block = followBlock;
+                ctrl = PushControl(Mnemonic.@else, ctrl.Inputs, ctrl.Output, false);
+            }
         }
 
         private bool RewriteEnd(WasmImageReader rdr)
@@ -446,18 +459,16 @@ namespace Reko.ImageLoaders.WebAssembly
                 BackpatchIf(ctrl, followBlock);
                 if (this.instr.Mnemonic != Mnemonic.@else)
                 {
-                    if (this.block is not null)
-                        this.block.Succ.Add(followBlock);
+                    this.block?.Succ.Add(followBlock);
                 }
                 CompleteBranches(ctrl, followBlock);
                 this.block = followBlock;
                 break;
             case Mnemonic.@else:
                 followBlock = MakeBlock(instr.Address);
-                Debug.Assert(ctrl.ThenBlock is not null, "Should have been set by the 'else' handler");
                 if (this.block is not null)
                     proc.ControlGraph.AddEdge(this.block, followBlock);
-                proc.ControlGraph.AddEdge(ctrl.ThenBlock, followBlock);
+                CompleteBranches(ctrl, followBlock);
                 this.block = followBlock;
                 break;
             case Mnemonic.block:
@@ -845,7 +856,6 @@ namespace Reko.ImageLoaders.WebAssembly
 
             public Mnemonic Mnemonic { get; }
             public Block Block { get; }
-            public Block? ThenBlock { get; set; } // Only present if an 'else' instruction is encountered.
             public Identifier[] Inputs { get; }
             public DataType? Output { get; }
             public int BlockDepth { get; }

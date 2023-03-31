@@ -4,6 +4,11 @@
 
 #include "hello.h"
 
+// 000E2C2B: void _free(Stack Eq_n arg0)
+void _free(Eq_n arg0)
+{
+}
+
 // 000E3D5D: Stack Eq_n fn000E3D5D(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn000E3D5D(Eq_n arg0, Eq_n arg1)
 {
@@ -265,6 +270,16 @@ Eq_n fn000E3E00(Eq_n arg0, Eq_n arg1)
 		v28 = loc2;
 		return v28;
 	}
+}
+
+// 000E3F06: Stack Eq_n fn000E3F06(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E3F06(Eq_n arg0, Eq_n arg1)
+{
+}
+
+// 000E47CC: void fn000E47CC(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn000E47CC(Eq_n arg0, Eq_n arg1)
+{
 }
 
 // 000E5815: void fn000E5815(Stack Eq_n arg0)
@@ -1667,6 +1682,46 @@ void fn000E680D(Eq_n arg0)
 {
 }
 
+// 000E69B2: void fn000E69B2(Stack Eq_n arg0)
+void fn000E69B2(Eq_n arg0)
+{
+	v11.u3 = g_t140030.u3;
+	loc9 = v11;
+	v11 = arg0;
+	v12.u0 = 0x10;
+	v11 += v12;
+	loc1 = v11;
+	v11 = loc1;
+	v11.u3 = *v11.u3;
+	loc2 = v11;
+	v11 = loc2;
+	v12.u0 = 0x01;
+	v11 |= v12;
+	loc3 = v11;
+	v11 = loc1;
+	v12 = loc3;
+	*v11.u3 = (word32) v12;
+	v11 = arg0;
+	v12.u0 = 0x14;
+	v11 += v12;
+	loc4 = v11;
+	v11 = loc4;
+	v11.u3 = *v11.u3;
+	loc5 = v11;
+	v11 = loc5;
+	v12.u0 = 0x01;
+	v11 &= v12;
+	loc6 = v11;
+	v11 = loc6;
+	v12.u0 = 0x00;
+	v13 = v11 == v12;
+	loc7 = v13;
+	v11 = loc7;
+	if (v11)
+		return;
+	___cxa_rethrow();
+}
+
 // 000E69FB: Stack Eq_n fn000E69FB(Stack Eq_n arg0)
 Eq_n fn000E69FB(Eq_n arg0)
 {
@@ -1806,6 +1861,11 @@ Eq_n fn000E7F2E(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	v22 = v22;
 }
 
+// 000E7FF3: Stack Eq_n fn000E7FF3(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E7FF3(Eq_n arg0, Eq_n arg1)
+{
+}
+
 // 000E8219: void fn000E8219(Stack Eq_n arg0)
 void fn000E8219(Eq_n arg0)
 {
@@ -1868,6 +1928,11 @@ Eq_n fn000E83CB(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	loc17 = v26;
 	v23 = loc17;
 	v23 = v23;
+}
+
+// 000E8498: Stack Eq_n fn000E8498(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000E8498(Eq_n arg0, Eq_n arg1)
+{
 }
 
 // 000E86C6: void fn000E86C6(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -2325,6 +2390,11 @@ Eq_n fn000E9F6F(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 {
 }
 
+// 000E9FEB: Stack Eq_n fn000E9FEB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000E9FEB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
 // 000EA9F7: Stack Eq_n fn000EA9F7(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn000EA9F7(Eq_n arg0, Eq_n arg1)
 {
@@ -2344,6 +2414,11 @@ Eq_n fn000EA9F7(Eq_n arg0, Eq_n arg1)
 	return v7;
 }
 
+// 000EAA19: Stack Eq_n fn000EAA19(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9)
+Eq_n fn000EAA19(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9)
+{
+}
+
 // 000EAD0D: Stack Eq_n fn000EAD0D()
 Eq_n fn000EAD0D()
 {
@@ -2357,6 +2432,53 @@ Eq_n fn000EAD98(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 // 000EAE12: Stack Eq_n fn000EAE12(Stack Eq_n arg0)
 Eq_n fn000EAE12(Eq_n arg0)
 {
+}
+
+// 000EAEAB: Stack Eq_n fn000EAEAB(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000EAEAB(Eq_n arg0, Eq_n arg1)
+{
+	v10.u3 = g_t140030.u3;
+	loc9 = v10;
+	v10 = arg0;
+	v11 = arg1;
+	v10 = fn000EAEFC(v10, v11);
+	loc2 = v10;
+	v10 = loc2;
+	if (!v10)
+	{
+		v10.u0 = 0x04;
+		v10 = ___cxa_allocate_exception(v10);
+		loc3 = v10;
+		v10 = loc3;
+		fn0011EE34(v10);
+		v10 = loc3;
+		v11.u0 = 0x0A08;
+		v12 = 0x015C;
+		___cxa_throw(v10, v11, v12);
+		v10.u0 = 0x00;
+		return v10;
+	}
+	else
+	{
+		v10 = arg0;
+		v11.u0 = 0x08;
+		v10 += v11;
+		loc4 = v10;
+		v10 = loc4;
+		v10.u3 = *v10.u3;
+		loc5 = v10;
+		v10 = loc5;
+		v11 = arg1;
+		v12 = 0x02;
+		v11 <<= v12;
+		v10 += v11;
+		loc6 = v10;
+		v10 = loc6;
+		v10.u3 = *v10.u3;
+		loc7 = v10;
+		v10 = loc7;
+		return v10;
+	}
 }
 
 // 000EAEFC: Stack Eq_n fn000EAEFC(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -2523,8 +2645,18 @@ void fn000EAF99(Eq_n arg0)
 	v21 += v23;
 }
 
+// 000EB025: Stack Eq_n fn000EB025(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000EB025(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
 // 000EB941: void fn000EB941(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void fn000EB941(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+}
+
+// 000EBAF2: Stack Eq_n fn000EBAF2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10, Stack Eq_n arg11)
+Eq_n fn000EBAF2(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10, Eq_n arg11)
 {
 }
 
@@ -2538,13 +2670,28 @@ void fn000EC01D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
 }
 
+// 000EC1F8: Stack Eq_n fn000EC1F8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000EC1F8(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
 // 000ECB14: Stack Eq_n fn000ECB14(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn000ECB14(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
 }
 
+// 000ECBDB: Stack Eq_n fn000ECBDB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000ECBDB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
 // 000ED4F8: Stack real32 fn000ED4F8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 real32 fn000ED4F8(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000ED5B7: Stack Eq_n fn000ED5B7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000ED5B7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
 }
 
@@ -2670,6 +2817,41 @@ void fn000EDF31(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 
 // 000EE0A5: Stack Eq_n fn000EE0A5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000EE0A5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000EE188: Stack Eq_n fn000EE188(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000EE188(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000EEA53: Stack Eq_n fn000EEA53(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000EEA53(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000EEB54: Stack Eq_n fn000EEB54(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000EEB54(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000EF41F: Stack Eq_n fn000EF41F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000EF41F(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000EF520: Stack Eq_n fn000EF520(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000EF520(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+}
+
+// 000EFDEB: Stack Eq_n fn000EFDEB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000EFDEB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000EFEEF: Stack Eq_n fn000EFEEF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000EFEEF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
 }
 
