@@ -31,6 +31,8 @@ using System.Linq;
 
 namespace Reko.UnitTests.ImageLoaders.WebAssembly
 {
+    using static Reko.ImageLoaders.WebAssembly.Mnemonic;
+
     [TestFixture]
     public class WasmProcedureBuilderTests
     {
@@ -69,6 +71,27 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             default:
                 throw new NotImplementedException($"Unknown value type {valType:X}.");
             }
+        }
+
+        private static byte[] ByteCode(params object[] objects)
+        {
+            var result = new List<byte>();
+            foreach (var o in objects)
+            {
+                switch (o)
+                {
+                case Mnemonic mn:
+                    //$TODO long mnemonics.
+                    result.Add((byte) mn);
+                    break;
+                case int i:
+                    result.Add((byte) i);
+                    break;
+                default:
+                    throw new NotImplementedException();
+                }
+            }
+            return result.ToArray();
         }
 
         private void Given_FuncType(int[] inputTypes, int outputType)
@@ -183,8 +206,8 @@ fn00000_entry:
 l00000000:
 	v2 = param0
 	v3 = 0xFFFFFFD6<32>
-	v4 = v2 - v3
-	return v4
+	v2 = v2 - v3
+	return v2
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -243,9 +266,9 @@ fn00000_entry:
 l00000000:
 	v2 = param0
 	v3 = 0xFFFFFFD6<32>
-	v4 = v2 - v3
-	v5 = CONVERT(v4, word32, uint64)
-	return v5
+	v2 = v2 - v3
+	v4 = CONVERT(v2, word32, uint64)
+	return v4
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -267,7 +290,7 @@ fn00000_exit:
         {
             Given_FuncType(new[] { 127, 125 }, 127);
             Given_FuncType(new[] { 127 }, 127);
-            Given_ImportFunc("env", "extfun", 1);
+            Given_ImportFunc("env", "extfun", 0);
             var sExp = @"
 // fn00000
 // Return size: 0
@@ -277,25 +300,24 @@ fn00000_entry:
 l00000000:
 	v2 = param0
 	v3 = 1<32>
-	v4 = v2 + v3
-	v5 = 3.14F
-	v6 = extfun(v5)
-	return v6
+	v2 = v2 + v3
+	v4 = 3.14F
+	v2 = extfun(v2, v4)
+	return v2
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
             RunTest(sExp, FnDef(
                 1,
                 Array.Empty<LocalVariable>(),
-                new byte[]
-                {
-                    32,0,           // get.local 0
-                    65,1,           // i32.const 1
-                    106,            // i32.add
-                    67,0xC3,0xF5,0x48,0x40, // f32.const 3.14F
-                    16,0,           // call 0
-                    11              // end
-                }));
+                ByteCode(
+                    get_local,0,
+                    i32_const,1,
+                    i32_add,
+                    f32_const,0xC3,0xF5,0x48,0x40, // 3.14F
+                    call,0,
+                    end
+                )));
         }
 
         [Test]
@@ -313,8 +335,8 @@ fn00000_entry:
 l00000000:
 	v2 = Mem0[0x00002000<p32>:word32]
 	v3 = param0
-	v4 = v2 + v3
-	Mem0[0x00002004<p32>:word32] = v4
+	v2 = v2 + v3
+	Mem0[0x00002004<p32>:word32] = v2
 	return
 	// succ:  fn00000_exit
 fn00000_exit:
@@ -346,12 +368,12 @@ l00000000:
 	v4 = param0
 	loc1 = v4
 	v5 = loc1
-	v6 = v4 * v5
-	loc2 = v6
-	v7 = loc1
-	v8 = loc2
-	v9 = v7 + v8
-	return v9
+	v4 = v4 * v5
+	loc2 = v4
+	v4 = loc1
+	v5 = loc2
+	v4 = v4 + v5
+	return v4
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -393,14 +415,14 @@ l00000000:
 	branch !v6 l0000000F
 	// succ:  l00000007 l0000000F
 l00000007:
-	v7 = 0<32>
-	v8 = param0
-	v9 = v7 - v8
-	param0 = v9
+	v4 = 0<32>
+	v5 = param0
+	v4 = v4 - v5
+	param0 = v4
 	// succ:  l0000000F
 l0000000F:
-	v10 = param0
-	return v10
+	v4 = param0
+	return v4
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -446,19 +468,19 @@ l00000000:
 	branch !v5 l0000000F
 	// succ:  l00000007 l0000000F
 l00000007:
-	v6 = 0<32>
-	v7 = param0
-	v8 = v6 - v7
-	loc1 = v8
+	v3 = 0<32>
+	v4 = param0
+	v3 = v3 - v4
+	loc1 = v3
 	goto l00000013
 	// succ:  l00000013
 l0000000F:
-	v9 = param0
-	loc1 = v9
+	v3 = param0
+	loc1 = v3
 	// succ:  l00000013
 l00000013:
-	v10 = loc1
-	return v10
+	v6 = loc1
+	return v6
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -538,13 +560,13 @@ l00000000:
 	branch v3 l00000017
 	// succ:  l00000007 l00000017
 l00000007:
-	v4 = 0x10<32>
-	puts(v4)
-	v5 = param0
-	v6 = 0xFFFFFFFF<32>
-	v7 = v5 + v6
-	param0 = v7
-	branch v7 l00000007
+	v2 = 0x10<32>
+	puts(v2)
+	v2 = param0
+	v4 = 0xFFFFFFFF<32>
+	v2 = v2 + v4
+	param0 = v2
+	branch v2 l00000007
 	// succ:  l00000016 l00000007
 l00000016:
 	// succ:  l00000017
@@ -594,11 +616,11 @@ fn00000_entry:
 l00000000:
 	v2 = 0x10<32>
 	puts(v2)
-	v3 = param0
-	v4 = 0xFFFFFFFF<32>
-	v5 = v3 + v4
-	param0 = v5
-	branch v5 l00000000
+	v2 = param0
+	v3 = 0xFFFFFFFF<32>
+	v2 = v2 + v3
+	param0 = v2
+	branch v2 l00000000
 	// succ:  l0000000F l00000000
 l0000000F:
 	return
@@ -637,8 +659,8 @@ fn00000_entry:
 l00000000:
 	v2 = param0
 	v3 = param0
-	v4 = Mem0[v3 + 8<u32>:word32]
-	Mem0[v2 + 4<u32>:word32] = v4
+	v3 = Mem0[v3 + 8<u32>:word32]
+	Mem0[v2 + 4<u32>:word32] = v3
 	return
 	// succ:  fn00000_exit
 fn00000_exit:
@@ -669,9 +691,9 @@ l00000000:
 	v2 = param0
 	v3 = param0
 	v4 = Mem0[v3 + 8<u32>:byte]
-	v5 = CONVERT(v4, byte, word32)
-	v6 = SLICE(v5, byte, 0)
-	Mem0[v2 + 4<u32>:byte] = v6
+	v3 = CONVERT(v4, byte, word32)
+	v5 = SLICE(v3, byte, 0)
+	Mem0[v2 + 4<u32>:byte] = v5
 	return
 	// succ:  fn00000_exit
 fn00000_exit:
@@ -703,8 +725,8 @@ l00000000:
 	v3 = 0xFFFFFFFF<32>
 	v4 = param0
 	v5 = v4 == 0<32>
-	v6 = v5 ? v2 : v3
-	return v6
+	v2 = v5 ? v2 : v3
+	return v2
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -858,8 +880,8 @@ fn00000_exit:
     1,0,65,12,11,8,1,0,0,0,2,0,0,0]);
         */
 
-         [Test]
-         public void Waspb_Switch()
+        [Test]
+        public void Waspb_Switch()
         {
             var sExp = @"
 // fn00000
@@ -874,36 +896,36 @@ l00000000:
 	branch v4 l0000001F
 	// succ:  l0000000F l0000001F
 l0000000F:
-	v5 = param0
-	switch (v5) { l0000001B l0000001B l00000023 l0000002A l00000031 }
+	v2 = param0
+	switch (v2) { l0000001B l0000001B l00000023 l0000002A l00000031 }
 	// succ:  l0000001B l0000001B l00000023 l0000002A l00000031
 l0000001B:
-	v6 = param0
-	return v6
+	v2 = param0
+	return v2
 	// succ:  fn00000_exit
 l0000001F:
-	v7 = 0xFFFFFFFF<32>
-	return v7
+	v2 = 0xFFFFFFFF<32>
+	return v2
 	// succ:  fn00000_exit
 l00000023:
-	v8 = param2
-	v9 = param1
-	v10 = v8 + v9
-	return v10
+	v2 = param2
+	v3 = param1
+	v2 = v2 + v3
+	return v2
 	// succ:  fn00000_exit
 l0000002A:
-	v11 = param1
-	v12 = param2
-	v13 = v11 - v12
-	return v13
+	v2 = param1
+	v3 = param2
+	v2 = v2 - v3
+	return v2
 	// succ:  fn00000_exit
 l00000031:
-	v14 = param1
-	v15 = param2
-	v16 = v14 - v15
-	v17 = param1
-	v18 = v16 * v17
-	return v18
+	v2 = param1
+	v3 = param2
+	v2 = v2 - v3
+	v3 = param1
+	v2 = v2 * v3
+	return v2
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -948,6 +970,54 @@ fn00000_exit:
 108,
 11 }));
 
+        }
+
+        [Test]
+        public void Waspb_IfWithOutput()
+        {
+            var sExp = @"
+// fn00000
+// Return size: 0
+word32 fn00000(word32 param0)
+fn00000_entry:
+	// succ:  l00000000
+l00000000:
+	v2 = param0
+	v3 = 0<32>
+	v4 = v2 >= v3
+	branch !v4 l0000000A
+	// succ:  l00000007 l0000000A
+l00000007:
+	v2 = param0
+	goto l0000000F
+	// succ:  l0000000F
+l0000000A:
+	v2 = 0<32>
+	v3 = param0
+	v2 = v2 - v3
+	// succ:  l0000000F
+l0000000F:
+	return v2
+	// succ:  fn00000_exit
+fn00000_exit:
+";
+            Given_FuncType(new[] { 127 }, 127);
+            RunTest(sExp, FnDef(
+                0,
+                Array.Empty<LocalVariable>(),
+                ByteCode(
+                    get_local, 0,
+                    i32_const, 0,
+                    i32_ge_s,
+                    @if, 127,
+                        get_local, 0,
+                    @else,
+                        i32_const, 0,
+                        get_local, 0,
+                        i32_sub,
+                    end,
+                    end
+                )));
         }
     }
 }

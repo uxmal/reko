@@ -24,10 +24,10 @@ void _offset_momentum(int32 arg0, struct Eq_n * arg1)
 	{
 		do
 		{
-			real64 v26_n = arg1->r0030;
-			loc5_n = arg1->r0018 * v26_n + 0.0;
-			loc4_n = v26_n * arg1->r0020 + 0.0;
-			loc3_n = v26_n * arg1->r0028 + 0.0;
+			real64 v15_n = arg1->r0030;
+			loc5_n = arg1->r0018 * v15_n + 0.0;
+			loc4_n = v15_n * arg1->r0020 + 0.0;
+			loc3_n = v15_n * arg1->r0028 + 0.0;
 		} while (arg0 != 0x01);
 	}
 	else

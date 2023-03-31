@@ -19,6 +19,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
@@ -34,13 +35,19 @@ namespace Reko.ImageLoaders.WebAssembly
 {
     public class WasmProcedureBuilder
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(WasmProcedureBuilder), nameof(WasmProcedureBuilder))
+        {
+            Level = TraceLevel.Verbose
+        };
+
         private readonly FunctionDefinition func;
         private readonly WasmArchitecture arch;
         private readonly WasmFile wasmFile;
         private readonly Dictionary<int, ProcedureBase> mpFunidxToProc;
         private readonly Dictionary<int, Address> mpGlobidxToAddr;
         private readonly Procedure proc;
-        private readonly List<Identifier> valueStack;
+        private readonly List<DataType> valueTypeStack;
+        private readonly Dictionary<DataType, Dictionary<int, Identifier>> stackIds;
         private readonly List<ControlEntry> controlStack;
         private readonly List<Identifier> locals;
         private readonly ExpressionEmitter m;
@@ -61,7 +68,8 @@ namespace Reko.ImageLoaders.WebAssembly
             this.mpGlobidxToAddr = mpGlobidxToAddr;
             this.proc = (Procedure) mpFunidxToProc[func.FunctionIndex];
             this.proc.Signature = wasmFile.TypeSection!.Types[(int)func.TypeIndex];
-            this.valueStack = new List<Identifier>();
+            this.valueTypeStack = new List<DataType>();
+            this.stackIds = new Dictionary<DataType, Dictionary<int, Identifier>>();
             this.controlStack = new List<ControlEntry>();
             this.locals = new List<Identifier>();
             this.m = new ExpressionEmitter();
@@ -106,11 +114,16 @@ namespace Reko.ImageLoaders.WebAssembly
             var rdr = new WasmImageReader(mem);
             rdr.Offset = func.Start;
             var dasm = new WasmDisassembler(arch, rdr).GetEnumerator();
+            trace.Inform("== Build WASM procedure {0}", proc.Name);
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
                 Identifier id;
                 Identifier local;
+                trace.Verbose("    {0,3} {1}{2}",
+                    this.valueTypeStack.Count,
+                    new string(' ', this.controlStack.Count),
+                    instr);
                 switch (instr.Mnemonic)
                 {
                 case Mnemonic.block: RewriteBlock(); break;
@@ -283,6 +296,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteBlock()
         {
+            DataType? output = DecodeBlockDataType();
             Debug.Assert(this.block is not null);
             if (instr.Operands.Length > 0)
             {
@@ -295,7 +309,7 @@ namespace Reko.ImageLoaders.WebAssembly
                 block = MakeBlock(instr.Address);
                 proc.ControlGraph.AddEdge(blockOld, block);
             }
-            PushControl(Mnemonic.block, Array.Empty<Identifier>(), null, false);
+            PushControl(Mnemonic.block, Array.Empty<Identifier>(), output, false);
         }
 
         private void RewriteBr()
@@ -399,9 +413,11 @@ namespace Reko.ImageLoaders.WebAssembly
             var ctrl = PopControl();
             if (ctrl.Mnemonic != Mnemonic.@if)
                 throw new BadImageFormatException("'else' was not preceded by 'if'.");
+            this.valueTypeStack.Clear();
+            this.valueTypeStack.AddRange(ctrl.TypeStack);
             var followBlock = MakeFollowBlock();
             BackpatchIf(ctrl, followBlock);
-            ctrl = PushControl(Mnemonic.@else, Array.Empty<Identifier>(), null, false);
+            ctrl = PushControl(Mnemonic.@else, ctrl.Inputs, ctrl.Output, false);
             ctrl.ThenBlock = blockThen;
             this.block = followBlock;
         }
@@ -421,6 +437,8 @@ namespace Reko.ImageLoaders.WebAssembly
             if (controlStack.Count == 0)
                 throw new BadImageFormatException("Control stack unbalanced at end of function.");
             var ctrl = PopControl();
+            if (ctrl.Output is not null)
+                this.PushValue(ctrl.Output);
             switch (ctrl.Mnemonic)
             {
             case Mnemonic.@if:
@@ -475,7 +493,6 @@ namespace Reko.ImageLoaders.WebAssembly
                     if (lastStm.Instruction is SwitchInstruction sw)
                     {
                         var c = (Constant) predicate;
-
                         sw.Targets[c.ToUInt32()] = followBlock;
                     }
                     else
@@ -564,15 +581,13 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteIf()
         {
-            if (instr.Operands.Length > 0)
-                Console.WriteLine($"Unhandled mnemonic if with argument.");
-
+            DataType? output = DecodeBlockDataType();
             Debug.Assert(this.block is not null);
             var predicate = PopValue();
             // Can't create the branch instruction yet; the
             // following 'else' or 'end' instruction is responsible for this.
             Assign(predicate, predicate);
-            PushControl(Mnemonic.@if, Array.Empty<Identifier>(), null, false);
+            PushControl(Mnemonic.@if, Array.Empty<Identifier>(), output, false);
 
             var thenBlock = this.MakeFollowBlock();
             proc.ControlGraph.AddEdge(block, thenBlock);        // Will be replaced when 'else' or 'end' is found.
@@ -691,6 +706,28 @@ namespace Reko.ImageLoaders.WebAssembly
             block.Statements.Add(instr.Address, store);
         }
 
+        private DataType? DecodeBlockDataType()
+        {
+            if (instr.Operands.Length == 0)
+                return null;
+            var v = ((ImmediateOperand) instr.Operands[0]).Value;
+            if (v.DataType.Size == 1)
+            {
+                switch (v.ToInt32())
+                {
+                case 127: return PrimitiveType.Word32;
+                case 126: return PrimitiveType.Word64;
+                case 125: return PrimitiveType.Real32;
+                case 124: return PrimitiveType.Real64;
+                default: throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         private Block MakeBlock(Address addr)
         {
             return proc.AddBlock(addr, NamingPolicy.Instance.BlockName(addr));
@@ -718,53 +755,67 @@ namespace Reko.ImageLoaders.WebAssembly
             var iTop = this.controlStack.Count - 1;
             var ctrl = this.controlStack[iTop];
             this.controlStack.RemoveAt(iTop);
+            this.valueTypeStack.Clear();
+            this.valueTypeStack.AddRange(ctrl.TypeStack);
             return ctrl;
         }
 
-        private ControlEntry PushControl(Mnemonic mnemonic, Identifier[] inputs, Identifier? output, bool isUnreachable)
+        private ControlEntry PushControl(Mnemonic mnemonic, Identifier[] inputs, DataType? output, bool isUnreachable)
         {
             Debug.Assert(this.block is not null);
-            var e = new ControlEntry(mnemonic, block, inputs, output, valueStack.Count, isUnreachable);
+            var e = new ControlEntry(mnemonic, block, inputs, output, valueTypeStack, isUnreachable);
             this.controlStack.Add(e);
             return e;
         }
 
         private Identifier PeekValue()
         {
-            int iTop = this.valueStack.Count - 1;
+            int iTop = this.valueTypeStack.Count - 1;
             if (iTop < 0)
                 throw new AddressCorrelatedException(instr.Address, "Exhausted value stack.");
-            return this.valueStack[iTop];
+            return this.stackIds[valueTypeStack[iTop]][iTop];
         }
 
         private Identifier PushValue(DataType dt)
         {
-            var id  = proc.Frame.CreateTemporary(dt);
-            this.valueStack.Add(id);
+            int iTop = this.valueTypeStack.Count;
+            this.valueTypeStack.Add(dt);
+            if (!this.stackIds.TryGetValue(dt, out var ids))
+            {
+                ids = new Dictionary<int, Identifier>();
+                this.stackIds.Add(dt, ids);
+            }
+            if (!ids.TryGetValue(iTop, out var id))
+            {
+                id = proc.Frame.CreateTemporary(dt);
+                ids.Add(iTop, id);
+            }
             return id;
         }
 
         private Identifier PopValue()
         {
-            int iTop = this.valueStack.Count - 1;
+            int iTop = this.valueTypeStack.Count - 1;
             if (iTop < 0)
                 throw new AddressCorrelatedException(instr.Address, $"Exhausted value stack when rewriting procedure {proc.Name}.");
-            var id = this.valueStack[iTop];
-            this.valueStack.RemoveAt(iTop);
+            var dt = this.valueTypeStack[iTop];
+            var id = this.stackIds[dt][iTop];
+            this.valueTypeStack.RemoveAt(iTop);
             return id;
         }
 
         private Expression[] PopValues(int cValues)
         {
-            int iTop = this.valueStack.Count - cValues;
+            int iTop = this.valueTypeStack.Count - cValues;
             if (iTop < 0)
                 throw new AddressCorrelatedException(instr.Address, $"Exhausted value stack when rewriting procedure {proc.Name}.");
             var exps = new Expression[cValues];
             for (int i = 0; i < cValues; i++)
             {
-                exps[i] = this.valueStack[iTop + i];
+                var dt = this.valueTypeStack[iTop + i];
+                exps[i] = this.stackIds[dt][iTop + i];
             }
-            this.valueStack.RemoveRange(iTop, cValues);
+            this.valueTypeStack.RemoveRange(iTop, cValues);
             return exps;
         }
 
@@ -775,25 +826,32 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private class ControlEntry
         {
-            public ControlEntry(Mnemonic mnemonic, Block block, Identifier[] inputs, Identifier? output, int blockDepth, bool isUnreachable)
+            public ControlEntry(
+                Mnemonic mnemonic,
+                Block block, 
+                Identifier[] inputs,
+                DataType? output,
+                List<DataType> valueStack, 
+                bool isUnreachable)
             {
                 this.Mnemonic = mnemonic;
                 this.Block = block;
                 this.Inputs = inputs;
                 this.Output = output;
-                this.BlockDepth = blockDepth;
                 this.IsUnreachable = isUnreachable;
                 this.IncompleteBranches = new();
+                this.TypeStack = new List<DataType>(valueStack);
             }
 
             public Mnemonic Mnemonic { get; }
             public Block Block { get; }
             public Block? ThenBlock { get; set; } // Only present if an 'else' instruction is encountered.
             public Identifier[] Inputs { get; }
-            public Identifier? Output { get; }
+            public DataType? Output { get; }
             public int BlockDepth { get; }
             public bool IsUnreachable { get; }
             public List<(Block, Expression? predicate)> IncompleteBranches { get; }
+            public List<DataType> TypeStack { get; }
         }
 
     }

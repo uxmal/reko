@@ -21,21 +21,21 @@ void update_gen(word32 arg0)
 update_gen_entry:
 	word32 arg0_1 = arg0
 l000C0060:
-	word32 v26_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
+	word32 v15_15 = (1<32> - arg0_1) * 0x2710<32> + 0x10<32>
 	word32 loc7_27 = false
 	word32 loc13_105 = 0<32>
 l000C00AC:
 	arg0_1 = 0<32>
-	word32 v86_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
-	branch v86_91 == 3<32> l000C011F
+	word32 v15_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
+	branch v15_91 == 3<32> l000C011F
 l000C011F:
 	loc13_105 = 1<32>
 l000C010C:
-	branch v86_91 != 2<32> l000C0124
+	branch v15_91 != 2<32> l000C0124
 l000C0113:
 	loc13_105 = CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x10<32>:byte], byte, word32)
 l000C0124:
-	Mem114[v26_15:byte] = SLICE(loc13_105, byte, 0)
+	Mem114[v15_15:byte] = SLICE(loc13_105, byte, 0)
 	branch true l000C0060
 l000C0137:
 	arg0_1 = 1<32>

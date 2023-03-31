@@ -4,11 +4,16 @@
 
 #include "hello.h"
 
+// 000D0000: Stack Eq_n stackAlloc(Stack Eq_n arg0)
+Eq_n stackAlloc(Eq_n arg0)
+{
+}
+
 // 000D0028: Stack Eq_n stackSave()
 Eq_n stackSave()
 {
 	<unknown> Mem0;
-	&v2_n.u2->t0000.u0 = g_t140030.u2;
+	v2_n.u3 = g_t140030.u3;
 	return v2_n;
 }
 
@@ -16,7 +21,7 @@ Eq_n stackSave()
 void stackRestore(Eq_n arg0)
 {
 	Eq_n arg0;
-	g_t140030.u2 = (struct Eq_n *) arg0;
+	g_t140030.u3 = (word32 *) arg0;
 }
 
 // 000D0031: void establishStackSpace(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -24,8 +29,8 @@ void establishStackSpace(Eq_n arg0, Eq_n arg1)
 {
 	Eq_n arg0;
 	Eq_n arg1;
-	g_t140030.u2 = (struct Eq_n *) arg0;
-	g_t140034.u2 = (struct Eq_n *) arg1;
+	g_t140030.u3 = (word32 *) arg0;
+	g_t140034.u3 = (word32 *) arg1;
 }
 
 // 000D003D: void setThrew(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -37,26 +42,41 @@ void setThrew(Eq_n arg0, Eq_n arg1)
 void setTempRet0(Eq_n arg0)
 {
 	Eq_n arg0;
-	g_t140094.u2 = (struct Eq_n *) arg0;
+	g_t140094.u3 = (word32 *) arg0;
 }
 
 // 000D0053: Stack Eq_n getTempRet0()
 Eq_n getTempRet0()
 {
 	<unknown> Mem0;
-	&v2_n.u2->t0000.u0 = g_t140094.u2;
+	v2_n.u3 = g_t140094.u3;
 	return v2_n;
+}
+
+// 000D0057: Stack Eq_n fn000D0057()
+Eq_n fn000D0057()
+{
 }
 
 // 000D0082: void fn000D0082()
 void fn000D0082()
 {
-	v6_n = fn000D0057();
-	*(union Eq_n *) 0x4620 = v6_n;
+	v5_n = fn000D0057();
+	*(union Eq_n *) 0x4620 = v5_n;
 }
 
 // 000D0098: Stack Eq_n _main()
 Eq_n _main()
+{
+}
+
+// 000D00FD: Stack Eq_n fn000D00FD(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000D00FD(Eq_n arg0, Eq_n arg1)
+{
+}
+
+// 000D0143: Stack Eq_n fn000D0143(Stack Eq_n arg0)
+Eq_n fn000D0143(Eq_n arg0)
 {
 }
 
@@ -65,27 +85,130 @@ Eq_n fn000D0290(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
 }
 
-// 000D0874: Stack (ptr32 word32) fn000D0874(Stack (ptr32 (ptr32 word32)) arg0, Stack (ptr32 word32) arg1, Stack (ptr32 word32) arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5)
-word32 * fn000D0874(word32 ** arg0, word32 * arg1, word32 * arg2, word32 arg3, word32 arg4, word32 arg5)
+// 000D0843: Stack Eq_n fn000D0843(Stack Eq_n arg0)
+Eq_n fn000D0843(Eq_n arg0)
+{
+}
+
+// 000D0874: Stack Eq_n fn000D0874(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+Eq_n fn000D0874(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
 }
 
 // 000D0E65: void fn000D0E65(Stack Eq_n arg0)
 void fn000D0E65(Eq_n arg0)
 {
-	&v4.u2->t0000.u0 = g_t140030.u2;
+	v4.u3 = g_t140030.u3;
 	loc2 = v4;
-	v5 = arg0;
-	v6 = ___cxa_begin_catch(v5);
+	v4 = arg0;
+	v4 = ___cxa_begin_catch(v4);
 	fn0011E21F();
+}
+
+// 000D0E75: Stack Eq_n fn000D0E75(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000D0E75(Eq_n arg0, Eq_n arg1)
+{
+}
+
+// 000D0EAE: Stack Eq_n fn000D0EAE()
+Eq_n fn000D0EAE()
+{
+	v4.u3 = g_t140030.u3;
+	loc1 = v4;
+	v4.u0 = ~0x00;
+	return v4;
 }
 
 // 000D0EB9: void __GLOBAL__sub_I_hello_cpp()
 void __GLOBAL__sub_I_hello_cpp()
 {
-	&v4.u2->t0000.u0 = g_t140030.u2;
+	v4.u3 = g_t140030.u3;
 	loc1 = v4;
 	fn000D0082();
+}
+
+// 000D0EC4: Stack Eq_n fn000D0EC4(Stack Eq_n arg0)
+Eq_n fn000D0EC4(Eq_n arg0)
+{
+}
+
+// 000D0F0D: Stack Eq_n fn000D0F0D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000D0F0D(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000D120B: Stack Eq_n fn000D120B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000D120B(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000D12B7: Stack Eq_n fn000D12B7(Stack Eq_n arg0)
+Eq_n fn000D12B7(Eq_n arg0)
+{
+	v8.u3 = g_t140030.u3;
+	loc6 = v8;
+	v8 = arg0;
+	v9.u0 = ~0x0FFF;
+	v10 = v8 > v9;
+	loc2 = v10;
+	v8 = loc2;
+	if (v8)
+	{
+		v8.u0 = 0x00;
+		v9 = arg0;
+		v8 -= v9;
+		loc3 = v8;
+		v8 = ___errno_location();
+		loc4 = v8;
+		v8 = loc4;
+		v9 = loc3;
+		*v8.u0 = v9;
+		v8.u0 = ~0x00;
+		loc1 = v8;
+	}
+	else
+	{
+		v8 = arg0;
+		loc1 = v8;
+	}
+	v8 = loc1;
+	return v8;
+}
+
+// 000D12EA: Stack Eq_n ___errno_location()
+Eq_n ___errno_location()
+{
+	v10.u3 = g_t140030.u3;
+	loc7 = v10;
+	v10.u0 = 0x4624;
+	v10 = *v10.u0;
+	loc1 = v10;
+	v10 = loc1;
+	v11.u0 = 0x00;
+	v12 = v10 == v11;
+	loc2 = v12;
+	v10 = loc2;
+	if (v10)
+	{
+		v10.u0 = 18000;
+		loc0 = v10;
+	}
+	else
+	{
+		v10 = _pthread_self();
+		loc3 = v10;
+		v10 = loc3;
+		v11.u0 = 0x40;
+		v10 += v11;
+		loc4 = v10;
+		v10 = loc4;
+		v10 = *v10.u0;
+		loc5 = v10;
+		v10 = loc5;
+		loc0 = v10;
+	}
+	v10 = loc0;
+	return v10;
 }
 
 // 000D1329: void fn000D1329(Stack Eq_n arg0)
@@ -96,8 +219,13 @@ void fn000D1329(Eq_n arg0)
 // 000D1351: void fn000D1351(Stack Eq_n arg0)
 void fn000D1351(Eq_n arg0)
 {
-	&v4.u2->t0000.u0 = g_t140030.u2;
+	v4.u3 = g_t140030.u3;
 	loc2 = v4;
+}
+
+// 000D135A: Stack Eq_n fn000D135A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000D135A(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
 }
 
 // 000D157C: void fn000D157C(Stack Eq_n arg0)
@@ -105,86 +233,120 @@ void fn000D157C(Eq_n arg0)
 {
 }
 
-// 000D1689: Stack Eq_n fn000D1689(Stack Eq_n arg0, Stack (ptr32 word32) arg1, Stack (ptr32 word32) arg2, Stack word64 arg3)
-Eq_n fn000D1689(Eq_n arg0, word32 * arg1, word32 * arg2, word64 arg3)
+// 000D15A4: Stack Eq_n fn000D15A4(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000D15A4(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000D165D: Stack Eq_n fn000D165D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000D165D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v5.u3 = g_t140030.u3;
+	loc5 = v5;
+	v5 = arg0;
+	v6 = arg1;
+	v7 = arg2;
+	v8 = fn000D1672(v5, v6, v7);
+	loc6 = v8;
+	v8 = loc6;
+	return v8;
+}
+
+// 000D1672: Stack Eq_n fn000D1672(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000D1672(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v5.u3 = g_t140030.u3;
+	loc4 = v5;
+	v5 = arg0;
+	v6 = arg1;
+	v7 = arg2;
+	v8 = ~0x00;
+	v9 = fn000D1689(v5, v6, v7, v8);
+	loc5 = v9;
+	v9 = loc5;
+	return v9;
+}
+
+// 000D1689: Stack Eq_n fn000D1689(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word64 arg3)
+Eq_n fn000D1689(Eq_n arg0, Eq_n arg1, Eq_n arg2, word64 arg3)
 {
 }
 
 // 000D1767: void fn000D1767(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn000D1767(Eq_n arg0, Eq_n arg1)
 {
-	&v18.u2->t0000.u0 = g_t140030.u2;
+	v18.u3 = g_t140030.u3;
 	loc17 = v18;
-	v19 = arg0;
-	v20 = 0x68;
-	v21 = (union Eq_n *) (v19.u2 + v20 / 112);
-	loc7 = v21;
-	v22 = loc7;
-	v23 = arg1;
-	v22->u2 = (struct Eq_n *) v23;
-	v24 = arg0;
-	v25 = 0x08;
-	v26 = (word32 *) (v24.u2 + v25 / 112);
-	loc8 = v26;
-	v27 = loc8;
-	v28 = *v27;
-	loc9 = v28;
-	v29 = arg0;
-	v30 = 0x04;
-	v31 = (word32 *) (v29.u2 + v30 / 112);
-	loc10 = v31;
-	v32 = loc10;
-	v33 = *v32;
-	loc11 = v33;
-	v34 = loc9;
-	v35 = loc11;
-	v36 = v34 - v35;
-	loc12 = v36;
-	v37 = arg0;
-	v38 = 0x6C;
-	v39 = (union Eq_n *) (v37.u2 + v38 / 112);
-	loc13 = v39;
-	v40 = loc13;
-	v41 = loc12;
-	v40->u2 = (struct Eq_n *) v41;
-	v42 = arg1;
-	v43.u0 = 0x00;
-	v44 = v42 != v43;
-	loc14 = v44;
-	v45 = loc12;
-	v46 = arg1;
-	v47 = v45 > v46;
-	loc2 = v47;
-	v48 = loc14;
-	v49 = loc2;
-	v50 = v48 & v49;
-	loc15 = v50;
-	v51 = loc15;
-	if (v51)
+	v18 = arg0;
+	v19.u0 = 0x68;
+	v18 += v19;
+	loc7 = v18;
+	v18 = loc7;
+	v19 = arg1;
+	*v18.u3 = (word32) v19;
+	v18 = arg0;
+	v19.u0 = 0x08;
+	v18 += v19;
+	loc8 = v18;
+	v18 = loc8;
+	v18.u3 = *v18.u3;
+	loc9 = v18;
+	v18 = arg0;
+	v19.u0 = 0x04;
+	v18 += v19;
+	loc10 = v18;
+	v18 = loc10;
+	v18.u3 = *v18.u3;
+	loc11 = v18;
+	v18 = loc9;
+	v19 = loc11;
+	v18 -= v19;
+	loc12 = v18;
+	v18 = arg0;
+	v19.u0 = 0x6C;
+	v18 += v19;
+	loc13 = v18;
+	v18 = loc13;
+	v19 = loc12;
+	*v18.u3 = (word32) v19;
+	v18 = arg1;
+	v19.u0 = 0x00;
+	v20 = v18 != v19;
+	loc14 = v20;
+	v18 = loc12;
+	v19 = arg1;
+	v20 = v18 > v19;
+	loc2 = v20;
+	v18 = loc14;
+	v19 = loc2;
+	v18 &= v19;
+	loc15 = v18;
+	v18 = loc15;
+	if (v18)
 	{
-		v52 = loc11;
-		loc3 = v52;
-		v53 = loc3;
-		v54 = arg1;
-		v55 = v54.u2 + v53 / 112;
-		loc4 = v55;
-		v56 = arg0;
-		v57 = 100;
-		v58 = (word32 *) (v56.u2 + v57 / 112);
-		loc5 = v58;
-		v59 = loc5;
-		v60 = loc4;
-		*v59 = v60;
+		v18 = loc11;
+		loc3 = v18;
+		v18 = loc3;
+		v19 = arg1;
+		v18 += v19;
+		loc4 = v18;
+		v18 = arg0;
+		v19.u0 = 100;
+		v18 += v19;
+		loc5 = v18;
+		v18 = loc5;
+		v19 = loc4;
+		*v18.u3 = (word32) v19;
 	}
 	else
 	{
-		v61 = arg0;
-		v62 = 100;
-		v63 = (word32 *) (v61.u2 + v62 / 112);
-		loc6 = v63;
-		v64 = loc6;
-		v65 = loc9;
-		*v64 = v65;
+		v18 = arg0;
+		v19.u0 = 100;
+		v18 += v19;
+		loc6 = v18;
+		v18 = loc6;
+		v19 = loc9;
+		*v18.u3 = (word32) v19;
 	}
 }
 
@@ -194,14 +356,48 @@ uint64 fn000D17F5(uint64 arg0, uint64 arg1)
 	v2 = arg1;
 	v3 = v2 == 0x00;
 	if (v3)
-		v4 = 0x00;
+		v2 = 0x00;
 	else
 	{
-		v5 = arg0;
-		v6 = arg1;
-		v7 = v5 /u v6;
+		v2 = arg0;
+		v4 = arg1;
+		v5 = v2 /u v4;
 	}
-	return v7;
+	return v2;
+}
+
+// 000D2493: Stack Eq_n fn000D2493(Stack Eq_n arg0)
+Eq_n fn000D2493(Eq_n arg0)
+{
+}
+
+// 000D2665: Stack Eq_n fn000D2665(Stack Eq_n arg0)
+Eq_n fn000D2665(Eq_n arg0)
+{
+	v9.u3 = g_t140030.u3;
+	loc7 = v9;
+	v9 = arg0;
+	v10.u0 = 0x20;
+	v11 = v9 == v10;
+	loc1 = v11;
+	v9 = arg0;
+	v10.u0 = ~0x08;
+	v9 += v10;
+	loc2 = v9;
+	v9 = loc2;
+	v10.u0 = 0x05;
+	v11 = v9 < v10;
+	loc3 = v11;
+	v9 = loc1;
+	v10 = loc3;
+	v9 |= v10;
+	loc4 = v9;
+	v9 = loc4;
+	v10.u0 = 0x01;
+	v9 &= v10;
+	loc5 = v9;
+	v9 = loc5;
+	return v9;
 }
 
 // 000D2693: Stack Eq_n fn000D2693(Stack Eq_n arg0)
@@ -212,58 +408,117 @@ Eq_n fn000D2693(Eq_n arg0)
 // 000D2742: Stack Eq_n fn000D2742(Stack Eq_n arg0)
 Eq_n fn000D2742(Eq_n arg0)
 {
-	&v29.u2->t0000.u0 = g_t140030.u2;
+	v29.u3 = g_t140030.u3;
 	loc27 = v29;
-	v30 = arg0;
-	v31 = 0x4A;
-	v32 = (int8 *) (v30.u2 + v31 / 112);
-	loc2 = v32;
-	v33 = loc2;
-	v34 = *v33;
-	v35 = (word32) v34;
-	loc13 = v35;
-	v36 = loc13;
-	v37 = 0x18;
-	v38 = v36 << v37;
-	v39 = 0x18;
-	v40 = v38 >> v39;
-	loc19 = v40;
-	v41 = loc19;
-	v42 = 0xFF;
-	v43 = v41 + v42;
-	loc20 = v43;
-	v44 = loc20;
-	v45 = loc19;
-	v46 = v44 | v45;
-	loc21 = v46;
-	v47 = loc21;
-	v48 = 0xFF;
-	v49 = v47 & v48;
-	loc22 = v49;
-	v50 = loc2;
-	v51 = loc22;
-	v52 = (byte) v51;
-	*v50 = v52;
-	v53 = arg0;
-	v54 = 0x14;
-	v55 = (up32 *) (v53.u2 + v54 / 112);
-	loc23 = v55;
-	v56 = loc23;
-	v57 = *v56;
-	loc24 = v57;
-	v58 = arg0;
-	v59 = 44;
-	v60 = (up32 *) (v58.u2 + v59 / 112);
-	loc25 = v60;
-	v61 = loc25;
-	v62 = *v61;
-	loc3 = v62;
-	v63 = loc24;
-	v64 = loc3;
-	v65 = v63 > v64;
-	loc4 = v65;
-	v66 = loc4;
-	v66 = v66;
+	v29 = arg0;
+	v30.u0 = 0x4A;
+	v29 += v30;
+	loc2 = v29;
+	v29 = loc2;
+	v31.u3 = *v29.u3;
+	v29.u3 = (word32) v31;
+	loc13 = v29;
+	v29 = loc13;
+	v30.u0 = 0x18;
+	v29 <<= v30;
+	v30.u0 = 0x18;
+	v29 >>= v30;
+	loc19 = v29;
+	v29 = loc19;
+	v30.u0 = 0xFF;
+	v29 += v30;
+	loc20 = v29;
+	v29 = loc20;
+	v30 = loc19;
+	v29 |= v30;
+	loc21 = v29;
+	v29 = loc21;
+	v30.u0 = 0xFF;
+	v29 &= v30;
+	loc22 = v29;
+	v29 = loc2;
+	v30 = loc22;
+	v32 = (byte) v30;
+	v29.u4->t0000.u0 = (bool) v32;
+	v29 = arg0;
+	v30.u0 = 0x14;
+	v29 += v30;
+	loc23 = v29;
+	v29 = loc23;
+	v29.u3 = *v29.u3;
+	loc24 = v29;
+	v29 = arg0;
+	v30.u0 = 44;
+	v29 += v30;
+	loc25 = v29;
+	v29 = loc25;
+	v29.u3 = *v29.u3;
+	loc3 = v29;
+	v29 = loc24;
+	v30 = loc3;
+	v33 = v29 > v30;
+	loc4 = v33;
+	v29 = loc4;
+	v29 = v29;
+}
+
+// 000D285D: Stack Eq_n fn000D285D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000D285D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v5.u3 = g_t140030.u3;
+	loc5 = v5;
+	v5 = arg0;
+	v6 = arg1;
+	v7 = arg2;
+	v8 = fn000D2872(v5, v6, v7);
+	loc6 = v8;
+	v8 = loc6;
+	return v8;
+}
+
+// 000D2872: Stack Eq_n fn000D2872(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000D2872(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v5.u3 = g_t140030.u3;
+	loc4 = v5;
+	v5 = arg0;
+	v6 = arg1;
+	v7 = arg2;
+	v8 = 0x80000000;
+	v9 = fn000D1689(v5, v6, v7, v8);
+	loc5 = v9;
+	v9 = loc5;
+	return v9;
+}
+
+// 000D2892: Stack Eq_n fn000D2892(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000D2892(Eq_n arg0, Eq_n arg1)
+{
+	v10.u3 = g_t140030.u3;
+	loc3 = v10;
+	v11 = arg0;
+	v12 = reinterpret_cast<uint64>(v11);
+	loc4 = v12;
+	v11 = arg1;
+	v12 = reinterpret_cast<uint64>(v11);
+	loc5 = v12;
+	v13 = loc4;
+	v14.u0 = 0xFFFFFFFF;
+	v13 &= v14;
+	loc6 = v13;
+	v13 = loc5;
+	v14.u0 = 0x80000000;
+	v13 &= v14;
+	loc7 = v13;
+	v13 = loc7;
+	v14 = loc6;
+	v13 |= v14;
+	loc8 = v13;
+	v13 = loc8;
+	v11 = reinterpret_cast<real64>(v13);
+	loc9 = v11;
+	v11 = loc9;
+	return v11;
 }
 
 // 000D29A3: Stack Eq_n fn000D29A3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
@@ -282,72 +537,81 @@ uint64 fn000D2E1D(uint64 arg0, uint64 arg1)
 	v2 = arg1;
 	v3 = v2 == 0x00;
 	if (v3)
-		v4 = 0x00;
+		v2 = 0x00;
 	else
 	{
-		v5 = arg0;
-		v6 = arg1;
-		v7 = v5 % v6;
+		v2 = arg0;
+		v4 = arg1;
+		v2 %= v4;
 	}
-	return v7;
+	return v2;
+}
+
+// 000D61F1: Stack Eq_n fn000D61F1(Stack Eq_n arg0)
+Eq_n fn000D61F1(Eq_n arg0)
+{
+	v4.u3 = g_t140030.u3;
+	loc2 = v4;
+	v4.u0 = 0x00;
+	return v4;
 }
 
 // 000D61FC: Stack Eq_n fn000D61FC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn000D61FC(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	&v44.u2->t0000.u0 = g_t140030.u2;
+	v44.u3 = g_t140030.u3;
 	loc44 = v44;
-	v45 = arg2;
-	v46 = 0x10;
-	v47 = (word32 *) (v45.u2 + v46 / 112);
-	loc30 = v47;
-	v48 = loc30;
-	v49 = *v48;
-	loc37 = v49;
-	v50 = loc37;
-	v51 = 0x00;
-	v52 = v50 == v51;
-	loc38 = v52;
-	v53 = loc38;
-	if (v53)
+	v44 = arg2;
+	v45.u0 = 0x10;
+	v44 += v45;
+	loc30 = v44;
+	v44 = loc30;
+	v44.u3 = *v44.u3;
+	loc37 = v44;
+	v44 = loc37;
+	v45.u0 = 0x00;
+	v46 = v44 == v45;
+	loc38 = v46;
+	v44 = loc38;
+	if (v44)
 	{
-		v54 = arg2;
-		v55 = fn000D799D(v54);
-		loc40 = v55;
-		v56 = loc40;
-		v57.u0 = 0x00;
-		v58 = v56 == v57;
-		loc41 = v58;
-		v59 = loc41;
-		if (v59)
+		v44 = arg2;
+		v44 = fn000D799D(v44);
+		loc40 = v44;
+		v44 = loc40;
+		v45.u0 = 0x00;
+		v46 = v44 == v45;
+		loc41 = v46;
+		v44 = loc41;
+		if (v44)
 		{
-			v60 = loc30;
-			v61 = *v60;
-			loc8 = v61;
-			v62 = loc8;
-			loc12 = v62;
-			v63 = 0x05;
-			loc43 = v63;
+			v44 = loc30;
+			v44.u3 = *v44.u3;
+			loc8 = v44;
+			v44 = loc8;
+			loc12 = v44;
+			v44.u0 = 0x05;
+			loc43 = v44;
 		}
 		else
 		{
-			v64 = 0x00;
-			loc4 = v64;
+			v44.u0 = 0x00;
+			loc4 = v44;
 		}
 	}
 	else
 	{
-		v65 = loc37;
-		loc39 = v65;
-		v66 = loc39;
-		loc12 = v66;
-		v67 = 0x05;
-		loc43 = v67;
+		v44 = loc37;
+		loc39 = v44;
+		v44 = loc39;
+		loc12 = v44;
+		v44.u0 = 0x05;
+		loc43 = v44;
 	}
-	v68 = loc43;
-	v69 = 0x05;
-	v70 = v68 == v69;
-	v70 = v70;
+	v44 = loc43;
+	v45.u0 = 0x05;
+	v46 = v44 == v45;
+	v46 = v46;
 }
 
 // 000D6D47: void fn000D6D47(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -355,214 +619,2706 @@ void fn000D6D47(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 }
 
+// 000D6E73: Stack Eq_n fn000D6E73(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000D6E73(Eq_n arg0, Eq_n arg1)
+{
+	v7.u3 = g_t140030.u3;
+	loc6 = v7;
+	v7 = arg0;
+	v8.u0 = 0x00;
+	v9 = v7 == v8;
+	loc3 = v9;
+	v7 = loc3;
+	if (v7)
+	{
+		v7.u0 = 0x00;
+		loc2 = v7;
+	}
+	else
+	{
+		v7 = arg0;
+		v8 = arg1;
+		v10.u0 = 0x00;
+		v7 = fn000D779F(v7, v8, v10);
+		loc4 = v7;
+		v7 = loc4;
+		loc2 = v7;
+	}
+	v7 = loc2;
+	return v7;
+}
+
+// 000D6E9E: Stack Eq_n fn000D6E9E(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000D6E9E(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = arg1;
+	v6 = fn000D6EB2(v6, v7);
+	loc4 = v6;
+	v6 = loc4;
+	return v6;
+}
+
+// 000D6EB2: Stack Eq_n fn000D6EB2(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000D6EB2(Eq_n arg0, Eq_n arg1)
+{
+	v22.u3 = g_t140030.u3;
+	loc12 = v22;
+	v23 = arg0;
+	v24 = reinterpret_cast<uint64>(v23);
+	loc15 = v24;
+	v25 = loc15;
+	v26 = 0x34;
+	v25 >>= v26;
+	loc16 = v25;
+	v25 = loc16;
+	v22 = (word64) v25;
+	v27.u0 = 0xFFFF;
+	v22 &= v27;
+	loc9 = v22;
+	v22 = loc9;
+	v27.u0 = 0x07FF;
+	v22 &= v27;
+	loc10 = v22;
+	v22 = loc10;
+	v27.u0 = 0x10;
+	v22 <<= v27;
+	v27.u0 = 0x10;
+	v22 >>= v27;
+	v27.u0 = 0x00;
+	v22 -= v27;
+	switch (v22)
+	{
+	case 0x00:
+		v23 = arg0;
+		v28.u1 = 0.0;
+		v29 = v23 != v28;
+		loc4 = v29;
+		v22 = loc4;
+		if (v22)
+		{
+			v23 = arg0;
+			v28.u1 = 1.8446744073709552e+19;
+			v23 *= v28;
+			loc20 = v23;
+			v23 = loc20;
+			v27 = arg1;
+			v23 = fn000D6EB2(v23, v27);
+			loc21 = v23;
+			v22 = arg1;
+			v22.u3 = *v22.u3;
+			loc5 = v22;
+			v22 = loc5;
+			v27.u0 = ~0x3F;
+			v22 += v27;
+			loc6 = v22;
+			v23 = loc21;
+			loc18 = v23;
+			v22 = loc6;
+			loc8 = v22;
+		}
+		else
+		{
+			v23 = arg0;
+			loc18 = v23;
+			v22.u0 = 0x00;
+			loc8 = v22;
+		}
+		v22 = arg1;
+		v27 = loc8;
+		*v22.u0 = v27;
+		v23 = loc18;
+		loc17 = v23;
+		break;
+	case 0x01:
+		v23 = arg0;
+		loc17 = v23;
+		break;
+	case 0x02:
+	case 0x03:
+	case 0x04:
+	case 0x05:
+	case 0x06:
+	case 0x07:
+	case 0x08:
+	case 0x09:
+	case 0x0A:
+	case 11:
+	case 0x0C:
+	case 0x0D:
+	case 0x0E:
+	case 0x0F:
+	case 0x10:
+	case 0x11:
+	case 0x12:
+	case 0x13:
+	case 0x14:
+	case 0x15:
+	case 22:
+	case 0x17:
+	case 0x18:
+	case 0x19:
+	case 0x1A:
+	case 0x1B:
+	case 0x1C:
+	case 0x1D:
+	case 0x1E:
+	case 0x1F:
+	case 0x20:
+	case 33:
+	case 0x22:
+	case 0x23:
+	case 0x24:
+	case 0x25:
+	case 0x26:
+	case 0x27:
+	case 0x28:
+	case 0x29:
+	case 0x2A:
+	case 0x2B:
+	case 44:
+	case 0x2D:
+	case 0x2E:
+	case 0x2F:
+	case 0x30:
+	case 0x31:
+	case 0x32:
+	case 0x33:
+	case 0x34:
+	case 0x35:
+	case 0x36:
+	case 55:
+	case 0x38:
+	case 0x39:
+	case 0x3A:
+	case 0x3B:
+	case 0x3C:
+	case 0x3D:
+	case 0x3E:
+	case 0x3F:
+	case 0x40:
+	case 0x41:
+	case 66:
+	case 0x43:
+	case 0x44:
+	case 0x45:
+	case 0x46:
+	case 0x47:
+	case 0x48:
+	case 0x49:
+	case 0x4A:
+	case 0x4B:
+	case 0x4C:
+	case 77:
+	case 0x4E:
+	case 0x4F:
+	case 0x50:
+	case 0x51:
+	case 0x52:
+	case 0x53:
+	case 0x54:
+	case 0x55:
+	case 0x56:
+	case 0x57:
+	case 88:
+	case 0x59:
+	case 0x5A:
+	case 0x5B:
+	case 0x5C:
+	case 0x5D:
+	case 0x5E:
+	case 0x5F:
+	case 0x60:
+	case 0x61:
+	case 0x62:
+	case 99:
+	case 100:
+	case 101:
+	case 0x66:
+	case 0x67:
+	case 0x68:
+	case 0x69:
+	case 0x6A:
+	case 0x6B:
+	case 0x6C:
+	case 0x6D:
+	case 110:
+	case 111:
+	case 0x70:
+	case 113:
+	case 114:
+	case 115:
+	case 116:
+	case 117:
+	case 118:
+	case 0x77:
+	case 0x78:
+	case 121:
+	case 122:
+	case 0x7B:
+	case 0x7C:
+	case 0x7D:
+	case 0x7E:
+	case 0x7F:
+	case 0x80:
+	case 0x81:
+	case 0x82:
+	case 131:
+	case 0x84:
+	case 133:
+	case 0x86:
+	case 0x87:
+	case 0x88:
+	case 0x89:
+	case 0x8A:
+	case 0x8B:
+	case 0x8C:
+	case 141:
+	case 0x8E:
+	case 0x8F:
+	case 0x90:
+	case 0x91:
+	case 0x92:
+	case 0x93:
+	case 0x94:
+	case 0x95:
+	case 0x96:
+	case 151:
+	case 0x98:
+	case 0x99:
+	case 0x9A:
+	case 155:
+	case 0x9C:
+	case 0x9D:
+	case 0x9E:
+	case 0x9F:
+	case 0xA0:
+	case 161:
+	case 0xA2:
+	case 0xA3:
+	case 0xA4:
+	case 0xA5:
+	case 166:
+	case 0xA7:
+	case 0xA8:
+	case 0xA9:
+	case 0xAA:
+	case 171:
+	case 0xAC:
+	case 0xAD:
+	case 0xAE:
+	case 0xAF:
+	case 0xB0:
+	case 177:
+	case 0xB2:
+	case 0xB3:
+	case 0xB4:
+	case 181:
+	case 0xB6:
+	case 0xB7:
+	case 0xB8:
+	case 0xB9:
+	case 0xBA:
+	case 0xBB:
+	case 188:
+	case 0xBD:
+	case 0xBE:
+	case 191:
+	case 0xC0:
+	case 0xC1:
+	case 0xC2:
+	case 0xC3:
+	case 0xC4:
+	case 0xC5:
+	case 0xC6:
+	case 199:
+	case 200:
+	case 0xC9:
+	case 202:
+	case 0xCB:
+	case 0xCC:
+	case 0xCD:
+	case 0xCE:
+	case 0xCF:
+	case 0xD0:
+	case 0xD1:
+	case 0xD2:
+	case 211:
+	case 212:
+	case 0xD5:
+	case 0xD6:
+	case 0xD7:
+	case 0xD8:
+	case 0xD9:
+	case 0xDA:
+	case 0xDB:
+	case 220:
+	case 0xDD:
+	case 222:
+	case 223:
+	case 0xE0:
+	case 225:
+	case 226:
+	case 227:
+	case 228:
+	case 229:
+	case 0xE6:
+	case 0xE7:
+	case 232:
+	case 233:
+	case 0xEA:
+	case 0xEB:
+	case 0xEC:
+	case 0xED:
+	case 0xEE:
+	case 0xEF:
+	case 0xF0:
+	case 0xF1:
+	case 242:
+	case 0xF3:
+	case 244:
+	case 0xF5:
+	case 0xF6:
+	case 0xF7:
+	case 0xF8:
+	case 0xF9:
+	case 0xFA:
+	case 0xFB:
+	case 252:
+	case 0xFD:
+	case 0xFE:
+	case 0xFF:
+	case 0x0100:
+	case 0x0101:
+	case 0x0102:
+	case 0x0103:
+	case 0x0104:
+	case 0x0105:
+	case 262:
+	case 0x0107:
+	case 0x0108:
+	case 0x0109:
+	case 266:
+	case 0x010B:
+	case 0x010C:
+	case 0x010D:
+	case 0x010E:
+	case 0x010F:
+	case 0x0110:
+	case 0x0111:
+	case 0x0112:
+	case 0x0113:
+	case 0x0114:
+	case 0x0115:
+	case 0x0116:
+	case 0x0117:
+	case 0x0118:
+	case 0x0119:
+	case 0x011A:
+	case 0x011B:
+	case 0x011C:
+	case 0x011D:
+	case 0x011E:
+	case 0x011F:
+	case 288:
+	case 0x0121:
+	case 0x0122:
+	case 0x0123:
+	case 292:
+	case 0x0125:
+	case 0x0126:
+	case 0x0127:
+	case 0x0128:
+	case 0x0129:
+	case 0x012A:
+	case 299:
+	case 300:
+	case 0x012D:
+	case 0x012E:
+	case 303:
+	case 0x0130:
+	case 0x0131:
+	case 0x0132:
+	case 0x0133:
+	case 0x0134:
+	case 0x0135:
+	case 0x0136:
+	case 311:
+	case 0x0138:
+	case 313:
+	case 0x013A:
+	case 0x013B:
+	case 0x013C:
+	case 0x013D:
+	case 0x013E:
+	case 0x013F:
+	case 0x0140:
+	case 0x0141:
+	case 322:
+	case 323:
+	case 0x0144:
+	case 0x0145:
+	case 0x0146:
+	case 0x0147:
+	case 0x0148:
+	case 0x0149:
+	case 330:
+	case 331:
+	case 332:
+	case 333:
+	case 334:
+	case 335:
+	case 336:
+	case 0x0151:
+	case 338:
+	case 339:
+	case 0x0154:
+	case 0x0155:
+	case 0x0156:
+	case 343:
+	case 344:
+	case 0x0159:
+	case 0x015A:
+	case 0x015B:
+	case 0x015C:
+	case 0x015D:
+	case 0x015E:
+	case 0x015F:
+	case 0x0160:
+	case 0x0161:
+	case 0x0162:
+	case 355:
+	case 0x0164:
+	case 0x0165:
+	case 0x0166:
+	case 0x0167:
+	case 0x0168:
+	case 0x0169:
+	case 0x016A:
+	case 363:
+	case 0x016C:
+	case 0x016D:
+	case 366:
+	case 0x016F:
+	case 0x0170:
+	case 0x0171:
+	case 0x0172:
+	case 0x0173:
+	case 0x0174:
+	case 373:
+	case 0x0176:
+	case 0x0177:
+	case 0x0178:
+	case 377:
+	case 0x017A:
+	case 0x017B:
+	case 0x017C:
+	case 0x017D:
+	case 0x017E:
+	case 383:
+	case 0x0180:
+	case 0x0181:
+	case 0x0182:
+	case 0x0183:
+	case 388:
+	case 0x0185:
+	case 0x0186:
+	case 0x0187:
+	case 0x0188:
+	case 393:
+	case 0x018A:
+	case 0x018B:
+	case 0x018C:
+	case 0x018D:
+	case 0x018E:
+	case 399:
+	case 400:
+	case 0x0191:
+	case 0x0192:
+	case 0x0193:
+	case 404:
+	case 0x0195:
+	case 0x0196:
+	case 0x0197:
+	case 0x0198:
+	case 0x0199:
+	case 0x019A:
+	case 411:
+	case 0x019C:
+	case 0x019D:
+	case 414:
+	case 0x019F:
+	case 0x01A0:
+	case 0x01A1:
+	case 0x01A2:
+	case 0x01A3:
+	case 0x01A4:
+	case 0x01A5:
+	case 422:
+	case 0x01A7:
+	case 424:
+	case 0x01A9:
+	case 0x01AA:
+	case 0x01AB:
+	case 0x01AC:
+	case 0x01AD:
+	case 0x01AE:
+	case 0x01AF:
+	case 0x01B0:
+	case 0x01B1:
+	case 434:
+	case 0x01B3:
+	case 0x01B4:
+	case 0x01B5:
+	case 0x01B6:
+	case 0x01B7:
+	case 440:
+	case 441:
+	case 442:
+	case 0x01BB:
+	case 444:
+	case 445:
+	case 446:
+	case 447:
+	case 448:
+	case 0x01C1:
+	case 0x01C2:
+	case 0x01C3:
+	case 0x01C4:
+	case 0x01C5:
+	case 454:
+	case 455:
+	case 0x01C8:
+	case 0x01C9:
+	case 0x01CA:
+	case 0x01CB:
+	case 0x01CC:
+	case 0x01CD:
+	case 0x01CE:
+	case 0x01CF:
+	case 464:
+	case 0x01D1:
+	case 466:
+	case 0x01D3:
+	case 0x01D4:
+	case 0x01D5:
+	case 0x01D6:
+	case 0x01D7:
+	case 0x01D8:
+	case 0x01D9:
+	case 474:
+	case 0x01DB:
+	case 0x01DC:
+	case 0x01DD:
+	case 0x01DE:
+	case 0x01DF:
+	case 0x01E0:
+	case 0x01E1:
+	case 0x01E2:
+	case 0x01E3:
+	case 484:
+	case 0x01E5:
+	case 0x01E6:
+	case 0x01E7:
+	case 488:
+	case 0x01E9:
+	case 0x01EA:
+	case 0x01EB:
+	case 0x01EC:
+	case 0x01ED:
+	case 0x01EE:
+	case 0x01EF:
+	case 0x01F0:
+	case 0x01F1:
+	case 0x01F2:
+	case 499:
+	case 500:
+	case 0x01F5:
+	case 0x01F6:
+	case 0x01F7:
+	case 0x01F8:
+	case 505:
+	case 0x01FA:
+	case 0x01FB:
+	case 0x01FC:
+	case 0x01FD:
+	case 0x01FE:
+	case 0x01FF:
+	case 0x0200:
+	case 0x0201:
+	case 0x0202:
+	case 515:
+	case 0x0204:
+	case 0x0205:
+	case 0x0206:
+	case 0x0207:
+	case 0x0208:
+	case 0x0209:
+	case 522:
+	case 0x020B:
+	case 0x020C:
+	case 525:
+	case 0x020E:
+	case 0x020F:
+	case 0x0210:
+	case 0x0211:
+	case 0x0212:
+	case 0x0213:
+	case 0x0214:
+	case 533:
+	case 0x0216:
+	case 535:
+	case 0x0218:
+	case 0x0219:
+	case 0x021A:
+	case 0x021B:
+	case 0x021C:
+	case 0x021D:
+	case 0x021E:
+	case 0x021F:
+	case 0x0220:
+	case 0x0221:
+	case 0x0222:
+	case 0x0223:
+	case 0x0224:
+	case 0x0225:
+	case 0x0226:
+	case 0x0227:
+	case 0x0228:
+	case 0x0229:
+	case 0x022A:
+	case 555:
+	case 0x022C:
+	case 0x022D:
+	case 0x022E:
+	case 0x022F:
+	case 0x0230:
+	case 0x0231:
+	case 0x0232:
+	case 0x0233:
+	case 0x0234:
+	case 565:
+	case 566:
+	case 0x0237:
+	case 0x0238:
+	case 0x0239:
+	case 0x023A:
+	case 0x023B:
+	case 0x023C:
+	case 0x023D:
+	case 0x023E:
+	case 575:
+	case 0x0240:
+	case 577:
+	case 0x0242:
+	case 0x0243:
+	case 0x0244:
+	case 0x0245:
+	case 0x0246:
+	case 0x0247:
+	case 0x0248:
+	case 585:
+	case 0x024A:
+	case 0x024B:
+	case 588:
+	case 0x024D:
+	case 0x024E:
+	case 0x024F:
+	case 0x0250:
+	case 0x0251:
+	case 0x0252:
+	case 595:
+	case 0x0254:
+	case 0x0255:
+	case 0x0256:
+	case 599:
+	case 600:
+	case 0x0259:
+	case 0x025A:
+	case 0x025B:
+	case 0x025C:
+	case 0x025D:
+	case 606:
+	case 0x025F:
+	case 0x0260:
+	case 0x0261:
+	case 0x0262:
+	case 611:
+	case 0x0264:
+	case 0x0265:
+	case 0x0266:
+	case 0x0267:
+	case 616:
+	case 0x0269:
+	case 0x026A:
+	case 0x026B:
+	case 0x026C:
+	case 0x026D:
+	case 622:
+	case 0x026F:
+	case 0x0270:
+	case 0x0271:
+	case 0x0272:
+	case 0x0273:
+	case 0x0274:
+	case 0x0275:
+	case 0x0276:
+	case 0x0277:
+	case 0x0278:
+	case 633:
+	case 0x027A:
+	case 0x027B:
+	case 636:
+	case 0x027D:
+	case 0x027E:
+	case 0x027F:
+	case 0x0280:
+	case 0x0281:
+	case 0x0282:
+	case 0x0283:
+	case 644:
+	case 0x0285:
+	case 646:
+	case 0x0287:
+	case 0x0288:
+	case 0x0289:
+	case 0x028A:
+	case 0x028B:
+	case 0x028C:
+	case 0x028D:
+	case 0x028E:
+	case 655:
+	case 656:
+	case 0x0291:
+	case 0x0292:
+	case 0x0293:
+	case 660:
+	case 661:
+	case 662:
+	case 663:
+	case 664:
+	case 0x0299:
+	case 666:
+	case 667:
+	case 668:
+	case 669:
+	case 0x029E:
+	case 0x029F:
+	case 0x02A0:
+	case 0x02A1:
+	case 0x02A2:
+	case 0x02A3:
+	case 676:
+	case 677:
+	case 0x02A6:
+	case 0x02A7:
+	case 0x02A8:
+	case 0x02A9:
+	case 0x02AA:
+	case 0x02AB:
+	case 0x02AC:
+	case 0x02AD:
+	case 686:
+	case 0x02AF:
+	case 688:
+	case 0x02B1:
+	case 0x02B2:
+	case 0x02B3:
+	case 0x02B4:
+	case 0x02B5:
+	case 0x02B6:
+	case 0x02B7:
+	case 696:
+	case 0x02B9:
+	case 0x02BA:
+	case 0x02BB:
+	case 700:
+	case 0x02BD:
+	case 0x02BE:
+	case 0x02BF:
+	case 0x02C0:
+	case 0x02C1:
+	case 0x02C2:
+	case 707:
+	case 0x02C4:
+	case 0x02C5:
+	case 0x02C6:
+	case 711:
+	case 0x02C8:
+	case 0x02C9:
+	case 0x02CA:
+	case 0x02CB:
+	case 0x02CC:
+	case 717:
+	case 0x02CE:
+	case 0x02CF:
+	case 0x02D0:
+	case 0x02D1:
+	case 0x02D2:
+	case 0x02D3:
+	case 0x02D4:
+	case 0x02D5:
+	case 0x02D6:
+	case 727:
+	case 0x02D8:
+	case 0x02D9:
+	case 0x02DA:
+	case 0x02DB:
+	case 0x02DC:
+	case 0x02DD:
+	case 0x02DE:
+	case 0x02DF:
+	case 0x02E0:
+	case 737:
+	case 0x02E2:
+	case 0x02E3:
+	case 0x02E4:
+	case 0x02E5:
+	case 0x02E6:
+	case 0x02E7:
+	case 744:
+	case 0x02E9:
+	case 0x02EA:
+	case 747:
+	case 0x02EC:
+	case 0x02ED:
+	case 0x02EE:
+	case 0x02EF:
+	case 0x02F0:
+	case 0x02F1:
+	case 0x02F2:
+	case 755:
+	case 0x02F4:
+	case 757:
+	case 0x02F6:
+	case 0x02F7:
+	case 0x02F8:
+	case 0x02F9:
+	case 0x02FA:
+	case 0x02FB:
+	case 0x02FC:
+	case 0x02FD:
+	case 766:
+	case 0x02FF:
+	case 0x0300:
+	case 0x0301:
+	case 770:
+	case 0x0303:
+	case 772:
+	case 773:
+	case 774:
+	case 775:
+	case 776:
+	case 777:
+	case 778:
+	case 779:
+	case 0x030C:
+	case 0x030D:
+	case 0x030E:
+	case 0x030F:
+	case 0x0310:
+	case 0x0311:
+	case 0x0312:
+	case 0x0313:
+	case 788:
+	case 0x0315:
+	case 0x0316:
+	case 0x0317:
+	case 0x0318:
+	case 0x0319:
+	case 0x031A:
+	case 0x031B:
+	case 0x031C:
+	case 797:
+	case 0x031E:
+	case 799:
+	case 800:
+	case 0x0321:
+	case 0x0322:
+	case 0x0323:
+	case 0x0324:
+	case 0x0325:
+	case 0x0326:
+	case 0x0327:
+	case 808:
+	case 0x0329:
+	case 0x032A:
+	case 811:
+	case 0x032C:
+	case 0x032D:
+	case 0x032E:
+	case 0x032F:
+	case 0x0330:
+	case 0x0331:
+	case 0x0332:
+	case 0x0333:
+	case 0x0334:
+	case 0x0335:
+	case 0x0336:
+	case 0x0337:
+	case 0x0338:
+	case 0x0339:
+	case 0x033A:
+	case 0x033B:
+	case 0x033C:
+	case 0x033D:
+	case 0x033E:
+	case 0x033F:
+	case 0x0340:
+	case 833:
+	case 0x0342:
+	case 0x0343:
+	case 0x0344:
+	case 0x0345:
+	case 838:
+	case 0x0347:
+	case 0x0348:
+	case 0x0349:
+	case 0x034A:
+	case 0x034B:
+	case 844:
+	case 0x034D:
+	case 0x034E:
+	case 0x034F:
+	case 848:
+	case 0x0351:
+	case 0x0352:
+	case 0x0353:
+	case 0x0354:
+	case 0x0355:
+	case 0x0356:
+	case 855:
+	case 0x0358:
+	case 0x0359:
+	case 858:
+	case 0x035B:
+	case 0x035C:
+	case 0x035D:
+	case 0x035E:
+	case 0x035F:
+	case 0x0360:
+	case 0x0361:
+	case 866:
+	case 0x0363:
+	case 868:
+	case 0x0365:
+	case 0x0366:
+	case 0x0367:
+	case 0x0368:
+	case 0x0369:
+	case 0x036A:
+	case 0x036B:
+	case 0x036C:
+	case 877:
+	case 878:
+	case 0x036F:
+	case 880:
+	case 881:
+	case 882:
+	case 0x0373:
+	case 884:
+	case 885:
+	case 886:
+	case 0x0377:
+	case 888:
+	case 889:
+	case 0x037A:
+	case 0x037B:
+	case 0x037C:
+	case 0x037D:
+	case 0x037E:
+	case 0x037F:
+	case 0x0380:
+	case 0x0381:
+	case 898:
+	case 0x0383:
+	case 900:
+	case 0x0385:
+	case 0x0386:
+	case 0x0387:
+	case 0x0388:
+	case 0x0389:
+	case 0x038A:
+	case 0x038B:
+	case 0x038C:
+	case 909:
+	case 0x038E:
+	case 911:
+	case 0x0390:
+	case 0x0391:
+	case 0x0392:
+	case 0x0393:
+	case 0x0394:
+	case 0x0395:
+	case 0x0396:
+	case 919:
+	case 0x0398:
+	case 0x0399:
+	case 922:
+	case 0x039B:
+	case 0x039C:
+	case 0x039D:
+	case 0x039E:
+	case 0x039F:
+	case 0x03A0:
+	case 929:
+	case 0x03A2:
+	case 0x03A3:
+	case 0x03A4:
+	case 933:
+	case 0x03A6:
+	case 0x03A7:
+	case 0x03A8:
+	case 0x03A9:
+	case 0x03AA:
+	case 939:
+	case 0x03AC:
+	case 0x03AD:
+	case 0x03AE:
+	case 0x03AF:
+	case 944:
+	case 0x03B1:
+	case 0x03B2:
+	case 0x03B3:
+	case 0x03B4:
+	case 949:
+	case 0x03B6:
+	case 0x03B7:
+	case 0x03B8:
+	case 0x03B9:
+	case 0x03BA:
+	case 0x03BB:
+	case 0x03BC:
+	case 0x03BD:
+	case 0x03BE:
+	case 959:
+	case 0x03C0:
+	case 0x03C1:
+	case 0x03C2:
+	case 0x03C3:
+	case 0x03C4:
+	case 0x03C5:
+	case 966:
+	case 0x03C7:
+	case 0x03C8:
+	case 969:
+	case 0x03CA:
+	case 0x03CB:
+	case 0x03CC:
+	case 0x03CD:
+	case 0x03CE:
+	case 0x03CF:
+	case 0x03D0:
+	case 977:
+	case 0x03D2:
+	case 0x03D3:
+	case 0x03D4:
+	case 0x03D5:
+	case 0x03D6:
+	case 0x03D7:
+	case 0x03D8:
+	case 0x03D9:
+	case 0x03DA:
+	case 0x03DB:
+	case 988:
+	case 0x03DD:
+	case 990:
+	case 991:
+	case 992:
+	case 993:
+	case 994:
+	case 0x03E3:
+	case 996:
+	case 997:
+	case 998:
+	case 999:
+	case 1000:
+	case 1001:
+	case 1002:
+	case 1003:
+	case 1004:
+	case 1005:
+	case 0x03EE:
+	case 1007:
+	case 0x03F0:
+	case 1009:
+	case 1010:
+	case 1011:
+	case 1012:
+	case 1013:
+	case 1014:
+	case 1015:
+	case 1016:
+	case 1017:
+	case 1018:
+	case 1019:
+	case 1020:
+	case 1021:
+	case 1022:
+	case 0x03FF:
+	case 0x0400:
+	case 0x0401:
+	case 0x0402:
+	case 0x0403:
+	case 0x0404:
+	case 0x0405:
+	case 0x0406:
+	case 0x0407:
+	case 0x0408:
+	case 0x0409:
+	case 0x040A:
+	case 0x040B:
+	case 0x040C:
+	case 0x040D:
+	case 0x040E:
+	case 0x040F:
+	case 0x0410:
+	case 0x0411:
+	case 0x0412:
+	case 0x0413:
+	case 0x0414:
+	case 0x0415:
+	case 0x0416:
+	case 0x0417:
+	case 0x0418:
+	case 0x0419:
+	case 1050:
+	case 1051:
+	case 0x041C:
+	case 0x041D:
+	case 0x041E:
+	case 1055:
+	case 0x0420:
+	case 0x0421:
+	case 0x0422:
+	case 0x0423:
+	case 0x0424:
+	case 1061:
+	case 0x0426:
+	case 0x0427:
+	case 0x0428:
+	case 0x0429:
+	case 1066:
+	case 0x042B:
+	case 0x042C:
+	case 0x042D:
+	case 1070:
+	case 1071:
+	case 0x0430:
+	case 0x0431:
+	case 0x0432:
+	case 0x0433:
+	case 0x0434:
+	case 1077:
+	case 0x0436:
+	case 0x0437:
+	case 1080:
+	case 1081:
+	case 0x043A:
+	case 0x043B:
+	case 0x043C:
+	case 0x043D:
+	case 0x043E:
+	case 0x043F:
+	case 0x0440:
+	case 0x0441:
+	case 0x0442:
+	case 0x0443:
+	case 0x0444:
+	case 0x0445:
+	case 0x0446:
+	case 0x0447:
+	case 0x0448:
+	case 0x0449:
+	case 0x044A:
+	case 0x044B:
+	case 1100:
+	case 1101:
+	case 0x044E:
+	case 0x044F:
+	case 0x0450:
+	case 1105:
+	case 1106:
+	case 1107:
+	case 0x0454:
+	case 0x0455:
+	case 1110:
+	case 1111:
+	case 1112:
+	case 1113:
+	case 1114:
+	case 1115:
+	case 1116:
+	case 1117:
+	case 1118:
+	case 1119:
+	case 0x0460:
+	case 1121:
+	case 1122:
+	case 1123:
+	case 0x0464:
+	case 1125:
+	case 0x0466:
+	case 1127:
+	case 1128:
+	case 1129:
+	case 1130:
+	case 1131:
+	case 1132:
+	case 1133:
+	case 1134:
+	case 1135:
+	case 0x0470:
+	case 1137:
+	case 1138:
+	case 1139:
+	case 0x0474:
+	case 1141:
+	case 1142:
+	case 0x0477:
+	case 1144:
+	case 1145:
+	case 1146:
+	case 1147:
+	case 1148:
+	case 1149:
+	case 1150:
+	case 1151:
+	case 0x0480:
+	case 1153:
+	case 1154:
+	case 1155:
+	case 0x0484:
+	case 1157:
+	case 1158:
+	case 1159:
+	case 0x0488:
+	case 1161:
+	case 1162:
+	case 1163:
+	case 1164:
+	case 1165:
+	case 1166:
+	case 1167:
+	case 0x0490:
+	case 1169:
+	case 1170:
+	case 1171:
+	case 0x0494:
+	case 1173:
+	case 1174:
+	case 1175:
+	case 1176:
+	case 1177:
+	case 1178:
+	case 1179:
+	case 1180:
+	case 1181:
+	case 1182:
+	case 1183:
+	case 0x04A0:
+	case 1185:
+	case 1186:
+	case 1187:
+	case 1188:
+	case 1189:
+	case 1190:
+	case 1191:
+	case 1192:
+	case 1193:
+	case 0x04AA:
+	case 1195:
+	case 1196:
+	case 1197:
+	case 1198:
+	case 1199:
+	case 0x04B0:
+	case 1201:
+	case 1202:
+	case 0x04B3:
+	case 0x04B4:
+	case 0x04B5:
+	case 0x04B6:
+	case 0x04B7:
+	case 0x04B8:
+	case 0x04B9:
+	case 1210:
+	case 1211:
+	case 1212:
+	case 1213:
+	case 1214:
+	case 1215:
+	case 0x04C0:
+	case 1217:
+	case 1218:
+	case 1219:
+	case 0x04C4:
+	case 1221:
+	case 1222:
+	case 1223:
+	case 1224:
+	case 1225:
+	case 1226:
+	case 1227:
+	case 0x04CC:
+	case 1229:
+	case 0x04CE:
+	case 1231:
+	case 0x04D0:
+	case 1233:
+	case 0x04D2:
+	case 0x04D3:
+	case 0x04D4:
+	case 0x04D5:
+	case 0x04D6:
+	case 0x04D7:
+	case 0x04D8:
+	case 1241:
+	case 1242:
+	case 0x04DB:
+	case 1244:
+	case 0x04DD:
+	case 0x04DE:
+	case 0x04DF:
+	case 0x04E0:
+	case 0x04E1:
+	case 0x04E2:
+	case 1251:
+	case 0x04E4:
+	case 0x04E5:
+	case 0x04E6:
+	case 1255:
+	case 0x04E8:
+	case 0x04E9:
+	case 0x04EA:
+	case 0x04EB:
+	case 0x04EC:
+	case 1261:
+	case 0x04EE:
+	case 0x04EF:
+	case 0x04F0:
+	case 0x04F1:
+	case 1266:
+	case 0x04F3:
+	case 0x04F4:
+	case 0x04F5:
+	case 0x04F6:
+	case 1271:
+	case 1272:
+	case 0x04F9:
+	case 0x04FA:
+	case 0x04FB:
+	case 0x04FC:
+	case 1277:
+	case 0x04FE:
+	case 0x04FF:
+	case 0x0500:
+	case 0x0501:
+	case 0x0502:
+	case 0x0503:
+	case 0x0504:
+	case 0x0505:
+	case 0x0506:
+	case 0x0507:
+	case 0x0508:
+	case 0x0509:
+	case 0x050A:
+	case 0x050B:
+	case 0x050C:
+	case 0x050D:
+	case 0x050E:
+	case 0x050F:
+	case 0x0510:
+	case 0x0511:
+	case 0x0512:
+	case 1299:
+	case 1300:
+	case 0x0515:
+	case 0x0516:
+	case 1303:
+	case 0x0518:
+	case 0x0519:
+	case 0x051A:
+	case 0x051B:
+	case 0x051C:
+	case 0x051D:
+	case 1310:
+	case 1311:
+	case 0x0520:
+	case 1313:
+	case 0x0522:
+	case 1315:
+	case 1316:
+	case 0x0525:
+	case 1318:
+	case 1319:
+	case 0x0528:
+	case 1321:
+	case 1322:
+	case 1323:
+	case 0x052C:
+	case 0x052D:
+	case 0x052E:
+	case 0x052F:
+	case 0x0530:
+	case 0x0531:
+	case 1330:
+	case 1331:
+	case 1332:
+	case 1333:
+	case 1334:
+	case 1335:
+	case 1336:
+	case 1337:
+	case 1338:
+	case 1339:
+	case 0x053C:
+	case 1341:
+	case 0x053E:
+	case 1343:
+	case 0x0540:
+	case 0x0541:
+	case 0x0542:
+	case 0x0543:
+	case 0x0544:
+	case 0x0545:
+	case 0x0546:
+	case 1351:
+	case 0x0548:
+	case 1353:
+	case 0x054A:
+	case 1355:
+	case 0x054C:
+	case 0x054D:
+	case 0x054E:
+	case 0x054F:
+	case 0x0550:
+	case 0x0551:
+	case 0x0552:
+	case 0x0553:
+	case 0x0554:
+	case 0x0555:
+	case 0x0556:
+	case 0x0557:
+	case 0x0558:
+	case 0x0559:
+	case 0x055A:
+	case 0x055B:
+	case 0x055C:
+	case 0x055D:
+	case 0x055E:
+	case 0x055F:
+	case 0x0560:
+	case 1377:
+	case 0x0562:
+	case 0x0563:
+	case 0x0564:
+	case 0x0565:
+	case 0x0566:
+	case 1383:
+	case 0x0568:
+	case 0x0569:
+	case 0x056A:
+	case 0x056B:
+	case 1388:
+	case 0x056D:
+	case 0x056E:
+	case 1391:
+	case 0x0570:
+	case 1393:
+	case 0x0572:
+	case 0x0573:
+	case 0x0574:
+	case 0x0575:
+	case 0x0576:
+	case 0x0577:
+	case 1400:
+	case 1401:
+	case 0x057A:
+	case 0x057B:
+	case 1404:
+	case 0x057D:
+	case 0x057E:
+	case 0x057F:
+	case 0x0580:
+	case 0x0581:
+	case 1410:
+	case 1411:
+	case 1412:
+	case 0x0585:
+	case 1414:
+	case 1415:
+	case 0x0588:
+	case 1417:
+	case 1418:
+	case 1419:
+	case 0x058C:
+	case 1421:
+	case 1422:
+	case 0x058F:
+	case 0x0590:
+	case 0x0591:
+	case 0x0592:
+	case 0x0593:
+	case 0x0594:
+	case 0x0595:
+	case 0x0596:
+	case 1431:
+	case 0x0598:
+	case 0x0599:
+	case 1434:
+	case 0x059B:
+	case 0x059C:
+	case 0x059D:
+	case 0x059E:
+	case 0x059F:
+	case 0x05A0:
+	case 1441:
+	case 1442:
+	case 1443:
+	case 1444:
+	case 0x05A5:
+	case 1446:
+	case 1447:
+	case 1448:
+	case 1449:
+	case 0x05AA:
+	case 1451:
+	case 0x05AC:
+	case 0x05AD:
+	case 1454:
+	case 1455:
+	case 0x05B0:
+	case 0x05B1:
+	case 0x05B2:
+	case 0x05B3:
+	case 0x05B4:
+	case 0x05B5:
+	case 0x05B6:
+	case 0x05B7:
+	case 1464:
+	case 0x05B9:
+	case 1466:
+	case 0x05BB:
+	case 0x05BC:
+	case 0x05BD:
+	case 0x05BE:
+	case 1471:
+	case 0x05C0:
+	case 0x05C1:
+	case 1474:
+	case 0x05C3:
+	case 0x05C4:
+	case 0x05C5:
+	case 0x05C6:
+	case 0x05C7:
+	case 0x05C8:
+	case 1481:
+	case 0x05CA:
+	case 0x05CB:
+	case 0x05CC:
+	case 0x05CD:
+	case 0x05CE:
+	case 0x05CF:
+	case 0x05D0:
+	case 0x05D1:
+	case 0x05D2:
+	case 1491:
+	case 0x05D4:
+	case 0x05D5:
+	case 1494:
+	case 0x05D7:
+	case 0x05D8:
+	case 0x05D9:
+	case 0x05DA:
+	case 1499:
+	case 1500:
+	case 0x05DD:
+	case 0x05DE:
+	case 0x05DF:
+	case 0x05E0:
+	case 1505:
+	case 0x05E2:
+	case 0x05E3:
+	case 0x05E4:
+	case 0x05E5:
+	case 1510:
+	case 1511:
+	case 1512:
+	case 1513:
+	case 1514:
+	case 1515:
+	case 1516:
+	case 1517:
+	case 0x05EE:
+	case 1519:
+	case 0x05F0:
+	case 1521:
+	case 1522:
+	case 0x05F3:
+	case 0x05F4:
+	case 0x05F5:
+	case 0x05F6:
+	case 0x05F7:
+	case 0x05F8:
+	case 0x05F9:
+	case 0x05FA:
+	case 1531:
+	case 0x05FC:
+	case 1533:
+	case 0x05FE:
+	case 0x05FF:
+	case 0x0600:
+	case 0x0601:
+	case 0x0602:
+	case 0x0603:
+	case 0x0604:
+	case 0x0605:
+	case 0x0606:
+	case 0x0607:
+	case 0x0608:
+	case 0x0609:
+	case 0x060A:
+	case 0x060B:
+	case 0x060C:
+	case 0x060D:
+	case 0x060E:
+	case 1551:
+	case 0x0610:
+	case 0x0611:
+	case 1554:
+	case 1555:
+	case 1556:
+	case 1557:
+	case 0x0616:
+	case 1559:
+	case 0x0618:
+	case 1561:
+	case 0x061A:
+	case 0x061B:
+	case 0x061C:
+	case 1565:
+	case 1566:
+	case 0x061F:
+	case 0x0620:
+	case 0x0621:
+	case 0x0622:
+	case 1571:
+	case 0x0624:
+	case 0x0625:
+	case 0x0626:
+	case 1575:
+	case 0x0628:
+	case 1577:
+	case 0x062A:
+	case 0x062B:
+	case 0x062C:
+	case 1581:
+	case 0x062E:
+	case 0x062F:
+	case 0x0630:
+	case 1585:
+	case 0x0632:
+	case 0x0633:
+	case 1588:
+	case 0x0635:
+	case 0x0636:
+	case 1591:
+	case 0x0638:
+	case 0x0639:
+	case 0x063A:
+	case 1595:
+	case 0x063C:
+	case 0x063D:
+	case 0x063E:
+	case 1599:
+	case 0x0640:
+	case 1601:
+	case 0x0642:
+	case 0x0643:
+	case 0x0644:
+	case 0x0645:
+	case 0x0646:
+	case 0x0647:
+	case 0x0648:
+	case 0x0649:
+	case 1610:
+	case 1611:
+	case 1612:
+	case 1613:
+	case 1614:
+	case 1615:
+	case 1616:
+	case 1617:
+	case 1618:
+	case 1619:
+	case 0x0654:
+	case 0x0655:
+	case 0x0656:
+	case 0x0657:
+	case 0x0658:
+	case 0x0659:
+	case 1626:
+	case 0x065B:
+	case 0x065C:
+	case 0x065D:
+	case 0x065E:
+	case 1631:
+	case 0x0660:
+	case 0x0661:
+	case 0x0662:
+	case 0x0663:
+	case 0x0664:
+	case 0x0665:
+	case 0x0666:
+	case 0x0667:
+	case 0x0668:
+	case 0x0669:
+	case 0x066A:
+	case 0x066B:
+	case 0x066C:
+	case 0x066D:
+	case 0x066E:
+	case 0x066F:
+	case 0x0670:
+	case 0x0671:
+	case 0x0672:
+	case 1651:
+	case 0x0674:
+	case 0x0675:
+	case 0x0676:
+	case 0x0677:
+	case 1656:
+	case 0x0679:
+	case 0x067A:
+	case 0x067B:
+	case 1660:
+	case 1661:
+	case 1662:
+	case 1663:
+	case 0x0680:
+	case 1665:
+	case 1666:
+	case 1667:
+	case 1668:
+	case 1669:
+	case 0x0686:
+	case 1671:
+	case 0x0688:
+	case 0x0689:
+	case 0x068A:
+	case 0x068B:
+	case 1676:
+	case 1677:
+	case 0x068E:
+	case 0x068F:
+	case 0x0690:
+	case 1681:
+	case 0x0692:
+	case 0x0693:
+	case 0x0694:
+	case 0x0695:
+	case 0x0696:
+	case 0x0697:
+	case 1688:
+	case 0x0699:
+	case 0x069A:
+	case 1691:
+	case 0x069C:
+	case 0x069D:
+	case 0x069E:
+	case 0x069F:
+	case 0x06A0:
+	case 0x06A1:
+	case 0x06A2:
+	case 1699:
+	case 1700:
+	case 1701:
+	case 0x06A6:
+	case 0x06A7:
+	case 0x06A8:
+	case 0x06A9:
+	case 0x06AA:
+	case 1707:
+	case 0x06AC:
+	case 0x06AD:
+	case 1710:
+	case 1711:
+	case 0x06B0:
+	case 1713:
+	case 1714:
+	case 1715:
+	case 1716:
+	case 1717:
+	case 0x06B6:
+	case 1719:
+	case 0x06B8:
+	case 1721:
+	case 1722:
+	case 0x06BB:
+	case 0x06BC:
+	case 0x06BD:
+	case 0x06BE:
+	case 1727:
+	case 0x06C0:
+	case 0x06C1:
+	case 0x06C2:
+	case 1731:
+	case 0x06C4:
+	case 1733:
+	case 0x06C6:
+	case 0x06C7:
+	case 0x06C8:
+	case 1737:
+	case 0x06CA:
+	case 0x06CB:
+	case 0x06CC:
+	case 1741:
+	case 0x06CE:
+	case 0x06CF:
+	case 0x06D0:
+	case 0x06D1:
+	case 0x06D2:
+	case 1747:
+	case 0x06D4:
+	case 0x06D5:
+	case 0x06D6:
+	case 1751:
+	case 0x06D8:
+	case 0x06D9:
+	case 0x06DA:
+	case 1755:
+	case 0x06DC:
+	case 0x06DD:
+	case 0x06DE:
+	case 0x06DF:
+	case 0x06E0:
+	case 1761:
+	case 0x06E2:
+	case 0x06E3:
+	case 0x06E4:
+	case 0x06E5:
+	case 0x06E6:
+	case 1767:
+	case 0x06E8:
+	case 0x06E9:
+	case 1770:
+	case 1771:
+	case 1772:
+	case 1773:
+	case 0x06EE:
+	case 1775:
+	case 0x06F0:
+	case 1777:
+	case 1778:
+	case 1779:
+	case 0x06F4:
+	case 1781:
+	case 0x06F6:
+	case 0x06F7:
+	case 0x06F8:
+	case 0x06F9:
+	case 0x06FA:
+	case 1787:
+	case 1788:
+	case 0x06FD:
+	case 0x06FE:
+	case 0x06FF:
+	case 0x0700:
+	case 0x0701:
+	case 0x0702:
+	case 0x0703:
+	case 0x0704:
+	case 0x0705:
+	case 0x0706:
+	case 0x0707:
+	case 0x0708:
+	case 0x0709:
+	case 0x070A:
+	case 0x070B:
+	case 0x070C:
+	case 0x070D:
+	case 0x070E:
+	case 0x070F:
+	case 0x0710:
+	case 0x0711:
+	case 1810:
+	case 1811:
+	case 1812:
+	case 1813:
+	case 1814:
+	case 0x0717:
+	case 1816:
+	case 1817:
+	case 1818:
+	case 1819:
+	case 0x071C:
+	case 1821:
+	case 1822:
+	case 0x071F:
+	case 0x0720:
+	case 0x0721:
+	case 0x0722:
+	case 0x0723:
+	case 1828:
+	case 0x0725:
+	case 0x0726:
+	case 0x0727:
+	case 0x0728:
+	case 1833:
+	case 0x072A:
+	case 0x072B:
+	case 0x072C:
+	case 0x072D:
+	case 1838:
+	case 0x072F:
+	case 0x0730:
+	case 1841:
+	case 0x0732:
+	case 0x0733:
+	case 1844:
+	case 0x0735:
+	case 0x0736:
+	case 0x0737:
+	case 1848:
+	case 0x0739:
+	case 0x073A:
+	case 1851:
+	case 0x073C:
+	case 0x073D:
+	case 0x073E:
+	case 1855:
+	case 0x0740:
+	case 0x0741:
+	case 1858:
+	case 0x0743:
+	case 0x0744:
+	case 1861:
+	case 0x0746:
+	case 0x0747:
+	case 0x0748:
+	case 0x0749:
+	case 1866:
+	case 0x074B:
+	case 1868:
+	case 0x074D:
+	case 0x074E:
+	case 1871:
+	case 0x0750:
+	case 0x0751:
+	case 0x0752:
+	case 0x0753:
+	case 0x0754:
+	case 0x0755:
+	case 1878:
+	case 0x0757:
+	case 1880:
+	case 1881:
+	case 1882:
+	case 1883:
+	case 1884:
+	case 1885:
+	case 1886:
+	case 1887:
+	case 1888:
+	case 1889:
+	case 0x0762:
+	case 1891:
+	case 0x0764:
+	case 0x0765:
+	case 0x0766:
+	case 0x0767:
+	case 0x0768:
+	case 0x0769:
+	case 1898:
+	case 1899:
+	case 1900:
+	case 1901:
+	case 0x076E:
+	case 0x076F:
+	case 0x0770:
+	case 0x0771:
+	case 0x0772:
+	case 0x0773:
+	case 0x0774:
+	case 0x0775:
+	case 0x0776:
+	case 0x0777:
+	case 0x0778:
+	case 0x0779:
+	case 0x077A:
+	case 0x077B:
+	case 0x077C:
+	case 0x077D:
+	case 0x077E:
+	case 1919:
+	case 0x0780:
+	case 1921:
+	case 1922:
+	case 0x0783:
+	case 0x0784:
+	case 0x0785:
+	case 0x0786:
+	case 0x0787:
+	case 0x0788:
+	case 1929:
+	case 0x078A:
+	case 1931:
+	case 0x078C:
+	case 1933:
+	case 0x078E:
+	case 0x078F:
+	case 0x0790:
+	case 0x0791:
+	case 0x0792:
+	case 1939:
+	case 0x0794:
+	case 1941:
+	case 0x0796:
+	case 0x0797:
+	case 1944:
+	case 0x0799:
+	case 0x079A:
+	case 0x079B:
+	case 0x079C:
+	case 1949:
+	case 0x079E:
+	case 1951:
+	case 0x07A0:
+	case 0x07A1:
+	case 0x07A2:
+	case 1955:
+	case 0x07A4:
+	case 0x07A5:
+	case 0x07A6:
+	case 0x07A7:
+	case 0x07A8:
+	case 1961:
+	case 0x07AA:
+	case 0x07AB:
+	case 0x07AC:
+	case 0x07AD:
+	case 1966:
+	case 0x07AF:
+	case 0x07B0:
+	case 1969:
+	case 0x07B2:
+	case 1971:
+	case 0x07B4:
+	case 0x07B5:
+	case 0x07B6:
+	case 0x07B7:
+	case 0x07B8:
+	case 1977:
+	case 0x07BA:
+	case 0x07BB:
+	case 0x07BC:
+	case 1981:
+	case 0x07BE:
+	case 0x07BF:
+	case 0x07C0:
+	case 0x07C1:
+	case 0x07C2:
+	case 0x07C3:
+	case 1988:
+	case 1989:
+	case 1990:
+	case 1991:
+	case 1992:
+	case 1993:
+	case 1994:
+	case 1995:
+	case 0x07CC:
+	case 1997:
+	case 1998:
+	case 1999:
+	case 2000:
+	case 2001:
+	case 2002:
+	case 2003:
+	case 2004:
+	case 2005:
+	case 2006:
+	case 0x07D7:
+	case 2008:
+	case 2009:
+	case 2010:
+	case 2011:
+	case 2012:
+	case 0x07DD:
+	case 0x07DE:
+	case 0x07DF:
+	case 0x07E0:
+	case 0x07E1:
+	case 0x07E2:
+	case 0x07E3:
+	case 2020:
+	case 2021:
+	case 2022:
+	case 0x07E7:
+	case 2024:
+	case 2025:
+	case 2026:
+	case 2027:
+	case 2028:
+	case 2029:
+	case 0x07EE:
+	case 0x07EF:
+	case 0x07F0:
+	case 2033:
+	case 0x07F2:
+	case 0x07F3:
+	case 0x07F4:
+	case 0x07F5:
+	case 0x07F6:
+	case 0x07F7:
+	case 2040:
+	case 0x07F9:
+	case 2042:
+	case 0x07FB:
+	case 2044:
+	case 0x07FD:
+	case 0x07FE:
+	case 0x07FF:
+		v25 = loc16;
+		v22 = (word64) v25;
+		loc2 = v22;
+		v22 = loc2;
+		v27.u0 = 0x07FF;
+		v22 &= v27;
+		loc7 = v22;
+		v22 = loc7;
+		v27.u0 = ~0x03FD;
+		v22 += v27;
+		loc3 = v22;
+		v22 = arg1;
+		v27 = loc3;
+		*v22.u0 = v27;
+		v25 = loc15;
+		v26 = 0xFFFFFFFF;
+		v25 &= v26;
+		loc13 = v25;
+		v25 = loc13;
+		v26 = 0x3FE00000;
+		v25 |= v26;
+		loc14 = v25;
+		v25 = loc14;
+		v23 = reinterpret_cast<real64>(v25);
+		loc19 = v23;
+		v23 = loc19;
+		loc17 = v23;
+		break;
+	}
+	v23 = loc17;
+	return v23;
+}
+
+// 000D799D: Stack Eq_n fn000D799D(Stack Eq_n arg0)
+Eq_n fn000D799D(Eq_n arg0)
+{
+	v26.u3 = g_t140030.u3;
+	loc24 = v26;
+	v26 = arg0;
+	v27.u0 = 0x4A;
+	v26 += v27;
+	loc2 = v26;
+	v26 = loc2;
+	v28.u3 = *v26.u3;
+	v26.u3 = (word32) v28;
+	loc13 = v26;
+	v26 = loc13;
+	v27.u0 = 0x18;
+	v26 <<= v27;
+	v27.u0 = 0x18;
+	v26 >>= v27;
+	loc16 = v26;
+	v26 = loc16;
+	v27.u0 = 0xFF;
+	v26 += v27;
+	loc17 = v26;
+	v26 = loc17;
+	v27 = loc16;
+	v26 |= v27;
+	loc18 = v26;
+	v26 = loc18;
+	v27.u0 = 0xFF;
+	v26 &= v27;
+	loc19 = v26;
+	v26 = loc2;
+	v27 = loc19;
+	v29 = (byte) v27;
+	v26.u4->t0000.u0 = (bool) v29;
+	v26 = arg0;
+	v26.u3 = *v26.u3;
+	loc20 = v26;
+	v26 = loc20;
+	v27.u0 = 0x08;
+	v26 &= v27;
+	loc21 = v26;
+	v26 = loc21;
+	v27.u0 = 0x00;
+	v30 = v26 == v27;
+	loc22 = v30;
+	v26 = loc22;
+	if (v26)
+	{
+		v26 = arg0;
+		v27.u0 = 0x08;
+		v26 += v27;
+		loc4 = v26;
+		v26 = loc4;
+		v27.u0 = 0x00;
+		*v26.u3 = (word32) v27;
+		v26 = arg0;
+		v27.u0 = 0x04;
+		v26 += v27;
+		loc5 = v26;
+		v26 = loc5;
+		v27.u0 = 0x00;
+		*v26.u3 = (word32) v27;
+		v26 = arg0;
+		v27.u0 = 44;
+		v26 += v27;
+		loc6 = v26;
+		v26 = loc6;
+		v26.u3 = *v26.u3;
+		loc7 = v26;
+		v26 = arg0;
+		v27.u0 = 0x1C;
+		v26 += v27;
+		loc8 = v26;
+		v26 = loc8;
+		v27 = loc7;
+		*v26.u3 = (word32) v27;
+		v26 = arg0;
+		v27.u0 = 0x14;
+		v26 += v27;
+		loc9 = v26;
+		v26 = loc9;
+		v27 = loc7;
+		*v26.u3 = (word32) v27;
+		v26 = loc7;
+		loc10 = v26;
+		v26 = arg0;
+		v27.u0 = 0x30;
+		v26 += v27;
+		loc11 = v26;
+		v26 = loc11;
+		v26.u3 = *v26.u3;
+		loc12 = v26;
+		v26 = loc10;
+		v27 = loc12;
+		v26 += v27;
+		loc14 = v26;
+		v26 = arg0;
+		v27.u0 = 0x10;
+		v26 += v27;
+		loc15 = v26;
+		v26 = loc15;
+		v27 = loc14;
+		*v26.u3 = (word32) v27;
+		v26.u0 = 0x00;
+		loc1 = v26;
+	}
+	else
+	{
+		v26 = loc20;
+		v27.u0 = 0x20;
+		v26 |= v27;
+		loc3 = v26;
+		v26 = arg0;
+		v27 = loc3;
+		*v26.u0 = v27;
+		v26.u0 = ~0x00;
+		loc1 = v26;
+	}
+	v26 = loc1;
+	return v26;
+}
+
 // 000D7A7D: Stack Eq_n fn000D7A7D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn000D7A7D(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	&v14.u2->t0000.u0 = g_t140030.u2;
+	v14.u3 = g_t140030.u3;
 	loc14 = v14;
-	v15 = arg0;
-	v16 = 0x10;
-	v17 = (word32 *) (v15.u2 + v16 / 112);
-	loc6 = v17;
-	v18 = loc6;
-	v19 = *v18;
-	loc7 = v19;
-	v20 = arg0;
-	v21 = 0x14;
-	v22 = (union Eq_n *) (v20.u2 + v21 / 112);
-	loc8 = v22;
-	v23 = loc8;
-	&v24.u2->t0000.u0 = v23->u2;
-	loc9 = v24;
-	v25 = loc7;
-	v26 = loc9;
-	v27 = v25 - v26;
-	loc10 = v27;
-	v28 = loc10;
-	v29 = arg2;
-	v30 = v28 > v29;
-	loc11 = v30;
-	v31 = loc11;
-	if (v31)
-		v32 = arg2;
+	v14 = arg0;
+	v15.u0 = 0x10;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc6;
+	v14.u3 = *v14.u3;
+	loc7 = v14;
+	v14 = arg0;
+	v15.u0 = 0x14;
+	v14 += v15;
+	loc8 = v14;
+	v14 = loc8;
+	v14.u3 = *v14.u3;
+	loc9 = v14;
+	v14 = loc7;
+	v15 = loc9;
+	v14 -= v15;
+	loc10 = v14;
+	v14 = loc10;
+	v15 = arg2;
+	v16 = v14 > v15;
+	loc11 = v16;
+	v14 = loc11;
+	if (v14)
+		v14 = arg2;
 	else
-		v33 = loc10;
-	loc3 = v33;
-	v34 = loc9;
-	loc4 = v34;
-	v35 = loc4;
-	v36 = arg1;
-	v37 = loc3;
-	v38 = _memcpy(v35, v36, v37);
-	v39 = loc8;
-	&v40.u2->t0000.u0 = v39->u2;
-	loc12 = v40;
-	v41 = loc12;
-	v42 = loc3;
-	v43 = v41 + v42;
-	loc5 = v43;
-	v44 = loc8;
-	v45 = loc5;
-	v44->u2 = (struct Eq_n *) v45;
-	v46 = arg2;
-	return v46;
+		v14 = loc10;
+	loc3 = v14;
+	v14 = loc9;
+	loc4 = v14;
+	v14 = loc4;
+	v15 = arg1;
+	v17 = loc3;
+	v14 = _memcpy(v14, v15, v17);
+	v14 = loc8;
+	v14.u3 = *v14.u3;
+	loc12 = v14;
+	v14 = loc12;
+	v15 = loc3;
+	v14 += v15;
+	loc5 = v14;
+	v14 = loc8;
+	v15 = loc5;
+	*v14.u3 = (word32) v15;
+	v14 = arg2;
+	return v14;
 }
 
-// 000DA625: Stack int64 fn000DA625(Stack Eq_n arg0, Stack word32 arg1)
-int64 fn000DA625(Eq_n arg0, word32 arg1)
+// 000D7AE1: Stack Eq_n fn000D7AE1()
+Eq_n fn000D7AE1()
+{
+	v4.u3 = g_t140030.u3;
+	loc1 = v4;
+	v4.u0 = 3300;
+	return v4;
+}
+
+// 000D7AED: Stack Eq_n fn000D7AED()
+Eq_n fn000D7AED()
+{
+	v4.u3 = g_t140030.u3;
+	loc1 = v4;
+	v4.u0 = 3304;
+	return v4;
+}
+
+// 000D7AF9: Stack Eq_n fn000D7AF9()
+Eq_n fn000D7AF9()
+{
+	v4.u3 = g_t140030.u3;
+	loc1 = v4;
+	v4.u0 = 4844;
+	return v4;
+}
+
+// 000D7B53: Stack Eq_n fn000D7B53(Stack Eq_n arg0)
+Eq_n fn000D7B53(Eq_n arg0)
+{
+	v11.u3 = g_t140030.u3;
+	loc9 = v11;
+	v11 = arg0;
+	v12.u0 = ~0x2F;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc7;
+	v12.u0 = 0x0A;
+	v13 = v11 < v12;
+	loc6 = v13;
+	v11 = arg0;
+	v12.u0 = 0x20;
+	v11 |= v12;
+	loc1 = v11;
+	v11 = loc1;
+	v12.u0 = ~0x60;
+	v11 += v12;
+	loc2 = v11;
+	v11 = loc2;
+	v12.u0 = 0x06;
+	v13 = v11 < v12;
+	loc3 = v13;
+	v11 = loc6;
+	v12 = loc3;
+	v11 |= v12;
+	loc4 = v11;
+	v11 = loc4;
+	v12.u0 = 0x01;
+	v11 &= v12;
+	loc5 = v11;
+	v11 = loc5;
+	return v11;
+}
+
+// 000DA625: Stack int64 fn000DA625(Stack Eq_n arg0, Stack Eq_n arg1)
+int64 fn000DA625(Eq_n arg0, Eq_n arg1)
 {
 }
 
-// 000DA9E1: Stack Eq_n fn000DA9E1(Stack real64 arg0, Stack int32 arg1)
-Eq_n fn000DA9E1(real64 arg0, int32 arg1)
+// 000DA9E1: Stack Eq_n fn000DA9E1(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DA9E1(Eq_n arg0, Eq_n arg1)
 {
-	&v27.u2->t0000.u0 = g_t140030.u2;
+	v27.u3 = g_t140030.u3;
 	loc17 = v27;
-	v28 = arg1;
-	v29 = 0x03FF;
-	v30 = v28 > v29;
-	loc10 = v30;
-	v31 = loc10;
-	if (v31)
+	v27 = arg1;
+	v28.u0 = 0x03FF;
+	v29 = v27 > v28;
+	loc10 = v29;
+	v27 = loc10;
+	if (v27)
 	{
-		v32 = arg0;
-		v33 = 8.98846567431158e+307;
-		v34 = v32 * v33;
-		loc25 = v34;
-		v35 = arg1;
-		v36 = ~0x03FE;
-		v37 = v35 + v36;
-		loc11 = v37;
-		v38 = loc11;
-		v39 = 0x03FF;
-		v40 = v38 > v39;
-		loc12 = v40;
-		v41 = arg1;
-		v42 = ~0x07FD;
-		v43 = v41 + v42;
-		loc13 = v43;
-		v44 = loc12;
-		if (v44)
+		v30 = arg0;
+		v31.u1 = 8.98846567431158e+307;
+		v30 *= v31;
+		loc25 = v30;
+		v27 = arg1;
+		v28.u0 = ~0x03FE;
+		v27 += v28;
+		loc11 = v27;
+		v27 = loc11;
+		v28.u0 = 0x03FF;
+		v29 = v27 > v28;
+		loc12 = v29;
+		v27 = arg1;
+		v28.u0 = ~0x07FD;
+		v27 += v28;
+		loc13 = v27;
+		v27 = loc12;
+		if (v27)
 		{
-			v45 = loc25;
-			v46 = 8.98846567431158e+307;
-			v47 = v45 * v46;
-			loc26 = v47;
-			v48 = loc13;
-			v49 = 0x03FF;
-			v50 = v48 > v49;
-			loc14 = v50;
-			v51 = loc14;
-			if (v51)
-				v52 = 0x03FF;
+			v30 = loc25;
+			v31.u1 = 8.98846567431158e+307;
+			v30 *= v31;
+			loc26 = v30;
+			v27 = loc13;
+			v28.u0 = 0x03FF;
+			v29 = v27 > v28;
+			loc14 = v29;
+			v27 = loc14;
+			if (v27)
+				v27.u0 = 0x03FF;
 			else
-				v53 = loc13;
-			loc2 = v53;
-			v54 = loc26;
-			loc20 = v54;
-			v55 = loc2;
-			loc3 = v55;
+				v27 = loc13;
+			loc2 = v27;
+			v30 = loc26;
+			loc20 = v30;
+			v27 = loc2;
+			loc3 = v27;
 		}
 		else
 		{
-			v56 = loc25;
-			loc20 = v56;
-			v57 = loc11;
-			loc3 = v57;
+			v30 = loc25;
+			loc20 = v30;
+			v27 = loc11;
+			loc3 = v27;
 		}
 	}
 	else
 	{
-		v58 = arg1;
-		v59 = ~0x03FD;
-		v60 = v58 < v59;
-		loc15 = v60;
-		v61 = loc15;
-		if (v61)
+		v27 = arg1;
+		v28.u0 = ~0x03FD;
+		v29 = v27 < v28;
+		loc15 = v29;
+		v27 = loc15;
+		if (v27)
 		{
-			v62 = arg0;
-			v63 = 2.2250738585072014e-308;
-			v64 = v62 * v63;
-			loc21 = v64;
-			v65 = arg1;
-			v66 = 1022;
-			v67 = v65 + v66;
-			loc5 = v67;
-			v68 = loc5;
-			v69 = ~0x03FD;
-			v70 = v68 < v69;
-			loc6 = v70;
-			v71 = arg1;
-			v72 = 2044;
-			v73 = v71 + v72;
-			loc7 = v73;
-			v74 = loc6;
-			if (v74)
+			v30 = arg0;
+			v31.u1 = 2.2250738585072014e-308;
+			v30 *= v31;
+			loc21 = v30;
+			v27 = arg1;
+			v28.u0 = 1022;
+			v27 += v28;
+			loc5 = v27;
+			v27 = loc5;
+			v28.u0 = ~0x03FD;
+			v29 = v27 < v28;
+			loc6 = v29;
+			v27 = arg1;
+			v28.u0 = 2044;
+			v27 += v28;
+			loc7 = v27;
+			v27 = loc6;
+			if (v27)
 			{
-				v75 = loc21;
-				v76 = 2.2250738585072014e-308;
-				v77 = v75 * v76;
-				loc22 = v77;
-				v78 = loc7;
-				v79 = ~0x03FD;
-				v80 = v78 < v79;
-				loc8 = v80;
-				v81 = loc8;
-				if (v81)
-					v82.u1 = ~0x03FD;
+				v30 = loc21;
+				v31.u1 = 2.2250738585072014e-308;
+				v30 *= v31;
+				loc22 = v30;
+				v27 = loc7;
+				v28.u0 = ~0x03FD;
+				v29 = v27 < v28;
+				loc8 = v29;
+				v27 = loc8;
+				if (v27)
+					v27.u0 = ~0x03FD;
 				else
-					v83 = loc7;
-				loc4 = v83;
-				v84 = loc22;
-				loc20 = v84;
-				v85 = loc4;
-				loc3 = v85;
+					v27 = loc7;
+				loc4 = v27;
+				v30 = loc22;
+				loc20 = v30;
+				v27 = loc4;
+				loc3 = v27;
 			}
 			else
 			{
-				v86 = loc21;
-				loc20 = v86;
-				v87 = loc5;
-				loc3 = v87;
+				v30 = loc21;
+				loc20 = v30;
+				v27 = loc5;
+				loc3 = v27;
 			}
 		}
 		else
 		{
-			v88 = arg0;
-			loc20 = v88;
-			v89 = arg1;
-			loc3 = v89;
+			v30 = arg0;
+			loc20 = v30;
+			v27 = arg1;
+			loc3 = v27;
 		}
 	}
-	v90 = loc3;
-	v91 = 0x03FF;
-	v92 = v90 + v91;
-	loc9 = v92;
-	v93 = loc9;
-	v94 = (uint64) v93;
-	loc18 = v94;
-	v95 = loc18;
-	v96 = 0x34;
-	v97 = v95 << v96;
-	loc19 = v97;
-	v98 = loc19;
-	v99 = reinterpret_cast<real64>(v98);
-	loc23 = v99;
-	v100 = loc20;
-	v101 = loc23;
-	v102 = v100 * v101;
-	loc24 = v102;
-	v103 = loc24;
-	return v103;
+	v27 = loc3;
+	v28.u0 = 0x03FF;
+	v27 += v28;
+	loc9 = v27;
+	v27 = loc9;
+	v32.u0 = (uint64) v27;
+	loc18 = v32;
+	v33 = loc18;
+	v34 = 0x34;
+	v33 <<= v34;
+	loc19 = v33;
+	v33 = loc19;
+	v30 = reinterpret_cast<real64>(v33);
+	loc23 = v30;
+	v30 = loc20;
+	v31 = loc23;
+	v30 *= v31;
+	loc24 = v30;
+	v30 = loc24;
+	return v30;
+}
+
+// 000DAAEE: Stack Eq_n fn000DAAEE(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DAAEE(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = arg1;
+	v6 = fn000D2892(v6, v7);
+	loc4 = v6;
+	v6 = loc4;
+	return v6;
+}
+
+// 000DAB02: Stack Eq_n fn000DAB02(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DAB02(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = arg1;
+	v6 = fn000DA9E1(v6, v7);
+	loc4 = v6;
+	v6 = loc4;
+	return v6;
+}
+
+// 000DAB16: Stack Eq_n fn000DAB16(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DAB16(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v6 = arg0;
+	v7 = arg1;
+	v6 = fn000DAB2A(v6, v7);
+	loc4 = v6;
+	v6 = loc4;
+	return v6;
+}
+
+// 000DAF01: Stack Eq_n fn000DAF01(Stack Eq_n arg0)
+Eq_n fn000DAF01(Eq_n arg0)
+{
+	v4.u3 = g_t140030.u3;
+	loc2 = v4;
+	v4.u0 = 0x00;
+	return v4;
+}
+
+// 000DAF0C: Stack Eq_n fn000DAF0C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000DAF0C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v4.u3 = g_t140030.u3;
+	loc5 = v4;
+	v4 = arg3;
+	return v4;
+}
+
+// 000DAF17: Stack Eq_n fn000DAF17(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DAF17(Eq_n arg0, Eq_n arg1)
+{
+	v4.u3 = g_t140030.u3;
+	loc3 = v4;
+	v4.u0 = ~0x00;
+	return v4;
 }
 
 // 000DAF22: void fn000DAF22(Stack Eq_n arg0)
 void fn000DAF22(Eq_n arg0)
 {
-	&v4.u2->t0000.u0 = g_t140030.u2;
+	v4.u3 = g_t140030.u3;
 	loc2 = v4;
+	v4 = arg0;
+	_free(v4);
+}
+
+// 000DB2F6: Stack Eq_n fn000DB2F6(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DB2F6(Eq_n arg0, Eq_n arg1)
+{
+	v7.u3 = g_t140030.u3;
+	loc6 = v7;
+	v7 = arg0;
+	v8.u0 = ~0x2F;
+	v7 += v8;
+	loc4 = v7;
+	v7 = loc4;
+	v8.u0 = 0x0A;
+	v9 = v7 < v8;
+	loc3 = v9;
+	v7 = loc3;
+	v8.u0 = 0x01;
+	v7 &= v8;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
+}
+
+// 000DB316: Stack Eq_n fn000DB316(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DB316(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc4 = v5;
 	v5 = arg0;
-	_free(v5);
+	v5 = fn000D7B53(v5);
+	loc2 = v5;
+	v5 = loc2;
+	return v5;
+}
+
+// 000DB3DF: Stack Eq_n fn000DB3DF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000DB3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+}
+
+// 000DB419: Stack Eq_n fn000DB419(Stack Eq_n arg0)
+Eq_n fn000DB419(Eq_n arg0)
+{
 }
 
 // 000DB4B6: Stack Eq_n fn000DB4B6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -573,135 +3329,194 @@ Eq_n fn000DB4B6(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 // 000DB84B: Stack Eq_n fn000DB84B(Stack Eq_n arg0)
 Eq_n fn000DB84B(Eq_n arg0)
 {
-	&v25.u2->t0000.u0 = g_t140030.u2;
+	v25.u3 = g_t140030.u3;
 	loc23 = v25;
-	v26 = arg0;
-	v27 = 0x14;
-	v28 = (up32 *) (v26.u2 + v27 / 112);
-	loc2 = v28;
-	v29 = loc2;
-	v30 = *v29;
-	loc13 = v30;
-	v31 = arg0;
-	v32 = 0x1C;
-	v33 = (up32 *) (v31.u2 + v32 / 112);
-	loc15 = v33;
-	v34 = loc15;
-	v35 = *v34;
-	loc16 = v35;
-	v36 = loc13;
-	v37 = loc16;
-	v38 = v36 > v37;
-	loc17 = v38;
-	v39 = loc17;
-	v39 = v39;
+	v25 = arg0;
+	v26.u0 = 0x14;
+	v25 += v26;
+	loc2 = v25;
+	v25 = loc2;
+	v25.u3 = *v25.u3;
+	loc13 = v25;
+	v25 = arg0;
+	v26.u0 = 0x1C;
+	v25 += v26;
+	loc15 = v25;
+	v25 = loc15;
+	v25.u3 = *v25.u3;
+	loc16 = v25;
+	v25 = loc13;
+	v26 = loc16;
+	v27 = v25 > v26;
+	loc17 = v27;
+	v25 = loc17;
+	v25 = v25;
+}
+
+// 000DB950: Stack Eq_n fn000DB950(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000DB950(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000DB988: Stack Eq_n fn000DB988(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000DB988(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000DBA85: Stack Eq_n fn000DBA85(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000DBA85(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v5.u3 = g_t140030.u3;
+	loc5 = v5;
+	v5 = arg0;
+	v6 = arg1;
+	v7 = arg2;
+	v5 = fn000DD5D8(v5, v6, v7);
+	loc3 = v5;
+	v5 = loc3;
+	return v5;
+}
+
+// 000DD5A3: Stack Eq_n fn000DD5A3(Stack Eq_n arg0)
+Eq_n fn000DD5A3(Eq_n arg0)
+{
+	v9.u3 = g_t140030.u3;
+	loc7 = v9;
+	v9 = arg0;
+	v10.u0 = 0x00;
+	v11 = v9 == v10;
+	loc1 = v11;
+	v9 = loc1;
+	if (v9)
+	{
+		v9.u0 = 0x01;
+		loc5 = v9;
+	}
+	else
+	{
+		v9 = arg0;
+		v9 = *v9.u0;
+		loc2 = v9;
+		v9 = loc2;
+		v10.u0 = 0x00;
+		v11 = v9 == v10;
+		loc3 = v11;
+		v9 = loc3;
+		loc5 = v9;
+	}
+	v9 = loc5;
+	v10.u0 = 0x01;
+	v9 &= v10;
+	loc4 = v9;
+	v9 = loc4;
+	return v9;
 }
 
 // 000DD5D8: Stack Eq_n fn000DD5D8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn000DD5D8(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	&v19.u2->t0000.u0 = g_t140030.u2;
+	v19.u3 = g_t140030.u3;
 	loc19 = v19;
-	v20 = arg0;
-	v21 = 0x54;
-	v22 = (union Eq_n *) (v20.u2 + v21 / 112);
-	loc11 = v22;
-	v23 = loc11;
-	&v24.u2->t0000.u0 = v23->u2;
-	loc12 = v24;
-	v25 = arg2;
-	v26 = 0x0100;
-	&v27.u2->t0000.u0 = v25.u2 + v26 / 112;
-	loc13 = v27;
-	v28 = loc12;
-	v29.u0 = 0x00;
-	v30 = loc13;
-	v31 = fn000D6AC0(v28, v29, v30);
-	loc14 = v31;
-	v32 = loc14;
-	v33.u0 = 0x00;
-	v34 = v32 == v33;
-	loc15 = v34;
-	v35 = loc14;
-	loc16 = v35;
-	v36 = loc12;
-	loc17 = v36;
-	v37 = loc16;
-	v38 = loc17;
-	v39 = v37 - v38;
-	loc5 = v39;
-	v40 = loc15;
-	if (v40)
-		v41 = loc13;
+	v19 = arg0;
+	v20.u0 = 0x54;
+	v19 += v20;
+	loc11 = v19;
+	v19 = loc11;
+	v19.u3 = *v19.u3;
+	loc12 = v19;
+	v19 = arg2;
+	v20.u0 = 0x0100;
+	v19 += v20;
+	loc13 = v19;
+	v19 = loc12;
+	v20.u0 = 0x00;
+	v21 = loc13;
+	v19 = fn000D6AC0(v19, v20, v21);
+	loc14 = v19;
+	v19 = loc14;
+	v20.u0 = 0x00;
+	v22 = v19 == v20;
+	loc15 = v22;
+	v19 = loc14;
+	loc16 = v19;
+	v19 = loc12;
+	loc17 = v19;
+	v19 = loc16;
+	v20 = loc17;
+	v19 -= v20;
+	loc5 = v19;
+	v19 = loc15;
+	if (v19)
+		v19 = loc13;
 	else
-		v42 = loc5;
-	loc3 = v42;
-	v43 = loc3;
-	v44 = arg2;
-	v45 = v43 < v44;
-	loc6 = v45;
-	v46 = loc6;
-	if (v46)
-		v47 = loc3;
+		v19 = loc5;
+	loc3 = v19;
+	v19 = loc3;
+	v20 = arg2;
+	v22 = v19 < v20;
+	loc6 = v22;
+	v19 = loc6;
+	if (v19)
+		v19 = loc3;
 	else
-		v48 = arg2;
-	loc4 = v48;
-	v49 = arg1;
-	v50 = loc12;
-	v51 = loc4;
-	v52 = _memcpy(v49, v50, v51);
-	v53 = loc12;
-	v54 = loc4;
-	v55 = v53 + v54;
-	loc7 = v55;
-	v56 = arg0;
-	v57 = 0x04;
-	v58 = (word32 *) (v56.u2 + v57 / 112);
-	loc8 = v58;
-	v59 = loc8;
-	v60 = loc7;
-	*v59 = v60;
-	v61 = loc12;
-	v62 = loc3;
-	v63 = v61 + v62;
-	loc9 = v63;
-	v64 = arg0;
-	v65 = 0x08;
-	v66 = (union Eq_n *) (v64.u2 + v65 / 112);
-	loc10 = v66;
-	v67 = loc10;
-	v68 = loc9;
-	v67->u2 = (struct Eq_n *) v68;
-	v69 = loc11;
-	v70 = loc9;
-	v69->u2 = (struct Eq_n *) v70;
-	v71 = loc4;
-	return v71;
+		v19 = arg2;
+	loc4 = v19;
+	v19 = arg1;
+	v20 = loc12;
+	v21 = loc4;
+	v19 = _memcpy(v19, v20, v21);
+	v19 = loc12;
+	v20 = loc4;
+	v19 += v20;
+	loc7 = v19;
+	v19 = arg0;
+	v20.u0 = 0x04;
+	v19 += v20;
+	loc8 = v19;
+	v19 = loc8;
+	v20 = loc7;
+	*v19.u3 = (word32) v20;
+	v19 = loc12;
+	v20 = loc3;
+	v19 += v20;
+	loc9 = v19;
+	v19 = arg0;
+	v20.u0 = 0x08;
+	v19 += v20;
+	loc10 = v19;
+	v19 = loc10;
+	v20 = loc9;
+	*v19.u3 = (word32) v20;
+	v19 = loc11;
+	v20 = loc9;
+	*v19.u3 = (word32) v20;
+	v19 = loc4;
+	return v19;
 }
 
 // 000DD675: Stack Eq_n fn000DD675(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn000DD675(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	&v7.u2->t0000.u0 = g_t140030.u2;
+	v7.u3 = g_t140030.u3;
 	loc7 = v7;
-	v8 = arg2;
-	v9.u0 = 0x00;
-	v10 = v8 != v9;
-	loc3 = v10;
-	v11 = loc3;
-	if (v11)
-		v12 = arg2;
+	v7 = arg2;
+	v8.u0 = 0x00;
+	v9 = v7 != v8;
+	loc3 = v9;
+	v7 = loc3;
+	if (v7)
+		v7 = arg2;
 	else
-		v13.u0 = 0x4660;
-	loc4 = v13;
-	v14.u0 = 0x00;
-	v15 = arg0;
-	v16 = arg1;
-	v17 = loc4;
-	v18 = fn000DB07F(v14, v15, v16, v17);
-	loc5 = v18;
-	v19 = loc5;
-	return v19;
+		v7.u0 = 0x4660;
+	loc4 = v7;
+	v7.u0 = 0x00;
+	v8 = arg0;
+	v10 = arg1;
+	v11 = loc4;
+	v7 = fn000DB07F(v7, v8, v10, v11);
+	loc5 = v7;
+	v7 = loc5;
+	return v7;
 }
 
 // 000DE31D: Stack Eq_n fn000DE31D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -719,8 +3534,116 @@ Eq_n fn000DEA30(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
 }
 
-// 000DEF2C: Stack Eq_n fn000DEF2C(Stack Eq_n arg0, Stack (ptr32 Eq_n) arg1, Stack (ptr32 Eq_n) arg2)
-Eq_n fn000DEF2C(Eq_n arg0, union Eq_n * arg1, union Eq_n * arg2)
+// 000DEB18: Stack Eq_n fn000DEB18(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DEB18(Eq_n arg0, Eq_n arg1)
 {
+}
+
+// 000DEC35: Stack Eq_n fn000DEC35(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn000DEC35(Eq_n arg0, Eq_n arg1)
+{
+}
+
+// 000DEDA6: Stack Eq_n fn000DEDA6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn000DEDA6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v16.u3 = g_t140030.u3;
+	loc17 = v16;
+	v16 = arg2;
+	v17 = arg1;
+	v16 *= v17;
+	loc9 = v16;
+	v16 = arg3;
+	v17.u0 = 0x4C;
+	v16 += v17;
+	loc10 = v16;
+	v16 = loc10;
+	v16.u3 = *v16.u3;
+	loc11 = v16;
+	v16 = loc11;
+	v17.u0 = ~0x00;
+	v18 = v16 > v17;
+	loc12 = v18;
+	v16 = loc12;
+	if (v16)
+	{
+		v16 = arg3;
+		v16 = fn000D61F1(v16);
+		loc14 = v16;
+		v16 = loc14;
+		v17.u0 = 0x00;
+		v18 = v16 == v17;
+		loc15 = v18;
+		v16 = arg0;
+		v17 = loc9;
+		v19 = arg3;
+		v16 = fn000D61FC(v16, v17, v19);
+		loc4 = v16;
+		v16 = loc15;
+		if (v16)
+		{
+			v16 = loc4;
+			loc6 = v16;
+		}
+		else
+		{
+			v16 = arg3;
+			fn000D1351(v16);
+			v16 = loc4;
+			loc6 = v16;
+		}
+	}
+	else
+	{
+		v16 = arg0;
+		v17 = loc9;
+		v19 = arg3;
+		v16 = fn000D61FC(v16, v17, v19);
+		loc13 = v16;
+		v16 = loc13;
+		loc6 = v16;
+	}
+	v16 = loc6;
+	v17 = loc9;
+	v18 = v16 == v17;
+	loc5 = v18;
+	v16 = loc5;
+	if (v16)
+	{
+		v16 = arg2;
+		loc8 = v16;
+	}
+	else
+	{
+		v16 = loc6;
+		v17 = arg1;
+		v16 = i32u-div(v16, v17);
+		v17.u0 = ~0x00;
+		v16 &= v17;
+		loc7 = v16;
+		v16 = loc7;
+		loc8 = v16;
+	}
+	v16 = loc8;
+	return v16;
+}
+
+// 000DEF2C: Stack Eq_n fn000DEF2C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000DEF2C(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+}
+
+// 000DF086: Stack Eq_n fn000DF086(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn000DF086(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v5.u3 = g_t140030.u3;
+	loc4 = v5;
+	v5 = arg0;
+	v6 = arg1;
+	v7.u0 = 0x02;
+	v8 = fn000DEF2C(v5, v6, v7);
+	loc5 = v8;
+	v8 = loc5;
+	return v8;
 }
 
