@@ -3343,7 +3343,7 @@ l000F1D85:
 l000F1DE4:
 	v72 = loc21
 	v72 = v72
-	// succ:  l000F1DEA l000F1DEA
+	// succ:  l000F1DEA
 l000F1DEA:
 	v72 = loc65
 	v73 = 0xFFFFFFFF<32>
@@ -20761,7 +20761,7 @@ l000F95F3:
 l000F9628:
 	v71 = loc15
 	v71 = v71
-	// succ:  l000F962E l000F962E
+	// succ:  l000F962E
 l000F962E:
 	v71 = arg0
 	v71 = Mem0[v71:word32]
@@ -24277,7 +24277,7 @@ l000FC0F8:
 l000FC12D:
 	v72 = loc16
 	v72 = v72
-	// succ:  l000FC133 l000FC133
+	// succ:  l000FC133
 l000FC133:
 	v72 = arg0
 	v72 = Mem0[v72:word32]
@@ -26780,7 +26780,7 @@ l000FD4D6:
 	loc18 = v52
 	v50 = loc18
 	v50 = v50
-	// succ:  l000FD4F6 l000FD4F6
+	// succ:  l000FD4F6
 l000FD4F6:
 	v50 = loc49
 	v50 = Mem0[v50:word32]

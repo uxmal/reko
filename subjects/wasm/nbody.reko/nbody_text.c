@@ -7,11 +7,89 @@
 // 000E0000: void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2)
 void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 {
+	if (!(arg0 > 0x00))
+		return;
+	int32 loc3_n = 0x00;
+	while (true)
+	{
+		int32 v18_n = loc3_n + 0x01;
+		if (v18_n < arg0)
+		{
+			do
+			{
+				real64 v23_n = arg1[loc3_n * 0x38 / 0x0118] - arg1[(v18_n * 0x38) / 0x0118];
+				real64 v26_n = (&(arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0000)[1] - (&(((arg1 + (v18_n * 0x38) / 0x0118)->a0000))[0].r0000)[1];
+				real64 v26_n = (&(arg1 + (loc3_n * 0x38) / 0x0118)->a0000[0].r0000)[2] - (&(((arg1 + (v18_n * 0x38) / 0x0118)->a0000))[0].r0000)[2];
+				real64 v22_n = (arg1 + (loc3_n * 0x38) / 0x0118)->r0030;
+				real64 v23_n = sqrt(v23_n * v23_n + v26_n * v26_n + v26_n * v26_n);
+				struct Eq_n * v18_n = arg1 + (loc3_n * 0x38) / 0x0118;
+				real64 v28_n = (arg1 + (v18_n * 0x38) / 0x0118)->r0030;
+				real64 v22_n = arg2 / (v23_n * (v23_n * v23_n));
+				v18_n->r0018 -= v23_n * v28_n * v22_n;
+				struct Eq_n * v18_n = arg1 + (loc3_n * 0x38) / 0x0118;
+				v18_n->r0020 -= v22_n * (v26_n * v28_n);
+				struct Eq_n * v18_n = arg1 + (loc3_n * 0x38) / 0x0118;
+				v18_n->r0028 -= v22_n * (v26_n * v28_n);
+				struct Eq_n * v18_n = arg1 + (v18_n * 0x38) / 0x0118;
+				v18_n->r0018 += v22_n * (v23_n * v22_n);
+				struct Eq_n * v18_n = arg1 + (v18_n * 0x38) / 0x0118;
+				v18_n->r0020 += v22_n * (v26_n * v22_n);
+				struct Eq_n * v18_n = arg1 + (v18_n * 0x38) / 0x0118;
+				v18_n->r0028 += v22_n * (v26_n * v22_n);
+				loc3_n = v18_n + 0x01;
+			} while (v18_n + 0x01 != arg0);
+		}
+		if (v18_n == arg0)
+			break;
+		loc3_n = v18_n;
+	}
+	if (!(arg0 > 0x00))
+		return;
+	int32 loc4_n = 0x00;
+	do
+	{
+		real64 * v18_n = arg1 + (loc4_n * 0x38) / 0x0118;
+		*v18_n += (arg1 + (loc4_n * 0x38) / 0x0118)->r0018 * arg2;
+		struct Eq_n * v18_n = arg1 + (loc4_n * 0x38) / 0x0118;
+		v18_n->r0008 += (arg1 + (loc4_n * 0x38) / 0x0118)->r0020 * arg2;
+		struct Eq_n * v18_n = arg1 + (loc4_n * 0x38) / 0x0118;
+		v18_n->r0010 += (arg1 + (loc4_n * 0x38) / 0x0118)->r0028 * arg2;
+		int32 v18_n = loc4_n + 0x01;
+		loc4_n = v18_n;
+	} while (v18_n != arg0);
 }
 
-// 000E020A: Stack real64 _energy(Stack int32 arg0, Stack ptr32 arg1)
-real64 _energy(int32 arg0, ptr32 arg1)
+// 000E020A: Stack real64 _energy(Stack int32 arg0, Stack (arr Eq_n) arg1)
+real64 _energy(int32 arg0, Eq_n arg1[])
 {
+	if (!(arg0 > 0x00))
+		return 0.0;
+	int32 loc2_n = 0x00;
+	real64 loc4_n = 0.0;
+	while (true)
+	{
+		real64 v16_n = (&(arg1 + loc2_n)->r0000)[3];
+		real64 v18_n = (&(arg1 + loc2_n)->r0000)[4];
+		real64 v18_n = (&(arg1 + loc2_n)->r0000)[5];
+		real64 v15_n = (&(arg1 + loc2_n)->r0000)[6];
+		int32 v9_n = loc2_n + 0x01;
+		loc4_n += v15_n * 0.5 * ((v16_n * v16_n + v18_n * v18_n) + v18_n * v18_n);
+		if (v9_n < arg0)
+		{
+			do
+			{
+				real64 v16_n = arg1[loc2_n].r0000 - (arg1)[v9_n].r0000;
+				real64 v18_n = (&(arg1 + loc2_n)->r0000)[1] - (&(arg1 + v9_n)->r0000)[1];
+				real64 v18_n = (&(arg1 + loc2_n)->r0000)[2] - (&(arg1 + v9_n)->r0000)[2];
+				loc4_n -= v15_n * (&(arg1 + v9_n)->r0000)[6] / sqrt((v16_n * v16_n + v18_n * v18_n) + v18_n * v18_n);
+				loc2_n = v9_n + 0x01;
+			} while (v9_n + 0x01 != arg0);
+		}
+		if (v9_n == arg0)
+			break;
+		loc2_n = v9_n;
+	}
+	return loc4_n;
 }
 
 // 000E0329: void _offset_momentum(Stack int32 arg0, Stack (ptr32 Eq_n) arg1)
@@ -44,11 +122,51 @@ void _offset_momentum(int32 arg0, struct Eq_n * arg1)
 // 000E0405: Stack real64 _start()
 real64 _start()
 {
+	do
+	{
+		real64 v12_n = g_ptr100000->r0030;
+		real64 v14_n = g_ptr100000->r0068;
+		real64 v14_n = g_ptr100000->r00A0;
+		real64 v14_n = g_ptr100000->r00D8;
+		real64 v14_n = g_ptr100000->r0110;
+		real64 v12_n = v12_n * g_ptr100000->r0020 + 0.0 + v14_n * g_ptr100000->r0058 + v14_n * g_ptr100000->r0090 + v14_n * g_ptr100000->r00C8 + v14_n * g_ptr100000->r0100;
+		real64 v12_n = v12_n * g_ptr100000->r0028 + 0.0 + v14_n * g_ptr100000->r0060 + v14_n * g_ptr100000->r0098 + v14_n * g_ptr100000->r00D0 + v14_n * g_ptr100000->r0108;
+		g_ptr100000->r0018 = -(g_ptr100000->r0018 * v12_n + 0.0 + g_ptr100000->r0050 * v14_n + g_ptr100000->r0088 * v14_n + g_ptr100000->r00C0 * v14_n + g_ptr100000->r00F8 * v14_n) / 39.47841760435743;
+		g_ptr100000->r0020 = -v12_n / 39.47841760435743;
+		g_ptr100000->r0028 = -v12_n / 39.47841760435743;
+		while (true)
+			;
+	} while (true);
+	return <invalid>;
 }
 
 // 000E061E: Stack real64 _run(Stack int32 arg0)
 real64 _run(int32 arg0)
 {
+	int32 arg0_n;
+	if (arg0 < 0x01)
+		arg0_n = 0x00;
+	else
+	{
+		do
+			_advance(0x05, g_ptr100000, 0.01);
+		while (!(arg0 == 0x01));
+		arg0_n = 0x00;
+	}
+	while (true)
+	{
+		int32 v9_n = arg0_n + 0x01;
+		if (v9_n < 0x05)
+		{
+			do
+				;
+			while (v9_n != ~0x03);
+		}
+		if (v9_n == 0x05)
+			break;
+		arg0_n = v9_n;
+	}
+	return <invalid>;
 }
 
 // 000E076E: void runPostSets()

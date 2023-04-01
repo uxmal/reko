@@ -6747,7 +6747,7 @@ l000E5B8F:
 	v33 = loc30
 	v35 = v33 == 0<32>
 	v35 = v35
-	// succ:  l000E5BA9 l000E5BA9
+	// succ:  l000E5BA9
 l000E5BA9:
 	v33 = arg0
 	v33 = Mem0[v33:word32]
@@ -12019,7 +12019,7 @@ l000E7F2E:
 l000E7F4F:
 	v22 = loc16
 	v22 = v22
-	// succ:  l000E7F55 l000E7F55
+	// succ:  l000E7F55
 l000E7F55:
 	v22 = 0<32>
 	loc3 = v22
@@ -12375,7 +12375,7 @@ l000E83CB:
 l000E83EC:
 	v23 = loc17
 	v23 = v23
-	// succ:  l000E83F2 l000E83F2
+	// succ:  l000E83F2
 l000E83F2:
 	v23 = 0<32>
 	loc3 = v23
@@ -12786,7 +12786,7 @@ l000E883D:
 l000E883F:
 	v43 = loc40
 	v43 = v43
-	// succ:  l000E8845 l000E8845
+	// succ:  l000E8845
 l000E8845:
 	v43 = arg0
 	v44 = 0x30<32>
@@ -12900,7 +12900,7 @@ l000E89C4:
 	loc63 = v70
 	v68 = loc63
 	v68 = v68
-	// succ:  l000E89FC l000E89FC
+	// succ:  l000E89FC
 l000E89FC:
 	v68 = arg0
 	v69 = 0x2C<32>
@@ -12991,7 +12991,7 @@ l000E8A82:
 	v69 = 8<32>
 	v70 = v68 == v69
 	v70 = v70
-	// succ:  l000E8A8B l000E8A8B
+	// succ:  l000E8A8B
 l000E8A8B:
 	v68 = arg0
 	v69 = 0x35<32>
@@ -13013,7 +13013,7 @@ l000E8A8B:
 l000E8AA6:
 	v68 = loc26
 	v68 = v68
-	// succ:  l000E8AAC l000E8AAC
+	// succ:  l000E8AAC
 l000E8AAC:
 	v68 = arg0
 	v69 = 0x28<32>
@@ -13267,7 +13267,7 @@ l000E8E53:
 l000E8E55:
 	v44 = loc41
 	v44 = v44
-	// succ:  l000E8E5B l000E8E5B
+	// succ:  l000E8E5B
 l000E8E5B:
 	v44 = arg0
 	v45 = 0x30<32>
@@ -13386,7 +13386,7 @@ l000E8FE2:
 	loc64 = v71
 	v69 = loc64
 	v69 = v69
-	// succ:  l000E901A l000E901A
+	// succ:  l000E901A
 l000E901A:
 	v69 = arg0
 	v70 = 0x2C<32>
@@ -13477,7 +13477,7 @@ l000E90A0:
 	v70 = 8<32>
 	v71 = v69 == v70
 	v71 = v71
-	// succ:  l000E90A9 l000E90A9
+	// succ:  l000E90A9
 l000E90A9:
 	v69 = arg0
 	v70 = 0x35<32>
@@ -13499,7 +13499,7 @@ l000E90A9:
 l000E90C4:
 	v69 = loc26
 	v69 = v69
-	// succ:  l000E90CA l000E90CA
+	// succ:  l000E90CA
 l000E90CA:
 	v69 = arg0
 	v70 = 0x28<32>
@@ -13605,7 +13605,7 @@ l000E930D:
 	v8 = loc1
 	v10 = v8 == 0<32>
 	v10 = v10
-	// succ:  l000E931F l000E931F
+	// succ:  l000E931F
 l000E931F:
 	v8 = arg0
 	v8 = Mem0[v8:word32]
@@ -14570,7 +14570,7 @@ l000E9846:
 l000E98A5:
 	v72 = loc21
 	v72 = v72
-	// succ:  l000E98AB l000E98AB
+	// succ:  l000E98AB
 l000E98AB:
 	v72 = loc65
 	v73 = 0xFFFFFFFF<32>

@@ -296,13 +296,8 @@ namespace Reko.ImageLoaders.WebAssembly
 
         private void RewriteBlock()
         {
-            DataType? output = DecodeBlockDataType();
             Debug.Assert(this.block is not null);
-            if (instr.Operands.Length > 0)
-            {
-                //$TODO: if block has args
-                Console.WriteLine("WASM block instruction with operands not handled yet.");
-            }
+            DataType? output = DecodeBlockDataType();
             if (block.Statements.Count != 0)
             {
                 var blockOld = block;
@@ -421,7 +416,7 @@ namespace Reko.ImageLoaders.WebAssembly
             this.valueTypeStack.Clear();
             this.valueTypeStack.AddRange(ctrl.TypeStack);
             var followBlock = MakeFollowBlock();
-            BackpatchIf(ctrl, followBlock);
+            BackpatchIf(ctrl.Block, followBlock);
             if (this.block is not null)
             {
                 ctrl = PushControl(Mnemonic.@else, ctrl.Inputs, ctrl.Output, false);
@@ -456,10 +451,11 @@ namespace Reko.ImageLoaders.WebAssembly
             {
             case Mnemonic.@if:
                 var followBlock = MakeFollowBlock();
-                BackpatchIf(ctrl, followBlock);
-                if (this.instr.Mnemonic != Mnemonic.@else)
+                BackpatchIf(ctrl.Block, followBlock);
+                if (this.instr.Mnemonic != Mnemonic.@else &&
+                    this.block is not null)
                 {
-                    this.block?.Succ.Add(followBlock);
+                    this.proc.ControlGraph.AddEdge(this.block, followBlock);
                 }
                 CompleteBranches(ctrl, followBlock);
                 this.block = followBlock;
@@ -515,14 +511,14 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private void BackpatchIf(ControlEntry ctrl, Block followBlock)
+        private void BackpatchIf(Block ifBlock, Block followBlock)
         {
-            var placeholder = ((Assignment) ctrl.Block.Statements[^1].Instruction).Dst;
+            Debug.Assert(ifBlock.Succ.Count == 1, "There should be one out edge created in ReriteIf");
+            var placeholder = ((Assignment) ifBlock.Statements[^1].Instruction).Dst;
+            ifBlock.Statements[^1].Instruction = new Branch(m.Not(placeholder), followBlock);
 
-            ctrl.Block.Statements[^1].Instruction = new Branch(m.Not(placeholder), followBlock);
-            ctrl.Block.Succ[1].Pred.RemoveAt(0);
-            ctrl.Block.Succ[1] = followBlock;
-            followBlock.Pred.Add(ctrl.Block);
+            // Add the second edge, the 'if' part already added the first.
+            proc.ControlGraph.AddEdge(ifBlock, followBlock);
         }
 
         private void RewriteCall()
@@ -597,11 +593,14 @@ namespace Reko.ImageLoaders.WebAssembly
             var predicate = PopValue();
             // Can't create the branch instruction yet; the
             // following 'else' or 'end' instruction is responsible for this.
+            // We leave a dummy instruction at the end of the block, and
+            // let the 'else' or 'end' change it to a 'Branch'.
             Assign(predicate, predicate);
             PushControl(Mnemonic.@if, Array.Empty<Identifier>(), output, false);
 
             var thenBlock = this.MakeFollowBlock();
-            proc.ControlGraph.AddEdge(block, thenBlock);        // Will be replaced when 'else' or 'end' is found.
+            // We only create the 'then' edge. The 'end' or 'else' block is 
+            // responsible for inserting the 'else' edge.
             proc.ControlGraph.AddEdge(block, thenBlock);
             this.block = thenBlock;
         }

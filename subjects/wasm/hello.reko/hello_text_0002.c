@@ -7,21 +7,2857 @@
 // 000F07BB: Stack Eq_n fn000F07BB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000F07BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
+	v19.u3 = g_t140030.u3;
+	loc16 = v19;
+	v19.u3 = g_t140030.u3;
+	v20.u0 = 0x10;
+	v19 += v20;
+	g_t140030.u3 = (word32 *) v19;
+	v19.u3 = g_t140030.u3;
+	v20.u3 = g_t140034.u3;
+	v21 = v19 >= v20;
+	if (v21)
+	{
+		v19.u0 = 0x10;
+		abortStackOverflow(v19);
+	}
+	v19 = loc16;
+	loc10 = v19;
+	v19 = arg0;
+	v20 = arg1;
+	v21 = v19 == v20;
+	loc11 = v21;
+	v19 = loc11;
+	if (v19)
+	{
+		v19 = arg2;
+		v20.u0 = 0x04;
+		*v19.u0 = v20;
+		v22.u0 = 0x00;
+		loc19 = v22;
+	}
+	else
+	{
+		v19 = ___errno_location();
+		loc12 = v19;
+		v19 = loc12;
+		v19 = *v19.u0;
+		loc13 = v19;
+		v19 = loc12;
+		v20.u0 = 0x00;
+		*v19.u0 = v20;
+		v19 = fn000EAD0D();
+		loc14 = v19;
+		v19 = arg0;
+		v20 = loc10;
+		v23 = arg3;
+		v24 = loc14;
+		v22 = fn000D285D(v19, v20, v23, v24);
+		loc20 = v22;
+		v19 = loc12;
+		v19 = *v19.u0;
+		loc4 = v19;
+		v19 = loc4;
+		v20.u0 = 0x00;
+		v21 = v19 == v20;
+		loc5 = v21;
+		v19 = loc5;
+		if (v19)
+		{
+			v19 = loc12;
+			v20 = loc13;
+			*v19.u0 = v20;
+		}
+		v19 = loc10;
+		v19 = *v19.u0;
+		loc6 = v19;
+		v19 = loc6;
+		v20 = arg1;
+		v21 = v19 == v20;
+		loc7 = v21;
+		v19 = loc7;
+		if (v19)
+		{
+			v19 = loc4;
+			v20.u0 = 0x22;
+			v21 = v19 == v20;
+			loc8 = v21;
+			v19 = loc8;
+			if (v19)
+			{
+				v19 = arg2;
+				v20.u0 = 0x04;
+				*v19.u0 = v20;
+				v22 = loc20;
+				v25.u0 = 0x00;
+				v21 = v22 > v25;
+				loc9 = v21;
+				v19 = loc9;
+				if (v19)
+					v22.u0 = 0xFFFFFFFF;
+				else
+					v22.u0 = 0x80000000;
+				loc17 = v22;
+				v22 = loc17;
+				loc18 = v22;
+			}
+			else
+			{
+				v22 = loc20;
+				loc18 = v22;
+			}
+		}
+		else
+		{
+			v19 = arg2;
+			v20.u0 = 0x04;
+			*v19.u0 = v20;
+			v22.u0 = 0x00;
+			loc18 = v22;
+		}
+		v22 = loc18;
+		loc19 = v22;
+	}
+	v19 = loc16;
+	g_t140030.u3 = (word32 *) v19;
+	v22 = loc19;
+	return v22;
 }
 
 // 000F089A: Stack Eq_n fn000F089A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F089A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v183.u3 = g_t140030.u3;
+	loc186 = v183;
+	v183.u3 = g_t140030.u3;
+	v184.u0 = 0xE0;
+	v183 += v184;
+	g_t140030.u3 = (word32 *) v183;
+	v183.u3 = g_t140030.u3;
+	v184.u3 = g_t140034.u3;
+	v185 = v183 >= v184;
+	if (v185)
+	{
+		v183.u0 = 0xE0;
+		abortStackOverflow(v183);
+	}
+	while (true)
+	{
+		v183 = loc186;
+		v184.u0 = 0xC6;
+		v183 += v184;
+		loc138 = v183;
+		v183 = loc186;
+		v184.u0 = 0xC4;
+		v183 += v184;
+		loc149 = v183;
+		v183 = loc186;
+		v184.u0 = 0xB8;
+		v183 += v184;
+		loc160 = v183;
+		v183 = loc186;
+		v184.u0 = 0xAC;
+		v183 += v184;
+		loc171 = v183;
+		v183 = loc186;
+		v184.u0 = 0xA8;
+		v183 += v184;
+		loc20 = v183;
+		v183 = loc186;
+		v184.u0 = 0x08;
+		v183 += v184;
+		loc31 = v183;
+		v183 = loc186;
+		v184.u0 = 0x04;
+		v183 += v184;
+		loc42 = v183;
+		v183 = loc186;
+		loc53 = v183;
+		v183 = arg3;
+		v183 = fn000EDE83(v183);
+		loc64 = v183;
+		v183 = loc160;
+		v184 = arg3;
+		v186 = loc138;
+		v187 = loc149;
+		fn000EDF31(v183, v184, v186, v187);
+		v183 = loc171;
+		v188.u0 = 0x00;
+		*v183.u0 = v188;
+		v183 = loc171;
+		v184.u0 = 0x08;
+		v183 += v184;
+		v184.u0 = 0x00;
+		*v183.u0 = v184;
+		v183.u0 = 0x00;
+		loc6 = v183;
+		v183 = loc6;
+		v184.u0 = 0x03;
+		v185 = v183 == v184;
+		loc182 = v185;
+		v183 = loc182;
+		if (v183)
+			break;
+		v183 = loc171;
+		v184 = loc6;
+		v186.u0 = 0x02;
+		v184 <<= v186;
+		v183 += v184;
+		loc75 = v183;
+		v183 = loc75;
+		v184.u0 = 0x00;
+		*v183.u0 = v184;
+		v183 = loc6;
+		v184.u0 = 0x01;
+		v183 += v184;
+		loc86 = v183;
+		v183 = loc86;
+		loc6 = v183;
+	}
+	v183 = loc171;
+	v184.u0 = 11;
+	v183 += v184;
+	loc95 = v183;
+	v183 = loc95;
+	v189 = *v183.u0;
+	v183.u3 = (word32) v189;
+	loc96 = v183;
+	v183 = loc96;
+	v184.u0 = 0x18;
+	v183 <<= v184;
+	v184.u0 = 0x18;
+	v183 >>= v184;
+	v184.u0 = 0x00;
+	v185 = v183 < v184;
+	loc97 = v185;
+	v183 = loc97;
+	if (v183)
+	{
+		v183 = loc171;
+		v184.u0 = 0x08;
+		v183 += v184;
+		loc98 = v183;
+		v183 = loc98;
+		v183.u3 = *v183.u3;
+		loc99 = v183;
+		v183 = loc99;
+		v184.u0 = 0x7FFFFFFF;
+		v183 &= v184;
+		loc100 = v183;
+		v183 = loc100;
+		v184.u0 = ~0x00;
+		v183 += v184;
+		loc183 = v183;
+		v183 = loc183;
+		loc101 = v183;
+	}
+	else
+	{
+		v183.u0 = 0x0A;
+		loc101 = v183;
+	}
+	v183.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v183;
+	v183.u0 = 0x017A;
+	v184 = loc171;
+	v186 = loc101;
+	v187.u0 = 0x00;
+	invoke_viii(v183, v184, v186, v187);
+	v183.u3 = g_t140048.u3;
+	loc102 = v183;
+	v183.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v183;
+	v183 = loc102;
+	v184.u0 = 0x01;
+	v183 &= v184;
+	loc103 = v183;
+	v183 = loc103;
+	if (v183)
+	{
+		v183 = ___cxa_find_matching_catch_n();
+		loc164 = v183;
+		v183.u3 = g_t140094.u3;
+		loc165 = v183;
+		v183 = loc164;
+		loc9 = v183;
+		v183 = loc165;
+		loc11 = v183;
+		goto l000F114F;
+	}
+	v183 = loc95;
+	v190.u3 = *v183.u3;
+	v183.u3 = (word32) v190;
+	loc104 = v183;
+	v183 = loc104;
+	v184.u0 = 0x18;
+	v183 <<= v184;
+	v184.u0 = 0x18;
+	v183 >>= v184;
+	v184.u0 = 0x00;
+	v185 = v183 < v184;
+	loc105 = v185;
+	v183 = loc171;
+	v183.u3 = *v183.u3;
+	loc106 = v183;
+	v183 = loc105;
+	if (v183)
+		v183 = loc106;
+	else
+		v183 = loc171;
+	while (true)
+	{
+		loc107 = v183;
+		v183 = loc20;
+		v184 = loc107;
+		*v183.u3 = (word32) v184;
+		v183 = loc42;
+		v184 = loc31;
+		*v183.u3 = (word32) v184;
+		v183 = loc53;
+		v184.u0 = 0x00;
+		*v183.u3 = (word32) v184;
+		v183 = loc171;
+		v184.u0 = 0x04;
+		v183 += v184;
+		loc108 = v183;
+		v183 = loc171;
+		v184.u0 = 0x08;
+		v183 += v184;
+		loc109 = v183;
+		v183 = arg1;
+		v183.u3 = *v183.u3;
+		loc13 = v183;
+		v183 = loc107;
+		loc8 = v183;
+		v183 = loc13;
+		loc15 = v183;
+		v183 = loc15;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc110 = v185;
+		v183 = loc110;
+		if (v183)
+		{
+			v183.u0 = 0x00;
+			loc14 = v183;
+		}
+		else
+		{
+			v183 = loc15;
+			v184.u0 = 0x0C;
+			v183 += v184;
+			loc111 = v183;
+			v183 = loc111;
+			v183 = *v183.u0;
+			loc112 = v183;
+			v183 = loc15;
+			v184.u0 = 0x10;
+			v183 += v184;
+			loc113 = v183;
+			v183 = loc113;
+			v183 = *v183.u0;
+			loc114 = v183;
+			v183 = loc112;
+			v184 = loc114;
+			v185 = v183 == v184;
+			loc115 = v185;
+			v183 = loc115;
+			if (v183)
+			{
+				v183 = loc15;
+				v183 = *v183.u0;
+				loc116 = v183;
+				v183 = loc116;
+				v184.u0 = 0x24;
+				v183 += v184;
+				loc117 = v183;
+				v183 = loc117;
+				v183 = *v183.u0;
+				loc118 = v183;
+				v183.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v183;
+				v183 = loc118;
+				v184 = loc15;
+				v183 = invoke_ii(v183, v184);
+				loc119 = v183;
+				v183.u3 = g_t140048.u3;
+				loc120 = v183;
+				v183.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v183;
+				v183 = loc120;
+				v184.u0 = 0x01;
+				v183 &= v184;
+				loc121 = v183;
+				v183 = loc121;
+				if (v183)
+				{
+					v183.u0 = 0x1C;
+					loc185 = v183;
+					goto l000F0E98;
+				}
+				v183 = loc119;
+				v184.u0 = ~0x00;
+				v185 = v183 == v184;
+				loc122 = v185;
+				v183 = loc122;
+				if (v183)
+				{
+					v183 = arg1;
+					v184.u0 = 0x00;
+					*v183.u0 = v184;
+					v183.u0 = 0x00;
+					loc14 = v183;
+				}
+				else
+				{
+					v183 = loc15;
+					loc14 = v183;
+				}
+			}
+			else
+			{
+				v183 = loc15;
+				loc14 = v183;
+			}
+		}
+		v183 = loc14;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc123 = v185;
+		v183 = arg2;
+		v183 = *v183.u0;
+		loc124 = v183;
+		v183 = loc124;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc125 = v185;
+		v183 = loc125;
+		if (v183)
+		{
+			v183.u0 = 0x13;
+			loc185 = v183;
+		}
+		else
+		{
+			v183 = loc124;
+			v184.u0 = 0x0C;
+			v183 += v184;
+			loc126 = v183;
+			v183 = loc126;
+			v183 = *v183.u0;
+			loc127 = v183;
+			v183 = loc124;
+			v184.u0 = 0x10;
+			v183 += v184;
+			loc128 = v183;
+			v183 = loc128;
+			v183 = *v183.u0;
+			loc129 = v183;
+			v183 = loc127;
+			v184 = loc129;
+			v185 = v183 == v184;
+			loc130 = v185;
+			v183 = loc130;
+			v185 = v183 == 0x00;
+			if (v185)
+			{
+				v183 = loc123;
+				if (!v183)
+				{
+					v183 = loc8;
+					loc12 = v183;
+					v183 = loc124;
+					loc16 = v183;
+					v183.u0 = 0x26;
+					loc185 = v183;
+					goto l000F0E98;
+				}
+				v183 = loc124;
+				loc94 = v183;
+			}
+			else
+			{
+				v183 = loc124;
+				v183 = *v183.u0;
+				loc131 = v183;
+				v183 = loc131;
+				v184.u0 = 0x24;
+				v183 += v184;
+				loc132 = v183;
+				v183 = loc132;
+				v183 = *v183.u0;
+				loc133 = v183;
+				v183.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v183;
+				v183 = loc133;
+				v184 = loc124;
+				v183 = invoke_ii(v183, v184);
+				loc134 = v183;
+				v183.u3 = g_t140048.u3;
+				loc135 = v183;
+				v183.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v183;
+				v183 = loc135;
+				v184.u0 = 0x01;
+				v183 &= v184;
+				loc136 = v183;
+				v183 = loc136;
+				if (v183)
+				{
+					v183.u0 = 0x1C;
+					loc185 = v183;
+					goto l000F0E98;
+				}
+				v183 = loc134;
+				v184.u0 = ~0x00;
+				v185 = v183 == v184;
+				loc137 = v185;
+				v183 = loc137;
+				if (v183)
+				{
+					v183 = arg2;
+					v184.u0 = 0x00;
+					*v183.u0 = v184;
+					v183.u0 = 0x13;
+					loc185 = v183;
+				}
+				else
+				{
+					v183 = loc123;
+					if (!v183)
+					{
+						v183 = loc8;
+						loc12 = v183;
+						v183 = loc124;
+						loc16 = v183;
+						v183.u0 = 0x26;
+						loc185 = v183;
+						goto l000F0E98;
+					}
+					v183 = loc124;
+					loc94 = v183;
+				}
+			}
+		}
+		v183 = loc185;
+		v184.u0 = 0x13;
+		v185 = v183 == v184;
+		if (v185)
+		{
+			v183.u0 = 0x00;
+			loc185 = v183;
+			v183 = loc123;
+			if (v183)
+			{
+				v183 = loc8;
+				loc12 = v183;
+				v183.u0 = 0x00;
+				loc16 = v183;
+				v183.u0 = 0x26;
+				loc185 = v183;
+				goto l000F0E98;
+			}
+			v183.u0 = 0x00;
+			loc94 = v183;
+		}
+		v183 = loc20;
+		v183 = *v183.u0;
+		loc139 = v183;
+		v183 = loc95;
+		v191 = *v183.u0;
+		v183.u3 = (word32) v191;
+		loc140 = v183;
+		v183 = loc140;
+		v184.u0 = 0x18;
+		v183 <<= v184;
+		v184.u0 = 0x18;
+		v183 >>= v184;
+		v184.u0 = 0x00;
+		v185 = v183 < v184;
+		loc141 = v185;
+		v183 = loc108;
+		v183.u3 = *v183.u3;
+		loc142 = v183;
+		v183 = loc140;
+		v184.u0 = 0xFF;
+		v183 &= v184;
+		loc143 = v183;
+		v183 = loc141;
+		if (v183)
+			v183 = loc142;
+		else
+			v183 = loc143;
+		loc144 = v183;
+		v183 = loc8;
+		v184 = loc144;
+		v183 += v184;
+		loc145 = v183;
+		v183 = loc139;
+		v184 = loc145;
+		v185 = v183 == v184;
+		loc146 = v185;
+		v183 = loc146;
+		if (v183)
+		{
+			v183 = loc144;
+			v184.u0 = 0x01;
+			v183 <<= v184;
+			loc147 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183.u0 = 0x017A;
+			v184 = loc171;
+			v186 = loc147;
+			v187.u0 = 0x00;
+			invoke_viii(v183, v184, v186, v187);
+			v183.u3 = g_t140048.u3;
+			loc148 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183 = loc148;
+			v184.u0 = 0x01;
+			v183 &= v184;
+			loc150 = v183;
+			v183 = loc150;
+			if (v183)
+			{
+				v183.u0 = 0x1E;
+				loc185 = v183;
+				goto l000F0E98;
+			}
+			v183 = loc95;
+			v192 = *v183.u0;
+			v183.u3 = (word32) v192;
+			loc151 = v183;
+			v183 = loc151;
+			v184.u0 = 0x18;
+			v183 <<= v184;
+			v184.u0 = 0x18;
+			v183 >>= v184;
+			v184.u0 = 0x00;
+			v185 = v183 < v184;
+			loc152 = v185;
+			v183 = loc152;
+			if (v183)
+			{
+				v183 = loc109;
+				v183.u3 = *v183.u3;
+				loc153 = v183;
+				v183 = loc153;
+				v184.u0 = 0x7FFFFFFF;
+				v183 &= v184;
+				loc154 = v183;
+				v183 = loc154;
+				v184.u0 = ~0x00;
+				v183 += v184;
+				loc184 = v183;
+				v183 = loc184;
+				loc155 = v183;
+			}
+			else
+			{
+				v183.u0 = 0x0A;
+				loc155 = v183;
+			}
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183.u0 = 0x017A;
+			v184 = loc171;
+			v186 = loc155;
+			v187.u0 = 0x00;
+			invoke_viii(v183, v184, v186, v187);
+			v183.u3 = g_t140048.u3;
+			loc156 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183 = loc156;
+			v184.u0 = 0x01;
+			v183 &= v184;
+			loc157 = v183;
+			v183 = loc157;
+			if (v183)
+			{
+				v183.u0 = 0x1E;
+				loc185 = v183;
+				goto l000F0E98;
+			}
+			v183 = loc95;
+			v193 = *v183.u0;
+			v183.u3 = (word32) v193;
+			loc158 = v183;
+			v183 = loc158;
+			v184.u0 = 0x18;
+			v183 <<= v184;
+			v184.u0 = 0x18;
+			v183 >>= v184;
+			v184.u0 = 0x00;
+			v185 = v183 < v184;
+			loc159 = v185;
+			v183 = loc171;
+			v183.u3 = *v183.u3;
+			loc161 = v183;
+			v183 = loc159;
+			if (v183)
+				v183 = loc161;
+			else
+				v183 = loc171;
+			loc162 = v183;
+			v183 = loc162;
+			v184 = loc144;
+			v183 += v184;
+			loc163 = v183;
+			v183 = loc20;
+			v184 = loc163;
+			*v183.u3 = (word32) v184;
+			v183 = loc162;
+			loc10 = v183;
+		}
+		else
+		{
+			v183 = loc8;
+			loc10 = v183;
+		}
+		v183 = loc14;
+		v184.u0 = 0x0C;
+		v183 += v184;
+		loc173 = v183;
+		v183 = loc173;
+		v183.u3 = *v183.u3;
+		loc174 = v183;
+		v183 = loc14;
+		v184.u0 = 0x10;
+		v183 += v184;
+		loc175 = v183;
+		v183 = loc175;
+		v183.u3 = *v183.u3;
+		loc176 = v183;
+		v183 = loc174;
+		v184 = loc176;
+		v185 = v183 == v184;
+		loc177 = v185;
+		v183 = loc177;
+		if (v183)
+		{
+			v183 = loc14;
+			v183.u3 = *v183.u3;
+			loc178 = v183;
+			v183 = loc178;
+			v184.u0 = 0x24;
+			v183 += v184;
+			loc179 = v183;
+			v183 = loc179;
+			v183.u3 = *v183.u3;
+			loc180 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183 = loc180;
+			v184 = loc14;
+			v183 = invoke_ii(v183, v184);
+			loc181 = v183;
+			v183.u3 = g_t140048.u3;
+			loc21 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183 = loc21;
+			v184.u0 = 0x01;
+			v183 &= v184;
+			loc22 = v183;
+			v183 = loc22;
+			if (v183)
+			{
+				v183.u0 = 0x1C;
+				loc185 = v183;
+				goto l000F0E98;
+			}
+			v183 = loc181;
+			loc7 = v183;
+		}
+		else
+		{
+			v183 = loc174;
+			v194 = *v183.u0;
+			v183.u3 = (word32) v194;
+			loc23 = v183;
+			v183 = loc23;
+			v184.u0 = 0xFF;
+			v183 &= v184;
+			loc24 = v183;
+			v183 = loc24;
+			loc7 = v183;
+		}
+		v183 = loc7;
+		v184.u0 = 0xFF;
+		v183 &= v184;
+		loc25 = v183;
+		v183 = loc149;
+		v195.u1 = v183.u4->t0000.u1;
+		v183.u3 = (word32) v195;
+		loc26 = v183;
+		v183 = loc25;
+		v184 = loc64;
+		v186 = loc10;
+		v187 = loc20;
+		v196 = loc53;
+		v197 = loc26;
+		v198 = loc160;
+		v199 = loc31;
+		v200 = loc42;
+		v201 = loc138;
+		v183 = fn000EAA19(v183, v184, v186, v187, v196, v197, v198, v199, v200, v201);
+		loc27 = v183;
+		v183 = loc27;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc28 = v185;
+		v183 = loc28;
+		v185 = v183 == 0x00;
+		if (v185)
+			break;
+		v183 = loc173;
+		v183 = *v183.u0;
+		loc29 = v183;
+		v183 = loc175;
+		v183 = *v183.u0;
+		loc30 = v183;
+		v183 = loc29;
+		v184 = loc30;
+		v185 = v183 == v184;
+		loc32 = v185;
+		v183 = loc32;
+		if (!v183)
+		{
+			v183 = loc29;
+			v184.u0 = 0x01;
+			v183 += v184;
+			loc38 = v183;
+			v183 = loc173;
+			v184 = loc38;
+			*v183.u0 = v184;
+			v183 = loc10;
+			loc8 = v183;
+			v183 = loc14;
+			loc15 = v183;
+			continue;
+		}
+		v183 = loc14;
+		v183 = *v183.u0;
+		loc33 = v183;
+		v183 = loc33;
+		v184.u0 = 0x28;
+		v183 += v184;
+		loc34 = v183;
+		v183 = loc34;
+		v183 = *v183.u0;
+		loc35 = v183;
+		v183.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v183;
+		v183 = loc35;
+		v184 = loc14;
+		v183 = invoke_ii(v183, v184);
+		v183.u3 = g_t140048.u3;
+		loc36 = v183;
+		v183.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v183;
+		v183 = loc36;
+		v184.u0 = 0x01;
+		v183 &= v184;
+		loc37 = v183;
+		v183 = loc37;
+		if (v183)
+		{
+			v183.u0 = 0x1C;
+			loc185 = v183;
+			goto l000F0E98;
+		}
+		v183 = loc10;
+		loc8 = v183;
+		v183 = loc14;
+		loc15 = v183;
+	}
+	v183 = loc10;
+	loc12 = v183;
+	v183 = loc94;
+	loc16 = v183;
+	v183.u0 = 0x26;
+	loc185 = v183;
+l000F0E98:
+	v183 = loc185;
+	v184.u0 = 0x1C;
+	v185 = v183 == v184;
+	if (v185)
+	{
+		v183 = ___cxa_find_matching_catch_n();
+		loc166 = v183;
+		v183.u3 = g_t140094.u3;
+		loc167 = v183;
+		v183 = loc166;
+		loc17 = v183;
+		v183 = loc167;
+		loc18 = v183;
+		goto l000F1146;
+	}
+	v183 = loc185;
+	v184.u0 = 0x1E;
+	v185 = v183 == v184;
+	if (v185)
+	{
+		v183 = ___cxa_find_matching_catch_n();
+		loc170 = v183;
+		v183.u3 = g_t140094.u3;
+		loc172 = v183;
+		v183 = loc170;
+		loc17 = v183;
+		v183 = loc172;
+		loc18 = v183;
+		goto l000F1145;
+	}
+	v183 = loc185;
+	v184.u0 = 0x26;
+	v185 = v183 == v184;
+	if (!v185)
+	{
+l000F1146:
+		v183 = loc17;
+		loc9 = v183;
+		v183 = loc18;
+		loc11 = v183;
+l000F114F:
+		v183 = loc171;
+		fn0011BAF7(v183);
+		v183 = loc160;
+		fn0011BAF7(v183);
+		v183 = loc9;
+		___resumeException(v183);
+		v183.u0 = 0x00;
+		return v183;
+	}
+	v183 = loc160;
+	v184.u0 = 11;
+	v183 += v184;
+	loc39 = v183;
+	v183 = loc39;
+	v202.u3 = *v183.u3;
+	v183.u3 = (word32) v202;
+	loc40 = v183;
+	v183 = loc40;
+	v184.u0 = 0x18;
+	v183 <<= v184;
+	v184.u0 = 0x18;
+	v183 >>= v184;
+	v184.u0 = 0x00;
+	v185 = v183 < v184;
+	loc41 = v185;
+	v183 = loc160;
+	v184.u0 = 0x04;
+	v183 += v184;
+	loc43 = v183;
+	v183 = loc43;
+	v183.u3 = *v183.u3;
+	loc44 = v183;
+	v183 = loc40;
+	v184.u0 = 0xFF;
+	v183 &= v184;
+	loc45 = v183;
+	v183 = loc41;
+	if (v183)
+		v183 = loc44;
+	else
+		v183 = loc45;
+	loc46 = v183;
+	v183 = loc46;
+	v184.u0 = 0x00;
+	v185 = v183 == v184;
+	loc47 = v185;
+	v183 = loc47;
+	v185 = v183 == 0x00;
+	if (v185)
+	{
+		v183 = loc42;
+		v183.u3 = *v183.u3;
+		loc48 = v183;
+		v183 = loc48;
+		loc49 = v183;
+		v183 = loc31;
+		loc50 = v183;
+		v183 = loc49;
+		v184 = loc50;
+		v183 -= v184;
+		loc51 = v183;
+		v183 = loc51;
+		v184.u0 = 0xA0;
+		v185 = v183 < v184;
+		loc52 = v185;
+		v183 = loc52;
+		if (v183)
+		{
+			v183 = loc53;
+			v183.u3 = *v183.u3;
+			loc54 = v183;
+			v183 = loc48;
+			v184.u0 = 0x04;
+			v183 += v184;
+			loc55 = v183;
+			v183 = loc42;
+			v184 = loc55;
+			*v183.u3 = (word32) v184;
+			v183 = loc48;
+			v184 = loc54;
+			*v183.u3 = (word32) v184;
+		}
+	}
+	v183 = loc20;
+	v183.u3 = *v183.u3;
+	loc56 = v183;
+	v183.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v183;
+	v183.u0 = 393;
+	v184 = loc12;
+	v186 = loc56;
+	v187 = arg4;
+	v196 = loc64;
+	v183 = invoke_iiiii(v183, v184, v186, v187, v196);
+	loc57 = v183;
+	v183.u3 = g_t140048.u3;
+	loc58 = v183;
+	v183.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v183;
+	v183 = loc58;
+	v184.u0 = 0x01;
+	v183 &= v184;
+	loc59 = v183;
+	v183 = loc59;
+	v185 = v183 == 0x00;
+	if (!v185)
+	{
+l000F112F:
+		v183 = ___cxa_find_matching_catch_n();
+		loc168 = v183;
+		v183.u3 = g_t140094.u3;
+		loc169 = v183;
+		v183 = loc168;
+		loc17 = v183;
+		v183 = loc169;
+		loc18 = v183;
+		goto l000F1145;
+	}
+	else
+	{
+		v183 = arg5;
+		v184 = loc57;
+		*v183.u0 = v184;
+		v183 = loc42;
+		v183 = *v183.u0;
+		loc60 = v183;
+		v183 = loc160;
+		v184 = loc31;
+		v186 = loc60;
+		v187 = arg4;
+		fn000EC01D(v183, v184, v186, v187);
+		v183 = loc14;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc61 = v185;
+		v183 = loc61;
+		if (v183)
+		{
+			v183.u0 = 0x00;
+			loc77 = v183;
+		}
+		else
+		{
+			v183 = loc14;
+			v184.u0 = 0x0C;
+			v183 += v184;
+			loc62 = v183;
+			v183 = loc62;
+			v183 = *v183.u0;
+			loc63 = v183;
+			v183 = loc14;
+			v184.u0 = 0x10;
+			v183 += v184;
+			loc65 = v183;
+			v183 = loc65;
+			v183 = *v183.u0;
+			loc66 = v183;
+			v183 = loc63;
+			v184 = loc66;
+			v185 = v183 == v184;
+			loc67 = v185;
+			v183 = loc67;
+			if (v183)
+			{
+				v183 = loc14;
+				v183 = *v183.u0;
+				loc68 = v183;
+				v183 = loc68;
+				v184.u0 = 0x24;
+				v183 += v184;
+				loc69 = v183;
+				v183 = loc69;
+				v183 = *v183.u0;
+				loc70 = v183;
+				v183.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v183;
+				v183 = loc70;
+				v184 = loc14;
+				v183 = invoke_ii(v183, v184);
+				loc71 = v183;
+				v183.u3 = g_t140048.u3;
+				loc72 = v183;
+				v183.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v183;
+				v183 = loc72;
+				v184.u0 = 0x01;
+				v183 &= v184;
+				loc73 = v183;
+				v183 = loc73;
+				if (v183)
+					goto l000F112F;
+				v183 = loc71;
+				v184.u0 = ~0x00;
+				v185 = v183 == v184;
+				loc74 = v185;
+				v183 = loc74;
+				if (v183)
+				{
+					v183 = arg1;
+					v184.u0 = 0x00;
+					*v183.u0 = v184;
+					v183.u0 = 0x00;
+					loc77 = v183;
+				}
+				else
+				{
+					v183 = loc14;
+					loc77 = v183;
+				}
+			}
+			else
+			{
+				v183 = loc14;
+				loc77 = v183;
+			}
+		}
+		v183 = loc77;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc76 = v185;
+		v183 = loc16;
+		v184.u0 = 0x00;
+		v185 = v183 == v184;
+		loc78 = v185;
+		v183 = loc78;
+		if (v183)
+		{
+			v183.u0 = 0x35;
+			loc185 = v183;
+			goto l000F10E0;
+		}
+		v183 = loc16;
+		v184.u0 = 0x0C;
+		v183 += v184;
+		loc79 = v183;
+		v183 = loc79;
+		v183 = *v183.u0;
+		loc80 = v183;
+		v183 = loc16;
+		v184.u0 = 0x10;
+		v183 += v184;
+		loc81 = v183;
+		v183 = loc81;
+		v183 = *v183.u0;
+		loc82 = v183;
+		v183 = loc80;
+		v184 = loc82;
+		v185 = v183 == v184;
+		loc83 = v185;
+		v183 = loc83;
+		if (v183)
+		{
+			v183 = loc16;
+			v183 = *v183.u0;
+			loc84 = v183;
+			v183 = loc84;
+			v184.u0 = 0x24;
+			v183 += v184;
+			loc85 = v183;
+			v183 = loc85;
+			v183 = *v183.u0;
+			loc87 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183 = loc87;
+			v184 = loc16;
+			v183 = invoke_ii(v183, v184);
+			loc88 = v183;
+			v183.u3 = g_t140048.u3;
+			loc89 = v183;
+			v183.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v183;
+			v183 = loc89;
+			v184.u0 = 0x01;
+			v183 &= v184;
+			loc90 = v183;
+			v183 = loc90;
+			if (v183)
+				goto l000F112F;
+			v183 = loc88;
+			v184.u0 = ~0x00;
+			v185 = v183 == v184;
+			loc91 = v185;
+			v183 = loc91;
+			if (v183)
+			{
+				v183 = arg2;
+				v184.u0 = 0x00;
+				*v183.u0 = v184;
+				v183.u0 = 0x35;
+				loc185 = v183;
+				goto l000F10E1;
+			}
+		}
+		v183 = loc76;
+		v185 = v183 == 0x00;
+		if (v185)
+		{
+			v183.u0 = 0x36;
+			loc185 = v183;
+		}
+l000F10E1:
+		v183 = loc185;
+		v184.u0 = 0x35;
+		v185 = v183 == v184;
+		if (v185)
+		{
+			v183 = loc76;
+			if (v183)
+			{
+				v183.u0 = 0x36;
+				loc185 = v183;
+			}
+		}
+		v183 = loc185;
+		v184.u0 = 0x36;
+		v185 = v183 == v184;
+		if (v185)
+		{
+			v183 = arg4;
+			v183 = *v183.u0;
+			loc92 = v183;
+			v183 = loc92;
+			v184.u0 = 0x02;
+			v183 |= v184;
+			loc93 = v183;
+			v183 = arg4;
+			v184 = loc93;
+			*v183.u0 = v184;
+		}
+		v183 = arg1;
+		v183 = *v183.u0;
+		loc19 = v183;
+		v183 = loc171;
+		fn0011BAF7(v183);
+		v183 = loc160;
+		fn0011BAF7(v183);
+		v183 = loc186;
+		g_t140030.u3 = (word32 *) v183;
+		v183 = loc19;
+		return v183;
+	}
 }
 
 // 000F1165: Stack Eq_n fn000F1165(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000F1165(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
+	v21.u3 = g_t140030.u3;
+	loc21 = v21;
+	v21.u3 = g_t140030.u3;
+	v22.u0 = 0x10;
+	v21 += v22;
+	g_t140030.u3 = (word32 *) v21;
+	v21.u3 = g_t140030.u3;
+	v22.u3 = g_t140034.u3;
+	v23 = v21 >= v22;
+	if (v23)
+	{
+		v21.u0 = 0x10;
+		abortStackOverflow(v21);
+	}
+	v21 = loc21;
+	loc15 = v21;
+	v21 = arg0;
+	v22 = arg1;
+	v23 = v21 == v22;
+	loc16 = v23;
+	v21 = loc16;
+	if (v21)
+	{
+		v21 = arg2;
+		v22.u0 = 0x04;
+		*v21.u0 = v22;
+		v21.u0 = 0x00;
+		loc5 = v21;
+		goto l000F1277;
+	}
+	v21 = ___errno_location();
+	loc17 = v21;
+	v21 = loc17;
+	v21 = *v21.u0;
+	loc18 = v21;
+	v21 = loc17;
+	v22.u0 = 0x00;
+	*v21.u0 = v22;
+	v21 = fn000EAD0D();
+	loc19 = v21;
+	v21 = arg0;
+	v22 = loc15;
+	v24 = arg3;
+	v25 = loc19;
+	v26 = fn000D285D(v21, v22, v24, v25);
+	loc22 = v26;
+	v21 = loc17;
+	v21 = *v21.u0;
+	loc6 = v21;
+	v21 = loc6;
+	v22.u0 = 0x00;
+	v23 = v21 == v22;
+	loc7 = v23;
+	v21 = loc7;
+	if (v21)
+	{
+		v21 = loc17;
+		v22 = loc18;
+		*v21.u0 = v22;
+	}
+	v21 = loc15;
+	v21 = *v21.u0;
+	loc8 = v21;
+	v21 = loc8;
+	v22 = arg1;
+	v23 = v21 == v22;
+	loc9 = v23;
+	v21 = loc9;
+	if (v21)
+	{
+		v21 = loc6;
+		v22.u0 = 0x22;
+		v23 = v21 == v22;
+		loc10 = v23;
+		v21 = loc10;
+		if (v21)
+		{
+			v21 = arg2;
+			v22.u0 = 0x04;
+			*v21.u0 = v22;
+			v26 = loc22;
+			v27.u0 = 0x00;
+			v23 = v26 > v27;
+			loc13 = v23;
+			v21 = loc13;
+			if (v21)
+			{
+				v21.u0 = 0x7FFFFFFF;
+				loc4 = v21;
+				goto l000F1272;
+			}
+		}
+		else
+		{
+			v26 = loc22;
+			v27.u0 = 0xFFFFFFF880000000;
+			v23 = v26 < v27;
+			loc11 = v23;
+			v21 = loc11;
+			if (!v21)
+			{
+				v26 = loc22;
+				v27.u0 = 0x7FFFFFFF;
+				v23 = v26 > v27;
+				loc12 = v23;
+				v21 = loc12;
+				if (v21)
+				{
+					v21 = arg2;
+					v22.u0 = 0x04;
+					*v21.u0 = v22;
+					v21.u0 = 0x7FFFFFFF;
+					loc4 = v21;
+				}
+				else
+				{
+					v26 = loc22;
+					v21 = (word64) v26;
+					loc14 = v21;
+					v21 = loc14;
+					loc4 = v21;
+				}
+l000F1272:
+				v21 = loc4;
+				loc5 = v21;
+l000F1277:
+				v21 = loc21;
+				g_t140030.u3 = (word32 *) v21;
+				v21 = loc5;
+				return v21;
+			}
+			v21 = arg2;
+			v22.u0 = 0x04;
+			*v21.u0 = v22;
+		}
+		v21.u0 = 0x80000000;
+		loc4 = v21;
+	}
+	else
+	{
+		v21 = arg2;
+		v22.u0 = 0x04;
+		*v21.u0 = v22;
+		v21.u0 = 0x00;
+		loc4 = v21;
+	}
+	goto l000F1272;
 }
 
 // 000F1281: Stack Eq_n fn000F1281(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn000F1281(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v229.u3 = g_t140030.u3;
+	loc233 = v229;
+	v229.u3 = g_t140030.u3;
+	v230.u0 = 0x70;
+	v229 += v230;
+	g_t140030.u3 = (word32 *) v229;
+	v229.u3 = g_t140030.u3;
+	v230.u3 = g_t140034.u3;
+	v231 = v229 >= v230;
+	if (v231)
+	{
+		v229.u0 = 0x70;
+		abortStackOverflow(v229);
+	}
+	v229 = loc233;
+	loc198 = v229;
+	v229 = arg3;
+	loc209 = v229;
+	v229 = arg2;
+	loc220 = v229;
+	v229 = loc209;
+	v230 = loc220;
+	v229 -= v230;
+	loc43 = v229;
+	v229 = loc43;
+	v230.u0 = 0x0C;
+	v229 = i32s-div(v229, v230);
+	v230.u0 = ~0x00;
+	v229 &= v230;
+	loc54 = v229;
+	v229 = loc54;
+	v230.u0 = 100;
+	v231 = v229 > v230;
+	loc65 = v231;
+	v229 = loc65;
+	if (v229)
+	{
+		v229 = loc54;
+		v229 = _malloc(v229);
+		loc76 = v229;
+		v229 = loc76;
+		v230.u0 = 0x00;
+		v231 = v229 == v230;
+		loc87 = v231;
+		v229 = loc87;
+		if (v229)
+		{
+			v229.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v229;
+			v229.u0 = 0x018A;
+			invoke_v(v229);
+			v229.u3 = g_t140048.u3;
+			loc98 = v229;
+			v229.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v229;
+			v229 = loc98;
+			v230.u0 = 0x01;
+			v229 &= v230;
+			loc109 = v229;
+			v229 = loc109;
+			if (v229)
+			{
+				v229 = ___cxa_find_matching_catch_n();
+				loc120 = v229;
+				v229.u3 = g_t140094.u3;
+				loc131 = v229;
+				v229 = loc120;
+				loc40 = v229;
+				v229 = loc131;
+				loc41 = v229;
+				goto l000F1336;
+			}
+		}
+		v229 = loc76;
+		loc142 = v229;
+		v229 = loc76;
+		loc15 = v229;
+		v229 = loc142;
+		loc42 = v229;
+		v229.u0 = 0x06;
+		loc232 = v229;
+	}
+	else
+	{
+		v229 = loc198;
+		loc15 = v229;
+		v229.u0 = 0x00;
+		loc42 = v229;
+		v229.u0 = 0x06;
+		loc232 = v229;
+	}
+l000F1336:
+	v229 = loc232;
+	v230.u0 = 0x06;
+	v231 = v229 == v230;
+	if (!v231)
+	{
+l000F1D4A:
+		v229 = loc40;
+		___resumeException(v229);
+		v229.u0 = 0x00;
+		return v229;
+	}
+	while (true)
+	{
+		v229 = arg2;
+		loc11 = v229;
+		v229 = loc15;
+		loc12 = v229;
+		v229.u0 = 0x00;
+		loc13 = v229;
+		v229 = loc54;
+		loc14 = v229;
+		v229 = loc11;
+		v230 = arg3;
+		v231 = v229 == v230;
+		loc148 = v231;
+		v229 = loc148;
+		if (v229)
+			break;
+		v229 = loc11;
+		v230.u0 = 11;
+		v229 += v230;
+		loc149 = v229;
+		v229 = loc149;
+		v232 = *v229.u0;
+		v229.u3 = (word32) v232;
+		loc150 = v229;
+		v229 = loc150;
+		v230.u0 = 0x18;
+		v229 <<= v230;
+		v230.u0 = 0x18;
+		v229 >>= v230;
+		v230.u0 = 0x00;
+		v231 = v229 < v230;
+		loc151 = v231;
+		v229 = loc151;
+		if (v229)
+		{
+			v229 = loc11;
+			v230.u0 = 0x04;
+			v229 += v230;
+			loc152 = v229;
+			v229 = loc152;
+			v229.u3 = *v229.u3;
+			loc153 = v229;
+			v229 = loc153;
+			loc156 = v229;
+		}
+		else
+		{
+			v229 = loc150;
+			v230.u0 = 0xFF;
+			v229 &= v230;
+			loc154 = v229;
+			v229 = loc154;
+			loc156 = v229;
+		}
+		v229 = loc156;
+		v230.u0 = 0x00;
+		v231 = v229 == v230;
+		loc155 = v231;
+		v229 = loc155;
+		if (v229)
+		{
+			v229 = loc12;
+			v230.u0 = 0x02;
+			v233 = (byte) v230;
+			v229.u4->t0000.u0 = (bool) v233;
+			v229 = loc14;
+			v230.u0 = ~0x00;
+			v229 += v230;
+			loc157 = v229;
+			v229 = loc13;
+			v230.u0 = 0x01;
+			v229 += v230;
+			loc158 = v229;
+			v229 = loc158;
+			loc22 = v229;
+			v229 = loc157;
+			loc23 = v229;
+		}
+		else
+		{
+			v229 = loc12;
+			v230.u0 = 0x01;
+			v234 = (byte) v230;
+			v229.u4->t0000.u0 = (bool) v234;
+			v229 = loc13;
+			loc22 = v229;
+			v229 = loc14;
+			loc23 = v229;
+		}
+		v229 = loc11;
+		v230.u0 = 0x0C;
+		v229 += v230;
+		loc159 = v229;
+		v229 = loc12;
+		v230.u0 = 0x01;
+		v229 += v230;
+		loc160 = v229;
+		v229 = loc159;
+		loc11 = v229;
+		v229 = loc160;
+		loc12 = v229;
+		v229 = loc22;
+		loc13 = v229;
+		v229 = loc23;
+		loc14 = v229;
+	}
+l000F1415:
+	v229.u0 = 0x00;
+	loc10 = v229;
+	v229 = loc13;
+	loc26 = v229;
+	v229 = loc14;
+	loc27 = v229;
+	v229 = arg0;
+	v229 = *v229.u0;
+	loc161 = v229;
+	v229 = loc161;
+	v230.u0 = 0x00;
+	v231 = v229 == v230;
+	loc162 = v231;
+	v229 = loc162;
+	if (v229)
+	{
+		v229.u0 = 0x00;
+		loc176 = v229;
+	}
+	else
+	{
+		v229 = loc161;
+		v230.u0 = 0x0C;
+		v229 += v230;
+		loc163 = v229;
+		v229 = loc163;
+		v229 = *v229.u0;
+		loc164 = v229;
+		v229 = loc161;
+		v230.u0 = 0x10;
+		v229 += v230;
+		loc165 = v229;
+		v229 = loc165;
+		v229 = *v229.u0;
+		loc166 = v229;
+		v229 = loc164;
+		v230 = loc166;
+		v231 = v229 == v230;
+		loc167 = v231;
+		v229 = loc167;
+		if (v229)
+		{
+			v229 = loc161;
+			v229 = *v229.u0;
+			loc168 = v229;
+			v229 = loc168;
+			v230.u0 = 0x24;
+			v229 += v230;
+			loc169 = v229;
+			v229 = loc169;
+			v229 = *v229.u0;
+			loc170 = v229;
+			v229.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v229;
+			v229 = loc170;
+			v230 = loc161;
+			v229 = invoke_ii(v229, v230);
+			loc171 = v229;
+			v229.u3 = g_t140048.u3;
+			loc172 = v229;
+			v229.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v229;
+			v229 = loc172;
+			v230.u0 = 0x01;
+			v229 &= v230;
+			loc173 = v229;
+			v229 = loc173;
+			if (v229)
+			{
+				v229.u0 = 0x27;
+				loc232 = v229;
+				goto l000F1A03;
+			}
+			v229 = loc171;
+			v230.u0 = ~0x00;
+			v231 = v229 == v230;
+			loc174 = v231;
+			v229 = loc174;
+			if (v229)
+			{
+				v229 = arg0;
+				v230.u0 = 0x00;
+				*v229.u0 = v230;
+				v229.u0 = 0x00;
+				loc176 = v229;
+			}
+			else
+			{
+				v229 = arg0;
+				v229 = *v229.u0;
+				loc35 = v229;
+				v229 = loc35;
+				loc176 = v229;
+			}
+l000F14F6:
+			v229 = loc176;
+			v230.u0 = 0x00;
+			v231 = v229 == v230;
+			loc175 = v231;
+			v229 = arg1;
+			v229 = *v229.u0;
+			loc177 = v229;
+			v229 = loc177;
+			v230.u0 = 0x00;
+			v231 = v229 == v230;
+			loc178 = v231;
+			v229 = loc178;
+			if (v229)
+			{
+				v229.u0 = 0x00;
+				loc37 = v229;
+			}
+			else
+			{
+				v229 = loc177;
+				v230.u0 = 0x0C;
+				v229 += v230;
+				loc179 = v229;
+				v229 = loc179;
+				v229 = *v229.u0;
+				loc180 = v229;
+				v229 = loc177;
+				v230.u0 = 0x10;
+				v229 += v230;
+				loc181 = v229;
+				v229 = loc181;
+				v229 = *v229.u0;
+				loc182 = v229;
+				v229 = loc180;
+				v230 = loc182;
+				v231 = v229 == v230;
+				loc183 = v231;
+				v229 = loc183;
+				if (v229)
+				{
+					v229 = loc177;
+					v229 = *v229.u0;
+					loc184 = v229;
+					v229 = loc184;
+					v230.u0 = 0x24;
+					v229 += v230;
+					loc185 = v229;
+					v229 = loc185;
+					v229 = *v229.u0;
+					loc186 = v229;
+					v229.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v229;
+					v229 = loc186;
+					v230 = loc177;
+					v229 = invoke_ii(v229, v230);
+					loc187 = v229;
+					v229.u3 = g_t140048.u3;
+					loc188 = v229;
+					v229.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v229;
+					v229 = loc188;
+					v230.u0 = 0x01;
+					v229 &= v230;
+					loc189 = v229;
+					v229 = loc189;
+					if (v229)
+					{
+						v229.u0 = 0x27;
+						loc232 = v229;
+						goto l000F1A03;
+					}
+					v229 = loc187;
+					v230.u0 = ~0x00;
+					v231 = v229 == v230;
+					loc190 = v231;
+					v229 = loc190;
+					if (v229)
+					{
+						v229 = arg1;
+						v230.u0 = 0x00;
+						*v229.u0 = v230;
+						v229.u0 = 0x00;
+						loc37 = v229;
+					}
+					else
+					{
+						v229 = loc177;
+						loc37 = v229;
+					}
+				}
+				else
+				{
+					v229 = loc177;
+					loc37 = v229;
+				}
+			}
+			v229 = loc37;
+			v230.u0 = 0x00;
+			v231 = v229 == v230;
+			loc191 = v231;
+			v229 = loc175;
+			v230 = loc191;
+			v229 = v229 ^ v230;
+			loc231 = v229;
+			v229 = loc27;
+			v230.u0 = 0x00;
+			v231 = v229 != v230;
+			loc192 = v231;
+			v229 = loc192;
+			v230 = loc231;
+			v229 &= v230;
+			loc193 = v229;
+			v229 = arg0;
+			v229 = *v229.u0;
+			loc194 = v229;
+			v229 = loc193;
+			v231 = v229 == 0x00;
+			if (v231)
+			{
+				v229.u0 = 0x1C;
+				loc232 = v229;
+				goto l000F1A03;
+			}
+			v229 = loc194;
+			v230.u0 = 0x0C;
+			v229 += v230;
+			loc227 = v229;
+			v229 = loc227;
+			v229 = *v229.u0;
+			loc228 = v229;
+			v229 = loc194;
+			v230.u0 = 0x10;
+			v229 += v230;
+			loc229 = v229;
+			v229 = loc229;
+			v229 = *v229.u0;
+			loc230 = v229;
+			v229 = loc228;
+			v230 = loc230;
+			v231 = v229 == v230;
+			loc44 = v231;
+			v229 = loc44;
+			if (v229)
+			{
+				v229 = loc194;
+				v229 = *v229.u0;
+				loc45 = v229;
+				v229 = loc45;
+				v230.u0 = 0x24;
+				v229 += v230;
+				loc46 = v229;
+				v229 = loc46;
+				v229 = *v229.u0;
+				loc47 = v229;
+				v229.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v229;
+				v229 = loc47;
+				v230 = loc194;
+				v229 = invoke_ii(v229, v230);
+				loc48 = v229;
+				v229.u3 = g_t140048.u3;
+				loc49 = v229;
+				v229.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v229;
+				v229 = loc49;
+				v230.u0 = 0x01;
+				v229 &= v230;
+				loc50 = v229;
+				v229 = loc50;
+				if (v229)
+				{
+					v229.u0 = 0x27;
+					loc232 = v229;
+					goto l000F1A03;
+				}
+				v229 = loc48;
+				loc8 = v229;
+			}
+			else
+			{
+				v229 = loc228;
+				v235 = *v229.u0;
+				v229.u3 = (word32) v235;
+				loc51 = v229;
+				v229 = loc51;
+				v230.u0 = 0xFF;
+				v229 &= v230;
+				loc52 = v229;
+				v229 = loc52;
+				loc8 = v229;
+			}
+			v229 = loc8;
+			v230.u0 = 0xFF;
+			v229 &= v230;
+			loc53 = v229;
+			v229 = arg6;
+			if (v229)
+			{
+				v229 = loc53;
+				loc9 = v229;
+			}
+			else
+			{
+				v229 = arg4;
+				v229.u3 = *v229.u3;
+				loc55 = v229;
+				v229 = loc55;
+				v230.u0 = 0x0C;
+				v229 += v230;
+				loc56 = v229;
+				v229 = loc56;
+				v229.u3 = *v229.u3;
+				loc57 = v229;
+				v229.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v229;
+				v229 = loc57;
+				v230 = arg4;
+				v236 = loc53;
+				v229 = invoke_iii(v229, v230, v236);
+				loc58 = v229;
+				v229.u3 = g_t140048.u3;
+				loc59 = v229;
+				v229.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v229;
+				v229 = loc59;
+				v230.u0 = 0x01;
+				v229 &= v230;
+				loc60 = v229;
+				v229 = loc60;
+				if (v229)
+				{
+					v229.u0 = 0x2D;
+					loc232 = v229;
+					goto l000F1A03;
+				}
+				v229 = loc58;
+				loc9 = v229;
+			}
+			while (true)
+			{
+				v229 = loc10;
+				v230.u0 = 0x01;
+				v229 += v230;
+				loc63 = v229;
+				v229 = arg2;
+				loc19 = v229;
+				v229.u0 = 0x00;
+				loc20 = v229;
+				v229 = loc15;
+				loc21 = v229;
+				v229 = loc26;
+				loc29 = v229;
+				v229 = loc27;
+				loc30 = v229;
+				v229 = loc19;
+				v230 = arg3;
+				v231 = v229 == v230;
+				loc64 = v231;
+				v229 = loc64;
+				if (v229)
+					break;
+				v229 = loc21;
+				v237 = *v229.u0;
+				v229.u3 = (word32) v237;
+				loc66 = v229;
+				v229 = loc66;
+				v230.u0 = 0x18;
+				v229 <<= v230;
+				v230.u0 = 0x18;
+				v229 >>= v230;
+				v230.u0 = 0x01;
+				v231 = v229 == v230;
+				loc67 = v231;
+				v229 = loc67;
+				if (v229)
+				{
+					v229 = loc19;
+					v230.u0 = 11;
+					v229 += v230;
+					loc68 = v229;
+					v229 = loc68;
+					v238.u1 = v229.u4->t0000.u1;
+					v229.u3 = (word32) v238;
+					loc69 = v229;
+					v229 = loc69;
+					v230.u0 = 0x18;
+					v229 <<= v230;
+					v230.u0 = 0x18;
+					v229 >>= v230;
+					v230.u0 = 0x00;
+					v231 = v229 < v230;
+					loc70 = v231;
+					v229 = loc70;
+					if (v229)
+					{
+						v229 = loc19;
+						v229.u3 = *v229.u3;
+						loc71 = v229;
+						v229 = loc71;
+						loc73 = v229;
+					}
+					else
+					{
+						v229 = loc19;
+						loc73 = v229;
+					}
+					v229 = loc73;
+					v230 = loc10;
+					v229 += v230;
+					loc72 = v229;
+					v229 = loc72;
+					v239.u1 = v229.u4->t0000.u1;
+					v229.u3 = (word32) v239;
+					loc74 = v229;
+					v229 = arg6;
+					if (v229)
+					{
+						v229 = loc74;
+						loc18 = v229;
+					}
+					else
+					{
+						v229 = arg4;
+						v229.u3 = *v229.u3;
+						loc75 = v229;
+						v229 = loc75;
+						v230.u0 = 0x0C;
+						v229 += v230;
+						loc77 = v229;
+						v229 = loc77;
+						v229.u3 = *v229.u3;
+						loc78 = v229;
+						v229.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v229;
+						v229 = loc78;
+						v230 = arg4;
+						v236 = loc74;
+						v229 = invoke_iii(v229, v230, v236);
+						loc79 = v229;
+						v229.u3 = g_t140048.u3;
+						loc80 = v229;
+						v229.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v229;
+						v229 = loc80;
+						v230.u0 = 0x01;
+						v229 &= v230;
+						loc81 = v229;
+						v229 = loc81;
+						if (v229)
+						{
+							v229.u0 = 55;
+							loc232 = v229;
+							goto l000F1A03;
+						}
+						v229 = loc79;
+						loc18 = v229;
+					}
+					v229 = loc9;
+					v230.u0 = 0x18;
+					v229 <<= v230;
+					v230.u0 = 0x18;
+					v229 >>= v230;
+					v230 = loc18;
+					v236.u0 = 0x18;
+					v230 <<= v236;
+					v236.u0 = 0x18;
+					v230 >>= v236;
+					v231 = v229 == v230;
+					loc84 = v231;
+					v229 = loc84;
+					v231 = v229 == 0x00;
+					if (v231)
+					{
+						v229 = loc21;
+						v230.u0 = 0x00;
+						v240 = (byte) v230;
+						*v229.u0 = v240;
+						v229 = loc30;
+						v230.u0 = ~0x00;
+						v229 += v230;
+						loc95 = v229;
+						v229 = loc20;
+						loc24 = v229;
+						v229 = loc29;
+						loc31 = v229;
+						v229 = loc95;
+						loc32 = v229;
+						goto l000F185F;
+					}
+					v229 = loc68;
+					v241 = *v229.u0;
+					v229.u3 = (word32) v241;
+					loc85 = v229;
+					v229 = loc85;
+					v230.u0 = 0x18;
+					v229 <<= v230;
+					v230.u0 = 0x18;
+					v229 >>= v230;
+					v230.u0 = 0x00;
+					v231 = v229 < v230;
+					loc86 = v231;
+					v229 = loc86;
+					if (v229)
+					{
+						v229 = loc19;
+						v230.u0 = 0x04;
+						v229 += v230;
+						loc88 = v229;
+						v229 = loc88;
+						v229.u3 = *v229.u3;
+						loc89 = v229;
+						v229 = loc89;
+						loc92 = v229;
+					}
+					else
+					{
+						v229 = loc85;
+						v230.u0 = 0xFF;
+						v229 &= v230;
+						loc90 = v229;
+						v229 = loc90;
+						loc92 = v229;
+					}
+					v229 = loc92;
+					v230 = loc63;
+					v231 = v229 == v230;
+					loc91 = v231;
+					v229 = loc91;
+					if (v229)
+					{
+						v229 = loc30;
+						v230.u0 = ~0x00;
+						v229 += v230;
+						loc93 = v229;
+						v229 = loc29;
+						v230.u0 = 0x01;
+						v229 += v230;
+						loc94 = v229;
+						v229 = loc21;
+						v230.u0 = 0x02;
+						v242 = (byte) v230;
+						v229.u4->t0000.u0 = (bool) v242;
+						v229.u0 = 0x01;
+						loc24 = v229;
+						v229 = loc94;
+						loc31 = v229;
+						v229 = loc93;
+						loc32 = v229;
+					}
+					else
+					{
+						v229.u0 = 0x01;
+						loc24 = v229;
+						v229 = loc29;
+						loc31 = v229;
+						v229 = loc30;
+						loc32 = v229;
+					}
+				}
+				else
+				{
+					v229 = loc20;
+					loc24 = v229;
+					v229 = loc29;
+					loc31 = v229;
+					v229 = loc30;
+					loc32 = v229;
+				}
+l000F185F:
+				v229 = loc19;
+				v230.u0 = 0x0C;
+				v229 += v230;
+				loc96 = v229;
+				v229 = loc21;
+				v230.u0 = 0x01;
+				v229 += v230;
+				loc97 = v229;
+				v229 = loc96;
+				loc19 = v229;
+				v229 = loc24;
+				loc20 = v229;
+				v229 = loc97;
+				loc21 = v229;
+				v229 = loc31;
+				loc29 = v229;
+				v229 = loc32;
+				loc30 = v229;
+			}
+			v229 = loc20;
+			v231 = v229 == 0x00;
+			if (v231)
+			{
+				v229 = loc63;
+				loc10 = v229;
+				v229 = loc29;
+				loc26 = v229;
+				v229 = loc30;
+				loc27 = v229;
+				goto l000F1415;
+			}
+			v229 = arg0;
+			v229 = *v229.u0;
+			loc99 = v229;
+			v229 = loc99;
+			v230.u0 = 0x0C;
+			v229 += v230;
+			loc100 = v229;
+			v229 = loc100;
+			v229 = *v229.u0;
+			loc101 = v229;
+			v229 = loc99;
+			v230.u0 = 0x10;
+			v229 += v230;
+			loc102 = v229;
+			v229 = loc102;
+			v229 = *v229.u0;
+			loc103 = v229;
+			v229 = loc101;
+			v230 = loc103;
+			v231 = v229 == v230;
+			loc104 = v231;
+			v229 = loc104;
+			if (v229)
+			{
+				v229 = loc99;
+				v229 = *v229.u0;
+				loc105 = v229;
+				v229 = loc105;
+				v230.u0 = 0x28;
+				v229 += v230;
+				loc106 = v229;
+				v229 = loc106;
+				v229 = *v229.u0;
+				loc107 = v229;
+				v229.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v229;
+				v229 = loc107;
+				v230 = loc99;
+				v229 = invoke_ii(v229, v230);
+				v229.u3 = g_t140048.u3;
+				loc108 = v229;
+				v229.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v229;
+				v229 = loc108;
+				v230.u0 = 0x01;
+				v229 &= v230;
+				loc110 = v229;
+				v229 = loc110;
+				if (v229)
+				{
+					v229.u0 = 0x45;
+					loc232 = v229;
+l000F1A03:
+					v229 = loc232;
+					v230.u0 = 0x1C;
+					v231 = v229 == v230;
+					if (!v231)
+					{
+						v229 = loc232;
+						v230.u0 = 0x27;
+						v231 = v229 == v230;
+						if (v231)
+						{
+							v229 = ___cxa_find_matching_catch_n();
+							loc225 = v229;
+							v229.u3 = g_t140094.u3;
+							loc226 = v229;
+							v229 = loc225;
+							loc38 = v229;
+							v229 = loc226;
+							loc39 = v229;
+						}
+						else
+						{
+							v229 = loc232;
+							v230.u0 = 0x2D;
+							v231 = v229 == v230;
+							if (v231)
+							{
+								v229 = ___cxa_find_matching_catch_n();
+								loc61 = v229;
+								v229.u3 = g_t140094.u3;
+								loc62 = v229;
+								v229 = loc61;
+								loc38 = v229;
+								v229 = loc62;
+								loc39 = v229;
+							}
+							else
+							{
+								v229 = loc232;
+								v230.u0 = 55;
+								v231 = v229 == v230;
+								if (v231)
+								{
+									v229 = ___cxa_find_matching_catch_n();
+									loc82 = v229;
+									v229.u3 = g_t140094.u3;
+									loc83 = v229;
+									v229 = loc82;
+									loc38 = v229;
+									v229 = loc83;
+									loc39 = v229;
+								}
+								else
+								{
+									v229 = loc232;
+									v230.u0 = 0x45;
+									v231 = v229 == v230;
+									if (v231)
+									{
+										v229 = ___cxa_find_matching_catch_n();
+										loc115 = v229;
+										v229.u3 = g_t140094.u3;
+										loc116 = v229;
+										v229 = loc115;
+										loc38 = v229;
+										v229 = loc116;
+										loc39 = v229;
+									}
+								}
+							}
+						}
+l000F1D1E:
+						v229 = loc42;
+						v230.u0 = 0x00;
+						v231 = v229 == v230;
+						loc146 = v231;
+						v229 = loc146;
+						if (v229)
+						{
+							v229 = loc38;
+							loc40 = v229;
+							v229 = loc39;
+							loc41 = v229;
+						}
+						else
+						{
+							v229 = loc42;
+							loc147 = v229;
+							v229 = loc147;
+							_free(v229);
+							v229 = loc38;
+							loc40 = v229;
+							v229 = loc39;
+							loc41 = v229;
+						}
+						goto l000F1D4A;
+					}
+					v229 = loc194;
+					v230.u0 = 0x00;
+					v231 = v229 == v230;
+					loc195 = v231;
+					v229 = loc195;
+					if (v229)
+					{
+						v229.u0 = 0x00;
+						loc211 = v229;
+						v229.u0 = 0x22;
+						loc232 = v229;
+					}
+					else
+					{
+						v229 = loc194;
+						v230.u0 = 0x0C;
+						v229 += v230;
+						loc196 = v229;
+						v229 = loc196;
+						v229 = *v229.u0;
+						loc197 = v229;
+						v229 = loc194;
+						v230.u0 = 0x10;
+						v229 += v230;
+						loc199 = v229;
+						v229 = loc199;
+						v229 = *v229.u0;
+						loc200 = v229;
+						v229 = loc197;
+						v230 = loc200;
+						v231 = v229 == v230;
+						loc201 = v231;
+						v229 = loc201;
+						if (v229)
+						{
+							v229 = loc194;
+							v229 = *v229.u0;
+							loc202 = v229;
+							v229 = loc202;
+							v230.u0 = 0x24;
+							v229 += v230;
+							loc203 = v229;
+							v229 = loc203;
+							v229 = *v229.u0;
+							loc204 = v229;
+							v229.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v229;
+							v229 = loc204;
+							v230 = loc194;
+							v229 = invoke_ii(v229, v230);
+							loc205 = v229;
+							v229.u3 = g_t140048.u3;
+							loc206 = v229;
+							v229.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v229;
+							v229 = loc206;
+							v230.u0 = 0x01;
+							v229 &= v230;
+							loc207 = v229;
+							v229 = loc207;
+							v231 = v229 == 0x00;
+							if (v231)
+							{
+								v229 = loc205;
+								v230.u0 = ~0x00;
+								v231 = v229 == v230;
+								loc208 = v231;
+								v229 = loc208;
+								if (v229)
+								{
+									v229 = arg0;
+									v230.u0 = 0x00;
+									*v229.u0 = v230;
+									v229.u0 = 0x00;
+									loc211 = v229;
+									v229.u0 = 0x22;
+									loc232 = v229;
+								}
+								else
+								{
+									v229 = arg0;
+									v229 = *v229.u0;
+									loc36 = v229;
+									v229 = loc36;
+									loc211 = v229;
+									v229.u0 = 0x22;
+									loc232 = v229;
+								}
+l000F1AE2:
+								v229 = loc232;
+								v230.u0 = 0x22;
+								v231 = v229 == v230;
+								if (!v231)
+								{
+l000F1C9C:
+									v229 = ___cxa_find_matching_catch_n();
+									loc134 = v229;
+									v229.u3 = g_t140094.u3;
+									loc135 = v229;
+									v229 = loc134;
+									loc38 = v229;
+									v229 = loc135;
+									loc39 = v229;
+									goto l000F1D1E;
+								}
+								else
+								{
+									v229 = loc211;
+									v230.u0 = 0x00;
+									v231 = v229 == v230;
+									loc210 = v231;
+									v229 = loc191;
+									if (v229)
+									{
+										v229.u0 = 0x4E;
+										loc232 = v229;
+										goto l000F1BAB;
+									}
+									v229 = loc37;
+									v230.u0 = 0x0C;
+									v229 += v230;
+									loc212 = v229;
+									v229 = loc212;
+									v229 = *v229.u0;
+									loc213 = v229;
+									v229 = loc37;
+									v230.u0 = 0x10;
+									v229 += v230;
+									loc214 = v229;
+									v229 = loc214;
+									v229 = *v229.u0;
+									loc215 = v229;
+									v229 = loc213;
+									v230 = loc215;
+									v231 = v229 == v230;
+									loc216 = v231;
+									v229 = loc216;
+									if (v229)
+									{
+										v229 = loc37;
+										v229 = *v229.u0;
+										loc217 = v229;
+										v229 = loc217;
+										v230.u0 = 0x24;
+										v229 += v230;
+										loc218 = v229;
+										v229 = loc218;
+										v229 = *v229.u0;
+										loc219 = v229;
+										v229.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v229;
+										v229 = loc219;
+										v230 = loc37;
+										v229 = invoke_ii(v229, v230);
+										loc221 = v229;
+										v229.u3 = g_t140048.u3;
+										loc222 = v229;
+										v229.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v229;
+										v229 = loc222;
+										v230.u0 = 0x01;
+										v229 &= v230;
+										loc223 = v229;
+										v229 = loc223;
+										if (v229)
+											goto l000F1C9C;
+										v229 = loc221;
+										v230.u0 = ~0x00;
+										v231 = v229 == v230;
+										loc224 = v231;
+										v229 = loc224;
+										if (v229)
+										{
+											v229 = arg1;
+											v230.u0 = 0x00;
+											*v229.u0 = v230;
+											v229.u0 = 0x4E;
+											loc232 = v229;
+											goto l000F1BAC;
+										}
+									}
+									v229 = loc210;
+									if (v229)
+									{
+										v229 = arg2;
+										loc16 = v229;
+										v229 = loc15;
+										loc28 = v229;
+									}
+									else
+									{
+										v229.u0 = 0x4F;
+										loc232 = v229;
+									}
+l000F1BAC:
+									v229 = loc232;
+									v230.u0 = 0x4E;
+									v231 = v229 == v230;
+									if (v231)
+									{
+										v229 = loc210;
+										if (v229)
+										{
+											v229.u0 = 0x4F;
+											loc232 = v229;
+										}
+										else
+										{
+											v229 = arg2;
+											loc16 = v229;
+											v229 = loc15;
+											loc28 = v229;
+										}
+									}
+									v229 = loc232;
+									v230.u0 = 0x4F;
+									v231 = v229 == v230;
+									if (v231)
+									{
+										v229 = arg5;
+										v229 = *v229.u0;
+										loc132 = v229;
+										v229 = loc132;
+										v230.u0 = 0x02;
+										v229 |= v230;
+										loc133 = v229;
+										v229 = arg5;
+										v230 = loc133;
+										*v229.u0 = v230;
+										v229 = arg2;
+										loc16 = v229;
+										v229 = loc15;
+										loc28 = v229;
+									}
+									while (true)
+									{
+										v229 = loc16;
+										v230 = arg3;
+										v231 = v229 == v230;
+										loc136 = v231;
+										v229 = loc136;
+										if (v229)
+											break;
+										v229 = loc28;
+										v246 = *v229.u0;
+										v229.u3 = (word32) v246;
+										loc137 = v229;
+										v229 = loc137;
+										v230.u0 = 0x18;
+										v229 <<= v230;
+										v230.u0 = 0x18;
+										v229 >>= v230;
+										v230.u0 = 0x02;
+										v231 = v229 == v230;
+										loc138 = v231;
+										v229 = loc138;
+										if (v229)
+										{
+											v229 = loc16;
+											loc17 = v229;
+											goto l000F1C50;
+										}
+										v229 = loc16;
+										v230.u0 = 0x0C;
+										v229 += v230;
+										loc139 = v229;
+										v229 = loc28;
+										v230.u0 = 0x01;
+										v229 += v230;
+										loc140 = v229;
+										v229 = loc139;
+										loc16 = v229;
+										v229 = loc140;
+										loc28 = v229;
+									}
+									v229.u0 = 0x54;
+									loc232 = v229;
+l000F1C50:
+									v229 = loc232;
+									v230.u0 = 0x54;
+									v231 = v229 == v230;
+									if (v231)
+									{
+										v229 = arg5;
+										v229.u3 = *v229.u3;
+										loc141 = v229;
+										v229 = loc141;
+										v230.u0 = 0x04;
+										v229 |= v230;
+										loc143 = v229;
+										v229 = arg5;
+										v230 = loc143;
+										*v229.u3 = (word32) v230;
+										v229 = arg3;
+										loc17 = v229;
+									}
+									v229 = loc42;
+									v230.u0 = 0x00;
+									v231 = v229 == v230;
+									loc144 = v231;
+									v229 = loc144;
+									v231 = v229 == 0x00;
+									if (v231)
+									{
+										v229 = loc42;
+										loc145 = v229;
+										v229 = loc145;
+										_free(v229);
+									}
+									v229 = loc233;
+									g_t140030.u3 = (word32 *) v229;
+									v229 = loc17;
+									return v229;
+								}
+							}
+						}
+						else
+						{
+							v229 = loc194;
+							loc211 = v229;
+							v229.u0 = 0x22;
+							loc232 = v229;
+						}
+					}
+					goto l000F1AE2;
+				}
+			}
+			else
+			{
+				v229 = loc101;
+				v230.u0 = 0x01;
+				v229 += v230;
+				loc111 = v229;
+				v229 = loc100;
+				v230 = loc111;
+				*v229.u0 = v230;
+			}
+			v229 = loc29;
+			v230 = loc30;
+			v229 += v230;
+			loc112 = v229;
+			v229 = loc112;
+			v230.u0 = 0x01;
+			v231 = v229 > v230;
+			loc113 = v231;
+			v229 = loc113;
+			if (v229)
+			{
+				v229 = arg2;
+				loc7 = v229;
+				v229 = loc15;
+				loc25 = v229;
+				v229 = loc29;
+				loc33 = v229;
+				while (true)
+				{
+					v229 = loc7;
+					v230 = arg3;
+					v231 = v229 == v230;
+					loc114 = v231;
+					v229 = loc114;
+					if (v229)
+						break;
+					v229 = loc25;
+					v243 = *v229.u0;
+					v229.u3 = (word32) v243;
+					loc117 = v229;
+					v229 = loc117;
+					v230.u0 = 0x18;
+					v229 <<= v230;
+					v230.u0 = 0x18;
+					v229 >>= v230;
+					v230.u0 = 0x02;
+					v231 = v229 == v230;
+					loc118 = v231;
+					v229 = loc118;
+					if (v229)
+					{
+						v229 = loc7;
+						v230.u0 = 11;
+						v229 += v230;
+						loc119 = v229;
+						v229 = loc119;
+						v244.u1 = v229.u4->t0000.u1;
+						v229.u3 = (word32) v244;
+						loc121 = v229;
+						v229 = loc121;
+						v230.u0 = 0x18;
+						v229 <<= v230;
+						v230.u0 = 0x18;
+						v229 >>= v230;
+						v230.u0 = 0x00;
+						v231 = v229 < v230;
+						loc122 = v231;
+						v229 = loc122;
+						if (v229)
+						{
+							v229 = loc7;
+							v230.u0 = 0x04;
+							v229 += v230;
+							loc123 = v229;
+							v229 = loc123;
+							v229.u3 = *v229.u3;
+							loc124 = v229;
+							v229 = loc124;
+							loc127 = v229;
+						}
+						else
+						{
+							v229 = loc121;
+							v230.u0 = 0xFF;
+							v229 &= v230;
+							loc125 = v229;
+							v229 = loc125;
+							loc127 = v229;
+						}
+						v229 = loc127;
+						v230 = loc63;
+						v231 = v229 == v230;
+						loc126 = v231;
+						v229 = loc126;
+						if (v229)
+						{
+							v229 = loc33;
+							loc34 = v229;
+						}
+						else
+						{
+							v229 = loc33;
+							v230.u0 = ~0x00;
+							v229 += v230;
+							loc128 = v229;
+							v229 = loc25;
+							v230.u0 = 0x00;
+							v245 = (byte) v230;
+							v229.u4->t0000.u0 = (bool) v245;
+							v229 = loc128;
+							loc34 = v229;
+						}
+					}
+					else
+					{
+						v229 = loc33;
+						loc34 = v229;
+					}
+					v229 = loc7;
+					v230.u0 = 0x0C;
+					v229 += v230;
+					loc129 = v229;
+					v229 = loc25;
+					v230.u0 = 0x01;
+					v229 += v230;
+					loc130 = v229;
+					v229 = loc129;
+					loc7 = v229;
+					v229 = loc130;
+					loc25 = v229;
+					v229 = loc34;
+					loc33 = v229;
+				}
+				v229 = loc63;
+				loc10 = v229;
+				v229 = loc33;
+				loc26 = v229;
+				v229 = loc30;
+				loc27 = v229;
+			}
+			else
+			{
+				v229 = loc63;
+				loc10 = v229;
+				v229 = loc29;
+				loc26 = v229;
+				v229 = loc30;
+				loc27 = v229;
+			}
+			goto l000F1415;
+		}
+		v229 = loc161;
+		loc176 = v229;
+	}
+	goto l000F14F6;
 }
 
 // 000F1D53: void fn000F1D53(Stack Eq_n arg0)
@@ -43,126 +2879,15160 @@ void fn000F1D5C(Eq_n arg0)
 // 000F1D6A: Stack Eq_n fn000F1D6A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F1D6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v72.u3 = g_t140030.u3;
+	loc75 = v72;
+	v72.u3 = g_t140030.u3;
+	v73.u0 = 0x40;
+	v72 += v73;
+	g_t140030.u3 = (word32 *) v72;
+	v72.u3 = g_t140030.u3;
+	v73.u3 = g_t140034.u3;
+	v74 = v72 >= v73;
+	if (v74)
+	{
+		v72.u0 = 0x40;
+		abortStackOverflow(v72);
+	}
+	v72 = loc75;
+	v73.u0 = 0x3C;
+	v72 += v73;
+	loc10 = v72;
+	v72 = loc75;
+	v73.u0 = 0x38;
+	v72 += v73;
+	loc9 = v72;
+	v72 = loc75;
+	v73.u0 = 0x34;
+	v72 += v73;
+	loc8 = v72;
+	v72 = loc75;
+	v73.u0 = 0x30;
+	v72 += v73;
+	loc65 = v72;
+	v72 = loc75;
+	v73.u0 = 44;
+	v72 += v73;
+	loc71 = v72;
+	v72 = loc75;
+	v73.u0 = 0x28;
+	v72 += v73;
+	loc72 = v72;
+	v72 = loc75;
+	v73.u0 = 0x24;
+	v72 += v73;
+	loc73 = v72;
+	v72 = loc75;
+	v73.u0 = 0x20;
+	v72 += v73;
+	loc15 = v72;
+	v72 = loc75;
+	v73.u0 = 0x08;
+	v72 += v73;
+	loc16 = v72;
+	v72 = loc75;
+	loc17 = v72;
+	v72 = arg3;
+	v73.u0 = 0x04;
+	v72 += v73;
+	loc18 = v72;
+	v72 = loc18;
+	v72 = *v72.u0;
+	loc19 = v72;
+	v72 = loc19;
+	v73.u0 = 0x01;
+	v72 &= v73;
+	loc20 = v72;
+	v72 = loc20;
+	v73.u0 = 0x00;
+	v74 = v72 == v73;
+	loc21 = v74;
+	v72 = loc21;
+	v72 = v72;
+	v72 = loc65;
+	v73.u0 = ~0x00;
+	*v72.u0 = v73;
+	v72 = arg0;
+	v72 = *v72.u0;
+	loc22 = v72;
+	v72 = loc22;
+	v73.u0 = 0x10;
+	v72 += v73;
+	loc23 = v72;
+	v72 = loc23;
+	v72 = *v72.u0;
+	loc24 = v72;
+	v72 = arg1;
+	v72 = *v72.u0;
+	loc25 = v72;
+	v72 = loc71;
+	v73 = loc25;
+	*v72.u0 = v73;
+	v72 = arg2;
+	v72 = *v72.u0;
+	loc26 = v72;
+	v72 = loc72;
+	v73 = loc26;
+	*v72.u0 = v73;
+	v72 = loc8;
+	v73 = loc71;
+	v73 = *v73.u0;
+	*v72.u0 = v73;
+	v72 = loc9;
+	v73 = loc72;
+	v73 = *v73.u0;
+	*v72.u0 = v73;
+	v72 = arg0;
+	v73 = loc8;
+	v75 = loc9;
+	v76 = arg3;
+	v77 = arg4;
+	v78 = loc65;
+	v79 = loc24;
+	v80.u0 = 0x01FF;
+	v79 &= v80;
+	v80.u0 = 0x0900;
+	v79 += v80;
 }
 
 // 000F20CE: Stack Eq_n fn000F20CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F20CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F81B1(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F214A: Stack Eq_n fn000F214A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F214A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F78C3(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F21C6: Stack Eq_n fn000F21C6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F21C6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F6FD6(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F2242: Stack Eq_n fn000F2242(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F2242(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F66E9(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F22BE: Stack Eq_n fn000F22BE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F22BE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F5DFC(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F233A: Stack Eq_n fn000F233A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F233A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F539A(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F23B6: Stack Eq_n fn000F23B6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F23B6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F4A65(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F2432: Stack Eq_n fn000F2432(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F2432(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F4131(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F24AE: Stack Eq_n fn000F24AE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F24AE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v11 = fn000F3224(v11, v12, v14, v15, v16, v17);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000F252A: Stack Eq_n fn000F252A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F252A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v206.u3 = g_t140030.u3;
+	loc209 = v206;
+	v206.u3 = g_t140030.u3;
+	v207.u0 = 0x0140;
+	v206 += v207;
+	g_t140030.u3 = (word32 *) v206;
+	v206.u3 = g_t140030.u3;
+	v207.u3 = g_t140034.u3;
+	v208 = v206 >= v207;
+	if (v208)
+	{
+		v206.u0 = 0x0140;
+		abortStackOverflow(v206);
+	}
+	while (true)
+	{
+		v206 = loc209;
+		loc207 = v206;
+		v206 = loc209;
+		v207.u0 = 0xD0;
+		v206 += v207;
+		loc159 = v206;
+		v206 = loc209;
+		v207.u0 = 0xC4;
+		v206 += v207;
+		loc170 = v206;
+		v206 = loc209;
+		v207.u0 = 0xC0;
+		v206 += v207;
+		loc181 = v206;
+		v206 = loc209;
+		v207.u0 = 0xB4;
+		v206 += v207;
+		loc192 = v206;
+		v206 = loc209;
+		v207.u0 = 0xB0;
+		v206 += v207;
+		loc29 = v206;
+		v206 = loc209;
+		v207.u0 = 0x10;
+		v206 += v207;
+		loc40 = v206;
+		v206 = loc209;
+		v207.u0 = 0x08;
+		v206 += v207;
+		loc51 = v206;
+		v206 = loc209;
+		v207.u0 = 0x04;
+		v206 += v207;
+		loc62 = v206;
+		v206 = loc170;
+		v209.u0 = 0x00;
+		*v206.u0 = v209;
+		v206 = loc170;
+		v207.u0 = 0x08;
+		v206 += v207;
+		v207.u0 = 0x00;
+		*v206.u0 = v207;
+		v206.u0 = 0x00;
+		loc7 = v206;
+		v206 = loc7;
+		v207.u0 = 0x03;
+		v208 = v206 == v207;
+		loc203 = v208;
+		v206 = loc203;
+		if (v206)
+			break;
+		v206 = loc170;
+		v207 = loc7;
+		v210.u0 = 0x02;
+		v207 <<= v210;
+		v206 += v207;
+		loc73 = v206;
+		v206 = loc73;
+		v207.u0 = 0x00;
+		*v206.u0 = v207;
+		v206 = loc7;
+		v207.u0 = 0x01;
+		v206 += v207;
+		loc84 = v206;
+		v206 = loc84;
+		loc7 = v206;
+	}
+	v206.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v206;
+	v206.u0 = 0x0167;
+	v207 = arg3;
+	v206 = invoke_ii(v206, v207);
+	loc95 = v206;
+	v206.u3 = g_t140048.u3;
+	loc106 = v206;
+	v206.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v206;
+	v206 = loc106;
+	v207.u0 = 0x01;
+	v206 &= v207;
+	loc117 = v206;
+	v206 = loc117;
+	if (v206)
+	{
+		v206 = ___cxa_find_matching_catch_n();
+		loc199 = v206;
+		v206.u3 = g_t140094.u3;
+		loc200 = v206;
+		v206 = loc199;
+		loc6 = v206;
+		v206 = loc200;
+		loc15 = v206;
+		v206.u0 = 0x24;
+		loc208 = v206;
+		goto l000F2F2F;
+	}
+	v206 = loc181;
+	v207 = loc95;
+	*v206.u0 = v207;
+	v206.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v206;
+	v206.u0 = 0x0164;
+	v207 = loc181;
+	v210.u0 = 0x4C90;
+	v206 = invoke_iii(v206, v207, v210);
+	loc118 = v206;
+	v206.u3 = g_t140048.u3;
+	loc119 = v206;
+	v206.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v206;
+	v206 = loc119;
+	v207.u0 = 0x01;
+	v206 &= v207;
+	loc120 = v206;
+	v206 = loc120;
+	v208 = v206 == 0x00;
+	if (v208)
+	{
+		v206 = loc118;
+		v206 = *v206.u0;
+		loc121 = v206;
+		v206 = loc121;
+		v207.u0 = 0x30;
+		v206 += v207;
+		loc122 = v206;
+		v206 = loc122;
+		v206 = *v206.u0;
+		loc123 = v206;
+		v206.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v206;
+		v206 = loc123;
+		v207 = loc118;
+		v210.u0 = 14251;
+		v211.u0 = 14277;
+		v212 = loc159;
+		v206 = invoke_iiiii(v206, v207, v210, v211, v212);
+		v206.u3 = g_t140048.u3;
+		loc124 = v206;
+		v206.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v206;
+		v206 = loc124;
+		v207.u0 = 0x01;
+		v206 &= v207;
+		loc125 = v206;
+		v206 = loc125;
+		v208 = v206 == 0x00;
+		if (v208)
+		{
+			while (true)
+			{
+				v206 = loc95;
+				v206 = fn0011B43F(v206);
+				v206 = loc192;
+				v209.u0 = 0x00;
+				*v206.u0 = v209;
+				v206 = loc192;
+				v207.u0 = 0x08;
+				v206 += v207;
+				v207.u0 = 0x00;
+				*v206.u0 = v207;
+				v206.u0 = 0x00;
+				loc12 = v206;
+				v206 = loc12;
+				v207.u0 = 0x03;
+				v208 = v206 == v207;
+				loc204 = v208;
+				v206 = loc204;
+				if (v206)
+					break;
+				v206 = loc192;
+				v207 = loc12;
+				v210.u0 = 0x02;
+				v207 <<= v210;
+				v206 += v207;
+				loc126 = v206;
+				v206 = loc126;
+				v207.u0 = 0x00;
+				*v206.u0 = v207;
+				v206 = loc12;
+				v207.u0 = 0x01;
+				v206 += v207;
+				loc127 = v206;
+				v206 = loc127;
+				loc12 = v206;
+			}
+			v206 = loc192;
+			v207.u0 = 11;
+			v206 += v207;
+			loc128 = v206;
+			v206 = loc128;
+			v213 = *v206.u0;
+			v206.u3 = (word32) v213;
+			loc129 = v206;
+			v206 = loc129;
+			v207.u0 = 0x18;
+			v206 <<= v207;
+			v207.u0 = 0x18;
+			v206 >>= v207;
+			v207.u0 = 0x00;
+			v208 = v206 < v207;
+			loc130 = v208;
+			v206 = loc130;
+			if (v206)
+			{
+				v206 = loc192;
+				v207.u0 = 0x08;
+				v206 += v207;
+				loc131 = v206;
+				v206 = loc131;
+				v206.u3 = *v206.u3;
+				loc132 = v206;
+				v206 = loc132;
+				v207.u0 = 0x7FFFFFFF;
+				v206 &= v207;
+				loc133 = v206;
+				v206 = loc133;
+				v207.u0 = ~0x00;
+				v206 += v207;
+				loc205 = v206;
+				v206 = loc205;
+				loc134 = v206;
+			}
+			else
+			{
+				v206.u0 = 0x0A;
+				loc134 = v206;
+			}
+			v206.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v206;
+			v206.u0 = 0x017A;
+			v207 = loc192;
+			v210 = loc134;
+			v211.u0 = 0x00;
+			invoke_viii(v206, v207, v210, v211);
+			v206.u3 = g_t140048.u3;
+			loc135 = v206;
+			v206.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v206;
+			v206 = loc135;
+			v207.u0 = 0x01;
+			v206 &= v207;
+			loc136 = v206;
+			v206 = loc136;
+			if (v206)
+			{
+				v206 = ___cxa_find_matching_catch_n();
+				loc30 = v206;
+				v206.u3 = g_t140094.u3;
+				loc31 = v206;
+				v206 = loc30;
+				loc17 = v206;
+				v206 = loc31;
+				loc19 = v206;
+				goto l000F2EFD;
+			}
+			v206 = loc128;
+			v214.u3 = *v206.u3;
+			v206.u3 = (word32) v214;
+			loc137 = v206;
+			v206 = loc137;
+			v207.u0 = 0x18;
+			v206 <<= v207;
+			v207.u0 = 0x18;
+			v206 >>= v207;
+			v207.u0 = 0x00;
+			v208 = v206 < v207;
+			loc138 = v208;
+			v206 = loc192;
+			v206.u3 = *v206.u3;
+			loc139 = v206;
+			v206 = loc138;
+			if (v206)
+				v206 = loc139;
+			else
+				v206 = loc192;
+			while (true)
+			{
+				loc140 = v206;
+				v206 = loc29;
+				v207 = loc140;
+				*v206.u3 = (word32) v207;
+				v206 = loc51;
+				v207 = loc40;
+				*v206.u3 = (word32) v207;
+				v206 = loc62;
+				v207.u0 = 0x00;
+				*v206.u3 = (word32) v207;
+				v206 = loc192;
+				v207.u0 = 0x04;
+				v206 += v207;
+				loc141 = v206;
+				v206 = loc192;
+				v207.u0 = 0x08;
+				v206 += v207;
+				loc142 = v206;
+				v206 = arg1;
+				v206.u3 = *v206.u3;
+				loc22 = v206;
+				v206 = loc140;
+				loc14 = v206;
+				v206 = loc22;
+				loc24 = v206;
+				v206 = loc24;
+				v207.u0 = 0x00;
+				v208 = v206 == v207;
+				loc143 = v208;
+				v206 = loc143;
+				if (v206)
+				{
+					v206.u0 = 0x00;
+					loc23 = v206;
+					v206.u0 = 0x01;
+					loc114 = v206;
+				}
+				else
+				{
+					v206 = loc24;
+					v207.u0 = 0x0C;
+					v206 += v207;
+					loc144 = v206;
+					v206 = loc144;
+					v206 = *v206.u0;
+					loc145 = v206;
+					v206 = loc24;
+					v207.u0 = 0x10;
+					v206 += v207;
+					loc146 = v206;
+					v206 = loc146;
+					v206 = *v206.u0;
+					loc147 = v206;
+					v206 = loc145;
+					v207 = loc147;
+					v208 = v206 == v207;
+					loc148 = v208;
+					v206 = loc148;
+					if (v206)
+					{
+						v206 = loc24;
+						v206 = *v206.u0;
+						loc149 = v206;
+						v206 = loc149;
+						v207.u0 = 0x24;
+						v206 += v207;
+						loc150 = v206;
+						v206 = loc150;
+						v206 = *v206.u0;
+						loc151 = v206;
+						v206.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v206;
+						v206 = loc151;
+						v207 = loc24;
+						v206 = invoke_ii(v206, v207);
+						loc152 = v206;
+						v206.u3 = g_t140048.u3;
+						loc153 = v206;
+						v206.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v206;
+						v206 = loc153;
+						v207.u0 = 0x01;
+						v206 &= v207;
+						loc154 = v206;
+						v206 = loc154;
+						if (v206)
+						{
+							v206.u0 = 0x26;
+							loc208 = v206;
+							goto l000F2C3D;
+						}
+						v206 = loc152;
+						loc9 = v206;
+					}
+					else
+					{
+						v206 = loc145;
+						v206 = *v206.u0;
+						loc155 = v206;
+						v206 = loc155;
+						loc9 = v206;
+					}
+					v206 = loc9;
+					v207.u0 = ~0x00;
+					v208 = v206 == v207;
+					loc156 = v208;
+					v206 = loc156;
+					if (v206)
+					{
+						v206 = arg1;
+						v207.u0 = 0x00;
+						*v206.u0 = v207;
+						v206.u0 = 0x00;
+						loc23 = v206;
+						v206.u0 = 0x01;
+						loc114 = v206;
+					}
+					else
+					{
+						v206 = loc24;
+						loc23 = v206;
+						v206.u0 = 0x00;
+						loc114 = v206;
+					}
+				}
+				v206 = arg2;
+				v206 = *v206.u0;
+				loc157 = v206;
+				v206 = loc157;
+				v207.u0 = 0x00;
+				v208 = v206 == v207;
+				loc158 = v208;
+				v206 = loc158;
+				if (v206)
+				{
+					v206.u0 = 0x1A;
+					loc208 = v206;
+				}
+				else
+				{
+					v206 = loc157;
+					v207.u0 = 0x0C;
+					v206 += v207;
+					loc160 = v206;
+					v206 = loc160;
+					v206 = *v206.u0;
+					loc161 = v206;
+					v206 = loc157;
+					v207.u0 = 0x10;
+					v206 += v207;
+					loc162 = v206;
+					v206 = loc162;
+					v206 = *v206.u0;
+					loc163 = v206;
+					v206 = loc161;
+					v207 = loc163;
+					v208 = v206 == v207;
+					loc164 = v208;
+					v206 = loc164;
+					if (v206)
+					{
+						v206 = loc157;
+						v206 = *v206.u0;
+						loc165 = v206;
+						v206 = loc165;
+						v207.u0 = 0x24;
+						v206 += v207;
+						loc166 = v206;
+						v206 = loc166;
+						v206 = *v206.u0;
+						loc167 = v206;
+						v206.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v206;
+						v206 = loc167;
+						v207 = loc157;
+						v206 = invoke_ii(v206, v207);
+						loc168 = v206;
+						v206.u3 = g_t140048.u3;
+						loc169 = v206;
+						v206.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v206;
+						v206 = loc169;
+						v207.u0 = 0x01;
+						v206 &= v207;
+						loc171 = v206;
+						v206 = loc171;
+						if (v206)
+						{
+							v206.u0 = 0x26;
+							loc208 = v206;
+							goto l000F2C3D;
+						}
+						v206 = loc168;
+						loc11 = v206;
+					}
+					else
+					{
+						v206 = loc161;
+						v206 = *v206.u0;
+						loc172 = v206;
+						v206 = loc172;
+						loc11 = v206;
+					}
+					v206 = loc11;
+					v207.u0 = ~0x00;
+					v208 = v206 == v207;
+					loc173 = v208;
+					v206 = loc173;
+					if (v206)
+					{
+						v206 = arg2;
+						v207.u0 = 0x00;
+						*v206.u0 = v207;
+						v206.u0 = 0x1A;
+						loc208 = v206;
+					}
+					else
+					{
+						v206 = loc114;
+						if (!v206)
+						{
+							v206 = loc14;
+							loc18 = v206;
+							v206 = loc157;
+							loc25 = v206;
+							v206.u0 = 0x30;
+							loc208 = v206;
+							goto l000F2C3D;
+						}
+						v206 = loc157;
+						loc115 = v206;
+					}
+				}
+				v206 = loc208;
+				v207.u0 = 0x1A;
+				v208 = v206 == v207;
+				if (v208)
+				{
+					v206.u0 = 0x00;
+					loc208 = v206;
+					v206 = loc114;
+					if (v206)
+					{
+						v206 = loc14;
+						loc18 = v206;
+						v206.u0 = 0x00;
+						loc25 = v206;
+						v206.u0 = 0x30;
+						loc208 = v206;
+						goto l000F2C3D;
+					}
+					v206.u0 = 0x00;
+					loc115 = v206;
+				}
+				v206 = loc29;
+				v206 = *v206.u0;
+				loc174 = v206;
+				v206 = loc128;
+				v215 = *v206.u0;
+				v206.u3 = (word32) v215;
+				loc175 = v206;
+				v206 = loc175;
+				v207.u0 = 0x18;
+				v206 <<= v207;
+				v207.u0 = 0x18;
+				v206 >>= v207;
+				v207.u0 = 0x00;
+				v208 = v206 < v207;
+				loc176 = v208;
+				v206 = loc141;
+				v206.u3 = *v206.u3;
+				loc177 = v206;
+				v206 = loc175;
+				v207.u0 = 0xFF;
+				v206 &= v207;
+				loc178 = v206;
+				v206 = loc176;
+				if (v206)
+					v206 = loc177;
+				else
+					v206 = loc178;
+				loc179 = v206;
+				v206 = loc14;
+				v207 = loc179;
+				v206 += v207;
+				loc180 = v206;
+				v206 = loc174;
+				v207 = loc180;
+				v208 = v206 == v207;
+				loc182 = v208;
+				v206 = loc182;
+				if (v206)
+				{
+					v206 = loc179;
+					v207.u0 = 0x01;
+					v206 <<= v207;
+					loc183 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206.u0 = 0x017A;
+					v207 = loc192;
+					v210 = loc183;
+					v211.u0 = 0x00;
+					invoke_viii(v206, v207, v210, v211);
+					v206.u3 = g_t140048.u3;
+					loc184 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206 = loc184;
+					v207.u0 = 0x01;
+					v206 &= v207;
+					loc185 = v206;
+					v206 = loc185;
+					if (v206)
+					{
+						v206.u0 = 0x28;
+						loc208 = v206;
+						goto l000F2C3D;
+					}
+					v206 = loc128;
+					v216 = *v206.u0;
+					v206.u3 = (word32) v216;
+					loc186 = v206;
+					v206 = loc186;
+					v207.u0 = 0x18;
+					v206 <<= v207;
+					v207.u0 = 0x18;
+					v206 >>= v207;
+					v207.u0 = 0x00;
+					v208 = v206 < v207;
+					loc187 = v208;
+					v206 = loc187;
+					if (v206)
+					{
+						v206 = loc142;
+						v206.u3 = *v206.u3;
+						loc188 = v206;
+						v206 = loc188;
+						v207.u0 = 0x7FFFFFFF;
+						v206 &= v207;
+						loc189 = v206;
+						v206 = loc189;
+						v207.u0 = ~0x00;
+						v206 += v207;
+						loc206 = v206;
+						v206 = loc206;
+						loc190 = v206;
+					}
+					else
+					{
+						v206.u0 = 0x0A;
+						loc190 = v206;
+					}
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206.u0 = 0x017A;
+					v207 = loc192;
+					v210 = loc190;
+					v211.u0 = 0x00;
+					invoke_viii(v206, v207, v210, v211);
+					v206.u3 = g_t140048.u3;
+					loc191 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206 = loc191;
+					v207.u0 = 0x01;
+					v206 &= v207;
+					loc193 = v206;
+					v206 = loc193;
+					if (v206)
+					{
+						v206.u0 = 0x28;
+						loc208 = v206;
+						goto l000F2C3D;
+					}
+					v206 = loc128;
+					v217 = *v206.u0;
+					v206.u3 = (word32) v217;
+					loc194 = v206;
+					v206 = loc194;
+					v207.u0 = 0x18;
+					v206 <<= v207;
+					v207.u0 = 0x18;
+					v206 >>= v207;
+					v207.u0 = 0x00;
+					v208 = v206 < v207;
+					loc195 = v208;
+					v206 = loc192;
+					v206.u3 = *v206.u3;
+					loc196 = v206;
+					v206 = loc195;
+					if (v206)
+						v206 = loc196;
+					else
+						v206 = loc192;
+					loc197 = v206;
+					v206 = loc197;
+					v207 = loc179;
+					v206 += v207;
+					loc198 = v206;
+					v206 = loc29;
+					v207 = loc198;
+					*v206.u3 = (word32) v207;
+					v206 = loc197;
+					loc16 = v206;
+				}
+				else
+				{
+					v206 = loc14;
+					loc16 = v206;
+				}
+				v206 = loc23;
+				v207.u0 = 0x0C;
+				v206 += v207;
+				loc38 = v206;
+				v206 = loc38;
+				v206.u3 = *v206.u3;
+				loc39 = v206;
+				v206 = loc23;
+				v207.u0 = 0x10;
+				v206 += v207;
+				loc41 = v206;
+				v206 = loc41;
+				v206.u3 = *v206.u3;
+				loc42 = v206;
+				v206 = loc39;
+				v207 = loc42;
+				v208 = v206 == v207;
+				loc43 = v208;
+				v206 = loc43;
+				if (v206)
+				{
+					v206 = loc23;
+					v206.u3 = *v206.u3;
+					loc44 = v206;
+					v206 = loc44;
+					v207.u0 = 0x24;
+					v206 += v207;
+					loc45 = v206;
+					v206 = loc45;
+					v206.u3 = *v206.u3;
+					loc46 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206 = loc46;
+					v207 = loc23;
+					v206 = invoke_ii(v206, v207);
+					loc47 = v206;
+					v206.u3 = g_t140048.u3;
+					loc48 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206 = loc48;
+					v207.u0 = 0x01;
+					v206 &= v207;
+					loc49 = v206;
+					v206 = loc49;
+					if (v206)
+					{
+						v206.u0 = 0x26;
+						loc208 = v206;
+						goto l000F2C3D;
+					}
+					v206 = loc47;
+					loc13 = v206;
+				}
+				else
+				{
+					v206 = loc39;
+					v206 = *v206.u0;
+					loc50 = v206;
+					v206 = loc50;
+					loc13 = v206;
+				}
+				v206 = loc13;
+				v207.u0 = 0x10;
+				v210 = loc16;
+				v211 = loc29;
+				v212 = loc62;
+				v218.u0 = 0x00;
+				v219 = loc170;
+				v220 = loc40;
+				v221 = loc51;
+				v222 = loc159;
+				v206 = fn000F2F51(v206, v207, v210, v211, v212, v218, v219, v220, v221, v222);
+				loc52 = v206;
+				v206 = loc52;
+				v207.u0 = 0x00;
+				v208 = v206 == v207;
+				loc53 = v208;
+				v206 = loc53;
+				v208 = v206 == 0x00;
+				if (v208)
+					break;
+				v206 = loc38;
+				v206 = *v206.u0;
+				loc54 = v206;
+				v206 = loc41;
+				v206 = *v206.u0;
+				loc55 = v206;
+				v206 = loc54;
+				v207 = loc55;
+				v208 = v206 == v207;
+				loc56 = v208;
+				v206 = loc56;
+				if (!v206)
+				{
+					v206 = loc54;
+					v207.u0 = 0x04;
+					v206 += v207;
+					loc63 = v206;
+					v206 = loc38;
+					v207 = loc63;
+					*v206.u0 = v207;
+					v206 = loc16;
+					loc14 = v206;
+					v206 = loc23;
+					loc24 = v206;
+					continue;
+				}
+				v206 = loc23;
+				v206 = *v206.u0;
+				loc57 = v206;
+				v206 = loc57;
+				v207.u0 = 0x28;
+				v206 += v207;
+				loc58 = v206;
+				v206 = loc58;
+				v206 = *v206.u0;
+				loc59 = v206;
+				v206.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v206;
+				v206 = loc59;
+				v207 = loc23;
+				v206 = invoke_ii(v206, v207);
+				v206.u3 = g_t140048.u3;
+				loc60 = v206;
+				v206.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v206;
+				v206 = loc60;
+				v207.u0 = 0x01;
+				v206 &= v207;
+				loc61 = v206;
+				v206 = loc61;
+				if (v206)
+				{
+					v206.u0 = 0x26;
+					loc208 = v206;
+					goto l000F2C3D;
+				}
+				v206 = loc16;
+				loc14 = v206;
+				v206 = loc23;
+				loc24 = v206;
+			}
+			v206 = loc16;
+			loc18 = v206;
+			v206 = loc115;
+			loc25 = v206;
+			v206.u0 = 0x30;
+			loc208 = v206;
+l000F2C3D:
+			v206 = loc208;
+			v207.u0 = 0x26;
+			v208 = v206 == v207;
+			if (v208)
+			{
+				v206 = ___cxa_find_matching_catch_n();
+				loc32 = v206;
+				v206.u3 = g_t140094.u3;
+				loc33 = v206;
+				v206 = loc32;
+				loc26 = v206;
+				v206 = loc33;
+				loc27 = v206;
+				goto l000F2EF4;
+			}
+			v206 = loc208;
+			v207.u0 = 0x28;
+			v208 = v206 == v207;
+			if (v208)
+			{
+				v206 = ___cxa_find_matching_catch_n();
+				loc36 = v206;
+				v206.u3 = g_t140094.u3;
+				loc37 = v206;
+				v206 = loc36;
+				loc26 = v206;
+				v206 = loc37;
+				loc27 = v206;
+				goto l000F2EF3;
+			}
+			v206 = loc208;
+			v207.u0 = 0x30;
+			v208 = v206 == v207;
+			if (!v208)
+			{
+l000F2EF4:
+				v206 = loc26;
+				loc17 = v206;
+				v206 = loc27;
+				loc19 = v206;
+l000F2EFD:
+				v206 = loc192;
+				fn0011BAF7(v206);
+				v206 = loc17;
+				loc20 = v206;
+				v206 = loc19;
+				loc21 = v206;
+				goto l000F2F30;
+			}
+			v206 = loc29;
+			v206.u3 = *v206.u3;
+			loc64 = v206;
+			v206 = loc18;
+			loc65 = v206;
+			v206 = loc64;
+			v207 = loc65;
+			v206 -= v207;
+			loc66 = v206;
+			v206.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v206;
+			v206.u0 = 0x017A;
+			v207 = loc192;
+			v210 = loc66;
+			v211.u0 = 0x00;
+			invoke_viii(v206, v207, v210, v211);
+			v206.u3 = g_t140048.u3;
+			loc67 = v206;
+			v206.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v206;
+			v206 = loc67;
+			v207.u0 = 0x01;
+			v206 &= v207;
+			loc68 = v206;
+			v206 = loc68;
+			v208 = v206 == 0x00;
+			if (v208)
+			{
+				v206 = loc128;
+				v223 = *v206.u0;
+				v206.u3 = (word32) v223;
+				loc69 = v206;
+				v206 = loc192;
+				v206.u3 = *v206.u3;
+				loc70 = v206;
+				v206.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v206;
+				v206.u0 = 0x017B;
+				v206 = invoke_i(v206);
+				loc71 = v206;
+				v206.u3 = g_t140048.u3;
+				loc72 = v206;
+				v206.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v206;
+				v206 = loc72;
+				v207.u0 = 0x01;
+				v206 &= v207;
+				loc74 = v206;
+				v206 = loc74;
+				v208 = v206 == 0x00;
+				if (v208)
+				{
+					v206 = loc69;
+					v207.u0 = 0x18;
+					v206 <<= v207;
+					v207.u0 = 0x18;
+					v206 >>= v207;
+					v207.u0 = 0x00;
+					v208 = v206 < v207;
+					loc75 = v208;
+					v206 = loc75;
+					if (v206)
+						v206 = loc70;
+					else
+						v206 = loc192;
+					loc76 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206 = loc207;
+					v207 = arg5;
+					*v206.u0 = v207;
+					v206.u0 = 0x017C;
+					v207 = loc76;
+					v210 = loc71;
+					v211.u0 = 0x37CC;
+					v212 = loc207;
+					v206 = invoke_iiiii(v206, v207, v210, v211, v212);
+					loc77 = v206;
+					v206.u3 = g_t140048.u3;
+					loc78 = v206;
+					v206.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v206;
+					v206 = loc78;
+					v207.u0 = 0x01;
+					v206 &= v207;
+					loc79 = v206;
+					v206 = loc79;
+					v208 = v206 == 0x00;
+					if (v208)
+					{
+						v206 = loc77;
+						v207.u0 = 0x01;
+						v208 = v206 == v207;
+						loc80 = v208;
+						v206 = loc80;
+						v208 = v206 == 0x00;
+						if (v208)
+						{
+							v206 = arg4;
+							v207.u0 = 0x04;
+							*v206.u0 = v207;
+						}
+						v206 = loc23;
+						v207.u0 = 0x00;
+						v208 = v206 == v207;
+						loc81 = v208;
+						v206 = loc81;
+						if (v206)
+						{
+							v206.u0 = 0x01;
+							loc116 = v206;
+						}
+						else
+						{
+							v206 = loc23;
+							v207.u0 = 0x0C;
+							v206 += v207;
+							loc82 = v206;
+							v206 = loc82;
+							v206 = *v206.u0;
+							loc83 = v206;
+							v206 = loc23;
+							v207.u0 = 0x10;
+							v206 += v207;
+							loc85 = v206;
+							v206 = loc85;
+							v206 = *v206.u0;
+							loc86 = v206;
+							v206 = loc83;
+							v207 = loc86;
+							v208 = v206 == v207;
+							loc87 = v208;
+							v206 = loc87;
+							if (v206)
+							{
+								v206 = loc23;
+								v206 = *v206.u0;
+								loc88 = v206;
+								v206 = loc88;
+								v207.u0 = 0x24;
+								v206 += v207;
+								loc89 = v206;
+								v206 = loc89;
+								v206 = *v206.u0;
+								loc90 = v206;
+								v206.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v206;
+								v206 = loc90;
+								v207 = loc23;
+								v206 = invoke_ii(v206, v207);
+								loc91 = v206;
+								v206.u3 = g_t140048.u3;
+								loc92 = v206;
+								v206.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v206;
+								v206 = loc92;
+								v207.u0 = 0x01;
+								v206 &= v207;
+								loc93 = v206;
+								v206 = loc93;
+								if (v206)
+									goto l000F2EE1;
+								v206 = loc91;
+								loc8 = v206;
+							}
+							else
+							{
+								v206 = loc83;
+								v206 = *v206.u0;
+								loc94 = v206;
+								v206 = loc94;
+								loc8 = v206;
+							}
+							v206 = loc8;
+							v207.u0 = ~0x00;
+							v208 = v206 == v207;
+							loc96 = v208;
+							v206 = loc96;
+							if (v206)
+							{
+								v206 = arg1;
+								v207.u0 = 0x00;
+								*v206.u0 = v207;
+								v206.u0 = 0x01;
+								loc116 = v206;
+							}
+							else
+							{
+								v206.u0 = 0x00;
+								loc116 = v206;
+							}
+						}
+						v206 = loc25;
+						v207.u0 = 0x00;
+						v208 = v206 == v207;
+						loc97 = v208;
+						v206 = loc97;
+						if (v206)
+						{
+							v206.u0 = 0x41;
+							loc208 = v206;
+							goto l000F2E8E;
+						}
+						v206 = loc25;
+						v207.u0 = 0x0C;
+						v206 += v207;
+						loc98 = v206;
+						v206 = loc98;
+						v206 = *v206.u0;
+						loc99 = v206;
+						v206 = loc25;
+						v207.u0 = 0x10;
+						v206 += v207;
+						loc100 = v206;
+						v206 = loc100;
+						v206 = *v206.u0;
+						loc101 = v206;
+						v206 = loc99;
+						v207 = loc101;
+						v208 = v206 == v207;
+						loc102 = v208;
+						v206 = loc102;
+						if (v206)
+						{
+							v206 = loc25;
+							v206 = *v206.u0;
+							loc103 = v206;
+							v206 = loc103;
+							v207.u0 = 0x24;
+							v206 += v207;
+							loc104 = v206;
+							v206 = loc104;
+							v206 = *v206.u0;
+							loc105 = v206;
+							v206.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v206;
+							v206 = loc105;
+							v207 = loc25;
+							v206 = invoke_ii(v206, v207);
+							loc107 = v206;
+							v206.u3 = g_t140048.u3;
+							loc108 = v206;
+							v206.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v206;
+							v206 = loc108;
+							v207.u0 = 0x01;
+							v206 &= v207;
+							loc109 = v206;
+							v206 = loc109;
+							if (v206)
+								goto l000F2EE1;
+							v206 = loc107;
+							loc10 = v206;
+						}
+						else
+						{
+							v206 = loc99;
+							v206 = *v206.u0;
+							loc110 = v206;
+							v206 = loc110;
+							loc10 = v206;
+						}
+						v206 = loc10;
+						v207.u0 = ~0x00;
+						v208 = v206 == v207;
+						loc111 = v208;
+						v206 = loc111;
+						if (v206)
+						{
+							v206 = arg2;
+							v207.u0 = 0x00;
+							*v206.u0 = v207;
+							v206.u0 = 0x41;
+							loc208 = v206;
+						}
+						else
+						{
+							v206 = loc116;
+							if (!v206)
+							{
+								v206.u0 = 0x43;
+								loc208 = v206;
+							}
+						}
+l000F2E8E:
+						v206 = loc208;
+						v207.u0 = 0x41;
+						v208 = v206 == v207;
+						if (v208)
+						{
+							v206 = loc116;
+							if (v206)
+							{
+								v206.u0 = 0x43;
+								loc208 = v206;
+							}
+						}
+						v206 = loc208;
+						v207.u0 = 0x43;
+						v208 = v206 == v207;
+						if (v208)
+						{
+							v206 = arg4;
+							v206 = *v206.u0;
+							loc112 = v206;
+							v206 = loc112;
+							v207.u0 = 0x02;
+							v206 |= v207;
+							loc113 = v206;
+							v206 = arg4;
+							v207 = loc113;
+							*v206.u0 = v207;
+						}
+						v206 = arg1;
+						v206 = *v206.u0;
+						loc28 = v206;
+						v206 = loc192;
+						fn0011BAF7(v206);
+						v206 = loc170;
+						fn0011BAF7(v206);
+						v206 = loc209;
+						g_t140030.u3 = (word32 *) v206;
+						v206 = loc28;
+						return v206;
+					}
+				}
+			}
+l000F2EE1:
+			v206 = ___cxa_find_matching_catch_n();
+			loc34 = v206;
+			v206.u3 = g_t140094.u3;
+			loc35 = v206;
+			v206 = loc34;
+			loc26 = v206;
+			v206 = loc35;
+			loc27 = v206;
+			goto l000F2EF3;
+		}
+	}
+	v206 = ___cxa_find_matching_catch_n();
+	loc201 = v206;
+	v206.u3 = g_t140094.u3;
+	loc202 = v206;
+	v206 = loc95;
+	v206 = fn0011B43F(v206);
+	v206 = loc201;
+	loc6 = v206;
+	v206 = loc202;
+	loc15 = v206;
+	v206.u0 = 0x24;
+	loc208 = v206;
+l000F2F30:
+	v206 = loc208;
+	v207.u0 = 0x24;
+	v208 = v206 == v207;
+	if (v208)
+	{
+		v206 = loc6;
+		loc20 = v206;
+		v206 = loc15;
+		loc21 = v206;
+	}
+	v206 = loc170;
+	fn0011BAF7(v206);
+	v206 = loc20;
+	___resumeException(v206);
+	v206.u0 = 0x00;
+	return v206;
 }
 
 // 000F2F51: Stack Eq_n fn000F2F51(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9)
 Eq_n fn000F2F51(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9)
 {
+	v62.u3 = g_t140030.u3;
+	loc69 = v62;
+	v62 = arg3;
+	v62.u3 = *v62.u3;
+	loc15 = v62;
+	v62 = loc15;
+	v63 = arg2;
+	v64 = v62 == v63;
+	loc16 = v64;
+	v62 = loc16;
+	if (v62)
+	{
+		v62 = arg9;
+		v63.u0 = 0x60;
+		v62 += v63;
+		loc17 = v62;
+		v62 = loc17;
+		v62.u3 = *v62.u3;
+		loc18 = v62;
+		v62 = loc18;
+		v63 = arg0;
+		v64 = v62 == v63;
+		loc19 = v64;
+		v62 = loc19;
+		v64 = v62 == 0x00;
+		if (v64)
+		{
+			v62 = arg9;
+			v63.u0 = 100;
+			v62 += v63;
+			loc20 = v62;
+			v62 = loc20;
+			v62.u3 = *v62.u3;
+			loc21 = v62;
+			v62 = loc21;
+			v63 = arg0;
+			v64 = v62 == v63;
+			loc22 = v64;
+			v62 = loc22;
+			v64 = v62 == 0x00;
+			if (v64)
+			{
+				v62.u0 = 0x05;
+				loc68 = v62;
+				goto l000F2FDB;
+			}
+		}
+		v62 = loc19;
+		if (v62)
+			v62.u0 = 0x2B;
+		else
+			v62.u0 = 0x2D;
+		loc23 = v62;
+		v62 = arg2;
+		v63.u0 = 0x01;
+		v62 += v63;
+		loc24 = v62;
+		v62 = arg3;
+		v63 = loc24;
+		*v62.u0 = v63;
+		v62 = arg2;
+		v63 = loc23;
+		v65 = (byte) v63;
+		*v62.u0 = v65;
+		v62 = arg4;
+		v63.u0 = 0x00;
+		*v62.u0 = v63;
+		v62.u0 = 0x00;
+		loc14 = v62;
+	}
+	else
+	{
+		v62.u0 = 0x05;
+		loc68 = v62;
+	}
+l000F2FDB:
+	v62 = loc68;
+	v63.u0 = 0x05;
+	v64 = v62 == v63;
+	if (v64)
+	{
+		v62 = arg6;
+		v63.u0 = 11;
+		v62 += v63;
+		loc25 = v62;
+		v62 = loc25;
+		v66 = *v62.u0;
+		v62.u3 = (word32) v66;
+		loc26 = v62;
+		v62 = loc26;
+		v63.u0 = 0x18;
+		v62 <<= v63;
+		v63.u0 = 0x18;
+		v62 >>= v63;
+		v63.u0 = 0x00;
+		v64 = v62 < v63;
+		loc27 = v64;
+		v62 = arg6;
+		v63.u0 = 0x04;
+		v62 += v63;
+		loc28 = v62;
+		v62 = loc28;
+		v62.u3 = *v62.u3;
+		loc29 = v62;
+		v62 = loc26;
+		v63.u0 = 0xFF;
+		v62 &= v63;
+		loc30 = v62;
+		v62 = loc27;
+		if (v62)
+			v62 = loc29;
+		else
+			v62 = loc30;
+		loc31 = v62;
+		v62 = loc31;
+		v63.u0 = 0x00;
+		v64 = v62 != v63;
+		loc32 = v64;
+		v62 = arg0;
+		v63 = arg5;
+		v64 = v62 == v63;
+		loc33 = v64;
+		v62 = loc33;
+		v63 = loc32;
+		v62 &= v63;
+		loc67 = v62;
+		v62 = loc67;
+		if (v62)
+		{
+			v62 = arg8;
+			v62.u3 = *v62.u3;
+			loc34 = v62;
+			v62 = loc34;
+			loc35 = v62;
+			v62 = arg7;
+			loc36 = v62;
+			v62 = loc35;
+			v63 = loc36;
+			v62 -= v63;
+			loc37 = v62;
+			v62 = loc37;
+			v63.u0 = 0xA0;
+			v64 = v62 < v63;
+			loc38 = v64;
+			v62 = loc38;
+			v64 = v62 == 0x00;
+			if (v64)
+			{
+				v62.u0 = 0x00;
+				loc14 = v62;
+			}
+			else
+			{
+				v62 = arg4;
+				v62 = *v62.u0;
+				loc39 = v62;
+				v62 = loc34;
+				v63.u0 = 0x04;
+				v62 += v63;
+				loc40 = v62;
+				v62 = arg8;
+				v63 = loc40;
+				*v62.u0 = v63;
+				v62 = loc34;
+				v63 = loc39;
+				*v62.u0 = v63;
+				v62 = arg4;
+				v63.u0 = 0x00;
+				*v62.u0 = v63;
+				v62.u0 = 0x00;
+				loc14 = v62;
+			}
+l000F321E:
+			v62 = loc14;
+			return v62;
+		}
+		while (true)
+		{
+			v62 = arg9;
+			v63.u0 = 0x68;
+			v62 += v63;
+			loc41 = v62;
+			v62.u0 = 0x00;
+			loc11 = v62;
+			v62 = arg9;
+			v63 = loc11;
+			v67 = 0x02;
+			v63 <<= v67;
+			v62 += v63;
+			loc12 = v62;
+			v62 = loc11;
+			v63.u0 = 0x1A;
+			v64 = v62 == v63;
+			loc42 = v64;
+			v62 = loc42;
+			if (v62)
+				break;
+			v62 = loc12;
+			v62 = *v62.u0;
+			loc43 = v62;
+			v62 = loc43;
+			v63 = arg0;
+			v64 = v62 == v63;
+			loc44 = v64;
+			v62 = loc11;
+			v63.u0 = 0x01;
+			v62 += v63;
+			loc10 = v62;
+			v62 = loc44;
+			if (v62)
+			{
+				v62 = loc12;
+				loc13 = v62;
+				goto l000F30E2;
+			}
+			v62 = loc10;
+			loc11 = v62;
+		}
+		v62 = loc41;
+		loc13 = v62;
+l000F30E2:
+		v62 = loc13;
+		loc45 = v62;
+		v62 = arg9;
+		loc46 = v62;
+		v62 = loc45;
+		v63 = loc46;
+		v62 -= v63;
+		loc47 = v62;
+		v62 = loc47;
+		v63.u0 = 0x02;
+		v62 >>= v63;
+		loc48 = v62;
+		v62 = loc47;
+		v63.u0 = 0x5C;
+		v64 = v62 > v63;
+		loc49 = v64;
+		v62 = loc49;
+		if (v62)
+		{
+			v62.u0 = ~0x00;
+			loc14 = v62;
+		}
+		else
+		{
+			v62 = arg1;
+			v63.u0 = 0x08;
+			v62 -= v63;
+			switch (v62)
+			{
+			case 0x00:
+				break;
+			case 0x01:
+				break;
+			case 0x02:
+				v62 = loc47;
+				v63.u0 = 88;
+				v64 = v62 < v63;
+				loc51 = v64;
+				v62 = loc51;
+				v64 = v62 == 0x00;
+				if (!v64)
+					goto l000F31DD;
+				v62 = loc16;
+				if (v62)
+				{
+					v62.u0 = ~0x00;
+					loc14 = v62;
+				}
+				else
+				{
+					v62 = loc15;
+					loc52 = v62;
+					v62 = arg2;
+					loc53 = v62;
+					v62 = loc52;
+					v63 = loc53;
+					v62 -= v63;
+					loc54 = v62;
+					v62 = loc54;
+					v63.u0 = 0x03;
+					v64 = v62 < v63;
+					loc55 = v64;
+					v62 = loc55;
+					v64 = v62 == 0x00;
+					if (v64)
+					{
+						v62.u0 = ~0x00;
+						loc14 = v62;
+					}
+					else
+					{
+						v62 = loc15;
+						v63.u0 = ~0x00;
+						v62 += v63;
+						loc56 = v62;
+						v62 = loc56;
+						v68 = *v62.u0;
+						v62.u3 = (word32) v68;
+						loc57 = v62;
+						v62 = loc57;
+						v63.u0 = 0x18;
+						v62 <<= v63;
+						v63.u0 = 0x18;
+						v62 >>= v63;
+						v63.u0 = 0x30;
+						v64 = v62 == v63;
+						loc58 = v64;
+						v62 = loc58;
+						v64 = v62 == 0x00;
+						if (v64)
+						{
+							v62.u0 = ~0x00;
+							loc14 = v62;
+						}
+						else
+						{
+							v62 = arg4;
+							v63.u0 = 0x00;
+							*v62.u0 = v63;
+							v62.u0 = 14251;
+							v63 = loc48;
+							v62 += v63;
+							loc59 = v62;
+							v62 = loc59;
+							v69 = *v62.u0;
+							v62.u3 = (word32) v69;
+							loc60 = v62;
+							v62 = loc15;
+							v63.u0 = 0x01;
+							v62 += v63;
+							loc61 = v62;
+							v62 = arg3;
+							v63 = loc61;
+							*v62.u3 = (word32) v63;
+							v62 = loc15;
+							v63 = loc60;
+							v70 = (byte) v63;
+							v62.u4->t0000.u0 = (bool) v70;
+							v62.u0 = 0x00;
+							loc14 = v62;
+						}
+					}
+				}
+				goto l000F321E;
+			case 0x03:
+			case 0x04:
+			case 0x05:
+			case 0x06:
+			case 0x07:
+			case 0x08:
+				goto l000F31DD;
+			}
+			v62 = loc48;
+			v63 = arg1;
+			v64 = v62 < v63;
+			loc50 = v64;
+			v62 = loc50;
+			v64 = v62 == 0x00;
+			if (v64)
+			{
+				v62.u0 = ~0x00;
+				loc14 = v62;
+				goto l000F321E;
+			}
+l000F31DD:
+			v62.u0 = 14251;
+			v63 = loc48;
+			v62 += v63;
+			loc62 = v62;
+			v62 = loc62;
+			v71 = *v62.u0;
+			v62.u3 = (word32) v71;
+			loc63 = v62;
+			v62 = loc15;
+			v63.u0 = 0x01;
+			v62 += v63;
+			loc64 = v62;
+			v62 = arg3;
+			v63 = loc64;
+			*v62.u3 = (word32) v63;
+			v62 = loc15;
+			v63 = loc63;
+			v72 = (byte) v63;
+			v62.u4->t0000.u0 = (bool) v72;
+			v62 = arg4;
+			v62.u3 = *v62.u3;
+			loc65 = v62;
+			v62 = loc65;
+			v63.u0 = 0x01;
+			v62 += v63;
+			loc66 = v62;
+			v62 = arg4;
+			v63 = loc66;
+			*v62.u3 = (word32) v63;
+			v62.u0 = 0x00;
+			loc14 = v62;
+		}
+	}
+	goto l000F321E;
 }
 
 // 000F3224: Stack Eq_n fn000F3224(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F3224(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v194.u3 = g_t140030.u3;
+	loc196 = v194;
+	v194.u3 = g_t140030.u3;
+	v195.u0 = 0x0160;
+	v194 += v195;
+	g_t140030.u3 = (word32 *) v194;
+	v194.u3 = g_t140030.u3;
+	v195.u3 = g_t140034.u3;
+	v196 = v194 >= v195;
+	if (v196)
+	{
+		v194.u0 = 0x0160;
+		abortStackOverflow(v194);
+	}
+	while (true)
+	{
+		v194 = loc196;
+		v195.u0 = 0xD0;
+		v194 += v195;
+		loc147 = v194;
+		v194 = loc196;
+		v195.u0 = 200;
+		v194 += v195;
+		loc158 = v194;
+		v194 = loc196;
+		v195.u0 = 0xC4;
+		v194 += v195;
+		loc169 = v194;
+		v194 = loc196;
+		v195.u0 = 0xB8;
+		v194 += v195;
+		loc180 = v194;
+		v194 = loc196;
+		v195.u0 = 0xAC;
+		v194 += v195;
+		loc24 = v194;
+		v194 = loc196;
+		v195.u0 = 0xA8;
+		v194 += v195;
+		loc35 = v194;
+		v194 = loc196;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc46 = v194;
+		v194 = loc196;
+		v195.u0 = 0x04;
+		v194 += v195;
+		loc57 = v194;
+		v194 = loc196;
+		loc67 = v194;
+		v194 = loc196;
+		v195.u0 = 0x0151;
+		v194 += v195;
+		loc78 = v194;
+		v194 = loc196;
+		v195.u0 = 336;
+		v194 += v195;
+		loc89 = v194;
+		v194 = loc180;
+		v195 = arg3;
+		v197 = loc147;
+		v198 = loc158;
+		v199 = loc169;
+		fn000F3B58(v194, v195, v197, v198, v199);
+		v194 = loc24;
+		v200.u0 = 0x00;
+		*v194.u0 = v200;
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		v195.u0 = 0x00;
+		*v194.u0 = v195;
+		v194.u0 = 0x00;
+		loc6 = v194;
+		v194 = loc6;
+		v195.u0 = 0x03;
+		v196 = v194 == v195;
+		loc191 = v196;
+		v194 = loc191;
+		if (v194)
+			break;
+		v194 = loc24;
+		v195 = loc6;
+		v197.u0 = 0x02;
+		v195 <<= v197;
+		v194 += v195;
+		loc100 = v194;
+		v194 = loc100;
+		v195.u0 = 0x00;
+		*v194.u0 = v195;
+		v194 = loc6;
+		v195.u0 = 0x01;
+		v194 += v195;
+		loc105 = v194;
+		v194 = loc105;
+		loc6 = v194;
+	}
+	v194 = loc24;
+	v195.u0 = 11;
+	v194 += v195;
+	loc106 = v194;
+	v194 = loc106;
+	v201 = *v194.u0;
+	v194.u3 = (word32) v201;
+	loc107 = v194;
+	v194 = loc107;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc108 = v196;
+	v194 = loc108;
+	if (v194)
+	{
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc109 = v194;
+		v194 = loc109;
+		v194.u3 = *v194.u3;
+		loc110 = v194;
+		v194 = loc110;
+		v195.u0 = 0x7FFFFFFF;
+		v194 &= v195;
+		loc111 = v194;
+		v194 = loc111;
+		v195.u0 = ~0x00;
+		v194 += v195;
+		loc193 = v194;
+		v194 = loc193;
+		loc112 = v194;
+	}
+	else
+	{
+		v194.u0 = 0x0A;
+		loc112 = v194;
+	}
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194.u0 = 0x017A;
+	v195 = loc24;
+	v197 = loc112;
+	v198.u0 = 0x00;
+	invoke_viii(v194, v195, v197, v198);
+	v194.u3 = g_t140048.u3;
+	loc113 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194 = loc113;
+	v195.u0 = 0x01;
+	v194 &= v195;
+	loc114 = v194;
+	v194 = loc114;
+	if (v194)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc176 = v194;
+		v194.u3 = g_t140094.u3;
+		loc177 = v194;
+		v194 = loc176;
+		loc13 = v194;
+		v194 = loc177;
+		loc15 = v194;
+		goto l000F3B43;
+	}
+	v194 = loc106;
+	v202.u3 = *v194.u3;
+	v194.u3 = (word32) v202;
+	loc115 = v194;
+	v194 = loc115;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc116 = v196;
+	v194 = loc24;
+	v194.u3 = *v194.u3;
+	loc117 = v194;
+	v194 = loc116;
+	if (v194)
+		v194 = loc117;
+	else
+		v194 = loc24;
+	while (true)
+	{
+		loc118 = v194;
+		v194 = loc35;
+		v195 = loc118;
+		*v194.u3 = (word32) v195;
+		v194 = loc57;
+		v195 = loc46;
+		*v194.u3 = (word32) v195;
+		v194 = loc67;
+		v195.u0 = 0x00;
+		*v194.u3 = (word32) v195;
+		v194 = loc78;
+		v195.u0 = 0x01;
+		v203 = (byte) v195;
+		v194.u4->t0000.u0 = (bool) v203;
+		v194 = loc89;
+		v195.u0 = 0x45;
+		v204 = (byte) v195;
+		v194.u4->t0000.u0 = (bool) v204;
+		v194 = loc24;
+		v195.u0 = 0x04;
+		v194 += v195;
+		loc119 = v194;
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc120 = v194;
+		v194 = arg1;
+		v194.u3 = *v194.u3;
+		loc17 = v194;
+		v194 = loc118;
+		loc12 = v194;
+		v194 = loc17;
+		loc19 = v194;
+		v194 = loc19;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc121 = v196;
+		v194 = loc121;
+		if (v194)
+		{
+			v194.u0 = 0x00;
+			loc18 = v194;
+			v194.u0 = 0x01;
+			loc102 = v194;
+		}
+		else
+		{
+			v194 = loc19;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc122 = v194;
+			v194 = loc122;
+			v194 = *v194.u0;
+			loc123 = v194;
+			v194 = loc19;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc124 = v194;
+			v194 = loc124;
+			v194 = *v194.u0;
+			loc125 = v194;
+			v194 = loc123;
+			v195 = loc125;
+			v196 = v194 == v195;
+			loc126 = v196;
+			v194 = loc126;
+			if (v194)
+			{
+				v194 = loc19;
+				v194 = *v194.u0;
+				loc127 = v194;
+				v194 = loc127;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc128 = v194;
+				v194 = loc128;
+				v194 = *v194.u0;
+				loc129 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc129;
+				v195 = loc19;
+				v194 = invoke_ii(v194, v195);
+				loc130 = v194;
+				v194.u3 = g_t140048.u3;
+				loc131 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc131;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc132 = v194;
+				v194 = loc132;
+				if (v194)
+				{
+					v194.u0 = 0x1D;
+					loc195 = v194;
+					goto l000F3855;
+				}
+				v194 = loc130;
+				loc8 = v194;
+			}
+			else
+			{
+				v194 = loc123;
+				v194 = *v194.u0;
+				loc133 = v194;
+				v194 = loc133;
+				loc8 = v194;
+			}
+			v194 = loc8;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc134 = v196;
+			v194 = loc134;
+			if (v194)
+			{
+				v194 = arg1;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x00;
+				loc18 = v194;
+				v194.u0 = 0x01;
+				loc102 = v194;
+			}
+			else
+			{
+				v194 = loc19;
+				loc18 = v194;
+				v194.u0 = 0x00;
+				loc102 = v194;
+			}
+		}
+		v194 = arg2;
+		v194 = *v194.u0;
+		loc135 = v194;
+		v194 = loc135;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc136 = v196;
+		v194 = loc136;
+		if (v194)
+		{
+			v194.u0 = 0x14;
+			loc195 = v194;
+		}
+		else
+		{
+			v194 = loc135;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc137 = v194;
+			v194 = loc137;
+			v194 = *v194.u0;
+			loc138 = v194;
+			v194 = loc135;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc139 = v194;
+			v194 = loc139;
+			v194 = *v194.u0;
+			loc140 = v194;
+			v194 = loc138;
+			v195 = loc140;
+			v196 = v194 == v195;
+			loc141 = v196;
+			v194 = loc141;
+			if (v194)
+			{
+				v194 = loc135;
+				v194 = *v194.u0;
+				loc142 = v194;
+				v194 = loc142;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc143 = v194;
+				v194 = loc143;
+				v194 = *v194.u0;
+				loc144 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc144;
+				v195 = loc135;
+				v194 = invoke_ii(v194, v195);
+				loc145 = v194;
+				v194.u3 = g_t140048.u3;
+				loc146 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc146;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc148 = v194;
+				v194 = loc148;
+				if (v194)
+				{
+					v194.u0 = 0x1D;
+					loc195 = v194;
+					goto l000F3855;
+				}
+				v194 = loc145;
+				loc10 = v194;
+			}
+			else
+			{
+				v194 = loc138;
+				v194 = *v194.u0;
+				loc149 = v194;
+				v194 = loc149;
+				loc10 = v194;
+			}
+			v194 = loc10;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc150 = v196;
+			v194 = loc150;
+			if (v194)
+			{
+				v194 = arg2;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x14;
+				loc195 = v194;
+			}
+			else
+			{
+				v194 = loc102;
+				if (!v194)
+				{
+					v194 = loc12;
+					loc16 = v194;
+					v194 = loc135;
+					loc20 = v194;
+					v194.u0 = 0x27;
+					loc195 = v194;
+					goto l000F3855;
+				}
+				v194 = loc135;
+				loc103 = v194;
+			}
+		}
+		v194 = loc195;
+		v195.u0 = 0x14;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194.u0 = 0x00;
+			loc195 = v194;
+			v194 = loc102;
+			if (v194)
+			{
+				v194 = loc12;
+				loc16 = v194;
+				v194.u0 = 0x00;
+				loc20 = v194;
+				v194.u0 = 0x27;
+				loc195 = v194;
+				goto l000F3855;
+			}
+			v194.u0 = 0x00;
+			loc103 = v194;
+		}
+		v194 = loc35;
+		v194 = *v194.u0;
+		loc151 = v194;
+		v194 = loc106;
+		v205 = *v194.u0;
+		v194.u3 = (word32) v205;
+		loc152 = v194;
+		v194 = loc152;
+		v195.u0 = 0x18;
+		v194 <<= v195;
+		v195.u0 = 0x18;
+		v194 >>= v195;
+		v195.u0 = 0x00;
+		v196 = v194 < v195;
+		loc153 = v196;
+		v194 = loc119;
+		v194.u3 = *v194.u3;
+		loc154 = v194;
+		v194 = loc152;
+		v195.u0 = 0xFF;
+		v194 &= v195;
+		loc155 = v194;
+		v194 = loc153;
+		if (v194)
+			v194 = loc154;
+		else
+			v194 = loc155;
+		loc156 = v194;
+		v194 = loc12;
+		v195 = loc156;
+		v194 += v195;
+		loc157 = v194;
+		v194 = loc151;
+		v195 = loc157;
+		v196 = v194 == v195;
+		loc159 = v196;
+		v194 = loc159;
+		if (v194)
+		{
+			v194 = loc156;
+			v195.u0 = 0x01;
+			v194 <<= v195;
+			loc160 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194.u0 = 0x017A;
+			v195 = loc24;
+			v197 = loc160;
+			v198.u0 = 0x00;
+			invoke_viii(v194, v195, v197, v198);
+			v194.u3 = g_t140048.u3;
+			loc161 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc161;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc162 = v194;
+			v194 = loc162;
+			if (v194)
+			{
+				v194.u0 = 0x1F;
+				loc195 = v194;
+				goto l000F3855;
+			}
+			v194 = loc106;
+			v206 = *v194.u0;
+			v194.u3 = (word32) v206;
+			loc163 = v194;
+			v194 = loc163;
+			v195.u0 = 0x18;
+			v194 <<= v195;
+			v195.u0 = 0x18;
+			v194 >>= v195;
+			v195.u0 = 0x00;
+			v196 = v194 < v195;
+			loc164 = v196;
+			v194 = loc164;
+			if (v194)
+			{
+				v194 = loc120;
+				v194.u3 = *v194.u3;
+				loc165 = v194;
+				v194 = loc165;
+				v195.u0 = 0x7FFFFFFF;
+				v194 &= v195;
+				loc166 = v194;
+				v194 = loc166;
+				v195.u0 = ~0x00;
+				v194 += v195;
+				loc194 = v194;
+				v194 = loc194;
+				loc167 = v194;
+			}
+			else
+			{
+				v194.u0 = 0x0A;
+				loc167 = v194;
+			}
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194.u0 = 0x017A;
+			v195 = loc24;
+			v197 = loc167;
+			v198.u0 = 0x00;
+			invoke_viii(v194, v195, v197, v198);
+			v194.u3 = g_t140048.u3;
+			loc168 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc168;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc170 = v194;
+			v194 = loc170;
+			if (v194)
+			{
+				v194.u0 = 0x1F;
+				loc195 = v194;
+				goto l000F3855;
+			}
+			v194 = loc106;
+			v207 = *v194.u0;
+			v194.u3 = (word32) v207;
+			loc171 = v194;
+			v194 = loc171;
+			v195.u0 = 0x18;
+			v194 <<= v195;
+			v195.u0 = 0x18;
+			v194 >>= v195;
+			v195.u0 = 0x00;
+			v196 = v194 < v195;
+			loc172 = v196;
+			v194 = loc24;
+			v194.u3 = *v194.u3;
+			loc173 = v194;
+			v194 = loc172;
+			if (v194)
+				v194 = loc173;
+			else
+				v194 = loc24;
+			loc174 = v194;
+			v194 = loc174;
+			v195 = loc156;
+			v194 += v195;
+			loc175 = v194;
+			v194 = loc35;
+			v195 = loc175;
+			*v194.u3 = (word32) v195;
+			v194 = loc174;
+			loc14 = v194;
+		}
+		else
+		{
+			v194 = loc12;
+			loc14 = v194;
+		}
+		v194 = loc18;
+		v195.u0 = 0x0C;
+		v194 += v195;
+		loc185 = v194;
+		v194 = loc185;
+		v194.u3 = *v194.u3;
+		loc186 = v194;
+		v194 = loc18;
+		v195.u0 = 0x10;
+		v194 += v195;
+		loc187 = v194;
+		v194 = loc187;
+		v194.u3 = *v194.u3;
+		loc188 = v194;
+		v194 = loc186;
+		v195 = loc188;
+		v196 = v194 == v195;
+		loc189 = v196;
+		v194 = loc189;
+		if (v194)
+		{
+			v194 = loc18;
+			v194.u3 = *v194.u3;
+			loc190 = v194;
+			v194 = loc190;
+			v195.u0 = 0x24;
+			v194 += v195;
+			loc25 = v194;
+			v194 = loc25;
+			v194.u3 = *v194.u3;
+			loc26 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc26;
+			v195 = loc18;
+			v194 = invoke_ii(v194, v195);
+			loc27 = v194;
+			v194.u3 = g_t140048.u3;
+			loc28 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc28;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc29 = v194;
+			v194 = loc29;
+			if (v194)
+			{
+				v194.u0 = 0x1D;
+				loc195 = v194;
+				goto l000F3855;
+			}
+			v194 = loc27;
+			loc11 = v194;
+		}
+		else
+		{
+			v194 = loc186;
+			v194 = *v194.u0;
+			loc30 = v194;
+			v194 = loc30;
+			loc11 = v194;
+		}
+		v194 = loc158;
+		v194 = *v194.u0;
+		loc31 = v194;
+		v194 = loc169;
+		v194 = *v194.u0;
+		loc32 = v194;
+		v194 = loc11;
+		v195 = loc78;
+		v197 = loc89;
+		v198 = loc14;
+		v199 = loc35;
+		v208 = loc31;
+		v209 = loc32;
+		v210 = loc180;
+		v211 = loc46;
+		v212 = loc57;
+		v213 = loc67;
+		v214 = loc147;
+		v194 = fn000F3D09(v194, v195, v197, v198, v199, v208, v209, v210, v211, v212, v213, v214);
+		loc33 = v194;
+		v194 = loc33;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc34 = v196;
+		v194 = loc34;
+		v196 = v194 == 0x00;
+		if (v196)
+			break;
+		v194 = loc185;
+		v194 = *v194.u0;
+		loc36 = v194;
+		v194 = loc187;
+		v194 = *v194.u0;
+		loc37 = v194;
+		v194 = loc36;
+		v195 = loc37;
+		v196 = v194 == v195;
+		loc38 = v196;
+		v194 = loc38;
+		if (!v194)
+		{
+			v194 = loc36;
+			v195.u0 = 0x04;
+			v194 += v195;
+			loc44 = v194;
+			v194 = loc185;
+			v195 = loc44;
+			*v194.u0 = v195;
+			v194 = loc14;
+			loc12 = v194;
+			v194 = loc18;
+			loc19 = v194;
+			continue;
+		}
+		v194 = loc18;
+		v194 = *v194.u0;
+		loc39 = v194;
+		v194 = loc39;
+		v195.u0 = 0x28;
+		v194 += v195;
+		loc40 = v194;
+		v194 = loc40;
+		v194 = *v194.u0;
+		loc41 = v194;
+		v194.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v194;
+		v194 = loc41;
+		v195 = loc18;
+		v194 = invoke_ii(v194, v195);
+		v194.u3 = g_t140048.u3;
+		loc42 = v194;
+		v194.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v194;
+		v194 = loc42;
+		v195.u0 = 0x01;
+		v194 &= v195;
+		loc43 = v194;
+		v194 = loc43;
+		if (v194)
+		{
+			v194.u0 = 0x1D;
+			loc195 = v194;
+			goto l000F3855;
+		}
+		v194 = loc14;
+		loc12 = v194;
+		v194 = loc18;
+		loc19 = v194;
+	}
+	v194 = loc14;
+	loc16 = v194;
+	v194 = loc103;
+	loc20 = v194;
+	v194.u0 = 0x27;
+	loc195 = v194;
+l000F3855:
+	v194 = loc195;
+	v195.u0 = 0x1D;
+	v196 = v194 == v195;
+	if (v196)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc178 = v194;
+		v194.u3 = g_t140094.u3;
+		loc179 = v194;
+		v194 = loc178;
+		loc21 = v194;
+		v194 = loc179;
+		loc22 = v194;
+		goto l000F3B3A;
+	}
+	v194 = loc195;
+	v195.u0 = 0x1F;
+	v196 = v194 == v195;
+	if (v196)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc183 = v194;
+		v194.u3 = g_t140094.u3;
+		loc184 = v194;
+		v194 = loc183;
+		loc21 = v194;
+		v194 = loc184;
+		loc22 = v194;
+		goto l000F3B39;
+	}
+	v194 = loc195;
+	v195.u0 = 0x27;
+	v196 = v194 == v195;
+	if (!v196)
+	{
+l000F3B3A:
+		v194 = loc21;
+		loc13 = v194;
+		v194 = loc22;
+		loc15 = v194;
+l000F3B43:
+		v194 = loc24;
+		fn0011BAF7(v194);
+		v194 = loc180;
+		fn0011BAF7(v194);
+		v194 = loc13;
+		___resumeException(v194);
+		v194.u0 = 0x00;
+		return v194;
+	}
+	v194 = loc180;
+	v195.u0 = 11;
+	v194 += v195;
+	loc45 = v194;
+	v194 = loc45;
+	v215.u3 = *v194.u3;
+	v194.u3 = (word32) v215;
+	loc47 = v194;
+	v194 = loc47;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc48 = v196;
+	v194 = loc180;
+	v195.u0 = 0x04;
+	v194 += v195;
+	loc49 = v194;
+	v194 = loc49;
+	v194.u3 = *v194.u3;
+	loc50 = v194;
+	v194 = loc47;
+	v195.u0 = 0xFF;
+	v194 &= v195;
+	loc51 = v194;
+	v194 = loc48;
+	if (v194)
+		v194 = loc50;
+	else
+		v194 = loc51;
+	loc52 = v194;
+	v194 = loc52;
+	v195.u0 = 0x00;
+	v196 = v194 == v195;
+	loc53 = v196;
+	v194 = loc78;
+	v216.u1 = v194.u4->t0000.u1;
+	v194.u3 = (word32) v216;
+	loc54 = v194;
+	v194 = loc54;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 == v195;
+	loc55 = v196;
+	v194 = loc53;
+	v195 = loc55;
+	v194 |= v195;
+	loc192 = v194;
+	v194 = loc192;
+	v196 = v194 == 0x00;
+	if (v196)
+	{
+		v194 = loc57;
+		v194.u3 = *v194.u3;
+		loc56 = v194;
+		v194 = loc56;
+		loc58 = v194;
+		v194 = loc46;
+		loc59 = v194;
+		v194 = loc58;
+		v195 = loc59;
+		v194 -= v195;
+		loc60 = v194;
+		v194 = loc60;
+		v195.u0 = 0xA0;
+		v196 = v194 < v195;
+		loc61 = v196;
+		v194 = loc61;
+		if (v194)
+		{
+			v194 = loc67;
+			v194.u3 = *v194.u3;
+			loc62 = v194;
+			v194 = loc56;
+			v195.u0 = 0x04;
+			v194 += v195;
+			loc63 = v194;
+			v194 = loc57;
+			v195 = loc63;
+			*v194.u3 = (word32) v195;
+			v194 = loc56;
+			v195 = loc62;
+			*v194.u3 = (word32) v195;
+		}
+	}
+	v194 = loc35;
+	v194.u3 = *v194.u3;
+	loc64 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194.u0 = 0x0181;
+	v195 = loc16;
+	v197 = loc64;
+	v198 = arg4;
+	v217 = invoke_diii(v194, v195, v197, v198);
+	loc197 = v217;
+	v194.u3 = g_t140048.u3;
+	loc65 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194 = loc65;
+	v195.u0 = 0x01;
+	v194 &= v195;
+	loc66 = v194;
+	v194 = loc66;
+	v196 = v194 == 0x00;
+	if (!v196)
+	{
+l000F3B23:
+		v194 = ___cxa_find_matching_catch_n();
+		loc181 = v194;
+		v194.u3 = g_t140094.u3;
+		loc182 = v194;
+		v194 = loc181;
+		loc21 = v194;
+		v194 = loc182;
+		loc22 = v194;
+		goto l000F3B39;
+	}
+	else
+	{
+		v194 = arg5;
+		v218 = loc197;
+		*v194.u0 = v218;
+		v194 = loc57;
+		v194 = *v194.u0;
+		loc68 = v194;
+		v194 = loc180;
+		v195 = loc46;
+		v197 = loc68;
+		v198 = arg4;
+		fn000EC01D(v194, v195, v197, v198);
+		v194 = loc18;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc69 = v196;
+		v194 = loc69;
+		if (v194)
+		{
+			v194.u0 = 0x01;
+			loc104 = v194;
+		}
+		else
+		{
+			v194 = loc18;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc70 = v194;
+			v194 = loc70;
+			v194 = *v194.u0;
+			loc71 = v194;
+			v194 = loc18;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc72 = v194;
+			v194 = loc72;
+			v194 = *v194.u0;
+			loc73 = v194;
+			v194 = loc71;
+			v195 = loc73;
+			v196 = v194 == v195;
+			loc74 = v196;
+			v194 = loc74;
+			if (v194)
+			{
+				v194 = loc18;
+				v194 = *v194.u0;
+				loc75 = v194;
+				v194 = loc75;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc76 = v194;
+				v194 = loc76;
+				v194 = *v194.u0;
+				loc77 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc77;
+				v195 = loc18;
+				v194 = invoke_ii(v194, v195);
+				loc79 = v194;
+				v194.u3 = g_t140048.u3;
+				loc80 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc80;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc81 = v194;
+				v194 = loc81;
+				if (v194)
+					goto l000F3B23;
+				v194 = loc79;
+				loc7 = v194;
+			}
+			else
+			{
+				v194 = loc71;
+				v194 = *v194.u0;
+				loc82 = v194;
+				v194 = loc82;
+				loc7 = v194;
+			}
+			v194 = loc7;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc83 = v196;
+			v194 = loc83;
+			if (v194)
+			{
+				v194 = arg1;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x01;
+				loc104 = v194;
+			}
+			else
+			{
+				v194.u0 = 0x00;
+				loc104 = v194;
+			}
+		}
+		v194 = loc20;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc84 = v196;
+		v194 = loc84;
+		if (v194)
+		{
+			v194.u0 = 55;
+			loc195 = v194;
+			goto l000F3AD6;
+		}
+		v194 = loc20;
+		v195.u0 = 0x0C;
+		v194 += v195;
+		loc85 = v194;
+		v194 = loc85;
+		v194 = *v194.u0;
+		loc86 = v194;
+		v194 = loc20;
+		v195.u0 = 0x10;
+		v194 += v195;
+		loc87 = v194;
+		v194 = loc87;
+		v194 = *v194.u0;
+		loc88 = v194;
+		v194 = loc86;
+		v195 = loc88;
+		v196 = v194 == v195;
+		loc90 = v196;
+		v194 = loc90;
+		if (v194)
+		{
+			v194 = loc20;
+			v194 = *v194.u0;
+			loc91 = v194;
+			v194 = loc91;
+			v195.u0 = 0x24;
+			v194 += v195;
+			loc92 = v194;
+			v194 = loc92;
+			v194 = *v194.u0;
+			loc93 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc93;
+			v195 = loc20;
+			v194 = invoke_ii(v194, v195);
+			loc94 = v194;
+			v194.u3 = g_t140048.u3;
+			loc95 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc95;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc96 = v194;
+			v194 = loc96;
+			if (v194)
+				goto l000F3B23;
+			v194 = loc94;
+			loc9 = v194;
+		}
+		else
+		{
+			v194 = loc86;
+			v194 = *v194.u0;
+			loc97 = v194;
+			v194 = loc97;
+			loc9 = v194;
+		}
+		v194 = loc9;
+		v195.u0 = ~0x00;
+		v196 = v194 == v195;
+		loc98 = v196;
+		v194 = loc98;
+		if (v194)
+		{
+			v194 = arg2;
+			v195.u0 = 0x00;
+			*v194.u0 = v195;
+			v194.u0 = 55;
+			loc195 = v194;
+		}
+		else
+		{
+			v194 = loc104;
+			if (!v194)
+			{
+				v194.u0 = 0x39;
+				loc195 = v194;
+			}
+		}
+l000F3AD6:
+		v194 = loc195;
+		v195.u0 = 55;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194 = loc104;
+			if (v194)
+			{
+				v194.u0 = 0x39;
+				loc195 = v194;
+			}
+		}
+		v194 = loc195;
+		v195.u0 = 0x39;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194 = arg4;
+			v194 = *v194.u0;
+			loc99 = v194;
+			v194 = loc99;
+			v195.u0 = 0x02;
+			v194 |= v195;
+			loc101 = v194;
+			v194 = arg4;
+			v195 = loc101;
+			*v194.u0 = v195;
+		}
+		v194 = arg1;
+		v194 = *v194.u0;
+		loc23 = v194;
+		v194 = loc24;
+		fn0011BAF7(v194);
+		v194 = loc180;
+		fn0011BAF7(v194);
+		v194 = loc196;
+		g_t140030.u3 = (word32 *) v194;
+		v194 = loc23;
+		return v194;
+	}
 }
 
 // 000F3B58: void fn000F3B58(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void fn000F3B58(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v40.u3 = g_t140030.u3;
+	loc42 = v40;
+	v40.u3 = g_t140030.u3;
+	v41.u0 = 0x10;
+	v40 += v41;
+	g_t140030.u3 = (word32 *) v40;
+	v40.u3 = g_t140030.u3;
+	v41.u3 = g_t140034.u3;
+	v42 = v40 >= v41;
+	if (v42)
+	{
+		v40.u0 = 0x10;
+		abortStackOverflow(v40);
+	}
+	v40 = loc42;
+	loc36 = v40;
+	v40 = arg1;
+	v40 = fn000E64CA(v40);
+	loc37 = v40;
+	v40 = loc36;
+	v41 = loc37;
+	*v40.u0 = v41;
+	v40.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v40;
+	v40.u0 = 0x0164;
+	v41 = loc36;
+	v43.u0 = 0x4C90;
+	v40 = invoke_iii(v40, v41, v43);
+	loc38 = v40;
+	v40.u3 = g_t140048.u3;
+	loc39 = v40;
+	v40.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v40;
+	v40 = loc39;
+	v41.u0 = 0x01;
+	v40 &= v41;
+	loc40 = v40;
+	v40 = loc40;
+	if (v40)
+	{
+		v40.u0 = 0x08;
+		loc41 = v40;
+	}
+	else
+	{
+		v40 = loc38;
+		v40 = *v40.u0;
+		loc7 = v40;
+		v40 = loc7;
+		v41.u0 = 0x30;
+		v40 += v41;
+		loc8 = v40;
+		v40 = loc8;
+		v40 = *v40.u0;
+		loc9 = v40;
+		v40.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v40;
+		v40 = loc9;
+		v41 = loc38;
+		v43.u0 = 14251;
+		v44 = 0x37CB;
+		v45 = arg2;
+		v40 = invoke_iiiii(v40, v41, v43, v44, v45);
+		v40.u3 = g_t140048.u3;
+		loc10 = v40;
+		v40.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v40;
+		v40 = loc10;
+		v41.u0 = 0x01;
+		v40 &= v41;
+		loc11 = v40;
+		v40 = loc11;
+		if (v40)
+		{
+			v40.u0 = 0x08;
+			loc41 = v40;
+		}
+		else
+		{
+			v40.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v40;
+			v40.u0 = 0x0164;
+			v41 = loc36;
+			v43.u0 = 0x4C98;
+			v40 = invoke_iii(v40, v41, v43);
+			loc12 = v40;
+			v40.u3 = g_t140048.u3;
+			loc13 = v40;
+			v40.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v40;
+			v40 = loc13;
+			v41.u0 = 0x01;
+			v40 &= v41;
+			loc14 = v40;
+			v40 = loc14;
+			if (v40)
+			{
+				v40.u0 = 0x08;
+				loc41 = v40;
+			}
+			else
+			{
+				v40 = loc12;
+				v40 = *v40.u0;
+				loc15 = v40;
+				v40 = loc15;
+				v41.u0 = 0x0C;
+				v40 += v41;
+				loc16 = v40;
+				v40 = loc16;
+				v40 = *v40.u0;
+				loc17 = v40;
+				v40.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v40;
+				v40 = loc17;
+				v41 = loc12;
+				v40 = invoke_ii(v40, v41);
+				loc18 = v40;
+				v40.u3 = g_t140048.u3;
+				loc19 = v40;
+				v40.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v40;
+				v40 = loc19;
+				v41.u0 = 0x01;
+				v40 &= v41;
+				loc20 = v40;
+				v40 = loc20;
+				v42 = v40 == 0x00;
+				if (v42)
+				{
+					v40 = arg3;
+					v41 = loc18;
+					*v40.u0 = v41;
+					v40 = loc12;
+					v40 = *v40.u0;
+					loc21 = v40;
+					v40 = loc21;
+					v41.u0 = 0x10;
+					v40 += v41;
+					loc22 = v40;
+					v40 = loc22;
+					v40 = *v40.u0;
+					loc23 = v40;
+					v40.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v40;
+					v40 = loc23;
+					v41 = loc12;
+					v40 = invoke_ii(v40, v41);
+					loc24 = v40;
+					v40.u3 = g_t140048.u3;
+					loc25 = v40;
+					v40.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v40;
+					v40 = loc25;
+					v41.u0 = 0x01;
+					v40 &= v41;
+					loc26 = v40;
+					v40 = loc26;
+					v42 = v40 == 0x00;
+					if (v42)
+					{
+						v40 = arg4;
+						v41 = loc24;
+						*v40.u0 = v41;
+						v40 = loc12;
+						v40 = *v40.u0;
+						loc27 = v40;
+						v40 = loc27;
+						v41.u0 = 0x14;
+						v40 += v41;
+						loc28 = v40;
+						v40 = loc28;
+						v40 = *v40.u0;
+						loc29 = v40;
+						v40.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v40;
+						v40 = loc29;
+						v41 = arg0;
+						v43 = loc12;
+						invoke_vii(v40, v41, v43);
+						v40.u3 = g_t140048.u3;
+						loc30 = v40;
+						v40.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v40;
+						v40 = loc30;
+						v41.u0 = 0x01;
+						v40 &= v41;
+						loc31 = v40;
+						v40 = loc31;
+						v42 = v40 == 0x00;
+						if (v42)
+						{
+							v40 = loc37;
+							v40 = fn0011B43F(v40);
+							v40 = loc42;
+							g_t140030.u3 = (word32 *) v40;
+							return;
+						}
+					}
+				}
+				v40 = ___cxa_find_matching_catch_n();
+				loc34 = v40;
+				v40.u3 = g_t140094.u3;
+				loc35 = v40;
+				v40 = loc34;
+				loc5 = v40;
+				v40 = loc35;
+				loc6 = v40;
+			}
+		}
+	}
+	v40 = loc41;
+	v41.u0 = 0x08;
+	v42 = v40 == v41;
+	if (v42)
+	{
+		v40 = ___cxa_find_matching_catch_n();
+		loc32 = v40;
+		v40.u3 = g_t140094.u3;
+		loc33 = v40;
+		v40 = loc32;
+		loc5 = v40;
+		v40 = loc33;
+		loc6 = v40;
+	}
+	v40 = loc37;
+	v40 = fn0011B43F(v40);
+	v40 = loc5;
+	___resumeException(v40);
 }
 
 // 000F3D09: Stack Eq_n fn000F3D09(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10, Stack Eq_n arg11)
 Eq_n fn000F3D09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10, Eq_n arg11)
 {
+	v98.u3 = g_t140030.u3;
+	loc107 = v98;
+	v98 = arg0;
+	v99 = arg5;
+	v100 = v98 == v99;
+	loc18 = v100;
+	v98 = loc18;
+	if (v98)
+	{
+		v98 = arg1;
+		v101.u3 = *v98.u3;
+		v98.u3 = (word32) v101;
+		loc19 = v98;
+		v98 = loc19;
+		v99.u0 = 0x18;
+		v98 <<= v99;
+		v99.u0 = 0x18;
+		v98 >>= v99;
+		v99.u0 = 0x00;
+		v100 = v98 == v99;
+		loc20 = v100;
+		v98 = loc20;
+		if (v98)
+		{
+			v98.u0 = ~0x00;
+			loc16 = v98;
+		}
+		else
+		{
+			v98 = arg1;
+			v99.u0 = 0x00;
+			v102 = (byte) v99;
+			*v98.u0 = v102;
+			v98 = arg4;
+			v98 = *v98.u0;
+			loc21 = v98;
+			v98 = loc21;
+			v99.u0 = 0x01;
+			v98 += v99;
+			loc22 = v98;
+			v98 = arg4;
+			v99 = loc22;
+			*v98.u0 = v99;
+			v98 = loc21;
+			v99.u0 = 0x2E;
+			v103 = (byte) v99;
+			*v98.u0 = v103;
+			v98 = arg7;
+			v99.u0 = 11;
+			v98 += v99;
+			loc23 = v98;
+			v98 = loc23;
+			v104 = *v98.u0;
+			v98.u3 = (word32) v104;
+			loc24 = v98;
+			v98 = loc24;
+			v99.u0 = 0x18;
+			v98 <<= v99;
+			v99.u0 = 0x18;
+			v98 >>= v99;
+			v99.u0 = 0x00;
+			v100 = v98 < v99;
+			loc25 = v100;
+			v98 = arg7;
+			v99.u0 = 0x04;
+			v98 += v99;
+			loc26 = v98;
+			v98 = loc26;
+			v98.u3 = *v98.u3;
+			loc27 = v98;
+			v98 = loc24;
+			v99.u0 = 0xFF;
+			v98 &= v99;
+			loc28 = v98;
+			v98 = loc25;
+			if (v98)
+				v98 = loc27;
+			else
+				v98 = loc28;
+			loc29 = v98;
+			v98 = loc29;
+			v99.u0 = 0x00;
+			v100 = v98 == v99;
+			loc30 = v100;
+			v98 = loc30;
+			if (v98)
+			{
+				v98.u0 = 0x00;
+				loc16 = v98;
+			}
+			else
+			{
+				v98 = arg9;
+				v98 = *v98.u0;
+				loc31 = v98;
+				v98 = loc31;
+				loc32 = v98;
+				v98 = arg8;
+				loc33 = v98;
+				v98 = loc32;
+				v99 = loc33;
+				v98 -= v99;
+				loc34 = v98;
+				v98 = loc34;
+				v99.u0 = 0xA0;
+				v100 = v98 < v99;
+				loc35 = v100;
+				v98 = loc35;
+				if (v98)
+				{
+					v98 = arg10;
+					v98 = *v98.u0;
+					loc36 = v98;
+					v98 = loc31;
+					v99.u0 = 0x04;
+					v98 += v99;
+					loc37 = v98;
+					v98 = arg9;
+					v99 = loc37;
+					*v98.u0 = v99;
+					v98 = loc31;
+					v99 = loc36;
+					*v98.u0 = v99;
+					v98.u0 = 0x00;
+					loc16 = v98;
+				}
+				else
+				{
+					v98.u0 = 0x00;
+					loc16 = v98;
+				}
+			}
+		}
+		goto l000F412A;
+	}
+	v98 = arg0;
+	v99 = arg6;
+	v100 = v98 == v99;
+	loc38 = v100;
+	v98 = loc38;
+	if (v98)
+	{
+		v98 = arg7;
+		v99.u0 = 11;
+		v98 += v99;
+		loc39 = v98;
+		v98 = loc39;
+		v105 = *v98.u0;
+		v98.u3 = (word32) v105;
+		loc40 = v98;
+		v98 = loc40;
+		v99.u0 = 0x18;
+		v98 <<= v99;
+		v99.u0 = 0x18;
+		v98 >>= v99;
+		v99.u0 = 0x00;
+		v100 = v98 < v99;
+		loc41 = v100;
+		v98 = arg7;
+		v99.u0 = 0x04;
+		v98 += v99;
+		loc42 = v98;
+		v98 = loc42;
+		v98.u3 = *v98.u3;
+		loc43 = v98;
+		v98 = loc40;
+		v99.u0 = 0xFF;
+		v98 &= v99;
+		loc44 = v98;
+		v98 = loc41;
+		if (v98)
+			v98 = loc43;
+		else
+			v98 = loc44;
+		loc45 = v98;
+		v98 = loc45;
+		v99.u0 = 0x00;
+		v100 = v98 == v99;
+		loc46 = v100;
+		v98 = loc46;
+		v100 = v98 == 0x00;
+		if (v100)
+		{
+			v98 = arg1;
+			v106.u1 = v98.u4->t0000.u1;
+			v98.u3 = (word32) v106;
+			loc47 = v98;
+			v98 = loc47;
+			v99.u0 = 0x18;
+			v98 <<= v99;
+			v99.u0 = 0x18;
+			v98 >>= v99;
+			v99.u0 = 0x00;
+			v100 = v98 == v99;
+			loc48 = v100;
+			v98 = loc48;
+			if (v98)
+			{
+				v98.u0 = ~0x00;
+				loc16 = v98;
+			}
+			else
+			{
+				v98 = arg9;
+				v98 = *v98.u0;
+				loc49 = v98;
+				v98 = loc49;
+				loc50 = v98;
+				v98 = arg8;
+				loc51 = v98;
+				v98 = loc50;
+				v99 = loc51;
+				v98 -= v99;
+				loc52 = v98;
+				v98 = loc52;
+				v99.u0 = 0xA0;
+				v100 = v98 < v99;
+				loc53 = v100;
+				v98 = loc53;
+				v100 = v98 == 0x00;
+				if (v100)
+				{
+					v98.u0 = 0x00;
+					loc16 = v98;
+				}
+				else
+				{
+					v98 = arg10;
+					v98 = *v98.u0;
+					loc54 = v98;
+					v98 = loc49;
+					v99.u0 = 0x04;
+					v98 += v99;
+					loc55 = v98;
+					v98 = arg9;
+					v99 = loc55;
+					*v98.u0 = v99;
+					v98 = loc49;
+					v99 = loc54;
+					*v98.u0 = v99;
+					v98 = arg10;
+					v99.u0 = 0x00;
+					*v98.u0 = v99;
+					v98.u0 = 0x00;
+					loc16 = v98;
+				}
+			}
+			goto l000F412B;
+		}
+	}
+	while (true)
+	{
+		v98 = arg11;
+		v99.u0 = 0x80;
+		v98 += v99;
+		loc56 = v98;
+		v98.u0 = 0x00;
+		loc13 = v98;
+		v98 = arg11;
+		v99 = loc13;
+		v107 = 0x02;
+		v99 <<= v107;
+		v98 += v99;
+		loc14 = v98;
+		v98 = loc13;
+		v99.u0 = 0x20;
+		v100 = v98 == v99;
+		loc57 = v100;
+		v98 = loc57;
+		if (v98)
+			break;
+		v98 = loc14;
+		v98 = *v98.u0;
+		loc58 = v98;
+		v98 = loc58;
+		v99 = arg0;
+		v100 = v98 == v99;
+		loc59 = v100;
+		v98 = loc13;
+		v99.u0 = 0x01;
+		v98 += v99;
+		loc12 = v98;
+		v98 = loc59;
+		if (v98)
+		{
+			v98 = loc14;
+			loc15 = v98;
+			goto l000F3F0F;
+		}
+		v98 = loc12;
+		loc13 = v98;
+	}
+	v98 = loc56;
+	loc15 = v98;
+l000F3F0F:
+	v98 = loc15;
+	loc60 = v98;
+	v98 = arg11;
+	loc61 = v98;
+	v98 = loc60;
+	v99 = loc61;
+	v98 -= v99;
+	loc62 = v98;
+	v98 = loc62;
+	v99.u0 = 0x02;
+	v98 >>= v99;
+	loc63 = v98;
+	v98 = loc62;
+	v99.u0 = 0x7C;
+	v100 = v98 > v99;
+	loc64 = v100;
+	v98 = loc64;
+	if (v98)
+	{
+		v98.u0 = ~0x00;
+		loc16 = v98;
+l000F4129:
+l000F412A:
+		goto l000F412B;
+	}
+	v98.u0 = 14251;
+	v99 = loc63;
+	v98 += v99;
+	loc65 = v98;
+	v98 = loc65;
+	v108 = *v98.u0;
+	v98.u3 = (word32) v108;
+	loc66 = v98;
+	v98 = loc63;
+	v99.u0 = 22;
+	v98 -= v99;
+	switch (v98)
+	{
+	case 0x00:
+		break;
+	case 0x01:
+		break;
+	case 0x02:
+		goto l000F3FE1;
+	case 0x03:
+l000F3FE1:
+		v98 = arg2;
+		v99.u0 = 0x50;
+		v112 = (byte) v99;
+		*v98.u0 = v112;
+		v98 = arg4;
+		v98.u3 = *v98.u3;
+		loc102 = v98;
+		v98 = loc102;
+		v99.u0 = 0x01;
+		v98 += v99;
+		loc103 = v98;
+		v98 = arg4;
+		v99 = loc103;
+		*v98.u3 = (word32) v99;
+		v98 = loc102;
+		v99 = loc66;
+		v118 = (byte) v99;
+		v98.u4->t0000.u0 = (bool) v118;
+		v98 = loc62;
+		v99.u0 = 0x54;
+		v100 = v98 > v99;
+		loc104 = v100;
+		v98 = loc104;
+		if (v98)
+		{
+			v98.u0 = 0x00;
+			loc16 = v98;
+		}
+		else
+		{
+			v98 = arg10;
+			v98 = *v98.u0;
+			loc105 = v98;
+			v98 = loc105;
+			v99.u0 = 0x01;
+			v98 += v99;
+			loc17 = v98;
+			v98 = arg10;
+			v99 = loc17;
+			*v98.u0 = v99;
+			v98.u0 = 0x00;
+			loc16 = v98;
+		}
+		goto l000F4129;
+	}
+	v98 = arg4;
+	v98.u3 = *v98.u3;
+	loc67 = v98;
+	v98 = loc67;
+	v99 = arg3;
+	v100 = v98 == v99;
+	loc68 = v100;
+	v98 = loc68;
+	v100 = v98 == 0x00;
+	if (v100)
+	{
+		v98 = loc67;
+		v99.u0 = ~0x00;
+		v98 += v99;
+		loc69 = v98;
+		v98 = loc69;
+		v109.u1 = v98.u4->t0000.u1;
+		v98.u3 = (word32) v109;
+		loc70 = v98;
+		v98 = loc70;
+		v99.u0 = 0xFF;
+		v98 &= v99;
+		loc71 = v98;
+		v98 = loc71;
+		v99.u0 = 0x5F;
+		v98 &= v99;
+		loc72 = v98;
+		v98 = arg2;
+		v110.u1 = v98.u4->t0000.u1;
+		v98.u3 = (word32) v110;
+		loc73 = v98;
+		v98 = loc73;
+		v99.u0 = 0xFF;
+		v98 &= v99;
+		loc74 = v98;
+		v98 = loc74;
+		v99.u0 = 0x7F;
+		v98 &= v99;
+		loc75 = v98;
+		v98 = loc72;
+		v99 = loc75;
+		v100 = v98 == v99;
+		loc76 = v100;
+		v98 = loc76;
+		v100 = v98 == 0x00;
+		if (v100)
+		{
+			v98.u0 = ~0x00;
+			loc16 = v98;
+			goto l000F412B;
+		}
+	}
+	v98 = loc67;
+	v99.u0 = 0x01;
+	v98 += v99;
+	loc77 = v98;
+	v98 = arg4;
+	v99 = loc77;
+	*v98.u0 = v99;
+	v98 = loc67;
+	v99 = loc66;
+	v111 = (byte) v99;
+	*v98.u0 = v111;
+	v98.u0 = 0x00;
+	loc16 = v98;
+l000F412B:
+	v98 = loc16;
+	return v98;
 }
 
 // 000F4131: Stack Eq_n fn000F4131(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F4131(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v194.u3 = g_t140030.u3;
+	loc196 = v194;
+	v194.u3 = g_t140030.u3;
+	v195.u0 = 0x0160;
+	v194 += v195;
+	g_t140030.u3 = (word32 *) v194;
+	v194.u3 = g_t140030.u3;
+	v195.u3 = g_t140034.u3;
+	v196 = v194 >= v195;
+	if (v196)
+	{
+		v194.u0 = 0x0160;
+		abortStackOverflow(v194);
+	}
+	while (true)
+	{
+		v194 = loc196;
+		v195.u0 = 0xD0;
+		v194 += v195;
+		loc147 = v194;
+		v194 = loc196;
+		v195.u0 = 200;
+		v194 += v195;
+		loc158 = v194;
+		v194 = loc196;
+		v195.u0 = 0xC4;
+		v194 += v195;
+		loc169 = v194;
+		v194 = loc196;
+		v195.u0 = 0xB8;
+		v194 += v195;
+		loc180 = v194;
+		v194 = loc196;
+		v195.u0 = 0xAC;
+		v194 += v195;
+		loc24 = v194;
+		v194 = loc196;
+		v195.u0 = 0xA8;
+		v194 += v195;
+		loc35 = v194;
+		v194 = loc196;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc46 = v194;
+		v194 = loc196;
+		v195.u0 = 0x04;
+		v194 += v195;
+		loc57 = v194;
+		v194 = loc196;
+		loc67 = v194;
+		v194 = loc196;
+		v195.u0 = 0x0151;
+		v194 += v195;
+		loc78 = v194;
+		v194 = loc196;
+		v195.u0 = 336;
+		v194 += v195;
+		loc89 = v194;
+		v194 = loc180;
+		v195 = arg3;
+		v197 = loc147;
+		v198 = loc158;
+		v199 = loc169;
+		fn000F3B58(v194, v195, v197, v198, v199);
+		v194 = loc24;
+		v200.u0 = 0x00;
+		*v194.u0 = v200;
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		v195.u0 = 0x00;
+		*v194.u0 = v195;
+		v194.u0 = 0x00;
+		loc6 = v194;
+		v194 = loc6;
+		v195.u0 = 0x03;
+		v196 = v194 == v195;
+		loc191 = v196;
+		v194 = loc191;
+		if (v194)
+			break;
+		v194 = loc24;
+		v195 = loc6;
+		v197.u0 = 0x02;
+		v195 <<= v197;
+		v194 += v195;
+		loc100 = v194;
+		v194 = loc100;
+		v195.u0 = 0x00;
+		*v194.u0 = v195;
+		v194 = loc6;
+		v195.u0 = 0x01;
+		v194 += v195;
+		loc105 = v194;
+		v194 = loc105;
+		loc6 = v194;
+	}
+	v194 = loc24;
+	v195.u0 = 11;
+	v194 += v195;
+	loc106 = v194;
+	v194 = loc106;
+	v201 = *v194.u0;
+	v194.u3 = (word32) v201;
+	loc107 = v194;
+	v194 = loc107;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc108 = v196;
+	v194 = loc108;
+	if (v194)
+	{
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc109 = v194;
+		v194 = loc109;
+		v194.u3 = *v194.u3;
+		loc110 = v194;
+		v194 = loc110;
+		v195.u0 = 0x7FFFFFFF;
+		v194 &= v195;
+		loc111 = v194;
+		v194 = loc111;
+		v195.u0 = ~0x00;
+		v194 += v195;
+		loc193 = v194;
+		v194 = loc193;
+		loc112 = v194;
+	}
+	else
+	{
+		v194.u0 = 0x0A;
+		loc112 = v194;
+	}
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194.u0 = 0x017A;
+	v195 = loc24;
+	v197 = loc112;
+	v198.u0 = 0x00;
+	invoke_viii(v194, v195, v197, v198);
+	v194.u3 = g_t140048.u3;
+	loc113 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194 = loc113;
+	v195.u0 = 0x01;
+	v194 &= v195;
+	loc114 = v194;
+	v194 = loc114;
+	if (v194)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc176 = v194;
+		v194.u3 = g_t140094.u3;
+		loc177 = v194;
+		v194 = loc176;
+		loc13 = v194;
+		v194 = loc177;
+		loc15 = v194;
+		goto l000F4A50;
+	}
+	v194 = loc106;
+	v202.u3 = *v194.u3;
+	v194.u3 = (word32) v202;
+	loc115 = v194;
+	v194 = loc115;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc116 = v196;
+	v194 = loc24;
+	v194.u3 = *v194.u3;
+	loc117 = v194;
+	v194 = loc116;
+	if (v194)
+		v194 = loc117;
+	else
+		v194 = loc24;
+	while (true)
+	{
+		loc118 = v194;
+		v194 = loc35;
+		v195 = loc118;
+		*v194.u3 = (word32) v195;
+		v194 = loc57;
+		v195 = loc46;
+		*v194.u3 = (word32) v195;
+		v194 = loc67;
+		v195.u0 = 0x00;
+		*v194.u3 = (word32) v195;
+		v194 = loc78;
+		v195.u0 = 0x01;
+		v203 = (byte) v195;
+		v194.u4->t0000.u0 = (bool) v203;
+		v194 = loc89;
+		v195.u0 = 0x45;
+		v204 = (byte) v195;
+		v194.u4->t0000.u0 = (bool) v204;
+		v194 = loc24;
+		v195.u0 = 0x04;
+		v194 += v195;
+		loc119 = v194;
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc120 = v194;
+		v194 = arg1;
+		v194.u3 = *v194.u3;
+		loc17 = v194;
+		v194 = loc118;
+		loc12 = v194;
+		v194 = loc17;
+		loc19 = v194;
+		v194 = loc19;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc121 = v196;
+		v194 = loc121;
+		if (v194)
+		{
+			v194.u0 = 0x00;
+			loc18 = v194;
+			v194.u0 = 0x01;
+			loc102 = v194;
+		}
+		else
+		{
+			v194 = loc19;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc122 = v194;
+			v194 = loc122;
+			v194 = *v194.u0;
+			loc123 = v194;
+			v194 = loc19;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc124 = v194;
+			v194 = loc124;
+			v194 = *v194.u0;
+			loc125 = v194;
+			v194 = loc123;
+			v195 = loc125;
+			v196 = v194 == v195;
+			loc126 = v196;
+			v194 = loc126;
+			if (v194)
+			{
+				v194 = loc19;
+				v194 = *v194.u0;
+				loc127 = v194;
+				v194 = loc127;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc128 = v194;
+				v194 = loc128;
+				v194 = *v194.u0;
+				loc129 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc129;
+				v195 = loc19;
+				v194 = invoke_ii(v194, v195);
+				loc130 = v194;
+				v194.u3 = g_t140048.u3;
+				loc131 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc131;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc132 = v194;
+				v194 = loc132;
+				if (v194)
+				{
+					v194.u0 = 0x1D;
+					loc195 = v194;
+					goto l000F4762;
+				}
+				v194 = loc130;
+				loc8 = v194;
+			}
+			else
+			{
+				v194 = loc123;
+				v194 = *v194.u0;
+				loc133 = v194;
+				v194 = loc133;
+				loc8 = v194;
+			}
+			v194 = loc8;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc134 = v196;
+			v194 = loc134;
+			if (v194)
+			{
+				v194 = arg1;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x00;
+				loc18 = v194;
+				v194.u0 = 0x01;
+				loc102 = v194;
+			}
+			else
+			{
+				v194 = loc19;
+				loc18 = v194;
+				v194.u0 = 0x00;
+				loc102 = v194;
+			}
+		}
+		v194 = arg2;
+		v194 = *v194.u0;
+		loc135 = v194;
+		v194 = loc135;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc136 = v196;
+		v194 = loc136;
+		if (v194)
+		{
+			v194.u0 = 0x14;
+			loc195 = v194;
+		}
+		else
+		{
+			v194 = loc135;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc137 = v194;
+			v194 = loc137;
+			v194 = *v194.u0;
+			loc138 = v194;
+			v194 = loc135;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc139 = v194;
+			v194 = loc139;
+			v194 = *v194.u0;
+			loc140 = v194;
+			v194 = loc138;
+			v195 = loc140;
+			v196 = v194 == v195;
+			loc141 = v196;
+			v194 = loc141;
+			if (v194)
+			{
+				v194 = loc135;
+				v194 = *v194.u0;
+				loc142 = v194;
+				v194 = loc142;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc143 = v194;
+				v194 = loc143;
+				v194 = *v194.u0;
+				loc144 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc144;
+				v195 = loc135;
+				v194 = invoke_ii(v194, v195);
+				loc145 = v194;
+				v194.u3 = g_t140048.u3;
+				loc146 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc146;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc148 = v194;
+				v194 = loc148;
+				if (v194)
+				{
+					v194.u0 = 0x1D;
+					loc195 = v194;
+					goto l000F4762;
+				}
+				v194 = loc145;
+				loc10 = v194;
+			}
+			else
+			{
+				v194 = loc138;
+				v194 = *v194.u0;
+				loc149 = v194;
+				v194 = loc149;
+				loc10 = v194;
+			}
+			v194 = loc10;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc150 = v196;
+			v194 = loc150;
+			if (v194)
+			{
+				v194 = arg2;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x14;
+				loc195 = v194;
+			}
+			else
+			{
+				v194 = loc102;
+				if (!v194)
+				{
+					v194 = loc12;
+					loc16 = v194;
+					v194 = loc135;
+					loc20 = v194;
+					v194.u0 = 0x27;
+					loc195 = v194;
+					goto l000F4762;
+				}
+				v194 = loc135;
+				loc103 = v194;
+			}
+		}
+		v194 = loc195;
+		v195.u0 = 0x14;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194.u0 = 0x00;
+			loc195 = v194;
+			v194 = loc102;
+			if (v194)
+			{
+				v194 = loc12;
+				loc16 = v194;
+				v194.u0 = 0x00;
+				loc20 = v194;
+				v194.u0 = 0x27;
+				loc195 = v194;
+				goto l000F4762;
+			}
+			v194.u0 = 0x00;
+			loc103 = v194;
+		}
+		v194 = loc35;
+		v194 = *v194.u0;
+		loc151 = v194;
+		v194 = loc106;
+		v205 = *v194.u0;
+		v194.u3 = (word32) v205;
+		loc152 = v194;
+		v194 = loc152;
+		v195.u0 = 0x18;
+		v194 <<= v195;
+		v195.u0 = 0x18;
+		v194 >>= v195;
+		v195.u0 = 0x00;
+		v196 = v194 < v195;
+		loc153 = v196;
+		v194 = loc119;
+		v194.u3 = *v194.u3;
+		loc154 = v194;
+		v194 = loc152;
+		v195.u0 = 0xFF;
+		v194 &= v195;
+		loc155 = v194;
+		v194 = loc153;
+		if (v194)
+			v194 = loc154;
+		else
+			v194 = loc155;
+		loc156 = v194;
+		v194 = loc12;
+		v195 = loc156;
+		v194 += v195;
+		loc157 = v194;
+		v194 = loc151;
+		v195 = loc157;
+		v196 = v194 == v195;
+		loc159 = v196;
+		v194 = loc159;
+		if (v194)
+		{
+			v194 = loc156;
+			v195.u0 = 0x01;
+			v194 <<= v195;
+			loc160 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194.u0 = 0x017A;
+			v195 = loc24;
+			v197 = loc160;
+			v198.u0 = 0x00;
+			invoke_viii(v194, v195, v197, v198);
+			v194.u3 = g_t140048.u3;
+			loc161 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc161;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc162 = v194;
+			v194 = loc162;
+			if (v194)
+			{
+				v194.u0 = 0x1F;
+				loc195 = v194;
+				goto l000F4762;
+			}
+			v194 = loc106;
+			v206 = *v194.u0;
+			v194.u3 = (word32) v206;
+			loc163 = v194;
+			v194 = loc163;
+			v195.u0 = 0x18;
+			v194 <<= v195;
+			v195.u0 = 0x18;
+			v194 >>= v195;
+			v195.u0 = 0x00;
+			v196 = v194 < v195;
+			loc164 = v196;
+			v194 = loc164;
+			if (v194)
+			{
+				v194 = loc120;
+				v194.u3 = *v194.u3;
+				loc165 = v194;
+				v194 = loc165;
+				v195.u0 = 0x7FFFFFFF;
+				v194 &= v195;
+				loc166 = v194;
+				v194 = loc166;
+				v195.u0 = ~0x00;
+				v194 += v195;
+				loc194 = v194;
+				v194 = loc194;
+				loc167 = v194;
+			}
+			else
+			{
+				v194.u0 = 0x0A;
+				loc167 = v194;
+			}
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194.u0 = 0x017A;
+			v195 = loc24;
+			v197 = loc167;
+			v198.u0 = 0x00;
+			invoke_viii(v194, v195, v197, v198);
+			v194.u3 = g_t140048.u3;
+			loc168 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc168;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc170 = v194;
+			v194 = loc170;
+			if (v194)
+			{
+				v194.u0 = 0x1F;
+				loc195 = v194;
+				goto l000F4762;
+			}
+			v194 = loc106;
+			v207 = *v194.u0;
+			v194.u3 = (word32) v207;
+			loc171 = v194;
+			v194 = loc171;
+			v195.u0 = 0x18;
+			v194 <<= v195;
+			v195.u0 = 0x18;
+			v194 >>= v195;
+			v195.u0 = 0x00;
+			v196 = v194 < v195;
+			loc172 = v196;
+			v194 = loc24;
+			v194.u3 = *v194.u3;
+			loc173 = v194;
+			v194 = loc172;
+			if (v194)
+				v194 = loc173;
+			else
+				v194 = loc24;
+			loc174 = v194;
+			v194 = loc174;
+			v195 = loc156;
+			v194 += v195;
+			loc175 = v194;
+			v194 = loc35;
+			v195 = loc175;
+			*v194.u3 = (word32) v195;
+			v194 = loc174;
+			loc14 = v194;
+		}
+		else
+		{
+			v194 = loc12;
+			loc14 = v194;
+		}
+		v194 = loc18;
+		v195.u0 = 0x0C;
+		v194 += v195;
+		loc185 = v194;
+		v194 = loc185;
+		v194.u3 = *v194.u3;
+		loc186 = v194;
+		v194 = loc18;
+		v195.u0 = 0x10;
+		v194 += v195;
+		loc187 = v194;
+		v194 = loc187;
+		v194.u3 = *v194.u3;
+		loc188 = v194;
+		v194 = loc186;
+		v195 = loc188;
+		v196 = v194 == v195;
+		loc189 = v196;
+		v194 = loc189;
+		if (v194)
+		{
+			v194 = loc18;
+			v194.u3 = *v194.u3;
+			loc190 = v194;
+			v194 = loc190;
+			v195.u0 = 0x24;
+			v194 += v195;
+			loc25 = v194;
+			v194 = loc25;
+			v194.u3 = *v194.u3;
+			loc26 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc26;
+			v195 = loc18;
+			v194 = invoke_ii(v194, v195);
+			loc27 = v194;
+			v194.u3 = g_t140048.u3;
+			loc28 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc28;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc29 = v194;
+			v194 = loc29;
+			if (v194)
+			{
+				v194.u0 = 0x1D;
+				loc195 = v194;
+				goto l000F4762;
+			}
+			v194 = loc27;
+			loc11 = v194;
+		}
+		else
+		{
+			v194 = loc186;
+			v194 = *v194.u0;
+			loc30 = v194;
+			v194 = loc30;
+			loc11 = v194;
+		}
+		v194 = loc158;
+		v194 = *v194.u0;
+		loc31 = v194;
+		v194 = loc169;
+		v194 = *v194.u0;
+		loc32 = v194;
+		v194 = loc11;
+		v195 = loc78;
+		v197 = loc89;
+		v198 = loc14;
+		v199 = loc35;
+		v208 = loc31;
+		v209 = loc32;
+		v210 = loc180;
+		v211 = loc46;
+		v212 = loc57;
+		v213 = loc67;
+		v214 = loc147;
+		v194 = fn000F3D09(v194, v195, v197, v198, v199, v208, v209, v210, v211, v212, v213, v214);
+		loc33 = v194;
+		v194 = loc33;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc34 = v196;
+		v194 = loc34;
+		v196 = v194 == 0x00;
+		if (v196)
+			break;
+		v194 = loc185;
+		v194 = *v194.u0;
+		loc36 = v194;
+		v194 = loc187;
+		v194 = *v194.u0;
+		loc37 = v194;
+		v194 = loc36;
+		v195 = loc37;
+		v196 = v194 == v195;
+		loc38 = v196;
+		v194 = loc38;
+		if (!v194)
+		{
+			v194 = loc36;
+			v195.u0 = 0x04;
+			v194 += v195;
+			loc44 = v194;
+			v194 = loc185;
+			v195 = loc44;
+			*v194.u0 = v195;
+			v194 = loc14;
+			loc12 = v194;
+			v194 = loc18;
+			loc19 = v194;
+			continue;
+		}
+		v194 = loc18;
+		v194 = *v194.u0;
+		loc39 = v194;
+		v194 = loc39;
+		v195.u0 = 0x28;
+		v194 += v195;
+		loc40 = v194;
+		v194 = loc40;
+		v194 = *v194.u0;
+		loc41 = v194;
+		v194.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v194;
+		v194 = loc41;
+		v195 = loc18;
+		v194 = invoke_ii(v194, v195);
+		v194.u3 = g_t140048.u3;
+		loc42 = v194;
+		v194.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v194;
+		v194 = loc42;
+		v195.u0 = 0x01;
+		v194 &= v195;
+		loc43 = v194;
+		v194 = loc43;
+		if (v194)
+		{
+			v194.u0 = 0x1D;
+			loc195 = v194;
+			goto l000F4762;
+		}
+		v194 = loc14;
+		loc12 = v194;
+		v194 = loc18;
+		loc19 = v194;
+	}
+	v194 = loc14;
+	loc16 = v194;
+	v194 = loc103;
+	loc20 = v194;
+	v194.u0 = 0x27;
+	loc195 = v194;
+l000F4762:
+	v194 = loc195;
+	v195.u0 = 0x1D;
+	v196 = v194 == v195;
+	if (v196)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc178 = v194;
+		v194.u3 = g_t140094.u3;
+		loc179 = v194;
+		v194 = loc178;
+		loc21 = v194;
+		v194 = loc179;
+		loc22 = v194;
+		goto l000F4A47;
+	}
+	v194 = loc195;
+	v195.u0 = 0x1F;
+	v196 = v194 == v195;
+	if (v196)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc183 = v194;
+		v194.u3 = g_t140094.u3;
+		loc184 = v194;
+		v194 = loc183;
+		loc21 = v194;
+		v194 = loc184;
+		loc22 = v194;
+		goto l000F4A46;
+	}
+	v194 = loc195;
+	v195.u0 = 0x27;
+	v196 = v194 == v195;
+	if (!v196)
+	{
+l000F4A47:
+		v194 = loc21;
+		loc13 = v194;
+		v194 = loc22;
+		loc15 = v194;
+l000F4A50:
+		v194 = loc24;
+		fn0011BAF7(v194);
+		v194 = loc180;
+		fn0011BAF7(v194);
+		v194 = loc13;
+		___resumeException(v194);
+		v194.u0 = 0x00;
+		return v194;
+	}
+	v194 = loc180;
+	v195.u0 = 11;
+	v194 += v195;
+	loc45 = v194;
+	v194 = loc45;
+	v215.u3 = *v194.u3;
+	v194.u3 = (word32) v215;
+	loc47 = v194;
+	v194 = loc47;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc48 = v196;
+	v194 = loc180;
+	v195.u0 = 0x04;
+	v194 += v195;
+	loc49 = v194;
+	v194 = loc49;
+	v194.u3 = *v194.u3;
+	loc50 = v194;
+	v194 = loc47;
+	v195.u0 = 0xFF;
+	v194 &= v195;
+	loc51 = v194;
+	v194 = loc48;
+	if (v194)
+		v194 = loc50;
+	else
+		v194 = loc51;
+	loc52 = v194;
+	v194 = loc52;
+	v195.u0 = 0x00;
+	v196 = v194 == v195;
+	loc53 = v196;
+	v194 = loc78;
+	v216.u1 = v194.u4->t0000.u1;
+	v194.u3 = (word32) v216;
+	loc54 = v194;
+	v194 = loc54;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 == v195;
+	loc55 = v196;
+	v194 = loc53;
+	v195 = loc55;
+	v194 |= v195;
+	loc192 = v194;
+	v194 = loc192;
+	v196 = v194 == 0x00;
+	if (v196)
+	{
+		v194 = loc57;
+		v194.u3 = *v194.u3;
+		loc56 = v194;
+		v194 = loc56;
+		loc58 = v194;
+		v194 = loc46;
+		loc59 = v194;
+		v194 = loc58;
+		v195 = loc59;
+		v194 -= v195;
+		loc60 = v194;
+		v194 = loc60;
+		v195.u0 = 0xA0;
+		v196 = v194 < v195;
+		loc61 = v196;
+		v194 = loc61;
+		if (v194)
+		{
+			v194 = loc67;
+			v194.u3 = *v194.u3;
+			loc62 = v194;
+			v194 = loc56;
+			v195.u0 = 0x04;
+			v194 += v195;
+			loc63 = v194;
+			v194 = loc57;
+			v195 = loc63;
+			*v194.u3 = (word32) v195;
+			v194 = loc56;
+			v195 = loc62;
+			*v194.u3 = (word32) v195;
+		}
+	}
+	v194 = loc35;
+	v194.u3 = *v194.u3;
+	loc64 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194.u0 = 0x0182;
+	v195 = loc16;
+	v197 = loc64;
+	v198 = arg4;
+	v217 = invoke_diii(v194, v195, v197, v198);
+	loc197 = v217;
+	v194.u3 = g_t140048.u3;
+	loc65 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194 = loc65;
+	v195.u0 = 0x01;
+	v194 &= v195;
+	loc66 = v194;
+	v194 = loc66;
+	v196 = v194 == 0x00;
+	if (!v196)
+	{
+l000F4A30:
+		v194 = ___cxa_find_matching_catch_n();
+		loc181 = v194;
+		v194.u3 = g_t140094.u3;
+		loc182 = v194;
+		v194 = loc181;
+		loc21 = v194;
+		v194 = loc182;
+		loc22 = v194;
+		goto l000F4A46;
+	}
+	else
+	{
+		v194 = arg5;
+		v218 = loc197;
+		*v194.u0 = v218;
+		v194 = loc57;
+		v194 = *v194.u0;
+		loc68 = v194;
+		v194 = loc180;
+		v195 = loc46;
+		v197 = loc68;
+		v198 = arg4;
+		fn000EC01D(v194, v195, v197, v198);
+		v194 = loc18;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc69 = v196;
+		v194 = loc69;
+		if (v194)
+		{
+			v194.u0 = 0x01;
+			loc104 = v194;
+		}
+		else
+		{
+			v194 = loc18;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc70 = v194;
+			v194 = loc70;
+			v194 = *v194.u0;
+			loc71 = v194;
+			v194 = loc18;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc72 = v194;
+			v194 = loc72;
+			v194 = *v194.u0;
+			loc73 = v194;
+			v194 = loc71;
+			v195 = loc73;
+			v196 = v194 == v195;
+			loc74 = v196;
+			v194 = loc74;
+			if (v194)
+			{
+				v194 = loc18;
+				v194 = *v194.u0;
+				loc75 = v194;
+				v194 = loc75;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc76 = v194;
+				v194 = loc76;
+				v194 = *v194.u0;
+				loc77 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc77;
+				v195 = loc18;
+				v194 = invoke_ii(v194, v195);
+				loc79 = v194;
+				v194.u3 = g_t140048.u3;
+				loc80 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc80;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc81 = v194;
+				v194 = loc81;
+				if (v194)
+					goto l000F4A30;
+				v194 = loc79;
+				loc7 = v194;
+			}
+			else
+			{
+				v194 = loc71;
+				v194 = *v194.u0;
+				loc82 = v194;
+				v194 = loc82;
+				loc7 = v194;
+			}
+			v194 = loc7;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc83 = v196;
+			v194 = loc83;
+			if (v194)
+			{
+				v194 = arg1;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x01;
+				loc104 = v194;
+			}
+			else
+			{
+				v194.u0 = 0x00;
+				loc104 = v194;
+			}
+		}
+		v194 = loc20;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc84 = v196;
+		v194 = loc84;
+		if (v194)
+		{
+			v194.u0 = 55;
+			loc195 = v194;
+			goto l000F49E3;
+		}
+		v194 = loc20;
+		v195.u0 = 0x0C;
+		v194 += v195;
+		loc85 = v194;
+		v194 = loc85;
+		v194 = *v194.u0;
+		loc86 = v194;
+		v194 = loc20;
+		v195.u0 = 0x10;
+		v194 += v195;
+		loc87 = v194;
+		v194 = loc87;
+		v194 = *v194.u0;
+		loc88 = v194;
+		v194 = loc86;
+		v195 = loc88;
+		v196 = v194 == v195;
+		loc90 = v196;
+		v194 = loc90;
+		if (v194)
+		{
+			v194 = loc20;
+			v194 = *v194.u0;
+			loc91 = v194;
+			v194 = loc91;
+			v195.u0 = 0x24;
+			v194 += v195;
+			loc92 = v194;
+			v194 = loc92;
+			v194 = *v194.u0;
+			loc93 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc93;
+			v195 = loc20;
+			v194 = invoke_ii(v194, v195);
+			loc94 = v194;
+			v194.u3 = g_t140048.u3;
+			loc95 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc95;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc96 = v194;
+			v194 = loc96;
+			if (v194)
+				goto l000F4A30;
+			v194 = loc94;
+			loc9 = v194;
+		}
+		else
+		{
+			v194 = loc86;
+			v194 = *v194.u0;
+			loc97 = v194;
+			v194 = loc97;
+			loc9 = v194;
+		}
+		v194 = loc9;
+		v195.u0 = ~0x00;
+		v196 = v194 == v195;
+		loc98 = v196;
+		v194 = loc98;
+		if (v194)
+		{
+			v194 = arg2;
+			v195.u0 = 0x00;
+			*v194.u0 = v195;
+			v194.u0 = 55;
+			loc195 = v194;
+		}
+		else
+		{
+			v194 = loc104;
+			if (!v194)
+			{
+				v194.u0 = 0x39;
+				loc195 = v194;
+			}
+		}
+l000F49E3:
+		v194 = loc195;
+		v195.u0 = 55;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194 = loc104;
+			if (v194)
+			{
+				v194.u0 = 0x39;
+				loc195 = v194;
+			}
+		}
+		v194 = loc195;
+		v195.u0 = 0x39;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194 = arg4;
+			v194 = *v194.u0;
+			loc99 = v194;
+			v194 = loc99;
+			v195.u0 = 0x02;
+			v194 |= v195;
+			loc101 = v194;
+			v194 = arg4;
+			v195 = loc101;
+			*v194.u0 = v195;
+		}
+		v194 = arg1;
+		v194 = *v194.u0;
+		loc23 = v194;
+		v194 = loc24;
+		fn0011BAF7(v194);
+		v194 = loc180;
+		fn0011BAF7(v194);
+		v194 = loc196;
+		g_t140030.u3 = (word32 *) v194;
+		v194 = loc23;
+		return v194;
+	}
 }
 
 // 000F4A65: Stack Eq_n fn000F4A65(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F4A65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v194.u3 = g_t140030.u3;
+	loc196 = v194;
+	v194.u3 = g_t140030.u3;
+	v195.u0 = 0x0160;
+	v194 += v195;
+	g_t140030.u3 = (word32 *) v194;
+	v194.u3 = g_t140030.u3;
+	v195.u3 = g_t140034.u3;
+	v196 = v194 >= v195;
+	if (v196)
+	{
+		v194.u0 = 0x0160;
+		abortStackOverflow(v194);
+	}
+	while (true)
+	{
+		v194 = loc196;
+		v195.u0 = 0xD0;
+		v194 += v195;
+		loc147 = v194;
+		v194 = loc196;
+		v195.u0 = 200;
+		v194 += v195;
+		loc158 = v194;
+		v194 = loc196;
+		v195.u0 = 0xC4;
+		v194 += v195;
+		loc169 = v194;
+		v194 = loc196;
+		v195.u0 = 0xB8;
+		v194 += v195;
+		loc180 = v194;
+		v194 = loc196;
+		v195.u0 = 0xAC;
+		v194 += v195;
+		loc24 = v194;
+		v194 = loc196;
+		v195.u0 = 0xA8;
+		v194 += v195;
+		loc35 = v194;
+		v194 = loc196;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc46 = v194;
+		v194 = loc196;
+		v195.u0 = 0x04;
+		v194 += v195;
+		loc57 = v194;
+		v194 = loc196;
+		loc67 = v194;
+		v194 = loc196;
+		v195.u0 = 0x0151;
+		v194 += v195;
+		loc78 = v194;
+		v194 = loc196;
+		v195.u0 = 336;
+		v194 += v195;
+		loc89 = v194;
+		v194 = loc180;
+		v195 = arg3;
+		v197 = loc147;
+		v198 = loc158;
+		v199 = loc169;
+		fn000F3B58(v194, v195, v197, v198, v199);
+		v194 = loc24;
+		v200.u0 = 0x00;
+		*v194.u0 = v200;
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		v195.u0 = 0x00;
+		*v194.u0 = v195;
+		v194.u0 = 0x00;
+		loc6 = v194;
+		v194 = loc6;
+		v195.u0 = 0x03;
+		v196 = v194 == v195;
+		loc191 = v196;
+		v194 = loc191;
+		if (v194)
+			break;
+		v194 = loc24;
+		v195 = loc6;
+		v197.u0 = 0x02;
+		v195 <<= v197;
+		v194 += v195;
+		loc100 = v194;
+		v194 = loc100;
+		v195.u0 = 0x00;
+		*v194.u0 = v195;
+		v194 = loc6;
+		v195.u0 = 0x01;
+		v194 += v195;
+		loc105 = v194;
+		v194 = loc105;
+		loc6 = v194;
+	}
+	v194 = loc24;
+	v195.u0 = 11;
+	v194 += v195;
+	loc106 = v194;
+	v194 = loc106;
+	v201 = *v194.u0;
+	v194.u3 = (word32) v201;
+	loc107 = v194;
+	v194 = loc107;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc108 = v196;
+	v194 = loc108;
+	if (v194)
+	{
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc109 = v194;
+		v194 = loc109;
+		v194.u3 = *v194.u3;
+		loc110 = v194;
+		v194 = loc110;
+		v195.u0 = 0x7FFFFFFF;
+		v194 &= v195;
+		loc111 = v194;
+		v194 = loc111;
+		v195.u0 = ~0x00;
+		v194 += v195;
+		loc193 = v194;
+		v194 = loc193;
+		loc112 = v194;
+	}
+	else
+	{
+		v194.u0 = 0x0A;
+		loc112 = v194;
+	}
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194.u0 = 0x017A;
+	v195 = loc24;
+	v197 = loc112;
+	v198.u0 = 0x00;
+	invoke_viii(v194, v195, v197, v198);
+	v194.u3 = g_t140048.u3;
+	loc113 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194 = loc113;
+	v195.u0 = 0x01;
+	v194 &= v195;
+	loc114 = v194;
+	v194 = loc114;
+	if (v194)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc176 = v194;
+		v194.u3 = g_t140094.u3;
+		loc177 = v194;
+		v194 = loc176;
+		loc13 = v194;
+		v194 = loc177;
+		loc15 = v194;
+		goto l000F5385;
+	}
+	v194 = loc106;
+	v202.u3 = *v194.u3;
+	v194.u3 = (word32) v202;
+	loc115 = v194;
+	v194 = loc115;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc116 = v196;
+	v194 = loc24;
+	v194.u3 = *v194.u3;
+	loc117 = v194;
+	v194 = loc116;
+	if (v194)
+		v194 = loc117;
+	else
+		v194 = loc24;
+	while (true)
+	{
+		loc118 = v194;
+		v194 = loc35;
+		v195 = loc118;
+		*v194.u3 = (word32) v195;
+		v194 = loc57;
+		v195 = loc46;
+		*v194.u3 = (word32) v195;
+		v194 = loc67;
+		v195.u0 = 0x00;
+		*v194.u3 = (word32) v195;
+		v194 = loc78;
+		v195.u0 = 0x01;
+		v203 = (byte) v195;
+		v194.u4->t0000.u0 = (bool) v203;
+		v194 = loc89;
+		v195.u0 = 0x45;
+		v204 = (byte) v195;
+		v194.u4->t0000.u0 = (bool) v204;
+		v194 = loc24;
+		v195.u0 = 0x04;
+		v194 += v195;
+		loc119 = v194;
+		v194 = loc24;
+		v195.u0 = 0x08;
+		v194 += v195;
+		loc120 = v194;
+		v194 = arg1;
+		v194.u3 = *v194.u3;
+		loc17 = v194;
+		v194 = loc118;
+		loc12 = v194;
+		v194 = loc17;
+		loc19 = v194;
+		v194 = loc19;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc121 = v196;
+		v194 = loc121;
+		if (v194)
+		{
+			v194.u0 = 0x00;
+			loc18 = v194;
+			v194.u0 = 0x01;
+			loc102 = v194;
+		}
+		else
+		{
+			v194 = loc19;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc122 = v194;
+			v194 = loc122;
+			v194 = *v194.u0;
+			loc123 = v194;
+			v194 = loc19;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc124 = v194;
+			v194 = loc124;
+			v194 = *v194.u0;
+			loc125 = v194;
+			v194 = loc123;
+			v195 = loc125;
+			v196 = v194 == v195;
+			loc126 = v196;
+			v194 = loc126;
+			if (v194)
+			{
+				v194 = loc19;
+				v194 = *v194.u0;
+				loc127 = v194;
+				v194 = loc127;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc128 = v194;
+				v194 = loc128;
+				v194 = *v194.u0;
+				loc129 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc129;
+				v195 = loc19;
+				v194 = invoke_ii(v194, v195);
+				loc130 = v194;
+				v194.u3 = g_t140048.u3;
+				loc131 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc131;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc132 = v194;
+				v194 = loc132;
+				if (v194)
+				{
+					v194.u0 = 0x1D;
+					loc195 = v194;
+					goto l000F5096;
+				}
+				v194 = loc130;
+				loc8 = v194;
+			}
+			else
+			{
+				v194 = loc123;
+				v194 = *v194.u0;
+				loc133 = v194;
+				v194 = loc133;
+				loc8 = v194;
+			}
+			v194 = loc8;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc134 = v196;
+			v194 = loc134;
+			if (v194)
+			{
+				v194 = arg1;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x00;
+				loc18 = v194;
+				v194.u0 = 0x01;
+				loc102 = v194;
+			}
+			else
+			{
+				v194 = loc19;
+				loc18 = v194;
+				v194.u0 = 0x00;
+				loc102 = v194;
+			}
+		}
+		v194 = arg2;
+		v194 = *v194.u0;
+		loc135 = v194;
+		v194 = loc135;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc136 = v196;
+		v194 = loc136;
+		if (v194)
+		{
+			v194.u0 = 0x14;
+			loc195 = v194;
+		}
+		else
+		{
+			v194 = loc135;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc137 = v194;
+			v194 = loc137;
+			v194 = *v194.u0;
+			loc138 = v194;
+			v194 = loc135;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc139 = v194;
+			v194 = loc139;
+			v194 = *v194.u0;
+			loc140 = v194;
+			v194 = loc138;
+			v195 = loc140;
+			v196 = v194 == v195;
+			loc141 = v196;
+			v194 = loc141;
+			if (v194)
+			{
+				v194 = loc135;
+				v194 = *v194.u0;
+				loc142 = v194;
+				v194 = loc142;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc143 = v194;
+				v194 = loc143;
+				v194 = *v194.u0;
+				loc144 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc144;
+				v195 = loc135;
+				v194 = invoke_ii(v194, v195);
+				loc145 = v194;
+				v194.u3 = g_t140048.u3;
+				loc146 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc146;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc148 = v194;
+				v194 = loc148;
+				if (v194)
+				{
+					v194.u0 = 0x1D;
+					loc195 = v194;
+					goto l000F5096;
+				}
+				v194 = loc145;
+				loc10 = v194;
+			}
+			else
+			{
+				v194 = loc138;
+				v194 = *v194.u0;
+				loc149 = v194;
+				v194 = loc149;
+				loc10 = v194;
+			}
+			v194 = loc10;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc150 = v196;
+			v194 = loc150;
+			if (v194)
+			{
+				v194 = arg2;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x14;
+				loc195 = v194;
+			}
+			else
+			{
+				v194 = loc102;
+				if (!v194)
+				{
+					v194 = loc12;
+					loc16 = v194;
+					v194 = loc135;
+					loc20 = v194;
+					v194.u0 = 0x27;
+					loc195 = v194;
+					goto l000F5096;
+				}
+				v194 = loc135;
+				loc103 = v194;
+			}
+		}
+		v194 = loc195;
+		v195.u0 = 0x14;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194.u0 = 0x00;
+			loc195 = v194;
+			v194 = loc102;
+			if (v194)
+			{
+				v194 = loc12;
+				loc16 = v194;
+				v194.u0 = 0x00;
+				loc20 = v194;
+				v194.u0 = 0x27;
+				loc195 = v194;
+				goto l000F5096;
+			}
+			v194.u0 = 0x00;
+			loc103 = v194;
+		}
+		v194 = loc35;
+		v194 = *v194.u0;
+		loc151 = v194;
+		v194 = loc106;
+		v205 = *v194.u0;
+		v194.u3 = (word32) v205;
+		loc152 = v194;
+		v194 = loc152;
+		v195.u0 = 0x18;
+		v194 <<= v195;
+		v195.u0 = 0x18;
+		v194 >>= v195;
+		v195.u0 = 0x00;
+		v196 = v194 < v195;
+		loc153 = v196;
+		v194 = loc119;
+		v194.u3 = *v194.u3;
+		loc154 = v194;
+		v194 = loc152;
+		v195.u0 = 0xFF;
+		v194 &= v195;
+		loc155 = v194;
+		v194 = loc153;
+		if (v194)
+			v194 = loc154;
+		else
+			v194 = loc155;
+		loc156 = v194;
+		v194 = loc12;
+		v195 = loc156;
+		v194 += v195;
+		loc157 = v194;
+		v194 = loc151;
+		v195 = loc157;
+		v196 = v194 == v195;
+		loc159 = v196;
+		v194 = loc159;
+		if (v194)
+		{
+			v194 = loc156;
+			v195.u0 = 0x01;
+			v194 <<= v195;
+			loc160 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194.u0 = 0x017A;
+			v195 = loc24;
+			v197 = loc160;
+			v198.u0 = 0x00;
+			invoke_viii(v194, v195, v197, v198);
+			v194.u3 = g_t140048.u3;
+			loc161 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc161;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc162 = v194;
+			v194 = loc162;
+			if (v194)
+			{
+				v194.u0 = 0x1F;
+				loc195 = v194;
+				goto l000F5096;
+			}
+			v194 = loc106;
+			v206 = *v194.u0;
+			v194.u3 = (word32) v206;
+			loc163 = v194;
+			v194 = loc163;
+			v195.u0 = 0x18;
+			v194 <<= v195;
+			v195.u0 = 0x18;
+			v194 >>= v195;
+			v195.u0 = 0x00;
+			v196 = v194 < v195;
+			loc164 = v196;
+			v194 = loc164;
+			if (v194)
+			{
+				v194 = loc120;
+				v194.u3 = *v194.u3;
+				loc165 = v194;
+				v194 = loc165;
+				v195.u0 = 0x7FFFFFFF;
+				v194 &= v195;
+				loc166 = v194;
+				v194 = loc166;
+				v195.u0 = ~0x00;
+				v194 += v195;
+				loc194 = v194;
+				v194 = loc194;
+				loc167 = v194;
+			}
+			else
+			{
+				v194.u0 = 0x0A;
+				loc167 = v194;
+			}
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194.u0 = 0x017A;
+			v195 = loc24;
+			v197 = loc167;
+			v198.u0 = 0x00;
+			invoke_viii(v194, v195, v197, v198);
+			v194.u3 = g_t140048.u3;
+			loc168 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc168;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc170 = v194;
+			v194 = loc170;
+			if (v194)
+			{
+				v194.u0 = 0x1F;
+				loc195 = v194;
+				goto l000F5096;
+			}
+			v194 = loc106;
+			v207 = *v194.u0;
+			v194.u3 = (word32) v207;
+			loc171 = v194;
+			v194 = loc171;
+			v195.u0 = 0x18;
+			v194 <<= v195;
+			v195.u0 = 0x18;
+			v194 >>= v195;
+			v195.u0 = 0x00;
+			v196 = v194 < v195;
+			loc172 = v196;
+			v194 = loc24;
+			v194.u3 = *v194.u3;
+			loc173 = v194;
+			v194 = loc172;
+			if (v194)
+				v194 = loc173;
+			else
+				v194 = loc24;
+			loc174 = v194;
+			v194 = loc174;
+			v195 = loc156;
+			v194 += v195;
+			loc175 = v194;
+			v194 = loc35;
+			v195 = loc175;
+			*v194.u3 = (word32) v195;
+			v194 = loc174;
+			loc14 = v194;
+		}
+		else
+		{
+			v194 = loc12;
+			loc14 = v194;
+		}
+		v194 = loc18;
+		v195.u0 = 0x0C;
+		v194 += v195;
+		loc185 = v194;
+		v194 = loc185;
+		v194.u3 = *v194.u3;
+		loc186 = v194;
+		v194 = loc18;
+		v195.u0 = 0x10;
+		v194 += v195;
+		loc187 = v194;
+		v194 = loc187;
+		v194.u3 = *v194.u3;
+		loc188 = v194;
+		v194 = loc186;
+		v195 = loc188;
+		v196 = v194 == v195;
+		loc189 = v196;
+		v194 = loc189;
+		if (v194)
+		{
+			v194 = loc18;
+			v194.u3 = *v194.u3;
+			loc190 = v194;
+			v194 = loc190;
+			v195.u0 = 0x24;
+			v194 += v195;
+			loc25 = v194;
+			v194 = loc25;
+			v194.u3 = *v194.u3;
+			loc26 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc26;
+			v195 = loc18;
+			v194 = invoke_ii(v194, v195);
+			loc27 = v194;
+			v194.u3 = g_t140048.u3;
+			loc28 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc28;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc29 = v194;
+			v194 = loc29;
+			if (v194)
+			{
+				v194.u0 = 0x1D;
+				loc195 = v194;
+				goto l000F5096;
+			}
+			v194 = loc27;
+			loc11 = v194;
+		}
+		else
+		{
+			v194 = loc186;
+			v194 = *v194.u0;
+			loc30 = v194;
+			v194 = loc30;
+			loc11 = v194;
+		}
+		v194 = loc158;
+		v194 = *v194.u0;
+		loc31 = v194;
+		v194 = loc169;
+		v194 = *v194.u0;
+		loc32 = v194;
+		v194 = loc11;
+		v195 = loc78;
+		v197 = loc89;
+		v198 = loc14;
+		v199 = loc35;
+		v208 = loc31;
+		v209 = loc32;
+		v210 = loc180;
+		v211 = loc46;
+		v212 = loc57;
+		v213 = loc67;
+		v214 = loc147;
+		v194 = fn000F3D09(v194, v195, v197, v198, v199, v208, v209, v210, v211, v212, v213, v214);
+		loc33 = v194;
+		v194 = loc33;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc34 = v196;
+		v194 = loc34;
+		v196 = v194 == 0x00;
+		if (v196)
+			break;
+		v194 = loc185;
+		v194 = *v194.u0;
+		loc36 = v194;
+		v194 = loc187;
+		v194 = *v194.u0;
+		loc37 = v194;
+		v194 = loc36;
+		v195 = loc37;
+		v196 = v194 == v195;
+		loc38 = v196;
+		v194 = loc38;
+		if (!v194)
+		{
+			v194 = loc36;
+			v195.u0 = 0x04;
+			v194 += v195;
+			loc44 = v194;
+			v194 = loc185;
+			v195 = loc44;
+			*v194.u0 = v195;
+			v194 = loc14;
+			loc12 = v194;
+			v194 = loc18;
+			loc19 = v194;
+			continue;
+		}
+		v194 = loc18;
+		v194 = *v194.u0;
+		loc39 = v194;
+		v194 = loc39;
+		v195.u0 = 0x28;
+		v194 += v195;
+		loc40 = v194;
+		v194 = loc40;
+		v194 = *v194.u0;
+		loc41 = v194;
+		v194.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v194;
+		v194 = loc41;
+		v195 = loc18;
+		v194 = invoke_ii(v194, v195);
+		v194.u3 = g_t140048.u3;
+		loc42 = v194;
+		v194.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v194;
+		v194 = loc42;
+		v195.u0 = 0x01;
+		v194 &= v195;
+		loc43 = v194;
+		v194 = loc43;
+		if (v194)
+		{
+			v194.u0 = 0x1D;
+			loc195 = v194;
+			goto l000F5096;
+		}
+		v194 = loc14;
+		loc12 = v194;
+		v194 = loc18;
+		loc19 = v194;
+	}
+	v194 = loc14;
+	loc16 = v194;
+	v194 = loc103;
+	loc20 = v194;
+	v194.u0 = 0x27;
+	loc195 = v194;
+l000F5096:
+	v194 = loc195;
+	v195.u0 = 0x1D;
+	v196 = v194 == v195;
+	if (v196)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc178 = v194;
+		v194.u3 = g_t140094.u3;
+		loc179 = v194;
+		v194 = loc178;
+		loc21 = v194;
+		v194 = loc179;
+		loc22 = v194;
+		goto l000F537C;
+	}
+	v194 = loc195;
+	v195.u0 = 0x1F;
+	v196 = v194 == v195;
+	if (v196)
+	{
+		v194 = ___cxa_find_matching_catch_n();
+		loc183 = v194;
+		v194.u3 = g_t140094.u3;
+		loc184 = v194;
+		v194 = loc183;
+		loc21 = v194;
+		v194 = loc184;
+		loc22 = v194;
+		goto l000F537B;
+	}
+	v194 = loc195;
+	v195.u0 = 0x27;
+	v196 = v194 == v195;
+	if (!v196)
+	{
+l000F537C:
+		v194 = loc21;
+		loc13 = v194;
+		v194 = loc22;
+		loc15 = v194;
+l000F5385:
+		v194 = loc24;
+		fn0011BAF7(v194);
+		v194 = loc180;
+		fn0011BAF7(v194);
+		v194 = loc13;
+		___resumeException(v194);
+		v194.u0 = 0x00;
+		return v194;
+	}
+	v194 = loc180;
+	v195.u0 = 11;
+	v194 += v195;
+	loc45 = v194;
+	v194 = loc45;
+	v215.u3 = *v194.u3;
+	v194.u3 = (word32) v215;
+	loc47 = v194;
+	v194 = loc47;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 < v195;
+	loc48 = v196;
+	v194 = loc180;
+	v195.u0 = 0x04;
+	v194 += v195;
+	loc49 = v194;
+	v194 = loc49;
+	v194.u3 = *v194.u3;
+	loc50 = v194;
+	v194 = loc47;
+	v195.u0 = 0xFF;
+	v194 &= v195;
+	loc51 = v194;
+	v194 = loc48;
+	if (v194)
+		v194 = loc50;
+	else
+		v194 = loc51;
+	loc52 = v194;
+	v194 = loc52;
+	v195.u0 = 0x00;
+	v196 = v194 == v195;
+	loc53 = v196;
+	v194 = loc78;
+	v216.u1 = v194.u4->t0000.u1;
+	v194.u3 = (word32) v216;
+	loc54 = v194;
+	v194 = loc54;
+	v195.u0 = 0x18;
+	v194 <<= v195;
+	v195.u0 = 0x18;
+	v194 >>= v195;
+	v195.u0 = 0x00;
+	v196 = v194 == v195;
+	loc55 = v196;
+	v194 = loc53;
+	v195 = loc55;
+	v194 |= v195;
+	loc192 = v194;
+	v194 = loc192;
+	v196 = v194 == 0x00;
+	if (v196)
+	{
+		v194 = loc57;
+		v194.u3 = *v194.u3;
+		loc56 = v194;
+		v194 = loc56;
+		loc58 = v194;
+		v194 = loc46;
+		loc59 = v194;
+		v194 = loc58;
+		v195 = loc59;
+		v194 -= v195;
+		loc60 = v194;
+		v194 = loc60;
+		v195.u0 = 0xA0;
+		v196 = v194 < v195;
+		loc61 = v196;
+		v194 = loc61;
+		if (v194)
+		{
+			v194 = loc67;
+			v194.u3 = *v194.u3;
+			loc62 = v194;
+			v194 = loc56;
+			v195.u0 = 0x04;
+			v194 += v195;
+			loc63 = v194;
+			v194 = loc57;
+			v195 = loc63;
+			*v194.u3 = (word32) v195;
+			v194 = loc56;
+			v195 = loc62;
+			*v194.u3 = (word32) v195;
+		}
+	}
+	v194 = loc35;
+	v194.u3 = *v194.u3;
+	loc64 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194.u0 = 0x0183;
+	v195 = loc16;
+	v197 = loc64;
+	v198 = arg4;
+	v217 = invoke_fiii(v194, v195, v197, v198);
+	v218.u3 = (real32) v217;
+	loc197 = v218;
+	v194.u3 = g_t140048.u3;
+	loc65 = v194;
+	v194.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v194;
+	v194 = loc65;
+	v195.u0 = 0x01;
+	v194 &= v195;
+	loc66 = v194;
+	v194 = loc66;
+	v196 = v194 == 0x00;
+	if (!v196)
+	{
+l000F5365:
+		v194 = ___cxa_find_matching_catch_n();
+		loc181 = v194;
+		v194.u3 = g_t140094.u3;
+		loc182 = v194;
+		v194 = loc181;
+		loc21 = v194;
+		v194 = loc182;
+		loc22 = v194;
+		goto l000F537B;
+	}
+	else
+	{
+		v194 = arg5;
+		v219 = loc197;
+		*v194.u0 = v219;
+		v194 = loc57;
+		v194 = *v194.u0;
+		loc68 = v194;
+		v194 = loc180;
+		v195 = loc46;
+		v197 = loc68;
+		v198 = arg4;
+		fn000EC01D(v194, v195, v197, v198);
+		v194 = loc18;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc69 = v196;
+		v194 = loc69;
+		if (v194)
+		{
+			v194.u0 = 0x01;
+			loc104 = v194;
+		}
+		else
+		{
+			v194 = loc18;
+			v195.u0 = 0x0C;
+			v194 += v195;
+			loc70 = v194;
+			v194 = loc70;
+			v194 = *v194.u0;
+			loc71 = v194;
+			v194 = loc18;
+			v195.u0 = 0x10;
+			v194 += v195;
+			loc72 = v194;
+			v194 = loc72;
+			v194 = *v194.u0;
+			loc73 = v194;
+			v194 = loc71;
+			v195 = loc73;
+			v196 = v194 == v195;
+			loc74 = v196;
+			v194 = loc74;
+			if (v194)
+			{
+				v194 = loc18;
+				v194 = *v194.u0;
+				loc75 = v194;
+				v194 = loc75;
+				v195.u0 = 0x24;
+				v194 += v195;
+				loc76 = v194;
+				v194 = loc76;
+				v194 = *v194.u0;
+				loc77 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc77;
+				v195 = loc18;
+				v194 = invoke_ii(v194, v195);
+				loc79 = v194;
+				v194.u3 = g_t140048.u3;
+				loc80 = v194;
+				v194.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v194;
+				v194 = loc80;
+				v195.u0 = 0x01;
+				v194 &= v195;
+				loc81 = v194;
+				v194 = loc81;
+				if (v194)
+					goto l000F5365;
+				v194 = loc79;
+				loc7 = v194;
+			}
+			else
+			{
+				v194 = loc71;
+				v194 = *v194.u0;
+				loc82 = v194;
+				v194 = loc82;
+				loc7 = v194;
+			}
+			v194 = loc7;
+			v195.u0 = ~0x00;
+			v196 = v194 == v195;
+			loc83 = v196;
+			v194 = loc83;
+			if (v194)
+			{
+				v194 = arg1;
+				v195.u0 = 0x00;
+				*v194.u0 = v195;
+				v194.u0 = 0x01;
+				loc104 = v194;
+			}
+			else
+			{
+				v194.u0 = 0x00;
+				loc104 = v194;
+			}
+		}
+		v194 = loc20;
+		v195.u0 = 0x00;
+		v196 = v194 == v195;
+		loc84 = v196;
+		v194 = loc84;
+		if (v194)
+		{
+			v194.u0 = 55;
+			loc195 = v194;
+			goto l000F5318;
+		}
+		v194 = loc20;
+		v195.u0 = 0x0C;
+		v194 += v195;
+		loc85 = v194;
+		v194 = loc85;
+		v194 = *v194.u0;
+		loc86 = v194;
+		v194 = loc20;
+		v195.u0 = 0x10;
+		v194 += v195;
+		loc87 = v194;
+		v194 = loc87;
+		v194 = *v194.u0;
+		loc88 = v194;
+		v194 = loc86;
+		v195 = loc88;
+		v196 = v194 == v195;
+		loc90 = v196;
+		v194 = loc90;
+		if (v194)
+		{
+			v194 = loc20;
+			v194 = *v194.u0;
+			loc91 = v194;
+			v194 = loc91;
+			v195.u0 = 0x24;
+			v194 += v195;
+			loc92 = v194;
+			v194 = loc92;
+			v194 = *v194.u0;
+			loc93 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc93;
+			v195 = loc20;
+			v194 = invoke_ii(v194, v195);
+			loc94 = v194;
+			v194.u3 = g_t140048.u3;
+			loc95 = v194;
+			v194.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v194;
+			v194 = loc95;
+			v195.u0 = 0x01;
+			v194 &= v195;
+			loc96 = v194;
+			v194 = loc96;
+			if (v194)
+				goto l000F5365;
+			v194 = loc94;
+			loc9 = v194;
+		}
+		else
+		{
+			v194 = loc86;
+			v194 = *v194.u0;
+			loc97 = v194;
+			v194 = loc97;
+			loc9 = v194;
+		}
+		v194 = loc9;
+		v195.u0 = ~0x00;
+		v196 = v194 == v195;
+		loc98 = v196;
+		v194 = loc98;
+		if (v194)
+		{
+			v194 = arg2;
+			v195.u0 = 0x00;
+			*v194.u0 = v195;
+			v194.u0 = 55;
+			loc195 = v194;
+		}
+		else
+		{
+			v194 = loc104;
+			if (!v194)
+			{
+				v194.u0 = 0x39;
+				loc195 = v194;
+			}
+		}
+l000F5318:
+		v194 = loc195;
+		v195.u0 = 55;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194 = loc104;
+			if (v194)
+			{
+				v194.u0 = 0x39;
+				loc195 = v194;
+			}
+		}
+		v194 = loc195;
+		v195.u0 = 0x39;
+		v196 = v194 == v195;
+		if (v196)
+		{
+			v194 = arg4;
+			v194 = *v194.u0;
+			loc99 = v194;
+			v194 = loc99;
+			v195.u0 = 0x02;
+			v194 |= v195;
+			loc101 = v194;
+			v194 = arg4;
+			v195 = loc101;
+			*v194.u0 = v195;
+		}
+		v194 = arg1;
+		v194 = *v194.u0;
+		loc23 = v194;
+		v194 = loc24;
+		fn0011BAF7(v194);
+		v194 = loc180;
+		fn0011BAF7(v194);
+		v194 = loc196;
+		g_t140030.u3 = (word32 *) v194;
+		v194 = loc23;
+		return v194;
+	}
 }
 
 // 000F539A: Stack Eq_n fn000F539A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F539A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v188.u3 = g_t140030.u3;
+	loc190 = v188;
+	v188.u3 = g_t140030.u3;
+	v189.u0 = 0x0130;
+	v188 += v189;
+	g_t140030.u3 = (word32 *) v188;
+	v188.u3 = g_t140030.u3;
+	v189.u3 = g_t140034.u3;
+	v190 = v188 >= v189;
+	if (v190)
+	{
+		v188.u0 = 0x0130;
+		abortStackOverflow(v188);
+	}
+	while (true)
+	{
+		v188 = loc190;
+		v189.u0 = 200;
+		v188 += v189;
+		loc142 = v188;
+		v188 = loc190;
+		v189.u0 = 0xC4;
+		v188 += v189;
+		loc153 = v188;
+		v188 = loc190;
+		v189.u0 = 0xB8;
+		v188 += v189;
+		loc164 = v188;
+		v188 = loc190;
+		v189.u0 = 0xAC;
+		v188 += v189;
+		loc175 = v188;
+		v188 = loc190;
+		v189.u0 = 0xA8;
+		v188 += v189;
+		loc24 = v188;
+		v188 = loc190;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc35 = v188;
+		v188 = loc190;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc46 = v188;
+		v188 = loc190;
+		loc57 = v188;
+		v188 = arg3;
+		v188 = fn000EDE83(v188);
+		loc67 = v188;
+		v188 = loc164;
+		v189 = arg3;
+		v191 = loc142;
+		v192 = loc153;
+		fn000F5C88(v188, v189, v191, v192);
+		v188 = loc175;
+		v193.u0 = 0x00;
+		*v188.u0 = v193;
+		v188 = loc175;
+		v189.u0 = 0x08;
+		v188 += v189;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188.u0 = 0x00;
+		loc6 = v188;
+		v188 = loc6;
+		v189.u0 = 0x03;
+		v190 = v188 == v189;
+		loc186 = v190;
+		v188 = loc186;
+		if (v188)
+			break;
+		v188 = loc175;
+		v189 = loc6;
+		v191.u0 = 0x02;
+		v189 <<= v191;
+		v188 += v189;
+		loc78 = v188;
+		v188 = loc78;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188 = loc6;
+		v189.u0 = 0x01;
+		v188 += v189;
+		loc89 = v188;
+		v188 = loc89;
+		loc6 = v188;
+	}
+	v188 = loc175;
+	v189.u0 = 11;
+	v188 += v189;
+	loc99 = v188;
+	v188 = loc99;
+	v194 = *v188.u0;
+	v188.u3 = (word32) v194;
+	loc100 = v188;
+	v188 = loc100;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc101 = v190;
+	v188 = loc101;
+	if (v188)
+	{
+		v188 = loc175;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc102 = v188;
+		v188 = loc102;
+		v188.u3 = *v188.u3;
+		loc103 = v188;
+		v188 = loc103;
+		v189.u0 = 0x7FFFFFFF;
+		v188 &= v189;
+		loc104 = v188;
+		v188 = loc104;
+		v189.u0 = ~0x00;
+		v188 += v189;
+		loc187 = v188;
+		v188 = loc187;
+		loc105 = v188;
+	}
+	else
+	{
+		v188.u0 = 0x0A;
+		loc105 = v188;
+	}
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x017A;
+	v189 = loc175;
+	v191 = loc105;
+	v192.u0 = 0x00;
+	invoke_viii(v188, v189, v191, v192);
+	v188.u3 = g_t140048.u3;
+	loc106 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc106;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc107 = v188;
+	v188 = loc107;
+	if (v188)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc169 = v188;
+		v188.u3 = g_t140094.u3;
+		loc170 = v188;
+		v188 = loc169;
+		loc13 = v188;
+		v188 = loc170;
+		loc15 = v188;
+		goto l000F5C72;
+	}
+	v188 = loc99;
+	v195.u3 = *v188.u3;
+	v188.u3 = (word32) v195;
+	loc108 = v188;
+	v188 = loc108;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc109 = v190;
+	v188 = loc175;
+	v188.u3 = *v188.u3;
+	loc110 = v188;
+	v188 = loc109;
+	if (v188)
+		v188 = loc110;
+	else
+		v188 = loc175;
+	while (true)
+	{
+		loc111 = v188;
+		v188 = loc24;
+		v189 = loc111;
+		*v188.u3 = (word32) v189;
+		v188 = loc46;
+		v189 = loc35;
+		*v188.u3 = (word32) v189;
+		v188 = loc57;
+		v189.u0 = 0x00;
+		*v188.u3 = (word32) v189;
+		v188 = loc175;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc112 = v188;
+		v188 = loc175;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc113 = v188;
+		v188 = arg1;
+		v188.u3 = *v188.u3;
+		loc17 = v188;
+		v188 = loc111;
+		loc12 = v188;
+		v188 = loc17;
+		loc19 = v188;
+		v188 = loc19;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc114 = v190;
+		v188 = loc114;
+		if (v188)
+		{
+			v188.u0 = 0x00;
+			loc18 = v188;
+			v188.u0 = 0x01;
+			loc96 = v188;
+		}
+		else
+		{
+			v188 = loc19;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc115 = v188;
+			v188 = loc115;
+			v188 = *v188.u0;
+			loc116 = v188;
+			v188 = loc19;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc117 = v188;
+			v188 = loc117;
+			v188 = *v188.u0;
+			loc118 = v188;
+			v188 = loc116;
+			v189 = loc118;
+			v190 = v188 == v189;
+			loc119 = v190;
+			v188 = loc119;
+			if (v188)
+			{
+				v188 = loc19;
+				v188 = *v188.u0;
+				loc120 = v188;
+				v188 = loc120;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc121 = v188;
+				v188 = loc121;
+				v188 = *v188.u0;
+				loc122 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc122;
+				v189 = loc19;
+				v188 = invoke_ii(v188, v189);
+				loc123 = v188;
+				v188.u3 = g_t140048.u3;
+				loc124 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc124;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc125 = v188;
+				v188 = loc125;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc189 = v188;
+					goto l000F599D;
+				}
+				v188 = loc123;
+				loc8 = v188;
+			}
+			else
+			{
+				v188 = loc116;
+				v188 = *v188.u0;
+				loc126 = v188;
+				v188 = loc126;
+				loc8 = v188;
+			}
+			v188 = loc8;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc127 = v190;
+			v188 = loc127;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x00;
+				loc18 = v188;
+				v188.u0 = 0x01;
+				loc96 = v188;
+			}
+			else
+			{
+				v188 = loc19;
+				loc18 = v188;
+				v188.u0 = 0x00;
+				loc96 = v188;
+			}
+		}
+		v188 = arg2;
+		v188 = *v188.u0;
+		loc128 = v188;
+		v188 = loc128;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc129 = v190;
+		v188 = loc129;
+		if (v188)
+		{
+			v188.u0 = 0x14;
+			loc189 = v188;
+		}
+		else
+		{
+			v188 = loc128;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc130 = v188;
+			v188 = loc130;
+			v188 = *v188.u0;
+			loc131 = v188;
+			v188 = loc128;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc132 = v188;
+			v188 = loc132;
+			v188 = *v188.u0;
+			loc133 = v188;
+			v188 = loc131;
+			v189 = loc133;
+			v190 = v188 == v189;
+			loc134 = v190;
+			v188 = loc134;
+			if (v188)
+			{
+				v188 = loc128;
+				v188 = *v188.u0;
+				loc135 = v188;
+				v188 = loc135;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc136 = v188;
+				v188 = loc136;
+				v188 = *v188.u0;
+				loc137 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc137;
+				v189 = loc128;
+				v188 = invoke_ii(v188, v189);
+				loc138 = v188;
+				v188.u3 = g_t140048.u3;
+				loc139 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc139;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc140 = v188;
+				v188 = loc140;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc189 = v188;
+					goto l000F599D;
+				}
+				v188 = loc138;
+				loc10 = v188;
+			}
+			else
+			{
+				v188 = loc131;
+				v188 = *v188.u0;
+				loc141 = v188;
+				v188 = loc141;
+				loc10 = v188;
+			}
+			v188 = loc10;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc143 = v190;
+			v188 = loc143;
+			if (v188)
+			{
+				v188 = arg2;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x14;
+				loc189 = v188;
+			}
+			else
+			{
+				v188 = loc96;
+				if (!v188)
+				{
+					v188 = loc12;
+					loc16 = v188;
+					v188 = loc128;
+					loc20 = v188;
+					v188.u0 = 0x27;
+					loc189 = v188;
+					goto l000F599D;
+				}
+				v188 = loc128;
+				loc97 = v188;
+			}
+		}
+		v188 = loc189;
+		v189.u0 = 0x14;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188.u0 = 0x00;
+			loc189 = v188;
+			v188 = loc96;
+			if (v188)
+			{
+				v188 = loc12;
+				loc16 = v188;
+				v188.u0 = 0x00;
+				loc20 = v188;
+				v188.u0 = 0x27;
+				loc189 = v188;
+				goto l000F599D;
+			}
+			v188.u0 = 0x00;
+			loc97 = v188;
+		}
+		v188 = loc24;
+		v188 = *v188.u0;
+		loc144 = v188;
+		v188 = loc99;
+		v196 = *v188.u0;
+		v188.u3 = (word32) v196;
+		loc145 = v188;
+		v188 = loc145;
+		v189.u0 = 0x18;
+		v188 <<= v189;
+		v189.u0 = 0x18;
+		v188 >>= v189;
+		v189.u0 = 0x00;
+		v190 = v188 < v189;
+		loc146 = v190;
+		v188 = loc112;
+		v188.u3 = *v188.u3;
+		loc147 = v188;
+		v188 = loc145;
+		v189.u0 = 0xFF;
+		v188 &= v189;
+		loc148 = v188;
+		v188 = loc146;
+		if (v188)
+			v188 = loc147;
+		else
+			v188 = loc148;
+		loc149 = v188;
+		v188 = loc12;
+		v189 = loc149;
+		v188 += v189;
+		loc150 = v188;
+		v188 = loc144;
+		v189 = loc150;
+		v190 = v188 == v189;
+		loc151 = v190;
+		v188 = loc151;
+		if (v188)
+		{
+			v188 = loc149;
+			v189.u0 = 0x01;
+			v188 <<= v189;
+			loc152 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc175;
+			v191 = loc152;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc154 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc154;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc155 = v188;
+			v188 = loc155;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc189 = v188;
+				goto l000F599D;
+			}
+			v188 = loc99;
+			v197 = *v188.u0;
+			v188.u3 = (word32) v197;
+			loc156 = v188;
+			v188 = loc156;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc157 = v190;
+			v188 = loc157;
+			if (v188)
+			{
+				v188 = loc113;
+				v188.u3 = *v188.u3;
+				loc158 = v188;
+				v188 = loc158;
+				v189.u0 = 0x7FFFFFFF;
+				v188 &= v189;
+				loc159 = v188;
+				v188 = loc159;
+				v189.u0 = ~0x00;
+				v188 += v189;
+				loc188 = v188;
+				v188 = loc188;
+				loc160 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x0A;
+				loc160 = v188;
+			}
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc175;
+			v191 = loc160;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc161 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc161;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc162 = v188;
+			v188 = loc162;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc189 = v188;
+				goto l000F599D;
+			}
+			v188 = loc99;
+			v198 = *v188.u0;
+			v188.u3 = (word32) v198;
+			loc163 = v188;
+			v188 = loc163;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc165 = v190;
+			v188 = loc175;
+			v188.u3 = *v188.u3;
+			loc166 = v188;
+			v188 = loc165;
+			if (v188)
+				v188 = loc166;
+			else
+				v188 = loc175;
+			loc167 = v188;
+			v188 = loc167;
+			v189 = loc149;
+			v188 += v189;
+			loc168 = v188;
+			v188 = loc24;
+			v189 = loc168;
+			*v188.u3 = (word32) v189;
+			v188 = loc167;
+			loc14 = v188;
+		}
+		else
+		{
+			v188 = loc12;
+			loc14 = v188;
+		}
+		v188 = loc18;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc178 = v188;
+		v188 = loc178;
+		v188.u3 = *v188.u3;
+		loc179 = v188;
+		v188 = loc18;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc180 = v188;
+		v188 = loc180;
+		v188.u3 = *v188.u3;
+		loc181 = v188;
+		v188 = loc179;
+		v189 = loc181;
+		v190 = v188 == v189;
+		loc182 = v190;
+		v188 = loc182;
+		if (v188)
+		{
+			v188 = loc18;
+			v188.u3 = *v188.u3;
+			loc183 = v188;
+			v188 = loc183;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc184 = v188;
+			v188 = loc184;
+			v188.u3 = *v188.u3;
+			loc185 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc185;
+			v189 = loc18;
+			v188 = invoke_ii(v188, v189);
+			loc25 = v188;
+			v188.u3 = g_t140048.u3;
+			loc26 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc26;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc27 = v188;
+			v188 = loc27;
+			if (v188)
+			{
+				v188.u0 = 0x1D;
+				loc189 = v188;
+				goto l000F599D;
+			}
+			v188 = loc25;
+			loc11 = v188;
+		}
+		else
+		{
+			v188 = loc179;
+			v188 = *v188.u0;
+			loc28 = v188;
+			v188 = loc28;
+			loc11 = v188;
+		}
+		v188 = loc153;
+		v188 = *v188.u0;
+		loc29 = v188;
+		v188 = loc11;
+		v189 = loc67;
+		v191 = loc14;
+		v192 = loc24;
+		v199 = loc57;
+		v200 = loc29;
+		v201 = loc164;
+		v202 = loc35;
+		v203 = loc46;
+		v204 = loc142;
+		v188 = fn000F2F51(v188, v189, v191, v192, v199, v200, v201, v202, v203, v204);
+		loc30 = v188;
+		v188 = loc30;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc31 = v190;
+		v188 = loc31;
+		v190 = v188 == 0x00;
+		if (v190)
+			break;
+		v188 = loc178;
+		v188 = *v188.u0;
+		loc32 = v188;
+		v188 = loc180;
+		v188 = *v188.u0;
+		loc33 = v188;
+		v188 = loc32;
+		v189 = loc33;
+		v190 = v188 == v189;
+		loc34 = v190;
+		v188 = loc34;
+		if (!v188)
+		{
+			v188 = loc32;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc41 = v188;
+			v188 = loc178;
+			v189 = loc41;
+			*v188.u0 = v189;
+			v188 = loc14;
+			loc12 = v188;
+			v188 = loc18;
+			loc19 = v188;
+			continue;
+		}
+		v188 = loc18;
+		v188 = *v188.u0;
+		loc36 = v188;
+		v188 = loc36;
+		v189.u0 = 0x28;
+		v188 += v189;
+		loc37 = v188;
+		v188 = loc37;
+		v188 = *v188.u0;
+		loc38 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc38;
+		v189 = loc18;
+		v188 = invoke_ii(v188, v189);
+		v188.u3 = g_t140048.u3;
+		loc39 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc39;
+		v189.u0 = 0x01;
+		v188 &= v189;
+		loc40 = v188;
+		v188 = loc40;
+		if (v188)
+		{
+			v188.u0 = 0x1D;
+			loc189 = v188;
+			goto l000F599D;
+		}
+		v188 = loc14;
+		loc12 = v188;
+		v188 = loc18;
+		loc19 = v188;
+	}
+	v188 = loc14;
+	loc16 = v188;
+	v188 = loc97;
+	loc20 = v188;
+	v188.u0 = 0x27;
+	loc189 = v188;
+l000F599D:
+	v188 = loc189;
+	v189.u0 = 0x1D;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc171 = v188;
+		v188.u3 = g_t140094.u3;
+		loc172 = v188;
+		v188 = loc171;
+		loc21 = v188;
+		v188 = loc172;
+		loc22 = v188;
+		goto l000F5C69;
+	}
+	v188 = loc189;
+	v189.u0 = 0x1F;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc176 = v188;
+		v188.u3 = g_t140094.u3;
+		loc177 = v188;
+		v188 = loc176;
+		loc21 = v188;
+		v188 = loc177;
+		loc22 = v188;
+		goto l000F5C68;
+	}
+	v188 = loc189;
+	v189.u0 = 0x27;
+	v190 = v188 == v189;
+	if (!v190)
+	{
+l000F5C69:
+		v188 = loc21;
+		loc13 = v188;
+		v188 = loc22;
+		loc15 = v188;
+l000F5C72:
+		v188 = loc175;
+		fn0011BAF7(v188);
+		v188 = loc164;
+		fn0011BAF7(v188);
+		v188 = loc13;
+		___resumeException(v188);
+		v188.u0 = 0x00;
+		return v188;
+	}
+	v188 = loc164;
+	v189.u0 = 11;
+	v188 += v189;
+	loc42 = v188;
+	v188 = loc42;
+	v205.u3 = *v188.u3;
+	v188.u3 = (word32) v205;
+	loc43 = v188;
+	v188 = loc43;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc44 = v190;
+	v188 = loc164;
+	v189.u0 = 0x04;
+	v188 += v189;
+	loc45 = v188;
+	v188 = loc45;
+	v188.u3 = *v188.u3;
+	loc47 = v188;
+	v188 = loc43;
+	v189.u0 = 0xFF;
+	v188 &= v189;
+	loc48 = v188;
+	v188 = loc44;
+	if (v188)
+		v188 = loc47;
+	else
+		v188 = loc48;
+	loc49 = v188;
+	v188 = loc49;
+	v189.u0 = 0x00;
+	v190 = v188 == v189;
+	loc50 = v190;
+	v188 = loc50;
+	v190 = v188 == 0x00;
+	if (v190)
+	{
+		v188 = loc46;
+		v188.u3 = *v188.u3;
+		loc51 = v188;
+		v188 = loc51;
+		loc52 = v188;
+		v188 = loc35;
+		loc53 = v188;
+		v188 = loc52;
+		v189 = loc53;
+		v188 -= v189;
+		loc54 = v188;
+		v188 = loc54;
+		v189.u0 = 0xA0;
+		v190 = v188 < v189;
+		loc55 = v190;
+		v188 = loc55;
+		if (v188)
+		{
+			v188 = loc57;
+			v188.u3 = *v188.u3;
+			loc56 = v188;
+			v188 = loc51;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc58 = v188;
+			v188 = loc46;
+			v189 = loc58;
+			*v188.u3 = (word32) v189;
+			v188 = loc51;
+			v189 = loc56;
+			*v188.u3 = (word32) v189;
+		}
+	}
+	v188 = loc24;
+	v188.u3 = *v188.u3;
+	loc59 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 388;
+	v189 = loc16;
+	v191 = loc59;
+	v192 = arg4;
+	v199 = loc67;
+	v206 = fn0011F5F3(v188, v189, v191, v192, v199);
+	loc191 = v206;
+	v188.u3 = g_t140048.u3;
+	loc60 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc60;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc61 = v188;
+	v188 = loc61;
+	v190 = v188 == 0x00;
+	if (!v190)
+	{
+l000F5C52:
+		v188 = ___cxa_find_matching_catch_n();
+		loc173 = v188;
+		v188.u3 = g_t140094.u3;
+		loc174 = v188;
+		v188 = loc173;
+		loc21 = v188;
+		v188 = loc174;
+		loc22 = v188;
+		goto l000F5C68;
+	}
+	else
+	{
+		v188 = arg5;
+		v193 = loc191;
+		*v188.u0 = v193;
+		v188 = loc46;
+		v188 = *v188.u0;
+		loc62 = v188;
+		v188 = loc164;
+		v189 = loc35;
+		v191 = loc62;
+		v192 = arg4;
+		fn000EC01D(v188, v189, v191, v192);
+		v188 = loc18;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc63 = v190;
+		v188 = loc63;
+		if (v188)
+		{
+			v188.u0 = 0x01;
+			loc98 = v188;
+		}
+		else
+		{
+			v188 = loc18;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc64 = v188;
+			v188 = loc64;
+			v188 = *v188.u0;
+			loc65 = v188;
+			v188 = loc18;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc66 = v188;
+			v188 = loc66;
+			v188 = *v188.u0;
+			loc68 = v188;
+			v188 = loc65;
+			v189 = loc68;
+			v190 = v188 == v189;
+			loc69 = v190;
+			v188 = loc69;
+			if (v188)
+			{
+				v188 = loc18;
+				v188 = *v188.u0;
+				loc70 = v188;
+				v188 = loc70;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc71 = v188;
+				v188 = loc71;
+				v188 = *v188.u0;
+				loc72 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc72;
+				v189 = loc18;
+				v188 = invoke_ii(v188, v189);
+				loc73 = v188;
+				v188.u3 = g_t140048.u3;
+				loc74 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc74;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc75 = v188;
+				v188 = loc75;
+				if (v188)
+					goto l000F5C52;
+				v188 = loc73;
+				loc7 = v188;
+			}
+			else
+			{
+				v188 = loc65;
+				v188 = *v188.u0;
+				loc76 = v188;
+				v188 = loc76;
+				loc7 = v188;
+			}
+			v188 = loc7;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc77 = v190;
+			v188 = loc77;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x01;
+				loc98 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x00;
+				loc98 = v188;
+			}
+		}
+		v188 = loc20;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc79 = v190;
+		v188 = loc79;
+		if (v188)
+		{
+			v188.u0 = 55;
+			loc189 = v188;
+			goto l000F5C04;
+		}
+		v188 = loc20;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc80 = v188;
+		v188 = loc80;
+		v188 = *v188.u0;
+		loc81 = v188;
+		v188 = loc20;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc82 = v188;
+		v188 = loc82;
+		v188 = *v188.u0;
+		loc83 = v188;
+		v188 = loc81;
+		v189 = loc83;
+		v190 = v188 == v189;
+		loc84 = v190;
+		v188 = loc84;
+		if (v188)
+		{
+			v188 = loc20;
+			v188 = *v188.u0;
+			loc85 = v188;
+			v188 = loc85;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc86 = v188;
+			v188 = loc86;
+			v188 = *v188.u0;
+			loc87 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc87;
+			v189 = loc20;
+			v188 = invoke_ii(v188, v189);
+			loc88 = v188;
+			v188.u3 = g_t140048.u3;
+			loc90 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc90;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc91 = v188;
+			v188 = loc91;
+			if (v188)
+				goto l000F5C52;
+			v188 = loc88;
+			loc9 = v188;
+		}
+		else
+		{
+			v188 = loc81;
+			v188 = *v188.u0;
+			loc92 = v188;
+			v188 = loc92;
+			loc9 = v188;
+		}
+		v188 = loc9;
+		v189.u0 = ~0x00;
+		v190 = v188 == v189;
+		loc93 = v190;
+		v188 = loc93;
+		if (v188)
+		{
+			v188 = arg2;
+			v189.u0 = 0x00;
+			*v188.u0 = v189;
+			v188.u0 = 55;
+			loc189 = v188;
+		}
+		else
+		{
+			v188 = loc98;
+			if (!v188)
+			{
+				v188.u0 = 0x39;
+				loc189 = v188;
+			}
+		}
+l000F5C04:
+		v188 = loc189;
+		v189.u0 = 55;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = loc98;
+			if (v188)
+			{
+				v188.u0 = 0x39;
+				loc189 = v188;
+			}
+		}
+		v188 = loc189;
+		v189.u0 = 0x39;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = arg4;
+			v188 = *v188.u0;
+			loc94 = v188;
+			v188 = loc94;
+			v189.u0 = 0x02;
+			v188 |= v189;
+			loc95 = v188;
+			v188 = arg4;
+			v189 = loc95;
+			*v188.u0 = v189;
+		}
+		v188 = arg1;
+		v188 = *v188.u0;
+		loc23 = v188;
+		v188 = loc175;
+		fn0011BAF7(v188);
+		v188 = loc164;
+		fn0011BAF7(v188);
+		v188 = loc190;
+		g_t140030.u3 = (word32 *) v188;
+		v188 = loc23;
+		return v188;
+	}
 }
 
 // 000F5C88: void fn000F5C88(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 void fn000F5C88(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
+	v34.u3 = g_t140030.u3;
+	loc35 = v34;
+	v34.u3 = g_t140030.u3;
+	v35.u0 = 0x10;
+	v34 += v35;
+	g_t140030.u3 = (word32 *) v34;
+	v34.u3 = g_t140030.u3;
+	v35.u3 = g_t140034.u3;
+	v36 = v34 >= v35;
+	if (v36)
+	{
+		v34.u0 = 0x10;
+		abortStackOverflow(v34);
+	}
+	v34 = loc35;
+	loc28 = v34;
+	v34 = arg1;
+	v34 = fn000E64CA(v34);
+	loc29 = v34;
+	v34 = loc28;
+	v35 = loc29;
+	*v34.u0 = v35;
+	v34.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v34;
+	v34.u0 = 0x0164;
+	v35 = loc28;
+	v37.u0 = 0x4C90;
+	v34 = invoke_iii(v34, v35, v37);
+	loc30 = v34;
+	v34.u3 = g_t140048.u3;
+	loc31 = v34;
+	v34.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v34;
+	v34 = loc31;
+	v35.u0 = 0x01;
+	v34 &= v35;
+	loc32 = v34;
+	v34 = loc32;
+	if (v34)
+	{
+		v34.u0 = 0x07;
+		loc34 = v34;
+	}
+	else
+	{
+		v34 = loc30;
+		v34 = *v34.u0;
+		loc33 = v34;
+		v34 = loc33;
+		v35.u0 = 0x30;
+		v34 += v35;
+		loc6 = v34;
+		v34 = loc6;
+		v34 = *v34.u0;
+		loc7 = v34;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34 = loc7;
+		v35 = loc30;
+		v37.u0 = 14251;
+		v38 = 14277;
+		v39 = arg2;
+		v34 = invoke_iiiii(v34, v35, v37, v38, v39);
+		v34.u3 = g_t140048.u3;
+		loc8 = v34;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34 = loc8;
+		v35.u0 = 0x01;
+		v34 &= v35;
+		loc9 = v34;
+		v34 = loc9;
+		if (v34)
+		{
+			v34.u0 = 0x07;
+			loc34 = v34;
+		}
+		else
+		{
+			v34.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v34;
+			v34.u0 = 0x0164;
+			v35 = loc28;
+			v37.u0 = 0x4C98;
+			v34 = invoke_iii(v34, v35, v37);
+			loc10 = v34;
+			v34.u3 = g_t140048.u3;
+			loc11 = v34;
+			v34.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v34;
+			v34 = loc11;
+			v35.u0 = 0x01;
+			v34 &= v35;
+			loc12 = v34;
+			v34 = loc12;
+			if (v34)
+			{
+				v34.u0 = 0x07;
+				loc34 = v34;
+			}
+			else
+			{
+				v34 = loc10;
+				v34 = *v34.u0;
+				loc13 = v34;
+				v34 = loc13;
+				v35.u0 = 0x10;
+				v34 += v35;
+				loc14 = v34;
+				v34 = loc14;
+				v34 = *v34.u0;
+				loc15 = v34;
+				v34.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v34;
+				v34 = loc15;
+				v35 = loc10;
+				v34 = invoke_ii(v34, v35);
+				loc16 = v34;
+				v34.u3 = g_t140048.u3;
+				loc17 = v34;
+				v34.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v34;
+				v34 = loc17;
+				v35.u0 = 0x01;
+				v34 &= v35;
+				loc18 = v34;
+				v34 = loc18;
+				v36 = v34 == 0x00;
+				if (v36)
+				{
+					v34 = arg3;
+					v35 = loc16;
+					*v34.u0 = v35;
+					v34 = loc10;
+					v34 = *v34.u0;
+					loc19 = v34;
+					v34 = loc19;
+					v35.u0 = 0x14;
+					v34 += v35;
+					loc20 = v34;
+					v34 = loc20;
+					v34 = *v34.u0;
+					loc21 = v34;
+					v34.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v34;
+					v34 = loc21;
+					v35 = arg0;
+					v37 = loc10;
+					invoke_vii(v34, v35, v37);
+					v34.u3 = g_t140048.u3;
+					loc22 = v34;
+					v34.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v34;
+					v34 = loc22;
+					v35.u0 = 0x01;
+					v34 &= v35;
+					loc23 = v34;
+					v34 = loc23;
+					v36 = v34 == 0x00;
+					if (v36)
+					{
+						v34 = loc29;
+						v34 = fn0011B43F(v34);
+						v34 = loc35;
+						g_t140030.u3 = (word32 *) v34;
+						return;
+					}
+				}
+				v34 = ___cxa_find_matching_catch_n();
+				loc26 = v34;
+				v34.u3 = g_t140094.u3;
+				loc27 = v34;
+				v34 = loc26;
+				loc4 = v34;
+				v34 = loc27;
+				loc5 = v34;
+			}
+		}
+	}
+	v34 = loc34;
+	v35.u0 = 0x07;
+	v36 = v34 == v35;
+	if (v36)
+	{
+		v34 = ___cxa_find_matching_catch_n();
+		loc24 = v34;
+		v34.u3 = g_t140094.u3;
+		loc25 = v34;
+		v34 = loc24;
+		loc4 = v34;
+		v34 = loc25;
+		loc5 = v34;
+	}
+	v34 = loc29;
+	v34 = fn0011B43F(v34);
+	v34 = loc4;
+	___resumeException(v34);
 }
 
 // 000F5DFC: Stack Eq_n fn000F5DFC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F5DFC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v188.u3 = g_t140030.u3;
+	loc191 = v188;
+	v188.u3 = g_t140030.u3;
+	v189.u0 = 0x0130;
+	v188 += v189;
+	g_t140030.u3 = (word32 *) v188;
+	v188.u3 = g_t140030.u3;
+	v189.u3 = g_t140034.u3;
+	v190 = v188 >= v189;
+	if (v190)
+	{
+		v188.u0 = 0x0130;
+		abortStackOverflow(v188);
+	}
+	while (true)
+	{
+		v188 = loc191;
+		v189.u0 = 200;
+		v188 += v189;
+		loc143 = v188;
+		v188 = loc191;
+		v189.u0 = 0xC4;
+		v188 += v189;
+		loc154 = v188;
+		v188 = loc191;
+		v189.u0 = 0xB8;
+		v188 += v189;
+		loc165 = v188;
+		v188 = loc191;
+		v189.u0 = 0xAC;
+		v188 += v189;
+		loc176 = v188;
+		v188 = loc191;
+		v189.u0 = 0xA8;
+		v188 += v189;
+		loc24 = v188;
+		v188 = loc191;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc35 = v188;
+		v188 = loc191;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc46 = v188;
+		v188 = loc191;
+		loc57 = v188;
+		v188 = arg3;
+		v188 = fn000EDE83(v188);
+		loc68 = v188;
+		v188 = loc165;
+		v189 = arg3;
+		v191 = loc143;
+		v192 = loc154;
+		fn000F5C88(v188, v189, v191, v192);
+		v188 = loc176;
+		v193.u0 = 0x00;
+		*v188.u0 = v193;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188.u0 = 0x00;
+		loc6 = v188;
+		v188 = loc6;
+		v189.u0 = 0x03;
+		v190 = v188 == v189;
+		loc187 = v190;
+		v188 = loc187;
+		if (v188)
+			break;
+		v188 = loc176;
+		v189 = loc6;
+		v191.u0 = 0x02;
+		v189 <<= v191;
+		v188 += v189;
+		loc79 = v188;
+		v188 = loc79;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188 = loc6;
+		v189.u0 = 0x01;
+		v188 += v189;
+		loc90 = v188;
+		v188 = loc90;
+		loc6 = v188;
+	}
+	v188 = loc176;
+	v189.u0 = 11;
+	v188 += v189;
+	loc100 = v188;
+	v188 = loc100;
+	v194 = *v188.u0;
+	v188.u3 = (word32) v194;
+	loc101 = v188;
+	v188 = loc101;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc102 = v190;
+	v188 = loc102;
+	if (v188)
+	{
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc103 = v188;
+		v188 = loc103;
+		v188.u3 = *v188.u3;
+		loc104 = v188;
+		v188 = loc104;
+		v189.u0 = 0x7FFFFFFF;
+		v188 &= v189;
+		loc105 = v188;
+		v188 = loc105;
+		v189.u0 = ~0x00;
+		v188 += v189;
+		loc188 = v188;
+		v188 = loc188;
+		loc106 = v188;
+	}
+	else
+	{
+		v188.u0 = 0x0A;
+		loc106 = v188;
+	}
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x017A;
+	v189 = loc176;
+	v191 = loc106;
+	v192.u0 = 0x00;
+	invoke_viii(v188, v189, v191, v192);
+	v188.u3 = g_t140048.u3;
+	loc107 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc107;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc108 = v188;
+	v188 = loc108;
+	if (v188)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc170 = v188;
+		v188.u3 = g_t140094.u3;
+		loc171 = v188;
+		v188 = loc170;
+		loc13 = v188;
+		v188 = loc171;
+		loc15 = v188;
+		goto l000F66D3;
+	}
+	v188 = loc100;
+	v195.u3 = *v188.u3;
+	v188.u3 = (word32) v195;
+	loc109 = v188;
+	v188 = loc109;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc110 = v190;
+	v188 = loc176;
+	v188.u3 = *v188.u3;
+	loc111 = v188;
+	v188 = loc110;
+	if (v188)
+		v188 = loc111;
+	else
+		v188 = loc176;
+	while (true)
+	{
+		loc112 = v188;
+		v188 = loc24;
+		v189 = loc112;
+		*v188.u3 = (word32) v189;
+		v188 = loc46;
+		v189 = loc35;
+		*v188.u3 = (word32) v189;
+		v188 = loc57;
+		v189.u0 = 0x00;
+		*v188.u3 = (word32) v189;
+		v188 = loc176;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc113 = v188;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc114 = v188;
+		v188 = arg1;
+		v188.u3 = *v188.u3;
+		loc17 = v188;
+		v188 = loc112;
+		loc12 = v188;
+		v188 = loc17;
+		loc19 = v188;
+		v188 = loc19;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc115 = v190;
+		v188 = loc115;
+		if (v188)
+		{
+			v188.u0 = 0x00;
+			loc18 = v188;
+			v188.u0 = 0x01;
+			loc97 = v188;
+		}
+		else
+		{
+			v188 = loc19;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc116 = v188;
+			v188 = loc116;
+			v188 = *v188.u0;
+			loc117 = v188;
+			v188 = loc19;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc118 = v188;
+			v188 = loc118;
+			v188 = *v188.u0;
+			loc119 = v188;
+			v188 = loc117;
+			v189 = loc119;
+			v190 = v188 == v189;
+			loc120 = v190;
+			v188 = loc120;
+			if (v188)
+			{
+				v188 = loc19;
+				v188 = *v188.u0;
+				loc121 = v188;
+				v188 = loc121;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc122 = v188;
+				v188 = loc122;
+				v188 = *v188.u0;
+				loc123 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc123;
+				v189 = loc19;
+				v188 = invoke_ii(v188, v189);
+				loc124 = v188;
+				v188.u3 = g_t140048.u3;
+				loc125 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc125;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc126 = v188;
+				v188 = loc126;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F6401;
+				}
+				v188 = loc124;
+				loc8 = v188;
+			}
+			else
+			{
+				v188 = loc117;
+				v188 = *v188.u0;
+				loc127 = v188;
+				v188 = loc127;
+				loc8 = v188;
+			}
+			v188 = loc8;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc128 = v190;
+			v188 = loc128;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x00;
+				loc18 = v188;
+				v188.u0 = 0x01;
+				loc97 = v188;
+			}
+			else
+			{
+				v188 = loc19;
+				loc18 = v188;
+				v188.u0 = 0x00;
+				loc97 = v188;
+			}
+		}
+		v188 = arg2;
+		v188 = *v188.u0;
+		loc129 = v188;
+		v188 = loc129;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc130 = v190;
+		v188 = loc130;
+		if (v188)
+		{
+			v188.u0 = 0x14;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc129;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc131 = v188;
+			v188 = loc131;
+			v188 = *v188.u0;
+			loc132 = v188;
+			v188 = loc129;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc133 = v188;
+			v188 = loc133;
+			v188 = *v188.u0;
+			loc134 = v188;
+			v188 = loc132;
+			v189 = loc134;
+			v190 = v188 == v189;
+			loc135 = v190;
+			v188 = loc135;
+			if (v188)
+			{
+				v188 = loc129;
+				v188 = *v188.u0;
+				loc136 = v188;
+				v188 = loc136;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc137 = v188;
+				v188 = loc137;
+				v188 = *v188.u0;
+				loc138 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc138;
+				v189 = loc129;
+				v188 = invoke_ii(v188, v189);
+				loc139 = v188;
+				v188.u3 = g_t140048.u3;
+				loc140 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc140;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc141 = v188;
+				v188 = loc141;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F6401;
+				}
+				v188 = loc139;
+				loc10 = v188;
+			}
+			else
+			{
+				v188 = loc132;
+				v188 = *v188.u0;
+				loc142 = v188;
+				v188 = loc142;
+				loc10 = v188;
+			}
+			v188 = loc10;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc144 = v190;
+			v188 = loc144;
+			if (v188)
+			{
+				v188 = arg2;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x14;
+				loc190 = v188;
+			}
+			else
+			{
+				v188 = loc97;
+				if (!v188)
+				{
+					v188 = loc12;
+					loc16 = v188;
+					v188 = loc129;
+					loc20 = v188;
+					v188.u0 = 0x27;
+					loc190 = v188;
+					goto l000F6401;
+				}
+				v188 = loc129;
+				loc98 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x14;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188.u0 = 0x00;
+			loc190 = v188;
+			v188 = loc97;
+			if (v188)
+			{
+				v188 = loc12;
+				loc16 = v188;
+				v188.u0 = 0x00;
+				loc20 = v188;
+				v188.u0 = 0x27;
+				loc190 = v188;
+				goto l000F6401;
+			}
+			v188.u0 = 0x00;
+			loc98 = v188;
+		}
+		v188 = loc24;
+		v188 = *v188.u0;
+		loc145 = v188;
+		v188 = loc100;
+		v196 = *v188.u0;
+		v188.u3 = (word32) v196;
+		loc146 = v188;
+		v188 = loc146;
+		v189.u0 = 0x18;
+		v188 <<= v189;
+		v189.u0 = 0x18;
+		v188 >>= v189;
+		v189.u0 = 0x00;
+		v190 = v188 < v189;
+		loc147 = v190;
+		v188 = loc113;
+		v188.u3 = *v188.u3;
+		loc148 = v188;
+		v188 = loc146;
+		v189.u0 = 0xFF;
+		v188 &= v189;
+		loc149 = v188;
+		v188 = loc147;
+		if (v188)
+			v188 = loc148;
+		else
+			v188 = loc149;
+		loc150 = v188;
+		v188 = loc12;
+		v189 = loc150;
+		v188 += v189;
+		loc151 = v188;
+		v188 = loc145;
+		v189 = loc151;
+		v190 = v188 == v189;
+		loc152 = v190;
+		v188 = loc152;
+		if (v188)
+		{
+			v188 = loc150;
+			v189.u0 = 0x01;
+			v188 <<= v189;
+			loc153 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc153;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc155 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc155;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc156 = v188;
+			v188 = loc156;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F6401;
+			}
+			v188 = loc100;
+			v197 = *v188.u0;
+			v188.u3 = (word32) v197;
+			loc157 = v188;
+			v188 = loc157;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc158 = v190;
+			v188 = loc158;
+			if (v188)
+			{
+				v188 = loc114;
+				v188.u3 = *v188.u3;
+				loc159 = v188;
+				v188 = loc159;
+				v189.u0 = 0x7FFFFFFF;
+				v188 &= v189;
+				loc160 = v188;
+				v188 = loc160;
+				v189.u0 = ~0x00;
+				v188 += v189;
+				loc189 = v188;
+				v188 = loc189;
+				loc161 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x0A;
+				loc161 = v188;
+			}
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc161;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc162 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc162;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc163 = v188;
+			v188 = loc163;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F6401;
+			}
+			v188 = loc100;
+			v198 = *v188.u0;
+			v188.u3 = (word32) v198;
+			loc164 = v188;
+			v188 = loc164;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc166 = v190;
+			v188 = loc176;
+			v188.u3 = *v188.u3;
+			loc167 = v188;
+			v188 = loc166;
+			if (v188)
+				v188 = loc167;
+			else
+				v188 = loc176;
+			loc168 = v188;
+			v188 = loc168;
+			v189 = loc150;
+			v188 += v189;
+			loc169 = v188;
+			v188 = loc24;
+			v189 = loc169;
+			*v188.u3 = (word32) v189;
+			v188 = loc168;
+			loc14 = v188;
+		}
+		else
+		{
+			v188 = loc12;
+			loc14 = v188;
+		}
+		v188 = loc18;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc179 = v188;
+		v188 = loc179;
+		v188.u3 = *v188.u3;
+		loc180 = v188;
+		v188 = loc18;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc181 = v188;
+		v188 = loc181;
+		v188.u3 = *v188.u3;
+		loc182 = v188;
+		v188 = loc180;
+		v189 = loc182;
+		v190 = v188 == v189;
+		loc183 = v190;
+		v188 = loc183;
+		if (v188)
+		{
+			v188 = loc18;
+			v188.u3 = *v188.u3;
+			loc184 = v188;
+			v188 = loc184;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc185 = v188;
+			v188 = loc185;
+			v188.u3 = *v188.u3;
+			loc186 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc186;
+			v189 = loc18;
+			v188 = invoke_ii(v188, v189);
+			loc25 = v188;
+			v188.u3 = g_t140048.u3;
+			loc26 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc26;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc27 = v188;
+			v188 = loc27;
+			if (v188)
+			{
+				v188.u0 = 0x1D;
+				loc190 = v188;
+				goto l000F6401;
+			}
+			v188 = loc25;
+			loc11 = v188;
+		}
+		else
+		{
+			v188 = loc180;
+			v188 = *v188.u0;
+			loc28 = v188;
+			v188 = loc28;
+			loc11 = v188;
+		}
+		v188 = loc154;
+		v188 = *v188.u0;
+		loc29 = v188;
+		v188 = loc11;
+		v189 = loc68;
+		v191 = loc14;
+		v192 = loc24;
+		v199 = loc57;
+		v200 = loc29;
+		v201 = loc165;
+		v202 = loc35;
+		v203 = loc46;
+		v204 = loc143;
+		v188 = fn000F2F51(v188, v189, v191, v192, v199, v200, v201, v202, v203, v204);
+		loc30 = v188;
+		v188 = loc30;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc31 = v190;
+		v188 = loc31;
+		v190 = v188 == 0x00;
+		if (v190)
+			break;
+		v188 = loc179;
+		v188 = *v188.u0;
+		loc32 = v188;
+		v188 = loc181;
+		v188 = *v188.u0;
+		loc33 = v188;
+		v188 = loc32;
+		v189 = loc33;
+		v190 = v188 == v189;
+		loc34 = v190;
+		v188 = loc34;
+		if (!v188)
+		{
+			v188 = loc32;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc41 = v188;
+			v188 = loc179;
+			v189 = loc41;
+			*v188.u0 = v189;
+			v188 = loc14;
+			loc12 = v188;
+			v188 = loc18;
+			loc19 = v188;
+			continue;
+		}
+		v188 = loc18;
+		v188 = *v188.u0;
+		loc36 = v188;
+		v188 = loc36;
+		v189.u0 = 0x28;
+		v188 += v189;
+		loc37 = v188;
+		v188 = loc37;
+		v188 = *v188.u0;
+		loc38 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc38;
+		v189 = loc18;
+		v188 = invoke_ii(v188, v189);
+		v188.u3 = g_t140048.u3;
+		loc39 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc39;
+		v189.u0 = 0x01;
+		v188 &= v189;
+		loc40 = v188;
+		v188 = loc40;
+		if (v188)
+		{
+			v188.u0 = 0x1D;
+			loc190 = v188;
+			goto l000F6401;
+		}
+		v188 = loc14;
+		loc12 = v188;
+		v188 = loc18;
+		loc19 = v188;
+	}
+	v188 = loc14;
+	loc16 = v188;
+	v188 = loc98;
+	loc20 = v188;
+	v188.u0 = 0x27;
+	loc190 = v188;
+l000F6401:
+	v188 = loc190;
+	v189.u0 = 0x1D;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc172 = v188;
+		v188.u3 = g_t140094.u3;
+		loc173 = v188;
+		v188 = loc172;
+		loc21 = v188;
+		v188 = loc173;
+		loc22 = v188;
+		goto l000F66CA;
+	}
+	v188 = loc190;
+	v189.u0 = 0x1F;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc177 = v188;
+		v188.u3 = g_t140094.u3;
+		loc178 = v188;
+		v188 = loc177;
+		loc21 = v188;
+		v188 = loc178;
+		loc22 = v188;
+		goto l000F66C9;
+	}
+	v188 = loc190;
+	v189.u0 = 0x27;
+	v190 = v188 == v189;
+	if (!v190)
+	{
+l000F66CA:
+		v188 = loc21;
+		loc13 = v188;
+		v188 = loc22;
+		loc15 = v188;
+l000F66D3:
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc13;
+		___resumeException(v188);
+		v188.u0 = 0x00;
+		return v188;
+	}
+	v188 = loc165;
+	v189.u0 = 11;
+	v188 += v189;
+	loc42 = v188;
+	v188 = loc42;
+	v205.u3 = *v188.u3;
+	v188.u3 = (word32) v205;
+	loc43 = v188;
+	v188 = loc43;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc44 = v190;
+	v188 = loc165;
+	v189.u0 = 0x04;
+	v188 += v189;
+	loc45 = v188;
+	v188 = loc45;
+	v188.u3 = *v188.u3;
+	loc47 = v188;
+	v188 = loc43;
+	v189.u0 = 0xFF;
+	v188 &= v189;
+	loc48 = v188;
+	v188 = loc44;
+	if (v188)
+		v188 = loc47;
+	else
+		v188 = loc48;
+	loc49 = v188;
+	v188 = loc49;
+	v189.u0 = 0x00;
+	v190 = v188 == v189;
+	loc50 = v190;
+	v188 = loc50;
+	v190 = v188 == 0x00;
+	if (v190)
+	{
+		v188 = loc46;
+		v188.u3 = *v188.u3;
+		loc51 = v188;
+		v188 = loc51;
+		loc52 = v188;
+		v188 = loc35;
+		loc53 = v188;
+		v188 = loc52;
+		v189 = loc53;
+		v188 -= v189;
+		loc54 = v188;
+		v188 = loc54;
+		v189.u0 = 0xA0;
+		v190 = v188 < v189;
+		loc55 = v190;
+		v188 = loc55;
+		if (v188)
+		{
+			v188 = loc57;
+			v188.u3 = *v188.u3;
+			loc56 = v188;
+			v188 = loc51;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc58 = v188;
+			v188 = loc46;
+			v189 = loc58;
+			*v188.u3 = (word32) v189;
+			v188 = loc51;
+			v189 = loc56;
+			*v188.u3 = (word32) v189;
+		}
+	}
+	v188 = loc24;
+	v188.u3 = *v188.u3;
+	loc59 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x0185;
+	v189 = loc16;
+	v191 = loc59;
+	v192 = arg4;
+	v199 = loc68;
+	v188 = invoke_iiiii(v188, v189, v191, v192, v199);
+	loc60 = v188;
+	v188.u3 = g_t140048.u3;
+	loc61 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc61;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc62 = v188;
+	v188 = loc62;
+	v190 = v188 == 0x00;
+	if (!v190)
+	{
+l000F66B3:
+		v188 = ___cxa_find_matching_catch_n();
+		loc174 = v188;
+		v188.u3 = g_t140094.u3;
+		loc175 = v188;
+		v188 = loc174;
+		loc21 = v188;
+		v188 = loc175;
+		loc22 = v188;
+		goto l000F66C9;
+	}
+	else
+	{
+		v188 = arg5;
+		v189 = loc60;
+		*v188.u0 = v189;
+		v188 = loc46;
+		v188 = *v188.u0;
+		loc63 = v188;
+		v188 = loc165;
+		v189 = loc35;
+		v191 = loc63;
+		v192 = arg4;
+		fn000EC01D(v188, v189, v191, v192);
+		v188 = loc18;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc64 = v190;
+		v188 = loc64;
+		if (v188)
+		{
+			v188.u0 = 0x01;
+			loc99 = v188;
+		}
+		else
+		{
+			v188 = loc18;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc65 = v188;
+			v188 = loc65;
+			v188 = *v188.u0;
+			loc66 = v188;
+			v188 = loc18;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc67 = v188;
+			v188 = loc67;
+			v188 = *v188.u0;
+			loc69 = v188;
+			v188 = loc66;
+			v189 = loc69;
+			v190 = v188 == v189;
+			loc70 = v190;
+			v188 = loc70;
+			if (v188)
+			{
+				v188 = loc18;
+				v188 = *v188.u0;
+				loc71 = v188;
+				v188 = loc71;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc72 = v188;
+				v188 = loc72;
+				v188 = *v188.u0;
+				loc73 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc73;
+				v189 = loc18;
+				v188 = invoke_ii(v188, v189);
+				loc74 = v188;
+				v188.u3 = g_t140048.u3;
+				loc75 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc75;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc76 = v188;
+				v188 = loc76;
+				if (v188)
+					goto l000F66B3;
+				v188 = loc74;
+				loc7 = v188;
+			}
+			else
+			{
+				v188 = loc66;
+				v188 = *v188.u0;
+				loc77 = v188;
+				v188 = loc77;
+				loc7 = v188;
+			}
+			v188 = loc7;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc78 = v190;
+			v188 = loc78;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x01;
+				loc99 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x00;
+				loc99 = v188;
+			}
+		}
+		v188 = loc20;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc80 = v190;
+		v188 = loc80;
+		if (v188)
+		{
+			v188.u0 = 55;
+			loc190 = v188;
+			goto l000F6665;
+		}
+		v188 = loc20;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc81 = v188;
+		v188 = loc81;
+		v188 = *v188.u0;
+		loc82 = v188;
+		v188 = loc20;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc83 = v188;
+		v188 = loc83;
+		v188 = *v188.u0;
+		loc84 = v188;
+		v188 = loc82;
+		v189 = loc84;
+		v190 = v188 == v189;
+		loc85 = v190;
+		v188 = loc85;
+		if (v188)
+		{
+			v188 = loc20;
+			v188 = *v188.u0;
+			loc86 = v188;
+			v188 = loc86;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc87 = v188;
+			v188 = loc87;
+			v188 = *v188.u0;
+			loc88 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc88;
+			v189 = loc20;
+			v188 = invoke_ii(v188, v189);
+			loc89 = v188;
+			v188.u3 = g_t140048.u3;
+			loc91 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc91;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc92 = v188;
+			v188 = loc92;
+			if (v188)
+				goto l000F66B3;
+			v188 = loc89;
+			loc9 = v188;
+		}
+		else
+		{
+			v188 = loc82;
+			v188 = *v188.u0;
+			loc93 = v188;
+			v188 = loc93;
+			loc9 = v188;
+		}
+		v188 = loc9;
+		v189.u0 = ~0x00;
+		v190 = v188 == v189;
+		loc94 = v190;
+		v188 = loc94;
+		if (v188)
+		{
+			v188 = arg2;
+			v189.u0 = 0x00;
+			*v188.u0 = v189;
+			v188.u0 = 55;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc99;
+			if (!v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+l000F6665:
+		v188 = loc190;
+		v189.u0 = 55;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = loc99;
+			if (v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x39;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = arg4;
+			v188 = *v188.u0;
+			loc95 = v188;
+			v188 = loc95;
+			v189.u0 = 0x02;
+			v188 |= v189;
+			loc96 = v188;
+			v188 = arg4;
+			v189 = loc96;
+			*v188.u0 = v189;
+		}
+		v188 = arg1;
+		v188 = *v188.u0;
+		loc23 = v188;
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc191;
+		g_t140030.u3 = (word32 *) v188;
+		v188 = loc23;
+		return v188;
+	}
 }
 
 // 000F66E9: Stack Eq_n fn000F66E9(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F66E9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v188.u3 = g_t140030.u3;
+	loc191 = v188;
+	v188.u3 = g_t140030.u3;
+	v189.u0 = 0x0130;
+	v188 += v189;
+	g_t140030.u3 = (word32 *) v188;
+	v188.u3 = g_t140030.u3;
+	v189.u3 = g_t140034.u3;
+	v190 = v188 >= v189;
+	if (v190)
+	{
+		v188.u0 = 0x0130;
+		abortStackOverflow(v188);
+	}
+	while (true)
+	{
+		v188 = loc191;
+		v189.u0 = 200;
+		v188 += v189;
+		loc143 = v188;
+		v188 = loc191;
+		v189.u0 = 0xC4;
+		v188 += v189;
+		loc154 = v188;
+		v188 = loc191;
+		v189.u0 = 0xB8;
+		v188 += v189;
+		loc165 = v188;
+		v188 = loc191;
+		v189.u0 = 0xAC;
+		v188 += v189;
+		loc176 = v188;
+		v188 = loc191;
+		v189.u0 = 0xA8;
+		v188 += v189;
+		loc24 = v188;
+		v188 = loc191;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc35 = v188;
+		v188 = loc191;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc46 = v188;
+		v188 = loc191;
+		loc57 = v188;
+		v188 = arg3;
+		v188 = fn000EDE83(v188);
+		loc68 = v188;
+		v188 = loc165;
+		v189 = arg3;
+		v191 = loc143;
+		v192 = loc154;
+		fn000F5C88(v188, v189, v191, v192);
+		v188 = loc176;
+		v193.u0 = 0x00;
+		*v188.u0 = v193;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188.u0 = 0x00;
+		loc6 = v188;
+		v188 = loc6;
+		v189.u0 = 0x03;
+		v190 = v188 == v189;
+		loc187 = v190;
+		v188 = loc187;
+		if (v188)
+			break;
+		v188 = loc176;
+		v189 = loc6;
+		v191.u0 = 0x02;
+		v189 <<= v191;
+		v188 += v189;
+		loc79 = v188;
+		v188 = loc79;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188 = loc6;
+		v189.u0 = 0x01;
+		v188 += v189;
+		loc90 = v188;
+		v188 = loc90;
+		loc6 = v188;
+	}
+	v188 = loc176;
+	v189.u0 = 11;
+	v188 += v189;
+	loc100 = v188;
+	v188 = loc100;
+	v194 = *v188.u0;
+	v188.u3 = (word32) v194;
+	loc101 = v188;
+	v188 = loc101;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc102 = v190;
+	v188 = loc102;
+	if (v188)
+	{
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc103 = v188;
+		v188 = loc103;
+		v188.u3 = *v188.u3;
+		loc104 = v188;
+		v188 = loc104;
+		v189.u0 = 0x7FFFFFFF;
+		v188 &= v189;
+		loc105 = v188;
+		v188 = loc105;
+		v189.u0 = ~0x00;
+		v188 += v189;
+		loc188 = v188;
+		v188 = loc188;
+		loc106 = v188;
+	}
+	else
+	{
+		v188.u0 = 0x0A;
+		loc106 = v188;
+	}
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x017A;
+	v189 = loc176;
+	v191 = loc106;
+	v192.u0 = 0x00;
+	invoke_viii(v188, v189, v191, v192);
+	v188.u3 = g_t140048.u3;
+	loc107 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc107;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc108 = v188;
+	v188 = loc108;
+	if (v188)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc170 = v188;
+		v188.u3 = g_t140094.u3;
+		loc171 = v188;
+		v188 = loc170;
+		loc13 = v188;
+		v188 = loc171;
+		loc15 = v188;
+		goto l000F6FC0;
+	}
+	v188 = loc100;
+	v195.u3 = *v188.u3;
+	v188.u3 = (word32) v195;
+	loc109 = v188;
+	v188 = loc109;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc110 = v190;
+	v188 = loc176;
+	v188.u3 = *v188.u3;
+	loc111 = v188;
+	v188 = loc110;
+	if (v188)
+		v188 = loc111;
+	else
+		v188 = loc176;
+	while (true)
+	{
+		loc112 = v188;
+		v188 = loc24;
+		v189 = loc112;
+		*v188.u3 = (word32) v189;
+		v188 = loc46;
+		v189 = loc35;
+		*v188.u3 = (word32) v189;
+		v188 = loc57;
+		v189.u0 = 0x00;
+		*v188.u3 = (word32) v189;
+		v188 = loc176;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc113 = v188;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc114 = v188;
+		v188 = arg1;
+		v188.u3 = *v188.u3;
+		loc17 = v188;
+		v188 = loc112;
+		loc12 = v188;
+		v188 = loc17;
+		loc19 = v188;
+		v188 = loc19;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc115 = v190;
+		v188 = loc115;
+		if (v188)
+		{
+			v188.u0 = 0x00;
+			loc18 = v188;
+			v188.u0 = 0x01;
+			loc97 = v188;
+		}
+		else
+		{
+			v188 = loc19;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc116 = v188;
+			v188 = loc116;
+			v188 = *v188.u0;
+			loc117 = v188;
+			v188 = loc19;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc118 = v188;
+			v188 = loc118;
+			v188 = *v188.u0;
+			loc119 = v188;
+			v188 = loc117;
+			v189 = loc119;
+			v190 = v188 == v189;
+			loc120 = v190;
+			v188 = loc120;
+			if (v188)
+			{
+				v188 = loc19;
+				v188 = *v188.u0;
+				loc121 = v188;
+				v188 = loc121;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc122 = v188;
+				v188 = loc122;
+				v188 = *v188.u0;
+				loc123 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc123;
+				v189 = loc19;
+				v188 = invoke_ii(v188, v189);
+				loc124 = v188;
+				v188.u3 = g_t140048.u3;
+				loc125 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc125;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc126 = v188;
+				v188 = loc126;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F6CEE;
+				}
+				v188 = loc124;
+				loc8 = v188;
+			}
+			else
+			{
+				v188 = loc117;
+				v188 = *v188.u0;
+				loc127 = v188;
+				v188 = loc127;
+				loc8 = v188;
+			}
+			v188 = loc8;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc128 = v190;
+			v188 = loc128;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x00;
+				loc18 = v188;
+				v188.u0 = 0x01;
+				loc97 = v188;
+			}
+			else
+			{
+				v188 = loc19;
+				loc18 = v188;
+				v188.u0 = 0x00;
+				loc97 = v188;
+			}
+		}
+		v188 = arg2;
+		v188 = *v188.u0;
+		loc129 = v188;
+		v188 = loc129;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc130 = v190;
+		v188 = loc130;
+		if (v188)
+		{
+			v188.u0 = 0x14;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc129;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc131 = v188;
+			v188 = loc131;
+			v188 = *v188.u0;
+			loc132 = v188;
+			v188 = loc129;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc133 = v188;
+			v188 = loc133;
+			v188 = *v188.u0;
+			loc134 = v188;
+			v188 = loc132;
+			v189 = loc134;
+			v190 = v188 == v189;
+			loc135 = v190;
+			v188 = loc135;
+			if (v188)
+			{
+				v188 = loc129;
+				v188 = *v188.u0;
+				loc136 = v188;
+				v188 = loc136;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc137 = v188;
+				v188 = loc137;
+				v188 = *v188.u0;
+				loc138 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc138;
+				v189 = loc129;
+				v188 = invoke_ii(v188, v189);
+				loc139 = v188;
+				v188.u3 = g_t140048.u3;
+				loc140 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc140;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc141 = v188;
+				v188 = loc141;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F6CEE;
+				}
+				v188 = loc139;
+				loc10 = v188;
+			}
+			else
+			{
+				v188 = loc132;
+				v188 = *v188.u0;
+				loc142 = v188;
+				v188 = loc142;
+				loc10 = v188;
+			}
+			v188 = loc10;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc144 = v190;
+			v188 = loc144;
+			if (v188)
+			{
+				v188 = arg2;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x14;
+				loc190 = v188;
+			}
+			else
+			{
+				v188 = loc97;
+				if (!v188)
+				{
+					v188 = loc12;
+					loc16 = v188;
+					v188 = loc129;
+					loc20 = v188;
+					v188.u0 = 0x27;
+					loc190 = v188;
+					goto l000F6CEE;
+				}
+				v188 = loc129;
+				loc98 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x14;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188.u0 = 0x00;
+			loc190 = v188;
+			v188 = loc97;
+			if (v188)
+			{
+				v188 = loc12;
+				loc16 = v188;
+				v188.u0 = 0x00;
+				loc20 = v188;
+				v188.u0 = 0x27;
+				loc190 = v188;
+				goto l000F6CEE;
+			}
+			v188.u0 = 0x00;
+			loc98 = v188;
+		}
+		v188 = loc24;
+		v188 = *v188.u0;
+		loc145 = v188;
+		v188 = loc100;
+		v196 = *v188.u0;
+		v188.u3 = (word32) v196;
+		loc146 = v188;
+		v188 = loc146;
+		v189.u0 = 0x18;
+		v188 <<= v189;
+		v189.u0 = 0x18;
+		v188 >>= v189;
+		v189.u0 = 0x00;
+		v190 = v188 < v189;
+		loc147 = v190;
+		v188 = loc113;
+		v188.u3 = *v188.u3;
+		loc148 = v188;
+		v188 = loc146;
+		v189.u0 = 0xFF;
+		v188 &= v189;
+		loc149 = v188;
+		v188 = loc147;
+		if (v188)
+			v188 = loc148;
+		else
+			v188 = loc149;
+		loc150 = v188;
+		v188 = loc12;
+		v189 = loc150;
+		v188 += v189;
+		loc151 = v188;
+		v188 = loc145;
+		v189 = loc151;
+		v190 = v188 == v189;
+		loc152 = v190;
+		v188 = loc152;
+		if (v188)
+		{
+			v188 = loc150;
+			v189.u0 = 0x01;
+			v188 <<= v189;
+			loc153 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc153;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc155 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc155;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc156 = v188;
+			v188 = loc156;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F6CEE;
+			}
+			v188 = loc100;
+			v197 = *v188.u0;
+			v188.u3 = (word32) v197;
+			loc157 = v188;
+			v188 = loc157;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc158 = v190;
+			v188 = loc158;
+			if (v188)
+			{
+				v188 = loc114;
+				v188.u3 = *v188.u3;
+				loc159 = v188;
+				v188 = loc159;
+				v189.u0 = 0x7FFFFFFF;
+				v188 &= v189;
+				loc160 = v188;
+				v188 = loc160;
+				v189.u0 = ~0x00;
+				v188 += v189;
+				loc189 = v188;
+				v188 = loc189;
+				loc161 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x0A;
+				loc161 = v188;
+			}
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc161;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc162 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc162;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc163 = v188;
+			v188 = loc163;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F6CEE;
+			}
+			v188 = loc100;
+			v198 = *v188.u0;
+			v188.u3 = (word32) v198;
+			loc164 = v188;
+			v188 = loc164;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc166 = v190;
+			v188 = loc176;
+			v188.u3 = *v188.u3;
+			loc167 = v188;
+			v188 = loc166;
+			if (v188)
+				v188 = loc167;
+			else
+				v188 = loc176;
+			loc168 = v188;
+			v188 = loc168;
+			v189 = loc150;
+			v188 += v189;
+			loc169 = v188;
+			v188 = loc24;
+			v189 = loc169;
+			*v188.u3 = (word32) v189;
+			v188 = loc168;
+			loc14 = v188;
+		}
+		else
+		{
+			v188 = loc12;
+			loc14 = v188;
+		}
+		v188 = loc18;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc179 = v188;
+		v188 = loc179;
+		v188.u3 = *v188.u3;
+		loc180 = v188;
+		v188 = loc18;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc181 = v188;
+		v188 = loc181;
+		v188.u3 = *v188.u3;
+		loc182 = v188;
+		v188 = loc180;
+		v189 = loc182;
+		v190 = v188 == v189;
+		loc183 = v190;
+		v188 = loc183;
+		if (v188)
+		{
+			v188 = loc18;
+			v188.u3 = *v188.u3;
+			loc184 = v188;
+			v188 = loc184;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc185 = v188;
+			v188 = loc185;
+			v188.u3 = *v188.u3;
+			loc186 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc186;
+			v189 = loc18;
+			v188 = invoke_ii(v188, v189);
+			loc25 = v188;
+			v188.u3 = g_t140048.u3;
+			loc26 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc26;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc27 = v188;
+			v188 = loc27;
+			if (v188)
+			{
+				v188.u0 = 0x1D;
+				loc190 = v188;
+				goto l000F6CEE;
+			}
+			v188 = loc25;
+			loc11 = v188;
+		}
+		else
+		{
+			v188 = loc180;
+			v188 = *v188.u0;
+			loc28 = v188;
+			v188 = loc28;
+			loc11 = v188;
+		}
+		v188 = loc154;
+		v188 = *v188.u0;
+		loc29 = v188;
+		v188 = loc11;
+		v189 = loc68;
+		v191 = loc14;
+		v192 = loc24;
+		v199 = loc57;
+		v200 = loc29;
+		v201 = loc165;
+		v202 = loc35;
+		v203 = loc46;
+		v204 = loc143;
+		v188 = fn000F2F51(v188, v189, v191, v192, v199, v200, v201, v202, v203, v204);
+		loc30 = v188;
+		v188 = loc30;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc31 = v190;
+		v188 = loc31;
+		v190 = v188 == 0x00;
+		if (v190)
+			break;
+		v188 = loc179;
+		v188 = *v188.u0;
+		loc32 = v188;
+		v188 = loc181;
+		v188 = *v188.u0;
+		loc33 = v188;
+		v188 = loc32;
+		v189 = loc33;
+		v190 = v188 == v189;
+		loc34 = v190;
+		v188 = loc34;
+		if (!v188)
+		{
+			v188 = loc32;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc41 = v188;
+			v188 = loc179;
+			v189 = loc41;
+			*v188.u0 = v189;
+			v188 = loc14;
+			loc12 = v188;
+			v188 = loc18;
+			loc19 = v188;
+			continue;
+		}
+		v188 = loc18;
+		v188 = *v188.u0;
+		loc36 = v188;
+		v188 = loc36;
+		v189.u0 = 0x28;
+		v188 += v189;
+		loc37 = v188;
+		v188 = loc37;
+		v188 = *v188.u0;
+		loc38 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc38;
+		v189 = loc18;
+		v188 = invoke_ii(v188, v189);
+		v188.u3 = g_t140048.u3;
+		loc39 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc39;
+		v189.u0 = 0x01;
+		v188 &= v189;
+		loc40 = v188;
+		v188 = loc40;
+		if (v188)
+		{
+			v188.u0 = 0x1D;
+			loc190 = v188;
+			goto l000F6CEE;
+		}
+		v188 = loc14;
+		loc12 = v188;
+		v188 = loc18;
+		loc19 = v188;
+	}
+	v188 = loc14;
+	loc16 = v188;
+	v188 = loc98;
+	loc20 = v188;
+	v188.u0 = 0x27;
+	loc190 = v188;
+l000F6CEE:
+	v188 = loc190;
+	v189.u0 = 0x1D;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc172 = v188;
+		v188.u3 = g_t140094.u3;
+		loc173 = v188;
+		v188 = loc172;
+		loc21 = v188;
+		v188 = loc173;
+		loc22 = v188;
+		goto l000F6FB7;
+	}
+	v188 = loc190;
+	v189.u0 = 0x1F;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc177 = v188;
+		v188.u3 = g_t140094.u3;
+		loc178 = v188;
+		v188 = loc177;
+		loc21 = v188;
+		v188 = loc178;
+		loc22 = v188;
+		goto l000F6FB6;
+	}
+	v188 = loc190;
+	v189.u0 = 0x27;
+	v190 = v188 == v189;
+	if (!v190)
+	{
+l000F6FB7:
+		v188 = loc21;
+		loc13 = v188;
+		v188 = loc22;
+		loc15 = v188;
+l000F6FC0:
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc13;
+		___resumeException(v188);
+		v188.u0 = 0x00;
+		return v188;
+	}
+	v188 = loc165;
+	v189.u0 = 11;
+	v188 += v189;
+	loc42 = v188;
+	v188 = loc42;
+	v205.u3 = *v188.u3;
+	v188.u3 = (word32) v205;
+	loc43 = v188;
+	v188 = loc43;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc44 = v190;
+	v188 = loc165;
+	v189.u0 = 0x04;
+	v188 += v189;
+	loc45 = v188;
+	v188 = loc45;
+	v188.u3 = *v188.u3;
+	loc47 = v188;
+	v188 = loc43;
+	v189.u0 = 0xFF;
+	v188 &= v189;
+	loc48 = v188;
+	v188 = loc44;
+	if (v188)
+		v188 = loc47;
+	else
+		v188 = loc48;
+	loc49 = v188;
+	v188 = loc49;
+	v189.u0 = 0x00;
+	v190 = v188 == v189;
+	loc50 = v190;
+	v188 = loc50;
+	v190 = v188 == 0x00;
+	if (v190)
+	{
+		v188 = loc46;
+		v188.u3 = *v188.u3;
+		loc51 = v188;
+		v188 = loc51;
+		loc52 = v188;
+		v188 = loc35;
+		loc53 = v188;
+		v188 = loc52;
+		v189 = loc53;
+		v188 -= v189;
+		loc54 = v188;
+		v188 = loc54;
+		v189.u0 = 0xA0;
+		v190 = v188 < v189;
+		loc55 = v190;
+		v188 = loc55;
+		if (v188)
+		{
+			v188 = loc57;
+			v188.u3 = *v188.u3;
+			loc56 = v188;
+			v188 = loc51;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc58 = v188;
+			v188 = loc46;
+			v189 = loc58;
+			*v188.u3 = (word32) v189;
+			v188 = loc51;
+			v189 = loc56;
+			*v188.u3 = (word32) v189;
+		}
+	}
+	v188 = loc24;
+	v188.u3 = *v188.u3;
+	loc59 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x0186;
+	v189 = loc16;
+	v191 = loc59;
+	v192 = arg4;
+	v199 = loc68;
+	v188 = invoke_iiiii(v188, v189, v191, v192, v199);
+	loc60 = v188;
+	v188.u3 = g_t140048.u3;
+	loc61 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc61;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc62 = v188;
+	v188 = loc62;
+	v190 = v188 == 0x00;
+	if (!v190)
+	{
+l000F6FA0:
+		v188 = ___cxa_find_matching_catch_n();
+		loc174 = v188;
+		v188.u3 = g_t140094.u3;
+		loc175 = v188;
+		v188 = loc174;
+		loc21 = v188;
+		v188 = loc175;
+		loc22 = v188;
+		goto l000F6FB6;
+	}
+	else
+	{
+		v188 = arg5;
+		v189 = loc60;
+		*v188.u0 = v189;
+		v188 = loc46;
+		v188 = *v188.u0;
+		loc63 = v188;
+		v188 = loc165;
+		v189 = loc35;
+		v191 = loc63;
+		v192 = arg4;
+		fn000EC01D(v188, v189, v191, v192);
+		v188 = loc18;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc64 = v190;
+		v188 = loc64;
+		if (v188)
+		{
+			v188.u0 = 0x01;
+			loc99 = v188;
+		}
+		else
+		{
+			v188 = loc18;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc65 = v188;
+			v188 = loc65;
+			v188 = *v188.u0;
+			loc66 = v188;
+			v188 = loc18;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc67 = v188;
+			v188 = loc67;
+			v188 = *v188.u0;
+			loc69 = v188;
+			v188 = loc66;
+			v189 = loc69;
+			v190 = v188 == v189;
+			loc70 = v190;
+			v188 = loc70;
+			if (v188)
+			{
+				v188 = loc18;
+				v188 = *v188.u0;
+				loc71 = v188;
+				v188 = loc71;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc72 = v188;
+				v188 = loc72;
+				v188 = *v188.u0;
+				loc73 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc73;
+				v189 = loc18;
+				v188 = invoke_ii(v188, v189);
+				loc74 = v188;
+				v188.u3 = g_t140048.u3;
+				loc75 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc75;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc76 = v188;
+				v188 = loc76;
+				if (v188)
+					goto l000F6FA0;
+				v188 = loc74;
+				loc7 = v188;
+			}
+			else
+			{
+				v188 = loc66;
+				v188 = *v188.u0;
+				loc77 = v188;
+				v188 = loc77;
+				loc7 = v188;
+			}
+			v188 = loc7;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc78 = v190;
+			v188 = loc78;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x01;
+				loc99 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x00;
+				loc99 = v188;
+			}
+		}
+		v188 = loc20;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc80 = v190;
+		v188 = loc80;
+		if (v188)
+		{
+			v188.u0 = 55;
+			loc190 = v188;
+			goto l000F6F52;
+		}
+		v188 = loc20;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc81 = v188;
+		v188 = loc81;
+		v188 = *v188.u0;
+		loc82 = v188;
+		v188 = loc20;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc83 = v188;
+		v188 = loc83;
+		v188 = *v188.u0;
+		loc84 = v188;
+		v188 = loc82;
+		v189 = loc84;
+		v190 = v188 == v189;
+		loc85 = v190;
+		v188 = loc85;
+		if (v188)
+		{
+			v188 = loc20;
+			v188 = *v188.u0;
+			loc86 = v188;
+			v188 = loc86;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc87 = v188;
+			v188 = loc87;
+			v188 = *v188.u0;
+			loc88 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc88;
+			v189 = loc20;
+			v188 = invoke_ii(v188, v189);
+			loc89 = v188;
+			v188.u3 = g_t140048.u3;
+			loc91 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc91;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc92 = v188;
+			v188 = loc92;
+			if (v188)
+				goto l000F6FA0;
+			v188 = loc89;
+			loc9 = v188;
+		}
+		else
+		{
+			v188 = loc82;
+			v188 = *v188.u0;
+			loc93 = v188;
+			v188 = loc93;
+			loc9 = v188;
+		}
+		v188 = loc9;
+		v189.u0 = ~0x00;
+		v190 = v188 == v189;
+		loc94 = v190;
+		v188 = loc94;
+		if (v188)
+		{
+			v188 = arg2;
+			v189.u0 = 0x00;
+			*v188.u0 = v189;
+			v188.u0 = 55;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc99;
+			if (!v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+l000F6F52:
+		v188 = loc190;
+		v189.u0 = 55;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = loc99;
+			if (v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x39;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = arg4;
+			v188 = *v188.u0;
+			loc95 = v188;
+			v188 = loc95;
+			v189.u0 = 0x02;
+			v188 |= v189;
+			loc96 = v188;
+			v188 = arg4;
+			v189 = loc96;
+			*v188.u0 = v189;
+		}
+		v188 = arg1;
+		v188 = *v188.u0;
+		loc23 = v188;
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc191;
+		g_t140030.u3 = (word32 *) v188;
+		v188 = loc23;
+		return v188;
+	}
 }
 
 // 000F6FD6: Stack Eq_n fn000F6FD6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F6FD6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v188.u3 = g_t140030.u3;
+	loc191 = v188;
+	v188.u3 = g_t140030.u3;
+	v189.u0 = 0x0130;
+	v188 += v189;
+	g_t140030.u3 = (word32 *) v188;
+	v188.u3 = g_t140030.u3;
+	v189.u3 = g_t140034.u3;
+	v190 = v188 >= v189;
+	if (v190)
+	{
+		v188.u0 = 0x0130;
+		abortStackOverflow(v188);
+	}
+	while (true)
+	{
+		v188 = loc191;
+		v189.u0 = 200;
+		v188 += v189;
+		loc143 = v188;
+		v188 = loc191;
+		v189.u0 = 0xC4;
+		v188 += v189;
+		loc154 = v188;
+		v188 = loc191;
+		v189.u0 = 0xB8;
+		v188 += v189;
+		loc165 = v188;
+		v188 = loc191;
+		v189.u0 = 0xAC;
+		v188 += v189;
+		loc176 = v188;
+		v188 = loc191;
+		v189.u0 = 0xA8;
+		v188 += v189;
+		loc24 = v188;
+		v188 = loc191;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc35 = v188;
+		v188 = loc191;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc46 = v188;
+		v188 = loc191;
+		loc57 = v188;
+		v188 = arg3;
+		v188 = fn000EDE83(v188);
+		loc68 = v188;
+		v188 = loc165;
+		v189 = arg3;
+		v191 = loc143;
+		v192 = loc154;
+		fn000F5C88(v188, v189, v191, v192);
+		v188 = loc176;
+		v193.u0 = 0x00;
+		*v188.u0 = v193;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188.u0 = 0x00;
+		loc6 = v188;
+		v188 = loc6;
+		v189.u0 = 0x03;
+		v190 = v188 == v189;
+		loc187 = v190;
+		v188 = loc187;
+		if (v188)
+			break;
+		v188 = loc176;
+		v189 = loc6;
+		v191.u0 = 0x02;
+		v189 <<= v191;
+		v188 += v189;
+		loc79 = v188;
+		v188 = loc79;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188 = loc6;
+		v189.u0 = 0x01;
+		v188 += v189;
+		loc90 = v188;
+		v188 = loc90;
+		loc6 = v188;
+	}
+	v188 = loc176;
+	v189.u0 = 11;
+	v188 += v189;
+	loc100 = v188;
+	v188 = loc100;
+	v194 = *v188.u0;
+	v188.u3 = (word32) v194;
+	loc101 = v188;
+	v188 = loc101;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc102 = v190;
+	v188 = loc102;
+	if (v188)
+	{
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc103 = v188;
+		v188 = loc103;
+		v188.u3 = *v188.u3;
+		loc104 = v188;
+		v188 = loc104;
+		v189.u0 = 0x7FFFFFFF;
+		v188 &= v189;
+		loc105 = v188;
+		v188 = loc105;
+		v189.u0 = ~0x00;
+		v188 += v189;
+		loc188 = v188;
+		v188 = loc188;
+		loc106 = v188;
+	}
+	else
+	{
+		v188.u0 = 0x0A;
+		loc106 = v188;
+	}
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x017A;
+	v189 = loc176;
+	v191 = loc106;
+	v192.u0 = 0x00;
+	invoke_viii(v188, v189, v191, v192);
+	v188.u3 = g_t140048.u3;
+	loc107 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc107;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc108 = v188;
+	v188 = loc108;
+	if (v188)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc170 = v188;
+		v188.u3 = g_t140094.u3;
+		loc171 = v188;
+		v188 = loc170;
+		loc13 = v188;
+		v188 = loc171;
+		loc15 = v188;
+		goto l000F78AD;
+	}
+	v188 = loc100;
+	v195.u3 = *v188.u3;
+	v188.u3 = (word32) v195;
+	loc109 = v188;
+	v188 = loc109;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc110 = v190;
+	v188 = loc176;
+	v188.u3 = *v188.u3;
+	loc111 = v188;
+	v188 = loc110;
+	if (v188)
+		v188 = loc111;
+	else
+		v188 = loc176;
+	while (true)
+	{
+		loc112 = v188;
+		v188 = loc24;
+		v189 = loc112;
+		*v188.u3 = (word32) v189;
+		v188 = loc46;
+		v189 = loc35;
+		*v188.u3 = (word32) v189;
+		v188 = loc57;
+		v189.u0 = 0x00;
+		*v188.u3 = (word32) v189;
+		v188 = loc176;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc113 = v188;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc114 = v188;
+		v188 = arg1;
+		v188.u3 = *v188.u3;
+		loc17 = v188;
+		v188 = loc112;
+		loc12 = v188;
+		v188 = loc17;
+		loc19 = v188;
+		v188 = loc19;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc115 = v190;
+		v188 = loc115;
+		if (v188)
+		{
+			v188.u0 = 0x00;
+			loc18 = v188;
+			v188.u0 = 0x01;
+			loc97 = v188;
+		}
+		else
+		{
+			v188 = loc19;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc116 = v188;
+			v188 = loc116;
+			v188 = *v188.u0;
+			loc117 = v188;
+			v188 = loc19;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc118 = v188;
+			v188 = loc118;
+			v188 = *v188.u0;
+			loc119 = v188;
+			v188 = loc117;
+			v189 = loc119;
+			v190 = v188 == v189;
+			loc120 = v190;
+			v188 = loc120;
+			if (v188)
+			{
+				v188 = loc19;
+				v188 = *v188.u0;
+				loc121 = v188;
+				v188 = loc121;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc122 = v188;
+				v188 = loc122;
+				v188 = *v188.u0;
+				loc123 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc123;
+				v189 = loc19;
+				v188 = invoke_ii(v188, v189);
+				loc124 = v188;
+				v188.u3 = g_t140048.u3;
+				loc125 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc125;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc126 = v188;
+				v188 = loc126;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F75DB;
+				}
+				v188 = loc124;
+				loc8 = v188;
+			}
+			else
+			{
+				v188 = loc117;
+				v188 = *v188.u0;
+				loc127 = v188;
+				v188 = loc127;
+				loc8 = v188;
+			}
+			v188 = loc8;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc128 = v190;
+			v188 = loc128;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x00;
+				loc18 = v188;
+				v188.u0 = 0x01;
+				loc97 = v188;
+			}
+			else
+			{
+				v188 = loc19;
+				loc18 = v188;
+				v188.u0 = 0x00;
+				loc97 = v188;
+			}
+		}
+		v188 = arg2;
+		v188 = *v188.u0;
+		loc129 = v188;
+		v188 = loc129;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc130 = v190;
+		v188 = loc130;
+		if (v188)
+		{
+			v188.u0 = 0x14;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc129;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc131 = v188;
+			v188 = loc131;
+			v188 = *v188.u0;
+			loc132 = v188;
+			v188 = loc129;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc133 = v188;
+			v188 = loc133;
+			v188 = *v188.u0;
+			loc134 = v188;
+			v188 = loc132;
+			v189 = loc134;
+			v190 = v188 == v189;
+			loc135 = v190;
+			v188 = loc135;
+			if (v188)
+			{
+				v188 = loc129;
+				v188 = *v188.u0;
+				loc136 = v188;
+				v188 = loc136;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc137 = v188;
+				v188 = loc137;
+				v188 = *v188.u0;
+				loc138 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc138;
+				v189 = loc129;
+				v188 = invoke_ii(v188, v189);
+				loc139 = v188;
+				v188.u3 = g_t140048.u3;
+				loc140 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc140;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc141 = v188;
+				v188 = loc141;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F75DB;
+				}
+				v188 = loc139;
+				loc10 = v188;
+			}
+			else
+			{
+				v188 = loc132;
+				v188 = *v188.u0;
+				loc142 = v188;
+				v188 = loc142;
+				loc10 = v188;
+			}
+			v188 = loc10;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc144 = v190;
+			v188 = loc144;
+			if (v188)
+			{
+				v188 = arg2;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x14;
+				loc190 = v188;
+			}
+			else
+			{
+				v188 = loc97;
+				if (!v188)
+				{
+					v188 = loc12;
+					loc16 = v188;
+					v188 = loc129;
+					loc20 = v188;
+					v188.u0 = 0x27;
+					loc190 = v188;
+					goto l000F75DB;
+				}
+				v188 = loc129;
+				loc98 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x14;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188.u0 = 0x00;
+			loc190 = v188;
+			v188 = loc97;
+			if (v188)
+			{
+				v188 = loc12;
+				loc16 = v188;
+				v188.u0 = 0x00;
+				loc20 = v188;
+				v188.u0 = 0x27;
+				loc190 = v188;
+				goto l000F75DB;
+			}
+			v188.u0 = 0x00;
+			loc98 = v188;
+		}
+		v188 = loc24;
+		v188 = *v188.u0;
+		loc145 = v188;
+		v188 = loc100;
+		v196 = *v188.u0;
+		v188.u3 = (word32) v196;
+		loc146 = v188;
+		v188 = loc146;
+		v189.u0 = 0x18;
+		v188 <<= v189;
+		v189.u0 = 0x18;
+		v188 >>= v189;
+		v189.u0 = 0x00;
+		v190 = v188 < v189;
+		loc147 = v190;
+		v188 = loc113;
+		v188.u3 = *v188.u3;
+		loc148 = v188;
+		v188 = loc146;
+		v189.u0 = 0xFF;
+		v188 &= v189;
+		loc149 = v188;
+		v188 = loc147;
+		if (v188)
+			v188 = loc148;
+		else
+			v188 = loc149;
+		loc150 = v188;
+		v188 = loc12;
+		v189 = loc150;
+		v188 += v189;
+		loc151 = v188;
+		v188 = loc145;
+		v189 = loc151;
+		v190 = v188 == v189;
+		loc152 = v190;
+		v188 = loc152;
+		if (v188)
+		{
+			v188 = loc150;
+			v189.u0 = 0x01;
+			v188 <<= v189;
+			loc153 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc153;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc155 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc155;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc156 = v188;
+			v188 = loc156;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F75DB;
+			}
+			v188 = loc100;
+			v197 = *v188.u0;
+			v188.u3 = (word32) v197;
+			loc157 = v188;
+			v188 = loc157;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc158 = v190;
+			v188 = loc158;
+			if (v188)
+			{
+				v188 = loc114;
+				v188.u3 = *v188.u3;
+				loc159 = v188;
+				v188 = loc159;
+				v189.u0 = 0x7FFFFFFF;
+				v188 &= v189;
+				loc160 = v188;
+				v188 = loc160;
+				v189.u0 = ~0x00;
+				v188 += v189;
+				loc189 = v188;
+				v188 = loc189;
+				loc161 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x0A;
+				loc161 = v188;
+			}
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc161;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc162 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc162;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc163 = v188;
+			v188 = loc163;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F75DB;
+			}
+			v188 = loc100;
+			v198 = *v188.u0;
+			v188.u3 = (word32) v198;
+			loc164 = v188;
+			v188 = loc164;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc166 = v190;
+			v188 = loc176;
+			v188.u3 = *v188.u3;
+			loc167 = v188;
+			v188 = loc166;
+			if (v188)
+				v188 = loc167;
+			else
+				v188 = loc176;
+			loc168 = v188;
+			v188 = loc168;
+			v189 = loc150;
+			v188 += v189;
+			loc169 = v188;
+			v188 = loc24;
+			v189 = loc169;
+			*v188.u3 = (word32) v189;
+			v188 = loc168;
+			loc14 = v188;
+		}
+		else
+		{
+			v188 = loc12;
+			loc14 = v188;
+		}
+		v188 = loc18;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc179 = v188;
+		v188 = loc179;
+		v188.u3 = *v188.u3;
+		loc180 = v188;
+		v188 = loc18;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc181 = v188;
+		v188 = loc181;
+		v188.u3 = *v188.u3;
+		loc182 = v188;
+		v188 = loc180;
+		v189 = loc182;
+		v190 = v188 == v189;
+		loc183 = v190;
+		v188 = loc183;
+		if (v188)
+		{
+			v188 = loc18;
+			v188.u3 = *v188.u3;
+			loc184 = v188;
+			v188 = loc184;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc185 = v188;
+			v188 = loc185;
+			v188.u3 = *v188.u3;
+			loc186 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc186;
+			v189 = loc18;
+			v188 = invoke_ii(v188, v189);
+			loc25 = v188;
+			v188.u3 = g_t140048.u3;
+			loc26 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc26;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc27 = v188;
+			v188 = loc27;
+			if (v188)
+			{
+				v188.u0 = 0x1D;
+				loc190 = v188;
+				goto l000F75DB;
+			}
+			v188 = loc25;
+			loc11 = v188;
+		}
+		else
+		{
+			v188 = loc180;
+			v188 = *v188.u0;
+			loc28 = v188;
+			v188 = loc28;
+			loc11 = v188;
+		}
+		v188 = loc154;
+		v188 = *v188.u0;
+		loc29 = v188;
+		v188 = loc11;
+		v189 = loc68;
+		v191 = loc14;
+		v192 = loc24;
+		v199 = loc57;
+		v200 = loc29;
+		v201 = loc165;
+		v202 = loc35;
+		v203 = loc46;
+		v204 = loc143;
+		v188 = fn000F2F51(v188, v189, v191, v192, v199, v200, v201, v202, v203, v204);
+		loc30 = v188;
+		v188 = loc30;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc31 = v190;
+		v188 = loc31;
+		v190 = v188 == 0x00;
+		if (v190)
+			break;
+		v188 = loc179;
+		v188 = *v188.u0;
+		loc32 = v188;
+		v188 = loc181;
+		v188 = *v188.u0;
+		loc33 = v188;
+		v188 = loc32;
+		v189 = loc33;
+		v190 = v188 == v189;
+		loc34 = v190;
+		v188 = loc34;
+		if (!v188)
+		{
+			v188 = loc32;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc41 = v188;
+			v188 = loc179;
+			v189 = loc41;
+			*v188.u0 = v189;
+			v188 = loc14;
+			loc12 = v188;
+			v188 = loc18;
+			loc19 = v188;
+			continue;
+		}
+		v188 = loc18;
+		v188 = *v188.u0;
+		loc36 = v188;
+		v188 = loc36;
+		v189.u0 = 0x28;
+		v188 += v189;
+		loc37 = v188;
+		v188 = loc37;
+		v188 = *v188.u0;
+		loc38 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc38;
+		v189 = loc18;
+		v188 = invoke_ii(v188, v189);
+		v188.u3 = g_t140048.u3;
+		loc39 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc39;
+		v189.u0 = 0x01;
+		v188 &= v189;
+		loc40 = v188;
+		v188 = loc40;
+		if (v188)
+		{
+			v188.u0 = 0x1D;
+			loc190 = v188;
+			goto l000F75DB;
+		}
+		v188 = loc14;
+		loc12 = v188;
+		v188 = loc18;
+		loc19 = v188;
+	}
+	v188 = loc14;
+	loc16 = v188;
+	v188 = loc98;
+	loc20 = v188;
+	v188.u0 = 0x27;
+	loc190 = v188;
+l000F75DB:
+	v188 = loc190;
+	v189.u0 = 0x1D;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc172 = v188;
+		v188.u3 = g_t140094.u3;
+		loc173 = v188;
+		v188 = loc172;
+		loc21 = v188;
+		v188 = loc173;
+		loc22 = v188;
+		goto l000F78A4;
+	}
+	v188 = loc190;
+	v189.u0 = 0x1F;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc177 = v188;
+		v188.u3 = g_t140094.u3;
+		loc178 = v188;
+		v188 = loc177;
+		loc21 = v188;
+		v188 = loc178;
+		loc22 = v188;
+		goto l000F78A3;
+	}
+	v188 = loc190;
+	v189.u0 = 0x27;
+	v190 = v188 == v189;
+	if (!v190)
+	{
+l000F78A4:
+		v188 = loc21;
+		loc13 = v188;
+		v188 = loc22;
+		loc15 = v188;
+l000F78AD:
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc13;
+		___resumeException(v188);
+		v188.u0 = 0x00;
+		return v188;
+	}
+	v188 = loc165;
+	v189.u0 = 11;
+	v188 += v189;
+	loc42 = v188;
+	v188 = loc42;
+	v205.u3 = *v188.u3;
+	v188.u3 = (word32) v205;
+	loc43 = v188;
+	v188 = loc43;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc44 = v190;
+	v188 = loc165;
+	v189.u0 = 0x04;
+	v188 += v189;
+	loc45 = v188;
+	v188 = loc45;
+	v188.u3 = *v188.u3;
+	loc47 = v188;
+	v188 = loc43;
+	v189.u0 = 0xFF;
+	v188 &= v189;
+	loc48 = v188;
+	v188 = loc44;
+	if (v188)
+		v188 = loc47;
+	else
+		v188 = loc48;
+	loc49 = v188;
+	v188 = loc49;
+	v189.u0 = 0x00;
+	v190 = v188 == v189;
+	loc50 = v190;
+	v188 = loc50;
+	v190 = v188 == 0x00;
+	if (v190)
+	{
+		v188 = loc46;
+		v188.u3 = *v188.u3;
+		loc51 = v188;
+		v188 = loc51;
+		loc52 = v188;
+		v188 = loc35;
+		loc53 = v188;
+		v188 = loc52;
+		v189 = loc53;
+		v188 -= v189;
+		loc54 = v188;
+		v188 = loc54;
+		v189.u0 = 0xA0;
+		v190 = v188 < v189;
+		loc55 = v190;
+		v188 = loc55;
+		if (v188)
+		{
+			v188 = loc57;
+			v188.u3 = *v188.u3;
+			loc56 = v188;
+			v188 = loc51;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc58 = v188;
+			v188 = loc46;
+			v189 = loc58;
+			*v188.u3 = (word32) v189;
+			v188 = loc51;
+			v189 = loc56;
+			*v188.u3 = (word32) v189;
+		}
+	}
+	v188 = loc24;
+	v188.u3 = *v188.u3;
+	loc59 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x0187;
+	v189 = loc16;
+	v191 = loc59;
+	v192 = arg4;
+	v199 = loc68;
+	v188 = invoke_iiiii(v188, v189, v191, v192, v199);
+	loc60 = v188;
+	v188.u3 = g_t140048.u3;
+	loc61 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc61;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc62 = v188;
+	v188 = loc62;
+	v190 = v188 == 0x00;
+	if (!v190)
+	{
+l000F788D:
+		v188 = ___cxa_find_matching_catch_n();
+		loc174 = v188;
+		v188.u3 = g_t140094.u3;
+		loc175 = v188;
+		v188 = loc174;
+		loc21 = v188;
+		v188 = loc175;
+		loc22 = v188;
+		goto l000F78A3;
+	}
+	else
+	{
+		v188 = arg5;
+		v189 = loc60;
+		v206 = (word16) v189;
+		*v188.u0 = v206;
+		v188 = loc46;
+		v188 = *v188.u0;
+		loc63 = v188;
+		v188 = loc165;
+		v189 = loc35;
+		v191 = loc63;
+		v192 = arg4;
+		fn000EC01D(v188, v189, v191, v192);
+		v188 = loc18;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc64 = v190;
+		v188 = loc64;
+		if (v188)
+		{
+			v188.u0 = 0x01;
+			loc99 = v188;
+		}
+		else
+		{
+			v188 = loc18;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc65 = v188;
+			v188 = loc65;
+			v188 = *v188.u0;
+			loc66 = v188;
+			v188 = loc18;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc67 = v188;
+			v188 = loc67;
+			v188 = *v188.u0;
+			loc69 = v188;
+			v188 = loc66;
+			v189 = loc69;
+			v190 = v188 == v189;
+			loc70 = v190;
+			v188 = loc70;
+			if (v188)
+			{
+				v188 = loc18;
+				v188 = *v188.u0;
+				loc71 = v188;
+				v188 = loc71;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc72 = v188;
+				v188 = loc72;
+				v188 = *v188.u0;
+				loc73 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc73;
+				v189 = loc18;
+				v188 = invoke_ii(v188, v189);
+				loc74 = v188;
+				v188.u3 = g_t140048.u3;
+				loc75 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc75;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc76 = v188;
+				v188 = loc76;
+				if (v188)
+					goto l000F788D;
+				v188 = loc74;
+				loc7 = v188;
+			}
+			else
+			{
+				v188 = loc66;
+				v188 = *v188.u0;
+				loc77 = v188;
+				v188 = loc77;
+				loc7 = v188;
+			}
+			v188 = loc7;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc78 = v190;
+			v188 = loc78;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x01;
+				loc99 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x00;
+				loc99 = v188;
+			}
+		}
+		v188 = loc20;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc80 = v190;
+		v188 = loc80;
+		if (v188)
+		{
+			v188.u0 = 55;
+			loc190 = v188;
+			goto l000F783F;
+		}
+		v188 = loc20;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc81 = v188;
+		v188 = loc81;
+		v188 = *v188.u0;
+		loc82 = v188;
+		v188 = loc20;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc83 = v188;
+		v188 = loc83;
+		v188 = *v188.u0;
+		loc84 = v188;
+		v188 = loc82;
+		v189 = loc84;
+		v190 = v188 == v189;
+		loc85 = v190;
+		v188 = loc85;
+		if (v188)
+		{
+			v188 = loc20;
+			v188 = *v188.u0;
+			loc86 = v188;
+			v188 = loc86;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc87 = v188;
+			v188 = loc87;
+			v188 = *v188.u0;
+			loc88 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc88;
+			v189 = loc20;
+			v188 = invoke_ii(v188, v189);
+			loc89 = v188;
+			v188.u3 = g_t140048.u3;
+			loc91 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc91;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc92 = v188;
+			v188 = loc92;
+			if (v188)
+				goto l000F788D;
+			v188 = loc89;
+			loc9 = v188;
+		}
+		else
+		{
+			v188 = loc82;
+			v188 = *v188.u0;
+			loc93 = v188;
+			v188 = loc93;
+			loc9 = v188;
+		}
+		v188 = loc9;
+		v189.u0 = ~0x00;
+		v190 = v188 == v189;
+		loc94 = v190;
+		v188 = loc94;
+		if (v188)
+		{
+			v188 = arg2;
+			v189.u0 = 0x00;
+			*v188.u0 = v189;
+			v188.u0 = 55;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc99;
+			if (!v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+l000F783F:
+		v188 = loc190;
+		v189.u0 = 55;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = loc99;
+			if (v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x39;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = arg4;
+			v188 = *v188.u0;
+			loc95 = v188;
+			v188 = loc95;
+			v189.u0 = 0x02;
+			v188 |= v189;
+			loc96 = v188;
+			v188 = arg4;
+			v189 = loc96;
+			*v188.u0 = v189;
+		}
+		v188 = arg1;
+		v188 = *v188.u0;
+		loc23 = v188;
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc191;
+		g_t140030.u3 = (word32 *) v188;
+		v188 = loc23;
+		return v188;
+	}
 }
 
 // 000F78C3: Stack Eq_n fn000F78C3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F78C3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v188.u3 = g_t140030.u3;
+	loc190 = v188;
+	v188.u3 = g_t140030.u3;
+	v189.u0 = 0x0130;
+	v188 += v189;
+	g_t140030.u3 = (word32 *) v188;
+	v188.u3 = g_t140030.u3;
+	v189.u3 = g_t140034.u3;
+	v190 = v188 >= v189;
+	if (v190)
+	{
+		v188.u0 = 0x0130;
+		abortStackOverflow(v188);
+	}
+	while (true)
+	{
+		v188 = loc190;
+		v189.u0 = 200;
+		v188 += v189;
+		loc142 = v188;
+		v188 = loc190;
+		v189.u0 = 0xC4;
+		v188 += v189;
+		loc153 = v188;
+		v188 = loc190;
+		v189.u0 = 0xB8;
+		v188 += v189;
+		loc164 = v188;
+		v188 = loc190;
+		v189.u0 = 0xAC;
+		v188 += v189;
+		loc175 = v188;
+		v188 = loc190;
+		v189.u0 = 0xA8;
+		v188 += v189;
+		loc24 = v188;
+		v188 = loc190;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc35 = v188;
+		v188 = loc190;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc46 = v188;
+		v188 = loc190;
+		loc57 = v188;
+		v188 = arg3;
+		v188 = fn000EDE83(v188);
+		loc67 = v188;
+		v188 = loc164;
+		v189 = arg3;
+		v191 = loc142;
+		v192 = loc153;
+		fn000F5C88(v188, v189, v191, v192);
+		v188 = loc175;
+		v193.u0 = 0x00;
+		*v188.u0 = v193;
+		v188 = loc175;
+		v189.u0 = 0x08;
+		v188 += v189;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188.u0 = 0x00;
+		loc6 = v188;
+		v188 = loc6;
+		v189.u0 = 0x03;
+		v190 = v188 == v189;
+		loc186 = v190;
+		v188 = loc186;
+		if (v188)
+			break;
+		v188 = loc175;
+		v189 = loc6;
+		v191.u0 = 0x02;
+		v189 <<= v191;
+		v188 += v189;
+		loc78 = v188;
+		v188 = loc78;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188 = loc6;
+		v189.u0 = 0x01;
+		v188 += v189;
+		loc89 = v188;
+		v188 = loc89;
+		loc6 = v188;
+	}
+	v188 = loc175;
+	v189.u0 = 11;
+	v188 += v189;
+	loc99 = v188;
+	v188 = loc99;
+	v194 = *v188.u0;
+	v188.u3 = (word32) v194;
+	loc100 = v188;
+	v188 = loc100;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc101 = v190;
+	v188 = loc101;
+	if (v188)
+	{
+		v188 = loc175;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc102 = v188;
+		v188 = loc102;
+		v188.u3 = *v188.u3;
+		loc103 = v188;
+		v188 = loc103;
+		v189.u0 = 0x7FFFFFFF;
+		v188 &= v189;
+		loc104 = v188;
+		v188 = loc104;
+		v189.u0 = ~0x00;
+		v188 += v189;
+		loc187 = v188;
+		v188 = loc187;
+		loc105 = v188;
+	}
+	else
+	{
+		v188.u0 = 0x0A;
+		loc105 = v188;
+	}
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x017A;
+	v189 = loc175;
+	v191 = loc105;
+	v192.u0 = 0x00;
+	invoke_viii(v188, v189, v191, v192);
+	v188.u3 = g_t140048.u3;
+	loc106 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc106;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc107 = v188;
+	v188 = loc107;
+	if (v188)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc169 = v188;
+		v188.u3 = g_t140094.u3;
+		loc170 = v188;
+		v188 = loc169;
+		loc13 = v188;
+		v188 = loc170;
+		loc15 = v188;
+		goto l000F819B;
+	}
+	v188 = loc99;
+	v195.u3 = *v188.u3;
+	v188.u3 = (word32) v195;
+	loc108 = v188;
+	v188 = loc108;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc109 = v190;
+	v188 = loc175;
+	v188.u3 = *v188.u3;
+	loc110 = v188;
+	v188 = loc109;
+	if (v188)
+		v188 = loc110;
+	else
+		v188 = loc175;
+	while (true)
+	{
+		loc111 = v188;
+		v188 = loc24;
+		v189 = loc111;
+		*v188.u3 = (word32) v189;
+		v188 = loc46;
+		v189 = loc35;
+		*v188.u3 = (word32) v189;
+		v188 = loc57;
+		v189.u0 = 0x00;
+		*v188.u3 = (word32) v189;
+		v188 = loc175;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc112 = v188;
+		v188 = loc175;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc113 = v188;
+		v188 = arg1;
+		v188.u3 = *v188.u3;
+		loc17 = v188;
+		v188 = loc111;
+		loc12 = v188;
+		v188 = loc17;
+		loc19 = v188;
+		v188 = loc19;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc114 = v190;
+		v188 = loc114;
+		if (v188)
+		{
+			v188.u0 = 0x00;
+			loc18 = v188;
+			v188.u0 = 0x01;
+			loc96 = v188;
+		}
+		else
+		{
+			v188 = loc19;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc115 = v188;
+			v188 = loc115;
+			v188 = *v188.u0;
+			loc116 = v188;
+			v188 = loc19;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc117 = v188;
+			v188 = loc117;
+			v188 = *v188.u0;
+			loc118 = v188;
+			v188 = loc116;
+			v189 = loc118;
+			v190 = v188 == v189;
+			loc119 = v190;
+			v188 = loc119;
+			if (v188)
+			{
+				v188 = loc19;
+				v188 = *v188.u0;
+				loc120 = v188;
+				v188 = loc120;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc121 = v188;
+				v188 = loc121;
+				v188 = *v188.u0;
+				loc122 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc122;
+				v189 = loc19;
+				v188 = invoke_ii(v188, v189);
+				loc123 = v188;
+				v188.u3 = g_t140048.u3;
+				loc124 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc124;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc125 = v188;
+				v188 = loc125;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc189 = v188;
+					goto l000F7EC6;
+				}
+				v188 = loc123;
+				loc8 = v188;
+			}
+			else
+			{
+				v188 = loc116;
+				v188 = *v188.u0;
+				loc126 = v188;
+				v188 = loc126;
+				loc8 = v188;
+			}
+			v188 = loc8;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc127 = v190;
+			v188 = loc127;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x00;
+				loc18 = v188;
+				v188.u0 = 0x01;
+				loc96 = v188;
+			}
+			else
+			{
+				v188 = loc19;
+				loc18 = v188;
+				v188.u0 = 0x00;
+				loc96 = v188;
+			}
+		}
+		v188 = arg2;
+		v188 = *v188.u0;
+		loc128 = v188;
+		v188 = loc128;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc129 = v190;
+		v188 = loc129;
+		if (v188)
+		{
+			v188.u0 = 0x14;
+			loc189 = v188;
+		}
+		else
+		{
+			v188 = loc128;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc130 = v188;
+			v188 = loc130;
+			v188 = *v188.u0;
+			loc131 = v188;
+			v188 = loc128;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc132 = v188;
+			v188 = loc132;
+			v188 = *v188.u0;
+			loc133 = v188;
+			v188 = loc131;
+			v189 = loc133;
+			v190 = v188 == v189;
+			loc134 = v190;
+			v188 = loc134;
+			if (v188)
+			{
+				v188 = loc128;
+				v188 = *v188.u0;
+				loc135 = v188;
+				v188 = loc135;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc136 = v188;
+				v188 = loc136;
+				v188 = *v188.u0;
+				loc137 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc137;
+				v189 = loc128;
+				v188 = invoke_ii(v188, v189);
+				loc138 = v188;
+				v188.u3 = g_t140048.u3;
+				loc139 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc139;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc140 = v188;
+				v188 = loc140;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc189 = v188;
+					goto l000F7EC6;
+				}
+				v188 = loc138;
+				loc10 = v188;
+			}
+			else
+			{
+				v188 = loc131;
+				v188 = *v188.u0;
+				loc141 = v188;
+				v188 = loc141;
+				loc10 = v188;
+			}
+			v188 = loc10;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc143 = v190;
+			v188 = loc143;
+			if (v188)
+			{
+				v188 = arg2;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x14;
+				loc189 = v188;
+			}
+			else
+			{
+				v188 = loc96;
+				if (!v188)
+				{
+					v188 = loc12;
+					loc16 = v188;
+					v188 = loc128;
+					loc20 = v188;
+					v188.u0 = 0x27;
+					loc189 = v188;
+					goto l000F7EC6;
+				}
+				v188 = loc128;
+				loc97 = v188;
+			}
+		}
+		v188 = loc189;
+		v189.u0 = 0x14;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188.u0 = 0x00;
+			loc189 = v188;
+			v188 = loc96;
+			if (v188)
+			{
+				v188 = loc12;
+				loc16 = v188;
+				v188.u0 = 0x00;
+				loc20 = v188;
+				v188.u0 = 0x27;
+				loc189 = v188;
+				goto l000F7EC6;
+			}
+			v188.u0 = 0x00;
+			loc97 = v188;
+		}
+		v188 = loc24;
+		v188 = *v188.u0;
+		loc144 = v188;
+		v188 = loc99;
+		v196 = *v188.u0;
+		v188.u3 = (word32) v196;
+		loc145 = v188;
+		v188 = loc145;
+		v189.u0 = 0x18;
+		v188 <<= v189;
+		v189.u0 = 0x18;
+		v188 >>= v189;
+		v189.u0 = 0x00;
+		v190 = v188 < v189;
+		loc146 = v190;
+		v188 = loc112;
+		v188.u3 = *v188.u3;
+		loc147 = v188;
+		v188 = loc145;
+		v189.u0 = 0xFF;
+		v188 &= v189;
+		loc148 = v188;
+		v188 = loc146;
+		if (v188)
+			v188 = loc147;
+		else
+			v188 = loc148;
+		loc149 = v188;
+		v188 = loc12;
+		v189 = loc149;
+		v188 += v189;
+		loc150 = v188;
+		v188 = loc144;
+		v189 = loc150;
+		v190 = v188 == v189;
+		loc151 = v190;
+		v188 = loc151;
+		if (v188)
+		{
+			v188 = loc149;
+			v189.u0 = 0x01;
+			v188 <<= v189;
+			loc152 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc175;
+			v191 = loc152;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc154 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc154;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc155 = v188;
+			v188 = loc155;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc189 = v188;
+				goto l000F7EC6;
+			}
+			v188 = loc99;
+			v197 = *v188.u0;
+			v188.u3 = (word32) v197;
+			loc156 = v188;
+			v188 = loc156;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc157 = v190;
+			v188 = loc157;
+			if (v188)
+			{
+				v188 = loc113;
+				v188.u3 = *v188.u3;
+				loc158 = v188;
+				v188 = loc158;
+				v189.u0 = 0x7FFFFFFF;
+				v188 &= v189;
+				loc159 = v188;
+				v188 = loc159;
+				v189.u0 = ~0x00;
+				v188 += v189;
+				loc188 = v188;
+				v188 = loc188;
+				loc160 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x0A;
+				loc160 = v188;
+			}
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc175;
+			v191 = loc160;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc161 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc161;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc162 = v188;
+			v188 = loc162;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc189 = v188;
+				goto l000F7EC6;
+			}
+			v188 = loc99;
+			v198 = *v188.u0;
+			v188.u3 = (word32) v198;
+			loc163 = v188;
+			v188 = loc163;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc165 = v190;
+			v188 = loc175;
+			v188.u3 = *v188.u3;
+			loc166 = v188;
+			v188 = loc165;
+			if (v188)
+				v188 = loc166;
+			else
+				v188 = loc175;
+			loc167 = v188;
+			v188 = loc167;
+			v189 = loc149;
+			v188 += v189;
+			loc168 = v188;
+			v188 = loc24;
+			v189 = loc168;
+			*v188.u3 = (word32) v189;
+			v188 = loc167;
+			loc14 = v188;
+		}
+		else
+		{
+			v188 = loc12;
+			loc14 = v188;
+		}
+		v188 = loc18;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc178 = v188;
+		v188 = loc178;
+		v188.u3 = *v188.u3;
+		loc179 = v188;
+		v188 = loc18;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc180 = v188;
+		v188 = loc180;
+		v188.u3 = *v188.u3;
+		loc181 = v188;
+		v188 = loc179;
+		v189 = loc181;
+		v190 = v188 == v189;
+		loc182 = v190;
+		v188 = loc182;
+		if (v188)
+		{
+			v188 = loc18;
+			v188.u3 = *v188.u3;
+			loc183 = v188;
+			v188 = loc183;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc184 = v188;
+			v188 = loc184;
+			v188.u3 = *v188.u3;
+			loc185 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc185;
+			v189 = loc18;
+			v188 = invoke_ii(v188, v189);
+			loc25 = v188;
+			v188.u3 = g_t140048.u3;
+			loc26 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc26;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc27 = v188;
+			v188 = loc27;
+			if (v188)
+			{
+				v188.u0 = 0x1D;
+				loc189 = v188;
+				goto l000F7EC6;
+			}
+			v188 = loc25;
+			loc11 = v188;
+		}
+		else
+		{
+			v188 = loc179;
+			v188 = *v188.u0;
+			loc28 = v188;
+			v188 = loc28;
+			loc11 = v188;
+		}
+		v188 = loc153;
+		v188 = *v188.u0;
+		loc29 = v188;
+		v188 = loc11;
+		v189 = loc67;
+		v191 = loc14;
+		v192 = loc24;
+		v199 = loc57;
+		v200 = loc29;
+		v201 = loc164;
+		v202 = loc35;
+		v203 = loc46;
+		v204 = loc142;
+		v188 = fn000F2F51(v188, v189, v191, v192, v199, v200, v201, v202, v203, v204);
+		loc30 = v188;
+		v188 = loc30;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc31 = v190;
+		v188 = loc31;
+		v190 = v188 == 0x00;
+		if (v190)
+			break;
+		v188 = loc178;
+		v188 = *v188.u0;
+		loc32 = v188;
+		v188 = loc180;
+		v188 = *v188.u0;
+		loc33 = v188;
+		v188 = loc32;
+		v189 = loc33;
+		v190 = v188 == v189;
+		loc34 = v190;
+		v188 = loc34;
+		if (!v188)
+		{
+			v188 = loc32;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc41 = v188;
+			v188 = loc178;
+			v189 = loc41;
+			*v188.u0 = v189;
+			v188 = loc14;
+			loc12 = v188;
+			v188 = loc18;
+			loc19 = v188;
+			continue;
+		}
+		v188 = loc18;
+		v188 = *v188.u0;
+		loc36 = v188;
+		v188 = loc36;
+		v189.u0 = 0x28;
+		v188 += v189;
+		loc37 = v188;
+		v188 = loc37;
+		v188 = *v188.u0;
+		loc38 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc38;
+		v189 = loc18;
+		v188 = invoke_ii(v188, v189);
+		v188.u3 = g_t140048.u3;
+		loc39 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc39;
+		v189.u0 = 0x01;
+		v188 &= v189;
+		loc40 = v188;
+		v188 = loc40;
+		if (v188)
+		{
+			v188.u0 = 0x1D;
+			loc189 = v188;
+			goto l000F7EC6;
+		}
+		v188 = loc14;
+		loc12 = v188;
+		v188 = loc18;
+		loc19 = v188;
+	}
+	v188 = loc14;
+	loc16 = v188;
+	v188 = loc97;
+	loc20 = v188;
+	v188.u0 = 0x27;
+	loc189 = v188;
+l000F7EC6:
+	v188 = loc189;
+	v189.u0 = 0x1D;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc171 = v188;
+		v188.u3 = g_t140094.u3;
+		loc172 = v188;
+		v188 = loc171;
+		loc21 = v188;
+		v188 = loc172;
+		loc22 = v188;
+		goto l000F8192;
+	}
+	v188 = loc189;
+	v189.u0 = 0x1F;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc176 = v188;
+		v188.u3 = g_t140094.u3;
+		loc177 = v188;
+		v188 = loc176;
+		loc21 = v188;
+		v188 = loc177;
+		loc22 = v188;
+		goto l000F8191;
+	}
+	v188 = loc189;
+	v189.u0 = 0x27;
+	v190 = v188 == v189;
+	if (!v190)
+	{
+l000F8192:
+		v188 = loc21;
+		loc13 = v188;
+		v188 = loc22;
+		loc15 = v188;
+l000F819B:
+		v188 = loc175;
+		fn0011BAF7(v188);
+		v188 = loc164;
+		fn0011BAF7(v188);
+		v188 = loc13;
+		___resumeException(v188);
+		v188.u0 = 0x00;
+		return v188;
+	}
+	v188 = loc164;
+	v189.u0 = 11;
+	v188 += v189;
+	loc42 = v188;
+	v188 = loc42;
+	v205.u3 = *v188.u3;
+	v188.u3 = (word32) v205;
+	loc43 = v188;
+	v188 = loc43;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc44 = v190;
+	v188 = loc164;
+	v189.u0 = 0x04;
+	v188 += v189;
+	loc45 = v188;
+	v188 = loc45;
+	v188.u3 = *v188.u3;
+	loc47 = v188;
+	v188 = loc43;
+	v189.u0 = 0xFF;
+	v188 &= v189;
+	loc48 = v188;
+	v188 = loc44;
+	if (v188)
+		v188 = loc47;
+	else
+		v188 = loc48;
+	loc49 = v188;
+	v188 = loc49;
+	v189.u0 = 0x00;
+	v190 = v188 == v189;
+	loc50 = v190;
+	v188 = loc50;
+	v190 = v188 == 0x00;
+	if (v190)
+	{
+		v188 = loc46;
+		v188.u3 = *v188.u3;
+		loc51 = v188;
+		v188 = loc51;
+		loc52 = v188;
+		v188 = loc35;
+		loc53 = v188;
+		v188 = loc52;
+		v189 = loc53;
+		v188 -= v189;
+		loc54 = v188;
+		v188 = loc54;
+		v189.u0 = 0xA0;
+		v190 = v188 < v189;
+		loc55 = v190;
+		v188 = loc55;
+		if (v188)
+		{
+			v188 = loc57;
+			v188.u3 = *v188.u3;
+			loc56 = v188;
+			v188 = loc51;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc58 = v188;
+			v188 = loc46;
+			v189 = loc58;
+			*v188.u3 = (word32) v189;
+			v188 = loc51;
+			v189 = loc56;
+			*v188.u3 = (word32) v189;
+		}
+	}
+	v188 = loc24;
+	v188.u3 = *v188.u3;
+	loc59 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x0188;
+	v189 = loc16;
+	v191 = loc59;
+	v192 = arg4;
+	v199 = loc67;
+	v206 = fn0011F5F3(v188, v189, v191, v192, v199);
+	loc191 = v206;
+	v188.u3 = g_t140048.u3;
+	loc60 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc60;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc61 = v188;
+	v188 = loc61;
+	v190 = v188 == 0x00;
+	if (!v190)
+	{
+l000F817B:
+		v188 = ___cxa_find_matching_catch_n();
+		loc173 = v188;
+		v188.u3 = g_t140094.u3;
+		loc174 = v188;
+		v188 = loc173;
+		loc21 = v188;
+		v188 = loc174;
+		loc22 = v188;
+		goto l000F8191;
+	}
+	else
+	{
+		v188 = arg5;
+		v193 = loc191;
+		*v188.u0 = v193;
+		v188 = loc46;
+		v188 = *v188.u0;
+		loc62 = v188;
+		v188 = loc164;
+		v189 = loc35;
+		v191 = loc62;
+		v192 = arg4;
+		fn000EC01D(v188, v189, v191, v192);
+		v188 = loc18;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc63 = v190;
+		v188 = loc63;
+		if (v188)
+		{
+			v188.u0 = 0x01;
+			loc98 = v188;
+		}
+		else
+		{
+			v188 = loc18;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc64 = v188;
+			v188 = loc64;
+			v188 = *v188.u0;
+			loc65 = v188;
+			v188 = loc18;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc66 = v188;
+			v188 = loc66;
+			v188 = *v188.u0;
+			loc68 = v188;
+			v188 = loc65;
+			v189 = loc68;
+			v190 = v188 == v189;
+			loc69 = v190;
+			v188 = loc69;
+			if (v188)
+			{
+				v188 = loc18;
+				v188 = *v188.u0;
+				loc70 = v188;
+				v188 = loc70;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc71 = v188;
+				v188 = loc71;
+				v188 = *v188.u0;
+				loc72 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc72;
+				v189 = loc18;
+				v188 = invoke_ii(v188, v189);
+				loc73 = v188;
+				v188.u3 = g_t140048.u3;
+				loc74 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc74;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc75 = v188;
+				v188 = loc75;
+				if (v188)
+					goto l000F817B;
+				v188 = loc73;
+				loc7 = v188;
+			}
+			else
+			{
+				v188 = loc65;
+				v188 = *v188.u0;
+				loc76 = v188;
+				v188 = loc76;
+				loc7 = v188;
+			}
+			v188 = loc7;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc77 = v190;
+			v188 = loc77;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x01;
+				loc98 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x00;
+				loc98 = v188;
+			}
+		}
+		v188 = loc20;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc79 = v190;
+		v188 = loc79;
+		if (v188)
+		{
+			v188.u0 = 55;
+			loc189 = v188;
+			goto l000F812D;
+		}
+		v188 = loc20;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc80 = v188;
+		v188 = loc80;
+		v188 = *v188.u0;
+		loc81 = v188;
+		v188 = loc20;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc82 = v188;
+		v188 = loc82;
+		v188 = *v188.u0;
+		loc83 = v188;
+		v188 = loc81;
+		v189 = loc83;
+		v190 = v188 == v189;
+		loc84 = v190;
+		v188 = loc84;
+		if (v188)
+		{
+			v188 = loc20;
+			v188 = *v188.u0;
+			loc85 = v188;
+			v188 = loc85;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc86 = v188;
+			v188 = loc86;
+			v188 = *v188.u0;
+			loc87 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc87;
+			v189 = loc20;
+			v188 = invoke_ii(v188, v189);
+			loc88 = v188;
+			v188.u3 = g_t140048.u3;
+			loc90 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc90;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc91 = v188;
+			v188 = loc91;
+			if (v188)
+				goto l000F817B;
+			v188 = loc88;
+			loc9 = v188;
+		}
+		else
+		{
+			v188 = loc81;
+			v188 = *v188.u0;
+			loc92 = v188;
+			v188 = loc92;
+			loc9 = v188;
+		}
+		v188 = loc9;
+		v189.u0 = ~0x00;
+		v190 = v188 == v189;
+		loc93 = v190;
+		v188 = loc93;
+		if (v188)
+		{
+			v188 = arg2;
+			v189.u0 = 0x00;
+			*v188.u0 = v189;
+			v188.u0 = 55;
+			loc189 = v188;
+		}
+		else
+		{
+			v188 = loc98;
+			if (!v188)
+			{
+				v188.u0 = 0x39;
+				loc189 = v188;
+			}
+		}
+l000F812D:
+		v188 = loc189;
+		v189.u0 = 55;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = loc98;
+			if (v188)
+			{
+				v188.u0 = 0x39;
+				loc189 = v188;
+			}
+		}
+		v188 = loc189;
+		v189.u0 = 0x39;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = arg4;
+			v188 = *v188.u0;
+			loc94 = v188;
+			v188 = loc94;
+			v189.u0 = 0x02;
+			v188 |= v189;
+			loc95 = v188;
+			v188 = arg4;
+			v189 = loc95;
+			*v188.u0 = v189;
+		}
+		v188 = arg1;
+		v188 = *v188.u0;
+		loc23 = v188;
+		v188 = loc175;
+		fn0011BAF7(v188);
+		v188 = loc164;
+		fn0011BAF7(v188);
+		v188 = loc190;
+		g_t140030.u3 = (word32 *) v188;
+		v188 = loc23;
+		return v188;
+	}
 }
 
 // 000F81B1: Stack Eq_n fn000F81B1(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000F81B1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v188.u3 = g_t140030.u3;
+	loc191 = v188;
+	v188.u3 = g_t140030.u3;
+	v189.u0 = 0x0130;
+	v188 += v189;
+	g_t140030.u3 = (word32 *) v188;
+	v188.u3 = g_t140030.u3;
+	v189.u3 = g_t140034.u3;
+	v190 = v188 >= v189;
+	if (v190)
+	{
+		v188.u0 = 0x0130;
+		abortStackOverflow(v188);
+	}
+	while (true)
+	{
+		v188 = loc191;
+		v189.u0 = 200;
+		v188 += v189;
+		loc143 = v188;
+		v188 = loc191;
+		v189.u0 = 0xC4;
+		v188 += v189;
+		loc154 = v188;
+		v188 = loc191;
+		v189.u0 = 0xB8;
+		v188 += v189;
+		loc165 = v188;
+		v188 = loc191;
+		v189.u0 = 0xAC;
+		v188 += v189;
+		loc176 = v188;
+		v188 = loc191;
+		v189.u0 = 0xA8;
+		v188 += v189;
+		loc24 = v188;
+		v188 = loc191;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc35 = v188;
+		v188 = loc191;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc46 = v188;
+		v188 = loc191;
+		loc57 = v188;
+		v188 = arg3;
+		v188 = fn000EDE83(v188);
+		loc68 = v188;
+		v188 = loc165;
+		v189 = arg3;
+		v191 = loc143;
+		v192 = loc154;
+		fn000F5C88(v188, v189, v191, v192);
+		v188 = loc176;
+		v193.u0 = 0x00;
+		*v188.u0 = v193;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188.u0 = 0x00;
+		loc6 = v188;
+		v188 = loc6;
+		v189.u0 = 0x03;
+		v190 = v188 == v189;
+		loc187 = v190;
+		v188 = loc187;
+		if (v188)
+			break;
+		v188 = loc176;
+		v189 = loc6;
+		v191.u0 = 0x02;
+		v189 <<= v191;
+		v188 += v189;
+		loc79 = v188;
+		v188 = loc79;
+		v189.u0 = 0x00;
+		*v188.u0 = v189;
+		v188 = loc6;
+		v189.u0 = 0x01;
+		v188 += v189;
+		loc90 = v188;
+		v188 = loc90;
+		loc6 = v188;
+	}
+	v188 = loc176;
+	v189.u0 = 11;
+	v188 += v189;
+	loc100 = v188;
+	v188 = loc100;
+	v194 = *v188.u0;
+	v188.u3 = (word32) v194;
+	loc101 = v188;
+	v188 = loc101;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc102 = v190;
+	v188 = loc102;
+	if (v188)
+	{
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc103 = v188;
+		v188 = loc103;
+		v188.u3 = *v188.u3;
+		loc104 = v188;
+		v188 = loc104;
+		v189.u0 = 0x7FFFFFFF;
+		v188 &= v189;
+		loc105 = v188;
+		v188 = loc105;
+		v189.u0 = ~0x00;
+		v188 += v189;
+		loc188 = v188;
+		v188 = loc188;
+		loc106 = v188;
+	}
+	else
+	{
+		v188.u0 = 0x0A;
+		loc106 = v188;
+	}
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 0x017A;
+	v189 = loc176;
+	v191 = loc106;
+	v192.u0 = 0x00;
+	invoke_viii(v188, v189, v191, v192);
+	v188.u3 = g_t140048.u3;
+	loc107 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc107;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc108 = v188;
+	v188 = loc108;
+	if (v188)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc170 = v188;
+		v188.u3 = g_t140094.u3;
+		loc171 = v188;
+		v188 = loc170;
+		loc13 = v188;
+		v188 = loc171;
+		loc15 = v188;
+		goto l000F8A88;
+	}
+	v188 = loc100;
+	v195.u3 = *v188.u3;
+	v188.u3 = (word32) v195;
+	loc109 = v188;
+	v188 = loc109;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc110 = v190;
+	v188 = loc176;
+	v188.u3 = *v188.u3;
+	loc111 = v188;
+	v188 = loc110;
+	if (v188)
+		v188 = loc111;
+	else
+		v188 = loc176;
+	while (true)
+	{
+		loc112 = v188;
+		v188 = loc24;
+		v189 = loc112;
+		*v188.u3 = (word32) v189;
+		v188 = loc46;
+		v189 = loc35;
+		*v188.u3 = (word32) v189;
+		v188 = loc57;
+		v189.u0 = 0x00;
+		*v188.u3 = (word32) v189;
+		v188 = loc176;
+		v189.u0 = 0x04;
+		v188 += v189;
+		loc113 = v188;
+		v188 = loc176;
+		v189.u0 = 0x08;
+		v188 += v189;
+		loc114 = v188;
+		v188 = arg1;
+		v188.u3 = *v188.u3;
+		loc17 = v188;
+		v188 = loc112;
+		loc12 = v188;
+		v188 = loc17;
+		loc19 = v188;
+		v188 = loc19;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc115 = v190;
+		v188 = loc115;
+		if (v188)
+		{
+			v188.u0 = 0x00;
+			loc18 = v188;
+			v188.u0 = 0x01;
+			loc97 = v188;
+		}
+		else
+		{
+			v188 = loc19;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc116 = v188;
+			v188 = loc116;
+			v188 = *v188.u0;
+			loc117 = v188;
+			v188 = loc19;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc118 = v188;
+			v188 = loc118;
+			v188 = *v188.u0;
+			loc119 = v188;
+			v188 = loc117;
+			v189 = loc119;
+			v190 = v188 == v189;
+			loc120 = v190;
+			v188 = loc120;
+			if (v188)
+			{
+				v188 = loc19;
+				v188 = *v188.u0;
+				loc121 = v188;
+				v188 = loc121;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc122 = v188;
+				v188 = loc122;
+				v188 = *v188.u0;
+				loc123 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc123;
+				v189 = loc19;
+				v188 = invoke_ii(v188, v189);
+				loc124 = v188;
+				v188.u3 = g_t140048.u3;
+				loc125 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc125;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc126 = v188;
+				v188 = loc126;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F87B6;
+				}
+				v188 = loc124;
+				loc8 = v188;
+			}
+			else
+			{
+				v188 = loc117;
+				v188 = *v188.u0;
+				loc127 = v188;
+				v188 = loc127;
+				loc8 = v188;
+			}
+			v188 = loc8;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc128 = v190;
+			v188 = loc128;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x00;
+				loc18 = v188;
+				v188.u0 = 0x01;
+				loc97 = v188;
+			}
+			else
+			{
+				v188 = loc19;
+				loc18 = v188;
+				v188.u0 = 0x00;
+				loc97 = v188;
+			}
+		}
+		v188 = arg2;
+		v188 = *v188.u0;
+		loc129 = v188;
+		v188 = loc129;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc130 = v190;
+		v188 = loc130;
+		if (v188)
+		{
+			v188.u0 = 0x14;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc129;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc131 = v188;
+			v188 = loc131;
+			v188 = *v188.u0;
+			loc132 = v188;
+			v188 = loc129;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc133 = v188;
+			v188 = loc133;
+			v188 = *v188.u0;
+			loc134 = v188;
+			v188 = loc132;
+			v189 = loc134;
+			v190 = v188 == v189;
+			loc135 = v190;
+			v188 = loc135;
+			if (v188)
+			{
+				v188 = loc129;
+				v188 = *v188.u0;
+				loc136 = v188;
+				v188 = loc136;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc137 = v188;
+				v188 = loc137;
+				v188 = *v188.u0;
+				loc138 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc138;
+				v189 = loc129;
+				v188 = invoke_ii(v188, v189);
+				loc139 = v188;
+				v188.u3 = g_t140048.u3;
+				loc140 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc140;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc141 = v188;
+				v188 = loc141;
+				if (v188)
+				{
+					v188.u0 = 0x1D;
+					loc190 = v188;
+					goto l000F87B6;
+				}
+				v188 = loc139;
+				loc10 = v188;
+			}
+			else
+			{
+				v188 = loc132;
+				v188 = *v188.u0;
+				loc142 = v188;
+				v188 = loc142;
+				loc10 = v188;
+			}
+			v188 = loc10;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc144 = v190;
+			v188 = loc144;
+			if (v188)
+			{
+				v188 = arg2;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x14;
+				loc190 = v188;
+			}
+			else
+			{
+				v188 = loc97;
+				if (!v188)
+				{
+					v188 = loc12;
+					loc16 = v188;
+					v188 = loc129;
+					loc20 = v188;
+					v188.u0 = 0x27;
+					loc190 = v188;
+					goto l000F87B6;
+				}
+				v188 = loc129;
+				loc98 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x14;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188.u0 = 0x00;
+			loc190 = v188;
+			v188 = loc97;
+			if (v188)
+			{
+				v188 = loc12;
+				loc16 = v188;
+				v188.u0 = 0x00;
+				loc20 = v188;
+				v188.u0 = 0x27;
+				loc190 = v188;
+				goto l000F87B6;
+			}
+			v188.u0 = 0x00;
+			loc98 = v188;
+		}
+		v188 = loc24;
+		v188 = *v188.u0;
+		loc145 = v188;
+		v188 = loc100;
+		v196 = *v188.u0;
+		v188.u3 = (word32) v196;
+		loc146 = v188;
+		v188 = loc146;
+		v189.u0 = 0x18;
+		v188 <<= v189;
+		v189.u0 = 0x18;
+		v188 >>= v189;
+		v189.u0 = 0x00;
+		v190 = v188 < v189;
+		loc147 = v190;
+		v188 = loc113;
+		v188.u3 = *v188.u3;
+		loc148 = v188;
+		v188 = loc146;
+		v189.u0 = 0xFF;
+		v188 &= v189;
+		loc149 = v188;
+		v188 = loc147;
+		if (v188)
+			v188 = loc148;
+		else
+			v188 = loc149;
+		loc150 = v188;
+		v188 = loc12;
+		v189 = loc150;
+		v188 += v189;
+		loc151 = v188;
+		v188 = loc145;
+		v189 = loc151;
+		v190 = v188 == v189;
+		loc152 = v190;
+		v188 = loc152;
+		if (v188)
+		{
+			v188 = loc150;
+			v189.u0 = 0x01;
+			v188 <<= v189;
+			loc153 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc153;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc155 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc155;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc156 = v188;
+			v188 = loc156;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F87B6;
+			}
+			v188 = loc100;
+			v197 = *v188.u0;
+			v188.u3 = (word32) v197;
+			loc157 = v188;
+			v188 = loc157;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc158 = v190;
+			v188 = loc158;
+			if (v188)
+			{
+				v188 = loc114;
+				v188.u3 = *v188.u3;
+				loc159 = v188;
+				v188 = loc159;
+				v189.u0 = 0x7FFFFFFF;
+				v188 &= v189;
+				loc160 = v188;
+				v188 = loc160;
+				v189.u0 = ~0x00;
+				v188 += v189;
+				loc189 = v188;
+				v188 = loc189;
+				loc161 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x0A;
+				loc161 = v188;
+			}
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188.u0 = 0x017A;
+			v189 = loc176;
+			v191 = loc161;
+			v192.u0 = 0x00;
+			invoke_viii(v188, v189, v191, v192);
+			v188.u3 = g_t140048.u3;
+			loc162 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc162;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc163 = v188;
+			v188 = loc163;
+			if (v188)
+			{
+				v188.u0 = 0x1F;
+				loc190 = v188;
+				goto l000F87B6;
+			}
+			v188 = loc100;
+			v198 = *v188.u0;
+			v188.u3 = (word32) v198;
+			loc164 = v188;
+			v188 = loc164;
+			v189.u0 = 0x18;
+			v188 <<= v189;
+			v189.u0 = 0x18;
+			v188 >>= v189;
+			v189.u0 = 0x00;
+			v190 = v188 < v189;
+			loc166 = v190;
+			v188 = loc176;
+			v188.u3 = *v188.u3;
+			loc167 = v188;
+			v188 = loc166;
+			if (v188)
+				v188 = loc167;
+			else
+				v188 = loc176;
+			loc168 = v188;
+			v188 = loc168;
+			v189 = loc150;
+			v188 += v189;
+			loc169 = v188;
+			v188 = loc24;
+			v189 = loc169;
+			*v188.u3 = (word32) v189;
+			v188 = loc168;
+			loc14 = v188;
+		}
+		else
+		{
+			v188 = loc12;
+			loc14 = v188;
+		}
+		v188 = loc18;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc179 = v188;
+		v188 = loc179;
+		v188.u3 = *v188.u3;
+		loc180 = v188;
+		v188 = loc18;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc181 = v188;
+		v188 = loc181;
+		v188.u3 = *v188.u3;
+		loc182 = v188;
+		v188 = loc180;
+		v189 = loc182;
+		v190 = v188 == v189;
+		loc183 = v190;
+		v188 = loc183;
+		if (v188)
+		{
+			v188 = loc18;
+			v188.u3 = *v188.u3;
+			loc184 = v188;
+			v188 = loc184;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc185 = v188;
+			v188 = loc185;
+			v188.u3 = *v188.u3;
+			loc186 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc186;
+			v189 = loc18;
+			v188 = invoke_ii(v188, v189);
+			loc25 = v188;
+			v188.u3 = g_t140048.u3;
+			loc26 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc26;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc27 = v188;
+			v188 = loc27;
+			if (v188)
+			{
+				v188.u0 = 0x1D;
+				loc190 = v188;
+				goto l000F87B6;
+			}
+			v188 = loc25;
+			loc11 = v188;
+		}
+		else
+		{
+			v188 = loc180;
+			v188 = *v188.u0;
+			loc28 = v188;
+			v188 = loc28;
+			loc11 = v188;
+		}
+		v188 = loc154;
+		v188 = *v188.u0;
+		loc29 = v188;
+		v188 = loc11;
+		v189 = loc68;
+		v191 = loc14;
+		v192 = loc24;
+		v199 = loc57;
+		v200 = loc29;
+		v201 = loc165;
+		v202 = loc35;
+		v203 = loc46;
+		v204 = loc143;
+		v188 = fn000F2F51(v188, v189, v191, v192, v199, v200, v201, v202, v203, v204);
+		loc30 = v188;
+		v188 = loc30;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc31 = v190;
+		v188 = loc31;
+		v190 = v188 == 0x00;
+		if (v190)
+			break;
+		v188 = loc179;
+		v188 = *v188.u0;
+		loc32 = v188;
+		v188 = loc181;
+		v188 = *v188.u0;
+		loc33 = v188;
+		v188 = loc32;
+		v189 = loc33;
+		v190 = v188 == v189;
+		loc34 = v190;
+		v188 = loc34;
+		if (!v188)
+		{
+			v188 = loc32;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc41 = v188;
+			v188 = loc179;
+			v189 = loc41;
+			*v188.u0 = v189;
+			v188 = loc14;
+			loc12 = v188;
+			v188 = loc18;
+			loc19 = v188;
+			continue;
+		}
+		v188 = loc18;
+		v188 = *v188.u0;
+		loc36 = v188;
+		v188 = loc36;
+		v189.u0 = 0x28;
+		v188 += v189;
+		loc37 = v188;
+		v188 = loc37;
+		v188 = *v188.u0;
+		loc38 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc38;
+		v189 = loc18;
+		v188 = invoke_ii(v188, v189);
+		v188.u3 = g_t140048.u3;
+		loc39 = v188;
+		v188.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v188;
+		v188 = loc39;
+		v189.u0 = 0x01;
+		v188 &= v189;
+		loc40 = v188;
+		v188 = loc40;
+		if (v188)
+		{
+			v188.u0 = 0x1D;
+			loc190 = v188;
+			goto l000F87B6;
+		}
+		v188 = loc14;
+		loc12 = v188;
+		v188 = loc18;
+		loc19 = v188;
+	}
+	v188 = loc14;
+	loc16 = v188;
+	v188 = loc98;
+	loc20 = v188;
+	v188.u0 = 0x27;
+	loc190 = v188;
+l000F87B6:
+	v188 = loc190;
+	v189.u0 = 0x1D;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc172 = v188;
+		v188.u3 = g_t140094.u3;
+		loc173 = v188;
+		v188 = loc172;
+		loc21 = v188;
+		v188 = loc173;
+		loc22 = v188;
+		goto l000F8A7F;
+	}
+	v188 = loc190;
+	v189.u0 = 0x1F;
+	v190 = v188 == v189;
+	if (v190)
+	{
+		v188 = ___cxa_find_matching_catch_n();
+		loc177 = v188;
+		v188.u3 = g_t140094.u3;
+		loc178 = v188;
+		v188 = loc177;
+		loc21 = v188;
+		v188 = loc178;
+		loc22 = v188;
+		goto l000F8A7E;
+	}
+	v188 = loc190;
+	v189.u0 = 0x27;
+	v190 = v188 == v189;
+	if (!v190)
+	{
+l000F8A7F:
+		v188 = loc21;
+		loc13 = v188;
+		v188 = loc22;
+		loc15 = v188;
+l000F8A88:
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc13;
+		___resumeException(v188);
+		v188.u0 = 0x00;
+		return v188;
+	}
+	v188 = loc165;
+	v189.u0 = 11;
+	v188 += v189;
+	loc42 = v188;
+	v188 = loc42;
+	v205.u3 = *v188.u3;
+	v188.u3 = (word32) v205;
+	loc43 = v188;
+	v188 = loc43;
+	v189.u0 = 0x18;
+	v188 <<= v189;
+	v189.u0 = 0x18;
+	v188 >>= v189;
+	v189.u0 = 0x00;
+	v190 = v188 < v189;
+	loc44 = v190;
+	v188 = loc165;
+	v189.u0 = 0x04;
+	v188 += v189;
+	loc45 = v188;
+	v188 = loc45;
+	v188.u3 = *v188.u3;
+	loc47 = v188;
+	v188 = loc43;
+	v189.u0 = 0xFF;
+	v188 &= v189;
+	loc48 = v188;
+	v188 = loc44;
+	if (v188)
+		v188 = loc47;
+	else
+		v188 = loc48;
+	loc49 = v188;
+	v188 = loc49;
+	v189.u0 = 0x00;
+	v190 = v188 == v189;
+	loc50 = v190;
+	v188 = loc50;
+	v190 = v188 == 0x00;
+	if (v190)
+	{
+		v188 = loc46;
+		v188.u3 = *v188.u3;
+		loc51 = v188;
+		v188 = loc51;
+		loc52 = v188;
+		v188 = loc35;
+		loc53 = v188;
+		v188 = loc52;
+		v189 = loc53;
+		v188 -= v189;
+		loc54 = v188;
+		v188 = loc54;
+		v189.u0 = 0xA0;
+		v190 = v188 < v189;
+		loc55 = v190;
+		v188 = loc55;
+		if (v188)
+		{
+			v188 = loc57;
+			v188.u3 = *v188.u3;
+			loc56 = v188;
+			v188 = loc51;
+			v189.u0 = 0x04;
+			v188 += v189;
+			loc58 = v188;
+			v188 = loc46;
+			v189 = loc58;
+			*v188.u3 = (word32) v189;
+			v188 = loc51;
+			v189 = loc56;
+			*v188.u3 = (word32) v189;
+		}
+	}
+	v188 = loc24;
+	v188.u3 = *v188.u3;
+	loc59 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188.u0 = 393;
+	v189 = loc16;
+	v191 = loc59;
+	v192 = arg4;
+	v199 = loc68;
+	v188 = invoke_iiiii(v188, v189, v191, v192, v199);
+	loc60 = v188;
+	v188.u3 = g_t140048.u3;
+	loc61 = v188;
+	v188.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v188;
+	v188 = loc61;
+	v189.u0 = 0x01;
+	v188 &= v189;
+	loc62 = v188;
+	v188 = loc62;
+	v190 = v188 == 0x00;
+	if (!v190)
+	{
+l000F8A68:
+		v188 = ___cxa_find_matching_catch_n();
+		loc174 = v188;
+		v188.u3 = g_t140094.u3;
+		loc175 = v188;
+		v188 = loc174;
+		loc21 = v188;
+		v188 = loc175;
+		loc22 = v188;
+		goto l000F8A7E;
+	}
+	else
+	{
+		v188 = arg5;
+		v189 = loc60;
+		*v188.u0 = v189;
+		v188 = loc46;
+		v188 = *v188.u0;
+		loc63 = v188;
+		v188 = loc165;
+		v189 = loc35;
+		v191 = loc63;
+		v192 = arg4;
+		fn000EC01D(v188, v189, v191, v192);
+		v188 = loc18;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc64 = v190;
+		v188 = loc64;
+		if (v188)
+		{
+			v188.u0 = 0x01;
+			loc99 = v188;
+		}
+		else
+		{
+			v188 = loc18;
+			v189.u0 = 0x0C;
+			v188 += v189;
+			loc65 = v188;
+			v188 = loc65;
+			v188 = *v188.u0;
+			loc66 = v188;
+			v188 = loc18;
+			v189.u0 = 0x10;
+			v188 += v189;
+			loc67 = v188;
+			v188 = loc67;
+			v188 = *v188.u0;
+			loc69 = v188;
+			v188 = loc66;
+			v189 = loc69;
+			v190 = v188 == v189;
+			loc70 = v190;
+			v188 = loc70;
+			if (v188)
+			{
+				v188 = loc18;
+				v188 = *v188.u0;
+				loc71 = v188;
+				v188 = loc71;
+				v189.u0 = 0x24;
+				v188 += v189;
+				loc72 = v188;
+				v188 = loc72;
+				v188 = *v188.u0;
+				loc73 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc73;
+				v189 = loc18;
+				v188 = invoke_ii(v188, v189);
+				loc74 = v188;
+				v188.u3 = g_t140048.u3;
+				loc75 = v188;
+				v188.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v188;
+				v188 = loc75;
+				v189.u0 = 0x01;
+				v188 &= v189;
+				loc76 = v188;
+				v188 = loc76;
+				if (v188)
+					goto l000F8A68;
+				v188 = loc74;
+				loc7 = v188;
+			}
+			else
+			{
+				v188 = loc66;
+				v188 = *v188.u0;
+				loc77 = v188;
+				v188 = loc77;
+				loc7 = v188;
+			}
+			v188 = loc7;
+			v189.u0 = ~0x00;
+			v190 = v188 == v189;
+			loc78 = v190;
+			v188 = loc78;
+			if (v188)
+			{
+				v188 = arg1;
+				v189.u0 = 0x00;
+				*v188.u0 = v189;
+				v188.u0 = 0x01;
+				loc99 = v188;
+			}
+			else
+			{
+				v188.u0 = 0x00;
+				loc99 = v188;
+			}
+		}
+		v188 = loc20;
+		v189.u0 = 0x00;
+		v190 = v188 == v189;
+		loc80 = v190;
+		v188 = loc80;
+		if (v188)
+		{
+			v188.u0 = 55;
+			loc190 = v188;
+			goto l000F8A1A;
+		}
+		v188 = loc20;
+		v189.u0 = 0x0C;
+		v188 += v189;
+		loc81 = v188;
+		v188 = loc81;
+		v188 = *v188.u0;
+		loc82 = v188;
+		v188 = loc20;
+		v189.u0 = 0x10;
+		v188 += v189;
+		loc83 = v188;
+		v188 = loc83;
+		v188 = *v188.u0;
+		loc84 = v188;
+		v188 = loc82;
+		v189 = loc84;
+		v190 = v188 == v189;
+		loc85 = v190;
+		v188 = loc85;
+		if (v188)
+		{
+			v188 = loc20;
+			v188 = *v188.u0;
+			loc86 = v188;
+			v188 = loc86;
+			v189.u0 = 0x24;
+			v188 += v189;
+			loc87 = v188;
+			v188 = loc87;
+			v188 = *v188.u0;
+			loc88 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc88;
+			v189 = loc20;
+			v188 = invoke_ii(v188, v189);
+			loc89 = v188;
+			v188.u3 = g_t140048.u3;
+			loc91 = v188;
+			v188.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v188;
+			v188 = loc91;
+			v189.u0 = 0x01;
+			v188 &= v189;
+			loc92 = v188;
+			v188 = loc92;
+			if (v188)
+				goto l000F8A68;
+			v188 = loc89;
+			loc9 = v188;
+		}
+		else
+		{
+			v188 = loc82;
+			v188 = *v188.u0;
+			loc93 = v188;
+			v188 = loc93;
+			loc9 = v188;
+		}
+		v188 = loc9;
+		v189.u0 = ~0x00;
+		v190 = v188 == v189;
+		loc94 = v190;
+		v188 = loc94;
+		if (v188)
+		{
+			v188 = arg2;
+			v189.u0 = 0x00;
+			*v188.u0 = v189;
+			v188.u0 = 55;
+			loc190 = v188;
+		}
+		else
+		{
+			v188 = loc99;
+			if (!v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+l000F8A1A:
+		v188 = loc190;
+		v189.u0 = 55;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = loc99;
+			if (v188)
+			{
+				v188.u0 = 0x39;
+				loc190 = v188;
+			}
+		}
+		v188 = loc190;
+		v189.u0 = 0x39;
+		v190 = v188 == v189;
+		if (v190)
+		{
+			v188 = arg4;
+			v188 = *v188.u0;
+			loc95 = v188;
+			v188 = loc95;
+			v189.u0 = 0x02;
+			v188 |= v189;
+			loc96 = v188;
+			v188 = arg4;
+			v189 = loc96;
+			*v188.u0 = v189;
+		}
+		v188 = arg1;
+		v188 = *v188.u0;
+		loc23 = v188;
+		v188 = loc176;
+		fn0011BAF7(v188);
+		v188 = loc165;
+		fn0011BAF7(v188);
+		v188 = loc191;
+		g_t140030.u3 = (word32 *) v188;
+		v188 = loc23;
+		return v188;
+	}
 }
 
 // 000F8A9E: Stack Eq_n fn000F8A9E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn000F8A9E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v239.u3 = g_t140030.u3;
+	loc243 = v239;
+	v239.u3 = g_t140030.u3;
+	v240.u0 = 0x70;
+	v239 += v240;
+	g_t140030.u3 = (word32 *) v239;
+	v239.u3 = g_t140030.u3;
+	v240.u3 = g_t140034.u3;
+	v241 = v239 >= v240;
+	if (v241)
+	{
+		v239.u0 = 0x70;
+		abortStackOverflow(v239);
+	}
+	v239 = loc243;
+	loc206 = v239;
+	v239 = arg3;
+	loc217 = v239;
+	v239 = arg2;
+	loc228 = v239;
+	v239 = loc217;
+	v240 = loc228;
+	v239 -= v240;
+	loc47 = v239;
+	v239 = loc47;
+	v240.u0 = 0x0C;
+	v239 = i32s-div(v239, v240);
+	v240.u0 = ~0x00;
+	v239 &= v240;
+	loc58 = v239;
+	v239 = loc58;
+	v240.u0 = 100;
+	v241 = v239 > v240;
+	loc69 = v241;
+	v239 = loc69;
+	if (v239)
+	{
+		v239 = loc58;
+		v239 = _malloc(v239);
+		loc80 = v239;
+		v239 = loc80;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc91 = v241;
+		v239 = loc91;
+		if (v239)
+		{
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239.u0 = 0x018A;
+			invoke_v(v239);
+			v239.u3 = g_t140048.u3;
+			loc102 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc102;
+			v240.u0 = 0x01;
+			v239 &= v240;
+			loc113 = v239;
+			v239 = loc113;
+			if (v239)
+			{
+				v239 = ___cxa_find_matching_catch_n();
+				loc124 = v239;
+				v239.u3 = g_t140094.u3;
+				loc135 = v239;
+				v239 = loc124;
+				loc44 = v239;
+				v239 = loc135;
+				loc45 = v239;
+				goto l000F8B53;
+			}
+		}
+		v239 = loc80;
+		loc146 = v239;
+		v239 = loc80;
+		loc22 = v239;
+		v239 = loc146;
+		loc46 = v239;
+		v239.u0 = 0x06;
+		loc242 = v239;
+	}
+	else
+	{
+		v239 = loc206;
+		loc22 = v239;
+		v239.u0 = 0x00;
+		loc46 = v239;
+		v239.u0 = 0x06;
+		loc242 = v239;
+	}
+l000F8B53:
+	v239 = loc242;
+	v240.u0 = 0x06;
+	v241 = v239 == v240;
+	if (!v241)
+	{
+l000F95BA:
+		v239 = loc44;
+		___resumeException(v239);
+		v239.u0 = 0x00;
+		return v239;
+	}
+	while (true)
+	{
+		v239 = arg2;
+		loc18 = v239;
+		v239 = loc22;
+		loc19 = v239;
+		v239.u0 = 0x00;
+		loc20 = v239;
+		v239 = loc58;
+		loc21 = v239;
+		v239 = loc18;
+		v240 = arg3;
+		v241 = v239 == v240;
+		loc156 = v241;
+		v239 = loc156;
+		if (v239)
+			break;
+		v239 = loc18;
+		v240.u0 = 0x08;
+		v239 += v240;
+		loc157 = v239;
+		v239 = loc157;
+		v240.u0 = 0x03;
+		v239 += v240;
+		loc158 = v239;
+		v239 = loc158;
+		v242 = *v239.u0;
+		v239.u3 = (word32) v242;
+		loc159 = v239;
+		v239 = loc159;
+		v240.u0 = 0x18;
+		v239 <<= v240;
+		v240.u0 = 0x18;
+		v239 >>= v240;
+		v240.u0 = 0x00;
+		v241 = v239 < v240;
+		loc160 = v241;
+		v239 = loc160;
+		if (v239)
+		{
+			v239 = loc18;
+			v240.u0 = 0x04;
+			v239 += v240;
+			loc161 = v239;
+			v239 = loc161;
+			v239.u3 = *v239.u3;
+			loc162 = v239;
+			v239 = loc162;
+			loc165 = v239;
+		}
+		else
+		{
+			v239 = loc159;
+			v240.u0 = 0xFF;
+			v239 &= v240;
+			loc163 = v239;
+			v239 = loc163;
+			loc165 = v239;
+		}
+		v239 = loc165;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc164 = v241;
+		v239 = loc164;
+		if (v239)
+		{
+			v239 = loc19;
+			v240.u0 = 0x02;
+			v243 = (byte) v240;
+			v239.u4->t0000.u0 = (bool) v243;
+			v239 = loc21;
+			v240.u0 = ~0x00;
+			v239 += v240;
+			loc166 = v239;
+			v239 = loc20;
+			v240.u0 = 0x01;
+			v239 += v240;
+			loc167 = v239;
+			v239 = loc167;
+			loc26 = v239;
+			v239 = loc166;
+			loc27 = v239;
+		}
+		else
+		{
+			v239 = loc19;
+			v240.u0 = 0x01;
+			v244 = (byte) v240;
+			v239.u4->t0000.u0 = (bool) v244;
+			v239 = loc20;
+			loc26 = v239;
+			v239 = loc21;
+			loc27 = v239;
+		}
+		v239 = loc18;
+		v240.u0 = 0x0C;
+		v239 += v240;
+		loc168 = v239;
+		v239 = loc19;
+		v240.u0 = 0x01;
+		v239 += v240;
+		loc169 = v239;
+		v239 = loc168;
+		loc18 = v239;
+		v239 = loc169;
+		loc19 = v239;
+		v239 = loc26;
+		loc20 = v239;
+		v239 = loc27;
+		loc21 = v239;
+	}
+	while (true)
+	{
+		v239.u0 = 0x00;
+		loc17 = v239;
+		v239 = loc20;
+		loc30 = v239;
+		v239 = loc21;
+		loc31 = v239;
+		v239 = arg0;
+		v239 = *v239.u0;
+		loc170 = v239;
+		v239 = loc170;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc171 = v241;
+		v239 = loc171;
+		if (v239)
+		{
+			v239.u0 = 0x01;
+			loc200 = v239;
+		}
+		else
+		{
+			v239 = loc170;
+			v240.u0 = 0x0C;
+			v239 += v240;
+			loc172 = v239;
+			v239 = loc172;
+			v239 = *v239.u0;
+			loc173 = v239;
+			v239 = loc170;
+			v240.u0 = 0x10;
+			v239 += v240;
+			loc174 = v239;
+			v239 = loc174;
+			v239 = *v239.u0;
+			loc175 = v239;
+			v239 = loc173;
+			v240 = loc175;
+			v241 = v239 == v240;
+			loc176 = v241;
+			v239 = loc176;
+			if (v239)
+			{
+				v239 = loc170;
+				v239 = *v239.u0;
+				loc177 = v239;
+				v239 = loc177;
+				v240.u0 = 0x24;
+				v239 += v240;
+				loc178 = v239;
+				v239 = loc178;
+				v239 = *v239.u0;
+				loc179 = v239;
+				v239.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v239;
+				v239 = loc179;
+				v240 = loc170;
+				v239 = invoke_ii(v239, v240);
+				loc180 = v239;
+				v239.u3 = g_t140048.u3;
+				loc181 = v239;
+				v239.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v239;
+				v239 = loc181;
+				v240.u0 = 0x01;
+				v239 &= v240;
+				loc182 = v239;
+				v239 = loc182;
+				if (v239)
+				{
+					v239.u0 = 0x2B;
+					loc242 = v239;
+					goto l000F9249;
+				}
+				v239 = loc180;
+				loc9 = v239;
+			}
+			else
+			{
+				v239 = loc173;
+				v239 = *v239.u0;
+				loc183 = v239;
+				v239 = loc183;
+				loc9 = v239;
+			}
+			v239 = loc9;
+			v240.u0 = ~0x00;
+			v241 = v239 == v240;
+			loc184 = v241;
+			v239 = loc184;
+			if (v239)
+			{
+				v239 = arg0;
+				v240.u0 = 0x00;
+				*v239.u0 = v240;
+				v239.u0 = 0x01;
+				loc200 = v239;
+			}
+			else
+			{
+				v239 = arg0;
+				v239 = *v239.u0;
+				loc39 = v239;
+				v239 = loc39;
+				v240.u0 = 0x00;
+				v241 = v239 == v240;
+				loc239 = v241;
+				v239 = loc239;
+				loc200 = v239;
+			}
+		}
+		v239 = arg1;
+		v239 = *v239.u0;
+		loc185 = v239;
+		v239 = loc185;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc186 = v241;
+		v239 = loc186;
+		if (v239)
+		{
+			v239.u0 = 0x00;
+			loc41 = v239;
+			v239.u0 = 0x01;
+			loc201 = v239;
+		}
+		else
+		{
+			v239 = loc185;
+			v240.u0 = 0x0C;
+			v239 += v240;
+			loc187 = v239;
+			v239 = loc187;
+			v239 = *v239.u0;
+			loc188 = v239;
+			v239 = loc185;
+			v240.u0 = 0x10;
+			v239 += v240;
+			loc189 = v239;
+			v239 = loc189;
+			v239 = *v239.u0;
+			loc190 = v239;
+			v239 = loc188;
+			v240 = loc190;
+			v241 = v239 == v240;
+			loc191 = v241;
+			v239 = loc191;
+			if (v239)
+			{
+				v239 = loc185;
+				v239 = *v239.u0;
+				loc192 = v239;
+				v239 = loc192;
+				v240.u0 = 0x24;
+				v239 += v240;
+				loc193 = v239;
+				v239 = loc193;
+				v239 = *v239.u0;
+				loc194 = v239;
+				v239.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v239;
+				v239 = loc194;
+				v240 = loc185;
+				v239 = invoke_ii(v239, v240);
+				loc195 = v239;
+				v239.u3 = g_t140048.u3;
+				loc196 = v239;
+				v239.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v239;
+				v239 = loc196;
+				v240.u0 = 0x01;
+				v239 &= v240;
+				loc197 = v239;
+				v239 = loc197;
+				if (v239)
+				{
+					v239.u0 = 0x2B;
+					loc242 = v239;
+					goto l000F9249;
+				}
+				v239 = loc195;
+				loc11 = v239;
+			}
+			else
+			{
+				v239 = loc188;
+				v239 = *v239.u0;
+				loc198 = v239;
+				v239 = loc198;
+				loc11 = v239;
+			}
+			v239 = loc11;
+			v240.u0 = ~0x00;
+			v241 = v239 == v240;
+			loc199 = v241;
+			v239 = loc199;
+			if (v239)
+			{
+				v239 = arg1;
+				v240.u0 = 0x00;
+				*v239.u0 = v240;
+				v239.u0 = 0x00;
+				loc41 = v239;
+				v239.u0 = 0x01;
+				loc201 = v239;
+			}
+			else
+			{
+				v239 = loc185;
+				loc41 = v239;
+				v239.u0 = 0x00;
+				loc201 = v239;
+			}
+		}
+		v239 = loc200;
+		v240 = loc201;
+		v239 = v239 ^ v240;
+		loc241 = v239;
+		v239 = loc31;
+		v240.u0 = 0x00;
+		v241 = v239 != v240;
+		loc202 = v241;
+		v239 = loc202;
+		v240 = loc241;
+		v239 &= v240;
+		loc203 = v239;
+		v239 = arg0;
+		v239 = *v239.u0;
+		loc204 = v239;
+		v239 = loc203;
+		v241 = v239 == 0x00;
+		if (v241)
+			break;
+		v239 = loc204;
+		v240.u0 = 0x0C;
+		v239 += v240;
+		loc238 = v239;
+		v239 = loc238;
+		v239 = *v239.u0;
+		loc48 = v239;
+		v239 = loc204;
+		v240.u0 = 0x10;
+		v239 += v240;
+		loc49 = v239;
+		v239 = loc49;
+		v239 = *v239.u0;
+		loc50 = v239;
+		v239 = loc48;
+		v240 = loc50;
+		v241 = v239 == v240;
+		loc51 = v241;
+		v239 = loc51;
+		if (v239)
+		{
+			v239 = loc204;
+			v239 = *v239.u0;
+			loc52 = v239;
+			v239 = loc52;
+			v240.u0 = 0x24;
+			v239 += v240;
+			loc53 = v239;
+			v239 = loc53;
+			v239 = *v239.u0;
+			loc54 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc54;
+			v240 = loc204;
+			v239 = invoke_ii(v239, v240);
+			loc55 = v239;
+			v239.u3 = g_t140048.u3;
+			loc56 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc56;
+			v240.u0 = 0x01;
+			v239 &= v240;
+			loc57 = v239;
+			v239 = loc57;
+			if (v239)
+			{
+				v239.u0 = 0x2B;
+				loc242 = v239;
+				goto l000F9249;
+			}
+			v239 = loc55;
+			loc8 = v239;
+		}
+		else
+		{
+			v239 = loc48;
+			v239 = *v239.u0;
+			loc59 = v239;
+			v239 = loc59;
+			loc8 = v239;
+		}
+		v239 = arg6;
+		if (v239)
+		{
+			v239 = loc8;
+			loc16 = v239;
+		}
+		else
+		{
+			v239 = arg4;
+			v239 = *v239.u0;
+			loc60 = v239;
+			v239 = loc60;
+			v240.u0 = 0x1C;
+			v239 += v240;
+			loc61 = v239;
+			v239 = loc61;
+			v239 = *v239.u0;
+			loc62 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc62;
+			v240 = arg4;
+			v245 = loc8;
+			v239 = invoke_iii(v239, v240, v245);
+			loc63 = v239;
+			v239.u3 = g_t140048.u3;
+			loc64 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc64;
+			v240.u0 = 0x01;
+			v239 &= v240;
+			loc65 = v239;
+			v239 = loc65;
+			if (v239)
+			{
+				v239.u0 = 0x31;
+				loc242 = v239;
+				goto l000F9249;
+			}
+			v239 = loc63;
+			loc16 = v239;
+		}
+		while (true)
+		{
+			v239 = loc17;
+			v240.u0 = 0x01;
+			v239 += v240;
+			loc68 = v239;
+			v239 = arg2;
+			loc14 = v239;
+			v239.u0 = 0x00;
+			loc15 = v239;
+			v239 = loc22;
+			loc25 = v239;
+			v239 = loc30;
+			loc33 = v239;
+			v239 = loc31;
+			loc34 = v239;
+			v239 = loc14;
+			v240 = arg3;
+			v241 = v239 == v240;
+			loc70 = v241;
+			v239 = loc70;
+			if (v239)
+				break;
+			v239 = loc25;
+			v246 = *v239.u0;
+			v239.u3 = (word32) v246;
+			loc71 = v239;
+			v239 = loc71;
+			v240.u0 = 0x18;
+			v239 <<= v240;
+			v240.u0 = 0x18;
+			v239 >>= v240;
+			v240.u0 = 0x01;
+			v241 = v239 == v240;
+			loc72 = v241;
+			v239 = loc72;
+			if (v239)
+			{
+				v239 = loc14;
+				v240.u0 = 0x08;
+				v239 += v240;
+				loc73 = v239;
+				v239 = loc73;
+				v240.u0 = 0x03;
+				v239 += v240;
+				loc74 = v239;
+				v239 = loc74;
+				v247.u1 = v239.u4->t0000.u1;
+				v239.u3 = (word32) v247;
+				loc75 = v239;
+				v239 = loc75;
+				v240.u0 = 0x18;
+				v239 <<= v240;
+				v240.u0 = 0x18;
+				v239 >>= v240;
+				v240.u0 = 0x00;
+				v241 = v239 < v240;
+				loc76 = v241;
+				v239 = loc76;
+				if (v239)
+				{
+					v239 = loc14;
+					v239.u3 = *v239.u3;
+					loc77 = v239;
+					v239 = loc77;
+					loc79 = v239;
+				}
+				else
+				{
+					v239 = loc14;
+					loc79 = v239;
+				}
+				v239 = loc79;
+				v240 = loc17;
+				v245.u0 = 0x02;
+				v240 <<= v245;
+				v239 += v240;
+				loc78 = v239;
+				v239 = loc78;
+				v239.u3 = *v239.u3;
+				loc81 = v239;
+				v239 = arg6;
+				if (v239)
+				{
+					v239 = loc81;
+					loc13 = v239;
+				}
+				else
+				{
+					v239 = arg4;
+					v239.u3 = *v239.u3;
+					loc82 = v239;
+					v239 = loc82;
+					v240.u0 = 0x1C;
+					v239 += v240;
+					loc83 = v239;
+					v239 = loc83;
+					v239.u3 = *v239.u3;
+					loc84 = v239;
+					v239.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v239;
+					v239 = loc84;
+					v240 = arg4;
+					v245 = loc81;
+					v239 = invoke_iii(v239, v240, v245);
+					loc85 = v239;
+					v239.u3 = g_t140048.u3;
+					loc86 = v239;
+					v239.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v239;
+					v239 = loc86;
+					v240.u0 = 0x01;
+					v239 &= v240;
+					loc87 = v239;
+					v239 = loc87;
+					if (v239)
+					{
+						v239.u0 = 0x3B;
+						loc242 = v239;
+						goto l000F9249;
+					}
+					v239 = loc85;
+					loc13 = v239;
+				}
+				v239 = loc16;
+				v240 = loc13;
+				v241 = v239 == v240;
+				loc90 = v241;
+				v239 = loc90;
+				v241 = v239 == 0x00;
+				if (v241)
+				{
+					v239 = loc25;
+					v240.u0 = 0x00;
+					v248 = (byte) v240;
+					*v239.u0 = v248;
+					v239 = loc34;
+					v240.u0 = ~0x00;
+					v239 += v240;
+					loc101 = v239;
+					v239 = loc15;
+					loc28 = v239;
+					v239 = loc33;
+					loc35 = v239;
+					v239 = loc101;
+					loc36 = v239;
+					goto l000F908E;
+				}
+				v239 = loc74;
+				v249 = *v239.u0;
+				v239.u3 = (word32) v249;
+				loc92 = v239;
+				v239 = loc92;
+				v240.u0 = 0x18;
+				v239 <<= v240;
+				v240.u0 = 0x18;
+				v239 >>= v240;
+				v240.u0 = 0x00;
+				v241 = v239 < v240;
+				loc93 = v241;
+				v239 = loc93;
+				if (v239)
+				{
+					v239 = loc14;
+					v240.u0 = 0x04;
+					v239 += v240;
+					loc94 = v239;
+					v239 = loc94;
+					v239.u3 = *v239.u3;
+					loc95 = v239;
+					v239 = loc95;
+					loc98 = v239;
+				}
+				else
+				{
+					v239 = loc92;
+					v240.u0 = 0xFF;
+					v239 &= v240;
+					loc96 = v239;
+					v239 = loc96;
+					loc98 = v239;
+				}
+				v239 = loc98;
+				v240 = loc68;
+				v241 = v239 == v240;
+				loc97 = v241;
+				v239 = loc97;
+				if (v239)
+				{
+					v239 = loc34;
+					v240.u0 = ~0x00;
+					v239 += v240;
+					loc99 = v239;
+					v239 = loc33;
+					v240.u0 = 0x01;
+					v239 += v240;
+					loc100 = v239;
+					v239 = loc25;
+					v240.u0 = 0x02;
+					v250 = (byte) v240;
+					v239.u4->t0000.u0 = (bool) v250;
+					v239.u0 = 0x01;
+					loc28 = v239;
+					v239 = loc100;
+					loc35 = v239;
+					v239 = loc99;
+					loc36 = v239;
+				}
+				else
+				{
+					v239.u0 = 0x01;
+					loc28 = v239;
+					v239 = loc33;
+					loc35 = v239;
+					v239 = loc34;
+					loc36 = v239;
+				}
+			}
+			else
+			{
+				v239 = loc15;
+				loc28 = v239;
+				v239 = loc33;
+				loc35 = v239;
+				v239 = loc34;
+				loc36 = v239;
+			}
+l000F908E:
+			v239 = loc14;
+			v240.u0 = 0x0C;
+			v239 += v240;
+			loc103 = v239;
+			v239 = loc25;
+			v240.u0 = 0x01;
+			v239 += v240;
+			loc104 = v239;
+			v239 = loc103;
+			loc14 = v239;
+			v239 = loc28;
+			loc15 = v239;
+			v239 = loc104;
+			loc25 = v239;
+			v239 = loc35;
+			loc33 = v239;
+			v239 = loc36;
+			loc34 = v239;
+		}
+		v239 = loc15;
+		v241 = v239 == 0x00;
+		if (!v241)
+		{
+			v239 = arg0;
+			v239 = *v239.u0;
+			loc105 = v239;
+			v239 = loc105;
+			v240.u0 = 0x0C;
+			v239 += v240;
+			loc106 = v239;
+			v239 = loc106;
+			v239 = *v239.u0;
+			loc107 = v239;
+			v239 = loc105;
+			v240.u0 = 0x10;
+			v239 += v240;
+			loc108 = v239;
+			v239 = loc108;
+			v239 = *v239.u0;
+			loc109 = v239;
+			v239 = loc107;
+			v240 = loc109;
+			v241 = v239 == v240;
+			loc110 = v241;
+			v239 = loc110;
+			if (v239)
+			{
+				v239 = loc105;
+				v239 = *v239.u0;
+				loc111 = v239;
+				v239 = loc111;
+				v240.u0 = 0x28;
+				v239 += v240;
+				loc112 = v239;
+				v239 = loc112;
+				v239 = *v239.u0;
+				loc114 = v239;
+				v239.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v239;
+				v239 = loc114;
+				v240 = loc105;
+				v239 = invoke_ii(v239, v240);
+				v239.u3 = g_t140048.u3;
+				loc115 = v239;
+				v239.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v239;
+				v239 = loc115;
+				v240.u0 = 0x01;
+				v239 &= v240;
+				loc116 = v239;
+				v239 = loc116;
+				if (v239)
+				{
+					v239.u0 = 0x49;
+					loc242 = v239;
+					goto l000F9249;
+				}
+			}
+			else
+			{
+				v239 = loc107;
+				v240.u0 = 0x04;
+				v239 += v240;
+				loc117 = v239;
+				v239 = loc106;
+				v240 = loc117;
+				*v239.u0 = v240;
+			}
+			v239 = loc33;
+			v240 = loc34;
+			v239 += v240;
+			loc118 = v239;
+			v239 = loc118;
+			v240.u0 = 0x01;
+			v241 = v239 > v240;
+			loc119 = v241;
+			v239 = loc119;
+			if (v239)
+			{
+				v239 = arg2;
+				loc7 = v239;
+				v239 = loc22;
+				loc29 = v239;
+				v239 = loc33;
+				loc37 = v239;
+				while (true)
+				{
+					v239 = loc7;
+					v240 = arg3;
+					v241 = v239 == v240;
+					loc120 = v241;
+					v239 = loc120;
+					if (v239)
+						break;
+					v239 = loc29;
+					v251 = *v239.u0;
+					v239.u3 = (word32) v251;
+					loc123 = v239;
+					v239 = loc123;
+					v240.u0 = 0x18;
+					v239 <<= v240;
+					v240.u0 = 0x18;
+					v239 >>= v240;
+					v240.u0 = 0x02;
+					v241 = v239 == v240;
+					loc125 = v241;
+					v239 = loc125;
+					if (v239)
+					{
+						v239 = loc7;
+						v240.u0 = 0x08;
+						v239 += v240;
+						loc126 = v239;
+						v239 = loc126;
+						v240.u0 = 0x03;
+						v239 += v240;
+						loc127 = v239;
+						v239 = loc127;
+						v252.u1 = v239.u4->t0000.u1;
+						v239.u3 = (word32) v252;
+						loc128 = v239;
+						v239 = loc128;
+						v240.u0 = 0x18;
+						v239 <<= v240;
+						v240.u0 = 0x18;
+						v239 >>= v240;
+						v240.u0 = 0x00;
+						v241 = v239 < v240;
+						loc129 = v241;
+						v239 = loc129;
+						if (v239)
+						{
+							v239 = loc7;
+							v240.u0 = 0x04;
+							v239 += v240;
+							loc130 = v239;
+							v239 = loc130;
+							v239.u3 = *v239.u3;
+							loc131 = v239;
+							v239 = loc131;
+							loc134 = v239;
+						}
+						else
+						{
+							v239 = loc128;
+							v240.u0 = 0xFF;
+							v239 &= v240;
+							loc132 = v239;
+							v239 = loc132;
+							loc134 = v239;
+						}
+						v239 = loc134;
+						v240 = loc68;
+						v241 = v239 == v240;
+						loc133 = v241;
+						v239 = loc133;
+						if (v239)
+						{
+							v239 = loc37;
+							loc38 = v239;
+						}
+						else
+						{
+							v239 = loc37;
+							v240.u0 = ~0x00;
+							v239 += v240;
+							loc136 = v239;
+							v239 = loc29;
+							v240.u0 = 0x00;
+							v253 = (byte) v240;
+							v239.u4->t0000.u0 = (bool) v253;
+							v239 = loc136;
+							loc38 = v239;
+						}
+					}
+					else
+					{
+						v239 = loc37;
+						loc38 = v239;
+					}
+					v239 = loc7;
+					v240.u0 = 0x0C;
+					v239 += v240;
+					loc137 = v239;
+					v239 = loc29;
+					v240.u0 = 0x01;
+					v239 += v240;
+					loc138 = v239;
+					v239 = loc137;
+					loc7 = v239;
+					v239 = loc138;
+					loc29 = v239;
+					v239 = loc38;
+					loc37 = v239;
+				}
+				v239 = loc68;
+				loc17 = v239;
+				v239 = loc37;
+				loc30 = v239;
+				v239 = loc34;
+				loc31 = v239;
+			}
+			else
+			{
+				v239 = loc68;
+				loc17 = v239;
+				v239 = loc33;
+				loc30 = v239;
+				v239 = loc34;
+				loc31 = v239;
+			}
+			continue;
+		}
+		v239 = loc68;
+		loc17 = v239;
+		v239 = loc33;
+		loc30 = v239;
+		v239 = loc34;
+		loc31 = v239;
+	}
+	v239.u0 = 0x1E;
+	loc242 = v239;
+l000F9249:
+	v239 = loc242;
+	v240.u0 = 0x1E;
+	v241 = v239 == v240;
+	if (!v241)
+	{
+		v239 = loc242;
+		v240.u0 = 0x2B;
+		v241 = v239 == v240;
+		if (v241)
+		{
+			v239 = ___cxa_find_matching_catch_n();
+			loc236 = v239;
+			v239.u3 = g_t140094.u3;
+			loc237 = v239;
+			v239 = loc236;
+			loc42 = v239;
+			v239 = loc237;
+			loc43 = v239;
+		}
+		else
+		{
+			v239 = loc242;
+			v240.u0 = 0x31;
+			v241 = v239 == v240;
+			if (v241)
+			{
+				v239 = ___cxa_find_matching_catch_n();
+				loc66 = v239;
+				v239.u3 = g_t140094.u3;
+				loc67 = v239;
+				v239 = loc66;
+				loc42 = v239;
+				v239 = loc67;
+				loc43 = v239;
+			}
+			else
+			{
+				v239 = loc242;
+				v240.u0 = 0x3B;
+				v241 = v239 == v240;
+				if (v241)
+				{
+					v239 = ___cxa_find_matching_catch_n();
+					loc88 = v239;
+					v239.u3 = g_t140094.u3;
+					loc89 = v239;
+					v239 = loc88;
+					loc42 = v239;
+					v239 = loc89;
+					loc43 = v239;
+				}
+				else
+				{
+					v239 = loc242;
+					v240.u0 = 0x49;
+					v241 = v239 == v240;
+					if (v241)
+					{
+						v239 = ___cxa_find_matching_catch_n();
+						loc121 = v239;
+						v239.u3 = g_t140094.u3;
+						loc122 = v239;
+						v239 = loc121;
+						loc42 = v239;
+						v239 = loc122;
+						loc43 = v239;
+					}
+				}
+			}
+		}
+l000F958E:
+		v239 = loc46;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc153 = v241;
+		v239 = loc153;
+		if (v239)
+		{
+			v239 = loc42;
+			loc44 = v239;
+			v239 = loc43;
+			loc45 = v239;
+		}
+		else
+		{
+			v239 = loc46;
+			loc154 = v239;
+			v239 = loc154;
+			_free(v239);
+			v239 = loc42;
+			loc44 = v239;
+			v239 = loc43;
+			loc45 = v239;
+		}
+		goto l000F95BA;
+	}
+	v239 = loc204;
+	v240.u0 = 0x00;
+	v241 = v239 == v240;
+	loc205 = v241;
+	v239 = loc205;
+	if (v239)
+	{
+		v239.u0 = 0x01;
+		loc155 = v239;
+		v239.u0 = 0x25;
+		loc242 = v239;
+	}
+	else
+	{
+		v239 = loc204;
+		v240.u0 = 0x0C;
+		v239 += v240;
+		loc207 = v239;
+		v239 = loc207;
+		v239 = *v239.u0;
+		loc208 = v239;
+		v239 = loc204;
+		v240.u0 = 0x10;
+		v239 += v240;
+		loc209 = v239;
+		v239 = loc209;
+		v239 = *v239.u0;
+		loc210 = v239;
+		v239 = loc208;
+		v240 = loc210;
+		v241 = v239 == v240;
+		loc211 = v241;
+		v239 = loc211;
+		if (v239)
+		{
+			v239 = loc204;
+			v239 = *v239.u0;
+			loc212 = v239;
+			v239 = loc212;
+			v240.u0 = 0x24;
+			v239 += v240;
+			loc213 = v239;
+			v239 = loc213;
+			v239 = *v239.u0;
+			loc214 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc214;
+			v240 = loc204;
+			v239 = invoke_ii(v239, v240);
+			loc215 = v239;
+			v239.u3 = g_t140048.u3;
+			loc216 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc216;
+			v240.u0 = 0x01;
+			v239 &= v240;
+			loc218 = v239;
+			v239 = loc218;
+			if (v239)
+				goto l000F933A;
+			v239 = loc215;
+			loc10 = v239;
+		}
+		else
+		{
+			v239 = loc208;
+			v239 = *v239.u0;
+			loc219 = v239;
+			v239 = loc219;
+			loc10 = v239;
+		}
+		v239 = loc10;
+		v240.u0 = ~0x00;
+		v241 = v239 == v240;
+		loc220 = v241;
+		v239 = loc220;
+		if (v239)
+		{
+			v239 = arg0;
+			v240.u0 = 0x00;
+			*v239.u0 = v240;
+			v239.u0 = 0x01;
+			loc155 = v239;
+			v239.u0 = 0x25;
+			loc242 = v239;
+		}
+		else
+		{
+			v239 = arg0;
+			v239 = *v239.u0;
+			loc40 = v239;
+			v239 = loc40;
+			v240.u0 = 0x00;
+			v241 = v239 == v240;
+			loc240 = v241;
+			v239 = loc240;
+			loc155 = v239;
+			v239.u0 = 0x25;
+			loc242 = v239;
+		}
+	}
+l000F933A:
+	v239 = loc242;
+	v240.u0 = 0x25;
+	v241 = v239 == v240;
+	if (!v241)
+	{
+l000F950C:
+		v239 = ___cxa_find_matching_catch_n();
+		loc141 = v239;
+		v239.u3 = g_t140094.u3;
+		loc142 = v239;
+		v239 = loc141;
+		loc42 = v239;
+		v239 = loc142;
+		loc43 = v239;
+		goto l000F958E;
+	}
+	else
+	{
+		v239 = loc41;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc221 = v241;
+		v239 = loc221;
+		if (v239)
+		{
+			v239.u0 = 0x51;
+			loc242 = v239;
+			goto l000F941C;
+		}
+		v239 = loc41;
+		v240.u0 = 0x0C;
+		v239 += v240;
+		loc222 = v239;
+		v239 = loc222;
+		v239 = *v239.u0;
+		loc223 = v239;
+		v239 = loc41;
+		v240.u0 = 0x10;
+		v239 += v240;
+		loc224 = v239;
+		v239 = loc224;
+		v239 = *v239.u0;
+		loc225 = v239;
+		v239 = loc223;
+		v240 = loc225;
+		v241 = v239 == v240;
+		loc226 = v241;
+		v239 = loc226;
+		if (v239)
+		{
+			v239 = loc41;
+			v239 = *v239.u0;
+			loc227 = v239;
+			v239 = loc227;
+			v240.u0 = 0x24;
+			v239 += v240;
+			loc229 = v239;
+			v239 = loc229;
+			v239 = *v239.u0;
+			loc230 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc230;
+			v240 = loc41;
+			v239 = invoke_ii(v239, v240);
+			loc231 = v239;
+			v239.u3 = g_t140048.u3;
+			loc232 = v239;
+			v239.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v239;
+			v239 = loc232;
+			v240.u0 = 0x01;
+			v239 &= v240;
+			loc233 = v239;
+			v239 = loc233;
+			if (v239)
+				goto l000F950C;
+			v239 = loc231;
+			loc12 = v239;
+		}
+		else
+		{
+			v239 = loc223;
+			v239 = *v239.u0;
+			loc234 = v239;
+			v239 = loc234;
+			loc12 = v239;
+		}
+		v239 = loc12;
+		v240.u0 = ~0x00;
+		v241 = v239 == v240;
+		loc235 = v241;
+		v239 = loc235;
+		if (v239)
+		{
+			v239 = arg1;
+			v240.u0 = 0x00;
+			*v239.u0 = v240;
+			v239.u0 = 0x51;
+			loc242 = v239;
+		}
+		else
+		{
+			v239 = loc155;
+			if (v239)
+			{
+				v239 = arg2;
+				loc23 = v239;
+				v239 = loc22;
+				loc32 = v239;
+			}
+			else
+			{
+				v239.u0 = 0x53;
+				loc242 = v239;
+			}
+		}
+l000F941C:
+		v239 = loc242;
+		v240.u0 = 0x51;
+		v241 = v239 == v240;
+		if (v241)
+		{
+			v239 = loc155;
+			if (v239)
+			{
+				v239.u0 = 0x53;
+				loc242 = v239;
+			}
+			else
+			{
+				v239 = arg2;
+				loc23 = v239;
+				v239 = loc22;
+				loc32 = v239;
+			}
+		}
+		v239 = loc242;
+		v240.u0 = 0x53;
+		v241 = v239 == v240;
+		if (v241)
+		{
+			v239 = arg5;
+			v239 = *v239.u0;
+			loc139 = v239;
+			v239 = loc139;
+			v240.u0 = 0x02;
+			v239 |= v240;
+			loc140 = v239;
+			v239 = arg5;
+			v240 = loc140;
+			*v239.u0 = v240;
+			v239 = arg2;
+			loc23 = v239;
+			v239 = loc22;
+			loc32 = v239;
+		}
+		while (true)
+		{
+			v239 = loc23;
+			v240 = arg3;
+			v241 = v239 == v240;
+			loc143 = v241;
+			v239 = loc143;
+			if (v239)
+				break;
+			v239 = loc32;
+			v254 = *v239.u0;
+			v239.u3 = (word32) v254;
+			loc144 = v239;
+			v239 = loc144;
+			v240.u0 = 0x18;
+			v239 <<= v240;
+			v240.u0 = 0x18;
+			v239 >>= v240;
+			v240.u0 = 0x02;
+			v241 = v239 == v240;
+			loc145 = v241;
+			v239 = loc145;
+			if (v239)
+			{
+				v239 = loc23;
+				loc24 = v239;
+				goto l000F94C0;
+			}
+			v239 = loc23;
+			v240.u0 = 0x0C;
+			v239 += v240;
+			loc147 = v239;
+			v239 = loc32;
+			v240.u0 = 0x01;
+			v239 += v240;
+			loc148 = v239;
+			v239 = loc147;
+			loc23 = v239;
+			v239 = loc148;
+			loc32 = v239;
+		}
+		v239.u0 = 88;
+		loc242 = v239;
+l000F94C0:
+		v239 = loc242;
+		v240.u0 = 88;
+		v241 = v239 == v240;
+		if (v241)
+		{
+			v239 = arg5;
+			v239.u3 = *v239.u3;
+			loc149 = v239;
+			v239 = loc149;
+			v240.u0 = 0x04;
+			v239 |= v240;
+			loc150 = v239;
+			v239 = arg5;
+			v240 = loc150;
+			*v239.u3 = (word32) v240;
+			v239 = arg3;
+			loc24 = v239;
+		}
+		v239 = loc46;
+		v240.u0 = 0x00;
+		v241 = v239 == v240;
+		loc151 = v241;
+		v239 = loc151;
+		v241 = v239 == 0x00;
+		if (v241)
+		{
+			v239 = loc46;
+			loc152 = v239;
+			v239 = loc152;
+			_free(v239);
+		}
+		v239 = loc243;
+		g_t140030.u3 = (word32 *) v239;
+		v239 = loc24;
+		return v239;
+	}
 }
 
 // 000F95C3: void fn000F95C3(Stack Eq_n arg0)
@@ -184,51 +18054,2522 @@ void fn000F95CC(Eq_n arg0)
 // 000F95DA: Stack Eq_n fn000F95DA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F95DA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v71.u3 = g_t140030.u3;
+	loc73 = v71;
+	v71.u3 = g_t140030.u3;
+	v72.u0 = 0x20;
+	v71 += v72;
+	g_t140030.u3 = (word32 *) v71;
+	v71.u3 = g_t140030.u3;
+	v72.u3 = g_t140034.u3;
+	v73 = v71 >= v72;
+	if (v73)
+	{
+		v71.u0 = 0x20;
+		abortStackOverflow(v71);
+	}
+	v71 = loc73;
+	v72.u0 = 0x14;
+	v71 += v72;
+	loc7 = v71;
+	v71 = loc73;
+	v72.u0 = 0x10;
+	v71 += v72;
+	loc54 = v71;
+	v71 = loc73;
+	v72.u0 = 0x0C;
+	v71 += v72;
+	loc65 = v71;
+	v71 = loc73;
+	loc69 = v71;
+	v71 = arg2;
+	v72.u0 = 0x04;
+	v71 += v72;
+	loc70 = v71;
+	v71 = loc70;
+	v71 = *v71.u0;
+	loc71 = v71;
+	v71 = loc71;
+	v72.u0 = 0x01;
+	v71 &= v72;
+	loc14 = v71;
+	v71 = loc14;
+	v72.u0 = 0x00;
+	v73 = v71 == v72;
+	loc15 = v73;
+	v71 = loc15;
+	v71 = v71;
+	v71 = arg0;
+	v71 = *v71.u0;
+	loc16 = v71;
+	v71 = loc16;
+	v72.u0 = 0x18;
+	v71 += v72;
+	loc17 = v71;
+	v71 = loc17;
+	v71 = *v71.u0;
+	loc18 = v71;
+	v71 = arg1;
+	v71 = *v71.u0;
+	loc19 = v71;
+	v71 = loc54;
+	v72 = loc19;
+	*v71.u0 = v72;
+	v71 = arg4;
+	v72.u0 = 0x01;
+	v71 &= v72;
+	loc20 = v71;
+	v71 = loc7;
+	v72 = loc54;
+	v72 = *v72.u0;
+	*v71.u0 = v72;
+	v71 = arg0;
+	v72 = loc7;
+	v74 = arg2;
+	v75 = arg3;
+	v76 = loc20;
+	v77 = loc18;
+	v78.u0 = 0x01FF;
+	v77 &= v78;
+	v78.u0 = 0x1D20;
+	v77 += v78;
 }
 
 // 000F98EA: Stack Eq_n fn000F98EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F98EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0x50;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0x50;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	loc31 = v31;
+	v31 = loc33;
+	v32.u0 = 0x3C;
+	v31 += v32;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0x2F;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x18;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x0C;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v32.u0 = 14505;
+	v32 = *v32.u0;
+	*v31.u0 = v32;
+	v31 = loc26;
+	v32.u0 = 0x04;
+	v31 += v32;
+	v32.u0 = 14505;
+	v34.u0 = 0x04;
+	v32 += v34;
+	v35 = *v32.u0;
+	v32.u3 = (word32) v35;
+	v36 = (word16) v32;
+	*v31.u0 = v36;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 14511;
+	v34.u0 = 0x01;
+	v37 = loc10;
+	fn000FB8CE(v31, v32, v34, v37);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v32 = arg4;
+	*v31.u0 = v32;
+	v31 = loc27;
+	v32.u0 = 0x0D;
+	v34 = loc11;
+	v37 = loc26;
+	v38 = loc31;
+	v31 = fn000FA95B(v31, v32, v34, v37, v38);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v34 = arg2;
+	v31 = fn000FA9D7(v31, v32, v34);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x018C;
+	v32 = loc27;
+	v34 = loc14;
+	v37 = loc13;
+	v38 = loc28;
+	v39 = loc29;
+	v40 = loc30;
+	v41 = loc6;
+	invoke_viiiiiii(v31, v32, v34, v37, v38, v39, v40, v41);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v34 = loc20;
+		v37 = loc21;
+		v38 = arg2;
+		v39 = arg3;
+		v31 = fn000D0874(v31, v32, v34, v37, v38, v39);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000F9A50: Stack Eq_n fn000F9A50(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9A50(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0x70;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0x70;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0x20;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc31 = v31;
+	v31 = loc33;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0x4F;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x24;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x1C;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x18;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v34.u0 = 0x25;
+	*v31.u0 = v34;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 0x38A6;
+	v35.u0 = 0x01;
+	v36 = loc10;
+	fn000FB8CE(v31, v32, v35, v36);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v34 = arg4;
+	*v31.u0 = v34;
+	v31 = loc27;
+	v32.u0 = 0x17;
+	v35 = loc11;
+	v36 = loc26;
+	v37 = loc31;
+	v31 = fn000FA95B(v31, v32, v35, v36, v37);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v35 = arg2;
+	v31 = fn000FA9D7(v31, v32, v35);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x018C;
+	v32 = loc27;
+	v35 = loc14;
+	v36 = loc13;
+	v37 = loc28;
+	v38 = loc29;
+	v39 = loc30;
+	v40 = loc6;
+	invoke_viiiiiii(v31, v32, v35, v36, v37, v38, v39, v40);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v35 = loc20;
+		v36 = loc21;
+		v37 = arg2;
+		v38 = arg3;
+		v31 = fn000D0874(v31, v32, v35, v36, v37, v38);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000F9BA0: Stack Eq_n fn000F9BA0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9BA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0x50;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0x50;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	loc31 = v31;
+	v31 = loc33;
+	v32.u0 = 0x3C;
+	v31 += v32;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0x30;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x18;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x0C;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v32.u0 = 14505;
+	v32 = *v32.u0;
+	*v31.u0 = v32;
+	v31 = loc26;
+	v32.u0 = 0x04;
+	v31 += v32;
+	v32.u0 = 14505;
+	v34.u0 = 0x04;
+	v32 += v34;
+	v35 = *v32.u0;
+	v32.u3 = (word32) v35;
+	v36 = (word16) v32;
+	*v31.u0 = v36;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 14511;
+	v34.u0 = 0x00;
+	v37 = loc10;
+	fn000FB8CE(v31, v32, v34, v37);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v32 = arg4;
+	*v31.u0 = v32;
+	v31 = loc27;
+	v32.u0 = 0x0C;
+	v34 = loc11;
+	v37 = loc26;
+	v38 = loc31;
+	v31 = fn000FA95B(v31, v32, v34, v37, v38);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v34 = arg2;
+	v31 = fn000FA9D7(v31, v32, v34);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x018C;
+	v32 = loc27;
+	v34 = loc14;
+	v37 = loc13;
+	v38 = loc28;
+	v39 = loc29;
+	v40 = loc30;
+	v41 = loc6;
+	invoke_viiiiiii(v31, v32, v34, v37, v38, v39, v40, v41);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v34 = loc20;
+		v37 = loc21;
+		v38 = arg2;
+		v39 = arg3;
+		v31 = fn000D0874(v31, v32, v34, v37, v38, v39);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000F9D06: Stack Eq_n fn000F9D06(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9D06(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0x70;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0x70;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0x20;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc31 = v31;
+	v31 = loc33;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0x4F;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x24;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x1C;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x18;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v34.u0 = 0x25;
+	*v31.u0 = v34;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 0x38A6;
+	v35.u0 = 0x00;
+	v36 = loc10;
+	fn000FB8CE(v31, v32, v35, v36);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v34 = arg4;
+	*v31.u0 = v34;
+	v31 = loc27;
+	v32.u0 = 0x17;
+	v35 = loc11;
+	v36 = loc26;
+	v37 = loc31;
+	v31 = fn000FA95B(v31, v32, v35, v36, v37);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v35 = arg2;
+	v31 = fn000FA9D7(v31, v32, v35);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x018C;
+	v32 = loc27;
+	v35 = loc14;
+	v36 = loc13;
+	v37 = loc28;
+	v38 = loc29;
+	v39 = loc30;
+	v40 = loc6;
+	invoke_viiiiiii(v31, v32, v35, v36, v37, v38, v39, v40);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v35 = loc20;
+		v36 = loc21;
+		v37 = arg2;
+		v38 = arg3;
+		v31 = fn000D0874(v31, v32, v35, v36, v37, v38);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000F9E56: Stack Eq_n fn000F9E56(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000F9E56(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v109.u3 = g_t140030.u3;
+	loc111 = v109;
+	v109.u3 = g_t140030.u3;
+	v110.u0 = 0xB0;
+	v109 += v110;
+	g_t140030.u3 = (word32 *) v109;
+	v109.u3 = g_t140030.u3;
+	v110.u3 = g_t140034.u3;
+	v111 = v109 >= v110;
+	if (v111)
+	{
+		v109.u0 = 0xB0;
+		abortStackOverflow(v109);
+	}
+	v109 = loc111;
+	v110.u0 = 0x4C;
+	v109 += v110;
+	loc17 = v109;
+	v109 = loc111;
+	v110.u0 = 0x30;
+	v109 += v110;
+	loc107 = v109;
+	v109 = loc111;
+	v110.u0 = 0x20;
+	v109 += v110;
+	loc106 = v109;
+	v109 = loc111;
+	v110.u0 = 0x18;
+	v109 += v110;
+	loc105 = v109;
+	v109 = loc111;
+	v110.u0 = 0x08;
+	v109 += v110;
+	loc104 = v109;
+	v109 = loc111;
+	loc65 = v109;
+	v109 = loc111;
+	v110.u0 = 0x8A;
+	v109 += v110;
+	loc76 = v109;
+	v109 = loc111;
+	v110.u0 = 0x48;
+	v109 += v110;
+	loc87 = v109;
+	v109 = loc111;
+	v110.u0 = 0x50;
+	v109 += v110;
+	loc98 = v109;
+	v109 = loc111;
+	v110.u0 = 0x44;
+	v109 += v110;
+	loc103 = v109;
+	v109 = loc111;
+	v110.u0 = 0x40;
+	v109 += v110;
+	loc25 = v109;
+	v109 = loc111;
+	v110.u0 = 0x3C;
+	v109 += v110;
+	loc26 = v109;
+	v109 = loc111;
+	v110.u0 = 0x38;
+	v109 += v110;
+	loc27 = v109;
+	v109 = loc65;
+	v112.u0 = 0x25;
+	*v109.u0 = v112;
+	v109 = loc65;
+	v110.u0 = 0x01;
+	v109 += v110;
+	loc28 = v109;
+	v109 = arg2;
+	v110.u0 = 0x04;
+	v109 += v110;
+	loc29 = v109;
+	v109 = loc29;
+	v109 = *v109.u0;
+	loc30 = v109;
+	v109 = loc28;
+	v110.u0 = 0x5C11;
+	v113 = loc30;
+	v109 = fn000FAB19(v109, v110, v113);
+	loc31 = v109;
+	v109 = loc87;
+	v110 = loc76;
+	*v109.u0 = v110;
+	v109 = fn000EAD0D();
+	loc32 = v109;
+	v109 = loc31;
+	if (v109)
+	{
+		v109 = arg2;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc33 = v109;
+		v109 = loc33;
+		v109 = *v109.u0;
+		loc34 = v109;
+		v109 = loc104;
+		v110 = loc34;
+		*v109.u0 = v110;
+		v109 = loc104;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc108 = v109;
+		v109 = loc108;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc104;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc35 = v109;
+		v109 = loc35;
+		loc5 = v109;
+	}
+	else
+	{
+		v109 = loc105;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc105;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc36 = v109;
+		v109 = loc36;
+		loc5 = v109;
+	}
+	v109 = loc5;
+	v110.u0 = 0x1D;
+	v111 = v109 > v110;
+	loc37 = v111;
+	v109 = loc37;
+	if (v109)
+	{
+		v109 = loc31;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc38 = v109;
+			v109.u3 = g_t140048.u3;
+			loc39 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc39;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc40 = v109;
+			v109 = loc40;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = arg2;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc41 = v109;
+				v109 = loc41;
+				v109 = *v109.u0;
+				loc42 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc106;
+				v110 = loc42;
+				*v109.u0 = v110;
+				v109 = loc106;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc109 = v109;
+				v109 = loc109;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc38;
+				v115 = loc65;
+				v116 = loc106;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc43 = v109;
+				v109.u3 = g_t140048.u3;
+				loc44 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc44;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc45 = v109;
+				v109 = loc45;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc43;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		else
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc48 = v109;
+			v109.u3 = g_t140048.u3;
+			loc49 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc49;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc50 = v109;
+			v109 = loc50;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc107;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc48;
+				v115 = loc65;
+				v116 = loc107;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc51 = v109;
+				v109.u3 = g_t140048.u3;
+				loc52 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc52;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc53 = v109;
+				v109 = loc53;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc51;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x0C;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc87;
+			v109 = *v109.u0;
+			loc54 = v109;
+			v109 = loc54;
+			v110.u0 = 0x00;
+			v111 = v109 == v110;
+			loc55 = v111;
+			v109 = loc55;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc54;
+				loc56 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc54;
+				loc22 = v109;
+				v109 = loc56;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FA0CD;
+			}
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc57 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc57;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc58 = v109;
+			v109 = loc58;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc87;
+				v109 = *v109.u0;
+				loc18 = v109;
+				v109 = loc18;
+				loc59 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc59;
+				loc22 = v109;
+				v109 = loc18;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FA0CD;
+			}
+		}
+		v109 = ___cxa_find_matching_catch_n();
+		loc46 = v109;
+		v109.u3 = g_t140094.u3;
+		loc47 = v109;
+		v109 = loc47;
+		loc15 = v109;
+		v109 = loc46;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc87;
+		v109.u3 = *v109.u3;
+		loc19 = v109;
+		v109 = loc5;
+		loc12 = v109;
+		v109 = loc19;
+		loc22 = v109;
+		v109.u0 = 0x00;
+		loc24 = v109;
+		v109.u0 = 0x10;
+		loc110 = v109;
+	}
+l000FA0CD:
+	v109 = loc110;
+	v110.u0 = 0x10;
+	v111 = v109 == v110;
+	if (!v111)
+	{
+l000FA317:
+		v109 = loc16;
+		___resumeException(v109);
+		v109.u0 = 0x00;
+		return v109;
+	}
+	v109 = loc22;
+	v110 = loc12;
+	v109 += v110;
+	loc60 = v109;
+	v109 = loc22;
+	v110 = loc60;
+	v113 = arg2;
+	v109 = fn000FA9D7(v109, v110, v113);
+	loc61 = v109;
+	v109 = loc22;
+	v110 = loc76;
+	v111 = v109 == v110;
+	loc62 = v111;
+	v109 = loc62;
+	if (v109)
+	{
+		v109 = loc98;
+		loc6 = v109;
+		v109.u0 = 0x00;
+		loc23 = v109;
+		v109 = loc76;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+	else
+	{
+		v109 = loc12;
+		v110.u0 = 0x01;
+		v109 <<= v110;
+		loc63 = v109;
+		v109 = loc63;
+		v109 = _malloc(v109);
+		loc64 = v109;
+		v109 = loc64;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc66 = v111;
+		v109 = loc66;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc67 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc67;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc68 = v109;
+			v109 = loc68;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc69 = v109;
+				v109.u3 = g_t140094.u3;
+				loc70 = v109;
+				v109 = loc69;
+				loc13 = v109;
+				v109 = loc70;
+				loc14 = v109;
+				goto l000FA179;
+			}
+			v109 = loc87;
+			v109.u3 = *v109.u3;
+			loc21 = v109;
+			v109 = loc21;
+			loc20 = v109;
+		}
+		else
+		{
+			v109 = loc22;
+			loc20 = v109;
+		}
+		v109 = loc64;
+		loc71 = v109;
+		v109 = loc64;
+		loc6 = v109;
+		v109 = loc71;
+		loc23 = v109;
+		v109 = loc20;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+l000FA179:
+	v109 = loc110;
+	v110.u0 = 22;
+	v111 = v109 == v110;
+	if (v111)
+	{
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109.u0 = 0x0167;
+		v110 = arg2;
+		v109 = invoke_ii(v109, v110);
+		loc72 = v109;
+		v109.u3 = g_t140048.u3;
+		loc73 = v109;
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109 = loc73;
+		v110.u0 = 0x01;
+		v109 &= v110;
+		loc74 = v109;
+		v109 = loc74;
+		if (v109)
+		{
+			v109 = ___cxa_find_matching_catch_n();
+			loc91 = v109;
+			v109.u3 = g_t140094.u3;
+			loc92 = v109;
+			v109 = loc91;
+			loc7 = v109;
+			v109 = loc92;
+			loc8 = v109;
+			v109.u0 = 0x20;
+			loc110 = v109;
+		}
+		else
+		{
+			v109 = loc26;
+			v110 = loc72;
+			*v109.u0 = v110;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018E;
+			v110 = loc75;
+			v113 = loc61;
+			v115 = loc60;
+			v116 = loc6;
+			v117 = loc103;
+			v118 = loc25;
+			v119 = loc26;
+			invoke_viiiiiii(v109, v110, v113, v115, v116, v117, v118, v119);
+			v109.u3 = g_t140048.u3;
+			loc77 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc77;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc78 = v109;
+			v109 = loc78;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc93 = v109;
+				v109.u3 = g_t140094.u3;
+				loc94 = v109;
+				v109 = loc26;
+				v109.u3 = *v109.u3;
+				loc95 = v109;
+				v109 = loc95;
+				v109 = fn0011B43F(v109);
+				v109 = loc93;
+				loc7 = v109;
+				v109 = loc94;
+				loc8 = v109;
+				v109.u0 = 0x20;
+				loc110 = v109;
+			}
+			else
+			{
+				v109 = loc26;
+				v109 = *v109.u0;
+				loc79 = v109;
+				v109 = loc79;
+				v109 = fn0011B43F(v109);
+				v109 = arg1;
+				v109 = *v109.u0;
+				loc80 = v109;
+				v109 = loc27;
+				v110 = loc80;
+				*v109.u0 = v110;
+				v109 = loc103;
+				v109 = *v109.u0;
+				loc81 = v109;
+				v109 = loc25;
+				v109 = *v109.u0;
+				loc82 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc17;
+				v110 = loc27;
+				v110 = *v110.u0;
+				*v109.u0 = v110;
+				v109.u0 = 0x0168;
+				v110 = loc17;
+				v113 = loc6;
+				v115 = loc81;
+				v116 = loc82;
+				v117 = arg2;
+				v118 = arg3;
+				v109 = invoke_iiiiiii(v109, v110, v113, v115, v116, v117, v118);
+				loc83 = v109;
+				v109.u3 = g_t140048.u3;
+				loc84 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc84;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc85 = v109;
+				v109 = loc85;
+				if (!v109)
+				{
+					v109 = arg1;
+					v110 = loc83;
+					*v109.u3 = (word32) v110;
+					v109 = loc23;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc86 = v111;
+					v109 = loc86;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc23;
+						loc88 = v109;
+						v109 = loc88;
+						_free(v109);
+					}
+					v109 = loc24;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc89 = v111;
+					v109 = loc89;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc24;
+						loc90 = v109;
+						v109 = loc90;
+						_free(v109);
+					}
+					v109 = loc111;
+					g_t140030.u3 = (word32 *) v109;
+					v109 = loc83;
+					return v109;
+				}
+				v109 = ___cxa_find_matching_catch_n();
+				loc96 = v109;
+				v109.u3 = g_t140094.u3;
+				loc97 = v109;
+				v109 = loc96;
+				loc10 = v109;
+				v109 = loc97;
+				loc11 = v109;
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x20;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc7;
+			loc10 = v109;
+			v109 = loc8;
+			loc11 = v109;
+		}
+		v109 = loc23;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc99 = v111;
+		v109 = loc99;
+		if (v109)
+		{
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+		else
+		{
+			v109 = loc23;
+			loc100 = v109;
+			v109 = loc100;
+			_free(v109);
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+	}
+	v109 = loc24;
+	v110.u0 = 0x00;
+	v111 = v109 == v110;
+	loc101 = v111;
+	v109 = loc101;
+	if (v109)
+	{
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc24;
+		loc102 = v109;
+		v109 = loc102;
+		_free(v109);
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	goto l000FA317;
 }
 
 // 000FA320: Stack Eq_n fn000FA320(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FA320(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v109.u3 = g_t140030.u3;
+	loc111 = v109;
+	v109.u3 = g_t140030.u3;
+	v110.u0 = 0xB0;
+	v109 += v110;
+	g_t140030.u3 = (word32 *) v109;
+	v109.u3 = g_t140030.u3;
+	v110.u3 = g_t140034.u3;
+	v111 = v109 >= v110;
+	if (v111)
+	{
+		v109.u0 = 0xB0;
+		abortStackOverflow(v109);
+	}
+	v109 = loc111;
+	v110.u0 = 0x4C;
+	v109 += v110;
+	loc17 = v109;
+	v109 = loc111;
+	v110.u0 = 0x30;
+	v109 += v110;
+	loc107 = v109;
+	v109 = loc111;
+	v110.u0 = 0x20;
+	v109 += v110;
+	loc106 = v109;
+	v109 = loc111;
+	v110.u0 = 0x18;
+	v109 += v110;
+	loc105 = v109;
+	v109 = loc111;
+	v110.u0 = 0x08;
+	v109 += v110;
+	loc104 = v109;
+	v109 = loc111;
+	loc65 = v109;
+	v109 = loc111;
+	v110.u0 = 0x8A;
+	v109 += v110;
+	loc76 = v109;
+	v109 = loc111;
+	v110.u0 = 0x48;
+	v109 += v110;
+	loc87 = v109;
+	v109 = loc111;
+	v110.u0 = 0x50;
+	v109 += v110;
+	loc98 = v109;
+	v109 = loc111;
+	v110.u0 = 0x44;
+	v109 += v110;
+	loc103 = v109;
+	v109 = loc111;
+	v110.u0 = 0x40;
+	v109 += v110;
+	loc25 = v109;
+	v109 = loc111;
+	v110.u0 = 0x3C;
+	v109 += v110;
+	loc26 = v109;
+	v109 = loc111;
+	v110.u0 = 0x38;
+	v109 += v110;
+	loc27 = v109;
+	v109 = loc65;
+	v112.u0 = 0x25;
+	*v109.u0 = v112;
+	v109 = loc65;
+	v110.u0 = 0x01;
+	v109 += v110;
+	loc28 = v109;
+	v109 = arg2;
+	v110.u0 = 0x04;
+	v109 += v110;
+	loc29 = v109;
+	v109 = loc29;
+	v109 = *v109.u0;
+	loc30 = v109;
+	v109 = loc28;
+	v110.u0 = 14500;
+	v113 = loc30;
+	v109 = fn000FAB19(v109, v110, v113);
+	loc31 = v109;
+	v109 = loc87;
+	v110 = loc76;
+	*v109.u0 = v110;
+	v109 = fn000EAD0D();
+	loc32 = v109;
+	v109 = loc31;
+	if (v109)
+	{
+		v109 = arg2;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc33 = v109;
+		v109 = loc33;
+		v109 = *v109.u0;
+		loc34 = v109;
+		v109 = loc104;
+		v110 = loc34;
+		*v109.u0 = v110;
+		v109 = loc104;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc108 = v109;
+		v109 = loc108;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc104;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc35 = v109;
+		v109 = loc35;
+		loc5 = v109;
+	}
+	else
+	{
+		v109 = loc105;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc105;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc36 = v109;
+		v109 = loc36;
+		loc5 = v109;
+	}
+	v109 = loc5;
+	v110.u0 = 0x1D;
+	v111 = v109 > v110;
+	loc37 = v111;
+	v109 = loc37;
+	if (v109)
+	{
+		v109 = loc31;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc38 = v109;
+			v109.u3 = g_t140048.u3;
+			loc39 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc39;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc40 = v109;
+			v109 = loc40;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = arg2;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc41 = v109;
+				v109 = loc41;
+				v109 = *v109.u0;
+				loc42 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc106;
+				v110 = loc42;
+				*v109.u0 = v110;
+				v109 = loc106;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc109 = v109;
+				v109 = loc109;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc38;
+				v115 = loc65;
+				v116 = loc106;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc43 = v109;
+				v109.u3 = g_t140048.u3;
+				loc44 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc44;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc45 = v109;
+				v109 = loc45;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc43;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		else
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc48 = v109;
+			v109.u3 = g_t140048.u3;
+			loc49 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc49;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc50 = v109;
+			v109 = loc50;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc107;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc48;
+				v115 = loc65;
+				v116 = loc107;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc51 = v109;
+				v109.u3 = g_t140048.u3;
+				loc52 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc52;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc53 = v109;
+				v109 = loc53;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc51;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x0C;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc87;
+			v109 = *v109.u0;
+			loc54 = v109;
+			v109 = loc54;
+			v110.u0 = 0x00;
+			v111 = v109 == v110;
+			loc55 = v111;
+			v109 = loc55;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc54;
+				loc56 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc54;
+				loc22 = v109;
+				v109 = loc56;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FA597;
+			}
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc57 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc57;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc58 = v109;
+			v109 = loc58;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc87;
+				v109 = *v109.u0;
+				loc18 = v109;
+				v109 = loc18;
+				loc59 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc59;
+				loc22 = v109;
+				v109 = loc18;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FA597;
+			}
+		}
+		v109 = ___cxa_find_matching_catch_n();
+		loc46 = v109;
+		v109.u3 = g_t140094.u3;
+		loc47 = v109;
+		v109 = loc47;
+		loc15 = v109;
+		v109 = loc46;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc87;
+		v109.u3 = *v109.u3;
+		loc19 = v109;
+		v109 = loc5;
+		loc12 = v109;
+		v109 = loc19;
+		loc22 = v109;
+		v109.u0 = 0x00;
+		loc24 = v109;
+		v109.u0 = 0x10;
+		loc110 = v109;
+	}
+l000FA597:
+	v109 = loc110;
+	v110.u0 = 0x10;
+	v111 = v109 == v110;
+	if (!v111)
+	{
+l000FA7E1:
+		v109 = loc16;
+		___resumeException(v109);
+		v109.u0 = 0x00;
+		return v109;
+	}
+	v109 = loc22;
+	v110 = loc12;
+	v109 += v110;
+	loc60 = v109;
+	v109 = loc22;
+	v110 = loc60;
+	v113 = arg2;
+	v109 = fn000FA9D7(v109, v110, v113);
+	loc61 = v109;
+	v109 = loc22;
+	v110 = loc76;
+	v111 = v109 == v110;
+	loc62 = v111;
+	v109 = loc62;
+	if (v109)
+	{
+		v109 = loc98;
+		loc6 = v109;
+		v109.u0 = 0x00;
+		loc23 = v109;
+		v109 = loc76;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+	else
+	{
+		v109 = loc12;
+		v110.u0 = 0x01;
+		v109 <<= v110;
+		loc63 = v109;
+		v109 = loc63;
+		v109 = _malloc(v109);
+		loc64 = v109;
+		v109 = loc64;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc66 = v111;
+		v109 = loc66;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc67 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc67;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc68 = v109;
+			v109 = loc68;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc69 = v109;
+				v109.u3 = g_t140094.u3;
+				loc70 = v109;
+				v109 = loc69;
+				loc13 = v109;
+				v109 = loc70;
+				loc14 = v109;
+				goto l000FA643;
+			}
+			v109 = loc87;
+			v109.u3 = *v109.u3;
+			loc21 = v109;
+			v109 = loc21;
+			loc20 = v109;
+		}
+		else
+		{
+			v109 = loc22;
+			loc20 = v109;
+		}
+		v109 = loc64;
+		loc71 = v109;
+		v109 = loc64;
+		loc6 = v109;
+		v109 = loc71;
+		loc23 = v109;
+		v109 = loc20;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+l000FA643:
+	v109 = loc110;
+	v110.u0 = 22;
+	v111 = v109 == v110;
+	if (v111)
+	{
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109.u0 = 0x0167;
+		v110 = arg2;
+		v109 = invoke_ii(v109, v110);
+		loc72 = v109;
+		v109.u3 = g_t140048.u3;
+		loc73 = v109;
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109 = loc73;
+		v110.u0 = 0x01;
+		v109 &= v110;
+		loc74 = v109;
+		v109 = loc74;
+		if (v109)
+		{
+			v109 = ___cxa_find_matching_catch_n();
+			loc91 = v109;
+			v109.u3 = g_t140094.u3;
+			loc92 = v109;
+			v109 = loc91;
+			loc7 = v109;
+			v109 = loc92;
+			loc8 = v109;
+			v109.u0 = 0x20;
+			loc110 = v109;
+		}
+		else
+		{
+			v109 = loc26;
+			v110 = loc72;
+			*v109.u0 = v110;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018E;
+			v110 = loc75;
+			v113 = loc61;
+			v115 = loc60;
+			v116 = loc6;
+			v117 = loc103;
+			v118 = loc25;
+			v119 = loc26;
+			invoke_viiiiiii(v109, v110, v113, v115, v116, v117, v118, v119);
+			v109.u3 = g_t140048.u3;
+			loc77 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc77;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc78 = v109;
+			v109 = loc78;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc93 = v109;
+				v109.u3 = g_t140094.u3;
+				loc94 = v109;
+				v109 = loc26;
+				v109.u3 = *v109.u3;
+				loc95 = v109;
+				v109 = loc95;
+				v109 = fn0011B43F(v109);
+				v109 = loc93;
+				loc7 = v109;
+				v109 = loc94;
+				loc8 = v109;
+				v109.u0 = 0x20;
+				loc110 = v109;
+			}
+			else
+			{
+				v109 = loc26;
+				v109 = *v109.u0;
+				loc79 = v109;
+				v109 = loc79;
+				v109 = fn0011B43F(v109);
+				v109 = arg1;
+				v109 = *v109.u0;
+				loc80 = v109;
+				v109 = loc27;
+				v110 = loc80;
+				*v109.u0 = v110;
+				v109 = loc103;
+				v109 = *v109.u0;
+				loc81 = v109;
+				v109 = loc25;
+				v109 = *v109.u0;
+				loc82 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc17;
+				v110 = loc27;
+				v110 = *v110.u0;
+				*v109.u0 = v110;
+				v109.u0 = 0x0168;
+				v110 = loc17;
+				v113 = loc6;
+				v115 = loc81;
+				v116 = loc82;
+				v117 = arg2;
+				v118 = arg3;
+				v109 = invoke_iiiiiii(v109, v110, v113, v115, v116, v117, v118);
+				loc83 = v109;
+				v109.u3 = g_t140048.u3;
+				loc84 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc84;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc85 = v109;
+				v109 = loc85;
+				if (!v109)
+				{
+					v109 = arg1;
+					v110 = loc83;
+					*v109.u3 = (word32) v110;
+					v109 = loc23;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc86 = v111;
+					v109 = loc86;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc23;
+						loc88 = v109;
+						v109 = loc88;
+						_free(v109);
+					}
+					v109 = loc24;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc89 = v111;
+					v109 = loc89;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc24;
+						loc90 = v109;
+						v109 = loc90;
+						_free(v109);
+					}
+					v109 = loc111;
+					g_t140030.u3 = (word32 *) v109;
+					v109 = loc83;
+					return v109;
+				}
+				v109 = ___cxa_find_matching_catch_n();
+				loc96 = v109;
+				v109.u3 = g_t140094.u3;
+				loc97 = v109;
+				v109 = loc96;
+				loc10 = v109;
+				v109 = loc97;
+				loc11 = v109;
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x20;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc7;
+			loc10 = v109;
+			v109 = loc8;
+			loc11 = v109;
+		}
+		v109 = loc23;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc99 = v111;
+		v109 = loc99;
+		if (v109)
+		{
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+		else
+		{
+			v109 = loc23;
+			loc100 = v109;
+			v109 = loc100;
+			_free(v109);
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+	}
+	v109 = loc24;
+	v110.u0 = 0x00;
+	v111 = v109 == v110;
+	loc101 = v111;
+	v109 = loc101;
+	if (v109)
+	{
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc24;
+		loc102 = v109;
+		v109 = loc102;
+		_free(v109);
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	goto l000FA7E1;
 }
 
 // 000FA7EA: Stack Eq_n fn000FA7EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FA7EA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v33.u3 = g_t140030.u3;
+	loc35 = v33;
+	v33.u3 = g_t140030.u3;
+	v34.u0 = 0x60;
+	v33 += v34;
+	g_t140030.u3 = (word32 *) v33;
+	v33.u3 = g_t140030.u3;
+	v34.u3 = g_t140034.u3;
+	v35 = v33 >= v34;
+	if (v35)
+	{
+		v33.u0 = 0x60;
+		abortStackOverflow(v33);
+	}
+	v33 = loc35;
+	v34.u0 = 0x0C;
+	v33 += v34;
+	loc6 = v33;
+	v33 = loc35;
+	loc33 = v33;
+	v33 = loc35;
+	v34.u0 = 0x4C;
+	v33 += v34;
+	loc28 = v33;
+	v33 = loc35;
+	v34.u0 = 0x38;
+	v33 += v34;
+	loc29 = v33;
+	v33 = loc35;
+	v34.u0 = 0x10;
+	v33 += v34;
+	loc30 = v33;
+	v33 = loc35;
+	v34.u0 = 0x08;
+	v33 += v34;
+	loc31 = v33;
+	v33 = loc35;
+	v34.u0 = 0x04;
+	v33 += v34;
+	loc32 = v33;
+	v33 = loc28;
+	v34.u0 = 14494;
+	v34 = *v34.u0;
+	*v33.u0 = v34;
+	v33 = loc28;
+	v34.u0 = 0x04;
+	v33 += v34;
+	v34.u0 = 14494;
+	v36.u0 = 0x04;
+	v34 += v36;
+	v37 = *v34.u0;
+	v34.u3 = (word32) v37;
+	v38 = (word16) v34;
+	*v33.u0 = v38;
+	v33 = fn000EAD0D();
+	loc7 = v33;
+	v33 = loc33;
+	v34 = arg4;
+	*v33.u0 = v34;
+	v33 = loc29;
+	v34.u0 = 0x14;
+	v36 = loc7;
+	v39 = loc28;
+	v40 = loc33;
+	v33 = fn000FA95B(v33, v34, v36, v39, v40);
+	loc8 = v33;
+	v33 = loc29;
+	v34 = loc8;
+	v33 += v34;
+	loc9 = v33;
+	v33 = loc29;
+	v34 = loc9;
+	v36 = arg2;
+	v33 = fn000FA9D7(v33, v34, v36);
+	loc10 = v33;
+	v33 = arg2;
+	v33 = fn000E64CA(v33);
+	loc11 = v33;
+	v33 = loc31;
+	v34 = loc11;
+	*v33.u0 = v34;
+	v33.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v33;
+	v33.u0 = 0x0164;
+	v34 = loc31;
+	v36.u0 = 0x4C70;
+	v33 = invoke_iii(v33, v34, v36);
+	loc12 = v33;
+	v33.u3 = g_t140048.u3;
+	loc13 = v33;
+	v33.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v33;
+	v33 = loc13;
+	v34.u0 = 0x01;
+	v33 &= v34;
+	loc14 = v33;
+	v33 = loc14;
+	if (!v33)
+	{
+		v33 = loc11;
+		v33 = fn0011B43F(v33);
+		v33 = loc12;
+		v33.u3 = *v33.u3;
+		loc15 = v33;
+		v33 = loc15;
+		v34.u0 = 0x20;
+		v33 += v34;
+		loc16 = v33;
+		v33 = loc16;
+		v33.u3 = *v33.u3;
+		loc17 = v33;
+		v33 = loc12;
+		v34 = loc29;
+		v36 = loc9;
+		v39 = loc30;
+		v40 = loc17;
+		v41 = 0x01FF;
+		v40 &= v41;
+		v41 = 0x2520;
+		v40.u3 += v41;
+	}
+	else
+	{
+		v33 = ___cxa_find_matching_catch_n();
+		loc26 = v33;
+		v33.u3 = g_t140094.u3;
+		loc27 = v33;
+		v33 = loc11;
+		v33 = fn0011B43F(v33);
+		v33 = loc26;
+		___resumeException(v33);
+	}
 }
 
 // 000FA95B: Stack Eq_n fn000FA95B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FA95B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v12.u3 = g_t140030.u3;
+	loc14 = v12;
+	v12.u3 = g_t140030.u3;
+	v13.u0 = 0x10;
+	v12 += v13;
+	g_t140030.u3 = (word32 *) v12;
+	v12.u3 = g_t140030.u3;
+	v13.u3 = g_t140034.u3;
+	v14 = v12 >= v13;
+	if (v14)
+	{
+		v12.u0 = 0x10;
+		abortStackOverflow(v12);
+	}
+	v12 = loc14;
+	loc7 = v12;
+	v12 = loc7;
+	v13 = arg4;
+	*v12.u0 = v13;
+	v12 = arg2;
+	v12 = fn000DB419(v12);
+	loc8 = v12;
+	v12 = arg0;
+	v13 = arg1;
+	v15 = arg3;
+	v16 = loc7;
+	v12 = fn000D29A3(v12, v13, v15, v16);
+	loc9 = v12;
+	v12 = loc8;
+	v13.u0 = 0x00;
+	v14 = v12 == v13;
+	loc10 = v14;
+	v12 = loc10;
+	v14 = v12 == 0x00;
+	if (v14)
+	{
+		v12.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v12;
+		v12.u0 = 0x017E;
+		v13 = loc8;
+		v12 = invoke_ii(v12, v13);
+		v12.u3 = g_t140048.u3;
+		loc11 = v12;
+		v12.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v12;
+		v12 = loc11;
+		v13.u0 = 0x01;
+		v12 &= v13;
+		loc12 = v12;
+		v12 = loc12;
+		if (v12)
+		{
+			v12.u0 = 0x00;
+			v12 = ___cxa_find_matching_catch_n(v12);
+			loc5 = v12;
+			v12.u3 = g_t140094.u3;
+			loc6 = v12;
+			v12 = loc5;
+			fn000D0E65(v12);
+		}
+	}
+	v12 = loc14;
+	g_t140030.u3 = (word32 *) v12;
+	v12 = loc9;
+	return v12;
 }
 
 // 000FA9D7: Stack Eq_n fn000FA9D7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn000FA9D7(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
+	v20.u3 = g_t140030.u3;
+	loc20 = v20;
+	v20 = arg2;
+	v21.u0 = 0x04;
+	v20 += v21;
+	loc10 = v20;
+	v20 = loc10;
+	v20.u3 = *v20.u3;
+	loc11 = v20;
+	v20 = loc11;
+	v21.u0 = 0xB0;
+	v20 &= v21;
+	loc12 = v20;
+	v20 = loc12;
+	v21.u0 = 0xFF;
+	v20 &= v21;
+	loc18 = v20;
+	v20 = loc18;
+	v21.u0 = 0x18;
+	v20 <<= v21;
+	v21.u0 = 0x18;
+	v20 >>= v21;
+	v21.u0 = 0x10;
+	v20 -= v21;
+	switch (v20)
+	{
+	case 0x00:
+		v20 = arg0;
+		v22.u1 = v20.u4->t0000.u1;
+		v20.u3 = (word32) v22;
+		loc13 = v20;
+		v20 = loc13;
+		v21.u0 = 0x18;
+		v20 <<= v21;
+		v21.u0 = 0x18;
+		v20 >>= v21;
+		v21.u0 = 0x2B;
+		v20 -= v21;
+		switch (v20)
+		{
+		case 0x00:
+			break;
+		case 0x01:
+			break;
+		case 0x02:
+			v20 = arg1;
+			loc15 = v20;
+			v20 = arg0;
+			loc16 = v20;
+			v20 = loc15;
+			v21 = loc16;
+			v20 -= v21;
+			loc4 = v20;
+			v20 = loc4;
+			v21.u0 = 0x01;
+			v23 = v20 > v21;
+			loc5 = v23;
+			v20 = loc13;
+			v21.u0 = 0x18;
+			v20 <<= v21;
+			v21.u0 = 0x18;
+			v20 >>= v21;
+			v21.u0 = 0x30;
+			v23 = v20 == v21;
+			loc6 = v23;
+			v20 = loc5;
+			v21 = loc6;
+			v20 &= v21;
+			loc17 = v20;
+			v20 = loc17;
+			if (v20)
+			{
+				v20 = arg0;
+				v21.u0 = 0x01;
+				v20 += v21;
+				loc7 = v20;
+				v20 = loc7;
+				v24.u1 = v20.u4->t0000.u1;
+				v20.u3 = (word32) v24;
+				loc8 = v20;
+				v20 = loc8;
+				v21.u0 = 0x18;
+				v20 <<= v21;
+				v21.u0 = 0x18;
+				v20 >>= v21;
+				v21.u0 = 88;
+				v20 -= v21;
+				switch (v20)
+				{
+				case 0x00:
+					goto l000FAAD5;
+				case 0x01:
+l000FAAD5:
+					v20 = arg0;
+					v21.u0 = 0x02;
+					v20 += v21;
+					loc9 = v20;
+					v20 = loc9;
+					loc3 = v20;
+					break;
+				case 0x02:
+				case 0x03:
+				case 0x04:
+				case 0x05:
+				case 0x06:
+				case 0x07:
+				case 0x08:
+				case 0x09:
+				case 0x0A:
+				case 11:
+				case 0x0C:
+				case 0x0D:
+				case 0x0E:
+				case 0x0F:
+				case 0x10:
+				case 0x11:
+				case 0x12:
+				case 0x13:
+				case 0x14:
+				case 0x15:
+				case 22:
+				case 0x17:
+				case 0x18:
+				case 0x19:
+				case 0x1A:
+				case 0x1B:
+				case 0x1C:
+				case 0x1D:
+				case 0x1E:
+				case 0x1F:
+				case 0x20:
+					v20.u0 = 0x07;
+					loc19 = v20;
+					goto l000FAB07;
+				}
+			}
+			else
+			{
+				v20.u0 = 0x07;
+				loc19 = v20;
+			}
+			goto l000FAB06;
+		}
+		v20 = arg0;
+		v21.u0 = 0x01;
+		v20 += v21;
+		loc14 = v20;
+		v20 = loc14;
+		loc3 = v20;
+		break;
+	case 0x01:
+		v20 = arg1;
+		loc3 = v20;
+		goto l000FAB06;
+	case 0x02:
+	case 0x03:
+	case 0x04:
+	case 0x05:
+	case 0x06:
+	case 0x07:
+	case 0x08:
+	case 0x09:
+	case 0x0A:
+	case 11:
+	case 0x0C:
+	case 0x0D:
+	case 0x0E:
+	case 0x0F:
+	case 0x10:
+		v20.u0 = 0x07;
+		loc19 = v20;
+l000FAB06:
+		break;
+	}
+l000FAB07:
+	v20 = loc19;
+	v21.u0 = 0x07;
+	v23 = v20 == v21;
+	if (v23)
+	{
+		v20 = arg0;
+		loc3 = v20;
+	}
+	v20 = loc3;
+	return v20;
 }
 
 // 000FAB19: Stack Eq_n fn000FAB19(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -743,11 +21084,175 @@ Eq_n fn000FAB19(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 // 000FADDC: Stack Eq_n fn000FADDC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn000FADDC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
+	v21.u3 = g_t140030.u3;
+	loc22 = v21;
+	v21.u3 = g_t140030.u3;
+	v22.u0 = 0x10;
+	v21 += v22;
+	g_t140030.u3 = (word32 *) v21;
+	v21.u3 = g_t140030.u3;
+	v22.u3 = g_t140034.u3;
+	v23 = v21 >= v22;
+	if (v23)
+	{
+		v21.u0 = 0x10;
+		abortStackOverflow(v21);
+	}
+	v21 = loc22;
+	loc14 = v21;
+	v21 = loc14;
+	v22 = arg3;
+	*v21.u0 = v22;
+	v21 = arg1;
+	v21 = fn000DB419(v21);
+	loc15 = v21;
+	v21.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v21;
+	v21.u0 = 399;
+	v22 = arg0;
+	v24 = arg2;
+	v25 = loc14;
+	v21 = invoke_iiii(v21, v22, v24, v25);
+	loc16 = v21;
+	v21.u3 = g_t140048.u3;
+	loc17 = v21;
+	v21.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v21;
+	v21 = loc17;
+	v22.u0 = 0x01;
+	v21 &= v22;
+	loc18 = v21;
+	v21 = loc18;
+	if (!v21)
+	{
+		v21 = loc15;
+		v22.u0 = 0x00;
+		v23 = v21 == v22;
+		loc19 = v23;
+		v21 = loc19;
+		v23 = v21 == 0x00;
+		if (v23)
+		{
+			v21.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v21;
+			v21.u0 = 0x017E;
+			v22 = loc15;
+			v21 = invoke_ii(v21, v22);
+			v21.u3 = g_t140048.u3;
+			loc20 = v21;
+			v21.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v21;
+			v21 = loc20;
+			v22.u0 = 0x01;
+			v21 &= v22;
+			loc4 = v21;
+			v21 = loc4;
+			if (v21)
+			{
+				v21.u0 = 0x00;
+				v21 = ___cxa_find_matching_catch_n(v21);
+				loc5 = v21;
+				v21.u3 = g_t140094.u3;
+				loc6 = v21;
+				v21 = loc5;
+				fn000D0E65(v21);
+			}
+		}
+		v21 = loc22;
+		g_t140030.u3 = (word32 *) v21;
+		v21 = loc16;
+		return v21;
+	}
+	else
+	{
+		v21 = ___cxa_find_matching_catch_n();
+		loc7 = v21;
+		v21.u3 = g_t140094.u3;
+		loc8 = v21;
+		v21 = loc15;
+		v22.u0 = 0x00;
+		v23 = v21 == v22;
+		loc9 = v23;
+		v21 = loc9;
+		v23 = v21 == 0x00;
+		if (v23)
+		{
+			v21.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v21;
+			v21.u0 = 0x017E;
+			v22 = loc15;
+			v21 = invoke_ii(v21, v22);
+			v21.u3 = g_t140048.u3;
+			loc10 = v21;
+			v21.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v21;
+			v21 = loc10;
+			v22.u0 = 0x01;
+			v21 &= v22;
+			loc11 = v21;
+			v21 = loc11;
+			if (v21)
+			{
+				v21.u0 = 0x00;
+				v21 = ___cxa_find_matching_catch_n(v21);
+				loc12 = v21;
+				v21.u3 = g_t140094.u3;
+				loc13 = v21;
+				v21 = loc12;
+				fn000D0E65(v21);
+			}
+		}
+		v21 = loc7;
+		___resumeException(v21);
+		v21.u0 = 0x00;
+		return v21;
+	}
 }
 
 // 000FAEBB: void fn000FAEBB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FAEBB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v211.u3 = g_t140030.u3;
+	loc215 = v211;
+	v211.u3 = g_t140030.u3;
+	v212.u0 = 0x10;
+	v211 += v212;
+	g_t140030.u3 = (word32 *) v211;
+	v211.u3 = g_t140030.u3;
+	v212.u3 = g_t140034.u3;
+	v213 = v211 >= v212;
+	if (v213)
+	{
+		v211.u0 = 0x10;
+		abortStackOverflow(v211);
+	}
+	v211 = loc215;
+	loc179 = v211;
+	v211 = arg6;
+	v212.u0 = 0x4C70;
+	v211 = fn000EA9F7(v211, v212);
+	loc190 = v211;
+	v211 = arg6;
+	v212.u0 = 0x4C80;
+	v211 = fn000EA9F7(v211, v212);
+	loc201 = v211;
+	v211 = loc201;
+	v211 = *v211.u0;
+	loc27 = v211;
+	v211 = loc27;
+	v212.u0 = 0x14;
+	v211 += v212;
+	loc38 = v211;
+	v211 = loc38;
+	v211 = *v211.u0;
+	loc49 = v211;
+	v211 = loc179;
+	v212 = loc201;
+	v214 = loc49;
+	v215 = 0x01FF;
+	v214 &= v215;
+	v215 = 0x0700;
+	v214.u3 += v215;
 }
 
 // 000FB8CE: void fn000FB8CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
@@ -976,6 +21481,47 @@ void fn000FB8CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 // 000FBA39: void fn000FBA39(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FBA39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v146.u3 = g_t140030.u3;
+	loc150 = v146;
+	v146.u3 = g_t140030.u3;
+	v147.u0 = 0x10;
+	v146 += v147;
+	g_t140030.u3 = (word32 *) v146;
+	v146.u3 = g_t140030.u3;
+	v147.u3 = g_t140034.u3;
+	v148 = v146 >= v147;
+	if (v148)
+	{
+		v146.u0 = 0x10;
+		abortStackOverflow(v146);
+	}
+	v146 = loc150;
+	loc114 = v146;
+	v146 = arg6;
+	v147.u0 = 0x4C70;
+	v146 = fn000EA9F7(v146, v147);
+	loc125 = v146;
+	v146 = arg6;
+	v147.u0 = 0x4C80;
+	v146 = fn000EA9F7(v146, v147);
+	loc136 = v146;
+	v146 = loc136;
+	v146 = *v146.u0;
+	loc23 = v146;
+	v146 = loc23;
+	v147.u0 = 0x14;
+	v146 += v147;
+	loc34 = v146;
+	v146 = loc34;
+	v146 = *v146.u0;
+	loc45 = v146;
+	v146 = loc114;
+	v147 = loc136;
+	v149 = loc45;
+	v150 = 0x01FF;
+	v149 &= v150;
+	v150 = 0x0700;
+	v149.u3 += v150;
 }
 
 // 000FC0C8: void fn000FC0C8(Stack Eq_n arg0)
@@ -997,56 +21543,2458 @@ void fn000FC0D1(Eq_n arg0)
 // 000FC0DF: Stack Eq_n fn000FC0DF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC0DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v72.u3 = g_t140030.u3;
+	loc74 = v72;
+	v72.u3 = g_t140030.u3;
+	v73.u0 = 0x20;
+	v72 += v73;
+	g_t140030.u3 = (word32 *) v72;
+	v72.u3 = g_t140030.u3;
+	v73.u3 = g_t140034.u3;
+	v74 = v72 >= v73;
+	if (v74)
+	{
+		v72.u0 = 0x20;
+		abortStackOverflow(v72);
+	}
+	v72 = loc74;
+	v73.u0 = 0x14;
+	v72 += v73;
+	loc8 = v72;
+	v72 = loc74;
+	v73.u0 = 0x10;
+	v72 += v73;
+	loc55 = v72;
+	v72 = loc74;
+	v73.u0 = 0x0C;
+	v72 += v73;
+	loc66 = v72;
+	v72 = loc74;
+	loc70 = v72;
+	v72 = arg2;
+	v73.u0 = 0x04;
+	v72 += v73;
+	loc71 = v72;
+	v72 = loc71;
+	v72 = *v72.u0;
+	loc72 = v72;
+	v72 = loc72;
+	v73.u0 = 0x01;
+	v72 &= v73;
+	loc15 = v72;
+	v72 = loc15;
+	v73.u0 = 0x00;
+	v74 = v72 == v73;
+	loc16 = v74;
+	v72 = loc16;
+	v72 = v72;
+	v72 = arg0;
+	v72 = *v72.u0;
+	loc17 = v72;
+	v72 = loc17;
+	v73.u0 = 0x18;
+	v72 += v73;
+	loc18 = v72;
+	v72 = loc18;
+	v72 = *v72.u0;
+	loc19 = v72;
+	v72 = arg1;
+	v72 = *v72.u0;
+	loc20 = v72;
+	v72 = loc55;
+	v73 = loc20;
+	*v72.u0 = v73;
+	v72 = arg4;
+	v73.u0 = 0x01;
+	v72 &= v73;
+	loc21 = v72;
+	v72 = loc8;
+	v73 = loc55;
+	v73 = *v73.u0;
+	*v72.u0 = v73;
+	v72 = arg0;
+	v73 = loc8;
+	v75 = arg2;
+	v76 = arg3;
+	v77 = loc21;
+	v78 = loc19;
+	v79.u0 = 0x01FF;
+	v78 &= v79;
+	v79.u0 = 0x1D20;
+	v78 += v79;
 }
 
 // 000FC3DF: Stack Eq_n fn000FC3DF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC3DF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0x90;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0x90;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0x70;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	loc31 = v31;
+	v31 = loc33;
+	v32.u0 = 0x82;
+	v31 += v32;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 116;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x0C;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v32.u0 = 14505;
+	v32 = *v32.u0;
+	*v31.u0 = v32;
+	v31 = loc26;
+	v32.u0 = 0x04;
+	v31 += v32;
+	v32.u0 = 14505;
+	v34.u0 = 0x04;
+	v32 += v34;
+	v35 = *v32.u0;
+	v32.u3 = (word32) v35;
+	v36 = (word16) v32;
+	*v31.u0 = v36;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 14511;
+	v34.u0 = 0x01;
+	v37 = loc10;
+	fn000FB8CE(v31, v32, v34, v37);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v32 = arg4;
+	*v31.u0 = v32;
+	v31 = loc27;
+	v32.u0 = 0x0D;
+	v34 = loc11;
+	v37 = loc26;
+	v38 = loc31;
+	v31 = fn000FA95B(v31, v32, v34, v37, v38);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v34 = arg2;
+	v31 = fn000FA9D7(v31, v32, v34);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x0192;
+	v32 = loc27;
+	v34 = loc14;
+	v37 = loc13;
+	v38 = loc28;
+	v39 = loc29;
+	v40 = loc30;
+	v41 = loc6;
+	invoke_viiiiiii(v31, v32, v34, v37, v38, v39, v40, v41);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v34 = loc20;
+		v37 = loc21;
+		v38 = arg2;
+		v39 = arg3;
+		v31 = fn000FD465(v31, v32, v34, v37, v38, v39);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000FC549: Stack Eq_n fn000FC549(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC549(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0xF0;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0xF0;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0xCC;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc31 = v31;
+	v31 = loc33;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0xD0;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x20;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x1C;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x18;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v34.u0 = 0x25;
+	*v31.u0 = v34;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 0x38A6;
+	v35.u0 = 0x01;
+	v36 = loc10;
+	fn000FB8CE(v31, v32, v35, v36);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v34 = arg4;
+	*v31.u0 = v34;
+	v31 = loc27;
+	v32.u0 = 0x17;
+	v35 = loc11;
+	v36 = loc26;
+	v37 = loc31;
+	v31 = fn000FA95B(v31, v32, v35, v36, v37);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v35 = arg2;
+	v31 = fn000FA9D7(v31, v32, v35);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x0192;
+	v32 = loc27;
+	v35 = loc14;
+	v36 = loc13;
+	v37 = loc28;
+	v38 = loc29;
+	v39 = loc30;
+	v40 = loc6;
+	invoke_viiiiiii(v31, v32, v35, v36, v37, v38, v39, v40);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v35 = loc20;
+		v36 = loc21;
+		v37 = arg2;
+		v38 = arg3;
+		v31 = fn000FD465(v31, v32, v35, v36, v37, v38);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000FC69B: Stack Eq_n fn000FC69B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC69B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0x80;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0x80;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0x68;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	loc31 = v31;
+	v31 = loc33;
+	v32.u0 = 0x78;
+	v31 += v32;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0x6C;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x0C;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v32.u0 = 14505;
+	v32 = *v32.u0;
+	*v31.u0 = v32;
+	v31 = loc26;
+	v32.u0 = 0x04;
+	v31 += v32;
+	v32.u0 = 14505;
+	v34.u0 = 0x04;
+	v32 += v34;
+	v35 = *v32.u0;
+	v32.u3 = (word32) v35;
+	v36 = (word16) v32;
+	*v31.u0 = v36;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 14511;
+	v34.u0 = 0x00;
+	v37 = loc10;
+	fn000FB8CE(v31, v32, v34, v37);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v32 = arg4;
+	*v31.u0 = v32;
+	v31 = loc27;
+	v32.u0 = 0x0C;
+	v34 = loc11;
+	v37 = loc26;
+	v38 = loc31;
+	v31 = fn000FA95B(v31, v32, v34, v37, v38);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v34 = arg2;
+	v31 = fn000FA9D7(v31, v32, v34);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x0192;
+	v32 = loc27;
+	v34 = loc14;
+	v37 = loc13;
+	v38 = loc28;
+	v39 = loc29;
+	v40 = loc30;
+	v41 = loc6;
+	invoke_viiiiiii(v31, v32, v34, v37, v38, v39, v40, v41);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v34 = loc20;
+		v37 = loc21;
+		v38 = arg2;
+		v39 = arg3;
+		v31 = fn000FD465(v31, v32, v34, v37, v38, v39);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000FC805: Stack Eq_n fn000FC805(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC805(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v31.u3 = g_t140030.u3;
+	loc33 = v31;
+	v31.u3 = g_t140030.u3;
+	v32.u0 = 0xF0;
+	v31 += v32;
+	g_t140030.u3 = (word32 *) v31;
+	v31.u3 = g_t140030.u3;
+	v32.u3 = g_t140034.u3;
+	v33 = v31 >= v32;
+	if (v33)
+	{
+		v31.u0 = 0xF0;
+		abortStackOverflow(v31);
+	}
+	v31 = loc33;
+	v32.u0 = 0xCC;
+	v31 += v32;
+	loc5 = v31;
+	v31 = loc33;
+	v32.u0 = 0x08;
+	v31 += v32;
+	loc31 = v31;
+	v31 = loc33;
+	loc26 = v31;
+	v31 = loc33;
+	v32.u0 = 0xD0;
+	v31 += v32;
+	loc27 = v31;
+	v31 = loc33;
+	v32.u0 = 0x20;
+	v31 += v32;
+	loc28 = v31;
+	v31 = loc33;
+	v32.u0 = 0x1C;
+	v31 += v32;
+	loc29 = v31;
+	v31 = loc33;
+	v32.u0 = 0x18;
+	v31 += v32;
+	loc30 = v31;
+	v31 = loc33;
+	v32.u0 = 0x14;
+	v31 += v32;
+	loc6 = v31;
+	v31 = loc33;
+	v32.u0 = 0x10;
+	v31 += v32;
+	loc7 = v31;
+	v31 = loc26;
+	v34.u0 = 0x25;
+	*v31.u0 = v34;
+	v31 = loc26;
+	v32.u0 = 0x01;
+	v31 += v32;
+	loc8 = v31;
+	v31 = arg2;
+	v32.u0 = 0x04;
+	v31 += v32;
+	loc9 = v31;
+	v31 = loc9;
+	v31 = *v31.u0;
+	loc10 = v31;
+	v31 = loc8;
+	v32.u0 = 0x38A6;
+	v35.u0 = 0x00;
+	v36 = loc10;
+	fn000FB8CE(v31, v32, v35, v36);
+	v31 = fn000EAD0D();
+	loc11 = v31;
+	v31 = loc31;
+	v34 = arg4;
+	*v31.u0 = v34;
+	v31 = loc27;
+	v32.u0 = 0x17;
+	v35 = loc11;
+	v36 = loc26;
+	v37 = loc31;
+	v31 = fn000FA95B(v31, v32, v35, v36, v37);
+	loc12 = v31;
+	v31 = loc27;
+	v32 = loc12;
+	v31 += v32;
+	loc13 = v31;
+	v31 = loc27;
+	v32 = loc13;
+	v35 = arg2;
+	v31 = fn000FA9D7(v31, v32, v35);
+	loc14 = v31;
+	v31 = arg2;
+	v31 = fn000E64CA(v31);
+	loc15 = v31;
+	v31 = loc6;
+	v32 = loc15;
+	*v31.u0 = v32;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31.u0 = 0x0192;
+	v32 = loc27;
+	v35 = loc14;
+	v36 = loc13;
+	v37 = loc28;
+	v38 = loc29;
+	v39 = loc30;
+	v40 = loc6;
+	invoke_viiiiiii(v31, v32, v35, v36, v37, v38, v39, v40);
+	v31.u3 = g_t140048.u3;
+	loc16 = v31;
+	v31.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v31;
+	v31 = loc16;
+	v32.u0 = 0x01;
+	v31 &= v32;
+	loc17 = v31;
+	v31 = loc17;
+	if (!v31)
+	{
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc18 = v31;
+		v31 = loc18;
+		v31 = fn0011B43F(v31);
+		v31 = arg1;
+		v31.u3 = *v31.u3;
+		loc19 = v31;
+		v31 = loc7;
+		v32 = loc19;
+		*v31.u3 = (word32) v32;
+		v31 = loc29;
+		v31.u3 = *v31.u3;
+		loc20 = v31;
+		v31 = loc30;
+		v31.u3 = *v31.u3;
+		loc21 = v31;
+		v31 = loc5;
+		v32 = loc7;
+		v32 = *v32.u0;
+		*v31.u3 = (word32) v32;
+		v31 = loc5;
+		v32 = loc28;
+		v35 = loc20;
+		v36 = loc21;
+		v37 = arg2;
+		v38 = arg3;
+		v31 = fn000FD465(v31, v32, v35, v36, v37, v38);
+		loc22 = v31;
+		v31 = loc33;
+		g_t140030.u3 = (word32 *) v31;
+		v31 = loc22;
+		return v31;
+	}
+	else
+	{
+		v31 = ___cxa_find_matching_catch_n();
+		loc23 = v31;
+		v31.u3 = g_t140094.u3;
+		loc24 = v31;
+		v31 = loc6;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v31 = fn0011B43F(v31);
+		v31 = loc23;
+		___resumeException(v31);
+		v31.u0 = 0x00;
+		return v31;
+	}
 }
 
 // 000FC957: Stack Eq_n fn000FC957(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FC957(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v109.u3 = g_t140030.u3;
+	loc111 = v109;
+	v109.u3 = g_t140030.u3;
+	v110.u0 = 0x0160;
+	v109 += v110;
+	g_t140030.u3 = (word32 *) v109;
+	v109.u3 = g_t140030.u3;
+	v110.u3 = g_t140034.u3;
+	v111 = v109 >= v110;
+	if (v111)
+	{
+		v109.u0 = 0x0160;
+		abortStackOverflow(v109);
+	}
+	v109 = loc111;
+	v110.u0 = 0x0130;
+	v109 += v110;
+	loc17 = v109;
+	v109 = loc111;
+	v110.u0 = 0x30;
+	v109 += v110;
+	loc107 = v109;
+	v109 = loc111;
+	v110.u0 = 0x20;
+	v109 += v110;
+	loc106 = v109;
+	v109 = loc111;
+	v110.u0 = 0x18;
+	v109 += v110;
+	loc105 = v109;
+	v109 = loc111;
+	v110.u0 = 0x08;
+	v109 += v110;
+	loc104 = v109;
+	v109 = loc111;
+	loc65 = v109;
+	v109 = loc111;
+	v110.u0 = 0x0134;
+	v109 += v110;
+	loc76 = v109;
+	v109 = loc111;
+	v110.u0 = 300;
+	v109 += v110;
+	loc87 = v109;
+	v109 = loc111;
+	v110.u0 = 0x48;
+	v109 += v110;
+	loc98 = v109;
+	v109 = loc111;
+	v110.u0 = 0x44;
+	v109 += v110;
+	loc103 = v109;
+	v109 = loc111;
+	v110.u0 = 0x40;
+	v109 += v110;
+	loc25 = v109;
+	v109 = loc111;
+	v110.u0 = 0x3C;
+	v109 += v110;
+	loc26 = v109;
+	v109 = loc111;
+	v110.u0 = 0x38;
+	v109 += v110;
+	loc27 = v109;
+	v109 = loc65;
+	v112.u0 = 0x25;
+	*v109.u0 = v112;
+	v109 = loc65;
+	v110.u0 = 0x01;
+	v109 += v110;
+	loc28 = v109;
+	v109 = arg2;
+	v110.u0 = 0x04;
+	v109 += v110;
+	loc29 = v109;
+	v109 = loc29;
+	v109 = *v109.u0;
+	loc30 = v109;
+	v109 = loc28;
+	v110.u0 = 0x5C11;
+	v113 = loc30;
+	v109 = fn000FAB19(v109, v110, v113);
+	loc31 = v109;
+	v109 = loc87;
+	v110 = loc76;
+	*v109.u0 = v110;
+	v109 = fn000EAD0D();
+	loc32 = v109;
+	v109 = loc31;
+	if (v109)
+	{
+		v109 = arg2;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc33 = v109;
+		v109 = loc33;
+		v109 = *v109.u0;
+		loc34 = v109;
+		v109 = loc104;
+		v110 = loc34;
+		*v109.u0 = v110;
+		v109 = loc104;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc108 = v109;
+		v109 = loc108;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc104;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc35 = v109;
+		v109 = loc35;
+		loc5 = v109;
+	}
+	else
+	{
+		v109 = loc105;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc105;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc36 = v109;
+		v109 = loc36;
+		loc5 = v109;
+	}
+	v109 = loc5;
+	v110.u0 = 0x1D;
+	v111 = v109 > v110;
+	loc37 = v111;
+	v109 = loc37;
+	if (v109)
+	{
+		v109 = loc31;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc38 = v109;
+			v109.u3 = g_t140048.u3;
+			loc39 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc39;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc40 = v109;
+			v109 = loc40;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = arg2;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc41 = v109;
+				v109 = loc41;
+				v109 = *v109.u0;
+				loc42 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc106;
+				v110 = loc42;
+				*v109.u0 = v110;
+				v109 = loc106;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc109 = v109;
+				v109 = loc109;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc38;
+				v115 = loc65;
+				v116 = loc106;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc43 = v109;
+				v109.u3 = g_t140048.u3;
+				loc44 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc44;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc45 = v109;
+				v109 = loc45;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc43;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		else
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc48 = v109;
+			v109.u3 = g_t140048.u3;
+			loc49 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc49;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc50 = v109;
+			v109 = loc50;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc107;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc48;
+				v115 = loc65;
+				v116 = loc107;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc51 = v109;
+				v109.u3 = g_t140048.u3;
+				loc52 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc52;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc53 = v109;
+				v109 = loc53;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc51;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x0C;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc87;
+			v109 = *v109.u0;
+			loc54 = v109;
+			v109 = loc54;
+			v110.u0 = 0x00;
+			v111 = v109 == v110;
+			loc55 = v111;
+			v109 = loc55;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc54;
+				loc56 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc54;
+				loc22 = v109;
+				v109 = loc56;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FCBCE;
+			}
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc57 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc57;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc58 = v109;
+			v109 = loc58;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc87;
+				v109 = *v109.u0;
+				loc18 = v109;
+				v109 = loc18;
+				loc59 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc59;
+				loc22 = v109;
+				v109 = loc18;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FCBCE;
+			}
+		}
+		v109 = ___cxa_find_matching_catch_n();
+		loc46 = v109;
+		v109.u3 = g_t140094.u3;
+		loc47 = v109;
+		v109 = loc47;
+		loc15 = v109;
+		v109 = loc46;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc87;
+		v109.u3 = *v109.u3;
+		loc19 = v109;
+		v109 = loc5;
+		loc12 = v109;
+		v109 = loc19;
+		loc22 = v109;
+		v109.u0 = 0x00;
+		loc24 = v109;
+		v109.u0 = 0x10;
+		loc110 = v109;
+	}
+l000FCBCE:
+	v109 = loc110;
+	v110.u0 = 0x10;
+	v111 = v109 == v110;
+	if (!v111)
+	{
+l000FCE18:
+		v109 = loc16;
+		___resumeException(v109);
+		v109.u0 = 0x00;
+		return v109;
+	}
+	v109 = loc22;
+	v110 = loc12;
+	v109 += v110;
+	loc60 = v109;
+	v109 = loc22;
+	v110 = loc60;
+	v113 = arg2;
+	v109 = fn000FA9D7(v109, v110, v113);
+	loc61 = v109;
+	v109 = loc22;
+	v110 = loc76;
+	v111 = v109 == v110;
+	loc62 = v111;
+	v109 = loc62;
+	if (v109)
+	{
+		v109 = loc98;
+		loc6 = v109;
+		v109.u0 = 0x00;
+		loc23 = v109;
+		v109 = loc76;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+	else
+	{
+		v109 = loc12;
+		v110.u0 = 0x03;
+		v109 <<= v110;
+		loc63 = v109;
+		v109 = loc63;
+		v109 = _malloc(v109);
+		loc64 = v109;
+		v109 = loc64;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc66 = v111;
+		v109 = loc66;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc67 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc67;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc68 = v109;
+			v109 = loc68;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc69 = v109;
+				v109.u3 = g_t140094.u3;
+				loc70 = v109;
+				v109 = loc69;
+				loc13 = v109;
+				v109 = loc70;
+				loc14 = v109;
+				goto l000FCC7A;
+			}
+			v109 = loc87;
+			v109.u3 = *v109.u3;
+			loc21 = v109;
+			v109 = loc21;
+			loc20 = v109;
+		}
+		else
+		{
+			v109 = loc22;
+			loc20 = v109;
+		}
+		v109 = loc64;
+		loc71 = v109;
+		v109 = loc64;
+		loc6 = v109;
+		v109 = loc71;
+		loc23 = v109;
+		v109 = loc20;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+l000FCC7A:
+	v109 = loc110;
+	v110.u0 = 22;
+	v111 = v109 == v110;
+	if (v111)
+	{
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109.u0 = 0x0167;
+		v110 = arg2;
+		v109 = invoke_ii(v109, v110);
+		loc72 = v109;
+		v109.u3 = g_t140048.u3;
+		loc73 = v109;
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109 = loc73;
+		v110.u0 = 0x01;
+		v109 &= v110;
+		loc74 = v109;
+		v109 = loc74;
+		if (v109)
+		{
+			v109 = ___cxa_find_matching_catch_n();
+			loc91 = v109;
+			v109.u3 = g_t140094.u3;
+			loc92 = v109;
+			v109 = loc91;
+			loc7 = v109;
+			v109 = loc92;
+			loc8 = v109;
+			v109.u0 = 0x20;
+			loc110 = v109;
+		}
+		else
+		{
+			v109 = loc26;
+			v110 = loc72;
+			*v109.u0 = v110;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x0193;
+			v110 = loc75;
+			v113 = loc61;
+			v115 = loc60;
+			v116 = loc6;
+			v117 = loc103;
+			v118 = loc25;
+			v119 = loc26;
+			invoke_viiiiiii(v109, v110, v113, v115, v116, v117, v118, v119);
+			v109.u3 = g_t140048.u3;
+			loc77 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc77;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc78 = v109;
+			v109 = loc78;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc93 = v109;
+				v109.u3 = g_t140094.u3;
+				loc94 = v109;
+				v109 = loc26;
+				v109.u3 = *v109.u3;
+				loc95 = v109;
+				v109 = loc95;
+				v109 = fn0011B43F(v109);
+				v109 = loc93;
+				loc7 = v109;
+				v109 = loc94;
+				loc8 = v109;
+				v109.u0 = 0x20;
+				loc110 = v109;
+			}
+			else
+			{
+				v109 = loc26;
+				v109 = *v109.u0;
+				loc79 = v109;
+				v109 = loc79;
+				v109 = fn0011B43F(v109);
+				v109 = arg1;
+				v109 = *v109.u0;
+				loc80 = v109;
+				v109 = loc27;
+				v110 = loc80;
+				*v109.u0 = v110;
+				v109 = loc103;
+				v109 = *v109.u0;
+				loc81 = v109;
+				v109 = loc25;
+				v109 = *v109.u0;
+				loc82 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc17;
+				v110 = loc27;
+				v110 = *v110.u0;
+				*v109.u0 = v110;
+				v109.u0 = 404;
+				v110 = loc17;
+				v113 = loc6;
+				v115 = loc81;
+				v116 = loc82;
+				v117 = arg2;
+				v118 = arg3;
+				v109 = invoke_iiiiiii(v109, v110, v113, v115, v116, v117, v118);
+				loc83 = v109;
+				v109.u3 = g_t140048.u3;
+				loc84 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc84;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc85 = v109;
+				v109 = loc85;
+				if (!v109)
+				{
+					v109 = arg1;
+					v110 = loc83;
+					*v109.u3 = (word32) v110;
+					v109 = loc23;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc86 = v111;
+					v109 = loc86;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc23;
+						loc88 = v109;
+						v109 = loc88;
+						_free(v109);
+					}
+					v109 = loc24;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc89 = v111;
+					v109 = loc89;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc24;
+						loc90 = v109;
+						v109 = loc90;
+						_free(v109);
+					}
+					v109 = loc111;
+					g_t140030.u3 = (word32 *) v109;
+					v109 = loc83;
+					return v109;
+				}
+				v109 = ___cxa_find_matching_catch_n();
+				loc96 = v109;
+				v109.u3 = g_t140094.u3;
+				loc97 = v109;
+				v109 = loc96;
+				loc10 = v109;
+				v109 = loc97;
+				loc11 = v109;
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x20;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc7;
+			loc10 = v109;
+			v109 = loc8;
+			loc11 = v109;
+		}
+		v109 = loc23;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc99 = v111;
+		v109 = loc99;
+		if (v109)
+		{
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+		else
+		{
+			v109 = loc23;
+			loc100 = v109;
+			v109 = loc100;
+			_free(v109);
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+	}
+	v109 = loc24;
+	v110.u0 = 0x00;
+	v111 = v109 == v110;
+	loc101 = v111;
+	v109 = loc101;
+	if (v109)
+	{
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc24;
+		loc102 = v109;
+		v109 = loc102;
+		_free(v109);
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	goto l000FCE18;
 }
 
 // 000FCE21: Stack Eq_n fn000FCE21(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FCE21(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v109.u3 = g_t140030.u3;
+	loc111 = v109;
+	v109.u3 = g_t140030.u3;
+	v110.u0 = 0x0160;
+	v109 += v110;
+	g_t140030.u3 = (word32 *) v109;
+	v109.u3 = g_t140030.u3;
+	v110.u3 = g_t140034.u3;
+	v111 = v109 >= v110;
+	if (v111)
+	{
+		v109.u0 = 0x0160;
+		abortStackOverflow(v109);
+	}
+	v109 = loc111;
+	v110.u0 = 0x0130;
+	v109 += v110;
+	loc17 = v109;
+	v109 = loc111;
+	v110.u0 = 0x30;
+	v109 += v110;
+	loc107 = v109;
+	v109 = loc111;
+	v110.u0 = 0x20;
+	v109 += v110;
+	loc106 = v109;
+	v109 = loc111;
+	v110.u0 = 0x18;
+	v109 += v110;
+	loc105 = v109;
+	v109 = loc111;
+	v110.u0 = 0x08;
+	v109 += v110;
+	loc104 = v109;
+	v109 = loc111;
+	loc65 = v109;
+	v109 = loc111;
+	v110.u0 = 0x0134;
+	v109 += v110;
+	loc76 = v109;
+	v109 = loc111;
+	v110.u0 = 300;
+	v109 += v110;
+	loc87 = v109;
+	v109 = loc111;
+	v110.u0 = 0x48;
+	v109 += v110;
+	loc98 = v109;
+	v109 = loc111;
+	v110.u0 = 0x44;
+	v109 += v110;
+	loc103 = v109;
+	v109 = loc111;
+	v110.u0 = 0x40;
+	v109 += v110;
+	loc25 = v109;
+	v109 = loc111;
+	v110.u0 = 0x3C;
+	v109 += v110;
+	loc26 = v109;
+	v109 = loc111;
+	v110.u0 = 0x38;
+	v109 += v110;
+	loc27 = v109;
+	v109 = loc65;
+	v112.u0 = 0x25;
+	*v109.u0 = v112;
+	v109 = loc65;
+	v110.u0 = 0x01;
+	v109 += v110;
+	loc28 = v109;
+	v109 = arg2;
+	v110.u0 = 0x04;
+	v109 += v110;
+	loc29 = v109;
+	v109 = loc29;
+	v109 = *v109.u0;
+	loc30 = v109;
+	v109 = loc28;
+	v110.u0 = 14500;
+	v113 = loc30;
+	v109 = fn000FAB19(v109, v110, v113);
+	loc31 = v109;
+	v109 = loc87;
+	v110 = loc76;
+	*v109.u0 = v110;
+	v109 = fn000EAD0D();
+	loc32 = v109;
+	v109 = loc31;
+	if (v109)
+	{
+		v109 = arg2;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc33 = v109;
+		v109 = loc33;
+		v109 = *v109.u0;
+		loc34 = v109;
+		v109 = loc104;
+		v110 = loc34;
+		*v109.u0 = v110;
+		v109 = loc104;
+		v110.u0 = 0x08;
+		v109 += v110;
+		loc108 = v109;
+		v109 = loc108;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc104;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc35 = v109;
+		v109 = loc35;
+		loc5 = v109;
+	}
+	else
+	{
+		v109 = loc105;
+		v114 = arg4;
+		*v109.u0 = v114;
+		v109 = loc76;
+		v110.u0 = 0x1E;
+		v113 = loc32;
+		v115 = loc65;
+		v116 = loc105;
+		v109 = fn000FA95B(v109, v110, v113, v115, v116);
+		loc36 = v109;
+		v109 = loc36;
+		loc5 = v109;
+	}
+	v109 = loc5;
+	v110.u0 = 0x1D;
+	v111 = v109 > v110;
+	loc37 = v111;
+	v109 = loc37;
+	if (v109)
+	{
+		v109 = loc31;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc38 = v109;
+			v109.u3 = g_t140048.u3;
+			loc39 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc39;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc40 = v109;
+			v109 = loc40;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = arg2;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc41 = v109;
+				v109 = loc41;
+				v109 = *v109.u0;
+				loc42 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc106;
+				v110 = loc42;
+				*v109.u0 = v110;
+				v109 = loc106;
+				v110.u0 = 0x08;
+				v109 += v110;
+				loc109 = v109;
+				v109 = loc109;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc38;
+				v115 = loc65;
+				v116 = loc106;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc43 = v109;
+				v109.u3 = g_t140048.u3;
+				loc44 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc44;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc45 = v109;
+				v109 = loc45;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc43;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		else
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x017B;
+			v109 = invoke_i(v109);
+			loc48 = v109;
+			v109.u3 = g_t140048.u3;
+			loc49 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc49;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc50 = v109;
+			v109 = loc50;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc107;
+				v114 = arg4;
+				*v109.u0 = v114;
+				v109.u0 = 0x018D;
+				v110 = loc87;
+				v113 = loc48;
+				v115 = loc65;
+				v116 = loc107;
+				v109 = invoke_iiiii(v109, v110, v113, v115, v116);
+				loc51 = v109;
+				v109.u3 = g_t140048.u3;
+				loc52 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc52;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc53 = v109;
+				v109 = loc53;
+				v111 = v109 == 0x00;
+				if (v111)
+				{
+					v109 = loc51;
+					loc9 = v109;
+					v109.u0 = 0x0C;
+					loc110 = v109;
+				}
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x0C;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc87;
+			v109 = *v109.u0;
+			loc54 = v109;
+			v109 = loc54;
+			v110.u0 = 0x00;
+			v111 = v109 == v110;
+			loc55 = v111;
+			v109 = loc55;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc54;
+				loc56 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc54;
+				loc22 = v109;
+				v109 = loc56;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FD098;
+			}
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc57 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc57;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc58 = v109;
+			v109 = loc58;
+			v111 = v109 == 0x00;
+			if (v111)
+			{
+				v109 = loc87;
+				v109 = *v109.u0;
+				loc18 = v109;
+				v109 = loc18;
+				loc59 = v109;
+				v109 = loc9;
+				loc12 = v109;
+				v109 = loc59;
+				loc22 = v109;
+				v109 = loc18;
+				loc24 = v109;
+				v109.u0 = 0x10;
+				loc110 = v109;
+				goto l000FD098;
+			}
+		}
+		v109 = ___cxa_find_matching_catch_n();
+		loc46 = v109;
+		v109.u3 = g_t140094.u3;
+		loc47 = v109;
+		v109 = loc47;
+		loc15 = v109;
+		v109 = loc46;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc87;
+		v109.u3 = *v109.u3;
+		loc19 = v109;
+		v109 = loc5;
+		loc12 = v109;
+		v109 = loc19;
+		loc22 = v109;
+		v109.u0 = 0x00;
+		loc24 = v109;
+		v109.u0 = 0x10;
+		loc110 = v109;
+	}
+l000FD098:
+	v109 = loc110;
+	v110.u0 = 0x10;
+	v111 = v109 == v110;
+	if (!v111)
+	{
+l000FD2E2:
+		v109 = loc16;
+		___resumeException(v109);
+		v109.u0 = 0x00;
+		return v109;
+	}
+	v109 = loc22;
+	v110 = loc12;
+	v109 += v110;
+	loc60 = v109;
+	v109 = loc22;
+	v110 = loc60;
+	v113 = arg2;
+	v109 = fn000FA9D7(v109, v110, v113);
+	loc61 = v109;
+	v109 = loc22;
+	v110 = loc76;
+	v111 = v109 == v110;
+	loc62 = v111;
+	v109 = loc62;
+	if (v109)
+	{
+		v109 = loc98;
+		loc6 = v109;
+		v109.u0 = 0x00;
+		loc23 = v109;
+		v109 = loc76;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+	else
+	{
+		v109 = loc12;
+		v110.u0 = 0x03;
+		v109 <<= v110;
+		loc63 = v109;
+		v109 = loc63;
+		v109 = _malloc(v109);
+		loc64 = v109;
+		v109 = loc64;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc66 = v111;
+		v109 = loc66;
+		if (v109)
+		{
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x018A;
+			invoke_v(v109);
+			v109.u3 = g_t140048.u3;
+			loc67 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc67;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc68 = v109;
+			v109 = loc68;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc69 = v109;
+				v109.u3 = g_t140094.u3;
+				loc70 = v109;
+				v109 = loc69;
+				loc13 = v109;
+				v109 = loc70;
+				loc14 = v109;
+				goto l000FD144;
+			}
+			v109 = loc87;
+			v109.u3 = *v109.u3;
+			loc21 = v109;
+			v109 = loc21;
+			loc20 = v109;
+		}
+		else
+		{
+			v109 = loc22;
+			loc20 = v109;
+		}
+		v109 = loc64;
+		loc71 = v109;
+		v109 = loc64;
+		loc6 = v109;
+		v109 = loc71;
+		loc23 = v109;
+		v109 = loc20;
+		loc75 = v109;
+		v109.u0 = 22;
+		loc110 = v109;
+	}
+l000FD144:
+	v109 = loc110;
+	v110.u0 = 22;
+	v111 = v109 == v110;
+	if (v111)
+	{
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109.u0 = 0x0167;
+		v110 = arg2;
+		v109 = invoke_ii(v109, v110);
+		loc72 = v109;
+		v109.u3 = g_t140048.u3;
+		loc73 = v109;
+		v109.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v109;
+		v109 = loc73;
+		v110.u0 = 0x01;
+		v109 &= v110;
+		loc74 = v109;
+		v109 = loc74;
+		if (v109)
+		{
+			v109 = ___cxa_find_matching_catch_n();
+			loc91 = v109;
+			v109.u3 = g_t140094.u3;
+			loc92 = v109;
+			v109 = loc91;
+			loc7 = v109;
+			v109 = loc92;
+			loc8 = v109;
+			v109.u0 = 0x20;
+			loc110 = v109;
+		}
+		else
+		{
+			v109 = loc26;
+			v110 = loc72;
+			*v109.u0 = v110;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109.u0 = 0x0193;
+			v110 = loc75;
+			v113 = loc61;
+			v115 = loc60;
+			v116 = loc6;
+			v117 = loc103;
+			v118 = loc25;
+			v119 = loc26;
+			invoke_viiiiiii(v109, v110, v113, v115, v116, v117, v118, v119);
+			v109.u3 = g_t140048.u3;
+			loc77 = v109;
+			v109.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v109;
+			v109 = loc77;
+			v110.u0 = 0x01;
+			v109 &= v110;
+			loc78 = v109;
+			v109 = loc78;
+			if (v109)
+			{
+				v109 = ___cxa_find_matching_catch_n();
+				loc93 = v109;
+				v109.u3 = g_t140094.u3;
+				loc94 = v109;
+				v109 = loc26;
+				v109.u3 = *v109.u3;
+				loc95 = v109;
+				v109 = loc95;
+				v109 = fn0011B43F(v109);
+				v109 = loc93;
+				loc7 = v109;
+				v109 = loc94;
+				loc8 = v109;
+				v109.u0 = 0x20;
+				loc110 = v109;
+			}
+			else
+			{
+				v109 = loc26;
+				v109 = *v109.u0;
+				loc79 = v109;
+				v109 = loc79;
+				v109 = fn0011B43F(v109);
+				v109 = arg1;
+				v109 = *v109.u0;
+				loc80 = v109;
+				v109 = loc27;
+				v110 = loc80;
+				*v109.u0 = v110;
+				v109 = loc103;
+				v109 = *v109.u0;
+				loc81 = v109;
+				v109 = loc25;
+				v109 = *v109.u0;
+				loc82 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc17;
+				v110 = loc27;
+				v110 = *v110.u0;
+				*v109.u0 = v110;
+				v109.u0 = 404;
+				v110 = loc17;
+				v113 = loc6;
+				v115 = loc81;
+				v116 = loc82;
+				v117 = arg2;
+				v118 = arg3;
+				v109 = invoke_iiiiiii(v109, v110, v113, v115, v116, v117, v118);
+				loc83 = v109;
+				v109.u3 = g_t140048.u3;
+				loc84 = v109;
+				v109.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v109;
+				v109 = loc84;
+				v110.u0 = 0x01;
+				v109 &= v110;
+				loc85 = v109;
+				v109 = loc85;
+				if (!v109)
+				{
+					v109 = arg1;
+					v110 = loc83;
+					*v109.u3 = (word32) v110;
+					v109 = loc23;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc86 = v111;
+					v109 = loc86;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc23;
+						loc88 = v109;
+						v109 = loc88;
+						_free(v109);
+					}
+					v109 = loc24;
+					v110.u0 = 0x00;
+					v111 = v109 == v110;
+					loc89 = v111;
+					v109 = loc89;
+					v111 = v109 == 0x00;
+					if (v111)
+					{
+						v109 = loc24;
+						loc90 = v109;
+						v109 = loc90;
+						_free(v109);
+					}
+					v109 = loc111;
+					g_t140030.u3 = (word32 *) v109;
+					v109 = loc83;
+					return v109;
+				}
+				v109 = ___cxa_find_matching_catch_n();
+				loc96 = v109;
+				v109.u3 = g_t140094.u3;
+				loc97 = v109;
+				v109 = loc96;
+				loc10 = v109;
+				v109 = loc97;
+				loc11 = v109;
+			}
+		}
+		v109 = loc110;
+		v110.u0 = 0x20;
+		v111 = v109 == v110;
+		if (v111)
+		{
+			v109 = loc7;
+			loc10 = v109;
+			v109 = loc8;
+			loc11 = v109;
+		}
+		v109 = loc23;
+		v110.u0 = 0x00;
+		v111 = v109 == v110;
+		loc99 = v111;
+		v109 = loc99;
+		if (v109)
+		{
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+		else
+		{
+			v109 = loc23;
+			loc100 = v109;
+			v109 = loc100;
+			_free(v109);
+			v109 = loc10;
+			loc13 = v109;
+			v109 = loc11;
+			loc14 = v109;
+		}
+	}
+	v109 = loc24;
+	v110.u0 = 0x00;
+	v111 = v109 == v110;
+	loc101 = v111;
+	v109 = loc101;
+	if (v109)
+	{
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	else
+	{
+		v109 = loc24;
+		loc102 = v109;
+		v109 = loc102;
+		_free(v109);
+		v109 = loc14;
+		loc15 = v109;
+		v109 = loc13;
+		loc16 = v109;
+	}
+	goto l000FD2E2;
 }
 
 // 000FD2EB: Stack Eq_n fn000FD2EB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn000FD2EB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
+	v33.u3 = g_t140030.u3;
+	loc35 = v33;
+	v33.u3 = g_t140030.u3;
+	v34.u0 = 0xC0;
+	v33 += v34;
+	g_t140030.u3 = (word32 *) v33;
+	v33.u3 = g_t140030.u3;
+	v34.u3 = g_t140034.u3;
+	v35 = v33 >= v34;
+	if (v35)
+	{
+		v33.u0 = 0xC0;
+		abortStackOverflow(v33);
+	}
+	v33 = loc35;
+	v34.u0 = 0xA0;
+	v33 += v34;
+	loc6 = v33;
+	v33 = loc35;
+	loc33 = v33;
+	v33 = loc35;
+	v34.u0 = 0xB8;
+	v33 += v34;
+	loc28 = v33;
+	v33 = loc35;
+	v34.u0 = 0xA4;
+	v33 += v34;
+	loc29 = v33;
+	v33 = loc35;
+	v34.u0 = 0x0C;
+	v33 += v34;
+	loc30 = v33;
+	v33 = loc35;
+	v34.u0 = 0x08;
+	v33 += v34;
+	loc31 = v33;
+	v33 = loc35;
+	v34.u0 = 0x04;
+	v33 += v34;
+	loc32 = v33;
+	v33 = loc28;
+	v34.u0 = 14494;
+	v34 = *v34.u0;
+	*v33.u0 = v34;
+	v33 = loc28;
+	v34.u0 = 0x04;
+	v33 += v34;
+	v34.u0 = 14494;
+	v36.u0 = 0x04;
+	v34 += v36;
+	v37 = *v34.u0;
+	v34.u3 = (word32) v37;
+	v38 = (word16) v34;
+	*v33.u0 = v38;
+	v33 = fn000EAD0D();
+	loc7 = v33;
+	v33 = loc33;
+	v34 = arg4;
+	*v33.u0 = v34;
+	v33 = loc29;
+	v34.u0 = 0x14;
+	v36 = loc7;
+	v39 = loc28;
+	v40 = loc33;
+	v33 = fn000FA95B(v33, v34, v36, v39, v40);
+	loc8 = v33;
+	v33 = loc29;
+	v34 = loc8;
+	v33 += v34;
+	loc9 = v33;
+	v33 = loc29;
+	v34 = loc9;
+	v36 = arg2;
+	v33 = fn000FA9D7(v33, v34, v36);
+	loc10 = v33;
+	v33 = arg2;
+	v33 = fn000E64CA(v33);
+	loc11 = v33;
+	v33 = loc31;
+	v34 = loc11;
+	*v33.u0 = v34;
+	v33.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v33;
+	v33.u0 = 0x0164;
+	v34 = loc31;
+	v36.u0 = 0x4C90;
+	v33 = invoke_iii(v33, v34, v36);
+	loc12 = v33;
+	v33.u3 = g_t140048.u3;
+	loc13 = v33;
+	v33.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v33;
+	v33 = loc13;
+	v34.u0 = 0x01;
+	v33 &= v34;
+	loc14 = v33;
+	v33 = loc14;
+	if (!v33)
+	{
+		v33 = loc11;
+		v33 = fn0011B43F(v33);
+		v33 = loc12;
+		v33.u3 = *v33.u3;
+		loc15 = v33;
+		v33 = loc15;
+		v34.u0 = 0x30;
+		v33 += v34;
+		loc16 = v33;
+		v33 = loc16;
+		v33.u3 = *v33.u3;
+		loc17 = v33;
+		v33 = loc12;
+		v34 = loc29;
+		v36 = loc9;
+		v39 = loc30;
+		v40 = loc17;
+		v41 = 0x01FF;
+		v40 &= v41;
+		v41 = 0x2520;
+		v40.u3 += v41;
+	}
+	else
+	{
+		v33 = ___cxa_find_matching_catch_n();
+		loc26 = v33;
+		v33.u3 = g_t140094.u3;
+		loc27 = v33;
+		v33 = loc11;
+		v33 = fn0011B43F(v33);
+		v33 = loc26;
+		___resumeException(v33);
+	}
 }
 
 // 000FD465: Stack Eq_n fn000FD465(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FD465(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v50.u3 = g_t140030.u3;
+	loc53 = v50;
+	v50.u3 = g_t140030.u3;
+	v51.u0 = 0x10;
+	v50 += v51;
+	g_t140030.u3 = (word32 *) v50;
+	v50.u3 = g_t140030.u3;
+	v51.u3 = g_t140034.u3;
+	v52 = v50 >= v51;
+	if (v52)
+	{
+		v50.u0 = 0x10;
+		abortStackOverflow(v50);
+	}
+	v50 = loc53;
+	loc48 = v50;
+	v50 = arg0;
+	v50 = *v50.u0;
+	loc49 = v50;
+	v50 = loc49;
+	v51.u0 = 0x00;
+	v52 = v50 == v51;
+	loc50 = v52;
+	v50 = loc50;
+	if (!v50)
+	{
+		v50 = arg3;
+		loc51 = v50;
+		v50 = arg1;
+		loc8 = v50;
+		v50 = loc51;
+		v51 = loc8;
+		v50 -= v51;
+		loc9 = v50;
+		v50 = loc9;
+		v51.u0 = 0x02;
+		v50 >>= v51;
+		loc10 = v50;
+		v50 = arg4;
+		v51.u0 = 0x0C;
+		v50 += v51;
+		loc11 = v50;
+		v50 = loc11;
+		v50 = *v50.u0;
+		loc12 = v50;
+		v50 = loc12;
+		v51 = loc10;
+		v52 = v50 > v51;
+		loc13 = v52;
+		v50 = loc12;
+		v51 = loc10;
+		v50 -= v51;
+		loc14 = v50;
+		v50 = loc13;
+		if (v50)
+			v50 = loc14;
+		else
+			v50.u0 = 0x00;
+		loc6 = v50;
+		v50 = arg2;
+		loc15 = v50;
+		v50 = loc15;
+		v51 = loc8;
+		v50 -= v51;
+		loc16 = v50;
+		v50 = loc16;
+		v51.u0 = 0x02;
+		v50 >>= v51;
+		loc17 = v50;
+		v50 = loc16;
+		v51.u0 = 0x00;
+		v52 = v50 > v51;
+		loc18 = v52;
+		v50 = loc18;
+		v50 = v50;
+		v50 = loc49;
+		v50 = *v50.u0;
+		loc19 = v50;
+		v50 = loc19;
+		v51.u0 = 0x30;
+		v50 += v51;
+		loc20 = v50;
+		v50 = loc20;
+		v50 = *v50.u0;
+		loc21 = v50;
+		v50 = loc49;
+		v51 = arg1;
+		v53 = loc17;
+		v54 = loc21;
+		v55.u0 = 0x01FF;
+		v54 &= v55;
+		v55.u0 = 0x0F20;
+		v54 += v55;
+	}
+	else
+	{
+		v50.u0 = 0x00;
+		loc7 = v50;
+	}
 }
 
 // 000FD67D: void fn000FD67D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FD67D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v211.u3 = g_t140030.u3;
+	loc215 = v211;
+	v211.u3 = g_t140030.u3;
+	v212.u0 = 0x10;
+	v211 += v212;
+	g_t140030.u3 = (word32 *) v211;
+	v211.u3 = g_t140030.u3;
+	v212.u3 = g_t140034.u3;
+	v213 = v211 >= v212;
+	if (v213)
+	{
+		v211.u0 = 0x10;
+		abortStackOverflow(v211);
+	}
+	v211 = loc215;
+	loc179 = v211;
+	v211 = arg6;
+	v212.u0 = 0x4C90;
+	v211 = fn000EA9F7(v211, v212);
+	loc190 = v211;
+	v211 = arg6;
+	v212.u0 = 0x4C98;
+	v211 = fn000EA9F7(v211, v212);
+	loc201 = v211;
+	v211 = loc201;
+	v211 = *v211.u0;
+	loc27 = v211;
+	v211 = loc27;
+	v212.u0 = 0x14;
+	v211 += v212;
+	loc38 = v211;
+	v211 = loc38;
+	v211 = *v211.u0;
+	loc49 = v211;
+	v211 = loc179;
+	v212 = loc201;
+	v214 = loc49;
+	v215 = 0x01FF;
+	v214 &= v215;
+	v215 = 0x0700;
+	v214.u3 += v215;
 }
 
 // 000FE09E: void fn000FE09E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn000FE09E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v143.u3 = g_t140030.u3;
+	loc147 = v143;
+	v143.u3 = g_t140030.u3;
+	v144.u0 = 0x10;
+	v143 += v144;
+	g_t140030.u3 = (word32 *) v143;
+	v143.u3 = g_t140030.u3;
+	v144.u3 = g_t140034.u3;
+	v145 = v143 >= v144;
+	if (v145)
+	{
+		v143.u0 = 0x10;
+		abortStackOverflow(v143);
+	}
+	v143 = loc147;
+	loc111 = v143;
+	v143 = arg6;
+	v144.u0 = 0x4C90;
+	v143 = fn000EA9F7(v143, v144);
+	loc122 = v143;
+	v143 = arg6;
+	v144.u0 = 0x4C98;
+	v143 = fn000EA9F7(v143, v144);
+	loc133 = v143;
+	v143 = loc133;
+	v143 = *v143.u0;
+	loc22 = v143;
+	v143 = loc22;
+	v144.u0 = 0x14;
+	v143 += v144;
+	loc33 = v143;
+	v143 = loc33;
+	v143 = *v143.u0;
+	loc44 = v143;
+	v143 = loc111;
+	v144 = loc133;
+	v146 = loc44;
+	v147 = 0x01FF;
+	v146 &= v147;
+	v147 = 0x0700;
+	v146.u3 += v147;
 }
 
 // 000FE711: void fn000FE711(Stack Eq_n arg0)
@@ -1077,55 +24025,2124 @@ Eq_n fn000FE728(Eq_n arg0)
 // 000FE733: Stack Eq_n fn000FE733(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE733(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v18.u0 = 15030;
+	v19.u0 = 0x3ABE;
+	v11 = fn001003A9(v11, v12, v14, v15, v16, v17, v18, v19);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 000FE7B7: Stack Eq_n fn000FE7B7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE7B7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v26.u3 = g_t140030.u3;
+	loc29 = v26;
+	v26.u3 = g_t140030.u3;
+	v27.u0 = 0x10;
+	v26 += v27;
+	g_t140030.u3 = (word32 *) v26;
+	v26.u3 = g_t140030.u3;
+	v27.u3 = g_t140034.u3;
+	v28 = v26 >= v27;
+	if (v28)
+	{
+		v26.u0 = 0x10;
+		abortStackOverflow(v26);
+	}
+	v26 = loc29;
+	v27.u0 = 0x0C;
+	v26 += v27;
+	loc7 = v26;
+	v26 = loc29;
+	v27.u0 = 0x08;
+	v26 += v27;
+	loc6 = v26;
+	v26 = loc29;
+	v27.u0 = 0x04;
+	v26 += v27;
+	loc24 = v26;
+	v26 = loc29;
+	loc25 = v26;
+	v26 = arg0;
+	v27.u0 = 0x08;
+	v26 += v27;
+	loc26 = v26;
+	v26 = loc26;
+	v26 = *v26.u0;
+	loc27 = v26;
+	v26 = loc27;
+	v27.u0 = 0x14;
+	v26 += v27;
+	loc8 = v26;
+	v26 = loc8;
+	v26 = *v26.u0;
+	loc9 = v26;
+	v26 = loc26;
+	v27 = loc9;
+	v29 = 0x01FF;
+	v27 &= v29;
+	v29 = 0x0B00;
+	v27.u0 = (bool) v27.u0 + v29;
 }
 
 // 000FE8BB: Stack Eq_n fn000FE8BB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE8BB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v16.u3 = g_t140030.u3;
+	loc19 = v16;
+	v16.u3 = g_t140030.u3;
+	v17.u0 = 0x10;
+	v16 += v17;
+	g_t140030.u3 = (word32 *) v16;
+	v16.u3 = g_t140030.u3;
+	v17.u3 = g_t140034.u3;
+	v18 = v16 >= v17;
+	if (v18)
+	{
+		v16.u0 = 0x10;
+		abortStackOverflow(v16);
+	}
+	v16 = loc19;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc6 = v16;
+	v16 = loc19;
+	v17.u0 = 0x04;
+	v16 += v17;
+	loc14 = v16;
+	v16 = loc19;
+	loc15 = v16;
+	v16 = arg3;
+	v16 = fn000E64CA(v16);
+	loc16 = v16;
+	v16 = loc14;
+	v17 = loc16;
+	*v16.u0 = v17;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x0164;
+	v17 = loc14;
+	v19.u0 = 0x4C70;
+	v16 = invoke_iii(v16, v17, v19);
+	loc17 = v16;
+	v16.u3 = g_t140048.u3;
+	loc8 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc8;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc9 = v16;
+	v16 = loc9;
+	if (!v16)
+	{
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = arg5;
+		v17.u0 = 0x18;
+		v16 += v17;
+		loc10 = v16;
+		v16 = arg2;
+		v16.u3 = *v16.u3;
+		loc11 = v16;
+		v16 = loc15;
+		v17 = loc11;
+		*v16.u3 = (word32) v17;
+		v16 = loc6;
+		v17 = loc15;
+		v17 = *v17.u0;
+		*v16.u3 = (word32) v17;
+		v16 = arg0;
+		v17 = loc10;
+		v19 = arg1;
+		v20 = loc6;
+		v21 = arg4;
+		v22 = loc17;
+		fn00100228(v16, v17, v19, v20, v21, v22);
+		v16 = arg1;
+		v16.u3 = *v16.u3;
+		loc7 = v16;
+		v16 = loc19;
+		g_t140030.u3 = (word32 *) v16;
+		v16 = loc7;
+		return v16;
+	}
+	else
+	{
+		v16 = ___cxa_find_matching_catch_n();
+		loc12 = v16;
+		v16.u3 = g_t140094.u3;
+		loc13 = v16;
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = loc12;
+		___resumeException(v16);
+		v16.u0 = 0x00;
+		return v16;
+	}
 }
 
 // 000FE973: Stack Eq_n fn000FE973(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FE973(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v16.u3 = g_t140030.u3;
+	loc19 = v16;
+	v16.u3 = g_t140030.u3;
+	v17.u0 = 0x10;
+	v16 += v17;
+	g_t140030.u3 = (word32 *) v16;
+	v16.u3 = g_t140030.u3;
+	v17.u3 = g_t140034.u3;
+	v18 = v16 >= v17;
+	if (v18)
+	{
+		v16.u0 = 0x10;
+		abortStackOverflow(v16);
+	}
+	v16 = loc19;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc6 = v16;
+	v16 = loc19;
+	v17.u0 = 0x04;
+	v16 += v17;
+	loc14 = v16;
+	v16 = loc19;
+	loc15 = v16;
+	v16 = arg3;
+	v16 = fn000E64CA(v16);
+	loc16 = v16;
+	v16 = loc14;
+	v17 = loc16;
+	*v16.u0 = v17;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x0164;
+	v17 = loc14;
+	v19.u0 = 0x4C70;
+	v16 = invoke_iii(v16, v17, v19);
+	loc17 = v16;
+	v16.u3 = g_t140048.u3;
+	loc8 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc8;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc9 = v16;
+	v16 = loc9;
+	if (!v16)
+	{
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = arg5;
+		v17.u0 = 0x10;
+		v16 += v17;
+		loc10 = v16;
+		v16 = arg2;
+		v16.u3 = *v16.u3;
+		loc11 = v16;
+		v16 = loc15;
+		v17 = loc11;
+		*v16.u3 = (word32) v17;
+		v16 = loc6;
+		v17 = loc15;
+		v17 = *v17.u0;
+		*v16.u3 = (word32) v17;
+		v16 = arg0;
+		v17 = loc10;
+		v19 = arg1;
+		v20 = loc6;
+		v21 = arg4;
+		v22 = loc17;
+		fn001002E5(v16, v17, v19, v20, v21, v22);
+		v16 = arg1;
+		v16.u3 = *v16.u3;
+		loc7 = v16;
+		v16 = loc19;
+		g_t140030.u3 = (word32 *) v16;
+		v16 = loc7;
+		return v16;
+	}
+	else
+	{
+		v16 = ___cxa_find_matching_catch_n();
+		loc12 = v16;
+		v16.u3 = g_t140094.u3;
+		loc13 = v16;
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = loc12;
+		___resumeException(v16);
+		v16.u0 = 0x00;
+		return v16;
+	}
 }
 
 // 000FEA2B: Stack Eq_n fn000FEA2B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn000FEA2B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v16.u3 = g_t140030.u3;
+	loc19 = v16;
+	v16.u3 = g_t140030.u3;
+	v17.u0 = 0x10;
+	v16 += v17;
+	g_t140030.u3 = (word32 *) v16;
+	v16.u3 = g_t140030.u3;
+	v17.u3 = g_t140034.u3;
+	v18 = v16 >= v17;
+	if (v18)
+	{
+		v16.u0 = 0x10;
+		abortStackOverflow(v16);
+	}
+	v16 = loc19;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc6 = v16;
+	v16 = loc19;
+	v17.u0 = 0x04;
+	v16 += v17;
+	loc14 = v16;
+	v16 = loc19;
+	loc15 = v16;
+	v16 = arg3;
+	v16 = fn000E64CA(v16);
+	loc16 = v16;
+	v16 = loc14;
+	v17 = loc16;
+	*v16.u0 = v17;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x0164;
+	v17 = loc14;
+	v19.u0 = 0x4C70;
+	v16 = invoke_iii(v16, v17, v19);
+	loc17 = v16;
+	v16.u3 = g_t140048.u3;
+	loc8 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc8;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc9 = v16;
+	v16 = loc9;
+	if (!v16)
+	{
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = arg5;
+		v17.u0 = 0x14;
+		v16 += v17;
+		loc10 = v16;
+		v16 = arg2;
+		v16.u3 = *v16.u3;
+		loc11 = v16;
+		v16 = loc15;
+		v17 = loc11;
+		*v16.u3 = (word32) v17;
+		v16 = loc6;
+		v17 = loc15;
+		v17 = *v17.u0;
+		*v16.u3 = (word32) v17;
+		v16 = arg0;
+		v17 = loc10;
+		v19 = arg1;
+		v20 = loc6;
+		v21 = arg4;
+		v22 = loc17;
+		fn0010195D(v16, v17, v19, v20, v21, v22);
+		v16 = arg1;
+		v16.u3 = *v16.u3;
+		loc7 = v16;
+		v16 = loc19;
+		g_t140030.u3 = (word32 *) v16;
+		v16 = loc7;
+		return v16;
+	}
+	else
+	{
+		v16 = ___cxa_find_matching_catch_n();
+		loc12 = v16;
+		v16.u3 = g_t140094.u3;
+		loc13 = v16;
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = loc12;
+		___resumeException(v16);
+		v16.u0 = 0x00;
+		return v16;
+	}
 }
 
 // 000FEAE3: Stack Eq_n fn000FEAE3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn000FEAE3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
+	v162.u3 = g_t140030.u3;
+	loc167 = v162;
+	v162.u3 = g_t140030.u3;
+	v163.u0 = 0x0100;
+	v162 += v163;
+	g_t140030.u3 = (word32 *) v162;
+	v162.u3 = g_t140030.u3;
+	v163.u3 = g_t140034.u3;
+	v164 = v162 >= v163;
+	if (v164)
+	{
+		v162.u0 = 0x0100;
+		abortStackOverflow(v162);
+	}
+	v162 = loc167;
+	v163.u0 = 0xF8;
+	v162 += v163;
+	loc32 = v162;
+	v162 = loc167;
+	v163.u0 = 244;
+	v162 += v163;
+	loc30 = v162;
+	v162 = loc167;
+	v163.u0 = 0xF0;
+	v162 += v163;
+	loc29 = v162;
+	v162 = loc167;
+	v163.u0 = 0xEC;
+	v162 += v163;
+	loc28 = v162;
+	v162 = loc167;
+	v163.u0 = 232;
+	v162 += v163;
+	loc27 = v162;
+	v162 = loc167;
+	v163.u0 = 228;
+	v162 += v163;
+	loc26 = v162;
+	v162 = loc167;
+	v163.u0 = 0xE0;
+	v162 += v163;
+	loc25 = v162;
+	v162 = loc167;
+	v163.u0 = 220;
+	v162 += v163;
+	loc24 = v162;
+	v162 = loc167;
+	v163.u0 = 0xD8;
+	v162 += v163;
+	loc23 = v162;
+	v162 = loc167;
+	v163.u0 = 212;
+	v162 += v163;
+	loc22 = v162;
+	v162 = loc167;
+	v163.u0 = 0xD0;
+	v162 += v163;
+	loc21 = v162;
+	v162 = loc167;
+	v163.u0 = 0xCC;
+	v162 += v163;
+	loc19 = v162;
+	v162 = loc167;
+	v163.u0 = 200;
+	v162 += v163;
+	loc18 = v162;
+	v162 = loc167;
+	v163.u0 = 0xC4;
+	v162 += v163;
+	loc17 = v162;
+	v162 = loc167;
+	v163.u0 = 0xC0;
+	v162 += v163;
+	loc16 = v162;
+	v162 = loc167;
+	v163.u0 = 188;
+	v162 += v163;
+	loc15 = v162;
+	v162 = loc167;
+	v163.u0 = 0xB8;
+	v162 += v163;
+	loc14 = v162;
+	v162 = loc167;
+	v163.u0 = 0xB4;
+	v162 += v163;
+	loc13 = v162;
+	v162 = loc167;
+	v163.u0 = 0xB0;
+	v162 += v163;
+	loc12 = v162;
+	v162 = loc167;
+	v163.u0 = 0xAC;
+	v162 += v163;
+	loc11 = v162;
+	v162 = loc167;
+	v163.u0 = 0xA8;
+	v162 += v163;
+	loc10 = v162;
+	v162 = loc167;
+	v163.u0 = 0xA4;
+	v162 += v163;
+	loc38 = v162;
+	v162 = loc167;
+	v163.u0 = 0xA0;
+	v162 += v163;
+	loc37 = v162;
+	v162 = loc167;
+	v163.u0 = 0x9C;
+	v162 += v163;
+	loc36 = v162;
+	v162 = loc167;
+	v163.u0 = 0x98;
+	v162 += v163;
+	loc35 = v162;
+	v162 = loc167;
+	v163.u0 = 0x94;
+	v162 += v163;
+	loc34 = v162;
+	v162 = loc167;
+	v163.u0 = 0x90;
+	v162 += v163;
+	loc33 = v162;
+	v162 = loc167;
+	v163.u0 = 0x8C;
+	v162 += v163;
+	loc31 = v162;
+	v162 = loc167;
+	v163.u0 = 0x88;
+	v162 += v163;
+	loc20 = v162;
+	v162 = loc167;
+	v163.u0 = 0x84;
+	v162 += v163;
+	loc9 = v162;
+	v162 = loc167;
+	v163.u0 = 0x80;
+	v162 += v163;
+	loc8 = v162;
+	v162 = loc167;
+	v163.u0 = 0x7C;
+	v162 += v163;
+	loc144 = v162;
+	v162 = loc167;
+	v163.u0 = 0x78;
+	v162 += v163;
+	loc155 = v162;
+	v162 = loc167;
+	v163.u0 = 116;
+	v162 += v163;
+	loc41 = v162;
+	v162 = loc167;
+	v163.u0 = 0x70;
+	v162 += v163;
+	loc52 = v162;
+	v162 = loc167;
+	v163.u0 = 0x6C;
+	v162 += v163;
+	loc63 = v162;
+	v162 = loc167;
+	v163.u0 = 0x68;
+	v162 += v163;
+	loc74 = v162;
+	v162 = loc167;
+	v163.u0 = 100;
+	v162 += v163;
+	loc78 = v162;
+	v162 = loc167;
+	v163.u0 = 0x60;
+	v162 += v163;
+	loc79 = v162;
+	v162 = loc167;
+	v163.u0 = 0x5C;
+	v162 += v163;
+	loc80 = v162;
+	v162 = loc167;
+	v163.u0 = 88;
+	v162 += v163;
+	loc81 = v162;
+	v162 = loc167;
+	v163.u0 = 0x54;
+	v162 += v163;
+	loc82 = v162;
+	v162 = loc167;
+	v163.u0 = 0x50;
+	v162 += v163;
+	loc83 = v162;
+	v162 = loc167;
+	v163.u0 = 0x4C;
+	v162 += v163;
+	loc84 = v162;
+	v162 = loc167;
+	v163.u0 = 0x48;
+	v162 += v163;
+	loc85 = v162;
+	v162 = loc167;
+	v163.u0 = 0x44;
+	v162 += v163;
+	loc86 = v162;
+	v162 = loc167;
+	v163.u0 = 0x40;
+	v162 += v163;
+	loc87 = v162;
+	v162 = loc167;
+	v163.u0 = 0x3C;
+	v162 += v163;
+	loc88 = v162;
+	v162 = loc167;
+	v163.u0 = 0x38;
+	v162 += v163;
+	loc89 = v162;
+	v162 = loc167;
+	v163.u0 = 0x34;
+	v162 += v163;
+	loc90 = v162;
+	v162 = loc167;
+	v163.u0 = 0x30;
+	v162 += v163;
+	loc91 = v162;
+	v162 = loc167;
+	v163.u0 = 44;
+	v162 += v163;
+	loc92 = v162;
+	v162 = loc167;
+	v163.u0 = 0x28;
+	v162 += v163;
+	loc93 = v162;
+	v162 = loc167;
+	v163.u0 = 0x24;
+	v162 += v163;
+	loc94 = v162;
+	v162 = loc167;
+	v163.u0 = 0x20;
+	v162 += v163;
+	loc95 = v162;
+	v162 = loc167;
+	v163.u0 = 0x1C;
+	v162 += v163;
+	loc96 = v162;
+	v162 = loc167;
+	v163.u0 = 0x18;
+	v162 += v163;
+	loc97 = v162;
+	v162 = loc167;
+	v163.u0 = 0x14;
+	v162 += v163;
+	loc98 = v162;
+	v162 = loc167;
+	v163.u0 = 0x10;
+	v162 += v163;
+	loc99 = v162;
+	v162 = loc167;
+	v163.u0 = 0x0C;
+	v162 += v163;
+	loc100 = v162;
+	v162 = loc167;
+	v163.u0 = 0x08;
+	v162 += v163;
+	loc101 = v162;
+	v162 = loc167;
+	v163.u0 = 0x04;
+	v162 += v163;
+	loc102 = v162;
+	v162 = loc167;
+	loc103 = v162;
+	v162 = arg4;
+	v163.u0 = 0x00;
+	*v162.u0 = v163;
+	v162 = arg3;
+	v162 = fn000E64CA(v162);
+	loc104 = v162;
+	v162 = loc144;
+	v163 = loc104;
+	*v162.u0 = v163;
+	v162.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v162;
+	v162.u0 = 0x0164;
+	v163 = loc144;
+	v165.u0 = 0x4C70;
+	v162 = invoke_iii(v162, v163, v165);
+	loc105 = v162;
+	v162.u3 = g_t140048.u3;
+	loc106 = v162;
+	v162.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v162;
+	v162 = loc106;
+	v163.u0 = 0x01;
+	v162 &= v163;
+	loc107 = v162;
+	v162 = loc107;
+	if (v162)
+	{
+		v162 = ___cxa_find_matching_catch_n();
+		loc109 = v162;
+		v162.u3 = g_t140094.u3;
+		loc110 = v162;
+		v162 = loc104;
+		v162 = fn0011B43F(v162);
+		v162 = loc109;
+		___resumeException(v162);
+	}
+	v162 = loc104;
+	v162 = fn0011B43F(v162);
+	v162 = arg6;
+	v163.u0 = 0x18;
+	v162 <<= v163;
+	v163.u0 = 0x18;
+	v162 >>= v163;
+	loc108 = v162;
+	v162 = loc108;
+	v163.u0 = 0x25;
+	v162 -= v163;
+	switch (v162)
+	{
+	case 0x00:
+		break;
+	case 0x01:
+		break;
+	case 0x02:
+		goto l000FEE5D;
+	case 0x03:
+l000FEE5D:
+		goto l000FEE5F;
+	case 0x04:
+l000FEE5F:
+		v162 = arg5;
+		v163.u0 = 0x10;
+		v162 += v163;
+		loc113 = v162;
+		v162 = arg2;
+		v162 = *v162.u0;
+		loc114 = v162;
+		v162 = loc41;
+		v163 = loc114;
+		*v162.u0 = v163;
+		v162 = loc9;
+		v163 = loc41;
+		v163 = *v163.u0;
+		*v162.u0 = v163;
+		v162 = arg0;
+		v163 = loc113;
+		v165 = arg1;
+		v166 = loc9;
+		v167 = arg4;
+		v168 = loc105;
+		fn001002E5(v162, v163, v165, v166, v167, v168);
+		v162.u0 = 0x1C;
+		loc166 = v162;
+	case 0x05:
+		v162 = arg0;
+		v163.u0 = 0x08;
+		v162 += v163;
+		loc115 = v162;
+		v162 = loc115;
+		v162 = *v162.u0;
+		loc116 = v162;
+		v162 = loc116;
+		v163.u0 = 0x0C;
+		v162 += v163;
+		loc117 = v162;
+		v162 = loc117;
+		v162 = *v162.u0;
+		loc118 = v162;
+		v162 = loc115;
+		v163 = loc118;
+		v165.u0 = 0x01FF;
+		v163 &= v165;
+		v165.u0 = 0x0B00;
+		v163 += v165;
+	}
+	v162 = arg5;
+	v163.u0 = 0x18;
+	v162 += v163;
+	loc111 = v162;
+	v162 = arg2;
+	v162.u3 = *v162.u3;
+	loc112 = v162;
+	v162 = loc155;
+	v163 = loc112;
+	*v162.u3 = (word32) v163;
+	v162 = loc8;
+	v163 = loc155;
+	v163 = *v163.u0;
+	*v162.u3 = (word32) v163;
+	v162 = arg0;
+	v163 = loc111;
+	v165 = arg1;
+	v166 = loc8;
+	v167 = arg4;
+	v168 = loc105;
+	fn00100228(v162, v163, v165, v166, v167, v168);
+	v162.u0 = 0x1C;
+	loc166 = v162;
 }
 
 // 000FF5D5: Stack Eq_n fn000FF5D5(Stack Eq_n arg0)
 Eq_n fn000FF5D5(Eq_n arg0)
 {
+	v50.u3 = g_t140030.u3;
+	loc48 = v50;
+	v50.u0 = 0x43D8;
+	v51 = *v50.u0;
+	v50.u3 = (word32) v51;
+	loc2 = v50;
+	v50 = loc2;
+	v52.u0 = 0x18;
+	v50 <<= v52;
+	v52.u0 = 0x18;
+	v50 >>= v52;
+	v52.u0 = 0x00;
+	v53 = v50 == v52;
+	loc13 = v53;
+	v50 = loc13;
+	if (v50)
+	{
+		v50.u0 = 0x43D8;
+		v50 = fn0011EE46(v50);
+		loc24 = v50;
+		v50 = loc24;
+		v52.u0 = 0x00;
+		v53 = v50 == v52;
+		loc35 = v53;
+		v50 = loc35;
+		v53 = v50 == 0x00;
+		if (v53)
+		{
+			v50.u0 = 0x43E0;
+			v54 = *v50.u0;
+			v50.u3 = (word32) v54;
+			loc41 = v50;
+			v50 = loc41;
+			v52.u0 = 0x18;
+			v50 <<= v52;
+			v52.u0 = 0x18;
+			v50 >>= v52;
+			v52.u0 = 0x00;
+			v53 = v50 == v52;
+			loc42 = v53;
+			v50 = loc42;
+			if (v50)
+			{
+				v50.u0 = 0x43E0;
+				v50 = fn0011EE46(v50);
+				loc43 = v50;
+				v50 = loc43;
+				v52.u0 = 0x00;
+				v53 = v50 == v52;
+				loc44 = v53;
+				v50 = loc44;
+				v53 = v50 == 0x00;
+				if (v53)
+				{
+					while (true)
+					{
+						v50.u0 = 20272;
+						loc45 = v50;
+						while (true)
+						{
+							v50 = loc45;
+							v55.u0 = 0x00;
+							*v50.u0 = v55;
+							v50 = loc45;
+							v52.u0 = 0x08;
+							v50 += v52;
+							v52.u0 = 0x00;
+							*v50.u0 = v52;
+							v50.u0 = 0x00;
+							loc1 = v50;
+							v50 = loc1;
+							v52.u0 = 0x03;
+							v53 = v50 == v52;
+							loc46 = v53;
+							v50 = loc46;
+							if (v50)
+								break;
+							v50 = loc45;
+							v52 = loc1;
+							v56 = 0x02;
+							v52 <<= v56;
+							v50 += v52;
+							loc3 = v50;
+							v50 = loc3;
+							v52.u0 = 0x00;
+							*v50.u0 = v52;
+							v50 = loc1;
+							v52.u0 = 0x01;
+							v50 += v52;
+							loc4 = v50;
+							v50 = loc4;
+							loc1 = v50;
+						}
+						v50 = loc45;
+						v52.u0 = 0x0C;
+						v50 += v52;
+						loc5 = v50;
+						v50 = loc5;
+						v52.u0 = 20440;
+						v53 = v50 == v52;
+						loc6 = v53;
+						v50 = loc6;
+						if (v50)
+							break;
+						v50 = loc5;
+						loc45 = v50;
+					}
+					v50.u0 = 0x0195;
+					v52.u0 = 0x00;
+					v56 = g_dw140044;
+					v50 = ___cxa_atexit(v50, v52, v56);
+				}
+			}
+			v50.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v50;
+			v50.u0 = 0x0196;
+			v52.u0 = 20272;
+			v56 = 0x3A39;
+			v50 = invoke_iii(v50, v52, v56);
+			v50.u3 = g_t140048.u3;
+			loc7 = v50;
+			v50.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v50;
+			v50 = loc7;
+			v52.u0 = 0x01;
+			v50 &= v52;
+			loc8 = v50;
+			v50 = loc8;
+			v53 = v50 == 0x00;
+			if (v53)
+			{
+				v50.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v50;
+				v50.u0 = 0x0196;
+				v52.u0 = 20284;
+				v56 = 0x3A40;
+				v50 = invoke_iii(v50, v52, v56);
+				v50.u3 = g_t140048.u3;
+				loc9 = v50;
+				v50.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v50;
+				v50 = loc9;
+				v52.u0 = 0x01;
+				v50 &= v52;
+				loc10 = v50;
+				v50 = loc10;
+				v53 = v50 == 0x00;
+				if (v53)
+				{
+					v50.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v50;
+					v50.u0 = 0x0196;
+					v52.u0 = 0x4F48;
+					v56 = 14919;
+					v50 = invoke_iii(v50, v52, v56);
+					v50.u3 = g_t140048.u3;
+					loc11 = v50;
+					v50.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v50;
+					v50 = loc11;
+					v52.u0 = 0x01;
+					v50 &= v52;
+					loc12 = v50;
+					v50 = loc12;
+					v53 = v50 == 0x00;
+					if (v53)
+					{
+						v50.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v50;
+						v50.u0 = 0x0196;
+						v52.u0 = 0x4F54;
+						v56 = 0x3A4F;
+						v50 = invoke_iii(v50, v52, v56);
+						v50.u3 = g_t140048.u3;
+						loc14 = v50;
+						v50.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v50;
+						v50 = loc14;
+						v52.u0 = 0x01;
+						v50 &= v52;
+						loc15 = v50;
+						v50 = loc15;
+						v53 = v50 == 0x00;
+						if (v53)
+						{
+							v50.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v50;
+							v50.u0 = 0x0196;
+							v52.u0 = 20320;
+							v56 = 0x3A59;
+							v50 = invoke_iii(v50, v52, v56);
+							v50.u3 = g_t140048.u3;
+							loc16 = v50;
+							v50.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v50;
+							v50 = loc16;
+							v52.u0 = 0x01;
+							v50 &= v52;
+							loc17 = v50;
+							v50 = loc17;
+							v53 = v50 == 0x00;
+							if (v53)
+							{
+								v50.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v50;
+								v50.u0 = 0x0196;
+								v52.u0 = 20332;
+								v56 = 14946;
+								v50 = invoke_iii(v50, v52, v56);
+								v50.u3 = g_t140048.u3;
+								loc18 = v50;
+								v50.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v50;
+								v50 = loc18;
+								v52.u0 = 0x01;
+								v50 &= v52;
+								loc19 = v50;
+								v50 = loc19;
+								v53 = v50 == 0x00;
+								if (v53)
+								{
+									v50.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v50;
+									v50.u0 = 0x0196;
+									v52.u0 = 20344;
+									v56 = 0x3A69;
+									v50 = invoke_iii(v50, v52, v56);
+									v50.u3 = g_t140048.u3;
+									loc20 = v50;
+									v50.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v50;
+									v50 = loc20;
+									v52.u0 = 0x01;
+									v50 &= v52;
+									loc21 = v50;
+									v50 = loc21;
+									v53 = v50 == 0x00;
+									if (v53)
+									{
+										v50.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v50;
+										v50.u0 = 0x0196;
+										v52.u0 = 0x4F84;
+										v56 = 0x3A72;
+										v50 = invoke_iii(v50, v52, v56);
+										v50.u3 = g_t140048.u3;
+										loc22 = v50;
+										v50.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v50;
+										v50 = loc22;
+										v52.u0 = 0x01;
+										v50 &= v52;
+										loc23 = v50;
+										v50 = loc23;
+										v53 = v50 == 0x00;
+										if (v53)
+										{
+											v50.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v50;
+											v50.u0 = 0x0196;
+											v52.u0 = 0x4F90;
+											v56 = 14966;
+											v50 = invoke_iii(v50, v52, v56);
+											v50.u3 = g_t140048.u3;
+											loc25 = v50;
+											v50.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v50;
+											v50 = loc25;
+											v52.u0 = 0x01;
+											v50 &= v52;
+											loc26 = v50;
+											v50 = loc26;
+											v53 = v50 == 0x00;
+											if (v53)
+											{
+												v50.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v50;
+												v50.u0 = 0x0196;
+												v52.u0 = 20380;
+												v56 = 0x3A7A;
+												v50 = invoke_iii(v50, v52, v56);
+												v50.u3 = g_t140048.u3;
+												loc27 = v50;
+												v50.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v50;
+												v50 = loc27;
+												v52.u0 = 0x01;
+												v50 &= v52;
+												loc28 = v50;
+												v50 = loc28;
+												v53 = v50 == 0x00;
+												if (v53)
+												{
+													v50.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v50;
+													v50.u0 = 0x0196;
+													v52.u0 = 20392;
+													v56 = 14974;
+													v50 = invoke_iii(v50, v52, v56);
+													v50.u3 = g_t140048.u3;
+													loc29 = v50;
+													v50.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v50;
+													v50 = loc29;
+													v52.u0 = 0x01;
+													v50 &= v52;
+													loc30 = v50;
+													v50 = loc30;
+													v53 = v50 == 0x00;
+													if (v53)
+													{
+														v50.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v50;
+														v50.u0 = 0x0196;
+														v52.u0 = 20404;
+														v56 = 0x3A82;
+														v50 = invoke_iii(v50, v52, v56);
+														v50.u3 = g_t140048.u3;
+														loc31 = v50;
+														v50.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v50;
+														v50 = loc31;
+														v52.u0 = 0x01;
+														v50 &= v52;
+														loc32 = v50;
+														v50 = loc32;
+														v53 = v50 == 0x00;
+														if (v53)
+														{
+															v50.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v50;
+															v50.u0 = 0x0196;
+															v52.u0 = 0x4FC0;
+															v56 = 0x3A86;
+															v50 = invoke_iii(v50, v52, v56);
+															v50.u3 = g_t140048.u3;
+															loc33 = v50;
+															v50.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v50;
+															v50 = loc33;
+															v52.u0 = 0x01;
+															v50 &= v52;
+															loc34 = v50;
+															v50 = loc34;
+															v53 = v50 == 0x00;
+															if (v53)
+															{
+																v50.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v50;
+																v50.u0 = 0x0196;
+																v52.u0 = 0x4FCC;
+																v56 = 0x3A8A;
+																v50 = invoke_iii(v50, v52, v56);
+																v50.u3 = g_t140048.u3;
+																loc36 = v50;
+																v50.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v50;
+																v50 = loc36;
+																v52.u0 = 0x01;
+																v50 &= v52;
+																loc37 = v50;
+																v50 = loc37;
+																v53 = v50 == 0x00;
+																if (v53)
+																{
+																	v50.u0 = 20440;
+																	v52.u0 = 20272;
+																	*v50.u0 = v52;
+																	goto l000FF8F5;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			v50 = ___cxa_find_matching_catch_n();
+			loc39 = v50;
+			v50.u3 = g_t140094.u3;
+			loc40 = v50;
+			v50 = loc39;
+			___resumeException(v50);
+		}
+	}
+l000FF8F5:
+	v50.u0 = 20440;
+	v50 = *v50.u0;
+	loc38 = v50;
+	v50 = loc38;
+	return v50;
 }
 
 // 000FF904: Stack Eq_n fn000FF904(Stack Eq_n arg0)
 Eq_n fn000FF904(Eq_n arg0)
 {
+	v70.u3 = g_t140030.u3;
+	loc68 = v70;
+	v70.u0 = 0x43C8;
+	v71 = *v70.u0;
+	v70.u3 = (word32) v71;
+	loc2 = v70;
+	v70 = loc2;
+	v72.u0 = 0x18;
+	v70 <<= v72;
+	v72.u0 = 0x18;
+	v70 >>= v72;
+	v72.u0 = 0x00;
+	v73 = v70 == v72;
+	loc13 = v73;
+	v70 = loc13;
+	if (!v70)
+	{
+l000FFDB6:
+		v70.u0 = 20268;
+		v70 = *v70.u0;
+		loc60 = v70;
+		v70 = loc60;
+		return v70;
+	}
+	v70.u0 = 0x43C8;
+	v70 = fn0011EE46(v70);
+	loc24 = v70;
+	v70 = loc24;
+	v72.u0 = 0x00;
+	v73 = v70 == v72;
+	loc35 = v73;
+	v70 = loc35;
+	v73 = v70 == 0x00;
+	if (!v73)
+	{
+l000FFDB5:
+		goto l000FFDB6;
+	}
+	v70.u0 = 0x43D0;
+	v74 = *v70.u0;
+	v70.u3 = (word32) v74;
+	loc46 = v70;
+	v70 = loc46;
+	v72.u0 = 0x18;
+	v70 <<= v72;
+	v72.u0 = 0x18;
+	v70 >>= v72;
+	v72.u0 = 0x00;
+	v73 = v70 == v72;
+	loc57 = v73;
+	v70 = loc57;
+	if (v70)
+	{
+		v70.u0 = 0x43D0;
+		v70 = fn0011EE46(v70);
+		loc63 = v70;
+		v70 = loc63;
+		v72.u0 = 0x00;
+		v73 = v70 == v72;
+		loc64 = v73;
+		v70 = loc64;
+		v73 = v70 == 0x00;
+		if (v73)
+		{
+			while (true)
+			{
+				v70.u0 = 0x4E0C;
+				loc65 = v70;
+				while (true)
+				{
+					v70 = loc65;
+					v75.u0 = 0x00;
+					*v70.u0 = v75;
+					v70 = loc65;
+					v72.u0 = 0x08;
+					v70 += v72;
+					v72.u0 = 0x00;
+					*v70.u0 = v72;
+					v70.u0 = 0x00;
+					loc1 = v70;
+					v70 = loc1;
+					v72.u0 = 0x03;
+					v73 = v70 == v72;
+					loc66 = v73;
+					v70 = loc66;
+					if (v70)
+						break;
+					v70 = loc65;
+					v72 = loc1;
+					v76 = 0x02;
+					v72 <<= v76;
+					v70 += v72;
+					loc3 = v70;
+					v70 = loc3;
+					v72.u0 = 0x00;
+					*v70.u0 = v72;
+					v70 = loc1;
+					v72.u0 = 0x01;
+					v70 += v72;
+					loc4 = v70;
+					v70 = loc4;
+					loc1 = v70;
+				}
+				v70 = loc65;
+				v72.u0 = 0x0C;
+				v70 += v72;
+				loc5 = v70;
+				v70 = loc5;
+				v72.u0 = 20268;
+				v73 = v70 == v72;
+				loc6 = v73;
+				v70 = loc6;
+				if (v70)
+					break;
+				v70 = loc5;
+				loc65 = v70;
+			}
+			v70.u0 = 0x0197;
+			v72.u0 = 0x00;
+			v76 = g_dw140044;
+			v70 = ___cxa_atexit(v70, v72, v76);
+		}
+	}
+	v70.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v70;
+	v70.u0 = 0x0196;
+	v72.u0 = 0x4E0C;
+	v76 = 14775;
+	v70 = invoke_iii(v70, v72, v76);
+	v70.u3 = g_t140048.u3;
+	loc7 = v70;
+	v70.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v70;
+	v70 = loc7;
+	v72.u0 = 0x01;
+	v70 &= v72;
+	loc8 = v70;
+	v70 = loc8;
+	v73 = v70 == 0x00;
+	if (v73)
+	{
+		v70.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v70;
+		v70.u0 = 0x0196;
+		v72.u0 = 19992;
+		v76 = 0x39BF;
+		v70 = invoke_iii(v70, v72, v76);
+		v70.u3 = g_t140048.u3;
+		loc9 = v70;
+		v70.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v70;
+		v70 = loc9;
+		v72.u0 = 0x01;
+		v70 &= v72;
+		loc10 = v70;
+		v70 = loc10;
+		v73 = v70 == 0x00;
+		if (v73)
+		{
+			v70.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v70;
+			v70.u0 = 0x0196;
+			v72.u0 = 20004;
+			v76 = 0x39C8;
+			v70 = invoke_iii(v70, v72, v76);
+			v70.u3 = g_t140048.u3;
+			loc11 = v70;
+			v70.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v70;
+			v70 = loc11;
+			v72.u0 = 0x01;
+			v70 &= v72;
+			loc12 = v70;
+			v70 = loc12;
+			v73 = v70 == 0x00;
+			if (v73)
+			{
+				v70.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v70;
+				v70.u0 = 0x0196;
+				v72.u0 = 0x4E30;
+				v76 = 0x39CE;
+				v70 = invoke_iii(v70, v72, v76);
+				v70.u3 = g_t140048.u3;
+				loc14 = v70;
+				v70.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v70;
+				v70 = loc14;
+				v72.u0 = 0x01;
+				v70 &= v72;
+				loc15 = v70;
+				v70 = loc15;
+				v73 = v70 == 0x00;
+				if (v73)
+				{
+					v70.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v70;
+					v70.u0 = 0x0196;
+					v72.u0 = 20028;
+					v76 = 14804;
+					v70 = invoke_iii(v70, v72, v76);
+					v70.u3 = g_t140048.u3;
+					loc16 = v70;
+					v70.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v70;
+					v70 = loc16;
+					v72.u0 = 0x01;
+					v70 &= v72;
+					loc17 = v70;
+					v70 = loc17;
+					v73 = v70 == 0x00;
+					if (v73)
+					{
+						v70.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v70;
+						v70.u0 = 0x0196;
+						v72.u0 = 20040;
+						v76 = 14808;
+						v70 = invoke_iii(v70, v72, v76);
+						v70.u3 = g_t140048.u3;
+						loc18 = v70;
+						v70.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v70;
+						v70 = loc18;
+						v72.u0 = 0x01;
+						v70 &= v72;
+						loc19 = v70;
+						v70 = loc19;
+						v73 = v70 == 0x00;
+						if (v73)
+						{
+							v70.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v70;
+							v70.u0 = 0x0196;
+							v72.u0 = 20052;
+							v76 = 0x39DD;
+							v70 = invoke_iii(v70, v72, v76);
+							v70.u3 = g_t140048.u3;
+							loc20 = v70;
+							v70.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v70;
+							v70 = loc20;
+							v72.u0 = 0x01;
+							v70 &= v72;
+							loc21 = v70;
+							v70 = loc21;
+							v73 = v70 == 0x00;
+							if (v73)
+							{
+								v70.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v70;
+								v70.u0 = 0x0196;
+								v72.u0 = 0x4E60;
+								v76 = 14818;
+								v70 = invoke_iii(v70, v72, v76);
+								v70.u3 = g_t140048.u3;
+								loc22 = v70;
+								v70.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v70;
+								v70 = loc22;
+								v72.u0 = 0x01;
+								v70 &= v72;
+								loc23 = v70;
+								v70 = loc23;
+								v73 = v70 == 0x00;
+								if (v73)
+								{
+									v70.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v70;
+									v70.u0 = 0x0196;
+									v72.u0 = 20076;
+									v76 = 0x39E9;
+									v70 = invoke_iii(v70, v72, v76);
+									v70.u3 = g_t140048.u3;
+									loc25 = v70;
+									v70.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v70;
+									v70 = loc25;
+									v72.u0 = 0x01;
+									v70 &= v72;
+									loc26 = v70;
+									v70 = loc26;
+									v73 = v70 == 0x00;
+									if (v73)
+									{
+										v70.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v70;
+										v70.u0 = 0x0196;
+										v72.u0 = 20088;
+										v76 = 0x39F3;
+										v70 = invoke_iii(v70, v72, v76);
+										v70.u3 = g_t140048.u3;
+										loc27 = v70;
+										v70.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v70;
+										v70 = loc27;
+										v72.u0 = 0x01;
+										v70 &= v72;
+										loc28 = v70;
+										v70 = loc28;
+										v73 = v70 == 0x00;
+										if (v73)
+										{
+											v70.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v70;
+											v70.u0 = 0x0196;
+											v72.u0 = 20100;
+											v76 = 14843;
+											v70 = invoke_iii(v70, v72, v76);
+											v70.u3 = g_t140048.u3;
+											loc29 = v70;
+											v70.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v70;
+											v70 = loc29;
+											v72.u0 = 0x01;
+											v70 &= v72;
+											loc30 = v70;
+											v70 = loc30;
+											v73 = v70 == 0x00;
+											if (v73)
+											{
+												v70.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v70;
+												v70.u0 = 0x0196;
+												v72.u0 = 20112;
+												v76 = 0x3A04;
+												v70 = invoke_iii(v70, v72, v76);
+												v70.u3 = g_t140048.u3;
+												loc31 = v70;
+												v70.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v70;
+												v70 = loc31;
+												v72.u0 = 0x01;
+												v70 &= v72;
+												loc32 = v70;
+												v70 = loc32;
+												v73 = v70 == 0x00;
+												if (v73)
+												{
+													v70.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v70;
+													v70.u0 = 0x0196;
+													v72.u0 = 20124;
+													v76 = 0x3A0D;
+													v70 = invoke_iii(v70, v72, v76);
+													v70.u3 = g_t140048.u3;
+													loc33 = v70;
+													v70.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v70;
+													v70 = loc33;
+													v72.u0 = 0x01;
+													v70 &= v72;
+													loc34 = v70;
+													v70 = loc34;
+													v73 = v70 == 0x00;
+													if (v73)
+													{
+														v70.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v70;
+														v70.u0 = 0x0196;
+														v72.u0 = 0x4EA8;
+														v76 = 0x3A11;
+														v70 = invoke_iii(v70, v72, v76);
+														v70.u3 = g_t140048.u3;
+														loc36 = v70;
+														v70.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v70;
+														v70 = loc36;
+														v72.u0 = 0x01;
+														v70 &= v72;
+														loc37 = v70;
+														v70 = loc37;
+														v73 = v70 == 0x00;
+														if (v73)
+														{
+															v70.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v70;
+															v70.u0 = 0x0196;
+															v72.u0 = 0x4EB4;
+															v76 = 0x3A15;
+															v70 = invoke_iii(v70, v72, v76);
+															v70.u3 = g_t140048.u3;
+															loc38 = v70;
+															v70.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v70;
+															v70 = loc38;
+															v72.u0 = 0x01;
+															v70 &= v72;
+															loc39 = v70;
+															v70 = loc39;
+															v73 = v70 == 0x00;
+															if (v73)
+															{
+																v70.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v70;
+																v70.u0 = 0x0196;
+																v72.u0 = 0x4EC0;
+																v76 = 0x3A19;
+																v70 = invoke_iii(v70, v72, v76);
+																v70.u3 = g_t140048.u3;
+																loc40 = v70;
+																v70.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v70;
+																v70 = loc40;
+																v72.u0 = 0x01;
+																v70 &= v72;
+																loc41 = v70;
+																v70 = loc41;
+																if (!v70)
+																{
+																	v70.u0 = 0x00;
+																	g_t140048.u3 = (word32 *) v70;
+																	v70.u0 = 0x0196;
+																	v72.u0 = 0x4ECC;
+																	v76 = 14804;
+																	v70 = invoke_iii(v70, v72, v76);
+																	v70.u3 = g_t140048.u3;
+																	loc42 = v70;
+																	v70.u0 = 0x00;
+																	g_t140048.u3 = (word32 *) v70;
+																	v70 = loc42;
+																	v72.u0 = 0x01;
+																	v70 &= v72;
+																	loc43 = v70;
+																	v70 = loc43;
+																	if (!v70)
+																	{
+																		v70.u0 = 0x00;
+																		g_t140048.u3 = (word32 *) v70;
+																		v70.u0 = 0x0196;
+																		v72.u0 = 0x4ED8;
+																		v76 = 14877;
+																		v70 = invoke_iii(v70, v72, v76);
+																		v70.u3 = g_t140048.u3;
+																		loc44 = v70;
+																		v70.u0 = 0x00;
+																		g_t140048.u3 = (word32 *) v70;
+																		v70 = loc44;
+																		v72.u0 = 0x01;
+																		v70 &= v72;
+																		loc45 = v70;
+																		v70 = loc45;
+																		if (!v70)
+																		{
+																			v70.u0 = 0x00;
+																			g_t140048.u3 = (word32 *) v70;
+																			v70.u0 = 0x0196;
+																			v72.u0 = 0x4EE4;
+																			v76 = 14881;
+																			v70 = invoke_iii(v70, v72, v76);
+																			v70.u3 = g_t140048.u3;
+																			loc47 = v70;
+																			v70.u0 = 0x00;
+																			g_t140048.u3 = (word32 *) v70;
+																			v70 = loc47;
+																			v72.u0 = 0x01;
+																			v70 &= v72;
+																			loc48 = v70;
+																			v70 = loc48;
+																			if (!v70)
+																			{
+																				v70.u0 = 0x00;
+																				g_t140048.u3 = (word32 *) v70;
+																				v70.u0 = 0x0196;
+																				v72.u0 = 20208;
+																				v76 = 14885;
+																				v70 = invoke_iii(v70, v72, v76);
+																				v70.u3 = g_t140048.u3;
+																				loc49 = v70;
+																				v70.u0 = 0x00;
+																				g_t140048.u3 = (word32 *) v70;
+																				v70 = loc49;
+																				v72.u0 = 0x01;
+																				v70 &= v72;
+																				loc50 = v70;
+																				v70 = loc50;
+																				if (!v70)
+																				{
+																					v70.u0 = 0x00;
+																					g_t140048.u3 = (word32 *) v70;
+																					v70.u0 = 0x0196;
+																					v72.u0 = 20220;
+																					v76 = 14889;
+																					v70 = invoke_iii(v70, v72, v76);
+																					v70.u3 = g_t140048.u3;
+																					loc51 = v70;
+																					v70.u0 = 0x00;
+																					g_t140048.u3 = (word32 *) v70;
+																					v70 = loc51;
+																					v72.u0 = 0x01;
+																					v70 &= v72;
+																					loc52 = v70;
+																					v70 = loc52;
+																					if (!v70)
+																					{
+																						v70.u0 = 0x00;
+																						g_t140048.u3 = (word32 *) v70;
+																						v70.u0 = 0x0196;
+																						v72.u0 = 20232;
+																						v76 = 0x3A2D;
+																						v70 = invoke_iii(v70, v72, v76);
+																						v70.u3 = g_t140048.u3;
+																						loc53 = v70;
+																						v70.u0 = 0x00;
+																						g_t140048.u3 = (word32 *) v70;
+																						v70 = loc53;
+																						v72.u0 = 0x01;
+																						v70 &= v72;
+																						loc54 = v70;
+																						v70 = loc54;
+																						if (!v70)
+																						{
+																							v70.u0 = 0x00;
+																							g_t140048.u3 = (word32 *) v70;
+																							v70.u0 = 0x0196;
+																							v72.u0 = 20244;
+																							v76 = 0x3A31;
+																							v70 = invoke_iii(v70, v72, v76);
+																							v70.u3 = g_t140048.u3;
+																							loc55 = v70;
+																							v70.u0 = 0x00;
+																							g_t140048.u3 = (word32 *) v70;
+																							v70 = loc55;
+																							v72.u0 = 0x01;
+																							v70 &= v72;
+																							loc56 = v70;
+																							v70 = loc56;
+																							if (!v70)
+																							{
+																								v70.u0 = 0x00;
+																								g_t140048.u3 = (word32 *) v70;
+																								v70.u0 = 0x0196;
+																								v72.u0 = 0x4F20;
+																								v76 = 0x3A35;
+																								v70 = invoke_iii(v70, v72, v76);
+																								v70.u3 = g_t140048.u3;
+																								loc58 = v70;
+																								v70.u0 = 0x00;
+																								g_t140048.u3 = (word32 *) v70;
+																								v70 = loc58;
+																								v72.u0 = 0x01;
+																								v70 &= v72;
+																								loc59 = v70;
+																								v70 = loc59;
+																								if (!v70)
+																								{
+																									v70.u0 = 20268;
+																									v72.u0 = 0x4E0C;
+																									*v70.u0 = v72;
+																									goto l000FFDB6;
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+																goto l000FFDA7;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+l000FFDA7:
+	v70 = ___cxa_find_matching_catch_n();
+	loc61 = v70;
+	v70.u3 = g_t140094.u3;
+	loc62 = v70;
+	v70 = loc61;
+	___resumeException(v70);
+	goto l000FFDB5;
 }
 
 // 000FFDC5: Stack Eq_n fn000FFDC5(Stack Eq_n arg0)
 Eq_n fn000FFDC5(Eq_n arg0)
 {
+	v26.u3 = g_t140030.u3;
+	loc24 = v26;
+	v26.u0 = 17336;
+	v27 = *v26.u0;
+	v26.u3 = (word32) v27;
+	loc2 = v26;
+	v26 = loc2;
+	v28.u0 = 0x18;
+	v26 <<= v28;
+	v28.u0 = 0x18;
+	v26 >>= v28;
+	v28.u0 = 0x00;
+	v29 = v26 == v28;
+	loc13 = v29;
+	v26 = loc13;
+	if (v26)
+	{
+		v26.u0 = 17336;
+		v26 = fn0011EE46(v26);
+		loc15 = v26;
+		v26 = loc15;
+		v28.u0 = 0x00;
+		v29 = v26 == v28;
+		loc16 = v29;
+		v26 = loc16;
+		v29 = v26 == 0x00;
+		if (v29)
+		{
+			v26.u0 = 0x43C0;
+			v30 = *v26.u0;
+			v26.u3 = (word32) v30;
+			loc17 = v26;
+			v26 = loc17;
+			v28.u0 = 0x18;
+			v26 <<= v28;
+			v28.u0 = 0x18;
+			v26 >>= v28;
+			v28.u0 = 0x00;
+			v29 = v26 == v28;
+			loc18 = v29;
+			v26 = loc18;
+			if (v26)
+			{
+				v26.u0 = 0x43C0;
+				v26 = fn0011EE46(v26);
+				loc19 = v26;
+				v26 = loc19;
+				v28.u0 = 0x00;
+				v29 = v26 == v28;
+				loc20 = v29;
+				v26 = loc20;
+				v29 = v26 == 0x00;
+				if (v29)
+				{
+					while (true)
+					{
+						v26.u0 = 19688;
+						loc21 = v26;
+						while (true)
+						{
+							v26 = loc21;
+							v31.u0 = 0x00;
+							*v26.u0 = v31;
+							v26 = loc21;
+							v28.u0 = 0x08;
+							v26 += v28;
+							v28.u0 = 0x00;
+							*v26.u0 = v28;
+							v26.u0 = 0x00;
+							loc1 = v26;
+							v26 = loc1;
+							v28.u0 = 0x03;
+							v29 = v26 == v28;
+							loc22 = v29;
+							v26 = loc22;
+							if (v26)
+								break;
+							v26 = loc21;
+							v28 = loc1;
+							v32 = 0x02;
+							v28 <<= v32;
+							v26 += v28;
+							loc3 = v26;
+							v26 = loc3;
+							v28.u0 = 0x00;
+							*v26.u0 = v28;
+							v26 = loc1;
+							v28.u0 = 0x01;
+							v26 += v28;
+							loc4 = v26;
+							v26 = loc4;
+							loc1 = v26;
+						}
+						v26 = loc21;
+						v28.u0 = 0x0C;
+						v26 += v28;
+						loc5 = v26;
+						v26 = loc5;
+						v28.u0 = 0x4E08;
+						v29 = v26 == v28;
+						loc6 = v29;
+						v26 = loc6;
+						if (v26)
+							break;
+						v26 = loc5;
+						loc21 = v26;
+					}
+					v26.u0 = 0x0198;
+					v28.u0 = 0x00;
+					v32 = g_dw140044;
+					v26 = ___cxa_atexit(v26, v28, v32);
+				}
+			}
+			v26.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v26;
+			v26.u0 = 0x0196;
+			v28.u0 = 19688;
+			v32 = 0x39B1;
+			v26 = invoke_iii(v26, v28, v32);
+			v26.u3 = g_t140048.u3;
+			loc7 = v26;
+			v26.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v26;
+			v26 = loc7;
+			v28.u0 = 0x01;
+			v26 &= v28;
+			loc8 = v26;
+			v26 = loc8;
+			v29 = v26 == 0x00;
+			if (v29)
+			{
+				v26.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v26;
+				v26.u0 = 0x0196;
+				v28.u0 = 0x4CF4;
+				v32 = 14772;
+				v26 = invoke_iii(v26, v28, v32);
+				v26.u3 = g_t140048.u3;
+				loc9 = v26;
+				v26.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v26;
+				v26 = loc9;
+				v28.u0 = 0x01;
+				v26 &= v28;
+				loc10 = v26;
+				v26 = loc10;
+				v29 = v26 == 0x00;
+				if (v29)
+				{
+					v26.u0 = 0x4E08;
+					v28.u0 = 19688;
+					*v26.u0 = v28;
+					goto l000FFF11;
+				}
+			}
+			v26 = ___cxa_find_matching_catch_n();
+			loc12 = v26;
+			v26.u3 = g_t140094.u3;
+			loc14 = v26;
+			v26 = loc12;
+			___resumeException(v26);
+		}
+	}
+l000FFF11:
+	v26.u0 = 0x4E08;
+	v26 = *v26.u0;
+	loc11 = v26;
+	v26 = loc11;
+	return v26;
 }
 
 // 000FFF20: Stack Eq_n fn000FFF20(Stack Eq_n arg0)
 Eq_n fn000FFF20(Eq_n arg0)
 {
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12.u0 = 0x43B0;
+	v13 = *v12.u0;
+	v12.u3 = (word32) v13;
+	loc1 = v12;
+	v12 = loc1;
+	v14.u0 = 0x18;
+	v12 <<= v14;
+	v14.u0 = 0x18;
+	v12 >>= v14;
+	v14.u0 = 0x00;
+	v15 = v12 == v14;
+	loc2 = v15;
+	v12 = loc2;
+	if (v12)
+	{
+		v12.u0 = 0x43B0;
+		v12 = fn0011EE46(v12);
+		loc3 = v12;
+		v12 = loc3;
+		v14.u0 = 0x00;
+		v15 = v12 == v14;
+		loc4 = v15;
+		v12 = loc4;
+		v15 = v12 == 0x00;
+		if (v15)
+		{
+			v12.u0 = 0x4CDC;
+			v16.u0 = 0x00;
+			*v12.u0 = v16;
+			v12.u0 = 0x4CDC;
+			v14.u0 = 0x08;
+			v12 += v14;
+			v14.u0 = 0x00;
+			*v12.u0 = v14;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12.u0 = 0x0199;
+			v14.u0 = 0x4CDC;
+			v17 = 0x399C;
+			v18 = 0x14;
+			invoke_viii(v12, v14, v17, v18);
+			v12.u3 = g_t140048.u3;
+			loc5 = v12;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12 = loc5;
+			v14.u0 = 0x01;
+			v12 &= v14;
+			loc6 = v12;
+			v12 = loc6;
+			if (!v12)
+			{
+				v12.u0 = 0x016D;
+				v14.u0 = 0x4CDC;
+				v17 = g_dw140044;
+				v12 = ___cxa_atexit(v12, v14, v17);
+				goto l000FFFB0;
+			}
+			v12 = ___cxa_find_matching_catch_n();
+			loc7 = v12;
+			v12.u3 = g_t140094.u3;
+			loc8 = v12;
+			v12 = loc7;
+			___resumeException(v12);
+		}
+	}
+l000FFFB0:
+	v12.u0 = 0x4CDC;
+	return v12;
 }
 
 // 000FFFB8: Stack Eq_n fn000FFFB8(Stack Eq_n arg0)
 Eq_n fn000FFFB8(Eq_n arg0)
 {
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12.u0 = 0x43A8;
+	v13 = *v12.u0;
+	v12.u3 = (word32) v13;
+	loc1 = v12;
+	v12 = loc1;
+	v14.u0 = 0x18;
+	v12 <<= v14;
+	v14.u0 = 0x18;
+	v12 >>= v14;
+	v14.u0 = 0x00;
+	v15 = v12 == v14;
+	loc2 = v15;
+	v12 = loc2;
+	if (v12)
+	{
+		v12.u0 = 0x43A8;
+		v12 = fn0011EE46(v12);
+		loc3 = v12;
+		v12 = loc3;
+		v14.u0 = 0x00;
+		v15 = v12 == v14;
+		loc4 = v15;
+		v12 = loc4;
+		v15 = v12 == 0x00;
+		if (v15)
+		{
+			v12.u0 = 0x4CD0;
+			v16.u0 = 0x00;
+			*v12.u0 = v16;
+			v12.u0 = 0x4CD0;
+			v14.u0 = 0x08;
+			v12 += v14;
+			v14.u0 = 0x00;
+			*v12.u0 = v14;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12.u0 = 0x0199;
+			v14.u0 = 0x4CD0;
+			v17 = 0x3990;
+			v18 = 11;
+			invoke_viii(v12, v14, v17, v18);
+			v12.u3 = g_t140048.u3;
+			loc5 = v12;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12 = loc5;
+			v14.u0 = 0x01;
+			v12 &= v14;
+			loc6 = v12;
+			v12 = loc6;
+			if (!v12)
+			{
+				v12.u0 = 0x016D;
+				v14.u0 = 0x4CD0;
+				v17 = g_dw140044;
+				v12 = ___cxa_atexit(v12, v14, v17);
+				goto l00100048;
+			}
+			v12 = ___cxa_find_matching_catch_n();
+			loc7 = v12;
+			v12.u3 = g_t140094.u3;
+			loc8 = v12;
+			v12 = loc7;
+			___resumeException(v12);
+		}
+	}
+l00100048:
+	v12.u0 = 0x4CD0;
+	return v12;
 }
 

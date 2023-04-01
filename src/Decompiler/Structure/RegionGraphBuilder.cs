@@ -40,7 +40,6 @@ namespace Reko.Structure
             this.graph = new DiGraph<Region>();
             this.regionFactory = new RegionFactory();
             this.switchPads = new Dictionary<Block, Dictionary<Block, Region>>();
-
         }
 
         public (DirectedGraph<Region>, Region) Build()

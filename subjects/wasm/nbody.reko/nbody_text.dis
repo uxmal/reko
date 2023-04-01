@@ -45,17 +45,17 @@ l000E0184:
 l000E018E:
 	return
 l000E0189:
-	word32 loc4_220 = 0<32>
+	word32 loc4_224 = 0<32>
 l000E018F:
-	word32 v18_227 = arg1 + loc4_220 * 0x38<32>
-	Mem242[v18_227:real64] = Mem230[v18_227:real64] + Mem230[(arg1 + loc4_220 * 0x38<32>) + 0x18<u32>:real64] * arg2
-	word32 v18_247 = arg1 + loc4_220 * 0x38<32>
-	Mem262[v18_247 + 8<32>:real64] = Mem242[v18_247 + 8<32>:real64] + Mem242[(arg1 + loc4_220 * 0x38<32>) + 0x20<u32>:real64] * arg2
-	word32 v18_267 = arg1 + loc4_220 * 0x38<32>
-	Mem282[v18_267 + 0x10<32>:real64] = Mem262[v18_267 + 0x10<32>:real64] + Mem262[(arg1 + loc4_220 * 0x38<32>) + 0x28<u32>:real64] * arg2
-	word32 v18_285 = loc4_220 + 1<32>
-	loc4_220 = v18_285
-	branch v18_285 != arg0 l000E018F
+	word32 v18_231 = arg1 + loc4_224 * 0x38<32>
+	Mem246[v18_231:real64] = Mem234[v18_231:real64] + Mem234[(arg1 + loc4_224 * 0x38<32>) + 0x18<u32>:real64] * arg2
+	word32 v18_251 = arg1 + loc4_224 * 0x38<32>
+	Mem266[v18_251 + 8<32>:real64] = Mem246[v18_251 + 8<32>:real64] + Mem246[(arg1 + loc4_224 * 0x38<32>) + 0x20<u32>:real64] * arg2
+	word32 v18_271 = arg1 + loc4_224 * 0x38<32>
+	Mem286[v18_271 + 0x10<32>:real64] = Mem266[v18_271 + 0x10<32>:real64] + Mem266[(arg1 + loc4_224 * 0x38<32>) + 0x28<u32>:real64] * arg2
+	word32 v18_289 = loc4_224 + 1<32>
+	loc4_224 = v18_289
+	branch v18_289 != arg0 l000E018F
 l000E0207:
 l000E0208:
 	return
@@ -77,27 +77,32 @@ l000E020A:
 l000E0223:
 	return 0.0
 l000E0213:
-	word32 loc2_15 = 0<32>
+	word32 loc2_144 = 0<32>
 	real64 loc4_10 = 0.0
 l000E022D:
-	real64 v16_30 = Mem0[arg1 + loc2_15 * 0x38<32> + 0x18<u32>:real64]
-	real64 v18_39 = Mem0[arg1 + loc2_15 * 0x38<32> + 0x20<u32>:real64]
-	real64 v18_49 = Mem0[arg1 + loc2_15 * 0x38<32> + 0x28<u32>:real64]
-	real64 v12_55 = loc4_10 + (Mem0[(arg1 + loc2_15 * 0x38<32>) + 0x30<u32>:real64] * 0.5) * ((v16_30 * v16_30 + v18_39 * v18_39) + v18_49 * v18_49)
-	word32 v9_59 = loc2_15 + 1<32>
-	loc4_10 = v12_55
+	real64 v16_30 = Mem0[arg1 + loc2_144 * 0x38<32> + 0x18<u32>:real64]
+	real64 v18_39 = Mem0[arg1 + loc2_144 * 0x38<32> + 0x20<u32>:real64]
+	real64 v18_49 = Mem0[arg1 + loc2_144 * 0x38<32> + 0x28<u32>:real64]
+	real64 v15_21 = Mem0[arg1 + loc2_144 * 0x38<32> + 0x30<u32>:real64]
+	word32 v9_59 = loc2_144 + 1<32>
+	loc4_10 = loc4_10 + (v15_21 * 0.5) * ((v16_30 * v16_30 + v18_39 * v18_39) + v18_49 * v18_49)
 	branch !(v9_59 < arg0) l000E0316
 l000E028B:
+	real64 v16_109 = Mem0[arg1 + loc2_144 * 0x38<32>:real64] - Mem0[arg1 + v9_59 * 0x38<32>:real64]
+	real64 v18_120 = Mem0[arg1 + loc2_144 * 0x38<32> + 8<u32>:real64] - Mem0[(arg1 + v9_59 * 0x38<32>) + 8<u32>:real64]
+	real64 v18_132 = Mem0[arg1 + loc2_144 * 0x38<32> + 0x10<u32>:real64] - Mem0[(arg1 + v9_59 * 0x38<32>) + 0x10<u32>:real64]
+	loc4_10 = loc4_10 - (v15_21 * Mem0[(arg1 + v9_59 * 0x38<32>) + 0x30<u32>:real64]) / sqrt((v16_109 * v16_109 + v18_120 * v18_120) + v18_132 * v18_132)
+	loc2_144 = v9_59 + 1<32>
 	branch v9_59 + 1<32> != arg0 l000E028B
 l000E0314:
 l000E0316:
 	branch !(v9_59 != arg0) l000E0324
 l000E0324:
 l000E0327:
-	return v12_55
+	return loc4_10
 _energy_exit:
 l000E031D:
-	loc2_15 = v9_59
+	loc2_144 = v9_59
 
 
 void _offset_momentum(word32 arg0, word32 arg1)
@@ -174,19 +179,19 @@ real64 _run(word32 arg0)
 // Preserved:
 _run_entry:
 l000E061E:
-	word32 arg0_168
+	word32 arg0_170
 	branch !(arg0 < 1<32>) l000E0637
 l000E0637:
 	_advance(5<32>, Mem0[0x00100000<p32>:word32], 0.01)
 	branch !(arg0 == 1<32>) l000E066A
 l000E066A:
 l000E065A:
-	arg0_168 = 0<32>
+	arg0_170 = 0<32>
 l000E0670:
 l000E0627:
-	arg0_168 = 0<32>
+	arg0_170 = 0<32>
 l000E0672:
-	word32 v9_77 = arg0_168 + 1<32>
+	word32 v9_77 = arg0_170 + 1<32>
 	branch !(v9_77 < 5<32>) l000E075B
 l000E06D0:
 	branch v9_77 != 0xFFFFFFFC<32> l000E06D0
@@ -198,7 +203,7 @@ l000E076C:
 	return <invalid>
 _run_exit:
 l000E0762:
-	arg0_168 = v9_77
+	arg0_170 = v9_77
 
 
 void runPostSets()

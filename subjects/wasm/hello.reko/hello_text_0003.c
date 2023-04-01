@@ -7,11 +7,153 @@
 // 00100050: Stack Eq_n fn00100050(Stack Eq_n arg0)
 Eq_n fn00100050(Eq_n arg0)
 {
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12.u0 = 0x43A0;
+	v13 = *v12.u0;
+	v12.u3 = (word32) v13;
+	loc1 = v12;
+	v12 = loc1;
+	v14.u0 = 0x18;
+	v12 <<= v14;
+	v14.u0 = 0x18;
+	v12 >>= v14;
+	v14.u0 = 0x00;
+	v15 = v12 == v14;
+	loc2 = v15;
+	v12 = loc2;
+	if (v12)
+	{
+		v12.u0 = 0x43A0;
+		v12 = fn0011EE46(v12);
+		loc3 = v12;
+		v12 = loc3;
+		v14.u0 = 0x00;
+		v15 = v12 == v14;
+		loc4 = v15;
+		v12 = loc4;
+		v15 = v12 == 0x00;
+		if (v15)
+		{
+			v12.u0 = 0x4CC4;
+			v16.u0 = 0x00;
+			*v12.u0 = v16;
+			v12.u0 = 0x4CC4;
+			v14.u0 = 0x08;
+			v12 += v14;
+			v14.u0 = 0x00;
+			*v12.u0 = v14;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12.u0 = 0x0199;
+			v14.u0 = 0x4CC4;
+			v17 = 14727;
+			v18 = 0x08;
+			invoke_viii(v12, v14, v17, v18);
+			v12.u3 = g_t140048.u3;
+			loc5 = v12;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12 = loc5;
+			v14.u0 = 0x01;
+			v12 &= v14;
+			loc6 = v12;
+			v12 = loc6;
+			if (!v12)
+			{
+				v12.u0 = 0x016D;
+				v14.u0 = 0x4CC4;
+				v17 = g_dw140044;
+				v12 = ___cxa_atexit(v12, v14, v17);
+				goto l001000E0;
+			}
+			v12 = ___cxa_find_matching_catch_n();
+			loc7 = v12;
+			v12.u3 = g_t140094.u3;
+			loc8 = v12;
+			v12 = loc7;
+			___resumeException(v12);
+		}
+	}
+l001000E0:
+	v12.u0 = 0x4CC4;
+	return v12;
 }
 
 // 001000E8: Stack Eq_n fn001000E8(Stack Eq_n arg0)
 Eq_n fn001000E8(Eq_n arg0)
 {
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12.u0 = 0x4398;
+	v13 = *v12.u0;
+	v12.u3 = (word32) v13;
+	loc1 = v12;
+	v12 = loc1;
+	v14.u0 = 0x18;
+	v12 <<= v14;
+	v14.u0 = 0x18;
+	v12 >>= v14;
+	v14.u0 = 0x00;
+	v15 = v12 == v14;
+	loc2 = v15;
+	v12 = loc2;
+	if (v12)
+	{
+		v12.u0 = 0x4398;
+		v12 = fn0011EE46(v12);
+		loc3 = v12;
+		v12 = loc3;
+		v14.u0 = 0x00;
+		v15 = v12 == v14;
+		loc4 = v15;
+		v12 = loc4;
+		v15 = v12 == 0x00;
+		if (v15)
+		{
+			v12.u0 = 0x4CB8;
+			v16.u0 = 0x00;
+			*v12.u0 = v16;
+			v12.u0 = 0x4CB8;
+			v14.u0 = 0x08;
+			v12 += v14;
+			v14.u0 = 0x00;
+			*v12.u0 = v14;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12.u0 = 0x0199;
+			v14.u0 = 0x4CB8;
+			v17 = 14718;
+			v18 = 0x08;
+			invoke_viii(v12, v14, v17, v18);
+			v12.u3 = g_t140048.u3;
+			loc5 = v12;
+			v12.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v12;
+			v12 = loc5;
+			v14.u0 = 0x01;
+			v12 &= v14;
+			loc6 = v12;
+			v12 = loc6;
+			if (!v12)
+			{
+				v12.u0 = 0x016D;
+				v14.u0 = 0x4CB8;
+				v17 = g_dw140044;
+				v12 = ___cxa_atexit(v12, v14, v17);
+				goto l00100178;
+			}
+			v12 = ___cxa_find_matching_catch_n();
+			loc7 = v12;
+			v12.u3 = g_t140094.u3;
+			loc8 = v12;
+			v12 = loc7;
+			___resumeException(v12);
+		}
+	}
+l00100178:
+	v12.u0 = 0x4CB8;
+	return v12;
 }
 
 // 00100180: void fn00100180(Stack Eq_n arg0)
@@ -98,46 +240,742 @@ void fn001001F0(Eq_n arg0)
 // 00100228: void fn00100228(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00100228(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v19.u3 = g_t140030.u3;
+	loc22 = v19;
+	v19.u3 = g_t140030.u3;
+	v20.u0 = 0x10;
+	v19 += v20;
+	g_t140030.u3 = (word32 *) v19;
+	v19.u3 = g_t140030.u3;
+	v20.u3 = g_t140034.u3;
+	v21 = v19 >= v20;
+	if (v21)
+	{
+		v19.u0 = 0x10;
+		abortStackOverflow(v19);
+	}
+	v19 = loc22;
+	v20.u0 = 0x04;
+	v19 += v20;
+	loc6 = v19;
+	v19 = loc22;
+	loc17 = v19;
+	v19 = arg0;
+	v20.u0 = 0x08;
+	v19 += v20;
+	loc18 = v19;
+	v19 = loc18;
+	v19 = *v19.u0;
+	loc19 = v19;
+	v19 = loc19;
+	v19 = *v19.u0;
+	loc20 = v19;
+	v19 = loc18;
+	v20 = loc20;
+	v22 = 0x01FF;
+	v20 &= v22;
+	v22 = 0x0B00;
+	v20.u0 = (bool) v20.u0 + v22;
 }
 
 // 001002E5: void fn001002E5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001002E5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v20.u3 = g_t140030.u3;
+	loc23 = v20;
+	v20.u3 = g_t140030.u3;
+	v21.u0 = 0x10;
+	v20 += v21;
+	g_t140030.u3 = (word32 *) v20;
+	v20.u3 = g_t140030.u3;
+	v21.u3 = g_t140034.u3;
+	v22 = v20 >= v21;
+	if (v22)
+	{
+		v20.u0 = 0x10;
+		abortStackOverflow(v20);
+	}
+	v20 = loc23;
+	v21.u0 = 0x04;
+	v20 += v21;
+	loc6 = v20;
+	v20 = loc23;
+	loc18 = v20;
+	v20 = arg0;
+	v21.u0 = 0x08;
+	v20 += v21;
+	loc19 = v20;
+	v20 = loc19;
+	v20 = *v20.u0;
+	loc20 = v20;
+	v20 = loc20;
+	v21.u0 = 0x04;
+	v20 += v21;
+	loc21 = v20;
+	v20 = loc21;
+	v20 = *v20.u0;
+	loc7 = v20;
+	v20 = loc19;
+	v21 = loc7;
+	v23 = 0x01FF;
+	v21 &= v23;
+	v23 = 0x0B00;
+	v21.u0 = (bool) v21.u0 + v23;
 }
 
 // 001003A9: Stack Eq_n fn001003A9(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn001003A9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
+	v222.u3 = g_t140030.u3;
+	loc227 = v222;
+	v222.u3 = g_t140030.u3;
+	v223.u0 = 0x20;
+	v222 += v223;
+	g_t140030.u3 = (word32 *) v222;
+	v222.u3 = g_t140030.u3;
+	v223.u3 = g_t140034.u3;
+	v224 = v222 >= v223;
+	if (v224)
+	{
+		v222.u0 = 0x20;
+		abortStackOverflow(v222);
+	}
+	v222 = loc227;
+	v223.u0 = 0x10;
+	v222 += v223;
+	loc18 = v222;
+	v222 = loc227;
+	v223.u0 = 0x0C;
+	v222 += v223;
+	loc17 = v222;
+	v222 = loc227;
+	v223.u0 = 0x08;
+	v222 += v223;
+	loc198 = v222;
+	v222 = loc227;
+	v223.u0 = 0x04;
+	v222 += v223;
+	loc209 = v222;
+	v222 = loc227;
+	loc27 = v222;
+	v222 = arg3;
+	v222 = fn000E64CA(v222);
+	loc38 = v222;
+	v222 = loc198;
+	v223 = loc38;
+	*v222.u0 = v223;
+	v222.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v222;
+	v222.u0 = 0x0164;
+	v223 = loc198;
+	v225.u0 = 0x4C70;
+	v222 = invoke_iii(v222, v223, v225);
+	loc49 = v222;
+	v222.u3 = g_t140048.u3;
+	loc60 = v222;
+	v222.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v222;
+	v222 = loc60;
+	v223.u0 = 0x01;
+	v222 &= v223;
+	loc71 = v222;
+	v222 = loc71;
+	if (v222)
+	{
+		v222 = ___cxa_find_matching_catch_n();
+		loc165 = v222;
+		v222.u3 = g_t140094.u3;
+		loc166 = v222;
+		v222 = loc38;
+		v222 = fn0011B43F(v222);
+		v222 = loc165;
+		___resumeException(v222);
+	}
+	v222 = loc38;
+	v222 = fn0011B43F(v222);
+	v222 = arg4;
+	v223.u0 = 0x00;
+	*v222.u3 = (word32) v223;
+	v222 = loc49;
+	v223.u0 = 0x08;
+	v222 += v223;
+	loc82 = v222;
+	v222 = arg6;
+	loc10 = v222;
+	v222.u0 = 0x00;
+	loc19 = v222;
+	v222 = loc10;
+	v223 = arg7;
+	v224 = v222 != v223;
+	loc93 = v224;
+	v222 = loc19;
+	loc115 = v222;
+	v222 = loc115;
+	v223.u0 = 0x00;
+	v224 = v222 == v223;
+	loc104 = v224;
+	v222 = loc93;
+	v223 = loc104;
+	v222 &= v223;
+	loc223 = v222;
+	v222 = arg1;
+	v222 = *v222.u0;
+	loc126 = v222;
+	v222 = loc223;
+	v224 = v222 == 0x00;
+	if (!v224)
+	{
+		v222 = loc126;
+		v223.u0 = 0x00;
+		v224 = v222 == v223;
+		loc137 = v224;
+		v222 = loc126;
+		loc139 = v222;
+		v222 = loc137;
+		if (!v222)
+		{
+			v222 = loc126;
+			v223.u0 = 0x0C;
+			v222 += v223;
+			loc140 = v222;
+			v222 = loc140;
+			v222 = *v222.u0;
+			loc141 = v222;
+			v222 = loc126;
+			v223.u0 = 0x10;
+			v222 += v223;
+			loc142 = v222;
+			v222 = loc142;
+			v222 = *v222.u0;
+			loc143 = v222;
+			v222 = loc141;
+			v223 = loc143;
+			v224 = v222 == v223;
+			loc144 = v224;
+			v222 = loc144;
+			v222 = v222;
+			v222 = loc126;
+			v222 = *v222.u0;
+			loc145 = v222;
+			v222 = loc145;
+			v223.u0 = 0x24;
+			v222 += v223;
+			loc146 = v222;
+			v222 = loc146;
+			v222 = *v222.u0;
+			loc147 = v222;
+			v222 = loc126;
+			v223 = loc147;
+			v225.u0 = 0x01FF;
+			v223 &= v225;
+			v225.u0 = 0x0B00;
+			v223 += v225;
+		}
+		else
+		{
+			v222.u0 = 0x00;
+			loc151 = v222;
+			v222 = loc139;
+			loc190 = v222;
+		}
+	}
+	else
+	{
+		v222 = loc126;
+		loc20 = v222;
+	}
 }
 
 // 00100F28: void fn00100F28(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00100F28(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc6 = v15;
+	v15 = loc18;
+	loc13 = v15;
+	v15 = arg3;
+	v15 = *v15.u0;
+	loc14 = v15;
+	v15 = loc13;
+	v16 = loc14;
+	*v15.u0 = v16;
+	v15 = loc6;
+	v16 = loc13;
+	v16 = *v16.u0;
+	*v15.u0 = v16;
+	v15 = arg2;
+	v16 = loc6;
+	v18 = arg4;
+	v19 = arg5;
+	v20.u0 = 0x02;
+	v15 = fn00101E90(v15, v16, v18, v19, v20);
+	loc15 = v15;
+	v15 = arg4;
+	v15 = *v15.u0;
+	loc16 = v15;
+	v15 = loc16;
+	v16.u0 = 0x04;
+	v15 &= v16;
+	loc8 = v15;
+	v15 = loc8;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc9 = v17;
+	v15 = loc15;
+	v16.u0 = ~0x00;
+	v15 += v16;
+	loc7 = v15;
+	v15 = loc7;
+	v16.u0 = 0x1F;
+	v17 = v15 < v16;
+	loc10 = v17;
+	v15 = loc10;
+	v16 = loc9;
+	v15 &= v16;
+	loc11 = v15;
+	v15 = loc11;
+	if (v15)
+	{
+		v15 = arg1;
+		v16 = loc15;
+		*v15.u0 = v16;
+	}
+	else
+	{
+		v15 = loc16;
+		v16.u0 = 0x04;
+		v15 |= v16;
+		loc12 = v15;
+		v15 = arg4;
+		v16 = loc12;
+		*v15.u0 = v16;
+	}
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 00100FBF: void fn00100FBF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00100FBF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x02;
+	v14 = fn00101E90(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x18;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 0010104F: void fn0010104F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0010104F(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc6 = v15;
+	v15 = loc18;
+	loc13 = v15;
+	v15 = arg3;
+	v15 = *v15.u0;
+	loc14 = v15;
+	v15 = loc13;
+	v16 = loc14;
+	*v15.u0 = v16;
+	v15 = loc6;
+	v16 = loc13;
+	v16 = *v16.u0;
+	*v15.u0 = v16;
+	v15 = arg2;
+	v16 = loc6;
+	v18 = arg4;
+	v19 = arg5;
+	v20.u0 = 0x02;
+	v15 = fn00101E90(v15, v16, v18, v19, v20);
+	loc15 = v15;
+	v15 = arg4;
+	v15 = *v15.u0;
+	loc16 = v15;
+	v15 = loc16;
+	v16.u0 = 0x04;
+	v15 &= v16;
+	loc8 = v15;
+	v15 = loc8;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc9 = v17;
+	v15 = loc15;
+	v16.u0 = ~0x00;
+	v15 += v16;
+	loc7 = v15;
+	v15 = loc7;
+	v16.u0 = 0x0C;
+	v17 = v15 < v16;
+	loc10 = v17;
+	v15 = loc10;
+	v16 = loc9;
+	v15 &= v16;
+	loc11 = v15;
+	v15 = loc11;
+	if (v15)
+	{
+		v15 = arg1;
+		v16 = loc15;
+		*v15.u0 = v16;
+	}
+	else
+	{
+		v15 = loc16;
+		v16.u0 = 0x04;
+		v15 |= v16;
+		loc12 = v15;
+		v15 = arg4;
+		v16 = loc12;
+		*v15.u0 = v16;
+	}
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 001010E6: void fn001010E6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001010E6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x03;
+	v14 = fn00101E90(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 366;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 00101177: void fn00101177(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00101177(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc6 = v15;
+	v15 = loc18;
+	loc12 = v15;
+	v15 = arg3;
+	v15 = *v15.u0;
+	loc13 = v15;
+	v15 = loc12;
+	v16 = loc13;
+	*v15.u0 = v16;
+	v15 = loc6;
+	v16 = loc12;
+	v16 = *v16.u0;
+	*v15.u0 = v16;
+	v15 = arg2;
+	v16 = loc6;
+	v18 = arg4;
+	v19 = arg5;
+	v20.u0 = 0x02;
+	v15 = fn00101E90(v15, v16, v18, v19, v20);
+	loc14 = v15;
+	v15 = arg4;
+	v15 = *v15.u0;
+	loc15 = v15;
+	v15 = loc15;
+	v16.u0 = 0x04;
+	v15 &= v16;
+	loc7 = v15;
+	v15 = loc7;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc8 = v17;
+	v15 = loc14;
+	v16.u0 = 0x0D;
+	v17 = v15 < v16;
+	loc9 = v17;
+	v15 = loc9;
+	v16 = loc8;
+	v15 &= v16;
+	loc16 = v15;
+	v15 = loc16;
+	if (v15)
+	{
+		v15 = loc14;
+		v16.u0 = ~0x00;
+		v15 += v16;
+		loc10 = v15;
+		v15 = arg1;
+		v16 = loc10;
+		*v15.u0 = v16;
+	}
+	else
+	{
+		v15 = loc15;
+		v16.u0 = 0x04;
+		v15 |= v16;
+		loc11 = v15;
+		v15 = arg4;
+		v16 = loc11;
+		*v15.u0 = v16;
+	}
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 0010120E: void fn0010120E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0010120E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x02;
+	v14 = fn00101E90(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x3C;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 0010129E: void fn0010129E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -157,56 +995,420 @@ void fn0010129E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v96 = v94 == v95;
 	loc71 = v96;
 	v94 = loc71;
-	if (v94)
+	if (!v94)
+	{
+		v94 = loc60;
+		v95.u0 = 0x0C;
+		v94 += v95;
+		loc82 = v94;
+		v94 = loc82;
+		v94 = *v94.u0;
+		loc92 = v94;
+		v94 = loc60;
+		v95.u0 = 0x10;
+		v94 += v95;
+		loc9 = v94;
+		v94 = loc9;
+		v94 = *v94.u0;
+		loc10 = v94;
+		v94 = loc92;
+		v95 = loc10;
+		v96 = v94 == v95;
+		loc11 = v96;
+		v94 = loc11;
+		v94 = v94;
+		v94 = loc60;
+		v94 = *v94.u0;
+		loc12 = v94;
+		v94 = loc12;
+		v95.u0 = 0x24;
+		v94 += v95;
+		loc13 = v94;
+		v94 = loc13;
+		v94 = *v94.u0;
+		loc14 = v94;
+		v94 = loc60;
+		v95 = loc14;
+		v97.u0 = 0x01FF;
+		v95 &= v97;
+		v97.u0 = 0x0B00;
+		v95 += v97;
+	}
+	else
 	{
 		v94.u0 = 0x00;
 		loc18 = v94;
 	}
-	v94 = loc60;
-	v95.u0 = 0x0C;
-	v94 += v95;
-	loc82 = v94;
-	v94 = loc82;
-	v94 = *v94.u0;
-	loc92 = v94;
-	v94 = loc60;
-	v95.u0 = 0x10;
-	v94 += v95;
-	loc9 = v94;
-	v94 = loc9;
-	v94 = *v94.u0;
-	loc10 = v94;
-	v94 = loc92;
-	v95 = loc10;
-	v96 = v94 == v95;
-	loc11 = v96;
-	v94 = loc11;
-	v94 = v94;
 }
 
 // 001016A1: void fn001016A1(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001016A1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v44.u3 = g_t140030.u3;
+	loc47 = v44;
+	v44.u3 = g_t140030.u3;
+	v45.u0 = 0x10;
+	v44 += v45;
+	g_t140030.u3 = (word32 *) v44;
+	v44.u3 = g_t140030.u3;
+	v45.u3 = g_t140034.u3;
+	v46 = v44 >= v45;
+	if (v46)
+	{
+		v44.u0 = 0x10;
+		abortStackOverflow(v44);
+	}
+	v44 = loc47;
+	v45.u0 = 0x04;
+	v44 += v45;
+	loc6 = v44;
+	v44 = loc47;
+	loc40 = v44;
+	v44 = arg0;
+	v45.u0 = 0x08;
+	v44 += v45;
+	loc41 = v44;
+	v44 = loc41;
+	v44 = *v44.u0;
+	loc42 = v44;
+	v44 = loc42;
+	v45.u0 = 0x08;
+	v44 += v45;
+	loc43 = v44;
+	v44 = loc43;
+	v44 = *v44.u0;
+	loc7 = v44;
+	v44 = loc41;
+	v45 = loc7;
+	v47 = 0x01FF;
+	v45 &= v47;
+	v47 = 0x0B00;
+	v45.u0 = (bool) v45.u0 + v47;
 }
 
 // 0010183D: void fn0010183D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0010183D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x02;
+	v14 = fn00101E90(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x3D;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 001018CD: void fn001018CD(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001018CD(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x01;
+	v14 = fn00101E90(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x07;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 0010195D: void fn0010195D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0010195D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v18.u3 = g_t140030.u3;
+	loc21 = v18;
+	v18.u3 = g_t140030.u3;
+	v19.u0 = 0x10;
+	v18 += v19;
+	g_t140030.u3 = (word32 *) v18;
+	v18.u3 = g_t140030.u3;
+	v19.u3 = g_t140034.u3;
+	v20 = v18 >= v19;
+	if (v20)
+	{
+		v18.u0 = 0x10;
+		abortStackOverflow(v18);
+	}
+	v18 = loc21;
+	v19.u0 = 0x04;
+	v18 += v19;
+	loc8 = v18;
+	v18 = loc21;
+	loc16 = v18;
+	v18 = arg3;
+	v18 = *v18.u0;
+	loc17 = v18;
+	v18 = loc16;
+	v19 = loc17;
+	*v18.u0 = v19;
+	v18 = loc8;
+	v19 = loc16;
+	v19 = *v19.u0;
+	*v18.u0 = v19;
+	v18 = arg2;
+	v19 = loc8;
+	v21 = arg4;
+	v22 = arg5;
+	v23.u0 = 0x04;
+	v18 = fn00101E90(v18, v19, v21, v22, v23);
+	loc18 = v18;
+	v18 = arg4;
+	v18 = *v18.u0;
+	loc19 = v18;
+	v18 = loc19;
+	v19.u0 = 0x04;
+	v18 &= v19;
+	loc9 = v18;
+	v18 = loc9;
+	v19.u0 = 0x00;
+	v20 = v18 == v19;
+	loc10 = v20;
+	v18 = loc10;
+	if (v18)
+	{
+		v18 = loc18;
+		v19.u0 = 0x45;
+		v20 = v18 < v19;
+		loc11 = v20;
+		v18 = loc11;
+		if (v18)
+		{
+			v18 = loc18;
+			v19.u0 = 2000;
+			v18 += v19;
+			loc12 = v18;
+			v18 = loc12;
+			loc7 = v18;
+		}
+		else
+		{
+			v18 = loc18;
+			v19.u0 = 100;
+			v20 = v18 < v19;
+			loc13 = v20;
+			v18 = loc18;
+			v19.u0 = 1900;
+			v18 += v19;
+			loc14 = v18;
+			v18 = loc13;
+			if (v18)
+				v18 = loc14;
+			else
+				v18 = loc18;
+			loc6 = v18;
+			v18 = loc6;
+			loc7 = v18;
+		}
+		v18 = loc7;
+		v19.u0 = ~0x076B;
+		v18 += v19;
+		loc15 = v18;
+		v18 = arg1;
+		v19 = loc15;
+		*v18.u0 = v19;
+	}
+	v18 = loc21;
+	g_t140030.u3 = (word32 *) v18;
 }
 
 // 00101A12: void fn00101A12(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00101A12(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v12.u3 = g_t140030.u3;
+	loc15 = v12;
+	v12.u3 = g_t140030.u3;
+	v13.u0 = 0x10;
+	v12 += v13;
+	g_t140030.u3 = (word32 *) v12;
+	v12.u3 = g_t140030.u3;
+	v13.u3 = g_t140034.u3;
+	v14 = v12 >= v13;
+	if (v14)
+	{
+		v12.u0 = 0x10;
+		abortStackOverflow(v12);
+	}
+	v12 = loc15;
+	v13.u0 = 0x04;
+	v12 += v13;
+	loc6 = v12;
+	v12 = loc15;
+	loc10 = v12;
+	v12 = arg3;
+	v12 = *v12.u0;
+	loc11 = v12;
+	v12 = loc10;
+	v13 = loc11;
+	*v12.u0 = v13;
+	v12 = loc6;
+	v13 = loc10;
+	v13 = *v13.u0;
+	*v12.u0 = v13;
+	v12 = arg2;
+	v13 = loc6;
+	v15 = arg4;
+	v16 = arg5;
+	v17.u0 = 0x04;
+	v12 = fn00101E90(v12, v13, v15, v16, v17);
+	loc12 = v12;
+	v12 = arg4;
+	v12 = *v12.u0;
+	loc13 = v12;
+	v12 = loc13;
+	v13.u0 = 0x04;
+	v12 &= v13;
+	loc7 = v12;
+	v12 = loc7;
+	v13.u0 = 0x00;
+	v14 = v12 == v13;
+	loc8 = v14;
+	v12 = loc8;
+	if (v12)
+	{
+		v12 = loc12;
+		v13.u0 = ~0x076B;
+		v12 += v13;
+		loc9 = v12;
+		v12 = arg1;
+		v13 = loc9;
+		*v12.u0 = v13;
+	}
+	v12 = loc15;
+	g_t140030.u3 = (word32 *) v12;
 }
 
 // 00101A8D: void fn00101A8D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -222,31 +1424,50 @@ void fn00101A8D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v96 = v94 == v95;
 	loc61 = v96;
 	v94 = loc61;
-	if (v94)
+	if (!v94)
+	{
+		v94 = loc50;
+		v95.u0 = 0x0C;
+		v94 += v95;
+		loc72 = v94;
+		v94 = loc72;
+		v94 = *v94.u0;
+		loc83 = v94;
+		v94 = loc50;
+		v95.u0 = 0x10;
+		v94 += v95;
+		loc94 = v94;
+		v94 = loc94;
+		v94 = *v94.u0;
+		loc10 = v94;
+		v94 = loc83;
+		v95 = loc10;
+		v96 = v94 == v95;
+		loc11 = v96;
+		v94 = loc11;
+		v94 = v94;
+		v94 = loc50;
+		v94 = *v94.u0;
+		loc12 = v94;
+		v94 = loc12;
+		v95.u0 = 0x24;
+		v94 += v95;
+		loc13 = v94;
+		v94 = loc13;
+		v94 = *v94.u0;
+		loc14 = v94;
+		v94 = loc50;
+		v95 = loc14;
+		v97.u0 = 0x01FF;
+		v95 &= v97;
+		v97.u0 = 0x0B00;
+		v95 += v97;
+	}
+	else
 	{
 		v94.u0 = 0x00;
 		loc18 = v94;
 	}
-	v94 = loc50;
-	v95.u0 = 0x0C;
-	v94 += v95;
-	loc72 = v94;
-	v94 = loc72;
-	v94 = *v94.u0;
-	loc83 = v94;
-	v94 = loc50;
-	v95.u0 = 0x10;
-	v94 += v95;
-	loc94 = v94;
-	v94 = loc94;
-	v94 = *v94.u0;
-	loc10 = v94;
-	v94 = loc83;
-	v95 = loc10;
-	v96 = v94 == v95;
-	loc11 = v96;
-	v94 = loc11;
-	v94 = v94;
 }
 
 // 00101E90: Stack Eq_n fn00101E90(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -262,31 +1483,50 @@ Eq_n fn00101E90(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v181 = v179 == v180;
 	loc131 = v181;
 	v179 = loc131;
-	if (v179)
+	if (!v179)
+	{
+		v179 = loc120;
+		v180.u0 = 0x0C;
+		v179 += v180;
+		loc142 = v179;
+		v179 = loc142;
+		v179 = *v179.u0;
+		loc153 = v179;
+		v179 = loc120;
+		v180.u0 = 0x10;
+		v179 += v180;
+		loc164 = v179;
+		v179 = loc164;
+		v179 = *v179.u0;
+		loc17 = v179;
+		v179 = loc153;
+		v180 = loc17;
+		v181 = v179 == v180;
+		loc28 = v181;
+		v179 = loc28;
+		v179 = v179;
+		v179 = loc120;
+		v179 = *v179.u0;
+		loc39 = v179;
+		v179 = loc39;
+		v180.u0 = 0x24;
+		v179 += v180;
+		loc50 = v179;
+		v179 = loc50;
+		v179 = *v179.u0;
+		loc61 = v179;
+		v179 = loc120;
+		v180 = loc61;
+		v182.u0 = 0x01FF;
+		v180 &= v182;
+		v182.u0 = 0x0B00;
+		v180 += v182;
+	}
+	else
 	{
 		v179.u0 = 0x00;
 		loc88 = v179;
 	}
-	v179 = loc120;
-	v180.u0 = 0x0C;
-	v179 += v180;
-	loc142 = v179;
-	v179 = loc142;
-	v179 = *v179.u0;
-	loc153 = v179;
-	v179 = loc120;
-	v180.u0 = 0x10;
-	v179 += v180;
-	loc164 = v179;
-	v179 = loc164;
-	v179 = *v179.u0;
-	loc17 = v179;
-	v179 = loc153;
-	v180 = loc17;
-	v181 = v179 == v180;
-	loc28 = v181;
-	v179 = loc28;
-	v179 = v179;
 }
 
 // 0010268E: void fn0010268E(Stack Eq_n arg0)
@@ -317,66 +1557,2357 @@ Eq_n fn001026A5(Eq_n arg0)
 // 001026B0: Stack Eq_n fn001026B0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn001026B0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v11.u3 = g_t140030.u3;
+	loc14 = v11;
+	v11.u3 = g_t140030.u3;
+	v12.u0 = 0x10;
+	v11 += v12;
+	g_t140030.u3 = (word32 *) v11;
+	v11.u3 = g_t140030.u3;
+	v12.u3 = g_t140034.u3;
+	v13 = v11 >= v12;
+	if (v13)
+	{
+		v11.u0 = 0x10;
+		abortStackOverflow(v11);
+	}
+	v11 = loc14;
+	v12.u0 = 0x0C;
+	v11 += v12;
+	loc7 = v11;
+	v11 = loc14;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc6 = v11;
+	v11 = loc14;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc9 = v11;
+	v11 = loc14;
+	loc10 = v11;
+	v11 = arg1;
+	v11 = *v11.u0;
+	loc11 = v11;
+	v11 = loc9;
+	v12 = loc11;
+	*v11.u0 = v12;
+	v11 = arg2;
+	v11 = *v11.u0;
+	loc12 = v11;
+	v11 = loc10;
+	v12 = loc12;
+	*v11.u0 = v12;
+	v11 = loc6;
+	v12 = loc9;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = loc7;
+	v12 = loc10;
+	v12 = *v12.u0;
+	*v11.u0 = v12;
+	v11 = arg0;
+	v12 = loc6;
+	v14 = loc7;
+	v15 = arg3;
+	v16 = arg4;
+	v17 = arg5;
+	v18.u0 = 0x2230;
+	v19.u0 = 0x2250;
+	v11 = fn001043BA(v11, v12, v14, v15, v16, v17, v18, v19);
+	loc8 = v11;
+	v11 = loc14;
+	g_t140030.u3 = (word32 *) v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 00102734: Stack Eq_n fn00102734(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn00102734(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v27.u3 = g_t140030.u3;
+	loc30 = v27;
+	v27.u3 = g_t140030.u3;
+	v28.u0 = 0x10;
+	v27 += v28;
+	g_t140030.u3 = (word32 *) v27;
+	v27.u3 = g_t140030.u3;
+	v28.u3 = g_t140034.u3;
+	v29 = v27 >= v28;
+	if (v29)
+	{
+		v27.u0 = 0x10;
+		abortStackOverflow(v27);
+	}
+	v27 = loc30;
+	v28.u0 = 0x0C;
+	v27 += v28;
+	loc7 = v27;
+	v27 = loc30;
+	v28.u0 = 0x08;
+	v27 += v28;
+	loc6 = v27;
+	v27 = loc30;
+	v28.u0 = 0x04;
+	v27 += v28;
+	loc25 = v27;
+	v27 = loc30;
+	loc26 = v27;
+	v27 = arg0;
+	v28.u0 = 0x08;
+	v27 += v28;
+	loc27 = v27;
+	v27 = loc27;
+	v27 = *v27.u0;
+	loc28 = v27;
+	v27 = loc28;
+	v28.u0 = 0x14;
+	v27 += v28;
+	loc8 = v27;
+	v27 = loc8;
+	v27 = *v27.u0;
+	loc9 = v27;
+	v27 = loc27;
+	v28 = loc9;
+	v30 = 0x01FF;
+	v28 &= v30;
+	v30 = 0x0B00;
+	v28.u0 = (bool) v28.u0 + v30;
 }
 
 // 00102842: Stack Eq_n fn00102842(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn00102842(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v16.u3 = g_t140030.u3;
+	loc19 = v16;
+	v16.u3 = g_t140030.u3;
+	v17.u0 = 0x10;
+	v16 += v17;
+	g_t140030.u3 = (word32 *) v16;
+	v16.u3 = g_t140030.u3;
+	v17.u3 = g_t140034.u3;
+	v18 = v16 >= v17;
+	if (v18)
+	{
+		v16.u0 = 0x10;
+		abortStackOverflow(v16);
+	}
+	v16 = loc19;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc6 = v16;
+	v16 = loc19;
+	v17.u0 = 0x04;
+	v16 += v17;
+	loc14 = v16;
+	v16 = loc19;
+	loc15 = v16;
+	v16 = arg3;
+	v16 = fn000E64CA(v16);
+	loc16 = v16;
+	v16 = loc14;
+	v17 = loc16;
+	*v16.u0 = v17;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x0164;
+	v17 = loc14;
+	v19.u0 = 0x4C90;
+	v16 = invoke_iii(v16, v17, v19);
+	loc17 = v16;
+	v16.u3 = g_t140048.u3;
+	loc8 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc8;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc9 = v16;
+	v16 = loc9;
+	if (!v16)
+	{
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = arg5;
+		v17.u0 = 0x18;
+		v16 += v17;
+		loc10 = v16;
+		v16 = arg2;
+		v16.u3 = *v16.u3;
+		loc11 = v16;
+		v16 = loc15;
+		v17 = loc11;
+		*v16.u3 = (word32) v17;
+		v16 = loc6;
+		v17 = loc15;
+		v17 = *v17.u0;
+		*v16.u3 = (word32) v17;
+		v16 = arg0;
+		v17 = loc10;
+		v19 = arg1;
+		v20 = loc6;
+		v21 = arg4;
+		v22 = loc17;
+		fn00104239(v16, v17, v19, v20, v21, v22);
+		v16 = arg1;
+		v16.u3 = *v16.u3;
+		loc7 = v16;
+		v16 = loc19;
+		g_t140030.u3 = (word32 *) v16;
+		v16 = loc7;
+		return v16;
+	}
+	else
+	{
+		v16 = ___cxa_find_matching_catch_n();
+		loc12 = v16;
+		v16.u3 = g_t140094.u3;
+		loc13 = v16;
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = loc12;
+		___resumeException(v16);
+		v16.u0 = 0x00;
+		return v16;
+	}
 }
 
 // 001028FA: Stack Eq_n fn001028FA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn001028FA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v16.u3 = g_t140030.u3;
+	loc19 = v16;
+	v16.u3 = g_t140030.u3;
+	v17.u0 = 0x10;
+	v16 += v17;
+	g_t140030.u3 = (word32 *) v16;
+	v16.u3 = g_t140030.u3;
+	v17.u3 = g_t140034.u3;
+	v18 = v16 >= v17;
+	if (v18)
+	{
+		v16.u0 = 0x10;
+		abortStackOverflow(v16);
+	}
+	v16 = loc19;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc6 = v16;
+	v16 = loc19;
+	v17.u0 = 0x04;
+	v16 += v17;
+	loc14 = v16;
+	v16 = loc19;
+	loc15 = v16;
+	v16 = arg3;
+	v16 = fn000E64CA(v16);
+	loc16 = v16;
+	v16 = loc14;
+	v17 = loc16;
+	*v16.u0 = v17;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x0164;
+	v17 = loc14;
+	v19.u0 = 0x4C90;
+	v16 = invoke_iii(v16, v17, v19);
+	loc17 = v16;
+	v16.u3 = g_t140048.u3;
+	loc8 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc8;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc9 = v16;
+	v16 = loc9;
+	if (!v16)
+	{
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = arg5;
+		v17.u0 = 0x10;
+		v16 += v17;
+		loc10 = v16;
+		v16 = arg2;
+		v16.u3 = *v16.u3;
+		loc11 = v16;
+		v16 = loc15;
+		v17 = loc11;
+		*v16.u3 = (word32) v17;
+		v16 = loc6;
+		v17 = loc15;
+		v17 = *v17.u0;
+		*v16.u3 = (word32) v17;
+		v16 = arg0;
+		v17 = loc10;
+		v19 = arg1;
+		v20 = loc6;
+		v21 = arg4;
+		v22 = loc17;
+		fn001042F6(v16, v17, v19, v20, v21, v22);
+		v16 = arg1;
+		v16.u3 = *v16.u3;
+		loc7 = v16;
+		v16 = loc19;
+		g_t140030.u3 = (word32 *) v16;
+		v16 = loc7;
+		return v16;
+	}
+	else
+	{
+		v16 = ___cxa_find_matching_catch_n();
+		loc12 = v16;
+		v16.u3 = g_t140094.u3;
+		loc13 = v16;
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = loc12;
+		___resumeException(v16);
+		v16.u0 = 0x00;
+		return v16;
+	}
 }
 
 // 001029B2: Stack Eq_n fn001029B2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn001029B2(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v16.u3 = g_t140030.u3;
+	loc19 = v16;
+	v16.u3 = g_t140030.u3;
+	v17.u0 = 0x10;
+	v16 += v17;
+	g_t140030.u3 = (word32 *) v16;
+	v16.u3 = g_t140030.u3;
+	v17.u3 = g_t140034.u3;
+	v18 = v16 >= v17;
+	if (v18)
+	{
+		v16.u0 = 0x10;
+		abortStackOverflow(v16);
+	}
+	v16 = loc19;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc6 = v16;
+	v16 = loc19;
+	v17.u0 = 0x04;
+	v16 += v17;
+	loc14 = v16;
+	v16 = loc19;
+	loc15 = v16;
+	v16 = arg3;
+	v16 = fn000E64CA(v16);
+	loc16 = v16;
+	v16 = loc14;
+	v17 = loc16;
+	*v16.u0 = v17;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x0164;
+	v17 = loc14;
+	v19.u0 = 0x4C90;
+	v16 = invoke_iii(v16, v17, v19);
+	loc17 = v16;
+	v16.u3 = g_t140048.u3;
+	loc8 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc8;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc9 = v16;
+	v16 = loc9;
+	if (!v16)
+	{
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = arg5;
+		v17.u0 = 0x14;
+		v16 += v17;
+		loc10 = v16;
+		v16 = arg2;
+		v16.u3 = *v16.u3;
+		loc11 = v16;
+		v16 = loc15;
+		v17 = loc11;
+		*v16.u3 = (word32) v17;
+		v16 = loc6;
+		v17 = loc15;
+		v17 = *v17.u0;
+		*v16.u3 = (word32) v17;
+		v16 = arg0;
+		v17 = loc10;
+		v19 = arg1;
+		v20 = loc6;
+		v21 = arg4;
+		v22 = loc17;
+		fn00105903(v16, v17, v19, v20, v21, v22);
+		v16 = arg1;
+		v16.u3 = *v16.u3;
+		loc7 = v16;
+		v16 = loc19;
+		g_t140030.u3 = (word32 *) v16;
+		v16 = loc7;
+		return v16;
+	}
+	else
+	{
+		v16 = ___cxa_find_matching_catch_n();
+		loc12 = v16;
+		v16.u3 = g_t140094.u3;
+		loc13 = v16;
+		v16 = loc16;
+		v16 = fn0011B43F(v16);
+		v16 = loc12;
+		___resumeException(v16);
+		v16.u0 = 0x00;
+		return v16;
+	}
 }
 
 // 00102A6A: Stack Eq_n fn00102A6A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00102A6A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
+	v164.u3 = g_t140030.u3;
+	loc169 = v164;
+	v164.u3 = g_t140030.u3;
+	v165.u0 = 0x0100;
+	v164 += v165;
+	g_t140030.u3 = (word32 *) v164;
+	v164.u3 = g_t140030.u3;
+	v165.u3 = g_t140034.u3;
+	v166 = v164 >= v165;
+	if (v166)
+	{
+		v164.u0 = 0x0100;
+		abortStackOverflow(v164);
+	}
+	v164 = loc169;
+	v165.u0 = 0xF8;
+	v164 += v165;
+	loc32 = v164;
+	v164 = loc169;
+	v165.u0 = 244;
+	v164 += v165;
+	loc30 = v164;
+	v164 = loc169;
+	v165.u0 = 0xF0;
+	v164 += v165;
+	loc29 = v164;
+	v164 = loc169;
+	v165.u0 = 0xEC;
+	v164 += v165;
+	loc28 = v164;
+	v164 = loc169;
+	v165.u0 = 232;
+	v164 += v165;
+	loc27 = v164;
+	v164 = loc169;
+	v165.u0 = 228;
+	v164 += v165;
+	loc26 = v164;
+	v164 = loc169;
+	v165.u0 = 0xE0;
+	v164 += v165;
+	loc25 = v164;
+	v164 = loc169;
+	v165.u0 = 220;
+	v164 += v165;
+	loc24 = v164;
+	v164 = loc169;
+	v165.u0 = 0xD8;
+	v164 += v165;
+	loc23 = v164;
+	v164 = loc169;
+	v165.u0 = 212;
+	v164 += v165;
+	loc22 = v164;
+	v164 = loc169;
+	v165.u0 = 0xD0;
+	v164 += v165;
+	loc21 = v164;
+	v164 = loc169;
+	v165.u0 = 0xCC;
+	v164 += v165;
+	loc19 = v164;
+	v164 = loc169;
+	v165.u0 = 200;
+	v164 += v165;
+	loc18 = v164;
+	v164 = loc169;
+	v165.u0 = 0xC4;
+	v164 += v165;
+	loc17 = v164;
+	v164 = loc169;
+	v165.u0 = 0xC0;
+	v164 += v165;
+	loc16 = v164;
+	v164 = loc169;
+	v165.u0 = 188;
+	v164 += v165;
+	loc15 = v164;
+	v164 = loc169;
+	v165.u0 = 0xB8;
+	v164 += v165;
+	loc14 = v164;
+	v164 = loc169;
+	v165.u0 = 0xB4;
+	v164 += v165;
+	loc13 = v164;
+	v164 = loc169;
+	v165.u0 = 0xB0;
+	v164 += v165;
+	loc12 = v164;
+	v164 = loc169;
+	v165.u0 = 0xAC;
+	v164 += v165;
+	loc11 = v164;
+	v164 = loc169;
+	v165.u0 = 0xA8;
+	v164 += v165;
+	loc10 = v164;
+	v164 = loc169;
+	v165.u0 = 0xA4;
+	v164 += v165;
+	loc38 = v164;
+	v164 = loc169;
+	v165.u0 = 0xA0;
+	v164 += v165;
+	loc37 = v164;
+	v164 = loc169;
+	v165.u0 = 0x9C;
+	v164 += v165;
+	loc36 = v164;
+	v164 = loc169;
+	v165.u0 = 0x98;
+	v164 += v165;
+	loc35 = v164;
+	v164 = loc169;
+	v165.u0 = 0x94;
+	v164 += v165;
+	loc34 = v164;
+	v164 = loc169;
+	v165.u0 = 0x90;
+	v164 += v165;
+	loc33 = v164;
+	v164 = loc169;
+	v165.u0 = 0x8C;
+	v164 += v165;
+	loc31 = v164;
+	v164 = loc169;
+	v165.u0 = 0x88;
+	v164 += v165;
+	loc20 = v164;
+	v164 = loc169;
+	v165.u0 = 0x84;
+	v164 += v165;
+	loc9 = v164;
+	v164 = loc169;
+	v165.u0 = 0x80;
+	v164 += v165;
+	loc8 = v164;
+	v164 = loc169;
+	v165.u0 = 0x7C;
+	v164 += v165;
+	loc146 = v164;
+	v164 = loc169;
+	v165.u0 = 0x78;
+	v164 += v165;
+	loc157 = v164;
+	v164 = loc169;
+	v165.u0 = 116;
+	v164 += v165;
+	loc41 = v164;
+	v164 = loc169;
+	v165.u0 = 0x70;
+	v164 += v165;
+	loc52 = v164;
+	v164 = loc169;
+	v165.u0 = 0x6C;
+	v164 += v165;
+	loc63 = v164;
+	v164 = loc169;
+	v165.u0 = 0x68;
+	v164 += v165;
+	loc74 = v164;
+	v164 = loc169;
+	v165.u0 = 100;
+	v164 += v165;
+	loc80 = v164;
+	v164 = loc169;
+	v165.u0 = 0x60;
+	v164 += v165;
+	loc81 = v164;
+	v164 = loc169;
+	v165.u0 = 0x5C;
+	v164 += v165;
+	loc82 = v164;
+	v164 = loc169;
+	v165.u0 = 88;
+	v164 += v165;
+	loc83 = v164;
+	v164 = loc169;
+	v165.u0 = 0x54;
+	v164 += v165;
+	loc84 = v164;
+	v164 = loc169;
+	v165.u0 = 0x50;
+	v164 += v165;
+	loc85 = v164;
+	v164 = loc169;
+	v165.u0 = 0x4C;
+	v164 += v165;
+	loc86 = v164;
+	v164 = loc169;
+	v165.u0 = 0x48;
+	v164 += v165;
+	loc87 = v164;
+	v164 = loc169;
+	v165.u0 = 0x44;
+	v164 += v165;
+	loc88 = v164;
+	v164 = loc169;
+	v165.u0 = 0x40;
+	v164 += v165;
+	loc89 = v164;
+	v164 = loc169;
+	v165.u0 = 0x3C;
+	v164 += v165;
+	loc90 = v164;
+	v164 = loc169;
+	v165.u0 = 0x38;
+	v164 += v165;
+	loc91 = v164;
+	v164 = loc169;
+	v165.u0 = 0x34;
+	v164 += v165;
+	loc92 = v164;
+	v164 = loc169;
+	v165.u0 = 0x30;
+	v164 += v165;
+	loc93 = v164;
+	v164 = loc169;
+	v165.u0 = 44;
+	v164 += v165;
+	loc94 = v164;
+	v164 = loc169;
+	v165.u0 = 0x28;
+	v164 += v165;
+	loc95 = v164;
+	v164 = loc169;
+	v165.u0 = 0x24;
+	v164 += v165;
+	loc96 = v164;
+	v164 = loc169;
+	v165.u0 = 0x20;
+	v164 += v165;
+	loc97 = v164;
+	v164 = loc169;
+	v165.u0 = 0x1C;
+	v164 += v165;
+	loc98 = v164;
+	v164 = loc169;
+	v165.u0 = 0x18;
+	v164 += v165;
+	loc99 = v164;
+	v164 = loc169;
+	v165.u0 = 0x14;
+	v164 += v165;
+	loc100 = v164;
+	v164 = loc169;
+	v165.u0 = 0x10;
+	v164 += v165;
+	loc101 = v164;
+	v164 = loc169;
+	v165.u0 = 0x0C;
+	v164 += v165;
+	loc102 = v164;
+	v164 = loc169;
+	v165.u0 = 0x08;
+	v164 += v165;
+	loc103 = v164;
+	v164 = loc169;
+	v165.u0 = 0x04;
+	v164 += v165;
+	loc104 = v164;
+	v164 = loc169;
+	loc105 = v164;
+	v164 = arg4;
+	v165.u0 = 0x00;
+	*v164.u0 = v165;
+	v164 = arg3;
+	v164 = fn000E64CA(v164);
+	loc106 = v164;
+	v164 = loc146;
+	v165 = loc106;
+	*v164.u0 = v165;
+	v164.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v164;
+	v164.u0 = 0x0164;
+	v165 = loc146;
+	v167.u0 = 0x4C90;
+	v164 = invoke_iii(v164, v165, v167);
+	loc107 = v164;
+	v164.u3 = g_t140048.u3;
+	loc108 = v164;
+	v164.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v164;
+	v164 = loc108;
+	v165.u0 = 0x01;
+	v164 &= v165;
+	loc109 = v164;
+	v164 = loc109;
+	if (v164)
+	{
+		v164 = ___cxa_find_matching_catch_n();
+		loc111 = v164;
+		v164.u3 = g_t140094.u3;
+		loc112 = v164;
+		v164 = loc106;
+		v164 = fn0011B43F(v164);
+		v164 = loc111;
+		___resumeException(v164);
+	}
+	v164 = loc106;
+	v164 = fn0011B43F(v164);
+	v164 = arg6;
+	v165.u0 = 0x18;
+	v164 <<= v165;
+	v165.u0 = 0x18;
+	v164 >>= v165;
+	loc110 = v164;
+	v164 = loc110;
+	v165.u0 = 0x25;
+	v164 -= v165;
+	switch (v164)
+	{
+	case 0x00:
+		break;
+	case 0x01:
+		break;
+	case 0x02:
+		goto l00102DE4;
+	case 0x03:
+l00102DE4:
+		goto l00102DE6;
+	case 0x04:
+l00102DE6:
+		v164 = arg5;
+		v165.u0 = 0x10;
+		v164 += v165;
+		loc115 = v164;
+		v164 = arg2;
+		v164 = *v164.u0;
+		loc116 = v164;
+		v164 = loc41;
+		v165 = loc116;
+		*v164.u0 = v165;
+		v164 = loc9;
+		v165 = loc41;
+		v165 = *v165.u0;
+		*v164.u0 = v165;
+		v164 = arg0;
+		v165 = loc115;
+		v167 = arg1;
+		v168 = loc9;
+		v169 = arg4;
+		v170 = loc107;
+		fn001042F6(v164, v165, v167, v168, v169, v170);
+		v164.u0 = 0x1C;
+		loc168 = v164;
+	case 0x05:
+		v164 = arg0;
+		v165.u0 = 0x08;
+		v164 += v165;
+		loc117 = v164;
+		v164 = loc117;
+		v164 = *v164.u0;
+		loc118 = v164;
+		v164 = loc118;
+		v165.u0 = 0x0C;
+		v164 += v165;
+		loc119 = v164;
+		v164 = loc119;
+		v164 = *v164.u0;
+		loc120 = v164;
+		v164 = loc117;
+		v165 = loc120;
+		v167.u0 = 0x01FF;
+		v165 &= v167;
+		v167.u0 = 0x0B00;
+		v165 += v167;
+	}
+	v164 = arg5;
+	v165.u0 = 0x18;
+	v164 += v165;
+	loc113 = v164;
+	v164 = arg2;
+	v164.u3 = *v164.u3;
+	loc114 = v164;
+	v164 = loc157;
+	v165 = loc114;
+	*v164.u3 = (word32) v165;
+	v164 = loc8;
+	v165 = loc157;
+	v165 = *v165.u0;
+	*v164.u3 = (word32) v165;
+	v164 = arg0;
+	v165 = loc113;
+	v167 = arg1;
+	v168 = loc8;
+	v169 = arg4;
+	v170 = loc107;
+	fn00104239(v164, v165, v167, v168, v169, v170);
+	v164.u0 = 0x1C;
+	loc168 = v164;
 }
 
 // 00103575: Stack Eq_n fn00103575(Stack Eq_n arg0)
 Eq_n fn00103575(Eq_n arg0)
 {
+	v50.u3 = g_t140030.u3;
+	loc48 = v50;
+	v50.u0 = 0x4428;
+	v51 = *v50.u0;
+	v50.u3 = (word32) v51;
+	loc2 = v50;
+	v50 = loc2;
+	v52.u0 = 0x18;
+	v50 <<= v52;
+	v52.u0 = 0x18;
+	v50 >>= v52;
+	v52.u0 = 0x00;
+	v53 = v50 == v52;
+	loc13 = v53;
+	v50 = loc13;
+	if (v50)
+	{
+		v50.u0 = 0x4428;
+		v50 = fn0011EE46(v50);
+		loc24 = v50;
+		v50 = loc24;
+		v52.u0 = 0x00;
+		v53 = v50 == v52;
+		loc35 = v53;
+		v50 = loc35;
+		v53 = v50 == 0x00;
+		if (v53)
+		{
+			v50.u0 = 0x4430;
+			v54 = *v50.u0;
+			v50.u3 = (word32) v54;
+			loc41 = v50;
+			v50 = loc41;
+			v52.u0 = 0x18;
+			v50 <<= v52;
+			v52.u0 = 0x18;
+			v50 >>= v52;
+			v52.u0 = 0x00;
+			v53 = v50 == v52;
+			loc42 = v53;
+			v50 = loc42;
+			if (v50)
+			{
+				v50.u0 = 0x4430;
+				v50 = fn0011EE46(v50);
+				loc43 = v50;
+				v50 = loc43;
+				v52.u0 = 0x00;
+				v53 = v50 == v52;
+				loc44 = v53;
+				v50 = loc44;
+				v53 = v50 == 0x00;
+				if (v53)
+				{
+					while (true)
+					{
+						v50.u0 = 0x525C;
+						loc45 = v50;
+						while (true)
+						{
+							v50 = loc45;
+							v55.u0 = 0x00;
+							*v50.u0 = v55;
+							v50 = loc45;
+							v52.u0 = 0x08;
+							v50 += v52;
+							v52.u0 = 0x00;
+							*v50.u0 = v52;
+							v50.u0 = 0x00;
+							loc1 = v50;
+							v50 = loc1;
+							v52.u0 = 0x03;
+							v53 = v50 == v52;
+							loc46 = v53;
+							v50 = loc46;
+							if (v50)
+								break;
+							v50 = loc45;
+							v52 = loc1;
+							v56 = 0x02;
+							v52 <<= v56;
+							v50 += v52;
+							loc3 = v50;
+							v50 = loc3;
+							v52.u0 = 0x00;
+							*v50.u0 = v52;
+							v50 = loc1;
+							v52.u0 = 0x01;
+							v50 += v52;
+							loc4 = v50;
+							v50 = loc4;
+							loc1 = v50;
+						}
+						v50 = loc45;
+						v52.u0 = 0x0C;
+						v50 += v52;
+						loc5 = v50;
+						v50 = loc5;
+						v52.u0 = 21252;
+						v53 = v50 == v52;
+						loc6 = v53;
+						v50 = loc6;
+						if (v50)
+							break;
+						v50 = loc5;
+						loc45 = v50;
+					}
+					v50.u0 = 0x019A;
+					v52.u0 = 0x00;
+					v56 = g_dw140044;
+					v50 = ___cxa_atexit(v50, v52, v56);
+				}
+			}
+			v50.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v50;
+			v50.u0 = 411;
+			v52.u0 = 0x525C;
+			v56 = 8252;
+			v50 = invoke_iii(v50, v52, v56);
+			v50.u3 = g_t140048.u3;
+			loc7 = v50;
+			v50.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v50;
+			v50 = loc7;
+			v52.u0 = 0x01;
+			v50 &= v52;
+			loc8 = v50;
+			v50 = loc8;
+			v53 = v50 == 0x00;
+			if (v53)
+			{
+				v50.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v50;
+				v50.u0 = 411;
+				v52.u0 = 0x5268;
+				v56 = 8280;
+				v50 = invoke_iii(v50, v52, v56);
+				v50.u3 = g_t140048.u3;
+				loc9 = v50;
+				v50.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v50;
+				v50 = loc9;
+				v52.u0 = 0x01;
+				v50 &= v52;
+				loc10 = v50;
+				v50 = loc10;
+				v53 = v50 == 0x00;
+				if (v53)
+				{
+					v50.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v50;
+					v50.u0 = 411;
+					v52.u0 = 21108;
+					v56 = 8308;
+					v50 = invoke_iii(v50, v52, v56);
+					v50.u3 = g_t140048.u3;
+					loc11 = v50;
+					v50.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v50;
+					v50 = loc11;
+					v52.u0 = 0x01;
+					v50 &= v52;
+					loc12 = v50;
+					v50 = loc12;
+					v53 = v50 == 0x00;
+					if (v53)
+					{
+						v50.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v50;
+						v50.u0 = 411;
+						v52.u0 = 21120;
+						v56 = 0x2094;
+						v50 = invoke_iii(v50, v52, v56);
+						v50.u3 = g_t140048.u3;
+						loc14 = v50;
+						v50.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v50;
+						v50 = loc14;
+						v52.u0 = 0x01;
+						v50 &= v52;
+						loc15 = v50;
+						v50 = loc15;
+						v53 = v50 == 0x00;
+						if (v53)
+						{
+							v50.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v50;
+							v50.u0 = 411;
+							v52.u0 = 21132;
+							v56 = 8380;
+							v50 = invoke_iii(v50, v52, v56);
+							v50.u3 = g_t140048.u3;
+							loc16 = v50;
+							v50.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v50;
+							v50 = loc16;
+							v52.u0 = 0x01;
+							v50 &= v52;
+							loc17 = v50;
+							v50 = loc17;
+							v53 = v50 == 0x00;
+							if (v53)
+							{
+								v50.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v50;
+								v50.u0 = 411;
+								v52.u0 = 21144;
+								v56 = 0x20E0;
+								v50 = invoke_iii(v50, v52, v56);
+								v50.u3 = g_t140048.u3;
+								loc18 = v50;
+								v50.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v50;
+								v50 = loc18;
+								v52.u0 = 0x01;
+								v50 &= v52;
+								loc19 = v50;
+								v50 = loc19;
+								v53 = v50 == 0x00;
+								if (v53)
+								{
+									v50.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v50;
+									v50.u0 = 411;
+									v52.u0 = 21156;
+									v56 = 8444;
+									v50 = invoke_iii(v50, v52, v56);
+									v50.u3 = g_t140048.u3;
+									loc20 = v50;
+									v50.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v50;
+									v50 = loc20;
+									v52.u0 = 0x01;
+									v50 &= v52;
+									loc21 = v50;
+									v50 = loc21;
+									v53 = v50 == 0x00;
+									if (v53)
+									{
+										v50.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v50;
+										v50.u0 = 411;
+										v52.u0 = 0x52B0;
+										v56 = 0x2120;
+										v50 = invoke_iii(v50, v52, v56);
+										v50.u3 = g_t140048.u3;
+										loc22 = v50;
+										v50.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v50;
+										v50 = loc22;
+										v52.u0 = 0x01;
+										v50 &= v52;
+										loc23 = v50;
+										v50 = loc23;
+										v53 = v50 == 0x00;
+										if (v53)
+										{
+											v50.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v50;
+											v50.u0 = 411;
+											v52.u0 = 21180;
+											v56 = 0x2130;
+											v50 = invoke_iii(v50, v52, v56);
+											v50.u3 = g_t140048.u3;
+											loc25 = v50;
+											v50.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v50;
+											v50 = loc25;
+											v52.u0 = 0x01;
+											v50 &= v52;
+											loc26 = v50;
+											v50 = loc26;
+											v53 = v50 == 0x00;
+											if (v53)
+											{
+												v50.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v50;
+												v50.u0 = 411;
+												v52.u0 = 21192;
+												v56 = 0x2140;
+												v50 = invoke_iii(v50, v52, v56);
+												v50.u3 = g_t140048.u3;
+												loc27 = v50;
+												v50.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v50;
+												v50 = loc27;
+												v52.u0 = 0x01;
+												v50 &= v52;
+												loc28 = v50;
+												v50 = loc28;
+												v53 = v50 == 0x00;
+												if (v53)
+												{
+													v50.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v50;
+													v50.u0 = 411;
+													v52.u0 = 21204;
+													v56 = 8528;
+													v50 = invoke_iii(v50, v52, v56);
+													v50.u3 = g_t140048.u3;
+													loc29 = v50;
+													v50.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v50;
+													v50 = loc29;
+													v52.u0 = 0x01;
+													v50 &= v52;
+													loc30 = v50;
+													v50 = loc30;
+													v53 = v50 == 0x00;
+													if (v53)
+													{
+														v50.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v50;
+														v50.u0 = 411;
+														v52.u0 = 21216;
+														v56 = 8544;
+														v50 = invoke_iii(v50, v52, v56);
+														v50.u3 = g_t140048.u3;
+														loc31 = v50;
+														v50.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v50;
+														v50 = loc31;
+														v52.u0 = 0x01;
+														v50 &= v52;
+														loc32 = v50;
+														v50 = loc32;
+														v53 = v50 == 0x00;
+														if (v53)
+														{
+															v50.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v50;
+															v50.u0 = 411;
+															v52.u0 = 21228;
+															v56 = 0x2170;
+															v50 = invoke_iii(v50, v52, v56);
+															v50.u3 = g_t140048.u3;
+															loc33 = v50;
+															v50.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v50;
+															v50 = loc33;
+															v52.u0 = 0x01;
+															v50 &= v52;
+															loc34 = v50;
+															v50 = loc34;
+															v53 = v50 == 0x00;
+															if (v53)
+															{
+																v50.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v50;
+																v50.u0 = 411;
+																v52.u0 = 21240;
+																v56 = 0x2180;
+																v50 = invoke_iii(v50, v52, v56);
+																v50.u3 = g_t140048.u3;
+																loc36 = v50;
+																v50.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v50;
+																v50 = loc36;
+																v52.u0 = 0x01;
+																v50 &= v52;
+																loc37 = v50;
+																v50 = loc37;
+																v53 = v50 == 0x00;
+																if (v53)
+																{
+																	v50.u0 = 21252;
+																	v52.u0 = 0x525C;
+																	*v50.u0 = v52;
+																	goto l00103895;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			v50 = ___cxa_find_matching_catch_n();
+			loc39 = v50;
+			v50.u3 = g_t140094.u3;
+			loc40 = v50;
+			v50 = loc39;
+			___resumeException(v50);
+		}
+	}
+l00103895:
+	v50.u0 = 21252;
+	v50 = *v50.u0;
+	loc38 = v50;
+	v50 = loc38;
+	return v50;
 }
 
 // 001038A4: Stack Eq_n fn001038A4(Stack Eq_n arg0)
 Eq_n fn001038A4(Eq_n arg0)
 {
+	v70.u3 = g_t140030.u3;
+	loc68 = v70;
+	v70.u0 = 0x4418;
+	v71 = *v70.u0;
+	v70.u3 = (word32) v71;
+	loc2 = v70;
+	v70 = loc2;
+	v72.u0 = 0x18;
+	v70 <<= v72;
+	v72.u0 = 0x18;
+	v70 >>= v72;
+	v72.u0 = 0x00;
+	v73 = v70 == v72;
+	loc13 = v73;
+	v70 = loc13;
+	if (!v70)
+	{
+l00103D41:
+		v70.u0 = 0x5258;
+		v70 = *v70.u0;
+		loc60 = v70;
+		v70 = loc60;
+		return v70;
+	}
+	v70.u0 = 0x4418;
+	v70 = fn0011EE46(v70);
+	loc24 = v70;
+	v70 = loc24;
+	v72.u0 = 0x00;
+	v73 = v70 == v72;
+	loc35 = v73;
+	v70 = loc35;
+	v73 = v70 == 0x00;
+	if (!v73)
+	{
+l00103D40:
+		goto l00103D41;
+	}
+	v70.u0 = 0x4420;
+	v74 = *v70.u0;
+	v70.u3 = (word32) v74;
+	loc46 = v70;
+	v70 = loc46;
+	v72.u0 = 0x18;
+	v70 <<= v72;
+	v72.u0 = 0x18;
+	v70 >>= v72;
+	v72.u0 = 0x00;
+	v73 = v70 == v72;
+	loc57 = v73;
+	v70 = loc57;
+	if (v70)
+	{
+		v70.u0 = 0x4420;
+		v70 = fn0011EE46(v70);
+		loc63 = v70;
+		v70 = loc63;
+		v72.u0 = 0x00;
+		v73 = v70 == v72;
+		loc64 = v73;
+		v70 = loc64;
+		v73 = v70 == 0x00;
+		if (v73)
+		{
+			while (true)
+			{
+				v70.u0 = 20792;
+				loc65 = v70;
+				while (true)
+				{
+					v70 = loc65;
+					v75.u0 = 0x00;
+					*v70.u0 = v75;
+					v70 = loc65;
+					v72.u0 = 0x08;
+					v70 += v72;
+					v72.u0 = 0x00;
+					*v70.u0 = v72;
+					v70.u0 = 0x00;
+					loc1 = v70;
+					v70 = loc1;
+					v72.u0 = 0x03;
+					v73 = v70 == v72;
+					loc66 = v73;
+					v70 = loc66;
+					if (v70)
+						break;
+					v70 = loc65;
+					v72 = loc1;
+					v76 = 0x02;
+					v72 <<= v76;
+					v70 += v72;
+					loc3 = v70;
+					v70 = loc3;
+					v72.u0 = 0x00;
+					*v70.u0 = v72;
+					v70 = loc1;
+					v72.u0 = 0x01;
+					v70 += v72;
+					loc4 = v70;
+					v70 = loc4;
+					loc1 = v70;
+				}
+				v70 = loc65;
+				v72.u0 = 0x0C;
+				v70 += v72;
+				loc5 = v70;
+				v70 = loc5;
+				v72.u0 = 0x5258;
+				v73 = v70 == v72;
+				loc6 = v73;
+				v70 = loc6;
+				if (v70)
+					break;
+				v70 = loc5;
+				loc65 = v70;
+			}
+			v70.u0 = 0x019C;
+			v72.u0 = 0x00;
+			v76 = g_dw140044;
+			v70 = ___cxa_atexit(v70, v72, v76);
+		}
+	}
+	v70.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v70;
+	v70.u0 = 411;
+	v72.u0 = 20792;
+	v76 = 7732;
+	v70 = invoke_iii(v70, v72, v76);
+	v70.u3 = g_t140048.u3;
+	loc7 = v70;
+	v70.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v70;
+	v70 = loc7;
+	v72.u0 = 0x01;
+	v70 &= v72;
+	loc8 = v70;
+	v70 = loc8;
+	v73 = v70 == 0x00;
+	if (v73)
+	{
+		v70.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v70;
+		v70.u0 = 411;
+		v72.u0 = 0x5144;
+		v76 = 7764;
+		v70 = invoke_iii(v70, v72, v76);
+		v70.u3 = g_t140048.u3;
+		loc9 = v70;
+		v70.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v70;
+		v70 = loc9;
+		v72.u0 = 0x01;
+		v70 &= v72;
+		loc10 = v70;
+		v70 = loc10;
+		v73 = v70 == 0x00;
+		if (v73)
+		{
+			v70.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v70;
+			v70.u0 = 411;
+			v72.u0 = 0x5150;
+			v76 = 7800;
+			v70 = invoke_iii(v70, v72, v76);
+			v70.u3 = g_t140048.u3;
+			loc11 = v70;
+			v70.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v70;
+			v70 = loc11;
+			v72.u0 = 0x01;
+			v70 &= v72;
+			loc12 = v70;
+			v70 = loc12;
+			v73 = v70 == 0x00;
+			if (v73)
+			{
+				v70.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v70;
+				v70.u0 = 411;
+				v72.u0 = 20828;
+				v76 = 0x1E90;
+				v70 = invoke_iii(v70, v72, v76);
+				v70.u3 = g_t140048.u3;
+				loc14 = v70;
+				v70.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v70;
+				v70 = loc14;
+				v72.u0 = 0x01;
+				v70 &= v72;
+				loc15 = v70;
+				v70 = loc15;
+				v73 = v70 == 0x00;
+				if (v73)
+				{
+					v70.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v70;
+					v70.u0 = 411;
+					v72.u0 = 20840;
+					v76 = 7848;
+					v70 = invoke_iii(v70, v72, v76);
+					v70.u3 = g_t140048.u3;
+					loc16 = v70;
+					v70.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v70;
+					v70 = loc16;
+					v72.u0 = 0x01;
+					v70 &= v72;
+					loc17 = v70;
+					v70 = loc17;
+					v73 = v70 == 0x00;
+					if (v73)
+					{
+						v70.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v70;
+						v70.u0 = 411;
+						v72.u0 = 20852;
+						v76 = 0x1EB8;
+						v70 = invoke_iii(v70, v72, v76);
+						v70.u3 = g_t140048.u3;
+						loc18 = v70;
+						v70.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v70;
+						v70 = loc18;
+						v72.u0 = 0x01;
+						v70 &= v72;
+						loc19 = v70;
+						v70 = loc19;
+						v73 = v70 == 0x00;
+						if (v73)
+						{
+							v70.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v70;
+							v70.u0 = 411;
+							v72.u0 = 0x5180;
+							v76 = 0x1ECC;
+							v70 = invoke_iii(v70, v72, v76);
+							v70.u3 = g_t140048.u3;
+							loc20 = v70;
+							v70.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v70;
+							v70 = loc20;
+							v72.u0 = 0x01;
+							v70 &= v72;
+							loc21 = v70;
+							v70 = loc21;
+							v73 = v70 == 0x00;
+							if (v73)
+							{
+								v70.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v70;
+								v70.u0 = 411;
+								v72.u0 = 0x518C;
+								v76 = 0x1EE0;
+								v70 = invoke_iii(v70, v72, v76);
+								v70.u3 = g_t140048.u3;
+								loc22 = v70;
+								v70.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v70;
+								v70 = loc22;
+								v72.u0 = 0x01;
+								v70 &= v72;
+								loc23 = v70;
+								v70 = loc23;
+								v73 = v70 == 0x00;
+								if (v73)
+								{
+									v70.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v70;
+									v70.u0 = 411;
+									v72.u0 = 20888;
+									v76 = 0x1EFC;
+									v70 = invoke_iii(v70, v72, v76);
+									v70.u3 = g_t140048.u3;
+									loc25 = v70;
+									v70.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v70;
+									v70 = loc25;
+									v72.u0 = 0x01;
+									v70 &= v72;
+									loc26 = v70;
+									v70 = loc26;
+									v73 = v70 == 0x00;
+									if (v73)
+									{
+										v70.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v70;
+										v70.u0 = 411;
+										v72.u0 = 20900;
+										v76 = 7972;
+										v70 = invoke_iii(v70, v72, v76);
+										v70.u3 = g_t140048.u3;
+										loc27 = v70;
+										v70.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v70;
+										v70 = loc27;
+										v72.u0 = 0x01;
+										v70 &= v72;
+										loc28 = v70;
+										v70 = loc28;
+										v73 = v70 == 0x00;
+										if (v73)
+										{
+											v70.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v70;
+											v70.u0 = 411;
+											v72.u0 = 0x51B0;
+											v76 = 0x1F44;
+											v70 = invoke_iii(v70, v72, v76);
+											v70.u3 = g_t140048.u3;
+											loc29 = v70;
+											v70.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v70;
+											v70 = loc29;
+											v72.u0 = 0x01;
+											v70 &= v72;
+											loc30 = v70;
+											v70 = loc30;
+											v73 = v70 == 0x00;
+											if (v73)
+											{
+												v70.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v70;
+												v70.u0 = 411;
+												v72.u0 = 20924;
+												v76 = 8040;
+												v70 = invoke_iii(v70, v72, v76);
+												v70.u3 = g_t140048.u3;
+												loc31 = v70;
+												v70.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v70;
+												v70 = loc31;
+												v72.u0 = 0x01;
+												v70 &= v72;
+												loc32 = v70;
+												v70 = loc32;
+												v73 = v70 == 0x00;
+												if (v73)
+												{
+													v70.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v70;
+													v70.u0 = 411;
+													v72.u0 = 0x51C8;
+													v76 = 0x1F8C;
+													v70 = invoke_iii(v70, v72, v76);
+													v70.u3 = g_t140048.u3;
+													loc33 = v70;
+													v70.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v70;
+													v70 = loc33;
+													v72.u0 = 0x01;
+													v70 &= v72;
+													loc34 = v70;
+													v70 = loc34;
+													v73 = v70 == 0x00;
+													if (v73)
+													{
+														v70.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v70;
+														v70.u0 = 411;
+														v72.u0 = 0x51D4;
+														v76 = 0x1F9C;
+														v70 = invoke_iii(v70, v72, v76);
+														v70.u3 = g_t140048.u3;
+														loc36 = v70;
+														v70.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v70;
+														v70 = loc36;
+														v72.u0 = 0x01;
+														v70 &= v72;
+														loc37 = v70;
+														v70 = loc37;
+														v73 = v70 == 0x00;
+														if (v73)
+														{
+															v70.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v70;
+															v70.u0 = 411;
+															v72.u0 = 0x51E0;
+															v76 = 8108;
+															v70 = invoke_iii(v70, v72, v76);
+															v70.u3 = g_t140048.u3;
+															loc38 = v70;
+															v70.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v70;
+															v70 = loc38;
+															v72.u0 = 0x01;
+															v70 &= v72;
+															loc39 = v70;
+															v70 = loc39;
+															v73 = v70 == 0x00;
+															if (v73)
+															{
+																v70.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v70;
+																v70.u0 = 411;
+																v72.u0 = 20972;
+																v76 = 0x1FBC;
+																v70 = invoke_iii(v70, v72, v76);
+																v70.u3 = g_t140048.u3;
+																loc40 = v70;
+																v70.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v70;
+																v70 = loc40;
+																v72.u0 = 0x01;
+																v70 &= v72;
+																loc41 = v70;
+																v70 = loc41;
+																if (!v70)
+																{
+																	v70.u0 = 0x00;
+																	g_t140048.u3 = (word32 *) v70;
+																	v70.u0 = 411;
+																	v72.u0 = 0x51F8;
+																	v76 = 7848;
+																	v70 = invoke_iii(v70, v72, v76);
+																	v70.u3 = g_t140048.u3;
+																	loc42 = v70;
+																	v70.u0 = 0x00;
+																	g_t140048.u3 = (word32 *) v70;
+																	v70 = loc42;
+																	v72.u0 = 0x01;
+																	v70 &= v72;
+																	loc43 = v70;
+																	v70 = loc43;
+																	if (!v70)
+																	{
+																		v70.u0 = 0x00;
+																		g_t140048.u3 = (word32 *) v70;
+																		v70.u0 = 411;
+																		v72.u0 = 0x5204;
+																		v76 = 0x1FCC;
+																		v70 = invoke_iii(v70, v72, v76);
+																		v70.u3 = g_t140048.u3;
+																		loc44 = v70;
+																		v70.u0 = 0x00;
+																		g_t140048.u3 = (word32 *) v70;
+																		v70 = loc44;
+																		v72.u0 = 0x01;
+																		v70 &= v72;
+																		loc45 = v70;
+																		v70 = loc45;
+																		if (!v70)
+																		{
+																			v70.u0 = 0x00;
+																			g_t140048.u3 = (word32 *) v70;
+																			v70.u0 = 411;
+																			v72.u0 = 0x5210;
+																			v76 = 0x1FDC;
+																			v70 = invoke_iii(v70, v72, v76);
+																			v70.u3 = g_t140048.u3;
+																			loc47 = v70;
+																			v70.u0 = 0x00;
+																			g_t140048.u3 = (word32 *) v70;
+																			v70 = loc47;
+																			v72.u0 = 0x01;
+																			v70 &= v72;
+																			loc48 = v70;
+																			v70 = loc48;
+																			if (!v70)
+																			{
+																				v70.u0 = 0x00;
+																				g_t140048.u3 = (word32 *) v70;
+																				v70.u0 = 411;
+																				v72.u0 = 21020;
+																				v76 = 0x1FEC;
+																				v70 = invoke_iii(v70, v72, v76);
+																				v70.u3 = g_t140048.u3;
+																				loc49 = v70;
+																				v70.u0 = 0x00;
+																				g_t140048.u3 = (word32 *) v70;
+																				v70 = loc49;
+																				v72.u0 = 0x01;
+																				v70 &= v72;
+																				loc50 = v70;
+																				v70 = loc50;
+																				if (!v70)
+																				{
+																					v70.u0 = 0x00;
+																					g_t140048.u3 = (word32 *) v70;
+																					v70.u0 = 411;
+																					v72.u0 = 0x5228;
+																					v76 = 8188;
+																					v70 = invoke_iii(v70, v72, v76);
+																					v70.u3 = g_t140048.u3;
+																					loc51 = v70;
+																					v70.u0 = 0x00;
+																					g_t140048.u3 = (word32 *) v70;
+																					v70 = loc51;
+																					v72.u0 = 0x01;
+																					v70 &= v72;
+																					loc52 = v70;
+																					v70 = loc52;
+																					if (!v70)
+																					{
+																						v70.u0 = 0x00;
+																						g_t140048.u3 = (word32 *) v70;
+																						v70.u0 = 411;
+																						v72.u0 = 21044;
+																						v76 = 0x200C;
+																						v70 = invoke_iii(v70, v72, v76);
+																						v70.u3 = g_t140048.u3;
+																						loc53 = v70;
+																						v70.u0 = 0x00;
+																						g_t140048.u3 = (word32 *) v70;
+																						v70 = loc53;
+																						v72.u0 = 0x01;
+																						v70 &= v72;
+																						loc54 = v70;
+																						v70 = loc54;
+																						if (!v70)
+																						{
+																							v70.u0 = 0x00;
+																							g_t140048.u3 = (word32 *) v70;
+																							v70.u0 = 411;
+																							v72.u0 = 0x5240;
+																							v76 = 8220;
+																							v70 = invoke_iii(v70, v72, v76);
+																							v70.u3 = g_t140048.u3;
+																							loc55 = v70;
+																							v70.u0 = 0x00;
+																							g_t140048.u3 = (word32 *) v70;
+																							v70 = loc55;
+																							v72.u0 = 0x01;
+																							v70 &= v72;
+																							loc56 = v70;
+																							v70 = loc56;
+																							if (!v70)
+																							{
+																								v70.u0 = 0x00;
+																								g_t140048.u3 = (word32 *) v70;
+																								v70.u0 = 411;
+																								v72.u0 = 0x524C;
+																								v76 = 0x202C;
+																								v70 = invoke_iii(v70, v72, v76);
+																								v70.u3 = g_t140048.u3;
+																								loc58 = v70;
+																								v70.u0 = 0x00;
+																								g_t140048.u3 = (word32 *) v70;
+																								v70 = loc58;
+																								v72.u0 = 0x01;
+																								v70 &= v72;
+																								loc59 = v70;
+																								v70 = loc59;
+																								if (!v70)
+																								{
+																									v70.u0 = 0x5258;
+																									v72.u0 = 20792;
+																									*v70.u0 = v72;
+																									goto l00103D41;
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+																goto l00103D32;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+l00103D32:
+	v70 = ___cxa_find_matching_catch_n();
+	loc61 = v70;
+	v70.u3 = g_t140094.u3;
+	loc62 = v70;
+	v70 = loc61;
+	___resumeException(v70);
+	goto l00103D40;
 }
 
 // 00103D50: Stack Eq_n fn00103D50(Stack Eq_n arg0)
 Eq_n fn00103D50(Eq_n arg0)
 {
+	v26.u3 = g_t140030.u3;
+	loc24 = v26;
+	v26.u0 = 0x4408;
+	v27 = *v26.u0;
+	v26.u3 = (word32) v27;
+	loc2 = v26;
+	v26 = loc2;
+	v28.u0 = 0x18;
+	v26 <<= v28;
+	v28.u0 = 0x18;
+	v26 >>= v28;
+	v28.u0 = 0x00;
+	v29 = v26 == v28;
+	loc13 = v29;
+	v26 = loc13;
+	if (v26)
+	{
+		v26.u0 = 0x4408;
+		v26 = fn0011EE46(v26);
+		loc15 = v26;
+		v26 = loc15;
+		v28.u0 = 0x00;
+		v29 = v26 == v28;
+		loc16 = v29;
+		v26 = loc16;
+		v29 = v26 == 0x00;
+		if (v29)
+		{
+			v26.u0 = 0x4410;
+			v30 = *v26.u0;
+			v26.u3 = (word32) v30;
+			loc17 = v26;
+			v26 = loc17;
+			v28.u0 = 0x18;
+			v26 <<= v28;
+			v28.u0 = 0x18;
+			v26 >>= v28;
+			v28.u0 = 0x00;
+			v29 = v26 == v28;
+			loc18 = v29;
+			v26 = loc18;
+			if (v26)
+			{
+				v26.u0 = 0x4410;
+				v26 = fn0011EE46(v26);
+				loc19 = v26;
+				v26 = loc19;
+				v28.u0 = 0x00;
+				v29 = v26 == v28;
+				loc20 = v29;
+				v26 = loc20;
+				v29 = v26 == 0x00;
+				if (v29)
+				{
+					while (true)
+					{
+						v26.u0 = 20500;
+						loc21 = v26;
+						while (true)
+						{
+							v26 = loc21;
+							v31.u0 = 0x00;
+							*v26.u0 = v31;
+							v26 = loc21;
+							v28.u0 = 0x08;
+							v26 += v28;
+							v28.u0 = 0x00;
+							*v26.u0 = v28;
+							v26.u0 = 0x00;
+							loc1 = v26;
+							v26 = loc1;
+							v28.u0 = 0x03;
+							v29 = v26 == v28;
+							loc22 = v29;
+							v26 = loc22;
+							if (v26)
+								break;
+							v26 = loc21;
+							v28 = loc1;
+							v32 = 0x02;
+							v28 <<= v32;
+							v26 += v28;
+							loc3 = v26;
+							v26 = loc3;
+							v28.u0 = 0x00;
+							*v26.u0 = v28;
+							v26 = loc1;
+							v28.u0 = 0x01;
+							v26 += v28;
+							loc4 = v26;
+							v26 = loc4;
+							loc1 = v26;
+						}
+						v26 = loc21;
+						v28.u0 = 0x0C;
+						v26 += v28;
+						loc5 = v26;
+						v26 = loc5;
+						v28.u0 = 20788;
+						v29 = v26 == v28;
+						loc6 = v29;
+						v26 = loc6;
+						if (v26)
+							break;
+						v26 = loc5;
+						loc21 = v26;
+					}
+					v26.u0 = 0x019D;
+					v28.u0 = 0x00;
+					v32 = g_dw140044;
+					v26 = ___cxa_atexit(v26, v28, v32);
+				}
+			}
+			v26.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v26;
+			v26.u0 = 411;
+			v28.u0 = 20500;
+			v32 = 0x1E1C;
+			v26 = invoke_iii(v26, v28, v32);
+			v26.u3 = g_t140048.u3;
+			loc7 = v26;
+			v26.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v26;
+			v26 = loc7;
+			v28.u0 = 0x01;
+			v26 &= v28;
+			loc8 = v26;
+			v26 = loc8;
+			v29 = v26 == 0x00;
+			if (v29)
+			{
+				v26.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v26;
+				v26.u0 = 411;
+				v28.u0 = 0x5020;
+				v32 = 7720;
+				v26 = invoke_iii(v26, v28, v32);
+				v26.u3 = g_t140048.u3;
+				loc9 = v26;
+				v26.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v26;
+				v26 = loc9;
+				v28.u0 = 0x01;
+				v26 &= v28;
+				loc10 = v26;
+				v26 = loc10;
+				v29 = v26 == 0x00;
+				if (v29)
+				{
+					v26.u0 = 20788;
+					v28.u0 = 20500;
+					*v26.u0 = v28;
+					goto l00103E9A;
+				}
+			}
+			v26 = ___cxa_find_matching_catch_n();
+			loc12 = v26;
+			v26.u3 = g_t140094.u3;
+			loc14 = v26;
+			v26 = loc12;
+			___resumeException(v26);
+		}
+	}
+l00103E9A:
+	v26.u0 = 20788;
+	v26 = *v26.u0;
+	loc11 = v26;
+	v26 = loc11;
+	return v26;
 }
 
 // 00103EA9: Stack Eq_n fn00103EA9(Stack Eq_n arg0)
 Eq_n fn00103EA9(Eq_n arg0)
 {
+	v15.u3 = g_t140030.u3;
+	loc13 = v15;
+	v15.u0 = 0x4400;
+	v16 = *v15.u0;
+	v15.u3 = (word32) v16;
+	loc1 = v15;
+	v15 = loc1;
+	v17.u0 = 0x18;
+	v15 <<= v17;
+	v17.u0 = 0x18;
+	v15 >>= v17;
+	v17.u0 = 0x00;
+	v18 = v15 == v17;
+	loc4 = v18;
+	v15 = loc4;
+	if (v15)
+	{
+		v15.u0 = 0x4400;
+		v15 = fn0011EE46(v15);
+		loc5 = v15;
+		v15 = loc5;
+		v17.u0 = 0x00;
+		v18 = v15 == v17;
+		loc6 = v18;
+		v15 = loc6;
+		v18 = v15 == 0x00;
+		if (v18)
+		{
+			v15.u0 = 0x5008;
+			v19.u0 = 0x00;
+			*v15.u0 = v19;
+			v15.u0 = 0x5008;
+			v17.u0 = 0x08;
+			v15 += v17;
+			v17.u0 = 0x00;
+			*v15.u0 = v17;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15.u0 = 414;
+			v17.u0 = 0x1DC8;
+			v15 = invoke_ii(v15, v17);
+			loc7 = v15;
+			v15.u3 = g_t140048.u3;
+			loc8 = v15;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15 = loc8;
+			v17.u0 = 0x01;
+			v15 &= v17;
+			loc9 = v15;
+			v15 = loc9;
+			v18 = v15 == 0x00;
+			if (v18)
+			{
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15.u0 = 0x019F;
+				v17.u0 = 0x5008;
+				v20 = 0x1DC8;
+				v21 = loc7;
+				invoke_viii(v15, v17, v20, v21);
+				v15.u3 = g_t140048.u3;
+				loc10 = v15;
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15 = loc10;
+				v17.u0 = 0x01;
+				v15 &= v17;
+				loc11 = v15;
+				v15 = loc11;
+				v18 = v15 == 0x00;
+				if (v18)
+				{
+					v15.u0 = 0x01A0;
+					v17.u0 = 0x5008;
+					v20 = g_dw140044;
+					v15 = ___cxa_atexit(v15, v17, v20);
+					goto l00103F5B;
+				}
+			}
+			v15 = ___cxa_find_matching_catch_n();
+			loc2 = v15;
+			v15.u3 = g_t140094.u3;
+			loc3 = v15;
+			v15 = loc2;
+			___resumeException(v15);
+		}
+	}
+l00103F5B:
+	v15.u0 = 0x5008;
+	return v15;
 }
 
 // 00103F63: Stack Eq_n fn00103F63(Stack Eq_n arg0)
 Eq_n fn00103F63(Eq_n arg0)
 {
+	v15.u3 = g_t140030.u3;
+	loc13 = v15;
+	v15.u0 = 17400;
+	v16 = *v15.u0;
+	v15.u3 = (word32) v16;
+	loc1 = v15;
+	v15 = loc1;
+	v17.u0 = 0x18;
+	v15 <<= v17;
+	v17.u0 = 0x18;
+	v15 >>= v17;
+	v17.u0 = 0x00;
+	v18 = v15 == v17;
+	loc4 = v18;
+	v15 = loc4;
+	if (v15)
+	{
+		v15.u0 = 17400;
+		v15 = fn0011EE46(v15);
+		loc5 = v15;
+		v15 = loc5;
+		v17.u0 = 0x00;
+		v18 = v15 == v17;
+		loc6 = v18;
+		v15 = loc6;
+		v18 = v15 == 0x00;
+		if (v18)
+		{
+			v15.u0 = 0x4FFC;
+			v19.u0 = 0x00;
+			*v15.u0 = v19;
+			v15.u0 = 0x4FFC;
+			v17.u0 = 0x08;
+			v15 += v17;
+			v17.u0 = 0x00;
+			*v15.u0 = v17;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15.u0 = 414;
+			v17.u0 = 7576;
+			v15 = invoke_ii(v15, v17);
+			loc7 = v15;
+			v15.u3 = g_t140048.u3;
+			loc8 = v15;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15 = loc8;
+			v17.u0 = 0x01;
+			v15 &= v17;
+			loc9 = v15;
+			v15 = loc9;
+			v18 = v15 == 0x00;
+			if (v18)
+			{
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15.u0 = 0x019F;
+				v17.u0 = 0x4FFC;
+				v20 = 7576;
+				v21 = loc7;
+				invoke_viii(v15, v17, v20, v21);
+				v15.u3 = g_t140048.u3;
+				loc10 = v15;
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15 = loc10;
+				v17.u0 = 0x01;
+				v15 &= v17;
+				loc11 = v15;
+				v15 = loc11;
+				v18 = v15 == 0x00;
+				if (v18)
+				{
+					v15.u0 = 0x01A0;
+					v17.u0 = 0x4FFC;
+					v20 = g_dw140044;
+					v15 = ___cxa_atexit(v15, v17, v20);
+					goto l00104015;
+				}
+			}
+			v15 = ___cxa_find_matching_catch_n();
+			loc2 = v15;
+			v15.u3 = g_t140094.u3;
+			loc3 = v15;
+			v15 = loc2;
+			___resumeException(v15);
+		}
+	}
+l00104015:
+	v15.u0 = 0x4FFC;
+	return v15;
 }
 
 // 0010401D: Stack Eq_n fn0010401D(Stack Eq_n arg0)
 Eq_n fn0010401D(Eq_n arg0)
 {
+	v15.u3 = g_t140030.u3;
+	loc13 = v15;
+	v15.u0 = 0x43F0;
+	v16 = *v15.u0;
+	v15.u3 = (word32) v16;
+	loc1 = v15;
+	v15 = loc1;
+	v17.u0 = 0x18;
+	v15 <<= v17;
+	v17.u0 = 0x18;
+	v15 >>= v17;
+	v17.u0 = 0x00;
+	v18 = v15 == v17;
+	loc4 = v18;
+	v15 = loc4;
+	if (v15)
+	{
+		v15.u0 = 0x43F0;
+		v15 = fn0011EE46(v15);
+		loc5 = v15;
+		v15 = loc5;
+		v17.u0 = 0x00;
+		v18 = v15 == v17;
+		loc6 = v18;
+		v15 = loc6;
+		v18 = v15 == 0x00;
+		if (v18)
+		{
+			v15.u0 = 0x4FF0;
+			v19.u0 = 0x00;
+			*v15.u0 = v19;
+			v15.u0 = 0x4FF0;
+			v17.u0 = 0x08;
+			v15 += v17;
+			v17.u0 = 0x00;
+			*v15.u0 = v17;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15.u0 = 414;
+			v17.u0 = 0x1D74;
+			v15 = invoke_ii(v15, v17);
+			loc7 = v15;
+			v15.u3 = g_t140048.u3;
+			loc8 = v15;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15 = loc8;
+			v17.u0 = 0x01;
+			v15 &= v17;
+			loc9 = v15;
+			v15 = loc9;
+			v18 = v15 == 0x00;
+			if (v18)
+			{
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15.u0 = 0x019F;
+				v17.u0 = 0x4FF0;
+				v20 = 0x1D74;
+				v21 = loc7;
+				invoke_viii(v15, v17, v20, v21);
+				v15.u3 = g_t140048.u3;
+				loc10 = v15;
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15 = loc10;
+				v17.u0 = 0x01;
+				v15 &= v17;
+				loc11 = v15;
+				v15 = loc11;
+				v18 = v15 == 0x00;
+				if (v18)
+				{
+					v15.u0 = 0x01A0;
+					v17.u0 = 0x4FF0;
+					v20 = g_dw140044;
+					v15 = ___cxa_atexit(v15, v17, v20);
+					goto l001040CF;
+				}
+			}
+			v15 = ___cxa_find_matching_catch_n();
+			loc2 = v15;
+			v15.u3 = g_t140094.u3;
+			loc3 = v15;
+			v15 = loc2;
+			___resumeException(v15);
+		}
+	}
+l001040CF:
+	v15.u0 = 0x4FF0;
+	return v15;
 }
 
 // 001040D7: Stack Eq_n fn001040D7(Stack Eq_n arg0)
 Eq_n fn001040D7(Eq_n arg0)
 {
+	v15.u3 = g_t140030.u3;
+	loc13 = v15;
+	v15.u0 = 0x43E8;
+	v16 = *v15.u0;
+	v15.u3 = (word32) v16;
+	loc1 = v15;
+	v15 = loc1;
+	v17.u0 = 0x18;
+	v15 <<= v17;
+	v17.u0 = 0x18;
+	v15 >>= v17;
+	v17.u0 = 0x00;
+	v18 = v15 == v17;
+	loc4 = v18;
+	v15 = loc4;
+	if (v15)
+	{
+		v15.u0 = 0x43E8;
+		v15 = fn0011EE46(v15);
+		loc5 = v15;
+		v15 = loc5;
+		v17.u0 = 0x00;
+		v18 = v15 == v17;
+		loc6 = v18;
+		v15 = loc6;
+		v18 = v15 == 0x00;
+		if (v18)
+		{
+			v15.u0 = 0x4FE4;
+			v19.u0 = 0x00;
+			*v15.u0 = v19;
+			v15.u0 = 0x4FE4;
+			v17.u0 = 0x08;
+			v15 += v17;
+			v17.u0 = 0x00;
+			*v15.u0 = v17;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15.u0 = 414;
+			v17.u0 = 0x1D50;
+			v15 = invoke_ii(v15, v17);
+			loc7 = v15;
+			v15.u3 = g_t140048.u3;
+			loc8 = v15;
+			v15.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v15;
+			v15 = loc8;
+			v17.u0 = 0x01;
+			v15 &= v17;
+			loc9 = v15;
+			v15 = loc9;
+			v18 = v15 == 0x00;
+			if (v18)
+			{
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15.u0 = 0x019F;
+				v17.u0 = 0x4FE4;
+				v20 = 0x1D50;
+				v21 = loc7;
+				invoke_viii(v15, v17, v20, v21);
+				v15.u3 = g_t140048.u3;
+				loc10 = v15;
+				v15.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v15;
+				v15 = loc10;
+				v17.u0 = 0x01;
+				v15 &= v17;
+				loc11 = v15;
+				v15 = loc11;
+				v18 = v15 == 0x00;
+				if (v18)
+				{
+					v15.u0 = 0x01A0;
+					v17.u0 = 0x4FE4;
+					v20 = g_dw140044;
+					v15 = ___cxa_atexit(v15, v17, v20);
+					goto l00104189;
+				}
+			}
+			v15 = ___cxa_find_matching_catch_n();
+			loc2 = v15;
+			v15.u3 = g_t140094.u3;
+			loc3 = v15;
+			v15 = loc2;
+			___resumeException(v15);
+		}
+	}
+l00104189:
+	v15.u0 = 0x4FE4;
+	return v15;
 }
 
 // 00104191: void fn00104191(Stack Eq_n arg0)
@@ -463,46 +3994,740 @@ void fn00104201(Eq_n arg0)
 // 00104239: void fn00104239(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00104239(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v19.u3 = g_t140030.u3;
+	loc22 = v19;
+	v19.u3 = g_t140030.u3;
+	v20.u0 = 0x10;
+	v19 += v20;
+	g_t140030.u3 = (word32 *) v19;
+	v19.u3 = g_t140030.u3;
+	v20.u3 = g_t140034.u3;
+	v21 = v19 >= v20;
+	if (v21)
+	{
+		v19.u0 = 0x10;
+		abortStackOverflow(v19);
+	}
+	v19 = loc22;
+	v20.u0 = 0x04;
+	v19 += v20;
+	loc6 = v19;
+	v19 = loc22;
+	loc17 = v19;
+	v19 = arg0;
+	v20.u0 = 0x08;
+	v19 += v20;
+	loc18 = v19;
+	v19 = loc18;
+	v19 = *v19.u0;
+	loc19 = v19;
+	v19 = loc19;
+	v19 = *v19.u0;
+	loc20 = v19;
+	v19 = loc18;
+	v20 = loc20;
+	v22 = 0x01FF;
+	v20 &= v22;
+	v22 = 0x0B00;
+	v20.u0 = (bool) v20.u0 + v22;
 }
 
 // 001042F6: void fn001042F6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001042F6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v20.u3 = g_t140030.u3;
+	loc23 = v20;
+	v20.u3 = g_t140030.u3;
+	v21.u0 = 0x10;
+	v20 += v21;
+	g_t140030.u3 = (word32 *) v20;
+	v20.u3 = g_t140030.u3;
+	v21.u3 = g_t140034.u3;
+	v22 = v20 >= v21;
+	if (v22)
+	{
+		v20.u0 = 0x10;
+		abortStackOverflow(v20);
+	}
+	v20 = loc23;
+	v21.u0 = 0x04;
+	v20 += v21;
+	loc6 = v20;
+	v20 = loc23;
+	loc18 = v20;
+	v20 = arg0;
+	v21.u0 = 0x08;
+	v20 += v21;
+	loc19 = v20;
+	v20 = loc19;
+	v20 = *v20.u0;
+	loc20 = v20;
+	v20 = loc20;
+	v21.u0 = 0x04;
+	v20 += v21;
+	loc21 = v20;
+	v20 = loc21;
+	v20 = *v20.u0;
+	loc7 = v20;
+	v20 = loc19;
+	v21 = loc7;
+	v23 = 0x01FF;
+	v21 &= v23;
+	v23 = 0x0B00;
+	v21.u0 = (bool) v21.u0 + v23;
 }
 
 // 001043BA: Stack Eq_n fn001043BA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn001043BA(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
+	v220.u3 = g_t140030.u3;
+	loc225 = v220;
+	v220.u3 = g_t140030.u3;
+	v221.u0 = 0x20;
+	v220 += v221;
+	g_t140030.u3 = (word32 *) v220;
+	v220.u3 = g_t140030.u3;
+	v221.u3 = g_t140034.u3;
+	v222 = v220 >= v221;
+	if (v222)
+	{
+		v220.u0 = 0x20;
+		abortStackOverflow(v220);
+	}
+	v220 = loc225;
+	v221.u0 = 0x10;
+	v220 += v221;
+	loc24 = v220;
+	v220 = loc225;
+	v221.u0 = 0x0C;
+	v220 += v221;
+	loc23 = v220;
+	v220 = loc225;
+	v221.u0 = 0x08;
+	v220 += v221;
+	loc199 = v220;
+	v220 = loc225;
+	v221.u0 = 0x04;
+	v220 += v221;
+	loc210 = v220;
+	v220 = loc225;
+	loc34 = v220;
+	v220 = arg3;
+	v220 = fn000E64CA(v220);
+	loc45 = v220;
+	v220 = loc199;
+	v221 = loc45;
+	*v220.u0 = v221;
+	v220.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v220;
+	v220.u0 = 0x0164;
+	v221 = loc199;
+	v223.u0 = 0x4C90;
+	v220 = invoke_iii(v220, v221, v223);
+	loc56 = v220;
+	v220.u3 = g_t140048.u3;
+	loc67 = v220;
+	v220.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v220;
+	v220 = loc67;
+	v221.u0 = 0x01;
+	v220 &= v221;
+	loc78 = v220;
+	v220 = loc78;
+	if (v220)
+	{
+		v220 = ___cxa_find_matching_catch_n();
+		loc165 = v220;
+		v220.u3 = g_t140094.u3;
+		loc166 = v220;
+		v220 = loc45;
+		v220 = fn0011B43F(v220);
+		v220 = loc165;
+		___resumeException(v220);
+	}
+	v220 = loc45;
+	v220 = fn0011B43F(v220);
+	v220 = arg4;
+	v221.u0 = 0x00;
+	*v220.u3 = (word32) v221;
+	v220 = arg6;
+	loc16 = v220;
+	v220.u0 = 0x00;
+	loc26 = v220;
+	v220 = loc16;
+	v221 = arg7;
+	v222 = v220 != v221;
+	loc89 = v222;
+	v220 = loc26;
+	loc111 = v220;
+	v220 = loc111;
+	v221.u0 = 0x00;
+	v222 = v220 == v221;
+	loc100 = v222;
+	v220 = loc89;
+	v221 = loc100;
+	v220 &= v221;
+	loc221 = v220;
+	v220 = arg1;
+	v220 = *v220.u0;
+	loc122 = v220;
+	v220 = loc221;
+	v222 = v220 == 0x00;
+	if (!v222)
+	{
+		v220 = loc122;
+		v221.u0 = 0x00;
+		v222 = v220 == v221;
+		loc133 = v222;
+		v220 = loc122;
+		loc139 = v220;
+		v220 = loc133;
+		if (!v220)
+		{
+			v220 = loc122;
+			v221.u0 = 0x0C;
+			v220 += v221;
+			loc140 = v220;
+			v220 = loc140;
+			v220 = *v220.u0;
+			loc141 = v220;
+			v220 = loc122;
+			v221.u0 = 0x10;
+			v220 += v221;
+			loc142 = v220;
+			v220 = loc142;
+			v220 = *v220.u0;
+			loc143 = v220;
+			v220 = loc141;
+			v221 = loc143;
+			v222 = v220 == v221;
+			loc144 = v222;
+			v220 = loc144;
+			v220 = v220;
+			v220 = loc122;
+			v220 = *v220.u0;
+			loc145 = v220;
+			v220 = loc145;
+			v221.u0 = 0x24;
+			v220 += v221;
+			loc146 = v220;
+			v220 = loc146;
+			v220 = *v220.u0;
+			loc147 = v220;
+			v220 = loc122;
+			v221 = loc147;
+			v223.u0 = 0x01FF;
+			v221 &= v223;
+			v223.u0 = 0x0B00;
+			v221 += v223;
+		}
+		else
+		{
+			v220.u0 = 0x00;
+			loc74 = v220;
+			v220.u0 = 0x01;
+			loc135 = v220;
+			v220 = loc139;
+			loc190 = v220;
+		}
+	}
+	else
+	{
+		v220 = loc122;
+		loc28 = v220;
+	}
 }
 
 // 00104EDE: void fn00104EDE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00104EDE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc6 = v15;
+	v15 = loc18;
+	loc13 = v15;
+	v15 = arg3;
+	v15 = *v15.u0;
+	loc14 = v15;
+	v15 = loc13;
+	v16 = loc14;
+	*v15.u0 = v16;
+	v15 = loc6;
+	v16 = loc13;
+	v16 = *v16.u0;
+	*v15.u0 = v16;
+	v15 = arg2;
+	v16 = loc6;
+	v18 = arg4;
+	v19 = arg5;
+	v20.u0 = 0x02;
+	v15 = fn00105E65(v15, v16, v18, v19, v20);
+	loc15 = v15;
+	v15 = arg4;
+	v15 = *v15.u0;
+	loc16 = v15;
+	v15 = loc16;
+	v16.u0 = 0x04;
+	v15 &= v16;
+	loc8 = v15;
+	v15 = loc8;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc9 = v17;
+	v15 = loc15;
+	v16.u0 = ~0x00;
+	v15 += v16;
+	loc7 = v15;
+	v15 = loc7;
+	v16.u0 = 0x1F;
+	v17 = v15 < v16;
+	loc10 = v17;
+	v15 = loc10;
+	v16 = loc9;
+	v15 &= v16;
+	loc11 = v15;
+	v15 = loc11;
+	if (v15)
+	{
+		v15 = arg1;
+		v16 = loc15;
+		*v15.u0 = v16;
+	}
+	else
+	{
+		v15 = loc16;
+		v16.u0 = 0x04;
+		v15 |= v16;
+		loc12 = v15;
+		v15 = arg4;
+		v16 = loc12;
+		*v15.u0 = v16;
+	}
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 00104F75: void fn00104F75(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00104F75(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x02;
+	v14 = fn00105E65(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x18;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 00105005: void fn00105005(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00105005(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc6 = v15;
+	v15 = loc18;
+	loc13 = v15;
+	v15 = arg3;
+	v15 = *v15.u0;
+	loc14 = v15;
+	v15 = loc13;
+	v16 = loc14;
+	*v15.u0 = v16;
+	v15 = loc6;
+	v16 = loc13;
+	v16 = *v16.u0;
+	*v15.u0 = v16;
+	v15 = arg2;
+	v16 = loc6;
+	v18 = arg4;
+	v19 = arg5;
+	v20.u0 = 0x02;
+	v15 = fn00105E65(v15, v16, v18, v19, v20);
+	loc15 = v15;
+	v15 = arg4;
+	v15 = *v15.u0;
+	loc16 = v15;
+	v15 = loc16;
+	v16.u0 = 0x04;
+	v15 &= v16;
+	loc8 = v15;
+	v15 = loc8;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc9 = v17;
+	v15 = loc15;
+	v16.u0 = ~0x00;
+	v15 += v16;
+	loc7 = v15;
+	v15 = loc7;
+	v16.u0 = 0x0C;
+	v17 = v15 < v16;
+	loc10 = v17;
+	v15 = loc10;
+	v16 = loc9;
+	v15 &= v16;
+	loc11 = v15;
+	v15 = loc11;
+	if (v15)
+	{
+		v15 = arg1;
+		v16 = loc15;
+		*v15.u0 = v16;
+	}
+	else
+	{
+		v15 = loc16;
+		v16.u0 = 0x04;
+		v15 |= v16;
+		loc12 = v15;
+		v15 = arg4;
+		v16 = loc12;
+		*v15.u0 = v16;
+	}
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 0010509C: void fn0010509C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0010509C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x03;
+	v14 = fn00105E65(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 366;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 0010512D: void fn0010512D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0010512D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc6 = v15;
+	v15 = loc18;
+	loc12 = v15;
+	v15 = arg3;
+	v15 = *v15.u0;
+	loc13 = v15;
+	v15 = loc12;
+	v16 = loc13;
+	*v15.u0 = v16;
+	v15 = loc6;
+	v16 = loc12;
+	v16 = *v16.u0;
+	*v15.u0 = v16;
+	v15 = arg2;
+	v16 = loc6;
+	v18 = arg4;
+	v19 = arg5;
+	v20.u0 = 0x02;
+	v15 = fn00105E65(v15, v16, v18, v19, v20);
+	loc14 = v15;
+	v15 = arg4;
+	v15 = *v15.u0;
+	loc15 = v15;
+	v15 = loc15;
+	v16.u0 = 0x04;
+	v15 &= v16;
+	loc7 = v15;
+	v15 = loc7;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc8 = v17;
+	v15 = loc14;
+	v16.u0 = 0x0D;
+	v17 = v15 < v16;
+	loc9 = v17;
+	v15 = loc9;
+	v16 = loc8;
+	v15 &= v16;
+	loc16 = v15;
+	v15 = loc16;
+	if (v15)
+	{
+		v15 = loc14;
+		v16.u0 = ~0x00;
+		v15 += v16;
+		loc10 = v15;
+		v15 = arg1;
+		v16 = loc10;
+		*v15.u0 = v16;
+	}
+	else
+	{
+		v15 = loc15;
+		v16.u0 = 0x04;
+		v15 |= v16;
+		loc11 = v15;
+		v15 = arg4;
+		v16 = loc11;
+		*v15.u0 = v16;
+	}
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 001051C4: void fn001051C4(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001051C4(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x02;
+	v14 = fn00105E65(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x3C;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 00105254: void fn00105254(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -518,56 +4743,420 @@ void fn00105254(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v97 = v95 == v96;
 	loc64 = v97;
 	v95 = loc64;
-	if (v95)
+	if (!v95)
+	{
+		v95 = loc53;
+		v96.u0 = 0x0C;
+		v95 += v96;
+		loc75 = v95;
+		v95 = loc75;
+		v95 = *v95.u0;
+		loc86 = v95;
+		v95 = loc53;
+		v96.u0 = 0x10;
+		v95 += v96;
+		loc93 = v95;
+		v95 = loc93;
+		v95 = *v95.u0;
+		loc13 = v95;
+		v95 = loc86;
+		v96 = loc13;
+		v97 = v95 == v96;
+		loc14 = v97;
+		v95 = loc14;
+		v95 = v95;
+		v95 = loc53;
+		v95 = *v95.u0;
+		loc15 = v95;
+		v95 = loc15;
+		v96.u0 = 0x24;
+		v95 += v96;
+		loc16 = v95;
+		v95 = loc16;
+		v95 = *v95.u0;
+		loc17 = v95;
+		v95 = loc53;
+		v96 = loc17;
+		v98.u0 = 0x01FF;
+		v96 &= v98;
+		v98.u0 = 0x0B00;
+		v96 += v98;
+	}
+	else
 	{
 		v95.u0 = 0x01;
 		loc90 = v95;
 	}
-	v95 = loc53;
-	v96.u0 = 0x0C;
-	v95 += v96;
-	loc75 = v95;
-	v95 = loc75;
-	v95 = *v95.u0;
-	loc86 = v95;
-	v95 = loc53;
-	v96.u0 = 0x10;
-	v95 += v96;
-	loc93 = v95;
-	v95 = loc93;
-	v95 = *v95.u0;
-	loc13 = v95;
-	v95 = loc86;
-	v96 = loc13;
-	v97 = v95 == v96;
-	loc14 = v97;
-	v95 = loc14;
-	v95 = v95;
 }
 
 // 00105640: void fn00105640(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00105640(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v45.u3 = g_t140030.u3;
+	loc48 = v45;
+	v45.u3 = g_t140030.u3;
+	v46.u0 = 0x10;
+	v45 += v46;
+	g_t140030.u3 = (word32 *) v45;
+	v45.u3 = g_t140030.u3;
+	v46.u3 = g_t140034.u3;
+	v47 = v45 >= v46;
+	if (v47)
+	{
+		v45.u0 = 0x10;
+		abortStackOverflow(v45);
+	}
+	v45 = loc48;
+	v46.u0 = 0x04;
+	v45 += v46;
+	loc6 = v45;
+	v45 = loc48;
+	loc41 = v45;
+	v45 = arg0;
+	v46.u0 = 0x08;
+	v45 += v46;
+	loc42 = v45;
+	v45 = loc42;
+	v45 = *v45.u0;
+	loc43 = v45;
+	v45 = loc43;
+	v46.u0 = 0x08;
+	v45 += v46;
+	loc44 = v45;
+	v45 = loc44;
+	v45 = *v45.u0;
+	loc7 = v45;
+	v45 = loc42;
+	v46 = loc7;
+	v48 = 0x01FF;
+	v46 &= v48;
+	v48 = 0x0B00;
+	v46.u0 = (bool) v46.u0 + v48;
 }
 
 // 001057E3: void fn001057E3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001057E3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x02;
+	v14 = fn00105E65(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x3D;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 00105873: void fn00105873(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00105873(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v14.u3 = g_t140030.u3;
+	loc17 = v14;
+	v14.u3 = g_t140030.u3;
+	v15.u0 = 0x10;
+	v14 += v15;
+	g_t140030.u3 = (word32 *) v14;
+	v14.u3 = g_t140030.u3;
+	v15.u3 = g_t140034.u3;
+	v16 = v14 >= v15;
+	if (v16)
+	{
+		v14.u0 = 0x10;
+		abortStackOverflow(v14);
+	}
+	v14 = loc17;
+	v15.u0 = 0x04;
+	v14 += v15;
+	loc6 = v14;
+	v14 = loc17;
+	loc11 = v14;
+	v14 = arg3;
+	v14 = *v14.u0;
+	loc12 = v14;
+	v14 = loc11;
+	v15 = loc12;
+	*v14.u0 = v15;
+	v14 = loc6;
+	v15 = loc11;
+	v15 = *v15.u0;
+	*v14.u0 = v15;
+	v14 = arg2;
+	v15 = loc6;
+	v17 = arg4;
+	v18 = arg5;
+	v19.u0 = 0x01;
+	v14 = fn00105E65(v14, v15, v17, v18, v19);
+	loc13 = v14;
+	v14 = arg4;
+	v14 = *v14.u0;
+	loc14 = v14;
+	v14 = loc14;
+	v15.u0 = 0x04;
+	v14 &= v15;
+	loc7 = v14;
+	v14 = loc7;
+	v15.u0 = 0x00;
+	v16 = v14 == v15;
+	loc8 = v16;
+	v14 = loc13;
+	v15.u0 = 0x07;
+	v16 = v14 < v15;
+	loc9 = v16;
+	v14 = loc9;
+	v15 = loc8;
+	v14 &= v15;
+	loc15 = v14;
+	v14 = loc15;
+	if (v14)
+	{
+		v14 = arg1;
+		v15 = loc13;
+		*v14.u0 = v15;
+	}
+	else
+	{
+		v14 = loc14;
+		v15.u0 = 0x04;
+		v14 |= v15;
+		loc10 = v14;
+		v14 = arg4;
+		v15 = loc10;
+		*v14.u0 = v15;
+	}
+	v14 = loc17;
+	g_t140030.u3 = (word32 *) v14;
 }
 
 // 00105903: void fn00105903(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00105903(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v18.u3 = g_t140030.u3;
+	loc21 = v18;
+	v18.u3 = g_t140030.u3;
+	v19.u0 = 0x10;
+	v18 += v19;
+	g_t140030.u3 = (word32 *) v18;
+	v18.u3 = g_t140030.u3;
+	v19.u3 = g_t140034.u3;
+	v20 = v18 >= v19;
+	if (v20)
+	{
+		v18.u0 = 0x10;
+		abortStackOverflow(v18);
+	}
+	v18 = loc21;
+	v19.u0 = 0x04;
+	v18 += v19;
+	loc8 = v18;
+	v18 = loc21;
+	loc16 = v18;
+	v18 = arg3;
+	v18 = *v18.u0;
+	loc17 = v18;
+	v18 = loc16;
+	v19 = loc17;
+	*v18.u0 = v19;
+	v18 = loc8;
+	v19 = loc16;
+	v19 = *v19.u0;
+	*v18.u0 = v19;
+	v18 = arg2;
+	v19 = loc8;
+	v21 = arg4;
+	v22 = arg5;
+	v23.u0 = 0x04;
+	v18 = fn00105E65(v18, v19, v21, v22, v23);
+	loc18 = v18;
+	v18 = arg4;
+	v18 = *v18.u0;
+	loc19 = v18;
+	v18 = loc19;
+	v19.u0 = 0x04;
+	v18 &= v19;
+	loc9 = v18;
+	v18 = loc9;
+	v19.u0 = 0x00;
+	v20 = v18 == v19;
+	loc10 = v20;
+	v18 = loc10;
+	if (v18)
+	{
+		v18 = loc18;
+		v19.u0 = 0x45;
+		v20 = v18 < v19;
+		loc11 = v20;
+		v18 = loc11;
+		if (v18)
+		{
+			v18 = loc18;
+			v19.u0 = 2000;
+			v18 += v19;
+			loc12 = v18;
+			v18 = loc12;
+			loc7 = v18;
+		}
+		else
+		{
+			v18 = loc18;
+			v19.u0 = 100;
+			v20 = v18 < v19;
+			loc13 = v20;
+			v18 = loc18;
+			v19.u0 = 1900;
+			v18 += v19;
+			loc14 = v18;
+			v18 = loc13;
+			if (v18)
+				v18 = loc14;
+			else
+				v18 = loc18;
+			loc6 = v18;
+			v18 = loc6;
+			loc7 = v18;
+		}
+		v18 = loc7;
+		v19.u0 = ~0x076B;
+		v18 += v19;
+		loc15 = v18;
+		v18 = arg1;
+		v19 = loc15;
+		*v18.u0 = v19;
+	}
+	v18 = loc21;
+	g_t140030.u3 = (word32 *) v18;
 }
 
 // 001059B8: void fn001059B8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001059B8(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v12.u3 = g_t140030.u3;
+	loc15 = v12;
+	v12.u3 = g_t140030.u3;
+	v13.u0 = 0x10;
+	v12 += v13;
+	g_t140030.u3 = (word32 *) v12;
+	v12.u3 = g_t140030.u3;
+	v13.u3 = g_t140034.u3;
+	v14 = v12 >= v13;
+	if (v14)
+	{
+		v12.u0 = 0x10;
+		abortStackOverflow(v12);
+	}
+	v12 = loc15;
+	v13.u0 = 0x04;
+	v12 += v13;
+	loc6 = v12;
+	v12 = loc15;
+	loc10 = v12;
+	v12 = arg3;
+	v12 = *v12.u0;
+	loc11 = v12;
+	v12 = loc10;
+	v13 = loc11;
+	*v12.u0 = v13;
+	v12 = loc6;
+	v13 = loc10;
+	v13 = *v13.u0;
+	*v12.u0 = v13;
+	v12 = arg2;
+	v13 = loc6;
+	v15 = arg4;
+	v16 = arg5;
+	v17.u0 = 0x04;
+	v12 = fn00105E65(v12, v13, v15, v16, v17);
+	loc12 = v12;
+	v12 = arg4;
+	v12 = *v12.u0;
+	loc13 = v12;
+	v12 = loc13;
+	v13.u0 = 0x04;
+	v12 &= v13;
+	loc7 = v12;
+	v12 = loc7;
+	v13.u0 = 0x00;
+	v14 = v12 == v13;
+	loc8 = v14;
+	v12 = loc8;
+	if (v12)
+	{
+		v12 = loc12;
+		v13.u0 = ~0x076B;
+		v12 += v13;
+		loc9 = v12;
+		v12 = arg1;
+		v13 = loc9;
+		*v12.u0 = v13;
+	}
+	v12 = loc15;
+	g_t140030.u3 = (word32 *) v12;
 }
 
 // 00105A33: void fn00105A33(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -583,31 +5172,50 @@ void fn00105A33(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v102 = v100 == v101;
 	loc65 = v102;
 	v100 = loc65;
-	if (v100)
+	if (!v100)
+	{
+		v100 = loc54;
+		v101.u0 = 0x0C;
+		v100 += v101;
+		loc76 = v100;
+		v100 = loc76;
+		v100 = *v100.u0;
+		loc87 = v100;
+		v100 = loc54;
+		v101.u0 = 0x10;
+		v100 += v101;
+		loc98 = v100;
+		v100 = loc98;
+		v100 = *v100.u0;
+		loc14 = v100;
+		v100 = loc87;
+		v101 = loc14;
+		v102 = v100 == v101;
+		loc15 = v102;
+		v100 = loc15;
+		v100 = v100;
+		v100 = loc54;
+		v100 = *v100.u0;
+		loc16 = v100;
+		v100 = loc16;
+		v101.u0 = 0x24;
+		v100 += v101;
+		loc17 = v100;
+		v100 = loc17;
+		v100 = *v100.u0;
+		loc18 = v100;
+		v100 = loc54;
+		v101 = loc18;
+		v103.u0 = 0x01FF;
+		v101 &= v103;
+		v103.u0 = 0x0B00;
+		v101 += v103;
+	}
+	else
 	{
 		v100.u0 = 0x01;
 		loc96 = v100;
 	}
-	v100 = loc54;
-	v101.u0 = 0x0C;
-	v100 += v101;
-	loc76 = v100;
-	v100 = loc76;
-	v100 = *v100.u0;
-	loc87 = v100;
-	v100 = loc54;
-	v101.u0 = 0x10;
-	v100 += v101;
-	loc98 = v100;
-	v100 = loc98;
-	v100 = *v100.u0;
-	loc14 = v100;
-	v100 = loc87;
-	v101 = loc14;
-	v102 = v100 == v101;
-	loc15 = v102;
-	v100 = loc15;
-	v100 = v100;
 }
 
 // 00105E65: Stack Eq_n fn00105E65(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
@@ -623,31 +5231,50 @@ Eq_n fn00105E65(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 	v181 = v179 == v180;
 	loc131 = v181;
 	v179 = loc131;
-	if (v179)
+	if (!v179)
+	{
+		v179 = loc120;
+		v180.u0 = 0x0C;
+		v179 += v180;
+		loc142 = v179;
+		v179 = loc142;
+		v179 = *v179.u0;
+		loc153 = v179;
+		v179 = loc120;
+		v180.u0 = 0x10;
+		v179 += v180;
+		loc164 = v179;
+		v179 = loc164;
+		v179 = *v179.u0;
+		loc23 = v179;
+		v179 = loc153;
+		v180 = loc23;
+		v181 = v179 == v180;
+		loc34 = v181;
+		v179 = loc34;
+		v179 = v179;
+		v179 = loc120;
+		v179 = *v179.u0;
+		loc45 = v179;
+		v179 = loc45;
+		v180.u0 = 0x24;
+		v179 += v180;
+		loc56 = v179;
+		v179 = loc56;
+		v179 = *v179.u0;
+		loc67 = v179;
+		v179 = loc120;
+		v180 = loc67;
+		v182.u0 = 0x01FF;
+		v180 &= v182;
+		v182.u0 = 0x0B00;
+		v180 += v182;
+	}
+	else
 	{
 		v179.u0 = 0x01;
 		loc82 = v179;
 	}
-	v179 = loc120;
-	v180.u0 = 0x0C;
-	v179 += v180;
-	loc142 = v179;
-	v179 = loc142;
-	v179 = *v179.u0;
-	loc153 = v179;
-	v179 = loc120;
-	v180.u0 = 0x10;
-	v179 += v180;
-	loc164 = v179;
-	v179 = loc164;
-	v179 = *v179.u0;
-	loc23 = v179;
-	v179 = loc153;
-	v180 = loc23;
-	v181 = v179 == v180;
-	loc34 = v181;
-	v179 = loc34;
-	v179 = v179;
 }
 
 // 00106657: void fn00106657(Stack Eq_n arg0)
@@ -681,16 +5308,280 @@ void fn0010666C(Eq_n arg0)
 // 00106686: Stack Eq_n fn00106686(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn00106686(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v30.u3 = g_t140030.u3;
+	loc34 = v30;
+	v30.u3 = g_t140030.u3;
+	v31.u0 = 0x70;
+	v30 += v31;
+	g_t140030.u3 = (word32 *) v30;
+	v30.u3 = g_t140030.u3;
+	v31.u3 = g_t140034.u3;
+	v32 = v30 >= v31;
+	if (v32)
+	{
+		v30.u0 = 0x70;
+		abortStackOverflow(v30);
+	}
+	v30 = loc34;
+	v31.u0 = 0x04;
+	v30 += v31;
+	loc30 = v30;
+	v30 = loc34;
+	loc31 = v30;
+	v30 = loc30;
+	v31.u0 = 100;
+	v30 += v31;
+	loc32 = v30;
+	v30 = loc31;
+	v31 = loc32;
+	*v30.u0 = v31;
+	v30 = arg0;
+	v31.u0 = 0x08;
+	v30 += v31;
+	loc11 = v30;
+	v30 = loc11;
+	v31 = loc30;
+	v33 = loc31;
+	v34 = arg4;
+	v35 = arg5;
+	v36 = arg6;
+	fn001067BD(v30, v31, v33, v34, v35, v36);
+	v30 = loc31;
+	v30 = *v30.u0;
+	loc12 = v30;
+	v30 = arg1;
+	v30 = *v30.u0;
+	loc13 = v30;
+	v30 = loc30;
+	loc8 = v30;
+	v30 = loc13;
+	loc9 = v30;
+	v30 = loc8;
+	v31 = loc12;
+	v32 = v30 == v31;
+	loc14 = v32;
+	v30 = loc14;
+	if (!v30)
+	{
+		v30 = loc8;
+		v37 = *v30.u0;
+		v30.u3 = (word32) v37;
+		loc15 = v30;
+		v30 = loc9;
+		v31.u0 = 0x00;
+		v32 = v30 == v31;
+		loc16 = v32;
+		v30 = loc16;
+		if (!v30)
+		{
+			v30 = loc9;
+			v31.u0 = 0x18;
+			v30 += v31;
+			loc17 = v30;
+			v30 = loc17;
+			v30 = *v30.u0;
+			loc18 = v30;
+			v30 = loc9;
+			v31.u0 = 0x1C;
+			v30 += v31;
+			loc19 = v30;
+			v30 = loc19;
+			v30 = *v30.u0;
+			loc20 = v30;
+			v30 = loc18;
+			v31 = loc20;
+			v32 = v30 == v31;
+			loc21 = v32;
+			v30 = loc21;
+			v30 = v30;
+			v30 = loc9;
+			v30 = *v30.u0;
+			loc23 = v30;
+			v30 = loc23;
+			v31.u0 = 0x34;
+			v30 += v31;
+			loc24 = v30;
+			v30 = loc24;
+			v30 = *v30.u0;
+			loc25 = v30;
+			v30 = loc15;
+			v31.u0 = 0xFF;
+			v30 &= v31;
+			loc26 = v30;
+			v30 = loc9;
+			v31 = loc26;
+			v33 = loc25;
+			v34.u0 = 0x01FF;
+			v33 &= v34;
+			v34.u0 = 6944;
+			v33 += v34;
+		}
+		else
+		{
+			v30.u0 = 0x00;
+			loc10 = v30;
+		}
+	}
 }
 
 // 001067BD: void fn001067BD(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001067BD(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v15.u3 = g_t140030.u3;
+	loc18 = v15;
+	v15.u3 = g_t140030.u3;
+	v16.u0 = 0x10;
+	v15 += v16;
+	g_t140030.u3 = (word32 *) v15;
+	v15.u3 = g_t140030.u3;
+	v16.u3 = g_t140034.u3;
+	v17 = v15 >= v16;
+	if (v17)
+	{
+		v15.u0 = 0x10;
+		abortStackOverflow(v15);
+	}
+	v15 = loc18;
+	loc13 = v15;
+	v15 = loc13;
+	v16.u0 = 0x25;
+	v18 = (byte) v16;
+	*v15.u0 = v18;
+	v15 = loc13;
+	v16.u0 = 0x01;
+	v15 += v16;
+	loc14 = v15;
+	v15 = loc14;
+	v16 = arg4;
+	v19 = (byte) v16;
+	*v15.u0 = v19;
+	v15 = loc13;
+	v16.u0 = 0x02;
+	v15 += v16;
+	loc15 = v15;
+	v15 = loc15;
+	v16 = arg5;
+	v20 = (byte) v16;
+	*v15.u0 = v20;
+	v15 = loc13;
+	v16.u0 = 0x03;
+	v15 += v16;
+	loc16 = v15;
+	v15 = loc16;
+	v16.u0 = 0x00;
+	v21 = (byte) v16;
+	*v15.u0 = v21;
+	v15 = arg5;
+	v16.u0 = 0x18;
+	v15 <<= v16;
+	v16.u0 = 0x18;
+	v15 >>= v16;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc6 = v17;
+	v15 = loc6;
+	v17 = v15 == 0x00;
+	if (v17)
+	{
+		v15 = loc14;
+		v16 = arg5;
+		v22 = (byte) v16;
+		*v15.u0 = v22;
+		v15 = loc15;
+		v16 = arg4;
+		v23 = (byte) v16;
+		*v15.u0 = v23;
+	}
+	v15 = arg2;
+	v15 = *v15.u0;
+	loc7 = v15;
+	v15 = arg1;
+	loc8 = v15;
+	v15 = loc7;
+	v16 = loc8;
+	v15 -= v16;
+	loc9 = v15;
+	v15 = arg0;
+	v15 = *v15.u0;
+	loc10 = v15;
+	v15 = arg1;
+	v16 = loc9;
+	v24 = loc13;
+	v25 = arg3;
+	v26 = loc10;
+	v15 = _strftime_l(v15, v16, v24, v25, v26);
+	loc11 = v15;
+	v15 = arg1;
+	v16 = loc11;
+	v15 += v16;
+	loc12 = v15;
+	v15 = arg2;
+	v16 = loc12;
+	*v15.u0 = v16;
+	v15 = loc18;
+	g_t140030.u3 = (word32 *) v15;
 }
 
 // 00106868: void fn00106868(Stack Eq_n arg0)
 void fn00106868(Eq_n arg0)
 {
+	v14.u3 = g_t140030.u3;
+	loc12 = v14;
+	v14 = arg0;
+	v14.u3 = *v14.u3;
+	loc1 = v14;
+	v14.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v14;
+	v14.u0 = 0x017B;
+	v14 = invoke_i(v14);
+	loc3 = v14;
+	v14.u3 = g_t140048.u3;
+	loc4 = v14;
+	v14.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v14;
+	v14 = loc4;
+	v15.u0 = 0x01;
+	v14 &= v15;
+	loc5 = v14;
+	v14 = loc5;
+	v16 = v14 == 0x00;
+	if (v16)
+	{
+		v14 = loc1;
+		v15 = loc3;
+		v16 = v14 == v15;
+		loc6 = v16;
+		v14 = loc6;
+		v16 = v14 == 0x00;
+		if (!v16)
+			return;
+		v14 = arg0;
+		v14 = *v14.u0;
+		loc7 = v14;
+		v14.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v14;
+		v14.u0 = 0x01A1;
+		v15 = loc7;
+		invoke_vi(v14, v15);
+		v14.u3 = g_t140048.u3;
+		loc8 = v14;
+		v14.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v14;
+		v14 = loc8;
+		v15.u0 = 0x01;
+		v14 &= v15;
+		loc9 = v14;
+		v14 = loc9;
+		if (!v14)
+			return;
+	}
+	v14.u0 = 0x00;
+	v14 = ___cxa_find_matching_catch_n(v14);
+	loc10 = v14;
+	v14.u3 = g_t140094.u3;
+	loc2 = v14;
+	v14 = loc10;
+	fn000D0E65(v14);
 }
 
 // 001068DE: void fn001068DE(Stack Eq_n arg0)
@@ -724,11 +5615,304 @@ void fn001068F3(Eq_n arg0)
 // 0010690D: Stack Eq_n fn0010690D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn0010690D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v30.u3 = g_t140030.u3;
+	loc34 = v30;
+	v30.u3 = g_t140030.u3;
+	v31.u0 = 0x01A0;
+	v30 += v31;
+	g_t140030.u3 = (word32 *) v30;
+	v30.u3 = g_t140030.u3;
+	v31.u3 = g_t140034.u3;
+	v32 = v30 >= v31;
+	if (v32)
+	{
+		v30.u0 = 0x01A0;
+		abortStackOverflow(v30);
+	}
+	v30 = loc34;
+	v31.u0 = 0x08;
+	v30 += v31;
+	loc30 = v30;
+	v30 = loc34;
+	loc31 = v30;
+	v30 = loc30;
+	v31.u0 = 400;
+	v30 += v31;
+	loc32 = v30;
+	v30 = loc31;
+	v31 = loc32;
+	*v30.u0 = v31;
+	v30 = arg0;
+	v31.u0 = 0x08;
+	v30 += v31;
+	loc12 = v30;
+	v30 = loc12;
+	v31 = loc30;
+	v33 = loc31;
+	v34 = arg4;
+	v35 = arg5;
+	v36 = arg6;
+	fn00106A39(v30, v31, v33, v34, v35, v36);
+	v30 = loc31;
+	v30 = *v30.u0;
+	loc13 = v30;
+	v30 = arg1;
+	v30 = *v30.u0;
+	loc14 = v30;
+	v30 = loc30;
+	loc8 = v30;
+	v30 = loc14;
+	loc10 = v30;
+	v30 = loc8;
+	v31 = loc13;
+	v32 = v30 == v31;
+	loc15 = v32;
+	v30 = loc15;
+	if (!v30)
+	{
+		v30 = loc8;
+		v30 = *v30.u0;
+		loc16 = v30;
+		v30 = loc10;
+		v31.u0 = 0x00;
+		v32 = v30 == v31;
+		loc17 = v32;
+		v30 = loc17;
+		if (!v30)
+		{
+			v30 = loc10;
+			v31.u0 = 0x18;
+			v30 += v31;
+			loc18 = v30;
+			v30 = loc18;
+			v30 = *v30.u0;
+			loc19 = v30;
+			v30 = loc10;
+			v31.u0 = 0x1C;
+			v30 += v31;
+			loc20 = v30;
+			v30 = loc20;
+			v30 = *v30.u0;
+			loc21 = v30;
+			v30 = loc19;
+			v31 = loc21;
+			v32 = v30 == v31;
+			loc22 = v32;
+			v30 = loc22;
+			v30 = v30;
+			v30 = loc10;
+			v30 = *v30.u0;
+			loc23 = v30;
+			v30 = loc23;
+			v31.u0 = 0x34;
+			v30 += v31;
+			loc24 = v30;
+			v30 = loc24;
+			v30 = *v30.u0;
+			loc25 = v30;
+			v30 = loc10;
+			v31 = loc16;
+			v33 = loc25;
+			v34.u0 = 0x01FF;
+			v33 &= v34;
+			v34.u0 = 6944;
+			v33 += v34;
+		}
+		else
+		{
+			v30.u0 = 0x00;
+			loc11 = v30;
+		}
+	}
 }
 
 // 00106A39: void fn00106A39(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn00106A39(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
+	v32.u3 = g_t140030.u3;
+	loc35 = v32;
+	v32.u3 = g_t140030.u3;
+	v33.u0 = 0x80;
+	v32 += v33;
+	g_t140030.u3 = (word32 *) v32;
+	v32.u3 = g_t140030.u3;
+	v33.u3 = g_t140034.u3;
+	v34 = v32 >= v33;
+	if (v34)
+	{
+		v32.u0 = 0x80;
+		abortStackOverflow(v32);
+	}
+	v32 = loc35;
+	v33.u0 = 0x10;
+	v32 += v33;
+	loc30 = v32;
+	v32 = loc35;
+	v33.u0 = 0x0C;
+	v32 += v33;
+	loc31 = v32;
+	v32 = loc35;
+	loc32 = v32;
+	v32 = loc35;
+	v33.u0 = 0x08;
+	v32 += v33;
+	loc33 = v32;
+	v32 = loc30;
+	v33.u0 = 100;
+	v32 += v33;
+	loc6 = v32;
+	v32 = loc31;
+	v33 = loc6;
+	*v32.u0 = v33;
+	v32 = arg0;
+	v33 = loc30;
+	v35 = loc31;
+	v36 = arg3;
+	v37 = arg4;
+	v38 = arg5;
+	fn001067BD(v32, v33, v35, v36, v37, v38);
+	v32 = loc32;
+	v39.u0 = 0x00;
+	*v32.u0 = v39;
+	v32 = loc33;
+	v33 = loc30;
+	*v32.u0 = v33;
+	v32 = arg2;
+	v32 = *v32.u0;
+	loc7 = v32;
+	v32 = arg1;
+	loc8 = v32;
+	v32 = loc7;
+	v33 = loc8;
+	v32 -= v33;
+	loc9 = v32;
+	v32 = loc9;
+	v33.u0 = 0x02;
+	v32 >>= v33;
+	loc10 = v32;
+	v32 = arg0;
+	v32 = *v32.u0;
+	loc11 = v32;
+	v32 = loc11;
+	v32 = fn000DB419(v32);
+	loc12 = v32;
+	v32.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v32;
+	v32.u0 = 0x01A2;
+	v33 = arg1;
+	v35 = loc33;
+	v36 = loc10;
+	v37 = loc32;
+	v32 = invoke_iiiii(v32, v33, v35, v36, v37);
+	loc13 = v32;
+	v32.u3 = g_t140048.u3;
+	loc14 = v32;
+	v32.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v32;
+	v32 = loc14;
+	v33.u0 = 0x01;
+	v32 &= v33;
+	loc15 = v32;
+	v32 = loc15;
+	if (v32)
+	{
+		v32 = ___cxa_find_matching_catch_n();
+		loc21 = v32;
+		v32.u3 = g_t140094.u3;
+		loc22 = v32;
+		v32 = loc12;
+		v33.u0 = 0x00;
+		v34 = v32 == v33;
+		loc23 = v34;
+		v32 = loc23;
+		v34 = v32 == 0x00;
+		if (v34)
+		{
+			v32.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v32;
+			v32.u0 = 0x017E;
+			v33 = loc12;
+			v32 = invoke_ii(v32, v33);
+			v32.u3 = g_t140048.u3;
+			loc24 = v32;
+			v32.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v32;
+			v32 = loc24;
+			v33.u0 = 0x01;
+			v32 &= v33;
+			loc25 = v32;
+			v32 = loc25;
+			if (v32)
+			{
+				v32.u0 = 0x00;
+				v32 = ___cxa_find_matching_catch_n(v32);
+				loc26 = v32;
+				v32.u3 = g_t140094.u3;
+				loc27 = v32;
+				v32 = loc26;
+				fn000D0E65(v32);
+			}
+		}
+		v32 = loc21;
+		___resumeException(v32);
+	}
+	v32 = loc12;
+	v33.u0 = 0x00;
+	v34 = v32 == v33;
+	loc16 = v34;
+	v32 = loc16;
+	v34 = v32 == 0x00;
+	if (v34)
+	{
+		v32.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v32;
+		v32.u0 = 0x017E;
+		v33 = loc12;
+		v32 = invoke_ii(v32, v33);
+		v32.u3 = g_t140048.u3;
+		loc17 = v32;
+		v32.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v32;
+		v32 = loc17;
+		v33.u0 = 0x01;
+		v32 &= v33;
+		loc18 = v32;
+		v32 = loc18;
+		if (v32)
+		{
+			v32.u0 = 0x00;
+			v32 = ___cxa_find_matching_catch_n(v32);
+			loc19 = v32;
+			v32.u3 = g_t140094.u3;
+			loc20 = v32;
+			v32 = loc19;
+			fn000D0E65(v32);
+		}
+	}
+	v32 = loc13;
+	v33.u0 = ~0x00;
+	v34 = v32 == v33;
+	loc28 = v34;
+	v32 = loc28;
+	if (!v32)
+	{
+		v32 = arg1;
+		v33 = loc13;
+		v35.u0 = 0x02;
+		v33 <<= v35;
+		v32 += v33;
+		loc29 = v32;
+		v32 = arg2;
+		v33 = loc29;
+		*v32.u0 = v33;
+		v32 = loc35;
+		g_t140030.u3 = (word32 *) v32;
+	}
+	else
+	{
+		v32.u0 = 15353;
+		fn00106B95(v32);
+	}
 }
 
 // 00106B95: void fn00106B95(Stack Eq_n arg0)
@@ -1625,11 +6809,1683 @@ void fn001071C0(Eq_n arg0)
 // 001071CE: Stack Eq_n fn001071CE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn001071CE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v151.u3 = g_t140030.u3;
+	loc155 = v151;
+	v151.u3 = g_t140030.u3;
+	v152.u0 = 0xF0;
+	v151 += v152;
+	g_t140030.u3 = (word32 *) v151;
+	v151.u3 = g_t140030.u3;
+	v152.u3 = g_t140034.u3;
+	v153 = v151 >= v152;
+	if (v153)
+	{
+		v151.u0 = 0xF0;
+		abortStackOverflow(v151);
+	}
+	v151 = loc155;
+	v152.u0 = 0x18;
+	v151 += v152;
+	loc23 = v151;
+	v151 = loc155;
+	loc153 = v151;
+	v151 = loc155;
+	v152.u0 = 0x8C;
+	v151 += v152;
+	loc120 = v151;
+	v151 = loc155;
+	v152.u0 = 0x10;
+	v151 += v152;
+	loc131 = v151;
+	v151 = loc155;
+	v152.u0 = 0x0C;
+	v151 += v152;
+	loc142 = v151;
+	v151 = loc155;
+	v152.u0 = 0x08;
+	v151 += v152;
+	loc30 = v151;
+	v151 = loc155;
+	v152.u0 = 0x8A;
+	v151 += v152;
+	loc41 = v151;
+	v151 = loc155;
+	v152.u0 = 0x04;
+	v151 += v152;
+	loc52 = v151;
+	v151 = loc155;
+	v152.u0 = 0x80;
+	v151 += v152;
+	loc63 = v151;
+	v151 = loc155;
+	v152.u0 = 0x1C;
+	v151 += v152;
+	loc64 = v151;
+	v151 = loc120;
+	loc65 = v151;
+	v151 = loc131;
+	v152 = loc65;
+	*v151.u0 = v152;
+	v151 = loc131;
+	v152.u0 = 0x04;
+	v151 += v152;
+	loc66 = v151;
+	v151 = loc66;
+	v152.u0 = 0x01A4;
+	*v151.u0 = v152;
+	v151 = loc120;
+	v152.u0 = 100;
+	v151 += v152;
+	loc67 = v151;
+	v151.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v151;
+	v151.u0 = 0x0167;
+	v152 = arg4;
+	v151 = invoke_ii(v151, v152);
+	loc68 = v151;
+	v151.u3 = g_t140048.u3;
+	loc69 = v151;
+	v151.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v151;
+	v151 = loc69;
+	v152.u0 = 0x01;
+	v151 &= v152;
+	loc70 = v151;
+	v151 = loc70;
+	if (v151)
+	{
+		v151 = ___cxa_find_matching_catch_n();
+		loc95 = v151;
+		v151.u3 = g_t140094.u3;
+		loc96 = v151;
+		v151 = loc131;
+		v152.u0 = 0x00;
+		*v151.u3 = (word32) v152;
+		v151 = loc96;
+		loc19 = v151;
+		v151 = loc95;
+		loc21 = v151;
+		v151.u0 = 0x01A4;
+		loc57 = v151;
+		v151 = loc120;
+		loc58 = v151;
+		v151.u0 = 0x34;
+		loc154 = v151;
+		goto l00107870;
+	}
+	v151 = loc30;
+	v152 = loc68;
+	*v151.u0 = v152;
+	v151.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v151;
+	v151.u0 = 0x0164;
+	v152 = loc30;
+	v154.u0 = 0x4C70;
+	v151 = invoke_iii(v151, v152, v154);
+	loc71 = v151;
+	v151.u3 = g_t140048.u3;
+	loc72 = v151;
+	v151.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v151;
+	v151 = loc72;
+	v152.u0 = 0x01;
+	v151 &= v152;
+	loc73 = v151;
+	v151 = loc73;
+	if (v151)
+	{
+		v151 = ___cxa_find_matching_catch_n();
+		loc97 = v151;
+		v151.u3 = g_t140094.u3;
+		loc98 = v151;
+		v151 = loc97;
+		loc17 = v151;
+		v151 = loc98;
+		loc18 = v151;
+		goto l00107821;
+	}
+	v151 = loc41;
+	v152.u0 = 0x00;
+	v155 = (byte) v152;
+	*v151.u3 = (word32) v155;
+	v151 = arg2;
+	v151.u3 = *v151.u3;
+	loc74 = v151;
+	v151 = loc52;
+	v152 = loc74;
+	*v151.u3 = (word32) v152;
+	v151 = arg4;
+	v152.u0 = 0x04;
+	v151 += v152;
+	loc75 = v151;
+	v151 = loc75;
+	v151.u3 = *v151.u3;
+	loc76 = v151;
+	v151.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v151;
+	v151 = loc23;
+	v152 = loc52;
+	v152 = *v152.u0;
+	*v151.u0 = v152;
+	v151.u0 = 0x01A5;
+	v152 = arg1;
+	v154 = loc23;
+	v156 = arg3;
+	v157 = loc30;
+	v158 = loc76;
+	v159 = arg5;
+	v160 = loc41;
+	v161 = loc71;
+	v162 = loc131;
+	v163 = loc142;
+	v164 = loc67;
+	v151 = invoke_iiiiiiiiiiii(v151, v152, v154, v156, v157, v158, v159, v160, v161, v162, v163, v164);
+	loc77 = v151;
+	v151.u3 = g_t140048.u3;
+	loc78 = v151;
+	v151.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v151;
+	v151 = loc78;
+	v152.u0 = 0x01;
+	v151 &= v152;
+	loc79 = v151;
+	v151 = loc79;
+	if (v151)
+	{
+		v151.u0 = 11;
+		loc154 = v151;
+		goto l001077FF;
+	}
+	v151 = loc77;
+	if (v151)
+	{
+		v151 = loc71;
+		v151 = *v151.u0;
+		loc80 = v151;
+		v151 = loc80;
+		v152.u0 = 0x20;
+		v151 += v152;
+		loc81 = v151;
+		v151 = loc81;
+		v151 = *v151.u0;
+		loc82 = v151;
+		v151.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v151;
+		v151 = loc82;
+		v152 = loc71;
+		v154.u0 = 15576;
+		v156.u0 = 15586;
+		v157 = loc63;
+		v151 = invoke_iiiii(v151, v152, v154, v156, v157);
+		v151.u3 = g_t140048.u3;
+		loc83 = v151;
+		v151.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v151;
+		v151 = loc83;
+		v152.u0 = 0x01;
+		v151 &= v152;
+		loc84 = v151;
+		v151 = loc84;
+		if (v151)
+		{
+			v151 = ___cxa_find_matching_catch_n();
+			loc101 = v151;
+			v151.u3 = g_t140094.u3;
+			loc102 = v151;
+			v151 = loc101;
+			loc11 = v151;
+			v151 = loc102;
+			loc12 = v151;
+			goto l001075CC;
+		}
+		v151 = loc142;
+		v151.u3 = *v151.u3;
+		loc85 = v151;
+		v151 = loc131;
+		v151.u3 = *v151.u3;
+		loc86 = v151;
+		v151 = loc85;
+		v152 = loc86;
+		v151 -= v152;
+		loc87 = v151;
+		v151 = loc87;
+		v152.u0 = 0x62;
+		v153 = v151 > v152;
+		loc88 = v153;
+		v151 = loc88;
+		if (v151)
+		{
+			v151 = loc87;
+			v152.u0 = 0x02;
+			v151 += v152;
+			loc89 = v151;
+			v151 = loc89;
+			v151 = _malloc(v151);
+			loc90 = v151;
+			v151 = loc90;
+			loc91 = v151;
+			v151 = loc90;
+			v152.u0 = 0x00;
+			v153 = v151 == v152;
+			loc92 = v153;
+			v151 = loc92;
+			if (v151)
+			{
+				v151.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v151;
+				v151.u0 = 0x018A;
+				invoke_v(v151);
+				v151.u3 = g_t140048.u3;
+				loc93 = v151;
+				v151.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v151;
+				v151 = loc93;
+				v152.u0 = 0x01;
+				v151 &= v152;
+				loc94 = v151;
+				v151 = loc94;
+				if (v151)
+				{
+					v151 = loc91;
+					loc28 = v151;
+				}
+				else
+				{
+					v151.u0 = 0x00;
+					loc10 = v151;
+					v151 = loc91;
+					loc29 = v151;
+					v151.u0 = 0x10;
+					loc154 = v151;
+				}
+			}
+			else
+			{
+				v151 = loc90;
+				loc10 = v151;
+				v151 = loc91;
+				loc29 = v151;
+				v151.u0 = 0x10;
+				loc154 = v151;
+			}
+		}
+		else
+		{
+			v151 = loc64;
+			loc10 = v151;
+			v151.u0 = 0x00;
+			loc29 = v151;
+			v151.u0 = 0x10;
+			loc154 = v151;
+		}
+		v151 = loc154;
+		v152.u0 = 0x10;
+		v153 = v151 == v152;
+		if (!v153)
+		{
+l001075A5:
+			v151 = ___cxa_find_matching_catch_n();
+			loc103 = v151;
+			v151.u3 = g_t140094.u3;
+			loc104 = v151;
+			v151 = loc28;
+			v152.u0 = 0x00;
+			v153 = v151 == v152;
+			loc105 = v153;
+			v151 = loc105;
+			v153 = v151 == 0x00;
+			if (v153)
+			{
+				v151 = loc28;
+				loc106 = v151;
+				v151 = loc106;
+				_free(v151);
+			}
+			v151 = loc103;
+			loc11 = v151;
+			v151 = loc104;
+			loc12 = v151;
+l001075CC:
+			v151 = loc11;
+			loc14 = v151;
+			v151 = loc12;
+			loc15 = v151;
+			goto l001077FF;
+		}
+		v151 = loc41;
+		v165 = *v151.u0;
+		v151.u3 = (word32) v165;
+		loc107 = v151;
+		v151 = loc107;
+		v152.u0 = 0x18;
+		v151 <<= v152;
+		v152.u0 = 0x18;
+		v151 >>= v152;
+		v152.u0 = 0x00;
+		v153 = v151 == v152;
+		loc108 = v153;
+		v151 = loc108;
+		if (v151)
+		{
+			v151 = loc10;
+			loc13 = v151;
+		}
+		else
+		{
+			v151 = loc10;
+			v152.u0 = 0x01;
+			v151 += v152;
+			loc109 = v151;
+			v151 = loc10;
+			v152.u0 = 0x2D;
+			v166 = (byte) v152;
+			v151.u4->t0000.u0 = (bool) v166;
+			v151 = loc109;
+			loc13 = v151;
+		}
+		while (true)
+		{
+			v151 = loc131;
+			v151.u3 = *v151.u3;
+			loc110 = v151;
+			v151 = loc63;
+			v152.u0 = 0x0A;
+			v151 += v152;
+			loc111 = v151;
+			v151 = loc63;
+			loc112 = v151;
+			v151 = loc110;
+			loc7 = v151;
+			v151 = loc13;
+			loc16 = v151;
+			v151 = loc142;
+			v151.u3 = *v151.u3;
+			loc113 = v151;
+			v151 = loc7;
+			v152 = loc113;
+			v153 = v151 < v152;
+			loc114 = v153;
+			v151 = loc114;
+			v153 = v151 == 0x00;
+			if (v153)
+				break;
+			while (true)
+			{
+				v151 = loc7;
+				v167.u1 = v151.u4->t0000.u1;
+				v151.u3 = (word32) v167;
+				loc117 = v151;
+				v151 = loc63;
+				loc8 = v151;
+				v151 = loc8;
+				v152 = loc111;
+				v153 = v151 == v152;
+				loc118 = v153;
+				v151 = loc118;
+				if (v151)
+					break;
+				v151 = loc8;
+				v168.u1 = v151.u4->t0000.u1;
+				v151.u3 = (word32) v168;
+				loc119 = v151;
+				v151 = loc119;
+				v152.u0 = 0x18;
+				v151 <<= v152;
+				v152.u0 = 0x18;
+				v151 >>= v152;
+				v152 = loc117;
+				v154.u0 = 0x18;
+				v152 <<= v154;
+				v154.u0 = 0x18;
+				v152 >>= v154;
+				v153 = v151 == v152;
+				loc121 = v153;
+				v151 = loc121;
+				if (v151)
+				{
+					v151 = loc8;
+					loc9 = v151;
+					goto l001074F3;
+				}
+				v151 = loc8;
+				v152.u0 = 0x01;
+				v151 += v152;
+				loc122 = v151;
+				v151 = loc122;
+				loc8 = v151;
+			}
+			v151 = loc111;
+			loc9 = v151;
+l001074F3:
+			v151 = loc9;
+			loc123 = v151;
+			v151 = loc123;
+			v152 = loc112;
+			v151 -= v152;
+			loc124 = v151;
+			v151.u0 = 15576;
+			v152 = loc124;
+			v151 += v152;
+			loc125 = v151;
+			v151 = loc125;
+			v169 = *v151.u0;
+			v151.u3 = (word32) v169;
+			loc126 = v151;
+			v151 = loc16;
+			v152 = loc126;
+			v170 = (byte) v152;
+			v151.u4->t0000.u0 = (bool) v170;
+			v151 = loc7;
+			v152.u0 = 0x01;
+			v151 += v152;
+			loc127 = v151;
+			v151 = loc16;
+			v152.u0 = 0x01;
+			v151 += v152;
+			loc128 = v151;
+			v151 = loc127;
+			loc7 = v151;
+			v151 = loc128;
+			loc16 = v151;
+		}
+		v151 = loc16;
+		v152.u0 = 0x00;
+		v171 = (byte) v152;
+		v151.u4->t0000.u0 = (bool) v171;
+		v151 = loc153;
+		v152 = arg6;
+		*v151.u3 = (word32) v152;
+		v151 = loc64;
+		v152.u0 = 0x3CE3;
+		v154 = loc153;
+		v151 = fn000DB950(v151, v152, v154);
+		loc115 = v151;
+		v151 = loc115;
+		v152.u0 = 0x01;
+		v153 = v151 == v152;
+		loc116 = v153;
+		v151 = loc116;
+		v153 = v151 == 0x00;
+		if (v153)
+		{
+			v151.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v151;
+			v151.u0 = 422;
+			v152.u0 = 15591;
+			invoke_vi(v151, v152);
+			v151.u3 = g_t140048.u3;
+			loc129 = v151;
+			v151.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v151;
+			v151 = loc129;
+			v152.u0 = 0x01;
+			v151 &= v152;
+			loc130 = v151;
+			v151 = loc130;
+			if (v151)
+			{
+				v151 = loc29;
+				loc28 = v151;
+				goto l001075A5;
+			}
+		}
+		v151 = loc29;
+		v152.u0 = 0x00;
+		v153 = v151 == v152;
+		loc132 = v153;
+		v151 = loc132;
+		v153 = v151 == 0x00;
+		if (v153)
+		{
+			v151 = loc29;
+			loc133 = v151;
+			v151 = loc133;
+			_free(v151);
+		}
+	}
+	v151 = arg1;
+	v151.u3 = *v151.u3;
+	loc134 = v151;
+	v151 = loc134;
+	v152.u0 = 0x00;
+	v153 = v151 == v152;
+	loc135 = v153;
+	v151 = loc135;
+	if (v151)
+	{
+		v151.u0 = 0x00;
+		loc150 = v151;
+	}
+	else
+	{
+		v151 = loc134;
+		v152.u0 = 0x0C;
+		v151 += v152;
+		loc136 = v151;
+		v151 = loc136;
+		v151 = *v151.u0;
+		loc137 = v151;
+		v151 = loc134;
+		v152.u0 = 0x10;
+		v151 += v152;
+		loc138 = v151;
+		v151 = loc138;
+		v151 = *v151.u0;
+		loc139 = v151;
+		v151 = loc137;
+		v152 = loc139;
+		v153 = v151 == v152;
+		loc140 = v153;
+		v151 = loc140;
+		if (v151)
+		{
+			v151 = loc134;
+			v151 = *v151.u0;
+			loc141 = v151;
+			v151 = loc141;
+			v152.u0 = 0x24;
+			v151 += v152;
+			loc143 = v151;
+			v151 = loc143;
+			v151 = *v151.u0;
+			loc144 = v151;
+			v151.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v151;
+			v151 = loc144;
+			v152 = loc134;
+			v151 = invoke_ii(v151, v152);
+			loc145 = v151;
+			v151.u3 = g_t140048.u3;
+			loc146 = v151;
+			v151.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v151;
+			v151 = loc146;
+			v152.u0 = 0x01;
+			v151 &= v152;
+			loc147 = v151;
+			v151 = loc147;
+			if (v151)
+			{
+				v151.u0 = 11;
+				loc154 = v151;
+				goto l001077FF;
+			}
+			v151 = loc145;
+			v152.u0 = ~0x00;
+			v153 = v151 == v152;
+			loc148 = v153;
+			v151 = loc148;
+			if (v151)
+			{
+				v151 = arg1;
+				v152.u0 = 0x00;
+				*v151.u0 = v152;
+				v151.u0 = 0x00;
+				loc150 = v151;
+			}
+			else
+			{
+				v151 = arg1;
+				v151 = *v151.u0;
+				loc25 = v151;
+				v151 = loc25;
+				loc150 = v151;
+			}
+l001076A8:
+			v151 = loc150;
+			v152.u0 = 0x00;
+			v153 = v151 == v152;
+			loc149 = v153;
+			v151 = arg2;
+			v151 = *v151.u0;
+			loc151 = v151;
+			v151 = loc151;
+			v152.u0 = 0x00;
+			v153 = v151 == v152;
+			loc152 = v153;
+			v151 = loc152;
+			if (v151)
+			{
+				v151.u0 = 0x2B;
+				loc154 = v151;
+				goto l0010775E;
+			}
+			v151 = loc151;
+			v152.u0 = 0x0C;
+			v151 += v152;
+			loc31 = v151;
+			v151 = loc31;
+			v151 = *v151.u0;
+			loc32 = v151;
+			v151 = loc151;
+			v152.u0 = 0x10;
+			v151 += v152;
+			loc33 = v151;
+			v151 = loc33;
+			v151 = *v151.u0;
+			loc34 = v151;
+			v151 = loc32;
+			v152 = loc34;
+			v153 = v151 == v152;
+			loc35 = v153;
+			v151 = loc35;
+			if (v151)
+			{
+				v151 = loc151;
+				v151 = *v151.u0;
+				loc36 = v151;
+				v151 = loc36;
+				v152.u0 = 0x24;
+				v151 += v152;
+				loc37 = v151;
+				v151 = loc37;
+				v151 = *v151.u0;
+				loc38 = v151;
+				v151.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v151;
+				v151 = loc38;
+				v152 = loc151;
+				v151 = invoke_ii(v151, v152);
+				loc39 = v151;
+				v151.u3 = g_t140048.u3;
+				loc40 = v151;
+				v151.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v151;
+				v151 = loc40;
+				v152.u0 = 0x01;
+				v151 &= v152;
+				loc42 = v151;
+				v151 = loc42;
+				if (v151)
+				{
+					v151.u0 = 11;
+					loc154 = v151;
+l001077FF:
+					v151 = loc154;
+					v152.u0 = 11;
+					v153 = v151 == v152;
+					if (v153)
+					{
+						v151 = ___cxa_find_matching_catch_n();
+						loc99 = v151;
+						v151.u3 = g_t140094.u3;
+						loc100 = v151;
+						v151 = loc99;
+						loc14 = v151;
+						v151 = loc100;
+						loc15 = v151;
+					}
+					v151 = loc14;
+					loc17 = v151;
+					v151 = loc15;
+					loc18 = v151;
+l00107821:
+					v151 = loc30;
+					v151.u3 = *v151.u3;
+					loc55 = v151;
+					v151 = loc55;
+					v151 = fn0011B43F(v151);
+					v151 = loc131;
+					v151.u3 = *v151.u3;
+					loc24 = v151;
+					v151 = loc131;
+					v152.u0 = 0x00;
+					*v151.u3 = (word32) v152;
+					v151 = loc24;
+					v152.u0 = 0x00;
+					v153 = v151 == v152;
+					loc56 = v153;
+					v151 = loc56;
+					if (v151)
+					{
+						v151 = loc18;
+						loc20 = v151;
+						v151 = loc17;
+						loc22 = v151;
+					}
+					else
+					{
+						v151 = loc66;
+						v151.u3 = *v151.u3;
+						loc26 = v151;
+						v151 = loc18;
+						loc19 = v151;
+						v151 = loc17;
+						loc21 = v151;
+						v151 = loc26;
+						loc57 = v151;
+						v151 = loc24;
+						loc58 = v151;
+						v151.u0 = 0x34;
+						loc154 = v151;
+					}
+l00107870:
+					v151 = loc154;
+					v152.u0 = 0x34;
+					v153 = v151 == v152;
+					if (v153)
+					{
+						v151.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v151;
+						v151 = loc57;
+						v152 = loc58;
+						invoke_vi(v151, v152);
+						v151.u3 = g_t140048.u3;
+						loc59 = v151;
+						v151.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v151;
+						v151 = loc59;
+						v152.u0 = 0x01;
+						v151 &= v152;
+						loc60 = v151;
+						v151 = loc60;
+						if (v151)
+						{
+							v151.u0 = 0x00;
+							v151 = ___cxa_find_matching_catch_n(v151);
+							loc61 = v151;
+							v151.u3 = g_t140094.u3;
+							loc62 = v151;
+							v151 = loc61;
+							fn000D0E65(v151);
+						}
+						else
+						{
+							v151 = loc19;
+							loc20 = v151;
+							v151 = loc21;
+							loc22 = v151;
+						}
+					}
+					v151 = loc22;
+					___resumeException(v151);
+					v151.u0 = 0x00;
+					return v151;
+				}
+				v151 = loc39;
+				v152.u0 = ~0x00;
+				v153 = v151 == v152;
+				loc43 = v153;
+				v151 = loc43;
+				if (v151)
+				{
+					v151 = arg2;
+					v152.u0 = 0x00;
+					*v151.u0 = v152;
+					v151.u0 = 0x2B;
+					loc154 = v151;
+					goto l0010775F;
+				}
+			}
+			v151 = loc149;
+			v153 = v151 == 0x00;
+			if (v153)
+			{
+				v151.u0 = 44;
+				loc154 = v151;
+			}
+l0010775F:
+			v151 = loc154;
+			v152.u0 = 0x2B;
+			v153 = v151 == v152;
+			if (v153)
+			{
+				v151 = loc149;
+				if (v151)
+				{
+					v151.u0 = 44;
+					loc154 = v151;
+				}
+			}
+			v151 = loc154;
+			v152.u0 = 44;
+			v153 = v151 == v152;
+			if (v153)
+			{
+				v151 = arg5;
+				v151 = *v151.u0;
+				loc44 = v151;
+				v151 = loc44;
+				v152.u0 = 0x02;
+				v151 |= v152;
+				loc45 = v151;
+				v151 = arg5;
+				v152 = loc45;
+				*v151.u0 = v152;
+			}
+			v151 = arg1;
+			v151 = *v151.u0;
+			loc27 = v151;
+			v151 = loc30;
+			v151 = *v151.u0;
+			loc46 = v151;
+			v151 = loc46;
+			v151 = fn0011B43F(v151);
+			v151 = loc131;
+			v151 = *v151.u0;
+			loc47 = v151;
+			v151 = loc131;
+			v152.u0 = 0x00;
+			*v151.u0 = v152;
+			v151 = loc47;
+			v152.u0 = 0x00;
+			v153 = v151 == v152;
+			loc48 = v153;
+			v151 = loc48;
+			v153 = v151 == 0x00;
+			if (v153)
+			{
+				v151 = loc66;
+				v151 = *v151.u0;
+				loc49 = v151;
+				v151.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v151;
+				v151 = loc49;
+				v152 = loc47;
+				invoke_vi(v151, v152);
+				v151.u3 = g_t140048.u3;
+				loc50 = v151;
+				v151.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v151;
+				v151 = loc50;
+				v152.u0 = 0x01;
+				v151 &= v152;
+				loc51 = v151;
+				v151 = loc51;
+				if (v151)
+				{
+					v151.u0 = 0x00;
+					v151 = ___cxa_find_matching_catch_n(v151);
+					loc53 = v151;
+					v151.u3 = g_t140094.u3;
+					loc54 = v151;
+					v151 = loc53;
+					fn000D0E65(v151);
+				}
+			}
+			v151 = loc155;
+			g_t140030.u3 = (word32 *) v151;
+			v151 = loc27;
+			return v151;
+		}
+		v151 = loc134;
+		loc150 = v151;
+	}
+	goto l001076A8;
 }
 
 // 001078B8: Stack Eq_n fn001078B8(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn001078B8(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v125.u3 = g_t140030.u3;
+	loc129 = v125;
+	v125.u3 = g_t140030.u3;
+	v126.u0 = 0x90;
+	v125 += v126;
+	g_t140030.u3 = (word32 *) v125;
+	v125.u3 = g_t140030.u3;
+	v126.u3 = g_t140034.u3;
+	v127 = v125 >= v126;
+	if (v127)
+	{
+		v125.u0 = 0x90;
+		abortStackOverflow(v125);
+	}
+	v125 = loc129;
+	v126.u0 = 0x18;
+	v125 += v126;
+	loc14 = v125;
+	v125 = loc129;
+	v126.u0 = 0x20;
+	v125 += v126;
+	loc95 = v125;
+	v125 = loc129;
+	v126.u0 = 0x10;
+	v125 += v126;
+	loc106 = v125;
+	v125 = loc129;
+	v126.u0 = 0x08;
+	v125 += v126;
+	loc117 = v125;
+	v125 = loc129;
+	v126.u0 = 0x04;
+	v125 += v126;
+	loc20 = v125;
+	v125 = loc129;
+	v126.u0 = 0x1C;
+	v125 += v126;
+	loc31 = v125;
+	v125 = loc129;
+	loc37 = v125;
+	v125 = loc95;
+	loc38 = v125;
+	v125 = loc106;
+	v126 = loc38;
+	*v125.u0 = v126;
+	v125 = loc106;
+	v126.u0 = 0x04;
+	v125 += v126;
+	loc39 = v125;
+	v125 = loc39;
+	v126.u0 = 0x01A4;
+	*v125.u0 = v126;
+	v125 = loc95;
+	v126.u0 = 100;
+	v125 += v126;
+	loc40 = v125;
+	v125.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v125;
+	v125.u0 = 0x0167;
+	v126 = arg4;
+	v125 = invoke_ii(v125, v126);
+	loc41 = v125;
+	v125.u3 = g_t140048.u3;
+	loc42 = v125;
+	v125.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v125;
+	v125 = loc42;
+	v126.u0 = 0x01;
+	v125 &= v126;
+	loc43 = v125;
+	v125 = loc43;
+	if (v125)
+	{
+		v125 = ___cxa_find_matching_catch_n();
+		loc69 = v125;
+		v125.u3 = g_t140094.u3;
+		loc70 = v125;
+		v125 = loc106;
+		v126.u0 = 0x00;
+		*v125.u3 = (word32) v126;
+		v125 = loc70;
+		loc10 = v125;
+		v125 = loc69;
+		loc12 = v125;
+		v125 = loc95;
+		loc32 = v125;
+		v125.u0 = 0x29;
+		loc128 = v125;
+		goto l00107E0A;
+	}
+	v125 = loc20;
+	v126 = loc41;
+	*v125.u0 = v126;
+	v125.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v125;
+	v125.u0 = 0x0164;
+	v126 = loc20;
+	v128.u0 = 0x4C70;
+	v125 = invoke_iii(v125, v126, v128);
+	loc44 = v125;
+	v125.u3 = g_t140048.u3;
+	loc45 = v125;
+	v125.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v125;
+	v125 = loc45;
+	v126.u0 = 0x01;
+	v125 &= v126;
+	loc46 = v125;
+	v125 = loc46;
+	if (v125)
+	{
+		v125 = ___cxa_find_matching_catch_n();
+		loc71 = v125;
+		v125.u3 = g_t140094.u3;
+		loc72 = v125;
+		v125 = loc71;
+		loc8 = v125;
+		v125 = loc72;
+		loc9 = v125;
+		goto l00107DC8;
+	}
+	v125 = loc31;
+	v126.u0 = 0x00;
+	v129 = (byte) v126;
+	*v125.u3 = (word32) v129;
+	v125 = arg2;
+	v125.u3 = *v125.u3;
+	loc47 = v125;
+	v125 = loc37;
+	v126 = loc47;
+	*v125.u3 = (word32) v126;
+	v125 = arg4;
+	v126.u0 = 0x04;
+	v125 += v126;
+	loc48 = v125;
+	v125 = loc48;
+	v125.u3 = *v125.u3;
+	loc49 = v125;
+	v125 = loc47;
+	loc50 = v125;
+	v125.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v125;
+	v125 = loc14;
+	v126 = loc37;
+	v126 = *v126.u0;
+	*v125.u0 = v126;
+	v125.u0 = 0x01A5;
+	v126 = arg1;
+	v128 = loc14;
+	v130 = arg3;
+	v131 = loc20;
+	v132 = loc49;
+	v133 = arg5;
+	v134 = loc31;
+	v135 = loc44;
+	v136 = loc106;
+	v137 = loc117;
+	v138 = loc40;
+	v125 = invoke_iiiiiiiiiiii(v125, v126, v128, v130, v131, v132, v133, v134, v135, v136, v137, v138);
+	loc51 = v125;
+	v125.u3 = g_t140048.u3;
+	loc52 = v125;
+	v125.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v125;
+	v125 = loc52;
+	v126.u0 = 0x01;
+	v125 &= v126;
+	loc53 = v125;
+	v125 = loc53;
+	if (v125)
+	{
+		v125.u0 = 0x0D;
+		loc128 = v125;
+		goto l00107DA6;
+	}
+	v125 = loc51;
+	if (v125)
+	{
+		v125 = arg6;
+		v126.u0 = 11;
+		v125 += v126;
+		loc54 = v125;
+		v125 = loc54;
+		v139 = *v125.u0;
+		v125.u3 = (word32) v139;
+		loc55 = v125;
+		v125 = loc55;
+		v126.u0 = 0x18;
+		v125 <<= v126;
+		v126.u0 = 0x18;
+		v125 >>= v126;
+		v126.u0 = 0x00;
+		v127 = v125 < v126;
+		loc56 = v127;
+		v125 = loc56;
+		if (v125)
+		{
+			v125 = arg6;
+			v125.u3 = *v125.u3;
+			loc57 = v125;
+			v125 = loc57;
+			v126.u0 = 0x00;
+			v140 = (byte) v126;
+			v125.u4->t0000.u0 = (bool) v140;
+			v125 = arg6;
+			v126.u0 = 0x04;
+			v125 += v126;
+			loc58 = v125;
+			v125 = loc58;
+			v126.u0 = 0x00;
+			*v125.u3 = (word32) v126;
+		}
+		else
+		{
+			v125 = arg6;
+			v126.u0 = 0x00;
+			v141 = (byte) v126;
+			v125.u4->t0000.u0 = (bool) v141;
+			v125 = loc54;
+			v126.u0 = 0x00;
+			v142 = (byte) v126;
+			v125.u4->t0000.u0 = (bool) v142;
+		}
+		v125 = loc31;
+		v143.u1 = v125.u4->t0000.u1;
+		v125.u3 = (word32) v143;
+		loc59 = v125;
+		v125 = loc59;
+		v126.u0 = 0x18;
+		v125 <<= v126;
+		v126.u0 = 0x18;
+		v125 >>= v126;
+		v126.u0 = 0x00;
+		v127 = v125 == v126;
+		loc60 = v127;
+		v125 = loc60;
+		v127 = v125 == 0x00;
+		if (v127)
+		{
+			v125 = loc44;
+			v125.u3 = *v125.u3;
+			loc61 = v125;
+			v125 = loc61;
+			v126.u0 = 0x1C;
+			v125 += v126;
+			loc62 = v125;
+			v125 = loc62;
+			v125.u3 = *v125.u3;
+			loc63 = v125;
+			v125.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v125;
+			v125 = loc63;
+			v126 = loc44;
+			v128.u0 = 0x2D;
+			v125 = invoke_iii(v125, v126, v128);
+			loc64 = v125;
+			v125.u3 = g_t140048.u3;
+			loc65 = v125;
+			v125.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v125;
+			v125 = loc65;
+			v126.u0 = 0x01;
+			v125 &= v126;
+			loc66 = v125;
+			v125 = loc66;
+			if (v125)
+			{
+				v125.u0 = 0x0D;
+				loc128 = v125;
+				goto l00107DA6;
+			}
+			v125.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v125;
+			v125.u0 = 0x01A7;
+			v126 = arg6;
+			v128 = loc64;
+			invoke_vii(v125, v126, v128);
+			v125.u3 = g_t140048.u3;
+			loc67 = v125;
+			v125.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v125;
+			v125 = loc67;
+			v126.u0 = 0x01;
+			v125 &= v126;
+			loc68 = v125;
+			v125 = loc68;
+			if (v125)
+			{
+				v125.u0 = 0x0D;
+				loc128 = v125;
+				goto l00107DA6;
+			}
+		}
+		v125 = loc44;
+		v125 = *v125.u0;
+		loc75 = v125;
+		v125 = loc75;
+		v126.u0 = 0x1C;
+		v125 += v126;
+		loc76 = v125;
+		v125 = loc76;
+		v125 = *v125.u0;
+		loc77 = v125;
+		v125.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v125;
+		v125 = loc77;
+		v126 = loc44;
+		v128.u0 = 0x30;
+		v125 = invoke_iii(v125, v126, v128);
+		loc78 = v125;
+		v125.u3 = g_t140048.u3;
+		loc79 = v125;
+		v125.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v125;
+		v125 = loc79;
+		v126.u0 = 0x01;
+		v125 &= v126;
+		loc80 = v125;
+		v125 = loc80;
+		if (v125)
+		{
+			v125.u0 = 0x0D;
+			loc128 = v125;
+			goto l00107DA6;
+		}
+		while (true)
+		{
+			v125 = loc106;
+			v125 = *v125.u0;
+			loc81 = v125;
+			v125 = loc117;
+			v125 = *v125.u0;
+			loc82 = v125;
+			v125 = loc82;
+			v126.u0 = ~0x00;
+			v125 += v126;
+			loc83 = v125;
+			v125 = loc81;
+			loc7 = v125;
+			v125 = loc7;
+			v126 = loc83;
+			v127 = v125 < v126;
+			loc84 = v127;
+			v125 = loc84;
+			v127 = v125 == 0x00;
+			if (v127)
+				break;
+			v125 = loc7;
+			v144 = *v125.u0;
+			v125.u3 = (word32) v144;
+			loc85 = v125;
+			v125 = loc85;
+			v126.u0 = 0x18;
+			v125 <<= v126;
+			v126.u0 = 0x18;
+			v125 >>= v126;
+			v126 = loc78;
+			v128.u0 = 0x18;
+			v126 <<= v128;
+			v128.u0 = 0x18;
+			v126 >>= v128;
+			v127 = v125 == v126;
+			loc86 = v127;
+			v125 = loc86;
+			v127 = v125 == 0x00;
+			if (v127)
+				break;
+			v125 = loc7;
+			v126.u0 = 0x01;
+			v125 += v126;
+			loc87 = v125;
+			v125 = loc87;
+			loc7 = v125;
+		}
+		v125.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v125;
+		v125.u0 = 424;
+		v126 = arg6;
+		v128 = loc7;
+		v130 = loc82;
+		v125 = invoke_iiii(v125, v126, v128, v130);
+		v125.u3 = g_t140048.u3;
+		loc88 = v125;
+		v125.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v125;
+		v125 = loc88;
+		v126.u0 = 0x01;
+		v125 &= v126;
+		loc89 = v125;
+		v125 = loc89;
+		if (v125)
+		{
+			v125 = ___cxa_find_matching_catch_n();
+			loc90 = v125;
+			v125.u3 = g_t140094.u3;
+			loc91 = v125;
+			v125 = loc90;
+			loc17 = v125;
+			v125 = loc91;
+			loc18 = v125;
+			goto l00107DA6;
+		}
+	}
+	v125 = arg1;
+	v125.u3 = *v125.u3;
+	loc92 = v125;
+	v125 = loc92;
+	v126.u0 = 0x00;
+	v127 = v125 == v126;
+	loc93 = v127;
+	v125 = loc93;
+	if (v125)
+	{
+		v125.u0 = 0x00;
+		loc109 = v125;
+	}
+	else
+	{
+		v125 = loc92;
+		v126.u0 = 0x0C;
+		v125 += v126;
+		loc94 = v125;
+		v125 = loc94;
+		v125 = *v125.u0;
+		loc96 = v125;
+		v125 = loc92;
+		v126.u0 = 0x10;
+		v125 += v126;
+		loc97 = v125;
+		v125 = loc97;
+		v125 = *v125.u0;
+		loc98 = v125;
+		v125 = loc96;
+		v126 = loc98;
+		v127 = v125 == v126;
+		loc99 = v127;
+		v125 = loc99;
+		if (v125)
+		{
+			v125 = loc92;
+			v125 = *v125.u0;
+			loc100 = v125;
+			v125 = loc100;
+			v126.u0 = 0x24;
+			v125 += v126;
+			loc101 = v125;
+			v125 = loc101;
+			v125 = *v125.u0;
+			loc102 = v125;
+			v125.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v125;
+			v125 = loc102;
+			v126 = loc92;
+			v125 = invoke_ii(v125, v126);
+			loc103 = v125;
+			v125.u3 = g_t140048.u3;
+			loc104 = v125;
+			v125.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v125;
+			v125 = loc104;
+			v126.u0 = 0x01;
+			v125 &= v126;
+			loc105 = v125;
+			v125 = loc105;
+			if (v125)
+			{
+				v125.u0 = 0x0D;
+				loc128 = v125;
+				goto l00107DA6;
+			}
+			v125 = loc103;
+			v126.u0 = ~0x00;
+			v127 = v125 == v126;
+			loc107 = v127;
+			v125 = loc107;
+			if (v125)
+			{
+				v125 = arg1;
+				v126.u0 = 0x00;
+				*v125.u0 = v126;
+				v125.u0 = 0x00;
+				loc109 = v125;
+			}
+			else
+			{
+				v125 = arg1;
+				v125 = *v125.u0;
+				loc16 = v125;
+				v125 = loc16;
+				loc109 = v125;
+			}
+l00107C60:
+			v125 = loc109;
+			v126.u0 = 0x00;
+			v127 = v125 == v126;
+			loc108 = v127;
+			v125 = loc47;
+			v126.u0 = 0x00;
+			v127 = v125 == v126;
+			loc110 = v127;
+			v125 = loc110;
+			if (v125)
+			{
+				v125.u0 = 33;
+				loc128 = v125;
+				goto l00107D08;
+			}
+			v125 = loc50;
+			v126.u0 = 0x0C;
+			v125 += v126;
+			loc111 = v125;
+			v125 = loc111;
+			v125 = *v125.u0;
+			loc112 = v125;
+			v125 = loc50;
+			v126.u0 = 0x10;
+			v125 += v126;
+			loc113 = v125;
+			v125 = loc113;
+			v125 = *v125.u0;
+			loc114 = v125;
+			v125 = loc112;
+			v126 = loc114;
+			v127 = v125 == v126;
+			loc115 = v127;
+			v125 = loc115;
+			if (v125)
+			{
+				v125 = loc47;
+				loc116 = v125;
+				v125 = loc116;
+				v125 = *v125.u0;
+				loc118 = v125;
+				v125 = loc118;
+				v126.u0 = 0x24;
+				v125 += v126;
+				loc119 = v125;
+				v125 = loc119;
+				v125 = *v125.u0;
+				loc120 = v125;
+				v125.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v125;
+				v125 = loc120;
+				v126 = loc50;
+				v125 = invoke_ii(v125, v126);
+				loc121 = v125;
+				v125.u3 = g_t140048.u3;
+				loc122 = v125;
+				v125.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v125;
+				v125 = loc122;
+				v126.u0 = 0x01;
+				v125 &= v126;
+				loc123 = v125;
+				v125 = loc123;
+				if (v125)
+				{
+					v125.u0 = 0x0D;
+					loc128 = v125;
+l00107DA6:
+					v125 = loc128;
+					v126.u0 = 0x0D;
+					v127 = v125 == v126;
+					if (v127)
+					{
+						v125 = ___cxa_find_matching_catch_n();
+						loc73 = v125;
+						v125.u3 = g_t140094.u3;
+						loc74 = v125;
+						v125 = loc73;
+						loc17 = v125;
+						v125 = loc74;
+						loc18 = v125;
+					}
+					v125 = loc17;
+					loc8 = v125;
+					v125 = loc18;
+					loc9 = v125;
+l00107DC8:
+					v125 = loc20;
+					v125.u3 = *v125.u3;
+					loc28 = v125;
+					v125 = loc28;
+					v125 = fn0011B43F(v125);
+					v125 = loc106;
+					v125.u3 = *v125.u3;
+					loc15 = v125;
+					v125 = loc106;
+					v126.u0 = 0x00;
+					*v125.u3 = (word32) v126;
+					v125 = loc15;
+					v126.u0 = 0x00;
+					v127 = v125 == v126;
+					loc29 = v127;
+					v125 = loc29;
+					if (v125)
+					{
+						v125 = loc9;
+						loc11 = v125;
+						v125 = loc8;
+						loc13 = v125;
+					}
+					else
+					{
+						v125 = loc9;
+						loc10 = v125;
+						v125 = loc8;
+						loc12 = v125;
+						v125 = loc15;
+						loc32 = v125;
+						v125.u0 = 0x29;
+						loc128 = v125;
+					}
+l00107E0A:
+					v125 = loc128;
+					v126.u0 = 0x29;
+					v127 = v125 == v126;
+					if (v127)
+					{
+						v125 = loc39;
+						v125 = *v125.u0;
+						loc30 = v125;
+						v125.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v125;
+						v125 = loc30;
+						v126 = loc32;
+						invoke_vi(v125, v126);
+						v125.u3 = g_t140048.u3;
+						loc33 = v125;
+						v125.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v125;
+						v125 = loc33;
+						v126.u0 = 0x01;
+						v125 &= v126;
+						loc34 = v125;
+						v125 = loc34;
+						if (v125)
+						{
+							v125.u0 = 0x00;
+							v125 = ___cxa_find_matching_catch_n(v125);
+							loc35 = v125;
+							v125.u3 = g_t140094.u3;
+							loc36 = v125;
+							v125 = loc35;
+							fn000D0E65(v125);
+						}
+						else
+						{
+							v125 = loc10;
+							loc11 = v125;
+							v125 = loc12;
+							loc13 = v125;
+						}
+					}
+					v125 = loc13;
+					___resumeException(v125);
+					v125.u0 = 0x00;
+					return v125;
+				}
+				v125 = loc121;
+				v126.u0 = ~0x00;
+				v127 = v125 == v126;
+				loc124 = v127;
+				v125 = loc124;
+				if (v125)
+				{
+					v125 = arg2;
+					v126.u0 = 0x00;
+					*v125.u0 = v126;
+					v125.u0 = 33;
+					loc128 = v125;
+					goto l00107D09;
+				}
+			}
+			v125 = loc108;
+			v127 = v125 == 0x00;
+			if (v127)
+			{
+				v125.u0 = 0x22;
+				loc128 = v125;
+			}
+l00107D09:
+			v125 = loc128;
+			v126.u0 = 33;
+			v127 = v125 == v126;
+			if (v127)
+			{
+				v125 = loc108;
+				if (v125)
+				{
+					v125.u0 = 0x22;
+					loc128 = v125;
+				}
+			}
+			v125 = loc128;
+			v126.u0 = 0x22;
+			v127 = v125 == v126;
+			if (v127)
+			{
+				v125 = arg5;
+				v125 = *v125.u0;
+				loc125 = v125;
+				v125 = loc125;
+				v126.u0 = 0x02;
+				v125 |= v126;
+				loc126 = v125;
+				v125 = arg5;
+				v126 = loc126;
+				*v125.u0 = v126;
+			}
+			v125 = arg1;
+			v125 = *v125.u0;
+			loc19 = v125;
+			v125 = loc20;
+			v125 = *v125.u0;
+			loc127 = v125;
+			v125 = loc127;
+			v125 = fn0011B43F(v125);
+			v125 = loc106;
+			v125 = *v125.u0;
+			loc21 = v125;
+			v125 = loc106;
+			v126.u0 = 0x00;
+			*v125.u0 = v126;
+			v125 = loc21;
+			v126.u0 = 0x00;
+			v127 = v125 == v126;
+			loc22 = v127;
+			v125 = loc22;
+			v127 = v125 == 0x00;
+			if (v127)
+			{
+				v125 = loc39;
+				v125 = *v125.u0;
+				loc23 = v125;
+				v125.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v125;
+				v125 = loc23;
+				v126 = loc21;
+				invoke_vi(v125, v126);
+				v125.u3 = g_t140048.u3;
+				loc24 = v125;
+				v125.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v125;
+				v125 = loc24;
+				v126.u0 = 0x01;
+				v125 &= v126;
+				loc25 = v125;
+				v125 = loc25;
+				if (v125)
+				{
+					v125.u0 = 0x00;
+					v125 = ___cxa_find_matching_catch_n(v125);
+					loc26 = v125;
+					v125.u3 = g_t140094.u3;
+					loc27 = v125;
+					v125 = loc26;
+					fn000D0E65(v125);
+				}
+			}
+			v125 = loc129;
+			g_t140030.u3 = (word32 *) v125;
+			v125 = loc19;
+			return v125;
+		}
+		v125 = loc92;
+		loc109 = v125;
+	}
+	goto l00107C60;
 }
 
 // 00107E59: void fn00107E59(Stack Eq_n arg0)
@@ -1642,6 +8498,6132 @@ void fn00107E59(Eq_n arg0)
 // 00107E62: Stack Eq_n fn00107E62(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10)
 Eq_n fn00107E62(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10)
 {
+	v969.u3 = g_t140030.u3;
+	loc977 = v969;
+	v969.u3 = g_t140030.u3;
+	v970.u0 = 0x0200;
+	v969 += v970;
+	g_t140030.u3 = (word32 *) v969;
+	v969.u3 = g_t140030.u3;
+	v970.u3 = g_t140034.u3;
+	v971 = v969 >= v970;
+	if (v971)
+	{
+		v969.u0 = 0x0200;
+		abortStackOverflow(v969);
+	}
+	while (true)
+	{
+		v969 = loc977;
+		v970.u0 = 488;
+		v969 += v970;
+		loc96 = v969;
+		v969 = loc977;
+		v970.u0 = 88;
+		v969 += v970;
+		loc107 = v969;
+		v969 = loc977;
+		v970.u0 = 0x50;
+		v969 += v970;
+		loc118 = v969;
+		v969 = loc977;
+		v970.u0 = 0x48;
+		v969 += v970;
+		loc129 = v969;
+		v969 = loc977;
+		v970.u0 = 0x44;
+		v969 += v970;
+		loc140 = v969;
+		v969 = loc977;
+		v970.u0 = 0x01F0;
+		v969 += v970;
+		loc151 = v969;
+		v969 = loc977;
+		v970.u0 = 0x01ED;
+		v969 += v970;
+		loc162 = v969;
+		v969 = loc977;
+		v970.u0 = 0x01EC;
+		v969 += v970;
+		loc173 = v969;
+		v969 = loc977;
+		v970.u0 = 0x38;
+		v969 += v970;
+		loc184 = v969;
+		v969 = loc977;
+		v970.u0 = 44;
+		v969 += v970;
+		loc195 = v969;
+		v969 = loc977;
+		v970.u0 = 0x20;
+		v969 += v970;
+		loc206 = v969;
+		v969 = loc977;
+		v970.u0 = 0x14;
+		v969 += v970;
+		loc217 = v969;
+		v969 = loc977;
+		v970.u0 = 0x08;
+		v969 += v970;
+		loc228 = v969;
+		v969 = loc977;
+		v970.u0 = 0x04;
+		v969 += v970;
+		loc239 = v969;
+		v969 = loc977;
+		loc250 = v969;
+		v969 = loc96;
+		v970 = arg10;
+		*v969.u0 = v970;
+		v969 = loc107;
+		loc261 = v969;
+		v969 = loc118;
+		v970 = loc261;
+		*v969.u0 = v970;
+		v969 = loc118;
+		v970.u0 = 0x04;
+		v969 += v970;
+		loc272 = v969;
+		v969 = loc272;
+		v970.u0 = 0x01A4;
+		*v969.u0 = v970;
+		v969 = loc129;
+		v970 = loc107;
+		*v969.u0 = v970;
+		v969 = loc107;
+		v970.u0 = 400;
+		v969 += v970;
+		loc283 = v969;
+		v969 = loc140;
+		v970 = loc283;
+		*v969.u0 = v970;
+		v969 = loc184;
+		v972.u0 = 0x00;
+		*v969.u0 = v972;
+		v969 = loc184;
+		v970.u0 = 0x08;
+		v969 += v970;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969.u0 = 0x00;
+		loc16 = v969;
+		v969 = loc16;
+		v970.u0 = 0x03;
+		v971 = v969 == v970;
+		loc951 = v971;
+		v969 = loc951;
+		if (v969)
+			break;
+		v969 = loc184;
+		v970 = loc16;
+		v973.u0 = 0x02;
+		v970 <<= v973;
+		v969 += v970;
+		loc294 = v969;
+		v969 = loc294;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969 = loc16;
+		v970.u0 = 0x01;
+		v969 += v970;
+		loc305 = v969;
+		v969 = loc305;
+		loc16 = v969;
+	}
+	while (true)
+	{
+		v969 = loc195;
+		v972.u0 = 0x00;
+		*v969.u0 = v972;
+		v969 = loc195;
+		v970.u0 = 0x08;
+		v969 += v970;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969.u0 = 0x00;
+		loc17 = v969;
+		v969 = loc17;
+		v970.u0 = 0x03;
+		v971 = v969 == v970;
+		loc952 = v971;
+		v969 = loc952;
+		if (v969)
+			break;
+		v969 = loc195;
+		v970 = loc17;
+		v973.u0 = 0x02;
+		v970 <<= v973;
+		v969 += v970;
+		loc316 = v969;
+		v969 = loc316;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969 = loc17;
+		v970.u0 = 0x01;
+		v969 += v970;
+		loc327 = v969;
+		v969 = loc327;
+		loc17 = v969;
+	}
+	while (true)
+	{
+		v969 = loc206;
+		v972.u0 = 0x00;
+		*v969.u0 = v972;
+		v969 = loc206;
+		v970.u0 = 0x08;
+		v969 += v970;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969.u0 = 0x00;
+		loc18 = v969;
+		v969 = loc18;
+		v970.u0 = 0x03;
+		v971 = v969 == v970;
+		loc953 = v971;
+		v969 = loc953;
+		if (v969)
+			break;
+		v969 = loc206;
+		v970 = loc18;
+		v973.u0 = 0x02;
+		v970 <<= v973;
+		v969 += v970;
+		loc338 = v969;
+		v969 = loc338;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969 = loc18;
+		v970.u0 = 0x01;
+		v969 += v970;
+		loc349 = v969;
+		v969 = loc349;
+		loc18 = v969;
+	}
+	while (true)
+	{
+		v969 = loc217;
+		v972.u0 = 0x00;
+		*v969.u0 = v972;
+		v969 = loc217;
+		v970.u0 = 0x08;
+		v969 += v970;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969.u0 = 0x00;
+		loc19 = v969;
+		v969 = loc19;
+		v970.u0 = 0x03;
+		v971 = v969 == v970;
+		loc954 = v971;
+		v969 = loc954;
+		if (v969)
+			break;
+		v969 = loc217;
+		v970 = loc19;
+		v973.u0 = 0x02;
+		v970 <<= v973;
+		v969 += v970;
+		loc360 = v969;
+		v969 = loc360;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969 = loc19;
+		v970.u0 = 0x01;
+		v969 += v970;
+		loc371 = v969;
+		v969 = loc371;
+		loc19 = v969;
+	}
+	while (true)
+	{
+		v969 = loc228;
+		v972.u0 = 0x00;
+		*v969.u0 = v972;
+		v969 = loc228;
+		v970.u0 = 0x08;
+		v969 += v970;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969.u0 = 0x00;
+		loc20 = v969;
+		v969 = loc20;
+		v970.u0 = 0x03;
+		v971 = v969 == v970;
+		loc955 = v971;
+		v969 = loc955;
+		if (v969)
+			break;
+		v969 = loc228;
+		v970 = loc20;
+		v973.u0 = 0x02;
+		v970 <<= v973;
+		v969 += v970;
+		loc382 = v969;
+		v969 = loc382;
+		v970.u0 = 0x00;
+		*v969.u0 = v970;
+		v969 = loc20;
+		v970.u0 = 0x01;
+		v969 += v970;
+		loc393 = v969;
+		v969 = loc393;
+		loc20 = v969;
+	}
+	v969.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v969;
+	v969.u0 = 0x01A9;
+	v970 = arg2;
+	v973 = arg3;
+	v974 = loc151;
+	v975 = loc162;
+	v976 = loc173;
+	v977 = loc184;
+	v978 = loc195;
+	v979 = loc206;
+	v980 = loc217;
+	v981 = loc239;
+	invoke_viiiiiiiiii(v969, v970, v973, v974, v975, v976, v977, v978, v979, v980, v981);
+	v969.u3 = g_t140048.u3;
+	loc404 = v969;
+	v969.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v969;
+	v969 = loc404;
+	v970.u0 = 0x01;
+	v969 &= v970;
+	loc415 = v969;
+	v969 = loc415;
+	if (v969)
+	{
+		v969 = ___cxa_find_matching_catch_n();
+		loc932 = v969;
+		v969.u3 = g_t140094.u3;
+		loc937 = v969;
+		v969 = loc932;
+		loc41 = v969;
+		v969 = loc937;
+		loc42 = v969;
+		goto l0010B26E;
+	}
+l00108129:
+	v969 = arg8;
+	v969.u3 = *v969.u3;
+	loc426 = v969;
+	v969 = arg9;
+	v970 = loc426;
+	*v969.u3 = (word32) v970;
+	v969 = arg7;
+	v970.u0 = 0x08;
+	v969 += v970;
+	loc437 = v969;
+	v969 = loc206;
+	v970.u0 = 11;
+	v969 += v970;
+	loc448 = v969;
+	v969 = loc206;
+	v970.u0 = 0x04;
+	v969 += v970;
+	loc459 = v969;
+	v969 = loc217;
+	v970.u0 = 11;
+	v969 += v970;
+	loc470 = v969;
+	v969 = loc217;
+	v970.u0 = 0x04;
+	v969 += v970;
+	loc481 = v969;
+	v969 = arg4;
+	v970.u0 = 0x0200;
+	v969 &= v970;
+	loc492 = v969;
+	v969 = loc492;
+	v970.u0 = 0x00;
+	v971 = v969 != v970;
+	loc503 = v971;
+	v969 = loc195;
+	v970.u0 = 11;
+	v969 += v970;
+	loc514 = v969;
+	v969 = loc195;
+	v970.u0 = 0x04;
+	v969 += v970;
+	loc525 = v969;
+	v969 = loc228;
+	v970.u0 = 11;
+	v969 += v970;
+	loc536 = v969;
+	v969 = loc228;
+	v970.u0 = 0x04;
+	v969 += v970;
+	loc547 = v969;
+	v969 = loc151;
+	v970.u0 = 0x03;
+	v969 += v970;
+	loc558 = v969;
+	v969 = loc184;
+	v970.u0 = 11;
+	v969 += v970;
+	loc569 = v969;
+	v969 = loc184;
+	v970.u0 = 0x04;
+	v969 += v970;
+	loc580 = v969;
+	v969.u0 = 0x00;
+	loc36 = v969;
+	v969.u0 = 0x00;
+	loc37 = v969;
+	v969 = loc37;
+	v970.u0 = 0x04;
+	v971 = v969 < v970;
+	loc591 = v971;
+	v969 = loc591;
+	v971 = v969 == 0x00;
+	if (v971)
+	{
+		v969.u0 = 0xFE;
+		loc976 = v969;
+		goto l0010A9D7;
+	}
+	v969 = arg0;
+	v969 = *v969.u0;
+	loc602 = v969;
+	v969 = loc602;
+	v970.u0 = 0x00;
+	v971 = v969 == v970;
+	loc613 = v971;
+	v969 = loc613;
+	if (v969)
+	{
+		v969.u0 = 0x00;
+		loc767 = v969;
+	}
+	else
+	{
+		v969 = loc602;
+		v970.u0 = 0x0C;
+		v969 += v970;
+		loc624 = v969;
+		v969 = loc624;
+		v969 = *v969.u0;
+		loc635 = v969;
+		v969 = loc602;
+		v970.u0 = 0x10;
+		v969 += v970;
+		loc646 = v969;
+		v969 = loc646;
+		v969 = *v969.u0;
+		loc657 = v969;
+		v969 = loc635;
+		v970 = loc657;
+		v971 = v969 == v970;
+		loc668 = v971;
+		v969 = loc668;
+		if (v969)
+		{
+			v969 = loc602;
+			v969 = *v969.u0;
+			loc679 = v969;
+			v969 = loc679;
+			v970.u0 = 0x24;
+			v969 += v970;
+			loc690 = v969;
+			v969 = loc690;
+			v969 = *v969.u0;
+			loc701 = v969;
+			v969.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v969;
+			v969 = loc701;
+			v970 = loc602;
+			v969 = invoke_ii(v969, v970);
+			loc712 = v969;
+			v969.u3 = g_t140048.u3;
+			loc723 = v969;
+			v969.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v969;
+			v969 = loc723;
+			v970.u0 = 0x01;
+			v969 &= v970;
+			loc734 = v969;
+			v969 = loc734;
+			if (v969)
+			{
+				v969.u0 = 0x23;
+				loc976 = v969;
+				goto l0010A9D7;
+			}
+			v969 = loc712;
+			v970.u0 = ~0x00;
+			v971 = v969 == v970;
+			loc745 = v971;
+			v969 = loc745;
+			if (v969)
+			{
+				v969 = arg0;
+				v970.u0 = 0x00;
+				*v969.u0 = v970;
+				v969.u0 = 0x00;
+				loc767 = v969;
+			}
+			else
+			{
+				v969 = arg0;
+				v969 = *v969.u0;
+				loc48 = v969;
+				v969 = loc48;
+				loc767 = v969;
+			}
+l001082A8:
+			v969 = loc767;
+			v970.u0 = 0x00;
+			v971 = v969 == v970;
+			loc756 = v971;
+			v969 = arg1;
+			v969 = *v969.u0;
+			loc778 = v969;
+			v969 = loc778;
+			v970.u0 = 0x00;
+			v971 = v969 == v970;
+			loc789 = v971;
+			v969 = loc789;
+			if (v969)
+			{
+				v969.u0 = 0x1F;
+				loc976 = v969;
+			}
+			else
+			{
+				v969 = loc778;
+				v970.u0 = 0x0C;
+				v969 += v970;
+				loc800 = v969;
+				v969 = loc800;
+				v969 = *v969.u0;
+				loc811 = v969;
+				v969 = loc778;
+				v970.u0 = 0x10;
+				v969 += v970;
+				loc822 = v969;
+				v969 = loc822;
+				v969 = *v969.u0;
+				loc833 = v969;
+				v969 = loc811;
+				v970 = loc833;
+				v971 = v969 == v970;
+				loc844 = v971;
+				v969 = loc844;
+				v971 = v969 == 0x00;
+				if (v971)
+				{
+					v969 = loc756;
+					if (!v969)
+					{
+						v969.u0 = 0xFE;
+						loc976 = v969;
+						goto l0010A9D7;
+					}
+					v969 = loc778;
+					loc930 = v969;
+				}
+				else
+				{
+					v969 = loc778;
+					v969 = *v969.u0;
+					loc855 = v969;
+					v969 = loc855;
+					v970.u0 = 0x24;
+					v969 += v970;
+					loc866 = v969;
+					v969 = loc866;
+					v969 = *v969.u0;
+					loc877 = v969;
+					v969.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v969;
+					v969 = loc877;
+					v970 = loc778;
+					v969 = invoke_ii(v969, v970);
+					loc888 = v969;
+					v969.u3 = g_t140048.u3;
+					loc899 = v969;
+					v969.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v969;
+					v969 = loc899;
+					v970.u0 = 0x01;
+					v969 &= v970;
+					loc910 = v969;
+					v969 = loc910;
+					if (v969)
+					{
+						v969.u0 = 0x23;
+						loc976 = v969;
+						goto l0010A9D7;
+					}
+					v969 = loc888;
+					v970.u0 = ~0x00;
+					v971 = v969 == v970;
+					loc921 = v971;
+					v969 = loc921;
+					if (v969)
+					{
+						v969 = arg1;
+						v970.u0 = 0x00;
+						*v969.u0 = v970;
+						v969.u0 = 0x1F;
+						loc976 = v969;
+					}
+					else
+					{
+						v969 = loc756;
+						if (!v969)
+						{
+							v969.u0 = 0xFE;
+							loc976 = v969;
+							goto l0010A9D7;
+						}
+						v969 = loc778;
+						loc930 = v969;
+					}
+				}
+			}
+			v969 = loc976;
+			v970.u0 = 0x1F;
+			v971 = v969 == v970;
+			if (v971)
+			{
+				v969.u0 = 0x00;
+				loc976 = v969;
+				v969 = loc756;
+				if (v969)
+				{
+					v969.u0 = 0xFE;
+					loc976 = v969;
+					goto l0010A9D7;
+				}
+				v969.u0 = 0x00;
+				loc930 = v969;
+			}
+			v969 = loc151;
+			v970 = loc37;
+			v969 += v970;
+			loc942 = v969;
+			v969 = loc942;
+			v982 = *v969.u0;
+			v969.u3 = (word32) v982;
+			loc943 = v969;
+			v969 = loc943;
+			v970.u0 = 0x18;
+			v969 <<= v970;
+			v970.u0 = 0x18;
+			v969 >>= v970;
+			loc944 = v969;
+			v969 = loc944;
+			v970.u0 = 0x00;
+			v969 -= v970;
+			switch (v969)
+			{
+			case 0x00:
+				v969 = loc37;
+				v970.u0 = 0x03;
+				v971 = v969 == v970;
+				loc950 = v971;
+				v969 = loc950;
+				if (v969)
+				{
+					v969 = loc36;
+					loc39 = v969;
+				}
+				else
+				{
+					v969 = arg0;
+					v969.u3 = *v969.u3;
+					loc945 = v969;
+					v969 = loc945;
+					v970.u0 = 0x0C;
+					v969 += v970;
+					loc946 = v969;
+					v969 = loc946;
+					v969.u3 = *v969.u3;
+					loc947 = v969;
+					v969 = loc945;
+					v970.u0 = 0x10;
+					v969 += v970;
+					loc948 = v969;
+					v969 = loc948;
+					v969.u3 = *v969.u3;
+					loc86 = v969;
+					v969 = loc947;
+					v970 = loc86;
+					v971 = v969 == v970;
+					loc87 = v971;
+					v969 = loc87;
+					if (v969)
+					{
+						v969 = loc945;
+						v969.u3 = *v969.u3;
+						loc88 = v969;
+						v969 = loc88;
+						v970.u0 = 0x24;
+						v969 += v970;
+						loc89 = v969;
+						v969 = loc89;
+						v969.u3 = *v969.u3;
+						loc90 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc90;
+						v970 = loc945;
+						v969 = invoke_ii(v969, v970);
+						loc91 = v969;
+						v969.u3 = g_t140048.u3;
+						loc92 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc92;
+						v970.u0 = 0x01;
+						v969 &= v970;
+						loc93 = v969;
+						v969 = loc93;
+						if (v969)
+						{
+							v969.u0 = 0x23;
+							loc976 = v969;
+							goto l0010A9D7;
+						}
+						v969 = loc91;
+						loc22 = v969;
+					}
+					else
+					{
+						v969 = loc947;
+						v983 = *v969.u0;
+						v969.u3 = (word32) v983;
+						loc94 = v969;
+						v969 = loc94;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc95 = v969;
+						v969 = loc95;
+						loc22 = v969;
+					}
+					v969 = loc22;
+					v970.u0 = 0xFF;
+					v969 &= v970;
+					loc97 = v969;
+					v969 = loc97;
+					v970.u0 = 0x18;
+					v969 <<= v970;
+					v970.u0 = 0x18;
+					v969 >>= v970;
+					v970.u0 = ~0x00;
+					v971 = v969 > v970;
+					loc956 = v971;
+					v969 = loc956;
+					v971 = v969 == 0x00;
+					if (v971)
+					{
+						v969.u0 = 0x30;
+						loc976 = v969;
+						goto l0010A9D7;
+					}
+					v969 = loc22;
+					v970.u0 = 0x18;
+					v969 <<= v970;
+					loc970 = v969;
+					v969 = loc970;
+					v970.u0 = 0x18;
+					v969 >>= v970;
+					loc98 = v969;
+					v969 = loc437;
+					v969 = *v969.u0;
+					loc99 = v969;
+					v969 = loc99;
+					v970 = loc98;
+					v973.u0 = 0x01;
+					v970 <<= v973;
+					v969 += v970;
+					loc100 = v969;
+					v969 = loc100;
+					v984 = *v969.u0;
+					v969.u3 = (word32) v984;
+					loc101 = v969;
+					v969 = loc101;
+					v970.u0 = 0x2000;
+					v969 &= v970;
+					loc102 = v969;
+					v969 = loc102;
+					v970.u0 = 0x10;
+					v969 <<= v970;
+					v970.u0 = 0x10;
+					v969 >>= v970;
+					v970.u0 = 0x00;
+					v971 = v969 == v970;
+					loc103 = v971;
+					v969 = loc103;
+					if (v969)
+					{
+						v969.u0 = 0x30;
+						loc976 = v969;
+						goto l0010A9D7;
+					}
+					v969 = arg0;
+					v969 = *v969.u0;
+					loc104 = v969;
+					v969 = loc104;
+					v970.u0 = 0x0C;
+					v969 += v970;
+					loc105 = v969;
+					v969 = loc105;
+					v969 = *v969.u0;
+					loc106 = v969;
+					v969 = loc104;
+					v970.u0 = 0x10;
+					v969 += v970;
+					loc108 = v969;
+					v969 = loc108;
+					v969 = *v969.u0;
+					loc109 = v969;
+					v969 = loc106;
+					v970 = loc109;
+					v971 = v969 == v970;
+					loc110 = v971;
+					v969 = loc110;
+					if (v969)
+					{
+						v969 = loc104;
+						v969 = *v969.u0;
+						loc111 = v969;
+						v969 = loc111;
+						v970.u0 = 0x28;
+						v969 += v970;
+						loc112 = v969;
+						v969 = loc112;
+						v969 = *v969.u0;
+						loc113 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc113;
+						v970 = loc104;
+						v969 = invoke_ii(v969, v970);
+						loc114 = v969;
+						v969.u3 = g_t140048.u3;
+						loc115 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc115;
+						v970.u0 = 0x01;
+						v969 &= v970;
+						loc116 = v969;
+						v969 = loc116;
+						if (v969)
+						{
+							v969.u0 = 0x23;
+							loc976 = v969;
+							goto l0010A9D7;
+						}
+						v969 = loc114;
+						loc23 = v969;
+					}
+					else
+					{
+						v969 = loc106;
+						v970.u0 = 0x01;
+						v969 += v970;
+						loc117 = v969;
+						v969 = loc105;
+						v970 = loc117;
+						*v969.u0 = v970;
+						v969 = loc106;
+						v985 = *v969.u0;
+						v969.u3 = (word32) v985;
+						loc119 = v969;
+						v969 = loc119;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc120 = v969;
+						v969 = loc120;
+						loc23 = v969;
+					}
+					v969 = loc23;
+					v970.u0 = 0xFF;
+					v969 &= v970;
+					loc121 = v969;
+					v969.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v969;
+					v969.u0 = 0x01A7;
+					v970 = loc228;
+					v973 = loc121;
+					invoke_vii(v969, v970, v973);
+					v969.u3 = g_t140048.u3;
+					loc122 = v969;
+					v969.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v969;
+					v969 = loc122;
+					v970.u0 = 0x01;
+					v969 &= v970;
+					loc123 = v969;
+					v969 = loc123;
+					if (v969)
+					{
+						v969.u0 = 0x23;
+						loc976 = v969;
+						goto l0010A9D7;
+					}
+					v969 = loc930;
+					loc54 = v969;
+					v969 = loc930;
+					loc146 = v969;
+					v969.u0 = 0x32;
+					loc976 = v969;
+				}
+				goto l0010A59B;
+			case 0x01:
+				v969 = loc37;
+				v970.u0 = 0x03;
+				v971 = v969 == v970;
+				loc126 = v971;
+				v969 = loc126;
+				if (v969)
+				{
+					v969 = loc36;
+					loc39 = v969;
+				}
+				else
+				{
+					v969 = loc930;
+					loc54 = v969;
+					v969 = loc930;
+					loc146 = v969;
+					v969.u0 = 0x32;
+					loc976 = v969;
+				}
+				goto l0010A59B;
+			case 0x02:
+				v969 = loc448;
+				v986 = *v969.u0;
+				v969.u3 = (word32) v986;
+				loc204 = v969;
+				v969 = loc204;
+				v970.u0 = 0x18;
+				v969 <<= v970;
+				v970.u0 = 0x18;
+				v969 >>= v970;
+				v970.u0 = 0x00;
+				v971 = v969 < v970;
+				loc205 = v971;
+				v969 = loc459;
+				v969.u3 = *v969.u3;
+				loc207 = v969;
+				v969 = loc204;
+				v970.u0 = 0xFF;
+				v969 &= v970;
+				loc208 = v969;
+				v969 = loc205;
+				if (v969)
+					v969 = loc207;
+				else
+					v969 = loc208;
+				loc209 = v969;
+				v969 = loc470;
+				v987.u1 = v969.u4->t0000.u1;
+				v969.u3 = (word32) v987;
+				loc210 = v969;
+				v969 = loc210;
+				v970.u0 = 0x18;
+				v969 <<= v970;
+				v970.u0 = 0x18;
+				v969 >>= v970;
+				v970.u0 = 0x00;
+				v971 = v969 < v970;
+				loc211 = v971;
+				v969 = loc481;
+				v969.u3 = *v969.u3;
+				loc212 = v969;
+				v969 = loc210;
+				v970.u0 = 0xFF;
+				v969 &= v970;
+				loc213 = v969;
+				v969 = loc211;
+				if (v969)
+					v969 = loc212;
+				else
+					v969 = loc213;
+				loc214 = v969;
+				v969.u0 = 0x00;
+				v970 = loc214;
+				v969 -= v970;
+				loc215 = v969;
+				v969 = loc209;
+				v970 = loc215;
+				v971 = v969 == v970;
+				loc216 = v971;
+				v969 = loc216;
+				if (!v969)
+				{
+					v969 = loc209;
+					v970.u0 = 0x00;
+					v971 = v969 == v970;
+					loc218 = v971;
+					v969 = loc218;
+					if (v969)
+					{
+						v969 = arg0;
+						v969 = *v969.u0;
+						loc263 = v969;
+						v969 = loc263;
+						v970.u0 = 0x0C;
+						v969 += v970;
+						loc264 = v969;
+						v969 = loc264;
+						v969 = *v969.u0;
+						loc265 = v969;
+						v969 = loc263;
+						v970.u0 = 0x10;
+						v969 += v970;
+						loc266 = v969;
+						v969 = loc266;
+						v969 = *v969.u0;
+						loc267 = v969;
+						v969 = loc265;
+						v970 = loc267;
+						v971 = v969 == v970;
+						loc268 = v971;
+						v969 = loc268;
+						if (v969)
+						{
+							v969 = loc263;
+							v969 = *v969.u0;
+							loc269 = v969;
+							v969 = loc269;
+							v970.u0 = 0x24;
+							v969 += v970;
+							loc270 = v969;
+							v969 = loc270;
+							v969 = *v969.u0;
+							loc271 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc271;
+							v970 = loc263;
+							v969 = invoke_ii(v969, v970);
+							loc273 = v969;
+							v969.u3 = g_t140048.u3;
+							loc274 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc274;
+							v970.u0 = 0x01;
+							v969 &= v970;
+							loc275 = v969;
+							v969 = loc275;
+							if (v969)
+							{
+								v969.u0 = 0x23;
+								loc976 = v969;
+								goto l0010A9D7;
+							}
+							v969 = loc470;
+							v988 = *v969.u0;
+							v969.u3 = (word32) v988;
+							loc79 = v969;
+							v969 = loc273;
+							loc30 = v969;
+							v969 = loc79;
+							loc280 = v969;
+						}
+						else
+						{
+							v969 = loc265;
+							v989.u1 = v969.u4->t0000.u1;
+							v969.u3 = (word32) v989;
+							loc276 = v969;
+							v969 = loc276;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc277 = v969;
+							v969 = loc277;
+							loc30 = v969;
+							v969 = loc210;
+							loc280 = v969;
+						}
+						v969 = loc30;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc278 = v969;
+						v969 = loc280;
+						v970.u0 = 0x18;
+						v969 <<= v970;
+						v970.u0 = 0x18;
+						v969 >>= v970;
+						v970.u0 = 0x00;
+						v971 = v969 < v970;
+						loc279 = v971;
+						v969 = loc217;
+						v969.u3 = *v969.u3;
+						loc281 = v969;
+						v969 = loc279;
+						if (v969)
+							v969 = loc281;
+						else
+							v969 = loc217;
+						loc282 = v969;
+						v969 = loc282;
+						v990.u1 = v969.u4->t0000.u1;
+						v969.u3 = (word32) v990;
+						loc284 = v969;
+						v969 = loc278;
+						v970.u0 = 0x18;
+						v969 <<= v970;
+						v970.u0 = 0x18;
+						v969 >>= v970;
+						v970 = loc284;
+						v973.u0 = 0x18;
+						v970 <<= v973;
+						v973.u0 = 0x18;
+						v970 >>= v973;
+						v971 = v969 == v970;
+						loc285 = v971;
+						v969 = loc285;
+						v971 = v969 == 0x00;
+						if (v971)
+						{
+							v969 = loc36;
+							loc39 = v969;
+						}
+						else
+						{
+							v969 = arg0;
+							v969.u3 = *v969.u3;
+							loc286 = v969;
+							v969 = loc286;
+							v970.u0 = 0x0C;
+							v969 += v970;
+							loc287 = v969;
+							v969 = loc287;
+							v969.u3 = *v969.u3;
+							loc288 = v969;
+							v969 = loc286;
+							v970.u0 = 0x10;
+							v969 += v970;
+							loc289 = v969;
+							v969 = loc289;
+							v969.u3 = *v969.u3;
+							loc290 = v969;
+							v969 = loc288;
+							v970 = loc290;
+							v971 = v969 == v970;
+							loc291 = v971;
+							v969 = loc291;
+							if (v969)
+							{
+								v969 = loc286;
+								v969.u3 = *v969.u3;
+								loc292 = v969;
+								v969 = loc292;
+								v970.u0 = 0x28;
+								v969 += v970;
+								loc293 = v969;
+								v969 = loc293;
+								v969.u3 = *v969.u3;
+								loc295 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc295;
+								v970 = loc286;
+								v969 = invoke_ii(v969, v970);
+								v969.u3 = g_t140048.u3;
+								loc296 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc296;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc297 = v969;
+								v969 = loc297;
+								if (v969)
+								{
+									v969.u0 = 0x23;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc470;
+								v991 = *v969.u0;
+								v969.u3 = (word32) v991;
+								loc80 = v969;
+								v969 = loc80;
+								loc300 = v969;
+							}
+							else
+							{
+								v969 = loc288;
+								v970.u0 = 0x01;
+								v969 += v970;
+								loc298 = v969;
+								v969 = loc287;
+								v970 = loc298;
+								*v969.u3 = (word32) v970;
+								v969 = loc280;
+								loc300 = v969;
+							}
+							v969 = arg6;
+							v970.u0 = 0x01;
+							v992 = (byte) v970;
+							v969.u4->t0000.u0 = (bool) v992;
+							v969 = loc300;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970.u0 = 0x00;
+							v971 = v969 < v970;
+							loc299 = v971;
+							v969 = loc481;
+							v969.u3 = *v969.u3;
+							loc301 = v969;
+							v969 = loc300;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc302 = v969;
+							v969 = loc299;
+							if (v969)
+								v969 = loc301;
+							else
+								v969 = loc302;
+							loc303 = v969;
+							v969 = loc303;
+							v970.u0 = 0x01;
+							v971 = v969 > v970;
+							loc304 = v971;
+							v969 = loc304;
+							if (v969)
+								v969 = loc217;
+							else
+								v969 = loc36;
+							loc12 = v969;
+							v969 = loc12;
+							loc39 = v969;
+						}
+					}
+					else
+					{
+						v969 = loc214;
+						v970.u0 = 0x00;
+						v971 = v969 == v970;
+						loc219 = v971;
+						v969 = arg0;
+						v969.u3 = *v969.u3;
+						loc220 = v969;
+						v969 = loc220;
+						v970.u0 = 0x0C;
+						v969 += v970;
+						loc221 = v969;
+						v969 = loc221;
+						v969.u3 = *v969.u3;
+						loc222 = v969;
+						v969 = loc220;
+						v970.u0 = 0x10;
+						v969 += v970;
+						loc223 = v969;
+						v969 = loc223;
+						v969.u3 = *v969.u3;
+						loc224 = v969;
+						v969 = loc222;
+						v970 = loc224;
+						v971 = v969 == v970;
+						loc225 = v971;
+						v969 = loc219;
+						if (v969)
+						{
+							v969 = loc225;
+							if (v969)
+							{
+								v969 = loc220;
+								v969.u3 = *v969.u3;
+								loc226 = v969;
+								v969 = loc226;
+								v970.u0 = 0x24;
+								v969 += v970;
+								loc227 = v969;
+								v969 = loc227;
+								v969.u3 = *v969.u3;
+								loc229 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc229;
+								v970 = loc220;
+								v969 = invoke_ii(v969, v970);
+								loc230 = v969;
+								v969.u3 = g_t140048.u3;
+								loc231 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc231;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc232 = v969;
+								v969 = loc232;
+								if (v969)
+								{
+									v969.u0 = 0x23;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc448;
+								v993 = *v969.u0;
+								v969.u3 = (word32) v993;
+								loc77 = v969;
+								v969 = loc230;
+								loc28 = v969;
+								v969 = loc77;
+								loc237 = v969;
+							}
+							else
+							{
+								v969 = loc222;
+								v994.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v994;
+								loc233 = v969;
+								v969 = loc233;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc234 = v969;
+								v969 = loc234;
+								loc28 = v969;
+								v969 = loc204;
+								loc237 = v969;
+							}
+							v969 = loc28;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc235 = v969;
+							v969 = loc237;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970.u0 = 0x00;
+							v971 = v969 < v970;
+							loc236 = v971;
+							v969 = loc206;
+							v969.u3 = *v969.u3;
+							loc238 = v969;
+							v969 = loc236;
+							if (v969)
+								v969 = loc238;
+							else
+								v969 = loc206;
+							loc240 = v969;
+							v969 = loc240;
+							v995.u1 = v969.u4->t0000.u1;
+							v969.u3 = (word32) v995;
+							loc241 = v969;
+							v969 = loc235;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970 = loc241;
+							v973.u0 = 0x18;
+							v970 <<= v973;
+							v973.u0 = 0x18;
+							v970 >>= v973;
+							v971 = v969 == v970;
+							loc242 = v971;
+							v969 = loc242;
+							v971 = v969 == 0x00;
+							if (v971)
+							{
+								v969 = arg6;
+								v970.u0 = 0x01;
+								v996 = (byte) v970;
+								v969.u4->t0000.u0 = (bool) v996;
+								v969 = loc36;
+								loc39 = v969;
+							}
+							else
+							{
+								v969 = arg0;
+								v969.u3 = *v969.u3;
+								loc243 = v969;
+								v969 = loc243;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc244 = v969;
+								v969 = loc244;
+								v969.u3 = *v969.u3;
+								loc245 = v969;
+								v969 = loc243;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc246 = v969;
+								v969 = loc246;
+								v969.u3 = *v969.u3;
+								loc247 = v969;
+								v969 = loc245;
+								v970 = loc247;
+								v971 = v969 == v970;
+								loc248 = v971;
+								v969 = loc248;
+								if (v969)
+								{
+									v969 = loc243;
+									v969.u3 = *v969.u3;
+									loc249 = v969;
+									v969 = loc249;
+									v970.u0 = 0x28;
+									v969 += v970;
+									loc251 = v969;
+									v969 = loc251;
+									v969.u3 = *v969.u3;
+									loc252 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc252;
+									v970 = loc243;
+									v969 = invoke_ii(v969, v970);
+									v969.u3 = g_t140048.u3;
+									loc253 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc253;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc254 = v969;
+									v969 = loc254;
+									if (v969)
+									{
+										v969.u0 = 0x23;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc448;
+									v997 = *v969.u0;
+									v969.u3 = (word32) v997;
+									loc78 = v969;
+									v969 = loc78;
+									loc257 = v969;
+								}
+								else
+								{
+									v969 = loc245;
+									v970.u0 = 0x01;
+									v969 += v970;
+									loc255 = v969;
+									v969 = loc244;
+									v970 = loc255;
+									*v969.u3 = (word32) v970;
+									v969 = loc237;
+									loc257 = v969;
+								}
+								v969 = loc257;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970.u0 = 0x00;
+								v971 = v969 < v970;
+								loc256 = v971;
+								v969 = loc459;
+								v969.u3 = *v969.u3;
+								loc258 = v969;
+								v969 = loc257;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc259 = v969;
+								v969 = loc256;
+								if (v969)
+									v969 = loc258;
+								else
+									v969 = loc259;
+								loc260 = v969;
+								v969 = loc260;
+								v970.u0 = 0x01;
+								v971 = v969 > v970;
+								loc262 = v971;
+								v969 = loc262;
+								if (v969)
+									v969 = loc206;
+								else
+									v969 = loc36;
+								loc11 = v969;
+								v969 = loc11;
+								loc39 = v969;
+							}
+						}
+						else
+						{
+							v969 = loc225;
+							if (v969)
+							{
+								v969 = loc220;
+								v969.u3 = *v969.u3;
+								loc306 = v969;
+								v969 = loc306;
+								v970.u0 = 0x24;
+								v969 += v970;
+								loc307 = v969;
+								v969 = loc307;
+								v969.u3 = *v969.u3;
+								loc308 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc308;
+								v970 = loc220;
+								v969 = invoke_ii(v969, v970);
+								loc309 = v969;
+								v969.u3 = g_t140048.u3;
+								loc310 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc310;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc311 = v969;
+								v969 = loc311;
+								if (v969)
+								{
+									v969.u0 = 0x23;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc448;
+								v998 = *v969.u0;
+								v969.u3 = (word32) v998;
+								loc71 = v969;
+								v969 = arg0;
+								v969.u3 = *v969.u3;
+								loc72 = v969;
+								v969 = loc72;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc44 = v969;
+								v969 = loc44;
+								v969.u3 = *v969.u3;
+								loc73 = v969;
+								v969 = loc72;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc45 = v969;
+								v969 = loc45;
+								v969.u3 = *v969.u3;
+								loc74 = v969;
+								v969 = loc309;
+								loc31 = v969;
+								v969 = loc71;
+								loc317 = v969;
+								v969 = loc72;
+								loc323 = v969;
+								v969 = loc73;
+								loc325 = v969;
+								v969 = loc74;
+								loc326 = v969;
+							}
+							else
+							{
+								v969 = loc222;
+								v999.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v999;
+								loc312 = v969;
+								v969 = loc312;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc313 = v969;
+								v969 = loc313;
+								loc31 = v969;
+								v969 = loc204;
+								loc317 = v969;
+								v969 = loc220;
+								loc323 = v969;
+								v969 = loc222;
+								loc325 = v969;
+								v969 = loc224;
+								loc326 = v969;
+							}
+							v969 = loc31;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc314 = v969;
+							v969 = loc317;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970.u0 = 0x00;
+							v971 = v969 < v970;
+							loc315 = v971;
+							v969 = loc206;
+							v969.u3 = *v969.u3;
+							loc318 = v969;
+							v969 = loc315;
+							if (v969)
+								v969 = loc318;
+							else
+								v969 = loc206;
+							loc319 = v969;
+							v969 = loc319;
+							v1000.u1 = v969.u4->t0000.u1;
+							v969.u3 = (word32) v1000;
+							loc320 = v969;
+							v969 = loc314;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970 = loc320;
+							v973.u0 = 0x18;
+							v970 <<= v973;
+							v973.u0 = 0x18;
+							v970 >>= v973;
+							v971 = v969 == v970;
+							loc321 = v971;
+							v969 = loc323;
+							v970.u0 = 0x0C;
+							v969 += v970;
+							loc322 = v969;
+							v969 = loc325;
+							v970 = loc326;
+							v971 = v969 == v970;
+							loc324 = v971;
+							v969 = loc321;
+							if (!v969)
+							{
+								v969 = loc324;
+								if (v969)
+								{
+									v969 = loc323;
+									v969.u3 = *v969.u3;
+									loc341 = v969;
+									v969 = loc341;
+									v970.u0 = 0x24;
+									v969 += v970;
+									loc342 = v969;
+									v969 = loc342;
+									v969.u3 = *v969.u3;
+									loc343 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc343;
+									v970 = loc323;
+									v969 = invoke_ii(v969, v970);
+									loc344 = v969;
+									v969.u3 = g_t140048.u3;
+									loc345 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc345;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc346 = v969;
+									v969 = loc346;
+									if (v969)
+									{
+										v969.u0 = 0x23;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc344;
+									loc32 = v969;
+								}
+								else
+								{
+									v969 = loc325;
+									v1002 = *v969.u0;
+									v969.u3 = (word32) v1002;
+									loc347 = v969;
+									v969 = loc347;
+									v970.u0 = 0xFF;
+									v969 &= v970;
+									loc348 = v969;
+									v969 = loc348;
+									loc32 = v969;
+								}
+								v969 = loc32;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc350 = v969;
+								v969 = loc470;
+								v1003.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v1003;
+								loc351 = v969;
+								v969 = loc351;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970.u0 = 0x00;
+								v971 = v969 < v970;
+								loc352 = v971;
+								v969 = loc217;
+								v969.u3 = *v969.u3;
+								loc353 = v969;
+								v969 = loc352;
+								if (v969)
+									v969 = loc353;
+								else
+									v969 = loc217;
+								loc354 = v969;
+								v969 = loc354;
+								v1004.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v1004;
+								loc355 = v969;
+								v969 = loc350;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970 = loc355;
+								v973.u0 = 0x18;
+								v970 <<= v973;
+								v973.u0 = 0x18;
+								v970 >>= v973;
+								v971 = v969 == v970;
+								loc356 = v971;
+								v969 = loc356;
+								v971 = v969 == 0x00;
+								if (v971)
+								{
+									v969.u0 = 116;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = arg0;
+								v969 = *v969.u0;
+								loc357 = v969;
+								v969 = loc357;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc358 = v969;
+								v969 = loc358;
+								v969 = *v969.u0;
+								loc359 = v969;
+								v969 = loc357;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc361 = v969;
+								v969 = loc361;
+								v969 = *v969.u0;
+								loc362 = v969;
+								v969 = loc359;
+								v970 = loc362;
+								v971 = v969 == v970;
+								loc363 = v971;
+								v969 = loc363;
+								if (v969)
+								{
+									v969 = loc357;
+									v969 = *v969.u0;
+									loc364 = v969;
+									v969 = loc364;
+									v970.u0 = 0x28;
+									v969 += v970;
+									loc365 = v969;
+									v969 = loc365;
+									v969 = *v969.u0;
+									loc366 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc366;
+									v970 = loc357;
+									v969 = invoke_ii(v969, v970);
+									v969.u3 = g_t140048.u3;
+									loc367 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc367;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc368 = v969;
+									v969 = loc368;
+									if (v969)
+									{
+										v969.u0 = 0x23;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc470;
+									v1005 = *v969.u0;
+									v969.u3 = (word32) v1005;
+									loc75 = v969;
+									v969 = loc75;
+									loc372 = v969;
+								}
+								else
+								{
+									v969 = loc359;
+									v970.u0 = 0x01;
+									v969 += v970;
+									loc369 = v969;
+									v969 = loc358;
+									v970 = loc369;
+									*v969.u3 = (word32) v970;
+									v969 = loc351;
+									loc372 = v969;
+								}
+								v969 = arg6;
+								v970.u0 = 0x01;
+								v1006 = (byte) v970;
+								v969.u4->t0000.u0 = (bool) v1006;
+								v969 = loc372;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970.u0 = 0x00;
+								v971 = v969 < v970;
+								loc370 = v971;
+								v969 = loc481;
+								v969.u3 = *v969.u3;
+								loc373 = v969;
+								v969 = loc372;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc374 = v969;
+								v969 = loc370;
+								if (v969)
+									v969 = loc373;
+								else
+									v969 = loc374;
+								loc375 = v969;
+								v969 = loc375;
+								v970.u0 = 0x01;
+								v971 = v969 > v970;
+								loc376 = v971;
+								v969 = loc376;
+								if (v969)
+									v969 = loc217;
+								else
+									v969 = loc36;
+								loc14 = v969;
+								v969 = loc14;
+								loc39 = v969;
+l00108EA7:
+								goto l0010A59B;
+							}
+							v969 = loc324;
+							if (v969)
+							{
+								v969 = loc323;
+								v969.u3 = *v969.u3;
+								loc328 = v969;
+								v969 = loc328;
+								v970.u0 = 0x28;
+								v969 += v970;
+								loc329 = v969;
+								v969 = loc329;
+								v969.u3 = *v969.u3;
+								loc330 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc330;
+								v970 = loc323;
+								v969 = invoke_ii(v969, v970);
+								v969.u3 = g_t140048.u3;
+								loc331 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc331;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc332 = v969;
+								v969 = loc332;
+								if (v969)
+								{
+									v969.u0 = 0x23;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc448;
+								v1001 = *v969.u0;
+								v969.u3 = (word32) v1001;
+								loc76 = v969;
+								v969 = loc76;
+								loc335 = v969;
+							}
+							else
+							{
+								v969 = loc325;
+								v970.u0 = 0x01;
+								v969 += v970;
+								loc333 = v969;
+								v969 = loc322;
+								v970 = loc333;
+								*v969.u3 = (word32) v970;
+								v969 = loc317;
+								loc335 = v969;
+							}
+							v969 = loc335;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970.u0 = 0x00;
+							v971 = v969 < v970;
+							loc334 = v971;
+							v969 = loc459;
+							v969.u3 = *v969.u3;
+							loc336 = v969;
+							v969 = loc335;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc337 = v969;
+							v969 = loc334;
+							if (v969)
+								v969 = loc336;
+							else
+								v969 = loc337;
+							loc339 = v969;
+							v969 = loc339;
+							v970.u0 = 0x01;
+							v971 = v969 > v970;
+							loc340 = v971;
+							v969 = loc340;
+							if (v969)
+								v969 = loc206;
+							else
+								v969 = loc36;
+							loc13 = v969;
+							v969 = loc13;
+							loc39 = v969;
+						}
+					}
+l0010A59C:
+					v969 = loc976;
+					v970.u0 = 0x32;
+					v971 = v969 == v970;
+					if (!v971)
+					{
+l0010A9C3:
+						v969 = loc37;
+						v970.u0 = 0x01;
+						v969 += v970;
+						loc820 = v969;
+						v969 = loc39;
+						loc36 = v969;
+						v969 = loc820;
+						loc37 = v969;
+						goto l00108129;
+					}
+l0010A5A7:
+					v969.u0 = 0x00;
+					loc976 = v969;
+					v969 = arg0;
+					v969 = *v969.u0;
+					loc127 = v969;
+					v969 = loc127;
+					v970.u0 = 0x00;
+					v971 = v969 == v970;
+					loc128 = v971;
+					v969 = loc128;
+					if (v969)
+					{
+						v969.u0 = 0x00;
+						loc144 = v969;
+					}
+					else
+					{
+						v969 = loc127;
+						v970.u0 = 0x0C;
+						v969 += v970;
+						loc130 = v969;
+						v969 = loc130;
+						v969 = *v969.u0;
+						loc131 = v969;
+						v969 = loc127;
+						v970.u0 = 0x10;
+						v969 += v970;
+						loc132 = v969;
+						v969 = loc132;
+						v969 = *v969.u0;
+						loc133 = v969;
+						v969 = loc131;
+						v970 = loc133;
+						v971 = v969 == v970;
+						loc134 = v971;
+						v969 = loc134;
+						if (v969)
+						{
+							v969 = loc127;
+							v969 = *v969.u0;
+							loc135 = v969;
+							v969 = loc135;
+							v970.u0 = 0x24;
+							v969 += v970;
+							loc136 = v969;
+							v969 = loc136;
+							v969 = *v969.u0;
+							loc137 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc137;
+							v970 = loc127;
+							v969 = invoke_ii(v969, v970);
+							loc138 = v969;
+							v969.u3 = g_t140048.u3;
+							loc139 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc139;
+							v970.u0 = 0x01;
+							v969 &= v970;
+							loc141 = v969;
+							v969 = loc141;
+							if (v969)
+							{
+								v969.u0 = 0x22;
+								loc976 = v969;
+								goto l0010A9D7;
+							}
+							v969 = loc138;
+							v970.u0 = ~0x00;
+							v971 = v969 == v970;
+							loc142 = v971;
+							v969 = loc142;
+							if (v969)
+							{
+								v969 = arg0;
+								v970.u0 = 0x00;
+								*v969.u0 = v970;
+								v969.u0 = 0x00;
+								loc144 = v969;
+							}
+							else
+							{
+								v969 = arg0;
+								v969 = *v969.u0;
+								loc49 = v969;
+								v969 = loc49;
+								loc144 = v969;
+							}
+l0010A676:
+							v969 = loc144;
+							v970.u0 = 0x00;
+							v971 = v969 == v970;
+							loc143 = v971;
+							v969 = loc146;
+							v970.u0 = 0x00;
+							v971 = v969 == v970;
+							loc145 = v971;
+							v969 = loc145;
+							if (v969)
+							{
+								v969 = loc54;
+								loc55 = v969;
+								v969.u0 = 0x3E;
+								loc976 = v969;
+							}
+							else
+							{
+								v969 = loc146;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc147 = v969;
+								v969 = loc147;
+								v969 = *v969.u0;
+								loc148 = v969;
+								v969 = loc146;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc149 = v969;
+								v969 = loc149;
+								v969 = *v969.u0;
+								loc150 = v969;
+								v969 = loc148;
+								v970 = loc150;
+								v971 = v969 == v970;
+								loc152 = v971;
+								v969 = loc152;
+								v971 = v969 == 0x00;
+								if (v971)
+								{
+									v969 = loc143;
+									if (!v969)
+									{
+										v969 = loc36;
+										loc39 = v969;
+										goto l0010A9C3;
+									}
+									v969 = loc54;
+									loc56 = v969;
+									v969 = loc146;
+									loc931 = v969;
+								}
+								else
+								{
+									v969 = loc146;
+									v969 = *v969.u0;
+									loc153 = v969;
+									v969 = loc153;
+									v970.u0 = 0x24;
+									v969 += v970;
+									loc154 = v969;
+									v969 = loc154;
+									v969 = *v969.u0;
+									loc155 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc155;
+									v970 = loc146;
+									v969 = invoke_ii(v969, v970);
+									loc156 = v969;
+									v969.u3 = g_t140048.u3;
+									loc157 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc157;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc158 = v969;
+									v969 = loc158;
+									if (v969)
+									{
+										v969.u0 = 0x22;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc156;
+									v970.u0 = ~0x00;
+									v971 = v969 == v970;
+									loc159 = v971;
+									v969 = loc159;
+									if (v969)
+									{
+										v969 = arg1;
+										v970.u0 = 0x00;
+										*v969.u0 = v970;
+										v969.u0 = 0x00;
+										loc55 = v969;
+										v969.u0 = 0x3E;
+										loc976 = v969;
+									}
+									else
+									{
+										v969 = loc54;
+										v970.u0 = 0x00;
+										v971 = v969 == v970;
+										loc160 = v971;
+										v969 = loc143;
+										v970 = loc160;
+										v969 = v969 ^ v970;
+										loc972 = v969;
+										v969 = loc972;
+										if (!v969)
+										{
+											v969 = loc36;
+											loc39 = v969;
+											goto l0010A9C3;
+										}
+										v969 = loc54;
+										loc56 = v969;
+										v969 = loc54;
+										loc931 = v969;
+									}
+								}
+							}
+							v969 = loc976;
+							v970.u0 = 0x3E;
+							v971 = v969 == v970;
+							if (v971)
+							{
+								v969.u0 = 0x00;
+								loc976 = v969;
+								v969 = loc143;
+								if (v969)
+								{
+									v969 = loc36;
+									loc39 = v969;
+									goto l0010A9C3;
+								}
+								v969 = loc55;
+								loc56 = v969;
+								v969.u0 = 0x00;
+								loc931 = v969;
+							}
+							v969 = arg0;
+							v969 = *v969.u0;
+							loc161 = v969;
+							v969 = loc161;
+							v970.u0 = 0x0C;
+							v969 += v970;
+							loc163 = v969;
+							v969 = loc163;
+							v969 = *v969.u0;
+							loc164 = v969;
+							v969 = loc161;
+							v970.u0 = 0x10;
+							v969 += v970;
+							loc165 = v969;
+							v969 = loc165;
+							v969 = *v969.u0;
+							loc166 = v969;
+							v969 = loc164;
+							v970 = loc166;
+							v971 = v969 == v970;
+							loc167 = v971;
+							v969 = loc167;
+							if (v969)
+							{
+								v969 = loc161;
+								v969 = *v969.u0;
+								loc168 = v969;
+								v969 = loc168;
+								v970.u0 = 0x24;
+								v969 += v970;
+								loc169 = v969;
+								v969 = loc169;
+								v969 = *v969.u0;
+								loc170 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc170;
+								v970 = loc161;
+								v969 = invoke_ii(v969, v970);
+								loc171 = v969;
+								v969.u3 = g_t140048.u3;
+								loc172 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc172;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc174 = v969;
+								v969 = loc174;
+								if (v969)
+								{
+									v969.u0 = 0x22;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc171;
+								loc24 = v969;
+							}
+							else
+							{
+								v969 = loc164;
+								v1030 = *v969.u0;
+								v969.u3 = (word32) v1030;
+								loc175 = v969;
+								v969 = loc175;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc176 = v969;
+								v969 = loc176;
+								loc24 = v969;
+							}
+							v969 = loc24;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc177 = v969;
+							v969 = loc177;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970.u0 = ~0x00;
+							v971 = v969 > v970;
+							loc957 = v971;
+							v969 = loc957;
+							v971 = v969 == 0x00;
+							if (v971)
+							{
+								v969 = loc36;
+								loc39 = v969;
+								goto l0010A9C3;
+							}
+							v969 = loc24;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							loc969 = v969;
+							v969 = loc969;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							loc178 = v969;
+							v969 = loc437;
+							v969.u3 = *v969.u3;
+							loc179 = v969;
+							v969 = loc179;
+							v970 = loc178;
+							v973.u0 = 0x01;
+							v970 <<= v973;
+							v969 += v970;
+							loc180 = v969;
+							v969 = loc180;
+							v1031.u2 = v969.u4->t0000.u2;
+							v969.u3 = (word32) v1031;
+							loc181 = v969;
+							v969 = loc181;
+							v970.u0 = 0x2000;
+							v969 &= v970;
+							loc182 = v969;
+							v969 = loc182;
+							v970.u0 = 0x10;
+							v969 <<= v970;
+							v970.u0 = 0x10;
+							v969 >>= v970;
+							v970.u0 = 0x00;
+							v971 = v969 == v970;
+							loc183 = v971;
+							v969 = loc183;
+							if (v969)
+							{
+								v969 = loc36;
+								loc39 = v969;
+								goto l0010A9C3;
+							}
+							v969 = arg0;
+							v969.u3 = *v969.u3;
+							loc185 = v969;
+							v969 = loc185;
+							v970.u0 = 0x0C;
+							v969 += v970;
+							loc186 = v969;
+							v969 = loc186;
+							v969.u3 = *v969.u3;
+							loc187 = v969;
+							v969 = loc185;
+							v970.u0 = 0x10;
+							v969 += v970;
+							loc188 = v969;
+							v969 = loc188;
+							v969.u3 = *v969.u3;
+							loc189 = v969;
+							v969 = loc187;
+							v970 = loc189;
+							v971 = v969 == v970;
+							loc190 = v971;
+							v969 = loc190;
+							if (v969)
+							{
+								v969 = loc185;
+								v969.u3 = *v969.u3;
+								loc191 = v969;
+								v969 = loc191;
+								v970.u0 = 0x28;
+								v969 += v970;
+								loc192 = v969;
+								v969 = loc192;
+								v969.u3 = *v969.u3;
+								loc193 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc193;
+								v970 = loc185;
+								v969 = invoke_ii(v969, v970);
+								loc194 = v969;
+								v969.u3 = g_t140048.u3;
+								loc196 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc196;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc197 = v969;
+								v969 = loc197;
+								if (v969)
+								{
+									v969.u0 = 0x22;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc194;
+								loc25 = v969;
+							}
+							else
+							{
+								v969 = loc187;
+								v970.u0 = 0x01;
+								v969 += v970;
+								loc198 = v969;
+								v969 = loc186;
+								v970 = loc198;
+								*v969.u0 = v970;
+								v969 = loc187;
+								v1032 = *v969.u0;
+								v969.u3 = (word32) v1032;
+								loc199 = v969;
+								v969 = loc199;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc200 = v969;
+								v969 = loc200;
+								loc25 = v969;
+							}
+							v969 = loc25;
+							v970.u0 = 0xFF;
+							v969 &= v970;
+							loc201 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969.u0 = 0x01A7;
+							v970 = loc228;
+							v973 = loc201;
+							invoke_vii(v969, v970, v973);
+							v969.u3 = g_t140048.u3;
+							loc202 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc202;
+							v970.u0 = 0x01;
+							v969 &= v970;
+							loc203 = v969;
+							v969 = loc203;
+							if (v969)
+							{
+								v969.u0 = 0x22;
+								loc976 = v969;
+l0010A9D7:
+								v969 = loc976;
+								v970.u0 = 0x22;
+								v969 -= v970;
+								switch (v969)
+								{
+								case 0x00:
+									v969 = ___cxa_find_matching_catch_n();
+									loc938 = v969;
+									v969.u3 = g_t140094.u3;
+									loc939 = v969;
+									v969 = loc938;
+									loc961 = v969;
+									v969 = loc939;
+									loc962 = v969;
+									v969.u0 = 0x24;
+									loc976 = v969;
+									break;
+								case 0x01:
+									v969 = ___cxa_find_matching_catch_n();
+									loc940 = v969;
+									v969.u3 = g_t140094.u3;
+									loc941 = v969;
+									v969 = loc940;
+									loc961 = v969;
+									v969 = loc941;
+									loc962 = v969;
+									v969.u0 = 0x24;
+									loc976 = v969;
+									break;
+								case 0x02:
+									v969 = arg5;
+									v969 = *v969.u0;
+									loc124 = v969;
+									v969 = loc124;
+									v970.u0 = 0x04;
+									v969 |= v970;
+									loc125 = v969;
+									v969 = arg5;
+									v970 = loc125;
+									*v969.u0 = v970;
+									v969.u0 = 0x00;
+									loc38 = v969;
+									v969.u0 = 288;
+									loc976 = v969;
+									break;
+								case 0x03:
+									v969 = arg5;
+									v969 = *v969.u0;
+									loc377 = v969;
+									v969 = loc377;
+									v970.u0 = 0x04;
+									v969 |= v970;
+									loc378 = v969;
+									v969 = arg5;
+									v970 = loc378;
+									*v969.u0 = v970;
+									v969.u0 = 0x00;
+									loc38 = v969;
+									v969.u0 = 288;
+									loc976 = v969;
+									break;
+								case 0x04:
+									v969 = ___cxa_find_matching_catch_n();
+									loc512 = v969;
+									v969.u3 = g_t140094.u3;
+									loc513 = v969;
+									v969 = loc512;
+									loc41 = v969;
+									v969 = loc513;
+									loc42 = v969;
+									goto l0010B26F;
+								case 0x05:
+									v969 = ___cxa_find_matching_catch_n();
+									loc515 = v969;
+									v969.u3 = g_t140094.u3;
+									loc516 = v969;
+									v969 = loc515;
+									loc41 = v969;
+									v969 = loc516;
+									loc42 = v969;
+									goto l0010B26F;
+								case 0x06:
+									v969 = arg5;
+									v969.u3 = *v969.u3;
+									loc527 = v969;
+									v969 = loc527;
+									v970.u0 = 0x04;
+									v969 |= v970;
+									loc528 = v969;
+									v969 = arg5;
+									v970 = loc528;
+									*v969.u3 = (word32) v970;
+									v969.u0 = 0x00;
+									loc38 = v969;
+									v969.u0 = 288;
+									loc976 = v969;
+									break;
+								case 0x07:
+									v969 = ___cxa_find_matching_catch_n();
+									loc592 = v969;
+									v969.u3 = g_t140094.u3;
+									loc593 = v969;
+									v969 = loc592;
+									loc81 = v969;
+									v969 = loc593;
+									loc82 = v969;
+									v969.u0 = 252;
+									loc976 = v969;
+									break;
+								case 0x08:
+									v969 = ___cxa_find_matching_catch_n();
+									loc594 = v969;
+									v969.u3 = g_t140094.u3;
+									loc595 = v969;
+									v969 = loc594;
+									loc81 = v969;
+									v969 = loc595;
+									loc82 = v969;
+									v969.u0 = 252;
+									loc976 = v969;
+									break;
+								case 0x09:
+									v969 = ___cxa_find_matching_catch_n();
+									loc596 = v969;
+									v969.u3 = g_t140094.u3;
+									loc597 = v969;
+									v969 = loc596;
+									loc81 = v969;
+									v969 = loc597;
+									loc82 = v969;
+									v969.u0 = 252;
+									loc976 = v969;
+									break;
+								case 0x0A:
+									v969 = ___cxa_find_matching_catch_n();
+									loc598 = v969;
+									v969.u3 = g_t140094.u3;
+									loc599 = v969;
+									v969 = loc598;
+									loc81 = v969;
+									v969 = loc599;
+									loc82 = v969;
+									v969.u0 = 252;
+									loc976 = v969;
+									break;
+								case 11:
+									v969 = arg5;
+									v969 = *v969.u0;
+									loc698 = v969;
+									v969 = loc698;
+									v970.u0 = 0x04;
+									v969 |= v970;
+									loc699 = v969;
+									v969 = arg5;
+									v970 = loc699;
+									*v969.u0 = v970;
+									v969.u0 = 0x00;
+									loc38 = v969;
+									v969.u0 = 288;
+									loc976 = v969;
+									break;
+								case 0x0C:
+									v969 = arg5;
+									v969 = *v969.u0;
+									loc773 = v969;
+									v969 = loc773;
+									v970.u0 = 0x04;
+									v969 |= v970;
+									loc774 = v969;
+									v969 = arg5;
+									v970 = loc774;
+									*v969.u0 = v970;
+									v969.u0 = 0x00;
+									loc38 = v969;
+									v969.u0 = 288;
+									loc976 = v969;
+									break;
+								case 0x0D:
+									v969 = arg5;
+									v969 = *v969.u0;
+									loc818 = v969;
+									v969 = loc818;
+									v970.u0 = 0x04;
+									v969 |= v970;
+									loc819 = v969;
+									v969 = arg5;
+									v970 = loc819;
+									*v969.u0 = v970;
+									v969.u0 = 0x00;
+									loc38 = v969;
+									v969.u0 = 288;
+									loc976 = v969;
+									break;
+								case 0x0E:
+									v969 = loc36;
+									v970.u0 = 0x00;
+									v971 = v969 == v970;
+									loc821 = v971;
+									v969 = loc821;
+									v971 = v969 == 0x00;
+									if (v971)
+									{
+										while (true)
+										{
+											v969 = loc36;
+											v970.u0 = 11;
+											v969 += v970;
+											loc823 = v969;
+											v969 = loc36;
+											v970.u0 = 0x04;
+											v969 += v970;
+											loc824 = v969;
+											v969.u0 = 0x01;
+											loc15 = v969;
+											v969 = loc823;
+											v1033 = *v969.u0;
+											v969.u3 = (word32) v1033;
+											loc825 = v969;
+											v969 = loc825;
+											v970.u0 = 0x18;
+											v969 <<= v970;
+											v970.u0 = 0x18;
+											v969 >>= v970;
+											v970.u0 = 0x00;
+											v971 = v969 < v970;
+											loc826 = v971;
+											v969 = loc826;
+											if (v969)
+											{
+												v969 = loc824;
+												v969.u3 = *v969.u3;
+												loc827 = v969;
+												v969 = loc827;
+												loc830 = v969;
+											}
+											else
+											{
+												v969 = loc825;
+												v970.u0 = 0xFF;
+												v969 &= v970;
+												loc828 = v969;
+												v969 = loc828;
+												loc830 = v969;
+											}
+											v969 = loc15;
+											v970 = loc830;
+											v971 = v969 < v970;
+											loc829 = v971;
+											v969 = loc829;
+											v971 = v969 == 0x00;
+											if (v971)
+												break;
+											v969 = arg0;
+											v969.u3 = *v969.u3;
+											loc831 = v969;
+											v969 = loc831;
+											v970.u0 = 0x00;
+											v971 = v969 == v970;
+											loc832 = v971;
+											v969 = loc832;
+											if (v969)
+											{
+												v969.u0 = 0x00;
+												loc848 = v969;
+												goto l0010AE16;
+											}
+											v969 = loc831;
+											v970.u0 = 0x0C;
+											v969 += v970;
+											loc834 = v969;
+											v969 = loc834;
+											v969 = *v969.u0;
+											loc835 = v969;
+											v969 = loc831;
+											v970.u0 = 0x10;
+											v969 += v970;
+											loc836 = v969;
+											v969 = loc836;
+											v969 = *v969.u0;
+											loc837 = v969;
+											v969 = loc835;
+											v970 = loc837;
+											v971 = v969 == v970;
+											loc838 = v971;
+											v969 = loc838;
+											if (v969)
+											{
+												v969 = loc831;
+												v969 = *v969.u0;
+												loc839 = v969;
+												v969 = loc839;
+												v970.u0 = 0x24;
+												v969 += v970;
+												loc840 = v969;
+												v969 = loc840;
+												v969 = *v969.u0;
+												loc841 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc841;
+												v970 = loc831;
+												v969 = invoke_ii(v969, v970);
+												loc842 = v969;
+												v969.u3 = g_t140048.u3;
+												loc843 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc843;
+												v970.u0 = 0x01;
+												v969 &= v970;
+												loc845 = v969;
+												v969 = loc845;
+												if (!v969)
+												{
+													v969 = loc842;
+													v970.u0 = ~0x00;
+													v971 = v969 == v970;
+													loc846 = v971;
+													v969 = loc846;
+													if (v969)
+													{
+														v969 = arg0;
+														v970.u0 = 0x00;
+														*v969.u0 = v970;
+														v969.u0 = 0x00;
+														loc848 = v969;
+													}
+													else
+													{
+														v969 = arg0;
+														v969 = *v969.u0;
+														loc47 = v969;
+														v969 = loc47;
+														loc848 = v969;
+													}
+													goto l0010AE17;
+												}
+												v969.u0 = 0x0118;
+												loc976 = v969;
+												goto l0010B0D1;
+											}
+											v969 = loc831;
+											loc848 = v969;
+l0010AE16:
+l0010AE17:
+											v969 = loc848;
+											v970.u0 = 0x00;
+											v971 = v969 == v970;
+											loc847 = v971;
+											v969 = arg1;
+											v969 = *v969.u0;
+											loc849 = v969;
+											v969 = loc849;
+											v970.u0 = 0x00;
+											v971 = v969 == v970;
+											loc850 = v971;
+											v969 = loc850;
+											if (v969)
+											{
+												v969.u0 = 0x0110;
+												loc976 = v969;
+												goto l0010AEEB;
+											}
+											v969 = loc849;
+											v970.u0 = 0x0C;
+											v969 += v970;
+											loc851 = v969;
+											v969 = loc851;
+											v969 = *v969.u0;
+											loc852 = v969;
+											v969 = loc849;
+											v970.u0 = 0x10;
+											v969 += v970;
+											loc853 = v969;
+											v969 = loc853;
+											v969 = *v969.u0;
+											loc854 = v969;
+											v969 = loc852;
+											v970 = loc854;
+											v971 = v969 == v970;
+											loc856 = v971;
+											v969 = loc856;
+											if (v969)
+											{
+												v969 = loc849;
+												v969 = *v969.u0;
+												loc857 = v969;
+												v969 = loc857;
+												v970.u0 = 0x24;
+												v969 += v970;
+												loc858 = v969;
+												v969 = loc858;
+												v969 = *v969.u0;
+												loc859 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc859;
+												v970 = loc849;
+												v969 = invoke_ii(v969, v970);
+												loc860 = v969;
+												v969.u3 = g_t140048.u3;
+												loc861 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc861;
+												v970.u0 = 0x01;
+												v969 &= v970;
+												loc862 = v969;
+												v969 = loc862;
+												if (!v969)
+												{
+													v969 = loc860;
+													v970.u0 = ~0x00;
+													v971 = v969 == v970;
+													loc863 = v971;
+													v969 = loc863;
+													if (!v969)
+														goto l0010AEDC;
+													v969 = arg1;
+													v970.u0 = 0x00;
+													*v969.u0 = v970;
+													v969.u0 = 0x0110;
+													loc976 = v969;
+													goto l0010AEEC;
+												}
+												v969.u0 = 0x0118;
+												loc976 = v969;
+												goto l0010B0D1;
+											}
+l0010AEDC:
+											v969 = loc847;
+											v971 = v969 == 0x00;
+											if (v971)
+											{
+												v969.u0 = 0x0117;
+												loc976 = v969;
+												goto l0010B0D1;
+											}
+l0010AEEB:
+l0010AEEC:
+											v969 = loc976;
+											v970.u0 = 0x0110;
+											v971 = v969 == v970;
+											if (v971)
+											{
+												v969.u0 = 0x00;
+												loc976 = v969;
+												v969 = loc847;
+												if (!v969)
+													goto l0010AF0A;
+												v969.u0 = 0x0117;
+												loc976 = v969;
+												goto l0010B0D1;
+											}
+l0010AF0A:
+											v969 = arg0;
+											v969 = *v969.u0;
+											loc864 = v969;
+											v969 = loc864;
+											v970.u0 = 0x0C;
+											v969 += v970;
+											loc865 = v969;
+											v969 = loc865;
+											v969 = *v969.u0;
+											loc867 = v969;
+											v969 = loc864;
+											v970.u0 = 0x10;
+											v969 += v970;
+											loc868 = v969;
+											v969 = loc868;
+											v969 = *v969.u0;
+											loc869 = v969;
+											v969 = loc867;
+											v970 = loc869;
+											v971 = v969 == v970;
+											loc870 = v971;
+											v969 = loc870;
+											if (v969)
+											{
+												v969 = loc864;
+												v969 = *v969.u0;
+												loc871 = v969;
+												v969 = loc871;
+												v970.u0 = 0x24;
+												v969 += v970;
+												loc872 = v969;
+												v969 = loc872;
+												v969 = *v969.u0;
+												loc873 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc873;
+												v970 = loc864;
+												v969 = invoke_ii(v969, v970);
+												loc874 = v969;
+												v969.u3 = g_t140048.u3;
+												loc875 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc875;
+												v970.u0 = 0x01;
+												v969 &= v970;
+												loc876 = v969;
+												v969 = loc876;
+												if (!v969)
+												{
+													v969 = loc874;
+													loc21 = v969;
+													goto l0010AFAE;
+												}
+												v969.u0 = 0x0118;
+												loc976 = v969;
+												goto l0010B0D1;
+											}
+											v969 = loc867;
+											v1034 = *v969.u0;
+											v969.u3 = (word32) v1034;
+											loc878 = v969;
+											v969 = loc878;
+											v970.u0 = 0xFF;
+											v969 &= v970;
+											loc879 = v969;
+											v969 = loc879;
+											loc21 = v969;
+l0010AFAE:
+											v969 = loc21;
+											v970.u0 = 0xFF;
+											v969 &= v970;
+											loc880 = v969;
+											v969 = loc823;
+											v1035.u1 = v969.u4->t0000.u1;
+											v969.u3 = (word32) v1035;
+											loc881 = v969;
+											v969 = loc881;
+											v970.u0 = 0x18;
+											v969 <<= v970;
+											v970.u0 = 0x18;
+											v969 >>= v970;
+											v970.u0 = 0x00;
+											v971 = v969 < v970;
+											loc882 = v971;
+											v969 = loc882;
+											if (v969)
+											{
+												v969 = loc36;
+												v969.u3 = *v969.u3;
+												loc883 = v969;
+												v969 = loc883;
+												loc885 = v969;
+											}
+											else
+											{
+												v969 = loc36;
+												loc885 = v969;
+											}
+											v969 = loc885;
+											v970 = loc15;
+											v969 += v970;
+											loc884 = v969;
+											v969 = loc884;
+											v1036.u1 = v969.u4->t0000.u1;
+											v969.u3 = (word32) v1036;
+											loc886 = v969;
+											v969 = loc880;
+											v970.u0 = 0x18;
+											v969 <<= v970;
+											v970.u0 = 0x18;
+											v969 >>= v970;
+											v970 = loc886;
+											v973.u0 = 0x18;
+											v970 <<= v973;
+											v973.u0 = 0x18;
+											v970 >>= v973;
+											v971 = v969 == v970;
+											loc887 = v971;
+											v969 = loc887;
+											v971 = v969 == 0x00;
+											if (v971)
+											{
+												v969.u0 = 0x0117;
+												loc976 = v969;
+												goto l0010B0D1;
+											}
+											v969 = loc15;
+											v970.u0 = 0x01;
+											v969 += v970;
+											loc893 = v969;
+											v969 = arg0;
+											v969 = *v969.u0;
+											loc894 = v969;
+											v969 = loc894;
+											v970.u0 = 0x0C;
+											v969 += v970;
+											loc895 = v969;
+											v969 = loc895;
+											v969 = *v969.u0;
+											loc896 = v969;
+											v969 = loc894;
+											v970.u0 = 0x10;
+											v969 += v970;
+											loc897 = v969;
+											v969 = loc897;
+											v969 = *v969.u0;
+											loc898 = v969;
+											v969 = loc896;
+											v970 = loc898;
+											v971 = v969 == v970;
+											loc900 = v971;
+											v969 = loc900;
+											if (!v969)
+											{
+												v969 = loc896;
+												v970.u0 = 0x01;
+												v969 += v970;
+												loc906 = v969;
+												v969 = loc895;
+												v970 = loc906;
+												*v969.u0 = v970;
+												v969 = loc893;
+												loc15 = v969;
+												continue;
+											}
+											v969 = loc894;
+											v969 = *v969.u0;
+											loc901 = v969;
+											v969 = loc901;
+											v970.u0 = 0x28;
+											v969 += v970;
+											loc902 = v969;
+											v969 = loc902;
+											v969 = *v969.u0;
+											loc903 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc903;
+											v970 = loc894;
+											v969 = invoke_ii(v969, v970);
+											v969.u3 = g_t140048.u3;
+											loc904 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc904;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc905 = v969;
+											v969 = loc905;
+											if (v969)
+											{
+												v969.u0 = 0x0118;
+												loc976 = v969;
+l0010B0D1:
+												v969 = loc976;
+												v970.u0 = 0x0117;
+												v971 = v969 == v970;
+												if (!v971)
+												{
+													v969 = loc976;
+													v970.u0 = 0x0118;
+													v971 = v969 == v970;
+													if (!v971)
+														goto l0010B124;
+													v969 = ___cxa_find_matching_catch_n();
+													loc891 = v969;
+													v969.u3 = g_t140094.u3;
+													loc892 = v969;
+													v969 = loc891;
+													loc41 = v969;
+													v969 = loc892;
+													loc42 = v969;
+													goto l0010B26F;
+												}
+												else
+												{
+													v969 = arg5;
+													v969 = *v969.u0;
+													loc889 = v969;
+													v969 = loc889;
+													v970.u0 = 0x04;
+													v969 |= v970;
+													loc890 = v969;
+													v969 = arg5;
+													v970 = loc890;
+													*v969.u0 = v970;
+													v969.u0 = 0x00;
+													loc38 = v969;
+													v969.u0 = 288;
+													loc976 = v969;
+													goto l0010B1B5;
+												}
+											}
+											v969 = loc893;
+											loc15 = v969;
+										}
+									}
+									else
+									{
+l0010B124:
+									}
+									v969 = loc118;
+									v969.u3 = *v969.u3;
+									loc907 = v969;
+									v969 = loc129;
+									v969.u3 = *v969.u3;
+									loc908 = v969;
+									v969 = loc907;
+									v970 = loc908;
+									v971 = v969 == v970;
+									loc909 = v971;
+									v969 = loc909;
+									if (v969)
+									{
+										v969.u0 = 0x01;
+										loc38 = v969;
+										v969.u0 = 288;
+										loc976 = v969;
+									}
+									else
+									{
+										v969 = loc250;
+										v970.u0 = 0x00;
+										*v969.u0 = v970;
+										v969 = loc184;
+										v970 = loc907;
+										v973 = loc908;
+										v974 = loc250;
+										fn000EC01D(v969, v970, v973, v974);
+										v969 = loc250;
+										v969 = *v969.u0;
+										loc911 = v969;
+										v969 = loc911;
+										v970.u0 = 0x00;
+										v971 = v969 == v970;
+										loc912 = v971;
+										v969 = loc912;
+										if (v969)
+										{
+											v969.u0 = 0x01;
+											loc38 = v969;
+											v969.u0 = 288;
+											loc976 = v969;
+										}
+										else
+										{
+											v969 = arg5;
+											v969 = *v969.u0;
+											loc913 = v969;
+											v969 = loc913;
+											v970.u0 = 0x04;
+											v969 |= v970;
+											loc914 = v969;
+											v969 = arg5;
+											v970 = loc914;
+											*v969.u0 = v970;
+											v969.u0 = 0x00;
+											loc38 = v969;
+											v969.u0 = 288;
+											loc976 = v969;
+										}
+									}
+									break;
+								case 0x0F:
+								case 0x10:
+								case 0x11:
+								case 0x12:
+								case 0x13:
+								case 0x14:
+								case 0x15:
+								case 22:
+								case 0x17:
+								case 0x18:
+								case 0x19:
+								case 0x1A:
+								case 0x1B:
+								case 0x1C:
+								case 0x1D:
+								case 0x1E:
+								case 0x1F:
+								case 0x20:
+								case 33:
+								case 0x22:
+								case 0x23:
+								case 0x24:
+								case 0x25:
+								case 0x26:
+								case 0x27:
+								case 0x28:
+								case 0x29:
+								case 0x2A:
+								case 0x2B:
+								case 44:
+								case 0x2D:
+								case 0x2E:
+								case 0x2F:
+								case 0x30:
+								case 0x31:
+								case 0x32:
+								case 0x33:
+								case 0x34:
+								case 0x35:
+								case 0x36:
+								case 55:
+								case 0x38:
+								case 0x39:
+								case 0x3A:
+								case 0x3B:
+								case 0x3C:
+								case 0x3D:
+								case 0x3E:
+								case 0x3F:
+								case 0x40:
+								case 0x41:
+								case 66:
+								case 0x43:
+								case 0x44:
+								case 0x45:
+								case 0x46:
+								case 0x47:
+								case 0x48:
+								case 0x49:
+								case 0x4A:
+								case 0x4B:
+								case 0x4C:
+								case 77:
+								case 0x4E:
+								case 0x4F:
+								case 0x50:
+								case 0x51:
+								case 0x52:
+								case 0x53:
+								case 0x54:
+								case 0x55:
+								case 0x56:
+								case 0x57:
+								case 88:
+								case 0x59:
+								case 0x5A:
+								case 0x5B:
+								case 0x5C:
+								case 0x5D:
+								case 0x5E:
+								case 0x5F:
+								case 0x60:
+								case 0x61:
+								case 0x62:
+								case 99:
+								case 100:
+								case 101:
+								case 0x66:
+								case 0x67:
+								case 0x68:
+								case 0x69:
+								case 0x6A:
+								case 0x6B:
+								case 0x6C:
+								case 0x6D:
+								case 110:
+								case 111:
+								case 0x70:
+								case 113:
+								case 114:
+								case 115:
+								case 116:
+								case 117:
+								case 118:
+								case 0x77:
+								case 0x78:
+								case 121:
+								case 122:
+								case 0x7B:
+								case 0x7C:
+								case 0x7D:
+								case 0x7E:
+								case 0x7F:
+								case 0x80:
+								case 0x81:
+								case 0x82:
+								case 131:
+								case 0x84:
+								case 133:
+								case 0x86:
+								case 0x87:
+								case 0x88:
+								case 0x89:
+								case 0x8A:
+								case 0x8B:
+								case 0x8C:
+								case 141:
+								case 0x8E:
+								case 0x8F:
+								case 0x90:
+								case 0x91:
+								case 0x92:
+								case 0x93:
+								case 0x94:
+								case 0x95:
+								case 0x96:
+								case 151:
+								case 0x98:
+								case 0x99:
+								case 0x9A:
+								case 155:
+								case 0x9C:
+								case 0x9D:
+								case 0x9E:
+								case 0x9F:
+								case 0xA0:
+								case 161:
+								case 0xA2:
+								case 0xA3:
+								case 0xA4:
+								case 0xA5:
+								case 166:
+								case 0xA7:
+								case 0xA8:
+								case 0xA9:
+								case 0xAA:
+								case 171:
+								case 0xAC:
+								case 0xAD:
+								case 0xAE:
+								case 0xAF:
+								case 0xB0:
+								case 177:
+								case 0xB2:
+								case 0xB3:
+								case 0xB4:
+								case 181:
+								case 0xB6:
+								case 0xB7:
+								case 0xB8:
+								case 0xB9:
+								case 0xBA:
+								case 0xBB:
+								case 188:
+								case 0xBD:
+								case 0xBE:
+								case 191:
+								case 0xC0:
+								case 0xC1:
+								case 0xC2:
+								case 0xC3:
+								case 0xC4:
+								case 0xC5:
+								case 0xC6:
+								case 199:
+								case 200:
+								case 0xC9:
+								case 202:
+								case 0xCB:
+								case 0xCC:
+								case 0xCD:
+								case 0xCE:
+								case 0xCF:
+								case 0xD0:
+								case 0xD1:
+								case 0xD2:
+								case 211:
+								case 212:
+								case 0xD5:
+								case 0xD6:
+								case 0xD7:
+								case 0xD8:
+								case 0xD9:
+								case 0xDA:
+								case 0xDB:
+								case 220:
+									break;
+								}
+l0010B1B5:
+								v969 = loc976;
+								v970.u0 = 0x24;
+								v971 = v969 == v970;
+								if (v971)
+								{
+									v969 = loc961;
+									loc41 = v969;
+									v969 = loc962;
+									loc42 = v969;
+									goto l0010B26F;
+								}
+								v969 = loc976;
+								v970.u0 = 252;
+								v971 = v969 == v970;
+								if (v971)
+								{
+									v969 = loc81;
+									loc41 = v969;
+									v969 = loc82;
+									loc42 = v969;
+									goto l0010B26F;
+								}
+								v969 = loc976;
+								v970.u0 = 288;
+								v971 = v969 == v970;
+								if (v971)
+								{
+									v969 = loc228;
+									fn0011BAF7(v969);
+									v969 = loc217;
+									fn0011BAF7(v969);
+									v969 = loc206;
+									fn0011BAF7(v969);
+									v969 = loc195;
+									fn0011BAF7(v969);
+									v969 = loc184;
+									fn0011BAF7(v969);
+									v969 = loc118;
+									v969 = *v969.u0;
+									loc915 = v969;
+									v969 = loc118;
+									v970.u0 = 0x00;
+									*v969.u0 = v970;
+									v969 = loc915;
+									v970.u0 = 0x00;
+									v971 = v969 == v970;
+									loc916 = v971;
+									v969 = loc916;
+									v971 = v969 == 0x00;
+									if (v971)
+									{
+										v969 = loc272;
+										v969 = *v969.u0;
+										loc917 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc917;
+										v970 = loc915;
+										invoke_vi(v969, v970);
+										v969.u3 = g_t140048.u3;
+										loc918 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc918;
+										v970.u0 = 0x01;
+										v969 &= v970;
+										loc919 = v969;
+										v969 = loc919;
+										if (v969)
+										{
+											v969.u0 = 0x00;
+											v969 = ___cxa_find_matching_catch_n(v969);
+											loc920 = v969;
+											v969.u3 = g_t140094.u3;
+											loc922 = v969;
+											v969 = loc920;
+											fn000D0E65(v969);
+										}
+									}
+									v969 = loc977;
+									g_t140030.u3 = (word32 *) v969;
+									v969 = loc38;
+									return v969;
+								}
+l0010B26F:
+								v969 = loc228;
+								fn0011BAF7(v969);
+								v969 = loc217;
+								fn0011BAF7(v969);
+								v969 = loc206;
+								fn0011BAF7(v969);
+								v969 = loc195;
+								fn0011BAF7(v969);
+								v969 = loc184;
+								fn0011BAF7(v969);
+								v969 = loc118;
+								v969.u3 = *v969.u3;
+								loc923 = v969;
+								v969 = loc118;
+								v970.u0 = 0x00;
+								*v969.u3 = (word32) v970;
+								v969 = loc923;
+								v970.u0 = 0x00;
+								v971 = v969 == v970;
+								loc924 = v971;
+								v969 = loc924;
+								v971 = v969 == 0x00;
+								if (v971)
+								{
+									v969 = loc272;
+									v969.u3 = *v969.u3;
+									loc925 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc925;
+									v970 = loc923;
+									invoke_vi(v969, v970);
+									v969.u3 = g_t140048.u3;
+									loc926 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc926;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc927 = v969;
+									v969 = loc927;
+									if (v969)
+									{
+										v969.u0 = 0x00;
+										v969 = ___cxa_find_matching_catch_n(v969);
+										loc928 = v969;
+										v969.u3 = g_t140094.u3;
+										loc929 = v969;
+										v969 = loc928;
+										fn000D0E65(v969);
+									}
+								}
+								v969 = loc41;
+								___resumeException(v969);
+								v969.u0 = 0x00;
+								return v969;
+							}
+							v969 = loc56;
+							loc54 = v969;
+							v969 = loc931;
+							loc146 = v969;
+							v969.u0 = 0x32;
+							loc976 = v969;
+							goto l0010A5A7;
+						}
+						v969 = loc127;
+						loc144 = v969;
+					}
+					goto l0010A676;
+				}
+				else
+				{
+					v969 = loc36;
+					loc39 = v969;
+					goto l00108EA7;
+				}
+			case 0x03:
+				v969 = loc36;
+				v970.u0 = 0x00;
+				v971 = v969 != v970;
+				loc379 = v971;
+				v969 = loc37;
+				v970.u0 = 0x02;
+				v971 = v969 < v970;
+				loc380 = v971;
+				v969 = loc380;
+				v970 = loc379;
+				v969 |= v970;
+				loc963 = v969;
+				v969 = loc963;
+				v971 = v969 == 0x00;
+				if (v971)
+				{
+					v969 = loc37;
+					v970.u0 = 0x02;
+					v971 = v969 == v970;
+					loc381 = v971;
+					v969 = loc558;
+					v1007.u1 = v969.u4->t0000.u1;
+					v969.u3 = (word32) v1007;
+					loc383 = v969;
+					v969 = loc383;
+					v970.u0 = 0x18;
+					v969 <<= v970;
+					v970.u0 = 0x18;
+					v969 >>= v970;
+					v970.u0 = 0x00;
+					v971 = v969 != v970;
+					loc384 = v971;
+					v969 = loc381;
+					v970 = loc384;
+					v969 &= v970;
+					loc385 = v969;
+					v969 = loc503;
+					v970 = loc385;
+					v969 |= v970;
+					loc949 = v969;
+					v969 = loc949;
+					v971 = v969 == 0x00;
+					if (v971)
+					{
+						v969.u0 = 0x00;
+						loc39 = v969;
+						goto l0010A59C;
+					}
+				}
+				v969 = loc514;
+				v1008 = *v969.u0;
+				v969.u3 = (word32) v1008;
+				loc386 = v969;
+				v969 = loc386;
+				v970.u0 = 0x18;
+				v969 <<= v970;
+				v970.u0 = 0x18;
+				v969 >>= v970;
+				v970.u0 = 0x00;
+				v971 = v969 < v970;
+				loc387 = v971;
+				v969 = loc195;
+				v969.u3 = *v969.u3;
+				loc388 = v969;
+				v969 = loc387;
+				if (v969)
+					v969 = loc388;
+				else
+					v969 = loc195;
+				loc389 = v969;
+				v969 = loc389;
+				loc390 = v969;
+				v969 = loc37;
+				v970.u0 = 0x00;
+				v971 = v969 == v970;
+				loc391 = v971;
+				v969 = loc391;
+				if (v969)
+				{
+					v969 = loc930;
+					loc64 = v969;
+					v969 = loc390;
+					loc84 = v969;
+					v969 = loc386;
+					loc434 = v969;
+					v969 = loc388;
+					loc439 = v969;
+					v969 = loc930;
+					loc463 = v969;
+				}
+				else
+				{
+					v969 = loc37;
+					v970.u0 = ~0x00;
+					v969 += v970;
+					loc392 = v969;
+					v969 = loc151;
+					v970 = loc392;
+					v969 += v970;
+					loc394 = v969;
+					v969 = loc394;
+					v1009.u1 = v969.u4->t0000.u1;
+					v969.u3 = (word32) v1009;
+					loc395 = v969;
+					v969 = loc395;
+					v970.u0 = 0xFF;
+					v969 &= v970;
+					v970.u0 = 0x02;
+					v971 = v969 < v970;
+					loc971 = v971;
+					v969 = loc971;
+					if (v969)
+					{
+						v969 = loc525;
+						v969.u3 = *v969.u3;
+						loc396 = v969;
+						v969 = loc386;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc397 = v969;
+						v969 = loc387;
+						if (v969)
+							v969 = loc396;
+						else
+							v969 = loc397;
+						while (true)
+						{
+							loc398 = v969;
+							v969 = loc389;
+							v970 = loc398;
+							v969 += v970;
+							loc399 = v969;
+							v969 = loc390;
+							loc85 = v969;
+							v969 = loc85;
+							loc400 = v969;
+							v969 = loc400;
+							v970 = loc399;
+							v971 = v969 == v970;
+							loc401 = v971;
+							v969 = loc401;
+							if (v969)
+								break;
+							v969 = loc400;
+							v1010.u1 = v969.u4->t0000.u1;
+							v969.u3 = (word32) v1010;
+							loc402 = v969;
+							v969 = loc402;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							v970.u0 = ~0x00;
+							v971 = v969 > v970;
+							loc960 = v971;
+							v969 = loc960;
+							v971 = v969 == 0x00;
+							if (v971)
+								break;
+							v969 = loc402;
+							v970.u0 = 0x18;
+							v969 <<= v970;
+							v970.u0 = 0x18;
+							v969 >>= v970;
+							loc403 = v969;
+							v969 = loc437;
+							v969.u3 = *v969.u3;
+							loc405 = v969;
+							v969 = loc405;
+							v970 = loc403;
+							v973.u0 = 0x01;
+							v970 <<= v973;
+							v969 += v970;
+							loc406 = v969;
+							v969 = loc406;
+							v1011.u2 = v969.u4->t0000.u2;
+							v969.u3 = (word32) v1011;
+							loc407 = v969;
+							v969 = loc407;
+							v970.u0 = 0x2000;
+							v969 &= v970;
+							loc408 = v969;
+							v969 = loc408;
+							v970.u0 = 0x10;
+							v969 <<= v970;
+							v970.u0 = 0x10;
+							v969 >>= v970;
+							v970.u0 = 0x00;
+							v971 = v969 == v970;
+							loc409 = v971;
+							v969 = loc409;
+							if (v969)
+								break;
+							v969 = loc400;
+							v970.u0 = 0x01;
+							v969 += v970;
+							loc410 = v969;
+							v969 = loc410;
+							loc411 = v969;
+							v969 = loc411;
+							loc85 = v969;
+						}
+						v969 = loc85;
+						v970 = loc390;
+						v969 -= v970;
+						loc412 = v969;
+						v969 = loc536;
+						v1012.u1 = v969.u4->t0000.u1;
+						v969.u3 = (word32) v1012;
+						loc413 = v969;
+						v969 = loc413;
+						v970.u0 = 0x18;
+						v969 <<= v970;
+						v970.u0 = 0x18;
+						v969 >>= v970;
+						v970.u0 = 0x00;
+						v971 = v969 < v970;
+						loc414 = v971;
+						v969 = loc547;
+						v969.u3 = *v969.u3;
+						loc416 = v969;
+						v969 = loc413;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc417 = v969;
+						v969 = loc414;
+						if (v969)
+							v969 = loc416;
+						else
+							v969 = loc417;
+						loc418 = v969;
+						v969 = loc412;
+						v970 = loc418;
+						v971 = v969 > v970;
+						loc419 = v971;
+						v969 = loc419;
+						if (!v969)
+						{
+							v969 = loc228;
+							v969.u3 = *v969.u3;
+							loc420 = v969;
+							v969 = loc414;
+							if (v969)
+								v969 = loc420;
+							else
+								v969 = loc228;
+							while (true)
+							{
+								loc421 = v969;
+								v969 = loc421;
+								v970 = loc418;
+								v969 += v970;
+								loc422 = v969;
+								v969.u0 = 0x00;
+								v970 = loc412;
+								v969 -= v970;
+								loc423 = v969;
+								v969 = loc422;
+								v970 = loc423;
+								v969 += v970;
+								loc424 = v969;
+								v969 = loc389;
+								loc83 = v969;
+								v969 = loc424;
+								loc427 = v969;
+								v969 = loc427;
+								v970 = loc422;
+								v971 = v969 == v970;
+								loc425 = v971;
+								v969 = loc425;
+								if (v969)
+									break;
+								v969 = loc427;
+								v1013 = *v969.u0;
+								v969.u3 = (word32) v1013;
+								loc428 = v969;
+								v969 = loc83;
+								v1014.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v1014;
+								loc429 = v969;
+								v969 = loc428;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970 = loc429;
+								v973.u0 = 0x18;
+								v970 <<= v973;
+								v973.u0 = 0x18;
+								v970 >>= v973;
+								v971 = v969 == v970;
+								loc430 = v971;
+								v969 = loc430;
+								v971 = v969 == 0x00;
+								if (v971)
+								{
+									v969 = loc930;
+									loc64 = v969;
+									v969 = loc390;
+									loc84 = v969;
+									v969 = loc386;
+									loc434 = v969;
+									v969 = loc388;
+									loc439 = v969;
+									v969 = loc930;
+									loc463 = v969;
+									goto l001091DE;
+								}
+								v969 = loc427;
+								v970.u0 = 0x01;
+								v969 += v970;
+								loc431 = v969;
+								v969 = loc83;
+								v970.u0 = 0x01;
+								v969 += v970;
+								loc432 = v969;
+								v969 = loc432;
+								loc83 = v969;
+								v969 = loc431;
+								loc427 = v969;
+							}
+							v969 = loc930;
+							loc64 = v969;
+							v969 = loc85;
+							loc84 = v969;
+							v969 = loc386;
+							loc434 = v969;
+							v969 = loc388;
+							loc439 = v969;
+							v969 = loc930;
+							loc463 = v969;
+l001091DE:
+							while (true)
+							{
+								v969 = loc434;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970.u0 = 0x00;
+								v971 = v969 < v970;
+								loc433 = v971;
+								v969 = loc525;
+								v969.u3 = *v969.u3;
+								loc435 = v969;
+								v969 = loc434;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc436 = v969;
+								v969 = loc433;
+								if (v969)
+									v969 = loc439;
+								else
+									v969 = loc195;
+								loc438 = v969;
+								v969 = loc433;
+								if (v969)
+									v969 = loc435;
+								else
+									v969 = loc436;
+								loc440 = v969;
+								v969 = loc438;
+								v970 = loc440;
+								v969 += v970;
+								loc441 = v969;
+								v969 = loc84;
+								loc442 = v969;
+								v969 = loc442;
+								v970 = loc441;
+								v971 = v969 == v970;
+								loc443 = v971;
+								v969 = loc443;
+								if (v969)
+									break;
+								v969 = arg0;
+								v969.u3 = *v969.u3;
+								loc444 = v969;
+								v969 = loc444;
+								v970.u0 = 0x00;
+								v971 = v969 == v970;
+								loc445 = v971;
+								v969 = loc445;
+								if (v969)
+								{
+									v969.u0 = 0x00;
+									loc461 = v969;
+									goto l0010931A;
+								}
+								v969 = loc444;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc446 = v969;
+								v969 = loc446;
+								v969 = *v969.u0;
+								loc447 = v969;
+								v969 = loc444;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc449 = v969;
+								v969 = loc449;
+								v969 = *v969.u0;
+								loc450 = v969;
+								v969 = loc447;
+								v970 = loc450;
+								v971 = v969 == v970;
+								loc451 = v971;
+								v969 = loc451;
+								if (v969)
+								{
+									v969 = loc444;
+									v969 = *v969.u0;
+									loc452 = v969;
+									v969 = loc452;
+									v970.u0 = 0x24;
+									v969 += v970;
+									loc453 = v969;
+									v969 = loc453;
+									v969 = *v969.u0;
+									loc454 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc454;
+									v970 = loc444;
+									v969 = invoke_ii(v969, v970);
+									loc455 = v969;
+									v969.u3 = g_t140048.u3;
+									loc456 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc456;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc457 = v969;
+									v969 = loc457;
+									if (v969)
+									{
+										v969.u0 = 0x9A;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc455;
+									v970.u0 = ~0x00;
+									v971 = v969 == v970;
+									loc458 = v971;
+									v969 = loc458;
+									if (v969)
+									{
+										v969 = arg0;
+										v970.u0 = 0x00;
+										*v969.u0 = v970;
+										v969.u0 = 0x00;
+										loc461 = v969;
+									}
+									else
+									{
+										v969 = arg0;
+										v969 = *v969.u0;
+										loc53 = v969;
+										v969 = loc53;
+										loc461 = v969;
+									}
+								}
+								else
+								{
+									v969 = loc444;
+									loc461 = v969;
+l0010931A:
+								}
+								v969 = loc461;
+								v970.u0 = 0x00;
+								v971 = v969 == v970;
+								loc460 = v971;
+								v969 = loc463;
+								v970.u0 = 0x00;
+								v971 = v969 == v970;
+								loc462 = v971;
+								v969 = loc462;
+								if (v969)
+								{
+									v969 = loc64;
+									loc66 = v969;
+									v969.u0 = 0x90;
+									loc976 = v969;
+								}
+								else
+								{
+									v969 = loc463;
+									v970.u0 = 0x0C;
+									v969 += v970;
+									loc464 = v969;
+									v969 = loc464;
+									v969 = *v969.u0;
+									loc465 = v969;
+									v969 = loc463;
+									v970.u0 = 0x10;
+									v969 += v970;
+									loc466 = v969;
+									v969 = loc466;
+									v969 = *v969.u0;
+									loc467 = v969;
+									v969 = loc465;
+									v970 = loc467;
+									v971 = v969 == v970;
+									loc468 = v971;
+									v969 = loc468;
+									v971 = v969 == 0x00;
+									if (v971)
+									{
+										v969 = loc460;
+										if (!v969)
+										{
+											v969 = loc442;
+											loc43 = v969;
+											goto l001095FB;
+										}
+										v969 = loc64;
+										loc65 = v969;
+										v969 = loc463;
+										loc933 = v969;
+									}
+									else
+									{
+										v969 = loc463;
+										v969 = *v969.u0;
+										loc469 = v969;
+										v969 = loc469;
+										v970.u0 = 0x24;
+										v969 += v970;
+										loc471 = v969;
+										v969 = loc471;
+										v969 = *v969.u0;
+										loc472 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc472;
+										v970 = loc463;
+										v969 = invoke_ii(v969, v970);
+										loc473 = v969;
+										v969.u3 = g_t140048.u3;
+										loc474 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc474;
+										v970.u0 = 0x01;
+										v969 &= v970;
+										loc475 = v969;
+										v969 = loc475;
+										if (v969)
+										{
+											v969.u0 = 0x9A;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969 = loc473;
+										v970.u0 = ~0x00;
+										v971 = v969 == v970;
+										loc476 = v971;
+										v969 = loc476;
+										if (v969)
+										{
+											v969 = arg1;
+											v970.u0 = 0x00;
+											*v969.u0 = v970;
+											v969.u0 = 0x00;
+											loc66 = v969;
+											v969.u0 = 0x90;
+											loc976 = v969;
+										}
+										else
+										{
+											v969 = loc64;
+											v970.u0 = 0x00;
+											v971 = v969 == v970;
+											loc477 = v971;
+											v969 = loc460;
+											v970 = loc477;
+											v969 = v969 ^ v970;
+											loc975 = v969;
+											v969 = loc975;
+											if (!v969)
+											{
+												v969 = loc442;
+												loc43 = v969;
+												goto l001095FB;
+											}
+											v969 = loc64;
+											loc65 = v969;
+											v969 = loc64;
+											loc933 = v969;
+										}
+									}
+								}
+								v969 = loc976;
+								v970.u0 = 0x90;
+								v971 = v969 == v970;
+								if (v971)
+								{
+									v969.u0 = 0x00;
+									loc976 = v969;
+									v969 = loc460;
+									if (v969)
+									{
+										v969 = loc442;
+										loc43 = v969;
+										goto l001095FB;
+									}
+									v969 = loc66;
+									loc65 = v969;
+									v969.u0 = 0x00;
+									loc933 = v969;
+								}
+								v969 = arg0;
+								v969 = *v969.u0;
+								loc478 = v969;
+								v969 = loc478;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc479 = v969;
+								v969 = loc479;
+								v969 = *v969.u0;
+								loc480 = v969;
+								v969 = loc478;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc482 = v969;
+								v969 = loc482;
+								v969 = *v969.u0;
+								loc483 = v969;
+								v969 = loc480;
+								v970 = loc483;
+								v971 = v969 == v970;
+								loc484 = v971;
+								v969 = loc484;
+								if (v969)
+								{
+									v969 = loc478;
+									v969 = *v969.u0;
+									loc485 = v969;
+									v969 = loc485;
+									v970.u0 = 0x24;
+									v969 += v970;
+									loc486 = v969;
+									v969 = loc486;
+									v969 = *v969.u0;
+									loc487 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc487;
+									v970 = loc478;
+									v969 = invoke_ii(v969, v970);
+									loc488 = v969;
+									v969.u3 = g_t140048.u3;
+									loc489 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc489;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc490 = v969;
+									v969 = loc490;
+									if (v969)
+									{
+										v969.u0 = 0x9A;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc488;
+									loc34 = v969;
+								}
+								else
+								{
+									v969 = loc480;
+									v1015 = *v969.u0;
+									v969.u3 = (word32) v1015;
+									loc491 = v969;
+									v969 = loc491;
+									v970.u0 = 0xFF;
+									v969 &= v970;
+									loc493 = v969;
+									v969 = loc493;
+									loc34 = v969;
+								}
+								v969 = loc34;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc494 = v969;
+								v969 = loc442;
+								v1016.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v1016;
+								loc495 = v969;
+								v969 = loc494;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970 = loc495;
+								v973.u0 = 0x18;
+								v970 <<= v973;
+								v973.u0 = 0x18;
+								v970 >>= v973;
+								v971 = v969 == v970;
+								loc496 = v971;
+								v969 = loc496;
+								v971 = v969 == 0x00;
+								if (v971)
+								{
+									v969 = loc442;
+									loc43 = v969;
+									goto l001095FB;
+								}
+								v969 = arg0;
+								v969.u3 = *v969.u3;
+								loc497 = v969;
+								v969 = loc497;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc498 = v969;
+								v969 = loc498;
+								v969.u3 = *v969.u3;
+								loc499 = v969;
+								v969 = loc497;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc500 = v969;
+								v969 = loc500;
+								v969.u3 = *v969.u3;
+								loc501 = v969;
+								v969 = loc499;
+								v970 = loc501;
+								v971 = v969 == v970;
+								loc502 = v971;
+								v969 = loc502;
+								if (v969)
+								{
+									v969 = loc497;
+									v969.u3 = *v969.u3;
+									loc504 = v969;
+									v969 = loc504;
+									v970.u0 = 0x28;
+									v969 += v970;
+									loc505 = v969;
+									v969 = loc505;
+									v969.u3 = *v969.u3;
+									loc506 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc506;
+									v970 = loc497;
+									v969 = invoke_ii(v969, v970);
+									v969.u3 = g_t140048.u3;
+									loc507 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc507;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc508 = v969;
+									v969 = loc508;
+									if (v969)
+									{
+										v969.u0 = 155;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+								}
+								else
+								{
+									v969 = loc499;
+									v970.u0 = 0x01;
+									v969 += v970;
+									loc509 = v969;
+									v969 = loc498;
+									v970 = loc509;
+									*v969.u0 = v970;
+								}
+								v969 = loc442;
+								v970.u0 = 0x01;
+								v969 += v970;
+								loc510 = v969;
+								v969 = loc510;
+								loc511 = v969;
+								v969 = loc514;
+								v1017 = *v969.u0;
+								v969.u3 = (word32) v1017;
+								loc69 = v969;
+								v969 = loc195;
+								v969.u3 = *v969.u3;
+								loc70 = v969;
+								v969 = loc65;
+								loc64 = v969;
+								v969 = loc511;
+								loc84 = v969;
+								v969 = loc69;
+								loc434 = v969;
+								v969 = loc70;
+								loc439 = v969;
+								v969 = loc933;
+								loc463 = v969;
+							}
+							v969 = loc441;
+							loc43 = v969;
+l001095FB:
+							v969 = loc503;
+							if (v969)
+							{
+								v969 = loc514;
+								v1018.u1 = v969.u4->t0000.u1;
+								v969.u3 = (word32) v1018;
+								loc517 = v969;
+								v969 = loc517;
+								v970.u0 = 0x18;
+								v969 <<= v970;
+								v970.u0 = 0x18;
+								v969 >>= v970;
+								v970.u0 = 0x00;
+								v971 = v969 < v970;
+								loc518 = v971;
+								v969 = loc195;
+								v969.u3 = *v969.u3;
+								loc519 = v969;
+								v969 = loc525;
+								v969.u3 = *v969.u3;
+								loc520 = v969;
+								v969 = loc517;
+								v970.u0 = 0xFF;
+								v969 &= v970;
+								loc521 = v969;
+								v969 = loc518;
+								if (v969)
+									v969 = loc519;
+								else
+									v969 = loc195;
+								loc522 = v969;
+								v969 = loc518;
+								if (v969)
+									v969 = loc520;
+								else
+									v969 = loc521;
+								loc523 = v969;
+								v969 = loc522;
+								v970 = loc523;
+								v969 += v970;
+								loc524 = v969;
+								v969 = loc43;
+								v970 = loc524;
+								v971 = v969 == v970;
+								loc526 = v971;
+								v969 = loc526;
+								if (!v969)
+								{
+									v969.u0 = 0x9E;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc36;
+								loc39 = v969;
+							}
+							else
+							{
+								v969 = loc36;
+								loc39 = v969;
+							}
+l0010A59B:
+							goto l0010A59C;
+						}
+						v969 = loc930;
+						loc64 = v969;
+						v969 = loc390;
+						loc84 = v969;
+						v969 = loc386;
+						loc434 = v969;
+						v969 = loc388;
+						loc439 = v969;
+						v969 = loc930;
+						loc463 = v969;
+					}
+					else
+					{
+						v969 = loc930;
+						loc64 = v969;
+						v969 = loc390;
+						loc84 = v969;
+						v969 = loc386;
+						loc434 = v969;
+						v969 = loc388;
+						loc439 = v969;
+						v969 = loc930;
+						loc463 = v969;
+					}
+				}
+				goto l001091DE;
+			case 0x04:
+				break;
+			}
+l00109685:
+			v969.u0 = 0x00;
+			loc35 = v969;
+			v969 = loc930;
+			loc61 = v969;
+			v969 = loc930;
+			loc548 = v969;
+			v969 = arg0;
+			v969 = *v969.u0;
+			loc529 = v969;
+			v969 = loc529;
+			v970.u0 = 0x00;
+			v971 = v969 == v970;
+			loc530 = v971;
+			v969 = loc530;
+			if (v969)
+			{
+				v969.u0 = 0x00;
+				loc545 = v969;
+			}
+			else
+			{
+				v969 = loc529;
+				v970.u0 = 0x0C;
+				v969 += v970;
+				loc531 = v969;
+				v969 = loc531;
+				v969 = *v969.u0;
+				loc532 = v969;
+				v969 = loc529;
+				v970.u0 = 0x10;
+				v969 += v970;
+				loc533 = v969;
+				v969 = loc533;
+				v969 = *v969.u0;
+				loc534 = v969;
+				v969 = loc532;
+				v970 = loc534;
+				v971 = v969 == v970;
+				loc535 = v971;
+				v969 = loc535;
+				if (v969)
+				{
+					v969 = loc529;
+					v969 = *v969.u0;
+					loc537 = v969;
+					v969 = loc537;
+					v970.u0 = 0x24;
+					v969 += v970;
+					loc538 = v969;
+					v969 = loc538;
+					v969 = *v969.u0;
+					loc539 = v969;
+					v969.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v969;
+					v969 = loc539;
+					v970 = loc529;
+					v969 = invoke_ii(v969, v970);
+					loc540 = v969;
+					v969.u3 = g_t140048.u3;
+					loc541 = v969;
+					v969.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v969;
+					v969 = loc541;
+					v970.u0 = 0x01;
+					v969 &= v970;
+					loc542 = v969;
+					v969 = loc542;
+					if (v969)
+					{
+						v969.u0 = 0xB6;
+						loc976 = v969;
+						goto l0010A9D7;
+					}
+					v969 = loc540;
+					v970.u0 = ~0x00;
+					v971 = v969 == v970;
+					loc543 = v971;
+					v969 = loc543;
+					if (v969)
+					{
+						v969 = arg0;
+						v970.u0 = 0x00;
+						*v969.u0 = v970;
+						v969.u0 = 0x00;
+						loc545 = v969;
+					}
+					else
+					{
+						v969 = arg0;
+						v969 = *v969.u0;
+						loc52 = v969;
+						v969 = loc52;
+						loc545 = v969;
+					}
+l0010976B:
+					v969 = loc545;
+					v970.u0 = 0x00;
+					v971 = v969 == v970;
+					loc544 = v971;
+					v969 = loc548;
+					v970.u0 = 0x00;
+					v971 = v969 == v970;
+					loc546 = v971;
+					v969 = loc546;
+					if (v969)
+					{
+						v969 = loc61;
+						loc62 = v969;
+						v969.u0 = 171;
+						loc976 = v969;
+					}
+					else
+					{
+						v969 = loc548;
+						v970.u0 = 0x0C;
+						v969 += v970;
+						loc549 = v969;
+						v969 = loc549;
+						v969 = *v969.u0;
+						loc550 = v969;
+						v969 = loc548;
+						v970.u0 = 0x10;
+						v969 += v970;
+						loc551 = v969;
+						v969 = loc551;
+						v969 = *v969.u0;
+						loc552 = v969;
+						v969 = loc550;
+						v970 = loc552;
+						v971 = v969 == v970;
+						loc553 = v971;
+						v969 = loc553;
+						v971 = v969 == 0x00;
+						if (v971)
+						{
+							v969 = loc544;
+							if (!v969)
+							{
+								v969 = loc61;
+								loc60 = v969;
+								goto l00109C1F;
+							}
+							v969 = loc61;
+							loc63 = v969;
+							v969 = loc548;
+							loc934 = v969;
+						}
+						else
+						{
+							v969 = loc548;
+							v969 = *v969.u0;
+							loc554 = v969;
+							v969 = loc554;
+							v970.u0 = 0x24;
+							v969 += v970;
+							loc555 = v969;
+							v969 = loc555;
+							v969 = *v969.u0;
+							loc556 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc556;
+							v970 = loc548;
+							v969 = invoke_ii(v969, v970);
+							loc557 = v969;
+							v969.u3 = g_t140048.u3;
+							loc559 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc559;
+							v970.u0 = 0x01;
+							v969 &= v970;
+							loc560 = v969;
+							v969 = loc560;
+							if (v969)
+							{
+								v969.u0 = 0xB6;
+								loc976 = v969;
+								goto l0010A9D7;
+							}
+							v969 = loc557;
+							v970.u0 = ~0x00;
+							v971 = v969 == v970;
+							loc561 = v971;
+							v969 = loc561;
+							if (v969)
+							{
+								v969 = arg1;
+								v970.u0 = 0x00;
+								*v969.u0 = v970;
+								v969.u0 = 0x00;
+								loc62 = v969;
+								v969.u0 = 171;
+								loc976 = v969;
+							}
+							else
+							{
+								v969 = loc61;
+								v970.u0 = 0x00;
+								v971 = v969 == v970;
+								loc562 = v971;
+								v969 = loc544;
+								v970 = loc562;
+								v969 = v969 ^ v970;
+								loc974 = v969;
+								v969 = loc974;
+								if (!v969)
+								{
+									v969 = loc61;
+									loc60 = v969;
+									goto l00109C1F;
+								}
+								v969 = loc61;
+								loc63 = v969;
+								v969 = loc61;
+								loc934 = v969;
+							}
+						}
+					}
+					v969 = loc976;
+					v970.u0 = 171;
+					v971 = v969 == v970;
+					if (v971)
+					{
+						v969.u0 = 0x00;
+						loc976 = v969;
+						v969 = loc544;
+						if (v969)
+						{
+							v969 = loc62;
+							loc60 = v969;
+							goto l00109C1F;
+						}
+						v969 = loc62;
+						loc63 = v969;
+						v969.u0 = 0x00;
+						loc934 = v969;
+					}
+					v969 = arg0;
+					v969 = *v969.u0;
+					loc563 = v969;
+					v969 = loc563;
+					v970.u0 = 0x0C;
+					v969 += v970;
+					loc564 = v969;
+					v969 = loc564;
+					v969 = *v969.u0;
+					loc565 = v969;
+					v969 = loc563;
+					v970.u0 = 0x10;
+					v969 += v970;
+					loc566 = v969;
+					v969 = loc566;
+					v969 = *v969.u0;
+					loc567 = v969;
+					v969 = loc565;
+					v970 = loc567;
+					v971 = v969 == v970;
+					loc568 = v971;
+					v969 = loc568;
+					if (v969)
+					{
+						v969 = loc563;
+						v969 = *v969.u0;
+						loc570 = v969;
+						v969 = loc570;
+						v970.u0 = 0x24;
+						v969 += v970;
+						loc571 = v969;
+						v969 = loc571;
+						v969 = *v969.u0;
+						loc572 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc572;
+						v970 = loc563;
+						v969 = invoke_ii(v969, v970);
+						loc573 = v969;
+						v969.u3 = g_t140048.u3;
+						loc574 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc574;
+						v970.u0 = 0x01;
+						v969 &= v970;
+						loc575 = v969;
+						v969 = loc575;
+						if (v969)
+						{
+							v969.u0 = 0xB6;
+							loc976 = v969;
+							goto l0010A9D7;
+						}
+						v969 = loc573;
+						loc33 = v969;
+					}
+					else
+					{
+						v969 = loc565;
+						v1019 = *v969.u0;
+						v969.u3 = (word32) v1019;
+						loc576 = v969;
+						v969 = loc576;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc577 = v969;
+						v969 = loc577;
+						loc33 = v969;
+					}
+					v969 = loc33;
+					v970.u0 = 0xFF;
+					v969 &= v970;
+					loc578 = v969;
+					v969 = loc578;
+					v970.u0 = 0x18;
+					v969 <<= v970;
+					v970.u0 = 0x18;
+					v969 >>= v970;
+					v970.u0 = ~0x00;
+					v971 = v969 > v970;
+					loc959 = v971;
+					v969 = loc959;
+					if (v969)
+					{
+						v969 = loc33;
+						v970.u0 = 0x18;
+						v969 <<= v970;
+						loc968 = v969;
+						v969 = loc968;
+						v970.u0 = 0x18;
+						v969 >>= v970;
+						loc579 = v969;
+						v969 = loc437;
+						v969.u3 = *v969.u3;
+						loc581 = v969;
+						v969 = loc581;
+						v970 = loc579;
+						v973.u0 = 0x01;
+						v970 <<= v973;
+						v969 += v970;
+						loc582 = v969;
+						v969 = loc582;
+						v1020.u2 = v969.u4->t0000.u2;
+						v969.u3 = (word32) v1020;
+						loc583 = v969;
+						v969 = loc583;
+						v970.u0 = 0x0800;
+						v969 &= v970;
+						loc584 = v969;
+						v969 = loc584;
+						v970.u0 = 0x10;
+						v969 <<= v970;
+						v970.u0 = 0x10;
+						v969 >>= v970;
+						v970.u0 = 0x00;
+						v971 = v969 == v970;
+						loc585 = v971;
+						v969 = loc585;
+						if (v969)
+						{
+							v969.u0 = 0xBA;
+							loc976 = v969;
+						}
+						else
+						{
+							v969 = arg9;
+							v969 = *v969.u0;
+							loc586 = v969;
+							v969 = loc96;
+							v969 = *v969.u0;
+							loc587 = v969;
+							v969 = loc586;
+							v970 = loc587;
+							v971 = v969 == v970;
+							loc588 = v971;
+							v969 = loc588;
+							if (v969)
+							{
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969.u0 = 0x01AA;
+								v970 = arg8;
+								v973 = arg9;
+								v974 = loc96;
+								invoke_viii(v969, v970, v973, v974);
+								v969.u3 = g_t140048.u3;
+								loc589 = v969;
+								v969.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v969;
+								v969 = loc589;
+								v970.u0 = 0x01;
+								v969 &= v970;
+								loc590 = v969;
+								v969 = loc590;
+								if (v969)
+								{
+									v969.u0 = 0xB8;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = arg9;
+								v969 = *v969.u0;
+								loc46 = v969;
+								v969 = loc46;
+								loc601 = v969;
+							}
+							else
+							{
+								v969 = loc586;
+								loc601 = v969;
+							}
+							v969 = loc601;
+							v970.u0 = 0x01;
+							v969 += v970;
+							loc600 = v969;
+							v969 = arg9;
+							v970 = loc600;
+							*v969.u0 = v970;
+							v969 = loc601;
+							v970 = loc578;
+							v1021 = (byte) v970;
+							*v969.u0 = v1021;
+							v969 = loc35;
+							v970.u0 = 0x01;
+							v969 += v970;
+							loc603 = v969;
+							v969 = loc603;
+							loc40 = v969;
+						}
+					}
+					else
+					{
+						v969.u0 = 0xBA;
+						loc976 = v969;
+					}
+					v969 = loc976;
+					v970.u0 = 0xBA;
+					v971 = v969 == v970;
+					if (v971)
+					{
+						v969.u0 = 0x00;
+						loc976 = v969;
+						v969 = loc569;
+						v1022 = *v969.u0;
+						v969.u3 = (word32) v1022;
+						loc604 = v969;
+						v969 = loc604;
+						v970.u0 = 0x18;
+						v969 <<= v970;
+						v970.u0 = 0x18;
+						v969 >>= v970;
+						v970.u0 = 0x00;
+						v971 = v969 < v970;
+						loc605 = v971;
+						v969 = loc580;
+						v969.u3 = *v969.u3;
+						loc606 = v969;
+						v969 = loc604;
+						v970.u0 = 0xFF;
+						v969 &= v970;
+						loc607 = v969;
+						v969 = loc605;
+						if (v969)
+							v969 = loc606;
+						else
+							v969 = loc607;
+						loc608 = v969;
+						v969 = loc608;
+						v970.u0 = 0x00;
+						v971 = v969 != v970;
+						loc609 = v971;
+						v969 = loc35;
+						v970.u0 = 0x00;
+						v971 = v969 != v970;
+						loc610 = v971;
+						v969 = loc610;
+						v970 = loc609;
+						v969 &= v970;
+						loc964 = v969;
+						v969 = loc173;
+						v1023.u1 = v969.u4->t0000.u1;
+						v969.u3 = (word32) v1023;
+						loc611 = v969;
+						v969 = loc578;
+						v970.u0 = 0x18;
+						v969 <<= v970;
+						v970.u0 = 0x18;
+						v969 >>= v970;
+						v970 = loc611;
+						v973.u0 = 0x18;
+						v970 <<= v973;
+						v973.u0 = 0x18;
+						v970 >>= v973;
+						v971 = v969 == v970;
+						loc612 = v971;
+						v969 = loc612;
+						v970 = loc964;
+						v969 &= v970;
+						loc966 = v969;
+						v969 = loc966;
+						v971 = v969 == 0x00;
+						if (v971)
+						{
+							v969 = loc63;
+							loc60 = v969;
+l00109C1F:
+							v969 = loc118;
+							v969 = *v969.u0;
+							loc634 = v969;
+							v969 = loc129;
+							v969 = *v969.u0;
+							loc636 = v969;
+							v969 = loc634;
+							v970 = loc636;
+							v971 = v969 != v970;
+							loc637 = v971;
+							v969 = loc35;
+							v970.u0 = 0x00;
+							v971 = v969 != v970;
+							loc638 = v971;
+							v969 = loc638;
+							v970 = loc637;
+							v969 &= v970;
+							loc965 = v969;
+							v969 = loc965;
+							if (v969)
+							{
+								v969 = loc140;
+								v969 = *v969.u0;
+								loc639 = v969;
+								v969 = loc636;
+								v970 = loc639;
+								v971 = v969 == v970;
+								loc640 = v971;
+								v969 = loc640;
+								if (v969)
+								{
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969.u0 = 0x01AB;
+									v970 = loc118;
+									v973 = loc129;
+									v974 = loc140;
+									invoke_viii(v969, v970, v973, v974);
+									v969.u3 = g_t140048.u3;
+									loc641 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc641;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc642 = v969;
+									v969 = loc642;
+									if (v969)
+									{
+										v969.u0 = 0xB7;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc129;
+									v969 = *v969.u0;
+									loc68 = v969;
+									v969 = loc68;
+									loc644 = v969;
+								}
+								else
+								{
+									v969 = loc636;
+									loc644 = v969;
+								}
+								v969 = loc644;
+								v970.u0 = 0x04;
+								v969 += v970;
+								loc643 = v969;
+								v969 = loc129;
+								v970 = loc643;
+								*v969.u0 = v970;
+								v969 = loc644;
+								v970 = loc35;
+								*v969.u0 = v970;
+							}
+							v969 = loc239;
+							v969 = *v969.u0;
+							loc645 = v969;
+							v969 = loc645;
+							v970.u0 = 0x00;
+							v971 = v969 > v970;
+							loc647 = v971;
+							v969 = loc647;
+							if (!v969)
+							{
+l0010A565:
+								v969 = arg9;
+								v969 = *v969.u0;
+								loc815 = v969;
+								v969 = arg8;
+								v969 = *v969.u0;
+								loc816 = v969;
+								v969 = loc815;
+								v970 = loc816;
+								v971 = v969 == v970;
+								loc817 = v971;
+								v969 = loc817;
+								if (v969)
+								{
+									v969.u0 = 0xFB;
+									loc976 = v969;
+									goto l0010A9D7;
+								}
+								v969 = loc36;
+								loc39 = v969;
+								goto l0010A59B;
+							}
+							v969 = arg0;
+							v969 = *v969.u0;
+							loc648 = v969;
+							v969 = loc648;
+							v970.u0 = 0x00;
+							v971 = v969 == v970;
+							loc649 = v971;
+							v969 = loc649;
+							if (v969)
+							{
+								v969.u0 = 0x00;
+								loc664 = v969;
+							}
+							else
+							{
+								v969 = loc648;
+								v970.u0 = 0x0C;
+								v969 += v970;
+								loc650 = v969;
+								v969 = loc650;
+								v969 = *v969.u0;
+								loc651 = v969;
+								v969 = loc648;
+								v970.u0 = 0x10;
+								v969 += v970;
+								loc652 = v969;
+								v969 = loc652;
+								v969 = *v969.u0;
+								loc653 = v969;
+								v969 = loc651;
+								v970 = loc653;
+								v971 = v969 == v970;
+								loc654 = v971;
+								v969 = loc654;
+								if (v969)
+								{
+									v969 = loc648;
+									v969 = *v969.u0;
+									loc655 = v969;
+									v969 = loc655;
+									v970.u0 = 0x24;
+									v969 += v970;
+									loc656 = v969;
+									v969 = loc656;
+									v969 = *v969.u0;
+									loc658 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc658;
+									v970 = loc648;
+									v969 = invoke_ii(v969, v970);
+									loc659 = v969;
+									v969.u3 = g_t140048.u3;
+									loc660 = v969;
+									v969.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v969;
+									v969 = loc660;
+									v970.u0 = 0x01;
+									v969 &= v970;
+									loc661 = v969;
+									v969 = loc661;
+									if (v969)
+									{
+										v969.u0 = 0xB7;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = loc659;
+									v970.u0 = ~0x00;
+									v971 = v969 == v970;
+									loc662 = v971;
+									v969 = loc662;
+									if (v969)
+									{
+										v969 = arg0;
+										v970.u0 = 0x00;
+										*v969.u0 = v970;
+										v969.u0 = 0x00;
+										loc664 = v969;
+									}
+									else
+									{
+										v969 = arg0;
+										v969 = *v969.u0;
+										loc51 = v969;
+										v969 = loc51;
+										loc664 = v969;
+									}
+l00109DB5:
+									v969 = loc664;
+									v970.u0 = 0x00;
+									v971 = v969 == v970;
+									loc663 = v971;
+									v969 = loc60;
+									v970.u0 = 0x00;
+									v971 = v969 == v970;
+									loc665 = v971;
+									v969 = loc665;
+									if (v969)
+									{
+										v969.u0 = 212;
+										loc976 = v969;
+									}
+									else
+									{
+										v969 = loc60;
+										v970.u0 = 0x0C;
+										v969 += v970;
+										loc666 = v969;
+										v969 = loc666;
+										v969 = *v969.u0;
+										loc667 = v969;
+										v969 = loc60;
+										v970.u0 = 0x10;
+										v969 += v970;
+										loc669 = v969;
+										v969 = loc669;
+										v969 = *v969.u0;
+										loc670 = v969;
+										v969 = loc667;
+										v970 = loc670;
+										v971 = v969 == v970;
+										loc671 = v971;
+										v969 = loc671;
+										if (v969)
+										{
+											v969 = loc60;
+											v969 = *v969.u0;
+											loc672 = v969;
+											v969 = loc672;
+											v970.u0 = 0x24;
+											v969 += v970;
+											loc673 = v969;
+											v969 = loc673;
+											v969 = *v969.u0;
+											loc674 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc674;
+											v970 = loc60;
+											v969 = invoke_ii(v969, v970);
+											loc675 = v969;
+											v969.u3 = g_t140048.u3;
+											loc676 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc676;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc677 = v969;
+											v969 = loc677;
+											if (v969)
+											{
+												v969.u0 = 0xB7;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+											v969 = loc675;
+											v970.u0 = ~0x00;
+											v971 = v969 == v970;
+											loc678 = v971;
+											v969 = loc678;
+											if (v969)
+											{
+												v969 = arg1;
+												v970.u0 = 0x00;
+												*v969.u0 = v970;
+												v969.u0 = 212;
+												loc976 = v969;
+												goto l00109E82;
+											}
+										}
+										v969 = loc663;
+										if (!v969)
+										{
+											v969.u0 = 0xD9;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969 = loc60;
+										loc935 = v969;
+									}
+l00109E82:
+									v969 = loc976;
+									v970.u0 = 212;
+									v971 = v969 == v970;
+									if (v971)
+									{
+										v969.u0 = 0x00;
+										loc976 = v969;
+										v969 = loc663;
+										if (v969)
+										{
+											v969.u0 = 0xD9;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969.u0 = 0x00;
+										loc935 = v969;
+									}
+									v969 = arg0;
+									v969 = *v969.u0;
+									loc680 = v969;
+									v969 = loc680;
+									v970.u0 = 0x0C;
+									v969 += v970;
+									loc681 = v969;
+									v969 = loc681;
+									v969 = *v969.u0;
+									loc682 = v969;
+									v969 = loc680;
+									v970.u0 = 0x10;
+									v969 += v970;
+									loc683 = v969;
+									v969 = loc683;
+									v969 = *v969.u0;
+									loc684 = v969;
+									v969 = loc682;
+									v970 = loc684;
+									v971 = v969 == v970;
+									loc685 = v971;
+									v969 = loc685;
+									if (v969)
+									{
+										v969 = loc680;
+										v969 = *v969.u0;
+										loc686 = v969;
+										v969 = loc686;
+										v970.u0 = 0x24;
+										v969 += v970;
+										loc687 = v969;
+										v969 = loc687;
+										v969 = *v969.u0;
+										loc688 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc688;
+										v970 = loc680;
+										v969 = invoke_ii(v969, v970);
+										loc689 = v969;
+										v969.u3 = g_t140048.u3;
+										loc691 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc691;
+										v970.u0 = 0x01;
+										v969 &= v970;
+										loc692 = v969;
+										v969 = loc692;
+										if (v969)
+										{
+											v969.u0 = 0xB7;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969 = loc689;
+										loc29 = v969;
+									}
+									else
+									{
+										v969 = loc682;
+										v1024 = *v969.u0;
+										v969.u3 = (word32) v1024;
+										loc693 = v969;
+										v969 = loc693;
+										v970.u0 = 0xFF;
+										v969 &= v970;
+										loc694 = v969;
+										v969 = loc694;
+										loc29 = v969;
+									}
+									v969 = loc29;
+									v970.u0 = 0xFF;
+									v969 &= v970;
+									loc695 = v969;
+									v969 = loc162;
+									v1025.u1 = v969.u4->t0000.u1;
+									v969.u3 = (word32) v1025;
+									loc696 = v969;
+									v969 = loc695;
+									v970.u0 = 0x18;
+									v969 <<= v970;
+									v970.u0 = 0x18;
+									v969 >>= v970;
+									v970 = loc696;
+									v973.u0 = 0x18;
+									v970 <<= v973;
+									v973.u0 = 0x18;
+									v970 >>= v973;
+									v971 = v969 == v970;
+									loc697 = v971;
+									v969 = loc697;
+									v971 = v969 == 0x00;
+									if (v971)
+									{
+										v969.u0 = 0xD9;
+										loc976 = v969;
+										goto l0010A9D7;
+									}
+									v969 = arg0;
+									v969 = *v969.u0;
+									loc700 = v969;
+									v969 = loc700;
+									v970.u0 = 0x0C;
+									v969 += v970;
+									loc702 = v969;
+									v969 = loc702;
+									v969 = *v969.u0;
+									loc703 = v969;
+									v969 = loc700;
+									v970.u0 = 0x10;
+									v969 += v970;
+									loc704 = v969;
+									v969 = loc704;
+									v969 = *v969.u0;
+									loc705 = v969;
+									v969 = loc703;
+									v970 = loc705;
+									v971 = v969 == v970;
+									loc706 = v971;
+									v969 = loc706;
+									if (v969)
+									{
+										v969 = loc700;
+										v969 = *v969.u0;
+										loc707 = v969;
+										v969 = loc707;
+										v970.u0 = 0x28;
+										v969 += v970;
+										loc708 = v969;
+										v969 = loc708;
+										v969 = *v969.u0;
+										loc709 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc709;
+										v970 = loc700;
+										v969 = invoke_ii(v969, v970);
+										v969.u3 = g_t140048.u3;
+										loc710 = v969;
+										v969.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v969;
+										v969 = loc710;
+										v970.u0 = 0x01;
+										v969 &= v970;
+										loc711 = v969;
+										v969 = loc711;
+										if (v969)
+										{
+											v969.u0 = 0xB7;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969 = loc935;
+										loc57 = v969;
+										v969 = loc935;
+										loc735 = v969;
+									}
+									else
+									{
+										v969 = loc703;
+										v970.u0 = 0x01;
+										v969 += v970;
+										loc713 = v969;
+										v969 = loc702;
+										v970 = loc713;
+										*v969.u0 = v970;
+										v969 = loc935;
+										loc57 = v969;
+										v969 = loc935;
+										loc735 = v969;
+									}
+									while (true)
+									{
+										v969 = loc239;
+										v969 = *v969.u0;
+										loc714 = v969;
+										v969 = loc714;
+										v970.u0 = 0x00;
+										v971 = v969 > v970;
+										loc715 = v971;
+										v969 = loc715;
+										v971 = v969 == 0x00;
+										if (v971)
+											break;
+										v969 = arg0;
+										v969 = *v969.u0;
+										loc716 = v969;
+										v969 = loc716;
+										v970.u0 = 0x00;
+										v971 = v969 == v970;
+										loc717 = v971;
+										v969 = loc717;
+										if (v969)
+										{
+											v969.u0 = 0x00;
+											loc732 = v969;
+											goto l0010A11C;
+										}
+										v969 = loc716;
+										v970.u0 = 0x0C;
+										v969 += v970;
+										loc718 = v969;
+										v969 = loc718;
+										v969 = *v969.u0;
+										loc719 = v969;
+										v969 = loc716;
+										v970.u0 = 0x10;
+										v969 += v970;
+										loc720 = v969;
+										v969 = loc720;
+										v969 = *v969.u0;
+										loc721 = v969;
+										v969 = loc719;
+										v970 = loc721;
+										v971 = v969 == v970;
+										loc722 = v971;
+										v969 = loc722;
+										if (v969)
+										{
+											v969 = loc716;
+											v969 = *v969.u0;
+											loc724 = v969;
+											v969 = loc724;
+											v970.u0 = 0x24;
+											v969 += v970;
+											loc725 = v969;
+											v969 = loc725;
+											v969 = *v969.u0;
+											loc726 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc726;
+											v970 = loc716;
+											v969 = invoke_ii(v969, v970);
+											loc727 = v969;
+											v969.u3 = g_t140048.u3;
+											loc728 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc728;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc729 = v969;
+											v969 = loc729;
+											if (v969)
+											{
+												v969.u0 = 181;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+											v969 = loc727;
+											v970.u0 = ~0x00;
+											v971 = v969 == v970;
+											loc730 = v971;
+											v969 = loc730;
+											if (v969)
+											{
+												v969 = arg0;
+												v970.u0 = 0x00;
+												*v969.u0 = v970;
+												v969.u0 = 0x00;
+												loc732 = v969;
+											}
+											else
+											{
+												v969 = arg0;
+												v969 = *v969.u0;
+												loc50 = v969;
+												v969 = loc50;
+												loc732 = v969;
+											}
+										}
+										else
+										{
+											v969 = loc716;
+											loc732 = v969;
+l0010A11C:
+										}
+										v969 = loc732;
+										v970.u0 = 0x00;
+										v971 = v969 == v970;
+										loc731 = v971;
+										v969 = loc735;
+										v970.u0 = 0x00;
+										v971 = v969 == v970;
+										loc733 = v971;
+										v969 = loc733;
+										if (v969)
+										{
+											v969 = loc57;
+											loc58 = v969;
+											v969.u0 = 0xEA;
+											loc976 = v969;
+										}
+										else
+										{
+											v969 = loc735;
+											v970.u0 = 0x0C;
+											v969 += v970;
+											loc736 = v969;
+											v969 = loc736;
+											v969 = *v969.u0;
+											loc737 = v969;
+											v969 = loc735;
+											v970.u0 = 0x10;
+											v969 += v970;
+											loc738 = v969;
+											v969 = loc738;
+											v969 = *v969.u0;
+											loc739 = v969;
+											v969 = loc737;
+											v970 = loc739;
+											v971 = v969 == v970;
+											loc740 = v971;
+											v969 = loc740;
+											v971 = v969 == 0x00;
+											if (v971)
+											{
+												v969 = loc731;
+												if (!v969)
+												{
+													v969.u0 = 0xF1;
+													loc976 = v969;
+													goto l0010A9D7;
+												}
+												v969 = loc57;
+												loc59 = v969;
+												v969 = loc735;
+												loc936 = v969;
+											}
+											else
+											{
+												v969 = loc735;
+												v969 = *v969.u0;
+												loc741 = v969;
+												v969 = loc741;
+												v970.u0 = 0x24;
+												v969 += v970;
+												loc742 = v969;
+												v969 = loc742;
+												v969 = *v969.u0;
+												loc743 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc743;
+												v970 = loc735;
+												v969 = invoke_ii(v969, v970);
+												loc744 = v969;
+												v969.u3 = g_t140048.u3;
+												loc746 = v969;
+												v969.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v969;
+												v969 = loc746;
+												v970.u0 = 0x01;
+												v969 &= v970;
+												loc747 = v969;
+												v969 = loc747;
+												if (v969)
+												{
+													v969.u0 = 181;
+													loc976 = v969;
+													goto l0010A9D7;
+												}
+												v969 = loc744;
+												v970.u0 = ~0x00;
+												v971 = v969 == v970;
+												loc748 = v971;
+												v969 = loc748;
+												if (v969)
+												{
+													v969 = arg1;
+													v970.u0 = 0x00;
+													*v969.u0 = v970;
+													v969.u0 = 0x00;
+													loc58 = v969;
+													v969.u0 = 0xEA;
+													loc976 = v969;
+												}
+												else
+												{
+													v969 = loc57;
+													v970.u0 = 0x00;
+													v971 = v969 == v970;
+													loc749 = v971;
+													v969 = loc731;
+													v970 = loc749;
+													v969 = v969 ^ v970;
+													loc973 = v969;
+													v969 = loc973;
+													if (!v969)
+													{
+														v969.u0 = 0xF1;
+														loc976 = v969;
+														goto l0010A9D7;
+													}
+													v969 = loc57;
+													loc59 = v969;
+													v969 = loc57;
+													loc936 = v969;
+												}
+											}
+										}
+										v969 = loc976;
+										v970.u0 = 0xEA;
+										v971 = v969 == v970;
+										if (v971)
+										{
+											v969.u0 = 0x00;
+											loc976 = v969;
+											v969 = loc731;
+											if (v969)
+											{
+												v969.u0 = 0xF1;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+											v969 = loc58;
+											loc59 = v969;
+											v969.u0 = 0x00;
+											loc936 = v969;
+										}
+										v969 = arg0;
+										v969 = *v969.u0;
+										loc750 = v969;
+										v969 = loc750;
+										v970.u0 = 0x0C;
+										v969 += v970;
+										loc751 = v969;
+										v969 = loc751;
+										v969 = *v969.u0;
+										loc752 = v969;
+										v969 = loc750;
+										v970.u0 = 0x10;
+										v969 += v970;
+										loc753 = v969;
+										v969 = loc753;
+										v969 = *v969.u0;
+										loc754 = v969;
+										v969 = loc752;
+										v970 = loc754;
+										v971 = v969 == v970;
+										loc755 = v971;
+										v969 = loc755;
+										if (v969)
+										{
+											v969 = loc750;
+											v969 = *v969.u0;
+											loc757 = v969;
+											v969 = loc757;
+											v970.u0 = 0x24;
+											v969 += v970;
+											loc758 = v969;
+											v969 = loc758;
+											v969 = *v969.u0;
+											loc759 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc759;
+											v970 = loc750;
+											v969 = invoke_ii(v969, v970);
+											loc760 = v969;
+											v969.u3 = g_t140048.u3;
+											loc761 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc761;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc762 = v969;
+											v969 = loc762;
+											if (v969)
+											{
+												v969.u0 = 181;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+											v969 = loc760;
+											loc27 = v969;
+										}
+										else
+										{
+											v969 = loc752;
+											v1026 = *v969.u0;
+											v969.u3 = (word32) v1026;
+											loc763 = v969;
+											v969 = loc763;
+											v970.u0 = 0xFF;
+											v969 &= v970;
+											loc764 = v969;
+											v969 = loc764;
+											loc27 = v969;
+										}
+										v969 = loc27;
+										v970.u0 = 0xFF;
+										v969 &= v970;
+										loc765 = v969;
+										v969 = loc765;
+										v970.u0 = 0x18;
+										v969 <<= v970;
+										v970.u0 = 0x18;
+										v969 >>= v970;
+										v970.u0 = ~0x00;
+										v971 = v969 > v970;
+										loc958 = v971;
+										v969 = loc958;
+										v971 = v969 == 0x00;
+										if (v971)
+										{
+											v969.u0 = 0xF1;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969 = loc27;
+										v970.u0 = 0x18;
+										v969 <<= v970;
+										loc967 = v969;
+										v969 = loc967;
+										v970.u0 = 0x18;
+										v969 >>= v970;
+										loc766 = v969;
+										v969 = loc437;
+										v969 = *v969.u0;
+										loc768 = v969;
+										v969 = loc768;
+										v970 = loc766;
+										v973.u0 = 0x01;
+										v970 <<= v973;
+										v969 += v970;
+										loc769 = v969;
+										v969 = loc769;
+										v1027 = *v969.u0;
+										v969.u3 = (word32) v1027;
+										loc770 = v969;
+										v969 = loc770;
+										v970.u0 = 0x0800;
+										v969 &= v970;
+										loc771 = v969;
+										v969 = loc771;
+										v970.u0 = 0x10;
+										v969 <<= v970;
+										v970.u0 = 0x10;
+										v969 >>= v970;
+										v970.u0 = 0x00;
+										v971 = v969 == v970;
+										loc772 = v971;
+										v969 = loc772;
+										if (v969)
+										{
+											v969.u0 = 0xF1;
+											loc976 = v969;
+											goto l0010A9D7;
+										}
+										v969 = arg9;
+										v969 = *v969.u0;
+										loc775 = v969;
+										v969 = loc96;
+										v969 = *v969.u0;
+										loc776 = v969;
+										v969 = loc775;
+										v970 = loc776;
+										v971 = v969 == v970;
+										loc777 = v971;
+										v969 = loc777;
+										if (v969)
+										{
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969.u0 = 0x01AA;
+											v970 = arg8;
+											v973 = arg9;
+											v974 = loc96;
+											invoke_viii(v969, v970, v973, v974);
+											v969.u3 = g_t140048.u3;
+											loc779 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc779;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc780 = v969;
+											v969 = loc780;
+											if (v969)
+											{
+												v969.u0 = 181;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+										}
+										v969 = arg0;
+										v969 = *v969.u0;
+										loc781 = v969;
+										v969 = loc781;
+										v970.u0 = 0x0C;
+										v969 += v970;
+										loc782 = v969;
+										v969 = loc782;
+										v969 = *v969.u0;
+										loc783 = v969;
+										v969 = loc781;
+										v970.u0 = 0x10;
+										v969 += v970;
+										loc784 = v969;
+										v969 = loc784;
+										v969 = *v969.u0;
+										loc785 = v969;
+										v969 = loc783;
+										v970 = loc785;
+										v971 = v969 == v970;
+										loc786 = v971;
+										v969 = loc786;
+										if (v969)
+										{
+											v969 = loc781;
+											v969 = *v969.u0;
+											loc787 = v969;
+											v969 = loc787;
+											v970.u0 = 0x24;
+											v969 += v970;
+											loc788 = v969;
+											v969 = loc788;
+											v969 = *v969.u0;
+											loc790 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc790;
+											v970 = loc781;
+											v969 = invoke_ii(v969, v970);
+											loc791 = v969;
+											v969.u3 = g_t140048.u3;
+											loc792 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc792;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc793 = v969;
+											v969 = loc793;
+											if (v969)
+											{
+												v969.u0 = 181;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+											v969 = loc791;
+											loc26 = v969;
+										}
+										else
+										{
+											v969 = loc783;
+											v1028 = *v969.u0;
+											v969.u3 = (word32) v1028;
+											loc794 = v969;
+											v969 = loc794;
+											v970.u0 = 0xFF;
+											v969 &= v970;
+											loc795 = v969;
+											v969 = loc795;
+											loc26 = v969;
+										}
+										v969 = loc26;
+										v970.u0 = 0xFF;
+										v969 &= v970;
+										loc796 = v969;
+										v969 = arg9;
+										v969.u3 = *v969.u3;
+										loc797 = v969;
+										v969 = loc797;
+										v970.u0 = 0x01;
+										v969 += v970;
+										loc798 = v969;
+										v969 = arg9;
+										v970 = loc798;
+										*v969.u3 = (word32) v970;
+										v969 = loc797;
+										v970 = loc796;
+										v1029 = (byte) v970;
+										v969.u4->t0000.u0 = (bool) v1029;
+										v969 = loc239;
+										v969.u3 = *v969.u3;
+										loc799 = v969;
+										v969 = loc799;
+										v970.u0 = ~0x00;
+										v969 += v970;
+										loc801 = v969;
+										v969 = loc239;
+										v970 = loc801;
+										*v969.u3 = (word32) v970;
+										v969 = arg0;
+										v969.u3 = *v969.u3;
+										loc802 = v969;
+										v969 = loc802;
+										v970.u0 = 0x0C;
+										v969 += v970;
+										loc803 = v969;
+										v969 = loc803;
+										v969.u3 = *v969.u3;
+										loc804 = v969;
+										v969 = loc802;
+										v970.u0 = 0x10;
+										v969 += v970;
+										loc805 = v969;
+										v969 = loc805;
+										v969.u3 = *v969.u3;
+										loc806 = v969;
+										v969 = loc804;
+										v970 = loc806;
+										v971 = v969 == v970;
+										loc807 = v971;
+										v969 = loc807;
+										if (v969)
+										{
+											v969 = loc802;
+											v969.u3 = *v969.u3;
+											loc808 = v969;
+											v969 = loc808;
+											v970.u0 = 0x28;
+											v969 += v970;
+											loc809 = v969;
+											v969 = loc809;
+											v969.u3 = *v969.u3;
+											loc810 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc810;
+											v970 = loc802;
+											v969 = invoke_ii(v969, v970);
+											v969.u3 = g_t140048.u3;
+											loc812 = v969;
+											v969.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v969;
+											v969 = loc812;
+											v970.u0 = 0x01;
+											v969 &= v970;
+											loc813 = v969;
+											v969 = loc813;
+											if (v969)
+											{
+												v969.u0 = 181;
+												loc976 = v969;
+												goto l0010A9D7;
+											}
+											v969 = loc59;
+											loc57 = v969;
+											v969 = loc936;
+											loc735 = v969;
+										}
+										else
+										{
+											v969 = loc804;
+											v970.u0 = 0x01;
+											v969 += v970;
+											loc814 = v969;
+											v969 = loc803;
+											v970 = loc814;
+											*v969.u0 = v970;
+											v969 = loc59;
+											loc57 = v969;
+											v969 = loc936;
+											loc735 = v969;
+										}
+									}
+									goto l0010A565;
+								}
+								v969 = loc648;
+								loc664 = v969;
+							}
+							goto l00109DB5;
+						}
+						v969 = loc129;
+						v969.u3 = *v969.u3;
+						loc614 = v969;
+						v969 = loc140;
+						v969.u3 = *v969.u3;
+						loc615 = v969;
+						v969 = loc614;
+						v970 = loc615;
+						v971 = v969 == v970;
+						loc616 = v971;
+						v969 = loc616;
+						if (v969)
+						{
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969.u0 = 0x01AB;
+							v970 = loc118;
+							v973 = loc129;
+							v974 = loc140;
+							invoke_viii(v969, v970, v973, v974);
+							v969.u3 = g_t140048.u3;
+							loc617 = v969;
+							v969.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v969;
+							v969 = loc617;
+							v970.u0 = 0x01;
+							v969 &= v970;
+							loc618 = v969;
+							v969 = loc618;
+							if (v969)
+							{
+								v969.u0 = 0xB8;
+								loc976 = v969;
+								goto l0010A9D7;
+							}
+							v969 = loc129;
+							v969 = *v969.u0;
+							loc67 = v969;
+							v969 = loc67;
+							loc620 = v969;
+						}
+						else
+						{
+							v969 = loc614;
+							loc620 = v969;
+						}
+						v969 = loc620;
+						v970.u0 = 0x04;
+						v969 += v970;
+						loc619 = v969;
+						v969 = loc129;
+						v970 = loc619;
+						*v969.u0 = v970;
+						v969 = loc620;
+						v970 = loc35;
+						*v969.u0 = v970;
+						v969.u0 = 0x00;
+						loc40 = v969;
+					}
+					v969 = arg0;
+					v969 = *v969.u0;
+					loc621 = v969;
+					v969 = loc621;
+					v970.u0 = 0x0C;
+					v969 += v970;
+					loc622 = v969;
+					v969 = loc622;
+					v969 = *v969.u0;
+					loc623 = v969;
+					v969 = loc621;
+					v970.u0 = 0x10;
+					v969 += v970;
+					loc625 = v969;
+					v969 = loc625;
+					v969 = *v969.u0;
+					loc626 = v969;
+					v969 = loc623;
+					v970 = loc626;
+					v971 = v969 == v970;
+					loc627 = v971;
+					v969 = loc627;
+					if (v969)
+					{
+						v969 = loc621;
+						v969 = *v969.u0;
+						loc628 = v969;
+						v969 = loc628;
+						v970.u0 = 0x28;
+						v969 += v970;
+						loc629 = v969;
+						v969 = loc629;
+						v969 = *v969.u0;
+						loc630 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc630;
+						v970 = loc621;
+						v969 = invoke_ii(v969, v970);
+						v969.u3 = g_t140048.u3;
+						loc631 = v969;
+						v969.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v969;
+						v969 = loc631;
+						v970.u0 = 0x01;
+						v969 &= v970;
+						loc632 = v969;
+						v969 = loc632;
+						if (v969)
+						{
+							v969.u0 = 0xB6;
+							loc976 = v969;
+							goto l0010A9D7;
+						}
+						v969 = loc40;
+						loc35 = v969;
+						v969 = loc63;
+						loc61 = v969;
+						v969 = loc934;
+						loc548 = v969;
+					}
+					else
+					{
+						v969 = loc623;
+						v970.u0 = 0x01;
+						v969 += v970;
+						loc633 = v969;
+						v969 = loc622;
+						v970 = loc633;
+						*v969.u0 = v970;
+						v969 = loc40;
+						loc35 = v969;
+						v969 = loc63;
+						loc61 = v969;
+						v969 = loc934;
+						loc548 = v969;
+					}
+					goto l00109685;
+				}
+				v969 = loc529;
+				loc545 = v969;
+			}
+			goto l0010976B;
+		}
+		v969 = loc602;
+		loc767 = v969;
+	}
+	goto l001082A8;
 }
 
 // 0010B2F4: Stack Eq_n fn0010B2F4(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -1885,16 +14867,427 @@ Eq_n fn0010B2F4(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 // 0010B494: void fn0010B494(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9)
 void fn0010B494(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
 {
+	v177.u3 = g_t140030.u3;
+	loc184 = v177;
+	v177.u3 = g_t140030.u3;
+	v178.u0 = 0x70;
+	v177 += v178;
+	g_t140030.u3 = (word32 *) v177;
+	v177.u3 = g_t140030.u3;
+	v178.u3 = g_t140034.u3;
+	v179 = v177 >= v178;
+	if (v179)
+	{
+		v177.u0 = 0x70;
+		abortStackOverflow(v177);
+	}
+	v177 = loc184;
+	v178.u0 = 100;
+	v177 += v178;
+	loc18 = v177;
+	v177 = loc184;
+	v178.u0 = 88;
+	v177 += v178;
+	loc29 = v177;
+	v177 = loc184;
+	v178.u0 = 0x4C;
+	v177 += v178;
+	loc40 = v177;
+	v177 = loc184;
+	v178.u0 = 0x40;
+	v177 += v178;
+	loc51 = v177;
+	v177 = loc184;
+	v178.u0 = 0x34;
+	v177 += v178;
+	loc62 = v177;
+	v177 = loc184;
+	v178.u0 = 0x30;
+	v177 += v178;
+	loc73 = v177;
+	v177 = loc184;
+	v178.u0 = 0x24;
+	v177 += v178;
+	loc84 = v177;
+	v177 = loc184;
+	v178.u0 = 0x18;
+	v177 += v178;
+	loc91 = v177;
+	v177 = loc184;
+	v178.u0 = 0x0C;
+	v177 += v178;
+	loc92 = v177;
+	v177 = loc184;
+	loc93 = v177;
+	v177 = arg0;
+	v177 = v177;
+	v177 = arg1;
+	v178.u0 = 21288;
+	v177 = fn000EA9F7(v177, v178);
+	loc94 = v177;
+	v177 = loc94;
+	v177 = *v177.u0;
+	loc95 = v177;
+	v177 = loc95;
+	v178.u0 = 44;
+	v177 += v178;
+	loc96 = v177;
+	v177 = loc96;
+	v177 = *v177.u0;
+	loc97 = v177;
+	v177 = loc18;
+	v178 = loc94;
+	v180 = loc97;
+	v181 = 0x01FF;
+	v180 &= v181;
+	v181 = 0x0700;
+	v180.u3 += v181;
 }
 
 // 0010BEC2: void fn0010BEC2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0010BEC2(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
+	v35.u3 = g_t140030.u3;
+	loc35 = v35;
+	v35 = arg0;
+	v36.u0 = 0x04;
+	v35 += v36;
+	loc27 = v35;
+	v35 = loc27;
+	v35.u3 = *v35.u3;
+	loc28 = v35;
+	v35 = loc28;
+	v36.u0 = 0x01A4;
+	v37 = v35 != v36;
+	loc29 = v37;
+	v35 = arg2;
+	v35.u3 = *v35.u3;
+	loc30 = v35;
+	v35 = arg0;
+	v35.u3 = *v35.u3;
+	loc31 = v35;
+	v35 = loc30;
+	v36 = loc31;
+	v35 -= v36;
+	loc32 = v35;
+	v35 = loc32;
+	v36.u0 = 0x7FFFFFFF;
+	v37 = v35 < v36;
+	loc33 = v37;
+	v35 = loc32;
+	v36.u0 = 0x01;
+	v35 <<= v36;
+	loc7 = v35;
+	v35 = loc33;
+	if (v35)
+		v35 = loc7;
+	else
+		v35.u0 = ~0x00;
+	loc4 = v35;
+	v35 = loc4;
+	v36.u0 = 0x00;
+	v37 = v35 == v36;
+	loc8 = v37;
+	v35 = loc8;
+	if (v35)
+		v35.u0 = 0x01;
+	else
+		v35 = loc4;
+	loc3 = v35;
+	v35 = arg1;
+	v35 = *v35.u0;
+	loc9 = v35;
+	v35 = loc31;
+	loc10 = v35;
+	v35 = loc9;
+	v36 = loc31;
+	v35 -= v36;
+	loc11 = v35;
+	v35 = loc29;
+	if (v35)
+		v35 = loc10;
+	else
+		v35.u0 = 0x00;
+	loc12 = v35;
+	v35 = loc12;
+	v36 = loc3;
+	v35 = fn000E3E00(v35, v36);
+	loc13 = v35;
+	v35 = loc13;
+	v36.u0 = 0x00;
+	v37 = v35 == v36;
+	loc14 = v37;
+	v35 = loc14;
+	if (v35)
+		fn0011B725();
+	v35 = loc29;
+	if (v35)
+	{
+		v35 = loc13;
+		loc15 = v35;
+		v35 = arg0;
+		v36 = loc15;
+		*v35.u0 = v36;
+		v35 = loc13;
+		loc24 = v35;
+	}
+	else
+	{
+		v35 = arg0;
+		v35 = *v35.u0;
+		loc5 = v35;
+		v35 = loc13;
+		loc16 = v35;
+		v35 = arg0;
+		v36 = loc16;
+		*v35.u0 = v36;
+		v35 = loc5;
+		v36.u0 = 0x00;
+		v37 = v35 == v36;
+		loc17 = v37;
+		v35 = loc17;
+		if (v35)
+		{
+			v35 = loc13;
+			loc24 = v35;
+		}
+		else
+		{
+			v35 = loc27;
+			v35 = *v35.u0;
+			loc18 = v35;
+			v35.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v35;
+			v35 = loc18;
+			v36 = loc5;
+			invoke_vi(v35, v36);
+			v35.u3 = g_t140048.u3;
+			loc19 = v35;
+			v35.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v35;
+			v35 = loc19;
+			v36.u0 = 0x01;
+			v35 &= v36;
+			loc20 = v35;
+			v35 = loc20;
+			if (!v35)
+			{
+				v35 = arg0;
+				v35.u3 = *v35.u3;
+				loc6 = v35;
+				v35 = loc6;
+				loc24 = v35;
+				goto l0010BFD5;
+			}
+			v35.u0 = 0x00;
+			v35 = ___cxa_find_matching_catch_n(v35);
+			loc21 = v35;
+			v35.u3 = g_t140094.u3;
+			loc22 = v35;
+			v35 = loc21;
+			fn000D0E65(v35);
+		}
+	}
+l0010BFD5:
+	v35 = loc27;
+	v36.u0 = 0x01AD;
+	*v35.u3 = (word32) v36;
+	v35 = loc24;
+	v36 = loc11;
+	v35 += v36;
+	loc23 = v35;
+	v35 = arg1;
+	v36 = loc23;
+	*v35.u3 = (word32) v36;
+	v35 = arg0;
+	v35.u3 = *v35.u3;
+	loc25 = v35;
+	v35 = loc25;
+	v36 = loc3;
+	v35 += v36;
+	loc26 = v35;
+	v35 = arg2;
+	v36 = loc26;
+	*v35.u3 = (word32) v36;
 }
 
 // 0010C004: void fn0010C004(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0010C004(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
+	v37.u3 = g_t140030.u3;
+	loc37 = v37;
+	v37 = arg0;
+	v38.u0 = 0x04;
+	v37 += v38;
+	loc27 = v37;
+	v37 = loc27;
+	v37.u3 = *v37.u3;
+	loc29 = v37;
+	v37 = loc29;
+	v38.u0 = 0x01A4;
+	v39 = v37 != v38;
+	loc30 = v39;
+	v37 = arg2;
+	v37.u3 = *v37.u3;
+	loc31 = v37;
+	v37 = arg0;
+	v37.u3 = *v37.u3;
+	loc32 = v37;
+	v37 = loc31;
+	v38 = loc32;
+	v37 -= v38;
+	loc33 = v37;
+	v37 = loc33;
+	v38.u0 = 0x7FFFFFFF;
+	v39 = v37 < v38;
+	loc34 = v39;
+	v37 = loc33;
+	v38.u0 = 0x01;
+	v37 <<= v38;
+	loc7 = v37;
+	v37 = loc34;
+	if (v37)
+		v37 = loc7;
+	else
+		v37.u0 = ~0x00;
+	loc4 = v37;
+	v37 = loc4;
+	v38.u0 = 0x00;
+	v39 = v37 == v38;
+	loc8 = v39;
+	v37 = loc8;
+	if (v37)
+		v37.u0 = 0x04;
+	else
+		v37 = loc4;
+	loc3 = v37;
+	v37 = arg1;
+	v37 = *v37.u0;
+	loc9 = v37;
+	v37 = loc9;
+	v38 = loc32;
+	v37 -= v38;
+	loc10 = v37;
+	v37 = loc10;
+	v38.u0 = 0x02;
+	v37 >>= v38;
+	loc11 = v37;
+	v37 = loc32;
+	loc35 = v37;
+	v37 = loc30;
+	if (v37)
+		v37 = loc35;
+	else
+		v37.u0 = 0x00;
+	loc12 = v37;
+	v37 = loc12;
+	v38 = loc3;
+	v37 = fn000E3E00(v37, v38);
+	loc13 = v37;
+	v37 = loc13;
+	v38.u0 = 0x00;
+	v39 = v37 == v38;
+	loc14 = v39;
+	v37 = loc14;
+	if (v37)
+		fn0011B725();
+	v37 = loc30;
+	if (v37)
+	{
+		v37 = loc13;
+		loc15 = v37;
+		v37 = arg0;
+		v38 = loc15;
+		*v37.u0 = v38;
+		v37 = loc13;
+		loc25 = v37;
+	}
+	else
+	{
+		v37 = arg0;
+		v37 = *v37.u0;
+		loc5 = v37;
+		v37 = loc13;
+		loc16 = v37;
+		v37 = arg0;
+		v38 = loc16;
+		*v37.u0 = v38;
+		v37 = loc5;
+		v38.u0 = 0x00;
+		v39 = v37 == v38;
+		loc17 = v39;
+		v37 = loc17;
+		if (v37)
+		{
+			v37 = loc13;
+			loc25 = v37;
+		}
+		else
+		{
+			v37 = loc27;
+			v37 = *v37.u0;
+			loc18 = v37;
+			v37.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v37;
+			v37 = loc18;
+			v38 = loc5;
+			invoke_vi(v37, v38);
+			v37.u3 = g_t140048.u3;
+			loc19 = v37;
+			v37.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v37;
+			v37 = loc19;
+			v38.u0 = 0x01;
+			v37 &= v38;
+			loc20 = v37;
+			v37 = loc20;
+			if (!v37)
+			{
+				v37 = arg0;
+				v37.u3 = *v37.u3;
+				loc6 = v37;
+				v37 = loc6;
+				loc25 = v37;
+				goto l0010C11E;
+			}
+			v37.u0 = 0x00;
+			v37 = ___cxa_find_matching_catch_n(v37);
+			loc21 = v37;
+			v37.u3 = g_t140094.u3;
+			loc22 = v37;
+			v37 = loc21;
+			fn000D0E65(v37);
+		}
+	}
+l0010C11E:
+	v37 = loc27;
+	v38.u0 = 0x01AD;
+	*v37.u3 = (word32) v38;
+	v37 = loc3;
+	v38.u0 = 0x02;
+	v37 >>= v38;
+	loc23 = v37;
+	v37 = loc25;
+	v38 = loc11;
+	v40 = 0x02;
+	v38 <<= v40;
+	v37 += v38;
+	loc24 = v37;
+	v37 = arg1;
+	v38 = loc24;
+	*v37.u3 = (word32) v38;
+	v37 = arg0;
+	v37.u3 = *v37.u3;
+	loc26 = v37;
+	v37 = loc26;
+	v38 = loc23;
+	v40 = 0x02;
+	v38 <<= v40;
+	v37 += v38;
+	loc28 = v37;
+	v37 = arg2;
+	v38 = loc28;
+	*v37.u3 = (word32) v38;
 }
 
 // 0010C15A: void fn0010C15A(Stack Eq_n arg0)
@@ -1916,15 +15309,7705 @@ void fn0010C163(Eq_n arg0)
 // 0010C171: Stack Eq_n fn0010C171(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn0010C171(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v157.u3 = g_t140030.u3;
+	loc161 = v157;
+	v157.u3 = g_t140030.u3;
+	v158.u0 = 0x0250;
+	v157 += v158;
+	g_t140030.u3 = (word32 *) v157;
+	v157.u3 = g_t140030.u3;
+	v158.u3 = g_t140034.u3;
+	v159 = v157 >= v158;
+	if (v159)
+	{
+		v157.u0 = 0x0250;
+		abortStackOverflow(v157);
+	}
+	v157 = loc161;
+	v158.u0 = 0x01D8;
+	v157 += v158;
+	loc25 = v157;
+	v157 = loc161;
+	loc159 = v157;
+	v157 = loc161;
+	v158.u0 = 0x48;
+	v157 += v158;
+	loc125 = v157;
+	v157 = loc161;
+	v158.u0 = 0x40;
+	v157 += v158;
+	loc136 = v157;
+	v157 = loc161;
+	v158.u0 = 0x38;
+	v157 += v158;
+	loc147 = v157;
+	v157 = loc161;
+	v158.u0 = 0x34;
+	v157 += v158;
+	loc32 = v157;
+	v157 = loc161;
+	v158.u0 = 0x0240;
+	v157 += v158;
+	loc43 = v157;
+	v157 = loc161;
+	v158.u0 = 0x30;
+	v157 += v158;
+	loc54 = v157;
+	v157 = loc161;
+	v158.u0 = 0x08;
+	v157 += v158;
+	loc65 = v157;
+	v157 = loc161;
+	v158.u0 = 0x01DC;
+	v157 += v158;
+	loc69 = v157;
+	v157 = loc125;
+	loc70 = v157;
+	v157 = loc136;
+	v158 = loc70;
+	*v157.u0 = v158;
+	v157 = loc136;
+	v158.u0 = 0x04;
+	v157 += v158;
+	loc71 = v157;
+	v157 = loc71;
+	v158.u0 = 0x01A4;
+	*v157.u0 = v158;
+	v157 = loc125;
+	v158.u0 = 400;
+	v157 += v158;
+	loc72 = v157;
+	v157.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v157;
+	v157.u0 = 0x0167;
+	v158 = arg4;
+	v157 = invoke_ii(v157, v158);
+	loc73 = v157;
+	v157.u3 = g_t140048.u3;
+	loc74 = v157;
+	v157.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v157;
+	v157 = loc74;
+	v158.u0 = 0x01;
+	v157 &= v158;
+	loc75 = v157;
+	v157 = loc75;
+	if (v157)
+	{
+		v157 = ___cxa_find_matching_catch_n();
+		loc101 = v157;
+		v157.u3 = g_t140094.u3;
+		loc102 = v157;
+		v157 = loc136;
+		v158.u0 = 0x00;
+		*v157.u3 = (word32) v158;
+		v157 = loc102;
+		loc21 = v157;
+		v157 = loc101;
+		loc23 = v157;
+		v157.u0 = 0x01A4;
+		loc61 = v157;
+		v157 = loc125;
+		loc62 = v157;
+		v157.u0 = 0x36;
+		loc160 = v157;
+		goto l0010C841;
+	}
+	v157 = loc32;
+	v158 = loc73;
+	*v157.u0 = v158;
+	v157.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v157;
+	v157.u0 = 0x0164;
+	v158 = loc32;
+	v160.u0 = 0x4C90;
+	v157 = invoke_iii(v157, v158, v160);
+	loc76 = v157;
+	v157.u3 = g_t140048.u3;
+	loc77 = v157;
+	v157.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v157;
+	v157 = loc77;
+	v158.u0 = 0x01;
+	v157 &= v158;
+	loc78 = v157;
+	v157 = loc78;
+	if (v157)
+	{
+		v157 = ___cxa_find_matching_catch_n();
+		loc103 = v157;
+		v157.u3 = g_t140094.u3;
+		loc104 = v157;
+		v157 = loc103;
+		loc19 = v157;
+		v157 = loc104;
+		loc20 = v157;
+		goto l0010C7F2;
+	}
+	v157 = loc43;
+	v158.u0 = 0x00;
+	v161 = (byte) v158;
+	*v157.u3 = (word32) v161;
+	v157 = arg2;
+	v157.u3 = *v157.u3;
+	loc79 = v157;
+	v157 = loc54;
+	v158 = loc79;
+	*v157.u3 = (word32) v158;
+	v157 = arg4;
+	v158.u0 = 0x04;
+	v157 += v158;
+	loc80 = v157;
+	v157 = loc80;
+	v157.u3 = *v157.u3;
+	loc81 = v157;
+	v157.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v157;
+	v157 = loc25;
+	v158 = loc54;
+	v158 = *v158.u0;
+	*v157.u0 = v158;
+	v157.u0 = 0x01AE;
+	v158 = arg1;
+	v160 = loc25;
+	v162 = arg3;
+	v163 = loc32;
+	v164 = loc81;
+	v165 = arg5;
+	v166 = loc43;
+	v167 = loc76;
+	v168 = loc136;
+	v169 = loc147;
+	v170 = loc72;
+	v157 = invoke_iiiiiiiiiiii(v157, v158, v160, v162, v163, v164, v165, v166, v167, v168, v169, v170);
+	loc82 = v157;
+	v157.u3 = g_t140048.u3;
+	loc83 = v157;
+	v157.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v157;
+	v157 = loc83;
+	v158.u0 = 0x01;
+	v157 &= v158;
+	loc84 = v157;
+	v157 = loc84;
+	if (v157)
+	{
+		v157.u0 = 11;
+		loc160 = v157;
+		goto l0010C7D0;
+	}
+	v157 = loc82;
+	if (v157)
+	{
+		v157 = loc76;
+		v157 = *v157.u0;
+		loc85 = v157;
+		v157 = loc85;
+		v158.u0 = 0x30;
+		v157 += v158;
+		loc86 = v157;
+		v157 = loc86;
+		v157 = *v157.u0;
+		loc87 = v157;
+		v157.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v157;
+		v157 = loc87;
+		v158 = loc76;
+		v160.u0 = 0x3D56;
+		v162.u0 = 0x3D60;
+		v163 = loc65;
+		v157 = invoke_iiiii(v157, v158, v160, v162, v163);
+		v157.u3 = g_t140048.u3;
+		loc88 = v157;
+		v157.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v157;
+		v157 = loc88;
+		v158.u0 = 0x01;
+		v157 &= v158;
+		loc89 = v157;
+		v157 = loc89;
+		if (v157)
+		{
+			v157 = ___cxa_find_matching_catch_n();
+			loc107 = v157;
+			v157.u3 = g_t140094.u3;
+			loc108 = v157;
+			v157 = loc107;
+			loc13 = v157;
+			v157 = loc108;
+			loc14 = v157;
+			goto l0010C581;
+		}
+		v157 = loc147;
+		v157.u3 = *v157.u3;
+		loc90 = v157;
+		v157 = loc136;
+		v157.u3 = *v157.u3;
+		loc91 = v157;
+		v157 = loc90;
+		v158 = loc91;
+		v157 -= v158;
+		loc92 = v157;
+		v157 = loc92;
+		v158.u0 = 0x0188;
+		v159 = v157 > v158;
+		loc93 = v159;
+		v157 = loc93;
+		if (v157)
+		{
+			v157 = loc92;
+			v158.u0 = 0x02;
+			v157 >>= v158;
+			loc94 = v157;
+			v157 = loc94;
+			v158.u0 = 0x02;
+			v157 += v158;
+			loc95 = v157;
+			v157 = loc95;
+			v157 = _malloc(v157);
+			loc96 = v157;
+			v157 = loc96;
+			loc97 = v157;
+			v157 = loc96;
+			v158.u0 = 0x00;
+			v159 = v157 == v158;
+			loc98 = v159;
+			v157 = loc98;
+			if (v157)
+			{
+				v157.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v157;
+				v157.u0 = 0x018A;
+				invoke_v(v157);
+				v157.u3 = g_t140048.u3;
+				loc99 = v157;
+				v157.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v157;
+				v157 = loc99;
+				v158.u0 = 0x01;
+				v157 &= v158;
+				loc100 = v157;
+				v157 = loc100;
+				if (v157)
+				{
+					v157 = loc97;
+					loc30 = v157;
+				}
+				else
+				{
+					v157.u0 = 0x00;
+					loc12 = v157;
+					v157 = loc97;
+					loc31 = v157;
+					v157.u0 = 0x10;
+					loc160 = v157;
+				}
+			}
+			else
+			{
+				v157 = loc96;
+				loc12 = v157;
+				v157 = loc97;
+				loc31 = v157;
+				v157.u0 = 0x10;
+				loc160 = v157;
+			}
+		}
+		else
+		{
+			v157 = loc69;
+			loc12 = v157;
+			v157.u0 = 0x00;
+			loc31 = v157;
+			v157.u0 = 0x10;
+			loc160 = v157;
+		}
+		v157 = loc160;
+		v158.u0 = 0x10;
+		v159 = v157 == v158;
+		if (!v159)
+		{
+l0010C55A:
+			v157 = ___cxa_find_matching_catch_n();
+			loc109 = v157;
+			v157.u3 = g_t140094.u3;
+			loc110 = v157;
+			v157 = loc30;
+			v158.u0 = 0x00;
+			v159 = v157 == v158;
+			loc111 = v159;
+			v157 = loc111;
+			v159 = v157 == 0x00;
+			if (v159)
+			{
+				v157 = loc30;
+				loc112 = v157;
+				v157 = loc112;
+				_free(v157);
+			}
+			v157 = loc109;
+			loc13 = v157;
+			v157 = loc110;
+			loc14 = v157;
+l0010C581:
+			v157 = loc13;
+			loc16 = v157;
+			v157 = loc14;
+			loc17 = v157;
+			goto l0010C7D0;
+		}
+		v157 = loc43;
+		v171 = *v157.u0;
+		v157.u3 = (word32) v171;
+		loc113 = v157;
+		v157 = loc113;
+		v158.u0 = 0x18;
+		v157 <<= v158;
+		v158.u0 = 0x18;
+		v157 >>= v158;
+		v158.u0 = 0x00;
+		v159 = v157 == v158;
+		loc114 = v159;
+		v157 = loc114;
+		if (v157)
+		{
+			v157 = loc12;
+			loc15 = v157;
+		}
+		else
+		{
+			v157 = loc12;
+			v158.u0 = 0x01;
+			v157 += v158;
+			loc115 = v157;
+			v157 = loc12;
+			v158.u0 = 0x2D;
+			v172 = (byte) v158;
+			v157.u4->t0000.u0 = (bool) v172;
+			v157 = loc115;
+			loc15 = v157;
+		}
+		while (true)
+		{
+			v157 = loc136;
+			v157.u3 = *v157.u3;
+			loc116 = v157;
+			v157 = loc65;
+			v158.u0 = 0x28;
+			v157 += v158;
+			loc117 = v157;
+			v157 = loc65;
+			loc118 = v157;
+			v157 = loc116;
+			loc7 = v157;
+			v157 = loc15;
+			loc18 = v157;
+			v157 = loc147;
+			v157.u3 = *v157.u3;
+			loc119 = v157;
+			v157 = loc7;
+			v158 = loc119;
+			v159 = v157 < v158;
+			loc120 = v159;
+			v157 = loc120;
+			v159 = v157 == 0x00;
+			if (v159)
+				break;
+			while (true)
+			{
+				v157 = loc7;
+				v157.u3 = *v157.u3;
+				loc123 = v157;
+				v157 = loc65;
+				loc8 = v157;
+				v157 = loc8;
+				v158 = loc117;
+				v159 = v157 == v158;
+				loc124 = v159;
+				v157 = loc124;
+				if (v157)
+					break;
+				v157 = loc8;
+				v157.u3 = *v157.u3;
+				loc126 = v157;
+				v157 = loc126;
+				v158 = loc123;
+				v159 = v157 == v158;
+				loc127 = v159;
+				v157 = loc127;
+				if (v157)
+				{
+					v157 = loc8;
+					loc11 = v157;
+					goto l0010C495;
+				}
+				v157 = loc8;
+				v158.u0 = 0x04;
+				v157 += v158;
+				loc128 = v157;
+				v157 = loc128;
+				loc8 = v157;
+			}
+			v157 = loc117;
+			loc11 = v157;
+l0010C495:
+			v157 = loc11;
+			loc129 = v157;
+			v157 = loc129;
+			v158 = loc118;
+			v157 -= v158;
+			loc130 = v157;
+			v157 = loc130;
+			v158.u0 = 0x02;
+			v157 >>= v158;
+			loc131 = v157;
+			v157.u0 = 0x3D56;
+			v158 = loc131;
+			v157 += v158;
+			loc132 = v157;
+			v157 = loc132;
+			v173 = *v157.u0;
+			v157.u3 = (word32) v173;
+			loc133 = v157;
+			v157 = loc18;
+			v158 = loc133;
+			v174 = (byte) v158;
+			v157.u4->t0000.u0 = (bool) v174;
+			v157 = loc7;
+			v158.u0 = 0x04;
+			v157 += v158;
+			loc134 = v157;
+			v157 = loc18;
+			v158.u0 = 0x01;
+			v157 += v158;
+			loc135 = v157;
+			v157 = loc134;
+			loc7 = v157;
+			v157 = loc135;
+			loc18 = v157;
+		}
+		v157 = loc18;
+		v158.u0 = 0x00;
+		v175 = (byte) v158;
+		v157.u4->t0000.u0 = (bool) v175;
+		v157 = loc159;
+		v158 = arg6;
+		*v157.u3 = (word32) v158;
+		v157 = loc69;
+		v158.u0 = 0x3CE3;
+		v160 = loc159;
+		v157 = fn000DB950(v157, v158, v160);
+		loc121 = v157;
+		v157 = loc121;
+		v158.u0 = 0x01;
+		v159 = v157 == v158;
+		loc122 = v159;
+		v157 = loc122;
+		v159 = v157 == 0x00;
+		if (v159)
+		{
+			v157.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v157;
+			v157.u0 = 422;
+			v158.u0 = 15591;
+			invoke_vi(v157, v158);
+			v157.u3 = g_t140048.u3;
+			loc137 = v157;
+			v157.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v157;
+			v157 = loc137;
+			v158.u0 = 0x01;
+			v157 &= v158;
+			loc138 = v157;
+			v157 = loc138;
+			if (v157)
+			{
+				v157 = loc31;
+				loc30 = v157;
+				goto l0010C55A;
+			}
+		}
+		v157 = loc31;
+		v158.u0 = 0x00;
+		v159 = v157 == v158;
+		loc139 = v159;
+		v157 = loc139;
+		v159 = v157 == 0x00;
+		if (v159)
+		{
+			v157 = loc31;
+			loc140 = v157;
+			v157 = loc140;
+			_free(v157);
+		}
+	}
+	v157 = arg1;
+	v157.u3 = *v157.u3;
+	loc141 = v157;
+	v157 = loc141;
+	v158.u0 = 0x00;
+	v159 = v157 == v158;
+	loc142 = v159;
+	v157 = loc142;
+	if (v157)
+	{
+		v157.u0 = 0x01;
+		loc68 = v157;
+	}
+	else
+	{
+		v157 = loc141;
+		v158.u0 = 0x0C;
+		v157 += v158;
+		loc143 = v157;
+		v157 = loc143;
+		v157 = *v157.u0;
+		loc144 = v157;
+		v157 = loc141;
+		v158.u0 = 0x10;
+		v157 += v158;
+		loc145 = v157;
+		v157 = loc145;
+		v157 = *v157.u0;
+		loc146 = v157;
+		v157 = loc144;
+		v158 = loc146;
+		v159 = v157 == v158;
+		loc148 = v159;
+		v157 = loc148;
+		if (v157)
+		{
+			v157 = loc141;
+			v157 = *v157.u0;
+			loc149 = v157;
+			v157 = loc149;
+			v158.u0 = 0x24;
+			v157 += v158;
+			loc150 = v157;
+			v157 = loc150;
+			v157 = *v157.u0;
+			loc151 = v157;
+			v157.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v157;
+			v157 = loc151;
+			v158 = loc141;
+			v157 = invoke_ii(v157, v158);
+			loc152 = v157;
+			v157.u3 = g_t140048.u3;
+			loc153 = v157;
+			v157.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v157;
+			v157 = loc153;
+			v158.u0 = 0x01;
+			v157 &= v158;
+			loc154 = v157;
+			v157 = loc154;
+			if (v157)
+			{
+				v157.u0 = 11;
+				loc160 = v157;
+				goto l0010C7D0;
+			}
+			v157 = loc152;
+			loc9 = v157;
+		}
+		else
+		{
+			v157 = loc144;
+			v157 = *v157.u0;
+			loc155 = v157;
+			v157 = loc155;
+			loc9 = v157;
+		}
+		v157 = loc9;
+		v158.u0 = ~0x00;
+		v159 = v157 == v158;
+		loc156 = v159;
+		v157 = loc156;
+		if (v157)
+		{
+			v157 = arg1;
+			v158.u0 = 0x00;
+			*v157.u0 = v158;
+			v157.u0 = 0x01;
+			loc68 = v157;
+		}
+		else
+		{
+			v157 = arg1;
+			v157 = *v157.u0;
+			loc27 = v157;
+			v157 = loc27;
+			v158.u0 = 0x00;
+			v159 = v157 == v158;
+			loc158 = v159;
+			v157 = loc158;
+			loc68 = v157;
+		}
+	}
+	v157 = arg2;
+	v157 = *v157.u0;
+	loc157 = v157;
+	v157 = loc157;
+	v158.u0 = 0x00;
+	v159 = v157 == v158;
+	loc33 = v159;
+	v157 = loc33;
+	if (v157)
+	{
+		v157.u0 = 44;
+		loc160 = v157;
+		goto l0010C731;
+	}
+	v157 = loc157;
+	v158.u0 = 0x0C;
+	v157 += v158;
+	loc34 = v157;
+	v157 = loc34;
+	v157 = *v157.u0;
+	loc35 = v157;
+	v157 = loc157;
+	v158.u0 = 0x10;
+	v157 += v158;
+	loc36 = v157;
+	v157 = loc36;
+	v157 = *v157.u0;
+	loc37 = v157;
+	v157 = loc35;
+	v158 = loc37;
+	v159 = v157 == v158;
+	loc38 = v159;
+	v157 = loc38;
+	if (v157)
+	{
+		v157 = loc157;
+		v157 = *v157.u0;
+		loc39 = v157;
+		v157 = loc39;
+		v158.u0 = 0x24;
+		v157 += v158;
+		loc40 = v157;
+		v157 = loc40;
+		v157 = *v157.u0;
+		loc41 = v157;
+		v157.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v157;
+		v157 = loc41;
+		v158 = loc157;
+		v157 = invoke_ii(v157, v158);
+		loc42 = v157;
+		v157.u3 = g_t140048.u3;
+		loc44 = v157;
+		v157.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v157;
+		v157 = loc44;
+		v158.u0 = 0x01;
+		v157 &= v158;
+		loc45 = v157;
+		v157 = loc45;
+		if (v157)
+		{
+			v157.u0 = 11;
+			loc160 = v157;
+l0010C7D0:
+			v157 = loc160;
+			v158.u0 = 11;
+			v159 = v157 == v158;
+			if (v159)
+			{
+				v157 = ___cxa_find_matching_catch_n();
+				loc105 = v157;
+				v157.u3 = g_t140094.u3;
+				loc106 = v157;
+				v157 = loc105;
+				loc16 = v157;
+				v157 = loc106;
+				loc17 = v157;
+			}
+			v157 = loc16;
+			loc19 = v157;
+			v157 = loc17;
+			loc20 = v157;
+l0010C7F2:
+			v157 = loc32;
+			v157.u3 = *v157.u3;
+			loc59 = v157;
+			v157 = loc59;
+			v157 = fn0011B43F(v157);
+			v157 = loc136;
+			v157.u3 = *v157.u3;
+			loc26 = v157;
+			v157 = loc136;
+			v158.u0 = 0x00;
+			*v157.u3 = (word32) v158;
+			v157 = loc26;
+			v158.u0 = 0x00;
+			v159 = v157 == v158;
+			loc60 = v159;
+			v157 = loc60;
+			if (v157)
+			{
+				v157 = loc20;
+				loc22 = v157;
+				v157 = loc19;
+				loc24 = v157;
+			}
+			else
+			{
+				v157 = loc71;
+				v157.u3 = *v157.u3;
+				loc28 = v157;
+				v157 = loc20;
+				loc21 = v157;
+				v157 = loc19;
+				loc23 = v157;
+				v157 = loc28;
+				loc61 = v157;
+				v157 = loc26;
+				loc62 = v157;
+				v157.u0 = 0x36;
+				loc160 = v157;
+			}
+l0010C841:
+			v157 = loc160;
+			v158.u0 = 0x36;
+			v159 = v157 == v158;
+			if (v159)
+			{
+				v157.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v157;
+				v157 = loc61;
+				v158 = loc62;
+				invoke_vi(v157, v158);
+				v157.u3 = g_t140048.u3;
+				loc63 = v157;
+				v157.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v157;
+				v157 = loc63;
+				v158.u0 = 0x01;
+				v157 &= v158;
+				loc64 = v157;
+				v157 = loc64;
+				if (v157)
+				{
+					v157.u0 = 0x00;
+					v157 = ___cxa_find_matching_catch_n(v157);
+					loc66 = v157;
+					v157.u3 = g_t140094.u3;
+					loc67 = v157;
+					v157 = loc66;
+					fn000D0E65(v157);
+				}
+				else
+				{
+					v157 = loc21;
+					loc22 = v157;
+					v157 = loc23;
+					loc24 = v157;
+				}
+			}
+			v157 = loc24;
+			___resumeException(v157);
+			v157.u0 = 0x00;
+			return v157;
+		}
+		v157 = loc42;
+		loc10 = v157;
+	}
+	else
+	{
+		v157 = loc35;
+		v157 = *v157.u0;
+		loc46 = v157;
+		v157 = loc46;
+		loc10 = v157;
+	}
+	v157 = loc10;
+	v158.u0 = ~0x00;
+	v159 = v157 == v158;
+	loc47 = v159;
+	v157 = loc47;
+	if (v157)
+	{
+		v157 = arg2;
+		v158.u0 = 0x00;
+		*v157.u0 = v158;
+		v157.u0 = 44;
+		loc160 = v157;
+	}
+	else
+	{
+		v157 = loc68;
+		if (!v157)
+		{
+			v157.u0 = 0x2E;
+			loc160 = v157;
+		}
+	}
+l0010C731:
+	v157 = loc160;
+	v158.u0 = 44;
+	v159 = v157 == v158;
+	if (v159)
+	{
+		v157 = loc68;
+		if (v157)
+		{
+			v157.u0 = 0x2E;
+			loc160 = v157;
+		}
+	}
+	v157 = loc160;
+	v158.u0 = 0x2E;
+	v159 = v157 == v158;
+	if (v159)
+	{
+		v157 = arg5;
+		v157 = *v157.u0;
+		loc48 = v157;
+		v157 = loc48;
+		v158.u0 = 0x02;
+		v157 |= v158;
+		loc49 = v157;
+		v157 = arg5;
+		v158 = loc49;
+		*v157.u0 = v158;
+	}
+	v157 = arg1;
+	v157 = *v157.u0;
+	loc29 = v157;
+	v157 = loc32;
+	v157 = *v157.u0;
+	loc50 = v157;
+	v157 = loc50;
+	v157 = fn0011B43F(v157);
+	v157 = loc136;
+	v157 = *v157.u0;
+	loc51 = v157;
+	v157 = loc136;
+	v158.u0 = 0x00;
+	*v157.u0 = v158;
+	v157 = loc51;
+	v158.u0 = 0x00;
+	v159 = v157 == v158;
+	loc52 = v159;
+	v157 = loc52;
+	v159 = v157 == 0x00;
+	if (v159)
+	{
+		v157 = loc71;
+		v157 = *v157.u0;
+		loc53 = v157;
+		v157.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v157;
+		v157 = loc53;
+		v158 = loc51;
+		invoke_vi(v157, v158);
+		v157.u3 = g_t140048.u3;
+		loc55 = v157;
+		v157.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v157;
+		v157 = loc55;
+		v158.u0 = 0x01;
+		v157 &= v158;
+		loc56 = v157;
+		v157 = loc56;
+		if (v157)
+		{
+			v157.u0 = 0x00;
+			v157 = ___cxa_find_matching_catch_n(v157);
+			loc57 = v157;
+			v157.u3 = g_t140094.u3;
+			loc58 = v157;
+			v157 = loc57;
+			fn000D0E65(v157);
+		}
+	}
+	v157 = loc161;
+	g_t140030.u3 = (word32 *) v157;
+	v157 = loc29;
+	return v157;
 }
 
 // 0010C889: Stack Eq_n fn0010C889(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn0010C889(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
+	v130.u3 = g_t140030.u3;
+	loc134 = v130;
+	v130.u3 = g_t140030.u3;
+	v131.u0 = 0x01B0;
+	v130 += v131;
+	g_t140030.u3 = (word32 *) v130;
+	v130.u3 = g_t140030.u3;
+	v131.u3 = g_t140034.u3;
+	v132 = v130 >= v131;
+	if (v132)
+	{
+		v130.u0 = 0x01B0;
+		abortStackOverflow(v130);
+	}
+	v130 = loc134;
+	v131.u0 = 424;
+	v130 += v131;
+	loc16 = v130;
+	v130 = loc134;
+	v131.u0 = 0x18;
+	v130 += v131;
+	loc99 = v130;
+	v130 = loc134;
+	v131.u0 = 0x10;
+	v130 += v131;
+	loc110 = v130;
+	v130 = loc134;
+	v131.u0 = 0x08;
+	v130 += v131;
+	loc121 = v130;
+	v130 = loc134;
+	v131.u0 = 0x04;
+	v130 += v131;
+	loc22 = v130;
+	v130 = loc134;
+	v131.u0 = 0x01AC;
+	v130 += v131;
+	loc33 = v130;
+	v130 = loc134;
+	loc41 = v130;
+	v130 = loc99;
+	loc42 = v130;
+	v130 = loc110;
+	v131 = loc42;
+	*v130.u0 = v131;
+	v130 = loc110;
+	v131.u0 = 0x04;
+	v130 += v131;
+	loc43 = v130;
+	v130 = loc43;
+	v131.u0 = 0x01A4;
+	*v130.u0 = v131;
+	v130 = loc99;
+	v131.u0 = 400;
+	v130 += v131;
+	loc44 = v130;
+	v130.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v130;
+	v130.u0 = 0x0167;
+	v131 = arg4;
+	v130 = invoke_ii(v130, v131);
+	loc45 = v130;
+	v130.u3 = g_t140048.u3;
+	loc46 = v130;
+	v130.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v130;
+	v130 = loc46;
+	v131.u0 = 0x01;
+	v130 &= v131;
+	loc47 = v130;
+	v130 = loc47;
+	if (v130)
+	{
+		v130 = ___cxa_find_matching_catch_n();
+		loc74 = v130;
+		v130.u3 = g_t140094.u3;
+		loc75 = v130;
+		v130 = loc110;
+		v131.u0 = 0x00;
+		*v130.u3 = (word32) v131;
+		v130 = loc75;
+		loc12 = v130;
+		v130 = loc74;
+		loc14 = v130;
+		v130 = loc99;
+		loc35 = v130;
+		v130.u0 = 0x2B;
+		loc133 = v130;
+		goto l0010CE04;
+	}
+	v130 = loc22;
+	v131 = loc45;
+	*v130.u0 = v131;
+	v130.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v130;
+	v130.u0 = 0x0164;
+	v131 = loc22;
+	v133.u0 = 0x4C90;
+	v130 = invoke_iii(v130, v131, v133);
+	loc48 = v130;
+	v130.u3 = g_t140048.u3;
+	loc49 = v130;
+	v130.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v130;
+	v130 = loc49;
+	v131.u0 = 0x01;
+	v130 &= v131;
+	loc50 = v130;
+	v130 = loc50;
+	if (v130)
+	{
+		v130 = ___cxa_find_matching_catch_n();
+		loc76 = v130;
+		v130.u3 = g_t140094.u3;
+		loc77 = v130;
+		v130 = loc76;
+		loc10 = v130;
+		v130 = loc77;
+		loc11 = v130;
+		goto l0010CDC2;
+	}
+	v130 = loc33;
+	v131.u0 = 0x00;
+	v134 = (byte) v131;
+	*v130.u3 = (word32) v134;
+	v130 = arg2;
+	v130.u3 = *v130.u3;
+	loc51 = v130;
+	v130 = loc41;
+	v131 = loc51;
+	*v130.u3 = (word32) v131;
+	v130 = arg4;
+	v131.u0 = 0x04;
+	v130 += v131;
+	loc52 = v130;
+	v130 = loc52;
+	v130.u3 = *v130.u3;
+	loc53 = v130;
+	v130 = loc51;
+	loc54 = v130;
+	v130.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v130;
+	v130 = loc16;
+	v131 = loc41;
+	v131 = *v131.u0;
+	*v130.u0 = v131;
+	v130.u0 = 0x01AE;
+	v131 = arg1;
+	v133 = loc16;
+	v135 = arg3;
+	v136 = loc22;
+	v137 = loc53;
+	v138 = arg5;
+	v139 = loc33;
+	v140 = loc48;
+	v141 = loc110;
+	v142 = loc121;
+	v143 = loc44;
+	v130 = invoke_iiiiiiiiiiii(v130, v131, v133, v135, v136, v137, v138, v139, v140, v141, v142, v143);
+	loc55 = v130;
+	v130.u3 = g_t140048.u3;
+	loc56 = v130;
+	v130.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v130;
+	v130 = loc56;
+	v131.u0 = 0x01;
+	v130 &= v131;
+	loc57 = v130;
+	v130 = loc57;
+	if (v130)
+	{
+		v130.u0 = 0x0D;
+		loc133 = v130;
+		goto l0010CDA0;
+	}
+	v130 = loc55;
+	if (v130)
+	{
+		v130 = arg6;
+		v131.u0 = 0x08;
+		v130 += v131;
+		loc58 = v130;
+		v130 = loc58;
+		v131.u0 = 0x03;
+		v130 += v131;
+		loc59 = v130;
+		v130 = loc59;
+		v144 = *v130.u0;
+		v130.u3 = (word32) v144;
+		loc60 = v130;
+		v130 = loc60;
+		v131.u0 = 0x18;
+		v130 <<= v131;
+		v131.u0 = 0x18;
+		v130 >>= v131;
+		v131.u0 = 0x00;
+		v132 = v130 < v131;
+		loc61 = v132;
+		v130 = loc61;
+		if (v130)
+		{
+			v130 = arg6;
+			v130.u3 = *v130.u3;
+			loc62 = v130;
+			v130 = loc62;
+			v131.u0 = 0x00;
+			*v130.u3 = (word32) v131;
+			v130 = arg6;
+			v131.u0 = 0x04;
+			v130 += v131;
+			loc63 = v130;
+			v130 = loc63;
+			v131.u0 = 0x00;
+			*v130.u3 = (word32) v131;
+		}
+		else
+		{
+			v130 = arg6;
+			v131.u0 = 0x00;
+			*v130.u3 = (word32) v131;
+			v130 = loc59;
+			v131.u0 = 0x00;
+			v145 = (byte) v131;
+			v130.u4->t0000.u0 = (bool) v145;
+		}
+		v130 = loc33;
+		v146.u1 = v130.u4->t0000.u1;
+		v130.u3 = (word32) v146;
+		loc64 = v130;
+		v130 = loc64;
+		v131.u0 = 0x18;
+		v130 <<= v131;
+		v131.u0 = 0x18;
+		v130 >>= v131;
+		v131.u0 = 0x00;
+		v132 = v130 == v131;
+		loc65 = v132;
+		v130 = loc65;
+		v132 = v130 == 0x00;
+		if (v132)
+		{
+			v130 = loc48;
+			v130.u3 = *v130.u3;
+			loc66 = v130;
+			v130 = loc66;
+			v131.u0 = 44;
+			v130 += v131;
+			loc67 = v130;
+			v130 = loc67;
+			v130.u3 = *v130.u3;
+			loc68 = v130;
+			v130.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v130;
+			v130 = loc68;
+			v131 = loc48;
+			v133.u0 = 0x2D;
+			v130 = invoke_iii(v130, v131, v133);
+			loc69 = v130;
+			v130.u3 = g_t140048.u3;
+			loc70 = v130;
+			v130.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v130;
+			v130 = loc70;
+			v131.u0 = 0x01;
+			v130 &= v131;
+			loc71 = v130;
+			v130 = loc71;
+			if (v130)
+			{
+				v130.u0 = 0x0D;
+				loc133 = v130;
+				goto l0010CDA0;
+			}
+			v130.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v130;
+			v130.u0 = 0x01AF;
+			v131 = arg6;
+			v133 = loc69;
+			invoke_vii(v130, v131, v133);
+			v130.u3 = g_t140048.u3;
+			loc72 = v130;
+			v130.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v130;
+			v130 = loc72;
+			v131.u0 = 0x01;
+			v130 &= v131;
+			loc73 = v130;
+			v130 = loc73;
+			if (v130)
+			{
+				v130.u0 = 0x0D;
+				loc133 = v130;
+				goto l0010CDA0;
+			}
+		}
+		v130 = loc48;
+		v130 = *v130.u0;
+		loc80 = v130;
+		v130 = loc80;
+		v131.u0 = 44;
+		v130 += v131;
+		loc81 = v130;
+		v130 = loc81;
+		v130 = *v130.u0;
+		loc82 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc82;
+		v131 = loc48;
+		v133.u0 = 0x30;
+		v130 = invoke_iii(v130, v131, v133);
+		loc83 = v130;
+		v130.u3 = g_t140048.u3;
+		loc84 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc84;
+		v131.u0 = 0x01;
+		v130 &= v131;
+		loc85 = v130;
+		v130 = loc85;
+		if (v130)
+		{
+			v130.u0 = 0x0D;
+			loc133 = v130;
+			goto l0010CDA0;
+		}
+		while (true)
+		{
+			v130 = loc110;
+			v130 = *v130.u0;
+			loc86 = v130;
+			v130 = loc121;
+			v130 = *v130.u0;
+			loc87 = v130;
+			v130 = loc87;
+			v131.u0 = ~0x03;
+			v130 += v131;
+			loc88 = v130;
+			v130 = loc86;
+			loc7 = v130;
+			v130 = loc7;
+			v131 = loc88;
+			v132 = v130 < v131;
+			loc89 = v132;
+			v130 = loc89;
+			v132 = v130 == 0x00;
+			if (v132)
+				break;
+			v130 = loc7;
+			v130 = *v130.u0;
+			loc90 = v130;
+			v130 = loc90;
+			v131 = loc83;
+			v132 = v130 == v131;
+			loc91 = v132;
+			v130 = loc91;
+			v132 = v130 == 0x00;
+			if (v132)
+				break;
+			v130 = loc7;
+			v131.u0 = 0x04;
+			v130 += v131;
+			loc92 = v130;
+			v130 = loc92;
+			loc7 = v130;
+		}
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130.u0 = 0x01B0;
+		v131 = arg6;
+		v133 = loc7;
+		v135 = loc87;
+		v130 = invoke_iiii(v130, v131, v133, v135);
+		v130.u3 = g_t140048.u3;
+		loc93 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc93;
+		v131.u0 = 0x01;
+		v130 &= v131;
+		loc94 = v130;
+		v130 = loc94;
+		if (v130)
+		{
+			v130 = ___cxa_find_matching_catch_n();
+			loc95 = v130;
+			v130.u3 = g_t140094.u3;
+			loc96 = v130;
+			v130 = loc95;
+			loc19 = v130;
+			v130 = loc96;
+			loc20 = v130;
+			goto l0010CDA0;
+		}
+	}
+	v130 = arg1;
+	v130.u3 = *v130.u3;
+	loc97 = v130;
+	v130 = loc97;
+	v131.u0 = 0x00;
+	v132 = v130 == v131;
+	loc98 = v132;
+	v130 = loc98;
+	if (v130)
+	{
+		v130.u0 = 0x01;
+		loc40 = v130;
+	}
+	else
+	{
+		v130 = loc97;
+		v131.u0 = 0x0C;
+		v130 += v131;
+		loc100 = v130;
+		v130 = loc100;
+		v130 = *v130.u0;
+		loc101 = v130;
+		v130 = loc97;
+		v131.u0 = 0x10;
+		v130 += v131;
+		loc102 = v130;
+		v130 = loc102;
+		v130 = *v130.u0;
+		loc103 = v130;
+		v130 = loc101;
+		v131 = loc103;
+		v132 = v130 == v131;
+		loc104 = v132;
+		v130 = loc104;
+		if (v130)
+		{
+			v130 = loc97;
+			v130 = *v130.u0;
+			loc105 = v130;
+			v130 = loc105;
+			v131.u0 = 0x24;
+			v130 += v131;
+			loc106 = v130;
+			v130 = loc106;
+			v130 = *v130.u0;
+			loc107 = v130;
+			v130.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v130;
+			v130 = loc107;
+			v131 = loc97;
+			v130 = invoke_ii(v130, v131);
+			loc108 = v130;
+			v130.u3 = g_t140048.u3;
+			loc109 = v130;
+			v130.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v130;
+			v130 = loc109;
+			v131.u0 = 0x01;
+			v130 &= v131;
+			loc111 = v130;
+			v130 = loc111;
+			if (v130)
+			{
+				v130.u0 = 0x0D;
+				loc133 = v130;
+				goto l0010CDA0;
+			}
+			v130 = loc108;
+			loc8 = v130;
+		}
+		else
+		{
+			v130 = loc101;
+			v130 = *v130.u0;
+			loc112 = v130;
+			v130 = loc112;
+			loc8 = v130;
+		}
+		v130 = loc8;
+		v131.u0 = ~0x00;
+		v132 = v130 == v131;
+		loc113 = v132;
+		v130 = loc113;
+		if (v130)
+		{
+			v130 = arg1;
+			v131.u0 = 0x00;
+			*v130.u0 = v131;
+			v130.u0 = 0x01;
+			loc40 = v130;
+		}
+		else
+		{
+			v130 = arg1;
+			v130 = *v130.u0;
+			loc18 = v130;
+			v130 = loc18;
+			v131.u0 = 0x00;
+			v132 = v130 == v131;
+			loc132 = v132;
+			v130 = loc132;
+			loc40 = v130;
+		}
+	}
+	v130 = loc51;
+	v131.u0 = 0x00;
+	v132 = v130 == v131;
+	loc114 = v132;
+	v130 = loc114;
+	if (v130)
+	{
+		v130.u0 = 0x22;
+		loc133 = v130;
+		goto l0010CCFF;
+	}
+	v130 = loc54;
+	v131.u0 = 0x0C;
+	v130 += v131;
+	loc115 = v130;
+	v130 = loc115;
+	v130 = *v130.u0;
+	loc116 = v130;
+	v130 = loc54;
+	v131.u0 = 0x10;
+	v130 += v131;
+	loc117 = v130;
+	v130 = loc117;
+	v130 = *v130.u0;
+	loc118 = v130;
+	v130 = loc116;
+	v131 = loc118;
+	v132 = v130 == v131;
+	loc119 = v132;
+	v130 = loc119;
+	if (v130)
+	{
+		v130 = loc51;
+		loc120 = v130;
+		v130 = loc120;
+		v130 = *v130.u0;
+		loc122 = v130;
+		v130 = loc122;
+		v131.u0 = 0x24;
+		v130 += v131;
+		loc123 = v130;
+		v130 = loc123;
+		v130 = *v130.u0;
+		loc124 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc124;
+		v131 = loc54;
+		v130 = invoke_ii(v130, v131);
+		loc125 = v130;
+		v130.u3 = g_t140048.u3;
+		loc126 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc126;
+		v131.u0 = 0x01;
+		v130 &= v131;
+		loc127 = v130;
+		v130 = loc127;
+		if (v130)
+		{
+			v130.u0 = 0x0D;
+			loc133 = v130;
+l0010CDA0:
+			v130 = loc133;
+			v131.u0 = 0x0D;
+			v132 = v130 == v131;
+			if (v132)
+			{
+				v130 = ___cxa_find_matching_catch_n();
+				loc78 = v130;
+				v130.u3 = g_t140094.u3;
+				loc79 = v130;
+				v130 = loc78;
+				loc19 = v130;
+				v130 = loc79;
+				loc20 = v130;
+			}
+			v130 = loc19;
+			loc10 = v130;
+			v130 = loc20;
+			loc11 = v130;
+l0010CDC2:
+			v130 = loc22;
+			v130.u3 = *v130.u3;
+			loc31 = v130;
+			v130 = loc31;
+			v130 = fn0011B43F(v130);
+			v130 = loc110;
+			v130.u3 = *v130.u3;
+			loc17 = v130;
+			v130 = loc110;
+			v131.u0 = 0x00;
+			*v130.u3 = (word32) v131;
+			v130 = loc17;
+			v131.u0 = 0x00;
+			v132 = v130 == v131;
+			loc32 = v132;
+			v130 = loc32;
+			if (v130)
+			{
+				v130 = loc11;
+				loc13 = v130;
+				v130 = loc10;
+				loc15 = v130;
+			}
+			else
+			{
+				v130 = loc11;
+				loc12 = v130;
+				v130 = loc10;
+				loc14 = v130;
+				v130 = loc17;
+				loc35 = v130;
+				v130.u0 = 0x2B;
+				loc133 = v130;
+			}
+l0010CE04:
+			v130 = loc133;
+			v131.u0 = 0x2B;
+			v132 = v130 == v131;
+			if (v132)
+			{
+				v130 = loc43;
+				v130 = *v130.u0;
+				loc34 = v130;
+				v130.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v130;
+				v130 = loc34;
+				v131 = loc35;
+				invoke_vi(v130, v131);
+				v130.u3 = g_t140048.u3;
+				loc36 = v130;
+				v130.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v130;
+				v130 = loc36;
+				v131.u0 = 0x01;
+				v130 &= v131;
+				loc37 = v130;
+				v130 = loc37;
+				if (v130)
+				{
+					v130.u0 = 0x00;
+					v130 = ___cxa_find_matching_catch_n(v130);
+					loc38 = v130;
+					v130.u3 = g_t140094.u3;
+					loc39 = v130;
+					v130 = loc38;
+					fn000D0E65(v130);
+				}
+				else
+				{
+					v130 = loc12;
+					loc13 = v130;
+					v130 = loc14;
+					loc15 = v130;
+				}
+			}
+			v130 = loc15;
+			___resumeException(v130);
+			v130.u0 = 0x00;
+			return v130;
+		}
+		v130 = loc125;
+		loc9 = v130;
+	}
+	else
+	{
+		v130 = loc116;
+		v130 = *v130.u0;
+		loc128 = v130;
+		v130 = loc128;
+		loc9 = v130;
+	}
+	v130 = loc9;
+	v131.u0 = ~0x00;
+	v132 = v130 == v131;
+	loc129 = v132;
+	v130 = loc129;
+	if (v130)
+	{
+		v130 = arg2;
+		v131.u0 = 0x00;
+		*v130.u0 = v131;
+		v130.u0 = 0x22;
+		loc133 = v130;
+	}
+	else
+	{
+		v130 = loc40;
+		if (!v130)
+		{
+			v130.u0 = 0x24;
+			loc133 = v130;
+		}
+	}
+l0010CCFF:
+	v130 = loc133;
+	v131.u0 = 0x22;
+	v132 = v130 == v131;
+	if (v132)
+	{
+		v130 = loc40;
+		if (v130)
+		{
+			v130.u0 = 0x24;
+			loc133 = v130;
+		}
+	}
+	v130 = loc133;
+	v131.u0 = 0x24;
+	v132 = v130 == v131;
+	if (v132)
+	{
+		v130 = arg5;
+		v130 = *v130.u0;
+		loc130 = v130;
+		v130 = loc130;
+		v131.u0 = 0x02;
+		v130 |= v131;
+		loc131 = v130;
+		v130 = arg5;
+		v131 = loc131;
+		*v130.u0 = v131;
+	}
+	v130 = arg1;
+	v130 = *v130.u0;
+	loc21 = v130;
+	v130 = loc22;
+	v130 = *v130.u0;
+	loc23 = v130;
+	v130 = loc23;
+	v130 = fn0011B43F(v130);
+	v130 = loc110;
+	v130 = *v130.u0;
+	loc24 = v130;
+	v130 = loc110;
+	v131.u0 = 0x00;
+	*v130.u0 = v131;
+	v130 = loc24;
+	v131.u0 = 0x00;
+	v132 = v130 == v131;
+	loc25 = v132;
+	v130 = loc25;
+	v132 = v130 == 0x00;
+	if (v132)
+	{
+		v130 = loc43;
+		v130 = *v130.u0;
+		loc26 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc26;
+		v131 = loc24;
+		invoke_vi(v130, v131);
+		v130.u3 = g_t140048.u3;
+		loc27 = v130;
+		v130.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v130;
+		v130 = loc27;
+		v131.u0 = 0x01;
+		v130 &= v131;
+		loc28 = v130;
+		v130 = loc28;
+		if (v130)
+		{
+			v130.u0 = 0x00;
+			v130 = ___cxa_find_matching_catch_n(v130);
+			loc29 = v130;
+			v130.u3 = g_t140094.u3;
+			loc30 = v130;
+			v130 = loc29;
+			fn000D0E65(v130);
+		}
+	}
+	v130 = loc134;
+	g_t140030.u3 = (word32 *) v130;
+	v130 = loc21;
+	return v130;
 }
 
 // 0010CE53: Stack Eq_n fn0010CE53(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10)
 Eq_n fn0010CE53(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10)
 {
+	v980.u3 = g_t140030.u3;
+	loc988 = v980;
+	v980.u3 = g_t140030.u3;
+	v981.u0 = 0x0200;
+	v980 += v981;
+	g_t140030.u3 = (word32 *) v980;
+	v980.u3 = g_t140030.u3;
+	v981.u3 = g_t140034.u3;
+	v982 = v980 >= v981;
+	if (v982)
+	{
+		v980.u0 = 0x0200;
+		abortStackOverflow(v980);
+	}
+	while (true)
+	{
+		v980 = loc988;
+		v981.u0 = 0x01F0;
+		v980 += v981;
+		loc114 = v980;
+		v980 = loc988;
+		v981.u0 = 0x60;
+		v980 += v981;
+		loc125 = v980;
+		v980 = loc988;
+		v981.u0 = 88;
+		v980 += v981;
+		loc136 = v980;
+		v980 = loc988;
+		v981.u0 = 0x50;
+		v980 += v981;
+		loc147 = v980;
+		v980 = loc988;
+		v981.u0 = 0x4C;
+		v980 += v981;
+		loc158 = v980;
+		v980 = loc988;
+		v981.u0 = 500;
+		v980 += v981;
+		loc169 = v980;
+		v980 = loc988;
+		v981.u0 = 0x48;
+		v980 += v981;
+		loc180 = v980;
+		v980 = loc988;
+		v981.u0 = 0x44;
+		v980 += v981;
+		loc191 = v980;
+		v980 = loc988;
+		v981.u0 = 0x38;
+		v980 += v981;
+		loc202 = v980;
+		v980 = loc988;
+		v981.u0 = 44;
+		v980 += v981;
+		loc213 = v980;
+		v980 = loc988;
+		v981.u0 = 0x20;
+		v980 += v981;
+		loc224 = v980;
+		v980 = loc988;
+		v981.u0 = 0x14;
+		v980 += v981;
+		loc235 = v980;
+		v980 = loc988;
+		v981.u0 = 0x08;
+		v980 += v981;
+		loc246 = v980;
+		v980 = loc988;
+		v981.u0 = 0x04;
+		v980 += v981;
+		loc257 = v980;
+		v980 = loc988;
+		loc268 = v980;
+		v980 = loc114;
+		v981 = arg10;
+		*v980.u0 = v981;
+		v980 = loc125;
+		loc279 = v980;
+		v980 = loc136;
+		v981 = loc279;
+		*v980.u0 = v981;
+		v980 = loc136;
+		v981.u0 = 0x04;
+		v980 += v981;
+		loc290 = v980;
+		v980 = loc290;
+		v981.u0 = 0x01A4;
+		*v980.u0 = v981;
+		v980 = loc147;
+		v981 = loc125;
+		*v980.u0 = v981;
+		v980 = loc125;
+		v981.u0 = 400;
+		v980 += v981;
+		loc301 = v980;
+		v980 = loc158;
+		v981 = loc301;
+		*v980.u0 = v981;
+		v980 = loc202;
+		v983.u0 = 0x00;
+		*v980.u0 = v983;
+		v980 = loc202;
+		v981.u0 = 0x08;
+		v980 += v981;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980.u0 = 0x00;
+		loc16 = v980;
+		v980 = loc16;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc960 = v982;
+		v980 = loc960;
+		if (v980)
+			break;
+		v980 = loc202;
+		v981 = loc16;
+		v984.u0 = 0x02;
+		v981 <<= v984;
+		v980 += v981;
+		loc312 = v980;
+		v980 = loc312;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980 = loc16;
+		v981.u0 = 0x01;
+		v980 += v981;
+		loc323 = v980;
+		v980 = loc323;
+		loc16 = v980;
+	}
+	while (true)
+	{
+		v980 = loc213;
+		v983.u0 = 0x00;
+		*v980.u0 = v983;
+		v980 = loc213;
+		v981.u0 = 0x08;
+		v980 += v981;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980.u0 = 0x00;
+		loc24 = v980;
+		v980 = loc24;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc961 = v982;
+		v980 = loc961;
+		if (v980)
+			break;
+		v980 = loc213;
+		v981 = loc24;
+		v984.u0 = 0x02;
+		v981 <<= v984;
+		v980 += v981;
+		loc334 = v980;
+		v980 = loc334;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980 = loc24;
+		v981.u0 = 0x01;
+		v980 += v981;
+		loc345 = v980;
+		v980 = loc345;
+		loc24 = v980;
+	}
+	while (true)
+	{
+		v980 = loc224;
+		v983.u0 = 0x00;
+		*v980.u0 = v983;
+		v980 = loc224;
+		v981.u0 = 0x08;
+		v980 += v981;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980.u0 = 0x00;
+		loc25 = v980;
+		v980 = loc25;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc962 = v982;
+		v980 = loc962;
+		if (v980)
+			break;
+		v980 = loc224;
+		v981 = loc25;
+		v984.u0 = 0x02;
+		v981 <<= v984;
+		v980 += v981;
+		loc356 = v980;
+		v980 = loc356;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980 = loc25;
+		v981.u0 = 0x01;
+		v980 += v981;
+		loc367 = v980;
+		v980 = loc367;
+		loc25 = v980;
+	}
+	while (true)
+	{
+		v980 = loc235;
+		v983.u0 = 0x00;
+		*v980.u0 = v983;
+		v980 = loc235;
+		v981.u0 = 0x08;
+		v980 += v981;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980.u0 = 0x00;
+		loc26 = v980;
+		v980 = loc26;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc963 = v982;
+		v980 = loc963;
+		if (v980)
+			break;
+		v980 = loc235;
+		v981 = loc26;
+		v984.u0 = 0x02;
+		v981 <<= v984;
+		v980 += v981;
+		loc378 = v980;
+		v980 = loc378;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980 = loc26;
+		v981.u0 = 0x01;
+		v980 += v981;
+		loc389 = v980;
+		v980 = loc389;
+		loc26 = v980;
+	}
+	while (true)
+	{
+		v980 = loc246;
+		v983.u0 = 0x00;
+		*v980.u0 = v983;
+		v980 = loc246;
+		v981.u0 = 0x08;
+		v980 += v981;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980.u0 = 0x00;
+		loc27 = v980;
+		v980 = loc27;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc964 = v982;
+		v980 = loc964;
+		if (v980)
+			break;
+		v980 = loc246;
+		v981 = loc27;
+		v984.u0 = 0x02;
+		v981 <<= v984;
+		v980 += v981;
+		loc400 = v980;
+		v980 = loc400;
+		v981.u0 = 0x00;
+		*v980.u0 = v981;
+		v980 = loc27;
+		v981.u0 = 0x01;
+		v980 += v981;
+		loc411 = v980;
+		v980 = loc411;
+		loc27 = v980;
+	}
+	v980.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v980;
+	v980.u0 = 0x01B1;
+	v981 = arg2;
+	v984 = arg3;
+	v985 = loc169;
+	v986 = loc180;
+	v987 = loc191;
+	v988 = loc202;
+	v989 = loc213;
+	v990 = loc224;
+	v991 = loc235;
+	v992 = loc257;
+	invoke_viiiiiiiiii(v980, v981, v984, v985, v986, v987, v988, v989, v990, v991, v992);
+	v980.u3 = g_t140048.u3;
+	loc422 = v980;
+	v980.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v980;
+	v980 = loc422;
+	v981.u0 = 0x01;
+	v980 &= v981;
+	loc433 = v980;
+	v980 = loc433;
+	if (v980)
+	{
+		v980 = ___cxa_find_matching_catch_n();
+		loc948 = v980;
+		v980.u3 = g_t140094.u3;
+		loc949 = v980;
+		v980 = loc948;
+		loc55 = v980;
+		v980 = loc949;
+		loc56 = v980;
+		goto l001101FF;
+	}
+l0010D11D:
+	v980 = arg8;
+	v980.u3 = *v980.u3;
+	loc444 = v980;
+	v980 = arg9;
+	v981 = loc444;
+	*v980.u3 = (word32) v981;
+	v980 = loc224;
+	v981.u0 = 0x08;
+	v980 += v981;
+	loc455 = v980;
+	v980 = loc455;
+	v981.u0 = 0x03;
+	v980 += v981;
+	loc466 = v980;
+	v980 = loc224;
+	v981.u0 = 0x04;
+	v980 += v981;
+	loc477 = v980;
+	v980 = loc235;
+	v981.u0 = 0x08;
+	v980 += v981;
+	loc488 = v980;
+	v980 = loc488;
+	v981.u0 = 0x03;
+	v980 += v981;
+	loc499 = v980;
+	v980 = loc235;
+	v981.u0 = 0x04;
+	v980 += v981;
+	loc510 = v980;
+	v980 = arg4;
+	v981.u0 = 0x0200;
+	v980 &= v981;
+	loc521 = v980;
+	v980 = loc521;
+	v981.u0 = 0x00;
+	v982 = v980 != v981;
+	loc532 = v982;
+	v980 = loc213;
+	v981.u0 = 0x08;
+	v980 += v981;
+	loc543 = v980;
+	v980 = loc543;
+	v981.u0 = 0x03;
+	v980 += v981;
+	loc554 = v980;
+	v980 = loc213;
+	v981.u0 = 0x04;
+	v980 += v981;
+	loc565 = v980;
+	v980 = loc246;
+	v981.u0 = 0x08;
+	v980 += v981;
+	loc576 = v980;
+	v980 = loc576;
+	v981.u0 = 0x03;
+	v980 += v981;
+	loc587 = v980;
+	v980 = loc246;
+	v981.u0 = 0x04;
+	v980 += v981;
+	loc598 = v980;
+	v980 = loc169;
+	v981.u0 = 0x03;
+	v980 += v981;
+	loc609 = v980;
+	v980 = loc202;
+	v981.u0 = 11;
+	v980 += v981;
+	loc620 = v980;
+	v980 = loc202;
+	v981.u0 = 0x04;
+	v980 += v981;
+	loc631 = v980;
+	v980.u0 = 0x00;
+	loc50 = v980;
+	v980.u0 = 0x00;
+	loc51 = v980;
+	v980 = loc51;
+	v981.u0 = 0x04;
+	v982 = v980 < v981;
+	loc642 = v982;
+	v980 = loc642;
+	v982 = v980 == 0x00;
+	if (v982)
+	{
+		v980.u0 = 262;
+		loc987 = v980;
+		goto l0010F92C;
+	}
+	v980 = arg0;
+	v980 = *v980.u0;
+	loc653 = v980;
+	v980 = loc653;
+	v981.u0 = 0x00;
+	v982 = v980 == v981;
+	loc664 = v982;
+	v980 = loc664;
+	if (v980)
+	{
+		v980.u0 = 0x01;
+		loc935 = v980;
+	}
+	else
+	{
+		v980 = loc653;
+		v981.u0 = 0x0C;
+		v980 += v981;
+		loc675 = v980;
+		v980 = loc675;
+		v980 = *v980.u0;
+		loc686 = v980;
+		v980 = loc653;
+		v981.u0 = 0x10;
+		v980 += v981;
+		loc697 = v980;
+		v980 = loc697;
+		v980 = *v980.u0;
+		loc708 = v980;
+		v980 = loc686;
+		v981 = loc708;
+		v982 = v980 == v981;
+		loc719 = v982;
+		v980 = loc719;
+		if (v980)
+		{
+			v980 = loc653;
+			v980 = *v980.u0;
+			loc730 = v980;
+			v980 = loc730;
+			v981.u0 = 0x24;
+			v980 += v981;
+			loc741 = v980;
+			v980 = loc741;
+			v980 = *v980.u0;
+			loc752 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc752;
+			v981 = loc653;
+			v980 = invoke_ii(v980, v981);
+			loc763 = v980;
+			v980.u3 = g_t140048.u3;
+			loc774 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc774;
+			v981.u0 = 0x01;
+			v980 &= v981;
+			loc785 = v980;
+			v980 = loc785;
+			if (v980)
+			{
+				v980.u0 = 0x24;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc763;
+			loc18 = v980;
+		}
+		else
+		{
+			v980 = loc686;
+			v980 = *v980.u0;
+			loc796 = v980;
+			v980 = loc796;
+			loc18 = v980;
+		}
+		v980 = loc18;
+		v981.u0 = ~0x00;
+		v982 = v980 == v981;
+		loc807 = v982;
+		v980 = loc807;
+		if (v980)
+		{
+			v980 = arg0;
+			v981.u0 = 0x00;
+			*v980.u0 = v981;
+			v980.u0 = 0x01;
+			loc935 = v980;
+		}
+		else
+		{
+			v980 = arg0;
+			v980 = *v980.u0;
+			loc62 = v980;
+			v980 = loc62;
+			v981.u0 = 0x00;
+			v982 = v980 == v981;
+			loc972 = v982;
+			v980 = loc972;
+			loc935 = v980;
+		}
+	}
+	v980 = arg1;
+	v980 = *v980.u0;
+	loc818 = v980;
+	v980 = loc818;
+	v981.u0 = 0x00;
+	v982 = v980 == v981;
+	loc829 = v982;
+	v980 = loc829;
+	if (v980)
+	{
+		v980.u0 = 0x20;
+		loc987 = v980;
+	}
+	else
+	{
+		v980 = loc818;
+		v981.u0 = 0x0C;
+		v980 += v981;
+		loc840 = v980;
+		v980 = loc840;
+		v980 = *v980.u0;
+		loc851 = v980;
+		v980 = loc818;
+		v981.u0 = 0x10;
+		v980 += v981;
+		loc862 = v980;
+		v980 = loc862;
+		v980 = *v980.u0;
+		loc873 = v980;
+		v980 = loc851;
+		v981 = loc873;
+		v982 = v980 == v981;
+		loc884 = v982;
+		v980 = loc884;
+		if (v980)
+		{
+			v980 = loc818;
+			v980 = *v980.u0;
+			loc895 = v980;
+			v980 = loc895;
+			v981.u0 = 0x24;
+			v980 += v981;
+			loc906 = v980;
+			v980 = loc906;
+			v980 = *v980.u0;
+			loc917 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc917;
+			v981 = loc818;
+			v980 = invoke_ii(v980, v981);
+			loc928 = v980;
+			v980.u3 = g_t140048.u3;
+			loc939 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc939;
+			v981.u0 = 0x01;
+			v980 &= v981;
+			loc945 = v980;
+			v980 = loc945;
+			if (v980)
+			{
+				v980.u0 = 0x24;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc928;
+			loc30 = v980;
+		}
+		else
+		{
+			v980 = loc851;
+			v980 = *v980.u0;
+			loc946 = v980;
+			v980 = loc946;
+			loc30 = v980;
+		}
+		v980 = loc30;
+		v981.u0 = ~0x00;
+		v982 = v980 == v981;
+		loc947 = v982;
+		v980 = loc947;
+		if (v980)
+		{
+			v980 = arg1;
+			v981.u0 = 0x00;
+			*v980.u0 = v981;
+			v980.u0 = 0x20;
+			loc987 = v980;
+		}
+		else
+		{
+			v980 = loc935;
+			if (!v980)
+			{
+				v980.u0 = 262;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc818;
+			loc936 = v980;
+		}
+	}
+	v980 = loc987;
+	v981.u0 = 0x20;
+	v982 = v980 == v981;
+	if (v982)
+	{
+		v980.u0 = 0x00;
+		loc987 = v980;
+		v980 = loc935;
+		if (v980)
+		{
+			v980.u0 = 262;
+			loc987 = v980;
+			goto l0010F92C;
+		}
+		v980.u0 = 0x00;
+		loc936 = v980;
+	}
+	v980 = loc169;
+	v981 = loc51;
+	v980 += v981;
+	loc954 = v980;
+	v980 = loc954;
+	v993 = *v980.u0;
+	v980.u3 = (word32) v993;
+	loc955 = v980;
+	v980 = loc955;
+	v981.u0 = 0x18;
+	v980 <<= v981;
+	v981.u0 = 0x18;
+	v980 >>= v981;
+	loc956 = v980;
+	v980 = loc956;
+	v981.u0 = 0x00;
+	v980 -= v981;
+	switch (v980)
+	{
+	case 0x00:
+		v980 = loc51;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc959 = v982;
+		v980 = loc959;
+		if (v980)
+		{
+			v980 = loc50;
+			loc53 = v980;
+		}
+		else
+		{
+			v980 = arg0;
+			v980.u3 = *v980.u3;
+			loc957 = v980;
+			v980 = loc957;
+			v981.u0 = 0x0C;
+			v980 += v981;
+			loc104 = v980;
+			v980 = loc104;
+			v980.u3 = *v980.u3;
+			loc105 = v980;
+			v980 = loc957;
+			v981.u0 = 0x10;
+			v980 += v981;
+			loc106 = v980;
+			v980 = loc106;
+			v980.u3 = *v980.u3;
+			loc107 = v980;
+			v980 = loc105;
+			v981 = loc107;
+			v982 = v980 == v981;
+			loc108 = v982;
+			v980 = loc108;
+			if (v980)
+			{
+				v980 = loc957;
+				v980.u3 = *v980.u3;
+				loc109 = v980;
+				v980 = loc109;
+				v981.u0 = 0x24;
+				v980 += v981;
+				loc110 = v980;
+				v980 = loc110;
+				v980.u3 = *v980.u3;
+				loc111 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc111;
+				v981 = loc957;
+				v980 = invoke_ii(v980, v981);
+				loc112 = v980;
+				v980.u3 = g_t140048.u3;
+				loc113 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc113;
+				v981.u0 = 0x01;
+				v980 &= v981;
+				loc115 = v980;
+				v980 = loc115;
+				if (v980)
+				{
+					v980.u0 = 0x24;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = loc112;
+				loc36 = v980;
+			}
+			else
+			{
+				v980 = loc105;
+				v980 = *v980.u0;
+				loc116 = v980;
+				v980 = loc116;
+				loc36 = v980;
+			}
+			v980 = arg7;
+			v980 = *v980.u0;
+			loc117 = v980;
+			v980 = loc117;
+			v981.u0 = 0x0C;
+			v980 += v981;
+			loc118 = v980;
+			v980 = loc118;
+			v980 = *v980.u0;
+			loc119 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc119;
+			v981 = arg7;
+			v984.u0 = 0x2000;
+			v985 = loc36;
+			v980 = invoke_iiii(v980, v981, v984, v985);
+			loc120 = v980;
+			v980.u3 = g_t140048.u3;
+			loc121 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc121;
+			v981.u0 = 0x01;
+			v980 &= v981;
+			loc122 = v980;
+			v980 = loc122;
+			if (v980)
+			{
+				v980.u0 = 0x24;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc120;
+			v982 = v980 == 0x00;
+			if (v982)
+			{
+				v980.u0 = 0x31;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = arg0;
+			v980 = *v980.u0;
+			loc123 = v980;
+			v980 = loc123;
+			v981.u0 = 0x0C;
+			v980 += v981;
+			loc124 = v980;
+			v980 = loc124;
+			v980 = *v980.u0;
+			loc126 = v980;
+			v980 = loc123;
+			v981.u0 = 0x10;
+			v980 += v981;
+			loc127 = v980;
+			v980 = loc127;
+			v980 = *v980.u0;
+			loc128 = v980;
+			v980 = loc126;
+			v981 = loc128;
+			v982 = v980 == v981;
+			loc129 = v982;
+			v980 = loc129;
+			if (v980)
+			{
+				v980 = loc123;
+				v980 = *v980.u0;
+				loc130 = v980;
+				v980 = loc130;
+				v981.u0 = 0x28;
+				v980 += v981;
+				loc131 = v980;
+				v980 = loc131;
+				v980 = *v980.u0;
+				loc132 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc132;
+				v981 = loc123;
+				v980 = invoke_ii(v980, v981);
+				loc133 = v980;
+				v980.u3 = g_t140048.u3;
+				loc134 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc134;
+				v981.u0 = 0x01;
+				v980 &= v981;
+				loc135 = v980;
+				v980 = loc135;
+				if (v980)
+				{
+					v980.u0 = 0x24;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = loc133;
+				loc37 = v980;
+			}
+			else
+			{
+				v980 = loc126;
+				v981.u0 = 0x04;
+				v980 += v981;
+				loc137 = v980;
+				v980 = loc124;
+				v981 = loc137;
+				*v980.u0 = v981;
+				v980 = loc126;
+				v980 = *v980.u0;
+				loc138 = v980;
+				v980 = loc138;
+				loc37 = v980;
+			}
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980.u0 = 0x01AF;
+			v981 = loc246;
+			v984 = loc37;
+			invoke_vii(v980, v981, v984);
+			v980.u3 = g_t140048.u3;
+			loc139 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc139;
+			v981.u0 = 0x01;
+			v980 &= v981;
+			loc140 = v980;
+			v980 = loc140;
+			if (v980)
+			{
+				v980.u0 = 0x24;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc936;
+			loc68 = v980;
+			v980 = loc936;
+			loc162 = v980;
+			v980.u0 = 0x33;
+			loc987 = v980;
+		}
+		goto l0010F51E;
+	case 0x01:
+		v980 = loc51;
+		v981.u0 = 0x03;
+		v982 = v980 == v981;
+		loc143 = v982;
+		v980 = loc143;
+		if (v980)
+		{
+			v980 = loc50;
+			loc53 = v980;
+		}
+		else
+		{
+			v980 = loc936;
+			loc68 = v980;
+			v980 = loc936;
+			loc162 = v980;
+			v980.u0 = 0x33;
+			loc987 = v980;
+		}
+		goto l0010F51E;
+	case 0x02:
+		v980 = loc466;
+		v994 = *v980.u0;
+		v980.u3 = (word32) v994;
+		loc217 = v980;
+		v980 = loc217;
+		v981.u0 = 0x18;
+		v980 <<= v981;
+		v981.u0 = 0x18;
+		v980 >>= v981;
+		v981.u0 = 0x00;
+		v982 = v980 < v981;
+		loc218 = v982;
+		v980 = loc477;
+		v980.u3 = *v980.u3;
+		loc219 = v980;
+		v980 = loc217;
+		v981.u0 = 0xFF;
+		v980 &= v981;
+		loc220 = v980;
+		v980 = loc218;
+		if (v980)
+			v980 = loc219;
+		else
+			v980 = loc220;
+		loc221 = v980;
+		v980 = loc499;
+		v995.u1 = v980.u4->t0000.u1;
+		v980.u3 = (word32) v995;
+		loc222 = v980;
+		v980 = loc222;
+		v981.u0 = 0x18;
+		v980 <<= v981;
+		v981.u0 = 0x18;
+		v980 >>= v981;
+		v981.u0 = 0x00;
+		v982 = v980 < v981;
+		loc223 = v982;
+		v980 = loc510;
+		v980.u3 = *v980.u3;
+		loc225 = v980;
+		v980 = loc222;
+		v981.u0 = 0xFF;
+		v980 &= v981;
+		loc226 = v980;
+		v980 = loc223;
+		if (v980)
+			v980 = loc225;
+		else
+			v980 = loc226;
+		loc227 = v980;
+		v980.u0 = 0x00;
+		v981 = loc227;
+		v980 -= v981;
+		loc228 = v980;
+		v980 = loc221;
+		v981 = loc228;
+		v982 = v980 == v981;
+		loc229 = v982;
+		v980 = loc229;
+		if (!v980)
+		{
+			v980 = loc221;
+			v981.u0 = 0x00;
+			v982 = v980 == v981;
+			loc230 = v982;
+			v980 = loc230;
+			if (v980)
+			{
+				v980 = arg0;
+				v980 = *v980.u0;
+				loc273 = v980;
+				v980 = loc273;
+				v981.u0 = 0x0C;
+				v980 += v981;
+				loc274 = v980;
+				v980 = loc274;
+				v980 = *v980.u0;
+				loc275 = v980;
+				v980 = loc273;
+				v981.u0 = 0x10;
+				v980 += v981;
+				loc276 = v980;
+				v980 = loc276;
+				v980 = *v980.u0;
+				loc277 = v980;
+				v980 = loc275;
+				v981 = loc277;
+				v982 = v980 == v981;
+				loc278 = v982;
+				v980 = loc278;
+				if (v980)
+				{
+					v980 = loc273;
+					v980 = *v980.u0;
+					loc280 = v980;
+					v980 = loc280;
+					v981.u0 = 0x24;
+					v980 += v981;
+					loc281 = v980;
+					v980 = loc281;
+					v980 = *v980.u0;
+					loc282 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc282;
+					v981 = loc273;
+					v980 = invoke_ii(v980, v981);
+					loc283 = v980;
+					v980.u3 = g_t140048.u3;
+					loc284 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc284;
+					v981.u0 = 0x01;
+					v980 &= v981;
+					loc285 = v980;
+					v980 = loc285;
+					if (v980)
+					{
+						v980.u0 = 0x24;
+						loc987 = v980;
+						goto l0010F92C;
+					}
+					v980 = loc499;
+					v996 = *v980.u0;
+					v980.u3 = (word32) v996;
+					loc97 = v980;
+					v980 = loc283;
+					loc43 = v980;
+					v980 = loc97;
+					loc288 = v980;
+				}
+				else
+				{
+					v980 = loc275;
+					v980.u3 = *v980.u3;
+					loc286 = v980;
+					v980 = loc286;
+					loc43 = v980;
+					v980 = loc222;
+					loc288 = v980;
+				}
+				v980 = loc288;
+				v981.u0 = 0x18;
+				v980 <<= v981;
+				v981.u0 = 0x18;
+				v980 >>= v981;
+				v981.u0 = 0x00;
+				v982 = v980 < v981;
+				loc287 = v982;
+				v980 = loc235;
+				v980.u3 = *v980.u3;
+				loc289 = v980;
+				v980 = loc287;
+				if (v980)
+					v980 = loc289;
+				else
+					v980 = loc235;
+				loc291 = v980;
+				v980 = loc291;
+				v980.u3 = *v980.u3;
+				loc292 = v980;
+				v980 = loc43;
+				v981 = loc292;
+				v982 = v980 == v981;
+				loc293 = v982;
+				v980 = loc293;
+				v982 = v980 == 0x00;
+				if (v982)
+				{
+					v980 = loc50;
+					loc53 = v980;
+				}
+				else
+				{
+					v980 = arg0;
+					v980.u3 = *v980.u3;
+					loc294 = v980;
+					v980 = loc294;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc295 = v980;
+					v980 = loc295;
+					v980.u3 = *v980.u3;
+					loc296 = v980;
+					v980 = loc294;
+					v981.u0 = 0x10;
+					v980 += v981;
+					loc297 = v980;
+					v980 = loc297;
+					v980.u3 = *v980.u3;
+					loc298 = v980;
+					v980 = loc296;
+					v981 = loc298;
+					v982 = v980 == v981;
+					loc299 = v982;
+					v980 = loc299;
+					if (v980)
+					{
+						v980 = loc294;
+						v980.u3 = *v980.u3;
+						loc300 = v980;
+						v980 = loc300;
+						v981.u0 = 0x28;
+						v980 += v981;
+						loc302 = v980;
+						v980 = loc302;
+						v980.u3 = *v980.u3;
+						loc303 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc303;
+						v981 = loc294;
+						v980 = invoke_ii(v980, v981);
+						v980.u3 = g_t140048.u3;
+						loc304 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc304;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc305 = v980;
+						v980 = loc305;
+						if (v980)
+						{
+							v980.u0 = 0x24;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc499;
+						v997 = *v980.u0;
+						v980.u3 = (word32) v997;
+						loc98 = v980;
+						v980 = loc98;
+						loc308 = v980;
+					}
+					else
+					{
+						v980 = loc296;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc306 = v980;
+						v980 = loc295;
+						v981 = loc306;
+						*v980.u3 = (word32) v981;
+						v980 = loc288;
+						loc308 = v980;
+					}
+					v980 = arg6;
+					v981.u0 = 0x01;
+					v998 = (byte) v981;
+					v980.u4->t0000.u0 = (bool) v998;
+					v980 = loc308;
+					v981.u0 = 0x18;
+					v980 <<= v981;
+					v981.u0 = 0x18;
+					v980 >>= v981;
+					v981.u0 = 0x00;
+					v982 = v980 < v981;
+					loc307 = v982;
+					v980 = loc510;
+					v980.u3 = *v980.u3;
+					loc309 = v980;
+					v980 = loc308;
+					v981.u0 = 0xFF;
+					v980 &= v981;
+					loc310 = v980;
+					v980 = loc307;
+					if (v980)
+						v980 = loc309;
+					else
+						v980 = loc310;
+					loc311 = v980;
+					v980 = loc311;
+					v981.u0 = 0x01;
+					v982 = v980 > v981;
+					loc313 = v982;
+					v980 = loc313;
+					if (v980)
+						v980 = loc235;
+					else
+						v980 = loc50;
+					loc12 = v980;
+					v980 = loc12;
+					loc53 = v980;
+				}
+			}
+			else
+			{
+				v980 = loc227;
+				v981.u0 = 0x00;
+				v982 = v980 == v981;
+				loc231 = v982;
+				v980 = arg0;
+				v980.u3 = *v980.u3;
+				loc232 = v980;
+				v980 = loc232;
+				v981.u0 = 0x0C;
+				v980 += v981;
+				loc233 = v980;
+				v980 = loc233;
+				v980.u3 = *v980.u3;
+				loc234 = v980;
+				v980 = loc232;
+				v981.u0 = 0x10;
+				v980 += v981;
+				loc236 = v980;
+				v980 = loc236;
+				v980.u3 = *v980.u3;
+				loc237 = v980;
+				v980 = loc234;
+				v981 = loc237;
+				v982 = v980 == v981;
+				loc238 = v982;
+				v980 = loc231;
+				if (v980)
+				{
+					v980 = loc238;
+					if (v980)
+					{
+						v980 = loc232;
+						v980.u3 = *v980.u3;
+						loc239 = v980;
+						v980 = loc239;
+						v981.u0 = 0x24;
+						v980 += v981;
+						loc240 = v980;
+						v980 = loc240;
+						v980.u3 = *v980.u3;
+						loc241 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc241;
+						v981 = loc232;
+						v980 = invoke_ii(v980, v981);
+						loc242 = v980;
+						v980.u3 = g_t140048.u3;
+						loc243 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc243;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc244 = v980;
+						v980 = loc244;
+						if (v980)
+						{
+							v980.u0 = 0x24;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc466;
+						v999 = *v980.u0;
+						v980.u3 = (word32) v999;
+						loc95 = v980;
+						v980 = loc242;
+						loc41 = v980;
+						v980 = loc95;
+						loc248 = v980;
+					}
+					else
+					{
+						v980 = loc234;
+						v980.u3 = *v980.u3;
+						loc245 = v980;
+						v980 = loc245;
+						loc41 = v980;
+						v980 = loc217;
+						loc248 = v980;
+					}
+					v980 = loc248;
+					v981.u0 = 0x18;
+					v980 <<= v981;
+					v981.u0 = 0x18;
+					v980 >>= v981;
+					v981.u0 = 0x00;
+					v982 = v980 < v981;
+					loc247 = v982;
+					v980 = loc224;
+					v980.u3 = *v980.u3;
+					loc249 = v980;
+					v980 = loc247;
+					if (v980)
+						v980 = loc249;
+					else
+						v980 = loc224;
+					loc250 = v980;
+					v980 = loc250;
+					v980.u3 = *v980.u3;
+					loc251 = v980;
+					v980 = loc41;
+					v981 = loc251;
+					v982 = v980 == v981;
+					loc252 = v982;
+					v980 = loc252;
+					v982 = v980 == 0x00;
+					if (v982)
+					{
+						v980 = arg6;
+						v981.u0 = 0x01;
+						v1000 = (byte) v981;
+						v980.u4->t0000.u0 = (bool) v1000;
+						v980 = loc50;
+						loc53 = v980;
+					}
+					else
+					{
+						v980 = arg0;
+						v980.u3 = *v980.u3;
+						loc253 = v980;
+						v980 = loc253;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc254 = v980;
+						v980 = loc254;
+						v980.u3 = *v980.u3;
+						loc255 = v980;
+						v980 = loc253;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc256 = v980;
+						v980 = loc256;
+						v980.u3 = *v980.u3;
+						loc258 = v980;
+						v980 = loc255;
+						v981 = loc258;
+						v982 = v980 == v981;
+						loc259 = v982;
+						v980 = loc259;
+						if (v980)
+						{
+							v980 = loc253;
+							v980.u3 = *v980.u3;
+							loc260 = v980;
+							v980 = loc260;
+							v981.u0 = 0x28;
+							v980 += v981;
+							loc261 = v980;
+							v980 = loc261;
+							v980.u3 = *v980.u3;
+							loc262 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc262;
+							v981 = loc253;
+							v980 = invoke_ii(v980, v981);
+							v980.u3 = g_t140048.u3;
+							loc263 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc263;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc264 = v980;
+							v980 = loc264;
+							if (v980)
+							{
+								v980.u0 = 0x24;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc466;
+							v1001 = *v980.u0;
+							v980.u3 = (word32) v1001;
+							loc96 = v980;
+							v980 = loc96;
+							loc267 = v980;
+						}
+						else
+						{
+							v980 = loc255;
+							v981.u0 = 0x04;
+							v980 += v981;
+							loc265 = v980;
+							v980 = loc254;
+							v981 = loc265;
+							*v980.u3 = (word32) v981;
+							v980 = loc248;
+							loc267 = v980;
+						}
+						v980 = loc267;
+						v981.u0 = 0x18;
+						v980 <<= v981;
+						v981.u0 = 0x18;
+						v980 >>= v981;
+						v981.u0 = 0x00;
+						v982 = v980 < v981;
+						loc266 = v982;
+						v980 = loc477;
+						v980.u3 = *v980.u3;
+						loc269 = v980;
+						v980 = loc267;
+						v981.u0 = 0xFF;
+						v980 &= v981;
+						loc270 = v980;
+						v980 = loc266;
+						if (v980)
+							v980 = loc269;
+						else
+							v980 = loc270;
+						loc271 = v980;
+						v980 = loc271;
+						v981.u0 = 0x01;
+						v982 = v980 > v981;
+						loc272 = v982;
+						v980 = loc272;
+						if (v980)
+							v980 = loc224;
+						else
+							v980 = loc50;
+						loc11 = v980;
+						v980 = loc11;
+						loc53 = v980;
+					}
+				}
+				else
+				{
+					v980 = loc238;
+					if (v980)
+					{
+						v980 = loc232;
+						v980.u3 = *v980.u3;
+						loc314 = v980;
+						v980 = loc314;
+						v981.u0 = 0x24;
+						v980 += v981;
+						loc315 = v980;
+						v980 = loc315;
+						v980.u3 = *v980.u3;
+						loc316 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc316;
+						v981 = loc232;
+						v980 = invoke_ii(v980, v981);
+						loc317 = v980;
+						v980.u3 = g_t140048.u3;
+						loc318 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc318;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc319 = v980;
+						v980 = loc319;
+						if (v980)
+						{
+							v980.u0 = 0x24;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc466;
+						v1002 = *v980.u0;
+						v980.u3 = (word32) v1002;
+						loc89 = v980;
+						v980 = arg0;
+						v980.u3 = *v980.u3;
+						loc90 = v980;
+						v980 = loc90;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc58 = v980;
+						v980 = loc58;
+						v980.u3 = *v980.u3;
+						loc91 = v980;
+						v980 = loc90;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc59 = v980;
+						v980 = loc59;
+						v980.u3 = *v980.u3;
+						loc92 = v980;
+						v980 = loc317;
+						loc44 = v980;
+						v980 = loc89;
+						loc322 = v980;
+						v980 = loc90;
+						loc329 = v980;
+						v980 = loc91;
+						loc331 = v980;
+						v980 = loc92;
+						loc332 = v980;
+					}
+					else
+					{
+						v980 = loc234;
+						v980.u3 = *v980.u3;
+						loc320 = v980;
+						v980 = loc320;
+						loc44 = v980;
+						v980 = loc217;
+						loc322 = v980;
+						v980 = loc232;
+						loc329 = v980;
+						v980 = loc234;
+						loc331 = v980;
+						v980 = loc237;
+						loc332 = v980;
+					}
+					v980 = loc322;
+					v981.u0 = 0x18;
+					v980 <<= v981;
+					v981.u0 = 0x18;
+					v980 >>= v981;
+					v981.u0 = 0x00;
+					v982 = v980 < v981;
+					loc321 = v982;
+					v980 = loc224;
+					v980.u3 = *v980.u3;
+					loc324 = v980;
+					v980 = loc321;
+					if (v980)
+						v980 = loc324;
+					else
+						v980 = loc224;
+					loc325 = v980;
+					v980 = loc325;
+					v980.u3 = *v980.u3;
+					loc326 = v980;
+					v980 = loc44;
+					v981 = loc326;
+					v982 = v980 == v981;
+					loc327 = v982;
+					v980 = loc329;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc328 = v980;
+					v980 = loc331;
+					v981 = loc332;
+					v982 = v980 == v981;
+					loc330 = v982;
+					v980 = loc327;
+					if (!v980)
+					{
+						v980 = loc330;
+						if (v980)
+						{
+							v980 = loc329;
+							v980.u3 = *v980.u3;
+							loc347 = v980;
+							v980 = loc347;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc348 = v980;
+							v980 = loc348;
+							v980.u3 = *v980.u3;
+							loc349 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc349;
+							v981 = loc329;
+							v980 = invoke_ii(v980, v981);
+							loc350 = v980;
+							v980.u3 = g_t140048.u3;
+							loc351 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc351;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc352 = v980;
+							v980 = loc352;
+							if (v980)
+							{
+								v980.u0 = 0x24;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc350;
+							loc46 = v980;
+						}
+						else
+						{
+							v980 = loc331;
+							v980 = *v980.u0;
+							loc353 = v980;
+							v980 = loc353;
+							loc46 = v980;
+						}
+						v980 = loc499;
+						v1004 = *v980.u0;
+						v980.u3 = (word32) v1004;
+						loc354 = v980;
+						v980 = loc354;
+						v981.u0 = 0x18;
+						v980 <<= v981;
+						v981.u0 = 0x18;
+						v980 >>= v981;
+						v981.u0 = 0x00;
+						v982 = v980 < v981;
+						loc355 = v982;
+						v980 = loc235;
+						v980.u3 = *v980.u3;
+						loc357 = v980;
+						v980 = loc355;
+						if (v980)
+							v980 = loc357;
+						else
+							v980 = loc235;
+						loc358 = v980;
+						v980 = loc358;
+						v980.u3 = *v980.u3;
+						loc359 = v980;
+						v980 = loc46;
+						v981 = loc359;
+						v982 = v980 == v981;
+						loc360 = v982;
+						v980 = loc360;
+						v982 = v980 == 0x00;
+						if (v982)
+						{
+							v980.u0 = 118;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc361 = v980;
+						v980 = loc361;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc362 = v980;
+						v980 = loc362;
+						v980 = *v980.u0;
+						loc363 = v980;
+						v980 = loc361;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc364 = v980;
+						v980 = loc364;
+						v980 = *v980.u0;
+						loc365 = v980;
+						v980 = loc363;
+						v981 = loc365;
+						v982 = v980 == v981;
+						loc366 = v982;
+						v980 = loc366;
+						if (v980)
+						{
+							v980 = loc361;
+							v980 = *v980.u0;
+							loc368 = v980;
+							v980 = loc368;
+							v981.u0 = 0x28;
+							v980 += v981;
+							loc369 = v980;
+							v980 = loc369;
+							v980 = *v980.u0;
+							loc370 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc370;
+							v981 = loc361;
+							v980 = invoke_ii(v980, v981);
+							v980.u3 = g_t140048.u3;
+							loc371 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc371;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc372 = v980;
+							v980 = loc372;
+							if (v980)
+							{
+								v980.u0 = 0x24;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc499;
+							v1005 = *v980.u0;
+							v980.u3 = (word32) v1005;
+							loc93 = v980;
+							v980 = loc93;
+							loc375 = v980;
+						}
+						else
+						{
+							v980 = loc363;
+							v981.u0 = 0x04;
+							v980 += v981;
+							loc373 = v980;
+							v980 = loc362;
+							v981 = loc373;
+							*v980.u3 = (word32) v981;
+							v980 = loc354;
+							loc375 = v980;
+						}
+						v980 = arg6;
+						v981.u0 = 0x01;
+						v1006 = (byte) v981;
+						v980.u4->t0000.u0 = (bool) v1006;
+						v980 = loc375;
+						v981.u0 = 0x18;
+						v980 <<= v981;
+						v981.u0 = 0x18;
+						v980 >>= v981;
+						v981.u0 = 0x00;
+						v982 = v980 < v981;
+						loc374 = v982;
+						v980 = loc510;
+						v980.u3 = *v980.u3;
+						loc376 = v980;
+						v980 = loc375;
+						v981.u0 = 0xFF;
+						v980 &= v981;
+						loc377 = v980;
+						v980 = loc374;
+						if (v980)
+							v980 = loc376;
+						else
+							v980 = loc377;
+						loc379 = v980;
+						v980 = loc379;
+						v981.u0 = 0x01;
+						v982 = v980 > v981;
+						loc380 = v982;
+						v980 = loc380;
+						if (v980)
+							v980 = loc235;
+						else
+							v980 = loc50;
+						loc14 = v980;
+						v980 = loc14;
+						loc53 = v980;
+l0010DE1B:
+						goto l0010F51E;
+					}
+					v980 = loc330;
+					if (v980)
+					{
+						v980 = loc329;
+						v980.u3 = *v980.u3;
+						loc333 = v980;
+						v980 = loc333;
+						v981.u0 = 0x28;
+						v980 += v981;
+						loc335 = v980;
+						v980 = loc335;
+						v980.u3 = *v980.u3;
+						loc336 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc336;
+						v981 = loc329;
+						v980 = invoke_ii(v980, v981);
+						v980.u3 = g_t140048.u3;
+						loc337 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc337;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc338 = v980;
+						v980 = loc338;
+						if (v980)
+						{
+							v980.u0 = 0x24;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc466;
+						v1003 = *v980.u0;
+						v980.u3 = (word32) v1003;
+						loc94 = v980;
+						v980 = loc94;
+						loc341 = v980;
+					}
+					else
+					{
+						v980 = loc331;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc339 = v980;
+						v980 = loc328;
+						v981 = loc339;
+						*v980.u3 = (word32) v981;
+						v980 = loc322;
+						loc341 = v980;
+					}
+					v980 = loc341;
+					v981.u0 = 0x18;
+					v980 <<= v981;
+					v981.u0 = 0x18;
+					v980 >>= v981;
+					v981.u0 = 0x00;
+					v982 = v980 < v981;
+					loc340 = v982;
+					v980 = loc477;
+					v980.u3 = *v980.u3;
+					loc342 = v980;
+					v980 = loc341;
+					v981.u0 = 0xFF;
+					v980 &= v981;
+					loc343 = v980;
+					v980 = loc340;
+					if (v980)
+						v980 = loc342;
+					else
+						v980 = loc343;
+					loc344 = v980;
+					v980 = loc344;
+					v981.u0 = 0x01;
+					v982 = v980 > v981;
+					loc346 = v982;
+					v980 = loc346;
+					if (v980)
+						v980 = loc224;
+					else
+						v980 = loc50;
+					loc13 = v980;
+					v980 = loc13;
+					loc53 = v980;
+				}
+			}
+l0010F51F:
+			v980 = loc987;
+			v981.u0 = 0x33;
+			v982 = v980 == v981;
+			if (!v982)
+			{
+l0010F918:
+				v980 = loc51;
+				v981.u0 = 0x01;
+				v980 += v981;
+				loc826 = v980;
+				v980 = loc53;
+				loc50 = v980;
+				v980 = loc826;
+				loc51 = v980;
+				goto l0010D11D;
+			}
+			else
+			{
+				while (true)
+				{
+					v980.u0 = 0x00;
+					loc987 = v980;
+					v980 = arg0;
+					v980 = *v980.u0;
+					loc144 = v980;
+					v980 = loc144;
+					v981.u0 = 0x00;
+					v982 = v980 == v981;
+					loc145 = v982;
+					v980 = loc145;
+					if (v980)
+					{
+						v980.u0 = 0x01;
+						loc177 = v980;
+					}
+					else
+					{
+						v980 = loc144;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc146 = v980;
+						v980 = loc146;
+						v980 = *v980.u0;
+						loc148 = v980;
+						v980 = loc144;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc149 = v980;
+						v980 = loc149;
+						v980 = *v980.u0;
+						loc150 = v980;
+						v980 = loc148;
+						v981 = loc150;
+						v982 = v980 == v981;
+						loc151 = v982;
+						v980 = loc151;
+						if (v980)
+						{
+							v980 = loc144;
+							v980 = *v980.u0;
+							loc152 = v980;
+							v980 = loc152;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc153 = v980;
+							v980 = loc153;
+							v980 = *v980.u0;
+							loc154 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc154;
+							v981 = loc144;
+							v980 = invoke_ii(v980, v981);
+							loc155 = v980;
+							v980.u3 = g_t140048.u3;
+							loc156 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc156;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc157 = v980;
+							v980 = loc157;
+							if (v980)
+							{
+								v980.u0 = 0x23;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc155;
+							loc19 = v980;
+						}
+						else
+						{
+							v980 = loc148;
+							v980 = *v980.u0;
+							loc159 = v980;
+							v980 = loc159;
+							loc19 = v980;
+						}
+						v980 = loc19;
+						v981.u0 = ~0x00;
+						v982 = v980 == v981;
+						loc160 = v982;
+						v980 = loc160;
+						if (v980)
+						{
+							v980 = arg0;
+							v981.u0 = 0x00;
+							*v980.u0 = v981;
+							v980.u0 = 0x01;
+							loc177 = v980;
+						}
+						else
+						{
+							v980 = arg0;
+							v980 = *v980.u0;
+							loc63 = v980;
+							v980 = loc63;
+							v981.u0 = 0x00;
+							v982 = v980 == v981;
+							loc973 = v982;
+							v980 = loc973;
+							loc177 = v980;
+						}
+					}
+					v980 = loc162;
+					v981.u0 = 0x00;
+					v982 = v980 == v981;
+					loc161 = v982;
+					v980 = loc161;
+					if (v980)
+					{
+						v980 = loc68;
+						loc69 = v980;
+						v980.u0 = 0x40;
+						loc987 = v980;
+					}
+					else
+					{
+						v980 = loc162;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc163 = v980;
+						v980 = loc163;
+						v980 = *v980.u0;
+						loc164 = v980;
+						v980 = loc162;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc165 = v980;
+						v980 = loc165;
+						v980 = *v980.u0;
+						loc166 = v980;
+						v980 = loc164;
+						v981 = loc166;
+						v982 = v980 == v981;
+						loc167 = v982;
+						v980 = loc167;
+						if (v980)
+						{
+							v980 = loc162;
+							v980 = *v980.u0;
+							loc168 = v980;
+							v980 = loc168;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc170 = v980;
+							v980 = loc170;
+							v980 = *v980.u0;
+							loc171 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc171;
+							v981 = loc162;
+							v980 = invoke_ii(v980, v981);
+							loc172 = v980;
+							v980.u3 = g_t140048.u3;
+							loc173 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc173;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc174 = v980;
+							v980 = loc174;
+							if (v980)
+							{
+								v980.u0 = 0x23;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc172;
+							loc31 = v980;
+						}
+						else
+						{
+							v980 = loc164;
+							v980 = *v980.u0;
+							loc175 = v980;
+							v980 = loc175;
+							loc31 = v980;
+						}
+						v980 = loc31;
+						v981.u0 = ~0x00;
+						v982 = v980 == v981;
+						loc176 = v982;
+						v980 = loc176;
+						if (v980)
+						{
+							v980 = arg1;
+							v981.u0 = 0x00;
+							*v980.u0 = v981;
+							v980.u0 = 0x00;
+							loc69 = v980;
+							v980.u0 = 0x40;
+							loc987 = v980;
+						}
+						else
+						{
+							v980 = loc68;
+							v981.u0 = 0x00;
+							v982 = v980 == v981;
+							loc978 = v982;
+							v980 = loc177;
+							v981 = loc978;
+							v980 = v980 ^ v981;
+							loc983 = v980;
+							v980 = loc983;
+							if (!v980)
+							{
+								v980 = loc50;
+								loc53 = v980;
+								goto l0010F918;
+							}
+							v980 = loc68;
+							loc70 = v980;
+							v980 = loc68;
+							loc937 = v980;
+						}
+					}
+					v980 = loc987;
+					v981.u0 = 0x40;
+					v982 = v980 == v981;
+					if (v982)
+					{
+						v980.u0 = 0x00;
+						loc987 = v980;
+						v980 = loc177;
+						if (v980)
+						{
+							v980 = loc50;
+							loc53 = v980;
+							goto l0010F918;
+						}
+						v980 = loc69;
+						loc70 = v980;
+						v980.u0 = 0x00;
+						loc937 = v980;
+					}
+					v980 = arg0;
+					v980 = *v980.u0;
+					loc178 = v980;
+					v980 = loc178;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc179 = v980;
+					v980 = loc179;
+					v980 = *v980.u0;
+					loc181 = v980;
+					v980 = loc178;
+					v981.u0 = 0x10;
+					v980 += v981;
+					loc182 = v980;
+					v980 = loc182;
+					v980 = *v980.u0;
+					loc183 = v980;
+					v980 = loc181;
+					v981 = loc183;
+					v982 = v980 == v981;
+					loc184 = v982;
+					v980 = loc184;
+					if (v980)
+					{
+						v980 = loc178;
+						v980 = *v980.u0;
+						loc185 = v980;
+						v980 = loc185;
+						v981.u0 = 0x24;
+						v980 += v981;
+						loc186 = v980;
+						v980 = loc186;
+						v980 = *v980.u0;
+						loc187 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc187;
+						v981 = loc178;
+						v980 = invoke_ii(v980, v981);
+						loc188 = v980;
+						v980.u3 = g_t140048.u3;
+						loc189 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc189;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc190 = v980;
+						v980 = loc190;
+						if (v980)
+						{
+							v980.u0 = 0x23;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc188;
+						loc38 = v980;
+					}
+					else
+					{
+						v980 = loc181;
+						v980 = *v980.u0;
+						loc192 = v980;
+						v980 = loc192;
+						loc38 = v980;
+					}
+					v980 = arg7;
+					v980 = *v980.u0;
+					loc193 = v980;
+					v980 = loc193;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc194 = v980;
+					v980 = loc194;
+					v980 = *v980.u0;
+					loc195 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc195;
+					v981 = arg7;
+					v984.u0 = 0x2000;
+					v985 = loc38;
+					v980 = invoke_iiii(v980, v981, v984, v985);
+					loc196 = v980;
+					v980.u3 = g_t140048.u3;
+					loc197 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc197;
+					v981.u0 = 0x01;
+					v980 &= v981;
+					loc198 = v980;
+					v980 = loc198;
+					if (v980)
+						break;
+					v980 = loc196;
+					v982 = v980 == 0x00;
+					if (v982)
+					{
+						v980 = loc50;
+						loc53 = v980;
+						goto l0010F918;
+					}
+					v980 = arg0;
+					v980 = *v980.u0;
+					loc199 = v980;
+					v980 = loc199;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc200 = v980;
+					v980 = loc200;
+					v980 = *v980.u0;
+					loc201 = v980;
+					v980 = loc199;
+					v981.u0 = 0x10;
+					v980 += v981;
+					loc203 = v980;
+					v980 = loc203;
+					v980 = *v980.u0;
+					loc204 = v980;
+					v980 = loc201;
+					v981 = loc204;
+					v982 = v980 == v981;
+					loc205 = v982;
+					v980 = loc205;
+					if (v980)
+					{
+						v980 = loc199;
+						v980 = *v980.u0;
+						loc206 = v980;
+						v980 = loc206;
+						v981.u0 = 0x28;
+						v980 += v981;
+						loc207 = v980;
+						v980 = loc207;
+						v980 = *v980.u0;
+						loc208 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc208;
+						v981 = loc199;
+						v980 = invoke_ii(v980, v981);
+						loc209 = v980;
+						v980.u3 = g_t140048.u3;
+						loc210 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc210;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc211 = v980;
+						v980 = loc211;
+						if (v980)
+						{
+							v980.u0 = 0x23;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc209;
+						loc39 = v980;
+					}
+					else
+					{
+						v980 = loc201;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc212 = v980;
+						v980 = loc200;
+						v981 = loc212;
+						*v980.u0 = v981;
+						v980 = loc201;
+						v980 = *v980.u0;
+						loc214 = v980;
+						v980 = loc214;
+						loc39 = v980;
+					}
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980.u0 = 0x01AF;
+					v981 = loc246;
+					v984 = loc39;
+					invoke_vii(v980, v981, v984);
+					v980.u3 = g_t140048.u3;
+					loc215 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc215;
+					v981.u0 = 0x01;
+					v980 &= v981;
+					loc216 = v980;
+					v980 = loc216;
+					if (v980)
+					{
+						v980.u0 = 0x23;
+						loc987 = v980;
+						goto l0010F92C;
+					}
+					v980 = loc70;
+					loc68 = v980;
+					v980 = loc937;
+					loc162 = v980;
+					v980.u0 = 0x33;
+					loc987 = v980;
+				}
+				v980.u0 = 0x23;
+				loc987 = v980;
+l0010F92C:
+				v980 = loc987;
+				v981.u0 = 0x23;
+				v980 -= v981;
+				switch (v980)
+				{
+				case 0x00:
+					v980 = ___cxa_find_matching_catch_n();
+					loc950 = v980;
+					v980.u3 = g_t140094.u3;
+					loc951 = v980;
+					v980 = loc950;
+					loc965 = v980;
+					v980 = loc951;
+					loc966 = v980;
+					v980.u0 = 0x25;
+					loc987 = v980;
+					break;
+				case 0x01:
+					v980 = ___cxa_find_matching_catch_n();
+					loc952 = v980;
+					v980.u3 = g_t140094.u3;
+					loc953 = v980;
+					v980 = loc952;
+					loc965 = v980;
+					v980 = loc953;
+					loc966 = v980;
+					v980.u0 = 0x25;
+					loc987 = v980;
+					break;
+				case 0x02:
+					v980 = arg5;
+					v980 = *v980.u0;
+					loc141 = v980;
+					v980 = loc141;
+					v981.u0 = 0x04;
+					v980 |= v981;
+					loc142 = v980;
+					v980 = arg5;
+					v981 = loc142;
+					*v980.u0 = v981;
+					v980.u0 = 0x00;
+					loc52 = v980;
+					v980.u0 = 0x012A;
+					loc987 = v980;
+					break;
+				case 0x03:
+					v980 = arg5;
+					v980 = *v980.u0;
+					loc381 = v980;
+					v980 = loc381;
+					v981.u0 = 0x04;
+					v980 |= v981;
+					loc382 = v980;
+					v980 = arg5;
+					v981 = loc382;
+					*v980.u0 = v981;
+					v980.u0 = 0x00;
+					loc52 = v980;
+					v980.u0 = 0x012A;
+					loc987 = v980;
+					break;
+				case 0x04:
+					v980 = ___cxa_find_matching_catch_n();
+					loc420 = v980;
+					v980.u3 = g_t140094.u3;
+					loc421 = v980;
+					v980 = loc420;
+					loc55 = v980;
+					v980 = loc421;
+					loc56 = v980;
+					goto l00110200;
+				case 0x05:
+					v980 = ___cxa_find_matching_catch_n();
+					loc527 = v980;
+					v980.u3 = g_t140094.u3;
+					loc528 = v980;
+					v980 = loc527;
+					loc55 = v980;
+					v980 = loc528;
+					loc56 = v980;
+					goto l00110200;
+				case 0x06:
+					v980 = ___cxa_find_matching_catch_n();
+					loc529 = v980;
+					v980.u3 = g_t140094.u3;
+					loc530 = v980;
+					v980 = loc529;
+					loc55 = v980;
+					v980 = loc530;
+					loc56 = v980;
+					goto l00110200;
+				case 0x07:
+					v980 = arg5;
+					v980.u3 = *v980.u3;
+					loc541 = v980;
+					v980 = loc541;
+					v981.u0 = 0x04;
+					v980 |= v981;
+					loc542 = v980;
+					v980 = arg5;
+					v981 = loc542;
+					*v980.u3 = (word32) v981;
+					v980.u0 = 0x00;
+					loc52 = v980;
+					v980.u0 = 0x012A;
+					loc987 = v980;
+					break;
+				case 0x08:
+					v980 = ___cxa_find_matching_catch_n();
+					loc604 = v980;
+					v980.u3 = g_t140094.u3;
+					loc605 = v980;
+					v980 = loc604;
+					loc99 = v980;
+					v980 = loc605;
+					loc100 = v980;
+					v980.u0 = 0x0104;
+					loc987 = v980;
+					break;
+				case 0x09:
+					v980 = ___cxa_find_matching_catch_n();
+					loc606 = v980;
+					v980.u3 = g_t140094.u3;
+					loc607 = v980;
+					v980 = loc606;
+					loc99 = v980;
+					v980 = loc607;
+					loc100 = v980;
+					v980.u0 = 0x0104;
+					loc987 = v980;
+					break;
+				case 0x0A:
+					v980 = ___cxa_find_matching_catch_n();
+					loc608 = v980;
+					v980.u3 = g_t140094.u3;
+					loc610 = v980;
+					v980 = loc608;
+					loc99 = v980;
+					v980 = loc610;
+					loc100 = v980;
+					v980.u0 = 0x0104;
+					loc987 = v980;
+					break;
+				case 11:
+					v980 = ___cxa_find_matching_catch_n();
+					loc611 = v980;
+					v980.u3 = g_t140094.u3;
+					loc612 = v980;
+					v980 = loc611;
+					loc99 = v980;
+					v980 = loc612;
+					loc100 = v980;
+					v980.u0 = 0x0104;
+					loc987 = v980;
+					break;
+				case 0x0C:
+					v980 = arg5;
+					v980 = *v980.u0;
+					loc709 = v980;
+					v980 = loc709;
+					v981.u0 = 0x04;
+					v980 |= v981;
+					loc710 = v980;
+					v980 = arg5;
+					v981 = loc710;
+					*v980.u0 = v981;
+					v980.u0 = 0x00;
+					loc52 = v980;
+					v980.u0 = 0x012A;
+					loc987 = v980;
+					break;
+				case 0x0D:
+					v980 = arg5;
+					v980 = *v980.u0;
+					loc781 = v980;
+					v980 = loc781;
+					v981.u0 = 0x04;
+					v980 |= v981;
+					loc782 = v980;
+					v980 = arg5;
+					v981 = loc782;
+					*v980.u0 = v981;
+					v980.u0 = 0x00;
+					loc52 = v980;
+					v980.u0 = 0x012A;
+					loc987 = v980;
+					break;
+				case 0x0E:
+					v980 = arg5;
+					v980 = *v980.u0;
+					loc824 = v980;
+					v980 = loc824;
+					v981.u0 = 0x04;
+					v980 |= v981;
+					loc825 = v980;
+					v980 = arg5;
+					v981 = loc825;
+					*v980.u0 = v981;
+					v980.u0 = 0x00;
+					loc52 = v980;
+					v980.u0 = 0x012A;
+					loc987 = v980;
+					break;
+				case 0x0F:
+					v980 = loc50;
+					v981.u0 = 0x00;
+					v982 = v980 == v981;
+					loc827 = v982;
+					v980 = loc827;
+					v982 = v980 == 0x00;
+					if (v982)
+					{
+						while (true)
+						{
+							v980 = loc50;
+							v981.u0 = 0x08;
+							v980 += v981;
+							loc828 = v980;
+							v980 = loc828;
+							v981.u0 = 0x03;
+							v980 += v981;
+							loc830 = v980;
+							v980 = loc50;
+							v981.u0 = 0x04;
+							v980 += v981;
+							loc831 = v980;
+							v980.u0 = 0x01;
+							loc15 = v980;
+							v980 = loc830;
+							v1016 = *v980.u0;
+							v980.u3 = (word32) v1016;
+							loc832 = v980;
+							v980 = loc832;
+							v981.u0 = 0x18;
+							v980 <<= v981;
+							v981.u0 = 0x18;
+							v980 >>= v981;
+							v981.u0 = 0x00;
+							v982 = v980 < v981;
+							loc833 = v982;
+							v980 = loc833;
+							if (v980)
+							{
+								v980 = loc831;
+								v980.u3 = *v980.u3;
+								loc834 = v980;
+								v980 = loc834;
+								loc837 = v980;
+							}
+							else
+							{
+								v980 = loc832;
+								v981.u0 = 0xFF;
+								v980 &= v981;
+								loc835 = v980;
+								v980 = loc835;
+								loc837 = v980;
+							}
+							v980 = loc15;
+							v981 = loc837;
+							v982 = v980 < v981;
+							loc836 = v982;
+							v980 = loc836;
+							v982 = v980 == 0x00;
+							if (v982)
+								break;
+							v980 = arg0;
+							v980.u3 = *v980.u3;
+							loc838 = v980;
+							v980 = loc838;
+							v981.u0 = 0x00;
+							v982 = v980 == v981;
+							loc839 = v982;
+							v980 = loc839;
+							if (v980)
+							{
+								v980.u0 = 0x01;
+								loc944 = v980;
+								goto l0010FDB4;
+							}
+							v980 = loc838;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc841 = v980;
+							v980 = loc841;
+							v980 = *v980.u0;
+							loc842 = v980;
+							v980 = loc838;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc843 = v980;
+							v980 = loc843;
+							v980 = *v980.u0;
+							loc844 = v980;
+							v980 = loc842;
+							v981 = loc844;
+							v982 = v980 == v981;
+							loc845 = v982;
+							v980 = loc845;
+							if (v980)
+							{
+								v980 = loc838;
+								v980 = *v980.u0;
+								loc846 = v980;
+								v980 = loc846;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc847 = v980;
+								v980 = loc847;
+								v980 = *v980.u0;
+								loc848 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc848;
+								v981 = loc838;
+								v980 = invoke_ii(v980, v981);
+								loc849 = v980;
+								v980.u3 = g_t140048.u3;
+								loc850 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc850;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc852 = v980;
+								v980 = loc852;
+								if (!v980)
+								{
+									v980 = loc849;
+									loc17 = v980;
+									goto l0010FD7E;
+								}
+								v980.u0 = 0x0122;
+								loc987 = v980;
+								goto l0011005F;
+							}
+							v980 = loc842;
+							v980 = *v980.u0;
+							loc853 = v980;
+							v980 = loc853;
+							loc17 = v980;
+l0010FD7E:
+							v980 = loc17;
+							v981.u0 = ~0x00;
+							v982 = v980 == v981;
+							loc854 = v982;
+							v980 = loc854;
+							if (v980)
+							{
+								v980 = arg0;
+								v981.u0 = 0x00;
+								*v980.u0 = v981;
+								v980.u0 = 0x01;
+								loc944 = v980;
+							}
+							else
+							{
+								v980 = arg0;
+								v980 = *v980.u0;
+								loc61 = v980;
+								v980 = loc61;
+								v981.u0 = 0x00;
+								v982 = v980 == v981;
+								loc971 = v982;
+								v980 = loc971;
+								loc944 = v980;
+							}
+l0010FDB4:
+							v980 = arg1;
+							v980 = *v980.u0;
+							loc855 = v980;
+							v980 = loc855;
+							v981.u0 = 0x00;
+							v982 = v980 == v981;
+							loc856 = v982;
+							v980 = loc856;
+							if (v980)
+							{
+								v980.u0 = 0x0119;
+								loc987 = v980;
+								goto l0010FE97;
+							}
+							v980 = loc855;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc857 = v980;
+							v980 = loc857;
+							v980 = *v980.u0;
+							loc858 = v980;
+							v980 = loc855;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc859 = v980;
+							v980 = loc859;
+							v980 = *v980.u0;
+							loc860 = v980;
+							v980 = loc858;
+							v981 = loc860;
+							v982 = v980 == v981;
+							loc861 = v982;
+							v980 = loc861;
+							if (v980)
+							{
+								v980 = loc855;
+								v980 = *v980.u0;
+								loc863 = v980;
+								v980 = loc863;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc864 = v980;
+								v980 = loc864;
+								v980 = *v980.u0;
+								loc865 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc865;
+								v981 = loc855;
+								v980 = invoke_ii(v980, v981);
+								loc866 = v980;
+								v980.u3 = g_t140048.u3;
+								loc867 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc867;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc868 = v980;
+								v980 = loc868;
+								if (!v980)
+								{
+									v980 = loc866;
+									loc29 = v980;
+									goto l0010FE66;
+								}
+								v980.u0 = 0x0122;
+								loc987 = v980;
+								goto l0011005F;
+							}
+							v980 = loc858;
+							v980 = *v980.u0;
+							loc869 = v980;
+							v980 = loc869;
+							loc29 = v980;
+l0010FE66:
+							v980 = loc29;
+							v981.u0 = ~0x00;
+							v982 = v980 == v981;
+							loc870 = v982;
+							v980 = loc870;
+							if (v980)
+							{
+								v980 = arg1;
+								v981.u0 = 0x00;
+								*v980.u0 = v981;
+								v980.u0 = 0x0119;
+								loc987 = v980;
+								goto l0010FE97;
+							}
+							v980 = loc944;
+							if (!v980)
+							{
+								v980.u0 = 0x0121;
+								loc987 = v980;
+								goto l0011005F;
+							}
+l0010FE97:
+							v980 = loc987;
+							v981.u0 = 0x0119;
+							v982 = v980 == v981;
+							if (v982)
+							{
+								v980.u0 = 0x00;
+								loc987 = v980;
+								v980 = loc944;
+								if (!v980)
+									goto l0010FEB5;
+								v980.u0 = 0x0121;
+								loc987 = v980;
+								goto l0011005F;
+							}
+l0010FEB5:
+							v980 = arg0;
+							v980 = *v980.u0;
+							loc871 = v980;
+							v980 = loc871;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc872 = v980;
+							v980 = loc872;
+							v980 = *v980.u0;
+							loc874 = v980;
+							v980 = loc871;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc875 = v980;
+							v980 = loc875;
+							v980 = *v980.u0;
+							loc876 = v980;
+							v980 = loc874;
+							v981 = loc876;
+							v982 = v980 == v981;
+							loc877 = v982;
+							v980 = loc877;
+							if (v980)
+							{
+								v980 = loc871;
+								v980 = *v980.u0;
+								loc878 = v980;
+								v980 = loc878;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc879 = v980;
+								v980 = loc879;
+								v980 = *v980.u0;
+								loc880 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc880;
+								v981 = loc871;
+								v980 = invoke_ii(v980, v981);
+								loc881 = v980;
+								v980.u3 = g_t140048.u3;
+								loc882 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc882;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc883 = v980;
+								v980 = loc883;
+								if (!v980)
+								{
+									v980 = loc881;
+									loc28 = v980;
+									goto l0010FF4F;
+								}
+								v980.u0 = 0x0122;
+								loc987 = v980;
+								goto l0011005F;
+							}
+							v980 = loc874;
+							v980 = *v980.u0;
+							loc885 = v980;
+							v980 = loc885;
+							loc28 = v980;
+l0010FF4F:
+							v980 = loc830;
+							v1017 = *v980.u0;
+							v980.u3 = (word32) v1017;
+							loc886 = v980;
+							v980 = loc886;
+							v981.u0 = 0x18;
+							v980 <<= v981;
+							v981.u0 = 0x18;
+							v980 >>= v981;
+							v981.u0 = 0x00;
+							v982 = v980 < v981;
+							loc887 = v982;
+							v980 = loc887;
+							if (v980)
+							{
+								v980 = loc50;
+								v980.u3 = *v980.u3;
+								loc888 = v980;
+								v980 = loc888;
+								loc890 = v980;
+							}
+							else
+							{
+								v980 = loc50;
+								loc890 = v980;
+							}
+							v980 = loc890;
+							v981 = loc15;
+							v984.u0 = 0x02;
+							v981 <<= v984;
+							v980 += v981;
+							loc889 = v980;
+							v980 = loc889;
+							v980.u3 = *v980.u3;
+							loc891 = v980;
+							v980 = loc28;
+							v981 = loc891;
+							v982 = v980 == v981;
+							loc892 = v982;
+							v980 = loc892;
+							v982 = v980 == 0x00;
+							if (v982)
+							{
+								v980.u0 = 0x0121;
+								loc987 = v980;
+								goto l0011005F;
+							}
+							v980 = loc15;
+							v981.u0 = 0x01;
+							v980 += v981;
+							loc898 = v980;
+							v980 = arg0;
+							v980 = *v980.u0;
+							loc899 = v980;
+							v980 = loc899;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc900 = v980;
+							v980 = loc900;
+							v980 = *v980.u0;
+							loc901 = v980;
+							v980 = loc899;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc902 = v980;
+							v980 = loc902;
+							v980 = *v980.u0;
+							loc903 = v980;
+							v980 = loc901;
+							v981 = loc903;
+							v982 = v980 == v981;
+							loc904 = v982;
+							v980 = loc904;
+							if (!v980)
+							{
+								v980 = loc901;
+								v981.u0 = 0x04;
+								v980 += v981;
+								loc911 = v980;
+								v980 = loc900;
+								v981 = loc911;
+								*v980.u0 = v981;
+								v980 = loc898;
+								loc15 = v980;
+								continue;
+							}
+							v980 = loc899;
+							v980 = *v980.u0;
+							loc905 = v980;
+							v980 = loc905;
+							v981.u0 = 0x28;
+							v980 += v981;
+							loc907 = v980;
+							v980 = loc907;
+							v980 = *v980.u0;
+							loc908 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc908;
+							v981 = loc899;
+							v980 = invoke_ii(v980, v981);
+							v980.u3 = g_t140048.u3;
+							loc909 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc909;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc910 = v980;
+							v980 = loc910;
+							if (v980)
+							{
+								v980.u0 = 0x0122;
+								loc987 = v980;
+l0011005F:
+								v980 = loc987;
+								v981.u0 = 0x0121;
+								v982 = v980 == v981;
+								if (!v982)
+								{
+									v980 = loc987;
+									v981.u0 = 0x0122;
+									v982 = v980 == v981;
+									if (!v982)
+										goto l001100B2;
+									v980 = ___cxa_find_matching_catch_n();
+									loc896 = v980;
+									v980.u3 = g_t140094.u3;
+									loc897 = v980;
+									v980 = loc896;
+									loc55 = v980;
+									v980 = loc897;
+									loc56 = v980;
+									goto l00110200;
+								}
+								else
+								{
+									v980 = arg5;
+									v980 = *v980.u0;
+									loc893 = v980;
+									v980 = loc893;
+									v981.u0 = 0x04;
+									v980 |= v981;
+									loc894 = v980;
+									v980 = arg5;
+									v981 = loc894;
+									*v980.u0 = v981;
+									v980.u0 = 0x00;
+									loc52 = v980;
+									v980.u0 = 0x012A;
+									loc987 = v980;
+									goto l00110144;
+								}
+							}
+							v980 = loc898;
+							loc15 = v980;
+						}
+					}
+					else
+					{
+l001100B2:
+					}
+					v980 = loc136;
+					v980.u3 = *v980.u3;
+					loc912 = v980;
+					v980 = loc147;
+					v980.u3 = *v980.u3;
+					loc913 = v980;
+					v980 = loc912;
+					v981 = loc913;
+					v982 = v980 == v981;
+					loc914 = v982;
+					v980 = loc914;
+					if (v980)
+					{
+						v980.u0 = 0x01;
+						loc52 = v980;
+						v980.u0 = 0x012A;
+						loc987 = v980;
+					}
+					else
+					{
+						v980 = loc268;
+						v981.u0 = 0x00;
+						*v980.u0 = v981;
+						v980 = loc202;
+						v981 = loc912;
+						v984 = loc913;
+						v985 = loc268;
+						fn000EC01D(v980, v981, v984, v985);
+						v980 = loc268;
+						v980 = *v980.u0;
+						loc915 = v980;
+						v980 = loc915;
+						v981.u0 = 0x00;
+						v982 = v980 == v981;
+						loc916 = v982;
+						v980 = loc916;
+						if (v980)
+						{
+							v980.u0 = 0x01;
+							loc52 = v980;
+							v980.u0 = 0x012A;
+							loc987 = v980;
+						}
+						else
+						{
+							v980 = arg5;
+							v980 = *v980.u0;
+							loc918 = v980;
+							v980 = loc918;
+							v981.u0 = 0x04;
+							v980 |= v981;
+							loc919 = v980;
+							v980 = arg5;
+							v981 = loc919;
+							*v980.u0 = v981;
+							v980.u0 = 0x00;
+							loc52 = v980;
+							v980.u0 = 0x012A;
+							loc987 = v980;
+						}
+					}
+					break;
+				case 0x10:
+				case 0x11:
+				case 0x12:
+				case 0x13:
+				case 0x14:
+				case 0x15:
+				case 22:
+				case 0x17:
+				case 0x18:
+				case 0x19:
+				case 0x1A:
+				case 0x1B:
+				case 0x1C:
+				case 0x1D:
+				case 0x1E:
+				case 0x1F:
+				case 0x20:
+				case 33:
+				case 0x22:
+				case 0x23:
+				case 0x24:
+				case 0x25:
+				case 0x26:
+				case 0x27:
+				case 0x28:
+				case 0x29:
+				case 0x2A:
+				case 0x2B:
+				case 44:
+				case 0x2D:
+				case 0x2E:
+				case 0x2F:
+				case 0x30:
+				case 0x31:
+				case 0x32:
+				case 0x33:
+				case 0x34:
+				case 0x35:
+				case 0x36:
+				case 55:
+				case 0x38:
+				case 0x39:
+				case 0x3A:
+				case 0x3B:
+				case 0x3C:
+				case 0x3D:
+				case 0x3E:
+				case 0x3F:
+				case 0x40:
+				case 0x41:
+				case 66:
+				case 0x43:
+				case 0x44:
+				case 0x45:
+				case 0x46:
+				case 0x47:
+				case 0x48:
+				case 0x49:
+				case 0x4A:
+				case 0x4B:
+				case 0x4C:
+				case 77:
+				case 0x4E:
+				case 0x4F:
+				case 0x50:
+				case 0x51:
+				case 0x52:
+				case 0x53:
+				case 0x54:
+				case 0x55:
+				case 0x56:
+				case 0x57:
+				case 88:
+				case 0x59:
+				case 0x5A:
+				case 0x5B:
+				case 0x5C:
+				case 0x5D:
+				case 0x5E:
+				case 0x5F:
+				case 0x60:
+				case 0x61:
+				case 0x62:
+				case 99:
+				case 100:
+				case 101:
+				case 0x66:
+				case 0x67:
+				case 0x68:
+				case 0x69:
+				case 0x6A:
+				case 0x6B:
+				case 0x6C:
+				case 0x6D:
+				case 110:
+				case 111:
+				case 0x70:
+				case 113:
+				case 114:
+				case 115:
+				case 116:
+				case 117:
+				case 118:
+				case 0x77:
+				case 0x78:
+				case 121:
+				case 122:
+				case 0x7B:
+				case 0x7C:
+				case 0x7D:
+				case 0x7E:
+				case 0x7F:
+				case 0x80:
+				case 0x81:
+				case 0x82:
+				case 131:
+				case 0x84:
+				case 133:
+				case 0x86:
+				case 0x87:
+				case 0x88:
+				case 0x89:
+				case 0x8A:
+				case 0x8B:
+				case 0x8C:
+				case 141:
+				case 0x8E:
+				case 0x8F:
+				case 0x90:
+				case 0x91:
+				case 0x92:
+				case 0x93:
+				case 0x94:
+				case 0x95:
+				case 0x96:
+				case 151:
+				case 0x98:
+				case 0x99:
+				case 0x9A:
+				case 155:
+				case 0x9C:
+				case 0x9D:
+				case 0x9E:
+				case 0x9F:
+				case 0xA0:
+				case 161:
+				case 0xA2:
+				case 0xA3:
+				case 0xA4:
+				case 0xA5:
+				case 166:
+				case 0xA7:
+				case 0xA8:
+				case 0xA9:
+				case 0xAA:
+				case 171:
+				case 0xAC:
+				case 0xAD:
+				case 0xAE:
+				case 0xAF:
+				case 0xB0:
+				case 177:
+				case 0xB2:
+				case 0xB3:
+				case 0xB4:
+				case 181:
+				case 0xB6:
+				case 0xB7:
+				case 0xB8:
+				case 0xB9:
+				case 0xBA:
+				case 0xBB:
+				case 188:
+				case 0xBD:
+				case 0xBE:
+				case 191:
+				case 0xC0:
+				case 0xC1:
+				case 0xC2:
+				case 0xC3:
+				case 0xC4:
+				case 0xC5:
+				case 0xC6:
+				case 199:
+				case 200:
+				case 0xC9:
+				case 202:
+				case 0xCB:
+				case 0xCC:
+				case 0xCD:
+				case 0xCE:
+				case 0xCF:
+				case 0xD0:
+				case 0xD1:
+				case 0xD2:
+				case 211:
+				case 212:
+				case 0xD5:
+				case 0xD6:
+				case 0xD7:
+				case 0xD8:
+				case 0xD9:
+				case 0xDA:
+				case 0xDB:
+				case 220:
+				case 0xDD:
+				case 222:
+				case 223:
+				case 0xE0:
+				case 225:
+				case 226:
+				case 227:
+					break;
+				}
+l00110144:
+				v980 = loc987;
+				v981.u0 = 0x25;
+				v982 = v980 == v981;
+				if (v982)
+				{
+					v980 = loc965;
+					loc55 = v980;
+					v980 = loc966;
+					loc56 = v980;
+					goto l00110200;
+				}
+				v980 = loc987;
+				v981.u0 = 0x0104;
+				v982 = v980 == v981;
+				if (v982)
+				{
+					v980 = loc99;
+					loc55 = v980;
+					v980 = loc100;
+					loc56 = v980;
+					goto l00110200;
+				}
+				v980 = loc987;
+				v981.u0 = 0x012A;
+				v982 = v980 == v981;
+				if (v982)
+				{
+					v980 = loc246;
+					fn0011C7BA(v980);
+					v980 = loc235;
+					fn0011C7BA(v980);
+					v980 = loc224;
+					fn0011C7BA(v980);
+					v980 = loc213;
+					fn0011C7BA(v980);
+					v980 = loc202;
+					fn0011BAF7(v980);
+					v980 = loc136;
+					v980 = *v980.u0;
+					loc920 = v980;
+					v980 = loc136;
+					v981.u0 = 0x00;
+					*v980.u0 = v981;
+					v980 = loc920;
+					v981.u0 = 0x00;
+					v982 = v980 == v981;
+					loc921 = v982;
+					v980 = loc921;
+					v982 = v980 == 0x00;
+					if (v982)
+					{
+						v980 = loc290;
+						v980 = *v980.u0;
+						loc922 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc922;
+						v981 = loc920;
+						invoke_vi(v980, v981);
+						v980.u3 = g_t140048.u3;
+						loc923 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc923;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc924 = v980;
+						v980 = loc924;
+						if (v980)
+						{
+							v980.u0 = 0x00;
+							v980 = ___cxa_find_matching_catch_n(v980);
+							loc925 = v980;
+							v980.u3 = g_t140094.u3;
+							loc926 = v980;
+							v980 = loc925;
+							fn000D0E65(v980);
+						}
+					}
+					v980 = loc988;
+					g_t140030.u3 = (word32 *) v980;
+					v980 = loc52;
+					return v980;
+				}
+l00110200:
+				v980 = loc246;
+				fn0011C7BA(v980);
+				v980 = loc235;
+				fn0011C7BA(v980);
+				v980 = loc224;
+				fn0011C7BA(v980);
+				v980 = loc213;
+				fn0011C7BA(v980);
+				v980 = loc202;
+				fn0011BAF7(v980);
+				v980 = loc136;
+				v980.u3 = *v980.u3;
+				loc927 = v980;
+				v980 = loc136;
+				v981.u0 = 0x00;
+				*v980.u3 = (word32) v981;
+				v980 = loc927;
+				v981.u0 = 0x00;
+				v982 = v980 == v981;
+				loc929 = v982;
+				v980 = loc929;
+				v982 = v980 == 0x00;
+				if (v982)
+				{
+					v980 = loc290;
+					v980.u3 = *v980.u3;
+					loc930 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc930;
+					v981 = loc927;
+					invoke_vi(v980, v981);
+					v980.u3 = g_t140048.u3;
+					loc931 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc931;
+					v981.u0 = 0x01;
+					v980 &= v981;
+					loc932 = v980;
+					v980 = loc932;
+					if (v980)
+					{
+						v980.u0 = 0x00;
+						v980 = ___cxa_find_matching_catch_n(v980);
+						loc933 = v980;
+						v980.u3 = g_t140094.u3;
+						loc934 = v980;
+						v980 = loc933;
+						fn000D0E65(v980);
+					}
+				}
+				v980 = loc55;
+				___resumeException(v980);
+				v980.u0 = 0x00;
+				return v980;
+			}
+		}
+		else
+		{
+			v980 = loc50;
+			loc53 = v980;
+			goto l0010DE1B;
+		}
+	case 0x03:
+		v980 = loc50;
+		v981.u0 = 0x00;
+		v982 = v980 != v981;
+		loc383 = v982;
+		v980 = loc51;
+		v981.u0 = 0x02;
+		v982 = v980 < v981;
+		loc384 = v982;
+		v980 = loc384;
+		v981 = loc383;
+		v980 |= v981;
+		loc967 = v980;
+		v980 = loc967;
+		v982 = v980 == 0x00;
+		if (v982)
+		{
+			v980 = loc51;
+			v981.u0 = 0x02;
+			v982 = v980 == v981;
+			loc385 = v982;
+			v980 = loc609;
+			v1007.u1 = v980.u4->t0000.u1;
+			v980.u3 = (word32) v1007;
+			loc386 = v980;
+			v980 = loc386;
+			v981.u0 = 0x18;
+			v980 <<= v981;
+			v981.u0 = 0x18;
+			v980 >>= v981;
+			v981.u0 = 0x00;
+			v982 = v980 != v981;
+			loc387 = v982;
+			v980 = loc385;
+			v981 = loc387;
+			v980 &= v981;
+			loc388 = v980;
+			v980 = loc532;
+			v981 = loc388;
+			v980 |= v981;
+			loc958 = v980;
+			v980 = loc958;
+			v982 = v980 == 0x00;
+			if (v982)
+			{
+				v980.u0 = 0x00;
+				loc53 = v980;
+				goto l0010F51F;
+			}
+		}
+		v980 = loc554;
+		v1008 = *v980.u0;
+		v980.u3 = (word32) v1008;
+		loc390 = v980;
+		v980 = loc390;
+		v981.u0 = 0x18;
+		v980 <<= v981;
+		v981.u0 = 0x18;
+		v980 >>= v981;
+		v981.u0 = 0x00;
+		v982 = v980 < v981;
+		loc391 = v982;
+		v980 = loc213;
+		v980.u3 = *v980.u3;
+		loc392 = v980;
+		v980 = loc391;
+		if (v980)
+			v980 = loc392;
+		else
+			v980 = loc213;
+		loc393 = v980;
+		v980 = loc393;
+		loc394 = v980;
+		v980 = loc51;
+		v981.u0 = 0x00;
+		v982 = v980 == v981;
+		loc395 = v982;
+		v980 = loc395;
+		if (v980)
+		{
+			v980 = loc936;
+			loc78 = v980;
+			v980 = loc394;
+			loc102 = v980;
+			v980 = loc390;
+			loc451 = v980;
+			v980 = loc392;
+			loc456 = v980;
+			v980 = loc936;
+			loc479 = v980;
+		}
+		else
+		{
+			v980 = loc51;
+			v981.u0 = ~0x00;
+			v980 += v981;
+			loc396 = v980;
+			v980 = loc169;
+			v981 = loc396;
+			v980 += v981;
+			loc397 = v980;
+			v980 = loc397;
+			v1009.u1 = v980.u4->t0000.u1;
+			v980.u3 = (word32) v1009;
+			loc398 = v980;
+			v980 = loc398;
+			v981.u0 = 0xFF;
+			v980 &= v981;
+			v981.u0 = 0x02;
+			v982 = v980 < v981;
+			loc982 = v982;
+			v980 = loc982;
+			if (v980)
+			{
+				while (true)
+				{
+					v980 = loc394;
+					loc103 = v980;
+					v980 = loc390;
+					loc401 = v980;
+					v980 = loc392;
+					loc405 = v980;
+					v980 = loc401;
+					v981.u0 = 0x18;
+					v980 <<= v981;
+					v981.u0 = 0x18;
+					v980 >>= v981;
+					v981.u0 = 0x00;
+					v982 = v980 < v981;
+					loc399 = v982;
+					v980 = loc565;
+					v980.u3 = *v980.u3;
+					loc402 = v980;
+					v980 = loc401;
+					v981.u0 = 0xFF;
+					v980 &= v981;
+					loc403 = v980;
+					v980 = loc399;
+					if (v980)
+						v980 = loc405;
+					else
+						v980 = loc213;
+					loc404 = v980;
+					v980 = loc399;
+					if (v980)
+						v980 = loc402;
+					else
+						v980 = loc403;
+					loc406 = v980;
+					v980 = loc404;
+					v981 = loc406;
+					v984.u0 = 0x02;
+					v981 <<= v984;
+					v980 += v981;
+					loc407 = v980;
+					v980 = loc103;
+					loc408 = v980;
+					v980 = loc408;
+					v981 = loc407;
+					v982 = v980 == v981;
+					loc409 = v982;
+					v980 = loc409;
+					if (v980)
+						break;
+					v980 = loc408;
+					v980.u3 = *v980.u3;
+					loc410 = v980;
+					v980 = arg7;
+					v980.u3 = *v980.u3;
+					loc412 = v980;
+					v980 = loc412;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc413 = v980;
+					v980 = loc413;
+					v980.u3 = *v980.u3;
+					loc414 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc414;
+					v981 = arg7;
+					v984.u0 = 0x2000;
+					v985 = loc410;
+					v980 = invoke_iiii(v980, v981, v984, v985);
+					loc415 = v980;
+					v980.u3 = g_t140048.u3;
+					loc416 = v980;
+					v980.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v980;
+					v980 = loc416;
+					v981.u0 = 0x01;
+					v980 &= v981;
+					loc417 = v980;
+					v980 = loc417;
+					if (v980)
+					{
+						v980.u0 = 0x80;
+						loc987 = v980;
+						goto l0010F92C;
+					}
+					v980 = loc415;
+					v982 = v980 == 0x00;
+					if (v982)
+					{
+						v980.u0 = 0x7E;
+						loc987 = v980;
+						goto l0010E032;
+					}
+					v980 = loc408;
+					v981.u0 = 0x04;
+					v980 += v981;
+					loc418 = v980;
+					v980 = loc418;
+					loc419 = v980;
+					v980 = loc554;
+					v1010 = *v980.u0;
+					v980.u3 = (word32) v1010;
+					loc83 = v980;
+					v980 = loc213;
+					v980.u3 = *v980.u3;
+					loc84 = v980;
+					v980 = loc419;
+					loc103 = v980;
+					v980 = loc83;
+					loc401 = v980;
+					v980 = loc84;
+					loc405 = v980;
+				}
+				v980 = loc401;
+				loc424 = v980;
+				v980 = loc405;
+				loc426 = v980;
+l0010E032:
+				v980 = loc987;
+				v981.u0 = 0x7E;
+				v982 = v980 == v981;
+				if (v982)
+				{
+					v980.u0 = 0x00;
+					loc987 = v980;
+					v980 = loc554;
+					v1011 = *v980.u0;
+					v980.u3 = (word32) v1011;
+					loc85 = v980;
+					v980 = loc213;
+					v980.u3 = *v980.u3;
+					loc86 = v980;
+					v980 = loc85;
+					loc424 = v980;
+					v980 = loc86;
+					loc426 = v980;
+				}
+				v980 = loc424;
+				v981.u0 = 0x18;
+				v980 <<= v981;
+				v981.u0 = 0x18;
+				v980 >>= v981;
+				v981.u0 = 0x00;
+				v982 = v980 < v981;
+				loc423 = v982;
+				v980 = loc423;
+				if (v980)
+					v980 = loc426;
+				else
+					v980 = loc213;
+				loc425 = v980;
+				v980 = loc425;
+				loc427 = v980;
+				v980 = loc103;
+				v981 = loc427;
+				v980 -= v981;
+				loc428 = v980;
+				v980 = loc428;
+				v981.u0 = 0x02;
+				v980 >>= v981;
+				loc429 = v980;
+				v980 = loc587;
+				v1012.u1 = v980.u4->t0000.u1;
+				v980.u3 = (word32) v1012;
+				loc430 = v980;
+				v980 = loc430;
+				v981.u0 = 0x18;
+				v980 <<= v981;
+				v981.u0 = 0x18;
+				v980 >>= v981;
+				v981.u0 = 0x00;
+				v982 = v980 < v981;
+				loc431 = v982;
+				v980 = loc598;
+				v980.u3 = *v980.u3;
+				loc432 = v980;
+				v980 = loc430;
+				v981.u0 = 0xFF;
+				v980 &= v981;
+				loc434 = v980;
+				v980 = loc431;
+				if (v980)
+					v980 = loc432;
+				else
+					v980 = loc434;
+				loc435 = v980;
+				v980 = loc429;
+				v981 = loc435;
+				v982 = v980 > v981;
+				loc436 = v982;
+				v980 = loc436;
+				if (!v980)
+				{
+					v980 = loc246;
+					v980.u3 = *v980.u3;
+					loc437 = v980;
+					v980 = loc431;
+					if (v980)
+						v980 = loc437;
+					else
+						v980 = loc246;
+					while (true)
+					{
+						loc438 = v980;
+						v980 = loc438;
+						v981 = loc435;
+						v984.u0 = 0x02;
+						v981 <<= v984;
+						v980 += v981;
+						loc439 = v980;
+						v980.u0 = 0x00;
+						v981 = loc429;
+						v980 -= v981;
+						loc440 = v980;
+						v980 = loc439;
+						v981 = loc440;
+						v984.u0 = 0x02;
+						v981 <<= v984;
+						v980 += v981;
+						loc441 = v980;
+						v980 = loc425;
+						loc101 = v980;
+						v980 = loc441;
+						loc443 = v980;
+						v980 = loc443;
+						v981 = loc439;
+						v982 = v980 == v981;
+						loc442 = v982;
+						v980 = loc442;
+						if (v980)
+							break;
+						v980 = loc443;
+						v980 = *v980.u0;
+						loc445 = v980;
+						v980 = loc101;
+						v980 = *v980.u0;
+						loc446 = v980;
+						v980 = loc445;
+						v981 = loc446;
+						v982 = v980 == v981;
+						loc447 = v982;
+						v980 = loc447;
+						v982 = v980 == 0x00;
+						if (v982)
+						{
+							v980 = loc936;
+							loc78 = v980;
+							v980 = loc427;
+							loc102 = v980;
+							v980 = loc424;
+							loc451 = v980;
+							v980 = loc426;
+							loc456 = v980;
+							v980 = loc936;
+							loc479 = v980;
+							goto l0010E1F0;
+						}
+						v980 = loc443;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc448 = v980;
+						v980 = loc101;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc449 = v980;
+						v980 = loc449;
+						loc101 = v980;
+						v980 = loc448;
+						loc443 = v980;
+					}
+					v980 = loc936;
+					loc78 = v980;
+					v980 = loc103;
+					loc102 = v980;
+					v980 = loc424;
+					loc451 = v980;
+					v980 = loc426;
+					loc456 = v980;
+					v980 = loc936;
+					loc479 = v980;
+l0010E1F0:
+					while (true)
+					{
+						v980 = loc451;
+						v981.u0 = 0x18;
+						v980 <<= v981;
+						v981.u0 = 0x18;
+						v980 >>= v981;
+						v981.u0 = 0x00;
+						v982 = v980 < v981;
+						loc450 = v982;
+						v980 = loc565;
+						v980 = *v980.u0;
+						loc452 = v980;
+						v980 = loc451;
+						v981.u0 = 0xFF;
+						v980 &= v981;
+						loc453 = v980;
+						v980 = loc450;
+						if (v980)
+							v980 = loc456;
+						else
+							v980 = loc213;
+						loc454 = v980;
+						v980 = loc450;
+						if (v980)
+							v980 = loc452;
+						else
+							v980 = loc453;
+						loc457 = v980;
+						v980 = loc454;
+						v981 = loc457;
+						v984.u0 = 0x02;
+						v981 <<= v984;
+						v980 += v981;
+						loc458 = v980;
+						v980 = loc102;
+						loc459 = v980;
+						v980 = loc459;
+						v981 = loc458;
+						v982 = v980 == v981;
+						loc460 = v982;
+						v980 = loc460;
+						if (v980)
+							break;
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc461 = v980;
+						v980 = loc461;
+						v981.u0 = 0x00;
+						v982 = v980 == v981;
+						loc462 = v982;
+						v980 = loc462;
+						if (v980)
+						{
+							v980.u0 = 0x01;
+							loc494 = v980;
+						}
+						else
+						{
+							v980 = loc461;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc463 = v980;
+							v980 = loc463;
+							v980 = *v980.u0;
+							loc464 = v980;
+							v980 = loc461;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc465 = v980;
+							v980 = loc465;
+							v980 = *v980.u0;
+							loc467 = v980;
+							v980 = loc464;
+							v981 = loc467;
+							v982 = v980 == v981;
+							loc468 = v982;
+							v980 = loc468;
+							if (v980)
+							{
+								v980 = loc461;
+								v980 = *v980.u0;
+								loc469 = v980;
+								v980 = loc469;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc470 = v980;
+								v980 = loc470;
+								v980 = *v980.u0;
+								loc471 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc471;
+								v981 = loc461;
+								v980 = invoke_ii(v980, v981);
+								loc472 = v980;
+								v980.u3 = g_t140048.u3;
+								loc473 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc473;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc474 = v980;
+								v980 = loc474;
+								if (v980)
+								{
+									v980.u0 = 0x9E;
+									loc987 = v980;
+									goto l0010F92C;
+								}
+								v980 = loc472;
+								loc23 = v980;
+							}
+							else
+							{
+								v980 = loc464;
+								v980 = *v980.u0;
+								loc475 = v980;
+								v980 = loc475;
+								loc23 = v980;
+							}
+							v980 = loc23;
+							v981.u0 = ~0x00;
+							v982 = v980 == v981;
+							loc476 = v982;
+							v980 = loc476;
+							if (v980)
+							{
+								v980 = arg0;
+								v981.u0 = 0x00;
+								*v980.u0 = v981;
+								v980.u0 = 0x01;
+								loc494 = v980;
+							}
+							else
+							{
+								v980 = arg0;
+								v980 = *v980.u0;
+								loc67 = v980;
+								v980 = loc67;
+								v981.u0 = 0x00;
+								v982 = v980 == v981;
+								loc977 = v982;
+								v980 = loc977;
+								loc494 = v980;
+							}
+						}
+						v980 = loc479;
+						v981.u0 = 0x00;
+						v982 = v980 == v981;
+						loc478 = v982;
+						v980 = loc478;
+						if (v980)
+						{
+							v980 = loc78;
+							loc80 = v980;
+							v980.u0 = 0x94;
+							loc987 = v980;
+						}
+						else
+						{
+							v980 = loc479;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc480 = v980;
+							v980 = loc480;
+							v980 = *v980.u0;
+							loc481 = v980;
+							v980 = loc479;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc482 = v980;
+							v980 = loc482;
+							v980 = *v980.u0;
+							loc483 = v980;
+							v980 = loc481;
+							v981 = loc483;
+							v982 = v980 == v981;
+							loc484 = v982;
+							v980 = loc484;
+							if (v980)
+							{
+								v980 = loc479;
+								v980 = *v980.u0;
+								loc485 = v980;
+								v980 = loc485;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc486 = v980;
+								v980 = loc486;
+								v980 = *v980.u0;
+								loc487 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc487;
+								v981 = loc479;
+								v980 = invoke_ii(v980, v981);
+								loc489 = v980;
+								v980.u3 = g_t140048.u3;
+								loc490 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc490;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc491 = v980;
+								v980 = loc491;
+								if (v980)
+								{
+									v980.u0 = 0x9E;
+									loc987 = v980;
+									goto l0010F92C;
+								}
+								v980 = loc489;
+								loc35 = v980;
+							}
+							else
+							{
+								v980 = loc481;
+								v980 = *v980.u0;
+								loc492 = v980;
+								v980 = loc492;
+								loc35 = v980;
+							}
+							v980 = loc35;
+							v981.u0 = ~0x00;
+							v982 = v980 == v981;
+							loc493 = v982;
+							v980 = loc493;
+							if (v980)
+							{
+								v980 = arg1;
+								v981.u0 = 0x00;
+								*v980.u0 = v981;
+								v980.u0 = 0x00;
+								loc80 = v980;
+								v980.u0 = 0x94;
+								loc987 = v980;
+							}
+							else
+							{
+								v980 = loc78;
+								v981.u0 = 0x00;
+								v982 = v980 == v981;
+								loc981 = v982;
+								v980 = loc494;
+								v981 = loc981;
+								v980 = v980 ^ v981;
+								loc986 = v980;
+								v980 = loc986;
+								if (!v980)
+								{
+									v980 = loc459;
+									loc57 = v980;
+									goto l0010E5F6;
+								}
+								v980 = loc78;
+								loc79 = v980;
+								v980 = loc78;
+								loc938 = v980;
+							}
+						}
+						v980 = loc987;
+						v981.u0 = 0x94;
+						v982 = v980 == v981;
+						if (v982)
+						{
+							v980.u0 = 0x00;
+							loc987 = v980;
+							v980 = loc494;
+							if (v980)
+							{
+								v980 = loc459;
+								loc57 = v980;
+								goto l0010E5F6;
+							}
+							v980 = loc80;
+							loc79 = v980;
+							v980.u0 = 0x00;
+							loc938 = v980;
+						}
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc495 = v980;
+						v980 = loc495;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc496 = v980;
+						v980 = loc496;
+						v980 = *v980.u0;
+						loc497 = v980;
+						v980 = loc495;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc498 = v980;
+						v980 = loc498;
+						v980 = *v980.u0;
+						loc500 = v980;
+						v980 = loc497;
+						v981 = loc500;
+						v982 = v980 == v981;
+						loc501 = v982;
+						v980 = loc501;
+						if (v980)
+						{
+							v980 = loc495;
+							v980 = *v980.u0;
+							loc502 = v980;
+							v980 = loc502;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc503 = v980;
+							v980 = loc503;
+							v980 = *v980.u0;
+							loc504 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc504;
+							v981 = loc495;
+							v980 = invoke_ii(v980, v981);
+							loc505 = v980;
+							v980.u3 = g_t140048.u3;
+							loc506 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc506;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc507 = v980;
+							v980 = loc507;
+							if (v980)
+							{
+								v980.u0 = 0x9E;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc505;
+							loc48 = v980;
+						}
+						else
+						{
+							v980 = loc497;
+							v980 = *v980.u0;
+							loc508 = v980;
+							v980 = loc508;
+							loc48 = v980;
+						}
+						v980 = loc459;
+						v980 = *v980.u0;
+						loc509 = v980;
+						v980 = loc48;
+						v981 = loc509;
+						v982 = v980 == v981;
+						loc511 = v982;
+						v980 = loc511;
+						v982 = v980 == 0x00;
+						if (v982)
+						{
+							v980 = loc459;
+							loc57 = v980;
+							goto l0010E5F6;
+						}
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc512 = v980;
+						v980 = loc512;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc513 = v980;
+						v980 = loc513;
+						v980 = *v980.u0;
+						loc514 = v980;
+						v980 = loc512;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc515 = v980;
+						v980 = loc515;
+						v980 = *v980.u0;
+						loc516 = v980;
+						v980 = loc514;
+						v981 = loc516;
+						v982 = v980 == v981;
+						loc517 = v982;
+						v980 = loc517;
+						if (v980)
+						{
+							v980 = loc512;
+							v980 = *v980.u0;
+							loc518 = v980;
+							v980 = loc518;
+							v981.u0 = 0x28;
+							v980 += v981;
+							loc519 = v980;
+							v980 = loc519;
+							v980 = *v980.u0;
+							loc520 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc520;
+							v981 = loc512;
+							v980 = invoke_ii(v980, v981);
+							v980.u3 = g_t140048.u3;
+							loc522 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc522;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc523 = v980;
+							v980 = loc523;
+							if (v980)
+							{
+								v980.u0 = 0x9F;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+						}
+						else
+						{
+							v980 = loc514;
+							v981.u0 = 0x04;
+							v980 += v981;
+							loc524 = v980;
+							v980 = loc513;
+							v981 = loc524;
+							*v980.u0 = v981;
+						}
+						v980 = loc459;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc525 = v980;
+						v980 = loc525;
+						loc526 = v980;
+						v980 = loc554;
+						v1013 = *v980.u0;
+						v980.u3 = (word32) v1013;
+						loc87 = v980;
+						v980 = loc213;
+						v980.u3 = *v980.u3;
+						loc88 = v980;
+						v980 = loc79;
+						loc78 = v980;
+						v980 = loc526;
+						loc102 = v980;
+						v980 = loc87;
+						loc451 = v980;
+						v980 = loc88;
+						loc456 = v980;
+						v980 = loc938;
+						loc479 = v980;
+					}
+					v980 = loc458;
+					loc57 = v980;
+l0010E5F6:
+					v980 = loc532;
+					if (v980)
+					{
+						v980 = loc554;
+						v1014.u1 = v980.u4->t0000.u1;
+						v980.u3 = (word32) v1014;
+						loc531 = v980;
+						v980 = loc531;
+						v981.u0 = 0x18;
+						v980 <<= v981;
+						v981.u0 = 0x18;
+						v980 >>= v981;
+						v981.u0 = 0x00;
+						v982 = v980 < v981;
+						loc533 = v982;
+						v980 = loc213;
+						v980.u3 = *v980.u3;
+						loc534 = v980;
+						v980 = loc565;
+						v980.u3 = *v980.u3;
+						loc535 = v980;
+						v980 = loc531;
+						v981.u0 = 0xFF;
+						v980 &= v981;
+						loc536 = v980;
+						v980 = loc533;
+						if (v980)
+							v980 = loc534;
+						else
+							v980 = loc213;
+						loc537 = v980;
+						v980 = loc533;
+						if (v980)
+							v980 = loc535;
+						else
+							v980 = loc536;
+						loc538 = v980;
+						v980 = loc537;
+						v981 = loc538;
+						v984.u0 = 0x02;
+						v981 <<= v984;
+						v980 += v981;
+						loc539 = v980;
+						v980 = loc57;
+						v981 = loc539;
+						v982 = v980 == v981;
+						loc540 = v982;
+						v980 = loc540;
+						if (!v980)
+						{
+							v980.u0 = 0xA2;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc50;
+						loc53 = v980;
+					}
+					else
+					{
+						v980 = loc50;
+						loc53 = v980;
+					}
+l0010F51E:
+					goto l0010F51F;
+				}
+				v980 = loc936;
+				loc78 = v980;
+				v980 = loc427;
+				loc102 = v980;
+				v980 = loc424;
+				loc451 = v980;
+				v980 = loc426;
+				loc456 = v980;
+				v980 = loc936;
+				loc479 = v980;
+			}
+			else
+			{
+				v980 = loc936;
+				loc78 = v980;
+				v980 = loc394;
+				loc102 = v980;
+				v980 = loc390;
+				loc451 = v980;
+				v980 = loc392;
+				loc456 = v980;
+				v980 = loc936;
+				loc479 = v980;
+			}
+		}
+		goto l0010E1F0;
+	case 0x04:
+		break;
+	}
+	while (true)
+	{
+		v980.u0 = 0x00;
+		loc49 = v980;
+		v980 = loc936;
+		loc75 = v980;
+		v980 = loc936;
+		loc561 = v980;
+		v980 = arg0;
+		v980 = *v980.u0;
+		loc544 = v980;
+		v980 = loc544;
+		v981.u0 = 0x00;
+		v982 = v980 == v981;
+		loc545 = v982;
+		v980 = loc545;
+		if (v980)
+		{
+			v980.u0 = 0x01;
+			loc577 = v980;
+		}
+		else
+		{
+			v980 = loc544;
+			v981.u0 = 0x0C;
+			v980 += v981;
+			loc546 = v980;
+			v980 = loc546;
+			v980 = *v980.u0;
+			loc547 = v980;
+			v980 = loc544;
+			v981.u0 = 0x10;
+			v980 += v981;
+			loc548 = v980;
+			v980 = loc548;
+			v980 = *v980.u0;
+			loc549 = v980;
+			v980 = loc547;
+			v981 = loc549;
+			v982 = v980 == v981;
+			loc550 = v982;
+			v980 = loc550;
+			if (v980)
+			{
+				v980 = loc544;
+				v980 = *v980.u0;
+				loc551 = v980;
+				v980 = loc551;
+				v981.u0 = 0x24;
+				v980 += v981;
+				loc552 = v980;
+				v980 = loc552;
+				v980 = *v980.u0;
+				loc553 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc553;
+				v981 = loc544;
+				v980 = invoke_ii(v980, v981);
+				loc555 = v980;
+				v980.u3 = g_t140048.u3;
+				loc556 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc556;
+				v981.u0 = 0x01;
+				v980 &= v981;
+				loc557 = v980;
+				v980 = loc557;
+				if (v980)
+				{
+					v980.u0 = 0xBB;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = loc555;
+				loc22 = v980;
+			}
+			else
+			{
+				v980 = loc547;
+				v980 = *v980.u0;
+				loc558 = v980;
+				v980 = loc558;
+				loc22 = v980;
+			}
+			v980 = loc22;
+			v981.u0 = ~0x00;
+			v982 = v980 == v981;
+			loc559 = v982;
+			v980 = loc559;
+			if (v980)
+			{
+				v980 = arg0;
+				v981.u0 = 0x00;
+				*v980.u0 = v981;
+				v980.u0 = 0x01;
+				loc577 = v980;
+			}
+			else
+			{
+				v980 = arg0;
+				v980 = *v980.u0;
+				loc66 = v980;
+				v980 = loc66;
+				v981.u0 = 0x00;
+				v982 = v980 == v981;
+				loc976 = v982;
+				v980 = loc976;
+				loc577 = v980;
+			}
+		}
+		v980 = loc561;
+		v981.u0 = 0x00;
+		v982 = v980 == v981;
+		loc560 = v982;
+		v980 = loc560;
+		if (v980)
+		{
+			v980 = loc75;
+			loc76 = v980;
+			v980.u0 = 0xB0;
+			loc987 = v980;
+		}
+		else
+		{
+			v980 = loc561;
+			v981.u0 = 0x0C;
+			v980 += v981;
+			loc562 = v980;
+			v980 = loc562;
+			v980 = *v980.u0;
+			loc563 = v980;
+			v980 = loc561;
+			v981.u0 = 0x10;
+			v980 += v981;
+			loc564 = v980;
+			v980 = loc564;
+			v980 = *v980.u0;
+			loc566 = v980;
+			v980 = loc563;
+			v981 = loc566;
+			v982 = v980 == v981;
+			loc567 = v982;
+			v980 = loc567;
+			if (v980)
+			{
+				v980 = loc561;
+				v980 = *v980.u0;
+				loc568 = v980;
+				v980 = loc568;
+				v981.u0 = 0x24;
+				v980 += v981;
+				loc569 = v980;
+				v980 = loc569;
+				v980 = *v980.u0;
+				loc570 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc570;
+				v981 = loc561;
+				v980 = invoke_ii(v980, v981);
+				loc571 = v980;
+				v980.u3 = g_t140048.u3;
+				loc572 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc572;
+				v981.u0 = 0x01;
+				v980 &= v981;
+				loc573 = v980;
+				v980 = loc573;
+				if (v980)
+				{
+					v980.u0 = 0xBB;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = loc571;
+				loc34 = v980;
+			}
+			else
+			{
+				v980 = loc563;
+				v980 = *v980.u0;
+				loc574 = v980;
+				v980 = loc574;
+				loc34 = v980;
+			}
+			v980 = loc34;
+			v981.u0 = ~0x00;
+			v982 = v980 == v981;
+			loc575 = v982;
+			v980 = loc575;
+			if (v980)
+			{
+				v980 = arg1;
+				v981.u0 = 0x00;
+				*v980.u0 = v981;
+				v980.u0 = 0x00;
+				loc76 = v980;
+				v980.u0 = 0xB0;
+				loc987 = v980;
+			}
+			else
+			{
+				v980 = loc75;
+				v981.u0 = 0x00;
+				v982 = v980 == v981;
+				loc980 = v982;
+				v980 = loc577;
+				v981 = loc980;
+				v980 = v980 ^ v981;
+				loc985 = v980;
+				v980 = loc985;
+				if (!v980)
+				{
+					v980 = loc75;
+					loc74 = v980;
+					goto l0010EBD7;
+				}
+				v980 = loc75;
+				loc77 = v980;
+				v980 = loc75;
+				loc940 = v980;
+			}
+		}
+		v980 = loc987;
+		v981.u0 = 0xB0;
+		v982 = v980 == v981;
+		if (v982)
+		{
+			v980.u0 = 0x00;
+			loc987 = v980;
+			v980 = loc577;
+			if (v980)
+			{
+				v980 = loc76;
+				loc74 = v980;
+				goto l0010EBD7;
+			}
+			v980 = loc76;
+			loc77 = v980;
+			v980.u0 = 0x00;
+			loc940 = v980;
+		}
+		v980 = arg0;
+		v980 = *v980.u0;
+		loc578 = v980;
+		v980 = loc578;
+		v981.u0 = 0x0C;
+		v980 += v981;
+		loc579 = v980;
+		v980 = loc579;
+		v980 = *v980.u0;
+		loc580 = v980;
+		v980 = loc578;
+		v981.u0 = 0x10;
+		v980 += v981;
+		loc581 = v980;
+		v980 = loc581;
+		v980 = *v980.u0;
+		loc582 = v980;
+		v980 = loc580;
+		v981 = loc582;
+		v982 = v980 == v981;
+		loc583 = v982;
+		v980 = loc583;
+		if (v980)
+		{
+			v980 = loc578;
+			v980 = *v980.u0;
+			loc584 = v980;
+			v980 = loc584;
+			v981.u0 = 0x24;
+			v980 += v981;
+			loc585 = v980;
+			v980 = loc585;
+			v980 = *v980.u0;
+			loc586 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc586;
+			v981 = loc578;
+			v980 = invoke_ii(v980, v981);
+			loc588 = v980;
+			v980.u3 = g_t140048.u3;
+			loc589 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc589;
+			v981.u0 = 0x01;
+			v980 &= v981;
+			loc590 = v980;
+			v980 = loc590;
+			if (v980)
+			{
+				v980.u0 = 0xBB;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc588;
+			loc47 = v980;
+		}
+		else
+		{
+			v980 = loc580;
+			v980 = *v980.u0;
+			loc591 = v980;
+			v980 = loc591;
+			loc47 = v980;
+		}
+		v980 = arg7;
+		v980 = *v980.u0;
+		loc592 = v980;
+		v980 = loc592;
+		v981.u0 = 0x0C;
+		v980 += v981;
+		loc593 = v980;
+		v980 = loc593;
+		v980 = *v980.u0;
+		loc594 = v980;
+		v980.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v980;
+		v980 = loc594;
+		v981 = arg7;
+		v984.u0 = 0x0800;
+		v985 = loc47;
+		v980 = invoke_iiii(v980, v981, v984, v985);
+		loc595 = v980;
+		v980.u3 = g_t140048.u3;
+		loc596 = v980;
+		v980.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v980;
+		v980 = loc596;
+		v981.u0 = 0x01;
+		v980 &= v981;
+		loc597 = v980;
+		v980 = loc597;
+		if (v980)
+		{
+			v980.u0 = 0xBD;
+			loc987 = v980;
+			goto l0010F92C;
+		}
+		v980 = loc595;
+		if (v980)
+		{
+			v980 = arg9;
+			v980 = *v980.u0;
+			loc599 = v980;
+			v980 = loc114;
+			v980 = *v980.u0;
+			loc600 = v980;
+			v980 = loc599;
+			v981 = loc600;
+			v982 = v980 == v981;
+			loc601 = v982;
+			v980 = loc601;
+			if (v980)
+			{
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980.u0 = 434;
+				v981 = arg8;
+				v984 = arg9;
+				v985 = loc114;
+				invoke_viii(v980, v981, v984, v985);
+				v980.u3 = g_t140048.u3;
+				loc602 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc602;
+				v981.u0 = 0x01;
+				v980 &= v981;
+				loc603 = v980;
+				v980 = loc603;
+				if (v980)
+				{
+					v980.u0 = 0xBD;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = arg9;
+				v980 = *v980.u0;
+				loc81 = v980;
+				v980 = loc81;
+				loc614 = v980;
+			}
+			else
+			{
+				v980 = loc599;
+				loc614 = v980;
+			}
+			v980 = loc614;
+			v981.u0 = 0x04;
+			v980 += v981;
+			loc613 = v980;
+			v980 = arg9;
+			v981 = loc613;
+			*v980.u0 = v981;
+			v980 = loc614;
+			v981 = loc47;
+			*v980.u0 = v981;
+			v980 = loc49;
+			v981.u0 = 0x01;
+			v980 += v981;
+			loc615 = v980;
+			v980 = loc615;
+			loc54 = v980;
+		}
+		else
+		{
+			v980 = loc620;
+			v1015 = *v980.u0;
+			v980.u3 = (word32) v1015;
+			loc616 = v980;
+			v980 = loc616;
+			v981.u0 = 0x18;
+			v980 <<= v981;
+			v981.u0 = 0x18;
+			v980 >>= v981;
+			v981.u0 = 0x00;
+			v982 = v980 < v981;
+			loc617 = v982;
+			v980 = loc631;
+			v980.u3 = *v980.u3;
+			loc618 = v980;
+			v980 = loc616;
+			v981.u0 = 0xFF;
+			v980 &= v981;
+			loc619 = v980;
+			v980 = loc617;
+			if (v980)
+				v980 = loc618;
+			else
+				v980 = loc619;
+			loc621 = v980;
+			v980 = loc621;
+			v981.u0 = 0x00;
+			v982 = v980 != v981;
+			loc622 = v982;
+			v980 = loc49;
+			v981.u0 = 0x00;
+			v982 = v980 != v981;
+			loc623 = v982;
+			v980 = loc623;
+			v981 = loc622;
+			v980 &= v981;
+			loc968 = v980;
+			v980 = loc191;
+			v980.u3 = *v980.u3;
+			loc624 = v980;
+			v980 = loc47;
+			v981 = loc624;
+			v982 = v980 == v981;
+			loc625 = v982;
+			v980 = loc625;
+			v981 = loc968;
+			v980 &= v981;
+			loc970 = v980;
+			v980 = loc970;
+			v982 = v980 == 0x00;
+			if (v982)
+			{
+				v980 = loc77;
+				loc74 = v980;
+l0010EBD7:
+				v980 = loc136;
+				v980 = *v980.u0;
+				loc647 = v980;
+				v980 = loc147;
+				v980 = *v980.u0;
+				loc648 = v980;
+				v980 = loc647;
+				v981 = loc648;
+				v982 = v980 != v981;
+				loc649 = v982;
+				v980 = loc49;
+				v981.u0 = 0x00;
+				v982 = v980 != v981;
+				loc650 = v982;
+				v980 = loc650;
+				v981 = loc649;
+				v980 &= v981;
+				loc969 = v980;
+				v980 = loc969;
+				if (v980)
+				{
+					v980 = loc158;
+					v980 = *v980.u0;
+					loc651 = v980;
+					v980 = loc648;
+					v981 = loc651;
+					v982 = v980 == v981;
+					loc652 = v982;
+					v980 = loc652;
+					if (v980)
+					{
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980.u0 = 0x01AB;
+						v981 = loc136;
+						v984 = loc147;
+						v985 = loc158;
+						invoke_viii(v980, v981, v984, v985);
+						v980.u3 = g_t140048.u3;
+						loc654 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc654;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc655 = v980;
+						v980 = loc655;
+						if (v980)
+						{
+							v980.u0 = 188;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc147;
+						v980 = *v980.u0;
+						loc82 = v980;
+						v980 = loc82;
+						loc657 = v980;
+					}
+					else
+					{
+						v980 = loc648;
+						loc657 = v980;
+					}
+					v980 = loc657;
+					v981.u0 = 0x04;
+					v980 += v981;
+					loc656 = v980;
+					v980 = loc147;
+					v981 = loc656;
+					*v980.u0 = v981;
+					v980 = loc657;
+					v981 = loc49;
+					*v980.u0 = v981;
+				}
+				v980 = loc257;
+				v980 = *v980.u0;
+				loc658 = v980;
+				v980 = loc658;
+				v981.u0 = 0x00;
+				v982 = v980 > v981;
+				loc659 = v982;
+				v980 = loc659;
+				if (v980)
+				{
+					v980 = arg0;
+					v980 = *v980.u0;
+					loc660 = v980;
+					v980 = loc660;
+					v981.u0 = 0x00;
+					v982 = v980 == v981;
+					loc661 = v982;
+					v980 = loc661;
+					if (v980)
+					{
+						v980.u0 = 0x01;
+						loc941 = v980;
+					}
+					else
+					{
+						v980 = loc660;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc662 = v980;
+						v980 = loc662;
+						v980 = *v980.u0;
+						loc663 = v980;
+						v980 = loc660;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc665 = v980;
+						v980 = loc665;
+						v980 = *v980.u0;
+						loc666 = v980;
+						v980 = loc663;
+						v981 = loc666;
+						v982 = v980 == v981;
+						loc667 = v982;
+						v980 = loc667;
+						if (v980)
+						{
+							v980 = loc660;
+							v980 = *v980.u0;
+							loc668 = v980;
+							v980 = loc668;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc669 = v980;
+							v980 = loc669;
+							v980 = *v980.u0;
+							loc670 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc670;
+							v981 = loc660;
+							v980 = invoke_ii(v980, v981);
+							loc671 = v980;
+							v980.u3 = g_t140048.u3;
+							loc672 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc672;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc673 = v980;
+							v980 = loc673;
+							if (v980)
+							{
+								v980.u0 = 188;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc671;
+							loc21 = v980;
+						}
+						else
+						{
+							v980 = loc663;
+							v980 = *v980.u0;
+							loc674 = v980;
+							v980 = loc674;
+							loc21 = v980;
+						}
+						v980 = loc21;
+						v981.u0 = ~0x00;
+						v982 = v980 == v981;
+						loc676 = v982;
+						v980 = loc676;
+						if (v980)
+						{
+							v980 = arg0;
+							v981.u0 = 0x00;
+							*v980.u0 = v981;
+							v980.u0 = 0x01;
+							loc941 = v980;
+						}
+						else
+						{
+							v980 = arg0;
+							v980 = *v980.u0;
+							loc65 = v980;
+							v980 = loc65;
+							v981.u0 = 0x00;
+							v982 = v980 == v981;
+							loc975 = v982;
+							v980 = loc975;
+							loc941 = v980;
+						}
+					}
+					v980 = loc74;
+					v981.u0 = 0x00;
+					v982 = v980 == v981;
+					loc677 = v982;
+					v980 = loc677;
+					if (v980)
+					{
+						v980.u0 = 0xDA;
+						loc987 = v980;
+					}
+					else
+					{
+						v980 = loc74;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc678 = v980;
+						v980 = loc678;
+						v980 = *v980.u0;
+						loc679 = v980;
+						v980 = loc74;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc680 = v980;
+						v980 = loc680;
+						v980 = *v980.u0;
+						loc681 = v980;
+						v980 = loc679;
+						v981 = loc681;
+						v982 = v980 == v981;
+						loc682 = v982;
+						v980 = loc682;
+						if (v980)
+						{
+							v980 = loc74;
+							v980 = *v980.u0;
+							loc683 = v980;
+							v980 = loc683;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc684 = v980;
+							v980 = loc684;
+							v980 = *v980.u0;
+							loc685 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc685;
+							v981 = loc74;
+							v980 = invoke_ii(v980, v981);
+							loc687 = v980;
+							v980.u3 = g_t140048.u3;
+							loc688 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc688;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc689 = v980;
+							v980 = loc689;
+							if (v980)
+							{
+								v980.u0 = 188;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc687;
+							loc33 = v980;
+						}
+						else
+						{
+							v980 = loc679;
+							v980 = *v980.u0;
+							loc690 = v980;
+							v980 = loc690;
+							loc33 = v980;
+						}
+						v980 = loc33;
+						v981.u0 = ~0x00;
+						v982 = v980 == v981;
+						loc691 = v982;
+						v980 = loc691;
+						if (v980)
+						{
+							v980 = arg1;
+							v981.u0 = 0x00;
+							*v980.u0 = v981;
+							v980.u0 = 0xDA;
+							loc987 = v980;
+						}
+						else
+						{
+							v980 = loc941;
+							if (!v980)
+							{
+								v980.u0 = 0xE0;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc74;
+							loc942 = v980;
+						}
+					}
+					v980 = loc987;
+					v981.u0 = 0xDA;
+					v982 = v980 == v981;
+					if (v982)
+					{
+						v980.u0 = 0x00;
+						loc987 = v980;
+						v980 = loc941;
+						if (v980)
+						{
+							v980.u0 = 0xE0;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980.u0 = 0x00;
+						loc942 = v980;
+					}
+					v980 = arg0;
+					v980 = *v980.u0;
+					loc692 = v980;
+					v980 = loc692;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc693 = v980;
+					v980 = loc693;
+					v980 = *v980.u0;
+					loc694 = v980;
+					v980 = loc692;
+					v981.u0 = 0x10;
+					v980 += v981;
+					loc695 = v980;
+					v980 = loc695;
+					v980 = *v980.u0;
+					loc696 = v980;
+					v980 = loc694;
+					v981 = loc696;
+					v982 = v980 == v981;
+					loc698 = v982;
+					v980 = loc698;
+					if (v980)
+					{
+						v980 = loc692;
+						v980 = *v980.u0;
+						loc699 = v980;
+						v980 = loc699;
+						v981.u0 = 0x24;
+						v980 += v981;
+						loc700 = v980;
+						v980 = loc700;
+						v980 = *v980.u0;
+						loc701 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc701;
+						v981 = loc692;
+						v980 = invoke_ii(v980, v981);
+						loc702 = v980;
+						v980.u3 = g_t140048.u3;
+						loc703 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc703;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc704 = v980;
+						v980 = loc704;
+						if (v980)
+						{
+							v980.u0 = 188;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc702;
+						loc45 = v980;
+					}
+					else
+					{
+						v980 = loc694;
+						v980 = *v980.u0;
+						loc705 = v980;
+						v980 = loc705;
+						loc45 = v980;
+					}
+					v980 = loc180;
+					v980 = *v980.u0;
+					loc706 = v980;
+					v980 = loc45;
+					v981 = loc706;
+					v982 = v980 == v981;
+					loc707 = v982;
+					v980 = loc707;
+					v982 = v980 == 0x00;
+					if (v982)
+					{
+						v980.u0 = 0xE0;
+						loc987 = v980;
+						goto l0010F92C;
+					}
+					v980 = arg0;
+					v980 = *v980.u0;
+					loc711 = v980;
+					v980 = loc711;
+					v981.u0 = 0x0C;
+					v980 += v981;
+					loc712 = v980;
+					v980 = loc712;
+					v980 = *v980.u0;
+					loc713 = v980;
+					v980 = loc711;
+					v981.u0 = 0x10;
+					v980 += v981;
+					loc714 = v980;
+					v980 = loc714;
+					v980 = *v980.u0;
+					loc715 = v980;
+					v980 = loc713;
+					v981 = loc715;
+					v982 = v980 == v981;
+					loc716 = v982;
+					v980 = loc716;
+					if (v980)
+					{
+						v980 = loc711;
+						v980 = *v980.u0;
+						loc717 = v980;
+						v980 = loc717;
+						v981.u0 = 0x28;
+						v980 += v981;
+						loc718 = v980;
+						v980 = loc718;
+						v980 = *v980.u0;
+						loc720 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc720;
+						v981 = loc711;
+						v980 = invoke_ii(v980, v981);
+						v980.u3 = g_t140048.u3;
+						loc721 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc721;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc722 = v980;
+						v980 = loc722;
+						if (v980)
+						{
+							v980.u0 = 188;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc942;
+						loc71 = v980;
+						v980 = loc942;
+						loc744 = v980;
+					}
+					else
+					{
+						v980 = loc713;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc723 = v980;
+						v980 = loc712;
+						v981 = loc723;
+						*v980.u0 = v981;
+						v980 = loc942;
+						loc71 = v980;
+						v980 = loc942;
+						loc744 = v980;
+					}
+					while (true)
+					{
+						v980 = loc257;
+						v980 = *v980.u0;
+						loc724 = v980;
+						v980 = loc724;
+						v981.u0 = 0x00;
+						v982 = v980 > v981;
+						loc725 = v982;
+						v980 = loc725;
+						v982 = v980 == 0x00;
+						if (v982)
+							break;
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc726 = v980;
+						v980 = loc726;
+						v981.u0 = 0x00;
+						v982 = v980 == v981;
+						loc727 = v982;
+						v980 = loc727;
+						if (v980)
+						{
+							v980.u0 = 0x01;
+							loc759 = v980;
+						}
+						else
+						{
+							v980 = loc726;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc728 = v980;
+							v980 = loc728;
+							v980 = *v980.u0;
+							loc729 = v980;
+							v980 = loc726;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc731 = v980;
+							v980 = loc731;
+							v980 = *v980.u0;
+							loc732 = v980;
+							v980 = loc729;
+							v981 = loc732;
+							v982 = v980 == v981;
+							loc733 = v982;
+							v980 = loc733;
+							if (v980)
+							{
+								v980 = loc726;
+								v980 = *v980.u0;
+								loc734 = v980;
+								v980 = loc734;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc735 = v980;
+								v980 = loc735;
+								v980 = *v980.u0;
+								loc736 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc736;
+								v981 = loc726;
+								v980 = invoke_ii(v980, v981);
+								loc737 = v980;
+								v980.u3 = g_t140048.u3;
+								loc738 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc738;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc739 = v980;
+								v980 = loc739;
+								if (v980)
+								{
+									v980.u0 = 0xBA;
+									loc987 = v980;
+									goto l0010F92C;
+								}
+								v980 = loc737;
+								loc20 = v980;
+							}
+							else
+							{
+								v980 = loc729;
+								v980 = *v980.u0;
+								loc740 = v980;
+								v980 = loc740;
+								loc20 = v980;
+							}
+							v980 = loc20;
+							v981.u0 = ~0x00;
+							v982 = v980 == v981;
+							loc742 = v982;
+							v980 = loc742;
+							if (v980)
+							{
+								v980 = arg0;
+								v981.u0 = 0x00;
+								*v980.u0 = v981;
+								v980.u0 = 0x01;
+								loc759 = v980;
+							}
+							else
+							{
+								v980 = arg0;
+								v980 = *v980.u0;
+								loc64 = v980;
+								v980 = loc64;
+								v981.u0 = 0x00;
+								v982 = v980 == v981;
+								loc974 = v982;
+								v980 = loc974;
+								loc759 = v980;
+							}
+						}
+						v980 = loc744;
+						v981.u0 = 0x00;
+						v982 = v980 == v981;
+						loc743 = v982;
+						v980 = loc743;
+						if (v980)
+						{
+							v980 = loc71;
+							loc72 = v980;
+							v980.u0 = 242;
+							loc987 = v980;
+						}
+						else
+						{
+							v980 = loc744;
+							v981.u0 = 0x0C;
+							v980 += v981;
+							loc745 = v980;
+							v980 = loc745;
+							v980 = *v980.u0;
+							loc746 = v980;
+							v980 = loc744;
+							v981.u0 = 0x10;
+							v980 += v981;
+							loc747 = v980;
+							v980 = loc747;
+							v980 = *v980.u0;
+							loc748 = v980;
+							v980 = loc746;
+							v981 = loc748;
+							v982 = v980 == v981;
+							loc749 = v982;
+							v980 = loc749;
+							if (v980)
+							{
+								v980 = loc744;
+								v980 = *v980.u0;
+								loc750 = v980;
+								v980 = loc750;
+								v981.u0 = 0x24;
+								v980 += v981;
+								loc751 = v980;
+								v980 = loc751;
+								v980 = *v980.u0;
+								loc753 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc753;
+								v981 = loc744;
+								v980 = invoke_ii(v980, v981);
+								loc754 = v980;
+								v980.u3 = g_t140048.u3;
+								loc755 = v980;
+								v980.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v980;
+								v980 = loc755;
+								v981.u0 = 0x01;
+								v980 &= v981;
+								loc756 = v980;
+								v980 = loc756;
+								if (v980)
+								{
+									v980.u0 = 0xBA;
+									loc987 = v980;
+									goto l0010F92C;
+								}
+								v980 = loc754;
+								loc32 = v980;
+							}
+							else
+							{
+								v980 = loc746;
+								v980 = *v980.u0;
+								loc757 = v980;
+								v980 = loc757;
+								loc32 = v980;
+							}
+							v980 = loc32;
+							v981.u0 = ~0x00;
+							v982 = v980 == v981;
+							loc758 = v982;
+							v980 = loc758;
+							if (v980)
+							{
+								v980 = arg1;
+								v981.u0 = 0x00;
+								*v980.u0 = v981;
+								v980.u0 = 0x00;
+								loc72 = v980;
+								v980.u0 = 242;
+								loc987 = v980;
+							}
+							else
+							{
+								v980 = loc71;
+								v981.u0 = 0x00;
+								v982 = v980 == v981;
+								loc979 = v982;
+								v980 = loc759;
+								v981 = loc979;
+								v980 = v980 ^ v981;
+								loc984 = v980;
+								v980 = loc984;
+								if (!v980)
+								{
+									v980.u0 = 0xF9;
+									loc987 = v980;
+									goto l0010F92C;
+								}
+								v980 = loc71;
+								loc73 = v980;
+								v980 = loc71;
+								loc943 = v980;
+							}
+						}
+						v980 = loc987;
+						v981.u0 = 242;
+						v982 = v980 == v981;
+						if (v982)
+						{
+							v980.u0 = 0x00;
+							loc987 = v980;
+							v980 = loc759;
+							if (v980)
+							{
+								v980.u0 = 0xF9;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc72;
+							loc73 = v980;
+							v980.u0 = 0x00;
+							loc943 = v980;
+						}
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc760 = v980;
+						v980 = loc760;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc761 = v980;
+						v980 = loc761;
+						v980 = *v980.u0;
+						loc762 = v980;
+						v980 = loc760;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc764 = v980;
+						v980 = loc764;
+						v980 = *v980.u0;
+						loc765 = v980;
+						v980 = loc762;
+						v981 = loc765;
+						v982 = v980 == v981;
+						loc766 = v982;
+						v980 = loc766;
+						if (v980)
+						{
+							v980 = loc760;
+							v980 = *v980.u0;
+							loc767 = v980;
+							v980 = loc767;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc768 = v980;
+							v980 = loc768;
+							v980 = *v980.u0;
+							loc769 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc769;
+							v981 = loc760;
+							v980 = invoke_ii(v980, v981);
+							loc770 = v980;
+							v980.u3 = g_t140048.u3;
+							loc771 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc771;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc772 = v980;
+							v980 = loc772;
+							if (v980)
+							{
+								v980.u0 = 0xBA;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc770;
+							loc42 = v980;
+						}
+						else
+						{
+							v980 = loc762;
+							v980 = *v980.u0;
+							loc773 = v980;
+							v980 = loc773;
+							loc42 = v980;
+						}
+						v980 = arg7;
+						v980 = *v980.u0;
+						loc775 = v980;
+						v980 = loc775;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc776 = v980;
+						v980 = loc776;
+						v980 = *v980.u0;
+						loc777 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc777;
+						v981 = arg7;
+						v984.u0 = 0x0800;
+						v985 = loc42;
+						v980 = invoke_iiii(v980, v981, v984, v985);
+						loc778 = v980;
+						v980.u3 = g_t140048.u3;
+						loc779 = v980;
+						v980.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v980;
+						v980 = loc779;
+						v981.u0 = 0x01;
+						v980 &= v981;
+						loc780 = v980;
+						v980 = loc780;
+						if (v980)
+						{
+							v980.u0 = 0xBA;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = loc778;
+						v982 = v980 == 0x00;
+						if (v982)
+						{
+							v980.u0 = 0xF9;
+							loc987 = v980;
+							goto l0010F92C;
+						}
+						v980 = arg9;
+						v980 = *v980.u0;
+						loc783 = v980;
+						v980 = loc114;
+						v980 = *v980.u0;
+						loc784 = v980;
+						v980 = loc783;
+						v981 = loc784;
+						v982 = v980 == v981;
+						loc786 = v982;
+						v980 = loc786;
+						if (v980)
+						{
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980.u0 = 434;
+							v981 = arg8;
+							v984 = arg9;
+							v985 = loc114;
+							invoke_viii(v980, v981, v984, v985);
+							v980.u3 = g_t140048.u3;
+							loc787 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc787;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc788 = v980;
+							v980 = loc788;
+							if (v980)
+							{
+								v980.u0 = 0xBA;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+						}
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc789 = v980;
+						v980 = loc789;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc790 = v980;
+						v980 = loc790;
+						v980 = *v980.u0;
+						loc791 = v980;
+						v980 = loc789;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc792 = v980;
+						v980 = loc792;
+						v980 = *v980.u0;
+						loc793 = v980;
+						v980 = loc791;
+						v981 = loc793;
+						v982 = v980 == v981;
+						loc794 = v982;
+						v980 = loc794;
+						if (v980)
+						{
+							v980 = loc789;
+							v980 = *v980.u0;
+							loc795 = v980;
+							v980 = loc795;
+							v981.u0 = 0x24;
+							v980 += v981;
+							loc797 = v980;
+							v980 = loc797;
+							v980 = *v980.u0;
+							loc798 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc798;
+							v981 = loc789;
+							v980 = invoke_ii(v980, v981);
+							loc799 = v980;
+							v980.u3 = g_t140048.u3;
+							loc800 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc800;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc801 = v980;
+							v980 = loc801;
+							if (v980)
+							{
+								v980.u0 = 0xBA;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc799;
+							loc40 = v980;
+						}
+						else
+						{
+							v980 = loc791;
+							v980 = *v980.u0;
+							loc802 = v980;
+							v980 = loc802;
+							loc40 = v980;
+						}
+						v980 = arg9;
+						v980 = *v980.u0;
+						loc803 = v980;
+						v980 = loc803;
+						v981.u0 = 0x04;
+						v980 += v981;
+						loc804 = v980;
+						v980 = arg9;
+						v981 = loc804;
+						*v980.u0 = v981;
+						v980 = loc803;
+						v981 = loc40;
+						*v980.u0 = v981;
+						v980 = loc257;
+						v980 = *v980.u0;
+						loc805 = v980;
+						v980 = loc805;
+						v981.u0 = ~0x00;
+						v980 += v981;
+						loc806 = v980;
+						v980 = loc257;
+						v981 = loc806;
+						*v980.u0 = v981;
+						v980 = arg0;
+						v980 = *v980.u0;
+						loc808 = v980;
+						v980 = loc808;
+						v981.u0 = 0x0C;
+						v980 += v981;
+						loc809 = v980;
+						v980 = loc809;
+						v980 = *v980.u0;
+						loc810 = v980;
+						v980 = loc808;
+						v981.u0 = 0x10;
+						v980 += v981;
+						loc811 = v980;
+						v980 = loc811;
+						v980 = *v980.u0;
+						loc812 = v980;
+						v980 = loc810;
+						v981 = loc812;
+						v982 = v980 == v981;
+						loc813 = v982;
+						v980 = loc813;
+						if (v980)
+						{
+							v980 = loc808;
+							v980 = *v980.u0;
+							loc814 = v980;
+							v980 = loc814;
+							v981.u0 = 0x28;
+							v980 += v981;
+							loc815 = v980;
+							v980 = loc815;
+							v980 = *v980.u0;
+							loc816 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc816;
+							v981 = loc808;
+							v980 = invoke_ii(v980, v981);
+							v980.u3 = g_t140048.u3;
+							loc817 = v980;
+							v980.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v980;
+							v980 = loc817;
+							v981.u0 = 0x01;
+							v980 &= v981;
+							loc819 = v980;
+							v980 = loc819;
+							if (v980)
+							{
+								v980.u0 = 0xBA;
+								loc987 = v980;
+								goto l0010F92C;
+							}
+							v980 = loc73;
+							loc71 = v980;
+							v980 = loc943;
+							loc744 = v980;
+						}
+						else
+						{
+							v980 = loc810;
+							v981.u0 = 0x04;
+							v980 += v981;
+							loc820 = v980;
+							v980 = loc809;
+							v981 = loc820;
+							*v980.u0 = v981;
+							v980 = loc73;
+							loc71 = v980;
+							v980 = loc943;
+							loc744 = v980;
+						}
+					}
+				}
+				v980 = arg9;
+				v980 = *v980.u0;
+				loc821 = v980;
+				v980 = arg8;
+				v980 = *v980.u0;
+				loc822 = v980;
+				v980 = loc821;
+				v981 = loc822;
+				v982 = v980 == v981;
+				loc823 = v982;
+				v980 = loc823;
+				if (v980)
+				{
+					v980.u0 = 0x0103;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = loc50;
+				loc53 = v980;
+				goto l0010F51E;
+			}
+			v980 = loc147;
+			v980.u3 = *v980.u3;
+			loc626 = v980;
+			v980 = loc158;
+			v980.u3 = *v980.u3;
+			loc627 = v980;
+			v980 = loc626;
+			v981 = loc627;
+			v982 = v980 == v981;
+			loc628 = v982;
+			v980 = loc628;
+			if (v980)
+			{
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980.u0 = 0x01AB;
+				v981 = loc136;
+				v984 = loc147;
+				v985 = loc158;
+				invoke_viii(v980, v981, v984, v985);
+				v980.u3 = g_t140048.u3;
+				loc629 = v980;
+				v980.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v980;
+				v980 = loc629;
+				v981.u0 = 0x01;
+				v980 &= v981;
+				loc630 = v980;
+				v980 = loc630;
+				if (v980)
+				{
+					v980.u0 = 0xBD;
+					loc987 = v980;
+					goto l0010F92C;
+				}
+				v980 = loc147;
+				v980 = *v980.u0;
+				loc60 = v980;
+				v980 = loc60;
+				loc633 = v980;
+			}
+			else
+			{
+				v980 = loc626;
+				loc633 = v980;
+			}
+			v980 = loc633;
+			v981.u0 = 0x04;
+			v980 += v981;
+			loc632 = v980;
+			v980 = loc147;
+			v981 = loc632;
+			*v980.u0 = v981;
+			v980 = loc633;
+			v981 = loc49;
+			*v980.u0 = v981;
+			v980.u0 = 0x00;
+			loc54 = v980;
+		}
+		v980 = arg0;
+		v980 = *v980.u0;
+		loc634 = v980;
+		v980 = loc634;
+		v981.u0 = 0x0C;
+		v980 += v981;
+		loc635 = v980;
+		v980 = loc635;
+		v980 = *v980.u0;
+		loc636 = v980;
+		v980 = loc634;
+		v981.u0 = 0x10;
+		v980 += v981;
+		loc637 = v980;
+		v980 = loc637;
+		v980 = *v980.u0;
+		loc638 = v980;
+		v980 = loc636;
+		v981 = loc638;
+		v982 = v980 == v981;
+		loc639 = v982;
+		v980 = loc639;
+		if (v980)
+		{
+			v980 = loc634;
+			v980 = *v980.u0;
+			loc640 = v980;
+			v980 = loc640;
+			v981.u0 = 0x28;
+			v980 += v981;
+			loc641 = v980;
+			v980 = loc641;
+			v980 = *v980.u0;
+			loc643 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc643;
+			v981 = loc634;
+			v980 = invoke_ii(v980, v981);
+			v980.u3 = g_t140048.u3;
+			loc644 = v980;
+			v980.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v980;
+			v980 = loc644;
+			v981.u0 = 0x01;
+			v980 &= v981;
+			loc645 = v980;
+			v980 = loc645;
+			if (v980)
+			{
+				v980.u0 = 0xBB;
+				loc987 = v980;
+				goto l0010F92C;
+			}
+			v980 = loc54;
+			loc49 = v980;
+			v980 = loc77;
+			loc75 = v980;
+			v980 = loc940;
+			loc561 = v980;
+		}
+		else
+		{
+			v980 = loc636;
+			v981.u0 = 0x04;
+			v980 += v981;
+			loc646 = v980;
+			v980 = loc635;
+			v981 = loc646;
+			*v980.u0 = v981;
+			v980 = loc54;
+			loc49 = v980;
+			v980 = loc77;
+			loc75 = v980;
+			v980 = loc940;
+			loc561 = v980;
+		}
+	}
 }
 
