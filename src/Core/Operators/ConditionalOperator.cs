@@ -107,8 +107,8 @@ namespace Reko.Core.Operators
             return c1.ToInt32() == c2.ToInt32() ? Constant.True() : Constant.False();
 		}
 
+        public override Operator Invert() => Ne;
         public override Operator Negate() => Eq;
-
         public override string ToString() => " == ";
     }
 
@@ -125,7 +125,7 @@ namespace Reko.Core.Operators
 				: Constant.False();
 		}
 
-
+        public override Operator Invert() => Eq;
         public override Operator Negate() => Ne;
 
         public override string ToString() => " != ";

@@ -100,7 +100,7 @@ namespace Reko.Core.Operators
             throw new NotSupportedException($"The {this} operator can't be used in a compound assignment.");
         }
 
-        public virtual OperatorType Invert()
+        public virtual Operator Invert()
 		{
 			throw new NotImplementedException();
 		}

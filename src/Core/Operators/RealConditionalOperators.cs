@@ -40,6 +40,7 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() == c2.ToReal64());
         }
 
+        public override Operator Invert() => Fne;
         public override Operator Negate() => Feq;
 
         public override string ToString() => " == ";
@@ -55,6 +56,8 @@ namespace Reko.Core.Operators
                 return InvalidConstant.Create(PrimitiveType.Bool);
             return Constant.Bool(c1.ToReal64() != c2.ToReal64());
         }
+
+        public override Operator Invert() => Feq;
 
         public override Operator Negate() => Fne;
 
@@ -72,6 +75,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() < c2.ToReal64());
 		}
 
+        public override Operator Invert() => Fge;
+
         public override Operator Negate() => Fgt;
 
         public override string ToString() => " < ";
@@ -88,6 +93,7 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() > c2.ToReal64());
         }
 
+        public override Operator Invert() => Fle;
 
         public override Operator Negate() => Flt;
 
@@ -106,6 +112,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() <= c2.ToReal64());
         }
 
+        public override Operator Invert() => Fgt;
+
         public override Operator Negate() => Fge;
 
         public override string ToString() => " <= ";
@@ -121,6 +129,8 @@ namespace Reko.Core.Operators
                 return InvalidConstant.Create(c1.DataType);
             return Constant.Bool(c1.ToReal64() >= c2.ToReal64());
         }
+
+        public override Operator Invert() => Flt;
 
         public override Operator Negate() => Fle;
 

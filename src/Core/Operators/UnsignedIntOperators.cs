@@ -42,6 +42,8 @@ namespace Reko.Core.Operators
 			return Constant.Bool(v1 < v2);
 		}
 
+        public override Operator Invert() => Uge;
+
         public override Operator Negate() => Ugt;
 
         public override string ToString() => " <u ";
@@ -59,6 +61,8 @@ namespace Reko.Core.Operators
 			ulong v2 = c2.ToUInt64();
             return Constant.Bool(v1 <= v2);
 		}
+
+        public override Operator Invert() => Ule;
 
         public override Operator Negate() => Ult;
 
@@ -79,6 +83,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(v1 <= v2);
 		}
 
+        public override Operator Invert() => Ugt;
+
         public override Operator Negate() => Uge;
 
         public override string ToString() => " <=u ";
@@ -97,6 +103,8 @@ namespace Reko.Core.Operators
 			ulong v2 = c2.ToUInt64();
 			return Constant.Bool(v1 >= v2);
 		}
+
+        public override Operator Invert() => Ult;
 
         public override Operator Negate() => Ule;
 

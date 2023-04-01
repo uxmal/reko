@@ -7,14 +7,14 @@ void _advance(word32 arg0, word32 arg1, real64 arg2)
 // Preserved:
 _advance_entry:
 l000E0000:
-	branch !(arg0 > 0<32>) l000E0010
+	branch arg0 <= 0<32> l000E0010
 l000E0010:
 	return
 l000E000B:
 	word32 loc3_19 = 0<32>
 l000E0011:
 	word32 v18_12 = loc3_19 + 1<32>
-	branch !(v18_12 < arg0) l000E0176
+	branch v18_12 >= arg0 l000E0176
 l000E0020:
 	real64 v23_84 = Mem24[arg1 + loc3_19 * 0x38<32>:real64] - Mem24[arg1 + v18_12 * 0x38<32>:real64]
 	real64 v26_95 = Mem24[arg1 + loc3_19 * 0x38<32> + 8<u32>:real64] - Mem24[(arg1 + v18_12 * 0x38<32>) + 8<u32>:real64]
@@ -39,9 +39,9 @@ l000E0020:
 	branch v18_12 + 1<32> != arg0 l000E0020
 l000E0174:
 l000E0176:
-	branch !(v18_12 != arg0) l000E0184
+	branch v18_12 == arg0 l000E0184
 l000E0184:
-	branch !(arg0 > 0<32>) l000E018E
+	branch arg0 <= 0<32> l000E018E
 l000E018E:
 	return
 l000E0189:
@@ -73,7 +73,7 @@ real64 _energy(word32 arg0, word32 arg1)
 // Preserved:
 _energy_entry:
 l000E020A:
-	branch !(arg0 > 0<32>) l000E0223
+	branch arg0 <= 0<32> l000E0223
 l000E0223:
 	return 0.0
 l000E0213:
@@ -86,7 +86,7 @@ l000E022D:
 	real64 v15_21 = Mem0[arg1 + loc2_144 * 0x38<32> + 0x30<u32>:real64]
 	word32 v9_59 = loc2_144 + 1<32>
 	loc4_10 = loc4_10 + (v15_21 * 0.5) * ((v16_30 * v16_30 + v18_39 * v18_39) + v18_49 * v18_49)
-	branch !(v9_59 < arg0) l000E0316
+	branch v9_59 >= arg0 l000E0316
 l000E028B:
 	real64 v16_109 = Mem0[arg1 + loc2_144 * 0x38<32>:real64] - Mem0[arg1 + v9_59 * 0x38<32>:real64]
 	real64 v18_120 = Mem0[arg1 + loc2_144 * 0x38<32> + 8<u32>:real64] - Mem0[(arg1 + v9_59 * 0x38<32>) + 8<u32>:real64]
@@ -96,7 +96,7 @@ l000E028B:
 	branch v9_59 + 1<32> != arg0 l000E028B
 l000E0314:
 l000E0316:
-	branch !(v9_59 != arg0) l000E0324
+	branch v9_59 == arg0 l000E0324
 l000E0324:
 l000E0327:
 	return loc4_10
@@ -117,7 +117,7 @@ l000E0329:
 	real64 loc3_60
 	real64 loc4_49
 	real64 loc5_11
-	branch !(arg0 > 0<32>) l000E03AB
+	branch arg0 <= 0<32> l000E03AB
 l000E03AB:
 	loc3_60 = 0.0
 	loc4_49 = 0.0
@@ -180,10 +180,10 @@ real64 _run(word32 arg0)
 _run_entry:
 l000E061E:
 	word32 arg0_170
-	branch !(arg0 < 1<32>) l000E0637
+	branch arg0 >= 1<32> l000E0637
 l000E0637:
 	_advance(5<32>, Mem0[0x00100000<p32>:word32], 0.01)
-	branch !(arg0 == 1<32>) l000E066A
+	branch arg0 != 1<32> l000E066A
 l000E066A:
 l000E065A:
 	arg0_170 = 0<32>
@@ -192,12 +192,12 @@ l000E0627:
 	arg0_170 = 0<32>
 l000E0672:
 	word32 v9_77 = arg0_170 + 1<32>
-	branch !(v9_77 < 5<32>) l000E075B
+	branch v9_77 >= 5<32> l000E075B
 l000E06D0:
 	branch v9_77 != 0xFFFFFFFC<32> l000E06D0
 l000E0759:
 l000E075B:
-	branch !(v9_77 != 5<32>) l000E0769
+	branch v9_77 == 5<32> l000E0769
 l000E0769:
 l000E076C:
 	return <invalid>

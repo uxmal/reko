@@ -41,6 +41,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToInt64() < c2.ToInt64());
 		}
 
+        public override Operator Invert() => Ge;
+
         public override Operator Negate() => Gt;
 
         public override string ToString() => " < ";
@@ -57,6 +59,8 @@ namespace Reko.Core.Operators
 
             return Constant.Bool(c1.ToInt64() > c2.ToInt64());
 		}
+
+        public override Operator Invert() => Le;
 
         public override Operator Negate() => Lt;
 
@@ -75,6 +79,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToInt64() <= c2.ToInt64());
         }
 
+        public override Operator Invert() => Gt;
+
         public override Operator Negate() => Ge;
 
         public override string ToString() => " <= ";
@@ -91,6 +97,8 @@ namespace Reko.Core.Operators
 
             return Constant.Bool(c1.ToInt64() >= c2.ToInt64());
         }
+
+        public override Operator Invert() => Lt;
 
         public override Operator Negate() => Le;
 

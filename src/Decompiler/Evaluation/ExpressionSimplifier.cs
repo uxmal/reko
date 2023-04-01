@@ -1743,6 +1743,12 @@ namespace Reko.Evaluation
                 return (e, true);
             }
 
+            e = LogicalNotComparison(unary);
+            if (e is not null)
+            {
+                return (e, true);
+            }
+
             // (!-exp) >= (!exp)
             e = logicalNotFollowedByNeg.Match(unary);
             if (e is not null)
@@ -1756,6 +1762,17 @@ namespace Reko.Evaluation
                 return (c2, true);
             }
             return (unary, changed);
+        }
+
+        private static Expression? LogicalNotComparison(UnaryExpression unary)
+        {
+            if (unary.Operator.Type == OperatorType.Not &&
+                unary.Expression is BinaryExpression bin &&
+                bin.Operator is ConditionalOperator cond)
+            {
+                return new BinaryExpression(cond.Invert(), bin.DataType, bin.Left, bin.Right);
+            }
+            return null;
         }
 
         public static bool IsSequence(EvaluationContext ctx, Expression e, out MkSequence sequence)

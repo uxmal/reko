@@ -1071,5 +1071,15 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.AreEqual("1234:5674", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_Invert_Conditional()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Not(m.Lt(foo, m.Word32(0x1234)));
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("foo_1 >= 0x1234<32>", result.ToString());
+        }
     }
 }

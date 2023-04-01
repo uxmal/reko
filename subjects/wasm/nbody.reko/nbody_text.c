@@ -7,7 +7,7 @@
 // 000E0000: void _advance(Stack int32 arg0, Stack (ptr32 Eq_n) arg1, Stack real64 arg2)
 void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 {
-	if (!(arg0 > 0x00))
+	if (arg0 <= 0x00)
 		return;
 	int32 loc3_n = 0x00;
 	while (true)
@@ -43,7 +43,7 @@ void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 			break;
 		loc3_n = v18_n;
 	}
-	if (!(arg0 > 0x00))
+	if (arg0 <= 0x00)
 		return;
 	int32 loc4_n = 0x00;
 	do
@@ -62,7 +62,7 @@ void _advance(int32 arg0, struct Eq_n * arg1, real64 arg2)
 // 000E020A: Stack real64 _energy(Stack int32 arg0, Stack (arr Eq_n) arg1)
 real64 _energy(int32 arg0, Eq_n arg1[])
 {
-	if (!(arg0 > 0x00))
+	if (arg0 <= 0x00)
 		return 0.0;
 	int32 loc2_n = 0x00;
 	real64 loc4_n = 0.0;
@@ -150,7 +150,7 @@ real64 _run(int32 arg0)
 	{
 		do
 			_advance(0x05, g_ptr100000, 0.01);
-		while (!(arg0 == 0x01));
+		while (arg0 != 0x01);
 		arg0_n = 0x00;
 	}
 	while (true)

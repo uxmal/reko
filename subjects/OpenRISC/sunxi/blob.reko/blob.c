@@ -1346,7 +1346,7 @@ l00006738:
 	{
 		if ((r6_n & 0x0F) != 0x04)
 		{
-			if (!((r6_n & 0x0F) == 0x08))
+			if ((r6_n & 0x0F) != 0x08)
 			{
 l000067D0:
 				r5_n = r5_n | 0x0600;
@@ -1650,7 +1650,7 @@ ptr32 fn000073EC(struct Eq_n * r3, Eq_n r14, Eq_n r15, Eq_n r16, Eq_n r18, ptr32
 	Eq_n r15_n = fn00004D60(r2_n);
 	if (r14_n != 0x01)
 	{
-		if (!(r14_n == 0x02))
+		if (r14_n != 0x02)
 		{
 			*(ui32 *) 0x01C63108 &= ~0x40;
 			*(ui32 *) 0x01C63108 |= 0xC0;
@@ -2500,7 +2500,7 @@ l0000865C:
 	}
 	else
 	{
-		if ((r3_n & 0x01) != 0x00 || !(r3_n != 0x00))
+		if ((r3_n & 0x01) != 0x00 || r3_n == 0x00)
 		{
 			while (true)
 			{
@@ -4204,7 +4204,7 @@ void fn0000B0B8(Eq_n r3, Eq_n r4)
 		}
 		else
 		{
-			if (!(r3 == 0x1F))
+			if (r3 != 0x1F)
 				return;
 			ui32 r11_n = fn0000B034(r4, &tLoc14, &tLoc10);
 			struct Eq_n * r1_n = (struct Eq_n *) <invalid>;
@@ -4221,7 +4221,7 @@ void fn0000B0B8(Eq_n r3, Eq_n r4)
 	}
 	else
 	{
-		if (!(r3 == 0x01))
+		if (r3 != 0x01)
 			return;
 		struct Eq_n * r5_n = g_ptr13948;
 		int32 r3_n = 0;
@@ -4347,7 +4347,7 @@ ptr32 fn0000B610(Eq_n r3, Eq_n r4, Eq_n dwArg14, ptr32 & r14Out)
 		{
 			if (r3 != 0x01)
 			{
-				if (!(r3 == 0x04))
+				if (r3 != 0x04)
 					goto l0000B8C8;
 				if (r4 != 0x03)
 				{
@@ -4392,7 +4392,7 @@ l0000B84C:
 				{
 					if (r2_n != &g_dw0003)
 					{
-						if (!(r2_n == &g_dw000B))
+						if (r2_n != &g_dw000B)
 						{
 l0000B5F8:
 							goto l0000B5FC;
@@ -4437,7 +4437,7 @@ l0000B8BC:
 				ui32 r3_n;
 				if (r4 != 0x01)
 				{
-					if (!(r4 == 0x03))
+					if (r4 != 0x03)
 						goto l0000B8C4;
 					r2_n = g_ptr13948;
 					r3_n = r2_n->dw0054 & ~0x03000000 | 0x01000000;
@@ -4450,7 +4450,7 @@ l0000B8BC:
 				r2_n->dw0054 = r3_n;
 				goto l0000B8BC;
 			}
-			if (!(r3 == 11))
+			if (r3 != 11)
 			{
 l0000B8C8:
 				r14Out = r14;
@@ -4655,7 +4655,7 @@ void fn0000BDC8(word32 * r3)
 Eq_n fn0000BE00(int32 r3, Eq_n r4, Eq_n r15)
 {
 	Eq_n tLoc10;
-	if (!(r3 == 0x06))
+	if (r3 != 0x06)
 		return r15;
 	r15 = fn0000B8D8(&tLoc10, r4, r15);
 	union Eq_n * r3_n = g_ptr13944;
@@ -4731,7 +4731,7 @@ word32 fn0000BF88(Eq_n r3, Eq_n r15, union Eq_n & r11Out, union Eq_n & r14Out, u
 		{
 			if (r3 != 0x06)
 			{
-				if (!(r3 == 0x01))
+				if (r3 != 0x01)
 				{
 					r11_n.u0 = 0;
 					goto l0000C12C;
@@ -4767,7 +4767,7 @@ l0000C130:
 				r4_n = r11_n;
 				goto l0000C0CC;
 			}
-			if (!(r3 == 0x11))
+			if (r3 != 0x11)
 			{
 				r11_n.u0 = 0;
 l0000C12C:
@@ -5211,7 +5211,7 @@ word32 fn0000CCA8(int32 r3, int32 r4, ui32 r5, byte * r6, Eq_n r7, uint32 VR, pt
 												r1_n->a0000[0] = (int8) *(union Eq_n *) 0x01F02410;
 												if (r1_n->a0000[0] != 0x28)
 													break;
-												if (!(r3 != 0x00))
+												if (r3 == 0x00)
 												{
 													bool F_n = r7 != 0x00;
 l0000CF3C:
@@ -5923,7 +5923,7 @@ void fn0000DE28(struct Eq_n * r3, struct Eq_n * r4)
 void fn0000DE50(struct Eq_n * r3, word32 r4, int32 r5)
 {
 	struct Eq_n * r6_n = r3;
-	if (!(r5 == 0x00))
+	if (r5 != 0x00)
 	{
 		while (true)
 		{
@@ -6906,7 +6906,7 @@ l0000F7F8:
 			r2_n = fn0000A5D0(r3);
 			goto l0000F7F8;
 		}
-		if (!(r4_n == 0x56))
+		if (r4_n != 0x56)
 		{
 l0000F7E4:
 			word32 r16_n;
@@ -7823,7 +7823,7 @@ l000115C0:
 							word32 r11_n;
 							r2_n = fn00009958(-1, r4_n & 0x0FFF, out r11_n);
 							r1_n = (struct Eq_n *) <invalid>;
-							if (!(r11_n == 0x00))
+							if (r11_n != 0x00)
 							{
 								r3_n.u0 = 0x00800000;
 								goto l00011728;
@@ -7840,7 +7840,7 @@ l000115DC:
 							if (fn00008C74(-5) != 0x00)
 							{
 								fn00008CA4(-5);
-								if (!(fn000092CC(out r15_n) != 0x01))
+								if (fn000092CC(out r15_n) == 0x01)
 								{
 									r3_n.u0 = 0x00080000;
 									goto l00011728;
@@ -7856,7 +7856,7 @@ l000115DC:
 						if ((r3_n & 0x00100000) != 0x00)
 						{
 							r1_n = (struct Eq_n *) <invalid>;
-							if (!(fn00008C74(-8) == 0x00))
+							if (fn00008C74(-8) != 0x00)
 							{
 								r3_n.u0 = 0x00100000;
 								goto l00011728;
@@ -7869,7 +7869,7 @@ l000115DC:
 						if ((r3_n & 0x00200000) != 0x00)
 						{
 							r1_n = (struct Eq_n *) <invalid>;
-							if (!(fn00008C74(-9) == 0x00))
+							if (fn00008C74(-9) != 0x00)
 							{
 								r3_n.u0 = 0x00200000;
 								goto l00011728;
@@ -7901,7 +7901,7 @@ l000115DC:
 								goto l00011728;
 							}
 							r1_n = (struct Eq_n *) <invalid>;
-							if (!(fn00008C74(-28) == 0x00))
+							if (fn00008C74(-28) != 0x00)
 							{
 								r3_n.u0 = 0x01000000;
 								goto l00011728;
