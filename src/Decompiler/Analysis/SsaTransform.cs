@@ -518,8 +518,6 @@ namespace Reko.Analysis
         {
             if (a is AliasAssignment)
                 return a;
-            if (a.Dst.ToString() == "Top_25")
-                _ = this; //$DEBUG
             var src = a.Src.Accept(this);
             Identifier idNew = this.RenameFrameAccesses ? a.Dst : NewDef(a.Dst, src, false);
             return new Assignment(idNew, src);

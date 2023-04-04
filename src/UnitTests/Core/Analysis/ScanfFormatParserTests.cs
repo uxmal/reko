@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Core.Analysis
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
             platform.Setup(p => p.Architecture).Returns(arch.Object);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Float)).Returns(32);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Double)).Returns(64);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program { Platform = platform.Object };
@@ -167,6 +168,22 @@ namespace Reko.UnitTests.Core.Analysis
             ParseChar32("%*c %d");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("(ptr32 int32)", parser.ArgumentTypes[0].ToString());
+        }
+
+        [Test]
+        public void SFP_Real32()
+        {
+            ParseChar32("%f ");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("(ptr32 real32)", parser.ArgumentTypes[0].ToString());
+        }
+
+        [Test]
+        public void SFP_Real64()
+        {
+            ParseChar32("%lf ");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("(ptr32 real64)", parser.ArgumentTypes[0].ToString());
         }
     }
 }

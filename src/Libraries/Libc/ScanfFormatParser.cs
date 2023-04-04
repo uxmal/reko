@@ -39,6 +39,7 @@ namespace Reko.Libraries.Libc
         protected string format;
         protected readonly int wordSize;
         protected readonly int longSize;
+        protected readonly int floatSize;
         protected readonly int doubleSize;
         protected readonly int pointerSize;
         private readonly IServiceProvider services;
@@ -57,6 +58,7 @@ namespace Reko.Libraries.Libc
 
             this.wordSize = platform.Architecture.WordWidth.BitSize;
             this.longSize = platform.GetBitSizeFromCBasicType(CBasicType.Long);
+            this.floatSize = platform.GetBitSizeFromCBasicType(CBasicType.Float);
             this.doubleSize = platform.GetBitSizeFromCBasicType(CBasicType.Double);
             this.pointerSize = platform.PointerType.BitSize;
             this.services = services;
@@ -155,7 +157,10 @@ namespace Reko.Libraries.Libc
             case 'e':
             case 'f':
             case 'g':
-                bitSize = this.doubleSize;
+                if (size == PrintfSize.Long)
+                    bitSize = this.doubleSize;
+                else 
+                    bitSize = this.floatSize;
                 domain = Domain.Real;
                 break;
             case 'p':
