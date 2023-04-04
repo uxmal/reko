@@ -1423,6 +1423,11 @@ namespace Reko.Arch.X86.Assembler
             ProcessBinop(0x04, dst, src);
         }
 
+        public void And(ParsedOperand op1, int imm)
+        {
+            And(op1, Imm(imm));
+        }
+
         public ParsedOperand Imm( uint constant)
         {
             return Imm((int)constant);
@@ -2079,6 +2084,12 @@ namespace Reko.Arch.X86.Assembler
         {
             ProcessBinop(0x06, dst, src);
         }
+
+        public void Xor(ParsedOperand op1, int imm)
+        {
+            Xor(op1, Imm(imm));
+        }
+
 
         public ParsedOperand ax
         {

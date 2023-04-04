@@ -4322,6 +4322,10 @@ namespace Reko.UnitTests.Arch.X86
                 "1|T--|if (Test(EQ,FPUF)) branch 1000000C");
         }
 
+        // If you XOR with 0x40 and you get a 0 result, AH
+        // must have been 0x40 before the XOR and after the
+        // AND, which according to the Intel manuals means
+        // only the C3 bit is set, i.e. "equals".
         [Test]
         public void X86Rw_fstsw_and_xor_40_jz__ne()
         {
@@ -4332,7 +4336,7 @@ namespace Reko.UnitTests.Arch.X86
                 "74 02");       // jz	$+4
             AssertCode(
                 "0|T--|10000000(10): 1 instructions",
-                "1|T--|if (Test(NE,FPUF)) branch 1000000C");
+                "1|T--|if (Test(EQ,FPUF)) branch 1000000C");
         }
 
         [Test]

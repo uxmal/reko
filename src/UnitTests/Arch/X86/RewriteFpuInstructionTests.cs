@@ -125,5 +125,25 @@ namespace Reko.UnitTests.Arch.X86
                 "2|T--|if (Test(GE,FPUF)) branch 00010000"
                 );
         }
+
+        // If you XOR with 0x40 and you get a non-0 result, AH
+        // cannot have been 0x40 before the XOR and after the
+        // AND, which means it could not have been "equals".
+        [Test]
+        public void X86Rw_fstsw_ax_xor_40()
+        {
+            BuildTest(m =>
+            {
+                m.Label("foo");
+                m.Fstsw(m.ax);
+                m.And(m.ah, 0x45);
+                m.Xor(m.ah, 0x40);
+                m.Jnz("foo");
+            });
+            AssertCode(
+                "0|T--|00010000(11): 1 instructions",
+                "1|T--|if (Test(NE,FPUF)) branch 00010000"
+                );
+        }
     }
 }

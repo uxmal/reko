@@ -406,6 +406,35 @@ namespace Reko.Arch.X86
                         Constant.Int16(8)));
         }
 
+        // https://www.plantation-productions.com/Webster/www.artofasm.com/DOS/ch14/CH14-3.html
+        // Instruction          Condition Code Bits Condition
+        //                      C3 C2 C1 C0 
+        // fcom, fcomp, fcompp, 0 0 X 0             ST > source
+        // ficom, ficomp        0 0 X 1             ST < source
+        //                      1 0 X 0             ST == source
+        //                      1 1 X 1             ST or source undefined
+        // fist                 0 0 X 0             ST > 0
+        //                      0 0 X 1             ST < 0
+        //                      1 0 X 0             ST == +/- 0
+        //                      1 1 X 1             ST uncomparable
+        // fxam                 0 0 0 0             + unnormalized
+        //                      0 0 1 0             - unnormalized
+        //                      0 1 0 0             + normalized
+        //                      0 1 1 0             - normalized
+        //                      1 0 0 0             + 0
+        //                      1 0 1 0             - 0
+        //                      1 1 0 0             + denormalized
+        //                      1 1 1 0             - denormalized
+        //                      0 0 0 1             + NaN
+        //                      0 0 1 1             - NaN
+        //                      0 1 0 1             + Infinity
+        //                      0 1 1 1             - Infinity
+        //                      1 X X 1             Empty register
+        // fucom, fucomp,       0 0 X 0             ST > source
+        // fucompp              0 0 X 1             ST < source
+        //                      1 0 X 0             ST = source
+        //                      1 1 X 1             Unordered
+
         public bool MatchesFstswSequence()
         {
             for (int i = 1; i < 4; ++i)
@@ -546,14 +575,14 @@ namespace Reko.Arch.X86
             case Mnemonic.jz:
                 switch (mask)
                 {
-                case 0x40: Branch(ConditionCode.NE, instrCur.Operands[0]); return true;
+                case 0x40: Branch(ConditionCode.EQ, instrCur.Operands[0]); return true;
                 }
                 break;
             case Mnemonic.jnz:
                 switch (mask)
                 {
-                case 0x40: Branch(ConditionCode.EQ, instrCur.Operands[0]); return true;
-            }
+                case 0x40: Branch(ConditionCode.NE, instrCur.Operands[0]); return true;
+                }
                 break;
             }
             this.host.Warn(instrCur.Address, "Unexpected {0} fstsw;xor mask for {1} mnemonic.", mask, instrCur.Mnemonic);
