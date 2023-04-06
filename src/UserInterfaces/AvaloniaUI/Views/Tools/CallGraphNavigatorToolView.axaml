@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:guivmt="using:Reko.Gui.ViewModels.Tools"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.CallGraphNavigatorToolView">
+	<StackPanel>
+		<Label>//$TODO: Toolbar</Label>
+		<Grid RowDefinitions="26,*" ColumnDefinitions="*,*,*">
+			<Label Grid.Column="0" Grid.Row="0">Calling procedures</Label>
+			<Label Grid.Column="1" Grid.Row="0">Procedure</Label>
+			<Label Grid.Column="2" Grid.Row="0">Called procedures</Label>
+
+			<Border Grid.Column="0" Grid.Row="1">
+				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Callers}">
+					<DataGrid.Columns>
+						<DataGridTemplateColumn Header="Name" Width="3*">
+							<DataGridTemplateColumn.CellTemplate>
+								<DataTemplate DataType="guivmt:CallGraphViewModelItem">
+									<TextBlock Text="{Binding Name}" />
+								</DataTemplate>
+							</DataGridTemplateColumn.CellTemplate>
+						</DataGridTemplateColumn>
+						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Address}" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</Border>
+			<StackPanel Grid.Column="1" Grid.Row="1">
+				<Label Name="lblProcedureName" />
+				<Label Name="lblAddress" />
+				<Label Name="lblSignature" />
+			</StackPanel>
+			<Border Grid.Column="2" Grid.Row="1">
+				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Callees}">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Name}" />
+						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Address}" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</Border>
+		</Grid>
+	</StackPanel>
+</UserControl>

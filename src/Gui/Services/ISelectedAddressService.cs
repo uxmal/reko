@@ -39,12 +39,32 @@ namespace Reko.Gui.Services
         event EventHandler? SelectedAddressChanged;
 
         /// <summary>
+        /// This event is raised when the selected procedure is changed.
+        /// </summary>
+        event EventHandler? SelectedProcedureChanged;
+
+        /// <summary>
+        /// This event is raised when the selected procedure is changed.
+        /// </summary>
+        event EventHandler? SelectedProgramChanged;
+
+        /// <summary>
         /// If not null, indicates the address the user has 
         /// selected. The property value is the currently selected
         /// <see cref="ProgramAddressRange"/>.
         /// A length of 0 indicates that only the address
         /// has been selected, not a range of bytes.
         /// </summary>
-        public ProgramAddressRange? SelectedAddressRange { get; set; }
+        ProgramAddressRange? SelectedAddressRange { get; set; }
+
+        /// <summary>
+        /// If not null, indicates which procedure the user has selected.
+        /// </summary>
+        Procedure? SelectedProcedure { get; set; }
+
+        /// <summary>
+        /// If not null, indicates which program the user has selected.
+        /// </summary>
+        Program? SelectedProgram { get; set; }
     }
 }

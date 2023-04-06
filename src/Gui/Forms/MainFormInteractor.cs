@@ -252,6 +252,9 @@ namespace Reko.Gui.Forms
 
             var seSvc = svcFactory.CreateStructureEditorService();
             sc.AddService<IStructureEditorService>(seSvc);
+
+            var cgnSvc = svcFactory.CreateCallGraphNavigatorService();
+            sc.AddService<ICallGraphNavigatorService>(cgnSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -282,6 +285,7 @@ namespace Reko.Gui.Forms
                 await SwitchInteractor(DecompilerPhases.Initial);
                 if (!await DecompilerPhases.Initial.OpenBinary(fileName))
                     return;
+                SelectProgram();
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
                     ProjectFileName = fileName;
@@ -298,6 +302,7 @@ namespace Reko.Gui.Forms
                 if (!await DecompilerPhases.Initial.OpenBinary(fileName))
                     return;
                 RememberFilenameInMru(fileName);
+                SelectProgram();
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
                     ProjectFileName = fileName;
@@ -313,6 +318,20 @@ namespace Reko.Gui.Forms
         {
             mru.Use(fileName);
             mru.Save(Services.RequireService<IFileSystemService>(), MruListFile);
+        }
+
+        private void SelectProgram(Program? program = null)
+        {
+            if (program is null)
+            {
+                var project = decompilerSvc.Decompiler?.Project;
+                if (project is not null)
+                {
+                    program = project.Programs.FirstOrDefault();
+                }
+            }
+            var svc = Services.RequireService<ISelectedAddressService>();
+            svc.SelectedProgram = program;
         }
 
         /// <summary>
@@ -433,6 +452,7 @@ namespace Reko.Gui.Forms
                 await CloseProject();
                 await SwitchInteractor(DecompilerPhases.Initial);
                 await DecompilerPhases.Initial.Assemble(fileName, asm, platform);
+                SelectProgram();
                 RememberFilenameInMru(fileName);
                 if (fileName.EndsWith(Project_v5.FileExtension))
                 {
@@ -462,6 +482,7 @@ namespace Reko.Gui.Forms
                 {
                     ProjectFileName = fileName;
                 }
+                SelectProgram();
                 var project = decompilerSvc.Decompiler?.Project;
                 if (project is { } && project.Programs.Count == 1 && string.IsNullOrEmpty(details.LoadAddress))
                 {
@@ -660,8 +681,8 @@ namespace Reko.Gui.Forms
                         var addr = program.SegmentMap.MapLinearAddressToAddress(
                               (ulong)((long) program.SegmentMap.BaseAddress.ToLinear() + o));
                         return program.ImageMap.TryFindItem(addr, out var item)
-                            && item.DataType is null ||
-                            item.DataType is UnknownType;
+                            && (item.DataType is null ||
+                            item.DataType is UnknownType);
                     };
             }
             else
@@ -1054,6 +1075,8 @@ namespace Reko.Gui.Forms
                 {
                     if (await DecompilerPhases.Initial.OpenBinary(file))
                     {
+                        var project = this.decompilerSvc.Decompiler!.Project;
+                        SelectProgram(project.Programs[0]);
                         RememberFilenameInMru(file);
                         if (file.EndsWith(Project_v5.FileExtension))
                         {

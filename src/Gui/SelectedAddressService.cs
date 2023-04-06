@@ -31,9 +31,12 @@ namespace Reko.Gui
     public class SelectedAddressService : ISelectedAddressService
     {
         public event EventHandler? SelectedAddressChanged;
+        public event EventHandler? SelectedProcedureChanged;
+        public event EventHandler? SelectedProgramChanged;
 
 
         private ProgramAddressRange? addressRange;
+        private Procedure? proc;
         private long length;
 
         public SelectedAddressService()
@@ -59,5 +62,38 @@ namespace Reko.Gui
                 SelectedAddressChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        public Procedure? SelectedProcedure
+        {
+            get => proc;
+            set
+            {
+                if (value is null)
+                {
+                    if (proc is null)
+                        return;
+                }
+                else
+                {
+                    if (value == proc)
+                        return;
+                }
+                this.proc = value;
+                SelectedProcedureChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public Program? SelectedProgram
+        {
+            get => program;
+            set
+            {
+                if (value == program)
+                    return;
+                this.program = value;
+                SelectedProgramChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        private Program? program;
     }
 }

@@ -66,19 +66,27 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
             get { return procedures; }
             set { this.RaiseAndSetIfChanged(ref procedures, value, nameof(Procedures)); }
         }
+
+        public ProcedureItem? SelectedProcedure
+        {
+            get { return procSelected; }
+            set { this.RaiseAndSetIfChanged(ref procSelected, value); }
+        }
+        private ProcedureItem? procSelected;
+
         private ObservableCollection<ProcedureItem> procedures;
 
 
-        public void LoadProcedures(IEnumerable<Procedure> procedures)
+        public void LoadProcedures(IEnumerable<(Program, Procedure)> procedures)
         {
             this.modelProcedures.Clear();
             this.modelProcedures.AddRange(procedures.Select(CreateProcedureItem));
             this.Procedures = new(modelProcedures.Where(p => p.Name.Contains(searchCriterion.Trim())));
         }
 
-        private ProcedureItem CreateProcedureItem(Procedure proc)
+        private ProcedureItem CreateProcedureItem((Program program, Procedure proc) pp)
         {
-            return new ProcedureItem(proc.Name, proc.EntryAddress.ToString());
+            return new ProcedureItem(pp.proc.Name, pp.proc.EntryAddress.ToString(), pp.program, pp.proc);
         }
 
         public void Show()
@@ -93,12 +101,18 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 
         public class ProcedureItem
         {
-            public ProcedureItem(string name, string address)
+            public ProcedureItem(string name, string address, Program program, Procedure proc)
             {
-                this.Name = name; this.Address = address;
+                this.Name = name;
+                this.Address = address;
+                this.Program = program;
+                this.Procedure = proc;
             }
+
             public string Name { get; }
             public string Address { get; }
+            public Program Program { get; }
+            public Procedure Procedure { get; }
         }
     }
 }

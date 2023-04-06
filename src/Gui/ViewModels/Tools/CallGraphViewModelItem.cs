@@ -19,36 +19,38 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
-using Reko.Gui.Services;
+using Reko.Core.Graphs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.Gui.ViewModels.Tools
 {
-    public class AvaloniaCodeViewerService : ICodeViewerService
+    public class CallGraphViewModelItem
     {
-        public void DisplayDataType(Program program, DataType dt)
+        public CallGraphViewModelItem(
+            string title,
+            string descrption,
+            Procedure proc,
+            bool isVisited)
         {
-            throw new NotImplementedException();
+            Title = title;
+            this.Description = descrption;
+            this.NodeObject = proc;
+            this.IsVisited = isVisited;
         }
 
-        public void DisplayGlobals(Program program, ImageSegment segment)
-        {
-            throw new NotImplementedException();
-        }
+        public string Title { get; }
+        public string Description { get; }
 
-        public void DisplayProcedure(Program program, Procedure proc, bool mixedMode)
-        {
-            //$TODO:display the code of this procedure.
-        }
+        public string? Details { get; set; }
 
-        public void DisplayStatement(Program program, Statement statement)
+        public bool IsVisited { get; set; }
+
+        public Procedure NodeObject { get; }
+
+        public static CallGraphViewModelItem Empty()
         {
-            throw new NotImplementedException();
+            return new CallGraphViewModelItem("<No procedure selected>", "", null!, false);
         }
     }
 }

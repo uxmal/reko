@@ -19,33 +19,13 @@
 #endregion
 
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
-using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class ProcedureListView : UserControl
+    public partial class CallGraphNavigatorToolView : UserControl
     {
-        public ProcedureListView()
+        public CallGraphNavigatorToolView()
         {
-            InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        private void procList_DoubleTapped(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is not ProcedureListViewModel vm)
-                return;
-            if (sender is DataGrid procList && procList.SelectedItem is ProcedureListViewModel.ProcedureItem item)
-            { 
-                vm.SelectedProcedure = item;
-            }
         }
     }
 }

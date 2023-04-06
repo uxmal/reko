@@ -48,6 +48,8 @@ namespace Reko.Core
 
         public List<Procedure> EntryPoints { get; } = new List<Procedure>();
 
+        public DirectedGraph<Procedure> Procedures => graphProcs;
+
         public void AddEntryPoint(Procedure proc)
 		{
 			AddProcedure(proc);

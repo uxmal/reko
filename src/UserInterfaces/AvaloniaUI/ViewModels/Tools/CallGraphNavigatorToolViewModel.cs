@@ -18,37 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Gui.Services;
+using Dock.Model.ReactiveUI.Controls;
+using Reko.Gui.ViewModels.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
-    public class AvaloniaCodeViewerService : ICodeViewerService
+    public class CallGraphNavigatorToolViewModel : Tool
     {
-        public void DisplayDataType(Program program, DataType dt)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayGlobals(Program program, ImageSegment segment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayProcedure(Program program, Procedure proc, bool mixedMode)
-        {
-            //$TODO:display the code of this procedure.
-        }
-
-        public void DisplayStatement(Program program, Statement statement)
-        {
-            throw new NotImplementedException();
-        }
+        public CallGraphNavigatorViewModel ViewModel { get; set; } = null!;
     }
 }

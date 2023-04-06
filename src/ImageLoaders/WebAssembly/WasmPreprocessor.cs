@@ -58,7 +58,7 @@ namespace Reko.ImageLoaders.WebAssembly
         {
             if (wasmFile.CodeSection is null)
                 return;
-            var funidxToProc = GenerateFuncIdxToProcedureMap();
+            var funidxToProc = GenerateFuncIdxToProcedureMap(program);
             var globidxToAddr = GenerateGlobalIdxToAddressMap();
             foreach (var func in wasmFile.CodeSection.Functions)
             {
@@ -93,7 +93,7 @@ namespace Reko.ImageLoaders.WebAssembly
             }
         }
 
-        private Dictionary<int, ProcedureBase> GenerateFuncIdxToProcedureMap()
+        private Dictionary<int, ProcedureBase> GenerateFuncIdxToProcedureMap(Program program)
         {
             Debug.Assert(wasmFile.CodeSection is not null, "If there are functions there must be a code segment.");
             Debug.Assert(codeSegment is not null, "If there are functions there must be a code segment.");

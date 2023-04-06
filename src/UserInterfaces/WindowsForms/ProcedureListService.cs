@@ -257,7 +257,7 @@ namespace Reko.Gui
         }
 #endif
 
-            private void UpdateItem(ListViewItem item)
+        private void UpdateItem(ListViewItem item)
         {
             if (item.Tag == null)
                 return;
@@ -308,6 +308,7 @@ namespace Reko.Gui
             var item = listProcedures.FocusedItem;
             if (item == null || !item.Selected || item.Tag is not ProgramProcedure pp)
                 return;
+            services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
             services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);
         }
 

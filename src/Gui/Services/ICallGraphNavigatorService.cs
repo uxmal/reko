@@ -19,36 +19,16 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
-using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.Gui.Services
 {
-    public class AvaloniaCodeViewerService : ICodeViewerService
+    public interface ICallGraphNavigatorService
     {
-        public void DisplayDataType(Program program, DataType dt)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayGlobals(Program program, ImageSegment segment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisplayProcedure(Program program, Procedure proc, bool mixedMode)
-        {
-            //$TODO:display the code of this procedure.
-        }
-
-        public void DisplayStatement(Program program, Statement statement)
-        {
-            throw new NotImplementedException();
-        }
+        void Show(Program? program, Procedure? proc);
     }
 }

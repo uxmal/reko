@@ -36,6 +36,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
     [TestFixture]
     public class WasmProcedureBuilderTests
     {
+        private Program program;
         private readonly WasmArchitecture arch;
         private List<FunctionType> funcTypes;
         private List<FunctionDefinition> funcindex;
@@ -58,6 +59,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             this.mpFunidxToProc = new Dictionary<int, ProcedureBase>();
             this.mpGlobIdxToAddr = new Dictionary<int, Address>();
             this.addrGlobal = Address.Ptr32(0x2000);
+            this.program = new Program();
         }
 
         private static DataType DataTypeFromValType(int valType)

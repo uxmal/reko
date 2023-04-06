@@ -23,6 +23,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Docks;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
@@ -53,7 +54,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public ProjectBrowserViewModel? ProjectBrowserTool { get; private set; }
         public ProcedureListViewModel? ProcedureList { get; private set; }
         public DiagnosticsViewModel? DiagnosticsList { get; private set; }
-
+        public CallGraphNavigatorToolViewModel? CallGraphNavigator { get; private set; } 
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
@@ -73,6 +74,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.DiagnosticsList = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
             var toolFindResults = new FindResultsViewModel {Id = "Tool4", Title = "Find Results"};
             var toolCallHierarchy = new CallHierarchyViewModel {Id = "Tool5", Title = "Call Hierarchy"};
+            this.CallGraphNavigator = new CallGraphNavigatorToolViewModel { Id = "Tool9", Title = "Call Graph Navigator"};
             var toolConsole = new ConsoleViewModel {Id = "Tool7", Title = "Console", CanClose = false, CanPin = false};
             var toolOutput = new OutputViewModel { Id = "Tool6", Title = "Output" };
 
@@ -109,6 +111,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                         VisibleDockables = CreateList<IDockable>(
                             DiagnosticsList, 
                             toolFindResults,
+                            CallGraphNavigator,
                             toolCallHierarchy,
                             toolConsole,
                             toolOutput),

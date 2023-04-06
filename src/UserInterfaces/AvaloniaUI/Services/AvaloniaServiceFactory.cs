@@ -258,5 +258,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             return new StructureEditorService(this.services);
         }
+
+        public ICallGraphNavigatorService CreateCallGraphNavigatorService()
+        {
+            return new AvaloniaCallGraphNavigatorService(this.services, mainViewModel);
+        }
     }
 }

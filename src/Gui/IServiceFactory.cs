@@ -75,5 +75,6 @@ namespace Reko.Gui
         ISegmentListService CreateSegmentListService();
         IBaseAddressFinderService CreateBaseAddressFinderService();
         IStructureEditorService CreateStructureEditorService();
+        ICallGraphNavigatorService CreateCallGraphNavigatorService();
     }
 }

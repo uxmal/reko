@@ -25,6 +25,7 @@ using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Documents;
 using Reko.Loading;
 using Reko.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -265,6 +266,11 @@ namespace Reko.UserInterfaces.WindowsForms
         public IStructureEditorService CreateStructureEditorService()
         {
             return new StructureEditorService(this.services);
+        }
+
+        public ICallGraphNavigatorService CreateCallGraphNavigatorService()
+        {
+            return new CallGraphNavigatorService(this.services, mainForm.CallGraphNavigatorView);
         }
     }
 }

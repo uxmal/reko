@@ -19,13 +19,12 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,13 +32,27 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     public class AvaloniaProcedureListService : IProcedureListService
     {
-        private IServiceProvider services;
-        private ProcedureListViewModel procedureVm;
+        private readonly IServiceProvider services;
+        private readonly ProcedureListViewModel procedureVm;
 
         public AvaloniaProcedureListService(IServiceProvider services, ProcedureListViewModel procedureVm)
         {
             this.services = services;
             this.procedureVm = procedureVm;
+
+            this.procedureVm.PropertyChanged += ProcedureVm_PropertyChanged;
+        }
+
+        private void ProcedureVm_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ProcedureListViewModel.SelectedProcedure))
+            {
+                if (procedureVm.SelectedProcedure is null)
+                    return;
+                var pp = procedureVm.SelectedProcedure;
+                services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
+                services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);
+            }
         }
 
         public bool ContainsFocus
@@ -62,7 +75,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Load(Project project)
         {
-            procedureVm.LoadProcedures(project.Programs.SelectMany(program => program.Procedures.Values));
+            procedureVm.LoadProcedures(project.Programs.SelectMany(program =>
+                program.Procedures.Values.Select(p => (program, p))));
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

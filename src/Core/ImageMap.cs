@@ -266,7 +266,7 @@ namespace Reko.Core
         /// <param name="addr"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-		public bool TryFindItem(Address addr, [MaybeNullWhen(false)] out ImageMapItem? item)
+		public bool TryFindItem(Address addr, [MaybeNullWhen(false)] out ImageMapItem item)
 		{
 			return Items.TryGetLowerBound(addr, out item);
 		}

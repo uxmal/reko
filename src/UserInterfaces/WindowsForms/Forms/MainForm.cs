@@ -50,6 +50,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             docWindows = new DocumentWindowCollection(this);
             ProjectBrowser = new TreeViewWrapper(treeBrowser);
             ProjectBrowserTab = new TabPageWrapper(tabProject);
+            CallGraphNavigatorView = this.callGraphNavigatorView;
 
             this.Load += MainForm_Load;
             this.ProcessCommandKey += this.MainForm_ProcessCommandKey;
@@ -200,11 +201,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public new Gui.Forms.FormWindowState WindowState
         {
-            get { return (Gui.Forms.FormWindowState)base.WindowState;  }
-            set { base.WindowState = (System.Windows.Forms.FormWindowState) value;  }
+            get { return (Gui.Forms.FormWindowState) base.WindowState; }
+            set { base.WindowState = (System.Windows.Forms.FormWindowState) value; }
         }
 
         public ITreeView ProjectBrowser { get; set; }
+
+        public CallGraphNavigatorView CallGraphNavigatorView { get; set; }
 
         public OpenFileDialog OpenFileDialog
         {
@@ -218,7 +221,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public void LayoutMdi(DocumentWindowLayout layout)
         {
-            LayoutMdi ((MdiLayout) ((int) layout));
+            LayoutMdi((MdiLayout) ((int) layout));
         }
 
         public void SetStatus(string txt)
@@ -247,12 +250,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public Gui.Services.DialogResult ShowDialog(CommonDialog dialog)
         {
-            return (Gui.Services.DialogResult)dialog.ShowDialog(this);
+            return (Gui.Services.DialogResult) dialog.ShowDialog(this);
         }
 
         public Gui.Services.DialogResult ShowMessageBox(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
-            return (Gui.Services.DialogResult)MessageBox.Show(this, message, caption, buttons, icon);
+            return (Gui.Services.DialogResult) MessageBox.Show(this, message, caption, buttons, icon);
         }
 
         public void UpdateToolbarState()
@@ -348,7 +351,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
             public void Add(IWindowFrame item)
             {
-                ((Form)item).MdiParent = mainForm;
+                ((Form) item).MdiParent = mainForm;
             }
 
             public void Clear()
@@ -366,7 +369,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
             public void CopyTo(IWindowFrame[] array, int arrayIndex)
             {
-                
+
                 throw new NotImplementedException();
             }
 
@@ -384,7 +387,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 foreach (var form in mainForm.MdiChildren)
                 {
-                    if (item == (IWindowFrame)form)
+                    if (item == (IWindowFrame) form)
                     {
                         form.Close();
                         return true;

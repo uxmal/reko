@@ -42,6 +42,9 @@
     <Compile Update="Views\Documents\StructureEditorDocumentView.axaml.cs">
       <DependentUpon>StructureEditorDocumentView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Tools\CallGraphNavigatorToolView.axaml.cs">
+      <DependentUpon>CallGraphNavigatorToolView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
