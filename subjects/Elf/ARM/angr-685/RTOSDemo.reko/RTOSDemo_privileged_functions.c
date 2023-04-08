@@ -1704,12 +1704,12 @@ void prvRestoreContextOfFirstTask(ptr32 cpsr)
 }
 
 struct Eq_n ** g_ptr1330 = &g_ptr200000C8; // 00001330
-// 00001334: void prvSVCHandler(Register Eq_n r0, Register ptr32 cpsr)
+// 00001334: void prvSVCHandler(Register (ptr32 Eq_n) r0, Register ptr32 cpsr)
 // Called from:
 //      vPortSVCHandler
-void prvSVCHandler(Eq_n r0, ptr32 cpsr)
+void prvSVCHandler(struct Eq_n * r0, ptr32 cpsr)
 {
-	up32 r3_n = (word32) *((char *) r0.u2->u1.ptr0018 - 2);
+	up32 r3_n = (word32) r0->ptr0018->bFFFFFFFE;
 	if (r3_n == 0x01)
 	{
 		*g_ptr1378 = 0x10000000;
@@ -2040,18 +2040,18 @@ ui32 g_dw1684 = 0x01070009; // 00001684
 // 00001688: void xPortPendSVHandler(Register word32 r4, Register word32 r5, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r9, Register word32 r10, Register word32 fp, Register ptr32 cpsr)
 void xPortPendSVHandler(word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 r9, word32 r10, word32 fp, ptr32 cpsr)
 {
-	Eq_n r0_n = __mrs(cpsr);
+	struct Eq_n * r0_n = __mrs(cpsr);
 	struct Eq_n ** r3_n = g_ptr16E0;
 	struct Eq_n * r2_n = *r3_n;
-	r0_n.u2->u1.tFFFFFFDC.u1 = (struct Eq_n *) __mrs(cpsr);
-	r0_n.u2->u1.dwFFFFFFE0 = r4;
-	r0_n.u2->u1.dwFFFFFFE4 = r5;
-	r0_n.u2->u1.dwFFFFFFE8 = r6;
-	r0_n.u2->u1.dwFFFFFFEC = r7;
-	r0_n.u2->u1.dwFFFFFFF0 = r8;
-	r0_n.u2->u1.dwFFFFFFF4 = r9;
-	r0_n.u2->u1.dwFFFFFFF8 = r10;
-	r0_n.u2->u1.dwFFFFFFFC = fp;
+	r0_n->dwFFFFFFDC = __mrs(cpsr);
+	r0_n->dwFFFFFFE0 = r4;
+	r0_n->dwFFFFFFE4 = r5;
+	r0_n->dwFFFFFFE8 = r6;
+	r0_n->dwFFFFFFEC = r7;
+	r0_n->dwFFFFFFF0 = r8;
+	r0_n->dwFFFFFFF4 = r9;
+	r0_n->dwFFFFFFF8 = r10;
+	r0_n->dwFFFFFFFC = fp;
 	r2_n->ptr0000 = r0_n - 36;
 	__msr(cpsr, 191);
 	vTaskSwitchContext();
@@ -2123,7 +2123,7 @@ void vPortSVCHandler(ui32 lr, ptr32 cpsr)
 {
 	if ((lr & 0x04) == 0x00)
 		__mrs(cpsr);
-	Eq_n r0_n = __mrs(cpsr);
+	struct Eq_n * r0_n = __mrs(cpsr);
 	prvSVCHandler(r0_n, cpsr);
 }
 

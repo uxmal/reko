@@ -4,7 +4,10 @@
 
 #include "UserDefinedSignatures.h"
 
-word32 g_dw403018 = 0x00; // 00403018
-word32 g_dw40301C = 0x00; // 0040301C
-word32 g_dw403020 = 0x00; // 00403020
+int32 g_dw403018 = 0; // 00403018
+real32 g_r40301C = 0.0F; // 0040301C
+Eq_n g_t403020 = // 00403020
+	{
+		0.0
+	};
 word32 g_dw403024 = 0x00; // 00403024

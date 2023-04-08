@@ -136,7 +136,8 @@ namespace Reko.Core.Serialization
                     ret = DeserializeArgument(ss.ReturnValue, "");
                 }
                 FpuStackOffset = -FpuStackOffset;
-                var sig = FunctionType.Create(ret, parameters.ToArray());
+                var sig = FunctionType.CreateUserDefined(
+                    ret, parameters.ToArray());
                 sig.IsVariadic = this.IsVariadic;
                 sig.IsInstanceMetod = ss.IsInstanceMethod;
                 ApplyConvention(ss, sig);
@@ -202,7 +203,8 @@ namespace Reko.Core.Serialization
                         }
                     }
                 }
-                var ft = FunctionType.Create(ret, parameters.ToArray());
+                var ft = FunctionType.CreateUserDefined(
+                    ret, parameters.ToArray());
                 ft.IsInstanceMetod = ss.IsInstanceMethod;
                 ft.StackDelta = ss.StackDelta != 0
                         ? ss.StackDelta

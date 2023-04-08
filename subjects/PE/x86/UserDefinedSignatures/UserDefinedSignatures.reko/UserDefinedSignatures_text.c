@@ -4,34 +4,34 @@
 
 #include "UserDefinedSignatures.h"
 
-// 00401000: void setInteger(Stack word32 d, Stack Eq_n value)
+// 00401000: void setInteger(Stack word32 d, Stack int32 value)
 // Called from:
 //      setParameter
-void setInteger(word32 d, Eq_n value)
+void setInteger(word32 d, int32 value)
 {
-	*d = value;
+	d->dw0000 = value;
 }
 
-// 00401010: void setFloat(Stack word32 d, Stack Eq_n value)
+// 00401010: void setFloat(Stack word32 d, Stack real32 value)
 // Called from:
 //      setParameter
-void setFloat(word32 d, Eq_n value)
+void setFloat(word32 d, real32 value)
 {
 	d->r0004 = value;
 }
 
-// 00401020: void setDouble(Stack word32 d, Stack Eq_n value)
+// 00401020: void setDouble(Stack word32 d, Stack real64 value)
 // Called from:
 //      setParameter
-void setDouble(word32 d, Eq_n value)
+void setDouble(word32 d, real64 value)
 {
-	d->r0008 = value;
+	d->t0008.u0 = (real64) value;
 }
 
-// 00401030: void setParameter(Stack (ptr32 Eq_n) d, Stack int32 type, Stack (ptr32 word32) value)
+// 00401030: void setParameter(Stack word32 d, Stack int32 type, Stack (ptr32 void) value)
 // Called from:
 //      main
-void setParameter(struct Eq_n * d, int32 type, word32 * value)
+void setParameter(word32 d, int32 type, void * value)
 {
 	switch (type)
 	{
@@ -85,8 +85,8 @@ int32 main(int32 argc, char ** argv)
 		}
 	}
 	g_dw403018 = eax_n->dw0000;
-	g_dw40301C = eax_n->dw0004;
-	g_dw403020 = eax_n->dw0008;
+	g_r40301C = eax_n->r0004;
+	g_t403020.u1 = eax_n->t0008.u1;
 	g_dw403024 = eax_n->dw000C;
 	free(eax_n);
 	return 0x00;

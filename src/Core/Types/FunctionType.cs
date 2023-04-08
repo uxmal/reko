@@ -78,6 +78,14 @@ namespace Reko.Core.Types
             return new FunctionType(ret, formals);
         }
 
+        public static FunctionType CreateUserDefined(
+            Identifier? returnId, params Identifier[] formals)
+        {
+            var ft = Create(returnId, formals);
+            ft.UserDefined = true;
+            return ft;
+        }
+
         public static FunctionType Func(Identifier returnId, params Identifier[] formals)
         {
             return new FunctionType(returnId, formals);
@@ -118,13 +126,20 @@ namespace Reko.Core.Types
         }
 
         public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
+        {
+            return Clone(clonedTypes, false);
+        }
+
+        public FunctionType Clone(
+            IDictionary<DataType, DataType>? clonedTypes = null,
+            bool shareIncompleteTypes = false)
 		{
             FunctionType ft;
             if (ParametersValid)
             {
-                var ret = new Identifier("", ReturnValue!.DataType.Clone(clonedTypes), ReturnValue.Storage);
+                var ret = CloneIdentifier(ReturnValue, clonedTypes, shareIncompleteTypes);
                 Identifier[] parameters = this.Parameters!
-                    .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
+                    .Select(p => CloneIdentifier(p, clonedTypes, shareIncompleteTypes))
                     .ToArray();
                 ft = new FunctionType(ret, parameters);
             }
@@ -311,5 +326,24 @@ namespace Reko.Core.Types
             AllDetails = ArgumentKind|LowLevelInfo,
         }
         #endregion
+
+        private static Identifier CloneIdentifier(
+            Identifier id,
+            IDictionary<DataType, DataType>? clonedTypes,
+            bool shareIncompleteTypes)
+        {
+            if (
+                shareIncompleteTypes &&
+                // Share incomplete(ptrXX, wordXX) and unknown types so that
+                // they can be reconstructed during Type Analysis
+                ((id.DataType is PrimitiveType && id.DataType.IsPointer) ||
+                id.DataType.IsWord || id.DataType is UnknownType)
+            )
+                return id;
+            return new Identifier(
+                id.Name,
+                id.DataType.Clone(clonedTypes),
+                id.Storage);
+        }
     }
 }

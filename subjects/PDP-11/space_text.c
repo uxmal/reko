@@ -744,10 +744,10 @@ l06B0:
 	cui16 r4_n = SEQ(SLICE(r4_n, byte, 8), 0x00);
 	struct Eq_n * r4_n = __rcr<word16,byte>(r4_n + 0x7F01, 0x01, (r5_n & 0x01) != 0x00);
 	struct Eq_n * r2_n = __rcr<word16,byte>(r2_n, 0x01, (r4_n + 0x7F01 & 0x01) != 0x00);
-	struct Eq_n * r3_n = __swab(r3_n);
+	cui16 r3_n = __swab(r3_n);
 	cu16 r2_n = SEQ(SLICE(__swab(r2_n), byte, 8), 0x00) | r3_n;
 	struct Eq_n * r3_n = __rcr<word16,byte>(SEQ(SLICE(r3_n, byte, 8), 0x00), 0x01, (r2_n & 0x01) != 0x00);
-	struct Eq_n * r1_n = __swab(r1_n);
+	cui16 r1_n = __swab(r1_n);
 	struct Eq_n * r0_n = SEQ(SLICE(__swab(r0_n), byte, 8), 0x00) | r1_n;
 	struct Eq_n * r1_n = SEQ(SLICE(r1_n, byte, 8), 0x00);
 	uint32 r4_r5_n = SEQ(r2_n >> 0x01, r3_n);
@@ -787,7 +787,7 @@ l0700:
 	if (r2_n < null)
 	{
 l0724:
-		ui32 r2_r3_n = SEQ(__swab(SEQ(SLICE(r2_n, byte, 8), 0x00)) + r4_n, __swab(SEQ(SLICE(__rcl<word16,byte>(r3_n, 0x01, C_n), byte, 8), 0x00) | r2_n)) + CONVERT(__rcl<word16,byte>(r1_n, 0x01, (r3_n & 0x80) != 0x00), word16, uint32);
+		uint32 r2_r3_n = __swab(SEQ(SLICE(__rcl<word16,byte>(r3_n, 0x01, C_n), byte, 8), 0x00) | r2_n) + (uint32) __rcl<word16,byte>(r1_n, 0x01, (r3_n & 0x80) != 0x00);
 		r3_n = (word16) r2_r3_n;
 		r2_n = SLICE(r2_r3_n, word16, 16);
 l0738:
@@ -1073,11 +1073,11 @@ void fn0AAE(struct Eq_n * r5)
 	struct Eq_n * r0_n = __rcr<word16,byte>(v11_n << 1, 0x01, true);
 	struct Eq_n * r2_n = SEQ(SLICE(r0_n, byte, 8), 0x00);
 	cui16 r0_n = r0_n & ~r2_n;
-	struct Eq_n * r2_n = __swab(r2_n);
-	if (r2_n <= null)
+	wchar_t r2_n = __swab(r2_n);
+	if (r2_n <= 0x00)
 	{
 		int32 r0_r1_n = SEQ(r0_n, v9_n);
-		if (r2_n > (char *) (&t0000.w0036) + 91)
+		if (r2_n > 0x91)
 		{
 			do
 			{
@@ -1431,12 +1431,12 @@ void fn0CF4(struct Eq_n * r5)
 //      fn0CF4
 struct Eq_n * fn0D3E(struct Eq_n * r0, struct Eq_n * r2)
 {
-	struct Eq_n * r2_n = __swab(r2);
+	ci16 r2_n = __swab(r2);
 	do
-		r2_n += 62977;
-	while (r2_n > null);
+		r2_n += 0xF601;
+	while (r2_n > 0x00);
 	r0->b0000 = (byte) r2_n + 0x2F;
-	r0->b0001 = (byte) __swab(r2_n + 0x00003A2F);
+	r0->b0001 = (byte) __swab(r2_n + 0x3A2F);
 	return &r0->b0001 + 1;
 }
 
@@ -2374,9 +2374,9 @@ void fn172C(struct Eq_n * r0, word16 r2)
 		{
 			if (r3_n == 0x00)
 			{
-				struct Eq_n * r1_n = __swab(SEQ(SLICE(r1_n, byte, 8), 0x00));
-				struct Eq_n * r4_n = __swab(r4_n);
-				if (r4_n != null)
+				cui16 r1_n = __swab(SEQ(SLICE(r1_n, byte, 8), 0x00));
+				cui16 r4_n = __swab(r4_n);
+				if (r4_n != 0x00)
 					__syscall<word16>(0x89A8);
 				struct Eq_n * r3_n = g_ptr5424;
 				r3_n->w005E = r1_n | r4_n;

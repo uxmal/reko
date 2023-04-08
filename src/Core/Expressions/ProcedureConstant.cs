@@ -36,7 +36,13 @@ namespace Reko.Core.Expressions
 		{
             this.Procedure = proc;
             this.sig = null;
-		}
+            // Clone user-defined ot platform-defined signatures so that they
+            // can not be changed during Type Analysis
+            if (proc.Signature is not null && proc.Signature.UserDefined)
+            {
+                this.sig = proc.Signature.Clone(shareIncompleteTypes: true);
+            }
+        }
 
         /// <summary>
         /// Creates a procedure constant with an overridden known signature <paramref name="sig" />,

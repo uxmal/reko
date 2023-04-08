@@ -134,12 +134,12 @@ l10001384:
 			Sleep(1000);
 		if (g_dw100033A8 != 0x02)
 			_amsg_exit(0x1F);
-		Eq_n eax_n = _decode_pointer(g_ptr100033B4);
+		word32 * eax_n = _decode_pointer(g_ptr100033B4);
 		ptr32 esp_n = fp - 16;
-		if (eax_n != 0x00)
+		if (eax_n != null)
 		{
 			ptr32 esp_n = fp - 16;
-			DWORD edi_n = _decode_pointer(g_ptr100033B0);
+			word32 * edi_n = _decode_pointer(g_ptr100033B0);
 			while (true)
 			{
 				edi_n -= 0x04;
@@ -153,13 +153,13 @@ l10001384:
 					eax_n();
 				}
 			}
-			DWORD * esp_n = esp_n - 4;
-			*esp_n = (uint32) eax_n;
+			word32 ** esp_n = esp_n - 4;
+			*esp_n = eax_n;
 			free(*esp_n);
 			void * eax_n = _encoded_null();
 			g_ptr100033B0 = eax_n;
 			g_ptr100033B4 = eax_n;
-			esp_n = esp_n + 1;
+			esp_n = (char *) esp_n + 4;
 		}
 		struct Eq_n * esp_n = esp_n - 4;
 		esp_n->t0000 = 0x00;
@@ -173,10 +173,10 @@ l10001384:
 	goto l10001381;
 }
 
-// 10001388: Register Eq_n fn10001388(Register Eq_n ecx, Register Eq_n edx, Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
+// 10001388: Register Eq_n fn10001388(Register Eq_n ecx, Register Eq_n edx, Register ptr32 ebx, Register ptr32 esi, Register word32 edi)
 // Called from:
 //      DllMain
-Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
+Eq_n fn10001388(Eq_n ecx, Eq_n edx, ptr32 ebx, ptr32 esi, word32 edi)
 {
 	ptr32 fp;
 	word32 dwLoc0C;
@@ -269,7 +269,7 @@ void fn10001493()
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
 Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 {
-	Eq_n (* ebx)(LONG *, Eq_n, Eq_n);
+	ptr32 ebx;
 	ptr32 esi;
 	word32 edi;
 	if (dwReason == 0x01)
@@ -277,10 +277,10 @@ Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 	return fn10001388(lpReserved, dwReason, ebx, esi, edi);
 }
 
-// 100015CF: Register Eq_n fn100015CF(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
+// 100015CF: Register Eq_n fn100015CF(Register ptr32 ebx, Register ptr32 esi, Register word32 edi)
 // Called from:
 //      fn1000166E
-Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
+Eq_n fn100015CF(ptr32 ebx, ptr32 esi, word32 edi)
 {
 	ptr32 fp;
 	word32 dwLoc0C;
@@ -302,11 +302,11 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		void * v14_n = g_ptr100033B4;
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->ptr0000);
 		void * v15_n = g_ptr100033B0;
-		ebp_n->tFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
+		ebp_n->ptrFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
 		Eq_n v16_n = ebp_n->t0008.u0;
 		ebp_n->tFFFFFFDC.u0 = (_onexit_t) __dllonexit(esp_n->tFFFFFFF0.u0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
 		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v16_n, ebp_n - 28, ebp_n - 32, v15_n, v14_n);
-		g_ptr100033B0 = encode_pointer(ebp_n->tFFFFFFE0);
+		g_ptr100033B0 = encode_pointer(ebp_n->ptrFFFFFFE0);
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
 		esp_n = esp_n + 0x1C;
@@ -324,8 +324,8 @@ void fn10001665()
 	unlock();
 }
 
-// 1000166E: void fn1000166E(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
-void fn1000166E(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
+// 1000166E: void fn1000166E(Register ptr32 ebx, Register ptr32 esi, Register word32 edi)
+void fn1000166E(ptr32 ebx, ptr32 esi, word32 edi)
 {
 	fn100015CF(ebx, esi, edi);
 }
@@ -382,10 +382,10 @@ struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 	return eax_n;
 }
 
-// 10001742: Register ui32 fn10001742(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
+// 10001742: Register ui32 fn10001742(Register ptr32 ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
 // Called from:
 //      fn100011E9
-ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 & ediOut)
+ui32 fn10001742(ptr32 ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 {
 	word32 dwLoc0C;
 	ui32 eax_n;
@@ -421,12 +421,12 @@ word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 	return 0x01;
 }
 
-// 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack ui32 dwArg08)
+// 100017E8: Register ptr32 fn100017E8(Register ptr32 ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack ui32 dwArg08)
 // Called from:
 //      fn10001388
 //      fn100015CF
 //      fn10001742
-ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
+ptr32 fn100017E8(ptr32 ebx, ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
 {
 	ptr32 fp;
 	struct Eq_n * fs;

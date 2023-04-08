@@ -115,7 +115,7 @@ void __truncdfsf2(Eq_n r4, Eq_n r5)
 	Eq_n r9_n = __ext<word32,word32>(r5, 0x00, 0x14);
 	Eq_n r10_n = __ext<word32,word32>(r5, 0x04, 11);
 	ui32 r9_n = r4 >> 0x1D | r9_n << 0x03;
-	if ((r10_n.u6 + 1 & 0x07FF) >= 0x02)
+	if ((r10_n.u11 + 1 & 0x07FF) >= 0x02)
 	{
 		r8_n.u3 = (word32) r10_n - 896;
 		if (r10_n > ~0x047D)
@@ -160,7 +160,7 @@ l004102C8:
 			if ((r7_n & 0x07) == 0x00 || (r7_n & 0x0F) == 0x04)
 				goto l004102FC;
 l00410336:
-			&r7_n.u6->b0000 = r7_n.u6 + 4;
+			&r7_n.u11->b0000 = r7_n.u11 + 4;
 l004102FC:
 			if (!__bit<word32,word32>(r7_n, 0x1A))
 			{

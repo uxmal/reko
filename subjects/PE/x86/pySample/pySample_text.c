@@ -173,10 +173,10 @@ l10001384:
 	goto l10001381;
 }
 
-// 10001388: Register Eq_n fn10001388(Register Eq_n ecx, Register Eq_n edx, Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
+// 10001388: Register Eq_n fn10001388(Register Eq_n ecx, Register Eq_n edx, Register ptr32 ebx, Register ptr32 esi, Register word32 edi)
 // Called from:
 //      DllMain
-Eq_n fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
+Eq_n fn10001388(Eq_n ecx, Eq_n edx, ptr32 ebx, ptr32 esi, word32 edi)
 {
 	ptr32 fp;
 	word32 dwLoc0C;
@@ -269,7 +269,7 @@ void fn10001493()
 // 1000149E: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
 Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 {
-	Eq_n (* ebx)(LONG *, Eq_n, Eq_n);
+	ptr32 ebx;
 	ptr32 esi;
 	word32 edi;
 	if (dwReason == 0x01)
@@ -314,10 +314,10 @@ struct Eq_n * fn10001700(struct Eq_n * dwArg04, uint32 dwArg08)
 	return eax_n;
 }
 
-// 10001742: Register ui32 fn10001742(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
+// 10001742: Register ui32 fn10001742(Register ptr32 ebx, Register ptr32 esi, Register word32 edi, Register out ptr32 ediOut)
 // Called from:
 //      fn100011E9
-ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 & ediOut)
+ui32 fn10001742(ptr32 ebx, ptr32 esi, word32 edi, ptr32 & ediOut)
 {
 	word32 dwLoc0C;
 	ui32 eax_n;
@@ -353,11 +353,11 @@ word32 fn100017C6(Eq_n dwArg04, Eq_n dwArg08)
 	return 0x01;
 }
 
-// 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack ui32 dwArg08)
+// 100017E8: Register ptr32 fn100017E8(Register ptr32 ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack ui32 dwArg08)
 // Called from:
 //      fn10001388
 //      fn10001742
-ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
+ptr32 fn100017E8(ptr32 ebx, ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
 {
 	ptr32 fp;
 	struct Eq_n * fs;
