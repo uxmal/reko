@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <location>UserDefinedSignatures.exe</location>
+    <asmDir>UserDefinedSignatures.reko</asmDir>
+    <srcDir>UserDefinedSignatures.reko</srcDir>
+    <includeDir>UserDefinedSignatures.reko</includeDir>
+    <resources>UserDefinedSignatures.reko\resources</resources>
+    <user>
+      <processor />
+      <procedure name="setInteger">
+        <signature>
+          <return>
+            <void />
+          </return>
+          <arg name="d">
+            <prim domain="SignedInt UnsignedInt Integer Real Pointer SegPointer" size="4" />
+          </arg>
+          <arg name="value">
+            <prim domain="SignedInt" size="4" />
+          </arg>
+        </signature>
+        <address>00401000</address>
+        <CSignature>void setInteger(word32 d, int value)</CSignature>
+      </procedure>
+      <procedure name="setFloat">
+        <signature>
+          <return>
+            <void />
+          </return>
+          <arg name="d">
+            <prim domain="SignedInt UnsignedInt Integer Real Pointer SegPointer" size="4" />
+          </arg>
+          <arg name="value">
+            <prim domain="Real" size="4" />
+          </arg>
+        </signature>
+        <address>00401010</address>
+        <CSignature>void setFloat(word32 d, float value)</CSignature>
+      </procedure>
+      <procedure name="setDouble">
+        <signature>
+          <return>
+            <void />
+          </return>
+          <arg name="d">
+            <prim domain="SignedInt UnsignedInt Integer Real Pointer SegPointer" size="4" />
+          </arg>
+          <arg name="value">
+            <prim domain="Real" size="8" />
+          </arg>
+        </signature>
+        <address>00401020</address>
+        <CSignature>void setDouble(word32 d, double value)</CSignature>
+      </procedure>
+      <procedure name="setParameter">
+        <signature>
+          <return>
+            <void />
+          </return>
+          <arg name="d">
+            <prim domain="SignedInt UnsignedInt Integer Real Pointer SegPointer" size="4" />
+          </arg>
+          <arg name="type">
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg name="value">
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </signature>
+        <address>00401030</address>
+        <CSignature>void setParameter(word32 d, int type, void *value)</CSignature>
+      </procedure>
+      <procedure name="new_data_struct">
+        <signature>
+          <return>
+            <prim domain="Pointer" size="4" />
+          </return>
+        </signature>
+        <address>004010B0</address>
+        <CSignature>ptr32 new_data_struct()</CSignature>
+      </procedure>
+      <procedure name="main">
+        <address>004010D0</address>
+        <CSignature>int main(int argc, char *argv[])</CSignature>
+      </procedure>
+      <procedure name="Win32CrtStartup">
+        <address>004014DF</address>
+        <decompile>false</decompile>
+      </procedure>
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>
