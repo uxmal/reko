@@ -140,6 +140,7 @@ namespace Reko.Core.Types
             ft.StackDelta = StackDelta;
             ft.FpuStackArgumentMax = FpuStackArgumentMax;
             ft.FpuStackOutArgumentMax = FpuStackOutArgumentMax;
+            ft.IsVariadic = IsVariadic;
             return ft;
 		}
 
@@ -153,6 +154,7 @@ namespace Reko.Core.Types
         {
             var sig = (FunctionType)Clone();
             sig.Parameters = parameters;
+            sig.IsVariadic = false;
             return sig;
         }
 
