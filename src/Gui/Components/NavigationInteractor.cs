@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2023 John Källén.
  *
@@ -18,16 +18,10 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Gui.Components;
-using Reko.Gui.Controls;
-using System;
+//using Reko.Gui.Controls;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui.Components
 {
     /// <summary>
     /// Performs back/forward navigation.
@@ -36,78 +30,70 @@ namespace Reko.UserInterfaces.WindowsForms
     /// This interactor is connected to a navigable control, which will have a pair of buttons -- for "Back" and "Forward" -- a timer, and 
     /// a way to show a menu to the user if the timer times out.
     /// </remarks>
-    public class NavigationInteractor<T>
+    public class NavigationInteractor<T> : ReactingObject
     {
-        private INavigableControl<T> navControl;
-        private List<T> navStack = new List<T>();
+        private readonly List<T> navStack = new List<T>();
         private int stackPosition = 0;
 
-        public void Attach(INavigableControl<T> navControl)
+        public NavigationInteractor()
         {
-            this.navControl = navControl;
-
             EnableControls();
-
-            navControl.BackButton.Click += btnBack_Click;
-            navControl.ForwardButton.Click += btnForward_Click;
         }
 
-        private T Location
+        public bool BackEnabled
         {
-            get {
-                if (stackPosition >= navStack.Count)
-                    return default(T);
-                return navStack[stackPosition];
-            }
+            get { return backEnabled; }
+            set { this.RaiseAndSetIfChanged(ref backEnabled, value); }
         }
+        private bool backEnabled;
+
+        public bool ForwardEnabled
+        {
+            get { return forwardEnabled; }
+            set { this.RaiseAndSetIfChanged(ref forwardEnabled, value); }
+        }
+        private bool forwardEnabled;
 
         private void EnableControls()
         {
-            navControl.BackButton.Enabled = stackPosition > 0;
-            navControl.ForwardButton.Enabled = stackPosition < (navStack.Count - 1);
+            this.BackEnabled = stackPosition > 0;
+            this.ForwardEnabled = stackPosition < navStack.Count;
         }
 
         /// <summary>
         /// Call this when a user navigation action has occurred and you need to add an address
         /// to the "stack".
         /// </summary>
-        /// <param name="address"></param>
-        public void RememberAddress(T address)
+        /// <param name="locationDest">Location being navigated to.</param>
+        public void RememberLocation(T locationDest)
         {
             int itemsAhead = navStack.Count - stackPosition;
             if (stackPosition >= 0 && itemsAhead > 0)
             {
-                var stackAddress = navStack[stackPosition];
-                if (stackAddress != null && 
-                    !stackAddress.Equals(navControl.CurrentAddress))
-                {
-                    stackPosition++;
-                    itemsAhead--;
-                }
                 navStack.RemoveRange(stackPosition, itemsAhead);
             }
-            navStack.Add(navControl.CurrentAddress);    // Remember where we were...
             ++stackPosition;
-            navStack.Add(address);    // Remember where we will be...
+            navStack.Add(locationDest);    // Remember where we will be...
             EnableControls();
         }
 
-        void btnBack_Click(object sender, EventArgs e)
+        public T NavigateBack()
         {
             if (stackPosition <= 0)
-                return;
-            --stackPosition;
+                return default!;
+            var result = navStack[--stackPosition];
             EnableControls();
-            navControl.CurrentAddress = Location;        // ...and move to the new position.
+            return result;
         }
 
-        void btnForward_Click(object sender, EventArgs e)
+        public T NavigateForward()
         {
             if (stackPosition >= navStack.Count)
-                return;
+                return default!;
+            var result = navStack[stackPosition];
             ++stackPosition;
             EnableControls();
-            navControl.CurrentAddress = Location;        // ...and move to the new position.
+            return result;
         }
     }
 }

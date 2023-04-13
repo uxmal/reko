@@ -25,6 +25,7 @@ using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
+using Reko.Gui.Components;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Documents;
@@ -43,6 +44,8 @@ using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+    using SelectionChangedEventArgs = Reko.Gui.Services.SelectionChangedEventArgs;
+
     /// <summary>
     /// This class manages user interaction with the LowLevelView control.
     /// </summary>
@@ -136,7 +139,15 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
 
             this.navInteractor = new NavigationInteractor<Address>();
-            this.navInteractor.Attach(this.Control);
+            this.Control.ToolbarBackButton.Click += delegate {  this.Control.CurrentAddress = this.navInteractor.NavigateBack(); };
+            this.Control.ToolbarForwardButton.Click += delegate { this.Control.CurrentAddress = this.navInteractor.NavigateForward(); };
+            this.navInteractor.PropertyChanged += delegate
+            {
+                this.Control.ToolbarBackButton.Enabled = navInteractor.BackEnabled;
+                this.Control.ToolbarForwardButton.Enabled = navInteractor.ForwardEnabled;
+            };
+            this.Control.ToolbarBackButton.Enabled = false;
+            this.Control.ToolbarForwardButton.Enabled = false;
 
             typeMarker = new TypeMarker(control.MemoryView);
 
@@ -185,8 +196,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (!program.SegmentMap.IsValidAddress(addrTo))
                 return;
-            navInteractor.RememberAddress(addrFrom);
-            control.CurrentAddress = addrTo;        // ...and move to the new position.
+            if (control.CurrentAddress != addrTo)
+            {
+                control.CurrentAddress = addrTo;        // move to the new position.
+                navInteractor.RememberLocation(addrFrom);
+            }
         }
 
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)

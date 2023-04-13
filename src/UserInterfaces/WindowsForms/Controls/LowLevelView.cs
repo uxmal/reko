@@ -82,7 +82,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public IComboBox VisualizerList { get { return ddlVisualizerWrapped; } }
         IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
         IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
-        public Address CurrentAddress { get { return addrCurrent; } set { addrCurrent = value; CurrentAddressChanged?.Invoke(this, EventArgs.Empty); } }
+
+        public Address CurrentAddress
+        {
+            get { return addrCurrent; }
+            set {
+                if (Address.Compare(addrCurrent, value) == 0)
+                    return;
+                addrCurrent = value;
+                CurrentAddressChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public event EventHandler CurrentAddressChanged;
     }

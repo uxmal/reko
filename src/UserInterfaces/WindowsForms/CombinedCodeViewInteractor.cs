@@ -26,6 +26,7 @@ using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
+using Reko.Gui.Components;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -264,7 +265,17 @@ namespace Reko.UserInterfaces.WindowsForms
             iViewer.MouseUp += IViewer_MouseUp;
             iViewer.MouseDown += IViewer_MouseDown;
             this.navInteractor = new NavigationInteractor<Address>();
-            this.navInteractor.Attach(this.combinedCodeView);
+            this.combinedCodeView.Back.Click += delegate { this.combinedCodeView.CurrentAddress = this.navInteractor.NavigateBack(); };
+            this.combinedCodeView.Forward.Click += delegate { this.combinedCodeView.CurrentAddress = this.navInteractor.NavigateForward(); };
+            this.navInteractor.PropertyChanged += delegate
+            {
+                this.combinedCodeView.Back.Enabled = navInteractor.BackEnabled;
+                this.combinedCodeView.Forward.Enabled = navInteractor.ForwardEnabled;
+            };
+            this.combinedCodeView.Back.Enabled = false;
+            this.combinedCodeView.Forward.Enabled = false;
+
+
 
             declarationFormInteractor = new DeclarationFormInteractor(services);
             commentFormInteractor = new CommentFormInteractor(services);
@@ -661,8 +672,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (!program.SegmentMap.IsValidAddress(addrTo))
                 return;
-            navInteractor.RememberAddress(addrTo);
-            this.SelectedAddress = addrTo;        // ...and move to the new position.
+            if (addrTo != this.SelectedAddress)
+            {
+                this.SelectedAddress = addrTo;
+                navInteractor.RememberLocation(addrFrom);
+            }
         }
 
         void ToolBarAddressTextbox_KeyDown(object sender, Gui.Controls.KeyEventArgs e)

@@ -227,6 +227,15 @@ namespace Reko.Core
             return this.ToLinear().CompareTo(that.ToLinear());
 		}
 
+        public static int Compare(Address? a, Address? b)
+        {
+            if (a is null)
+            {
+                return (b is null) ? 0 : -1;
+            }
+            return a.CompareTo(b);
+        }
+
         public abstract Constant ToConstant();
         public abstract ushort ToUInt16();
         public abstract uint ToUInt32();
