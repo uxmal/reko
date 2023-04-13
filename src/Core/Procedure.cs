@@ -38,7 +38,11 @@ namespace Reko.Core
 	{
         private readonly List<Block> blocks;
 
-		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name, true)
+		public Procedure(
+            IProcessorArchitecture arch, 
+            string name, 
+            Address addrEntry, 
+            Frame frame) : base(name, true)
 		{
             this.EntryAddress = addrEntry;
             this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
@@ -64,12 +68,39 @@ namespace Reko.Core
         /// </summary>
         public bool UserSpecified { get; set; }
 
+        /// <summary>
+        /// The <see cref="IProcessorArchitecture"/> used to decompile this procedure.
+        /// </summary>
         public IProcessorArchitecture Architecture { get; }
+
         public List<AbsynStatement>? Body { get; set; }
+
+        /// <summary>
+        /// The control flow graph (CFG) of this procedure.
+        /// </summary>
         public BlockGraph ControlGraph { get; }
+
+        /// <summary>
+        /// A synthetic <see cref="Block"/> modelling entry into a procedure.
+        /// Architecture and platform invariants can be implemented by injecting
+        /// <see cref="Reko.Core.Code.DefInstruction"/>s or <see cref="Code.Assignment"/>s
+        /// into this block.
+        /// </summary>
         public Block EntryBlock { get; }
+
+        /// <summary>
+        /// A synthetic <see cref="Block"/> modelling all exits from the procedure in a 
+        /// single block. During analysis it is used for <see cref="Code.UseInstruction"/>s
+        /// that keep presumed live-out registers alive during dead code elimination.
+        /// </summary>
         public Block ExitBlock { get; }
+
         public Frame Frame { get; }
+
+        /// <summary>
+        /// The machine address where the machine code for the procdure entry point is 
+        /// located.
+        /// </summary>
         public Address EntryAddress { get; }
 
         Address IAddressable.Address => EntryAddress;
