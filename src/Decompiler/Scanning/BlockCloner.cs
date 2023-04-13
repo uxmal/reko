@@ -111,10 +111,7 @@ namespace Reko.Scanning
             var callee = ci.Callee.Accept(this);
             if (callee is ProcedureConstant pc)
             {
-                if (pc.Procedure is Procedure calledProc)
-                {
-                    callGraph.AddEdge(StatementNew!, calledProc);
-                }
+                callGraph.AddEdge(StatementNew!, pc.Procedure);
             }
             var ciNew = new CallInstruction(ci.Callee, new CallSite(ci.CallSite.SizeOfReturnAddressOnStack, ci.CallSite.FpuStackDepthBefore));
             return ciNew;  

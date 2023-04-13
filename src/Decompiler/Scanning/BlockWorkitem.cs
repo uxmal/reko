@@ -599,10 +599,7 @@ namespace Reko.Scanning
                 sig = callee.Signature;
                 chr = callee.Characteristics;
                 EmitCall(pcCallee, sig, chr, site);
-                if (callee is Procedure pCallee)
-                {
-                    program.CallGraph.AddEdge(blockCur!.Statements[^1], pCallee);
-                }
+                program.CallGraph.AddEdge(blockCur!.Statements[^1], callee);
                 return OnAfterCall(sig, chr);
             }
 

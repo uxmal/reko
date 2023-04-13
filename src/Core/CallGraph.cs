@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Graphs;
 using System;
 using System.Collections.Generic;
@@ -27,24 +26,41 @@ using System.Linq;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Describes the call structure of the program: what nodes call what others.
-	/// </summary>
-	public class CallGraph : IReadOnlyCallGraph
+    /// <summary>
+    /// Describes the call structure of the program: what nodes call what others.
+    /// </summary>
+    public class CallGraph : IReadOnlyCallGraph
 	{
+        //$TODO: implement DirectedBipartiteGraph<Statement, ProcedureBase>
+        // and DirectedBipartiteGraph<Procedure, ProcedureBase>
 		private DirectedGraphImpl<Procedure> graphProcs = new DirectedGraphImpl<Procedure>();
-		private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
+		private DirectedGraphImpl<ProcedureBase> graphExternals = new DirectedGraphImpl<ProcedureBase>();
+        private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
 
-		public void AddEdge(Statement stmCaller, Procedure callee)
-		{
-			graphProcs.AddNode(stmCaller.Block.Procedure);
-			graphProcs.AddNode(callee);
-			graphProcs.AddEdge(stmCaller.Block.Procedure, callee);
+        public void AddEdge(Statement stmCaller, ProcedureBase callee)
+        {
+            switch (callee)
+            {
+            case Procedure proc:
+                graphProcs.AddNode(stmCaller.Block.Procedure);
+                graphProcs.AddNode(proc);
+                graphProcs.AddEdge(stmCaller.Block.Procedure, proc);
 
-			graphStms.AddNode(stmCaller);
-			graphStms.AddNode(callee);
-			graphStms.AddEdge(stmCaller, callee);
-		}
+                graphStms.AddNode(stmCaller);
+                graphStms.AddNode(proc);
+                graphStms.AddEdge(stmCaller, proc);
+                break;
+            case ExternalProcedure extProc:
+                graphExternals.AddNode(stmCaller.Block.Procedure);
+                graphExternals.AddNode(extProc);
+                graphExternals.AddEdge(stmCaller.Block.Procedure, extProc);
+
+                graphStms.AddNode(stmCaller);
+                graphStms.AddNode(extProc);
+                graphStms.AddEdge(stmCaller, extProc);
+                break;
+            }
+        }
 
         public List<Procedure> EntryPoints { get; } = new List<Procedure>();
 
@@ -96,15 +112,23 @@ namespace Reko.Core
 			return graphProcs.Successors(proc);
 		}
 
-        public IEnumerable<Procedure> CallerProcedures(Procedure proc)
+        public IEnumerable<Procedure> CallerProcedures(ProcedureBase proc)
 		{
-			return graphProcs.Predecessors(proc);
+            switch (proc)
+            {
+            case Procedure p:
+                return graphProcs.Predecessors(p);
+            case ExternalProcedure ep:
+                return graphExternals.Predecessors(ep).Cast<Procedure>();
+            default:
+                return Enumerable.Empty<Procedure>();
+            }
 		}
 
         /// <summary>
         /// Given a procedure, find all the statements that call it.
         /// </summary>
-        public IEnumerable<Statement> FindCallerStatements(Procedure proc)
+        public IEnumerable<Statement> FindCallerStatements(ProcedureBase proc)
 		{
             if (!graphStms.Nodes.Contains(proc))
                 return Array.Empty<Statement>();

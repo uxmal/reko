@@ -27,6 +27,8 @@ using Reko.Loading;
 using Reko.Scanning;
 using NUnit.Framework;
 using System;
+using Reko.UnitTests.Mocks;
+using System.Linq;
 
 namespace Reko.UnitTests.Core
 {
@@ -84,6 +86,20 @@ namespace Reko.UnitTests.Core
         private CallInstruction CreateCall(ProcedureConstant pc)
         {
             return new CallInstruction(pc, new CallSite(4, 0));
+        }
+
+        [Test]
+        public void CallGraph_ExternalFunc()
+        {
+            var g = new CallGraph();
+            var pb = new ProcedureBuilder();
+            var ep =new ExternalProcedure("externo@4", new FunctionType());
+            pb.Call(ep, 0);
+            g.AddEdge(pb.CurrentBlock.Statements[^1], ep);
+            pb.SideEffect(pb.Fn(ep));
+            g.AddEdge(pb.CurrentBlock.Statements[^1], ep);
+
+            Assert.AreEqual(2, g.FindCallerStatements(ep).Count());
         }
 	}
 }

@@ -30,13 +30,13 @@ namespace Reko.Core
         /// <summary>
         /// Given a procedure, find all the statements that call it.
         /// </summary>
-        IEnumerable<Statement> FindCallerStatements(Procedure procedure);
+        IEnumerable<Statement> FindCallerStatements(ProcedureBase procedure);
 
         //$BUG: mutable state. Used in ValuePropagator when 
         // new procedure constants are discovered. Need to
         // change this so that mutations of the call graph
         // are done safely.
-        void AddEdge(Statement stmCur, Procedure procCallee);
+        void AddEdge(Statement stmCur, ProcedureBase procCallee);
 
         //$BUG: mutable state. Only used in SsaTransform
         // when unreachable code is discovered. Need to

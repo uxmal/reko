@@ -111,8 +111,6 @@ namespace Reko.Gui.ViewModels.Tools
 
         private CallGraphViewModelItem MakeViewModelItem(ProcedureBase? p)
         {
-            if (p is not null && p.Name.StartsWith("str"))
-                _ = this; //$DEBUG
             bool isVisited = p is not null
                 ? visited.Contains(p)
                 : false;

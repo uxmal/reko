@@ -138,10 +138,9 @@ namespace Reko.Scanning
 
         private void AddEdgeToCallGraph(Statement stm, CallInstruction call)
         {
-            if (call.Callee is ProcedureConstant pc && 
-                pc.Procedure is Procedure proc)
+            if (call.Callee is ProcedureConstant pc)
             {
-                program.CallGraph.AddEdge(stm, proc);
+                program.CallGraph.AddEdge(stm, pc.Procedure);
             }
         }
 
