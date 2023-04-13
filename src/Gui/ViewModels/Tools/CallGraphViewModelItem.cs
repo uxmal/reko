@@ -19,9 +19,6 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Graphs;
-using System;
-using System.Collections;
 
 namespace Reko.Gui.ViewModels.Tools
 {
@@ -30,7 +27,7 @@ namespace Reko.Gui.ViewModels.Tools
         public CallGraphViewModelItem(
             string title,
             string descrption,
-            Procedure proc,
+            ProcedureBase proc,
             bool isVisited)
         {
             Title = title;
@@ -46,7 +43,7 @@ namespace Reko.Gui.ViewModels.Tools
 
         public bool IsVisited { get; set; }
 
-        public Procedure NodeObject { get; }
+        public ProcedureBase NodeObject { get; }
 
         public static CallGraphViewModelItem Empty()
         {

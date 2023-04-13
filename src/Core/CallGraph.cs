@@ -113,17 +113,18 @@ namespace Reko.Core
 		}
 
         public IEnumerable<Procedure> CallerProcedures(ProcedureBase proc)
-		{
+        {
             switch (proc)
             {
             case Procedure p:
                 return graphProcs.Predecessors(p);
             case ExternalProcedure ep:
-                return graphExternals.Predecessors(ep).Cast<Procedure>();
-            default:
-                return Enumerable.Empty<Procedure>();
+                if (graphExternals.Nodes.Contains(ep))
+                    return graphExternals.Predecessors(ep).Cast<Procedure>();
+                break;
             }
-		}
+            return Enumerable.Empty<Procedure>();
+        }
 
         /// <summary>
         /// Given a procedure, find all the statements that call it.

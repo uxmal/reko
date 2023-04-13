@@ -545,6 +545,8 @@ namespace Reko.Scanning
         {
             try
             {
+                if (sym.Name == "open")
+                    _ = this; //$DEBUG
                 Address addr = sym.Address!;
                 if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
@@ -601,7 +603,9 @@ namespace Reko.Scanning
                 return ep;
             var trampoline = GetTrampoline(arch, addr);
             if (trampoline is not null)
+            {
                 return trampoline;
+            }
 
             var imp = GetImportedProcedure(arch, addr, addr);
             if (imp is not null)

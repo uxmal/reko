@@ -32,13 +32,13 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     public partial class CallGraphNavigatorView : UserControl
     {
         private Font boldFont;
-        private NavigationInteractor<Procedure> navInteractor;
+        private NavigationInteractor<ProcedureBase> navInteractor;
 
         public CallGraphNavigatorView()
         {
             InitializeComponent();
             MakeBoldFont();
-            this.navInteractor = new NavigationInteractor<Procedure>();
+            this.navInteractor = new NavigationInteractor<ProcedureBase>();
             this.btnBack.Click += delegate { ViewModel.NavigateTo(navInteractor.NavigateBack()); };
             this.btnForward.Click += delegate { ViewModel.NavigateTo(navInteractor.NavigateForward()); };
             this.navInteractor.PropertyChanged += delegate

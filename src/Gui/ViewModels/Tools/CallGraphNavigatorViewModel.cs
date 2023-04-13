@@ -23,14 +23,9 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Gui.Reactive;
-using Reko.Gui.ViewModels.Documents;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
-using System.Transactions;
 
 namespace Reko.Gui.ViewModels.Tools
 {
@@ -117,25 +112,33 @@ namespace Reko.Gui.ViewModels.Tools
             return p switch
             {
                 Procedure proc => new CallGraphViewModelItem(
-                                    proc.Name, proc.EntryAddress.ToString(), proc, isVisited),
+                    proc.Name, proc.EntryAddress.ToString(), proc, isVisited),
+                ExternalProcedure ep => new CallGraphViewModelItem(
+                    ep.Name, "", ep, isVisited),
                 ProcedureBase callable => new CallGraphViewModelItem(
-                                    callable.Name, "", null!, isVisited),
+                    callable.Name, "", null!, isVisited),
                 _ => CallGraphViewModelItem.Empty(),
             };
         }
 
         private IEnumerable<CallGraphViewModelItem> GetPredecessors(CallGraphViewModelItem item)
         {
-            return MakeViewModelItems(graph.Procedures.Predecessors(item.NodeObject));
+            return MakeViewModelItems(graph.CallerProcedures(item.NodeObject));
         }
 
         private IEnumerable<CallGraphViewModelItem> GetSuccessors(CallGraphViewModelItem item)
         {
-            var calleeCollector = new CalleeCollector(this, item.NodeObject);
-            return calleeCollector.FindCallees();
+            switch (item.NodeObject)
+            {
+            case Procedure proc:
+                var calleeCollector = new CalleeCollector(this, proc);
+                return calleeCollector.FindCallees();
+            default:
+                return Enumerable.Empty<CallGraphViewModelItem>();
+            }
         }
 
-        public void NavigateTo(Procedure? proc)
+        public void NavigateTo(ProcedureBase? proc)
         {
             if (proc is null)
             {
@@ -154,7 +157,8 @@ namespace Reko.Gui.ViewModels.Tools
         public void NavigateTo(CallGraphViewModelItem? item)
         {
             currentNode = item;
-            if (item is null || item.NodeObject is not Procedure)
+            if (item is null || item.NodeObject is not Procedure &&
+                item.NodeObject is not ExternalProcedure)
             {
                 NodeTitle = "(No selection)";
                 NodeDescription = "";
