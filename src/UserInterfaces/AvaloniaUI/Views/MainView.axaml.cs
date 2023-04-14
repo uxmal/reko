@@ -53,7 +53,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 
             themes.SelectionChanged += (_, _) =>
             {
-                Application.Current.Styles[0] = themes.SelectedIndex switch
+                Application.Current!.Styles[0] = themes.SelectedIndex switch
                 {
                     0 => App.FluentLight,
                     1 => App.FluentDark,

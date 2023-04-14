@@ -183,7 +183,7 @@ namespace Reko.Gui
             new CmdDefinition { id = CmdIds.WindowsCloseAll, cmdSet = Reko, container = GroupIds.GrpWindows, text = "C_lose All Windows" },
             new CmdDefinition { id = CmdIds.HelpAbout, cmdSet = Reko, container = GroupIds.GrpHelp, text = "_About Decompiler..." },
 
-            new CmdDefinition { id = CmdIds.ShowProcedureCallHierarchy, cmdSet = Reko, container = GroupIds.GrpProcedure, text = "Show Call _Hierarchy" },
+            new CmdDefinition { id = CmdIds.ShowCallGraphNavigator, cmdSet = Reko, container = GroupIds.GrpProcedure, text = "Show Call _Graph Navigator" },
             new CmdDefinition { id = CmdIds.ProcedureDebugTrace, cmdSet = Reko, container = GroupIds.GrpProcedureListDebug, text = "_Debug procedure decompilation" },
 
             new CmdDefinition { id = CmdIds.CollapseAllNodes, cmdSet = Reko, container = GroupIds.GrpBrowserToolbar, imageKey = "Collapse.ico", tip = "Collapse All" },
@@ -250,7 +250,7 @@ namespace Reko.Gui
             new Placement { item=(int)CmdIds.EditProperties, container=GroupIds.GrpBrowser },
             new Placement { item=(int)CmdIds.ViewGoToAddress, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpBrowserProc },
-            new Placement { item=(int)CmdIds.ShowProcedureCallHierarchy, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.ShowCallGraphNavigator, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ActionEditSignature, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ActionAssumeRegisterValues, container=GroupIds.GrpBrowserProc },
 

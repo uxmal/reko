@@ -25,6 +25,7 @@ using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.Services;
+using System;
 using System.ComponentModel.Design;
 
 namespace Reko.Gui
@@ -65,7 +66,6 @@ namespace Reko.Gui
         ISelectionService CreateSelectionService();
         ISelectedAddressService CreateSelectedAddressService();
         IProcedureListService CreateProcedureListService();
-        ICallHierarchyService CreateCallHierarchyService();
         IDecompiledFileService CreateDecompiledFileService();
         ITestGenerationService CreateTestGenerationService();
         IUserEventService CreateUserEventService();

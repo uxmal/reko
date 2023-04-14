@@ -5,6 +5,8 @@
 			 xmlns:guivmt="using:Reko.Gui.ViewModels.Tools"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.CallGraphNavigatorToolView">
+	<ScrollViewer>
+		
 	<StackPanel>
 		<Label>//$TODO: Toolbar</Label>
 		<Grid RowDefinitions="26,*" ColumnDefinitions="*,*,*">
@@ -13,16 +15,17 @@
 			<Label Grid.Column="2" Grid.Row="0">Called procedures</Label>
 
 			<Border Grid.Column="0" Grid.Row="1">
-				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Callers}">
+				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Predecessors}"
+						  x:DataType="guivmt:CallGraphViewModelItem">
 					<DataGrid.Columns>
 						<DataGridTemplateColumn Header="Name" Width="3*">
 							<DataGridTemplateColumn.CellTemplate>
 								<DataTemplate DataType="guivmt:CallGraphViewModelItem">
-									<TextBlock Text="{Binding Name}" />
+									<TextBlock Text="{Binding Title}" VerticalAlignment="Center" />
 								</DataTemplate>
 							</DataGridTemplateColumn.CellTemplate>
 						</DataGridTemplateColumn>
-						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Address}" />
+						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Description}" />
 					</DataGrid.Columns>
 				</DataGrid>
 			</Border>
@@ -32,13 +35,14 @@
 				<Label Name="lblSignature" />
 			</StackPanel>
 			<Border Grid.Column="2" Grid.Row="1">
-				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Callees}">
+				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Successors}">
 					<DataGrid.Columns>
-						<DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Name}" />
-						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Address}" />
+						<DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Title}" />
+						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Description}" />
 					</DataGrid.Columns>
 				</DataGrid>
 			</Border>
 		</Grid>
 	</StackPanel>
+	</ScrollViewer>
 </UserControl>

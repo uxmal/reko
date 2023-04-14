@@ -48,8 +48,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             btnDiagnosticFilter = new System.Windows.Forms.ToolStripButton();
             tabFindResults = new System.Windows.Forms.TabPage();
             listFindResults = new System.Windows.Forms.ListView();
-            tabCallHierarchy = new System.Windows.Forms.TabPage();
-            callHierarchyView = new CallHierarchyView();
             tabConsole = new System.Windows.Forms.TabPage();
             tabOutput = new System.Windows.Forms.TabPage();
             outputWindowPanel = new System.Windows.Forms.Panel();
@@ -75,7 +73,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabDiagnostics.SuspendLayout();
             diagnosticsToolstrip.SuspendLayout();
             tabFindResults.SuspendLayout();
-            tabCallHierarchy.SuspendLayout();
             tabOutput.SuspendLayout();
             outputWindowToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize) splitContainerMain).BeginInit();
@@ -167,7 +164,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl1.Controls.Add(tabDiagnostics);
             tabControl1.Controls.Add(tabFindResults);
             tabControl1.Controls.Add(tabCallGraphNavigator);
-            tabControl1.Controls.Add(tabCallHierarchy);
             tabControl1.Controls.Add(tabConsole);
             tabControl1.Controls.Add(tabOutput);
             tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -272,27 +268,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             listFindResults.Size = new System.Drawing.Size(898, 160);
             listFindResults.TabIndex = 0;
             listFindResults.UseCompatibleStateImageBehavior = false;
-            // 
-            // tabCallHierarchy
-            // 
-            tabCallHierarchy.Controls.Add(callHierarchyView);
-            tabCallHierarchy.Location = new System.Drawing.Point(4, 24);
-            tabCallHierarchy.Margin = new System.Windows.Forms.Padding(4);
-            tabCallHierarchy.Name = "tabCallHierarchy";
-            tabCallHierarchy.Size = new System.Drawing.Size(906, 168);
-            tabCallHierarchy.TabIndex = 3;
-            tabCallHierarchy.Text = "Call hierarchy";
-            tabCallHierarchy.UseVisualStyleBackColor = true;
-            // 
-            // callHierarchyView
-            // 
-            callHierarchyView.Dock = System.Windows.Forms.DockStyle.Fill;
-            callHierarchyView.Location = new System.Drawing.Point(0, 0);
-            callHierarchyView.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            callHierarchyView.Name = "callHierarchyView";
-            callHierarchyView.Services = null;
-            callHierarchyView.Size = new System.Drawing.Size(906, 168);
-            callHierarchyView.TabIndex = 0;
             // 
             // tabConsole
             // 
@@ -502,7 +477,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             diagnosticsToolstrip.ResumeLayout(false);
             diagnosticsToolstrip.PerformLayout();
             tabFindResults.ResumeLayout(false);
-            tabCallHierarchy.ResumeLayout(false);
             tabOutput.ResumeLayout(false);
             tabOutput.PerformLayout();
             outputWindowToolstrip.ResumeLayout(false);
@@ -551,8 +525,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.ColumnHeader colProcName;
         private System.Windows.Forms.TextBox txtProcedureFilter;
         private System.Windows.Forms.ColumnHeader colProcSegment;
-        private System.Windows.Forms.TabPage tabCallHierarchy;
-        private CallHierarchyView callHierarchyView;
         private System.Windows.Forms.TabPage tabOutput;
         private System.Windows.Forms.ToolStrip outputWindowToolstrip;
         private System.Windows.Forms.ToolStripComboBox ddlOutputWindowSources;

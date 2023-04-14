@@ -50,12 +50,6 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
             Given_MemoryArea(new Word36MemoryArea(addr, new[] { word }));
         }
 
-        [Obsolete("", true)]
-        private new void Given_HexString(string s)
-        {
-            Given_OctalWord(s);
-        }
-
         [Test]
         public void Pdp10Rw_addb()
         {

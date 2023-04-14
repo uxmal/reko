@@ -161,11 +161,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return tabDiagnostics; }
         }
 
-        public TabPage CallHierarchyPage
-        {
-            get { return tabCallHierarchy; }
-        }
-
 
         public TabPage ConsolePage
         {
@@ -278,8 +273,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public ToolStripLabel SelectedAddressLabel => this.statusLblSelection;
 
         public StatusStrip StatusStrip => statusStrip;
-
-        public CallHierarchyView CallHierarchy => callHierarchyView;
 
         public event KeyEventHandler ProcessCommandKey;
 

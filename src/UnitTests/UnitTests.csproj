@@ -33,6 +33,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Gui\Windows\" />
     <Folder Include="ImageLoaders\MzExe\Pe\" />
   </ItemGroup>
   <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">

@@ -62,11 +62,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             return new AvaloniaCallGraphViewService(this.services);
         }
 
-        public ICallHierarchyService CreateCallHierarchyService()
-        {
-            return new AvaloniaCallHierarchyService(services);
-        }
-
         public ICodeViewerService CreateCodeViewerService()
         {
             return new AvaloniaCodeViewerService();
@@ -97,7 +92,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IDiagnosticsService CreateDiagnosticsService()
         {
-            return new AvaloniaDiagnosticsService(mainViewModel.DiagnosticsList, SynchronizationContext.Current);
+            return new AvaloniaDiagnosticsService(mainViewModel.DiagnosticsList, SynchronizationContext.Current!);
         }
 
         public IDisassemblyViewService CreateDisassemblyViewService()

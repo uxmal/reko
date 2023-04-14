@@ -147,7 +147,7 @@ namespace Reko.Gui
                 {
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ViewGoToAddress:
-                case CmdIds.ShowProcedureCallHierarchy:
+                case CmdIds.ShowCallGraphNavigator:
                     status.Status = singleItemSelected
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
@@ -182,8 +182,8 @@ namespace Reko.Gui
                 case CmdIds.ViewGoToAddress:
                     GotoProcedureAddress();
                     return true;
-                case CmdIds.ShowProcedureCallHierarchy:
-                    ShowProcedureCallHierarchy();
+                case CmdIds.ShowCallGraphNavigator:
+                    ShowCallGraphNavigator();
                     return true;
 #if DEBUG
                 case CmdIds.ProcedureDebugTrace:
@@ -222,14 +222,14 @@ namespace Reko.Gui
             }
         }
 
-        private void ShowProcedureCallHierarchy()
+        private void ShowCallGraphNavigator()
         {
             Debug.Assert(listProcedures.SelectedItems.Count == 1, "QueryStatus should be ensuring this");
             var item = listProcedures.SelectedItems[0];
             if (item.Tag != null)
             {
                 var pp = (ProgramProcedure) item.Tag;
-                services.RequireService<ICallHierarchyService>().Show(pp.Program, pp.Procedure);
+                services.RequireService<ICallGraphNavigatorService>().Show(pp.Program, pp.Procedure);
             }
         }
 

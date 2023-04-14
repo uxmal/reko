@@ -73,7 +73,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
             this.DiagnosticsList = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
             var toolFindResults = new FindResultsViewModel {Id = "Tool4", Title = "Find Results"};
-            var toolCallHierarchy = new CallHierarchyViewModel {Id = "Tool5", Title = "Call Hierarchy"};
             this.CallGraphNavigator = new CallGraphNavigatorToolViewModel { Id = "Tool9", Title = "Call Graph Navigator"};
             var toolConsole = new ConsoleViewModel {Id = "Tool7", Title = "Console", CanClose = false, CanPin = false};
             var toolOutput = new OutputViewModel { Id = "Tool6", Title = "Output" };
@@ -112,7 +111,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                             DiagnosticsList, 
                             toolFindResults,
                             CallGraphNavigator,
-                            toolCallHierarchy,
                             toolConsole,
                             toolOutput),
                         Alignment = Alignment.Left
@@ -155,23 +153,21 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
             var mainLayout = new ProportionalDock
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Vertical,
                 VisibleDockables = CreateList<IDockable>
                 (
-                    leftDock,
-                    new ProportionalDockSplitter(),
                     new ProportionalDock
                     {
-                        Orientation = Orientation.Vertical,
+                        Orientation = Orientation.Horizontal,
                         VisibleDockables = CreateList<IDockable>(
+                            leftDock,
+                            new ProportionalDockSplitter(),
                             documentDock,
                             new ProportionalDockSplitter(),
-                            bottomDock
-                        )
+                            rightDock),
                     },
                     new ProportionalDockSplitter(),
-                    rightDock
-                )
+                    bottomDock)
             };
 
             var homeView = new HomeViewModel

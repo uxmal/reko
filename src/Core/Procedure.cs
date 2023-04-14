@@ -44,8 +44,6 @@ namespace Reko.Core
             Address addrEntry, 
             Frame frame) : base(name, true)
 		{
-            if (name == "open")
-                _ = this; //$DEBUG
             this.EntryAddress = addrEntry;
             this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
             //$REVIEW consider removing Body completely and use

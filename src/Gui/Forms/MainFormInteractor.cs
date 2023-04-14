@@ -211,9 +211,6 @@ namespace Reko.Gui.Forms
             srSvc = svcFactory.CreateSearchResultService();
             sc.AddService<ISearchResultService>(srSvc);
 
-            var callHierSvc = svcFactory.CreateCallHierarchyService();
-            sc.AddService<ICallHierarchyService>(callHierSvc);
-
             this.searchResultsTabControl = svcFactory.CreateTabControlHost();
             sc.AddService<ITabControlHostService>(this.searchResultsTabControl);
 

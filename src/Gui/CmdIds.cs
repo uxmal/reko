@@ -158,7 +158,7 @@ namespace Reko.Gui
 		WindowsTileHorizontal,
 		WindowsCloseAll,
 		HelpAbout,
-		ShowProcedureCallHierarchy,
+		ShowCallGraphNavigator,
 		ProcedureDebugTrace,
 		CollapseAllNodes,
 		CreateUserSegment,

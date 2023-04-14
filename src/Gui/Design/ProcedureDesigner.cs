@@ -95,7 +95,7 @@ namespace Reko.Gui.Design
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     return true;
                 case CmdIds.ViewFindWhatPointsHere:
-                case CmdIds.ShowProcedureCallHierarchy:
+                case CmdIds.ShowCallGraphNavigator:
                     status.Status = MenuStatus.Visible;
                     if (procedure != null)
                         status.Status |= MenuStatus.Enabled;
@@ -121,8 +121,8 @@ namespace Reko.Gui.Design
                 case CmdIds.ActionEditSignature:
                     await EditSignature();
                     break;
-                case CmdIds.ShowProcedureCallHierarchy:
-                    Services!.RequireService<ICallHierarchyService>().Show(program, procedure);
+                case CmdIds.ShowCallGraphNavigator:
+                    Services!.RequireService<ICallGraphNavigatorService>().Show(program, procedure);
                     break;
                 case CmdIds.ActionAssumeRegisterValues:
                     await AssumeRegisterValues();

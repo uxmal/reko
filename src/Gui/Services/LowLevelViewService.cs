@@ -80,11 +80,11 @@ namespace Reko.Gui.Services
 
         public abstract ILowLevelViewInteractor CreateMemoryViewInteractor();
 
-        private void mvi_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void mvi_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            var llvi = (ILowLevelViewInteractor) sender;
+            var llvi = (ILowLevelViewInteractor) sender!;
             var addrRange = llvi.GetSelectedAddressRange();
-            var par = ProgramAddressRange.ClosedRange(llvi.Program, addrRange.Begin, addrRange.End);
+            var par = ProgramAddressRange.ClosedRange(llvi.Program!, addrRange.Begin, addrRange.End);
             selAddrSvc.SelectedAddressRange = par;
         }
     }

@@ -545,8 +545,6 @@ namespace Reko.Scanning
         {
             try
             {
-                if (sym.Name == "open")
-                    _ = this; //$DEBUG
                 Address addr = sym.Address!;
                 if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
