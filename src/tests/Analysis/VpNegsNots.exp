@@ -27,53 +27,53 @@ SCZO_9: orig: SCZO
 ds:ds
     def:  def ds
     uses: Mem11[ds:0x300<16>:word32] = eax_8
-          v8_12 = Mem11[ds:0x202<16>:word16]
-          Mem15[ds:0x202<16>:word16] = v9_14
-          v10_17 = Mem15[ds:0x200<16>:word16]
-          Mem20[ds:0x200<16>:word16] = v11_19
+          v9_12 = Mem11[ds:0x202<16>:word16]
+          Mem15[ds:0x202<16>:word16] = v10_14
+          v11_17 = Mem15[ds:0x200<16>:word16]
+          Mem20[ds:0x200<16>:word16] = v12_19
           Mem24[ds:0x308<16>:word32] = ecx_22
           Mem27[ds:0x304<16>:word16] = bx_26
-          v14_28 = ~Mem27[ds:0x204<16>:word16]
-          Mem29[ds:0x204<16>:word16] = v14_28
+          v15_28 = ~Mem27[ds:0x204<16>:word16]
+          Mem29[ds:0x204<16>:word16] = v15_28
           cx_30 = Mem29[ds:0x304<16>:word16]
           Mem36[ds:0x306<16>:word16] = cx_34
           eax_37 = Mem36[ds:0x310<16>:word32]
           Mem45[ds:0x30C<16>:word32] = eax_43
 Mem11: orig: Mem0
     def:  Mem11[ds:0x300<16>:word32] = eax_8
-    uses: v8_12 = Mem11[ds:0x202<16>:word16]
-v8_12: orig: v8
-    def:  v8_12 = Mem11[ds:0x202<16>:word16]
-    uses: C_13 = v8_12 != 0<16>
-          v9_14 = -v8_12
+    uses: v9_12 = Mem11[ds:0x202<16>:word16]
+v9_12: orig: v9
+    def:  v9_12 = Mem11[ds:0x202<16>:word16]
+    uses: C_13 = v9_12 != 0<16>
+          v10_14 = -v9_12
 C_13: orig: C
-    def:  C_13 = v8_12 != 0<16>
-v9_14: orig: v9
-    def:  v9_14 = -v8_12
-    uses: Mem15[ds:0x202<16>:word16] = v9_14
-          SZO_16 = cond(v9_14)
+    def:  C_13 = v9_12 != 0<16>
+v10_14: orig: v10
+    def:  v10_14 = -v9_12
+    uses: Mem15[ds:0x202<16>:word16] = v10_14
+          SZO_16 = cond(v10_14)
 Mem15: orig: Mem0
-    def:  Mem15[ds:0x202<16>:word16] = v9_14
-    uses: v10_17 = Mem15[ds:0x200<16>:word16]
+    def:  Mem15[ds:0x202<16>:word16] = v10_14
+    uses: v11_17 = Mem15[ds:0x200<16>:word16]
 SZO_16: orig: SZO
-    def:  SZO_16 = cond(v9_14)
-v10_17: orig: v10
-    def:  v10_17 = Mem15[ds:0x200<16>:word16]
-    uses: C_18 = v10_17 != 0<16>
-          v11_19 = -v10_17
-          ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
+    def:  SZO_16 = cond(v10_14)
+v11_17: orig: v11
+    def:  v11_17 = Mem15[ds:0x200<16>:word16]
+    uses: C_18 = v11_17 != 0<16>
+          v12_19 = -v11_17
+          ecx_22 = 0<32> - CONVERT(v11_17 != 0<16>, bool, word32)
 C_18: orig: C
-    def:  C_18 = v10_17 != 0<16>
-v11_19: orig: v11
-    def:  v11_19 = -v10_17
-    uses: Mem20[ds:0x200<16>:word16] = v11_19
-          SZO_21 = cond(v11_19)
+    def:  C_18 = v11_17 != 0<16>
+v12_19: orig: v12
+    def:  v12_19 = -v11_17
+    uses: Mem20[ds:0x200<16>:word16] = v12_19
+          SZO_21 = cond(v12_19)
 Mem20: orig: Mem0
-    def:  Mem20[ds:0x200<16>:word16] = v11_19
+    def:  Mem20[ds:0x200<16>:word16] = v12_19
 SZO_21: orig: SZO
-    def:  SZO_21 = cond(v11_19)
+    def:  SZO_21 = cond(v12_19)
 ecx_22: orig: ecx
-    def:  ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
+    def:  ecx_22 = 0<32> - CONVERT(v11_17 != 0<16>, bool, word32)
     uses: SCZO_23 = cond(ecx_22)
           Mem24[ds:0x308<16>:word32] = ecx_22
 SCZO_23: orig: SCZO
@@ -88,12 +88,12 @@ bx_26: orig: bx
     uses: Mem27[ds:0x304<16>:word16] = bx_26
 Mem27: orig: Mem0
     def:  Mem27[ds:0x304<16>:word16] = bx_26
-    uses: v14_28 = ~Mem27[ds:0x204<16>:word16]
-v14_28: orig: v14
-    def:  v14_28 = ~Mem27[ds:0x204<16>:word16]
-    uses: Mem29[ds:0x204<16>:word16] = v14_28
+    uses: v15_28 = ~Mem27[ds:0x204<16>:word16]
+v15_28: orig: v15
+    def:  v15_28 = ~Mem27[ds:0x204<16>:word16]
+    uses: Mem29[ds:0x204<16>:word16] = v15_28
 Mem29: orig: Mem0
-    def:  Mem29[ds:0x204<16>:word16] = v14_28
+    def:  Mem29[ds:0x204<16>:word16] = v15_28
     uses: cx_30 = Mem29[ds:0x304<16>:word16]
 cx_30: orig: cx
     def:  cx_30 = Mem29[ds:0x304<16>:word16]
@@ -160,23 +160,23 @@ l0C00_0000:
 	eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
 	SCZO_9 = cond(eax_8)
 	Mem11[ds:0x300<16>:word32] = eax_8
-	v8_12 = Mem11[ds:0x202<16>:word16]
-	C_13 = v8_12 != 0<16>
-	v9_14 = -v8_12
-	Mem15[ds:0x202<16>:word16] = v9_14
-	SZO_16 = cond(v9_14)
-	v10_17 = Mem15[ds:0x200<16>:word16]
-	C_18 = v10_17 != 0<16>
-	v11_19 = -v10_17
-	Mem20[ds:0x200<16>:word16] = v11_19
-	SZO_21 = cond(v11_19)
-	ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
+	v9_12 = Mem11[ds:0x202<16>:word16]
+	C_13 = v9_12 != 0<16>
+	v10_14 = -v9_12
+	Mem15[ds:0x202<16>:word16] = v10_14
+	SZO_16 = cond(v10_14)
+	v11_17 = Mem15[ds:0x200<16>:word16]
+	C_18 = v11_17 != 0<16>
+	v12_19 = -v11_17
+	Mem20[ds:0x200<16>:word16] = v12_19
+	SZO_21 = cond(v12_19)
+	ecx_22 = 0<32> - CONVERT(v11_17 != 0<16>, bool, word32)
 	SCZO_23 = cond(ecx_22)
 	Mem24[ds:0x308<16>:word32] = ecx_22
 	bx_26 = ~bx
 	Mem27[ds:0x304<16>:word16] = bx_26
-	v14_28 = ~Mem27[ds:0x204<16>:word16]
-	Mem29[ds:0x204<16>:word16] = v14_28
+	v15_28 = ~Mem27[ds:0x204<16>:word16]
+	Mem29[ds:0x204<16>:word16] = v15_28
 	cx_30 = Mem29[ds:0x304<16>:word16]
 	cx_31 = cx_30 - 0x3E8<16>
 	SCZO_32 = cond(cx_31)
@@ -225,53 +225,53 @@ SCZO_9: orig: SCZO
 ds:ds
     def:  def ds
     uses: Mem11[ds:0x300<16>:word32] = eax_8
-          v8_12 = Mem11[ds:0x202<16>:word16]
-          Mem15[ds:0x202<16>:word16] = v9_14
-          v10_17 = Mem15[ds:0x200<16>:word16]
-          Mem20[ds:0x200<16>:word16] = v11_19
+          v9_12 = Mem11[ds:0x202<16>:word16]
+          Mem15[ds:0x202<16>:word16] = v10_14
+          v11_17 = Mem15[ds:0x200<16>:word16]
+          Mem20[ds:0x200<16>:word16] = v12_19
           Mem24[ds:0x308<16>:word32] = ecx_22
           Mem27[ds:0x304<16>:word16] = bx_26
-          v14_28 = ~Mem27[ds:0x204<16>:word16]
-          Mem29[ds:0x204<16>:word16] = v14_28
+          v15_28 = ~Mem27[ds:0x204<16>:word16]
+          Mem29[ds:0x204<16>:word16] = v15_28
           cx_30 = Mem29[ds:0x304<16>:word16]
           Mem36[ds:0x306<16>:word16] = cx_34
           eax_37 = Mem36[ds:0x310<16>:word32]
           Mem45[ds:0x30C<16>:word32] = eax_41 + 1<32>
 Mem11: orig: Mem0
     def:  Mem11[ds:0x300<16>:word32] = eax_8
-    uses: v8_12 = Mem11[ds:0x202<16>:word16]
-v8_12: orig: v8
-    def:  v8_12 = Mem11[ds:0x202<16>:word16]
-    uses: C_13 = v8_12 != 0<16>
-          v9_14 = -v8_12
+    uses: v9_12 = Mem11[ds:0x202<16>:word16]
+v9_12: orig: v9
+    def:  v9_12 = Mem11[ds:0x202<16>:word16]
+    uses: C_13 = v9_12 != 0<16>
+          v10_14 = -v9_12
 C_13: orig: C
-    def:  C_13 = v8_12 != 0<16>
-v9_14: orig: v9
-    def:  v9_14 = -v8_12
-    uses: Mem15[ds:0x202<16>:word16] = v9_14
-          SZO_16 = cond(v9_14)
+    def:  C_13 = v9_12 != 0<16>
+v10_14: orig: v10
+    def:  v10_14 = -v9_12
+    uses: Mem15[ds:0x202<16>:word16] = v10_14
+          SZO_16 = cond(v10_14)
 Mem15: orig: Mem0
-    def:  Mem15[ds:0x202<16>:word16] = v9_14
-    uses: v10_17 = Mem15[ds:0x200<16>:word16]
+    def:  Mem15[ds:0x202<16>:word16] = v10_14
+    uses: v11_17 = Mem15[ds:0x200<16>:word16]
 SZO_16: orig: SZO
-    def:  SZO_16 = cond(v9_14)
-v10_17: orig: v10
-    def:  v10_17 = Mem15[ds:0x200<16>:word16]
-    uses: C_18 = v10_17 != 0<16>
-          v11_19 = -v10_17
-          ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
+    def:  SZO_16 = cond(v10_14)
+v11_17: orig: v11
+    def:  v11_17 = Mem15[ds:0x200<16>:word16]
+    uses: C_18 = v11_17 != 0<16>
+          v12_19 = -v11_17
+          ecx_22 = 0<32> - CONVERT(v11_17 != 0<16>, bool, word32)
 C_18: orig: C
-    def:  C_18 = v10_17 != 0<16>
-v11_19: orig: v11
-    def:  v11_19 = -v10_17
-    uses: Mem20[ds:0x200<16>:word16] = v11_19
-          SZO_21 = cond(v11_19)
+    def:  C_18 = v11_17 != 0<16>
+v12_19: orig: v12
+    def:  v12_19 = -v11_17
+    uses: Mem20[ds:0x200<16>:word16] = v12_19
+          SZO_21 = cond(v12_19)
 Mem20: orig: Mem0
-    def:  Mem20[ds:0x200<16>:word16] = v11_19
+    def:  Mem20[ds:0x200<16>:word16] = v12_19
 SZO_21: orig: SZO
-    def:  SZO_21 = cond(v11_19)
+    def:  SZO_21 = cond(v12_19)
 ecx_22: orig: ecx
-    def:  ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
+    def:  ecx_22 = 0<32> - CONVERT(v11_17 != 0<16>, bool, word32)
     uses: SCZO_23 = cond(ecx_22)
           Mem24[ds:0x308<16>:word32] = ecx_22
 SCZO_23: orig: SCZO
@@ -286,12 +286,12 @@ bx_26: orig: bx
     uses: Mem27[ds:0x304<16>:word16] = bx_26
 Mem27: orig: Mem0
     def:  Mem27[ds:0x304<16>:word16] = bx_26
-    uses: v14_28 = ~Mem27[ds:0x204<16>:word16]
-v14_28: orig: v14
-    def:  v14_28 = ~Mem27[ds:0x204<16>:word16]
-    uses: Mem29[ds:0x204<16>:word16] = v14_28
+    uses: v15_28 = ~Mem27[ds:0x204<16>:word16]
+v15_28: orig: v15
+    def:  v15_28 = ~Mem27[ds:0x204<16>:word16]
+    uses: Mem29[ds:0x204<16>:word16] = v15_28
 Mem29: orig: Mem0
-    def:  Mem29[ds:0x204<16>:word16] = v14_28
+    def:  Mem29[ds:0x204<16>:word16] = v15_28
     uses: cx_30 = Mem29[ds:0x304<16>:word16]
 cx_30: orig: cx
     def:  cx_30 = Mem29[ds:0x304<16>:word16]
@@ -358,23 +358,23 @@ l0C00_0000:
 	eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
 	SCZO_9 = cond(eax_8)
 	Mem11[ds:0x300<16>:word32] = eax_8
-	v8_12 = Mem11[ds:0x202<16>:word16]
-	C_13 = v8_12 != 0<16>
-	v9_14 = -v8_12
-	Mem15[ds:0x202<16>:word16] = v9_14
-	SZO_16 = cond(v9_14)
-	v10_17 = Mem15[ds:0x200<16>:word16]
-	C_18 = v10_17 != 0<16>
-	v11_19 = -v10_17
-	Mem20[ds:0x200<16>:word16] = v11_19
-	SZO_21 = cond(v11_19)
-	ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
+	v9_12 = Mem11[ds:0x202<16>:word16]
+	C_13 = v9_12 != 0<16>
+	v10_14 = -v9_12
+	Mem15[ds:0x202<16>:word16] = v10_14
+	SZO_16 = cond(v10_14)
+	v11_17 = Mem15[ds:0x200<16>:word16]
+	C_18 = v11_17 != 0<16>
+	v12_19 = -v11_17
+	Mem20[ds:0x200<16>:word16] = v12_19
+	SZO_21 = cond(v12_19)
+	ecx_22 = 0<32> - CONVERT(v11_17 != 0<16>, bool, word32)
 	SCZO_23 = cond(ecx_22)
 	Mem24[ds:0x308<16>:word32] = ecx_22
 	bx_26 = ~bx
 	Mem27[ds:0x304<16>:word16] = bx_26
-	v14_28 = ~Mem27[ds:0x204<16>:word16]
-	Mem29[ds:0x204<16>:word16] = v14_28
+	v15_28 = ~Mem27[ds:0x204<16>:word16]
+	Mem29[ds:0x204<16>:word16] = v15_28
 	cx_30 = Mem29[ds:0x304<16>:word16]
 	cx_31 = cx_30 - 0x3E8<16>
 	SCZO_32 = cond(cx_30 - 0x3E8<16>)

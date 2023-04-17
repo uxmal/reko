@@ -5531,7 +5531,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|T--|00100000(4): 4 instructions",
                 "1|L--|fp = Mem0[sp:word32]",
-                "2|L--|v4 = Mem0[sp + 4<i32>:word32]",
+                "2|L--|v5 = Mem0[sp + 4<i32>:word32]",
                 "3|L--|sp = sp + 8<i32>",
                 "4|R--|return (0,0)");
         }
@@ -5662,8 +5662,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C1FA8724");
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(r7, uint8, 0)",
-                "2|L--|r4 = __crc32<uint8>(r1, v4)");
+                "1|L--|v5 = SLICE(r7, uint8, 0)",
+                "2|L--|r4 = __crc32<uint8>(r1, v5)");
         }
 
         [Test]
@@ -5763,8 +5763,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0x7013);  // strb        r3,[r2]
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v3 = SLICE(r3, byte, 0)",
-                "2|L--|Mem0[r2:byte] = v3");
+                "1|L--|v4 = SLICE(r3, byte, 0)",
+                "2|L--|Mem0[r2:byte] = v4");
         }
 
         [Test]
@@ -5895,8 +5895,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0x800B);  // strh        r3,[r1]
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v3 = SLICE(r3, uint16, 0)",
-                "2|L--|Mem0[r1:word16] = v3");
+                "1|L--|v4 = SLICE(r3, uint16, 0)",
+                "2|L--|Mem0[r1:word16] = v4");
         }
 
         [Test]
@@ -5914,8 +5914,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E8B2");	// uxtb r0, r5
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v4 = SLICE(r5, byte, 0)",
-                "2|L--|r0 = CONVERT(v4, byte, uint32)");
+                "1|L--|v5 = SLICE(r5, byte, 0)",
+                "2|L--|r0 = CONVERT(v5, byte, uint32)");
         }
 
         [Test]
@@ -5924,8 +5924,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xB2A9);  // uxth        r1,r5
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v4 = SLICE(r5, uint16, 0)",
-                "2|L--|r1 = CONVERT(v4, uint16, uint32)");
+                "1|L--|v5 = SLICE(r5, uint16, 0)",
+                "2|L--|r1 = CONVERT(v5, uint16, uint32)");
         }
 
         [Test]
@@ -5952,9 +5952,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xF85D, 0xFB0C);  // ldr         pc,[sp],#0xC
             AssertCode(
                 "0|T--|00100000(4): 3 instructions",
-                "1|L--|v4 = Mem0[sp:word32]",
+                "1|L--|v5 = Mem0[sp:word32]",
                 "2|L--|sp = sp + 12<i32>",
-                "3|T--|goto v4");
+                "3|T--|goto v5");
         }
 
         [Test]
@@ -5991,9 +5991,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xF801, 0x0F01);  // strb.w r0, [r1, #1]!
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r0, byte, 0)",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
                 "2|L--|r1 = r1 + 1<i32>",
-                "3|L--|Mem0[r1:byte] = v3");
+                "3|L--|Mem0[r1:byte] = v4");
         }
 
         [Test]
@@ -6002,8 +6002,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt16s(0xF802, 0x3B01);  // strb        r3,[r2],#1
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r3, byte, 0)",
-                "2|L--|Mem0[r2:byte] = v3",
+                "1|L--|v4 = SLICE(r3, byte, 0)",
+                "2|L--|Mem0[r2:byte] = v4",
                 "3|L--|r2 = r2 + 1<i32>");
         }
 
@@ -6183,8 +6183,8 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r10 = r10 + -128",
-                "2|L--|v3 = Mem0[r10:word32]",
-                "3|L--|p6 = __ldc(0x04, v3)");
+                "2|L--|v4 = Mem0[r10:word32]",
+                "3|L--|p6 = __ldc(0x04, v4)");
         }
 
         [Test]
@@ -6225,8 +6225,8 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r1 = r1",
-                "2|L--|v3 = Mem0[r1:word32]",
-                "3|L--|p8 = __ldc2(0x02, v3)");
+                "2|L--|v4 = Mem0[r1:word32]",
+                "3|L--|p8 = __ldc2(0x02, v4)");
         }
 
         [Test]
@@ -6236,8 +6236,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("D8EC3846");	// ldcl p6, c4, [r8], {0x38}
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = Mem0[r8:word32]",
-                "2|L--|p6 = __ldcl(0x04, v3)");
+                "1|L--|v4 = Mem0[r8:word32]",
+                "2|L--|p6 = __ldcl(0x04, v4)");
         }
 
         [Test]
@@ -6330,8 +6330,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("A8F93148");	// vld1.32 {d4[0]}, [r8:0x20], r1
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = __vld1_multiple<int32>(r8)",
-                "2|L--|d4 = SLICE(v2, word64, 0)",
+                "1|L--|v3 = __vld1_multiple<int32>(r8)",
+                "2|L--|d4 = SLICE(v3, word64, 0)",
                 "3|L--|r8 = r8 + r1");
         }
 
@@ -6341,11 +6341,11 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("20F920B3");
             AssertCode(
                 "0|L--|00100000(4): 6 instructions",
-                "1|L--|v2 = __vld2_multiple<int8>(r0)",
-                "2|L--|d11 = SLICE(v2, word64, 192)",
-                "3|L--|d12 = SLICE(v2, word64, 128)",
-                "4|L--|d13 = SLICE(v2, word64, 64)",
-                "5|L--|d14 = SLICE(v2, word64, 0)",
+                "1|L--|v3 = __vld2_multiple<int8>(r0)",
+                "2|L--|d11 = SLICE(v3, word64, 192)",
+                "3|L--|d12 = SLICE(v3, word64, 128)",
+                "4|L--|d13 = SLICE(v3, word64, 64)",
+                "5|L--|d14 = SLICE(v3, word64, 0)",
                 "6|L--|r0 = r0 + r0");
         }
 
@@ -6355,10 +6355,10 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("A0F91866");
             AssertCode(     // vld3.i16	{d6[0],d7[0],d8[0]},[r0],r8
                 "0|L--|00100000(4): 5 instructions",
-                "1|L--|v2 = __vld3_multiple<int16>(r0)",
-                "2|L--|d6 = SLICE(v2, word64, 128)",
-                "3|L--|d7 = SLICE(v2, word64, 64)",
-                "4|L--|d8 = SLICE(v2, word64, 0)",
+                "1|L--|v3 = __vld3_multiple<int16>(r0)",
+                "2|L--|d6 = SLICE(v3, word64, 128)",
+                "3|L--|d7 = SLICE(v3, word64, 64)",
+                "4|L--|d8 = SLICE(v3, word64, 0)",
                 "5|L--|r0 = r0 + r8");
         }
 
@@ -6458,8 +6458,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("59B2");	// sxtb r1, r3
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v4 = SLICE(r3, int8, 0)",
-                "2|L--|r1 = CONVERT(v4, int8, int32)");
+                "1|L--|v5 = SLICE(r3, int8, 0)",
+                "2|L--|r1 = CONVERT(v5, int8, int32)");
         }
 
         [Test]
@@ -6468,8 +6468,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("08B2");	// sxth r0, r1
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v4 = SLICE(r1, int16, 0)",
-                "2|L--|r0 = CONVERT(v4, int16, int32)");
+                "1|L--|v5 = SLICE(r1, int16, 0)",
+                "2|L--|r0 = CONVERT(v5, int16, int32)");
         }
 
         [Test]
@@ -6607,8 +6607,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("5BFA94F8");	// uxtab r8, fp, r4, ror #8
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(__ror<word32,int32>(r4, 8<i32>), byte, 0)",
-                "2|L--|r8 = fp + CONVERT(v4, byte, word32)");
+                "1|L--|v5 = SLICE(__ror<word32,int32>(r4, 8<i32>), byte, 0)",
+                "2|L--|r8 = fp + CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -6617,8 +6617,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("11FAFEF7");	// uxtah r7, r1, lr, ror #24
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(__ror<word32,int32>(lr, 24<i32>), uint16, 0)",
-                "2|L--|r7 = r1 + CONVERT(v4, uint16, word32)");
+                "1|L--|v5 = SLICE(__ror<word32,int32>(lr, 24<i32>), uint16, 0)",
+                "2|L--|r7 = r1 + CONVERT(v5, uint16, word32)");
         }
 
         [Test]
@@ -6788,9 +6788,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E0FB6320");	// umaal r2, r0, r0, r3
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = r0 *u r3",
-                "2|L--|v2 = v2 + CONVERT(r0, word32, uint64)",
-                "3|L--|r0_r2 = v2 + CONVERT(r2, word32, uint64)");
+                "1|L--|v3 = r0 *u r3",
+                "2|L--|v3 = v3 + CONVERT(r0, word32, uint64)",
+                "3|L--|r0_r2 = v3 + CONVERT(r2, word32, uint64)");
         }
 
         [Test]
@@ -7063,8 +7063,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FBFF2046");	// vcvt.f32.s32 d20, d16
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = d16",
-                "2|L--|d20 = __vcvt<int32[2],real32[2]>(v4)");
+                "1|L--|v5 = d16",
+                "2|L--|d20 = __vcvt<int32[2],real32[2]>(v5)");
         }
 
         [Test]
@@ -7147,9 +7147,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("77FB0030");	// usada8 r0, r7, r0, r3
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = r7",
-                "2|L--|v6 = r0",
-                "3|L--|r0 = __usada8<byte[4]>(v5, v6)");
+                "1|L--|v6 = r7",
+                "2|L--|v7 = r0",
+                "3|L--|r0 = __usada8<byte[4]>(v6, v7)");
         }
 
         [Test]
@@ -7288,9 +7288,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("48FB00F1");	// smusd r1, r8, r0
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = SLICE(r8, int16, 0) *s SLICE(r0, int16, 0)",
-                "2|L--|v6 = SLICE(r8, int16, 16) *s SLICE(r0, int16, 16)",
-                "3|L--|r1 = v5 - v6");
+                "1|L--|v6 = SLICE(r8, int16, 0) *s SLICE(r0, int16, 0)",
+                "2|L--|v7 = SLICE(r8, int16, 16) *s SLICE(r0, int16, 16)",
+                "3|L--|r1 = v6 - v7");
         }
 
         [Test]
@@ -7299,8 +7299,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("42FA83F1");	// sxtab r1, r2, r3
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(r3, int8, 0)",
-                "2|L--|r1 = r2 + CONVERT(v4, int8, word32)");
+                "1|L--|v5 = SLICE(r3, int8, 0)",
+                "2|L--|r1 = r2 + CONVERT(v5, int8, word32)");
         }
 
         [Test]
@@ -7309,8 +7309,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00FAFEFF");	// sxtah pc, r0, lr, ror #24
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(__ror<word32,int32>(lr, 24<i32>), int16, 0)",
-                "2|L--|pc = r0 + CONVERT(v4, int16, word32)");
+                "1|L--|v5 = SLICE(__ror<word32,int32>(lr, 24<i32>), int16, 0)",
+                "2|L--|pc = r0 + CONVERT(v5, int16, word32)");
         }
 
         [Test]
@@ -7368,8 +7368,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("63F31F43");	// bfi r3, r3, #0x10, #0x10
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r3, ui16, 0)",
-                "2|L--|r3 = SEQ(v3, SLICE(r3, word16, 0))");
+                "1|L--|v4 = SLICE(r3, ui16, 0)",
+                "2|L--|r3 = SEQ(v4, SLICE(r3, word16, 0))");
         }
 
         [Test]
@@ -7723,9 +7723,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EEFA40F6");	// usax r6, lr, r0
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = SLICE(lr, ui16, 0) + SLICE(r0, ui16, 16)",
-                "2|L--|v3 = SLICE(lr, ui16, 16) - SLICE(r0, ui16, 0)",
-                "3|L--|r6 = SEQ(v3, v2)");
+                "1|L--|v3 = SLICE(lr, ui16, 0) + SLICE(r0, ui16, 16)",
+                "2|L--|v4 = SLICE(lr, ui16, 16) - SLICE(r0, ui16, 0)",
+                "3|L--|r6 = SEQ(v4, v3)");
         }
 
         [Test]
@@ -7808,9 +7808,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("A4FA42F0");	// uasx r0, r4, r2
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = SLICE(r4, ui16, 0) - SLICE(r2, ui16, 16)",
-                "2|L--|v3 = SLICE(r4, ui16, 16) + SLICE(r2, ui16, 0)",
-                "3|L--|r0 = SEQ(v3, v2)");
+                "1|L--|v3 = SLICE(r4, ui16, 0) - SLICE(r2, ui16, 16)",
+                "2|L--|v4 = SLICE(r4, ui16, 16) + SLICE(r2, ui16, 0)",
+                "3|L--|r0 = SEQ(v4, v3)");
         }
 
         [Test]
@@ -7837,8 +7837,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("23F8236E");	// strht r6, [r3, #0x23]
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r6, uint16, 0)",
-                "2|L--|Mem0[r3 + 35<i32>:word16] = v3");
+                "1|L--|v4 = SLICE(r6, uint16, 0)",
+                "2|L--|Mem0[r3 + 35<i32>:word16] = v4");
         }
 
         [Test]
@@ -7847,8 +7847,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("08F8031E");	// strbt r1, [r8, #3]
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r1, byte, 0)",
-                "2|L--|Mem0[r8 + 3<i32>:byte] = v3");
+                "1|L--|v4 = SLICE(r1, byte, 0)",
+                "2|L--|Mem0[r8 + 3<i32>:byte] = v4");
         }
 
         [Test]

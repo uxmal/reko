@@ -16,8 +16,8 @@ l0C00_0000:
 	ax_10 = Mem9[ds:si + 0x202<16>:word16]
 	Mem11[ds:0x202<16>:word16] = ax_10
 	ax_12 = Mem11[ds:si + 0x204<16>:word16]
-	v6_13 = Mem11[ds:0x204<16>:word16] + ax_12
-	Mem14[ds:0x204<16>:word16] = v6_13
+	v7_13 = Mem11[ds:0x204<16>:word16] + ax_12
+	Mem14[ds:0x204<16>:word16] = v7_13
 	ax_16 = Mem14[ds:0x200<16>:word16]
 	call fn0C00_002A (retsize: 2;)
 		uses: ds:ds

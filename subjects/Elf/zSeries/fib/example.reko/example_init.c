@@ -14,7 +14,7 @@ word64 _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11,
 	<anonymous> * r1_n = g_ptr2038;
 	if (r1_n != null)
 		r1_n();
-	ptr64 v16_n = (char *) r15_n + 0x00D0;
+	ptr64 v17_n = (char *) r15_n + 0x00D0;
 	word64 r6_n;
 	ptr64 r8_n;
 	ptr64 r9_n;

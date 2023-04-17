@@ -1,9 +1,0 @@
-// Mem0:Mem
-// fp:fp
-// ax:ax
-// cx:cx
-// wLoc02:Stack -0002
-// sp:sp
-// ss:ss
-// return address size: 0
-ax = bar(cx, Mem0[ss:sp + -2<i16>:word16])

@@ -6,9 +6,9 @@ main_entry:
 	def r2
 	// succ:  l1
 l1:
-	v5_9 = SEQ(r1, r2) >>u 1<8>
-	r1_2 = SLICE(v5_9, word32, 32)
-	r2_5 = SLICE(v5_9, word32, 0)
+	v6_9 = SEQ(r1, r2) >>u 1<8>
+	r1_2 = SLICE(v6_9, word32, 32)
+	r2_5 = SLICE(v6_9, word32, 0)
 	Mem7[0x3000<32>:word32] = r2_5
 	Mem8[0x3004<32>:word32] = r1_2
 	return

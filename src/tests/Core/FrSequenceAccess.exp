@@ -1,8 +1,0 @@
-// Mem0:Mem
-// fp:fp
-// ax:ax
-// dx:dx
-// dx_ax:Sequence dx:ax
-// return address size: 0
-Head(dx_ax) = dx
-Tail(dx_ax) = ax

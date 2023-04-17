@@ -197,17 +197,17 @@ word32 fn00200557(bui8 c, byte b, byte * xhl)
 	byte b_n;
 	for (b_n = 0x13; b_n != 0x00; --b_n)
 	{
-		cu8 v17_n = *xhl;
+		cu8 v18_n = *xhl;
 		word16 xwa_16_16_n = SLICE(xwa_24_8_n, word16, 8);
-		word32 xwa_n = SEQ(xwa_24_8_n, v17_n);
-		if (v17_n == 0x00)
+		word32 xwa_n = SEQ(xwa_24_8_n, v18_n);
+		if (v18_n == 0x00)
 			return xwa_n;
 		++xhl;
 		word32 * xde_n = xde_n + 1;
-		word32 v24_n = *xde_n;
+		word32 v25_n = *xde_n;
 		xde_n = (struct Eq_n *) ((char *) xde_n + 1);
-		xwa_24_8_n = SEQ(xwa_16_16_n, v24_n);
-		xwa_n = SEQ(xwa_16_16_n, v24_n, xde_n->dw0000);
+		xwa_24_8_n = SEQ(xwa_16_16_n, v25_n);
+		xwa_n = SEQ(xwa_16_16_n, v25_n, xde_n->dw0000);
 	}
 	return xwa_n;
 }
@@ -238,8 +238,8 @@ void fn002005F5(bui8 w, byte a, word16 xwa_16_n, word32 xix, word16 sr)
 {
 	__ldf(0x03);
 	<anonymous> *** xwa_n = SEQ(xwa_16_n, w * 0x04, a);
-	<anonymous> ** v9_n = *xwa_n;
-	(*v9_n)();
+	<anonymous> ** v10_n = *xwa_n;
+	(*v10_n)();
 }
 
 // 0020060C: void fn0020060C()

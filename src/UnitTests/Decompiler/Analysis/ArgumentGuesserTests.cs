@@ -86,8 +86,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             #region Expected
 @"
 esp_1 = esp + 4<32>
-v2_5 = 0x68<32>
-external_proc(v2_5)
+v3_5 = 0x68<32>
+external_proc(v3_5)
 return
 ";
             #endregion
@@ -115,10 +115,10 @@ return
 @"
 esp = fp
 esp_1 = fp - 4<32>
-v3_9 = 0x68<32>
+v4_9 = 0x68<32>
 esp_2 = fp - 8<32>
-v2_8 = 0x65<32>
-external_proc(v2_8, v3_9)
+v3_8 = 0x65<32>
+external_proc(v3_8, v4_9)
 return
 ";
             #endregion

@@ -233,21 +233,21 @@ l00200557:
 	word32 xde_26 = CONVERT(c * 2<8>, byte, uint32) + 0x9800<32> + CONVERT(b, byte, uint16) *u 0x40<16>
 	byte b_29 = 0x13<8>
 l00200579:
-	byte v17_32 = Mem8[xhl:byte]
+	byte v18_32 = Mem8[xhl:byte]
 	word16 xwa_16_16_108 = SLICE(xwa_24_8_106, word16, 8)
-	word32 xwa_105 = SEQ(xwa_24_8_106, v17_32)
-	branch v17_32 == 0<8> l0020059E
+	word32 xwa_105 = SEQ(xwa_24_8_106, v18_32)
+	branch v18_32 == 0<8> l0020059E
 l0020057F:
 	xhl = xhl + 1<32>
-	branch v17_32 <u 0x5B<8> l00200589
+	branch v18_32 <u 0x5B<8> l00200589
 l00200586:
 l00200589:
 	word32 xde_57 = xde_26 + 1<32>
-	word32 v24_58 = Mem8[xde_57:word32]
+	word32 v25_58 = Mem8[xde_57:word32]
 	xde_26 = xde_57 + 1<32>
 	b_29 = b_29 - 1<8>
-	xwa_24_8_106 = SEQ(xwa_16_16_108, v24_58) (alias)
-	xwa_105 = SEQ(xwa_16_16_108, v24_58, Mem8[xde_26:word32]) (alias)
+	xwa_24_8_106 = SEQ(xwa_16_16_108, v25_58) (alias)
+	xwa_105 = SEQ(xwa_16_16_108, v25_58, Mem8[xde_26:word32]) (alias)
 	branch b_29 != 0<8> l00200579
 l0020059E:
 	return xwa_105
@@ -296,9 +296,9 @@ fn002005F5_entry:
 l002005F5:
 	__ldf(3<8>)
 	word32 xwa_16 = SEQ(xwa_16_16, w * 4<8>, a)
-	word32 v9_17 = Mem8[xwa_16:word32]
-	call Mem8[v9_17:word32] (retsize: 4;)
-		uses: sr:sr,Stack +0004:xix,xix:v9_17,xwa:xwa_16
+	word32 v10_17 = Mem8[xwa_16:word32]
+	call Mem8[v10_17:word32] (retsize: 4;)
+		uses: sr:sr,Stack +0004:xix,xix:v10_17,xwa:xwa_16
 	return
 fn002005F5_exit:
 

@@ -221,10 +221,10 @@ namespace Reko.UnitTests.Arch.C166
             Given_HexString("ECF0");
             AssertCode(     // push	r0
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|v3 = r0",
+                "1|L--|v4 = r0",
                 "2|L--|SP = SP - 2<i16>",
-                "3|L--|Mem0[SP:word16] = v3",
-                "4|L--|EZN = cond(v3)");
+                "3|L--|Mem0[SP:word16] = v4",
+                "4|L--|EZN = cond(v4)");
         }
 
         [Test]

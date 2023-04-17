@@ -79,20 +79,20 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 		__syscall<word16>(0xA02E);
 l00001556:
 		ui32 d0_n;
-		ci8 v18_n = a3_n->b0000;
+		ci8 v19_n = a3_n->b0000;
 		++a3_n;
-		uint32 d0_n = (uint32) v18_n;
-		if (v18_n <= 0x00)
+		uint32 d0_n = (uint32) v19_n;
+		if (v19_n <= 0x00)
 		{
-			if (v18_n >= 0x00)
+			if (v19_n >= 0x00)
 			{
-				byte v22_n = a3_n->b0000;
-				uint32 d0_n = (uint32) v22_n;
-				if (v22_n != 0x00)
+				byte v23_n = a3_n->b0000;
+				uint32 d0_n = (uint32) v23_n;
+				if (v23_n != 0x00)
 				{
-					word24 v29_n = SLICE(__swap(SEQ(SLICE((uint32) ((word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8);
+					word24 v30_n = SLICE(__swap(SEQ(SLICE((uint32) ((word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8);
 					a3_n += 4;
-					d0_n = SEQ(SLICE(SEQ(SLICE(v29_n, word16, 8), (word16) SEQ(v29_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
+					d0_n = SEQ(SLICE(SEQ(SLICE(v30_n, word16, 8), (word16) SEQ(v30_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
 					a2_n = &a2_n->u0 + d0_n;
 					if (dwArg02 != 0x00 && a2_n->u0 >= 0x00)

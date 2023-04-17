@@ -3079,7 +3079,7 @@ T_636: (in GetSystemTimeAsFileTime(&tLoc10) @ 00401692 : void)
   Class: Eq_636
   DataType: void
   OrigDataType: void
-T_637: (in v14_43 @ 004016B0 : ui32)
+T_637: (in v15_43 @ 004016B0 : ui32)
   Class: Eq_637
   DataType: ui32
   OrigDataType: ui32
@@ -3211,7 +3211,7 @@ T_669: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart @ 004016C9 : word32)
   Class: Eq_669
   DataType: ui32
   OrigDataType: ui32
-T_670: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v14_43 @ 004016C9 : word32)
+T_670: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_43 @ 004016C9 : word32)
   Class: Eq_670
   DataType: ui32
   OrigDataType: ui32
@@ -3223,7 +3223,7 @@ T_672: (in fp - 8<i32> @ 004016C9 : word32)
   Class: Eq_672
   DataType: ptr32
   OrigDataType: ptr32
-T_673: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v14_43 ^ fp - 8<i32> @ 004016C9 : word32)
+T_673: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_43 ^ fp - 8<i32> @ 004016C9 : word32)
   Class: Eq_627
   DataType: ui32
   OrigDataType: ui32

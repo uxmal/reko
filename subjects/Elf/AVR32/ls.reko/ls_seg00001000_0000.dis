@@ -11446,7 +11446,7 @@ l00009D16:
 l00009C56:
 	branch r11 != 2<32> l00009D62
 l00009C5A:
-	word32 v19_298 = Mem38[r12:word32]
+	word32 v20_298 = Mem38[r12:word32]
 	word32 r7_301 = Mem38[r12 + 4<i32>:word32]
 	word32 r3_308
 	word32 r4_309
@@ -11455,7 +11455,7 @@ l00009C5A:
 	word32 r8_318
 	byte VNZC_319
 	call r9 (retsize: 0;)
-		uses: lr:lr,r0:r0,r1:r1,r10:r10,r11:r7_301,r12:v19_298,r2:r2,r3:r12,r4:v19_298,r5:r12 + 4<i32>,r6:r6_32,r7:r7_301,r8:r8_318,r9:r9
+		uses: lr:lr,r0:r0,r1:r1,r10:r10,r11:r7_301,r12:v20_298,r2:r2,r3:r12,r4:v20_298,r5:r12 + 4<i32>,r6:r6_32,r7:r7_301,r8:r8_318,r9:r9
 		defs: lr:lr_313,r10:r10_315,r3:r3_308,r4:r4_309,r5:r5_310,r7:r7_312,r8:r8_318,VNZC:VNZC_319
 	branch SLICE(VNZC_319, bool, 3) l00009D62
 l00009C6A:
@@ -20857,15 +20857,15 @@ l0000F864:
 	r10_113 = r10_39 >>u r9_101 + 0xB<32>
 	r11_112 = r11_49 >>u r9_101 + 0xB<32> | r11_49 << r8_106
 l0000F886:
-	bool v14_123 = SLICE(r10_113, bool, 0)
-	bool C_125 = v14_123
-	branch Test(UGE,v14_123) l0000F89C
+	bool v15_123 = SLICE(r10_113, bool, 0)
+	bool C_125 = v15_123
+	branch Test(UGE,v15_123) l0000F89C
 l0000F88C:
 	branch lr != 0<32> l0000F896
 l0000F890:
-	bool v15_129 = SLICE(r10_113, bool, 1)
-	C_125 = v15_129
-	branch Test(UGE,v15_129) l0000F89C
+	bool v16_129 = SLICE(r10_113, bool, 1)
+	C_125 = v16_129
+	branch Test(UGE,v16_129) l0000F89C
 l0000F896:
 	r10_113 = r10_113 + 1<32>
 	C_125 = SLICE(cond(r10_113), bool, 0) (alias)
@@ -20933,21 +20933,21 @@ bool __avr32_f64_cmp_ge(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r1
 __avr32_f64_cmp_ge_entry:
 	word32 lr
 l0000F91C:
-	bool v17_116 = r11 << 1<i32> == 0<32>
+	bool v18_116 = r11 << 1<i32> == 0<32>
 	word32 r12_7 = CONVERT(r11 << 1<i32> <u 0<32>, bool, word32)
 	branch r11 << 1<i32> != 0<32> l0000F924
 l0000F920_1:
-	v17_116 = r10 == 0<32>
+	v18_116 = r10 == 0<32>
 l0000F924:
-	branch v17_116 l0000F96A
+	branch v18_116 l0000F96A
 l0000F96A:
-	bool v20_119 = r9 << 1<i32> != 0<32>
+	bool v21_119 = r9 << 1<i32> != 0<32>
 	word32 r12_19 = CONVERT(r9 << 1<i32> <u 0<32>, bool, word32)
 	branch r9 << 1<i32> != 0<32> l0000F972
 l0000F96E_1:
-	v20_119 = r8 != 0<32>
+	v21_119 = r8 != 0<32>
 l0000F972:
-	branch v20_119 l0000F974
+	branch v21_119 l0000F974
 l0000F974:
 	r12Out = r12_19
 	lrOut = lr
@@ -21033,21 +21033,21 @@ bool __avr32_f64_cmp_lt(word32 r8, word32 r9, word32 r10, word32 r11, ptr32 & r9
 __avr32_f64_cmp_lt_entry:
 	word32 lr
 l0000F976:
-	bool v17_116 = r11 << 1<i32> == 0<32>
+	bool v18_116 = r11 << 1<i32> == 0<32>
 	word32 r12_7 = CONVERT(r11 << 1<i32> <u 0<32>, bool, word32)
 	branch r11 << 1<i32> != 0<32> l0000F97E
 l0000F97A_1:
-	v17_116 = r10 == 0<32>
+	v18_116 = r10 == 0<32>
 l0000F97E:
-	branch v17_116 l0000F9C4
+	branch v18_116 l0000F9C4
 l0000F9C4:
-	bool v20_119 = r9 << 1<i32> != 0<32>
+	bool v21_119 = r9 << 1<i32> != 0<32>
 	word32 r12_19 = CONVERT(r9 << 1<i32> >=u 0<32>, bool, word32)
 	branch r9 << 1<i32> != 0<32> l0000F9CC
 l0000F9C8_1:
-	v20_119 = r8 != 0<32>
+	v21_119 = r8 != 0<32>
 l0000F9CC:
-	branch v20_119 l0000F9CE
+	branch v21_119 l0000F9CE
 l0000F9CE:
 	r9Out = <invalid>
 	r12Out = r12_19
@@ -21140,22 +21140,22 @@ bool fn0000F9D0(word32 r11, word32 r12, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r1
 fn0000F9D0_entry:
 	word32 r8
 l0000F9D0:
-	bool v17_87 = r11 << 1<32> != 0<32>
+	bool v18_87 = r11 << 1<32> != 0<32>
 	branch r11 << 1<32> != 0<32> l0000F9DC
 l0000F9D8_1:
-	v17_87 = r12 << 1<32> != 0<32>
+	v18_87 = r12 << 1<32> != 0<32>
 l0000F9DC:
-	branch v17_87 l0000F9DE
+	branch v18_87 l0000F9DE
 l0000F9DE:
 	branch r12 << 1<32> <=u 0xFF000000<32> l0000F9E8
 l0000F9E8:
 	branch r11 << 1<32> <=u 0xFF000000<32> l0000F9EC
 l0000F9EC:
-	bool v16_25 = SLICE(r12, bool, 31)
-	word32 r8_28 = CONVERT(Test(UGE,v16_25), bool, word32)
+	bool v17_25 = SLICE(r12, bool, 31)
+	word32 r8_28 = CONVERT(Test(UGE,v17_25), bool, word32)
 	branch (r11 ^ r12) >= 0<32> l0000F9F8
 l0000F9F8:
-	branch Test(ULT,v16_25) l0000FA00
+	branch Test(ULT,v17_25) l0000FA00
 l0000F9FA:
 	branch r12 <u r11 l0000F9FE
 l0000F9FE:
@@ -21229,22 +21229,22 @@ bool fn0000FA0E(word32 r11, word32 r12, ptr32 & r8Out, ptr32 & r9Out, ptr32 & r1
 fn0000FA0E_entry:
 	word32 r8
 l0000FA0E:
-	bool v17_87 = r11 << 1<32> != 0<32>
+	bool v18_87 = r11 << 1<32> != 0<32>
 	branch r11 << 1<32> != 0<32> l0000FA1A
 l0000FA16_1:
-	v17_87 = r12 << 1<32> != 0<32>
+	v18_87 = r12 << 1<32> != 0<32>
 l0000FA1A:
-	branch v17_87 l0000FA1C
+	branch v18_87 l0000FA1C
 l0000FA1C:
 	branch r12 << 1<32> <=u 0xFF000000<32> l0000FA26
 l0000FA26:
 	branch r11 << 1<32> <=u 0xFF000000<32> l0000FA2A
 l0000FA2A:
-	bool v16_25 = SLICE(r12, bool, 31)
-	word32 r8_28 = CONVERT(Test(ULT,v16_25), bool, word32)
+	bool v17_25 = SLICE(r12, bool, 31)
+	word32 r8_28 = CONVERT(Test(ULT,v17_25), bool, word32)
 	branch (r11 ^ r12) >= 0<32> l0000FA36
 l0000FA36:
-	branch Test(ULT,v16_25) l0000FA3E
+	branch Test(ULT,v17_25) l0000FA3E
 l0000FA38:
 	branch r12 <u r11 l0000FA3C
 l0000FA3C:

@@ -55,8 +55,8 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("5C4B");	// abs	r11
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v2 = r11",
-                "2|L--|r11 = abs<int32>(v2)",
+                "1|L--|v3 = r11",
+                "2|L--|r11 = abs<int32>(v3)",
                 "3|L--|Z = r11 == 0<32>");
         }
 
@@ -145,9 +145,9 @@ namespace Reko.UnitTests.Arch.Avr
             Given_HexString("EDBB0014");
             AssertCode(     // bld	r11,+00000014
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r11, bool, 20)",
-                "2|L--|Z = v3",
-                "3|L--|C = v3");
+                "1|L--|v4 = SLICE(r11, bool, 20)",
+                "2|L--|Z = v4",
+                "3|L--|C = v4");
         }
 
         [Test]
@@ -263,8 +263,8 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
                 "1|L--|r6 = r6 - 8<i32>",
-                "2|L--|v3 = Mem0[r6:word64]",
-                "3|L--|r9_r8 = v3");
+                "2|L--|v4 = Mem0[r6:word64]",
+                "3|L--|r9_r8 = v4");
         }
 
         [Ignore("needs special casing")]
@@ -286,9 +286,9 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("0114");	// ld.sh	r4,r0++
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v3 = Mem0[r0:int16]",
+                "1|L--|v4 = Mem0[r0:int16]",
                 "2|L--|r0 = r0 + 2<i32>",
-                "3|L--|r4 = CONVERT(v3, int16, int32)");
+                "3|L--|r4 = CONVERT(v4, int16, int32)");
         }
 
         [Test]
@@ -306,9 +306,9 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("0123");	// ld.uh	r3,r0++
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v3 = Mem0[r0:word16]",
+                "1|L--|v4 = Mem0[r0:word16]",
                 "2|L--|r0 = r0 + 2<i32>",
-                "3|L--|r3 = CONVERT(v3, word16, word32)");
+                "3|L--|r3 = CONVERT(v4, word16, word32)");
         }
 
         [Test]
@@ -326,9 +326,9 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("1B0B");	// ld.w	r11,sp++
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v3 = Mem0[sp:word32]",
+                "1|L--|v4 = Mem0[sp:word32]",
                 "2|L--|sp = sp + 4<i32>",
-                "3|L--|r11 = v3");
+                "3|L--|r11 = v4");
         }
 
         [Test]
@@ -761,8 +761,8 @@ namespace Reko.UnitTests.Arch.Avr
             Given_Instruction("F9760000");	// stcond	r12[0],r6
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = r12",
-                "2|L--|Z = __stcond(v4, r6)");
+                "1|L--|v5 = r12",
+                "2|L--|Z = __stcond(v5, r6)");
         }
 
         [Test]

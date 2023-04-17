@@ -2,6 +2,7 @@
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // ebx:ebx
 // ebp:ebp
@@ -357,6 +358,7 @@ fn10000000_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -377,6 +379,7 @@ fn10000233_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -397,6 +400,7 @@ fn10000242_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -417,6 +421,7 @@ fn10000251_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -437,6 +442,7 @@ fn10000260_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -457,6 +463,7 @@ fn1000026F_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -477,6 +484,7 @@ fn1000027E_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -497,6 +505,7 @@ fn1000028D_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -517,6 +526,7 @@ fn1000029C_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -537,6 +547,7 @@ fn100002AB_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // SCZO:SCZO
@@ -560,6 +571,7 @@ fn100002BA_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // Top:Top
@@ -580,6 +592,7 @@ fn100002CD_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // SCZO:SCZO
@@ -603,6 +616,7 @@ fn100002DC_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // edx:edx
 // eax:eax
@@ -636,6 +650,7 @@ fn100002EF_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // Top:Top
 // return address size: 4
@@ -653,6 +668,7 @@ fn1000032A_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // edx:edx
 // eax:eax

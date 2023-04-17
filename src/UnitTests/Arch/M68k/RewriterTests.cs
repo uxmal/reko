@@ -68,10 +68,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xB103);        // eorb %d0,%d3
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
-                "1|L--|v4 = SLICE(d3, byte, 0) ^ SLICE(d0, byte, 0)",
-                "2|L--|v5 = SLICE(d3, word24, 8)",
-                "3|L--|d3 = SEQ(v5, v4)",
-                "4|L--|ZN = cond(v4)",
+                "1|L--|v5 = SLICE(d3, byte, 0) ^ SLICE(d0, byte, 0)",
+                "2|L--|v6 = SLICE(d3, word24, 8)",
+                "3|L--|d3 = SEQ(v6, v5)",
+                "4|L--|ZN = cond(v5)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -119,9 +119,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xDBDC);
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
-                "1|L--|v3 = Mem0[a4:word32]",
+                "1|L--|v4 = Mem0[a4:word32]",
                 "2|L--|a4 = a4 + 4<i32>",
-                "3|L--|a5 = a5 + v3");
+                "3|L--|a5 = a5 + v4");
         }
 
         [Test]
@@ -130,10 +130,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x867c, 0x1123);    // or.w #$1123,d3
             AssertCode(
                 "0|L--|00010000(4): 6 instructions",
-                "1|L--|v3 = SLICE(d3, word16, 0) | 0x1123<16>",
-                "2|L--|v4 = SLICE(d3, word16, 16)",
-                "3|L--|d3 = SEQ(v4, v3)",
-                "4|L--|ZN = cond(v3)",
+                "1|L--|v4 = SLICE(d3, word16, 0) | 0x1123<16>",
+                "2|L--|v5 = SLICE(d3, word16, 16)",
+                "3|L--|d3 = SEQ(v5, v4)",
+                "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -153,10 +153,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x3410);    // move.w (A0),D2
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v4 = Mem0[a0:word16]",
-                "2|L--|v5 = SLICE(d2, word16, 16)",
-                "3|L--|d2 = SEQ(v5, v4)",
-                "4|L--|CVZN = cond(v4)");
+                "1|L--|v5 = Mem0[a0:word16]",
+                "2|L--|v6 = SLICE(d2, word16, 16)",
+                "3|L--|d2 = SEQ(v6, v5)",
+                "4|L--|CVZN = cond(v5)");
         }
 
         [Test]
@@ -166,10 +166,10 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
                 "1|L--|a3 = a3 - 2<i32>",
-                "2|L--|v3 = Mem0[a3:word16]",
-                "3|L--|Mem0[a3:word16] = v3",
+                "2|L--|v4 = Mem0[a3:word16]",
+                "3|L--|Mem0[a3:word16] = v4",
                 "4|L--|a3 = a3 + 2<i32>",
-                "5|L--|CVZN = cond(v3)");
+                "5|L--|CVZN = cond(v4)");
         }
 
         [Test]
@@ -201,10 +201,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4643); // not.w d3
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
-                "1|L--|v3 = ~CONVERT(d3, word32, word16)",
-                "2|L--|v4 = SLICE(d3, word16, 16)",
-                "3|L--|d3 = SEQ(v4, v3)",
-                "4|L--|ZN = cond(v3)",
+                "1|L--|v4 = ~CONVERT(d3, word32, word16)",
+                "2|L--|v5 = SLICE(d3, word16, 16)",
+                "3|L--|d3 = SEQ(v5, v4)",
+                "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -227,9 +227,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
                 "1|L--|a4 = a4 - 4<i32>",
-                "2|L--|v3 = ~Mem0[a4:word32]",
-                "3|L--|Mem0[a4:word32] = v3",
-                "4|L--|ZN = cond(v3)",
+                "2|L--|v4 = ~Mem0[a4:word32]",
+                "3|L--|Mem0[a4:word32] = v4",
+                "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -241,9 +241,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
                 "1|L--|a3 = a3 - 2<i32>",
-                "2|L--|v4 = Mem0[a3:word16] & SLICE(d1, word16, 0)",
-                "3|L--|Mem0[a3:word16] = v4",
-                "4|L--|ZN = cond(v4)",
+                "2|L--|v5 = Mem0[a3:word16] & SLICE(d1, word16, 0)",
+                "3|L--|Mem0[a3:word16] = v5",
+                "4|L--|ZN = cond(v5)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -254,10 +254,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x029C, 0x0001, 0x0000);    // and.l #00010000,(a4)+
             AssertCode(
                 "0|L--|00010000(6): 6 instructions",
-                "1|L--|v3 = Mem0[a4:word32] & 0x10000<32>",
-                "2|L--|Mem0[a4:word32] = v3",
+                "1|L--|v4 = Mem0[a4:word32] & 0x10000<32>",
+                "2|L--|Mem0[a4:word32] = v4",
                 "3|L--|a4 = a4 + 4<i32>",
-                "4|L--|ZN = cond(v3)",
+                "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -268,10 +268,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0202, 0x00F0);     // andi.b #F0,d2"
             AssertCode(
                 "0|L--|00010000(4): 6 instructions",
-                "1|L--|v3 = SLICE(d2, byte, 0) & 0xF0<8>",
-                "2|L--|v4 = SLICE(d2, word24, 8)",
-                "3|L--|d2 = SEQ(v4, v3)",
-                "4|L--|ZN = cond(v3)",
+                "1|L--|v4 = SLICE(d2, byte, 0) & 0xF0<8>",
+                "2|L--|v5 = SLICE(d2, word24, 8)",
+                "3|L--|d2 = SEQ(v5, v4)",
+                "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -282,10 +282,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xEE00);        // asr.b\t#7,d0
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v3 = SLICE(d0, byte, 0) >> 7<8>",
-                "2|L--|v4 = SLICE(d0, word24, 8)",
-                "3|L--|d0 = SEQ(v4, v3)",
-                "4|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = SLICE(d0, byte, 0) >> 7<8>",
+                "2|L--|v5 = SLICE(d0, word24, 8)",
+                "3|L--|d0 = SEQ(v5, v4)",
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -294,10 +294,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x445B);
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v3 = -Mem0[a3:word16]",
-                "2|L--|Mem0[a3:word16] = v3",
+                "1|L--|v4 = -Mem0[a3:word16]",
+                "2|L--|Mem0[a3:word16] = v4",
                 "3|L--|a3 = a3 + 2<i32>",
-                "4|L--|CVZNX = cond(v3)");
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -306,9 +306,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4453);
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
-                "1|L--|v3 = -Mem0[a3:word16]",
-                "2|L--|Mem0[a3:word16] = v3",
-                "3|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = -Mem0[a3:word16]",
+                "2|L--|Mem0[a3:word16] = v4",
+                "3|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -319,9 +319,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a1 = a1 - 1<i32>",
-                "2|L--|v4 = -Mem0[a1:byte] - X",
-                "3|L--|Mem0[a1:byte] = v4",
-                "4|L--|CVZNX = cond(v4)");
+                "2|L--|v5 = -Mem0[a1:byte] - X",
+                "3|L--|Mem0[a1:byte] = v5",
+                "4|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -331,10 +331,10 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
                 "1|L--|a4 = a4 - 2<i32>",
-                "2|L--|v4 = SLICE(d0, word16, 0) - Mem0[a4:word16]",
-                "3|L--|v5 = SLICE(d0, word16, 16)",
-                "4|L--|d0 = SEQ(v5, v4)",
-                "5|L--|CVZNX = cond(v4)");
+                "2|L--|v5 = SLICE(d0, word16, 0) - Mem0[a4:word16]",
+                "3|L--|v6 = SLICE(d0, word16, 16)",
+                "4|L--|d0 = SEQ(v6, v5)",
+                "5|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -344,11 +344,11 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x90DC);      // suba.w (a4)+,a0
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v3 = Mem0[a4:word16]",
+                "1|L--|v4 = Mem0[a4:word16]",
                 "2|L--|a4 = a4 + 2<i32>",
-                "3|L--|v5 = SLICE(a0, word16, 0) - v3",
-                "4|L--|v6 = SLICE(a0, word16, 16)",
-                "5|L--|a0 = SEQ(v6, v5)");
+                "3|L--|v6 = SLICE(a0, word16, 0) - v4",
+                "4|L--|v7 = SLICE(a0, word16, 16)",
+                "5|L--|a0 = SEQ(v7, v6)");
         }
 
         [Test]
@@ -389,8 +389,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4240);        // clr.w\td0
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
-                "1|L--|v4 = SLICE(d0, word16, 16)",
-                "2|L--|d0 = SEQ(v4, 0<16>)",
+                "1|L--|v5 = SLICE(d0, word16, 16)",
+                "2|L--|d0 = SEQ(v5, 0<16>)",
                 "3|L--|Z = true",
                 "4|L--|C = false",
                 "5|L--|N = false",
@@ -430,10 +430,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0C18, 0x0042);    // cmpi.b #$42,(a0)+
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|v3 = Mem0[a0:byte]",
+                "1|L--|v4 = Mem0[a0:byte]",
                 "2|L--|a0 = a0 + 1<i32>",
-                "3|L--|v4 = v3 - 0x42<8>",
-                "4|L--|CVZN = cond(v4)");
+                "3|L--|v5 = v4 - 0x42<8>",
+                "4|L--|CVZN = cond(v5)");
         }
 
         [Test]
@@ -442,8 +442,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xB041);        // cmp.w d1,d0
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
-                "1|L--|v4 = SLICE(d0, word16, 0) - SLICE(d1, word16, 0)",
-                "2|L--|CVZN = cond(v4)");
+                "1|L--|v5 = SLICE(d0, word16, 0) - SLICE(d1, word16, 0)",
+                "2|L--|CVZN = cond(v5)");
         }
 
         [Test]
@@ -453,8 +453,8 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
                 "1|L--|a6 = a6 - 2<i32>",
-                "2|L--|v4 = SLICE(d0, word16, 0) - Mem0[a6:word16]",
-                "3|L--|CVZN = cond(v4)");
+                "2|L--|v5 = SLICE(d0, word16, 0) - Mem0[a6:word16]",
+                "3|L--|CVZN = cond(v5)");
         }
 
         [Test]
@@ -463,8 +463,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xB0EC, 0x0022);    // cmpa.w $22(a4),a0
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|v4 = SLICE(a0, word16, 0) - Mem0[a4 + 34<i32>:word16]",
-                "2|L--|CVZN = cond(v4)");
+                "1|L--|v5 = SLICE(a0, word16, 0) - Mem0[a4 + 34<i32>:word16]",
+                "2|L--|CVZN = cond(v5)");
         }
 
         [Test]
@@ -473,8 +473,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xB1EC, 0x0010);    // cmpa.l $10(a4),a0
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|v4 = a0 - Mem0[a4 + 16<i32>:word32]",
-                "2|L--|CVZN = cond(v4)");
+                "1|L--|v5 = a0 - Mem0[a4 + 16<i32>:word32]",
+                "2|L--|CVZN = cond(v5)");
         }
 
         [Test]
@@ -505,9 +505,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x81A8, 0xFFF8);
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
-                "1|L--|v4 = Mem0[a0 + -8<i32>:word32] | d0",
-                "2|L--|Mem0[a0 + -8<i32>:word32] = v4",
-                "3|L--|ZN = cond(v4)");
+                "1|L--|v5 = Mem0[a0 + -8<i32>:word32] | d0",
+                "2|L--|Mem0[a0 + -8<i32>:word32] = v5",
+                "3|L--|ZN = cond(v5)");
         }
 
         [Test]
@@ -516,10 +516,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE148);    // lsl.w #$08,d0"
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v3 = SLICE(d0, word16, 0) << 8<16>",
-                "2|L--|v4 = SLICE(d0, word16, 16)",
-                "3|L--|d0 = SEQ(v4, v3)",
-                "4|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = SLICE(d0, word16, 0) << 8<16>",
+                "2|L--|v5 = SLICE(d0, word16, 16)",
+                "3|L--|d0 = SEQ(v5, v4)",
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -528,10 +528,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0440, 0x0140);    // subiw #320,%d0
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|v3 = SLICE(d0, word16, 0) - 0x140<16>",
-                "2|L--|v4 = SLICE(d0, word16, 16)",
-                "3|L--|d0 = SEQ(v4, v3)",
-                "4|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = SLICE(d0, word16, 0) - 0x140<16>",
+                "2|L--|v5 = SLICE(d0, word16, 16)",
+                "3|L--|d0 = SEQ(v5, v4)",
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -540,10 +540,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x919F);    // sub.l\td0,(a7)+
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v4 = Mem0[a7:word32] - d0",
-                "2|L--|Mem0[a7:word32] = v4",
+                "1|L--|v5 = Mem0[a7:word32] - d0",
+                "2|L--|Mem0[a7:word32] = v5",
                 "3|L--|a7 = a7 + 4<i32>",
-                "4|L--|CVZNX = cond(v4)");
+                "4|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -553,15 +553,15 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a6 = a6 - 2<i32>",
-                "2|L--|v3 = Mem0[a6:word16] - 7<16>",
-                "3|L--|Mem0[a6:word16] = v3",
-                "4|L--|CVZNX = cond(v3)");
+                "2|L--|v4 = Mem0[a6:word16] - 7<16>",
+                "3|L--|Mem0[a6:word16] = v4",
+                "4|L--|CVZNX = cond(v4)");
             Given_UInt16s(0x5370, 0x1034);    // subq.w\t#$01,(34,a0,d1)
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v4 = Mem0[a0 + 52<i32> + d1:word16] - 1<16>",
-                "2|L--|Mem0[a0 + 52<i32> + d1:word16] = v4",
-                "3|L--|CVZNX = cond(v4)");
+                "1|L--|v5 = Mem0[a0 + 52<i32> + d1:word16] - 1<16>",
+                "2|L--|Mem0[a0 + 52<i32> + d1:word16] = v5",
+                "3|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -591,9 +591,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a5 = a5 - 2<i32>",
-                "2|L--|v3 = Mem0[a5:word16] >> 1<i32>",
-                "3|L--|Mem0[a5:word16] = v3",
-                "4|L--|CVZNX = cond(v3)");
+                "2|L--|v4 = Mem0[a5:word16] >> 1<i32>",
+                "3|L--|Mem0[a5:word16] = v4",
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -603,11 +603,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
                 "1|L--|a1 = a1 - 2<i32>",
-                "2|L--|v4 = Mem0[a1:word16]",
+                "2|L--|v5 = Mem0[a1:word16]",
                 "3|L--|a0 = a0 - 2<i32>",
-                "4|L--|v6 = Mem0[a0:word16] - v4 - X",
-                "5|L--|Mem0[a0:word16] = v6",
-                "6|L--|CVZNX = cond(v6)");
+                "4|L--|v7 = Mem0[a0:word16] - v5 - X",
+                "5|L--|Mem0[a0:word16] = v7",
+                "6|L--|CVZNX = cond(v7)");
         }
 
         [Test]
@@ -616,9 +616,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE3D1);    // lsl.w\t(a1)
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
-                "1|L--|v3 = Mem0[a1:word16] << 1<i32>",
-                "2|L--|Mem0[a1:word16] = v3",
-                "3|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = Mem0[a1:word16] << 1<i32>",
+                "2|L--|Mem0[a1:word16] = v4",
+                "3|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -627,10 +627,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE36C);    // lsl.w\td1,d4
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v4 = SLICE(d4, word16, 0) << SLICE(d1, word16, 0)",
-                "2|L--|v5 = SLICE(d4, word16, 16)",
-                "3|L--|d4 = SEQ(v5, v4)",
-                "4|L--|CVZNX = cond(v4)");
+                "1|L--|v5 = SLICE(d4, word16, 0) << SLICE(d1, word16, 0)",
+                "2|L--|v6 = SLICE(d4, word16, 16)",
+                "3|L--|d4 = SEQ(v6, v5)",
+                "4|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -649,10 +649,10 @@ namespace Reko.UnitTests.Arch.M68k
         {
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|v2 = 1<32> << 0x3<32>",
-                "2|L--|v4 = Mem0[a0:word32]",
-                "3|L--|Mem0[a0] = v4 ^ v5",
-                "4|L--|Z = cond(v4 & v5)");
+                "1|L--|v3 = 1<32> << 0x3<32>",
+                "2|L--|v5 = Mem0[a0:word32]",
+                "3|L--|Mem0[a0] = v5 ^ v6",
+                "4|L--|Z = cond(v5 & v6)");
         }
 
         [Test]
@@ -670,11 +670,11 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x51CD, 0xFFFA);        // dbra -$6
             AssertCode(
                 "0|T--|00010000(4): 5 instructions",
-                "1|L--|v3 = SLICE(d5, word16, 0)",
-                "2|L--|v3 = v3 - 1<i16>",
-                "3|L--|v4 = SLICE(d5, word16, 16)",
-                "4|L--|d5 = SEQ(v4, v3)",
-                "5|T--|if (v3 != 0xFFFF<16>) branch 0000FFFC");
+                "1|L--|v4 = SLICE(d5, word16, 0)",
+                "2|L--|v4 = v4 - 1<i16>",
+                "3|L--|v5 = SLICE(d5, word16, 16)",
+                "4|L--|d5 = SEQ(v5, v4)",
+                "5|T--|if (v4 != 0xFFFF<16>) branch 0000FFFC");
         }
 
         [Test]
@@ -684,11 +684,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(LE,VZN)) branch 00010004",
-                "2|L--|v4 = SLICE(d7, word16, 0)",
-                "3|L--|v4 = v4 - 1<i16>",
-                "4|L--|v5 = SLICE(d7, word16, 16)",
-                "5|L--|d7 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 0000FFFC");
+                "2|L--|v5 = SLICE(d7, word16, 0)",
+                "3|L--|v5 = v5 - 1<i16>",
+                "4|L--|v6 = SLICE(d7, word16, 16)",
+                "5|L--|d7 = SEQ(v6, v5)",
+                "6|T--|if (v5 != 0xFFFF<16>) branch 0000FFFC");
         }
 
         [Test]
@@ -698,11 +698,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(     // dbvc	d4,$00044FCF
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(NO,V)) branch 00010004",
-                "2|L--|v4 = SLICE(d4, word16, 0)",
-                "3|L--|v4 = v4 - 1<i16>",
-                "4|L--|v5 = SLICE(d4, word16, 16)",
-                "5|L--|d4 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 00015090");
+                "2|L--|v5 = SLICE(d4, word16, 0)",
+                "3|L--|v5 = v5 - 1<i16>",
+                "4|L--|v6 = SLICE(d4, word16, 16)",
+                "5|L--|d4 = SEQ(v6, v5)",
+                "6|T--|if (v5 != 0xFFFF<16>) branch 00015090");
         }
 
 
@@ -810,10 +810,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x5401);
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v3 = SLICE(d1, byte, 0) + 2<8>",
-                "2|L--|v4 = SLICE(d1, word24, 8)",
-                "3|L--|d1 = SEQ(v4, v3)",
-                "4|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = SLICE(d1, byte, 0) + 2<8>",
+                "2|L--|v5 = SLICE(d1, word24, 8)",
+                "3|L--|d1 = SEQ(v5, v4)",
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -894,8 +894,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4241);
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
-                "1|L--|v4 = SLICE(d1, word16, 16)",
-                "2|L--|d1 = SEQ(v4, 0<16>)",
+                "1|L--|v5 = SLICE(d1, word16, 16)",
+                "2|L--|d1 = SEQ(v5, 0<16>)",
                 "3|L--|Z = true",
                 "4|L--|C = false",
                 "5|L--|N = false",
@@ -908,9 +908,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0038, 0x584F, 0x4000);
             AssertCode(
                 "0|L--|00010000(6): 5 instructions",
-                "1|L--|v2 = Mem0[0x00004000<p32>:byte] | 0x4F<8>",
-                "2|L--|Mem0[0x00004000<p32>:byte] = v2",
-                "3|L--|ZN = cond(v2)",
+                "1|L--|v3 = Mem0[0x00004000<p32>:byte] | 0x4F<8>",
+                "2|L--|Mem0[0x00004000<p32>:byte] = v3",
+                "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");
         }
@@ -922,11 +922,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
                 "1|L--|a5 = a5 - 4<i32>",
-                "2|L--|v5 = Mem0[a5:word32]",
+                "2|L--|v6 = Mem0[a5:word32]",
                 "3|L--|a1 = a1 - 4<i32>",
-                "4|L--|v6 = v5 + Mem0[a1:word32] + X",
-                "5|L--|Mem0[a1:word32] = v6",
-                "6|L--|CVZNX = cond(v6)");
+                "4|L--|v7 = v6 + Mem0[a1:word32] + X",
+                "5|L--|Mem0[a1:word32] = v7",
+                "6|L--|CVZNX = cond(v7)");
         }
 
         [Test]
@@ -935,10 +935,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4cef, 0x0003, 0x0030);
             AssertCode(
                 "0|L--|00010000(6): 5 instructions",
-                "1|L--|v3 = a7 + 48<i32>",
-                "2|L--|d0 = Mem0[v3:word32]",
-                "3|L--|v3 = v3 + 4<i32>",
-                "4|L--|d1 = Mem0[v3:word32]");
+                "1|L--|v4 = a7 + 48<i32>",
+                "2|L--|d0 = Mem0[v4:word32]",
+                "3|L--|v4 = v4 + 4<i32>",
+                "4|L--|d1 = Mem0[v4:word32]");
         }
 
         [Test]
@@ -947,10 +947,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x80C1);
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v3 = d0 %u SLICE(d1, uint16, 0)",
-                "2|L--|v4 = d0 /u SLICE(d1, uint16, 0)",
-                "3|L--|d0 = SEQ(v3, v4)",
-                "4|L--|VZN = cond(v4)",
+                "1|L--|v4 = d0 %u SLICE(d1, uint16, 0)",
+                "2|L--|v5 = d0 /u SLICE(d1, uint16, 0)",
+                "3|L--|d0 = SEQ(v4, v5)",
+                "4|L--|VZN = cond(v5)",
                 "5|L--|C = false");
         }
 
@@ -1002,10 +1002,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE014);
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v4 = __rcr<byte,byte>(SLICE(d4, byte, 0), 8<8>, X)",
-                "2|L--|v5 = SLICE(d4, word24, 8)",
-                "3|L--|d4 = SEQ(v5, v4)",
-                "4|L--|CZNX = cond(v4)",
+                "1|L--|v5 = __rcr<byte,byte>(SLICE(d4, byte, 0), 8<8>, X)",
+                "2|L--|v6 = SLICE(d4, word24, 8)",
+                "3|L--|d4 = SEQ(v6, v5)",
+                "4|L--|CZNX = cond(v5)",
                 "5|L--|V = false");
         }
 
@@ -1015,9 +1015,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xE6D4);
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v3 = __ror<word32,byte>(Mem0[a4:word32], 1<8>)",
-                "2|L--|Mem0[a4:word32] = v3",
-                "3|L--|CZN = cond(v3)");
+                "1|L--|v4 = __ror<word32,byte>(Mem0[a4:word32], 1<8>)",
+                "2|L--|Mem0[a4:word32] = v4",
+                "3|L--|CZN = cond(v4)");
         }
 
         [Test]
@@ -1086,10 +1086,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0646, 0x000F);            // addiw #15,%d6
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|v3 = SLICE(d6, word16, 0) + 0xF<16>",
-                "2|L--|v4 = SLICE(d6, word16, 16)",
-                "3|L--|d6 = SEQ(v4, v3)",
-                "4|L--|CVZNX = cond(v3)");
+                "1|L--|v4 = SLICE(d6, word16, 0) + 0xF<16>",
+                "2|L--|v5 = SLICE(d6, word16, 16)",
+                "3|L--|d6 = SEQ(v5, v4)",
+                "4|L--|CVZNX = cond(v4)");
         }
 
         [Test]
@@ -1098,10 +1098,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0A40, 0x000F);     //                    eoriw #15,%d0    
             AssertCode(
                 "0|L--|00010000(4): 6 instructions",
-                "1|L--|v3 = SLICE(d0, word16, 0) ^ 0xF<16>",
-                "2|L--|v4 = SLICE(d0, word16, 16)",
-                "3|L--|d0 = SEQ(v4, v3)",
-                "4|L--|ZN = cond(v3)",
+                "1|L--|v4 = SLICE(d0, word16, 0) ^ 0xF<16>",
+                "2|L--|v5 = SLICE(d0, word16, 16)",
+                "3|L--|d0 = SEQ(v5, v4)",
+                "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
@@ -1122,11 +1122,11 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4CB9, 0x0003, 0x0004, 0x000A); // , "movem.w\t$0004000A,d0-d1");
             AssertCode(
                "0|L--|00010000(8): 5 instructions",
-               "1|L--|v2 = 0004000A",
-               "2|L--|d0 = Mem0[v2:word16]",
-               "3|L--|v2 = v2 + 2<i32>",
-               "4|L--|d1 = Mem0[v2:word16]",
-               "5|L--|v2 = v2 + 2<i32>");
+               "1|L--|v3 = 0004000A",
+               "2|L--|d0 = Mem0[v3:word16]",
+               "3|L--|v3 = v3 + 2<i32>",
+               "4|L--|d1 = Mem0[v3:word16]",
+               "5|L--|v3 = v3 + 2<i32>");
         }
 
         [Test]
@@ -1173,11 +1173,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00010004",
-                "2|L--|v4 = SLICE(d0, word16, 0)",
-                "3|L--|v4 = v4 - 1<i16>",
-                "4|L--|v5 = SLICE(d0, word16, 16)",
-                "5|L--|d0 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 0000FFFC");
+                "2|L--|v5 = SLICE(d0, word16, 0)",
+                "3|L--|v5 = v5 - 1<i16>",
+                "4|L--|v6 = SLICE(d0, word16, 16)",
+                "5|L--|d0 = SEQ(v6, v5)",
+                "6|T--|if (v5 != 0xFFFF<16>) branch 0000FFFC");
         }
 
         [Test]
@@ -1186,12 +1186,12 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xB308);
             AssertCode(
                 "0|L--|00010000(2): 6 instructions",
-                "1|L--|v3 = Mem0[a0:byte]",
+                "1|L--|v4 = Mem0[a0:byte]",
                 "2|L--|a0 = a0 + 1<i32>",
-                "3|L--|v5 = Mem0[a1:byte]",
+                "3|L--|v6 = Mem0[a1:byte]",
                 "4|L--|a1 = a1 + 1<i32>",
-                "5|L--|v6 = v5 - v3",
-                "6|L--|CVZN = cond(v6)");
+                "5|L--|v7 = v6 - v4",
+                "6|L--|CVZN = cond(v7)");
         }
 
         [Test]
@@ -1200,10 +1200,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x303B, 0x0006);    // move.w (06, pc, d0), d0
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|v3 = Mem0[0x00010008<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32):word16]",
-                "2|L--|v4 = SLICE(d0, word16, 16)",
-                "3|L--|d0 = SEQ(v4, v3)",
-                "4|L--|CVZN = cond(v3)");
+                "1|L--|v4 = Mem0[0x00010008<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32):word16]",
+                "2|L--|v5 = SLICE(d0, word16, 16)",
+                "3|L--|d0 = SEQ(v5, v4)",
+                "4|L--|CVZN = cond(v4)");
         }
 
         [Test]
@@ -1231,10 +1231,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x81C1);                // divs
             AssertCode(
                 "0|L--|00010000(2): 5 instructions",
-                "1|L--|v3 = d0 %s SLICE(d1, word16, 0)",
-                "2|L--|v4 = d0 /16 SLICE(d1, word16, 0)",
-                "3|L--|d0 = SEQ(v3, v4)",
-                "4|L--|VZN = cond(v4)",
+                "1|L--|v4 = d0 %s SLICE(d1, word16, 0)",
+                "2|L--|v5 = d0 /16 SLICE(d1, word16, 0)",
+                "3|L--|d0 = SEQ(v4, v5)",
+                "4|L--|VZN = cond(v5)",
                 "5|L--|C = false");
         }
 
@@ -1308,9 +1308,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xF22E, 0x7400, 0xFFF8); // fmove.d\tfp0,$-0008(a6)
             AssertCode(
                 "0|L--|00010000(6): 3 instructions",
-                "1|L--|v4 = CONVERT(fp0, real96, real64)",
-                "2|L--|Mem0[a6 + -8<i32>:real64] = v4",
-                "3|L--|FPUFLAGS = cond(v4)");
+                "1|L--|v5 = CONVERT(fp0, real96, real64)",
+                "2|L--|Mem0[a6 + -8<i32>:real64] = v5",
+                "3|L--|FPUFLAGS = cond(v5)");
         }
 
         [Test]
@@ -1467,9 +1467,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xF22E, 0xD020, 0xFFE8); //  fmovemx %fp@(-24),%fp2
             AssertCode(
                 "0|L--|00010000(6): 3 instructions",
-                "1|L--|v3 = a6 + -24<i32>",
-                "2|L--|fp2 = Mem0[v3:real96]",
-                "3|L--|v3 = v3 + 12<i32>");
+                "1|L--|v4 = a6 + -24<i32>",
+                "2|L--|fp2 = Mem0[v4:real96]",
+                "3|L--|v4 = v4 + 12<i32>");
         }
 
         [Test]
@@ -1526,9 +1526,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4D9A);         // chk
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v3 = Mem0[a2:word16]",
+                "1|L--|v4 = Mem0[a2:word16]",
                 "2|L--|a2 = a2 + 2<i32>",
-                "3|T--|if (v3 >= 0<16> && v3 <= SLICE(d6, word16, 0)) branch 00010002",
+                "3|T--|if (v4 >= 0<16> && v4 <= SLICE(d6, word16, 0)) branch 00010002",
                 "4|L--|__syscall<byte>(6<8>)");
         }
 
@@ -1596,8 +1596,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x42d3);
             AssertCode( // move\tccr,(a3)",
                 "0|L--|00010000(2): 2 instructions",
-                "1|L--|v4 = CONVERT(ccr, byte, uint16)",
-                "2|L--|Mem0[a3:uint16] = v4");
+                "1|L--|v5 = CONVERT(ccr, byte, uint16)",
+                "2|L--|Mem0[a3:uint16] = v5");
         }
 
         [Test]
@@ -1643,9 +1643,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|S--|00010000(4): 4 instructions",
                 "1|L--|a0 = a0 - 2<i32>",
-                "2|L--|v4 = __moves(Mem0[a0:word16])",
-                "3|L--|v5 = SLICE(d0, word16, 16)",
-                "4|L--|d0 = SEQ(v5, v4)");
+                "2|L--|v5 = __moves(Mem0[a0:word16])",
+                "3|L--|v6 = SLICE(d0, word16, 16)",
+                "4|L--|d0 = SEQ(v6, v5)");
         }
 
         [Test]
@@ -1655,9 +1655,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4036, 0x600A); // negx.b (0A, a6, d6)
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v5 = -Mem0[a6 + 10<i32> + d6:byte] - X",
-                "2|L--|Mem0[a6 + 10<i32> + d6:byte] = v5",
-                "3|L--|CVZNX = cond(v5)");
+                "1|L--|v6 = -Mem0[a6 + 10<i32> + d6:byte] - X",
+                "2|L--|Mem0[a6 + 10<i32> + d6:byte] = v6",
+                "3|L--|CVZNX = cond(v6)");
         }
 
         [Test]
@@ -1689,7 +1689,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xF605, 0x6600, 0xFFF4);    // move16 (a5)+,#$6600FFF4
             AssertCode(
                "0|L--|00010000(6): 2 instructions",
-               "1|L--|v3 = Mem0[a5:word128]",
+               "1|L--|v4 = Mem0[a5:word128]",
                "2|L--|a5 = a5 + 16<i32>");
         }
 
@@ -1700,10 +1700,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x8F02);    // sbcd d2,d7
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v5 = SLICE(d2, byte, 0) - SLICE(d7, byte, 0) - X",
-                "2|L--|v6 = SLICE(d7, word24, 8)",
-                "3|L--|d7 = SEQ(v6, v5)",
-                "4|L--|CVZNX = cond(v5)");
+                "1|L--|v6 = SLICE(d2, byte, 0) - SLICE(d7, byte, 0) - X",
+                "2|L--|v7 = SLICE(d7, word24, 8)",
+                "3|L--|d7 = SEQ(v7, v6)",
+                "4|L--|CVZNX = cond(v6)");
         }
 
         [Test]
@@ -1723,11 +1723,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(ULT,C)) branch 00010004",
-                "2|L--|v4 = SLICE(d7, word16, 0)",
-                "3|L--|v4 = v4 - 1<i16>",
-                "4|L--|v5 = SLICE(d7, word16, 16)",
-                "5|L--|d7 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 0000FFF4");
+                "2|L--|v5 = SLICE(d7, word16, 0)",
+                "3|L--|v5 = v5 - 1<i16>",
+                "4|L--|v6 = SLICE(d7, word16, 16)",
+                "5|L--|d7 = SEQ(v6, v5)",
+                "6|T--|if (v5 != 0xFFFF<16>) branch 0000FFF4");
         }
 
         [Test]
@@ -1749,9 +1749,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a2 = a2 - 1<i32>",
-                "2|L--|v4 = 0<8> - Mem0[a2:byte] - X",
-                "3|L--|Mem0[a2:byte] = v4",
-                "4|L--|CVZNX = cond(v4)");
+                "2|L--|v5 = 0<8> - Mem0[a2:byte] - X",
+                "3|L--|Mem0[a2:byte] = v5",
+                "4|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -1760,9 +1760,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x8F47, 0x0002);   // pack d7, d7, 2
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v3 = __pack(SLICE(d7, uint16, 0), 2<u16>)",
-                "2|L--|v4 = SLICE(d7, word24, 8)",
-                "3|L--|d7 = SEQ(v4, v3)");
+                "1|L--|v4 = __pack(SLICE(d7, uint16, 0), 2<u16>)",
+                "2|L--|v5 = SLICE(d7, word24, 8)",
+                "3|L--|d7 = SEQ(v5, v4)");
         }
 
         [Test]
@@ -1771,9 +1771,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x8784, 0x0784);    // unpk d4, d3
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v4 = __unpk(SLICE(d4, byte, 0), 0x784<u16>)",
-                "2|L--|v5 = SLICE(d3, word16, 16)",
-                "3|L--|d3 = SEQ(v5, v4)");
+                "1|L--|v5 = __unpk(SLICE(d4, byte, 0), 0x784<u16>)",
+                "2|L--|v6 = SLICE(d3, word16, 16)",
+                "3|L--|d3 = SEQ(v6, v5)");
         }
 
         [Test]
@@ -1791,10 +1791,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xC700);        // abcd d0, d3
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
-                "1|L--|v5 = SLICE(d3, byte, 0) + SLICE(d0, byte, 0) + X",
-                "2|L--|v6 = SLICE(d3, word24, 8)",
-                "3|L--|d3 = SEQ(v6, v5)",
-                "4|L--|CVZNX = cond(v5)");
+                "1|L--|v6 = SLICE(d3, byte, 0) + SLICE(d0, byte, 0) + X",
+                "2|L--|v7 = SLICE(d3, word24, 8)",
+                "3|L--|d3 = SEQ(v7, v6)",
+                "4|L--|CVZNX = cond(v6)");
         }
 
         [Test]
@@ -1803,8 +1803,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0C3B, 0x0004, 0x0028);    // cmpi.b\t#$04,($2C,pc,d0.w)
             AssertCode(
                 "0|L--|00010000(6): 2 instructions",
-                "1|L--|v3 = Mem0[0x0001002C<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32):byte] - 4<8>",
-                "2|L--|CVZN = cond(v3)");
+                "1|L--|v4 = Mem0[0x0001002C<p32> + CONVERT(SLICE(d0, int16, 0), int16, int32):byte] - 4<8>",
+                "2|L--|CVZN = cond(v4)");
         }
 
         [Test]
@@ -1824,9 +1824,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4C44, 0x00A0); // divul.l d4, d0
             AssertCode(
                 "0|L--|00010000(4): 5 instructions",
-                "1|L--|v4 = d4",
-                "2|L--|d4 = d0 %u v4",
-                "3|L--|d0 = d0 /u v4",
+                "1|L--|v5 = d4",
+                "2|L--|d4 = d0 %u v5",
+                "3|L--|d0 = d0 /u v5",
                 "4|L--|VZN = cond(d0)",
                 "5|L--|C = false");
         }
@@ -1847,9 +1847,9 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x4033, 0xB316, 0x008B); // negx.b([a3], a3.w * 2, +008B)
             AssertCode(
                 "0|L--|00010000(6): 3 instructions",
-                "1|L--|v4 = -Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte] - X",
-                "2|L--|Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte] = v4",
-                "3|L--|CVZNX = cond(v4)");
+                "1|L--|v5 = -Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte] - X",
+                "2|L--|Mem0[Mem0[a3:word32] + CONVERT(SLICE(a3, int16, 0), int16, int32) * 2<i32> + 139<i32>:byte] = v5",
+                "3|L--|CVZNX = cond(v5)");
         }
 
         [Test]
@@ -1886,8 +1886,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x0C03, 0x0016);    // cmpi.b
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|v3 = SLICE(d3, byte, 0) - 0x16<8>",
-                "2|L--|CVZN = cond(v3)");
+                "1|L--|v4 = SLICE(d3, byte, 0) - 0x16<8>",
+                "2|L--|CVZN = cond(v4)");
         }
 
         [Test]
@@ -1906,11 +1906,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(LT,VN)) branch 00010004",
-                "2|L--|v4 = SLICE(d2, word16, 0)",
-                "3|L--|v4 = v4 - 1<i16>",
-                "4|L--|v5 = SLICE(d2, word16, 16)",
-                "5|L--|d2 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 00014EFA");
+                "2|L--|v5 = SLICE(d2, word16, 0)",
+                "3|L--|v5 = v5 - 1<i16>",
+                "4|L--|v6 = SLICE(d2, word16, 16)",
+                "5|L--|d2 = SEQ(v6, v5)",
+                "6|T--|if (v5 != 0xFFFF<16>) branch 00014EFA");
         }
 
         [Test]
@@ -1939,11 +1939,11 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
                 "1|T--|if (Test(EQ,Z)) branch 00010004",
-                "2|L--|v4 = SLICE(d1, word16, 0)",
-                "3|L--|v4 = v4 - 1<i16>",
-                "4|L--|v5 = SLICE(d1, word16, 16)",
-                "5|L--|d1 = SEQ(v5, v4)",
-                "6|T--|if (v4 != 0xFFFF<16>) branch 0000FFFE");
+                "2|L--|v5 = SLICE(d1, word16, 0)",
+                "3|L--|v5 = v5 - 1<i16>",
+                "4|L--|v6 = SLICE(d1, word16, 16)",
+                "5|L--|d1 = SEQ(v6, v5)",
+                "6|T--|if (v5 != 0xFFFF<16>) branch 0000FFFE");
         }
 
         [Test]
@@ -1952,10 +1952,10 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xD831, 0x6000); // add.b\t(a1,d6.w)",
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
-                "1|L--|v5 = SLICE(d4, byte, 0) + Mem0[a1 + CONVERT(SLICE(d6, int16, 0), int16, int32):byte]",
-                "2|L--|v6 = SLICE(d4, word24, 8)",
-                "3|L--|d4 = SEQ(v6, v5)",
-                "4|L--|CVZNX = cond(v5)");
+                "1|L--|v6 = SLICE(d4, byte, 0) + Mem0[a1 + CONVERT(SLICE(d6, int16, 0), int16, int32):byte]",
+                "2|L--|v7 = SLICE(d4, word24, 8)",
+                "3|L--|d4 = SEQ(v7, v6)",
+                "4|L--|CVZNX = cond(v6)");
         }
 
         [Test]
@@ -1964,8 +1964,8 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x57C4);  // seq d4
             AssertCode(
                 "0|L--|00010000(2): 2 instructions",
-                "1|L--|v5 = SLICE(d4, word24, 8)",
-                "2|L--|d4 = SEQ(v5, Test(EQ,Z) ? 0xFF<8> : 0<8>)");
+                "1|L--|v6 = SLICE(d4, word24, 8)",
+                "2|L--|d4 = SEQ(v6, Test(EQ,Z) ? 0xFF<8> : 0<8>)");
         }
 
         [Test]
@@ -1986,9 +1986,9 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(         // asl.w -(a0)
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a0 = a0 - 2<i32>",
-                "2|L--|v3 = Mem0[a0:word16] << 1<i32>",
-                "3|L--|Mem0[a0:word16] = v3",
-                "4|L--|CVZNX = cond(v3)");
+                "2|L--|v4 = Mem0[a0:word16] << 1<i32>",
+                "3|L--|Mem0[a0:word16] = v4",
+                "4|L--|CVZNX = cond(v4)");
         }
     }
 }

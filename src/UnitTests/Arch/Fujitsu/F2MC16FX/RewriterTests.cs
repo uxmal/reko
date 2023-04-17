@@ -78,8 +78,8 @@ namespace Reko.UnitTests.Arch.Fujitsu.F2MC16FX
             Given_HexString("7804");
             AssertCode(     // mulu a,r4
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v2 = SLICE(a, uint8, 0)",
-                "2|L--|al = v2 *u16 r4");
+                "1|L--|v3 = SLICE(a, uint8, 0)",
+                "2|L--|al = v3 *u16 r4");
         }
     }
 }

@@ -82,10 +82,10 @@ void frame_dummy()
 	{
 l0000000000000740:
 		Mem17 = Mem10;
-		struct Eq_n * v8_n = r15_n + 264;
-		r13_n = v8_n->ptr0000;
-		<anonymous> * r14_n = v8_n->ptr0008;
-		r15_n = v8_n->ptr0010;
+		struct Eq_n * v9_n = r15_n + 264;
+		r13_n = v9_n->ptr0000;
+		<anonymous> * r14_n = v9_n->ptr0008;
+		r15_n = v9_n->ptr0010;
 		if (CC_n)
 		{
 			register_tm_clones(r14_n);
@@ -120,7 +120,7 @@ Eq_n fib(Eq_n r2, ptr64 & r10Out, ptr64 & r11Out)
 		word64 r2_n = fib((int64) (r11_n->dw00A4 - 2), out r10_n, out r11_n);
 		r1_n = SEQ(SLICE(r2_n, word32, 32), (int32) (r2_n + r10_n));
 	}
-	ptr64 v28_n = (char *) r11_n + 0x00F8;
+	ptr64 v29_n = (char *) r11_n + 0x00F8;
 	int64 r1_n = (int64) (word32) r1_n;
 	ptr64 r10_n;
 	ptr64 r11_n;
@@ -163,7 +163,7 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 			r11_n = r11_n - 1;
 		} while (r11_n != 0x01);
 	}
-	ptr64 v17_n = (char *) r15_n + 0x00D8;
+	ptr64 v18_n = (char *) r15_n + 0x00D8;
 	<anonymous> * r4_n = r15_n->ptr0110;
 	r4_n();
 }

@@ -86,11 +86,11 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 	word32 dwLoc18;
 	word32 dwLoc1C;
 	word32 dwLoc20;
-	byte v15_n = *dwArg08;
+	byte v16_n = *dwArg08;
 	Eq_n dwLoc0C_n = 0;
-	uip32 d6_n = SEQ(SLICE(d6, word24, 8), v15_n);
+	uip32 d6_n = SEQ(SLICE(d6, word24, 8), v16_n);
 	byte * dwArg08_n = dwArg08 + 1;
-	if (v15_n != 0x00)
+	if (v16_n != 0x00)
 	{
 		while (true)
 		{
@@ -103,15 +103,15 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 			dwLoc0C_n = d0_n;
 			if (d0_n <= 7)
 			{
-				word16 v40_n = g_a1758[(int32) (int16) d0_n * 2];
+				word16 v41_n = g_a1758[(int32) (int16) d0_n * 2];
 				word32 d2_n;
-				g_a1758[(int32) v40_n]();
+				g_a1758[(int32) v41_n]();
 				return;
 			}
-			byte v42_n = *dwArg08_n;
-			d6_n = SEQ(SLICE(d6_n, word24, 8), v42_n);
+			byte v43_n = *dwArg08_n;
+			d6_n = SEQ(SLICE(d6_n, word24, 8), v43_n);
 			++dwArg08_n;
-			if (v42_n == 0x00)
+			if (v43_n == 0x00)
 				return;
 		}
 	}
@@ -130,10 +130,10 @@ struct Eq_n * fn00001C40(struct Eq_n * a5, byte bArg04, struct Eq_n * dwArg08, u
 	word32 dwArg04;
 	byte bArg07_n = (byte) dwArg04;
 	int32 d0_n;
-	int32 v5_n = dwArg08->dw0004 - 0x01;
-	dwArg08->dw0004 = v5_n;
+	int32 v6_n = dwArg08->dw0004 - 0x01;
+	dwArg08->dw0004 = v6_n;
 	struct Eq_n * a6_n = fp - 0x04;
-	if (v5_n >= 0x00)
+	if (v6_n >= 0x00)
 	{
 		*dwArg08->ptr0000 = bArg07_n;
 		byte * a0_n = dwArg08->ptr0000;

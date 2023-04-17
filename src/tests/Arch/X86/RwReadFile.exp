@@ -2,6 +2,7 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ss:ss
 // ds:ds
@@ -47,6 +48,7 @@ fn0C00_0000_exit:
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ah:ah
 // al:al
@@ -65,6 +67,7 @@ fn0C00_001F_exit:
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ah:ah
 // C:C

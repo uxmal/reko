@@ -658,9 +658,9 @@ l000000014000186C:
 	branch rax_14 != 0x2B992DDFA232<64> l0000000140001903
 l0000000140001894:
 	GetSystemTimeAsFileTime(&tArg10)
-	word64 v14_30 = Mem11[&tArg10:word64] ^ CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
+	word64 v15_30 = Mem11[&tArg10:word64] ^ CONVERT(GetCurrentThreadId(), DWORD, uint64) ^ CONVERT(GetCurrentProcessId(), DWORD, uint64)
 	QueryPerformanceCounter(&tArg18)
-	word64 rax_40 = CONVERT(Mem31[&tArg18:word32], word32, uint64) << 0x20<64> ^ Mem31[&tArg18:word64] ^ v14_30 ^ fp + 8<i64>
+	word64 rax_40 = CONVERT(Mem31[&tArg18:word32], word32, uint64) << 0x20<64> ^ Mem31[&tArg18:word64] ^ v15_30 ^ fp + 8<i64>
 	rax_14 = rax_40 & 0xFFFFFFFFFFFF<64>
 	branch (rax_40 & 0xFFFFFFFFFFFF<64>) != 0x2B992DDFA232<64> l00000001400018FC
 l00000001400018F8_1:

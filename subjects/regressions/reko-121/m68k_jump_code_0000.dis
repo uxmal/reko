@@ -15,19 +15,19 @@ l0000C3DE:
 	branch Mem60[0x00FF0F04<p32>:word32] - Mem60[0x00FF0F08<p32>:word32] < 0<32> l0000C050
 l0000C050:
 	word32 d3_71 = SEQ(SLICE(a4_56, word24, 8), Mem60[a0 + 4<i32> + a4_56:byte])
-	word16 v27_75 = SLICE(d3_71, word16, 0) & 0xFF<16> & 0xF0<16>
-	word32 d0_80 = SEQ(SLICE(CONVERT(v27_75, word16, uint32), word24, 8), SLICE(v27_75, byte, 0) >>u 2<8>)
+	word16 v28_75 = SLICE(d3_71, word16, 0) & 0xFF<16> & 0xF0<16>
+	word32 d0_80 = SEQ(SLICE(CONVERT(v28_75, word16, uint32), word24, 8), SLICE(v28_75, byte, 0) >>u 2<8>)
 	a4_56 = a4_56 + 1<i32>
-	word16 v34_82 = SLICE(d0_80, word16, 0)
+	word16 v35_82 = SLICE(d0_80, word16, 0)
 	branch SLICE(d0_80, word16, 0) > 0x2C<16> l0000C3DE
 l0000C06A:
-	switch (v34_82) { l0000C0A0 }
+	switch (v35_82) { l0000C0A0 }
 l0000C0A0:
 	word32 d3_89 = (d3_71 & 0xFF<32> & 15<i32>) + 1<32>
 l0000C0AE:
-	word16 v35_92 = SLICE(d3_89, word16, 0)
-	d3_89 = SEQ(SLICE(d3_89, word16, 16), v35_92 - 1<i16>)
-	branch v35_92 != 0<16> l0000C0A6
+	word16 v36_92 = SLICE(d3_89, word16, 0)
+	d3_89 = SEQ(SLICE(d3_89, word16, 16), v36_92 - 1<i16>)
+	branch v36_92 != 0<16> l0000C0A6
 l0000C0A6:
 	Mem98[a6_141:word32] = 0<i32>
 	Mem101[0x00FF0F04<p32>:word32] = Mem98[0x00FF0F04<p32>:word32] + 4<32>

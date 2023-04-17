@@ -1,8 +1,0 @@
-// Mem0:Mem
-// fp:fp
-// wLoc02:Local -0002
-// wLoc04:Local -0004
-// wArg04:Stack +0004
-// wArg06:Stack +0006
-// return address size: 4
-foo(wArg04, wArg06)

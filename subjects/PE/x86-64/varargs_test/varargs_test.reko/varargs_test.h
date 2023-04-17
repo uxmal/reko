@@ -535,7 +535,7 @@ Eq_790: LPFILETIME
 	T_790 (in lpSystemTimeAsFileTime @ 0000000140001898 : LPFILETIME)
 	T_791 (in &tArg10 @ 0000000140001898 : (ptr64 (struct "_FILETIME")))
 Eq_793: (union "Eq_793" (ui32 u0) (word64 u1))
-	T_793 (in v14_30 @ 00000001400018BE : Eq_793)
+	T_793 (in v15_30 @ 00000001400018BE : Eq_793)
 	T_807 (in tArg10.dwLowDateTime ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId() @ 00000001400018BE : word64)
 Eq_794: (struct "_FILETIME" (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
 	T_794 (in &tArg10 @ 00000001400018BE : (ptr64 (struct "_FILETIME")))
@@ -3909,7 +3909,7 @@ T_792: (in GetSystemTimeAsFileTime(&tArg10) @ 0000000140001898 : void)
   Class: Eq_792
   DataType: void
   OrigDataType: void
-T_793: (in v14_30 @ 00000001400018BE : Eq_793)
+T_793: (in v15_30 @ 00000001400018BE : Eq_793)
   Class: Eq_793
   DataType: Eq_793
   OrigDataType: (union (ui32 u1) (word64 u0))
@@ -4041,7 +4041,7 @@ T_825: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart @ 00000001400
   Class: Eq_825
   DataType: ui64
   OrigDataType: ui64
-T_826: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart ^ v14_30 @ 00000001400018DB : word64)
+T_826: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart ^ v15_30 @ 00000001400018DB : word64)
   Class: Eq_826
   DataType: ui64
   OrigDataType: ui64
@@ -4053,7 +4053,7 @@ T_828: (in fp + 8<i64> @ 00000001400018DB : word64)
   Class: Eq_828
   DataType: ptr64
   OrigDataType: ptr64
-T_829: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart ^ v14_30 ^ fp + 8<i64> @ 00000001400018DB : word64)
+T_829: (in (uint64) tArg18.u.LowPart << 0x20<64> ^ tArg18.QuadPart ^ v15_30 ^ fp + 8<i64> @ 00000001400018DB : word64)
   Class: Eq_813
   DataType: ui64
   OrigDataType: ui64

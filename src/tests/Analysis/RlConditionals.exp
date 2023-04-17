@@ -18,9 +18,9 @@ l0C00_000A:
 l0C00_000F:
 	Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
 	ax_12 = Mem11[ds:0x104<16>:word16]
-	v7_13 = Mem11[ds:0x106<16>:word16] - ax_12
-	Mem14[ds:0x106<16>:word16] = v7_13
-	branch v7_13 <= 0<16> l0C00_001E
+	v8_13 = Mem11[ds:0x106<16>:word16] - ax_12
+	Mem14[ds:0x106<16>:word16] = v8_13
+	branch v8_13 <= 0<16> l0C00_001E
 l0C00_0019:
 	Mem17[ds:0xF01<16>:byte] = 1<8>
 l0C00_001E:

@@ -32,9 +32,9 @@ l00000E:
 	byte TBLPTRL_4 = 6<8>
 	byte TBLPTRH_46 = 0<8>
 	byte TBLPTRU_49 = 0<8>
-	bool v20_98 = TABLAT != 0<8>
+	bool v21_98 = TABLAT != 0<8>
 l000028:
-	branch v20_98 l000030
+	branch v21_98 l000030
 l00002A:
 	branch Data19[0x00C5<p16>:byte] == 0<8> l00002E
 l00002E:
@@ -64,9 +64,9 @@ l000030:
 	Data47[0x00C8<p16>:byte] = TBLPTRH_46
 	Data50[0x00C9<p16>:byte] = TBLPTRU_49
 	Data55[0x00C3<p16>:byte] = Data50[0x00C3<p16>:byte]
-	bool v23_101 = Data55[0x00C3<p16>:byte] != 0<8>
+	bool v24_101 = Data55[0x00C3<p16>:byte] != 0<8>
 l000080:
-	branch v23_101 l000086
+	branch v24_101 l000086
 l000082:
 	Data60[0x00C4<p16>:byte] = Data59[0x00C4<p16>:byte]
 	branch Data60[0x00C4<p16>:byte] == 0<8> l000094
@@ -76,13 +76,13 @@ l000094:
 	TBLPTRU_49 = Data60[0x00C9<p16>:byte]
 	Data67[0x00C5<p16>:byte] = Data60[0x00C5<p16>:byte] - 1<8>
 	Data71[0x00C6<p16>:byte] = Data67[0x00C6<p16>:byte] - !SLICE(cond(Data67[0x00C5<p16>:byte]), bool, 0)
-	v20_98 = Data71[0x00C6<p16>:byte] != 0<8>
+	v21_98 = Data71[0x00C6<p16>:byte] != 0<8>
 l000086:
 	__tblrd(TBLPTR, 1<8>)
 	Data77[FSR0:byte] = TABLAT
 	Data80[0x00C3<p16>:byte] = Data77[0x00C3<p16>:byte] - 1<8>
 	FSR0 = FSR0 + 1<16>
-	v23_101 = Data80[0x00C3<p16>:byte] != 0<8>
+	v24_101 = Data80[0x00C3<p16>:byte] != 0<8>
 	branch Data80[0x00C3<p16>:byte] <u 0<8> l000080
 l000090:
 	Data83[0x00C4<p16>:byte] = Data80[0x00C4<p16>:byte] - 1<8>

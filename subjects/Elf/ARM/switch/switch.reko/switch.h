@@ -942,7 +942,7 @@ T_191: (in ip_5 >= 0<32> @ 00008620 : bool)
   Class: Eq_191
   DataType: bool
   OrigDataType: bool
-T_192: (in v20_154 @ 000085B0 : bool)
+T_192: (in v21_154 @ 000085B0 : bool)
   Class: Eq_192
   DataType: bool
   OrigDataType: bool
@@ -954,7 +954,7 @@ T_194: (in r1_10 < 0x10000000<32> @ 000085B0 : bool)
   Class: Eq_192
   DataType: bool
   OrigDataType: bool
-T_195: (in v17_151 @ 000085B0 : bool)
+T_195: (in v18_151 @ 000085B0 : bool)
   Class: Eq_195
   DataType: bool
   OrigDataType: bool
@@ -998,7 +998,7 @@ T_205: (in r3_135 << 4<i32> @ 000085BC : word32)
   Class: Eq_169
   DataType: Eq_169
   OrigDataType: ui32
-T_206: (in v26_160 @ 000085C4 : bool)
+T_206: (in v27_160 @ 000085C4 : bool)
   Class: Eq_206
   DataType: bool
   OrigDataType: bool
@@ -1010,7 +1010,7 @@ T_208: (in r1_10 < 0x80000000<32> @ 000085C4 : bool)
   Class: Eq_206
   DataType: bool
   OrigDataType: bool
-T_209: (in v23_157 @ 000085C4 : bool)
+T_209: (in v24_157 @ 000085C4 : bool)
   Class: Eq_209
   DataType: bool
   OrigDataType: bool
@@ -1154,7 +1154,7 @@ T_244: (in r0 - (r1_10 >> 3<i32>) @ 00008600 : word32)
   Class: Eq_103
   DataType: Eq_103
   OrigDataType: (union (int32 u0) (uint32 u1))
-T_245: (in v32_166 @ 00008608 : bool)
+T_245: (in v33_166 @ 00008608 : bool)
   Class: Eq_245
   DataType: bool
   OrigDataType: bool
@@ -1166,7 +1166,7 @@ T_247: (in r0 != 0<32> @ 00008608 : bool)
   Class: Eq_245
   DataType: bool
   OrigDataType: bool
-T_248: (in v29_163 @ 00008608 : bool)
+T_248: (in v30_163 @ 00008608 : bool)
   Class: Eq_248
   DataType: bool
   OrigDataType: bool

@@ -37,7 +37,7 @@ C_17: orig: C
 Z_18: orig: Z
 SCZO_19: orig: SCZO
 Z_20: orig: Z
-v12_21: orig: v12
+v13_21: orig: v13
 Mem22: orig: Mem0
     def:  Mem22[ds:0x302<16>:word16] = Mem14[ds:0x302<16>:word16] + 1<16>
     uses: Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))

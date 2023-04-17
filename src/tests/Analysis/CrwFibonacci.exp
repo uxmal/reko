@@ -9,6 +9,7 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // esi:esi
 // SCZO:SCZO

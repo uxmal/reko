@@ -114,6 +114,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // a7:a7
 // d0:d0
 // CVZN:CVZN
@@ -121,7 +122,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 // C:C
 // N:N
 // V:V
-// v9:v9
+// v10:v10
 // return address size: 4
 define fn00100000
 fn00100000_entry:
@@ -136,9 +137,9 @@ l00100000:
 	C = false
 	N = false
 	V = false
-	v9 = Mem0[a7:word32]
+	v10 = Mem0[a7:word32]
 	a7 = a7 + 4<i32>
-	d0 = v9
+	d0 = v10
 	CVZN = cond(d0)
 	return
 	// succ:  fn00100000_exit
@@ -166,6 +167,7 @@ fn00100000_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // a7:a7
 // a0:a0
 // d0:d0

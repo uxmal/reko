@@ -988,8 +988,8 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("0D02B25E");
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(f21, int32, 0)",
-                "2|L--|f18 = CONVERT(v3, int32, int64)");
+                "1|L--|v4 = SLICE(f21, int32, 0)",
+                "2|L--|f18 = CONVERT(v4, int32, int64)");
         }
 
         [Test]

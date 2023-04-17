@@ -220,9 +220,9 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xEB);
             AssertCode(
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v2 = de",
+                "1|L--|v3 = de",
                 "2|L--|de = hl",
-                "3|L--|hl = v2");
+                "3|L--|hl = v3");
         }
 
         [Test]
@@ -291,27 +291,27 @@ namespace Reko.UnitTests.Arch.Z80
         }
 
         [Test]
-        public void Z80rw_outi()
-        {
-            Given_HexString("EDA3");
-            AssertCode(
-                "0|L--|0100(2): 3 instructions",
-                "1|L--|v4 = Mem0[hl:byte]",
-                "2|L--|__out(c, v4)",
-                "3|L--|hl = hl + 1<i16>");
-        }
-
-        [Test]
         public void Z80rw_otir()
         {
             Given_HexString("EDB3");
             AssertCode(
                "0|L--|0100(2): 5 instructions",
-               "1|L--|v4 = Mem0[hl:byte]",
-               "2|L--|__out(c, v4)",
+               "1|L--|v5 = Mem0[hl:byte]",
+               "2|L--|__out(c, v5)",
                "3|L--|hl = hl + 1<i16>",
                "4|L--|b = b - 1<8>",
                "5|T--|if (b != 0<8>) branch 0100");
+        }
+
+        [Test]
+        public void Z80rw_outi()
+        {
+            Given_HexString("EDA3");
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|v5 = Mem0[hl:byte]",
+                "2|L--|__out(c, v5)",
+                "3|L--|hl = hl + 1<i16>");
         }
     }
 }

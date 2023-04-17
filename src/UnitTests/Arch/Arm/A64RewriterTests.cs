@@ -59,8 +59,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("21BA200E");
             AssertCode(     // abs	v1.8b,v17.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|d1 = __abs<int8[8]>(v2)");
+                "1|L--|v3 = d17",
+                "2|L--|d1 = __abs<int8[8]>(v3)");
         }
 
         [Test]
@@ -115,9 +115,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00402B4E");
             AssertCode(     // addhn2	v0.16b,v0.8h,v11.8h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = q11",
-                "3|L--|q0 = __addhn2<word16[8]>(v2, v3)");
+                "1|L--|v3 = q0",
+                "2|L--|v4 = q11",
+                "3|L--|q0 = __addhn2<word16[8]>(v3, v4)");
         }
 
         [Test]
@@ -146,9 +146,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("21B8F15E");
             AssertCode(     // addp	d1,v1.2d
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|v3 = q1",
-                "3|L--|d1 = __addp<word64[2]>(v3, v2)");
+                "1|L--|v3 = d1",
+                "2|L--|v4 = q1",
+                "3|L--|d1 = __addp<word64[2]>(v4, v3)");
         }
 
         [Test]
@@ -157,9 +157,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("21BC210E");
             AssertCode(     // addp	v1.8b,v1.8b,v1.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|v3 = d1",
-                "3|L--|d1 = __addp<byte[8]>(v2, v3)");
+                "1|L--|v3 = d1",
+                "2|L--|v4 = d1",
+                "3|L--|d1 = __addp<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -168,8 +168,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("0AB8310E");
             AssertCode(     // addv b10,v0.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|b10 = __sum<ui8[8],byte>(v2)");
+                "1|L--|v3 = d0",
+                "2|L--|b10 = __sum<ui8[8],byte>(v3)");
         }
 
         [Test]
@@ -298,9 +298,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C11FEA2E");
             AssertCode(     // bif	v1.8b,v30.8b,v10.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|v3 = d10",
-                "3|L--|d1 = __bif<byte[8]>(v2, v3)");
+                "1|L--|v3 = d30",
+                "2|L--|v4 = d10",
+                "3|L--|d1 = __bif<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -309,9 +309,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("BF1DA16E");
             AssertCode(     // bit	v31.16b,v13.16b,v1.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|v3 = q1",
-                "3|L--|q31 = __bit<byte[16]>(v2, v3)");
+                "1|L--|v3 = q13",
+                "2|L--|v4 = q1",
+                "3|L--|q31 = __bit<byte[16]>(v3, v4)");
         }
 
         [Test]
@@ -356,8 +356,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("3E48200E");
             AssertCode(     // cls	v30.8b,v1.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|d30 = __cls<byte[8]>(v2)");
+                "1|L--|v3 = d1",
+                "2|L--|d30 = __cls<byte[8]>(v3)");
         }
 
         [Test]
@@ -366,9 +366,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x6E208C21);	// cmeq	v1.16b,v1.16b,v0.16b
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q0",
-                "3|L--|q1 = __cmeq<byte[16]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q0",
+                "3|L--|q1 = __cmeq<byte[16]>(v3, v4)");
         }
 
         [Test]
@@ -377,9 +377,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("513D2B0E");
             AssertCode(     // cmge	v17.8b,v10.8b,v11.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d11",
-                "3|L--|d17 = __cmge<byte[8]>(v2, v3)");
+                "1|L--|v3 = d10",
+                "2|L--|v4 = d11",
+                "3|L--|d17 = __cmge<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -388,9 +388,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2D34200E");
             AssertCode(     // cmgt	v13.8b,v1.8b,v0.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|v3 = d0",
-                "3|L--|d13 = __cmgt<byte[8]>(v2, v3)");
+                "1|L--|v3 = d1",
+                "2|L--|v4 = d0",
+                "3|L--|d13 = __cmgt<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -399,9 +399,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E034A06E");
             AssertCode( //cmhi\tv0.4s,v7.4s,v0.4s
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q7",
-                "2|L--|v3 = q0",
-                "3|L--|q0 = __cmhi<word32[4]>(v2, v3)");
+                "1|L--|v3 = q7",
+                "2|L--|v4 = q0",
+                "3|L--|q0 = __cmhi<word32[4]>(v3, v4)");
         }
 
         [Test]
@@ -410,9 +410,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("233C236E");
             AssertCode(     // cmhs	v3.16b,v1.16b,v3.16b,#0
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q3",
-                "3|L--|q3 = __cmhs<byte[16]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q3",
+                "3|L--|q3 = __cmhs<byte[16]>(v3, v4)");
         }
 
         [Test]
@@ -421,9 +421,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("213CA26E");
             AssertCode(//cmhs\tv1.16b,v1.16b,v2.16b,#0
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q2",
-                "3|L--|q1 = __cmhs<word32[4]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q2",
+                "3|L--|q1 = __cmhs<word32[4]>(v3, v4)");
         }
 
         [Test]
@@ -450,9 +450,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AB8D210E");
             AssertCode(     // cmtst	v11.8b,v13.8b,v1.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|v3 = d1",
-                "3|L--|d11 = __cmtst<byte[8]>(v2, v3)");
+                "1|L--|v3 = d13",
+                "2|L--|v4 = d1",
+                "3|L--|d11 = __cmtst<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -461,8 +461,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6C59200E");
             AssertCode(     // cnt	v12.8b,v11.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|d12 = __cnt<byte[8]>(v2)");
+                "1|L--|v3 = d11",
+                "2|L--|d12 = __cnt<byte[8]>(v3)");
         }
 
         [Test]
@@ -489,9 +489,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("48656C6C");
             AssertCode(     // ldnp	d8,d25,[x10,#-&140]
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v5 = x10 + -320<i64>",
-                "2|L--|d8 = Mem0[v5:word64]",
-                "3|L--|d25 = Mem0[v5 + 8<i64>:word64]");
+                "1|L--|v6 = x10 + -320<i64>",
+                "2|L--|d8 = Mem0[v6:word64]",
+                "3|L--|d25 = Mem0[v6 + 8<i64>:word64]");
         }
 
         [Test]
@@ -500,9 +500,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x2D646C2F);
             AssertCode(     // ldp\ts15,27,[x1,-#&E0]
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = x1 + -224<i64>",
-                "2|L--|s15 = Mem0[v5:word32]",
-                "3|L--|s27 = Mem0[v5 + 4<i64>:word32]");
+                "1|L--|v6 = x1 + -224<i64>",
+                "2|L--|s15 = Mem0[v6:word32]",
+                "3|L--|s27 = Mem0[v6 + 4<i64>:word32]");
         }
 
         [Test]
@@ -547,8 +547,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x39402260);
             AssertCode(     // ldrb\tw0,[x19,#&8]
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[x19 + 8<i64>:byte]",
-                "2|L--|w0 = CONVERT(v4, byte, word32)");
+                "1|L--|v5 = Mem0[x19 + 8<i64>:byte]",
+                "2|L--|w0 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -557,8 +557,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xB9800033);
             AssertCode(     // ldrsw\tx19,[x1]
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[x1:int32]",
-                "2|L--|x19 = CONVERT(v4, int32, int64)");
+                "1|L--|v5 = Mem0[x1:int32]",
+                "2|L--|x19 = CONVERT(v5, int32, int64)");
         }
 
         [Test]
@@ -567,8 +567,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("000E5BC8");
             AssertCode(     // ldxr	x0,[x16]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = &Mem0[x16:word64]",
-                "2|L--|x0 = __load_exclusive<word64>(v4)");
+                "1|L--|v5 = &Mem0[x16:word64]",
+                "2|L--|x0 = __load_exclusive<word64>(v5)");
         }
 
         [Test]
@@ -640,8 +640,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4E011CCD);
             AssertCode(     // mov v13.b[0],w6
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = SLICE(w6, byte, 0)",
-                "2|L--|v13 = SEQ(SLICE(v13, word120, 8), v4)");
+                "1|L--|v5 = SLICE(w6, byte, 0)",
+                "2|L--|v13 = SEQ(SLICE(v13, word120, 8), v5)");
         }
 
         [Test]
@@ -686,8 +686,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("CBBB202E");
             AssertCode(     // neg	v11.8b,v30.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|d11 = __neg<int8[8]>(v2)");
+                "1|L--|v3 = d30",
+                "2|L--|d11 = __neg<int8[8]>(v3)");
         }
 
         [Test]
@@ -714,9 +714,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xFA400B84);
             AssertCode(     // ccmp\tx28,#0,#4,EQ
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = Test(NE,Z)",
+                "1|L--|v4 = Test(NE,Z)",
                 "2|L--|NZCV = 0x40000000<32>",
-                "3|T--|if (v3) branch 00100004",
+                "3|T--|if (v4) branch 00100004",
                 "4|L--|NZCV = cond(x28 - 0<64>)");
         }
 
@@ -754,8 +754,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("01FC9F48");
             AssertCode(     // stlrh	w1,[x0]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = &Mem0[x0:word16]",
-                "2|L--|__store_release<word32>(v3, w1)");
+                "1|L--|v4 = &Mem0[x0:word16]",
+                "2|L--|__store_release<word32>(v4, w1)");
         }
 
         [Test]
@@ -764,9 +764,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00000028");
             AssertCode(     // stnp	w0,w0,[x0]
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = x0",
-                "2|L--|Mem0[v4:word32] = w0",
-                "3|L--|Mem0[v4 + 4<i64>:word32] = w0");
+                "1|L--|v5 = x0",
+                "2|L--|Mem0[v5:word32] = w0",
+                "3|L--|Mem0[v5 + 4<i64>:word32] = w0");
         }
 
         [Test]
@@ -784,8 +784,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("067C0788");
             AssertCode(     // stxr	w7,w6,[x0]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = &Mem0[x0:word32]",
-                "2|L--|w7 = __store_exclusive<word32>(v4, w6)");
+                "1|L--|v5 = &Mem0[x0:word32]",
+                "2|L--|w7 = __store_exclusive<word32>(v5, w6)");
         }
 
         [Test]
@@ -794,8 +794,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("067C07C8");
             AssertCode(     // stxr	w7,x6,[x0]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = &Mem0[x0:word64]",
-                "2|L--|w7 = __store_exclusive<word64>(v4, x6)");
+                "1|L--|v5 = &Mem0[x0:word64]",
+                "2|L--|w7 = __store_exclusive<word64>(v5, x6)");
         }
 
         [Test]
@@ -804,8 +804,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FF0B0008");
             AssertCode(     // stxrb	w0,w31,[sp]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = &Mem0[sp:byte]",
-                "2|L--|w0 = __store_exclusive<byte>(v4, w31)");
+                "1|L--|v5 = &Mem0[sp:byte]",
+                "2|L--|w0 = __store_exclusive<byte>(v5, w31)");
         }
 
         [Test]
@@ -954,9 +954,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xA9446BB9);
             AssertCode(     // ldp\tx25,x26,[x29,#&40]
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = x29 + 64<i64>",
-                "2|L--|x25 = Mem0[v5:word64]",
-                "3|L--|x26 = Mem0[v5 + 8<i64>:word64]");
+                "1|L--|v6 = x29 + 64<i64>",
+                "2|L--|x25 = Mem0[v6:word64]",
+                "3|L--|x26 = Mem0[v6 + 8<i64>:word64]");
         }
 
         [Test]
@@ -965,9 +965,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xA8C17BFD);
             AssertCode(     // ldp\tx29,x30,[x31],#&8
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v5 = sp",
-                "2|L--|x29 = Mem0[v5:word64]",
-                "3|L--|x30 = Mem0[v5 + 8<i64>:word64]",
+                "1|L--|v6 = sp",
+                "2|L--|x29 = Mem0[v6:word64]",
+                "3|L--|x30 = Mem0[v6 + 8<i64>:word64]",
                 "4|L--|sp = sp + 16<i64>");
         }
 
@@ -1072,8 +1072,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x385F9019);
             AssertCode(     // ldurb\tw25,[x0,-#&7]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v4 = Mem0[x0 + -7<i64>:byte]",
-                 "2|L--|w25 = CONVERT(v4, byte, word32)");
+                 "1|L--|v5 = Mem0[x0 + -7<i64>:byte]",
+                 "2|L--|w25 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -1102,8 +1102,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x79400021);
             AssertCode(     // ldrh\tw1,[x1]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v4 = Mem0[x1:word16]",
-                 "2|L--|w1 = CONVERT(v4, word16, word32)");
+                 "1|L--|v5 = Mem0[x1:word16]",
+                 "2|L--|w1 = CONVERT(v5, word16, word32)");
         }
 
         [Test]
@@ -1223,8 +1223,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x38616857);
             AssertCode(     // ldrb\tw23,[x2,x1]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v5 = Mem0[x2 + x1:byte]",
-                 "2|L--|w23 = CONVERT(v5, byte, word32)");
+                 "1|L--|v6 = Mem0[x2 + x1:byte]",
+                 "2|L--|w23 = CONVERT(v6, byte, word32)");
         }
 
         [Test]
@@ -1270,8 +1270,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x38401420);
             AssertCode(     // ldrb\tw0,[x1],#&1
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v4 = Mem0[x1:byte]",
-                "2|L--|w0 = CONVERT(v4, byte, word32)",
+                "1|L--|v5 = Mem0[x1:byte]",
+                "2|L--|w0 = CONVERT(v5, byte, word32)",
                 "3|L--|x1 = x1 + 1<i64>");
         }
 
@@ -1301,8 +1301,8 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // ldrb\tw1,[x2,#&1]!
                  "0|L--|00100000(4): 3 instructions",
                  "1|L--|x2 = x2 + 1<i64>",
-                 "2|L--|v4 = Mem0[x2:byte]",
-                 "3|L--|w1 = CONVERT(v4, byte, word32)");
+                 "2|L--|v5 = Mem0[x2:byte]",
+                 "3|L--|w1 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -1311,8 +1311,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x38614873);
             AssertCode(     // ldrb\tw19,[x3,w1,uxtw]
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v5 = Mem0[x3 + CONVERT(w1, uint32, uint64):byte]",
-                "2|L--|w19 = CONVERT(v5, byte, word32)");
+                "1|L--|v6 = Mem0[x3 + CONVERT(w1, uint32, uint64):byte]",
+                "2|L--|w19 = CONVERT(v6, byte, word32)");
         }
 
         [Test]
@@ -1321,8 +1321,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x787B7B20);
             AssertCode(     // ldrh\tw0,[x25,x27,lsl #1]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v5 = Mem0[x25 + (x27 << 1<8>):word16]",
-                 "2|L--|w0 = CONVERT(v5, word16, word32)");
+                 "1|L--|v6 = Mem0[x25 + (x27 << 1<8>):word16]",
+                 "2|L--|w0 = CONVERT(v6, word16, word32)");
         }
 
         [Test]
@@ -1331,8 +1331,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7876D800);
             AssertCode(     // ldrh\tw0,[x0,w22,sxtw #1]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v5 = Mem0[x0 + (CONVERT(w22, int32, int64) << 1<8>):word16]",
-                 "2|L--|w0 = CONVERT(v5, word16, word32)");
+                 "1|L--|v6 = Mem0[x0 + (CONVERT(w22, int32, int64) << 1<8>):word16]",
+                 "2|L--|w0 = CONVERT(v6, word16, word32)");
         }
 
         [Test]
@@ -1341,8 +1341,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00C87338");
             AssertCode(     // ldrb w0,[x0,w19,sxtw]
                  "0|L--|0000000000100000(4): 2 instructions",
-                 "1|L--|v5 = Mem0[x0 + CONVERT(w19, int32, int64):byte]",
-                 "2|L--|w0 = CONVERT(v5, byte, word32)");
+                 "1|L--|v6 = Mem0[x0 + CONVERT(w19, int32, int64):byte]",
+                 "2|L--|w0 = CONVERT(v6, byte, word32)");
         }
 
         [Test]
@@ -1627,9 +1627,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x296107A2);
             AssertCode(     // ldp\tw2,w1,[x29,-#&F8]
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = x29 + -248<i64>",
-                "2|L--|w2 = Mem0[v5:word32]",
-                "3|L--|w1 = Mem0[v5 + 4<i64>:word32]");
+                "1|L--|v6 = x29 + -248<i64>",
+                "2|L--|w2 = Mem0[v6:word32]",
+                "3|L--|w1 = Mem0[v6 + 4<i64>:word32]");
         }
 
         [Test]
@@ -1647,9 +1647,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x2D010FE2);
             AssertCode(     // stp\ts2,s3,[sp,#&8]
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = sp + 8<i64>",
-                "2|L--|Mem0[v5:word32] = s2",
-                "3|L--|Mem0[v5 + 4<i64>:word32] = s3");
+                "1|L--|v6 = sp + 8<i64>",
+                "2|L--|Mem0[v6:word32] = s2",
+                "3|L--|Mem0[v6 + 4<i64>:word32] = s3");
         }
 
         [Test]
@@ -1667,8 +1667,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("F1CB614E");
             AssertCode(     // fcvtas	v17.2d,v31.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q31",
-                "2|L--|q17 = __round<real64[2]>(v2)");
+                "1|L--|v3 = q31",
+                "2|L--|q17 = __round<real64[2]>(v3)");
         }
 
         [Test]
@@ -1677,8 +1677,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1FC8616E");
             AssertCode(     // fcvtau	v31.2d,v0.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|q31 = __round<real64[2]>(v2)");
+                "1|L--|v3 = q0",
+                "2|L--|q31 = __round<real64[2]>(v3)");
         }
 
         [Test]
@@ -1687,8 +1687,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("21BA616E");
             AssertCode(     // fcvtmu	v1.2d,v17.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q17",
-                "2|L--|q1 = __floor<real64[2]>(v2)");
+                "1|L--|v3 = q17",
+                "2|L--|q1 = __floor<real64[2]>(v3)");
         }
 
         [Test]
@@ -1697,8 +1697,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("20AA614E");
             AssertCode(     // fcvtns	v0.2d,v17.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q17",
-                "2|L--|q0 = __nearest<real64[2]>(v2)");
+                "1|L--|v3 = q17",
+                "2|L--|q0 = __nearest<real64[2]>(v3)");
         }
 
         [Test]
@@ -1707,8 +1707,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6AA9616E");
             AssertCode(     // fcvtnu	v10.2d,v11.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q11",
-                "2|L--|q10 = __nearest<real64[2]>(v2)");
+                "1|L--|v3 = q11",
+                "2|L--|q10 = __nearest<real64[2]>(v3)");
         }
 
         [Test]
@@ -1717,8 +1717,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("0BA8E16E");
             AssertCode(     // fcvtpu	v11.2d,v0.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|q11 = __ceil<real64[2]>(v2)");
+                "1|L--|v3 = q0",
+                "2|L--|q11 = __ceil<real64[2]>(v3)");
         }
 
         [Test]
@@ -1727,8 +1727,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2CBAE16E");
             AssertCode(     // fcvtzu	v12.2d,v17.2d
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q17",
-                "2|L--|q12 = __trunc<real64[2]>(v2)");
+                "1|L--|v3 = q17",
+                "2|L--|q12 = __trunc<real64[2]>(v3)");
         }
 
         [Test]
@@ -1809,8 +1809,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4EA1BAB5);
             AssertCode(     // fcvtzs\tv21.4s,v21.4s
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = q21",
-                "2|L--|q21 = __trunc<real32[4]>(v2)");
+                "1|L--|v3 = q21",
+                "2|L--|q21 = __trunc<real32[4]>(v3)");
         }
 
         [Test]
@@ -1873,8 +1873,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1E20C021);
             AssertCode(     // fabs\ts1,s1
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = s1",
-                "2|L--|s1 = fabsf(v3)");
+                "1|L--|v4 = s1",
+                "2|L--|s1 = fabsf(v4)");
         }
 
         [Test]
@@ -1892,8 +1892,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1E21C001);
             AssertCode(     // fsqrt\ts1,s0
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = s0",
-                "2|L--|s1 = sqrtf(v2)");
+                "1|L--|v3 = s0",
+                "2|L--|s1 = sqrtf(v3)");
         }
 
         [Test]
@@ -1992,9 +1992,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4E30D4D0);
             AssertCode(     // fadd\tv16.4s,v6.4s,v16.4s
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q6",
-                "2|L--|v3 = q16",
-                "3|L--|q16 = __simd_fadd<real32[4]>(v2, v3)");
+                "1|L--|v3 = q6",
+                "2|L--|v4 = q16",
+                "3|L--|q16 = __simd_fadd<real32[4]>(v3, v4)");
         }
 
         [Test]
@@ -2003,8 +2003,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("10DA214E");
             AssertCode(     // scvtf\tv16.4s,v16.4s
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = q16",
-                "2|L--|q16 = __cvtf<int32[4]>(v3)");
+                "1|L--|v4 = q16",
+                "2|L--|q16 = __cvtf<int32[4]>(v4)");
         }
 
         [Test]
@@ -2013,9 +2013,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4E609C20);
             AssertCode(     // mul\tv0.8h,v1.8h,v0.8h
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q0",
-                "3|L--|q0 = __simd_mul<word16[8]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q0",
+                "3|L--|q0 = __simd_mul<word16[8]>(v3, v4)");
         }
 
         [Test]
@@ -2024,9 +2024,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("009CAC4E");
             AssertCode(
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = q12",
-                "3|L--|q0 = __simd_mul<word32[4]>(v2, v3)");
+                "1|L--|v3 = q0",
+                "2|L--|v4 = q12",
+                "3|L--|q0 = __simd_mul<word32[4]>(v3, v4)");
         }
 
         [Test]
@@ -2035,8 +2035,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4EB1B821);
             AssertCode(     // addv\ts1,v1.4s
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|s1 = __sum<ui32[4],word32>(v2)");
+                "1|L--|v3 = q1",
+                "2|L--|s1 = __sum<ui32[4],word32>(v3)");
         }
 
         [Test]
@@ -2045,9 +2045,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6384EB4E");
             AssertCode(
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q3",
-                "2|L--|v3 = q11",
-                "3|L--|q3 = __simd_add<word64[2]>(v2, v3)");
+                "1|L--|v3 = q3",
+                "2|L--|v4 = q11",
+                "3|L--|q3 = __simd_add<word64[2]>(v3, v4)");
         }
 
         [Test]
@@ -2056,9 +2056,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4EA28482);
             AssertCode(     // add\tv2.4s,v4.4s,v2.4s
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q4",
-                "2|L--|v3 = q2",
-                "3|L--|q2 = __simd_add<word32[4]>(v2, v3)");
+                "1|L--|v3 = q4",
+                "2|L--|v4 = q2",
+                "3|L--|q2 = __simd_add<word32[4]>(v3, v4)");
         }
 
         [Test]
@@ -2067,9 +2067,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x6E30DC90);
             AssertCode(     // fmul\tv16.4s,v4.4s,v16.4s
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q4",
-                "2|L--|v3 = q16",
-                "3|L--|q16 = __simd_fmul<real32[4]>(v2, v3)");
+                "1|L--|v3 = q4",
+                "2|L--|v4 = q16",
+                "3|L--|q16 = __simd_fmul<real32[4]>(v3, v4)");
         }
 
         [Test]
@@ -2078,9 +2078,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7A43B900);
             AssertCode(     // ccmp\tw8,#3,#0,LT
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = Test(GE,NZV)",
+                "1|L--|v4 = Test(GE,NZV)",
                 "2|L--|NZCV = 0<32>",
-                "3|T--|if (v3) branch 00100004",
+                "3|T--|if (v4) branch 00100004",
                 "4|L--|NZCV = cond(w8 - 3<32>)");
         }
 
@@ -2108,9 +2108,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xA9007EBF);
             AssertCode(     // stp\tx31,x31,[x21]
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = x21",
-                "2|L--|Mem0[v3:word64] = 0<64>",
-                "3|L--|Mem0[v3 + 8<i64>:word64] = 0<64>");
+                "1|L--|v4 = x21",
+                "2|L--|Mem0[v4:word64] = 0<64>",
+                "3|L--|Mem0[v4 + 8<i64>:word64] = 0<64>");
         }
 
         [Test]
@@ -2191,8 +2191,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4EB0A800);
             AssertCode(     // smaxv\ts0,v0.4s
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|s0 = __smaxv<int32[4],word32>(v2)");
+                "1|L--|v3 = q0",
+                "2|L--|s0 = __smaxv<int32[4],word32>(v3)");
         }
 
         [Test]
@@ -2201,9 +2201,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x4EA16400);
             AssertCode(     // smax\tv0.4s,v0.4s,v1.4s
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = q1",
-                "3|L--|q0 = __smax<int32[4]>(v2, v3)");
+                "1|L--|v3 = q0",
+                "2|L--|v4 = q1",
+                "3|L--|q0 = __smax<int32[4]>(v3, v4)");
         }
 
         [Test]
@@ -2331,9 +2331,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x69404222);	// ldpsw	x2,x16,[x17]
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v5 = x17",
-                "2|L--|x2 = CONVERT(Mem0[v5:int32], int32, int64)",
-                "3|L--|x16 = CONVERT(Mem0[v5 + 4<i64>:int32], int32, int64)");
+                "1|L--|v6 = x17",
+                "2|L--|x2 = CONVERT(Mem0[v6:int32], int32, int64)",
+                "3|L--|x16 = CONVERT(Mem0[v6 + 4<i64>:int32], int32, int64)");
         }
 
         [Test]
@@ -2370,8 +2370,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x6E205821);	// not	v1.16b,v1.16b
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|q1 = __simd_not<byte[16]>(v2)");
+                "1|L--|v3 = q1",
+                "2|L--|q1 = __simd_not<byte[16]>(v3)");
         }
 
         [Test]
@@ -2389,8 +2389,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("63043F6F");
             AssertCode(     // ushr	v3.4s,v3.4s,#1
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q3",
-                "2|L--|q3 = __ushr<uint32[4]>(v2, 1<i32>)");
+                "1|L--|v3 = q3",
+                "2|L--|q3 = __ushr<uint32[4]>(v3, 1<i32>)");
         }
 
         [Test]
@@ -2481,9 +2481,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7A42D020);
             AssertCode(     // ccmp\tw1,w2,#0,LE
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = Test(GT,NZV)",
+                "1|L--|v4 = Test(GT,NZV)",
                 "2|L--|NZCV = 0<32>",
-                "3|T--|if (v3) branch 00100004",
+                "3|T--|if (v4) branch 00100004",
                 "4|L--|NZCV = cond(w1 - w2)");
         }
 
@@ -2547,9 +2547,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x3A4D09C0);	// ccmn	w14,#&D,#0,EQ
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = Test(NE,Z)",
+                "1|L--|v4 = Test(NE,Z)",
                 "2|L--|NZCV = 0<32>",
-                "3|T--|if (v3) branch 00100004",
+                "3|T--|if (v4) branch 00100004",
                 "4|L--|NZCV = cond(w14 + 0xD<32>)");
         }
 
@@ -2559,8 +2559,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00FD9FC8");
             AssertCode(     // stlr	x0,[x8]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = &Mem0[x8:word64]",
-                "2|L--|__store_release<word64>(v3, x0)");
+                "1|L--|v4 = &Mem0[x8:word64]",
+                "2|L--|__store_release<word64>(v4, x0)");
         }
 
         [Test]
@@ -2746,9 +2746,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("019C2C2E");
             AssertCode(     // pmul	v1.8b,v0.8b,v12.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d12",
-                "3|L--|d1 = __pmul<byte[8]>(v2, v3)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d12",
+                "3|L--|d1 = __pmul<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -2757,9 +2757,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("81E13E0E");
             AssertCode(     // pmull	v1.8h,v12.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|v3 = d30",
-                "3|L--|q1 = __pmull<byte[8]>(v2, v3)");
+                "1|L--|v3 = d12",
+                "2|L--|v4 = d30",
+                "3|L--|q1 = __pmull<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -2768,9 +2768,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("60E1E00E");
             AssertCode(     // pmull	v0.1q,v11.1d,v0.1d
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|v3 = d0",
-                "3|L--|q0 = __pmull<word64[1]>(v2, v3)");
+                "1|L--|v3 = d11",
+                "2|L--|v4 = d0",
+                "3|L--|q0 = __pmull<word64[1]>(v3, v4)");
         }
 
         [Test]
@@ -2779,9 +2779,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("3FE02D4E");
             AssertCode(     // pmull2	v31.8h,v1.16b,v13.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q13",
-                "3|L--|q31 = __pmull2<byte[16]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q13",
+                "3|L--|q31 = __pmull2<byte[16]>(v3, v4)");
         }
 
         [Test]
@@ -2790,9 +2790,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("DFE3ED4E");
             AssertCode(     // pmull2	v31.1q,v30.2d,v13.2d
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q30",
-                "2|L--|v3 = q13",
-                "3|L--|q31 = __pmull2<word64[2]>(v2, v3)");
+                "1|L--|v3 = q30",
+                "2|L--|v4 = q13",
+                "3|L--|q31 = __pmull2<word64[2]>(v3, v4)");
         }
 
         [Test]
@@ -2801,9 +2801,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2140312E");
             AssertCode(     // raddhn	v1.8b,v1.8h,v17.8h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q17",
-                "3|L--|d1 = __raddhn<word16[8]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q17",
+                "3|L--|d1 = __raddhn<word16[8]>(v3, v4)");
         }
 
         [Test]
@@ -2812,9 +2812,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2D402B6E");
             AssertCode(     // raddhn2	v13.16b,v1.8h,v11.8h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q11",
-                "3|L--|q13 = __raddhn2<word16[8]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q11",
+                "3|L--|q13 = __raddhn2<word16[8]>(v3, v4)");
         }
 
         [Test]
@@ -2823,8 +2823,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1108200E");
             AssertCode(     // rev64	v17.8b,v0.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|d17 = __rev64<byte[8]>(v2)");
+                "1|L--|v3 = d0",
+                "2|L--|d17 = __rev64<byte[8]>(v3)");
         }
 
         [Test]
@@ -2833,8 +2833,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4B8D0B0F");
             AssertCode(     // rshrn	v11.8b,v10.8h,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q10",
-                "2|L--|d11 = __rshrn<word16[8]>(v2, 5<i32>)");
+                "1|L--|v3 = q10",
+                "2|L--|d11 = __rshrn<word16[8]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -2843,8 +2843,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("0A8C094F");
             AssertCode(     // rshrn2	v10.16b,v0.8h,#7
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|q10 = __rshrn2<word16[8]>(v2, 7<i32>)");
+                "1|L--|v3 = q0",
+                "2|L--|q10 = __rshrn2<word16[8]>(v3, 7<i32>)");
         }
 
         [Test]
@@ -2871,9 +2871,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("7E7D3F0E");
             AssertCode(     // saba	v30.8b,v11.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|v3 = d31",
-                "3|L--|d30 = __saba<byte[8]>(v2, v3)");
+                "1|L--|v3 = d11",
+                "2|L--|v4 = d31",
+                "3|L--|d30 = __saba<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -2882,9 +2882,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6151210E");
             AssertCode(     // sabal	v1.8h,v11.8b,v1.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|v3 = d1",
-                "3|L--|q1 = __sabal<byte[8]>(v2, v3)");
+                "1|L--|v3 = d11",
+                "2|L--|v4 = d1",
+                "3|L--|q1 = __sabal<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -2893,9 +2893,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("20523E4E");
             AssertCode(     // sabal2	v0.8h,v17.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d30",
-                "3|L--|q0 = __sabal2<byte[8]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d30",
+                "3|L--|q0 = __sabal2<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -2904,9 +2904,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FE773E0E");
             AssertCode(     // sabd	v30.8b,v31.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d30",
-                "3|L--|d30 = __sabd<byte[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d30",
+                "3|L--|d30 = __sabd<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -2933,9 +2933,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("BE69200E");
             AssertCode(     // sadalp	v30.4h,v13.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|v3 = d13",
-                "3|L--|d30 = __sadalp<int8[8]>(v3, v2)");
+                "1|L--|v3 = d30",
+                "2|L--|v4 = d13",
+                "3|L--|d30 = __sadalp<int8[8]>(v4, v3)");
         }
 
         [Test]
@@ -2971,8 +2971,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2B38300E");
             AssertCode(     // saddlv	h11,v1.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|h11 = __saddlv<int8[8]>(v2)");
+                "1|L--|v3 = d1",
+                "2|L--|h11 = __saddlv<int8[8]>(v3)");
         }
 
         [Test]
@@ -3008,9 +3008,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1E042A0E");
             AssertCode(     // shadd	v30.8b,v0.8b,v10.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d10",
-                "3|L--|d30 = __shadd<int8[8]>(v2, v3)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d10",
+                "3|L--|d30 = __shadd<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3019,8 +3019,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2C560D0F");
             AssertCode(     // shl	v12.8b,v17.8b,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|d12 = __shl<byte[8]>(v2, 5<i32>)");
+                "1|L--|v3 = d17",
+                "2|L--|d12 = __shl<byte[8]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -3029,8 +3029,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8C39212E");
             AssertCode(     // shll	v12.8h,v12.8b,#8
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|q12 = __shll<byte[8]>(v2, 8<i32>)");
+                "1|L--|v3 = d12",
+                "2|L--|q12 = __shll<byte[8]>(v3, 8<i32>)");
         }
 
         [Test]
@@ -3039,8 +3039,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1E38216E");
             AssertCode(     // shll2	v30.8h,v0.16b,lsl #8
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|q30 = __shll2<byte[16]>(v2, 8<i32>)");
+                "1|L--|v3 = q0",
+                "2|L--|q30 = __shll2<byte[16]>(v3, 8<i32>)");
         }
 
         [Test]
@@ -3049,9 +3049,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4A253F0E");
             AssertCode(     // shsub	v10.8b,v10.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d31",
-                "3|L--|d10 = __shsub<int8[8]>(v2, v3)");
+                "1|L--|v3 = d10",
+                "2|L--|v4 = d31",
+                "3|L--|d10 = __shsub<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3060,8 +3060,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("3F56082F");
             AssertCode(     // sli	v31.8b,v17.8b,#8
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|d31 = __sli<byte[8]>(v2, 8<i32>)");
+                "1|L--|v3 = d17",
+                "2|L--|d31 = __sli<byte[8]>(v3, 8<i32>)");
         }
 
         [Test]
@@ -3070,9 +3070,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2BA63E0E");
             AssertCode(     // smaxp	v11.8b,v17.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d30",
-                "3|L--|d11 = __smaxp<int8[8]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d30",
+                "3|L--|d11 = __smaxp<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3081,9 +3081,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("0B6C310E");
             AssertCode(     // smin	v11.8b,v0.8b,v17.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d17",
-                "3|L--|d11 = __smin<int8[8]>(v2, v3)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d17",
+                "3|L--|d11 = __smin<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3092,9 +3092,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("CBAF3F0E");
             AssertCode(     // sminp	v11.8b,v30.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|v3 = d31",
-                "3|L--|d11 = __sminp<int8[8]>(v2, v3)");
+                "1|L--|v3 = d30",
+                "2|L--|v4 = d31",
+                "3|L--|d11 = __sminp<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3103,8 +3103,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("0DA8310E");
             AssertCode(     // sminv	b13,v0.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|b13 = __sminv<int8[8]>(v2)");
+                "1|L--|v3 = d0",
+                "2|L--|b13 = __sminv<int8[8]>(v3)");
         }
 
         [Test]
@@ -3149,8 +3149,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E42F170E");
             AssertCode(     // smov	w4,v31.b[11]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q31",
-                "2|L--|w4 = CONVERT(v2[11<i32>], int8, int32)");
+                "1|L--|v3 = q31",
+                "2|L--|w4 = CONVERT(v3[11<i32>], int8, int32)");
         }
 
         [Test]
@@ -3168,9 +3168,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E1C3314E");
             AssertCode(     // smull2	v1.8h,v31.16b,v17.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q31",
-                "2|L--|v3 = q17",
-                "3|L--|q1 = __smull2<int8[16]>(v2, v3)");
+                "1|L--|v3 = q31",
+                "2|L--|v4 = q17",
+                "3|L--|q1 = __smull2<int8[16]>(v3, v4)");
         }
 
         [Test]
@@ -3179,8 +3179,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("ED7B200E");
             AssertCode(     // sqabs	v13.8b,v31.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|d13 = __sqabs<int8[8]>(v2)");
+                "1|L--|v3 = d31",
+                "2|L--|d13 = __sqabs<int8[8]>(v3)");
         }
 
         [Test]
@@ -3189,9 +3189,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("F10F2A0E");
             AssertCode(     // sqadd	v17.8b,v31.8b,v10.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d10",
-                "3|L--|d17 = __sqadd<int8[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d10",
+                "3|L--|d17 = __sqadd<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3254,9 +3254,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("31B4600E");
             AssertCode(     // sqdmulh	v17.4h,v1.4h,v0.4h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|v3 = d0",
-                "3|L--|d17 = __sqdmulh_vec<int16[4]>(v2, v3)");
+                "1|L--|v3 = d1",
+                "2|L--|v4 = d0",
+                "3|L--|d17 = __sqdmulh_vec<int16[4]>(v3, v4)");
         }
 
         [Test]
@@ -3301,8 +3301,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("9F79202E");
             AssertCode(     // sqneg	v31.8b,v12.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|d31 = __sqneg<int8[8]>(v2)");
+                "1|L--|v3 = d12",
+                "2|L--|d31 = __sqneg<int8[8]>(v3)");
         }
 
         [Test]
@@ -3365,9 +3365,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8A5D210E");
             AssertCode(     // sqrshl	v10.8b,v12.8b,v1.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|v3 = d1",
-                "3|L--|d10 = __sqrshl<int8[8]>(v2, v3)");
+                "1|L--|v3 = d12",
+                "2|L--|v4 = d1",
+                "3|L--|d10 = __sqrshl<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3376,8 +3376,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2D9C0B0F");
             AssertCode(     // sqrshrn	v13.8b,v1.8h,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|d13 = __sqrshrn<int16[8]>(v2, 5<i32>)");
+                "1|L--|v3 = q1",
+                "2|L--|d13 = __sqrshrn<int16[8]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -3386,8 +3386,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AC9D094F");
             AssertCode(     // sqrshrn2	v12.16b,v13.8h,#7
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|q12 = __sqrshrn2<int16[8]>(v2, 7<i32>)");
+                "1|L--|v3 = q13",
+                "2|L--|q12 = __sqrshrn2<int16[8]>(v3, 7<i32>)");
         }
 
         [Test]
@@ -3396,8 +3396,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("CD8F0A2F");
             AssertCode(     // sqrshrun	v13.8b,v30.8h,#6
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q30",
-                "2|L--|d13 = __sqrshrun<int16[8]>(v2, 6<i32>)");
+                "1|L--|v3 = q30",
+                "2|L--|d13 = __sqrshrun<int16[8]>(v3, 6<i32>)");
         }
 
         [Test]
@@ -3406,8 +3406,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("B18D0A6F");
             AssertCode(     // sqrshrun2	v17.16b,v13.8h,#6
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|q17 = __sqrshrun2<int16[8]>(v2, 6<i32>)");
+                "1|L--|v3 = q13",
+                "2|L--|q17 = __sqrshrun2<int16[8]>(v3, 6<i32>)");
         }
 
         [Test]
@@ -3416,9 +3416,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EA4F3E0E");
             AssertCode(     // sqshl	v10.8b,v31.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d30",
-                "3|L--|d10 = __sqshl<int8[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d30",
+                "3|L--|d10 = __sqshl<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3427,8 +3427,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00640D2F");
             AssertCode(     // sqshlu	v0.8b,v0.8b,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|d0 = __sqshlu<int8[8]>(v2, 5<i32>)");
+                "1|L--|v3 = d0",
+                "2|L--|d0 = __sqshlu<int8[8]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -3437,8 +3437,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8B950B0F");
             AssertCode(     // sqshrn	v11.8b,v12.8h,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q12",
-                "2|L--|d11 = __sqshrn<int16[8]>(v2, 5<i32>)");
+                "1|L--|v3 = q12",
+                "2|L--|d11 = __sqshrn<int16[8]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -3447,8 +3447,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("7F950B4F");
             AssertCode(     // sqshrn2	v31.16b,v11.8h,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q11",
-                "2|L--|q31 = __sqshrn2<int16[8]>(v2, 5<i32>)");
+                "1|L--|v3 = q11",
+                "2|L--|q31 = __sqshrn2<int16[8]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -3457,9 +3457,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4D2D2C0E");
             AssertCode(     // sqsub	v13.8b,v10.8b,v12.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d12",
-                "3|L--|d13 = __sqsub<int8[8]>(v2, v3)");
+                "1|L--|v3 = d10",
+                "2|L--|v4 = d12",
+                "3|L--|d13 = __sqsub<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3504,9 +3504,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2A162A0E");
             AssertCode(     // srhadd	v10.8b,v17.8b,v10.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d10",
-                "3|L--|d10 = __srhadd<int8[8]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d10",
+                "3|L--|d10 = __srhadd<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3515,8 +3515,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("F147092F");
             AssertCode(     // sri	v17.8b,v31.8b,#7
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|d17 = __sri<int8[8]>(v2, 7<i32>)");
+                "1|L--|v3 = d31",
+                "2|L--|d17 = __sri<int8[8]>(v3, 7<i32>)");
         }
 
         [Test]
@@ -3525,9 +3525,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6B55200E");
             AssertCode(     // srshl	v11.8b,v11.8b,v0.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|v3 = d0",
-                "3|L--|d11 = __srshl<int8[8]>(v2, v3)");
+                "1|L--|v3 = d11",
+                "2|L--|v4 = d0",
+                "3|L--|d11 = __srshl<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3536,8 +3536,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AC250C0F");
             AssertCode(     // srshr	v12.8b,v13.8b,#4
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|d12 = __srshr<int8[8]>(v2, 4<i32>)");
+                "1|L--|v3 = d13",
+                "2|L--|d12 = __srshr<int8[8]>(v3, 4<i32>)");
         }
 
         [Test]
@@ -3546,8 +3546,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2A340D0F");
             AssertCode(     // srsra	v10.8b,v1.8b,#3
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|d10 = __srsra<int8[8]>(v2, 3<i32>)");
+                "1|L--|v3 = d1",
+                "2|L--|d10 = __srsra<int8[8]>(v3, 3<i32>)");
         }
 
         [Test]
@@ -3565,8 +3565,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("01A40E0F");
             AssertCode(     // sshll	v1.8h,v0.8b,#6
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|q1 = __sshll<int8[8]>(v2, 6<i32>)");
+                "1|L--|v3 = d0",
+                "2|L--|q1 = __sshll<int8[8]>(v3, 6<i32>)");
         }
 
         [Test]
@@ -3575,8 +3575,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("3EA4094F");
             AssertCode(     // sshll2	v30.8h,v1.16b,#1
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|q30 = __sshll2<int8[16]>(v2, 1<i32>)");
+                "1|L--|v3 = q1",
+                "2|L--|q30 = __sshll2<int8[16]>(v3, 1<i32>)");
         }
 
         [Test]
@@ -3612,9 +3612,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2022310E");
             AssertCode(     // ssubl	v0.8b,v17.4h,v17.4h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d17",
-                "3|L--|q0 = __ssubl<int8[8]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d17",
+                "3|L--|q0 = __ssubl<int8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3623,9 +3623,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AB312C0E");
             AssertCode(     // ssubw	v11.8h,v13.8h,v12.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|v3 = d12",
-                "3|L--|q11 = __ssubw<int16[8]>(v2, v3)");
+                "1|L--|v3 = q13",
+                "2|L--|v4 = d12",
+                "3|L--|q11 = __ssubw<int16[8]>(v3, v4)");
         }
 
         [Test]
@@ -3634,9 +3634,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EC33314E");
             AssertCode(     // ssubw2	v12.8h,v31.8h,v17.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q31",
-                "2|L--|v3 = q17",
-                "3|L--|q12 = __ssubw2<int16[8]>(v2, v3)");
+                "1|L--|v3 = q31",
+                "2|L--|v4 = q17",
+                "3|L--|q12 = __ssubw2<int16[8]>(v3, v4)");
         }
 
         [Test]
@@ -3645,9 +3645,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("7E212C4E");
             AssertCode(     // ssubl2	v30.16b,v12.8h,v12.8h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q11",
-                "2|L--|v3 = q12",
-                "3|L--|q30 = __ssubl2<int8[16]>(v2, v3)");
+                "1|L--|v3 = q11",
+                "2|L--|v4 = q12",
+                "3|L--|q30 = __ssubl2<int8[16]>(v3, v4)");
         }
 
         [Test]
@@ -3656,9 +3656,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2D602C0E");
             AssertCode(     // subhn	v13.8b,v1.8h,v12.8h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q12",
-                "3|L--|d13 = __subhn<int16[8]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q12",
+                "3|L--|d13 = __subhn<int16[8]>(v3, v4)");
         }
 
         [Test]
@@ -3676,9 +3676,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AA39200E");
             AssertCode(     // suqadd	v10.8b,v13.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d13",
-                "3|L--|d10 = __suqadd<int8[8]>(v3, v2)");
+                "1|L--|v3 = d10",
+                "2|L--|v4 = d13",
+                "3|L--|d10 = __suqadd<int8[8]>(v4, v3)");
         }
 
         [Test]
@@ -3687,8 +3687,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("5101010E");
             AssertCode(     // tbl	v17.8b,{v10.8b},v17.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|d17 = __tbl<byte[8]>(1<i32>, v10, v2)");
+                "1|L--|v3 = d1",
+                "2|L--|d17 = __tbl<byte[8]>(1<i32>, v10, v3)");
         }
 
         [Test]
@@ -3697,8 +3697,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4A41010E");
             AssertCode(     // tbl	v10.8b,{v10.8b-v12.8b},v1.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|d10 = __tbl<byte[8]>(3<i32>, v10, v11, v12, v2)");
+                "1|L--|v3 = d1",
+                "2|L--|d10 = __tbl<byte[8]>(3<i32>, v10, v11, v12, v3)");
         }
 
         [Test]
@@ -3707,8 +3707,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("5E110A0E");
             AssertCode(     // tbx	v30.8b,{v10.16b},v10.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|d30 = __tbx<byte[8]>(1<i32>, v10, v2)");
+                "1|L--|v3 = d10",
+                "2|L--|d30 = __tbx<byte[8]>(1<i32>, v10, v3)");
         }
 
         [Test]
@@ -3726,9 +3726,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("01281F0E");
             AssertCode(     // trn1	v1.8b,v0.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d31",
-                "3|L--|d1 = __trn1<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d31",
+                "3|L--|d1 = __trn1<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3737,9 +3737,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8D690C0E");
             AssertCode(     // trn2	v13.8b,v12.8b,v12.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|v3 = d12",
-                "3|L--|d13 = __trn2<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d12",
+                "2|L--|v4 = d12",
+                "3|L--|d13 = __trn2<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3748,9 +3748,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("207E3F2E");
             AssertCode(     // uaba	v0.8b,v17.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d31",
-                "3|L--|d0 = __uaba<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d31",
+                "3|L--|d0 = __uaba<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3777,9 +3777,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6174696E");
             AssertCode(     // uabd	v1.8h,v3.8h,v9.8h
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q3",
-                "2|L--|v3 = q9",
-                "3|L--|q1 = __uabd<uint16[8]>(v2, v3)");
+                "1|L--|v3 = q3",
+                "2|L--|v4 = q9",
+                "3|L--|q1 = __uabd<uint16[8]>(v3, v4)");
         }
 
         [Test]
@@ -3788,9 +3788,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AC71312E");
             AssertCode(     // uabdl	v12.8h,v13.8b,v17.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|v3 = d17",
-                "3|L--|q12 = __uabdl<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d13",
+                "2|L--|v4 = d17",
+                "3|L--|q12 = __uabdl<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3799,9 +3799,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6B71206E");
             AssertCode(     // uabdl2	v11.8h,v11.16b,v0.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q11",
-                "2|L--|v3 = q0",
-                "3|L--|q11 = __uabdl2<uint8[16]>(v2, v3)");
+                "1|L--|v3 = q11",
+                "2|L--|v4 = q0",
+                "3|L--|q11 = __uabdl2<uint8[16]>(v3, v4)");
         }
 
         [Test]
@@ -3810,9 +3810,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C06B202E");
             AssertCode(     // uadalp	v0.4h,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d30",
-                "3|L--|d0 = __uadalp<uint8[8]>(v3, v2)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d30",
+                "3|L--|d0 = __uadalp<uint8[8]>(v4, v3)");
         }
 
         [Test]
@@ -3839,9 +3839,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AD29202E");
             AssertCode(     // uaddlp	v13.4h,v13.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|v3 = d13",
-                "3|L--|d13 = __uaddlp<uint8[8]>(v3, v2)");
+                "1|L--|v3 = d13",
+                "2|L--|v4 = d13",
+                "3|L--|d13 = __uaddlp<uint8[8]>(v4, v3)");
         }
 
         [Test]
@@ -3850,8 +3850,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1138302E");
             AssertCode(     // uaddlv	h17,v0.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|h17 = __uaddlv<uint8[8]>(v2)");
+                "1|L--|v3 = d0",
+                "2|L--|h17 = __uaddlv<uint8[8]>(v3)");
         }
 
         [Test]
@@ -3878,8 +3878,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EBDB792E");
             AssertCode(     // ucvtf	v11.4h,v31.4h
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = d31",
-                "2|L--|d11 = __cvtf<uint16[4]>(v4)");
+                "1|L--|v5 = d31",
+                "2|L--|d11 = __cvtf<uint16[4]>(v5)");
         }
 
         [Test]
@@ -3906,9 +3906,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E1073E2E");
             AssertCode(     // uhadd	v1.8b,v31.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d30",
-                "3|L--|d1 = __uhadd<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d30",
+                "3|L--|d1 = __uhadd<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3917,9 +3917,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8125312E");
             AssertCode(     // uhsub	v1.16b,v12.16b,v17.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q12",
-                "2|L--|v3 = q17",
-                "3|L--|q1 = __uhsub<uint8[16]>(v2, v3)");
+                "1|L--|v3 = q12",
+                "2|L--|v4 = q17",
+                "3|L--|q1 = __uhsub<uint8[16]>(v3, v4)");
         }
 
         [Test]
@@ -3928,9 +3928,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C1672B2E");
             AssertCode(     // umax	v1.8b,v30.8b,v11.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|v3 = d11",
-                "3|L--|d1 = __umax<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d30",
+                "2|L--|v4 = d11",
+                "3|L--|d1 = __umax<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3939,9 +3939,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1EA4212E");
             AssertCode(     // umaxp	v30.8b,v0.8b,v1.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d1",
-                "3|L--|d30 = __umaxp<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d1",
+                "3|L--|d30 = __umaxp<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3950,8 +3950,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AAA9302E");
             AssertCode(     // umaxv	b10,v13.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|b10 = __umaxv<uint8[8]>(v2)");
+                "1|L--|v3 = d13",
+                "2|L--|b10 = __umaxv<uint8[8]>(v3)");
         }
 
         [Test]
@@ -3960,9 +3960,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("116C3E2E");
             AssertCode(     // umin	v17.8b,v0.8b,v30.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|v3 = d30",
-                "3|L--|d17 = __umin<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d0",
+                "2|L--|v4 = d30",
+                "3|L--|d17 = __umin<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3971,9 +3971,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("4BAD2B2E");
             AssertCode(     // uminp	v11.8b,v10.8b,v11.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d11",
-                "3|L--|d11 = __uminp<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d10",
+                "2|L--|v4 = d11",
+                "3|L--|d11 = __uminp<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -3982,8 +3982,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2BAA312E");
             AssertCode(     // uminv	b11,v17.8b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|b11 = __uminv<uint8[8]>(v2)");
+                "1|L--|v3 = d17",
+                "2|L--|b11 = __uminv<uint8[8]>(v3)");
         }
 
         [Test]
@@ -4028,8 +4028,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("043C0D0E");
             AssertCode(     // umov	w4,v0.b[6]
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|w4 = CONVERT(v2[6<i32>], uint8, uint32)");
+                "1|L--|v3 = d0",
+                "2|L--|w4 = CONVERT(v3[6<i32>], uint8, uint32)");
         }
 
         [Test]
@@ -4038,9 +4038,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("20C02D6E");
             AssertCode(     // umull2	v0.8h,v1.16b,v13.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q13",
-                "3|L--|q0 = __umull2<uint8[16]>(v2, v3)");
+                "1|L--|v3 = q1",
+                "2|L--|v4 = q13",
+                "3|L--|q0 = __umull2<uint8[16]>(v3, v4)");
         }
 
         [Test]
@@ -4049,9 +4049,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("810D2A2E");
             AssertCode(     // uqadd	v1.8b,v12.8b,v10.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|v3 = d10",
-                "3|L--|d1 = __uqadd<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d12",
+                "2|L--|v4 = d10",
+                "3|L--|d1 = __uqadd<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -4060,9 +4060,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("715D3F2E");
             AssertCode(     // uqrshl	v17.8b,v11.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|v3 = d31",
-                "3|L--|d17 = __uqrshl<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d11",
+                "2|L--|v4 = d31",
+                "3|L--|d17 = __uqrshl<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -4071,8 +4071,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FE9F0C2F");
             AssertCode(     // uqrshrn	v30.8b,v31.4h,#4
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|d30 = __uqrshrn<uint16[4]>(v2, 4<i32>)");
+                "1|L--|v3 = d31",
+                "2|L--|d30 = __uqrshrn<uint16[4]>(v3, 4<i32>)");
         }
 
         [Test]
@@ -4081,8 +4081,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EA9F0D6F");
             AssertCode(     // uqrshrn2	v10.8b,v31.4h,#3
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|d10 = __uqrshrn2<uint16[4]>(v2, 3<i32>)");
+                "1|L--|v3 = d31",
+                "2|L--|d10 = __uqrshrn2<uint16[4]>(v3, 3<i32>)");
         }
 
         [Test]
@@ -4091,9 +4091,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("CD4F3F2E");
             AssertCode(     // uqshl	v13.8b,v30.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|v3 = d31",
-                "3|L--|d13 = __uqshl<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d30",
+                "2|L--|v4 = d31",
+                "3|L--|d13 = __uqshl<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -4102,8 +4102,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AA950D2F");
             AssertCode(     // uqshrn	v10.8b,v13.4h,#3
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|d10 = __uqshrn<uint16[4]>(v2, 3<i32>)");
+                "1|L--|v3 = d13",
+                "2|L--|d10 = __uqshrn<uint16[4]>(v3, 3<i32>)");
         }
 
         [Test]
@@ -4112,8 +4112,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1F940B6F");
             AssertCode(     // uqshrn2	v31.8b,v0.4h,#5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|d31 = __uqshrn2<uint16[4]>(v2, 5<i32>)");
+                "1|L--|v3 = d0",
+                "2|L--|d31 = __uqshrn2<uint16[4]>(v3, 5<i32>)");
         }
 
         [Test]
@@ -4122,9 +4122,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("BE2D2A2E");
             AssertCode(     // uqsub	v30.16b,v13.16b,v10.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|v3 = q10",
-                "3|L--|q30 = __uqsub<uint8[16]>(v2, v3)");
+                "1|L--|v3 = q13",
+                "2|L--|v4 = q10",
+                "3|L--|q30 = __uqsub<uint8[16]>(v3, v4)");
         }
 
         [Test]
@@ -4133,8 +4133,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("5F49212E");
             AssertCode(     // uqxtn	v31.8b,v10.4h
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|d31 = __uqxtn<uint16[4]>(v2)");
+                "1|L--|v3 = d10",
+                "2|L--|d31 = __uqxtn<uint16[4]>(v3)");
         }
 
         [Test]
@@ -4143,8 +4143,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E04B216E");
             AssertCode(     // uqxtn2	v0.8b,v31.4h
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|d0 = __uqxtn2<uint16[4]>(v2)");
+                "1|L--|v3 = d31",
+                "2|L--|d0 = __uqxtn2<uint16[4]>(v3)");
         }
 
         [Test]
@@ -4153,8 +4153,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("DFCBA10E");
             AssertCode(     // urecpe	v31.2s,v30.2s
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d30",
-                "2|L--|d31 = __urecpe<uint32[2]>(v2)");
+                "1|L--|v3 = d30",
+                "2|L--|d31 = __urecpe<uint32[2]>(v3)");
         }
 
         [Test]
@@ -4163,9 +4163,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("AA153F2E");
             AssertCode(     // urhadd	v10.8b,v13.8b,v31.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d13",
-                "2|L--|v3 = d31",
-                "3|L--|d10 = __urhadd<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d13",
+                "2|L--|v4 = d31",
+                "3|L--|d10 = __urhadd<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -4174,9 +4174,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("F157202E");
             AssertCode(     // urshl	v17.8b,v31.8b,v0.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d0",
-                "3|L--|d17 = __urshl<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d0",
+                "3|L--|d17 = __urshl<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -4185,8 +4185,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("3F24082F");
             AssertCode(     // urshr	v31.8b,v1.8b,#8
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|d31 = __urshr<uint8[8]>(v2, 8<i32>)");
+                "1|L--|v3 = d1",
+                "2|L--|d31 = __urshr<uint8[8]>(v3, 8<i32>)");
         }
 
         [Test]
@@ -4195,8 +4195,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("21C8A12E");
             AssertCode(     // ursqrte	v1.2s,v1.2s
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d1",
-                "2|L--|d1 = __ursqrte<uint32[2]>(v2)");
+                "1|L--|v3 = d1",
+                "2|L--|d1 = __ursqrte<uint32[2]>(v3)");
         }
 
         [Test]
@@ -4205,8 +4205,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("6A350D2F");
             AssertCode(     // ursra	v10.8b,v11.8b,#3
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d11",
-                "2|L--|d10 = __ursra<uint8[8]>(v2, 3<i32>)");
+                "1|L--|v3 = d11",
+                "2|L--|d10 = __ursra<uint8[8]>(v3, 3<i32>)");
         }
 
         [Test]
@@ -4215,9 +4215,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("E147312E");
             AssertCode(     // ushl	v1.8b,v31.8b,v17.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d17",
-                "3|L--|d1 = __ushl<uint8[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d17",
+                "3|L--|d1 = __ushl<uint8[8]>(v3, v4)");
         }
 
         [Test]
@@ -4226,8 +4226,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EDA70B2F");
             AssertCode(     // ushll	v13.8h,v31.8b,#3
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|q13 = __ushll<uint8[8]>(v2, 3<i32>)");
+                "1|L--|v3 = d31",
+                "2|L--|q13 = __ushll<uint8[8]>(v3, 3<i32>)");
         }
 
         [Test]
@@ -4236,8 +4236,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("11A40C6F");
             AssertCode(     // ushll2	v17.8h,v0.16b,#4
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|q17 = __ushll2<uint8[16]>(v2, 4<i32>)");
+                "1|L--|v3 = q0",
+                "2|L--|q17 = __ushll2<uint8[16]>(v3, 4<i32>)");
         }
 
         [Test]
@@ -4246,9 +4246,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("B139202E");
             AssertCode(     // usqadd	v17.8b,v13.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d13",
-                "3|L--|d17 = __usqadd<uint8[8]>(v3, v2)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d13",
+                "3|L--|d17 = __usqadd<uint8[8]>(v4, v3)");
         }
 
         [Test]
@@ -4257,8 +4257,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8C15092F");
             AssertCode(     // usra	v12.8b,v12.8b,#7
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|d12 = __usra<uint8[8]>(v2, 7<i32>)");
+                "1|L--|v3 = d12",
+                "2|L--|d12 = __usra<uint8[8]>(v3, 7<i32>)");
         }
 
         [Test]
@@ -4267,9 +4267,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2C22202E");
             AssertCode(     // usubl	v12.8h,v17.8b,v0.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d0",
-                "3|L--|q12 = __usubl<uint16[4]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d0",
+                "3|L--|q12 = __usubl<uint16[4]>(v3, v4)");
         }
 
         [Test]
@@ -4278,9 +4278,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("8121216E");
             AssertCode(     // usubl2	v1.16h,v12.8b,v1.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q12",
-                "2|L--|v3 = q1",
-                "3|L--|q1 = __usubl2<uint16[8]>(v2, v3)");
+                "1|L--|v3 = q12",
+                "2|L--|v4 = q1",
+                "3|L--|q1 = __usubl2<uint16[8]>(v3, v4)");
         }
 
         [Test]
@@ -4289,9 +4289,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("11302A2E");
             AssertCode(     // usubw	v17.8h,v0.8h,v10.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|v3 = d10",
-                "3|L--|q17 = __usubw<uint16[8]>(v2, v3)");
+                "1|L--|v3 = q0",
+                "2|L--|v4 = d10",
+                "3|L--|q17 = __usubw<uint16[8]>(v3, v4)");
         }
 
         [Test]
@@ -4300,9 +4300,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("40312D6E");
             AssertCode(     // usubw2	v0.8h,v10.8h,v13.16b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q10",
-                "2|L--|v3 = q13",
-                "3|L--|q0 = __usubw2<uint16[8]>(v2, v3)");
+                "1|L--|v3 = q10",
+                "2|L--|v4 = q13",
+                "3|L--|q0 = __usubw2<uint16[8]>(v3, v4)");
         }
 
         [Test]
@@ -4320,8 +4320,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x2F08A400);
             AssertCode(     // uxtl\tv0.8h,v0.8b
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|q0 = __uxtl<uint8[8]>(v2)");
+                "1|L--|v3 = d0",
+                "2|L--|q0 = __uxtl<uint8[8]>(v3)");
         }
 
         [Test]
@@ -4330,8 +4330,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("11A4086F");
             AssertCode(     // uxtl2	v17.8h,v0.16b
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q0",
-                "2|L--|q17 = __uxtl2<uint8[16]>(v2)");
+                "1|L--|v3 = q0",
+                "2|L--|q17 = __uxtl2<uint8[16]>(v3)");
         }
 
         [Test]
@@ -4340,9 +4340,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("51190B0E");
             AssertCode(     // uzp1	v17.8b,v10.8b,v11.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d10",
-                "2|L--|v3 = d11",
-                "3|L--|d17 = __uzp1<byte[8]>(v2, v3)");
+                "1|L--|v3 = d10",
+                "2|L--|v4 = d11",
+                "3|L--|d17 = __uzp1<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -4351,9 +4351,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("9159110E");
             AssertCode(     // uzp2	v17.8b,v12.8b,v17.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d12",
-                "2|L--|v3 = d17",
-                "3|L--|d17 = __uzp2<byte[8]>(v2, v3)");
+                "1|L--|v3 = d12",
+                "2|L--|v4 = d17",
+                "3|L--|d17 = __uzp2<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -4362,8 +4362,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x0E612A10);
             AssertCode(     // xtn\tv16.4h,v16.4s
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = q16",
-                "2|L--|d16 = __xtn<word32[4]>(v2)");
+                "1|L--|v3 = q16",
+                "2|L--|d16 = __xtn<word32[4]>(v3)");
         }
 
         [Test]
@@ -4372,8 +4372,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C02B214E");
             AssertCode(     // xtn2	v0.16b,v30.8h
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = q30",
-                "2|L--|q0 = __xtn2<word16[8]>(v2)");
+                "1|L--|v3 = q30",
+                "2|L--|q0 = __xtn2<word16[8]>(v3)");
         }
 
         [Test]
@@ -4382,9 +4382,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("2D3A0B0E");
             AssertCode(     // zip1	v13.8b,v17.8b,v11.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d17",
-                "2|L--|v3 = d11",
-                "3|L--|d13 = __zip1<byte[8]>(v2, v3)");
+                "1|L--|v3 = d17",
+                "2|L--|v4 = d11",
+                "3|L--|d13 = __zip1<byte[8]>(v3, v4)");
         }
 
         [Test]
@@ -4393,9 +4393,9 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("F17B110E");
             AssertCode(     // zip2	v17.8b,v31.8b,v17.8b
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|v3 = d17",
-                "3|L--|d17 = __zip2<byte[8]>(v2, v3)");
+                "1|L--|v3 = d31",
+                "2|L--|v4 = d17",
+                "3|L--|d17 = __zip2<byte[8]>(v3, v4)");
         }
 
         // This file contains unit tests automatically generated by Reko decompiler.

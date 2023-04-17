@@ -450,7 +450,7 @@ Eq_538: (union "Eq_538" (ui32 u0) (byte u1))
 	T_721 (in Mem13[0x00403004<p32>:word32] @ 00401671 : word32)
 	T_722 (in 0xBB40E64E<32> @ 00401684 : word32)
 	T_752 (in ecx_55 @ 004016CE : Eq_538)
-	T_765 (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v14_43 ^ fp - 8<i32> @ 004016CE : word32)
+	T_765 (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_43 ^ fp - 8<i32> @ 004016CE : word32)
 	T_766 (in 0xBB40E64E<32> @ 004016D2 : word32)
 	T_779 (in 0xBB40E64F<32> @ 004016D4 : word32)
 	T_780 (in Mem71[0x00403004<p32>:word32] @ 004016EB : word32)
@@ -3562,7 +3562,7 @@ T_728: (in GetSystemTimeAsFileTime(&tLoc10) @ 00401697 : void)
   Class: Eq_728
   DataType: void
   OrigDataType: void
-T_729: (in v14_43 @ 004016B5 : ui32)
+T_729: (in v15_43 @ 004016B5 : ui32)
   Class: Eq_729
   DataType: ui32
   OrigDataType: ui32
@@ -3694,7 +3694,7 @@ T_761: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart @ 004016CE : word32)
   Class: Eq_761
   DataType: ui32
   OrigDataType: ui32
-T_762: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v14_43 @ 004016CE : word32)
+T_762: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_43 @ 004016CE : word32)
   Class: Eq_762
   DataType: ui32
   OrigDataType: ui32
@@ -3706,7 +3706,7 @@ T_764: (in fp - 8<i32> @ 004016CE : word32)
   Class: Eq_764
   DataType: ptr32
   OrigDataType: ptr32
-T_765: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v14_43 ^ fp - 8<i32> @ 004016CE : word32)
+T_765: (in tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_43 ^ fp - 8<i32> @ 004016CE : word32)
   Class: Eq_538
   DataType: Eq_538
   OrigDataType: ui32

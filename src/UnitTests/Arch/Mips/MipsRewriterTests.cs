@@ -613,8 +613,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x46200049, // trunc.l.d $f1,$f0
             "0|L--|00100000(4): 2 instructions",
-            "1|L--|v2 = f0",
-                "2|L--|f1 = CONVERT(trunc<real64>(v2), real64, int64)");
+            "1|L--|v3 = f0",
+            "2|L--|f1 = CONVERT(trunc<real64>(v3), real64, int64)");
         }
 
         [Test]
@@ -876,8 +876,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x7C021620, // seh\tr2,r2"
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r2, word16, 0)",
-                "2|L--|r2 = CONVERT(v3, word16, int32)");
+                "1|L--|v4 = SLICE(r2, word16, 0)",
+                "2|L--|r2 = CONVERT(v4, word16, int32)");
         }
 
         [Test]

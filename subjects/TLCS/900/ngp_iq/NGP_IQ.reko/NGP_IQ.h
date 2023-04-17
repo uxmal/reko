@@ -1641,7 +1641,7 @@ T_383: (in xhl + 1<32> @ 0020057F : word32)
   Class: Eq_117
   DataType: (ptr32 byte)
   OrigDataType: word32
-T_384: (in v17_32 @ 00200584 : cu8)
+T_384: (in v18_32 @ 00200584 : cu8)
   Class: Eq_384
   DataType: cu8
   OrigDataType: cu8
@@ -1649,7 +1649,7 @@ T_385: (in 0x5B<8> @ 00200584 : byte)
   Class: Eq_384
   DataType: cu8
   OrigDataType: cu8
-T_386: (in v17_32 < 0x5B<8> @ 00200584 : bool)
+T_386: (in v18_32 < 0x5B<8> @ 00200584 : bool)
   Class: Eq_386
   DataType: bool
   OrigDataType: bool
@@ -1665,7 +1665,7 @@ T_389: (in xde_26 + 1<32> @ 00200595 : word32)
   Class: Eq_387
   DataType: (ptr32 word32)
   OrigDataType: uint32
-T_390: (in v24_58 @ 00200597 : word32)
+T_390: (in v25_58 @ 00200597 : word32)
   Class: Eq_390
   DataType: word32
   OrigDataType: word32
@@ -1701,7 +1701,7 @@ T_398: (in xwa_16_16_108 @ 0020059B : word16)
   Class: Eq_398
   DataType: word16
   OrigDataType: word16
-T_399: (in SEQ(xwa_16_16_108, v24_58) @ 0020059B : word24)
+T_399: (in SEQ(xwa_16_16_108, v25_58) @ 0020059B : word24)
   Class: Eq_367
   DataType: word24
   OrigDataType: word24
@@ -1717,7 +1717,7 @@ T_402: (in Mem8[xde_26 + 0<32>:word32] @ 0020059B : word32)
   Class: Eq_402
   DataType: word32
   OrigDataType: word32
-T_403: (in SEQ(xwa_16_16_108, v24_58, Mem8[xde_26 + 0<32>:word32]) @ 0020059B : word32)
+T_403: (in SEQ(xwa_16_16_108, v25_58, Mem8[xde_26 + 0<32>:word32]) @ 0020059B : word32)
   Class: Eq_366
   DataType: word32
   OrigDataType: word32
@@ -1745,7 +1745,7 @@ T_409: (in SLICE(xwa_24_8_106, word16, 8) @ 00200579 : word16)
   Class: Eq_398
   DataType: word16
   OrigDataType: word16
-T_410: (in SEQ(xwa_24_8_106, v17_32) @ 0020057B : word32)
+T_410: (in SEQ(xwa_24_8_106, v18_32) @ 0020057B : word32)
   Class: Eq_366
   DataType: word32
   OrigDataType: word32
@@ -1753,7 +1753,7 @@ T_411: (in 0<8> @ 0020057D : byte)
   Class: Eq_384
   DataType: cu8
   OrigDataType: byte
-T_412: (in v17_32 == 0<8> @ 0020057D : bool)
+T_412: (in v18_32 == 0<8> @ 0020057D : bool)
   Class: Eq_412
   DataType: bool
   OrigDataType: bool
@@ -1925,7 +1925,7 @@ T_454: (in SEQ(xwa_16_16, w * 4<8>, a) @ 00200602 : word32)
   Class: Eq_451
   DataType: (ptr32 (ptr32 (ptr32 code)))
   OrigDataType: word32
-T_455: (in v9_17 @ 00200602 : (ptr32 (ptr32 code)))
+T_455: (in v10_17 @ 00200602 : (ptr32 (ptr32 code)))
   Class: Eq_455
   DataType: (ptr32 (ptr32 code))
   OrigDataType: (ptr32 (struct (0 T_461 t0000)))
@@ -1945,11 +1945,11 @@ T_459: (in 0<32> @ 00200607 : word32)
   Class: Eq_459
   DataType: word32
   OrigDataType: word32
-T_460: (in v9_17 + 0<32> @ 00200607 : word32)
+T_460: (in v10_17 + 0<32> @ 00200607 : word32)
   Class: Eq_460
   DataType: word32
   OrigDataType: word32
-T_461: (in Mem8[v9_17 + 0<32>:word32] @ 00200607 : word32)
+T_461: (in Mem8[v10_17 + 0<32>:word32] @ 00200607 : word32)
   Class: Eq_461
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)

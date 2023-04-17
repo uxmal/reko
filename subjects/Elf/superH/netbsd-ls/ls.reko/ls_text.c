@@ -32,11 +32,11 @@ void ___start(word32 r4, struct Eq_n * r5, word32 r9, word32 r10, word32 r11, wo
 			byte * r1_n = *r1_n;
 			while (true)
 			{
-				Eq_n v28_n = *r1_n;
+				Eq_n v29_n = *r1_n;
 				++r1_n;
-				if (v28_n == 0x00)
+				if (v29_n == 0x00)
 					break;
-				if (v28_n == 0x2F)
+				if (v29_n == 0x2F)
 					**r0_n = (byte ***) r1_n;
 			}
 		}
@@ -57,8 +57,8 @@ void ___start(word32 r4, struct Eq_n * r5, word32 r9, word32 r10, word32 r11, wo
 			bool T_n = r9_n >= r11_n;
 			while (!T_n)
 			{
-				<anonymous> ** v32_n = *r9_n;
-				(*v32_n)();
+				<anonymous> ** v33_n = *r9_n;
+				(*v33_n)();
 				T_n = r9_n >= r11_n;
 			}
 			int32 r1_n = g_dw401EC4;
@@ -75,8 +75,8 @@ void ___start(word32 r4, struct Eq_n * r5, word32 r9, word32 r10, word32 r11, wo
 			bool T_n = r9_n >= r11_n;
 			while (!T_n)
 			{
-				<anonymous> ** v31_n = *r9_n;
-				(*v31_n)();
+				<anonymous> ** v32_n = *r9_n;
+				(*v32_n)();
 				T_n = r9_n >= r11_n;
 			}
 			word32 r0_n = g_dw401ED4;

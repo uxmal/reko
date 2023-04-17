@@ -70,7 +70,12 @@ namespace Reko.Core
         /// </summary>
         /// <param name="framePointerSize">The size of the frame pointer must match the size of the 
         /// stack register, if any, or at the least the size of a pointer.</param>
-		public Frame(IProcessorArchitecture arch, PrimitiveType framePointerSize)
+        /// <param name="codeAddressSize">The size of the return address. Usually it is the same
+        /// as a pointer size, but on x86 this can differ from the frame pointer size.</param>
+		public Frame(
+            IProcessorArchitecture arch,
+            PrimitiveType framePointerSize,
+            PrimitiveType codeAddressSize)
 		{
             if (framePointerSize is null)
                 throw new ArgumentNullException(nameof(framePointerSize));
@@ -84,11 +89,21 @@ namespace Reko.Core
             this.Memory = new MemoryIdentifier(0, new UnknownType());
             this.Identifiers.Add(Memory);
 			this.FramePointer = CreateTemporary("fp", framePointerSize);
+            this.Continuation = CreateTemporary("%continuation", codeAddressSize);
 		}
+
+        public Frame(IProcessorArchitecture arch, PrimitiveType pointerSize) : this(arch, pointerSize, pointerSize)
+        {
+        }
 
         public bool Escapes { get; set; }
         public int FrameOffset { get; set; }
+
+        /// <summary>
+        /// A virtual register that is a constant pointer to 
+        /// </summary>
         public Identifier FramePointer { get; private set; }
+        public Identifier Continuation { get; private set; }
         public List<Identifier> Identifiers { get { return identifiers; } }
         public Identifier Memory { get; private set; }
 

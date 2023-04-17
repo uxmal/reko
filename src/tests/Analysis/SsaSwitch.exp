@@ -35,13 +35,13 @@ si:si
     uses: bl_11 = Mem7[ds_8:si:byte]
 bl_11: orig: bl
     def:  bl_11 = Mem7[ds_8:si:byte]
-    uses: v14_12 = bl_11
+    uses: v15_12 = bl_11
           SCZO_13 = cond(bl_11 - 2<8>)
           bx_19 = SEQ(bh_16, bl_11) (alias)
           bx_28 = SEQ(bh, bl_11) (alias)
-v14_12: orig: v14
-    def:  v14_12 = bl_11
-    uses: switch (v14_12) { l0C00_0017 l0C00_001B l0C00_001F }
+v15_12: orig: v15
+    def:  v15_12 = bl_11
+    uses: switch (v15_12) { l0C00_0017 l0C00_001B l0C00_001F }
 SCZO_13: orig: SCZO
     def:  SCZO_13 = cond(bl_11 - 2<8>)
     uses: CZ_14 = SLICE(SCZO_13, bool, 2) (alias)
@@ -162,7 +162,7 @@ l0C00_0000:
 	ds_8 = Mem7[ss:sp_4:selector]
 	sp_9 = sp_4 + 2<i16>
 	bl_11 = Mem7[ds_8:si:byte]
-	v14_12 = bl_11
+	v15_12 = bl_11
 	SCZO_13 = cond(bl_11 - 2<8>)
 	CZ_14 = SLICE(SCZO_13, bool, 2) (alias)
 	bx_28 = SEQ(bh, bl_11) (alias)
@@ -183,7 +183,7 @@ l0C00_0009:
 	O_35 = SLICE(SCZO_21, bool, 4) (alias)
 	S_38 = SLICE(SCZO_21, bool, 0) (alias)
 	Z_43 = SLICE(SCZO_21, bool, 2) (alias)
-	switch (v14_12) { l0C00_0017 l0C00_001B l0C00_001F }
+	switch (v15_12) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:
 	ax_24 = 1<16>

@@ -36,7 +36,7 @@ Mem11: orig: Mem0
     uses: Mem14[ds:0x204<16>:word16] = Mem11[ds:0x204<16>:word16] + Mem11[ds:si + 0x204<16>:word16]
           Mem14[ds:0x204<16>:word16] = Mem11[ds:0x204<16>:word16] + Mem11[ds:si + 0x204<16>:word16]
 ax_12: orig: ax
-v6_13: orig: v6
+v7_13: orig: v7
 Mem14: orig: Mem0
     def:  Mem14[ds:0x204<16>:word16] = Mem11[ds:0x204<16>:word16] + Mem11[ds:si + 0x204<16>:word16]
     uses: ax_16 = Mem14[ds:0x200<16>:word16]

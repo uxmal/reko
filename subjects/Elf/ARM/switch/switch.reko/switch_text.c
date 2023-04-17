@@ -169,34 +169,34 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 		{
 			do
 			{
-				bool v20_n = r1_n < 0x10000000;
-				bool v17_n = r1_n >= 0x10000000;
+				bool v21_n = r1_n < 0x10000000;
+				bool v18_n = r1_n >= 0x10000000;
 				if (r1_n < 0x10000000)
 				{
-					v20_n = r1_n < r0;
-					v17_n = r1_n >= r0;
+					v21_n = r1_n < r0;
+					v18_n = r1_n >= r0;
 				}
-				if (!v17_n)
+				if (!v18_n)
 				{
 					r1_n <<= 4;
 					r3_n <<= 4;
 				}
-			} while (v20_n);
+			} while (v21_n);
 			do
 			{
-				bool v26_n = r1_n < 0x80000000;
-				bool v23_n = r1_n >= 0x80000000;
+				bool v27_n = r1_n < 0x80000000;
+				bool v24_n = r1_n >= 0x80000000;
 				if (r1_n < 0x80000000)
 				{
-					v26_n = r1_n < r0;
-					v23_n = r1_n >= r0;
+					v27_n = r1_n < r0;
+					v24_n = r1_n >= r0;
 				}
-				if (!v23_n)
+				if (!v24_n)
 				{
 					r1_n <<= 1;
 					r3_n <<= 1;
 				}
-			} while (v26_n);
+			} while (v27_n);
 			do
 			{
 				if (r0 >= r1_n)
@@ -219,17 +219,17 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 					r0 -= r1_n >> 3;
 					r2_n |= r3_n >> 3;
 				}
-				bool v32_n = r0 != 0x00;
-				bool v29_n = r0 == 0x00;
+				bool v33_n = r0 != 0x00;
+				bool v30_n = r0 == 0x00;
 				if (r0 != 0x00)
 				{
 					r3_n >>= 4;
-					v32_n = r3_n != 0x00;
-					v29_n = r3_n == 0x00;
+					v33_n = r3_n != 0x00;
+					v30_n = r3_n == 0x00;
 				}
-				if (!v29_n)
+				if (!v30_n)
 					r1_n >>= 4;
-			} while (v32_n);
+			} while (v33_n);
 		}
 		Eq_n r0_n = r2_n;
 		if (ip_n < 0x00)

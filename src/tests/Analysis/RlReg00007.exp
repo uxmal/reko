@@ -33,8 +33,8 @@ l0C00_000C:
 	C_6 = SLICE(SCZO_5, bool, 1) (alias)
 	branch al <u 0x20<8> l0C00_0014
 l0C00_0010:
-	v7_9 = Mem0[ds:0x201<16>:word16] + 1<16>
-	Mem10[ds:0x201<16>:word16] = v7_9
+	v8_9 = Mem0[ds:0x201<16>:word16] + 1<16>
+	Mem10[ds:0x201<16>:word16] = v8_9
 l0C00_0014:
 	return
 fn0C00_000C_exit:

@@ -39,7 +39,7 @@ Z_12: orig: Z
     def:  Z_12 = SLICE(SCZO_11, bool, 2) (alias)
 Mem14: orig: Mem0
     def:  Mem14[ds:di:word16] = ax_9
-    uses: v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+    uses: v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
           Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
 ax_15: orig: ax
     def:  ax_15 = ax_9 | ax_9
@@ -59,15 +59,15 @@ SCZO_19: orig: SCZO
     uses: Z_20 = SLICE(SCZO_19, bool, 2) (alias)
 Z_20: orig: Z
     def:  Z_20 = SLICE(SCZO_19, bool, 2) (alias)
-v12_21: orig: v12
-    def:  v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
-    uses: Mem22[ds:0x302<16>:word16] = v12_21
-          SZO_23 = cond(v12_21)
+v13_21: orig: v13
+    def:  v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+    uses: Mem22[ds:0x302<16>:word16] = v13_21
+          SZO_23 = cond(v13_21)
 Mem22: orig: Mem0
-    def:  Mem22[ds:0x302<16>:word16] = v12_21
+    def:  Mem22[ds:0x302<16>:word16] = v13_21
     uses: Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
 SZO_23: orig: SZO
-    def:  SZO_23 = cond(v12_21)
+    def:  SZO_23 = cond(v13_21)
 ax_24: orig: ax
     def:  ax_24 = 0xFFFF<16>
     uses: ax_29 = PHI((ax_27, l0C00_0020), (ax_24, l0C00_000B))
@@ -89,8 +89,8 @@ ds:ds
     def:  def ds
     uses: ax_9 = Mem8[ds:si_7:word16]
           Mem14[ds:di:word16] = ax_9
-          v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
-          Mem22[ds:0x302<16>:word16] = v12_21
+          v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+          Mem22[ds:0x302<16>:word16] = v13_21
           Mem31[ds:0x300<16>:word16] = ax_29
 Mem0:Mem
     def:  def Mem0
@@ -132,9 +132,9 @@ l0C00_0011:
 	branch ax_15 != 0xD<16> l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
-	v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
-	Mem22[ds:0x302<16>:word16] = v12_21
-	SZO_23 = cond(v12_21)
+	v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+	Mem22[ds:0x302<16>:word16] = v13_21
+	SZO_23 = cond(v13_21)
 	// succ:  l0C00_001A
 l0C00_001A:
 	Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
@@ -201,7 +201,7 @@ Z_12: orig: Z
     def:  Z_12 = SLICE(SCZO_11, bool, 2) (alias)
 Mem14: orig: Mem0
     def:  Mem14[ds:di:word16] = ax_9
-    uses: v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+    uses: v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
           Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
 ax_15: orig: ax
     def:  ax_15 = ax_9
@@ -217,15 +217,15 @@ SCZO_19: orig: SCZO
     uses: Z_20 = SLICE(SCZO_19, bool, 2) (alias)
 Z_20: orig: Z
     def:  Z_20 = SLICE(SCZO_19, bool, 2) (alias)
-v12_21: orig: v12
-    def:  v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
-    uses: Mem22[ds:0x302<16>:word16] = v12_21
-          SZO_23 = cond(v12_21)
+v13_21: orig: v13
+    def:  v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+    uses: Mem22[ds:0x302<16>:word16] = v13_21
+          SZO_23 = cond(v13_21)
 Mem22: orig: Mem0
-    def:  Mem22[ds:0x302<16>:word16] = v12_21
+    def:  Mem22[ds:0x302<16>:word16] = v13_21
     uses: Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))
 SZO_23: orig: SZO
-    def:  SZO_23 = cond(v12_21)
+    def:  SZO_23 = cond(v13_21)
 ax_24: orig: ax
     def:  ax_24 = 0xFFFF<16>
     uses: ax_29 = PHI((ax_27, l0C00_0020), (ax_24, l0C00_000B))
@@ -246,8 +246,8 @@ ds:ds
     def:  def ds
     uses: ax_9 = Mem8[ds:si_7:word16]
           Mem14[ds:di:word16] = ax_9
-          v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
-          Mem22[ds:0x302<16>:word16] = v12_21
+          v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+          Mem22[ds:0x302<16>:word16] = v13_21
           Mem31[ds:0x300<16>:word16] = ax_29
 Mem0:Mem
     def:  def Mem0
@@ -289,9 +289,9 @@ l0C00_0011:
 	branch ax_9 != 0xD<16> l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
-	v12_21 = Mem14[ds:0x302<16>:word16] + 1<16>
-	Mem22[ds:0x302<16>:word16] = v12_21
-	SZO_23 = cond(v12_21)
+	v13_21 = Mem14[ds:0x302<16>:word16] + 1<16>
+	Mem22[ds:0x302<16>:word16] = v13_21
+	SZO_23 = cond(v13_21)
 	// succ:  l0C00_001A
 l0C00_001A:
 	Mem8 = PHI((Mem0, l0C00_0000), (Mem14, l0C00_0011), (Mem22, l0C00_0016))

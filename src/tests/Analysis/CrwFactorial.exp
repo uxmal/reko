@@ -9,6 +9,7 @@ void fn0C00_0000(Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // cx:cx
 // ss:ss
@@ -44,6 +45,7 @@ Register word16 fn0C00_000F(Stack word16 wArg02)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss

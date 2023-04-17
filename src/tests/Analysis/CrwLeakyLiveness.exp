@@ -9,11 +9,12 @@ void fn0C00_0000(Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // C:C
 // ds:ds
 // ax:ax
-// v6:v6
+// v7:v7
 // SCZO:SCZO
 // Top:Top
 // si:si
@@ -31,8 +32,8 @@ l0C00_0000:
 	branch C_8 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	v6_12 = Mem0[ds:0x300<16>:word16] + ax_6
-	Mem13[ds:0x300<16>:word16] = v6_12
+	v7_12 = Mem0[ds:0x300<16>:word16] + ax_6
+	Mem13[ds:0x300<16>:word16] = v7_12
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -49,6 +50,7 @@ FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // si:si
 // ds:ds

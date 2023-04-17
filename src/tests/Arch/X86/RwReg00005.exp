@@ -2,6 +2,7 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ds:ds
 // bx:bx
@@ -25,6 +26,7 @@ fn0C00_0000_exit:
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // cx:cx
 // ds:ds

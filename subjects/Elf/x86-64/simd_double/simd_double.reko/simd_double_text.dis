@@ -196,8 +196,8 @@ l00000000000008FD:
 	word32 eax_65 = SLICE(qwLoc10_204, word32, 0)
 	branch qwLoc10_204 < 0<64> l0000000000000921
 l0000000000000921:
-	real64 v24_71 = CONVERT(qwLoc10_204 >>u 1<64> | CONVERT(eax_65 & 1<32>, word32, uint64), word64, real64)
-	xmm0 = SEQ(0<64>, v24_71 + v24_71)
+	real64 v25_71 = CONVERT(qwLoc10_204 >>u 1<64> | CONVERT(eax_65 & 1<32>, word32, uint64), word64, real64)
+	xmm0 = SEQ(0<64>, v25_71 + v25_71)
 l000000000000091A:
 	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_204, word64, real64))
 l0000000000000936:
@@ -212,8 +212,8 @@ l0000000000000953:
 	word64 rcx_96 = qwLoc18_210 * 8<64> + rax_29
 	branch qwLoc18_210 < 1<64> l000000000000097A
 l000000000000097A:
-	real64 v19_108 = CONVERT(qwLoc18_210 + 1<64> >>u 1<64> | CONVERT(eax_102 & 1<32>, word32, uint64), word64, real64)
-	xmm0 = SEQ(0<64>, v19_108 + v19_108)
+	real64 v20_108 = CONVERT(qwLoc18_210 + 1<64> >>u 1<64> | CONVERT(eax_102 & 1<32>, word32, uint64), word64, real64)
+	xmm0 = SEQ(0<64>, v20_108 + v20_108)
 l0000000000000973:
 	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_210 + 1<64>, word64, real64))
 l000000000000098F:

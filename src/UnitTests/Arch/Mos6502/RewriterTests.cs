@@ -67,9 +67,9 @@ namespace Reko.UnitTests.Arch.Mos6502
             Given_Bytes(0xCE, 0x34, 0x12);
             AssertCode(
                 "0|L--|0200(3): 3 instructions",
-                "1|L--|v2 = Mem0[0x1234<p16>:byte] - 1<8>",
-                "2|L--|Mem0[0x1234<p16>:byte] = v2",
-                "3|L--|NZ = cond(v2)");
+                "1|L--|v3 = Mem0[0x1234<p16>:byte] - 1<8>",
+                "2|L--|Mem0[0x1234<p16>:byte] = v3",
+                "3|L--|NZ = cond(v3)");
         }
 
         [Test]
@@ -107,9 +107,9 @@ namespace Reko.UnitTests.Arch.Mos6502
             Given_Bytes(0x16, 0x64);
             AssertCode(
                 "0|L--|0200(2): 3 instructions",
-                "1|L--|v3 = Mem0[0x0064<p16> + x:byte] << 1<8>",
-                "2|L--|Mem0[0x0064<p16> + x:byte] = v3",
-                "3|L--|NZC = cond(v3)");
+                "1|L--|v4 = Mem0[0x0064<p16> + x:byte] << 1<8>",
+                "2|L--|Mem0[0x0064<p16> + x:byte] = v4",
+                "3|L--|NZC = cond(v4)");
         }
 
         [Test]
@@ -146,9 +146,9 @@ namespace Reko.UnitTests.Arch.Mos6502
             Given_Bytes(0x0A);
             AssertCode(
                 "0|L--|0200(1): 3 instructions",
-                "1|L--|v3 = a << 1<8>",
-                "2|L--|a = v3",
-                "3|L--|NZC = cond(v3)");
+                "1|L--|v4 = a << 1<8>",
+                "2|L--|a = v4",
+                "3|L--|NZC = cond(v4)");
         }
 
         [Test]

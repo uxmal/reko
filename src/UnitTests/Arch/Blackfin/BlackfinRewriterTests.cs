@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("1805");
             AssertCode( // (FP:P0) = [SP++];
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v3 = SP",
+                "1|L--|v4 = SP",
                 "2|L--|SP = SP + 4<i32>");
         }
 
@@ -161,10 +161,10 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("AD98");
             AssertCode(
                 "0|L--|00100000(2): 4 instructions",
-                "1|L--|v3 = P5",
+                "1|L--|v4 = P5",
                 "2|L--|P5 = P5 - 2<i32>",
-                "3|L--|v4 = SLICE(Mem0[v3:word16], byte, 0)",
-                "4|L--|R5 = CONVERT(v4, byte, word32)");
+                "3|L--|v5 = SLICE(Mem0[v4:word16], byte, 0)",
+                "4|L--|R5 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -200,9 +200,9 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("059A");
             AssertCode( // B[P0++] = R5;
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v4 = P0",
+                "1|L--|v5 = P0",
                 "2|L--|P0 = P0 + 1<i32>",
-                "3|L--|Mem0[v4:byte] = R5");
+                "3|L--|Mem0[v5:byte] = R5");
         }
 
         [Test]
@@ -320,8 +320,8 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("4043");
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v3 = SLICE(R0, byte, 0)",
-                "2|L--|R0 = CONVERT(v3, byte, word32)");
+                "1|L--|v4 = SLICE(R0, byte, 0)",
+                "2|L--|R0 = CONVERT(v4, byte, word32)");
         }
 
         [Test]
@@ -377,8 +377,8 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("C342");
             AssertCode(     // R3 = R0.L (Z);
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v3 = SLICE(R0, word16, 0)",
-                "2|L--|R3 = CONVERT(v3, word16, word32)");
+                "1|L--|v4 = SLICE(R0, word16, 0)",
+                "2|L--|R3 = CONVERT(v4, word16, word32)");
         }
 
         [Test]

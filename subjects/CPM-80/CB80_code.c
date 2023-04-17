@@ -1206,10 +1206,10 @@ byte fn1326(byte c, uint16 hl, union Eq_n & lOut)
 	uint16 hl_n = hl;
 	do
 	{
-		uint16 v11_n = hl_n >> 0x01;
-		Eq_n l_n = (byte) v11_n;
+		uint16 v12_n = hl_n >> 0x01;
+		Eq_n l_n = (byte) v12_n;
 		--c;
-		hl_n = v11_n;
+		hl_n = v12_n;
 	} while (c != 0x00);
 	lOut = l_n;
 	return c;

@@ -308,7 +308,7 @@ Eq_229: (union "Eq_229" (byte u0) (ptr16 u1))
 	T_235 (in out l_137 @ 049E : ptr16)
 	T_1930 (in out l_245 @ 0C45 : ptr16)
 	T_2692 (in l_14 @ 132C : Eq_229)
-	T_2693 (in SLICE(v11_22, byte, 0) @ 132C : byte)
+	T_2693 (in SLICE(v12_22, byte, 0) @ 132C : byte)
 Eq_242: (fn void (Eq_115))
 	T_242 (in F_DMAOFF @ 04B5 : ptr16)
 	T_243 (in signature of F_DMAOFF : void)
@@ -11587,7 +11587,7 @@ T_2688: (in hl_26 @ 1326 : uint16)
   Class: Eq_228
   DataType: uint16
   OrigDataType: uint16
-T_2689: (in v11_22 @ 1328 : uint16)
+T_2689: (in v12_22 @ 1328 : uint16)
   Class: Eq_228
   DataType: uint16
   OrigDataType: uint16
@@ -11603,7 +11603,7 @@ T_2692: (in l_14 @ 132C : Eq_229)
   Class: Eq_229
   DataType: Eq_229
   OrigDataType: byte
-T_2693: (in SLICE(v11_22, byte, 0) @ 132C : byte)
+T_2693: (in SLICE(v12_22, byte, 0) @ 132C : byte)
   Class: Eq_229
   DataType: Eq_229
   OrigDataType: byte

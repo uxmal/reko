@@ -384,7 +384,7 @@ T_84: (in 0x10AEC<32> @ 00010B74 : word32)
   Class: Eq_80
   DataType: word32
   OrigDataType: word32
-T_85: (in v24_215 @ 00010B84 : bool)
+T_85: (in v25_215 @ 00010B84 : bool)
   Class: Eq_85
   DataType: bool
   OrigDataType: bool

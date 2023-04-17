@@ -217,7 +217,7 @@ T_38: (in 0<8> @ 000018 : byte)
   Class: Eq_37
   DataType: byte
   OrigDataType: byte
-T_39: (in v19_98 @ 000024 : bool)
+T_39: (in v20_98 @ 000024 : bool)
   Class: Eq_39
   DataType: bool
   OrigDataType: bool
@@ -445,7 +445,7 @@ T_95: (in Data55[0x00C3<p16>:byte] @ 00007E : byte)
   Class: Eq_2
   DataType: cu8
   OrigDataType: byte
-T_96: (in v22_101 @ 00007E : bool)
+T_96: (in v23_101 @ 00007E : bool)
   Class: Eq_96
   DataType: bool
   OrigDataType: bool

@@ -51,9 +51,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             base.Given_HexString("4104");
             base.AssertCode(
                 "0|L--|00123400(2): 3 instructions",
-                "1|L--|v2 = 4<32>",
+                "1|L--|v3 = 4<32>",
                 "2|L--|sp = sp - 8<i32>",
-                "3|L--|Mem0[sp:word32] = v2");
+                "3|L--|Mem0[sp:word32] = v3");
         }
 
         [Test]
@@ -62,9 +62,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Given_HexString("43C3F548C0");
             base.AssertCode(
                 "0|L--|00123400(5): 3 instructions",
-                "1|L--|v2 = -3.14F",
+                "1|L--|v3 = -3.14F",
                 "2|L--|sp = sp - 8<i32>",
-                "3|L--|Mem0[sp:real32] = v2");
+                "3|L--|Mem0[sp:real32] = v3");
         }
 
         [Test]
@@ -73,9 +73,9 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
             Given_HexString("3C0404");
             AssertCode(
                 "0|L--|00123400(3): 4 instructions",
-                "1|L--|v3 = Mem0[sp:ptr32]",
-                "2|L--|v4 = Mem0[sp + 8<i32>:byte]",
-                "3|L--|Mem0[v3 + 4<i32>:byte] = v4",
+                "1|L--|v4 = Mem0[sp:ptr32]",
+                "2|L--|v5 = Mem0[sp + 8<i32>:byte]",
+                "3|L--|Mem0[v4 + 4<i32>:byte] = v5",
                 "4|L--|sp = sp + 16<i32>");
         }
     }

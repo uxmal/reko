@@ -75,17 +75,17 @@ l0388:
 l0316:
 	Mem115[0x1174<p16>:word16] = Mem103[0x1170<p16>:word16]
 	Mem119[pc + 0xE52<16>:word16] = Mem115[pc + 0xE52<16>:word16] + 1<16>
-	word16 v35_120 = ~Mem119[0x0EF4<p16>:word16]
-	Mem121[0x0EF6<p16>:word16] = v35_120
-	branch v35_120 != 0<16> l032C
+	word16 v36_120 = ~Mem119[0x0EF4<p16>:word16]
+	Mem121[0x0EF6<p16>:word16] = v36_120
+	branch v36_120 != 0<16> l032C
 l0328:
 	Mem127[0x0EF8<p16>:word16] = ~Mem121[0x0EF6<p16>:word16]
 l032C:
 	branch Mem131[0x0EFA<p16>:word16] == 0<16> l0352
 l0332:
-	word16 v41_138 = Mem131[0x0EFA<p16>:word16] - 1<16>
-	Mem139[0x0EFC<p16>:word16] = v41_138
-	branch v41_138 != 0<16> l0370
+	word16 v42_138 = Mem131[0x0EFA<p16>:word16] - 1<16>
+	Mem139[0x0EFC<p16>:word16] = v42_138
+	branch v42_138 != 0<16> l0370
 l0338:
 	branch Mem139[0x0F18<p16>:word16] == 0<16> l03AE
 l033E:
@@ -99,9 +99,9 @@ l0352:
 l0358:
 	branch Mem169[0x0F14<p16>:word16] <=u 8<16> l0370
 l0360:
-	word16 v65_179 = Mem169[0x0F16<p16>:word16] - 1<16>
-	Mem180[0x0F18<p16>:word16] = v65_179
-	branch v65_179 > 0<16> l0370
+	word16 v66_179 = Mem169[0x0F16<p16>:word16] - 1<16>
+	Mem180[0x0F18<p16>:word16] = v66_179
+	branch v66_179 > 0<16> l0370
 l0366:
 	Mem182[0x0EFA<p16>:word16] = 0x456<16>
 l036C:
@@ -230,9 +230,9 @@ word16 fn04A0(word16 r4, word16 pc)
 fn04A0_entry:
 	ptr16 fp
 l04A0:
-	word16 v5_5 = Mem0[pc + 0xA52<16>:word16] & Mem0[0x0EF4<p16>:word16]
-	Mem6[pc + 0xA52<16>:word16] = v5_5
-	branch v5_5 == 0<16> l04AA
+	word16 v6_5 = Mem0[pc + 0xA52<16>:word16] & Mem0[0x0EF4<p16>:word16]
+	Mem6[pc + 0xA52<16>:word16] = v6_5
+	branch v6_5 == 0<16> l04AA
 l04AA:
 	word16 r5_10 = Mem6[0x0F04<p16>:word16]
 l04AE:
@@ -272,10 +272,10 @@ l050A:
 l050C:
 	branch Mem54[r2_107 + 0xDB8<16>:word16] - r0_100 == 0<16> l0524
 l0512:
-	word16 v41_119 = Mem54[r2_107 + 0xDB8<16>:word16] - r1_71
-	branch v41_119 <u 0<16> l05B4
+	word16 v42_119 = Mem54[r2_107 + 0xDB8<16>:word16] - r1_71
+	branch v42_119 <u 0<16> l05B4
 l0518:
-	branch v41_119 == 0<16> l0524
+	branch v42_119 == 0<16> l0524
 l0524:
 	r0_100 = Mem54[r2_107 + 0xDAC<16>:word16]
 	word16 r1_126 = 8<16>
@@ -321,9 +321,9 @@ l0542:
 	fn0A7C(fn0AB6(r0_199, r4, out r4_212, out r5_354), r4_212, out r4_218)
 	Mem228[pc + 0x5F2<16>:word16] = Mem208[pc + 0x5F2<16>:word16] + Mem208[r2_107 + 0xDD4<16>:word16]
 	r4 = fn0B1A(r4_218, out r5_10)
-	word16 v69_237 = Mem228[0x0F12<p16>:word16] - 1<16>
-	Mem238[0x0F14<p16>:word16] = v69_237
-	branch v69_237 > 0<16> l0584
+	word16 v70_237 = Mem228[0x0F12<p16>:word16] - 1<16>
+	Mem238[0x0F14<p16>:word16] = v70_237
+	branch v70_237 > 0<16> l0584
 l0574:
 	branch Mem238[0x0F02<p16>:word16] > 0<16> l0584
 l057A:
@@ -367,9 +367,9 @@ bool fn05D4(word16 r0, word16 r3, word16 r4, word16 pc, ptr16 & r0Out, ptr16 & r
 fn05D4_entry:
 	word16 r5
 l05D4:
-	word16 v11_10 = 4<16> - (r3 - Mem5[0x0F02<p16>:word16])
-	bool Z_111 = SLICE(cond(v11_10), bool, 2)
-	branch v11_10 >u 0<16> l0648
+	word16 v12_10 = 4<16> - (r3 - Mem5[0x0F02<p16>:word16])
+	bool Z_111 = SLICE(cond(v12_10), bool, 2)
+	branch v12_10 >u 0<16> l0648
 l0648:
 	r0Out = r0
 	r3Out = r3
@@ -384,9 +384,9 @@ l05E0:
 	word16 r0_34 = fn0A94()
 	word16 r3_49 = __rcl<word16,byte>(__rcl<word16,byte>(0<16>, 1<8>, SLICE(cond(r0_34 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_34 << 2<i16>), bool, 0))
 	word16 r0_51 = Mem18[(r3_49 << 1<i16>) + 0xF2A<16>:word16]
-	word16 v27_53 = Mem18[pc + 0x90A<16>:word16] >> 1<i16>
-	Mem54[pc + 0x90A<16>:word16] = v27_53
-	branch v27_53 <u 0<16> l060E
+	word16 v28_53 = Mem18[pc + 0x90A<16>:word16] >> 1<i16>
+	Mem54[pc + 0x90A<16>:word16] = v28_53
+	branch v28_53 <u 0<16> l060E
 l060A:
 	r0_51 = r0_51 + 0xC8<16>
 l060E:
@@ -468,18 +468,18 @@ fn067C_entry:
 	word16 r5
 l067C:
 	word16 r1_8 = (r3 - 1<16> << 1<i16>) + r0
-	byte v11_10 = Mem0[r1_8 + 0xE2A<16>:byte]
-	bool Z_15 = SLICE(cond(v11_10), bool, 2)
-	branch v11_10 == 0<8> l06A0
+	byte v12_10 = Mem0[r1_8 + 0xE2A<16>:byte]
+	bool Z_15 = SLICE(cond(v12_10), bool, 2)
+	branch v12_10 == 0<8> l06A0
 l068A:
 	Mem17[r1_8 + 0xE2A<16>:byte] = Mem0[r1_8 + 0xE2A<16>:byte] - 1<8>
 	word16 r1_18 = CONVERT(Mem17[r1_8 + 0xE2A<16>:byte], byte, int16)
 	word16 r4_28
 	r0 = fn0AB6(r0, r4, out r4_28, out r5)
-	byte v23_33 = Mem23[r1_18 + 0xEE0<16>:byte]
-	Mem34[r4_28:byte] = v23_33
+	byte v24_33 = Mem23[r1_18 + 0xEE0<16>:byte]
+	Mem34[r4_28:byte] = v24_33
 	r4 = r4_28 + 1<16>
-	Z_15 = SLICE(cond(v23_33), bool, 2) (alias)
+	Z_15 = SLICE(cond(v24_33), bool, 2) (alias)
 l06A0:
 	r0Out = r0
 	r4Out = r4
@@ -534,9 +534,9 @@ l06DA:
 	word16 r3_9 = CONVERT(Mem8[r2_174 + 0xEE6<16>:byte], byte, int16)
 	branch r3_9 == 0<16> l07A0
 l06E0:
-	word16 v12_14 = Mem8[pc + 0x812<16>:word16] & Mem8[0x0EF4<p16>:word16]
-	Mem15[pc + 0x812<16>:word16] = v12_14
-	branch v12_14 != 0<16> l06F6
+	word16 v13_14 = Mem8[pc + 0x812<16>:word16] & Mem8[0x0EF4<p16>:word16]
+	Mem15[pc + 0x812<16>:word16] = v13_14
+	branch v13_14 != 0<16> l06F6
 l06E8:
 	branch Mem15[r2_174 + 0xEEC<16>:byte] <= 0<8> l07A0
 l06EE:
@@ -619,9 +619,9 @@ fn07A6_entry:
 	word16 r0
 	word16 sp_119 = fp
 l07A6:
-	word16 v5_4 = Mem0[0x0F1C<p16>:word16] - 1<16>
-	Mem5[0x0F1E<p16>:word16] = v5_4
-	branch v5_4 == 0<16> l07B0
+	word16 v6_4 = Mem0[0x0F1C<p16>:word16] - 1<16>
+	Mem5[0x0F1E<p16>:word16] = v6_4
+	branch v6_4 == 0<16> l07B0
 l07B0:
 	Mem9[0x0F1E<p16>:word16] = Mem5[0x0F26<p16>:word16]
 	word16 r5_10 = 0<16>
@@ -679,9 +679,9 @@ l0860:
 l0864:
 	Mem171[r2_16 + 0xDB8<16>:word16] = 0<16>
 l0868:
-	word16 v80_184 = Mem183[pc + 0x6AE<16>:word16] - 2<16>
-	Mem185[pc + 0x6AE<16>:word16] = v80_184
-	branch v80_184 < 0<16> l087E
+	word16 v81_184 = Mem183[pc + 0x6AE<16>:word16] - 2<16>
+	Mem185[pc + 0x6AE<16>:word16] = v81_184
+	branch v81_184 < 0<16> l087E
 l087E:
 	Mem188[0x0F1C<p16>:word16] = 0xA<16>
 	Mem190[0x0DAA<p16>:word16] = ~Mem188[0x0DA8<p16>:word16]
@@ -738,9 +738,9 @@ l07AC:
 l08B2:
 	branch Mem315[0x0F12<p16>:word16] == 0<16> l08CE
 l08B8:
-	word16 v37_325 = Mem315[pc + 0x63A<16>:word16] & Mem315[0x0EF4<p16>:word16]
-	Mem326[pc + 0x63A<16>:word16] = v37_325
-	branch v37_325 == 0<16> l08CE
+	word16 v38_325 = Mem315[pc + 0x63A<16>:word16] & Mem315[0x0EF4<p16>:word16]
+	Mem326[pc + 0x63A<16>:word16] = v38_325
+	branch v38_325 == 0<16> l08CE
 l08C0:
 	word16 r2_330 = Mem326[0x0F06<p16>:word16]
 l08C4:
@@ -758,9 +758,9 @@ l08EA:
 	r0_351 = r0_351 << 1<i16>
 	branch r0_351 << 1<i16> <u 0<16> l0904
 l08EE:
-	ui32 v117_457 = CONVERT(r0_351, word16, uint32) << 1<8>
-	word16 r0_371 = SLICE(v117_457, word16, 0)
-	word16 r1_385 = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v117_457, word16, 16), 1<8>, SLICE(cond(r0_371 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_371 << 2<i16>), bool, 0))
+	ui32 v118_457 = CONVERT(r0_351, word16, uint32) << 1<8>
+	word16 r0_371 = SLICE(v118_457, word16, 0)
+	word16 r1_385 = __rcl<word16,byte>(__rcl<word16,byte>(SLICE(v118_457, word16, 16), 1<8>, SLICE(cond(r0_371 << 1<i16>), bool, 0)), 1<8>, SLICE(cond(r0_371 << 2<i16>), bool, 0))
 	r1_356 = r1_385 << 1<i16>
 	branch Mem326[(r1_385 << 1<i16>) + 0xDC4<16>:word16] <= 0<16> l08D0
 l0904:
@@ -812,10 +812,10 @@ l094C:
 	word16 wLoc04_49 = 7<16>
 l0958:
 	Mem30[r3_22 + 0<16>:byte] = 0<8>
-	word16 v18_34 = wLoc04_49 - 1<16>
+	word16 v19_34 = wLoc04_49 - 1<16>
 	r3_22 = r3_22 + 2<16>
-	wLoc04_49 = v18_34
-	branch v18_34 != 0<16> l0958
+	wLoc04_49 = v19_34
+	branch v19_34 != 0<16> l0958
 l0964:
 	return
 fn093C_exit:
@@ -862,9 +862,9 @@ l0998:
 	word16 r2_154 = Mem0[0x0F02<p16>:word16]
 	branch r2_154 > 0<16> l09E4
 l099E:
-	word16 v10_8 = Mem0[0x0F1E<p16>:word16] - 1<16>
-	Mem9[0x0F20<p16>:word16] = v10_8
-	branch v10_8 != 0<16> l0A1E
+	word16 v11_8 = Mem0[0x0F1E<p16>:word16] - 1<16>
+	Mem9[0x0F20<p16>:word16] = v11_8
+	branch v11_8 != 0<16> l0A1E
 l0A1E:
 	branch r2_154 == 0<16> l0A5E
 l0A22:
@@ -1078,11 +1078,11 @@ fn0AE8_entry:
 l0AE8:
 	word16 r0_12 = Mem5[r5:word16]
 l0AEC:
-	byte v8_14 = Mem13[r0_12:byte]
-	Mem17[r4:byte] = v8_14
+	byte v9_14 = Mem13[r0_12:byte]
+	Mem17[r4:byte] = v9_14
 	r0_12 = r0_12 + 1<16>
 	r4 = r4 + 1<16>
-	branch v8_14 != 0<8> l0AEC
+	branch v9_14 != 0<8> l0AEC
 l0AF0:
 	word16 r0_33
 	byte NZV_34
@@ -1162,15 +1162,15 @@ l0B80:
 	word16 r2_35 = 0xBD4<16> - (r3 << 1<i16>)
 l0B88:
 	word16 r5_123 = 0x30<16>
-	word16 v16_41 = Mem40[r2_35:word16]
+	word16 v17_41 = Mem40[r2_35:word16]
 	r2_35 = r2_35 + 2<16>
-	branch v16_41 == 0<16> l0BBE
+	branch v17_41 == 0<16> l0BBE
 l0B8E:
-	r0 = r0 - v16_41
+	r0 = r0 - v17_41
 	branch r0 <u 0<16> l0B96
 l0B96:
 	word16 r5_79
-	r0 = r0 + v16_41
+	r0 = r0 + v17_41
 	branch wLoc08_139 != 0<16> l0BB4
 l0B9C:
 	branch r5_123 == 0xFFD0<16> l0BA4
@@ -1288,9 +1288,9 @@ l0C76:
 	Mem62[0x0F20<p16>:word16] = 0x64<16>
 	Mem63[0x0F22<p16>:word16] = 1<16>
 	Mem69[pc + 0x25E<16>:word16] = Mem63[pc + 0x25E<16>:word16] << 1<i16>
-	word16 v17_70 = Mem69[pc + 0x25C<16>:word16] << 1<i16>
-	Mem71[pc + 0x25C<16>:word16] = v17_70
-	branch v17_70 != 0<16> l0CBA
+	word16 v18_70 = Mem69[pc + 0x25C<16>:word16] << 1<i16>
+	Mem71[pc + 0x25C<16>:word16] = v18_70
+	branch v18_70 != 0<16> l0CBA
 l0CB6:
 	Mem75[pc + 0x256<16>:word16] = Mem71[pc + 0x256<16>:word16] >> 1<i16>
 l0CBA:

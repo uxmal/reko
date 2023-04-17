@@ -490,9 +490,9 @@ l00401686:
 	branch (eax_15 & 0xFFFF0000<32>) == 0<32> l00401693
 l00401693:
 	GetSystemTimeAsFileTime(&tLoc10)
-	word32 v14_43 = Mem33[&tLoc10 + 4<i32>:word32] ^ Mem33[&tLoc10:word32] ^ GetCurrentThreadId() ^ GetCurrentProcessId()
+	word32 v15_43 = Mem33[&tLoc10 + 4<i32>:word32] ^ Mem33[&tLoc10:word32] ^ GetCurrentThreadId() ^ GetCurrentProcessId()
 	QueryPerformanceCounter(&tLoc18)
-	word32 ecx_55 = Mem48[&tLoc18 + 4<i32>:word32] ^ Mem48[&tLoc18:word32] ^ v14_43 ^ fp - 8<i32>
+	word32 ecx_55 = Mem48[&tLoc18 + 4<i32>:word32] ^ Mem48[&tLoc18:word32] ^ v15_43 ^ fp - 8<i32>
 	branch ecx_55 != 0xBB40E64E<32> l004016DB
 l004016DB:
 	branch (ecx_55 & 0xFFFF0000<32>) != 0<32> l004016EB

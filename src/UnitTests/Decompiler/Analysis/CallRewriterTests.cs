@@ -623,6 +623,7 @@ CrwManyPredecessorsToExitBlock_exit:
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // Top:Top
 // r63:r63
 // rRet0:rRet0
@@ -652,6 +653,7 @@ FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, Fpu
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // Top:Top
 // r63:r63
 // rArg1:FPU +1
@@ -724,6 +726,7 @@ FpuMultiplyAdd_exit:
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // r1:r1
 // r2:r2
 // r63:r63
@@ -752,6 +755,7 @@ Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out 
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // r1:r1
 // r2:r2
 // r63:r63

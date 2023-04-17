@@ -21,8 +21,6 @@
 using NUnit.Framework;
 using Reko.Arch.WE32100;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.WE32100
@@ -59,9 +57,9 @@ namespace Reko.UnitTests.Arch.WE32100
             Given_HexString("96B979CA"); //69C1B17D7D2E12E468B510AC");
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = Mem0[Mem0[fp - 13703<i32>:ptr32]:word16] - 1<16>",
-                "2|L--|Mem0[Mem0[fp - 13703<i32>:ptr32]:word16] = v3",
-                "3|L--|NZVC = cond(v3)");
+                "1|L--|v4 = Mem0[Mem0[fp - 13703<i32>:ptr32]:word16] - 1<16>",
+                "2|L--|Mem0[Mem0[fp - 13703<i32>:ptr32]:word16] = v4",
+                "3|L--|NZVC = cond(v4)");
         }
 
         [Test]
@@ -81,9 +79,9 @@ namespace Reko.UnitTests.Arch.WE32100
             Given_HexString("B73CD185"); //AD23AA3A2E6B8DA00BD381BD");
             AssertCode(
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = Mem0[Mem0[r1 - 123<i32>:ptr32]:byte] ^ 0x3C<8>",
-                "2|L--|Mem0[Mem0[r1 - 123<i32>:ptr32]:byte] = v3",
-                "3|L--|NZV = cond(v3)",
+                "1|L--|v4 = Mem0[Mem0[r1 - 123<i32>:ptr32]:byte] ^ 0x3C<8>",
+                "2|L--|Mem0[Mem0[r1 - 123<i32>:ptr32]:byte] = v4",
+                "3|L--|NZV = cond(v4)",
                 "4|L--|C = false");
         }
 
@@ -93,9 +91,9 @@ namespace Reko.UnitTests.Arch.WE32100
             Given_HexString("B69D D30C CB4A D8FE");
             AssertCode(
                 "0|L--|00100000(8): 4 instructions",
-                "1|L--|v4 = Mem0[Mem0[r8 - 2<i32>:ptr32]:word16] ^ Mem0[Mem0[pcbp + 1254821075<i32>:ptr32]:word16]",
-                "2|L--|Mem0[Mem0[r8 - 2<i32>:ptr32]:word16] = v4",
-                "3|L--|NZV = cond(v4)",
+                "1|L--|v5 = Mem0[Mem0[r8 - 2<i32>:ptr32]:word16] ^ Mem0[Mem0[pcbp + 1254821075<i32>:ptr32]:word16]",
+                "2|L--|Mem0[Mem0[r8 - 2<i32>:ptr32]:word16] = v5",
+                "3|L--|NZV = cond(v5)",
                 "4|L--|C = false");
         }
 
@@ -105,9 +103,9 @@ namespace Reko.UnitTests.Arch.WE32100
             Given_HexString("B47D 8338 35C3 C2");
             AssertCode(
                 "0|L--|00100000(7): 4 instructions",
-                "1|L--|v4 = Mem0[Mem0[r3 - 1027394248<i32>:ptr32]:word32] ^ Mem0[ap - 3<i32>:word32]",
-                "2|L--|Mem0[Mem0[r3 - 1027394248<i32>:ptr32]:word32] = v4",
-                "3|L--|NZV = cond(v4)",
+                "1|L--|v5 = Mem0[Mem0[r3 - 1027394248<i32>:ptr32]:word32] ^ Mem0[ap - 3<i32>:word32]",
+                "2|L--|Mem0[Mem0[r3 - 1027394248<i32>:ptr32]:word32] = v5",
+                "3|L--|NZV = cond(v5)",
                 "4|L--|C = false");
         }
     }

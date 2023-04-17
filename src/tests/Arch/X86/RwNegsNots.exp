@@ -2,19 +2,20 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // eax:eax
 // C:C
 // SZO:SZO
 // SCZO:SCZO
 // ds:ds
-// v8:v8
 // v9:v9
 // v10:v10
 // v11:v11
+// v12:v12
 // ecx:ecx
 // bx:bx
-// v14:v14
+// v15:v15
 // cx:cx
 // Top:Top
 // return address size: 2
@@ -30,23 +31,23 @@ l0C00_0000:
 	eax = eax - eax - C
 	SCZO = cond(eax)
 	Mem0[ds:0x300<16>:word32] = eax
-	v8 = Mem0[ds:0x202<16>:word16]
-	C = v8 != 0<16>
-	v9 = -v8
-	Mem0[ds:0x202<16>:word16] = v9
-	SZO = cond(v9)
-	v10 = Mem0[ds:0x200<16>:word16]
-	C = v10 != 0<16>
-	v11 = -v10
-	Mem0[ds:0x200<16>:word16] = v11
-	SZO = cond(v11)
+	v9 = Mem0[ds:0x202<16>:word16]
+	C = v9 != 0<16>
+	v10 = -v9
+	Mem0[ds:0x202<16>:word16] = v10
+	SZO = cond(v10)
+	v11 = Mem0[ds:0x200<16>:word16]
+	C = v11 != 0<16>
+	v12 = -v11
+	Mem0[ds:0x200<16>:word16] = v12
+	SZO = cond(v12)
 	ecx = ecx - ecx - C
 	SCZO = cond(ecx)
 	Mem0[ds:0x308<16>:word32] = ecx
 	bx = ~bx
 	Mem0[ds:0x304<16>:word16] = bx
-	v14 = ~Mem0[ds:0x204<16>:word16]
-	Mem0[ds:0x204<16>:word16] = v14
+	v15 = ~Mem0[ds:0x204<16>:word16]
+	Mem0[ds:0x204<16>:word16] = v15
 	cx = Mem0[ds:0x304<16>:word16]
 	cx = cx - 0x3E8<16>
 	SCZO = cond(cx)

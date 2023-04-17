@@ -304,9 +304,9 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("A033");
             AssertCode(     // suba\t$04,x+
                 "0|L--|0000(2): 4 instructions",
-                "1|L--|v4 = x",
+                "1|L--|v5 = x",
                 "2|L--|x = x + 4<i16>",
-                "3|L--|a = a - Mem0[v4:byte]",
+                "3|L--|a = a - Mem0[v5:byte]",
                 "4|L--|NZVC = cond(a)");
         }
 
@@ -347,11 +347,11 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("6730");
             AssertCode(    // asr
                 "0|L--|0000(2): 5 instructions",
-                "1|L--|v3 = x",
+                "1|L--|v4 = x",
                 "2|L--|x = x + 1<i16>",
-                "3|L--|v4 = Mem0[v3:byte] >> 1<i8>",
-                "4|L--|Mem0[v3:byte] = v4",
-                "5|L--|NZVC = cond(v4)");
+                "3|L--|v5 = Mem0[v4:byte] >> 1<i8>",
+                "4|L--|Mem0[v4:byte] = v5",
+                "5|L--|NZVC = cond(v5)");
         }
 
         [Test]
@@ -381,9 +381,9 @@ namespace Reko.UnitTests.Arch.M6800
             AssertCode(    // bclr
                 "0|L--|0000(3): 5 instructions",
                 "1|L--|y = y + 1<i16>",
-                "2|L--|v3 = Mem0[y:byte] & 0xFD<8>",
-                "3|L--|Mem0[y:byte] = v3",
-                "4|L--|NZ = cond(v3)",
+                "2|L--|v4 = Mem0[y:byte] & 0xFD<8>",
+                "3|L--|Mem0[y:byte] = v4",
+                "4|L--|NZ = cond(v4)",
                 "5|L--|V = false");
         }
 

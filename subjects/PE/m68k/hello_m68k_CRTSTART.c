@@ -39,13 +39,13 @@ void fn00002264(byte * dwArg04)
 {
 	if (dwArg04 != null)
 	{
-		byte v10_n = *dwArg04;
-		if (v10_n != 0x00)
+		byte v11_n = *dwArg04;
+		if (v11_n != 0x00)
 		{
 			byte * a2_n = dwArg04;
 			uint32 d0_n;
 			byte * a1_n = dwArg04 + 1;
-			for (d0_n = (uint32) v10_n; d0_n != 0x00; --d0_n)
+			for (d0_n = (uint32) v11_n; d0_n != 0x00; --d0_n)
 			{
 				*a2_n = *a1_n;
 				++a1_n;
@@ -77,7 +77,7 @@ void fn000022C4(word32 a2, ptr32 a5)
 	word32 a6_n;
 	ptr32 a5_n;
 	(*((word32) a5 + 0x00C2))();
-	word32 v7_n = a7_n->dw0000;
+	word32 v8_n = a7_n->dw0000;
 	a7_n->wFFFFFFFE = 0xA1AD;
 	0x00 = 0x00;
 	word32 * a7_n;

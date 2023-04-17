@@ -9,6 +9,7 @@ void fn0C00_0000(Sequence segptr32 ds_di)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // si:si
 // ss:ss
@@ -47,6 +48,7 @@ void fn0C00_0010(Sequence segptr32 ds_di, Register word16 si)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // si:si
@@ -81,6 +83,7 @@ void fn0C00_0017(Sequence segptr32 ds_di, Stack word16 wArg02)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss
@@ -123,6 +126,7 @@ void fn0C00_0029(Sequence segptr32 ds_di, Register word16 ax)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // di:di
 // ds:ds
@@ -152,6 +156,7 @@ void fn0C00_002C(Sequence segptr32 ds_di, Stack word16 wArg02)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss

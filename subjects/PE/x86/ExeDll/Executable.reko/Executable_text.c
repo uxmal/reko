@@ -362,9 +362,9 @@ void fn00401663()
 	else
 	{
 		GetSystemTimeAsFileTime(&tLoc10);
-		ui32 v14_n = tLoc10.dwHighDateTime ^ tLoc10.dwLowDateTime ^ GetCurrentThreadId() ^ GetCurrentProcessId();
+		ui32 v15_n = tLoc10.dwHighDateTime ^ tLoc10.dwLowDateTime ^ GetCurrentThreadId() ^ GetCurrentProcessId();
 		QueryPerformanceCounter(&tLoc18);
-		Eq_n ecx_n = tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v14_n ^ fp - 8;
+		Eq_n ecx_n = tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_n ^ fp - 8;
 		if (ecx_n == 0xBB40E64E)
 			ecx_n.u0 = ~0x44BF19B0;
 		else if ((ecx_n & 0xFFFF0000) == 0x00)

@@ -294,9 +294,9 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("081A5880");
             AssertCode(     // cmpclr,>=	r26,r0,r0
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = r26",
-                "2|L--|v4 = 0<64>",
-                "3|T--|if (v3 >= v4) branch 00100008");
+                "1|L--|v4 = r26",
+                "2|L--|v5 = 0<64>",
+                "3|T--|if (v4 >= v5) branch 00100008");
         }
 
         [Test]
@@ -305,10 +305,10 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("905C2000");
             AssertCode(     // cmpiclr,=	+00000000,r2,r28
                 "0|L--|00100000(4): 4 instructions",
-                "1|L--|v3 = r2",
-                "2|L--|v4 = 0<i64>",
+                "1|L--|v4 = r2",
+                "2|L--|v5 = 0<i64>",
                 "3|L--|r28 = 0<64>",
-                "4|T--|if (v3 == v4) branch 00100008");
+                "4|T--|if (v4 == v5) branch 00100008");
         }
 
         [Test]
@@ -371,9 +371,9 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("D4390838");
             AssertCode(     // depw,z	r25,1E,00000008,r1
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r25, byte, 0)",
+                "1|L--|v4 = SLICE(r25, byte, 0)",
                 "2|L--|r1 = 0<32>",
-                "3|L--|r1 = SEQ(SLICE(r1, word31, 33), v4, SLICE(r1, bool, 0))");
+                "3|L--|r1 = SEQ(SLICE(r1, word31, 33), v5, SLICE(r1, bool, 0))");
         }
 
         [Test]
@@ -436,8 +436,8 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("3080A204");
             AssertCode(     // fcnvxf,w,dbl	fr4,fr4
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(fr4, int32, 0)",
-                "2|L--|fr4 = CONVERT(v3, int32, real64)");
+                "1|L--|v4 = SLICE(fr4, int32, 0)",
+                "2|L--|fr4 = CONVERT(v4, int32, real64)");
         }
 
         [Test]
@@ -537,9 +537,9 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("6fc30100");  // stw,ma\tr3,128(r30)
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = r30 + 128<i64>",
-                "2|L--|r30 = v3",
-                "3|L--|Mem0[v3:word32] = SLICE(r3, word32, 0)");
+                "1|L--|v4 = r30 + 128<i64>",
+                "2|L--|r30 = v4",
+                "3|L--|Mem0[v4:word32] = SLICE(r3, word32, 0)");
         }
 
         [Test]

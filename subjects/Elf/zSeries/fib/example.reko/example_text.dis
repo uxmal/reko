@@ -124,10 +124,10 @@ l0000000000000720:
 	branch Mem10[0x00000000000008D8<p64>:byte] != Mem10[0x0000000000001E18<p64>:byte] l000000000000074C
 l0000000000000740:
 	Mem17 = Mem10 (alias)
-	word64 v8_16 = r15_12 + 264<i64>
-	r13_11 = Mem17[v8_16:word64]
-	word64 r14_20 = Mem17[v8_16 + 8<i64>:word64]
-	r15_12 = Mem17[v8_16 + 16<i64>:word64]
+	word64 v9_16 = r15_12 + 264<i64>
+	r13_11 = Mem17[v9_16:word64]
+	word64 r14_20 = Mem17[v9_16 + 8<i64>:word64]
+	r15_12 = Mem17[v9_16 + 16<i64>:word64]
 	branch CC_43 l0000000000000680
 l0000000000000746_thunk_register_tm_clones:
 	register_tm_clones(r14_20)
@@ -170,13 +170,13 @@ l0000000000000792:
 l000000000000078A:
 	r1_75 = r2
 l00000000000007CA:
-	word64 v28_86 = r11_21 + 248<i64>
+	word64 v29_86 = r11_21 + 248<i64>
 	word64 r1_81 = CONVERT(SLICE(r1_75, word32, 0), word32, int64)
 	word64 r10_99
 	word64 r11_100
 	word64 r2_104
 	call Mem24[r11_21 + 280<i64>:word64] (retsize: 0;)
-		uses: r1:r1_81,r10:Mem24[v28_86:word64],r11:Mem24[v28_86 + 8<i64>:word64],r12:Mem24[v28_86 + 16<i64>:word64],r13:Mem24[v28_86 + 24<i64>:word64],r14:Mem24[v28_86 + 32<i64>:word64],r2:r1_81
+		uses: r1:r1_81,r10:Mem24[v29_86:word64],r11:Mem24[v29_86 + 8<i64>:word64],r12:Mem24[v29_86 + 16<i64>:word64],r13:Mem24[v29_86 + 24<i64>:word64],r14:Mem24[v29_86 + 32<i64>:word64],r2:r1_81
 		defs: r10:r10_99,r11:r11_100,r2:r2_104
 	r10Out = r10_99
 	r11Out = r11_100
@@ -232,10 +232,10 @@ l000000000000085A:
 	r11_54 = r11_79 - 1<i64>
 	branch r11_79 != 1<64> l000000000000085A
 l0000000000000876:
-	word64 v17_93 = r15_29 + 216<i64>
+	word64 v18_93 = r15_29 + 216<i64>
 	word64 r4_92 = Mem28[r15_29 + 272<i64>:word64]
 	call r4_92 (retsize: 0;)
-		uses: r10:Mem28[v17_93 + 24<i64>:word64],r11:Mem28[v17_93 + 32<i64>:word64],r12:Mem28[v17_93 + 40<i64>:word64],r13:Mem28[v17_93 + 48<i64>:word64],r14:Mem28[v17_93 + 56<i64>:word64],r2:r2_111,r3:r3_112,r4:r4_92,r6:r6_113,r7:Mem28[v17_93:word64],r8:Mem28[v17_93 + 8<i64>:word64],r9:Mem28[v17_93 + 16<i64>:word64]
+		uses: r10:Mem28[v18_93 + 24<i64>:word64],r11:Mem28[v18_93 + 32<i64>:word64],r12:Mem28[v18_93 + 40<i64>:word64],r13:Mem28[v18_93 + 48<i64>:word64],r14:Mem28[v18_93 + 56<i64>:word64],r2:r2_111,r3:r3_112,r4:r4_92,r6:r6_113,r7:Mem28[v18_93:word64],r8:Mem28[v18_93 + 8<i64>:word64],r9:Mem28[v18_93 + 16<i64>:word64]
 	return
 __libc_csu_init_exit:
 

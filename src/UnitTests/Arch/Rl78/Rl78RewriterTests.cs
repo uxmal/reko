@@ -398,9 +398,9 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("08");	// xch	a,x
             AssertCode(
                 "0|L--|00001000(1): 3 instructions",
-                "1|L--|v4 = a",
+                "1|L--|v5 = a",
                 "2|L--|a = x",
-                "3|L--|x = v4");
+                "3|L--|x = v5");
         }
 
         [Test]
@@ -409,9 +409,9 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("7A E8 04");	// xor	[0FFF08h],0x04
             AssertCode(
                 "0|L--|00001000(3): 3 instructions",
-                "1|L--|v2 = Mem0[0x000FFF08<p32>:byte] ^ 4<8>",
-                "2|L--|Mem0[0x000FFF08<p32>:byte] = v2",
-                "3|L--|Z = cond(v2)");
+                "1|L--|v3 = Mem0[0x000FFF08<p32>:byte] ^ 4<8>",
+                "2|L--|Mem0[0x000FFF08<p32>:byte] = v3",
+                "3|L--|Z = cond(v3)");
         }
 
         [Test]
@@ -447,9 +447,9 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("37");	// xchw	ax,hl
             AssertCode(
                 "0|L--|00001000(1): 3 instructions",
-                "1|L--|v4 = ax",
+                "1|L--|v5 = ax",
                 "2|L--|ax = hl",
-                "3|L--|hl = v4");
+                "3|L--|hl = v5");
         }
 
         [Test]

@@ -469,9 +469,9 @@ word64 fn000000014000186C(Eq_n tArg18)
 	if (rax_n == 0x2B992DDFA232)
 	{
 		GetSystemTimeAsFileTime(&tArg10);
-		Eq_n v14_n = tArg10.dwLowDateTime ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
+		Eq_n v15_n = tArg10.dwLowDateTime ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
 		QueryPerformanceCounter(&tArg18);
-		ui64 rax_n = (uint64) tArg18.u.LowPart << 0x20 ^ tArg18.QuadPart ^ v14_n ^ fp + 8;
+		ui64 rax_n = (uint64) tArg18.u.LowPart << 0x20 ^ tArg18.QuadPart ^ v15_n ^ fp + 8;
 		rax_n = rax_n & 0xFFFFFFFFFFFF;
 		if ((rax_n & 0xFFFFFFFFFFFF) == 0x2B992DDFA232)
 			rax_n = 0x2B992DDFA233;

@@ -298,11 +298,11 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("01D051FB");
             AssertCode( // divxs.b\tr7l,e3
                 "0|L--|8000(4): 5 instructions",
-                "1|L--|v4 = e3 /8 r7l",
-                "2|L--|v5 = e3 %s r7l",
+                "1|L--|v5 = e3 /8 r7l",
+                "2|L--|v6 = e3 %s r7l",
                 "3|L--|Z = cond(r7l)",
-                "4|L--|N = cond(v4)",
-                "5|L--|e3 = SEQ(v5, v4)" +
+                "4|L--|N = cond(v5)",
+                "5|L--|e3 = SEQ(v6, v5)" +
                 "");
         }
 
@@ -312,11 +312,11 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("01D05385");
             AssertCode( // divxs.w\te0,er5
                 "0|L--|8000(4): 5 instructions",
-                "1|L--|v4 = er5 /16 e0",
-                "2|L--|v5 = er5 %s e0",
+                "1|L--|v5 = er5 /16 e0",
+                "2|L--|v6 = er5 %s e0",
                 "3|L--|Z = cond(e0)",
-                "4|L--|N = cond(v4)",
-                "5|L--|er5 = SEQ(v5, v4)");
+                "4|L--|N = cond(v5)",
+                "5|L--|er5 = SEQ(v6, v5)");
         }
 
         [Test]
@@ -439,9 +439,9 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("0100 6D05");
             AssertCode(     // mov.l @er0+, er5
                 "0|L--|8000(4): 5 instructions",
-                "1|L--|v3 = er0",
+                "1|L--|v4 = er0",
                 "2|L--|er0 = er0 + 4<i32>",
-                "3|L--|er5 = Mem0[v3:word32]",
+                "3|L--|er5 = Mem0[v4:word32]",
                 "4|L--|NZ = cond(er5)",
                 "5|L--|V = false");
         }

@@ -436,10 +436,10 @@ l0888:
 					fn0790();
 					return;
 				}
-				ci16 v67_n = 64936 - r4;
-				if (v67_n <= 0x00)
+				ci16 v68_n = 64936 - r4;
+				if (v68_n <= 0x00)
 				{
-					if (v67_n <= 0x00)
+					if (v68_n <= 0x00)
 						goto l0904;
 					g_w34CA = 0x23FE;
 					fn0E32();
@@ -561,9 +561,9 @@ void fn0A0A()
 	else
 	{
 		struct Eq_n * r4_n = g_ptr0064;
-		ci16 v15_n = 0x3F - r4_n;
-		bool C_n = (bool) cond(v15_n);
-		if (v15_n > 0x00)
+		ci16 v16_n = 0x3F - r4_n;
+		bool C_n = (bool) cond(v16_n);
+		if (v16_n > 0x00)
 			r4_n = (struct Eq_n *) &g_t003F;
 		struct Eq_n * r4_n = __rcl<word16,byte>(r4_n, 0x01, C_n);
 		struct Eq_n * r4_n = __rcl<word16,byte>(r4_n, 0x01, (r4_n & 0x8000) != 0x00);
@@ -627,11 +627,11 @@ void fn0A94(int16 r3, struct Eq_n * r4, word16 * r5)
 			*r5 = r0_n;
 			struct Eq_n * r5_n = r5 + 1;
 			r5_n->w0000 = r0_n + 0x2040 & 0x3FFF;
-			int16 v25_n = wLoc02_n - 0x01;
+			int16 v26_n = wLoc02_n - 0x01;
 			r2_n = r2_n & 0x3F;
 			r5 = &r5_n->w0002;
-			wLoc02_n = v25_n;
-		} while (v25_n > 0x00);
+			wLoc02_n = v26_n;
+		} while (v26_n > 0x00);
 		r5_n->w0002 = 0xF700;
 		r5_n->w0004 = 0x00;
 		g_w00B0 = r2_n & 0x3F;
@@ -670,9 +670,9 @@ void fn0B06(int16 r3, struct Eq_n * r4, word16 * r5)
 	ptr16 sp_n = fp;
 	do
 	{
-		cu16 v11_n = g_w0070 & 0x7F;
-		g_w0070 = v11_n;
-	} while (v11_n != 0x00);
+		cu16 v12_n = g_w0070 & 0x7F;
+		g_w0070 = v12_n;
+	} while (v12_n != 0x00);
 	if (g_w07BA != 0x00)
 	{
 		word16 * r3_n = g_w2610 - g_w34B4;
@@ -727,15 +727,15 @@ void fn0C76()
 {
 	do
 	{
-		cu16 v3_n = g_w0070 & 0x07;
-		g_w0070 = v3_n;
-	} while (v3_n == 0x00);
+		cu16 v4_n = g_w0070 & 0x07;
+		g_w0070 = v4_n;
+	} while (v4_n == 0x00);
 	fn1578();
 	do
 	{
-		cu16 v9_n = g_w0070 & 0x07;
-		g_w0070 = v9_n;
-	} while (v9_n != 0x00);
+		cu16 v10_n = g_w0070 & 0x07;
+		g_w0070 = v10_n;
+	} while (v10_n != 0x00);
 	fn1578();
 }
 
@@ -825,9 +825,9 @@ cui16 * fn0D78(word16 * r4, cui16 * r5)
 		if (g_ptr0082 == null)
 		{
 l0D9C:
-			ci16 v18_n = g_w00A2 - 0x01;
-			g_w00A2 = v18_n;
-			if (v18_n <= 0x00)
+			ci16 v19_n = g_w00A2 - 0x01;
+			g_w00A2 = v19_n;
+			if (v19_n <= 0x00)
 			{
 				++g_w00A4;
 				g_w00A4 &= 0x03;
@@ -856,8 +856,8 @@ l0D9C:
 				r4_n = r4_n & 0x3F;
 			}
 			*r5 = r4_n | wLoc02_n;
-			ci16 v43_n = g_w00A0 - 0x01;
-			g_w00A0 = v43_n;
+			ci16 v44_n = g_w00A0 - 0x01;
+			g_w00A0 = v44_n;
 			cui16 * r5_n = r5 + 1;
 			return r5_n;
 		}
@@ -964,10 +964,10 @@ l0EFE:
 		r5->w0002 = 0x00;
 l0EF0:
 		++g_w0046;
-		ci16 v29_n = wLoc02_n - 0x01;
+		ci16 v30_n = wLoc02_n - 0x01;
 		++r5;
-		wLoc02_n = v29_n;
-	} while (v29_n > 0x00);
+		wLoc02_n = v30_n;
+	} while (v30_n > 0x00);
 	r5Out = r5;
 	return r0_n;
 }
@@ -997,10 +997,10 @@ void fn0F04(int16 r0)
 		wchar_t r3_n;
 		sp_n->ptrFFFFFFFE = r4_n;
 		word16 * r4_n = fn100C(*r0_n);
-		word16 * v22_n = sp_n->ptrFFFFFFFE;
+		word16 * v23_n = sp_n->ptrFFFFFFFE;
 		sp_n->ptrFFFFFFFE = r0_n + 1;
-		r4_n = v22_n;
-		ci16 r1_n = r4_n - v22_n;
+		r4_n = v23_n;
+		ci16 r1_n = r4_n - v23_n;
 		if (r1_n <= 0x00)
 		{
 			word16 r3_n;
@@ -1049,10 +1049,10 @@ void fn103C(word16 r0, struct Eq_n * r3, struct Eq_n * r5, struct Eq_n * wArg00)
 	int16 r4_n = (r4_n >> 1) + wArg00->w0002;
 	g_w0084 = wArg00->w0004;
 	r5->w0004 = r4_n;
-	cup16 v31_n = r3->w0002 - r3->w0000;
-	if (v31_n != 0x00)
+	cup16 v32_n = r3->w0002 - r3->w0000;
+	if (v32_n != 0x00)
 	{
-		if (v31_n <= 0x00)
+		if (v32_n <= 0x00)
 			g_w0046 += ~0x15;
 		else
 			g_w0046 += 22;
@@ -1071,9 +1071,9 @@ void fn103C(word16 r0, struct Eq_n * r3, struct Eq_n * r5, struct Eq_n * wArg00)
 bool fn114A(struct Eq_n * r0, struct Eq_n * r1, union Eq_n & r2_r3Out)
 {
 	struct Eq_n * r2_n;
-	cup16 v10_n = r0 - r1;
-	bool C_n = (bool) cond(v10_n);
-	if (v10_n < 0x00)
+	cup16 v11_n = r0 - r1;
+	bool C_n = (bool) cond(v11_n);
+	if (v11_n < 0x00)
 	{
 		r2_n = r1;
 		if (r1 == null)
@@ -1266,10 +1266,10 @@ l1224:
 													{
 l122E:
 														cui16 r2_n = SLICE(r2_r3_n, word16, 16);
-														ui32 v90_n = r2_r3_n << 0x01;
+														ui32 v91_n = r2_r3_n << 0x01;
 														bool C_n = (r2_n & 0x8000) != 0x00;
 														if ((r2_n & 0x8000) == 0x00)
-															C_n = (bool) cond(SLICE(v90_n + (uint32) r1, word16, 16));
+															C_n = (bool) cond(SLICE(v91_n + (uint32) r1, word16, 16));
 														r2_r3Out.u0 = <invalid>;
 														return C_n;
 													}
@@ -1440,100 +1440,100 @@ struct Eq_n * fn126C(struct Eq_n * r0, struct Eq_n * r2, struct Eq_n * r3, union
 		if (r2_n <= null)
 		{
 l127C:
-			ui32 v43_n = r2_r3_n << 0x01;
-			r3_n = (word16) v43_n;
-			r2_n = r0 + SLICE(v43_n, word16, 16);
+			ui32 v44_n = r2_r3_n << 0x01;
+			r3_n = (word16) v44_n;
+			r2_n = r0 + SLICE(v44_n, word16, 16);
 			r2_r3_n = (ui32) r3_n;
 			if (r2_n <= null)
 			{
 l1284:
-				ui32 v46_n = r2_r3_n << 0x01;
-				r3_n = (word16) v46_n;
-				r2_n = r0 + SLICE(v46_n, word16, 16);
+				ui32 v47_n = r2_r3_n << 0x01;
+				r3_n = (word16) v47_n;
+				r2_n = r0 + SLICE(v47_n, word16, 16);
 				r2_r3_n = (ui32) r3_n;
 				if (r2_n <= null)
 				{
 l128C:
-					ui32 v49_n = r2_r3_n << 0x01;
-					r3_n = (word16) v49_n;
-					r2_n = r0 + SLICE(v49_n, word16, 16);
+					ui32 v50_n = r2_r3_n << 0x01;
+					r3_n = (word16) v50_n;
+					r2_n = r0 + SLICE(v50_n, word16, 16);
 					r2_r3_n = (ui32) r3_n;
 					if (r2_n <= null)
 					{
 l1294:
-						ui32 v52_n = r2_r3_n << 0x01;
-						r3_n = (word16) v52_n;
-						r2_n = r0 + SLICE(v52_n, word16, 16);
+						ui32 v53_n = r2_r3_n << 0x01;
+						r3_n = (word16) v53_n;
+						r2_n = r0 + SLICE(v53_n, word16, 16);
 						r2_r3_n = (ui32) r3_n;
 						if (r2_n <= null)
 						{
 l129C:
-							ui32 v55_n = r2_r3_n << 0x01;
-							r3_n = (word16) v55_n;
-							r2_n = r0 + SLICE(v55_n, word16, 16);
+							ui32 v56_n = r2_r3_n << 0x01;
+							r3_n = (word16) v56_n;
+							r2_n = r0 + SLICE(v56_n, word16, 16);
 							r2_r3_n = (ui32) r3_n;
 							if (r2_n <= null)
 							{
 l12A4:
-								ui32 v58_n = r2_r3_n << 0x01;
-								r3_n = (word16) v58_n;
-								r2_n = r0 + SLICE(v58_n, word16, 16);
+								ui32 v59_n = r2_r3_n << 0x01;
+								r3_n = (word16) v59_n;
+								r2_n = r0 + SLICE(v59_n, word16, 16);
 								r2_r3_n = (ui32) r3_n;
 								if (r2_n <= null)
 								{
 l12AC:
-									ui32 v61_n = r2_r3_n << 0x01;
-									r3_n = (word16) v61_n;
-									r2_n = r0 + SLICE(v61_n, word16, 16);
+									ui32 v62_n = r2_r3_n << 0x01;
+									r3_n = (word16) v62_n;
+									r2_n = r0 + SLICE(v62_n, word16, 16);
 									r2_r3_n = (ui32) r3_n;
 									if (r2_n <= null)
 									{
 l12B4:
-										ui32 v64_n = r2_r3_n << 0x01;
-										r3_n = (word16) v64_n;
-										r2_n = r0 + SLICE(v64_n, word16, 16);
+										ui32 v65_n = r2_r3_n << 0x01;
+										r3_n = (word16) v65_n;
+										r2_n = r0 + SLICE(v65_n, word16, 16);
 										r2_r3_n = (ui32) r3_n;
 										if (r2_n <= null)
 										{
 l12BC:
-											ui32 v67_n = r2_r3_n << 0x01;
-											r3_n = (word16) v67_n;
-											r2_n = r0 + SLICE(v67_n, word16, 16);
+											ui32 v68_n = r2_r3_n << 0x01;
+											r3_n = (word16) v68_n;
+											r2_n = r0 + SLICE(v68_n, word16, 16);
 											r2_r3_n = (ui32) r3_n;
 											if (r2_n <= null)
 											{
 l12C4:
-												ui32 v70_n = r2_r3_n << 0x01;
-												r3_n = (word16) v70_n;
-												r2_n = r0 + SLICE(v70_n, word16, 16);
+												ui32 v71_n = r2_r3_n << 0x01;
+												r3_n = (word16) v71_n;
+												r2_n = r0 + SLICE(v71_n, word16, 16);
 												r2_r3_n = (ui32) r3_n;
 												if (r2_n <= null)
 												{
 l12CC:
-													ui32 v73_n = r2_r3_n << 0x01;
-													r3_n = (word16) v73_n;
-													r2_n = r0 + SLICE(v73_n, word16, 16);
+													ui32 v74_n = r2_r3_n << 0x01;
+													r3_n = (word16) v74_n;
+													r2_n = r0 + SLICE(v74_n, word16, 16);
 													r2_r3_n = (ui32) r3_n;
 													if (r2_n <= null)
 													{
 l12D4:
-														ui32 v76_n = r2_r3_n << 0x01;
-														r3_n = (word16) v76_n;
-														r2_n = r0 + SLICE(v76_n, word16, 16);
+														ui32 v77_n = r2_r3_n << 0x01;
+														r3_n = (word16) v77_n;
+														r2_n = r0 + SLICE(v77_n, word16, 16);
 														r2_r3_n = (ui32) r3_n;
 														if (r2_n <= null)
 														{
 l12DC:
-															ui32 v79_n = r2_r3_n << 0x01;
-															r3_n = (word16) v79_n;
-															r2_n = r0 + SLICE(v79_n, word16, 16);
+															ui32 v80_n = r2_r3_n << 0x01;
+															r3_n = (word16) v80_n;
+															r2_n = r0 + SLICE(v80_n, word16, 16);
 															r2_r3_n = (ui32) r3_n;
 															if (r2_n <= null)
 															{
 l12E4:
-																ui32 v82_n = r2_r3_n << 0x01;
-																r3_n = (word16) v82_n;
-																r2_n = r0 + SLICE(v82_n, word16, 16);
+																ui32 v83_n = r2_r3_n << 0x01;
+																r3_n = (word16) v83_n;
+																r2_n = r0 + SLICE(v83_n, word16, 16);
 																if (r2_n <= null)
 																{
 l12EC:
@@ -1730,11 +1730,11 @@ void fn13AA(Eq_n ptrArg00)
 	word16 * r0_n = g_a013E;
 	while (true)
 	{
-		word16 * v23_n = *r0_n;
+		word16 * v24_n = *r0_n;
 		word16 * r0_n = r0_n + 1;
-		if (v23_n == null)
+		if (v24_n == null)
 			break;
-		*v23_n = *r0_n;
+		*v24_n = *r0_n;
 		r0_n = r0_n + 1;
 	}
 	while (true)

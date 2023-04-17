@@ -9,6 +9,7 @@ void fn0C00_0000(Register word16 dx)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // Top:Top
 // dx:dx
@@ -38,6 +39,7 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // dx:dx
 // SCZO:SCZO
@@ -82,6 +84,7 @@ Register word16 fn0C00_0013(Register word16 dx)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // dx:dx
 // SCZO:SCZO

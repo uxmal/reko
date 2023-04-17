@@ -9,6 +9,7 @@ void fn0C00_0000(Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // ds:ds
@@ -44,6 +45,7 @@ Register byte fn0C00_0015(Register word16 ax)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // SZO:SZO
@@ -86,6 +88,7 @@ Register byte fn0C00_0020(Register word16 ax)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // SZO:SZO

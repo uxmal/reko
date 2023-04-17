@@ -61,10 +61,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A5181000");
             AssertCode(     // add.w	$r5,$r5,$r6
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r5, word32, 0)",
-                "2|L--|v5 = SLICE(r6, word32, 0)",
-                "3|L--|v6 = v3 + v5",
-                "4|L--|r5 = CONVERT(v6, word32, int64)");
+                "1|L--|v4 = SLICE(r5, word32, 0)",
+                "2|L--|v6 = SLICE(r6, word32, 0)",
+                "3|L--|v7 = v4 + v6",
+                "4|L--|r5 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -82,9 +82,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A5048002");
             AssertCode(     // addi.w	$r5,$r5,+00000001
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r5, word32, 0)",
-                "2|L--|v4 = v3 + 1<i32>",
-                "3|L--|r5 = CONVERT(v4, word32, int64)");
+                "1|L--|v4 = SLICE(r5, word32, 0)",
+                "2|L--|v5 = v4 + 1<i32>",
+                "3|L--|r5 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -102,10 +102,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("360C0400");
             AssertCode(     // alsl.w	$r22,$r1,$r3,+00000000
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r1, word32, 0)",
-                "2|L--|v5 = SLICE(r3, word32, 0)",
-                "3|L--|v7 = (v3 << 1<8>) + v5",
-                "4|L--|r22 = CONVERT(v7, word32, int64)");
+                "1|L--|v4 = SLICE(r1, word32, 0)",
+                "2|L--|v6 = SLICE(r3, word32, 0)",
+                "3|L--|v8 = (v4 << 1<8>) + v6",
+                "4|L--|r22 = CONVERT(v8, word32, int64)");
         }
 
         [Test]
@@ -114,8 +114,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("01000600");
             AssertCode(     // alsl.wu	$r0,$r0,$r0,+00000000
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = (0<32> << 1<8>) + 0<32>",
-                "2|L--|r1 = CONVERT(v3, word32, word64)");
+                "1|L--|v4 = (0<32> << 1<8>) + 0<32>",
+                "2|L--|r1 = CONVERT(v4, word32, word64)");
         }
 
         [Test]
@@ -142,9 +142,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("CF536A38");
             AssertCode(     // amadd.db.w	$r15,$r20,$r30
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r30, word32, 0)",
-                "2|L--|v6 = __atomic_add_db<word32>(r20, v4)",
-                "3|L--|r15 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r30, word32, 0)",
+                "2|L--|v7 = __atomic_add_db<word32>(r20, v5)",
+                "3|L--|r15 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -153,9 +153,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("24576138");
             AssertCode(     // amadd.w	$r4,$r21,$r25
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r25, word32, 0)",
-                "2|L--|v6 = __atomic_add<word32>(r21, v4)",
-                "3|L--|r4 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r25, word32, 0)",
+                "2|L--|v7 = __atomic_add<word32>(r21, v5)",
+                "3|L--|r4 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -173,9 +173,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("50196B38");
             AssertCode(     // amand.db.w	$r16,$r6,$r10
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r10, word32, 0)",
-                "2|L--|v6 = __atomic_and_db<word32>(r6, v4)",
-                "3|L--|r16 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r10, word32, 0)",
+                "2|L--|v7 = __atomic_and_db<word32>(r6, v5)",
+                "3|L--|r16 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -184,9 +184,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("EA606238");
             AssertCode(     // amand.w	$r10,$r24,$r7
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r7, word32, 0)",
-                "2|L--|v6 = __atomic_and<word32>(r24, v4)",
-                "3|L--|r10 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r7, word32, 0)",
+                "2|L--|v7 = __atomic_and<word32>(r24, v5)",
+                "3|L--|r10 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -231,9 +231,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("9F0D6E38");
             AssertCode(     // ammax.db.w	$r31,$r3,$r12
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r12, word32, 0)",
-                "2|L--|v6 = __atomic_max_db<word32>(r3, v4)",
-                "3|L--|r31 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r12, word32, 0)",
+                "2|L--|v7 = __atomic_max_db<word32>(r3, v5)",
+                "3|L--|r31 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -242,9 +242,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("FB7F7038");
             AssertCode(     // ammax.db.wu	$r27,$r31,$r31
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r31, word32, 0)",
-                "2|L--|v5 = __atomic_maxu_db<word32>(r31, v3)",
-                "3|L--|r27 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r31, word32, 0)",
+                "2|L--|v6 = __atomic_maxu_db<word32>(r31, v4)",
+                "3|L--|r27 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -253,9 +253,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("C3156538");
             AssertCode(     // ammax.w	$r3,$r5,$r14
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r14, word32, 0)",
-                "2|L--|v6 = __atomic_max<word32>(r5, v4)",
-                "3|L--|r3 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r14, word32, 0)",
+                "2|L--|v7 = __atomic_max<word32>(r5, v5)",
+                "3|L--|r3 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -264,9 +264,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("7D296738");
             AssertCode(     // ammax.wu	$r29,$r10,$r11
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r11, word32, 0)",
-                "2|L--|v6 = __atomic_maxu<word32>(r10, v4)",
-                "3|L--|r29 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r11, word32, 0)",
+                "2|L--|v7 = __atomic_maxu<word32>(r10, v5)",
+                "3|L--|r29 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -311,9 +311,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("5A596F38");
             AssertCode(     // ammin.db.w	$r26,$r22,$r10
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r10, word32, 0)",
-                "2|L--|v6 = __atomic_minu_db<word32>(r22, v4)",
-                "3|L--|r26 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r10, word32, 0)",
+                "2|L--|v7 = __atomic_minu_db<word32>(r22, v5)",
+                "3|L--|r26 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -322,9 +322,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("9B337138");
             AssertCode(     // ammin.db.wu	$r27,$r12,$r28
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r28, word32, 0)",
-                "2|L--|v6 = __atomic_minu_db<word32>(r12, v4)",
-                "3|L--|r27 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r28, word32, 0)",
+                "2|L--|v7 = __atomic_minu_db<word32>(r12, v5)",
+                "3|L--|r27 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -333,9 +333,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A55C6638");
             AssertCode(     // ammin.w	$r5,$r23,$r5
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r5, word32, 0)",
-                "2|L--|v5 = __atomic_min<word32>(r23, v4)",
-                "3|L--|r5 = CONVERT(v5, word32, int64)");
+                "1|L--|v5 = SLICE(r5, word32, 0)",
+                "2|L--|v6 = __atomic_min<word32>(r23, v5)",
+                "3|L--|r5 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -344,9 +344,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("63256838");
             AssertCode(     // ammin.wu	$r3,$r9,$r11
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r11, word32, 0)",
-                "2|L--|v6 = __atomic_minu<word32>(r9, v4)",
-                "3|L--|r3 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r11, word32, 0)",
+                "2|L--|v7 = __atomic_minu<word32>(r9, v5)",
+                "3|L--|r3 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -373,9 +373,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("62346C38");
             AssertCode(     // amor.db.w	$r2,$r13,$r3
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r3, word32, 0)",
-                "2|L--|v6 = __atomic_or_db<word32>(r13, v4)",
-                "3|L--|r2 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r3, word32, 0)",
+                "2|L--|v7 = __atomic_or_db<word32>(r13, v5)",
+                "3|L--|r2 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -384,9 +384,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("12566338");
             AssertCode(     // amor.w	$r18,$r21,$r16
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r16, word32, 0)",
-                "2|L--|v6 = __atomic_or<word32>(r21, v4)",
-                "3|L--|r18 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r16, word32, 0)",
+                "2|L--|v7 = __atomic_or<word32>(r21, v5)",
+                "3|L--|r18 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -404,9 +404,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8F7E6038");
             AssertCode(     // amswap.w	$r15,$r31,$r20
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r20, word32, 0)",
-                "2|L--|v6 = __atomic_swap<word32>(r31, v4)",
-                "3|L--|r15 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r20, word32, 0)",
+                "2|L--|v7 = __atomic_swap<word32>(r31, v5)",
+                "3|L--|r15 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -433,9 +433,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("3D686D38");
             AssertCode(     // amxor.db.w	$r29,$r26,$r1
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r1, word32, 0)",
-                "2|L--|v6 = __atomic_xor_db<word32>(r26, v4)",
-                "3|L--|r29 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r1, word32, 0)",
+                "2|L--|v7 = __atomic_xor_db<word32>(r26, v5)",
+                "3|L--|r29 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -444,9 +444,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("E1276438");
             AssertCode(     // amxor.w	$r1,$r9,$r31
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v4 = SLICE(r31, word32, 0)",
-                "2|L--|v6 = __atomic_xor<word32>(r9, v4)",
-                "3|L--|r1 = CONVERT(v6, word32, int64)");
+                "1|L--|v5 = SLICE(r31, word32, 0)",
+                "2|L--|v7 = __atomic_xor<word32>(r9, v5)",
+                "3|L--|r1 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -536,9 +536,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("44500000");
             AssertCode(     // bitrev.w	$r0,$r0
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r2, word32, 0)",
-                "2|L--|v5 = __bitrev<word32>(v3)",
-                "3|L--|r4 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r2, word32, 0)",
+                "2|L--|v6 = __bitrev<word32>(v4)",
+                "3|L--|r4 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -619,9 +619,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("E4010800");
             AssertCode(     // bytepick.w	$r4,$r15,$r0,+00000000
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r15, word32, 0)",
-                "2|L--|v5 = __bytepick<word32>(v3, 0<32>, 0<i32>)",
-                "3|L--|r4 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r15, word32, 0)",
+                "2|L--|v6 = __bytepick<word32>(v4, 0<32>, 0<i32>)",
+                "3|L--|r4 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -648,8 +648,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("11100000");
             AssertCode(     // clo.w	$r0,$r0
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = __count_leading_ones<word32>(0<32>)",
-                "2|L--|r17 = CONVERT(v3, word32, int64)");
+                "1|L--|v4 = __count_leading_ones<word32>(0<32>)",
+                "2|L--|r17 = CONVERT(v4, word32, int64)");
         }
 
         [Test]
@@ -658,8 +658,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("04140000");
             AssertCode(     // clz.w	$r4,$r0
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = __count_leading_zeros<word32>(0<32>)",
-                "2|L--|r4 = CONVERT(v3, word32, int64)");
+                "1|L--|v4 = __count_leading_zeros<word32>(0<32>)",
+                "2|L--|r4 = CONVERT(v4, word32, int64)");
         }
 
         [Test]
@@ -668,9 +668,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("0C800004");
             AssertCode(     // csrrd	$r12,00000020
                 "0|S--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r12, word32, 0)",
-                "2|L--|v4 = __csrrd<word32>(v3)",
-                "3|L--|r12 = CONVERT(v4, word32, int64)");
+                "1|L--|v4 = SLICE(r12, word32, 0)",
+                "2|L--|v5 = __csrrd<word32>(v4)",
+                "3|L--|r12 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -706,10 +706,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("6E3A2000");
             AssertCode(     // div.w	$r14,$r19,$r14
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r19, word32, 0)",
-                "2|L--|v5 = SLICE(r14, word32, 0)",
-                "3|L--|v6 = v3 / v5",
-                "4|L--|r14 = CONVERT(v6, word32, int64)");
+                "1|L--|v4 = SLICE(r19, word32, 0)",
+                "2|L--|v6 = SLICE(r14, word32, 0)",
+                "3|L--|v7 = v4 / v6",
+                "4|L--|r14 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -718,10 +718,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("21212100");
             AssertCode(     // div.wu	$r1,$r9,$r8
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r9, word32, 0)",
-                "2|L--|v5 = SLICE(r8, word32, 0)",
-                "3|L--|v7 = v3 /u v5",
-                "4|L--|r1 = CONVERT(v7, word32, int64)");
+                "1|L--|v4 = SLICE(r9, word32, 0)",
+                "2|L--|v6 = SLICE(r8, word32, 0)",
+                "3|L--|v8 = v4 /u v6",
+                "4|L--|r1 = CONVERT(v8, word32, int64)");
         }
 
         [Test]
@@ -730,9 +730,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("845C0000");
             AssertCode(     // ext.w.b	$r4,$r4
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r4, int8, 0)",
-                "2|L--|v4 = CONVERT(v3, int8, int32)",
-                "3|L--|r4 = CONVERT(v4, int32, int64)");
+                "1|L--|v4 = SLICE(r4, int8, 0)",
+                "2|L--|v5 = CONVERT(v4, int8, int32)",
+                "3|L--|r4 = CONVERT(v5, int32, int64)");
         }
 
         [Test]
@@ -741,9 +741,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("4D5A0000");
             AssertCode(     // ext.w.h	$r13,$r18
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r13, int16, 0)",
-                "2|L--|v4 = CONVERT(v3, int16, int32)",
-                "3|L--|r13 = CONVERT(v4, int32, int64)");
+                "1|L--|v4 = SLICE(r13, int16, 0)",
+                "2|L--|v5 = CONVERT(v4, int16, int32)",
+                "3|L--|r13 = CONVERT(v5, int32, int64)");
         }
 
         [Test]
@@ -788,10 +788,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("EAD50601");
             AssertCode(     // fdiv.s	$f10,$f15,$f21
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f15, word32, 0)",
-                "2|L--|v5 = SLICE(f21, word32, 0)",
-                "3|L--|v7 = v3 / v5",
-                "4|L--|f10 = SEQ(SLICE(f10, word32, 32), v7)");
+                "1|L--|v4 = SLICE(f15, word32, 0)",
+                "2|L--|v6 = SLICE(f21, word32, 0)",
+                "3|L--|v8 = v4 / v6",
+                "4|L--|f10 = SEQ(SLICE(f10, word32, 32), v8)");
         }
 
         [Test]
@@ -800,8 +800,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("7461202B");
             AssertCode(     // fld.s	$f20,$r11,-000007E8
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r11 - 2024<i64>:real32]",
-                "2|L--|f20 = SEQ(SLICE(f20, word32, 32), v4)");
+                "1|L--|v5 = Mem0[r11 - 2024<i64>:real32]",
+                "2|L--|f20 = SEQ(SLICE(f20, word32, 32), v5)");
         }
 
         [Test]
@@ -856,7 +856,7 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r14 <=u r19) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v5 = Mem0[r14:real32]");
+                "4|L--|v6 = Mem0[r14:real32]");
         }
 
         [Test]
@@ -874,8 +874,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("5F253038");
             AssertCode(     // fldx.s	$f31,$r10,$r9
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v5 = Mem0[r10 + r9:real32]",
-                "2|L--|f31 = SEQ(SLICE(f31, word32, 32), v5)");
+                "1|L--|v6 = Mem0[r10 + r9:real32]",
+                "2|L--|f31 = SEQ(SLICE(f31, word32, 32), v6)");
         }
 
         [Test]
@@ -893,10 +893,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("F8AC0801");
             AssertCode(     // fmax.s	$f24,$f7,$f11
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f7, word32, 0)",
-                "2|L--|v5 = SLICE(f11, word32, 0)",
-                "3|L--|v7 = fmaxf(v3, v5)",
-                "4|L--|f24 = SEQ(SLICE(f24, word32, 32), v7)");
+                "1|L--|v4 = SLICE(f7, word32, 0)",
+                "2|L--|v6 = SLICE(f11, word32, 0)",
+                "3|L--|v8 = fmaxf(v4, v6)",
+                "4|L--|f24 = SEQ(SLICE(f24, word32, 32), v8)");
         }
 
         [Test]
@@ -914,10 +914,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("65FC0C01");
             AssertCode(     // fmaxa.s	$f5,$f3,$f31
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f3, word32, 0)",
-                "2|L--|v5 = SLICE(f31, word32, 0)",
-                "3|L--|v7 = __fmaxa<real32>(v3, v5)",
-                "4|L--|f5 = SEQ(SLICE(f5, word32, 32), v7)");
+                "1|L--|v4 = SLICE(f3, word32, 0)",
+                "2|L--|v6 = SLICE(f31, word32, 0)",
+                "3|L--|v8 = __fmaxa<real32>(v4, v6)",
+                "4|L--|f5 = SEQ(SLICE(f5, word32, 32), v8)");
         }
 
         [Test]
@@ -935,10 +935,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("71CF0A01");
             AssertCode(     // fmin.s	$f17,$f27,$f19
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f27, word32, 0)",
-                "2|L--|v5 = SLICE(f19, word32, 0)",
-                "3|L--|v7 = fminf(v3, v5)",
-                "4|L--|f17 = SEQ(SLICE(f17, word32, 32), v7)");
+                "1|L--|v4 = SLICE(f27, word32, 0)",
+                "2|L--|v6 = SLICE(f19, word32, 0)",
+                "3|L--|v8 = fminf(v4, v6)",
+                "4|L--|f17 = SEQ(SLICE(f17, word32, 32), v8)");
         }
 
         [Test]
@@ -956,9 +956,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("45C00E01");
             AssertCode(     // fmina.s	$f5,$f2,$f16
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f2, word32, 0)",
-                "2|L--|v5 = SLICE(f16, word32, 0)",
-                "3|L--|v7 = __fmina<real32>(v3, v5)");
+                "1|L--|v4 = SLICE(f2, word32, 0)",
+                "2|L--|v6 = SLICE(f16, word32, 0)",
+                "3|L--|v8 = __fmina<real32>(v4, v6)");
         }
 
         [Test]
@@ -967,9 +967,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("90971401");
             AssertCode(     // fmov.s	$f16,$f28
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(f28, word32, 0)",
-                "2|L--|v5 = v3",
-                "3|L--|f16 = SEQ(SLICE(f16, word32, 32), v5)");
+                "1|L--|v4 = SLICE(f28, word32, 0)",
+                "2|L--|v6 = v4",
+                "3|L--|f16 = SEQ(SLICE(f16, word32, 32), v6)");
         }
 
         [Test]
@@ -987,10 +987,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("C8FB0401");
             AssertCode(     // fmul.s	$f8,$f30,$f30
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f30, word32, 0)",
-                "2|L--|v4 = SLICE(f30, word32, 0)",
-                "3|L--|v6 = v3 * v4",
-                "4|L--|f8 = SEQ(SLICE(f8, word32, 32), v6)");
+                "1|L--|v4 = SLICE(f30, word32, 0)",
+                "2|L--|v5 = SLICE(f30, word32, 0)",
+                "3|L--|v7 = v4 * v5",
+                "4|L--|f8 = SEQ(SLICE(f8, word32, 32), v7)");
         }
 
         [Test]
@@ -1008,10 +1008,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("DEBE1001");
             AssertCode(     // fscaleb.s	$f30,$f22,$f15
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f22, word32, 0)",
-                "2|L--|v5 = SLICE(f15, word32, 0)",
-                "3|L--|v7 = __fscaleb<real32>(v3, v5)",
-                "4|L--|f30 = SEQ(SLICE(f30, word32, 32), v7)");
+                "1|L--|v4 = SLICE(f22, word32, 0)",
+                "2|L--|v6 = SLICE(f15, word32, 0)",
+                "3|L--|v8 = __fscaleb<real32>(v4, v6)",
+                "4|L--|f30 = SEQ(SLICE(f30, word32, 32), v8)");
         }
 
         [Test]
@@ -1029,8 +1029,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A62F602B");
             AssertCode(     // fst.s	$f6,$r29,-000007F5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(f6, real32, 0)",
-                "2|L--|Mem0[r29 - 2037<i64>:real32] = v3");
+                "1|L--|v4 = SLICE(f6, real32, 0)",
+                "2|L--|Mem0[r29 - 2037<i64>:real32] = v4");
         }
 
         [Test]
@@ -1051,11 +1051,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("04467638");
             AssertCode(     // fstgt.s	$f4,$r16,$r17
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(f4, real32, 0)",
+                "1|L--|v4 = SLICE(f4, real32, 0)",
                 "2|T--|if (r16 >u r17) micro_goto skip",
                 "3|L--|__raise_exception(0xA<32>)",
                 "4|---|skip::",
-                "5|L--|Mem0[r16:real32] = v3");
+                "5|L--|Mem0[r16:real32] = v4");
         }
 
         [Test]
@@ -1076,7 +1076,7 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("855F7738");
             AssertCode(     // fstle.s	$f5,$r28,$r23
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(f5, real32, 0)");
+                "1|L--|v4 = SLICE(f5, real32, 0)");
         }
 
         [Test]
@@ -1094,8 +1094,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("32443838");
             AssertCode(     // fstx.s	$f18,$r1,$r17
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(f18, real32, 0)",
-                "2|L--|Mem0[r1 + r17:real32] = v3");
+                "1|L--|v4 = SLICE(f18, real32, 0)",
+                "2|L--|Mem0[r1 + r17:real32] = v4");
         }
 
         [Test]
@@ -1113,10 +1113,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("DE820201");
             AssertCode(     // fsub.s	$f30,$f22,$f0
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(f22, word32, 0)",
-                "2|L--|v5 = SLICE(f0, word32, 0)",
-                "3|L--|v7 = v3 - v5",
-                "4|L--|f30 = SEQ(SLICE(f30, word32, 32), v7)");
+                "1|L--|v4 = SLICE(f22, word32, 0)",
+                "2|L--|v6 = SLICE(f0, word32, 0)",
+                "3|L--|v8 = v4 - v6",
+                "4|L--|f30 = SEQ(SLICE(f30, word32, 32), v8)");
         }
 
         [Test]
@@ -1145,8 +1145,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("2E070028");
             AssertCode(     // ld.b	$r14,$r25,+00000001
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r25 + 1<i64>:int8]",
-                "2|L--|r14 = CONVERT(v4, int8, int64)");
+                "1|L--|v5 = Mem0[r25 + 1<i64>:int8]",
+                "2|L--|r14 = CONVERT(v5, int8, int64)");
         }
 
         [Test]
@@ -1155,8 +1155,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A614002A");
             AssertCode(     // ld.bu	$r6,$r5,+00000005
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r5 + 5<i64>:byte]",
-                "2|L--|r6 = CONVERT(v4, byte, int64)");
+                "1|L--|v5 = Mem0[r5 + 5<i64>:byte]",
+                "2|L--|r6 = CONVERT(v5, byte, int64)");
         }
 
         [Test]
@@ -1165,8 +1165,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("26207E28");
             AssertCode(     // ld.h	$r6,$r1,-00000078
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r1 - 120<i64>:int16]",
-                "2|L--|r6 = CONVERT(v4, int16, int64)");
+                "1|L--|v5 = Mem0[r1 - 120<i64>:int16]",
+                "2|L--|r6 = CONVERT(v5, int16, int64)");
         }
 
         [Test]
@@ -1175,8 +1175,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("90C0402A");
             AssertCode(     // ld.hu	$r16,$r4,+00000030
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r4 + 48<i64>:uint16]",
-                "2|L--|r16 = CONVERT(v4, uint16, int64)");
+                "1|L--|v5 = Mem0[r4 + 48<i64>:uint16]",
+                "2|L--|r16 = CONVERT(v5, uint16, int64)");
         }
 
         [Test]
@@ -1194,8 +1194,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8E008028");
             AssertCode(     // ld.w	$r14,$r4,+00000000
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r4:int32]",
-                "2|L--|r14 = CONVERT(v4, int32, int64)");
+                "1|L--|v5 = Mem0[r4:int32]",
+                "2|L--|r14 = CONVERT(v5, int32, int64)");
         }
 
         [Test]
@@ -1204,8 +1204,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("F56EB82A");
             AssertCode(     // ld.wu	$r21,$r23,-000001E5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r23 - 485<i64>:word32]",
-                "2|L--|r21 = CONVERT(v4, word32, int64)");
+                "1|L--|v5 = Mem0[r23 - 485<i64>:word32]",
+                "2|L--|r21 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -1239,8 +1239,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r25 >u r20) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v5 = Mem0[r25:int16]",
-                "5|L--|r23 = CONVERT(v5, int16, int64)");
+                "4|L--|v6 = Mem0[r25:int16]",
+                "5|L--|r23 = CONVERT(v6, int16, int64)");
         }
 
         [Test]
@@ -1252,8 +1252,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r28 >u r3) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v5 = Mem0[r28:int32]",
-                "5|L--|r4 = CONVERT(v5, int32, int64)");
+                "4|L--|v6 = Mem0[r28:int32]",
+                "5|L--|r4 = CONVERT(v6, int32, int64)");
         }
 
         [Test]
@@ -1265,8 +1265,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r7 <=u r4) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v5 = Mem0[r7:int8]",
-                "5|L--|r9 = CONVERT(v5, int8, int64)");
+                "4|L--|v6 = Mem0[r7:int8]",
+                "5|L--|r9 = CONVERT(v6, int8, int64)");
         }
 
         [Test]
@@ -1290,8 +1290,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r25 <=u r17) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v5 = Mem0[r25:int16]",
-                "5|L--|r23 = CONVERT(v5, int16, int64)");
+                "4|L--|v6 = Mem0[r25:int16]",
+                "5|L--|r23 = CONVERT(v6, int16, int64)");
         }
 
         [Test]
@@ -1303,8 +1303,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r29 <=u r13) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v5 = Mem0[r29:int32]",
-                "5|L--|r9 = CONVERT(v5, int32, int64)");
+                "4|L--|v6 = Mem0[r29:int32]",
+                "5|L--|r9 = CONVERT(v6, int32, int64)");
         }
 
         [Test]
@@ -1322,8 +1322,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8D810124");
             AssertCode(     // ldptr.w	$r13,$r12,+00000060
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r12 + 96<i64>:word32]",
-                "2|L--|r13 = CONVERT(v4, word32, int64)");
+                "1|L--|v5 = Mem0[r12 + 96<i64>:word32]",
+                "2|L--|r13 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -1332,8 +1332,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("2C5F0038");
             AssertCode(     // ldx.b	$r12,$r25,$r23
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v5 = Mem0[r25 + r23:int8]",
-                "2|L--|r12 = CONVERT(v5, int8, int64)");
+                "1|L--|v6 = Mem0[r25 + r23:int8]",
+                "2|L--|r12 = CONVERT(v6, int8, int64)");
         }
 
         [Test]
@@ -1342,8 +1342,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("3C3C2038");
             AssertCode(     // ldx.bu	$r28,$r1,$r15
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v5 = Mem0[r1 + r15:byte]",
-                "2|L--|r28 = CONVERT(v5, byte, int64)");
+                "1|L--|v6 = Mem0[r1 + r15:byte]",
+                "2|L--|r28 = CONVERT(v6, byte, int64)");
         }
 
         [Test]
@@ -1352,8 +1352,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("15610438");
             AssertCode(     // ldx.h	$r21,$r8,$r24
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v5 = Mem0[r8 + r24:int16]",
-                "2|L--|r21 = CONVERT(v5, int16, int64)");
+                "1|L--|v6 = Mem0[r8 + r24:int16]",
+                "2|L--|r21 = CONVERT(v6, int16, int64)");
         }
 
         [Test]
@@ -1362,8 +1362,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("5F4C2438");
             AssertCode(     // ldx.hu	$r31,$r2,$r19
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v5 = Mem0[r2 + r19:uint16]",
-                "2|L--|r31 = CONVERT(v5, uint16, int64)");
+                "1|L--|v6 = Mem0[r2 + r19:uint16]",
+                "2|L--|r31 = CONVERT(v6, uint16, int64)");
         }
 
 
@@ -1382,8 +1382,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("84300838");
             AssertCode(     // ldx.w	$r4,$r4,$r12
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[r4 + r12:int32]",
-                "2|L--|r4 = CONVERT(v4, int32, int64)");
+                "1|L--|v5 = Mem0[r4 + r12:int32]",
+                "2|L--|r4 = CONVERT(v5, int32, int64)");
         }
 
         [Test]
@@ -1464,10 +1464,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("ACB42000");
             AssertCode(     // mod.w	$r12,$r5,$r13
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r5, word32, 0)",
-                "2|L--|v5 = SLICE(r13, word32, 0)",
-                "3|L--|v7 = v3 %s v5",
-                "4|L--|r12 = CONVERT(v7, word32, int64)");
+                "1|L--|v4 = SLICE(r5, word32, 0)",
+                "2|L--|v6 = SLICE(r13, word32, 0)",
+                "3|L--|v8 = v4 %s v6",
+                "4|L--|r12 = CONVERT(v8, word32, int64)");
         }
 
         [Test]
@@ -1476,10 +1476,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8EB52100");
             AssertCode(     // mod.wu	$r14,$r12,$r13
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r12, word32, 0)",
-                "2|L--|v5 = SLICE(r13, word32, 0)",
-                "3|L--|v7 = v3 %u v5",
-                "4|L--|r14 = CONVERT(v7, word32, int64)");
+                "1|L--|v4 = SLICE(r12, word32, 0)",
+                "2|L--|v6 = SLICE(r13, word32, 0)",
+                "3|L--|v8 = v4 %u v6",
+                "4|L--|r14 = CONVERT(v8, word32, int64)");
         }
 
         [Test]
@@ -1497,10 +1497,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("18671C00");
             AssertCode(     // mul.w	$r24,$r24,$r25
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r24, word32, 0)",
-                "2|L--|v5 = SLICE(r25, word32, 0)",
-                "3|L--|v6 = v3 * v5",
-                "4|L--|r24 = CONVERT(v6, word32, int64)");
+                "1|L--|v4 = SLICE(r24, word32, 0)",
+                "2|L--|v6 = SLICE(r25, word32, 0)",
+                "3|L--|v7 = v4 * v6",
+                "4|L--|r24 = CONVERT(v7, word32, int64)");
         }
 
         [Test]
@@ -1509,8 +1509,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("2B601E00");
             AssertCode(     // mulh.d	$r11,$r1,$r24
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = r1 *s128 r24",
-                "2|L--|r11 = SLICE(v4, int64, 64)");
+                "1|L--|v5 = r1 *s128 r24",
+                "2|L--|r11 = SLICE(v5, int64, 64)");
         }
         
         [Test]
@@ -1519,8 +1519,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("21D31E00");
             AssertCode(     // mulh.du	$r1,$r25,$r20
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v4 = r25 *u128 r20",
-                "2|L--|r1 = SLICE(v4, uint64, 64)");
+                "1|L--|v5 = r25 *u128 r20",
+                "2|L--|r1 = SLICE(v5, uint64, 64)");
         }
 
         [Test]
@@ -1529,11 +1529,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("17C31C00");
             AssertCode(     // mulh.w	$r23,$r24,$r16
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r24, word32, 0)",
-                "2|L--|v5 = SLICE(r16, word32, 0)",
-                "3|L--|v6 = v3 *s64 v5",
-                "4|L--|v8 = SLICE(v6, int32, 32)",
-                "5|L--|r23 = CONVERT(v8, int32, int64)");
+                "1|L--|v4 = SLICE(r24, word32, 0)",
+                "2|L--|v6 = SLICE(r16, word32, 0)",
+                "3|L--|v7 = v4 *s64 v6",
+                "4|L--|v9 = SLICE(v7, int32, 32)",
+                "5|L--|r23 = CONVERT(v9, int32, int64)");
         }
 
         [Test]
@@ -1542,11 +1542,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("1C331D00");
             AssertCode(     // mulh.wu	$r28,$r24,$r12
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r24, word32, 0)",
-                "2|L--|v5 = SLICE(r12, word32, 0)",
-                "3|L--|v6 = v3 *u64 v5",
-                "4|L--|v8 = SLICE(v6, uint32, 32)",
-                "5|L--|r28 = CONVERT(v8, uint32, int64)");
+                "1|L--|v4 = SLICE(r24, word32, 0)",
+                "2|L--|v6 = SLICE(r12, word32, 0)",
+                "3|L--|v7 = v4 *u64 v6",
+                "4|L--|v9 = SLICE(v7, uint32, 32)",
+                "5|L--|r28 = CONVERT(v9, uint32, int64)");
         }
 
         [Test]
@@ -1555,9 +1555,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("CF2F1F00");
             AssertCode(     // mulw.d.w	$r15,$r30,$r11
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = SLICE(r30, int32, 0)",
-                "2|L--|v4 = SLICE(r11, int32, 0)",
-                "3|L--|r15 = v2 *s64 v4");
+                "1|L--|v3 = SLICE(r30, int32, 0)",
+                "2|L--|v5 = SLICE(r11, int32, 0)",
+                "3|L--|r15 = v3 *s64 v5");
         }
 
         [Test]
@@ -1566,9 +1566,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("48E21F00");
             AssertCode(     // mulw.d.wu	$r8,$r18,$r24
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = SLICE(r18, uint32, 0)",
-                "2|L--|v4 = SLICE(r24, uint32, 0)",
-                "3|L--|r8 = v2 *u64 v4");
+                "1|L--|v3 = SLICE(r18, uint32, 0)",
+                "2|L--|v5 = SLICE(r24, uint32, 0)",
+                "3|L--|r8 = v3 *u64 v5");
         }
 
         [Test]
@@ -1649,9 +1649,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("10661B00");
             AssertCode(     // rotr.w	$r16,$r16,$r25
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r16, word32, 0)",
-                "2|L--|v5 = __ror<word32,word64>(v3, r25)",
-                "3|L--|r16 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r16, word32, 0)",
+                "2|L--|v6 = __ror<word32,word64>(v4, r25)",
+                "3|L--|r16 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -1669,9 +1669,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("E4F04C00");
             AssertCode(     // rotri.w	$r4,$r7,0000001C
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r7, word32, 0)",
-                "2|L--|v5 = __ror<word32,word64>(v3, 0x1C<64>)",
-                "3|L--|r4 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r7, word32, 0)",
+                "2|L--|v6 = __ror<word32,word64>(v4, 0x1C<64>)",
+                "3|L--|r4 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -1689,9 +1689,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A5151700");
             AssertCode(     // sll.w	$r5,$r13,$r5
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r13, word32, 0)",
-                "2|L--|v5 = v3 << r5",
-                "3|L--|r5 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r13, word32, 0)",
+                "2|L--|v6 = v4 << r5",
+                "3|L--|r5 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -1709,9 +1709,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("A5884000");
             AssertCode(     // slli.w	$r5,$r5,00000002
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r5, word32, 0)",
-                "2|L--|v4 = v3 << 2<64>",
-                "3|L--|r5 = CONVERT(v4, word32, int64)");
+                "1|L--|v4 = SLICE(r5, word32, 0)",
+                "2|L--|v5 = v4 << 2<64>",
+                "3|L--|r5 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -1765,9 +1765,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("2C321800");
             AssertCode(     // sra.w	$r12,$r17,$r12
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r17, word32, 0)",
-                "2|L--|v5 = v3 >> r12",
-                "3|L--|r12 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r17, word32, 0)",
+                "2|L--|v6 = v4 >> r12",
+                "3|L--|r12 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -1785,9 +1785,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("99FD4800");
             AssertCode(     // srai.w	$r25,$r12,0000001F
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r12, word32, 0)",
-                "2|L--|v5 = v3 >> 0x1F<64>",
-                "3|L--|r25 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r12, word32, 0)",
+                "2|L--|v6 = v4 >> 0x1F<64>",
+                "3|L--|r25 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -1796,9 +1796,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("85941700");
             AssertCode(     // srl.w	$r5,$r4,$r5
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r4, word32, 0)",
-                "2|L--|v5 = v3 >>u r5",
-                "3|L--|r5 = CONVERT(v5, word32, int64)");
+                "1|L--|v4 = SLICE(r4, word32, 0)",
+                "2|L--|v6 = v4 >>u r5",
+                "3|L--|r5 = CONVERT(v6, word32, int64)");
         }
 
         [Test]
@@ -1816,9 +1816,9 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("08A14400");
             AssertCode(     // srli.w	$r8,$r8,00000008
                 "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(r8, word32, 0)",
-                "2|L--|v4 = v3 >>u 8<64>",
-                "3|L--|r8 = CONVERT(v4, word32, int64)");
+                "1|L--|v4 = SLICE(r8, word32, 0)",
+                "2|L--|v5 = v4 >>u 8<64>",
+                "3|L--|r8 = CONVERT(v5, word32, int64)");
         }
 
         [Test]
@@ -1827,8 +1827,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8D110029");
             AssertCode(     // st.b	$r13,$r12,+00000004
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r13, byte, 0)",
-                "2|L--|Mem0[r12 + 4<i64>:byte] = v3");
+                "1|L--|v4 = SLICE(r13, byte, 0)",
+                "2|L--|Mem0[r12 + 4<i64>:byte] = v4");
         }
 
         [Test]
@@ -1846,8 +1846,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("6C204029");
             AssertCode(     // st.h	$r12,$r3,+00000008
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r12, word16, 0)",
-                "2|L--|Mem0[r3 + 8<i64>:word16] = v3");
+                "1|L--|v4 = SLICE(r12, word16, 0)",
+                "2|L--|Mem0[r3 + 8<i64>:word16] = v4");
         }
 
         [Test]
@@ -1865,11 +1865,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("7A7C7C38");
             AssertCode(     // stgt.b	$r26,$r3,$r31
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r26, byte, 0)",
+                "1|L--|v4 = SLICE(r26, byte, 0)",
                 "2|T--|if (r3 >u r31) micro_goto skip",
                 "3|L--|__raise_exception(0xA<32>)",
                 "4|---|skip::",
-                "5|L--|Mem0[r3:byte] = v3");
+                "5|L--|Mem0[r3:byte] = v4");
         }
 
         [Test]
@@ -1890,11 +1890,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("149F7C38");
             AssertCode(     // stgt.h	$r20,$r24,$r7
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r20, word16, 0)",
+                "1|L--|v4 = SLICE(r20, word16, 0)",
                 "2|T--|if (r24 >u r7) micro_goto skip",
                 "3|L--|__raise_exception(0xA<32>)",
                 "4|---|skip::",
-                "5|L--|Mem0[r24:word16] = v3");
+                "5|L--|Mem0[r24:word16] = v4");
         }
 
         [Test]
@@ -1903,7 +1903,7 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("4D017E38");
             AssertCode(     // stle.b	$r13,$r10,$r0
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r13, byte, 0)");
+                "1|L--|v4 = SLICE(r13, byte, 0)");
         }
 
         [Test]
@@ -1924,11 +1924,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("D6C87E38");
             AssertCode(     // stle.h	$r22,$r6,$r18
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r22, word16, 0)",
+                "1|L--|v4 = SLICE(r22, word16, 0)",
                 "2|T--|if (r6 <=u r18) micro_goto skip",
                 "3|L--|__raise_exception(0xA<32>)",
                 "4|---|skip::",
-                "5|L--|Mem0[r6:word16] = v3");
+                "5|L--|Mem0[r6:word16] = v4");
         }
 
         [Test]
@@ -1937,11 +1937,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("4C767F38");
             AssertCode(     // stle.w	$r12,$r18,$r29
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v3 = SLICE(r12, word32, 0)",
+                "1|L--|v4 = SLICE(r12, word32, 0)",
                 "2|T--|if (r18 <=u r29) micro_goto skip",
                 "3|L--|__raise_exception(0xA<32>)",
                 "4|---|skip::",
-                "5|L--|Mem0[r18:word32] = v3");
+                "5|L--|Mem0[r18:word32] = v4");
         }
 
         [Test]
@@ -1959,8 +1959,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8D810125");
             AssertCode(     // stptr.w	$r13,$r12,+00000060
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r13, word32, 0)",
-                "2|L--|Mem0[r12 + 96<i64>:word32] = v3");
+                "1|L--|v4 = SLICE(r13, word32, 0)",
+                "2|L--|Mem0[r12 + 96<i64>:word32] = v4");
         }
 
         [Test]
@@ -1969,8 +1969,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("F1151038");
             AssertCode(     // stx.b	$r17,$r15,$r5
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r17, byte, 0)",
-                "2|L--|Mem0[r15 + r5:byte] = v3");
+                "1|L--|v4 = SLICE(r17, byte, 0)",
+                "2|L--|Mem0[r15 + r5:byte] = v4");
         }
 
         [Test]
@@ -1988,8 +1988,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("847D1438");
             AssertCode(     // stx.h	$r4,$r12,$r31
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r4, word16, 0)",
-                "2|L--|Mem0[r12 + r31:word16] = v3");
+                "1|L--|v4 = SLICE(r4, word16, 0)",
+                "2|L--|Mem0[r12 + r31:word16] = v4");
         }
 
         [Test]
@@ -1998,8 +1998,8 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8E341838");
             AssertCode(     // stx.w	$r14,$r4,$r13
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r14, word32, 0)",
-                "2|L--|Mem0[r4 + r13:word32] = v3");
+                "1|L--|v4 = SLICE(r14, word32, 0)",
+                "2|L--|Mem0[r4 + r13:word32] = v4");
         }
 
         [Test]
@@ -2017,10 +2017,10 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("8C5D1100");
             AssertCode(     // sub.w	$r12,$r12,$r23
                 "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|v3 = SLICE(r12, word32, 0)",
-                "2|L--|v5 = SLICE(r23, word32, 0)",
-                "3|L--|v6 = v3 - v5",
-                "4|L--|r12 = CONVERT(v6, word32, int64)");
+                "1|L--|v4 = SLICE(r12, word32, 0)",
+                "2|L--|v6 = SLICE(r23, word32, 0)",
+                "3|L--|v7 = v4 - v6",
+                "4|L--|r12 = CONVERT(v7, word32, int64)");
         }
 
         [Test]

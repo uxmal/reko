@@ -177,9 +177,9 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("5302F5");
             AssertCode(     // dbnz     @B,4639
                 "0|T--|0100(3): 3 instructions",
-                "1|L--|v2 = B - 1<8>",
-                "2|L--|B = v2",
-                "3|T--|if (v2 != 0<8>) branch 00F7");
+                "1|L--|v3 = B - 1<8>",
+                "2|L--|B = v3",
+                "3|T--|if (v3 != 0<8>) branch 00F7");
         }
 
         [Test]
@@ -215,9 +215,9 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("40");
             AssertCode(     // div
                 "0|L--|0100(1): 5 instructions",
-                "1|L--|v4 = ACC_C",
-                "2|L--|ACC_C = v4 /u B",
-                "3|L--|B = v4 %u B",
+                "1|L--|v5 = ACC_C",
+                "2|L--|ACC_C = v5 /u B",
+                "3|L--|B = v5 %u B",
                 "4|L--|C = false",
                 "5|L--|V = B == 0<8>");
         }
@@ -427,9 +427,9 @@ namespace Reko.UnitTests.Arch.Sanyo
             Given_HexString("C7");
             AssertCode(     // xch      @R3
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v3 = ACC",
+                "1|L--|v4 = ACC",
                 "2|L--|ACC = Mem0[R3:byte]",
-                "3|L--|Mem0[R3:byte] = v3");
+                "3|L--|Mem0[R3:byte] = v4");
         }
 
         [Test]

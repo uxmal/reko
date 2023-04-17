@@ -1191,11 +1191,11 @@ event_handle_int_entry:
 	// succ:  l00000E3C
 l00000E3C:
 	__crswap(r29, sgp0)
-	v4 = r29 - 8<i32>
-	Mem0[v4:word32] = r30
-	Mem0[v4 + 4<i32>:word32] = r31
-	r30 = v4
-	r29 = v4 - 160<i32>
+	v5 = r29 - 8<i32>
+	Mem0[v5:word32] = r30
+	Mem0[v5 + 4<i32>:word32] = r31
+	r30 = v5
+	r29 = v5 - 160<i32>
 	Mem0[r29:word64] = r1_r0
 	r0 = SA0
 	Mem0[r29 + 8<i32>:word64] = r3_r2
@@ -1289,10 +1289,10 @@ l00000F24:
 	r1_r0 = Mem0[r29:word64]
 	r3_r2 = Mem0[r29 + 8<i32>:word64]
 	SA0 = r0
-	v46 = r30
-	r31 = Mem0[v46 + 4<i32>:word32]
-	r30 = Mem0[v46:word32]
-	r29 = v46 + 8<i32>
+	v47 = r30
+	r31 = Mem0[v47 + 4<i32>:word32]
+	r30 = Mem0[v47:word32]
+	r29 = v47 + 8<i32>
 	__crswap(r29, sgp0)
 	__rte()
 	return

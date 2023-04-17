@@ -14,8 +14,8 @@ l0C00_0000:
 		defs: ax:ax_6,C:C_8
 	branch C_8 l0C00_0009
 l0C00_0005:
-	v6_12 = Mem0[ds:0x300<16>:word16] + ax_6
-	Mem13[ds:0x300<16>:word16] = v6_12
+	v7_12 = Mem0[ds:0x300<16>:word16] + ax_6
+	Mem13[ds:0x300<16>:word16] = v7_12
 l0C00_0009:
 	return
 fn0C00_0000_exit:

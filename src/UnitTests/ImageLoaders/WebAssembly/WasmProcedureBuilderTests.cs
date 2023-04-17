@@ -180,8 +180,8 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = 1<32>
-	return v2
+	v3 = 1<32>
+	return v3
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -206,10 +206,10 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 0xFFFFFFD6<32>
-	v2 = v2 - v3
-	return v2
+	v3 = param0
+	v4 = 0xFFFFFFD6<32>
+	v3 = v3 - v4
+	return v3
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -236,10 +236,10 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 0xFFFFFFD6<32>
-	v4 = v2 == v3
-	return v4
+	v3 = param0
+	v4 = 0xFFFFFFD6<32>
+	v5 = v3 == v4
+	return v5
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -266,11 +266,11 @@ word64 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 0xFFFFFFD6<32>
-	v2 = v2 - v3
-	v4 = CONVERT(v2, word32, uint64)
-	return v4
+	v3 = param0
+	v4 = 0xFFFFFFD6<32>
+	v3 = v3 - v4
+	v5 = CONVERT(v3, word32, uint64)
+	return v5
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -300,12 +300,12 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 1<32>
-	v2 = v2 + v3
-	v4 = 3.14F
-	v2 = extfun(v2, v4)
-	return v2
+	v3 = param0
+	v4 = 1<32>
+	v3 = v3 + v4
+	v5 = 3.14F
+	v3 = extfun(v3, v5)
+	return v3
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -335,10 +335,10 @@ void fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = Mem0[0x00002000<p32>:word32]
-	v3 = param0
-	v2 = v2 + v3
-	Mem0[0x00002004<p32>:word32] = v2
+	v3 = Mem0[0x00002000<p32>:word32]
+	v4 = param0
+	v3 = v3 + v4
+	Mem0[0x00002004<p32>:word32] = v3
 	return
 	// succ:  fn00000_exit
 fn00000_exit:
@@ -367,15 +367,15 @@ real32 fn00000(real32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v4 = param0
-	loc1 = v4
+	v5 = param0
+	loc1 = v5
+	v6 = loc1
+	v5 = v5 * v6
+	loc2 = v5
 	v5 = loc1
-	v4 = v4 * v5
-	loc2 = v4
-	v4 = loc1
-	v5 = loc2
-	v4 = v4 + v5
-	return v4
+	v6 = loc2
+	v5 = v5 + v6
+	return v5
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -411,20 +411,20 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v4 = param0
-	v5 = 0<32>
-	v6 = v4 < v5
-	branch !v6 l0000000F
+	v5 = param0
+	v6 = 0<32>
+	v7 = v5 < v6
+	branch !v7 l0000000F
 	// succ:  l00000007 l0000000F
 l00000007:
-	v4 = 0<32>
-	v5 = param0
-	v4 = v4 - v5
-	param0 = v4
+	v5 = 0<32>
+	v6 = param0
+	v5 = v5 - v6
+	param0 = v5
 	// succ:  l0000000F
 l0000000F:
-	v4 = param0
-	return v4
+	v5 = param0
+	return v5
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -464,25 +464,25 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v3 = param0
-	v4 = 0<32>
-	v5 = v3 < v4
-	branch !v5 l0000000F
+	v4 = param0
+	v5 = 0<32>
+	v6 = v4 < v5
+	branch !v6 l0000000F
 	// succ:  l00000007 l0000000F
 l00000007:
-	v3 = 0<32>
-	v4 = param0
-	v3 = v3 - v4
-	loc1 = v3
+	v4 = 0<32>
+	v5 = param0
+	v4 = v4 - v5
+	loc1 = v4
 	goto l00000013
 	// succ:  l00000013
 l0000000F:
-	v3 = param0
-	loc1 = v3
+	v4 = param0
+	loc1 = v4
 	// succ:  l00000013
 l00000013:
-	v6 = loc1
-	return v6
+	v7 = loc1
+	return v7
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -524,8 +524,8 @@ void fn00000()
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = 0x10<32>
-	puts(v2)
+	v3 = 0x10<32>
+	puts(v3)
 	goto l00000000
 	// succ:  l00000000
 fn00000_exit:
@@ -557,18 +557,18 @@ void fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = v2 == 0<32>
-	branch v3 l00000017
+	v3 = param0
+	v4 = v3 == 0<32>
+	branch v4 l00000017
 	// succ:  l00000007 l00000017
 l00000007:
-	v2 = 0x10<32>
-	puts(v2)
-	v2 = param0
-	v4 = 0xFFFFFFFF<32>
-	v2 = v2 + v4
-	param0 = v2
-	branch v2 l00000007
+	v3 = 0x10<32>
+	puts(v3)
+	v3 = param0
+	v5 = 0xFFFFFFFF<32>
+	v3 = v3 + v5
+	param0 = v3
+	branch v3 l00000007
 	// succ:  l00000016 l00000007
 l00000016:
 	// succ:  l00000017
@@ -616,13 +616,13 @@ void fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = 0x10<32>
-	puts(v2)
-	v2 = param0
-	v3 = 0xFFFFFFFF<32>
-	v2 = v2 + v3
-	param0 = v2
-	branch v2 l00000000
+	v3 = 0x10<32>
+	puts(v3)
+	v3 = param0
+	v4 = 0xFFFFFFFF<32>
+	v3 = v3 + v4
+	param0 = v3
+	branch v3 l00000000
 	// succ:  l0000000F l00000000
 l0000000F:
 	return
@@ -659,10 +659,10 @@ void fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
 	v3 = param0
-	v3 = Mem0[v3 + 8<u32>:word32]
-	Mem0[v2 + 4<u32>:word32] = v3
+	v4 = param0
+	v4 = Mem0[v4 + 8<u32>:word32]
+	Mem0[v3 + 4<u32>:word32] = v4
 	return
 	// succ:  fn00000_exit
 fn00000_exit:
@@ -690,12 +690,12 @@ void fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
 	v3 = param0
-	v4 = Mem0[v3 + 8<u32>:byte]
-	v3 = CONVERT(v4, byte, word32)
-	v5 = SLICE(v3, byte, 0)
-	Mem0[v2 + 4<u32>:byte] = v5
+	v4 = param0
+	v5 = Mem0[v4 + 8<u32>:byte]
+	v4 = CONVERT(v5, byte, word32)
+	v6 = SLICE(v4, byte, 0)
+	Mem0[v3 + 4<u32>:byte] = v6
 	return
 	// succ:  fn00000_exit
 fn00000_exit:
@@ -723,12 +723,12 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = 1<32>
-	v3 = 0xFFFFFFFF<32>
-	v4 = param0
-	v5 = v4 == 0<32>
-	v2 = v5 ? v2 : v3
-	return v2
+	v3 = 1<32>
+	v4 = 0xFFFFFFFF<32>
+	v5 = param0
+	v6 = v5 == 0<32>
+	v3 = v6 ? v3 : v4
+	return v3
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -764,12 +764,12 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 1<32>
-	v4 = v2 + v3
-	v5 = 3.14F
-	v6 = extfun(v5)
-	return v6
+	v3 = param0
+	v4 = 1<32>
+	v5 = v3 + v4
+	v6 = 3.14F
+	v7 = extfun(v6)
+	return v7
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -892,42 +892,42 @@ word32 fn00000(word32 param0, word32 param1, word32 param2)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 4<32>
-	v4 = v2 >u v3
-	branch v4 l0000001F
+	v3 = param0
+	v4 = 4<32>
+	v5 = v3 >u v4
+	branch v5 l0000001F
 	// succ:  l0000000F l0000001F
 l0000000F:
-	v2 = param0
-	switch (v2) { l0000001B l0000001B l00000023 l0000002A l00000031 }
+	v3 = param0
+	switch (v3) { l0000001B l0000001B l00000023 l0000002A l00000031 }
 	// succ:  l0000001B l0000001B l00000023 l0000002A l00000031
 l0000001B:
-	v2 = param0
-	return v2
+	v3 = param0
+	return v3
 	// succ:  fn00000_exit
 l0000001F:
-	v2 = 0xFFFFFFFF<32>
-	return v2
+	v3 = 0xFFFFFFFF<32>
+	return v3
 	// succ:  fn00000_exit
 l00000023:
-	v2 = param2
-	v3 = param1
-	v2 = v2 + v3
-	return v2
+	v3 = param2
+	v4 = param1
+	v3 = v3 + v4
+	return v3
 	// succ:  fn00000_exit
 l0000002A:
-	v2 = param1
-	v3 = param2
-	v2 = v2 - v3
-	return v2
+	v3 = param1
+	v4 = param2
+	v3 = v3 - v4
+	return v3
 	// succ:  fn00000_exit
 l00000031:
-	v2 = param1
-	v3 = param2
-	v2 = v2 - v3
 	v3 = param1
-	v2 = v2 * v3
-	return v2
+	v4 = param2
+	v3 = v3 - v4
+	v4 = param1
+	v3 = v3 * v4
+	return v3
 	// succ:  fn00000_exit
 fn00000_exit:
 ";
@@ -984,22 +984,22 @@ word32 fn00000(word32 param0)
 fn00000_entry:
 	// succ:  l00000000
 l00000000:
-	v2 = param0
-	v3 = 0<32>
-	v4 = v2 >= v3
-	branch !v4 l0000000A
+	v3 = param0
+	v4 = 0<32>
+	v5 = v3 >= v4
+	branch !v5 l0000000A
 	// succ:  l00000007 l0000000A
 l00000007:
-	v2 = param0
+	v3 = param0
 	goto l0000000F
 	// succ:  l0000000F
 l0000000A:
-	v2 = 0<32>
-	v3 = param0
-	v2 = v2 - v3
+	v3 = 0<32>
+	v4 = param0
+	v3 = v3 - v4
 	// succ:  l0000000F
 l0000000F:
-	return v2
+	return v3
 	// succ:  fn00000_exit
 fn00000_exit:
 ";

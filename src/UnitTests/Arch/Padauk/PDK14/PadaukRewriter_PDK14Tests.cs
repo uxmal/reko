@@ -52,9 +52,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK14
             Given_HexString("4208");
             AssertCode(     // add [m],a
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v3 = Mem0[0x0042<p16>:byte] + a",
-                "2|L--|Mem0[0x0042<p16>:byte] = v3",
-                "3|L--|ZCAV = cond(v3)");
+                "1|L--|v4 = Mem0[0x0042<p16>:byte] + a",
+                "2|L--|Mem0[0x0042<p16>:byte] = v4",
+                "3|L--|ZCAV = cond(v4)");
         }
 
         [Test]

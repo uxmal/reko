@@ -2,6 +2,7 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ss:ss
 // SCZO:SCZO
@@ -38,6 +39,7 @@ fn0C00_0000_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss
@@ -45,7 +47,7 @@ fn0C00_0000_exit:
 // ax:ax
 // bx:bx
 // es:es
-// v9:v9
+// v10:v10
 // SCZO:SCZO
 // Top:Top
 // return address size: 4
@@ -60,9 +62,9 @@ l0C00_0020:
 	bp = sp
 	es_bx = Mem0[ss:bp + 6<i16>:segptr32]
 	ax = Mem0[ss:bp + 10<i16>:word16]
-	v9 = Mem0[es:bx:word16] + ax
-	Mem0[es:bx:word16] = v9
-	SCZO = cond(v9)
+	v10 = Mem0[es:bx:word16] + ax
+	Mem0[es:bx:word16] = v10
+	SCZO = cond(v10)
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 2<i16>
 	return
@@ -72,6 +74,7 @@ fn0C00_0020_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss
@@ -79,7 +82,7 @@ fn0C00_0020_exit:
 // ax:ax
 // bx:bx
 // es:es
-// v9:v9
+// v10:v10
 // SCZO:SCZO
 // Top:Top
 // return address size: 4
@@ -94,9 +97,9 @@ l0C00_002E:
 	bp = sp
 	es_bx = Mem0[ss:bp + 6<i16>:segptr32]
 	ax = Mem0[ss:bp + 10<i16>:word16]
-	v9 = Mem0[es:bx:word16] - ax
-	Mem0[es:bx:word16] = v9
-	SCZO = cond(v9)
+	v10 = Mem0[es:bx:word16] - ax
+	Mem0[es:bx:word16] = v10
+	SCZO = cond(v10)
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 2<i16>
 	return

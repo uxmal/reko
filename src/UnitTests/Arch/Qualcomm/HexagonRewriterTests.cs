@@ -56,11 +56,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("01C09DA0");
             AssertCode(     // { allocframe(+00000008) }
                 "0|L--|00100000(4): 5 instructions",
-                "1|L--|v2 = r29 - 8<i32>",
-                "2|L--|Mem0[v2:word32] = r30",
-                "3|L--|Mem0[v2 + 4<i32>:word32] = r31",
-                "4|L--|r30 = v2",
-                "5|L--|r29 = v2 - 8<i32>");
+                "1|L--|v3 = r29 - 8<i32>",
+                "2|L--|Mem0[v3:word32] = r30",
+                "3|L--|Mem0[v3 + 4<i32>:word32] = r31",
+                "4|L--|r30 = v3",
+                "5|L--|r29 = v3 - 8<i32>");
         }
 
         [Test]
@@ -229,11 +229,11 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("101CF4EB");
             AssertCode(     // { allocframe(00000008); memd(r29+496) = r17:r16 }
                 "0|L--|00100000(4): 6 instructions",
-                "1|L--|v2 = r29 - 8<i32>",
-                "2|L--|Mem0[v2:word32] = r30",
-                "3|L--|Mem0[v2 + 4<i32>:word32] = r31",
-                "4|L--|r30 = v2", 
-                "5|L--|r29 = v2 - 8<i32>",
+                "1|L--|v3 = r29 - 8<i32>",
+                "2|L--|Mem0[v3:word32] = r30",
+                "3|L--|Mem0[v3 + 4<i32>:word32] = r31",
+                "4|L--|r30 = v3", 
+                "5|L--|r29 = v3 - 8<i32>",
                 "6|L--|Mem0[r29 + 496<i32>:word64] = r17_r16");
         }
 

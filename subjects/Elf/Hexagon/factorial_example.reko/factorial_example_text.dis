@@ -20,19 +20,19 @@ _ZL26strict_aliasing_workaroundPt_entry:
 	r29 = fp
 	// succ:  l000050C0
 l000050C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r30 - 12<i32>:word32] = r0
 	r0 = Mem0[r30 - 12<i32>:word32]
 	Mem0[r30 - 4<i32>:word32] = r0
 	r0 = Mem0[r30 - 4<i32>:word32]
-	v7 = r30
-	r31 = Mem0[v7 + 4<i32>:word32]
-	r30 = Mem0[v7:word32]
-	r29 = v7 + 8<i32>
+	v8 = r30
+	r31 = Mem0[v8 + 4<i32>:word32]
+	r30 = Mem0[v8:word32]
+	r29 = v8 + 8<i32>
 	return
 	// succ:  _ZL26strict_aliasing_workaroundPt_exit
 _ZL26strict_aliasing_workaroundPt_exit:
@@ -45,11 +45,11 @@ _Z4facti_entry:
 	r29 = fp
 	// succ:  l000050DC
 l000050DC:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r30 - 4<i32>:word32] = r0
 	r0 = Mem0[r30 - 4<i32>:word32]
 	p0 = r0 > 1<32>
@@ -71,10 +71,10 @@ l00005100:
 	r0 = r1 * r0
 	// succ:  l00005118
 l00005118:
-	v9 = r30
-	r31 = Mem0[v9 + 4<i32>:word32]
-	r30 = Mem0[v9:word32]
-	r29 = v9 + 8<i32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
 	// succ:  _Z4facti_exit
 _Z4facti_exit:
@@ -87,11 +87,11 @@ main_entry:
 	r29 = fp
 	// succ:  l00005120
 l00005120:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 24<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 24<i32>
 	Mem0[r30 - 12<i32>:word32] = r0
 	Mem0[r30 - 16<i32>:word32] = r1
 	r0 = Mem0[r30 - 12<i32>:word32]
@@ -144,10 +144,10 @@ l000051A8:
 	r0 = 0<32>
 	// succ:  l000051D4
 l000051D4:
-	v9 = r30
-	r31 = Mem0[v9 + 4<i32>:word32]
-	r30 = Mem0[v9:word32]
-	r29 = v9 + 8<i32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
 	// succ:  main_exit
 main_exit:
@@ -160,20 +160,20 @@ atoi_entry:
 	r29 = fp
 	// succ:  l000051DC
 l000051DC:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r30 - 4<i32>:word32] = r0
 	r0 = Mem0[r30 - 4<i32>:word32]
 	r1 = 0<32>
 	r2 = 0xA<32>
 	call _Stoul (retsize: 0;)
-	v9 = r30
-	r31 = Mem0[v9 + 4<i32>:word32]
-	r30 = Mem0[v9:word32]
-	r29 = v9 + 8<i32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
 	// succ:  atoi_exit
 atoi_exit:
@@ -282,11 +282,11 @@ __sys_get_cmdline_entry:
 	r29 = fp
 	// succ:  l000052C0
 l000052C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	r3 = Mem0[gp + 224<i32>:word32]
 	r2 = 0<32>
 	Mem0[r29 + 8<i32>:word64] = r17_r16
@@ -308,10 +308,10 @@ l000052D8:
 	r2 = r0
 	// succ:  l00005300
 l00005300:
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  __sys_get_cmdline_exit
 __sys_get_cmdline_exit:
@@ -324,11 +324,11 @@ printf_entry:
 	r29 = fp
 	// succ:  l00005310
 l00005310:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	r0 = 0xE498<32>
@@ -342,10 +342,10 @@ l00005310:
 	r16 = r0
 	r0 = 0x18<32>
 	call _Unlockfilelock (retsize: 0;)
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
 	return
 	// succ:  printf_exit
 printf_exit:
@@ -358,11 +358,11 @@ prout_entry:
 	r29 = fp
 	// succ:  l00005360
 l00005360:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r0_r2
 	r4 = r1
@@ -372,10 +372,10 @@ l00005360:
 	r0 = -1<i32>
 	r0 = r17 + 0<32>
 	p0 = r0 == r16
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  prout_exit
 prout_exit:
@@ -544,11 +544,11 @@ __libc_start_main_entry:
 	r29 = fp
 	// succ:  l000054C0
 l000054C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r3
 	p0 = r1 > 0xFFFFFFFF<32>
@@ -673,10 +673,10 @@ l000055E4:
 	call exit (retsize: 0;)
 	// succ:  l000055FC
 l000055FC:
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
 	return
 	// succ:  __libc_start_main_exit
 __libc_start_main_exit:
@@ -739,11 +739,11 @@ __registerx_entry:
 	r29 = fp
 	// succ:  l00005690
 l00005690:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	Mem0[r29:word64] = r19_r18
@@ -774,10 +774,10 @@ l000056D0:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l000056D4
 l000056D4:
-	v20 = r30
-	r31 = Mem0[v20 + 4<i32>:word32]
-	r30 = Mem0[v20:word32]
-	r29 = v20 + 8<i32>
+	v21 = r30
+	r31 = Mem0[v21 + 4<i32>:word32]
+	r30 = Mem0[v21:word32]
+	r29 = v21 + 8<i32>
 	return
 	// succ:  __registerx_exit
 l000056D8:
@@ -797,11 +797,11 @@ __register_frame_info_bases_entry:
 	r29 = fp
 	// succ:  l000056E0
 l000056E0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r2_r0
 	Mem0[r29:word64] = r19_r18
@@ -832,10 +832,10 @@ l00005720:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l00005724
 l00005724:
-	v19 = r30
-	r31 = Mem0[v19 + 4<i32>:word32]
-	r30 = Mem0[v19:word32]
-	r29 = v19 + 8<i32>
+	v20 = r30
+	r31 = Mem0[v20 + 4<i32>:word32]
+	r30 = Mem0[v20:word32]
+	r29 = v20 + 8<i32>
 	return
 	// succ:  __register_frame_info_bases_exit
 l00005728:
@@ -855,11 +855,11 @@ __deregister_frame_info_bases_entry:
 	r29 = fp
 	// succ:  l00005730
 l00005730:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	branch p0 l0000576C
 	// succ:  l00005738 l0000576C
 l00005738:
@@ -874,10 +874,10 @@ l00005738:
 	call free (retsize: 0;)
 	// succ:  l0000576C
 l0000576C:
-	v11 = r30
-	r31 = Mem0[v11 + 4<i32>:word32]
-	r30 = Mem0[v11:word32]
-	r29 = v11 + 8<i32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
 	return
 	// succ:  __deregister_frame_info_bases_exit
 __deregister_frame_info_bases_exit:
@@ -890,11 +890,11 @@ _Printf_entry:
 	r29 = fp
 	// succ:  l00005770
 l00005770:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 200<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 200<i32>
 	call __save_r16_through_r25 (retsize: 0;)
 	r5_r4 = 0<64>
 	r1 = r3
@@ -1202,11 +1202,11 @@ _Putfld_entry:
 	r29 = fp
 	// succ:  l00005AD0
 l00005AD0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	p0 = r2 >u 0x40<32>
@@ -1477,10 +1477,10 @@ l00005CE8:
 	call _Ldtob (retsize: 0;)
 	// succ:  l00005D00
 l00005D00:
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  fn00005B54_exit
 fn00005B54_exit:
@@ -1513,11 +1513,11 @@ _Putstr_entry:
 	r29 = fp
 	// succ:  l00006200
 l00006200:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 112<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 112<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r23_r22 = 0<64>
 	r18 = r1
@@ -1621,11 +1621,11 @@ _Puttxt_entry:
 	r29 = fp
 	// succ:  l00006320
 l00006320:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r17_r16 = r1_r0
 	r2 = Mem0[r16 + 20<i32>:word32]
@@ -1886,11 +1886,11 @@ _Tls_get__Mbcurmax_entry:
 	r29 = fp
 	// succ:  l00006560
 l00006560:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	Mem0[r29:word64] = r19_r18
@@ -1957,10 +1957,10 @@ l000065F8:
 	r0 = r16
 	// succ:  l00006600
 l00006600:
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  _Tls_get__Mbcurmax_exit
 _Tls_get__Mbcurmax_exit:
@@ -1973,11 +1973,11 @@ _Tls_get__Mbstate_entry:
 	r29 = fp
 	// succ:  l00006604
 l00006604:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r17 = 0x10020<32>
@@ -2086,10 +2086,10 @@ l000066A8:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l000066AC
 l000066AC:
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  fn00006620_exit
 fn00006620_exit:
@@ -2102,16 +2102,16 @@ _Getmbcurmax_entry:
 	r29 = fp
 	// succ:  l000066B0
 l000066B0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Tls_get__Mbcurmax (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _Getmbcurmax_exit
 _Getmbcurmax_exit:
@@ -2139,11 +2139,11 @@ _Stoulx_entry:
 	r29 = fp
 	// succ:  l000066C0
 l000066C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 64<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 64<i32>
 	p0 = r3 == 0<32>
 	call __save_r16_through_r27 (retsize: 0;)
 	Mem0[r29 + 8<i32>:word32] = r3
@@ -2368,11 +2368,11 @@ _Clearlocks_entry:
 	r29 = fp
 	// succ:  l000068A0
 l000068A0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r0 = 0<32>
 	Mem0[gp + 4<i32>:byte] = r0
@@ -2400,10 +2400,10 @@ l000068E4:
 	// succ:  l000068F4 l000068E4
 l000068F4:
 	p0 = r25 == 1<32>
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  _Clearlocks_exit
 _Clearlocks_exit:
@@ -2416,11 +2416,11 @@ _Initlocks_entry:
 	r29 = fp
 	// succ:  l00006900
 l00006900:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = 0xE8D400000020<64>
 	// succ:  l00006910
@@ -2463,11 +2463,11 @@ _Lockfilelock_entry:
 	r29 = fp
 	// succ:  l00006958
 l00006958:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 24<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 24<i32>
 	call __save_r16_through_r21 (retsize: 0;)
 	r1 = 1<32>
 	r20 = 0x2C<32>
@@ -2549,11 +2549,11 @@ _Unlockfilelock_entry:
 	r29 = fp
 	// succ:  l00006A10
 l00006A10:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	branch p0 l00006A40
 	// succ:  l00006A18 l00006A40
 l00006A18:
@@ -2567,10 +2567,10 @@ l00006A18:
 	r0 = r1 + (r0 << 2<32>)
 	// succ:  l00006A40
 l00006A40:
-	v10 = r30
-	r31 = Mem0[v10 + 4<i32>:word32]
-	r30 = Mem0[v10:word32]
-	r29 = v10 + 8<i32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
 	return
 	// succ:  _Unlockfilelock_exit
 _Unlockfilelock_exit:
@@ -2583,11 +2583,11 @@ _Locksyslock_entry:
 	r29 = fp
 	// succ:  l00006A44
 l00006A44:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 24<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 24<i32>
 	call __save_r16_through_r21 (retsize: 0;)
 	r1 = 1<32>
 	r20 = 0x2C<32>
@@ -2674,21 +2674,21 @@ _Unlocksyslock_entry:
 	r29 = fp
 	// succ:  l00006AF8
 l00006AF8:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	r1 = Mem0[gp + 40<i32>:int8]
 	p0 = r1
 	r1 = p0 ? 4<32> : 0<32>
 	r1 = 0xE930<32>
 	call fn0000AF34 (retsize: 0;)
 	r0 = r1 + (r0 << 2<32>)
-	v10 = r30
-	r31 = Mem0[v10 + 4<i32>:word32]
-	r30 = Mem0[v10:word32]
-	r29 = v10 + 8<i32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
 	return
 	// succ:  _Unlocksyslock_exit
 _Unlocksyslock_exit:
@@ -2701,11 +2701,11 @@ _Tls_get__Tolotab_entry:
 	r29 = fp
 	// succ:  l00006B30
 l00006B30:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r17 = 0x10034<32>
@@ -2778,10 +2778,10 @@ l00006BD0:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l00006BD4
 l00006BD4:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  _Tls_get__Tolotab_exit
 _Tls_get__Tolotab_exit:
@@ -2794,16 +2794,16 @@ _Getptolower_entry:
 	r29 = fp
 	// succ:  l00006BD8
 l00006BD8:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Tls_get__Tolotab (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _Getptolower_exit
 _Getptolower_exit:
@@ -2816,20 +2816,20 @@ _Vacopy_entry:
 	r29 = fp
 	// succ:  l00006BF0
 l00006BF0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	r3 = r1
 	r2 = 4<32>
 	Mem0[r29 + 4<i32>:word32] = r3
 	r1 = r29 + 4<32>
 	call memcpy (retsize: 0;)
-	v9 = r30
-	r31 = Mem0[v9 + 4<i32>:word32]
-	r30 = Mem0[v9:word32]
-	r29 = v9 + 8<i32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
 	// succ:  _Vacopy_exit
 _Vacopy_exit:
@@ -2842,11 +2842,11 @@ _Wctombx_entry:
 	r29 = fp
 	// succ:  l00006C10
 l00006C10:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r20 = r4
 	r18 = r2
@@ -2973,10 +2973,10 @@ l00006DE4_thunk_fn00006E54:
 	return
 	// succ:  _Wctombx_exit
 l00006E28:
-	v24 = r30
-	r31 = Mem0[v24 + 4<i32>:word32]
-	r30 = Mem0[v24:word32]
-	r29 = v24 + 8<i32>
+	v25 = r30
+	r31 = Mem0[v25 + 4<i32>:word32]
+	r30 = Mem0[v25:word32]
+	r29 = v25 + 8<i32>
 	goto l00006C10
 	// succ:  l00006C10
 _Wctombx_exit:
@@ -2989,11 +2989,11 @@ _Wctomb_entry:
 	r29 = fp
 	// succ:  l00006DF0
 l00006DF0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r2_r0
 	Mem0[r29:word64] = r19_r18
@@ -3028,11 +3028,11 @@ abort_entry:
 	r29 = fp
 	// succ:  l00006E30
 l00006E30:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	r0 = 6<32>
 	call raise (retsize: 0;)
 	r0 = 1<32>
@@ -3052,11 +3052,11 @@ calloc_entry:
 	r29 = fp
 	// succ:  l00006E40
 l00006E40:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17 = r1 * r0
 	r0 = r17
@@ -3081,34 +3081,34 @@ l00006E5C:
 	r16 = r0
 	r1_r0 = 0<64>
 	r2 = r17
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
-	return
-	// succ:  fn00006E54_exit
-l00006E5C_in_fn00006E54:
-	r16 = r0
-	r1_r0 = 0<64>
-	r2 = r17
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
-	return
-	// succ:  fn00006E54_exit
-l00006E64:
 	v14 = r30
 	r31 = Mem0[v14 + 4<i32>:word32]
 	r30 = Mem0[v14:word32]
 	r29 = v14 + 8<i32>
 	return
 	// succ:  fn00006E54_exit
+l00006E5C_in_fn00006E54:
+	r16 = r0
+	r1_r0 = 0<64>
+	r2 = r17
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
+	return
+	// succ:  fn00006E54_exit
+l00006E64:
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
+	return
+	// succ:  fn00006E54_exit
 l00006E64_in_fn00006E54:
-	v4 = r30
-	r31 = Mem0[v4 + 4<i32>:word32]
-	r30 = Mem0[v4:word32]
-	r29 = v4 + 8<i32>
+	v5 = r30
+	r31 = Mem0[v5 + 4<i32>:word32]
+	r30 = Mem0[v5:word32]
+	r29 = v5 + 8<i32>
 	return
 	// succ:  fn00006E54_exit
 fn00006E54_exit:
@@ -3121,11 +3121,11 @@ _Tls_get__Errno_entry:
 	r29 = fp
 	// succ:  l00006E70
 l00006E70:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r17 = 0x1003C<32>
@@ -3193,10 +3193,10 @@ l00006F08:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l00006F0C
 l00006F0C:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  _Tls_get__Errno_exit
 _Tls_get__Errno_exit:
@@ -3224,11 +3224,11 @@ atexit_entry:
 	r29 = fp
 	// succ:  l00006F20
 l00006F20:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r0 = 1<32>
 	r16 = r0
@@ -3251,10 +3251,10 @@ l00006F48:
 l00006F60:
 	r0 = 1<32>
 	call _Unlocksyslock (retsize: 0;)
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  atexit_exit
 atexit_exit:
@@ -3267,11 +3267,11 @@ exit_entry:
 	r29 = fp
 	// succ:  l00006F70
 l00006F70:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	r2 = Mem0[gp + 4<i32>:word32]
@@ -3323,11 +3323,11 @@ free_entry:
 	r29 = fp
 	// succ:  l00006FF0
 l00006FF0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	// succ:  l00006FF0_thunk_fn00006FF4
 l00006FF0_thunk_fn00006FF4:
@@ -3471,10 +3471,10 @@ l00007098:
 	r0 = 1<32>
 	// succ:  l0000709C
 l0000709C:
-	v10 = r30
-	r31 = Mem0[v10 + 4<i32>:word32]
-	r30 = Mem0[v10:word32]
-	r29 = v10 + 8<i32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
 	return
 	// succ:  fn000070A0_exit
 l000070A0:
@@ -3493,11 +3493,11 @@ fwrite_entry:
 	r29 = fp
 	// succ:  l000070C0
 l000070C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 56<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 56<i32>
 	call __save_r16_through_r25 (retsize: 0;)
 	r19 = r0
 	r0 = 0<32>
@@ -3662,11 +3662,11 @@ malloc_entry:
 	r29 = fp
 	// succ:  l00007220
 l00007220:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r0 = 1<32>
 	r16 = r0
@@ -3685,11 +3685,11 @@ fn00007224_entry:
 	r29 = fp
 	// succ:  l00007224
 l00007224:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r0 = 1<32>
 	// succ:  l00007224_thunk_fn0000722C
@@ -3815,10 +3815,10 @@ l00007334:
 	// succ:  l00007340
 l00007340:
 	call _Unlocksyslock (retsize: 0;)
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  fn00007240_exit
 fn00007240_exit:
@@ -3911,11 +3911,11 @@ puts_entry:
 	r29 = fp
 	// succ:  l00007380
 l00007380:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	r0 = 0xE498<32>
@@ -3942,10 +3942,10 @@ l000073CC:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r1 = Mem0[r29:word64]
 	p0 = r1
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  puts_exit
 puts_exit:
@@ -4072,11 +4072,11 @@ raise_entry:
 	r29 = fp
 	// succ:  l00007760
 l00007760:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	Mem0[r29 + 16<i32>:word64] = r19_r18
@@ -4133,10 +4133,10 @@ l000077FC:
 	r19_r18 = Mem0[r29 + 16<i32>:word64]
 	r17_r16 = Mem0[r29 + 24<i32>:word64]
 	r0 = r18
-	v21 = r30
-	r31 = Mem0[v21 + 4<i32>:word32]
-	r30 = Mem0[v21:word32]
-	r29 = v21 + 8<i32>
+	v22 = r30
+	r31 = Mem0[v22 + 4<i32>:word32]
+	r30 = Mem0[v22:word32]
+	r29 = v22 + 8<i32>
 	return
 	// succ:  raise_exit
 l00007810:
@@ -4166,11 +4166,11 @@ signal_entry:
 	r29 = fp
 	// succ:  l00007880
 l00007880:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	Mem0[r29:word64] = r19_r18
@@ -4195,10 +4195,10 @@ l000078BC:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r18
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  signal_exit
 signal_exit:
@@ -4234,11 +4234,11 @@ _Tls_get__Ctype_entry:
 	r29 = fp
 	// succ:  l000078F0
 l000078F0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r17 = 0x10050<32>
@@ -4311,10 +4311,10 @@ l00007990:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l00007994
 l00007994:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  _Tls_get__Ctype_exit
 _Tls_get__Ctype_exit:
@@ -4327,16 +4327,16 @@ _Getpctype_entry:
 	r29 = fp
 	// succ:  l00007998
 l00007998:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Tls_get__Ctype (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _Getpctype_exit
 _Getpctype_exit:
@@ -4349,11 +4349,11 @@ _Exit_entry:
 	r29 = fp
 	// succ:  l000079B0
 l000079B0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _exit (retsize: 0;)
 	// succ:  l000079BC_thunk__Fwprep
 l000079BC_thunk__Fwprep:
@@ -4370,11 +4370,11 @@ _Fwprep_entry:
 	r29 = fp
 	// succ:  l000079C0
 l000079C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	r1 = Mem0[r16 + 16<i32>:word32]
@@ -4460,17 +4460,17 @@ l00007A8C:
 	Mem0[r16 + 24<i32>:word32] = r3
 	// succ:  l00007A9C
 l00007A9C:
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
+	return
+	// succ:  _Fwprep_exit
+l00007AA0:
 	v15 = r30
 	r31 = Mem0[v15 + 4<i32>:word32]
 	r30 = Mem0[v15:word32]
 	r29 = v15 + 8<i32>
-	return
-	// succ:  _Fwprep_exit
-l00007AA0:
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
 	return
 	// succ:  _Fwprep_exit
 _Fwprep_exit:
@@ -4483,27 +4483,27 @@ _Getmem_entry:
 	r29 = fp
 	// succ:  l00007AB0
 l00007AB0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	branch p0 l00007AC4
 	// succ:  l00007AB8 l00007AC4
 l00007AB8:
 	p0 = r0 > 0<32>
 	call __sys_sbrk (retsize: 0;)
-	v8 = r30
-	r31 = Mem0[v8 + 4<i32>:word32]
-	r30 = Mem0[v8:word32]
-	r29 = v8 + 8<i32>
-	return
-	// succ:  _Getmem_exit
-l00007AC4:
 	v9 = r30
 	r31 = Mem0[v9 + 4<i32>:word32]
 	r30 = Mem0[v9:word32]
 	r29 = v9 + 8<i32>
+	return
+	// succ:  _Getmem_exit
+l00007AC4:
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
 	// succ:  _Getmem_exit
 _Getmem_exit:
@@ -4516,11 +4516,11 @@ _Ldtob_entry:
 	r29 = fp
 	// succ:  l00007AD0
 l00007AD0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 256<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 256<i32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r16 = r0
 	r26 = r1
@@ -4586,16 +4586,16 @@ _LDunscale_entry:
 	r29 = fp
 	// succ:  l00008100
 l00008100:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Dunscale (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _LDunscale_exit
 _LDunscale_exit:
@@ -4608,11 +4608,11 @@ _Litob_entry:
 	r29 = fp
 	// succ:  l00008110
 l00008110:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 72<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 72<i32>
 	r2 = 0x18<32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r16 = r0
@@ -4789,11 +4789,11 @@ _LXp_getw_entry:
 	r29 = fp
 	// succ:  l000082E0
 l000082E0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	p0 = r1 == 0<32>
 	r17_r16 = Mem0[gp + 192<i32>:word64]
@@ -4843,16 +4843,16 @@ l00008340:
 	r17_r16 = r1_r0
 	// succ:  l00008348
 l00008348:
-	v11 = r30
-	r31 = Mem0[v11 + 4<i32>:word32]
-	r30 = Mem0[v11:word32]
-	r29 = v11 + 8<i32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
 	return
 l0000834C:
-	v19 = r30
-	r31 = Mem0[v19 + 4<i32>:word32]
-	r30 = Mem0[v19:word32]
-	r29 = v19 + 8<i32>
+	v20 = r30
+	r31 = Mem0[v20 + 4<i32>:word32]
+	r30 = Mem0[v20:word32]
+	r29 = v20 + 8<i32>
 	return
 	// succ:  _LXp_getw_exit _LXp_getw_exit
 _LXp_getw_exit:
@@ -4865,11 +4865,11 @@ _LXp_setw_entry:
 	r29 = fp
 	// succ:  l00008350
 l00008350:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 48<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 48<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r17_r16 = r1_r0
 	r19_r18 = r3_r2
@@ -4958,11 +4958,11 @@ fn00008354_entry:
 	r29 = fp
 	// succ:  l00008354
 l00008354:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 48<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 48<i32>
 	r17_r16 = r1_r0
 	r19_r18 = r3_r2
 	Mem0[r29 + 8<i32>:word64] = r19_r18
@@ -5286,11 +5286,11 @@ _LXp_addh_entry:
 	r29 = fp
 	// succ:  l00008450
 l00008450:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 96<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 96<i32>
 	call __save_r16_through_r27 (retsize: 0;)
 	// succ:  l00008450_thunk_fn00008458
 l00008450_thunk_fn00008458:
@@ -5307,11 +5307,11 @@ fn00008454_entry:
 	r29 = fp
 	// succ:  l00008454
 l00008454:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 96<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 96<i32>
 	// succ:  l00008454_thunk_fn00008458
 l00008454_thunk_fn00008458:
 	call fn00008458 (retsize: 0;)
@@ -5529,11 +5529,11 @@ _LXp_mulh_entry:
 	r29 = fp
 	// succ:  l00008788
 l00008788:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 96<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 96<i32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r19_r18 = r3_r2
 	r17_r16 = r1_r0
@@ -5709,21 +5709,21 @@ _LXp_movx_entry:
 	r29 = fp
 	// succ:  l000088F4
 l000088F4:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	r1 = r2
 	r3 = r1 << 3<32>
 	Mem0[r29:word64] = r17_r16
 	r2 = r3
 	r16 = r0
 	call memcpy (retsize: 0;)
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
 	return
 	// succ:  _LXp_movx_exit
 _LXp_movx_exit:
@@ -5736,11 +5736,11 @@ _LXp_addx_entry:
 	r29 = fp
 	// succ:  l00008910
 l00008910:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r19_r18 = r2_r1
 	r17_r16 = r0_r3
@@ -5786,11 +5786,11 @@ _LXp_subx_entry:
 	r29 = fp
 	// succ:  l00008954
 l00008954:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r19_r18 = r2_r1
 	r17_r16 = r0_r3
@@ -5871,11 +5871,11 @@ _LXp_ldexpx_entry:
 	r29 = fp
 	// succ:  l000089A0
 l000089A0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r17_r16 = r1_r0
 	r21_r20 = Mem0[gp + 192<i32>:word64]
@@ -5908,11 +5908,11 @@ _LXp_mulx_entry:
 	r29 = fp
 	// succ:  l000089F0
 l000089F0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 48<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 48<i32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r20 = r4
 	r19_r18 = r3_r2
@@ -6158,11 +6158,11 @@ _LXp_invx_entry:
 	r29 = fp
 	// succ:  l00008AC0
 l00008AC0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 48<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 48<i32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r22 = r2
 	r17_r16 = r1_r0
@@ -6492,11 +6492,11 @@ _LXp_sqrtx_entry:
 	r29 = fp
 	// succ:  l00008C04
 l00008C04:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 48<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 48<i32>
 	call __save_r16_through_r27 (retsize: 0;)
 	r18 = r2
 	r17_r16 = r1_r0
@@ -6795,11 +6795,11 @@ _Mbtowcx_entry:
 	r29 = fp
 	// succ:  l00008D30
 l00008D30:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	p0 = r1 == 0<32>
 	r6 = Mem0[r3 + 6<i32>:int16]
 	r5 = Mem0[r3:word32]
@@ -6839,10 +6839,10 @@ l00008EFC:
 	r0 = Mem0[r4:word32]
 	r0 = Mem0[r0:word16]
 	r2 = r0 & 0xF00<32>
-	v11 = r30
-	r31 = Mem0[v11 + 4<i32>:word32]
-	r30 = Mem0[v11:word32]
-	r29 = v11 + 8<i32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
 	return
 	// succ:  fn00008D44_exit
 fn00008D44_exit:
@@ -6916,10 +6916,10 @@ l00008EDC:
 	r2 = 0xFFFFFFFE<32>
 	Mem0[r3 + 8<i32>:word16] = r0
 	r0 = r2
-	v24 = r30
-	r31 = Mem0[v24 + 4<i32>:word32]
-	r30 = Mem0[v24:word32]
-	r29 = v24 + 8<i32>
+	v25 = r30
+	r31 = Mem0[v25 + 4<i32>:word32]
+	r30 = Mem0[v25:word32]
+	r29 = v25 + 8<i32>
 	return
 	// succ:  fn00008D4C_exit
 l00008EF0:
@@ -6927,10 +6927,10 @@ l00008EF0:
 	r2 = 0xFFFFFFFF<32>
 	// succ:  l00008EF8
 l00008EF8:
-	v23 = r30
-	r31 = Mem0[v23 + 4<i32>:word32]
-	r30 = Mem0[v23:word32]
-	r29 = v23 + 8<i32>
+	v24 = r30
+	r31 = Mem0[v24 + 4<i32>:word32]
+	r30 = Mem0[v24:word32]
+	r29 = v24 + 8<i32>
 	return
 	// succ:  fn00008D4C_exit
 fn00008D4C_exit:
@@ -7004,10 +7004,10 @@ l00008DF8:
 	p0 = r5 == 0<32>
 	Mem0[r3 + 8<i32>:word16] = r6
 	r0 = -1<i32>
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  fn00008DEC_exit
 fn00008DEC_exit:
@@ -7020,11 +7020,11 @@ _Mbtowc_entry:
 	r29 = fp
 	// succ:  l00008F3C
 l00008F3C:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	Mem0[r29:word64] = r19_r18
 	r19_r18 = r1_r2
@@ -7034,10 +7034,10 @@ l00008F3C:
 	r4 = r0
 	r1_r0 = r19_r17
 	r3_r2 = r16_r18
-	v23 = r30
-	r31 = Mem0[v23 + 4<i32>:word32]
-	r30 = Mem0[v23:word32]
-	r29 = v23 + 8<i32>
+	v24 = r30
+	r31 = Mem0[v24 + 4<i32>:word32]
+	r30 = Mem0[v24:word32]
+	r29 = v24 + 8<i32>
 	r19_r18 = Mem0[r29:word64]
 	// succ:  l00008F5C_thunk__Mbtowcx
 l00008F5C_thunk__Mbtowcx:
@@ -7054,11 +7054,11 @@ _Tls_get__Wcstate_entry:
 	r29 = fp
 	// succ:  l00008F70
 l00008F70:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r17 = 0x10058<32>
@@ -7130,10 +7130,10 @@ l00009014:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l00009018
 l00009018:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  _Tls_get__Wcstate_exit
 _Tls_get__Wcstate_exit:
@@ -7161,11 +7161,11 @@ _Atrealloc_entry:
 	r29 = fp
 	// succ:  l00009020
 l00009020:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17 = Mem0[gp + 4<i32>:word32]
 	r0 = r17
@@ -7202,10 +7202,10 @@ l00009048:
 	r3 = r0 + r17
 	Mem0[gp:word32] = r0
 	Mem0[gp + 96<i32>:word32] = r3
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  _Atrealloc_exit
 l000090BC:
@@ -7224,11 +7224,11 @@ _Closreg_entry:
 	r29 = fp
 	// succ:  l000090C0
 l000090C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r16 = 0x1005C<32>
@@ -7298,11 +7298,11 @@ fclose_entry:
 	r29 = fp
 	// succ:  l00009140
 l00009140:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	Mem0[r29:word64] = r19_r18
@@ -7366,10 +7366,10 @@ l000091F4:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r17
-	v11 = r30
-	r31 = Mem0[v11 + 4<i32>:word32]
-	r30 = Mem0[v11:word32]
-	r29 = v11 + 8<i32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
 	return
 	// succ:  fclose_exit
 fclose_exit:
@@ -7382,11 +7382,11 @@ fflush_entry:
 	r29 = fp
 	// succ:  l00009200
 l00009200:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	Mem0[r29:word64] = r19_r18
@@ -7453,10 +7453,10 @@ l000092B8:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r0 = r17
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  fflush_exit
 l000092C4:
@@ -7481,11 +7481,11 @@ fputc_entry:
 	r29 = fp
 	// succ:  l000092E0
 l000092E0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	r0 = r17
@@ -7525,10 +7525,10 @@ l00009354:
 	call _Unlockfilelock (retsize: 0;)
 	// succ:  l00009358
 l00009358:
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  fputc_exit
 fputc_exit:
@@ -7541,11 +7541,11 @@ fputs_entry:
 	r29 = fp
 	// succ:  l00009360
 l00009360:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 32<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 32<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r0_r1
 	Mem0[r29 + 16<i32>:word64] = r19_r18
@@ -7646,10 +7646,10 @@ l00009454:
 	r19_r18 = Mem0[r29 + 16<i32>:word64]
 	r17_r16 = Mem0[r29 + 24<i32>:word64]
 	r0 = r16
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  fputs_exit
 fputs_exit:
@@ -7662,11 +7662,11 @@ ldexpl_entry:
 	r29 = fp
 	// succ:  l00009470
 l00009470:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r2
 	Mem0[r29:word64] = r1_r0
@@ -7688,10 +7688,10 @@ l0000948C:
 l000094AC:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	r1_r0 = Mem0[r29:word64]
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  ldexpl_exit
 ldexpl_exit:
@@ -7704,19 +7704,19 @@ ldiv_entry:
 	r29 = fp
 	// succ:  l000094C0
 l000094C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	call __hexagon_divsi3 (retsize: 0;)
 	r2 = r0 * r17
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
 	return
 	// succ:  ldiv_exit
 ldiv_exit:
@@ -7744,18 +7744,18 @@ write_entry:
 	r29 = fp
 	// succ:  l000094F0
 l000094F0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r2
 	call __sys_write (retsize: 0;)
-	v9 = r30
-	r31 = Mem0[v9 + 4<i32>:word32]
-	r30 = Mem0[v9:word32]
-	r29 = v9 + 8<i32>
+	v10 = r30
+	r31 = Mem0[v10 + 4<i32>:word32]
+	r30 = Mem0[v10:word32]
+	r29 = v10 + 8<i32>
 	return
 	// succ:  write_exit
 write_exit:
@@ -7783,11 +7783,11 @@ sqrtl_entry:
 	r29 = fp
 	// succ:  l00009520
 l00009520:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 24<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 24<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	Mem0[r29 + 8<i32>:word64] = r17_r16
@@ -7823,10 +7823,10 @@ l0000955C:
 	r1_r0 = r17_r16
 	// succ:  l00009560
 l00009560:
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  sqrtl_exit
 sqrtl_exit:
@@ -7865,11 +7865,11 @@ _Atexit_entry:
 	r29 = fp
 	// succ:  l00009590
 l00009590:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r16 = r0
 	r2 = Mem0[gp + 64<i32>:word32]
@@ -7884,10 +7884,10 @@ l000095AC:
 	r0 = r1 + 0xFFFFFFFF<32>
 	Mem0[r30 + r0 * 4<32>:word32] = r16
 	Mem0[gp:word32] = r0
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  _Atexit_exit
 l000095C4:
@@ -7907,11 +7907,11 @@ _Dunscale_entry:
 	r29 = fp
 	// succ:  l000095D0
 l000095D0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r0_r1
 	r2 = Mem0[r16 + 6<i32>:int16]
@@ -7923,10 +7923,10 @@ l000095D0:
 	Mem0[r17:word16] = 0<16>
 	// succ:  l00009664
 l00009664:
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  _Dunscale_exit
 _Dunscale_exit:
@@ -7939,11 +7939,11 @@ _Feraise_entry:
 	r29 = fp
 	// succ:  l00009670
 l00009670:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	r2 = r0 & 0xC<32>
 	r1 = __set_bit<word32,word32>(r0, 8<32>)
 	Mem0[r29:word64] = r17_r16
@@ -7960,10 +7960,10 @@ l00009698:
 	call _Geterrno (retsize: 0;)
 	Mem0[r0:word32] = 0x21<32>
 	r17_r16 = Mem0[r29:word64]
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  _Feraise_exit
 l000096A8:
@@ -7972,10 +7972,10 @@ l000096A8:
 l000096B4:
 	r0 = r16 & 0xC<32>
 	Mem0[r0:word32] = 0x22<32>
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  _Feraise_exit
 l000096BC:
@@ -7994,11 +7994,11 @@ _Fofind_entry:
 	r29 = fp
 	// succ:  l000096C0
 l000096C0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = 0xE53800000000<64>
 	branch p0 l000096F4
@@ -8015,10 +8015,10 @@ l000096DC:
 	goto l0000971C
 	// succ:  l0000971C
 l000096F4:
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  _Fofind_exit
 l00009700:
@@ -8031,17 +8031,17 @@ l00009708:
 	Mem0[r17:word32] = r0
 	Mem0[r0:word16] = 0x80<16>
 	r17_r16 = Mem0[r29:word64]
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
+	return
+	// succ:  _Fofind_exit
+l0000971C:
 	v15 = r30
 	r31 = Mem0[v15 + 4<i32>:word32]
 	r30 = Mem0[v15:word32]
 	r29 = v15 + 8<i32>
-	return
-	// succ:  _Fofind_exit
-l0000971C:
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
 	return
 	// succ:  _Fofind_exit
 _Fofind_exit:
@@ -8054,11 +8054,11 @@ _Fofree_entry:
 	r29 = fp
 	// succ:  l00009720
 l00009720:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	r2 = r0 + 0x4C<32>
 	r1 = Mem0[r0:byte]
 	r1 = r1 & 0x80<32>
@@ -8076,10 +8076,10 @@ l00009754:
 	p0 = r4 == -1<i32>
 	Mem0[r3:word32] = 0<32>
 	call free (retsize: 0;)
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
 	return
 	// succ:  _Fofree_exit
 _Fofree_exit:
@@ -8092,11 +8092,11 @@ _Genld_entry:
 	r29 = fp
 	// succ:  l00009780
 l00009780:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 48<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 48<i32>
 	call __save_r16_through_r23 (retsize: 0;)
 	r17_r16 = r2_r0
 	r19_r18 = r4_r3
@@ -8411,16 +8411,16 @@ _LDint_entry:
 	r29 = fp
 	// succ:  l00009B50
 l00009B50:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Dint (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _LDint_exit
 _LDint_exit:
@@ -8433,15 +8433,15 @@ fn00009B54_entry:
 	r29 = fp
 	// succ:  l00009B54
 l00009B54:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  fn00009B54_exit
 fn00009B54_exit:
@@ -8454,16 +8454,16 @@ _LDscale_entry:
 	r29 = fp
 	// succ:  l00009B60
 l00009B60:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Dscale (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _LDscale_exit
 _LDscale_exit:
@@ -8476,16 +8476,16 @@ _LDtest_entry:
 	r29 = fp
 	// succ:  l00009B70
 l00009B70:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 0<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 0<i32>
 	call _Dtest (retsize: 0;)
-	v6 = r30
-	r31 = Mem0[v6 + 4<i32>:word32]
-	r30 = Mem0[v6:word32]
-	r29 = v6 + 8<i32>
+	v7 = r30
+	r31 = Mem0[v7 + 4<i32>:word32]
+	r30 = Mem0[v7:word32]
+	r29 = v7 + 8<i32>
 	return
 	// succ:  _LDtest_exit
 _LDtest_exit:
@@ -8498,19 +8498,19 @@ div_entry:
 	r29 = fp
 	// succ:  l00009B80
 l00009B80:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	call __hexagon_divsi3 (retsize: 0;)
 	r2 = r0 * r17
-	v12 = r30
-	r31 = Mem0[v12 + 4<i32>:word32]
-	r30 = Mem0[v12:word32]
-	r29 = v12 + 8<i32>
+	v13 = r30
+	r31 = Mem0[v13 + 4<i32>:word32]
+	r30 = Mem0[v13:word32]
+	r29 = v13 + 8<i32>
 	return
 	// succ:  div_exit
 div_exit:
@@ -8523,11 +8523,11 @@ feraiseexcept_entry:
 	r29 = fp
 	// succ:  l00009BA0
 l00009BA0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	branch r16 == 0<32> l00009BA4_thunk__Force_raise
 	goto l00009BB4
@@ -8546,10 +8546,10 @@ l00009BB4:
 	r0 = Mem0[r29 + 4<i32>:word32]
 	r16 = r16 & r0 >>u 0x19<32>
 	r0 = r16
-	v10 = r30
-	r31 = Mem0[v10 + 4<i32>:word32]
-	r30 = Mem0[v10:word32]
-	r29 = v10 + 8<i32>
+	v11 = r30
+	r31 = Mem0[v11 + 4<i32>:word32]
+	r30 = Mem0[v11:word32]
+	r29 = v11 + 8<i32>
 	return
 	// succ:  feraiseexcept_exit
 feraiseexcept_exit:
@@ -8562,11 +8562,11 @@ _Force_raise_entry:
 	r29 = fp
 	// succ:  l00009BE0
 l00009BE0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	r3_r2 = Mem0[gp + 192<i32>:word64]
 	Mem0[r29:word64] = r19_r18
 	Mem0[r29 + 8<i32>:word64] = r17_r16
@@ -8591,10 +8591,10 @@ l00009C18:
 l00009C24:
 	r19_r18 = Mem0[r29:word64]
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
-	v18 = r30
-	r31 = Mem0[v18 + 4<i32>:word32]
-	r30 = Mem0[v18:word32]
-	r29 = v18 + 8<i32>
+	v19 = r30
+	r31 = Mem0[v19 + 4<i32>:word32]
+	r30 = Mem0[v19:word32]
+	r29 = v19 + 8<i32>
 	return
 	// succ:  _Force_raise_exit
 _Force_raise_exit:
@@ -8634,11 +8634,11 @@ _Tls_get__Locale_entry:
 	r29 = fp
 	// succ:  l00009C40
 l00009C40:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r1 = 1<32>
 	r17 = 0x10064<32>
@@ -8710,10 +8710,10 @@ l00009CE4:
 	r17_r16 = Mem0[r29 + 8<i32>:word64]
 	// succ:  l00009CE8
 l00009CE8:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  _Tls_get__Locale_exit
 _Tls_get__Locale_exit:
@@ -8970,11 +8970,11 @@ _Dscale_entry:
 	r29 = fp
 	// succ:  l00009F70
 l00009F70:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	r2 = Mem0[r16 + 6<i32>:int16]
@@ -9189,17 +9189,17 @@ l0000A1D4:
 	r1 = 0x3F<32>
 	// succ:  l0000A1D8
 l0000A1D8:
+	v28 = r30
+	r31 = Mem0[v28 + 4<i32>:word32]
+	r30 = Mem0[v28:word32]
+	r29 = v28 + 8<i32>
+	return
+	// succ:  _Dscale_exit
+l0000A1DC:
 	v27 = r30
 	r31 = Mem0[v27 + 4<i32>:word32]
 	r30 = Mem0[v27:word32]
 	r29 = v27 + 8<i32>
-	return
-	// succ:  _Dscale_exit
-l0000A1DC:
-	v26 = r30
-	r31 = Mem0[v26 + 4<i32>:word32]
-	r30 = Mem0[v26:word32]
-	r29 = v26 + 8<i32>
 	return
 	// succ:  _Dscale_exit
 _Dscale_exit:
@@ -9547,10 +9547,10 @@ __restore_r16_through_r17_and_deallocframe_before_tailcall_entry:
 	r29 = fp
 	// succ:  l0000A330
 l0000A330:
-	v3 = r30
-	r31 = Mem0[v3 + 4<i32>:word32]
-	r30 = Mem0[v3:word32]
-	r29 = v3 + 8<i32>
+	v4 = r30
+	r31 = Mem0[v4 + 4<i32>:word32]
+	r30 = Mem0[v4:word32]
+	r29 = v4 + 8<i32>
 	r17_r16 = Mem0[r30 - 8<i32>:word64]
 	return
 	// succ:  __restore_r16_through_r17_and_deallocframe_before_tailcall_exit
@@ -9647,10 +9647,10 @@ __restore_r16_through_r17_and_deallocframe_entry:
 	r29 = fp
 	// succ:  l0000A368
 l0000A368:
-	v3 = r30
-	r31 = Mem0[v3 + 4<i32>:word32]
-	r30 = Mem0[v3:word32]
-	r29 = v3 + 8<i32>
+	v4 = r30
+	r31 = Mem0[v4 + 4<i32>:word32]
+	r30 = Mem0[v4:word32]
+	r29 = v4 + 8<i32>
 	return
 	// succ:  __restore_r16_through_r17_and_deallocframe_exit
 __restore_r16_through_r17_and_deallocframe_exit:
@@ -9663,10 +9663,10 @@ __deallocframe_entry:
 	r29 = fp
 	// succ:  l0000A370
 l0000A370:
-	v3 = r30
-	r31 = Mem0[v3 + 4<i32>:word32]
-	r30 = Mem0[v3:word32]
-	r29 = v3 + 8<i32>
+	v4 = r30
+	r31 = Mem0[v4 + 4<i32>:word32]
+	r30 = Mem0[v4:word32]
+	r29 = v4 + 8<i32>
 	return
 	// succ:  __deallocframe_exit
 __deallocframe_exit:
@@ -10495,11 +10495,11 @@ _exit_entry:
 	r29 = fp
 	// succ:  l0000AEB0
 l0000AEB0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	r1 = Mem0[gp + 224<i32>:word32]
 	r3 = r0
 	Mem0[r29 + 4<i32>:word32] = r3
@@ -10513,19 +10513,19 @@ l0000AECC:
 	r2 = r3
 	__trap0(0<32>)
 	r3 = r0
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  _exit_exit
 l0000AEE4:
 	call thread_stop (retsize: 0;)
 	r3 = 0<32>
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  _exit_exit
 _exit_exit:
@@ -10733,11 +10733,11 @@ __sys_close_entry:
 	r29 = fp
 	// succ:  l0000AFC0
 l0000AFC0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	r1 = Mem0[gp + 224<i32>:word32]
 	Mem0[r29 + 4<i32>:word32] = r0
 	Mem0[r29 + 8<i32>:word64] = r17_r16
@@ -10769,10 +10769,10 @@ l0000B004:
 	r2 = 0xFFFFFFFF<32>
 	// succ:  l0000B010
 l0000B010:
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  __sys_close_exit
 __sys_close_exit:
@@ -10785,11 +10785,11 @@ __sys_remove_entry:
 	r29 = fp
 	// succ:  l0000B020
 l0000B020:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 16<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 16<i32>
 	r1 = Mem0[gp + 224<i32>:word32]
 	Mem0[r29 + 8<i32>:word64] = r17_r16
 	r16 = r0
@@ -10832,10 +10832,10 @@ l0000B084:
 	r2 = 0xFFFFFFFF<32>
 	// succ:  l0000B090
 l0000B090:
-	v14 = r30
-	r31 = Mem0[v14 + 4<i32>:word32]
-	r30 = Mem0[v14:word32]
-	r29 = v14 + 8<i32>
+	v15 = r30
+	r31 = Mem0[v15 + 4<i32>:word32]
+	r30 = Mem0[v15:word32]
+	r29 = v15 + 8<i32>
 	return
 	// succ:  __sys_remove_exit
 __sys_remove_exit:
@@ -10848,11 +10848,11 @@ __sys_sbrk_entry:
 	r29 = fp
 	// succ:  l0000B0A0
 l0000B0A0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17 = r0
 	r0 = 0x1006C<32>
@@ -10888,10 +10888,10 @@ l0000B10C:
 l0000B118:
 	r0 = 0x1006C<32>
 	call __sys_Mtxunlock (retsize: 0;)
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  __sys_sbrk_exit
 __sys_sbrk_exit:
@@ -10936,11 +10936,11 @@ sys_Tlsalloc_entry:
 	r29 = fp
 	// succ:  l0000B150
 l0000B150:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	branch p0 l0000B1C4
 	// succ:  l0000B15C l0000B1C4
@@ -10980,10 +10980,10 @@ l0000B1B4:
 	call __sys_Mtxunlock (retsize: 0;)
 	// succ:  l0000B1C4
 l0000B1C4:
-	v16 = r30
-	r31 = Mem0[v16 + 4<i32>:word32]
-	r30 = Mem0[v16:word32]
-	r29 = v16 + 8<i32>
+	v17 = r30
+	r31 = Mem0[v17 + 4<i32>:word32]
+	r30 = Mem0[v17:word32]
+	r29 = v17 + 8<i32>
 	return
 	// succ:  sys_Tlsalloc_exit
 sys_Tlsalloc_exit:
@@ -10996,11 +10996,11 @@ sys_Tlsfree_entry:
 	r29 = fp
 	// succ:  l0000B1D0
 l0000B1D0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 8<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 8<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17 = r0 + 0x1EFB000<32>
 	p0 = r17 >u 0x3F<32>
@@ -11027,10 +11027,10 @@ l0000B1F8:
 	call __sys_Mtxunlock (retsize: 0;)
 	// succ:  l0000B21C
 l0000B21C:
-	v11 = r30
-	r31 = Mem0[v11 + 4<i32>:word32]
-	r30 = Mem0[v11:word32]
-	r29 = v11 + 8<i32>
+	v12 = r30
+	r31 = Mem0[v12 + 4<i32>:word32]
+	r30 = Mem0[v12:word32]
+	r29 = v12 + 8<i32>
 	return
 	// succ:  sys_Tlsfree_exit
 sys_Tlsfree_exit:
@@ -11102,11 +11102,11 @@ __sys_write_entry:
 	r29 = fp
 	// succ:  l0000B2A0
 l0000B2A0:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 24<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 24<i32>
 	r4 = Mem0[gp + 224<i32>:word32]
 	r3 = r0
 	Mem0[r29 + 16<i32>:word64] = r17_r16
@@ -11145,10 +11145,10 @@ l0000B2F8:
 	r2 = 0xFFFFFFFF<32>
 	// succ:  l0000B304
 l0000B304:
-	v15 = r30
-	r31 = Mem0[v15 + 4<i32>:word32]
-	r30 = Mem0[v15:word32]
-	r29 = v15 + 8<i32>
+	v16 = r30
+	r31 = Mem0[v16 + 4<i32>:word32]
+	r30 = Mem0[v16:word32]
+	r29 = v16 + 8<i32>
 	return
 	// succ:  __sys_write_exit
 __sys_write_exit:
@@ -11161,11 +11161,11 @@ sqrt_entry:
 	r29 = fp
 	// succ:  l0000B310
 l0000B310:
-	v3 = r29 - 8<i32>
-	Mem0[v3:word32] = r30
-	Mem0[v3 + 4<i32>:word32] = r31
-	r30 = v3
-	r29 = v3 - 24<i32>
+	v4 = r29 - 8<i32>
+	Mem0[v4:word32] = r30
+	Mem0[v4 + 4<i32>:word32] = r31
+	r30 = v4
+	r29 = v4 - 24<i32>
 	Mem0[r29 + 496<i32>:word64] = r17_r16
 	r17_r16 = r1_r0
 	Mem0[r29 + 8<i32>:word64] = r17_r16
@@ -11201,10 +11201,10 @@ l0000B34C:
 	r1_r0 = r17_r16
 	// succ:  l0000B350
 l0000B350:
-	v13 = r30
-	r31 = Mem0[v13 + 4<i32>:word32]
-	r30 = Mem0[v13:word32]
-	r29 = v13 + 8<i32>
+	v14 = r30
+	r31 = Mem0[v14 + 4<i32>:word32]
+	r30 = Mem0[v14:word32]
+	r29 = v14 + 8<i32>
 	return
 	// succ:  sqrt_exit
 sqrt_exit:

@@ -176,12 +176,12 @@ l000000000040397B:
 l00000000004032F4:
 	branch Mem602[0x000000000061B150<p64>:word32] == 0<32> l000000000040380D
 l000000000040380D:
-	bool v151_3797 = r12_3716 == 0<64>
+	bool v152_3797 = r12_3716 == 0<64>
 	branch r12_3716 == 0<64> l00000000004045C6
 l00000000004045C6:
 	word64 rax_621 = getenv(0x4138F5<u64>)
 	r12_3716 = rax_621
-	v151_3797 = rax_621 == 0<64>
+	v152_3797 = rax_621 == 0<64>
 	branch rax_621 != 0<64> l00000000004045DF
 l00000000004045DB_1:
 	r12_3716 = 0x413827<u64>
@@ -194,7 +194,7 @@ l000000000040383E:
 l0000000000403847:
 	branch rcx_638 == 0<64> l0000000000403849
 l0000000000403847_1:
-	v151_3797 = Mem3724[rsi_4106:byte] == Mem3724[rdi_4107:byte]
+	v152_3797 = Mem3724[rsi_4106:byte] == Mem3724[rdi_4107:byte]
 	rsi_634 = rsi_4106 + 1<i64>
 	rdi_636 = rdi_4107 + 1<i64>
 	rcx_638 = rcx_638 - 1<64>
@@ -202,12 +202,12 @@ l0000000000403847_1:
 	rdi_4107 = rdi_636
 	branch Mem3724[rsi_4106:byte] != Mem3724[rdi_4107:byte] l0000000000403847
 l0000000000403849:
-	branch v151_3797 l0000000000403828
+	branch v152_3797 l0000000000403828
 l0000000000403828:
 	branch fn000000000040AB70(2<32>) == 0<8> l0000000000403301
 l000000000040383A:
 	r12_3716 = r12_3716 + 6<64>
-	v151_3797 = r12_3716 == 0<64>
+	v152_3797 = r12_3716 == 0<64>
 l000000000040384B:
 	branch Mem3724[r12_3716:byte] == 0x2B<8> l00000000004043D9
 l00000000004043D9:
@@ -1178,7 +1178,7 @@ l00000000004049E0:
 	word64 r10_116 = 0<u64>
 	word64 r11_127 = 0<u64>
 l0000000000404A06:
-	bool v43_522
+	bool v44_522
 	word64 rax_322
 	byte al_152
 	word32 eax_273
@@ -1248,10 +1248,10 @@ l0000000000404CB0:
 	r9_110 = r9_110 + 1<64>
 l0000000000404A70:
 	al_152 = Mem149[r8_124:byte] (alias)
-	v43_522 = al_152 <= 0x3D<8>
+	v44_522 = al_152 <= 0x3D<8>
 	branch al_152 == 0x3D<8> l0000000000404ABA
 l0000000000404A78:
-	branch v43_522 l0000000000404B40
+	branch v44_522 l0000000000404B40
 l0000000000404B40:
 	branch al_152 == 0<8> l0000000000404B48
 l0000000000404B44:
@@ -1327,7 +1327,7 @@ l0000000000404AA0:
 	al_152 = Mem284[r8_124:byte] (alias)
 	r10_116 = r10_116 + 1<64>
 	r9_110 = r9_110 + 1<64>
-	v43_522 = al_152 <= 0x3D<8>
+	v44_522 = al_152 <= 0x3D<8>
 	branch al_152 != 0x3D<8> l0000000000404A78
 l0000000000404ABA:
 	branch dl == 0<8> l0000000000404B60
@@ -1372,7 +1372,7 @@ l0000000000404CEB:
 l0000000000404D10:
 	return CONVERT(CONVERT(Mem0[rsi_12:byte] != 0x30<8>, bool, int8), int8, uint64)
 l0000000000404CF1:
-	bool v17_41 = rdx_11 != 2<64>
+	bool v18_41 = rdx_11 != 2<64>
 	rax_23 = 1<u64>
 	branch rdx_11 == 2<64> l0000000000404D00
 l0000000000404D00:
@@ -1381,7 +1381,7 @@ l0000000000404D00:
 l0000000000404D0A:
 	branch rcx_28 == 0<64> l0000000000404D0C
 l0000000000404D0A_1:
-	v17_41 = Mem0[rsi_100:byte] != Mem0[rdi_101:byte]
+	v18_41 = Mem0[rsi_100:byte] != Mem0[rdi_101:byte]
 	rsi_12 = rsi_100 + 1<i64>
 	rdi_26 = rdi_101 + 1<i64>
 	rcx_28 = rcx_28 - 1<64>
@@ -1389,7 +1389,7 @@ l0000000000404D0A_1:
 	rdi_101 = rdi_26
 	branch Mem0[rsi_100:byte] != Mem0[rdi_101:byte] l0000000000404D0A
 l0000000000404D0C:
-	return CONVERT(CONVERT(v17_41, bool, int8), int8, uint64)
+	return CONVERT(CONVERT(v18_41, bool, int8), int8, uint64)
 l0000000000404CFC:
 	return rax_23
 fn0000000000404CD0_exit:
@@ -1723,9 +1723,9 @@ l00000000004052D0:
 	word64 qwLoc2070_421 = fp - 8264<i64>
 	branch rax_50 >u 0x1FFF<64> l0000000000405590
 l0000000000405590:
-	word64 v24_73 = fp - 0x2088<64> - (rax_50 + 31<i64> & 0xFFFFFFFFFFFFFFF0<64>) + 15<i64> & 0xFFFFFFFFFFFFFFF0<64>
-	fn000000000040E6F0(0xFFFFFFFFFFFFFFFF<64>, rsi, rax_50 + 1<i64>, v24_73, rdx, fs)
-	qwLoc2070_421 = v24_73
+	word64 v25_73 = fp - 0x2088<64> - (rax_50 + 31<i64> & 0xFFFFFFFFFFFFFFF0<64>) + 15<i64> & 0xFFFFFFFFFFFFFFF0<64>
+	fn000000000040E6F0(0xFFFFFFFFFFFFFFFF<64>, rsi, rax_50 + 1<i64>, v25_73, rdx, fs)
+	qwLoc2070_421 = v25_73
 l0000000000405343:
 	branch Mem91[0x000000000061B0F0<p64>:byte] != 0<8> l0000000000405412
 l0000000000405412:
@@ -2808,7 +2808,7 @@ fn0000000000406B70_entry:
 	struct <anonymous> tLoc1278
 	char bLoc0E88
 l0000000000406B70:
-	bool v53_1223
+	bool v54_1223
 	word64 qwLoc12B8_1238
 	word64 qwLoc12B0_1237
 	word32 eax_105
@@ -2833,20 +2833,20 @@ l0000000000406E50:
 l0000000000406E59:
 	eax_105 = Mem61[0x000000000061B14C<p64>:word32] (alias)
 	Mem73[&tLoc12A8 + 10<i64>:byte] = 0x2B<8>
-	v53_1223 = eax_105 <u 1<32>
+	v54_1223 = eax_105 <u 1<32>
 	branch eax_105 != 1<32> l0000000000406BD6
 l0000000000406E6D:
 l0000000000406BC2:
 	Mem78[&tLoc12A8 + 10<i64>:byte] = 0<8>
 l0000000000406BC7:
 	eax_105 = Mem79[0x000000000061B14C<p64>:word32] (alias)
-	v53_1223 = eax_105 <u 1<32>
+	v54_1223 = eax_105 <u 1<32>
 	branch eax_105 == 1<32> l0000000000406E70
 l0000000000406E70:
 	qwLoc12B0_1237 = Mem88[rdi + 128<i64>:word64]
 	qwLoc12B8_1238 = Mem88[rdi + 120<i64>:word64]
 l0000000000406BD6:
-	branch v53_1223 l0000000000407040
+	branch v54_1223 l0000000000407040
 l0000000000407040:
 	qwLoc12B0_1237 = Mem99[rdi + 112<i64>:word64]
 	qwLoc12B8_1238 = Mem99[rdi + 104<i64>:word64]
@@ -3212,10 +3212,10 @@ void fn00000000004079F0(word64 r12, selector fs)
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 fn00000000004079F0_entry:
 l00000000004079F0:
-	word32 v13_5 = Mem0[0x000000000061B150<p64>:word32]
+	word32 v14_5 = Mem0[0x000000000061B150<p64>:word32]
 	branch Mem0[0x000000000061B150<p64>:word32] >u 4<32> l0000000000407A46
 l00000000004079F9:
-	switch (v13_5) { l0000000000407C01 l0000000000407C75 l0000000000407CDA l0000000000407A48 l0000000000407B31 }
+	switch (v14_5) { l0000000000407C01 l0000000000407C75 l0000000000407CDA l0000000000407A48 l0000000000407B31 }
 l0000000000407B31:
 	branch Mem25[0x000000000061B1B0<p64>:word64] == 0<64> l0000000000407A18
 l0000000000407B3F:
@@ -3348,9 +3348,9 @@ l0000000000407DC7:
 	Mem458[rdi_450 + 40<i64>:word64] = rax_451 + 1<i64>
 	Mem459[rax_451:byte] = 0xA<8>
 l0000000000407DD2:
-	word64 v33_462 = qwLoc40_679 + 1<64>
-	qwLoc40_679 = v33_462
-	branch v33_462 != rdx_367 l0000000000407D30
+	word64 v34_462 = qwLoc40_679 + 1<64>
+	qwLoc40_679 = v34_462
+	branch v34_462 != rdx_367 l0000000000407D30
 l0000000000407DE8:
 l0000000000407C75:
 	word64 rbx_482 = 0<u64>
@@ -3669,15 +3669,15 @@ l0000000000408C52:
 	Mem819[r14_129 + 168<i64>:word64] = 0x61A56A<64>
 	r13b_1053 = 0<8> (alias)
 l000000000040806D:
-	bool v82_2139
+	bool v83_2139
 	branch sil_821 == 0<8> l0000000000408458
 l0000000000408458:
 	word32 eax_847 = fn0000000000411840(r14_129 + 168<i64>, r12_463)
-	v82_2139 = eax_847 != 0<32>
+	v83_2139 = eax_847 != 0<32>
 	branch eax_847 >= 0<32> l0000000000408093
 l0000000000408080:
 	word32 eax_862 = fn0000000000411820(r14_129 + 168<i64>, r12_463)
-	v82_2139 = eax_862 != 0<32>
+	v83_2139 = eax_862 != 0<32>
 	branch eax_862 < 0<32> l000000000040846B
 l000000000040846B:
 	word32 eax_878 = Mem872[__errno_location():word32]
@@ -3705,7 +3705,7 @@ l0000000000408093:
 l00000000004080A4:
 	branch rcx_910 == 0<64> l00000000004080A6
 l00000000004080A4_1:
-	v82_2139 = Mem808[rsi_3304:byte] != Mem808[rdi_3305:byte]
+	v83_2139 = Mem808[rsi_3304:byte] != Mem808[rdi_3305:byte]
 	rsi_908 = rsi_3304 + 1<i64>
 	rdi_906 = rdi_3305 + 1<i64>
 	rcx_910 = rcx_910 - 1<64>
@@ -3713,7 +3713,7 @@ l00000000004080A4_1:
 	rdi_3305 = rdi_906
 	branch Mem808[rsi_3304:byte] != Mem808[rdi_3305:byte] l00000000004080A4
 l00000000004080A6:
-	r13b_1053 = CONVERT(v82_2139, bool, int8)
+	r13b_1053 = CONVERT(v83_2139, bool, int8)
 l00000000004080AA:
 	word32 ecx_1026
 	word32 edx_1111 = edx_673
@@ -4690,10 +4690,10 @@ l000000000040AB70:
 l000000000040ABB0:
 	return 1<8>
 l000000000040AB80:
-	bool v17_50 = Mem0[rax_8:byte] != 0x43<8>
+	bool v18_50 = Mem0[rax_8:byte] != 0x43<8>
 	branch Mem0[rax_8:byte] != 0x43<8> l000000000040AB98
 l000000000040AB85:
-	v17_50 = Mem0[rax_8 + 1<i64>:byte] != 0<8>
+	v18_50 = Mem0[rax_8 + 1<i64>:byte] != 0<8>
 	branch Mem0[rax_8 + 1<i64>:byte] != 0<8> l000000000040AB98
 l000000000040AB98:
 	word64 rsi_22 = rax_8
@@ -4702,7 +4702,7 @@ l000000000040AB98:
 l000000000040ABA5:
 	branch rcx_26 == 0<64> l000000000040ABA7
 l000000000040ABA5_1:
-	v17_50 = Mem0[rsi_89:byte] != Mem0[rdi_90:byte]
+	v18_50 = Mem0[rsi_89:byte] != Mem0[rdi_90:byte]
 	rsi_22 = rsi_89 + 1<i64>
 	rdi_24 = rdi_90 + 1<i64>
 	rcx_26 = rcx_26 - 1<64>
@@ -4710,7 +4710,7 @@ l000000000040ABA5_1:
 	rdi_90 = rdi_24
 	branch Mem0[rsi_89:byte] != Mem0[rdi_90:byte] l000000000040ABA5
 l000000000040ABA7:
-	return CONVERT(v17_50, bool, int8)
+	return CONVERT(v18_50, bool, int8)
 l000000000040AB8B:
 	return 0<8>
 fn000000000040AB70_exit:
@@ -4902,12 +4902,12 @@ l000000000040ADD6:
 l000000000040ADE4:
 	branch Mem0[rax_6:real32] <u Mem0[0x0000000000415F00<p64>:real32] l000000000040AE20
 l000000000040ADF1:
-	real32 v14_31 = Mem0[rax_6:real32] + Mem0[0x0000000000415EF4<p64>:real32]
-	branch Mem0[rax_6 + 4<i64>:real32] <=u v14_31 l000000000040AE20
+	real32 v15_31 = Mem0[rax_6:real32] + Mem0[0x0000000000415EF4<p64>:real32]
+	branch Mem0[rax_6 + 4<i64>:real32] <=u v15_31 l000000000040AE20
 l000000000040AE03:
 	branch Mem0[0x0000000000415F04<p64>:real32] <u Mem0[rax_6 + 4<i64>:real32] l000000000040AE20
 l000000000040AE10:
-	branch Mem0[rax_6 + 8<i64>:real32] >u v14_31 l000000000040AE35
+	branch Mem0[rax_6 + 8<i64>:real32] >u v15_31 l000000000040AE35
 l000000000040AE35:
 	return 1<8>
 l000000000040AE1A:
@@ -5057,19 +5057,19 @@ l000000000040B477:
 	word128 xmm0_108
 	branch rdi < 0<64> l000000000040B578
 l000000000040B578:
-	real32 v35_104 = CONVERT(rdi >>u 1<64> | CONVERT(r15d_97 & 1<32>, word32, uint64), word64, real32)
-	xmm0_108 = SEQ(SLICE(xmm0_74, word96, 32), v35_104 + v35_104)
+	real32 v36_104 = CONVERT(rdi >>u 1<64> | CONVERT(r15d_97 & 1<32>, word32, uint64), word64, real32)
+	xmm0_108 = SEQ(SLICE(xmm0_74, word96, 32), v36_104 + v36_104)
 l000000000040B480:
 	xmm0_108 = SEQ(SLICE(xmm0_74, word96, 32), CONVERT(rdi, word64, real32))
 l000000000040B485:
-	real32 v26_113 = SLICE(xmm0_108, real32, 0) / Mem71[rbp_32 + 8<i64>:real32]
-	branch v26_113 >=u Mem71[0x0000000000415F08<p64>:real32] l000000000040B540
+	real32 v27_113 = SLICE(xmm0_108, real32, 0) / Mem71[rbp_32 + 8<i64>:real32]
+	branch v27_113 >=u Mem71[0x0000000000415F08<p64>:real32] l000000000040B540
 l000000000040B496:
-	branch v26_113 <u Mem71[0x0000000000415F0C<p64>:real32] l000000000040B568
+	branch v27_113 <u Mem71[0x0000000000415F0C<p64>:real32] l000000000040B568
 l000000000040B568:
-	r15_10 = CONVERT(v26_113, real32, int64)
+	r15_10 = CONVERT(v27_113, real32, int64)
 l000000000040B4A3:
-	r15_10 = CONVERT(v26_113 - Mem71[0x0000000000415F0C<p64>:real32], real32, int64) ^ 0x8000000000000000<64>
+	r15_10 = CONVERT(v27_113 - Mem71[0x0000000000415F0C<p64>:real32], real32, int64) ^ 0x8000000000000000<64>
 l000000000040B4C0:
 	word64 rax_137 = fn000000000040ABC0(r15_10)
 	branch rax_137 >u 0x1FFFFFFFFFFFFFFF<64> l000000000040B540
@@ -5194,19 +5194,19 @@ l000000000040B72A:
 	word128 xmm0_37
 	branch rsi < 0<64> l000000000040B8D0
 l000000000040B8D0:
-	real32 v30_32 = CONVERT(rsi >>u 1<64> | CONVERT(esi_25 & 1<32>, word32, uint64), word64, real32)
-	xmm0_37 = SEQ(SLICE(xmm0, word96, 32), v30_32 + v30_32)
+	real32 v31_32 = CONVERT(rsi >>u 1<64> | CONVERT(esi_25 & 1<32>, word32, uint64), word64, real32)
+	xmm0_37 = SEQ(SLICE(xmm0, word96, 32), v31_32 + v31_32)
 l000000000040B733:
 	xmm0_37 = SEQ(SLICE(xmm0, word96, 32), CONVERT(rsi, word64, real32))
 l000000000040B738:
-	real32 v16_42 = SLICE(xmm0_37, real32, 0) / Mem12[rbp_16 + 8<i64>:real32]
-	branch v16_42 >=u Mem12[0x0000000000415F08<p64>:real32] l000000000040B870
+	real32 v17_42 = SLICE(xmm0_37, real32, 0) / Mem12[rbp_16 + 8<i64>:real32]
+	branch v17_42 >=u Mem12[0x0000000000415F08<p64>:real32] l000000000040B870
 l000000000040B749:
-	branch v16_42 <u Mem12[0x0000000000415F0C<p64>:real32] l000000000040B880
+	branch v17_42 <u Mem12[0x0000000000415F0C<p64>:real32] l000000000040B880
 l000000000040B880:
-	rsi = CONVERT(v16_42, real32, int64)
+	rsi = CONVERT(v17_42, real32, int64)
 l000000000040B756:
-	rsi = CONVERT(v16_42 - Mem12[0x0000000000415F0C<p64>:real32], real32, int64) ^ 0x8000000000000000<64>
+	rsi = CONVERT(v17_42 - Mem12[0x0000000000415F0C<p64>:real32], real32, int64) ^ 0x8000000000000000<64>
 l000000000040B770:
 	word64 rax_66 = fn000000000040ABC0(rsi)
 	branch rax_66 >u 0x1FFFFFFFFFFFFFFF<64> l000000000040B870
@@ -5280,8 +5280,8 @@ l000000000040B938:
 	word32 eax_48 = SLICE(rax_43, word32, 0)
 	branch rax_43 < 0<64> l000000000040BA70
 l000000000040BA70:
-	real32 v28_55 = CONVERT(rax_43 >>u 1<64> | CONVERT(eax_48 & 1<32>, word32, uint64), word64, real32)
-	xmm0_60 = SEQ(SLICE(xmm0, word96, 32), v28_55 + v28_55)
+	real32 v29_55 = CONVERT(rax_43 >>u 1<64> | CONVERT(eax_48 & 1<32>, word32, uint64), word64, real32)
+	xmm0_60 = SEQ(SLICE(xmm0, word96, 32), v29_55 + v29_55)
 l000000000040B945:
 	xmm0_60 = SEQ(SLICE(xmm0, word96, 32), CONVERT(rax_43, word64, real32))
 l000000000040B94A:
@@ -5291,8 +5291,8 @@ l000000000040B94A:
 	word64 rdx_66 = Mem14[rdi + 40<i64>:word64]
 	branch rax_65 < 0<64> l000000000040BA90
 l000000000040BA90:
-	real32 v53_78 = CONVERT(rax_65 >>u 1<64> | CONVERT(eax_71 & 1<32>, word32, uint64), word64, real32)
-	xmm1_84 = SEQ(SLICE(xmm1, word96, 32), v53_78 + v53_78)
+	real32 v54_78 = CONVERT(rax_65 >>u 1<64> | CONVERT(eax_71 & 1<32>, word32, uint64), word64, real32)
+	xmm1_84 = SEQ(SLICE(xmm1, word96, 32), v54_78 + v54_78)
 l000000000040B95B:
 	xmm1_84 = SEQ(SLICE(xmm1, word96, 32), CONVERT(rax_65, word64, real32))
 l000000000040B960:
@@ -5305,8 +5305,8 @@ l000000000040B9C8:
 	word64 rdx_112 = Mem14[rdi + 40<i64>:word64]
 	branch rax_111 < 0<64> l000000000040BAE7
 l000000000040BAE7:
-	real32 v50_125 = CONVERT(rax_111 >>u 1<64> | CONVERT(eax_118 & 1<32>, word32, uint64), word64, real32)
-	xmm0_129 = SEQ(SLICE(xmm0_102, word96, 32), v50_125 + v50_125)
+	real32 v51_125 = CONVERT(rax_111 >>u 1<64> | CONVERT(eax_118 & 1<32>, word32, uint64), word64, real32)
+	xmm0_129 = SEQ(SLICE(xmm0_102, word96, 32), v51_125 + v51_125)
 l000000000040B9E7:
 	xmm0_129 = SEQ(SLICE(xmm0_102, word96, 32), CONVERT(rax_111, word64, real32))
 l000000000040B9EC:
@@ -5315,19 +5315,19 @@ l000000000040B9EC:
 	word32 eax_139 = SLICE(rax_134, word32, 0)
 	branch rax_134 < 0<64> l000000000040BB01
 l000000000040BB01:
-	real32 v45_146 = CONVERT(rax_134 >>u 1<64> | CONVERT(eax_139 & 1<32>, word32, uint64), word64, real32)
-	xmm1_151 = SEQ(SLICE(xmm1_103, word96, 32), v45_146 + v45_146)
+	real32 v46_146 = CONVERT(rax_134 >>u 1<64> | CONVERT(eax_139 & 1<32>, word32, uint64), word64, real32)
+	xmm1_151 = SEQ(SLICE(xmm1_103, word96, 32), v46_146 + v46_146)
 l000000000040B9F9:
 	xmm1_151 = SEQ(SLICE(xmm1_103, word96, 32), CONVERT(rax_134, word64, real32))
 l000000000040B9FE:
 	branch SLICE(xmm1_151, real32, 0) <=u Mem14[rdx_112 + 8<i64>:real32] * SLICE(xmm0_129, real32, 0) l000000000040B96A
 l000000000040BA0E:
-	real32 v40_171 = SLICE(xmm0_129, real32, 0) * Mem14[rdx_112 + 12<i64>:real32]
-	word96 v41_172 = SLICE(xmm0_129, word96, 32)
-	word128 xmm0_173 = SEQ(v41_172, v40_171)
+	real32 v41_171 = SLICE(xmm0_129, real32, 0) * Mem14[rdx_112 + 12<i64>:real32]
+	word96 v42_172 = SLICE(xmm0_129, word96, 32)
+	word128 xmm0_173 = SEQ(v42_172, v41_171)
 	branch Mem14[rdx_112 + 16<i64>:byte] != 0<8> l000000000040BA1D
 l000000000040BA19:
-	xmm0_173 = SEQ(v41_172, v40_171 * Mem14[rdx_112 + 8<i64>:real32])
+	xmm0_173 = SEQ(v42_172, v41_171 * Mem14[rdx_112 + 8<i64>:real32])
 l000000000040BA1D:
 	branch SLICE(xmm0_173, real32, 0) >=u Mem14[0x0000000000415F08<p64>:real32] l000000000040BB2E
 l000000000040BA2A:
@@ -5436,8 +5436,8 @@ l000000000040BBD0:
 	word32 eax_53 = SLICE(rax_46, word32, 0) - 1<32>
 	branch rax_46 < 1<64> l000000000040BCE8
 l000000000040BCE8:
-	real32 v27_60 = CONVERT(rax_46 - 1<64> >>u 1<64> | CONVERT(eax_53 & 1<32>, word32, uint64), word64, real32)
-	xmm0_65 = SEQ(SLICE(xmm0, word96, 32), v27_60 + v27_60)
+	real32 v28_60 = CONVERT(rax_46 - 1<64> >>u 1<64> | CONVERT(eax_53 & 1<32>, word32, uint64), word64, real32)
+	xmm0_65 = SEQ(SLICE(xmm0, word96, 32), v28_60 + v28_60)
 l000000000040BBE5:
 	xmm0_65 = SEQ(SLICE(xmm0, word96, 32), CONVERT(rax_46 - 1<64>, word64, real32))
 l000000000040BBEA:
@@ -5447,8 +5447,8 @@ l000000000040BBEA:
 	word64 rdx_71 = Mem50[rdi + 40<i64>:word64]
 	branch rax_70 < 0<64> l000000000040BCC8
 l000000000040BCC8:
-	real32 v39_83 = CONVERT(rax_70 >>u 1<64> | CONVERT(eax_76 & 1<32>, word32, uint64), word64, real32)
-	xmm1_89 = SEQ(SLICE(xmm1, word96, 32), v39_83 + v39_83)
+	real32 v40_83 = CONVERT(rax_70 >>u 1<64> | CONVERT(eax_76 & 1<32>, word32, uint64), word64, real32)
+	xmm1_89 = SEQ(SLICE(xmm1, word96, 32), v40_83 + v40_83)
 l000000000040BBFB:
 	xmm1_89 = SEQ(SLICE(xmm1, word96, 32), CONVERT(rax_70, word64, real32))
 l000000000040BC00:
@@ -5461,8 +5461,8 @@ l000000000040BC18:
 	word64 rax_117 = Mem50[rdi + 40<i64>:word64]
 	branch rdx_116 < 0<64> l000000000040BD2F
 l000000000040BD2F:
-	real32 v43_129 = CONVERT(rdx_116 >>u 1<64> | CONVERT(edx_122 & 1<32>, word32, uint64), word64, real32)
-	xmm0_133 = SEQ(SLICE(xmm0_107, word96, 32), v43_129 + v43_129)
+	real32 v44_129 = CONVERT(rdx_116 >>u 1<64> | CONVERT(edx_122 & 1<32>, word32, uint64), word64, real32)
+	xmm0_133 = SEQ(SLICE(xmm0_107, word96, 32), v44_129 + v44_129)
 l000000000040BC32:
 	xmm0_133 = SEQ(SLICE(xmm0_107, word96, 32), CONVERT(rdx_116, word64, real32))
 l000000000040BC37:
@@ -5471,19 +5471,19 @@ l000000000040BC37:
 	word32 edx_143 = SLICE(rdx_138, word32, 0)
 	branch rdx_138 < 0<64> l000000000040BD49
 l000000000040BD49:
-	real32 v46_150 = CONVERT(rdx_138 >>u 1<64> | CONVERT(edx_143 & 1<32>, word32, uint64), word64, real32)
-	xmm1_155 = SEQ(SLICE(xmm1_108, word96, 32), v46_150 + v46_150)
+	real32 v47_150 = CONVERT(rdx_138 >>u 1<64> | CONVERT(edx_143 & 1<32>, word32, uint64), word64, real32)
+	xmm1_155 = SEQ(SLICE(xmm1_108, word96, 32), v47_150 + v47_150)
 l000000000040BC44:
 	xmm1_155 = SEQ(SLICE(xmm1_108, word96, 32), CONVERT(rdx_138, word64, real32))
 l000000000040BC49:
 	branch Mem50[rax_117:real32] * SLICE(xmm0_133, real32, 0) <=u SLICE(xmm1_155, real32, 0) l000000000040BC09
 l000000000040BC56:
-	real32 v35_173 = SLICE(xmm0_133, real32, 0) * Mem50[rax_117 + 4<i64>:real32]
-	word96 v36_174 = SLICE(xmm0_133, word96, 32)
-	word128 xmm0_175 = SEQ(v36_174, v35_173)
+	real32 v36_173 = SLICE(xmm0_133, real32, 0) * Mem50[rax_117 + 4<i64>:real32]
+	word96 v37_174 = SLICE(xmm0_133, word96, 32)
+	word128 xmm0_175 = SEQ(v37_174, v36_173)
 	branch Mem50[rax_117 + 16<i64>:byte] != 0<8> l000000000040BC66
 l000000000040BC61:
-	xmm0_175 = SEQ(v36_174, v35_173 * Mem50[rax_117 + 8<i64>:real32])
+	xmm0_175 = SEQ(v37_174, v36_173 * Mem50[rax_117 + 8<i64>:real32])
 l000000000040BC66:
 	word64 rsi_191
 	branch SLICE(xmm0_175, real32, 0) >=u Mem50[0x0000000000415F0C<p64>:real32] l000000000040BD10
@@ -5533,7 +5533,7 @@ l000000000040BD70:
 	word64 r15_542 = Mem63[rax_64:word64]
 	word64 rax_68 = strlen(r15_542)
 	byte bLocC8_1620 = SLICE(edx, byte, 0)
-	word32 v22_62 = (0<32> - CONVERT((edx & 0x20<32>) <u 1<32>, bool, word32) & 0xFFFFFFE8<32>) + 0x400<32>
+	word32 v23_62 = (0<32> - CONVERT((edx & 0x20<32>) <u 1<32>, bool, word32) & 0xFFFFFFE8<32>) + 0x400<32>
 	word64 rbp_1213 = Mem63[rax_64 + 16<i64>:word64]
 	word64 r11_70 = rax_68
 	word64 r13_1174 = Mem63[rax_64 + 8<i64>:word64]
@@ -5590,7 +5590,7 @@ l000000000040C12D:
 	word32 r9d_198 = SLICE(r9_197, word32, 0)
 	branch r9d_198 == 0<32> l000000000040C530
 l000000000040C146:
-	word64 rsi_203 = CONVERT(v22_62, word32, uint64)
+	word64 rsi_203 = CONVERT(v23_62, word32, uint64)
 	word64 rdi_1510 = rdi_139
 	branch r10_128 <u rsi_203 l000000000040C710
 l000000000040C710:
@@ -5602,19 +5602,19 @@ l000000000040C17D:
 	word128 rdx_rax_224 = CONVERT(r10_128, word64, uint128)
 	word64 rdx_227 = CONVERT(rdx_rax_224 %u rsi_203, word128, uint64)
 	word64 edx_eax_246 = CONVERT(SLICE(rdi_1510, word32, 0) + (SLICE(rdx_227, word32, 0) + SLICE(rdx_227, word32, 0) * 4<32>) * 2<32>, word32, uint64)
-	word32 eax_250 = CONVERT(edx_eax_246 /u v22_62, word32, uint32)
-	word32 edx_249 = CONVERT(edx_eax_246 %u v22_62, word64, uint32)
+	word32 eax_250 = CONVERT(edx_eax_246 /u v23_62, word32, uint32)
+	word32 edx_249 = CONVERT(edx_eax_246 %u v23_62, word64, uint32)
 	word64 rax_228 = CONVERT(rdx_rax_224 /u rsi_203, word64, uint64)
 	word64 rdi_256 = CONVERT(eax_250, word32, uint64)
 	word32 r14d_257 = (ecx_151 >> 1<32>) + edx_249 * 2<32>
 	r10_128 = rax_228
 	edi_345 = SLICE(rdi_256, word32, 0) (alias)
 	word32 ecx_262 = ecx_151 + r14d_257
-	branch v22_62 >u r14d_257 l000000000040C160
+	branch v23_62 >u r14d_257 l000000000040C160
 l000000000040C160:
 	ecx_151 = CONVERT(ecx_262 != 0<32>, bool, word32) (alias)
 l000000000040C1A8:
-	ecx_151 = ~(0<32> - CONVERT(v22_62 <u ecx_262, bool, word32)) + 3<32> (alias)
+	ecx_151 = ~(0<32> - CONVERT(v23_62 <u ecx_262, bool, word32)) + 3<32> (alias)
 l000000000040C168:
 	ebx_1288 = ebx_1288 + 1<32> (alias)
 	rdi_1510 = rdi_256 (alias)
@@ -5678,7 +5678,7 @@ l000000000040C550:
 	r10_128 = r10_128 + 1<64>
 	branch r9d_500 == 0<32> l000000000040C5A0
 l000000000040C559:
-	branch CONVERT(v22_62, word32, uint64) != r10_128 l000000000040C5A0
+	branch CONVERT(v23_62, word32, uint64) != r10_128 l000000000040C5A0
 l000000000040C562:
 	branch ebx_1288 == 8<32> l000000000040C5A0
 l000000000040C567:
@@ -5769,7 +5769,7 @@ l000000000040C1CD:
 	ebx_1288 = 0xFFFFFFFF<32> (alias)
 	r15_1137 = strlen(rsi)
 l000000000040BEA3:
-	real64 rLoc2_1699 = CONVERT(v22_62, word32, real64)
+	real64 rLoc2_1699 = CONVERT(v23_62, word32, real64)
 	ebx_1288 = 0<32> (alias)
 	real64 rLoc3_1700 = rLoc2_1699
 l000000000040BEB4:
@@ -5935,7 +5935,7 @@ l000000000040C618:
 l000000000040C7A9:
 	ebx_1288 = 0<32> (alias)
 l000000000040C627:
-	word64 r14_1317 = CONVERT(v22_62, word32, uint64)
+	word64 r14_1317 = CONVERT(v23_62, word32, uint64)
 	ebx_1288 = 1<32> (alias)
 	word64 rax_1321 = 1<u64>
 l000000000040C640:
@@ -6651,10 +6651,10 @@ l000000000040D520:
 l000000000040D533:
 	r13_116 = Mem114[rdi + r14_111 * 8<64>:word64]
 l000000000040D547:
-	word64 v22_117 = qwLoc40_296 + 1<64>
+	word64 v23_117 = qwLoc40_296 + 1<64>
 	Mem119[r15_210 - 8<i64>:word64] = r12_208
-	qwLoc40_296 = v22_117
-	branch rbx == v22_117 l000000000040D625
+	qwLoc40_296 = v23_117
+	branch rbx == v23_117 l000000000040D625
 l000000000040D625:
 	qwLoc40_296 = r14_111
 	qwLoc30_292 = qwLoc48
@@ -6686,17 +6686,17 @@ l000000000040D5F0:
 l000000000040D5AF:
 	r13_147 = Mem172[rdi + r14_143 * 8<64>:word64]
 l000000000040D5C3:
-	word64 v23_197 = qwLoc58_358 + 1<64>
+	word64 v24_197 = qwLoc58_358 + 1<64>
 	Mem199[rdi - 8<i64> + r15_145 * 8<64>:word64] = r12_139
-	qwLoc58_358 = v23_197
-	branch rsi >>u 1<64> == v23_197 l000000000040D479
+	qwLoc58_358 = v24_197
+	branch rsi >>u 1<64> == v24_197 l000000000040D479
 l000000000040D5DE:
 	rcx = rdx
-	r12_139 = Mem199[rdx + v23_197 * 8<64>:word64]
+	r12_139 = Mem199[rdx + v24_197 * 8<64>:word64]
 l000000000040D5B3:
 	r15_145 = r15_145 + 1<64>
 l000000000040D561:
-	r12_208 = Mem119[rdi + v22_117 * 8<64>:word64]
+	r12_208 = Mem119[rdi + v23_117 * 8<64>:word64]
 l000000000040D537:
 	r15_210 = r15_210 + 8<64>
 l000000000040D473:
@@ -6762,7 +6762,7 @@ l000000000040D6B8:
 	word64 rcx_28 = rax_22 + 1<i64> - rdi
 	byte SCZO_29 = cond(rcx_28 - 6<64>)
 	bool Z_44 = SLICE(SCZO_29, bool, 2)
-	bool v21_102 = rcx_28 != 6<64>
+	bool v22_102 = rcx_28 != 6<64>
 	bool C_71 = SLICE(SCZO_29, bool, 1)
 	branch rcx_28 <= 6<64> l000000000040D703
 l000000000040D6C8:
@@ -6775,7 +6775,7 @@ l000000000040D6D6:
 l000000000040D6D6_1:
 	byte SCZO_40 = cond(Mem9[rsi_162:byte] - Mem9[rdi_163:byte])
 	Z_44 = SLICE(SCZO_40, bool, 2) (alias)
-	v21_102 = Mem9[rsi_162:byte] != Mem9[rdi_163:byte]
+	v22_102 = Mem9[rsi_162:byte] != Mem9[rdi_163:byte]
 	C_71 = SLICE(SCZO_40, bool, 1) (alias)
 	C_73 = SLICE(SCZO_40, bool, 1) (alias)
 	rsi_31 = rsi_162 + 1<i64>
@@ -6786,9 +6786,9 @@ l000000000040D6D6_1:
 	branch Mem9[rsi_162:byte] != Mem9[rdi_163:byte] l000000000040D6D6
 l000000000040D6D8:
 	bool C_75 = SLICE(C_73, bool, 2)
-	bool v29_110 = Z_44 | C_75
-	bool v25_106 = Z_44 | C_75
-	branch v21_102 l000000000040D703
+	bool v30_110 = Z_44 | C_75
+	bool v26_106 = Z_44 | C_75
+	branch v22_102 l000000000040D703
 l000000000040D6DA:
 	word64 rcx_49 = 3<u64>
 	word64 rsi_52 = rax_22 + 1<i64>
@@ -6796,8 +6796,8 @@ l000000000040D6DA:
 l000000000040D6E7:
 	branch rcx_49 == 0<64> l000000000040D6E9
 l000000000040D6E7_2:
-	v29_110 = Mem9[rsi_164:byte] <u Mem9[rdi_165:byte]
-	v25_106 = Mem9[rsi_164:byte] >u Mem9[rdi_165:byte]
+	v30_110 = Mem9[rsi_164:byte] <u Mem9[rdi_165:byte]
+	v26_106 = Mem9[rsi_164:byte] >u Mem9[rdi_165:byte]
 	rsi_52 = rsi_164 + 1<i64>
 	rdi_54 = rdi_165 + 1<i64>
 	rcx_49 = rcx_49 - 1<64>
@@ -6806,7 +6806,7 @@ l000000000040D6E7_2:
 	branch Mem9[rsi_164:byte] != Mem9[rdi_165:byte] l000000000040D6E7
 l000000000040D6E9:
 	rbx_10 = rax_22 + 1<i64>
-	branch CONVERT(v25_106, bool, int8) != CONVERT(v29_110, bool, int8) l000000000040D703
+	branch CONVERT(v26_106, bool, int8) != CONVERT(v30_110, bool, int8) l000000000040D703
 l000000000040D6F8:
 	Mem88[0x000000000061A600<p64>:word64] = rax_22 + 4<i64>
 	rbx_10 = rax_22 + 4<i64>
@@ -7964,12 +7964,12 @@ l000000000040ED94:
 	byte dil_119 = SLICE(rdi_118, byte, 0)
 	word32 r9_32_32_7134 = SLICE(r9_106, word32, 32)
 	word32 r9d_1035 = SLICE(r9_106, word32, 0)
-	bool v127_4436 = dil_119 > 0x30<8>
+	bool v128_4436 = dil_119 > 0x30<8>
 	branch dil_119 == 0x30<8> l000000000040EDC0
 l000000000040EDA1:
 	byte r9b_1669 = SLICE(r9d_1035, byte, 0)
 	dil_119 = SLICE(rdi_118, byte, 0) (alias)
-	branch v127_4436 l000000000040EDD0
+	branch v128_4436 l000000000040EDD0
 l000000000040EDD0:
 	branch dil_119 != 0x5E<8> l000000000040EE70
 l000000000040EE70:
@@ -9190,7 +9190,7 @@ l000000000040EDA9:
 	rdi_118 = CONVERT(Mem104[rbx_101:byte], byte, uint64)
 	dil_119 = SLICE(rdi_118, byte, 0) (alias)
 	al_4239 = 1<8> (alias)
-	v127_4436 = dil_119 > 0x30<8>
+	v128_4436 = dil_119 > 0x30<8>
 	branch dil_119 != 0x30<8> l000000000040EDA1
 l000000000040EDBB:
 l000000000040EDC0:
@@ -10045,7 +10045,7 @@ l0000000000411800:
 	Mem10[__errno_location():word32] = 0x5F<32>
 	rax_12 = 0xFFFFFFFF<u64>
 l00000000004117B8:
-	bool v16_48 = edi != 0xA<32>
+	bool v17_48 = edi != 0xA<32>
 	rax_12 = CONVERT(edi, word32, uint64)
 	branch edi == 0xA<32> l00000000004117C8
 l00000000004117C8:
@@ -10056,7 +10056,7 @@ l00000000004117C8:
 l00000000004117D8:
 	branch rcx_23 == 0<64> l00000000004117DA
 l00000000004117D8_1:
-	v16_48 = Mem0[rsi_75:byte] != Mem0[rdi_76:byte]
+	v17_48 = Mem0[rsi_75:byte] != Mem0[rdi_76:byte]
 	rsi_24 = rsi_75 + 1<i64>
 	rdi_21 = rdi_76 + 1<i64>
 	rcx_23 = rcx_23 - 1<64>
@@ -10064,7 +10064,7 @@ l00000000004117D8_1:
 	rdi_76 = rdi_21
 	branch Mem0[rsi_75:byte] != Mem0[rdi_76:byte] l00000000004117D8
 l00000000004117DA:
-	branch v16_48 l00000000004117BF
+	branch v17_48 l00000000004117BF
 l00000000004117DC:
 	freecon(rdx_19)
 	Mem40[__errno_location():word32] = 0x3D<32>

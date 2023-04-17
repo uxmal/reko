@@ -1582,10 +1582,10 @@ byte fn1326(byte c, word16 hl, ptr16 & lOut)
 fn1326_entry:
 	word16 hl_26 = hl
 l1326:
-	uint16 v11_22 = hl_26 >>u 1<8>
-	byte l_14 = SLICE(v11_22, byte, 0)
+	uint16 v12_22 = hl_26 >>u 1<8>
+	byte l_14 = SLICE(v12_22, byte, 0)
 	c = c - 1<8>
-	hl_26 = v11_22 (alias)
+	hl_26 = v12_22 (alias)
 	branch c != 0<8> l1326
 l1331:
 	lOut = l_14

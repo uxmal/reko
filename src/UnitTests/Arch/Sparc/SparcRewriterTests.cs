@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x9DE3BEE8); // save\t%g1,%o1,%g5
             AssertCode(
                 "0|L--|00100000(4): 10 instructions",
-                "1|L--|v3 = sp + 0xFFFFFEE8<32>",
+                "1|L--|v4 = sp + 0xFFFFFEE8<32>",
                 "2|L--|i0 = o0",
                 "3|L--|i1 = o1",
                 "4|L--|i2 = o2",
@@ -243,7 +243,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 "7|L--|i5 = o5",
                 "8|L--|i6 = sp",
                 "9|L--|i7 = o7",
-                "10|L--|sp = v3");
+                "10|L--|sp = v4");
         }
 
         [Test]
@@ -403,8 +403,8 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_HexString("C28C0000");
             AssertCode(     // lduba	[%l0+0],%g1
                 "0|S--|00100000(4): 2 instructions",
-                "1|L--|v4 = __load_alternate<byte>(&Mem0[l0:byte])",
-                "2|L--|g1 = CONVERT(v4, byte, ui32)");
+                "1|L--|v5 = __load_alternate<byte>(&Mem0[l0:byte])",
+                "2|L--|g1 = CONVERT(v5, byte, ui32)");
         }
 
         [Test]

@@ -9,6 +9,7 @@ void main(Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // ds:ds
@@ -41,6 +42,7 @@ Register word16 memfoo()
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ds:ds
 // ax:ax
@@ -96,6 +98,7 @@ Register word16 membar(Register word16 ax)
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ds:ds
 // ax:ax

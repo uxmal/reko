@@ -284,8 +284,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("4D697373");	// l.maci	r9,+00007373
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = r9 *64 29555<i32>",
-                "2|L--|MACHI_MACLO = MACHI_MACLO + v3");
+                "1|L--|v4 = r9 *64 29555<i32>",
+                "2|L--|MACHI_MACLO = MACHI_MACLO + v4");
         }
 
         [Test]

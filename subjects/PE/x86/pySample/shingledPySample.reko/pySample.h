@@ -210,7 +210,7 @@ Eq_169: (union "Eq_169" (_onexit_t u0) (HMODULE u1))
 	T_653 (in Mem194[esp_184 + -8<i32>:word32] @ 1000143A : word32)
 	T_708 (in eax @ 100014A5 : Eq_169)
 	T_714 (in eax_111 @ 100015CF : Eq_169)
-	T_768 (in v16_57 @ 10001628 : Eq_169)
+	T_768 (in v17_57 @ 10001628 : Eq_169)
 	T_771 (in Mem56[ebp_13 + 8<i32>:word32] @ 10001628 : word32)
 	T_774 (in func @ 10001630 : _onexit_t)
 	T_779 (in Mem59[esp_30 + -16<i32>:_onexit_t] @ 10001630 : _onexit_t)
@@ -3616,7 +3616,7 @@ T_743: (in Mem38[ebp_13 + -4<i32>:word32] @ 10001606 : word32)
   Class: Eq_448
   DataType: word32
   OrigDataType: word32
-T_744: (in v14_41 @ 1000160A : (ptr32 void))
+T_744: (in v15_41 @ 1000160A : (ptr32 void))
   Class: Eq_253
   DataType: (ptr32 void)
   OrigDataType: (struct (0 word32 dw0000))
@@ -3664,7 +3664,7 @@ T_755: (in Mem45[ebp_13 + -28<i32>:word32] @ 10001612 : word32)
   Class: Eq_170
   DataType: Eq_170
   OrigDataType: word32
-T_756: (in v15_46 @ 10001615 : (ptr32 void))
+T_756: (in v16_46 @ 10001615 : (ptr32 void))
   Class: Eq_253
   DataType: (ptr32 void)
   OrigDataType: (struct (0 word32 dw0000))
@@ -3712,7 +3712,7 @@ T_767: (in Mem50[ebp_13 + -32<i32>:word32] @ 1000161D : word32)
   Class: Eq_764
   DataType: (ptr32 void)
   OrigDataType: word32
-T_768: (in v16_57 @ 10001628 : Eq_169)
+T_768: (in v17_57 @ 10001628 : Eq_169)
   Class: Eq_169
   DataType: Eq_169
   OrigDataType: word32
@@ -3836,7 +3836,7 @@ T_798: (in ebp_13 - 32<i32> @ 1000163E : word32)
   Class: Eq_798
   DataType: ptr32
   OrigDataType: ptr32
-T_799: (in encode_pointer(ecx_35, ebp_13->tFFFFFFE4, v16_57, ebp_13 - 28<i32>, ebp_13 - 32<i32>, v15_46, v14_41) @ 1000163E : word32)
+T_799: (in encode_pointer(ecx_35, ebp_13->tFFFFFFE4, v17_57, ebp_13 - 28<i32>, ebp_13 - 32<i32>, v16_46, v15_41) @ 1000163E : word32)
   Class: Eq_253
   DataType: (ptr32 void)
   OrigDataType: word32

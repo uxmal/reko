@@ -163,10 +163,10 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("4BF40142");
             AssertCode(     // div	e4,d4,d15
                 "0|L--|00100000(4): 5 instructions",
-                "1|L--|v2 = d4 / d15",
-                "2|L--|v3 = d4 %s d15",
-                "3|L--|e4 = SEQ(v3, v2)",
-                "4|L--|V_SV = cond(v2)",
+                "1|L--|v3 = d4 / d15",
+                "2|L--|v4 = d4 %s d15",
+                "3|L--|e4 = SEQ(v4, v3)",
+                "4|L--|V_SV = cond(v3)",
                 "5|L--|AV = false");
         }
 
@@ -176,8 +176,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("3700640E");
             AssertCode(     // extr	d0,d0,#0x1C,#0x4
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(d0, word4, 28)",
-                "2|L--|d0 = CONVERT(v3, word4, int32)");
+                "1|L--|v4 = SLICE(d0, word4, 28)",
+                "2|L--|d0 = CONVERT(v4, word4, int32)");
         }
 
         [Test]
@@ -313,8 +313,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("79FE0000");
             AssertCode(     // ld.b	d14,[a15]
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[a15:int8]",
-                "2|L--|d14 = CONVERT(v4, int8, int32)");
+                "1|L--|v5 = Mem0[a15:int8]",
+                "2|L--|d14 = CONVERT(v5, int8, int32)");
         }
 
         [Test]
@@ -323,8 +323,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("39CF3480");
             AssertCode(     // ld.bu	d15,[a12]564
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[a12 + 564<i32>:byte]",
-                "2|L--|d15 = CONVERT(v4, byte, uint32)");
+                "1|L--|v5 = Mem0[a12 + 564<i32>:byte]",
+                "2|L--|d15 = CONVERT(v5, byte, uint32)");
         }
 
         [Test]
@@ -343,8 +343,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("84FE");
             AssertCode(     // ld.h	d14,[a15+]
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v4 = Mem0[a15:int16]",
-                "2|L--|d14 = CONVERT(v4, int16, int32)",
+                "1|L--|v5 = Mem0[a15:int16]",
+                "2|L--|d14 = CONVERT(v5, int16, int32)",
                 "3|L--|a15 = a15 + 2<i32>");
         }
 
@@ -354,8 +354,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("B9A20C00");
             AssertCode(     // ld.hu	d2,[a10]12
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[a10 + 12<i32>:word16]",
-                "2|L--|d2 = CONVERT(v4, word16, uint32)");
+                "1|L--|v5 = Mem0[a10 + 12<i32>:word16]",
+                "2|L--|d2 = CONVERT(v5, word16, uint32)");
         }
 
         [Test]
@@ -401,9 +401,9 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("FCFD");
             AssertCode(     // loop	d15,000002AE
                 "0|T--|00100000(2): 3 instructions",
-                "1|L--|v2 = d15",
+                "1|L--|v3 = d15",
                 "2|L--|d15 = d15 - 1<32>",
-                "3|T--|if (v2 != 0<32>) branch 000FFFFA");
+                "3|T--|if (v3 != 0<32>) branch 000FFFFA");
         }
 
         [Test]
@@ -522,8 +522,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("8BFF3F22");
             AssertCode(     // ne	d2,d15,#0x1FF
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = d15 != 0xFFFFFFFF<32>",
-                "2|L--|d2 = CONVERT(v2, bool, word32)");
+                "1|L--|v3 = d15 != 0xFFFFFFFF<32>",
+                "2|L--|d2 = CONVERT(v3, bool, word32)");
         }
 
         [Test]
@@ -541,8 +541,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("8B0FE044");
             AssertCode(     // or.eq	d4,d15,#0x0
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = __bit<word32,int32>(d4, 0<i32>)",
-                "2|L--|d4 = __write_bit<word32,int32>(d4, 0<i32>, v2 | d15 == 0<16>)");
+                "1|L--|v3 = __bit<word32,int32>(d4, 0<i32>)",
+                "2|L--|d4 = __write_bit<word32,int32>(d4, 0<i32>, v3 | d15 == 0<16>)");
         }
 
         [Test]
@@ -551,8 +551,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("07042CA3");
             AssertCode(     // orn.t	d10,d4,#0xC,d0,#0x6
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = __bit<word32,int32>(d4, 12<i32>) | ~__bit<word32,int32>(d0, 6<i32>)",
-                "2|L--|d10 = CONVERT(v4, bool, uint32)");
+                "1|L--|v5 = __bit<word32,int32>(d4, 12<i32>) | ~__bit<word32,int32>(d0, 6<i32>)",
+                "2|L--|d10 = CONVERT(v5, bool, uint32)");
         }
 
         [Test]
@@ -609,8 +609,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("89FE4801");
             AssertCode(     // st.b	[a15+]8,d14
                 "0|L--|00100000(4): 3 instructions",
-                "1|L--|v3 = SLICE(d14, byte, 0)",
-                "2|L--|Mem0[a15:byte] = v3",
+                "1|L--|v4 = SLICE(d14, byte, 0)",
+                "2|L--|Mem0[a15:byte] = v4",
                 "3|L--|a15 = a15 + 8<i32>");
         }
 
@@ -620,8 +620,8 @@ namespace Reko.UnitTests.Arch.TriCore
             Given_HexString("A4FF");
             AssertCode(     // st.h	[a15+],d15
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v3 = SLICE(d15, word16, 0)",
-                "2|L--|Mem0[a15:word16] = v3",
+                "1|L--|v4 = SLICE(d15, word16, 0)",
+                "2|L--|Mem0[a15:word16] = v4",
                 "3|L--|a15 = a15 + 2<i32>");
         }
 

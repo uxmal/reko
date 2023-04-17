@@ -45,11 +45,11 @@ fn00002264_entry:
 l00002264:
 	branch dwArg04 == 0<32> l0000228C
 l00002272:
-	byte v10_15 = Mem10[dwArg04:byte]
-	branch v10_15 == 0<8> l0000228C
+	byte v11_15 = Mem10[dwArg04:byte]
+	branch v11_15 == 0<8> l0000228C
 l00002276:
 	word32 a2_21 = dwArg04
-	word32 d0_25 = CONVERT(v10_15, byte, uint32)
+	word32 d0_25 = CONVERT(v11_15, byte, uint32)
 	word32 a1_29 = dwArg04 + 1<i32>
 	branch d0_25 == 0<32> l0000228A
 l00002284:
@@ -102,7 +102,7 @@ l000022C4:
 	call a5 + 194<i32> (retsize: 4;)
 		uses: a2:a2,a5:a5,a6:a6_38
 		defs: a5:a5_55,a6:a6_53,a7:a7_52
-	word32 v7_63 = Mem50[a7_52:word32]
+	word32 v8_63 = Mem50[a7_52:word32]
 	Mem68[a7_52 - 2<i32>:word16] = 0xA1AD<16>
 	Mem70[0<8>:byte] = 0<8>
 	word32 a7_75
@@ -111,7 +111,7 @@ l000022C4:
 	word32 a5_78
 	word32 a0_81
 	call a5_55 + 194<i32> (retsize: 4;)
-		uses: a2:v7_63,a5:a5_55,a6:a6_53
+		uses: a2:v8_63,a5:a5_55,a6:a6_53
 		defs: a0:a0_81,a2:a2_77,a5:a5_78,a6:a6_76,a7:a7_75
 	branch a2_77 - Mem70[a7_75:word32] == 0<32> l0000231C
 l00002304:

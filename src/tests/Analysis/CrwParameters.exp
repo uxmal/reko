@@ -9,6 +9,7 @@ void fn0C00_0000(Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // si:si
 // ds:ds
@@ -54,6 +55,7 @@ Register word16 fn0C00_0025(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // ds:ds
@@ -86,6 +88,7 @@ Register word16 fn0C00_0027(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // SZO:SZO
@@ -132,6 +135,7 @@ Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // ds:ds
@@ -165,6 +169,7 @@ Register word16 fn0C00_0036(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // ds:ds

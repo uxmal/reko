@@ -2,6 +2,7 @@
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // SCZO:SCZO
@@ -10,7 +11,7 @@
 // SZO:SZO
 // C:C
 // dl:dl
-// v10:v10
+// v11:v11
 // Top:Top
 // return address size: 4
 define fn10000000
@@ -20,7 +21,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	eax = Mem0[esp + 4<i32>:word32]
-	v10 = eax
+	v11 = eax
 	SCZO = cond(eax - 3<32>)
 	branch Test(UGT,CZ) l10000048
 	// succ:  l1000000B l10000048
@@ -29,7 +30,7 @@ l1000000B:
 	SZO = cond(edx)
 	C = false
 	dl = Mem0[eax + 0x1000001A<32>:byte]
-	switch (v10) { l10000034 l1000002A l10000034 l1000003E }
+	switch (v11) { l10000034 l1000002A l10000034 l1000003E }
 	// succ:  l10000034 l1000002A l10000034 l1000003E
 l1000002A:
 	eax = 0<32>

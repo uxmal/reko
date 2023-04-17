@@ -7,1600 +7,1600 @@
 // 00110287: Stack Eq_n fn00110287(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn00110287(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v45.u3 = g_t140030.u3;
-	loc45 = v45;
-	v45 = arg1;
-	loc26 = v45;
-	v45 = arg0;
-	v46.u0 = 0x08;
-	v45 += v46;
-	loc36 = v45;
-	v45 = loc36;
-	v46.u0 = 0x03;
-	v45 += v46;
-	loc37 = v45;
-	v45 = loc37;
-	v47.u3 = *v45.u3;
-	v45.u3 = (word32) v47;
-	loc38 = v45;
-	v45 = loc38;
-	v46.u0 = 0x18;
-	v45 <<= v46;
-	v46.u0 = 0x18;
-	v45 >>= v46;
-	v46.u0 = 0x00;
-	v48 = v45 < v46;
-	loc39 = v48;
-	v45 = loc39;
-	if (v45)
+	v46.u3 = g_t140030.u3;
+	loc45 = v46;
+	v46 = arg1;
+	loc26 = v46;
+	v46 = arg0;
+	v47.u0 = 0x08;
+	v46 += v47;
+	loc36 = v46;
+	v46 = loc36;
+	v47.u0 = 0x03;
+	v46 += v47;
+	loc37 = v46;
+	v46 = loc37;
+	v48.u3 = *v46.u3;
+	v46.u3 = (word32) v48;
+	loc38 = v46;
+	v46 = loc38;
+	v47.u0 = 0x18;
+	v46 <<= v47;
+	v47.u0 = 0x18;
+	v46 >>= v47;
+	v47.u0 = 0x00;
+	v49 = v46 < v47;
+	loc39 = v49;
+	v46 = loc39;
+	if (v46)
 	{
-		v45 = arg0;
-		v46.u0 = 0x04;
-		v45 += v46;
-		loc41 = v45;
-		v45 = loc41;
-		v45.u3 = *v45.u3;
-		loc6 = v45;
-		v45 = loc36;
-		v45.u3 = *v45.u3;
-		loc7 = v45;
-		v45 = loc7;
-		v46.u0 = 0x7FFFFFFF;
-		v45 &= v46;
-		loc8 = v45;
-		v45 = loc8;
-		v46.u0 = ~0x00;
-		v45 += v46;
-		loc42 = v45;
-		v45 = loc42;
-		loc14 = v45;
-		v45 = loc6;
-		loc15 = v45;
+		v46 = arg0;
+		v47.u0 = 0x04;
+		v46 += v47;
+		loc41 = v46;
+		v46 = loc41;
+		v46.u3 = *v46.u3;
+		loc6 = v46;
+		v46 = loc36;
+		v46.u3 = *v46.u3;
+		loc7 = v46;
+		v46 = loc7;
+		v47.u0 = 0x7FFFFFFF;
+		v46 &= v47;
+		loc8 = v46;
+		v46 = loc8;
+		v47.u0 = ~0x00;
+		v46 += v47;
+		loc42 = v46;
+		v46 = loc42;
+		loc14 = v46;
+		v46 = loc6;
+		loc15 = v46;
 	}
 	else
 	{
-		v45 = loc38;
-		v46.u0 = 0xFF;
-		v45 &= v46;
-		loc40 = v45;
-		v45.u0 = 0x01;
-		loc14 = v45;
-		v45 = loc40;
-		loc15 = v45;
+		v46 = loc38;
+		v47.u0 = 0xFF;
+		v46 &= v47;
+		loc40 = v46;
+		v46.u0 = 0x01;
+		loc14 = v46;
+		v46 = loc40;
+		loc15 = v46;
 	}
-	v45 = arg2;
-	loc9 = v45;
-	v45 = loc9;
-	v46 = loc26;
-	v45 -= v46;
-	loc10 = v45;
-	v45 = loc10;
-	v46.u0 = 0x02;
-	v45 >>= v46;
-	loc11 = v45;
-	v45 = loc11;
-	v46.u0 = 0x00;
-	v48 = v45 == v46;
-	loc12 = v48;
-	v45 = loc12;
-	v48 = v45 == 0x00;
-	if (v48)
+	v46 = arg2;
+	loc9 = v46;
+	v46 = loc9;
+	v47 = loc26;
+	v46 -= v47;
+	loc10 = v46;
+	v46 = loc10;
+	v47.u0 = 0x02;
+	v46 >>= v47;
+	loc11 = v46;
+	v46 = loc11;
+	v47.u0 = 0x00;
+	v49 = v46 == v47;
+	loc12 = v49;
+	v46 = loc12;
+	v49 = v46 == 0x00;
+	if (v49)
 	{
-		v45 = loc14;
-		v46 = loc15;
-		v45 -= v46;
-		loc13 = v45;
-		v45 = loc13;
-		v46 = loc11;
-		v48 = v45 < v46;
-		loc16 = v48;
-		v45 = loc16;
-		if (v45)
+		v46 = loc14;
+		v47 = loc15;
+		v46 -= v47;
+		loc13 = v46;
+		v46 = loc13;
+		v47 = loc11;
+		v49 = v46 < v47;
+		loc16 = v49;
+		v46 = loc16;
+		if (v46)
 		{
-			v45 = loc15;
-			v46 = loc11;
-			v45 += v46;
-			loc17 = v45;
-			v45 = loc17;
-			v46 = loc14;
-			v45 -= v46;
-			loc18 = v45;
-			v45 = arg0;
-			v46 = loc14;
-			v49 = loc18;
-			v50 = loc15;
+			v46 = loc15;
+			v47 = loc11;
+			v46 += v47;
+			loc17 = v46;
+			v46 = loc17;
+			v47 = loc14;
+			v46 -= v47;
+			loc18 = v46;
+			v46 = arg0;
+			v47 = loc14;
+			v50 = loc18;
 			v51 = loc15;
-			v52.u0 = 0x00;
+			v52 = loc15;
 			v53.u0 = 0x00;
-			fn0011CDB7(v45, v46, v49, v50, v51, v52, v53);
-			v45 = loc37;
-			v54 = *v45.u0;
-			v45.u3 = (word32) v54;
-			loc5 = v45;
-			v45 = loc5;
-			loc20 = v45;
+			v54.u0 = 0x00;
+			fn0011CDB7(v46, v47, v50, v51, v52, v53, v54);
+			v46 = loc37;
+			v55 = *v46.u0;
+			v46.u3 = (word32) v55;
+			loc5 = v46;
+			v46 = loc5;
+			loc20 = v46;
 		}
 		else
 		{
-			v45 = loc38;
-			loc20 = v45;
+			v46 = loc38;
+			loc20 = v46;
 		}
-		v45 = loc20;
-		v46.u0 = 0x18;
-		v45 <<= v46;
-		v46.u0 = 0x18;
-		v45 >>= v46;
-		v46.u0 = 0x00;
-		v48 = v45 < v46;
-		loc19 = v48;
-		v45 = loc19;
-		if (v45)
+		v46 = loc20;
+		v47.u0 = 0x18;
+		v46 <<= v47;
+		v47.u0 = 0x18;
+		v46 >>= v47;
+		v47.u0 = 0x00;
+		v49 = v46 < v47;
+		loc19 = v49;
+		v46 = loc19;
+		if (v46)
 		{
-			v45 = arg0;
-			v45.u3 = *v45.u3;
-			loc21 = v45;
-			v45 = loc21;
-			loc23 = v45;
+			v46 = arg0;
+			v46.u3 = *v46.u3;
+			loc21 = v46;
+			v46 = loc21;
+			loc23 = v46;
 		}
 		else
 		{
-			v45 = arg0;
-			loc23 = v45;
+			v46 = arg0;
+			loc23 = v46;
 		}
 		while (true)
 		{
-			v45 = loc23;
-			v46 = loc15;
-			v49.u0 = 0x02;
-			v46 <<= v49;
-			v45 += v46;
-			loc22 = v45;
-			v45 = arg2;
-			loc24 = v45;
-			v45 = loc24;
-			v46 = loc26;
-			v45 -= v46;
-			loc25 = v45;
-			v45 = loc25;
-			v46.u0 = 0x02;
-			v45 >>= v46;
-			loc27 = v45;
-			v45 = loc15;
-			v46 = loc27;
-			v45 += v46;
-			loc28 = v45;
-			v45 = loc22;
-			loc3 = v45;
-			v45 = arg1;
-			loc4 = v45;
-			v45 = loc4;
+			v46 = loc23;
+			v47 = loc15;
+			v50.u0 = 0x02;
+			v47 <<= v50;
+			v46 += v47;
+			loc22 = v46;
 			v46 = arg2;
-			v48 = v45 == v46;
-			loc29 = v48;
-			v45 = loc29;
-			if (v45)
+			loc24 = v46;
+			v46 = loc24;
+			v47 = loc26;
+			v46 -= v47;
+			loc25 = v46;
+			v46 = loc25;
+			v47.u0 = 0x02;
+			v46 >>= v47;
+			loc27 = v46;
+			v46 = loc15;
+			v47 = loc27;
+			v46 += v47;
+			loc28 = v46;
+			v46 = loc22;
+			loc3 = v46;
+			v46 = arg1;
+			loc4 = v46;
+			v46 = loc4;
+			v47 = arg2;
+			v49 = v46 == v47;
+			loc29 = v49;
+			v46 = loc29;
+			if (v46)
 				break;
-			v45 = loc4;
-			v45.u3 = *v45.u3;
-			loc30 = v45;
-			v45 = loc3;
-			v46 = loc30;
-			*v45.u3 = (word32) v46;
-			v45 = loc3;
-			v46.u0 = 0x04;
-			v45 += v46;
-			loc31 = v45;
-			v45 = loc4;
-			v46.u0 = 0x04;
-			v45 += v46;
-			loc32 = v45;
-			v45 = loc31;
-			loc3 = v45;
-			v45 = loc32;
-			loc4 = v45;
+			v46 = loc4;
+			v46.u3 = *v46.u3;
+			loc30 = v46;
+			v46 = loc3;
+			v47 = loc30;
+			*v46.u3 = (word32) v47;
+			v46 = loc3;
+			v47.u0 = 0x04;
+			v46 += v47;
+			loc31 = v46;
+			v46 = loc4;
+			v47.u0 = 0x04;
+			v46 += v47;
+			loc32 = v46;
+			v46 = loc31;
+			loc3 = v46;
+			v46 = loc32;
+			loc4 = v46;
 		}
-		v45 = loc23;
-		v46 = loc28;
-		v49.u0 = 0x02;
-		v46 <<= v49;
-		v45 += v46;
-		loc43 = v45;
-		v45 = loc43;
-		v46.u0 = 0x00;
-		*v45.u3 = (word32) v46;
-		v45 = loc15;
-		v46 = loc11;
-		v45 += v46;
-		loc33 = v45;
-		v45 = loc19;
-		if (v45)
+		v46 = loc23;
+		v47 = loc28;
+		v50.u0 = 0x02;
+		v47 <<= v50;
+		v46 += v47;
+		loc43 = v46;
+		v46 = loc43;
+		v47.u0 = 0x00;
+		*v46.u3 = (word32) v47;
+		v46 = loc15;
+		v47 = loc11;
+		v46 += v47;
+		loc33 = v46;
+		v46 = loc19;
+		if (v46)
 		{
-			v45 = arg0;
-			v46.u0 = 0x04;
-			v45 += v46;
-			loc34 = v45;
-			v45 = loc34;
-			v46 = loc33;
-			*v45.u3 = (word32) v46;
+			v46 = arg0;
+			v47.u0 = 0x04;
+			v46 += v47;
+			loc34 = v46;
+			v46 = loc34;
+			v47 = loc33;
+			*v46.u3 = (word32) v47;
 		}
 		else
 		{
-			v45 = loc33;
-			v46.u0 = 0xFF;
-			v45 &= v46;
-			loc35 = v45;
-			v45 = loc37;
-			v46 = loc35;
-			v55 = (byte) v46;
-			v45.u4->t0000.u0 = (bool) v55;
+			v46 = loc33;
+			v47.u0 = 0xFF;
+			v46 &= v47;
+			loc35 = v46;
+			v46 = loc37;
+			v47 = loc35;
+			v56 = (byte) v47;
+			v46.u4->t0000.u0 = (bool) v56;
 		}
 	}
-	v45 = arg0;
-	return v45;
+	v46 = arg0;
+	return v46;
 }
 
 // 00110427: void fn00110427(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9)
 void fn00110427(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
 {
-	v183.u3 = g_t140030.u3;
-	loc190 = v183;
-	v183.u3 = g_t140030.u3;
-	v184.u0 = 0x70;
-	v183 += v184;
-	g_t140030.u3 = (word32 *) v183;
-	v183.u3 = g_t140030.u3;
-	v184.u3 = g_t140034.u3;
-	v185 = v183 >= v184;
-	if (v185)
+	v184.u3 = g_t140030.u3;
+	loc190 = v184;
+	v184.u3 = g_t140030.u3;
+	v185.u0 = 0x70;
+	v184 += v185;
+	g_t140030.u3 = (word32 *) v184;
+	v184.u3 = g_t140030.u3;
+	v185.u3 = g_t140034.u3;
+	v186 = v184 >= v185;
+	if (v186)
 	{
-		v183.u0 = 0x70;
-		abortStackOverflow(v183);
+		v184.u0 = 0x70;
+		abortStackOverflow(v184);
 	}
-	v183 = loc190;
-	v184.u0 = 100;
-	v183 += v184;
-	loc18 = v183;
-	v183 = loc190;
-	v184.u0 = 88;
-	v183 += v184;
-	loc29 = v183;
-	v183 = loc190;
-	v184.u0 = 0x4C;
-	v183 += v184;
-	loc40 = v183;
-	v183 = loc190;
-	v184.u0 = 0x40;
-	v183 += v184;
-	loc51 = v183;
-	v183 = loc190;
-	v184.u0 = 0x34;
-	v183 += v184;
-	loc62 = v183;
-	v183 = loc190;
-	v184.u0 = 0x30;
-	v183 += v184;
-	loc73 = v183;
-	v183 = loc190;
-	v184.u0 = 0x24;
-	v183 += v184;
-	loc84 = v183;
-	v183 = loc190;
-	v184.u0 = 0x18;
-	v183 += v184;
-	loc95 = v183;
-	v183 = loc190;
-	v184.u0 = 0x0C;
-	v183 += v184;
-	loc98 = v183;
-	v183 = loc190;
-	loc99 = v183;
-	v183 = arg0;
-	v183 = v183;
-	v183 = arg1;
-	v184.u0 = 0x5338;
-	v183 = fn000EA9F7(v183, v184);
-	loc100 = v183;
-	v183 = loc100;
-	v183 = *v183.u0;
-	loc101 = v183;
-	v183 = loc101;
-	v184.u0 = 44;
-	v183 += v184;
-	loc102 = v183;
-	v183 = loc102;
-	v183 = *v183.u0;
-	loc103 = v183;
-	v183 = loc18;
+	v184 = loc190;
+	v185.u0 = 100;
+	v184 += v185;
+	loc18 = v184;
+	v184 = loc190;
+	v185.u0 = 88;
+	v184 += v185;
+	loc29 = v184;
+	v184 = loc190;
+	v185.u0 = 0x4C;
+	v184 += v185;
+	loc40 = v184;
+	v184 = loc190;
+	v185.u0 = 0x40;
+	v184 += v185;
+	loc51 = v184;
+	v184 = loc190;
+	v185.u0 = 0x34;
+	v184 += v185;
+	loc62 = v184;
+	v184 = loc190;
+	v185.u0 = 0x30;
+	v184 += v185;
+	loc73 = v184;
+	v184 = loc190;
+	v185.u0 = 0x24;
+	v184 += v185;
+	loc84 = v184;
+	v184 = loc190;
+	v185.u0 = 0x18;
+	v184 += v185;
+	loc95 = v184;
+	v184 = loc190;
+	v185.u0 = 0x0C;
+	v184 += v185;
+	loc98 = v184;
+	v184 = loc190;
+	loc99 = v184;
+	v184 = arg0;
+	v184 = v184;
+	v184 = arg1;
+	v185.u0 = 0x5338;
+	v184 = fn000EA9F7(v184, v185);
+	loc100 = v184;
 	v184 = loc100;
-	v186 = loc103;
-	v187 = 0x01FF;
-	v186 &= v187;
-	v187 = 0x0700;
-	v186.u3 += v187;
+	v184 = *v184.u0;
+	loc101 = v184;
+	v184 = loc101;
+	v185.u0 = 44;
+	v184 += v185;
+	loc102 = v184;
+	v184 = loc102;
+	v184 = *v184.u0;
+	loc103 = v184;
+	v184 = loc18;
+	v185 = loc100;
+	v187 = loc103;
+	v188 = 0x01FF;
+	v187 &= v188;
+	v188 = 0x0700;
+	v187.u3 += v188;
 }
 
 // 00110E8A: void fn00110E8A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn00110E8A(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v37.u3 = g_t140030.u3;
-	loc37 = v37;
-	v37 = arg0;
-	v38.u0 = 0x04;
-	v37 += v38;
-	loc27 = v37;
-	v37 = loc27;
-	v37.u3 = *v37.u3;
-	loc29 = v37;
-	v37 = loc29;
-	v38.u0 = 0x01A4;
-	v39 = v37 != v38;
-	loc30 = v39;
-	v37 = arg2;
-	v37.u3 = *v37.u3;
-	loc31 = v37;
-	v37 = arg0;
-	v37.u3 = *v37.u3;
-	loc32 = v37;
-	v37 = loc31;
+	v38.u3 = g_t140030.u3;
+	loc37 = v38;
+	v38 = arg0;
+	v39.u0 = 0x04;
+	v38 += v39;
+	loc27 = v38;
+	v38 = loc27;
+	v38.u3 = *v38.u3;
+	loc29 = v38;
+	v38 = loc29;
+	v39.u0 = 0x01A4;
+	v40 = v38 != v39;
+	loc30 = v40;
+	v38 = arg2;
+	v38.u3 = *v38.u3;
+	loc31 = v38;
+	v38 = arg0;
+	v38.u3 = *v38.u3;
+	loc32 = v38;
+	v38 = loc31;
+	v39 = loc32;
+	v38 -= v39;
+	loc33 = v38;
+	v38 = loc33;
+	v39.u0 = 0x7FFFFFFF;
+	v40 = v38 < v39;
+	loc34 = v40;
+	v38 = loc33;
+	v39.u0 = 0x01;
+	v38 <<= v39;
+	loc7 = v38;
+	v38 = loc34;
+	if (v38)
+		v38 = loc7;
+	else
+		v38.u0 = ~0x00;
+	loc4 = v38;
+	v38 = loc4;
+	v39.u0 = 0x00;
+	v40 = v38 == v39;
+	loc8 = v40;
+	v38 = loc8;
+	if (v38)
+		v38.u0 = 0x04;
+	else
+		v38 = loc4;
+	loc3 = v38;
+	v38 = arg1;
+	v38 = *v38.u0;
+	loc9 = v38;
+	v38 = loc9;
+	v39 = loc32;
+	v38 -= v39;
+	loc10 = v38;
+	v38 = loc10;
+	v39.u0 = 0x02;
+	v38 >>= v39;
+	loc11 = v38;
 	v38 = loc32;
-	v37 -= v38;
-	loc33 = v37;
-	v37 = loc33;
-	v38.u0 = 0x7FFFFFFF;
-	v39 = v37 < v38;
-	loc34 = v39;
-	v37 = loc33;
-	v38.u0 = 0x01;
-	v37 <<= v38;
-	loc7 = v37;
-	v37 = loc34;
-	if (v37)
-		v37 = loc7;
+	loc35 = v38;
+	v38 = loc30;
+	if (v38)
+		v38 = loc35;
 	else
-		v37.u0 = ~0x00;
-	loc4 = v37;
-	v37 = loc4;
-	v38.u0 = 0x00;
-	v39 = v37 == v38;
-	loc8 = v39;
-	v37 = loc8;
-	if (v37)
-		v37.u0 = 0x04;
-	else
-		v37 = loc4;
-	loc3 = v37;
-	v37 = arg1;
-	v37 = *v37.u0;
-	loc9 = v37;
-	v37 = loc9;
-	v38 = loc32;
-	v37 -= v38;
-	loc10 = v37;
-	v37 = loc10;
-	v38.u0 = 0x02;
-	v37 >>= v38;
-	loc11 = v37;
-	v37 = loc32;
-	loc35 = v37;
-	v37 = loc30;
-	if (v37)
-		v37 = loc35;
-	else
-		v37.u0 = 0x00;
-	loc12 = v37;
-	v37 = loc12;
-	v38 = loc3;
-	v37 = fn000E3E00(v37, v38);
-	loc13 = v37;
-	v37 = loc13;
-	v38.u0 = 0x00;
-	v39 = v37 == v38;
-	loc14 = v39;
-	v37 = loc14;
-	if (v37)
+		v38.u0 = 0x00;
+	loc12 = v38;
+	v38 = loc12;
+	v39 = loc3;
+	v38 = fn000E3E00(v38, v39);
+	loc13 = v38;
+	v38 = loc13;
+	v39.u0 = 0x00;
+	v40 = v38 == v39;
+	loc14 = v40;
+	v38 = loc14;
+	if (v38)
 		fn0011B725();
-	v37 = loc30;
-	if (v37)
+	v38 = loc30;
+	if (v38)
 	{
-		v37 = loc13;
-		loc15 = v37;
-		v37 = arg0;
-		v38 = loc15;
-		*v37.u0 = v38;
-		v37 = loc13;
-		loc25 = v37;
+		v38 = loc13;
+		loc15 = v38;
+		v38 = arg0;
+		v39 = loc15;
+		*v38.u0 = v39;
+		v38 = loc13;
+		loc25 = v38;
 	}
 	else
 	{
-		v37 = arg0;
-		v37 = *v37.u0;
-		loc5 = v37;
-		v37 = loc13;
-		loc16 = v37;
-		v37 = arg0;
-		v38 = loc16;
-		*v37.u0 = v38;
-		v37 = loc5;
-		v38.u0 = 0x00;
-		v39 = v37 == v38;
-		loc17 = v39;
-		v37 = loc17;
-		if (v37)
+		v38 = arg0;
+		v38 = *v38.u0;
+		loc5 = v38;
+		v38 = loc13;
+		loc16 = v38;
+		v38 = arg0;
+		v39 = loc16;
+		*v38.u0 = v39;
+		v38 = loc5;
+		v39.u0 = 0x00;
+		v40 = v38 == v39;
+		loc17 = v40;
+		v38 = loc17;
+		if (v38)
 		{
-			v37 = loc13;
-			loc25 = v37;
+			v38 = loc13;
+			loc25 = v38;
 		}
 		else
 		{
-			v37 = loc27;
-			v37 = *v37.u0;
-			loc18 = v37;
-			v37.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v37;
-			v37 = loc18;
-			v38 = loc5;
-			invoke_vi(v37, v38);
-			v37.u3 = g_t140048.u3;
-			loc19 = v37;
-			v37.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v37;
-			v37 = loc19;
-			v38.u0 = 0x01;
-			v37 &= v38;
-			loc20 = v37;
-			v37 = loc20;
-			if (!v37)
+			v38 = loc27;
+			v38 = *v38.u0;
+			loc18 = v38;
+			v38.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v38;
+			v38 = loc18;
+			v39 = loc5;
+			invoke_vi(v38, v39);
+			v38.u3 = g_t140048.u3;
+			loc19 = v38;
+			v38.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v38;
+			v38 = loc19;
+			v39.u0 = 0x01;
+			v38 &= v39;
+			loc20 = v38;
+			v38 = loc20;
+			if (!v38)
 			{
-				v37 = arg0;
-				v37.u3 = *v37.u3;
-				loc6 = v37;
-				v37 = loc6;
-				loc25 = v37;
+				v38 = arg0;
+				v38.u3 = *v38.u3;
+				loc6 = v38;
+				v38 = loc6;
+				loc25 = v38;
 				goto l00110FA4;
 			}
-			v37.u0 = 0x00;
-			v37 = ___cxa_find_matching_catch_n(v37);
-			loc21 = v37;
-			v37.u3 = g_t140094.u3;
-			loc22 = v37;
-			v37 = loc21;
-			fn000D0E65(v37);
+			v38.u0 = 0x00;
+			v38 = ___cxa_find_matching_catch_n(v38);
+			loc21 = v38;
+			v38.u3 = g_t140094.u3;
+			loc22 = v38;
+			v38 = loc21;
+			fn000D0E65(v38);
 		}
 	}
 l00110FA4:
-	v37 = loc27;
-	v38.u0 = 0x01AD;
-	*v37.u3 = (word32) v38;
-	v37 = loc3;
-	v38.u0 = 0x02;
-	v37 >>= v38;
-	loc23 = v37;
-	v37 = loc25;
-	v38 = loc11;
-	v40 = 0x02;
-	v38 <<= v40;
-	v37 += v38;
-	loc24 = v37;
-	v37 = arg1;
-	v38 = loc24;
-	*v37.u3 = (word32) v38;
-	v37 = arg0;
-	v37.u3 = *v37.u3;
-	loc26 = v37;
-	v37 = loc26;
-	v38 = loc23;
-	v40 = 0x02;
-	v38 <<= v40;
-	v37 += v38;
-	loc28 = v37;
-	v37 = arg2;
-	v38 = loc28;
-	*v37.u3 = (word32) v38;
+	v38 = loc27;
+	v39.u0 = 0x01AD;
+	*v38.u3 = (word32) v39;
+	v38 = loc3;
+	v39.u0 = 0x02;
+	v38 >>= v39;
+	loc23 = v38;
+	v38 = loc25;
+	v39 = loc11;
+	v41 = 0x02;
+	v39 <<= v41;
+	v38 += v39;
+	loc24 = v38;
+	v38 = arg1;
+	v39 = loc24;
+	*v38.u3 = (word32) v39;
+	v38 = arg0;
+	v38.u3 = *v38.u3;
+	loc26 = v38;
+	v38 = loc26;
+	v39 = loc23;
+	v41 = 0x02;
+	v39 <<= v41;
+	v38 += v39;
+	loc28 = v38;
+	v38 = arg2;
+	v39 = loc28;
+	*v38.u3 = (word32) v39;
 }
 
 // 00110FE0: void fn00110FE0(Stack Eq_n arg0)
 void fn00110FE0(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 00110FE9: void fn00110FE9(Stack Eq_n arg0)
 void fn00110FE9(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00110FF7: Stack Eq_n fn00110FF7(Stack ui32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn00110FF7(ui32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v180.u3 = g_t140030.u3;
-	loc183 = v180;
-	v180.u3 = g_t140030.u3;
-	v181.u0 = 400;
-	v180 += v181;
-	g_t140030.u3 = (word32 *) v180;
-	v180.u3 = g_t140030.u3;
-	v181.u3 = g_t140034.u3;
-	v182 = v180 >= v181;
-	if (v182)
+	v181.u3 = g_t140030.u3;
+	loc183 = v181;
+	v181.u3 = g_t140030.u3;
+	v182.u0 = 400;
+	v181 += v182;
+	g_t140030.u3 = (word32 *) v181;
+	v181.u3 = g_t140030.u3;
+	v182.u3 = g_t140034.u3;
+	v183 = v181 >= v182;
+	if (v183)
 	{
-		v180.u0 = 400;
-		abortStackOverflow(v180);
+		v181.u0 = 400;
+		abortStackOverflow(v181);
 	}
-	v180 = loc183;
-	v181.u0 = 0x4C;
-	v180 += v181;
-	loc20 = v180;
-	v180 = loc183;
-	v181.u0 = 0x08;
-	v180 += v181;
-	loc181 = v180;
-	v180 = loc183;
-	loc180 = v180;
-	v180 = loc183;
-	v181.u0 = 288;
-	v180 += v181;
-	loc133 = v180;
-	v180 = loc183;
-	v181.u0 = 0x48;
-	v180 += v181;
-	loc144 = v180;
-	v180 = loc183;
-	v181.u0 = 188;
-	v180 += v181;
-	loc155 = v180;
-	v180 = loc183;
-	v181.u0 = 0x44;
-	v180 += v181;
-	loc166 = v180;
-	v180 = loc183;
-	v181.u0 = 0xB8;
-	v180 += v181;
-	loc33 = v180;
-	v180 = loc183;
-	v181.u0 = 181;
-	v180 += v181;
-	loc44 = v180;
-	v180 = loc183;
-	v181.u0 = 0xB4;
-	v180 += v181;
-	loc55 = v180;
-	v180 = loc183;
-	v181.u0 = 0x38;
-	v180 += v181;
-	loc66 = v180;
-	v180 = loc183;
-	v181.u0 = 44;
-	v180 += v181;
-	loc77 = v180;
-	v180 = loc183;
-	v181.u0 = 0x20;
-	v180 += v181;
-	loc88 = v180;
-	v180 = loc183;
-	v181.u0 = 0x1C;
-	v180 += v181;
-	loc89 = v180;
-	v180 = loc183;
-	v181.u0 = 0x50;
-	v180 += v181;
-	loc90 = v180;
-	v180 = loc183;
-	v181.u0 = 0x18;
-	v180 += v181;
-	loc91 = v180;
-	v180 = loc183;
-	v181.u0 = 0x14;
-	v180 += v181;
-	loc92 = v180;
-	v180 = loc183;
-	v181.u0 = 0x10;
-	v180 += v181;
-	loc93 = v180;
-	v180 = loc144;
+	v181 = loc183;
+	v182.u0 = 0x4C;
+	v181 += v182;
+	loc20 = v181;
+	v181 = loc183;
+	v182.u0 = 0x08;
+	v181 += v182;
+	loc181 = v181;
+	v181 = loc183;
+	loc180 = v181;
+	v181 = loc183;
+	v182.u0 = 288;
+	v181 += v182;
+	loc133 = v181;
+	v181 = loc183;
+	v182.u0 = 0x48;
+	v181 += v182;
+	loc144 = v181;
+	v181 = loc183;
+	v182.u0 = 188;
+	v181 += v182;
+	loc155 = v181;
+	v181 = loc183;
+	v182.u0 = 0x44;
+	v181 += v182;
+	loc166 = v181;
+	v181 = loc183;
+	v182.u0 = 0xB8;
+	v181 += v182;
+	loc33 = v181;
+	v181 = loc183;
+	v182.u0 = 181;
+	v181 += v182;
+	loc44 = v181;
+	v181 = loc183;
+	v182.u0 = 0xB4;
+	v181 += v182;
+	loc55 = v181;
+	v181 = loc183;
+	v182.u0 = 0x38;
+	v181 += v182;
+	loc66 = v181;
+	v181 = loc183;
+	v182.u0 = 44;
+	v181 += v182;
+	loc77 = v181;
+	v181 = loc183;
+	v182.u0 = 0x20;
+	v181 += v182;
+	loc88 = v181;
+	v181 = loc183;
+	v182.u0 = 0x1C;
+	v181 += v182;
+	loc89 = v181;
+	v181 = loc183;
+	v182.u0 = 0x50;
+	v181 += v182;
+	loc90 = v181;
+	v181 = loc183;
+	v182.u0 = 0x18;
+	v181 += v182;
+	loc91 = v181;
+	v181 = loc183;
+	v182.u0 = 0x14;
+	v181 += v182;
+	loc92 = v181;
+	v181 = loc183;
+	v182.u0 = 0x10;
+	v181 += v182;
+	loc93 = v181;
+	v181 = loc144;
+	v182 = loc133;
+	*v181.u0 = v182;
+	v181 = loc180;
+	v184 = arg5;
+	*v181.u0 = v184;
 	v181 = loc133;
-	*v180.u0 = v181;
-	v180 = loc180;
-	v183 = arg5;
-	*v180.u0 = v183;
-	v180 = loc133;
-	v181.u0 = 100;
-	v184.u0 = 0x3DC0;
-	v185 = loc180;
-	v180 = fn000DB3DF(v180, v181, v184, v185);
-	loc94 = v180;
-	v180 = loc94;
-	v181.u0 = 99;
-	v182 = v180 > v181;
-	loc95 = v182;
-	v180 = loc95;
-	if (v180)
+	v182.u0 = 100;
+	v185.u0 = 0x3DC0;
+	v186 = loc180;
+	v181 = fn000DB3DF(v181, v182, v185, v186);
+	loc94 = v181;
+	v181 = loc94;
+	v182.u0 = 99;
+	v183 = v181 > v182;
+	loc95 = v183;
+	v181 = loc95;
+	if (v181)
 	{
-		v180.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v180;
-		v180.u0 = 0x017B;
-		v180 = invoke_i(v180);
-		loc96 = v180;
-		v180.u3 = g_t140048.u3;
-		loc97 = v180;
-		v180.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v180;
-		v180 = loc97;
-		v181.u0 = 0x01;
-		v180 &= v181;
-		loc98 = v180;
-		v180 = loc98;
-		if (v180)
+		v181.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v181;
+		v181.u0 = 0x017B;
+		v181 = invoke_i(v181);
+		loc96 = v181;
+		v181.u3 = g_t140048.u3;
+		loc97 = v181;
+		v181.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v181;
+		v181 = loc97;
+		v182.u0 = 0x01;
+		v181 &= v182;
+		loc98 = v181;
+		v181 = loc98;
+		if (v181)
 		{
-			v180.u0 = 0x00;
-			loc27 = v180;
-			v180.u0 = 0x00;
-			loc30 = v180;
-			v180.u0 = 0x08;
-			loc182 = v180;
+			v181.u0 = 0x00;
+			loc27 = v181;
+			v181.u0 = 0x00;
+			loc30 = v181;
+			v181.u0 = 0x08;
+			loc182 = v181;
 		}
 		else
 		{
-			v180.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v180;
-			v180 = loc181;
-			v183 = arg5;
-			*v180.u0 = v183;
-			v180.u0 = 0x018D;
-			v181 = loc144;
-			v184 = loc96;
-			v185.u0 = 0x3DC0;
-			v186 = loc181;
-			v180 = invoke_iiiii(v180, v181, v184, v185, v186);
-			loc99 = v180;
-			v180.u3 = g_t140048.u3;
-			loc100 = v180;
-			v180.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v180;
-			v180 = loc100;
-			v181.u0 = 0x01;
-			v180 &= v181;
-			loc101 = v180;
-			v180 = loc101;
-			if (v180)
+			v181.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v181;
+			v181 = loc181;
+			v184 = arg5;
+			*v181.u0 = v184;
+			v181.u0 = 0x018D;
+			v182 = loc144;
+			v185 = loc96;
+			v186.u0 = 0x3DC0;
+			v187 = loc181;
+			v181 = invoke_iiiii(v181, v182, v185, v186, v187);
+			loc99 = v181;
+			v181.u3 = g_t140048.u3;
+			loc100 = v181;
+			v181.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v181;
+			v181 = loc100;
+			v182.u0 = 0x01;
+			v181 &= v182;
+			loc101 = v181;
+			v181 = loc101;
+			if (v181)
 			{
-				v180.u0 = 0x00;
-				loc27 = v180;
-				v180.u0 = 0x00;
-				loc30 = v180;
-				v180.u0 = 0x08;
-				loc182 = v180;
+				v181.u0 = 0x00;
+				loc27 = v181;
+				v181.u0 = 0x00;
+				loc30 = v181;
+				v181.u0 = 0x08;
+				loc182 = v181;
 			}
 			else
 			{
-				v180 = loc144;
-				v180 = *v180.u0;
-				loc102 = v180;
-				v180 = loc102;
-				v181.u0 = 0x00;
-				v182 = v180 == v181;
-				loc103 = v182;
-				v180 = loc103;
-				if (v180)
+				v181 = loc144;
+				v181 = *v181.u0;
+				loc102 = v181;
+				v181 = loc102;
+				v182.u0 = 0x00;
+				v183 = v181 == v182;
+				loc103 = v183;
+				v181 = loc103;
+				if (v181)
 				{
-					v180.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v180;
-					v180.u0 = 0x018A;
-					invoke_v(v180);
-					v180.u3 = g_t140048.u3;
-					loc105 = v180;
-					v180.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v180;
-					v180 = loc105;
-					v181.u0 = 0x01;
-					v180 &= v181;
-					loc106 = v180;
-					v180 = loc106;
-					if (v180)
+					v181.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v181;
+					v181.u0 = 0x018A;
+					invoke_v(v181);
+					v181.u3 = g_t140048.u3;
+					loc105 = v181;
+					v181.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v181;
+					v181 = loc105;
+					v182.u0 = 0x01;
+					v181 &= v182;
+					loc106 = v181;
+					v181 = loc106;
+					if (v181)
 					{
-						v180.u0 = 0x00;
-						loc27 = v180;
-						v180.u0 = 0x00;
-						loc30 = v180;
-						v180.u0 = 0x08;
-						loc182 = v180;
+						v181.u0 = 0x00;
+						loc27 = v181;
+						v181.u0 = 0x00;
+						loc30 = v181;
+						v181.u0 = 0x08;
+						loc182 = v181;
 						goto l00111228;
 					}
-					v180 = loc144;
-					v180 = *v180.u0;
-					loc22 = v180;
-					v180 = loc22;
-					loc87 = v180;
+					v181 = loc144;
+					v181 = *v181.u0;
+					loc22 = v181;
+					v181 = loc22;
+					loc87 = v181;
 				}
 				else
 				{
-					v180 = loc102;
-					loc104 = v180;
-					v180 = loc104;
-					loc87 = v180;
+					v181 = loc102;
+					loc104 = v181;
+					v181 = loc104;
+					loc87 = v181;
 				}
-				v180 = loc99;
-				v180 = _malloc(v180);
-				loc109 = v180;
-				v180 = loc109;
-				loc110 = v180;
-				v180 = loc109;
-				v181.u0 = 0x00;
-				v182 = v180 == v181;
-				loc111 = v182;
-				v180 = loc111;
-				if (v180)
+				v181 = loc99;
+				v181 = _malloc(v181);
+				loc109 = v181;
+				v181 = loc109;
+				loc110 = v181;
+				v181 = loc109;
+				v182.u0 = 0x00;
+				v183 = v181 == v182;
+				loc111 = v183;
+				v181 = loc111;
+				if (v181)
 				{
-					v180.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v180;
-					v180.u0 = 0x018A;
-					invoke_v(v180);
-					v180.u3 = g_t140048.u3;
-					loc112 = v180;
-					v180.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v180;
-					v180 = loc112;
-					v181.u0 = 0x01;
-					v180 &= v181;
-					loc113 = v180;
-					v180 = loc113;
-					if (v180)
+					v181.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v181;
+					v181.u0 = 0x018A;
+					invoke_v(v181);
+					v181.u3 = g_t140048.u3;
+					loc112 = v181;
+					v181.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v181;
+					v181 = loc112;
+					v182.u0 = 0x01;
+					v181 &= v182;
+					loc113 = v181;
+					v181 = loc113;
+					if (v181)
 					{
-						v180 = loc110;
-						loc27 = v180;
-						v180 = loc87;
-						loc30 = v180;
-						v180.u0 = 0x08;
-						loc182 = v180;
+						v181 = loc110;
+						loc27 = v181;
+						v181 = loc87;
+						loc30 = v181;
+						v181.u0 = 0x08;
+						loc182 = v181;
 					}
 					else
 					{
-						v180.u0 = 0x00;
-						loc6 = v180;
-						v180 = loc99;
-						loc11 = v180;
-						v180 = loc110;
-						loc28 = v180;
-						v180 = loc87;
-						loc31 = v180;
-						v180.u0 = 11;
-						loc182 = v180;
+						v181.u0 = 0x00;
+						loc6 = v181;
+						v181 = loc99;
+						loc11 = v181;
+						v181 = loc110;
+						loc28 = v181;
+						v181 = loc87;
+						loc31 = v181;
+						v181.u0 = 11;
+						loc182 = v181;
 					}
 				}
 				else
 				{
-					v180 = loc109;
-					loc6 = v180;
-					v180 = loc99;
-					loc11 = v180;
-					v180 = loc110;
-					loc28 = v180;
-					v180 = loc87;
-					loc31 = v180;
-					v180.u0 = 11;
-					loc182 = v180;
+					v181 = loc109;
+					loc6 = v181;
+					v181 = loc99;
+					loc11 = v181;
+					v181 = loc110;
+					loc28 = v181;
+					v181 = loc87;
+					loc31 = v181;
+					v181.u0 = 11;
+					loc182 = v181;
 				}
 			}
 		}
 	}
 	else
 	{
-		v180 = loc155;
-		loc6 = v180;
-		v180 = loc94;
-		loc11 = v180;
-		v180.u0 = 0x00;
-		loc28 = v180;
-		v180.u0 = 0x00;
-		loc31 = v180;
-		v180.u0 = 11;
-		loc182 = v180;
+		v181 = loc155;
+		loc6 = v181;
+		v181 = loc94;
+		loc11 = v181;
+		v181.u0 = 0x00;
+		loc28 = v181;
+		v181.u0 = 0x00;
+		loc31 = v181;
+		v181.u0 = 11;
+		loc182 = v181;
 	}
 l00111228:
-	v180 = loc182;
-	v181.u0 = 11;
-	v182 = v180 == v181;
-	if (!v182)
+	v181 = loc182;
+	v182.u0 = 11;
+	v183 = v181 == v182;
+	if (!v183)
 	{
 l00111826:
-		v180 = loc182;
-		v181.u0 = 0x08;
-		v182 = v180 == v181;
-		if (v182)
+		v181 = loc182;
+		v182.u0 = 0x08;
+		v183 = v181 == v182;
+		if (v183)
 		{
-			v180 = ___cxa_find_matching_catch_n();
-			loc107 = v180;
-			v180.u3 = g_t140094.u3;
-			loc108 = v180;
-			v180 = loc107;
-			loc18 = v180;
-			v180 = loc108;
-			loc19 = v180;
-			v180 = loc27;
-			loc29 = v180;
-			v180 = loc30;
-			loc32 = v180;
+			v181 = ___cxa_find_matching_catch_n();
+			loc107 = v181;
+			v181.u3 = g_t140094.u3;
+			loc108 = v181;
+			v181 = loc107;
+			loc18 = v181;
+			v181 = loc108;
+			loc19 = v181;
+			v181 = loc27;
+			loc29 = v181;
+			v181 = loc30;
+			loc32 = v181;
 		}
-		v180 = loc29;
+		v181 = loc29;
+		v182.u0 = 0x00;
+		v183 = v181 == v182;
+		loc83 = v183;
+		v181 = loc83;
+		v183 = v181 == 0x00;
+		if (v183)
+		{
+			v181 = loc29;
+			loc84 = v181;
+			v181 = loc84;
+			_free(v181);
+		}
+		v181 = loc32;
+		v182.u0 = 0x00;
+		v183 = v181 == v182;
+		loc85 = v183;
+		v181 = loc85;
+		v183 = v181 == 0x00;
+		if (v183)
+		{
+			v181 = loc32;
+			loc86 = v181;
+			v181 = loc86;
+			_free(v181);
+		}
+		v181 = loc18;
+		___resumeException(v181);
 		v181.u0 = 0x00;
-		v182 = v180 == v181;
-		loc83 = v182;
-		v180 = loc83;
-		v182 = v180 == 0x00;
-		if (v182)
-		{
-			v180 = loc29;
-			loc84 = v180;
-			v180 = loc84;
-			_free(v180);
-		}
-		v180 = loc32;
-		v181.u0 = 0x00;
-		v182 = v180 == v181;
-		loc85 = v182;
-		v180 = loc85;
-		v182 = v180 == 0x00;
-		if (v182)
-		{
-			v180 = loc32;
-			loc86 = v180;
-			v180 = loc86;
-			_free(v180);
-		}
-		v180 = loc18;
-		___resumeException(v180);
-		v180.u0 = 0x00;
-		return v180;
+		return v181;
 	}
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180.u0 = 0x0167;
-	v181 = arg3;
-	v180 = invoke_ii(v180, v181);
-	loc114 = v180;
-	v180.u3 = g_t140048.u3;
-	loc115 = v180;
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180 = loc115;
-	v181.u0 = 0x01;
-	v180 &= v181;
-	loc116 = v180;
-	v180 = loc116;
-	if (v180)
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181.u0 = 0x0167;
+	v182 = arg3;
+	v181 = invoke_ii(v181, v182);
+	loc114 = v181;
+	v181.u3 = g_t140048.u3;
+	loc115 = v181;
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181 = loc115;
+	v182.u0 = 0x01;
+	v181 &= v182;
+	loc116 = v181;
+	v181 = loc116;
+	if (v181)
 	{
-		v180 = loc28;
-		loc27 = v180;
-		v180 = loc31;
-		loc30 = v180;
-		v180.u0 = 0x08;
-		loc182 = v180;
+		v181 = loc28;
+		loc27 = v181;
+		v181 = loc31;
+		loc30 = v181;
+		v181.u0 = 0x08;
+		loc182 = v181;
 		goto l00111824;
 	}
-	v180 = loc166;
-	v181 = loc114;
-	*v180.u0 = v181;
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180.u0 = 0x0164;
 	v181 = loc166;
-	v184.u0 = 0x4C70;
-	v180 = invoke_iii(v180, v181, v184);
-	loc117 = v180;
-	v180.u3 = g_t140048.u3;
-	loc118 = v180;
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180 = loc118;
-	v181.u0 = 0x01;
-	v180 &= v181;
-	loc119 = v180;
-	v180 = loc119;
-	if (v180)
+	v182 = loc114;
+	*v181.u0 = v182;
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181.u0 = 0x0164;
+	v182 = loc166;
+	v185.u0 = 0x4C70;
+	v181 = invoke_iii(v181, v182, v185);
+	loc117 = v181;
+	v181.u3 = g_t140048.u3;
+	loc118 = v181;
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181 = loc118;
+	v182.u0 = 0x01;
+	v181 &= v182;
+	loc119 = v181;
+	v181 = loc119;
+	if (v181)
 	{
-		v180 = ___cxa_find_matching_catch_n();
-		loc46 = v180;
-		v180.u3 = g_t140094.u3;
-		loc47 = v180;
-		v180 = loc46;
-		loc16 = v180;
-		v180 = loc47;
-		loc17 = v180;
-		v180 = loc114;
-		loc82 = v180;
+		v181 = ___cxa_find_matching_catch_n();
+		loc46 = v181;
+		v181.u3 = g_t140094.u3;
+		loc47 = v181;
+		v181 = loc46;
+		loc16 = v181;
+		v181 = loc47;
+		loc17 = v181;
+		v181 = loc114;
+		loc82 = v181;
 		goto l0011180C;
 	}
-	v180 = loc144;
-	v180.u3 = *v180.u3;
-	loc120 = v180;
-	v180 = loc120;
-	v181 = loc11;
-	v180 += v181;
-	loc121 = v180;
-	v180 = loc117;
-	v180.u3 = *v180.u3;
-	loc122 = v180;
-	v180 = loc122;
-	v181.u0 = 0x20;
-	v180 += v181;
-	loc123 = v180;
-	v180 = loc123;
-	v180.u3 = *v180.u3;
-	loc124 = v180;
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180 = loc124;
+	v181 = loc144;
+	v181.u3 = *v181.u3;
+	loc120 = v181;
+	v181 = loc120;
+	v182 = loc11;
+	v181 += v182;
+	loc121 = v181;
 	v181 = loc117;
-	v184 = loc120;
-	v185 = loc121;
-	v186 = loc6;
-	v180 = invoke_iiiii(v180, v181, v184, v185, v186);
-	v180.u3 = g_t140048.u3;
-	loc125 = v180;
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180 = loc125;
-	v181.u0 = 0x01;
-	v180 &= v181;
-	loc126 = v180;
-	v180 = loc126;
-	if (v180)
+	v181.u3 = *v181.u3;
+	loc122 = v181;
+	v181 = loc122;
+	v182.u0 = 0x20;
+	v181 += v182;
+	loc123 = v181;
+	v181 = loc123;
+	v181.u3 = *v181.u3;
+	loc124 = v181;
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181 = loc124;
+	v182 = loc117;
+	v185 = loc120;
+	v186 = loc121;
+	v187 = loc6;
+	v181 = invoke_iiiii(v181, v182, v185, v186, v187);
+	v181.u3 = g_t140048.u3;
+	loc125 = v181;
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181 = loc125;
+	v182.u0 = 0x01;
+	v181 &= v182;
+	loc126 = v181;
+	v181 = loc126;
+	if (v181)
 	{
-		v180 = ___cxa_find_matching_catch_n();
-		loc48 = v180;
-		v180.u3 = g_t140094.u3;
-		loc49 = v180;
-		v180 = loc48;
-		loc16 = v180;
-		v180 = loc49;
-		loc17 = v180;
-		v180 = loc114;
-		loc82 = v180;
+		v181 = ___cxa_find_matching_catch_n();
+		loc48 = v181;
+		v181.u3 = g_t140094.u3;
+		loc49 = v181;
+		v181 = loc48;
+		loc16 = v181;
+		v181 = loc49;
+		loc17 = v181;
+		v181 = loc114;
+		loc82 = v181;
 		goto l0011180D;
 	}
-	v180 = loc11;
-	v181.u0 = 0x00;
-	v182 = v180 == v181;
-	loc127 = v182;
-	v180 = loc127;
-	if (v180)
+	v181 = loc11;
+	v182.u0 = 0x00;
+	v183 = v181 == v182;
+	loc127 = v183;
+	v181 = loc127;
+	if (v181)
 	{
-		v180.u0 = 0x00;
-		loc138 = v180;
+		v181.u0 = 0x00;
+		loc138 = v181;
 	}
 	else
 	{
-		v180 = loc144;
-		v180 = *v180.u0;
-		loc128 = v180;
-		v180 = loc128;
-		v187 = *v180.u0;
-		v180.u3 = (word32) v187;
-		loc129 = v180;
-		v180 = loc129;
-		v181.u0 = 0x18;
-		v180 <<= v181;
-		v181.u0 = 0x18;
-		v180 >>= v181;
-		v181.u0 = 0x2D;
-		v182 = v180 == v181;
-		loc130 = v182;
-		v180 = loc130;
-		loc138 = v180;
+		v181 = loc144;
+		v181 = *v181.u0;
+		loc128 = v181;
+		v181 = loc128;
+		v188 = *v181.u0;
+		v181.u3 = (word32) v188;
+		loc129 = v181;
+		v181 = loc129;
+		v182.u0 = 0x18;
+		v181 <<= v182;
+		v182.u0 = 0x18;
+		v181 >>= v182;
+		v182.u0 = 0x2D;
+		v183 = v181 == v182;
+		loc130 = v183;
+		v181 = loc130;
+		loc138 = v181;
 	}
 	while (true)
 	{
-		v180 = loc66;
-		v188.u0 = 0x00;
-		v180.u4->t0000.u4 = (struct Eq_n *) v188;
-		v180 = loc66;
-		v181.u0 = 0x08;
-		v180 += v181;
+		v181 = loc66;
+		v189.u0 = 0x00;
+		v181.u4->t0000.u4 = (struct Eq_n *) v189;
+		v181 = loc66;
+		v182.u0 = 0x08;
+		v181 += v182;
+		v182.u0 = 0x00;
+		*v181.u3 = (word32) v182;
 		v181.u0 = 0x00;
-		*v180.u3 = (word32) v181;
-		v180.u0 = 0x00;
-		loc7 = v180;
-		v180 = loc7;
-		v181.u0 = 0x03;
-		v182 = v180 == v181;
-		loc177 = v182;
-		v180 = loc177;
-		if (v180)
-			break;
-		v180 = loc66;
+		loc7 = v181;
 		v181 = loc7;
-		v184.u0 = 0x02;
-		v181 <<= v184;
-		v180 += v181;
-		loc131 = v180;
-		v180 = loc131;
-		v181.u0 = 0x00;
-		*v180.u0 = v181;
-		v180 = loc7;
-		v181.u0 = 0x01;
-		v180 += v181;
-		loc132 = v180;
-		v180 = loc132;
-		loc7 = v180;
+		v182.u0 = 0x03;
+		v183 = v181 == v182;
+		loc177 = v183;
+		v181 = loc177;
+		if (v181)
+			break;
+		v181 = loc66;
+		v182 = loc7;
+		v185.u0 = 0x02;
+		v182 <<= v185;
+		v181 += v182;
+		loc131 = v181;
+		v181 = loc131;
+		v182.u0 = 0x00;
+		*v181.u0 = v182;
+		v181 = loc7;
+		v182.u0 = 0x01;
+		v181 += v182;
+		loc132 = v181;
+		v181 = loc132;
+		loc7 = v181;
 	}
 	while (true)
 	{
-		v180 = loc77;
-		v188.u0 = 0x00;
-		*v180.u0 = v188;
-		v180 = loc77;
-		v181.u0 = 0x08;
-		v180 += v181;
+		v181 = loc77;
+		v189.u0 = 0x00;
+		*v181.u0 = v189;
+		v181 = loc77;
+		v182.u0 = 0x08;
+		v181 += v182;
+		v182.u0 = 0x00;
+		*v181.u0 = v182;
 		v181.u0 = 0x00;
-		*v180.u0 = v181;
-		v180.u0 = 0x00;
-		loc8 = v180;
-		v180 = loc8;
-		v181.u0 = 0x03;
-		v182 = v180 == v181;
-		loc178 = v182;
-		v180 = loc178;
-		if (v180)
-			break;
-		v180 = loc77;
+		loc8 = v181;
 		v181 = loc8;
-		v184.u0 = 0x02;
-		v181 <<= v184;
-		v180 += v181;
-		loc134 = v180;
-		v180 = loc134;
-		v181.u0 = 0x00;
-		*v180.u0 = v181;
-		v180 = loc8;
-		v181.u0 = 0x01;
-		v180 += v181;
-		loc135 = v180;
-		v180 = loc135;
-		loc8 = v180;
+		v182.u0 = 0x03;
+		v183 = v181 == v182;
+		loc178 = v183;
+		v181 = loc178;
+		if (v181)
+			break;
+		v181 = loc77;
+		v182 = loc8;
+		v185.u0 = 0x02;
+		v182 <<= v185;
+		v181 += v182;
+		loc134 = v181;
+		v181 = loc134;
+		v182.u0 = 0x00;
+		*v181.u0 = v182;
+		v181 = loc8;
+		v182.u0 = 0x01;
+		v181 += v182;
+		loc135 = v181;
+		v181 = loc135;
+		loc8 = v181;
 	}
 	while (true)
 	{
-		v180 = loc88;
-		v188.u0 = 0x00;
-		*v180.u0 = v188;
-		v180 = loc88;
-		v181.u0 = 0x08;
-		v180 += v181;
+		v181 = loc88;
+		v189.u0 = 0x00;
+		*v181.u0 = v189;
+		v181 = loc88;
+		v182.u0 = 0x08;
+		v181 += v182;
+		v182.u0 = 0x00;
+		*v181.u0 = v182;
 		v181.u0 = 0x00;
-		*v180.u0 = v181;
-		v180.u0 = 0x00;
-		loc9 = v180;
-		v180 = loc9;
-		v181.u0 = 0x03;
-		v182 = v180 == v181;
-		loc179 = v182;
-		v180 = loc179;
-		if (v180)
-			break;
-		v180 = loc88;
+		loc9 = v181;
 		v181 = loc9;
-		v184.u0 = 0x02;
-		v181 <<= v184;
-		v180 += v181;
-		loc136 = v180;
-		v180 = loc136;
-		v181.u0 = 0x00;
-		*v180.u0 = v181;
-		v180 = loc9;
-		v181.u0 = 0x01;
-		v180 += v181;
-		loc137 = v180;
-		v180 = loc137;
-		loc9 = v180;
+		v182.u0 = 0x03;
+		v183 = v181 == v182;
+		loc179 = v183;
+		v181 = loc179;
+		if (v181)
+			break;
+		v181 = loc88;
+		v182 = loc9;
+		v185.u0 = 0x02;
+		v182 <<= v185;
+		v181 += v182;
+		loc136 = v181;
+		v181 = loc136;
+		v182.u0 = 0x00;
+		*v181.u0 = v182;
+		v181 = loc9;
+		v182.u0 = 0x01;
+		v181 += v182;
+		loc137 = v181;
+		v181 = loc137;
+		loc9 = v181;
 	}
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180.u0 = 0x01B4;
-	v181 = arg2;
-	v184 = loc138;
-	v185 = loc166;
-	v186 = loc33;
-	v189 = loc44;
-	v190 = loc55;
-	v191 = loc66;
-	v192 = loc77;
-	v193 = loc88;
-	v194 = loc89;
-	invoke_viiiiiiiiii(v180, v181, v184, v185, v186, v189, v190, v191, v192, v193, v194);
-	v180.u3 = g_t140048.u3;
-	loc139 = v180;
-	v180.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v180;
-	v180 = loc139;
-	v181.u0 = 0x01;
-	v180 &= v181;
-	loc140 = v180;
-	v180 = loc140;
-	if (v180)
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181.u0 = 0x01B4;
+	v182 = arg2;
+	v185 = loc138;
+	v186 = loc166;
+	v187 = loc33;
+	v190 = loc44;
+	v191 = loc55;
+	v192 = loc66;
+	v193 = loc77;
+	v194 = loc88;
+	v195 = loc89;
+	invoke_viiiiiiiiii(v181, v182, v185, v186, v187, v190, v191, v192, v193, v194, v195);
+	v181.u3 = g_t140048.u3;
+	loc139 = v181;
+	v181.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v181;
+	v181 = loc139;
+	v182.u0 = 0x01;
+	v181 &= v182;
+	loc140 = v181;
+	v181 = loc140;
+	if (v181)
 	{
-		v180 = ___cxa_find_matching_catch_n();
-		loc50 = v180;
-		v180.u3 = g_t140094.u3;
-		loc51 = v180;
-		v180 = loc50;
-		loc14 = v180;
-		v180 = loc51;
-		loc15 = v180;
+		v181 = ___cxa_find_matching_catch_n();
+		loc50 = v181;
+		v181.u3 = g_t140094.u3;
+		loc51 = v181;
+		v181 = loc50;
+		loc14 = v181;
+		v181 = loc51;
+		loc15 = v181;
 		goto l001117E8;
 	}
-	v180 = loc89;
-	v180.u3 = *v180.u3;
-	loc141 = v180;
-	v180 = loc11;
-	v181 = loc141;
-	v182 = v180 > v181;
-	loc142 = v182;
-	v180 = loc142;
-	if (v180)
+	v181 = loc89;
+	v181.u3 = *v181.u3;
+	loc141 = v181;
+	v181 = loc11;
+	v182 = loc141;
+	v183 = v181 > v182;
+	loc142 = v183;
+	v181 = loc142;
+	if (v181)
 	{
-		v180 = loc11;
-		v181 = loc141;
-		v180 -= v181;
-		loc143 = v180;
-		v180 = loc143;
-		v181.u0 = 0x01;
-		v180 <<= v181;
-		loc145 = v180;
-		v180 = loc88;
-		v181.u0 = 11;
-		v180 += v181;
-		loc146 = v180;
-		v180 = loc146;
-		v195.u1 = v180.u4->t0000.u1;
-		v180.u3 = (word32) v195;
-		loc147 = v180;
-		v180 = loc147;
-		v181.u0 = 0x18;
-		v180 <<= v181;
-		v181.u0 = 0x18;
-		v180 >>= v181;
-		v181.u0 = 0x00;
-		v182 = v180 < v181;
-		loc148 = v182;
-		v180 = loc88;
-		v181.u0 = 0x04;
-		v180 += v181;
-		loc149 = v180;
-		v180 = loc149;
-		v180.u3 = *v180.u3;
-		loc150 = v180;
-		v180 = loc147;
-		v181.u0 = 0xFF;
-		v180 &= v181;
-		loc151 = v180;
-		v180 = loc148;
-		if (v180)
-			v180 = loc150;
+		v181 = loc11;
+		v182 = loc141;
+		v181 -= v182;
+		loc143 = v181;
+		v181 = loc143;
+		v182.u0 = 0x01;
+		v181 <<= v182;
+		loc145 = v181;
+		v181 = loc88;
+		v182.u0 = 11;
+		v181 += v182;
+		loc146 = v181;
+		v181 = loc146;
+		v196.u1 = v181.u4->t0000.u1;
+		v181.u3 = (word32) v196;
+		loc147 = v181;
+		v181 = loc147;
+		v182.u0 = 0x18;
+		v181 <<= v182;
+		v182.u0 = 0x18;
+		v181 >>= v182;
+		v182.u0 = 0x00;
+		v183 = v181 < v182;
+		loc148 = v183;
+		v181 = loc88;
+		v182.u0 = 0x04;
+		v181 += v182;
+		loc149 = v181;
+		v181 = loc149;
+		v181.u3 = *v181.u3;
+		loc150 = v181;
+		v181 = loc147;
+		v182.u0 = 0xFF;
+		v181 &= v182;
+		loc151 = v181;
+		v181 = loc148;
+		if (v181)
+			v181 = loc150;
 		else
-			v180 = loc151;
-		loc152 = v180;
-		v180 = loc77;
-		v181.u0 = 11;
-		v180 += v181;
-		loc153 = v180;
-		v180 = loc153;
-		v196.u1 = v180.u4->t0000.u1;
-		v180.u3 = (word32) v196;
-		loc154 = v180;
-		v180 = loc154;
-		v181.u0 = 0x18;
-		v180 <<= v181;
-		v181.u0 = 0x18;
-		v180 >>= v181;
-		v181.u0 = 0x00;
-		v182 = v180 < v181;
-		loc156 = v182;
-		v180 = loc77;
-		v181.u0 = 0x04;
-		v180 += v181;
-		loc157 = v180;
-		v180 = loc157;
-		v180.u3 = *v180.u3;
-		loc158 = v180;
-		v180 = loc154;
-		v181.u0 = 0xFF;
-		v180 &= v181;
-		loc159 = v180;
-		v180 = loc156;
-		if (v180)
-			v180 = loc158;
+			v181 = loc151;
+		loc152 = v181;
+		v181 = loc77;
+		v182.u0 = 11;
+		v181 += v182;
+		loc153 = v181;
+		v181 = loc153;
+		v197.u1 = v181.u4->t0000.u1;
+		v181.u3 = (word32) v197;
+		loc154 = v181;
+		v181 = loc154;
+		v182.u0 = 0x18;
+		v181 <<= v182;
+		v182.u0 = 0x18;
+		v181 >>= v182;
+		v182.u0 = 0x00;
+		v183 = v181 < v182;
+		loc156 = v183;
+		v181 = loc77;
+		v182.u0 = 0x04;
+		v181 += v182;
+		loc157 = v181;
+		v181 = loc157;
+		v181.u3 = *v181.u3;
+		loc158 = v181;
+		v181 = loc154;
+		v182.u0 = 0xFF;
+		v181 &= v182;
+		loc159 = v181;
+		v181 = loc156;
+		if (v181)
+			v181 = loc158;
 		else
-			v180 = loc159;
-		loc160 = v180;
-		v180 = loc145;
-		v181.u0 = 0x01;
-		v180 |= v181;
-		loc161 = v180;
-		v180 = loc152;
-		v181 = loc161;
-		v180 += v181;
-		loc162 = v180;
-		v180 = loc162;
-		v181 = loc160;
-		v180 += v181;
-		loc163 = v180;
-		v180 = loc163;
-		loc21 = v180;
+			v181 = loc159;
+		loc160 = v181;
+		v181 = loc145;
+		v182.u0 = 0x01;
+		v181 |= v182;
+		loc161 = v181;
+		v181 = loc152;
+		v182 = loc161;
+		v181 += v182;
+		loc162 = v181;
+		v181 = loc162;
+		v182 = loc160;
+		v181 += v182;
+		loc163 = v181;
+		v181 = loc163;
+		loc21 = v181;
 	}
 	else
 	{
-		v180 = loc88;
-		v181.u0 = 11;
-		v180 += v181;
-		loc164 = v180;
-		v180 = loc164;
-		v197.u1 = v180.u4->t0000.u1;
-		v180.u3 = (word32) v197;
-		loc165 = v180;
-		v180 = loc165;
-		v181.u0 = 0x18;
-		v180 <<= v181;
-		v181.u0 = 0x18;
-		v180 >>= v181;
-		v181.u0 = 0x00;
-		v182 = v180 < v181;
-		loc167 = v182;
-		v180 = loc88;
-		v181.u0 = 0x04;
-		v180 += v181;
-		loc168 = v180;
-		v180 = loc168;
-		v180.u3 = *v180.u3;
-		loc169 = v180;
-		v180 = loc165;
-		v181.u0 = 0xFF;
-		v180 &= v181;
-		loc170 = v180;
-		v180 = loc167;
-		if (v180)
-			v180 = loc169;
+		v181 = loc88;
+		v182.u0 = 11;
+		v181 += v182;
+		loc164 = v181;
+		v181 = loc164;
+		v198.u1 = v181.u4->t0000.u1;
+		v181.u3 = (word32) v198;
+		loc165 = v181;
+		v181 = loc165;
+		v182.u0 = 0x18;
+		v181 <<= v182;
+		v182.u0 = 0x18;
+		v181 >>= v182;
+		v182.u0 = 0x00;
+		v183 = v181 < v182;
+		loc167 = v183;
+		v181 = loc88;
+		v182.u0 = 0x04;
+		v181 += v182;
+		loc168 = v181;
+		v181 = loc168;
+		v181.u3 = *v181.u3;
+		loc169 = v181;
+		v181 = loc165;
+		v182.u0 = 0xFF;
+		v181 &= v182;
+		loc170 = v181;
+		v181 = loc167;
+		if (v181)
+			v181 = loc169;
 		else
-			v180 = loc170;
-		loc171 = v180;
-		v180 = loc77;
-		v181.u0 = 11;
-		v180 += v181;
-		loc172 = v180;
-		v180 = loc172;
-		v198.u1 = v180.u4->t0000.u1;
-		v180.u3 = (word32) v198;
-		loc173 = v180;
-		v180 = loc173;
-		v181.u0 = 0x18;
-		v180 <<= v181;
-		v181.u0 = 0x18;
-		v180 >>= v181;
-		v181.u0 = 0x00;
-		v182 = v180 < v181;
-		loc174 = v182;
-		v180 = loc77;
-		v181.u0 = 0x04;
-		v180 += v181;
-		loc175 = v180;
-		v180 = loc175;
-		v180.u3 = *v180.u3;
-		loc176 = v180;
-		v180 = loc173;
-		v181.u0 = 0xFF;
-		v180 &= v181;
-		loc34 = v180;
-		v180 = loc174;
-		if (v180)
-			v180 = loc176;
+			v181 = loc170;
+		loc171 = v181;
+		v181 = loc77;
+		v182.u0 = 11;
+		v181 += v182;
+		loc172 = v181;
+		v181 = loc172;
+		v199.u1 = v181.u4->t0000.u1;
+		v181.u3 = (word32) v199;
+		loc173 = v181;
+		v181 = loc173;
+		v182.u0 = 0x18;
+		v181 <<= v182;
+		v182.u0 = 0x18;
+		v181 >>= v182;
+		v182.u0 = 0x00;
+		v183 = v181 < v182;
+		loc174 = v183;
+		v181 = loc77;
+		v182.u0 = 0x04;
+		v181 += v182;
+		loc175 = v181;
+		v181 = loc175;
+		v181.u3 = *v181.u3;
+		loc176 = v181;
+		v181 = loc173;
+		v182.u0 = 0xFF;
+		v181 &= v182;
+		loc34 = v181;
+		v181 = loc174;
+		if (v181)
+			v181 = loc176;
 		else
-			v180 = loc34;
-		loc35 = v180;
-		v180 = loc171;
-		v181.u0 = 0x02;
-		v180 += v181;
-		loc36 = v180;
-		v180 = loc36;
-		v181 = loc35;
-		v180 += v181;
-		loc37 = v180;
-		v180 = loc37;
-		loc21 = v180;
+			v181 = loc34;
+		loc35 = v181;
+		v181 = loc171;
+		v182.u0 = 0x02;
+		v181 += v182;
+		loc36 = v181;
+		v181 = loc36;
+		v182 = loc35;
+		v181 += v182;
+		loc37 = v181;
+		v181 = loc37;
+		loc21 = v181;
 	}
-	v180 = loc21;
-	v181 = loc141;
-	v180 += v181;
-	loc38 = v180;
-	v180 = loc38;
-	v181.u0 = 100;
-	v182 = v180 > v181;
-	loc39 = v182;
-	v180 = loc39;
-	if (v180)
+	v181 = loc21;
+	v182 = loc141;
+	v181 += v182;
+	loc38 = v181;
+	v181 = loc38;
+	v182.u0 = 100;
+	v183 = v181 > v182;
+	loc39 = v183;
+	v181 = loc39;
+	if (v181)
 	{
-		v180 = loc38;
-		v180 = _malloc(v180);
-		loc40 = v180;
-		v180 = loc40;
-		loc41 = v180;
-		v180 = loc40;
-		v181.u0 = 0x00;
-		v182 = v180 == v181;
-		loc42 = v182;
-		v180 = loc42;
-		if (v180)
+		v181 = loc38;
+		v181 = _malloc(v181);
+		loc40 = v181;
+		v181 = loc40;
+		loc41 = v181;
+		v181 = loc40;
+		v182.u0 = 0x00;
+		v183 = v181 == v182;
+		loc42 = v183;
+		v181 = loc42;
+		if (v181)
 		{
-			v180.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v180;
-			v180.u0 = 0x018A;
-			invoke_v(v180);
-			v180.u3 = g_t140048.u3;
-			loc43 = v180;
-			v180.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v180;
-			v180 = loc43;
-			v181.u0 = 0x01;
-			v180 &= v181;
-			loc45 = v180;
-			v180 = loc45;
-			if (v180)
+			v181.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v181;
+			v181.u0 = 0x018A;
+			invoke_v(v181);
+			v181.u3 = g_t140048.u3;
+			loc43 = v181;
+			v181.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v181;
+			v181 = loc43;
+			v182.u0 = 0x01;
+			v181 &= v182;
+			loc45 = v181;
+			v181 = loc45;
+			if (v181)
 			{
-				v180 = ___cxa_find_matching_catch_n();
-				loc52 = v180;
-				v180.u3 = g_t140094.u3;
-				loc53 = v180;
-				v180 = loc52;
-				loc12 = v180;
-				v180 = loc53;
-				loc13 = v180;
-				v180 = loc41;
-				loc26 = v180;
+				v181 = ___cxa_find_matching_catch_n();
+				loc52 = v181;
+				v181.u3 = g_t140094.u3;
+				loc53 = v181;
+				v181 = loc52;
+				loc12 = v181;
+				v181 = loc53;
+				loc13 = v181;
+				v181 = loc41;
+				loc26 = v181;
 			}
 			else
 			{
-				v180 = loc89;
-				v180.u3 = *v180.u3;
-				loc23 = v180;
-				v180.u0 = 0x00;
-				loc10 = v180;
-				v180 = loc41;
-				loc25 = v180;
-				v180 = loc23;
-				loc60 = v180;
-				v180.u0 = 0x25;
-				loc182 = v180;
+				v181 = loc89;
+				v181.u3 = *v181.u3;
+				loc23 = v181;
+				v181.u0 = 0x00;
+				loc10 = v181;
+				v181 = loc41;
+				loc25 = v181;
+				v181 = loc23;
+				loc60 = v181;
+				v181.u0 = 0x25;
+				loc182 = v181;
 			}
 l00111693:
-			v180 = loc182;
-			v181.u0 = 0x25;
-			v182 = v180 == v181;
-			if (v182)
+			v181 = loc182;
+			v182.u0 = 0x25;
+			v183 = v181 == v182;
+			if (v183)
 			{
-				v180 = arg3;
-				v181.u0 = 0x04;
-				v180 += v181;
-				loc54 = v180;
-				v180 = loc54;
-				v180 = *v180.u0;
-				loc56 = v180;
-				v180 = loc6;
-				v181 = loc11;
-				v180 += v181;
-				loc57 = v180;
-				v180 = loc44;
-				v199 = *v180.u0;
-				v180.u3 = (word32) v199;
-				loc58 = v180;
-				v180 = loc55;
-				v200.u1 = v180.u4->t0000.u1;
-				v180.u3 = (word32) v200;
-				loc59 = v180;
-				v180.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v180;
-				v180.u0 = 0x01B5;
-				v181 = loc10;
-				v184 = loc91;
-				v185 = loc92;
-				v186 = loc56;
-				v189 = loc6;
-				v190 = loc57;
-				v191 = loc117;
-				v192 = loc138;
-				v193 = loc33;
-				v194 = loc58;
-				v201 = loc59;
-				v202 = loc66;
-				v203 = loc77;
-				v204 = loc88;
-				v205 = loc60;
-				invoke_viiiiiiiiiiiiiii(v180, v181, v184, v185, v186, v189, v190, v191, v192, v193, v194, v201, v202, v203, v204, v205);
-				v180.u3 = g_t140048.u3;
-				loc61 = v180;
-				v180.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v180;
-				v180 = loc61;
-				v181.u0 = 0x01;
-				v180 &= v181;
-				loc62 = v180;
-				v180 = loc62;
-				v182 = v180 == 0x00;
-				if (v182)
+				v181 = arg3;
+				v182.u0 = 0x04;
+				v181 += v182;
+				loc54 = v181;
+				v181 = loc54;
+				v181 = *v181.u0;
+				loc56 = v181;
+				v181 = loc6;
+				v182 = loc11;
+				v181 += v182;
+				loc57 = v181;
+				v181 = loc44;
+				v200 = *v181.u0;
+				v181.u3 = (word32) v200;
+				loc58 = v181;
+				v181 = loc55;
+				v201.u1 = v181.u4->t0000.u1;
+				v181.u3 = (word32) v201;
+				loc59 = v181;
+				v181.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v181;
+				v181.u0 = 0x01B5;
+				v182 = loc10;
+				v185 = loc91;
+				v186 = loc92;
+				v187 = loc56;
+				v190 = loc6;
+				v191 = loc57;
+				v192 = loc117;
+				v193 = loc138;
+				v194 = loc33;
+				v195 = loc58;
+				v202 = loc59;
+				v203 = loc66;
+				v204 = loc77;
+				v205 = loc88;
+				v206 = loc60;
+				invoke_viiiiiiiiiiiiiii(v181, v182, v185, v186, v187, v190, v191, v192, v193, v194, v195, v202, v203, v204, v205, v206);
+				v181.u3 = g_t140048.u3;
+				loc61 = v181;
+				v181.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v181;
+				v181 = loc61;
+				v182.u0 = 0x01;
+				v181 &= v182;
+				loc62 = v181;
+				v181 = loc62;
+				v183 = v181 == 0x00;
+				if (v183)
 				{
-					v180 = arg1;
-					v180 = *v180.u0;
-					loc63 = v180;
-					v180 = loc93;
-					v181 = loc63;
-					*v180.u0 = v181;
-					v180 = loc91;
-					v180 = *v180.u0;
-					loc64 = v180;
-					v180 = loc92;
-					v180 = *v180.u0;
-					loc65 = v180;
-					v180.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v180;
-					v180 = loc20;
-					v181 = loc93;
+					v181 = arg1;
 					v181 = *v181.u0;
-					*v180.u0 = v181;
-					v180.u0 = 0x0168;
+					loc63 = v181;
+					v181 = loc93;
+					v182 = loc63;
+					*v181.u0 = v182;
+					v181 = loc91;
+					v181 = *v181.u0;
+					loc64 = v181;
+					v181 = loc92;
+					v181 = *v181.u0;
+					loc65 = v181;
+					v181.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v181;
 					v181 = loc20;
-					v184 = loc10;
-					v185 = loc64;
-					v186 = loc65;
-					v189 = arg3;
-					v190 = arg4;
-					v180 = invoke_iiiiiii(v180, v181, v184, v185, v186, v189, v190);
-					loc67 = v180;
-					v180.u3 = g_t140048.u3;
-					loc68 = v180;
-					v180.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v180;
-					v180 = loc68;
-					v181.u0 = 0x01;
-					v180 &= v181;
-					loc69 = v180;
-					v180 = loc69;
-					v182 = v180 == 0x00;
-					if (v182)
+					v182 = loc93;
+					v182 = *v182.u0;
+					*v181.u0 = v182;
+					v181.u0 = 0x0168;
+					v182 = loc20;
+					v185 = loc10;
+					v186 = loc64;
+					v187 = loc65;
+					v190 = arg3;
+					v191 = arg4;
+					v181 = invoke_iiiiiii(v181, v182, v185, v186, v187, v190, v191);
+					loc67 = v181;
+					v181.u3 = g_t140048.u3;
+					loc68 = v181;
+					v181.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v181;
+					v181 = loc68;
+					v182.u0 = 0x01;
+					v181 &= v182;
+					loc69 = v181;
+					v181 = loc69;
+					v183 = v181 == 0x00;
+					if (v183)
 					{
-						v180 = loc25;
-						v181.u0 = 0x00;
-						v182 = v180 == v181;
-						loc70 = v182;
-						v180 = loc70;
-						v182 = v180 == 0x00;
-						if (v182)
+						v181 = loc25;
+						v182.u0 = 0x00;
+						v183 = v181 == v182;
+						loc70 = v183;
+						v181 = loc70;
+						v183 = v181 == 0x00;
+						if (v183)
 						{
-							v180 = loc25;
-							loc71 = v180;
-							v180 = loc71;
-							_free(v180);
+							v181 = loc25;
+							loc71 = v181;
+							v181 = loc71;
+							_free(v181);
 						}
-						v180 = loc88;
-						fn0011BAF7(v180);
-						v180 = loc77;
-						fn0011BAF7(v180);
-						v180 = loc66;
-						fn0011BAF7(v180);
-						v180 = loc166;
-						v180 = *v180.u0;
-						loc72 = v180;
-						v180 = loc72;
-						v180 = fn0011B43F(v180);
-						v180 = loc28;
-						v181.u0 = 0x00;
-						v182 = v180 == v181;
-						loc73 = v182;
-						v180 = loc73;
-						v182 = v180 == 0x00;
-						if (v182)
+						v181 = loc88;
+						fn0011BAF7(v181);
+						v181 = loc77;
+						fn0011BAF7(v181);
+						v181 = loc66;
+						fn0011BAF7(v181);
+						v181 = loc166;
+						v181 = *v181.u0;
+						loc72 = v181;
+						v181 = loc72;
+						v181 = fn0011B43F(v181);
+						v181 = loc28;
+						v182.u0 = 0x00;
+						v183 = v181 == v182;
+						loc73 = v183;
+						v181 = loc73;
+						v183 = v181 == 0x00;
+						if (v183)
 						{
-							v180 = loc28;
-							loc74 = v180;
-							v180 = loc74;
-							_free(v180);
+							v181 = loc28;
+							loc74 = v181;
+							v181 = loc74;
+							_free(v181);
 						}
-						v180 = loc31;
-						v181.u0 = 0x00;
-						v182 = v180 == v181;
-						loc75 = v182;
-						v180 = loc75;
-						v182 = v180 == 0x00;
-						if (v182)
+						v181 = loc31;
+						v182.u0 = 0x00;
+						v183 = v181 == v182;
+						loc75 = v183;
+						v181 = loc75;
+						v183 = v181 == 0x00;
+						if (v183)
 						{
-							v180 = loc31;
-							loc76 = v180;
-							v180 = loc76;
-							_free(v180);
+							v181 = loc31;
+							loc76 = v181;
+							v181 = loc76;
+							_free(v181);
 						}
-						v180 = loc183;
-						g_t140030.u3 = (word32 *) v180;
-						v180 = loc67;
-						return v180;
+						v181 = loc183;
+						g_t140030.u3 = (word32 *) v181;
+						v181 = loc67;
+						return v181;
 					}
 				}
-				v180 = ___cxa_find_matching_catch_n();
-				loc78 = v180;
-				v180.u3 = g_t140094.u3;
-				loc79 = v180;
-				v180 = loc78;
-				loc12 = v180;
-				v180 = loc79;
-				loc13 = v180;
-				v180 = loc25;
-				loc26 = v180;
+				v181 = ___cxa_find_matching_catch_n();
+				loc78 = v181;
+				v181.u3 = g_t140094.u3;
+				loc79 = v181;
+				v181 = loc78;
+				loc12 = v181;
+				v181 = loc79;
+				loc13 = v181;
+				v181 = loc25;
+				loc26 = v181;
 			}
-			v180 = loc26;
-			v181.u0 = 0x00;
-			v182 = v180 == v181;
-			loc80 = v182;
-			v180 = loc80;
-			v182 = v180 == 0x00;
-			if (v182)
+			v181 = loc26;
+			v182.u0 = 0x00;
+			v183 = v181 == v182;
+			loc80 = v183;
+			v181 = loc80;
+			v183 = v181 == 0x00;
+			if (v183)
 			{
-				v180 = loc26;
-				loc81 = v180;
-				v180 = loc81;
-				_free(v180);
+				v181 = loc26;
+				loc81 = v181;
+				v181 = loc81;
+				_free(v181);
 			}
-			v180 = loc12;
-			loc14 = v180;
-			v180 = loc13;
-			loc15 = v180;
+			v181 = loc12;
+			loc14 = v181;
+			v181 = loc13;
+			loc15 = v181;
 l001117E8:
-			v180 = loc88;
-			fn0011BAF7(v180);
-			v180 = loc77;
-			fn0011BAF7(v180);
-			v180 = loc66;
-			fn0011BAF7(v180);
-			v180 = loc166;
-			v180.u3 = *v180.u3;
-			loc24 = v180;
-			v180 = loc14;
-			loc16 = v180;
-			v180 = loc15;
-			loc17 = v180;
-			v180 = loc24;
-			loc82 = v180;
+			v181 = loc88;
+			fn0011BAF7(v181);
+			v181 = loc77;
+			fn0011BAF7(v181);
+			v181 = loc66;
+			fn0011BAF7(v181);
+			v181 = loc166;
+			v181.u3 = *v181.u3;
+			loc24 = v181;
+			v181 = loc14;
+			loc16 = v181;
+			v181 = loc15;
+			loc17 = v181;
+			v181 = loc24;
+			loc82 = v181;
 l0011180D:
-			v180 = loc82;
-			v180 = fn0011B43F(v180);
-			v180 = loc16;
-			loc18 = v180;
-			v180 = loc17;
-			loc19 = v180;
-			v180 = loc28;
-			loc29 = v180;
-			v180 = loc31;
-			loc32 = v180;
+			v181 = loc82;
+			v181 = fn0011B43F(v181);
+			v181 = loc16;
+			loc18 = v181;
+			v181 = loc17;
+			loc19 = v181;
+			v181 = loc28;
+			loc29 = v181;
+			v181 = loc31;
+			loc32 = v181;
 l00111824:
 			goto l00111826;
 		}
-		v180 = loc40;
-		loc10 = v180;
-		v180 = loc41;
-		loc25 = v180;
-		v180 = loc141;
-		loc60 = v180;
-		v180.u0 = 0x25;
-		loc182 = v180;
+		v181 = loc40;
+		loc10 = v181;
+		v181 = loc41;
+		loc25 = v181;
+		v181 = loc141;
+		loc60 = v181;
+		v181.u0 = 0x25;
+		loc182 = v181;
 	}
 	else
 	{
-		v180 = loc90;
-		loc10 = v180;
-		v180.u0 = 0x00;
-		loc25 = v180;
-		v180 = loc141;
-		loc60 = v180;
-		v180.u0 = 0x25;
-		loc182 = v180;
+		v181 = loc90;
+		loc10 = v181;
+		v181.u0 = 0x00;
+		loc25 = v181;
+		v181 = loc141;
+		loc60 = v181;
+		v181.u0 = 0x25;
+		loc182 = v181;
 	}
 	goto l00111693;
 }
@@ -1608,861 +1608,861 @@ l00111824:
 // 0011187C: Stack Eq_n fn0011187C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn0011187C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v153.u3 = g_t140030.u3;
-	loc156 = v153;
-	v153.u3 = g_t140030.u3;
-	v154.u0 = 0xB0;
-	v153 += v154;
-	g_t140030.u3 = (word32 *) v153;
-	v153.u3 = g_t140030.u3;
-	v154.u3 = g_t140034.u3;
-	v155 = v153 >= v154;
-	if (v155)
+	v154.u3 = g_t140030.u3;
+	loc156 = v154;
+	v154.u3 = g_t140030.u3;
+	v155.u0 = 0xB0;
+	v154 += v155;
+	g_t140030.u3 = (word32 *) v154;
+	v154.u3 = g_t140030.u3;
+	v155.u3 = g_t140034.u3;
+	v156 = v154 >= v155;
+	if (v156)
 	{
-		v153.u0 = 0xB0;
-		abortStackOverflow(v153);
+		v154.u0 = 0xB0;
+		abortStackOverflow(v154);
 	}
-	v153 = loc156;
-	v154.u0 = 0x38;
-	v153 += v154;
-	loc16 = v153;
-	v153 = loc156;
-	v154.u0 = 0x34;
-	v153 += v154;
-	loc108 = v153;
-	v153 = loc156;
-	v154.u0 = 0xA4;
-	v153 += v154;
-	loc119 = v153;
-	v153 = loc156;
-	v154.u0 = 161;
-	v153 += v154;
-	loc130 = v153;
-	v153 = loc156;
-	v154.u0 = 0xA0;
-	v153 += v154;
-	loc141 = v153;
-	v153 = loc156;
-	v154.u0 = 0x28;
-	v153 += v154;
-	loc23 = v153;
-	v153 = loc156;
-	v154.u0 = 0x1C;
-	v153 += v154;
-	loc34 = v153;
-	v153 = loc156;
-	v154.u0 = 0x10;
-	v153 += v154;
-	loc45 = v153;
-	v153 = loc156;
-	v154.u0 = 0x0C;
-	v153 += v154;
-	loc56 = v153;
-	v153 = loc156;
-	v154.u0 = 0x3C;
-	v153 += v154;
-	loc62 = v153;
-	v153 = loc156;
-	v154.u0 = 0x08;
-	v153 += v154;
-	loc63 = v153;
-	v153 = loc156;
-	v154.u0 = 0x04;
-	v153 += v154;
-	loc64 = v153;
-	v153 = loc156;
-	loc65 = v153;
-	v153 = arg3;
-	v153 = fn000E64CA(v153);
-	loc66 = v153;
-	v153 = loc108;
-	v154 = loc66;
-	*v153.u0 = v154;
-	v153.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v153;
-	v153.u0 = 0x0164;
+	v154 = loc156;
+	v155.u0 = 0x38;
+	v154 += v155;
+	loc16 = v154;
+	v154 = loc156;
+	v155.u0 = 0x34;
+	v154 += v155;
+	loc108 = v154;
+	v154 = loc156;
+	v155.u0 = 0xA4;
+	v154 += v155;
+	loc119 = v154;
+	v154 = loc156;
+	v155.u0 = 161;
+	v154 += v155;
+	loc130 = v154;
+	v154 = loc156;
+	v155.u0 = 0xA0;
+	v154 += v155;
+	loc141 = v154;
+	v154 = loc156;
+	v155.u0 = 0x28;
+	v154 += v155;
+	loc23 = v154;
+	v154 = loc156;
+	v155.u0 = 0x1C;
+	v154 += v155;
+	loc34 = v154;
+	v154 = loc156;
+	v155.u0 = 0x10;
+	v154 += v155;
+	loc45 = v154;
+	v154 = loc156;
+	v155.u0 = 0x0C;
+	v154 += v155;
+	loc56 = v154;
+	v154 = loc156;
+	v155.u0 = 0x3C;
+	v154 += v155;
+	loc62 = v154;
+	v154 = loc156;
+	v155.u0 = 0x08;
+	v154 += v155;
+	loc63 = v154;
+	v154 = loc156;
+	v155.u0 = 0x04;
+	v154 += v155;
+	loc64 = v154;
+	v154 = loc156;
+	loc65 = v154;
+	v154 = arg3;
+	v154 = fn000E64CA(v154);
+	loc66 = v154;
 	v154 = loc108;
-	v156.u0 = 0x4C70;
-	v153 = invoke_iii(v153, v154, v156);
-	loc67 = v153;
-	v153.u3 = g_t140048.u3;
-	loc68 = v153;
-	v153.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v153;
-	v153 = loc68;
-	v154.u0 = 0x01;
-	v153 &= v154;
-	loc69 = v153;
-	v153 = loc69;
-	if (v153)
+	v155 = loc66;
+	*v154.u0 = v155;
+	v154.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v154;
+	v154.u0 = 0x0164;
+	v155 = loc108;
+	v157.u0 = 0x4C70;
+	v154 = invoke_iii(v154, v155, v157);
+	loc67 = v154;
+	v154.u3 = g_t140048.u3;
+	loc68 = v154;
+	v154.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v154;
+	v154 = loc68;
+	v155.u0 = 0x01;
+	v154 &= v155;
+	loc69 = v154;
+	v154 = loc69;
+	if (v154)
 	{
-		v153 = ___cxa_find_matching_catch_n();
-		loc150 = v153;
-		v153.u3 = g_t140094.u3;
-		loc151 = v153;
-		v153 = loc150;
-		loc14 = v153;
-		v153 = loc151;
-		loc15 = v153;
+		v154 = ___cxa_find_matching_catch_n();
+		loc150 = v154;
+		v154.u3 = g_t140094.u3;
+		loc151 = v154;
+		v154 = loc150;
+		loc14 = v154;
+		v154 = loc151;
+		loc15 = v154;
 		goto l00111F0F;
 	}
-	v153 = arg5;
-	v154.u0 = 11;
-	v153 += v154;
-	loc70 = v153;
-	v153 = loc70;
-	v157.u3 = *v153.u3;
-	v153.u3 = (word32) v157;
-	loc71 = v153;
-	v153 = loc71;
-	v154.u0 = 0x18;
-	v153 <<= v154;
-	v154.u0 = 0x18;
-	v153 >>= v154;
-	v154.u0 = 0x00;
-	v155 = v153 < v154;
-	loc72 = v155;
-	v153 = arg5;
-	v154.u0 = 0x04;
-	v153 += v154;
-	loc73 = v153;
-	v153 = loc73;
-	v153.u3 = *v153.u3;
-	loc74 = v153;
-	v153 = loc71;
-	v154.u0 = 0xFF;
-	v153 &= v154;
-	loc75 = v153;
-	v153 = loc72;
-	if (v153)
-		v153 = loc74;
+	v154 = arg5;
+	v155.u0 = 11;
+	v154 += v155;
+	loc70 = v154;
+	v154 = loc70;
+	v158.u3 = *v154.u3;
+	v154.u3 = (word32) v158;
+	loc71 = v154;
+	v154 = loc71;
+	v155.u0 = 0x18;
+	v154 <<= v155;
+	v155.u0 = 0x18;
+	v154 >>= v155;
+	v155.u0 = 0x00;
+	v156 = v154 < v155;
+	loc72 = v156;
+	v154 = arg5;
+	v155.u0 = 0x04;
+	v154 += v155;
+	loc73 = v154;
+	v154 = loc73;
+	v154.u3 = *v154.u3;
+	loc74 = v154;
+	v154 = loc71;
+	v155.u0 = 0xFF;
+	v154 &= v155;
+	loc75 = v154;
+	v154 = loc72;
+	if (v154)
+		v154 = loc74;
 	else
-		v153 = loc75;
-	loc76 = v153;
-	v153 = loc76;
-	v154.u0 = 0x00;
-	v155 = v153 == v154;
-	loc77 = v155;
-	v153 = loc77;
-	if (v153)
+		v154 = loc75;
+	loc76 = v154;
+	v154 = loc76;
+	v155.u0 = 0x00;
+	v156 = v154 == v155;
+	loc77 = v156;
+	v154 = loc77;
+	if (v154)
 	{
-		v153.u0 = 0x00;
-		loc94 = v153;
+		v154.u0 = 0x00;
+		loc94 = v154;
 	}
 	else
 	{
-		v153 = arg5;
-		v153 = *v153.u0;
-		loc78 = v153;
-		v153 = loc72;
-		if (v153)
-			v153 = loc78;
+		v154 = arg5;
+		v154 = *v154.u0;
+		loc78 = v154;
+		v154 = loc72;
+		if (v154)
+			v154 = loc78;
 		else
-			v153 = arg5;
-		loc79 = v153;
-		v153 = loc79;
-		v158 = *v153.u0;
-		v153.u3 = (word32) v158;
-		loc80 = v153;
-		v153 = loc67;
-		v153.u3 = *v153.u3;
-		loc81 = v153;
-		v153 = loc81;
-		v154.u0 = 0x1C;
-		v153 += v154;
-		loc82 = v153;
-		v153 = loc82;
-		v153.u3 = *v153.u3;
-		loc83 = v153;
-		v153.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v153;
-		v153 = loc83;
+			v154 = arg5;
+		loc79 = v154;
+		v154 = loc79;
+		v159 = *v154.u0;
+		v154.u3 = (word32) v159;
+		loc80 = v154;
 		v154 = loc67;
-		v156.u0 = 0x2D;
-		v153 = invoke_iii(v153, v154, v156);
-		loc84 = v153;
-		v153.u3 = g_t140048.u3;
-		loc85 = v153;
-		v153.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v153;
-		v153 = loc85;
-		v154.u0 = 0x01;
-		v153 &= v154;
-		loc86 = v153;
-		v153 = loc86;
-		if (v153)
+		v154.u3 = *v154.u3;
+		loc81 = v154;
+		v154 = loc81;
+		v155.u0 = 0x1C;
+		v154 += v155;
+		loc82 = v154;
+		v154 = loc82;
+		v154.u3 = *v154.u3;
+		loc83 = v154;
+		v154.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v154;
+		v154 = loc83;
+		v155 = loc67;
+		v157.u0 = 0x2D;
+		v154 = invoke_iii(v154, v155, v157);
+		loc84 = v154;
+		v154.u3 = g_t140048.u3;
+		loc85 = v154;
+		v154.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v154;
+		v154 = loc85;
+		v155.u0 = 0x01;
+		v154 &= v155;
+		loc86 = v154;
+		v154 = loc86;
+		if (v154)
 		{
-			v153 = ___cxa_find_matching_catch_n();
-			loc24 = v153;
-			v153.u3 = g_t140094.u3;
-			loc25 = v153;
-			v153 = loc24;
-			loc14 = v153;
-			v153 = loc25;
-			loc15 = v153;
+			v154 = ___cxa_find_matching_catch_n();
+			loc24 = v154;
+			v154.u3 = g_t140094.u3;
+			loc25 = v154;
+			v154 = loc24;
+			loc14 = v154;
+			v154 = loc25;
+			loc15 = v154;
 			goto l00111F10;
 		}
-		v153 = loc80;
-		v154.u0 = 0x18;
-		v153 <<= v154;
-		v154.u0 = 0x18;
-		v153 >>= v154;
-		v154 = loc84;
-		v156.u0 = 0x18;
-		v154 <<= v156;
-		v156.u0 = 0x18;
-		v154 >>= v156;
-		v155 = v153 == v154;
-		loc87 = v155;
-		v153 = loc87;
-		loc94 = v153;
+		v154 = loc80;
+		v155.u0 = 0x18;
+		v154 <<= v155;
+		v155.u0 = 0x18;
+		v154 >>= v155;
+		v155 = loc84;
+		v157.u0 = 0x18;
+		v155 <<= v157;
+		v157.u0 = 0x18;
+		v155 >>= v157;
+		v156 = v154 == v155;
+		loc87 = v156;
+		v154 = loc87;
+		loc94 = v154;
 	}
 	while (true)
 	{
-		v153 = loc23;
-		v159.u0 = 0x00;
-		*v153.u3 = (word32) v159;
-		v153 = loc23;
-		v154.u0 = 0x08;
-		v153 += v154;
+		v154 = loc23;
+		v160.u0 = 0x00;
+		*v154.u3 = (word32) v160;
+		v154 = loc23;
+		v155.u0 = 0x08;
+		v154 += v155;
+		v155.u0 = 0x00;
+		*v154.u3 = (word32) v155;
 		v154.u0 = 0x00;
-		*v153.u3 = (word32) v154;
-		v153.u0 = 0x00;
-		loc7 = v153;
-		v153 = loc7;
-		v154.u0 = 0x03;
-		v155 = v153 == v154;
-		loc152 = v155;
-		v153 = loc152;
-		if (v153)
-			break;
-		v153 = loc23;
+		loc7 = v154;
 		v154 = loc7;
-		v156.u0 = 0x02;
-		v154 <<= v156;
-		v153 += v154;
-		loc88 = v153;
-		v153 = loc88;
-		v154.u0 = 0x00;
-		*v153.u0 = v154;
-		v153 = loc7;
-		v154.u0 = 0x01;
-		v153 += v154;
-		loc89 = v153;
-		v153 = loc89;
-		loc7 = v153;
+		v155.u0 = 0x03;
+		v156 = v154 == v155;
+		loc152 = v156;
+		v154 = loc152;
+		if (v154)
+			break;
+		v154 = loc23;
+		v155 = loc7;
+		v157.u0 = 0x02;
+		v155 <<= v157;
+		v154 += v155;
+		loc88 = v154;
+		v154 = loc88;
+		v155.u0 = 0x00;
+		*v154.u0 = v155;
+		v154 = loc7;
+		v155.u0 = 0x01;
+		v154 += v155;
+		loc89 = v154;
+		v154 = loc89;
+		loc7 = v154;
 	}
 	while (true)
 	{
-		v153 = loc34;
-		v159.u0 = 0x00;
-		*v153.u0 = v159;
-		v153 = loc34;
-		v154.u0 = 0x08;
-		v153 += v154;
+		v154 = loc34;
+		v160.u0 = 0x00;
+		*v154.u0 = v160;
+		v154 = loc34;
+		v155.u0 = 0x08;
+		v154 += v155;
+		v155.u0 = 0x00;
+		*v154.u0 = v155;
 		v154.u0 = 0x00;
-		*v153.u0 = v154;
-		v153.u0 = 0x00;
-		loc8 = v153;
-		v153 = loc8;
-		v154.u0 = 0x03;
-		v155 = v153 == v154;
-		loc153 = v155;
-		v153 = loc153;
-		if (v153)
-			break;
-		v153 = loc34;
+		loc8 = v154;
 		v154 = loc8;
-		v156.u0 = 0x02;
-		v154 <<= v156;
-		v153 += v154;
-		loc90 = v153;
-		v153 = loc90;
-		v154.u0 = 0x00;
-		*v153.u0 = v154;
-		v153 = loc8;
-		v154.u0 = 0x01;
-		v153 += v154;
-		loc91 = v153;
-		v153 = loc91;
-		loc8 = v153;
+		v155.u0 = 0x03;
+		v156 = v154 == v155;
+		loc153 = v156;
+		v154 = loc153;
+		if (v154)
+			break;
+		v154 = loc34;
+		v155 = loc8;
+		v157.u0 = 0x02;
+		v155 <<= v157;
+		v154 += v155;
+		loc90 = v154;
+		v154 = loc90;
+		v155.u0 = 0x00;
+		*v154.u0 = v155;
+		v154 = loc8;
+		v155.u0 = 0x01;
+		v154 += v155;
+		loc91 = v154;
+		v154 = loc91;
+		loc8 = v154;
 	}
 	while (true)
 	{
-		v153 = loc45;
-		v159.u0 = 0x00;
-		*v153.u0 = v159;
-		v153 = loc45;
-		v154.u0 = 0x08;
-		v153 += v154;
+		v154 = loc45;
+		v160.u0 = 0x00;
+		*v154.u0 = v160;
+		v154 = loc45;
+		v155.u0 = 0x08;
+		v154 += v155;
+		v155.u0 = 0x00;
+		*v154.u0 = v155;
 		v154.u0 = 0x00;
-		*v153.u0 = v154;
-		v153.u0 = 0x00;
-		loc9 = v153;
-		v153 = loc9;
-		v154.u0 = 0x03;
-		v155 = v153 == v154;
-		loc154 = v155;
-		v153 = loc154;
-		if (v153)
-			break;
-		v153 = loc45;
+		loc9 = v154;
 		v154 = loc9;
-		v156.u0 = 0x02;
-		v154 <<= v156;
-		v153 += v154;
-		loc92 = v153;
-		v153 = loc92;
-		v154.u0 = 0x00;
-		*v153.u0 = v154;
-		v153 = loc9;
-		v154.u0 = 0x01;
-		v153 += v154;
-		loc93 = v153;
-		v153 = loc93;
-		loc9 = v153;
+		v155.u0 = 0x03;
+		v156 = v154 == v155;
+		loc154 = v156;
+		v154 = loc154;
+		if (v154)
+			break;
+		v154 = loc45;
+		v155 = loc9;
+		v157.u0 = 0x02;
+		v155 <<= v157;
+		v154 += v155;
+		loc92 = v154;
+		v154 = loc92;
+		v155.u0 = 0x00;
+		*v154.u0 = v155;
+		v154 = loc9;
+		v155.u0 = 0x01;
+		v154 += v155;
+		loc93 = v154;
+		v154 = loc93;
+		loc9 = v154;
 	}
-	v153.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v153;
-	v153.u0 = 0x01B4;
-	v154 = arg2;
-	v156 = loc94;
-	v160 = loc108;
-	v161 = loc119;
-	v162 = loc130;
-	v163 = loc141;
-	v164 = loc23;
-	v165 = loc34;
-	v166 = loc45;
-	v167 = loc56;
-	invoke_viiiiiiiiii(v153, v154, v156, v160, v161, v162, v163, v164, v165, v166, v167);
-	v153.u3 = g_t140048.u3;
-	loc95 = v153;
-	v153.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v153;
-	v153 = loc95;
-	v154.u0 = 0x01;
-	v153 &= v154;
-	loc96 = v153;
-	v153 = loc96;
-	if (v153)
+	v154.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v154;
+	v154.u0 = 0x01B4;
+	v155 = arg2;
+	v157 = loc94;
+	v161 = loc108;
+	v162 = loc119;
+	v163 = loc130;
+	v164 = loc141;
+	v165 = loc23;
+	v166 = loc34;
+	v167 = loc45;
+	v168 = loc56;
+	invoke_viiiiiiiiii(v154, v155, v157, v161, v162, v163, v164, v165, v166, v167, v168);
+	v154.u3 = g_t140048.u3;
+	loc95 = v154;
+	v154.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v154;
+	v154 = loc95;
+	v155.u0 = 0x01;
+	v154 &= v155;
+	loc96 = v154;
+	v154 = loc96;
+	if (v154)
 	{
-		v153 = ___cxa_find_matching_catch_n();
-		loc26 = v153;
-		v153.u3 = g_t140094.u3;
-		loc27 = v153;
-		v153 = loc26;
-		loc12 = v153;
-		v153 = loc27;
-		loc13 = v153;
+		v154 = ___cxa_find_matching_catch_n();
+		loc26 = v154;
+		v154.u3 = g_t140094.u3;
+		loc27 = v154;
+		v154 = loc26;
+		loc12 = v154;
+		v154 = loc27;
+		loc13 = v154;
 		goto l00111EF7;
 	}
-	v153 = loc70;
-	v168.u3 = *v153.u3;
-	v153.u3 = (word32) v168;
-	loc97 = v153;
-	v153 = loc97;
-	v154.u0 = 0x18;
-	v153 <<= v154;
-	v154.u0 = 0x18;
-	v153 >>= v154;
-	v154.u0 = 0x00;
-	v155 = v153 < v154;
-	loc98 = v155;
-	v153 = loc73;
-	v153.u3 = *v153.u3;
-	loc99 = v153;
-	v153 = loc97;
-	v154.u0 = 0xFF;
-	v153 &= v154;
-	loc100 = v153;
-	v153 = loc98;
-	if (v153)
-		v153 = loc99;
+	v154 = loc70;
+	v169.u3 = *v154.u3;
+	v154.u3 = (word32) v169;
+	loc97 = v154;
+	v154 = loc97;
+	v155.u0 = 0x18;
+	v154 <<= v155;
+	v155.u0 = 0x18;
+	v154 >>= v155;
+	v155.u0 = 0x00;
+	v156 = v154 < v155;
+	loc98 = v156;
+	v154 = loc73;
+	v154.u3 = *v154.u3;
+	loc99 = v154;
+	v154 = loc97;
+	v155.u0 = 0xFF;
+	v154 &= v155;
+	loc100 = v154;
+	v154 = loc98;
+	if (v154)
+		v154 = loc99;
 	else
-		v153 = loc100;
-	loc101 = v153;
-	v153 = loc56;
-	v153.u3 = *v153.u3;
-	loc102 = v153;
-	v153 = loc101;
-	v154 = loc102;
-	v155 = v153 > v154;
-	loc103 = v155;
-	v153 = loc103;
-	if (v153)
+		v154 = loc100;
+	loc101 = v154;
+	v154 = loc56;
+	v154.u3 = *v154.u3;
+	loc102 = v154;
+	v154 = loc101;
+	v155 = loc102;
+	v156 = v154 > v155;
+	loc103 = v156;
+	v154 = loc103;
+	if (v154)
 	{
-		v153 = loc101;
-		v154 = loc102;
-		v153 -= v154;
-		loc104 = v153;
-		v153 = loc104;
-		v154.u0 = 0x01;
-		v153 <<= v154;
-		loc105 = v153;
-		v153 = loc45;
-		v154.u0 = 11;
-		v153 += v154;
-		loc106 = v153;
-		v153 = loc106;
-		v169.u1 = v153.u4->t0000.u1;
-		v153.u3 = (word32) v169;
-		loc107 = v153;
-		v153 = loc107;
-		v154.u0 = 0x18;
-		v153 <<= v154;
-		v154.u0 = 0x18;
-		v153 >>= v154;
-		v154.u0 = 0x00;
-		v155 = v153 < v154;
-		loc109 = v155;
-		v153 = loc45;
-		v154.u0 = 0x04;
-		v153 += v154;
-		loc110 = v153;
-		v153 = loc110;
-		v153.u3 = *v153.u3;
-		loc111 = v153;
-		v153 = loc107;
-		v154.u0 = 0xFF;
-		v153 &= v154;
-		loc112 = v153;
-		v153 = loc109;
-		if (v153)
-			v153 = loc111;
+		v154 = loc101;
+		v155 = loc102;
+		v154 -= v155;
+		loc104 = v154;
+		v154 = loc104;
+		v155.u0 = 0x01;
+		v154 <<= v155;
+		loc105 = v154;
+		v154 = loc45;
+		v155.u0 = 11;
+		v154 += v155;
+		loc106 = v154;
+		v154 = loc106;
+		v170.u1 = v154.u4->t0000.u1;
+		v154.u3 = (word32) v170;
+		loc107 = v154;
+		v154 = loc107;
+		v155.u0 = 0x18;
+		v154 <<= v155;
+		v155.u0 = 0x18;
+		v154 >>= v155;
+		v155.u0 = 0x00;
+		v156 = v154 < v155;
+		loc109 = v156;
+		v154 = loc45;
+		v155.u0 = 0x04;
+		v154 += v155;
+		loc110 = v154;
+		v154 = loc110;
+		v154.u3 = *v154.u3;
+		loc111 = v154;
+		v154 = loc107;
+		v155.u0 = 0xFF;
+		v154 &= v155;
+		loc112 = v154;
+		v154 = loc109;
+		if (v154)
+			v154 = loc111;
 		else
-			v153 = loc112;
-		loc113 = v153;
-		v153 = loc34;
-		v154.u0 = 11;
-		v153 += v154;
-		loc114 = v153;
-		v153 = loc114;
-		v170.u1 = v153.u4->t0000.u1;
-		v153.u3 = (word32) v170;
-		loc115 = v153;
-		v153 = loc115;
-		v154.u0 = 0x18;
-		v153 <<= v154;
-		v154.u0 = 0x18;
-		v153 >>= v154;
-		v154.u0 = 0x00;
-		v155 = v153 < v154;
-		loc116 = v155;
-		v153 = loc34;
-		v154.u0 = 0x04;
-		v153 += v154;
-		loc117 = v153;
-		v153 = loc117;
-		v153.u3 = *v153.u3;
-		loc118 = v153;
-		v153 = loc115;
-		v154.u0 = 0xFF;
-		v153 &= v154;
-		loc120 = v153;
-		v153 = loc116;
-		if (v153)
-			v153 = loc118;
+			v154 = loc112;
+		loc113 = v154;
+		v154 = loc34;
+		v155.u0 = 11;
+		v154 += v155;
+		loc114 = v154;
+		v154 = loc114;
+		v171.u1 = v154.u4->t0000.u1;
+		v154.u3 = (word32) v171;
+		loc115 = v154;
+		v154 = loc115;
+		v155.u0 = 0x18;
+		v154 <<= v155;
+		v155.u0 = 0x18;
+		v154 >>= v155;
+		v155.u0 = 0x00;
+		v156 = v154 < v155;
+		loc116 = v156;
+		v154 = loc34;
+		v155.u0 = 0x04;
+		v154 += v155;
+		loc117 = v154;
+		v154 = loc117;
+		v154.u3 = *v154.u3;
+		loc118 = v154;
+		v154 = loc115;
+		v155.u0 = 0xFF;
+		v154 &= v155;
+		loc120 = v154;
+		v154 = loc116;
+		if (v154)
+			v154 = loc118;
 		else
-			v153 = loc120;
-		loc121 = v153;
-		v153 = loc105;
-		v154.u0 = 0x01;
-		v153 |= v154;
-		loc122 = v153;
-		v153 = loc113;
-		v154 = loc122;
-		v153 += v154;
-		loc123 = v153;
-		v153 = loc123;
-		v154 = loc121;
-		v153 += v154;
-		loc124 = v153;
-		v153 = loc124;
-		loc17 = v153;
+			v154 = loc120;
+		loc121 = v154;
+		v154 = loc105;
+		v155.u0 = 0x01;
+		v154 |= v155;
+		loc122 = v154;
+		v154 = loc113;
+		v155 = loc122;
+		v154 += v155;
+		loc123 = v154;
+		v154 = loc123;
+		v155 = loc121;
+		v154 += v155;
+		loc124 = v154;
+		v154 = loc124;
+		loc17 = v154;
 	}
 	else
 	{
-		v153 = loc45;
-		v154.u0 = 11;
-		v153 += v154;
-		loc125 = v153;
-		v153 = loc125;
-		v171.u1 = v153.u4->t0000.u1;
-		v153.u3 = (word32) v171;
-		loc126 = v153;
-		v153 = loc126;
-		v154.u0 = 0x18;
-		v153 <<= v154;
-		v154.u0 = 0x18;
-		v153 >>= v154;
-		v154.u0 = 0x00;
-		v155 = v153 < v154;
-		loc127 = v155;
-		v153 = loc45;
-		v154.u0 = 0x04;
-		v153 += v154;
-		loc128 = v153;
-		v153 = loc128;
-		v153.u3 = *v153.u3;
-		loc129 = v153;
-		v153 = loc126;
-		v154.u0 = 0xFF;
-		v153 &= v154;
-		loc131 = v153;
-		v153 = loc127;
-		if (v153)
-			v153 = loc129;
+		v154 = loc45;
+		v155.u0 = 11;
+		v154 += v155;
+		loc125 = v154;
+		v154 = loc125;
+		v172.u1 = v154.u4->t0000.u1;
+		v154.u3 = (word32) v172;
+		loc126 = v154;
+		v154 = loc126;
+		v155.u0 = 0x18;
+		v154 <<= v155;
+		v155.u0 = 0x18;
+		v154 >>= v155;
+		v155.u0 = 0x00;
+		v156 = v154 < v155;
+		loc127 = v156;
+		v154 = loc45;
+		v155.u0 = 0x04;
+		v154 += v155;
+		loc128 = v154;
+		v154 = loc128;
+		v154.u3 = *v154.u3;
+		loc129 = v154;
+		v154 = loc126;
+		v155.u0 = 0xFF;
+		v154 &= v155;
+		loc131 = v154;
+		v154 = loc127;
+		if (v154)
+			v154 = loc129;
 		else
-			v153 = loc131;
-		loc132 = v153;
-		v153 = loc34;
-		v154.u0 = 11;
-		v153 += v154;
-		loc133 = v153;
-		v153 = loc133;
-		v172.u1 = v153.u4->t0000.u1;
-		v153.u3 = (word32) v172;
-		loc134 = v153;
-		v153 = loc134;
-		v154.u0 = 0x18;
-		v153 <<= v154;
-		v154.u0 = 0x18;
-		v153 >>= v154;
-		v154.u0 = 0x00;
-		v155 = v153 < v154;
-		loc135 = v155;
-		v153 = loc34;
-		v154.u0 = 0x04;
-		v153 += v154;
-		loc136 = v153;
-		v153 = loc136;
-		v153.u3 = *v153.u3;
-		loc137 = v153;
-		v153 = loc134;
-		v154.u0 = 0xFF;
-		v153 &= v154;
-		loc138 = v153;
-		v153 = loc135;
-		if (v153)
-			v153 = loc137;
+			v154 = loc131;
+		loc132 = v154;
+		v154 = loc34;
+		v155.u0 = 11;
+		v154 += v155;
+		loc133 = v154;
+		v154 = loc133;
+		v173.u1 = v154.u4->t0000.u1;
+		v154.u3 = (word32) v173;
+		loc134 = v154;
+		v154 = loc134;
+		v155.u0 = 0x18;
+		v154 <<= v155;
+		v155.u0 = 0x18;
+		v154 >>= v155;
+		v155.u0 = 0x00;
+		v156 = v154 < v155;
+		loc135 = v156;
+		v154 = loc34;
+		v155.u0 = 0x04;
+		v154 += v155;
+		loc136 = v154;
+		v154 = loc136;
+		v154.u3 = *v154.u3;
+		loc137 = v154;
+		v154 = loc134;
+		v155.u0 = 0xFF;
+		v154 &= v155;
+		loc138 = v154;
+		v154 = loc135;
+		if (v154)
+			v154 = loc137;
 		else
-			v153 = loc138;
-		loc139 = v153;
-		v153 = loc132;
-		v154.u0 = 0x02;
-		v153 += v154;
-		loc140 = v153;
-		v153 = loc140;
-		v154 = loc139;
-		v153 += v154;
-		loc142 = v153;
-		v153 = loc142;
-		loc17 = v153;
+			v154 = loc138;
+		loc139 = v154;
+		v154 = loc132;
+		v155.u0 = 0x02;
+		v154 += v155;
+		loc140 = v154;
+		v154 = loc140;
+		v155 = loc139;
+		v154 += v155;
+		loc142 = v154;
+		v154 = loc142;
+		loc17 = v154;
 	}
-	v153 = loc17;
-	v154 = loc102;
-	v153 += v154;
-	loc143 = v153;
-	v153 = loc143;
-	v154.u0 = 100;
-	v155 = v153 > v154;
-	loc144 = v155;
-	v153 = loc144;
-	if (v153)
+	v154 = loc17;
+	v155 = loc102;
+	v154 += v155;
+	loc143 = v154;
+	v154 = loc143;
+	v155.u0 = 100;
+	v156 = v154 > v155;
+	loc144 = v156;
+	v154 = loc144;
+	if (v154)
 	{
-		v153 = loc143;
-		v153 = _malloc(v153);
-		loc145 = v153;
-		v153 = loc145;
-		loc146 = v153;
-		v153 = loc145;
-		v154.u0 = 0x00;
-		v155 = v153 == v154;
-		loc147 = v155;
-		v153 = loc147;
-		if (v153)
+		v154 = loc143;
+		v154 = _malloc(v154);
+		loc145 = v154;
+		v154 = loc145;
+		loc146 = v154;
+		v154 = loc145;
+		v155.u0 = 0x00;
+		v156 = v154 == v155;
+		loc147 = v156;
+		v154 = loc147;
+		if (v154)
 		{
-			v153.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v153;
-			v153.u0 = 0x018A;
-			invoke_v(v153);
-			v153.u3 = g_t140048.u3;
-			loc148 = v153;
-			v153.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v153;
-			v153 = loc148;
-			v154.u0 = 0x01;
-			v153 &= v154;
-			loc149 = v153;
-			v153 = loc149;
-			if (v153)
+			v154.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v154;
+			v154.u0 = 0x018A;
+			invoke_v(v154);
+			v154.u3 = g_t140048.u3;
+			loc148 = v154;
+			v154.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v154;
+			v154 = loc148;
+			v155.u0 = 0x01;
+			v154 &= v155;
+			loc149 = v154;
+			v154 = loc149;
+			if (v154)
 			{
-				v153 = ___cxa_find_matching_catch_n();
-				loc28 = v153;
-				v153.u3 = g_t140094.u3;
-				loc29 = v153;
-				v153 = loc28;
-				loc6 = v153;
-				v153 = loc29;
-				loc11 = v153;
-				v153 = loc146;
-				loc22 = v153;
+				v154 = ___cxa_find_matching_catch_n();
+				loc28 = v154;
+				v154.u3 = g_t140094.u3;
+				loc29 = v154;
+				v154 = loc28;
+				loc6 = v154;
+				v154 = loc29;
+				loc11 = v154;
+				v154 = loc146;
+				loc22 = v154;
 			}
 			else
 			{
-				v153 = loc70;
-				v173.u3 = *v153.u3;
-				v153.u3 = (word32) v173;
-				loc18 = v153;
-				v153 = loc73;
-				v153.u3 = *v153.u3;
-				loc19 = v153;
-				v153 = loc56;
-				v153.u3 = *v153.u3;
-				loc20 = v153;
-				v153.u0 = 0x00;
-				loc10 = v153;
-				v153 = loc146;
-				loc21 = v153;
-				v153 = loc18;
-				loc33 = v153;
-				v153 = loc19;
-				loc39 = v153;
-				v153 = loc20;
-				loc43 = v153;
-				v153.u0 = 0x1A;
-				loc155 = v153;
+				v154 = loc70;
+				v174.u3 = *v154.u3;
+				v154.u3 = (word32) v174;
+				loc18 = v154;
+				v154 = loc73;
+				v154.u3 = *v154.u3;
+				loc19 = v154;
+				v154 = loc56;
+				v154.u3 = *v154.u3;
+				loc20 = v154;
+				v154.u0 = 0x00;
+				loc10 = v154;
+				v154 = loc146;
+				loc21 = v154;
+				v154 = loc18;
+				loc33 = v154;
+				v154 = loc19;
+				loc39 = v154;
+				v154 = loc20;
+				loc43 = v154;
+				v154.u0 = 0x1A;
+				loc155 = v154;
 			}
 l00111D9A:
-			v153 = loc155;
-			v154.u0 = 0x1A;
-			v155 = v153 == v154;
-			if (v155)
+			v154 = loc155;
+			v155.u0 = 0x1A;
+			v156 = v154 == v155;
+			if (v156)
 			{
-				v153 = arg3;
-				v154.u0 = 0x04;
-				v153 += v154;
-				loc30 = v153;
-				v153 = loc30;
-				v153 = *v153.u0;
-				loc31 = v153;
-				v153 = loc33;
-				v154.u0 = 0x18;
-				v153 <<= v154;
-				v154.u0 = 0x18;
-				v153 >>= v154;
+				v154 = arg3;
+				v155.u0 = 0x04;
+				v154 += v155;
+				loc30 = v154;
+				v154 = loc30;
+				v154 = *v154.u0;
+				loc31 = v154;
+				v154 = loc33;
+				v155.u0 = 0x18;
+				v154 <<= v155;
+				v155.u0 = 0x18;
+				v154 >>= v155;
+				v155.u0 = 0x00;
+				v156 = v154 < v155;
+				loc32 = v156;
+				v154 = arg5;
+				v154 = *v154.u0;
+				loc35 = v154;
+				v154 = loc32;
+				if (v154)
+					v154 = loc35;
+				else
+					v154 = arg5;
+				loc36 = v154;
+				v154 = loc33;
+				v155.u0 = 0xFF;
+				v154 &= v155;
+				loc37 = v154;
+				v154 = loc32;
+				if (v154)
+					v154 = loc39;
+				else
+					v154 = loc37;
+				loc38 = v154;
+				v154 = loc36;
+				v155 = loc38;
+				v154 += v155;
+				loc40 = v154;
+				v154 = loc130;
+				v175 = *v154.u0;
+				v154.u3 = (word32) v175;
+				loc41 = v154;
+				v154 = loc141;
+				v176.u1 = v154.u4->t0000.u1;
+				v154.u3 = (word32) v176;
+				loc42 = v154;
 				v154.u0 = 0x00;
-				v155 = v153 < v154;
-				loc32 = v155;
-				v153 = arg5;
-				v153 = *v153.u0;
-				loc35 = v153;
-				v153 = loc32;
-				if (v153)
-					v153 = loc35;
-				else
-					v153 = arg5;
-				loc36 = v153;
-				v153 = loc33;
-				v154.u0 = 0xFF;
-				v153 &= v154;
-				loc37 = v153;
-				v153 = loc32;
-				if (v153)
-					v153 = loc39;
-				else
-					v153 = loc37;
-				loc38 = v153;
-				v153 = loc36;
-				v154 = loc38;
-				v153 += v154;
-				loc40 = v153;
-				v153 = loc130;
-				v174 = *v153.u0;
-				v153.u3 = (word32) v174;
-				loc41 = v153;
-				v153 = loc141;
-				v175.u1 = v153.u4->t0000.u1;
-				v153.u3 = (word32) v175;
-				loc42 = v153;
-				v153.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v153;
-				v153.u0 = 0x01B5;
-				v154 = loc10;
-				v156 = loc63;
-				v160 = loc64;
-				v161 = loc31;
-				v162 = loc36;
-				v163 = loc40;
-				v164 = loc67;
-				v165 = loc94;
-				v166 = loc119;
-				v167 = loc41;
-				v176 = loc42;
-				v177 = loc23;
-				v178 = loc34;
-				v179 = loc45;
-				v180 = loc43;
-				invoke_viiiiiiiiiiiiiii(v153, v154, v156, v160, v161, v162, v163, v164, v165, v166, v167, v176, v177, v178, v179, v180);
-				v153.u3 = g_t140048.u3;
-				loc44 = v153;
-				v153.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v153;
-				v153 = loc44;
-				v154.u0 = 0x01;
-				v153 &= v154;
-				loc46 = v153;
-				v153 = loc46;
-				v155 = v153 == 0x00;
-				if (v155)
+				g_t140048.u3 = (word32 *) v154;
+				v154.u0 = 0x01B5;
+				v155 = loc10;
+				v157 = loc63;
+				v161 = loc64;
+				v162 = loc31;
+				v163 = loc36;
+				v164 = loc40;
+				v165 = loc67;
+				v166 = loc94;
+				v167 = loc119;
+				v168 = loc41;
+				v177 = loc42;
+				v178 = loc23;
+				v179 = loc34;
+				v180 = loc45;
+				v181 = loc43;
+				invoke_viiiiiiiiiiiiiii(v154, v155, v157, v161, v162, v163, v164, v165, v166, v167, v168, v177, v178, v179, v180, v181);
+				v154.u3 = g_t140048.u3;
+				loc44 = v154;
+				v154.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v154;
+				v154 = loc44;
+				v155.u0 = 0x01;
+				v154 &= v155;
+				loc46 = v154;
+				v154 = loc46;
+				v156 = v154 == 0x00;
+				if (v156)
 				{
-					v153 = arg1;
-					v153 = *v153.u0;
-					loc47 = v153;
-					v153 = loc65;
-					v154 = loc47;
-					*v153.u0 = v154;
-					v153 = loc63;
-					v153 = *v153.u0;
-					loc48 = v153;
-					v153 = loc64;
-					v153 = *v153.u0;
-					loc49 = v153;
-					v153.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v153;
-					v153 = loc16;
-					v154 = loc65;
+					v154 = arg1;
 					v154 = *v154.u0;
-					*v153.u0 = v154;
-					v153.u0 = 0x0168;
+					loc47 = v154;
+					v154 = loc65;
+					v155 = loc47;
+					*v154.u0 = v155;
+					v154 = loc63;
+					v154 = *v154.u0;
+					loc48 = v154;
+					v154 = loc64;
+					v154 = *v154.u0;
+					loc49 = v154;
+					v154.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v154;
 					v154 = loc16;
-					v156 = loc10;
-					v160 = loc48;
-					v161 = loc49;
-					v162 = arg3;
-					v163 = arg4;
-					v153 = invoke_iiiiiii(v153, v154, v156, v160, v161, v162, v163);
-					loc50 = v153;
-					v153.u3 = g_t140048.u3;
-					loc51 = v153;
-					v153.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v153;
-					v153 = loc51;
-					v154.u0 = 0x01;
-					v153 &= v154;
-					loc52 = v153;
-					v153 = loc52;
-					v155 = v153 == 0x00;
-					if (v155)
+					v155 = loc65;
+					v155 = *v155.u0;
+					*v154.u0 = v155;
+					v154.u0 = 0x0168;
+					v155 = loc16;
+					v157 = loc10;
+					v161 = loc48;
+					v162 = loc49;
+					v163 = arg3;
+					v164 = arg4;
+					v154 = invoke_iiiiiii(v154, v155, v157, v161, v162, v163, v164);
+					loc50 = v154;
+					v154.u3 = g_t140048.u3;
+					loc51 = v154;
+					v154.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v154;
+					v154 = loc51;
+					v155.u0 = 0x01;
+					v154 &= v155;
+					loc52 = v154;
+					v154 = loc52;
+					v156 = v154 == 0x00;
+					if (v156)
 					{
-						v153 = loc21;
-						v154.u0 = 0x00;
-						v155 = v153 == v154;
-						loc53 = v155;
-						v153 = loc53;
-						v155 = v153 == 0x00;
-						if (v155)
+						v154 = loc21;
+						v155.u0 = 0x00;
+						v156 = v154 == v155;
+						loc53 = v156;
+						v154 = loc53;
+						v156 = v154 == 0x00;
+						if (v156)
 						{
-							v153 = loc21;
-							loc54 = v153;
-							v153 = loc54;
-							_free(v153);
+							v154 = loc21;
+							loc54 = v154;
+							v154 = loc54;
+							_free(v154);
 						}
-						v153 = loc45;
-						fn0011BAF7(v153);
-						v153 = loc34;
-						fn0011BAF7(v153);
-						v153 = loc23;
-						fn0011BAF7(v153);
-						v153 = loc108;
-						v153 = *v153.u0;
-						loc55 = v153;
-						v153 = loc55;
-						v153 = fn0011B43F(v153);
-						v153 = loc156;
-						g_t140030.u3 = (word32 *) v153;
-						v153 = loc50;
-						return v153;
+						v154 = loc45;
+						fn0011BAF7(v154);
+						v154 = loc34;
+						fn0011BAF7(v154);
+						v154 = loc23;
+						fn0011BAF7(v154);
+						v154 = loc108;
+						v154 = *v154.u0;
+						loc55 = v154;
+						v154 = loc55;
+						v154 = fn0011B43F(v154);
+						v154 = loc156;
+						g_t140030.u3 = (word32 *) v154;
+						v154 = loc50;
+						return v154;
 					}
 				}
-				v153 = ___cxa_find_matching_catch_n();
-				loc57 = v153;
-				v153.u3 = g_t140094.u3;
-				loc58 = v153;
-				v153 = loc57;
-				loc6 = v153;
-				v153 = loc58;
-				loc11 = v153;
-				v153 = loc21;
-				loc22 = v153;
+				v154 = ___cxa_find_matching_catch_n();
+				loc57 = v154;
+				v154.u3 = g_t140094.u3;
+				loc58 = v154;
+				v154 = loc57;
+				loc6 = v154;
+				v154 = loc58;
+				loc11 = v154;
+				v154 = loc21;
+				loc22 = v154;
 			}
-			v153 = loc22;
-			v154.u0 = 0x00;
-			v155 = v153 == v154;
-			loc59 = v155;
-			v153 = loc59;
-			v155 = v153 == 0x00;
-			if (v155)
+			v154 = loc22;
+			v155.u0 = 0x00;
+			v156 = v154 == v155;
+			loc59 = v156;
+			v154 = loc59;
+			v156 = v154 == 0x00;
+			if (v156)
 			{
-				v153 = loc22;
-				loc60 = v153;
-				v153 = loc60;
-				_free(v153);
+				v154 = loc22;
+				loc60 = v154;
+				v154 = loc60;
+				_free(v154);
 			}
-			v153 = loc6;
-			loc12 = v153;
-			v153 = loc11;
-			loc13 = v153;
+			v154 = loc6;
+			loc12 = v154;
+			v154 = loc11;
+			loc13 = v154;
 l00111EF7:
-			v153 = loc45;
-			fn0011BAF7(v153);
-			v153 = loc34;
-			fn0011BAF7(v153);
-			v153 = loc23;
-			fn0011BAF7(v153);
-			v153 = loc12;
-			loc14 = v153;
-			v153 = loc13;
-			loc15 = v153;
+			v154 = loc45;
+			fn0011BAF7(v154);
+			v154 = loc34;
+			fn0011BAF7(v154);
+			v154 = loc23;
+			fn0011BAF7(v154);
+			v154 = loc12;
+			loc14 = v154;
+			v154 = loc13;
+			loc15 = v154;
 l00111F10:
-			v153 = loc108;
-			v153.u3 = *v153.u3;
-			loc61 = v153;
-			v153 = loc61;
-			v153 = fn0011B43F(v153);
-			v153 = loc14;
-			___resumeException(v153);
-			v153.u0 = 0x00;
-			return v153;
+			v154 = loc108;
+			v154.u3 = *v154.u3;
+			loc61 = v154;
+			v154 = loc61;
+			v154 = fn0011B43F(v154);
+			v154 = loc14;
+			___resumeException(v154);
+			v154.u0 = 0x00;
+			return v154;
 		}
-		v153 = loc145;
-		loc10 = v153;
-		v153 = loc146;
-		loc21 = v153;
-		v153 = loc97;
-		loc33 = v153;
-		v153 = loc99;
-		loc39 = v153;
-		v153 = loc102;
-		loc43 = v153;
-		v153.u0 = 0x1A;
-		loc155 = v153;
+		v154 = loc145;
+		loc10 = v154;
+		v154 = loc146;
+		loc21 = v154;
+		v154 = loc97;
+		loc33 = v154;
+		v154 = loc99;
+		loc39 = v154;
+		v154 = loc102;
+		loc43 = v154;
+		v154.u0 = 0x1A;
+		loc155 = v154;
 	}
 	else
 	{
-		v153 = loc62;
-		loc10 = v153;
-		v153.u0 = 0x00;
-		loc21 = v153;
-		v153 = loc97;
-		loc33 = v153;
-		v153 = loc99;
-		loc39 = v153;
-		v153 = loc102;
-		loc43 = v153;
-		v153.u0 = 0x1A;
-		loc155 = v153;
+		v154 = loc62;
+		loc10 = v154;
+		v154.u0 = 0x00;
+		loc21 = v154;
+		v154 = loc97;
+		loc33 = v154;
+		v154 = loc99;
+		loc39 = v154;
+		v154 = loc102;
+		loc43 = v154;
+		v154.u0 = 0x1A;
+		loc155 = v154;
 	}
 	goto l00111D9A;
 }
@@ -2470,204 +2470,204 @@ l00111F10:
 // 00111F27: void fn00111F27(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9)
 void fn00111F27(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
 {
-	v189.u3 = g_t140030.u3;
-	loc196 = v189;
-	v189.u3 = g_t140030.u3;
-	v190.u0 = 0x70;
-	v189 += v190;
-	g_t140030.u3 = (word32 *) v189;
-	v189.u3 = g_t140030.u3;
-	v190.u3 = g_t140034.u3;
-	v191 = v189 >= v190;
-	if (v191)
+	v190.u3 = g_t140030.u3;
+	loc196 = v190;
+	v190.u3 = g_t140030.u3;
+	v191.u0 = 0x70;
+	v190 += v191;
+	g_t140030.u3 = (word32 *) v190;
+	v190.u3 = g_t140030.u3;
+	v191.u3 = g_t140034.u3;
+	v192 = v190 >= v191;
+	if (v192)
 	{
-		v189.u0 = 0x70;
-		abortStackOverflow(v189);
+		v190.u0 = 0x70;
+		abortStackOverflow(v190);
 	}
-	v189 = loc196;
-	v190.u0 = 0x6C;
-	v189 += v190;
-	loc20 = v189;
-	v189 = loc196;
-	v190.u0 = 0x60;
-	v189 += v190;
-	loc31 = v189;
-	v189 = loc196;
-	v190.u0 = 0x5C;
-	v189 += v190;
-	loc42 = v189;
-	v189 = loc196;
-	v190.u0 = 0x50;
-	v189 += v190;
-	loc53 = v189;
-	v189 = loc196;
-	v190.u0 = 0x44;
-	v189 += v190;
-	loc64 = v189;
-	v189 = loc196;
-	v190.u0 = 0x38;
-	v189 += v190;
-	loc75 = v189;
-	v189 = loc196;
-	v190.u0 = 0x34;
-	v189 += v190;
-	loc86 = v189;
-	v189 = loc196;
-	v190.u0 = 0x28;
-	v189 += v190;
-	loc97 = v189;
-	v189 = loc196;
-	v190.u0 = 0x24;
-	v189 += v190;
-	loc104 = v189;
-	v189 = loc196;
-	v190.u0 = 0x18;
-	v189 += v190;
-	loc105 = v189;
-	v189 = loc196;
-	v190.u0 = 0x0C;
-	v189 += v190;
-	loc106 = v189;
-	v189 = loc196;
-	loc107 = v189;
-	v189 = arg0;
-	v189 = v189;
-	v189 = arg2;
-	v190.u0 = 21288;
-	v189 = fn000EA9F7(v189, v190);
-	loc108 = v189;
-	v189 = arg1;
-	v189 = v189;
-	v189 = loc108;
-	v189 = *v189.u0;
-	loc109 = v189;
-	v189 = loc109;
-	v190.u0 = 44;
-	v189 += v190;
-	loc110 = v189;
-	v189 = loc110;
-	v189 = *v189.u0;
-	loc111 = v189;
-	v189 = loc20;
+	v190 = loc196;
+	v191.u0 = 0x6C;
+	v190 += v191;
+	loc20 = v190;
+	v190 = loc196;
+	v191.u0 = 0x60;
+	v190 += v191;
+	loc31 = v190;
+	v190 = loc196;
+	v191.u0 = 0x5C;
+	v190 += v191;
+	loc42 = v190;
+	v190 = loc196;
+	v191.u0 = 0x50;
+	v190 += v191;
+	loc53 = v190;
+	v190 = loc196;
+	v191.u0 = 0x44;
+	v190 += v191;
+	loc64 = v190;
+	v190 = loc196;
+	v191.u0 = 0x38;
+	v190 += v191;
+	loc75 = v190;
+	v190 = loc196;
+	v191.u0 = 0x34;
+	v190 += v191;
+	loc86 = v190;
+	v190 = loc196;
+	v191.u0 = 0x28;
+	v190 += v191;
+	loc97 = v190;
+	v190 = loc196;
+	v191.u0 = 0x24;
+	v190 += v191;
+	loc104 = v190;
+	v190 = loc196;
+	v191.u0 = 0x18;
+	v190 += v191;
+	loc105 = v190;
+	v190 = loc196;
+	v191.u0 = 0x0C;
+	v190 += v191;
+	loc106 = v190;
+	v190 = loc196;
+	loc107 = v190;
+	v190 = arg0;
+	v190 = v190;
+	v190 = arg2;
+	v191.u0 = 21288;
+	v190 = fn000EA9F7(v190, v191);
+	loc108 = v190;
+	v190 = arg1;
+	v190 = v190;
 	v190 = loc108;
-	v192 = loc111;
-	v193 = 0x01FF;
-	v192 &= v193;
-	v193 = 0x0700;
-	v192.u3 += v193;
+	v190 = *v190.u0;
+	loc109 = v190;
+	v190 = loc109;
+	v191.u0 = 44;
+	v190 += v191;
+	loc110 = v190;
+	v190 = loc110;
+	v190 = *v190.u0;
+	loc111 = v190;
+	v190 = loc20;
+	v191 = loc108;
+	v193 = loc111;
+	v194 = 0x01FF;
+	v193 &= v194;
+	v194 = 0x0700;
+	v193.u3 += v194;
 }
 
 // 00112A04: void fn00112A04(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack word32 arg5, Stack Eq_n arg6, Stack word32 arg7, Stack Eq_n arg8, Stack word32 arg9, Stack word32 arg10, Stack Eq_n arg11, Stack Eq_n arg12, Stack Eq_n arg13, Stack Eq_n arg14)
 void fn00112A04(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, word32 arg5, Eq_n arg6, word32 arg7, Eq_n arg8, word32 arg9, word32 arg10, Eq_n arg11, Eq_n arg12, Eq_n arg13, Eq_n arg14)
 {
-	v168.u3 = g_t140030.u3;
-	loc180 = v168;
-	v168 = arg2;
-	v169 = arg0;
-	*v168.u3 = (word32) v169;
-	v168 = arg13;
-	v169.u0 = 11;
-	v168 += v169;
-	loc89 = v168;
-	v168 = arg13;
-	v169.u0 = 0x04;
-	v168 += v169;
-	loc91 = v168;
-	v168 = arg12;
-	v169.u0 = 11;
-	v168 += v169;
-	loc92 = v168;
-	v168 = arg12;
-	v169.u0 = 0x04;
-	v168 += v169;
-	loc93 = v168;
-	v168 = arg3;
-	v169.u0 = 0x0200;
-	v168 &= v169;
-	loc94 = v168;
-	v168 = loc94;
+	v169.u3 = g_t140030.u3;
+	loc180 = v169;
+	v169 = arg2;
+	v170 = arg0;
+	*v169.u3 = (word32) v170;
+	v169 = arg13;
+	v170.u0 = 11;
+	v169 += v170;
+	loc89 = v169;
+	v169 = arg13;
+	v170.u0 = 0x04;
+	v169 += v170;
+	loc91 = v169;
+	v169 = arg12;
+	v170.u0 = 11;
+	v169 += v170;
+	loc92 = v169;
+	v169 = arg12;
+	v170.u0 = 0x04;
+	v169 += v170;
+	loc93 = v169;
+	v169 = arg3;
+	v170.u0 = 0x0200;
+	v169 &= v170;
+	loc94 = v169;
+	v169 = loc94;
+	v170.u0 = 0x00;
+	v171 = v169 == v170;
+	loc95 = v171;
+	v169 = arg6;
+	v170.u0 = 0x08;
+	v169 += v170;
+	loc96 = v169;
+	v169 = arg14;
+	v170.u0 = 0x00;
+	v171 = v169 > v170;
+	loc97 = v171;
+	v169 = arg11;
+	v170.u0 = 11;
+	v169 += v170;
+	loc98 = v169;
+	v169 = arg11;
+	v170.u0 = 0x04;
+	v169 += v170;
+	loc99 = v169;
 	v169.u0 = 0x00;
-	v170 = v168 == v169;
-	loc95 = v170;
-	v168 = arg6;
-	v169.u0 = 0x08;
-	v168 += v169;
-	loc96 = v168;
-	v168 = arg14;
-	v169.u0 = 0x00;
-	v170 = v168 > v169;
-	loc97 = v170;
-	v168 = arg11;
-	v169.u0 = 11;
-	v168 += v169;
-	loc98 = v168;
-	v168 = arg11;
-	v169.u0 = 0x04;
-	v168 += v169;
-	loc99 = v168;
-	v168.u0 = 0x00;
-	loc22 = v168;
-	v168 = arg4;
-	loc26 = v168;
-	v168 = loc22;
-	v169.u0 = 0x04;
-	v170 = v168 == v169;
-	loc175 = v170;
-	v168 = loc175;
-	if (!v168)
+	loc22 = v169;
+	v169 = arg4;
+	loc26 = v169;
+	v169 = loc22;
+	v170.u0 = 0x04;
+	v171 = v169 == v170;
+	loc175 = v171;
+	v169 = loc175;
+	if (!v169)
 	{
-		v168 = arg8;
-		v169 = loc22;
-		v168 += v169;
-		loc106 = v168;
-		v168 = loc106;
-		v171 = *v168.u0;
-		v168.u3 = (word32) v171;
-		loc107 = v168;
-		v168 = loc107;
-		v169.u0 = 0x18;
-		v168 <<= v169;
-		v169.u0 = 0x18;
-		v168 >>= v169;
-		loc108 = v168;
-		v168 = loc108;
-		v169.u0 = 0x00;
-		v168 -= v169;
-		switch (v168)
+		v169 = arg8;
+		v170 = loc22;
+		v169 += v170;
+		loc106 = v169;
+		v169 = loc106;
+		v172 = *v169.u0;
+		v169.u3 = (word32) v172;
+		loc107 = v169;
+		v169 = loc107;
+		v170.u0 = 0x18;
+		v169 <<= v170;
+		v170.u0 = 0x18;
+		v169 >>= v170;
+		loc108 = v169;
+		v169 = loc108;
+		v170.u0 = 0x00;
+		v169 -= v170;
+		switch (v169)
 		{
 		case 0x00:
-			v168 = arg2;
-			v168.u3 = *v168.u3;
-			loc109 = v168;
-			v168 = arg1;
-			v169 = loc109;
-			*v168.u3 = (word32) v169;
-			v168 = loc26;
-			loc33 = v168;
+			v169 = arg2;
+			v169.u3 = *v169.u3;
+			loc109 = v169;
+			v169 = arg1;
+			v170 = loc109;
+			*v169.u3 = (word32) v170;
+			v169 = loc26;
+			loc33 = v169;
 		case 0x01:
-			v168 = arg2;
-			v168.u3 = *v168.u3;
-			loc110 = v168;
-			v168 = arg1;
-			v169 = loc110;
-			*v168.u3 = (word32) v169;
-			v168 = arg6;
-			v168.u3 = *v168.u3;
-			loc111 = v168;
-			v168 = loc111;
-			v169.u0 = 0x1C;
-			v168 += v169;
-			loc112 = v168;
-			v168 = loc112;
-			v168.u3 = *v168.u3;
-			loc113 = v168;
-			v168 = arg6;
-			v169.u0 = 0x20;
-			v172 = loc113;
-			v173.u0 = 0x01FF;
-			v172 &= v173;
-			v173.u0 = 6944;
-			v172 += v173;
+			v169 = arg2;
+			v169.u3 = *v169.u3;
+			loc110 = v169;
+			v169 = arg1;
+			v170 = loc110;
+			*v169.u3 = (word32) v170;
+			v169 = arg6;
+			v169.u3 = *v169.u3;
+			loc111 = v169;
+			v169 = loc111;
+			v170.u0 = 0x1C;
+			v169 += v170;
+			loc112 = v169;
+			v169 = loc112;
+			v169.u3 = *v169.u3;
+			loc113 = v169;
+			v169 = arg6;
+			v170.u0 = 0x20;
+			v173 = loc113;
+			v174.u0 = 0x01FF;
+			v173 &= v174;
+			v174.u0 = 6944;
+			v173 += v174;
 		}
 	}
 }
@@ -2675,1130 +2675,1130 @@ void fn00112A04(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, word32 ar
 // 001131DC: void fn001131DC(Stack Eq_n arg0)
 void fn001131DC(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 001131E5: void fn001131E5(Stack Eq_n arg0)
 void fn001131E5(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 001131F3: Stack Eq_n fn001131F3(Stack ui32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn001131F3(ui32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v186.u3 = g_t140030.u3;
-	loc189 = v186;
-	v186.u3 = g_t140030.u3;
-	v187.u0 = 0x03F0;
-	v186 += v187;
-	g_t140030.u3 = (word32 *) v186;
-	v186.u3 = g_t140030.u3;
-	v187.u3 = g_t140034.u3;
-	v188 = v186 >= v187;
-	if (v188)
+	v187.u3 = g_t140030.u3;
+	loc189 = v187;
+	v187.u3 = g_t140030.u3;
+	v188.u0 = 0x03F0;
+	v187 += v188;
+	g_t140030.u3 = (word32 *) v187;
+	v187.u3 = g_t140030.u3;
+	v188.u3 = g_t140034.u3;
+	v189 = v187 >= v188;
+	if (v189)
 	{
-		v186.u0 = 0x03F0;
-		abortStackOverflow(v186);
+		v187.u0 = 0x03F0;
+		abortStackOverflow(v187);
 	}
-	v186 = loc189;
-	v187.u0 = 0x037C;
-	v186 += v187;
-	loc20 = v186;
-	v186 = loc189;
-	v187.u0 = 0x08;
-	v186 += v187;
-	loc187 = v186;
-	v186 = loc189;
-	loc186 = v186;
-	v186 = loc189;
-	v187.u0 = 900;
-	v186 += v187;
-	loc139 = v186;
-	v186 = loc189;
-	v187.u0 = 888;
-	v186 += v187;
-	loc150 = v186;
-	v186 = loc189;
-	v187.u0 = 488;
-	v186 += v187;
-	loc161 = v186;
-	v186 = loc189;
-	v187.u0 = 0x01E0;
-	v186 += v187;
-	loc172 = v186;
-	v186 = loc189;
-	v187.u0 = 0x0380;
-	v186 += v187;
-	loc33 = v186;
-	v186 = loc189;
-	v187.u0 = 0x01DC;
-	v186 += v187;
-	loc44 = v186;
-	v186 = loc189;
-	v187.u0 = 0x01D8;
-	v186 += v187;
-	loc55 = v186;
-	v186 = loc189;
-	v187.u0 = 0x01CC;
-	v186 += v187;
-	loc66 = v186;
-	v186 = loc189;
-	v187.u0 = 448;
-	v186 += v187;
-	loc77 = v186;
-	v186 = loc189;
-	v187.u0 = 0x01B4;
-	v186 += v187;
-	loc88 = v186;
-	v186 = loc189;
-	v187.u0 = 0x01B0;
-	v186 += v187;
-	loc95 = v186;
-	v186 = loc189;
-	v187.u0 = 0x20;
-	v186 += v187;
-	loc96 = v186;
-	v186 = loc189;
-	v187.u0 = 0x18;
-	v186 += v187;
-	loc97 = v186;
-	v186 = loc189;
-	v187.u0 = 0x14;
-	v186 += v187;
-	loc98 = v186;
-	v186 = loc189;
-	v187.u0 = 0x10;
-	v186 += v187;
-	loc99 = v186;
-	v186 = loc150;
+	v187 = loc189;
+	v188.u0 = 0x037C;
+	v187 += v188;
+	loc20 = v187;
+	v187 = loc189;
+	v188.u0 = 0x08;
+	v187 += v188;
+	loc187 = v187;
+	v187 = loc189;
+	loc186 = v187;
+	v187 = loc189;
+	v188.u0 = 900;
+	v187 += v188;
+	loc139 = v187;
+	v187 = loc189;
+	v188.u0 = 888;
+	v187 += v188;
+	loc150 = v187;
+	v187 = loc189;
+	v188.u0 = 488;
+	v187 += v188;
+	loc161 = v187;
+	v187 = loc189;
+	v188.u0 = 0x01E0;
+	v187 += v188;
+	loc172 = v187;
+	v187 = loc189;
+	v188.u0 = 0x0380;
+	v187 += v188;
+	loc33 = v187;
+	v187 = loc189;
+	v188.u0 = 0x01DC;
+	v187 += v188;
+	loc44 = v187;
+	v187 = loc189;
+	v188.u0 = 0x01D8;
+	v187 += v188;
+	loc55 = v187;
+	v187 = loc189;
+	v188.u0 = 0x01CC;
+	v187 += v188;
+	loc66 = v187;
+	v187 = loc189;
+	v188.u0 = 448;
+	v187 += v188;
+	loc77 = v187;
+	v187 = loc189;
+	v188.u0 = 0x01B4;
+	v187 += v188;
+	loc88 = v187;
+	v187 = loc189;
+	v188.u0 = 0x01B0;
+	v187 += v188;
+	loc95 = v187;
+	v187 = loc189;
+	v188.u0 = 0x20;
+	v187 += v188;
+	loc96 = v187;
+	v187 = loc189;
+	v188.u0 = 0x18;
+	v187 += v188;
+	loc97 = v187;
+	v187 = loc189;
+	v188.u0 = 0x14;
+	v187 += v188;
+	loc98 = v187;
+	v187 = loc189;
+	v188.u0 = 0x10;
+	v187 += v188;
+	loc99 = v187;
+	v187 = loc150;
+	v188 = loc139;
+	*v187.u0 = v188;
+	v187 = loc186;
+	v190 = arg5;
+	*v187.u0 = v190;
 	v187 = loc139;
-	*v186.u0 = v187;
-	v186 = loc186;
-	v189 = arg5;
-	*v186.u0 = v189;
-	v186 = loc139;
-	v187.u0 = 100;
-	v190.u0 = 0x3DC0;
-	v191 = loc186;
-	v186 = fn000DB3DF(v186, v187, v190, v191);
-	loc100 = v186;
-	v186 = loc100;
-	v187.u0 = 99;
-	v188 = v186 > v187;
-	loc101 = v188;
-	v186 = loc101;
-	if (v186)
+	v188.u0 = 100;
+	v191.u0 = 0x3DC0;
+	v192 = loc186;
+	v187 = fn000DB3DF(v187, v188, v191, v192);
+	loc100 = v187;
+	v187 = loc100;
+	v188.u0 = 99;
+	v189 = v187 > v188;
+	loc101 = v189;
+	v187 = loc101;
+	if (v187)
 	{
-		v186.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v186;
-		v186.u0 = 0x017B;
-		v186 = invoke_i(v186);
-		loc102 = v186;
-		v186.u3 = g_t140048.u3;
-		loc103 = v186;
-		v186.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v186;
-		v186 = loc103;
-		v187.u0 = 0x01;
-		v186 &= v187;
-		loc104 = v186;
-		v186 = loc104;
-		if (v186)
+		v187.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v187;
+		v187.u0 = 0x017B;
+		v187 = invoke_i(v187);
+		loc102 = v187;
+		v187.u3 = g_t140048.u3;
+		loc103 = v187;
+		v187.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v187;
+		v187 = loc103;
+		v188.u0 = 0x01;
+		v187 &= v188;
+		loc104 = v187;
+		v187 = loc104;
+		if (v187)
 		{
-			v186.u0 = 0x00;
-			loc27 = v186;
-			v186.u0 = 0x00;
-			loc30 = v186;
-			v186.u0 = 0x08;
-			loc188 = v186;
+			v187.u0 = 0x00;
+			loc27 = v187;
+			v187.u0 = 0x00;
+			loc30 = v187;
+			v187.u0 = 0x08;
+			loc188 = v187;
 		}
 		else
 		{
-			v186.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v186;
-			v186 = loc187;
-			v189 = arg5;
-			*v186.u0 = v189;
-			v186.u0 = 0x018D;
-			v187 = loc150;
-			v190 = loc102;
-			v191.u0 = 0x3DC0;
-			v192 = loc187;
-			v186 = invoke_iiiii(v186, v187, v190, v191, v192);
-			loc105 = v186;
-			v186.u3 = g_t140048.u3;
-			loc106 = v186;
-			v186.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v186;
-			v186 = loc106;
-			v187.u0 = 0x01;
-			v186 &= v187;
-			loc107 = v186;
-			v186 = loc107;
-			if (v186)
+			v187.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v187;
+			v187 = loc187;
+			v190 = arg5;
+			*v187.u0 = v190;
+			v187.u0 = 0x018D;
+			v188 = loc150;
+			v191 = loc102;
+			v192.u0 = 0x3DC0;
+			v193 = loc187;
+			v187 = invoke_iiiii(v187, v188, v191, v192, v193);
+			loc105 = v187;
+			v187.u3 = g_t140048.u3;
+			loc106 = v187;
+			v187.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v187;
+			v187 = loc106;
+			v188.u0 = 0x01;
+			v187 &= v188;
+			loc107 = v187;
+			v187 = loc107;
+			if (v187)
 			{
-				v186.u0 = 0x00;
-				loc27 = v186;
-				v186.u0 = 0x00;
-				loc30 = v186;
-				v186.u0 = 0x08;
-				loc188 = v186;
+				v187.u0 = 0x00;
+				loc27 = v187;
+				v187.u0 = 0x00;
+				loc30 = v187;
+				v187.u0 = 0x08;
+				loc188 = v187;
 			}
 			else
 			{
-				v186 = loc150;
-				v186 = *v186.u0;
-				loc108 = v186;
-				v186 = loc108;
-				v187.u0 = 0x00;
-				v188 = v186 == v187;
-				loc109 = v188;
-				v186 = loc109;
-				if (v186)
+				v187 = loc150;
+				v187 = *v187.u0;
+				loc108 = v187;
+				v187 = loc108;
+				v188.u0 = 0x00;
+				v189 = v187 == v188;
+				loc109 = v189;
+				v187 = loc109;
+				if (v187)
 				{
-					v186.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v186;
-					v186.u0 = 0x018A;
-					invoke_v(v186);
-					v186.u3 = g_t140048.u3;
-					loc111 = v186;
-					v186.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v186;
-					v186 = loc111;
-					v187.u0 = 0x01;
-					v186 &= v187;
-					loc112 = v186;
-					v186 = loc112;
-					if (v186)
+					v187.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v187;
+					v187.u0 = 0x018A;
+					invoke_v(v187);
+					v187.u3 = g_t140048.u3;
+					loc111 = v187;
+					v187.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v187;
+					v187 = loc111;
+					v188.u0 = 0x01;
+					v187 &= v188;
+					loc112 = v187;
+					v187 = loc112;
+					if (v187)
 					{
-						v186.u0 = 0x00;
-						loc27 = v186;
-						v186.u0 = 0x00;
-						loc30 = v186;
-						v186.u0 = 0x08;
-						loc188 = v186;
+						v187.u0 = 0x00;
+						loc27 = v187;
+						v187.u0 = 0x00;
+						loc30 = v187;
+						v187.u0 = 0x08;
+						loc188 = v187;
 						goto l0011342E;
 					}
-					v186 = loc150;
-					v186 = *v186.u0;
-					loc22 = v186;
-					v186 = loc22;
-					loc94 = v186;
+					v187 = loc150;
+					v187 = *v187.u0;
+					loc22 = v187;
+					v187 = loc22;
+					loc94 = v187;
 				}
 				else
 				{
-					v186 = loc108;
-					loc110 = v186;
-					v186 = loc110;
-					loc94 = v186;
+					v187 = loc108;
+					loc110 = v187;
+					v187 = loc110;
+					loc94 = v187;
 				}
-				v186 = loc105;
-				v187.u0 = 0x02;
-				v186 <<= v187;
-				loc115 = v186;
-				v186 = loc115;
-				v186 = _malloc(v186);
-				loc116 = v186;
-				v186 = loc116;
-				loc117 = v186;
-				v186 = loc116;
-				v187.u0 = 0x00;
-				v188 = v186 == v187;
-				loc118 = v188;
-				v186 = loc118;
-				if (v186)
+				v187 = loc105;
+				v188.u0 = 0x02;
+				v187 <<= v188;
+				loc115 = v187;
+				v187 = loc115;
+				v187 = _malloc(v187);
+				loc116 = v187;
+				v187 = loc116;
+				loc117 = v187;
+				v187 = loc116;
+				v188.u0 = 0x00;
+				v189 = v187 == v188;
+				loc118 = v189;
+				v187 = loc118;
+				if (v187)
 				{
-					v186.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v186;
-					v186.u0 = 0x018A;
-					invoke_v(v186);
-					v186.u3 = g_t140048.u3;
-					loc119 = v186;
-					v186.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v186;
-					v186 = loc119;
-					v187.u0 = 0x01;
-					v186 &= v187;
-					loc120 = v186;
-					v186 = loc120;
-					if (v186)
+					v187.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v187;
+					v187.u0 = 0x018A;
+					invoke_v(v187);
+					v187.u3 = g_t140048.u3;
+					loc119 = v187;
+					v187.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v187;
+					v187 = loc119;
+					v188.u0 = 0x01;
+					v187 &= v188;
+					loc120 = v187;
+					v187 = loc120;
+					if (v187)
 					{
-						v186 = loc117;
-						loc27 = v186;
-						v186 = loc94;
-						loc30 = v186;
-						v186.u0 = 0x08;
-						loc188 = v186;
+						v187 = loc117;
+						loc27 = v187;
+						v187 = loc94;
+						loc30 = v187;
+						v187.u0 = 0x08;
+						loc188 = v187;
 					}
 					else
 					{
-						v186.u0 = 0x00;
-						loc6 = v186;
-						v186 = loc105;
-						loc11 = v186;
-						v186 = loc117;
-						loc28 = v186;
-						v186 = loc94;
-						loc31 = v186;
-						v186.u0 = 11;
-						loc188 = v186;
+						v187.u0 = 0x00;
+						loc6 = v187;
+						v187 = loc105;
+						loc11 = v187;
+						v187 = loc117;
+						loc28 = v187;
+						v187 = loc94;
+						loc31 = v187;
+						v187.u0 = 11;
+						loc188 = v187;
 					}
 				}
 				else
 				{
-					v186 = loc116;
-					loc6 = v186;
-					v186 = loc105;
-					loc11 = v186;
-					v186 = loc117;
-					loc28 = v186;
-					v186 = loc94;
-					loc31 = v186;
-					v186.u0 = 11;
-					loc188 = v186;
+					v187 = loc116;
+					loc6 = v187;
+					v187 = loc105;
+					loc11 = v187;
+					v187 = loc117;
+					loc28 = v187;
+					v187 = loc94;
+					loc31 = v187;
+					v187.u0 = 11;
+					loc188 = v187;
 				}
 			}
 		}
 	}
 	else
 	{
-		v186 = loc161;
-		loc6 = v186;
-		v186 = loc100;
-		loc11 = v186;
-		v186.u0 = 0x00;
-		loc28 = v186;
-		v186.u0 = 0x00;
-		loc31 = v186;
-		v186.u0 = 11;
-		loc188 = v186;
+		v187 = loc161;
+		loc6 = v187;
+		v187 = loc100;
+		loc11 = v187;
+		v187.u0 = 0x00;
+		loc28 = v187;
+		v187.u0 = 0x00;
+		loc31 = v187;
+		v187.u0 = 11;
+		loc188 = v187;
 	}
 l0011342E:
-	v186 = loc188;
-	v187.u0 = 11;
-	v188 = v186 == v187;
-	if (!v188)
+	v187 = loc188;
+	v188.u0 = 11;
+	v189 = v187 == v188;
+	if (!v189)
 	{
 l00113A5D:
-		v186 = loc188;
-		v187.u0 = 0x08;
-		v188 = v186 == v187;
-		if (v188)
+		v187 = loc188;
+		v188.u0 = 0x08;
+		v189 = v187 == v188;
+		if (v189)
 		{
-			v186 = ___cxa_find_matching_catch_n();
-			loc113 = v186;
-			v186.u3 = g_t140094.u3;
-			loc114 = v186;
-			v186 = loc113;
-			loc18 = v186;
-			v186 = loc114;
-			loc19 = v186;
-			v186 = loc27;
-			loc29 = v186;
-			v186 = loc30;
-			loc32 = v186;
+			v187 = ___cxa_find_matching_catch_n();
+			loc113 = v187;
+			v187.u3 = g_t140094.u3;
+			loc114 = v187;
+			v187 = loc113;
+			loc18 = v187;
+			v187 = loc114;
+			loc19 = v187;
+			v187 = loc27;
+			loc29 = v187;
+			v187 = loc30;
+			loc32 = v187;
 		}
-		v186 = loc29;
+		v187 = loc29;
+		v188.u0 = 0x00;
+		v189 = v187 == v188;
+		loc90 = v189;
+		v187 = loc90;
+		v189 = v187 == 0x00;
+		if (v189)
+		{
+			v187 = loc29;
+			loc91 = v187;
+			v187 = loc91;
+			_free(v187);
+		}
+		v187 = loc32;
+		v188.u0 = 0x00;
+		v189 = v187 == v188;
+		loc92 = v189;
+		v187 = loc92;
+		v189 = v187 == 0x00;
+		if (v189)
+		{
+			v187 = loc32;
+			loc93 = v187;
+			v187 = loc93;
+			_free(v187);
+		}
+		v187 = loc18;
+		___resumeException(v187);
 		v187.u0 = 0x00;
-		v188 = v186 == v187;
-		loc90 = v188;
-		v186 = loc90;
-		v188 = v186 == 0x00;
-		if (v188)
-		{
-			v186 = loc29;
-			loc91 = v186;
-			v186 = loc91;
-			_free(v186);
-		}
-		v186 = loc32;
-		v187.u0 = 0x00;
-		v188 = v186 == v187;
-		loc92 = v188;
-		v186 = loc92;
-		v188 = v186 == 0x00;
-		if (v188)
-		{
-			v186 = loc32;
-			loc93 = v186;
-			v186 = loc93;
-			_free(v186);
-		}
-		v186 = loc18;
-		___resumeException(v186);
-		v186.u0 = 0x00;
-		return v186;
+		return v187;
 	}
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186.u0 = 0x0167;
-	v187 = arg3;
-	v186 = invoke_ii(v186, v187);
-	loc121 = v186;
-	v186.u3 = g_t140048.u3;
-	loc122 = v186;
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186 = loc122;
-	v187.u0 = 0x01;
-	v186 &= v187;
-	loc123 = v186;
-	v186 = loc123;
-	if (v186)
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187.u0 = 0x0167;
+	v188 = arg3;
+	v187 = invoke_ii(v187, v188);
+	loc121 = v187;
+	v187.u3 = g_t140048.u3;
+	loc122 = v187;
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187 = loc122;
+	v188.u0 = 0x01;
+	v187 &= v188;
+	loc123 = v187;
+	v187 = loc123;
+	if (v187)
 	{
-		v186 = loc28;
-		loc27 = v186;
-		v186 = loc31;
-		loc30 = v186;
-		v186.u0 = 0x08;
-		loc188 = v186;
+		v187 = loc28;
+		loc27 = v187;
+		v187 = loc31;
+		loc30 = v187;
+		v187.u0 = 0x08;
+		loc188 = v187;
 		goto l00113A5B;
 	}
-	v186 = loc172;
-	v187 = loc121;
-	*v186.u0 = v187;
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186.u0 = 0x0164;
 	v187 = loc172;
-	v190.u0 = 0x4C90;
-	v186 = invoke_iii(v186, v187, v190);
-	loc124 = v186;
-	v186.u3 = g_t140048.u3;
-	loc125 = v186;
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186 = loc125;
-	v187.u0 = 0x01;
-	v186 &= v187;
-	loc126 = v186;
-	v186 = loc126;
-	if (v186)
+	v188 = loc121;
+	*v187.u0 = v188;
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187.u0 = 0x0164;
+	v188 = loc172;
+	v191.u0 = 0x4C90;
+	v187 = invoke_iii(v187, v188, v191);
+	loc124 = v187;
+	v187.u3 = g_t140048.u3;
+	loc125 = v187;
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187 = loc125;
+	v188.u0 = 0x01;
+	v187 &= v188;
+	loc126 = v187;
+	v187 = loc126;
+	if (v187)
 	{
-		v186 = ___cxa_find_matching_catch_n();
-		loc52 = v186;
-		v186.u3 = g_t140094.u3;
-		loc53 = v186;
-		v186 = loc52;
-		loc16 = v186;
-		v186 = loc53;
-		loc17 = v186;
-		v186 = loc121;
-		loc89 = v186;
+		v187 = ___cxa_find_matching_catch_n();
+		loc52 = v187;
+		v187.u3 = g_t140094.u3;
+		loc53 = v187;
+		v187 = loc52;
+		loc16 = v187;
+		v187 = loc53;
+		loc17 = v187;
+		v187 = loc121;
+		loc89 = v187;
 		goto l00113A43;
 	}
-	v186 = loc150;
-	v186.u3 = *v186.u3;
-	loc127 = v186;
-	v186 = loc127;
-	v187 = loc11;
-	v186 += v187;
-	loc128 = v186;
-	v186 = loc124;
-	v186.u3 = *v186.u3;
-	loc129 = v186;
-	v186 = loc129;
-	v187.u0 = 0x30;
-	v186 += v187;
-	loc130 = v186;
-	v186 = loc130;
-	v186.u3 = *v186.u3;
-	loc131 = v186;
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186 = loc131;
+	v187 = loc150;
+	v187.u3 = *v187.u3;
+	loc127 = v187;
+	v187 = loc127;
+	v188 = loc11;
+	v187 += v188;
+	loc128 = v187;
 	v187 = loc124;
-	v190 = loc127;
-	v191 = loc128;
-	v192 = loc6;
-	v186 = invoke_iiiii(v186, v187, v190, v191, v192);
-	v186.u3 = g_t140048.u3;
-	loc132 = v186;
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186 = loc132;
-	v187.u0 = 0x01;
-	v186 &= v187;
-	loc133 = v186;
-	v186 = loc133;
-	if (v186)
+	v187.u3 = *v187.u3;
+	loc129 = v187;
+	v187 = loc129;
+	v188.u0 = 0x30;
+	v187 += v188;
+	loc130 = v187;
+	v187 = loc130;
+	v187.u3 = *v187.u3;
+	loc131 = v187;
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187 = loc131;
+	v188 = loc124;
+	v191 = loc127;
+	v192 = loc128;
+	v193 = loc6;
+	v187 = invoke_iiiii(v187, v188, v191, v192, v193);
+	v187.u3 = g_t140048.u3;
+	loc132 = v187;
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187 = loc132;
+	v188.u0 = 0x01;
+	v187 &= v188;
+	loc133 = v187;
+	v187 = loc133;
+	if (v187)
 	{
-		v186 = ___cxa_find_matching_catch_n();
-		loc54 = v186;
-		v186.u3 = g_t140094.u3;
-		loc56 = v186;
-		v186 = loc54;
-		loc16 = v186;
-		v186 = loc56;
-		loc17 = v186;
-		v186 = loc121;
-		loc89 = v186;
+		v187 = ___cxa_find_matching_catch_n();
+		loc54 = v187;
+		v187.u3 = g_t140094.u3;
+		loc56 = v187;
+		v187 = loc54;
+		loc16 = v187;
+		v187 = loc56;
+		loc17 = v187;
+		v187 = loc121;
+		loc89 = v187;
 		goto l00113A44;
 	}
-	v186 = loc11;
-	v187.u0 = 0x00;
-	v188 = v186 == v187;
-	loc134 = v188;
-	v186 = loc134;
-	if (v186)
+	v187 = loc11;
+	v188.u0 = 0x00;
+	v189 = v187 == v188;
+	loc134 = v189;
+	v187 = loc134;
+	if (v187)
 	{
-		v186.u0 = 0x00;
-		loc145 = v186;
+		v187.u0 = 0x00;
+		loc145 = v187;
 	}
 	else
 	{
-		v186 = loc150;
-		v186 = *v186.u0;
-		loc135 = v186;
-		v186 = loc135;
-		v193 = *v186.u0;
-		v186.u3 = (word32) v193;
-		loc136 = v186;
-		v186 = loc136;
-		v187.u0 = 0x18;
-		v186 <<= v187;
-		v187.u0 = 0x18;
-		v186 >>= v187;
-		v187.u0 = 0x2D;
-		v188 = v186 == v187;
-		loc137 = v188;
-		v186 = loc137;
-		loc145 = v186;
+		v187 = loc150;
+		v187 = *v187.u0;
+		loc135 = v187;
+		v187 = loc135;
+		v194 = *v187.u0;
+		v187.u3 = (word32) v194;
+		loc136 = v187;
+		v187 = loc136;
+		v188.u0 = 0x18;
+		v187 <<= v188;
+		v188.u0 = 0x18;
+		v187 >>= v188;
+		v188.u0 = 0x2D;
+		v189 = v187 == v188;
+		loc137 = v189;
+		v187 = loc137;
+		loc145 = v187;
 	}
 	while (true)
 	{
-		v186 = loc66;
-		v194.u0 = 0x00;
-		v186.u4->t0000.u4 = (struct Eq_n *) v194;
-		v186 = loc66;
-		v187.u0 = 0x08;
-		v186 += v187;
+		v187 = loc66;
+		v195.u0 = 0x00;
+		v187.u4->t0000.u4 = (struct Eq_n *) v195;
+		v187 = loc66;
+		v188.u0 = 0x08;
+		v187 += v188;
+		v188.u0 = 0x00;
+		*v187.u3 = (word32) v188;
 		v187.u0 = 0x00;
-		*v186.u3 = (word32) v187;
-		v186.u0 = 0x00;
-		loc7 = v186;
-		v186 = loc7;
-		v187.u0 = 0x03;
-		v188 = v186 == v187;
-		loc183 = v188;
-		v186 = loc183;
-		if (v186)
-			break;
-		v186 = loc66;
+		loc7 = v187;
 		v187 = loc7;
-		v190.u0 = 0x02;
-		v187 <<= v190;
-		v186 += v187;
-		loc138 = v186;
-		v186 = loc138;
-		v187.u0 = 0x00;
-		*v186.u0 = v187;
-		v186 = loc7;
-		v187.u0 = 0x01;
-		v186 += v187;
-		loc140 = v186;
-		v186 = loc140;
-		loc7 = v186;
+		v188.u0 = 0x03;
+		v189 = v187 == v188;
+		loc183 = v189;
+		v187 = loc183;
+		if (v187)
+			break;
+		v187 = loc66;
+		v188 = loc7;
+		v191.u0 = 0x02;
+		v188 <<= v191;
+		v187 += v188;
+		loc138 = v187;
+		v187 = loc138;
+		v188.u0 = 0x00;
+		*v187.u0 = v188;
+		v187 = loc7;
+		v188.u0 = 0x01;
+		v187 += v188;
+		loc140 = v187;
+		v187 = loc140;
+		loc7 = v187;
 	}
 	while (true)
 	{
-		v186 = loc77;
-		v194.u0 = 0x00;
-		*v186.u0 = v194;
-		v186 = loc77;
-		v187.u0 = 0x08;
-		v186 += v187;
+		v187 = loc77;
+		v195.u0 = 0x00;
+		*v187.u0 = v195;
+		v187 = loc77;
+		v188.u0 = 0x08;
+		v187 += v188;
+		v188.u0 = 0x00;
+		*v187.u0 = v188;
 		v187.u0 = 0x00;
-		*v186.u0 = v187;
-		v186.u0 = 0x00;
-		loc8 = v186;
-		v186 = loc8;
-		v187.u0 = 0x03;
-		v188 = v186 == v187;
-		loc184 = v188;
-		v186 = loc184;
-		if (v186)
-			break;
-		v186 = loc77;
+		loc8 = v187;
 		v187 = loc8;
-		v190.u0 = 0x02;
-		v187 <<= v190;
-		v186 += v187;
-		loc141 = v186;
-		v186 = loc141;
-		v187.u0 = 0x00;
-		*v186.u0 = v187;
-		v186 = loc8;
-		v187.u0 = 0x01;
-		v186 += v187;
-		loc142 = v186;
-		v186 = loc142;
-		loc8 = v186;
+		v188.u0 = 0x03;
+		v189 = v187 == v188;
+		loc184 = v189;
+		v187 = loc184;
+		if (v187)
+			break;
+		v187 = loc77;
+		v188 = loc8;
+		v191.u0 = 0x02;
+		v188 <<= v191;
+		v187 += v188;
+		loc141 = v187;
+		v187 = loc141;
+		v188.u0 = 0x00;
+		*v187.u0 = v188;
+		v187 = loc8;
+		v188.u0 = 0x01;
+		v187 += v188;
+		loc142 = v187;
+		v187 = loc142;
+		loc8 = v187;
 	}
 	while (true)
 	{
-		v186 = loc88;
-		v194.u0 = 0x00;
-		*v186.u0 = v194;
-		v186 = loc88;
-		v187.u0 = 0x08;
-		v186 += v187;
+		v187 = loc88;
+		v195.u0 = 0x00;
+		*v187.u0 = v195;
+		v187 = loc88;
+		v188.u0 = 0x08;
+		v187 += v188;
+		v188.u0 = 0x00;
+		*v187.u0 = v188;
 		v187.u0 = 0x00;
-		*v186.u0 = v187;
-		v186.u0 = 0x00;
-		loc9 = v186;
-		v186 = loc9;
-		v187.u0 = 0x03;
-		v188 = v186 == v187;
-		loc185 = v188;
-		v186 = loc185;
-		if (v186)
-			break;
-		v186 = loc88;
+		loc9 = v187;
 		v187 = loc9;
-		v190.u0 = 0x02;
-		v187 <<= v190;
-		v186 += v187;
-		loc143 = v186;
-		v186 = loc143;
-		v187.u0 = 0x00;
-		*v186.u0 = v187;
-		v186 = loc9;
-		v187.u0 = 0x01;
-		v186 += v187;
-		loc144 = v186;
-		v186 = loc144;
-		loc9 = v186;
+		v188.u0 = 0x03;
+		v189 = v187 == v188;
+		loc185 = v189;
+		v187 = loc185;
+		if (v187)
+			break;
+		v187 = loc88;
+		v188 = loc9;
+		v191.u0 = 0x02;
+		v188 <<= v191;
+		v187 += v188;
+		loc143 = v187;
+		v187 = loc143;
+		v188.u0 = 0x00;
+		*v187.u0 = v188;
+		v187 = loc9;
+		v188.u0 = 0x01;
+		v187 += v188;
+		loc144 = v187;
+		v187 = loc144;
+		loc9 = v187;
 	}
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186.u0 = 0x01B6;
-	v187 = arg2;
-	v190 = loc145;
-	v191 = loc172;
-	v192 = loc33;
-	v195 = loc44;
-	v196 = loc55;
-	v197 = loc66;
-	v198 = loc77;
-	v199 = loc88;
-	v200 = loc95;
-	invoke_viiiiiiiiii(v186, v187, v190, v191, v192, v195, v196, v197, v198, v199, v200);
-	v186.u3 = g_t140048.u3;
-	loc146 = v186;
-	v186.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v186;
-	v186 = loc146;
-	v187.u0 = 0x01;
-	v186 &= v187;
-	loc147 = v186;
-	v186 = loc147;
-	if (v186)
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187.u0 = 0x01B6;
+	v188 = arg2;
+	v191 = loc145;
+	v192 = loc172;
+	v193 = loc33;
+	v196 = loc44;
+	v197 = loc55;
+	v198 = loc66;
+	v199 = loc77;
+	v200 = loc88;
+	v201 = loc95;
+	invoke_viiiiiiiiii(v187, v188, v191, v192, v193, v196, v197, v198, v199, v200, v201);
+	v187.u3 = g_t140048.u3;
+	loc146 = v187;
+	v187.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v187;
+	v187 = loc146;
+	v188.u0 = 0x01;
+	v187 &= v188;
+	loc147 = v187;
+	v187 = loc147;
+	if (v187)
 	{
-		v186 = ___cxa_find_matching_catch_n();
-		loc57 = v186;
-		v186.u3 = g_t140094.u3;
-		loc58 = v186;
-		v186 = loc57;
-		loc14 = v186;
-		v186 = loc58;
-		loc15 = v186;
+		v187 = ___cxa_find_matching_catch_n();
+		loc57 = v187;
+		v187.u3 = g_t140094.u3;
+		loc58 = v187;
+		v187 = loc57;
+		loc14 = v187;
+		v187 = loc58;
+		loc15 = v187;
 		goto l00113A1F;
 	}
-	v186 = loc95;
-	v186.u3 = *v186.u3;
-	loc148 = v186;
-	v186 = loc11;
-	v187 = loc148;
-	v188 = v186 > v187;
-	loc149 = v188;
-	v186 = loc149;
-	if (v186)
+	v187 = loc95;
+	v187.u3 = *v187.u3;
+	loc148 = v187;
+	v187 = loc11;
+	v188 = loc148;
+	v189 = v187 > v188;
+	loc149 = v189;
+	v187 = loc149;
+	if (v187)
 	{
-		v186 = loc11;
-		v187 = loc148;
-		v186 -= v187;
-		loc151 = v186;
-		v186 = loc151;
-		v187.u0 = 0x01;
-		v186 <<= v187;
-		loc152 = v186;
-		v186 = loc88;
-		v187.u0 = 0x08;
-		v186 += v187;
-		loc153 = v186;
-		v186 = loc153;
-		v187.u0 = 0x03;
-		v186 += v187;
-		loc154 = v186;
-		v186 = loc154;
-		v201.u1 = v186.u4->t0000.u1;
-		v186.u3 = (word32) v201;
-		loc155 = v186;
-		v186 = loc155;
-		v187.u0 = 0x18;
-		v186 <<= v187;
-		v187.u0 = 0x18;
-		v186 >>= v187;
-		v187.u0 = 0x00;
-		v188 = v186 < v187;
-		loc156 = v188;
-		v186 = loc88;
-		v187.u0 = 0x04;
-		v186 += v187;
-		loc157 = v186;
-		v186 = loc157;
-		v186.u3 = *v186.u3;
-		loc158 = v186;
-		v186 = loc155;
-		v187.u0 = 0xFF;
-		v186 &= v187;
-		loc159 = v186;
-		v186 = loc156;
-		if (v186)
-			v186 = loc158;
+		v187 = loc11;
+		v188 = loc148;
+		v187 -= v188;
+		loc151 = v187;
+		v187 = loc151;
+		v188.u0 = 0x01;
+		v187 <<= v188;
+		loc152 = v187;
+		v187 = loc88;
+		v188.u0 = 0x08;
+		v187 += v188;
+		loc153 = v187;
+		v187 = loc153;
+		v188.u0 = 0x03;
+		v187 += v188;
+		loc154 = v187;
+		v187 = loc154;
+		v202.u1 = v187.u4->t0000.u1;
+		v187.u3 = (word32) v202;
+		loc155 = v187;
+		v187 = loc155;
+		v188.u0 = 0x18;
+		v187 <<= v188;
+		v188.u0 = 0x18;
+		v187 >>= v188;
+		v188.u0 = 0x00;
+		v189 = v187 < v188;
+		loc156 = v189;
+		v187 = loc88;
+		v188.u0 = 0x04;
+		v187 += v188;
+		loc157 = v187;
+		v187 = loc157;
+		v187.u3 = *v187.u3;
+		loc158 = v187;
+		v187 = loc155;
+		v188.u0 = 0xFF;
+		v187 &= v188;
+		loc159 = v187;
+		v187 = loc156;
+		if (v187)
+			v187 = loc158;
 		else
-			v186 = loc159;
-		loc160 = v186;
-		v186 = loc77;
-		v187.u0 = 0x08;
-		v186 += v187;
-		loc162 = v186;
-		v186 = loc162;
-		v187.u0 = 0x03;
-		v186 += v187;
-		loc163 = v186;
-		v186 = loc163;
-		v202.u1 = v186.u4->t0000.u1;
-		v186.u3 = (word32) v202;
-		loc164 = v186;
-		v186 = loc164;
-		v187.u0 = 0x18;
-		v186 <<= v187;
-		v187.u0 = 0x18;
-		v186 >>= v187;
-		v187.u0 = 0x00;
-		v188 = v186 < v187;
-		loc165 = v188;
-		v186 = loc77;
-		v187.u0 = 0x04;
-		v186 += v187;
-		loc166 = v186;
-		v186 = loc166;
-		v186.u3 = *v186.u3;
-		loc167 = v186;
-		v186 = loc164;
-		v187.u0 = 0xFF;
-		v186 &= v187;
-		loc168 = v186;
-		v186 = loc165;
-		if (v186)
-			v186 = loc167;
+			v187 = loc159;
+		loc160 = v187;
+		v187 = loc77;
+		v188.u0 = 0x08;
+		v187 += v188;
+		loc162 = v187;
+		v187 = loc162;
+		v188.u0 = 0x03;
+		v187 += v188;
+		loc163 = v187;
+		v187 = loc163;
+		v203.u1 = v187.u4->t0000.u1;
+		v187.u3 = (word32) v203;
+		loc164 = v187;
+		v187 = loc164;
+		v188.u0 = 0x18;
+		v187 <<= v188;
+		v188.u0 = 0x18;
+		v187 >>= v188;
+		v188.u0 = 0x00;
+		v189 = v187 < v188;
+		loc165 = v189;
+		v187 = loc77;
+		v188.u0 = 0x04;
+		v187 += v188;
+		loc166 = v187;
+		v187 = loc166;
+		v187.u3 = *v187.u3;
+		loc167 = v187;
+		v187 = loc164;
+		v188.u0 = 0xFF;
+		v187 &= v188;
+		loc168 = v187;
+		v187 = loc165;
+		if (v187)
+			v187 = loc167;
 		else
-			v186 = loc168;
-		loc169 = v186;
-		v186 = loc152;
-		v187.u0 = 0x01;
-		v186 |= v187;
-		loc170 = v186;
-		v186 = loc160;
-		v187 = loc170;
-		v186 += v187;
-		loc171 = v186;
-		v186 = loc171;
-		v187 = loc169;
-		v186 += v187;
-		loc173 = v186;
-		v186 = loc173;
-		loc21 = v186;
+			v187 = loc168;
+		loc169 = v187;
+		v187 = loc152;
+		v188.u0 = 0x01;
+		v187 |= v188;
+		loc170 = v187;
+		v187 = loc160;
+		v188 = loc170;
+		v187 += v188;
+		loc171 = v187;
+		v187 = loc171;
+		v188 = loc169;
+		v187 += v188;
+		loc173 = v187;
+		v187 = loc173;
+		loc21 = v187;
 	}
 	else
 	{
-		v186 = loc88;
-		v187.u0 = 0x08;
-		v186 += v187;
-		loc174 = v186;
-		v186 = loc174;
-		v187.u0 = 0x03;
-		v186 += v187;
-		loc175 = v186;
-		v186 = loc175;
-		v203.u1 = v186.u4->t0000.u1;
-		v186.u3 = (word32) v203;
-		loc176 = v186;
-		v186 = loc176;
-		v187.u0 = 0x18;
-		v186 <<= v187;
-		v187.u0 = 0x18;
-		v186 >>= v187;
-		v187.u0 = 0x00;
-		v188 = v186 < v187;
-		loc177 = v188;
-		v186 = loc88;
-		v187.u0 = 0x04;
-		v186 += v187;
-		loc178 = v186;
-		v186 = loc178;
-		v186.u3 = *v186.u3;
-		loc179 = v186;
-		v186 = loc176;
-		v187.u0 = 0xFF;
-		v186 &= v187;
-		loc180 = v186;
-		v186 = loc177;
-		if (v186)
-			v186 = loc179;
+		v187 = loc88;
+		v188.u0 = 0x08;
+		v187 += v188;
+		loc174 = v187;
+		v187 = loc174;
+		v188.u0 = 0x03;
+		v187 += v188;
+		loc175 = v187;
+		v187 = loc175;
+		v204.u1 = v187.u4->t0000.u1;
+		v187.u3 = (word32) v204;
+		loc176 = v187;
+		v187 = loc176;
+		v188.u0 = 0x18;
+		v187 <<= v188;
+		v188.u0 = 0x18;
+		v187 >>= v188;
+		v188.u0 = 0x00;
+		v189 = v187 < v188;
+		loc177 = v189;
+		v187 = loc88;
+		v188.u0 = 0x04;
+		v187 += v188;
+		loc178 = v187;
+		v187 = loc178;
+		v187.u3 = *v187.u3;
+		loc179 = v187;
+		v187 = loc176;
+		v188.u0 = 0xFF;
+		v187 &= v188;
+		loc180 = v187;
+		v187 = loc177;
+		if (v187)
+			v187 = loc179;
 		else
-			v186 = loc180;
-		loc181 = v186;
-		v186 = loc77;
-		v187.u0 = 0x08;
-		v186 += v187;
-		loc182 = v186;
-		v186 = loc182;
-		v187.u0 = 0x03;
-		v186 += v187;
-		loc34 = v186;
-		v186 = loc34;
-		v204.u1 = v186.u4->t0000.u1;
-		v186.u3 = (word32) v204;
-		loc35 = v186;
-		v186 = loc35;
-		v187.u0 = 0x18;
-		v186 <<= v187;
-		v187.u0 = 0x18;
-		v186 >>= v187;
-		v187.u0 = 0x00;
-		v188 = v186 < v187;
-		loc36 = v188;
-		v186 = loc77;
-		v187.u0 = 0x04;
-		v186 += v187;
-		loc37 = v186;
-		v186 = loc37;
-		v186.u3 = *v186.u3;
-		loc38 = v186;
-		v186 = loc35;
-		v187.u0 = 0xFF;
-		v186 &= v187;
-		loc39 = v186;
-		v186 = loc36;
-		if (v186)
-			v186 = loc38;
+			v187 = loc180;
+		loc181 = v187;
+		v187 = loc77;
+		v188.u0 = 0x08;
+		v187 += v188;
+		loc182 = v187;
+		v187 = loc182;
+		v188.u0 = 0x03;
+		v187 += v188;
+		loc34 = v187;
+		v187 = loc34;
+		v205.u1 = v187.u4->t0000.u1;
+		v187.u3 = (word32) v205;
+		loc35 = v187;
+		v187 = loc35;
+		v188.u0 = 0x18;
+		v187 <<= v188;
+		v188.u0 = 0x18;
+		v187 >>= v188;
+		v188.u0 = 0x00;
+		v189 = v187 < v188;
+		loc36 = v189;
+		v187 = loc77;
+		v188.u0 = 0x04;
+		v187 += v188;
+		loc37 = v187;
+		v187 = loc37;
+		v187.u3 = *v187.u3;
+		loc38 = v187;
+		v187 = loc35;
+		v188.u0 = 0xFF;
+		v187 &= v188;
+		loc39 = v187;
+		v187 = loc36;
+		if (v187)
+			v187 = loc38;
 		else
-			v186 = loc39;
-		loc40 = v186;
-		v186 = loc181;
-		v187.u0 = 0x02;
-		v186 += v187;
-		loc41 = v186;
-		v186 = loc41;
-		v187 = loc40;
-		v186 += v187;
-		loc42 = v186;
-		v186 = loc42;
-		loc21 = v186;
+			v187 = loc39;
+		loc40 = v187;
+		v187 = loc181;
+		v188.u0 = 0x02;
+		v187 += v188;
+		loc41 = v187;
+		v187 = loc41;
+		v188 = loc40;
+		v187 += v188;
+		loc42 = v187;
+		v187 = loc42;
+		loc21 = v187;
 	}
-	v186 = loc21;
-	v187 = loc148;
-	v186 += v187;
-	loc43 = v186;
-	v186 = loc43;
-	v187.u0 = 100;
-	v188 = v186 > v187;
-	loc45 = v188;
-	v186 = loc45;
-	if (v186)
+	v187 = loc21;
+	v188 = loc148;
+	v187 += v188;
+	loc43 = v187;
+	v187 = loc43;
+	v188.u0 = 100;
+	v189 = v187 > v188;
+	loc45 = v189;
+	v187 = loc45;
+	if (v187)
 	{
-		v186 = loc43;
-		v187.u0 = 0x02;
-		v186 <<= v187;
-		loc46 = v186;
-		v186 = loc46;
-		v186 = _malloc(v186);
-		loc47 = v186;
-		v186 = loc47;
-		loc48 = v186;
-		v186 = loc47;
-		v187.u0 = 0x00;
-		v188 = v186 == v187;
-		loc49 = v188;
-		v186 = loc49;
-		if (v186)
+		v187 = loc43;
+		v188.u0 = 0x02;
+		v187 <<= v188;
+		loc46 = v187;
+		v187 = loc46;
+		v187 = _malloc(v187);
+		loc47 = v187;
+		v187 = loc47;
+		loc48 = v187;
+		v187 = loc47;
+		v188.u0 = 0x00;
+		v189 = v187 == v188;
+		loc49 = v189;
+		v187 = loc49;
+		if (v187)
 		{
-			v186.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v186;
-			v186.u0 = 0x018A;
-			invoke_v(v186);
-			v186.u3 = g_t140048.u3;
-			loc50 = v186;
-			v186.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v186;
-			v186 = loc50;
-			v187.u0 = 0x01;
-			v186 &= v187;
-			loc51 = v186;
-			v186 = loc51;
-			if (v186)
+			v187.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v187;
+			v187.u0 = 0x018A;
+			invoke_v(v187);
+			v187.u3 = g_t140048.u3;
+			loc50 = v187;
+			v187.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v187;
+			v187 = loc50;
+			v188.u0 = 0x01;
+			v187 &= v188;
+			loc51 = v187;
+			v187 = loc51;
+			if (v187)
 			{
-				v186 = ___cxa_find_matching_catch_n();
-				loc59 = v186;
-				v186.u3 = g_t140094.u3;
-				loc60 = v186;
-				v186 = loc59;
-				loc12 = v186;
-				v186 = loc60;
-				loc13 = v186;
-				v186 = loc48;
-				loc26 = v186;
+				v187 = ___cxa_find_matching_catch_n();
+				loc59 = v187;
+				v187.u3 = g_t140094.u3;
+				loc60 = v187;
+				v187 = loc59;
+				loc12 = v187;
+				v187 = loc60;
+				loc13 = v187;
+				v187 = loc48;
+				loc26 = v187;
 			}
 			else
 			{
-				v186 = loc95;
-				v186.u3 = *v186.u3;
-				loc23 = v186;
-				v186.u0 = 0x00;
-				loc10 = v186;
-				v186 = loc48;
-				loc25 = v186;
-				v186 = loc23;
-				loc67 = v186;
-				v186.u0 = 0x25;
-				loc188 = v186;
+				v187 = loc95;
+				v187.u3 = *v187.u3;
+				loc23 = v187;
+				v187.u0 = 0x00;
+				loc10 = v187;
+				v187 = loc48;
+				loc25 = v187;
+				v187 = loc23;
+				loc67 = v187;
+				v187.u0 = 0x25;
+				loc188 = v187;
 			}
 l001138C7:
-			v186 = loc188;
-			v187.u0 = 0x25;
-			v188 = v186 == v187;
-			if (v188)
+			v187 = loc188;
+			v188.u0 = 0x25;
+			v189 = v187 == v188;
+			if (v189)
 			{
-				v186 = arg3;
-				v187.u0 = 0x04;
-				v186 += v187;
-				loc61 = v186;
-				v186 = loc61;
-				v186 = *v186.u0;
-				loc62 = v186;
-				v186 = loc6;
-				v187 = loc11;
-				v190.u0 = 0x02;
-				v187 <<= v190;
-				v186 += v187;
-				loc63 = v186;
-				v186 = loc44;
-				v186 = *v186.u0;
-				loc64 = v186;
-				v186 = loc55;
-				v186 = *v186.u0;
-				loc65 = v186;
-				v186.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v186;
-				v186.u0 = 0x01B7;
-				v187 = loc10;
-				v190 = loc97;
-				v191 = loc98;
-				v192 = loc62;
-				v195 = loc6;
-				v196 = loc63;
-				v197 = loc124;
-				v198 = loc145;
-				v199 = loc33;
-				v200 = loc64;
-				v205 = loc65;
-				v206 = loc66;
-				v207 = loc77;
-				v208 = loc88;
-				v209 = loc67;
-				invoke_viiiiiiiiiiiiiii(v186, v187, v190, v191, v192, v195, v196, v197, v198, v199, v200, v205, v206, v207, v208, v209);
-				v186.u3 = g_t140048.u3;
-				loc68 = v186;
-				v186.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v186;
-				v186 = loc68;
-				v187.u0 = 0x01;
-				v186 &= v187;
-				loc69 = v186;
-				v186 = loc69;
-				v188 = v186 == 0x00;
-				if (v188)
+				v187 = arg3;
+				v188.u0 = 0x04;
+				v187 += v188;
+				loc61 = v187;
+				v187 = loc61;
+				v187 = *v187.u0;
+				loc62 = v187;
+				v187 = loc6;
+				v188 = loc11;
+				v191.u0 = 0x02;
+				v188 <<= v191;
+				v187 += v188;
+				loc63 = v187;
+				v187 = loc44;
+				v187 = *v187.u0;
+				loc64 = v187;
+				v187 = loc55;
+				v187 = *v187.u0;
+				loc65 = v187;
+				v187.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v187;
+				v187.u0 = 0x01B7;
+				v188 = loc10;
+				v191 = loc97;
+				v192 = loc98;
+				v193 = loc62;
+				v196 = loc6;
+				v197 = loc63;
+				v198 = loc124;
+				v199 = loc145;
+				v200 = loc33;
+				v201 = loc64;
+				v206 = loc65;
+				v207 = loc66;
+				v208 = loc77;
+				v209 = loc88;
+				v210 = loc67;
+				invoke_viiiiiiiiiiiiiii(v187, v188, v191, v192, v193, v196, v197, v198, v199, v200, v201, v206, v207, v208, v209, v210);
+				v187.u3 = g_t140048.u3;
+				loc68 = v187;
+				v187.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v187;
+				v187 = loc68;
+				v188.u0 = 0x01;
+				v187 &= v188;
+				loc69 = v187;
+				v187 = loc69;
+				v189 = v187 == 0x00;
+				if (v189)
 				{
-					v186 = arg1;
-					v186 = *v186.u0;
-					loc70 = v186;
-					v186 = loc99;
-					v187 = loc70;
-					*v186.u0 = v187;
-					v186 = loc97;
-					v186 = *v186.u0;
-					loc71 = v186;
-					v186 = loc98;
-					v186 = *v186.u0;
-					loc72 = v186;
-					v186.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v186;
-					v186 = loc20;
-					v187 = loc99;
+					v187 = arg1;
 					v187 = *v187.u0;
-					*v186.u0 = v187;
-					v186.u0 = 404;
+					loc70 = v187;
+					v187 = loc99;
+					v188 = loc70;
+					*v187.u0 = v188;
+					v187 = loc97;
+					v187 = *v187.u0;
+					loc71 = v187;
+					v187 = loc98;
+					v187 = *v187.u0;
+					loc72 = v187;
+					v187.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v187;
 					v187 = loc20;
-					v190 = loc10;
-					v191 = loc71;
-					v192 = loc72;
-					v195 = arg3;
-					v196 = arg4;
-					v186 = invoke_iiiiiii(v186, v187, v190, v191, v192, v195, v196);
-					loc73 = v186;
-					v186.u3 = g_t140048.u3;
-					loc74 = v186;
-					v186.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v186;
-					v186 = loc74;
-					v187.u0 = 0x01;
-					v186 &= v187;
-					loc75 = v186;
-					v186 = loc75;
-					v188 = v186 == 0x00;
-					if (v188)
+					v188 = loc99;
+					v188 = *v188.u0;
+					*v187.u0 = v188;
+					v187.u0 = 404;
+					v188 = loc20;
+					v191 = loc10;
+					v192 = loc71;
+					v193 = loc72;
+					v196 = arg3;
+					v197 = arg4;
+					v187 = invoke_iiiiiii(v187, v188, v191, v192, v193, v196, v197);
+					loc73 = v187;
+					v187.u3 = g_t140048.u3;
+					loc74 = v187;
+					v187.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v187;
+					v187 = loc74;
+					v188.u0 = 0x01;
+					v187 &= v188;
+					loc75 = v187;
+					v187 = loc75;
+					v189 = v187 == 0x00;
+					if (v189)
 					{
-						v186 = loc25;
-						v187.u0 = 0x00;
-						v188 = v186 == v187;
-						loc76 = v188;
-						v186 = loc76;
-						v188 = v186 == 0x00;
-						if (v188)
+						v187 = loc25;
+						v188.u0 = 0x00;
+						v189 = v187 == v188;
+						loc76 = v189;
+						v187 = loc76;
+						v189 = v187 == 0x00;
+						if (v189)
 						{
-							v186 = loc25;
-							loc78 = v186;
-							v186 = loc78;
-							_free(v186);
+							v187 = loc25;
+							loc78 = v187;
+							v187 = loc78;
+							_free(v187);
 						}
-						v186 = loc88;
-						fn0011C7BA(v186);
-						v186 = loc77;
-						fn0011C7BA(v186);
-						v186 = loc66;
-						fn0011BAF7(v186);
-						v186 = loc172;
-						v186 = *v186.u0;
-						loc79 = v186;
-						v186 = loc79;
-						v186 = fn0011B43F(v186);
-						v186 = loc28;
-						v187.u0 = 0x00;
-						v188 = v186 == v187;
-						loc80 = v188;
-						v186 = loc80;
-						v188 = v186 == 0x00;
-						if (v188)
+						v187 = loc88;
+						fn0011C7BA(v187);
+						v187 = loc77;
+						fn0011C7BA(v187);
+						v187 = loc66;
+						fn0011BAF7(v187);
+						v187 = loc172;
+						v187 = *v187.u0;
+						loc79 = v187;
+						v187 = loc79;
+						v187 = fn0011B43F(v187);
+						v187 = loc28;
+						v188.u0 = 0x00;
+						v189 = v187 == v188;
+						loc80 = v189;
+						v187 = loc80;
+						v189 = v187 == 0x00;
+						if (v189)
 						{
-							v186 = loc28;
-							loc81 = v186;
-							v186 = loc81;
-							_free(v186);
+							v187 = loc28;
+							loc81 = v187;
+							v187 = loc81;
+							_free(v187);
 						}
-						v186 = loc31;
-						v187.u0 = 0x00;
-						v188 = v186 == v187;
-						loc82 = v188;
-						v186 = loc82;
-						v188 = v186 == 0x00;
-						if (v188)
+						v187 = loc31;
+						v188.u0 = 0x00;
+						v189 = v187 == v188;
+						loc82 = v189;
+						v187 = loc82;
+						v189 = v187 == 0x00;
+						if (v189)
 						{
-							v186 = loc31;
-							loc83 = v186;
-							v186 = loc83;
-							_free(v186);
+							v187 = loc31;
+							loc83 = v187;
+							v187 = loc83;
+							_free(v187);
 						}
-						v186 = loc189;
-						g_t140030.u3 = (word32 *) v186;
-						v186 = loc73;
-						return v186;
+						v187 = loc189;
+						g_t140030.u3 = (word32 *) v187;
+						v187 = loc73;
+						return v187;
 					}
 				}
-				v186 = ___cxa_find_matching_catch_n();
-				loc84 = v186;
-				v186.u3 = g_t140094.u3;
-				loc85 = v186;
-				v186 = loc84;
-				loc12 = v186;
-				v186 = loc85;
-				loc13 = v186;
-				v186 = loc25;
-				loc26 = v186;
+				v187 = ___cxa_find_matching_catch_n();
+				loc84 = v187;
+				v187.u3 = g_t140094.u3;
+				loc85 = v187;
+				v187 = loc84;
+				loc12 = v187;
+				v187 = loc85;
+				loc13 = v187;
+				v187 = loc25;
+				loc26 = v187;
 			}
-			v186 = loc26;
-			v187.u0 = 0x00;
-			v188 = v186 == v187;
-			loc86 = v188;
-			v186 = loc86;
-			v188 = v186 == 0x00;
-			if (v188)
+			v187 = loc26;
+			v188.u0 = 0x00;
+			v189 = v187 == v188;
+			loc86 = v189;
+			v187 = loc86;
+			v189 = v187 == 0x00;
+			if (v189)
 			{
-				v186 = loc26;
-				loc87 = v186;
-				v186 = loc87;
-				_free(v186);
+				v187 = loc26;
+				loc87 = v187;
+				v187 = loc87;
+				_free(v187);
 			}
-			v186 = loc12;
-			loc14 = v186;
-			v186 = loc13;
-			loc15 = v186;
+			v187 = loc12;
+			loc14 = v187;
+			v187 = loc13;
+			loc15 = v187;
 l00113A1F:
-			v186 = loc88;
-			fn0011C7BA(v186);
-			v186 = loc77;
-			fn0011C7BA(v186);
-			v186 = loc66;
-			fn0011BAF7(v186);
-			v186 = loc172;
-			v186.u3 = *v186.u3;
-			loc24 = v186;
-			v186 = loc14;
-			loc16 = v186;
-			v186 = loc15;
-			loc17 = v186;
-			v186 = loc24;
-			loc89 = v186;
+			v187 = loc88;
+			fn0011C7BA(v187);
+			v187 = loc77;
+			fn0011C7BA(v187);
+			v187 = loc66;
+			fn0011BAF7(v187);
+			v187 = loc172;
+			v187.u3 = *v187.u3;
+			loc24 = v187;
+			v187 = loc14;
+			loc16 = v187;
+			v187 = loc15;
+			loc17 = v187;
+			v187 = loc24;
+			loc89 = v187;
 l00113A44:
-			v186 = loc89;
-			v186 = fn0011B43F(v186);
-			v186 = loc16;
-			loc18 = v186;
-			v186 = loc17;
-			loc19 = v186;
-			v186 = loc28;
-			loc29 = v186;
-			v186 = loc31;
-			loc32 = v186;
+			v187 = loc89;
+			v187 = fn0011B43F(v187);
+			v187 = loc16;
+			loc18 = v187;
+			v187 = loc17;
+			loc19 = v187;
+			v187 = loc28;
+			loc29 = v187;
+			v187 = loc31;
+			loc32 = v187;
 l00113A5B:
 			goto l00113A5D;
 		}
-		v186 = loc47;
-		loc10 = v186;
-		v186 = loc48;
-		loc25 = v186;
-		v186 = loc148;
-		loc67 = v186;
-		v186.u0 = 0x25;
-		loc188 = v186;
+		v187 = loc47;
+		loc10 = v187;
+		v187 = loc48;
+		loc25 = v187;
+		v187 = loc148;
+		loc67 = v187;
+		v187.u0 = 0x25;
+		loc188 = v187;
 	}
 	else
 	{
-		v186 = loc96;
-		loc10 = v186;
-		v186.u0 = 0x00;
-		loc25 = v186;
-		v186 = loc148;
-		loc67 = v186;
-		v186.u0 = 0x25;
-		loc188 = v186;
+		v187 = loc96;
+		loc10 = v187;
+		v187.u0 = 0x00;
+		loc25 = v187;
+		v187 = loc148;
+		loc67 = v187;
+		v187.u0 = 0x25;
+		loc188 = v187;
 	}
 	goto l001138C7;
 }
@@ -3806,876 +3806,876 @@ l00113A5B:
 // 00113AB3: Stack Eq_n fn00113AB3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn00113AB3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v159.u3 = g_t140030.u3;
-	loc162 = v159;
-	v159.u3 = g_t140030.u3;
-	v160.u0 = 0x01E0;
-	v159 += v160;
-	g_t140030.u3 = (word32 *) v159;
-	v159.u3 = g_t140030.u3;
-	v160.u3 = g_t140034.u3;
-	v161 = v159 >= v160;
-	if (v161)
+	v160.u3 = g_t140030.u3;
+	loc162 = v160;
+	v160.u3 = g_t140030.u3;
+	v161.u0 = 0x01E0;
+	v160 += v161;
+	g_t140030.u3 = (word32 *) v160;
+	v160.u3 = g_t140030.u3;
+	v161.u3 = g_t140034.u3;
+	v162 = v160 >= v161;
+	if (v162)
 	{
-		v159.u0 = 0x01E0;
-		abortStackOverflow(v159);
+		v160.u0 = 0x01E0;
+		abortStackOverflow(v160);
 	}
-	v159 = loc162;
-	v160.u0 = 0x01D4;
-	v159 += v160;
-	loc16 = v159;
-	v159 = loc162;
-	v160.u0 = 464;
-	v159 += v160;
-	loc114 = v159;
-	v159 = loc162;
-	v160.u0 = 0x01D8;
-	v159 += v160;
-	loc125 = v159;
-	v159 = loc162;
-	v160.u0 = 0x01CC;
-	v159 += v160;
-	loc136 = v159;
-	v159 = loc162;
-	v160.u0 = 0x01C8;
-	v159 += v160;
-	loc147 = v159;
-	v159 = loc162;
-	v160.u0 = 444;
-	v159 += v160;
-	loc23 = v159;
-	v159 = loc162;
-	v160.u0 = 0x01B0;
-	v159 += v160;
-	loc34 = v159;
-	v159 = loc162;
-	v160.u0 = 0x01A4;
-	v159 += v160;
-	loc45 = v159;
-	v159 = loc162;
-	v160.u0 = 0x01A0;
-	v159 += v160;
-	loc56 = v159;
-	v159 = loc162;
-	v160.u0 = 0x10;
-	v159 += v160;
-	loc67 = v159;
-	v159 = loc162;
-	v160.u0 = 0x08;
-	v159 += v160;
-	loc69 = v159;
-	v159 = loc162;
-	v160.u0 = 0x04;
-	v159 += v160;
-	loc70 = v159;
-	v159 = loc162;
-	loc71 = v159;
-	v159 = arg3;
-	v159 = fn000E64CA(v159);
-	loc72 = v159;
-	v159 = loc114;
-	v160 = loc72;
-	*v159.u0 = v160;
-	v159.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v159;
-	v159.u0 = 0x0164;
+	v160 = loc162;
+	v161.u0 = 0x01D4;
+	v160 += v161;
+	loc16 = v160;
+	v160 = loc162;
+	v161.u0 = 464;
+	v160 += v161;
+	loc114 = v160;
+	v160 = loc162;
+	v161.u0 = 0x01D8;
+	v160 += v161;
+	loc125 = v160;
+	v160 = loc162;
+	v161.u0 = 0x01CC;
+	v160 += v161;
+	loc136 = v160;
+	v160 = loc162;
+	v161.u0 = 0x01C8;
+	v160 += v161;
+	loc147 = v160;
+	v160 = loc162;
+	v161.u0 = 444;
+	v160 += v161;
+	loc23 = v160;
+	v160 = loc162;
+	v161.u0 = 0x01B0;
+	v160 += v161;
+	loc34 = v160;
+	v160 = loc162;
+	v161.u0 = 0x01A4;
+	v160 += v161;
+	loc45 = v160;
+	v160 = loc162;
+	v161.u0 = 0x01A0;
+	v160 += v161;
+	loc56 = v160;
+	v160 = loc162;
+	v161.u0 = 0x10;
+	v160 += v161;
+	loc67 = v160;
+	v160 = loc162;
+	v161.u0 = 0x08;
+	v160 += v161;
+	loc69 = v160;
+	v160 = loc162;
+	v161.u0 = 0x04;
+	v160 += v161;
+	loc70 = v160;
+	v160 = loc162;
+	loc71 = v160;
+	v160 = arg3;
+	v160 = fn000E64CA(v160);
+	loc72 = v160;
 	v160 = loc114;
-	v162.u0 = 0x4C90;
-	v159 = invoke_iii(v159, v160, v162);
-	loc73 = v159;
-	v159.u3 = g_t140048.u3;
-	loc74 = v159;
-	v159.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v159;
-	v159 = loc74;
-	v160.u0 = 0x01;
-	v159 &= v160;
-	loc75 = v159;
-	v159 = loc75;
-	if (v159)
+	v161 = loc72;
+	*v160.u0 = v161;
+	v160.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v160;
+	v160.u0 = 0x0164;
+	v161 = loc114;
+	v163.u0 = 0x4C90;
+	v160 = invoke_iii(v160, v161, v163);
+	loc73 = v160;
+	v160.u3 = g_t140048.u3;
+	loc74 = v160;
+	v160.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v160;
+	v160 = loc74;
+	v161.u0 = 0x01;
+	v160 &= v161;
+	loc75 = v160;
+	v160 = loc75;
+	if (v160)
 	{
-		v159 = ___cxa_find_matching_catch_n();
-		loc28 = v159;
-		v159.u3 = g_t140094.u3;
-		loc29 = v159;
-		v159 = loc28;
-		loc14 = v159;
-		v159 = loc29;
-		loc15 = v159;
+		v160 = ___cxa_find_matching_catch_n();
+		loc28 = v160;
+		v160.u3 = g_t140094.u3;
+		loc29 = v160;
+		v160 = loc28;
+		loc14 = v160;
+		v160 = loc29;
+		loc15 = v160;
 		goto l00114178;
 	}
-	v159 = arg5;
-	v160.u0 = 0x08;
-	v159 += v160;
-	loc76 = v159;
-	v159 = loc76;
-	v160.u0 = 0x03;
-	v159 += v160;
-	loc77 = v159;
-	v159 = loc77;
-	v163.u3 = *v159.u3;
-	v159.u3 = (word32) v163;
-	loc78 = v159;
-	v159 = loc78;
-	v160.u0 = 0x18;
-	v159 <<= v160;
-	v160.u0 = 0x18;
-	v159 >>= v160;
-	v160.u0 = 0x00;
-	v161 = v159 < v160;
-	loc79 = v161;
-	v159 = arg5;
-	v160.u0 = 0x04;
-	v159 += v160;
-	loc80 = v159;
-	v159 = loc80;
-	v159.u3 = *v159.u3;
-	loc81 = v159;
-	v159 = loc78;
-	v160.u0 = 0xFF;
-	v159 &= v160;
-	loc82 = v159;
-	v159 = loc79;
-	if (v159)
-		v159 = loc81;
+	v160 = arg5;
+	v161.u0 = 0x08;
+	v160 += v161;
+	loc76 = v160;
+	v160 = loc76;
+	v161.u0 = 0x03;
+	v160 += v161;
+	loc77 = v160;
+	v160 = loc77;
+	v164.u3 = *v160.u3;
+	v160.u3 = (word32) v164;
+	loc78 = v160;
+	v160 = loc78;
+	v161.u0 = 0x18;
+	v160 <<= v161;
+	v161.u0 = 0x18;
+	v160 >>= v161;
+	v161.u0 = 0x00;
+	v162 = v160 < v161;
+	loc79 = v162;
+	v160 = arg5;
+	v161.u0 = 0x04;
+	v160 += v161;
+	loc80 = v160;
+	v160 = loc80;
+	v160.u3 = *v160.u3;
+	loc81 = v160;
+	v160 = loc78;
+	v161.u0 = 0xFF;
+	v160 &= v161;
+	loc82 = v160;
+	v160 = loc79;
+	if (v160)
+		v160 = loc81;
 	else
-		v159 = loc82;
-	loc83 = v159;
-	v159 = loc83;
-	v160.u0 = 0x00;
-	v161 = v159 == v160;
-	loc84 = v161;
-	v159 = loc84;
-	if (v159)
+		v160 = loc82;
+	loc83 = v160;
+	v160 = loc83;
+	v161.u0 = 0x00;
+	v162 = v160 == v161;
+	loc84 = v162;
+	v160 = loc84;
+	if (v160)
 	{
-		v159.u0 = 0x00;
-		loc101 = v159;
+		v160.u0 = 0x00;
+		loc101 = v160;
 	}
 	else
 	{
-		v159 = arg5;
-		v159 = *v159.u0;
-		loc85 = v159;
-		v159 = loc79;
-		if (v159)
-			v159 = loc85;
+		v160 = arg5;
+		v160 = *v160.u0;
+		loc85 = v160;
+		v160 = loc79;
+		if (v160)
+			v160 = loc85;
 		else
-			v159 = arg5;
-		loc86 = v159;
-		v159 = loc86;
-		v159 = *v159.u0;
-		loc87 = v159;
-		v159 = loc73;
-		v159 = *v159.u0;
-		loc88 = v159;
-		v159 = loc88;
-		v160.u0 = 44;
-		v159 += v160;
-		loc89 = v159;
-		v159 = loc89;
-		v159 = *v159.u0;
-		loc90 = v159;
-		v159.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v159;
-		v159 = loc90;
+			v160 = arg5;
+		loc86 = v160;
+		v160 = loc86;
+		v160 = *v160.u0;
+		loc87 = v160;
 		v160 = loc73;
-		v162.u0 = 0x2D;
-		v159 = invoke_iii(v159, v160, v162);
-		loc91 = v159;
-		v159.u3 = g_t140048.u3;
-		loc92 = v159;
-		v159.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v159;
-		v159 = loc92;
-		v160.u0 = 0x01;
-		v159 &= v160;
-		loc93 = v159;
-		v159 = loc93;
-		if (v159)
+		v160 = *v160.u0;
+		loc88 = v160;
+		v160 = loc88;
+		v161.u0 = 44;
+		v160 += v161;
+		loc89 = v160;
+		v160 = loc89;
+		v160 = *v160.u0;
+		loc90 = v160;
+		v160.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v160;
+		v160 = loc90;
+		v161 = loc73;
+		v163.u0 = 0x2D;
+		v160 = invoke_iii(v160, v161, v163);
+		loc91 = v160;
+		v160.u3 = g_t140048.u3;
+		loc92 = v160;
+		v160.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v160;
+		v160 = loc92;
+		v161.u0 = 0x01;
+		v160 &= v161;
+		loc93 = v160;
+		v160 = loc93;
+		if (v160)
 		{
-			v159 = ___cxa_find_matching_catch_n();
-			loc30 = v159;
-			v159.u3 = g_t140094.u3;
-			loc31 = v159;
-			v159 = loc30;
-			loc14 = v159;
-			v159 = loc31;
-			loc15 = v159;
+			v160 = ___cxa_find_matching_catch_n();
+			loc30 = v160;
+			v160.u3 = g_t140094.u3;
+			loc31 = v160;
+			v160 = loc30;
+			loc14 = v160;
+			v160 = loc31;
+			loc15 = v160;
 			goto l00114179;
 		}
-		v159 = loc87;
-		v160 = loc91;
-		v161 = v159 == v160;
-		loc94 = v161;
-		v159 = loc94;
-		loc101 = v159;
+		v160 = loc87;
+		v161 = loc91;
+		v162 = v160 == v161;
+		loc94 = v162;
+		v160 = loc94;
+		loc101 = v160;
 	}
 	while (true)
 	{
-		v159 = loc23;
-		v164.u0 = 0x00;
-		*v159.u3 = (word32) v164;
-		v159 = loc23;
-		v160.u0 = 0x08;
-		v159 += v160;
+		v160 = loc23;
+		v165.u0 = 0x00;
+		*v160.u3 = (word32) v165;
+		v160 = loc23;
+		v161.u0 = 0x08;
+		v160 += v161;
+		v161.u0 = 0x00;
+		*v160.u3 = (word32) v161;
 		v160.u0 = 0x00;
-		*v159.u3 = (word32) v160;
-		v159.u0 = 0x00;
-		loc7 = v159;
-		v159 = loc7;
-		v160.u0 = 0x03;
-		v161 = v159 == v160;
-		loc158 = v161;
-		v159 = loc158;
-		if (v159)
-			break;
-		v159 = loc23;
+		loc7 = v160;
 		v160 = loc7;
-		v162.u0 = 0x02;
-		v160 <<= v162;
-		v159 += v160;
-		loc95 = v159;
-		v159 = loc95;
-		v160.u0 = 0x00;
-		*v159.u0 = v160;
-		v159 = loc7;
-		v160.u0 = 0x01;
-		v159 += v160;
-		loc96 = v159;
-		v159 = loc96;
-		loc7 = v159;
+		v161.u0 = 0x03;
+		v162 = v160 == v161;
+		loc158 = v162;
+		v160 = loc158;
+		if (v160)
+			break;
+		v160 = loc23;
+		v161 = loc7;
+		v163.u0 = 0x02;
+		v161 <<= v163;
+		v160 += v161;
+		loc95 = v160;
+		v160 = loc95;
+		v161.u0 = 0x00;
+		*v160.u0 = v161;
+		v160 = loc7;
+		v161.u0 = 0x01;
+		v160 += v161;
+		loc96 = v160;
+		v160 = loc96;
+		loc7 = v160;
 	}
 	while (true)
 	{
-		v159 = loc34;
-		v164.u0 = 0x00;
-		*v159.u0 = v164;
-		v159 = loc34;
-		v160.u0 = 0x08;
-		v159 += v160;
+		v160 = loc34;
+		v165.u0 = 0x00;
+		*v160.u0 = v165;
+		v160 = loc34;
+		v161.u0 = 0x08;
+		v160 += v161;
+		v161.u0 = 0x00;
+		*v160.u0 = v161;
 		v160.u0 = 0x00;
-		*v159.u0 = v160;
-		v159.u0 = 0x00;
-		loc8 = v159;
-		v159 = loc8;
-		v160.u0 = 0x03;
-		v161 = v159 == v160;
-		loc159 = v161;
-		v159 = loc159;
-		if (v159)
-			break;
-		v159 = loc34;
+		loc8 = v160;
 		v160 = loc8;
-		v162.u0 = 0x02;
-		v160 <<= v162;
-		v159 += v160;
-		loc97 = v159;
-		v159 = loc97;
-		v160.u0 = 0x00;
-		*v159.u0 = v160;
-		v159 = loc8;
-		v160.u0 = 0x01;
-		v159 += v160;
-		loc98 = v159;
-		v159 = loc98;
-		loc8 = v159;
+		v161.u0 = 0x03;
+		v162 = v160 == v161;
+		loc159 = v162;
+		v160 = loc159;
+		if (v160)
+			break;
+		v160 = loc34;
+		v161 = loc8;
+		v163.u0 = 0x02;
+		v161 <<= v163;
+		v160 += v161;
+		loc97 = v160;
+		v160 = loc97;
+		v161.u0 = 0x00;
+		*v160.u0 = v161;
+		v160 = loc8;
+		v161.u0 = 0x01;
+		v160 += v161;
+		loc98 = v160;
+		v160 = loc98;
+		loc8 = v160;
 	}
 	while (true)
 	{
-		v159 = loc45;
-		v164.u0 = 0x00;
-		*v159.u0 = v164;
-		v159 = loc45;
-		v160.u0 = 0x08;
-		v159 += v160;
+		v160 = loc45;
+		v165.u0 = 0x00;
+		*v160.u0 = v165;
+		v160 = loc45;
+		v161.u0 = 0x08;
+		v160 += v161;
+		v161.u0 = 0x00;
+		*v160.u0 = v161;
 		v160.u0 = 0x00;
-		*v159.u0 = v160;
-		v159.u0 = 0x00;
-		loc9 = v159;
-		v159 = loc9;
-		v160.u0 = 0x03;
-		v161 = v159 == v160;
-		loc160 = v161;
-		v159 = loc160;
-		if (v159)
-			break;
-		v159 = loc45;
+		loc9 = v160;
 		v160 = loc9;
-		v162.u0 = 0x02;
-		v160 <<= v162;
-		v159 += v160;
-		loc99 = v159;
-		v159 = loc99;
-		v160.u0 = 0x00;
-		*v159.u0 = v160;
-		v159 = loc9;
-		v160.u0 = 0x01;
-		v159 += v160;
-		loc100 = v159;
-		v159 = loc100;
-		loc9 = v159;
+		v161.u0 = 0x03;
+		v162 = v160 == v161;
+		loc160 = v162;
+		v160 = loc160;
+		if (v160)
+			break;
+		v160 = loc45;
+		v161 = loc9;
+		v163.u0 = 0x02;
+		v161 <<= v163;
+		v160 += v161;
+		loc99 = v160;
+		v160 = loc99;
+		v161.u0 = 0x00;
+		*v160.u0 = v161;
+		v160 = loc9;
+		v161.u0 = 0x01;
+		v160 += v161;
+		loc100 = v160;
+		v160 = loc100;
+		loc9 = v160;
 	}
-	v159.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v159;
-	v159.u0 = 0x01B6;
-	v160 = arg2;
-	v162 = loc101;
-	v165 = loc114;
-	v166 = loc125;
-	v167 = loc136;
-	v168 = loc147;
-	v169 = loc23;
-	v170 = loc34;
-	v171 = loc45;
-	v172 = loc56;
-	invoke_viiiiiiiiii(v159, v160, v162, v165, v166, v167, v168, v169, v170, v171, v172);
-	v159.u3 = g_t140048.u3;
-	loc102 = v159;
-	v159.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v159;
-	v159 = loc102;
-	v160.u0 = 0x01;
-	v159 &= v160;
-	loc103 = v159;
-	v159 = loc103;
-	if (v159)
+	v160.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v160;
+	v160.u0 = 0x01B6;
+	v161 = arg2;
+	v163 = loc101;
+	v166 = loc114;
+	v167 = loc125;
+	v168 = loc136;
+	v169 = loc147;
+	v170 = loc23;
+	v171 = loc34;
+	v172 = loc45;
+	v173 = loc56;
+	invoke_viiiiiiiiii(v160, v161, v163, v166, v167, v168, v169, v170, v171, v172, v173);
+	v160.u3 = g_t140048.u3;
+	loc102 = v160;
+	v160.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v160;
+	v160 = loc102;
+	v161.u0 = 0x01;
+	v160 &= v161;
+	loc103 = v160;
+	v160 = loc103;
+	if (v160)
 	{
-		v159 = ___cxa_find_matching_catch_n();
-		loc32 = v159;
-		v159.u3 = g_t140094.u3;
-		loc33 = v159;
-		v159 = loc32;
-		loc12 = v159;
-		v159 = loc33;
-		loc13 = v159;
+		v160 = ___cxa_find_matching_catch_n();
+		loc32 = v160;
+		v160.u3 = g_t140094.u3;
+		loc33 = v160;
+		v160 = loc32;
+		loc12 = v160;
+		v160 = loc33;
+		loc13 = v160;
 		goto l00114160;
 	}
-	v159 = loc77;
-	v173.u3 = *v159.u3;
-	v159.u3 = (word32) v173;
-	loc104 = v159;
-	v159 = loc104;
-	v160.u0 = 0x18;
-	v159 <<= v160;
-	v160.u0 = 0x18;
-	v159 >>= v160;
-	v160.u0 = 0x00;
-	v161 = v159 < v160;
-	loc105 = v161;
-	v159 = loc80;
-	v159.u3 = *v159.u3;
-	loc106 = v159;
-	v159 = loc104;
-	v160.u0 = 0xFF;
-	v159 &= v160;
-	loc107 = v159;
-	v159 = loc105;
-	if (v159)
-		v159 = loc106;
+	v160 = loc77;
+	v174.u3 = *v160.u3;
+	v160.u3 = (word32) v174;
+	loc104 = v160;
+	v160 = loc104;
+	v161.u0 = 0x18;
+	v160 <<= v161;
+	v161.u0 = 0x18;
+	v160 >>= v161;
+	v161.u0 = 0x00;
+	v162 = v160 < v161;
+	loc105 = v162;
+	v160 = loc80;
+	v160.u3 = *v160.u3;
+	loc106 = v160;
+	v160 = loc104;
+	v161.u0 = 0xFF;
+	v160 &= v161;
+	loc107 = v160;
+	v160 = loc105;
+	if (v160)
+		v160 = loc106;
 	else
-		v159 = loc107;
-	loc108 = v159;
-	v159 = loc56;
-	v159.u3 = *v159.u3;
-	loc109 = v159;
-	v159 = loc108;
-	v160 = loc109;
-	v161 = v159 > v160;
-	loc110 = v161;
-	v159 = loc110;
-	if (v159)
+		v160 = loc107;
+	loc108 = v160;
+	v160 = loc56;
+	v160.u3 = *v160.u3;
+	loc109 = v160;
+	v160 = loc108;
+	v161 = loc109;
+	v162 = v160 > v161;
+	loc110 = v162;
+	v160 = loc110;
+	if (v160)
 	{
-		v159 = loc108;
-		v160 = loc109;
-		v159 -= v160;
-		loc111 = v159;
-		v159 = loc111;
-		v160.u0 = 0x01;
-		v159 <<= v160;
-		loc112 = v159;
-		v159 = loc45;
-		v160.u0 = 0x08;
-		v159 += v160;
-		loc113 = v159;
-		v159 = loc113;
-		v160.u0 = 0x03;
-		v159 += v160;
-		loc115 = v159;
-		v159 = loc115;
-		v174.u1 = v159.u4->t0000.u1;
-		v159.u3 = (word32) v174;
-		loc116 = v159;
-		v159 = loc116;
-		v160.u0 = 0x18;
-		v159 <<= v160;
-		v160.u0 = 0x18;
-		v159 >>= v160;
-		v160.u0 = 0x00;
-		v161 = v159 < v160;
-		loc117 = v161;
-		v159 = loc45;
-		v160.u0 = 0x04;
-		v159 += v160;
-		loc118 = v159;
-		v159 = loc118;
-		v159.u3 = *v159.u3;
-		loc119 = v159;
-		v159 = loc116;
-		v160.u0 = 0xFF;
-		v159 &= v160;
-		loc120 = v159;
-		v159 = loc117;
-		if (v159)
-			v159 = loc119;
+		v160 = loc108;
+		v161 = loc109;
+		v160 -= v161;
+		loc111 = v160;
+		v160 = loc111;
+		v161.u0 = 0x01;
+		v160 <<= v161;
+		loc112 = v160;
+		v160 = loc45;
+		v161.u0 = 0x08;
+		v160 += v161;
+		loc113 = v160;
+		v160 = loc113;
+		v161.u0 = 0x03;
+		v160 += v161;
+		loc115 = v160;
+		v160 = loc115;
+		v175.u1 = v160.u4->t0000.u1;
+		v160.u3 = (word32) v175;
+		loc116 = v160;
+		v160 = loc116;
+		v161.u0 = 0x18;
+		v160 <<= v161;
+		v161.u0 = 0x18;
+		v160 >>= v161;
+		v161.u0 = 0x00;
+		v162 = v160 < v161;
+		loc117 = v162;
+		v160 = loc45;
+		v161.u0 = 0x04;
+		v160 += v161;
+		loc118 = v160;
+		v160 = loc118;
+		v160.u3 = *v160.u3;
+		loc119 = v160;
+		v160 = loc116;
+		v161.u0 = 0xFF;
+		v160 &= v161;
+		loc120 = v160;
+		v160 = loc117;
+		if (v160)
+			v160 = loc119;
 		else
-			v159 = loc120;
-		loc121 = v159;
-		v159 = loc34;
-		v160.u0 = 0x08;
-		v159 += v160;
-		loc122 = v159;
-		v159 = loc122;
-		v160.u0 = 0x03;
-		v159 += v160;
-		loc123 = v159;
-		v159 = loc123;
-		v175.u1 = v159.u4->t0000.u1;
-		v159.u3 = (word32) v175;
-		loc124 = v159;
-		v159 = loc124;
-		v160.u0 = 0x18;
-		v159 <<= v160;
-		v160.u0 = 0x18;
-		v159 >>= v160;
-		v160.u0 = 0x00;
-		v161 = v159 < v160;
-		loc126 = v161;
-		v159 = loc34;
-		v160.u0 = 0x04;
-		v159 += v160;
-		loc127 = v159;
-		v159 = loc127;
-		v159.u3 = *v159.u3;
-		loc128 = v159;
-		v159 = loc124;
-		v160.u0 = 0xFF;
-		v159 &= v160;
-		loc129 = v159;
-		v159 = loc126;
-		if (v159)
-			v159 = loc128;
+			v160 = loc120;
+		loc121 = v160;
+		v160 = loc34;
+		v161.u0 = 0x08;
+		v160 += v161;
+		loc122 = v160;
+		v160 = loc122;
+		v161.u0 = 0x03;
+		v160 += v161;
+		loc123 = v160;
+		v160 = loc123;
+		v176.u1 = v160.u4->t0000.u1;
+		v160.u3 = (word32) v176;
+		loc124 = v160;
+		v160 = loc124;
+		v161.u0 = 0x18;
+		v160 <<= v161;
+		v161.u0 = 0x18;
+		v160 >>= v161;
+		v161.u0 = 0x00;
+		v162 = v160 < v161;
+		loc126 = v162;
+		v160 = loc34;
+		v161.u0 = 0x04;
+		v160 += v161;
+		loc127 = v160;
+		v160 = loc127;
+		v160.u3 = *v160.u3;
+		loc128 = v160;
+		v160 = loc124;
+		v161.u0 = 0xFF;
+		v160 &= v161;
+		loc129 = v160;
+		v160 = loc126;
+		if (v160)
+			v160 = loc128;
 		else
-			v159 = loc129;
-		loc130 = v159;
-		v159 = loc112;
-		v160.u0 = 0x01;
-		v159 |= v160;
-		loc131 = v159;
-		v159 = loc121;
-		v160 = loc131;
-		v159 += v160;
-		loc132 = v159;
-		v159 = loc132;
-		v160 = loc130;
-		v159 += v160;
-		loc133 = v159;
-		v159 = loc133;
-		loc17 = v159;
+			v160 = loc129;
+		loc130 = v160;
+		v160 = loc112;
+		v161.u0 = 0x01;
+		v160 |= v161;
+		loc131 = v160;
+		v160 = loc121;
+		v161 = loc131;
+		v160 += v161;
+		loc132 = v160;
+		v160 = loc132;
+		v161 = loc130;
+		v160 += v161;
+		loc133 = v160;
+		v160 = loc133;
+		loc17 = v160;
 	}
 	else
 	{
-		v159 = loc45;
-		v160.u0 = 0x08;
-		v159 += v160;
-		loc134 = v159;
-		v159 = loc134;
-		v160.u0 = 0x03;
-		v159 += v160;
-		loc135 = v159;
-		v159 = loc135;
-		v176.u1 = v159.u4->t0000.u1;
-		v159.u3 = (word32) v176;
-		loc137 = v159;
-		v159 = loc137;
-		v160.u0 = 0x18;
-		v159 <<= v160;
-		v160.u0 = 0x18;
-		v159 >>= v160;
-		v160.u0 = 0x00;
-		v161 = v159 < v160;
-		loc138 = v161;
-		v159 = loc45;
-		v160.u0 = 0x04;
-		v159 += v160;
-		loc139 = v159;
-		v159 = loc139;
-		v159.u3 = *v159.u3;
-		loc140 = v159;
-		v159 = loc137;
-		v160.u0 = 0xFF;
-		v159 &= v160;
-		loc141 = v159;
-		v159 = loc138;
-		if (v159)
-			v159 = loc140;
+		v160 = loc45;
+		v161.u0 = 0x08;
+		v160 += v161;
+		loc134 = v160;
+		v160 = loc134;
+		v161.u0 = 0x03;
+		v160 += v161;
+		loc135 = v160;
+		v160 = loc135;
+		v177.u1 = v160.u4->t0000.u1;
+		v160.u3 = (word32) v177;
+		loc137 = v160;
+		v160 = loc137;
+		v161.u0 = 0x18;
+		v160 <<= v161;
+		v161.u0 = 0x18;
+		v160 >>= v161;
+		v161.u0 = 0x00;
+		v162 = v160 < v161;
+		loc138 = v162;
+		v160 = loc45;
+		v161.u0 = 0x04;
+		v160 += v161;
+		loc139 = v160;
+		v160 = loc139;
+		v160.u3 = *v160.u3;
+		loc140 = v160;
+		v160 = loc137;
+		v161.u0 = 0xFF;
+		v160 &= v161;
+		loc141 = v160;
+		v160 = loc138;
+		if (v160)
+			v160 = loc140;
 		else
-			v159 = loc141;
-		loc142 = v159;
-		v159 = loc34;
-		v160.u0 = 0x08;
-		v159 += v160;
-		loc143 = v159;
-		v159 = loc143;
-		v160.u0 = 0x03;
-		v159 += v160;
-		loc144 = v159;
-		v159 = loc144;
-		v177.u1 = v159.u4->t0000.u1;
-		v159.u3 = (word32) v177;
-		loc145 = v159;
-		v159 = loc145;
-		v160.u0 = 0x18;
-		v159 <<= v160;
-		v160.u0 = 0x18;
-		v159 >>= v160;
-		v160.u0 = 0x00;
-		v161 = v159 < v160;
-		loc146 = v161;
-		v159 = loc34;
-		v160.u0 = 0x04;
-		v159 += v160;
-		loc148 = v159;
-		v159 = loc148;
-		v159.u3 = *v159.u3;
-		loc149 = v159;
-		v159 = loc145;
-		v160.u0 = 0xFF;
-		v159 &= v160;
-		loc150 = v159;
-		v159 = loc146;
-		if (v159)
-			v159 = loc149;
+			v160 = loc141;
+		loc142 = v160;
+		v160 = loc34;
+		v161.u0 = 0x08;
+		v160 += v161;
+		loc143 = v160;
+		v160 = loc143;
+		v161.u0 = 0x03;
+		v160 += v161;
+		loc144 = v160;
+		v160 = loc144;
+		v178.u1 = v160.u4->t0000.u1;
+		v160.u3 = (word32) v178;
+		loc145 = v160;
+		v160 = loc145;
+		v161.u0 = 0x18;
+		v160 <<= v161;
+		v161.u0 = 0x18;
+		v160 >>= v161;
+		v161.u0 = 0x00;
+		v162 = v160 < v161;
+		loc146 = v162;
+		v160 = loc34;
+		v161.u0 = 0x04;
+		v160 += v161;
+		loc148 = v160;
+		v160 = loc148;
+		v160.u3 = *v160.u3;
+		loc149 = v160;
+		v160 = loc145;
+		v161.u0 = 0xFF;
+		v160 &= v161;
+		loc150 = v160;
+		v160 = loc146;
+		if (v160)
+			v160 = loc149;
 		else
-			v159 = loc150;
-		loc151 = v159;
-		v159 = loc142;
-		v160.u0 = 0x02;
-		v159 += v160;
-		loc152 = v159;
-		v159 = loc152;
-		v160 = loc151;
-		v159 += v160;
-		loc153 = v159;
-		v159 = loc153;
-		loc17 = v159;
+			v160 = loc150;
+		loc151 = v160;
+		v160 = loc142;
+		v161.u0 = 0x02;
+		v160 += v161;
+		loc152 = v160;
+		v160 = loc152;
+		v161 = loc151;
+		v160 += v161;
+		loc153 = v160;
+		v160 = loc153;
+		loc17 = v160;
 	}
-	v159 = loc17;
-	v160 = loc109;
-	v159 += v160;
-	loc154 = v159;
-	v159 = loc154;
-	v160.u0 = 100;
-	v161 = v159 > v160;
-	loc155 = v161;
-	v159 = loc155;
-	if (v159)
+	v160 = loc17;
+	v161 = loc109;
+	v160 += v161;
+	loc154 = v160;
+	v160 = loc154;
+	v161.u0 = 100;
+	v162 = v160 > v161;
+	loc155 = v162;
+	v160 = loc155;
+	if (v160)
 	{
-		v159 = loc154;
-		v160.u0 = 0x02;
-		v159 <<= v160;
-		loc156 = v159;
-		v159 = loc156;
-		v159 = _malloc(v159);
-		loc157 = v159;
-		v159 = loc157;
-		loc24 = v159;
-		v159 = loc157;
-		v160.u0 = 0x00;
-		v161 = v159 == v160;
-		loc25 = v161;
-		v159 = loc25;
-		if (v159)
+		v160 = loc154;
+		v161.u0 = 0x02;
+		v160 <<= v161;
+		loc156 = v160;
+		v160 = loc156;
+		v160 = _malloc(v160);
+		loc157 = v160;
+		v160 = loc157;
+		loc24 = v160;
+		v160 = loc157;
+		v161.u0 = 0x00;
+		v162 = v160 == v161;
+		loc25 = v162;
+		v160 = loc25;
+		if (v160)
 		{
-			v159.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v159;
-			v159.u0 = 0x018A;
-			invoke_v(v159);
-			v159.u3 = g_t140048.u3;
-			loc26 = v159;
-			v159.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v159;
-			v159 = loc26;
-			v160.u0 = 0x01;
-			v159 &= v160;
-			loc27 = v159;
-			v159 = loc27;
-			if (v159)
+			v160.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v160;
+			v160.u0 = 0x018A;
+			invoke_v(v160);
+			v160.u3 = g_t140048.u3;
+			loc26 = v160;
+			v160.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v160;
+			v160 = loc26;
+			v161.u0 = 0x01;
+			v160 &= v161;
+			loc27 = v160;
+			v160 = loc27;
+			if (v160)
 			{
-				v159 = ___cxa_find_matching_catch_n();
-				loc35 = v159;
-				v159.u3 = g_t140094.u3;
-				loc36 = v159;
-				v159 = loc35;
-				loc6 = v159;
-				v159 = loc36;
-				loc11 = v159;
-				v159 = loc24;
-				loc22 = v159;
+				v160 = ___cxa_find_matching_catch_n();
+				loc35 = v160;
+				v160.u3 = g_t140094.u3;
+				loc36 = v160;
+				v160 = loc35;
+				loc6 = v160;
+				v160 = loc36;
+				loc11 = v160;
+				v160 = loc24;
+				loc22 = v160;
 			}
 			else
 			{
-				v159 = loc77;
-				v178.u3 = *v159.u3;
-				v159.u3 = (word32) v178;
-				loc18 = v159;
-				v159 = loc80;
-				v159.u3 = *v159.u3;
-				loc19 = v159;
-				v159 = loc56;
-				v159.u3 = *v159.u3;
-				loc20 = v159;
-				v159.u0 = 0x00;
-				loc10 = v159;
-				v159 = loc24;
-				loc21 = v159;
-				v159 = loc18;
-				loc40 = v159;
-				v159 = loc19;
-				loc46 = v159;
-				v159 = loc20;
-				loc50 = v159;
-				v159.u0 = 0x1A;
-				loc161 = v159;
+				v160 = loc77;
+				v179.u3 = *v160.u3;
+				v160.u3 = (word32) v179;
+				loc18 = v160;
+				v160 = loc80;
+				v160.u3 = *v160.u3;
+				loc19 = v160;
+				v160 = loc56;
+				v160.u3 = *v160.u3;
+				loc20 = v160;
+				v160.u0 = 0x00;
+				loc10 = v160;
+				v160 = loc24;
+				loc21 = v160;
+				v160 = loc18;
+				loc40 = v160;
+				v160 = loc19;
+				loc46 = v160;
+				v160 = loc20;
+				loc50 = v160;
+				v160.u0 = 0x1A;
+				loc161 = v160;
 			}
 l00114000:
-			v159 = loc161;
-			v160.u0 = 0x1A;
-			v161 = v159 == v160;
-			if (v161)
+			v160 = loc161;
+			v161.u0 = 0x1A;
+			v162 = v160 == v161;
+			if (v162)
 			{
-				v159 = arg3;
-				v160.u0 = 0x04;
-				v159 += v160;
-				loc37 = v159;
-				v159 = loc37;
-				v159 = *v159.u0;
-				loc38 = v159;
-				v159 = loc40;
-				v160.u0 = 0x18;
-				v159 <<= v160;
-				v160.u0 = 0x18;
-				v159 >>= v160;
+				v160 = arg3;
+				v161.u0 = 0x04;
+				v160 += v161;
+				loc37 = v160;
+				v160 = loc37;
+				v160 = *v160.u0;
+				loc38 = v160;
+				v160 = loc40;
+				v161.u0 = 0x18;
+				v160 <<= v161;
+				v161.u0 = 0x18;
+				v160 >>= v161;
+				v161.u0 = 0x00;
+				v162 = v160 < v161;
+				loc39 = v162;
+				v160 = arg5;
+				v160 = *v160.u0;
+				loc41 = v160;
+				v160 = loc39;
+				if (v160)
+					v160 = loc41;
+				else
+					v160 = arg5;
+				loc42 = v160;
+				v160 = loc40;
+				v161.u0 = 0xFF;
+				v160 &= v161;
+				loc43 = v160;
+				v160 = loc39;
+				if (v160)
+					v160 = loc46;
+				else
+					v160 = loc43;
+				loc44 = v160;
+				v160 = loc42;
+				v161 = loc44;
+				v163.u0 = 0x02;
+				v161 <<= v163;
+				v160 += v161;
+				loc47 = v160;
+				v160 = loc136;
+				v160 = *v160.u0;
+				loc48 = v160;
+				v160 = loc147;
+				v160 = *v160.u0;
+				loc49 = v160;
 				v160.u0 = 0x00;
-				v161 = v159 < v160;
-				loc39 = v161;
-				v159 = arg5;
-				v159 = *v159.u0;
-				loc41 = v159;
-				v159 = loc39;
-				if (v159)
-					v159 = loc41;
-				else
-					v159 = arg5;
-				loc42 = v159;
-				v159 = loc40;
-				v160.u0 = 0xFF;
-				v159 &= v160;
-				loc43 = v159;
-				v159 = loc39;
-				if (v159)
-					v159 = loc46;
-				else
-					v159 = loc43;
-				loc44 = v159;
-				v159 = loc42;
-				v160 = loc44;
-				v162.u0 = 0x02;
-				v160 <<= v162;
-				v159 += v160;
-				loc47 = v159;
-				v159 = loc136;
-				v159 = *v159.u0;
-				loc48 = v159;
-				v159 = loc147;
-				v159 = *v159.u0;
-				loc49 = v159;
-				v159.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v159;
-				v159.u0 = 0x01B7;
-				v160 = loc10;
-				v162 = loc69;
-				v165 = loc70;
-				v166 = loc38;
-				v167 = loc42;
-				v168 = loc47;
-				v169 = loc73;
-				v170 = loc101;
-				v171 = loc125;
-				v172 = loc48;
-				v179 = loc49;
-				v180 = loc23;
-				v181 = loc34;
-				v182 = loc45;
-				v183 = loc50;
-				invoke_viiiiiiiiiiiiiii(v159, v160, v162, v165, v166, v167, v168, v169, v170, v171, v172, v179, v180, v181, v182, v183);
-				v159.u3 = g_t140048.u3;
-				loc51 = v159;
-				v159.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v159;
-				v159 = loc51;
-				v160.u0 = 0x01;
-				v159 &= v160;
-				loc52 = v159;
-				v159 = loc52;
-				v161 = v159 == 0x00;
-				if (v161)
+				g_t140048.u3 = (word32 *) v160;
+				v160.u0 = 0x01B7;
+				v161 = loc10;
+				v163 = loc69;
+				v166 = loc70;
+				v167 = loc38;
+				v168 = loc42;
+				v169 = loc47;
+				v170 = loc73;
+				v171 = loc101;
+				v172 = loc125;
+				v173 = loc48;
+				v180 = loc49;
+				v181 = loc23;
+				v182 = loc34;
+				v183 = loc45;
+				v184 = loc50;
+				invoke_viiiiiiiiiiiiiii(v160, v161, v163, v166, v167, v168, v169, v170, v171, v172, v173, v180, v181, v182, v183, v184);
+				v160.u3 = g_t140048.u3;
+				loc51 = v160;
+				v160.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v160;
+				v160 = loc51;
+				v161.u0 = 0x01;
+				v160 &= v161;
+				loc52 = v160;
+				v160 = loc52;
+				v162 = v160 == 0x00;
+				if (v162)
 				{
-					v159 = arg1;
-					v159 = *v159.u0;
-					loc53 = v159;
-					v159 = loc71;
-					v160 = loc53;
-					*v159.u0 = v160;
-					v159 = loc69;
-					v159 = *v159.u0;
-					loc54 = v159;
-					v159 = loc70;
-					v159 = *v159.u0;
-					loc55 = v159;
-					v159.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v159;
-					v159 = loc16;
-					v160 = loc71;
+					v160 = arg1;
 					v160 = *v160.u0;
-					*v159.u0 = v160;
-					v159.u0 = 404;
+					loc53 = v160;
+					v160 = loc71;
+					v161 = loc53;
+					*v160.u0 = v161;
+					v160 = loc69;
+					v160 = *v160.u0;
+					loc54 = v160;
+					v160 = loc70;
+					v160 = *v160.u0;
+					loc55 = v160;
+					v160.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v160;
 					v160 = loc16;
-					v162 = loc10;
-					v165 = loc54;
-					v166 = loc55;
-					v167 = arg3;
-					v168 = arg4;
-					v159 = invoke_iiiiiii(v159, v160, v162, v165, v166, v167, v168);
-					loc57 = v159;
-					v159.u3 = g_t140048.u3;
-					loc58 = v159;
-					v159.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v159;
-					v159 = loc58;
-					v160.u0 = 0x01;
-					v159 &= v160;
-					loc59 = v159;
-					v159 = loc59;
-					v161 = v159 == 0x00;
-					if (v161)
+					v161 = loc71;
+					v161 = *v161.u0;
+					*v160.u0 = v161;
+					v160.u0 = 404;
+					v161 = loc16;
+					v163 = loc10;
+					v166 = loc54;
+					v167 = loc55;
+					v168 = arg3;
+					v169 = arg4;
+					v160 = invoke_iiiiiii(v160, v161, v163, v166, v167, v168, v169);
+					loc57 = v160;
+					v160.u3 = g_t140048.u3;
+					loc58 = v160;
+					v160.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v160;
+					v160 = loc58;
+					v161.u0 = 0x01;
+					v160 &= v161;
+					loc59 = v160;
+					v160 = loc59;
+					v162 = v160 == 0x00;
+					if (v162)
 					{
-						v159 = loc21;
-						v160.u0 = 0x00;
-						v161 = v159 == v160;
-						loc60 = v161;
-						v159 = loc60;
-						v161 = v159 == 0x00;
-						if (v161)
+						v160 = loc21;
+						v161.u0 = 0x00;
+						v162 = v160 == v161;
+						loc60 = v162;
+						v160 = loc60;
+						v162 = v160 == 0x00;
+						if (v162)
 						{
-							v159 = loc21;
-							loc61 = v159;
-							v159 = loc61;
-							_free(v159);
+							v160 = loc21;
+							loc61 = v160;
+							v160 = loc61;
+							_free(v160);
 						}
-						v159 = loc45;
-						fn0011C7BA(v159);
-						v159 = loc34;
-						fn0011C7BA(v159);
-						v159 = loc23;
-						fn0011BAF7(v159);
-						v159 = loc114;
-						v159 = *v159.u0;
-						loc62 = v159;
-						v159 = loc62;
-						v159 = fn0011B43F(v159);
-						v159 = loc162;
-						g_t140030.u3 = (word32 *) v159;
-						v159 = loc57;
-						return v159;
+						v160 = loc45;
+						fn0011C7BA(v160);
+						v160 = loc34;
+						fn0011C7BA(v160);
+						v160 = loc23;
+						fn0011BAF7(v160);
+						v160 = loc114;
+						v160 = *v160.u0;
+						loc62 = v160;
+						v160 = loc62;
+						v160 = fn0011B43F(v160);
+						v160 = loc162;
+						g_t140030.u3 = (word32 *) v160;
+						v160 = loc57;
+						return v160;
 					}
 				}
-				v159 = ___cxa_find_matching_catch_n();
-				loc63 = v159;
-				v159.u3 = g_t140094.u3;
-				loc64 = v159;
-				v159 = loc63;
-				loc6 = v159;
-				v159 = loc64;
-				loc11 = v159;
-				v159 = loc21;
-				loc22 = v159;
+				v160 = ___cxa_find_matching_catch_n();
+				loc63 = v160;
+				v160.u3 = g_t140094.u3;
+				loc64 = v160;
+				v160 = loc63;
+				loc6 = v160;
+				v160 = loc64;
+				loc11 = v160;
+				v160 = loc21;
+				loc22 = v160;
 			}
-			v159 = loc22;
-			v160.u0 = 0x00;
-			v161 = v159 == v160;
-			loc65 = v161;
-			v159 = loc65;
-			v161 = v159 == 0x00;
-			if (v161)
+			v160 = loc22;
+			v161.u0 = 0x00;
+			v162 = v160 == v161;
+			loc65 = v162;
+			v160 = loc65;
+			v162 = v160 == 0x00;
+			if (v162)
 			{
-				v159 = loc22;
-				loc66 = v159;
-				v159 = loc66;
-				_free(v159);
+				v160 = loc22;
+				loc66 = v160;
+				v160 = loc66;
+				_free(v160);
 			}
-			v159 = loc6;
-			loc12 = v159;
-			v159 = loc11;
-			loc13 = v159;
+			v160 = loc6;
+			loc12 = v160;
+			v160 = loc11;
+			loc13 = v160;
 l00114160:
-			v159 = loc45;
-			fn0011C7BA(v159);
-			v159 = loc34;
-			fn0011C7BA(v159);
-			v159 = loc23;
-			fn0011BAF7(v159);
-			v159 = loc12;
-			loc14 = v159;
-			v159 = loc13;
-			loc15 = v159;
+			v160 = loc45;
+			fn0011C7BA(v160);
+			v160 = loc34;
+			fn0011C7BA(v160);
+			v160 = loc23;
+			fn0011BAF7(v160);
+			v160 = loc12;
+			loc14 = v160;
+			v160 = loc13;
+			loc15 = v160;
 l00114179:
-			v159 = loc114;
-			v159.u3 = *v159.u3;
-			loc68 = v159;
-			v159 = loc68;
-			v159 = fn0011B43F(v159);
-			v159 = loc14;
-			___resumeException(v159);
-			v159.u0 = 0x00;
-			return v159;
+			v160 = loc114;
+			v160.u3 = *v160.u3;
+			loc68 = v160;
+			v160 = loc68;
+			v160 = fn0011B43F(v160);
+			v160 = loc14;
+			___resumeException(v160);
+			v160.u0 = 0x00;
+			return v160;
 		}
-		v159 = loc157;
-		loc10 = v159;
-		v159 = loc24;
-		loc21 = v159;
-		v159 = loc104;
-		loc40 = v159;
-		v159 = loc106;
-		loc46 = v159;
-		v159 = loc109;
-		loc50 = v159;
-		v159.u0 = 0x1A;
-		loc161 = v159;
+		v160 = loc157;
+		loc10 = v160;
+		v160 = loc24;
+		loc21 = v160;
+		v160 = loc104;
+		loc40 = v160;
+		v160 = loc106;
+		loc46 = v160;
+		v160 = loc109;
+		loc50 = v160;
+		v160.u0 = 0x1A;
+		loc161 = v160;
 	}
 	else
 	{
-		v159 = loc67;
-		loc10 = v159;
-		v159.u0 = 0x00;
-		loc21 = v159;
-		v159 = loc104;
-		loc40 = v159;
-		v159 = loc106;
-		loc46 = v159;
-		v159 = loc109;
-		loc50 = v159;
-		v159.u0 = 0x1A;
-		loc161 = v159;
+		v160 = loc67;
+		loc10 = v160;
+		v160.u0 = 0x00;
+		loc21 = v160;
+		v160 = loc104;
+		loc40 = v160;
+		v160 = loc106;
+		loc46 = v160;
+		v160 = loc109;
+		loc50 = v160;
+		v160.u0 = 0x1A;
+		loc161 = v160;
 	}
 	goto l00114000;
 }
@@ -4683,208 +4683,208 @@ l00114179:
 // 00114190: void fn00114190(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9)
 void fn00114190(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
 {
-	v193.u3 = g_t140030.u3;
-	loc200 = v193;
-	v193.u3 = g_t140030.u3;
-	v194.u0 = 0x70;
-	v193 += v194;
-	g_t140030.u3 = (word32 *) v193;
-	v193.u3 = g_t140030.u3;
-	v194.u3 = g_t140034.u3;
-	v195 = v193 >= v194;
-	if (v195)
+	v194.u3 = g_t140030.u3;
+	loc200 = v194;
+	v194.u3 = g_t140030.u3;
+	v195.u0 = 0x70;
+	v194 += v195;
+	g_t140030.u3 = (word32 *) v194;
+	v194.u3 = g_t140030.u3;
+	v195.u3 = g_t140034.u3;
+	v196 = v194 >= v195;
+	if (v196)
 	{
-		v193.u0 = 0x70;
-		abortStackOverflow(v193);
+		v194.u0 = 0x70;
+		abortStackOverflow(v194);
 	}
-	v193 = loc200;
-	v194.u0 = 0x6C;
-	v193 += v194;
-	loc18 = v193;
-	v193 = loc200;
-	v194.u0 = 0x60;
-	v193 += v194;
-	loc29 = v193;
-	v193 = loc200;
-	v194.u0 = 0x5C;
-	v193 += v194;
-	loc40 = v193;
-	v193 = loc200;
-	v194.u0 = 0x50;
-	v193 += v194;
-	loc51 = v193;
-	v193 = loc200;
-	v194.u0 = 0x44;
-	v193 += v194;
-	loc62 = v193;
-	v193 = loc200;
-	v194.u0 = 0x38;
-	v193 += v194;
-	loc73 = v193;
-	v193 = loc200;
-	v194.u0 = 0x34;
-	v193 += v194;
-	loc84 = v193;
-	v193 = loc200;
-	v194.u0 = 0x28;
-	v193 += v194;
-	loc95 = v193;
-	v193 = loc200;
-	v194.u0 = 0x24;
-	v193 += v194;
-	loc106 = v193;
-	v193 = loc200;
-	v194.u0 = 0x18;
-	v193 += v194;
-	loc109 = v193;
-	v193 = loc200;
-	v194.u0 = 0x0C;
-	v193 += v194;
-	loc110 = v193;
-	v193 = loc200;
-	loc111 = v193;
-	v193 = arg0;
-	v193 = v193;
-	v193 = arg2;
-	v194.u0 = 0x5338;
-	v193 = fn000EA9F7(v193, v194);
-	loc112 = v193;
-	v193 = arg1;
-	v193 = v193;
-	v193 = loc112;
-	v193 = *v193.u0;
-	loc113 = v193;
-	v193 = loc113;
-	v194.u0 = 44;
-	v193 += v194;
-	loc114 = v193;
-	v193 = loc114;
-	v193 = *v193.u0;
-	loc115 = v193;
-	v193 = loc18;
+	v194 = loc200;
+	v195.u0 = 0x6C;
+	v194 += v195;
+	loc18 = v194;
+	v194 = loc200;
+	v195.u0 = 0x60;
+	v194 += v195;
+	loc29 = v194;
+	v194 = loc200;
+	v195.u0 = 0x5C;
+	v194 += v195;
+	loc40 = v194;
+	v194 = loc200;
+	v195.u0 = 0x50;
+	v194 += v195;
+	loc51 = v194;
+	v194 = loc200;
+	v195.u0 = 0x44;
+	v194 += v195;
+	loc62 = v194;
+	v194 = loc200;
+	v195.u0 = 0x38;
+	v194 += v195;
+	loc73 = v194;
+	v194 = loc200;
+	v195.u0 = 0x34;
+	v194 += v195;
+	loc84 = v194;
+	v194 = loc200;
+	v195.u0 = 0x28;
+	v194 += v195;
+	loc95 = v194;
+	v194 = loc200;
+	v195.u0 = 0x24;
+	v194 += v195;
+	loc106 = v194;
+	v194 = loc200;
+	v195.u0 = 0x18;
+	v194 += v195;
+	loc109 = v194;
+	v194 = loc200;
+	v195.u0 = 0x0C;
+	v194 += v195;
+	loc110 = v194;
+	v194 = loc200;
+	loc111 = v194;
+	v194 = arg0;
+	v194 = v194;
+	v194 = arg2;
+	v195.u0 = 0x5338;
+	v194 = fn000EA9F7(v194, v195);
+	loc112 = v194;
+	v194 = arg1;
+	v194 = v194;
 	v194 = loc112;
-	v196 = loc115;
-	v197 = 0x01FF;
-	v196 &= v197;
-	v197 = 0x0700;
-	v196.u3 += v197;
+	v194 = *v194.u0;
+	loc113 = v194;
+	v194 = loc113;
+	v195.u0 = 44;
+	v194 += v195;
+	loc114 = v194;
+	v194 = loc114;
+	v194 = *v194.u0;
+	loc115 = v194;
+	v194 = loc18;
+	v195 = loc112;
+	v197 = loc115;
+	v198 = 0x01FF;
+	v197 &= v198;
+	v198 = 0x0700;
+	v197.u3 += v198;
 }
 
 // 00114C7D: void fn00114C7D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack word32 arg5, Stack Eq_n arg6, Stack word32 arg7, Stack Eq_n arg8, Stack word32 arg9, Stack word32 arg10, Stack Eq_n arg11, Stack Eq_n arg12, Stack Eq_n arg13, Stack Eq_n arg14)
 void fn00114C7D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, word32 arg5, Eq_n arg6, word32 arg7, Eq_n arg8, word32 arg9, word32 arg10, Eq_n arg11, Eq_n arg12, Eq_n arg13, Eq_n arg14)
 {
-	v170.u3 = g_t140030.u3;
-	loc182 = v170;
-	v170 = arg2;
-	v171 = arg0;
-	*v170.u3 = (word32) v171;
-	v170 = arg13;
-	v171.u0 = 0x08;
-	v170 += v171;
-	loc88 = v170;
-	v170 = loc88;
-	v171.u0 = 0x03;
-	v170 += v171;
-	loc92 = v170;
-	v170 = arg13;
-	v171.u0 = 0x04;
-	v170 += v171;
-	loc93 = v170;
-	v170 = arg12;
-	v171.u0 = 0x08;
-	v170 += v171;
-	loc94 = v170;
-	v170 = loc94;
-	v171.u0 = 0x03;
-	v170 += v171;
-	loc95 = v170;
-	v170 = arg12;
-	v171.u0 = 0x04;
-	v170 += v171;
-	loc96 = v170;
-	v170 = arg3;
-	v171.u0 = 0x0200;
-	v170 &= v171;
-	loc97 = v170;
-	v170 = loc97;
+	v171.u3 = g_t140030.u3;
+	loc182 = v171;
+	v171 = arg2;
+	v172 = arg0;
+	*v171.u3 = (word32) v172;
+	v171 = arg13;
+	v172.u0 = 0x08;
+	v171 += v172;
+	loc88 = v171;
+	v171 = loc88;
+	v172.u0 = 0x03;
+	v171 += v172;
+	loc92 = v171;
+	v171 = arg13;
+	v172.u0 = 0x04;
+	v171 += v172;
+	loc93 = v171;
+	v171 = arg12;
+	v172.u0 = 0x08;
+	v171 += v172;
+	loc94 = v171;
+	v171 = loc94;
+	v172.u0 = 0x03;
+	v171 += v172;
+	loc95 = v171;
+	v171 = arg12;
+	v172.u0 = 0x04;
+	v171 += v172;
+	loc96 = v171;
+	v171 = arg3;
+	v172.u0 = 0x0200;
+	v171 &= v172;
+	loc97 = v171;
+	v171 = loc97;
+	v172.u0 = 0x00;
+	v173 = v171 == v172;
+	loc98 = v173;
+	v171 = arg14;
+	v172.u0 = 0x00;
+	v173 = v171 > v172;
+	loc99 = v173;
+	v171 = arg11;
+	v172.u0 = 11;
+	v171 += v172;
+	loc100 = v171;
+	v171 = arg11;
+	v172.u0 = 0x04;
+	v171 += v172;
+	loc101 = v171;
 	v171.u0 = 0x00;
-	v172 = v170 == v171;
-	loc98 = v172;
-	v170 = arg14;
-	v171.u0 = 0x00;
-	v172 = v170 > v171;
-	loc99 = v172;
-	v170 = arg11;
-	v171.u0 = 11;
-	v170 += v171;
-	loc100 = v170;
-	v170 = arg11;
-	v171.u0 = 0x04;
-	v170 += v171;
-	loc101 = v170;
-	v170.u0 = 0x00;
-	loc23 = v170;
-	v170 = arg4;
-	loc27 = v170;
-	v170 = loc23;
-	v171.u0 = 0x04;
-	v172 = v170 == v171;
-	loc176 = v172;
-	v170 = loc176;
-	if (!v170)
+	loc23 = v171;
+	v171 = arg4;
+	loc27 = v171;
+	v171 = loc23;
+	v172.u0 = 0x04;
+	v173 = v171 == v172;
+	loc176 = v173;
+	v171 = loc176;
+	if (!v171)
 	{
-		v170 = arg8;
-		v171 = loc23;
-		v170 += v171;
-		loc108 = v170;
-		v170 = loc108;
-		v173 = *v170.u0;
-		v170.u3 = (word32) v173;
-		loc109 = v170;
-		v170 = loc109;
-		v171.u0 = 0x18;
-		v170 <<= v171;
-		v171.u0 = 0x18;
-		v170 >>= v171;
-		loc110 = v170;
-		v170 = loc110;
-		v171.u0 = 0x00;
-		v170 -= v171;
-		switch (v170)
+		v171 = arg8;
+		v172 = loc23;
+		v171 += v172;
+		loc108 = v171;
+		v171 = loc108;
+		v174 = *v171.u0;
+		v171.u3 = (word32) v174;
+		loc109 = v171;
+		v171 = loc109;
+		v172.u0 = 0x18;
+		v171 <<= v172;
+		v172.u0 = 0x18;
+		v171 >>= v172;
+		loc110 = v171;
+		v171 = loc110;
+		v172.u0 = 0x00;
+		v171 -= v172;
+		switch (v171)
 		{
 		case 0x00:
-			v170 = arg2;
-			v170.u3 = *v170.u3;
-			loc111 = v170;
-			v170 = arg1;
-			v171 = loc111;
-			*v170.u3 = (word32) v171;
-			v170 = loc27;
-			loc33 = v170;
+			v171 = arg2;
+			v171.u3 = *v171.u3;
+			loc111 = v171;
+			v171 = arg1;
+			v172 = loc111;
+			*v171.u3 = (word32) v172;
+			v171 = loc27;
+			loc33 = v171;
 		case 0x01:
-			v170 = arg2;
-			v170.u3 = *v170.u3;
-			loc112 = v170;
-			v170 = arg1;
-			v171 = loc112;
-			*v170.u3 = (word32) v171;
-			v170 = arg6;
-			v170.u3 = *v170.u3;
-			loc113 = v170;
-			v170 = loc113;
-			v171.u0 = 44;
-			v170 += v171;
-			loc114 = v170;
-			v170 = loc114;
-			v170.u3 = *v170.u3;
-			loc115 = v170;
-			v170 = arg6;
-			v171.u0 = 0x20;
-			v174 = loc115;
-			v175.u0 = 0x01FF;
-			v174 &= v175;
-			v175.u0 = 6944;
-			v174 += v175;
+			v171 = arg2;
+			v171.u3 = *v171.u3;
+			loc112 = v171;
+			v171 = arg1;
+			v172 = loc112;
+			*v171.u3 = (word32) v172;
+			v171 = arg6;
+			v171.u3 = *v171.u3;
+			loc113 = v171;
+			v171 = loc113;
+			v172.u0 = 44;
+			v171 += v172;
+			loc114 = v171;
+			v171 = loc114;
+			v171.u3 = *v171.u3;
+			loc115 = v171;
+			v171 = arg6;
+			v172.u0 = 0x20;
+			v175 = loc115;
+			v176.u0 = 0x01FF;
+			v175 &= v176;
+			v176.u0 = 6944;
+			v175 += v176;
 		}
 	}
 }
@@ -4892,1838 +4892,1838 @@ void fn00114C7D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, word32 ar
 // 00115464: void fn00115464(Stack Eq_n arg0)
 void fn00115464(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011546D: void fn0011546D(Stack Eq_n arg0)
 void fn0011546D(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011547B: Stack Eq_n fn0011547B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011547B(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v14.u3 = g_t140030.u3;
-	loc14 = v14;
-	v14 = arg1;
-	v15.u0 = 11;
-	v14 += v15;
-	loc5 = v14;
-	v14 = loc5;
-	v16.u3 = *v14.u3;
-	v14.u3 = (word32) v16;
-	loc6 = v14;
-	v14 = loc6;
-	v15.u0 = 0x18;
-	v14 <<= v15;
-	v15.u0 = 0x18;
-	v14 >>= v15;
-	v15.u0 = 0x00;
-	v17 = v14 < v15;
-	loc7 = v17;
-	v14 = arg1;
-	v14.u3 = *v14.u3;
-	loc8 = v14;
-	v14 = loc7;
-	if (v14)
-		v14 = loc8;
+	v15.u3 = g_t140030.u3;
+	loc14 = v15;
+	v15 = arg1;
+	v16.u0 = 11;
+	v15 += v16;
+	loc5 = v15;
+	v15 = loc5;
+	v17.u3 = *v15.u3;
+	v15.u3 = (word32) v17;
+	loc6 = v15;
+	v15 = loc6;
+	v16.u0 = 0x18;
+	v15 <<= v16;
+	v16.u0 = 0x18;
+	v15 >>= v16;
+	v16.u0 = 0x00;
+	v18 = v15 < v16;
+	loc7 = v18;
+	v15 = arg1;
+	v15.u3 = *v15.u3;
+	loc8 = v15;
+	v15 = loc7;
+	if (v15)
+		v15 = loc8;
 	else
-		v14 = arg1;
-	loc9 = v14;
-	v14 = loc9;
-	v15.u0 = 0x01;
-	v14 = fn000DAF17(v14, v15);
-	loc10 = v14;
-	v14 = loc10;
-	loc11 = v14;
-	v14 = loc10;
-	v15.u0 = ~0x00;
-	v17 = v14 != v15;
-	loc12 = v17;
-	v14 = loc12;
-	v15.u0 = 0x01;
-	v14 &= v15;
-	loc4 = v14;
-	v14 = loc11;
-	v15 = loc4;
-	v14 >>= v15;
-	loc3 = v14;
-	v14 = loc3;
-	return v14;
+		v15 = arg1;
+	loc9 = v15;
+	v15 = loc9;
+	v16.u0 = 0x01;
+	v15 = fn000DAF17(v15, v16);
+	loc10 = v15;
+	v15 = loc10;
+	loc11 = v15;
+	v15 = loc10;
+	v16.u0 = ~0x00;
+	v18 = v15 != v16;
+	loc12 = v18;
+	v15 = loc12;
+	v16.u0 = 0x01;
+	v15 &= v16;
+	loc4 = v15;
+	v15 = loc11;
+	v16 = loc4;
+	v15 >>= v16;
+	loc3 = v15;
+	v15 = loc3;
+	return v15;
 }
 
 // 001154D6: void fn001154D6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001154D6(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v57.u3 = g_t140030.u3;
-	loc60 = v57;
-	v57.u3 = g_t140030.u3;
-	v58.u0 = 0x10;
-	v57 += v58;
-	g_t140030.u3 = (word32 *) v57;
-	v57.u3 = g_t140030.u3;
-	v58.u3 = g_t140034.u3;
-	v59 = v57 >= v58;
-	if (v59)
+	v58.u3 = g_t140030.u3;
+	loc60 = v58;
+	v58.u3 = g_t140030.u3;
+	v59.u0 = 0x10;
+	v58 += v59;
+	g_t140030.u3 = (word32 *) v58;
+	v58.u3 = g_t140030.u3;
+	v59.u3 = g_t140034.u3;
+	v60 = v58 >= v59;
+	if (v60)
 	{
-		v57.u0 = 0x10;
-		abortStackOverflow(v57);
+		v58.u0 = 0x10;
+		abortStackOverflow(v58);
 	}
 	while (true)
 	{
-		v57 = loc60;
-		loc53 = v57;
-		v57 = loc53;
-		v60.u0 = 0x00;
-		*v57.u0 = v60;
-		v57 = loc53;
-		v58.u0 = 0x08;
-		v57 += v58;
-		v58.u0 = 0x00;
-		*v57.u0 = v58;
-		v57.u0 = 0x00;
-		loc7 = v57;
-		v57 = loc7;
-		v58.u0 = 0x03;
-		v59 = v57 == v58;
-		loc57 = v59;
-		v57 = loc57;
-		if (v57)
-			break;
-		v57 = loc53;
-		v58 = loc7;
-		v61.u0 = 0x02;
-		v58 <<= v61;
-		v57 += v58;
-		loc54 = v57;
-		v57 = loc54;
-		v58.u0 = 0x00;
-		*v57.u0 = v58;
-		v57 = loc7;
-		v58.u0 = 0x01;
-		v57 += v58;
-		loc55 = v57;
-		v57 = loc55;
-		loc7 = v57;
-	}
-	v57 = arg5;
-	v58.u0 = 11;
-	v57 += v58;
-	loc56 = v57;
-	v57 = loc56;
-	v62 = *v57.u0;
-	v57.u3 = (word32) v62;
-	loc12 = v57;
-	v57 = loc12;
-	v58.u0 = 0x18;
-	v57 <<= v58;
-	v58.u0 = 0x18;
-	v57 >>= v58;
-	v58.u0 = 0x00;
-	v59 = v57 < v58;
-	loc13 = v59;
-	v57 = arg5;
-	v57.u3 = *v57.u3;
-	loc14 = v57;
-	v57 = loc13;
-	if (v57)
-		v57 = loc14;
-	else
-		v57 = arg5;
-	loc15 = v57;
-	v57 = arg5;
-	v58.u0 = 0x04;
-	v57 += v58;
-	loc16 = v57;
-	v57 = loc16;
-	v57.u3 = *v57.u3;
-	loc17 = v57;
-	v57 = loc12;
-	v58.u0 = 0xFF;
-	v57 &= v58;
-	loc18 = v57;
-	v57 = loc13;
-	if (v57)
-		v57 = loc17;
-	else
-		v57 = loc18;
-	while (true)
-	{
-		loc19 = v57;
-		v57 = loc15;
-		v58 = loc19;
-		v57 += v58;
-		loc20 = v57;
-		v57 = loc15;
-		loc9 = v57;
-		v57 = loc9;
-		v58 = loc20;
-		v59 = v57 < v58;
-		loc21 = v59;
-		v57 = loc21;
-		v59 = v57 == 0x00;
-		if (v59)
-			break;
-		v57 = loc9;
-		v63 = *v57.u0;
-		v57.u3 = (word32) v63;
-		loc22 = v57;
-		v57.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v57;
-		v57.u0 = 0x01A7;
+		v58 = loc60;
+		loc53 = v58;
 		v58 = loc53;
-		v61 = loc22;
-		invoke_vii(v57, v58, v61);
-		v57.u3 = g_t140048.u3;
-		loc23 = v57;
-		v57.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v57;
-		v57 = loc23;
-		v58.u0 = 0x01;
-		v57 &= v58;
-		loc24 = v57;
-		v57 = loc24;
-		if (v57)
+		v61.u0 = 0x00;
+		*v58.u0 = v61;
+		v58 = loc53;
+		v59.u0 = 0x08;
+		v58 += v59;
+		v59.u0 = 0x00;
+		*v58.u0 = v59;
+		v58.u0 = 0x00;
+		loc7 = v58;
+		v58 = loc7;
+		v59.u0 = 0x03;
+		v60 = v58 == v59;
+		loc57 = v60;
+		v58 = loc57;
+		if (v58)
+			break;
+		v58 = loc53;
+		v59 = loc7;
+		v62.u0 = 0x02;
+		v59 <<= v62;
+		v58 += v59;
+		loc54 = v58;
+		v58 = loc54;
+		v59.u0 = 0x00;
+		*v58.u0 = v59;
+		v58 = loc7;
+		v59.u0 = 0x01;
+		v58 += v59;
+		loc55 = v58;
+		v58 = loc55;
+		loc7 = v58;
+	}
+	v58 = arg5;
+	v59.u0 = 11;
+	v58 += v59;
+	loc56 = v58;
+	v58 = loc56;
+	v63 = *v58.u0;
+	v58.u3 = (word32) v63;
+	loc12 = v58;
+	v58 = loc12;
+	v59.u0 = 0x18;
+	v58 <<= v59;
+	v59.u0 = 0x18;
+	v58 >>= v59;
+	v59.u0 = 0x00;
+	v60 = v58 < v59;
+	loc13 = v60;
+	v58 = arg5;
+	v58.u3 = *v58.u3;
+	loc14 = v58;
+	v58 = loc13;
+	if (v58)
+		v58 = loc14;
+	else
+		v58 = arg5;
+	loc15 = v58;
+	v58 = arg5;
+	v59.u0 = 0x04;
+	v58 += v59;
+	loc16 = v58;
+	v58 = loc16;
+	v58.u3 = *v58.u3;
+	loc17 = v58;
+	v58 = loc12;
+	v59.u0 = 0xFF;
+	v58 &= v59;
+	loc18 = v58;
+	v58 = loc13;
+	if (v58)
+		v58 = loc17;
+	else
+		v58 = loc18;
+	while (true)
+	{
+		loc19 = v58;
+		v58 = loc15;
+		v59 = loc19;
+		v58 += v59;
+		loc20 = v58;
+		v58 = loc15;
+		loc9 = v58;
+		v58 = loc9;
+		v59 = loc20;
+		v60 = v58 < v59;
+		loc21 = v60;
+		v58 = loc21;
+		v60 = v58 == 0x00;
+		if (v60)
+			break;
+		v58 = loc9;
+		v64 = *v58.u0;
+		v58.u3 = (word32) v64;
+		loc22 = v58;
+		v58.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v58;
+		v58.u0 = 0x01A7;
+		v59 = loc53;
+		v62 = loc22;
+		invoke_vii(v58, v59, v62);
+		v58.u3 = g_t140048.u3;
+		loc23 = v58;
+		v58.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v58;
+		v58 = loc23;
+		v59.u0 = 0x01;
+		v58 &= v59;
+		loc24 = v58;
+		v58 = loc24;
+		if (v58)
 		{
-			v57.u0 = 0x09;
-			loc59 = v57;
+			v58.u0 = 0x09;
+			loc59 = v58;
 			goto l001155E7;
 		}
-		v57 = loc9;
-		v58.u0 = 0x01;
-		v57 += v58;
-		loc25 = v57;
-		v57 = loc25;
-		loc9 = v57;
+		v58 = loc9;
+		v59.u0 = 0x01;
+		v58 += v59;
+		loc25 = v58;
+		v58 = loc25;
+		loc9 = v58;
 	}
-	v57.u0 = 0x08;
-	loc59 = v57;
-l001155E7:
-	v57 = loc59;
 	v58.u0 = 0x08;
-	v59 = v57 == v58;
-	if (v59)
+	loc59 = v58;
+l001155E7:
+	v58 = loc59;
+	v59.u0 = 0x08;
+	v60 = v58 == v59;
+	if (v60)
 	{
-		v57 = arg2;
-		v58.u0 = ~0x00;
-		v59 = v57 == v58;
-		loc26 = v59;
-		v57 = arg2;
-		v58.u0 = 0x01;
-		v57 <<= v58;
-		loc27 = v57;
-		v57 = loc27;
-		loc28 = v57;
-		v57 = loc26;
-		if (v57)
-			v57.u0 = ~0x00;
+		v58 = arg2;
+		v59.u0 = ~0x00;
+		v60 = v58 == v59;
+		loc26 = v60;
+		v58 = arg2;
+		v59.u0 = 0x01;
+		v58 <<= v59;
+		loc27 = v58;
+		v58 = loc27;
+		loc28 = v58;
+		v58 = loc26;
+		if (v58)
+			v58.u0 = ~0x00;
 		else
-			v57 = loc28;
-		loc29 = v57;
-		v57 = loc53;
-		v58.u0 = 11;
-		v57 += v58;
-		loc30 = v57;
-		v57 = loc30;
-		v64 = *v57.u0;
-		v57.u3 = (word32) v64;
-		loc31 = v57;
-		v57 = loc31;
-		v58.u0 = 0x18;
-		v57 <<= v58;
-		v58.u0 = 0x18;
-		v57 >>= v58;
+			v58 = loc28;
+		loc29 = v58;
+		v58 = loc53;
+		v59.u0 = 11;
+		v58 += v59;
+		loc30 = v58;
+		v58 = loc30;
+		v65 = *v58.u0;
+		v58.u3 = (word32) v65;
+		loc31 = v58;
+		v58 = loc31;
+		v59.u0 = 0x18;
+		v58 <<= v59;
+		v59.u0 = 0x18;
+		v58 >>= v59;
+		v59.u0 = 0x00;
+		v60 = v58 < v59;
+		loc32 = v60;
+		v58 = loc53;
+		v58.u3 = *v58.u3;
+		loc33 = v58;
+		v58 = loc32;
+		if (v58)
+			v58 = loc33;
+		else
+			v58 = loc53;
+		loc34 = v58;
 		v58.u0 = 0x00;
-		v59 = v57 < v58;
-		loc32 = v59;
-		v57 = loc53;
-		v57.u3 = *v57.u3;
-		loc33 = v57;
-		v57 = loc32;
-		if (v57)
-			v57 = loc33;
-		else
-			v57 = loc53;
-		loc34 = v57;
-		v57.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v57;
-		v57.u0 = 440;
-		v58 = loc29;
-		v61 = arg3;
-		v65 = arg4;
-		v66 = loc34;
-		v57 = invoke_iiiii(v57, v58, v61, v65, v66);
-		loc35 = v57;
-		v57.u3 = g_t140048.u3;
-		loc36 = v57;
-		v57.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v57;
-		v57 = loc36;
-		v58.u0 = 0x01;
-		v57 &= v58;
-		loc37 = v57;
-		v57 = loc37;
-		if (v57)
+		g_t140048.u3 = (word32 *) v58;
+		v58.u0 = 440;
+		v59 = loc29;
+		v62 = arg3;
+		v66 = arg4;
+		v67 = loc34;
+		v58 = invoke_iiiii(v58, v59, v62, v66, v67);
+		loc35 = v58;
+		v58.u3 = g_t140048.u3;
+		loc36 = v58;
+		v58.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v58;
+		v58 = loc36;
+		v59.u0 = 0x01;
+		v58 &= v59;
+		loc37 = v58;
+		v58 = loc37;
+		if (v58)
 		{
-			v57 = ___cxa_find_matching_catch_n();
-			loc49 = v57;
-			v57.u3 = g_t140094.u3;
-			loc50 = v57;
-			v57 = loc49;
-			loc10 = v57;
-			v57 = loc50;
-			loc11 = v57;
+			v58 = ___cxa_find_matching_catch_n();
+			loc49 = v58;
+			v58.u3 = g_t140094.u3;
+			loc50 = v58;
+			v58 = loc49;
+			loc10 = v58;
+			v58 = loc50;
+			loc11 = v58;
 			goto l00115770;
 		}
 		while (true)
 		{
-			v57 = arg0;
-			v60.u0 = 0x00;
-			*v57.u3 = (word32) v60;
-			v57 = arg0;
-			v58.u0 = 0x08;
-			v57 += v58;
+			v58 = arg0;
+			v61.u0 = 0x00;
+			*v58.u3 = (word32) v61;
+			v58 = arg0;
+			v59.u0 = 0x08;
+			v58 += v59;
+			v59.u0 = 0x00;
+			*v58.u3 = (word32) v59;
 			v58.u0 = 0x00;
-			*v57.u3 = (word32) v58;
-			v57.u0 = 0x00;
-			loc8 = v57;
-			v57 = loc8;
-			v58.u0 = 0x03;
-			v59 = v57 == v58;
-			loc58 = v59;
-			v57 = loc58;
-			if (v57)
-				break;
-			v57 = arg0;
+			loc8 = v58;
 			v58 = loc8;
-			v61.u0 = 0x02;
-			v58 <<= v61;
-			v57 += v58;
-			loc40 = v57;
-			v57 = loc40;
-			v58.u0 = 0x00;
-			*v57.u0 = v58;
-			v57 = loc8;
-			v58.u0 = 0x01;
-			v57 += v58;
-			loc41 = v57;
-			v57 = loc41;
-			loc8 = v57;
+			v59.u0 = 0x03;
+			v60 = v58 == v59;
+			loc58 = v60;
+			v58 = loc58;
+			if (v58)
+				break;
+			v58 = arg0;
+			v59 = loc8;
+			v62.u0 = 0x02;
+			v59 <<= v62;
+			v58 += v59;
+			loc40 = v58;
+			v58 = loc40;
+			v59.u0 = 0x00;
+			*v58.u0 = v59;
+			v58 = loc8;
+			v59.u0 = 0x01;
+			v58 += v59;
+			loc41 = v58;
+			v58 = loc41;
+			loc8 = v58;
 		}
 		while (true)
 		{
-			v57 = loc35;
-			v57 = fn000DAF30(v57);
-			loc42 = v57;
-			v57 = loc35;
-			v58 = loc42;
-			v57 += v58;
-			loc43 = v57;
-			v57 = loc35;
-			loc6 = v57;
-			v57 = loc6;
-			v58 = loc43;
-			v59 = v57 < v58;
-			loc44 = v59;
-			v57 = loc44;
-			v59 = v57 == 0x00;
-			if (v59)
+			v58 = loc35;
+			v58 = fn000DAF30(v58);
+			loc42 = v58;
+			v58 = loc35;
+			v59 = loc42;
+			v58 += v59;
+			loc43 = v58;
+			v58 = loc35;
+			loc6 = v58;
+			v58 = loc6;
+			v59 = loc43;
+			v60 = v58 < v59;
+			loc44 = v60;
+			v58 = loc44;
+			v60 = v58 == 0x00;
+			if (v60)
 				break;
-			v57 = loc6;
-			v67 = *v57.u0;
-			v57.u3 = (word32) v67;
-			loc45 = v57;
-			v57.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v57;
-			v57.u0 = 0x01A7;
-			v58 = arg0;
-			v61 = loc45;
-			invoke_vii(v57, v58, v61);
-			v57.u3 = g_t140048.u3;
-			loc46 = v57;
-			v57.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v57;
-			v57 = loc46;
-			v58.u0 = 0x01;
-			v57 &= v58;
-			loc47 = v57;
-			v57 = loc47;
-			if (v57)
+			v58 = loc6;
+			v68 = *v58.u0;
+			v58.u3 = (word32) v68;
+			loc45 = v58;
+			v58.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v58;
+			v58.u0 = 0x01A7;
+			v59 = arg0;
+			v62 = loc45;
+			invoke_vii(v58, v59, v62);
+			v58.u3 = g_t140048.u3;
+			loc46 = v58;
+			v58.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v58;
+			v58 = loc46;
+			v59.u0 = 0x01;
+			v58 &= v59;
+			loc47 = v58;
+			v58 = loc47;
+			if (v58)
 			{
-				v57.u0 = 0x12;
-				loc59 = v57;
+				v58.u0 = 0x12;
+				loc59 = v58;
 				goto l00115722;
 			}
-			v57 = loc6;
-			v58.u0 = 0x01;
-			v57 += v58;
-			loc48 = v57;
-			v57 = loc48;
-			loc6 = v57;
+			v58 = loc6;
+			v59.u0 = 0x01;
+			v58 += v59;
+			loc48 = v58;
+			v58 = loc48;
+			loc6 = v58;
 		}
-		v57.u0 = 0x13;
-		loc59 = v57;
+		v58.u0 = 0x13;
+		loc59 = v58;
 l00115722:
-		v57 = loc59;
-		v58.u0 = 0x12;
-		v59 = v57 == v58;
-		if (v59)
+		v58 = loc59;
+		v59.u0 = 0x12;
+		v60 = v58 == v59;
+		if (v60)
 		{
-			v57 = ___cxa_find_matching_catch_n();
-			loc51 = v57;
-			v57.u3 = g_t140094.u3;
-			loc52 = v57;
-			v57 = arg0;
-			fn0011BAF7(v57);
-			v57 = loc51;
-			loc10 = v57;
-			v57 = loc52;
-			loc11 = v57;
+			v58 = ___cxa_find_matching_catch_n();
+			loc51 = v58;
+			v58.u3 = g_t140094.u3;
+			loc52 = v58;
+			v58 = arg0;
+			fn0011BAF7(v58);
+			v58 = loc51;
+			loc10 = v58;
+			v58 = loc52;
+			loc11 = v58;
 			goto l00115770;
 		}
-		v57 = loc59;
-		v58.u0 = 0x13;
-		v59 = v57 == v58;
-		if (v59)
+		v58 = loc59;
+		v59.u0 = 0x13;
+		v60 = v58 == v59;
+		if (v60)
 		{
-			v57 = loc53;
-			fn0011BAF7(v57);
-			v57 = loc60;
-			g_t140030.u3 = (word32 *) v57;
+			v58 = loc53;
+			fn0011BAF7(v58);
+			v58 = loc60;
+			g_t140030.u3 = (word32 *) v58;
 			return;
 		}
 	}
 	else
 	{
-		v57 = loc59;
-		v58.u0 = 0x09;
-		v59 = v57 == v58;
-		if (v59)
+		v58 = loc59;
+		v59.u0 = 0x09;
+		v60 = v58 == v59;
+		if (v60)
 		{
-			v57 = ___cxa_find_matching_catch_n();
-			loc38 = v57;
-			v57.u3 = g_t140094.u3;
-			loc39 = v57;
-			v57 = loc38;
-			loc10 = v57;
-			v57 = loc39;
-			loc11 = v57;
+			v58 = ___cxa_find_matching_catch_n();
+			loc38 = v58;
+			v58.u3 = g_t140094.u3;
+			loc39 = v58;
+			v58 = loc38;
+			loc10 = v58;
+			v58 = loc39;
+			loc11 = v58;
 		}
 	}
 l00115770:
-	v57 = loc53;
-	fn0011BAF7(v57);
-	v57 = loc10;
-	___resumeException(v57);
+	v58 = loc53;
+	fn0011BAF7(v58);
+	v58 = loc10;
+	___resumeException(v58);
 }
 
 // 0011577C: void fn0011577C(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011577C(Eq_n arg0, Eq_n arg1)
 {
-	v4.u3 = g_t140030.u3;
-	loc3 = v4;
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
 }
 
 // 00115785: void fn00115785(Stack Eq_n arg0)
 void fn00115785(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011578E: void fn0011578E(Stack Eq_n arg0)
 void fn0011578E(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011579C: Stack Eq_n fn0011579C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011579C(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v14.u3 = g_t140030.u3;
-	loc14 = v14;
-	v14 = arg1;
-	v15.u0 = 11;
-	v14 += v15;
-	loc5 = v14;
-	v14 = loc5;
-	v16.u3 = *v14.u3;
-	v14.u3 = (word32) v16;
-	loc6 = v14;
-	v14 = loc6;
-	v15.u0 = 0x18;
-	v14 <<= v15;
-	v15.u0 = 0x18;
-	v14 >>= v15;
-	v15.u0 = 0x00;
-	v17 = v14 < v15;
-	loc7 = v17;
-	v14 = arg1;
-	v14.u3 = *v14.u3;
-	loc8 = v14;
-	v14 = loc7;
-	if (v14)
-		v14 = loc8;
+	v15.u3 = g_t140030.u3;
+	loc14 = v15;
+	v15 = arg1;
+	v16.u0 = 11;
+	v15 += v16;
+	loc5 = v15;
+	v15 = loc5;
+	v17.u3 = *v15.u3;
+	v15.u3 = (word32) v17;
+	loc6 = v15;
+	v15 = loc6;
+	v16.u0 = 0x18;
+	v15 <<= v16;
+	v16.u0 = 0x18;
+	v15 >>= v16;
+	v16.u0 = 0x00;
+	v18 = v15 < v16;
+	loc7 = v18;
+	v15 = arg1;
+	v15.u3 = *v15.u3;
+	loc8 = v15;
+	v15 = loc7;
+	if (v15)
+		v15 = loc8;
 	else
-		v14 = arg1;
-	loc9 = v14;
-	v14 = loc9;
-	v15.u0 = 0x01;
-	v14 = fn000DAF17(v14, v15);
-	loc10 = v14;
-	v14 = loc10;
-	loc11 = v14;
-	v14 = loc10;
-	v15.u0 = ~0x00;
-	v17 = v14 != v15;
-	loc12 = v17;
-	v14 = loc12;
-	v15.u0 = 0x01;
-	v14 &= v15;
-	loc4 = v14;
-	v14 = loc11;
-	v15 = loc4;
-	v14 >>= v15;
-	loc3 = v14;
-	v14 = loc3;
-	return v14;
+		v15 = arg1;
+	loc9 = v15;
+	v15 = loc9;
+	v16.u0 = 0x01;
+	v15 = fn000DAF17(v15, v16);
+	loc10 = v15;
+	v15 = loc10;
+	loc11 = v15;
+	v15 = loc10;
+	v16.u0 = ~0x00;
+	v18 = v15 != v16;
+	loc12 = v18;
+	v15 = loc12;
+	v16.u0 = 0x01;
+	v15 &= v16;
+	loc4 = v15;
+	v15 = loc11;
+	v16 = loc4;
+	v15 >>= v16;
+	loc3 = v15;
+	v15 = loc3;
+	return v15;
 }
 
 // 001157F7: void fn001157F7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn001157F7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v126.u3 = g_t140030.u3;
-	loc129 = v126;
-	v126.u3 = g_t140030.u3;
-	v127.u0 = 0xE0;
-	v126 += v127;
-	g_t140030.u3 = (word32 *) v126;
-	v126.u3 = g_t140030.u3;
-	v127.u3 = g_t140034.u3;
-	v128 = v126 >= v127;
-	if (v128)
+	v127.u3 = g_t140030.u3;
+	loc129 = v127;
+	v127.u3 = g_t140030.u3;
+	v128.u0 = 0xE0;
+	v127 += v128;
+	g_t140030.u3 = (word32 *) v127;
+	v127.u3 = g_t140030.u3;
+	v128.u3 = g_t140034.u3;
+	v129 = v127 >= v128;
+	if (v129)
 	{
-		v126.u0 = 0xE0;
-		abortStackOverflow(v126);
+		v127.u0 = 0xE0;
+		abortStackOverflow(v127);
 	}
 	while (true)
 	{
-		v126 = loc129;
-		v127.u0 = 0xB8;
-		v126 += v127;
-		loc76 = v126;
-		v126 = loc129;
-		v127.u0 = 0xC0;
-		v126 += v127;
-		loc87 = v126;
-		v126 = loc129;
-		v127.u0 = 0xB4;
-		v126 += v127;
-		loc98 = v126;
-		v126 = loc129;
-		v127.u0 = 0xB0;
-		v126 += v127;
-		loc109 = v126;
-		v126 = loc129;
-		v127.u0 = 0xA8;
-		v126 += v127;
-		loc16 = v126;
-		v126 = loc129;
-		v127.u0 = 0x28;
-		v126 += v127;
-		loc27 = v126;
-		v126 = loc129;
-		v127.u0 = 0x20;
-		v126 += v127;
-		loc28 = v126;
-		v126 = loc129;
-		v127.u0 = 0x1C;
-		v126 += v127;
-		loc29 = v126;
-		v126 = loc129;
-		v127.u0 = 0x10;
-		v126 += v127;
-		loc30 = v126;
-		v126 = loc129;
-		v127.u0 = 0x08;
-		v126 += v127;
-		loc31 = v126;
-		v126 = loc129;
-		loc32 = v126;
-		v126 = loc30;
-		v129.u0 = 0x00;
-		*v126.u0 = v129;
-		v126 = loc30;
-		v127.u0 = 0x08;
-		v126 += v127;
+		v127 = loc129;
+		v128.u0 = 0xB8;
+		v127 += v128;
+		loc76 = v127;
+		v127 = loc129;
+		v128.u0 = 0xC0;
+		v127 += v128;
+		loc87 = v127;
+		v127 = loc129;
+		v128.u0 = 0xB4;
+		v127 += v128;
+		loc98 = v127;
+		v127 = loc129;
+		v128.u0 = 0xB0;
+		v127 += v128;
+		loc109 = v127;
+		v127 = loc129;
+		v128.u0 = 0xA8;
+		v127 += v128;
+		loc16 = v127;
+		v127 = loc129;
+		v128.u0 = 0x28;
+		v127 += v128;
+		loc27 = v127;
+		v127 = loc129;
+		v128.u0 = 0x20;
+		v127 += v128;
+		loc28 = v127;
+		v127 = loc129;
+		v128.u0 = 0x1C;
+		v127 += v128;
+		loc29 = v127;
+		v127 = loc129;
+		v128.u0 = 0x10;
+		v127 += v128;
+		loc30 = v127;
+		v127 = loc129;
+		v128.u0 = 0x08;
+		v127 += v128;
+		loc31 = v127;
+		v127 = loc129;
+		loc32 = v127;
+		v127 = loc30;
+		v130.u0 = 0x00;
+		*v127.u0 = v130;
+		v127 = loc30;
+		v128.u0 = 0x08;
+		v127 += v128;
+		v128.u0 = 0x00;
+		*v127.u0 = v128;
 		v127.u0 = 0x00;
-		*v126.u0 = v127;
-		v126.u0 = 0x00;
-		loc7 = v126;
-		v126 = loc7;
-		v127.u0 = 0x03;
-		v128 = v126 == v127;
-		loc120 = v128;
-		v126 = loc120;
-		if (v126)
-			break;
-		v126 = loc30;
+		loc7 = v127;
 		v127 = loc7;
-		v130.u0 = 0x02;
-		v127 <<= v130;
-		v126 += v127;
-		loc33 = v126;
-		v126 = loc33;
-		v127.u0 = 0x00;
-		*v126.u0 = v127;
-		v126 = loc7;
-		v127.u0 = 0x01;
-		v126 += v127;
-		loc34 = v126;
-		v126 = loc34;
-		loc7 = v126;
+		v128.u0 = 0x03;
+		v129 = v127 == v128;
+		loc120 = v129;
+		v127 = loc120;
+		if (v127)
+			break;
+		v127 = loc30;
+		v128 = loc7;
+		v131.u0 = 0x02;
+		v128 <<= v131;
+		v127 += v128;
+		loc33 = v127;
+		v127 = loc33;
+		v128.u0 = 0x00;
+		*v127.u0 = v128;
+		v127 = loc7;
+		v128.u0 = 0x01;
+		v127 += v128;
+		loc34 = v127;
+		v127 = loc34;
+		loc7 = v127;
 	}
-	v126 = loc31;
-	v127.u0 = 0x04;
-	v126 += v127;
-	loc35 = v126;
-	v126 = loc35;
-	v127.u0 = 0x00;
-	*v126.u0 = v127;
-	v126 = loc31;
-	v127.u0 = 0x2418;
-	*v126.u0 = v127;
-	v126 = arg5;
-	v127.u0 = 0x08;
-	v126 += v127;
-	loc36 = v126;
-	v126 = loc36;
-	v127.u0 = 0x03;
-	v126 += v127;
-	loc37 = v126;
-	v126 = loc37;
-	v131 = *v126.u0;
-	v126.u3 = (word32) v131;
-	loc38 = v126;
-	v126 = loc38;
-	v127.u0 = 0x18;
-	v126 <<= v127;
-	v127.u0 = 0x18;
-	v126 >>= v127;
-	v127.u0 = 0x00;
-	v128 = v126 < v127;
-	loc39 = v128;
-	v126 = arg5;
-	v126.u3 = *v126.u3;
-	loc40 = v126;
-	v126 = loc39;
-	if (v126)
-		v126 = loc40;
+	v127 = loc31;
+	v128.u0 = 0x04;
+	v127 += v128;
+	loc35 = v127;
+	v127 = loc35;
+	v128.u0 = 0x00;
+	*v127.u0 = v128;
+	v127 = loc31;
+	v128.u0 = 0x2418;
+	*v127.u0 = v128;
+	v127 = arg5;
+	v128.u0 = 0x08;
+	v127 += v128;
+	loc36 = v127;
+	v127 = loc36;
+	v128.u0 = 0x03;
+	v127 += v128;
+	loc37 = v127;
+	v127 = loc37;
+	v132 = *v127.u0;
+	v127.u3 = (word32) v132;
+	loc38 = v127;
+	v127 = loc38;
+	v128.u0 = 0x18;
+	v127 <<= v128;
+	v128.u0 = 0x18;
+	v127 >>= v128;
+	v128.u0 = 0x00;
+	v129 = v127 < v128;
+	loc39 = v129;
+	v127 = arg5;
+	v127.u3 = *v127.u3;
+	loc40 = v127;
+	v127 = loc39;
+	if (v127)
+		v127 = loc40;
 	else
-		v126 = arg5;
-	loc41 = v126;
-	v126 = arg5;
-	v127.u0 = 0x04;
-	v126 += v127;
-	loc42 = v126;
-	v126 = loc42;
-	v126.u3 = *v126.u3;
-	loc43 = v126;
-	v126 = loc38;
-	v127.u0 = 0xFF;
-	v126 &= v127;
-	loc44 = v126;
-	v126 = loc39;
-	if (v126)
-		v126 = loc43;
+		v127 = arg5;
+	loc41 = v127;
+	v127 = arg5;
+	v128.u0 = 0x04;
+	v127 += v128;
+	loc42 = v127;
+	v127 = loc42;
+	v127.u3 = *v127.u3;
+	loc43 = v127;
+	v127 = loc38;
+	v128.u0 = 0xFF;
+	v127 &= v128;
+	loc44 = v127;
+	v127 = loc39;
+	if (v127)
+		v127 = loc43;
 	else
-		v126 = loc44;
+		v127 = loc44;
 	while (true)
 	{
-		loc45 = v126;
-		v126 = loc41;
-		v127 = loc45;
-		v130.u0 = 0x02;
-		v127 <<= v130;
-		v126 += v127;
-		loc46 = v126;
-		v126 = loc87;
-		v127.u0 = 0x20;
-		v126 += v127;
-		loc47 = v126;
-		v126 = loc41;
-		loc10 = v126;
-		v126.u0 = 0x00;
-		loc11 = v126;
-		v126 = loc10;
-		v127 = loc46;
-		v128 = v126 < v127;
-		loc48 = v128;
-		v126 = loc11;
-		v127.u0 = 0x02;
-		v128 = v126 != v127;
-		loc49 = v128;
-		v126 = loc49;
-		v127 = loc48;
-		v126 &= v127;
-		loc50 = v126;
-		v126 = loc50;
-		v128 = v126 == 0x00;
-		if (v128)
+		loc45 = v127;
+		v127 = loc41;
+		v128 = loc45;
+		v131.u0 = 0x02;
+		v128 <<= v131;
+		v127 += v128;
+		loc46 = v127;
+		v127 = loc87;
+		v128.u0 = 0x20;
+		v127 += v128;
+		loc47 = v127;
+		v127 = loc41;
+		loc10 = v127;
+		v127.u0 = 0x00;
+		loc11 = v127;
+		v127 = loc10;
+		v128 = loc46;
+		v129 = v127 < v128;
+		loc48 = v129;
+		v127 = loc11;
+		v128.u0 = 0x02;
+		v129 = v127 != v128;
+		loc49 = v129;
+		v127 = loc49;
+		v128 = loc48;
+		v127 &= v128;
+		loc50 = v127;
+		v127 = loc50;
+		v129 = v127 == 0x00;
+		if (v129)
 			break;
-		v126 = loc109;
-		v127 = loc10;
-		*v126.u0 = v127;
-		v126 = loc31;
-		v126 = *v126.u0;
-		loc51 = v126;
-		v126 = loc51;
-		v127.u0 = 0x0C;
-		v126 += v127;
-		loc52 = v126;
-		v126 = loc52;
-		v126 = *v126.u0;
-		loc53 = v126;
-		v126.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v126;
-		v126 = loc53;
+		v127 = loc109;
+		v128 = loc10;
+		*v127.u0 = v128;
 		v127 = loc31;
-		v130 = loc76;
-		v132 = loc10;
-		v133 = loc46;
-		v134 = loc109;
-		v135 = loc87;
-		v136 = loc47;
-		v137 = loc98;
-		v126 = invoke_iiiiiiiii(v126, v127, v130, v132, v133, v134, v135, v136, v137);
-		loc54 = v126;
-		v126.u3 = g_t140048.u3;
-		loc55 = v126;
-		v126.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v126;
-		v126 = loc55;
-		v127.u0 = 0x01;
-		v126 &= v127;
-		loc56 = v126;
-		v126 = loc56;
-		if (v126)
+		v127 = *v127.u0;
+		loc51 = v127;
+		v127 = loc51;
+		v128.u0 = 0x0C;
+		v127 += v128;
+		loc52 = v127;
+		v127 = loc52;
+		v127 = *v127.u0;
+		loc53 = v127;
+		v127.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v127;
+		v127 = loc53;
+		v128 = loc31;
+		v131 = loc76;
+		v133 = loc10;
+		v134 = loc46;
+		v135 = loc109;
+		v136 = loc87;
+		v137 = loc47;
+		v138 = loc98;
+		v127 = invoke_iiiiiiiii(v127, v128, v131, v133, v134, v135, v136, v137, v138);
+		loc54 = v127;
+		v127.u3 = g_t140048.u3;
+		loc55 = v127;
+		v127.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v127;
+		v127 = loc55;
+		v128.u0 = 0x01;
+		v127 &= v128;
+		loc56 = v127;
+		v127 = loc56;
+		if (v127)
 		{
-			v126.u0 = 0x0F;
-			loc128 = v126;
+			v127.u0 = 0x0F;
+			loc128 = v127;
 			goto l00115A48;
 		}
-		v126 = loc54;
-		v127.u0 = 0x02;
-		v128 = v126 == v127;
-		loc57 = v128;
-		v126 = loc109;
-		v126 = *v126.u0;
-		loc58 = v126;
-		v126 = loc58;
-		v127 = loc10;
-		v128 = v126 == v127;
-		loc59 = v128;
-		v126 = loc57;
-		v127 = loc59;
-		v126 |= v127;
-		loc127 = v126;
-		v126 = loc127;
-		if (v126)
+		v127 = loc54;
+		v128.u0 = 0x02;
+		v129 = v127 == v128;
+		loc57 = v129;
+		v127 = loc109;
+		v127 = *v127.u0;
+		loc58 = v127;
+		v127 = loc58;
+		v128 = loc10;
+		v129 = v127 == v128;
+		loc59 = v129;
+		v127 = loc57;
+		v128 = loc59;
+		v127 |= v128;
+		loc127 = v127;
+		v127 = loc127;
+		if (v127)
 		{
-			v126.u0 = 0x08;
-			loc128 = v126;
+			v127.u0 = 0x08;
+			loc128 = v127;
 			goto l00115A48;
 		}
-		v126 = loc87;
-		loc9 = v126;
+		v127 = loc87;
+		loc9 = v127;
 		while (true)
 		{
-			v126 = loc98;
-			v126 = *v126.u0;
-			loc63 = v126;
-			v126 = loc9;
-			v127 = loc63;
-			v128 = v126 < v127;
-			loc64 = v128;
-			v126 = loc64;
-			v128 = v126 == 0x00;
-			if (v128)
+			v127 = loc98;
+			v127 = *v127.u0;
+			loc63 = v127;
+			v127 = loc9;
+			v128 = loc63;
+			v129 = v127 < v128;
+			loc64 = v129;
+			v127 = loc64;
+			v129 = v127 == 0x00;
+			if (v129)
 				break;
-			v126 = loc9;
-			v138 = *v126.u0;
-			v126.u3 = (word32) v138;
-			loc66 = v126;
-			v126.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v126;
-			v126.u0 = 0x01A7;
-			v127 = loc30;
-			v130 = loc66;
-			invoke_vii(v126, v127, v130);
-			v126.u3 = g_t140048.u3;
-			loc67 = v126;
-			v126.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v126;
-			v126 = loc67;
-			v127.u0 = 0x01;
-			v126 &= v127;
-			loc68 = v126;
-			v126 = loc68;
-			if (v126)
+			v127 = loc9;
+			v139 = *v127.u0;
+			v127.u3 = (word32) v139;
+			loc66 = v127;
+			v127.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v127;
+			v127.u0 = 0x01A7;
+			v128 = loc30;
+			v131 = loc66;
+			invoke_vii(v127, v128, v131);
+			v127.u3 = g_t140048.u3;
+			loc67 = v127;
+			v127.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v127;
+			v127 = loc67;
+			v128.u0 = 0x01;
+			v127 &= v128;
+			loc68 = v127;
+			v127 = loc68;
+			if (v127)
 			{
-				v126.u0 = 0x0E;
-				loc128 = v126;
+				v127.u0 = 0x0E;
+				loc128 = v127;
 				goto l00115A48;
 			}
-			v126 = loc9;
-			v127.u0 = 0x01;
-			v126 += v127;
-			loc69 = v126;
-			v126 = loc69;
-			loc9 = v126;
+			v127 = loc9;
+			v128.u0 = 0x01;
+			v127 += v128;
+			loc69 = v127;
+			v127 = loc69;
+			loc9 = v127;
 		}
-		v126 = loc109;
-		v126 = *v126.u0;
-		loc65 = v126;
-		v126 = loc65;
-		loc10 = v126;
-		v126 = loc54;
-		loc11 = v126;
+		v127 = loc109;
+		v127 = *v127.u0;
+		loc65 = v127;
+		v127 = loc65;
+		loc10 = v127;
+		v127 = loc54;
+		loc11 = v127;
 	}
-	v126.u0 = 0x0D;
-	loc128 = v126;
+	v127.u0 = 0x0D;
+	loc128 = v127;
 l00115A48:
-	v126 = loc128;
-	v127.u0 = 0x08;
-	v128 = v126 == v127;
-	if (v128)
+	v127 = loc128;
+	v128.u0 = 0x08;
+	v129 = v127 == v128;
+	if (v129)
 	{
-		v126.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v126;
-		v126.u0 = 422;
-		v127.u0 = 15353;
-		invoke_vi(v126, v127);
-		v126.u3 = g_t140048.u3;
-		loc60 = v126;
-		v126.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v126;
-		v126 = ___cxa_find_matching_catch_n();
-		loc61 = v126;
-		v126.u3 = g_t140094.u3;
-		loc62 = v126;
-		v126 = loc61;
-		loc124 = v126;
-		v126 = loc62;
-		loc125 = v126;
-		v126.u0 = 0x10;
-		loc128 = v126;
+		v127.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v127;
+		v127.u0 = 422;
+		v128.u0 = 15353;
+		invoke_vi(v127, v128);
+		v127.u3 = g_t140048.u3;
+		loc60 = v127;
+		v127.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v127;
+		v127 = ___cxa_find_matching_catch_n();
+		loc61 = v127;
+		v127.u3 = g_t140094.u3;
+		loc62 = v127;
+		v127 = loc61;
+		loc124 = v127;
+		v127 = loc62;
+		loc125 = v127;
+		v127.u0 = 0x10;
+		loc128 = v127;
 	}
 	else
 	{
-		v126 = loc128;
-		v127.u0 = 0x0D;
-		v128 = v126 == v127;
-		if (v128)
+		v127 = loc128;
+		v128.u0 = 0x0D;
+		v129 = v127 == v128;
+		if (v129)
 		{
-			v126 = arg2;
-			v127.u0 = ~0x00;
-			v128 = v126 == v127;
-			loc70 = v128;
-			v126 = arg2;
-			v127.u0 = 0x01;
-			v126 <<= v127;
-			loc71 = v126;
-			v126 = loc71;
-			loc72 = v126;
-			v126 = loc70;
-			if (v126)
-				v126.u0 = ~0x00;
+			v127 = arg2;
+			v128.u0 = ~0x00;
+			v129 = v127 == v128;
+			loc70 = v129;
+			v127 = arg2;
+			v128.u0 = 0x01;
+			v127 <<= v128;
+			loc71 = v127;
+			v127 = loc71;
+			loc72 = v127;
+			v127 = loc70;
+			if (v127)
+				v127.u0 = ~0x00;
 			else
-				v126 = loc72;
-			loc73 = v126;
-			v126 = loc30;
-			v127.u0 = 11;
-			v126 += v127;
-			loc74 = v126;
-			v126 = loc74;
-			v139 = *v126.u0;
-			v126.u3 = (word32) v139;
-			loc75 = v126;
-			v126 = loc75;
-			v127.u0 = 0x18;
-			v126 <<= v127;
-			v127.u0 = 0x18;
-			v126 >>= v127;
+				v127 = loc72;
+			loc73 = v127;
+			v127 = loc30;
+			v128.u0 = 11;
+			v127 += v128;
+			loc74 = v127;
+			v127 = loc74;
+			v140 = *v127.u0;
+			v127.u3 = (word32) v140;
+			loc75 = v127;
+			v127 = loc75;
+			v128.u0 = 0x18;
+			v127 <<= v128;
+			v128.u0 = 0x18;
+			v127 >>= v128;
+			v128.u0 = 0x00;
+			v129 = v127 < v128;
+			loc77 = v129;
+			v127 = loc30;
+			v127.u3 = *v127.u3;
+			loc78 = v127;
+			v127 = loc77;
+			if (v127)
+				v127 = loc78;
+			else
+				v127 = loc30;
+			loc79 = v127;
 			v127.u0 = 0x00;
-			v128 = v126 < v127;
-			loc77 = v128;
-			v126 = loc30;
-			v126.u3 = *v126.u3;
-			loc78 = v126;
-			v126 = loc77;
-			if (v126)
-				v126 = loc78;
-			else
-				v126 = loc30;
-			loc79 = v126;
-			v126.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v126;
-			v126.u0 = 440;
-			v127 = loc73;
-			v130 = arg3;
-			v132 = arg4;
-			v133 = loc79;
-			v126 = invoke_iiiii(v126, v127, v130, v132, v133);
-			loc80 = v126;
-			v126.u3 = g_t140048.u3;
-			loc81 = v126;
-			v126.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v126;
-			v126 = loc81;
-			v127.u0 = 0x01;
-			v126 &= v127;
-			loc82 = v126;
-			v126 = loc82;
-			if (v126)
+			g_t140048.u3 = (word32 *) v127;
+			v127.u0 = 440;
+			v128 = loc73;
+			v131 = arg3;
+			v133 = arg4;
+			v134 = loc79;
+			v127 = invoke_iiiii(v127, v128, v131, v133, v134);
+			loc80 = v127;
+			v127.u3 = g_t140048.u3;
+			loc81 = v127;
+			v127.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v127;
+			v127 = loc81;
+			v128.u0 = 0x01;
+			v127 &= v128;
+			loc82 = v127;
+			v127 = loc82;
+			if (v127)
 			{
-				v126 = ___cxa_find_matching_catch_n();
-				loc21 = v126;
-				v126.u3 = g_t140094.u3;
-				loc22 = v126;
-				v126 = loc21;
-				loc14 = v126;
-				v126 = loc22;
-				loc15 = v126;
+				v127 = ___cxa_find_matching_catch_n();
+				loc21 = v127;
+				v127.u3 = g_t140094.u3;
+				loc22 = v127;
+				v127 = loc21;
+				loc14 = v127;
+				v127 = loc22;
+				loc15 = v127;
 				goto l00115D84;
 			}
 			while (true)
 			{
-				v126 = arg0;
-				v129.u0 = 0x00;
-				*v126.u3 = (word32) v129;
-				v126 = arg0;
-				v127.u0 = 0x08;
-				v126 += v127;
+				v127 = arg0;
+				v130.u0 = 0x00;
+				*v127.u3 = (word32) v130;
+				v127 = arg0;
+				v128.u0 = 0x08;
+				v127 += v128;
+				v128.u0 = 0x00;
+				*v127.u3 = (word32) v128;
 				v127.u0 = 0x00;
-				*v126.u3 = (word32) v127;
-				v126.u0 = 0x00;
-				loc8 = v126;
-				v126 = loc8;
-				v127.u0 = 0x03;
-				v128 = v126 == v127;
-				loc121 = v128;
-				v126 = loc121;
-				if (v126)
-					break;
-				v126 = arg0;
+				loc8 = v127;
 				v127 = loc8;
-				v130.u0 = 0x02;
-				v127 <<= v130;
-				v126 += v127;
-				loc88 = v126;
-				v126 = loc88;
-				v127.u0 = 0x00;
-				*v126.u0 = v127;
-				v126 = loc8;
-				v127.u0 = 0x01;
-				v126 += v127;
-				loc89 = v126;
-				v126 = loc89;
-				loc8 = v126;
+				v128.u0 = 0x03;
+				v129 = v127 == v128;
+				loc121 = v129;
+				v127 = loc121;
+				if (v127)
+					break;
+				v127 = arg0;
+				v128 = loc8;
+				v131.u0 = 0x02;
+				v128 <<= v131;
+				v127 += v128;
+				loc88 = v127;
+				v127 = loc88;
+				v128.u0 = 0x00;
+				*v127.u0 = v128;
+				v127 = loc8;
+				v128.u0 = 0x01;
+				v127 += v128;
+				loc89 = v127;
+				v127 = loc89;
+				loc8 = v127;
 			}
 			while (true)
 			{
-				v126 = loc32;
-				v127.u0 = 0x04;
-				v126 += v127;
-				loc90 = v126;
-				v126 = loc90;
-				v127.u0 = 0x00;
-				*v126.u0 = v127;
-				v126 = loc32;
-				v127.u0 = 0x2448;
-				*v126.u0 = v127;
-				v126 = loc80;
-				v126 = fn000DAF30(v126);
-				loc91 = v126;
-				v126 = loc80;
-				v127 = loc91;
-				v126 += v127;
-				loc92 = v126;
-				v126 = loc92;
-				loc93 = v126;
-				v126 = loc27;
-				v127.u0 = 0x80;
-				v126 += v127;
-				loc94 = v126;
-				v126 = loc80;
-				loc12 = v126;
-				v126.u0 = 0x00;
-				loc13 = v126;
-				v126 = loc12;
-				v127 = loc92;
-				v128 = v126 < v127;
-				loc95 = v128;
-				v126 = loc13;
-				v127.u0 = 0x02;
-				v128 = v126 != v127;
-				loc96 = v128;
-				v126 = loc96;
-				v127 = loc95;
-				v126 &= v127;
-				loc97 = v126;
-				v126 = loc97;
-				v128 = v126 == 0x00;
-				if (v128)
-					break;
-				v126 = loc29;
-				v127 = loc12;
-				*v126.u0 = v127;
-				v126 = loc32;
-				v126 = *v126.u0;
-				loc99 = v126;
-				v126 = loc99;
-				v127.u0 = 0x10;
-				v126 += v127;
-				loc100 = v126;
-				v126 = loc100;
-				v126 = *v126.u0;
-				loc101 = v126;
-				v126 = loc12;
-				loc102 = v126;
-				v126 = loc93;
-				v127 = loc102;
-				v126 -= v127;
-				loc103 = v126;
-				v126 = loc103;
-				v127.u0 = 0x20;
-				v128 = v126 > v127;
-				loc104 = v128;
-				v126 = loc12;
-				v127.u0 = 0x20;
-				v126 += v127;
-				loc105 = v126;
-				v126 = loc104;
-				if (v126)
-					v126 = loc105;
-				else
-					v126 = loc92;
-				loc106 = v126;
-				v126.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v126;
-				v126 = loc101;
 				v127 = loc32;
-				v130 = loc16;
-				v132 = loc12;
-				v133 = loc106;
-				v134 = loc29;
-				v135 = loc27;
-				v136 = loc94;
-				v137 = loc28;
-				v126 = invoke_iiiiiiiii(v126, v127, v130, v132, v133, v134, v135, v136, v137);
-				loc107 = v126;
-				v126.u3 = g_t140048.u3;
-				loc108 = v126;
-				v126.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v126;
-				v126 = loc108;
-				v127.u0 = 0x01;
-				v126 &= v127;
-				loc110 = v126;
-				v126 = loc110;
-				if (v126)
-				{
-					v126.u0 = 0x20;
-					loc128 = v126;
-					goto l00115CBE;
-				}
-				v126 = loc107;
-				v127.u0 = 0x02;
-				v128 = v126 == v127;
-				loc111 = v128;
-				v126 = loc29;
-				v126 = *v126.u0;
-				loc112 = v126;
-				v126 = loc112;
+				v128.u0 = 0x04;
+				v127 += v128;
+				loc90 = v127;
+				v127 = loc90;
+				v128.u0 = 0x00;
+				*v127.u0 = v128;
+				v127 = loc32;
+				v128.u0 = 0x2448;
+				*v127.u0 = v128;
+				v127 = loc80;
+				v127 = fn000DAF30(v127);
+				loc91 = v127;
+				v127 = loc80;
+				v128 = loc91;
+				v127 += v128;
+				loc92 = v127;
+				v127 = loc92;
+				loc93 = v127;
+				v127 = loc27;
+				v128.u0 = 0x80;
+				v127 += v128;
+				loc94 = v127;
+				v127 = loc80;
+				loc12 = v127;
+				v127.u0 = 0x00;
+				loc13 = v127;
 				v127 = loc12;
-				v128 = v126 == v127;
-				loc113 = v128;
-				v126 = loc111;
-				v127 = loc113;
-				v126 |= v127;
-				loc126 = v126;
-				v126 = loc126;
-				if (v126)
+				v128 = loc92;
+				v129 = v127 < v128;
+				loc95 = v129;
+				v127 = loc13;
+				v128.u0 = 0x02;
+				v129 = v127 != v128;
+				loc96 = v129;
+				v127 = loc96;
+				v128 = loc95;
+				v127 &= v128;
+				loc97 = v127;
+				v127 = loc97;
+				v129 = v127 == 0x00;
+				if (v129)
+					break;
+				v127 = loc29;
+				v128 = loc12;
+				*v127.u0 = v128;
+				v127 = loc32;
+				v127 = *v127.u0;
+				loc99 = v127;
+				v127 = loc99;
+				v128.u0 = 0x10;
+				v127 += v128;
+				loc100 = v127;
+				v127 = loc100;
+				v127 = *v127.u0;
+				loc101 = v127;
+				v127 = loc12;
+				loc102 = v127;
+				v127 = loc93;
+				v128 = loc102;
+				v127 -= v128;
+				loc103 = v127;
+				v127 = loc103;
+				v128.u0 = 0x20;
+				v129 = v127 > v128;
+				loc104 = v129;
+				v127 = loc12;
+				v128.u0 = 0x20;
+				v127 += v128;
+				loc105 = v127;
+				v127 = loc104;
+				if (v127)
+					v127 = loc105;
+				else
+					v127 = loc92;
+				loc106 = v127;
+				v127.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v127;
+				v127 = loc101;
+				v128 = loc32;
+				v131 = loc16;
+				v133 = loc12;
+				v134 = loc106;
+				v135 = loc29;
+				v136 = loc27;
+				v137 = loc94;
+				v138 = loc28;
+				v127 = invoke_iiiiiiiii(v127, v128, v131, v133, v134, v135, v136, v137, v138);
+				loc107 = v127;
+				v127.u3 = g_t140048.u3;
+				loc108 = v127;
+				v127.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v127;
+				v127 = loc108;
+				v128.u0 = 0x01;
+				v127 &= v128;
+				loc110 = v127;
+				v127 = loc110;
+				if (v127)
 				{
-					v126.u0 = 0x18;
-					loc128 = v126;
+					v127.u0 = 0x20;
+					loc128 = v127;
 					goto l00115CBE;
 				}
-				v126 = loc27;
-				loc6 = v126;
+				v127 = loc107;
+				v128.u0 = 0x02;
+				v129 = v127 == v128;
+				loc111 = v129;
+				v127 = loc29;
+				v127 = *v127.u0;
+				loc112 = v127;
+				v127 = loc112;
+				v128 = loc12;
+				v129 = v127 == v128;
+				loc113 = v129;
+				v127 = loc111;
+				v128 = loc113;
+				v127 |= v128;
+				loc126 = v127;
+				v127 = loc126;
+				if (v127)
+				{
+					v127.u0 = 0x18;
+					loc128 = v127;
+					goto l00115CBE;
+				}
+				v127 = loc27;
+				loc6 = v127;
 				while (true)
 				{
-					v126 = loc28;
-					v126 = *v126.u0;
-					loc117 = v126;
-					v126 = loc6;
-					v127 = loc117;
-					v128 = v126 < v127;
-					loc118 = v128;
-					v126 = loc118;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc28;
+					v127 = *v127.u0;
+					loc117 = v127;
+					v127 = loc6;
+					v128 = loc117;
+					v129 = v127 < v128;
+					loc118 = v129;
+					v127 = loc118;
+					v129 = v127 == 0x00;
+					if (v129)
 						break;
-					v126 = loc6;
-					v126 = *v126.u0;
-					loc17 = v126;
-					v126.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v126;
-					v126.u0 = 0x01AF;
-					v127 = arg0;
-					v130 = loc17;
-					invoke_vii(v126, v127, v130);
-					v126.u3 = g_t140048.u3;
-					loc18 = v126;
-					v126.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v126;
-					v126 = loc18;
-					v127.u0 = 0x01;
-					v126 &= v127;
-					loc19 = v126;
-					v126 = loc19;
-					if (v126)
+					v127 = loc6;
+					v127 = *v127.u0;
+					loc17 = v127;
+					v127.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v127;
+					v127.u0 = 0x01AF;
+					v128 = arg0;
+					v131 = loc17;
+					invoke_vii(v127, v128, v131);
+					v127.u3 = g_t140048.u3;
+					loc18 = v127;
+					v127.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v127;
+					v127 = loc18;
+					v128.u0 = 0x01;
+					v127 &= v128;
+					loc19 = v127;
+					v127 = loc19;
+					if (v127)
 					{
-						v126.u0 = 0x1F;
-						loc128 = v126;
+						v127.u0 = 0x1F;
+						loc128 = v127;
 						goto l00115CBE;
 					}
-					v126 = loc6;
-					v127.u0 = 0x04;
-					v126 += v127;
-					loc20 = v126;
-					v126 = loc20;
-					loc6 = v126;
+					v127 = loc6;
+					v128.u0 = 0x04;
+					v127 += v128;
+					loc20 = v127;
+					v127 = loc20;
+					loc6 = v127;
 				}
-				v126 = loc29;
-				v126 = *v126.u0;
-				loc119 = v126;
-				v126 = loc119;
-				loc12 = v126;
-				v126 = loc107;
-				loc13 = v126;
+				v127 = loc29;
+				v127 = *v127.u0;
+				loc119 = v127;
+				v127 = loc119;
+				loc12 = v127;
+				v127 = loc107;
+				loc13 = v127;
 			}
-			v126.u0 = 0x1D;
-			loc128 = v126;
+			v127.u0 = 0x1D;
+			loc128 = v127;
 l00115CBE:
-			v126 = loc128;
-			v127.u0 = 0x18;
-			v128 = v126 == v127;
-			if (v128)
+			v127 = loc128;
+			v128.u0 = 0x18;
+			v129 = v127 == v128;
+			if (v129)
 			{
-				v126.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v126;
-				v126.u0 = 422;
-				v127.u0 = 15353;
-				invoke_vi(v126, v127);
-				v126.u3 = g_t140048.u3;
-				loc114 = v126;
-				v126.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v126;
-				v126 = ___cxa_find_matching_catch_n();
-				loc115 = v126;
-				v126.u3 = g_t140094.u3;
-				loc116 = v126;
-				v126 = loc115;
-				loc122 = v126;
-				v126 = loc116;
-				loc123 = v126;
+				v127.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v127;
+				v127.u0 = 422;
+				v128.u0 = 15353;
+				invoke_vi(v127, v128);
+				v127.u3 = g_t140048.u3;
+				loc114 = v127;
+				v127.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v127;
+				v127 = ___cxa_find_matching_catch_n();
+				loc115 = v127;
+				v127.u3 = g_t140094.u3;
+				loc116 = v127;
+				v127 = loc115;
+				loc122 = v127;
+				v127 = loc116;
+				loc123 = v127;
 			}
 			else
 			{
-				v126 = loc128;
-				v127.u0 = 0x1D;
-				v128 = v126 == v127;
-				if (v128)
+				v127 = loc128;
+				v128.u0 = 0x1D;
+				v129 = v127 == v128;
+				if (v129)
 				{
-					v126 = loc30;
-					fn0011BAF7(v126);
-					v126 = loc129;
-					g_t140030.u3 = (word32 *) v126;
+					v127 = loc30;
+					fn0011BAF7(v127);
+					v127 = loc129;
+					g_t140030.u3 = (word32 *) v127;
 					return;
 				}
-				v126 = loc128;
-				v127.u0 = 0x1F;
-				v128 = v126 == v127;
-				if (v128)
+				v127 = loc128;
+				v128.u0 = 0x1F;
+				v129 = v127 == v128;
+				if (v129)
 				{
-					v126 = ___cxa_find_matching_catch_n();
-					loc23 = v126;
-					v126.u3 = g_t140094.u3;
-					loc24 = v126;
-					v126 = loc23;
-					loc122 = v126;
-					v126 = loc24;
-					loc123 = v126;
+					v127 = ___cxa_find_matching_catch_n();
+					loc23 = v127;
+					v127.u3 = g_t140094.u3;
+					loc24 = v127;
+					v127 = loc23;
+					loc122 = v127;
+					v127 = loc24;
+					loc123 = v127;
 				}
 				else
 				{
-					v126 = loc128;
-					v127.u0 = 0x20;
-					v128 = v126 == v127;
-					if (v128)
+					v127 = loc128;
+					v128.u0 = 0x20;
+					v129 = v127 == v128;
+					if (v129)
 					{
-						v126 = ___cxa_find_matching_catch_n();
-						loc25 = v126;
-						v126.u3 = g_t140094.u3;
-						loc26 = v126;
-						v126 = loc25;
-						loc122 = v126;
-						v126 = loc26;
-						loc123 = v126;
+						v127 = ___cxa_find_matching_catch_n();
+						loc25 = v127;
+						v127.u3 = g_t140094.u3;
+						loc26 = v127;
+						v127 = loc25;
+						loc122 = v127;
+						v127 = loc26;
+						loc123 = v127;
 					}
 				}
 			}
-			v126 = arg0;
-			fn0011C7BA(v126);
-			v126 = loc122;
-			loc14 = v126;
-			v126 = loc123;
-			loc15 = v126;
+			v127 = arg0;
+			fn0011C7BA(v127);
+			v127 = loc122;
+			loc14 = v127;
+			v127 = loc123;
+			loc15 = v127;
 		}
 		else
 		{
-			v126 = loc128;
-			v127.u0 = 0x0E;
-			v128 = v126 == v127;
-			if (v128)
+			v127 = loc128;
+			v128.u0 = 0x0E;
+			v129 = v127 == v128;
+			if (v129)
 			{
-				v126 = ___cxa_find_matching_catch_n();
-				loc83 = v126;
-				v126.u3 = g_t140094.u3;
-				loc84 = v126;
-				v126 = loc83;
-				loc124 = v126;
-				v126 = loc84;
-				loc125 = v126;
-				v126.u0 = 0x10;
-				loc128 = v126;
+				v127 = ___cxa_find_matching_catch_n();
+				loc83 = v127;
+				v127.u3 = g_t140094.u3;
+				loc84 = v127;
+				v127 = loc83;
+				loc124 = v127;
+				v127 = loc84;
+				loc125 = v127;
+				v127.u0 = 0x10;
+				loc128 = v127;
 			}
 			else
 			{
-				v126 = loc128;
-				v127.u0 = 0x0F;
-				v128 = v126 == v127;
-				if (v128)
+				v127 = loc128;
+				v128.u0 = 0x0F;
+				v129 = v127 == v128;
+				if (v129)
 				{
-					v126 = ___cxa_find_matching_catch_n();
-					loc85 = v126;
-					v126.u3 = g_t140094.u3;
-					loc86 = v126;
-					v126 = loc85;
-					loc124 = v126;
-					v126 = loc86;
-					loc125 = v126;
-					v126.u0 = 0x10;
-					loc128 = v126;
+					v127 = ___cxa_find_matching_catch_n();
+					loc85 = v127;
+					v127.u3 = g_t140094.u3;
+					loc86 = v127;
+					v127 = loc85;
+					loc124 = v127;
+					v127 = loc86;
+					loc125 = v127;
+					v127.u0 = 0x10;
+					loc128 = v127;
 				}
 			}
 		}
 	}
 l00115D84:
-	v126 = loc128;
-	v127.u0 = 0x10;
-	v128 = v126 == v127;
-	if (v128)
+	v127 = loc128;
+	v128.u0 = 0x10;
+	v129 = v127 == v128;
+	if (v129)
 	{
-		v126 = loc124;
-		loc14 = v126;
-		v126 = loc125;
-		loc15 = v126;
+		v127 = loc124;
+		loc14 = v127;
+		v127 = loc125;
+		loc15 = v127;
 	}
-	v126 = loc30;
-	fn0011BAF7(v126);
-	v126 = loc14;
-	___resumeException(v126);
+	v127 = loc30;
+	fn0011BAF7(v127);
+	v127 = loc14;
+	___resumeException(v127);
 }
 
 // 00115DA1: void fn00115DA1(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn00115DA1(Eq_n arg0, Eq_n arg1)
 {
-	v4.u3 = g_t140030.u3;
-	loc3 = v4;
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
 }
 
 // 00115DAA: void fn00115DAA(Stack Eq_n arg0)
 void fn00115DAA(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 00115DB3: void fn00115DB3(Stack Eq_n arg0)
 void fn00115DB3(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00115DC1: Stack Eq_n fn00115DC1(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00115DC1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v9.u3 = g_t140030.u3;
-	loc14 = v9;
-	v9.u3 = g_t140030.u3;
-	v10.u0 = 0x10;
-	v9 += v10;
-	g_t140030.u3 = (word32 *) v9;
-	v9.u3 = g_t140030.u3;
-	v10.u3 = g_t140034.u3;
-	v11 = v9 >= v10;
-	if (v11)
+	v10.u3 = g_t140030.u3;
+	loc14 = v10;
+	v10.u3 = g_t140030.u3;
+	v11.u0 = 0x10;
+	v10 += v11;
+	g_t140030.u3 = (word32 *) v10;
+	v10.u3 = g_t140030.u3;
+	v11.u3 = g_t140034.u3;
+	v12 = v10 >= v11;
+	if (v12)
 	{
-		v9.u0 = 0x10;
-		abortStackOverflow(v9);
+		v10.u0 = 0x10;
+		abortStackOverflow(v10);
 	}
-	v9 = loc14;
-	v10.u0 = 0x04;
-	v9 += v10;
-	loc11 = v9;
-	v9 = loc14;
-	loc12 = v9;
-	v9 = loc11;
+	v10 = loc14;
+	v11.u0 = 0x04;
+	v10 += v11;
+	loc11 = v10;
+	v10 = loc14;
+	loc12 = v10;
+	v10 = loc11;
+	v11 = arg2;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v11 = arg5;
+	*v10.u0 = v11;
 	v10 = arg2;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v10 = arg5;
-	*v9.u0 = v10;
-	v9 = arg2;
-	v10 = arg3;
-	v12 = loc11;
-	v13 = arg5;
-	v14 = arg6;
-	v15 = loc12;
-	v16.u0 = 1114111;
-	v17.u0 = 0x00;
-	v9 = fn00116A09(v9, v10, v12, v13, v14, v15, v16, v17);
-	loc8 = v9;
-	v9 = loc11;
-	v9 = *v9.u0;
-	loc9 = v9;
-	v9 = arg4;
-	v10 = loc9;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v9 = *v9.u0;
-	loc10 = v9;
-	v9 = arg7;
-	v10 = loc10;
-	*v9.u0 = v10;
-	v9 = loc14;
-	g_t140030.u3 = (word32 *) v9;
-	v9 = loc8;
-	return v9;
+	v11 = arg3;
+	v13 = loc11;
+	v14 = arg5;
+	v15 = arg6;
+	v16 = loc12;
+	v17.u0 = 1114111;
+	v18.u0 = 0x00;
+	v10 = fn00116A09(v10, v11, v13, v14, v15, v16, v17, v18);
+	loc8 = v10;
+	v10 = loc11;
+	v10 = *v10.u0;
+	loc9 = v10;
+	v10 = arg4;
+	v11 = loc9;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v10 = *v10.u0;
+	loc10 = v10;
+	v10 = arg7;
+	v11 = loc10;
+	*v10.u0 = v11;
+	v10 = loc14;
+	g_t140030.u3 = (word32 *) v10;
+	v10 = loc8;
+	return v10;
 }
 
 // 00115E30: Stack Eq_n fn00115E30(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00115E30(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v9.u3 = g_t140030.u3;
-	loc14 = v9;
-	v9.u3 = g_t140030.u3;
-	v10.u0 = 0x10;
-	v9 += v10;
-	g_t140030.u3 = (word32 *) v9;
-	v9.u3 = g_t140030.u3;
-	v10.u3 = g_t140034.u3;
-	v11 = v9 >= v10;
-	if (v11)
+	v10.u3 = g_t140030.u3;
+	loc14 = v10;
+	v10.u3 = g_t140030.u3;
+	v11.u0 = 0x10;
+	v10 += v11;
+	g_t140030.u3 = (word32 *) v10;
+	v10.u3 = g_t140030.u3;
+	v11.u3 = g_t140034.u3;
+	v12 = v10 >= v11;
+	if (v12)
 	{
-		v9.u0 = 0x10;
-		abortStackOverflow(v9);
+		v10.u0 = 0x10;
+		abortStackOverflow(v10);
 	}
-	v9 = loc14;
-	v10.u0 = 0x04;
-	v9 += v10;
-	loc11 = v9;
-	v9 = loc14;
-	loc12 = v9;
-	v9 = loc11;
+	v10 = loc14;
+	v11.u0 = 0x04;
+	v10 += v11;
+	loc11 = v10;
+	v10 = loc14;
+	loc12 = v10;
+	v10 = loc11;
+	v11 = arg2;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v11 = arg5;
+	*v10.u0 = v11;
 	v10 = arg2;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v10 = arg5;
-	*v9.u0 = v10;
-	v9 = arg2;
-	v10 = arg3;
-	v12 = loc11;
-	v13 = arg5;
-	v14 = arg6;
-	v15 = loc12;
-	v16.u0 = 1114111;
-	v17.u0 = 0x00;
-	v9 = fn001164A4(v9, v10, v12, v13, v14, v15, v16, v17);
-	loc8 = v9;
-	v9 = loc11;
-	v9 = *v9.u0;
-	loc9 = v9;
-	v9 = arg4;
-	v10 = loc9;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v9 = *v9.u0;
-	loc10 = v9;
-	v9 = arg7;
-	v10 = loc10;
-	*v9.u0 = v10;
-	v9 = loc14;
-	g_t140030.u3 = (word32 *) v9;
-	v9 = loc8;
-	return v9;
+	v11 = arg3;
+	v13 = loc11;
+	v14 = arg5;
+	v15 = arg6;
+	v16 = loc12;
+	v17.u0 = 1114111;
+	v18.u0 = 0x00;
+	v10 = fn001164A4(v10, v11, v13, v14, v15, v16, v17, v18);
+	loc8 = v10;
+	v10 = loc11;
+	v10 = *v10.u0;
+	loc9 = v10;
+	v10 = arg4;
+	v11 = loc9;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v10 = *v10.u0;
+	loc10 = v10;
+	v10 = arg7;
+	v11 = loc10;
+	*v10.u0 = v11;
+	v10 = loc14;
+	g_t140030.u3 = (word32 *) v10;
+	v10 = loc8;
+	return v10;
 }
 
 // 00115E9F: Stack Eq_n fn00115E9F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00115E9F(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v4.u3 = g_t140030.u3;
-	loc6 = v4;
-	v4 = arg4;
-	v5 = arg2;
-	*v4.u3 = (word32) v5;
-	v4.u0 = 0x03;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc6 = v5;
+	v5 = arg4;
+	v6 = arg2;
+	*v5.u3 = (word32) v6;
+	v5.u0 = 0x03;
+	return v5;
 }
 
 // 00115EB1: Stack Eq_n fn00115EB1(Stack Eq_n arg0)
 Eq_n fn00115EB1(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x00;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x00;
+	return v5;
 }
 
 // 00115EBC: Stack Eq_n fn00115EBC(Stack Eq_n arg0)
 Eq_n fn00115EBC(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x00;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x00;
+	return v5;
 }
 
 // 00115EC7: Stack Eq_n fn00115EC7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00115EC7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v5.u3 = g_t140030.u3;
-	loc7 = v5;
-	v5 = arg2;
-	v6 = arg3;
-	v7 = arg4;
-	v8.u0 = 1114111;
-	v9.u0 = 0x00;
-	v5 = fn00115EEF(v5, v6, v7, v8, v9);
-	loc5 = v5;
-	v5 = loc5;
-	return v5;
+	v6.u3 = g_t140030.u3;
+	loc7 = v6;
+	v6 = arg2;
+	v7 = arg3;
+	v8 = arg4;
+	v9.u0 = 1114111;
+	v10.u0 = 0x00;
+	v6 = fn00115EEF(v6, v7, v8, v9, v10);
+	loc5 = v6;
+	v6 = loc5;
+	return v6;
 }
 
 // 00115EE4: Stack Eq_n fn00115EE4(Stack Eq_n arg0)
 Eq_n fn00115EE4(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x04;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x04;
+	return v5;
 }
 
 // 00115EEF: Stack Eq_n fn00115EEF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00115EEF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v126.u3 = g_t140030.u3;
-	loc128 = v126;
-	v126 = arg4;
-	v127.u0 = 0x04;
-	v126 &= v127;
-	loc71 = v126;
-	v126 = loc71;
-	v127.u0 = 0x00;
-	v128 = v126 == v127;
-	loc82 = v128;
-	v126 = arg1;
-	loc14 = v126;
-	v126 = loc82;
-	if (v126)
+	v127.u3 = g_t140030.u3;
+	loc128 = v127;
+	v127 = arg4;
+	v128.u0 = 0x04;
+	v127 &= v128;
+	loc71 = v127;
+	v127 = loc71;
+	v128.u0 = 0x00;
+	v129 = v127 == v128;
+	loc82 = v129;
+	v127 = arg1;
+	loc14 = v127;
+	v127 = loc82;
+	if (v127)
 	{
-		v126.u0 = 0x00;
-		loc6 = v126;
-		v126 = arg0;
-		loc7 = v126;
+		v127.u0 = 0x00;
+		loc6 = v127;
+		v127 = arg0;
+		loc7 = v127;
 	}
 	else
 	{
-		v126 = arg0;
-		loc93 = v126;
-		v126 = loc14;
-		v127 = loc93;
-		v126 -= v127;
-		loc104 = v126;
-		v126 = loc104;
-		v127.u0 = 0x02;
-		v128 = v126 > v127;
-		loc115 = v128;
-		v126 = loc115;
-		if (v126)
+		v127 = arg0;
+		loc93 = v127;
+		v127 = loc14;
+		v128 = loc93;
+		v127 -= v128;
+		loc104 = v127;
+		v127 = loc104;
+		v128.u0 = 0x02;
+		v129 = v127 > v128;
+		loc115 = v129;
+		v127 = loc115;
+		if (v127)
 		{
-			v126 = arg0;
-			v129 = *v126.u0;
-			v126.u3 = (word32) v129;
-			loc15 = v126;
-			v126 = loc15;
-			v127.u0 = 0x18;
-			v126 <<= v127;
-			v127.u0 = 0x18;
-			v126 >>= v127;
-			v127.u0 = ~0x10;
-			v128 = v126 == v127;
-			loc26 = v128;
-			v126 = loc26;
-			if (v126)
+			v127 = arg0;
+			v130 = *v127.u0;
+			v127.u3 = (word32) v130;
+			loc15 = v127;
+			v127 = loc15;
+			v128.u0 = 0x18;
+			v127 <<= v128;
+			v128.u0 = 0x18;
+			v127 >>= v128;
+			v128.u0 = ~0x10;
+			v129 = v127 == v128;
+			loc26 = v129;
+			v127 = loc26;
+			if (v127)
 			{
-				v126 = arg0;
-				v127.u0 = 0x01;
-				v126 += v127;
-				loc33 = v126;
-				v126 = loc33;
-				v130.u1 = v126.u4->t0000.u1;
-				v126.u3 = (word32) v130;
-				loc34 = v126;
-				v126 = loc34;
-				v127.u0 = 0x18;
-				v126 <<= v127;
-				v127.u0 = 0x18;
-				v126 >>= v127;
-				v127.u0 = ~0x44;
-				v128 = v126 == v127;
-				loc35 = v128;
-				v126 = loc35;
-				if (v126)
+				v127 = arg0;
+				v128.u0 = 0x01;
+				v127 += v128;
+				loc33 = v127;
+				v127 = loc33;
+				v131.u1 = v127.u4->t0000.u1;
+				v127.u3 = (word32) v131;
+				loc34 = v127;
+				v127 = loc34;
+				v128.u0 = 0x18;
+				v127 <<= v128;
+				v128.u0 = 0x18;
+				v127 >>= v128;
+				v128.u0 = ~0x44;
+				v129 = v127 == v128;
+				loc35 = v129;
+				v127 = loc35;
+				if (v127)
 				{
-					v126 = arg0;
-					v127.u0 = 0x02;
-					v126 += v127;
-					loc36 = v126;
-					v126 = loc36;
-					v131.u1 = v126.u4->t0000.u1;
-					v126.u3 = (word32) v131;
-					loc37 = v126;
-					v126 = loc37;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					v127.u0 = ~0x40;
-					v128 = v126 == v127;
-					loc38 = v128;
-					v126 = arg0;
-					v127.u0 = 0x03;
-					v126 += v127;
-					loc39 = v126;
-					v126 = loc38;
-					if (v126)
-						v126 = loc39;
+					v127 = arg0;
+					v128.u0 = 0x02;
+					v127 += v128;
+					loc36 = v127;
+					v127 = loc36;
+					v132.u1 = v127.u4->t0000.u1;
+					v127.u3 = (word32) v132;
+					loc37 = v127;
+					v127 = loc37;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					v128.u0 = ~0x40;
+					v129 = v127 == v128;
+					loc38 = v129;
+					v127 = arg0;
+					v128.u0 = 0x03;
+					v127 += v128;
+					loc39 = v127;
+					v127 = loc38;
+					if (v127)
+						v127 = loc39;
 					else
-						v126 = arg0;
-					loc5 = v126;
-					v126.u0 = 0x00;
-					loc6 = v126;
-					v126 = loc5;
-					loc7 = v126;
+						v127 = arg0;
+					loc5 = v127;
+					v127.u0 = 0x00;
+					loc6 = v127;
+					v127 = loc5;
+					loc7 = v127;
 				}
 				else
 				{
-					v126.u0 = 0x00;
-					loc6 = v126;
-					v126 = arg0;
-					loc7 = v126;
+					v127.u0 = 0x00;
+					loc6 = v127;
+					v127 = arg0;
+					loc7 = v127;
 				}
 			}
 			else
 			{
-				v126.u0 = 0x00;
-				loc6 = v126;
-				v126 = arg0;
-				loc7 = v126;
+				v127.u0 = 0x00;
+				loc6 = v127;
+				v127 = arg0;
+				loc7 = v127;
 			}
 		}
 		else
 		{
-			v126.u0 = 0x00;
-			loc6 = v126;
-			v126 = arg0;
-			loc7 = v126;
+			v127.u0 = 0x00;
+			loc6 = v127;
+			v127 = arg0;
+			loc7 = v127;
 		}
 	}
 	while (true)
 	{
-		v126 = loc7;
-		v127 = arg1;
-		v128 = v126 < v127;
-		loc40 = v128;
-		v126 = loc6;
-		v127 = arg2;
-		v128 = v126 < v127;
-		loc41 = v128;
-		v126 = loc41;
-		v127 = loc40;
-		v126 &= v127;
-		loc126 = v126;
-		v126 = loc126;
-		v128 = v126 == 0x00;
-		if (v128)
+		v127 = loc7;
+		v128 = arg1;
+		v129 = v127 < v128;
+		loc40 = v129;
+		v127 = loc6;
+		v128 = arg2;
+		v129 = v127 < v128;
+		loc41 = v129;
+		v127 = loc41;
+		v128 = loc40;
+		v127 &= v128;
+		loc126 = v127;
+		v127 = loc126;
+		v129 = v127 == 0x00;
+		if (v129)
 			break;
-		v126 = loc7;
-		v132 = *v126.u0;
-		v126.u3 = (word32) v132;
-		loc42 = v126;
-		v126 = loc42;
-		v127.u0 = 0xFF;
-		v126 &= v127;
-		loc43 = v126;
-		v126 = loc42;
-		v127.u0 = 0x18;
-		v126 <<= v127;
-		v127.u0 = 0x18;
-		v126 >>= v127;
-		v127.u0 = ~0x00;
-		v128 = v126 > v127;
-		loc44 = v128;
-		v126 = loc44;
-		if (v126)
+		v127 = loc7;
+		v133 = *v127.u0;
+		v127.u3 = (word32) v133;
+		loc42 = v127;
+		v127 = loc42;
+		v128.u0 = 0xFF;
+		v127 &= v128;
+		loc43 = v127;
+		v127 = loc42;
+		v128.u0 = 0x18;
+		v127 <<= v128;
+		v128.u0 = 0x18;
+		v127 >>= v128;
+		v128.u0 = ~0x00;
+		v129 = v127 > v128;
+		loc44 = v129;
+		v127 = loc44;
+		if (v127)
 		{
-			v126 = loc43;
-			v127 = arg3;
-			v128 = v126 > v127;
-			loc45 = v128;
-			v126 = loc45;
-			if (v126)
+			v127 = loc43;
+			v128 = arg3;
+			v129 = v127 > v128;
+			loc45 = v129;
+			v127 = loc45;
+			if (v127)
 			{
-				v126.u0 = 0x28;
-				loc127 = v126;
+				v127.u0 = 0x28;
+				loc127 = v127;
 				goto l001163F2;
 			}
-			v126 = loc7;
-			v127.u0 = 0x01;
-			v126 += v127;
-			loc46 = v126;
-			v126 = loc46;
-			loc9 = v126;
+			v127 = loc7;
+			v128.u0 = 0x01;
+			v127 += v128;
+			loc46 = v127;
+			v127 = loc46;
+			loc9 = v127;
 			goto l001163DF;
 		}
-		v126 = loc42;
-		v127.u0 = 0xFF;
-		v126 &= v127;
-		v127.u0 = 0xC2;
-		v128 = v126 < v127;
-		loc47 = v128;
-		v126 = loc47;
-		if (v126)
+		v127 = loc42;
+		v128.u0 = 0xFF;
+		v127 &= v128;
+		v128.u0 = 0xC2;
+		v129 = v127 < v128;
+		loc47 = v129;
+		v127 = loc47;
+		if (v127)
 		{
-			v126.u0 = 0x28;
-			loc127 = v126;
+			v127.u0 = 0x28;
+			loc127 = v127;
 			goto l001163F2;
 		}
-		v126 = loc42;
-		v127.u0 = 0xFF;
-		v126 &= v127;
-		v127.u0 = 0xE0;
-		v128 = v126 < v127;
-		loc48 = v128;
-		v126 = loc48;
-		if (v126)
+		v127 = loc42;
+		v128.u0 = 0xFF;
+		v127 &= v128;
+		v128.u0 = 0xE0;
+		v129 = v127 < v128;
+		loc48 = v129;
+		v127 = loc48;
+		if (v127)
 		{
-			v126 = loc7;
-			loc49 = v126;
-			v126 = loc14;
-			v127 = loc49;
-			v126 -= v127;
-			loc50 = v126;
-			v126 = loc50;
-			v127.u0 = 0x02;
-			v128 = v126 < v127;
-			loc51 = v128;
-			v126 = loc51;
-			if (v126)
+			v127 = loc7;
+			loc49 = v127;
+			v127 = loc14;
+			v128 = loc49;
+			v127 -= v128;
+			loc50 = v127;
+			v127 = loc50;
+			v128.u0 = 0x02;
+			v129 = v127 < v128;
+			loc51 = v129;
+			v127 = loc51;
+			if (v127)
 			{
-				v126.u0 = 0x28;
-				loc127 = v126;
+				v127.u0 = 0x28;
+				loc127 = v127;
 				goto l001163F2;
 			}
-			v126 = loc7;
-			v127.u0 = 0x01;
-			v126 += v127;
-			loc52 = v126;
-			v126 = loc52;
-			v133 = *v126.u0;
-			v126.u3 = (word32) v133;
-			loc53 = v126;
-			v126 = loc53;
-			v127.u0 = 0xFF;
-			v126 &= v127;
-			loc54 = v126;
-			v126 = loc54;
-			v127.u0 = 0xC0;
-			v126 &= v127;
-			loc55 = v126;
-			v126 = loc55;
-			v127.u0 = 0x80;
-			v128 = v126 == v127;
-			loc56 = v128;
-			v126 = loc56;
-			v128 = v126 == 0x00;
-			if (v128)
+			v127 = loc7;
+			v128.u0 = 0x01;
+			v127 += v128;
+			loc52 = v127;
+			v127 = loc52;
+			v134 = *v127.u0;
+			v127.u3 = (word32) v134;
+			loc53 = v127;
+			v127 = loc53;
+			v128.u0 = 0xFF;
+			v127 &= v128;
+			loc54 = v127;
+			v127 = loc54;
+			v128.u0 = 0xC0;
+			v127 &= v128;
+			loc55 = v127;
+			v127 = loc55;
+			v128.u0 = 0x80;
+			v129 = v127 == v128;
+			loc56 = v129;
+			v127 = loc56;
+			v129 = v127 == 0x00;
+			if (v129)
 			{
-				v126.u0 = 0x28;
-				loc127 = v126;
+				v127.u0 = 0x28;
+				loc127 = v127;
 				goto l001163F2;
 			}
-			v126 = loc43;
-			v127.u0 = 0x06;
-			v126 <<= v127;
-			loc57 = v126;
-			v126 = loc57;
-			v127.u0 = 0x07C0;
-			v126 &= v127;
-			loc58 = v126;
-			v126 = loc54;
-			v127.u0 = 0x3F;
-			v126 &= v127;
-			loc59 = v126;
-			v126 = loc59;
-			v127 = loc58;
-			v126 |= v127;
-			loc60 = v126;
-			v126 = loc60;
-			v127 = arg3;
-			v128 = v126 > v127;
-			loc61 = v128;
-			v126 = loc61;
-			if (v126)
+			v127 = loc43;
+			v128.u0 = 0x06;
+			v127 <<= v128;
+			loc57 = v127;
+			v127 = loc57;
+			v128.u0 = 0x07C0;
+			v127 &= v128;
+			loc58 = v127;
+			v127 = loc54;
+			v128.u0 = 0x3F;
+			v127 &= v128;
+			loc59 = v127;
+			v127 = loc59;
+			v128 = loc58;
+			v127 |= v128;
+			loc60 = v127;
+			v127 = loc60;
+			v128 = arg3;
+			v129 = v127 > v128;
+			loc61 = v129;
+			v127 = loc61;
+			if (v127)
 			{
-				v126.u0 = 0x28;
-				loc127 = v126;
+				v127.u0 = 0x28;
+				loc127 = v127;
 				goto l001163F2;
 			}
-			v126 = loc7;
-			v127.u0 = 0x02;
-			v126 += v127;
-			loc62 = v126;
-			v126 = loc62;
-			loc9 = v126;
+			v127 = loc7;
+			v128.u0 = 0x02;
+			v127 += v128;
+			loc62 = v127;
+			v127 = loc62;
+			loc9 = v127;
 		}
 		else
 		{
-			v126 = loc42;
-			v127.u0 = 0xFF;
-			v126 &= v127;
-			v127.u0 = 0xF0;
-			v128 = v126 < v127;
-			loc63 = v128;
-			v126 = loc63;
-			if (v126)
+			v127 = loc42;
+			v128.u0 = 0xFF;
+			v127 &= v128;
+			v128.u0 = 0xF0;
+			v129 = v127 < v128;
+			loc63 = v129;
+			v127 = loc63;
+			if (v127)
 			{
-				v126 = loc7;
-				loc64 = v126;
-				v126 = loc14;
-				v127 = loc64;
-				v126 -= v127;
-				loc65 = v126;
-				v126 = loc65;
-				v127.u0 = 0x03;
-				v128 = v126 < v127;
-				loc66 = v128;
-				v126 = loc66;
-				if (v126)
+				v127 = loc7;
+				loc64 = v127;
+				v127 = loc14;
+				v128 = loc64;
+				v127 -= v128;
+				loc65 = v127;
+				v127 = loc65;
+				v128.u0 = 0x03;
+				v129 = v127 < v128;
+				loc66 = v129;
+				v127 = loc66;
+				if (v127)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc7;
-				v127.u0 = 0x01;
-				v126 += v127;
-				loc67 = v126;
-				v126 = loc67;
-				v134 = *v126.u0;
-				v126.u3 = (word32) v134;
-				loc68 = v126;
-				v126 = loc7;
-				v127.u0 = 0x02;
-				v126 += v127;
-				loc69 = v126;
-				v126 = loc69;
-				v135.u1 = v126.u4->t0000.u1;
-				v126.u3 = (word32) v135;
-				loc70 = v126;
-				v126 = loc42;
-				v127.u0 = 0x18;
-				v126 <<= v127;
-				v127.u0 = 0x18;
-				v126 >>= v127;
-				v127.u0 = ~0x1F;
-				v126 -= v127;
-				switch (v126)
+				v127 = loc7;
+				v128.u0 = 0x01;
+				v127 += v128;
+				loc67 = v127;
+				v127 = loc67;
+				v135 = *v127.u0;
+				v127.u3 = (word32) v135;
+				loc68 = v127;
+				v127 = loc7;
+				v128.u0 = 0x02;
+				v127 += v128;
+				loc69 = v127;
+				v127 = loc69;
+				v136.u1 = v127.u4->t0000.u1;
+				v127.u3 = (word32) v136;
+				loc70 = v127;
+				v127 = loc42;
+				v128.u0 = 0x18;
+				v127 <<= v128;
+				v128.u0 = 0x18;
+				v127 >>= v128;
+				v128.u0 = ~0x1F;
+				v127 -= v128;
+				switch (v127)
 				{
 				case 0x00:
-					v126 = loc68;
-					v127.u0 = ~0x1F;
-					v126 &= v127;
-					loc72 = v126;
-					v126 = loc72;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					v127.u0 = ~0x5F;
-					v128 = v126 == v127;
-					loc73 = v128;
-					v126 = loc73;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc68;
+					v128.u0 = ~0x1F;
+					v127 &= v128;
+					loc72 = v127;
+					v127 = loc72;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					v128.u0 = ~0x5F;
+					v129 = v127 == v128;
+					loc73 = v129;
+					v127 = loc73;
+					v129 = v127 == 0x00;
+					if (v129)
 					{
-						v126.u0 = 0x14;
-						loc127 = v126;
+						v127.u0 = 0x14;
+						loc127 = v127;
 						goto l001163F2;
 					}
 					break;
 				case 0x01:
-					v126 = loc68;
-					v127.u0 = ~0x1F;
-					v126 &= v127;
-					loc76 = v126;
-					v126 = loc76;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					v127.u0 = ~0x7F;
-					v128 = v126 == v127;
-					loc77 = v128;
-					v126 = loc77;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc68;
+					v128.u0 = ~0x1F;
+					v127 &= v128;
+					loc76 = v127;
+					v127 = loc76;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					v128.u0 = ~0x7F;
+					v129 = v127 == v128;
+					loc77 = v129;
+					v127 = loc77;
+					v129 = v127 == 0x00;
+					if (v129)
 					{
-						v126.u0 = 22;
-						loc127 = v126;
+						v127.u0 = 22;
+						loc127 = v127;
 						goto l001163F2;
 					}
 					break;
@@ -6739,462 +6739,462 @@ Eq_n fn00115EEF(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				case 11:
 				case 0x0C:
 				case 0x0D:
-					v126 = loc68;
-					v127.u0 = ~0x3F;
-					v126 &= v127;
-					loc80 = v126;
-					v126 = loc80;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					v127.u0 = ~0x7F;
-					v128 = v126 == v127;
-					loc81 = v128;
-					v126 = loc81;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc68;
+					v128.u0 = ~0x3F;
+					v127 &= v128;
+					loc80 = v127;
+					v127 = loc80;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					v128.u0 = ~0x7F;
+					v129 = v127 == v128;
+					loc81 = v129;
+					v127 = loc81;
+					v129 = v127 == 0x00;
+					if (v129)
 					{
-						v126.u0 = 0x18;
-						loc127 = v126;
+						v127.u0 = 0x18;
+						loc127 = v127;
 						goto l001163F2;
 					}
 					break;
 				}
-				v126 = loc70;
-				v127.u0 = 0xFF;
-				v126 &= v127;
-				loc85 = v126;
-				v126 = loc85;
-				v127.u0 = 0xC0;
-				v126 &= v127;
-				loc86 = v126;
-				v126 = loc86;
-				v127.u0 = 0x80;
-				v128 = v126 == v127;
-				loc87 = v128;
-				v126 = loc87;
-				v128 = v126 == 0x00;
-				if (v128)
+				v127 = loc70;
+				v128.u0 = 0xFF;
+				v127 &= v128;
+				loc85 = v127;
+				v127 = loc85;
+				v128.u0 = 0xC0;
+				v127 &= v128;
+				loc86 = v127;
+				v127 = loc86;
+				v128.u0 = 0x80;
+				v129 = v127 == v128;
+				loc87 = v129;
+				v127 = loc87;
+				v129 = v127 == 0x00;
+				if (v129)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc43;
-				v127.u0 = 0x0C;
-				v126 <<= v127;
-				loc88 = v126;
-				v126 = loc88;
-				v127.u0 = 0xF000;
-				v126 &= v127;
-				loc89 = v126;
-				v126 = loc68;
-				v127.u0 = 0xFF;
-				v126 &= v127;
-				loc90 = v126;
-				v126 = loc90;
-				v127.u0 = 0x06;
-				v126 <<= v127;
-				loc91 = v126;
-				v126 = loc91;
-				v127.u0 = 0x0FC0;
-				v126 &= v127;
-				loc92 = v126;
-				v126 = loc92;
-				v127 = loc89;
-				v126 |= v127;
-				loc94 = v126;
-				v126 = loc85;
-				v127.u0 = 0x3F;
-				v126 &= v127;
-				loc95 = v126;
-				v126 = loc94;
-				v127 = loc95;
-				v126 |= v127;
-				loc96 = v126;
-				v126 = loc96;
-				v127 = arg3;
-				v128 = v126 > v127;
-				loc97 = v128;
-				v126 = loc7;
-				v127.u0 = 0x03;
-				v126 += v127;
-				loc98 = v126;
-				v126 = loc97;
-				if (v126)
+				v127 = loc43;
+				v128.u0 = 0x0C;
+				v127 <<= v128;
+				loc88 = v127;
+				v127 = loc88;
+				v128.u0 = 0xF000;
+				v127 &= v128;
+				loc89 = v127;
+				v127 = loc68;
+				v128.u0 = 0xFF;
+				v127 &= v128;
+				loc90 = v127;
+				v127 = loc90;
+				v128.u0 = 0x06;
+				v127 <<= v128;
+				loc91 = v127;
+				v127 = loc91;
+				v128.u0 = 0x0FC0;
+				v127 &= v128;
+				loc92 = v127;
+				v127 = loc92;
+				v128 = loc89;
+				v127 |= v128;
+				loc94 = v127;
+				v127 = loc85;
+				v128.u0 = 0x3F;
+				v127 &= v128;
+				loc95 = v127;
+				v127 = loc94;
+				v128 = loc95;
+				v127 |= v128;
+				loc96 = v127;
+				v127 = loc96;
+				v128 = arg3;
+				v129 = v127 > v128;
+				loc97 = v129;
+				v127 = loc7;
+				v128.u0 = 0x03;
+				v127 += v128;
+				loc98 = v127;
+				v127 = loc97;
+				if (v127)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc98;
-				loc9 = v126;
+				v127 = loc98;
+				loc9 = v127;
 			}
 			else
 			{
-				v126 = loc42;
-				v127.u0 = 0xFF;
-				v126 &= v127;
-				v127.u0 = 0xF5;
-				v128 = v126 < v127;
-				loc99 = v128;
-				v126 = loc99;
-				v128 = v126 == 0x00;
-				if (v128)
+				v127 = loc42;
+				v128.u0 = 0xFF;
+				v127 &= v128;
+				v128.u0 = 0xF5;
+				v129 = v127 < v128;
+				loc99 = v129;
+				v127 = loc99;
+				v129 = v127 == 0x00;
+				if (v129)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc7;
-				loc100 = v126;
-				v126 = loc14;
-				v127 = loc100;
-				v126 -= v127;
-				loc101 = v126;
-				v126 = loc101;
-				v127.u0 = 0x04;
-				v128 = v126 < v127;
-				loc102 = v128;
-				v126 = loc102;
-				if (v126)
+				v127 = loc7;
+				loc100 = v127;
+				v127 = loc14;
+				v128 = loc100;
+				v127 -= v128;
+				loc101 = v127;
+				v127 = loc101;
+				v128.u0 = 0x04;
+				v129 = v127 < v128;
+				loc102 = v129;
+				v127 = loc102;
+				if (v127)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc7;
-				v127.u0 = 0x01;
-				v126 += v127;
-				loc103 = v126;
-				v126 = loc103;
-				v136 = *v126.u0;
-				v126.u3 = (word32) v136;
-				loc105 = v126;
-				v126 = loc7;
-				v127.u0 = 0x02;
-				v126 += v127;
-				loc106 = v126;
-				v126 = loc106;
-				v137.u1 = v126.u4->t0000.u1;
-				v126.u3 = (word32) v137;
-				loc107 = v126;
-				v126 = loc7;
-				v127.u0 = 0x03;
-				v126 += v127;
-				loc108 = v126;
-				v126 = loc108;
-				v138.u1 = v126.u4->t0000.u1;
-				v126.u3 = (word32) v138;
-				loc109 = v126;
-				v126 = loc42;
-				v127.u0 = 0x18;
-				v126 <<= v127;
-				v127.u0 = 0x18;
-				v126 >>= v127;
-				v127.u0 = ~0x0F;
-				v126 -= v127;
-				switch (v126)
+				v127 = loc7;
+				v128.u0 = 0x01;
+				v127 += v128;
+				loc103 = v127;
+				v127 = loc103;
+				v137 = *v127.u0;
+				v127.u3 = (word32) v137;
+				loc105 = v127;
+				v127 = loc7;
+				v128.u0 = 0x02;
+				v127 += v128;
+				loc106 = v127;
+				v127 = loc106;
+				v138.u1 = v127.u4->t0000.u1;
+				v127.u3 = (word32) v138;
+				loc107 = v127;
+				v127 = loc7;
+				v128.u0 = 0x03;
+				v127 += v128;
+				loc108 = v127;
+				v127 = loc108;
+				v139.u1 = v127.u4->t0000.u1;
+				v127.u3 = (word32) v139;
+				loc109 = v127;
+				v127 = loc42;
+				v128.u0 = 0x18;
+				v127 <<= v128;
+				v128.u0 = 0x18;
+				v127 >>= v128;
+				v128.u0 = ~0x0F;
+				v127 -= v128;
+				switch (v127)
 				{
 				case 0x00:
-					v126 = loc105;
-					v127.u0 = 0x70;
-					v126 += v127;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					loc10 = v126;
-					v126 = loc10;
-					v127.u0 = 0xFF;
-					v126 &= v127;
-					v127.u0 = 0x30;
-					v128 = v126 < v127;
-					loc110 = v128;
-					v126 = loc110;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc105;
+					v128.u0 = 0x70;
+					v127 += v128;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					loc10 = v127;
+					v127 = loc10;
+					v128.u0 = 0xFF;
+					v127 &= v128;
+					v128.u0 = 0x30;
+					v129 = v127 < v128;
+					loc110 = v129;
+					v127 = loc110;
+					v129 = v127 == 0x00;
+					if (v129)
 					{
-						v126.u0 = 0x1F;
-						loc127 = v126;
+						v127.u0 = 0x1F;
+						loc127 = v127;
 						goto l001163F2;
 					}
 					break;
 				case 0x01:
-					v126 = loc105;
-					v127.u0 = ~0x0F;
-					v126 &= v127;
-					loc113 = v126;
-					v126 = loc113;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					v127.u0 = ~0x7F;
-					v128 = v126 == v127;
-					loc114 = v128;
-					v126 = loc114;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc105;
+					v128.u0 = ~0x0F;
+					v127 &= v128;
+					loc113 = v127;
+					v127 = loc113;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					v128.u0 = ~0x7F;
+					v129 = v127 == v128;
+					loc114 = v129;
+					v127 = loc114;
+					v129 = v127 == 0x00;
+					if (v129)
 					{
-						v126.u0 = 33;
-						loc127 = v126;
+						v127.u0 = 33;
+						loc127 = v127;
 						goto l001163F2;
 					}
 					break;
 				case 0x02:
 				case 0x03:
 				case 0x04:
-					v126 = loc105;
-					v127.u0 = ~0x3F;
-					v126 &= v127;
-					loc118 = v126;
-					v126 = loc118;
-					v127.u0 = 0x18;
-					v126 <<= v127;
-					v127.u0 = 0x18;
-					v126 >>= v127;
-					v127.u0 = ~0x7F;
-					v128 = v126 == v127;
-					loc119 = v128;
-					v126 = loc119;
-					v128 = v126 == 0x00;
-					if (v128)
+					v127 = loc105;
+					v128.u0 = ~0x3F;
+					v127 &= v128;
+					loc118 = v127;
+					v127 = loc118;
+					v128.u0 = 0x18;
+					v127 <<= v128;
+					v128.u0 = 0x18;
+					v127 >>= v128;
+					v128.u0 = ~0x7F;
+					v129 = v127 == v128;
+					loc119 = v129;
+					v127 = loc119;
+					v129 = v127 == 0x00;
+					if (v129)
 					{
-						v126.u0 = 0x23;
-						loc127 = v126;
+						v127.u0 = 0x23;
+						loc127 = v127;
 						goto l001163F2;
 					}
 					break;
 				}
-				v126 = loc107;
-				v127.u0 = 0xFF;
-				v126 &= v127;
-				loc122 = v126;
-				v126 = loc122;
-				v127.u0 = 0xC0;
-				v126 &= v127;
-				loc123 = v126;
-				v126 = loc123;
-				v127.u0 = 0x80;
-				v128 = v126 == v127;
-				loc124 = v128;
-				v126 = loc124;
-				v128 = v126 == 0x00;
-				if (v128)
+				v127 = loc107;
+				v128.u0 = 0xFF;
+				v127 &= v128;
+				loc122 = v127;
+				v127 = loc122;
+				v128.u0 = 0xC0;
+				v127 &= v128;
+				loc123 = v127;
+				v127 = loc123;
+				v128.u0 = 0x80;
+				v129 = v127 == v128;
+				loc124 = v129;
+				v127 = loc124;
+				v129 = v127 == 0x00;
+				if (v129)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc109;
-				v127.u0 = 0xFF;
-				v126 &= v127;
-				loc125 = v126;
-				v126 = loc125;
-				v127.u0 = 0xC0;
-				v126 &= v127;
-				loc16 = v126;
-				v126 = loc16;
-				v127.u0 = 0x80;
-				v128 = v126 == v127;
-				loc17 = v128;
-				v126 = loc17;
-				v128 = v126 == 0x00;
-				if (v128)
+				v127 = loc109;
+				v128.u0 = 0xFF;
+				v127 &= v128;
+				loc125 = v127;
+				v127 = loc125;
+				v128.u0 = 0xC0;
+				v127 &= v128;
+				loc16 = v127;
+				v127 = loc16;
+				v128.u0 = 0x80;
+				v129 = v127 == v128;
+				loc17 = v129;
+				v127 = loc17;
+				v129 = v127 == 0x00;
+				if (v129)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc43;
-				v127.u0 = 0x12;
-				v126 <<= v127;
-				loc18 = v126;
-				v126 = loc18;
-				v127.u0 = 0x001C0000;
-				v126 &= v127;
-				loc19 = v126;
-				v126 = loc105;
-				v127.u0 = 0xFF;
-				v126 &= v127;
-				loc20 = v126;
-				v126 = loc20;
-				v127.u0 = 0x0C;
-				v126 <<= v127;
-				loc21 = v126;
-				v126 = loc21;
-				v127.u0 = 0x0003F000;
-				v126 &= v127;
-				loc22 = v126;
-				v126 = loc22;
-				v127 = loc19;
-				v126 |= v127;
-				loc23 = v126;
-				v126 = loc122;
-				v127.u0 = 0x06;
-				v126 <<= v127;
-				loc24 = v126;
-				v126 = loc24;
-				v127.u0 = 0x0FC0;
-				v126 &= v127;
-				loc25 = v126;
-				v126 = loc23;
-				v127 = loc25;
-				v126 |= v127;
-				loc27 = v126;
-				v126 = loc125;
-				v127.u0 = 0x3F;
-				v126 &= v127;
-				loc28 = v126;
-				v126 = loc27;
-				v127 = loc28;
-				v126 |= v127;
-				loc29 = v126;
-				v126 = loc29;
-				v127 = arg3;
-				v128 = v126 > v127;
-				loc30 = v128;
-				v126 = loc7;
-				v127.u0 = 0x04;
-				v126 += v127;
-				loc31 = v126;
-				v126 = loc30;
-				if (v126)
+				v127 = loc43;
+				v128.u0 = 0x12;
+				v127 <<= v128;
+				loc18 = v127;
+				v127 = loc18;
+				v128.u0 = 0x001C0000;
+				v127 &= v128;
+				loc19 = v127;
+				v127 = loc105;
+				v128.u0 = 0xFF;
+				v127 &= v128;
+				loc20 = v127;
+				v127 = loc20;
+				v128.u0 = 0x0C;
+				v127 <<= v128;
+				loc21 = v127;
+				v127 = loc21;
+				v128.u0 = 0x0003F000;
+				v127 &= v128;
+				loc22 = v127;
+				v127 = loc22;
+				v128 = loc19;
+				v127 |= v128;
+				loc23 = v127;
+				v127 = loc122;
+				v128.u0 = 0x06;
+				v127 <<= v128;
+				loc24 = v127;
+				v127 = loc24;
+				v128.u0 = 0x0FC0;
+				v127 &= v128;
+				loc25 = v127;
+				v127 = loc23;
+				v128 = loc25;
+				v127 |= v128;
+				loc27 = v127;
+				v127 = loc125;
+				v128.u0 = 0x3F;
+				v127 &= v128;
+				loc28 = v127;
+				v127 = loc27;
+				v128 = loc28;
+				v127 |= v128;
+				loc29 = v127;
+				v127 = loc29;
+				v128 = arg3;
+				v129 = v127 > v128;
+				loc30 = v129;
+				v127 = loc7;
+				v128.u0 = 0x04;
+				v127 += v128;
+				loc31 = v127;
+				v127 = loc30;
+				if (v127)
 				{
-					v126.u0 = 0x28;
-					loc127 = v126;
+					v127.u0 = 0x28;
+					loc127 = v127;
 					goto l001163F2;
 				}
-				v126 = loc31;
-				loc9 = v126;
+				v127 = loc31;
+				loc9 = v127;
 l001163DF:
 			}
 		}
-		v126 = loc6;
-		v127.u0 = 0x01;
-		v126 += v127;
-		loc32 = v126;
-		v126 = loc32;
-		loc6 = v126;
-		v126 = loc9;
-		loc7 = v126;
+		v127 = loc6;
+		v128.u0 = 0x01;
+		v127 += v128;
+		loc32 = v127;
+		v127 = loc32;
+		loc6 = v127;
+		v127 = loc9;
+		loc7 = v127;
 	}
-	v126.u0 = 0x28;
-	loc127 = v126;
+	v127.u0 = 0x28;
+	loc127 = v127;
 l001163F2:
-	v126 = loc127;
-	v127.u0 = 0x14;
-	v128 = v126 == v127;
-	if (v128)
+	v127 = loc127;
+	v128.u0 = 0x14;
+	v129 = v127 == v128;
+	if (v129)
 	{
-		v126 = arg0;
-		loc74 = v126;
-		v126 = loc64;
-		v127 = loc74;
-		v126 -= v127;
-		loc75 = v126;
-		v126 = loc75;
-		loc8 = v126;
+		v127 = arg0;
+		loc74 = v127;
+		v127 = loc64;
+		v128 = loc74;
+		v127 -= v128;
+		loc75 = v127;
+		v127 = loc75;
+		loc8 = v127;
 	}
 	else
 	{
-		v126 = loc127;
-		v127.u0 = 22;
-		v128 = v126 == v127;
-		if (v128)
+		v127 = loc127;
+		v128.u0 = 22;
+		v129 = v127 == v128;
+		if (v129)
 		{
-			v126 = arg0;
-			loc78 = v126;
-			v126 = loc64;
-			v127 = loc78;
-			v126 -= v127;
-			loc79 = v126;
-			v126 = loc79;
-			loc8 = v126;
+			v127 = arg0;
+			loc78 = v127;
+			v127 = loc64;
+			v128 = loc78;
+			v127 -= v128;
+			loc79 = v127;
+			v127 = loc79;
+			loc8 = v127;
 		}
 		else
 		{
-			v126 = loc127;
-			v127.u0 = 0x18;
-			v128 = v126 == v127;
-			if (v128)
+			v127 = loc127;
+			v128.u0 = 0x18;
+			v129 = v127 == v128;
+			if (v129)
 			{
-				v126 = arg0;
-				loc83 = v126;
-				v126 = loc64;
-				v127 = loc83;
-				v126 -= v127;
-				loc84 = v126;
-				v126 = loc84;
-				loc8 = v126;
+				v127 = arg0;
+				loc83 = v127;
+				v127 = loc64;
+				v128 = loc83;
+				v127 -= v128;
+				loc84 = v127;
+				v127 = loc84;
+				loc8 = v127;
 			}
 			else
 			{
-				v126 = loc127;
-				v127.u0 = 0x1F;
-				v128 = v126 == v127;
-				if (v128)
+				v127 = loc127;
+				v128.u0 = 0x1F;
+				v129 = v127 == v128;
+				if (v129)
 				{
-					v126 = arg0;
-					loc111 = v126;
-					v126 = loc100;
-					v127 = loc111;
-					v126 -= v127;
-					loc112 = v126;
-					v126 = loc112;
-					loc8 = v126;
+					v127 = arg0;
+					loc111 = v127;
+					v127 = loc100;
+					v128 = loc111;
+					v127 -= v128;
+					loc112 = v127;
+					v127 = loc112;
+					loc8 = v127;
 				}
 				else
 				{
-					v126 = loc127;
-					v127.u0 = 33;
-					v128 = v126 == v127;
-					if (v128)
+					v127 = loc127;
+					v128.u0 = 33;
+					v129 = v127 == v128;
+					if (v129)
 					{
-						v126 = arg0;
-						loc116 = v126;
-						v126 = loc100;
-						v127 = loc116;
-						v126 -= v127;
-						loc117 = v126;
-						v126 = loc117;
-						loc8 = v126;
+						v127 = arg0;
+						loc116 = v127;
+						v127 = loc100;
+						v128 = loc116;
+						v127 -= v128;
+						loc117 = v127;
+						v127 = loc117;
+						loc8 = v127;
 					}
 					else
 					{
-						v126 = loc127;
-						v127.u0 = 0x23;
-						v128 = v126 == v127;
-						if (v128)
+						v127 = loc127;
+						v128.u0 = 0x23;
+						v129 = v127 == v128;
+						if (v129)
 						{
-							v126 = arg0;
-							loc120 = v126;
-							v126 = loc100;
-							v127 = loc120;
-							v126 -= v127;
-							loc121 = v126;
-							v126 = loc121;
-							loc8 = v126;
+							v127 = arg0;
+							loc120 = v127;
+							v127 = loc100;
+							v128 = loc120;
+							v127 -= v128;
+							loc121 = v127;
+							v127 = loc121;
+							loc8 = v127;
 						}
 						else
 						{
-							v126 = loc127;
-							v127.u0 = 0x28;
-							v128 = v126 == v127;
-							if (v128)
+							v127 = loc127;
+							v128.u0 = 0x28;
+							v129 = v127 == v128;
+							if (v129)
 							{
-								v126 = loc7;
-								loc11 = v126;
-								v126 = arg0;
-								loc12 = v126;
-								v126 = loc11;
-								v127 = loc12;
-								v126 -= v127;
-								loc13 = v126;
-								v126 = loc13;
-								loc8 = v126;
+								v127 = loc7;
+								loc11 = v127;
+								v127 = arg0;
+								loc12 = v127;
+								v127 = loc11;
+								v128 = loc12;
+								v127 -= v128;
+								loc13 = v127;
+								v127 = loc13;
+								loc8 = v127;
 							}
 						}
 					}
@@ -7202,413 +7202,413 @@ l001163F2:
 			}
 		}
 	}
-	v126 = loc8;
-	return v126;
+	v127 = loc8;
+	return v127;
 }
 
 // 001164A4: Stack Eq_n fn001164A4(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn001164A4(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v113.u3 = g_t140030.u3;
-	loc118 = v113;
-	v113 = arg2;
-	v114 = arg0;
-	*v113.u3 = (word32) v114;
-	v113 = arg5;
-	v114 = arg3;
-	*v113.u3 = (word32) v114;
-	v113 = arg7;
-	v114.u0 = 0x04;
-	v113 &= v114;
-	loc95 = v113;
-	v113 = loc95;
-	v114.u0 = 0x00;
-	v115 = v113 == v114;
-	loc106 = v115;
-	v113 = loc106;
-	if (v113)
+	v114.u3 = g_t140030.u3;
+	loc118 = v114;
+	v114 = arg2;
+	v115 = arg0;
+	*v114.u3 = (word32) v115;
+	v114 = arg5;
+	v115 = arg3;
+	*v114.u3 = (word32) v115;
+	v114 = arg7;
+	v115.u0 = 0x04;
+	v114 &= v115;
+	loc95 = v114;
+	v114 = loc95;
+	v115.u0 = 0x00;
+	v116 = v114 == v115;
+	loc106 = v116;
+	v114 = loc106;
+	if (v114)
 	{
-		v113 = arg1;
-		loc10 = v113;
-		v113 = loc10;
-		loc11 = v113;
+		v114 = arg1;
+		loc10 = v114;
+		v114 = loc10;
+		loc11 = v114;
 	}
 	else
 	{
-		v113 = arg2;
-		v113.u3 = *v113.u3;
-		loc12 = v113;
-		v113 = arg1;
-		loc23 = v113;
-		v113 = loc12;
-		loc27 = v113;
-		v113 = loc23;
-		v114 = loc27;
-		v113 -= v114;
-		loc28 = v113;
-		v113 = loc28;
-		v114.u0 = 0x02;
-		v115 = v113 > v114;
-		loc29 = v115;
-		v113 = loc29;
-		if (v113)
+		v114 = arg2;
+		v114.u3 = *v114.u3;
+		loc12 = v114;
+		v114 = arg1;
+		loc23 = v114;
+		v114 = loc12;
+		loc27 = v114;
+		v114 = loc23;
+		v115 = loc27;
+		v114 -= v115;
+		loc28 = v114;
+		v114 = loc28;
+		v115.u0 = 0x02;
+		v116 = v114 > v115;
+		loc29 = v116;
+		v114 = loc29;
+		if (v114)
 		{
-			v113 = loc12;
-			v116.u1 = v113.u4->t0000.u1;
-			v113.u3 = (word32) v116;
-			loc30 = v113;
-			v113 = loc30;
-			v114.u0 = 0x18;
-			v113 <<= v114;
-			v114.u0 = 0x18;
-			v113 >>= v114;
-			v114.u0 = ~0x10;
-			v115 = v113 == v114;
-			loc31 = v115;
-			v113 = loc31;
-			if (v113)
+			v114 = loc12;
+			v117.u1 = v114.u4->t0000.u1;
+			v114.u3 = (word32) v117;
+			loc30 = v114;
+			v114 = loc30;
+			v115.u0 = 0x18;
+			v114 <<= v115;
+			v115.u0 = 0x18;
+			v114 >>= v115;
+			v115.u0 = ~0x10;
+			v116 = v114 == v115;
+			loc31 = v116;
+			v114 = loc31;
+			if (v114)
 			{
-				v113 = loc12;
-				v114.u0 = 0x01;
-				v113 += v114;
-				loc32 = v113;
-				v113 = loc32;
-				v117.u1 = v113.u4->t0000.u1;
-				v113.u3 = (word32) v117;
-				loc33 = v113;
-				v113 = loc33;
-				v114.u0 = 0x18;
-				v113 <<= v114;
-				v114.u0 = 0x18;
-				v113 >>= v114;
-				v114.u0 = ~0x44;
-				v115 = v113 == v114;
-				loc34 = v115;
-				v113 = loc34;
-				if (v113)
+				v114 = loc12;
+				v115.u0 = 0x01;
+				v114 += v115;
+				loc32 = v114;
+				v114 = loc32;
+				v118.u1 = v114.u4->t0000.u1;
+				v114.u3 = (word32) v118;
+				loc33 = v114;
+				v114 = loc33;
+				v115.u0 = 0x18;
+				v114 <<= v115;
+				v115.u0 = 0x18;
+				v114 >>= v115;
+				v115.u0 = ~0x44;
+				v116 = v114 == v115;
+				loc34 = v116;
+				v114 = loc34;
+				if (v114)
 				{
-					v113 = loc12;
-					v114.u0 = 0x02;
-					v113 += v114;
-					loc35 = v113;
-					v113 = loc35;
-					v118.u1 = v113.u4->t0000.u1;
-					v113.u3 = (word32) v118;
-					loc36 = v113;
-					v113 = loc36;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					v114.u0 = ~0x40;
-					v115 = v113 == v114;
-					loc37 = v115;
-					v113 = loc37;
-					if (v113)
+					v114 = loc12;
+					v115.u0 = 0x02;
+					v114 += v115;
+					loc35 = v114;
+					v114 = loc35;
+					v119.u1 = v114.u4->t0000.u1;
+					v114.u3 = (word32) v119;
+					loc36 = v114;
+					v114 = loc36;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					v115.u0 = ~0x40;
+					v116 = v114 == v115;
+					loc37 = v116;
+					v114 = loc37;
+					if (v114)
 					{
-						v113 = loc12;
-						v114.u0 = 0x03;
-						v113 += v114;
-						loc38 = v113;
-						v113 = arg2;
-						v114 = loc38;
-						*v113.u3 = (word32) v114;
-						v113 = loc23;
-						loc11 = v113;
+						v114 = loc12;
+						v115.u0 = 0x03;
+						v114 += v115;
+						loc38 = v114;
+						v114 = arg2;
+						v115 = loc38;
+						*v114.u3 = (word32) v115;
+						v114 = loc23;
+						loc11 = v114;
 					}
 					else
 					{
-						v113 = loc23;
-						loc11 = v113;
+						v114 = loc23;
+						loc11 = v114;
 					}
 				}
 				else
 				{
-					v113 = loc23;
-					loc11 = v113;
+					v114 = loc23;
+					loc11 = v114;
 				}
 			}
 			else
 			{
-				v113 = loc23;
-				loc11 = v113;
+				v114 = loc23;
+				loc11 = v114;
 			}
 		}
 		else
 		{
-			v113 = loc23;
-			loc11 = v113;
+			v114 = loc23;
+			loc11 = v114;
 		}
 	}
 	while (true)
 	{
-		v113 = arg2;
-		v113.u3 = *v113.u3;
-		loc39 = v113;
-		v113 = loc39;
-		v114 = arg1;
-		v115 = v113 < v114;
-		loc40 = v115;
-		v113 = loc40;
-		v115 = v113 == 0x00;
-		if (v115)
+		v114 = arg2;
+		v114.u3 = *v114.u3;
+		loc39 = v114;
+		v114 = loc39;
+		v115 = arg1;
+		v116 = v114 < v115;
+		loc40 = v116;
+		v114 = loc40;
+		v116 = v114 == 0x00;
+		if (v116)
 			break;
-		v113 = arg5;
-		v113 = *v113.u0;
-		loc41 = v113;
-		v113 = loc41;
-		v114 = arg4;
-		v115 = v113 < v114;
-		loc42 = v115;
-		v113 = loc42;
-		v115 = v113 == 0x00;
-		if (v115)
+		v114 = arg5;
+		v114 = *v114.u0;
+		loc41 = v114;
+		v114 = loc41;
+		v115 = arg4;
+		v116 = v114 < v115;
+		loc42 = v116;
+		v114 = loc42;
+		v116 = v114 == 0x00;
+		if (v116)
 		{
-			v113.u0 = 0x28;
-			loc117 = v113;
+			v114.u0 = 0x28;
+			loc117 = v114;
 			goto l001169EF;
 		}
-		v113 = loc39;
-		v119 = *v113.u0;
-		v113.u3 = (word32) v119;
-		loc43 = v113;
-		v113 = loc43;
-		v114.u0 = 0xFF;
-		v113 &= v114;
-		loc44 = v113;
-		v113 = loc43;
-		v114.u0 = 0x18;
-		v113 <<= v114;
-		v114.u0 = 0x18;
-		v113 >>= v114;
-		v114.u0 = ~0x00;
-		v115 = v113 > v114;
-		loc45 = v115;
-		v113 = loc45;
-		if (v113)
+		v114 = loc39;
+		v120 = *v114.u0;
+		v114.u3 = (word32) v120;
+		loc43 = v114;
+		v114 = loc43;
+		v115.u0 = 0xFF;
+		v114 &= v115;
+		loc44 = v114;
+		v114 = loc43;
+		v115.u0 = 0x18;
+		v114 <<= v115;
+		v115.u0 = 0x18;
+		v114 >>= v115;
+		v115.u0 = ~0x00;
+		v116 = v114 > v115;
+		loc45 = v116;
+		v114 = loc45;
+		if (v114)
 		{
-			v113 = loc44;
-			v114 = arg6;
-			v115 = v113 > v114;
-			loc46 = v115;
-			v113 = loc46;
-			if (v113)
+			v114 = loc44;
+			v115 = arg6;
+			v116 = v114 > v115;
+			loc46 = v116;
+			v114 = loc46;
+			if (v114)
 			{
-				v113.u0 = 0x02;
-				loc8 = v113;
+				v114.u0 = 0x02;
+				loc8 = v114;
 				goto l001169EF;
 			}
-			v113 = loc41;
-			v114 = loc44;
-			*v113.u0 = v114;
-			v113 = loc39;
-			v114.u0 = 0x01;
-			v113 += v114;
-			loc47 = v113;
-			v113 = arg2;
-			v114 = loc47;
-			*v113.u0 = v114;
+			v114 = loc41;
+			v115 = loc44;
+			*v114.u0 = v115;
+			v114 = loc39;
+			v115.u0 = 0x01;
+			v114 += v115;
+			loc47 = v114;
+			v114 = arg2;
+			v115 = loc47;
+			*v114.u0 = v115;
 			goto l001169D6;
 		}
-		v113 = loc43;
-		v114.u0 = 0xFF;
-		v113 &= v114;
-		v114.u0 = 0xC2;
-		v115 = v113 < v114;
-		loc48 = v115;
-		v113 = loc48;
-		if (v113)
+		v114 = loc43;
+		v115.u0 = 0xFF;
+		v114 &= v115;
+		v115.u0 = 0xC2;
+		v116 = v114 < v115;
+		loc48 = v116;
+		v114 = loc48;
+		if (v114)
 		{
-			v113.u0 = 0x02;
-			loc8 = v113;
+			v114.u0 = 0x02;
+			loc8 = v114;
 			goto l001169EF;
 		}
-		v113 = loc43;
-		v114.u0 = 0xFF;
-		v113 &= v114;
-		v114.u0 = 0xE0;
-		v115 = v113 < v114;
-		loc49 = v115;
-		v113 = loc49;
-		if (v113)
+		v114 = loc43;
+		v115.u0 = 0xFF;
+		v114 &= v115;
+		v115.u0 = 0xE0;
+		v116 = v114 < v115;
+		loc49 = v116;
+		v114 = loc49;
+		if (v114)
 		{
-			v113 = loc39;
-			loc50 = v113;
-			v113 = loc11;
-			v114 = loc50;
-			v113 -= v114;
-			loc51 = v113;
-			v113 = loc51;
-			v114.u0 = 0x02;
-			v115 = v113 < v114;
-			loc52 = v115;
-			v113 = loc52;
-			if (v113)
+			v114 = loc39;
+			loc50 = v114;
+			v114 = loc11;
+			v115 = loc50;
+			v114 -= v115;
+			loc51 = v114;
+			v114 = loc51;
+			v115.u0 = 0x02;
+			v116 = v114 < v115;
+			loc52 = v116;
+			v114 = loc52;
+			if (v114)
 			{
-				v113.u0 = 0x01;
-				loc8 = v113;
+				v114.u0 = 0x01;
+				loc8 = v114;
 				goto l001169EF;
 			}
-			v113 = loc39;
-			v114.u0 = 0x01;
-			v113 += v114;
-			loc53 = v113;
-			v113 = loc53;
-			v120 = *v113.u0;
-			v113.u3 = (word32) v120;
-			loc54 = v113;
-			v113 = loc54;
-			v114.u0 = 0xFF;
-			v113 &= v114;
-			loc55 = v113;
-			v113 = loc55;
-			v114.u0 = 0xC0;
-			v113 &= v114;
-			loc56 = v113;
-			v113 = loc56;
-			v114.u0 = 0x80;
-			v115 = v113 == v114;
-			loc57 = v115;
-			v113 = loc57;
-			v115 = v113 == 0x00;
-			if (v115)
+			v114 = loc39;
+			v115.u0 = 0x01;
+			v114 += v115;
+			loc53 = v114;
+			v114 = loc53;
+			v121 = *v114.u0;
+			v114.u3 = (word32) v121;
+			loc54 = v114;
+			v114 = loc54;
+			v115.u0 = 0xFF;
+			v114 &= v115;
+			loc55 = v114;
+			v114 = loc55;
+			v115.u0 = 0xC0;
+			v114 &= v115;
+			loc56 = v114;
+			v114 = loc56;
+			v115.u0 = 0x80;
+			v116 = v114 == v115;
+			loc57 = v116;
+			v114 = loc57;
+			v116 = v114 == 0x00;
+			if (v116)
 			{
-				v113.u0 = 0x02;
-				loc8 = v113;
+				v114.u0 = 0x02;
+				loc8 = v114;
 				goto l001169EF;
 			}
-			v113 = loc44;
-			v114.u0 = 0x06;
-			v113 <<= v114;
-			loc58 = v113;
-			v113 = loc58;
-			v114.u0 = 0x07C0;
-			v113 &= v114;
-			loc59 = v113;
-			v113 = loc55;
-			v114.u0 = 0x3F;
-			v113 &= v114;
-			loc60 = v113;
-			v113 = loc60;
-			v114 = loc59;
-			v113 |= v114;
-			loc61 = v113;
-			v113 = loc61;
-			v114 = arg6;
-			v115 = v113 > v114;
-			loc62 = v115;
-			v113 = loc62;
-			if (v113)
-			{
-				v113.u0 = 0x02;
-				loc8 = v113;
-				goto l001169EF;
-			}
-			v113 = loc41;
+			v114 = loc44;
+			v115.u0 = 0x06;
+			v114 <<= v115;
+			loc58 = v114;
+			v114 = loc58;
+			v115.u0 = 0x07C0;
+			v114 &= v115;
+			loc59 = v114;
+			v114 = loc55;
+			v115.u0 = 0x3F;
+			v114 &= v115;
+			loc60 = v114;
+			v114 = loc60;
+			v115 = loc59;
+			v114 |= v115;
+			loc61 = v114;
 			v114 = loc61;
-			*v113.u0 = v114;
-			v113 = loc39;
-			v114.u0 = 0x02;
-			v113 += v114;
-			loc63 = v113;
-			v113 = arg2;
-			v114 = loc63;
-			*v113.u0 = v114;
+			v115 = arg6;
+			v116 = v114 > v115;
+			loc62 = v116;
+			v114 = loc62;
+			if (v114)
+			{
+				v114.u0 = 0x02;
+				loc8 = v114;
+				goto l001169EF;
+			}
+			v114 = loc41;
+			v115 = loc61;
+			*v114.u0 = v115;
+			v114 = loc39;
+			v115.u0 = 0x02;
+			v114 += v115;
+			loc63 = v114;
+			v114 = arg2;
+			v115 = loc63;
+			*v114.u0 = v115;
 		}
 		else
 		{
-			v113 = loc43;
-			v114.u0 = 0xFF;
-			v113 &= v114;
-			v114.u0 = 0xF0;
-			v115 = v113 < v114;
-			loc64 = v115;
-			v113 = loc64;
-			if (v113)
+			v114 = loc43;
+			v115.u0 = 0xFF;
+			v114 &= v115;
+			v115.u0 = 0xF0;
+			v116 = v114 < v115;
+			loc64 = v116;
+			v114 = loc64;
+			if (v114)
 			{
-				v113 = loc39;
-				loc65 = v113;
-				v113 = loc11;
-				v114 = loc65;
-				v113 -= v114;
-				loc66 = v113;
-				v113 = loc66;
-				v114.u0 = 0x03;
-				v115 = v113 < v114;
-				loc67 = v115;
-				v113 = loc67;
-				if (v113)
+				v114 = loc39;
+				loc65 = v114;
+				v114 = loc11;
+				v115 = loc65;
+				v114 -= v115;
+				loc66 = v114;
+				v114 = loc66;
+				v115.u0 = 0x03;
+				v116 = v114 < v115;
+				loc67 = v116;
+				v114 = loc67;
+				if (v114)
 				{
-					v113.u0 = 0x01;
-					loc8 = v113;
+					v114.u0 = 0x01;
+					loc8 = v114;
 					goto l001169EF;
 				}
-				v113 = loc39;
-				v114.u0 = 0x01;
-				v113 += v114;
-				loc68 = v113;
-				v113 = loc68;
-				v121 = *v113.u0;
-				v113.u3 = (word32) v121;
-				loc69 = v113;
-				v113 = loc39;
-				v114.u0 = 0x02;
-				v113 += v114;
-				loc70 = v113;
-				v113 = loc70;
-				v122.u1 = v113.u4->t0000.u1;
-				v113.u3 = (word32) v122;
-				loc71 = v113;
-				v113 = loc43;
-				v114.u0 = 0x18;
-				v113 <<= v114;
-				v114.u0 = 0x18;
-				v113 >>= v114;
-				v114.u0 = ~0x1F;
-				v113 -= v114;
-				switch (v113)
+				v114 = loc39;
+				v115.u0 = 0x01;
+				v114 += v115;
+				loc68 = v114;
+				v114 = loc68;
+				v122 = *v114.u0;
+				v114.u3 = (word32) v122;
+				loc69 = v114;
+				v114 = loc39;
+				v115.u0 = 0x02;
+				v114 += v115;
+				loc70 = v114;
+				v114 = loc70;
+				v123.u1 = v114.u4->t0000.u1;
+				v114.u3 = (word32) v123;
+				loc71 = v114;
+				v114 = loc43;
+				v115.u0 = 0x18;
+				v114 <<= v115;
+				v115.u0 = 0x18;
+				v114 >>= v115;
+				v115.u0 = ~0x1F;
+				v114 -= v115;
+				switch (v114)
 				{
 				case 0x00:
-					v113 = loc69;
-					v114.u0 = ~0x1F;
-					v113 &= v114;
-					loc72 = v113;
-					v113 = loc72;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					v114.u0 = ~0x5F;
-					v115 = v113 == v114;
-					loc73 = v115;
-					v113 = loc73;
-					v115 = v113 == 0x00;
-					if (v115)
+					v114 = loc69;
+					v115.u0 = ~0x1F;
+					v114 &= v115;
+					loc72 = v114;
+					v114 = loc72;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					v115.u0 = ~0x5F;
+					v116 = v114 == v115;
+					loc73 = v116;
+					v114 = loc73;
+					v116 = v114 == 0x00;
+					if (v116)
 					{
-						v113.u0 = 0x02;
-						loc8 = v113;
+						v114.u0 = 0x02;
+						loc8 = v114;
 						goto l001169EF;
 					}
 					break;
 				case 0x01:
-					v113 = loc69;
-					v114.u0 = ~0x1F;
-					v113 &= v114;
-					loc74 = v113;
-					v113 = loc74;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					v114.u0 = ~0x7F;
-					v115 = v113 == v114;
-					loc75 = v115;
-					v113 = loc75;
-					v115 = v113 == 0x00;
-					if (v115)
+					v114 = loc69;
+					v115.u0 = ~0x1F;
+					v114 &= v115;
+					loc74 = v114;
+					v114 = loc74;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					v115.u0 = ~0x7F;
+					v116 = v114 == v115;
+					loc75 = v116;
+					v114 = loc75;
+					v116 = v114 == 0x00;
+					if (v116)
 					{
-						v113.u0 = 0x02;
-						loc8 = v113;
+						v114.u0 = 0x02;
+						loc8 = v114;
 						goto l001169EF;
 					}
 					break;
@@ -7624,993 +7624,993 @@ Eq_n fn001164A4(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				case 11:
 				case 0x0C:
 				case 0x0D:
-					v113 = loc69;
-					v114.u0 = ~0x3F;
-					v113 &= v114;
-					loc76 = v113;
-					v113 = loc76;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					v114.u0 = ~0x7F;
-					v115 = v113 == v114;
-					loc77 = v115;
-					v113 = loc77;
-					v115 = v113 == 0x00;
-					if (v115)
+					v114 = loc69;
+					v115.u0 = ~0x3F;
+					v114 &= v115;
+					loc76 = v114;
+					v114 = loc76;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					v115.u0 = ~0x7F;
+					v116 = v114 == v115;
+					loc77 = v116;
+					v114 = loc77;
+					v116 = v114 == 0x00;
+					if (v116)
 					{
-						v113.u0 = 0x02;
-						loc8 = v113;
+						v114.u0 = 0x02;
+						loc8 = v114;
 						goto l001169EF;
 					}
 					break;
 				}
-				v113 = loc71;
-				v114.u0 = 0xFF;
-				v113 &= v114;
-				loc78 = v113;
-				v113 = loc78;
-				v114.u0 = 0xC0;
-				v113 &= v114;
-				loc79 = v113;
-				v113 = loc79;
-				v114.u0 = 0x80;
-				v115 = v113 == v114;
-				loc80 = v115;
-				v113 = loc80;
-				v115 = v113 == 0x00;
-				if (v115)
+				v114 = loc71;
+				v115.u0 = 0xFF;
+				v114 &= v115;
+				loc78 = v114;
+				v114 = loc78;
+				v115.u0 = 0xC0;
+				v114 &= v115;
+				loc79 = v114;
+				v114 = loc79;
+				v115.u0 = 0x80;
+				v116 = v114 == v115;
+				loc80 = v116;
+				v114 = loc80;
+				v116 = v114 == 0x00;
+				if (v116)
 				{
-					v113.u0 = 0x02;
-					loc8 = v113;
+					v114.u0 = 0x02;
+					loc8 = v114;
 					goto l001169EF;
 				}
-				v113 = loc44;
-				v114.u0 = 0x0C;
-				v113 <<= v114;
-				loc81 = v113;
-				v113 = loc81;
-				v114.u0 = 0xF000;
-				v113 &= v114;
-				loc82 = v113;
-				v113 = loc69;
-				v114.u0 = 0xFF;
-				v113 &= v114;
-				loc83 = v113;
-				v113 = loc83;
-				v114.u0 = 0x06;
-				v113 <<= v114;
-				loc84 = v113;
-				v113 = loc84;
-				v114.u0 = 0x0FC0;
-				v113 &= v114;
-				loc85 = v113;
-				v113 = loc85;
-				v114 = loc82;
-				v113 |= v114;
-				loc86 = v113;
-				v113 = loc78;
-				v114.u0 = 0x3F;
-				v113 &= v114;
-				loc87 = v113;
-				v113 = loc86;
-				v114 = loc87;
-				v113 |= v114;
-				loc88 = v113;
-				v113 = loc88;
-				v114 = arg6;
-				v115 = v113 > v114;
-				loc89 = v115;
-				v113 = loc89;
-				if (v113)
-				{
-					v113.u0 = 0x02;
-					loc8 = v113;
-					goto l001169EF;
-				}
-				v113 = loc41;
+				v114 = loc44;
+				v115.u0 = 0x0C;
+				v114 <<= v115;
+				loc81 = v114;
+				v114 = loc81;
+				v115.u0 = 0xF000;
+				v114 &= v115;
+				loc82 = v114;
+				v114 = loc69;
+				v115.u0 = 0xFF;
+				v114 &= v115;
+				loc83 = v114;
+				v114 = loc83;
+				v115.u0 = 0x06;
+				v114 <<= v115;
+				loc84 = v114;
+				v114 = loc84;
+				v115.u0 = 0x0FC0;
+				v114 &= v115;
+				loc85 = v114;
+				v114 = loc85;
+				v115 = loc82;
+				v114 |= v115;
+				loc86 = v114;
+				v114 = loc78;
+				v115.u0 = 0x3F;
+				v114 &= v115;
+				loc87 = v114;
+				v114 = loc86;
+				v115 = loc87;
+				v114 |= v115;
+				loc88 = v114;
 				v114 = loc88;
-				*v113.u0 = v114;
-				v113 = loc39;
-				v114.u0 = 0x03;
-				v113 += v114;
-				loc90 = v113;
-				v113 = arg2;
-				v114 = loc90;
-				*v113.u0 = v114;
+				v115 = arg6;
+				v116 = v114 > v115;
+				loc89 = v116;
+				v114 = loc89;
+				if (v114)
+				{
+					v114.u0 = 0x02;
+					loc8 = v114;
+					goto l001169EF;
+				}
+				v114 = loc41;
+				v115 = loc88;
+				*v114.u0 = v115;
+				v114 = loc39;
+				v115.u0 = 0x03;
+				v114 += v115;
+				loc90 = v114;
+				v114 = arg2;
+				v115 = loc90;
+				*v114.u0 = v115;
 			}
 			else
 			{
-				v113 = loc43;
-				v114.u0 = 0xFF;
-				v113 &= v114;
-				v114.u0 = 0xF5;
-				v115 = v113 < v114;
-				loc91 = v115;
-				v113 = loc91;
-				v115 = v113 == 0x00;
-				if (v115)
+				v114 = loc43;
+				v115.u0 = 0xFF;
+				v114 &= v115;
+				v115.u0 = 0xF5;
+				v116 = v114 < v115;
+				loc91 = v116;
+				v114 = loc91;
+				v116 = v114 == 0x00;
+				if (v116)
 				{
-					v113.u0 = 0x02;
-					loc8 = v113;
+					v114.u0 = 0x02;
+					loc8 = v114;
 					goto l001169EF;
 				}
-				v113 = loc39;
-				loc92 = v113;
-				v113 = loc11;
-				v114 = loc92;
-				v113 -= v114;
-				loc93 = v113;
-				v113 = loc93;
-				v114.u0 = 0x04;
-				v115 = v113 < v114;
-				loc94 = v115;
-				v113 = loc94;
-				if (v113)
+				v114 = loc39;
+				loc92 = v114;
+				v114 = loc11;
+				v115 = loc92;
+				v114 -= v115;
+				loc93 = v114;
+				v114 = loc93;
+				v115.u0 = 0x04;
+				v116 = v114 < v115;
+				loc94 = v116;
+				v114 = loc94;
+				if (v114)
 				{
-					v113.u0 = 0x01;
-					loc8 = v113;
+					v114.u0 = 0x01;
+					loc8 = v114;
 					goto l001169EF;
 				}
-				v113 = loc39;
-				v114.u0 = 0x01;
-				v113 += v114;
-				loc96 = v113;
-				v113 = loc96;
-				v123 = *v113.u0;
-				v113.u3 = (word32) v123;
-				loc97 = v113;
-				v113 = loc39;
-				v114.u0 = 0x02;
-				v113 += v114;
-				loc98 = v113;
-				v113 = loc98;
-				v124.u1 = v113.u4->t0000.u1;
-				v113.u3 = (word32) v124;
-				loc99 = v113;
-				v113 = loc39;
-				v114.u0 = 0x03;
-				v113 += v114;
-				loc100 = v113;
-				v113 = loc100;
-				v125.u1 = v113.u4->t0000.u1;
-				v113.u3 = (word32) v125;
-				loc101 = v113;
-				v113 = loc43;
-				v114.u0 = 0x18;
-				v113 <<= v114;
-				v114.u0 = 0x18;
-				v113 >>= v114;
-				v114.u0 = ~0x0F;
-				v113 -= v114;
-				switch (v113)
+				v114 = loc39;
+				v115.u0 = 0x01;
+				v114 += v115;
+				loc96 = v114;
+				v114 = loc96;
+				v124 = *v114.u0;
+				v114.u3 = (word32) v124;
+				loc97 = v114;
+				v114 = loc39;
+				v115.u0 = 0x02;
+				v114 += v115;
+				loc98 = v114;
+				v114 = loc98;
+				v125.u1 = v114.u4->t0000.u1;
+				v114.u3 = (word32) v125;
+				loc99 = v114;
+				v114 = loc39;
+				v115.u0 = 0x03;
+				v114 += v115;
+				loc100 = v114;
+				v114 = loc100;
+				v126.u1 = v114.u4->t0000.u1;
+				v114.u3 = (word32) v126;
+				loc101 = v114;
+				v114 = loc43;
+				v115.u0 = 0x18;
+				v114 <<= v115;
+				v115.u0 = 0x18;
+				v114 >>= v115;
+				v115.u0 = ~0x0F;
+				v114 -= v115;
+				switch (v114)
 				{
 				case 0x00:
-					v113 = loc97;
-					v114.u0 = 0x70;
-					v113 += v114;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					loc9 = v113;
-					v113 = loc9;
-					v114.u0 = 0xFF;
-					v113 &= v114;
-					v114.u0 = 0x30;
-					v115 = v113 < v114;
-					loc102 = v115;
-					v113 = loc102;
-					v115 = v113 == 0x00;
-					if (v115)
+					v114 = loc97;
+					v115.u0 = 0x70;
+					v114 += v115;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					loc9 = v114;
+					v114 = loc9;
+					v115.u0 = 0xFF;
+					v114 &= v115;
+					v115.u0 = 0x30;
+					v116 = v114 < v115;
+					loc102 = v116;
+					v114 = loc102;
+					v116 = v114 == 0x00;
+					if (v116)
 					{
-						v113.u0 = 0x02;
-						loc8 = v113;
+						v114.u0 = 0x02;
+						loc8 = v114;
 						goto l001169EF;
 					}
 					break;
 				case 0x01:
-					v113 = loc97;
-					v114.u0 = ~0x0F;
-					v113 &= v114;
-					loc103 = v113;
-					v113 = loc103;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					v114.u0 = ~0x7F;
-					v115 = v113 == v114;
-					loc104 = v115;
-					v113 = loc104;
-					v115 = v113 == 0x00;
-					if (v115)
+					v114 = loc97;
+					v115.u0 = ~0x0F;
+					v114 &= v115;
+					loc103 = v114;
+					v114 = loc103;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					v115.u0 = ~0x7F;
+					v116 = v114 == v115;
+					loc104 = v116;
+					v114 = loc104;
+					v116 = v114 == 0x00;
+					if (v116)
 					{
-						v113.u0 = 0x02;
-						loc8 = v113;
+						v114.u0 = 0x02;
+						loc8 = v114;
 						goto l001169EF;
 					}
 					break;
 				case 0x02:
 				case 0x03:
 				case 0x04:
-					v113 = loc97;
-					v114.u0 = ~0x3F;
-					v113 &= v114;
-					loc105 = v113;
-					v113 = loc105;
-					v114.u0 = 0x18;
-					v113 <<= v114;
-					v114.u0 = 0x18;
-					v113 >>= v114;
-					v114.u0 = ~0x7F;
-					v115 = v113 == v114;
-					loc107 = v115;
-					v113 = loc107;
-					v115 = v113 == 0x00;
-					if (v115)
+					v114 = loc97;
+					v115.u0 = ~0x3F;
+					v114 &= v115;
+					loc105 = v114;
+					v114 = loc105;
+					v115.u0 = 0x18;
+					v114 <<= v115;
+					v115.u0 = 0x18;
+					v114 >>= v115;
+					v115.u0 = ~0x7F;
+					v116 = v114 == v115;
+					loc107 = v116;
+					v114 = loc107;
+					v116 = v114 == 0x00;
+					if (v116)
 					{
-						v113.u0 = 0x02;
-						loc8 = v113;
+						v114.u0 = 0x02;
+						loc8 = v114;
 						goto l001169EF;
 					}
 					break;
 				}
-				v113 = loc99;
-				v114.u0 = 0xFF;
-				v113 &= v114;
-				loc108 = v113;
-				v113 = loc108;
-				v114.u0 = 0xC0;
-				v113 &= v114;
-				loc109 = v113;
-				v113 = loc109;
-				v114.u0 = 0x80;
-				v115 = v113 == v114;
-				loc110 = v115;
-				v113 = loc110;
-				v115 = v113 == 0x00;
-				if (v115)
+				v114 = loc99;
+				v115.u0 = 0xFF;
+				v114 &= v115;
+				loc108 = v114;
+				v114 = loc108;
+				v115.u0 = 0xC0;
+				v114 &= v115;
+				loc109 = v114;
+				v114 = loc109;
+				v115.u0 = 0x80;
+				v116 = v114 == v115;
+				loc110 = v116;
+				v114 = loc110;
+				v116 = v114 == 0x00;
+				if (v116)
 				{
-					v113.u0 = 0x02;
-					loc8 = v113;
+					v114.u0 = 0x02;
+					loc8 = v114;
 					goto l001169EF;
 				}
-				v113 = loc101;
-				v114.u0 = 0xFF;
-				v113 &= v114;
-				loc111 = v113;
-				v113 = loc111;
-				v114.u0 = 0xC0;
-				v113 &= v114;
-				loc112 = v113;
-				v113 = loc112;
-				v114.u0 = 0x80;
-				v115 = v113 == v114;
-				loc113 = v115;
-				v113 = loc113;
-				v115 = v113 == 0x00;
-				if (v115)
+				v114 = loc101;
+				v115.u0 = 0xFF;
+				v114 &= v115;
+				loc111 = v114;
+				v114 = loc111;
+				v115.u0 = 0xC0;
+				v114 &= v115;
+				loc112 = v114;
+				v114 = loc112;
+				v115.u0 = 0x80;
+				v116 = v114 == v115;
+				loc113 = v116;
+				v114 = loc113;
+				v116 = v114 == 0x00;
+				if (v116)
 				{
-					v113.u0 = 0x02;
-					loc8 = v113;
+					v114.u0 = 0x02;
+					loc8 = v114;
 					goto l001169EF;
 				}
-				v113 = loc44;
-				v114.u0 = 0x12;
-				v113 <<= v114;
-				loc114 = v113;
-				v113 = loc114;
-				v114.u0 = 0x001C0000;
-				v113 &= v114;
-				loc115 = v113;
-				v113 = loc97;
-				v114.u0 = 0xFF;
-				v113 &= v114;
-				loc116 = v113;
-				v113 = loc116;
-				v114.u0 = 0x0C;
-				v113 <<= v114;
-				loc13 = v113;
-				v113 = loc13;
-				v114.u0 = 0x0003F000;
-				v113 &= v114;
-				loc14 = v113;
-				v113 = loc14;
-				v114 = loc115;
-				v113 |= v114;
-				loc15 = v113;
-				v113 = loc108;
-				v114.u0 = 0x06;
-				v113 <<= v114;
-				loc16 = v113;
-				v113 = loc16;
-				v114.u0 = 0x0FC0;
-				v113 &= v114;
-				loc17 = v113;
-				v113 = loc15;
-				v114 = loc17;
-				v113 |= v114;
-				loc18 = v113;
-				v113 = loc111;
-				v114.u0 = 0x3F;
-				v113 &= v114;
-				loc19 = v113;
-				v113 = loc18;
-				v114 = loc19;
-				v113 |= v114;
-				loc20 = v113;
-				v113 = loc20;
-				v114 = arg6;
-				v115 = v113 > v114;
-				loc21 = v115;
-				v113 = loc21;
-				if (v113)
-				{
-					v113.u0 = 0x02;
-					loc8 = v113;
-					goto l001169EF;
-				}
-				v113 = loc41;
+				v114 = loc44;
+				v115.u0 = 0x12;
+				v114 <<= v115;
+				loc114 = v114;
+				v114 = loc114;
+				v115.u0 = 0x001C0000;
+				v114 &= v115;
+				loc115 = v114;
+				v114 = loc97;
+				v115.u0 = 0xFF;
+				v114 &= v115;
+				loc116 = v114;
+				v114 = loc116;
+				v115.u0 = 0x0C;
+				v114 <<= v115;
+				loc13 = v114;
+				v114 = loc13;
+				v115.u0 = 0x0003F000;
+				v114 &= v115;
+				loc14 = v114;
+				v114 = loc14;
+				v115 = loc115;
+				v114 |= v115;
+				loc15 = v114;
+				v114 = loc108;
+				v115.u0 = 0x06;
+				v114 <<= v115;
+				loc16 = v114;
+				v114 = loc16;
+				v115.u0 = 0x0FC0;
+				v114 &= v115;
+				loc17 = v114;
+				v114 = loc15;
+				v115 = loc17;
+				v114 |= v115;
+				loc18 = v114;
+				v114 = loc111;
+				v115.u0 = 0x3F;
+				v114 &= v115;
+				loc19 = v114;
+				v114 = loc18;
+				v115 = loc19;
+				v114 |= v115;
+				loc20 = v114;
 				v114 = loc20;
-				*v113.u0 = v114;
-				v113 = loc39;
-				v114.u0 = 0x04;
-				v113 += v114;
-				loc22 = v113;
-				v113 = arg2;
-				v114 = loc22;
-				*v113.u0 = v114;
+				v115 = arg6;
+				v116 = v114 > v115;
+				loc21 = v116;
+				v114 = loc21;
+				if (v114)
+				{
+					v114.u0 = 0x02;
+					loc8 = v114;
+					goto l001169EF;
+				}
+				v114 = loc41;
+				v115 = loc20;
+				*v114.u0 = v115;
+				v114 = loc39;
+				v115.u0 = 0x04;
+				v114 += v115;
+				loc22 = v114;
+				v114 = arg2;
+				v115 = loc22;
+				*v114.u0 = v115;
 l001169D6:
 			}
 		}
-		v113 = arg5;
-		v113 = *v113.u0;
-		loc24 = v113;
-		v113 = loc24;
-		v114.u0 = 0x04;
-		v113 += v114;
-		loc25 = v113;
-		v113 = arg5;
-		v114 = loc25;
-		*v113.u0 = v114;
+		v114 = arg5;
+		v114 = *v114.u0;
+		loc24 = v114;
+		v114 = loc24;
+		v115.u0 = 0x04;
+		v114 += v115;
+		loc25 = v114;
+		v114 = arg5;
+		v115 = loc25;
+		*v114.u0 = v115;
 	}
-	v113.u0 = 0x28;
-	loc117 = v113;
-l001169EF:
-	v113 = loc117;
 	v114.u0 = 0x28;
-	v115 = v113 == v114;
-	if (v115)
+	loc117 = v114;
+l001169EF:
+	v114 = loc117;
+	v115.u0 = 0x28;
+	v116 = v114 == v115;
+	if (v116)
 	{
-		v113 = loc40;
-		v114.u0 = 0x01;
-		v113 &= v114;
-		loc26 = v113;
-		v113 = loc26;
-		loc8 = v113;
+		v114 = loc40;
+		v115.u0 = 0x01;
+		v114 &= v115;
+		loc26 = v114;
+		v114 = loc26;
+		loc8 = v114;
 	}
-	v113 = loc8;
-	return v113;
+	v114 = loc8;
+	return v114;
 }
 
 // 00116A09: Stack Eq_n fn00116A09(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00116A09(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v89.u3 = g_t140030.u3;
-	loc94 = v89;
-	v89 = arg2;
-	v90 = arg0;
-	*v89.u3 = (word32) v90;
-	v89 = arg5;
-	v90 = arg3;
-	*v89.u3 = (word32) v90;
-	v89 = arg7;
-	v90.u0 = 0x02;
-	v89 &= v90;
-	loc81 = v89;
-	v89 = loc81;
-	v90.u0 = 0x00;
-	v91 = v89 == v90;
-	loc91 = v91;
-	v89 = arg4;
-	loc10 = v89;
-	v89 = loc91;
-	if (v89)
+	v90.u3 = g_t140030.u3;
+	loc94 = v90;
+	v90 = arg2;
+	v91 = arg0;
+	*v90.u3 = (word32) v91;
+	v90 = arg5;
+	v91 = arg3;
+	*v90.u3 = (word32) v91;
+	v90 = arg7;
+	v91.u0 = 0x02;
+	v90 &= v91;
+	loc81 = v90;
+	v90 = loc81;
+	v91.u0 = 0x00;
+	v92 = v90 == v91;
+	loc91 = v92;
+	v90 = arg4;
+	loc10 = v90;
+	v90 = loc91;
+	if (v90)
 	{
-		v89.u0 = 0x04;
-		loc93 = v89;
+		v90.u0 = 0x04;
+		loc93 = v90;
 	}
 	else
 	{
-		v89 = arg3;
-		loc11 = v89;
-		v89 = loc10;
-		v90 = loc11;
-		v89 -= v90;
-		loc12 = v89;
-		v89 = loc12;
-		v90.u0 = 0x03;
-		v91 = v89 < v90;
-		loc13 = v91;
-		v89 = loc13;
-		if (v89)
+		v90 = arg3;
+		loc11 = v90;
+		v90 = loc10;
+		v91 = loc11;
+		v90 -= v91;
+		loc12 = v90;
+		v90 = loc12;
+		v91.u0 = 0x03;
+		v92 = v90 < v91;
+		loc13 = v92;
+		v90 = loc13;
+		if (v90)
 		{
-			v89.u0 = 0x01;
-			loc8 = v89;
+			v90.u0 = 0x01;
+			loc8 = v90;
 		}
 		else
 		{
-			v89 = arg3;
-			v90.u0 = 0x01;
-			v89 += v90;
-			loc14 = v89;
-			v89 = arg5;
-			v90 = loc14;
-			*v89.u0 = v90;
-			v89 = arg3;
-			v90.u0 = ~0x10;
-			v92 = (byte) v90;
-			*v89.u0 = v92;
-			v89 = arg5;
-			v89 = *v89.u0;
-			loc15 = v89;
-			v89 = loc15;
-			v90.u0 = 0x01;
-			v89 += v90;
-			loc16 = v89;
-			v89 = arg5;
-			v90 = loc16;
-			*v89.u0 = v90;
-			v89 = loc15;
-			v90.u0 = ~0x44;
-			v93 = (byte) v90;
-			*v89.u0 = v93;
-			v89 = arg5;
-			v89 = *v89.u0;
-			loc17 = v89;
-			v89 = loc17;
-			v90.u0 = 0x01;
-			v89 += v90;
-			loc18 = v89;
-			v89 = arg5;
-			v90 = loc18;
-			*v89.u0 = v90;
-			v89 = loc17;
-			v90.u0 = ~0x40;
-			v94 = (byte) v90;
-			*v89.u0 = v94;
-			v89.u0 = 0x04;
-			loc93 = v89;
+			v90 = arg3;
+			v91.u0 = 0x01;
+			v90 += v91;
+			loc14 = v90;
+			v90 = arg5;
+			v91 = loc14;
+			*v90.u0 = v91;
+			v90 = arg3;
+			v91.u0 = ~0x10;
+			v93 = (byte) v91;
+			*v90.u0 = v93;
+			v90 = arg5;
+			v90 = *v90.u0;
+			loc15 = v90;
+			v90 = loc15;
+			v91.u0 = 0x01;
+			v90 += v91;
+			loc16 = v90;
+			v90 = arg5;
+			v91 = loc16;
+			*v90.u0 = v91;
+			v90 = loc15;
+			v91.u0 = ~0x44;
+			v94 = (byte) v91;
+			*v90.u0 = v94;
+			v90 = arg5;
+			v90 = *v90.u0;
+			loc17 = v90;
+			v90 = loc17;
+			v91.u0 = 0x01;
+			v90 += v91;
+			loc18 = v90;
+			v90 = arg5;
+			v91 = loc18;
+			*v90.u0 = v91;
+			v90 = loc17;
+			v91.u0 = ~0x40;
+			v95 = (byte) v91;
+			*v90.u0 = v95;
+			v90.u0 = 0x04;
+			loc93 = v90;
 		}
 	}
-	v89 = loc93;
-	v90.u0 = 0x04;
-	v91 = v89 == v90;
-	if (v91)
+	v90 = loc93;
+	v91.u0 = 0x04;
+	v92 = v90 == v91;
+	if (v92)
 	{
 		while (true)
 		{
-			v89 = arg2;
-			v89 = *v89.u0;
-			loc9 = v89;
-			v89 = loc9;
-			loc20 = v89;
-			v89 = loc20;
-			v90 = arg1;
-			v91 = v89 < v90;
-			loc19 = v91;
-			v89 = loc19;
-			v91 = v89 == 0x00;
-			if (v91)
+			v90 = arg2;
+			v90 = *v90.u0;
+			loc9 = v90;
+			v90 = loc9;
+			loc20 = v90;
+			v90 = loc20;
+			v91 = arg1;
+			v92 = v90 < v91;
+			loc19 = v92;
+			v90 = loc19;
+			v92 = v90 == 0x00;
+			if (v92)
 				break;
-			v89 = loc20;
-			v89 = *v89.u0;
-			loc21 = v89;
-			v89 = loc21;
-			v90.u0 = ~0x07FF;
-			v89 &= v90;
-			loc22 = v89;
-			v89 = loc22;
-			v90.u0 = 0xD800;
-			v91 = v89 == v90;
-			loc23 = v91;
-			v89 = loc21;
-			v90 = arg6;
-			v91 = v89 > v90;
-			loc24 = v91;
-			v89 = loc24;
-			v90 = loc23;
-			v89 |= v90;
-			loc92 = v89;
-			v89 = loc92;
-			if (v89)
+			v90 = loc20;
+			v90 = *v90.u0;
+			loc21 = v90;
+			v90 = loc21;
+			v91.u0 = ~0x07FF;
+			v90 &= v91;
+			loc22 = v90;
+			v90 = loc22;
+			v91.u0 = 0xD800;
+			v92 = v90 == v91;
+			loc23 = v92;
+			v90 = loc21;
+			v91 = arg6;
+			v92 = v90 > v91;
+			loc24 = v92;
+			v90 = loc24;
+			v91 = loc23;
+			v90 |= v91;
+			loc92 = v90;
+			v90 = loc92;
+			if (v90)
 			{
-				v89.u0 = 0x02;
-				loc8 = v89;
+				v90.u0 = 0x02;
+				loc8 = v90;
 				goto l00116DB8;
 			}
-			v89 = loc21;
-			v90.u0 = 0x80;
-			v91 = v89 < v90;
-			loc25 = v91;
-			v89 = loc25;
-			if (v89)
+			v90 = loc21;
+			v91.u0 = 0x80;
+			v92 = v90 < v91;
+			loc25 = v92;
+			v90 = loc25;
+			if (v90)
 			{
-				v89 = arg5;
-				v89 = *v89.u0;
-				loc26 = v89;
-				v89 = loc26;
-				loc27 = v89;
-				v89 = loc10;
-				v90 = loc27;
-				v89 -= v90;
-				loc28 = v89;
-				v89 = loc28;
-				v90.u0 = 0x01;
-				v91 = v89 < v90;
-				loc29 = v91;
-				v89 = loc29;
-				if (v89)
+				v90 = arg5;
+				v90 = *v90.u0;
+				loc26 = v90;
+				v90 = loc26;
+				loc27 = v90;
+				v90 = loc10;
+				v91 = loc27;
+				v90 -= v91;
+				loc28 = v90;
+				v90 = loc28;
+				v91.u0 = 0x01;
+				v92 = v90 < v91;
+				loc29 = v92;
+				v90 = loc29;
+				if (v90)
 				{
-					v89.u0 = 0x01;
-					loc8 = v89;
+					v90.u0 = 0x01;
+					loc8 = v90;
 					goto l00116DB8;
 				}
-				v89 = loc21;
-				v90.u0 = 0xFF;
-				v89 &= v90;
-				loc30 = v89;
-				v89 = loc26;
-				v90.u0 = 0x01;
-				v89 += v90;
-				loc31 = v89;
-				v89 = arg5;
-				v90 = loc31;
-				*v89.u0 = v90;
-				v89 = loc26;
-				v90 = loc30;
-				v95 = (byte) v90;
-				*v89.u0 = v95;
+				v90 = loc21;
+				v91.u0 = 0xFF;
+				v90 &= v91;
+				loc30 = v90;
+				v90 = loc26;
+				v91.u0 = 0x01;
+				v90 += v91;
+				loc31 = v90;
+				v90 = arg5;
+				v91 = loc31;
+				*v90.u0 = v91;
+				v90 = loc26;
+				v91 = loc30;
+				v96 = (byte) v91;
+				*v90.u0 = v96;
 			}
 			else
 			{
-				v89 = loc21;
-				v90.u0 = 0x0800;
-				v91 = v89 < v90;
-				loc32 = v91;
-				v89 = loc32;
-				if (v89)
+				v90 = loc21;
+				v91.u0 = 0x0800;
+				v92 = v90 < v91;
+				loc32 = v92;
+				v90 = loc32;
+				if (v90)
 				{
-					v89 = arg5;
-					v89 = *v89.u0;
-					loc33 = v89;
-					v89 = loc33;
-					loc34 = v89;
-					v89 = loc10;
-					v90 = loc34;
-					v89 -= v90;
-					loc35 = v89;
-					v89 = loc35;
-					v90.u0 = 0x02;
-					v91 = v89 < v90;
-					loc36 = v91;
-					v89 = loc36;
-					if (v89)
+					v90 = arg5;
+					v90 = *v90.u0;
+					loc33 = v90;
+					v90 = loc33;
+					loc34 = v90;
+					v90 = loc10;
+					v91 = loc34;
+					v90 -= v91;
+					loc35 = v90;
+					v90 = loc35;
+					v91.u0 = 0x02;
+					v92 = v90 < v91;
+					loc36 = v92;
+					v90 = loc36;
+					if (v90)
 					{
-						v89.u0 = 0x01;
-						loc8 = v89;
+						v90.u0 = 0x01;
+						loc8 = v90;
 						goto l00116DB8;
 					}
-					v89 = loc21;
-					v90.u0 = 0x06;
-					v89 >>= v90;
-					loc37 = v89;
-					v89 = loc37;
-					v90.u0 = 0xC0;
-					v89 |= v90;
-					loc38 = v89;
-					v89 = loc38;
-					v90.u0 = 0xFF;
-					v89 &= v90;
-					loc39 = v89;
-					v89 = loc33;
-					v90.u0 = 0x01;
-					v89 += v90;
-					loc40 = v89;
-					v89 = arg5;
-					v90 = loc40;
-					*v89.u0 = v90;
-					v89 = loc33;
-					v90 = loc39;
-					v96 = (byte) v90;
-					*v89.u0 = v96;
-					v89 = loc21;
-					v90.u0 = 0x3F;
-					v89 &= v90;
-					loc41 = v89;
-					v89 = loc41;
-					v90.u0 = 0x80;
-					v89 |= v90;
-					loc42 = v89;
-					v89 = loc42;
-					v90.u0 = 0xFF;
-					v89 &= v90;
-					loc43 = v89;
-					v89 = arg5;
-					v89 = *v89.u0;
-					loc44 = v89;
-					v89 = loc44;
-					v90.u0 = 0x01;
-					v89 += v90;
-					loc45 = v89;
-					v89 = arg5;
-					v90 = loc45;
-					*v89.u0 = v90;
-					v89 = loc44;
-					v90 = loc43;
-					v97 = (byte) v90;
-					*v89.u0 = v97;
+					v90 = loc21;
+					v91.u0 = 0x06;
+					v90 >>= v91;
+					loc37 = v90;
+					v90 = loc37;
+					v91.u0 = 0xC0;
+					v90 |= v91;
+					loc38 = v90;
+					v90 = loc38;
+					v91.u0 = 0xFF;
+					v90 &= v91;
+					loc39 = v90;
+					v90 = loc33;
+					v91.u0 = 0x01;
+					v90 += v91;
+					loc40 = v90;
+					v90 = arg5;
+					v91 = loc40;
+					*v90.u0 = v91;
+					v90 = loc33;
+					v91 = loc39;
+					v97 = (byte) v91;
+					*v90.u0 = v97;
+					v90 = loc21;
+					v91.u0 = 0x3F;
+					v90 &= v91;
+					loc41 = v90;
+					v90 = loc41;
+					v91.u0 = 0x80;
+					v90 |= v91;
+					loc42 = v90;
+					v90 = loc42;
+					v91.u0 = 0xFF;
+					v90 &= v91;
+					loc43 = v90;
+					v90 = arg5;
+					v90 = *v90.u0;
+					loc44 = v90;
+					v90 = loc44;
+					v91.u0 = 0x01;
+					v90 += v91;
+					loc45 = v90;
+					v90 = arg5;
+					v91 = loc45;
+					*v90.u0 = v91;
+					v90 = loc44;
+					v91 = loc43;
+					v98 = (byte) v91;
+					*v90.u0 = v98;
 				}
 				else
 				{
-					v89 = loc21;
-					v90.u0 = 0x00010000;
-					v91 = v89 < v90;
-					loc46 = v91;
-					v89 = arg5;
-					v89 = *v89.u0;
-					loc47 = v89;
-					v89 = loc47;
-					loc48 = v89;
-					v89 = loc10;
-					v90 = loc48;
-					v89 -= v90;
-					loc49 = v89;
-					v89 = loc46;
-					if (v89)
+					v90 = loc21;
+					v91.u0 = 0x00010000;
+					v92 = v90 < v91;
+					loc46 = v92;
+					v90 = arg5;
+					v90 = *v90.u0;
+					loc47 = v90;
+					v90 = loc47;
+					loc48 = v90;
+					v90 = loc10;
+					v91 = loc48;
+					v90 -= v91;
+					loc49 = v90;
+					v90 = loc46;
+					if (v90)
 					{
-						v89 = loc49;
-						v90.u0 = 0x03;
-						v91 = v89 < v90;
-						loc50 = v91;
-						v89 = loc50;
-						if (v89)
+						v90 = loc49;
+						v91.u0 = 0x03;
+						v92 = v90 < v91;
+						loc50 = v92;
+						v90 = loc50;
+						if (v90)
 						{
-							v89.u0 = 0x01;
-							loc8 = v89;
+							v90.u0 = 0x01;
+							loc8 = v90;
 							goto l00116DB8;
 						}
-						v89 = loc21;
-						v90.u0 = 0x0C;
-						v89 >>= v90;
-						loc51 = v89;
-						v89 = loc51;
-						v90.u0 = 0xE0;
-						v89 |= v90;
-						loc52 = v89;
-						v89 = loc52;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc53 = v89;
-						v89 = loc47;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc54 = v89;
-						v89 = arg5;
-						v90 = loc54;
-						*v89.u0 = v90;
-						v89 = loc47;
-						v90 = loc53;
-						v98 = (byte) v90;
-						*v89.u0 = v98;
-						v89 = loc21;
-						v90.u0 = 0x06;
-						v89 >>= v90;
-						loc55 = v89;
-						v89 = loc55;
-						v90.u0 = 0x3F;
-						v89 &= v90;
-						loc56 = v89;
-						v89 = loc56;
-						v90.u0 = 0x80;
-						v89 |= v90;
-						loc57 = v89;
-						v89 = loc57;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc58 = v89;
-						v89 = arg5;
-						v89 = *v89.u0;
-						loc59 = v89;
-						v89 = loc59;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc60 = v89;
-						v89 = arg5;
-						v90 = loc60;
-						*v89.u0 = v90;
-						v89 = loc59;
-						v90 = loc58;
-						v99 = (byte) v90;
-						*v89.u0 = v99;
-						v89 = loc21;
-						v90.u0 = 0x3F;
-						v89 &= v90;
-						loc61 = v89;
-						v89 = loc61;
-						v90.u0 = 0x80;
-						v89 |= v90;
-						loc62 = v89;
-						v89 = loc62;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc63 = v89;
-						v89 = arg5;
-						v89 = *v89.u0;
-						loc64 = v89;
-						v89 = loc64;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc65 = v89;
-						v89 = arg5;
-						v90 = loc65;
-						*v89.u0 = v90;
-						v89 = loc64;
-						v90 = loc63;
-						v100 = (byte) v90;
-						*v89.u0 = v100;
+						v90 = loc21;
+						v91.u0 = 0x0C;
+						v90 >>= v91;
+						loc51 = v90;
+						v90 = loc51;
+						v91.u0 = 0xE0;
+						v90 |= v91;
+						loc52 = v90;
+						v90 = loc52;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc53 = v90;
+						v90 = loc47;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc54 = v90;
+						v90 = arg5;
+						v91 = loc54;
+						*v90.u0 = v91;
+						v90 = loc47;
+						v91 = loc53;
+						v99 = (byte) v91;
+						*v90.u0 = v99;
+						v90 = loc21;
+						v91.u0 = 0x06;
+						v90 >>= v91;
+						loc55 = v90;
+						v90 = loc55;
+						v91.u0 = 0x3F;
+						v90 &= v91;
+						loc56 = v90;
+						v90 = loc56;
+						v91.u0 = 0x80;
+						v90 |= v91;
+						loc57 = v90;
+						v90 = loc57;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc58 = v90;
+						v90 = arg5;
+						v90 = *v90.u0;
+						loc59 = v90;
+						v90 = loc59;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc60 = v90;
+						v90 = arg5;
+						v91 = loc60;
+						*v90.u0 = v91;
+						v90 = loc59;
+						v91 = loc58;
+						v100 = (byte) v91;
+						*v90.u0 = v100;
+						v90 = loc21;
+						v91.u0 = 0x3F;
+						v90 &= v91;
+						loc61 = v90;
+						v90 = loc61;
+						v91.u0 = 0x80;
+						v90 |= v91;
+						loc62 = v90;
+						v90 = loc62;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc63 = v90;
+						v90 = arg5;
+						v90 = *v90.u0;
+						loc64 = v90;
+						v90 = loc64;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc65 = v90;
+						v90 = arg5;
+						v91 = loc65;
+						*v90.u0 = v91;
+						v90 = loc64;
+						v91 = loc63;
+						v101 = (byte) v91;
+						*v90.u0 = v101;
 					}
 					else
 					{
-						v89 = loc49;
-						v90.u0 = 0x04;
-						v91 = v89 < v90;
-						loc66 = v91;
-						v89 = loc66;
-						if (v89)
+						v90 = loc49;
+						v91.u0 = 0x04;
+						v92 = v90 < v91;
+						loc66 = v92;
+						v90 = loc66;
+						if (v90)
 						{
-							v89.u0 = 0x01;
-							loc8 = v89;
+							v90.u0 = 0x01;
+							loc8 = v90;
 							goto l00116DB8;
 						}
-						v89 = loc21;
-						v90.u0 = 0x12;
-						v89 >>= v90;
-						loc67 = v89;
-						v89 = loc67;
-						v90.u0 = 0xF0;
-						v89 |= v90;
-						loc68 = v89;
-						v89 = loc68;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc69 = v89;
-						v89 = loc47;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc70 = v89;
-						v89 = arg5;
-						v90 = loc70;
-						*v89.u0 = v90;
-						v89 = loc47;
-						v90 = loc69;
-						v101 = (byte) v90;
-						*v89.u0 = v101;
-						v89 = loc21;
-						v90.u0 = 0x0C;
-						v89 >>= v90;
-						loc71 = v89;
-						v89 = loc71;
-						v90.u0 = 0x3F;
-						v89 &= v90;
-						loc72 = v89;
-						v89 = loc72;
-						v90.u0 = 0x80;
-						v89 |= v90;
-						loc73 = v89;
-						v89 = loc73;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc74 = v89;
-						v89 = arg5;
-						v89 = *v89.u0;
-						loc75 = v89;
-						v89 = loc75;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc76 = v89;
-						v89 = arg5;
-						v90 = loc76;
-						*v89.u0 = v90;
-						v89 = loc75;
-						v90 = loc74;
-						v102 = (byte) v90;
-						*v89.u0 = v102;
-						v89 = loc21;
-						v90.u0 = 0x06;
-						v89 >>= v90;
-						loc77 = v89;
-						v89 = loc77;
-						v90.u0 = 0x3F;
-						v89 &= v90;
-						loc78 = v89;
-						v89 = loc78;
-						v90.u0 = 0x80;
-						v89 |= v90;
-						loc79 = v89;
-						v89 = loc79;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc80 = v89;
-						v89 = arg5;
-						v89 = *v89.u0;
-						loc82 = v89;
-						v89 = loc82;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc83 = v89;
-						v89 = arg5;
-						v90 = loc83;
-						*v89.u0 = v90;
-						v89 = loc82;
-						v90 = loc80;
-						v103 = (byte) v90;
-						*v89.u0 = v103;
-						v89 = loc21;
-						v90.u0 = 0x3F;
-						v89 &= v90;
-						loc84 = v89;
-						v89 = loc84;
-						v90.u0 = 0x80;
-						v89 |= v90;
-						loc85 = v89;
-						v89 = loc85;
-						v90.u0 = 0xFF;
-						v89 &= v90;
-						loc86 = v89;
-						v89 = arg5;
-						v89 = *v89.u0;
-						loc87 = v89;
-						v89 = loc87;
-						v90.u0 = 0x01;
-						v89 += v90;
-						loc88 = v89;
-						v89 = arg5;
-						v90 = loc88;
-						*v89.u0 = v90;
-						v89 = loc87;
-						v90 = loc86;
-						v104 = (byte) v90;
-						*v89.u0 = v104;
+						v90 = loc21;
+						v91.u0 = 0x12;
+						v90 >>= v91;
+						loc67 = v90;
+						v90 = loc67;
+						v91.u0 = 0xF0;
+						v90 |= v91;
+						loc68 = v90;
+						v90 = loc68;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc69 = v90;
+						v90 = loc47;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc70 = v90;
+						v90 = arg5;
+						v91 = loc70;
+						*v90.u0 = v91;
+						v90 = loc47;
+						v91 = loc69;
+						v102 = (byte) v91;
+						*v90.u0 = v102;
+						v90 = loc21;
+						v91.u0 = 0x0C;
+						v90 >>= v91;
+						loc71 = v90;
+						v90 = loc71;
+						v91.u0 = 0x3F;
+						v90 &= v91;
+						loc72 = v90;
+						v90 = loc72;
+						v91.u0 = 0x80;
+						v90 |= v91;
+						loc73 = v90;
+						v90 = loc73;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc74 = v90;
+						v90 = arg5;
+						v90 = *v90.u0;
+						loc75 = v90;
+						v90 = loc75;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc76 = v90;
+						v90 = arg5;
+						v91 = loc76;
+						*v90.u0 = v91;
+						v90 = loc75;
+						v91 = loc74;
+						v103 = (byte) v91;
+						*v90.u0 = v103;
+						v90 = loc21;
+						v91.u0 = 0x06;
+						v90 >>= v91;
+						loc77 = v90;
+						v90 = loc77;
+						v91.u0 = 0x3F;
+						v90 &= v91;
+						loc78 = v90;
+						v90 = loc78;
+						v91.u0 = 0x80;
+						v90 |= v91;
+						loc79 = v90;
+						v90 = loc79;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc80 = v90;
+						v90 = arg5;
+						v90 = *v90.u0;
+						loc82 = v90;
+						v90 = loc82;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc83 = v90;
+						v90 = arg5;
+						v91 = loc83;
+						*v90.u0 = v91;
+						v90 = loc82;
+						v91 = loc80;
+						v104 = (byte) v91;
+						*v90.u0 = v104;
+						v90 = loc21;
+						v91.u0 = 0x3F;
+						v90 &= v91;
+						loc84 = v90;
+						v90 = loc84;
+						v91.u0 = 0x80;
+						v90 |= v91;
+						loc85 = v90;
+						v90 = loc85;
+						v91.u0 = 0xFF;
+						v90 &= v91;
+						loc86 = v90;
+						v90 = arg5;
+						v90 = *v90.u0;
+						loc87 = v90;
+						v90 = loc87;
+						v91.u0 = 0x01;
+						v90 += v91;
+						loc88 = v90;
+						v90 = arg5;
+						v91 = loc88;
+						*v90.u0 = v91;
+						v90 = loc87;
+						v91 = loc86;
+						v105 = (byte) v91;
+						*v90.u0 = v105;
 					}
 				}
 			}
-			v89 = arg2;
-			v89 = *v89.u0;
-			loc89 = v89;
-			v89 = loc89;
-			v90.u0 = 0x04;
-			v89 += v90;
-			loc90 = v89;
-			v89 = arg2;
+			v90 = arg2;
+			v90 = *v90.u0;
+			loc89 = v90;
+			v90 = loc89;
+			v91.u0 = 0x04;
+			v90 += v91;
+			loc90 = v90;
+			v90 = arg2;
+			v91 = loc90;
+			*v90.u0 = v91;
 			v90 = loc90;
-			*v89.u0 = v90;
-			v89 = loc90;
-			loc20 = v89;
+			loc20 = v90;
 		}
-		v89.u0 = 0x00;
-		loc8 = v89;
+		v90.u0 = 0x00;
+		loc8 = v90;
 	}
 l00116DB8:
-	v89 = loc8;
-	return v89;
+	v90 = loc8;
+	return v90;
 }
 
 // 00116DBE: void fn00116DBE(Stack Eq_n arg0)
 void fn00116DBE(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00116DCC: Stack Eq_n fn00116DCC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00116DCC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v4.u3 = g_t140030.u3;
-	loc9 = v4;
-	v4 = arg4;
-	v5 = arg2;
-	*v4.u3 = (word32) v5;
-	v4 = arg7;
-	v5 = arg5;
-	*v4.u3 = (word32) v5;
-	v4.u0 = 0x03;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc9 = v5;
+	v5 = arg4;
+	v6 = arg2;
+	*v5.u3 = (word32) v6;
+	v5 = arg7;
+	v6 = arg5;
+	*v5.u3 = (word32) v6;
+	v5.u0 = 0x03;
+	return v5;
 }
 
 // 00116DE5: Stack Eq_n fn00116DE5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00116DE5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v4.u3 = g_t140030.u3;
-	loc9 = v4;
-	v4 = arg4;
-	v5 = arg2;
-	*v4.u3 = (word32) v5;
-	v4 = arg7;
-	v5 = arg5;
-	*v4.u3 = (word32) v5;
-	v4.u0 = 0x03;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc9 = v5;
+	v5 = arg4;
+	v6 = arg2;
+	*v5.u3 = (word32) v6;
+	v5 = arg7;
+	v6 = arg5;
+	*v5.u3 = (word32) v6;
+	v5.u0 = 0x03;
+	return v5;
 }
 
 // 00116DFE: Stack Eq_n fn00116DFE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00116DFE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v4.u3 = g_t140030.u3;
-	loc6 = v4;
-	v4 = arg4;
-	v5 = arg2;
-	*v4.u3 = (word32) v5;
-	v4.u0 = 0x03;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc6 = v5;
+	v5 = arg4;
+	v6 = arg2;
+	*v5.u3 = (word32) v6;
+	v5.u0 = 0x03;
+	return v5;
 }
 
 // 00116E10: Stack Eq_n fn00116E10(Stack Eq_n arg0)
 Eq_n fn00116E10(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x01;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x01;
+	return v5;
 }
 
 // 00116E1B: Stack Eq_n fn00116E1B(Stack Eq_n arg0)
 Eq_n fn00116E1B(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x01;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x01;
+	return v5;
 }
 
 // 00116E26: Stack Eq_n fn00116E26(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00116E26(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v9.u3 = g_t140030.u3;
-	loc11 = v9;
-	v9 = arg3;
-	loc6 = v9;
-	v9 = arg2;
-	loc7 = v9;
-	v9 = loc6;
-	v10 = loc7;
-	v9 -= v10;
-	loc8 = v9;
-	v9 = loc8;
-	v10 = arg4;
-	v11 = v9 < v10;
-	loc9 = v11;
-	v9 = loc9;
-	if (v9)
-		v9 = loc8;
+	v10.u3 = g_t140030.u3;
+	loc11 = v10;
+	v10 = arg3;
+	loc6 = v10;
+	v10 = arg2;
+	loc7 = v10;
+	v10 = loc6;
+	v11 = loc7;
+	v10 -= v11;
+	loc8 = v10;
+	v10 = loc8;
+	v11 = arg4;
+	v12 = v10 < v11;
+	loc9 = v12;
+	v10 = loc9;
+	if (v10)
+		v10 = loc8;
 	else
-		v9 = arg4;
-	loc5 = v9;
-	v9 = loc5;
-	return v9;
+		v10 = arg4;
+	loc5 = v10;
+	v10 = loc5;
+	return v10;
 }
 
 // 00116E53: Stack Eq_n fn00116E53(Stack Eq_n arg0)
 Eq_n fn00116E53(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x01;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x01;
+	return v5;
 }
 
 // 00116E5E: Stack Eq_n fn00116E5E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
@@ -8621,799 +8621,799 @@ Eq_n fn00116E5E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 // 0011742D: Stack Eq_n fn0011742D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn0011742D(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v117.u3 = g_t140030.u3;
-	loc121 = v117;
-	v117.u3 = g_t140030.u3;
-	v118.u0 = 0x10;
-	v117 += v118;
-	g_t140030.u3 = (word32 *) v117;
-	v117.u3 = g_t140030.u3;
-	v118.u3 = g_t140034.u3;
-	v119 = v117 >= v118;
-	if (v119)
+	v118.u3 = g_t140030.u3;
+	loc121 = v118;
+	v118.u3 = g_t140030.u3;
+	v119.u0 = 0x10;
+	v118 += v119;
+	g_t140030.u3 = (word32 *) v118;
+	v118.u3 = g_t140030.u3;
+	v119.u3 = g_t140034.u3;
+	v120 = v118 >= v119;
+	if (v120)
 	{
-		v117.u0 = 0x10;
-		abortStackOverflow(v117);
+		v118.u0 = 0x10;
+		abortStackOverflow(v118);
 	}
 	while (true)
 	{
-		v117 = loc121;
-		loc94 = v117;
-		v117 = arg2;
-		loc8 = v117;
-		v117 = loc8;
-		v118 = arg3;
-		v119 = v117 == v118;
-		loc105 = v119;
-		v117 = loc105;
-		if (v117)
+		v118 = loc121;
+		loc94 = v118;
+		v118 = arg2;
+		loc8 = v118;
+		v118 = loc8;
+		v119 = arg3;
+		v120 = v118 == v119;
+		loc105 = v120;
+		v118 = loc105;
+		if (v118)
 			break;
-		v117 = loc8;
-		v120 = *v117.u0;
-		v117.u3 = (word32) v120;
-		loc23 = v117;
-		v117 = loc23;
-		v118.u0 = 0x18;
-		v117 <<= v118;
-		v118.u0 = 0x18;
-		v117 >>= v118;
-		v118.u0 = 0x00;
-		v119 = v117 == v118;
-		loc26 = v119;
-		v117 = loc26;
-		if (v117)
+		v118 = loc8;
+		v121 = *v118.u0;
+		v118.u3 = (word32) v121;
+		loc23 = v118;
+		v118 = loc23;
+		v119.u0 = 0x18;
+		v118 <<= v119;
+		v119.u0 = 0x18;
+		v118 >>= v119;
+		v119.u0 = 0x00;
+		v120 = v118 == v119;
+		loc26 = v120;
+		v118 = loc26;
+		if (v118)
 		{
-			v117 = loc8;
-			loc9 = v117;
+			v118 = loc8;
+			loc9 = v118;
 			goto l00117490;
 		}
-		v117 = loc8;
-		v118.u0 = 0x01;
-		v117 += v118;
-		loc27 = v117;
-		v117 = loc27;
-		loc8 = v117;
+		v118 = loc8;
+		v119.u0 = 0x01;
+		v118 += v119;
+		loc27 = v118;
+		v118 = loc27;
+		loc8 = v118;
 	}
-	v117 = arg3;
-	loc9 = v117;
+	v118 = arg3;
+	loc9 = v118;
 l00117490:
 	while (true)
 	{
-		v117 = arg7;
-		v118 = arg5;
-		*v117.u3 = (word32) v118;
-		v117 = arg4;
-		v118 = arg2;
-		*v117.u3 = (word32) v118;
-		v117 = arg6;
-		loc28 = v117;
-		v117 = arg0;
-		v118.u0 = 0x08;
-		v117 += v118;
-		loc29 = v117;
-		v117 = arg2;
-		loc10 = v117;
-		v117 = arg5;
-		loc11 = v117;
-		v117 = loc9;
-		loc12 = v117;
-		v117 = loc10;
-		v118 = arg3;
-		v119 = v117 == v118;
-		loc30 = v119;
-		v117 = loc11;
+		v118 = arg7;
+		v119 = arg5;
+		*v118.u3 = (word32) v119;
+		v118 = arg4;
+		v119 = arg2;
+		*v118.u3 = (word32) v119;
 		v118 = arg6;
-		v119 = v117 == v118;
-		loc31 = v119;
-		v117 = loc31;
-		v118 = loc30;
-		v117 |= v118;
-		loc118 = v117;
-		v117 = loc118;
-		if (v117)
-			break;
-		v117 = arg1;
-		v121 = *v117.u0;
-		loc122 = v121;
-		v117 = loc94;
-		v122 = loc122;
-		*v117.u0 = v122;
-		v117 = loc12;
-		loc32 = v117;
-		v117 = loc10;
-		loc33 = v117;
-		v117 = loc32;
-		v118 = loc33;
-		v117 -= v118;
-		loc34 = v117;
-		v117 = loc11;
-		loc35 = v117;
-		v117 = loc28;
-		v118 = loc35;
-		v117 -= v118;
-		loc36 = v117;
-		v117 = loc36;
-		v118.u0 = 0x02;
-		v117 >>= v118;
-		loc37 = v117;
-		v117 = loc29;
-		v117 = *v117.u0;
-		loc38 = v117;
-		v117 = loc38;
-		v117 = fn000DB419(v117);
-		loc39 = v117;
-		v117.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v117;
-		v117.u0 = 0x01BB;
+		loc28 = v118;
+		v118 = arg0;
+		v119.u0 = 0x08;
+		v118 += v119;
+		loc29 = v118;
+		v118 = arg2;
+		loc10 = v118;
+		v118 = arg5;
+		loc11 = v118;
+		v118 = loc9;
+		loc12 = v118;
+		v118 = loc10;
+		v119 = arg3;
+		v120 = v118 == v119;
+		loc30 = v120;
 		v118 = loc11;
-		v123 = arg4;
-		v124 = loc34;
-		v125 = loc37;
-		v126 = arg1;
-		v117 = invoke_iiiiii(v117, v118, v123, v124, v125, v126);
-		loc40 = v117;
-		v117.u3 = g_t140048.u3;
-		loc41 = v117;
-		v117.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v117;
-		v117 = loc41;
-		v118.u0 = 0x01;
-		v117 &= v118;
-		loc42 = v117;
-		v117 = loc42;
-		if (v117)
+		v119 = arg6;
+		v120 = v118 == v119;
+		loc31 = v120;
+		v118 = loc31;
+		v119 = loc30;
+		v118 |= v119;
+		loc118 = v118;
+		v118 = loc118;
+		if (v118)
+			break;
+		v118 = arg1;
+		v122 = *v118.u0;
+		loc122 = v122;
+		v118 = loc94;
+		v123 = loc122;
+		*v118.u0 = v123;
+		v118 = loc12;
+		loc32 = v118;
+		v118 = loc10;
+		loc33 = v118;
+		v118 = loc32;
+		v119 = loc33;
+		v118 -= v119;
+		loc34 = v118;
+		v118 = loc11;
+		loc35 = v118;
+		v118 = loc28;
+		v119 = loc35;
+		v118 -= v119;
+		loc36 = v118;
+		v118 = loc36;
+		v119.u0 = 0x02;
+		v118 >>= v119;
+		loc37 = v118;
+		v118 = loc29;
+		v118 = *v118.u0;
+		loc38 = v118;
+		v118 = loc38;
+		v118 = fn000DB419(v118);
+		loc39 = v118;
+		v118.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v118;
+		v118.u0 = 0x01BB;
+		v119 = loc11;
+		v124 = arg4;
+		v125 = loc34;
+		v126 = loc37;
+		v127 = arg1;
+		v118 = invoke_iiiiii(v118, v119, v124, v125, v126, v127);
+		loc40 = v118;
+		v118.u3 = g_t140048.u3;
+		loc41 = v118;
+		v118.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v118;
+		v118 = loc41;
+		v119.u0 = 0x01;
+		v118 &= v119;
+		loc42 = v118;
+		v118 = loc42;
+		if (v118)
 		{
-			v117.u0 = 11;
-			loc120 = v117;
+			v118.u0 = 11;
+			loc120 = v118;
 			goto l001176FA;
 		}
-		v117 = loc39;
-		v118.u0 = 0x00;
-		v119 = v117 == v118;
-		loc43 = v119;
-		v117 = loc43;
-		v119 = v117 == 0x00;
-		if (v119)
+		v118 = loc39;
+		v119.u0 = 0x00;
+		v120 = v118 == v119;
+		loc43 = v120;
+		v118 = loc43;
+		v120 = v118 == 0x00;
+		if (v120)
 		{
-			v117.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v117;
-			v117.u0 = 0x017E;
-			v118 = loc39;
-			v117 = invoke_ii(v117, v118);
-			v117.u3 = g_t140048.u3;
-			loc44 = v117;
-			v117.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v117;
-			v117 = loc44;
-			v118.u0 = 0x01;
-			v117 &= v118;
-			loc45 = v117;
-			v117 = loc45;
-			if (v117)
+			v118.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v118;
+			v118.u0 = 0x017E;
+			v119 = loc39;
+			v118 = invoke_ii(v118, v119);
+			v118.u3 = g_t140048.u3;
+			loc44 = v118;
+			v118.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v118;
+			v118 = loc44;
+			v119.u0 = 0x01;
+			v118 &= v119;
+			loc45 = v118;
+			v118 = loc45;
+			if (v118)
 			{
-				v117.u0 = 0x0A;
-				loc120 = v117;
+				v118.u0 = 0x0A;
+				loc120 = v118;
 				goto l001176FA;
 			}
 		}
-		v117 = loc40;
-		v118.u0 = ~0x00;
-		v119 = v117 == v118;
-		loc55 = v119;
-		v117 = loc55;
-		if (v117)
-		{
-			v117 = loc10;
-			loc14 = v117;
-			v117 = loc11;
-			loc119 = v117;
-			v117.u0 = 0x10;
-			loc120 = v117;
-			goto l001176FA;
-		}
-		v117 = arg7;
-		v117 = *v117.u0;
-		loc82 = v117;
-		v117 = loc82;
 		v118 = loc40;
-		v123.u0 = 0x02;
-		v118 <<= v123;
-		v117 += v118;
-		loc83 = v117;
-		v117 = arg7;
-		v118 = loc83;
-		*v117.u0 = v118;
-		v117 = loc83;
-		v118 = arg6;
-		v119 = v117 == v118;
-		loc84 = v119;
-		v117 = loc84;
-		if (v117)
+		v119.u0 = ~0x00;
+		v120 = v118 == v119;
+		loc55 = v120;
+		v118 = loc55;
+		if (v118)
 		{
-			v117.u0 = 0x30;
-			loc120 = v117;
+			v118 = loc10;
+			loc14 = v118;
+			v118 = loc11;
+			loc119 = v118;
+			v118.u0 = 0x10;
+			loc120 = v118;
 			goto l001176FA;
 		}
-		v117 = loc12;
-		v118 = arg3;
-		v119 = v117 == v118;
-		loc85 = v119;
-		v117 = arg4;
-		v117 = *v117.u0;
-		loc20 = v117;
-		v117 = loc85;
-		if (v117)
+		v118 = arg7;
+		v118 = *v118.u0;
+		loc82 = v118;
+		v118 = loc82;
+		v119 = loc40;
+		v124.u0 = 0x02;
+		v119 <<= v124;
+		v118 += v119;
+		loc83 = v118;
+		v118 = arg7;
+		v119 = loc83;
+		*v118.u0 = v119;
+		v118 = loc83;
+		v119 = arg6;
+		v120 = v118 == v119;
+		loc84 = v120;
+		v118 = loc84;
+		if (v118)
 		{
-			v117 = arg3;
-			loc19 = v117;
-			v117 = loc83;
-			loc24 = v117;
-			v117 = loc20;
-			loc25 = v117;
+			v118.u0 = 0x30;
+			loc120 = v118;
+			goto l001176FA;
+		}
+		v118 = loc12;
+		v119 = arg3;
+		v120 = v118 == v119;
+		loc85 = v120;
+		v118 = arg4;
+		v118 = *v118.u0;
+		loc20 = v118;
+		v118 = loc85;
+		if (v118)
+		{
+			v118 = arg3;
+			loc19 = v118;
+			v118 = loc83;
+			loc24 = v118;
+			v118 = loc20;
+			loc25 = v118;
 		}
 		else
 		{
-			v117 = loc29;
-			v117 = *v117.u0;
-			loc86 = v117;
-			v117 = loc86;
-			v117 = fn000DB419(v117);
-			loc87 = v117;
-			v117.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v117;
-			v117.u0 = 444;
-			v118 = loc83;
-			v123 = loc20;
-			v124.u0 = 0x01;
-			v125 = arg1;
-			v117 = invoke_iiiii(v117, v118, v123, v124, v125);
-			loc88 = v117;
-			v117.u3 = g_t140048.u3;
-			loc89 = v117;
-			v117.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v117;
-			v117 = loc89;
-			v118.u0 = 0x01;
-			v117 &= v118;
-			loc90 = v117;
-			v117 = loc90;
-			if (v117)
+			v118 = loc29;
+			v118 = *v118.u0;
+			loc86 = v118;
+			v118 = loc86;
+			v118 = fn000DB419(v118);
+			loc87 = v118;
+			v118.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v118;
+			v118.u0 = 444;
+			v119 = loc83;
+			v124 = loc20;
+			v125.u0 = 0x01;
+			v126 = arg1;
+			v118 = invoke_iiiii(v118, v119, v124, v125, v126);
+			loc88 = v118;
+			v118.u3 = g_t140048.u3;
+			loc89 = v118;
+			v118.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v118;
+			v118 = loc89;
+			v119.u0 = 0x01;
+			v118 &= v119;
+			loc90 = v118;
+			v118 = loc90;
+			if (v118)
 			{
-				v117.u0 = 0x26;
-				loc120 = v117;
+				v118.u0 = 0x26;
+				loc120 = v118;
 				goto l001176FA;
 			}
-			v117 = loc87;
-			v118.u0 = 0x00;
-			v119 = v117 == v118;
-			loc91 = v119;
-			v117 = loc91;
-			v119 = v117 == 0x00;
-			if (v119)
+			v118 = loc87;
+			v119.u0 = 0x00;
+			v120 = v118 == v119;
+			loc91 = v120;
+			v118 = loc91;
+			v120 = v118 == 0x00;
+			if (v120)
 			{
-				v117.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v117;
-				v117.u0 = 0x017E;
-				v118 = loc87;
-				v117 = invoke_ii(v117, v118);
-				v117.u3 = g_t140048.u3;
-				loc92 = v117;
-				v117.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v117;
-				v117 = loc92;
-				v118.u0 = 0x01;
-				v117 &= v118;
-				loc93 = v117;
-				v117 = loc93;
-				if (v117)
+				v118.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v118;
+				v118.u0 = 0x017E;
+				v119 = loc87;
+				v118 = invoke_ii(v118, v119);
+				v118.u3 = g_t140048.u3;
+				loc92 = v118;
+				v118.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v118;
+				v118 = loc92;
+				v119.u0 = 0x01;
+				v118 &= v119;
+				loc93 = v118;
+				v118 = loc93;
+				if (v118)
 				{
-					v117.u0 = 0x25;
-					loc120 = v117;
+					v118.u0 = 0x25;
+					loc120 = v118;
 					goto l001176FA;
 				}
 			}
-			v117 = loc88;
-			v118.u0 = 0x00;
-			v119 = v117 == v118;
-			loc104 = v119;
-			v117 = loc104;
-			v119 = v117 == 0x00;
-			if (v119)
+			v118 = loc88;
+			v119.u0 = 0x00;
+			v120 = v118 == v119;
+			loc104 = v120;
+			v118 = loc104;
+			v120 = v118 == 0x00;
+			if (v120)
 			{
-				v117.u0 = 0x02;
-				loc13 = v117;
-				v117.u0 = 0x2F;
-				loc120 = v117;
+				v118.u0 = 0x02;
+				loc13 = v118;
+				v118.u0 = 0x2F;
+				loc120 = v118;
 				goto l001176FA;
 			}
 			while (true)
 			{
-				v117 = arg7;
-				v117 = *v117.u0;
-				loc106 = v117;
-				v117 = loc106;
-				v118.u0 = 0x04;
-				v117 += v118;
-				loc107 = v117;
-				v117 = arg7;
-				v118 = loc107;
-				*v117.u0 = v118;
-				v117 = arg4;
-				v117 = *v117.u0;
-				loc108 = v117;
-				v117 = loc108;
-				v118.u0 = 0x01;
-				v117 += v118;
-				loc109 = v117;
-				v117 = arg4;
+				v118 = arg7;
+				v118 = *v118.u0;
+				loc106 = v118;
+				v118 = loc106;
+				v119.u0 = 0x04;
+				v118 += v119;
+				loc107 = v118;
+				v118 = arg7;
+				v119 = loc107;
+				*v118.u0 = v119;
+				v118 = arg4;
+				v118 = *v118.u0;
+				loc108 = v118;
+				v118 = loc108;
+				v119.u0 = 0x01;
+				v118 += v119;
+				loc109 = v118;
+				v118 = arg4;
+				v119 = loc109;
+				*v118.u0 = v119;
 				v118 = loc109;
-				*v117.u0 = v118;
-				v117 = loc109;
-				loc15 = v117;
-				v117 = loc15;
-				v118 = arg3;
-				v119 = v117 == v118;
-				loc110 = v119;
-				v117 = loc110;
-				if (v117)
+				loc15 = v118;
+				v118 = loc15;
+				v119 = arg3;
+				v120 = v118 == v119;
+				loc110 = v120;
+				v118 = loc110;
+				if (v118)
 					break;
-				v117 = loc15;
-				v127 = *v117.u0;
-				v117.u3 = (word32) v127;
-				loc111 = v117;
-				v117 = loc111;
-				v118.u0 = 0x18;
-				v117 <<= v118;
-				v118.u0 = 0x18;
-				v117 >>= v118;
-				v118.u0 = 0x00;
-				v119 = v117 == v118;
-				loc112 = v119;
-				v117 = loc112;
-				if (v117)
+				v118 = loc15;
+				v128 = *v118.u0;
+				v118.u3 = (word32) v128;
+				loc111 = v118;
+				v118 = loc111;
+				v119.u0 = 0x18;
+				v118 <<= v119;
+				v119.u0 = 0x18;
+				v118 >>= v119;
+				v119.u0 = 0x00;
+				v120 = v118 == v119;
+				loc112 = v120;
+				v118 = loc112;
+				if (v118)
 				{
-					v117 = loc15;
-					loc16 = v117;
+					v118 = loc15;
+					loc16 = v118;
 					goto l001176D6;
 				}
-				v117 = loc15;
-				v118.u0 = 0x01;
-				v117 += v118;
-				loc113 = v117;
-				v117 = loc113;
-				loc15 = v117;
+				v118 = loc15;
+				v119.u0 = 0x01;
+				v118 += v119;
+				loc113 = v118;
+				v118 = loc113;
+				loc15 = v118;
 			}
-			v117 = arg3;
-			loc16 = v117;
+			v118 = arg3;
+			loc16 = v118;
 l001176D6:
-			v117 = arg7;
-			v117.u3 = *v117.u3;
-			loc21 = v117;
-			v117 = loc16;
-			loc19 = v117;
-			v117 = loc21;
-			loc24 = v117;
-			v117 = loc109;
-			loc25 = v117;
+			v118 = arg7;
+			v118.u3 = *v118.u3;
+			loc21 = v118;
+			v118 = loc16;
+			loc19 = v118;
+			v118 = loc21;
+			loc24 = v118;
+			v118 = loc109;
+			loc25 = v118;
 		}
-		v117 = loc25;
-		loc10 = v117;
-		v117 = loc24;
-		loc11 = v117;
-		v117 = loc19;
-		loc12 = v117;
+		v118 = loc25;
+		loc10 = v118;
+		v118 = loc24;
+		loc11 = v118;
+		v118 = loc19;
+		loc12 = v118;
 	}
-	v117 = loc10;
-	loc114 = v117;
-	v117.u0 = 0x33;
-	loc120 = v117;
+	v118 = loc10;
+	loc114 = v118;
+	v118.u0 = 0x33;
+	loc120 = v118;
 l001176FA:
-	v117 = loc120;
-	v118.u0 = 0x0A;
-	v119 = v117 == v118;
-	if (v119)
+	v118 = loc120;
+	v119.u0 = 0x0A;
+	v120 = v118 == v119;
+	if (v120)
 	{
-		v117.u0 = 0x00;
-		v117 = ___cxa_find_matching_catch_n(v117);
-		loc46 = v117;
-		v117.u3 = g_t140094.u3;
-		loc47 = v117;
-		v117 = loc46;
-		fn000D0E65(v117);
+		v118.u0 = 0x00;
+		v118 = ___cxa_find_matching_catch_n(v118);
+		loc46 = v118;
+		v118.u3 = g_t140094.u3;
+		loc47 = v118;
+		v118 = loc46;
+		fn000D0E65(v118);
 		goto l001179BA;
 	}
-	v117 = loc120;
-	v118.u0 = 11;
-	v119 = v117 == v118;
-	if (v119)
+	v118 = loc120;
+	v119.u0 = 11;
+	v120 = v118 == v119;
+	if (v120)
 	{
-		v117 = ___cxa_find_matching_catch_n();
-		loc48 = v117;
-		v117.u3 = g_t140094.u3;
-		loc49 = v117;
-		v117 = loc39;
-		v118.u0 = 0x00;
-		v119 = v117 == v118;
-		loc50 = v119;
-		v117 = loc50;
-		v119 = v117 == 0x00;
-		if (v119)
+		v118 = ___cxa_find_matching_catch_n();
+		loc48 = v118;
+		v118.u3 = g_t140094.u3;
+		loc49 = v118;
+		v118 = loc39;
+		v119.u0 = 0x00;
+		v120 = v118 == v119;
+		loc50 = v120;
+		v118 = loc50;
+		v120 = v118 == 0x00;
+		if (v120)
 		{
-			v117.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v117;
-			v117.u0 = 0x017E;
-			v118 = loc39;
-			v117 = invoke_ii(v117, v118);
-			v117.u3 = g_t140048.u3;
-			loc51 = v117;
-			v117.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v117;
-			v117 = loc51;
-			v118.u0 = 0x01;
-			v117 &= v118;
-			loc52 = v117;
-			v117 = loc52;
-			if (v117)
+			v118.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v118;
+			v118.u0 = 0x017E;
+			v119 = loc39;
+			v118 = invoke_ii(v118, v119);
+			v118.u3 = g_t140048.u3;
+			loc51 = v118;
+			v118.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v118;
+			v118 = loc51;
+			v119.u0 = 0x01;
+			v118 &= v119;
+			loc52 = v118;
+			v118 = loc52;
+			if (v118)
 			{
-				v117.u0 = 0x00;
-				v117 = ___cxa_find_matching_catch_n(v117);
-				loc53 = v117;
-				v117.u3 = g_t140094.u3;
-				loc54 = v117;
-				v117 = loc53;
-				fn000D0E65(v117);
-			}
-		}
-		v117 = loc48;
-		___resumeException(v117);
-l001179BB:
-		v117 = loc120;
-		v118.u0 = 0x2F;
-		v119 = v117 == v118;
-		if (v119)
-		{
-			v117 = loc13;
-			loc17 = v117;
-		}
-		else
-		{
-			v117 = loc120;
-			v118.u0 = 0x33;
-			v119 = v117 == v118;
-			if (v119)
-			{
-				v117 = loc114;
-				v118 = arg3;
-				v119 = v117 != v118;
-				loc116 = v119;
-				v117 = loc116;
-				v118.u0 = 0x01;
-				v117 &= v118;
-				loc115 = v117;
-				v117 = loc115;
-				loc17 = v117;
-			}
-		}
-		v117 = loc121;
-		g_t140030.u3 = (word32 *) v117;
-		v117 = loc17;
-		return v117;
-	}
-	v117 = loc120;
-	v118.u0 = 0x10;
-	v119 = v117 == v118;
-	if (!v119)
-	{
-		v117 = loc120;
-		v118.u0 = 0x25;
-		v119 = v117 == v118;
-		if (v119)
-		{
-			v117.u0 = 0x00;
-			v117 = ___cxa_find_matching_catch_n(v117);
-			loc95 = v117;
-			v117.u3 = g_t140094.u3;
-			loc96 = v117;
-			v117 = loc95;
-			fn000D0E65(v117);
-		}
-		else
-		{
-			v117 = loc120;
-			v118.u0 = 0x26;
-			v119 = v117 == v118;
-			if (v119)
-			{
-				v117 = ___cxa_find_matching_catch_n();
-				loc97 = v117;
-				v117.u3 = g_t140094.u3;
-				loc98 = v117;
-				v117 = loc87;
 				v118.u0 = 0x00;
-				v119 = v117 == v118;
-				loc99 = v119;
-				v117 = loc99;
-				v119 = v117 == 0x00;
-				if (v119)
+				v118 = ___cxa_find_matching_catch_n(v118);
+				loc53 = v118;
+				v118.u3 = g_t140094.u3;
+				loc54 = v118;
+				v118 = loc53;
+				fn000D0E65(v118);
+			}
+		}
+		v118 = loc48;
+		___resumeException(v118);
+l001179BB:
+		v118 = loc120;
+		v119.u0 = 0x2F;
+		v120 = v118 == v119;
+		if (v120)
+		{
+			v118 = loc13;
+			loc17 = v118;
+		}
+		else
+		{
+			v118 = loc120;
+			v119.u0 = 0x33;
+			v120 = v118 == v119;
+			if (v120)
+			{
+				v118 = loc114;
+				v119 = arg3;
+				v120 = v118 != v119;
+				loc116 = v120;
+				v118 = loc116;
+				v119.u0 = 0x01;
+				v118 &= v119;
+				loc115 = v118;
+				v118 = loc115;
+				loc17 = v118;
+			}
+		}
+		v118 = loc121;
+		g_t140030.u3 = (word32 *) v118;
+		v118 = loc17;
+		return v118;
+	}
+	v118 = loc120;
+	v119.u0 = 0x10;
+	v120 = v118 == v119;
+	if (!v120)
+	{
+		v118 = loc120;
+		v119.u0 = 0x25;
+		v120 = v118 == v119;
+		if (v120)
+		{
+			v118.u0 = 0x00;
+			v118 = ___cxa_find_matching_catch_n(v118);
+			loc95 = v118;
+			v118.u3 = g_t140094.u3;
+			loc96 = v118;
+			v118 = loc95;
+			fn000D0E65(v118);
+		}
+		else
+		{
+			v118 = loc120;
+			v119.u0 = 0x26;
+			v120 = v118 == v119;
+			if (v120)
+			{
+				v118 = ___cxa_find_matching_catch_n();
+				loc97 = v118;
+				v118.u3 = g_t140094.u3;
+				loc98 = v118;
+				v118 = loc87;
+				v119.u0 = 0x00;
+				v120 = v118 == v119;
+				loc99 = v120;
+				v118 = loc99;
+				v120 = v118 == 0x00;
+				if (v120)
 				{
-					v117.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v117;
-					v117.u0 = 0x017E;
-					v118 = loc87;
-					v117 = invoke_ii(v117, v118);
-					v117.u3 = g_t140048.u3;
-					loc100 = v117;
-					v117.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v117;
-					v117 = loc100;
-					v118.u0 = 0x01;
-					v117 &= v118;
-					loc101 = v117;
-					v117 = loc101;
-					if (v117)
+					v118.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v118;
+					v118.u0 = 0x017E;
+					v119 = loc87;
+					v118 = invoke_ii(v118, v119);
+					v118.u3 = g_t140048.u3;
+					loc100 = v118;
+					v118.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v118;
+					v118 = loc100;
+					v119.u0 = 0x01;
+					v118 &= v119;
+					loc101 = v118;
+					v118 = loc101;
+					if (v118)
 					{
-						v117.u0 = 0x00;
-						v117 = ___cxa_find_matching_catch_n(v117);
-						loc102 = v117;
-						v117.u3 = g_t140094.u3;
-						loc103 = v117;
-						v117 = loc102;
-						fn000D0E65(v117);
+						v118.u0 = 0x00;
+						v118 = ___cxa_find_matching_catch_n(v118);
+						loc102 = v118;
+						v118.u3 = g_t140094.u3;
+						loc103 = v118;
+						v118 = loc102;
+						fn000D0E65(v118);
 					}
 				}
-				v117 = loc97;
-				___resumeException(v117);
+				v118 = loc97;
+				___resumeException(v118);
 			}
 			else
 			{
-				v117 = loc120;
-				v118.u0 = 0x30;
-				v119 = v117 == v118;
-				if (v119)
+				v118 = loc120;
+				v119.u0 = 0x30;
+				v120 = v118 == v119;
+				if (v120)
 				{
-					v117 = arg4;
-					v117.u3 = *v117.u3;
-					loc22 = v117;
-					v117 = loc22;
-					loc114 = v117;
-					v117.u0 = 0x33;
-					loc120 = v117;
+					v118 = arg4;
+					v118.u3 = *v118.u3;
+					loc22 = v118;
+					v118 = loc22;
+					loc114 = v118;
+					v118.u0 = 0x33;
+					loc120 = v118;
 				}
 			}
 		}
 		goto l001179B8;
 	}
 l0011776A:
-	v117.u0 = 0x00;
-	loc120 = v117;
-	v117 = arg7;
-	v118 = loc119;
-	*v117.u0 = v118;
-	v117 = arg4;
-	v117 = *v117.u0;
-	loc56 = v117;
-	v117 = loc14;
-	v118 = loc56;
-	v119 = v117 == v118;
-	loc57 = v119;
-	v117 = loc57;
-	if (v117)
-	{
-		v117.u0 = 0x1F;
-		loc120 = v117;
-		goto l00117875;
-	}
-	v117 = loc14;
-	loc58 = v117;
-	v117 = loc32;
-	v118 = loc58;
-	v117 -= v118;
-	loc59 = v117;
-	v117 = loc29;
-	v117 = *v117.u0;
-	loc60 = v117;
-	v117 = loc60;
-	v117 = fn000DB419(v117);
-	loc61 = v117;
-	v117.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v117;
-	v117.u0 = 444;
-	v118 = loc119;
-	v123 = loc14;
-	v124 = loc59;
-	v125 = loc94;
-	v117 = invoke_iiiii(v117, v118, v123, v124, v125);
-	loc62 = v117;
-	v117.u3 = g_t140048.u3;
-	loc63 = v117;
-	v117.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v117;
-	v117 = loc63;
-	v118.u0 = 0x01;
-	v117 &= v118;
-	loc64 = v117;
-	v117 = loc64;
-	if (v117)
-	{
-		v117.u0 = 0x15;
-		loc120 = v117;
-		goto l00117875;
-	}
-	v117 = loc61;
 	v118.u0 = 0x00;
-	v119 = v117 == v118;
-	loc65 = v119;
-	v117 = loc65;
-	v119 = v117 == 0x00;
-	if (v119)
+	loc120 = v118;
+	v118 = arg7;
+	v119 = loc119;
+	*v118.u0 = v119;
+	v118 = arg4;
+	v118 = *v118.u0;
+	loc56 = v118;
+	v118 = loc14;
+	v119 = loc56;
+	v120 = v118 == v119;
+	loc57 = v120;
+	v118 = loc57;
+	if (v118)
 	{
-		v117.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v117;
-		v117.u0 = 0x017E;
-		v118 = loc61;
-		v117 = invoke_ii(v117, v118);
-		v117.u3 = g_t140048.u3;
-		loc66 = v117;
-		v117.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v117;
-		v117 = loc66;
-		v118.u0 = 0x01;
-		v117 &= v118;
-		loc67 = v117;
-		v117 = loc67;
-		if (v117)
+		v118.u0 = 0x1F;
+		loc120 = v118;
+		goto l00117875;
+	}
+	v118 = loc14;
+	loc58 = v118;
+	v118 = loc32;
+	v119 = loc58;
+	v118 -= v119;
+	loc59 = v118;
+	v118 = loc29;
+	v118 = *v118.u0;
+	loc60 = v118;
+	v118 = loc60;
+	v118 = fn000DB419(v118);
+	loc61 = v118;
+	v118.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v118;
+	v118.u0 = 444;
+	v119 = loc119;
+	v124 = loc14;
+	v125 = loc59;
+	v126 = loc94;
+	v118 = invoke_iiiii(v118, v119, v124, v125, v126);
+	loc62 = v118;
+	v118.u3 = g_t140048.u3;
+	loc63 = v118;
+	v118.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v118;
+	v118 = loc63;
+	v119.u0 = 0x01;
+	v118 &= v119;
+	loc64 = v118;
+	v118 = loc64;
+	if (v118)
+	{
+		v118.u0 = 0x15;
+		loc120 = v118;
+		goto l00117875;
+	}
+	v118 = loc61;
+	v119.u0 = 0x00;
+	v120 = v118 == v119;
+	loc65 = v120;
+	v118 = loc65;
+	v120 = v118 == 0x00;
+	if (v120)
+	{
+		v118.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v118;
+		v118.u0 = 0x017E;
+		v119 = loc61;
+		v118 = invoke_ii(v118, v119);
+		v118.u3 = g_t140048.u3;
+		loc66 = v118;
+		v118.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v118;
+		v118 = loc66;
+		v119.u0 = 0x01;
+		v118 &= v119;
+		loc67 = v118;
+		v118 = loc67;
+		if (v118)
 		{
-			v117.u0 = 0x14;
-			loc120 = v117;
+			v118.u0 = 0x14;
+			loc120 = v118;
 			goto l00117875;
 		}
 	}
-	v117 = loc62;
-	v118.u0 = ~0x01;
-	v117 -= v118;
-	switch (v117)
+	v118 = loc62;
+	v119.u0 = ~0x01;
+	v118 -= v119;
+	switch (v118)
 	{
 	case 0x00:
-		v117.u0 = 0x1B;
-		loc120 = v117;
+		v118.u0 = 0x1B;
+		loc120 = v118;
 		break;
 	case 0x01:
-		v117.u0 = 0x1C;
-		loc120 = v117;
+		v118.u0 = 0x1C;
+		loc120 = v118;
 		break;
 	case 0x02:
-		v117 = loc14;
-		v118.u0 = 0x01;
-		v117 += v118;
-		loc77 = v117;
-		v117 = loc77;
-		loc18 = v117;
-		v117 = arg7;
-		v117 = *v117.u0;
-		loc79 = v117;
-		v117 = loc79;
-		v118.u0 = 0x04;
-		v117 += v118;
-		loc80 = v117;
-		v117 = loc18;
-		loc14 = v117;
-		v117 = loc80;
-		loc119 = v117;
-		v117.u0 = 0x10;
-		loc120 = v117;
+		v118 = loc14;
+		v119.u0 = 0x01;
+		v118 += v119;
+		loc77 = v118;
+		v118 = loc77;
+		loc18 = v118;
+		v118 = arg7;
+		v118 = *v118.u0;
+		loc79 = v118;
+		v118 = loc79;
+		v119.u0 = 0x04;
+		v118 += v119;
+		loc80 = v118;
+		v118 = loc18;
+		loc14 = v118;
+		v118 = loc80;
+		loc119 = v118;
+		v118.u0 = 0x10;
+		loc120 = v118;
 		goto l0011776A;
 	}
 l00117875:
-	v117 = loc120;
-	v118.u0 = 0x14;
-	v119 = v117 == v118;
-	if (v119)
+	v118 = loc120;
+	v119.u0 = 0x14;
+	v120 = v118 == v119;
+	if (v120)
 	{
-		v117.u0 = 0x00;
-		v117 = ___cxa_find_matching_catch_n(v117);
-		loc68 = v117;
-		v117.u3 = g_t140094.u3;
-		loc69 = v117;
-		v117 = loc68;
-		fn000D0E65(v117);
+		v118.u0 = 0x00;
+		v118 = ___cxa_find_matching_catch_n(v118);
+		loc68 = v118;
+		v118.u3 = g_t140094.u3;
+		loc69 = v118;
+		v118 = loc68;
+		fn000D0E65(v118);
 	}
 	else
 	{
-		v117 = loc120;
-		v118.u0 = 0x15;
-		v119 = v117 == v118;
-		if (v119)
+		v118 = loc120;
+		v119.u0 = 0x15;
+		v120 = v118 == v119;
+		if (v120)
 		{
-			v117 = ___cxa_find_matching_catch_n();
-			loc70 = v117;
-			v117.u3 = g_t140094.u3;
-			loc71 = v117;
-			v117 = loc61;
-			v118.u0 = 0x00;
-			v119 = v117 == v118;
-			loc72 = v119;
-			v117 = loc72;
-			v119 = v117 == 0x00;
-			if (v119)
+			v118 = ___cxa_find_matching_catch_n();
+			loc70 = v118;
+			v118.u3 = g_t140094.u3;
+			loc71 = v118;
+			v118 = loc61;
+			v119.u0 = 0x00;
+			v120 = v118 == v119;
+			loc72 = v120;
+			v118 = loc72;
+			v120 = v118 == 0x00;
+			if (v120)
 			{
-				v117.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v117;
-				v117.u0 = 0x017E;
-				v118 = loc61;
-				v117 = invoke_ii(v117, v118);
-				v117.u3 = g_t140048.u3;
-				loc73 = v117;
-				v117.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v117;
-				v117 = loc73;
-				v118.u0 = 0x01;
-				v117 &= v118;
-				loc74 = v117;
-				v117 = loc74;
-				if (v117)
+				v118.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v118;
+				v118.u0 = 0x017E;
+				v119 = loc61;
+				v118 = invoke_ii(v118, v119);
+				v118.u3 = g_t140048.u3;
+				loc73 = v118;
+				v118.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v118;
+				v118 = loc73;
+				v119.u0 = 0x01;
+				v118 &= v119;
+				loc74 = v118;
+				v118 = loc74;
+				if (v118)
 				{
-					v117.u0 = 0x00;
-					v117 = ___cxa_find_matching_catch_n(v117);
-					loc75 = v117;
-					v117.u3 = g_t140094.u3;
-					loc76 = v117;
-					v117 = loc75;
-					fn000D0E65(v117);
+					v118.u0 = 0x00;
+					v118 = ___cxa_find_matching_catch_n(v118);
+					loc75 = v118;
+					v118.u3 = g_t140094.u3;
+					loc76 = v118;
+					v118 = loc75;
+					fn000D0E65(v118);
 				}
 			}
-			v117 = loc70;
-			___resumeException(v117);
+			v118 = loc70;
+			___resumeException(v118);
 		}
 		else
 		{
-			v117 = loc120;
-			v118.u0 = 0x1B;
-			v119 = v117 == v118;
-			if (v119)
+			v118 = loc120;
+			v119.u0 = 0x1B;
+			v120 = v118 == v119;
+			if (v120)
 			{
-				v117 = arg4;
-				v118 = loc14;
-				*v117.u3 = (word32) v118;
-				v117.u0 = 0x02;
-				loc13 = v117;
-				v117.u0 = 0x2F;
-				loc120 = v117;
+				v118 = arg4;
+				v119 = loc14;
+				*v118.u3 = (word32) v119;
+				v118.u0 = 0x02;
+				loc13 = v118;
+				v118.u0 = 0x2F;
+				loc120 = v118;
 				goto l001179BB;
 			}
-			v117 = loc120;
-			v118.u0 = 0x1C;
-			v119 = v117 == v118;
-			if (v119)
+			v118 = loc120;
+			v119.u0 = 0x1C;
+			v120 = v118 == v119;
+			if (v120)
 			{
-				v117 = arg4;
-				v118 = loc14;
-				*v117.u0 = v118;
-				v117.u0 = 0x01;
-				loc13 = v117;
-				v117.u0 = 0x2F;
-				loc120 = v117;
-				goto l001179BB;
-			}
-			v117 = loc120;
-			v118.u0 = 0x1F;
-			v119 = v117 == v118;
-			if (v119)
-			{
-				v117 = arg4;
-				v118 = loc14;
-				*v117.u0 = v118;
-				v117 = loc14;
-				v118 = arg3;
-				v119 = v117 != v118;
-				loc117 = v119;
-				v117 = loc117;
+				v118 = arg4;
+				v119 = loc14;
+				*v118.u0 = v119;
 				v118.u0 = 0x01;
-				v117 &= v118;
-				loc81 = v117;
-				v117 = loc81;
-				loc13 = v117;
-				v117.u0 = 0x2F;
-				loc120 = v117;
+				loc13 = v118;
+				v118.u0 = 0x2F;
+				loc120 = v118;
+				goto l001179BB;
+			}
+			v118 = loc120;
+			v119.u0 = 0x1F;
+			v120 = v118 == v119;
+			if (v120)
+			{
+				v118 = arg4;
+				v119 = loc14;
+				*v118.u0 = v119;
+				v118 = loc14;
+				v119 = arg3;
+				v120 = v118 != v119;
+				loc117 = v120;
+				v118 = loc117;
+				v119.u0 = 0x01;
+				v118 &= v119;
+				loc81 = v118;
+				v118 = loc81;
+				loc13 = v118;
+				v118.u0 = 0x2F;
+				loc120 = v118;
 				goto l001179BB;
 			}
 		}
@@ -9425,1341 +9425,1341 @@ l001179B8:
 // 001179EC: Stack Eq_n fn001179EC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn001179EC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v37.u3 = g_t140030.u3;
-	loc39 = v37;
-	v37.u3 = g_t140030.u3;
-	v38.u0 = 0x10;
-	v37 += v38;
-	g_t140030.u3 = (word32 *) v37;
-	v37.u3 = g_t140030.u3;
-	v38.u3 = g_t140034.u3;
-	v39 = v37 >= v38;
-	if (v39)
+	v38.u3 = g_t140030.u3;
+	loc39 = v38;
+	v38.u3 = g_t140030.u3;
+	v39.u0 = 0x10;
+	v38 += v39;
+	g_t140030.u3 = (word32 *) v38;
+	v38.u3 = g_t140030.u3;
+	v39.u3 = g_t140034.u3;
+	v40 = v38 >= v39;
+	if (v40)
 	{
-		v37.u0 = 0x10;
-		abortStackOverflow(v37);
+		v38.u0 = 0x10;
+		abortStackOverflow(v38);
 	}
-	v37 = loc39;
-	loc33 = v37;
-	v37 = arg4;
-	v38 = arg2;
-	*v37.u0 = v38;
-	v37 = arg0;
-	v38.u0 = 0x08;
-	v37 += v38;
-	loc34 = v37;
-	v37 = loc34;
-	v37 = *v37.u0;
-	loc35 = v37;
-	v37 = loc35;
-	v37 = fn000DB419(v37);
-	loc36 = v37;
-	v37.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v37;
-	v37.u0 = 442;
-	v38 = loc33;
-	v40 = 0x00;
-	v41 = arg1;
-	v37 = invoke_iiii(v37, v38, v40, v41);
-	loc37 = v37;
-	v37.u3 = g_t140048.u3;
-	loc8 = v37;
-	v37.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v37;
-	v37 = loc8;
-	v38.u0 = 0x01;
-	v37 &= v38;
-	loc9 = v37;
-	v37 = loc9;
-	if (v37)
+	v38 = loc39;
+	loc33 = v38;
+	v38 = arg4;
+	v39 = arg2;
+	*v38.u0 = v39;
+	v38 = arg0;
+	v39.u0 = 0x08;
+	v38 += v39;
+	loc34 = v38;
+	v38 = loc34;
+	v38 = *v38.u0;
+	loc35 = v38;
+	v38 = loc35;
+	v38 = fn000DB419(v38);
+	loc36 = v38;
+	v38.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v38;
+	v38.u0 = 442;
+	v39 = loc33;
+	v41 = 0x00;
+	v42 = arg1;
+	v38 = invoke_iiii(v38, v39, v41, v42);
+	loc37 = v38;
+	v38.u3 = g_t140048.u3;
+	loc8 = v38;
+	v38.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v38;
+	v38 = loc8;
+	v39.u0 = 0x01;
+	v38 &= v39;
+	loc9 = v38;
+	v38 = loc9;
+	if (v38)
 	{
-		v37 = ___cxa_find_matching_catch_n();
-		loc15 = v37;
-		v37.u3 = g_t140094.u3;
-		loc16 = v37;
-		v37 = loc36;
-		v38.u0 = 0x00;
-		v39 = v37 == v38;
-		loc17 = v39;
-		v37 = loc17;
-		v39 = v37 == 0x00;
-		if (v39)
+		v38 = ___cxa_find_matching_catch_n();
+		loc15 = v38;
+		v38.u3 = g_t140094.u3;
+		loc16 = v38;
+		v38 = loc36;
+		v39.u0 = 0x00;
+		v40 = v38 == v39;
+		loc17 = v40;
+		v38 = loc17;
+		v40 = v38 == 0x00;
+		if (v40)
 		{
-			v37.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v37;
-			v37.u0 = 0x017E;
-			v38 = loc36;
-			v37 = invoke_ii(v37, v38);
-			v37.u3 = g_t140048.u3;
-			loc18 = v37;
-			v37.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v37;
-			v37 = loc18;
-			v38.u0 = 0x01;
-			v37 &= v38;
-			loc19 = v37;
-			v37 = loc19;
-			if (v37)
+			v38.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v38;
+			v38.u0 = 0x017E;
+			v39 = loc36;
+			v38 = invoke_ii(v38, v39);
+			v38.u3 = g_t140048.u3;
+			loc18 = v38;
+			v38.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v38;
+			v38 = loc18;
+			v39.u0 = 0x01;
+			v38 &= v39;
+			loc19 = v38;
+			v38 = loc19;
+			if (v38)
 			{
-				v37.u0 = 0x00;
-				v37 = ___cxa_find_matching_catch_n(v37);
-				loc20 = v37;
-				v37.u3 = g_t140094.u3;
-				loc21 = v37;
-				v37 = loc20;
-				fn000D0E65(v37);
+				v38.u0 = 0x00;
+				v38 = ___cxa_find_matching_catch_n(v38);
+				loc20 = v38;
+				v38.u3 = g_t140094.u3;
+				loc21 = v38;
+				v38 = loc20;
+				fn000D0E65(v38);
 			}
 		}
-		v37 = loc15;
-		___resumeException(v37);
+		v38 = loc15;
+		___resumeException(v38);
 	}
-	v37 = loc36;
-	v38.u0 = 0x00;
-	v39 = v37 == v38;
-	loc10 = v39;
-	v37 = loc10;
-	v39 = v37 == 0x00;
-	if (v39)
+	v38 = loc36;
+	v39.u0 = 0x00;
+	v40 = v38 == v39;
+	loc10 = v40;
+	v38 = loc10;
+	v40 = v38 == 0x00;
+	if (v40)
 	{
-		v37.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v37;
-		v37.u0 = 0x017E;
-		v38 = loc36;
-		v37 = invoke_ii(v37, v38);
-		v37.u3 = g_t140048.u3;
-		loc11 = v37;
-		v37.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v37;
-		v37 = loc11;
-		v38.u0 = 0x01;
-		v37 &= v38;
-		loc12 = v37;
-		v37 = loc12;
-		if (v37)
+		v38.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v38;
+		v38.u0 = 0x017E;
+		v39 = loc36;
+		v38 = invoke_ii(v38, v39);
+		v38.u3 = g_t140048.u3;
+		loc11 = v38;
+		v38.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v38;
+		v38 = loc11;
+		v39.u0 = 0x01;
+		v38 &= v39;
+		loc12 = v38;
+		v38 = loc12;
+		if (v38)
 		{
-			v37.u0 = 0x00;
-			v37 = ___cxa_find_matching_catch_n(v37);
-			loc13 = v37;
-			v37.u3 = g_t140094.u3;
-			loc14 = v37;
-			v37 = loc13;
-			fn000D0E65(v37);
+			v38.u0 = 0x00;
+			v38 = ___cxa_find_matching_catch_n(v38);
+			loc13 = v38;
+			v38.u3 = g_t140094.u3;
+			loc14 = v38;
+			v38 = loc13;
+			fn000D0E65(v38);
 		}
 	}
-	v37 = loc37;
-	v38.u0 = ~0x00;
-	v37 -= v38;
-	switch (v37)
+	v38 = loc37;
+	v39.u0 = ~0x00;
+	v38 -= v39;
+	switch (v38)
 	{
 	case 0x00:
 		break;
 	case 0x01:
 		break;
 	}
-	v37.u0 = 0x02;
-	loc7 = v37;
+	v38.u0 = 0x02;
+	loc7 = v38;
 l00117B73:
-	v37 = loc39;
-	g_t140030.u3 = (word32 *) v37;
-	v37 = loc7;
-	return v37;
+	v38 = loc39;
+	g_t140030.u3 = (word32 *) v38;
+	v38 = loc7;
+	return v38;
 }
 
 // 00117B7D: Stack Eq_n fn00117B7D(Stack Eq_n arg0)
 Eq_n fn00117B7D(Eq_n arg0)
 {
-	v39.u3 = g_t140030.u3;
-	loc37 = v39;
-	v39 = arg0;
-	v40.u0 = 0x08;
-	v39 += v40;
-	loc1 = v39;
-	v39 = loc1;
-	v39.u3 = *v39.u3;
-	loc12 = v39;
-	v39.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v39;
-	v39.u0 = 0x017E;
-	v40 = loc12;
-	v39 = invoke_ii(v39, v40);
-	loc23 = v39;
-	v39.u3 = g_t140048.u3;
-	loc28 = v39;
-	v39.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v39;
-	v39 = loc28;
-	v40.u0 = 0x01;
-	v39 &= v40;
-	loc29 = v39;
-	v39 = loc29;
-	if (v39)
+	v40.u3 = g_t140030.u3;
+	loc37 = v40;
+	v40 = arg0;
+	v41.u0 = 0x08;
+	v40 += v41;
+	loc1 = v40;
+	v40 = loc1;
+	v40.u3 = *v40.u3;
+	loc12 = v40;
+	v40.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v40;
+	v40.u0 = 0x017E;
+	v41 = loc12;
+	v40 = invoke_ii(v40, v41);
+	loc23 = v40;
+	v40.u3 = g_t140048.u3;
+	loc28 = v40;
+	v40.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v40;
+	v40 = loc28;
+	v41.u0 = 0x01;
+	v40 &= v41;
+	loc29 = v40;
+	v40 = loc29;
+	if (v40)
 	{
-		v39.u0 = 0x10;
-		loc36 = v39;
+		v40.u0 = 0x10;
+		loc36 = v40;
 		goto l00117D01;
 	}
-	v39.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v39;
-	v39.u0 = 445;
 	v40.u0 = 0x00;
-	v41 = 0x00;
-	v42 = 0x04;
-	v39 = invoke_iiii(v39, v40, v41, v42);
-	loc30 = v39;
-	v39.u3 = g_t140048.u3;
-	loc31 = v39;
-	v39.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v39;
-	v39 = loc31;
-	v40.u0 = 0x01;
-	v39 &= v40;
-	loc32 = v39;
-	v39 = loc32;
-	if (v39)
+	g_t140048.u3 = (word32 *) v40;
+	v40.u0 = 445;
+	v41.u0 = 0x00;
+	v42 = 0x00;
+	v43 = 0x04;
+	v40 = invoke_iiii(v40, v41, v42, v43);
+	loc30 = v40;
+	v40.u3 = g_t140048.u3;
+	loc31 = v40;
+	v40.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v40;
+	v40 = loc31;
+	v41.u0 = 0x01;
+	v40 &= v41;
+	loc32 = v40;
+	v40 = loc32;
+	if (v40)
 	{
-		v39.u0 = 0x00;
-		v39 = ___cxa_find_matching_catch_n(v39);
-		loc6 = v39;
-		v39.u3 = g_t140094.u3;
-		loc7 = v39;
-		v39 = loc23;
 		v40.u0 = 0x00;
-		v43 = v39 == v40;
-		loc8 = v43;
-		v39 = loc8;
-		if (v39)
+		v40 = ___cxa_find_matching_catch_n(v40);
+		loc6 = v40;
+		v40.u3 = g_t140094.u3;
+		loc7 = v40;
+		v40 = loc23;
+		v41.u0 = 0x00;
+		v44 = v40 == v41;
+		loc8 = v44;
+		v40 = loc8;
+		if (v40)
 		{
-			v39 = loc6;
-			loc34 = v39;
+			v40 = loc6;
+			loc34 = v40;
 			goto l00117D01;
 		}
-		v39.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v39;
-		v39.u0 = 0x017E;
-		v40 = loc23;
-		v39 = invoke_ii(v39, v40);
-		v39.u3 = g_t140048.u3;
-		loc9 = v39;
-		v39.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v39;
-		v39 = loc9;
-		v40.u0 = 0x01;
-		v39 &= v40;
-		loc10 = v39;
-		v39 = loc10;
-		v43 = v39 == 0x00;
-		if (v43)
+		v40.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v40;
+		v40.u0 = 0x017E;
+		v41 = loc23;
+		v40 = invoke_ii(v40, v41);
+		v40.u3 = g_t140048.u3;
+		loc9 = v40;
+		v40.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v40;
+		v40 = loc9;
+		v41.u0 = 0x01;
+		v40 &= v41;
+		loc10 = v40;
+		v40 = loc10;
+		v44 = v40 == 0x00;
+		if (v44)
 		{
-			v39 = loc6;
-			loc34 = v39;
+			v40 = loc6;
+			loc34 = v40;
 			goto l00117D01;
 		}
-		v39.u0 = 0x00;
-		v39 = ___cxa_find_matching_catch_n(v39);
-		loc11 = v39;
-		v39.u3 = g_t140094.u3;
-		loc13 = v39;
-		v39 = loc11;
-		fn000D0E65(v39);
+		v40.u0 = 0x00;
+		v40 = ___cxa_find_matching_catch_n(v40);
+		loc11 = v40;
+		v40.u3 = g_t140094.u3;
+		loc13 = v40;
+		v40 = loc11;
+		fn000D0E65(v40);
 	}
-	v39 = loc23;
-	v40.u0 = 0x00;
-	v43 = v39 == v40;
-	loc33 = v43;
-	v39 = loc33;
-	v43 = v39 == 0x00;
-	if (v43)
+	v40 = loc23;
+	v41.u0 = 0x00;
+	v44 = v40 == v41;
+	loc33 = v44;
+	v40 = loc33;
+	v44 = v40 == 0x00;
+	if (v44)
 	{
-		v39.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v39;
-		v39.u0 = 0x017E;
-		v40 = loc23;
-		v39 = invoke_ii(v39, v40);
-		v39.u3 = g_t140048.u3;
-		loc2 = v39;
-		v39.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v39;
-		v39 = loc2;
-		v40.u0 = 0x01;
-		v39 &= v40;
-		loc3 = v39;
-		v39 = loc3;
-		if (v39)
+		v40.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v40;
+		v40.u0 = 0x017E;
+		v41 = loc23;
+		v40 = invoke_ii(v40, v41);
+		v40.u3 = g_t140048.u3;
+		loc2 = v40;
+		v40.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v40;
+		v40 = loc2;
+		v41.u0 = 0x01;
+		v40 &= v41;
+		loc3 = v40;
+		v40 = loc3;
+		if (v40)
 		{
-			v39.u0 = 0x00;
-			v39 = ___cxa_find_matching_catch_n(v39);
-			loc4 = v39;
-			v39.u3 = g_t140094.u3;
-			loc5 = v39;
-			v39 = loc4;
-			fn000D0E65(v39);
+			v40.u0 = 0x00;
+			v40 = ___cxa_find_matching_catch_n(v40);
+			loc4 = v40;
+			v40.u3 = g_t140094.u3;
+			loc5 = v40;
+			v40 = loc4;
+			fn000D0E65(v40);
 		}
 	}
-	v39 = loc30;
-	v40.u0 = 0x00;
-	v43 = v39 == v40;
-	loc14 = v43;
-	v39 = loc14;
-	if (v39)
+	v40 = loc30;
+	v41.u0 = 0x00;
+	v44 = v40 == v41;
+	loc14 = v44;
+	v40 = loc14;
+	if (v40)
 	{
-		v39 = loc1;
-		v39.u3 = *v39.u3;
-		loc15 = v39;
-		v39 = loc15;
-		v40.u0 = 0x00;
-		v43 = v39 == v40;
-		loc16 = v43;
-		v39 = loc16;
-		if (v39)
+		v40 = loc1;
+		v40.u3 = *v40.u3;
+		loc15 = v40;
+		v40 = loc15;
+		v41.u0 = 0x00;
+		v44 = v40 == v41;
+		loc16 = v44;
+		v40 = loc16;
+		if (v40)
 		{
-			v39.u0 = 0x01;
-			loc35 = v39;
+			v40.u0 = 0x01;
+			loc35 = v40;
 		}
 		else
 		{
-			v39.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v39;
-			v39.u0 = 0x017E;
-			v40 = loc15;
-			v39 = invoke_ii(v39, v40);
-			loc17 = v39;
-			v39.u3 = g_t140048.u3;
-			loc18 = v39;
-			v39.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v39;
-			v39 = loc18;
-			v40.u0 = 0x01;
-			v39 &= v40;
-			loc19 = v39;
-			v39 = loc19;
-			if (v39)
-			{
-				v39.u0 = 0x10;
-				loc36 = v39;
-l00117D01:
-				v39 = loc36;
-				v40.u0 = 0x10;
-				v43 = v39 == v40;
-				if (v43)
-				{
-					v39.u0 = 0x00;
-					v39 = ___cxa_find_matching_catch_n(v39);
-					loc26 = v39;
-					v39.u3 = g_t140094.u3;
-					loc27 = v39;
-					v39 = loc26;
-					loc34 = v39;
-				}
-				v39 = loc34;
-				fn000D0E65(v39);
-				v39.u0 = 0x00;
-				return v39;
-			}
-			v39 = loc17;
 			v40.u0 = 0x00;
-			v43 = v39 == v40;
-			loc20 = v43;
-			v39 = loc20;
-			if (v39)
+			g_t140048.u3 = (word32 *) v40;
+			v40.u0 = 0x017E;
+			v41 = loc15;
+			v40 = invoke_ii(v40, v41);
+			loc17 = v40;
+			v40.u3 = g_t140048.u3;
+			loc18 = v40;
+			v40.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v40;
+			v40 = loc18;
+			v41.u0 = 0x01;
+			v40 &= v41;
+			loc19 = v40;
+			v40 = loc19;
+			if (v40)
 			{
-				v39.u0 = 0x00;
-				loc35 = v39;
+				v40.u0 = 0x10;
+				loc36 = v40;
+l00117D01:
+				v40 = loc36;
+				v41.u0 = 0x10;
+				v44 = v40 == v41;
+				if (v44)
+				{
+					v40.u0 = 0x00;
+					v40 = ___cxa_find_matching_catch_n(v40);
+					loc26 = v40;
+					v40.u3 = g_t140094.u3;
+					loc27 = v40;
+					v40 = loc26;
+					loc34 = v40;
+				}
+				v40 = loc34;
+				fn000D0E65(v40);
+				v40.u0 = 0x00;
+				return v40;
+			}
+			v40 = loc17;
+			v41.u0 = 0x00;
+			v44 = v40 == v41;
+			loc20 = v44;
+			v40 = loc20;
+			if (v40)
+			{
+				v40.u0 = 0x00;
+				loc35 = v40;
 			}
 			else
 			{
-				v39.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v39;
-				v39.u0 = 0x017E;
-				v40 = loc17;
-				v39 = invoke_ii(v39, v40);
-				v39.u3 = g_t140048.u3;
-				loc21 = v39;
-				v39.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v39;
-				v39 = loc21;
-				v40.u0 = 0x01;
-				v39 &= v40;
-				loc22 = v39;
-				v39 = loc22;
-				if (v39)
+				v40.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v40;
+				v40.u0 = 0x017E;
+				v41 = loc17;
+				v40 = invoke_ii(v40, v41);
+				v40.u3 = g_t140048.u3;
+				loc21 = v40;
+				v40.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v40;
+				v40 = loc21;
+				v41.u0 = 0x01;
+				v40 &= v41;
+				loc22 = v40;
+				v40 = loc22;
+				if (v40)
 				{
-					v39.u0 = 0x00;
-					v39 = ___cxa_find_matching_catch_n(v39);
-					loc24 = v39;
-					v39.u3 = g_t140094.u3;
-					loc25 = v39;
-					v39 = loc24;
-					fn000D0E65(v39);
+					v40.u0 = 0x00;
+					v40 = ___cxa_find_matching_catch_n(v40);
+					loc24 = v40;
+					v40.u3 = g_t140094.u3;
+					loc25 = v40;
+					v40 = loc24;
+					fn000D0E65(v40);
 				}
 				else
 				{
-					v39.u0 = 0x00;
-					loc35 = v39;
+					v40.u0 = 0x00;
+					loc35 = v40;
 				}
 			}
 		}
 	}
 	else
 	{
-		v39.u0 = ~0x00;
-		loc35 = v39;
+		v40.u0 = ~0x00;
+		loc35 = v40;
 	}
-	v39 = loc35;
-	return v39;
+	v40 = loc35;
+	return v40;
 }
 
 // 00117D21: Stack Eq_n fn00117D21(Stack Eq_n arg0)
 Eq_n fn00117D21(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x00;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x00;
+	return v5;
 }
 
 // 00117D2C: Stack Eq_n fn00117D2C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00117D2C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 l00117D2C:
-	v37.u3 = g_t140030.u3;
-	loc39 = v37;
-	v37 = arg3;
-	loc32 = v37;
-	v37 = arg0;
-	v38.u0 = 0x08;
-	v37 += v38;
-	loc33 = v37;
-	v37.u0 = 0x00;
-	loc5 = v37;
-	v37.u0 = 0x00;
-	loc6 = v37;
-	v37 = arg2;
-	loc7 = v37;
-	v37 = loc5;
-	v38 = arg4;
-	v39 = v37 >= v38;
-	loc34 = v39;
-	v37 = loc7;
+	v38.u3 = g_t140030.u3;
+	loc39 = v38;
 	v38 = arg3;
-	v39 = v37 == v38;
-	loc35 = v39;
-	v37 = loc35;
-	v38 = loc34;
-	v37 |= v38;
-	loc37 = v37;
-	v37 = loc37;
-	if (v37)
-	{
-		v37.u0 = 0x0F;
-		loc38 = v37;
-		goto l00117E4C;
-	}
-	v37 = loc7;
-	loc36 = v37;
-	v37 = loc32;
-	v38 = loc36;
-	v37 -= v38;
-	loc11 = v37;
-	v37 = loc33;
-	v37 = *v37.u0;
-	loc12 = v37;
-	v37 = loc12;
-	v37 = fn000DB419(v37);
-	loc13 = v37;
-	v37.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v37;
-	v37.u0 = 446;
-	v38 = loc7;
-	v40 = loc11;
-	v41 = arg1;
-	v37 = invoke_iiii(v37, v38, v40, v41);
-	loc14 = v37;
-	v37.u3 = g_t140048.u3;
-	loc15 = v37;
-	v37.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v37;
-	v37 = loc15;
-	v38.u0 = 0x01;
-	v37 &= v38;
-	loc16 = v37;
-	v37 = loc16;
-	if (v37)
-	{
-		v37.u0 = 0x07;
-		loc38 = v37;
-		goto l00117E4C;
-	}
-	v37 = loc13;
+	loc32 = v38;
+	v38 = arg0;
+	v39.u0 = 0x08;
+	v38 += v39;
+	loc33 = v38;
 	v38.u0 = 0x00;
-	v39 = v37 == v38;
-	loc17 = v39;
-	v37 = loc17;
-	v39 = v37 == 0x00;
-	if (v39)
+	loc5 = v38;
+	v38.u0 = 0x00;
+	loc6 = v38;
+	v38 = arg2;
+	loc7 = v38;
+	v38 = loc5;
+	v39 = arg4;
+	v40 = v38 >= v39;
+	loc34 = v40;
+	v38 = loc7;
+	v39 = arg3;
+	v40 = v38 == v39;
+	loc35 = v40;
+	v38 = loc35;
+	v39 = loc34;
+	v38 |= v39;
+	loc37 = v38;
+	v38 = loc37;
+	if (v38)
 	{
-		v37.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v37;
-		v37.u0 = 0x017E;
-		v38 = loc13;
-		v37 = invoke_ii(v37, v38);
-		v37.u3 = g_t140048.u3;
-		loc18 = v37;
-		v37.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v37;
-		v37 = loc18;
-		v38.u0 = 0x01;
-		v37 &= v38;
-		loc19 = v37;
-		v37 = loc19;
-		if (v37)
+		v38.u0 = 0x0F;
+		loc38 = v38;
+		goto l00117E4C;
+	}
+	v38 = loc7;
+	loc36 = v38;
+	v38 = loc32;
+	v39 = loc36;
+	v38 -= v39;
+	loc11 = v38;
+	v38 = loc33;
+	v38 = *v38.u0;
+	loc12 = v38;
+	v38 = loc12;
+	v38 = fn000DB419(v38);
+	loc13 = v38;
+	v38.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v38;
+	v38.u0 = 446;
+	v39 = loc7;
+	v41 = loc11;
+	v42 = arg1;
+	v38 = invoke_iiii(v38, v39, v41, v42);
+	loc14 = v38;
+	v38.u3 = g_t140048.u3;
+	loc15 = v38;
+	v38.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v38;
+	v38 = loc15;
+	v39.u0 = 0x01;
+	v38 &= v39;
+	loc16 = v38;
+	v38 = loc16;
+	if (v38)
+	{
+		v38.u0 = 0x07;
+		loc38 = v38;
+		goto l00117E4C;
+	}
+	v38 = loc13;
+	v39.u0 = 0x00;
+	v40 = v38 == v39;
+	loc17 = v40;
+	v38 = loc17;
+	v40 = v38 == 0x00;
+	if (v40)
+	{
+		v38.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v38;
+		v38.u0 = 0x017E;
+		v39 = loc13;
+		v38 = invoke_ii(v38, v39);
+		v38.u3 = g_t140048.u3;
+		loc18 = v38;
+		v38.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v38;
+		v38 = loc18;
+		v39.u0 = 0x01;
+		v38 &= v39;
+		loc19 = v38;
+		v38 = loc19;
+		if (v38)
 		{
-			v37.u0 = 0x06;
-			loc38 = v37;
+			v38.u0 = 0x06;
+			loc38 = v38;
 			goto l00117E4C;
 		}
 	}
-	v37 = loc14;
-	v38.u0 = ~0x01;
-	v37 -= v38;
-	switch (v37)
+	v38 = loc14;
+	v39.u0 = ~0x01;
+	v38 -= v39;
+	switch (v38)
 	{
 	case 0x00:
 		break;
 	case 0x01:
 		break;
 	case 0x02:
-		v37 = loc7;
+		v38 = loc7;
+		v39.u0 = 0x01;
+		v38 += v39;
+		loc29 = v38;
+		v38 = loc29;
+		loc9 = v38;
 		v38.u0 = 0x01;
-		v37 += v38;
-		loc29 = v37;
-		v37 = loc29;
-		loc9 = v37;
-		v37.u0 = 0x01;
-		loc10 = v37;
-		v37 = loc10;
-		v38 = loc6;
-		v37 += v38;
-		loc8 = v37;
-		v37 = loc5;
-		v38.u0 = 0x01;
-		v37 += v38;
-		loc31 = v37;
-		v37 = loc31;
-		loc5 = v37;
-		v37 = loc8;
-		loc6 = v37;
-		v37 = loc9;
-		loc7 = v37;
+		loc10 = v38;
+		v38 = loc10;
+		v39 = loc6;
+		v38 += v39;
+		loc8 = v38;
+		v38 = loc5;
+		v39.u0 = 0x01;
+		v38 += v39;
+		loc31 = v38;
+		v38 = loc31;
+		loc5 = v38;
+		v38 = loc8;
+		loc6 = v38;
+		v38 = loc9;
+		loc7 = v38;
 		goto l00117D2C;
 	}
-	v37.u0 = 0x0F;
-	loc38 = v37;
+	v38.u0 = 0x0F;
+	loc38 = v38;
 l00117E4C:
-	v37 = loc38;
-	v38.u0 = 0x06;
-	v39 = v37 == v38;
-	if (v39)
+	v38 = loc38;
+	v39.u0 = 0x06;
+	v40 = v38 == v39;
+	if (v40)
 	{
-		v37.u0 = 0x00;
-		v37 = ___cxa_find_matching_catch_n(v37);
-		loc20 = v37;
-		v37.u3 = g_t140094.u3;
-		loc21 = v37;
-		v37 = loc20;
-		fn000D0E65(v37);
+		v38.u0 = 0x00;
+		v38 = ___cxa_find_matching_catch_n(v38);
+		loc20 = v38;
+		v38.u3 = g_t140094.u3;
+		loc21 = v38;
+		v38 = loc20;
+		fn000D0E65(v38);
 	}
 	else
 	{
-		v37 = loc38;
-		v38.u0 = 0x07;
-		v39 = v37 == v38;
-		if (v39)
+		v38 = loc38;
+		v39.u0 = 0x07;
+		v40 = v38 == v39;
+		if (v40)
 		{
-			v37 = ___cxa_find_matching_catch_n();
-			loc22 = v37;
-			v37.u3 = g_t140094.u3;
-			loc23 = v37;
-			v37 = loc13;
-			v38.u0 = 0x00;
-			v39 = v37 == v38;
-			loc24 = v39;
-			v37 = loc24;
-			v39 = v37 == 0x00;
-			if (v39)
+			v38 = ___cxa_find_matching_catch_n();
+			loc22 = v38;
+			v38.u3 = g_t140094.u3;
+			loc23 = v38;
+			v38 = loc13;
+			v39.u0 = 0x00;
+			v40 = v38 == v39;
+			loc24 = v40;
+			v38 = loc24;
+			v40 = v38 == 0x00;
+			if (v40)
 			{
-				v37.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v37;
-				v37.u0 = 0x017E;
-				v38 = loc13;
-				v37 = invoke_ii(v37, v38);
-				v37.u3 = g_t140048.u3;
-				loc25 = v37;
-				v37.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v37;
-				v37 = loc25;
-				v38.u0 = 0x01;
-				v37 &= v38;
-				loc26 = v37;
-				v37 = loc26;
-				if (v37)
+				v38.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v38;
+				v38.u0 = 0x017E;
+				v39 = loc13;
+				v38 = invoke_ii(v38, v39);
+				v38.u3 = g_t140048.u3;
+				loc25 = v38;
+				v38.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v38;
+				v38 = loc25;
+				v39.u0 = 0x01;
+				v38 &= v39;
+				loc26 = v38;
+				v38 = loc26;
+				if (v38)
 				{
-					v37.u0 = 0x00;
-					v37 = ___cxa_find_matching_catch_n(v37);
-					loc27 = v37;
-					v37.u3 = g_t140094.u3;
-					loc28 = v37;
-					v37 = loc27;
-					fn000D0E65(v37);
+					v38.u0 = 0x00;
+					v38 = ___cxa_find_matching_catch_n(v38);
+					loc27 = v38;
+					v38.u3 = g_t140094.u3;
+					loc28 = v38;
+					v38 = loc27;
+					fn000D0E65(v38);
 				}
 			}
-			v37 = loc22;
-			___resumeException(v37);
+			v38 = loc22;
+			___resumeException(v38);
 		}
 		else
 		{
-			v37 = loc38;
-			v38.u0 = 0x0F;
-			v39 = v37 == v38;
-			if (v39)
+			v38 = loc38;
+			v39.u0 = 0x0F;
+			v40 = v38 == v39;
+			if (v40)
 			{
-				v37 = loc6;
-				return v37;
+				v38 = loc6;
+				return v38;
 			}
 		}
 	}
-	v37.u0 = 0x00;
-	return v37;
+	v38.u0 = 0x00;
+	return v38;
 }
 
 // 00117EC5: Stack Eq_n fn00117EC5(Stack Eq_n arg0)
 Eq_n fn00117EC5(Eq_n arg0)
 {
-	v18.u3 = g_t140030.u3;
-	loc16 = v18;
-	v18 = arg0;
-	v19.u0 = 0x08;
-	v18 += v19;
-	loc1 = v18;
-	v18 = loc1;
-	v18.u3 = *v18.u3;
-	loc7 = v18;
-	v18 = loc7;
-	v19.u0 = 0x00;
-	v20 = v18 == v19;
-	loc8 = v20;
-	v18 = loc8;
-	if (v18)
+	v19.u3 = g_t140030.u3;
+	loc16 = v19;
+	v19 = arg0;
+	v20.u0 = 0x08;
+	v19 += v20;
+	loc1 = v19;
+	v19 = loc1;
+	v19.u3 = *v19.u3;
+	loc7 = v19;
+	v19 = loc7;
+	v20.u0 = 0x00;
+	v21 = v19 == v20;
+	loc8 = v21;
+	v19 = loc8;
+	if (v19)
 	{
-		v18.u0 = 0x01;
-		loc4 = v18;
+		v19.u0 = 0x01;
+		loc4 = v19;
 	}
 	else
 	{
-		v18.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v18;
-		v18.u0 = 0x017E;
-		v19 = loc7;
-		v18 = invoke_ii(v18, v19);
-		loc9 = v18;
-		v18.u3 = g_t140048.u3;
-		loc10 = v18;
-		v18.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v18;
-		v18 = loc10;
-		v19.u0 = 0x01;
-		v18 &= v19;
-		loc11 = v18;
-		v18 = loc11;
-		if (v18)
-		{
-			v18.u0 = 0x00;
-			v18 = ___cxa_find_matching_catch_n(v18);
-			loc5 = v18;
-			v18.u3 = g_t140094.u3;
-			loc6 = v18;
-			v18 = loc5;
-			fn000D0E65(v18);
-		}
-		v18 = loc9;
 		v19.u0 = 0x00;
-		v20 = v18 == v19;
-		loc12 = v20;
-		v18 = loc12;
-		if (v18)
+		g_t140048.u3 = (word32 *) v19;
+		v19.u0 = 0x017E;
+		v20 = loc7;
+		v19 = invoke_ii(v19, v20);
+		loc9 = v19;
+		v19.u3 = g_t140048.u3;
+		loc10 = v19;
+		v19.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v19;
+		v19 = loc10;
+		v20.u0 = 0x01;
+		v19 &= v20;
+		loc11 = v19;
+		v19 = loc11;
+		if (v19)
 		{
-			v18.u0 = 0x04;
-			loc4 = v18;
+			v19.u0 = 0x00;
+			v19 = ___cxa_find_matching_catch_n(v19);
+			loc5 = v19;
+			v19.u3 = g_t140094.u3;
+			loc6 = v19;
+			v19 = loc5;
+			fn000D0E65(v19);
+		}
+		v19 = loc9;
+		v20.u0 = 0x00;
+		v21 = v19 == v20;
+		loc12 = v21;
+		v19 = loc12;
+		if (v19)
+		{
+			v19.u0 = 0x04;
+			loc4 = v19;
 		}
 		else
 		{
-			v18.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v18;
-			v18.u0 = 0x017E;
-			v19 = loc9;
-			v18 = invoke_ii(v18, v19);
-			v18.u3 = g_t140048.u3;
-			loc13 = v18;
-			v18.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v18;
-			v18 = loc13;
-			v19.u0 = 0x01;
-			v18 &= v19;
-			loc14 = v18;
-			v18 = loc14;
-			if (v18)
+			v19.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v19;
+			v19.u0 = 0x017E;
+			v20 = loc9;
+			v19 = invoke_ii(v19, v20);
+			v19.u3 = g_t140048.u3;
+			loc13 = v19;
+			v19.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v19;
+			v19 = loc13;
+			v20.u0 = 0x01;
+			v19 &= v20;
+			loc14 = v19;
+			v19 = loc14;
+			if (v19)
 			{
-				v18.u0 = 0x00;
-				v18 = ___cxa_find_matching_catch_n(v18);
-				loc2 = v18;
-				v18.u3 = g_t140094.u3;
-				loc3 = v18;
-				v18 = loc2;
-				fn000D0E65(v18);
+				v19.u0 = 0x00;
+				v19 = ___cxa_find_matching_catch_n(v19);
+				loc2 = v19;
+				v19.u3 = g_t140094.u3;
+				loc3 = v19;
+				v19 = loc2;
+				fn000D0E65(v19);
 			}
 			else
 			{
-				v18.u0 = 0x04;
-				loc4 = v18;
+				v19.u0 = 0x04;
+				loc4 = v19;
 			}
 		}
 	}
-	v18 = loc4;
-	return v18;
+	v19 = loc4;
+	return v19;
 }
 
 // 00117F62: void fn00117F62(Stack Eq_n arg0)
 void fn00117F62(Eq_n arg0)
 {
-	v15.u3 = g_t140030.u3;
-	loc13 = v15;
-	v15 = arg0;
-	v16.u0 = 9336;
-	*v15.u3 = (word32) v16;
-	v15 = arg0;
-	v16.u0 = 0x08;
-	v15 += v16;
-	loc1 = v15;
-	v15 = loc1;
-	v15.u3 = *v15.u3;
-	loc4 = v15;
-	v15.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v15;
-	v15.u0 = 0x017B;
-	v15 = invoke_i(v15);
-	loc5 = v15;
-	v15.u3 = g_t140048.u3;
-	loc6 = v15;
-	v15.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v15;
-	v15 = loc6;
-	v16.u0 = 0x01;
-	v15 &= v16;
-	loc7 = v15;
-	v15 = loc7;
-	v17 = v15 == 0x00;
-	if (v17)
+	v16.u3 = g_t140030.u3;
+	loc13 = v16;
+	v16 = arg0;
+	v17.u0 = 9336;
+	*v16.u3 = (word32) v17;
+	v16 = arg0;
+	v17.u0 = 0x08;
+	v16 += v17;
+	loc1 = v16;
+	v16 = loc1;
+	v16.u3 = *v16.u3;
+	loc4 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16.u0 = 0x017B;
+	v16 = invoke_i(v16);
+	loc5 = v16;
+	v16.u3 = g_t140048.u3;
+	loc6 = v16;
+	v16.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v16;
+	v16 = loc6;
+	v17.u0 = 0x01;
+	v16 &= v17;
+	loc7 = v16;
+	v16 = loc7;
+	v18 = v16 == 0x00;
+	if (v18)
 	{
-		v15 = loc4;
-		v16 = loc5;
-		v17 = v15 == v16;
-		loc8 = v17;
-		v15 = loc8;
-		v17 = v15 == 0x00;
-		if (!v17)
+		v16 = loc4;
+		v17 = loc5;
+		v18 = v16 == v17;
+		loc8 = v18;
+		v16 = loc8;
+		v18 = v16 == 0x00;
+		if (!v18)
 			return;
-		v15 = loc1;
-		v15 = *v15.u0;
-		loc9 = v15;
-		v15.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v15;
-		v15.u0 = 0x01A1;
-		v16 = loc9;
-		invoke_vi(v15, v16);
-		v15.u3 = g_t140048.u3;
-		loc10 = v15;
-		v15.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v15;
-		v15 = loc10;
-		v16.u0 = 0x01;
-		v15 &= v16;
-		loc11 = v15;
-		v15 = loc11;
-		if (!v15)
+		v16 = loc1;
+		v16 = *v16.u0;
+		loc9 = v16;
+		v16.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v16;
+		v16.u0 = 0x01A1;
+		v17 = loc9;
+		invoke_vi(v16, v17);
+		v16.u3 = g_t140048.u3;
+		loc10 = v16;
+		v16.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v16;
+		v16 = loc10;
+		v17.u0 = 0x01;
+		v16 &= v17;
+		loc11 = v16;
+		v16 = loc11;
+		if (!v16)
 			return;
 	}
-	v15.u0 = 0x00;
-	v15 = ___cxa_find_matching_catch_n(v15);
-	loc2 = v15;
-	v15.u3 = g_t140094.u3;
-	loc3 = v15;
-	v15 = arg0;
-	fn00115DAA(v15);
-	v15 = loc2;
-	fn000D0E65(v15);
+	v16.u0 = 0x00;
+	v16 = ___cxa_find_matching_catch_n(v16);
+	loc2 = v16;
+	v16.u3 = g_t140094.u3;
+	loc3 = v16;
+	v16 = arg0;
+	fn00115DAA(v16);
+	v16 = loc2;
+	fn000D0E65(v16);
 }
 
 // 00117FED: void fn00117FED(Stack Eq_n arg0)
 void fn00117FED(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn00117F62(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn00117F62(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00118000: Stack Eq_n fn00118000(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00118000(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v9.u3 = g_t140030.u3;
-	loc14 = v9;
-	v9.u3 = g_t140030.u3;
-	v10.u0 = 0x10;
-	v9 += v10;
-	g_t140030.u3 = (word32 *) v9;
-	v9.u3 = g_t140030.u3;
-	v10.u3 = g_t140034.u3;
-	v11 = v9 >= v10;
-	if (v11)
+	v10.u3 = g_t140030.u3;
+	loc14 = v10;
+	v10.u3 = g_t140030.u3;
+	v11.u0 = 0x10;
+	v10 += v11;
+	g_t140030.u3 = (word32 *) v10;
+	v10.u3 = g_t140030.u3;
+	v11.u3 = g_t140034.u3;
+	v12 = v10 >= v11;
+	if (v12)
 	{
-		v9.u0 = 0x10;
-		abortStackOverflow(v9);
+		v10.u0 = 0x10;
+		abortStackOverflow(v10);
 	}
-	v9 = loc14;
-	v10.u0 = 0x04;
-	v9 += v10;
-	loc11 = v9;
-	v9 = loc14;
-	loc12 = v9;
-	v9 = loc11;
+	v10 = loc14;
+	v11.u0 = 0x04;
+	v10 += v11;
+	loc11 = v10;
+	v10 = loc14;
+	loc12 = v10;
+	v10 = loc11;
+	v11 = arg2;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v11 = arg5;
+	*v10.u0 = v11;
 	v10 = arg2;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v10 = arg5;
-	*v9.u0 = v10;
-	v9 = arg2;
-	v10 = arg3;
-	v12 = loc11;
-	v13 = arg5;
-	v14 = arg6;
-	v15 = loc12;
-	v16.u0 = 1114111;
-	v17.u0 = 0x00;
-	v9 = fn00118DA0(v9, v10, v12, v13, v14, v15, v16, v17);
-	loc8 = v9;
-	v9 = loc11;
-	v9 = *v9.u0;
-	loc9 = v9;
-	v9 = arg4;
-	v10 = loc9;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v9 = *v9.u0;
-	loc10 = v9;
-	v9 = arg7;
-	v10 = loc10;
-	*v9.u0 = v10;
-	v9 = loc14;
-	g_t140030.u3 = (word32 *) v9;
-	v9 = loc8;
-	return v9;
+	v11 = arg3;
+	v13 = loc11;
+	v14 = arg5;
+	v15 = arg6;
+	v16 = loc12;
+	v17.u0 = 1114111;
+	v18.u0 = 0x00;
+	v10 = fn00118DA0(v10, v11, v13, v14, v15, v16, v17, v18);
+	loc8 = v10;
+	v10 = loc11;
+	v10 = *v10.u0;
+	loc9 = v10;
+	v10 = arg4;
+	v11 = loc9;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v10 = *v10.u0;
+	loc10 = v10;
+	v10 = arg7;
+	v11 = loc10;
+	*v10.u0 = v11;
+	v10 = loc14;
+	g_t140030.u3 = (word32 *) v10;
+	v10 = loc8;
+	return v10;
 }
 
 // 0011806F: Stack Eq_n fn0011806F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn0011806F(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v9.u3 = g_t140030.u3;
-	loc14 = v9;
-	v9.u3 = g_t140030.u3;
-	v10.u0 = 0x10;
-	v9 += v10;
-	g_t140030.u3 = (word32 *) v9;
-	v9.u3 = g_t140030.u3;
-	v10.u3 = g_t140034.u3;
-	v11 = v9 >= v10;
-	if (v11)
+	v10.u3 = g_t140030.u3;
+	loc14 = v10;
+	v10.u3 = g_t140030.u3;
+	v11.u0 = 0x10;
+	v10 += v11;
+	g_t140030.u3 = (word32 *) v10;
+	v10.u3 = g_t140030.u3;
+	v11.u3 = g_t140034.u3;
+	v12 = v10 >= v11;
+	if (v12)
 	{
-		v9.u0 = 0x10;
-		abortStackOverflow(v9);
+		v10.u0 = 0x10;
+		abortStackOverflow(v10);
 	}
-	v9 = loc14;
-	v10.u0 = 0x04;
-	v9 += v10;
-	loc11 = v9;
-	v9 = loc14;
-	loc12 = v9;
-	v9 = loc11;
+	v10 = loc14;
+	v11.u0 = 0x04;
+	v10 += v11;
+	loc11 = v10;
+	v10 = loc14;
+	loc12 = v10;
+	v10 = loc11;
+	v11 = arg2;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v11 = arg5;
+	*v10.u0 = v11;
 	v10 = arg2;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v10 = arg5;
-	*v9.u0 = v10;
-	v9 = arg2;
-	v10 = arg3;
-	v12 = loc11;
-	v13 = arg5;
-	v14 = arg6;
-	v15 = loc12;
-	v16.u0 = 1114111;
-	v17.u0 = 0x00;
-	v9 = fn00118734(v9, v10, v12, v13, v14, v15, v16, v17);
-	loc8 = v9;
-	v9 = loc11;
-	v9 = *v9.u0;
-	loc9 = v9;
-	v9 = arg4;
-	v10 = loc9;
-	*v9.u0 = v10;
-	v9 = loc12;
-	v9 = *v9.u0;
-	loc10 = v9;
-	v9 = arg7;
-	v10 = loc10;
-	*v9.u0 = v10;
-	v9 = loc14;
-	g_t140030.u3 = (word32 *) v9;
-	v9 = loc8;
-	return v9;
+	v11 = arg3;
+	v13 = loc11;
+	v14 = arg5;
+	v15 = arg6;
+	v16 = loc12;
+	v17.u0 = 1114111;
+	v18.u0 = 0x00;
+	v10 = fn00118734(v10, v11, v13, v14, v15, v16, v17, v18);
+	loc8 = v10;
+	v10 = loc11;
+	v10 = *v10.u0;
+	loc9 = v10;
+	v10 = arg4;
+	v11 = loc9;
+	*v10.u0 = v11;
+	v10 = loc12;
+	v10 = *v10.u0;
+	loc10 = v10;
+	v10 = arg7;
+	v11 = loc10;
+	*v10.u0 = v11;
+	v10 = loc14;
+	g_t140030.u3 = (word32 *) v10;
+	v10 = loc8;
+	return v10;
 }
 
 // 001180DE: Stack Eq_n fn001180DE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn001180DE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v4.u3 = g_t140030.u3;
-	loc6 = v4;
-	v4 = arg4;
-	v5 = arg2;
-	*v4.u3 = (word32) v5;
-	v4.u0 = 0x03;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc6 = v5;
+	v5 = arg4;
+	v6 = arg2;
+	*v5.u3 = (word32) v6;
+	v5.u0 = 0x03;
+	return v5;
 }
 
 // 001180F0: Stack Eq_n fn001180F0(Stack Eq_n arg0)
 Eq_n fn001180F0(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x00;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x00;
+	return v5;
 }
 
 // 001180FB: Stack Eq_n fn001180FB(Stack Eq_n arg0)
 Eq_n fn001180FB(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x00;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x00;
+	return v5;
 }
 
 // 00118106: Stack Eq_n fn00118106(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00118106(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v5.u3 = g_t140030.u3;
-	loc7 = v5;
-	v5 = arg2;
-	v6 = arg3;
-	v7 = arg4;
-	v8.u0 = 1114111;
-	v9.u0 = 0x00;
-	v5 = fn0011812E(v5, v6, v7, v8, v9);
-	loc5 = v5;
-	v5 = loc5;
-	return v5;
+	v6.u3 = g_t140030.u3;
+	loc7 = v6;
+	v6 = arg2;
+	v7 = arg3;
+	v8 = arg4;
+	v9.u0 = 1114111;
+	v10.u0 = 0x00;
+	v6 = fn0011812E(v6, v7, v8, v9, v10);
+	loc5 = v6;
+	v6 = loc5;
+	return v6;
 }
 
 // 00118123: Stack Eq_n fn00118123(Stack Eq_n arg0)
 Eq_n fn00118123(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x04;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x04;
+	return v5;
 }
 
 // 0011812E: Stack Eq_n fn0011812E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn0011812E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v131.u3 = g_t140030.u3;
-	loc133 = v131;
-	v131 = arg4;
-	v132.u0 = 0x04;
-	v131 &= v132;
-	loc75 = v131;
-	v131 = loc75;
-	v132.u0 = 0x00;
-	v133 = v131 == v132;
-	loc86 = v133;
-	v131 = arg1;
-	loc12 = v131;
-	v131 = loc86;
-	if (v131)
+	v132.u3 = g_t140030.u3;
+	loc133 = v132;
+	v132 = arg4;
+	v133.u0 = 0x04;
+	v132 &= v133;
+	loc75 = v132;
+	v132 = loc75;
+	v133.u0 = 0x00;
+	v134 = v132 == v133;
+	loc86 = v134;
+	v132 = arg1;
+	loc12 = v132;
+	v132 = loc86;
+	if (v132)
 	{
-		v131.u0 = 0x00;
-		loc6 = v131;
-		v131 = arg0;
-		loc7 = v131;
+		v132.u0 = 0x00;
+		loc6 = v132;
+		v132 = arg0;
+		loc7 = v132;
 	}
 	else
 	{
-		v131 = arg0;
-		loc97 = v131;
-		v131 = loc12;
-		v132 = loc97;
-		v131 -= v132;
-		loc108 = v131;
-		v131 = loc108;
-		v132.u0 = 0x02;
-		v133 = v131 > v132;
-		loc119 = v133;
-		v131 = loc119;
-		if (v131)
+		v132 = arg0;
+		loc97 = v132;
+		v132 = loc12;
+		v133 = loc97;
+		v132 -= v133;
+		loc108 = v132;
+		v132 = loc108;
+		v133.u0 = 0x02;
+		v134 = v132 > v133;
+		loc119 = v134;
+		v132 = loc119;
+		if (v132)
 		{
-			v131 = arg0;
-			v134 = *v131.u0;
-			v131.u3 = (word32) v134;
-			loc13 = v131;
-			v131 = loc13;
-			v132.u0 = 0x18;
-			v131 <<= v132;
-			v132.u0 = 0x18;
-			v131 >>= v132;
-			v132.u0 = ~0x10;
-			v133 = v131 == v132;
-			loc24 = v133;
-			v131 = loc24;
-			if (v131)
+			v132 = arg0;
+			v135 = *v132.u0;
+			v132.u3 = (word32) v135;
+			loc13 = v132;
+			v132 = loc13;
+			v133.u0 = 0x18;
+			v132 <<= v133;
+			v133.u0 = 0x18;
+			v132 >>= v133;
+			v133.u0 = ~0x10;
+			v134 = v132 == v133;
+			loc24 = v134;
+			v132 = loc24;
+			if (v132)
 			{
-				v131 = arg0;
-				v132.u0 = 0x01;
-				v131 += v132;
-				loc35 = v131;
-				v131 = loc35;
-				v135.u1 = v131.u4->t0000.u1;
-				v131.u3 = (word32) v135;
-				loc38 = v131;
-				v131 = loc38;
-				v132.u0 = 0x18;
-				v131 <<= v132;
-				v132.u0 = 0x18;
-				v131 >>= v132;
-				v132.u0 = ~0x44;
-				v133 = v131 == v132;
-				loc39 = v133;
-				v131 = loc39;
-				if (v131)
+				v132 = arg0;
+				v133.u0 = 0x01;
+				v132 += v133;
+				loc35 = v132;
+				v132 = loc35;
+				v136.u1 = v132.u4->t0000.u1;
+				v132.u3 = (word32) v136;
+				loc38 = v132;
+				v132 = loc38;
+				v133.u0 = 0x18;
+				v132 <<= v133;
+				v133.u0 = 0x18;
+				v132 >>= v133;
+				v133.u0 = ~0x44;
+				v134 = v132 == v133;
+				loc39 = v134;
+				v132 = loc39;
+				if (v132)
 				{
-					v131 = arg0;
-					v132.u0 = 0x02;
-					v131 += v132;
-					loc40 = v131;
-					v131 = loc40;
-					v136.u1 = v131.u4->t0000.u1;
-					v131.u3 = (word32) v136;
-					loc41 = v131;
-					v131 = loc41;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					v132.u0 = ~0x40;
-					v133 = v131 == v132;
-					loc42 = v133;
-					v131 = arg0;
-					v132.u0 = 0x03;
-					v131 += v132;
-					loc43 = v131;
-					v131 = loc42;
-					if (v131)
-						v131 = loc43;
+					v132 = arg0;
+					v133.u0 = 0x02;
+					v132 += v133;
+					loc40 = v132;
+					v132 = loc40;
+					v137.u1 = v132.u4->t0000.u1;
+					v132.u3 = (word32) v137;
+					loc41 = v132;
+					v132 = loc41;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					v133.u0 = ~0x40;
+					v134 = v132 == v133;
+					loc42 = v134;
+					v132 = arg0;
+					v133.u0 = 0x03;
+					v132 += v133;
+					loc43 = v132;
+					v132 = loc42;
+					if (v132)
+						v132 = loc43;
 					else
-						v131 = arg0;
-					loc5 = v131;
-					v131.u0 = 0x00;
-					loc6 = v131;
-					v131 = loc5;
-					loc7 = v131;
+						v132 = arg0;
+					loc5 = v132;
+					v132.u0 = 0x00;
+					loc6 = v132;
+					v132 = loc5;
+					loc7 = v132;
 				}
 				else
 				{
-					v131.u0 = 0x00;
-					loc6 = v131;
-					v131 = arg0;
-					loc7 = v131;
+					v132.u0 = 0x00;
+					loc6 = v132;
+					v132 = arg0;
+					loc7 = v132;
 				}
 			}
 			else
 			{
-				v131.u0 = 0x00;
-				loc6 = v131;
-				v131 = arg0;
-				loc7 = v131;
+				v132.u0 = 0x00;
+				loc6 = v132;
+				v132 = arg0;
+				loc7 = v132;
 			}
 		}
 		else
 		{
-			v131.u0 = 0x00;
-			loc6 = v131;
-			v131 = arg0;
-			loc7 = v131;
+			v132.u0 = 0x00;
+			loc6 = v132;
+			v132 = arg0;
+			loc7 = v132;
 		}
 	}
 	while (true)
 	{
-		v131 = loc7;
-		v132 = arg1;
-		v133 = v131 < v132;
-		loc44 = v133;
-		v131 = loc6;
-		v132 = arg2;
-		v133 = v131 < v132;
-		loc45 = v133;
-		v131 = loc45;
-		v132 = loc44;
-		v131 &= v132;
-		loc130 = v131;
-		v131 = loc130;
-		v133 = v131 == 0x00;
-		if (v133)
+		v132 = loc7;
+		v133 = arg1;
+		v134 = v132 < v133;
+		loc44 = v134;
+		v132 = loc6;
+		v133 = arg2;
+		v134 = v132 < v133;
+		loc45 = v134;
+		v132 = loc45;
+		v133 = loc44;
+		v132 &= v133;
+		loc130 = v132;
+		v132 = loc130;
+		v134 = v132 == 0x00;
+		if (v134)
 			break;
-		v131 = loc7;
-		v137 = *v131.u0;
-		v131.u3 = (word32) v137;
-		loc46 = v131;
-		v131 = loc46;
-		v132.u0 = 0xFF;
-		v131 &= v132;
-		loc47 = v131;
-		v131 = loc47;
-		v132 = arg3;
-		v133 = v131 > v132;
-		loc48 = v133;
-		v131 = loc48;
-		if (v131)
+		v132 = loc7;
+		v138 = *v132.u0;
+		v132.u3 = (word32) v138;
+		loc46 = v132;
+		v132 = loc46;
+		v133.u0 = 0xFF;
+		v132 &= v133;
+		loc47 = v132;
+		v132 = loc47;
+		v133 = arg3;
+		v134 = v132 > v133;
+		loc48 = v134;
+		v132 = loc48;
+		if (v132)
 		{
-			v131.u0 = 0x27;
-			loc132 = v131;
+			v132.u0 = 0x27;
+			loc132 = v132;
 			goto l0011867B;
 		}
-		v131 = loc46;
-		v132.u0 = 0x18;
-		v131 <<= v132;
-		v132.u0 = 0x18;
-		v131 >>= v132;
-		v132.u0 = ~0x00;
-		v133 = v131 > v132;
-		loc49 = v133;
-		v131 = loc49;
-		if (v131)
+		v132 = loc46;
+		v133.u0 = 0x18;
+		v132 <<= v133;
+		v133.u0 = 0x18;
+		v132 >>= v133;
+		v133.u0 = ~0x00;
+		v134 = v132 > v133;
+		loc49 = v134;
+		v132 = loc49;
+		if (v132)
 		{
-			v131 = loc7;
-			v132.u0 = 0x01;
-			v131 += v132;
-			loc50 = v131;
-			v131 = loc6;
-			loc8 = v131;
-			v131 = loc50;
-			loc9 = v131;
+			v132 = loc7;
+			v133.u0 = 0x01;
+			v132 += v133;
+			loc50 = v132;
+			v132 = loc6;
+			loc8 = v132;
+			v132 = loc50;
+			loc9 = v132;
 			goto l00118668;
 		}
-		v131 = loc46;
-		v132.u0 = 0xFF;
-		v131 &= v132;
-		v132.u0 = 0xC2;
-		v133 = v131 < v132;
-		loc51 = v133;
-		v131 = loc51;
-		if (v131)
+		v132 = loc46;
+		v133.u0 = 0xFF;
+		v132 &= v133;
+		v133.u0 = 0xC2;
+		v134 = v132 < v133;
+		loc51 = v134;
+		v132 = loc51;
+		if (v132)
 		{
-			v131.u0 = 0x27;
-			loc132 = v131;
+			v132.u0 = 0x27;
+			loc132 = v132;
 			goto l0011867B;
 		}
-		v131 = loc46;
-		v132.u0 = 0xFF;
-		v131 &= v132;
-		v132.u0 = 0xE0;
-		v133 = v131 < v132;
-		loc52 = v133;
-		v131 = loc52;
-		if (v131)
+		v132 = loc46;
+		v133.u0 = 0xFF;
+		v132 &= v133;
+		v133.u0 = 0xE0;
+		v134 = v132 < v133;
+		loc52 = v134;
+		v132 = loc52;
+		if (v132)
 		{
-			v131 = loc7;
-			loc53 = v131;
-			v131 = loc12;
-			v132 = loc53;
-			v131 -= v132;
-			loc54 = v131;
-			v131 = loc54;
-			v132.u0 = 0x02;
-			v133 = v131 < v132;
-			loc55 = v133;
-			v131 = loc55;
-			if (v131)
+			v132 = loc7;
+			loc53 = v132;
+			v132 = loc12;
+			v133 = loc53;
+			v132 -= v133;
+			loc54 = v132;
+			v132 = loc54;
+			v133.u0 = 0x02;
+			v134 = v132 < v133;
+			loc55 = v134;
+			v132 = loc55;
+			if (v132)
 			{
-				v131.u0 = 0x27;
-				loc132 = v131;
+				v132.u0 = 0x27;
+				loc132 = v132;
 				goto l0011867B;
 			}
-			v131 = loc7;
-			v132.u0 = 0x01;
-			v131 += v132;
-			loc56 = v131;
-			v131 = loc56;
-			v138 = *v131.u0;
-			v131.u3 = (word32) v138;
-			loc57 = v131;
-			v131 = loc57;
-			v132.u0 = 0xFF;
-			v131 &= v132;
-			loc58 = v131;
-			v131 = loc58;
-			v132.u0 = 0xC0;
-			v131 &= v132;
-			loc59 = v131;
-			v131 = loc59;
-			v132.u0 = 0x80;
-			v133 = v131 == v132;
-			loc60 = v133;
-			v131 = loc60;
-			v133 = v131 == 0x00;
-			if (v133)
+			v132 = loc7;
+			v133.u0 = 0x01;
+			v132 += v133;
+			loc56 = v132;
+			v132 = loc56;
+			v139 = *v132.u0;
+			v132.u3 = (word32) v139;
+			loc57 = v132;
+			v132 = loc57;
+			v133.u0 = 0xFF;
+			v132 &= v133;
+			loc58 = v132;
+			v132 = loc58;
+			v133.u0 = 0xC0;
+			v132 &= v133;
+			loc59 = v132;
+			v132 = loc59;
+			v133.u0 = 0x80;
+			v134 = v132 == v133;
+			loc60 = v134;
+			v132 = loc60;
+			v134 = v132 == 0x00;
+			if (v134)
 			{
-				v131.u0 = 0x27;
-				loc132 = v131;
+				v132.u0 = 0x27;
+				loc132 = v132;
 				goto l0011867B;
 			}
-			v131 = loc47;
-			v132.u0 = 0x06;
-			v131 <<= v132;
-			loc61 = v131;
-			v131 = loc61;
-			v132.u0 = 0x07C0;
-			v131 &= v132;
-			loc62 = v131;
-			v131 = loc58;
-			v132.u0 = 0x3F;
-			v131 &= v132;
-			loc63 = v131;
-			v131 = loc63;
-			v132 = loc62;
-			v131 |= v132;
-			loc64 = v131;
-			v131 = loc64;
-			v132 = arg3;
-			v133 = v131 > v132;
-			loc65 = v133;
-			v131 = loc7;
-			v132.u0 = 0x02;
-			v131 += v132;
-			loc66 = v131;
-			v131 = loc65;
-			if (v131)
+			v132 = loc47;
+			v133.u0 = 0x06;
+			v132 <<= v133;
+			loc61 = v132;
+			v132 = loc61;
+			v133.u0 = 0x07C0;
+			v132 &= v133;
+			loc62 = v132;
+			v132 = loc58;
+			v133.u0 = 0x3F;
+			v132 &= v133;
+			loc63 = v132;
+			v132 = loc63;
+			v133 = loc62;
+			v132 |= v133;
+			loc64 = v132;
+			v132 = loc64;
+			v133 = arg3;
+			v134 = v132 > v133;
+			loc65 = v134;
+			v132 = loc7;
+			v133.u0 = 0x02;
+			v132 += v133;
+			loc66 = v132;
+			v132 = loc65;
+			if (v132)
 			{
-				v131.u0 = 0x27;
-				loc132 = v131;
+				v132.u0 = 0x27;
+				loc132 = v132;
 				goto l0011867B;
 			}
-			v131 = loc6;
-			loc8 = v131;
-			v131 = loc66;
-			loc9 = v131;
+			v132 = loc6;
+			loc8 = v132;
+			v132 = loc66;
+			loc9 = v132;
 		}
 		else
 		{
-			v131 = loc46;
-			v132.u0 = 0xFF;
-			v131 &= v132;
-			v132.u0 = 0xF0;
-			v133 = v131 < v132;
-			loc67 = v133;
-			v131 = loc67;
-			if (v131)
+			v132 = loc46;
+			v133.u0 = 0xFF;
+			v132 &= v133;
+			v133.u0 = 0xF0;
+			v134 = v132 < v133;
+			loc67 = v134;
+			v132 = loc67;
+			if (v132)
 			{
-				v131 = loc7;
-				loc68 = v131;
-				v131 = loc12;
-				v132 = loc68;
-				v131 -= v132;
-				loc69 = v131;
-				v131 = loc69;
-				v132.u0 = 0x03;
-				v133 = v131 < v132;
-				loc70 = v133;
-				v131 = loc70;
-				if (v131)
+				v132 = loc7;
+				loc68 = v132;
+				v132 = loc12;
+				v133 = loc68;
+				v132 -= v133;
+				loc69 = v132;
+				v132 = loc69;
+				v133.u0 = 0x03;
+				v134 = v132 < v133;
+				loc70 = v134;
+				v132 = loc70;
+				if (v132)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc7;
-				v132.u0 = 0x01;
-				v131 += v132;
-				loc71 = v131;
-				v131 = loc71;
-				v139 = *v131.u0;
-				v131.u3 = (word32) v139;
-				loc72 = v131;
-				v131 = loc7;
-				v132.u0 = 0x02;
-				v131 += v132;
-				loc73 = v131;
-				v131 = loc73;
-				v140.u1 = v131.u4->t0000.u1;
-				v131.u3 = (word32) v140;
-				loc74 = v131;
-				v131 = loc46;
-				v132.u0 = 0x18;
-				v131 <<= v132;
-				v132.u0 = 0x18;
-				v131 >>= v132;
-				v132.u0 = ~0x1F;
-				v131 -= v132;
-				switch (v131)
+				v132 = loc7;
+				v133.u0 = 0x01;
+				v132 += v133;
+				loc71 = v132;
+				v132 = loc71;
+				v140 = *v132.u0;
+				v132.u3 = (word32) v140;
+				loc72 = v132;
+				v132 = loc7;
+				v133.u0 = 0x02;
+				v132 += v133;
+				loc73 = v132;
+				v132 = loc73;
+				v141.u1 = v132.u4->t0000.u1;
+				v132.u3 = (word32) v141;
+				loc74 = v132;
+				v132 = loc46;
+				v133.u0 = 0x18;
+				v132 <<= v133;
+				v133.u0 = 0x18;
+				v132 >>= v133;
+				v133.u0 = ~0x1F;
+				v132 -= v133;
+				switch (v132)
 				{
 				case 0x00:
-					v131 = loc72;
-					v132.u0 = ~0x1F;
-					v131 &= v132;
-					loc76 = v131;
-					v131 = loc76;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					v132.u0 = ~0x5F;
-					v133 = v131 == v132;
-					loc77 = v133;
-					v131 = loc77;
-					v133 = v131 == 0x00;
-					if (v133)
+					v132 = loc72;
+					v133.u0 = ~0x1F;
+					v132 &= v133;
+					loc76 = v132;
+					v132 = loc76;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					v133.u0 = ~0x5F;
+					v134 = v132 == v133;
+					loc77 = v134;
+					v132 = loc77;
+					v134 = v132 == 0x00;
+					if (v134)
 					{
-						v131.u0 = 0x13;
-						loc132 = v131;
+						v132.u0 = 0x13;
+						loc132 = v132;
 						goto l0011867B;
 					}
 					break;
 				case 0x01:
-					v131 = loc72;
-					v132.u0 = ~0x1F;
-					v131 &= v132;
-					loc80 = v131;
-					v131 = loc80;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					v132.u0 = ~0x7F;
-					v133 = v131 == v132;
-					loc81 = v133;
-					v131 = loc81;
-					v133 = v131 == 0x00;
-					if (v133)
+					v132 = loc72;
+					v133.u0 = ~0x1F;
+					v132 &= v133;
+					loc80 = v132;
+					v132 = loc80;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					v133.u0 = ~0x7F;
+					v134 = v132 == v133;
+					loc81 = v134;
+					v132 = loc81;
+					v134 = v132 == 0x00;
+					if (v134)
 					{
-						v131.u0 = 0x15;
-						loc132 = v131;
+						v132.u0 = 0x15;
+						loc132 = v132;
 						goto l0011867B;
 					}
 					break;
@@ -10775,482 +10775,482 @@ Eq_n fn0011812E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 				case 11:
 				case 0x0C:
 				case 0x0D:
-					v131 = loc72;
-					v132.u0 = ~0x3F;
-					v131 &= v132;
-					loc84 = v131;
-					v131 = loc84;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					v132.u0 = ~0x7F;
-					v133 = v131 == v132;
-					loc85 = v133;
-					v131 = loc85;
-					v133 = v131 == 0x00;
-					if (v133)
+					v132 = loc72;
+					v133.u0 = ~0x3F;
+					v132 &= v133;
+					loc84 = v132;
+					v132 = loc84;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					v133.u0 = ~0x7F;
+					v134 = v132 == v133;
+					loc85 = v134;
+					v132 = loc85;
+					v134 = v132 == 0x00;
+					if (v134)
 					{
-						v131.u0 = 0x17;
-						loc132 = v131;
+						v132.u0 = 0x17;
+						loc132 = v132;
 						goto l0011867B;
 					}
 					break;
 				}
-				v131 = loc74;
-				v132.u0 = 0xFF;
-				v131 &= v132;
-				loc89 = v131;
-				v131 = loc89;
-				v132.u0 = 0xC0;
-				v131 &= v132;
-				loc90 = v131;
-				v131 = loc90;
-				v132.u0 = 0x80;
-				v133 = v131 == v132;
-				loc91 = v133;
-				v131 = loc91;
-				v133 = v131 == 0x00;
-				if (v133)
+				v132 = loc74;
+				v133.u0 = 0xFF;
+				v132 &= v133;
+				loc89 = v132;
+				v132 = loc89;
+				v133.u0 = 0xC0;
+				v132 &= v133;
+				loc90 = v132;
+				v132 = loc90;
+				v133.u0 = 0x80;
+				v134 = v132 == v133;
+				loc91 = v134;
+				v132 = loc91;
+				v134 = v132 == 0x00;
+				if (v134)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc47;
-				v132.u0 = 0x0C;
-				v131 <<= v132;
-				loc92 = v131;
-				v131 = loc92;
-				v132.u0 = 0xF000;
-				v131 &= v132;
-				loc93 = v131;
-				v131 = loc72;
-				v132.u0 = 0xFF;
-				v131 &= v132;
-				loc94 = v131;
-				v131 = loc94;
-				v132.u0 = 0x06;
-				v131 <<= v132;
-				loc95 = v131;
-				v131 = loc95;
-				v132.u0 = 0x0FC0;
-				v131 &= v132;
-				loc96 = v131;
-				v131 = loc96;
-				v132 = loc93;
-				v131 |= v132;
-				loc98 = v131;
-				v131 = loc89;
-				v132.u0 = 0x3F;
-				v131 &= v132;
-				loc99 = v131;
-				v131 = loc98;
-				v132 = loc99;
-				v131 |= v132;
-				loc100 = v131;
-				v131 = loc100;
-				v132 = arg3;
-				v133 = v131 > v132;
-				loc101 = v133;
-				v131 = loc7;
-				v132.u0 = 0x03;
-				v131 += v132;
-				loc102 = v131;
-				v131 = loc101;
-				if (v131)
+				v132 = loc47;
+				v133.u0 = 0x0C;
+				v132 <<= v133;
+				loc92 = v132;
+				v132 = loc92;
+				v133.u0 = 0xF000;
+				v132 &= v133;
+				loc93 = v132;
+				v132 = loc72;
+				v133.u0 = 0xFF;
+				v132 &= v133;
+				loc94 = v132;
+				v132 = loc94;
+				v133.u0 = 0x06;
+				v132 <<= v133;
+				loc95 = v132;
+				v132 = loc95;
+				v133.u0 = 0x0FC0;
+				v132 &= v133;
+				loc96 = v132;
+				v132 = loc96;
+				v133 = loc93;
+				v132 |= v133;
+				loc98 = v132;
+				v132 = loc89;
+				v133.u0 = 0x3F;
+				v132 &= v133;
+				loc99 = v132;
+				v132 = loc98;
+				v133 = loc99;
+				v132 |= v133;
+				loc100 = v132;
+				v132 = loc100;
+				v133 = arg3;
+				v134 = v132 > v133;
+				loc101 = v134;
+				v132 = loc7;
+				v133.u0 = 0x03;
+				v132 += v133;
+				loc102 = v132;
+				v132 = loc101;
+				if (v132)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc6;
-				loc8 = v131;
-				v131 = loc102;
-				loc9 = v131;
+				v132 = loc6;
+				loc8 = v132;
+				v132 = loc102;
+				loc9 = v132;
 			}
 			else
 			{
-				v131 = loc46;
-				v132.u0 = 0xFF;
-				v131 &= v132;
-				v132.u0 = 0xF5;
-				v133 = v131 < v132;
-				loc103 = v133;
-				v131 = loc103;
-				v133 = v131 == 0x00;
-				if (v133)
+				v132 = loc46;
+				v133.u0 = 0xFF;
+				v132 &= v133;
+				v133.u0 = 0xF5;
+				v134 = v132 < v133;
+				loc103 = v134;
+				v132 = loc103;
+				v134 = v132 == 0x00;
+				if (v134)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc7;
-				loc104 = v131;
-				v131 = loc12;
-				v132 = loc104;
-				v131 -= v132;
-				loc105 = v131;
-				v131 = loc105;
-				v132.u0 = 0x04;
-				v133 = v131 < v132;
-				loc106 = v133;
-				v131 = arg2;
-				v132 = loc6;
-				v131 -= v132;
-				loc107 = v131;
-				v131 = loc107;
-				v132.u0 = 0x02;
-				v133 = v131 < v132;
-				loc109 = v133;
-				v131 = loc109;
-				v132 = loc106;
-				v131 |= v132;
-				loc131 = v131;
-				v131 = loc131;
-				if (v131)
+				v132 = loc7;
+				loc104 = v132;
+				v132 = loc12;
+				v133 = loc104;
+				v132 -= v133;
+				loc105 = v132;
+				v132 = loc105;
+				v133.u0 = 0x04;
+				v134 = v132 < v133;
+				loc106 = v134;
+				v132 = arg2;
+				v133 = loc6;
+				v132 -= v133;
+				loc107 = v132;
+				v132 = loc107;
+				v133.u0 = 0x02;
+				v134 = v132 < v133;
+				loc109 = v134;
+				v132 = loc109;
+				v133 = loc106;
+				v132 |= v133;
+				loc131 = v132;
+				v132 = loc131;
+				if (v132)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc7;
-				v132.u0 = 0x01;
-				v131 += v132;
-				loc110 = v131;
-				v131 = loc110;
-				v141 = *v131.u0;
-				v131.u3 = (word32) v141;
-				loc111 = v131;
-				v131 = loc7;
-				v132.u0 = 0x02;
-				v131 += v132;
-				loc112 = v131;
-				v131 = loc112;
-				v142.u1 = v131.u4->t0000.u1;
-				v131.u3 = (word32) v142;
-				loc113 = v131;
-				v131 = loc7;
-				v132.u0 = 0x03;
-				v131 += v132;
-				loc114 = v131;
-				v131 = loc114;
-				v143.u1 = v131.u4->t0000.u1;
-				v131.u3 = (word32) v143;
-				loc115 = v131;
-				v131 = loc46;
-				v132.u0 = 0x18;
-				v131 <<= v132;
-				v132.u0 = 0x18;
-				v131 >>= v132;
-				v132.u0 = ~0x0F;
-				v131 -= v132;
-				switch (v131)
+				v132 = loc7;
+				v133.u0 = 0x01;
+				v132 += v133;
+				loc110 = v132;
+				v132 = loc110;
+				v142 = *v132.u0;
+				v132.u3 = (word32) v142;
+				loc111 = v132;
+				v132 = loc7;
+				v133.u0 = 0x02;
+				v132 += v133;
+				loc112 = v132;
+				v132 = loc112;
+				v143.u1 = v132.u4->t0000.u1;
+				v132.u3 = (word32) v143;
+				loc113 = v132;
+				v132 = loc7;
+				v133.u0 = 0x03;
+				v132 += v133;
+				loc114 = v132;
+				v132 = loc114;
+				v144.u1 = v132.u4->t0000.u1;
+				v132.u3 = (word32) v144;
+				loc115 = v132;
+				v132 = loc46;
+				v133.u0 = 0x18;
+				v132 <<= v133;
+				v133.u0 = 0x18;
+				v132 >>= v133;
+				v133.u0 = ~0x0F;
+				v132 -= v133;
+				switch (v132)
 				{
 				case 0x00:
-					v131 = loc111;
-					v132.u0 = 0x70;
-					v131 += v132;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					loc10 = v131;
-					v131 = loc10;
-					v132.u0 = 0xFF;
-					v131 &= v132;
-					v132.u0 = 0x30;
-					v133 = v131 < v132;
-					loc116 = v133;
-					v131 = loc116;
-					v133 = v131 == 0x00;
-					if (v133)
+					v132 = loc111;
+					v133.u0 = 0x70;
+					v132 += v133;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					loc10 = v132;
+					v132 = loc10;
+					v133.u0 = 0xFF;
+					v132 &= v133;
+					v133.u0 = 0x30;
+					v134 = v132 < v133;
+					loc116 = v134;
+					v132 = loc116;
+					v134 = v132 == 0x00;
+					if (v134)
 					{
-						v131.u0 = 0x1E;
-						loc132 = v131;
+						v132.u0 = 0x1E;
+						loc132 = v132;
 						goto l0011867B;
 					}
 					break;
 				case 0x01:
-					v131 = loc111;
-					v132.u0 = ~0x0F;
-					v131 &= v132;
-					loc120 = v131;
-					v131 = loc120;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					v132.u0 = ~0x7F;
-					v133 = v131 == v132;
-					loc121 = v133;
-					v131 = loc121;
-					v133 = v131 == 0x00;
-					if (v133)
+					v132 = loc111;
+					v133.u0 = ~0x0F;
+					v132 &= v133;
+					loc120 = v132;
+					v132 = loc120;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					v133.u0 = ~0x7F;
+					v134 = v132 == v133;
+					loc121 = v134;
+					v132 = loc121;
+					v134 = v132 == 0x00;
+					if (v134)
 					{
-						v131.u0 = 0x20;
-						loc132 = v131;
+						v132.u0 = 0x20;
+						loc132 = v132;
 						goto l0011867B;
 					}
 					break;
 				case 0x02:
 				case 0x03:
 				case 0x04:
-					v131 = loc111;
-					v132.u0 = ~0x3F;
-					v131 &= v132;
-					loc124 = v131;
-					v131 = loc124;
-					v132.u0 = 0x18;
-					v131 <<= v132;
-					v132.u0 = 0x18;
-					v131 >>= v132;
-					v132.u0 = ~0x7F;
-					v133 = v131 == v132;
-					loc125 = v133;
-					v131 = loc125;
-					v133 = v131 == 0x00;
-					if (v133)
+					v132 = loc111;
+					v133.u0 = ~0x3F;
+					v132 &= v133;
+					loc124 = v132;
+					v132 = loc124;
+					v133.u0 = 0x18;
+					v132 <<= v133;
+					v133.u0 = 0x18;
+					v132 >>= v133;
+					v133.u0 = ~0x7F;
+					v134 = v132 == v133;
+					loc125 = v134;
+					v132 = loc125;
+					v134 = v132 == 0x00;
+					if (v134)
 					{
-						v131.u0 = 0x22;
-						loc132 = v131;
+						v132.u0 = 0x22;
+						loc132 = v132;
 						goto l0011867B;
 					}
 					break;
 				}
-				v131 = loc113;
-				v132.u0 = 0xFF;
-				v131 &= v132;
-				loc128 = v131;
-				v131 = loc128;
-				v132.u0 = 0xC0;
-				v131 &= v132;
-				loc129 = v131;
-				v131 = loc129;
-				v132.u0 = 0x80;
-				v133 = v131 == v132;
-				loc14 = v133;
-				v131 = loc14;
-				v133 = v131 == 0x00;
-				if (v133)
+				v132 = loc113;
+				v133.u0 = 0xFF;
+				v132 &= v133;
+				loc128 = v132;
+				v132 = loc128;
+				v133.u0 = 0xC0;
+				v132 &= v133;
+				loc129 = v132;
+				v132 = loc129;
+				v133.u0 = 0x80;
+				v134 = v132 == v133;
+				loc14 = v134;
+				v132 = loc14;
+				v134 = v132 == 0x00;
+				if (v134)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc115;
-				v132.u0 = 0xFF;
-				v131 &= v132;
-				loc15 = v131;
-				v131 = loc15;
-				v132.u0 = 0xC0;
-				v131 &= v132;
-				loc16 = v131;
-				v131 = loc16;
-				v132.u0 = 0x80;
-				v133 = v131 == v132;
-				loc17 = v133;
-				v131 = loc17;
-				v133 = v131 == 0x00;
-				if (v133)
+				v132 = loc115;
+				v133.u0 = 0xFF;
+				v132 &= v133;
+				loc15 = v132;
+				v132 = loc15;
+				v133.u0 = 0xC0;
+				v132 &= v133;
+				loc16 = v132;
+				v132 = loc16;
+				v133.u0 = 0x80;
+				v134 = v132 == v133;
+				loc17 = v134;
+				v132 = loc17;
+				v134 = v132 == 0x00;
+				if (v134)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc47;
-				v132.u0 = 0x12;
-				v131 <<= v132;
-				loc18 = v131;
-				v131 = loc18;
-				v132.u0 = 0x001C0000;
-				v131 &= v132;
-				loc19 = v131;
-				v131 = loc111;
-				v132.u0 = 0xFF;
-				v131 &= v132;
-				loc20 = v131;
-				v131 = loc20;
-				v132.u0 = 0x0C;
-				v131 <<= v132;
-				loc21 = v131;
-				v131 = loc21;
-				v132.u0 = 0x0003F000;
-				v131 &= v132;
-				loc22 = v131;
-				v131 = loc22;
-				v132 = loc19;
-				v131 |= v132;
-				loc23 = v131;
-				v131 = loc128;
-				v132.u0 = 0x06;
-				v131 <<= v132;
-				loc25 = v131;
-				v131 = loc25;
-				v132.u0 = 0x0FC0;
-				v131 &= v132;
-				loc26 = v131;
-				v131 = loc23;
-				v132 = loc26;
-				v131 |= v132;
-				loc27 = v131;
-				v131 = loc15;
-				v132.u0 = 0x3F;
-				v131 &= v132;
-				loc28 = v131;
-				v131 = loc27;
-				v132 = loc28;
-				v131 |= v132;
-				loc29 = v131;
-				v131 = loc29;
-				v132 = arg3;
-				v133 = v131 > v132;
-				loc30 = v133;
-				v131 = loc6;
-				v132.u0 = 0x01;
-				v131 += v132;
-				loc31 = v131;
-				v131 = loc7;
-				v132.u0 = 0x04;
-				v131 += v132;
-				loc32 = v131;
-				v131 = loc30;
-				if (v131)
+				v132 = loc47;
+				v133.u0 = 0x12;
+				v132 <<= v133;
+				loc18 = v132;
+				v132 = loc18;
+				v133.u0 = 0x001C0000;
+				v132 &= v133;
+				loc19 = v132;
+				v132 = loc111;
+				v133.u0 = 0xFF;
+				v132 &= v133;
+				loc20 = v132;
+				v132 = loc20;
+				v133.u0 = 0x0C;
+				v132 <<= v133;
+				loc21 = v132;
+				v132 = loc21;
+				v133.u0 = 0x0003F000;
+				v132 &= v133;
+				loc22 = v132;
+				v132 = loc22;
+				v133 = loc19;
+				v132 |= v133;
+				loc23 = v132;
+				v132 = loc128;
+				v133.u0 = 0x06;
+				v132 <<= v133;
+				loc25 = v132;
+				v132 = loc25;
+				v133.u0 = 0x0FC0;
+				v132 &= v133;
+				loc26 = v132;
+				v132 = loc23;
+				v133 = loc26;
+				v132 |= v133;
+				loc27 = v132;
+				v132 = loc15;
+				v133.u0 = 0x3F;
+				v132 &= v133;
+				loc28 = v132;
+				v132 = loc27;
+				v133 = loc28;
+				v132 |= v133;
+				loc29 = v132;
+				v132 = loc29;
+				v133 = arg3;
+				v134 = v132 > v133;
+				loc30 = v134;
+				v132 = loc6;
+				v133.u0 = 0x01;
+				v132 += v133;
+				loc31 = v132;
+				v132 = loc7;
+				v133.u0 = 0x04;
+				v132 += v133;
+				loc32 = v132;
+				v132 = loc30;
+				if (v132)
 				{
-					v131.u0 = 0x27;
-					loc132 = v131;
+					v132.u0 = 0x27;
+					loc132 = v132;
 					goto l0011867B;
 				}
-				v131 = loc31;
-				loc8 = v131;
-				v131 = loc32;
-				loc9 = v131;
+				v132 = loc31;
+				loc8 = v132;
+				v132 = loc32;
+				loc9 = v132;
 l00118668:
 			}
 		}
-		v131 = loc8;
-		v132.u0 = 0x01;
-		v131 += v132;
-		loc33 = v131;
-		v131 = loc33;
-		loc6 = v131;
-		v131 = loc9;
-		loc7 = v131;
+		v132 = loc8;
+		v133.u0 = 0x01;
+		v132 += v133;
+		loc33 = v132;
+		v132 = loc33;
+		loc6 = v132;
+		v132 = loc9;
+		loc7 = v132;
 	}
-	v131.u0 = 0x27;
-	loc132 = v131;
+	v132.u0 = 0x27;
+	loc132 = v132;
 l0011867B:
-	v131 = loc132;
-	v132.u0 = 0x13;
-	v133 = v131 == v132;
-	if (v133)
+	v132 = loc132;
+	v133.u0 = 0x13;
+	v134 = v132 == v133;
+	if (v134)
 	{
-		v131 = arg0;
-		loc78 = v131;
-		v131 = loc68;
-		v132 = loc78;
-		v131 -= v132;
-		loc79 = v131;
-		v131 = loc79;
-		loc37 = v131;
+		v132 = arg0;
+		loc78 = v132;
+		v132 = loc68;
+		v133 = loc78;
+		v132 -= v133;
+		loc79 = v132;
+		v132 = loc79;
+		loc37 = v132;
 	}
 	else
 	{
-		v131 = loc132;
-		v132.u0 = 0x15;
-		v133 = v131 == v132;
-		if (v133)
+		v132 = loc132;
+		v133.u0 = 0x15;
+		v134 = v132 == v133;
+		if (v134)
 		{
-			v131 = arg0;
-			loc82 = v131;
-			v131 = loc68;
-			v132 = loc82;
-			v131 -= v132;
-			loc83 = v131;
-			v131 = loc83;
-			loc37 = v131;
+			v132 = arg0;
+			loc82 = v132;
+			v132 = loc68;
+			v133 = loc82;
+			v132 -= v133;
+			loc83 = v132;
+			v132 = loc83;
+			loc37 = v132;
 		}
 		else
 		{
-			v131 = loc132;
-			v132.u0 = 0x17;
-			v133 = v131 == v132;
-			if (v133)
+			v132 = loc132;
+			v133.u0 = 0x17;
+			v134 = v132 == v133;
+			if (v134)
 			{
-				v131 = arg0;
-				loc87 = v131;
-				v131 = loc68;
-				v132 = loc87;
-				v131 -= v132;
-				loc88 = v131;
-				v131 = loc88;
-				loc37 = v131;
+				v132 = arg0;
+				loc87 = v132;
+				v132 = loc68;
+				v133 = loc87;
+				v132 -= v133;
+				loc88 = v132;
+				v132 = loc88;
+				loc37 = v132;
 			}
 			else
 			{
-				v131 = loc132;
-				v132.u0 = 0x1E;
-				v133 = v131 == v132;
-				if (v133)
+				v132 = loc132;
+				v133.u0 = 0x1E;
+				v134 = v132 == v133;
+				if (v134)
 				{
-					v131 = arg0;
-					loc117 = v131;
-					v131 = loc104;
-					v132 = loc117;
-					v131 -= v132;
-					loc118 = v131;
-					v131 = loc118;
-					loc37 = v131;
+					v132 = arg0;
+					loc117 = v132;
+					v132 = loc104;
+					v133 = loc117;
+					v132 -= v133;
+					loc118 = v132;
+					v132 = loc118;
+					loc37 = v132;
 				}
 				else
 				{
-					v131 = loc132;
-					v132.u0 = 0x20;
-					v133 = v131 == v132;
-					if (v133)
+					v132 = loc132;
+					v133.u0 = 0x20;
+					v134 = v132 == v133;
+					if (v134)
 					{
-						v131 = arg0;
-						loc122 = v131;
-						v131 = loc104;
-						v132 = loc122;
-						v131 -= v132;
-						loc123 = v131;
-						v131 = loc123;
-						loc37 = v131;
+						v132 = arg0;
+						loc122 = v132;
+						v132 = loc104;
+						v133 = loc122;
+						v132 -= v133;
+						loc123 = v132;
+						v132 = loc123;
+						loc37 = v132;
 					}
 					else
 					{
-						v131 = loc132;
-						v132.u0 = 0x22;
-						v133 = v131 == v132;
-						if (v133)
+						v132 = loc132;
+						v133.u0 = 0x22;
+						v134 = v132 == v133;
+						if (v134)
 						{
-							v131 = arg0;
-							loc126 = v131;
-							v131 = loc104;
-							v132 = loc126;
-							v131 -= v132;
-							loc127 = v131;
-							v131 = loc127;
-							loc37 = v131;
+							v132 = arg0;
+							loc126 = v132;
+							v132 = loc104;
+							v133 = loc126;
+							v132 -= v133;
+							loc127 = v132;
+							v132 = loc127;
+							loc37 = v132;
 						}
 						else
 						{
-							v131 = loc132;
-							v132.u0 = 0x27;
-							v133 = v131 == v132;
-							if (v133)
+							v132 = loc132;
+							v133.u0 = 0x27;
+							v134 = v132 == v133;
+							if (v134)
 							{
-								v131 = arg0;
-								loc11 = v131;
-								v131 = loc7;
-								loc34 = v131;
-								v131 = loc34;
-								v132 = loc11;
-								v131 -= v132;
-								loc36 = v131;
-								v131 = loc36;
-								loc37 = v131;
+								v132 = arg0;
+								loc11 = v132;
+								v132 = loc7;
+								loc34 = v132;
+								v132 = loc34;
+								v133 = loc11;
+								v132 -= v133;
+								loc36 = v132;
+								v132 = loc36;
+								loc37 = v132;
 							}
 						}
 					}
@@ -11258,425 +11258,425 @@ l0011867B:
 			}
 		}
 	}
-	v131 = loc37;
-	return v131;
+	v132 = loc37;
+	return v132;
 }
 
 // 00118734: Stack Eq_n fn00118734(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00118734(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v140.u3 = g_t140030.u3;
-	loc145 = v140;
-	v140 = arg2;
-	v141 = arg0;
-	*v140.u3 = (word32) v141;
-	v140 = arg5;
-	v141 = arg3;
-	*v140.u3 = (word32) v141;
-	v140 = arg7;
-	v141.u0 = 0x04;
-	v140 &= v141;
-	loc122 = v140;
-	v140 = loc122;
-	v141.u0 = 0x00;
-	v142 = v140 == v141;
-	loc133 = v142;
-	v140 = loc133;
-	if (v140)
+	v141.u3 = g_t140030.u3;
+	loc145 = v141;
+	v141 = arg2;
+	v142 = arg0;
+	*v141.u3 = (word32) v142;
+	v141 = arg5;
+	v142 = arg3;
+	*v141.u3 = (word32) v142;
+	v141 = arg7;
+	v142.u0 = 0x04;
+	v141 &= v142;
+	loc122 = v141;
+	v141 = loc122;
+	v142.u0 = 0x00;
+	v143 = v141 == v142;
+	loc133 = v143;
+	v141 = loc133;
+	if (v141)
 	{
-		v140 = arg1;
-		loc10 = v140;
-		v140 = loc10;
-		loc11 = v140;
+		v141 = arg1;
+		loc10 = v141;
+		v141 = loc10;
+		loc11 = v141;
 	}
 	else
 	{
-		v140 = arg2;
-		v140.u3 = *v140.u3;
-		loc12 = v140;
-		v140 = arg1;
-		loc23 = v140;
-		v140 = loc12;
-		loc34 = v140;
-		v140 = loc23;
-		v141 = loc34;
-		v140 -= v141;
-		loc45 = v140;
-		v140 = loc45;
-		v141.u0 = 0x02;
-		v142 = v140 > v141;
-		loc56 = v142;
-		v140 = loc56;
-		if (v140)
+		v141 = arg2;
+		v141.u3 = *v141.u3;
+		loc12 = v141;
+		v141 = arg1;
+		loc23 = v141;
+		v141 = loc12;
+		loc34 = v141;
+		v141 = loc23;
+		v142 = loc34;
+		v141 -= v142;
+		loc45 = v141;
+		v141 = loc45;
+		v142.u0 = 0x02;
+		v143 = v141 > v142;
+		loc56 = v143;
+		v141 = loc56;
+		if (v141)
 		{
-			v140 = loc12;
-			v143.u1 = v140.u4->t0000.u1;
-			v140.u3 = (word32) v143;
-			loc57 = v140;
-			v140 = loc57;
-			v141.u0 = 0x18;
-			v140 <<= v141;
-			v141.u0 = 0x18;
-			v140 >>= v141;
-			v141.u0 = ~0x10;
-			v142 = v140 == v141;
-			loc58 = v142;
-			v140 = loc58;
-			if (v140)
+			v141 = loc12;
+			v144.u1 = v141.u4->t0000.u1;
+			v141.u3 = (word32) v144;
+			loc57 = v141;
+			v141 = loc57;
+			v142.u0 = 0x18;
+			v141 <<= v142;
+			v142.u0 = 0x18;
+			v141 >>= v142;
+			v142.u0 = ~0x10;
+			v143 = v141 == v142;
+			loc58 = v143;
+			v141 = loc58;
+			if (v141)
 			{
-				v140 = loc12;
-				v141.u0 = 0x01;
-				v140 += v141;
-				loc59 = v140;
-				v140 = loc59;
-				v144.u1 = v140.u4->t0000.u1;
-				v140.u3 = (word32) v144;
-				loc60 = v140;
-				v140 = loc60;
-				v141.u0 = 0x18;
-				v140 <<= v141;
-				v141.u0 = 0x18;
-				v140 >>= v141;
-				v141.u0 = ~0x44;
-				v142 = v140 == v141;
-				loc61 = v142;
-				v140 = loc61;
-				if (v140)
+				v141 = loc12;
+				v142.u0 = 0x01;
+				v141 += v142;
+				loc59 = v141;
+				v141 = loc59;
+				v145.u1 = v141.u4->t0000.u1;
+				v141.u3 = (word32) v145;
+				loc60 = v141;
+				v141 = loc60;
+				v142.u0 = 0x18;
+				v141 <<= v142;
+				v142.u0 = 0x18;
+				v141 >>= v142;
+				v142.u0 = ~0x44;
+				v143 = v141 == v142;
+				loc61 = v143;
+				v141 = loc61;
+				if (v141)
 				{
-					v140 = loc12;
-					v141.u0 = 0x02;
-					v140 += v141;
-					loc62 = v140;
-					v140 = loc62;
-					v145.u1 = v140.u4->t0000.u1;
-					v140.u3 = (word32) v145;
-					loc63 = v140;
-					v140 = loc63;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					v141.u0 = ~0x40;
-					v142 = v140 == v141;
-					loc64 = v142;
-					v140 = loc64;
-					if (v140)
+					v141 = loc12;
+					v142.u0 = 0x02;
+					v141 += v142;
+					loc62 = v141;
+					v141 = loc62;
+					v146.u1 = v141.u4->t0000.u1;
+					v141.u3 = (word32) v146;
+					loc63 = v141;
+					v141 = loc63;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					v142.u0 = ~0x40;
+					v143 = v141 == v142;
+					loc64 = v143;
+					v141 = loc64;
+					if (v141)
 					{
-						v140 = loc12;
-						v141.u0 = 0x03;
-						v140 += v141;
-						loc65 = v140;
-						v140 = arg2;
-						v141 = loc65;
-						*v140.u3 = (word32) v141;
-						v140 = loc23;
-						loc11 = v140;
+						v141 = loc12;
+						v142.u0 = 0x03;
+						v141 += v142;
+						loc65 = v141;
+						v141 = arg2;
+						v142 = loc65;
+						*v141.u3 = (word32) v142;
+						v141 = loc23;
+						loc11 = v141;
 					}
 					else
 					{
-						v140 = loc23;
-						loc11 = v140;
+						v141 = loc23;
+						loc11 = v141;
 					}
 				}
 				else
 				{
-					v140 = loc23;
-					loc11 = v140;
+					v141 = loc23;
+					loc11 = v141;
 				}
 			}
 			else
 			{
-				v140 = loc23;
-				loc11 = v140;
+				v141 = loc23;
+				loc11 = v141;
 			}
 		}
 		else
 		{
-			v140 = loc23;
-			loc11 = v140;
+			v141 = loc23;
+			loc11 = v141;
 		}
 	}
 	while (true)
 	{
-		v140 = arg4;
-		loc66 = v140;
-		v140 = arg2;
-		v140.u3 = *v140.u3;
-		loc67 = v140;
-		v140 = loc67;
-		v141 = arg1;
-		v142 = v140 < v141;
-		loc68 = v142;
-		v140 = loc68;
-		v142 = v140 == 0x00;
-		if (v142)
-			break;
-		v140 = arg5;
-		v140 = *v140.u0;
-		loc69 = v140;
-		v140 = loc69;
 		v141 = arg4;
-		v142 = v140 < v141;
-		loc70 = v142;
-		v140 = loc70;
-		v142 = v140 == 0x00;
-		if (v142)
+		loc66 = v141;
+		v141 = arg2;
+		v141.u3 = *v141.u3;
+		loc67 = v141;
+		v141 = loc67;
+		v142 = arg1;
+		v143 = v141 < v142;
+		loc68 = v143;
+		v141 = loc68;
+		v143 = v141 == 0x00;
+		if (v143)
+			break;
+		v141 = arg5;
+		v141 = *v141.u0;
+		loc69 = v141;
+		v141 = loc69;
+		v142 = arg4;
+		v143 = v141 < v142;
+		loc70 = v143;
+		v141 = loc70;
+		v143 = v141 == 0x00;
+		if (v143)
 		{
-			v140.u0 = 0x29;
-			loc144 = v140;
+			v141.u0 = 0x29;
+			loc144 = v141;
 			goto l00118D85;
 		}
-		v140 = loc67;
-		v146 = *v140.u0;
-		v140.u3 = (word32) v146;
-		loc71 = v140;
-		v140 = loc71;
-		v141.u0 = 0xFF;
-		v140 &= v141;
-		loc72 = v140;
-		v140 = loc72;
-		v141 = arg6;
-		v142 = v140 > v141;
-		loc73 = v142;
-		v140 = loc73;
-		if (v140)
+		v141 = loc67;
+		v147 = *v141.u0;
+		v141.u3 = (word32) v147;
+		loc71 = v141;
+		v141 = loc71;
+		v142.u0 = 0xFF;
+		v141 &= v142;
+		loc72 = v141;
+		v141 = loc72;
+		v142 = arg6;
+		v143 = v141 > v142;
+		loc73 = v143;
+		v141 = loc73;
+		if (v141)
 		{
-			v140.u0 = 0x02;
-			loc8 = v140;
+			v141.u0 = 0x02;
+			loc8 = v141;
 			goto l00118D85;
 		}
-		v140 = loc71;
-		v141.u0 = 0x18;
-		v140 <<= v141;
-		v141.u0 = 0x18;
-		v140 >>= v141;
-		v141.u0 = ~0x00;
-		v142 = v140 > v141;
-		loc74 = v142;
-		v140 = loc74;
-		if (v140)
+		v141 = loc71;
+		v142.u0 = 0x18;
+		v141 <<= v142;
+		v142.u0 = 0x18;
+		v141 >>= v142;
+		v142.u0 = ~0x00;
+		v143 = v141 > v142;
+		loc74 = v143;
+		v141 = loc74;
+		if (v141)
 		{
-			v140 = loc71;
-			v141.u0 = 0xFF;
-			v140 &= v141;
-			loc75 = v140;
-			v140 = loc69;
-			v141 = loc75;
-			v147 = (word16) v141;
-			*v140.u0 = v147;
-			v140 = loc67;
-			v141.u0 = 0x01;
-			v140 += v141;
-			loc76 = v140;
-			v140 = arg2;
-			v141 = loc76;
-			*v140.u0 = v141;
+			v141 = loc71;
+			v142.u0 = 0xFF;
+			v141 &= v142;
+			loc75 = v141;
+			v141 = loc69;
+			v142 = loc75;
+			v148 = (word16) v142;
+			*v141.u0 = v148;
+			v141 = loc67;
+			v142.u0 = 0x01;
+			v141 += v142;
+			loc76 = v141;
+			v141 = arg2;
+			v142 = loc76;
+			*v141.u0 = v142;
 			goto l00118D6C;
 		}
-		v140 = loc71;
-		v141.u0 = 0xFF;
-		v140 &= v141;
-		v141.u0 = 0xC2;
-		v142 = v140 < v141;
-		loc77 = v142;
-		v140 = loc77;
-		if (v140)
+		v141 = loc71;
+		v142.u0 = 0xFF;
+		v141 &= v142;
+		v142.u0 = 0xC2;
+		v143 = v141 < v142;
+		loc77 = v143;
+		v141 = loc77;
+		if (v141)
 		{
-			v140.u0 = 0x02;
-			loc8 = v140;
+			v141.u0 = 0x02;
+			loc8 = v141;
 			goto l00118D85;
 		}
-		v140 = loc71;
-		v141.u0 = 0xFF;
-		v140 &= v141;
-		v141.u0 = 0xE0;
-		v142 = v140 < v141;
-		loc78 = v142;
-		v140 = loc78;
-		if (v140)
+		v141 = loc71;
+		v142.u0 = 0xFF;
+		v141 &= v142;
+		v142.u0 = 0xE0;
+		v143 = v141 < v142;
+		loc78 = v143;
+		v141 = loc78;
+		if (v141)
 		{
-			v140 = loc67;
-			loc79 = v140;
-			v140 = loc11;
-			v141 = loc79;
-			v140 -= v141;
-			loc80 = v140;
-			v140 = loc80;
-			v141.u0 = 0x02;
-			v142 = v140 < v141;
-			loc81 = v142;
-			v140 = loc81;
-			if (v140)
+			v141 = loc67;
+			loc79 = v141;
+			v141 = loc11;
+			v142 = loc79;
+			v141 -= v142;
+			loc80 = v141;
+			v141 = loc80;
+			v142.u0 = 0x02;
+			v143 = v141 < v142;
+			loc81 = v143;
+			v141 = loc81;
+			if (v141)
 			{
-				v140.u0 = 0x01;
-				loc8 = v140;
+				v141.u0 = 0x01;
+				loc8 = v141;
 				goto l00118D85;
 			}
-			v140 = loc67;
-			v141.u0 = 0x01;
-			v140 += v141;
-			loc82 = v140;
-			v140 = loc82;
-			v148 = *v140.u0;
-			v140.u3 = (word32) v148;
-			loc83 = v140;
-			v140 = loc83;
-			v141.u0 = 0xFF;
-			v140 &= v141;
-			loc84 = v140;
-			v140 = loc84;
-			v141.u0 = 0xC0;
-			v140 &= v141;
-			loc85 = v140;
-			v140 = loc85;
-			v141.u0 = 0x80;
-			v142 = v140 == v141;
-			loc86 = v142;
-			v140 = loc86;
-			v142 = v140 == 0x00;
-			if (v142)
+			v141 = loc67;
+			v142.u0 = 0x01;
+			v141 += v142;
+			loc82 = v141;
+			v141 = loc82;
+			v149 = *v141.u0;
+			v141.u3 = (word32) v149;
+			loc83 = v141;
+			v141 = loc83;
+			v142.u0 = 0xFF;
+			v141 &= v142;
+			loc84 = v141;
+			v141 = loc84;
+			v142.u0 = 0xC0;
+			v141 &= v142;
+			loc85 = v141;
+			v141 = loc85;
+			v142.u0 = 0x80;
+			v143 = v141 == v142;
+			loc86 = v143;
+			v141 = loc86;
+			v143 = v141 == 0x00;
+			if (v143)
 			{
-				v140.u0 = 0x02;
-				loc8 = v140;
+				v141.u0 = 0x02;
+				loc8 = v141;
 				goto l00118D85;
 			}
-			v140 = loc72;
-			v141.u0 = 0x06;
-			v140 <<= v141;
-			loc87 = v140;
-			v140 = loc87;
-			v141.u0 = 0x07C0;
-			v140 &= v141;
-			loc88 = v140;
-			v140 = loc84;
-			v141.u0 = 0x3F;
-			v140 &= v141;
-			loc89 = v140;
-			v140 = loc89;
-			v141 = loc88;
-			v140 |= v141;
-			loc90 = v140;
-			v140 = loc90;
-			v141 = arg6;
-			v142 = v140 > v141;
-			loc91 = v142;
-			v140 = loc91;
-			if (v140)
+			v141 = loc72;
+			v142.u0 = 0x06;
+			v141 <<= v142;
+			loc87 = v141;
+			v141 = loc87;
+			v142.u0 = 0x07C0;
+			v141 &= v142;
+			loc88 = v141;
+			v141 = loc84;
+			v142.u0 = 0x3F;
+			v141 &= v142;
+			loc89 = v141;
+			v141 = loc89;
+			v142 = loc88;
+			v141 |= v142;
+			loc90 = v141;
+			v141 = loc90;
+			v142 = arg6;
+			v143 = v141 > v142;
+			loc91 = v143;
+			v141 = loc91;
+			if (v141)
 			{
-				v140.u0 = 0x02;
-				loc8 = v140;
+				v141.u0 = 0x02;
+				loc8 = v141;
 				goto l00118D85;
 			}
-			v140 = loc90;
-			v141.u0 = 0xFFFF;
-			v140 &= v141;
-			loc92 = v140;
-			v140 = loc69;
-			v141 = loc92;
-			v149 = (word16) v141;
-			*v140.u0 = v149;
-			v140 = loc67;
-			v141.u0 = 0x02;
-			v140 += v141;
-			loc93 = v140;
-			v140 = arg2;
-			v141 = loc93;
-			*v140.u0 = v141;
+			v141 = loc90;
+			v142.u0 = 0xFFFF;
+			v141 &= v142;
+			loc92 = v141;
+			v141 = loc69;
+			v142 = loc92;
+			v150 = (word16) v142;
+			*v141.u0 = v150;
+			v141 = loc67;
+			v142.u0 = 0x02;
+			v141 += v142;
+			loc93 = v141;
+			v141 = arg2;
+			v142 = loc93;
+			*v141.u0 = v142;
 		}
 		else
 		{
-			v140 = loc71;
-			v141.u0 = 0xFF;
-			v140 &= v141;
-			v141.u0 = 0xF0;
-			v142 = v140 < v141;
-			loc94 = v142;
-			v140 = loc94;
-			if (v140)
+			v141 = loc71;
+			v142.u0 = 0xFF;
+			v141 &= v142;
+			v142.u0 = 0xF0;
+			v143 = v141 < v142;
+			loc94 = v143;
+			v141 = loc94;
+			if (v141)
 			{
-				v140 = loc67;
-				loc95 = v140;
-				v140 = loc11;
-				v141 = loc95;
-				v140 -= v141;
-				loc96 = v140;
-				v140 = loc96;
-				v141.u0 = 0x03;
-				v142 = v140 < v141;
-				loc97 = v142;
-				v140 = loc97;
-				if (v140)
+				v141 = loc67;
+				loc95 = v141;
+				v141 = loc11;
+				v142 = loc95;
+				v141 -= v142;
+				loc96 = v141;
+				v141 = loc96;
+				v142.u0 = 0x03;
+				v143 = v141 < v142;
+				loc97 = v143;
+				v141 = loc97;
+				if (v141)
 				{
-					v140.u0 = 0x01;
-					loc8 = v140;
+					v141.u0 = 0x01;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc67;
-				v141.u0 = 0x01;
-				v140 += v141;
-				loc98 = v140;
-				v140 = loc98;
-				v150 = *v140.u0;
-				v140.u3 = (word32) v150;
-				loc99 = v140;
-				v140 = loc67;
-				v141.u0 = 0x02;
-				v140 += v141;
-				loc100 = v140;
-				v140 = loc100;
-				v151.u1 = v140.u4->t0000.u1;
-				v140.u3 = (word32) v151;
-				loc101 = v140;
-				v140 = loc71;
-				v141.u0 = 0x18;
-				v140 <<= v141;
-				v141.u0 = 0x18;
-				v140 >>= v141;
-				v141.u0 = ~0x1F;
-				v140 -= v141;
-				switch (v140)
+				v141 = loc67;
+				v142.u0 = 0x01;
+				v141 += v142;
+				loc98 = v141;
+				v141 = loc98;
+				v151 = *v141.u0;
+				v141.u3 = (word32) v151;
+				loc99 = v141;
+				v141 = loc67;
+				v142.u0 = 0x02;
+				v141 += v142;
+				loc100 = v141;
+				v141 = loc100;
+				v152.u1 = v141.u4->t0000.u1;
+				v141.u3 = (word32) v152;
+				loc101 = v141;
+				v141 = loc71;
+				v142.u0 = 0x18;
+				v141 <<= v142;
+				v142.u0 = 0x18;
+				v141 >>= v142;
+				v142.u0 = ~0x1F;
+				v141 -= v142;
+				switch (v141)
 				{
 				case 0x00:
-					v140 = loc99;
-					v141.u0 = ~0x1F;
-					v140 &= v141;
-					loc102 = v140;
-					v140 = loc102;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					v141.u0 = ~0x5F;
-					v142 = v140 == v141;
-					loc103 = v142;
-					v140 = loc103;
-					v142 = v140 == 0x00;
-					if (v142)
+					v141 = loc99;
+					v142.u0 = ~0x1F;
+					v141 &= v142;
+					loc102 = v141;
+					v141 = loc102;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					v142.u0 = ~0x5F;
+					v143 = v141 == v142;
+					loc103 = v143;
+					v141 = loc103;
+					v143 = v141 == 0x00;
+					if (v143)
 					{
-						v140.u0 = 0x02;
-						loc8 = v140;
+						v141.u0 = 0x02;
+						loc8 = v141;
 						goto l00118D85;
 					}
 					break;
 				case 0x01:
-					v140 = loc99;
-					v141.u0 = ~0x1F;
-					v140 &= v141;
-					loc104 = v140;
-					v140 = loc104;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					v141.u0 = ~0x7F;
-					v142 = v140 == v141;
-					loc105 = v142;
-					v140 = loc105;
-					v142 = v140 == 0x00;
-					if (v142)
+					v141 = loc99;
+					v142.u0 = ~0x1F;
+					v141 &= v142;
+					loc104 = v141;
+					v141 = loc104;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					v142.u0 = ~0x7F;
+					v143 = v141 == v142;
+					loc105 = v143;
+					v141 = loc105;
+					v143 = v141 == 0x00;
+					if (v143)
 					{
-						v140.u0 = 0x02;
-						loc8 = v140;
+						v141.u0 = 0x02;
+						loc8 = v141;
 						goto l00118D85;
 					}
 					break;
@@ -11692,1256 +11692,1256 @@ Eq_n fn00118734(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5
 				case 11:
 				case 0x0C:
 				case 0x0D:
-					v140 = loc99;
-					v141.u0 = ~0x3F;
-					v140 &= v141;
-					loc106 = v140;
-					v140 = loc106;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					v141.u0 = ~0x7F;
-					v142 = v140 == v141;
-					loc107 = v142;
-					v140 = loc107;
-					v142 = v140 == 0x00;
-					if (v142)
+					v141 = loc99;
+					v142.u0 = ~0x3F;
+					v141 &= v142;
+					loc106 = v141;
+					v141 = loc106;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					v142.u0 = ~0x7F;
+					v143 = v141 == v142;
+					loc107 = v143;
+					v141 = loc107;
+					v143 = v141 == 0x00;
+					if (v143)
 					{
-						v140.u0 = 0x02;
-						loc8 = v140;
+						v141.u0 = 0x02;
+						loc8 = v141;
 						goto l00118D85;
 					}
 					break;
 				}
-				v140 = loc101;
-				v141.u0 = 0xFF;
-				v140 &= v141;
-				loc108 = v140;
-				v140 = loc108;
-				v141.u0 = 0xC0;
-				v140 &= v141;
-				loc109 = v140;
-				v140 = loc109;
-				v141.u0 = 0x80;
-				v142 = v140 == v141;
-				loc110 = v142;
-				v140 = loc110;
-				v142 = v140 == 0x00;
-				if (v142)
+				v141 = loc101;
+				v142.u0 = 0xFF;
+				v141 &= v142;
+				loc108 = v141;
+				v141 = loc108;
+				v142.u0 = 0xC0;
+				v141 &= v142;
+				loc109 = v141;
+				v141 = loc109;
+				v142.u0 = 0x80;
+				v143 = v141 == v142;
+				loc110 = v143;
+				v141 = loc110;
+				v143 = v141 == 0x00;
+				if (v143)
 				{
-					v140.u0 = 0x02;
-					loc8 = v140;
+					v141.u0 = 0x02;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc72;
-				v141.u0 = 0x0C;
-				v140 <<= v141;
-				loc111 = v140;
-				v140 = loc99;
-				v141.u0 = 0xFF;
-				v140 &= v141;
-				loc112 = v140;
-				v140 = loc112;
-				v141.u0 = 0x06;
-				v140 <<= v141;
-				loc113 = v140;
-				v140 = loc113;
-				v141.u0 = 0x0FC0;
-				v140 &= v141;
-				loc114 = v140;
-				v140 = loc114;
-				v141 = loc111;
-				v140 |= v141;
-				loc115 = v140;
-				v140 = loc108;
-				v141.u0 = 0x3F;
-				v140 &= v141;
-				loc116 = v140;
-				v140 = loc115;
-				v141 = loc116;
-				v140 |= v141;
-				loc117 = v140;
-				v140 = loc117;
-				v141.u0 = 0xFFFF;
-				v140 &= v141;
-				loc118 = v140;
-				v140 = loc118;
-				v141 = arg6;
-				v142 = v140 > v141;
-				loc119 = v142;
-				v140 = loc119;
-				if (v140)
+				v141 = loc72;
+				v142.u0 = 0x0C;
+				v141 <<= v142;
+				loc111 = v141;
+				v141 = loc99;
+				v142.u0 = 0xFF;
+				v141 &= v142;
+				loc112 = v141;
+				v141 = loc112;
+				v142.u0 = 0x06;
+				v141 <<= v142;
+				loc113 = v141;
+				v141 = loc113;
+				v142.u0 = 0x0FC0;
+				v141 &= v142;
+				loc114 = v141;
+				v141 = loc114;
+				v142 = loc111;
+				v141 |= v142;
+				loc115 = v141;
+				v141 = loc108;
+				v142.u0 = 0x3F;
+				v141 &= v142;
+				loc116 = v141;
+				v141 = loc115;
+				v142 = loc116;
+				v141 |= v142;
+				loc117 = v141;
+				v141 = loc117;
+				v142.u0 = 0xFFFF;
+				v141 &= v142;
+				loc118 = v141;
+				v141 = loc118;
+				v142 = arg6;
+				v143 = v141 > v142;
+				loc119 = v143;
+				v141 = loc119;
+				if (v141)
 				{
-					v140.u0 = 0x02;
-					loc8 = v140;
+					v141.u0 = 0x02;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc117;
-				v141.u0 = 0xFFFF;
-				v140 &= v141;
-				loc120 = v140;
-				v140 = loc69;
-				v141 = loc120;
-				v152 = (word16) v141;
-				*v140.u0 = v152;
-				v140 = loc67;
-				v141.u0 = 0x03;
-				v140 += v141;
-				loc121 = v140;
-				v140 = arg2;
-				v141 = loc121;
-				*v140.u0 = v141;
+				v141 = loc117;
+				v142.u0 = 0xFFFF;
+				v141 &= v142;
+				loc120 = v141;
+				v141 = loc69;
+				v142 = loc120;
+				v153 = (word16) v142;
+				*v141.u0 = v153;
+				v141 = loc67;
+				v142.u0 = 0x03;
+				v141 += v142;
+				loc121 = v141;
+				v141 = arg2;
+				v142 = loc121;
+				*v141.u0 = v142;
 			}
 			else
 			{
-				v140 = loc71;
-				v141.u0 = 0xFF;
-				v140 &= v141;
-				v141.u0 = 0xF5;
-				v142 = v140 < v141;
-				loc123 = v142;
-				v140 = loc123;
-				v142 = v140 == 0x00;
-				if (v142)
+				v141 = loc71;
+				v142.u0 = 0xFF;
+				v141 &= v142;
+				v142.u0 = 0xF5;
+				v143 = v141 < v142;
+				loc123 = v143;
+				v141 = loc123;
+				v143 = v141 == 0x00;
+				if (v143)
 				{
-					v140.u0 = 0x02;
-					loc8 = v140;
+					v141.u0 = 0x02;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc67;
-				loc124 = v140;
-				v140 = loc11;
-				v141 = loc124;
-				v140 -= v141;
-				loc125 = v140;
-				v140 = loc125;
-				v141.u0 = 0x04;
-				v142 = v140 < v141;
-				loc126 = v142;
-				v140 = loc126;
-				if (v140)
+				v141 = loc67;
+				loc124 = v141;
+				v141 = loc11;
+				v142 = loc124;
+				v141 -= v142;
+				loc125 = v141;
+				v141 = loc125;
+				v142.u0 = 0x04;
+				v143 = v141 < v142;
+				loc126 = v143;
+				v141 = loc126;
+				if (v141)
 				{
-					v140.u0 = 0x01;
-					loc8 = v140;
+					v141.u0 = 0x01;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc67;
-				v141.u0 = 0x01;
-				v140 += v141;
-				loc127 = v140;
-				v140 = loc127;
-				v153 = *v140.u0;
-				v140.u3 = (word32) v153;
-				loc128 = v140;
-				v140 = loc67;
-				v141.u0 = 0x02;
-				v140 += v141;
-				loc129 = v140;
-				v140 = loc129;
-				v154.u1 = v140.u4->t0000.u1;
-				v140.u3 = (word32) v154;
-				loc130 = v140;
-				v140 = loc67;
-				v141.u0 = 0x03;
-				v140 += v141;
-				loc131 = v140;
-				v140 = loc131;
-				v155.u1 = v140.u4->t0000.u1;
-				v140.u3 = (word32) v155;
-				loc132 = v140;
-				v140 = loc71;
-				v141.u0 = 0x18;
-				v140 <<= v141;
-				v141.u0 = 0x18;
-				v140 >>= v141;
-				v141.u0 = ~0x0F;
-				v140 -= v141;
-				switch (v140)
+				v141 = loc67;
+				v142.u0 = 0x01;
+				v141 += v142;
+				loc127 = v141;
+				v141 = loc127;
+				v154 = *v141.u0;
+				v141.u3 = (word32) v154;
+				loc128 = v141;
+				v141 = loc67;
+				v142.u0 = 0x02;
+				v141 += v142;
+				loc129 = v141;
+				v141 = loc129;
+				v155.u1 = v141.u4->t0000.u1;
+				v141.u3 = (word32) v155;
+				loc130 = v141;
+				v141 = loc67;
+				v142.u0 = 0x03;
+				v141 += v142;
+				loc131 = v141;
+				v141 = loc131;
+				v156.u1 = v141.u4->t0000.u1;
+				v141.u3 = (word32) v156;
+				loc132 = v141;
+				v141 = loc71;
+				v142.u0 = 0x18;
+				v141 <<= v142;
+				v142.u0 = 0x18;
+				v141 >>= v142;
+				v142.u0 = ~0x0F;
+				v141 -= v142;
+				switch (v141)
 				{
 				case 0x00:
-					v140 = loc128;
-					v141.u0 = 0x70;
-					v140 += v141;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					loc9 = v140;
-					v140 = loc9;
-					v141.u0 = 0xFF;
-					v140 &= v141;
-					v141.u0 = 0x30;
-					v142 = v140 < v141;
-					loc134 = v142;
-					v140 = loc134;
-					v142 = v140 == 0x00;
-					if (v142)
+					v141 = loc128;
+					v142.u0 = 0x70;
+					v141 += v142;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					loc9 = v141;
+					v141 = loc9;
+					v142.u0 = 0xFF;
+					v141 &= v142;
+					v142.u0 = 0x30;
+					v143 = v141 < v142;
+					loc134 = v143;
+					v141 = loc134;
+					v143 = v141 == 0x00;
+					if (v143)
 					{
-						v140.u0 = 0x02;
-						loc8 = v140;
+						v141.u0 = 0x02;
+						loc8 = v141;
 						goto l00118D85;
 					}
 					break;
 				case 0x01:
-					v140 = loc128;
-					v141.u0 = ~0x0F;
-					v140 &= v141;
-					loc135 = v140;
-					v140 = loc135;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					v141.u0 = ~0x7F;
-					v142 = v140 == v141;
-					loc136 = v142;
-					v140 = loc136;
-					v142 = v140 == 0x00;
-					if (v142)
+					v141 = loc128;
+					v142.u0 = ~0x0F;
+					v141 &= v142;
+					loc135 = v141;
+					v141 = loc135;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					v142.u0 = ~0x7F;
+					v143 = v141 == v142;
+					loc136 = v143;
+					v141 = loc136;
+					v143 = v141 == 0x00;
+					if (v143)
 					{
-						v140.u0 = 0x02;
-						loc8 = v140;
+						v141.u0 = 0x02;
+						loc8 = v141;
 						goto l00118D85;
 					}
 					break;
 				case 0x02:
 				case 0x03:
 				case 0x04:
-					v140 = loc128;
-					v141.u0 = ~0x3F;
-					v140 &= v141;
-					loc137 = v140;
-					v140 = loc137;
-					v141.u0 = 0x18;
-					v140 <<= v141;
-					v141.u0 = 0x18;
-					v140 >>= v141;
-					v141.u0 = ~0x7F;
-					v142 = v140 == v141;
-					loc138 = v142;
-					v140 = loc138;
-					v142 = v140 == 0x00;
-					if (v142)
+					v141 = loc128;
+					v142.u0 = ~0x3F;
+					v141 &= v142;
+					loc137 = v141;
+					v141 = loc137;
+					v142.u0 = 0x18;
+					v141 <<= v142;
+					v142.u0 = 0x18;
+					v141 >>= v142;
+					v142.u0 = ~0x7F;
+					v143 = v141 == v142;
+					loc138 = v143;
+					v141 = loc138;
+					v143 = v141 == 0x00;
+					if (v143)
 					{
-						v140.u0 = 0x02;
-						loc8 = v140;
+						v141.u0 = 0x02;
+						loc8 = v141;
 						goto l00118D85;
 					}
 					break;
 				}
-				v140 = loc130;
-				v141.u0 = 0xFF;
-				v140 &= v141;
-				loc139 = v140;
-				v140 = loc139;
-				v141.u0 = 0xC0;
-				v140 &= v141;
-				loc140 = v140;
-				v140 = loc140;
-				v141.u0 = 0x80;
-				v142 = v140 == v141;
-				loc141 = v142;
-				v140 = loc141;
-				v142 = v140 == 0x00;
-				if (v142)
+				v141 = loc130;
+				v142.u0 = 0xFF;
+				v141 &= v142;
+				loc139 = v141;
+				v141 = loc139;
+				v142.u0 = 0xC0;
+				v141 &= v142;
+				loc140 = v141;
+				v141 = loc140;
+				v142.u0 = 0x80;
+				v143 = v141 == v142;
+				loc141 = v143;
+				v141 = loc141;
+				v143 = v141 == 0x00;
+				if (v143)
 				{
-					v140.u0 = 0x02;
-					loc8 = v140;
+					v141.u0 = 0x02;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc132;
-				v141.u0 = 0xFF;
-				v140 &= v141;
-				loc142 = v140;
-				v140 = loc142;
-				v141.u0 = 0xC0;
-				v140 &= v141;
-				loc143 = v140;
-				v140 = loc143;
-				v141.u0 = 0x80;
-				v142 = v140 == v141;
-				loc13 = v142;
-				v140 = loc13;
-				v142 = v140 == 0x00;
-				if (v142)
+				v141 = loc132;
+				v142.u0 = 0xFF;
+				v141 &= v142;
+				loc142 = v141;
+				v141 = loc142;
+				v142.u0 = 0xC0;
+				v141 &= v142;
+				loc143 = v141;
+				v141 = loc143;
+				v142.u0 = 0x80;
+				v143 = v141 == v142;
+				loc13 = v143;
+				v141 = loc13;
+				v143 = v141 == 0x00;
+				if (v143)
 				{
-					v140.u0 = 0x02;
-					loc8 = v140;
+					v141.u0 = 0x02;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc69;
-				loc14 = v140;
-				v140 = loc66;
-				v141 = loc14;
-				v140 -= v141;
-				loc15 = v140;
-				v140 = loc15;
-				v141.u0 = 0x04;
-				v142 = v140 < v141;
-				loc16 = v142;
-				v140 = loc16;
-				if (v140)
+				v141 = loc69;
+				loc14 = v141;
+				v141 = loc66;
+				v142 = loc14;
+				v141 -= v142;
+				loc15 = v141;
+				v141 = loc15;
+				v142.u0 = 0x04;
+				v143 = v141 < v142;
+				loc16 = v143;
+				v141 = loc16;
+				if (v141)
 				{
-					v140.u0 = 0x01;
-					loc8 = v140;
+					v141.u0 = 0x01;
+					loc8 = v141;
 					goto l00118D85;
 				}
-				v140 = loc72;
-				v141.u0 = 0x07;
-				v140 &= v141;
-				loc17 = v140;
-				v140 = loc17;
-				v141.u0 = 0x12;
-				v140 <<= v141;
-				loc18 = v140;
-				v140 = loc128;
-				v141.u0 = 0xFF;
-				v140 &= v141;
-				loc19 = v140;
-				v140 = loc19;
-				v141.u0 = 0x0C;
-				v140 <<= v141;
-				loc20 = v140;
-				v140 = loc20;
-				v141.u0 = 0x0003F000;
-				v140 &= v141;
-				loc21 = v140;
-				v140 = loc21;
-				v141 = loc18;
-				v140 |= v141;
-				loc22 = v140;
-				v140 = loc139;
-				v141.u0 = 0x06;
-				v140 <<= v141;
-				loc24 = v140;
-				v140 = loc24;
-				v141.u0 = 0x0FC0;
-				v140 &= v141;
-				loc25 = v140;
-				v140 = loc22;
-				v141 = loc25;
-				v140 |= v141;
-				loc26 = v140;
-				v140 = loc142;
-				v141.u0 = 0x3F;
-				v140 &= v141;
-				loc27 = v140;
-				v140 = loc26;
+				v141 = loc72;
+				v142.u0 = 0x07;
+				v141 &= v142;
+				loc17 = v141;
+				v141 = loc17;
+				v142.u0 = 0x12;
+				v141 <<= v142;
+				loc18 = v141;
+				v141 = loc128;
+				v142.u0 = 0xFF;
+				v141 &= v142;
+				loc19 = v141;
+				v141 = loc19;
+				v142.u0 = 0x0C;
+				v141 <<= v142;
+				loc20 = v141;
+				v141 = loc20;
+				v142.u0 = 0x0003F000;
+				v141 &= v142;
+				loc21 = v141;
+				v141 = loc21;
+				v142 = loc18;
+				v141 |= v142;
+				loc22 = v141;
+				v141 = loc139;
+				v142.u0 = 0x06;
+				v141 <<= v142;
+				loc24 = v141;
+				v141 = loc24;
+				v142.u0 = 0x0FC0;
+				v141 &= v142;
+				loc25 = v141;
+				v141 = loc22;
+				v142 = loc25;
+				v141 |= v142;
+				loc26 = v141;
+				v141 = loc142;
+				v142.u0 = 0x3F;
+				v141 &= v142;
+				loc27 = v141;
+				v141 = loc26;
+				v142 = loc27;
+				v141 |= v142;
+				loc28 = v141;
+				v141 = loc28;
+				v142 = arg6;
+				v143 = v141 > v142;
+				loc29 = v143;
+				v141 = loc29;
+				if (v141)
+				{
+					v141.u0 = 0x02;
+					loc8 = v141;
+					goto l00118D85;
+				}
+				v141 = loc17;
+				v142.u0 = 0x02;
+				v141 <<= v142;
+				loc30 = v141;
+				v141 = loc19;
+				v142.u0 = 0x04;
+				v141 >>= v142;
+				loc31 = v141;
+				v141 = loc31;
+				v142.u0 = 0x03;
+				v141 &= v142;
+				loc32 = v141;
+				v141 = loc32;
+				v142 = loc30;
+				v141 |= v142;
+				loc33 = v141;
+				v141 = loc33;
+				v142.u0 = 0x06;
+				v141 <<= v142;
+				loc35 = v141;
+				v141 = loc35;
+				v142.u0 = 0x3FC0;
+				v141 += v142;
+				loc36 = v141;
+				v141 = loc19;
+				v142.u0 = 0x02;
+				v141 <<= v142;
+				loc37 = v141;
+				v141 = loc37;
+				v142.u0 = 0x3C;
+				v141 &= v142;
+				loc38 = v141;
+				v141 = loc139;
+				v142.u0 = 0x04;
+				v141 >>= v142;
+				loc39 = v141;
+				v141 = loc39;
+				v142.u0 = 0x03;
+				v141 &= v142;
+				loc40 = v141;
+				v141 = loc38;
+				v142 = loc40;
+				v141 |= v142;
+				loc41 = v141;
+				v141 = loc41;
+				v142 = loc36;
+				v141 |= v142;
+				loc42 = v141;
+				v141 = loc42;
+				v142.u0 = 0xD800;
+				v141 |= v142;
+				loc43 = v141;
+				v141 = loc43;
+				v142.u0 = 0xFFFF;
+				v141 &= v142;
+				loc44 = v141;
+				v141 = loc69;
+				v142 = loc44;
+				v157 = (word16) v142;
+				*v141.u0 = v157;
+				v141 = loc24;
+				v142.u0 = 0x03C0;
+				v141 &= v142;
+				loc46 = v141;
 				v141 = loc27;
-				v140 |= v141;
-				loc28 = v140;
-				v140 = loc28;
-				v141 = arg6;
-				v142 = v140 > v141;
-				loc29 = v142;
-				v140 = loc29;
-				if (v140)
-				{
-					v140.u0 = 0x02;
-					loc8 = v140;
-					goto l00118D85;
-				}
-				v140 = loc17;
-				v141.u0 = 0x02;
-				v140 <<= v141;
-				loc30 = v140;
-				v140 = loc19;
-				v141.u0 = 0x04;
-				v140 >>= v141;
-				loc31 = v140;
-				v140 = loc31;
-				v141.u0 = 0x03;
-				v140 &= v141;
-				loc32 = v140;
-				v140 = loc32;
-				v141 = loc30;
-				v140 |= v141;
-				loc33 = v140;
-				v140 = loc33;
-				v141.u0 = 0x06;
-				v140 <<= v141;
-				loc35 = v140;
-				v140 = loc35;
-				v141.u0 = 0x3FC0;
-				v140 += v141;
-				loc36 = v140;
-				v140 = loc19;
-				v141.u0 = 0x02;
-				v140 <<= v141;
-				loc37 = v140;
-				v140 = loc37;
-				v141.u0 = 0x3C;
-				v140 &= v141;
-				loc38 = v140;
-				v140 = loc139;
-				v141.u0 = 0x04;
-				v140 >>= v141;
-				loc39 = v140;
-				v140 = loc39;
-				v141.u0 = 0x03;
-				v140 &= v141;
-				loc40 = v140;
-				v140 = loc38;
-				v141 = loc40;
-				v140 |= v141;
-				loc41 = v140;
-				v140 = loc41;
-				v141 = loc36;
-				v140 |= v141;
-				loc42 = v140;
-				v140 = loc42;
-				v141.u0 = 0xD800;
-				v140 |= v141;
-				loc43 = v140;
-				v140 = loc43;
-				v141.u0 = 0xFFFF;
-				v140 &= v141;
-				loc44 = v140;
-				v140 = loc69;
-				v141 = loc44;
-				v156 = (word16) v141;
-				*v140.u0 = v156;
-				v140 = loc24;
-				v141.u0 = 0x03C0;
-				v140 &= v141;
-				loc46 = v140;
-				v140 = loc27;
-				v141 = loc46;
-				v140 |= v141;
-				loc47 = v140;
-				v140 = loc47;
-				v141.u0 = 0xDC00;
-				v140 |= v141;
-				loc48 = v140;
-				v140 = loc48;
-				v141.u0 = 0xFFFF;
-				v140 &= v141;
-				loc49 = v140;
-				v140 = loc69;
-				v141.u0 = 0x02;
-				v140 += v141;
-				loc50 = v140;
-				v140 = arg5;
+				v142 = loc46;
+				v141 |= v142;
+				loc47 = v141;
+				v141 = loc47;
+				v142.u0 = 0xDC00;
+				v141 |= v142;
+				loc48 = v141;
+				v141 = loc48;
+				v142.u0 = 0xFFFF;
+				v141 &= v142;
+				loc49 = v141;
+				v141 = loc69;
+				v142.u0 = 0x02;
+				v141 += v142;
+				loc50 = v141;
+				v141 = arg5;
+				v142 = loc50;
+				*v141.u0 = v142;
 				v141 = loc50;
-				*v140.u0 = v141;
-				v140 = loc50;
-				v141 = loc49;
-				v157 = (word16) v141;
-				*v140.u0 = v157;
-				v140 = arg2;
-				v140 = *v140.u0;
-				loc51 = v140;
-				v140 = loc51;
-				v141.u0 = 0x04;
-				v140 += v141;
-				loc52 = v140;
-				v140 = arg2;
-				v141 = loc52;
-				*v140.u0 = v141;
+				v142 = loc49;
+				v158 = (word16) v142;
+				*v141.u0 = v158;
+				v141 = arg2;
+				v141 = *v141.u0;
+				loc51 = v141;
+				v141 = loc51;
+				v142.u0 = 0x04;
+				v141 += v142;
+				loc52 = v141;
+				v141 = arg2;
+				v142 = loc52;
+				*v141.u0 = v142;
 l00118D6C:
 			}
 		}
-		v140 = arg5;
-		v140 = *v140.u0;
-		loc53 = v140;
-		v140 = loc53;
-		v141.u0 = 0x02;
-		v140 += v141;
-		loc54 = v140;
-		v140 = arg5;
-		v141 = loc54;
-		*v140.u0 = v141;
+		v141 = arg5;
+		v141 = *v141.u0;
+		loc53 = v141;
+		v141 = loc53;
+		v142.u0 = 0x02;
+		v141 += v142;
+		loc54 = v141;
+		v141 = arg5;
+		v142 = loc54;
+		*v141.u0 = v142;
 	}
-	v140.u0 = 0x29;
-	loc144 = v140;
-l00118D85:
-	v140 = loc144;
 	v141.u0 = 0x29;
-	v142 = v140 == v141;
-	if (v142)
+	loc144 = v141;
+l00118D85:
+	v141 = loc144;
+	v142.u0 = 0x29;
+	v143 = v141 == v142;
+	if (v143)
 	{
-		v140 = loc68;
-		v141.u0 = 0x01;
-		v140 &= v141;
-		loc55 = v140;
-		v140 = loc55;
-		loc8 = v140;
+		v141 = loc68;
+		v142.u0 = 0x01;
+		v141 &= v142;
+		loc55 = v141;
+		v141 = loc55;
+		loc8 = v141;
 	}
-	v140 = loc8;
-	return v140;
+	v141 = loc8;
+	return v141;
 }
 
 // 00118DA0: Stack Eq_n fn00118DA0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn00118DA0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v137.u3 = g_t140030.u3;
-	loc142 = v137;
-	v137 = arg2;
-	v138 = arg0;
-	*v137.u3 = (word32) v138;
-	v137 = arg5;
-	v138 = arg3;
-	*v137.u3 = (word32) v138;
-	v137 = arg7;
-	v138.u0 = 0x02;
-	v137 &= v138;
-	loc119 = v137;
-	v137 = loc119;
-	v138.u0 = 0x00;
-	v139 = v137 == v138;
-	loc130 = v139;
-	v137 = arg4;
-	loc10 = v137;
-	v137 = loc130;
-	if (v137)
+	v138.u3 = g_t140030.u3;
+	loc142 = v138;
+	v138 = arg2;
+	v139 = arg0;
+	*v138.u3 = (word32) v139;
+	v138 = arg5;
+	v139 = arg3;
+	*v138.u3 = (word32) v139;
+	v138 = arg7;
+	v139.u0 = 0x02;
+	v138 &= v139;
+	loc119 = v138;
+	v138 = loc119;
+	v139.u0 = 0x00;
+	v140 = v138 == v139;
+	loc130 = v140;
+	v138 = arg4;
+	loc10 = v138;
+	v138 = loc130;
+	if (v138)
 	{
-		v137.u0 = 0x04;
-		loc141 = v137;
+		v138.u0 = 0x04;
+		loc141 = v138;
 	}
 	else
 	{
-		v137 = arg3;
-		loc11 = v137;
-		v137 = loc10;
-		v138 = loc11;
-		v137 -= v138;
-		loc22 = v137;
-		v137 = loc22;
-		v138.u0 = 0x03;
-		v139 = v137 < v138;
-		loc33 = v139;
-		v137 = loc33;
-		if (v137)
+		v138 = arg3;
+		loc11 = v138;
+		v138 = loc10;
+		v139 = loc11;
+		v138 -= v139;
+		loc22 = v138;
+		v138 = loc22;
+		v139.u0 = 0x03;
+		v140 = v138 < v139;
+		loc33 = v140;
+		v138 = loc33;
+		if (v138)
 		{
-			v137.u0 = 0x01;
-			loc8 = v137;
+			v138.u0 = 0x01;
+			loc8 = v138;
 		}
 		else
 		{
-			v137 = arg3;
-			v138.u0 = 0x01;
-			v137 += v138;
-			loc44 = v137;
-			v137 = arg5;
-			v138 = loc44;
-			*v137.u0 = v138;
-			v137 = arg3;
-			v138.u0 = ~0x10;
-			v140 = (byte) v138;
-			*v137.u0 = v140;
-			v137 = arg5;
-			v137 = *v137.u0;
-			loc53 = v137;
-			v137 = loc53;
-			v138.u0 = 0x01;
-			v137 += v138;
-			loc54 = v137;
-			v137 = arg5;
-			v138 = loc54;
-			*v137.u0 = v138;
-			v137 = loc53;
-			v138.u0 = ~0x44;
-			v141 = (byte) v138;
-			*v137.u0 = v141;
-			v137 = arg5;
-			v137 = *v137.u0;
-			loc55 = v137;
-			v137 = loc55;
-			v138.u0 = 0x01;
-			v137 += v138;
-			loc56 = v137;
-			v137 = arg5;
-			v138 = loc56;
-			*v137.u0 = v138;
-			v137 = loc55;
-			v138.u0 = ~0x40;
-			v142 = (byte) v138;
-			*v137.u0 = v142;
-			v137.u0 = 0x04;
-			loc141 = v137;
+			v138 = arg3;
+			v139.u0 = 0x01;
+			v138 += v139;
+			loc44 = v138;
+			v138 = arg5;
+			v139 = loc44;
+			*v138.u0 = v139;
+			v138 = arg3;
+			v139.u0 = ~0x10;
+			v141 = (byte) v139;
+			*v138.u0 = v141;
+			v138 = arg5;
+			v138 = *v138.u0;
+			loc53 = v138;
+			v138 = loc53;
+			v139.u0 = 0x01;
+			v138 += v139;
+			loc54 = v138;
+			v138 = arg5;
+			v139 = loc54;
+			*v138.u0 = v139;
+			v138 = loc53;
+			v139.u0 = ~0x44;
+			v142 = (byte) v139;
+			*v138.u0 = v142;
+			v138 = arg5;
+			v138 = *v138.u0;
+			loc55 = v138;
+			v138 = loc55;
+			v139.u0 = 0x01;
+			v138 += v139;
+			loc56 = v138;
+			v138 = arg5;
+			v139 = loc56;
+			*v138.u0 = v139;
+			v138 = loc55;
+			v139.u0 = ~0x40;
+			v143 = (byte) v139;
+			*v138.u0 = v143;
+			v138.u0 = 0x04;
+			loc141 = v138;
 		}
 	}
-	v137 = loc141;
-	v138.u0 = 0x04;
-	v139 = v137 == v138;
-	if (v139)
+	v138 = loc141;
+	v139.u0 = 0x04;
+	v140 = v138 == v139;
+	if (v140)
 	{
 		while (true)
 		{
-			v137 = arg1;
-			loc57 = v137;
-			v137 = arg2;
-			v137 = *v137.u0;
-			loc9 = v137;
-			v137 = loc9;
-			loc59 = v137;
-			v137 = loc59;
 			v138 = arg1;
-			v139 = v137 < v138;
-			loc58 = v139;
-			v137 = loc58;
-			v139 = v137 == 0x00;
-			if (v139)
+			loc57 = v138;
+			v138 = arg2;
+			v138 = *v138.u0;
+			loc9 = v138;
+			v138 = loc9;
+			loc59 = v138;
+			v138 = loc59;
+			v139 = arg1;
+			v140 = v138 < v139;
+			loc58 = v140;
+			v138 = loc58;
+			v140 = v138 == 0x00;
+			if (v140)
 				break;
-			v137 = loc59;
-			v143 = *v137.u0;
-			v137.u3 = (word32) v143;
-			loc60 = v137;
-			v137 = loc60;
-			v138.u0 = 0xFFFF;
-			v137 &= v138;
-			loc61 = v137;
-			v137 = loc61;
-			v138 = arg6;
-			v139 = v137 > v138;
-			loc62 = v139;
-			v137 = loc62;
-			if (v137)
+			v138 = loc59;
+			v144 = *v138.u0;
+			v138.u3 = (word32) v144;
+			loc60 = v138;
+			v138 = loc60;
+			v139.u0 = 0xFFFF;
+			v138 &= v139;
+			loc61 = v138;
+			v138 = loc61;
+			v139 = arg6;
+			v140 = v138 > v139;
+			loc62 = v140;
+			v138 = loc62;
+			if (v138)
 			{
-				v137.u0 = 0x02;
-				loc8 = v137;
+				v138.u0 = 0x02;
+				loc8 = v138;
 				goto l00119351;
 			}
-			v137 = loc60;
-			v138.u0 = 0xFFFF;
-			v137 &= v138;
-			v138.u0 = 0x80;
-			v139 = v137 < v138;
-			loc63 = v139;
-			v137 = loc63;
-			if (v137)
+			v138 = loc60;
+			v139.u0 = 0xFFFF;
+			v138 &= v139;
+			v139.u0 = 0x80;
+			v140 = v138 < v139;
+			loc63 = v140;
+			v138 = loc63;
+			if (v138)
 			{
-				v137 = arg5;
-				v137 = *v137.u0;
-				loc64 = v137;
-				v137 = loc64;
-				loc65 = v137;
-				v137 = loc10;
-				v138 = loc65;
-				v137 -= v138;
-				loc66 = v137;
-				v137 = loc66;
-				v138.u0 = 0x01;
-				v139 = v137 < v138;
-				loc67 = v139;
-				v137 = loc67;
-				if (v137)
+				v138 = arg5;
+				v138 = *v138.u0;
+				loc64 = v138;
+				v138 = loc64;
+				loc65 = v138;
+				v138 = loc10;
+				v139 = loc65;
+				v138 -= v139;
+				loc66 = v138;
+				v138 = loc66;
+				v139.u0 = 0x01;
+				v140 = v138 < v139;
+				loc67 = v140;
+				v138 = loc67;
+				if (v138)
 				{
-					v137.u0 = 0x01;
-					loc8 = v137;
+					v138.u0 = 0x01;
+					loc8 = v138;
 					goto l00119351;
 				}
-				v137 = loc60;
-				v138.u0 = 0xFF;
-				v137 &= v138;
-				loc68 = v137;
-				v137 = loc64;
-				v138.u0 = 0x01;
-				v137 += v138;
-				loc69 = v137;
-				v137 = arg5;
-				v138 = loc69;
-				*v137.u0 = v138;
-				v137 = loc64;
-				v138 = loc68;
-				v144 = (byte) v138;
-				*v137.u0 = v144;
+				v138 = loc60;
+				v139.u0 = 0xFF;
+				v138 &= v139;
+				loc68 = v138;
+				v138 = loc64;
+				v139.u0 = 0x01;
+				v138 += v139;
+				loc69 = v138;
+				v138 = arg5;
+				v139 = loc69;
+				*v138.u0 = v139;
+				v138 = loc64;
+				v139 = loc68;
+				v145 = (byte) v139;
+				*v138.u0 = v145;
 				goto l00119332;
 			}
-			v137 = loc60;
-			v138.u0 = 0xFFFF;
-			v137 &= v138;
-			v138.u0 = 0x0800;
-			v139 = v137 < v138;
-			loc70 = v139;
-			v137 = loc70;
-			if (v137)
+			v138 = loc60;
+			v139.u0 = 0xFFFF;
+			v138 &= v139;
+			v139.u0 = 0x0800;
+			v140 = v138 < v139;
+			loc70 = v140;
+			v138 = loc70;
+			if (v138)
 			{
-				v137 = arg5;
-				v137 = *v137.u0;
-				loc71 = v137;
-				v137 = loc71;
-				loc72 = v137;
-				v137 = loc10;
-				v138 = loc72;
-				v137 -= v138;
-				loc73 = v137;
-				v137 = loc73;
-				v138.u0 = 0x02;
-				v139 = v137 < v138;
-				loc74 = v139;
-				v137 = loc74;
-				if (v137)
+				v138 = arg5;
+				v138 = *v138.u0;
+				loc71 = v138;
+				v138 = loc71;
+				loc72 = v138;
+				v138 = loc10;
+				v139 = loc72;
+				v138 -= v139;
+				loc73 = v138;
+				v138 = loc73;
+				v139.u0 = 0x02;
+				v140 = v138 < v139;
+				loc74 = v140;
+				v138 = loc74;
+				if (v138)
 				{
-					v137.u0 = 0x01;
-					loc8 = v137;
+					v138.u0 = 0x01;
+					loc8 = v138;
 					goto l00119351;
 				}
-				v137 = loc61;
-				v138.u0 = 0x06;
-				v137 >>= v138;
-				loc75 = v137;
-				v137 = loc75;
-				v138.u0 = 0xC0;
-				v137 |= v138;
-				loc76 = v137;
-				v137 = loc76;
-				v138.u0 = 0xFF;
-				v137 &= v138;
-				loc77 = v137;
-				v137 = loc71;
-				v138.u0 = 0x01;
-				v137 += v138;
-				loc78 = v137;
-				v137 = arg5;
-				v138 = loc78;
-				*v137.u0 = v138;
-				v137 = loc71;
-				v138 = loc77;
-				v145 = (byte) v138;
-				*v137.u0 = v145;
-				v137 = loc61;
-				v138.u0 = 0x3F;
-				v137 &= v138;
-				loc79 = v137;
-				v137 = loc79;
-				v138.u0 = 0x80;
-				v137 |= v138;
-				loc80 = v137;
-				v137 = loc80;
-				v138.u0 = 0xFF;
-				v137 &= v138;
-				loc81 = v137;
-				v137 = arg5;
-				v137 = *v137.u0;
-				loc82 = v137;
-				v137 = loc82;
-				v138.u0 = 0x01;
-				v137 += v138;
-				loc83 = v137;
-				v137 = arg5;
-				v138 = loc83;
-				*v137.u0 = v138;
-				v137 = loc82;
-				v138 = loc81;
-				v146 = (byte) v138;
-				*v137.u0 = v146;
+				v138 = loc61;
+				v139.u0 = 0x06;
+				v138 >>= v139;
+				loc75 = v138;
+				v138 = loc75;
+				v139.u0 = 0xC0;
+				v138 |= v139;
+				loc76 = v138;
+				v138 = loc76;
+				v139.u0 = 0xFF;
+				v138 &= v139;
+				loc77 = v138;
+				v138 = loc71;
+				v139.u0 = 0x01;
+				v138 += v139;
+				loc78 = v138;
+				v138 = arg5;
+				v139 = loc78;
+				*v138.u0 = v139;
+				v138 = loc71;
+				v139 = loc77;
+				v146 = (byte) v139;
+				*v138.u0 = v146;
+				v138 = loc61;
+				v139.u0 = 0x3F;
+				v138 &= v139;
+				loc79 = v138;
+				v138 = loc79;
+				v139.u0 = 0x80;
+				v138 |= v139;
+				loc80 = v138;
+				v138 = loc80;
+				v139.u0 = 0xFF;
+				v138 &= v139;
+				loc81 = v138;
+				v138 = arg5;
+				v138 = *v138.u0;
+				loc82 = v138;
+				v138 = loc82;
+				v139.u0 = 0x01;
+				v138 += v139;
+				loc83 = v138;
+				v138 = arg5;
+				v139 = loc83;
+				*v138.u0 = v139;
+				v138 = loc82;
+				v139 = loc81;
+				v147 = (byte) v139;
+				*v138.u0 = v147;
 			}
 			else
 			{
-				v137 = loc60;
-				v138.u0 = 0xFFFF;
-				v137 &= v138;
-				v138.u0 = 0xD800;
-				v139 = v137 < v138;
-				loc84 = v139;
-				v137 = loc84;
-				if (v137)
+				v138 = loc60;
+				v139.u0 = 0xFFFF;
+				v138 &= v139;
+				v139.u0 = 0xD800;
+				v140 = v138 < v139;
+				loc84 = v140;
+				v138 = loc84;
+				if (v138)
 				{
-					v137 = arg5;
-					v137 = *v137.u0;
-					loc85 = v137;
-					v137 = loc85;
-					loc86 = v137;
-					v137 = loc10;
-					v138 = loc86;
-					v137 -= v138;
-					loc87 = v137;
-					v137 = loc87;
-					v138.u0 = 0x03;
-					v139 = v137 < v138;
-					loc88 = v139;
-					v137 = loc88;
-					if (v137)
+					v138 = arg5;
+					v138 = *v138.u0;
+					loc85 = v138;
+					v138 = loc85;
+					loc86 = v138;
+					v138 = loc10;
+					v139 = loc86;
+					v138 -= v139;
+					loc87 = v138;
+					v138 = loc87;
+					v139.u0 = 0x03;
+					v140 = v138 < v139;
+					loc88 = v140;
+					v138 = loc88;
+					if (v138)
 					{
-						v137.u0 = 0x01;
-						loc8 = v137;
+						v138.u0 = 0x01;
+						loc8 = v138;
 						goto l00119351;
 					}
-					v137 = loc61;
-					v138.u0 = 0x0C;
-					v137 >>= v138;
-					loc89 = v137;
-					v137 = loc89;
-					v138.u0 = 0xE0;
-					v137 |= v138;
-					loc90 = v137;
-					v137 = loc90;
-					v138.u0 = 0xFF;
-					v137 &= v138;
-					loc91 = v137;
-					v137 = loc85;
-					v138.u0 = 0x01;
-					v137 += v138;
-					loc92 = v137;
-					v137 = arg5;
-					v138 = loc92;
-					*v137.u0 = v138;
-					v137 = loc85;
-					v138 = loc91;
-					v147 = (byte) v138;
-					*v137.u0 = v147;
-					v137 = loc61;
-					v138.u0 = 0x06;
-					v137 >>= v138;
-					loc93 = v137;
-					v137 = loc93;
-					v138.u0 = 0x3F;
-					v137 &= v138;
-					loc94 = v137;
-					v137 = loc94;
-					v138.u0 = 0x80;
-					v137 |= v138;
-					loc95 = v137;
-					v137 = loc95;
-					v138.u0 = 0xFF;
-					v137 &= v138;
-					loc96 = v137;
-					v137 = arg5;
-					v137 = *v137.u0;
-					loc97 = v137;
-					v137 = loc97;
-					v138.u0 = 0x01;
-					v137 += v138;
-					loc98 = v137;
-					v137 = arg5;
-					v138 = loc98;
-					*v137.u0 = v138;
-					v137 = loc97;
-					v138 = loc96;
-					v148 = (byte) v138;
-					*v137.u0 = v148;
-					v137 = loc61;
-					v138.u0 = 0x3F;
-					v137 &= v138;
-					loc99 = v137;
-					v137 = loc99;
-					v138.u0 = 0x80;
-					v137 |= v138;
-					loc100 = v137;
-					v137 = loc100;
-					v138.u0 = 0xFF;
-					v137 &= v138;
-					loc101 = v137;
-					v137 = arg5;
-					v137 = *v137.u0;
-					loc102 = v137;
-					v137 = loc102;
-					v138.u0 = 0x01;
-					v137 += v138;
-					loc103 = v137;
-					v137 = arg5;
-					v138 = loc103;
-					*v137.u0 = v138;
-					v137 = loc102;
-					v138 = loc101;
-					v149 = (byte) v138;
-					*v137.u0 = v149;
+					v138 = loc61;
+					v139.u0 = 0x0C;
+					v138 >>= v139;
+					loc89 = v138;
+					v138 = loc89;
+					v139.u0 = 0xE0;
+					v138 |= v139;
+					loc90 = v138;
+					v138 = loc90;
+					v139.u0 = 0xFF;
+					v138 &= v139;
+					loc91 = v138;
+					v138 = loc85;
+					v139.u0 = 0x01;
+					v138 += v139;
+					loc92 = v138;
+					v138 = arg5;
+					v139 = loc92;
+					*v138.u0 = v139;
+					v138 = loc85;
+					v139 = loc91;
+					v148 = (byte) v139;
+					*v138.u0 = v148;
+					v138 = loc61;
+					v139.u0 = 0x06;
+					v138 >>= v139;
+					loc93 = v138;
+					v138 = loc93;
+					v139.u0 = 0x3F;
+					v138 &= v139;
+					loc94 = v138;
+					v138 = loc94;
+					v139.u0 = 0x80;
+					v138 |= v139;
+					loc95 = v138;
+					v138 = loc95;
+					v139.u0 = 0xFF;
+					v138 &= v139;
+					loc96 = v138;
+					v138 = arg5;
+					v138 = *v138.u0;
+					loc97 = v138;
+					v138 = loc97;
+					v139.u0 = 0x01;
+					v138 += v139;
+					loc98 = v138;
+					v138 = arg5;
+					v139 = loc98;
+					*v138.u0 = v139;
+					v138 = loc97;
+					v139 = loc96;
+					v149 = (byte) v139;
+					*v138.u0 = v149;
+					v138 = loc61;
+					v139.u0 = 0x3F;
+					v138 &= v139;
+					loc99 = v138;
+					v138 = loc99;
+					v139.u0 = 0x80;
+					v138 |= v139;
+					loc100 = v138;
+					v138 = loc100;
+					v139.u0 = 0xFF;
+					v138 &= v139;
+					loc101 = v138;
+					v138 = arg5;
+					v138 = *v138.u0;
+					loc102 = v138;
+					v138 = loc102;
+					v139.u0 = 0x01;
+					v138 += v139;
+					loc103 = v138;
+					v138 = arg5;
+					v139 = loc103;
+					*v138.u0 = v139;
+					v138 = loc102;
+					v139 = loc101;
+					v150 = (byte) v139;
+					*v138.u0 = v150;
 				}
 				else
 				{
-					v137 = loc60;
-					v138.u0 = 0xFFFF;
-					v137 &= v138;
-					v138.u0 = 0xDC00;
-					v139 = v137 < v138;
-					loc104 = v139;
-					v137 = loc104;
-					v139 = v137 == 0x00;
-					if (v139)
+					v138 = loc60;
+					v139.u0 = 0xFFFF;
+					v138 &= v139;
+					v139.u0 = 0xDC00;
+					v140 = v138 < v139;
+					loc104 = v140;
+					v138 = loc104;
+					v140 = v138 == 0x00;
+					if (v140)
 					{
-						v137 = loc60;
-						v138.u0 = 0xFFFF;
-						v137 &= v138;
-						v138.u0 = 0xE000;
-						v139 = v137 < v138;
-						loc29 = v139;
-						v137 = loc29;
-						if (v137)
+						v138 = loc60;
+						v139.u0 = 0xFFFF;
+						v138 &= v139;
+						v139.u0 = 0xE000;
+						v140 = v138 < v139;
+						loc29 = v140;
+						v138 = loc29;
+						if (v138)
 						{
-							v137.u0 = 0x02;
-							loc8 = v137;
+							v138.u0 = 0x02;
+							loc8 = v138;
 							goto l00119351;
 						}
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc30 = v137;
-						v137 = loc30;
-						loc31 = v137;
-						v137 = loc10;
-						v138 = loc31;
-						v137 -= v138;
-						loc32 = v137;
-						v137 = loc32;
-						v138.u0 = 0x03;
-						v139 = v137 < v138;
-						loc34 = v139;
-						v137 = loc34;
-						if (v137)
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc30 = v138;
+						v138 = loc30;
+						loc31 = v138;
+						v138 = loc10;
+						v139 = loc31;
+						v138 -= v139;
+						loc32 = v138;
+						v138 = loc32;
+						v139.u0 = 0x03;
+						v140 = v138 < v139;
+						loc34 = v140;
+						v138 = loc34;
+						if (v138)
 						{
-							v137.u0 = 0x01;
-							loc8 = v137;
+							v138.u0 = 0x01;
+							loc8 = v138;
 							goto l00119351;
 						}
-						v137 = loc61;
-						v138.u0 = 0x0C;
-						v137 >>= v138;
-						loc35 = v137;
-						v137 = loc35;
-						v138.u0 = 0xE0;
-						v137 |= v138;
-						loc36 = v137;
-						v137 = loc36;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc37 = v137;
-						v137 = loc30;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc38 = v137;
-						v137 = arg5;
-						v138 = loc38;
-						*v137.u0 = v138;
-						v137 = loc30;
-						v138 = loc37;
-						v150 = (byte) v138;
-						*v137.u0 = v150;
-						v137 = loc61;
-						v138.u0 = 0x06;
-						v137 >>= v138;
-						loc39 = v137;
-						v137 = loc39;
-						v138.u0 = 0x3F;
-						v137 &= v138;
-						loc40 = v137;
-						v137 = loc40;
-						v138.u0 = 0x80;
-						v137 |= v138;
-						loc41 = v137;
-						v137 = loc41;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc42 = v137;
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc43 = v137;
-						v137 = loc43;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc45 = v137;
-						v137 = arg5;
-						v138 = loc45;
-						*v137.u0 = v138;
-						v137 = loc43;
-						v138 = loc42;
-						v151 = (byte) v138;
-						*v137.u0 = v151;
-						v137 = loc61;
-						v138.u0 = 0x3F;
-						v137 &= v138;
-						loc46 = v137;
-						v137 = loc46;
-						v138.u0 = 0x80;
-						v137 |= v138;
-						loc47 = v137;
-						v137 = loc47;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc48 = v137;
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc49 = v137;
-						v137 = loc49;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc50 = v137;
-						v137 = arg5;
-						v138 = loc50;
-						*v137.u0 = v138;
-						v137 = loc49;
-						v138 = loc48;
-						v152 = (byte) v138;
-						*v137.u0 = v152;
+						v138 = loc61;
+						v139.u0 = 0x0C;
+						v138 >>= v139;
+						loc35 = v138;
+						v138 = loc35;
+						v139.u0 = 0xE0;
+						v138 |= v139;
+						loc36 = v138;
+						v138 = loc36;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc37 = v138;
+						v138 = loc30;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc38 = v138;
+						v138 = arg5;
+						v139 = loc38;
+						*v138.u0 = v139;
+						v138 = loc30;
+						v139 = loc37;
+						v151 = (byte) v139;
+						*v138.u0 = v151;
+						v138 = loc61;
+						v139.u0 = 0x06;
+						v138 >>= v139;
+						loc39 = v138;
+						v138 = loc39;
+						v139.u0 = 0x3F;
+						v138 &= v139;
+						loc40 = v138;
+						v138 = loc40;
+						v139.u0 = 0x80;
+						v138 |= v139;
+						loc41 = v138;
+						v138 = loc41;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc42 = v138;
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc43 = v138;
+						v138 = loc43;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc45 = v138;
+						v138 = arg5;
+						v139 = loc45;
+						*v138.u0 = v139;
+						v138 = loc43;
+						v139 = loc42;
+						v152 = (byte) v139;
+						*v138.u0 = v152;
+						v138 = loc61;
+						v139.u0 = 0x3F;
+						v138 &= v139;
+						loc46 = v138;
+						v138 = loc46;
+						v139.u0 = 0x80;
+						v138 |= v139;
+						loc47 = v138;
+						v138 = loc47;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc48 = v138;
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc49 = v138;
+						v138 = loc49;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc50 = v138;
+						v138 = arg5;
+						v139 = loc50;
+						*v138.u0 = v139;
+						v138 = loc49;
+						v139 = loc48;
+						v153 = (byte) v139;
+						*v138.u0 = v153;
 					}
 					else
 					{
-						v137 = loc59;
-						loc105 = v137;
-						v137 = loc57;
-						v138 = loc105;
-						v137 -= v138;
-						loc106 = v137;
-						v137 = loc106;
-						v138.u0 = 0x04;
-						v139 = v137 < v138;
-						loc107 = v139;
-						v137 = loc107;
-						if (v137)
+						v138 = loc59;
+						loc105 = v138;
+						v138 = loc57;
+						v139 = loc105;
+						v138 -= v139;
+						loc106 = v138;
+						v138 = loc106;
+						v139.u0 = 0x04;
+						v140 = v138 < v139;
+						loc107 = v140;
+						v138 = loc107;
+						if (v138)
 						{
-							v137.u0 = 0x01;
-							loc8 = v137;
+							v138.u0 = 0x01;
+							loc8 = v138;
 							goto l00119351;
 						}
-						v137 = loc59;
-						v138.u0 = 0x02;
-						v137 += v138;
-						loc108 = v137;
-						v137 = loc108;
-						v153 = *v137.u0;
-						v137.u3 = (word32) v153;
-						loc109 = v137;
-						v137 = loc109;
-						v138.u0 = 0xFFFF;
-						v137 &= v138;
-						loc110 = v137;
-						v137 = loc110;
-						v138.u0 = 0xFC00;
-						v137 &= v138;
-						loc111 = v137;
-						v137 = loc111;
-						v138.u0 = 0xDC00;
-						v139 = v137 == v138;
-						loc112 = v139;
-						v137 = loc112;
-						v139 = v137 == 0x00;
-						if (v139)
-						{
-							v137.u0 = 0x02;
-							loc8 = v137;
-							goto l00119351;
-						}
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc113 = v137;
-						v137 = loc10;
-						v138 = loc113;
-						v137 -= v138;
-						loc114 = v137;
-						v137 = loc114;
-						v138.u0 = 0x04;
-						v139 = v137 < v138;
-						loc115 = v139;
-						v137 = loc115;
-						if (v137)
-						{
-							v137.u0 = 0x01;
-							loc8 = v137;
-							goto l00119351;
-						}
-						v137 = loc61;
-						v138.u0 = 0x03C0;
-						v137 &= v138;
-						loc116 = v137;
-						v137 = loc116;
-						v138.u0 = 0x0A;
-						v137 <<= v138;
-						loc117 = v137;
-						v137 = loc117;
-						v138.u0 = 0x00010000;
-						v137 += v138;
-						loc118 = v137;
-						v137 = loc61;
-						v138.u0 = 0x0A;
-						v137 <<= v138;
-						loc120 = v137;
-						v137 = loc120;
-						v138.u0 = 0xFC00;
-						v137 &= v138;
-						loc121 = v137;
-						v137 = loc118;
-						v138 = loc121;
-						v137 |= v138;
-						loc122 = v137;
-						v137 = loc110;
-						v138.u0 = 0x03FF;
-						v137 &= v138;
-						loc123 = v137;
-						v137 = loc122;
-						v138 = loc123;
-						v137 |= v138;
-						loc124 = v137;
-						v137 = loc124;
-						v138 = arg6;
-						v139 = v137 > v138;
-						loc125 = v139;
-						v137 = loc125;
-						if (v137)
-						{
-							v137.u0 = 0x02;
-							loc8 = v137;
-							goto l00119351;
-						}
-						v137 = arg2;
+						v138 = loc59;
+						v139.u0 = 0x02;
+						v138 += v139;
+						loc108 = v138;
 						v138 = loc108;
-						*v137.u0 = v138;
-						v137 = loc116;
-						v138.u0 = 0x06;
-						v137 >>= v138;
-						loc126 = v137;
-						v137 = loc126;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc127 = v137;
-						v137 = loc127;
-						v138.u0 = 0x02;
-						v137 >>= v138;
-						loc128 = v137;
-						v137 = loc128;
-						v138.u0 = 0xF0;
-						v137 |= v138;
-						loc129 = v137;
-						v137 = loc129;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc131 = v137;
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc132 = v137;
-						v137 = loc132;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc133 = v137;
-						v137 = arg5;
-						v138 = loc133;
-						*v137.u0 = v138;
-						v137 = loc132;
-						v138 = loc131;
-						v154 = (byte) v138;
-						*v137.u0 = v154;
-						v137 = loc127;
-						v138.u0 = 0x04;
-						v137 <<= v138;
-						loc134 = v137;
-						v137 = loc134;
-						v138.u0 = 0x30;
-						v137 &= v138;
-						loc135 = v137;
-						v137 = loc61;
-						v138.u0 = 0x02;
-						v137 >>= v138;
-						loc136 = v137;
-						v137 = loc136;
-						v138.u0 = 0x0F;
-						v137 &= v138;
-						loc137 = v137;
-						v137 = loc137;
-						v138 = loc135;
-						v137 |= v138;
-						loc138 = v137;
-						v137 = loc138;
-						v138.u0 = 0x80;
-						v137 |= v138;
-						loc139 = v137;
-						v137 = loc139;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc140 = v137;
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc12 = v137;
-						v137 = loc12;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc13 = v137;
-						v137 = arg5;
-						v138 = loc13;
-						*v137.u0 = v138;
-						v137 = loc12;
-						v138 = loc140;
-						v155 = (byte) v138;
-						*v137.u0 = v155;
-						v137 = loc61;
-						v138.u0 = 0x04;
-						v137 <<= v138;
-						loc14 = v137;
-						v137 = loc14;
-						v138.u0 = 0x30;
-						v137 &= v138;
-						loc15 = v137;
-						v137 = loc110;
-						v138.u0 = 0x06;
-						v137 >>= v138;
-						loc16 = v137;
-						v137 = loc16;
-						v138.u0 = 0x0F;
-						v137 &= v138;
-						loc17 = v137;
-						v137 = loc15;
-						v138 = loc17;
-						v137 |= v138;
-						loc18 = v137;
-						v137 = loc18;
-						v138.u0 = 0x80;
-						v137 |= v138;
-						loc19 = v137;
-						v137 = loc19;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc20 = v137;
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc21 = v137;
-						v137 = loc21;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc23 = v137;
-						v137 = arg5;
-						v138 = loc23;
-						*v137.u0 = v138;
-						v137 = loc21;
-						v138 = loc20;
-						v156 = (byte) v138;
-						*v137.u0 = v156;
-						v137 = loc110;
-						v138.u0 = 0x3F;
-						v137 &= v138;
-						loc24 = v137;
-						v137 = loc24;
-						v138.u0 = 0x80;
-						v137 |= v138;
-						loc25 = v137;
-						v137 = loc25;
-						v138.u0 = 0xFF;
-						v137 &= v138;
-						loc26 = v137;
-						v137 = arg5;
-						v137 = *v137.u0;
-						loc27 = v137;
-						v137 = loc27;
-						v138.u0 = 0x01;
-						v137 += v138;
-						loc28 = v137;
-						v137 = arg5;
-						v138 = loc28;
-						*v137.u0 = v138;
-						v137 = loc27;
-						v138 = loc26;
-						v157 = (byte) v138;
-						*v137.u0 = v157;
+						v154 = *v138.u0;
+						v138.u3 = (word32) v154;
+						loc109 = v138;
+						v138 = loc109;
+						v139.u0 = 0xFFFF;
+						v138 &= v139;
+						loc110 = v138;
+						v138 = loc110;
+						v139.u0 = 0xFC00;
+						v138 &= v139;
+						loc111 = v138;
+						v138 = loc111;
+						v139.u0 = 0xDC00;
+						v140 = v138 == v139;
+						loc112 = v140;
+						v138 = loc112;
+						v140 = v138 == 0x00;
+						if (v140)
+						{
+							v138.u0 = 0x02;
+							loc8 = v138;
+							goto l00119351;
+						}
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc113 = v138;
+						v138 = loc10;
+						v139 = loc113;
+						v138 -= v139;
+						loc114 = v138;
+						v138 = loc114;
+						v139.u0 = 0x04;
+						v140 = v138 < v139;
+						loc115 = v140;
+						v138 = loc115;
+						if (v138)
+						{
+							v138.u0 = 0x01;
+							loc8 = v138;
+							goto l00119351;
+						}
+						v138 = loc61;
+						v139.u0 = 0x03C0;
+						v138 &= v139;
+						loc116 = v138;
+						v138 = loc116;
+						v139.u0 = 0x0A;
+						v138 <<= v139;
+						loc117 = v138;
+						v138 = loc117;
+						v139.u0 = 0x00010000;
+						v138 += v139;
+						loc118 = v138;
+						v138 = loc61;
+						v139.u0 = 0x0A;
+						v138 <<= v139;
+						loc120 = v138;
+						v138 = loc120;
+						v139.u0 = 0xFC00;
+						v138 &= v139;
+						loc121 = v138;
+						v138 = loc118;
+						v139 = loc121;
+						v138 |= v139;
+						loc122 = v138;
+						v138 = loc110;
+						v139.u0 = 0x03FF;
+						v138 &= v139;
+						loc123 = v138;
+						v138 = loc122;
+						v139 = loc123;
+						v138 |= v139;
+						loc124 = v138;
+						v138 = loc124;
+						v139 = arg6;
+						v140 = v138 > v139;
+						loc125 = v140;
+						v138 = loc125;
+						if (v138)
+						{
+							v138.u0 = 0x02;
+							loc8 = v138;
+							goto l00119351;
+						}
+						v138 = arg2;
+						v139 = loc108;
+						*v138.u0 = v139;
+						v138 = loc116;
+						v139.u0 = 0x06;
+						v138 >>= v139;
+						loc126 = v138;
+						v138 = loc126;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc127 = v138;
+						v138 = loc127;
+						v139.u0 = 0x02;
+						v138 >>= v139;
+						loc128 = v138;
+						v138 = loc128;
+						v139.u0 = 0xF0;
+						v138 |= v139;
+						loc129 = v138;
+						v138 = loc129;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc131 = v138;
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc132 = v138;
+						v138 = loc132;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc133 = v138;
+						v138 = arg5;
+						v139 = loc133;
+						*v138.u0 = v139;
+						v138 = loc132;
+						v139 = loc131;
+						v155 = (byte) v139;
+						*v138.u0 = v155;
+						v138 = loc127;
+						v139.u0 = 0x04;
+						v138 <<= v139;
+						loc134 = v138;
+						v138 = loc134;
+						v139.u0 = 0x30;
+						v138 &= v139;
+						loc135 = v138;
+						v138 = loc61;
+						v139.u0 = 0x02;
+						v138 >>= v139;
+						loc136 = v138;
+						v138 = loc136;
+						v139.u0 = 0x0F;
+						v138 &= v139;
+						loc137 = v138;
+						v138 = loc137;
+						v139 = loc135;
+						v138 |= v139;
+						loc138 = v138;
+						v138 = loc138;
+						v139.u0 = 0x80;
+						v138 |= v139;
+						loc139 = v138;
+						v138 = loc139;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc140 = v138;
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc12 = v138;
+						v138 = loc12;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc13 = v138;
+						v138 = arg5;
+						v139 = loc13;
+						*v138.u0 = v139;
+						v138 = loc12;
+						v139 = loc140;
+						v156 = (byte) v139;
+						*v138.u0 = v156;
+						v138 = loc61;
+						v139.u0 = 0x04;
+						v138 <<= v139;
+						loc14 = v138;
+						v138 = loc14;
+						v139.u0 = 0x30;
+						v138 &= v139;
+						loc15 = v138;
+						v138 = loc110;
+						v139.u0 = 0x06;
+						v138 >>= v139;
+						loc16 = v138;
+						v138 = loc16;
+						v139.u0 = 0x0F;
+						v138 &= v139;
+						loc17 = v138;
+						v138 = loc15;
+						v139 = loc17;
+						v138 |= v139;
+						loc18 = v138;
+						v138 = loc18;
+						v139.u0 = 0x80;
+						v138 |= v139;
+						loc19 = v138;
+						v138 = loc19;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc20 = v138;
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc21 = v138;
+						v138 = loc21;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc23 = v138;
+						v138 = arg5;
+						v139 = loc23;
+						*v138.u0 = v139;
+						v138 = loc21;
+						v139 = loc20;
+						v157 = (byte) v139;
+						*v138.u0 = v157;
+						v138 = loc110;
+						v139.u0 = 0x3F;
+						v138 &= v139;
+						loc24 = v138;
+						v138 = loc24;
+						v139.u0 = 0x80;
+						v138 |= v139;
+						loc25 = v138;
+						v138 = loc25;
+						v139.u0 = 0xFF;
+						v138 &= v139;
+						loc26 = v138;
+						v138 = arg5;
+						v138 = *v138.u0;
+						loc27 = v138;
+						v138 = loc27;
+						v139.u0 = 0x01;
+						v138 += v139;
+						loc28 = v138;
+						v138 = arg5;
+						v139 = loc28;
+						*v138.u0 = v139;
+						v138 = loc27;
+						v139 = loc26;
+						v158 = (byte) v139;
+						*v138.u0 = v158;
 l00119332:
 					}
 				}
 			}
-			v137 = arg2;
-			v137 = *v137.u0;
-			loc51 = v137;
-			v137 = loc51;
-			v138.u0 = 0x02;
-			v137 += v138;
-			loc52 = v137;
-			v137 = arg2;
+			v138 = arg2;
+			v138 = *v138.u0;
+			loc51 = v138;
+			v138 = loc51;
+			v139.u0 = 0x02;
+			v138 += v139;
+			loc52 = v138;
+			v138 = arg2;
+			v139 = loc52;
+			*v138.u0 = v139;
 			v138 = loc52;
-			*v137.u0 = v138;
-			v137 = loc52;
-			loc59 = v137;
+			loc59 = v138;
 		}
-		v137.u0 = 0x00;
-		loc8 = v137;
+		v138.u0 = 0x00;
+		loc8 = v138;
 	}
 l00119351:
-	v137 = loc8;
-	return v137;
+	v138 = loc8;
+	return v138;
 }
 
 // 00119357: void fn00119357(Stack Eq_n arg0)
@@ -12949,161 +12949,161 @@ void fn00119357(Eq_n arg0)
 {
 	while (true)
 	{
-		v18.u3 = g_t140030.u3;
-		loc16 = v18;
-		v18 = arg0;
-		v19.u0 = 0x24A8;
-		*v18.u3 = (word32) v19;
-		v18 = arg0;
-		v19.u0 = 0x08;
-		v18 += v19;
-		loc2 = v18;
-		v18 = arg0;
-		v19.u0 = 0x0C;
-		v18 += v19;
-		loc7 = v18;
-		v18.u0 = 0x00;
-		loc1 = v18;
-		v18 = loc7;
-		v18 = *v18.u0;
-		loc8 = v18;
-		v18 = loc2;
-		v18 = *v18.u0;
-		loc9 = v18;
-		v18 = loc8;
-		v19 = loc9;
-		v18 -= v19;
-		loc10 = v18;
-		v18 = loc10;
-		v19.u0 = 0x02;
-		v18 >>= v19;
-		loc11 = v18;
-		v18 = loc1;
-		v19 = loc11;
-		v20 = v18 < v19;
-		loc12 = v20;
-		v18 = loc12;
-		v20 = v18 == 0x00;
-		if (v20)
-			break;
-		v18 = loc9;
-		loc14 = v18;
-		v18 = loc14;
-		v19 = loc1;
-		v21 = 0x02;
-		v19 <<= v21;
-		v18 += v19;
-		loc3 = v18;
-		v18 = loc3;
-		v18 = *v18.u0;
-		loc4 = v18;
-		v18 = loc4;
+		v19.u3 = g_t140030.u3;
+		loc16 = v19;
+		v19 = arg0;
+		v20.u0 = 0x24A8;
+		*v19.u3 = (word32) v20;
+		v19 = arg0;
+		v20.u0 = 0x08;
+		v19 += v20;
+		loc2 = v19;
+		v19 = arg0;
+		v20.u0 = 0x0C;
+		v19 += v20;
+		loc7 = v19;
 		v19.u0 = 0x00;
-		v20 = v18 == v19;
-		loc5 = v20;
-		v18 = loc5;
-		v20 = v18 == 0x00;
-		if (v20)
+		loc1 = v19;
+		v19 = loc7;
+		v19 = *v19.u0;
+		loc8 = v19;
+		v19 = loc2;
+		v19 = *v19.u0;
+		loc9 = v19;
+		v19 = loc8;
+		v20 = loc9;
+		v19 -= v20;
+		loc10 = v19;
+		v19 = loc10;
+		v20.u0 = 0x02;
+		v19 >>= v20;
+		loc11 = v19;
+		v19 = loc1;
+		v20 = loc11;
+		v21 = v19 < v20;
+		loc12 = v21;
+		v19 = loc12;
+		v21 = v19 == 0x00;
+		if (v21)
+			break;
+		v19 = loc9;
+		loc14 = v19;
+		v19 = loc14;
+		v20 = loc1;
+		v22 = 0x02;
+		v20 <<= v22;
+		v19 += v20;
+		loc3 = v19;
+		v19 = loc3;
+		v19 = *v19.u0;
+		loc4 = v19;
+		v19 = loc4;
+		v20.u0 = 0x00;
+		v21 = v19 == v20;
+		loc5 = v21;
+		v19 = loc5;
+		v21 = v19 == 0x00;
+		if (v21)
 		{
-			v18 = loc4;
-			v18 = fn0011B43F(v18);
+			v19 = loc4;
+			v19 = fn0011B43F(v19);
 		}
-		v18 = loc1;
-		v19.u0 = 0x01;
-		v18 += v19;
-		loc6 = v18;
-		v18 = loc6;
-		loc1 = v18;
+		v19 = loc1;
+		v20.u0 = 0x01;
+		v19 += v20;
+		loc6 = v19;
+		v19 = loc6;
+		loc1 = v19;
 	}
-	v18 = arg0;
-	v19.u0 = 0x90;
-	v18 += v19;
-	loc13 = v18;
-	v18 = loc13;
-	fn0011BAF7(v18);
-	v18 = loc2;
-	fn00119406(v18);
+	v19 = arg0;
+	v20.u0 = 0x90;
+	v19 += v20;
+	loc13 = v19;
+	v19 = loc13;
+	fn0011BAF7(v19);
+	v19 = loc2;
+	fn00119406(v19);
 }
 
 // 001193F3: void fn001193F3(Stack Eq_n arg0)
 void fn001193F3(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn00119357(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn00119357(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00119406: void fn00119406(Stack Eq_n arg0)
 void fn00119406(Eq_n arg0)
 {
-	v14.u3 = g_t140030.u3;
-	loc12 = v14;
-	v14 = arg0;
-	v14.u3 = *v14.u3;
-	loc2 = v14;
-	v14 = loc2;
-	v15.u0 = 0x00;
-	v16 = v14 == v15;
-	loc3 = v16;
-	v14 = loc3;
-	v16 = v14 == 0x00;
-	if (v16)
+	v15.u3 = g_t140030.u3;
+	loc12 = v15;
+	v15 = arg0;
+	v15.u3 = *v15.u3;
+	loc2 = v15;
+	v15 = loc2;
+	v16.u0 = 0x00;
+	v17 = v15 == v16;
+	loc3 = v17;
+	v15 = loc3;
+	v17 = v15 == 0x00;
+	if (v17)
 	{
 		while (true)
 		{
-			v14 = arg0;
-			v15.u0 = 0x04;
-			v14 += v15;
-			loc4 = v14;
-			v14 = loc4;
-			v14.u3 = *v14.u3;
-			loc1 = v14;
-			v14 = loc1;
-			loc6 = v14;
-			v14 = loc6;
-			v15 = loc2;
-			v16 = v14 == v15;
-			loc5 = v16;
-			v14 = loc5;
-			if (v14)
+			v15 = arg0;
+			v16.u0 = 0x04;
+			v15 += v16;
+			loc4 = v15;
+			v15 = loc4;
+			v15.u3 = *v15.u3;
+			loc1 = v15;
+			v15 = loc1;
+			loc6 = v15;
+			v15 = loc6;
+			v16 = loc2;
+			v17 = v15 == v16;
+			loc5 = v17;
+			v15 = loc5;
+			if (v15)
 				break;
-			v14 = loc6;
-			v15.u0 = ~0x03;
-			v14 += v15;
-			loc7 = v14;
-			v14 = loc4;
+			v15 = loc6;
+			v16.u0 = ~0x03;
+			v15 += v16;
+			loc7 = v15;
+			v15 = loc4;
+			v16 = loc7;
+			*v15.u3 = (word32) v16;
 			v15 = loc7;
-			*v14.u3 = (word32) v15;
-			v14 = loc7;
-			loc6 = v14;
+			loc6 = v15;
 		}
-		v14 = arg0;
-		v15.u0 = 0x10;
-		v14 += v15;
-		loc8 = v14;
-		v14 = loc8;
-		v15 = loc2;
-		v16 = v14 == v15;
-		loc9 = v16;
-		v14 = loc9;
-		if (v14)
+		v15 = arg0;
+		v16.u0 = 0x10;
+		v15 += v16;
+		loc8 = v15;
+		v15 = loc8;
+		v16 = loc2;
+		v17 = v15 == v16;
+		loc9 = v17;
+		v15 = loc9;
+		if (v15)
 		{
-			v14 = arg0;
-			v15.u0 = 0x80;
-			v14 += v15;
-			loc10 = v14;
-			v14 = loc10;
-			v15.u0 = 0x00;
-			v17 = (byte) v15;
-			v14.u4->t0000.u0 = (bool) v17;
+			v15 = arg0;
+			v16.u0 = 0x80;
+			v15 += v16;
+			loc10 = v15;
+			v15 = loc10;
+			v16.u0 = 0x00;
+			v18 = (byte) v16;
+			v15.u4->t0000.u0 = (bool) v18;
 		}
 		else
 		{
-			v14 = loc2;
-			fn0011B709(v14);
+			v15 = loc2;
+			fn0011B709(v15);
 		}
 	}
 }
@@ -13111,48 +13111,48 @@ void fn00119406(Eq_n arg0)
 // 0011948C: void fn0011948C(Stack Eq_n arg0)
 void fn0011948C(Eq_n arg0)
 {
-	v10.u3 = g_t140030.u3;
-	loc8 = v10;
-	v10 = arg0;
-	v11.u0 = 9404;
-	*v10.u3 = (word32) v11;
-	v10 = arg0;
-	v11.u0 = 0x08;
-	v10 += v11;
-	loc1 = v10;
-	v10 = loc1;
-	v10.u3 = *v10.u3;
-	loc2 = v10;
-	v10 = loc2;
-	v11.u0 = 0x00;
-	v12 = v10 == v11;
-	loc3 = v12;
-	v10 = loc3;
-	v12 = v10 == 0x00;
-	if (v12)
+	v11.u3 = g_t140030.u3;
+	loc8 = v11;
+	v11 = arg0;
+	v12.u0 = 9404;
+	*v11.u3 = (word32) v12;
+	v11 = arg0;
+	v12.u0 = 0x08;
+	v11 += v12;
+	loc1 = v11;
+	v11 = loc1;
+	v11.u3 = *v11.u3;
+	loc2 = v11;
+	v11 = loc2;
+	v12.u0 = 0x00;
+	v13 = v11 == v12;
+	loc3 = v13;
+	v11 = loc3;
+	v13 = v11 == 0x00;
+	if (v13)
 	{
-		v10 = arg0;
-		v11.u0 = 0x0C;
-		v10 += v11;
-		loc4 = v10;
-		v10 = loc4;
-		v13.u1 = v10.u4->t0000.u1;
-		v10.u3 = (word32) v13;
-		loc5 = v10;
-		v10 = loc5;
-		v11.u0 = 0x18;
-		v10 <<= v11;
-		v11.u0 = 0x18;
-		v10 >>= v11;
-		v11.u0 = 0x00;
-		v12 = v10 == v11;
-		loc6 = v12;
-		v10 = loc6;
-		v12 = v10 == 0x00;
-		if (v12)
+		v11 = arg0;
+		v12.u0 = 0x0C;
+		v11 += v12;
+		loc4 = v11;
+		v11 = loc4;
+		v14.u1 = v11.u4->t0000.u1;
+		v11.u3 = (word32) v14;
+		loc5 = v11;
+		v11 = loc5;
+		v12.u0 = 0x18;
+		v11 <<= v12;
+		v12.u0 = 0x18;
+		v11 >>= v12;
+		v12.u0 = 0x00;
+		v13 = v11 == v12;
+		loc6 = v13;
+		v11 = loc6;
+		v13 = v11 == 0x00;
+		if (v13)
 		{
-			v10 = loc2;
-			fn0011B717(v10);
+			v11 = loc2;
+			fn0011B717(v11);
 		}
 	}
 }
@@ -13160,59 +13160,59 @@ void fn0011948C(Eq_n arg0)
 // 001194DF: void fn001194DF(Stack Eq_n arg0)
 void fn001194DF(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011948C(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011948C(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 001194F2: Stack Eq_n fn001194F2(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn001194F2(Eq_n arg0, Eq_n arg1)
 {
-	v11.u3 = g_t140030.u3;
-	loc10 = v11;
-	v11 = arg1;
-	v12.u0 = 0x18;
-	v11 <<= v12;
-	v12.u0 = 0x18;
-	v11 >>= v12;
-	v12.u0 = ~0x00;
-	v13 = v11 > v12;
-	loc8 = v13;
-	v11 = loc8;
-	if (v11)
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12 = arg1;
+	v13.u0 = 0x18;
+	v12 <<= v13;
+	v13.u0 = 0x18;
+	v12 >>= v13;
+	v13.u0 = ~0x00;
+	v14 = v12 > v13;
+	loc8 = v14;
+	v12 = loc8;
+	if (v12)
 	{
-		v11 = arg1;
-		v12.u0 = 0xFF;
-		v11 &= v12;
-		loc2 = v11;
-		v11 = fn001197B3();
-		loc3 = v11;
-		v11 = loc3;
-		v12 = loc2;
-		v14 = 0x02;
-		v12 <<= v14;
-		v11 += v12;
-		loc4 = v11;
-		v11 = loc4;
-		v11.u3 = *v11.u3;
-		loc5 = v11;
-		v11 = loc5;
-		v12.u0 = 0xFF;
-		v11 &= v12;
-		loc6 = v11;
-		v11 = loc6;
-		loc7 = v11;
+		v12 = arg1;
+		v13.u0 = 0xFF;
+		v12 &= v13;
+		loc2 = v12;
+		v12 = fn001197B3();
+		loc3 = v12;
+		v12 = loc3;
+		v13 = loc2;
+		v15 = 0x02;
+		v13 <<= v15;
+		v12 += v13;
+		loc4 = v12;
+		v12 = loc4;
+		v12.u3 = *v12.u3;
+		loc5 = v12;
+		v12 = loc5;
+		v13.u0 = 0xFF;
+		v12 &= v13;
+		loc6 = v12;
+		v12 = loc6;
+		loc7 = v12;
 	}
 	else
 	{
-		v11 = arg1;
-		loc7 = v11;
+		v12 = arg1;
+		loc7 = v12;
 	}
-	v11 = loc7;
-	return v11;
+	v12 = loc7;
+	return v12;
 }
 
 // 0011953E: Stack Eq_n fn0011953E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -13220,123 +13220,123 @@ Eq_n fn0011953E(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
 	while (true)
 	{
-		v15.u3 = g_t140030.u3;
-		loc15 = v15;
-		v15 = arg1;
-		loc3 = v15;
-		v15 = loc3;
-		v16 = arg2;
-		v17 = v15 == v16;
-		loc6 = v17;
-		v15 = loc6;
-		if (v15)
+		v16.u3 = g_t140030.u3;
+		loc15 = v16;
+		v16 = arg1;
+		loc3 = v16;
+		v16 = loc3;
+		v17 = arg2;
+		v18 = v16 == v17;
+		loc6 = v18;
+		v16 = loc6;
+		if (v16)
 			break;
-		v15 = loc3;
-		v18.u3 = *v15.u3;
-		v15.u3 = (word32) v18;
-		loc7 = v15;
-		v15 = loc7;
-		v16.u0 = 0x18;
-		v15 <<= v16;
-		v16.u0 = 0x18;
-		v15 >>= v16;
-		v16.u0 = ~0x00;
-		v17 = v15 > v16;
-		loc13 = v17;
-		v15 = loc13;
-		if (v15)
+		v16 = loc3;
+		v19.u3 = *v16.u3;
+		v16.u3 = (word32) v19;
+		loc7 = v16;
+		v16 = loc7;
+		v17.u0 = 0x18;
+		v16 <<= v17;
+		v17.u0 = 0x18;
+		v16 >>= v17;
+		v17.u0 = ~0x00;
+		v18 = v16 > v17;
+		loc13 = v18;
+		v16 = loc13;
+		if (v16)
 		{
-			v15 = loc7;
-			v16.u0 = 0x18;
-			v15 <<= v16;
-			v16.u0 = 0x18;
-			v15 >>= v16;
-			loc8 = v15;
-			v15 = fn001197B3();
-			loc9 = v15;
-			v15 = loc9;
-			v16 = loc8;
-			v19 = 0x02;
-			v16 <<= v19;
-			v15 += v16;
-			loc10 = v15;
-			v15 = loc10;
-			v15.u3 = *v15.u3;
-			loc11 = v15;
-			v15 = loc11;
-			v16.u0 = 0xFF;
-			v15 &= v16;
-			loc12 = v15;
-			v15 = loc12;
-			loc4 = v15;
+			v16 = loc7;
+			v17.u0 = 0x18;
+			v16 <<= v17;
+			v17.u0 = 0x18;
+			v16 >>= v17;
+			loc8 = v16;
+			v16 = fn001197B3();
+			loc9 = v16;
+			v16 = loc9;
+			v17 = loc8;
+			v20 = 0x02;
+			v17 <<= v20;
+			v16 += v17;
+			loc10 = v16;
+			v16 = loc10;
+			v16.u3 = *v16.u3;
+			loc11 = v16;
+			v16 = loc11;
+			v17.u0 = 0xFF;
+			v16 &= v17;
+			loc12 = v16;
+			v16 = loc12;
+			loc4 = v16;
 		}
 		else
 		{
-			v15 = loc7;
-			loc4 = v15;
+			v16 = loc7;
+			loc4 = v16;
 		}
-		v15 = loc3;
-		v16 = loc4;
-		v20 = (byte) v16;
-		v15.u4->t0000.u0 = (bool) v20;
-		v15 = loc3;
-		v16.u0 = 0x01;
-		v15 += v16;
-		loc5 = v15;
-		v15 = loc5;
-		loc3 = v15;
+		v16 = loc3;
+		v17 = loc4;
+		v21 = (byte) v17;
+		v16.u4->t0000.u0 = (bool) v21;
+		v16 = loc3;
+		v17.u0 = 0x01;
+		v16 += v17;
+		loc5 = v16;
+		v16 = loc5;
+		loc3 = v16;
 	}
-	v15 = arg2;
-	return v15;
+	v16 = arg2;
+	return v16;
 }
 
 // 001195BF: Stack Eq_n fn001195BF(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn001195BF(Eq_n arg0, Eq_n arg1)
 {
-	v11.u3 = g_t140030.u3;
-	loc10 = v11;
-	v11 = arg1;
-	v12.u0 = 0x18;
-	v11 <<= v12;
-	v12.u0 = 0x18;
-	v11 >>= v12;
-	v12.u0 = ~0x00;
-	v13 = v11 > v12;
-	loc8 = v13;
-	v11 = loc8;
-	if (v11)
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12 = arg1;
+	v13.u0 = 0x18;
+	v12 <<= v13;
+	v13.u0 = 0x18;
+	v12 >>= v13;
+	v13.u0 = ~0x00;
+	v14 = v12 > v13;
+	loc8 = v14;
+	v12 = loc8;
+	if (v12)
 	{
-		v11 = arg1;
-		v12.u0 = 0x18;
-		v11 <<= v12;
-		v12.u0 = 0x18;
-		v11 >>= v12;
-		loc2 = v11;
-		v11 = fn00119770();
-		loc3 = v11;
-		v11 = loc3;
-		v12 = loc2;
-		v14 = 0x02;
-		v12 <<= v14;
-		v11 += v12;
-		loc4 = v11;
-		v11 = loc4;
-		v11.u3 = *v11.u3;
-		loc5 = v11;
-		v11 = loc5;
-		v12.u0 = 0xFF;
-		v11 &= v12;
-		loc6 = v11;
-		v11 = loc6;
-		loc7 = v11;
+		v12 = arg1;
+		v13.u0 = 0x18;
+		v12 <<= v13;
+		v13.u0 = 0x18;
+		v12 >>= v13;
+		loc2 = v12;
+		v12 = fn00119770();
+		loc3 = v12;
+		v12 = loc3;
+		v13 = loc2;
+		v15 = 0x02;
+		v13 <<= v15;
+		v12 += v13;
+		loc4 = v12;
+		v12 = loc4;
+		v12.u3 = *v12.u3;
+		loc5 = v12;
+		v12 = loc5;
+		v13.u0 = 0xFF;
+		v12 &= v13;
+		loc6 = v12;
+		v12 = loc6;
+		loc7 = v12;
 	}
 	else
 	{
-		v11 = arg1;
-		loc7 = v11;
+		v12 = arg1;
+		loc7 = v12;
 	}
-	v11 = loc7;
-	return v11;
+	v12 = loc7;
+	return v12;
 }
 
 // 0011960D: Stack Eq_n fn0011960D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
@@ -13344,83 +13344,83 @@ Eq_n fn0011960D(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
 	while (true)
 	{
-		v15.u3 = g_t140030.u3;
-		loc15 = v15;
-		v15 = arg1;
-		loc3 = v15;
-		v15 = loc3;
-		v16 = arg2;
-		v17 = v15 == v16;
-		loc6 = v17;
-		v15 = loc6;
-		if (v15)
+		v16.u3 = g_t140030.u3;
+		loc15 = v16;
+		v16 = arg1;
+		loc3 = v16;
+		v16 = loc3;
+		v17 = arg2;
+		v18 = v16 == v17;
+		loc6 = v18;
+		v16 = loc6;
+		if (v16)
 			break;
-		v15 = loc3;
-		v18.u3 = *v15.u3;
-		v15.u3 = (word32) v18;
-		loc7 = v15;
-		v15 = loc7;
-		v16.u0 = 0x18;
-		v15 <<= v16;
-		v16.u0 = 0x18;
-		v15 >>= v16;
-		v16.u0 = ~0x00;
-		v17 = v15 > v16;
-		loc13 = v17;
-		v15 = loc13;
-		if (v15)
+		v16 = loc3;
+		v19.u3 = *v16.u3;
+		v16.u3 = (word32) v19;
+		loc7 = v16;
+		v16 = loc7;
+		v17.u0 = 0x18;
+		v16 <<= v17;
+		v17.u0 = 0x18;
+		v16 >>= v17;
+		v17.u0 = ~0x00;
+		v18 = v16 > v17;
+		loc13 = v18;
+		v16 = loc13;
+		if (v16)
 		{
-			v15 = loc7;
-			v16.u0 = 0x18;
-			v15 <<= v16;
-			v16.u0 = 0x18;
-			v15 >>= v16;
-			loc8 = v15;
-			v15 = fn00119770();
-			loc9 = v15;
-			v15 = loc9;
-			v16 = loc8;
-			v19 = 0x02;
-			v16 <<= v19;
-			v15 += v16;
-			loc10 = v15;
-			v15 = loc10;
-			v15.u3 = *v15.u3;
-			loc11 = v15;
-			v15 = loc11;
-			v16.u0 = 0xFF;
-			v15 &= v16;
-			loc12 = v15;
-			v15 = loc12;
-			loc4 = v15;
+			v16 = loc7;
+			v17.u0 = 0x18;
+			v16 <<= v17;
+			v17.u0 = 0x18;
+			v16 >>= v17;
+			loc8 = v16;
+			v16 = fn00119770();
+			loc9 = v16;
+			v16 = loc9;
+			v17 = loc8;
+			v20 = 0x02;
+			v17 <<= v20;
+			v16 += v17;
+			loc10 = v16;
+			v16 = loc10;
+			v16.u3 = *v16.u3;
+			loc11 = v16;
+			v16 = loc11;
+			v17.u0 = 0xFF;
+			v16 &= v17;
+			loc12 = v16;
+			v16 = loc12;
+			loc4 = v16;
 		}
 		else
 		{
-			v15 = loc7;
-			loc4 = v15;
+			v16 = loc7;
+			loc4 = v16;
 		}
-		v15 = loc3;
-		v16 = loc4;
-		v20 = (byte) v16;
-		v15.u4->t0000.u0 = (bool) v20;
-		v15 = loc3;
-		v16.u0 = 0x01;
-		v15 += v16;
-		loc5 = v15;
-		v15 = loc5;
-		loc3 = v15;
+		v16 = loc3;
+		v17 = loc4;
+		v21 = (byte) v17;
+		v16.u4->t0000.u0 = (bool) v21;
+		v16 = loc3;
+		v17.u0 = 0x01;
+		v16 += v17;
+		loc5 = v16;
+		v16 = loc5;
+		loc3 = v16;
 	}
-	v15 = arg2;
-	return v15;
+	v16 = arg2;
+	return v16;
 }
 
 // 0011968E: Stack Eq_n fn0011968E(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn0011968E(Eq_n arg0, Eq_n arg1)
 {
-	v4.u3 = g_t140030.u3;
-	loc3 = v4;
-	v4 = arg1;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v5 = arg1;
+	return v5;
 }
 
 // 00119699: Stack Eq_n fn00119699(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
@@ -13428,979 +13428,8 @@ Eq_n fn00119699(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
 	while (true)
 	{
-		v10.u3 = g_t140030.u3;
-		loc11 = v10;
-		v10 = arg3;
-		loc4 = v10;
-		v10 = arg1;
-		loc5 = v10;
-		v10 = loc5;
-		v11 = arg2;
-		v12 = v10 == v11;
-		loc6 = v12;
-		v10 = loc6;
-		if (v10)
-			break;
-		v10 = loc5;
-		v13.u3 = *v10.u3;
-		v10.u3 = (word32) v13;
-		loc7 = v10;
-		v10 = loc4;
-		v11 = loc7;
-		v14 = (byte) v11;
-		v10.u4->t0000.u0 = (bool) v14;
-		v10 = loc5;
-		v11.u0 = 0x01;
-		v10 += v11;
-		loc8 = v10;
-		v10 = loc4;
-		v11.u0 = 0x01;
-		v10 += v11;
-		loc9 = v10;
-		v10 = loc9;
-		loc4 = v10;
-		v10 = loc8;
-		loc5 = v10;
-	}
-	v10 = arg2;
-	return v10;
-}
-
-// 001196E6: Stack Eq_n fn001196E6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn001196E6(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v6.u3 = g_t140030.u3;
-	loc6 = v6;
-	v6 = arg1;
-	v7.u0 = 0x18;
-	v6 <<= v7;
-	v7.u0 = 0x18;
-	v6 >>= v7;
-	v7.u0 = ~0x00;
-	v8 = v6 > v7;
-	loc4 = v8;
-	v6 = loc4;
-	if (v6)
-		v6 = arg1;
-	else
-		v6 = arg2;
-	loc3 = v6;
-	v6 = loc3;
-	return v6;
-}
-
-// 0011970A: Stack Eq_n fn0011970A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
-Eq_n fn0011970A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
-{
-	while (true)
-	{
-		v12.u3 = g_t140030.u3;
-		loc14 = v12;
-		v12 = arg4;
-		loc6 = v12;
-		v12 = arg1;
-		loc7 = v12;
-		v12 = loc7;
-		v13 = arg2;
-		v14 = v12 == v13;
-		loc8 = v14;
-		v12 = loc8;
-		if (v12)
-			break;
-		v12 = loc7;
-		v15.u3 = *v12.u3;
-		v12.u3 = (word32) v15;
-		loc9 = v12;
-		v12 = loc9;
-		v13.u0 = 0x18;
-		v12 <<= v13;
-		v13.u0 = 0x18;
-		v12 >>= v13;
-		v13.u0 = ~0x00;
-		v14 = v12 > v13;
-		loc12 = v14;
-		v12 = loc12;
-		if (v12)
-			v12 = loc9;
-		else
-			v12 = arg3;
-		loc5 = v12;
-		v12 = loc6;
-		v13 = loc5;
-		v16 = (byte) v13;
-		v12.u4->t0000.u0 = (bool) v16;
-		v12 = loc7;
-		v13.u0 = 0x01;
-		v12 += v13;
-		loc10 = v12;
-		v12 = loc6;
-		v13.u0 = 0x01;
-		v12 += v13;
-		loc11 = v12;
-		v12 = loc11;
-		loc6 = v12;
-		v12 = loc10;
-		loc7 = v12;
-	}
-	v12 = arg2;
-	return v12;
-}
-
-// 00119770: Stack Eq_n fn00119770()
-Eq_n fn00119770()
-{
-	v10.u3 = g_t140030.u3;
-	loc7 = v10;
-	v10.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v10;
-	v10.u0 = 447;
-	v10 = invoke_i(v10);
-	loc0 = v10;
-	v10.u3 = g_t140048.u3;
-	loc1 = v10;
-	v10.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v10;
-	v10 = loc1;
-	v11 = 0x01;
-	v10 &= v11;
-	loc2 = v10;
-	v10 = loc2;
-	if (!v10)
-	{
-		v10 = loc0;
-		v10.u3 = *v10.u3;
-		loc3 = v10;
-		v10 = loc3;
-		return v10;
-	}
-	else
-	{
-		v10.u0 = 0x00;
-		v10 = ___cxa_find_matching_catch_n(v10);
-		loc4 = v10;
-		v10.u3 = g_t140094.u3;
-		loc5 = v10;
-		v10 = loc4;
-		fn000D0E65(v10);
-		v10.u0 = 0x00;
-		return v10;
-	}
-}
-
-// 001197B3: Stack Eq_n fn001197B3()
-Eq_n fn001197B3()
-{
-	v10.u3 = g_t140030.u3;
-	loc7 = v10;
-	v10.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v10;
-	v10.u0 = 448;
-	v10 = invoke_i(v10);
-	loc0 = v10;
-	v10.u3 = g_t140048.u3;
-	loc1 = v10;
-	v10.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v10;
-	v10 = loc1;
-	v11 = 0x01;
-	v10 &= v11;
-	loc2 = v10;
-	v10 = loc2;
-	if (!v10)
-	{
-		v10 = loc0;
-		v10.u3 = *v10.u3;
-		loc3 = v10;
-		v10 = loc3;
-		return v10;
-	}
-	else
-	{
-		v10.u0 = 0x00;
-		v10 = ___cxa_find_matching_catch_n(v10);
-		loc4 = v10;
-		v10.u3 = g_t140094.u3;
-		loc5 = v10;
-		v10 = loc4;
-		fn000D0E65(v10);
-		v10.u0 = 0x00;
-		return v10;
-	}
-}
-
-// 001197F6: Stack Eq_n fn001197F6()
-Eq_n fn001197F6()
-{
-	v10.u3 = g_t140030.u3;
-	loc7 = v10;
-	v10.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v10;
-	v10.u0 = 0x01C1;
-	v10 = invoke_i(v10);
-	loc0 = v10;
-	v10.u3 = g_t140048.u3;
-	loc1 = v10;
-	v10.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v10;
-	v10 = loc1;
-	v11 = 0x01;
-	v10 &= v11;
-	loc2 = v10;
-	v10 = loc2;
-	if (!v10)
-	{
-		v10 = loc0;
-		v10.u3 = *v10.u3;
-		loc3 = v10;
-		v10 = loc3;
-		return v10;
-	}
-	else
-	{
-		v10.u0 = 0x00;
-		v10 = ___cxa_find_matching_catch_n(v10);
-		loc4 = v10;
-		v10.u3 = g_t140094.u3;
-		loc5 = v10;
-		v10 = loc4;
-		fn000D0E65(v10);
-		v10.u0 = 0x00;
-		return v10;
-	}
-}
-
-// 00119839: void fn00119839(Stack Eq_n arg0)
-void fn00119839(Eq_n arg0)
-{
-	v5.u3 = g_t140030.u3;
-	loc3 = v5;
-	v5 = arg0;
-	v6.u0 = 0x24F0;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v6.u0 = 0x0C;
-	v5 += v6;
-	loc1 = v5;
-	v5 = loc1;
-	fn0011BAF7(v5);
-}
-
-// 00119857: void fn00119857(Stack Eq_n arg0)
-void fn00119857(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn00119839(v4);
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 0011986A: Stack Eq_n fn0011986A(Stack Eq_n arg0)
-Eq_n fn0011986A(Eq_n arg0)
-{
-	v6.u3 = g_t140030.u3;
-	loc4 = v6;
-	v6 = arg0;
-	v7 = 0x08;
-	v6.u3 += v7;
-	loc1 = v6;
-	v6 = loc1;
-	v8.u3 = *v6.u3;
-	v6.u3 = (word32) v8;
-	loc2 = v6;
-	v6 = loc2;
-	return v6;
-}
-
-// 00119883: Stack Eq_n fn00119883(Stack Eq_n arg0)
-Eq_n fn00119883(Eq_n arg0)
-{
-	v6.u3 = g_t140030.u3;
-	loc4 = v6;
-	v6 = arg0;
-	v7 = 0x09;
-	v6.u3 += v7;
-	loc1 = v6;
-	v6 = loc1;
-	v8.u3 = *v6.u3;
-	v6.u3 = (word32) v8;
-	loc2 = v6;
-	v6 = loc2;
-	return v6;
-}
-
-// 0011989C: void fn0011989C(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011989C(Eq_n arg0, Eq_n arg1)
-{
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5 = arg1;
-	v6.u0 = 0x0C;
-	v5 += v6;
-	loc2 = v5;
-	v5 = arg0;
-	v6 = loc2;
-	fn0011B8FA(v5, v6);
-}
-
-// 001198B3: void fn001198B3(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn001198B3(Eq_n arg0, Eq_n arg1)
-{
-	v4.u3 = g_t140030.u3;
-	loc3 = v4;
-	v4 = arg0;
-	v5.u0 = 0x00;
-	*v4.u3 = (word32) v5;
-	v4 = arg0;
-	v6.u0 = 0x08;
-	v4 += v6;
-	v6.u0 = 0x00;
-	*v4.u3 = (word32) v6;
-	v4 = arg0;
-	v6.u0 = 0x4001;
-	v7.u0 = 0x04;
-	fn0011B96D(v4, v6, v7);
-}
-
-// 001198D8: void fn001198D8(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn001198D8(Eq_n arg0, Eq_n arg1)
-{
-	v4.u3 = g_t140030.u3;
-	loc3 = v4;
-	v4 = arg0;
-	v5.u0 = 0x00;
-	*v4.u3 = (word32) v5;
-	v4 = arg0;
-	v6.u0 = 0x08;
-	v4 += v6;
-	v6.u0 = 0x00;
-	*v4.u3 = (word32) v6;
-	v4 = arg0;
-	v6.u0 = 0x3FFB;
-	v7.u0 = 0x05;
-	fn0011B96D(v4, v6, v7);
-}
-
-// 001198FD: void fn001198FD(Stack Eq_n arg0)
-void fn001198FD(Eq_n arg0)
-{
-	v5.u3 = g_t140030.u3;
-	loc3 = v5;
-	v5 = arg0;
-	v6.u0 = 9496;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v6.u0 = 0x10;
-	v5 += v6;
-	loc1 = v5;
-	v5 = loc1;
-	fn0011BAF7(v5);
-}
-
-// 0011991B: void fn0011991B(Stack Eq_n arg0)
-void fn0011991B(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn001198FD(v4);
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 0011992E: Stack Eq_n fn0011992E(Stack Eq_n arg0)
-Eq_n fn0011992E(Eq_n arg0)
-{
-	v6.u3 = g_t140030.u3;
-	loc4 = v6;
-	v6 = arg0;
-	v7 = 0x08;
-	v6.u3 += v7;
-	loc1 = v6;
-	v6 = loc1;
-	v6.u3 = *v6.u3;
-	loc2 = v6;
-	v6 = loc2;
-	return v6;
-}
-
-// 00119947: Stack Eq_n fn00119947(Stack Eq_n arg0)
-Eq_n fn00119947(Eq_n arg0)
-{
-	v6.u3 = g_t140030.u3;
-	loc4 = v6;
-	v6 = arg0;
-	v7 = 0x0C;
-	v6.u3 += v7;
-	loc1 = v6;
-	v6 = loc1;
-	v6.u3 = *v6.u3;
-	loc2 = v6;
-	v6 = loc2;
-	return v6;
-}
-
-// 00119960: void fn00119960(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn00119960(Eq_n arg0, Eq_n arg1)
-{
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5 = arg1;
-	v6.u0 = 0x10;
-	v5 += v6;
-	loc2 = v5;
-	v5 = arg0;
-	v6 = loc2;
-	fn0011B8FA(v5, v6);
-}
-
-// 00119977: void fn00119977(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn00119977(Eq_n arg0, Eq_n arg1)
-{
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5 = arg0;
-	v6.u0 = 0x00;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v7.u0 = 0x08;
-	v5 += v7;
-	v7.u0 = 0x00;
-	*v5.u3 = (word32) v7;
-	v5.u0 = 0x2550;
-	v5 = fn000D7B05(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v7.u0 = 0x2550;
-	v8 = loc2;
-	fn0011C5CF(v5, v7, v8);
-}
-
-// 001199A5: void fn001199A5(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn001199A5(Eq_n arg0, Eq_n arg1)
-{
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5 = arg0;
-	v6.u0 = 0x00;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v7.u0 = 0x08;
-	v5 += v7;
-	v7.u0 = 0x00;
-	*v5.u3 = (word32) v7;
-	v5.u0 = 0x2538;
-	v5 = fn000D7B05(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v7.u0 = 0x2538;
-	v8 = loc2;
-	fn0011C5CF(v5, v7, v8);
-}
-
-// 001199D3: void fn001199D3(Stack Eq_n arg0)
-void fn001199D3(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 001199E1: void fn001199E1(Stack Eq_n arg0)
-void fn001199E1(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 001199EF: Stack Eq_n fn001199EF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn001199EF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v11.u3 = g_t140030.u3;
-	loc11 = v11;
-	v11 = arg2;
-	v12.u0 = 0x80;
-	v13 = v11 < v12;
-	loc9 = v13;
-	v11 = loc9;
-	if (v11)
-	{
-		v11 = fn001197F6();
-		loc3 = v11;
-		v11 = loc3;
-		v12 = arg2;
-		v14 = 0x01;
-		v12 <<= v14;
-		v11 += v12;
-		loc4 = v11;
-		v11 = loc4;
-		v15.u3 = *v11.u3;
-		v11.u3 = (word32) v15;
-		loc5 = v11;
-		v11 = loc5;
-		v12 = arg1;
-		v11 &= v12;
-		loc6 = v11;
-		v11 = loc6;
-		v12.u0 = 0x10;
-		v11 <<= v12;
-		v12.u0 = 0x10;
-		v11 >>= v12;
-		v12.u0 = 0x00;
-		v13 = v11 != v12;
-		loc7 = v13;
-		v11 = loc7;
-		loc8 = v11;
-	}
-	else
-	{
-		v11.u0 = 0x00;
-		loc8 = v11;
-	}
-	v11 = loc8;
-	return v11;
-}
-
-// 00119A3A: Stack Eq_n fn00119A3A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-Eq_n fn00119A3A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	while (true)
-	{
-		v17.u3 = g_t140030.u3;
-		loc18 = v17;
-		v17 = arg3;
-		loc4 = v17;
-		v17 = arg1;
-		loc5 = v17;
-		v17 = loc5;
-		v18 = arg2;
-		v19 = v17 == v18;
-		loc10 = v19;
-		v17 = loc10;
-		if (v17)
-			break;
-		v17 = loc5;
-		v17.u3 = *v17.u3;
-		loc11 = v17;
-		v17 = loc11;
-		v18.u0 = 0x80;
-		v19 = v17 < v18;
-		loc16 = v19;
-		v17 = loc16;
-		if (v17)
-		{
-			v17 = fn001197F6();
-			loc12 = v17;
-			v17 = loc12;
-			v18 = loc11;
-			v20 = 0x01;
-			v18 <<= v20;
-			v17 += v18;
-			loc13 = v17;
-			v17 = loc13;
-			v21.u2 = v17.u4->t0000.u2;
-			v17.u3 = (word32) v21;
-			loc14 = v17;
-			v17 = loc14;
-			v18.u0 = 0xFFFF;
-			v17 &= v18;
-			loc15 = v17;
-			v17 = loc15;
-			loc7 = v17;
-		}
-		else
-		{
-			v17.u0 = 0x00;
-			loc7 = v17;
-		}
-		v17 = loc7;
-		v18.u0 = 0xFFFF;
-		v17 &= v18;
-		loc6 = v17;
-		v17 = loc4;
-		v18 = loc6;
-		v22 = (word16) v18;
-		*v17.u0 = v22;
-		v17 = loc5;
-		v18.u0 = 0x04;
-		v17 += v18;
-		loc8 = v17;
-		v17 = loc4;
-		v18.u0 = 0x02;
-		v17 += v18;
-		loc9 = v17;
-		v17 = loc9;
-		loc4 = v17;
-		v17 = loc8;
-		loc5 = v17;
-	}
-	v17 = arg2;
-	return v17;
-}
-
-// 00119AC5: Stack Eq_n fn00119AC5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-Eq_n fn00119AC5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	while (true)
-	{
-		v15.u3 = g_t140030.u3;
-		loc16 = v15;
-		v15 = arg2;
-		loc4 = v15;
-		v15 = loc4;
-		v16 = arg3;
-		v17 = v15 == v16;
-		loc8 = v17;
-		v15 = loc8;
-		if (v15)
-			break;
-		v15 = loc4;
-		v15.u3 = *v15.u3;
-		loc9 = v15;
-		v15 = loc9;
-		v16.u0 = 0x80;
-		v17 = v15 < v16;
-		loc14 = v17;
-		v15 = loc14;
-		if (v15)
-		{
-			v15 = fn001197F6();
-			loc10 = v15;
-			v15 = loc10;
-			v16 = loc9;
-			v18 = 0x01;
-			v16 <<= v18;
-			v15 += v16;
-			loc11 = v15;
-			v15 = loc11;
-			v19.u2 = v15.u4->t0000.u2;
-			v15.u3 = (word32) v19;
-			loc12 = v15;
-			v15 = loc12;
-			v16 = arg1;
-			v15 &= v16;
-			loc13 = v15;
-			v15 = loc13;
-			v16.u0 = 0x10;
-			v15 <<= v16;
-			v16.u0 = 0x10;
-			v15 >>= v16;
-			v16.u0 = 0x00;
-			v17 = v15 == v16;
-			loc6 = v17;
-			v15 = loc6;
-			v17 = v15 == 0x00;
-			if (v17)
-			{
-				v15 = loc4;
-				loc5 = v15;
-				goto l00119B3C;
-			}
-		}
-		v15 = loc4;
-		v16.u0 = 0x04;
-		v15 += v16;
-		loc7 = v15;
-		v15 = loc7;
-		loc4 = v15;
-	}
-	v15 = arg3;
-	loc5 = v15;
-l00119B3C:
-	v15 = loc5;
-	return v15;
-}
-
-// 00119B43: Stack Eq_n fn00119B43(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-Eq_n fn00119B43(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	while (true)
-	{
-		v15.u3 = g_t140030.u3;
-		loc16 = v15;
-		v15 = arg2;
-		loc4 = v15;
-		v15 = loc4;
-		v16 = arg3;
-		v17 = v15 == v16;
-		loc8 = v17;
-		v15 = loc8;
-		if (v15)
-			break;
-		v15 = loc4;
-		v15.u3 = *v15.u3;
-		loc9 = v15;
-		v15 = loc9;
-		v16.u0 = 0x80;
-		v17 = v15 < v16;
-		loc14 = v17;
-		v15 = loc14;
-		v17 = v15 == 0x00;
-		if (v17)
-		{
-			v15 = loc4;
-			loc5 = v15;
-			goto l00119BC0;
-		}
-		v15 = fn001197F6();
-		loc10 = v15;
-		v15 = loc10;
-		v16 = loc9;
-		v18 = 0x01;
-		v16 <<= v18;
-		v15 += v16;
-		loc11 = v15;
-		v15 = loc11;
-		v19.u2 = v15.u4->t0000.u2;
-		v15.u3 = (word32) v19;
-		loc12 = v15;
-		v15 = loc12;
-		v16 = arg1;
-		v15 &= v16;
-		loc13 = v15;
-		v15 = loc13;
-		v16.u0 = 0x10;
-		v15 <<= v16;
-		v16.u0 = 0x10;
-		v15 >>= v16;
-		v16.u0 = 0x00;
-		v17 = v15 == v16;
-		loc6 = v17;
-		v15 = loc6;
-		if (v15)
-		{
-			v15 = loc4;
-			loc5 = v15;
-			goto l00119BC0;
-		}
-		v15 = loc4;
-		v16.u0 = 0x04;
-		v15 += v16;
-		loc7 = v15;
-		v15 = loc7;
-		loc4 = v15;
-	}
-	v15 = arg3;
-	loc5 = v15;
-l00119BC0:
-	v15 = loc5;
-	return v15;
-}
-
-// 00119BC7: Stack Eq_n fn00119BC7(Stack Eq_n arg0, Stack Eq_n arg1)
-Eq_n fn00119BC7(Eq_n arg0, Eq_n arg1)
-{
-	v9.u3 = g_t140030.u3;
-	loc8 = v9;
-	v9 = arg1;
-	v10.u0 = 0x80;
-	v11 = v9 < v10;
-	loc6 = v11;
-	v9 = loc6;
-	if (v9)
-	{
-		v9 = fn001197B3();
-		loc2 = v9;
-		v9 = loc2;
-		v10 = arg1;
-		v12 = 0x02;
-		v10 <<= v12;
-		v9 += v10;
-		loc3 = v9;
-		v9 = loc3;
-		v9.u3 = *v9.u3;
-		loc4 = v9;
-		v9 = loc4;
-		loc5 = v9;
-	}
-	else
-	{
-		v9 = arg1;
-		loc5 = v9;
-	}
-	v9 = loc5;
-	return v9;
-}
-
-// 00119BFE: Stack Eq_n fn00119BFE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn00119BFE(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	while (true)
-	{
-		v13.u3 = g_t140030.u3;
-		loc13 = v13;
-		v13 = arg1;
-		loc3 = v13;
-		v13 = loc3;
-		v14 = arg2;
-		v15 = v13 == v14;
-		loc4 = v15;
-		v13 = loc4;
-		if (v13)
-			break;
-		v13 = loc3;
-		v13.u3 = *v13.u3;
-		loc5 = v13;
-		v13 = loc5;
-		v14.u0 = 0x80;
-		v15 = v13 < v14;
-		loc11 = v15;
-		v13 = loc11;
-		if (v13)
-		{
-			v13 = fn001197B3();
-			loc6 = v13;
-			v13 = loc6;
-			v14 = loc5;
-			v16 = 0x02;
-			v14 <<= v16;
-			v13 += v14;
-			loc7 = v13;
-			v13 = loc7;
-			v13.u3 = *v13.u3;
-			loc8 = v13;
-			v13 = loc8;
-			loc9 = v13;
-		}
-		else
-		{
-			v13 = loc5;
-			loc9 = v13;
-		}
-		v13 = loc3;
-		v14 = loc9;
-		*v13.u3 = (word32) v14;
-		v13 = loc3;
-		v14.u0 = 0x04;
-		v13 += v14;
-		loc10 = v13;
-		v13 = loc10;
-		loc3 = v13;
-	}
-	v13 = arg2;
-	return v13;
-}
-
-// 00119C68: Stack Eq_n fn00119C68(Stack Eq_n arg0, Stack Eq_n arg1)
-Eq_n fn00119C68(Eq_n arg0, Eq_n arg1)
-{
-	v9.u3 = g_t140030.u3;
-	loc8 = v9;
-	v9 = arg1;
-	v10.u0 = 0x80;
-	v11 = v9 < v10;
-	loc6 = v11;
-	v9 = loc6;
-	if (v9)
-	{
-		v9 = fn00119770();
-		loc2 = v9;
-		v9 = loc2;
-		v10 = arg1;
-		v12 = 0x02;
-		v10 <<= v12;
-		v9 += v10;
-		loc3 = v9;
-		v9 = loc3;
-		v9.u3 = *v9.u3;
-		loc4 = v9;
-		v9 = loc4;
-		loc5 = v9;
-	}
-	else
-	{
-		v9 = arg1;
-		loc5 = v9;
-	}
-	v9 = loc5;
-	return v9;
-}
-
-// 00119C9F: Stack Eq_n fn00119C9F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn00119C9F(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	while (true)
-	{
-		v13.u3 = g_t140030.u3;
-		loc13 = v13;
-		v13 = arg1;
-		loc3 = v13;
-		v13 = loc3;
-		v14 = arg2;
-		v15 = v13 == v14;
-		loc4 = v15;
-		v13 = loc4;
-		if (v13)
-			break;
-		v13 = loc3;
-		v13.u3 = *v13.u3;
-		loc5 = v13;
-		v13 = loc5;
-		v14.u0 = 0x80;
-		v15 = v13 < v14;
-		loc11 = v15;
-		v13 = loc11;
-		if (v13)
-		{
-			v13 = fn00119770();
-			loc6 = v13;
-			v13 = loc6;
-			v14 = loc5;
-			v16 = 0x02;
-			v14 <<= v16;
-			v13 += v14;
-			loc7 = v13;
-			v13 = loc7;
-			v13.u3 = *v13.u3;
-			loc8 = v13;
-			v13 = loc8;
-			loc9 = v13;
-		}
-		else
-		{
-			v13 = loc5;
-			loc9 = v13;
-		}
-		v13 = loc3;
-		v14 = loc9;
-		*v13.u3 = (word32) v14;
-		v13 = loc3;
-		v14.u0 = 0x04;
-		v13 += v14;
-		loc10 = v13;
-		v13 = loc10;
-		loc3 = v13;
-	}
-	v13 = arg2;
-	return v13;
-}
-
-// 00119D09: Stack Eq_n fn00119D09(Stack Eq_n arg0, Stack Eq_n arg1)
-Eq_n fn00119D09(Eq_n arg0, Eq_n arg1)
-{
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5 = arg1;
-	v6 = 0x18;
-	v5 <<= v6;
-	v6 = 0x18;
-	v5 >>= v6;
-	loc2 = v5;
-	v5 = loc2;
-	return v5;
-}
-
-// 00119D1E: Stack Eq_n fn00119D1E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-Eq_n fn00119D1E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	while (true)
-	{
 		v11.u3 = g_t140030.u3;
-		loc12 = v11;
+		loc11 = v11;
 		v11 = arg3;
 		loc4 = v11;
 		v11 = arg1;
@@ -14416,48 +13445,43 @@ Eq_n fn00119D1E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 		v14.u3 = *v11.u3;
 		v11.u3 = (word32) v14;
 		loc7 = v11;
-		v11 = loc7;
-		v12.u0 = 0x18;
-		v11 <<= v12;
-		v12.u0 = 0x18;
-		v11 >>= v12;
-		loc8 = v11;
 		v11 = loc4;
-		v12 = loc8;
-		*v11.u3 = (word32) v12;
+		v12 = loc7;
+		v15 = (byte) v12;
+		v11.u4->t0000.u0 = (bool) v15;
 		v11 = loc5;
 		v12.u0 = 0x01;
 		v11 += v12;
-		loc9 = v11;
+		loc8 = v11;
 		v11 = loc4;
-		v12.u0 = 0x04;
+		v12.u0 = 0x01;
 		v11 += v12;
-		loc10 = v11;
-		v11 = loc10;
-		loc4 = v11;
+		loc9 = v11;
 		v11 = loc9;
+		loc4 = v11;
+		v11 = loc8;
 		loc5 = v11;
 	}
 	v11 = arg2;
 	return v11;
 }
 
-// 00119D75: Stack Eq_n fn00119D75(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn00119D75(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+// 001196E6: Stack Eq_n fn001196E6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn001196E6(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
 	v7.u3 = g_t140030.u3;
-	loc7 = v7;
+	loc6 = v7;
 	v7 = arg1;
-	v8.u0 = 0x80;
-	v9 = v7 < v8;
-	loc5 = v9;
-	v7 = arg1;
-	v8.u0 = 0xFF;
-	v7 &= v8;
-	loc4 = v7;
-	v7 = loc5;
+	v8.u0 = 0x18;
+	v7 <<= v8;
+	v8.u0 = 0x18;
+	v7 >>= v8;
+	v8.u0 = ~0x00;
+	v9 = v7 > v8;
+	loc4 = v9;
+	v7 = loc4;
 	if (v7)
-		v7 = loc4;
+		v7 = arg1;
 	else
 		v7 = arg2;
 	loc3 = v7;
@@ -14465,1144 +13489,2120 @@ Eq_n fn00119D75(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 	return v7;
 }
 
+// 0011970A: Stack Eq_n fn0011970A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+Eq_n fn0011970A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+	while (true)
+	{
+		v13.u3 = g_t140030.u3;
+		loc14 = v13;
+		v13 = arg4;
+		loc6 = v13;
+		v13 = arg1;
+		loc7 = v13;
+		v13 = loc7;
+		v14 = arg2;
+		v15 = v13 == v14;
+		loc8 = v15;
+		v13 = loc8;
+		if (v13)
+			break;
+		v13 = loc7;
+		v16.u3 = *v13.u3;
+		v13.u3 = (word32) v16;
+		loc9 = v13;
+		v13 = loc9;
+		v14.u0 = 0x18;
+		v13 <<= v14;
+		v14.u0 = 0x18;
+		v13 >>= v14;
+		v14.u0 = ~0x00;
+		v15 = v13 > v14;
+		loc12 = v15;
+		v13 = loc12;
+		if (v13)
+			v13 = loc9;
+		else
+			v13 = arg3;
+		loc5 = v13;
+		v13 = loc6;
+		v14 = loc5;
+		v17 = (byte) v14;
+		v13.u4->t0000.u0 = (bool) v17;
+		v13 = loc7;
+		v14.u0 = 0x01;
+		v13 += v14;
+		loc10 = v13;
+		v13 = loc6;
+		v14.u0 = 0x01;
+		v13 += v14;
+		loc11 = v13;
+		v13 = loc11;
+		loc6 = v13;
+		v13 = loc10;
+		loc7 = v13;
+	}
+	v13 = arg2;
+	return v13;
+}
+
+// 00119770: Stack Eq_n fn00119770()
+Eq_n fn00119770()
+{
+	v11.u3 = g_t140030.u3;
+	loc7 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11.u0 = 447;
+	v11 = invoke_i(v11);
+	loc0 = v11;
+	v11.u3 = g_t140048.u3;
+	loc1 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11 = loc1;
+	v12 = 0x01;
+	v11 &= v12;
+	loc2 = v11;
+	v11 = loc2;
+	if (!v11)
+	{
+		v11 = loc0;
+		v11.u3 = *v11.u3;
+		loc3 = v11;
+		v11 = loc3;
+		return v11;
+	}
+	else
+	{
+		v11.u0 = 0x00;
+		v11 = ___cxa_find_matching_catch_n(v11);
+		loc4 = v11;
+		v11.u3 = g_t140094.u3;
+		loc5 = v11;
+		v11 = loc4;
+		fn000D0E65(v11);
+		v11.u0 = 0x00;
+		return v11;
+	}
+}
+
+// 001197B3: Stack Eq_n fn001197B3()
+Eq_n fn001197B3()
+{
+	v11.u3 = g_t140030.u3;
+	loc7 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11.u0 = 448;
+	v11 = invoke_i(v11);
+	loc0 = v11;
+	v11.u3 = g_t140048.u3;
+	loc1 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11 = loc1;
+	v12 = 0x01;
+	v11 &= v12;
+	loc2 = v11;
+	v11 = loc2;
+	if (!v11)
+	{
+		v11 = loc0;
+		v11.u3 = *v11.u3;
+		loc3 = v11;
+		v11 = loc3;
+		return v11;
+	}
+	else
+	{
+		v11.u0 = 0x00;
+		v11 = ___cxa_find_matching_catch_n(v11);
+		loc4 = v11;
+		v11.u3 = g_t140094.u3;
+		loc5 = v11;
+		v11 = loc4;
+		fn000D0E65(v11);
+		v11.u0 = 0x00;
+		return v11;
+	}
+}
+
+// 001197F6: Stack Eq_n fn001197F6()
+Eq_n fn001197F6()
+{
+	v11.u3 = g_t140030.u3;
+	loc7 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11.u0 = 0x01C1;
+	v11 = invoke_i(v11);
+	loc0 = v11;
+	v11.u3 = g_t140048.u3;
+	loc1 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11 = loc1;
+	v12 = 0x01;
+	v11 &= v12;
+	loc2 = v11;
+	v11 = loc2;
+	if (!v11)
+	{
+		v11 = loc0;
+		v11.u3 = *v11.u3;
+		loc3 = v11;
+		v11 = loc3;
+		return v11;
+	}
+	else
+	{
+		v11.u0 = 0x00;
+		v11 = ___cxa_find_matching_catch_n(v11);
+		loc4 = v11;
+		v11.u3 = g_t140094.u3;
+		loc5 = v11;
+		v11 = loc4;
+		fn000D0E65(v11);
+		v11.u0 = 0x00;
+		return v11;
+	}
+}
+
+// 00119839: void fn00119839(Stack Eq_n arg0)
+void fn00119839(Eq_n arg0)
+{
+	v6.u3 = g_t140030.u3;
+	loc3 = v6;
+	v6 = arg0;
+	v7.u0 = 0x24F0;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v7.u0 = 0x0C;
+	v6 += v7;
+	loc1 = v6;
+	v6 = loc1;
+	fn0011BAF7(v6);
+}
+
+// 00119857: void fn00119857(Stack Eq_n arg0)
+void fn00119857(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn00119839(v5);
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 0011986A: Stack Eq_n fn0011986A(Stack Eq_n arg0)
+Eq_n fn0011986A(Eq_n arg0)
+{
+	v7.u3 = g_t140030.u3;
+	loc4 = v7;
+	v7 = arg0;
+	v8 = 0x08;
+	v7.u3 += v8;
+	loc1 = v7;
+	v7 = loc1;
+	v9.u3 = *v7.u3;
+	v7.u3 = (word32) v9;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
+}
+
+// 00119883: Stack Eq_n fn00119883(Stack Eq_n arg0)
+Eq_n fn00119883(Eq_n arg0)
+{
+	v7.u3 = g_t140030.u3;
+	loc4 = v7;
+	v7 = arg0;
+	v8 = 0x09;
+	v7.u3 += v8;
+	loc1 = v7;
+	v7 = loc1;
+	v9.u3 = *v7.u3;
+	v7.u3 = (word32) v9;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
+}
+
+// 0011989C: void fn0011989C(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011989C(Eq_n arg0, Eq_n arg1)
+{
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6 = arg1;
+	v7.u0 = 0x0C;
+	v6 += v7;
+	loc2 = v6;
+	v6 = arg0;
+	v7 = loc2;
+	fn0011B8FA(v6, v7);
+}
+
+// 001198B3: void fn001198B3(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn001198B3(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v5 = arg0;
+	v6.u0 = 0x00;
+	*v5.u3 = (word32) v6;
+	v5 = arg0;
+	v7.u0 = 0x08;
+	v5 += v7;
+	v7.u0 = 0x00;
+	*v5.u3 = (word32) v7;
+	v5 = arg0;
+	v7.u0 = 0x4001;
+	v8.u0 = 0x04;
+	fn0011B96D(v5, v7, v8);
+}
+
+// 001198D8: void fn001198D8(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn001198D8(Eq_n arg0, Eq_n arg1)
+{
+	v5.u3 = g_t140030.u3;
+	loc3 = v5;
+	v5 = arg0;
+	v6.u0 = 0x00;
+	*v5.u3 = (word32) v6;
+	v5 = arg0;
+	v7.u0 = 0x08;
+	v5 += v7;
+	v7.u0 = 0x00;
+	*v5.u3 = (word32) v7;
+	v5 = arg0;
+	v7.u0 = 0x3FFB;
+	v8.u0 = 0x05;
+	fn0011B96D(v5, v7, v8);
+}
+
+// 001198FD: void fn001198FD(Stack Eq_n arg0)
+void fn001198FD(Eq_n arg0)
+{
+	v6.u3 = g_t140030.u3;
+	loc3 = v6;
+	v6 = arg0;
+	v7.u0 = 9496;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v7.u0 = 0x10;
+	v6 += v7;
+	loc1 = v6;
+	v6 = loc1;
+	fn0011BAF7(v6);
+}
+
+// 0011991B: void fn0011991B(Stack Eq_n arg0)
+void fn0011991B(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn001198FD(v5);
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 0011992E: Stack Eq_n fn0011992E(Stack Eq_n arg0)
+Eq_n fn0011992E(Eq_n arg0)
+{
+	v7.u3 = g_t140030.u3;
+	loc4 = v7;
+	v7 = arg0;
+	v8 = 0x08;
+	v7.u3 += v8;
+	loc1 = v7;
+	v7 = loc1;
+	v7.u3 = *v7.u3;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
+}
+
+// 00119947: Stack Eq_n fn00119947(Stack Eq_n arg0)
+Eq_n fn00119947(Eq_n arg0)
+{
+	v7.u3 = g_t140030.u3;
+	loc4 = v7;
+	v7 = arg0;
+	v8 = 0x0C;
+	v7.u3 += v8;
+	loc1 = v7;
+	v7 = loc1;
+	v7.u3 = *v7.u3;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
+}
+
+// 00119960: void fn00119960(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn00119960(Eq_n arg0, Eq_n arg1)
+{
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6 = arg1;
+	v7.u0 = 0x10;
+	v6 += v7;
+	loc2 = v6;
+	v6 = arg0;
+	v7 = loc2;
+	fn0011B8FA(v6, v7);
+}
+
+// 00119977: void fn00119977(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn00119977(Eq_n arg0, Eq_n arg1)
+{
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6 = arg0;
+	v7.u0 = 0x00;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v8.u0 = 0x08;
+	v6 += v8;
+	v8.u0 = 0x00;
+	*v6.u3 = (word32) v8;
+	v6.u0 = 0x2550;
+	v6 = fn000D7B05(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v8.u0 = 0x2550;
+	v9 = loc2;
+	fn0011C5CF(v6, v8, v9);
+}
+
+// 001199A5: void fn001199A5(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn001199A5(Eq_n arg0, Eq_n arg1)
+{
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6 = arg0;
+	v7.u0 = 0x00;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v8.u0 = 0x08;
+	v6 += v8;
+	v8.u0 = 0x00;
+	*v6.u3 = (word32) v8;
+	v6.u0 = 0x2538;
+	v6 = fn000D7B05(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v8.u0 = 0x2538;
+	v9 = loc2;
+	fn0011C5CF(v6, v8, v9);
+}
+
+// 001199D3: void fn001199D3(Stack Eq_n arg0)
+void fn001199D3(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 001199E1: void fn001199E1(Stack Eq_n arg0)
+void fn001199E1(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 001199EF: Stack Eq_n fn001199EF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn001199EF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v12.u3 = g_t140030.u3;
+	loc11 = v12;
+	v12 = arg2;
+	v13.u0 = 0x80;
+	v14 = v12 < v13;
+	loc9 = v14;
+	v12 = loc9;
+	if (v12)
+	{
+		v12 = fn001197F6();
+		loc3 = v12;
+		v12 = loc3;
+		v13 = arg2;
+		v15 = 0x01;
+		v13 <<= v15;
+		v12 += v13;
+		loc4 = v12;
+		v12 = loc4;
+		v16.u3 = *v12.u3;
+		v12.u3 = (word32) v16;
+		loc5 = v12;
+		v12 = loc5;
+		v13 = arg1;
+		v12 &= v13;
+		loc6 = v12;
+		v12 = loc6;
+		v13.u0 = 0x10;
+		v12 <<= v13;
+		v13.u0 = 0x10;
+		v12 >>= v13;
+		v13.u0 = 0x00;
+		v14 = v12 != v13;
+		loc7 = v14;
+		v12 = loc7;
+		loc8 = v12;
+	}
+	else
+	{
+		v12.u0 = 0x00;
+		loc8 = v12;
+	}
+	v12 = loc8;
+	return v12;
+}
+
+// 00119A3A: Stack Eq_n fn00119A3A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn00119A3A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	while (true)
+	{
+		v18.u3 = g_t140030.u3;
+		loc18 = v18;
+		v18 = arg3;
+		loc4 = v18;
+		v18 = arg1;
+		loc5 = v18;
+		v18 = loc5;
+		v19 = arg2;
+		v20 = v18 == v19;
+		loc10 = v20;
+		v18 = loc10;
+		if (v18)
+			break;
+		v18 = loc5;
+		v18.u3 = *v18.u3;
+		loc11 = v18;
+		v18 = loc11;
+		v19.u0 = 0x80;
+		v20 = v18 < v19;
+		loc16 = v20;
+		v18 = loc16;
+		if (v18)
+		{
+			v18 = fn001197F6();
+			loc12 = v18;
+			v18 = loc12;
+			v19 = loc11;
+			v21 = 0x01;
+			v19 <<= v21;
+			v18 += v19;
+			loc13 = v18;
+			v18 = loc13;
+			v22.u2 = v18.u4->t0000.u2;
+			v18.u3 = (word32) v22;
+			loc14 = v18;
+			v18 = loc14;
+			v19.u0 = 0xFFFF;
+			v18 &= v19;
+			loc15 = v18;
+			v18 = loc15;
+			loc7 = v18;
+		}
+		else
+		{
+			v18.u0 = 0x00;
+			loc7 = v18;
+		}
+		v18 = loc7;
+		v19.u0 = 0xFFFF;
+		v18 &= v19;
+		loc6 = v18;
+		v18 = loc4;
+		v19 = loc6;
+		v23 = (word16) v19;
+		*v18.u0 = v23;
+		v18 = loc5;
+		v19.u0 = 0x04;
+		v18 += v19;
+		loc8 = v18;
+		v18 = loc4;
+		v19.u0 = 0x02;
+		v18 += v19;
+		loc9 = v18;
+		v18 = loc9;
+		loc4 = v18;
+		v18 = loc8;
+		loc5 = v18;
+	}
+	v18 = arg2;
+	return v18;
+}
+
+// 00119AC5: Stack Eq_n fn00119AC5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn00119AC5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	while (true)
+	{
+		v16.u3 = g_t140030.u3;
+		loc16 = v16;
+		v16 = arg2;
+		loc4 = v16;
+		v16 = loc4;
+		v17 = arg3;
+		v18 = v16 == v17;
+		loc8 = v18;
+		v16 = loc8;
+		if (v16)
+			break;
+		v16 = loc4;
+		v16.u3 = *v16.u3;
+		loc9 = v16;
+		v16 = loc9;
+		v17.u0 = 0x80;
+		v18 = v16 < v17;
+		loc14 = v18;
+		v16 = loc14;
+		if (v16)
+		{
+			v16 = fn001197F6();
+			loc10 = v16;
+			v16 = loc10;
+			v17 = loc9;
+			v19 = 0x01;
+			v17 <<= v19;
+			v16 += v17;
+			loc11 = v16;
+			v16 = loc11;
+			v20.u2 = v16.u4->t0000.u2;
+			v16.u3 = (word32) v20;
+			loc12 = v16;
+			v16 = loc12;
+			v17 = arg1;
+			v16 &= v17;
+			loc13 = v16;
+			v16 = loc13;
+			v17.u0 = 0x10;
+			v16 <<= v17;
+			v17.u0 = 0x10;
+			v16 >>= v17;
+			v17.u0 = 0x00;
+			v18 = v16 == v17;
+			loc6 = v18;
+			v16 = loc6;
+			v18 = v16 == 0x00;
+			if (v18)
+			{
+				v16 = loc4;
+				loc5 = v16;
+				goto l00119B3C;
+			}
+		}
+		v16 = loc4;
+		v17.u0 = 0x04;
+		v16 += v17;
+		loc7 = v16;
+		v16 = loc7;
+		loc4 = v16;
+	}
+	v16 = arg3;
+	loc5 = v16;
+l00119B3C:
+	v16 = loc5;
+	return v16;
+}
+
+// 00119B43: Stack Eq_n fn00119B43(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn00119B43(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	while (true)
+	{
+		v16.u3 = g_t140030.u3;
+		loc16 = v16;
+		v16 = arg2;
+		loc4 = v16;
+		v16 = loc4;
+		v17 = arg3;
+		v18 = v16 == v17;
+		loc8 = v18;
+		v16 = loc8;
+		if (v16)
+			break;
+		v16 = loc4;
+		v16.u3 = *v16.u3;
+		loc9 = v16;
+		v16 = loc9;
+		v17.u0 = 0x80;
+		v18 = v16 < v17;
+		loc14 = v18;
+		v16 = loc14;
+		v18 = v16 == 0x00;
+		if (v18)
+		{
+			v16 = loc4;
+			loc5 = v16;
+			goto l00119BC0;
+		}
+		v16 = fn001197F6();
+		loc10 = v16;
+		v16 = loc10;
+		v17 = loc9;
+		v19 = 0x01;
+		v17 <<= v19;
+		v16 += v17;
+		loc11 = v16;
+		v16 = loc11;
+		v20.u2 = v16.u4->t0000.u2;
+		v16.u3 = (word32) v20;
+		loc12 = v16;
+		v16 = loc12;
+		v17 = arg1;
+		v16 &= v17;
+		loc13 = v16;
+		v16 = loc13;
+		v17.u0 = 0x10;
+		v16 <<= v17;
+		v17.u0 = 0x10;
+		v16 >>= v17;
+		v17.u0 = 0x00;
+		v18 = v16 == v17;
+		loc6 = v18;
+		v16 = loc6;
+		if (v16)
+		{
+			v16 = loc4;
+			loc5 = v16;
+			goto l00119BC0;
+		}
+		v16 = loc4;
+		v17.u0 = 0x04;
+		v16 += v17;
+		loc7 = v16;
+		v16 = loc7;
+		loc4 = v16;
+	}
+	v16 = arg3;
+	loc5 = v16;
+l00119BC0:
+	v16 = loc5;
+	return v16;
+}
+
+// 00119BC7: Stack Eq_n fn00119BC7(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn00119BC7(Eq_n arg0, Eq_n arg1)
+{
+	v10.u3 = g_t140030.u3;
+	loc8 = v10;
+	v10 = arg1;
+	v11.u0 = 0x80;
+	v12 = v10 < v11;
+	loc6 = v12;
+	v10 = loc6;
+	if (v10)
+	{
+		v10 = fn001197B3();
+		loc2 = v10;
+		v10 = loc2;
+		v11 = arg1;
+		v13 = 0x02;
+		v11 <<= v13;
+		v10 += v11;
+		loc3 = v10;
+		v10 = loc3;
+		v10.u3 = *v10.u3;
+		loc4 = v10;
+		v10 = loc4;
+		loc5 = v10;
+	}
+	else
+	{
+		v10 = arg1;
+		loc5 = v10;
+	}
+	v10 = loc5;
+	return v10;
+}
+
+// 00119BFE: Stack Eq_n fn00119BFE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn00119BFE(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	while (true)
+	{
+		v14.u3 = g_t140030.u3;
+		loc13 = v14;
+		v14 = arg1;
+		loc3 = v14;
+		v14 = loc3;
+		v15 = arg2;
+		v16 = v14 == v15;
+		loc4 = v16;
+		v14 = loc4;
+		if (v14)
+			break;
+		v14 = loc3;
+		v14.u3 = *v14.u3;
+		loc5 = v14;
+		v14 = loc5;
+		v15.u0 = 0x80;
+		v16 = v14 < v15;
+		loc11 = v16;
+		v14 = loc11;
+		if (v14)
+		{
+			v14 = fn001197B3();
+			loc6 = v14;
+			v14 = loc6;
+			v15 = loc5;
+			v17 = 0x02;
+			v15 <<= v17;
+			v14 += v15;
+			loc7 = v14;
+			v14 = loc7;
+			v14.u3 = *v14.u3;
+			loc8 = v14;
+			v14 = loc8;
+			loc9 = v14;
+		}
+		else
+		{
+			v14 = loc5;
+			loc9 = v14;
+		}
+		v14 = loc3;
+		v15 = loc9;
+		*v14.u3 = (word32) v15;
+		v14 = loc3;
+		v15.u0 = 0x04;
+		v14 += v15;
+		loc10 = v14;
+		v14 = loc10;
+		loc3 = v14;
+	}
+	v14 = arg2;
+	return v14;
+}
+
+// 00119C68: Stack Eq_n fn00119C68(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn00119C68(Eq_n arg0, Eq_n arg1)
+{
+	v10.u3 = g_t140030.u3;
+	loc8 = v10;
+	v10 = arg1;
+	v11.u0 = 0x80;
+	v12 = v10 < v11;
+	loc6 = v12;
+	v10 = loc6;
+	if (v10)
+	{
+		v10 = fn00119770();
+		loc2 = v10;
+		v10 = loc2;
+		v11 = arg1;
+		v13 = 0x02;
+		v11 <<= v13;
+		v10 += v11;
+		loc3 = v10;
+		v10 = loc3;
+		v10.u3 = *v10.u3;
+		loc4 = v10;
+		v10 = loc4;
+		loc5 = v10;
+	}
+	else
+	{
+		v10 = arg1;
+		loc5 = v10;
+	}
+	v10 = loc5;
+	return v10;
+}
+
+// 00119C9F: Stack Eq_n fn00119C9F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn00119C9F(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	while (true)
+	{
+		v14.u3 = g_t140030.u3;
+		loc13 = v14;
+		v14 = arg1;
+		loc3 = v14;
+		v14 = loc3;
+		v15 = arg2;
+		v16 = v14 == v15;
+		loc4 = v16;
+		v14 = loc4;
+		if (v14)
+			break;
+		v14 = loc3;
+		v14.u3 = *v14.u3;
+		loc5 = v14;
+		v14 = loc5;
+		v15.u0 = 0x80;
+		v16 = v14 < v15;
+		loc11 = v16;
+		v14 = loc11;
+		if (v14)
+		{
+			v14 = fn00119770();
+			loc6 = v14;
+			v14 = loc6;
+			v15 = loc5;
+			v17 = 0x02;
+			v15 <<= v17;
+			v14 += v15;
+			loc7 = v14;
+			v14 = loc7;
+			v14.u3 = *v14.u3;
+			loc8 = v14;
+			v14 = loc8;
+			loc9 = v14;
+		}
+		else
+		{
+			v14 = loc5;
+			loc9 = v14;
+		}
+		v14 = loc3;
+		v15 = loc9;
+		*v14.u3 = (word32) v15;
+		v14 = loc3;
+		v15.u0 = 0x04;
+		v14 += v15;
+		loc10 = v14;
+		v14 = loc10;
+		loc3 = v14;
+	}
+	v14 = arg2;
+	return v14;
+}
+
+// 00119D09: Stack Eq_n fn00119D09(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn00119D09(Eq_n arg0, Eq_n arg1)
+{
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6 = arg1;
+	v7 = 0x18;
+	v6 <<= v7;
+	v7 = 0x18;
+	v6 >>= v7;
+	loc2 = v6;
+	v6 = loc2;
+	return v6;
+}
+
+// 00119D1E: Stack Eq_n fn00119D1E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn00119D1E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	while (true)
+	{
+		v12.u3 = g_t140030.u3;
+		loc12 = v12;
+		v12 = arg3;
+		loc4 = v12;
+		v12 = arg1;
+		loc5 = v12;
+		v12 = loc5;
+		v13 = arg2;
+		v14 = v12 == v13;
+		loc6 = v14;
+		v12 = loc6;
+		if (v12)
+			break;
+		v12 = loc5;
+		v15.u3 = *v12.u3;
+		v12.u3 = (word32) v15;
+		loc7 = v12;
+		v12 = loc7;
+		v13.u0 = 0x18;
+		v12 <<= v13;
+		v13.u0 = 0x18;
+		v12 >>= v13;
+		loc8 = v12;
+		v12 = loc4;
+		v13 = loc8;
+		*v12.u3 = (word32) v13;
+		v12 = loc5;
+		v13.u0 = 0x01;
+		v12 += v13;
+		loc9 = v12;
+		v12 = loc4;
+		v13.u0 = 0x04;
+		v12 += v13;
+		loc10 = v12;
+		v12 = loc10;
+		loc4 = v12;
+		v12 = loc9;
+		loc5 = v12;
+	}
+	v12 = arg2;
+	return v12;
+}
+
+// 00119D75: Stack Eq_n fn00119D75(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn00119D75(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v8.u3 = g_t140030.u3;
+	loc7 = v8;
+	v8 = arg1;
+	v9.u0 = 0x80;
+	v10 = v8 < v9;
+	loc5 = v10;
+	v8 = arg1;
+	v9.u0 = 0xFF;
+	v8 &= v9;
+	loc4 = v8;
+	v8 = loc5;
+	if (v8)
+		v8 = loc4;
+	else
+		v8 = arg2;
+	loc3 = v8;
+	v8 = loc3;
+	return v8;
+}
+
 // 00119D9C: Stack Eq_n fn00119D9C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn00119D9C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
 	while (true)
 	{
-		v18.u3 = g_t140030.u3;
-		loc20 = v18;
-		v18 = arg1;
-		loc12 = v18;
-		v18 = arg2;
-		loc13 = v18;
-		v18 = loc13;
-		v19 = loc12;
-		v18 -= v19;
-		loc14 = v18;
-		v18 = loc14;
-		v19.u0 = 0x02;
-		v18 >>= v19;
-		loc15 = v18;
-		v18 = arg4;
-		loc6 = v18;
-		v18 = arg1;
-		loc7 = v18;
-		v18 = loc7;
+		v19.u3 = g_t140030.u3;
+		loc20 = v19;
+		v19 = arg1;
+		loc12 = v19;
 		v19 = arg2;
-		v20 = v18 == v19;
-		loc16 = v20;
-		v18 = loc16;
-		if (v18)
+		loc13 = v19;
+		v19 = loc13;
+		v20 = loc12;
+		v19 -= v20;
+		loc14 = v19;
+		v19 = loc14;
+		v20.u0 = 0x02;
+		v19 >>= v20;
+		loc15 = v19;
+		v19 = arg4;
+		loc6 = v19;
+		v19 = arg1;
+		loc7 = v19;
+		v19 = loc7;
+		v20 = arg2;
+		v21 = v19 == v20;
+		loc16 = v21;
+		v19 = loc16;
+		if (v19)
 			break;
-		v18 = loc7;
-		v18.u3 = *v18.u3;
-		loc8 = v18;
-		v18 = loc8;
-		v19.u0 = 0x80;
-		v20 = v18 < v19;
-		loc17 = v20;
-		v18 = loc8;
-		v19.u0 = 0xFF;
-		v18 &= v19;
-		loc9 = v18;
-		v18 = loc17;
-		if (v18)
-			v18 = loc9;
+		v19 = loc7;
+		v19.u3 = *v19.u3;
+		loc8 = v19;
+		v19 = loc8;
+		v20.u0 = 0x80;
+		v21 = v19 < v20;
+		loc17 = v21;
+		v19 = loc8;
+		v20.u0 = 0xFF;
+		v19 &= v20;
+		loc9 = v19;
+		v19 = loc17;
+		if (v19)
+			v19 = loc9;
 		else
-			v18 = arg3;
-		loc5 = v18;
-		v18 = loc6;
-		v19 = loc5;
-		v21 = (byte) v19;
-		v18.u4->t0000.u0 = (bool) v21;
-		v18 = loc7;
-		v19.u0 = 0x04;
-		v18 += v19;
-		loc10 = v18;
-		v18 = loc6;
-		v19.u0 = 0x01;
-		v18 += v19;
-		loc11 = v18;
-		v18 = loc11;
-		loc6 = v18;
-		v18 = loc10;
-		loc7 = v18;
+			v19 = arg3;
+		loc5 = v19;
+		v19 = loc6;
+		v20 = loc5;
+		v22 = (byte) v20;
+		v19.u4->t0000.u0 = (bool) v22;
+		v19 = loc7;
+		v20.u0 = 0x04;
+		v19 += v20;
+		loc10 = v19;
+		v19 = loc6;
+		v20.u0 = 0x01;
+		v19 += v20;
+		loc11 = v19;
+		v19 = loc11;
+		loc6 = v19;
+		v19 = loc10;
+		loc7 = v19;
 	}
-	v18 = arg1;
-	v19 = loc15;
-	v22 = 0x02;
-	v19 <<= v22;
-	v18 += v19;
-	loc18 = v18;
-	v18 = loc18;
-	return v18;
+	v19 = arg1;
+	v20 = loc15;
+	v23 = 0x02;
+	v20 <<= v23;
+	v19 += v20;
+	loc18 = v19;
+	v19 = loc18;
+	return v19;
 }
 
 // 00119E25: void fn00119E25(Stack Eq_n arg0)
 void fn00119E25(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00119E33: void fn00119E33(Stack Eq_n arg0)
 void fn00119E33(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00119E41: void fn00119E41(Stack Eq_n arg0)
 void fn00119E41(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 00119E4F: void fn00119E4F(Stack Eq_n arg0)
 void fn00119E4F(Eq_n arg0)
 {
-	v9.u3 = g_t140030.u3;
-	loc7 = v9;
-	v9.u0 = 0x08;
-	v9 = ___cxa_allocate_exception(v9);
-	loc1 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9.u0 = 0x01C2;
-	v10 = loc1;
-	v11 = 0x4030;
-	invoke_vii(v9, v10, v11);
-	v9.u3 = g_t140048.u3;
-	loc2 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9 = loc2;
-	v10.u0 = 0x01;
-	v9 &= v10;
-	loc3 = v9;
-	v9 = loc3;
-	if (v9)
+	v10.u3 = g_t140030.u3;
+	loc7 = v10;
+	v10.u0 = 0x08;
+	v10 = ___cxa_allocate_exception(v10);
+	loc1 = v10;
+	v10.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v10;
+	v10.u0 = 0x01C2;
+	v11 = loc1;
+	v12 = 0x4030;
+	invoke_vii(v10, v11, v12);
+	v10.u3 = g_t140048.u3;
+	loc2 = v10;
+	v10.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v10;
+	v10 = loc2;
+	v11.u0 = 0x01;
+	v10 &= v11;
+	loc3 = v10;
+	v10 = loc3;
+	if (v10)
 	{
-		v9 = ___cxa_find_matching_catch_n();
-		loc4 = v9;
-		v9.u3 = g_t140094.u3;
-		loc5 = v9;
-		v9 = loc1;
-		___cxa_free_exception(v9);
-		v9 = loc4;
-		___resumeException(v9);
+		v10 = ___cxa_find_matching_catch_n();
+		loc4 = v10;
+		v10.u3 = g_t140094.u3;
+		loc5 = v10;
+		v10 = loc1;
+		___cxa_free_exception(v10);
+		v10 = loc4;
+		___resumeException(v10);
 	}
 	else
 	{
-		v9 = loc1;
-		v10.u0 = 9980;
-		*v9.u3 = (word32) v10;
-		v9 = loc1;
-		v10.u0 = 2552;
-		v11 = 0x0156;
-		___cxa_throw(v9, v10, v11);
+		v10 = loc1;
+		v11.u0 = 9980;
+		*v10.u3 = (word32) v11;
+		v10 = loc1;
+		v11.u0 = 2552;
+		v12 = 0x0156;
+		___cxa_throw(v10, v11, v12);
 	}
 }
 
 // 00119EA4: void fn00119EA4(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn00119EA4(Eq_n arg0, Eq_n arg1)
 {
-	v99.u3 = g_t140030.u3;
-	loc98 = v99;
-	v99 = arg1;
-	v100.u0 = ~0x00;
-	v99 += v100;
-	loc17 = v99;
-	v99 = arg0;
-	v100.u0 = 0x04;
-	v99 += v100;
-	loc28 = v99;
-	v99 = loc28;
-	v100 = loc17;
-	*v99.u3 = (word32) v100;
-	v99 = arg0;
-	v100.u0 = 0x24A8;
-	*v99.u3 = (word32) v100;
-	v99 = arg0;
-	v100.u0 = 0x08;
-	v99 += v100;
-	loc39 = v99;
-	v99.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v99;
-	v99.u0 = 0x01C3;
-	v100 = loc39;
-	v101 = 0x1C;
-	invoke_vii(v99, v100, v101);
-	v99.u3 = g_t140048.u3;
-	loc50 = v99;
-	v99.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v99;
-	v99 = loc50;
-	v100.u0 = 0x01;
-	v99 &= v100;
-	loc61 = v99;
-	v99 = loc61;
-	if (v99)
+	v100.u3 = g_t140030.u3;
+	loc98 = v100;
+	v100 = arg1;
+	v101.u0 = ~0x00;
+	v100 += v101;
+	loc17 = v100;
+	v100 = arg0;
+	v101.u0 = 0x04;
+	v100 += v101;
+	loc28 = v100;
+	v100 = loc28;
+	v101 = loc17;
+	*v100.u3 = (word32) v101;
+	v100 = arg0;
+	v101.u0 = 0x24A8;
+	*v100.u3 = (word32) v101;
+	v100 = arg0;
+	v101.u0 = 0x08;
+	v100 += v101;
+	loc39 = v100;
+	v100.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v100;
+	v100.u0 = 0x01C3;
+	v101 = loc39;
+	v102 = 0x1C;
+	invoke_vii(v100, v101, v102);
+	v100.u3 = g_t140048.u3;
+	loc50 = v100;
+	v100.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v100;
+	v100 = loc50;
+	v101.u0 = 0x01;
+	v100 &= v101;
+	loc61 = v100;
+	v100 = loc61;
+	if (v100)
 	{
-		v99 = ___cxa_find_matching_catch_n();
-		loc88 = v99;
-		v99.u3 = g_t140094.u3;
-		loc89 = v99;
-		v99 = loc89;
-		loc4 = v99;
-		v99 = loc88;
-		loc5 = v99;
+		v100 = ___cxa_find_matching_catch_n();
+		loc88 = v100;
+		v100.u3 = g_t140094.u3;
+		loc89 = v100;
+		v100 = loc89;
+		loc4 = v100;
+		v100 = loc88;
+		loc5 = v100;
 		goto l0011A718;
 	}
-	v99 = arg0;
-	v100.u0 = 0x90;
-	v99 += v100;
-	loc72 = v99;
-	v99 = loc72;
-	v102.u0 = 0x00;
-	*v99.u3 = (word32) v102;
-	v99 = loc72;
-	v100.u0 = 0x08;
-	v99 += v100;
-	v100.u0 = 0x00;
-	*v99.u3 = (word32) v100;
-	v99.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v99;
-	v99.u0 = 0x0199;
+	v100 = arg0;
+	v101.u0 = 0x90;
+	v100 += v101;
+	loc72 = v100;
 	v100 = loc72;
-	v101 = 0x37CF;
-	v103 = 0x01;
-	invoke_viii(v99, v100, v101, v103);
-	v99.u3 = g_t140048.u3;
-	loc83 = v99;
-	v99.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v99;
-	v99 = loc83;
-	v100.u0 = 0x01;
-	v99 &= v100;
-	loc94 = v99;
-	v99 = loc94;
-	if (v99)
+	v103.u0 = 0x00;
+	*v100.u3 = (word32) v103;
+	v100 = loc72;
+	v101.u0 = 0x08;
+	v100 += v101;
+	v101.u0 = 0x00;
+	*v100.u3 = (word32) v101;
+	v100.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v100;
+	v100.u0 = 0x0199;
+	v101 = loc72;
+	v102 = 0x37CF;
+	v104 = 0x01;
+	invoke_viii(v100, v101, v102, v104);
+	v100.u3 = g_t140048.u3;
+	loc83 = v100;
+	v100.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v100;
+	v100 = loc83;
+	v101.u0 = 0x01;
+	v100 &= v101;
+	loc94 = v100;
+	v100 = loc94;
+	if (v100)
 	{
-		v99 = ___cxa_find_matching_catch_n();
-		loc90 = v99;
-		v99.u3 = g_t140094.u3;
-		loc91 = v99;
-		v99 = loc91;
-		loc2 = v99;
-		v99 = loc90;
-		loc3 = v99;
+		v100 = ___cxa_find_matching_catch_n();
+		loc90 = v100;
+		v100.u3 = g_t140094.u3;
+		loc91 = v100;
+		v100 = loc91;
+		loc2 = v100;
+		v100 = loc90;
+		loc3 = v100;
 		goto l0011A70A;
 	}
 	while (true)
 	{
-		v99 = loc39;
-		v99.u3 = *v99.u3;
-		loc7 = v99;
-		v99 = arg0;
-		v100.u0 = 0x0C;
-		v99 += v100;
-		loc8 = v99;
-		v99 = loc8;
-		v99.u3 = *v99.u3;
-		loc6 = v99;
-		v99 = loc6;
-		loc10 = v99;
-		v99 = loc10;
-		v100 = loc7;
-		v104 = v99 == v100;
-		loc9 = v104;
-		v99 = loc9;
-		if (v99)
+		v100 = loc39;
+		v100.u3 = *v100.u3;
+		loc7 = v100;
+		v100 = arg0;
+		v101.u0 = 0x0C;
+		v100 += v101;
+		loc8 = v100;
+		v100 = loc8;
+		v100.u3 = *v100.u3;
+		loc6 = v100;
+		v100 = loc6;
+		loc10 = v100;
+		v100 = loc10;
+		v101 = loc7;
+		v105 = v100 == v101;
+		loc9 = v105;
+		v100 = loc9;
+		if (v100)
 			break;
-		v99 = loc10;
-		v100.u0 = ~0x03;
-		v99 += v100;
-		loc11 = v99;
-		v99 = loc8;
+		v100 = loc10;
+		v101.u0 = ~0x03;
+		v100 += v101;
+		loc11 = v100;
+		v100 = loc8;
+		v101 = loc11;
+		*v100.u3 = (word32) v101;
 		v100 = loc11;
-		*v99.u3 = (word32) v100;
-		v99 = loc11;
-		loc10 = v99;
+		loc10 = v100;
 	}
-	v99.u0 = 0x443C;
+	v100.u0 = 0x443C;
+	v101.u0 = 0x00;
+	*v100.u0 = v101;
+	v100.u0 = 0x4438;
+	v101.u0 = 0x1B88;
+	*v100.u0 = v101;
 	v100.u0 = 0x00;
-	*v99.u0 = v100;
-	v99.u0 = 0x4438;
-	v100.u0 = 0x1B88;
-	*v99.u0 = v100;
-	v99.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v99;
-	v99.u0 = 0x01C4;
-	v100 = arg0;
-	v101 = 0x4438;
-	invoke_vii(v99, v100, v101);
-	v99.u3 = g_t140048.u3;
-	loc12 = v99;
-	v99.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v99;
-	v99 = loc12;
-	v100.u0 = 0x01;
-	v99 &= v100;
-	loc13 = v99;
-	v99 = loc13;
-	if (v99)
+	g_t140048.u3 = (word32 *) v100;
+	v100.u0 = 0x01C4;
+	v101 = arg0;
+	v102 = 0x4438;
+	invoke_vii(v100, v101, v102);
+	v100.u3 = g_t140048.u3;
+	loc12 = v100;
+	v100.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v100;
+	v100 = loc12;
+	v101.u0 = 0x01;
+	v100 &= v101;
+	loc13 = v100;
+	v100 = loc13;
+	if (v100)
 	{
-		v99.u0 = 0x2A;
-		loc97 = v99;
+		v100.u0 = 0x2A;
+		loc97 = v100;
 	}
 	else
 	{
-		v99.u0 = 0x4444;
+		v100.u0 = 0x4444;
+		v101.u0 = 0x00;
+		*v100.u0 = v101;
+		v100.u0 = 0x4440;
+		v101.u0 = 7080;
+		*v100.u0 = v101;
 		v100.u0 = 0x00;
-		*v99.u0 = v100;
-		v99.u0 = 0x4440;
-		v100.u0 = 7080;
-		*v99.u0 = v100;
-		v99.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v99;
-		v99.u0 = 0x01C5;
-		v100 = arg0;
-		v101 = 0x4440;
-		invoke_vii(v99, v100, v101);
-		v99.u3 = g_t140048.u3;
-		loc14 = v99;
-		v99.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v99;
-		v99 = loc14;
-		v100.u0 = 0x01;
-		v99 &= v100;
-		loc15 = v99;
-		v99 = loc15;
-		if (v99)
+		g_t140048.u3 = (word32 *) v100;
+		v100.u0 = 0x01C5;
+		v101 = arg0;
+		v102 = 0x4440;
+		invoke_vii(v100, v101, v102);
+		v100.u3 = g_t140048.u3;
+		loc14 = v100;
+		v100.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v100;
+		v100 = loc14;
+		v101.u0 = 0x01;
+		v100 &= v101;
+		loc15 = v100;
+		v100 = loc15;
+		if (v100)
 		{
-			v99.u0 = 0x2A;
-			loc97 = v99;
+			v100.u0 = 0x2A;
+			loc97 = v100;
 		}
 		else
 		{
-			v99.u0 = 0x444C;
+			v100.u0 = 0x444C;
+			v101.u0 = 0x00;
+			*v100.u0 = v101;
+			v100.u0 = 0x4448;
+			v101.u0 = 9404;
+			*v100.u0 = v101;
+			v100.u0 = 0x4450;
+			v101.u0 = 0x00;
+			*v100.u0 = v101;
+			v100.u0 = 0x4454;
+			v101.u0 = 0x00;
+			v106 = (byte) v101;
+			*v100.u0 = v106;
+			v100 = fn001197F6();
+			loc16 = v100;
+			v100.u0 = 0x4450;
+			v101 = loc16;
+			*v100.u0 = v101;
 			v100.u0 = 0x00;
-			*v99.u0 = v100;
-			v99.u0 = 0x4448;
-			v100.u0 = 9404;
-			*v99.u0 = v100;
-			v99.u0 = 0x4450;
+			g_t140048.u3 = (word32 *) v100;
+			v100.u0 = 454;
+			v101 = arg0;
+			v102 = 0x4448;
+			invoke_vii(v100, v101, v102);
+			v100.u3 = g_t140048.u3;
+			loc18 = v100;
 			v100.u0 = 0x00;
-			*v99.u0 = v100;
-			v99.u0 = 0x4454;
-			v100.u0 = 0x00;
-			v105 = (byte) v100;
-			*v99.u0 = v105;
-			v99 = fn001197F6();
-			loc16 = v99;
-			v99.u0 = 0x4450;
-			v100 = loc16;
-			*v99.u0 = v100;
-			v99.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v99;
-			v99.u0 = 454;
-			v100 = arg0;
-			v101 = 0x4448;
-			invoke_vii(v99, v100, v101);
-			v99.u3 = g_t140048.u3;
-			loc18 = v99;
-			v99.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v99;
-			v99 = loc18;
-			v100.u0 = 0x01;
-			v99 &= v100;
-			loc19 = v99;
-			v99 = loc19;
-			if (v99)
+			g_t140048.u3 = (word32 *) v100;
+			v100 = loc18;
+			v101.u0 = 0x01;
+			v100 &= v101;
+			loc19 = v100;
+			v100 = loc19;
+			if (v100)
 			{
-				v99.u0 = 0x2A;
-				loc97 = v99;
+				v100.u0 = 0x2A;
+				loc97 = v100;
 			}
 			else
 			{
-				v99.u0 = 0x445C;
+				v100.u0 = 0x445C;
+				v101.u0 = 0x00;
+				*v100.u0 = v101;
+				v100.u0 = 0x4458;
+				v101.u0 = 9600;
+				*v100.u0 = v101;
 				v100.u0 = 0x00;
-				*v99.u0 = v100;
-				v99.u0 = 0x4458;
-				v100.u0 = 9600;
-				*v99.u0 = v100;
-				v99.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v99;
-				v99.u0 = 455;
-				v100 = arg0;
-				v101 = 0x4458;
-				invoke_vii(v99, v100, v101);
-				v99.u3 = g_t140048.u3;
-				loc20 = v99;
-				v99.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v99;
-				v99 = loc20;
-				v100.u0 = 0x01;
-				v99 &= v100;
-				loc21 = v99;
-				v99 = loc21;
-				if (v99)
+				g_t140048.u3 = (word32 *) v100;
+				v100.u0 = 455;
+				v101 = arg0;
+				v102 = 0x4458;
+				invoke_vii(v100, v101, v102);
+				v100.u3 = g_t140048.u3;
+				loc20 = v100;
+				v100.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v100;
+				v100 = loc20;
+				v101.u0 = 0x01;
+				v100 &= v101;
+				loc21 = v100;
+				v100 = loc21;
+				if (v100)
 				{
-					v99.u0 = 0x2A;
-					loc97 = v99;
+					v100.u0 = 0x2A;
+					loc97 = v100;
 				}
 				else
 				{
-					v99.u0 = 0x4464;
+					v100.u0 = 0x4464;
+					v101.u0 = 0x00;
+					*v100.u0 = v101;
+					v100.u0 = 0x4460;
+					v101.u0 = 9668;
+					*v100.u0 = v101;
 					v100.u0 = 0x00;
-					*v99.u0 = v100;
-					v99.u0 = 0x4460;
-					v100.u0 = 9668;
-					*v99.u0 = v100;
-					v99.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v99;
-					v99.u0 = 0x01C8;
-					v100 = arg0;
-					v101 = 0x4460;
-					invoke_vii(v99, v100, v101);
-					v99.u3 = g_t140048.u3;
-					loc22 = v99;
-					v99.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v99;
-					v99 = loc22;
-					v100.u0 = 0x01;
-					v99 &= v100;
-					loc23 = v99;
-					v99 = loc23;
-					if (v99)
+					g_t140048.u3 = (word32 *) v100;
+					v100.u0 = 0x01C8;
+					v101 = arg0;
+					v102 = 0x4460;
+					invoke_vii(v100, v101, v102);
+					v100.u3 = g_t140048.u3;
+					loc22 = v100;
+					v100.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v100;
+					v100 = loc22;
+					v101.u0 = 0x01;
+					v100 &= v101;
+					loc23 = v100;
+					v100 = loc23;
+					if (v100)
 					{
-						v99.u0 = 0x2A;
-						loc97 = v99;
+						v100.u0 = 0x2A;
+						loc97 = v100;
 					}
 					else
 					{
-						v99.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v99;
-						v99.u0 = 0x01C9;
-						v100.u0 = 0x4468;
-						v101 = 0x01;
-						invoke_vii(v99, v100, v101);
-						v99.u3 = g_t140048.u3;
-						loc24 = v99;
-						v99.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v99;
-						v99 = loc24;
-						v100.u0 = 0x01;
-						v99 &= v100;
-						loc25 = v99;
-						v99 = loc25;
-						if (v99)
+						v100.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v100;
+						v100.u0 = 0x01C9;
+						v101.u0 = 0x4468;
+						v102 = 0x01;
+						invoke_vii(v100, v101, v102);
+						v100.u3 = g_t140048.u3;
+						loc24 = v100;
+						v100.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v100;
+						v100 = loc24;
+						v101.u0 = 0x01;
+						v100 &= v101;
+						loc25 = v100;
+						v100 = loc25;
+						if (v100)
 						{
-							v99.u0 = 0x2A;
-							loc97 = v99;
+							v100.u0 = 0x2A;
+							loc97 = v100;
 						}
 						else
 						{
-							v99.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v99;
-							v99.u0 = 0x01CA;
-							v100 = arg0;
-							v101 = 0x4468;
-							invoke_vii(v99, v100, v101);
-							v99.u3 = g_t140048.u3;
-							loc26 = v99;
-							v99.u0 = 0x00;
-							g_t140048.u3 = (word32 *) v99;
-							v99 = loc26;
-							v100.u0 = 0x01;
-							v99 &= v100;
-							loc27 = v99;
-							v99 = loc27;
-							if (v99)
+							v100.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v100;
+							v100.u0 = 0x01CA;
+							v101 = arg0;
+							v102 = 0x4468;
+							invoke_vii(v100, v101, v102);
+							v100.u3 = g_t140048.u3;
+							loc26 = v100;
+							v100.u0 = 0x00;
+							g_t140048.u3 = (word32 *) v100;
+							v100 = loc26;
+							v101.u0 = 0x01;
+							v100 &= v101;
+							loc27 = v100;
+							v100 = loc27;
+							if (v100)
 							{
-								v99.u0 = 0x2A;
-								loc97 = v99;
+								v100.u0 = 0x2A;
+								loc97 = v100;
 							}
 							else
 							{
-								v99.u0 = 0x447C;
+								v100.u0 = 0x447C;
+								v101.u0 = 0x00;
+								*v100.u0 = v101;
+								v100.u0 = 0x4478;
+								v101.u0 = 0x25F4;
+								*v100.u0 = v101;
 								v100.u0 = 0x00;
-								*v99.u0 = v100;
-								v99.u0 = 0x4478;
-								v100.u0 = 0x25F4;
-								*v99.u0 = v100;
-								v99.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v99;
-								v99.u0 = 0x01CB;
-								v100 = arg0;
-								v101 = 0x4478;
-								invoke_vii(v99, v100, v101);
-								v99.u3 = g_t140048.u3;
-								loc29 = v99;
-								v99.u0 = 0x00;
-								g_t140048.u3 = (word32 *) v99;
-								v99 = loc29;
-								v100.u0 = 0x01;
-								v99 &= v100;
-								loc30 = v99;
-								v99 = loc30;
-								if (v99)
+								g_t140048.u3 = (word32 *) v100;
+								v100.u0 = 0x01CB;
+								v101 = arg0;
+								v102 = 0x4478;
+								invoke_vii(v100, v101, v102);
+								v100.u3 = g_t140048.u3;
+								loc29 = v100;
+								v100.u0 = 0x00;
+								g_t140048.u3 = (word32 *) v100;
+								v100 = loc29;
+								v101.u0 = 0x01;
+								v100 &= v101;
+								loc30 = v100;
+								v100 = loc30;
+								if (v100)
 								{
-									v99.u0 = 0x2A;
-									loc97 = v99;
+									v100.u0 = 0x2A;
+									loc97 = v100;
 								}
 								else
 								{
-									v99.u0 = 0x4484;
+									v100.u0 = 0x4484;
+									v101.u0 = 0x00;
+									*v100.u0 = v101;
+									v100.u0 = 0x4480;
+									v101.u0 = 0x2624;
+									*v100.u0 = v101;
 									v100.u0 = 0x00;
-									*v99.u0 = v100;
-									v99.u0 = 0x4480;
-									v100.u0 = 0x2624;
-									*v99.u0 = v100;
-									v99.u0 = 0x00;
-									g_t140048.u3 = (word32 *) v99;
-									v99.u0 = 0x01CC;
-									v100 = arg0;
-									v101 = 0x4480;
-									invoke_vii(v99, v100, v101);
-									v99.u3 = g_t140048.u3;
-									loc31 = v99;
-									v99.u0 = 0x00;
-									g_t140048.u3 = (word32 *) v99;
-									v99 = loc31;
-									v100.u0 = 0x01;
-									v99 &= v100;
-									loc32 = v99;
-									v99 = loc32;
-									if (v99)
+									g_t140048.u3 = (word32 *) v100;
+									v100.u0 = 0x01CC;
+									v101 = arg0;
+									v102 = 0x4480;
+									invoke_vii(v100, v101, v102);
+									v100.u3 = g_t140048.u3;
+									loc31 = v100;
+									v100.u0 = 0x00;
+									g_t140048.u3 = (word32 *) v100;
+									v100 = loc31;
+									v101.u0 = 0x01;
+									v100 &= v101;
+									loc32 = v100;
+									v100 = loc32;
+									if (v100)
 									{
-										v99.u0 = 0x2A;
-										loc97 = v99;
+										v100.u0 = 0x2A;
+										loc97 = v100;
 									}
 									else
 									{
-										v99.u0 = 0x4488;
-										v100.u0 = 0x01;
-										fn0011A8DF(v99, v100);
-										v99.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v99;
-										v99.u0 = 0x01CD;
-										v100 = arg0;
-										v101 = 0x4488;
-										invoke_vii(v99, v100, v101);
-										v99.u3 = g_t140048.u3;
-										loc33 = v99;
-										v99.u0 = 0x00;
-										g_t140048.u3 = (word32 *) v99;
-										v99 = loc33;
-										v100.u0 = 0x01;
-										v99 &= v100;
-										loc34 = v99;
-										v99 = loc34;
-										if (v99)
+										v100.u0 = 0x4488;
+										v101.u0 = 0x01;
+										fn0011A8DF(v100, v101);
+										v100.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v100;
+										v100.u0 = 0x01CD;
+										v101 = arg0;
+										v102 = 0x4488;
+										invoke_vii(v100, v101, v102);
+										v100.u3 = g_t140048.u3;
+										loc33 = v100;
+										v100.u0 = 0x00;
+										g_t140048.u3 = (word32 *) v100;
+										v100 = loc33;
+										v101.u0 = 0x01;
+										v100 &= v101;
+										loc34 = v100;
+										v100 = loc34;
+										if (v100)
 										{
-											v99.u0 = 0x2A;
-											loc97 = v99;
+											v100.u0 = 0x2A;
+											loc97 = v100;
 										}
 										else
 										{
-											v99.u0 = 0x44A0;
-											v100.u0 = 0x01;
-											fn0011A98B(v99, v100);
-											v99.u0 = 0x00;
-											g_t140048.u3 = (word32 *) v99;
-											v99.u0 = 0x01CE;
-											v100 = arg0;
-											v101 = 0x44A0;
-											invoke_vii(v99, v100, v101);
-											v99.u3 = g_t140048.u3;
-											loc35 = v99;
-											v99.u0 = 0x00;
-											g_t140048.u3 = (word32 *) v99;
-											v99 = loc35;
-											v100.u0 = 0x01;
-											v99 &= v100;
-											loc36 = v99;
-											v99 = loc36;
-											if (v99)
+											v100.u0 = 0x44A0;
+											v101.u0 = 0x01;
+											fn0011A98B(v100, v101);
+											v100.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v100;
+											v100.u0 = 0x01CE;
+											v101 = arg0;
+											v102 = 0x44A0;
+											invoke_vii(v100, v101, v102);
+											v100.u3 = g_t140048.u3;
+											loc35 = v100;
+											v100.u0 = 0x00;
+											g_t140048.u3 = (word32 *) v100;
+											v100 = loc35;
+											v101.u0 = 0x01;
+											v100 &= v101;
+											loc36 = v100;
+											v100 = loc36;
+											if (v100)
 											{
-												v99.u0 = 0x2A;
-												loc97 = v99;
+												v100.u0 = 0x2A;
+												loc97 = v100;
 											}
 											else
 											{
-												v99.u0 = 0x44C4;
+												v100.u0 = 0x44C4;
+												v101.u0 = 0x00;
+												*v100.u0 = v101;
+												v100.u0 = 0x44C0;
+												v101.u0 = 7112;
+												*v100.u0 = v101;
 												v100.u0 = 0x00;
-												*v99.u0 = v100;
-												v99.u0 = 0x44C0;
-												v100.u0 = 7112;
-												*v99.u0 = v100;
-												v99.u0 = 0x00;
-												g_t140048.u3 = (word32 *) v99;
-												v99.u0 = 0x01CF;
-												v100 = arg0;
-												v101 = 0x44C0;
-												invoke_vii(v99, v100, v101);
-												v99.u3 = g_t140048.u3;
-												loc37 = v99;
-												v99.u0 = 0x00;
-												g_t140048.u3 = (word32 *) v99;
-												v99 = loc37;
-												v100.u0 = 0x01;
-												v99 &= v100;
-												loc38 = v99;
-												v99 = loc38;
-												if (v99)
+												g_t140048.u3 = (word32 *) v100;
+												v100.u0 = 0x01CF;
+												v101 = arg0;
+												v102 = 0x44C0;
+												invoke_vii(v100, v101, v102);
+												v100.u3 = g_t140048.u3;
+												loc37 = v100;
+												v100.u0 = 0x00;
+												g_t140048.u3 = (word32 *) v100;
+												v100 = loc37;
+												v101.u0 = 0x01;
+												v100 &= v101;
+												loc38 = v100;
+												v100 = loc38;
+												if (v100)
 												{
-													v99.u0 = 0x2A;
-													loc97 = v99;
+													v100.u0 = 0x2A;
+													loc97 = v100;
 												}
 												else
 												{
-													v99.u0 = 0x44CC;
+													v100.u0 = 0x44CC;
+													v101.u0 = 0x00;
+													*v100.u0 = v101;
+													v100.u0 = 0x44C8;
+													v101.u0 = 7176;
+													*v100.u0 = v101;
 													v100.u0 = 0x00;
-													*v99.u0 = v100;
-													v99.u0 = 0x44C8;
-													v100.u0 = 7176;
-													*v99.u0 = v100;
-													v99.u0 = 0x00;
-													g_t140048.u3 = (word32 *) v99;
-													v99.u0 = 464;
-													v100 = arg0;
-													v101 = 0x44C8;
-													invoke_vii(v99, v100, v101);
-													v99.u3 = g_t140048.u3;
-													loc40 = v99;
-													v99.u0 = 0x00;
-													g_t140048.u3 = (word32 *) v99;
-													v99 = loc40;
-													v100.u0 = 0x01;
-													v99 &= v100;
-													loc41 = v99;
-													v99 = loc41;
-													if (v99)
+													g_t140048.u3 = (word32 *) v100;
+													v100.u0 = 464;
+													v101 = arg0;
+													v102 = 0x44C8;
+													invoke_vii(v100, v101, v102);
+													v100.u3 = g_t140048.u3;
+													loc40 = v100;
+													v100.u0 = 0x00;
+													g_t140048.u3 = (word32 *) v100;
+													v100 = loc40;
+													v101.u0 = 0x01;
+													v100 &= v101;
+													loc41 = v100;
+													v100 = loc41;
+													if (v100)
 													{
-														v99.u0 = 0x2A;
-														loc97 = v99;
+														v100.u0 = 0x2A;
+														loc97 = v100;
 													}
 													else
 													{
-														v99.u0 = 0x44D4;
+														v100.u0 = 0x44D4;
+														v101.u0 = 0x00;
+														*v100.u0 = v101;
+														v100.u0 = 0x44D0;
+														v101.u0 = 0x1C48;
+														*v100.u0 = v101;
 														v100.u0 = 0x00;
-														*v99.u0 = v100;
-														v99.u0 = 0x44D0;
-														v100.u0 = 0x1C48;
-														*v99.u0 = v100;
-														v99.u0 = 0x00;
-														g_t140048.u3 = (word32 *) v99;
-														v99.u0 = 0x01D1;
-														v100 = arg0;
-														v101 = 0x44D0;
-														invoke_vii(v99, v100, v101);
-														v99.u3 = g_t140048.u3;
-														loc42 = v99;
-														v99.u0 = 0x00;
-														g_t140048.u3 = (word32 *) v99;
-														v99 = loc42;
-														v100.u0 = 0x01;
-														v99 &= v100;
-														loc43 = v99;
-														v99 = loc43;
-														if (v99)
+														g_t140048.u3 = (word32 *) v100;
+														v100.u0 = 0x01D1;
+														v101 = arg0;
+														v102 = 0x44D0;
+														invoke_vii(v100, v101, v102);
+														v100.u3 = g_t140048.u3;
+														loc42 = v100;
+														v100.u0 = 0x00;
+														g_t140048.u3 = (word32 *) v100;
+														v100 = loc42;
+														v101.u0 = 0x01;
+														v100 &= v101;
+														loc43 = v100;
+														v100 = loc43;
+														if (v100)
 														{
-															v99.u0 = 0x2A;
-															loc97 = v99;
+															v100.u0 = 0x2A;
+															loc97 = v100;
 														}
 														else
 														{
-															v99.u0 = 0x44DC;
+															v100.u0 = 0x44DC;
+															v101.u0 = 0x00;
+															*v100.u0 = v101;
+															v100.u0 = 0x44D8;
+															v101.u0 = 0x1C7C;
+															*v100.u0 = v101;
 															v100.u0 = 0x00;
-															*v99.u0 = v100;
-															v99.u0 = 0x44D8;
-															v100.u0 = 0x1C7C;
-															*v99.u0 = v100;
-															v99.u0 = 0x00;
-															g_t140048.u3 = (word32 *) v99;
-															v99.u0 = 466;
-															v100 = arg0;
-															v101 = 0x44D8;
-															invoke_vii(v99, v100, v101);
-															v99.u3 = g_t140048.u3;
-															loc44 = v99;
-															v99.u0 = 0x00;
-															g_t140048.u3 = (word32 *) v99;
-															v99 = loc44;
-															v100.u0 = 0x01;
-															v99 &= v100;
-															loc45 = v99;
-															v99 = loc45;
-															if (!v99)
+															g_t140048.u3 = (word32 *) v100;
+															v100.u0 = 466;
+															v101 = arg0;
+															v102 = 0x44D8;
+															invoke_vii(v100, v101, v102);
+															v100.u3 = g_t140048.u3;
+															loc44 = v100;
+															v100.u0 = 0x00;
+															g_t140048.u3 = (word32 *) v100;
+															v100 = loc44;
+															v101.u0 = 0x01;
+															v100 &= v101;
+															loc45 = v100;
+															v100 = loc45;
+															if (!v100)
 															{
-																v99.u0 = 0x44E4;
+																v100.u0 = 0x44E4;
+																v101.u0 = 0x00;
+																*v100.u0 = v101;
+																v100.u0 = 0x44E0;
+																v101.u0 = 0x2288;
+																*v100.u0 = v101;
 																v100.u0 = 0x00;
-																*v99.u0 = v100;
-																v99.u0 = 0x44E0;
-																v100.u0 = 0x2288;
-																*v99.u0 = v100;
-																v99.u0 = 0x00;
-																g_t140048.u3 = (word32 *) v99;
-																v99.u0 = 0x01D3;
-																v100 = arg0;
-																v101 = 0x44E0;
-																invoke_vii(v99, v100, v101);
-																v99.u3 = g_t140048.u3;
-																loc46 = v99;
-																v99.u0 = 0x00;
-																g_t140048.u3 = (word32 *) v99;
-																v99 = loc46;
-																v100.u0 = 0x01;
-																v99 &= v100;
-																loc47 = v99;
-																v99 = loc47;
-																if (v99)
+																g_t140048.u3 = (word32 *) v100;
+																v100.u0 = 0x01D3;
+																v101 = arg0;
+																v102 = 0x44E0;
+																invoke_vii(v100, v101, v102);
+																v100.u3 = g_t140048.u3;
+																loc46 = v100;
+																v100.u0 = 0x00;
+																g_t140048.u3 = (word32 *) v100;
+																v100 = loc46;
+																v101.u0 = 0x01;
+																v100 &= v101;
+																loc47 = v100;
+																v100 = loc47;
+																if (v100)
 																{
-																	v99.u0 = 0x2A;
-																	loc97 = v99;
+																	v100.u0 = 0x2A;
+																	loc97 = v100;
 																}
 																else
 																{
-																	v99.u0 = 0x44EC;
+																	v100.u0 = 0x44EC;
+																	v101.u0 = 0x00;
+																	*v100.u0 = v101;
+																	v100.u0 = 0x44E8;
+																	v101.u0 = 0x22C0;
+																	*v100.u0 = v101;
 																	v100.u0 = 0x00;
-																	*v99.u0 = v100;
-																	v99.u0 = 0x44E8;
-																	v100.u0 = 0x22C0;
-																	*v99.u0 = v100;
-																	v99.u0 = 0x00;
-																	g_t140048.u3 = (word32 *) v99;
-																	v99.u0 = 0x01D4;
-																	v100 = arg0;
-																	v101 = 0x44E8;
-																	invoke_vii(v99, v100, v101);
-																	v99.u3 = g_t140048.u3;
-																	loc48 = v99;
-																	v99.u0 = 0x00;
-																	g_t140048.u3 = (word32 *) v99;
-																	v99 = loc48;
-																	v100.u0 = 0x01;
-																	v99 &= v100;
-																	loc49 = v99;
-																	v99 = loc49;
-																	if (v99)
+																	g_t140048.u3 = (word32 *) v100;
+																	v100.u0 = 0x01D4;
+																	v101 = arg0;
+																	v102 = 0x44E8;
+																	invoke_vii(v100, v101, v102);
+																	v100.u3 = g_t140048.u3;
+																	loc48 = v100;
+																	v100.u0 = 0x00;
+																	g_t140048.u3 = (word32 *) v100;
+																	v100 = loc48;
+																	v101.u0 = 0x01;
+																	v100 &= v101;
+																	loc49 = v100;
+																	v100 = loc49;
+																	if (v100)
 																	{
-																		v99.u0 = 0x2A;
-																		loc97 = v99;
+																		v100.u0 = 0x2A;
+																		loc97 = v100;
 																	}
 																	else
 																	{
-																		v99.u0 = 0x44F4;
+																		v100.u0 = 0x44F4;
+																		v101.u0 = 0x00;
+																		*v100.u0 = v101;
+																		v100.u0 = 0x44F0;
+																		v101.u0 = 0x22F8;
+																		*v100.u0 = v101;
 																		v100.u0 = 0x00;
-																		*v99.u0 = v100;
-																		v99.u0 = 0x44F0;
-																		v100.u0 = 0x22F8;
-																		*v99.u0 = v100;
-																		v99.u0 = 0x00;
-																		g_t140048.u3 = (word32 *) v99;
-																		v99.u0 = 0x01D5;
-																		v100 = arg0;
-																		v101 = 0x44F0;
-																		invoke_vii(v99, v100, v101);
-																		v99.u3 = g_t140048.u3;
-																		loc51 = v99;
-																		v99.u0 = 0x00;
-																		g_t140048.u3 = (word32 *) v99;
-																		v99 = loc51;
-																		v100.u0 = 0x01;
-																		v99 &= v100;
-																		loc52 = v99;
-																		v99 = loc52;
-																		if (v99)
+																		g_t140048.u3 = (word32 *) v100;
+																		v100.u0 = 0x01D5;
+																		v101 = arg0;
+																		v102 = 0x44F0;
+																		invoke_vii(v100, v101, v102);
+																		v100.u3 = g_t140048.u3;
+																		loc51 = v100;
+																		v100.u0 = 0x00;
+																		g_t140048.u3 = (word32 *) v100;
+																		v100 = loc51;
+																		v101.u0 = 0x01;
+																		v100 &= v101;
+																		loc52 = v100;
+																		v100 = loc52;
+																		if (v100)
 																		{
-																			v99.u0 = 0x2A;
-																			loc97 = v99;
+																			v100.u0 = 0x2A;
+																			loc97 = v100;
 																		}
 																		else
 																		{
-																			v99.u0 = 0x44FC;
+																			v100.u0 = 0x44FC;
+																			v101.u0 = 0x00;
+																			*v100.u0 = v101;
+																			v100.u0 = 0x44F8;
+																			v101.u0 = 0x2330;
+																			*v100.u0 = v101;
 																			v100.u0 = 0x00;
-																			*v99.u0 = v100;
-																			v99.u0 = 0x44F8;
-																			v100.u0 = 0x2330;
-																			*v99.u0 = v100;
-																			v99.u0 = 0x00;
-																			g_t140048.u3 = (word32 *) v99;
-																			v99.u0 = 0x01D6;
-																			v100 = arg0;
-																			v101 = 0x44F8;
-																			invoke_vii(v99, v100, v101);
-																			v99.u3 = g_t140048.u3;
-																			loc53 = v99;
-																			v99.u0 = 0x00;
-																			g_t140048.u3 = (word32 *) v99;
-																			v99 = loc53;
-																			v100.u0 = 0x01;
-																			v99 &= v100;
-																			loc54 = v99;
-																			v99 = loc54;
-																			if (v99)
+																			g_t140048.u3 = (word32 *) v100;
+																			v100.u0 = 0x01D6;
+																			v101 = arg0;
+																			v102 = 0x44F8;
+																			invoke_vii(v100, v101, v102);
+																			v100.u3 = g_t140048.u3;
+																			loc53 = v100;
+																			v100.u0 = 0x00;
+																			g_t140048.u3 = (word32 *) v100;
+																			v100 = loc53;
+																			v101.u0 = 0x01;
+																			v100 &= v101;
+																			loc54 = v100;
+																			v100 = loc54;
+																			if (v100)
 																			{
-																				v99.u0 = 0x2A;
-																				loc97 = v99;
+																				v100.u0 = 0x2A;
+																				loc97 = v100;
 																			}
 																			else
 																			{
-																				v99.u0 = 0x4504;
+																				v100.u0 = 0x4504;
+																				v101.u0 = 0x00;
+																				*v100.u0 = v101;
+																				v100.u0 = 0x4500;
+																				v101.u0 = 0x2368;
+																				*v100.u0 = v101;
 																				v100.u0 = 0x00;
-																				*v99.u0 = v100;
-																				v99.u0 = 0x4500;
-																				v100.u0 = 0x2368;
-																				*v99.u0 = v100;
-																				v99.u0 = 0x00;
-																				g_t140048.u3 = (word32 *) v99;
-																				v99.u0 = 0x01D7;
-																				v100 = arg0;
-																				v101 = 0x4500;
-																				invoke_vii(v99, v100, v101);
-																				v99.u3 = g_t140048.u3;
-																				loc55 = v99;
-																				v99.u0 = 0x00;
-																				g_t140048.u3 = (word32 *) v99;
-																				v99 = loc55;
-																				v100.u0 = 0x01;
-																				v99 &= v100;
-																				loc56 = v99;
-																				v99 = loc56;
-																				if (v99)
+																				g_t140048.u3 = (word32 *) v100;
+																				v100.u0 = 0x01D7;
+																				v101 = arg0;
+																				v102 = 0x4500;
+																				invoke_vii(v100, v101, v102);
+																				v100.u3 = g_t140048.u3;
+																				loc55 = v100;
+																				v100.u0 = 0x00;
+																				g_t140048.u3 = (word32 *) v100;
+																				v100 = loc55;
+																				v101.u0 = 0x01;
+																				v100 &= v101;
+																				loc56 = v100;
+																				v100 = loc56;
+																				if (v100)
 																				{
-																					v99.u0 = 0x2A;
-																					loc97 = v99;
+																					v100.u0 = 0x2A;
+																					loc97 = v100;
 																				}
 																				else
 																				{
-																					v99.u0 = 17676;
+																					v100.u0 = 17676;
+																					v101.u0 = 0x00;
+																					*v100.u0 = v101;
+																					v100.u0 = 0x4508;
+																					v101.u0 = 9092;
+																					*v100.u0 = v101;
 																					v100.u0 = 0x00;
-																					*v99.u0 = v100;
-																					v99.u0 = 0x4508;
-																					v100.u0 = 9092;
-																					*v99.u0 = v100;
-																					v99.u0 = 0x00;
-																					g_t140048.u3 = (word32 *) v99;
-																					v99.u0 = 0x01D8;
-																					v100 = arg0;
-																					v101 = 0x4508;
-																					invoke_vii(v99, v100, v101);
-																					v99.u3 = g_t140048.u3;
-																					loc57 = v99;
-																					v99.u0 = 0x00;
-																					g_t140048.u3 = (word32 *) v99;
-																					v99 = loc57;
-																					v100.u0 = 0x01;
-																					v99 &= v100;
-																					loc58 = v99;
-																					v99 = loc58;
-																					if (v99)
+																					g_t140048.u3 = (word32 *) v100;
+																					v100.u0 = 0x01D8;
+																					v101 = arg0;
+																					v102 = 0x4508;
+																					invoke_vii(v100, v101, v102);
+																					v100.u3 = g_t140048.u3;
+																					loc57 = v100;
+																					v100.u0 = 0x00;
+																					g_t140048.u3 = (word32 *) v100;
+																					v100 = loc57;
+																					v101.u0 = 0x01;
+																					v100 &= v101;
+																					loc58 = v100;
+																					v100 = loc58;
+																					if (v100)
 																					{
-																						v99.u0 = 0x2A;
-																						loc97 = v99;
+																						v100.u0 = 0x2A;
+																						loc97 = v100;
 																					}
 																					else
 																					{
-																						v99.u0 = 0x4514;
+																						v100.u0 = 0x4514;
+																						v101.u0 = 0x00;
+																						*v100.u0 = v101;
+																						v100.u0 = 0x4510;
+																						v101.u0 = 0x23A0;
+																						*v100.u0 = v101;
 																						v100.u0 = 0x00;
-																						*v99.u0 = v100;
-																						v99.u0 = 0x4510;
-																						v100.u0 = 0x23A0;
-																						*v99.u0 = v100;
-																						v99.u0 = 0x00;
-																						g_t140048.u3 = (word32 *) v99;
-																						v99.u0 = 0x01D9;
-																						v100 = arg0;
-																						v101 = 0x4510;
-																						invoke_vii(v99, v100, v101);
-																						v99.u3 = g_t140048.u3;
-																						loc59 = v99;
-																						v99.u0 = 0x00;
-																						g_t140048.u3 = (word32 *) v99;
-																						v99 = loc59;
-																						v100.u0 = 0x01;
-																						v99 &= v100;
-																						loc60 = v99;
-																						v99 = loc60;
-																						if (v99)
+																						g_t140048.u3 = (word32 *) v100;
+																						v100.u0 = 0x01D9;
+																						v101 = arg0;
+																						v102 = 0x4510;
+																						invoke_vii(v100, v101, v102);
+																						v100.u3 = g_t140048.u3;
+																						loc59 = v100;
+																						v100.u0 = 0x00;
+																						g_t140048.u3 = (word32 *) v100;
+																						v100 = loc59;
+																						v101.u0 = 0x01;
+																						v100 &= v101;
+																						loc60 = v100;
+																						v100 = loc60;
+																						if (v100)
 																						{
-																							v99.u0 = 0x2A;
-																							loc97 = v99;
+																							v100.u0 = 0x2A;
+																							loc97 = v100;
 																						}
 																						else
 																						{
-																							v99.u0 = 0x451C;
+																							v100.u0 = 0x451C;
+																							v101.u0 = 0x00;
+																							*v100.u0 = v101;
+																							v100.u0 = 17688;
+																							v101.u0 = 0x23BC;
+																							*v100.u0 = v101;
 																							v100.u0 = 0x00;
-																							*v99.u0 = v100;
-																							v99.u0 = 17688;
-																							v100.u0 = 0x23BC;
-																							*v99.u0 = v100;
-																							v99.u0 = 0x00;
-																							g_t140048.u3 = (word32 *) v99;
-																							v99.u0 = 474;
-																							v100 = arg0;
-																							v101 = 17688;
-																							invoke_vii(v99, v100, v101);
-																							v99.u3 = g_t140048.u3;
-																							loc62 = v99;
-																							v99.u0 = 0x00;
-																							g_t140048.u3 = (word32 *) v99;
-																							v99 = loc62;
-																							v100.u0 = 0x01;
-																							v99 &= v100;
-																							loc63 = v99;
-																							v99 = loc63;
-																							if (v99)
+																							g_t140048.u3 = (word32 *) v100;
+																							v100.u0 = 474;
+																							v101 = arg0;
+																							v102 = 17688;
+																							invoke_vii(v100, v101, v102);
+																							v100.u3 = g_t140048.u3;
+																							loc62 = v100;
+																							v100.u0 = 0x00;
+																							g_t140048.u3 = (word32 *) v100;
+																							v100 = loc62;
+																							v101.u0 = 0x01;
+																							v100 &= v101;
+																							loc63 = v100;
+																							v100 = loc63;
+																							if (v100)
 																							{
-																								v99.u0 = 0x2A;
-																								loc97 = v99;
+																								v100.u0 = 0x2A;
+																								loc97 = v100;
 																							}
 																							else
 																							{
-																								v99.u0 = 17700;
+																								v100.u0 = 17700;
+																								v101.u0 = 0x00;
+																								*v100.u0 = v101;
+																								v100.u0 = 0x4520;
+																								v101.u0 = 7344;
+																								*v100.u0 = v101;
+																								v100.u0 = 17704;
+																								v101.u0 = 0x1CE0;
+																								*v100.u0 = v101;
 																								v100.u0 = 0x00;
-																								*v99.u0 = v100;
-																								v99.u0 = 0x4520;
-																								v100.u0 = 7344;
-																								*v99.u0 = v100;
-																								v99.u0 = 17704;
-																								v100.u0 = 0x1CE0;
-																								*v99.u0 = v100;
-																								v99.u0 = 0x00;
-																								g_t140048.u3 = (word32 *) v99;
-																								v99.u0 = 0x01DB;
-																								v100 = arg0;
-																								v101 = 0x4520;
-																								invoke_vii(v99, v100, v101);
-																								v99.u3 = g_t140048.u3;
-																								loc64 = v99;
-																								v99.u0 = 0x00;
-																								g_t140048.u3 = (word32 *) v99;
-																								v99 = loc64;
-																								v100.u0 = 0x01;
-																								v99 &= v100;
-																								loc65 = v99;
-																								v99 = loc65;
-																								if (v99)
+																								g_t140048.u3 = (word32 *) v100;
+																								v100.u0 = 0x01DB;
+																								v101 = arg0;
+																								v102 = 0x4520;
+																								invoke_vii(v100, v101, v102);
+																								v100.u3 = g_t140048.u3;
+																								loc64 = v100;
+																								v100.u0 = 0x00;
+																								g_t140048.u3 = (word32 *) v100;
+																								v100 = loc64;
+																								v101.u0 = 0x01;
+																								v100 &= v101;
+																								loc65 = v100;
+																								v100 = loc65;
+																								if (v100)
 																								{
-																									v99.u0 = 0x2A;
-																									loc97 = v99;
+																									v100.u0 = 0x2A;
+																									loc97 = v100;
 																								}
 																								else
 																								{
-																									v99.u0 = 17716;
+																									v100.u0 = 17716;
+																									v101.u0 = 0x00;
+																									*v100.u0 = v101;
+																									v100.u0 = 17712;
+																									v101.u0 = 0x1D04;
+																									*v100.u0 = v101;
+																									v100.u0 = 17720;
+																									v101.u0 = 7476;
+																									*v100.u0 = v101;
 																									v100.u0 = 0x00;
-																									*v99.u0 = v100;
-																									v99.u0 = 17712;
-																									v100.u0 = 0x1D04;
-																									*v99.u0 = v100;
-																									v99.u0 = 17720;
-																									v100.u0 = 7476;
-																									*v99.u0 = v100;
-																									v99.u0 = 0x00;
-																									g_t140048.u3 = (word32 *) v99;
-																									v99.u0 = 0x01DC;
-																									v100 = arg0;
-																									v101 = 17712;
-																									invoke_vii(v99, v100, v101);
-																									v99.u3 = g_t140048.u3;
-																									loc66 = v99;
-																									v99.u0 = 0x00;
-																									g_t140048.u3 = (word32 *) v99;
-																									v99 = loc66;
-																									v100.u0 = 0x01;
-																									v99 &= v100;
-																									loc67 = v99;
-																									v99 = loc67;
-																									if (v99)
+																									g_t140048.u3 = (word32 *) v100;
+																									v100.u0 = 0x01DC;
+																									v101 = arg0;
+																									v102 = 17712;
+																									invoke_vii(v100, v101, v102);
+																									v100.u3 = g_t140048.u3;
+																									loc66 = v100;
+																									v100.u0 = 0x00;
+																									g_t140048.u3 = (word32 *) v100;
+																									v100 = loc66;
+																									v101.u0 = 0x01;
+																									v100 &= v101;
+																									loc67 = v100;
+																									v100 = loc67;
+																									if (v100)
 																									{
-																										v99.u0 = 0x2A;
-																										loc97 = v99;
+																										v100.u0 = 0x2A;
+																										loc97 = v100;
 																									}
 																									else
 																									{
-																										v99.u0 = 0x4544;
+																										v100.u0 = 0x4544;
+																										v101.u0 = 0x00;
+																										*v100.u0 = v101;
+																										v100.u0 = 0x4540;
+																										v101.u0 = 0x256C;
+																										*v100.u0 = v101;
 																										v100.u0 = 0x00;
-																										*v99.u0 = v100;
-																										v99.u0 = 0x4540;
-																										v100.u0 = 0x256C;
-																										*v99.u0 = v100;
-																										v99.u0 = 0x00;
-																										g_t140048.u3 = (word32 *) v99;
-																										v99.u0 = 0x017B;
-																										v99 = invoke_i(v99);
-																										loc68 = v99;
-																										v99.u3 = g_t140048.u3;
-																										loc69 = v99;
-																										v99.u0 = 0x00;
-																										g_t140048.u3 = (word32 *) v99;
-																										v99 = loc69;
-																										v100.u0 = 0x01;
-																										v99 &= v100;
-																										loc70 = v99;
-																										v99 = loc70;
-																										if (v99)
+																										g_t140048.u3 = (word32 *) v100;
+																										v100.u0 = 0x017B;
+																										v100 = invoke_i(v100);
+																										loc68 = v100;
+																										v100.u3 = g_t140048.u3;
+																										loc69 = v100;
+																										v100.u0 = 0x00;
+																										g_t140048.u3 = (word32 *) v100;
+																										v100 = loc69;
+																										v101.u0 = 0x01;
+																										v100 &= v101;
+																										loc70 = v100;
+																										v100 = loc70;
+																										if (v100)
 																										{
-																											v99 = ___cxa_find_matching_catch_n();
-																											loc71 = v99;
-																											v99.u3 = g_t140094.u3;
-																											loc73 = v99;
-																											v99 = loc73;
-																											loc95 = v99;
-																											v99 = loc71;
-																											loc96 = v99;
+																											v100 = ___cxa_find_matching_catch_n();
+																											loc71 = v100;
+																											v100.u3 = g_t140094.u3;
+																											loc73 = v100;
+																											v100 = loc73;
+																											loc95 = v100;
+																											v100 = loc71;
+																											loc96 = v100;
 																										}
 																										else
 																										{
-																											v99.u0 = 0x4548;
-																											v100 = loc68;
-																											*v99.u0 = v100;
-																											v99.u0 = 0x4540;
-																											v100.u0 = 0x2258;
-																											*v99.u0 = v100;
-																											v99.u0 = 0x00;
-																											g_t140048.u3 = (word32 *) v99;
-																											v99.u0 = 0x01DD;
-																											v100 = arg0;
-																											v101 = 0x4540;
-																											invoke_vii(v99, v100, v101);
-																											v99.u3 = g_t140048.u3;
-																											loc74 = v99;
-																											v99.u0 = 0x00;
-																											g_t140048.u3 = (word32 *) v99;
-																											v99 = loc74;
-																											v100.u0 = 0x01;
-																											v99 &= v100;
-																											loc75 = v99;
-																											v99 = loc75;
-																											if (v99)
+																											v100.u0 = 0x4548;
+																											v101 = loc68;
+																											*v100.u0 = v101;
+																											v100.u0 = 0x4540;
+																											v101.u0 = 0x2258;
+																											*v100.u0 = v101;
+																											v100.u0 = 0x00;
+																											g_t140048.u3 = (word32 *) v100;
+																											v100.u0 = 0x01DD;
+																											v101 = arg0;
+																											v102 = 0x4540;
+																											invoke_vii(v100, v101, v102);
+																											v100.u3 = g_t140048.u3;
+																											loc74 = v100;
+																											v100.u0 = 0x00;
+																											g_t140048.u3 = (word32 *) v100;
+																											v100 = loc74;
+																											v101.u0 = 0x01;
+																											v100 &= v101;
+																											loc75 = v100;
+																											v100 = loc75;
+																											if (v100)
 																											{
-																												v99.u0 = 0x2A;
-																												loc97 = v99;
+																												v100.u0 = 0x2A;
+																												loc97 = v100;
 																											}
 																											else
 																											{
-																												v99.u0 = 0x4554;
+																												v100.u0 = 0x4554;
+																												v101.u0 = 0x00;
+																												*v100.u0 = v101;
+																												v100.u0 = 0x4550;
+																												v101.u0 = 0x256C;
+																												*v100.u0 = v101;
 																												v100.u0 = 0x00;
-																												*v99.u0 = v100;
-																												v99.u0 = 0x4550;
-																												v100.u0 = 0x256C;
-																												*v99.u0 = v100;
-																												v99.u0 = 0x00;
-																												g_t140048.u3 = (word32 *) v99;
-																												v99.u0 = 0x017B;
-																												v99 = invoke_i(v99);
-																												loc76 = v99;
-																												v99.u3 = g_t140048.u3;
-																												loc77 = v99;
-																												v99.u0 = 0x00;
-																												g_t140048.u3 = (word32 *) v99;
-																												v99 = loc77;
-																												v100.u0 = 0x01;
-																												v99 &= v100;
-																												loc78 = v99;
-																												v99 = loc78;
-																												if (v99)
+																												g_t140048.u3 = (word32 *) v100;
+																												v100.u0 = 0x017B;
+																												v100 = invoke_i(v100);
+																												loc76 = v100;
+																												v100.u3 = g_t140048.u3;
+																												loc77 = v100;
+																												v100.u0 = 0x00;
+																												g_t140048.u3 = (word32 *) v100;
+																												v100 = loc77;
+																												v101.u0 = 0x01;
+																												v100 &= v101;
+																												loc78 = v100;
+																												v100 = loc78;
+																												if (v100)
 																												{
-																													v99 = ___cxa_find_matching_catch_n();
-																													loc79 = v99;
-																													v99.u3 = g_t140094.u3;
-																													loc80 = v99;
-																													v99 = loc80;
-																													loc95 = v99;
-																													v99 = loc79;
-																													loc96 = v99;
+																													v100 = ___cxa_find_matching_catch_n();
+																													loc79 = v100;
+																													v100.u3 = g_t140094.u3;
+																													loc80 = v100;
+																													v100 = loc80;
+																													loc95 = v100;
+																													v100 = loc79;
+																													loc96 = v100;
 																												}
 																												else
 																												{
-																													v99.u0 = 0x4558;
-																													v100 = loc76;
-																													*v99.u0 = v100;
-																													v99.u0 = 0x4550;
-																													v100.u0 = 0x2270;
-																													*v99.u0 = v100;
-																													v99.u0 = 0x00;
-																													g_t140048.u3 = (word32 *) v99;
-																													v99.u0 = 0x01DE;
-																													v100 = arg0;
-																													v101 = 0x4550;
-																													invoke_vii(v99, v100, v101);
-																													v99.u3 = g_t140048.u3;
-																													loc81 = v99;
-																													v99.u0 = 0x00;
-																													g_t140048.u3 = (word32 *) v99;
-																													v99 = loc81;
-																													v100.u0 = 0x01;
-																													v99 &= v100;
-																													loc82 = v99;
-																													v99 = loc82;
-																													if (v99)
+																													v100.u0 = 0x4558;
+																													v101 = loc76;
+																													*v100.u0 = v101;
+																													v100.u0 = 0x4550;
+																													v101.u0 = 0x2270;
+																													*v100.u0 = v101;
+																													v100.u0 = 0x00;
+																													g_t140048.u3 = (word32 *) v100;
+																													v100.u0 = 0x01DE;
+																													v101 = arg0;
+																													v102 = 0x4550;
+																													invoke_vii(v100, v101, v102);
+																													v100.u3 = g_t140048.u3;
+																													loc81 = v100;
+																													v100.u0 = 0x00;
+																													g_t140048.u3 = (word32 *) v100;
+																													v100 = loc81;
+																													v101.u0 = 0x01;
+																													v100 &= v101;
+																													loc82 = v100;
+																													v100 = loc82;
+																													if (v100)
 																													{
-																														v99.u0 = 0x2A;
-																														loc97 = v99;
+																														v100.u0 = 0x2A;
+																														loc97 = v100;
 																													}
 																													else
 																													{
-																														v99.u0 = 0x4564;
+																														v100.u0 = 0x4564;
+																														v101.u0 = 0x00;
+																														*v100.u0 = v101;
+																														v100.u0 = 0x4560;
+																														v101.u0 = 0x23D8;
+																														*v100.u0 = v101;
 																														v100.u0 = 0x00;
-																														*v99.u0 = v100;
-																														v99.u0 = 0x4560;
-																														v100.u0 = 0x23D8;
-																														*v99.u0 = v100;
-																														v99.u0 = 0x00;
-																														g_t140048.u3 = (word32 *) v99;
-																														v99.u0 = 0x01DF;
-																														v100 = arg0;
-																														v101 = 0x4560;
-																														invoke_vii(v99, v100, v101);
-																														v99.u3 = g_t140048.u3;
-																														loc84 = v99;
-																														v99.u0 = 0x00;
-																														g_t140048.u3 = (word32 *) v99;
-																														v99 = loc84;
-																														v100.u0 = 0x01;
-																														v99 &= v100;
-																														loc85 = v99;
-																														v99 = loc85;
-																														if (v99)
+																														g_t140048.u3 = (word32 *) v100;
+																														v100.u0 = 0x01DF;
+																														v101 = arg0;
+																														v102 = 0x4560;
+																														invoke_vii(v100, v101, v102);
+																														v100.u3 = g_t140048.u3;
+																														loc84 = v100;
+																														v100.u0 = 0x00;
+																														g_t140048.u3 = (word32 *) v100;
+																														v100 = loc84;
+																														v101.u0 = 0x01;
+																														v100 &= v101;
+																														loc85 = v100;
+																														v100 = loc85;
+																														if (v100)
 																														{
-																															v99.u0 = 0x2A;
-																															loc97 = v99;
+																															v100.u0 = 0x2A;
+																															loc97 = v100;
 																														}
 																														else
 																														{
-																															v99.u0 = 17772;
+																															v100.u0 = 17772;
+																															v101.u0 = 0x00;
+																															*v100.u0 = v101;
+																															v100.u0 = 17768;
+																															v101.u0 = 0x23F8;
+																															*v100.u0 = v101;
 																															v100.u0 = 0x00;
-																															*v99.u0 = v100;
-																															v99.u0 = 17768;
-																															v100.u0 = 0x23F8;
-																															*v99.u0 = v100;
-																															v99.u0 = 0x00;
-																															g_t140048.u3 = (word32 *) v99;
-																															v99.u0 = 0x01E0;
-																															v100 = arg0;
-																															v101 = 17768;
-																															invoke_vii(v99, v100, v101);
-																															v99.u3 = g_t140048.u3;
-																															loc86 = v99;
-																															v99.u0 = 0x00;
-																															g_t140048.u3 = (word32 *) v99;
-																															v99 = loc86;
-																															v100.u0 = 0x01;
-																															v99 &= v100;
-																															loc87 = v99;
-																															v99 = loc87;
-																															if (!v99)
+																															g_t140048.u3 = (word32 *) v100;
+																															v100.u0 = 0x01E0;
+																															v101 = arg0;
+																															v102 = 17768;
+																															invoke_vii(v100, v101, v102);
+																															v100.u3 = g_t140048.u3;
+																															loc86 = v100;
+																															v100.u0 = 0x00;
+																															g_t140048.u3 = (word32 *) v100;
+																															v100 = loc86;
+																															v101.u0 = 0x01;
+																															v100 &= v101;
+																															loc87 = v100;
+																															v100 = loc87;
+																															if (!v100)
 																																return;
-																															v99.u0 = 0x2A;
-																															loc97 = v99;
+																															v100.u0 = 0x2A;
+																															loc97 = v100;
 																														}
 																													}
 																												}
@@ -15619,40 +15619,40 @@ void fn00119EA4(Eq_n arg0, Eq_n arg1)
 																	}
 																}
 l0011A6E4:
-																v99 = loc97;
-																v100.u0 = 0x2A;
-																v104 = v99 == v100;
-																if (v104)
+																v100 = loc97;
+																v101.u0 = 0x2A;
+																v105 = v100 == v101;
+																if (v105)
 																{
-																	v99 = ___cxa_find_matching_catch_n();
-																	loc92 = v99;
-																	v99.u3 = g_t140094.u3;
-																	loc93 = v99;
-																	v99 = loc93;
-																	loc95 = v99;
-																	v99 = loc92;
-																	loc96 = v99;
+																	v100 = ___cxa_find_matching_catch_n();
+																	loc92 = v100;
+																	v100.u3 = g_t140094.u3;
+																	loc93 = v100;
+																	v100 = loc93;
+																	loc95 = v100;
+																	v100 = loc92;
+																	loc96 = v100;
 																}
-																v99 = loc72;
-																fn0011BAF7(v99);
-																v99 = loc95;
-																loc2 = v99;
-																v99 = loc96;
-																loc3 = v99;
+																v100 = loc72;
+																fn0011BAF7(v100);
+																v100 = loc95;
+																loc2 = v100;
+																v100 = loc96;
+																loc3 = v100;
 l0011A70A:
-																v99 = loc39;
-																fn00119406(v99);
-																v99 = loc2;
-																loc4 = v99;
-																v99 = loc3;
-																loc5 = v99;
+																v100 = loc39;
+																fn00119406(v100);
+																v100 = loc2;
+																loc4 = v100;
+																v100 = loc3;
+																loc5 = v100;
 l0011A718:
-																v99 = loc5;
-																___resumeException(v99);
+																v100 = loc5;
+																___resumeException(v100);
 																return;
 															}
-															v99.u0 = 0x2A;
-															loc97 = v99;
+															v100.u0 = 0x2A;
+															loc97 = v100;
 														}
 													}
 												}
@@ -15673,239 +15673,239 @@ l0011A718:
 // 0011A71F: void fn0011A71F(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A71F(Eq_n arg0, Eq_n arg1)
 {
-	v12.u3 = g_t140030.u3;
-	loc11 = v12;
-	v12 = arg0;
-	v13.u0 = 0x00;
-	*v12.u3 = (word32) v13;
-	v12 = arg0;
-	v13.u0 = 0x04;
-	v12 += v13;
-	loc2 = v12;
-	v12 = loc2;
-	v13.u0 = 0x00;
-	*v12.u3 = (word32) v13;
-	v12 = arg0;
-	v13.u0 = 0x08;
-	v12 += v13;
-	loc3 = v12;
-	v12 = loc3;
-	v13.u0 = 0x00;
-	*v12.u3 = (word32) v13;
-	v12 = arg0;
-	v13.u0 = 0x80;
-	v12 += v13;
-	loc4 = v12;
-	v12 = loc4;
-	v13.u0 = 0x00;
-	v14 = (byte) v13;
-	*v12.u3 = (word32) v14;
-	v12 = arg1;
-	v13.u0 = 0x00;
-	v15 = v12 == v13;
-	loc5 = v15;
-	v12 = loc5;
-	v15 = v12 == 0x00;
-	if (!v15)
-		return;
-	v12.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v12;
-	v12.u0 = 0x01E1;
+	v13.u3 = g_t140030.u3;
+	loc11 = v13;
 	v13 = arg0;
-	v16 = arg1;
-	invoke_vii(v12, v13, v16);
-	v12.u3 = g_t140048.u3;
-	loc6 = v12;
-	v12.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v12;
-	v12 = loc6;
-	v13.u0 = 0x01;
-	v12 &= v13;
-	loc7 = v12;
-	v12 = loc7;
-	if (!v12)
+	v14.u0 = 0x00;
+	*v13.u3 = (word32) v14;
+	v13 = arg0;
+	v14.u0 = 0x04;
+	v13 += v14;
+	loc2 = v13;
+	v13 = loc2;
+	v14.u0 = 0x00;
+	*v13.u3 = (word32) v14;
+	v13 = arg0;
+	v14.u0 = 0x08;
+	v13 += v14;
+	loc3 = v13;
+	v13 = loc3;
+	v14.u0 = 0x00;
+	*v13.u3 = (word32) v14;
+	v13 = arg0;
+	v14.u0 = 0x80;
+	v13 += v14;
+	loc4 = v13;
+	v13 = loc4;
+	v14.u0 = 0x00;
+	v15 = (byte) v14;
+	*v13.u3 = (word32) v15;
+	v13 = arg1;
+	v14.u0 = 0x00;
+	v16 = v13 == v14;
+	loc5 = v16;
+	v13 = loc5;
+	v16 = v13 == 0x00;
+	if (!v16)
+		return;
+	v13.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v13;
+	v13.u0 = 0x01E1;
+	v14 = arg0;
+	v17 = arg1;
+	invoke_vii(v13, v14, v17);
+	v13.u3 = g_t140048.u3;
+	loc6 = v13;
+	v13.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v13;
+	v13 = loc6;
+	v14.u0 = 0x01;
+	v13 &= v14;
+	loc7 = v13;
+	v13 = loc7;
+	if (!v13)
 	{
-		v12 = arg0;
-		v13 = arg1;
-		fn0011AEEB(v12, v13);
+		v13 = arg0;
+		v14 = arg1;
+		fn0011AEEB(v13, v14);
 	}
 	else
 	{
-		v12 = ___cxa_find_matching_catch_n();
-		loc8 = v12;
-		v12.u3 = g_t140094.u3;
-		loc9 = v12;
-		v12 = arg0;
-		fn00119406(v12);
-		v12 = loc8;
-		___resumeException(v12);
+		v13 = ___cxa_find_matching_catch_n();
+		loc8 = v13;
+		v13.u3 = g_t140094.u3;
+		loc9 = v13;
+		v13 = arg0;
+		fn00119406(v13);
+		v13 = loc8;
+		___resumeException(v13);
 	}
 }
 
 // 0011A7A6: void fn0011A7A6(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A7A6(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C60;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C60;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A7C1: void fn0011A7C1(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A7C1(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C68;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C68;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A7DC: void fn0011A7DC(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A7DC(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C70;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C70;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A7F7: void fn0011A7F7(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A7F7(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C90;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C90;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A812: void fn0011A812(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A812(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5370;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5370;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A82D: void fn0011A82D(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A82D(Eq_n arg0, Eq_n arg1)
 {
-	v12.u3 = g_t140030.u3;
-	loc11 = v12;
-	v12 = arg1;
-	v13.u0 = ~0x00;
-	v12 += v13;
-	loc2 = v12;
-	v12 = arg0;
-	v13.u0 = 0x04;
-	v12 += v13;
-	loc3 = v12;
-	v12 = loc3;
-	v13 = loc2;
-	*v12.u3 = (word32) v13;
-	v12 = arg0;
-	v13.u0 = 9336;
-	*v12.u3 = (word32) v13;
-	v12.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v12;
-	v12.u0 = 0x017B;
-	v12 = invoke_i(v12);
-	loc4 = v12;
-	v12.u3 = g_t140048.u3;
-	loc5 = v12;
-	v12.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v12;
-	v12 = loc5;
-	v13.u0 = 0x01;
-	v12 &= v13;
-	loc6 = v12;
-	v12 = loc6;
-	if (!v12)
+	v13.u3 = g_t140030.u3;
+	loc11 = v13;
+	v13 = arg1;
+	v14.u0 = ~0x00;
+	v13 += v14;
+	loc2 = v13;
+	v13 = arg0;
+	v14.u0 = 0x04;
+	v13 += v14;
+	loc3 = v13;
+	v13 = loc3;
+	v14 = loc2;
+	*v13.u3 = (word32) v14;
+	v13 = arg0;
+	v14.u0 = 9336;
+	*v13.u3 = (word32) v14;
+	v13.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v13;
+	v13.u0 = 0x017B;
+	v13 = invoke_i(v13);
+	loc4 = v13;
+	v13.u3 = g_t140048.u3;
+	loc5 = v13;
+	v13.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v13;
+	v13 = loc5;
+	v14.u0 = 0x01;
+	v13 &= v14;
+	loc6 = v13;
+	v13 = loc6;
+	if (!v13)
 	{
-		v12 = arg0;
-		v13.u0 = 0x08;
-		v12 += v13;
-		loc7 = v12;
-		v12 = loc7;
-		v13 = loc4;
-		*v12.u3 = (word32) v13;
+		v13 = arg0;
+		v14.u0 = 0x08;
+		v13 += v14;
+		loc7 = v13;
+		v13 = loc7;
+		v14 = loc4;
+		*v13.u3 = (word32) v14;
 	}
 	else
 	{
-		v12 = ___cxa_find_matching_catch_n();
-		loc8 = v12;
-		v12.u3 = g_t140094.u3;
-		loc9 = v12;
-		v12 = loc8;
-		___resumeException(v12);
+		v13 = ___cxa_find_matching_catch_n();
+		loc8 = v13;
+		v13.u3 = g_t140094.u3;
+		loc9 = v13;
+		v13 = loc8;
+		___resumeException(v13);
 	}
 }
 
 // 0011A88E: void fn0011A88E(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A88E(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5378;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5378;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A8A9: void fn0011A8A9(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A8A9(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5380;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5380;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A8C4: void fn0011A8C4(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A8C4(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5388;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5388;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A8DF: void fn0011A8DF(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -15913,89 +15913,89 @@ void fn0011A8DF(Eq_n arg0, Eq_n arg1)
 {
 	while (true)
 	{
-		v13.u3 = g_t140030.u3;
-		loc12 = v13;
-		v13 = arg1;
-		v14.u0 = ~0x00;
-		v13 += v14;
-		loc3 = v13;
-		v13 = arg0;
-		v14.u0 = 0x04;
-		v13 += v14;
-		loc4 = v13;
-		v13 = loc4;
-		v14 = loc3;
-		*v13.u3 = (word32) v14;
-		v13 = arg0;
-		v14.u0 = 0x24F0;
-		*v13.u3 = (word32) v14;
-		v13 = arg0;
-		v14.u0 = 0x08;
-		v13 += v14;
-		loc5 = v13;
-		v13 = loc5;
-		v14.u0 = 0x2E;
-		v15 = (byte) v14;
-		*v13.u3 = (word32) v15;
-		v13 = arg0;
-		v14.u0 = 0x09;
-		v13 += v14;
-		loc6 = v13;
-		v13 = loc6;
-		v14.u0 = 44;
-		v16 = (byte) v14;
-		*v13.u3 = (word32) v16;
-		v13 = arg0;
-		v14.u0 = 0x0C;
-		v13 += v14;
-		loc7 = v13;
-		v13 = loc7;
-		v17.u0 = 0x00;
-		*v13.u3 = (word32) v17;
-		v13 = loc7;
-		v14.u0 = 0x08;
-		v13 += v14;
+		v14.u3 = g_t140030.u3;
+		loc12 = v14;
+		v14 = arg1;
+		v15.u0 = ~0x00;
+		v14 += v15;
+		loc3 = v14;
+		v14 = arg0;
+		v15.u0 = 0x04;
+		v14 += v15;
+		loc4 = v14;
+		v14 = loc4;
+		v15 = loc3;
+		*v14.u3 = (word32) v15;
+		v14 = arg0;
+		v15.u0 = 0x24F0;
+		*v14.u3 = (word32) v15;
+		v14 = arg0;
+		v15.u0 = 0x08;
+		v14 += v15;
+		loc5 = v14;
+		v14 = loc5;
+		v15.u0 = 0x2E;
+		v16 = (byte) v15;
+		*v14.u3 = (word32) v16;
+		v14 = arg0;
+		v15.u0 = 0x09;
+		v14 += v15;
+		loc6 = v14;
+		v14 = loc6;
+		v15.u0 = 44;
+		v17 = (byte) v15;
+		*v14.u3 = (word32) v17;
+		v14 = arg0;
+		v15.u0 = 0x0C;
+		v14 += v15;
+		loc7 = v14;
+		v14 = loc7;
+		v18.u0 = 0x00;
+		*v14.u3 = (word32) v18;
+		v14 = loc7;
+		v15.u0 = 0x08;
+		v14 += v15;
+		v15.u0 = 0x00;
+		*v14.u3 = (word32) v15;
 		v14.u0 = 0x00;
-		*v13.u3 = (word32) v14;
-		v13.u0 = 0x00;
-		loc2 = v13;
-		v13 = loc2;
-		v14.u0 = 0x03;
-		v18 = v13 == v14;
-		loc10 = v18;
-		v13 = loc10;
-		if (v13)
-			break;
-		v13 = loc7;
+		loc2 = v14;
 		v14 = loc2;
-		v19 = 0x02;
-		v14 <<= v19;
-		v13 += v14;
-		loc8 = v13;
-		v13 = loc8;
-		v14.u0 = 0x00;
-		*v13.u0 = v14;
-		v13 = loc2;
-		v14.u0 = 0x01;
-		v13 += v14;
-		loc9 = v13;
-		v13 = loc9;
-		loc2 = v13;
+		v15.u0 = 0x03;
+		v19 = v14 == v15;
+		loc10 = v19;
+		v14 = loc10;
+		if (v14)
+			break;
+		v14 = loc7;
+		v15 = loc2;
+		v20 = 0x02;
+		v15 <<= v20;
+		v14 += v15;
+		loc8 = v14;
+		v14 = loc8;
+		v15.u0 = 0x00;
+		*v14.u0 = v15;
+		v14 = loc2;
+		v15.u0 = 0x01;
+		v14 += v15;
+		loc9 = v14;
+		v14 = loc9;
+		loc2 = v14;
 	}
 }
 
 // 0011A970: void fn0011A970(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011A970(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C80;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C80;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011A98B: void fn0011A98B(Stack Eq_n arg0, Stack Eq_n arg1)
@@ -16003,916 +16003,363 @@ void fn0011A98B(Eq_n arg0, Eq_n arg1)
 {
 	while (true)
 	{
-		v13.u3 = g_t140030.u3;
-		loc12 = v13;
-		v13 = arg1;
-		v14.u0 = ~0x00;
-		v13 += v14;
-		loc3 = v13;
-		v13 = arg0;
-		v14.u0 = 0x04;
-		v13 += v14;
-		loc4 = v13;
-		v13 = loc4;
-		v14 = loc3;
-		*v13.u3 = (word32) v14;
-		v13 = arg0;
-		v14.u0 = 9496;
-		*v13.u3 = (word32) v14;
-		v13 = arg0;
-		v14.u0 = 0x08;
-		v13 += v14;
-		loc5 = v13;
-		v13 = loc5;
-		v14.u0 = 0x2E;
-		*v13.u3 = (word32) v14;
-		v13 = arg0;
-		v14.u0 = 0x0C;
-		v13 += v14;
-		loc6 = v13;
-		v13 = loc6;
-		v14.u0 = 44;
-		*v13.u3 = (word32) v14;
-		v13 = arg0;
-		v14.u0 = 0x10;
-		v13 += v14;
-		loc7 = v13;
-		v13 = loc7;
+		v14.u3 = g_t140030.u3;
+		loc12 = v14;
+		v14 = arg1;
+		v15.u0 = ~0x00;
+		v14 += v15;
+		loc3 = v14;
+		v14 = arg0;
+		v15.u0 = 0x04;
+		v14 += v15;
+		loc4 = v14;
+		v14 = loc4;
+		v15 = loc3;
+		*v14.u3 = (word32) v15;
+		v14 = arg0;
+		v15.u0 = 9496;
+		*v14.u3 = (word32) v15;
+		v14 = arg0;
+		v15.u0 = 0x08;
+		v14 += v15;
+		loc5 = v14;
+		v14 = loc5;
+		v15.u0 = 0x2E;
+		*v14.u3 = (word32) v15;
+		v14 = arg0;
+		v15.u0 = 0x0C;
+		v14 += v15;
+		loc6 = v14;
+		v14 = loc6;
+		v15.u0 = 44;
+		*v14.u3 = (word32) v15;
+		v14 = arg0;
+		v15.u0 = 0x10;
+		v14 += v15;
+		loc7 = v14;
+		v14 = loc7;
+		v16.u0 = 0x00;
+		*v14.u3 = (word32) v16;
+		v14 = loc7;
+		v15.u0 = 0x08;
+		v14 += v15;
 		v15.u0 = 0x00;
-		*v13.u3 = (word32) v15;
-		v13 = loc7;
-		v14.u0 = 0x08;
-		v13 += v14;
+		*v14.u3 = (word32) v15;
 		v14.u0 = 0x00;
-		*v13.u3 = (word32) v14;
-		v13.u0 = 0x00;
-		loc2 = v13;
-		v13 = loc2;
-		v14.u0 = 0x03;
-		v16 = v13 == v14;
-		loc10 = v16;
-		v13 = loc10;
-		if (v13)
-			break;
-		v13 = loc7;
+		loc2 = v14;
 		v14 = loc2;
-		v17 = 0x02;
-		v14 <<= v17;
-		v13 += v14;
-		loc8 = v13;
-		v13 = loc8;
-		v14.u0 = 0x00;
-		*v13.u0 = v14;
-		v13 = loc2;
-		v14.u0 = 0x01;
-		v13 += v14;
-		loc9 = v13;
-		v13 = loc9;
-		loc2 = v13;
+		v15.u0 = 0x03;
+		v17 = v14 == v15;
+		loc10 = v17;
+		v14 = loc10;
+		if (v14)
+			break;
+		v14 = loc7;
+		v15 = loc2;
+		v18 = 0x02;
+		v15 <<= v18;
+		v14 += v15;
+		loc8 = v14;
+		v14 = loc8;
+		v15.u0 = 0x00;
+		*v14.u0 = v15;
+		v14 = loc2;
+		v15.u0 = 0x01;
+		v14 += v15;
+		loc9 = v14;
+		v14 = loc9;
+		loc2 = v14;
 	}
 }
 
 // 0011AA1C: void fn0011AA1C(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AA1C(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C98;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C98;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AA37: void fn0011AA37(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AA37(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4C88;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4C88;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AA52: void fn0011AA52(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AA52(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 19616;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 19616;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AA6D: void fn0011AA6D(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AA6D(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4CA8;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4CA8;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AA88: void fn0011AA88(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AA88(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x4CB0;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x4CB0;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AAA3: void fn0011AAA3(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AAA3(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5320;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5320;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AABE: void fn0011AABE(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AABE(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 21288;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 21288;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AAD9: void fn0011AAD9(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AAD9(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5330;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5330;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AAF4: void fn0011AAF4(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AAF4(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5338;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5338;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AB0F: void fn0011AB0F(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AB0F(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 21312;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 21312;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AB2A: void fn0011AB2A(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AB2A(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 21320;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 21320;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AB45: void fn0011AB45(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AB45(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5350;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5350;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AB60: void fn0011AB60(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AB60(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5358;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5358;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AB7B: void fn0011AB7B(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AB7B(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 20444;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 20444;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AB96: void fn0011AB96(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AB96(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5308;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5308;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011ABB1: void fn0011ABB1(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011ABB1(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5310;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5310;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011ABCC: void fn0011ABCC(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011ABCC(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 21272;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 21272;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011ABE7: void fn0011ABE7(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011ABE7(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 0x5360;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 0x5360;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AC02: void fn0011AC02(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011AC02(Eq_n arg0, Eq_n arg1)
 {
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5.u0 = 21352;
-	v5 = fn000EAE12(v5);
-	loc2 = v5;
-	v5 = arg0;
-	v6 = arg1;
-	v7 = loc2;
-	fn0011AC1D(v5, v6, v7);
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6.u0 = 21352;
+	v6 = fn000EAE12(v6);
+	loc2 = v6;
+	v6 = arg0;
+	v7 = arg1;
+	v8 = loc2;
+	fn0011AC1D(v6, v7, v8);
 }
 
 // 0011AC1D: void fn0011AC1D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011AC1D(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v27.u3 = g_t140030.u3;
-	loc27 = v27;
-	v27 = arg1;
-	fn0011B41A(v27);
-	v27 = arg0;
-	v28.u0 = 0x08;
-	v27 += v28;
-	loc19 = v27;
-	v27 = arg0;
-	v28.u0 = 0x0C;
-	v27 += v28;
-	loc20 = v27;
-	v27 = loc20;
-	v27.u3 = *v27.u3;
-	loc21 = v27;
-	v27 = loc19;
-	v27.u3 = *v27.u3;
-	loc22 = v27;
-	v27 = loc21;
-	v28 = loc22;
-	v27 -= v28;
-	loc23 = v27;
-	v27 = loc23;
-	v28.u0 = 0x02;
-	v27 >>= v28;
-	loc24 = v27;
-	v27 = loc24;
-	v28 = arg2;
-	v29 = v27 > v28;
-	loc25 = v29;
-	v27 = loc25;
-	if (v27)
-	{
-		v27 = loc22;
-		loc6 = v27;
-		v27 = loc19;
-		loc4 = v27;
-		v27 = loc6;
-		loc14 = v27;
-	}
-	else
-	{
-		v27 = arg2;
-		v28.u0 = 0x01;
-		v27 += v28;
-		loc7 = v27;
-		v27.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v27;
-		v27.u0 = 0x01E2;
-		v28 = loc19;
-		v30 = loc7;
-		invoke_vii(v27, v28, v30);
-		v27.u3 = g_t140048.u3;
-		loc8 = v27;
-		v27.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v27;
-		v27 = loc8;
-		v28.u0 = 0x01;
-		v27 &= v28;
-		loc9 = v27;
-		v27 = loc9;
-		v29 = v27 == 0x00;
-		if (v29)
-		{
-			v27 = loc19;
-			v27 = *v27.u0;
-			loc3 = v27;
-			v27 = loc19;
-			loc4 = v27;
-			v27 = loc3;
-			loc14 = v27;
-			goto l0011ACC6;
-		}
-		v27 = ___cxa_find_matching_catch_n();
-		loc10 = v27;
-		v27.u3 = g_t140094.u3;
-		loc11 = v27;
-		v27 = arg1;
-		v28.u0 = 0x00;
-		v29 = v27 == v28;
-		loc12 = v29;
-		v27 = loc12;
-		v29 = v27 == 0x00;
-		if (v29)
-		{
-			v27 = arg1;
-			v27 = fn0011B43F(v27);
-		}
-		v27 = loc10;
-		___resumeException(v27);
-	}
-l0011ACC6:
-	v27 = loc14;
-	v28 = arg2;
-	v30.u0 = 0x02;
-	v28 <<= v30;
-	v27 += v28;
-	loc13 = v27;
-	v27 = loc13;
-	v27.u3 = *v27.u3;
-	loc15 = v27;
-	v27 = loc15;
-	v28.u0 = 0x00;
-	v29 = v27 == v28;
-	loc16 = v29;
-	v27 = loc16;
-	if (v27)
-	{
-		v27 = loc14;
-		loc18 = v27;
-	}
-	else
-	{
-		v27 = loc15;
-		v27 = fn0011B43F(v27);
-		v27 = loc4;
-		v27.u3 = *v27.u3;
-		loc5 = v27;
-		v27 = loc5;
-		loc18 = v27;
-	}
-	v27 = loc18;
-	v28 = arg2;
-	v30.u0 = 0x02;
-	v28 <<= v30;
-	v27 += v28;
-	loc17 = v27;
-	v27 = loc17;
-	v28 = arg1;
-	*v27.u3 = (word32) v28;
-}
-
-// 0011AD0E: void fn0011AD0E(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011AD0E(Eq_n arg0, Eq_n arg1)
-{
-	v18.u3 = g_t140030.u3;
-	loc17 = v18;
-	v18 = arg0;
-	v19.u0 = 0x04;
-	v18 += v19;
-	loc8 = v18;
-	v18 = loc8;
-	v18.u3 = *v18.u3;
-	loc9 = v18;
-	v18 = arg0;
-	v18.u3 = *v18.u3;
-	loc10 = v18;
-	v18 = loc9;
-	v19 = loc10;
-	v18 -= v19;
-	loc11 = v18;
-	v18 = loc11;
-	v19.u0 = 0x02;
-	v18 >>= v19;
-	loc12 = v18;
-	v18 = loc12;
-	v19 = arg1;
-	v20 = v18 < v19;
-	loc13 = v20;
-	v18 = loc10;
-	loc14 = v18;
-	v18 = loc9;
-	loc15 = v18;
-	v18 = loc13;
-	if (!v18)
-	{
-		v18 = loc12;
-		v19 = arg1;
-		v20 = v18 > v19;
-		loc3 = v20;
-		v18 = loc3;
-		if (!v18)
-			return;
-		while (true)
-		{
-			v18 = loc14;
-			v19 = arg1;
-			v21 = 0x02;
-			v19 <<= v21;
-			v18 += v19;
-			loc4 = v18;
-			v18 = loc15;
-			loc6 = v18;
-			v18 = loc6;
-			v19 = loc4;
-			v20 = v18 == v19;
-			loc5 = v20;
-			v18 = loc5;
-			if (v18)
-				break;
-			v18 = loc6;
-			v19.u0 = ~0x03;
-			v18 += v19;
-			loc7 = v18;
-			v18 = loc8;
-			v19 = loc7;
-			*v18.u3 = (word32) v19;
-			v18 = loc7;
-			loc6 = v18;
-		}
-	}
-	else
-	{
-		v18 = arg1;
-		v19 = loc12;
-		v18 -= v19;
-		loc2 = v18;
-		v18 = arg0;
-		v19 = loc2;
-		fn0011AD9F(v18, v19);
-	}
-}
-
-// 0011AD9F: void fn0011AD9F(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011AD9F(Eq_n arg0, Eq_n arg1)
-{
-	v33.u3 = g_t140030.u3;
-	loc32 = v33;
-	v33.u3 = g_t140030.u3;
-	v34.u0 = 0x20;
-	v33 += v34;
-	g_t140030.u3 = (word32 *) v33;
-	v33.u3 = g_t140030.u3;
-	v34.u3 = g_t140034.u3;
-	v35 = v33 >= v34;
-	if (v35)
-	{
-		v33.u0 = 0x20;
-		abortStackOverflow(v33);
-	}
-	v33 = loc32;
-	loc16 = v33;
-	v33 = arg0;
-	v34.u0 = 0x08;
-	v33 += v34;
-	loc24 = v33;
-	v33 = loc24;
-	v33 = *v33.u0;
-	loc25 = v33;
-	v33 = arg0;
-	v34.u0 = 0x04;
-	v33 += v34;
-	loc26 = v33;
-	v33 = loc26;
-	v33 = *v33.u0;
-	loc27 = v33;
-	v33 = loc25;
-	v34 = loc27;
-	v33 -= v34;
-	loc28 = v33;
-	v33 = loc28;
-	v34.u0 = 0x02;
-	v33 >>= v34;
-	loc29 = v33;
-	v33 = loc29;
-	v34 = arg1;
-	v35 = v33 < v34;
-	loc30 = v35;
-	v33 = loc30;
-	if (v33)
-	{
-		v33 = arg0;
-		v33 = *v33.u0;
-		loc6 = v33;
-		v33 = loc27;
-		v34 = loc6;
-		v33 -= v34;
-		loc7 = v33;
-		v33 = loc7;
-		v34.u0 = 0x02;
-		v33 >>= v34;
-		loc8 = v33;
-		v33 = loc8;
-		v34 = arg1;
-		v33 += v34;
-		loc9 = v33;
-		v33 = loc9;
-		v34.u0 = 0x3FFFFFFF;
-		v35 = v33 > v34;
-		loc10 = v35;
-		v33 = loc10;
-		if (v33)
-		{
-			v33 = arg0;
-			fn00119E4F(v33);
-		}
-		v33 = arg0;
-		v34.u0 = 0x10;
-		v33 += v34;
-		loc11 = v33;
-		v33 = loc25;
-		v34 = loc6;
-		v33 -= v34;
-		loc12 = v33;
-		v33 = loc12;
-		v34.u0 = 0x02;
-		v33 >>= v34;
-		loc13 = v33;
-		v33 = loc13;
-		v34.u0 = 0x1FFFFFFF;
-		v35 = v33 < v34;
-		loc14 = v35;
-		v33 = loc12;
-		v34.u0 = 0x01;
-		v33 >>= v34;
-		loc15 = v33;
-		v33 = loc15;
-		v34 = loc9;
-		v35 = v33 < v34;
-		loc17 = v35;
-		v33 = loc17;
-		if (v33)
-			v33 = loc9;
-		else
-			v33 = loc15;
-		loc5 = v33;
-		v33 = loc14;
-		if (v33)
-			v33 = loc5;
-		else
-			v33.u0 = 0x3FFFFFFF;
-		while (true)
-		{
-			loc3 = v33;
-			v33 = loc16;
-			v34 = loc3;
-			v36 = loc8;
-			v37 = loc11;
-			fn0011AF4C(v33, v34, v36, v37);
-			v33 = loc16;
-			v34.u0 = 0x08;
-			v33 += v34;
-			loc18 = v33;
-			v33 = loc18;
-			v33 = *v33.u0;
-			loc4 = v33;
-			v33 = arg1;
-			loc2 = v33;
-			v33 = loc4;
-			loc19 = v33;
-			v33 = loc19;
-			v34.u0 = 0x00;
-			*v33.u0 = v34;
-			v33 = loc18;
-			v33 = *v33.u0;
-			loc20 = v33;
-			v33 = loc20;
-			v34.u0 = 0x04;
-			v33 += v34;
-			loc21 = v33;
-			v33 = loc18;
-			v34 = loc21;
-			*v33.u0 = v34;
-			v33 = loc2;
-			v34.u0 = ~0x00;
-			v33 += v34;
-			loc22 = v33;
-			v33 = loc22;
-			v34.u0 = 0x00;
-			v35 = v33 == v34;
-			loc23 = v35;
-			v33 = loc23;
-			if (v33)
-				break;
-			v33 = loc22;
-			loc2 = v33;
-			v33 = loc21;
-			loc19 = v33;
-		}
-		v33 = arg0;
-		v34 = loc16;
-		fn0011B01B(v33, v34);
-		v33 = loc16;
-		fn0011B113(v33);
-	}
-	else
-	{
-		v33 = arg0;
-		v34 = arg1;
-		fn0011AEEB(v33, v34);
-	}
-	v33 = loc32;
-	g_t140030.u3 = (word32 *) v33;
-}
-
-// 0011AEEB: void fn0011AEEB(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011AEEB(Eq_n arg0, Eq_n arg1)
-{
-	while (true)
-	{
-		v12.u3 = g_t140030.u3;
-		loc11 = v12;
-		v12 = arg0;
-		v13.u0 = 0x04;
-		v12 += v13;
-		loc4 = v12;
-		v12 = loc4;
-		v12.u3 = *v12.u3;
-		loc3 = v12;
-		v12 = arg1;
-		loc2 = v12;
-		v12 = loc3;
-		loc5 = v12;
-		v12 = loc5;
-		v13.u0 = 0x00;
-		*v12.u3 = (word32) v13;
-		v12 = loc4;
-		v12.u3 = *v12.u3;
-		loc6 = v12;
-		v12 = loc6;
-		v13.u0 = 0x04;
-		v12 += v13;
-		loc7 = v12;
-		v12 = loc4;
-		v13 = loc7;
-		*v12.u3 = (word32) v13;
-		v12 = loc2;
-		v13.u0 = ~0x00;
-		v12 += v13;
-		loc8 = v12;
-		v12 = loc8;
-		v13.u0 = 0x00;
-		v14 = v12 == v13;
-		loc9 = v14;
-		v12 = loc9;
-		if (v12)
-			break;
-		v12 = loc8;
-		loc2 = v12;
-		v12 = loc7;
-		loc5 = v12;
-	}
-}
-
-// 0011AF4C: void fn0011AF4C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-void fn0011AF4C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	v20.u3 = g_t140030.u3;
-	loc21 = v20;
-	v20 = arg0;
-	v21.u0 = 0x0C;
-	v20 += v21;
-	loc13 = v20;
-	v20 = loc13;
-	v21.u0 = 0x00;
-	*v20.u3 = (word32) v21;
-	v20 = arg0;
-	v21.u0 = 0x10;
-	v20 += v21;
-	loc14 = v20;
-	v20 = loc14;
-	v21 = arg3;
-	*v20.u3 = (word32) v21;
-	v20 = arg1;
-	v21.u0 = 0x00;
-	v22 = v20 == v21;
-	loc15 = v22;
-	v20 = loc15;
-	if (v20)
-	{
-		v20.u0 = 0x00;
-		loc7 = v20;
-	}
-	else
-	{
-		v20 = arg3;
-		v21.u0 = 0x70;
-		v20 += v21;
-		loc16 = v20;
-		v20 = loc16;
-		v23 = *v20.u0;
-		v20.u3 = (word32) v23;
-		loc17 = v20;
-		v20 = loc17;
-		v21.u0 = 0x18;
-		v20 <<= v21;
-		v21.u0 = 0x18;
-		v20 >>= v21;
-		v21.u0 = 0x00;
-		v22 = v20 == v21;
-		loc4 = v22;
-		v20 = arg1;
-		v21.u0 = 0x1D;
-		v22 = v20 < v21;
-		loc18 = v22;
-		v20 = loc18;
-		v21 = loc4;
-		v20 &= v21;
-		loc19 = v20;
-		v20 = loc19;
-		if (v20)
-		{
-			v20 = loc16;
-			v21.u0 = 0x01;
-			v24 = (byte) v21;
-			v20.u4->t0000.u0 = (bool) v24;
-			v20 = arg3;
-			loc7 = v20;
-		}
-		else
-		{
-			v20 = arg1;
-			v21.u0 = 0x02;
-			v20 <<= v21;
-			loc5 = v20;
-			v20 = loc5;
-			v20 = fn0011B67B(v20);
-			loc6 = v20;
-			v20 = loc6;
-			loc7 = v20;
-		}
-	}
-	v20 = arg0;
-	v21 = loc7;
-	*v20.u3 = (word32) v21;
-	v20 = loc7;
-	v21 = arg2;
-	v25 = 0x02;
-	v21 <<= v25;
-	v20 += v21;
-	loc8 = v20;
-	v20 = arg0;
-	v21.u0 = 0x08;
-	v20 += v21;
-	loc9 = v20;
-	v20 = loc9;
-	v21 = loc8;
-	*v20.u3 = (word32) v21;
-	v20 = arg0;
-	v21.u0 = 0x04;
-	v20 += v21;
-	loc10 = v20;
-	v20 = loc10;
-	v21 = loc8;
-	*v20.u3 = (word32) v21;
-	v20 = loc7;
-	v21 = arg1;
-	v25 = 0x02;
-	v21 <<= v25;
-	v20 += v21;
-	loc11 = v20;
-	v20 = arg0;
-	v21.u0 = 0x0C;
-	v20 += v21;
-	loc12 = v20;
-	v20 = loc12;
-	v21 = loc11;
-	*v20.u3 = (word32) v21;
-}
-
-// 0011B01B: void fn0011B01B(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011B01B(Eq_n arg0, Eq_n arg1)
-{
 	v28.u3 = g_t140030.u3;
 	loc27 = v28;
+	v28 = arg1;
+	fn0011B41A(v28);
 	v28 = arg0;
-	v28.u3 = *v28.u3;
-	loc14 = v28;
-	v28 = arg0;
-	v29.u0 = 0x04;
+	v29.u0 = 0x08;
 	v28 += v29;
 	loc19 = v28;
+	v28 = arg0;
+	v29.u0 = 0x0C;
+	v28 += v29;
+	loc20 = v28;
+	v28 = loc20;
+	v28.u3 = *v28.u3;
+	loc21 = v28;
 	v28 = loc19;
 	v28.u3 = *v28.u3;
-	loc20 = v28;
-	v28 = arg1;
-	v29.u0 = 0x04;
-	v28 += v29;
-	loc21 = v28;
-	v28 = loc14;
 	loc22 = v28;
-	v28 = loc20;
+	v28 = loc21;
 	v29 = loc22;
 	v28 -= v29;
 	loc23 = v28;
@@ -16920,101 +16367,654 @@ void fn0011B01B(Eq_n arg0, Eq_n arg1)
 	v29.u0 = 0x02;
 	v28 >>= v29;
 	loc24 = v28;
-	v28 = loc21;
-	v28.u3 = *v28.u3;
-	loc25 = v28;
-	v28.u0 = 0x00;
-	v29 = loc24;
-	v28 -= v29;
-	loc4 = v28;
+	v28 = loc24;
+	v29 = arg2;
+	v30 = v28 > v29;
+	loc25 = v30;
 	v28 = loc25;
-	v29 = loc4;
-	v30.u0 = 0x02;
-	v29 <<= v30;
-	v28 += v29;
-	loc5 = v28;
-	v28 = loc21;
-	v29 = loc5;
-	*v28.u0 = v29;
-	v28 = loc23;
-	v29.u0 = 0x00;
-	v31 = v28 > v29;
-	loc6 = v31;
-	v28 = loc6;
 	if (v28)
 	{
-		v28 = loc5;
-		v29 = loc14;
-		v30 = loc23;
-		v28 = _memcpy(v28, v29, v30);
-		v28 = loc21;
-		v28 = *v28.u0;
-		loc2 = v28;
-		v28 = loc21;
-		loc3 = v28;
-		v28 = loc2;
-		loc9 = v28;
+		v28 = loc22;
+		loc6 = v28;
+		v28 = loc19;
+		loc4 = v28;
+		v28 = loc6;
+		loc14 = v28;
 	}
 	else
 	{
-		v28 = loc5;
+		v28 = arg2;
+		v29.u0 = 0x01;
+		v28 += v29;
 		loc7 = v28;
-		v28 = loc21;
-		loc3 = v28;
-		v28 = loc7;
+		v28.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v28;
+		v28.u0 = 0x01E2;
+		v29 = loc19;
+		v31 = loc7;
+		invoke_vii(v28, v29, v31);
+		v28.u3 = g_t140048.u3;
+		loc8 = v28;
+		v28.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v28;
+		v28 = loc8;
+		v29.u0 = 0x01;
+		v28 &= v29;
 		loc9 = v28;
+		v28 = loc9;
+		v30 = v28 == 0x00;
+		if (v30)
+		{
+			v28 = loc19;
+			v28 = *v28.u0;
+			loc3 = v28;
+			v28 = loc19;
+			loc4 = v28;
+			v28 = loc3;
+			loc14 = v28;
+			goto l0011ACC6;
+		}
+		v28 = ___cxa_find_matching_catch_n();
+		loc10 = v28;
+		v28.u3 = g_t140094.u3;
+		loc11 = v28;
+		v28 = arg1;
+		v29.u0 = 0x00;
+		v30 = v28 == v29;
+		loc12 = v30;
+		v28 = loc12;
+		v30 = v28 == 0x00;
+		if (v30)
+		{
+			v28 = arg1;
+			v28 = fn0011B43F(v28);
+		}
+		v28 = loc10;
+		___resumeException(v28);
 	}
-	v28 = arg0;
-	v28 = *v28.u0;
-	loc8 = v28;
-	v28 = arg0;
-	v29 = loc9;
-	*v28.u0 = v29;
-	v28 = loc3;
-	v29 = loc8;
-	*v28.u0 = v29;
-	v28 = arg1;
-	v29.u0 = 0x08;
-	v28 += v29;
-	loc10 = v28;
-	v28 = loc19;
-	v28 = *v28.u0;
-	loc11 = v28;
-	v28 = loc10;
-	v28 = *v28.u0;
-	loc12 = v28;
-	v28 = loc19;
-	v29 = loc12;
-	*v28.u0 = v29;
-	v28 = loc10;
-	v29 = loc11;
-	*v28.u0 = v29;
-	v28 = arg0;
-	v29.u0 = 0x08;
+l0011ACC6:
+	v28 = loc14;
+	v29 = arg2;
+	v31.u0 = 0x02;
+	v29 <<= v31;
 	v28 += v29;
 	loc13 = v28;
-	v28 = arg1;
-	v29.u0 = 0x0C;
-	v28 += v29;
+	v28 = loc13;
+	v28.u3 = *v28.u3;
 	loc15 = v28;
-	v28 = loc13;
-	v28 = *v28.u0;
-	loc16 = v28;
 	v28 = loc15;
-	v28 = *v28.u0;
+	v29.u0 = 0x00;
+	v30 = v28 == v29;
+	loc16 = v30;
+	v28 = loc16;
+	if (v28)
+	{
+		v28 = loc14;
+		loc18 = v28;
+	}
+	else
+	{
+		v28 = loc15;
+		v28 = fn0011B43F(v28);
+		v28 = loc4;
+		v28.u3 = *v28.u3;
+		loc5 = v28;
+		v28 = loc5;
+		loc18 = v28;
+	}
+	v28 = loc18;
+	v29 = arg2;
+	v31.u0 = 0x02;
+	v29 <<= v31;
+	v28 += v29;
 	loc17 = v28;
-	v28 = loc13;
-	v29 = loc17;
-	*v28.u0 = v29;
-	v28 = loc15;
-	v29 = loc16;
-	*v28.u0 = v29;
-	v28 = loc3;
-	v28 = *v28.u0;
-	loc18 = v28;
-	v28 = arg1;
-	v29 = loc18;
-	*v28.u0 = v29;
+	v28 = loc17;
+	v29 = arg1;
+	*v28.u3 = (word32) v29;
+}
+
+// 0011AD0E: void fn0011AD0E(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011AD0E(Eq_n arg0, Eq_n arg1)
+{
+	v19.u3 = g_t140030.u3;
+	loc17 = v19;
+	v19 = arg0;
+	v20.u0 = 0x04;
+	v19 += v20;
+	loc8 = v19;
+	v19 = loc8;
+	v19.u3 = *v19.u3;
+	loc9 = v19;
+	v19 = arg0;
+	v19.u3 = *v19.u3;
+	loc10 = v19;
+	v19 = loc9;
+	v20 = loc10;
+	v19 -= v20;
+	loc11 = v19;
+	v19 = loc11;
+	v20.u0 = 0x02;
+	v19 >>= v20;
+	loc12 = v19;
+	v19 = loc12;
+	v20 = arg1;
+	v21 = v19 < v20;
+	loc13 = v21;
+	v19 = loc10;
+	loc14 = v19;
+	v19 = loc9;
+	loc15 = v19;
+	v19 = loc13;
+	if (!v19)
+	{
+		v19 = loc12;
+		v20 = arg1;
+		v21 = v19 > v20;
+		loc3 = v21;
+		v19 = loc3;
+		if (!v19)
+			return;
+		while (true)
+		{
+			v19 = loc14;
+			v20 = arg1;
+			v22 = 0x02;
+			v20 <<= v22;
+			v19 += v20;
+			loc4 = v19;
+			v19 = loc15;
+			loc6 = v19;
+			v19 = loc6;
+			v20 = loc4;
+			v21 = v19 == v20;
+			loc5 = v21;
+			v19 = loc5;
+			if (v19)
+				break;
+			v19 = loc6;
+			v20.u0 = ~0x03;
+			v19 += v20;
+			loc7 = v19;
+			v19 = loc8;
+			v20 = loc7;
+			*v19.u3 = (word32) v20;
+			v19 = loc7;
+			loc6 = v19;
+		}
+	}
+	else
+	{
+		v19 = arg1;
+		v20 = loc12;
+		v19 -= v20;
+		loc2 = v19;
+		v19 = arg0;
+		v20 = loc2;
+		fn0011AD9F(v19, v20);
+	}
+}
+
+// 0011AD9F: void fn0011AD9F(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011AD9F(Eq_n arg0, Eq_n arg1)
+{
+	v34.u3 = g_t140030.u3;
+	loc32 = v34;
+	v34.u3 = g_t140030.u3;
+	v35.u0 = 0x20;
+	v34 += v35;
+	g_t140030.u3 = (word32 *) v34;
+	v34.u3 = g_t140030.u3;
+	v35.u3 = g_t140034.u3;
+	v36 = v34 >= v35;
+	if (v36)
+	{
+		v34.u0 = 0x20;
+		abortStackOverflow(v34);
+	}
+	v34 = loc32;
+	loc16 = v34;
+	v34 = arg0;
+	v35.u0 = 0x08;
+	v34 += v35;
+	loc24 = v34;
+	v34 = loc24;
+	v34 = *v34.u0;
+	loc25 = v34;
+	v34 = arg0;
+	v35.u0 = 0x04;
+	v34 += v35;
+	loc26 = v34;
+	v34 = loc26;
+	v34 = *v34.u0;
+	loc27 = v34;
+	v34 = loc25;
+	v35 = loc27;
+	v34 -= v35;
+	loc28 = v34;
+	v34 = loc28;
+	v35.u0 = 0x02;
+	v34 >>= v35;
+	loc29 = v34;
+	v34 = loc29;
+	v35 = arg1;
+	v36 = v34 < v35;
+	loc30 = v36;
+	v34 = loc30;
+	if (v34)
+	{
+		v34 = arg0;
+		v34 = *v34.u0;
+		loc6 = v34;
+		v34 = loc27;
+		v35 = loc6;
+		v34 -= v35;
+		loc7 = v34;
+		v34 = loc7;
+		v35.u0 = 0x02;
+		v34 >>= v35;
+		loc8 = v34;
+		v34 = loc8;
+		v35 = arg1;
+		v34 += v35;
+		loc9 = v34;
+		v34 = loc9;
+		v35.u0 = 0x3FFFFFFF;
+		v36 = v34 > v35;
+		loc10 = v36;
+		v34 = loc10;
+		if (v34)
+		{
+			v34 = arg0;
+			fn00119E4F(v34);
+		}
+		v34 = arg0;
+		v35.u0 = 0x10;
+		v34 += v35;
+		loc11 = v34;
+		v34 = loc25;
+		v35 = loc6;
+		v34 -= v35;
+		loc12 = v34;
+		v34 = loc12;
+		v35.u0 = 0x02;
+		v34 >>= v35;
+		loc13 = v34;
+		v34 = loc13;
+		v35.u0 = 0x1FFFFFFF;
+		v36 = v34 < v35;
+		loc14 = v36;
+		v34 = loc12;
+		v35.u0 = 0x01;
+		v34 >>= v35;
+		loc15 = v34;
+		v34 = loc15;
+		v35 = loc9;
+		v36 = v34 < v35;
+		loc17 = v36;
+		v34 = loc17;
+		if (v34)
+			v34 = loc9;
+		else
+			v34 = loc15;
+		loc5 = v34;
+		v34 = loc14;
+		if (v34)
+			v34 = loc5;
+		else
+			v34.u0 = 0x3FFFFFFF;
+		while (true)
+		{
+			loc3 = v34;
+			v34 = loc16;
+			v35 = loc3;
+			v37 = loc8;
+			v38 = loc11;
+			fn0011AF4C(v34, v35, v37, v38);
+			v34 = loc16;
+			v35.u0 = 0x08;
+			v34 += v35;
+			loc18 = v34;
+			v34 = loc18;
+			v34 = *v34.u0;
+			loc4 = v34;
+			v34 = arg1;
+			loc2 = v34;
+			v34 = loc4;
+			loc19 = v34;
+			v34 = loc19;
+			v35.u0 = 0x00;
+			*v34.u0 = v35;
+			v34 = loc18;
+			v34 = *v34.u0;
+			loc20 = v34;
+			v34 = loc20;
+			v35.u0 = 0x04;
+			v34 += v35;
+			loc21 = v34;
+			v34 = loc18;
+			v35 = loc21;
+			*v34.u0 = v35;
+			v34 = loc2;
+			v35.u0 = ~0x00;
+			v34 += v35;
+			loc22 = v34;
+			v34 = loc22;
+			v35.u0 = 0x00;
+			v36 = v34 == v35;
+			loc23 = v36;
+			v34 = loc23;
+			if (v34)
+				break;
+			v34 = loc22;
+			loc2 = v34;
+			v34 = loc21;
+			loc19 = v34;
+		}
+		v34 = arg0;
+		v35 = loc16;
+		fn0011B01B(v34, v35);
+		v34 = loc16;
+		fn0011B113(v34);
+	}
+	else
+	{
+		v34 = arg0;
+		v35 = arg1;
+		fn0011AEEB(v34, v35);
+	}
+	v34 = loc32;
+	g_t140030.u3 = (word32 *) v34;
+}
+
+// 0011AEEB: void fn0011AEEB(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011AEEB(Eq_n arg0, Eq_n arg1)
+{
+	while (true)
+	{
+		v13.u3 = g_t140030.u3;
+		loc11 = v13;
+		v13 = arg0;
+		v14.u0 = 0x04;
+		v13 += v14;
+		loc4 = v13;
+		v13 = loc4;
+		v13.u3 = *v13.u3;
+		loc3 = v13;
+		v13 = arg1;
+		loc2 = v13;
+		v13 = loc3;
+		loc5 = v13;
+		v13 = loc5;
+		v14.u0 = 0x00;
+		*v13.u3 = (word32) v14;
+		v13 = loc4;
+		v13.u3 = *v13.u3;
+		loc6 = v13;
+		v13 = loc6;
+		v14.u0 = 0x04;
+		v13 += v14;
+		loc7 = v13;
+		v13 = loc4;
+		v14 = loc7;
+		*v13.u3 = (word32) v14;
+		v13 = loc2;
+		v14.u0 = ~0x00;
+		v13 += v14;
+		loc8 = v13;
+		v13 = loc8;
+		v14.u0 = 0x00;
+		v15 = v13 == v14;
+		loc9 = v15;
+		v13 = loc9;
+		if (v13)
+			break;
+		v13 = loc8;
+		loc2 = v13;
+		v13 = loc7;
+		loc5 = v13;
+	}
+}
+
+// 0011AF4C: void fn0011AF4C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn0011AF4C(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v21.u3 = g_t140030.u3;
+	loc21 = v21;
+	v21 = arg0;
+	v22.u0 = 0x0C;
+	v21 += v22;
+	loc13 = v21;
+	v21 = loc13;
+	v22.u0 = 0x00;
+	*v21.u3 = (word32) v22;
+	v21 = arg0;
+	v22.u0 = 0x10;
+	v21 += v22;
+	loc14 = v21;
+	v21 = loc14;
+	v22 = arg3;
+	*v21.u3 = (word32) v22;
+	v21 = arg1;
+	v22.u0 = 0x00;
+	v23 = v21 == v22;
+	loc15 = v23;
+	v21 = loc15;
+	if (v21)
+	{
+		v21.u0 = 0x00;
+		loc7 = v21;
+	}
+	else
+	{
+		v21 = arg3;
+		v22.u0 = 0x70;
+		v21 += v22;
+		loc16 = v21;
+		v21 = loc16;
+		v24 = *v21.u0;
+		v21.u3 = (word32) v24;
+		loc17 = v21;
+		v21 = loc17;
+		v22.u0 = 0x18;
+		v21 <<= v22;
+		v22.u0 = 0x18;
+		v21 >>= v22;
+		v22.u0 = 0x00;
+		v23 = v21 == v22;
+		loc4 = v23;
+		v21 = arg1;
+		v22.u0 = 0x1D;
+		v23 = v21 < v22;
+		loc18 = v23;
+		v21 = loc18;
+		v22 = loc4;
+		v21 &= v22;
+		loc19 = v21;
+		v21 = loc19;
+		if (v21)
+		{
+			v21 = loc16;
+			v22.u0 = 0x01;
+			v25 = (byte) v22;
+			v21.u4->t0000.u0 = (bool) v25;
+			v21 = arg3;
+			loc7 = v21;
+		}
+		else
+		{
+			v21 = arg1;
+			v22.u0 = 0x02;
+			v21 <<= v22;
+			loc5 = v21;
+			v21 = loc5;
+			v21 = fn0011B67B(v21);
+			loc6 = v21;
+			v21 = loc6;
+			loc7 = v21;
+		}
+	}
+	v21 = arg0;
+	v22 = loc7;
+	*v21.u3 = (word32) v22;
+	v21 = loc7;
+	v22 = arg2;
+	v26 = 0x02;
+	v22 <<= v26;
+	v21 += v22;
+	loc8 = v21;
+	v21 = arg0;
+	v22.u0 = 0x08;
+	v21 += v22;
+	loc9 = v21;
+	v21 = loc9;
+	v22 = loc8;
+	*v21.u3 = (word32) v22;
+	v21 = arg0;
+	v22.u0 = 0x04;
+	v21 += v22;
+	loc10 = v21;
+	v21 = loc10;
+	v22 = loc8;
+	*v21.u3 = (word32) v22;
+	v21 = loc7;
+	v22 = arg1;
+	v26 = 0x02;
+	v22 <<= v26;
+	v21 += v22;
+	loc11 = v21;
+	v21 = arg0;
+	v22.u0 = 0x0C;
+	v21 += v22;
+	loc12 = v21;
+	v21 = loc12;
+	v22 = loc11;
+	*v21.u3 = (word32) v22;
+}
+
+// 0011B01B: void fn0011B01B(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011B01B(Eq_n arg0, Eq_n arg1)
+{
+	v29.u3 = g_t140030.u3;
+	loc27 = v29;
+	v29 = arg0;
+	v29.u3 = *v29.u3;
+	loc14 = v29;
+	v29 = arg0;
+	v30.u0 = 0x04;
+	v29 += v30;
+	loc19 = v29;
+	v29 = loc19;
+	v29.u3 = *v29.u3;
+	loc20 = v29;
+	v29 = arg1;
+	v30.u0 = 0x04;
+	v29 += v30;
+	loc21 = v29;
+	v29 = loc14;
+	loc22 = v29;
+	v29 = loc20;
+	v30 = loc22;
+	v29 -= v30;
+	loc23 = v29;
+	v29 = loc23;
+	v30.u0 = 0x02;
+	v29 >>= v30;
+	loc24 = v29;
+	v29 = loc21;
+	v29.u3 = *v29.u3;
+	loc25 = v29;
+	v29.u0 = 0x00;
+	v30 = loc24;
+	v29 -= v30;
+	loc4 = v29;
+	v29 = loc25;
+	v30 = loc4;
+	v31.u0 = 0x02;
+	v30 <<= v31;
+	v29 += v30;
+	loc5 = v29;
+	v29 = loc21;
+	v30 = loc5;
+	*v29.u0 = v30;
+	v29 = loc23;
+	v30.u0 = 0x00;
+	v32 = v29 > v30;
+	loc6 = v32;
+	v29 = loc6;
+	if (v29)
+	{
+		v29 = loc5;
+		v30 = loc14;
+		v31 = loc23;
+		v29 = _memcpy(v29, v30, v31);
+		v29 = loc21;
+		v29 = *v29.u0;
+		loc2 = v29;
+		v29 = loc21;
+		loc3 = v29;
+		v29 = loc2;
+		loc9 = v29;
+	}
+	else
+	{
+		v29 = loc5;
+		loc7 = v29;
+		v29 = loc21;
+		loc3 = v29;
+		v29 = loc7;
+		loc9 = v29;
+	}
+	v29 = arg0;
+	v29 = *v29.u0;
+	loc8 = v29;
+	v29 = arg0;
+	v30 = loc9;
+	*v29.u0 = v30;
+	v29 = loc3;
+	v30 = loc8;
+	*v29.u0 = v30;
+	v29 = arg1;
+	v30.u0 = 0x08;
+	v29 += v30;
+	loc10 = v29;
+	v29 = loc19;
+	v29 = *v29.u0;
+	loc11 = v29;
+	v29 = loc10;
+	v29 = *v29.u0;
+	loc12 = v29;
+	v29 = loc19;
+	v30 = loc12;
+	*v29.u0 = v30;
+	v29 = loc10;
+	v30 = loc11;
+	*v29.u0 = v30;
+	v29 = arg0;
+	v30.u0 = 0x08;
+	v29 += v30;
+	loc13 = v29;
+	v29 = arg1;
+	v30.u0 = 0x0C;
+	v29 += v30;
+	loc15 = v29;
+	v29 = loc13;
+	v29 = *v29.u0;
+	loc16 = v29;
+	v29 = loc15;
+	v29 = *v29.u0;
+	loc17 = v29;
+	v29 = loc13;
+	v30 = loc17;
+	*v29.u0 = v30;
+	v29 = loc15;
+	v30 = loc16;
+	*v29.u0 = v30;
+	v29 = loc3;
+	v29 = *v29.u0;
+	loc18 = v29;
+	v29 = arg1;
+	v30 = loc18;
+	*v29.u0 = v30;
 }
 
 // 0011B113: void fn0011B113(Stack Eq_n arg0)
@@ -17022,79 +17022,79 @@ void fn0011B113(Eq_n arg0)
 {
 	while (true)
 	{
-		v17.u3 = g_t140030.u3;
-		loc15 = v17;
-		v17 = arg0;
-		v18.u0 = 0x04;
-		v17 += v18;
-		loc2 = v17;
-		v17 = loc2;
-		v17.u3 = *v17.u3;
-		loc6 = v17;
-		v17 = arg0;
-		v18.u0 = 0x08;
-		v17 += v18;
-		loc7 = v17;
-		v17 = loc7;
-		v17.u3 = *v17.u3;
-		loc1 = v17;
-		v17 = loc1;
-		loc9 = v17;
-		v17 = loc9;
-		v18 = loc6;
-		v19 = v17 == v18;
-		loc8 = v19;
-		v17 = loc8;
-		if (v17)
+		v18.u3 = g_t140030.u3;
+		loc15 = v18;
+		v18 = arg0;
+		v19.u0 = 0x04;
+		v18 += v19;
+		loc2 = v18;
+		v18 = loc2;
+		v18.u3 = *v18.u3;
+		loc6 = v18;
+		v18 = arg0;
+		v19.u0 = 0x08;
+		v18 += v19;
+		loc7 = v18;
+		v18 = loc7;
+		v18.u3 = *v18.u3;
+		loc1 = v18;
+		v18 = loc1;
+		loc9 = v18;
+		v18 = loc9;
+		v19 = loc6;
+		v20 = v18 == v19;
+		loc8 = v20;
+		v18 = loc8;
+		if (v18)
 			break;
-		v17 = loc9;
-		v18.u0 = ~0x03;
-		v17 += v18;
-		loc10 = v17;
-		v17 = loc7;
+		v18 = loc9;
+		v19.u0 = ~0x03;
+		v18 += v19;
+		loc10 = v18;
+		v18 = loc7;
+		v19 = loc10;
+		*v18.u3 = (word32) v19;
 		v18 = loc10;
-		*v17.u3 = (word32) v18;
-		v17 = loc10;
-		loc9 = v17;
+		loc9 = v18;
 	}
-	v17 = arg0;
-	v17.u3 = *v17.u3;
-	loc11 = v17;
-	v17 = loc11;
-	v18.u0 = 0x00;
-	v19 = v17 == v18;
-	loc12 = v19;
-	v17 = loc12;
-	v19 = v17 == 0x00;
-	if (v19)
+	v18 = arg0;
+	v18.u3 = *v18.u3;
+	loc11 = v18;
+	v18 = loc11;
+	v19.u0 = 0x00;
+	v20 = v18 == v19;
+	loc12 = v20;
+	v18 = loc12;
+	v20 = v18 == 0x00;
+	if (v20)
 	{
-		v17 = arg0;
-		v18.u0 = 0x10;
-		v17 += v18;
-		loc13 = v17;
-		v17 = loc13;
-		v17.u3 = *v17.u3;
-		loc3 = v17;
-		v17 = loc3;
-		v18 = loc11;
-		v19 = v17 == v18;
-		loc4 = v19;
-		v17 = loc4;
-		if (v17)
+		v18 = arg0;
+		v19.u0 = 0x10;
+		v18 += v19;
+		loc13 = v18;
+		v18 = loc13;
+		v18.u3 = *v18.u3;
+		loc3 = v18;
+		v18 = loc3;
+		v19 = loc11;
+		v20 = v18 == v19;
+		loc4 = v20;
+		v18 = loc4;
+		if (v18)
 		{
-			v17 = loc3;
-			v18.u0 = 0x70;
-			v17 += v18;
-			loc5 = v17;
-			v17 = loc5;
-			v18.u0 = 0x00;
-			v20 = (byte) v18;
-			v17.u4->t0000.u0 = (bool) v20;
+			v18 = loc3;
+			v19.u0 = 0x70;
+			v18 += v19;
+			loc5 = v18;
+			v18 = loc5;
+			v19.u0 = 0x00;
+			v21 = (byte) v19;
+			v18.u4->t0000.u0 = (bool) v21;
 		}
 		else
 		{
-			v17 = loc11;
-			fn0011B709(v17);
+			v18 = loc11;
+			fn0011B709(v18);
 		}
 	}
 }
@@ -17102,271 +17102,929 @@ void fn0011B113(Eq_n arg0)
 // 0011B1AE: void fn0011B1AE(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011B1AE(Eq_n arg0, Eq_n arg1)
 {
-	v17.u3 = g_t140030.u3;
-	loc16 = v17;
-	v17 = arg1;
-	v18.u0 = 0x3FFFFFFF;
-	v19 = v17 > v18;
-	loc6 = v19;
-	v17 = loc6;
-	if (v17)
+	v18.u3 = g_t140030.u3;
+	loc16 = v18;
+	v18 = arg1;
+	v19.u0 = 0x3FFFFFFF;
+	v20 = v18 > v19;
+	loc6 = v20;
+	v18 = loc6;
+	if (v18)
 	{
-		v17 = arg0;
-		fn00119E4F(v17);
+		v18 = arg0;
+		fn00119E4F(v18);
 	}
-	v17 = arg0;
-	v18.u0 = 0x80;
-	v17 += v18;
-	loc7 = v17;
-	v17 = loc7;
-	v20.u3 = *v17.u3;
-	v17.u3 = (word32) v20;
-	loc8 = v17;
-	v17 = loc8;
-	v18.u0 = 0x18;
-	v17 <<= v18;
-	v18.u0 = 0x18;
-	v17 >>= v18;
-	v18.u0 = 0x00;
-	v19 = v17 == v18;
-	loc3 = v19;
-	v17 = arg1;
-	v18.u0 = 0x1D;
-	v19 = v17 < v18;
-	loc9 = v19;
-	v17 = loc9;
-	v18 = loc3;
-	v17 &= v18;
-	loc14 = v17;
-	v17 = loc14;
-	if (v17)
+	v18 = arg0;
+	v19.u0 = 0x80;
+	v18 += v19;
+	loc7 = v18;
+	v18 = loc7;
+	v21.u3 = *v18.u3;
+	v18.u3 = (word32) v21;
+	loc8 = v18;
+	v18 = loc8;
+	v19.u0 = 0x18;
+	v18 <<= v19;
+	v19.u0 = 0x18;
+	v18 >>= v19;
+	v19.u0 = 0x00;
+	v20 = v18 == v19;
+	loc3 = v20;
+	v18 = arg1;
+	v19.u0 = 0x1D;
+	v20 = v18 < v19;
+	loc9 = v20;
+	v18 = loc9;
+	v19 = loc3;
+	v18 &= v19;
+	loc14 = v18;
+	v18 = loc14;
+	if (v18)
 	{
-		v17 = arg0;
-		v18.u0 = 0x10;
-		v17 += v18;
-		loc10 = v17;
-		v17 = loc7;
-		v18.u0 = 0x01;
-		v21 = (byte) v18;
-		v17.u4->t0000.u0 = (bool) v21;
-		v17 = loc10;
-		loc2 = v17;
+		v18 = arg0;
+		v19.u0 = 0x10;
+		v18 += v19;
+		loc10 = v18;
+		v18 = loc7;
+		v19.u0 = 0x01;
+		v22 = (byte) v19;
+		v18.u4->t0000.u0 = (bool) v22;
+		v18 = loc10;
+		loc2 = v18;
 	}
 	else
 	{
-		v17 = arg1;
-		v18.u0 = 0x02;
-		v17 <<= v18;
-		loc11 = v17;
-		v17 = loc11;
-		v17 = fn0011B67B(v17);
-		loc12 = v17;
-		v17 = loc12;
-		loc2 = v17;
+		v18 = arg1;
+		v19.u0 = 0x02;
+		v18 <<= v19;
+		loc11 = v18;
+		v18 = loc11;
+		v18 = fn0011B67B(v18);
+		loc12 = v18;
+		v18 = loc12;
+		loc2 = v18;
 	}
-	v17 = arg0;
-	v18.u0 = 0x04;
-	v17 += v18;
-	loc13 = v17;
-	v17 = loc13;
+	v18 = arg0;
+	v19.u0 = 0x04;
+	v18 += v19;
+	loc13 = v18;
+	v18 = loc13;
+	v19 = loc2;
+	*v18.u3 = (word32) v19;
+	v18 = arg0;
+	v19 = loc2;
+	*v18.u3 = (word32) v19;
 	v18 = loc2;
-	*v17.u3 = (word32) v18;
-	v17 = arg0;
-	v18 = loc2;
-	*v17.u3 = (word32) v18;
-	v17 = loc2;
-	v18 = arg1;
-	v22 = 0x02;
-	v18 <<= v22;
-	v17 += v18;
-	loc4 = v17;
-	v17 = arg0;
-	v18.u0 = 0x08;
-	v17 += v18;
-	loc5 = v17;
-	v17 = loc5;
-	v18 = loc4;
-	*v17.u3 = (word32) v18;
+	v19 = arg1;
+	v23 = 0x02;
+	v19 <<= v23;
+	v18 += v19;
+	loc4 = v18;
+	v18 = arg0;
+	v19.u0 = 0x08;
+	v18 += v19;
+	loc5 = v18;
+	v18 = loc5;
+	v19 = loc4;
+	*v18.u3 = (word32) v19;
 }
 
 // 0011B24D: Stack Eq_n fn0011B24D()
 Eq_n fn0011B24D()
 {
-	v13.u3 = g_t140030.u3;
-	loc10 = v13;
-	v13.u0 = 17776;
-	v14 = *v13.u0;
-	v13.u3 = (word32) v14;
-	loc0 = v13;
-	v13 = loc0;
-	v15.u0 = 0x18;
-	v13 <<= v15;
-	v15.u0 = 0x18;
-	v13 >>= v15;
-	v15.u0 = 0x00;
-	v16 = v13 == v15;
-	loc1 = v16;
-	v13 = loc1;
-	if (v13)
+	v14.u3 = g_t140030.u3;
+	loc10 = v14;
+	v14.u0 = 17776;
+	v15 = *v14.u0;
+	v14.u3 = (word32) v15;
+	loc0 = v14;
+	v14 = loc0;
+	v16.u0 = 0x18;
+	v14 <<= v16;
+	v16.u0 = 0x18;
+	v14 >>= v16;
+	v16.u0 = 0x00;
+	v17 = v14 == v16;
+	loc1 = v17;
+	v14 = loc1;
+	if (v14)
 	{
-		v13.u0 = 17776;
-		v13 = fn0011EE46(v13);
-		loc2 = v13;
-		v13 = loc2;
-		v15.u0 = 0x00;
-		v16 = v13 == v15;
-		loc3 = v16;
-		v13 = loc3;
-		v16 = v13 == 0x00;
-		if (v16)
+		v14.u0 = 17776;
+		v14 = fn0011EE46(v14);
+		loc2 = v14;
+		v14 = loc2;
+		v16.u0 = 0x00;
+		v17 = v14 == v16;
+		loc3 = v17;
+		v14 = loc3;
+		v17 = v14 == 0x00;
+		if (v17)
 		{
-			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
-			v13.u0 = 0x01E3;
-			v13 = invoke_i(v13);
-			v13.u3 = g_t140048.u3;
-			loc4 = v13;
-			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
-			v13 = loc4;
-			v15.u0 = 0x01;
-			v13 &= v15;
-			loc5 = v13;
-			v13 = loc5;
-			if (!v13)
+			v14.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v14;
+			v14.u0 = 0x01E3;
+			v14 = invoke_i(v14);
+			v14.u3 = g_t140048.u3;
+			loc4 = v14;
+			v14.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v14;
+			v14 = loc4;
+			v16.u0 = 0x01;
+			v14 &= v16;
+			loc5 = v14;
+			v14 = loc5;
+			if (!v14)
 			{
-				v13.u0 = 0x5394;
-				v15.u0 = 0x5390;
-				*v13.u0 = v15;
+				v14.u0 = 0x5394;
+				v16.u0 = 0x5390;
+				*v14.u0 = v16;
 				goto l0011B2BE;
 			}
-			v13 = ___cxa_find_matching_catch_n();
-			loc7 = v13;
-			v13.u3 = g_t140094.u3;
-			loc8 = v13;
-			v13 = loc7;
-			___resumeException(v13);
+			v14 = ___cxa_find_matching_catch_n();
+			loc7 = v14;
+			v14.u3 = g_t140094.u3;
+			loc8 = v14;
+			v14 = loc7;
+			___resumeException(v14);
 		}
 	}
 l0011B2BE:
-	v13.u0 = 0x5394;
-	v13 = *v13.u0;
-	loc6 = v13;
-	v13 = loc6;
-	return v13;
+	v14.u0 = 0x5394;
+	v14 = *v14.u0;
+	loc6 = v14;
+	v14 = loc6;
+	return v14;
 }
 
 // 0011B2CD: Stack Eq_n fn0011B2CD()
 Eq_n fn0011B2CD()
 {
-	v4.u3 = g_t140030.u3;
-	loc1 = v4;
-	v4.u0 = 17784;
-	v5.u0 = 0x01;
-	fn00119EA4(v4, v5);
-	v4.u0 = 0x5390;
+	v5.u3 = g_t140030.u3;
+	loc1 = v5;
 	v5.u0 = 17784;
-	*v4.u0 = v5;
-	v4.u0 = 0x5390;
-	return v4;
+	v6.u0 = 0x01;
+	fn00119EA4(v5, v6);
+	v5.u0 = 0x5390;
+	v6.u0 = 17784;
+	*v5.u0 = v6;
+	v5.u0 = 0x5390;
+	return v5;
 }
 
 // 0011B2EE: Stack Eq_n fn0011B2EE()
 Eq_n fn0011B2EE()
 {
-	v6.u3 = g_t140030.u3;
-	loc3 = v6;
-	v6 = fn0011B24D();
-	loc0 = v6;
-	v6 = loc0;
-	v6.u3 = *v6.u3;
-	loc1 = v6;
-	v6.u0 = 21400;
+	v7.u3 = g_t140030.u3;
+	loc3 = v7;
+	v7 = fn0011B24D();
+	loc0 = v7;
+	v7 = loc0;
+	v7.u3 = *v7.u3;
+	loc1 = v7;
+	v7.u0 = 21400;
+	v8 = loc1;
+	*v7.u0 = v8;
 	v7 = loc1;
-	*v6.u0 = v7;
-	v6 = loc1;
-	fn0011B41A(v6);
-	v6.u0 = 21400;
-	return v6;
+	fn0011B41A(v7);
+	v7.u0 = 21400;
+	return v7;
 }
 
 // 0011B315: Stack Eq_n fn0011B315()
 Eq_n fn0011B315()
 {
-	v13.u3 = g_t140030.u3;
-	loc10 = v13;
-	v13.u0 = 17944;
-	v14 = *v13.u0;
-	v13.u3 = (word32) v14;
-	loc0 = v13;
-	v13 = loc0;
-	v15.u0 = 0x18;
-	v13 <<= v15;
-	v15.u0 = 0x18;
-	v13 >>= v15;
-	v15.u0 = 0x00;
-	v16 = v13 == v15;
-	loc1 = v16;
-	v13 = loc1;
-	if (v13)
+	v14.u3 = g_t140030.u3;
+	loc10 = v14;
+	v14.u0 = 17944;
+	v15 = *v14.u0;
+	v14.u3 = (word32) v15;
+	loc0 = v14;
+	v14 = loc0;
+	v16.u0 = 0x18;
+	v14 <<= v16;
+	v16.u0 = 0x18;
+	v14 >>= v16;
+	v16.u0 = 0x00;
+	v17 = v14 == v16;
+	loc1 = v17;
+	v14 = loc1;
+	if (v14)
 	{
-		v13.u0 = 17944;
-		v13 = fn0011EE46(v13);
-		loc2 = v13;
-		v13 = loc2;
-		v15.u0 = 0x00;
-		v16 = v13 == v15;
-		loc3 = v16;
-		v13 = loc3;
-		v16 = v13 == 0x00;
-		if (v16)
+		v14.u0 = 17944;
+		v14 = fn0011EE46(v14);
+		loc2 = v14;
+		v14 = loc2;
+		v16.u0 = 0x00;
+		v17 = v14 == v16;
+		loc3 = v17;
+		v14 = loc3;
+		v17 = v14 == 0x00;
+		if (v17)
 		{
-			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
-			v13.u0 = 484;
-			v13 = invoke_i(v13);
-			v13.u3 = g_t140048.u3;
-			loc4 = v13;
-			v13.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v13;
-			v13 = loc4;
-			v15.u0 = 0x01;
-			v13 &= v15;
-			loc5 = v13;
-			v13 = loc5;
-			if (!v13)
+			v14.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v14;
+			v14.u0 = 484;
+			v14 = invoke_i(v14);
+			v14.u3 = g_t140048.u3;
+			loc4 = v14;
+			v14.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v14;
+			v14 = loc4;
+			v16.u0 = 0x01;
+			v14 &= v16;
+			loc5 = v14;
+			v14 = loc5;
+			if (!v14)
 			{
-				v13.u0 = 21404;
-				v15.u0 = 21400;
-				*v13.u0 = v15;
+				v14.u0 = 21404;
+				v16.u0 = 21400;
+				*v14.u0 = v16;
 				goto l0011B386;
 			}
-			v13 = ___cxa_find_matching_catch_n();
-			loc7 = v13;
-			v13.u3 = g_t140094.u3;
-			loc8 = v13;
-			v13 = loc7;
-			___resumeException(v13);
+			v14 = ___cxa_find_matching_catch_n();
+			loc7 = v14;
+			v14.u3 = g_t140094.u3;
+			loc8 = v14;
+			v14 = loc7;
+			___resumeException(v14);
 		}
 	}
 l0011B386:
-	v13.u0 = 21404;
-	v13 = *v13.u0;
-	loc6 = v13;
-	v13 = loc6;
-	return v13;
+	v14.u0 = 21404;
+	v14 = *v14.u0;
+	loc6 = v14;
+	v14 = loc6;
+	return v14;
 }
 
 // 0011B395: void fn0011B395(Stack Eq_n arg0)
 void fn0011B395(Eq_n arg0)
 {
+	v11.u3 = g_t140030.u3;
+	loc8 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11.u0 = 0x01E5;
+	v11 = invoke_i(v11);
+	loc1 = v11;
+	v11.u3 = g_t140048.u3;
+	loc2 = v11;
+	v11.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v11;
+	v11 = loc2;
+	v12.u0 = 0x01;
+	v11 &= v12;
+	loc3 = v11;
+	v11 = loc3;
+	if (!v11)
+	{
+		v11 = loc1;
+		v11.u3 = *v11.u3;
+		loc4 = v11;
+		v11 = arg0;
+		v12 = loc4;
+		*v11.u3 = (word32) v12;
+		v11 = loc4;
+		fn0011B41A(v11);
+	}
+	else
+	{
+		v11.u0 = 0x00;
+		v11 = ___cxa_find_matching_catch_n(v11);
+		loc5 = v11;
+		v11.u3 = g_t140094.u3;
+		loc6 = v11;
+		v11 = loc5;
+		fn000D0E65(v11);
+	}
+}
+
+// 0011B3DF: void fn0011B3DF(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011B3DF(Eq_n arg0, Eq_n arg1)
+{
+	v6.u3 = g_t140030.u3;
+	loc4 = v6;
+	v6 = arg1;
+	v6.u3 = *v6.u3;
+	loc2 = v6;
+	v6 = arg0;
+	v7 = loc2;
+	*v6.u3 = (word32) v7;
+	v6 = loc2;
+	fn0011B41A(v6);
+}
+
+// 0011B3FB: void fn0011B3FB(Stack Eq_n arg0)
+void fn0011B3FB(Eq_n arg0)
+{
+	v6.u3 = g_t140030.u3;
+	loc3 = v6;
+	v6 = arg0;
+	v6.u3 = *v6.u3;
+	loc1 = v6;
+	v6 = loc1;
+	v6 = fn0011B43F(v6);
+}
+
+// 0011B411: void fn0011B411(Stack Eq_n arg0)
+void fn0011B411(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+}
+
+// 0011B41A: void fn0011B41A(Stack Eq_n arg0)
+void fn0011B41A(Eq_n arg0)
+{
+	v8.u3 = g_t140030.u3;
+	loc5 = v8;
+	v8 = arg0;
+	v9.u0 = 0x04;
+	v8 += v9;
+	loc1 = v8;
+	v8 = loc1;
+	v8.u3 = *v8.u3;
+	loc2 = v8;
+	v8 = loc2;
+	v9.u0 = 0x01;
+	v8 += v9;
+	loc3 = v8;
+	v8 = loc1;
+	v9 = loc3;
+	*v8.u3 = (word32) v9;
+}
+
+// 0011B43F: Stack Eq_n fn0011B43F(Stack Eq_n arg0)
+Eq_n fn0011B43F(Eq_n arg0)
+{
+	v13.u3 = g_t140030.u3;
+	loc10 = v13;
+	v13 = arg0;
+	v14.u0 = 0x04;
+	v13 += v14;
+	loc2 = v13;
+	v13 = loc2;
+	v13.u3 = *v13.u3;
+	loc3 = v13;
+	v13 = loc3;
+	v14.u0 = ~0x00;
+	v13 += v14;
+	loc4 = v13;
+	v13 = loc2;
+	v14 = loc4;
+	*v13.u3 = (word32) v14;
+	v13 = loc3;
+	v14.u0 = 0x00;
+	v15 = v13 == v14;
+	loc5 = v15;
+	v13 = loc5;
+	v13 = v13;
+	v13 = arg0;
+	v13.u3 = *v13.u3;
+	loc6 = v13;
+	v13 = loc6;
+	v14.u0 = 0x08;
+	v13 += v14;
+	loc7 = v13;
+	v13 = loc7;
+	v13.u3 = *v13.u3;
+	loc8 = v13;
+	v13 = arg0;
+	v14 = loc8;
+	v16.u0 = 0x01FF;
+	v14 &= v16;
+	v16.u0 = 0x0500;
+	v14 += v16;
+}
+
+// 0011B49F: void fn0011B49F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn0011B49F(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	while (true)
+	{
+		v34.u3 = g_t140030.u3;
+		loc33 = v34;
+		v34.u0 = 0x53A0;
+		v34 = _pthread_mutex_lock(v34);
+		v34 = arg0;
+		v34 = *v34.u0;
+		loc23 = v34;
+		v34 = loc23;
+		v35.u0 = 0x01;
+		v36 = v34 == v35;
+		loc26 = v36;
+		v34 = loc26;
+		v36 = v34 == 0x00;
+		if (v36)
+			break;
+		v34.u0 = 0x53BC;
+		v35.u0 = 0x53A0;
+		v34 = _pthread_cond_wait(v34, v35);
+	}
+	v34 = arg0;
+	v34 = *v34.u0;
+	loc27 = v34;
+	v34 = loc27;
+	v35.u0 = 0x00;
+	v36 = v34 == v35;
+	loc28 = v36;
+	v34 = loc28;
+	if (!v34)
+	{
+		v34.u0 = 0x53A0;
+		v34 = _pthread_mutex_unlock(v34);
+	}
+	else
+	{
+		v34 = arg0;
+		v35.u0 = 0x01;
+		*v34.u0 = v35;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34.u0 = 0x01E6;
+		v35.u0 = 0x53A0;
+		v34 = invoke_ii(v34, v35);
+		v34.u3 = g_t140048.u3;
+		loc29 = v34;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34 = loc29;
+		v35.u0 = 0x01;
+		v34 &= v35;
+		loc30 = v34;
+		v34 = loc30;
+		v36 = v34 == 0x00;
+		if (v36)
+		{
+			v34.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v34;
+			v34 = arg2;
+			v35 = arg1;
+			invoke_vi(v34, v35);
+			v34.u3 = g_t140048.u3;
+			loc31 = v34;
+			v34.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v34;
+			v34 = loc31;
+			v35.u0 = 0x01;
+			v34 &= v35;
+			loc3 = v34;
+			v34 = loc3;
+			v36 = v34 == 0x00;
+			if (v36)
+			{
+				v34.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v34;
+				v34.u0 = 0x01E7;
+				v35.u0 = 0x53A0;
+				v34 = invoke_ii(v34, v35);
+				v34.u3 = g_t140048.u3;
+				loc4 = v34;
+				v34.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v34;
+				v34 = loc4;
+				v35.u0 = 0x01;
+				v34 &= v35;
+				loc5 = v34;
+				v34 = loc5;
+				v36 = v34 == 0x00;
+				if (v36)
+				{
+					v34 = arg0;
+					v35.u0 = ~0x00;
+					*v34.u0 = v35;
+					v34.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v34;
+					v34.u0 = 0x01E6;
+					v35.u0 = 0x53A0;
+					v34 = invoke_ii(v34, v35);
+					v34.u3 = g_t140048.u3;
+					loc6 = v34;
+					v34.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v34;
+					v34 = loc6;
+					v35.u0 = 0x01;
+					v34 &= v35;
+					loc7 = v34;
+					v34 = loc7;
+					v36 = v34 == 0x00;
+					if (v36)
+					{
+						v34.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v34;
+						v34.u0 = 488;
+						v35.u0 = 0x53BC;
+						v34 = invoke_ii(v34, v35);
+						v34.u3 = g_t140048.u3;
+						loc8 = v34;
+						v34.u0 = 0x00;
+						g_t140048.u3 = (word32 *) v34;
+						v34 = loc8;
+						v35.u0 = 0x01;
+						v34 &= v35;
+						loc9 = v34;
+						v34 = loc9;
+						v36 = v34 == 0x00;
+						if (v36)
+							return;
+					}
+				}
+			}
+		}
+		v34.u0 = 0x00;
+		v34 = ___cxa_find_matching_catch_n(v34);
+		loc10 = v34;
+		v34.u3 = g_t140094.u3;
+		loc11 = v34;
+		v34 = loc10;
+		v34 = ___cxa_begin_catch(v34);
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34.u0 = 0x01E7;
+		v35.u0 = 0x53A0;
+		v34 = invoke_ii(v34, v35);
+		v34.u3 = g_t140048.u3;
+		loc12 = v34;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34 = loc12;
+		v35.u0 = 0x01;
+		v34 &= v35;
+		loc13 = v34;
+		v34 = loc13;
+		v36 = v34 == 0x00;
+		if (v36)
+		{
+			v34 = arg0;
+			v35.u0 = 0x00;
+			*v34.u0 = v35;
+			v34.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v34;
+			v34.u0 = 0x01E6;
+			v35.u0 = 0x53A0;
+			v34 = invoke_ii(v34, v35);
+			v34.u3 = g_t140048.u3;
+			loc14 = v34;
+			v34.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v34;
+			v34 = loc14;
+			v35.u0 = 0x01;
+			v34 &= v35;
+			loc15 = v34;
+			v34 = loc15;
+			v36 = v34 == 0x00;
+			if (v36)
+			{
+				v34.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v34;
+				v34.u0 = 488;
+				v35.u0 = 0x53BC;
+				v34 = invoke_ii(v34, v35);
+				v34.u3 = g_t140048.u3;
+				loc16 = v34;
+				v34.u0 = 0x00;
+				g_t140048.u3 = (word32 *) v34;
+				v34 = loc16;
+				v35.u0 = 0x01;
+				v34 &= v35;
+				loc17 = v34;
+				v34 = loc17;
+				v36 = v34 == 0x00;
+				if (v36)
+				{
+					v34.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v34;
+					v34.u0 = 0x01E9;
+					invoke_v(v34);
+					v34.u3 = g_t140048.u3;
+					loc18 = v34;
+					v34.u0 = 0x00;
+					g_t140048.u3 = (word32 *) v34;
+				}
+			}
+		}
+		v34 = ___cxa_find_matching_catch_n();
+		loc19 = v34;
+		v34.u3 = g_t140094.u3;
+		loc20 = v34;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34.u0 = 0x016C;
+		invoke_v(v34);
+		v34.u3 = g_t140048.u3;
+		loc21 = v34;
+		v34.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v34;
+		v34 = loc21;
+		v35.u0 = 0x01;
+		v34 &= v35;
+		loc22 = v34;
+		v34 = loc22;
+		if (v34)
+		{
+			v34.u0 = 0x00;
+			v34 = ___cxa_find_matching_catch_n(v34);
+			loc24 = v34;
+			v34.u3 = g_t140094.u3;
+			loc25 = v34;
+			v34 = loc24;
+			fn000D0E65(v34);
+		}
+		else
+		{
+			v34 = loc19;
+			___resumeException(v34);
+		}
+	}
+}
+
+// 0011B67B: Stack Eq_n fn0011B67B(Stack Eq_n arg0)
+Eq_n fn0011B67B(Eq_n arg0)
+{
+	v12.u3 = g_t140030.u3;
+	loc9 = v12;
+	v12 = arg0;
+	v13.u0 = 0x00;
+	v14 = v12 == v13;
+	loc2 = v14;
+	v12 = loc2;
+	if (v12)
+		v12.u0 = 0x01;
+	else
+		v12 = arg0;
+	loc1 = v12;
+	v12 = loc1;
+	v12 = _malloc(v12);
+	loc3 = v12;
+	v12 = loc3;
+	v13.u0 = 0x00;
+	v14 = v12 == v13;
+	loc4 = v14;
+	v12 = loc4;
+	v14 = v12 == 0x00;
+	if (!v14)
+	{
+		v12 = fn0011EE9E();
+		loc5 = v12;
+		v12 = loc5;
+		v13.u0 = 0x00;
+		v14 = v12 == v13;
+		loc6 = v14;
+		v12 = loc6;
+		if (!v12)
+		{
+			v12 = loc5;
+			v13.u0 = 0x01FF;
+			v12 &= v13;
+			v13.u0 = 0x2A20;
+			v12 += v13;
+		}
+		else
+		{
+			v12.u0 = 0x05;
+			loc8 = v12;
+		}
+	}
+	else
+	{
+		v12.u0 = 0x06;
+		loc8 = v12;
+	}
+}
+
+// 0011B709: void fn0011B709(Stack Eq_n arg0)
+void fn0011B709(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	_free(v5);
+}
+
+// 0011B717: void fn0011B717(Stack Eq_n arg0)
+void fn0011B717(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 0011B725: void fn0011B725()
+void fn0011B725()
+{
+	v6.u3 = g_t140030.u3;
+	loc2 = v6;
+	v6.u0 = 0x04;
+	v6 = ___cxa_allocate_exception(v6);
+	loc0 = v6;
+	v6 = loc0;
+	fn0011EE8C(v6);
+	v6 = loc0;
+	v7 = 0x09C8;
+	v8 = 339;
+	___cxa_throw(v6, v7, v8);
+}
+
+// 0011B742: void fn0011B742(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011B742(Eq_n arg0, Eq_n arg1)
+{
+	v12.u3 = g_t140030.u3;
+	loc10 = v12;
+	v12 = arg1;
+	v12 = fn000DAF30(v12);
+	loc2 = v12;
+	v12 = loc2;
+	v13.u0 = 0x0D;
+	v12 += v13;
+	loc3 = v12;
+	v12 = loc3;
+	v12 = fn0011B67B(v12);
+	loc4 = v12;
+	v12 = loc4;
+	v13 = loc2;
+	*v12.u3 = (word32) v13;
+	v12 = loc4;
+	v13.u0 = 0x04;
+	v12 += v13;
+	loc5 = v12;
+	v12 = loc5;
+	v13 = loc2;
+	*v12.u3 = (word32) v13;
+	v12 = loc4;
+	v13.u0 = 0x08;
+	v12 += v13;
+	loc6 = v12;
+	v12 = loc6;
+	v13.u0 = 0x00;
+	*v12.u3 = (word32) v13;
+	v12 = loc4;
+	v13.u0 = 0x0C;
+	v12 += v13;
+	loc7 = v12;
+	v12 = loc2;
+	v13.u0 = 0x01;
+	v12 += v13;
+	loc8 = v12;
+	v12 = loc7;
+	v13 = arg1;
+	v14 = loc8;
+	v12 = _memcpy(v12, v13, v14);
+	v12 = arg0;
+	v13 = loc7;
+	*v12.u3 = (word32) v13;
+}
+
+// 0011B7A2: void fn0011B7A2(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011B7A2(Eq_n arg0, Eq_n arg1)
+{
 	v10.u3 = g_t140030.u3;
 	loc8 = v10;
+	v10 = arg0;
+	v11.u0 = 9940;
+	*v10.u3 = (word32) v11;
+	v10 = arg0;
+	v11.u0 = 0x04;
+	v10 += v11;
+	loc2 = v10;
 	v10.u0 = 0x00;
 	g_t140048.u3 = (word32 *) v10;
-	v10.u0 = 0x01E5;
-	v10 = invoke_i(v10);
+	v10.u0 = 0x01EA;
+	v11 = loc2;
+	v12 = arg1;
+	invoke_vii(v10, v11, v12);
+	v10.u3 = g_t140048.u3;
+	loc3 = v10;
+	v10.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v10;
+	v10 = loc3;
+	v11.u0 = 0x01;
+	v10 &= v11;
+	loc4 = v10;
+	v10 = loc4;
+	if (!v10)
+		return;
+	v10 = ___cxa_find_matching_catch_n();
+	loc5 = v10;
+	v10.u3 = g_t140094.u3;
+	loc6 = v10;
+	v10 = loc5;
+	___resumeException(v10);
+}
+
+// 0011B7E9: void fn0011B7E9(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011B7E9(Eq_n arg0, Eq_n arg1)
+{
+	v15.u3 = g_t140030.u3;
+	loc13 = v15;
+	v15 = arg0;
+	v16.u0 = 9960;
+	*v15.u3 = (word32) v16;
+	v15 = arg0;
+	v16.u0 = 0x04;
+	v15 += v16;
+	loc4 = v15;
+	v15 = arg1;
+	v16.u0 = 11;
+	v15 += v16;
+	loc5 = v15;
+	v15 = loc5;
+	v17.u3 = *v15.u3;
+	v15.u3 = (word32) v17;
+	loc6 = v15;
+	v15 = loc6;
+	v16.u0 = 0x18;
+	v15 <<= v16;
+	v16.u0 = 0x18;
+	v15 >>= v16;
+	v16.u0 = 0x00;
+	v18 = v15 < v16;
+	loc7 = v18;
+	v15 = arg1;
+	v15.u3 = *v15.u3;
+	loc8 = v15;
+	v15 = loc7;
+	if (v15)
+		v15 = loc8;
+	else
+		v15 = arg1;
+	loc9 = v15;
+	v15.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v15;
+	v15.u0 = 0x01EA;
+	v16 = loc4;
+	v19 = loc9;
+	invoke_vii(v15, v16, v19);
+	v15.u3 = g_t140048.u3;
+	loc10 = v15;
+	v15.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v15;
+	v15 = loc10;
+	v16.u0 = 0x01;
+	v15 &= v16;
+	loc11 = v15;
+	v15 = loc11;
+	if (!v15)
+		return;
+	v15 = ___cxa_find_matching_catch_n();
+	loc2 = v15;
+	v15.u3 = g_t140094.u3;
+	loc3 = v15;
+	v15 = loc2;
+	___resumeException(v15);
+}
+
+// 0011B85E: void fn0011B85E(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011B85E(Eq_n arg0, Eq_n arg1)
+{
+	v10.u3 = g_t140030.u3;
+	loc8 = v10;
+	v10 = arg0;
+	v11.u0 = 9960;
+	*v10.u3 = (word32) v11;
+	v10 = arg0;
+	v11.u0 = 0x04;
+	v10 += v11;
+	loc2 = v10;
+	v10.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v10;
+	v10.u0 = 0x01EA;
+	v11 = loc2;
+	v12 = arg1;
+	invoke_vii(v10, v11, v12);
+	v10.u3 = g_t140048.u3;
+	loc3 = v10;
+	v10.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v10;
+	v10 = loc3;
+	v11.u0 = 0x01;
+	v10 &= v11;
+	loc4 = v10;
+	v10 = loc4;
+	if (!v10)
+		return;
+	v10 = ___cxa_find_matching_catch_n();
+	loc5 = v10;
+	v10.u3 = g_t140094.u3;
+	loc6 = v10;
+	v10 = loc5;
+	___resumeException(v10);
+}
+
+// 0011B8A5: void fn0011B8A5(Stack Eq_n arg0)
+void fn0011B8A5(Eq_n arg0)
+{
+	v10.u3 = g_t140030.u3;
+	loc7 = v10;
+	v10.u0 = 0x08;
+	v10 = ___cxa_allocate_exception(v10);
 	loc1 = v10;
+	v10.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v10;
+	v10.u0 = 0x01C2;
+	v11 = loc1;
+	v12 = 0x4050;
+	invoke_vii(v10, v11, v12);
 	v10.u3 = g_t140048.u3;
 	loc2 = v10;
 	v10.u0 = 0x00;
@@ -17376,2420 +18034,361 @@ void fn0011B395(Eq_n arg0)
 	v10 &= v11;
 	loc3 = v10;
 	v10 = loc3;
-	if (!v10)
+	if (v10)
+	{
+		v10 = ___cxa_find_matching_catch_n();
+		loc4 = v10;
+		v10.u3 = g_t140094.u3;
+		loc5 = v10;
+		v10 = loc1;
+		___cxa_free_exception(v10);
+		v10 = loc4;
+		___resumeException(v10);
+	}
+	else
 	{
 		v10 = loc1;
-		v10.u3 = *v10.u3;
-		loc4 = v10;
-		v10 = arg0;
-		v11 = loc4;
+		v11.u0 = 9980;
 		*v10.u3 = (word32) v11;
-		v10 = loc4;
-		fn0011B41A(v10);
-	}
-	else
-	{
-		v10.u0 = 0x00;
-		v10 = ___cxa_find_matching_catch_n(v10);
-		loc5 = v10;
-		v10.u3 = g_t140094.u3;
-		loc6 = v10;
-		v10 = loc5;
-		fn000D0E65(v10);
-	}
-}
-
-// 0011B3DF: void fn0011B3DF(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011B3DF(Eq_n arg0, Eq_n arg1)
-{
-	v5.u3 = g_t140030.u3;
-	loc4 = v5;
-	v5 = arg1;
-	v5.u3 = *v5.u3;
-	loc2 = v5;
-	v5 = arg0;
-	v6 = loc2;
-	*v5.u3 = (word32) v6;
-	v5 = loc2;
-	fn0011B41A(v5);
-}
-
-// 0011B3FB: void fn0011B3FB(Stack Eq_n arg0)
-void fn0011B3FB(Eq_n arg0)
-{
-	v5.u3 = g_t140030.u3;
-	loc3 = v5;
-	v5 = arg0;
-	v5.u3 = *v5.u3;
-	loc1 = v5;
-	v5 = loc1;
-	v5 = fn0011B43F(v5);
-}
-
-// 0011B411: void fn0011B411(Stack Eq_n arg0)
-void fn0011B411(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-}
-
-// 0011B41A: void fn0011B41A(Stack Eq_n arg0)
-void fn0011B41A(Eq_n arg0)
-{
-	v7.u3 = g_t140030.u3;
-	loc5 = v7;
-	v7 = arg0;
-	v8.u0 = 0x04;
-	v7 += v8;
-	loc1 = v7;
-	v7 = loc1;
-	v7.u3 = *v7.u3;
-	loc2 = v7;
-	v7 = loc2;
-	v8.u0 = 0x01;
-	v7 += v8;
-	loc3 = v7;
-	v7 = loc1;
-	v8 = loc3;
-	*v7.u3 = (word32) v8;
-}
-
-// 0011B43F: Stack Eq_n fn0011B43F(Stack Eq_n arg0)
-Eq_n fn0011B43F(Eq_n arg0)
-{
-	v12.u3 = g_t140030.u3;
-	loc10 = v12;
-	v12 = arg0;
-	v13.u0 = 0x04;
-	v12 += v13;
-	loc2 = v12;
-	v12 = loc2;
-	v12.u3 = *v12.u3;
-	loc3 = v12;
-	v12 = loc3;
-	v13.u0 = ~0x00;
-	v12 += v13;
-	loc4 = v12;
-	v12 = loc2;
-	v13 = loc4;
-	*v12.u3 = (word32) v13;
-	v12 = loc3;
-	v13.u0 = 0x00;
-	v14 = v12 == v13;
-	loc5 = v14;
-	v12 = loc5;
-	v12 = v12;
-	v12 = arg0;
-	v12.u3 = *v12.u3;
-	loc6 = v12;
-	v12 = loc6;
-	v13.u0 = 0x08;
-	v12 += v13;
-	loc7 = v12;
-	v12 = loc7;
-	v12.u3 = *v12.u3;
-	loc8 = v12;
-	v12 = arg0;
-	v13 = loc8;
-	v15.u0 = 0x01FF;
-	v13 &= v15;
-	v15.u0 = 0x0500;
-	v13 += v15;
-}
-
-// 0011B49F: void fn0011B49F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-void fn0011B49F(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	while (true)
-	{
-		v33.u3 = g_t140030.u3;
-		loc33 = v33;
-		v33.u0 = 0x53A0;
-		v33 = _pthread_mutex_lock(v33);
-		v33 = arg0;
-		v33 = *v33.u0;
-		loc23 = v33;
-		v33 = loc23;
-		v34.u0 = 0x01;
-		v35 = v33 == v34;
-		loc26 = v35;
-		v33 = loc26;
-		v35 = v33 == 0x00;
-		if (v35)
-			break;
-		v33.u0 = 0x53BC;
-		v34.u0 = 0x53A0;
-		v33 = _pthread_cond_wait(v33, v34);
-	}
-	v33 = arg0;
-	v33 = *v33.u0;
-	loc27 = v33;
-	v33 = loc27;
-	v34.u0 = 0x00;
-	v35 = v33 == v34;
-	loc28 = v35;
-	v33 = loc28;
-	if (!v33)
-	{
-		v33.u0 = 0x53A0;
-		v33 = _pthread_mutex_unlock(v33);
-	}
-	else
-	{
-		v33 = arg0;
-		v34.u0 = 0x01;
-		*v33.u0 = v34;
-		v33.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v33;
-		v33.u0 = 0x01E6;
-		v34.u0 = 0x53A0;
-		v33 = invoke_ii(v33, v34);
-		v33.u3 = g_t140048.u3;
-		loc29 = v33;
-		v33.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v33;
-		v33 = loc29;
-		v34.u0 = 0x01;
-		v33 &= v34;
-		loc30 = v33;
-		v33 = loc30;
-		v35 = v33 == 0x00;
-		if (v35)
-		{
-			v33.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v33;
-			v33 = arg2;
-			v34 = arg1;
-			invoke_vi(v33, v34);
-			v33.u3 = g_t140048.u3;
-			loc31 = v33;
-			v33.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v33;
-			v33 = loc31;
-			v34.u0 = 0x01;
-			v33 &= v34;
-			loc3 = v33;
-			v33 = loc3;
-			v35 = v33 == 0x00;
-			if (v35)
-			{
-				v33.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v33;
-				v33.u0 = 0x01E7;
-				v34.u0 = 0x53A0;
-				v33 = invoke_ii(v33, v34);
-				v33.u3 = g_t140048.u3;
-				loc4 = v33;
-				v33.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v33;
-				v33 = loc4;
-				v34.u0 = 0x01;
-				v33 &= v34;
-				loc5 = v33;
-				v33 = loc5;
-				v35 = v33 == 0x00;
-				if (v35)
-				{
-					v33 = arg0;
-					v34.u0 = ~0x00;
-					*v33.u0 = v34;
-					v33.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v33;
-					v33.u0 = 0x01E6;
-					v34.u0 = 0x53A0;
-					v33 = invoke_ii(v33, v34);
-					v33.u3 = g_t140048.u3;
-					loc6 = v33;
-					v33.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v33;
-					v33 = loc6;
-					v34.u0 = 0x01;
-					v33 &= v34;
-					loc7 = v33;
-					v33 = loc7;
-					v35 = v33 == 0x00;
-					if (v35)
-					{
-						v33.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v33;
-						v33.u0 = 488;
-						v34.u0 = 0x53BC;
-						v33 = invoke_ii(v33, v34);
-						v33.u3 = g_t140048.u3;
-						loc8 = v33;
-						v33.u0 = 0x00;
-						g_t140048.u3 = (word32 *) v33;
-						v33 = loc8;
-						v34.u0 = 0x01;
-						v33 &= v34;
-						loc9 = v33;
-						v33 = loc9;
-						v35 = v33 == 0x00;
-						if (v35)
-							return;
-					}
-				}
-			}
-		}
-		v33.u0 = 0x00;
-		v33 = ___cxa_find_matching_catch_n(v33);
-		loc10 = v33;
-		v33.u3 = g_t140094.u3;
-		loc11 = v33;
-		v33 = loc10;
-		v33 = ___cxa_begin_catch(v33);
-		v33.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v33;
-		v33.u0 = 0x01E7;
-		v34.u0 = 0x53A0;
-		v33 = invoke_ii(v33, v34);
-		v33.u3 = g_t140048.u3;
-		loc12 = v33;
-		v33.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v33;
-		v33 = loc12;
-		v34.u0 = 0x01;
-		v33 &= v34;
-		loc13 = v33;
-		v33 = loc13;
-		v35 = v33 == 0x00;
-		if (v35)
-		{
-			v33 = arg0;
-			v34.u0 = 0x00;
-			*v33.u0 = v34;
-			v33.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v33;
-			v33.u0 = 0x01E6;
-			v34.u0 = 0x53A0;
-			v33 = invoke_ii(v33, v34);
-			v33.u3 = g_t140048.u3;
-			loc14 = v33;
-			v33.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v33;
-			v33 = loc14;
-			v34.u0 = 0x01;
-			v33 &= v34;
-			loc15 = v33;
-			v33 = loc15;
-			v35 = v33 == 0x00;
-			if (v35)
-			{
-				v33.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v33;
-				v33.u0 = 488;
-				v34.u0 = 0x53BC;
-				v33 = invoke_ii(v33, v34);
-				v33.u3 = g_t140048.u3;
-				loc16 = v33;
-				v33.u0 = 0x00;
-				g_t140048.u3 = (word32 *) v33;
-				v33 = loc16;
-				v34.u0 = 0x01;
-				v33 &= v34;
-				loc17 = v33;
-				v33 = loc17;
-				v35 = v33 == 0x00;
-				if (v35)
-				{
-					v33.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v33;
-					v33.u0 = 0x01E9;
-					invoke_v(v33);
-					v33.u3 = g_t140048.u3;
-					loc18 = v33;
-					v33.u0 = 0x00;
-					g_t140048.u3 = (word32 *) v33;
-				}
-			}
-		}
-		v33 = ___cxa_find_matching_catch_n();
-		loc19 = v33;
-		v33.u3 = g_t140094.u3;
-		loc20 = v33;
-		v33.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v33;
-		v33.u0 = 0x016C;
-		invoke_v(v33);
-		v33.u3 = g_t140048.u3;
-		loc21 = v33;
-		v33.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v33;
-		v33 = loc21;
-		v34.u0 = 0x01;
-		v33 &= v34;
-		loc22 = v33;
-		v33 = loc22;
-		if (v33)
-		{
-			v33.u0 = 0x00;
-			v33 = ___cxa_find_matching_catch_n(v33);
-			loc24 = v33;
-			v33.u3 = g_t140094.u3;
-			loc25 = v33;
-			v33 = loc24;
-			fn000D0E65(v33);
-		}
-		else
-		{
-			v33 = loc19;
-			___resumeException(v33);
-		}
-	}
-}
-
-// 0011B67B: Stack Eq_n fn0011B67B(Stack Eq_n arg0)
-Eq_n fn0011B67B(Eq_n arg0)
-{
-	v11.u3 = g_t140030.u3;
-	loc9 = v11;
-	v11 = arg0;
-	v12.u0 = 0x00;
-	v13 = v11 == v12;
-	loc2 = v13;
-	v11 = loc2;
-	if (v11)
-		v11.u0 = 0x01;
-	else
-		v11 = arg0;
-	loc1 = v11;
-	v11 = loc1;
-	v11 = _malloc(v11);
-	loc3 = v11;
-	v11 = loc3;
-	v12.u0 = 0x00;
-	v13 = v11 == v12;
-	loc4 = v13;
-	v11 = loc4;
-	v13 = v11 == 0x00;
-	if (!v13)
-	{
-		v11 = fn0011EE9E();
-		loc5 = v11;
-		v11 = loc5;
-		v12.u0 = 0x00;
-		v13 = v11 == v12;
-		loc6 = v13;
-		v11 = loc6;
-		if (!v11)
-		{
-			v11 = loc5;
-			v12.u0 = 0x01FF;
-			v11 &= v12;
-			v12.u0 = 0x2A20;
-			v11 += v12;
-		}
-		else
-		{
-			v11.u0 = 0x05;
-			loc8 = v11;
-		}
-	}
-	else
-	{
-		v11.u0 = 0x06;
-		loc8 = v11;
-	}
-}
-
-// 0011B709: void fn0011B709(Stack Eq_n arg0)
-void fn0011B709(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	_free(v4);
-}
-
-// 0011B717: void fn0011B717(Stack Eq_n arg0)
-void fn0011B717(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 0011B725: void fn0011B725()
-void fn0011B725()
-{
-	v5.u3 = g_t140030.u3;
-	loc2 = v5;
-	v5.u0 = 0x04;
-	v5 = ___cxa_allocate_exception(v5);
-	loc0 = v5;
-	v5 = loc0;
-	fn0011EE8C(v5);
-	v5 = loc0;
-	v6 = 0x09C8;
-	v7 = 339;
-	___cxa_throw(v5, v6, v7);
-}
-
-// 0011B742: void fn0011B742(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011B742(Eq_n arg0, Eq_n arg1)
-{
-	v11.u3 = g_t140030.u3;
-	loc10 = v11;
-	v11 = arg1;
-	v11 = fn000DAF30(v11);
-	loc2 = v11;
-	v11 = loc2;
-	v12.u0 = 0x0D;
-	v11 += v12;
-	loc3 = v11;
-	v11 = loc3;
-	v11 = fn0011B67B(v11);
-	loc4 = v11;
-	v11 = loc4;
-	v12 = loc2;
-	*v11.u3 = (word32) v12;
-	v11 = loc4;
-	v12.u0 = 0x04;
-	v11 += v12;
-	loc5 = v11;
-	v11 = loc5;
-	v12 = loc2;
-	*v11.u3 = (word32) v12;
-	v11 = loc4;
-	v12.u0 = 0x08;
-	v11 += v12;
-	loc6 = v11;
-	v11 = loc6;
-	v12.u0 = 0x00;
-	*v11.u3 = (word32) v12;
-	v11 = loc4;
-	v12.u0 = 0x0C;
-	v11 += v12;
-	loc7 = v11;
-	v11 = loc2;
-	v12.u0 = 0x01;
-	v11 += v12;
-	loc8 = v11;
-	v11 = loc7;
-	v12 = arg1;
-	v13 = loc8;
-	v11 = _memcpy(v11, v12, v13);
-	v11 = arg0;
-	v12 = loc7;
-	*v11.u3 = (word32) v12;
-}
-
-// 0011B7A2: void fn0011B7A2(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011B7A2(Eq_n arg0, Eq_n arg1)
-{
-	v9.u3 = g_t140030.u3;
-	loc8 = v9;
-	v9 = arg0;
-	v10.u0 = 9940;
-	*v9.u3 = (word32) v10;
-	v9 = arg0;
-	v10.u0 = 0x04;
-	v9 += v10;
-	loc2 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9.u0 = 0x01EA;
-	v10 = loc2;
-	v11 = arg1;
-	invoke_vii(v9, v10, v11);
-	v9.u3 = g_t140048.u3;
-	loc3 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9 = loc3;
-	v10.u0 = 0x01;
-	v9 &= v10;
-	loc4 = v9;
-	v9 = loc4;
-	if (!v9)
-		return;
-	v9 = ___cxa_find_matching_catch_n();
-	loc5 = v9;
-	v9.u3 = g_t140094.u3;
-	loc6 = v9;
-	v9 = loc5;
-	___resumeException(v9);
-}
-
-// 0011B7E9: void fn0011B7E9(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011B7E9(Eq_n arg0, Eq_n arg1)
-{
-	v14.u3 = g_t140030.u3;
-	loc13 = v14;
-	v14 = arg0;
-	v15.u0 = 9960;
-	*v14.u3 = (word32) v15;
-	v14 = arg0;
-	v15.u0 = 0x04;
-	v14 += v15;
-	loc4 = v14;
-	v14 = arg1;
-	v15.u0 = 11;
-	v14 += v15;
-	loc5 = v14;
-	v14 = loc5;
-	v16.u3 = *v14.u3;
-	v14.u3 = (word32) v16;
-	loc6 = v14;
-	v14 = loc6;
-	v15.u0 = 0x18;
-	v14 <<= v15;
-	v15.u0 = 0x18;
-	v14 >>= v15;
-	v15.u0 = 0x00;
-	v17 = v14 < v15;
-	loc7 = v17;
-	v14 = arg1;
-	v14.u3 = *v14.u3;
-	loc8 = v14;
-	v14 = loc7;
-	if (v14)
-		v14 = loc8;
-	else
-		v14 = arg1;
-	loc9 = v14;
-	v14.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v14;
-	v14.u0 = 0x01EA;
-	v15 = loc4;
-	v18 = loc9;
-	invoke_vii(v14, v15, v18);
-	v14.u3 = g_t140048.u3;
-	loc10 = v14;
-	v14.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v14;
-	v14 = loc10;
-	v15.u0 = 0x01;
-	v14 &= v15;
-	loc11 = v14;
-	v14 = loc11;
-	if (!v14)
-		return;
-	v14 = ___cxa_find_matching_catch_n();
-	loc2 = v14;
-	v14.u3 = g_t140094.u3;
-	loc3 = v14;
-	v14 = loc2;
-	___resumeException(v14);
-}
-
-// 0011B85E: void fn0011B85E(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011B85E(Eq_n arg0, Eq_n arg1)
-{
-	v9.u3 = g_t140030.u3;
-	loc8 = v9;
-	v9 = arg0;
-	v10.u0 = 9960;
-	*v9.u3 = (word32) v10;
-	v9 = arg0;
-	v10.u0 = 0x04;
-	v9 += v10;
-	loc2 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9.u0 = 0x01EA;
-	v10 = loc2;
-	v11 = arg1;
-	invoke_vii(v9, v10, v11);
-	v9.u3 = g_t140048.u3;
-	loc3 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9 = loc3;
-	v10.u0 = 0x01;
-	v9 &= v10;
-	loc4 = v9;
-	v9 = loc4;
-	if (!v9)
-		return;
-	v9 = ___cxa_find_matching_catch_n();
-	loc5 = v9;
-	v9.u3 = g_t140094.u3;
-	loc6 = v9;
-	v9 = loc5;
-	___resumeException(v9);
-}
-
-// 0011B8A5: void fn0011B8A5(Stack Eq_n arg0)
-void fn0011B8A5(Eq_n arg0)
-{
-	v9.u3 = g_t140030.u3;
-	loc7 = v9;
-	v9.u0 = 0x08;
-	v9 = ___cxa_allocate_exception(v9);
-	loc1 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9.u0 = 0x01C2;
-	v10 = loc1;
-	v11 = 0x4050;
-	invoke_vii(v9, v10, v11);
-	v9.u3 = g_t140048.u3;
-	loc2 = v9;
-	v9.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v9;
-	v9 = loc2;
-	v10.u0 = 0x01;
-	v9 &= v10;
-	loc3 = v9;
-	v9 = loc3;
-	if (v9)
-	{
-		v9 = ___cxa_find_matching_catch_n();
-		loc4 = v9;
-		v9.u3 = g_t140094.u3;
-		loc5 = v9;
-		v9 = loc1;
-		___cxa_free_exception(v9);
-		v9 = loc4;
-		___resumeException(v9);
-	}
-	else
-	{
-		v9 = loc1;
-		v10.u0 = 9980;
-		*v9.u3 = (word32) v10;
-		v9 = loc1;
-		v10.u0 = 2552;
-		v11 = 0x0156;
-		___cxa_throw(v9, v10, v11);
+		v10 = loc1;
+		v11.u0 = 2552;
+		v12 = 0x0156;
+		___cxa_throw(v10, v11, v12);
 	}
 }
 
 // 0011B8FA: void fn0011B8FA(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011B8FA(Eq_n arg0, Eq_n arg1)
 {
-	v10.u3 = g_t140030.u3;
-	loc9 = v10;
-	v10 = arg0;
-	v11.u0 = 0x00;
-	*v10.u3 = (word32) v11;
-	v10 = arg0;
-	v12.u0 = 0x08;
-	v10 += v12;
+	v11.u3 = g_t140030.u3;
+	loc9 = v11;
+	v11 = arg0;
 	v12.u0 = 0x00;
-	*v10.u3 = (word32) v12;
-	v10 = arg1;
-	v12.u0 = 11;
-	v10 += v12;
-	loc2 = v10;
-	v10 = loc2;
-	v13.u3 = *v10.u3;
-	v10.u3 = (word32) v13;
-	loc3 = v10;
-	v10 = loc3;
-	v12.u0 = 0x18;
-	v10 <<= v12;
-	v12.u0 = 0x18;
-	v10 >>= v12;
-	v12.u0 = 0x00;
-	v14 = v10 < v12;
-	loc4 = v14;
-	v10 = loc4;
-	if (v10)
+	*v11.u3 = (word32) v12;
+	v11 = arg0;
+	v13.u0 = 0x08;
+	v11 += v13;
+	v13.u0 = 0x00;
+	*v11.u3 = (word32) v13;
+	v11 = arg1;
+	v13.u0 = 11;
+	v11 += v13;
+	loc2 = v11;
+	v11 = loc2;
+	v14.u3 = *v11.u3;
+	v11.u3 = (word32) v14;
+	loc3 = v11;
+	v11 = loc3;
+	v13.u0 = 0x18;
+	v11 <<= v13;
+	v13.u0 = 0x18;
+	v11 >>= v13;
+	v13.u0 = 0x00;
+	v15 = v11 < v13;
+	loc4 = v15;
+	v11 = loc4;
+	if (v11)
 	{
-		v10 = arg1;
-		v10.u3 = *v10.u3;
-		loc5 = v10;
-		v10 = arg1;
-		v12.u0 = 0x04;
-		v10 += v12;
-		loc6 = v10;
-		v10 = loc6;
-		v10.u3 = *v10.u3;
-		loc7 = v10;
-		v10 = arg0;
-		v12 = loc5;
-		v15 = loc7;
-		fn0011B96D(v10, v12, v15);
+		v11 = arg1;
+		v11.u3 = *v11.u3;
+		loc5 = v11;
+		v11 = arg1;
+		v13.u0 = 0x04;
+		v11 += v13;
+		loc6 = v11;
+		v11 = loc6;
+		v11.u3 = *v11.u3;
+		loc7 = v11;
+		v11 = arg0;
+		v13 = loc5;
+		v16 = loc7;
+		fn0011B96D(v11, v13, v16);
 	}
 	else
 	{
-		v10 = arg0;
-		v12 = arg1;
-		v11 = *v12.u0;
-		v10.u4->t0000.u4 = (struct Eq_n *) v11;
-		v10 = arg0;
-		v12.u0 = 0x08;
-		v10 += v12;
-		v12 = arg1;
-		v15.u0 = 0x08;
-		v12 += v15;
-		v12 = *v12.u0;
-		*v10.u3 = (word32) v12;
+		v11 = arg0;
+		v13 = arg1;
+		v12 = *v13.u0;
+		v11.u4->t0000.u4 = (struct Eq_n *) v12;
+		v11 = arg0;
+		v13.u0 = 0x08;
+		v11 += v13;
+		v13 = arg1;
+		v16.u0 = 0x08;
+		v13 += v16;
+		v13 = *v13.u0;
+		*v11.u3 = (word32) v13;
 	}
 }
 
 // 0011B96D: void fn0011B96D(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011B96D(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v18.u3 = g_t140030.u3;
-	loc18 = v18;
-	v18 = arg2;
-	v19.u0 = ~0x10;
-	v20 = v18 > v19;
-	loc10 = v20;
-	v18 = loc10;
-	if (v18)
+	v19.u3 = g_t140030.u3;
+	loc18 = v19;
+	v19 = arg2;
+	v20.u0 = ~0x10;
+	v21 = v19 > v20;
+	loc10 = v21;
+	v19 = loc10;
+	if (v19)
 	{
-		v18 = arg0;
-		fn0011B8A5(v18);
+		v19 = arg0;
+		fn0011B8A5(v19);
 	}
-	v18 = arg2;
-	v19.u0 = 11;
-	v20 = v18 < v19;
-	loc11 = v20;
-	v18 = loc11;
-	if (v18)
+	v19 = arg2;
+	v20.u0 = 11;
+	v21 = v19 < v20;
+	loc11 = v21;
+	v19 = loc11;
+	if (v19)
 	{
-		v18 = arg2;
-		v19.u0 = 0xFF;
-		v18 &= v19;
-		loc6 = v18;
-		v18 = arg0;
-		v19.u0 = 11;
-		v18 += v19;
-		loc7 = v18;
-		v18 = loc7;
-		v19 = loc6;
-		v21 = (byte) v19;
-		*v18.u3 = (word32) v21;
-		v18 = arg2;
-		v19.u0 = 0x00;
-		v20 = v18 == v19;
-		loc8 = v20;
-		v18 = loc8;
-		if (v18)
+		v19 = arg2;
+		v20.u0 = 0xFF;
+		v19 &= v20;
+		loc6 = v19;
+		v19 = arg0;
+		v20.u0 = 11;
+		v19 += v20;
+		loc7 = v19;
+		v19 = loc7;
+		v20 = loc6;
+		v22 = (byte) v20;
+		*v19.u3 = (word32) v22;
+		v19 = arg2;
+		v20.u0 = 0x00;
+		v21 = v19 == v20;
+		loc8 = v21;
+		v19 = loc8;
+		if (v19)
 		{
-			v18 = arg0;
-			loc4 = v18;
+			v19 = arg0;
+			loc4 = v19;
 		}
 		else
 		{
-			v18 = arg0;
-			loc3 = v18;
-			v18.u0 = 0x06;
-			loc17 = v18;
+			v19 = arg0;
+			loc3 = v19;
+			v19.u0 = 0x06;
+			loc17 = v19;
 		}
 	}
 	else
 	{
-		v18 = arg2;
-		v19.u0 = 0x10;
-		v18 += v19;
-		loc12 = v18;
-		v18 = loc12;
-		v19.u0 = ~0x0F;
-		v18 &= v19;
-		loc13 = v18;
-		v18 = loc13;
-		v18 = fn0011B67B(v18);
-		loc14 = v18;
-		v18 = arg0;
-		v19 = loc14;
-		*v18.u0 = v19;
-		v18 = loc13;
-		v19.u0 = 0x80000000;
-		v18 |= v19;
-		loc15 = v18;
-		v18 = arg0;
-		v19.u0 = 0x08;
-		v18 += v19;
-		loc16 = v18;
-		v18 = loc16;
-		v19 = loc15;
-		*v18.u0 = v19;
-		v18 = arg0;
-		v19.u0 = 0x04;
-		v18 += v19;
-		loc5 = v18;
-		v18 = loc5;
 		v19 = arg2;
-		*v18.u0 = v19;
-		v18 = loc14;
-		loc3 = v18;
-		v18.u0 = 0x06;
-		loc17 = v18;
+		v20.u0 = 0x10;
+		v19 += v20;
+		loc12 = v19;
+		v19 = loc12;
+		v20.u0 = ~0x0F;
+		v19 &= v20;
+		loc13 = v19;
+		v19 = loc13;
+		v19 = fn0011B67B(v19);
+		loc14 = v19;
+		v19 = arg0;
+		v20 = loc14;
+		*v19.u0 = v20;
+		v19 = loc13;
+		v20.u0 = 0x80000000;
+		v19 |= v20;
+		loc15 = v19;
+		v19 = arg0;
+		v20.u0 = 0x08;
+		v19 += v20;
+		loc16 = v19;
+		v19 = loc16;
+		v20 = loc15;
+		*v19.u0 = v20;
+		v19 = arg0;
+		v20.u0 = 0x04;
+		v19 += v20;
+		loc5 = v19;
+		v19 = loc5;
+		v20 = arg2;
+		*v19.u0 = v20;
+		v19 = loc14;
+		loc3 = v19;
+		v19.u0 = 0x06;
+		loc17 = v19;
 	}
-	v18 = loc17;
-	v19.u0 = 0x06;
-	v20 = v18 == v19;
-	if (v20)
+	v19 = loc17;
+	v20.u0 = 0x06;
+	v21 = v19 == v20;
+	if (v21)
 	{
-		v18 = loc3;
-		v19 = arg1;
-		v22 = arg2;
-		v18 = _memcpy(v18, v19, v22);
-		v18 = loc3;
-		loc4 = v18;
+		v19 = loc3;
+		v20 = arg1;
+		v23 = arg2;
+		v19 = _memcpy(v19, v20, v23);
+		v19 = loc3;
+		loc4 = v19;
 	}
-	v18 = loc4;
-	v19 = arg2;
-	v18 += v19;
-	loc9 = v18;
-	v18 = loc9;
-	v19.u0 = 0x00;
-	v23 = (byte) v19;
-	*v18.u0 = v23;
+	v19 = loc4;
+	v20 = arg2;
+	v19 += v20;
+	loc9 = v19;
+	v19 = loc9;
+	v20.u0 = 0x00;
+	v24 = (byte) v20;
+	*v19.u0 = v24;
 }
 
 // 0011BA32: void fn0011BA32(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011BA32(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v18.u3 = g_t140030.u3;
-	loc18 = v18;
-	v18 = arg1;
-	v19.u0 = ~0x10;
-	v20 = v18 > v19;
-	loc10 = v20;
-	v18 = loc10;
-	if (v18)
+	v19.u3 = g_t140030.u3;
+	loc18 = v19;
+	v19 = arg1;
+	v20.u0 = ~0x10;
+	v21 = v19 > v20;
+	loc10 = v21;
+	v19 = loc10;
+	if (v19)
 	{
-		v18 = arg0;
-		fn0011B8A5(v18);
+		v19 = arg0;
+		fn0011B8A5(v19);
 	}
-	v18 = arg1;
-	v19.u0 = 11;
-	v20 = v18 < v19;
-	loc11 = v20;
-	v18 = loc11;
-	if (v18)
+	v19 = arg1;
+	v20.u0 = 11;
+	v21 = v19 < v20;
+	loc11 = v21;
+	v19 = loc11;
+	if (v19)
 	{
-		v18 = arg1;
-		v19.u0 = 0xFF;
-		v18 &= v19;
-		loc6 = v18;
-		v18 = arg0;
-		v19.u0 = 11;
-		v18 += v19;
-		loc7 = v18;
-		v18 = loc7;
-		v19 = loc6;
-		v21 = (byte) v19;
-		*v18.u3 = (word32) v21;
-		v18 = arg1;
-		v19.u0 = 0x00;
-		v20 = v18 == v19;
-		loc8 = v20;
-		v18 = loc8;
-		if (v18)
+		v19 = arg1;
+		v20.u0 = 0xFF;
+		v19 &= v20;
+		loc6 = v19;
+		v19 = arg0;
+		v20.u0 = 11;
+		v19 += v20;
+		loc7 = v19;
+		v19 = loc7;
+		v20 = loc6;
+		v22 = (byte) v20;
+		*v19.u3 = (word32) v22;
+		v19 = arg1;
+		v20.u0 = 0x00;
+		v21 = v19 == v20;
+		loc8 = v21;
+		v19 = loc8;
+		if (v19)
 		{
-			v18 = arg0;
-			loc4 = v18;
+			v19 = arg0;
+			loc4 = v19;
 		}
 		else
 		{
-			v18 = arg0;
-			loc3 = v18;
-			v18.u0 = 0x06;
-			loc17 = v18;
+			v19 = arg0;
+			loc3 = v19;
+			v19.u0 = 0x06;
+			loc17 = v19;
 		}
 	}
 	else
 	{
-		v18 = arg1;
-		v19.u0 = 0x10;
-		v18 += v19;
-		loc12 = v18;
-		v18 = loc12;
-		v19.u0 = ~0x0F;
-		v18 &= v19;
-		loc13 = v18;
-		v18 = loc13;
-		v18 = fn0011B67B(v18);
-		loc14 = v18;
-		v18 = arg0;
-		v19 = loc14;
-		*v18.u0 = v19;
-		v18 = loc13;
-		v19.u0 = 0x80000000;
-		v18 |= v19;
-		loc15 = v18;
-		v18 = arg0;
-		v19.u0 = 0x08;
-		v18 += v19;
-		loc16 = v18;
-		v18 = loc16;
-		v19 = loc15;
-		*v18.u0 = v19;
-		v18 = arg0;
-		v19.u0 = 0x04;
-		v18 += v19;
-		loc5 = v18;
-		v18 = loc5;
 		v19 = arg1;
-		*v18.u0 = v19;
-		v18 = loc14;
-		loc3 = v18;
-		v18.u0 = 0x06;
-		loc17 = v18;
+		v20.u0 = 0x10;
+		v19 += v20;
+		loc12 = v19;
+		v19 = loc12;
+		v20.u0 = ~0x0F;
+		v19 &= v20;
+		loc13 = v19;
+		v19 = loc13;
+		v19 = fn0011B67B(v19);
+		loc14 = v19;
+		v19 = arg0;
+		v20 = loc14;
+		*v19.u0 = v20;
+		v19 = loc13;
+		v20.u0 = 0x80000000;
+		v19 |= v20;
+		loc15 = v19;
+		v19 = arg0;
+		v20.u0 = 0x08;
+		v19 += v20;
+		loc16 = v19;
+		v19 = loc16;
+		v20 = loc15;
+		*v19.u0 = v20;
+		v19 = arg0;
+		v20.u0 = 0x04;
+		v19 += v20;
+		loc5 = v19;
+		v19 = loc5;
+		v20 = arg1;
+		*v19.u0 = v20;
+		v19 = loc14;
+		loc3 = v19;
+		v19.u0 = 0x06;
+		loc17 = v19;
 	}
-	v18 = loc17;
-	v19.u0 = 0x06;
-	v20 = v18 == v19;
-	if (v20)
+	v19 = loc17;
+	v20.u0 = 0x06;
+	v21 = v19 == v20;
+	if (v21)
 	{
-		v18 = loc3;
-		v19 = arg2;
-		v22 = arg1;
-		v18 = _memset(v18, v19, v22);
-		v18 = loc3;
-		loc4 = v18;
+		v19 = loc3;
+		v20 = arg2;
+		v23 = arg1;
+		v19 = _memset(v19, v20, v23);
+		v19 = loc3;
+		loc4 = v19;
 	}
-	v18 = loc4;
-	v19 = arg1;
-	v18 += v19;
-	loc9 = v18;
-	v18 = loc9;
-	v19.u0 = 0x00;
-	v23 = (byte) v19;
-	*v18.u0 = v23;
+	v19 = loc4;
+	v20 = arg1;
+	v19 += v20;
+	loc9 = v19;
+	v19 = loc9;
+	v20.u0 = 0x00;
+	v24 = (byte) v20;
+	*v19.u0 = v24;
 }
 
 // 0011BAF7: void fn0011BAF7(Stack Eq_n arg0)
 void fn0011BAF7(Eq_n arg0)
 {
-	v8.u3 = g_t140030.u3;
-	loc6 = v8;
-	v8 = arg0;
-	v9.u0 = 11;
-	v8 += v9;
-	loc1 = v8;
-	v8 = loc1;
-	v10.u3 = *v8.u3;
-	v8.u3 = (word32) v10;
-	loc2 = v8;
-	v8 = loc2;
-	v9.u0 = 0x18;
-	v8 <<= v9;
-	v9.u0 = 0x18;
-	v8 >>= v9;
-	v9.u0 = 0x00;
-	v11 = v8 < v9;
-	loc3 = v11;
-	v8 = loc3;
-	if (v8)
+	v9.u3 = g_t140030.u3;
+	loc6 = v9;
+	v9 = arg0;
+	v10.u0 = 11;
+	v9 += v10;
+	loc1 = v9;
+	v9 = loc1;
+	v11.u3 = *v9.u3;
+	v9.u3 = (word32) v11;
+	loc2 = v9;
+	v9 = loc2;
+	v10.u0 = 0x18;
+	v9 <<= v10;
+	v10.u0 = 0x18;
+	v9 >>= v10;
+	v10.u0 = 0x00;
+	v12 = v9 < v10;
+	loc3 = v12;
+	v9 = loc3;
+	if (v9)
 	{
-		v8 = arg0;
-		v8.u3 = *v8.u3;
-		loc4 = v8;
-		v8 = loc4;
-		fn0011B709(v8);
+		v9 = arg0;
+		v9.u3 = *v9.u3;
+		loc4 = v9;
+		v9 = loc4;
+		fn0011B709(v9);
 	}
 }
 
 // 0011BB2C: Stack Eq_n fn0011BB2C(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011BB2C(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v26.u3 = g_t140030.u3;
-	loc26 = v26;
-	v26 = arg0;
-	v27.u0 = 11;
-	v26 += v27;
-	loc17 = v26;
-	v26 = loc17;
-	v28.u3 = *v26.u3;
-	v26.u3 = (word32) v28;
-	loc18 = v26;
-	v26 = loc18;
-	v27.u0 = 0x18;
-	v26 <<= v27;
-	v27.u0 = 0x18;
-	v26 >>= v27;
-	v27.u0 = 0x00;
-	v29 = v26 < v27;
-	loc19 = v29;
-	v26 = loc19;
-	if (v26)
-	{
-		v26 = arg0;
-		v27.u0 = 0x08;
-		v26 += v27;
-		loc20 = v26;
-		v26 = loc20;
-		v26.u3 = *v26.u3;
-		loc21 = v26;
-		v26 = loc21;
-		v27.u0 = 0x7FFFFFFF;
-		v26 &= v27;
-		loc22 = v26;
-		v26 = loc22;
-		v27.u0 = ~0x00;
-		v26 += v27;
-		loc24 = v26;
-		v26 = loc24;
-		loc3 = v26;
-	}
-	else
-	{
-		v26.u0 = 0x0A;
-		loc3 = v26;
-	}
-	v26 = loc3;
-	v27 = arg2;
-	v29 = v26 < v27;
-	loc23 = v29;
-	v26 = loc23;
-	if (v26)
-	{
-		v26 = loc19;
-		if (v26)
-		{
-			v26 = arg0;
-			v27.u0 = 0x04;
-			v26 += v27;
-			loc12 = v26;
-			v26 = loc12;
-			v26 = *v26.u0;
-			loc13 = v26;
-			v26 = loc13;
-			loc16 = v26;
-		}
-		else
-		{
-			v26 = loc18;
-			v27.u0 = 0xFF;
-			v26 &= v27;
-			loc14 = v26;
-			v26 = loc14;
-			loc16 = v26;
-		}
-		v26 = arg2;
-		v27 = loc3;
-		v26 -= v27;
-		loc15 = v26;
-		v26 = arg0;
-		v27 = loc3;
-		v30 = loc15;
-		v31 = loc16;
-		v32.u0 = 0x00;
-		v33 = loc16;
-		v34 = arg2;
-		v35 = arg1;
-		fn0011BC43(v26, v27, v30, v31, v32, v33, v34, v35);
-	}
-	else
-	{
-		v26 = loc19;
-		if (v26)
-		{
-			v26 = arg0;
-			v26 = *v26.u0;
-			loc4 = v26;
-			v26 = loc4;
-			loc6 = v26;
-		}
-		else
-		{
-			v26 = arg0;
-			loc6 = v26;
-		}
-		v26 = arg2;
-		v27.u0 = 0x00;
-		v29 = v26 == v27;
-		loc5 = v29;
-		v26 = loc5;
-		v29 = v26 == 0x00;
-		if (v29)
-		{
-			v26 = loc6;
-			v27 = arg1;
-			v30 = arg2;
-			v26 = _memmove(v26, v27, v30);
-		}
-		v26 = loc6;
-		v27 = arg2;
-		v26 += v27;
-		loc7 = v26;
-		v26 = loc7;
-		v27.u0 = 0x00;
-		v36 = (byte) v27;
-		*v26.u0 = v36;
-		v26 = loc17;
-		v37 = *v26.u0;
-		v26.u3 = (word32) v37;
-		loc8 = v26;
-		v26 = loc8;
-		v27.u0 = 0x18;
-		v26 <<= v27;
-		v27.u0 = 0x18;
-		v26 >>= v27;
-		v27.u0 = 0x00;
-		v29 = v26 < v27;
-		loc9 = v29;
-		v26 = loc9;
-		if (v26)
-		{
-			v26 = arg0;
-			v27.u0 = 0x04;
-			v26 += v27;
-			loc10 = v26;
-			v26 = loc10;
-			v27 = arg2;
-			*v26.u3 = (word32) v27;
-		}
-		else
-		{
-			v26 = arg2;
-			v27.u0 = 0xFF;
-			v26 &= v27;
-			loc11 = v26;
-			v26 = loc17;
-			v27 = loc11;
-			v38 = (byte) v27;
-			v26.u4->t0000.u0 = (bool) v38;
-		}
-	}
-	v26 = arg0;
-	return v26;
-}
-
-// 0011BC43: void fn0011BC43(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
-void fn0011BC43(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
-{
-	v38.u3 = g_t140030.u3;
-	loc43 = v38;
-	v38.u0 = ~0x11;
-	v39 = arg1;
-	v38 -= v39;
-	loc39 = v38;
-	v38 = loc39;
-	v39 = arg2;
-	v40 = v38 < v39;
-	loc40 = v40;
-	v38 = loc40;
-	if (v38)
-	{
-		v38 = arg0;
-		fn0011B8A5(v38);
-	}
-	v38 = arg0;
-	v39.u0 = 11;
-	v38 += v39;
-	loc9 = v38;
-	v38 = loc9;
-	v41 = *v38.u0;
-	v38.u3 = (word32) v41;
-	loc10 = v38;
-	v38 = loc10;
-	v39.u0 = 0x18;
-	v38 <<= v39;
-	v39.u0 = 0x18;
-	v38 >>= v39;
-	v39.u0 = 0x00;
-	v40 = v38 < v39;
-	loc11 = v40;
-	v38 = loc11;
-	if (v38)
-	{
-		v38 = arg0;
-		v38.u3 = *v38.u3;
-		loc12 = v38;
-		v38 = loc12;
-		loc23 = v38;
-	}
-	else
-	{
-		v38 = arg0;
-		loc23 = v38;
-	}
-	v38 = arg1;
-	v39.u0 = 0x7FFFFFE7;
-	v40 = v38 < v39;
-	loc13 = v40;
-	v38 = loc13;
-	if (v38)
-	{
-		v38 = arg2;
-		v39 = arg1;
-		v38 += v39;
-		loc14 = v38;
-		v38 = arg1;
-		v39.u0 = 0x01;
-		v38 <<= v39;
-		loc15 = v38;
-		v38 = loc14;
-		v39 = loc15;
-		v40 = v38 < v39;
-		loc16 = v40;
-		v38 = loc16;
-		if (v38)
-			v38 = loc15;
-		else
-			v38 = loc14;
-		loc8 = v38;
-		v38 = loc8;
-		v39.u0 = 11;
-		v40 = v38 < v39;
-		loc17 = v40;
-		v38 = loc8;
-		v39.u0 = 0x10;
-		v38 += v39;
-		loc18 = v38;
-		v38 = loc18;
-		v39.u0 = ~0x0F;
-		v38 &= v39;
-		loc19 = v38;
-		v38 = loc17;
-		if (v38)
-			v38.u0 = 11;
-		else
-			v38 = loc19;
-		loc41 = v38;
-		v38 = loc41;
-		loc20 = v38;
-	}
-	else
-	{
-		v38.u0 = ~0x10;
-		loc20 = v38;
-	}
-	v38 = loc20;
-	v38 = fn0011B67B(v38);
-	loc21 = v38;
-	v38 = arg4;
-	v39.u0 = 0x00;
-	v40 = v38 == v39;
-	loc22 = v40;
-	v38 = loc22;
-	v40 = v38 == 0x00;
-	if (v40)
-	{
-		v38 = loc21;
-		v39 = loc23;
-		v42 = arg4;
-		v38 = _memcpy(v38, v39, v42);
-	}
-	v38 = arg6;
-	v39.u0 = 0x00;
-	v40 = v38 == v39;
-	loc24 = v40;
-	v38 = loc24;
-	v40 = v38 == 0x00;
-	if (v40)
-	{
-		v38 = loc21;
-		v39 = arg4;
-		v38 += v39;
-		loc25 = v38;
-		v38 = loc25;
-		v39 = arg7;
-		v42 = arg6;
-		v38 = _memcpy(v38, v39, v42);
-	}
-	v38 = arg3;
-	v39 = arg5;
-	v38 -= v39;
-	loc26 = v38;
-	v38 = loc26;
-	v39 = arg4;
-	v38 -= v39;
-	loc27 = v38;
-	v38 = loc27;
-	v39.u0 = 0x00;
-	v40 = v38 == v39;
-	loc28 = v40;
-	v38 = loc28;
-	v40 = v38 == 0x00;
-	if (v40)
-	{
-		v38 = loc21;
-		v39 = arg4;
-		v38 += v39;
-		loc29 = v38;
-		v38 = loc29;
-		v39 = arg6;
-		v38 += v39;
-		loc30 = v38;
-		v38 = loc23;
-		v39 = arg4;
-		v38 += v39;
-		loc31 = v38;
-		v38 = loc31;
-		v39 = arg5;
-		v38 += v39;
-		loc32 = v38;
-		v38 = loc30;
-		v39 = loc32;
-		v42 = loc27;
-		v38 = _memcpy(v38, v39, v42);
-	}
-	v38 = arg1;
-	v39.u0 = 0x0A;
-	v40 = v38 == v39;
-	loc33 = v40;
-	v38 = loc33;
-	v40 = v38 == 0x00;
-	if (v40)
-	{
-		v38 = loc23;
-		fn0011B709(v38);
-	}
-	v38 = arg0;
-	v39 = loc21;
-	*v38.u0 = v39;
-	v38 = loc20;
-	v39.u0 = 0x80000000;
-	v38 |= v39;
-	loc34 = v38;
-	v38 = arg0;
-	v39.u0 = 0x08;
-	v38 += v39;
-	loc35 = v38;
-	v38 = loc35;
-	v39 = loc34;
-	*v38.u0 = v39;
-	v38 = loc26;
-	v39 = arg6;
-	v38 += v39;
-	loc36 = v38;
-	v38 = arg0;
-	v39.u0 = 0x04;
-	v38 += v39;
-	loc37 = v38;
-	v38 = loc37;
-	v39 = loc36;
-	*v38.u0 = v39;
-	v38 = loc21;
-	v39 = loc36;
-	v38 += v39;
-	loc38 = v38;
-	v38 = loc38;
-	v39.u0 = 0x00;
-	v43 = (byte) v39;
-	*v38.u0 = v43;
-}
-
-// 0011BDC1: void fn0011BDC1(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011BDC1(Eq_n arg0, Eq_n arg1)
-{
-	v58.u3 = g_t140030.u3;
-	loc57 = v58;
-	v58 = arg1;
-	v59.u0 = ~0x10;
-	v60 = v58 > v59;
-	loc26 = v60;
-	v58 = loc26;
-	if (v58)
-	{
-		v58 = arg0;
-		fn0011B8A5(v58);
-	}
-	v58 = arg0;
-	v59.u0 = 11;
-	v58 += v59;
-	loc37 = v58;
-	v58 = loc37;
-	v61.u3 = *v58.u3;
-	v58.u3 = (word32) v61;
-	loc48 = v58;
-	v58 = loc48;
-	v59.u0 = 0x18;
-	v58 <<= v59;
-	v59.u0 = 0x18;
-	v58 >>= v59;
-	v59.u0 = 0x00;
-	v60 = v58 < v59;
-	loc49 = v60;
-	v58 = loc49;
-	if (v58)
-	{
-		v58 = arg0;
-		v59.u0 = 0x08;
-		v58 += v59;
-		loc50 = v58;
-		v58 = loc50;
-		v58.u3 = *v58.u3;
-		loc51 = v58;
-		v58 = loc51;
-		v59.u0 = 0x7FFFFFFF;
-		v58 &= v59;
-		loc52 = v58;
-		v58 = loc52;
-		v59.u0 = ~0x00;
-		v58 += v59;
-		loc54 = v58;
-		v58 = arg0;
-		v59.u0 = 0x04;
-		v58 += v59;
-		loc53 = v58;
-		v58 = loc53;
-		v58.u3 = *v58.u3;
-		loc16 = v58;
-		v58 = loc16;
-		loc19 = v58;
-		v58 = loc54;
-		loc24 = v58;
-	}
-	else
-	{
-		v58 = loc48;
-		v59.u0 = 0xFF;
-		v58 &= v59;
-		loc17 = v58;
-		v58 = loc17;
-		loc19 = v58;
-		v58.u0 = 0x0A;
-		loc24 = v58;
-	}
-	v58 = loc19;
-	v59 = arg1;
-	v60 = v58 > v59;
-	loc18 = v60;
-	v58 = loc18;
-	if (v58)
-		v58 = loc19;
-	else
-		v58 = arg1;
-	loc15 = v58;
-	v58 = loc15;
-	v59.u0 = 11;
-	v60 = v58 < v59;
-	loc20 = v60;
-	v58 = loc15;
-	v59.u0 = 0x10;
-	v58 += v59;
-	loc21 = v58;
-	v58 = loc21;
-	v59.u0 = ~0x0F;
-	v58 &= v59;
-	loc22 = v58;
-	v58 = loc22;
-	v59.u0 = ~0x00;
-	v58 += v59;
-	loc55 = v58;
-	v58 = loc20;
-	if (v58)
-		v58.u0 = 0x0A;
-	else
-		v58 = loc55;
-	loc14 = v58;
-	v58 = loc14;
-	v59 = loc24;
-	v60 = v58 == v59;
-	loc23 = v60;
-	v58 = loc23;
-	v60 = v58 == 0x00;
-	if (!v60)
-		return;
-	v58 = loc20;
-	if (v58)
-	{
-		v58 = arg0;
-		v58 = *v58.u0;
-		loc35 = v58;
-		v58 = loc49;
-		if (v58)
-		{
-			v58 = loc35;
-			loc4 = v58;
-			v58.u0 = 0x00;
-			loc7 = v58;
-			v58 = arg0;
-			loc12 = v58;
-			v58.u0 = 0x10;
-			loc56 = v58;
-		}
-		else
-		{
-			v58 = loc35;
-			loc5 = v58;
-			v58.u0 = 0x00;
-			loc8 = v58;
-			v58.u0 = 0x01;
-			loc10 = v58;
-			v58 = arg0;
-			loc13 = v58;
-			v58.u0 = 0x11;
-			loc56 = v58;
-		}
-	}
-	else
-	{
-		v58 = loc14;
-		v59 = loc24;
-		v60 = v58 > v59;
-		loc25 = v60;
-		v58 = loc14;
-		v59.u0 = 0x01;
-		v58 += v59;
-		loc27 = v58;
-		v58 = loc25;
-		if (v58)
-		{
-			v58 = loc27;
-			v58 = fn0011B67B(v58);
-			loc28 = v58;
-			v58 = loc28;
-			loc2 = v58;
-		}
-		else
-		{
-			v58.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v58;
-			v58.u0 = 0x01EB;
-			v59 = loc27;
-			v58 = invoke_ii(v58, v59);
-			loc29 = v58;
-			v58.u3 = g_t140048.u3;
-			loc30 = v58;
-			v58.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v58;
-			v58 = loc30;
-			v59.u0 = 0x01;
-			v58 &= v59;
-			loc31 = v58;
-			v58 = loc31;
-			if (v58)
-			{
-				v58.u0 = 0x00;
-				v58 = ___cxa_find_matching_catch_n(v58);
-				loc32 = v58;
-				v58.u3 = g_t140094.u3;
-				loc33 = v58;
-				v58 = loc32;
-				v58 = ___cxa_begin_catch(v58);
-				___cxa_end_catch();
-				return;
-			}
-			v58 = loc29;
-			loc2 = v58;
-		}
-		v58 = loc49;
-		if (v58)
-		{
-			v58 = arg0;
-			v58.u3 = *v58.u3;
-			loc34 = v58;
-			v58 = loc34;
-			loc4 = v58;
-			v58.u0 = 0x01;
-			loc7 = v58;
-			v58 = loc2;
-			loc12 = v58;
-			v58.u0 = 0x10;
-			loc56 = v58;
-		}
-		else
-		{
-			v58 = arg0;
-			loc5 = v58;
-			v58.u0 = 0x01;
-			loc8 = v58;
-			v58.u0 = 0x00;
-			loc10 = v58;
-			v58 = loc2;
-			loc13 = v58;
-			v58.u0 = 0x11;
-			loc56 = v58;
-		}
-	}
-	v58 = loc56;
-	v59.u0 = 0x10;
-	v60 = v58 == v59;
-	if (v60)
-	{
-		v58 = arg0;
-		v59.u0 = 0x04;
-		v58 += v59;
-		loc36 = v58;
-		v58 = loc36;
-		v58 = *v58.u0;
-		loc38 = v58;
-		v58 = loc4;
-		loc3 = v58;
-		v58 = loc7;
-		loc6 = v58;
-		v58.u0 = 0x01;
-		loc9 = v58;
-		v58 = loc12;
-		loc11 = v58;
-		v58 = loc38;
-		loc41 = v58;
-	}
-	else
-	{
-		v58 = loc56;
-		v59.u0 = 0x11;
-		v60 = v58 == v59;
-		if (v60)
-		{
-			v58 = loc48;
-			v59.u0 = 0xFF;
-			v58 &= v59;
-			loc39 = v58;
-			v58 = loc5;
-			loc3 = v58;
-			v58 = loc8;
-			loc6 = v58;
-			v58 = loc10;
-			loc9 = v58;
-			v58 = loc13;
-			loc11 = v58;
-			v58 = loc39;
-			loc41 = v58;
-		}
-	}
-	v58 = loc41;
-	v59.u0 = 0x01;
-	v58 += v59;
-	loc40 = v58;
-	v58 = loc40;
-	v59.u0 = 0x00;
-	v60 = v58 == v59;
-	loc42 = v60;
-	v58 = loc42;
-	v60 = v58 == 0x00;
-	if (v60)
-	{
-		v58 = loc11;
-		v59 = loc3;
-		v62 = loc40;
-		v58 = _memcpy(v58, v59, v62);
-	}
-	v58 = loc9;
-	if (v58)
-	{
-		v58 = loc3;
-		fn0011B709(v58);
-	}
-	v58 = loc6;
-	if (v58)
-	{
-		v58 = loc14;
-		v59.u0 = 0x01;
-		v58 += v59;
-		loc43 = v58;
-		v58 = loc43;
-		v59.u0 = 0x80000000;
-		v58 |= v59;
-		loc44 = v58;
-		v58 = arg0;
-		v59.u0 = 0x08;
-		v58 += v59;
-		loc45 = v58;
-		v58 = loc45;
-		v59 = loc44;
-		*v58.u0 = v59;
-		v58 = arg0;
-		v59.u0 = 0x04;
-		v58 += v59;
-		loc46 = v58;
-		v58 = loc46;
-		v59 = loc19;
-		*v58.u0 = v59;
-		v58 = arg0;
-		v59 = loc11;
-		*v58.u0 = v59;
-	}
-	else
-	{
-		v58 = loc19;
-		v59.u0 = 0xFF;
-		v58 &= v59;
-		loc47 = v58;
-		v58 = loc37;
-		v59 = loc47;
-		v63 = (byte) v59;
-		*v58.u0 = v63;
-	}
-}
-
-// 0011C019: Stack Eq_n fn0011C019(Stack Eq_n arg0, Stack Eq_n arg1)
-Eq_n fn0011C019(Eq_n arg0, Eq_n arg1)
-{
-	v6.u3 = g_t140030.u3;
-	loc5 = v6;
-	v6 = arg1;
-	v6 = fn000DAF30(v6);
-	loc2 = v6;
-	v6 = arg0;
-	v7 = arg1;
-	v8 = loc2;
-	v6 = fn0011BB2C(v6, v7, v8);
-	loc3 = v6;
-	v6 = loc3;
-	return v6;
-}
-
-// 0011C036: void fn0011C036(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-void fn0011C036(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v18.u3 = g_t140030.u3;
-	loc18 = v18;
-	v18 = arg0;
-	v19.u0 = 11;
-	v18 += v19;
-	loc10 = v18;
-	v18 = loc10;
-	v20.u3 = *v18.u3;
-	v18.u3 = (word32) v20;
-	loc11 = v18;
-	v18 = loc11;
-	v19.u0 = 0x18;
-	v18 <<= v19;
-	v19.u0 = 0x18;
-	v18 >>= v19;
-	v19.u0 = 0x00;
-	v21 = v18 < v19;
-	loc12 = v21;
-	v18 = loc12;
-	if (v18)
-	{
-		v18 = arg0;
-		v19.u0 = 0x04;
-		v18 += v19;
-		loc13 = v18;
-		v18 = loc13;
-		v18.u3 = *v18.u3;
-		loc14 = v18;
-		v18 = loc14;
-		loc3 = v18;
-	}
-	else
-	{
-		v18 = loc11;
-		v19.u0 = 0xFF;
-		v18 &= v19;
-		loc15 = v18;
-		v18 = loc15;
-		loc3 = v18;
-	}
-	v18 = loc3;
-	v19 = arg1;
-	v21 = v18 < v19;
-	loc16 = v21;
-	v18 = loc16;
-	if (v18)
-	{
-		v18 = arg1;
-		v19 = loc3;
-		v18 -= v19;
-		loc4 = v18;
-		v18 = arg0;
-		v19 = loc4;
-		v22 = arg2;
-		v18 = fn0011C0EA(v18, v19, v22);
-	}
-	else
-	{
-		v18 = loc12;
-		if (v18)
-		{
-			v18 = arg0;
-			v18.u3 = *v18.u3;
-			loc5 = v18;
-			v18 = loc5;
-			v19 = arg1;
-			v18 += v19;
-			loc6 = v18;
-			v18 = loc6;
-			v19.u0 = 0x00;
-			v23 = (byte) v19;
-			v18.u4->t0000.u0 = (bool) v23;
-			v18 = arg0;
-			v19.u0 = 0x04;
-			v18 += v19;
-			loc7 = v18;
-			v18 = loc7;
-			v19 = arg1;
-			*v18.u3 = (word32) v19;
-		}
-		else
-		{
-			v18 = arg0;
-			v19 = arg1;
-			v18 += v19;
-			loc8 = v18;
-			v18 = loc8;
-			v19.u0 = 0x00;
-			v24 = (byte) v19;
-			v18.u4->t0000.u0 = (bool) v24;
-			v18 = arg1;
-			v19.u0 = 0xFF;
-			v18 &= v19;
-			loc9 = v18;
-			v18 = loc10;
-			v19 = loc9;
-			v25 = (byte) v19;
-			v18.u4->t0000.u0 = (bool) v25;
-		}
-	}
-}
-
-// 0011C0EA: Stack Eq_n fn0011C0EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn0011C0EA(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v33.u3 = g_t140030.u3;
-	loc33 = v33;
-	v33 = arg1;
-	v34.u0 = 0x00;
-	v35 = v33 == v34;
-	loc24 = v35;
-	v33 = loc24;
-	v35 = v33 == 0x00;
-	if (v35)
-	{
-		v33 = arg0;
-		v34.u0 = 11;
-		v33 += v34;
-		loc25 = v33;
-		v33 = loc25;
-		v36.u3 = *v33.u3;
-		v33.u3 = (word32) v36;
-		loc26 = v33;
-		v33 = loc26;
-		v34.u0 = 0x18;
-		v33 <<= v34;
-		v34.u0 = 0x18;
-		v33 >>= v34;
-		v34.u0 = 0x00;
-		v35 = v33 < v34;
-		loc27 = v35;
-		v33 = loc27;
-		if (v33)
-		{
-			v33 = arg0;
-			v34.u0 = 0x08;
-			v33 += v34;
-			loc28 = v33;
-			v33 = loc28;
-			v33.u3 = *v33.u3;
-			loc29 = v33;
-			v33 = loc29;
-			v34.u0 = 0x7FFFFFFF;
-			v33 &= v34;
-			loc30 = v33;
-			v33 = loc30;
-			v34.u0 = ~0x00;
-			v33 += v34;
-			loc31 = v33;
-			v33 = arg0;
-			v34.u0 = 0x04;
-			v33 += v34;
-			loc4 = v33;
-			v33 = loc4;
-			v33.u3 = *v33.u3;
-			loc5 = v33;
-			v33 = loc31;
-			loc8 = v33;
-			v33 = loc5;
-			loc9 = v33;
-		}
-		else
-		{
-			v33 = loc26;
-			v34.u0 = 0xFF;
-			v33 &= v34;
-			loc6 = v33;
-			v33.u0 = 0x0A;
-			loc8 = v33;
-			v33 = loc6;
-			loc9 = v33;
-		}
-		v33 = loc8;
-		v34 = loc9;
-		v33 -= v34;
-		loc7 = v33;
-		v33 = loc7;
-		v34 = arg1;
-		v35 = v33 < v34;
-		loc10 = v35;
-		v33 = loc10;
-		if (v33)
-		{
-			v33 = arg1;
-			v34 = loc8;
-			v33 -= v34;
-			loc11 = v33;
-			v33 = loc11;
-			v34 = loc9;
-			v33 += v34;
-			loc12 = v33;
-			v33 = arg0;
-			v34 = loc8;
-			v37 = loc12;
-			v38 = loc9;
-			v39 = loc9;
-			v40.u0 = 0x00;
-			v41.u0 = 0x00;
-			fn0011C22A(v33, v34, v37, v38, v39, v40, v41);
-			v33 = loc25;
-			v42 = *v33.u0;
-			v33.u3 = (word32) v42;
-			loc3 = v33;
-			v33 = loc3;
-			loc14 = v33;
-		}
-		else
-		{
-			v33 = loc26;
-			loc14 = v33;
-		}
-		v33 = loc14;
-		v34.u0 = 0x18;
-		v33 <<= v34;
-		v34.u0 = 0x18;
-		v33 >>= v34;
-		v34.u0 = 0x00;
-		v35 = v33 < v34;
-		loc13 = v35;
-		v33 = loc13;
-		if (v33)
-		{
-			v33 = arg0;
-			v33.u3 = *v33.u3;
-			loc15 = v33;
-			v33 = loc15;
-			loc17 = v33;
-		}
-		else
-		{
-			v33 = arg0;
-			loc17 = v33;
-		}
-		v33 = loc17;
-		v34 = loc9;
-		v33 += v34;
-		loc16 = v33;
-		v33 = loc16;
-		v34 = arg2;
-		v37 = arg1;
-		v33 = _memset(v33, v34, v37);
-		v33 = loc9;
-		v34 = arg1;
-		v33 += v34;
-		loc18 = v33;
-		v33 = loc25;
-		v43.u1 = v33.u4->t0000.u1;
-		v33.u3 = (word32) v43;
-		loc19 = v33;
-		v33 = loc19;
-		v34.u0 = 0x18;
-		v33 <<= v34;
-		v34.u0 = 0x18;
-		v33 >>= v34;
-		v34.u0 = 0x00;
-		v35 = v33 < v34;
-		loc20 = v35;
-		v33 = loc20;
-		if (v33)
-		{
-			v33 = arg0;
-			v34.u0 = 0x04;
-			v33 += v34;
-			loc21 = v33;
-			v33 = loc21;
-			v34 = loc18;
-			*v33.u3 = (word32) v34;
-		}
-		else
-		{
-			v33 = loc18;
-			v34.u0 = 0xFF;
-			v33 &= v34;
-			loc22 = v33;
-			v33 = loc25;
-			v34 = loc22;
-			v44 = (byte) v34;
-			v33.u4->t0000.u0 = (bool) v44;
-		}
-		v33 = loc17;
-		v34 = loc18;
-		v33 += v34;
-		loc23 = v33;
-		v33 = loc23;
-		v34.u0 = 0x00;
-		v45 = (byte) v34;
-		v33.u4->t0000.u0 = (bool) v45;
-	}
-	v33 = arg0;
-	return v33;
-}
-
-// 0011C22A: void fn0011C22A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
-void fn0011C22A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
-{
-	v33.u3 = g_t140030.u3;
-	loc37 = v33;
-	v33.u0 = ~0x10;
-	v34 = arg1;
-	v33 -= v34;
-	loc32 = v33;
-	v33 = loc32;
-	v34 = arg2;
-	v35 = v33 < v34;
-	loc33 = v35;
-	v33 = loc33;
-	if (v33)
-	{
-		v33 = arg0;
-		fn0011B8A5(v33);
-	}
-	v33 = arg0;
-	v34.u0 = 11;
-	v33 += v34;
-	loc34 = v33;
-	v33 = loc34;
-	v36 = *v33.u0;
-	v33.u3 = (word32) v36;
-	loc8 = v33;
-	v33 = loc8;
-	v34.u0 = 0x18;
-	v33 <<= v34;
-	v34.u0 = 0x18;
-	v33 >>= v34;
-	v34.u0 = 0x00;
-	v35 = v33 < v34;
-	loc9 = v35;
-	v33 = loc9;
-	if (v33)
-	{
-		v33 = arg0;
-		v33.u3 = *v33.u3;
-		loc10 = v33;
-		v33 = loc10;
-		loc21 = v33;
-	}
-	else
-	{
-		v33 = arg0;
-		loc21 = v33;
-	}
-	v33 = arg1;
-	v34.u0 = 0x7FFFFFE7;
-	v35 = v33 < v34;
-	loc11 = v35;
-	v33 = loc11;
-	if (v33)
-	{
-		v33 = arg2;
-		v34 = arg1;
-		v33 += v34;
-		loc12 = v33;
-		v33 = arg1;
-		v34.u0 = 0x01;
-		v33 <<= v34;
-		loc13 = v33;
-		v33 = loc12;
-		v34 = loc13;
-		v35 = v33 < v34;
-		loc14 = v35;
-		v33 = loc14;
-		if (v33)
-			v33 = loc13;
-		else
-			v33 = loc12;
-		loc7 = v33;
-		v33 = loc7;
-		v34.u0 = 11;
-		v35 = v33 < v34;
-		loc15 = v35;
-		v33 = loc7;
-		v34.u0 = 0x10;
-		v33 += v34;
-		loc16 = v33;
-		v33 = loc16;
-		v34.u0 = ~0x0F;
-		v33 &= v34;
-		loc17 = v33;
-		v33 = loc15;
-		if (v33)
-			v33.u0 = 11;
-		else
-			v33 = loc17;
-		loc35 = v33;
-		v33 = loc35;
-		loc18 = v33;
-	}
-	else
-	{
-		v33.u0 = ~0x10;
-		loc18 = v33;
-	}
-	v33 = loc18;
-	v33 = fn0011B67B(v33);
-	loc19 = v33;
-	v33 = arg4;
-	v34.u0 = 0x00;
-	v35 = v33 == v34;
-	loc20 = v35;
-	v33 = loc20;
-	v35 = v33 == 0x00;
-	if (v35)
-	{
-		v33 = loc19;
-		v34 = loc21;
-		v37 = arg4;
-		v33 = _memcpy(v33, v34, v37);
-	}
-	v33 = arg3;
-	v34 = arg5;
-	v33 -= v34;
-	loc22 = v33;
-	v33 = loc22;
-	v34 = arg4;
-	v33 -= v34;
-	loc23 = v33;
-	v33 = loc23;
-	v34.u0 = 0x00;
-	v35 = v33 == v34;
-	loc24 = v35;
-	v33 = loc24;
-	v35 = v33 == 0x00;
-	if (v35)
-	{
-		v33 = loc19;
-		v34 = arg4;
-		v33 += v34;
-		loc25 = v33;
-		v33 = loc25;
-		v34 = arg6;
-		v33 += v34;
-		loc26 = v33;
-		v33 = loc21;
-		v34 = arg4;
-		v33 += v34;
-		loc27 = v33;
-		v33 = loc27;
-		v34 = arg5;
-		v33 += v34;
-		loc28 = v33;
-		v33 = loc26;
-		v34 = loc28;
-		v37 = loc23;
-		v33 = _memcpy(v33, v34, v37);
-	}
-	v33 = arg1;
-	v34.u0 = 0x0A;
-	v35 = v33 == v34;
-	loc29 = v35;
-	v33 = loc29;
-	v35 = v33 == 0x00;
-	if (v35)
-	{
-		v33 = loc21;
-		fn0011B709(v33);
-	}
-	v33 = arg0;
-	v34 = loc19;
-	*v33.u0 = v34;
-	v33 = loc18;
-	v34.u0 = 0x80000000;
-	v33 |= v34;
-	loc30 = v33;
-	v33 = arg0;
-	v34.u0 = 0x08;
-	v33 += v34;
-	loc31 = v33;
-	v33 = loc31;
-	v34 = loc30;
-	*v33.u0 = v34;
-}
-
-// 0011C367: Stack Eq_n fn0011C367(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn0011C367(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v30.u3 = g_t140030.u3;
-	loc30 = v30;
-	v30 = arg0;
-	v31.u0 = 11;
-	v30 += v31;
-	loc21 = v30;
-	v30 = loc21;
-	v32.u3 = *v30.u3;
-	v30.u3 = (word32) v32;
-	loc22 = v30;
-	v30 = loc22;
-	v31.u0 = 0x18;
-	v30 <<= v31;
-	v31.u0 = 0x18;
-	v30 >>= v31;
-	v31.u0 = 0x00;
-	v33 = v30 < v31;
-	loc23 = v33;
-	v30 = loc23;
-	if (v30)
-	{
-		v30 = arg0;
-		v31.u0 = 0x08;
-		v30 += v31;
-		loc24 = v30;
-		v30 = loc24;
-		v30.u3 = *v30.u3;
-		loc25 = v30;
-		v30 = loc25;
-		v31.u0 = 0x7FFFFFFF;
-		v30 &= v31;
-		loc26 = v30;
-		v30 = loc26;
-		v31.u0 = ~0x00;
-		v30 += v31;
-		loc28 = v30;
-		v30 = arg0;
-		v31.u0 = 0x04;
-		v30 += v31;
-		loc27 = v30;
-		v30 = loc27;
-		v30.u3 = *v30.u3;
-		loc3 = v30;
-		v30 = loc28;
-		loc6 = v30;
-		v30 = loc3;
-		loc7 = v30;
-	}
-	else
-	{
-		v30 = loc22;
-		v31.u0 = 0xFF;
-		v30 &= v31;
-		loc4 = v30;
-		v30.u0 = 0x0A;
-		loc6 = v30;
-		v30 = loc4;
-		loc7 = v30;
-	}
-	v30 = loc6;
-	v31 = loc7;
-	v30 -= v31;
-	loc5 = v30;
-	v30 = loc5;
-	v31 = arg2;
-	v33 = v30 < v31;
-	loc8 = v33;
-	v30 = loc8;
-	if (v30)
-	{
-		v30 = arg2;
-		v31 = loc6;
-		v30 -= v31;
-		loc19 = v30;
-		v30 = loc19;
-		v31 = loc7;
-		v30 += v31;
-		loc20 = v30;
-		v30 = arg0;
-		v31 = loc6;
-		v34 = loc20;
-		v35 = loc7;
-		v36 = loc7;
-		v37.u0 = 0x00;
-		v38 = arg2;
-		v39 = arg1;
-		fn0011BC43(v30, v31, v34, v35, v36, v37, v38, v39);
-	}
-	else
-	{
-		v30 = arg2;
-		v31.u0 = 0x00;
-		v33 = v30 == v31;
-		loc9 = v33;
-		v30 = loc9;
-		v33 = v30 == 0x00;
-		if (v33)
-		{
-			v30 = loc23;
-			if (v30)
-			{
-				v30 = arg0;
-				v30 = *v30.u0;
-				loc10 = v30;
-				v30 = loc10;
-				loc12 = v30;
-			}
-			else
-			{
-				v30 = arg0;
-				loc12 = v30;
-			}
-			v30 = loc12;
-			v31 = loc7;
-			v30 += v31;
-			loc11 = v30;
-			v30 = loc11;
-			v31 = arg1;
-			v34 = arg2;
-			v30 = _memcpy(v30, v31, v34);
-			v30 = loc7;
-			v31 = arg2;
-			v30 += v31;
-			loc13 = v30;
-			v30 = loc21;
-			v40 = *v30.u0;
-			v30.u3 = (word32) v40;
-			loc14 = v30;
-			v30 = loc14;
-			v31.u0 = 0x18;
-			v30 <<= v31;
-			v31.u0 = 0x18;
-			v30 >>= v31;
-			v31.u0 = 0x00;
-			v33 = v30 < v31;
-			loc15 = v33;
-			v30 = loc15;
-			if (v30)
-			{
-				v30 = arg0;
-				v31.u0 = 0x04;
-				v30 += v31;
-				loc16 = v30;
-				v30 = loc16;
-				v31 = loc13;
-				*v30.u3 = (word32) v31;
-			}
-			else
-			{
-				v30 = loc13;
-				v31.u0 = 0xFF;
-				v30 &= v31;
-				loc17 = v30;
-				v30 = loc21;
-				v31 = loc17;
-				v41 = (byte) v31;
-				v30.u4->t0000.u0 = (bool) v41;
-			}
-			v30 = loc12;
-			v31 = loc13;
-			v30 += v31;
-			loc18 = v30;
-			v30 = loc18;
-			v31.u0 = 0x00;
-			v42 = (byte) v31;
-			v30.u4->t0000.u0 = (bool) v42;
-		}
-	}
-	v30 = arg0;
-	return v30;
-}
-
-// 0011C48D: Stack Eq_n fn0011C48D(Stack Eq_n arg0, Stack Eq_n arg1)
-Eq_n fn0011C48D(Eq_n arg0, Eq_n arg1)
-{
-	v6.u3 = g_t140030.u3;
-	loc5 = v6;
-	v6 = arg1;
-	v6 = fn000DAF30(v6);
-	loc2 = v6;
-	v6 = arg0;
-	v7 = arg1;
-	v8 = loc2;
-	v6 = fn0011C367(v6, v7, v8);
-	loc3 = v6;
-	v6 = loc3;
-	return v6;
-}
-
-// 0011C4AA: void fn0011C4AA(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011C4AA(Eq_n arg0, Eq_n arg1)
-{
 	v27.u3 = g_t140030.u3;
 	loc26 = v27;
 	v27 = arg0;
 	v28.u0 = 11;
 	v27 += v28;
-	loc16 = v27;
-	v27 = loc16;
+	loc17 = v27;
+	v27 = loc17;
 	v29.u3 = *v27.u3;
 	v27.u3 = (word32) v29;
 	loc18 = v27;
@@ -19807,1257 +18406,2658 @@ void fn0011C4AA(Eq_n arg0, Eq_n arg1)
 		v27 = arg0;
 		v28.u0 = 0x08;
 		v27 += v28;
+		loc20 = v27;
+		v27 = loc20;
+		v27.u3 = *v27.u3;
 		loc21 = v27;
 		v27 = loc21;
-		v27.u3 = *v27.u3;
-		loc22 = v27;
-		v27 = loc22;
 		v28.u0 = 0x7FFFFFFF;
 		v27 &= v28;
-		loc23 = v27;
-		v27 = loc23;
+		loc22 = v27;
+		v27 = loc22;
 		v28.u0 = ~0x00;
 		v27 += v28;
 		loc24 = v27;
-		v27 = arg0;
-		v28.u0 = 0x04;
-		v27 += v28;
-		loc6 = v27;
-		v27 = loc6;
-		v27.u3 = *v27.u3;
-		loc7 = v27;
-		v27 = loc7;
-		loc3 = v27;
 		v27 = loc24;
-		loc4 = v27;
+		loc3 = v27;
 	}
 	else
 	{
-		v27 = loc18;
-		v28.u0 = 0xFF;
-		v27 &= v28;
-		loc20 = v27;
-		v27 = loc20;
-		loc3 = v27;
 		v27.u0 = 0x0A;
-		loc4 = v27;
+		loc3 = v27;
 	}
 	v27 = loc3;
-	v28 = loc4;
-	v30 = v27 == v28;
-	loc8 = v30;
-	v27 = loc8;
+	v28 = arg2;
+	v30 = v27 < v28;
+	loc23 = v30;
+	v27 = loc23;
 	if (v27)
 	{
-		v27 = arg0;
-		v28 = loc4;
-		v31.u0 = 0x01;
-		v32 = loc4;
-		v33 = loc4;
-		v34.u0 = 0x00;
-		v35.u0 = 0x00;
-		fn0011C22A(v27, v28, v31, v32, v33, v34, v35);
-		v27 = loc16;
-		v36 = *v27.u0;
-		v27.u3 = (word32) v36;
-		loc9 = v27;
-		v27 = loc9;
-		v28.u0 = 0x18;
-		v27 <<= v28;
-		v28.u0 = 0x18;
-		v27 >>= v28;
-		v28.u0 = ~0x00;
-		v30 = v27 > v28;
-		loc10 = v30;
-		v27 = loc10;
+		v27 = loc19;
 		if (v27)
 		{
-			v27.u0 = 0x07;
-			loc25 = v27;
+			v27 = arg0;
+			v28.u0 = 0x04;
+			v27 += v28;
+			loc12 = v27;
+			v27 = loc12;
+			v27 = *v27.u0;
+			loc13 = v27;
+			v27 = loc13;
+			loc16 = v27;
 		}
 		else
 		{
-			v27.u0 = 0x08;
-			loc25 = v27;
+			v27 = loc18;
+			v28.u0 = 0xFF;
+			v27 &= v28;
+			loc14 = v27;
+			v27 = loc14;
+			loc16 = v27;
 		}
+		v27 = arg2;
+		v28 = loc3;
+		v27 -= v28;
+		loc15 = v27;
+		v27 = arg0;
+		v28 = loc3;
+		v31 = loc15;
+		v32 = loc16;
+		v33.u0 = 0x00;
+		v34 = loc16;
+		v35 = arg2;
+		v36 = arg1;
+		fn0011BC43(v27, v28, v31, v32, v33, v34, v35, v36);
 	}
 	else
 	{
 		v27 = loc19;
 		if (v27)
 		{
-			v27.u0 = 0x08;
-			loc25 = v27;
+			v27 = arg0;
+			v27 = *v27.u0;
+			loc4 = v27;
+			v27 = loc4;
+			loc6 = v27;
 		}
 		else
 		{
-			v27.u0 = 0x07;
-			loc25 = v27;
+			v27 = arg0;
+			loc6 = v27;
 		}
-	}
-	v27 = loc25;
-	v28.u0 = 0x07;
-	v30 = v27 == v28;
-	if (v30)
-	{
-		v27 = loc3;
-		v28.u0 = 0x01;
-		v27 += v28;
-		loc11 = v27;
-		v27 = loc11;
-		v28.u0 = 0xFF;
-		v27 &= v28;
-		loc12 = v27;
-		v27 = loc16;
-		v28 = loc12;
-		v37 = (byte) v28;
-		*v27.u0 = v37;
-		v27 = arg0;
-		loc5 = v27;
-	}
-	else
-	{
-		v27 = loc25;
-		v28.u0 = 0x08;
+		v27 = arg2;
+		v28.u0 = 0x00;
 		v30 = v27 == v28;
+		loc5 = v30;
+		v27 = loc5;
+		v30 = v27 == 0x00;
 		if (v30)
 		{
-			v27 = arg0;
-			v27 = *v27.u0;
-			loc13 = v27;
-			v27 = loc3;
-			v28.u0 = 0x01;
-			v27 += v28;
-			loc14 = v27;
+			v27 = loc6;
+			v28 = arg1;
+			v31 = arg2;
+			v27 = _memmove(v27, v28, v31);
+		}
+		v27 = loc6;
+		v28 = arg2;
+		v27 += v28;
+		loc7 = v27;
+		v27 = loc7;
+		v28.u0 = 0x00;
+		v37 = (byte) v28;
+		*v27.u0 = v37;
+		v27 = loc17;
+		v38 = *v27.u0;
+		v27.u3 = (word32) v38;
+		loc8 = v27;
+		v27 = loc8;
+		v28.u0 = 0x18;
+		v27 <<= v28;
+		v28.u0 = 0x18;
+		v27 >>= v28;
+		v28.u0 = 0x00;
+		v30 = v27 < v28;
+		loc9 = v30;
+		v27 = loc9;
+		if (v27)
+		{
 			v27 = arg0;
 			v28.u0 = 0x04;
 			v27 += v28;
-			loc15 = v27;
-			v27 = loc15;
-			v28 = loc14;
-			*v27.u0 = v28;
-			v27 = loc13;
-			loc5 = v27;
+			loc10 = v27;
+			v27 = loc10;
+			v28 = arg2;
+			*v27.u3 = (word32) v28;
+		}
+		else
+		{
+			v27 = arg2;
+			v28.u0 = 0xFF;
+			v27 &= v28;
+			loc11 = v27;
+			v27 = loc17;
+			v28 = loc11;
+			v39 = (byte) v28;
+			v27.u4->t0000.u0 = (bool) v39;
 		}
 	}
-	v27 = loc5;
+	v27 = arg0;
+	return v27;
+}
+
+// 0011BC43: void fn0011BC43(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
+void fn0011BC43(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
+{
+	v39.u3 = g_t140030.u3;
+	loc43 = v39;
+	v39.u0 = ~0x11;
+	v40 = arg1;
+	v39 -= v40;
+	loc39 = v39;
+	v39 = loc39;
+	v40 = arg2;
+	v41 = v39 < v40;
+	loc40 = v41;
+	v39 = loc40;
+	if (v39)
+	{
+		v39 = arg0;
+		fn0011B8A5(v39);
+	}
+	v39 = arg0;
+	v40.u0 = 11;
+	v39 += v40;
+	loc9 = v39;
+	v39 = loc9;
+	v42 = *v39.u0;
+	v39.u3 = (word32) v42;
+	loc10 = v39;
+	v39 = loc10;
+	v40.u0 = 0x18;
+	v39 <<= v40;
+	v40.u0 = 0x18;
+	v39 >>= v40;
+	v40.u0 = 0x00;
+	v41 = v39 < v40;
+	loc11 = v41;
+	v39 = loc11;
+	if (v39)
+	{
+		v39 = arg0;
+		v39.u3 = *v39.u3;
+		loc12 = v39;
+		v39 = loc12;
+		loc23 = v39;
+	}
+	else
+	{
+		v39 = arg0;
+		loc23 = v39;
+	}
+	v39 = arg1;
+	v40.u0 = 0x7FFFFFE7;
+	v41 = v39 < v40;
+	loc13 = v41;
+	v39 = loc13;
+	if (v39)
+	{
+		v39 = arg2;
+		v40 = arg1;
+		v39 += v40;
+		loc14 = v39;
+		v39 = arg1;
+		v40.u0 = 0x01;
+		v39 <<= v40;
+		loc15 = v39;
+		v39 = loc14;
+		v40 = loc15;
+		v41 = v39 < v40;
+		loc16 = v41;
+		v39 = loc16;
+		if (v39)
+			v39 = loc15;
+		else
+			v39 = loc14;
+		loc8 = v39;
+		v39 = loc8;
+		v40.u0 = 11;
+		v41 = v39 < v40;
+		loc17 = v41;
+		v39 = loc8;
+		v40.u0 = 0x10;
+		v39 += v40;
+		loc18 = v39;
+		v39 = loc18;
+		v40.u0 = ~0x0F;
+		v39 &= v40;
+		loc19 = v39;
+		v39 = loc17;
+		if (v39)
+			v39.u0 = 11;
+		else
+			v39 = loc19;
+		loc41 = v39;
+		v39 = loc41;
+		loc20 = v39;
+	}
+	else
+	{
+		v39.u0 = ~0x10;
+		loc20 = v39;
+	}
+	v39 = loc20;
+	v39 = fn0011B67B(v39);
+	loc21 = v39;
+	v39 = arg4;
+	v40.u0 = 0x00;
+	v41 = v39 == v40;
+	loc22 = v41;
+	v39 = loc22;
+	v41 = v39 == 0x00;
+	if (v41)
+	{
+		v39 = loc21;
+		v40 = loc23;
+		v43 = arg4;
+		v39 = _memcpy(v39, v40, v43);
+	}
+	v39 = arg6;
+	v40.u0 = 0x00;
+	v41 = v39 == v40;
+	loc24 = v41;
+	v39 = loc24;
+	v41 = v39 == 0x00;
+	if (v41)
+	{
+		v39 = loc21;
+		v40 = arg4;
+		v39 += v40;
+		loc25 = v39;
+		v39 = loc25;
+		v40 = arg7;
+		v43 = arg6;
+		v39 = _memcpy(v39, v40, v43);
+	}
+	v39 = arg3;
+	v40 = arg5;
+	v39 -= v40;
+	loc26 = v39;
+	v39 = loc26;
+	v40 = arg4;
+	v39 -= v40;
+	loc27 = v39;
+	v39 = loc27;
+	v40.u0 = 0x00;
+	v41 = v39 == v40;
+	loc28 = v41;
+	v39 = loc28;
+	v41 = v39 == 0x00;
+	if (v41)
+	{
+		v39 = loc21;
+		v40 = arg4;
+		v39 += v40;
+		loc29 = v39;
+		v39 = loc29;
+		v40 = arg6;
+		v39 += v40;
+		loc30 = v39;
+		v39 = loc23;
+		v40 = arg4;
+		v39 += v40;
+		loc31 = v39;
+		v39 = loc31;
+		v40 = arg5;
+		v39 += v40;
+		loc32 = v39;
+		v39 = loc30;
+		v40 = loc32;
+		v43 = loc27;
+		v39 = _memcpy(v39, v40, v43);
+	}
+	v39 = arg1;
+	v40.u0 = 0x0A;
+	v41 = v39 == v40;
+	loc33 = v41;
+	v39 = loc33;
+	v41 = v39 == 0x00;
+	if (v41)
+	{
+		v39 = loc23;
+		fn0011B709(v39);
+	}
+	v39 = arg0;
+	v40 = loc21;
+	*v39.u0 = v40;
+	v39 = loc20;
+	v40.u0 = 0x80000000;
+	v39 |= v40;
+	loc34 = v39;
+	v39 = arg0;
+	v40.u0 = 0x08;
+	v39 += v40;
+	loc35 = v39;
+	v39 = loc35;
+	v40 = loc34;
+	*v39.u0 = v40;
+	v39 = loc26;
+	v40 = arg6;
+	v39 += v40;
+	loc36 = v39;
+	v39 = arg0;
+	v40.u0 = 0x04;
+	v39 += v40;
+	loc37 = v39;
+	v39 = loc37;
+	v40 = loc36;
+	*v39.u0 = v40;
+	v39 = loc21;
+	v40 = loc36;
+	v39 += v40;
+	loc38 = v39;
+	v39 = loc38;
+	v40.u0 = 0x00;
+	v44 = (byte) v40;
+	*v39.u0 = v44;
+}
+
+// 0011BDC1: void fn0011BDC1(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011BDC1(Eq_n arg0, Eq_n arg1)
+{
+	v59.u3 = g_t140030.u3;
+	loc57 = v59;
+	v59 = arg1;
+	v60.u0 = ~0x10;
+	v61 = v59 > v60;
+	loc26 = v61;
+	v59 = loc26;
+	if (v59)
+	{
+		v59 = arg0;
+		fn0011B8A5(v59);
+	}
+	v59 = arg0;
+	v60.u0 = 11;
+	v59 += v60;
+	loc37 = v59;
+	v59 = loc37;
+	v62.u3 = *v59.u3;
+	v59.u3 = (word32) v62;
+	loc48 = v59;
+	v59 = loc48;
+	v60.u0 = 0x18;
+	v59 <<= v60;
+	v60.u0 = 0x18;
+	v59 >>= v60;
+	v60.u0 = 0x00;
+	v61 = v59 < v60;
+	loc49 = v61;
+	v59 = loc49;
+	if (v59)
+	{
+		v59 = arg0;
+		v60.u0 = 0x08;
+		v59 += v60;
+		loc50 = v59;
+		v59 = loc50;
+		v59.u3 = *v59.u3;
+		loc51 = v59;
+		v59 = loc51;
+		v60.u0 = 0x7FFFFFFF;
+		v59 &= v60;
+		loc52 = v59;
+		v59 = loc52;
+		v60.u0 = ~0x00;
+		v59 += v60;
+		loc54 = v59;
+		v59 = arg0;
+		v60.u0 = 0x04;
+		v59 += v60;
+		loc53 = v59;
+		v59 = loc53;
+		v59.u3 = *v59.u3;
+		loc16 = v59;
+		v59 = loc16;
+		loc19 = v59;
+		v59 = loc54;
+		loc24 = v59;
+	}
+	else
+	{
+		v59 = loc48;
+		v60.u0 = 0xFF;
+		v59 &= v60;
+		loc17 = v59;
+		v59 = loc17;
+		loc19 = v59;
+		v59.u0 = 0x0A;
+		loc24 = v59;
+	}
+	v59 = loc19;
+	v60 = arg1;
+	v61 = v59 > v60;
+	loc18 = v61;
+	v59 = loc18;
+	if (v59)
+		v59 = loc19;
+	else
+		v59 = arg1;
+	loc15 = v59;
+	v59 = loc15;
+	v60.u0 = 11;
+	v61 = v59 < v60;
+	loc20 = v61;
+	v59 = loc15;
+	v60.u0 = 0x10;
+	v59 += v60;
+	loc21 = v59;
+	v59 = loc21;
+	v60.u0 = ~0x0F;
+	v59 &= v60;
+	loc22 = v59;
+	v59 = loc22;
+	v60.u0 = ~0x00;
+	v59 += v60;
+	loc55 = v59;
+	v59 = loc20;
+	if (v59)
+		v59.u0 = 0x0A;
+	else
+		v59 = loc55;
+	loc14 = v59;
+	v59 = loc14;
+	v60 = loc24;
+	v61 = v59 == v60;
+	loc23 = v61;
+	v59 = loc23;
+	v61 = v59 == 0x00;
+	if (!v61)
+		return;
+	v59 = loc20;
+	if (v59)
+	{
+		v59 = arg0;
+		v59 = *v59.u0;
+		loc35 = v59;
+		v59 = loc49;
+		if (v59)
+		{
+			v59 = loc35;
+			loc4 = v59;
+			v59.u0 = 0x00;
+			loc7 = v59;
+			v59 = arg0;
+			loc12 = v59;
+			v59.u0 = 0x10;
+			loc56 = v59;
+		}
+		else
+		{
+			v59 = loc35;
+			loc5 = v59;
+			v59.u0 = 0x00;
+			loc8 = v59;
+			v59.u0 = 0x01;
+			loc10 = v59;
+			v59 = arg0;
+			loc13 = v59;
+			v59.u0 = 0x11;
+			loc56 = v59;
+		}
+	}
+	else
+	{
+		v59 = loc14;
+		v60 = loc24;
+		v61 = v59 > v60;
+		loc25 = v61;
+		v59 = loc14;
+		v60.u0 = 0x01;
+		v59 += v60;
+		loc27 = v59;
+		v59 = loc25;
+		if (v59)
+		{
+			v59 = loc27;
+			v59 = fn0011B67B(v59);
+			loc28 = v59;
+			v59 = loc28;
+			loc2 = v59;
+		}
+		else
+		{
+			v59.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v59;
+			v59.u0 = 0x01EB;
+			v60 = loc27;
+			v59 = invoke_ii(v59, v60);
+			loc29 = v59;
+			v59.u3 = g_t140048.u3;
+			loc30 = v59;
+			v59.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v59;
+			v59 = loc30;
+			v60.u0 = 0x01;
+			v59 &= v60;
+			loc31 = v59;
+			v59 = loc31;
+			if (v59)
+			{
+				v59.u0 = 0x00;
+				v59 = ___cxa_find_matching_catch_n(v59);
+				loc32 = v59;
+				v59.u3 = g_t140094.u3;
+				loc33 = v59;
+				v59 = loc32;
+				v59 = ___cxa_begin_catch(v59);
+				___cxa_end_catch();
+				return;
+			}
+			v59 = loc29;
+			loc2 = v59;
+		}
+		v59 = loc49;
+		if (v59)
+		{
+			v59 = arg0;
+			v59.u3 = *v59.u3;
+			loc34 = v59;
+			v59 = loc34;
+			loc4 = v59;
+			v59.u0 = 0x01;
+			loc7 = v59;
+			v59 = loc2;
+			loc12 = v59;
+			v59.u0 = 0x10;
+			loc56 = v59;
+		}
+		else
+		{
+			v59 = arg0;
+			loc5 = v59;
+			v59.u0 = 0x01;
+			loc8 = v59;
+			v59.u0 = 0x00;
+			loc10 = v59;
+			v59 = loc2;
+			loc13 = v59;
+			v59.u0 = 0x11;
+			loc56 = v59;
+		}
+	}
+	v59 = loc56;
+	v60.u0 = 0x10;
+	v61 = v59 == v60;
+	if (v61)
+	{
+		v59 = arg0;
+		v60.u0 = 0x04;
+		v59 += v60;
+		loc36 = v59;
+		v59 = loc36;
+		v59 = *v59.u0;
+		loc38 = v59;
+		v59 = loc4;
+		loc3 = v59;
+		v59 = loc7;
+		loc6 = v59;
+		v59.u0 = 0x01;
+		loc9 = v59;
+		v59 = loc12;
+		loc11 = v59;
+		v59 = loc38;
+		loc41 = v59;
+	}
+	else
+	{
+		v59 = loc56;
+		v60.u0 = 0x11;
+		v61 = v59 == v60;
+		if (v61)
+		{
+			v59 = loc48;
+			v60.u0 = 0xFF;
+			v59 &= v60;
+			loc39 = v59;
+			v59 = loc5;
+			loc3 = v59;
+			v59 = loc8;
+			loc6 = v59;
+			v59 = loc10;
+			loc9 = v59;
+			v59 = loc13;
+			loc11 = v59;
+			v59 = loc39;
+			loc41 = v59;
+		}
+	}
+	v59 = loc41;
+	v60.u0 = 0x01;
+	v59 += v60;
+	loc40 = v59;
+	v59 = loc40;
+	v60.u0 = 0x00;
+	v61 = v59 == v60;
+	loc42 = v61;
+	v59 = loc42;
+	v61 = v59 == 0x00;
+	if (v61)
+	{
+		v59 = loc11;
+		v60 = loc3;
+		v63 = loc40;
+		v59 = _memcpy(v59, v60, v63);
+	}
+	v59 = loc9;
+	if (v59)
+	{
+		v59 = loc3;
+		fn0011B709(v59);
+	}
+	v59 = loc6;
+	if (v59)
+	{
+		v59 = loc14;
+		v60.u0 = 0x01;
+		v59 += v60;
+		loc43 = v59;
+		v59 = loc43;
+		v60.u0 = 0x80000000;
+		v59 |= v60;
+		loc44 = v59;
+		v59 = arg0;
+		v60.u0 = 0x08;
+		v59 += v60;
+		loc45 = v59;
+		v59 = loc45;
+		v60 = loc44;
+		*v59.u0 = v60;
+		v59 = arg0;
+		v60.u0 = 0x04;
+		v59 += v60;
+		loc46 = v59;
+		v59 = loc46;
+		v60 = loc19;
+		*v59.u0 = v60;
+		v59 = arg0;
+		v60 = loc11;
+		*v59.u0 = v60;
+	}
+	else
+	{
+		v59 = loc19;
+		v60.u0 = 0xFF;
+		v59 &= v60;
+		loc47 = v59;
+		v59 = loc37;
+		v60 = loc47;
+		v64 = (byte) v60;
+		*v59.u0 = v64;
+	}
+}
+
+// 0011C019: Stack Eq_n fn0011C019(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn0011C019(Eq_n arg0, Eq_n arg1)
+{
+	v7.u3 = g_t140030.u3;
+	loc5 = v7;
+	v7 = arg1;
+	v7 = fn000DAF30(v7);
+	loc2 = v7;
+	v7 = arg0;
+	v8 = arg1;
+	v9 = loc2;
+	v7 = fn0011BB2C(v7, v8, v9);
+	loc3 = v7;
+	v7 = loc3;
+	return v7;
+}
+
+// 0011C036: void fn0011C036(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn0011C036(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v19.u3 = g_t140030.u3;
+	loc18 = v19;
+	v19 = arg0;
+	v20.u0 = 11;
+	v19 += v20;
+	loc10 = v19;
+	v19 = loc10;
+	v21.u3 = *v19.u3;
+	v19.u3 = (word32) v21;
+	loc11 = v19;
+	v19 = loc11;
+	v20.u0 = 0x18;
+	v19 <<= v20;
+	v20.u0 = 0x18;
+	v19 >>= v20;
+	v20.u0 = 0x00;
+	v22 = v19 < v20;
+	loc12 = v22;
+	v19 = loc12;
+	if (v19)
+	{
+		v19 = arg0;
+		v20.u0 = 0x04;
+		v19 += v20;
+		loc13 = v19;
+		v19 = loc13;
+		v19.u3 = *v19.u3;
+		loc14 = v19;
+		v19 = loc14;
+		loc3 = v19;
+	}
+	else
+	{
+		v19 = loc11;
+		v20.u0 = 0xFF;
+		v19 &= v20;
+		loc15 = v19;
+		v19 = loc15;
+		loc3 = v19;
+	}
+	v19 = loc3;
+	v20 = arg1;
+	v22 = v19 < v20;
+	loc16 = v22;
+	v19 = loc16;
+	if (v19)
+	{
+		v19 = arg1;
+		v20 = loc3;
+		v19 -= v20;
+		loc4 = v19;
+		v19 = arg0;
+		v20 = loc4;
+		v23 = arg2;
+		v19 = fn0011C0EA(v19, v20, v23);
+	}
+	else
+	{
+		v19 = loc12;
+		if (v19)
+		{
+			v19 = arg0;
+			v19.u3 = *v19.u3;
+			loc5 = v19;
+			v19 = loc5;
+			v20 = arg1;
+			v19 += v20;
+			loc6 = v19;
+			v19 = loc6;
+			v20.u0 = 0x00;
+			v24 = (byte) v20;
+			v19.u4->t0000.u0 = (bool) v24;
+			v19 = arg0;
+			v20.u0 = 0x04;
+			v19 += v20;
+			loc7 = v19;
+			v19 = loc7;
+			v20 = arg1;
+			*v19.u3 = (word32) v20;
+		}
+		else
+		{
+			v19 = arg0;
+			v20 = arg1;
+			v19 += v20;
+			loc8 = v19;
+			v19 = loc8;
+			v20.u0 = 0x00;
+			v25 = (byte) v20;
+			v19.u4->t0000.u0 = (bool) v25;
+			v19 = arg1;
+			v20.u0 = 0xFF;
+			v19 &= v20;
+			loc9 = v19;
+			v19 = loc10;
+			v20 = loc9;
+			v26 = (byte) v20;
+			v19.u4->t0000.u0 = (bool) v26;
+		}
+	}
+}
+
+// 0011C0EA: Stack Eq_n fn0011C0EA(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn0011C0EA(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v34.u3 = g_t140030.u3;
+	loc33 = v34;
+	v34 = arg1;
+	v35.u0 = 0x00;
+	v36 = v34 == v35;
+	loc24 = v36;
+	v34 = loc24;
+	v36 = v34 == 0x00;
+	if (v36)
+	{
+		v34 = arg0;
+		v35.u0 = 11;
+		v34 += v35;
+		loc25 = v34;
+		v34 = loc25;
+		v37.u3 = *v34.u3;
+		v34.u3 = (word32) v37;
+		loc26 = v34;
+		v34 = loc26;
+		v35.u0 = 0x18;
+		v34 <<= v35;
+		v35.u0 = 0x18;
+		v34 >>= v35;
+		v35.u0 = 0x00;
+		v36 = v34 < v35;
+		loc27 = v36;
+		v34 = loc27;
+		if (v34)
+		{
+			v34 = arg0;
+			v35.u0 = 0x08;
+			v34 += v35;
+			loc28 = v34;
+			v34 = loc28;
+			v34.u3 = *v34.u3;
+			loc29 = v34;
+			v34 = loc29;
+			v35.u0 = 0x7FFFFFFF;
+			v34 &= v35;
+			loc30 = v34;
+			v34 = loc30;
+			v35.u0 = ~0x00;
+			v34 += v35;
+			loc31 = v34;
+			v34 = arg0;
+			v35.u0 = 0x04;
+			v34 += v35;
+			loc4 = v34;
+			v34 = loc4;
+			v34.u3 = *v34.u3;
+			loc5 = v34;
+			v34 = loc31;
+			loc8 = v34;
+			v34 = loc5;
+			loc9 = v34;
+		}
+		else
+		{
+			v34 = loc26;
+			v35.u0 = 0xFF;
+			v34 &= v35;
+			loc6 = v34;
+			v34.u0 = 0x0A;
+			loc8 = v34;
+			v34 = loc6;
+			loc9 = v34;
+		}
+		v34 = loc8;
+		v35 = loc9;
+		v34 -= v35;
+		loc7 = v34;
+		v34 = loc7;
+		v35 = arg1;
+		v36 = v34 < v35;
+		loc10 = v36;
+		v34 = loc10;
+		if (v34)
+		{
+			v34 = arg1;
+			v35 = loc8;
+			v34 -= v35;
+			loc11 = v34;
+			v34 = loc11;
+			v35 = loc9;
+			v34 += v35;
+			loc12 = v34;
+			v34 = arg0;
+			v35 = loc8;
+			v38 = loc12;
+			v39 = loc9;
+			v40 = loc9;
+			v41.u0 = 0x00;
+			v42.u0 = 0x00;
+			fn0011C22A(v34, v35, v38, v39, v40, v41, v42);
+			v34 = loc25;
+			v43 = *v34.u0;
+			v34.u3 = (word32) v43;
+			loc3 = v34;
+			v34 = loc3;
+			loc14 = v34;
+		}
+		else
+		{
+			v34 = loc26;
+			loc14 = v34;
+		}
+		v34 = loc14;
+		v35.u0 = 0x18;
+		v34 <<= v35;
+		v35.u0 = 0x18;
+		v34 >>= v35;
+		v35.u0 = 0x00;
+		v36 = v34 < v35;
+		loc13 = v36;
+		v34 = loc13;
+		if (v34)
+		{
+			v34 = arg0;
+			v34.u3 = *v34.u3;
+			loc15 = v34;
+			v34 = loc15;
+			loc17 = v34;
+		}
+		else
+		{
+			v34 = arg0;
+			loc17 = v34;
+		}
+		v34 = loc17;
+		v35 = loc9;
+		v34 += v35;
+		loc16 = v34;
+		v34 = loc16;
+		v35 = arg2;
+		v38 = arg1;
+		v34 = _memset(v34, v35, v38);
+		v34 = loc9;
+		v35 = arg1;
+		v34 += v35;
+		loc18 = v34;
+		v34 = loc25;
+		v44.u1 = v34.u4->t0000.u1;
+		v34.u3 = (word32) v44;
+		loc19 = v34;
+		v34 = loc19;
+		v35.u0 = 0x18;
+		v34 <<= v35;
+		v35.u0 = 0x18;
+		v34 >>= v35;
+		v35.u0 = 0x00;
+		v36 = v34 < v35;
+		loc20 = v36;
+		v34 = loc20;
+		if (v34)
+		{
+			v34 = arg0;
+			v35.u0 = 0x04;
+			v34 += v35;
+			loc21 = v34;
+			v34 = loc21;
+			v35 = loc18;
+			*v34.u3 = (word32) v35;
+		}
+		else
+		{
+			v34 = loc18;
+			v35.u0 = 0xFF;
+			v34 &= v35;
+			loc22 = v34;
+			v34 = loc25;
+			v35 = loc22;
+			v45 = (byte) v35;
+			v34.u4->t0000.u0 = (bool) v45;
+		}
+		v34 = loc17;
+		v35 = loc18;
+		v34 += v35;
+		loc23 = v34;
+		v34 = loc23;
+		v35.u0 = 0x00;
+		v46 = (byte) v35;
+		v34.u4->t0000.u0 = (bool) v46;
+	}
+	v34 = arg0;
+	return v34;
+}
+
+// 0011C22A: void fn0011C22A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
+void fn0011C22A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
+{
+	v34.u3 = g_t140030.u3;
+	loc37 = v34;
+	v34.u0 = ~0x10;
+	v35 = arg1;
+	v34 -= v35;
+	loc32 = v34;
+	v34 = loc32;
+	v35 = arg2;
+	v36 = v34 < v35;
+	loc33 = v36;
+	v34 = loc33;
+	if (v34)
+	{
+		v34 = arg0;
+		fn0011B8A5(v34);
+	}
+	v34 = arg0;
+	v35.u0 = 11;
+	v34 += v35;
+	loc34 = v34;
+	v34 = loc34;
+	v37 = *v34.u0;
+	v34.u3 = (word32) v37;
+	loc8 = v34;
+	v34 = loc8;
+	v35.u0 = 0x18;
+	v34 <<= v35;
+	v35.u0 = 0x18;
+	v34 >>= v35;
+	v35.u0 = 0x00;
+	v36 = v34 < v35;
+	loc9 = v36;
+	v34 = loc9;
+	if (v34)
+	{
+		v34 = arg0;
+		v34.u3 = *v34.u3;
+		loc10 = v34;
+		v34 = loc10;
+		loc21 = v34;
+	}
+	else
+	{
+		v34 = arg0;
+		loc21 = v34;
+	}
+	v34 = arg1;
+	v35.u0 = 0x7FFFFFE7;
+	v36 = v34 < v35;
+	loc11 = v36;
+	v34 = loc11;
+	if (v34)
+	{
+		v34 = arg2;
+		v35 = arg1;
+		v34 += v35;
+		loc12 = v34;
+		v34 = arg1;
+		v35.u0 = 0x01;
+		v34 <<= v35;
+		loc13 = v34;
+		v34 = loc12;
+		v35 = loc13;
+		v36 = v34 < v35;
+		loc14 = v36;
+		v34 = loc14;
+		if (v34)
+			v34 = loc13;
+		else
+			v34 = loc12;
+		loc7 = v34;
+		v34 = loc7;
+		v35.u0 = 11;
+		v36 = v34 < v35;
+		loc15 = v36;
+		v34 = loc7;
+		v35.u0 = 0x10;
+		v34 += v35;
+		loc16 = v34;
+		v34 = loc16;
+		v35.u0 = ~0x0F;
+		v34 &= v35;
+		loc17 = v34;
+		v34 = loc15;
+		if (v34)
+			v34.u0 = 11;
+		else
+			v34 = loc17;
+		loc35 = v34;
+		v34 = loc35;
+		loc18 = v34;
+	}
+	else
+	{
+		v34.u0 = ~0x10;
+		loc18 = v34;
+	}
+	v34 = loc18;
+	v34 = fn0011B67B(v34);
+	loc19 = v34;
+	v34 = arg4;
+	v35.u0 = 0x00;
+	v36 = v34 == v35;
+	loc20 = v36;
+	v34 = loc20;
+	v36 = v34 == 0x00;
+	if (v36)
+	{
+		v34 = loc19;
+		v35 = loc21;
+		v38 = arg4;
+		v34 = _memcpy(v34, v35, v38);
+	}
+	v34 = arg3;
+	v35 = arg5;
+	v34 -= v35;
+	loc22 = v34;
+	v34 = loc22;
+	v35 = arg4;
+	v34 -= v35;
+	loc23 = v34;
+	v34 = loc23;
+	v35.u0 = 0x00;
+	v36 = v34 == v35;
+	loc24 = v36;
+	v34 = loc24;
+	v36 = v34 == 0x00;
+	if (v36)
+	{
+		v34 = loc19;
+		v35 = arg4;
+		v34 += v35;
+		loc25 = v34;
+		v34 = loc25;
+		v35 = arg6;
+		v34 += v35;
+		loc26 = v34;
+		v34 = loc21;
+		v35 = arg4;
+		v34 += v35;
+		loc27 = v34;
+		v34 = loc27;
+		v35 = arg5;
+		v34 += v35;
+		loc28 = v34;
+		v34 = loc26;
+		v35 = loc28;
+		v38 = loc23;
+		v34 = _memcpy(v34, v35, v38);
+	}
+	v34 = arg1;
+	v35.u0 = 0x0A;
+	v36 = v34 == v35;
+	loc29 = v36;
+	v34 = loc29;
+	v36 = v34 == 0x00;
+	if (v36)
+	{
+		v34 = loc21;
+		fn0011B709(v34);
+	}
+	v34 = arg0;
+	v35 = loc19;
+	*v34.u0 = v35;
+	v34 = loc18;
+	v35.u0 = 0x80000000;
+	v34 |= v35;
+	loc30 = v34;
+	v34 = arg0;
+	v35.u0 = 0x08;
+	v34 += v35;
+	loc31 = v34;
+	v34 = loc31;
+	v35 = loc30;
+	*v34.u0 = v35;
+}
+
+// 0011C367: Stack Eq_n fn0011C367(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn0011C367(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v31.u3 = g_t140030.u3;
+	loc30 = v31;
+	v31 = arg0;
+	v32.u0 = 11;
+	v31 += v32;
+	loc21 = v31;
+	v31 = loc21;
+	v33.u3 = *v31.u3;
+	v31.u3 = (word32) v33;
+	loc22 = v31;
+	v31 = loc22;
+	v32.u0 = 0x18;
+	v31 <<= v32;
+	v32.u0 = 0x18;
+	v31 >>= v32;
+	v32.u0 = 0x00;
+	v34 = v31 < v32;
+	loc23 = v34;
+	v31 = loc23;
+	if (v31)
+	{
+		v31 = arg0;
+		v32.u0 = 0x08;
+		v31 += v32;
+		loc24 = v31;
+		v31 = loc24;
+		v31.u3 = *v31.u3;
+		loc25 = v31;
+		v31 = loc25;
+		v32.u0 = 0x7FFFFFFF;
+		v31 &= v32;
+		loc26 = v31;
+		v31 = loc26;
+		v32.u0 = ~0x00;
+		v31 += v32;
+		loc28 = v31;
+		v31 = arg0;
+		v32.u0 = 0x04;
+		v31 += v32;
+		loc27 = v31;
+		v31 = loc27;
+		v31.u3 = *v31.u3;
+		loc3 = v31;
+		v31 = loc28;
+		loc6 = v31;
+		v31 = loc3;
+		loc7 = v31;
+	}
+	else
+	{
+		v31 = loc22;
+		v32.u0 = 0xFF;
+		v31 &= v32;
+		loc4 = v31;
+		v31.u0 = 0x0A;
+		loc6 = v31;
+		v31 = loc4;
+		loc7 = v31;
+	}
+	v31 = loc6;
+	v32 = loc7;
+	v31 -= v32;
+	loc5 = v31;
+	v31 = loc5;
+	v32 = arg2;
+	v34 = v31 < v32;
+	loc8 = v34;
+	v31 = loc8;
+	if (v31)
+	{
+		v31 = arg2;
+		v32 = loc6;
+		v31 -= v32;
+		loc19 = v31;
+		v31 = loc19;
+		v32 = loc7;
+		v31 += v32;
+		loc20 = v31;
+		v31 = arg0;
+		v32 = loc6;
+		v35 = loc20;
+		v36 = loc7;
+		v37 = loc7;
+		v38.u0 = 0x00;
+		v39 = arg2;
+		v40 = arg1;
+		fn0011BC43(v31, v32, v35, v36, v37, v38, v39, v40);
+	}
+	else
+	{
+		v31 = arg2;
+		v32.u0 = 0x00;
+		v34 = v31 == v32;
+		loc9 = v34;
+		v31 = loc9;
+		v34 = v31 == 0x00;
+		if (v34)
+		{
+			v31 = loc23;
+			if (v31)
+			{
+				v31 = arg0;
+				v31 = *v31.u0;
+				loc10 = v31;
+				v31 = loc10;
+				loc12 = v31;
+			}
+			else
+			{
+				v31 = arg0;
+				loc12 = v31;
+			}
+			v31 = loc12;
+			v32 = loc7;
+			v31 += v32;
+			loc11 = v31;
+			v31 = loc11;
+			v32 = arg1;
+			v35 = arg2;
+			v31 = _memcpy(v31, v32, v35);
+			v31 = loc7;
+			v32 = arg2;
+			v31 += v32;
+			loc13 = v31;
+			v31 = loc21;
+			v41 = *v31.u0;
+			v31.u3 = (word32) v41;
+			loc14 = v31;
+			v31 = loc14;
+			v32.u0 = 0x18;
+			v31 <<= v32;
+			v32.u0 = 0x18;
+			v31 >>= v32;
+			v32.u0 = 0x00;
+			v34 = v31 < v32;
+			loc15 = v34;
+			v31 = loc15;
+			if (v31)
+			{
+				v31 = arg0;
+				v32.u0 = 0x04;
+				v31 += v32;
+				loc16 = v31;
+				v31 = loc16;
+				v32 = loc13;
+				*v31.u3 = (word32) v32;
+			}
+			else
+			{
+				v31 = loc13;
+				v32.u0 = 0xFF;
+				v31 &= v32;
+				loc17 = v31;
+				v31 = loc21;
+				v32 = loc17;
+				v42 = (byte) v32;
+				v31.u4->t0000.u0 = (bool) v42;
+			}
+			v31 = loc12;
+			v32 = loc13;
+			v31 += v32;
+			loc18 = v31;
+			v31 = loc18;
+			v32.u0 = 0x00;
+			v43 = (byte) v32;
+			v31.u4->t0000.u0 = (bool) v43;
+		}
+	}
+	v31 = arg0;
+	return v31;
+}
+
+// 0011C48D: Stack Eq_n fn0011C48D(Stack Eq_n arg0, Stack Eq_n arg1)
+Eq_n fn0011C48D(Eq_n arg0, Eq_n arg1)
+{
+	v7.u3 = g_t140030.u3;
+	loc5 = v7;
+	v7 = arg1;
+	v7 = fn000DAF30(v7);
+	loc2 = v7;
+	v7 = arg0;
+	v8 = arg1;
+	v9 = loc2;
+	v7 = fn0011C367(v7, v8, v9);
+	loc3 = v7;
+	v7 = loc3;
+	return v7;
+}
+
+// 0011C4AA: void fn0011C4AA(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011C4AA(Eq_n arg0, Eq_n arg1)
+{
+	v28.u3 = g_t140030.u3;
+	loc26 = v28;
+	v28 = arg0;
+	v29.u0 = 11;
+	v28 += v29;
+	loc16 = v28;
+	v28 = loc16;
+	v30.u3 = *v28.u3;
+	v28.u3 = (word32) v30;
+	loc18 = v28;
+	v28 = loc18;
+	v29.u0 = 0x18;
+	v28 <<= v29;
+	v29.u0 = 0x18;
+	v28 >>= v29;
+	v29.u0 = 0x00;
+	v31 = v28 < v29;
+	loc19 = v31;
+	v28 = loc19;
+	if (v28)
+	{
+		v28 = arg0;
+		v29.u0 = 0x08;
+		v28 += v29;
+		loc21 = v28;
+		v28 = loc21;
+		v28.u3 = *v28.u3;
+		loc22 = v28;
+		v28 = loc22;
+		v29.u0 = 0x7FFFFFFF;
+		v28 &= v29;
+		loc23 = v28;
+		v28 = loc23;
+		v29.u0 = ~0x00;
+		v28 += v29;
+		loc24 = v28;
+		v28 = arg0;
+		v29.u0 = 0x04;
+		v28 += v29;
+		loc6 = v28;
+		v28 = loc6;
+		v28.u3 = *v28.u3;
+		loc7 = v28;
+		v28 = loc7;
+		loc3 = v28;
+		v28 = loc24;
+		loc4 = v28;
+	}
+	else
+	{
+		v28 = loc18;
+		v29.u0 = 0xFF;
+		v28 &= v29;
+		loc20 = v28;
+		v28 = loc20;
+		loc3 = v28;
+		v28.u0 = 0x0A;
+		loc4 = v28;
+	}
 	v28 = loc3;
-	v27 += v28;
-	loc2 = v27;
-	v27 = loc2;
-	v28 = arg1;
-	v38 = (byte) v28;
-	*v27.u0 = v38;
-	v27 = loc2;
-	v28.u0 = 0x01;
-	v27 += v28;
-	loc17 = v27;
-	v27 = loc17;
-	v28.u0 = 0x00;
-	v39 = (byte) v28;
-	*v27.u0 = v39;
+	v29 = loc4;
+	v31 = v28 == v29;
+	loc8 = v31;
+	v28 = loc8;
+	if (v28)
+	{
+		v28 = arg0;
+		v29 = loc4;
+		v32.u0 = 0x01;
+		v33 = loc4;
+		v34 = loc4;
+		v35.u0 = 0x00;
+		v36.u0 = 0x00;
+		fn0011C22A(v28, v29, v32, v33, v34, v35, v36);
+		v28 = loc16;
+		v37 = *v28.u0;
+		v28.u3 = (word32) v37;
+		loc9 = v28;
+		v28 = loc9;
+		v29.u0 = 0x18;
+		v28 <<= v29;
+		v29.u0 = 0x18;
+		v28 >>= v29;
+		v29.u0 = ~0x00;
+		v31 = v28 > v29;
+		loc10 = v31;
+		v28 = loc10;
+		if (v28)
+		{
+			v28.u0 = 0x07;
+			loc25 = v28;
+		}
+		else
+		{
+			v28.u0 = 0x08;
+			loc25 = v28;
+		}
+	}
+	else
+	{
+		v28 = loc19;
+		if (v28)
+		{
+			v28.u0 = 0x08;
+			loc25 = v28;
+		}
+		else
+		{
+			v28.u0 = 0x07;
+			loc25 = v28;
+		}
+	}
+	v28 = loc25;
+	v29.u0 = 0x07;
+	v31 = v28 == v29;
+	if (v31)
+	{
+		v28 = loc3;
+		v29.u0 = 0x01;
+		v28 += v29;
+		loc11 = v28;
+		v28 = loc11;
+		v29.u0 = 0xFF;
+		v28 &= v29;
+		loc12 = v28;
+		v28 = loc16;
+		v29 = loc12;
+		v38 = (byte) v29;
+		*v28.u0 = v38;
+		v28 = arg0;
+		loc5 = v28;
+	}
+	else
+	{
+		v28 = loc25;
+		v29.u0 = 0x08;
+		v31 = v28 == v29;
+		if (v31)
+		{
+			v28 = arg0;
+			v28 = *v28.u0;
+			loc13 = v28;
+			v28 = loc3;
+			v29.u0 = 0x01;
+			v28 += v29;
+			loc14 = v28;
+			v28 = arg0;
+			v29.u0 = 0x04;
+			v28 += v29;
+			loc15 = v28;
+			v28 = loc15;
+			v29 = loc14;
+			*v28.u0 = v29;
+			v28 = loc13;
+			loc5 = v28;
+		}
+	}
+	v28 = loc5;
+	v29 = loc3;
+	v28 += v29;
+	loc2 = v28;
+	v28 = loc2;
+	v29 = arg1;
+	v39 = (byte) v29;
+	*v28.u0 = v39;
+	v28 = loc2;
+	v29.u0 = 0x01;
+	v28 += v29;
+	loc17 = v28;
+	v28 = loc17;
+	v29.u0 = 0x00;
+	v40 = (byte) v29;
+	*v28.u0 = v40;
 }
 
 // 0011C5CF: void fn0011C5CF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011C5CF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v20.u3 = g_t140030.u3;
-	loc20 = v20;
-	v20 = arg2;
-	v21.u0 = 0x3FFFFFEF;
-	v22 = v20 > v21;
-	loc12 = v22;
-	v20 = loc12;
-	if (v20)
+	v21.u3 = g_t140030.u3;
+	loc20 = v21;
+	v21 = arg2;
+	v22.u0 = 0x3FFFFFEF;
+	v23 = v21 > v22;
+	loc12 = v23;
+	v21 = loc12;
+	if (v21)
 	{
-		v20 = arg0;
-		fn0011B8A5(v20);
+		v21 = arg0;
+		fn0011B8A5(v21);
 	}
-	v20 = arg2;
-	v21.u0 = 0x02;
-	v22 = v20 < v21;
-	loc13 = v22;
-	v20 = loc13;
-	if (v20)
+	v21 = arg2;
+	v22.u0 = 0x02;
+	v23 = v21 < v22;
+	loc13 = v23;
+	v21 = loc13;
+	if (v21)
 	{
-		v20 = arg2;
-		v21.u0 = 0xFF;
-		v20 &= v21;
-		loc14 = v20;
-		v20 = arg0;
-		v21.u0 = 0x08;
-		v20 += v21;
-		loc15 = v20;
-		v20 = loc15;
-		v21.u0 = 0x03;
-		v20 += v21;
-		loc16 = v20;
-		v20 = loc16;
-		v21 = loc14;
-		v23 = (byte) v21;
-		*v20.u3 = (word32) v23;
-		v20 = arg0;
-		loc3 = v20;
+		v21 = arg2;
+		v22.u0 = 0xFF;
+		v21 &= v22;
+		loc14 = v21;
+		v21 = arg0;
+		v22.u0 = 0x08;
+		v21 += v22;
+		loc15 = v21;
+		v21 = loc15;
+		v22.u0 = 0x03;
+		v21 += v22;
+		loc16 = v21;
+		v21 = loc16;
+		v22 = loc14;
+		v24 = (byte) v22;
+		*v21.u3 = (word32) v24;
+		v21 = arg0;
+		loc3 = v21;
 	}
 	else
 	{
-		v20 = arg2;
-		v21.u0 = 0x04;
-		v20 += v21;
-		loc17 = v20;
-		v20 = loc17;
-		v21.u0 = ~0x03;
-		v20 &= v21;
-		loc18 = v20;
-		v20 = loc18;
-		v21.u0 = 0x3FFFFFFF;
-		v22 = v20 > v21;
-		loc4 = v22;
-		v20 = loc4;
-		if (!v20)
+		v21 = arg2;
+		v22.u0 = 0x04;
+		v21 += v22;
+		loc17 = v21;
+		v21 = loc17;
+		v22.u0 = ~0x03;
+		v21 &= v22;
+		loc18 = v21;
+		v21 = loc18;
+		v22.u0 = 0x3FFFFFFF;
+		v23 = v21 > v22;
+		loc4 = v23;
+		v21 = loc4;
+		if (!v21)
 		{
-			v20 = loc18;
-			v21.u0 = 0x02;
-			v20 <<= v21;
-			loc6 = v20;
-			v20 = loc6;
-			v20 = fn0011B67B(v20);
-			loc7 = v20;
-			v20 = arg0;
+			v21 = loc18;
+			v22.u0 = 0x02;
+			v21 <<= v22;
+			loc6 = v21;
+			v21 = loc6;
+			v21 = fn0011B67B(v21);
+			loc7 = v21;
+			v21 = arg0;
+			v22 = loc7;
+			*v21.u0 = v22;
+			v21 = loc18;
+			v22.u0 = 0x80000000;
+			v21 |= v22;
+			loc8 = v21;
+			v21 = arg0;
+			v22.u0 = 0x08;
+			v21 += v22;
+			loc9 = v21;
+			v21 = loc9;
+			v22 = loc8;
+			*v21.u0 = v22;
+			v21 = arg0;
+			v22.u0 = 0x04;
+			v21 += v22;
+			loc10 = v21;
+			v21 = loc10;
+			v22 = arg2;
+			*v21.u0 = v22;
 			v21 = loc7;
-			*v20.u0 = v21;
-			v20 = loc18;
-			v21.u0 = 0x80000000;
-			v20 |= v21;
-			loc8 = v20;
-			v20 = arg0;
-			v21.u0 = 0x08;
-			v20 += v21;
-			loc9 = v20;
-			v20 = loc9;
-			v21 = loc8;
-			*v20.u0 = v21;
-			v20 = arg0;
-			v21.u0 = 0x04;
-			v20 += v21;
-			loc10 = v20;
-			v20 = loc10;
-			v21 = arg2;
-			*v20.u0 = v21;
-			v20 = loc7;
-			loc3 = v20;
+			loc3 = v21;
 			goto l0011C690;
 		}
-		v20.u0 = 0x04;
-		v20 = ___cxa_allocate_exception(v20);
-		loc5 = v20;
-		v20 = loc5;
-		fn0011EE8C(v20);
-		v20 = loc5;
-		v21.u0 = 0x09C8;
-		v24.u0 = 339;
-		___cxa_throw(v20, v21, v24);
+		v21.u0 = 0x04;
+		v21 = ___cxa_allocate_exception(v21);
+		loc5 = v21;
+		v21 = loc5;
+		fn0011EE8C(v21);
+		v21 = loc5;
+		v22.u0 = 0x09C8;
+		v25.u0 = 339;
+		___cxa_throw(v21, v22, v25);
 	}
 l0011C690:
-	v20 = loc3;
-	v21 = arg1;
-	v24 = arg2;
-	v20 = fn000E5F91(v20, v21, v24);
-	v20 = loc3;
-	v21 = arg2;
-	v24.u0 = 0x02;
-	v21 <<= v24;
-	v20 += v21;
-	loc11 = v20;
-	v20 = loc11;
-	v21.u0 = 0x00;
-	*v20.u0 = v21;
+	v21 = loc3;
+	v22 = arg1;
+	v25 = arg2;
+	v21 = fn000E5F91(v21, v22, v25);
+	v21 = loc3;
+	v22 = arg2;
+	v25.u0 = 0x02;
+	v22 <<= v25;
+	v21 += v22;
+	loc11 = v21;
+	v21 = loc11;
+	v22.u0 = 0x00;
+	*v21.u0 = v22;
 }
 
 // 0011C6AF: void fn0011C6AF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011C6AF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v20.u3 = g_t140030.u3;
-	loc20 = v20;
-	v20 = arg1;
-	v21.u0 = 0x3FFFFFEF;
-	v22 = v20 > v21;
-	loc12 = v22;
-	v20 = loc12;
-	if (v20)
+	v21.u3 = g_t140030.u3;
+	loc20 = v21;
+	v21 = arg1;
+	v22.u0 = 0x3FFFFFEF;
+	v23 = v21 > v22;
+	loc12 = v23;
+	v21 = loc12;
+	if (v21)
 	{
-		v20 = arg0;
-		fn0011B8A5(v20);
+		v21 = arg0;
+		fn0011B8A5(v21);
 	}
-	v20 = arg1;
-	v21.u0 = 0x02;
-	v22 = v20 < v21;
-	loc13 = v22;
-	v20 = loc13;
-	if (v20)
+	v21 = arg1;
+	v22.u0 = 0x02;
+	v23 = v21 < v22;
+	loc13 = v23;
+	v21 = loc13;
+	if (v21)
 	{
-		v20 = arg1;
-		v21.u0 = 0xFF;
-		v20 &= v21;
-		loc14 = v20;
-		v20 = arg0;
-		v21.u0 = 0x08;
-		v20 += v21;
-		loc15 = v20;
-		v20 = loc15;
-		v21.u0 = 0x03;
-		v20 += v21;
-		loc16 = v20;
-		v20 = loc16;
-		v21 = loc14;
-		v23 = (byte) v21;
-		*v20.u3 = (word32) v23;
-		v20 = arg0;
-		loc3 = v20;
+		v21 = arg1;
+		v22.u0 = 0xFF;
+		v21 &= v22;
+		loc14 = v21;
+		v21 = arg0;
+		v22.u0 = 0x08;
+		v21 += v22;
+		loc15 = v21;
+		v21 = loc15;
+		v22.u0 = 0x03;
+		v21 += v22;
+		loc16 = v21;
+		v21 = loc16;
+		v22 = loc14;
+		v24 = (byte) v22;
+		*v21.u3 = (word32) v24;
+		v21 = arg0;
+		loc3 = v21;
 	}
 	else
 	{
-		v20 = arg1;
-		v21.u0 = 0x04;
-		v20 += v21;
-		loc17 = v20;
-		v20 = loc17;
-		v21.u0 = ~0x03;
-		v20 &= v21;
-		loc18 = v20;
-		v20 = loc18;
-		v21.u0 = 0x3FFFFFFF;
-		v22 = v20 > v21;
-		loc4 = v22;
-		v20 = loc4;
-		if (!v20)
+		v21 = arg1;
+		v22.u0 = 0x04;
+		v21 += v22;
+		loc17 = v21;
+		v21 = loc17;
+		v22.u0 = ~0x03;
+		v21 &= v22;
+		loc18 = v21;
+		v21 = loc18;
+		v22.u0 = 0x3FFFFFFF;
+		v23 = v21 > v22;
+		loc4 = v23;
+		v21 = loc4;
+		if (!v21)
 		{
-			v20 = loc18;
-			v21.u0 = 0x02;
-			v20 <<= v21;
-			loc6 = v20;
-			v20 = loc6;
-			v20 = fn0011B67B(v20);
-			loc7 = v20;
-			v20 = arg0;
+			v21 = loc18;
+			v22.u0 = 0x02;
+			v21 <<= v22;
+			loc6 = v21;
+			v21 = loc6;
+			v21 = fn0011B67B(v21);
+			loc7 = v21;
+			v21 = arg0;
+			v22 = loc7;
+			*v21.u0 = v22;
+			v21 = loc18;
+			v22.u0 = 0x80000000;
+			v21 |= v22;
+			loc8 = v21;
+			v21 = arg0;
+			v22.u0 = 0x08;
+			v21 += v22;
+			loc9 = v21;
+			v21 = loc9;
+			v22 = loc8;
+			*v21.u0 = v22;
+			v21 = arg0;
+			v22.u0 = 0x04;
+			v21 += v22;
+			loc10 = v21;
+			v21 = loc10;
+			v22 = arg1;
+			*v21.u0 = v22;
 			v21 = loc7;
-			*v20.u0 = v21;
-			v20 = loc18;
-			v21.u0 = 0x80000000;
-			v20 |= v21;
-			loc8 = v20;
-			v20 = arg0;
-			v21.u0 = 0x08;
-			v20 += v21;
-			loc9 = v20;
-			v20 = loc9;
-			v21 = loc8;
-			*v20.u0 = v21;
-			v20 = arg0;
-			v21.u0 = 0x04;
-			v20 += v21;
-			loc10 = v20;
-			v20 = loc10;
-			v21 = arg1;
-			*v20.u0 = v21;
-			v20 = loc7;
-			loc3 = v20;
+			loc3 = v21;
 			goto l0011C770;
 		}
-		v20.u0 = 0x04;
-		v20 = ___cxa_allocate_exception(v20);
-		loc5 = v20;
-		v20 = loc5;
-		fn0011EE8C(v20);
-		v20 = loc5;
-		v21.u0 = 0x09C8;
-		v24.u0 = 339;
-		___cxa_throw(v20, v21, v24);
+		v21.u0 = 0x04;
+		v21 = ___cxa_allocate_exception(v21);
+		loc5 = v21;
+		v21 = loc5;
+		fn0011EE8C(v21);
+		v21 = loc5;
+		v22.u0 = 0x09C8;
+		v25.u0 = 339;
+		___cxa_throw(v21, v22, v25);
 	}
 l0011C770:
-	v20 = loc3;
-	v21 = arg1;
-	v24 = arg2;
-	v20 = fn0011C78F(v20, v21, v24);
-	v20 = loc3;
-	v21 = arg1;
-	v24.u0 = 0x02;
-	v21 <<= v24;
-	v20 += v21;
-	loc11 = v20;
-	v20 = loc11;
-	v21.u0 = 0x00;
-	*v20.u0 = v21;
+	v21 = loc3;
+	v22 = arg1;
+	v25 = arg2;
+	v21 = fn0011C78F(v21, v22, v25);
+	v21 = loc3;
+	v22 = arg1;
+	v25.u0 = 0x02;
+	v22 <<= v25;
+	v21 += v22;
+	loc11 = v21;
+	v21 = loc11;
+	v22.u0 = 0x00;
+	*v21.u0 = v22;
 }
 
 // 0011C78F: Stack Eq_n fn0011C78F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011C78F(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v7.u3 = g_t140030.u3;
-	loc7 = v7;
-	v7 = arg1;
-	v8.u0 = 0x00;
-	v9 = v7 == v8;
-	loc3 = v9;
-	v7 = loc3;
-	if (v7)
+	v8.u3 = g_t140030.u3;
+	loc7 = v8;
+	v8 = arg1;
+	v9.u0 = 0x00;
+	v10 = v8 == v9;
+	loc3 = v10;
+	v8 = loc3;
+	if (v8)
 	{
-		v7 = arg0;
-		loc5 = v7;
+		v8 = arg0;
+		loc5 = v8;
 	}
 	else
 	{
-		v7 = arg0;
-		v8 = arg2;
-		v10 = arg1;
-		v7 = fn000DF09C(v7, v8, v10);
-		loc4 = v7;
-		v7 = loc4;
-		loc5 = v7;
+		v8 = arg0;
+		v9 = arg2;
+		v11 = arg1;
+		v8 = fn000DF09C(v8, v9, v11);
+		loc4 = v8;
+		v8 = loc4;
+		loc5 = v8;
 	}
-	v7 = loc5;
-	return v7;
+	v8 = loc5;
+	return v8;
 }
 
 // 0011C7BA: void fn0011C7BA(Stack Eq_n arg0)
 void fn0011C7BA(Eq_n arg0)
 {
-	v9.u3 = g_t140030.u3;
-	loc7 = v9;
-	v9 = arg0;
-	v10.u0 = 0x08;
-	v9 += v10;
-	loc1 = v9;
-	v9 = loc1;
-	v10.u0 = 0x03;
-	v9 += v10;
-	loc2 = v9;
-	v9 = loc2;
-	v11.u3 = *v9.u3;
-	v9.u3 = (word32) v11;
-	loc3 = v9;
-	v9 = loc3;
-	v10.u0 = 0x18;
-	v9 <<= v10;
-	v10.u0 = 0x18;
-	v9 >>= v10;
-	v10.u0 = 0x00;
-	v12 = v9 < v10;
-	loc4 = v12;
-	v9 = loc4;
-	if (v9)
+	v10.u3 = g_t140030.u3;
+	loc7 = v10;
+	v10 = arg0;
+	v11.u0 = 0x08;
+	v10 += v11;
+	loc1 = v10;
+	v10 = loc1;
+	v11.u0 = 0x03;
+	v10 += v11;
+	loc2 = v10;
+	v10 = loc2;
+	v12.u3 = *v10.u3;
+	v10.u3 = (word32) v12;
+	loc3 = v10;
+	v10 = loc3;
+	v11.u0 = 0x18;
+	v10 <<= v11;
+	v11.u0 = 0x18;
+	v10 >>= v11;
+	v11.u0 = 0x00;
+	v13 = v10 < v11;
+	loc4 = v13;
+	v10 = loc4;
+	if (v10)
 	{
-		v9 = arg0;
-		v9.u3 = *v9.u3;
-		loc5 = v9;
-		v9 = loc5;
-		fn0011B709(v9);
+		v10 = arg0;
+		v10.u3 = *v10.u3;
+		loc5 = v10;
+		v10 = loc5;
+		fn0011B709(v10);
 	}
 }
 
 // 0011C7F6: Stack Eq_n fn0011C7F6(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011C7F6(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v25.u3 = g_t140030.u3;
-	loc25 = v25;
-	v25 = arg0;
-	v26.u0 = 0x08;
-	v25 += v26;
-	loc16 = v25;
-	v25 = loc16;
-	v26.u0 = 0x03;
-	v25 += v26;
-	loc17 = v25;
-	v25 = loc17;
-	v27.u3 = *v25.u3;
-	v25.u3 = (word32) v27;
-	loc18 = v25;
-	v25 = loc18;
-	v26.u0 = 0x18;
-	v25 <<= v26;
-	v26.u0 = 0x18;
-	v25 >>= v26;
-	v26.u0 = 0x00;
-	v28 = v25 < v26;
-	loc19 = v28;
-	v25 = loc19;
-	if (v25)
+	v26.u3 = g_t140030.u3;
+	loc25 = v26;
+	v26 = arg0;
+	v27.u0 = 0x08;
+	v26 += v27;
+	loc16 = v26;
+	v26 = loc16;
+	v27.u0 = 0x03;
+	v26 += v27;
+	loc17 = v26;
+	v26 = loc17;
+	v28.u3 = *v26.u3;
+	v26.u3 = (word32) v28;
+	loc18 = v26;
+	v26 = loc18;
+	v27.u0 = 0x18;
+	v26 <<= v27;
+	v27.u0 = 0x18;
+	v26 >>= v27;
+	v27.u0 = 0x00;
+	v29 = v26 < v27;
+	loc19 = v29;
+	v26 = loc19;
+	if (v26)
 	{
-		v25 = loc16;
-		v25.u3 = *v25.u3;
-		loc20 = v25;
-		v25 = loc20;
-		v26.u0 = 0x7FFFFFFF;
-		v25 &= v26;
-		loc21 = v25;
-		v25 = loc21;
-		v26.u0 = ~0x00;
-		v25 += v26;
-		loc23 = v25;
-		v25 = loc23;
-		loc3 = v25;
+		v26 = loc16;
+		v26.u3 = *v26.u3;
+		loc20 = v26;
+		v26 = loc20;
+		v27.u0 = 0x7FFFFFFF;
+		v26 &= v27;
+		loc21 = v26;
+		v26 = loc21;
+		v27.u0 = ~0x00;
+		v26 += v27;
+		loc23 = v26;
+		v26 = loc23;
+		loc3 = v26;
 	}
 	else
 	{
-		v25.u0 = 0x01;
-		loc3 = v25;
+		v26.u0 = 0x01;
+		loc3 = v26;
 	}
-	v25 = loc3;
-	v26 = arg2;
-	v28 = v25 < v26;
-	loc22 = v28;
-	v25 = loc22;
-	if (v25)
+	v26 = loc3;
+	v27 = arg2;
+	v29 = v26 < v27;
+	loc22 = v29;
+	v26 = loc22;
+	if (v26)
 	{
-		v25 = loc19;
-		if (v25)
+		v26 = loc19;
+		if (v26)
 		{
-			v25 = arg0;
-			v26.u0 = 0x04;
-			v25 += v26;
-			loc11 = v25;
-			v25 = loc11;
-			v25 = *v25.u0;
-			loc12 = v25;
-			v25 = loc12;
-			loc15 = v25;
+			v26 = arg0;
+			v27.u0 = 0x04;
+			v26 += v27;
+			loc11 = v26;
+			v26 = loc11;
+			v26 = *v26.u0;
+			loc12 = v26;
+			v26 = loc12;
+			loc15 = v26;
 		}
 		else
 		{
-			v25 = loc18;
-			v26.u0 = 0xFF;
-			v25 &= v26;
-			loc13 = v25;
-			v25 = loc13;
-			loc15 = v25;
+			v26 = loc18;
+			v27.u0 = 0xFF;
+			v26 &= v27;
+			loc13 = v26;
+			v26 = loc13;
+			loc15 = v26;
 		}
-		v25 = arg2;
-		v26 = loc3;
-		v25 -= v26;
-		loc14 = v25;
-		v25 = arg0;
-		v26 = loc3;
-		v29 = loc14;
-		v30 = loc15;
-		v31.u0 = 0x00;
-		v32 = loc15;
-		v33 = arg2;
-		v34 = arg1;
-		fn0011C92E(v25, v26, v29, v30, v31, v32, v33, v34);
-	}
-	else
-	{
-		v25 = loc19;
-		if (v25)
-		{
-			v25 = arg0;
-			v25 = *v25.u0;
-			loc4 = v25;
-			v25 = loc4;
-			loc5 = v25;
-		}
-		else
-		{
-			v25 = arg0;
-			loc5 = v25;
-		}
-		v25 = loc5;
-		v26 = arg1;
-		v29 = arg2;
-		v25 = fn0011C903(v25, v26, v29);
-		v25 = loc5;
 		v26 = arg2;
-		v29.u0 = 0x02;
-		v26 <<= v29;
-		v25 += v26;
-		loc6 = v25;
-		v25 = loc6;
-		v26.u0 = 0x00;
-		*v25.u0 = v26;
-		v25 = loc17;
-		v35 = *v25.u0;
-		v25.u3 = (word32) v35;
-		loc7 = v25;
-		v25 = loc7;
-		v26.u0 = 0x18;
-		v25 <<= v26;
-		v26.u0 = 0x18;
-		v25 >>= v26;
-		v26.u0 = 0x00;
-		v28 = v25 < v26;
-		loc8 = v28;
-		v25 = loc8;
-		if (v25)
+		v27 = loc3;
+		v26 -= v27;
+		loc14 = v26;
+		v26 = arg0;
+		v27 = loc3;
+		v30 = loc14;
+		v31 = loc15;
+		v32.u0 = 0x00;
+		v33 = loc15;
+		v34 = arg2;
+		v35 = arg1;
+		fn0011C92E(v26, v27, v30, v31, v32, v33, v34, v35);
+	}
+	else
+	{
+		v26 = loc19;
+		if (v26)
 		{
-			v25 = arg0;
-			v26.u0 = 0x04;
-			v25 += v26;
-			loc9 = v25;
-			v25 = loc9;
-			v26 = arg2;
-			*v25.u3 = (word32) v26;
+			v26 = arg0;
+			v26 = *v26.u0;
+			loc4 = v26;
+			v26 = loc4;
+			loc5 = v26;
 		}
 		else
 		{
-			v25 = arg2;
-			v26.u0 = 0xFF;
-			v25 &= v26;
-			loc10 = v25;
-			v25 = loc17;
-			v26 = loc10;
-			v36 = (byte) v26;
-			v25.u4->t0000.u0 = (bool) v36;
+			v26 = arg0;
+			loc5 = v26;
+		}
+		v26 = loc5;
+		v27 = arg1;
+		v30 = arg2;
+		v26 = fn0011C903(v26, v27, v30);
+		v26 = loc5;
+		v27 = arg2;
+		v30.u0 = 0x02;
+		v27 <<= v30;
+		v26 += v27;
+		loc6 = v26;
+		v26 = loc6;
+		v27.u0 = 0x00;
+		*v26.u0 = v27;
+		v26 = loc17;
+		v36 = *v26.u0;
+		v26.u3 = (word32) v36;
+		loc7 = v26;
+		v26 = loc7;
+		v27.u0 = 0x18;
+		v26 <<= v27;
+		v27.u0 = 0x18;
+		v26 >>= v27;
+		v27.u0 = 0x00;
+		v29 = v26 < v27;
+		loc8 = v29;
+		v26 = loc8;
+		if (v26)
+		{
+			v26 = arg0;
+			v27.u0 = 0x04;
+			v26 += v27;
+			loc9 = v26;
+			v26 = loc9;
+			v27 = arg2;
+			*v26.u3 = (word32) v27;
+		}
+		else
+		{
+			v26 = arg2;
+			v27.u0 = 0xFF;
+			v26 &= v27;
+			loc10 = v26;
+			v26 = loc17;
+			v27 = loc10;
+			v37 = (byte) v27;
+			v26.u4->t0000.u0 = (bool) v37;
 		}
 	}
-	v25 = arg0;
-	return v25;
+	v26 = arg0;
+	return v26;
 }
 
 // 0011C903: Stack Eq_n fn0011C903(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011C903(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v7.u3 = g_t140030.u3;
-	loc7 = v7;
-	v7 = arg2;
-	v8.u0 = 0x00;
-	v9 = v7 == v8;
-	loc3 = v9;
-	v7 = loc3;
-	if (v7)
+	v8.u3 = g_t140030.u3;
+	loc7 = v8;
+	v8 = arg2;
+	v9.u0 = 0x00;
+	v10 = v8 == v9;
+	loc3 = v10;
+	v8 = loc3;
+	if (v8)
 	{
-		v7 = arg0;
-		loc5 = v7;
+		v8 = arg0;
+		loc5 = v8;
 	}
 	else
 	{
-		v7 = arg0;
-		v8 = arg1;
-		v10 = arg2;
-		v7 = fn000DF0F0(v7, v8, v10);
-		loc4 = v7;
-		v7 = loc4;
-		loc5 = v7;
+		v8 = arg0;
+		v9 = arg1;
+		v11 = arg2;
+		v8 = fn000DF0F0(v8, v9, v11);
+		loc4 = v8;
+		v8 = loc4;
+		loc5 = v8;
 	}
-	v7 = loc5;
-	return v7;
+	v8 = loc5;
+	return v8;
 }
 
 // 0011C92E: void fn0011C92E(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 void fn0011C92E(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v41.u3 = g_t140030.u3;
-	loc46 = v41;
-	v41.u0 = 0x3FFFFFEE;
+	v42.u3 = g_t140030.u3;
+	loc46 = v42;
+	v42.u0 = 0x3FFFFFEE;
+	v43 = arg1;
+	v42 -= v43;
+	loc43 = v42;
+	v42 = loc43;
+	v43 = arg2;
+	v44 = v42 < v43;
+	loc44 = v44;
+	v42 = loc44;
+	if (v42)
+	{
+		v42 = arg0;
+		fn0011B8A5(v42);
+	}
+	v42 = arg0;
+	v43.u0 = 0x08;
+	v42 += v43;
+	loc9 = v42;
+	v42 = loc9;
+	v43.u0 = 0x03;
+	v42 += v43;
+	loc10 = v42;
+	v42 = loc10;
+	v45 = *v42.u0;
+	v42.u3 = (word32) v45;
+	loc11 = v42;
+	v42 = loc11;
+	v43.u0 = 0x18;
+	v42 <<= v43;
+	v43.u0 = 0x18;
+	v42 >>= v43;
+	v43.u0 = 0x00;
+	v44 = v42 < v43;
+	loc12 = v44;
+	v42 = loc12;
+	if (v42)
+	{
+		v42 = arg0;
+		v42.u3 = *v42.u3;
+		loc13 = v42;
+		v42 = loc13;
+		loc28 = v42;
+	}
+	else
+	{
+		v42 = arg0;
+		loc28 = v42;
+	}
 	v42 = arg1;
-	v41 -= v42;
-	loc43 = v41;
-	v41 = loc43;
-	v42 = arg2;
-	v43 = v41 < v42;
-	loc44 = v43;
-	v41 = loc44;
-	if (v41)
+	v43.u0 = 0x1FFFFFE7;
+	v44 = v42 < v43;
+	loc14 = v44;
+	v42 = loc14;
+	if (v42)
 	{
-		v41 = arg0;
-		fn0011B8A5(v41);
-	}
-	v41 = arg0;
-	v42.u0 = 0x08;
-	v41 += v42;
-	loc9 = v41;
-	v41 = loc9;
-	v42.u0 = 0x03;
-	v41 += v42;
-	loc10 = v41;
-	v41 = loc10;
-	v44 = *v41.u0;
-	v41.u3 = (word32) v44;
-	loc11 = v41;
-	v41 = loc11;
-	v42.u0 = 0x18;
-	v41 <<= v42;
-	v42.u0 = 0x18;
-	v41 >>= v42;
-	v42.u0 = 0x00;
-	v43 = v41 < v42;
-	loc12 = v43;
-	v41 = loc12;
-	if (v41)
-	{
-		v41 = arg0;
-		v41.u3 = *v41.u3;
-		loc13 = v41;
-		v41 = loc13;
-		loc28 = v41;
-	}
-	else
-	{
-		v41 = arg0;
-		loc28 = v41;
-	}
-	v41 = arg1;
-	v42.u0 = 0x1FFFFFE7;
-	v43 = v41 < v42;
-	loc14 = v43;
-	v41 = loc14;
-	if (v41)
-	{
-		v41 = arg2;
+		v42 = arg2;
+		v43 = arg1;
+		v42 += v43;
+		loc15 = v42;
 		v42 = arg1;
-		v41 += v42;
-		loc15 = v41;
-		v41 = arg1;
-		v42.u0 = 0x01;
-		v41 <<= v42;
-		loc16 = v41;
-		v41 = loc15;
-		v42 = loc16;
-		v43 = v41 < v42;
-		loc17 = v43;
-		v41 = loc17;
-		if (v41)
-			v41 = loc16;
+		v43.u0 = 0x01;
+		v42 <<= v43;
+		loc16 = v42;
+		v42 = loc15;
+		v43 = loc16;
+		v44 = v42 < v43;
+		loc17 = v44;
+		v42 = loc17;
+		if (v42)
+			v42 = loc16;
 		else
-			v41 = loc15;
-		loc8 = v41;
-		v41 = loc8;
-		v42.u0 = 0x02;
-		v43 = v41 < v42;
-		loc18 = v43;
-		v41 = loc8;
-		v42.u0 = 0x04;
-		v41 += v42;
-		loc19 = v41;
-		v41 = loc19;
-		v42.u0 = ~0x03;
-		v41 &= v42;
-		loc20 = v41;
-		v41 = loc18;
-		if (v41)
-			v41.u0 = 0x02;
+			v42 = loc15;
+		loc8 = v42;
+		v42 = loc8;
+		v43.u0 = 0x02;
+		v44 = v42 < v43;
+		loc18 = v44;
+		v42 = loc8;
+		v43.u0 = 0x04;
+		v42 += v43;
+		loc19 = v42;
+		v42 = loc19;
+		v43.u0 = ~0x03;
+		v42 &= v43;
+		loc20 = v42;
+		v42 = loc18;
+		if (v42)
+			v42.u0 = 0x02;
 		else
-			v41 = loc20;
-		loc21 = v41;
-		v41 = loc21;
-		v42.u0 = 0x3FFFFFFF;
-		v43 = v41 > v42;
-		loc22 = v43;
-		v41 = loc22;
-		if (v41)
+			v42 = loc20;
+		loc21 = v42;
+		v42 = loc21;
+		v43.u0 = 0x3FFFFFFF;
+		v44 = v42 > v43;
+		loc22 = v44;
+		v42 = loc22;
+		if (v42)
 		{
-			v41.u0 = 0x04;
-			v41 = ___cxa_allocate_exception(v41);
-			loc23 = v41;
-			v41 = loc23;
-			fn0011EE8C(v41);
-			v41 = loc23;
-			v42.u0 = 0x09C8;
-			v45.u0 = 339;
-			___cxa_throw(v41, v42, v45);
+			v42.u0 = 0x04;
+			v42 = ___cxa_allocate_exception(v42);
+			loc23 = v42;
+			v42 = loc23;
+			fn0011EE8C(v42);
+			v42 = loc23;
+			v43.u0 = 0x09C8;
+			v46.u0 = 339;
+			___cxa_throw(v42, v43, v46);
 		}
 		else
 		{
-			v41 = loc21;
-			loc25 = v41;
+			v42 = loc21;
+			loc25 = v42;
 		}
 	}
 	else
 	{
-		v41.u0 = 0x3FFFFFEF;
-		loc25 = v41;
+		v42.u0 = 0x3FFFFFEF;
+		loc25 = v42;
 	}
-	v41 = loc25;
-	v42.u0 = 0x02;
-	v41 <<= v42;
-	loc24 = v41;
-	v41 = loc24;
-	v41 = fn0011B67B(v41);
-	loc26 = v41;
-	v41 = arg4;
-	v42.u0 = 0x00;
-	v43 = v41 == v42;
-	loc27 = v43;
-	v41 = loc27;
-	v43 = v41 == 0x00;
-	if (v43)
-	{
-		v41 = loc26;
-		v42 = loc28;
-		v45 = arg4;
-		v41 = fn000E5F91(v41, v42, v45);
-	}
-	v41 = arg6;
-	v42.u0 = 0x00;
-	v43 = v41 == v42;
-	loc29 = v43;
-	v41 = loc29;
-	v43 = v41 == 0x00;
-	if (v43)
-	{
-		v41 = loc26;
-		v42 = arg4;
-		v45.u0 = 0x02;
-		v42 <<= v45;
-		v41 += v42;
-		loc30 = v41;
-		v41 = loc30;
-		v42 = arg7;
-		v45 = arg6;
-		v41 = fn000E5F91(v41, v42, v45);
-	}
-	v41 = arg3;
-	v42 = arg5;
-	v41 -= v42;
-	loc31 = v41;
-	v41 = loc31;
+	v42 = loc25;
+	v43.u0 = 0x02;
+	v42 <<= v43;
+	loc24 = v42;
+	v42 = loc24;
+	v42 = fn0011B67B(v42);
+	loc26 = v42;
 	v42 = arg4;
-	v41 -= v42;
-	loc32 = v41;
-	v41 = loc32;
-	v42.u0 = 0x00;
-	v43 = v41 == v42;
-	loc33 = v43;
-	v41 = loc33;
-	v43 = v41 == 0x00;
-	if (v43)
+	v43.u0 = 0x00;
+	v44 = v42 == v43;
+	loc27 = v44;
+	v42 = loc27;
+	v44 = v42 == 0x00;
+	if (v44)
 	{
-		v41 = loc28;
-		v42 = arg4;
-		v45.u0 = 0x02;
-		v42 <<= v45;
-		v41 += v42;
-		loc34 = v41;
-		v41 = loc34;
-		v42 = arg5;
-		v45.u0 = 0x02;
-		v42 <<= v45;
-		v41 += v42;
-		loc35 = v41;
-		v41 = loc26;
-		v42 = arg4;
-		v45.u0 = 0x02;
-		v42 <<= v45;
-		v41 += v42;
-		loc36 = v41;
-		v41 = loc36;
-		v42 = arg6;
-		v45.u0 = 0x02;
-		v42 <<= v45;
-		v41 += v42;
-		loc37 = v41;
-		v41 = loc37;
-		v42 = loc35;
-		v45 = loc32;
-		v41 = fn000E5F91(v41, v42, v45);
+		v42 = loc26;
+		v43 = loc28;
+		v46 = arg4;
+		v42 = fn000E5F91(v42, v43, v46);
 	}
-	v41 = arg1;
-	v42.u0 = 0x01;
-	v43 = v41 == v42;
-	loc38 = v43;
-	v41 = loc38;
-	v43 = v41 == 0x00;
-	if (v43)
-	{
-		v41 = loc28;
-		fn0011B709(v41);
-	}
-	v41 = arg0;
-	v42 = loc26;
-	*v41.u0 = v42;
-	v41 = loc25;
-	v42.u0 = 0x80000000;
-	v41 |= v42;
-	loc39 = v41;
-	v41 = loc9;
-	v42 = loc39;
-	*v41.u0 = v42;
-	v41 = loc31;
 	v42 = arg6;
-	v41 += v42;
-	loc40 = v41;
-	v41 = arg0;
-	v42.u0 = 0x04;
-	v41 += v42;
-	loc41 = v41;
-	v41 = loc41;
-	v42 = loc40;
-	*v41.u0 = v42;
-	v41 = loc26;
-	v42 = loc40;
-	v45.u0 = 0x02;
-	v42 <<= v45;
-	v41 += v42;
-	loc42 = v41;
-	v41 = loc42;
-	v42.u0 = 0x00;
-	*v41.u0 = v42;
+	v43.u0 = 0x00;
+	v44 = v42 == v43;
+	loc29 = v44;
+	v42 = loc29;
+	v44 = v42 == 0x00;
+	if (v44)
+	{
+		v42 = loc26;
+		v43 = arg4;
+		v46.u0 = 0x02;
+		v43 <<= v46;
+		v42 += v43;
+		loc30 = v42;
+		v42 = loc30;
+		v43 = arg7;
+		v46 = arg6;
+		v42 = fn000E5F91(v42, v43, v46);
+	}
+	v42 = arg3;
+	v43 = arg5;
+	v42 -= v43;
+	loc31 = v42;
+	v42 = loc31;
+	v43 = arg4;
+	v42 -= v43;
+	loc32 = v42;
+	v42 = loc32;
+	v43.u0 = 0x00;
+	v44 = v42 == v43;
+	loc33 = v44;
+	v42 = loc33;
+	v44 = v42 == 0x00;
+	if (v44)
+	{
+		v42 = loc28;
+		v43 = arg4;
+		v46.u0 = 0x02;
+		v43 <<= v46;
+		v42 += v43;
+		loc34 = v42;
+		v42 = loc34;
+		v43 = arg5;
+		v46.u0 = 0x02;
+		v43 <<= v46;
+		v42 += v43;
+		loc35 = v42;
+		v42 = loc26;
+		v43 = arg4;
+		v46.u0 = 0x02;
+		v43 <<= v46;
+		v42 += v43;
+		loc36 = v42;
+		v42 = loc36;
+		v43 = arg6;
+		v46.u0 = 0x02;
+		v43 <<= v46;
+		v42 += v43;
+		loc37 = v42;
+		v42 = loc37;
+		v43 = loc35;
+		v46 = loc32;
+		v42 = fn000E5F91(v42, v43, v46);
+	}
+	v42 = arg1;
+	v43.u0 = 0x01;
+	v44 = v42 == v43;
+	loc38 = v44;
+	v42 = loc38;
+	v44 = v42 == 0x00;
+	if (v44)
+	{
+		v42 = loc28;
+		fn0011B709(v42);
+	}
+	v42 = arg0;
+	v43 = loc26;
+	*v42.u0 = v43;
+	v42 = loc25;
+	v43.u0 = 0x80000000;
+	v42 |= v43;
+	loc39 = v42;
+	v42 = loc9;
+	v43 = loc39;
+	*v42.u0 = v43;
+	v42 = loc31;
+	v43 = arg6;
+	v42 += v43;
+	loc40 = v42;
+	v42 = arg0;
+	v43.u0 = 0x04;
+	v42 += v43;
+	loc41 = v42;
+	v42 = loc41;
+	v43 = loc40;
+	*v42.u0 = v43;
+	v42 = loc26;
+	v43 = loc40;
+	v46.u0 = 0x02;
+	v43 <<= v46;
+	v42 += v43;
+	loc42 = v42;
+	v42 = loc42;
+	v43.u0 = 0x00;
+	*v42.u0 = v43;
 }
 
 // 0011CAF3: void fn0011CAF3(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011CAF3(Eq_n arg0, Eq_n arg1)
 {
-	v57.u3 = g_t140030.u3;
-	loc56 = v57;
-	v57 = arg1;
-	v58.u0 = 0x3FFFFFEF;
-	v59 = v57 > v58;
-	loc19 = v59;
-	v57 = loc19;
-	if (v57)
-	{
-		v57 = arg0;
-		fn0011B8A5(v57);
-	}
-	v57 = arg0;
-	v58.u0 = 0x08;
-	v57 += v58;
-	loc30 = v57;
-	v57 = loc30;
-	v58.u0 = 0x03;
-	v57 += v58;
-	loc41 = v57;
-	v57 = loc41;
-	v60.u3 = *v57.u3;
-	v57.u3 = (word32) v60;
-	loc48 = v57;
-	v57 = loc48;
-	v58.u0 = 0x18;
-	v57 <<= v58;
-	v58.u0 = 0x18;
-	v57 >>= v58;
-	v58.u0 = 0x00;
-	v59 = v57 < v58;
-	loc49 = v59;
-	v57 = loc49;
-	if (v57)
-	{
-		v57 = loc30;
-		v57.u3 = *v57.u3;
-		loc50 = v57;
-		v57 = loc50;
-		v58.u0 = 0x7FFFFFFF;
-		v57 &= v58;
-		loc51 = v57;
-		v57 = loc51;
-		v58.u0 = ~0x00;
-		v57 += v58;
-		loc53 = v57;
-		v57 = arg0;
-		v58.u0 = 0x04;
-		v57 += v58;
-		loc52 = v57;
-		v57 = loc52;
-		v57.u3 = *v57.u3;
-		loc9 = v57;
-		v57 = loc9;
-		loc12 = v57;
-		v57 = loc53;
-		loc17 = v57;
-	}
-	else
-	{
-		v57 = loc48;
-		v58.u0 = 0xFF;
-		v57 &= v58;
-		loc10 = v57;
-		v57 = loc10;
-		loc12 = v57;
-		v57.u0 = 0x01;
-		loc17 = v57;
-	}
-	v57 = loc12;
+	v58.u3 = g_t140030.u3;
+	loc56 = v58;
 	v58 = arg1;
-	v59 = v57 > v58;
-	loc11 = v59;
-	v57 = loc11;
-	if (v57)
-		v57 = loc12;
-	else
-		v57 = arg1;
-	loc8 = v57;
-	v57 = loc8;
-	v58.u0 = 0x02;
-	v59 = v57 < v58;
-	loc13 = v59;
-	v57 = loc8;
-	v58.u0 = 0x04;
-	v57 += v58;
-	loc14 = v57;
-	v57 = loc14;
-	v58.u0 = ~0x03;
-	v57 &= v58;
-	loc15 = v57;
-	v57 = loc15;
-	v58.u0 = ~0x00;
-	v57 += v58;
-	loc54 = v57;
-	v57 = loc13;
-	if (v57)
-		v57.u0 = 0x01;
-	else
-		v57 = loc54;
-	loc6 = v57;
-	v57 = loc6;
-	v58 = loc17;
-	v59 = v57 == v58;
-	loc16 = v59;
-	v57 = loc16;
-	v59 = v57 == 0x00;
-	if (!v59)
-		return;
-	v57 = loc13;
-	if (v57)
+	v59.u0 = 0x3FFFFFEF;
+	v60 = v58 > v59;
+	loc19 = v60;
+	v58 = loc19;
+	if (v58)
 	{
-		v57 = arg0;
-		v57 = *v57.u0;
-		loc35 = v57;
-		v57 = loc49;
-		if (v57)
+		v58 = arg0;
+		fn0011B8A5(v58);
+	}
+	v58 = arg0;
+	v59.u0 = 0x08;
+	v58 += v59;
+	loc30 = v58;
+	v58 = loc30;
+	v59.u0 = 0x03;
+	v58 += v59;
+	loc41 = v58;
+	v58 = loc41;
+	v61.u3 = *v58.u3;
+	v58.u3 = (word32) v61;
+	loc48 = v58;
+	v58 = loc48;
+	v59.u0 = 0x18;
+	v58 <<= v59;
+	v59.u0 = 0x18;
+	v58 >>= v59;
+	v59.u0 = 0x00;
+	v60 = v58 < v59;
+	loc49 = v60;
+	v58 = loc49;
+	if (v58)
+	{
+		v58 = loc30;
+		v58.u3 = *v58.u3;
+		loc50 = v58;
+		v58 = loc50;
+		v59.u0 = 0x7FFFFFFF;
+		v58 &= v59;
+		loc51 = v58;
+		v58 = loc51;
+		v59.u0 = ~0x00;
+		v58 += v59;
+		loc53 = v58;
+		v58 = arg0;
+		v59.u0 = 0x04;
+		v58 += v59;
+		loc52 = v58;
+		v58 = loc52;
+		v58.u3 = *v58.u3;
+		loc9 = v58;
+		v58 = loc9;
+		loc12 = v58;
+		v58 = loc53;
+		loc17 = v58;
+	}
+	else
+	{
+		v58 = loc48;
+		v59.u0 = 0xFF;
+		v58 &= v59;
+		loc10 = v58;
+		v58 = loc10;
+		loc12 = v58;
+		v58.u0 = 0x01;
+		loc17 = v58;
+	}
+	v58 = loc12;
+	v59 = arg1;
+	v60 = v58 > v59;
+	loc11 = v60;
+	v58 = loc11;
+	if (v58)
+		v58 = loc12;
+	else
+		v58 = arg1;
+	loc8 = v58;
+	v58 = loc8;
+	v59.u0 = 0x02;
+	v60 = v58 < v59;
+	loc13 = v60;
+	v58 = loc8;
+	v59.u0 = 0x04;
+	v58 += v59;
+	loc14 = v58;
+	v58 = loc14;
+	v59.u0 = ~0x03;
+	v58 &= v59;
+	loc15 = v58;
+	v58 = loc15;
+	v59.u0 = ~0x00;
+	v58 += v59;
+	loc54 = v58;
+	v58 = loc13;
+	if (v58)
+		v58.u0 = 0x01;
+	else
+		v58 = loc54;
+	loc6 = v58;
+	v58 = loc6;
+	v59 = loc17;
+	v60 = v58 == v59;
+	loc16 = v60;
+	v58 = loc16;
+	v60 = v58 == 0x00;
+	if (!v60)
+		return;
+	v58 = loc13;
+	if (v58)
+	{
+		v58 = arg0;
+		v58 = *v58.u0;
+		loc35 = v58;
+		v58 = loc49;
+		if (v58)
 		{
-			v57 = loc35;
-			loc2 = v57;
-			v57.u0 = 0x00;
-			loc3 = v57;
-			v57 = arg0;
-			loc5 = v57;
-			v57.u0 = 0x15;
-			loc55 = v57;
+			v58 = loc35;
+			loc2 = v58;
+			v58.u0 = 0x00;
+			loc3 = v58;
+			v58 = arg0;
+			loc5 = v58;
+			v58.u0 = 0x15;
+			loc55 = v58;
 		}
 		else
 		{
-			v57 = loc48;
-			v58.u0 = 0xFF;
-			v57 &= v58;
-			loc36 = v57;
-			v57 = loc36;
-			v58.u0 = 0x01;
-			v57 += v58;
-			loc37 = v57;
-			v57 = arg0;
+			v58 = loc48;
+			v59.u0 = 0xFF;
+			v58 &= v59;
+			loc36 = v58;
+			v58 = loc36;
+			v59.u0 = 0x01;
+			v58 += v59;
+			loc37 = v58;
+			v58 = arg0;
+			v59 = loc35;
+			v62 = loc37;
+			v58 = fn000E5F91(v58, v59, v62);
 			v58 = loc35;
-			v61 = loc37;
-			v57 = fn000E5F91(v57, v58, v61);
-			v57 = loc35;
-			fn0011B709(v57);
-			v57.u0 = 0x17;
-			loc55 = v57;
+			fn0011B709(v58);
+			v58.u0 = 0x17;
+			loc55 = v58;
 		}
 		goto l0011CD04;
 	}
-	v57 = loc6;
-	v58 = loc17;
-	v59 = v57 > v58;
-	loc18 = v59;
-	v57 = loc6;
-	v58.u0 = 0x01;
-	v57 += v58;
-	loc20 = v57;
-	v57 = loc20;
-	v58.u0 = 0x3FFFFFFF;
-	v59 = v57 > v58;
-	loc21 = v59;
-	v57 = loc18;
-	if (!v57)
+	v58 = loc6;
+	v59 = loc17;
+	v60 = v58 > v59;
+	loc18 = v60;
+	v58 = loc6;
+	v59.u0 = 0x01;
+	v58 += v59;
+	loc20 = v58;
+	v58 = loc20;
+	v59.u0 = 0x3FFFFFFF;
+	v60 = v58 > v59;
+	loc21 = v60;
+	v58 = loc18;
+	if (!v58)
 	{
-		v57 = loc21;
-		if (v57)
+		v58 = loc21;
+		if (v58)
 		{
-			v57.u0 = 0x04;
-			v57 = ___cxa_allocate_exception(v57);
-			loc25 = v57;
-			v57 = loc25;
-			fn0011EE8C(v57);
-			v57.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v57;
-			v57.u0 = 0x0173;
+			v58.u0 = 0x04;
+			v58 = ___cxa_allocate_exception(v58);
+			loc25 = v58;
 			v58 = loc25;
-			v61.u0 = 0x09C8;
-			v62 = 339;
-			invoke_viii(v57, v58, v61, v62);
-			v57.u3 = g_t140048.u3;
-			loc26 = v57;
-			v57.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v57;
+			fn0011EE8C(v58);
+			v58.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v58;
+			v58.u0 = 0x0173;
+			v59 = loc25;
+			v62.u0 = 0x09C8;
+			v63 = 339;
+			invoke_viii(v58, v59, v62, v63);
+			v58.u3 = g_t140048.u3;
+			loc26 = v58;
+			v58.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v58;
 		}
 		else
 		{
-			v57 = loc20;
-			v58.u0 = 0x02;
-			v57 <<= v58;
-			loc27 = v57;
-			v57.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v57;
-			v57.u0 = 0x01EB;
-			v58 = loc27;
-			v57 = invoke_ii(v57, v58);
-			loc28 = v57;
-			v57.u3 = g_t140048.u3;
-			loc29 = v57;
-			v57.u0 = 0x00;
-			g_t140048.u3 = (word32 *) v57;
-			v57 = loc29;
-			v58.u0 = 0x01;
-			v57 &= v58;
-			loc31 = v57;
-			v57 = loc31;
-			v59 = v57 == 0x00;
-			if (v59)
+			v58 = loc20;
+			v59.u0 = 0x02;
+			v58 <<= v59;
+			loc27 = v58;
+			v58.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v58;
+			v58.u0 = 0x01EB;
+			v59 = loc27;
+			v58 = invoke_ii(v58, v59);
+			loc28 = v58;
+			v58.u3 = g_t140048.u3;
+			loc29 = v58;
+			v58.u0 = 0x00;
+			g_t140048.u3 = (word32 *) v58;
+			v58 = loc29;
+			v59.u0 = 0x01;
+			v58 &= v59;
+			loc31 = v58;
+			v58 = loc31;
+			v60 = v58 == 0x00;
+			if (v60)
 			{
-				v57 = loc28;
-				loc7 = v57;
+				v58 = loc28;
+				loc7 = v58;
 				goto l0011CCC0;
 			}
 		}
-		v57.u0 = 0x00;
-		v57 = ___cxa_find_matching_catch_n(v57);
-		loc32 = v57;
-		v57.u3 = g_t140094.u3;
-		loc33 = v57;
-		v57 = loc32;
-		v57 = ___cxa_begin_catch(v57);
+		v58.u0 = 0x00;
+		v58 = ___cxa_find_matching_catch_n(v58);
+		loc32 = v58;
+		v58.u3 = g_t140094.u3;
+		loc33 = v58;
+		v58 = loc32;
+		v58 = ___cxa_begin_catch(v58);
 		___cxa_end_catch();
 	}
 	else
 	{
-		v57 = loc21;
-		if (v57)
+		v58 = loc21;
+		if (v58)
 		{
-			v57.u0 = 0x04;
-			v57 = ___cxa_allocate_exception(v57);
-			loc22 = v57;
-			v57 = loc22;
-			fn0011EE8C(v57);
-			v57 = loc22;
-			v58.u0 = 0x09C8;
-			v61.u0 = 339;
-			___cxa_throw(v57, v58, v61);
+			v58.u0 = 0x04;
+			v58 = ___cxa_allocate_exception(v58);
+			loc22 = v58;
+			v58 = loc22;
+			fn0011EE8C(v58);
+			v58 = loc22;
+			v59.u0 = 0x09C8;
+			v62.u0 = 339;
+			___cxa_throw(v58, v59, v62);
 		}
 		else
 		{
-			v57 = loc20;
-			v58.u0 = 0x02;
-			v57 <<= v58;
-			loc23 = v57;
-			v57 = loc23;
-			v57 = fn0011B67B(v57);
-			loc24 = v57;
-			v57 = loc24;
-			loc7 = v57;
+			v58 = loc20;
+			v59.u0 = 0x02;
+			v58 <<= v59;
+			loc23 = v58;
+			v58 = loc23;
+			v58 = fn0011B67B(v58);
+			loc24 = v58;
+			v58 = loc24;
+			loc7 = v58;
 		}
 l0011CCC0:
-		v57 = loc49;
-		if (v57)
+		v58 = loc49;
+		if (v58)
 		{
-			v57 = arg0;
-			v57.u3 = *v57.u3;
-			loc34 = v57;
-			v57 = loc34;
-			loc2 = v57;
-			v57.u0 = 0x01;
-			loc3 = v57;
-			v57 = loc7;
-			loc5 = v57;
-			v57.u0 = 0x15;
-			loc55 = v57;
+			v58 = arg0;
+			v58.u3 = *v58.u3;
+			loc34 = v58;
+			v58 = loc34;
+			loc2 = v58;
+			v58.u0 = 0x01;
+			loc3 = v58;
+			v58 = loc7;
+			loc5 = v58;
+			v58.u0 = 0x15;
+			loc55 = v58;
 		}
 		else
 		{
-			v57 = loc48;
-			v58.u0 = 0xFF;
-			v57 &= v58;
-			loc38 = v57;
-			v57 = loc38;
-			v58.u0 = 0x01;
-			v57 += v58;
-			loc39 = v57;
-			v57 = loc7;
-			v58 = arg0;
-			v61 = loc39;
-			v57 = fn000E5F91(v57, v58, v61);
-			v57 = loc7;
-			loc4 = v57;
-			v57.u0 = 22;
-			loc55 = v57;
+			v58 = loc48;
+			v59.u0 = 0xFF;
+			v58 &= v59;
+			loc38 = v58;
+			v58 = loc38;
+			v59.u0 = 0x01;
+			v58 += v59;
+			loc39 = v58;
+			v58 = loc7;
+			v59 = arg0;
+			v62 = loc39;
+			v58 = fn000E5F91(v58, v59, v62);
+			v58 = loc7;
+			loc4 = v58;
+			v58.u0 = 22;
+			loc55 = v58;
 		}
 l0011CD04:
-		v57 = loc55;
-		v58.u0 = 0x15;
-		v59 = v57 == v58;
-		if (v59)
+		v58 = loc55;
+		v59.u0 = 0x15;
+		v60 = v58 == v59;
+		if (v60)
 		{
-			v57 = arg0;
-			v58.u0 = 0x04;
-			v57 += v58;
-			loc40 = v57;
-			v57 = loc40;
-			v57 = *v57.u0;
-			loc42 = v57;
-			v57 = loc42;
-			v58.u0 = 0x01;
-			v57 += v58;
-			loc43 = v57;
-			v57 = loc5;
+			v58 = arg0;
+			v59.u0 = 0x04;
+			v58 += v59;
+			loc40 = v58;
+			v58 = loc40;
+			v58 = *v58.u0;
+			loc42 = v58;
+			v58 = loc42;
+			v59.u0 = 0x01;
+			v58 += v59;
+			loc43 = v58;
+			v58 = loc5;
+			v59 = loc2;
+			v62 = loc43;
+			v58 = fn000E5F91(v58, v59, v62);
 			v58 = loc2;
-			v61 = loc43;
-			v57 = fn000E5F91(v57, v58, v61);
-			v57 = loc2;
-			fn0011B709(v57);
-			v57 = loc3;
-			if (v57)
+			fn0011B709(v58);
+			v58 = loc3;
+			if (v58)
 			{
-				v57 = loc5;
-				loc4 = v57;
-				v57.u0 = 22;
-				loc55 = v57;
+				v58 = loc5;
+				loc4 = v58;
+				v58.u0 = 22;
+				loc55 = v58;
 			}
 			else
 			{
-				v57.u0 = 0x17;
-				loc55 = v57;
+				v58.u0 = 0x17;
+				loc55 = v58;
 			}
 		}
-		v57 = loc55;
-		v58.u0 = 22;
-		v59 = v57 == v58;
-		if (!v59)
+		v58 = loc55;
+		v59.u0 = 22;
+		v60 = v58 == v59;
+		if (!v60)
 		{
-			v57 = loc55;
-			v58.u0 = 0x17;
-			v59 = v57 == v58;
-			if (!v59)
+			v58 = loc55;
+			v59.u0 = 0x17;
+			v60 = v58 == v59;
+			if (!v60)
 				return;
-			v57 = loc12;
-			v58.u0 = 0xFF;
-			v57 &= v58;
-			loc47 = v57;
-			v57 = loc41;
-			v58 = loc47;
-			v63 = (byte) v58;
-			*v57.u0 = v63;
+			v58 = loc12;
+			v59.u0 = 0xFF;
+			v58 &= v59;
+			loc47 = v58;
+			v58 = loc41;
+			v59 = loc47;
+			v64 = (byte) v59;
+			*v58.u0 = v64;
 		}
 		else
 		{
-			v57 = loc6;
-			v58.u0 = 0x01;
-			v57 += v58;
-			loc44 = v57;
-			v57 = loc44;
-			v58.u0 = 0x80000000;
-			v57 |= v58;
-			loc45 = v57;
-			v57 = loc30;
-			v58 = loc45;
-			*v57.u0 = v58;
-			v57 = arg0;
-			v58.u0 = 0x04;
-			v57 += v58;
-			loc46 = v57;
-			v57 = loc46;
-			v58 = loc12;
-			*v57.u0 = v58;
-			v57 = arg0;
-			v58 = loc4;
-			*v57.u0 = v58;
+			v58 = loc6;
+			v59.u0 = 0x01;
+			v58 += v59;
+			loc44 = v58;
+			v58 = loc44;
+			v59.u0 = 0x80000000;
+			v58 |= v59;
+			loc45 = v58;
+			v58 = loc30;
+			v59 = loc45;
+			*v58.u0 = v59;
+			v58 = arg0;
+			v59.u0 = 0x04;
+			v58 += v59;
+			loc46 = v58;
+			v58 = loc46;
+			v59 = loc12;
+			*v58.u0 = v59;
+			v58 = arg0;
+			v59 = loc4;
+			*v58.u0 = v59;
 		}
 	}
 }
@@ -21065,793 +21065,556 @@ l0011CD04:
 // 0011CD9A: Stack Eq_n fn0011CD9A(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn0011CD9A(Eq_n arg0, Eq_n arg1)
 {
-	v6.u3 = g_t140030.u3;
-	loc5 = v6;
-	v6 = arg1;
-	v6 = fn000D7B05(v6);
-	loc2 = v6;
-	v6 = arg0;
+	v7.u3 = g_t140030.u3;
+	loc5 = v7;
 	v7 = arg1;
-	v8 = loc2;
-	v6 = fn0011C7F6(v6, v7, v8);
-	loc3 = v6;
-	v6 = loc3;
-	return v6;
+	v7 = fn000D7B05(v7);
+	loc2 = v7;
+	v7 = arg0;
+	v8 = arg1;
+	v9 = loc2;
+	v7 = fn0011C7F6(v7, v8, v9);
+	loc3 = v7;
+	v7 = loc3;
+	return v7;
 }
 
 // 0011CDB7: void fn0011CDB7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn0011CDB7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v36.u3 = g_t140030.u3;
-	loc40 = v36;
-	v36.u0 = 0x3FFFFFEF;
+	v37.u3 = g_t140030.u3;
+	loc40 = v37;
+	v37.u0 = 0x3FFFFFEF;
+	v38 = arg1;
+	v37 -= v38;
+	loc36 = v37;
+	v37 = loc36;
+	v38 = arg2;
+	v39 = v37 < v38;
+	loc37 = v39;
+	v37 = loc37;
+	if (v37)
+	{
+		v37 = arg0;
+		fn0011B8A5(v37);
+	}
+	v37 = arg0;
+	v38.u0 = 0x08;
+	v37 += v38;
+	loc38 = v37;
+	v37 = loc38;
+	v38.u0 = 0x03;
+	v37 += v38;
+	loc8 = v37;
+	v37 = loc8;
+	v40 = *v37.u0;
+	v37.u3 = (word32) v40;
+	loc9 = v37;
+	v37 = loc9;
+	v38.u0 = 0x18;
+	v37 <<= v38;
+	v38.u0 = 0x18;
+	v37 >>= v38;
+	v38.u0 = 0x00;
+	v39 = v37 < v38;
+	loc10 = v39;
+	v37 = loc10;
+	if (v37)
+	{
+		v37 = arg0;
+		v37.u3 = *v37.u3;
+		loc11 = v37;
+		v37 = loc11;
+		loc26 = v37;
+	}
+	else
+	{
+		v37 = arg0;
+		loc26 = v37;
+	}
 	v37 = arg1;
-	v36 -= v37;
-	loc36 = v36;
-	v36 = loc36;
-	v37 = arg2;
-	v38 = v36 < v37;
-	loc37 = v38;
-	v36 = loc37;
-	if (v36)
+	v38.u0 = 0x1FFFFFE7;
+	v39 = v37 < v38;
+	loc12 = v39;
+	v37 = loc12;
+	if (v37)
 	{
-		v36 = arg0;
-		fn0011B8A5(v36);
-	}
-	v36 = arg0;
-	v37.u0 = 0x08;
-	v36 += v37;
-	loc38 = v36;
-	v36 = loc38;
-	v37.u0 = 0x03;
-	v36 += v37;
-	loc8 = v36;
-	v36 = loc8;
-	v39 = *v36.u0;
-	v36.u3 = (word32) v39;
-	loc9 = v36;
-	v36 = loc9;
-	v37.u0 = 0x18;
-	v36 <<= v37;
-	v37.u0 = 0x18;
-	v36 >>= v37;
-	v37.u0 = 0x00;
-	v38 = v36 < v37;
-	loc10 = v38;
-	v36 = loc10;
-	if (v36)
-	{
-		v36 = arg0;
-		v36.u3 = *v36.u3;
-		loc11 = v36;
-		v36 = loc11;
-		loc26 = v36;
-	}
-	else
-	{
-		v36 = arg0;
-		loc26 = v36;
-	}
-	v36 = arg1;
-	v37.u0 = 0x1FFFFFE7;
-	v38 = v36 < v37;
-	loc12 = v38;
-	v36 = loc12;
-	if (v36)
-	{
-		v36 = arg2;
+		v37 = arg2;
+		v38 = arg1;
+		v37 += v38;
+		loc13 = v37;
 		v37 = arg1;
-		v36 += v37;
-		loc13 = v36;
-		v36 = arg1;
-		v37.u0 = 0x01;
-		v36 <<= v37;
-		loc14 = v36;
-		v36 = loc13;
-		v37 = loc14;
-		v38 = v36 < v37;
-		loc15 = v38;
-		v36 = loc15;
-		if (v36)
-			v36 = loc14;
+		v38.u0 = 0x01;
+		v37 <<= v38;
+		loc14 = v37;
+		v37 = loc13;
+		v38 = loc14;
+		v39 = v37 < v38;
+		loc15 = v39;
+		v37 = loc15;
+		if (v37)
+			v37 = loc14;
 		else
-			v36 = loc13;
-		loc7 = v36;
-		v36 = loc7;
-		v37.u0 = 0x02;
-		v38 = v36 < v37;
-		loc16 = v38;
-		v36 = loc7;
-		v37.u0 = 0x04;
-		v36 += v37;
-		loc17 = v36;
-		v36 = loc17;
-		v37.u0 = ~0x03;
-		v36 &= v37;
-		loc18 = v36;
-		v36 = loc16;
-		if (v36)
-			v36.u0 = 0x02;
+			v37 = loc13;
+		loc7 = v37;
+		v37 = loc7;
+		v38.u0 = 0x02;
+		v39 = v37 < v38;
+		loc16 = v39;
+		v37 = loc7;
+		v38.u0 = 0x04;
+		v37 += v38;
+		loc17 = v37;
+		v37 = loc17;
+		v38.u0 = ~0x03;
+		v37 &= v38;
+		loc18 = v37;
+		v37 = loc16;
+		if (v37)
+			v37.u0 = 0x02;
 		else
-			v36 = loc18;
-		loc19 = v36;
-		v36 = loc19;
-		v37.u0 = 0x3FFFFFFF;
-		v38 = v36 > v37;
-		loc20 = v38;
-		v36 = loc20;
-		if (v36)
+			v37 = loc18;
+		loc19 = v37;
+		v37 = loc19;
+		v38.u0 = 0x3FFFFFFF;
+		v39 = v37 > v38;
+		loc20 = v39;
+		v37 = loc20;
+		if (v37)
 		{
-			v36.u0 = 0x04;
-			v36 = ___cxa_allocate_exception(v36);
-			loc21 = v36;
-			v36 = loc21;
-			fn0011EE8C(v36);
-			v36 = loc21;
-			v37.u0 = 0x09C8;
-			v40.u0 = 339;
-			___cxa_throw(v36, v37, v40);
+			v37.u0 = 0x04;
+			v37 = ___cxa_allocate_exception(v37);
+			loc21 = v37;
+			v37 = loc21;
+			fn0011EE8C(v37);
+			v37 = loc21;
+			v38.u0 = 0x09C8;
+			v41.u0 = 339;
+			___cxa_throw(v37, v38, v41);
 		}
 		else
 		{
-			v36 = loc19;
-			loc23 = v36;
+			v37 = loc19;
+			loc23 = v37;
 		}
 	}
 	else
 	{
-		v36.u0 = 0x3FFFFFEF;
-		loc23 = v36;
+		v37.u0 = 0x3FFFFFEF;
+		loc23 = v37;
 	}
-	v36 = loc23;
-	v37.u0 = 0x02;
-	v36 <<= v37;
-	loc22 = v36;
-	v36 = loc22;
-	v36 = fn0011B67B(v36);
-	loc24 = v36;
-	v36 = arg4;
-	v37.u0 = 0x00;
-	v38 = v36 == v37;
-	loc25 = v38;
-	v36 = loc25;
-	v38 = v36 == 0x00;
-	if (v38)
-	{
-		v36 = loc24;
-		v37 = loc26;
-		v40 = arg4;
-		v36 = fn000E5F91(v36, v37, v40);
-	}
-	v36 = arg3;
-	v37 = arg5;
-	v36 -= v37;
-	loc27 = v36;
-	v36 = loc27;
+	v37 = loc23;
+	v38.u0 = 0x02;
+	v37 <<= v38;
+	loc22 = v37;
+	v37 = loc22;
+	v37 = fn0011B67B(v37);
+	loc24 = v37;
 	v37 = arg4;
-	v36 -= v37;
-	loc28 = v36;
-	v36 = loc28;
-	v37.u0 = 0x00;
-	v38 = v36 == v37;
-	loc29 = v38;
-	v36 = loc29;
-	v38 = v36 == 0x00;
-	if (v38)
+	v38.u0 = 0x00;
+	v39 = v37 == v38;
+	loc25 = v39;
+	v37 = loc25;
+	v39 = v37 == 0x00;
+	if (v39)
 	{
-		v36 = loc26;
-		v37 = arg4;
-		v40.u0 = 0x02;
-		v37 <<= v40;
-		v36 += v37;
-		loc30 = v36;
-		v36 = loc30;
-		v37 = arg5;
-		v40.u0 = 0x02;
-		v37 <<= v40;
-		v36 += v37;
-		loc31 = v36;
-		v36 = loc24;
-		v37 = arg4;
-		v40.u0 = 0x02;
-		v37 <<= v40;
-		v36 += v37;
-		loc32 = v36;
-		v36 = loc32;
-		v37 = arg6;
-		v40.u0 = 0x02;
-		v37 <<= v40;
-		v36 += v37;
-		loc33 = v36;
-		v36 = loc33;
-		v37 = loc31;
-		v40 = loc28;
-		v36 = fn000E5F91(v36, v37, v40);
+		v37 = loc24;
+		v38 = loc26;
+		v41 = arg4;
+		v37 = fn000E5F91(v37, v38, v41);
 	}
-	v36 = arg1;
-	v37.u0 = 0x01;
-	v38 = v36 == v37;
-	loc34 = v38;
-	v36 = loc34;
-	v38 = v36 == 0x00;
-	if (v38)
+	v37 = arg3;
+	v38 = arg5;
+	v37 -= v38;
+	loc27 = v37;
+	v37 = loc27;
+	v38 = arg4;
+	v37 -= v38;
+	loc28 = v37;
+	v37 = loc28;
+	v38.u0 = 0x00;
+	v39 = v37 == v38;
+	loc29 = v39;
+	v37 = loc29;
+	v39 = v37 == 0x00;
+	if (v39)
 	{
-		v36 = loc26;
-		fn0011B709(v36);
+		v37 = loc26;
+		v38 = arg4;
+		v41.u0 = 0x02;
+		v38 <<= v41;
+		v37 += v38;
+		loc30 = v37;
+		v37 = loc30;
+		v38 = arg5;
+		v41.u0 = 0x02;
+		v38 <<= v41;
+		v37 += v38;
+		loc31 = v37;
+		v37 = loc24;
+		v38 = arg4;
+		v41.u0 = 0x02;
+		v38 <<= v41;
+		v37 += v38;
+		loc32 = v37;
+		v37 = loc32;
+		v38 = arg6;
+		v41.u0 = 0x02;
+		v38 <<= v41;
+		v37 += v38;
+		loc33 = v37;
+		v37 = loc33;
+		v38 = loc31;
+		v41 = loc28;
+		v37 = fn000E5F91(v37, v38, v41);
 	}
-	v36 = arg0;
-	v37 = loc24;
-	*v36.u0 = v37;
-	v36 = loc23;
-	v37.u0 = 0x80000000;
-	v36 |= v37;
-	loc35 = v36;
-	v36 = loc38;
-	v37 = loc35;
-	*v36.u0 = v37;
+	v37 = arg1;
+	v38.u0 = 0x01;
+	v39 = v37 == v38;
+	loc34 = v39;
+	v37 = loc34;
+	v39 = v37 == 0x00;
+	if (v39)
+	{
+		v37 = loc26;
+		fn0011B709(v37);
+	}
+	v37 = arg0;
+	v38 = loc24;
+	*v37.u0 = v38;
+	v37 = loc23;
+	v38.u0 = 0x80000000;
+	v37 |= v38;
+	loc35 = v37;
+	v37 = loc38;
+	v38 = loc35;
+	*v37.u0 = v38;
 }
 
 // 0011CF35: void fn0011CF35(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011CF35(Eq_n arg0, Eq_n arg1)
 {
-	v27.u3 = g_t140030.u3;
-	loc26 = v27;
-	v27 = arg0;
-	v28.u0 = 0x08;
-	v27 += v28;
-	loc16 = v27;
-	v27 = loc16;
-	v28.u0 = 0x03;
-	v27 += v28;
-	loc18 = v27;
-	v27 = loc18;
-	v29.u3 = *v27.u3;
-	v27.u3 = (word32) v29;
-	loc19 = v27;
-	v27 = loc19;
-	v28.u0 = 0x18;
-	v27 <<= v28;
-	v28.u0 = 0x18;
-	v27 >>= v28;
-	v28.u0 = 0x00;
-	v30 = v27 < v28;
-	loc20 = v30;
-	v27 = loc20;
-	if (v27)
+	v28.u3 = g_t140030.u3;
+	loc26 = v28;
+	v28 = arg0;
+	v29.u0 = 0x08;
+	v28 += v29;
+	loc16 = v28;
+	v28 = loc16;
+	v29.u0 = 0x03;
+	v28 += v29;
+	loc18 = v28;
+	v28 = loc18;
+	v30.u3 = *v28.u3;
+	v28.u3 = (word32) v30;
+	loc19 = v28;
+	v28 = loc19;
+	v29.u0 = 0x18;
+	v28 <<= v29;
+	v29.u0 = 0x18;
+	v28 >>= v29;
+	v29.u0 = 0x00;
+	v31 = v28 < v29;
+	loc20 = v31;
+	v28 = loc20;
+	if (v28)
 	{
-		v27 = loc16;
-		v27.u3 = *v27.u3;
-		loc22 = v27;
-		v27 = loc22;
-		v28.u0 = 0x7FFFFFFF;
-		v27 &= v28;
-		loc23 = v27;
-		v27 = loc23;
-		v28.u0 = ~0x00;
-		v27 += v28;
-		loc24 = v27;
-		v27 = arg0;
-		v28.u0 = 0x04;
-		v27 += v28;
-		loc6 = v27;
-		v27 = loc6;
-		v27.u3 = *v27.u3;
-		loc7 = v27;
-		v27 = loc7;
-		loc3 = v27;
-		v27 = loc24;
-		loc4 = v27;
+		v28 = loc16;
+		v28.u3 = *v28.u3;
+		loc22 = v28;
+		v28 = loc22;
+		v29.u0 = 0x7FFFFFFF;
+		v28 &= v29;
+		loc23 = v28;
+		v28 = loc23;
+		v29.u0 = ~0x00;
+		v28 += v29;
+		loc24 = v28;
+		v28 = arg0;
+		v29.u0 = 0x04;
+		v28 += v29;
+		loc6 = v28;
+		v28 = loc6;
+		v28.u3 = *v28.u3;
+		loc7 = v28;
+		v28 = loc7;
+		loc3 = v28;
+		v28 = loc24;
+		loc4 = v28;
 	}
 	else
 	{
-		v27 = loc19;
-		v28.u0 = 0xFF;
-		v27 &= v28;
-		loc21 = v27;
-		v27 = loc21;
-		loc3 = v27;
-		v27.u0 = 0x01;
-		loc4 = v27;
-	}
-	v27 = loc3;
-	v28 = loc4;
-	v30 = v27 == v28;
-	loc8 = v30;
-	v27 = loc8;
-	if (v27)
-	{
-		v27 = arg0;
-		v28 = loc4;
-		v31.u0 = 0x01;
-		v32 = loc4;
-		v33 = loc4;
-		v34.u0 = 0x00;
-		v35.u0 = 0x00;
-		fn0011CDB7(v27, v28, v31, v32, v33, v34, v35);
-		v27 = loc18;
-		v36 = *v27.u0;
-		v27.u3 = (word32) v36;
-		loc9 = v27;
-		v27 = loc9;
-		v28.u0 = 0x18;
-		v27 <<= v28;
-		v28.u0 = 0x18;
-		v27 >>= v28;
-		v28.u0 = ~0x00;
-		v30 = v27 > v28;
-		loc10 = v30;
-		v27 = loc10;
-		if (v27)
-		{
-			v27.u0 = 0x07;
-			loc25 = v27;
-		}
-		else
-		{
-			v27.u0 = 0x08;
-			loc25 = v27;
-		}
-	}
-	else
-	{
-		v27 = loc20;
-		if (v27)
-		{
-			v27.u0 = 0x08;
-			loc25 = v27;
-		}
-		else
-		{
-			v27.u0 = 0x07;
-			loc25 = v27;
-		}
-	}
-	v27 = loc25;
-	v28.u0 = 0x07;
-	v30 = v27 == v28;
-	if (v30)
-	{
-		v27 = loc3;
+		v28 = loc19;
+		v29.u0 = 0xFF;
+		v28 &= v29;
+		loc21 = v28;
+		v28 = loc21;
+		loc3 = v28;
 		v28.u0 = 0x01;
-		v27 += v28;
-		loc11 = v27;
-		v27 = loc11;
-		v28.u0 = 0xFF;
-		v27 &= v28;
-		loc12 = v27;
-		v27 = loc18;
-		v28 = loc12;
-		v37 = (byte) v28;
-		*v27.u0 = v37;
-		v27 = arg0;
-		loc5 = v27;
+		loc4 = v28;
+	}
+	v28 = loc3;
+	v29 = loc4;
+	v31 = v28 == v29;
+	loc8 = v31;
+	v28 = loc8;
+	if (v28)
+	{
+		v28 = arg0;
+		v29 = loc4;
+		v32.u0 = 0x01;
+		v33 = loc4;
+		v34 = loc4;
+		v35.u0 = 0x00;
+		v36.u0 = 0x00;
+		fn0011CDB7(v28, v29, v32, v33, v34, v35, v36);
+		v28 = loc18;
+		v37 = *v28.u0;
+		v28.u3 = (word32) v37;
+		loc9 = v28;
+		v28 = loc9;
+		v29.u0 = 0x18;
+		v28 <<= v29;
+		v29.u0 = 0x18;
+		v28 >>= v29;
+		v29.u0 = ~0x00;
+		v31 = v28 > v29;
+		loc10 = v31;
+		v28 = loc10;
+		if (v28)
+		{
+			v28.u0 = 0x07;
+			loc25 = v28;
+		}
+		else
+		{
+			v28.u0 = 0x08;
+			loc25 = v28;
+		}
 	}
 	else
 	{
-		v27 = loc25;
-		v28.u0 = 0x08;
-		v30 = v27 == v28;
-		if (v30)
+		v28 = loc20;
+		if (v28)
 		{
-			v27 = arg0;
-			v27 = *v27.u0;
-			loc13 = v27;
-			v27 = loc3;
-			v28.u0 = 0x01;
-			v27 += v28;
-			loc14 = v27;
-			v27 = arg0;
-			v28.u0 = 0x04;
-			v27 += v28;
-			loc15 = v27;
-			v27 = loc15;
-			v28 = loc14;
-			*v27.u0 = v28;
-			v27 = loc13;
-			loc5 = v27;
+			v28.u0 = 0x08;
+			loc25 = v28;
+		}
+		else
+		{
+			v28.u0 = 0x07;
+			loc25 = v28;
 		}
 	}
-	v27 = loc5;
-	v28 = loc3;
-	v31.u0 = 0x02;
-	v28 <<= v31;
-	v27 += v28;
-	loc2 = v27;
-	v27 = loc2;
-	v28 = arg1;
-	*v27.u0 = v28;
-	v27 = loc2;
-	v28.u0 = 0x04;
-	v27 += v28;
-	loc17 = v27;
-	v27 = loc17;
-	v28.u0 = 0x00;
-	*v27.u0 = v28;
+	v28 = loc25;
+	v29.u0 = 0x07;
+	v31 = v28 == v29;
+	if (v31)
+	{
+		v28 = loc3;
+		v29.u0 = 0x01;
+		v28 += v29;
+		loc11 = v28;
+		v28 = loc11;
+		v29.u0 = 0xFF;
+		v28 &= v29;
+		loc12 = v28;
+		v28 = loc18;
+		v29 = loc12;
+		v38 = (byte) v29;
+		*v28.u0 = v38;
+		v28 = arg0;
+		loc5 = v28;
+	}
+	else
+	{
+		v28 = loc25;
+		v29.u0 = 0x08;
+		v31 = v28 == v29;
+		if (v31)
+		{
+			v28 = arg0;
+			v28 = *v28.u0;
+			loc13 = v28;
+			v28 = loc3;
+			v29.u0 = 0x01;
+			v28 += v29;
+			loc14 = v28;
+			v28 = arg0;
+			v29.u0 = 0x04;
+			v28 += v29;
+			loc15 = v28;
+			v28 = loc15;
+			v29 = loc14;
+			*v28.u0 = v29;
+			v28 = loc13;
+			loc5 = v28;
+		}
+	}
+	v28 = loc5;
+	v29 = loc3;
+	v32.u0 = 0x02;
+	v29 <<= v32;
+	v28 += v29;
+	loc2 = v28;
+	v28 = loc2;
+	v29 = arg1;
+	*v28.u0 = v29;
+	v28 = loc2;
+	v29.u0 = 0x04;
+	v28 += v29;
+	loc17 = v28;
+	v28 = loc17;
+	v29.u0 = 0x00;
+	*v28.u0 = v29;
 }
 
 // 0011D05D: void fn0011D05D(Stack Eq_n arg0)
 void fn0011D05D(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011D066: void fn0011D066(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011D066(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v5.u3 = g_t140030.u3;
-	loc5 = v5;
-	v5 = arg0;
-	v6 = arg2;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v6.u0 = 0x04;
-	v5 += v6;
-	loc3 = v5;
-	v5 = loc3;
-	v6 = arg1;
-	*v5.u3 = (word32) v6;
+	v6.u3 = g_t140030.u3;
+	loc5 = v6;
+	v6 = arg0;
+	v7 = arg2;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v7.u0 = 0x04;
+	v6 += v7;
+	loc3 = v6;
+	v6 = loc3;
+	v7 = arg1;
+	*v6.u3 = (word32) v7;
 }
 
 // 0011D084: Stack Eq_n fn0011D084(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011D084(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v17.u3 = g_t140030.u3;
-	loc17 = v17;
-	v17.u3 = g_t140030.u3;
-	v18.u0 = 0x10;
-	v17 += v18;
-	g_t140030.u3 = (word32 *) v17;
-	v17.u3 = g_t140030.u3;
-	v18.u3 = g_t140034.u3;
-	v19 = v17 >= v18;
-	if (v19)
+	v18.u3 = g_t140030.u3;
+	loc17 = v18;
+	v18.u3 = g_t140030.u3;
+	v19.u0 = 0x10;
+	v18 += v19;
+	g_t140030.u3 = (word32 *) v18;
+	v18.u3 = g_t140030.u3;
+	v19.u3 = g_t140034.u3;
+	v20 = v18 >= v19;
+	if (v20)
 	{
-		v17.u0 = 0x10;
-		abortStackOverflow(v17);
+		v18.u0 = 0x10;
+		abortStackOverflow(v18);
 	}
-	v17 = loc17;
-	loc9 = v17;
-	v17 = arg0;
-	v17 = *v17.u0;
-	loc10 = v17;
-	v17 = loc10;
-	v18.u0 = 0x0C;
-	v17 += v18;
-	loc11 = v17;
-	v17 = loc11;
-	v17 = *v17.u0;
-	loc12 = v17;
-	v17 = loc9;
+	v18 = loc17;
+	loc9 = v18;
 	v18 = arg0;
-	v20 = arg1;
-	v21 = loc12;
-	v22 = 0x01FF;
-	v21 &= v22;
-	v22 = 0x2820;
-	v21.u3 += v22;
+	v18 = *v18.u0;
+	loc10 = v18;
+	v18 = loc10;
+	v19.u0 = 0x0C;
+	v18 += v19;
+	loc11 = v18;
+	v18 = loc11;
+	v18 = *v18.u0;
+	loc12 = v18;
+	v18 = loc9;
+	v19 = arg0;
+	v21 = arg1;
+	v22 = loc12;
+	v23 = 0x01FF;
+	v22 &= v23;
+	v23 = 0x2820;
+	v22.u3 += v23;
 }
 
 // 0011D119: Stack Eq_n fn0011D119(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011D119(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v10.u3 = g_t140030.u3;
-	loc10 = v10;
-	v10 = arg1;
-	v11.u0 = 0x04;
-	v10 += v11;
-	loc3 = v10;
-	v10 = loc3;
-	v10.u3 = *v10.u3;
-	loc4 = v10;
-	v10 = loc4;
-	v11 = arg0;
-	v12 = v10 == v11;
-	loc5 = v12;
-	v10 = arg1;
-	v10.u3 = *v10.u3;
-	loc6 = v10;
-	v10 = loc6;
-	v11 = arg2;
-	v12 = v10 == v11;
-	loc7 = v12;
-	v10 = loc5;
-	v11 = loc7;
-	v10 &= v11;
-	loc8 = v10;
-	v10 = loc8;
-	return v10;
+	v11.u3 = g_t140030.u3;
+	loc10 = v11;
+	v11 = arg1;
+	v12.u0 = 0x04;
+	v11 += v12;
+	loc3 = v11;
+	v11 = loc3;
+	v11.u3 = *v11.u3;
+	loc4 = v11;
+	v11 = loc4;
+	v12 = arg0;
+	v13 = v11 == v12;
+	loc5 = v13;
+	v11 = arg1;
+	v11.u3 = *v11.u3;
+	loc6 = v11;
+	v11 = loc6;
+	v12 = arg2;
+	v13 = v11 == v12;
+	loc7 = v13;
+	v11 = loc5;
+	v12 = loc7;
+	v11 &= v12;
+	loc8 = v11;
+	v11 = loc8;
+	return v11;
 }
 
 // 0011D14E: void fn0011D14E(Stack Eq_n arg0)
 void fn0011D14E(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011E468(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011E468(v5);
 }
 
 // 0011D15C: void fn0011D15C(Stack Eq_n arg0)
 void fn0011D15C(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011E468(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011E468(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011D16F: void fn0011D16F(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011D16F(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v6.u3 = g_t140030.u3;
-	loc6 = v6;
-	v6 = arg2;
-	v6 = fn000D69BF(v6);
-	loc3 = v6;
-	v6 = arg0;
-	v7.u0 = 0x00;
-	*v6.u3 = (word32) v7;
-	v6 = arg0;
-	v8.u0 = 0x08;
-	v6 += v8;
+	v7.u3 = g_t140030.u3;
+	loc6 = v7;
+	v7 = arg2;
+	v7 = fn000D69BF(v7);
+	loc3 = v7;
+	v7 = arg0;
 	v8.u0 = 0x00;
-	*v6.u3 = (word32) v8;
-	v6 = loc3;
-	v6 = fn000DAF30(v6);
-	loc4 = v6;
-	v6 = arg0;
-	v8 = loc3;
-	v9 = loc4;
-	fn0011B96D(v6, v8, v9);
+	*v7.u3 = (word32) v8;
+	v7 = arg0;
+	v9.u0 = 0x08;
+	v7 += v9;
+	v9.u0 = 0x00;
+	*v7.u3 = (word32) v9;
+	v7 = loc3;
+	v7 = fn000DAF30(v7);
+	loc4 = v7;
+	v7 = arg0;
+	v9 = loc3;
+	v10 = loc4;
+	fn0011B96D(v7, v9, v10);
 }
 
 // 0011D1A0: void fn0011D1A0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011D1A0(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v39.u3 = g_t140030.u3;
-	loc39 = v39;
-	v39.u3 = g_t140030.u3;
-	v40.u0 = 0x10;
-	v39 += v40;
-	g_t140030.u3 = (word32 *) v39;
-	v39.u3 = g_t140030.u3;
-	v40.u3 = g_t140034.u3;
-	v41 = v39 >= v40;
-	if (v41)
-	{
-		v39.u0 = 0x10;
-		abortStackOverflow(v39);
-	}
-	v39 = loc39;
-	loc25 = v39;
-	v39 = arg1;
-	v39 = *v39.u0;
-	loc31 = v39;
-	v39 = loc31;
-	v40.u0 = 0x00;
-	v41 = v39 == v40;
-	loc32 = v41;
-	v39 = loc32;
-	v41 = v39 == 0x00;
-	v41 = v41;
-	v39 = arg2;
-	v40.u0 = 11;
-	v39 += v40;
-	loc33 = v39;
-	v39 = loc33;
-	v42 = *v39.u0;
-	v39.u3 = (word32) v42;
-	loc34 = v39;
-	v39 = loc34;
-	v40.u0 = 0x18;
-	v39 <<= v40;
-	v40.u0 = 0x18;
-	v39 >>= v40;
-	v40.u0 = 0x00;
-	v41 = v39 < v40;
-	loc35 = v41;
-	v39 = loc35;
-	if (v39)
-	{
-		v39 = arg2;
-		v40.u0 = 0x04;
-		v39 += v40;
-		loc36 = v39;
-		v39 = loc36;
-		v39.u3 = *v39.u3;
-		loc5 = v39;
-		v39 = loc5;
-		loc8 = v39;
-	}
-	else
-	{
-		v39 = loc34;
-		v40.u0 = 0xFF;
-		v39 &= v40;
-		loc6 = v39;
-		v39 = loc6;
-		loc8 = v39;
-	}
-	v39 = loc8;
-	v40.u0 = 0x00;
-	v41 = v39 == v40;
-	loc7 = v41;
-	v39 = loc7;
-	if (v39)
-	{
-		v39 = loc31;
-		loc14 = v39;
-	}
-	else
-	{
-		v39 = arg2;
-		v40.u0 = 0x40A4;
-		v39 = fn0011C48D(v39, v40);
-		v39 = arg1;
-		v39.u3 = *v39.u3;
-		loc4 = v39;
-		v39 = loc4;
-		loc14 = v39;
-	}
-	v39 = arg1;
-	v40.u0 = 0x04;
-	v39 += v40;
-	loc9 = v39;
-	v39 = loc9;
-	v39.u3 = *v39.u3;
-	loc10 = v39;
-	v39 = loc10;
-	v39.u3 = *v39.u3;
-	loc11 = v39;
-	v39 = loc11;
-	v40.u0 = 0x18;
-	v39 += v40;
-	loc12 = v39;
-	v39 = loc12;
-	v39.u3 = *v39.u3;
-	loc13 = v39;
-	v39 = loc25;
-	v40 = loc10;
-	v43 = loc14;
-	v44 = loc13;
-	v45.u0 = 0x01FF;
-	v44 &= v45;
-	v45.u0 = 0x2820;
-	v44 += v45;
-}
-
-// 0011D354: void fn0011D354(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-void fn0011D354(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v19.u3 = g_t140030.u3;
-	loc18 = v19;
-	v19.u3 = g_t140030.u3;
-	v20.u0 = 0x20;
-	v19 += v20;
-	g_t140030.u3 = (word32 *) v19;
-	v19.u3 = g_t140030.u3;
-	v20.u3 = g_t140034.u3;
-	v21 = v19 >= v20;
-	if (v21)
-	{
-		v19.u0 = 0x20;
-		abortStackOverflow(v19);
-	}
-	v19 = loc18;
-	v20.u0 = 0x0C;
-	v19 += v20;
-	loc10 = v19;
-	v19 = loc18;
-	loc11 = v19;
-	v19 = loc11;
-	v22.u0 = 0x00;
-	*v19.u0 = v22;
-	v19 = loc11;
-	v20.u0 = 0x08;
-	v19 += v20;
-	v20.u0 = 0x00;
-	*v19.u0 = v20;
-	v19 = arg2;
-	v19 = fn000DAF30(v19);
-	loc12 = v19;
-	v19 = loc11;
-	v20 = arg2;
-	v23 = loc12;
-	fn0011B96D(v19, v20, v23);
-	v19.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v19;
-	v19.u0 = 0x01ED;
-	v20 = loc10;
-	v23 = arg1;
-	v24 = loc11;
-	invoke_viii(v19, v20, v23, v24);
-	v19.u3 = g_t140048.u3;
-	loc13 = v19;
-	v19.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v19;
-	v19 = loc13;
-	v20.u0 = 0x01;
-	v19 &= v20;
-	loc14 = v19;
-	v19 = loc14;
-	if (v19)
-	{
-		v19 = ___cxa_find_matching_catch_n();
-		loc6 = v19;
-		v19.u3 = g_t140094.u3;
-		loc7 = v19;
-		v19 = loc7;
-		loc3 = v19;
-		v19 = loc6;
-		loc4 = v19;
-	}
-	else
-	{
-		v19.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v19;
-		v19.u0 = 0x01EE;
-		v20 = arg0;
-		v23 = loc10;
-		invoke_vii(v19, v20, v23);
-		v19.u3 = g_t140048.u3;
-		loc15 = v19;
-		v19.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v19;
-		v19 = loc15;
-		v20.u0 = 0x01;
-		v19 &= v20;
-		loc16 = v19;
-		v19 = loc16;
-		if (!v19)
-		{
-			v19 = loc10;
-			fn0011BAF7(v19);
-			v19 = loc11;
-			fn0011BAF7(v19);
-			v19 = arg0;
-			v20.u0 = 0x2654;
-			*v19.u3 = (word32) v20;
-			v19 = arg0;
-			v20.u0 = 0x08;
-			v19 += v20;
-			loc5 = v19;
-			v19 = arg1;
-			v25.u3 = *v19.u3;
-			loc19 = v25;
-			v19 = loc5;
-			v22 = loc19;
-			*v19.u3 = (word32) v22;
-			v19 = loc18;
-			g_t140030.u3 = (word32 *) v19;
-			return;
-		}
-		v19 = ___cxa_find_matching_catch_n();
-		loc8 = v19;
-		v19.u3 = g_t140094.u3;
-		loc9 = v19;
-		v19 = loc10;
-		fn0011BAF7(v19);
-		v19 = loc9;
-		loc3 = v19;
-		v19 = loc8;
-		loc4 = v19;
-	}
-	v19 = loc11;
-	fn0011BAF7(v19);
-	v19 = loc4;
-	___resumeException(v19);
-}
-
-// 0011D441: void fn0011D441()
-void fn0011D441()
-{
 	v40.u3 = g_t140030.u3;
-	loc35 = v40;
+	loc39 = v40;
 	v40.u3 = g_t140030.u3;
-	v41.u0 = 0x30;
+	v41.u0 = 0x10;
 	v40 += v41;
 	g_t140030.u3 = (word32 *) v40;
 	v40.u3 = g_t140030.u3;
@@ -21859,136 +21622,1601 @@ void fn0011D441()
 	v42 = v40 >= v41;
 	if (v42)
 	{
-		v40.u0 = 0x30;
+		v40.u0 = 0x10;
 		abortStackOverflow(v40);
 	}
-	v40 = loc35;
-	v41.u0 = 0x20;
-	v40 += v41;
-	loc28 = v40;
-	v40 = loc35;
-	v41.u0 = 0x18;
-	v40 += v41;
-	loc30 = v40;
-	v40 = loc35;
-	v41.u0 = 0x10;
-	v40 += v41;
-	loc29 = v40;
-	v40 = loc35;
-	loc27 = v40;
-	v40 = loc35;
-	v41.u0 = 0x24;
-	v40 += v41;
-	loc0 = v40;
-	v40 = fn0011D5FB();
-	loc1 = v40;
-	v40 = loc1;
-	v41.u0 = 0x00;
-	v42 = v40 == v41;
-	loc12 = v42;
-	v40 = loc12;
-	v42 = v40 == 0x00;
-	v42 = v42;
-	v40 = loc1;
-	v40 = *v40.u0;
-	loc22 = v40;
-	v40 = loc22;
-	v41.u0 = 0x00;
-	v42 = v40 == v41;
-	loc23 = v42;
-	v40 = loc23;
-	v42 = v40 == 0x00;
-	v42 = v42;
-	v40 = loc22;
-	v41.u0 = 0x50;
-	v40 += v41;
-	loc24 = v40;
-	v40 = loc22;
-	v41.u0 = 0x30;
-	v40 += v41;
+	v40 = loc39;
 	loc25 = v40;
-	v40 = loc25;
-	v43 = *v40.u0;
-	loc36 = v43;
-	v43 = loc36;
-	v44.u0 = ~0xFF;
-	v43 &= v44;
-	loc37 = v43;
-	v43 = loc37;
-	v44.u0 = 0x436F6F40;
-	v42 = v43 == v44;
-	loc26 = v42;
-	v40 = loc26;
+	v40 = arg1;
+	v40 = *v40.u0;
+	loc31 = v40;
+	v40 = loc31;
+	v41.u0 = 0x00;
+	v42 = v40 == v41;
+	loc32 = v42;
+	v40 = loc32;
 	v42 = v40 == 0x00;
-	if (v42)
-	{
-		v40.u0 = 0x2664;
-		v40 = *v40.u0;
-		loc21 = v40;
-		v40 = loc30;
-		v41 = loc21;
-		*v40.u0 = v41;
-		v40.u0 = 0x40FD;
-		v41 = loc30;
-		fn0011D654(v40, v41);
-	}
-	v43 = loc36;
-	v44.u0 = 1131376449;
-	v42 = v43 == v44;
-	loc2 = v42;
-	v40 = loc2;
+	v42 = v42;
+	v40 = arg2;
+	v41.u0 = 11;
+	v40 += v41;
+	loc33 = v40;
+	v40 = loc33;
+	v43 = *v40.u0;
+	v40.u3 = (word32) v43;
+	loc34 = v40;
+	v40 = loc34;
+	v41.u0 = 0x18;
+	v40 <<= v41;
+	v41.u0 = 0x18;
+	v40 >>= v41;
+	v41.u0 = 0x00;
+	v42 = v40 < v41;
+	loc35 = v42;
+	v40 = loc35;
 	if (v40)
 	{
-		v40 = loc22;
-		v41.u0 = 44;
+		v40 = arg2;
+		v41.u0 = 0x04;
 		v40 += v41;
-		loc3 = v40;
-		v40 = loc3;
-		v40 = *v40.u0;
-		loc4 = v40;
-		v40 = loc4;
+		loc36 = v40;
+		v40 = loc36;
+		v40.u3 = *v40.u3;
 		loc5 = v40;
+		v40 = loc5;
+		loc8 = v40;
 	}
 	else
 	{
-		v40 = loc24;
-		loc5 = v40;
+		v40 = loc34;
+		v41.u0 = 0xFF;
+		v40 &= v41;
+		loc6 = v40;
+		v40 = loc6;
+		loc8 = v40;
 	}
-	v40 = loc0;
-	v41 = loc5;
-	*v40.u0 = v41;
-	v40 = loc22;
-	v40 = *v40.u0;
-	loc6 = v40;
-	v40 = loc6;
+	v40 = loc8;
+	v41.u0 = 0x00;
+	v42 = v40 == v41;
+	loc7 = v42;
+	v40 = loc7;
+	if (v40)
+	{
+		v40 = loc31;
+		loc14 = v40;
+	}
+	else
+	{
+		v40 = arg2;
+		v41.u0 = 0x40A4;
+		v40 = fn0011C48D(v40, v41);
+		v40 = arg1;
+		v40.u3 = *v40.u3;
+		loc4 = v40;
+		v40 = loc4;
+		loc14 = v40;
+	}
+	v40 = arg1;
 	v41.u0 = 0x04;
 	v40 += v41;
-	loc7 = v40;
-	v40 = loc7;
-	v40 = *v40.u0;
-	loc8 = v40;
-	v40.u0 = 0x0988;
-	v40 = *v40.u0;
 	loc9 = v40;
 	v40 = loc9;
-	v41.u0 = 0x10;
-	v40 += v41;
+	v40.u3 = *v40.u3;
 	loc10 = v40;
 	v40 = loc10;
-	v40 = *v40.u0;
+	v40.u3 = *v40.u3;
 	loc11 = v40;
-	v40.u0 = 0x0988;
+	v40 = loc11;
+	v41.u0 = 0x18;
+	v40 += v41;
+	loc12 = v40;
+	v40 = loc12;
+	v40.u3 = *v40.u3;
+	loc13 = v40;
+	v40 = loc25;
+	v41 = loc10;
+	v44 = loc14;
+	v45 = loc13;
+	v46.u0 = 0x01FF;
+	v45 &= v46;
+	v46.u0 = 0x2820;
+	v45 += v46;
+}
+
+// 0011D354: void fn0011D354(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+void fn0011D354(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v20.u3 = g_t140030.u3;
+	loc18 = v20;
+	v20.u3 = g_t140030.u3;
+	v21.u0 = 0x20;
+	v20 += v21;
+	g_t140030.u3 = (word32 *) v20;
+	v20.u3 = g_t140030.u3;
+	v21.u3 = g_t140034.u3;
+	v22 = v20 >= v21;
+	if (v22)
+	{
+		v20.u0 = 0x20;
+		abortStackOverflow(v20);
+	}
+	v20 = loc18;
+	v21.u0 = 0x0C;
+	v20 += v21;
+	loc10 = v20;
+	v20 = loc18;
+	loc11 = v20;
+	v20 = loc11;
+	v23.u0 = 0x00;
+	*v20.u0 = v23;
+	v20 = loc11;
+	v21.u0 = 0x08;
+	v20 += v21;
+	v21.u0 = 0x00;
+	*v20.u0 = v21;
+	v20 = arg2;
+	v20 = fn000DAF30(v20);
+	loc12 = v20;
+	v20 = loc11;
+	v21 = arg2;
+	v24 = loc12;
+	fn0011B96D(v20, v21, v24);
+	v20.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v20;
+	v20.u0 = 0x01ED;
+	v21 = loc10;
+	v24 = arg1;
+	v25 = loc11;
+	invoke_viii(v20, v21, v24, v25);
+	v20.u3 = g_t140048.u3;
+	loc13 = v20;
+	v20.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v20;
+	v20 = loc13;
+	v21.u0 = 0x01;
+	v20 &= v21;
+	loc14 = v20;
+	v20 = loc14;
+	if (v20)
+	{
+		v20 = ___cxa_find_matching_catch_n();
+		loc6 = v20;
+		v20.u3 = g_t140094.u3;
+		loc7 = v20;
+		v20 = loc7;
+		loc3 = v20;
+		v20 = loc6;
+		loc4 = v20;
+	}
+	else
+	{
+		v20.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v20;
+		v20.u0 = 0x01EE;
+		v21 = arg0;
+		v24 = loc10;
+		invoke_vii(v20, v21, v24);
+		v20.u3 = g_t140048.u3;
+		loc15 = v20;
+		v20.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v20;
+		v20 = loc15;
+		v21.u0 = 0x01;
+		v20 &= v21;
+		loc16 = v20;
+		v20 = loc16;
+		if (!v20)
+		{
+			v20 = loc10;
+			fn0011BAF7(v20);
+			v20 = loc11;
+			fn0011BAF7(v20);
+			v20 = arg0;
+			v21.u0 = 0x2654;
+			*v20.u3 = (word32) v21;
+			v20 = arg0;
+			v21.u0 = 0x08;
+			v20 += v21;
+			loc5 = v20;
+			v20 = arg1;
+			v26.u3 = *v20.u3;
+			loc19 = v26;
+			v20 = loc5;
+			v23 = loc19;
+			*v20.u3 = (word32) v23;
+			v20 = loc18;
+			g_t140030.u3 = (word32 *) v20;
+			return;
+		}
+		v20 = ___cxa_find_matching_catch_n();
+		loc8 = v20;
+		v20.u3 = g_t140094.u3;
+		loc9 = v20;
+		v20 = loc10;
+		fn0011BAF7(v20);
+		v20 = loc9;
+		loc3 = v20;
+		v20 = loc8;
+		loc4 = v20;
+	}
+	v20 = loc11;
+	fn0011BAF7(v20);
+	v20 = loc4;
+	___resumeException(v20);
+}
+
+// 0011D441: void fn0011D441()
+void fn0011D441()
+{
+	v41.u3 = g_t140030.u3;
+	loc35 = v41;
+	v41.u3 = g_t140030.u3;
+	v42.u0 = 0x30;
+	v41 += v42;
+	g_t140030.u3 = (word32 *) v41;
+	v41.u3 = g_t140030.u3;
+	v42.u3 = g_t140034.u3;
+	v43 = v41 >= v42;
+	if (v43)
+	{
+		v41.u0 = 0x30;
+		abortStackOverflow(v41);
+	}
+	v41 = loc35;
+	v42.u0 = 0x20;
+	v41 += v42;
+	loc28 = v41;
+	v41 = loc35;
+	v42.u0 = 0x18;
+	v41 += v42;
+	loc30 = v41;
+	v41 = loc35;
+	v42.u0 = 0x10;
+	v41 += v42;
+	loc29 = v41;
+	v41 = loc35;
+	loc27 = v41;
+	v41 = loc35;
+	v42.u0 = 0x24;
+	v41 += v42;
+	loc0 = v41;
+	v41 = fn0011D5FB();
+	loc1 = v41;
+	v41 = loc1;
+	v42.u0 = 0x00;
+	v43 = v41 == v42;
+	loc12 = v43;
+	v41 = loc12;
+	v43 = v41 == 0x00;
+	v43 = v43;
+	v41 = loc1;
+	v41 = *v41.u0;
+	loc22 = v41;
+	v41 = loc22;
+	v42.u0 = 0x00;
+	v43 = v41 == v42;
+	loc23 = v43;
+	v41 = loc23;
+	v43 = v41 == 0x00;
+	v43 = v43;
+	v41 = loc22;
+	v42.u0 = 0x50;
+	v41 += v42;
+	loc24 = v41;
+	v41 = loc22;
+	v42.u0 = 0x30;
+	v41 += v42;
+	loc25 = v41;
+	v41 = loc25;
+	v44 = *v41.u0;
+	loc36 = v44;
+	v44 = loc36;
+	v45.u0 = ~0xFF;
+	v44 &= v45;
+	loc37 = v44;
+	v44 = loc37;
+	v45.u0 = 0x436F6F40;
+	v43 = v44 == v45;
+	loc26 = v43;
+	v41 = loc26;
+	v43 = v41 == 0x00;
+	if (v43)
+	{
+		v41.u0 = 0x2664;
+		v41 = *v41.u0;
+		loc21 = v41;
+		v41 = loc30;
+		v42 = loc21;
+		*v41.u0 = v42;
+		v41.u0 = 0x40FD;
+		v42 = loc30;
+		fn0011D654(v41, v42);
+	}
+	v44 = loc36;
+	v45.u0 = 1131376449;
+	v43 = v44 == v45;
+	loc2 = v43;
+	v41 = loc2;
+	if (v41)
+	{
+		v41 = loc22;
+		v42.u0 = 44;
+		v41 += v42;
+		loc3 = v41;
+		v41 = loc3;
+		v41 = *v41.u0;
+		loc4 = v41;
+		v41 = loc4;
+		loc5 = v41;
+	}
+	else
+	{
+		v41 = loc24;
+		loc5 = v41;
+	}
+	v41 = loc0;
+	v42 = loc5;
+	*v41.u0 = v42;
+	v41 = loc22;
+	v41 = *v41.u0;
+	loc6 = v41;
 	v41 = loc6;
-	v45 = loc0;
-	v46 = loc11;
-	v47.u0 = 0x01FF;
-	v46 &= v47;
-	v47.u0 = 0x0F20;
-	v46 += v47;
+	v42.u0 = 0x04;
+	v41 += v42;
+	loc7 = v41;
+	v41 = loc7;
+	v41 = *v41.u0;
+	loc8 = v41;
+	v41.u0 = 0x0988;
+	v41 = *v41.u0;
+	loc9 = v41;
+	v41 = loc9;
+	v42.u0 = 0x10;
+	v41 += v42;
+	loc10 = v41;
+	v41 = loc10;
+	v41 = *v41.u0;
+	loc11 = v41;
+	v41.u0 = 0x0988;
+	v42 = loc6;
+	v46 = loc0;
+	v47 = loc11;
+	v48.u0 = 0x01FF;
+	v47 &= v48;
+	v48.u0 = 0x0F20;
+	v47 += v48;
 }
 
 // 0011D5FB: Stack Eq_n fn0011D5FB()
 Eq_n fn0011D5FB()
+{
+	v10.u3 = g_t140030.u3;
+	loc6 = v10;
+	v10.u3 = g_t140030.u3;
+	v11.u0 = 0x10;
+	v10 += v11;
+	g_t140030.u3 = (word32 *) v10;
+	v10.u3 = g_t140030.u3;
+	v11.u3 = g_t140034.u3;
+	v12 = v10 >= v11;
+	if (v12)
+	{
+		v10.u0 = 0x10;
+		abortStackOverflow(v10);
+	}
+	v10 = loc6;
+	loc4 = v10;
+	v10.u0 = 21484;
+	v11.u0 = 0x01EF;
+	v10 = _pthread_once(v10, v11);
+	loc0 = v10;
+	v10 = loc0;
+	v11.u0 = 0x00;
+	v12 = v10 == v11;
+	loc1 = v12;
+	v10 = loc1;
+	if (!v10)
+	{
+		v10.u0 = 16826;
+		v11 = loc4;
+		fn0011D654(v10, v11);
+		v10.u0 = 0x00;
+		return v10;
+	}
+	else
+	{
+		v10.u0 = 0x53F0;
+		v10 = *v10.u0;
+		loc2 = v10;
+		v10 = loc2;
+		v10 = _pthread_getspecific(v10);
+		loc3 = v10;
+		v10 = loc6;
+		g_t140030.u3 = (word32 *) v10;
+		v10 = loc3;
+		return v10;
+	}
+}
+
+// 0011D654: void fn0011D654(Stack Eq_n arg0, Stack Eq_n arg1)
+void fn0011D654(Eq_n arg0, Eq_n arg1)
+{
+	v7.u3 = g_t140030.u3;
+	loc5 = v7;
+	v7.u3 = g_t140030.u3;
+	v8.u0 = 0x10;
+	v7 += v8;
+	g_t140030.u3 = (word32 *) v7;
+	v7.u3 = g_t140030.u3;
+	v8.u3 = g_t140034.u3;
+	v9 = v7 >= v8;
+	if (v9)
+	{
+		v7.u0 = 0x10;
+		abortStackOverflow(v7);
+	}
+	v7 = loc5;
+	loc2 = v7;
+	v7 = loc2;
+	v8 = arg1;
+	*v7.u0 = v8;
+	v7.u0 = 0x0B14;
+	v7 = *v7.u0;
+	loc3 = v7;
+	v7 = loc3;
+	v8 = arg0;
+	v10 = loc2;
+	v7 = fn000D2BD4(v7, v8, v10);
+	v7.u0 = 0x0A;
+	v8 = loc3;
+	v7 = fn000DEC35(v7, v8);
+	_abort();
+}
+
+// 0011D696: void fn0011D696(Stack Eq_n arg0)
+void fn0011D696(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+}
+
+// 0011D69F: void fn0011D69F(Stack Eq_n arg0)
+void fn0011D69F(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 0011D6AD: void fn0011D6AD(Stack Eq_n arg0)
+void fn0011D6AD(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+}
+
+// 0011D6B6: void fn0011D6B6(Stack Eq_n arg0)
+void fn0011D6B6(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+}
+
+// 0011D6BF: Stack Eq_n fn0011D6BF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
+Eq_n fn0011D6BF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
+{
+	v25.u3 = g_t140030.u3;
+	loc24 = v25;
+	v25.u3 = g_t140030.u3;
+	v26.u0 = 0x40;
+	v25 += v26;
+	g_t140030.u3 = (word32 *) v25;
+	v25.u3 = g_t140030.u3;
+	v26.u3 = g_t140034.u3;
+	v27 = v25 >= v26;
+	if (v27)
+	{
+		v25.u0 = 0x40;
+		abortStackOverflow(v25);
+	}
+	v25 = loc24;
+	loc16 = v25;
+	v25 = arg0;
+	v26 = arg1;
+	v27 = v25 == v26;
+	loc17 = v27;
+	v25 = loc17;
+	if (!v25)
+	{
+		v25 = arg1;
+		v26.u0 = 0x00;
+		v27 = v25 == v26;
+		loc18 = v27;
+		v25 = loc18;
+		if (!v25)
+		{
+			v25 = arg1;
+			v26.u0 = 0x09A0;
+			v28.u0 = 0x0990;
+			v29.u0 = 0x00;
+			v25 = fn0011DBBE(v25, v26, v28, v29);
+			loc19 = v25;
+			v25 = loc19;
+			v26.u0 = 0x00;
+			v27 = v25 == v26;
+			loc20 = v27;
+			v25 = loc20;
+			if (!v25)
+			{
+				v25 = loc16;
+				v26.u0 = 0x04;
+				v25 += v26;
+				loc21 = v25;
+				v25 = loc21;
+				v30.u0 = 0x00;
+				*v25.u0 = v30;
+				v25 = loc21;
+				v26.u0 = 0x08;
+				v25 += v26;
+				v30.u0 = 0x00;
+				*v25.u0 = v30;
+				v25 = loc21;
+				v26.u0 = 0x10;
+				v25 += v26;
+				v30.u0 = 0x00;
+				*v25.u0 = v30;
+				v25 = loc21;
+				v26.u0 = 0x18;
+				v25 += v26;
+				v30.u0 = 0x00;
+				*v25.u0 = v30;
+				v25 = loc21;
+				v26.u0 = 0x20;
+				v25 += v26;
+				v30.u0 = 0x00;
+				*v25.u0 = v30;
+				v25 = loc21;
+				v26.u0 = 0x28;
+				v25 += v26;
+				v30.u0 = 0x00;
+				*v25.u0 = v30;
+				v25 = loc21;
+				v26.u0 = 0x30;
+				v25 += v26;
+				v26.u0 = 0x00;
+				*v25.u0 = v26;
+				v25 = loc16;
+				v26 = loc19;
+				*v25.u0 = v26;
+				v25 = loc16;
+				v26.u0 = 0x08;
+				v25 += v26;
+				loc22 = v25;
+				v25 = loc22;
+				v26 = arg0;
+				*v25.u0 = v26;
+				v25 = loc16;
+				v26.u0 = 0x0C;
+				v25 += v26;
+				loc5 = v25;
+				v25 = loc5;
+				v26.u0 = ~0x00;
+				*v25.u0 = v26;
+				v25 = loc16;
+				v26.u0 = 0x30;
+				v25 += v26;
+				loc6 = v25;
+				v25 = loc6;
+				v26.u0 = 0x01;
+				*v25.u0 = v26;
+				v25 = loc19;
+				v25 = *v25.u0;
+				loc7 = v25;
+				v25 = loc7;
+				v26.u0 = 0x1C;
+				v25 += v26;
+				loc8 = v25;
+				v25 = loc8;
+				v25 = *v25.u0;
+				loc9 = v25;
+				v25 = arg2;
+				v25 = *v25.u0;
+				loc10 = v25;
+				v25 = loc19;
+				v26 = loc16;
+				v28 = loc10;
+				v29.u0 = 0x01;
+				v31 = loc9;
+				v32.u0 = 0x01FF;
+				v31 &= v32;
+				v32.u0 = 0x2F20;
+				v31 += v32;
+			}
+			else
+			{
+				v25.u0 = 0x00;
+				loc4 = v25;
+			}
+		}
+		else
+		{
+			v25.u0 = 0x00;
+			loc4 = v25;
+		}
+	}
+	else
+	{
+		v25.u0 = 0x01;
+		loc4 = v25;
+	}
+}
+
+// 0011D812: void fn0011D812(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+void fn0011D812(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+	v8.u3 = g_t140030.u3;
+	loc10 = v8;
+	v8 = arg1;
+	v9.u0 = 0x08;
+	v8 += v9;
+	loc6 = v8;
+	v8 = loc6;
+	v8.u3 = *v8.u3;
+	loc7 = v8;
+	v8 = arg0;
+	v9 = loc7;
+	v10 = v8 == v9;
+	loc8 = v10;
+	v8 = loc8;
+	if (v8)
+	{
+		v8.u0 = 0x00;
+		v9 = arg1;
+		v11 = arg2;
+		v12 = arg3;
+		v13 = arg4;
+		fn0011DA6B(v8, v9, v11, v12, v13);
+	}
+}
+
+// 0011D842: void fn0011D842(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+void fn0011D842(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+	v36.u3 = g_t140030.u3;
+	loc37 = v36;
+	v36 = arg1;
+	v37.u0 = 0x08;
+	v36 += v37;
+	loc31 = v36;
+	v36 = loc31;
+	v36.u3 = *v36.u3;
+	loc32 = v36;
+	v36 = arg0;
+	v37 = loc32;
+	v38 = v36 == v37;
+	loc33 = v38;
+	v36 = loc33;
+	if (!v36)
+	{
+		v36 = arg1;
+		v36.u3 = *v36.u3;
+		loc9 = v36;
+		v36 = arg0;
+		v37 = loc9;
+		v38 = v36 == v37;
+		loc10 = v38;
+		v36 = loc10;
+		if (!v36)
+			return;
+		v36 = arg1;
+		v37.u0 = 0x10;
+		v36 += v37;
+		loc11 = v36;
+		v36 = loc11;
+		v36.u3 = *v36.u3;
+		loc12 = v36;
+		v36 = loc12;
+		v37 = arg2;
+		v38 = v36 == v37;
+		loc13 = v38;
+		v36 = loc13;
+		v38 = v36 == 0x00;
+		if (v38)
+		{
+			v36 = arg1;
+			v37.u0 = 0x14;
+			v36 += v37;
+			loc14 = v36;
+			v36 = loc14;
+			v36.u3 = *v36.u3;
+			loc15 = v36;
+			v36 = loc15;
+			v37 = arg2;
+			v38 = v36 == v37;
+			loc16 = v38;
+			v36 = loc16;
+			v38 = v36 == 0x00;
+			if (v38)
+			{
+				v36 = arg1;
+				v37.u0 = 0x20;
+				v36 += v37;
+				loc19 = v36;
+				v36 = loc19;
+				v37 = arg3;
+				*v36.u3 = (word32) v37;
+				v36 = loc14;
+				v37 = arg2;
+				*v36.u3 = (word32) v37;
+				v36 = arg1;
+				v37.u0 = 0x28;
+				v36 += v37;
+				loc20 = v36;
+				v36 = loc20;
+				v36.u3 = *v36.u3;
+				loc21 = v36;
+				v36 = loc21;
+				v37.u0 = 0x01;
+				v36 += v37;
+				loc22 = v36;
+				v36 = loc20;
+				v37 = loc22;
+				*v36.u3 = (word32) v37;
+				v36 = arg1;
+				v37.u0 = 0x24;
+				v36 += v37;
+				loc23 = v36;
+				v36 = loc23;
+				v36.u3 = *v36.u3;
+				loc24 = v36;
+				v36 = loc24;
+				v37.u0 = 0x01;
+				v38 = v36 == v37;
+				loc25 = v38;
+				v36 = loc25;
+				if (v36)
+				{
+					v36 = arg1;
+					v37.u0 = 0x18;
+					v36 += v37;
+					loc26 = v36;
+					v36 = loc26;
+					v36.u3 = *v36.u3;
+					loc27 = v36;
+					v36 = loc27;
+					v37.u0 = 0x02;
+					v38 = v36 == v37;
+					loc28 = v38;
+					v36 = loc28;
+					if (v36)
+					{
+						v36 = arg1;
+						v37.u0 = 0x36;
+						v36 += v37;
+						loc29 = v36;
+						v36 = loc29;
+						v37.u0 = 0x01;
+						v39 = (byte) v37;
+						v36.u4->t0000.u0 = (bool) v39;
+					}
+				}
+				v36 = arg1;
+				v37.u0 = 44;
+				v36 += v37;
+				loc30 = v36;
+				v36 = loc30;
+				v37.u0 = 0x04;
+				*v36.u3 = (word32) v37;
+				return;
+			}
+		}
+		v36 = arg3;
+		v37.u0 = 0x01;
+		v38 = v36 == v37;
+		loc17 = v38;
+		v36 = loc17;
+		if (v36)
+		{
+			v36 = arg1;
+			v37.u0 = 0x20;
+			v36 += v37;
+			loc18 = v36;
+			v36 = loc18;
+			v37.u0 = 0x01;
+			*v36.u3 = (word32) v37;
+		}
+	}
+	else
+	{
+		v36 = arg1;
+		v37.u0 = 0x04;
+		v36 += v37;
+		loc34 = v36;
+		v36 = loc34;
+		v36.u3 = *v36.u3;
+		loc35 = v36;
+		v36 = loc35;
+		v37 = arg2;
+		v38 = v36 == v37;
+		loc5 = v38;
+		v36 = loc5;
+		if (v36)
+		{
+			v36 = arg1;
+			v37.u0 = 0x1C;
+			v36 += v37;
+			loc6 = v36;
+			v36 = loc6;
+			v36.u3 = *v36.u3;
+			loc7 = v36;
+			v36 = loc7;
+			v37.u0 = 0x01;
+			v38 = v36 == v37;
+			loc8 = v38;
+			v36 = loc8;
+			v38 = v36 == 0x00;
+			if (v38)
+			{
+				v36 = loc6;
+				v37 = arg3;
+				*v36.u3 = (word32) v37;
+			}
+		}
+	}
+}
+
+// 0011D98B: void fn0011D98B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn0011D98B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v8.u3 = g_t140030.u3;
+	loc8 = v8;
+	v8 = arg1;
+	v9.u0 = 0x08;
+	v8 += v9;
+	loc4 = v8;
+	v8 = loc4;
+	v8.u3 = *v8.u3;
+	loc5 = v8;
+	v8 = arg0;
+	v9 = loc5;
+	v10 = v8 == v9;
+	loc6 = v10;
+	v8 = loc6;
+	if (v8)
+	{
+		v8.u0 = 0x00;
+		v9 = arg1;
+		v11 = arg2;
+		v12 = arg3;
+		fn0011D9B9(v8, v9, v11, v12);
+	}
+}
+
+// 0011D9B9: void fn0011D9B9(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn0011D9B9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v19.u3 = g_t140030.u3;
+	loc19 = v19;
+	v19 = arg1;
+	v20.u0 = 0x10;
+	v19 += v20;
+	loc12 = v19;
+	v19 = loc12;
+	v19.u3 = *v19.u3;
+	loc13 = v19;
+	v19 = loc13;
+	v20.u0 = 0x00;
+	v21 = v19 == v20;
+	loc14 = v21;
+	v19 = loc14;
+	if (!v19)
+	{
+		v19 = loc13;
+		v20 = arg2;
+		v21 = v19 == v20;
+		loc17 = v21;
+		v19 = loc17;
+		v21 = v19 == 0x00;
+		if (!v21)
+		{
+			v19 = arg1;
+			v20.u0 = 0x18;
+			v19 += v20;
+			loc4 = v19;
+			v19 = loc4;
+			v19.u3 = *v19.u3;
+			loc5 = v19;
+			v19 = loc5;
+			v20.u0 = 0x02;
+			v21 = v19 == v20;
+			loc6 = v21;
+			v19 = loc6;
+			if (v19)
+			{
+				v19 = loc4;
+				v20 = arg3;
+				*v19.u3 = (word32) v20;
+			}
+		}
+		else
+		{
+			v19 = arg1;
+			v20.u0 = 0x24;
+			v19 += v20;
+			loc7 = v19;
+			v19 = loc7;
+			v19.u3 = *v19.u3;
+			loc8 = v19;
+			v19 = loc8;
+			v20.u0 = 0x01;
+			v19 += v20;
+			loc9 = v19;
+			v19 = loc7;
+			v20 = loc9;
+			*v19.u3 = (word32) v20;
+			v19 = arg1;
+			v20.u0 = 0x18;
+			v19 += v20;
+			loc10 = v19;
+			v19 = loc10;
+			v20.u0 = 0x02;
+			*v19.u3 = (word32) v20;
+			v19 = arg1;
+			v20.u0 = 0x36;
+			v19 += v20;
+			loc11 = v19;
+			v19 = loc11;
+			v20.u0 = 0x01;
+			v22 = (byte) v20;
+			v19.u4->t0000.u0 = (bool) v22;
+		}
+	}
+	else
+	{
+		v19 = loc12;
+		v20 = arg2;
+		*v19.u3 = (word32) v20;
+		v19 = arg1;
+		v20.u0 = 0x18;
+		v19 += v20;
+		loc15 = v19;
+		v19 = loc15;
+		v20 = arg3;
+		*v19.u3 = (word32) v20;
+		v19 = arg1;
+		v20.u0 = 0x24;
+		v19 += v20;
+		loc16 = v19;
+		v19 = loc16;
+		v20.u0 = 0x01;
+		*v19.u3 = (word32) v20;
+	}
+}
+
+// 0011DA6B: void fn0011DA6B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+void fn0011DA6B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+	v36.u3 = g_t140030.u3;
+	loc37 = v36;
+	v36 = arg1;
+	v37.u0 = 0x35;
+	v36 += v37;
+	loc29 = v36;
+	v36 = loc29;
+	v37.u0 = 0x01;
+	v38 = (byte) v37;
+	*v36.u3 = (word32) v38;
+	v36 = arg1;
+	v37.u0 = 0x04;
+	v36 += v37;
+	loc30 = v36;
+	v36 = loc30;
+	v36.u3 = *v36.u3;
+	loc31 = v36;
+	v36 = loc31;
+	v37 = arg3;
+	v39 = v36 == v37;
+	loc32 = v39;
+	v36 = loc32;
+	if (!v36)
+		return;
+	v36 = arg1;
+	v37.u0 = 0x34;
+	v36 += v37;
+	loc33 = v36;
+	v36 = loc33;
+	v37.u0 = 0x01;
+	v40 = (byte) v37;
+	v36.u4->t0000.u0 = (bool) v40;
+	v36 = arg1;
+	v37.u0 = 0x10;
+	v36 += v37;
+	loc5 = v36;
+	v36 = loc5;
+	v36.u3 = *v36.u3;
+	loc6 = v36;
+	v36 = loc6;
+	v37.u0 = 0x00;
+	v39 = v36 == v37;
+	loc7 = v39;
+	v36 = loc7;
+	if (!v36)
+	{
+		v36 = loc6;
+		v37 = arg2;
+		v39 = v36 == v37;
+		loc15 = v39;
+		v36 = loc15;
+		v39 = v36 == 0x00;
+		if (!v39)
+		{
+			v36 = arg1;
+			v37.u0 = 0x18;
+			v36 += v37;
+			loc16 = v36;
+			v36 = loc16;
+			v36.u3 = *v36.u3;
+			loc17 = v36;
+			v36 = loc17;
+			v37.u0 = 0x02;
+			v39 = v36 == v37;
+			loc18 = v39;
+			v36 = loc18;
+			if (v36)
+			{
+				v36 = loc16;
+				v37 = arg4;
+				*v36.u3 = (word32) v37;
+				v36 = arg4;
+				loc23 = v36;
+			}
+			else
+			{
+				v36 = loc17;
+				loc23 = v36;
+			}
+			v36 = arg1;
+			v37.u0 = 0x30;
+			v36 += v37;
+			loc19 = v36;
+			v36 = loc19;
+			v36.u3 = *v36.u3;
+			loc20 = v36;
+			v36 = loc20;
+			v37.u0 = 0x01;
+			v39 = v36 == v37;
+			loc21 = v39;
+			v36 = loc23;
+			v37.u0 = 0x01;
+			v39 = v36 == v37;
+			loc22 = v39;
+			v36 = loc21;
+			v37 = loc22;
+			v36 &= v37;
+			loc35 = v36;
+			v36 = loc35;
+			if (v36)
+			{
+				v36 = arg1;
+				v37.u0 = 0x36;
+				v36 += v37;
+				loc24 = v36;
+				v36 = loc24;
+				v37.u0 = 0x01;
+				v43 = (byte) v37;
+				v36.u4->t0000.u0 = (bool) v43;
+			}
+		}
+		else
+		{
+			v36 = arg1;
+			v37.u0 = 0x24;
+			v36 += v37;
+			loc25 = v36;
+			v36 = loc25;
+			v36.u3 = *v36.u3;
+			loc26 = v36;
+			v36 = loc26;
+			v37.u0 = 0x01;
+			v36 += v37;
+			loc27 = v36;
+			v36 = loc25;
+			v37 = loc27;
+			*v36.u3 = (word32) v37;
+			v36 = arg1;
+			v37.u0 = 0x36;
+			v36 += v37;
+			loc28 = v36;
+			v36 = loc28;
+			v37.u0 = 0x01;
+			v42 = (byte) v37;
+			v36.u4->t0000.u0 = (bool) v42;
+		}
+	}
+	else
+	{
+		v36 = loc5;
+		v37 = arg2;
+		*v36.u3 = (word32) v37;
+		v36 = arg1;
+		v37.u0 = 0x18;
+		v36 += v37;
+		loc8 = v36;
+		v36 = loc8;
+		v37 = arg4;
+		*v36.u3 = (word32) v37;
+		v36 = arg1;
+		v37.u0 = 0x24;
+		v36 += v37;
+		loc9 = v36;
+		v36 = loc9;
+		v37.u0 = 0x01;
+		*v36.u3 = (word32) v37;
+		v36 = arg1;
+		v37.u0 = 0x30;
+		v36 += v37;
+		loc10 = v36;
+		v36 = loc10;
+		v36.u3 = *v36.u3;
+		loc11 = v36;
+		v36 = loc11;
+		v37.u0 = 0x01;
+		v39 = v36 == v37;
+		loc12 = v39;
+		v36 = arg4;
+		v37.u0 = 0x01;
+		v39 = v36 == v37;
+		loc13 = v39;
+		v36 = loc12;
+		v37 = loc13;
+		v36 &= v37;
+		loc34 = v36;
+		v36 = loc34;
+		v39 = v36 == 0x00;
+		if (!v39)
+		{
+			v36 = arg1;
+			v37.u0 = 0x36;
+			v36 += v37;
+			loc14 = v36;
+			v36 = loc14;
+			v37.u0 = 0x01;
+			v41 = (byte) v37;
+			v36.u4->t0000.u0 = (bool) v41;
+		}
+	}
+}
+
+// 0011DBBE: Stack Eq_n fn0011DBBE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+Eq_n fn0011DBBE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v56.u3 = g_t140030.u3;
+	loc56 = v56;
+	v56.u3 = g_t140030.u3;
+	v57.u0 = 0x40;
+	v56 += v57;
+	g_t140030.u3 = (word32 *) v56;
+	v56.u3 = g_t140030.u3;
+	v57.u3 = g_t140034.u3;
+	v58 = v56 >= v57;
+	if (v58)
+	{
+		v56.u0 = 0x40;
+		abortStackOverflow(v56);
+	}
+	v56 = loc56;
+	loc37 = v56;
+	v56 = arg0;
+	v56 = *v56.u0;
+	loc46 = v56;
+	v56 = loc46;
+	v57.u0 = ~0x07;
+	v56 += v57;
+	loc47 = v56;
+	v56 = loc47;
+	v56 = *v56.u0;
+	loc48 = v56;
+	v56 = arg0;
+	v57 = loc48;
+	v56 += v57;
+	loc49 = v56;
+	v56 = loc46;
+	v57.u0 = ~0x03;
+	v56 += v57;
+	loc50 = v56;
+	v56 = loc50;
+	v56 = *v56.u0;
+	loc7 = v56;
+	v56 = loc37;
+	v57 = arg2;
+	*v56.u0 = v57;
+	v56 = loc37;
+	v57.u0 = 0x04;
+	v56 += v57;
+	loc8 = v56;
+	v56 = loc8;
+	v57 = arg0;
+	*v56.u0 = v57;
+	v56 = loc37;
+	v57.u0 = 0x08;
+	v56 += v57;
+	loc9 = v56;
+	v56 = loc9;
+	v57 = arg1;
+	*v56.u0 = v57;
+	v56 = loc37;
+	v57.u0 = 0x0C;
+	v56 += v57;
+	loc10 = v56;
+	v56 = loc10;
+	v57 = arg3;
+	*v56.u0 = v57;
+	v56 = loc37;
+	v57.u0 = 0x10;
+	v56 += v57;
+	loc11 = v56;
+	v56 = loc37;
+	v57.u0 = 0x14;
+	v56 += v57;
+	loc12 = v56;
+	v56 = loc37;
+	v57.u0 = 0x18;
+	v56 += v57;
+	loc13 = v56;
+	v56 = loc37;
+	v57.u0 = 0x1C;
+	v56 += v57;
+	loc14 = v56;
+	v56 = loc37;
+	v57.u0 = 0x20;
+	v56 += v57;
+	loc15 = v56;
+	v56 = loc37;
+	v57.u0 = 0x28;
+	v56 += v57;
+	loc16 = v56;
+	v56 = loc7;
+	v57 = arg2;
+	v58 = v56 == v57;
+	loc17 = v58;
+	v56 = loc11;
+	v59.u0 = 0x00;
+	*v56.u0 = v59;
+	v56 = loc11;
+	v57.u0 = 0x08;
+	v56 += v57;
+	v59.u0 = 0x00;
+	*v56.u0 = v59;
+	v56 = loc11;
+	v57.u0 = 0x10;
+	v56 += v57;
+	v59.u0 = 0x00;
+	*v56.u0 = v59;
+	v56 = loc11;
+	v57.u0 = 0x18;
+	v56 += v57;
+	v59.u0 = 0x00;
+	*v56.u0 = v59;
+	v56 = loc11;
+	v57.u0 = 0x20;
+	v56 += v57;
+	v57.u0 = 0x00;
+	*v56.u0 = v57;
+	v56 = loc11;
+	v57.u0 = 0x24;
+	v56 += v57;
+	v57.u0 = 0x00;
+	v60 = (word16) v57;
+	*v56.u0 = v60;
+	v56 = loc11;
+	v57.u0 = 0x26;
+	v56 += v57;
+	v57.u0 = 0x00;
+	v61 = (byte) v57;
+	*v56.u0 = v61;
+	v56 = loc17;
+	v56 = v56;
+	v56 = loc37;
+	v57.u0 = 0x30;
+	v56 += v57;
+	loc18 = v56;
+	v56 = loc18;
+	v57.u0 = 0x01;
+	*v56.u0 = v57;
+	v56 = arg2;
+	v56 = *v56.u0;
+	loc19 = v56;
+	v56 = loc19;
+	v57.u0 = 0x14;
+	v56 += v57;
+	loc20 = v56;
+	v56 = loc20;
+	v56 = *v56.u0;
+	loc21 = v56;
+	v56 = arg2;
+	v57 = loc37;
+	v62 = loc49;
+	v63 = loc49;
+	v64 = 0x01;
+	v65 = 0x00;
+	v66 = loc21;
+	v67.u0 = 0x01FF;
+	v66 &= v67;
+	v67.u0 = 0x1320;
+	v66 += v67;
+}
+
+// 0011DE2C: void fn0011DE2C(Stack Eq_n arg0)
+void fn0011DE2C(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
+}
+
+// 0011DE3A: void fn0011DE3A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
+void fn0011DE3A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
+{
+	v13.u3 = g_t140030.u3;
+	loc15 = v13;
+	v13 = arg1;
+	v14.u0 = 0x08;
+	v13 += v14;
+	loc10 = v13;
+	v13 = loc10;
+	v13.u3 = *v13.u3;
+	loc11 = v13;
+	v13 = arg0;
+	v14 = loc11;
+	v15 = v13 == v14;
+	loc12 = v15;
+	v13 = loc12;
+	if (!v13)
+	{
+		v13 = arg0;
+		v14.u0 = 0x08;
+		v13 += v14;
+		loc13 = v13;
+		v13 = loc13;
+		v13 = *v13.u0;
+		loc6 = v13;
+		v13 = loc6;
+		v13 = *v13.u0;
+		loc7 = v13;
+		v13 = loc7;
+		v14.u0 = 0x14;
+		v13 += v14;
+		loc8 = v13;
+		v13 = loc8;
+		v13 = *v13.u0;
+		loc9 = v13;
+		v13 = loc6;
+		v14 = arg1;
+		v16 = arg2;
+		v17 = arg3;
+		v18 = arg4;
+		v19 = arg5;
+		v20 = loc9;
+		v21.u0 = 0x01FF;
+		v20 &= v21;
+		v21.u0 = 0x1320;
+		v20 += v21;
+	}
+	else
+	{
+		v13.u0 = 0x00;
+		v14 = arg1;
+		v16 = arg2;
+		v17 = arg3;
+		v18 = arg4;
+		fn0011DA6B(v13, v14, v16, v17, v18);
+	}
+}
+
+// 0011DEA7: void fn0011DEA7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
+void fn0011DEA7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+	v56.u3 = g_t140030.u3;
+	loc57 = v56;
+	v56 = arg1;
+	v57.u0 = 0x08;
+	v56 += v57;
+	loc46 = v56;
+	v56 = loc46;
+	v56.u3 = *v56.u3;
+	loc51 = v56;
+	v56 = arg0;
+	v57 = loc51;
+	v58 = v56 == v57;
+	loc52 = v58;
+	v56 = loc52;
+	if (!v56)
+	{
+		v56 = arg1;
+		v56.u3 = *v56.u3;
+		loc10 = v56;
+		v56 = arg0;
+		v57 = loc10;
+		v58 = v56 == v57;
+		loc11 = v58;
+		v56 = loc11;
+		v58 = v56 == 0x00;
+		v58 = v58;
+		v56 = arg0;
+		v57.u0 = 0x08;
+		v56 += v57;
+		loc45 = v56;
+		v56 = loc45;
+		v56.u3 = *v56.u3;
+		loc47 = v56;
+		v56 = loc47;
+		v56.u3 = *v56.u3;
+		loc48 = v56;
+		v56 = loc48;
+		v57.u0 = 0x18;
+		v56 += v57;
+		loc49 = v56;
+		v56 = loc49;
+		v56.u3 = *v56.u3;
+		loc50 = v56;
+		v56 = loc47;
+		v57 = arg1;
+		v59 = arg2;
+		v60 = arg3;
+		v61 = arg4;
+		v62 = loc50;
+		v63.u0 = 0x01FF;
+		v62 &= v63;
+		v63.u0 = 0x0200;
+		v62 += v63;
+	}
+	else
+	{
+		v56 = arg1;
+		v57.u0 = 0x04;
+		v56 += v57;
+		loc53 = v56;
+		v56 = loc53;
+		v56.u3 = *v56.u3;
+		loc54 = v56;
+		v56 = loc54;
+		v57 = arg2;
+		v58 = v56 == v57;
+		loc6 = v58;
+		v56 = loc6;
+		if (v56)
+		{
+			v56 = arg1;
+			v57.u0 = 0x1C;
+			v56 += v57;
+			loc7 = v56;
+			v56 = loc7;
+			v56.u3 = *v56.u3;
+			loc8 = v56;
+			v56 = loc8;
+			v57.u0 = 0x01;
+			v58 = v56 == v57;
+			loc9 = v58;
+			v56 = loc9;
+			v58 = v56 == 0x00;
+			if (v58)
+			{
+				v56 = loc7;
+				v57 = arg3;
+				*v56.u3 = (word32) v57;
+			}
+		}
+	}
+}
+
+// 0011E119: void fn0011E119(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
+void fn0011E119(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
+{
+	v13.u3 = g_t140030.u3;
+	loc13 = v13;
+	v13 = arg1;
+	v14.u0 = 0x08;
+	v13 += v14;
+	loc6 = v13;
+	v13 = loc6;
+	v13.u3 = *v13.u3;
+	loc7 = v13;
+	v13 = arg0;
+	v14 = loc7;
+	v15 = v13 == v14;
+	loc8 = v15;
+	v13 = loc8;
+	if (!v13)
+	{
+		v13 = arg0;
+		v14.u0 = 0x08;
+		v13 += v14;
+		loc9 = v13;
+		v13 = loc9;
+		v13 = *v13.u0;
+		loc10 = v13;
+		v13 = loc10;
+		v13 = *v13.u0;
+		loc11 = v13;
+		v13 = loc11;
+		v14.u0 = 0x1C;
+		v13 += v14;
+		loc4 = v13;
+		v13 = loc4;
+		v13 = *v13.u0;
+		loc5 = v13;
+		v13 = loc10;
+		v14 = arg1;
+		v16 = arg2;
+		v17 = arg3;
+		v18 = loc5;
+		v19.u0 = 0x01FF;
+		v18 &= v19;
+		v19.u0 = 0x2F20;
+		v18 += v19;
+	}
+	else
+	{
+		v13.u0 = 0x00;
+		v14 = arg1;
+		v16 = arg2;
+		v17 = arg3;
+		fn0011D9B9(v13, v14, v16, v17);
+	}
+}
+
+// 0011E181: void fn0011E181(Stack Eq_n arg0)
+void fn0011E181(Eq_n arg0)
+{
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+}
+
+// 0011E18A: void fn0011E18A()
+void fn0011E18A()
+{
+	v8.u3 = g_t140030.u3;
+	loc4 = v8;
+	v8.u3 = g_t140030.u3;
+	v9.u0 = 0x10;
+	v8 += v9;
+	g_t140030.u3 = (word32 *) v8;
+	v8.u3 = g_t140030.u3;
+	v9.u3 = g_t140034.u3;
+	v10 = v8 >= v9;
+	if (v10)
+	{
+		v8.u0 = 0x10;
+		abortStackOverflow(v8);
+	}
+	v8 = loc4;
+	loc2 = v8;
+	v8.u0 = 0x53F0;
+	v9.u0 = 0x01F0;
+	v8 = _pthread_key_create(v8, v9);
+	loc0 = v8;
+	v8 = loc0;
+	v9.u0 = 0x00;
+	v10 = v8 == v9;
+	loc1 = v10;
+	v8 = loc1;
+	if (!v8)
+	{
+		v8.u0 = 0x41EB;
+		v9 = loc2;
+		fn0011D654(v8, v9);
+	}
+	else
+	{
+		v8 = loc4;
+		g_t140030.u3 = (word32 *) v8;
+	}
+}
+
+// 0011E1CF: void fn0011E1CF(Stack Eq_n arg0)
+void fn0011E1CF(Eq_n arg0)
 {
 	v9.u3 = g_t140030.u3;
 	loc6 = v9;
@@ -22006,1271 +23234,144 @@ Eq_n fn0011D5FB()
 	}
 	v9 = loc6;
 	loc4 = v9;
-	v9.u0 = 21484;
-	v10.u0 = 0x01EF;
-	v9 = _pthread_once(v9, v10);
-	loc0 = v9;
-	v9 = loc0;
+	v9 = arg0;
+	_free(v9);
+	v9.u0 = 0x53F0;
+	v9 = *v9.u0;
+	loc1 = v9;
+	v9 = loc1;
+	v10.u0 = 0x00;
+	v9 = _pthread_setspecific(v9, v10);
+	loc2 = v9;
+	v9 = loc2;
 	v10.u0 = 0x00;
 	v11 = v9 == v10;
-	loc1 = v11;
-	v9 = loc1;
+	loc3 = v11;
+	v9 = loc3;
 	if (!v9)
 	{
-		v9.u0 = 16826;
+		v9.u0 = 0x421D;
 		v10 = loc4;
 		fn0011D654(v9, v10);
-		v9.u0 = 0x00;
-		return v9;
 	}
 	else
 	{
-		v9.u0 = 0x53F0;
-		v9 = *v9.u0;
-		loc2 = v9;
-		v9 = loc2;
-		v9 = _pthread_getspecific(v9);
-		loc3 = v9;
 		v9 = loc6;
 		g_t140030.u3 = (word32 *) v9;
-		v9 = loc3;
-		return v9;
-	}
-}
-
-// 0011D654: void fn0011D654(Stack Eq_n arg0, Stack Eq_n arg1)
-void fn0011D654(Eq_n arg0, Eq_n arg1)
-{
-	v6.u3 = g_t140030.u3;
-	loc5 = v6;
-	v6.u3 = g_t140030.u3;
-	v7.u0 = 0x10;
-	v6 += v7;
-	g_t140030.u3 = (word32 *) v6;
-	v6.u3 = g_t140030.u3;
-	v7.u3 = g_t140034.u3;
-	v8 = v6 >= v7;
-	if (v8)
-	{
-		v6.u0 = 0x10;
-		abortStackOverflow(v6);
-	}
-	v6 = loc5;
-	loc2 = v6;
-	v6 = loc2;
-	v7 = arg1;
-	*v6.u0 = v7;
-	v6.u0 = 0x0B14;
-	v6 = *v6.u0;
-	loc3 = v6;
-	v6 = loc3;
-	v7 = arg0;
-	v9 = loc2;
-	v6 = fn000D2BD4(v6, v7, v9);
-	v6.u0 = 0x0A;
-	v7 = loc3;
-	v6 = fn000DEC35(v6, v7);
-	_abort();
-}
-
-// 0011D696: void fn0011D696(Stack Eq_n arg0)
-void fn0011D696(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-}
-
-// 0011D69F: void fn0011D69F(Stack Eq_n arg0)
-void fn0011D69F(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 0011D6AD: void fn0011D6AD(Stack Eq_n arg0)
-void fn0011D6AD(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-}
-
-// 0011D6B6: void fn0011D6B6(Stack Eq_n arg0)
-void fn0011D6B6(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-}
-
-// 0011D6BF: Stack Eq_n fn0011D6BF(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
-Eq_n fn0011D6BF(Eq_n arg0, Eq_n arg1, Eq_n arg2)
-{
-	v24.u3 = g_t140030.u3;
-	loc24 = v24;
-	v24.u3 = g_t140030.u3;
-	v25.u0 = 0x40;
-	v24 += v25;
-	g_t140030.u3 = (word32 *) v24;
-	v24.u3 = g_t140030.u3;
-	v25.u3 = g_t140034.u3;
-	v26 = v24 >= v25;
-	if (v26)
-	{
-		v24.u0 = 0x40;
-		abortStackOverflow(v24);
-	}
-	v24 = loc24;
-	loc16 = v24;
-	v24 = arg0;
-	v25 = arg1;
-	v26 = v24 == v25;
-	loc17 = v26;
-	v24 = loc17;
-	if (!v24)
-	{
-		v24 = arg1;
-		v25.u0 = 0x00;
-		v26 = v24 == v25;
-		loc18 = v26;
-		v24 = loc18;
-		if (!v24)
-		{
-			v24 = arg1;
-			v25.u0 = 0x09A0;
-			v27.u0 = 0x0990;
-			v28.u0 = 0x00;
-			v24 = fn0011DBBE(v24, v25, v27, v28);
-			loc19 = v24;
-			v24 = loc19;
-			v25.u0 = 0x00;
-			v26 = v24 == v25;
-			loc20 = v26;
-			v24 = loc20;
-			if (!v24)
-			{
-				v24 = loc16;
-				v25.u0 = 0x04;
-				v24 += v25;
-				loc21 = v24;
-				v24 = loc21;
-				v29.u0 = 0x00;
-				*v24.u0 = v29;
-				v24 = loc21;
-				v25.u0 = 0x08;
-				v24 += v25;
-				v29.u0 = 0x00;
-				*v24.u0 = v29;
-				v24 = loc21;
-				v25.u0 = 0x10;
-				v24 += v25;
-				v29.u0 = 0x00;
-				*v24.u0 = v29;
-				v24 = loc21;
-				v25.u0 = 0x18;
-				v24 += v25;
-				v29.u0 = 0x00;
-				*v24.u0 = v29;
-				v24 = loc21;
-				v25.u0 = 0x20;
-				v24 += v25;
-				v29.u0 = 0x00;
-				*v24.u0 = v29;
-				v24 = loc21;
-				v25.u0 = 0x28;
-				v24 += v25;
-				v29.u0 = 0x00;
-				*v24.u0 = v29;
-				v24 = loc21;
-				v25.u0 = 0x30;
-				v24 += v25;
-				v25.u0 = 0x00;
-				*v24.u0 = v25;
-				v24 = loc16;
-				v25 = loc19;
-				*v24.u0 = v25;
-				v24 = loc16;
-				v25.u0 = 0x08;
-				v24 += v25;
-				loc22 = v24;
-				v24 = loc22;
-				v25 = arg0;
-				*v24.u0 = v25;
-				v24 = loc16;
-				v25.u0 = 0x0C;
-				v24 += v25;
-				loc5 = v24;
-				v24 = loc5;
-				v25.u0 = ~0x00;
-				*v24.u0 = v25;
-				v24 = loc16;
-				v25.u0 = 0x30;
-				v24 += v25;
-				loc6 = v24;
-				v24 = loc6;
-				v25.u0 = 0x01;
-				*v24.u0 = v25;
-				v24 = loc19;
-				v24 = *v24.u0;
-				loc7 = v24;
-				v24 = loc7;
-				v25.u0 = 0x1C;
-				v24 += v25;
-				loc8 = v24;
-				v24 = loc8;
-				v24 = *v24.u0;
-				loc9 = v24;
-				v24 = arg2;
-				v24 = *v24.u0;
-				loc10 = v24;
-				v24 = loc19;
-				v25 = loc16;
-				v27 = loc10;
-				v28.u0 = 0x01;
-				v30 = loc9;
-				v31.u0 = 0x01FF;
-				v30 &= v31;
-				v31.u0 = 0x2F20;
-				v30 += v31;
-			}
-			else
-			{
-				v24.u0 = 0x00;
-				loc4 = v24;
-			}
-		}
-		else
-		{
-			v24.u0 = 0x00;
-			loc4 = v24;
-		}
-	}
-	else
-	{
-		v24.u0 = 0x01;
-		loc4 = v24;
-	}
-}
-
-// 0011D812: void fn0011D812(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-void fn0011D812(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
-{
-	v7.u3 = g_t140030.u3;
-	loc10 = v7;
-	v7 = arg1;
-	v8.u0 = 0x08;
-	v7 += v8;
-	loc6 = v7;
-	v7 = loc6;
-	v7.u3 = *v7.u3;
-	loc7 = v7;
-	v7 = arg0;
-	v8 = loc7;
-	v9 = v7 == v8;
-	loc8 = v9;
-	v7 = loc8;
-	if (v7)
-	{
-		v7.u0 = 0x00;
-		v8 = arg1;
-		v10 = arg2;
-		v11 = arg3;
-		v12 = arg4;
-		fn0011DA6B(v7, v8, v10, v11, v12);
-	}
-}
-
-// 0011D842: void fn0011D842(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
-void fn0011D842(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
-{
-	v35.u3 = g_t140030.u3;
-	loc37 = v35;
-	v35 = arg1;
-	v36.u0 = 0x08;
-	v35 += v36;
-	loc31 = v35;
-	v35 = loc31;
-	v35.u3 = *v35.u3;
-	loc32 = v35;
-	v35 = arg0;
-	v36 = loc32;
-	v37 = v35 == v36;
-	loc33 = v37;
-	v35 = loc33;
-	if (!v35)
-	{
-		v35 = arg1;
-		v35.u3 = *v35.u3;
-		loc9 = v35;
-		v35 = arg0;
-		v36 = loc9;
-		v37 = v35 == v36;
-		loc10 = v37;
-		v35 = loc10;
-		if (!v35)
-			return;
-		v35 = arg1;
-		v36.u0 = 0x10;
-		v35 += v36;
-		loc11 = v35;
-		v35 = loc11;
-		v35.u3 = *v35.u3;
-		loc12 = v35;
-		v35 = loc12;
-		v36 = arg2;
-		v37 = v35 == v36;
-		loc13 = v37;
-		v35 = loc13;
-		v37 = v35 == 0x00;
-		if (v37)
-		{
-			v35 = arg1;
-			v36.u0 = 0x14;
-			v35 += v36;
-			loc14 = v35;
-			v35 = loc14;
-			v35.u3 = *v35.u3;
-			loc15 = v35;
-			v35 = loc15;
-			v36 = arg2;
-			v37 = v35 == v36;
-			loc16 = v37;
-			v35 = loc16;
-			v37 = v35 == 0x00;
-			if (v37)
-			{
-				v35 = arg1;
-				v36.u0 = 0x20;
-				v35 += v36;
-				loc19 = v35;
-				v35 = loc19;
-				v36 = arg3;
-				*v35.u3 = (word32) v36;
-				v35 = loc14;
-				v36 = arg2;
-				*v35.u3 = (word32) v36;
-				v35 = arg1;
-				v36.u0 = 0x28;
-				v35 += v36;
-				loc20 = v35;
-				v35 = loc20;
-				v35.u3 = *v35.u3;
-				loc21 = v35;
-				v35 = loc21;
-				v36.u0 = 0x01;
-				v35 += v36;
-				loc22 = v35;
-				v35 = loc20;
-				v36 = loc22;
-				*v35.u3 = (word32) v36;
-				v35 = arg1;
-				v36.u0 = 0x24;
-				v35 += v36;
-				loc23 = v35;
-				v35 = loc23;
-				v35.u3 = *v35.u3;
-				loc24 = v35;
-				v35 = loc24;
-				v36.u0 = 0x01;
-				v37 = v35 == v36;
-				loc25 = v37;
-				v35 = loc25;
-				if (v35)
-				{
-					v35 = arg1;
-					v36.u0 = 0x18;
-					v35 += v36;
-					loc26 = v35;
-					v35 = loc26;
-					v35.u3 = *v35.u3;
-					loc27 = v35;
-					v35 = loc27;
-					v36.u0 = 0x02;
-					v37 = v35 == v36;
-					loc28 = v37;
-					v35 = loc28;
-					if (v35)
-					{
-						v35 = arg1;
-						v36.u0 = 0x36;
-						v35 += v36;
-						loc29 = v35;
-						v35 = loc29;
-						v36.u0 = 0x01;
-						v38 = (byte) v36;
-						v35.u4->t0000.u0 = (bool) v38;
-					}
-				}
-				v35 = arg1;
-				v36.u0 = 44;
-				v35 += v36;
-				loc30 = v35;
-				v35 = loc30;
-				v36.u0 = 0x04;
-				*v35.u3 = (word32) v36;
-				return;
-			}
-		}
-		v35 = arg3;
-		v36.u0 = 0x01;
-		v37 = v35 == v36;
-		loc17 = v37;
-		v35 = loc17;
-		if (v35)
-		{
-			v35 = arg1;
-			v36.u0 = 0x20;
-			v35 += v36;
-			loc18 = v35;
-			v35 = loc18;
-			v36.u0 = 0x01;
-			*v35.u3 = (word32) v36;
-		}
-	}
-	else
-	{
-		v35 = arg1;
-		v36.u0 = 0x04;
-		v35 += v36;
-		loc34 = v35;
-		v35 = loc34;
-		v35.u3 = *v35.u3;
-		loc35 = v35;
-		v35 = loc35;
-		v36 = arg2;
-		v37 = v35 == v36;
-		loc5 = v37;
-		v35 = loc5;
-		if (v35)
-		{
-			v35 = arg1;
-			v36.u0 = 0x1C;
-			v35 += v36;
-			loc6 = v35;
-			v35 = loc6;
-			v35.u3 = *v35.u3;
-			loc7 = v35;
-			v35 = loc7;
-			v36.u0 = 0x01;
-			v37 = v35 == v36;
-			loc8 = v37;
-			v35 = loc8;
-			v37 = v35 == 0x00;
-			if (v37)
-			{
-				v35 = loc6;
-				v36 = arg3;
-				*v35.u3 = (word32) v36;
-			}
-		}
-	}
-}
-
-// 0011D98B: void fn0011D98B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-void fn0011D98B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	v7.u3 = g_t140030.u3;
-	loc8 = v7;
-	v7 = arg1;
-	v8.u0 = 0x08;
-	v7 += v8;
-	loc4 = v7;
-	v7 = loc4;
-	v7.u3 = *v7.u3;
-	loc5 = v7;
-	v7 = arg0;
-	v8 = loc5;
-	v9 = v7 == v8;
-	loc6 = v9;
-	v7 = loc6;
-	if (v7)
-	{
-		v7.u0 = 0x00;
-		v8 = arg1;
-		v10 = arg2;
-		v11 = arg3;
-		fn0011D9B9(v7, v8, v10, v11);
-	}
-}
-
-// 0011D9B9: void fn0011D9B9(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-void fn0011D9B9(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	v18.u3 = g_t140030.u3;
-	loc19 = v18;
-	v18 = arg1;
-	v19.u0 = 0x10;
-	v18 += v19;
-	loc12 = v18;
-	v18 = loc12;
-	v18.u3 = *v18.u3;
-	loc13 = v18;
-	v18 = loc13;
-	v19.u0 = 0x00;
-	v20 = v18 == v19;
-	loc14 = v20;
-	v18 = loc14;
-	if (!v18)
-	{
-		v18 = loc13;
-		v19 = arg2;
-		v20 = v18 == v19;
-		loc17 = v20;
-		v18 = loc17;
-		v20 = v18 == 0x00;
-		if (!v20)
-		{
-			v18 = arg1;
-			v19.u0 = 0x18;
-			v18 += v19;
-			loc4 = v18;
-			v18 = loc4;
-			v18.u3 = *v18.u3;
-			loc5 = v18;
-			v18 = loc5;
-			v19.u0 = 0x02;
-			v20 = v18 == v19;
-			loc6 = v20;
-			v18 = loc6;
-			if (v18)
-			{
-				v18 = loc4;
-				v19 = arg3;
-				*v18.u3 = (word32) v19;
-			}
-		}
-		else
-		{
-			v18 = arg1;
-			v19.u0 = 0x24;
-			v18 += v19;
-			loc7 = v18;
-			v18 = loc7;
-			v18.u3 = *v18.u3;
-			loc8 = v18;
-			v18 = loc8;
-			v19.u0 = 0x01;
-			v18 += v19;
-			loc9 = v18;
-			v18 = loc7;
-			v19 = loc9;
-			*v18.u3 = (word32) v19;
-			v18 = arg1;
-			v19.u0 = 0x18;
-			v18 += v19;
-			loc10 = v18;
-			v18 = loc10;
-			v19.u0 = 0x02;
-			*v18.u3 = (word32) v19;
-			v18 = arg1;
-			v19.u0 = 0x36;
-			v18 += v19;
-			loc11 = v18;
-			v18 = loc11;
-			v19.u0 = 0x01;
-			v21 = (byte) v19;
-			v18.u4->t0000.u0 = (bool) v21;
-		}
-	}
-	else
-	{
-		v18 = loc12;
-		v19 = arg2;
-		*v18.u3 = (word32) v19;
-		v18 = arg1;
-		v19.u0 = 0x18;
-		v18 += v19;
-		loc15 = v18;
-		v18 = loc15;
-		v19 = arg3;
-		*v18.u3 = (word32) v19;
-		v18 = arg1;
-		v19.u0 = 0x24;
-		v18 += v19;
-		loc16 = v18;
-		v18 = loc16;
-		v19.u0 = 0x01;
-		*v18.u3 = (word32) v19;
-	}
-}
-
-// 0011DA6B: void fn0011DA6B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
-void fn0011DA6B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
-{
-	v35.u3 = g_t140030.u3;
-	loc37 = v35;
-	v35 = arg1;
-	v36.u0 = 0x35;
-	v35 += v36;
-	loc29 = v35;
-	v35 = loc29;
-	v36.u0 = 0x01;
-	v37 = (byte) v36;
-	*v35.u3 = (word32) v37;
-	v35 = arg1;
-	v36.u0 = 0x04;
-	v35 += v36;
-	loc30 = v35;
-	v35 = loc30;
-	v35.u3 = *v35.u3;
-	loc31 = v35;
-	v35 = loc31;
-	v36 = arg3;
-	v38 = v35 == v36;
-	loc32 = v38;
-	v35 = loc32;
-	if (!v35)
-		return;
-	v35 = arg1;
-	v36.u0 = 0x34;
-	v35 += v36;
-	loc33 = v35;
-	v35 = loc33;
-	v36.u0 = 0x01;
-	v39 = (byte) v36;
-	v35.u4->t0000.u0 = (bool) v39;
-	v35 = arg1;
-	v36.u0 = 0x10;
-	v35 += v36;
-	loc5 = v35;
-	v35 = loc5;
-	v35.u3 = *v35.u3;
-	loc6 = v35;
-	v35 = loc6;
-	v36.u0 = 0x00;
-	v38 = v35 == v36;
-	loc7 = v38;
-	v35 = loc7;
-	if (!v35)
-	{
-		v35 = loc6;
-		v36 = arg2;
-		v38 = v35 == v36;
-		loc15 = v38;
-		v35 = loc15;
-		v38 = v35 == 0x00;
-		if (!v38)
-		{
-			v35 = arg1;
-			v36.u0 = 0x18;
-			v35 += v36;
-			loc16 = v35;
-			v35 = loc16;
-			v35.u3 = *v35.u3;
-			loc17 = v35;
-			v35 = loc17;
-			v36.u0 = 0x02;
-			v38 = v35 == v36;
-			loc18 = v38;
-			v35 = loc18;
-			if (v35)
-			{
-				v35 = loc16;
-				v36 = arg4;
-				*v35.u3 = (word32) v36;
-				v35 = arg4;
-				loc23 = v35;
-			}
-			else
-			{
-				v35 = loc17;
-				loc23 = v35;
-			}
-			v35 = arg1;
-			v36.u0 = 0x30;
-			v35 += v36;
-			loc19 = v35;
-			v35 = loc19;
-			v35.u3 = *v35.u3;
-			loc20 = v35;
-			v35 = loc20;
-			v36.u0 = 0x01;
-			v38 = v35 == v36;
-			loc21 = v38;
-			v35 = loc23;
-			v36.u0 = 0x01;
-			v38 = v35 == v36;
-			loc22 = v38;
-			v35 = loc21;
-			v36 = loc22;
-			v35 &= v36;
-			loc35 = v35;
-			v35 = loc35;
-			if (v35)
-			{
-				v35 = arg1;
-				v36.u0 = 0x36;
-				v35 += v36;
-				loc24 = v35;
-				v35 = loc24;
-				v36.u0 = 0x01;
-				v42 = (byte) v36;
-				v35.u4->t0000.u0 = (bool) v42;
-			}
-		}
-		else
-		{
-			v35 = arg1;
-			v36.u0 = 0x24;
-			v35 += v36;
-			loc25 = v35;
-			v35 = loc25;
-			v35.u3 = *v35.u3;
-			loc26 = v35;
-			v35 = loc26;
-			v36.u0 = 0x01;
-			v35 += v36;
-			loc27 = v35;
-			v35 = loc25;
-			v36 = loc27;
-			*v35.u3 = (word32) v36;
-			v35 = arg1;
-			v36.u0 = 0x36;
-			v35 += v36;
-			loc28 = v35;
-			v35 = loc28;
-			v36.u0 = 0x01;
-			v41 = (byte) v36;
-			v35.u4->t0000.u0 = (bool) v41;
-		}
-	}
-	else
-	{
-		v35 = loc5;
-		v36 = arg2;
-		*v35.u3 = (word32) v36;
-		v35 = arg1;
-		v36.u0 = 0x18;
-		v35 += v36;
-		loc8 = v35;
-		v35 = loc8;
-		v36 = arg4;
-		*v35.u3 = (word32) v36;
-		v35 = arg1;
-		v36.u0 = 0x24;
-		v35 += v36;
-		loc9 = v35;
-		v35 = loc9;
-		v36.u0 = 0x01;
-		*v35.u3 = (word32) v36;
-		v35 = arg1;
-		v36.u0 = 0x30;
-		v35 += v36;
-		loc10 = v35;
-		v35 = loc10;
-		v35.u3 = *v35.u3;
-		loc11 = v35;
-		v35 = loc11;
-		v36.u0 = 0x01;
-		v38 = v35 == v36;
-		loc12 = v38;
-		v35 = arg4;
-		v36.u0 = 0x01;
-		v38 = v35 == v36;
-		loc13 = v38;
-		v35 = loc12;
-		v36 = loc13;
-		v35 &= v36;
-		loc34 = v35;
-		v35 = loc34;
-		v38 = v35 == 0x00;
-		if (!v38)
-		{
-			v35 = arg1;
-			v36.u0 = 0x36;
-			v35 += v36;
-			loc14 = v35;
-			v35 = loc14;
-			v36.u0 = 0x01;
-			v40 = (byte) v36;
-			v35.u4->t0000.u0 = (bool) v40;
-		}
-	}
-}
-
-// 0011DBBE: Stack Eq_n fn0011DBBE(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-Eq_n fn0011DBBE(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	v55.u3 = g_t140030.u3;
-	loc56 = v55;
-	v55.u3 = g_t140030.u3;
-	v56.u0 = 0x40;
-	v55 += v56;
-	g_t140030.u3 = (word32 *) v55;
-	v55.u3 = g_t140030.u3;
-	v56.u3 = g_t140034.u3;
-	v57 = v55 >= v56;
-	if (v57)
-	{
-		v55.u0 = 0x40;
-		abortStackOverflow(v55);
-	}
-	v55 = loc56;
-	loc37 = v55;
-	v55 = arg0;
-	v55 = *v55.u0;
-	loc46 = v55;
-	v55 = loc46;
-	v56.u0 = ~0x07;
-	v55 += v56;
-	loc47 = v55;
-	v55 = loc47;
-	v55 = *v55.u0;
-	loc48 = v55;
-	v55 = arg0;
-	v56 = loc48;
-	v55 += v56;
-	loc49 = v55;
-	v55 = loc46;
-	v56.u0 = ~0x03;
-	v55 += v56;
-	loc50 = v55;
-	v55 = loc50;
-	v55 = *v55.u0;
-	loc7 = v55;
-	v55 = loc37;
-	v56 = arg2;
-	*v55.u0 = v56;
-	v55 = loc37;
-	v56.u0 = 0x04;
-	v55 += v56;
-	loc8 = v55;
-	v55 = loc8;
-	v56 = arg0;
-	*v55.u0 = v56;
-	v55 = loc37;
-	v56.u0 = 0x08;
-	v55 += v56;
-	loc9 = v55;
-	v55 = loc9;
-	v56 = arg1;
-	*v55.u0 = v56;
-	v55 = loc37;
-	v56.u0 = 0x0C;
-	v55 += v56;
-	loc10 = v55;
-	v55 = loc10;
-	v56 = arg3;
-	*v55.u0 = v56;
-	v55 = loc37;
-	v56.u0 = 0x10;
-	v55 += v56;
-	loc11 = v55;
-	v55 = loc37;
-	v56.u0 = 0x14;
-	v55 += v56;
-	loc12 = v55;
-	v55 = loc37;
-	v56.u0 = 0x18;
-	v55 += v56;
-	loc13 = v55;
-	v55 = loc37;
-	v56.u0 = 0x1C;
-	v55 += v56;
-	loc14 = v55;
-	v55 = loc37;
-	v56.u0 = 0x20;
-	v55 += v56;
-	loc15 = v55;
-	v55 = loc37;
-	v56.u0 = 0x28;
-	v55 += v56;
-	loc16 = v55;
-	v55 = loc7;
-	v56 = arg2;
-	v57 = v55 == v56;
-	loc17 = v57;
-	v55 = loc11;
-	v58.u0 = 0x00;
-	*v55.u0 = v58;
-	v55 = loc11;
-	v56.u0 = 0x08;
-	v55 += v56;
-	v58.u0 = 0x00;
-	*v55.u0 = v58;
-	v55 = loc11;
-	v56.u0 = 0x10;
-	v55 += v56;
-	v58.u0 = 0x00;
-	*v55.u0 = v58;
-	v55 = loc11;
-	v56.u0 = 0x18;
-	v55 += v56;
-	v58.u0 = 0x00;
-	*v55.u0 = v58;
-	v55 = loc11;
-	v56.u0 = 0x20;
-	v55 += v56;
-	v56.u0 = 0x00;
-	*v55.u0 = v56;
-	v55 = loc11;
-	v56.u0 = 0x24;
-	v55 += v56;
-	v56.u0 = 0x00;
-	v59 = (word16) v56;
-	*v55.u0 = v59;
-	v55 = loc11;
-	v56.u0 = 0x26;
-	v55 += v56;
-	v56.u0 = 0x00;
-	v60 = (byte) v56;
-	*v55.u0 = v60;
-	v55 = loc17;
-	v55 = v55;
-	v55 = loc37;
-	v56.u0 = 0x30;
-	v55 += v56;
-	loc18 = v55;
-	v55 = loc18;
-	v56.u0 = 0x01;
-	*v55.u0 = v56;
-	v55 = arg2;
-	v55 = *v55.u0;
-	loc19 = v55;
-	v55 = loc19;
-	v56.u0 = 0x14;
-	v55 += v56;
-	loc20 = v55;
-	v55 = loc20;
-	v55 = *v55.u0;
-	loc21 = v55;
-	v55 = arg2;
-	v56 = loc37;
-	v61 = loc49;
-	v62 = loc49;
-	v63 = 0x01;
-	v64 = 0x00;
-	v65 = loc21;
-	v66.u0 = 0x01FF;
-	v65 &= v66;
-	v66.u0 = 0x1320;
-	v65 += v66;
-}
-
-// 0011DE2C: void fn0011DE2C(Stack Eq_n arg0)
-void fn0011DE2C(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
-}
-
-// 0011DE3A: void fn0011DE3A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
-void fn0011DE3A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
-{
-	v12.u3 = g_t140030.u3;
-	loc15 = v12;
-	v12 = arg1;
-	v13.u0 = 0x08;
-	v12 += v13;
-	loc10 = v12;
-	v12 = loc10;
-	v12.u3 = *v12.u3;
-	loc11 = v12;
-	v12 = arg0;
-	v13 = loc11;
-	v14 = v12 == v13;
-	loc12 = v14;
-	v12 = loc12;
-	if (!v12)
-	{
-		v12 = arg0;
-		v13.u0 = 0x08;
-		v12 += v13;
-		loc13 = v12;
-		v12 = loc13;
-		v12 = *v12.u0;
-		loc6 = v12;
-		v12 = loc6;
-		v12 = *v12.u0;
-		loc7 = v12;
-		v12 = loc7;
-		v13.u0 = 0x14;
-		v12 += v13;
-		loc8 = v12;
-		v12 = loc8;
-		v12 = *v12.u0;
-		loc9 = v12;
-		v12 = loc6;
-		v13 = arg1;
-		v15 = arg2;
-		v16 = arg3;
-		v17 = arg4;
-		v18 = arg5;
-		v19 = loc9;
-		v20.u0 = 0x01FF;
-		v19 &= v20;
-		v20.u0 = 0x1320;
-		v19 += v20;
-	}
-	else
-	{
-		v12.u0 = 0x00;
-		v13 = arg1;
-		v15 = arg2;
-		v16 = arg3;
-		v17 = arg4;
-		fn0011DA6B(v12, v13, v15, v16, v17);
-	}
-}
-
-// 0011DEA7: void fn0011DEA7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
-void fn0011DEA7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
-{
-	v55.u3 = g_t140030.u3;
-	loc57 = v55;
-	v55 = arg1;
-	v56.u0 = 0x08;
-	v55 += v56;
-	loc46 = v55;
-	v55 = loc46;
-	v55.u3 = *v55.u3;
-	loc51 = v55;
-	v55 = arg0;
-	v56 = loc51;
-	v57 = v55 == v56;
-	loc52 = v57;
-	v55 = loc52;
-	if (!v55)
-	{
-		v55 = arg1;
-		v55.u3 = *v55.u3;
-		loc10 = v55;
-		v55 = arg0;
-		v56 = loc10;
-		v57 = v55 == v56;
-		loc11 = v57;
-		v55 = loc11;
-		v57 = v55 == 0x00;
-		v57 = v57;
-		v55 = arg0;
-		v56.u0 = 0x08;
-		v55 += v56;
-		loc45 = v55;
-		v55 = loc45;
-		v55.u3 = *v55.u3;
-		loc47 = v55;
-		v55 = loc47;
-		v55.u3 = *v55.u3;
-		loc48 = v55;
-		v55 = loc48;
-		v56.u0 = 0x18;
-		v55 += v56;
-		loc49 = v55;
-		v55 = loc49;
-		v55.u3 = *v55.u3;
-		loc50 = v55;
-		v55 = loc47;
-		v56 = arg1;
-		v58 = arg2;
-		v59 = arg3;
-		v60 = arg4;
-		v61 = loc50;
-		v62.u0 = 0x01FF;
-		v61 &= v62;
-		v62.u0 = 0x0200;
-		v61 += v62;
-	}
-	else
-	{
-		v55 = arg1;
-		v56.u0 = 0x04;
-		v55 += v56;
-		loc53 = v55;
-		v55 = loc53;
-		v55.u3 = *v55.u3;
-		loc54 = v55;
-		v55 = loc54;
-		v56 = arg2;
-		v57 = v55 == v56;
-		loc6 = v57;
-		v55 = loc6;
-		if (v55)
-		{
-			v55 = arg1;
-			v56.u0 = 0x1C;
-			v55 += v56;
-			loc7 = v55;
-			v55 = loc7;
-			v55.u3 = *v55.u3;
-			loc8 = v55;
-			v55 = loc8;
-			v56.u0 = 0x01;
-			v57 = v55 == v56;
-			loc9 = v57;
-			v55 = loc9;
-			v57 = v55 == 0x00;
-			if (v57)
-			{
-				v55 = loc7;
-				v56 = arg3;
-				*v55.u3 = (word32) v56;
-			}
-		}
-	}
-}
-
-// 0011E119: void fn0011E119(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
-void fn0011E119(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
-{
-	v12.u3 = g_t140030.u3;
-	loc13 = v12;
-	v12 = arg1;
-	v13.u0 = 0x08;
-	v12 += v13;
-	loc6 = v12;
-	v12 = loc6;
-	v12.u3 = *v12.u3;
-	loc7 = v12;
-	v12 = arg0;
-	v13 = loc7;
-	v14 = v12 == v13;
-	loc8 = v14;
-	v12 = loc8;
-	if (!v12)
-	{
-		v12 = arg0;
-		v13.u0 = 0x08;
-		v12 += v13;
-		loc9 = v12;
-		v12 = loc9;
-		v12 = *v12.u0;
-		loc10 = v12;
-		v12 = loc10;
-		v12 = *v12.u0;
-		loc11 = v12;
-		v12 = loc11;
-		v13.u0 = 0x1C;
-		v12 += v13;
-		loc4 = v12;
-		v12 = loc4;
-		v12 = *v12.u0;
-		loc5 = v12;
-		v12 = loc10;
-		v13 = arg1;
-		v15 = arg2;
-		v16 = arg3;
-		v17 = loc5;
-		v18.u0 = 0x01FF;
-		v17 &= v18;
-		v18.u0 = 0x2F20;
-		v17 += v18;
-	}
-	else
-	{
-		v12.u0 = 0x00;
-		v13 = arg1;
-		v15 = arg2;
-		v16 = arg3;
-		fn0011D9B9(v12, v13, v15, v16);
-	}
-}
-
-// 0011E181: void fn0011E181(Stack Eq_n arg0)
-void fn0011E181(Eq_n arg0)
-{
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-}
-
-// 0011E18A: void fn0011E18A()
-void fn0011E18A()
-{
-	v7.u3 = g_t140030.u3;
-	loc4 = v7;
-	v7.u3 = g_t140030.u3;
-	v8.u0 = 0x10;
-	v7 += v8;
-	g_t140030.u3 = (word32 *) v7;
-	v7.u3 = g_t140030.u3;
-	v8.u3 = g_t140034.u3;
-	v9 = v7 >= v8;
-	if (v9)
-	{
-		v7.u0 = 0x10;
-		abortStackOverflow(v7);
-	}
-	v7 = loc4;
-	loc2 = v7;
-	v7.u0 = 0x53F0;
-	v8.u0 = 0x01F0;
-	v7 = _pthread_key_create(v7, v8);
-	loc0 = v7;
-	v7 = loc0;
-	v8.u0 = 0x00;
-	v9 = v7 == v8;
-	loc1 = v9;
-	v7 = loc1;
-	if (!v7)
-	{
-		v7.u0 = 0x41EB;
-		v8 = loc2;
-		fn0011D654(v7, v8);
-	}
-	else
-	{
-		v7 = loc4;
-		g_t140030.u3 = (word32 *) v7;
-	}
-}
-
-// 0011E1CF: void fn0011E1CF(Stack Eq_n arg0)
-void fn0011E1CF(Eq_n arg0)
-{
-	v8.u3 = g_t140030.u3;
-	loc6 = v8;
-	v8.u3 = g_t140030.u3;
-	v9.u0 = 0x10;
-	v8 += v9;
-	g_t140030.u3 = (word32 *) v8;
-	v8.u3 = g_t140030.u3;
-	v9.u3 = g_t140034.u3;
-	v10 = v8 >= v9;
-	if (v10)
-	{
-		v8.u0 = 0x10;
-		abortStackOverflow(v8);
-	}
-	v8 = loc6;
-	loc4 = v8;
-	v8 = arg0;
-	_free(v8);
-	v8.u0 = 0x53F0;
-	v8 = *v8.u0;
-	loc1 = v8;
-	v8 = loc1;
-	v9.u0 = 0x00;
-	v8 = _pthread_setspecific(v8, v9);
-	loc2 = v8;
-	v8 = loc2;
-	v9.u0 = 0x00;
-	v10 = v8 == v9;
-	loc3 = v10;
-	v8 = loc3;
-	if (!v8)
-	{
-		v8.u0 = 0x421D;
-		v9 = loc4;
-		fn0011D654(v8, v9);
-	}
-	else
-	{
-		v8 = loc6;
-		g_t140030.u3 = (word32 *) v8;
 	}
 }
 
 // 0011E21F: void fn0011E21F()
 void fn0011E21F()
 {
+	v20.u3 = g_t140030.u3;
+	loc14 = v20;
+	v20.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v20;
+	v20.u0 = 0x01F1;
+	v20 = invoke_i(v20);
+	loc0 = v20;
+	v20.u3 = g_t140048.u3;
+	loc1 = v20;
+	v20.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v20;
+	v20 = loc1;
+	v21.u0 = 0x01;
+	v20 &= v21;
+	loc7 = v20;
+	v20 = loc7;
+	if (v20)
+	{
+		v20.u0 = 0x00;
+		v20 = ___cxa_find_matching_catch_n(v20);
+		loc5 = v20;
+		v20.u3 = g_t140094.u3;
+		loc6 = v20;
+		v20 = loc5;
+		fn000D0E65(v20);
+	}
+	v20 = loc0;
+	v21.u0 = 0x00;
+	v22 = v20 == v21;
+	loc8 = v22;
+	v20 = loc8;
+	v22 = v20 == 0x00;
+	if (v22)
+	{
+		v20 = loc0;
+		v20.u3 = *v20.u3;
+		loc9 = v20;
+		v20 = loc9;
+		v21.u0 = 0x00;
+		v22 = v20 == v21;
+		loc10 = v22;
+		v20 = loc10;
+		v22 = v20 == 0x00;
+		if (v22)
+		{
+			v20 = loc9;
+			v21.u0 = 0x30;
+			v20 += v21;
+			loc11 = v20;
+			v20 = loc11;
+			&v23.u4->t0000.u0 = v20.u4->t0000.u4;
+			loc15 = v23;
+			v23 = loc15;
+			v24.u0 = ~0xFF;
+			v23 &= v24;
+			loc16 = v23;
+			v23 = loc16;
+			v24.u0 = 0x436F6F40;
+			v22 = v23 == v24;
+			loc12 = v22;
+			v20 = loc12;
+			if (v20)
+			{
+				v20 = loc9;
+				v21.u0 = 0x0C;
+				v20 += v21;
+				loc2 = v20;
+				v20 = loc2;
+				v20.u3 = *v20.u3;
+				loc3 = v20;
+				v20 = loc3;
+				fn0011E2BD(v20);
+			}
+		}
+	}
+	v20 = fn0011E377();
+	loc4 = v20;
+	v20 = loc4;
+	fn0011E2BD(v20);
+}
+
+// 0011E2BD: void fn0011E2BD(Stack Eq_n arg0)
+void fn0011E2BD(Eq_n arg0)
+{
 	v19.u3 = g_t140030.u3;
+	loc16 = v19;
+	v19.u3 = g_t140030.u3;
+	v20.u0 = 0x10;
+	v19 += v20;
+	g_t140030.u3 = (word32 *) v19;
+	v19.u3 = g_t140030.u3;
+	v20.u3 = g_t140034.u3;
+	v21 = v19 >= v20;
+	if (v21)
+	{
+		v19.u0 = 0x10;
+		abortStackOverflow(v19);
+	}
+	v19 = loc16;
+	v20.u0 = 0x08;
+	v19 += v20;
 	loc14 = v19;
+	v19 = loc16;
+	loc13 = v19;
 	v19.u0 = 0x00;
 	g_t140048.u3 = (word32 *) v19;
-	v19.u0 = 0x01F1;
-	v19 = invoke_i(v19);
-	loc0 = v19;
+	v19 = arg0;
+	invoke_v(v19);
 	v19.u3 = g_t140048.u3;
 	loc1 = v19;
 	v19.u0 = 0x00;
@@ -23278,924 +23379,823 @@ void fn0011E21F()
 	v19 = loc1;
 	v20.u0 = 0x01;
 	v19 &= v20;
+	loc5 = v19;
+	v19 = loc5;
+	v21 = v19 == 0x00;
+	if (v21)
+	{
+		v19.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v19;
+		v19.u0 = 0x01F2;
+		v20.u0 = 0x4252;
+		v22 = loc13;
+		invoke_vii(v19, v20, v22);
+		v19.u3 = g_t140048.u3;
+		loc6 = v19;
+		v19.u0 = 0x00;
+		g_t140048.u3 = (word32 *) v19;
+	}
+	v19.u0 = 0x00;
+	v19 = ___cxa_find_matching_catch_n(v19);
 	loc7 = v19;
+	v19.u3 = g_t140094.u3;
+	loc8 = v19;
 	v19 = loc7;
+	v19 = ___cxa_begin_catch(v19);
+	v19.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v19;
+	v19.u0 = 0x01F2;
+	v20.u0 = 17018;
+	v22 = loc14;
+	invoke_vii(v19, v20, v22);
+	v19.u3 = g_t140048.u3;
+	loc9 = v19;
+	v19.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v19;
+	v19.u0 = 0x00;
+	v19 = ___cxa_find_matching_catch_n(v19);
+	loc10 = v19;
+	v19.u3 = g_t140094.u3;
+	loc11 = v19;
+	v19.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v19;
+	v19.u0 = 0x016C;
+	invoke_v(v19);
+	v19.u3 = g_t140048.u3;
+	loc12 = v19;
+	v19.u0 = 0x00;
+	g_t140048.u3 = (word32 *) v19;
+	v19 = loc12;
+	v20.u0 = 0x01;
+	v19 &= v20;
+	loc2 = v19;
+	v19 = loc2;
 	if (v19)
 	{
 		v19.u0 = 0x00;
 		v19 = ___cxa_find_matching_catch_n(v19);
-		loc5 = v19;
+		loc3 = v19;
 		v19.u3 = g_t140094.u3;
-		loc6 = v19;
-		v19 = loc5;
+		loc4 = v19;
+		v19 = loc3;
 		fn000D0E65(v19);
-	}
-	v19 = loc0;
-	v20.u0 = 0x00;
-	v21 = v19 == v20;
-	loc8 = v21;
-	v19 = loc8;
-	v21 = v19 == 0x00;
-	if (v21)
-	{
-		v19 = loc0;
-		v19.u3 = *v19.u3;
-		loc9 = v19;
-		v19 = loc9;
-		v20.u0 = 0x00;
-		v21 = v19 == v20;
-		loc10 = v21;
-		v19 = loc10;
-		v21 = v19 == 0x00;
-		if (v21)
-		{
-			v19 = loc9;
-			v20.u0 = 0x30;
-			v19 += v20;
-			loc11 = v19;
-			v19 = loc11;
-			&v22.u4->t0000.u0 = v19.u4->t0000.u4;
-			loc15 = v22;
-			v22 = loc15;
-			v23.u0 = ~0xFF;
-			v22 &= v23;
-			loc16 = v22;
-			v22 = loc16;
-			v23.u0 = 0x436F6F40;
-			v21 = v22 == v23;
-			loc12 = v21;
-			v19 = loc12;
-			if (v19)
-			{
-				v19 = loc9;
-				v20.u0 = 0x0C;
-				v19 += v20;
-				loc2 = v19;
-				v19 = loc2;
-				v19.u3 = *v19.u3;
-				loc3 = v19;
-				v19 = loc3;
-				fn0011E2BD(v19);
-			}
-		}
-	}
-	v19 = fn0011E377();
-	loc4 = v19;
-	v19 = loc4;
-	fn0011E2BD(v19);
-}
-
-// 0011E2BD: void fn0011E2BD(Stack Eq_n arg0)
-void fn0011E2BD(Eq_n arg0)
-{
-	v18.u3 = g_t140030.u3;
-	loc16 = v18;
-	v18.u3 = g_t140030.u3;
-	v19.u0 = 0x10;
-	v18 += v19;
-	g_t140030.u3 = (word32 *) v18;
-	v18.u3 = g_t140030.u3;
-	v19.u3 = g_t140034.u3;
-	v20 = v18 >= v19;
-	if (v20)
-	{
-		v18.u0 = 0x10;
-		abortStackOverflow(v18);
-	}
-	v18 = loc16;
-	v19.u0 = 0x08;
-	v18 += v19;
-	loc14 = v18;
-	v18 = loc16;
-	loc13 = v18;
-	v18.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v18;
-	v18 = arg0;
-	invoke_v(v18);
-	v18.u3 = g_t140048.u3;
-	loc1 = v18;
-	v18.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v18;
-	v18 = loc1;
-	v19.u0 = 0x01;
-	v18 &= v19;
-	loc5 = v18;
-	v18 = loc5;
-	v20 = v18 == 0x00;
-	if (v20)
-	{
-		v18.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v18;
-		v18.u0 = 0x01F2;
-		v19.u0 = 0x4252;
-		v21 = loc13;
-		invoke_vii(v18, v19, v21);
-		v18.u3 = g_t140048.u3;
-		loc6 = v18;
-		v18.u0 = 0x00;
-		g_t140048.u3 = (word32 *) v18;
-	}
-	v18.u0 = 0x00;
-	v18 = ___cxa_find_matching_catch_n(v18);
-	loc7 = v18;
-	v18.u3 = g_t140094.u3;
-	loc8 = v18;
-	v18 = loc7;
-	v18 = ___cxa_begin_catch(v18);
-	v18.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v18;
-	v18.u0 = 0x01F2;
-	v19.u0 = 17018;
-	v21 = loc14;
-	invoke_vii(v18, v19, v21);
-	v18.u3 = g_t140048.u3;
-	loc9 = v18;
-	v18.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v18;
-	v18.u0 = 0x00;
-	v18 = ___cxa_find_matching_catch_n(v18);
-	loc10 = v18;
-	v18.u3 = g_t140094.u3;
-	loc11 = v18;
-	v18.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v18;
-	v18.u0 = 0x016C;
-	invoke_v(v18);
-	v18.u3 = g_t140048.u3;
-	loc12 = v18;
-	v18.u0 = 0x00;
-	g_t140048.u3 = (word32 *) v18;
-	v18 = loc12;
-	v19.u0 = 0x01;
-	v18 &= v19;
-	loc2 = v18;
-	v18 = loc2;
-	if (v18)
-	{
-		v18.u0 = 0x00;
-		v18 = ___cxa_find_matching_catch_n(v18);
-		loc3 = v18;
-		v18.u3 = g_t140094.u3;
-		loc4 = v18;
-		v18 = loc3;
-		fn000D0E65(v18);
 	}
 	else
 	{
-		v18 = loc10;
-		fn000D0E65(v18);
+		v19 = loc10;
+		fn000D0E65(v19);
 	}
 }
 
 // 0011E377: Stack Eq_n fn0011E377()
 Eq_n fn0011E377()
 {
-	v7.u3 = g_t140030.u3;
-	loc4 = v7;
-	v7.u0 = 0x2660;
-	v7 = *v7.u0;
-	loc0 = v7;
-	v7 = loc0;
-	v8.u0 = 0x00;
-	v7 += v8;
-	loc1 = v7;
-	v7.u0 = 0x2660;
-	v8 = loc1;
-	*v7.u0 = v8;
-	v7 = loc0;
-	loc2 = v7;
-	v7 = loc2;
-	return v7;
+	v8.u3 = g_t140030.u3;
+	loc4 = v8;
+	v8.u0 = 0x2660;
+	v8 = *v8.u0;
+	loc0 = v8;
+	v8 = loc0;
+	v9.u0 = 0x00;
+	v8 += v9;
+	loc1 = v8;
+	v8.u0 = 0x2660;
+	v9 = loc1;
+	*v8.u0 = v9;
+	v8 = loc0;
+	loc2 = v8;
+	v8 = loc2;
+	return v8;
 }
 
 // 0011E39F: void fn0011E39F(Stack Eq_n arg0)
 void fn0011E39F(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011E3A8: void fn0011E3A8(Stack Eq_n arg0)
 void fn0011E3A8(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011E3B6: Stack Eq_n fn0011E3B6(Stack Eq_n arg0)
 Eq_n fn0011E3B6(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 0x42AC;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 0x42AC;
+	return v5;
 }
 
 // 0011E3C3: void fn0011E3C3(Stack Eq_n arg0)
 void fn0011E3C3(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011E3CC: void fn0011E3CC(Stack Eq_n arg0)
 void fn0011E3CC(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
-	loc3 = v5;
-	v5 = arg0;
-	v6.u0 = 9940;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v6.u0 = 0x04;
-	v5 += v6;
-	loc1 = v5;
-	v5 = loc1;
-	fn0011E416(v5);
+	v6.u3 = g_t140030.u3;
+	loc3 = v6;
+	v6 = arg0;
+	v7.u0 = 9940;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v7.u0 = 0x04;
+	v6 += v7;
+	loc1 = v6;
+	v6 = loc1;
+	fn0011E416(v6);
 }
 
 // 0011E3EA: void fn0011E3EA(Stack Eq_n arg0)
 void fn0011E3EA(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011E3CC(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011E3CC(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011E3FD: Stack Eq_n fn0011E3FD(Stack Eq_n arg0)
 Eq_n fn0011E3FD(Eq_n arg0)
 {
-	v6.u3 = g_t140030.u3;
-	loc4 = v6;
-	v6 = arg0;
-	v7 = 0x04;
-	v6.u3 += v7;
-	loc1 = v6;
-	v6 = loc1;
-	v6.u3 = *v6.u3;
-	loc2 = v6;
-	v6 = loc2;
-	return v6;
+	v7.u3 = g_t140030.u3;
+	loc4 = v7;
+	v7 = arg0;
+	v8 = 0x04;
+	v7.u3 += v8;
+	loc1 = v7;
+	v7 = loc1;
+	v7.u3 = *v7.u3;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
 }
 
 // 0011E416: void fn0011E416(Stack Eq_n arg0)
 void fn0011E416(Eq_n arg0)
 {
-	v12.u3 = g_t140030.u3;
-	loc10 = v12;
-	v12 = arg0;
-	v12.u3 = *v12.u3;
-	loc1 = v12;
-	v12 = loc1;
-	v13.u0 = ~0x03;
-	v12 += v13;
-	loc2 = v12;
-	v12 = loc2;
-	v12.u3 = *v12.u3;
-	loc3 = v12;
-	v12 = loc3;
-	v13.u0 = ~0x00;
-	v12 += v13;
-	loc4 = v12;
-	v12 = loc2;
-	v13 = loc4;
-	*v12.u3 = (word32) v13;
-	v12 = loc3;
-	v13.u0 = ~0x00;
-	v12 += v13;
-	loc5 = v12;
-	v12 = loc5;
-	v13.u0 = 0x00;
-	v14 = v12 < v13;
-	loc6 = v14;
-	v12 = loc6;
-	if (v12)
+	v13.u3 = g_t140030.u3;
+	loc10 = v13;
+	v13 = arg0;
+	v13.u3 = *v13.u3;
+	loc1 = v13;
+	v13 = loc1;
+	v14.u0 = ~0x03;
+	v13 += v14;
+	loc2 = v13;
+	v13 = loc2;
+	v13.u3 = *v13.u3;
+	loc3 = v13;
+	v13 = loc3;
+	v14.u0 = ~0x00;
+	v13 += v14;
+	loc4 = v13;
+	v13 = loc2;
+	v14 = loc4;
+	*v13.u3 = (word32) v14;
+	v13 = loc3;
+	v14.u0 = ~0x00;
+	v13 += v14;
+	loc5 = v13;
+	v13 = loc5;
+	v14.u0 = 0x00;
+	v15 = v13 < v14;
+	loc6 = v15;
+	v13 = loc6;
+	if (v13)
 	{
-		v12 = arg0;
-		v12.u3 = *v12.u3;
-		loc7 = v12;
-		v12 = loc7;
-		v13.u0 = ~0x0B;
-		v12 += v13;
-		loc8 = v12;
-		v12 = loc8;
-		fn0011B709(v12);
+		v13 = arg0;
+		v13.u3 = *v13.u3;
+		loc7 = v13;
+		v13 = loc7;
+		v14.u0 = ~0x0B;
+		v13 += v14;
+		loc8 = v13;
+		v13 = loc8;
+		fn0011B709(v13);
 	}
 }
 
 // 0011E468: void fn0011E468(Stack Eq_n arg0)
 void fn0011E468(Eq_n arg0)
 {
-	v5.u3 = g_t140030.u3;
-	loc3 = v5;
-	v5 = arg0;
-	v6.u0 = 9960;
-	*v5.u3 = (word32) v6;
-	v5 = arg0;
-	v6.u0 = 0x04;
-	v5 += v6;
-	loc1 = v5;
-	v5 = loc1;
-	fn0011E416(v5);
+	v6.u3 = g_t140030.u3;
+	loc3 = v6;
+	v6 = arg0;
+	v7.u0 = 9960;
+	*v6.u3 = (word32) v7;
+	v6 = arg0;
+	v7.u0 = 0x04;
+	v6 += v7;
+	loc1 = v6;
+	v6 = loc1;
+	fn0011E416(v6);
 }
 
 // 0011E486: void fn0011E486(Stack Eq_n arg0)
 void fn0011E486(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011E468(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011E468(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011E499: Stack Eq_n fn0011E499(Stack Eq_n arg0)
 Eq_n fn0011E499(Eq_n arg0)
 {
-	v6.u3 = g_t140030.u3;
-	loc4 = v6;
-	v6 = arg0;
-	v7 = 0x04;
-	v6.u3 += v7;
-	loc1 = v6;
-	v6 = loc1;
-	v6.u3 = *v6.u3;
-	loc2 = v6;
-	v6 = loc2;
-	return v6;
+	v7.u3 = g_t140030.u3;
+	loc4 = v7;
+	v7 = arg0;
+	v8 = 0x04;
+	v7.u3 += v8;
+	loc1 = v7;
+	v7 = loc1;
+	v7.u3 = *v7.u3;
+	loc2 = v7;
+	v7 = loc2;
+	return v7;
 }
 
 // 0011E4B2: void fn0011E4B2(Stack Eq_n arg0)
 void fn0011E4B2(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011E3CC(v4);
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011E3CC(v5);
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011E4C5: void fn0011E4C5(Stack Eq_n arg0)
 void fn0011E4C5(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011E4CE: void fn0011E4CE(Stack Eq_n arg0)
 void fn0011E4CE(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011E4DC: Stack Eq_n fn0011E4DC(Stack Eq_n arg0)
 Eq_n fn0011E4DC(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4.u0 = 17147;
-	return v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5.u0 = 17147;
+	return v5;
 }
 
 // 0011E4E9: void fn0011E4E9(Stack Eq_n arg0)
 void fn0011E4E9(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	fn0011B709(v4);
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	fn0011B709(v5);
 }
 
 // 0011E4F7: void fn0011E4F7(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0011E4F7(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v39.u3 = g_t140030.u3;
-	loc42 = v39;
-	v39 = arg1;
-	v40.u0 = 0x08;
-	v39 += v40;
-	loc37 = v39;
-	v39 = loc37;
-	v39.u3 = *v39.u3;
-	loc38 = v39;
-	v39 = arg0;
-	v40 = loc38;
-	v41 = v39 == v40;
-	loc39 = v41;
-	v39 = loc39;
-	if (v39)
+	v40.u3 = g_t140030.u3;
+	loc42 = v40;
+	v40 = arg1;
+	v41.u0 = 0x08;
+	v40 += v41;
+	loc37 = v40;
+	v40 = loc37;
+	v40.u3 = *v40.u3;
+	loc38 = v40;
+	v40 = arg0;
+	v41 = loc38;
+	v42 = v40 == v41;
+	loc39 = v42;
+	v40 = loc39;
+	if (v40)
 	{
-		v39.u0 = 0x00;
-		v40 = arg1;
-		v42 = arg2;
-		v43 = arg3;
-		v44 = arg4;
-		fn0011DA6B(v39, v40, v42, v43, v44);
+		v40.u0 = 0x00;
+		v41 = arg1;
+		v43 = arg2;
+		v44 = arg3;
+		v45 = arg4;
+		fn0011DA6B(v40, v41, v43, v44, v45);
 	}
 	else
 	{
-		v39 = arg1;
-		v40.u0 = 0x34;
-		v39 += v40;
-		loc40 = v39;
-		v39 = loc40;
-		v45 = *v39.u0;
-		v39.u3 = (word32) v45;
-		loc7 = v39;
-		v39 = loc7;
-		v40.u0 = 0xFF;
-		v39 &= v40;
-		loc8 = v39;
-		v39 = arg1;
-		v40.u0 = 0x35;
-		v39 += v40;
-		loc9 = v39;
-		v39 = loc7;
-		v40.u0 = 0xFFFF;
-		v39 &= v40;
-		v40.u0 = 0x08;
-		v39 >>= v40;
-		loc10 = v39;
-		v39 = loc10;
-		v40.u0 = 0xFF;
-		v39 &= v40;
-		loc11 = v39;
-		v39 = arg0;
-		v40.u0 = 0x10;
-		v39 += v40;
-		loc12 = v39;
-		v39 = arg0;
-		v40.u0 = 0x0C;
-		v39 += v40;
-		loc13 = v39;
-		v39 = loc13;
-		v39.u3 = *v39.u3;
-		loc14 = v39;
-		v39 = arg0;
-		v40.u0 = 0x10;
-		v39 += v40;
-		v40 = loc14;
-		v42.u0 = 0x03;
-		v40 <<= v42;
-		v39 += v40;
-		loc15 = v39;
-		v39 = loc40;
-		v40.u0 = 0x00;
-		v46 = (byte) v40;
-		v39.u4->t0000.u0 = (bool) v46;
-		v39 = loc9;
-		v40.u0 = 0x00;
-		v47 = (byte) v40;
-		v39.u4->t0000.u0 = (bool) v47;
-		v39 = loc12;
 		v40 = arg1;
-		v42 = arg2;
-		v43 = arg3;
-		v44 = arg4;
-		v48 = arg5;
-		fn0011ECEC(v39, v40, v42, v43, v44, v48);
-		v39 = loc14;
-		v40.u0 = 0x01;
-		v41 = v39 > v40;
-		loc16 = v41;
-		v39 = loc16;
-		if (v39)
+		v41.u0 = 0x34;
+		v40 += v41;
+		loc40 = v40;
+		v40 = loc40;
+		v46 = *v40.u0;
+		v40.u3 = (word32) v46;
+		loc7 = v40;
+		v40 = loc7;
+		v41.u0 = 0xFF;
+		v40 &= v41;
+		loc8 = v40;
+		v40 = arg1;
+		v41.u0 = 0x35;
+		v40 += v41;
+		loc9 = v40;
+		v40 = loc7;
+		v41.u0 = 0xFFFF;
+		v40 &= v41;
+		v41.u0 = 0x08;
+		v40 >>= v41;
+		loc10 = v40;
+		v40 = loc10;
+		v41.u0 = 0xFF;
+		v40 &= v41;
+		loc11 = v40;
+		v40 = arg0;
+		v41.u0 = 0x10;
+		v40 += v41;
+		loc12 = v40;
+		v40 = arg0;
+		v41.u0 = 0x0C;
+		v40 += v41;
+		loc13 = v40;
+		v40 = loc13;
+		v40.u3 = *v40.u3;
+		loc14 = v40;
+		v40 = arg0;
+		v41.u0 = 0x10;
+		v40 += v41;
+		v41 = loc14;
+		v43.u0 = 0x03;
+		v41 <<= v43;
+		v40 += v41;
+		loc15 = v40;
+		v40 = loc40;
+		v41.u0 = 0x00;
+		v47 = (byte) v41;
+		v40.u4->t0000.u0 = (bool) v47;
+		v40 = loc9;
+		v41.u0 = 0x00;
+		v48 = (byte) v41;
+		v40.u4->t0000.u0 = (bool) v48;
+		v40 = loc12;
+		v41 = arg1;
+		v43 = arg2;
+		v44 = arg3;
+		v45 = arg4;
+		v49 = arg5;
+		fn0011ECEC(v40, v41, v43, v44, v45, v49);
+		v40 = loc14;
+		v41.u0 = 0x01;
+		v42 = v40 > v41;
+		loc16 = v42;
+		v40 = loc16;
+		if (v40)
 		{
 			while (true)
 			{
-				v39 = arg0;
-				v40.u0 = 0x18;
-				v39 += v40;
-				loc17 = v39;
-				v39 = arg1;
-				v40.u0 = 0x18;
-				v39 += v40;
-				loc18 = v39;
-				v39 = arg0;
-				v40.u0 = 0x08;
-				v39 += v40;
-				loc19 = v39;
-				v39 = arg1;
-				v40.u0 = 0x36;
-				v39 += v40;
-				loc20 = v39;
-				v39 = loc17;
-				loc6 = v39;
-				v39 = loc20;
-				v49.u1 = v39.u4->t0000.u1;
-				v39.u3 = (word32) v49;
-				loc21 = v39;
-				v39 = loc21;
-				v40.u0 = 0x18;
-				v39 <<= v40;
-				v40.u0 = 0x18;
-				v39 >>= v40;
-				v40.u0 = 0x00;
-				v41 = v39 == v40;
-				loc22 = v41;
-				v39 = loc22;
-				v41 = v39 == 0x00;
-				if (v41)
+				v40 = arg0;
+				v41.u0 = 0x18;
+				v40 += v41;
+				loc17 = v40;
+				v40 = arg1;
+				v41.u0 = 0x18;
+				v40 += v41;
+				loc18 = v40;
+				v40 = arg0;
+				v41.u0 = 0x08;
+				v40 += v41;
+				loc19 = v40;
+				v40 = arg1;
+				v41.u0 = 0x36;
+				v40 += v41;
+				loc20 = v40;
+				v40 = loc17;
+				loc6 = v40;
+				v40 = loc20;
+				v50.u1 = v40.u4->t0000.u1;
+				v40.u3 = (word32) v50;
+				loc21 = v40;
+				v40 = loc21;
+				v41.u0 = 0x18;
+				v40 <<= v41;
+				v41.u0 = 0x18;
+				v40 >>= v41;
+				v41.u0 = 0x00;
+				v42 = v40 == v41;
+				loc22 = v42;
+				v40 = loc22;
+				v42 = v40 == 0x00;
+				if (v42)
 					break;
-				v39 = loc40;
-				v50.u2 = v39.u4->t0000.u2;
-				v39.u3 = (word32) v50;
-				loc23 = v39;
-				v39 = loc23;
-				v40.u0 = 0xFF;
-				v39 &= v40;
-				loc24 = v39;
-				v39 = loc24;
-				v40.u0 = 0x18;
-				v39 <<= v40;
-				v40.u0 = 0x18;
-				v39 >>= v40;
-				v40.u0 = 0x00;
-				v41 = v39 == v40;
-				loc25 = v41;
-				v39 = loc25;
-				if (v39)
+				v40 = loc40;
+				v51.u2 = v40.u4->t0000.u2;
+				v40.u3 = (word32) v51;
+				loc23 = v40;
+				v40 = loc23;
+				v41.u0 = 0xFF;
+				v40 &= v41;
+				loc24 = v40;
+				v40 = loc24;
+				v41.u0 = 0x18;
+				v40 <<= v41;
+				v41.u0 = 0x18;
+				v40 >>= v41;
+				v41.u0 = 0x00;
+				v42 = v40 == v41;
+				loc25 = v42;
+				v40 = loc25;
+				if (v40)
 				{
-					v39 = loc23;
-					v40.u0 = 0xFFFF;
-					v39 &= v40;
-					v40.u0 = 0x0100;
-					v41 = v39 < v40;
-					loc31 = v41;
-					v39 = loc31;
-					v41 = v39 == 0x00;
-					if (v41)
+					v40 = loc23;
+					v41.u0 = 0xFFFF;
+					v40 &= v41;
+					v41.u0 = 0x0100;
+					v42 = v40 < v41;
+					loc31 = v42;
+					v40 = loc31;
+					v42 = v40 == 0x00;
+					if (v42)
 					{
-						v39 = loc19;
-						v39.u3 = *v39.u3;
-						loc32 = v39;
-						v39 = loc32;
-						v40.u0 = 0x01;
-						v39 &= v40;
-						loc33 = v39;
-						v39 = loc33;
-						v40.u0 = 0x00;
-						v41 = v39 == v40;
-						loc34 = v41;
-						v39 = loc34;
-						if (v39)
+						v40 = loc19;
+						v40.u3 = *v40.u3;
+						loc32 = v40;
+						v40 = loc32;
+						v41.u0 = 0x01;
+						v40 &= v41;
+						loc33 = v40;
+						v40 = loc33;
+						v41.u0 = 0x00;
+						v42 = v40 == v41;
+						loc34 = v42;
+						v40 = loc34;
+						if (v40)
 							break;
 					}
 				}
 				else
 				{
-					v39 = loc18;
-					v39.u3 = *v39.u3;
-					loc26 = v39;
-					v39 = loc26;
-					v40.u0 = 0x01;
-					v41 = v39 == v40;
-					loc27 = v41;
-					v39 = loc27;
-					if (v39)
+					v40 = loc18;
+					v40.u3 = *v40.u3;
+					loc26 = v40;
+					v40 = loc26;
+					v41.u0 = 0x01;
+					v42 = v40 == v41;
+					loc27 = v42;
+					v40 = loc27;
+					if (v40)
 						break;
-					v39 = loc19;
-					v39.u3 = *v39.u3;
-					loc28 = v39;
-					v39 = loc28;
-					v40.u0 = 0x02;
-					v39 &= v40;
-					loc29 = v39;
-					v39 = loc29;
-					v40.u0 = 0x00;
-					v41 = v39 == v40;
-					loc30 = v41;
-					v39 = loc30;
-					if (v39)
+					v40 = loc19;
+					v40.u3 = *v40.u3;
+					loc28 = v40;
+					v40 = loc28;
+					v41.u0 = 0x02;
+					v40 &= v41;
+					loc29 = v40;
+					v40 = loc29;
+					v41.u0 = 0x00;
+					v42 = v40 == v41;
+					loc30 = v42;
+					v40 = loc30;
+					if (v40)
 						break;
 				}
-				v39 = loc40;
-				v40.u0 = 0x00;
-				v51 = (byte) v40;
-				v39.u4->t0000.u0 = (bool) v51;
-				v39 = loc9;
-				v40.u0 = 0x00;
-				v52 = (byte) v40;
-				v39.u4->t0000.u0 = (bool) v52;
-				v39 = loc6;
-				v40 = arg1;
-				v42 = arg2;
-				v43 = arg3;
-				v44 = arg4;
-				v48 = arg5;
-				fn0011ECEC(v39, v40, v42, v43, v44, v48);
-				v39 = loc6;
-				v40.u0 = 0x08;
-				v39 += v40;
-				loc35 = v39;
-				v39 = loc35;
-				v40 = loc15;
-				v41 = v39 < v40;
-				loc36 = v41;
-				v39 = loc36;
-				if (!v39)
+				v40 = loc40;
+				v41.u0 = 0x00;
+				v52 = (byte) v41;
+				v40.u4->t0000.u0 = (bool) v52;
+				v40 = loc9;
+				v41.u0 = 0x00;
+				v53 = (byte) v41;
+				v40.u4->t0000.u0 = (bool) v53;
+				v40 = loc6;
+				v41 = arg1;
+				v43 = arg2;
+				v44 = arg3;
+				v45 = arg4;
+				v49 = arg5;
+				fn0011ECEC(v40, v41, v43, v44, v45, v49);
+				v40 = loc6;
+				v41.u0 = 0x08;
+				v40 += v41;
+				loc35 = v40;
+				v40 = loc35;
+				v41 = loc15;
+				v42 = v40 < v41;
+				loc36 = v42;
+				v40 = loc36;
+				if (!v40)
 					goto l0011E69F;
-				v39 = loc35;
-				loc6 = v39;
+				v40 = loc35;
+				loc6 = v40;
 			}
 		}
 		else
 		{
 l0011E69F:
 		}
-		v39 = loc40;
-		v40 = loc8;
-		v53 = (byte) v40;
-		v39.u4->t0000.u0 = (bool) v53;
-		v39 = loc9;
-		v40 = loc11;
-		v54 = (byte) v40;
-		v39.u4->t0000.u0 = (bool) v54;
+		v40 = loc40;
+		v41 = loc8;
+		v54 = (byte) v41;
+		v40.u4->t0000.u0 = (bool) v54;
+		v40 = loc9;
+		v41 = loc11;
+		v55 = (byte) v41;
+		v40.u4->t0000.u0 = (bool) v55;
 	}
 }
 
 // 0011E6B2: void fn0011E6B2(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void fn0011E6B2(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v107.u3 = g_t140030.u3;
-	loc109 = v107;
-	v107 = arg1;
-	v108.u0 = 0x08;
-	v107 += v108;
-	loc54 = v107;
-	v107 = loc54;
-	v107.u3 = *v107.u3;
-	loc65 = v107;
-	v107 = arg0;
-	v108 = loc65;
-	v109 = v107 == v108;
-	loc76 = v109;
-	v107 = loc76;
-	if (v107)
+	v108.u3 = g_t140030.u3;
+	loc109 = v108;
+	v108 = arg1;
+	v109.u0 = 0x08;
+	v108 += v109;
+	loc54 = v108;
+	v108 = loc54;
+	v108.u3 = *v108.u3;
+	loc65 = v108;
+	v108 = arg0;
+	v109 = loc65;
+	v110 = v108 == v109;
+	loc76 = v110;
+	v108 = loc76;
+	if (v108)
 	{
-		v107 = arg1;
-		v108.u0 = 0x04;
-		v107 += v108;
-		loc87 = v107;
-		v107 = loc87;
-		v107.u3 = *v107.u3;
-		loc98 = v107;
-		v107 = loc98;
-		v108 = arg2;
-		v109 = v107 == v108;
-		loc14 = v109;
-		v107 = loc14;
-		if (v107)
+		v108 = arg1;
+		v109.u0 = 0x04;
+		v108 += v109;
+		loc87 = v108;
+		v108 = loc87;
+		v108.u3 = *v108.u3;
+		loc98 = v108;
+		v108 = loc98;
+		v109 = arg2;
+		v110 = v108 == v109;
+		loc14 = v110;
+		v108 = loc14;
+		if (v108)
 		{
-			v107 = arg1;
-			v108.u0 = 0x1C;
-			v107 += v108;
-			loc15 = v107;
-			v107 = loc15;
-			v107.u3 = *v107.u3;
-			loc16 = v107;
-			v107 = loc16;
-			v108.u0 = 0x01;
-			v109 = v107 == v108;
-			loc17 = v109;
-			v107 = loc17;
-			v109 = v107 == 0x00;
-			if (v109)
+			v108 = arg1;
+			v109.u0 = 0x1C;
+			v108 += v109;
+			loc15 = v108;
+			v108 = loc15;
+			v108.u3 = *v108.u3;
+			loc16 = v108;
+			v108 = loc16;
+			v109.u0 = 0x01;
+			v110 = v108 == v109;
+			loc17 = v110;
+			v108 = loc17;
+			v110 = v108 == 0x00;
+			if (v110)
 			{
-				v107 = loc15;
-				v108 = arg3;
-				*v107.u3 = (word32) v108;
+				v108 = loc15;
+				v109 = arg3;
+				*v108.u3 = (word32) v109;
 			}
 		}
 		return;
 	}
-	v107 = arg1;
-	v107.u3 = *v107.u3;
-	loc18 = v107;
-	v107 = arg0;
-	v108 = loc18;
-	v109 = v107 == v108;
-	loc19 = v109;
-	v107 = loc19;
-	v109 = v107 == 0x00;
-	if (v109)
+	v108 = arg1;
+	v108.u3 = *v108.u3;
+	loc18 = v108;
+	v108 = arg0;
+	v109 = loc18;
+	v110 = v108 == v109;
+	loc19 = v110;
+	v108 = loc19;
+	v110 = v108 == 0x00;
+	if (v110)
 	{
-		v107 = arg0;
-		v108.u0 = 0x10;
-		v107 += v108;
-		loc68 = v107;
-		v107 = arg0;
-		v108.u0 = 0x0C;
-		v107 += v108;
-		loc69 = v107;
-		v107 = loc69;
-		v107.u3 = *v107.u3;
-		loc70 = v107;
-		v107 = arg0;
-		v108.u0 = 0x10;
-		v107 += v108;
+		v108 = arg0;
+		v109.u0 = 0x10;
+		v108 += v109;
+		loc68 = v108;
+		v108 = arg0;
+		v109.u0 = 0x0C;
+		v108 += v109;
+		loc69 = v108;
+		v108 = loc69;
+		v108.u3 = *v108.u3;
+		loc70 = v108;
+		v108 = arg0;
+		v109.u0 = 0x10;
+		v108 += v109;
+		v109 = loc70;
+		v111.u0 = 0x03;
+		v109 <<= v111;
+		v108 += v109;
+		loc71 = v108;
+		v108 = loc68;
+		v109 = arg1;
+		v111 = arg2;
+		v112 = arg3;
+		v113 = arg4;
+		fn0011ED91(v108, v109, v111, v112, v113);
+		v108 = arg0;
+		v109.u0 = 0x18;
+		v108 += v109;
+		loc72 = v108;
 		v108 = loc70;
-		v110.u0 = 0x03;
-		v108 <<= v110;
-		v107 += v108;
-		loc71 = v107;
-		v107 = loc68;
-		v108 = arg1;
-		v110 = arg2;
-		v111 = arg3;
-		v112 = arg4;
-		fn0011ED91(v107, v108, v110, v111, v112);
-		v107 = arg0;
-		v108.u0 = 0x18;
-		v107 += v108;
-		loc72 = v107;
-		v107 = loc70;
-		v108.u0 = 0x01;
-		v109 = v107 > v108;
-		loc73 = v109;
-		v107 = loc73;
-		v109 = v107 == 0x00;
-		if (v109)
+		v109.u0 = 0x01;
+		v110 = v108 > v109;
+		loc73 = v110;
+		v108 = loc73;
+		v110 = v108 == 0x00;
+		if (v110)
 			return;
-		v107 = arg0;
-		v108.u0 = 0x08;
-		v107 += v108;
-		loc74 = v107;
-		v107 = loc74;
-		v107.u3 = *v107.u3;
-		loc75 = v107;
-		v107 = loc75;
-		v108.u0 = 0x02;
-		v107 &= v108;
-		loc77 = v107;
-		v107 = loc77;
-		v108.u0 = 0x00;
-		v109 = v107 == v108;
-		loc78 = v109;
-		v107 = loc78;
-		if (v107)
+		v108 = arg0;
+		v109.u0 = 0x08;
+		v108 += v109;
+		loc74 = v108;
+		v108 = loc74;
+		v108.u3 = *v108.u3;
+		loc75 = v108;
+		v108 = loc75;
+		v109.u0 = 0x02;
+		v108 &= v109;
+		loc77 = v108;
+		v108 = loc77;
+		v109.u0 = 0x00;
+		v110 = v108 == v109;
+		loc78 = v110;
+		v108 = loc78;
+		if (v108)
 		{
-			v107 = arg1;
-			v108.u0 = 0x24;
-			v107 += v108;
-			loc79 = v107;
-			v107 = loc79;
-			v107.u3 = *v107.u3;
-			loc80 = v107;
-			v107 = loc80;
-			v108.u0 = 0x01;
-			v109 = v107 == v108;
-			loc81 = v109;
-			v107 = loc81;
-			v109 = v107 == 0x00;
-			if (v109)
+			v108 = arg1;
+			v109.u0 = 0x24;
+			v108 += v109;
+			loc79 = v108;
+			v108 = loc79;
+			v108.u3 = *v108.u3;
+			loc80 = v108;
+			v108 = loc80;
+			v109.u0 = 0x01;
+			v110 = v108 == v109;
+			loc81 = v110;
+			v108 = loc81;
+			v110 = v108 == 0x00;
+			if (v110)
 			{
-				v107 = loc75;
-				v108.u0 = 0x01;
-				v107 &= v108;
-				loc88 = v107;
-				v107 = loc88;
-				v108.u0 = 0x00;
-				v109 = v107 == v108;
-				loc89 = v109;
-				v107 = loc89;
-				if (v107)
+				v108 = loc75;
+				v109.u0 = 0x01;
+				v108 &= v109;
+				loc88 = v108;
+				v108 = loc88;
+				v109.u0 = 0x00;
+				v110 = v108 == v109;
+				loc89 = v110;
+				v108 = loc89;
+				if (v108)
 				{
 					while (true)
 					{
-						v107 = arg1;
-						v108.u0 = 0x36;
-						v107 += v108;
-						loc92 = v107;
-						v107 = loc72;
-						loc12 = v107;
-						v107 = loc92;
-						v113.u1 = v107.u4->t0000.u1;
-						v107.u3 = (word32) v113;
-						loc102 = v107;
-						v107 = loc102;
-						v108.u0 = 0x18;
-						v107 <<= v108;
-						v108.u0 = 0x18;
-						v107 >>= v108;
-						v108.u0 = 0x00;
-						v109 = v107 == v108;
-						loc103 = v109;
-						v107 = loc103;
-						v109 = v107 == 0x00;
-						if (v109)
-							break;
-						v107 = loc79;
-						v107.u3 = *v107.u3;
-						loc104 = v107;
-						v107 = loc104;
-						v108.u0 = 0x01;
-						v109 = v107 == v108;
-						loc105 = v109;
-						v107 = loc105;
-						if (v107)
-							return;
-						v107 = loc12;
 						v108 = arg1;
-						v110 = arg2;
-						v111 = arg3;
-						v112 = arg4;
-						fn0011ED91(v107, v108, v110, v111, v112);
-						v107 = loc12;
-						v108.u0 = 0x08;
-						v107 += v108;
-						loc106 = v107;
-						v107 = loc106;
-						v108 = loc71;
-						v109 = v107 < v108;
-						loc107 = v109;
-						v107 = loc107;
-						if (!v107)
+						v109.u0 = 0x36;
+						v108 += v109;
+						loc92 = v108;
+						v108 = loc72;
+						loc12 = v108;
+						v108 = loc92;
+						v114.u1 = v108.u4->t0000.u1;
+						v108.u3 = (word32) v114;
+						loc102 = v108;
+						v108 = loc102;
+						v109.u0 = 0x18;
+						v108 <<= v109;
+						v109.u0 = 0x18;
+						v108 >>= v109;
+						v109.u0 = 0x00;
+						v110 = v108 == v109;
+						loc103 = v110;
+						v108 = loc103;
+						v110 = v108 == 0x00;
+						if (v110)
+							break;
+						v108 = loc79;
+						v108.u3 = *v108.u3;
+						loc104 = v108;
+						v108 = loc104;
+						v109.u0 = 0x01;
+						v110 = v108 == v109;
+						loc105 = v110;
+						v108 = loc105;
+						if (v108)
 							return;
-						v107 = loc106;
-						loc12 = v107;
+						v108 = loc12;
+						v109 = arg1;
+						v111 = arg2;
+						v112 = arg3;
+						v113 = arg4;
+						fn0011ED91(v108, v109, v111, v112, v113);
+						v108 = loc12;
+						v109.u0 = 0x08;
+						v108 += v109;
+						loc106 = v108;
+						v108 = loc106;
+						v109 = loc71;
+						v110 = v108 < v109;
+						loc107 = v110;
+						v108 = loc107;
+						if (!v108)
+							return;
+						v108 = loc106;
+						loc12 = v108;
 					}
 				}
 				else
 				{
 					while (true)
 					{
-						v107 = arg1;
-						v108.u0 = 0x18;
-						v107 += v108;
-						loc90 = v107;
-						v107 = arg1;
-						v108.u0 = 0x36;
-						v107 += v108;
-						loc91 = v107;
-						v107 = loc72;
-						loc9 = v107;
-						v107 = loc91;
-						v114.u1 = v107.u4->t0000.u1;
-						v107.u3 = (word32) v114;
-						loc93 = v107;
-						v107 = loc93;
-						v108.u0 = 0x18;
-						v107 <<= v108;
-						v108.u0 = 0x18;
-						v107 >>= v108;
-						v108.u0 = 0x00;
-						v109 = v107 == v108;
-						loc94 = v109;
-						v107 = loc94;
-						v109 = v107 == 0x00;
-						if (v109)
+						v108 = arg1;
+						v109.u0 = 0x18;
+						v108 += v109;
+						loc90 = v108;
+						v108 = arg1;
+						v109.u0 = 0x36;
+						v108 += v109;
+						loc91 = v108;
+						v108 = loc72;
+						loc9 = v108;
+						v108 = loc91;
+						v115.u1 = v108.u4->t0000.u1;
+						v108.u3 = (word32) v115;
+						loc93 = v108;
+						v108 = loc93;
+						v109.u0 = 0x18;
+						v108 <<= v109;
+						v109.u0 = 0x18;
+						v108 >>= v109;
+						v109.u0 = 0x00;
+						v110 = v108 == v109;
+						loc94 = v110;
+						v108 = loc94;
+						v110 = v108 == 0x00;
+						if (v110)
 							break;
-						v107 = loc79;
-						v107.u3 = *v107.u3;
-						loc95 = v107;
-						v107 = loc95;
-						v108.u0 = 0x01;
-						v109 = v107 == v108;
-						loc96 = v109;
-						v107 = loc96;
-						if (v107)
+						v108 = loc79;
+						v108.u3 = *v108.u3;
+						loc95 = v108;
+						v108 = loc95;
+						v109.u0 = 0x01;
+						v110 = v108 == v109;
+						loc96 = v110;
+						v108 = loc96;
+						if (v108)
 						{
-							v107 = loc90;
-							v107.u3 = *v107.u3;
-							loc97 = v107;
-							v107 = loc97;
-							v108.u0 = 0x01;
-							v109 = v107 == v108;
-							loc99 = v109;
-							v107 = loc99;
-							if (v107)
+							v108 = loc90;
+							v108.u3 = *v108.u3;
+							loc97 = v108;
+							v108 = loc97;
+							v109.u0 = 0x01;
+							v110 = v108 == v109;
+							loc99 = v110;
+							v108 = loc99;
+							if (v108)
 								return;
 						}
-						v107 = loc9;
-						v108 = arg1;
-						v110 = arg2;
-						v111 = arg3;
-						v112 = arg4;
-						fn0011ED91(v107, v108, v110, v111, v112);
-						v107 = loc9;
-						v108.u0 = 0x08;
-						v107 += v108;
-						loc100 = v107;
-						v107 = loc100;
-						v108 = loc71;
-						v109 = v107 < v108;
-						loc101 = v109;
-						v107 = loc101;
-						if (!v107)
+						v108 = loc9;
+						v109 = arg1;
+						v111 = arg2;
+						v112 = arg3;
+						v113 = arg4;
+						fn0011ED91(v108, v109, v111, v112, v113);
+						v108 = loc9;
+						v109.u0 = 0x08;
+						v108 += v109;
+						loc100 = v108;
+						v108 = loc100;
+						v109 = loc71;
+						v110 = v108 < v109;
+						loc101 = v110;
+						v108 = loc101;
+						if (!v108)
 							return;
-						v107 = loc100;
-						loc9 = v107;
+						v108 = loc100;
+						loc9 = v108;
 					}
 				}
 				return;
@@ -24203,472 +24203,472 @@ void fn0011E6B2(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 		}
 		while (true)
 		{
-			v107 = arg1;
-			v108.u0 = 0x36;
-			v107 += v108;
-			loc82 = v107;
-			v107 = loc72;
-			loc5 = v107;
-			v107 = loc82;
-			v115.u1 = v107.u4->t0000.u1;
-			v107.u3 = (word32) v115;
-			loc83 = v107;
-			v107 = loc83;
-			v108.u0 = 0x18;
-			v107 <<= v108;
-			v108.u0 = 0x18;
-			v107 >>= v108;
-			v108.u0 = 0x00;
-			v109 = v107 == v108;
-			loc84 = v109;
-			v107 = loc84;
-			v109 = v107 == 0x00;
-			if (v109)
-				break;
-			v107 = loc5;
 			v108 = arg1;
-			v110 = arg2;
-			v111 = arg3;
-			v112 = arg4;
-			fn0011ED91(v107, v108, v110, v111, v112);
-			v107 = loc5;
-			v108.u0 = 0x08;
-			v107 += v108;
-			loc85 = v107;
-			v107 = loc85;
-			v108 = loc71;
-			v109 = v107 < v108;
-			loc86 = v109;
-			v107 = loc86;
-			if (!v107)
+			v109.u0 = 0x36;
+			v108 += v109;
+			loc82 = v108;
+			v108 = loc72;
+			loc5 = v108;
+			v108 = loc82;
+			v116.u1 = v108.u4->t0000.u1;
+			v108.u3 = (word32) v116;
+			loc83 = v108;
+			v108 = loc83;
+			v109.u0 = 0x18;
+			v108 <<= v109;
+			v109.u0 = 0x18;
+			v108 >>= v109;
+			v109.u0 = 0x00;
+			v110 = v108 == v109;
+			loc84 = v110;
+			v108 = loc84;
+			v110 = v108 == 0x00;
+			if (v110)
+				break;
+			v108 = loc5;
+			v109 = arg1;
+			v111 = arg2;
+			v112 = arg3;
+			v113 = arg4;
+			fn0011ED91(v108, v109, v111, v112, v113);
+			v108 = loc5;
+			v109.u0 = 0x08;
+			v108 += v109;
+			loc85 = v108;
+			v108 = loc85;
+			v109 = loc71;
+			v110 = v108 < v109;
+			loc86 = v110;
+			v108 = loc86;
+			if (!v108)
 				return;
-			v107 = loc85;
-			loc5 = v107;
+			v108 = loc85;
+			loc5 = v108;
 		}
 		return;
 	}
-	v107 = arg1;
-	v108.u0 = 0x10;
-	v107 += v108;
-	loc20 = v107;
-	v107 = loc20;
-	v107.u3 = *v107.u3;
-	loc21 = v107;
-	v107 = loc21;
-	v108 = arg2;
-	v109 = v107 == v108;
-	loc22 = v109;
-	v107 = loc22;
-	v109 = v107 == 0x00;
-	if (v109)
+	v108 = arg1;
+	v109.u0 = 0x10;
+	v108 += v109;
+	loc20 = v108;
+	v108 = loc20;
+	v108.u3 = *v108.u3;
+	loc21 = v108;
+	v108 = loc21;
+	v109 = arg2;
+	v110 = v108 == v109;
+	loc22 = v110;
+	v108 = loc22;
+	v110 = v108 == 0x00;
+	if (v110)
 	{
-		v107 = arg1;
-		v108.u0 = 0x14;
-		v107 += v108;
-		loc23 = v107;
-		v107 = loc23;
-		v107.u3 = *v107.u3;
-		loc24 = v107;
-		v107 = loc24;
-		v108 = arg2;
-		v109 = v107 == v108;
-		loc25 = v109;
-		v107 = loc25;
-		v109 = v107 == 0x00;
-		if (v109)
+		v108 = arg1;
+		v109.u0 = 0x14;
+		v108 += v109;
+		loc23 = v108;
+		v108 = loc23;
+		v108.u3 = *v108.u3;
+		loc24 = v108;
+		v108 = loc24;
+		v109 = arg2;
+		v110 = v108 == v109;
+		loc25 = v110;
+		v108 = loc25;
+		v110 = v108 == 0x00;
+		if (v110)
 		{
-			v107 = arg1;
-			v108.u0 = 0x20;
-			v107 += v108;
-			loc28 = v107;
-			v107 = loc28;
-			v108 = arg3;
-			*v107.u3 = (word32) v108;
-			v107 = arg1;
-			v108.u0 = 44;
-			v107 += v108;
-			loc29 = v107;
-			v107 = loc29;
-			v107.u3 = *v107.u3;
-			loc30 = v107;
-			v107 = loc30;
-			v108.u0 = 0x04;
-			v109 = v107 == v108;
-			loc31 = v109;
-			v107 = loc31;
-			if (v107)
+			v108 = arg1;
+			v109.u0 = 0x20;
+			v108 += v109;
+			loc28 = v108;
+			v108 = loc28;
+			v109 = arg3;
+			*v108.u3 = (word32) v109;
+			v108 = arg1;
+			v109.u0 = 44;
+			v108 += v109;
+			loc29 = v108;
+			v108 = loc29;
+			v108.u3 = *v108.u3;
+			loc30 = v108;
+			v108 = loc30;
+			v109.u0 = 0x04;
+			v110 = v108 == v109;
+			loc31 = v110;
+			v108 = loc31;
+			if (v108)
 				return;
 			while (true)
 			{
-				v107 = arg0;
-				v108.u0 = 0x10;
-				v107 += v108;
-				loc32 = v107;
-				v107 = arg0;
-				v108.u0 = 0x0C;
-				v107 += v108;
-				loc33 = v107;
-				v107 = loc33;
-				v107.u3 = *v107.u3;
-				loc34 = v107;
-				v107 = arg0;
-				v108.u0 = 0x10;
-				v107 += v108;
-				v108 = loc34;
-				v110.u0 = 0x03;
-				v108 <<= v110;
-				v107 += v108;
-				loc35 = v107;
-				v107 = arg1;
-				v108.u0 = 0x34;
-				v107 += v108;
-				loc36 = v107;
-				v107 = arg1;
-				v108.u0 = 0x35;
-				v107 += v108;
-				loc37 = v107;
-				v107 = arg1;
-				v108.u0 = 0x36;
-				v107 += v108;
-				loc38 = v107;
-				v107 = arg0;
-				v108.u0 = 0x08;
-				v107 += v108;
-				loc39 = v107;
-				v107 = arg1;
-				v108.u0 = 0x18;
-				v107 += v108;
-				loc40 = v107;
-				v107.u0 = 0x00;
-				loc6 = v107;
-				v107 = loc32;
-				loc7 = v107;
-				v107.u0 = 0x00;
-				loc8 = v107;
-				v107 = loc7;
-				v108 = loc35;
-				v109 = v107 < v108;
-				loc41 = v109;
-				v107 = loc41;
-				v109 = v107 == 0x00;
-				if (v109)
-					break;
-				v107 = loc36;
-				v108.u0 = 0x00;
-				v116 = (byte) v108;
-				*v107.u0 = v116;
-				v107 = loc37;
-				v108.u0 = 0x00;
-				v117 = (byte) v108;
-				*v107.u0 = v117;
-				v107 = loc7;
+				v108 = arg0;
+				v109.u0 = 0x10;
+				v108 += v109;
+				loc32 = v108;
+				v108 = arg0;
+				v109.u0 = 0x0C;
+				v108 += v109;
+				loc33 = v108;
+				v108 = loc33;
+				v108.u3 = *v108.u3;
+				loc34 = v108;
+				v108 = arg0;
+				v109.u0 = 0x10;
+				v108 += v109;
+				v109 = loc34;
+				v111.u0 = 0x03;
+				v109 <<= v111;
+				v108 += v109;
+				loc35 = v108;
 				v108 = arg1;
-				v110 = arg2;
-				v111 = arg2;
-				v112.u0 = 0x01;
-				v118 = arg4;
-				fn0011ECEC(v107, v108, v110, v111, v112, v118);
-				v107 = loc38;
-				v119 = *v107.u0;
-				v107.u3 = (word32) v119;
-				loc42 = v107;
-				v107 = loc42;
-				v108.u0 = 0x18;
-				v107 <<= v108;
-				v108.u0 = 0x18;
-				v107 >>= v108;
+				v109.u0 = 0x34;
+				v108 += v109;
+				loc36 = v108;
+				v108 = arg1;
+				v109.u0 = 0x35;
+				v108 += v109;
+				loc37 = v108;
+				v108 = arg1;
+				v109.u0 = 0x36;
+				v108 += v109;
+				loc38 = v108;
+				v108 = arg0;
+				v109.u0 = 0x08;
+				v108 += v109;
+				loc39 = v108;
+				v108 = arg1;
+				v109.u0 = 0x18;
+				v108 += v109;
+				loc40 = v108;
 				v108.u0 = 0x00;
-				v109 = v107 == v108;
-				loc43 = v109;
-				v107 = loc43;
-				v109 = v107 == 0x00;
-				if (v109)
+				loc6 = v108;
+				v108 = loc32;
+				loc7 = v108;
+				v108.u0 = 0x00;
+				loc8 = v108;
+				v108 = loc7;
+				v109 = loc35;
+				v110 = v108 < v109;
+				loc41 = v110;
+				v108 = loc41;
+				v110 = v108 == 0x00;
+				if (v110)
+					break;
+				v108 = loc36;
+				v109.u0 = 0x00;
+				v117 = (byte) v109;
+				*v108.u0 = v117;
+				v108 = loc37;
+				v109.u0 = 0x00;
+				v118 = (byte) v109;
+				*v108.u0 = v118;
+				v108 = loc7;
+				v109 = arg1;
+				v111 = arg2;
+				v112 = arg2;
+				v113.u0 = 0x01;
+				v119 = arg4;
+				fn0011ECEC(v108, v109, v111, v112, v113, v119);
+				v108 = loc38;
+				v120 = *v108.u0;
+				v108.u3 = (word32) v120;
+				loc42 = v108;
+				v108 = loc42;
+				v109.u0 = 0x18;
+				v108 <<= v109;
+				v109.u0 = 0x18;
+				v108 >>= v109;
+				v109.u0 = 0x00;
+				v110 = v108 == v109;
+				loc43 = v110;
+				v108 = loc43;
+				v110 = v108 == 0x00;
+				if (v110)
 				{
-					v107 = loc6;
-					loc13 = v107;
-					v107.u0 = 0x14;
-					loc108 = v107;
+					v108 = loc6;
+					loc13 = v108;
+					v108.u0 = 0x14;
+					loc108 = v108;
 					goto l0011EAC4;
 				}
-				v107 = loc37;
-				v120 = *v107.u0;
-				v107.u3 = (word32) v120;
-				loc44 = v107;
-				v107 = loc44;
-				v108.u0 = 0x18;
-				v107 <<= v108;
-				v108.u0 = 0x18;
-				v107 >>= v108;
-				v108.u0 = 0x00;
-				v109 = v107 == v108;
-				loc45 = v109;
-				v107 = loc45;
-				if (v107)
+				v108 = loc37;
+				v121 = *v108.u0;
+				v108.u3 = (word32) v121;
+				loc44 = v108;
+				v108 = loc44;
+				v109.u0 = 0x18;
+				v108 <<= v109;
+				v109.u0 = 0x18;
+				v108 >>= v109;
+				v109.u0 = 0x00;
+				v110 = v108 == v109;
+				loc45 = v110;
+				v108 = loc45;
+				if (v108)
 				{
-					v107 = loc6;
-					loc10 = v107;
-					v107 = loc8;
-					loc11 = v107;
+					v108 = loc6;
+					loc10 = v108;
+					v108 = loc8;
+					loc11 = v108;
 					goto l0011EAAD;
 				}
-				v107 = loc36;
-				v121.u1 = v107.u4->t0000.u1;
-				v107.u3 = (word32) v121;
-				loc46 = v107;
-				v107 = loc46;
-				v108.u0 = 0x18;
-				v107 <<= v108;
-				v108.u0 = 0x18;
-				v107 >>= v108;
-				v108.u0 = 0x00;
-				v109 = v107 == v108;
-				loc47 = v109;
-				v107 = loc47;
-				if (v107)
+				v108 = loc36;
+				v122.u1 = v108.u4->t0000.u1;
+				v108.u3 = (word32) v122;
+				loc46 = v108;
+				v108 = loc46;
+				v109.u0 = 0x18;
+				v108 <<= v109;
+				v109.u0 = 0x18;
+				v108 >>= v109;
+				v109.u0 = 0x00;
+				v110 = v108 == v109;
+				loc47 = v110;
+				v108 = loc47;
+				if (v108)
 				{
-					v107 = loc39;
-					v107.u3 = *v107.u3;
-					loc53 = v107;
-					v107 = loc53;
-					v108.u0 = 0x01;
-					v107 &= v108;
-					loc55 = v107;
-					v107 = loc55;
-					v108.u0 = 0x00;
-					v109 = v107 == v108;
-					loc56 = v109;
-					v107 = loc56;
-					if (v107)
+					v108 = loc39;
+					v108.u3 = *v108.u3;
+					loc53 = v108;
+					v108 = loc53;
+					v109.u0 = 0x01;
+					v108 &= v109;
+					loc55 = v108;
+					v108 = loc55;
+					v109.u0 = 0x00;
+					v110 = v108 == v109;
+					loc56 = v110;
+					v108 = loc56;
+					if (v108)
 					{
-						v107.u0 = 0x01;
-						loc13 = v107;
-						v107.u0 = 0x14;
-						loc108 = v107;
+						v108.u0 = 0x01;
+						loc13 = v108;
+						v108.u0 = 0x14;
+						loc108 = v108;
 						goto l0011EAC4;
 					}
-					v107.u0 = 0x01;
-					loc10 = v107;
-					v107 = loc8;
-					loc11 = v107;
+					v108.u0 = 0x01;
+					loc10 = v108;
+					v108 = loc8;
+					loc11 = v108;
 				}
 				else
 				{
-					v107 = loc40;
-					v107 = *v107.u0;
-					loc48 = v107;
-					v107 = loc48;
+					v108 = loc40;
+					v108 = *v108.u0;
+					loc48 = v108;
+					v108 = loc48;
+					v109.u0 = 0x01;
+					v110 = v108 == v109;
+					loc49 = v110;
+					v108 = loc49;
+					if (v108)
+					{
+						v108.u0 = 0x19;
+						loc108 = v108;
+						goto l0011EAC4;
+					}
+					v108 = loc39;
+					v108 = *v108.u0;
+					loc50 = v108;
+					v108 = loc50;
+					v109.u0 = 0x02;
+					v108 &= v109;
+					loc51 = v108;
+					v108 = loc51;
+					v109.u0 = 0x00;
+					v110 = v108 == v109;
+					loc52 = v110;
+					v108 = loc52;
+					if (v108)
+					{
+						v108.u0 = 0x19;
+						loc108 = v108;
+						goto l0011EAC4;
+					}
 					v108.u0 = 0x01;
-					v109 = v107 == v108;
-					loc49 = v109;
-					v107 = loc49;
-					if (v107)
-					{
-						v107.u0 = 0x19;
-						loc108 = v107;
-						goto l0011EAC4;
-					}
-					v107 = loc39;
-					v107 = *v107.u0;
-					loc50 = v107;
-					v107 = loc50;
-					v108.u0 = 0x02;
-					v107 &= v108;
-					loc51 = v107;
-					v107 = loc51;
-					v108.u0 = 0x00;
-					v109 = v107 == v108;
-					loc52 = v109;
-					v107 = loc52;
-					if (v107)
-					{
-						v107.u0 = 0x19;
-						loc108 = v107;
-						goto l0011EAC4;
-					}
-					v107.u0 = 0x01;
-					loc10 = v107;
-					v107.u0 = 0x01;
-					loc11 = v107;
+					loc10 = v108;
+					v108.u0 = 0x01;
+					loc11 = v108;
 l0011EAAD:
 				}
-				v107 = loc7;
-				v108.u0 = 0x08;
-				v107 += v108;
-				loc57 = v107;
-				v107 = loc10;
-				loc6 = v107;
-				v107 = loc57;
-				loc7 = v107;
-				v107 = loc11;
-				loc8 = v107;
+				v108 = loc7;
+				v109.u0 = 0x08;
+				v108 += v109;
+				loc57 = v108;
+				v108 = loc10;
+				loc6 = v108;
+				v108 = loc57;
+				loc7 = v108;
+				v108 = loc11;
+				loc8 = v108;
 			}
-			v107 = loc6;
-			loc13 = v107;
-			v107.u0 = 0x14;
-			loc108 = v107;
-l0011EAC4:
-			v107 = loc108;
+			v108 = loc6;
+			loc13 = v108;
 			v108.u0 = 0x14;
-			v109 = v107 == v108;
-			if (v109)
+			loc108 = v108;
+l0011EAC4:
+			v108 = loc108;
+			v109.u0 = 0x14;
+			v110 = v108 == v109;
+			if (v110)
 			{
-				v107 = loc8;
-				v109 = v107 == 0x00;
-				if (v109)
+				v108 = loc8;
+				v110 = v108 == 0x00;
+				if (v110)
 				{
-					v107 = loc23;
-					v108 = arg2;
-					*v107.u0 = v108;
-					v107 = arg1;
-					v108.u0 = 0x28;
-					v107 += v108;
-					loc58 = v107;
-					v107 = loc58;
-					v107 = *v107.u0;
-					loc59 = v107;
-					v107 = loc59;
-					v108.u0 = 0x01;
-					v107 += v108;
-					loc60 = v107;
-					v107 = loc58;
-					v108 = loc60;
-					*v107.u0 = v108;
-					v107 = arg1;
-					v108.u0 = 0x24;
-					v107 += v108;
-					loc61 = v107;
-					v107 = loc61;
-					v107 = *v107.u0;
-					loc62 = v107;
-					v107 = loc62;
-					v108.u0 = 0x01;
-					v109 = v107 == v108;
-					loc63 = v109;
-					v107 = loc63;
-					if (v107)
+					v108 = loc23;
+					v109 = arg2;
+					*v108.u0 = v109;
+					v108 = arg1;
+					v109.u0 = 0x28;
+					v108 += v109;
+					loc58 = v108;
+					v108 = loc58;
+					v108 = *v108.u0;
+					loc59 = v108;
+					v108 = loc59;
+					v109.u0 = 0x01;
+					v108 += v109;
+					loc60 = v108;
+					v108 = loc58;
+					v109 = loc60;
+					*v108.u0 = v109;
+					v108 = arg1;
+					v109.u0 = 0x24;
+					v108 += v109;
+					loc61 = v108;
+					v108 = loc61;
+					v108 = *v108.u0;
+					loc62 = v108;
+					v108 = loc62;
+					v109.u0 = 0x01;
+					v110 = v108 == v109;
+					loc63 = v110;
+					v108 = loc63;
+					if (v108)
 					{
-						v107 = loc40;
-						v107 = *v107.u0;
-						loc64 = v107;
-						v107 = loc64;
-						v108.u0 = 0x02;
-						v109 = v107 == v108;
-						loc66 = v109;
-						v107 = loc66;
-						if (v107)
+						v108 = loc40;
+						v108 = *v108.u0;
+						loc64 = v108;
+						v108 = loc64;
+						v109.u0 = 0x02;
+						v110 = v108 == v109;
+						loc66 = v110;
+						v108 = loc66;
+						if (v108)
 						{
-							v107 = loc38;
-							v108.u0 = 0x01;
-							v122 = (byte) v108;
-							*v107.u0 = v122;
-							v107 = loc13;
-							if (v107)
+							v108 = loc38;
+							v109.u0 = 0x01;
+							v123 = (byte) v109;
+							*v108.u0 = v123;
+							v108 = loc13;
+							if (v108)
 							{
-								v107.u0 = 0x19;
-								loc108 = v107;
+								v108.u0 = 0x19;
+								loc108 = v108;
 							}
 							else
 							{
-								v107.u0 = 0x04;
-								loc67 = v107;
+								v108.u0 = 0x04;
+								loc67 = v108;
 							}
 l0011EB4D:
-							v107 = loc108;
-							v108.u0 = 0x19;
-							v109 = v107 == v108;
-							if (v109)
+							v108 = loc108;
+							v109.u0 = 0x19;
+							v110 = v108 == v109;
+							if (v110)
 							{
-								v107.u0 = 0x03;
-								loc67 = v107;
+								v108.u0 = 0x03;
+								loc67 = v108;
 							}
-							v107 = loc29;
-							v108 = loc67;
-							*v107.u0 = v108;
+							v108 = loc29;
+							v109 = loc67;
+							*v108.u0 = v109;
 							return;
 						}
 					}
 				}
-				v107 = loc13;
-				if (v107)
+				v108 = loc13;
+				if (v108)
 				{
-					v107.u0 = 0x19;
-					loc108 = v107;
+					v108.u0 = 0x19;
+					loc108 = v108;
 				}
 				else
 				{
-					v107.u0 = 0x04;
-					loc67 = v107;
+					v108.u0 = 0x04;
+					loc67 = v108;
 				}
 			}
 			goto l0011EB4D;
 		}
 	}
-	v107 = arg3;
-	v108.u0 = 0x01;
-	v109 = v107 == v108;
-	loc26 = v109;
-	v107 = loc26;
-	if (v107)
+	v108 = arg3;
+	v109.u0 = 0x01;
+	v110 = v108 == v109;
+	loc26 = v110;
+	v108 = loc26;
+	if (v108)
 	{
-		v107 = arg1;
-		v108.u0 = 0x20;
-		v107 += v108;
-		loc27 = v107;
-		v107 = loc27;
-		v108.u0 = 0x01;
-		*v107.u0 = v108;
+		v108 = arg1;
+		v109.u0 = 0x20;
+		v108 += v109;
+		loc27 = v108;
+		v108 = loc27;
+		v109.u0 = 0x01;
+		*v108.u0 = v109;
 	}
 }
 
 // 0011EB84: void fn0011EB84(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 void fn0011EB84(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v19.u3 = g_t140030.u3;
-	loc20 = v19;
-	v19 = arg1;
-	v20.u0 = 0x08;
-	v19 += v20;
-	loc13 = v19;
-	v19 = loc13;
-	v19.u3 = *v19.u3;
-	loc14 = v19;
-	v19 = arg0;
-	v20 = loc14;
-	v21 = v19 == v20;
-	loc15 = v21;
-	v19 = loc15;
-	if (!v19)
+	v20.u3 = g_t140030.u3;
+	loc20 = v20;
+	v20 = arg1;
+	v21.u0 = 0x08;
+	v20 += v21;
+	loc13 = v20;
+	v20 = loc13;
+	v20.u3 = *v20.u3;
+	loc14 = v20;
+	v20 = arg0;
+	v21 = loc14;
+	v22 = v20 == v21;
+	loc15 = v22;
+	v20 = loc15;
+	if (!v20)
 	{
-		v19 = arg0;
-		v20.u0 = 0x10;
-		v19 += v20;
-		loc16 = v19;
-		v19 = arg0;
-		v20.u0 = 0x0C;
-		v19 += v20;
-		loc17 = v19;
-		v19 = loc17;
-		v19 = *v19.u0;
-		loc18 = v19;
-		v19 = arg0;
-		v20.u0 = 0x10;
-		v19 += v20;
+		v20 = arg0;
+		v21.u0 = 0x10;
+		v20 += v21;
+		loc16 = v20;
+		v20 = arg0;
+		v21.u0 = 0x0C;
+		v20 += v21;
+		loc17 = v20;
+		v20 = loc17;
+		v20 = *v20.u0;
+		loc18 = v20;
+		v20 = arg0;
+		v21.u0 = 0x10;
+		v20 += v21;
+		v21 = loc18;
+		v23.u0 = 0x03;
+		v21 <<= v23;
+		v20 += v21;
+		loc5 = v20;
+		v20 = loc16;
+		v21 = arg1;
+		v23 = arg2;
+		v24 = arg3;
+		fn0011EC4A(v20, v21, v23, v24);
 		v20 = loc18;
-		v22.u0 = 0x03;
-		v20 <<= v22;
-		v19 += v20;
-		loc5 = v19;
-		v19 = loc16;
-		v20 = arg1;
-		v22 = arg2;
-		v23 = arg3;
-		fn0011EC4A(v19, v20, v22, v23);
-		v19 = loc18;
-		v20.u0 = 0x01;
-		v21 = v19 > v20;
-		loc6 = v21;
-		v19 = loc6;
-		if (!v19)
+		v21.u0 = 0x01;
+		v22 = v20 > v21;
+		loc6 = v22;
+		v20 = loc6;
+		if (!v20)
 		{
 l0011EC45:
 		}
@@ -24676,499 +24676,499 @@ l0011EC45:
 		{
 			while (true)
 			{
-				v19 = arg0;
-				v20.u0 = 0x18;
-				v19 += v20;
-				loc7 = v19;
-				v19 = arg1;
-				v20.u0 = 0x36;
-				v19 += v20;
-				loc8 = v19;
-				v19 = loc7;
-				loc4 = v19;
-				v19 = loc4;
+				v20 = arg0;
+				v21.u0 = 0x18;
+				v20 += v21;
+				loc7 = v20;
 				v20 = arg1;
-				v22 = arg2;
-				v23 = arg3;
-				fn0011EC4A(v19, v20, v22, v23);
-				v19 = loc8;
-				v24 = *v19.u0;
-				v19.u3 = (word32) v24;
-				loc9 = v19;
-				v19 = loc9;
-				v20.u0 = 0x18;
-				v19 <<= v20;
-				v20.u0 = 0x18;
-				v19 >>= v20;
-				v20.u0 = 0x00;
-				v21 = v19 == v20;
-				loc10 = v21;
-				v19 = loc10;
-				v21 = v19 == 0x00;
-				if (v21)
+				v21.u0 = 0x36;
+				v20 += v21;
+				loc8 = v20;
+				v20 = loc7;
+				loc4 = v20;
+				v20 = loc4;
+				v21 = arg1;
+				v23 = arg2;
+				v24 = arg3;
+				fn0011EC4A(v20, v21, v23, v24);
+				v20 = loc8;
+				v25 = *v20.u0;
+				v20.u3 = (word32) v25;
+				loc9 = v20;
+				v20 = loc9;
+				v21.u0 = 0x18;
+				v20 <<= v21;
+				v21.u0 = 0x18;
+				v20 >>= v21;
+				v21.u0 = 0x00;
+				v22 = v20 == v21;
+				loc10 = v22;
+				v20 = loc10;
+				v22 = v20 == 0x00;
+				if (v22)
 					break;
-				v19 = loc4;
-				v20.u0 = 0x08;
-				v19 += v20;
-				loc11 = v19;
-				v19 = loc11;
-				v20 = loc5;
-				v21 = v19 < v20;
-				loc12 = v21;
-				v19 = loc12;
-				if (!v19)
+				v20 = loc4;
+				v21.u0 = 0x08;
+				v20 += v21;
+				loc11 = v20;
+				v20 = loc11;
+				v21 = loc5;
+				v22 = v20 < v21;
+				loc12 = v22;
+				v20 = loc12;
+				if (!v20)
 					goto l0011EC45;
-				v19 = loc11;
-				loc4 = v19;
+				v20 = loc11;
+				loc4 = v20;
 			}
 		}
 	}
 	else
 	{
-		v19.u0 = 0x00;
-		v20 = arg1;
-		v22 = arg2;
-		v23 = arg3;
-		fn0011D9B9(v19, v20, v22, v23);
+		v20.u0 = 0x00;
+		v21 = arg1;
+		v23 = arg2;
+		v24 = arg3;
+		fn0011D9B9(v20, v21, v23, v24);
 	}
 }
 
 // 0011EC4A: void fn0011EC4A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 void fn0011EC4A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v21.u3 = g_t140030.u3;
-	loc22 = v21;
-	v21 = arg0;
-	v22.u0 = 0x04;
-	v21 += v22;
-	loc15 = v21;
-	v21 = loc15;
-	v21.u3 = *v21.u3;
-	loc16 = v21;
-	v21 = loc16;
-	v22.u0 = 0x08;
-	v21 >>= v22;
-	loc17 = v21;
-	v21 = loc16;
-	v22.u0 = 0x01;
-	v21 &= v22;
-	loc18 = v21;
-	v21 = loc18;
-	v22.u0 = 0x00;
-	v23 = v21 == v22;
-	loc19 = v23;
-	v21 = loc19;
-	if (v21)
+	v22.u3 = g_t140030.u3;
+	loc22 = v22;
+	v22 = arg0;
+	v23.u0 = 0x04;
+	v22 += v23;
+	loc15 = v22;
+	v22 = loc15;
+	v22.u3 = *v22.u3;
+	loc16 = v22;
+	v22 = loc16;
+	v23.u0 = 0x08;
+	v22 >>= v23;
+	loc17 = v22;
+	v22 = loc16;
+	v23.u0 = 0x01;
+	v22 &= v23;
+	loc18 = v22;
+	v22 = loc18;
+	v23.u0 = 0x00;
+	v24 = v22 == v23;
+	loc19 = v24;
+	v22 = loc19;
+	if (v22)
 	{
-		v21 = loc17;
-		loc4 = v21;
-	}
-	else
-	{
-		v21 = arg2;
-		v21.u3 = *v21.u3;
-		loc20 = v21;
-		v21 = loc20;
 		v22 = loc17;
-		v21 += v22;
-		loc5 = v21;
-		v21 = loc5;
-		v21.u3 = *v21.u3;
-		loc6 = v21;
-		v21 = loc6;
-		loc4 = v21;
+		loc4 = v22;
 	}
-	v21 = arg0;
-	v21.u3 = *v21.u3;
-	loc7 = v21;
-	v21 = loc7;
-	v21.u3 = *v21.u3;
-	loc8 = v21;
-	v21 = loc8;
-	v22.u0 = 0x1C;
-	v21 += v22;
-	loc9 = v21;
-	v21 = loc9;
-	v21.u3 = *v21.u3;
-	loc10 = v21;
-	v21 = arg2;
-	v22 = loc4;
-	v21 += v22;
-	loc11 = v21;
-	v21 = loc16;
-	v22.u0 = 0x02;
-	v21 &= v22;
-	loc12 = v21;
-	v21 = loc12;
-	v22.u0 = 0x00;
-	v23 = v21 != v22;
-	loc13 = v23;
-	v21 = loc13;
-	if (v21)
-		v21 = arg3;
 	else
-		v21.u0 = 0x02;
-	loc14 = v21;
-	v21 = loc7;
-	v22 = arg1;
-	v24 = loc11;
-	v25 = loc14;
-	v26 = loc10;
-	v27.u0 = 0x01FF;
-	v26 &= v27;
-	v27.u0 = 0x2F20;
-	v26 += v27;
+	{
+		v22 = arg2;
+		v22.u3 = *v22.u3;
+		loc20 = v22;
+		v22 = loc20;
+		v23 = loc17;
+		v22 += v23;
+		loc5 = v22;
+		v22 = loc5;
+		v22.u3 = *v22.u3;
+		loc6 = v22;
+		v22 = loc6;
+		loc4 = v22;
+	}
+	v22 = arg0;
+	v22.u3 = *v22.u3;
+	loc7 = v22;
+	v22 = loc7;
+	v22.u3 = *v22.u3;
+	loc8 = v22;
+	v22 = loc8;
+	v23.u0 = 0x1C;
+	v22 += v23;
+	loc9 = v22;
+	v22 = loc9;
+	v22.u3 = *v22.u3;
+	loc10 = v22;
+	v22 = arg2;
+	v23 = loc4;
+	v22 += v23;
+	loc11 = v22;
+	v22 = loc16;
+	v23.u0 = 0x02;
+	v22 &= v23;
+	loc12 = v22;
+	v22 = loc12;
+	v23.u0 = 0x00;
+	v24 = v22 != v23;
+	loc13 = v24;
+	v22 = loc13;
+	if (v22)
+		v22 = arg3;
+	else
+		v22.u0 = 0x02;
+	loc14 = v22;
+	v22 = loc7;
+	v23 = arg1;
+	v25 = loc11;
+	v26 = loc14;
+	v27 = loc10;
+	v28.u0 = 0x01FF;
+	v27 &= v28;
+	v28.u0 = 0x2F20;
+	v27 += v28;
 }
 
 // 0011ECEC: void fn0011ECEC(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0011ECEC(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v21.u3 = g_t140030.u3;
-	loc24 = v21;
-	v21 = arg0;
-	v22.u0 = 0x04;
-	v21 += v22;
-	loc19 = v21;
-	v21 = loc19;
-	v21.u3 = *v21.u3;
-	loc20 = v21;
-	v21 = loc20;
-	v22.u0 = 0x08;
-	v21 >>= v22;
-	loc21 = v21;
-	v21 = loc20;
-	v22.u0 = 0x01;
-	v21 &= v22;
-	loc22 = v21;
-	v21 = loc22;
-	v22.u0 = 0x00;
-	v23 = v21 == v22;
-	loc7 = v23;
-	v21 = loc7;
-	if (v21)
+	v22.u3 = g_t140030.u3;
+	loc24 = v22;
+	v22 = arg0;
+	v23.u0 = 0x04;
+	v22 += v23;
+	loc19 = v22;
+	v22 = loc19;
+	v22.u3 = *v22.u3;
+	loc20 = v22;
+	v22 = loc20;
+	v23.u0 = 0x08;
+	v22 >>= v23;
+	loc21 = v22;
+	v22 = loc20;
+	v23.u0 = 0x01;
+	v22 &= v23;
+	loc22 = v22;
+	v22 = loc22;
+	v23.u0 = 0x00;
+	v24 = v22 == v23;
+	loc7 = v24;
+	v22 = loc7;
+	if (v22)
 	{
-		v21 = loc21;
-		loc6 = v21;
-	}
-	else
-	{
-		v21 = arg3;
-		v21.u3 = *v21.u3;
-		loc8 = v21;
-		v21 = loc8;
 		v22 = loc21;
-		v21 += v22;
-		loc9 = v21;
-		v21 = loc9;
-		v21.u3 = *v21.u3;
-		loc10 = v21;
-		v21 = loc10;
-		loc6 = v21;
+		loc6 = v22;
 	}
-	v21 = arg0;
-	v21.u3 = *v21.u3;
-	loc11 = v21;
-	v21 = loc11;
-	v21.u3 = *v21.u3;
-	loc12 = v21;
-	v21 = loc12;
-	v22.u0 = 0x14;
-	v21 += v22;
-	loc13 = v21;
-	v21 = loc13;
-	v21.u3 = *v21.u3;
-	loc14 = v21;
-	v21 = arg3;
-	v22 = loc6;
-	v21 += v22;
-	loc15 = v21;
-	v21 = loc20;
-	v22.u0 = 0x02;
-	v21 &= v22;
-	loc16 = v21;
-	v21 = loc16;
-	v22.u0 = 0x00;
-	v23 = v21 != v22;
-	loc17 = v23;
-	v21 = loc17;
-	if (v21)
-		v21 = arg4;
 	else
-		v21.u0 = 0x02;
-	loc18 = v21;
-	v21 = loc11;
-	v22 = arg1;
-	v24 = arg2;
-	v25 = loc15;
-	v26 = loc18;
-	v27 = arg5;
-	v28 = loc14;
-	v29.u0 = 0x01FF;
-	v28 &= v29;
-	v29.u0 = 0x1320;
-	v28 += v29;
+	{
+		v22 = arg3;
+		v22.u3 = *v22.u3;
+		loc8 = v22;
+		v22 = loc8;
+		v23 = loc21;
+		v22 += v23;
+		loc9 = v22;
+		v22 = loc9;
+		v22.u3 = *v22.u3;
+		loc10 = v22;
+		v22 = loc10;
+		loc6 = v22;
+	}
+	v22 = arg0;
+	v22.u3 = *v22.u3;
+	loc11 = v22;
+	v22 = loc11;
+	v22.u3 = *v22.u3;
+	loc12 = v22;
+	v22 = loc12;
+	v23.u0 = 0x14;
+	v22 += v23;
+	loc13 = v22;
+	v22 = loc13;
+	v22.u3 = *v22.u3;
+	loc14 = v22;
+	v22 = arg3;
+	v23 = loc6;
+	v22 += v23;
+	loc15 = v22;
+	v22 = loc20;
+	v23.u0 = 0x02;
+	v22 &= v23;
+	loc16 = v22;
+	v22 = loc16;
+	v23.u0 = 0x00;
+	v24 = v22 != v23;
+	loc17 = v24;
+	v22 = loc17;
+	if (v22)
+		v22 = arg4;
+	else
+		v22.u0 = 0x02;
+	loc18 = v22;
+	v22 = loc11;
+	v23 = arg1;
+	v25 = arg2;
+	v26 = loc15;
+	v27 = loc18;
+	v28 = arg5;
+	v29 = loc14;
+	v30.u0 = 0x01FF;
+	v29 &= v30;
+	v30.u0 = 0x1320;
+	v29 += v30;
 }
 
 // 0011ED91: void fn0011ED91(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void fn0011ED91(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v21.u3 = g_t140030.u3;
-	loc23 = v21;
-	v21 = arg0;
-	v22.u0 = 0x04;
-	v21 += v22;
-	loc17 = v21;
-	v21 = loc17;
-	v21.u3 = *v21.u3;
-	loc18 = v21;
-	v21 = loc18;
-	v22.u0 = 0x08;
-	v21 >>= v22;
-	loc19 = v21;
-	v21 = loc18;
-	v22.u0 = 0x01;
-	v21 &= v22;
-	loc20 = v21;
-	v21 = loc20;
-	v22.u0 = 0x00;
-	v23 = v21 == v22;
-	loc21 = v23;
-	v21 = loc21;
-	if (v21)
+	v22.u3 = g_t140030.u3;
+	loc23 = v22;
+	v22 = arg0;
+	v23.u0 = 0x04;
+	v22 += v23;
+	loc17 = v22;
+	v22 = loc17;
+	v22.u3 = *v22.u3;
+	loc18 = v22;
+	v22 = loc18;
+	v23.u0 = 0x08;
+	v22 >>= v23;
+	loc19 = v22;
+	v22 = loc18;
+	v23.u0 = 0x01;
+	v22 &= v23;
+	loc20 = v22;
+	v22 = loc20;
+	v23.u0 = 0x00;
+	v24 = v22 == v23;
+	loc21 = v24;
+	v22 = loc21;
+	if (v22)
 	{
-		v21 = loc19;
-		loc5 = v21;
-	}
-	else
-	{
-		v21 = arg2;
-		v21.u3 = *v21.u3;
-		loc6 = v21;
-		v21 = loc6;
 		v22 = loc19;
-		v21 += v22;
-		loc7 = v21;
-		v21 = loc7;
-		v21.u3 = *v21.u3;
-		loc8 = v21;
-		v21 = loc8;
-		loc5 = v21;
+		loc5 = v22;
 	}
-	v21 = arg0;
-	v21.u3 = *v21.u3;
-	loc9 = v21;
-	v21 = loc9;
-	v21.u3 = *v21.u3;
-	loc10 = v21;
-	v21 = loc10;
-	v22.u0 = 0x18;
-	v21 += v22;
-	loc11 = v21;
-	v21 = loc11;
-	v21.u3 = *v21.u3;
-	loc12 = v21;
-	v21 = arg2;
-	v22 = loc5;
-	v21 += v22;
-	loc13 = v21;
-	v21 = loc18;
-	v22.u0 = 0x02;
-	v21 &= v22;
-	loc14 = v21;
-	v21 = loc14;
-	v22.u0 = 0x00;
-	v23 = v21 != v22;
-	loc15 = v23;
-	v21 = loc15;
-	if (v21)
-		v21 = arg3;
 	else
-		v21.u0 = 0x02;
-	loc16 = v21;
-	v21 = loc9;
-	v22 = arg1;
-	v24 = loc13;
-	v25 = loc16;
-	v26 = arg4;
-	v27 = loc12;
-	v28.u0 = 0x01FF;
-	v27 &= v28;
-	v28.u0 = 0x0200;
-	v27 += v28;
+	{
+		v22 = arg2;
+		v22.u3 = *v22.u3;
+		loc6 = v22;
+		v22 = loc6;
+		v23 = loc19;
+		v22 += v23;
+		loc7 = v22;
+		v22 = loc7;
+		v22.u3 = *v22.u3;
+		loc8 = v22;
+		v22 = loc8;
+		loc5 = v22;
+	}
+	v22 = arg0;
+	v22.u3 = *v22.u3;
+	loc9 = v22;
+	v22 = loc9;
+	v22.u3 = *v22.u3;
+	loc10 = v22;
+	v22 = loc10;
+	v23.u0 = 0x18;
+	v22 += v23;
+	loc11 = v22;
+	v22 = loc11;
+	v22.u3 = *v22.u3;
+	loc12 = v22;
+	v22 = arg2;
+	v23 = loc5;
+	v22 += v23;
+	loc13 = v22;
+	v22 = loc18;
+	v23.u0 = 0x02;
+	v22 &= v23;
+	loc14 = v22;
+	v22 = loc14;
+	v23.u0 = 0x00;
+	v24 = v22 != v23;
+	loc15 = v24;
+	v22 = loc15;
+	if (v22)
+		v22 = arg3;
+	else
+		v22.u0 = 0x02;
+	loc16 = v22;
+	v22 = loc9;
+	v23 = arg1;
+	v25 = loc13;
+	v26 = loc16;
+	v27 = arg4;
+	v28 = loc12;
+	v29.u0 = 0x01FF;
+	v28 &= v29;
+	v29.u0 = 0x0200;
+	v28 += v29;
 }
 
 // 0011EE34: void fn0011EE34(Stack Eq_n arg0)
 void fn0011EE34(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	v5.u0 = 10000;
-	*v4.u3 = (word32) v5;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	v6.u0 = 10000;
+	*v5.u3 = (word32) v6;
 }
 
 // 0011EE46: Stack Eq_n fn0011EE46(Stack Eq_n arg0)
 Eq_n fn0011EE46(Eq_n arg0)
 {
-	v7.u3 = g_t140030.u3;
-	loc5 = v7;
-	v7 = arg0;
-	v8.u3 = *v7.u3;
-	v7.u3 = (word32) v8;
-	loc2 = v7;
-	v7 = loc2;
-	v9.u0 = 0x18;
-	v7 <<= v9;
-	v9.u0 = 0x18;
-	v7 >>= v9;
-	v9.u0 = 0x01;
-	v10 = v7 == v9;
-	loc3 = v10;
-	v7 = loc3;
-	if (v7)
+	v8.u3 = g_t140030.u3;
+	loc5 = v8;
+	v8 = arg0;
+	v9.u3 = *v8.u3;
+	v8.u3 = (word32) v9;
+	loc2 = v8;
+	v8 = loc2;
+	v10.u0 = 0x18;
+	v8 <<= v10;
+	v10.u0 = 0x18;
+	v8 >>= v10;
+	v10.u0 = 0x01;
+	v11 = v8 == v10;
+	loc3 = v11;
+	v8 = loc3;
+	if (v8)
 	{
-		v7.u0 = 0x00;
-		loc1 = v7;
+		v8.u0 = 0x00;
+		loc1 = v8;
 	}
 	else
 	{
-		v7 = arg0;
-		v9.u0 = 0x01;
-		v11 = (byte) v9;
-		*v7.u0 = v11;
-		v7.u0 = 0x01;
-		loc1 = v7;
+		v8 = arg0;
+		v10.u0 = 0x01;
+		v12 = (byte) v10;
+		*v8.u0 = v12;
+		v8.u0 = 0x01;
+		loc1 = v8;
 	}
-	v7 = loc1;
-	return v7;
+	v8 = loc1;
+	return v8;
 }
 
 // 0011EE7A: void fn0011EE7A(Stack Eq_n arg0)
 void fn0011EE7A(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011EE83: void fn0011EE83(Stack Eq_n arg0)
 void fn0011EE83(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
 }
 
 // 0011EE8C: void fn0011EE8C(Stack Eq_n arg0)
 void fn0011EE8C(Eq_n arg0)
 {
-	v4.u3 = g_t140030.u3;
-	loc2 = v4;
-	v4 = arg0;
-	v5.u0 = 9920;
-	*v4.u3 = (word32) v5;
+	v5.u3 = g_t140030.u3;
+	loc2 = v5;
+	v5 = arg0;
+	v6.u0 = 9920;
+	*v5.u3 = (word32) v6;
 }
 
 // 0011EE9E: Stack Eq_n fn0011EE9E()
 Eq_n fn0011EE9E()
 {
-	v7.u3 = g_t140030.u3;
-	loc4 = v7;
-	v7.u0 = 21492;
-	v7 = *v7.u0;
-	loc0 = v7;
-	v7 = loc0;
-	v8.u0 = 0x00;
-	v7 += v8;
-	loc1 = v7;
-	v7.u0 = 21492;
-	v8 = loc1;
-	*v7.u0 = v8;
-	v7 = loc0;
-	loc2 = v7;
-	v7 = loc2;
-	return v7;
+	v8.u3 = g_t140030.u3;
+	loc4 = v8;
+	v8.u0 = 21492;
+	v8 = *v8.u0;
+	loc0 = v8;
+	v8 = loc0;
+	v9.u0 = 0x00;
+	v8 += v9;
+	loc1 = v8;
+	v8.u0 = 21492;
+	v9 = loc1;
+	*v8.u0 = v9;
+	v8 = loc0;
+	loc2 = v8;
+	v8 = loc2;
+	return v8;
 }
 
 // 0011EEC6: Stack Eq_n ___cxa_can_catch(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n ___cxa_can_catch(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v12.u3 = g_t140030.u3;
-	loc12 = v12;
-	v12.u3 = g_t140030.u3;
-	v13.u0 = 0x10;
-	v12 += v13;
-	g_t140030.u3 = (word32 *) v12;
-	v12.u3 = g_t140030.u3;
-	v13.u3 = g_t140034.u3;
-	v14 = v12 >= v13;
-	if (v14)
+	v13.u3 = g_t140030.u3;
+	loc12 = v13;
+	v13.u3 = g_t140030.u3;
+	v14.u0 = 0x10;
+	v13 += v14;
+	g_t140030.u3 = (word32 *) v13;
+	v13.u3 = g_t140030.u3;
+	v14.u3 = g_t140034.u3;
+	v15 = v13 >= v14;
+	if (v15)
 	{
-		v12.u0 = 0x10;
-		abortStackOverflow(v12);
+		v13.u0 = 0x10;
+		abortStackOverflow(v13);
 	}
-	v12 = loc12;
-	loc4 = v12;
-	v12 = arg2;
-	v12 = *v12.u0;
-	loc5 = v12;
-	v12 = loc4;
-	v13 = loc5;
-	*v12.u0 = v13;
-	v12 = arg0;
-	v12 = *v12.u0;
-	loc6 = v12;
-	v12 = loc6;
-	v13.u0 = 0x10;
-	v12 += v13;
-	loc7 = v12;
-	v12 = loc7;
-	v12 = *v12.u0;
-	loc8 = v12;
-	v12 = arg0;
-	v13 = arg1;
-	v15 = loc4;
-	v16 = loc8;
-	v17 = 0x01FF;
-	v16 &= v17;
-	v17 = 0x0F20;
-	v16.u3 += v17;
+	v13 = loc12;
+	loc4 = v13;
+	v13 = arg2;
+	v13 = *v13.u0;
+	loc5 = v13;
+	v13 = loc4;
+	v14 = loc5;
+	*v13.u0 = v14;
+	v13 = arg0;
+	v13 = *v13.u0;
+	loc6 = v13;
+	v13 = loc6;
+	v14.u0 = 0x10;
+	v13 += v14;
+	loc7 = v13;
+	v13 = loc7;
+	v13 = *v13.u0;
+	loc8 = v13;
+	v13 = arg0;
+	v14 = arg1;
+	v16 = loc4;
+	v17 = loc8;
+	v18 = 0x01FF;
+	v17 &= v18;
+	v18 = 0x0F20;
+	v17.u3 += v18;
 }
 
 // 0011EF3E: Stack Eq_n ___cxa_is_pointer_type(Stack Eq_n arg0)
 Eq_n ___cxa_is_pointer_type(Eq_n arg0)
 {
-	v9.u3 = g_t140030.u3;
-	loc7 = v9;
-	v9 = arg0;
-	v10.u0 = 0x00;
-	v11 = v9 == v10;
-	loc1 = v11;
-	v9 = loc1;
-	if (v9)
+	v10.u3 = g_t140030.u3;
+	loc7 = v10;
+	v10 = arg0;
+	v11.u0 = 0x00;
+	v12 = v10 == v11;
+	loc1 = v12;
+	v10 = loc1;
+	if (v10)
 	{
-		v9.u0 = 0x00;
-		loc4 = v9;
+		v10.u0 = 0x00;
+		loc4 = v10;
 	}
 	else
 	{
-		v9 = arg0;
-		v10.u0 = 0x09A0;
-		v12.u0 = 2600;
-		v13.u0 = 0x00;
-		v9 = fn0011DBBE(v9, v10, v12, v13);
-		loc2 = v9;
-		v9 = loc2;
-		v10.u0 = 0x00;
-		v11 = v9 != v10;
-		loc5 = v11;
-		v9 = loc5;
-		loc4 = v9;
+		v10 = arg0;
+		v11.u0 = 0x09A0;
+		v13.u0 = 2600;
+		v14.u0 = 0x00;
+		v10 = fn0011DBBE(v10, v11, v13, v14);
+		loc2 = v10;
+		v10 = loc2;
+		v11.u0 = 0x00;
+		v12 = v10 != v11;
+		loc5 = v12;
+		v10 = loc5;
+		loc4 = v10;
 	}
-	v9 = loc4;
-	v10.u0 = 0x01;
-	v9 &= v10;
-	loc3 = v9;
-	v9 = loc3;
-	return v9;
+	v10 = loc4;
+	v11.u0 = 0x01;
+	v10 &= v11;
+	loc3 = v10;
+	v10 = loc3;
+	return v10;
 }
 
 // 0011EF7B: void runPostSets()
@@ -25179,1017 +25179,1017 @@ void runPostSets()
 // 0011EF7D: Stack Eq_n _memset(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n _memset(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v6 = arg0;
+	v7 = arg0;
+	v8 = arg2;
+	v7 += v8;
+	loc3 = v7;
 	v7 = arg2;
-	v6 += v7;
-	loc3 = v6;
-	v6 = arg2;
-	v7.u0 = 0x14;
-	v8 = v6 >= v7;
-	if (v8)
+	v8.u0 = 0x14;
+	v9 = v7 >= v8;
+	if (v9)
 	{
-		v6 = arg1;
-		v7.u0 = 0xFF;
-		v6 &= v7;
-		arg1 = v6;
-		v6 = arg0;
-		v7.u0 = 0x03;
-		v6 &= v7;
-		loc6 = v6;
-		v6 = arg1;
 		v7 = arg1;
-		v9 = 0x08;
-		v7 <<= v9;
-		v6 |= v7;
+		v8.u0 = 0xFF;
+		v7 &= v8;
+		arg1 = v7;
+		v7 = arg0;
+		v8.u0 = 0x03;
+		v7 &= v8;
+		loc6 = v7;
 		v7 = arg1;
-		v9 = 0x10;
-		v7 <<= v9;
-		v6 |= v7;
-		v7 = arg1;
-		v9 = 0x18;
-		v7 <<= v9;
-		v6 |= v7;
-		loc4 = v6;
-		v6 = loc3;
-		v7.u0 = 0x03;
-		v9 = ~0x00;
-		v7 = v7 ^ v9;
-		v6 &= v7;
-		loc5 = v6;
-		v6 = loc6;
-		if (v6)
+		v8 = arg1;
+		v10 = 0x08;
+		v8 <<= v10;
+		v7 |= v8;
+		v8 = arg1;
+		v10 = 0x10;
+		v8 <<= v10;
+		v7 |= v8;
+		v8 = arg1;
+		v10 = 0x18;
+		v8 <<= v10;
+		v7 |= v8;
+		loc4 = v7;
+		v7 = loc3;
+		v8.u0 = 0x03;
+		v10 = ~0x00;
+		v8 = v8 ^ v10;
+		v7 &= v8;
+		loc5 = v7;
+		v7 = loc6;
+		if (v7)
 		{
 			while (true)
 			{
-				v6 = arg0;
-				v7.u0 = 0x04;
-				v6 += v7;
-				v7 = loc6;
-				v6 -= v7;
-				loc6 = v6;
-				v6 = arg0;
-				v7 = loc6;
-				v8 = v6 < v7;
-				v8 = v8 == 0x00;
-				if (v8)
+				v7 = arg0;
+				v8.u0 = 0x04;
+				v7 += v8;
+				v8 = loc6;
+				v7 -= v8;
+				loc6 = v7;
+				v7 = arg0;
+				v8 = loc6;
+				v9 = v7 < v8;
+				v9 = v9 == 0x00;
+				if (v9)
 					break;
-				v6 = arg0;
-				v7 = arg1;
-				v10 = (byte) v7;
-				v6.u4->t0000.u0 = (bool) v10;
-				v6 = arg0;
-				v7.u0 = 0x01;
-				v6 += v7;
-				arg0 = v6;
+				v7 = arg0;
+				v8 = arg1;
+				v11 = (byte) v8;
+				v7.u4->t0000.u0 = (bool) v11;
+				v7 = arg0;
+				v8.u0 = 0x01;
+				v7 += v8;
+				arg0 = v7;
 			}
 		}
 		while (true)
 		{
-			v6 = arg0;
-			v7 = loc5;
-			v8 = v6 < v7;
-			v8 = v8 == 0x00;
-			if (v8)
+			v7 = arg0;
+			v8 = loc5;
+			v9 = v7 < v8;
+			v9 = v9 == 0x00;
+			if (v9)
 				break;
-			v6 = arg0;
-			v7 = loc4;
-			*v6.u3 = (word32) v7;
-			v6 = arg0;
-			v7.u0 = 0x04;
-			v6 += v7;
-			arg0 = v6;
+			v7 = arg0;
+			v8 = loc4;
+			*v7.u3 = (word32) v8;
+			v7 = arg0;
+			v8.u0 = 0x04;
+			v7 += v8;
+			arg0 = v7;
 		}
 	}
 	while (true)
 	{
-		v6 = arg0;
-		v7 = loc3;
-		v8 = v6 < v7;
-		v8 = v8 == 0x00;
-		if (v8)
+		v7 = arg0;
+		v8 = loc3;
+		v9 = v7 < v8;
+		v9 = v9 == 0x00;
+		if (v9)
 			break;
-		v6 = arg0;
-		v7 = arg1;
-		v11 = (byte) v7;
-		v6.u4->t0000.u0 = (bool) v11;
-		v6 = arg0;
-		v7.u0 = 0x01;
-		v6 += v7;
-		arg0 = v6;
+		v7 = arg0;
+		v8 = arg1;
+		v12 = (byte) v8;
+		v7.u4->t0000.u0 = (bool) v12;
+		v7 = arg0;
+		v8.u0 = 0x01;
+		v7 += v8;
+		arg0 = v7;
 	}
-	v6 = arg0;
-	v7 = arg2;
-	v6 -= v7;
-	return v6;
+	v7 = arg0;
+	v8 = arg2;
+	v7 -= v8;
+	return v7;
 }
 
 // 0011F040: Stack Eq_n _pthread_mutex_lock(Stack Eq_n arg0)
 Eq_n _pthread_mutex_lock(Eq_n arg0)
 {
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F044: Stack Eq_n _pthread_cond_broadcast(Stack Eq_n arg0)
 Eq_n _pthread_cond_broadcast(Eq_n arg0)
 {
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F048: Stack Eq_n _memcpy(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n _memcpy(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v3 = arg2;
-	v4.u0 = 0x1000;
-	v5 = v3 >= v4;
-	if (!v5)
+	v4 = arg2;
+	v5.u0 = 0x1000;
+	v6 = v4 >= v5;
+	if (!v6)
 	{
-		v3 = arg0;
-		loc3 = v3;
-		v3 = arg0;
-		v4.u0 = 0x03;
-		v3 &= v4;
-		v4 = arg1;
-		v6.u0 = 0x03;
-		v4 &= v6;
-		v5 = v3 == v4;
-		if (v5)
+		v4 = arg0;
+		loc3 = v4;
+		v4 = arg0;
+		v5.u0 = 0x03;
+		v4 &= v5;
+		v5 = arg1;
+		v7.u0 = 0x03;
+		v5 &= v7;
+		v6 = v4 == v5;
+		if (v6)
 		{
 			while (true)
 			{
-				v3 = arg0;
-				v4.u0 = 0x03;
-				v3 &= v4;
-				v5 = v3 == 0x00;
-				if (v5)
+				v4 = arg0;
+				v5.u0 = 0x03;
+				v4 &= v5;
+				v6 = v4 == 0x00;
+				if (v6)
 					break;
-				v3 = arg2;
-				v4.u0 = 0x00;
-				v5 = v3 == v4;
-				if (v5)
+				v4 = arg2;
+				v5.u0 = 0x00;
+				v6 = v4 == v5;
+				if (v6)
 				{
-					v3 = loc3;
-					return v3;
+					v4 = loc3;
+					return v4;
 				}
-				v3 = arg0;
+				v4 = arg0;
+				v5 = arg1;
+				v8 = *v5.u0;
+				v5.u3 = (word32) v8;
+				v9 = (byte) v5;
+				v4.u4->t0000.u0 = (bool) v9;
+				v4 = arg0;
+				v5.u0 = 0x01;
+				v4 += v5;
+				arg0 = v4;
 				v4 = arg1;
-				v7 = *v4.u0;
-				v4.u3 = (word32) v7;
-				v8 = (byte) v4;
-				v3.u4->t0000.u0 = (bool) v8;
-				v3 = arg0;
-				v4.u0 = 0x01;
-				v3 += v4;
-				arg0 = v3;
-				v3 = arg1;
-				v4.u0 = 0x01;
-				v3 += v4;
-				arg1 = v3;
-				v3 = arg2;
-				v4.u0 = 0x01;
-				v3 -= v4;
-				arg2 = v3;
+				v5.u0 = 0x01;
+				v4 += v5;
+				arg1 = v4;
+				v4 = arg2;
+				v5.u0 = 0x01;
+				v4 -= v5;
+				arg2 = v4;
 			}
 			while (true)
 			{
-				v3 = arg2;
-				v4.u0 = 0x04;
-				v5 = v3 >= v4;
-				v5 = v5 == 0x00;
-				if (v5)
+				v4 = arg2;
+				v5.u0 = 0x04;
+				v6 = v4 >= v5;
+				v6 = v6 == 0x00;
+				if (v6)
 					break;
-				v3 = arg0;
+				v4 = arg0;
+				v5 = arg1;
+				v5 = *v5.u0;
+				*v4.u3 = (word32) v5;
+				v4 = arg0;
+				v5.u0 = 0x04;
+				v4 += v5;
+				arg0 = v4;
 				v4 = arg1;
-				v4 = *v4.u0;
-				*v3.u3 = (word32) v4;
-				v3 = arg0;
-				v4.u0 = 0x04;
-				v3 += v4;
-				arg0 = v3;
-				v3 = arg1;
-				v4.u0 = 0x04;
-				v3 += v4;
-				arg1 = v3;
-				v3 = arg2;
-				v4.u0 = 0x04;
-				v3 -= v4;
-				arg2 = v3;
+				v5.u0 = 0x04;
+				v4 += v5;
+				arg1 = v4;
+				v4 = arg2;
+				v5.u0 = 0x04;
+				v4 -= v5;
+				arg2 = v4;
 			}
 		}
 		while (true)
 		{
-			v3 = arg2;
-			v4.u0 = 0x00;
-			v5 = v3 > v4;
-			v5 = v5 == 0x00;
-			if (v5)
+			v4 = arg2;
+			v5.u0 = 0x00;
+			v6 = v4 > v5;
+			v6 = v6 == 0x00;
+			if (v6)
 				break;
-			v3 = arg0;
+			v4 = arg0;
+			v5 = arg1;
+			v10 = *v5.u0;
+			v5.u3 = (word32) v10;
+			v11 = (byte) v5;
+			v4.u4->t0000.u0 = (bool) v11;
+			v4 = arg0;
+			v5.u0 = 0x01;
+			v4 += v5;
+			arg0 = v4;
 			v4 = arg1;
-			v9 = *v4.u0;
-			v4.u3 = (word32) v9;
-			v10 = (byte) v4;
-			v3.u4->t0000.u0 = (bool) v10;
-			v3 = arg0;
-			v4.u0 = 0x01;
-			v3 += v4;
-			arg0 = v3;
-			v3 = arg1;
-			v4.u0 = 0x01;
-			v3 += v4;
-			arg1 = v3;
-			v3 = arg2;
-			v4.u0 = 0x01;
-			v3 -= v4;
-			arg2 = v3;
+			v5.u0 = 0x01;
+			v4 += v5;
+			arg1 = v4;
+			v4 = arg2;
+			v5.u0 = 0x01;
+			v4 -= v5;
+			arg2 = v4;
 		}
-		v3 = loc3;
-		return v3;
+		v4 = loc3;
+		return v4;
 	}
 	else
 	{
-		v3 = arg0;
-		v4 = arg1;
-		v6 = arg2;
-		v3 = _emscripten_memcpy_big(v3, v4, v6);
-		return v3;
+		v4 = arg0;
+		v5 = arg1;
+		v7 = arg2;
+		v4 = _emscripten_memcpy_big(v4, v5, v7);
+		return v4;
 	}
 }
 
 // 0011F11D: Stack Eq_n _sbrk(Stack Eq_n arg0)
 Eq_n _sbrk(Eq_n arg0)
 {
-	v6 = arg0;
-	v7.u0 = 0x0F;
-	v6 += v7;
-	v7.u0 = ~0x0F;
-	v6 &= v7;
-	arg0 = v6;
-	v6.u3 = g_t140038.u3;
-	v6.u3 = *v6.u3;
-	loc1 = v6;
-	v6 = loc1;
 	v7 = arg0;
-	v6 += v7;
-	loc3 = v6;
-	v6 = arg0;
-	v7.u0 = 0x00;
-	v8 = v6 > v7;
-	v7 = loc3;
-	v9 = loc1;
-	v10 = v7 < v9;
-	v6 = v8 & v10;
-	v7 = loc3;
-	v9.u0 = 0x00;
-	v10 = v7 < v9;
-	v6 |= v10;
-	if (!v6)
+	v8.u0 = 0x0F;
+	v7 += v8;
+	v8.u0 = ~0x0F;
+	v7 &= v8;
+	arg0 = v7;
+	v7.u3 = g_t140038.u3;
+	v7.u3 = *v7.u3;
+	loc1 = v7;
+	v7 = loc1;
+	v8 = arg0;
+	v7 += v8;
+	loc3 = v7;
+	v7 = arg0;
+	v8.u0 = 0x00;
+	v9 = v7 > v8;
+	v8 = loc3;
+	v10 = loc1;
+	v11 = v8 < v10;
+	v7 = v9 & v11;
+	v8 = loc3;
+	v10.u0 = 0x00;
+	v11 = v8 < v10;
+	v7 |= v11;
+	if (!v7)
 	{
-		v6.u3 = g_t140038.u3;
+		v7.u3 = g_t140038.u3;
+		v8 = loc3;
+		*v7.u3 = (word32) v8;
+		v7 = getTotalMemory();
+		loc4 = v7;
 		v7 = loc3;
-		*v6.u3 = (word32) v7;
-		v6 = getTotalMemory();
-		loc4 = v6;
-		v6 = loc3;
-		v7 = loc4;
-		v8 = v6 > v7;
-		if (v8)
+		v8 = loc4;
+		v9 = v7 > v8;
+		if (v9)
 		{
-			v6 = enlargeMemory();
-			v7.u0 = 0x00;
-			v8 = v6 == v7;
-			if (v8)
+			v7 = enlargeMemory();
+			v8.u0 = 0x00;
+			v9 = v7 == v8;
+			if (v9)
 			{
-				v6.u0 = 0x0C;
-				___setErrNo(v6);
-				v6.u3 = g_t140038.u3;
-				v7 = loc1;
-				*v6.u3 = (word32) v7;
-				v6.u0 = ~0x00;
-				return v6;
+				v7.u0 = 0x0C;
+				___setErrNo(v7);
+				v7.u3 = g_t140038.u3;
+				v8 = loc1;
+				*v7.u3 = (word32) v8;
+				v7.u0 = ~0x00;
+				return v7;
 			}
 		}
-		v6 = loc1;
-		return v6;
+		v7 = loc1;
+		return v7;
 	}
 	else
 	{
-		v6 = abortOnCannotGrowMemory();
-		v6.u0 = 0x0C;
-		___setErrNo(v6);
-		v6.u0 = ~0x00;
-		return v6;
+		v7 = abortOnCannotGrowMemory();
+		v7.u0 = 0x0C;
+		___setErrNo(v7);
+		v7.u0 = ~0x00;
+		return v7;
 	}
 }
 
 // 0011F183: Stack Eq_n _memmove(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n _memmove(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v3 = arg1;
-	v4 = arg0;
-	v5 = v3 < v4;
-	v4 = arg0;
-	v6 = arg1;
-	v7 = arg2;
-	v6 += v7;
-	v8 = v4 < v6;
-	v3 = v5 & v8;
-	if (v3)
+	v4 = arg1;
+	v5 = arg0;
+	v6 = v4 < v5;
+	v5 = arg0;
+	v7 = arg1;
+	v8 = arg2;
+	v7 += v8;
+	v9 = v5 < v7;
+	v4 = v6 & v9;
+	if (v4)
 	{
 		while (true)
 		{
-			v3 = arg0;
-			loc3 = v3;
-			v3 = arg1;
-			v4 = arg2;
-			v3 += v4;
-			arg1 = v3;
-			v3 = arg0;
-			v4 = arg2;
-			v3 += v4;
-			arg0 = v3;
-			v3 = arg2;
-			v4.u0 = 0x00;
-			v5 = v3 > v4;
-			v5 = v5 == 0x00;
-			if (v5)
-				break;
-			v3 = arg0;
-			v4.u0 = 0x01;
-			v3 -= v4;
-			arg0 = v3;
-			v3 = arg1;
-			v4.u0 = 0x01;
-			v3 -= v4;
-			arg1 = v3;
-			v3 = arg2;
-			v4.u0 = 0x01;
-			v3 -= v4;
-			arg2 = v3;
-			v3 = arg0;
+			v4 = arg0;
+			loc3 = v4;
 			v4 = arg1;
-			v9 = *v4.u0;
-			v4.u3 = (word32) v9;
-			v10 = (byte) v4;
-			v3.u4->t0000.u0 = (bool) v10;
+			v5 = arg2;
+			v4 += v5;
+			arg1 = v4;
+			v4 = arg0;
+			v5 = arg2;
+			v4 += v5;
+			arg0 = v4;
+			v4 = arg2;
+			v5.u0 = 0x00;
+			v6 = v4 > v5;
+			v6 = v6 == 0x00;
+			if (v6)
+				break;
+			v4 = arg0;
+			v5.u0 = 0x01;
+			v4 -= v5;
+			arg0 = v4;
+			v4 = arg1;
+			v5.u0 = 0x01;
+			v4 -= v5;
+			arg1 = v4;
+			v4 = arg2;
+			v5.u0 = 0x01;
+			v4 -= v5;
+			arg2 = v4;
+			v4 = arg0;
+			v5 = arg1;
+			v10 = *v5.u0;
+			v5.u3 = (word32) v10;
+			v11 = (byte) v5;
+			v4.u4->t0000.u0 = (bool) v11;
 		}
-		v3 = loc3;
-		arg0 = v3;
+		v4 = loc3;
+		arg0 = v4;
 	}
 	else
 	{
-		v3 = arg0;
-		v4 = arg1;
-		v6 = arg2;
-		v3 = _memcpy(v3, v4, v6);
+		v4 = arg0;
+		v5 = arg1;
+		v7 = arg2;
+		v4 = _memcpy(v4, v5, v7);
 	}
-	v3 = arg0;
-	return v3;
+	v4 = arg0;
+	return v4;
 }
 
 // 0011F1F1: Stack Eq_n _pthread_mutex_unlock(Stack Eq_n arg0)
 Eq_n _pthread_mutex_unlock(Eq_n arg0)
 {
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F1F5: Stack Eq_n _pthread_self()
 Eq_n _pthread_self()
 {
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F1F9: Stack Eq_n dynCall_iiiiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n dynCall_iiiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg7;
-	v9 = arg0;
-	v10 = 0x01FF;
-	v9 &= v10;
-	v10 = 0x00;
-	v9.u3 += v10;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg7;
+	v10 = arg0;
+	v11 = 0x01FF;
+	v10 &= v11;
+	v11 = 0x00;
+	v10.u3 += v11;
 }
 
 // 0011F215: void dynCall_viiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void dynCall_viiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg0;
-	v8 = 0x01FF;
-	v7 &= v8;
-	v8 = 0x0200;
-	v7.u3 += v8;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg0;
+	v9 = 0x01FF;
+	v8 &= v9;
+	v9 = 0x0200;
+	v8.u3 += v9;
 }
 
 // 0011F22D: Stack word32 dynCall_iiiiiid(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack real64 arg6)
 word32 dynCall_iiiiiid(ui32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, real64 arg6)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg0;
-	v9 = 0xFF;
-	v8 &= v9;
-	v9 = 0x0400;
-	v8 += v9;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg0;
+	v10 = 0xFF;
+	v9 &= v10;
+	v10 = 0x0400;
+	v9 += v10;
 }
 
 // 0011F248: void dynCall_vi(Stack Eq_n arg0, Stack Eq_n arg1)
 void dynCall_vi(Eq_n arg0, Eq_n arg1)
 {
-	v2 = arg1;
-	v3 = arg0;
-	v4 = 0x01FF;
-	v3 &= v4;
-	v4 = 0x0500;
-	v3.u3 += v4;
+	v3 = arg1;
+	v4 = arg0;
+	v5 = 0x01FF;
+	v4 &= v5;
+	v5 = 0x0500;
+	v4.u3 += v5;
 }
 
 // 0011F258: void dynCall_vii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void dynCall_vii(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg0;
-	v5 = 0x01FF;
-	v4 &= v5;
-	v5 = 0x0700;
-	v4.u3 += v5;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg0;
+	v6 = 0x01FF;
+	v5 &= v6;
+	v6 = 0x0700;
+	v5.u3 += v6;
 }
 
 // 0011F26A: Stack Eq_n dynCall_iiiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n dynCall_iiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg0;
-	v9 = 0x01FF;
-	v8 &= v9;
-	v9 = 0x0900;
-	v8.u3 += v9;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg0;
+	v10 = 0x01FF;
+	v9 &= v10;
+	v10 = 0x0900;
+	v9.u3 += v10;
 }
 
 // 0011F285: Stack Eq_n dynCall_ii(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n dynCall_ii(Eq_n arg0, Eq_n arg1)
 {
-	v2 = arg1;
-	v3 = arg0;
-	v4 = 0x01FF;
-	v3 &= v4;
-	v4 = 0x0B00;
-	v3.u3 += v4;
+	v3 = arg1;
+	v4 = arg0;
+	v5 = 0x01FF;
+	v4 &= v5;
+	v5 = 0x0B00;
+	v4.u3 += v5;
 }
 
 // 0011F296: void fn0011F296(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack ui64 arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0011F296(Eq_n arg0, Eq_n arg1, Eq_n arg2, ui64 arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg0;
-	v8 = 0x1F;
-	v7 &= v8;
-	v8 = 0x0D00;
-	v7.u3 += v8;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg0;
+	v9 = 0x1F;
+	v8 &= v9;
+	v9 = 0x0D00;
+	v8.u3 += v9;
 }
 
 // 0011F2AD: Stack Eq_n dynCall_iiiiiiiiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10, Stack Eq_n arg11)
 Eq_n dynCall_iiiiiiiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10, Eq_n arg11)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg7;
-	v9 = arg8;
-	v10 = arg9;
-	v11 = arg10;
-	v12 = arg11;
-	v13 = arg0;
-	v14 = 0x01FF;
-	v13 &= v14;
-	v14 = 0x0D20;
-	v13.u3 += v14;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg7;
+	v10 = arg8;
+	v11 = arg9;
+	v12 = arg10;
+	v13 = arg11;
+	v14 = arg0;
+	v15 = 0x01FF;
+	v14 &= v15;
+	v15 = 0x0D20;
+	v14.u3 += v15;
 }
 
 // 0011F2D2: Stack Eq_n dynCall_iiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n dynCall_iiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg0;
-	v6 = 0x01FF;
-	v5 &= v6;
-	v6 = 0x0F20;
-	v5.u3 += v6;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg0;
+	v7 = 0x01FF;
+	v6 &= v7;
+	v7 = 0x0F20;
+	v6.u3 += v7;
 }
 
 // 0011F2E7: void dynCall_viiiiiiiiiiiiiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9, Stack word32 arg10, Stack word32 arg11, Stack word32 arg12, Stack word32 arg13, Stack word32 arg14, Stack word32 arg15)
 void dynCall_viiiiiiiiiiiiiii(ui32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10, word32 arg11, word32 arg12, word32 arg13, word32 arg14, word32 arg15)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg7;
-	v9 = arg8;
-	v10 = arg9;
-	v11 = arg10;
-	v12 = arg11;
-	v13 = arg12;
-	v14 = arg13;
-	v15 = arg14;
-	v16 = arg15;
-	v17 = arg0;
-	v18 = 0x01FF;
-	v17 &= v18;
-	v18 = 0x1120;
-	v17 += v18;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg7;
+	v10 = arg8;
+	v11 = arg9;
+	v12 = arg10;
+	v13 = arg11;
+	v14 = arg12;
+	v15 = arg13;
+	v16 = arg14;
+	v17 = arg15;
+	v18 = arg0;
+	v19 = 0x01FF;
+	v18 &= v19;
+	v19 = 0x1120;
+	v18 += v19;
 }
 
 // 0011F313: void dynCall_viiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void dynCall_viiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg0;
-	v9 = 0x01FF;
-	v8 &= v9;
-	v9 = 0x1320;
-	v8.u3 += v9;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg0;
+	v10 = 0x01FF;
+	v9 &= v10;
+	v10 = 0x1320;
+	v9.u3 += v10;
 }
 
 // 0011F32D: Stack real32 dynCall_fiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3)
 real32 dynCall_fiii(ui32 arg0, word32 arg1, word32 arg2, word32 arg3)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg0;
-	v6 = 0x01FF;
-	v5 &= v6;
-	v6 = 0x1520;
-	v5 += v6;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg0;
+	v7 = 0x01FF;
+	v6 &= v7;
+	v7 = 0x1520;
+	v6 += v7;
 }
 
 // 0011F342: void dynCall_viiiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 void dynCall_viiiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg7;
-	v9 = arg0;
-	v10 = 0x01FF;
-	v9 &= v10;
-	v10 = 0x1720;
-	v9.u3 += v10;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg7;
+	v10 = arg0;
+	v11 = 0x01FF;
+	v10 &= v11;
+	v11 = 0x1720;
+	v10.u3 += v11;
 }
 
 // 0011F35E: void dynCall_viiiiiiiiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9, Stack word32 arg10)
 void dynCall_viiiiiiiiii(ui32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9, word32 arg10)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg7;
-	v9 = arg8;
-	v10 = arg9;
-	v11 = arg10;
-	v12 = arg0;
-	v13 = 0x01FF;
-	v12 &= v13;
-	v13 = 0x1920;
-	v12 += v13;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg7;
+	v10 = arg8;
+	v11 = arg9;
+	v12 = arg10;
+	v13 = arg0;
+	v14 = 0x01FF;
+	v13 &= v14;
+	v14 = 0x1920;
+	v13 += v14;
 }
 
 // 0011F380: Stack Eq_n dynCall_iii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n dynCall_iii(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg0;
-	v5.u0 = 0x01FF;
-	v4 &= v5;
-	v5.u0 = 6944;
-	v4 += v5;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg0;
+	v6.u0 = 0x01FF;
+	v5 &= v6;
+	v6.u0 = 6944;
+	v5 += v6;
 }
 
 // 0011F393: Stack Eq_n dynCall_iiiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n dynCall_iiiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg0;
-	v8 = 0x01FF;
-	v7 &= v8;
-	v8 = 0x1D20;
-	v7.u3 += v8;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg0;
+	v9 = 0x01FF;
+	v8 &= v9;
+	v9 = 0x1D20;
+	v8.u3 += v9;
 }
 
 // 0011F3AC: Stack real64 dynCall_diii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3)
 real64 dynCall_diii(ui32 arg0, word32 arg1, word32 arg2, word32 arg3)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg0;
-	v6 = 0x01FF;
-	v5 &= v6;
-	v6 = 0x1F20;
-	v5 += v6;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg0;
+	v7 = 0x01FF;
+	v6 &= v7;
+	v7 = 0x1F20;
+	v6 += v7;
 }
 
 // 0011F3C1: Stack Eq_n dynCall_i(Stack Eq_n arg0)
 Eq_n dynCall_i(Eq_n arg0)
 {
-	v2 = arg0;
-	v3 = 0x01FF;
-	v2 &= v3;
-	v3 = 0x2120;
-	v2.u3 += v3;
+	v3 = arg0;
+	v4 = 0x01FF;
+	v3 &= v4;
+	v4 = 0x2120;
+	v3.u3 += v4;
 }
 
 // 0011F3D1: Stack ui64 fn0011F3D1(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 ui64 fn0011F3D1(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg0;
-	v7 = 0x01FF;
-	v6 &= v7;
-	v7 = 0x2320;
-	v6.u3 += v7;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg0;
+	v8 = 0x01FF;
+	v7 &= v8;
+	v8 = 0x2320;
+	v7.u3 += v8;
 }
 
 // 0011F3E9: Stack Eq_n dynCall_iiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n dynCall_iiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg0;
-	v7 = 0x01FF;
-	v6 &= v7;
-	v7 = 0x2520;
-	v6.u3 += v7;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg0;
+	v8 = 0x01FF;
+	v7 &= v8;
+	v8 = 0x2520;
+	v7.u3 += v8;
 }
 
 // 0011F401: Stack word32 fn0011F401(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack ui64 arg5)
 word32 fn0011F401(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, ui64 arg5)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg0;
-	v8 = 0xFF;
-	v7 &= v8;
-	v8 = 0x2720;
-	v7.u3 += v8;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg0;
+	v9 = 0xFF;
+	v8 &= v9;
+	v9 = 0x2720;
+	v8.u3 += v9;
 }
 
 // 0011F41B: void dynCall_viii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 void dynCall_viii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg0;
-	v6 = 0x01FF;
-	v5 &= v6;
-	v6 = 0x2820;
-	v5.u3 += v6;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg0;
+	v7 = 0x01FF;
+	v6 &= v7;
+	v7 = 0x2820;
+	v6.u3 += v7;
 }
 
 // 0011F430: void dynCall_v(Stack Eq_n arg0)
 void dynCall_v(Eq_n arg0)
 {
-	v2 = arg0;
-	v3 = 0x01FF;
-	v2 &= v3;
-	v3 = 0x2A20;
-	v2.u3 += v3;
+	v3 = arg0;
+	v4 = 0x01FF;
+	v3 &= v4;
+	v4 = 0x2A20;
+	v3.u3 += v4;
 }
 
 // 0011F43F: Stack word32 dynCall_iiiiiiiii(Stack ui32 arg0, Stack word32 arg1, Stack word32 arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8)
 word32 dynCall_iiiiiiiii(ui32 arg0, word32 arg1, word32 arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg6;
-	v8 = arg7;
-	v9 = arg8;
-	v10 = arg0;
-	v11 = 0x01FF;
-	v10 &= v11;
-	v11 = 0x2C20;
-	v10 += v11;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg6;
+	v9 = arg7;
+	v10 = arg8;
+	v11 = arg0;
+	v12 = 0x01FF;
+	v11 &= v12;
+	v12 = 0x2C20;
+	v11 += v12;
 }
 
 // 0011F45F: Stack Eq_n dynCall_iiiiid(Stack ui32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n dynCall_iiiiid(ui32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg5;
-	v7 = arg0;
-	v8 = 0xFF;
-	v7 &= v8;
-	v8 = 0x2E20;
-	v7 += v8;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg5;
+	v8 = arg0;
+	v9 = 0xFF;
+	v8 &= v9;
+	v9 = 0x2E20;
+	v8 += v9;
 }
 
 // 0011F479: void dynCall_viiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void dynCall_viiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2 = arg1;
-	v3 = arg2;
-	v4 = arg3;
-	v5 = arg4;
-	v6 = arg0;
-	v7 = 0x01FF;
-	v6 &= v7;
-	v7 = 0x2F20;
-	v6.u3 += v7;
+	v3 = arg1;
+	v4 = arg2;
+	v5 = arg3;
+	v6 = arg4;
+	v7 = arg0;
+	v8 = 0x01FF;
+	v7 &= v8;
+	v8 = 0x2F20;
+	v7.u3 += v8;
 }
 
 // 0011F490: Stack Eq_n fn0011F490(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 Eq_n fn0011F490(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v2.u0 = 0x00;
-	nullFunc_iiiiiiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x00;
+	nullFunc_iiiiiiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F49B: void fn0011F49B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 void fn0011F49B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2 = 0x01;
-	nullFunc_viiiii(v2);
+	v3 = 0x01;
+	nullFunc_viiiii(v3);
 }
 
 // 0011F4A0: Stack Eq_n fn0011F4A0(Stack ui32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn0011F4A0(ui32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2.u0 = 0x02;
-	nullFunc_iiiiiid(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x02;
+	nullFunc_iiiiiid(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F4AB: void fn0011F4AB(Stack Eq_n arg0)
 void fn0011F4AB(Eq_n arg0)
 {
-	v2 = 0x03;
-	nullFunc_vi(v2);
+	v3 = 0x03;
+	nullFunc_vi(v3);
 }
 
 // 0011F4B0: void fn0011F4B0(Stack Eq_n arg0, Stack Eq_n arg1)
 void fn0011F4B0(Eq_n arg0, Eq_n arg1)
 {
-	v2 = 0x04;
-	nullFunc_vii(v2);
+	v3 = 0x04;
+	nullFunc_vii(v3);
 }
 
 // 0011F4B5: Stack Eq_n fn0011F4B5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 Eq_n fn0011F4B5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2.u0 = 0x05;
-	nullFunc_iiiiiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x05;
+	nullFunc_iiiiiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F4C0: Stack Eq_n fn0011F4C0(Stack Eq_n arg0)
 Eq_n fn0011F4C0(Eq_n arg0)
 {
-	v2.u0 = 0x06;
-	nullFunc_ii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x06;
+	nullFunc_ii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F4CB: Stack Eq_n fn0011F4CB(Stack Eq_n arg0)
 Eq_n fn0011F4CB(Eq_n arg0)
 {
-	v2 = arg0;
-	v2 = _pthread_mutex_unlock(v2);
-	return v2;
+	v3 = arg0;
+	v3 = _pthread_mutex_unlock(v3);
+	return v3;
 }
 
 // 0011F4D2: Stack Eq_n fn0011F4D2(Stack Eq_n arg0)
 Eq_n fn0011F4D2(Eq_n arg0)
 {
-	v2 = arg0;
-	v2 = _pthread_mutex_lock(v2);
-	return v2;
+	v3 = arg0;
+	v3 = _pthread_mutex_lock(v3);
+	return v3;
 }
 
 // 0011F4D9: Stack Eq_n fn0011F4D9(Stack Eq_n arg0)
 Eq_n fn0011F4D9(Eq_n arg0)
 {
-	v2 = arg0;
-	v2 = _pthread_cond_broadcast(v2);
-	return v2;
+	v3 = arg0;
+	v3 = _pthread_cond_broadcast(v3);
+	return v3;
 }
 
 // 0011F4E0: void fn0011F4E0(Stack Eq_n arg0, Stack word32 arg1, Stack word64 arg2, Stack word32 arg3, Stack word32 arg4)
 void fn0011F4E0(Eq_n arg0, word32 arg1, word64 arg2, word32 arg3, word32 arg4)
 {
-	v2 = 0x07;
-	nullFunc_viijii(v2);
+	v3 = 0x07;
+	nullFunc_viijii(v3);
 }
 
 // 0011F4E5: Stack Eq_n fn0011F4E5(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7, Stack Eq_n arg8, Stack Eq_n arg9, Stack Eq_n arg10)
 Eq_n fn0011F4E5(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7, Eq_n arg8, Eq_n arg9, Eq_n arg10)
 {
-	v2.u0 = 0x08;
-	nullFunc_iiiiiiiiiiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x08;
+	nullFunc_iiiiiiiiiiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F4F0: Stack Eq_n fn0011F4F0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011F4F0(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2.u0 = 0x09;
-	nullFunc_iiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x09;
+	nullFunc_iiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F4FB: void fn0011F4FB(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack word32 arg5, Stack Eq_n arg6, Stack word32 arg7, Stack Eq_n arg8, Stack word32 arg9, Stack word32 arg10, Stack Eq_n arg11, Stack Eq_n arg12, Stack Eq_n arg13, Stack Eq_n arg14)
 void fn0011F4FB(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, word32 arg5, Eq_n arg6, word32 arg7, Eq_n arg8, word32 arg9, word32 arg10, Eq_n arg11, Eq_n arg12, Eq_n arg13, Eq_n arg14)
 {
-	v2 = 0x0A;
-	nullFunc_viiiiiiiiiiiiiii(v2);
+	v3 = 0x0A;
+	nullFunc_viiiiiiiiiiiiiii(v3);
 }
 
 // 0011F500: void fn0011F500(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5)
 void fn0011F500(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5)
 {
-	v2 = 11;
-	nullFunc_viiiiii(v2);
+	v3 = 11;
+	nullFunc_viiiiii(v3);
 }
 
 // 0011F505: Stack real32 fn0011F505(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 real32 fn0011F505(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2 = 0x0C;
-	nullFunc_fiii(v2);
-	v3 = 0.0F;
-	return v3;
+	v3 = 0x0C;
+	nullFunc_fiii(v3);
+	v4 = 0.0F;
+	return v4;
 }
 
 // 0011F513: void fn0011F513(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void fn0011F513(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v2 = 0x0D;
-	nullFunc_viiiiiii(v2);
+	v3 = 0x0D;
+	nullFunc_viiiiiii(v3);
 }
 
 // 0011F518: void fn0011F518(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack word32 arg3, Stack word32 arg4, Stack word32 arg5, Stack word32 arg6, Stack word32 arg7, Stack word32 arg8, Stack word32 arg9)
 void fn0011F518(Eq_n arg0, Eq_n arg1, Eq_n arg2, word32 arg3, word32 arg4, word32 arg5, word32 arg6, word32 arg7, word32 arg8, word32 arg9)
 {
-	v2 = 0x0E;
-	nullFunc_viiiiiiiiii(v2);
+	v3 = 0x0E;
+	nullFunc_viiiiiiiiii(v3);
 }
 
 // 0011F51D: Stack Eq_n fn0011F51D(Stack Eq_n arg0, Stack Eq_n arg1)
 Eq_n fn0011F51D(Eq_n arg0, Eq_n arg1)
 {
-	v2.u0 = 0x0F;
-	nullFunc_iii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x0F;
+	nullFunc_iii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F528: Stack Eq_n fn0011F528(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn0011F528(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2.u0 = 0x10;
-	nullFunc_iiiiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x10;
+	nullFunc_iiiiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F533: Stack Eq_n fn0011F533(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 Eq_n fn0011F533(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2 = 0x11;
-	nullFunc_diii(v2);
-	v3.u0 = 0.0;
-	return v3;
+	v3 = 0x11;
+	nullFunc_diii(v3);
+	v4.u0 = 0.0;
+	return v4;
 }
 
 // 0011F545: Stack Eq_n fn0011F545()
 Eq_n fn0011F545()
 {
-	v2.u0 = 0x12;
-	nullFunc_i(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x12;
+	nullFunc_i(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F550: Stack Eq_n fn0011F550(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn0011F550(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v2 = 0x13;
-	nullFunc_jiiii(v2);
-	v3.u0 = 0x00;
-	return v3;
+	v3 = 0x13;
+	nullFunc_jiiii(v3);
+	v4.u0 = 0x00;
+	return v4;
 }
 
 // 0011F55B: Stack Eq_n fn0011F55B(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 Eq_n fn0011F55B(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v2.u0 = 0x14;
-	nullFunc_iiiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x14;
+	nullFunc_iiiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F566: Stack Eq_n fn0011F566(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn0011F566(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2.u0 = 0x15;
-	nullFunc_iiiiij(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x15;
+	nullFunc_iiiiij(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F571: void fn0011F571(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011F571(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2 = 22;
-	nullFunc_viii(v2);
+	v3 = 22;
+	nullFunc_viii(v3);
 }
 
 // 0011F576: void fn0011F576(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2)
 void fn0011F576(Eq_n arg0, Eq_n arg1, Eq_n arg2)
 {
-	v2 = arg0;
-	v3 = arg1;
-	v4 = arg2;
-	___cxa_throw(v2, v3, v4);
+	v3 = arg0;
+	v4 = arg1;
+	v5 = arg2;
+	___cxa_throw(v3, v4, v5);
 }
 
 // 0011F57F: void fn0011F57F()
 void fn0011F57F()
 {
-	v2 = 0x17;
-	nullFunc_v(v2);
+	v3 = 0x17;
+	nullFunc_v(v3);
 }
 
 // 0011F584: void fn0011F584()
@@ -26207,100 +26207,100 @@ void fn0011F587()
 // 0011F58A: Stack Eq_n fn0011F58A(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6, Stack Eq_n arg7)
 Eq_n fn0011F58A(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6, Eq_n arg7)
 {
-	v2.u0 = 0x18;
-	nullFunc_iiiiiiiii(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x18;
+	nullFunc_iiiiiiiii(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F595: Stack Eq_n fn0011F595(Stack word32 arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n fn0011F595(word32 arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2.u0 = 0x19;
-	nullFunc_iiiiid(v2);
-	v2.u0 = 0x00;
-	return v2;
+	v3.u0 = 0x19;
+	nullFunc_iiiiid(v3);
+	v3.u0 = 0x00;
+	return v3;
 }
 
 // 0011F5A0: void fn0011F5A0(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3)
 void fn0011F5A0(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3)
 {
-	v2 = 0x1A;
-	nullFunc_viiii(v2);
+	v3 = 0x1A;
+	nullFunc_viiii(v3);
 }
 
 // 0011F5A5: void dynCall_viijii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
 void dynCall_viijii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
-	v2 = arg0;
-	v3 = arg1;
-	v4 = arg2;
-	v5 = arg3;
-	v6 = (uint64) v5;
-	v7 = arg4;
-	v8 = (uint64) v7;
-	v9 = 0x20;
-	v10 = v8 << v9;
-	v11 = v6 | v10;
-	v7 = arg5;
-	v12 = arg6;
-	fn0011F296(v2, v3, v4, v11, v7, v12);
+	v3 = arg0;
+	v4 = arg1;
+	v5 = arg2;
+	v6 = arg3;
+	v7 = (uint64) v6;
+	v8 = arg4;
+	v9 = (uint64) v8;
+	v10 = 0x20;
+	v11 = v9 << v10;
+	v12 = v7 | v11;
+	v8 = arg5;
+	v13 = arg6;
+	fn0011F296(v3, v4, v5, v12, v8, v13);
 }
 
 // 0011F5BD: Stack Eq_n dynCall_jiiii(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 Eq_n dynCall_jiiii(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
+{
+	v4 = arg0;
+	v5 = arg1;
+	v6 = arg2;
+	v7 = arg3;
+	v8 = arg4;
+	v9 = fn0011F3D1(v4, v5, v6, v7, v8);
+	loc5 = v9;
+	v9 = loc5;
+	v10 = 0x20;
+	v9 >>= v10;
+	v4 = (word64) v9;
+	g_t140094.u3 = (word32 *) v4;
+	v9 = loc5;
+	v4 = (word64) v9;
+	return v4;
+}
+
+// 0011F5DB: Stack Eq_n dynCall_iiiiij(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
+Eq_n dynCall_iiiiij(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
 {
 	v3 = arg0;
 	v4 = arg1;
 	v5 = arg2;
 	v6 = arg3;
 	v7 = arg4;
-	v8 = fn0011F3D1(v3, v4, v5, v6, v7);
-	loc5 = v8;
-	v8 = loc5;
-	v9 = 0x20;
-	v8 >>= v9;
-	v3 = (word64) v8;
-	g_t140094.u3 = (word32 *) v3;
-	v8 = loc5;
-	v3 = (word64) v8;
+	v8 = arg5;
+	v9 = (uint64) v8;
+	v10 = arg6;
+	v11 = (uint64) v10;
+	v12 = 0x20;
+	v13 = v11 << v12;
+	v14 = v9 | v13;
+	v3 = fn0011F401(v3, v4, v5, v6, v7, v14);
 	return v3;
-}
-
-// 0011F5DB: Stack Eq_n dynCall_iiiiij(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4, Stack Eq_n arg5, Stack Eq_n arg6)
-Eq_n dynCall_iiiiij(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4, Eq_n arg5, Eq_n arg6)
-{
-	v2 = arg0;
-	v3 = arg1;
-	v4 = arg2;
-	v5 = arg3;
-	v6 = arg4;
-	v7 = arg5;
-	v8 = (uint64) v7;
-	v9 = arg6;
-	v10 = (uint64) v9;
-	v11 = 0x20;
-	v12 = v10 << v11;
-	v13 = v8 | v12;
-	v2 = fn0011F401(v2, v3, v4, v5, v6, v13);
-	return v2;
 }
 
 // 0011F5F3: Stack ui64 fn0011F5F3(Stack Eq_n arg0, Stack Eq_n arg1, Stack Eq_n arg2, Stack Eq_n arg3, Stack Eq_n arg4)
 ui64 fn0011F5F3(Eq_n arg0, Eq_n arg1, Eq_n arg2, Eq_n arg3, Eq_n arg4)
 {
-	v2 = arg0;
-	v3 = arg1;
-	v4 = arg2;
-	v5 = arg3;
-	v6 = arg4;
-	v2 = invoke_jiiii(v2, v3, v4, v5, v6);
-	v7 = (uint64) v2;
-	v3.u3 = g_t140094.u3;
+	v3 = arg0;
+	v4 = arg1;
+	v5 = arg2;
+	v6 = arg3;
+	v7 = arg4;
+	v3 = invoke_jiiii(v3, v4, v5, v6, v7);
 	v8 = (uint64) v3;
-	v9 = 0x20;
-	v10 = v8 << v9;
-	v11 = v7 | v10;
-	return v11;
+	v4.u3 = g_t140094.u3;
+	v9 = (uint64) v4;
+	v10 = 0x20;
+	v11 = v9 << v10;
+	v12 = v8 | v11;
+	return v12;
 }
 

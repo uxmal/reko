@@ -2,16 +2,17 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss
 // si:si
 // dx:dx
 // al:al
-// v8:v8
+// v9:v9
 // bx:bx
 // C:C
-// v11:v11
+// v12:v12
 // cx:cx
 // SZO:SZO
 // es:es
@@ -29,12 +30,12 @@ fn0C00_0000_entry:
 l0C00_0000:
 	si = bp + 12<i16>
 	__out<byte>(dx, al)
-	v8 = (bx & 1<16> << 1<8>) != 0<16>
+	v9 = (bx & 1<16> << 1<8>) != 0<16>
 	bx = __ror<word16,byte>(bx, 1<8>)
-	C = v8
-	v11 = (cx & 1<16> << 1<8>) != 0<16>
+	C = v9
+	v12 = (cx & 1<16> << 1<8>) != 0<16>
 	cx = __rcr<word16,byte>(cx, 1<8>, C)
-	C = v11
+	C = v12
 	dx = dx + 1<16>
 	SZO = cond(dx)
 	al = __in<byte>(dx)

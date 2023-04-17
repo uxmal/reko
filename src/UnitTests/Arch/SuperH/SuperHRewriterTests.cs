@@ -121,8 +121,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("F0CD"); // and.b\t#F0,@(r0,gbr)
             AssertCode(
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|v2 = Mem0[r0 + gbr:byte]",
-                "2|L--|Mem0[r0 + gbr:byte] = v2 & 0xF0<32>");
+                "1|L--|v3 = Mem0[r0 + gbr:byte]",
+                "2|L--|Mem0[r0 + gbr:byte] = v3 & 0xF0<32>");
         }
 
         [Test]
@@ -532,9 +532,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("3642");
             AssertCode(     // ldc.l	@r2+,sgr
                 "0|S--|00100000(2): 3 instructions",
-                "1|L--|v2 = Mem0[r2:word32]",
+                "1|L--|v3 = Mem0[r2:word32]",
                 "2|L--|r2 = r2 + 4<i32>",
-                "3|L--|sgr = v2");
+                "3|L--|sgr = v3");
         }
 
         [Test]
@@ -543,9 +543,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("264F"); // lds.l\t@r15+,pr
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v2 = Mem0[r15:word32]",
+                "1|L--|v3 = Mem0[r15:word32]",
                 "2|L--|r15 = r15 + 4<i32>",
-                "3|L--|pr = v2");
+                "3|L--|pr = v3");
         }
 
         [Test]
@@ -621,7 +621,6 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r4 = r7");
-
         }
 
         [Test]
@@ -639,9 +638,9 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("8669"); // mov.l\t@r8+,r9
             AssertCode(
                 "0|L--|00100000(2): 3 instructions",
-                "1|L--|v2 = Mem0[r8:word32]",
+                "1|L--|v3 = Mem0[r8:word32]",
                 "2|L--|r8 = r8 + 4<i32>",
-                "3|L--|r9 = v2");
+                "3|L--|r9 = v3");
         }
 
         [Test]
@@ -1021,11 +1020,11 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("FF00");	// mac.l	@r15+,@r0+
             AssertCode(
                 "0|L--|00100000(2): 5 instructions",
-                "1|L--|v2 = Mem0[r15:word32]",
+                "1|L--|v3 = Mem0[r15:word32]",
                 "2|L--|r15 = r15 + 4<i32>",
-                "3|L--|v4 = Mem0[r0:word32]",
+                "3|L--|v5 = Mem0[r0:word32]",
                 "4|L--|r0 = r0 + 4<i32>",
-                "5|L--|mac = v2 *s64 v4 + mac");
+                "5|L--|mac = v3 *s64 v5 + mac");
         }
 
         [Test]

@@ -2,6 +2,7 @@
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // edi:edi
 // esi:esi
@@ -9,7 +10,7 @@
 // SZO:SZO
 // C:C
 // Z:Z
-// v9:v9
+// v10:v10
 // eax:eax
 // SCZO:SCZO
 // Top:Top
@@ -26,9 +27,9 @@ l10000000:
 	goto l10000027
 	// succ:  l10000027
 l10000016:
-	v9 = Mem0[edi:word32]
+	v10 = Mem0[edi:word32]
 	esp = esp - 4<i32>
-	Mem0[esp:word32] = v9
+	Mem0[esp:word32] = v10
 	eax = GetDC(Mem0[esp:HWND])
 	esp = esp + 4<32>
 	Mem0[edi:word32] = eax

@@ -2,6 +2,7 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // ds:ds
@@ -12,9 +13,9 @@
 // cx:cx
 // bx:bx
 // eax:eax
-// v12:v12
+// v13:v13
 // edx:edx
-// v14:v14
+// v15:v15
 // Top:Top
 // return address size: 2
 define fn0C00_0000
@@ -35,12 +36,12 @@ l0C00_0000:
 	dx = Mem0[ds:si + 0x30A<16>:word16]
 	dx = dx + bx + C
 	SCZO = cond(dx)
-	v12 = Mem0[ds:0x200<16>:word32] + eax
-	Mem0[ds:0x200<16>:word32] = v12
-	SCZO = cond(v12)
-	v14 = Mem0[ds:0x204<16>:word32] + edx + C
-	Mem0[ds:0x204<16>:word32] = v14
-	SCZO = cond(v14)
+	v13 = Mem0[ds:0x200<16>:word32] + eax
+	Mem0[ds:0x200<16>:word32] = v13
+	SCZO = cond(v13)
+	v15 = Mem0[ds:0x204<16>:word32] + edx + C
+	Mem0[ds:0x204<16>:word32] = v15
+	SCZO = cond(v15)
 	cx = Mem0[ds:si + 0x30C<16>:word16]
 	ax = ax - cx
 	SCZO = cond(ax)

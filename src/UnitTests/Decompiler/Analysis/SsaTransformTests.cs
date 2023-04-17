@@ -4010,21 +4010,21 @@ SsaDoNotSearchImportedProcInFpuStack_exit:
 @"fp:fp
     def:  def fp
 Mem2: orig: Mem0
-v3_3: orig: v3
-    def:  v3_3 = bLoc04_7
-    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+v4_3: orig: v4
+    def:  v4_3 = bLoc04_7
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
 r0:r0
     def:  def r0
-    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
 r0_5: orig: r0
-    def:  r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+    def:  r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
     uses: use r0_5
 wLoc04_6: orig: wLoc04
     def:  wLoc04_6 = 1<16>
     uses: bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
 bLoc04_7: orig: bLoc04
     def:  bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
-    uses: v3_3 = bLoc04_7
+    uses: v4_3 = bLoc04_7
 // proc1
 // Return size: 0
 define proc1
@@ -4035,8 +4035,8 @@ proc1_entry:
 l1:
 	wLoc04_6 = 1<16>
 	bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
-	v3_3 = bLoc04_7
-	r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+	v4_3 = bLoc04_7
+	r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -4062,21 +4062,21 @@ proc1_exit:
 @"fp:fp
     def:  def fp
 Mem2: orig: Mem0
-v3_3: orig: v3
-    def:  v3_3 = bLoc04_7
-    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+v4_3: orig: v4
+    def:  v4_3 = bLoc04_7
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
 r0:r0
     def:  def r0
-    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+    uses: r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
 r0_5: orig: r0
-    def:  r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+    def:  r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
     uses: use r0_5
 wLoc04_6: orig: wLoc04
     def:  wLoc04_6 = 1<16>
     uses: bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
 bLoc04_7: orig: bLoc04
     def:  bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
-    uses: v3_3 = bLoc04_7
+    uses: v4_3 = bLoc04_7
 // proc1
 // Return size: 0
 define proc1
@@ -4087,8 +4087,8 @@ proc1_entry:
 l1:
 	wLoc04_6 = 1<16>
 	bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
-	v3_3 = bLoc04_7
-	r0_5 = SEQ(SLICE(r0, word24, 8), v3_3)
+	v4_3 = bLoc04_7
+	r0_5 = SEQ(SLICE(r0, word24, 8), v4_3)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -4776,7 +4776,7 @@ l1:
 	rdx_4 = CONVERT(edx_3, word32, uint64)
 	edx_5 = SLICE(rdx_4, word32, 0) (alias)
 	edx_eax_7 = SEQ(edx_5, eax_6) (alias)
-	v6_8 = edx_eax_7
+	v7_8 = edx_eax_7
 SsaGithub1131_exit:
 ";
             #endregion

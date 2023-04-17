@@ -12,9 +12,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	Mem9[ds:0x300<16>:word32] = 0<32> - (eax != 0<32>)
 	Mem12[ds:0x202<16>:word16] = -Mem9[ds:0x202<16>:word16]
-	word16 v10_13 = Mem12[ds:0x200<16>:word16]
-	Mem16[ds:0x200<16>:word16] = -v10_13
-	Mem18[ds:0x308<16>:word32] = 0<32> - (v10_13 != 0<16>)
+	word16 v11_13 = Mem12[ds:0x200<16>:word16]
+	Mem16[ds:0x200<16>:word16] = -v11_13
+	Mem18[ds:0x308<16>:word32] = 0<32> - (v11_13 != 0<16>)
 	Mem21[ds:0x304<16>:word16] = ~bx
 	Mem23[ds:0x204<16>:word16] = ~Mem21[ds:0x204<16>:word16]
 	Mem27[ds:0x306<16>:word16] = 0x3E8<16> - Mem23[ds:0x304<16>:word16]

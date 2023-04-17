@@ -453,10 +453,10 @@ l00002986:
 	Mem222[a0_197 + 48<i32>:word32] = 0<i32>
 	Mem224[a0_197 + 52<i32>:word32] = 0<i32>
 	Mem226[a0_197 + 56<i32>:word32] = 0<i32>
-	word16 v29_230 = SLICE(d0_192, word16, 0)
+	word16 v30_230 = SLICE(d0_192, word16, 0)
 	a0 = a0_197 + 60<i32>
-	d0_192 = SEQ(SLICE(d0_192, word16, 16), v29_230 - 1<i16>)
-	branch v29_230 != 0<16> l00002986
+	d0_192 = SEQ(SLICE(d0_192, word16, 16), v30_230 - 1<i16>)
+	branch v30_230 != 0<16> l00002986
 l000029AA:
 	d5_112 = Mem226[a5 + -1312<i32>:word32]
 	Mem238[a5 + -1312<i32>:word32] = Mem226[a5 + -1312<i32>:word32] + 32<i32>
@@ -756,13 +756,13 @@ l00002DDC:
 	a6Out = a6
 	return 0<i32>
 l00002C4E:
-	word16 v24_272 = Mem99[0x00002C58<p32> + CONVERT(SLICE(d0_64, int16, 0) + 3<i16>, int16, int32) * 2<i32>:word16]
+	word16 v25_272 = Mem99[0x00002C58<p32> + CONVERT(SLICE(d0_64, int16, 0) + 3<i16>, int16, int32) * 2<i32>:word16]
 	word32 a6_277
 	word32 d0_282
 	word32 a5_284
 	word32 a1_285
-	call 0x00002C58<p32> + CONVERT(v24_272, word16, int32) (retsize: 0;)
-		uses: a1:a1_285,a2:dwArg04,a3:a3_91,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_64 + 3<32>, word16, 16), v24_272),Stack +0008:tLoc1C,Stack +001C:tLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
+	call 0x00002C58<p32> + CONVERT(v25_272, word16, int32) (retsize: 0;)
+		uses: a1:a1_285,a2:dwArg04,a3:a3_91,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_64 + 3<32>, word16, 16), v25_272),Stack +0008:tLoc1C,Stack +001C:tLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
 		defs: a1:a1_285,a5:a5_284,a6:a6_277,d0:d0_282
 	a5Out = a5_284
 	a6Out = a6_277
@@ -792,16 +792,16 @@ l00002E6C:
 	branch SEQ(SLICE(d1_25, word16, 16), SLICE(d1_25, word16, 0) & 0xFFFC<16>) - d2_34 == 0<32> l00002E9A
 l00002E7C:
 	word32 a0_43 = Mem13[dwArg10:word32]
-	word32 v32_44 = Mem13[a0_43:word32]
+	word32 v33_44 = Mem13[a0_43:word32]
 	Mem47[dwArg10:word32] = a0_43 + 4<i32>
-	Mem48[v32_44 + 4<i32>:word32] = d2_34
+	Mem48[v33_44 + 4<i32>:word32] = d2_34
 	word32 d2_49
 	__bclr<word32>(d2_34, 0<32>, out d2_49)
 	word32 d2_51
 	__bset<word16>(d2_49, 1<16>, out d2_51)
-	Mem53[v32_44 + 4<i32>:word32] = d2_51
-	Mem54[dwArg04:word32] = v32_44
-	a2_14 = v32_44
+	Mem53[v33_44 + 4<i32>:word32] = d2_51
+	Mem54[dwArg04:word32] = v33_44
+	a2_14 = v33_44
 l00002E9A:
 	Mem61[a2_14:word32] = dwArg0C
 	return

@@ -71,8 +71,8 @@ fn0C00_0035_entry:
 	si = SLICE(ds_si, word16, 0)
 	def es
 l0C00_0035:
-	v7_10 = Mem7[ds_si + 2<i16>:word16] + 1<16>
-	Mem11[ds_si + 2<i16>:word16] = v7_10
+	v8_10 = Mem7[ds_si + 2<i16>:word16] + 1<16>
+	Mem11[ds_si + 2<i16>:word16] = v8_10
 	ax_12 = Mem11[ds_si + 2<i16>:word16]
 	di_15 = si + 4<i16> + (ax_12 << 2<16>)
 	Mem20[es:di_15:word16] = di

@@ -25613,7 +25613,7 @@ T_5612: (in fp @ 000086E8 : ptr32)
   Class: Eq_5612
   DataType: ptr32
   OrigDataType: ptr32
-T_5613: (in v23_116 @ 000086E8 : bool)
+T_5613: (in v24_116 @ 000086E8 : bool)
   Class: Eq_5613
   DataType: bool
   OrigDataType: bool

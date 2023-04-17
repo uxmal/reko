@@ -44,8 +44,8 @@ fn0C00_0026_entry:
 	ds = SLICE(ds_si, selector, 16)
 l0C00_0026:
 	di_9 = Mem7[ds:0x104<16>:word16]
-	v6_10 = Mem7[ds:di_9 + 48<i16>:word16] + 1<16>
-	Mem11[ds:di_9 + 48<i16>:word16] = v6_10
+	v7_10 = Mem7[ds:di_9 + 48<i16>:word16] + 1<16>
+	Mem11[ds:di_9 + 48<i16>:word16] = v7_10
 	call fn0C00_0033 (retsize: 2;)
 		uses: Sequence ds:si:ds_si
 		defs: ax:ax_15

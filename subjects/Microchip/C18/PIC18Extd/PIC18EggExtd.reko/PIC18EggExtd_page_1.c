@@ -24,10 +24,10 @@ void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 	byte TBLPTRL_n = 0x06;
 	byte TBLPTRH_n = 0x00;
 	byte TBLPTRU_n = 0x00;
-	bool v20_n = TABLAT != 0x00;
+	bool v21_n = TABLAT != 0x00;
 	while (true)
 	{
-		if (!v20_n && g_b00C5 == 0x00)
+		if (!v21_n && g_b00C5 == 0x00)
 			return;
 		__tblrd(TBLPTR, 0x01);
 		g_b00C0 = TABLAT;
@@ -50,9 +50,9 @@ void fn00000E(cu8 TABLAT, Eq_n FSR0, Eq_n TBLPTR)
 		g_b00C8 = TBLPTRH_n;
 		g_b00C9 = TBLPTRU_n;
 		g_b00C3 = g_b00C3;
-		bool v23_n = g_b00C3 != 0x00;
+		bool v24_n = g_b00C3 != 0x00;
 l000080:
-		if (v23_n)
+		if (v24_n)
 			break;
 		g_b00C4 = g_b00C4;
 		if (g_b00C4 != 0x00)
@@ -62,7 +62,7 @@ l000080:
 		TBLPTRU_n = g_b00C9;
 		--g_b00C5;
 		g_b00C6 -= !(bool) cond(g_b00C5);
-		v20_n = g_b00C6 != 0x00;
+		v21_n = g_b00C6 != 0x00;
 	}
 	while (true)
 	{
@@ -70,7 +70,7 @@ l000080:
 		*FSR0.u1 = TABLAT;
 		--g_b00C3;
 		++FSR0;
-		v23_n = g_b00C3 != 0x00;
+		v24_n = g_b00C3 != 0x00;
 		if (g_b00C3 < 0x00)
 			break;
 		--g_b00C4;

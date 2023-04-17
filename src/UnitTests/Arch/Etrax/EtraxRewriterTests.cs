@@ -190,9 +190,9 @@ namespace Reko.UnitTests.Arch.Etrax
             Given_HexString("532C");
             AssertCode(     // movu.w   [r3+],r2
                 "0|L--|00100000(2): 7 instructions",
-                "1|L--|v3 = Mem0[r3:uint16]",
+                "1|L--|v4 = Mem0[r3:uint16]",
                 "2|L--|r3 = r3 + 2<i32>",
-                "3|L--|r2 = CONVERT(v3, uint16, uint32)",
+                "3|L--|r2 = CONVERT(v4, uint16, uint32)",
                 "4|L--|Z = cond(r2)",
                 "5|L--|N = false",
                 "6|L--|V = false",

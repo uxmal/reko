@@ -154,7 +154,7 @@ namespace Reko.Core
     public enum StorageDomain
     {
         None = -1,
-        Register = 0,           // Few architectures have 4096 registers (fingers xD)
+        Register = 0,           // Few architectures have 4096 general purpose registers (fingers xD)
         Memory = 4096,          // Refers to a memory space
         FpuStack = 4098,
         Global = 8191,          // Global variable within a memory space

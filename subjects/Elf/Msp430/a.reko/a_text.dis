@@ -164,12 +164,12 @@ msp430_compute_modulator_bits_entry:
 	word20 r14 = SLICE(r15_r14, word20, 0)
 	word20 r15 = SLICE(r15_r14, word20, 20)
 l0000420E:
-	word16 v16_39 = Mem26[fp + 2<32>:word16]
+	word16 v17_39 = Mem26[fp + 2<32>:word16]
 	word20 r12_45 = fn00005B04(r15_r14, r13_r12)
 	ui40 r9_r8_209 = fn00005ADC(r14, r15, r12_45, 0<16>) - r13_r12
-	branch v16_39 == 0<16> l00004274
+	branch v17_39 == 0<16> l00004274
 l0000426C:
-	Mem86[v16_39:word16] = r12_45
+	Mem86[v17_39:word16] = r12_45
 l00004274:
 	word20 r7_137 = 0<8>
 	word20 r6_126 = 0<8>
@@ -211,20 +211,20 @@ init_uart_isr_entry:
 	ptr16 fp
 	byte bLoc10 = SLICE(wLoc10, byte, 0)
 l000042CC:
-	word16 v15_34 = Mem23[fp + 2<32>:word16]
-	word16 v16_37 = Mem23[fp + 4<32>:word16]
-	byte v17_41 = Mem23[fp + 6<32>:byte]
+	word16 v16_34 = Mem23[fp + 2<32>:word16]
+	word16 v17_37 = Mem23[fp + 4<32>:word16]
+	byte v18_41 = Mem23[fp + 6<32>:byte]
 	Mem47[0x0218<p16>:word16] = Mem23[0x0218<p16>:word16] + 1<16>
 	word20 r15_52
-	word20 sr_53 = xQueueCreate(sr & 0xFFF7<16>, v17_41, out r15_52)
+	word20 sr_53 = xQueueCreate(sr & 0xFFF7<16>, v18_41, out r15_52)
 	Mem58[0x021C<p16>:word16] = r15_52
 	word20 r15_62
-	word20 sr_121 = xQueueCreate(sr_53, v17_41, out r15_62)
+	word20 sr_121 = xQueueCreate(sr_53, v18_41, out r15_62)
 	Mem68[0x021E<p16>:word16] = r15_62
 	Mem69[0x0078<p16>:byte] = 1<8>
 	Mem72[0x0078<p16>:byte] = Mem69[0x0078<p16>:byte] | 0x10<16>
 	Mem76[0x0079<p16>:byte] = r15 & 0x30<16>
-	word20 r15_88 = msp430_compute_modulator_bits(SEQ(v16_37, v15_34), r14_r13)
+	word20 r15_88 = msp430_compute_modulator_bits(SEQ(v17_37, v16_34), r14_r13)
 	Mem95[0x007C<p16>:byte] = bLoc10
 	Mem100[0x007D<p16>:byte] = __swpb(wLoc10) & 0xFF<8>
 	Mem101[0x007B<p16>:byte] = r15_88
@@ -234,9 +234,9 @@ l000042CC:
 	Mem111[0x0001<p16>:byte] = Mem108[0x0001<p16>:byte] | 0x30<16>
 	branch Mem111[0x0218<p16>:word16] == 0<16> l0000436E
 l00004366:
-	word16 v30_116 = Mem111[0x0218<p16>:word16]
-	Mem118[0x0218<p16>:word16] = v30_116 + 0xFFFF<16>
-	branch v30_116 != 0xFFFF<16> l0000436E
+	word16 v31_116 = Mem111[0x0218<p16>:word16]
+	Mem118[0x0218<p16>:word16] = v31_116 + 0xFFFF<16>
+	branch v31_116 != 0xFFFF<16> l0000436E
 l0000436C:
 	sr_121 = sr_121 | 8<16>
 l0000436E:
@@ -367,9 +367,9 @@ l00004440:
 l00004420:
 	branch Mem60[0x0218<p16>:word16] == 0<16> l0000444A
 l00004426:
-	word16 v14_64 = Mem60[0x0218<p16>:word16]
-	Mem66[0x0218<p16>:word16] = v14_64 + 0xFFFF<16>
-	branch v14_64 != 0xFFFF<16> l0000444A
+	word16 v15_64 = Mem60[0x0218<p16>:word16]
+	Mem66[0x0218<p16>:word16] = v15_64 + 0xFFFF<16>
+	branch v15_64 != 0xFFFF<16> l0000444A
 l0000442C:
 	sr_111 = sr_111 | 8<16>
 l0000444A:
@@ -438,15 +438,15 @@ xTaskCreate_entry:
 	ptr16 fp
 l000044B4:
 	word20 r10_144
-	word16 v15_35 = Mem23[fp + 2<32>:word16]
-	word16 v16_37 = Mem23[fp + 4<32>:word16]
+	word16 v16_35 = Mem23[fp + 2<32>:word16]
+	word16 v17_37 = Mem23[fp + 4<32>:word16]
 	word20 r15_45
 	word20 sr_157 = prvAllocateTCBAndStack(sr, r13, out r15_45)
 	branch r15_45 == 0<20> l000045A0
 l000045A0:
 	r10_144 = 0xFFFF<16>
 l000044E2:
-	prvInitialiseTCBVariables(v15_35, r14, r13, r15_45)
+	prvInitialiseTCBVariables(v16_35, r14, r13, r15_45)
 	Mem79[r15_45:word16] = pxPortInitialiseStack(r12, r15, Mem23[r15_45 + 36<i16>:word16] *20 2<20> + Mem23[r15_45 + 2<i16>:word16] - 2<16>)
 	Mem83[0x0218<p16>:word16] = Mem79[0x0218<p16>:word16] + 1<16>
 	Mem86[0x0206<p16>:word16] = Mem83[0x0206<p16>:word16] + 1<16>
@@ -458,41 +458,41 @@ l00004596:
 l00004514:
 	branch Mem86[0x020E<p16>:word16] != 0<16> l0000452A
 l0000451A:
-	branch v15_35 >=u Mem86[Mem86[0x0202<p16>:word16] + 6<i16>:word16] l0000452A
+	branch v16_35 >=u Mem86[Mem86[0x0202<p16>:word16] + 6<i16>:word16] l0000452A
 l00004526:
 	Mem105[0x0202<p16>:word16] = r15_45
 l0000452A:
-	word16 v28_108 = Mem107[r15_45 + 6<i16>:word16]
-	branch Mem107[0x020A<p16>:word16] <u v28_108 l00004538
+	word16 v29_108 = Mem107[r15_45 + 6<i16>:word16]
+	branch Mem107[0x020A<p16>:word16] <u v29_108 l00004538
 l00004534:
-	Mem113[0x020A<p16>:word16] = v28_108
+	Mem113[0x020A<p16>:word16] = v29_108
 l00004538:
 	Mem117[r15_45 + 4<i16>:word16] = Mem114[0x0214<p16>:word16]
 	Mem120[0x0214<p16>:word16] = Mem117[0x0214<p16>:word16] + 1<16>
 	Mem121[r15_45 + 8<i16>:word16] = 0<16>
-	branch Mem121[0x020C<p16>:word16] <u v28_108 l00004550
+	branch Mem121[0x020C<p16>:word16] <u v29_108 l00004550
 l0000454C:
-	Mem126[0x020C<p16>:word16] = v28_108
+	Mem126[0x020C<p16>:word16] = v29_108
 l00004550:
-	vListInsertEnd(r15_45 + 8<16>, v28_108 *20 0x10<20> + 0x222<16>)
+	vListInsertEnd(r15_45 + 8<16>, v29_108 *20 0x10<20> + 0x222<16>)
 	r10_144 = 1<16>
 	branch Mem145[0x0218<p16>:word16] == 0<16> l00004574
 l0000456C:
-	word16 v44_149 = Mem145[0x0218<p16>:word16]
-	Mem151[0x0218<p16>:word16] = v44_149 + 0xFFFF<16>
-	branch v44_149 != 0xFFFF<16> l00004574
+	word16 v45_149 = Mem145[0x0218<p16>:word16]
+	Mem151[0x0218<p16>:word16] = v45_149 + 0xFFFF<16>
+	branch v45_149 != 0xFFFF<16> l00004574
 l00004572:
 	sr_157 = sr_157 & 0xFFF7<16> | 8<16>
 l00004574:
 	branch r10_144 != 1<16> l000045A4
 l00004578:
-	branch v16_37 == 0<16> l00004580
+	branch v17_37 == 0<16> l00004580
 l0000457C:
-	Mem168[v16_37:word16] = r15_45
+	Mem168[v17_37:word16] = r15_45
 l00004580:
 	branch Mem169[0x020E<p16>:word16] == 0<16> l000045A4
 l00004586:
-	branch Mem169[Mem169[0x0202<p16>:word16] + 6<i16>:word16] <u v15_35 l000045A4
+	branch Mem169[Mem169[0x0202<p16>:word16] + 6<i16>:word16] <u v16_35 l000045A4
 l00004590:
 	word20 r9_316
 	word20 r11_317
@@ -530,9 +530,9 @@ l45DA:
 	Mem63[0x0204<p16>:word16] = Mem18[0x0204<p16>:word16] + 1<16>
 	branch Mem63[0x0218<p16>:word16] == 0<16> l45F6
 l45EE:
-	word16 v15_67 = Mem63[0x0218<p16>:word16]
-	Mem69[0x0218<p16>:word16] = v15_67 + 0xFFFF<16>
-	branch v15_67 != 0xFFFF<16> l45F6
+	word16 v16_67 = Mem63[0x0218<p16>:word16]
+	Mem69[0x0218<p16>:word16] = v16_67 + 0xFFFF<16>
+	branch v16_67 != 0xFFFF<16> l45F6
 l45F4:
 	sr_15 = sr & 0xFFF7<16> | 8<16>
 l45F6:
@@ -562,15 +562,15 @@ word20 vTaskDelayUntil(word20 sr, word20 r14, word20 r15)
 vTaskDelayUntil_entry:
 l0000461A:
 	word20 sr_18 = vTaskSuspendAll(sr)
-	word16 v8_23 = Mem11[r15:word16]
+	word16 v9_23 = Mem11[r15:word16]
 	word20 r10_16 = 0<16>
-	word20 r11_25 = r14 + v8_23
-	branch Mem11[0x0208<p16>:word16] <u v8_23 l00004690
+	word20 r11_25 = r14 + v9_23
+	branch Mem11[0x0208<p16>:word16] <u v9_23 l00004690
 l00004690:
-	branch r11_25 >=u v8_23 l0000463E
+	branch r11_25 >=u v9_23 l0000463E
 l00004694:
 l00004634:
-	branch r11_25 <u v8_23 l00004640
+	branch r11_25 <u v9_23 l00004640
 l00004638:
 	branch Mem11[0x0208<p16>:word16] <u r11_25 l00004640
 l0000463E:
@@ -709,9 +709,9 @@ l00004742:
 	word20 sr_20 = sr & 0xFFF7<16>
 	branch Mem11[0x0218<p16>:word16] == 0<16> l0000475A
 l00004752:
-	word16 v9_15 = Mem11[0x0218<p16>:word16]
-	Mem17[0x0218<p16>:word16] = v9_15 + 0xFFFF<16>
-	branch v9_15 != 0xFFFF<16> l0000475A
+	word16 v10_15 = Mem11[0x0218<p16>:word16]
+	Mem17[0x0218<p16>:word16] = v10_15 + 0xFFFF<16>
+	branch v10_15 != 0xFFFF<16> l0000475A
 l00004758:
 	sr_20 = sr & 0xFFF7<16> | 8<16>
 l0000475A:
@@ -736,11 +736,11 @@ word20 xTaskResumeAll(word20 sr, ptr16 & r15Out)
 xTaskResumeAll_entry:
 l0000475C:
 	Mem20[0x0218<p16>:word16] = Mem14[0x0218<p16>:word16] + 1<16>
-	word16 v10_21 = Mem20[0x0210<p16>:word16]
-	Mem23[0x0210<p16>:word16] = v10_21 + 0xFFFF<16>
+	word16 v11_21 = Mem20[0x0210<p16>:word16]
+	Mem23[0x0210<p16>:word16] = v11_21 + 0xFFFF<16>
 	word20 r8_109 = 0<16>
 	word20 sr_106 = sr & 0xFFF7<16>
-	branch v10_21 != 0xFFFF<16> l000047EA
+	branch v11_21 != 0xFFFF<16> l000047EA
 l00004772:
 	branch Mem23[0x0206<p16>:word16] == 0<16> l000047EA
 l00004778:
@@ -760,9 +760,9 @@ l000047DE:
 	branch Mem30[0x0212<p16>:word16] != 0<16> l00004802
 l00004802:
 	vTaskIncrementTick()
-	word16 v33_60 = Mem59[0x0212<p16>:word16]
-	Mem62[0x0212<p16>:word16] = v33_60 + 0xFFFF<16>
-	branch v33_60 != 0xFFFF<16> l00004802
+	word16 v34_60 = Mem59[0x0212<p16>:word16]
+	Mem62[0x0212<p16>:word16] = v34_60 + 0xFFFF<16>
+	branch v34_60 != 0xFFFF<16> l00004802
 l0000480C:
 l000047E4:
 	r9_188 = 1<16>
@@ -776,9 +776,9 @@ l000047FA:
 l000047EA:
 	branch Mem95[0x0218<p16>:word16] == 0<16> l00004812
 l000047F0:
-	word16 v22_101 = Mem95[0x0218<p16>:word16]
-	Mem103[0x0218<p16>:word16] = v22_101 + 0xFFFF<16>
-	branch v22_101 != 0xFFFF<16> l00004812
+	word16 v23_101 = Mem95[0x0218<p16>:word16]
+	Mem103[0x0218<p16>:word16] = v23_101 + 0xFFFF<16>
+	branch v23_101 != 0xFFFF<16> l00004812
 l000047F6:
 	sr_106 = sr_106 | 8<16>
 l00004812:
@@ -790,12 +790,12 @@ l00004790:
 	word20 r10_147 = r11_34 + 8<16>
 	vListRemove(r10_147)
 	Mem157[r11_34 + 8<i16>:word16] = 0<16>
-	word16 v18_158 = Mem157[r11_34 + 6<i16>:word16]
-	branch Mem157[0x020C<p16>:word16] <u v18_158 l000047B6
+	word16 v19_158 = Mem157[r11_34 + 6<i16>:word16]
+	branch Mem157[0x020C<p16>:word16] <u v19_158 l000047B6
 l000047B2:
-	Mem163[0x020C<p16>:word16] = v18_158
+	Mem163[0x020C<p16>:word16] = v19_158
 l000047B6:
-	vListInsertEnd(r10_147, v18_158 *20 0x10<20> + 0x222<16>)
+	vListInsertEnd(r10_147, v19_158 *20 0x10<20> + 0x222<16>)
 	branch Mem180[Mem180[0x0202<p16>:word16] + 6<i16>:word16] <u Mem180[r11_34 + 6<i16>:word16] l0000477A
 l000047D4:
 	r9_188 = 1<16>
@@ -815,15 +815,15 @@ word20 xTaskGetTickCount(word20 sr, ptr16 & r15Out)
 // Preserved: sp
 xTaskGetTickCount_entry:
 l0000481E:
-	word16 v4_6 = Mem0[0x0218<p16>:word16]
-	Mem8[0x0218<p16>:word16] = v4_6 + 1<16>
+	word16 v5_6 = Mem0[0x0218<p16>:word16]
+	Mem8[0x0218<p16>:word16] = v5_6 + 1<16>
 	word20 sr_18 = sr & 0xFFF7<16>
 	word20 r15_11 = Mem8[0x0208<p16>:word16]
-	branch v4_6 == 1<16> l00004832
+	branch v5_6 == 1<16> l00004832
 l0000482A:
-	word16 v9_13 = Mem8[0x0218<p16>:word16]
-	Mem15[0x0218<p16>:word16] = v9_13 + 0xFFFF<16>
-	branch v9_13 != 0xFFFF<16> l00004832
+	word16 v10_13 = Mem8[0x0218<p16>:word16]
+	Mem15[0x0218<p16>:word16] = v10_13 + 0xFFFF<16>
+	branch v10_13 != 0xFFFF<16> l00004832
 l00004830:
 	sr_18 = sr & 0xFFF7<16> | 8<16>
 l00004832:
@@ -841,13 +841,13 @@ void uxTaskGetNumberOfTasks()
 // Preserved: sp
 uxTaskGetNumberOfTasks_entry:
 l4834:
-	word16 v4_6 = Mem0[0x0218<p16>:word16]
-	Mem8[0x0218<p16>:word16] = v4_6 + 1<16>
-	branch v4_6 == 1<16> l4848
+	word16 v5_6 = Mem0[0x0218<p16>:word16]
+	Mem8[0x0218<p16>:word16] = v5_6 + 1<16>
+	branch v5_6 == 1<16> l4848
 l4840:
-	word16 v9_13 = Mem8[0x0218<p16>:word16]
-	Mem15[0x0218<p16>:word16] = v9_13 + 0xFFFF<16>
-	branch v9_13 != 0xFFFF<16> l4848
+	word16 v10_13 = Mem8[0x0218<p16>:word16]
+	Mem15[0x0218<p16>:word16] = v10_13 + 0xFFFF<16>
+	branch v10_13 != 0xFFFF<16> l4848
 l4846:
 l4848:
 	return
@@ -870,21 +870,21 @@ l0000484A:
 l000048D0:
 	Mem14[0x0212<p16>:word16] = Mem8[0x0212<p16>:word16] + 1<16>
 l00004854:
-	word16 v8_16 = Mem8[0x0208<p16>:word16]
-	Mem18[0x0208<p16>:word16] = v8_16 + 1<16>
-	branch v8_16 != 1<16> l00004868
+	word16 v9_16 = Mem8[0x0208<p16>:word16]
+	Mem18[0x0208<p16>:word16] = v9_16 + 1<16>
+	branch v9_16 != 1<16> l00004868
 l0000485A:
-	word16 v9_21 = Mem18[0x0282<p16>:word16]
+	word16 v10_21 = Mem18[0x0282<p16>:word16]
 	Mem24[0x0282<p16>:word16] = Mem18[0x0284<p16>:word16]
-	Mem25[0x0284<p16>:word16] = v9_21
+	Mem25[0x0284<p16>:word16] = v10_21
 l00004868:
 	word20 r11_32
-	word16 v15_27 = Mem26[0x0282<p16>:word16]
-	branch Mem26[v15_27:word16] == 0<16> l000048CC
+	word16 v16_27 = Mem26[0x0282<p16>:word16]
+	branch Mem26[v16_27:word16] == 0<16> l000048CC
 l000048CC:
 	r11_32 = 0<16>
 l00004872:
-	r11_32 = Mem26[Mem26[Mem26[v15_27 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
+	r11_32 = Mem26[Mem26[Mem26[v16_27 + 2<i16>:word16] + 2<i16>:word16] + 6<i16>:word16]
 l0000487E:
 	branch r11_32 == 0<20> l000048D4
 l00004882:
@@ -900,12 +900,12 @@ l000048C0:
 	vListRemove(r11_32 + 0x12<16>)
 l0000489A:
 	Mem82[r11_32 + 8<i16>:word16] = 0<16>
-	word16 v24_83 = Mem82[r11_32 + 6<i16>:word16]
-	branch Mem82[0x020C<p16>:word16] <u v24_83 l000048AC
+	word16 v25_83 = Mem82[r11_32 + 6<i16>:word16]
+	branch Mem82[0x020C<p16>:word16] <u v25_83 l000048AC
 l000048A8:
-	Mem88[0x020C<p16>:word16] = v24_83
+	Mem88[0x020C<p16>:word16] = v25_83
 l000048AC:
-	vListInsertEnd(r10_58, v24_83 *20 0x10<20> + 0x222<16>)
+	vListInsertEnd(r10_58, v25_83 *20 0x10<20> + 0x222<16>)
 
 
 void vTaskPlaceOnEventList(word20 r14, word20 r15)
@@ -969,12 +969,12 @@ l0000499A:
 l00004958:
 	vListRemove(r10_13 + 8<16>)
 	Mem48[r10_13 + 8<i16>:word16] = 0<16>
-	word16 v13_49 = Mem48[r10_13 + 6<i16>:word16]
-	branch Mem48[0x020C<p16>:word16] <u v13_49 l00004974
+	word16 v14_49 = Mem48[r10_13 + 6<i16>:word16]
+	branch Mem48[0x020C<p16>:word16] <u v14_49 l00004974
 l00004970:
-	Mem54[0x020C<p16>:word16] = v13_49
+	Mem54[0x020C<p16>:word16] = v14_49
 l00004974:
-	r15_37 = v13_49 *20 0x10<20> + 0x222<16>
+	r15_37 = v14_49 *20 0x10<20> + 0x222<16>
 	r14_36 = r10_13 + 8<16>
 l00004982:
 	word20 r15_112
@@ -1103,9 +1103,9 @@ l4A94:
 	Mem62[0x0204<p16>:word16] = Mem59[0x0204<p16>:word16] + 0xFFFF<16>
 	branch Mem62[0x0218<p16>:word16] == 0<16> l4AB2
 l4AAA:
-	word16 v19_66 = Mem62[0x0218<p16>:word16]
-	Mem68[0x0218<p16>:word16] = v19_66 + 0xFFFF<16>
-	branch v19_66 != 0xFFFF<16> l4AB2
+	word16 v20_66 = Mem62[0x0218<p16>:word16]
+	Mem68[0x0218<p16>:word16] = v20_66 + 0xFFFF<16>
+	branch v20_66 != 0xFFFF<16> l4AB2
 l4AB0:
 	sr = sr & 0xFFF7<16> | 8<16>
 l4AB2:
@@ -1249,11 +1249,11 @@ void vListInsertEnd(word20 r14, word20 r15)
 // Preserved: sp
 vListInsertEnd_entry:
 l00004C06:
-	word16 v5_6 = Mem0[r15 + 4<i16>:word16]
-	Mem10[r14 + 2<i16>:word16] = Mem0[v5_6 + 2<i16>:word16]
+	word16 v6_6 = Mem0[r15 + 4<i16>:word16]
+	Mem10[r14 + 2<i16>:word16] = Mem0[v6_6 + 2<i16>:word16]
 	Mem12[r14 + 4<i16>:word16] = Mem10[r15 + 4<i16>:word16]
-	Mem15[Mem12[v5_6 + 2<i16>:word16] + 4<i16>:word16] = r14
-	Mem16[v5_6 + 2<i16>:word16] = r14
+	Mem15[Mem12[v6_6 + 2<i16>:word16] + 4<i16>:word16] = r14
+	Mem16[v6_6 + 2<i16>:word16] = r14
 	Mem17[r15 + 4<i16>:word16] = r14
 	Mem18[r14 + 8<i16>:word16] = r15
 	Mem21[r15:word16] = Mem18[r15:word16] + 1<16>
@@ -1275,24 +1275,24 @@ void vListInsert(word20 r14, word20 r15)
 vListInsert_entry:
 l00004C32:
 	word20 r13_14
-	word16 v6_9 = Mem5[r14:word16]
-	branch v6_9 == 0xFFFF<16> l00004C5A
+	word16 v7_9 = Mem5[r14:word16]
+	branch v7_9 == 0xFFFF<16> l00004C5A
 l00004C5A:
-	word16 v18_13 = Mem5[r15 + 2<i16>:word16]
-	r13_14 = v18_13
-	branch Mem5[Mem5[v18_13 + 2<i16>:word16]:word16] <u 0xFFFF<16> l00004C76
+	word16 v19_13 = Mem5[r15 + 2<i16>:word16]
+	r13_14 = v19_13
+	branch Mem5[Mem5[v19_13 + 2<i16>:word16]:word16] <u 0xFFFF<16> l00004C76
 l00004C68:
-	word16 v21_22 = Mem5[r13_14 + 2<i16>:word16]
-	r13_14 = v21_22
-	branch Mem5[Mem5[v21_22 + 2<i16>:word16]:word16] >=u v6_9 l00004C68
+	word16 v22_22 = Mem5[r13_14 + 2<i16>:word16]
+	r13_14 = v22_22
+	branch Mem5[Mem5[v22_22 + 2<i16>:word16]:word16] >=u v7_9 l00004C68
 l00004C3C:
-	word16 v10_30 = Mem5[r15 + 2<i16>:word16]
-	r13_14 = v10_30
-	branch v6_9 >=u Mem5[Mem5[v10_30 + 2<i16>:word16]:word16] l00004C76
+	word16 v11_30 = Mem5[r15 + 2<i16>:word16]
+	r13_14 = v11_30
+	branch v7_9 >=u Mem5[Mem5[v11_30 + 2<i16>:word16]:word16] l00004C76
 l00004C4A:
-	word16 v15_40 = Mem5[r13_14 + 2<i16>:word16]
-	r13_14 = v15_40
-	branch v6_9 <u Mem5[Mem5[v15_40 + 2<i16>:word16]:word16] l00004C4A
+	word16 v16_40 = Mem5[r13_14 + 2<i16>:word16]
+	r13_14 = v16_40
+	branch v7_9 <u Mem5[Mem5[v16_40 + 2<i16>:word16]:word16] l00004C4A
 l00004C58:
 l00004C76:
 	Mem55[r14 + 2<i16>:word16] = Mem5[r13_14 + 2<i16>:word16]
@@ -1323,17 +1323,17 @@ void vListRemove(word20 r15)
 // Preserved: sp
 vListRemove_entry:
 l00004C98:
-	word16 v5_6 = Mem0[r15 + 2<i16>:word16]
-	Mem9[v5_6 + 4<i16>:word16] = Mem0[r15 + 4<i16>:word16]
-	word16 v7_10 = Mem9[r15 + 4<i16>:word16]
-	Mem12[v7_10 + 2<i16>:word16] = v5_6
-	word16 v9_13 = Mem12[r15 + 8<i16>:word16]
-	branch Mem12[v9_13 + 4<i16>:word16] != r15 l00004CBA
+	word16 v6_6 = Mem0[r15 + 2<i16>:word16]
+	Mem9[v6_6 + 4<i16>:word16] = Mem0[r15 + 4<i16>:word16]
+	word16 v8_10 = Mem9[r15 + 4<i16>:word16]
+	Mem12[v8_10 + 2<i16>:word16] = v6_6
+	word16 v10_13 = Mem12[r15 + 8<i16>:word16]
+	branch Mem12[v10_13 + 4<i16>:word16] != r15 l00004CBA
 l00004CB6:
-	Mem18[v9_13 + 4<i16>:word16] = v7_10
+	Mem18[v10_13 + 4<i16>:word16] = v8_10
 l00004CBA:
 	Mem20[r15 + 8<i16>:word16] = 0<16>
-	Mem24[v9_13:word16] = Mem20[v9_13:word16] + 0xFFFF<16>
+	Mem24[v10_13:word16] = Mem20[v10_13:word16] + 0xFFFF<16>
 	return
 vListRemove_exit:
 
@@ -1383,9 +1383,9 @@ l00004D7E:
 	word20 sr_24 = sr_19 & 0xFFF7<16>
 	branch Mem33[0x0218<p16>:word16] == 0<16> l00004DAA
 l00004DA2:
-	word16 v16_37 = Mem33[0x0218<p16>:word16]
-	Mem39[0x0218<p16>:word16] = v16_37 + 0xFFFF<16>
-	branch v16_37 != 0xFFFF<16> l00004DAA
+	word16 v17_37 = Mem33[0x0218<p16>:word16]
+	Mem39[0x0218<p16>:word16] = v17_37 + 0xFFFF<16>
+	branch v17_37 != 0xFFFF<16> l00004DAA
 l00004DA8:
 	sr_24 = sr_19 & 0xFFF7<16> | 8<16>
 l00004DAA:
@@ -1413,17 +1413,17 @@ l00004E44:
 	sr_115 = sr_110 & 0xFFF7<16>
 	branch Mem126[0x0218<p16>:word16] == 0<16> l00004E64
 l00004E5C:
-	word16 v38_130 = Mem126[0x0218<p16>:word16]
-	Mem132[0x0218<p16>:word16] = v38_130 + 0xFFFF<16>
-	branch v38_130 != 0xFFFF<16> l00004E64
+	word16 v39_130 = Mem126[0x0218<p16>:word16]
+	Mem132[0x0218<p16>:word16] = v39_130 + 0xFFFF<16>
+	branch v39_130 != 0xFFFF<16> l00004E64
 l00004E62:
 	sr_115 = sr_110 & 0xFFF7<16> | 8<16>
 l00004E64:
 	branch Mem136[0x0218<p16>:word16] == 0<16> l00004DB8
 l00004E6A:
-	word16 v40_140 = Mem136[0x0218<p16>:word16]
-	Mem142[0x0218<p16>:word16] = v40_140 + 0xFFFF<16>
-	branch v40_140 != 0xFFFF<16> l00004DB8
+	word16 v41_140 = Mem136[0x0218<p16>:word16]
+	Mem142[0x0218<p16>:word16] = v41_140 + 0xFFFF<16>
+	branch v41_140 != 0xFFFF<16> l00004DB8
 l00004E70:
 	sr_115 = sr_115 | 8<16>
 l00004DB8:
@@ -1447,9 +1447,9 @@ l00004DC6:
 l00004DCA:
 	branch Mem197[0x0218<p16>:word16] == 0<16> l00004DD8
 l00004DD0:
-	word16 v22_201 = Mem197[0x0218<p16>:word16]
-	Mem203[0x0218<p16>:word16] = v22_201 + 0xFFFF<16>
-	branch v22_201 != 0xFFFF<16> l00004DD8
+	word16 v23_201 = Mem197[0x0218<p16>:word16]
+	Mem203[0x0218<p16>:word16] = v23_201 + 0xFFFF<16>
+	branch v23_201 != 0xFFFF<16> l00004DD8
 l00004DD6:
 	sr_148 = sr_148 | 8<16>
 l00004DD8:
@@ -1497,8 +1497,8 @@ l4E98:
 l4EBA:
 	Mem43[r15 + 4<i16>:word16] = Mem38[r15:word16]
 l4EBE:
-	word16 v20_46 = Mem45[r15 + 48<i16>:word16]
-	branch v20_46 == 0xFFFF<16> l4ECE
+	word16 v21_46 = Mem45[r15 + 48<i16>:word16]
+	branch v21_46 == 0xFFFF<16> l4ECE
 l4ECE:
 	branch r13 != 0<20> l4E94
 l4ED2:
@@ -1508,7 +1508,7 @@ l4ED8:
 l4EE6:
 	r13_69 = 1<16>
 l4EC6:
-	Mem72[r15 + 48<i16>:word16] = v20_46 + 1<16>
+	Mem72[r15 + 48<i16>:word16] = v21_46 + 1<16>
 l4E94:
 	r13_69 = r13
 l4EE8:
@@ -1538,9 +1538,9 @@ l00004EF0:
 	word20 sr_24 = sr_19 & 0xFFF7<16>
 	branch Mem33[0x0218<p16>:word16] == 0<16> l00004F1C
 l00004F14:
-	word16 v16_37 = Mem33[0x0218<p16>:word16]
-	Mem39[0x0218<p16>:word16] = v16_37 + 0xFFFF<16>
-	branch v16_37 != 0xFFFF<16> l00004F1C
+	word16 v17_37 = Mem33[0x0218<p16>:word16]
+	Mem39[0x0218<p16>:word16] = v17_37 + 0xFFFF<16>
+	branch v17_37 != 0xFFFF<16> l00004F1C
 l00004F1A:
 	sr_24 = sr_19 & 0xFFF7<16> | 8<16>
 l00004F1C:
@@ -1568,45 +1568,45 @@ l00004FB6:
 	sr_115 = sr_110 & 0xFFF7<16>
 	branch Mem126[0x0218<p16>:word16] == 0<16> l00004FD6
 l00004FCE:
-	word16 v33_130 = Mem126[0x0218<p16>:word16]
-	Mem132[0x0218<p16>:word16] = v33_130 + 0xFFFF<16>
-	branch v33_130 != 0xFFFF<16> l00004FD6
+	word16 v34_130 = Mem126[0x0218<p16>:word16]
+	Mem132[0x0218<p16>:word16] = v34_130 + 0xFFFF<16>
+	branch v34_130 != 0xFFFF<16> l00004FD6
 l00004FD4:
 	sr_115 = sr_110 & 0xFFF7<16> | 8<16>
 l00004FD6:
 	branch Mem136[0x0218<p16>:word16] == 0<16> l00004F2A
 l00004FDC:
-	word16 v38_140 = Mem136[0x0218<p16>:word16]
-	Mem142[0x0218<p16>:word16] = v38_140 + 0xFFFF<16>
-	branch v38_140 != 0xFFFF<16> l00004F2A
+	word16 v39_140 = Mem136[0x0218<p16>:word16]
+	Mem142[0x0218<p16>:word16] = v39_140 + 0xFFFF<16>
+	branch v39_140 != 0xFFFF<16> l00004F2A
 l00004FE2:
 	sr_115 = sr_115 | 8<16>
 l00004F2A:
 	word20 r10_159
 	Mem152[0x0218<p16>:word16] = Mem149[0x0218<p16>:word16] + 1<16>
 	word20 sr_148 = sr_115 & 0xFFF7<16>
-	word16 v18_155 = Mem152[r11_120 + 40<i16>:word16]
-	branch v18_155 == 0<16> l00004F92
+	word16 v19_155 = Mem152[r11_120 + 40<i16>:word16]
+	branch v19_155 == 0<16> l00004F92
 l00004F92:
 	r10_159 = 0<16>
 l00004F38:
-	word16 v19_160 = Mem152[r11_120 + 44<i16>:word16]
-	word20 r15_164 = Mem152[r11_120 + 6<i16>:word16] + v19_160
+	word16 v20_160 = Mem152[r11_120 + 44<i16>:word16]
+	word20 r15_164 = Mem152[r11_120 + 6<i16>:word16] + v20_160
 	Mem165[r11_120 + 6<i16>:word16] = r15_164
 	branch r15_164 >=u Mem165[r11_120 + 2<i16>:word16] l00004F50
 l00004F4C:
 	Mem170[r11_120 + 6<i16>:word16] = Mem165[r11_120:word16]
 l00004F50:
-	Mem175[r11_120 + 40<i16>:word16] = v18_155 + 0xFFFF<16>
-	sr_148 = memcpy(sr_148, v19_160, Mem175[r11_120 + 6<i16>:word16], r9_102)
+	Mem175[r11_120 + 40<i16>:word16] = v19_155 + 0xFFFF<16>
+	sr_148 = memcpy(sr_148, v20_160, Mem175[r11_120 + 6<i16>:word16], r9_102)
 	Mem196[r11_120 + 46<i16>:word16] = Mem175[r11_120 + 46<i16>:word16] + 1<16>
 	r10_159 = 1<16>
 l00004F66:
 	branch Mem199[0x0218<p16>:word16] == 0<16> l00004F74
 l00004F6C:
-	word16 v27_203 = Mem199[0x0218<p16>:word16]
-	Mem205[0x0218<p16>:word16] = v27_203 + 0xFFFF<16>
-	branch v27_203 != 0xFFFF<16> l00004F74
+	word16 v28_203 = Mem199[0x0218<p16>:word16]
+	Mem205[0x0218<p16>:word16] = v28_203 + 0xFFFF<16>
+	branch v28_203 != 0xFFFF<16> l00004F74
 l00004F72:
 	sr_148 = sr_148 | 8<16>
 l00004F74:
@@ -1644,22 +1644,22 @@ word20 xQueueReceiveFromISR(word20 sr, word20 r13, word20 r14, word20 r15)
 xQueueReceiveFromISR_entry:
 l00004FF6:
 	word20 r15_119
-	word16 v9_15 = Mem8[r15 + 40<i16>:word16]
-	branch v9_15 == 0<16> l00005060
+	word16 v10_15 = Mem8[r15 + 40<i16>:word16]
+	branch v10_15 == 0<16> l00005060
 l00005060:
 	r15_119 = 0<16>
 l00005008:
-	word16 v12_20 = Mem8[r15 + 44<i16>:word16]
-	word20 r15_24 = Mem8[r15 + 6<i16>:word16] + v12_20
+	word16 v13_20 = Mem8[r15 + 44<i16>:word16]
+	word20 r15_24 = Mem8[r15 + 6<i16>:word16] + v13_20
 	Mem25[r15 + 6<i16>:word16] = r15_24
 	branch r15_24 >=u Mem25[r15 + 2<i16>:word16] l00005020
 l0000501C:
 	Mem30[r15 + 6<i16>:word16] = Mem25[r15:word16]
 l00005020:
-	Mem35[r15 + 40<i16>:word16] = v9_15 + 0xFFFF<16>
-	memcpy(sr, v12_20, Mem35[r15 + 6<i16>:word16], r14)
-	word16 v20_51 = Mem35[r15 + 46<i16>:word16]
-	branch v20_51 == 0xFFFF<16> l00005042
+	Mem35[r15 + 40<i16>:word16] = v10_15 + 0xFFFF<16>
+	memcpy(sr, v13_20, Mem35[r15 + 6<i16>:word16], r14)
+	word16 v21_51 = Mem35[r15 + 46<i16>:word16]
+	branch v21_51 == 0xFFFF<16> l00005042
 l00005042:
 	branch Mem35[r13:word16] != 0<16> l0000503E
 l00005048:
@@ -1669,7 +1669,7 @@ l0000504E:
 l0000505A:
 	Mem75[r13:word16] = 1<16>
 l00005038:
-	Mem78[r15 + 46<i16>:word16] = v20_51 + 1<16>
+	Mem78[r15 + 46<i16>:word16] = v21_51 + 1<16>
 l0000503E:
 	r15_119 = 1<16>
 l00005062:
@@ -1686,13 +1686,13 @@ void uxQueueMessagesWaiting()
 // Preserved: sp
 uxQueueMessagesWaiting_entry:
 l5068:
-	word16 v4_6 = Mem0[0x0218<p16>:word16]
-	Mem8[0x0218<p16>:word16] = v4_6 + 1<16>
-	branch v4_6 == 1<16> l507C
+	word16 v5_6 = Mem0[0x0218<p16>:word16]
+	Mem8[0x0218<p16>:word16] = v5_6 + 1<16>
+	branch v5_6 == 1<16> l507C
 l5074:
-	word16 v9_14 = Mem8[0x0218<p16>:word16]
-	Mem16[0x0218<p16>:word16] = v9_14 + 0xFFFF<16>
-	branch v9_14 != 0xFFFF<16> l507C
+	word16 v10_14 = Mem8[0x0218<p16>:word16]
+	Mem16[0x0218<p16>:word16] = v10_14 + 0xFFFF<16>
+	branch v10_14 != 0xFFFF<16> l507C
 l507A:
 l507C:
 	return
@@ -1727,11 +1727,11 @@ word20 prvUnlockQueue(word20 sr, word20 r15, ptr16 & r15Out)
 prvUnlockQueue_entry:
 l00005092:
 	Mem16[0x0218<p16>:word16] = Mem8[0x0218<p16>:word16] + 1<16>
-	word16 v9_17 = Mem16[r15 + 48<i16>:word16]
-	Mem19[r15 + 48<i16>:word16] = v9_17 + 0xFFFF<16>
+	word16 v10_17 = Mem16[r15 + 48<i16>:word16]
+	Mem19[r15 + 48<i16>:word16] = v10_17 + 0xFFFF<16>
 	word20 r10_11 = 0<16>
 	word20 sr_13 = sr & 0xFFF7<16>
-	branch v9_17 < 0xFFFF<16> l000050B0
+	branch v10_17 < 0xFFFF<16> l000050B0
 l000050A6:
 	Mem22[r15 + 48<i16>:word16] = 0xFFFF<16>
 	branch Mem22[r15 + 24<i16>:word16] != 0<16> l000050F4
@@ -1742,17 +1742,17 @@ l00005100:
 l000050B0:
 	branch Mem39[0x0218<p16>:word16] == 0<16> l000050BE
 l000050B6:
-	word16 v14_43 = Mem39[0x0218<p16>:word16]
-	Mem45[0x0218<p16>:word16] = v14_43 + 0xFFFF<16>
-	branch v14_43 != 0xFFFF<16> l000050BE
+	word16 v15_43 = Mem39[0x0218<p16>:word16]
+	Mem45[0x0218<p16>:word16] = v15_43 + 0xFFFF<16>
+	branch v15_43 != 0xFFFF<16> l000050BE
 l000050BC:
 	sr_13 = sr & 0xFFF7<16> | 8<16>
 l000050BE:
 	Mem55[0x0218<p16>:word16] = Mem52[0x0218<p16>:word16] + 1<16>
-	word16 v16_58 = Mem55[r15 + 46<i16>:word16]
-	Mem60[r15 + 46<i16>:word16] = v16_58 + 0xFFFF<16>
+	word16 v17_58 = Mem55[r15 + 46<i16>:word16]
+	Mem60[r15 + 46<i16>:word16] = v17_58 + 0xFFFF<16>
 	word20 sr_139 = sr_13 & 0xFFF7<16>
-	branch v16_58 < 0xFFFF<16> l000050D4
+	branch v17_58 < 0xFFFF<16> l000050D4
 l000050CA:
 	Mem63[r15 + 46<i16>:word16] = 0xFFFF<16>
 	branch Mem63[r15 + 8<i16>:word16] != 0<16> l000050E4
@@ -1763,9 +1763,9 @@ l000050F0:
 l000050D4:
 	branch Mem81[0x0218<p16>:word16] == 0<16> l00005104
 l000050DA:
-	word16 v19_85 = Mem81[0x0218<p16>:word16]
-	Mem87[0x0218<p16>:word16] = v19_85 + 0xFFFF<16>
-	branch v19_85 != 0xFFFF<16> l00005104
+	word16 v20_85 = Mem81[0x0218<p16>:word16]
+	Mem87[0x0218<p16>:word16] = v20_85 + 0xFFFF<16>
+	branch v20_85 != 0xFFFF<16> l00005104
 l000050E0:
 	sr_139 = sr_139 | 8<16>
 l00005104:
@@ -1794,9 +1794,9 @@ l0000511A:
 l0000511C:
 	branch Mem8[0x0218<p16>:word16] == 0<16> l0000512A
 l00005122:
-	word16 v11_19 = Mem8[0x0218<p16>:word16]
-	Mem21[0x0218<p16>:word16] = v11_19 + 0xFFFF<16>
-	branch v11_19 != 0xFFFF<16> l0000512A
+	word16 v12_19 = Mem8[0x0218<p16>:word16]
+	Mem21[0x0218<p16>:word16] = v12_19 + 0xFFFF<16>
+	branch v12_19 != 0xFFFF<16> l0000512A
 l00005128:
 	sr_25 = sr & 0xFFF7<16> | 8<16>
 l0000512A:
@@ -1825,9 +1825,9 @@ l0000514E:
 l0000513E:
 	branch Mem8[0x0218<p16>:word16] == 0<16> l00005152
 l00005144:
-	word16 v12_20 = Mem8[0x0218<p16>:word16]
-	Mem22[0x0218<p16>:word16] = v12_20 + 0xFFFF<16>
-	branch v12_20 != 0xFFFF<16> l00005152
+	word16 v13_20 = Mem8[0x0218<p16>:word16]
+	Mem22[0x0218<p16>:word16] = v13_20 + 0xFFFF<16>
+	branch v13_20 != 0xFFFF<16> l00005152
 l0000514A:
 	sr_26 = sr & 0xFFF7<16> | 8<16>
 l00005152:
@@ -1855,14 +1855,14 @@ l00005162:
 	r11_10 = r15 - (r15 & 1<16>) + 2<16>
 l00005166:
 	word20 sr_21 = vTaskSuspendAll(sr)
-	word16 v10_27 = Mem8[0x0216<p16>:word16]
-	word20 r15_31 = v10_27 + r11_10
+	word16 v11_27 = Mem8[0x0216<p16>:word16]
+	word20 r15_31 = v11_27 + r11_10
 	branch r15_31 <u 0x708<16> l00005186
 l00005178:
-	branch v10_27 <u r15_31 l00005186
+	branch v11_27 <u r15_31 l00005186
 l0000517C:
 	Mem39[0x0216<p16>:word16] = r15_31
-	r10_11 = v10_27 + 0x2AA<16>
+	r10_11 = v11_27 + 0x2AA<16>
 l00005186:
 	word20 r15_67
 	word20 sr_42 = xTaskResumeAll(sr_21, out r15_67)
@@ -1986,12 +1986,12 @@ vPortYield_entry:
 l0000523A:
 	Mem49[Mem46[0x00000202<p32>:word16]:word16] = fp - 28<i32>
 	vTaskSwitchContext()
-	word16 v20_59 = Mem49[Mem49[0x00000202<p32>:word16]:word16]
-	Mem64[0x00000218<p32>:word16] = Mem49[v20_59:word16]
-	word20 r11_79 = Mem64[v20_59 + 10<i16>:word16]
-	word20 r10_82 = Mem64[v20_59 + 12<i16>:word16]
-	word20 r9_85 = Mem64[v20_59 + 14<i16>:word16]
-	r8Out = Mem64[v20_59 + 16<i16>:word16]
+	word16 v21_59 = Mem49[Mem49[0x00000202<p32>:word16]:word16]
+	Mem64[0x00000218<p32>:word16] = Mem49[v21_59:word16]
+	word20 r11_79 = Mem64[v21_59 + 10<i16>:word16]
+	word20 r10_82 = Mem64[v21_59 + 12<i16>:word16]
+	word20 r9_85 = Mem64[v21_59 + 14<i16>:word16]
+	r8Out = Mem64[v21_59 + 16<i16>:word16]
 	r9Out = r9_85
 	r10Out = r10_82
 	r11Out = r11_79
@@ -2149,21 +2149,21 @@ l0000537E:
 	word32 dwLoc1C_2084 = 0<32>
 l53A6:
 	word20 r6_47
-	byte v15_41 = Mem40[r6_37:byte]
-	word20 r7_42 = v15_41
+	byte v16_41 = Mem40[r6_37:byte]
+	word20 r7_42 = v16_41
 	r6_47 = r6_37
-	branch v15_41 == 0<8> l000053C2
+	branch v16_41 == 0<8> l000053C2
 l000053AE:
 	r6_47 = r6_37
 	r6_47 = r6_37
-	branch v15_41 == 0x25<16> l000053C2
+	branch v16_41 == 0x25<16> l000053C2
 l000053B4:
 	r6_47 = r6_47 + 1<16>
-	byte v17_50 = Mem40[r6_47:byte]
-	r7_42 = v17_50
-	branch v17_50 == 0<8> l000053C2
+	byte v18_50 = Mem40[r6_47:byte]
+	r7_42 = v18_50
+	branch v18_50 == 0<8> l000053C2
 l000053BC:
-	branch v17_50 != 0x25<16> l000053B4
+	branch v18_50 != 0x25<16> l000053B4
 l000053C2:
 	word20 r13_60 = r6_47 - r6_37
 	branch r13_60 == 0<20> l000053CC
@@ -2242,9 +2242,9 @@ l57AE:
 	word32 dwLoc1C_2077
 	branch (bLoc1E_1013 & 1<8>) == 0<8> l57E6
 l57E6:
-	word16 v135_186 = Mem176[r5_112:word16]
+	word16 v136_186 = Mem176[r5_112:word16]
 	r5_112 = r5_112 + 2<16>
-	dwLoc1C_2077 = SEQ(~(0<16> - CONVERT(v135_186 * 2<16> <u 0<16>, bool, word16)), v135_186) (alias)
+	dwLoc1C_2077 = SEQ(~(0<16> - CONVERT(v136_186 * 2<16> <u 0<16>, bool, word16)), v136_186) (alias)
 l57B4:
 	r5_112 = r5_112 + 4<16>
 	dwLoc1C_2077 = Mem209[r5_112:word32] (alias)
@@ -2254,9 +2254,9 @@ l57C0:
 	word32 dwLoc1C_2070 = dwLoc1C_2077
 	branch wLoc1A_1036 < 0<16> l57CE
 l57CE:
-	word16 v131_219 = ~wLoc1C_1037
+	word16 v132_219 = ~wLoc1C_1037
 	bLoc24_1016 = 0x2D<16>
-	dwLoc1C_2070 = SEQ(SLICE(SEQ(~wLoc1A_1036, v131_219) + 1<32>, word16, 16), v131_219 + 1<16>) (alias)
+	dwLoc1C_2070 = SEQ(SLICE(SEQ(~wLoc1A_1036, v132_219) + 1<32>, word16, 16), v132_219 + 1<16>) (alias)
 l57C6:
 	bLoc18_1043 = 0xA<16>
 	dwLoc1C_2060 = dwLoc1C_2070 (alias)
@@ -2281,10 +2281,10 @@ l5784:
 l54C8:
 	branch r7_257 == 0x73<16> l570C
 l570C:
-	word16 v115_262 = Mem151[r5_112:word16]
+	word16 v116_262 = Mem151[r5_112:word16]
 	r5_112 = r5_112 + 2<16>
-	word16 wLoc20_1050 = v115_262
-	branch v115_262 == 0<16> l5756
+	word16 wLoc20_1050 = v116_262
+	branch v116_262 == 0<16> l5756
 l5756:
 	wLoc20_1050 = fp - 0x4C<32>
 l571A:
@@ -2485,11 +2485,11 @@ l5458:
 l545A:
 	word20 r14_740 = r13_734 * 2<20>
 	word20 r13_749 = r13_734 * 4<20> + r14_740 + r14_740 + r14_740 + CONVERT(SLICE(r7_257, byte, 0), byte, int16)
-	byte v53_753 = Mem151[r6_37:byte]
+	byte v54_753 = Mem151[r6_37:byte]
 	r13_734 = r13_749 + 0xFFD0<16>
-	r7_257 = v53_753
+	r7_257 = v54_753
 	r6_37 = r6_37 + 1<16>
-	branch v53_753 >=u 0xFFC6<16> l545A
+	branch v54_753 >=u 0xFFC6<16> l545A
 l5486:
 	bLoc1D_1015 = r13_749 + 0xFFD0<16>
 l5448:
@@ -2500,29 +2500,29 @@ l582E:
 l582A:
 l543E:
 l5838:
-	byte v46_774 = Mem151[r6_37:byte]
-	r7_257 = v46_774
+	byte v47_774 = Mem151[r6_37:byte]
+	r7_257 = v47_774
 	r6_37 = r6_37 + 1<16>
-	branch v46_774 == 0x2A<16> l588A
+	branch v47_774 == 0x2A<16> l588A
 l588A:
-	word16 v49_781 = Mem151[r5_112:word16]
+	word16 v50_781 = Mem151[r5_112:word16]
 	r5_112 = r5_112 + 2<16>
-	word20 r15_783 = v49_781
-	branch v49_781 >= 0xFFFF<16> l5898
+	word20 r15_783 = v50_781
+	branch v50_781 >= 0xFFFF<16> l5898
 l5896:
 	r15_783 = 0xFFFF<16>
 l5898:
 	r11_278 = r15_783
 l5842:
 	word20 r13_789 = 0<16>
-	branch v46_774 <u 0xFFC6<16> l587C
+	branch v47_774 <u 0xFFC6<16> l587C
 l5850:
 	word20 r14_799 = r13_789 * 2<20>
-	byte v48_812 = Mem151[r6_37:byte]
+	byte v49_812 = Mem151[r6_37:byte]
 	r13_789 = r13_789 * 4<20> + r14_799 + r14_799 + r14_799 + CONVERT(SLICE(r7_257, byte, 0), byte, int16) + 0xFFD0<16>
-	r7_257 = v48_812
+	r7_257 = v49_812
 	r6_37 = r6_37 + 1<16>
-	branch v48_812 >=u 0xFFC6<16> l5850
+	branch v49_812 >=u 0xFFC6<16> l5850
 l587C:
 	word20 r15_820 = r13_789
 	branch r13_789 >= 0xFFFF<16> l5884
@@ -2536,12 +2536,12 @@ l589E:
 l542A:
 l5420:
 l58B8:
-	byte v39_829 = Mem151[r5_112:byte]
+	byte v40_829 = Mem151[r5_112:byte]
 	r5_112 = r5_112 + 2<16>
-	bLoc1D_1015 = v39_829
-	branch v39_829 < 0<8> l58CA
+	bLoc1D_1015 = v40_829
+	branch v40_829 < 0<8> l58CA
 l58CA:
-	bLoc1D_1015 = -v39_829
+	bLoc1D_1015 = -v40_829
 l58A8:
 	bLoc1E_1013 = (bLoc1E_1013 | 0x10<16>) & 0xFFDF<16>
 l58C6:

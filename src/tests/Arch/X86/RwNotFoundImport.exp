@@ -2,6 +2,7 @@
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // edi:edi
 // Top:Top

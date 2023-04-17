@@ -137,9 +137,9 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("2F28E0D0"); // addsdw	r16,r55,r3
             AssertCode(
                 "0|L--|00100000(4): 5 instructions",
-                "1|L--|v2 = r55",
-                "2|L--|v3 = r3",
-                "3|L--|r16 = __addsdw(v2, v3)",
+                "1|L--|v3 = r55",
+                "2|L--|v4 = r3",
+                "3|L--|r16 = __addsdw(v3, v4)",
                 "4|L--|ZNV = cond(r16)",
                 "5|L--|S = cond(r16)");
         }
@@ -1331,9 +1331,9 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("282F0341"); // subsdw	r1,r0,r13
             AssertCode(
                 "0|L--|00100000(4): 5 instructions",
-                "1|L--|v2 = r0",
-                "2|L--|v3 = r13",
-                "3|L--|r1 = __subsdw(v2, v3)",
+                "1|L--|v3 = r0",
+                "2|L--|v4 = r13",
+                "3|L--|r1 = __subsdw(v3, v4)",
                 "4|L--|ZNV = cond(r1)",
                 "5|L--|S = cond(r1)");
         }

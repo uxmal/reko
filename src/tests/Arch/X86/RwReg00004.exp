@@ -2,6 +2,7 @@
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // eax:eax
 // ebx:ebx
@@ -16,8 +17,8 @@
 // esi:esi
 // edi:edi
 // FPUF:FPUF
-// v16:v16
 // v17:v17
+// v18:v18
 // SO:SO
 // return address size: 4
 define fn10000000
@@ -93,17 +94,17 @@ l10000072:
 	// succ:  l1000007F
 l1000007F:
 	ST[Top:real64] = ST[Top:real64] * Mem0[0x10033290<p32>:real64]
-	v16 = ST[Top:real64]
+	v17 = ST[Top:real64]
 	Top = Top - 1<i8>
-	ST[Top:real64] = v16
+	ST[Top:real64] = v17
 	call fn1000010A (retsize: 4;)
 	ecx = eax
 	Mem0[esp + 28<i32>:word32] = ecx
 	Top = Top - 1<i8>
 	ST[Top:real64] = CONVERT(Mem0[esp + 28<i32>:int32], int32, real64)
-	v17 = ST[Top + 1<i8>:real64]
+	v18 = ST[Top + 1<i8>:real64]
 	Top = Top - 1<i8>
-	ST[Top:real64] = v17
+	ST[Top:real64] = v18
 	FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])
 	Top = Top + 2<i8>
 	SCZO = FPUF
@@ -175,6 +176,7 @@ fn10000000_exit:
 // Return size: 4
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // esp:esp
 // Top:Top
 // eax:eax

@@ -2,6 +2,7 @@
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ecx:ecx
 // SZO:SZO
@@ -29,6 +30,7 @@ fn0C00_0000_exit:
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // Top:Top
 // return address size: 2
@@ -46,6 +48,7 @@ fn0C00_000F_exit:
 // Return size: 2
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ch:ch
 // SZO:SZO

@@ -147,8 +147,8 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0007");
             AssertCode(     // idxm	[[0x0]],a
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|v3 = Mem0[null:byte]",
-                "2|L--|Mem0[v3:byte] = a");
+                "1|L--|v4 = Mem0[null:byte]",
+                "2|L--|Mem0[v4:byte] = a");
         }
 
         [Test]
@@ -157,9 +157,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0024");
             AssertCode(     // inc	[0x0]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v2 = Mem0[null:byte] + 1<8>",
-                "2|L--|Mem0[null:byte] = v2",
-                "3|L--|ZCAV = cond(v2)");
+                "1|L--|v3 = Mem0[null:byte] + 1<8>",
+                "2|L--|Mem0[null:byte] = v3",
+                "3|L--|ZCAV = cond(v3)");
         }
 
         [Test]
@@ -247,9 +247,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("B32B");
             AssertCode(     // sl	[0x179]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v2 = Mem0[0x00B3<p16>:byte] << 1<8>",
-                "2|L--|Mem0[0x00B3<p16>:byte] = v2",
-                "3|L--|C = cond(v2)");
+                "1|L--|v3 = Mem0[0x00B3<p16>:byte] << 1<8>",
+                "2|L--|Mem0[0x00B3<p16>:byte] = v3",
+                "3|L--|C = cond(v3)");
         }
 
         [Test]
@@ -258,9 +258,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("B42D");
             AssertCode(     // slc	[0x180]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v3 = __rcl<byte,byte>(Mem0[0x00B4<p16>:byte], 1<8>, C)",
-                "2|L--|Mem0[0x00B4<p16>:byte] = v3",
-                "3|L--|C = cond(v3)");
+                "1|L--|v4 = __rcl<byte,byte>(Mem0[0x00B4<p16>:byte], 1<8>, C)",
+                "2|L--|Mem0[0x00B4<p16>:byte] = v4",
+                "3|L--|C = cond(v4)");
         }
 
         [Test]
@@ -269,9 +269,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("032A");
             AssertCode(     // sr	[0x3]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v2 = Mem0[0x0003<p16>:byte] >>u 1<8>",
-                "2|L--|Mem0[0x0003<p16>:byte] = v2",
-                "3|L--|C = cond(v2)");
+                "1|L--|v3 = Mem0[0x0003<p16>:byte] >>u 1<8>",
+                "2|L--|Mem0[0x0003<p16>:byte] = v3",
+                "3|L--|C = cond(v3)");
         }
 
         [Test]
@@ -309,8 +309,8 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("8030");
             AssertCode(     // t0sn	IO(0x0).1
                 "0|T--|0100(1): 2 instructions",
-                "1|L--|v2 = __in_bit(0<8>, 1<8>)",
-                "2|T--|if (!v2) branch 0102");
+                "1|L--|v3 = __in_bit(0<8>, 1<8>)",
+                "2|T--|if (!v3) branch 0102");
         }
 
         [Test]
@@ -319,9 +319,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("0027");
             AssertCode(     // xch	[0x0]
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v2 = Mem0[null:byte]",
+                "1|L--|v3 = Mem0[null:byte]",
                 "2|L--|Mem0[null:byte] = a",
-                "3|L--|a = v2");
+                "3|L--|a = v3");
         }
 
         [Test]
@@ -330,9 +330,9 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("8A16");
             AssertCode(     // xor	[0x008A],a
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v3 = Mem0[0x008A<p16>:byte] ^ a",
-                "2|L--|Mem0[0x008A<p16>:byte] = v3",
-                "3|L--|Z = cond(v3)");
+                "1|L--|v4 = Mem0[0x008A<p16>:byte] ^ a",
+                "2|L--|Mem0[0x008A<p16>:byte] = v4",
+                "3|L--|Z = cond(v4)");
         }
 
         [Test]

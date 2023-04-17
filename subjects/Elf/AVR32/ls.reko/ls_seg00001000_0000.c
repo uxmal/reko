@@ -9949,7 +9949,7 @@ Eq_n fn00009C40(Eq_n r0, Eq_n r1, Eq_n r2, <anonymous> * r9, word32 * r10, uint3
 	{
 		if (r11 == 0x02)
 		{
-			word32 v19_n = r12->dw0000;
+			word32 v20_n = r12->dw0000;
 			word32 r7_n = r12->dw0004;
 			word32 * r3_n;
 			word32 r4_n;
@@ -18341,15 +18341,15 @@ Eq_n fn0000F80A(ui64 r11_r10, Eq_n r12, union Eq_n & r11Out, union Eq_n & lrOut)
 		r11_n.u0 = 0x00;
 		r10_n = r11_n >> (word32) r9_n + 11;
 	}
-	bool v14_n = (bool) r10_n;
-	bool C_n = v14_n;
-	if (Test(ULT,v14_n))
+	bool v15_n = (bool) r10_n;
+	bool C_n = v15_n;
+	if (Test(ULT,v15_n))
 	{
 		if (lr == 0x00)
 		{
-			bool v15_n = SLICE(r10_n, bool, 1);
-			C_n = v15_n;
-			if (Test(UGE,v15_n))
+			bool v16_n = SLICE(r10_n, bool, 1);
+			C_n = v16_n;
+			if (Test(UGE,v16_n))
 				goto l0000F89C;
 		}
 		&r10_n.u7->a0000->u0->u0 = r10_n.u7 + 1;
@@ -18407,17 +18407,17 @@ bool __avr32_f64_cmp_eq(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, struct Eq_n & r12O
 bool __avr32_f64_cmp_ge(word32 r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12Out, ptr32 & lrOut)
 {
 	ptr32 lr;
-	bool v17_n = r11 << 1 == 0x00;
+	bool v18_n = r11 << 1 == 0x00;
 	Eq_n r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
-		v17_n = r10 == 0x00;
-	if (v17_n)
+		v18_n = r10 == 0x00;
+	if (v18_n)
 	{
-		bool v20_n = r9 << 1 != 0x00;
+		bool v21_n = r9 << 1 != 0x00;
 		Eq_n r12_n = (word32) (r9 << 1 < 0x00);
 		if (r9 << 1 == 0x00)
-			v20_n = r8 != 0x00;
-		if (v20_n)
+			v21_n = r8 != 0x00;
+		if (v21_n)
 		{
 			r12Out = r12_n;
 			lrOut = lr;
@@ -18506,17 +18506,17 @@ bool __avr32_f64_cmp_ge(word32 r8, ui32 r9, Eq_n r10, Eq_n r11, union Eq_n & r12
 bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out, union Eq_n & r12Out, ptr32 & lrOut)
 {
 	ptr32 lr;
-	bool v17_n = r11 << 1 == 0x00;
+	bool v18_n = r11 << 1 == 0x00;
 	Eq_n r12_n = (word32) (r11 << 1 < 0x00);
 	if (r11 << 1 == 0x00)
-		v17_n = r10 == 0x00;
-	if (v17_n)
+		v18_n = r10 == 0x00;
+	if (v18_n)
 	{
-		bool v20_n = r9 << 1 != 0x00;
+		bool v21_n = r9 << 1 != 0x00;
 		Eq_n r12_n = (word32) (r9 << 1 >= 0x00);
 		if (r9 << 1 == 0x00)
-			v20_n = r8 != 0x00;
-		if (v20_n)
+			v21_n = r8 != 0x00;
+		if (v21_n)
 		{
 			r9Out.u0 = <invalid>;
 			r12Out = r12_n;
@@ -18612,20 +18612,20 @@ bool __avr32_f64_cmp_lt(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r9Out
 bool fn0000F9D0(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_n & r10Out)
 {
 	ptr32 r8;
-	bool v17_n = r11 << 0x01 != 0x00;
+	bool v18_n = r11 << 0x01 != 0x00;
 	if (r11 << 0x01 == 0x00)
-		v17_n = r12 << 0x01 != 0x00;
-	if (v17_n)
+		v18_n = r12 << 0x01 != 0x00;
+	if (v18_n)
 	{
 		if (r12 << 0x01 <= 0xFF000000)
 		{
 			if (r11 << 0x01 <= 0xFF000000)
 			{
-				bool v16_n = SLICE(r12, bool, 31);
-				ptr32 r8_n = (word32) Test(UGE,v16_n);
+				bool v17_n = SLICE(r12, bool, 31);
+				ptr32 r8_n = (word32) Test(UGE,v17_n);
 				if ((r11 ^ r12) >= 0x00)
 				{
-					if (Test(UGE,v16_n))
+					if (Test(UGE,v17_n))
 					{
 						if (r12 >= r11)
 						{
@@ -18708,20 +18708,20 @@ bool fn0000F9D0(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_
 bool fn0000FA0E(Eq_n r11, Eq_n r12, ptr32 & r8Out, union Eq_n & r9Out, union Eq_n & r10Out)
 {
 	ptr32 r8;
-	bool v17_n = r11 << 0x01 != 0x00;
+	bool v18_n = r11 << 0x01 != 0x00;
 	if (r11 << 0x01 == 0x00)
-		v17_n = r12 << 0x01 != 0x00;
-	if (v17_n)
+		v18_n = r12 << 0x01 != 0x00;
+	if (v18_n)
 	{
 		if (r12 << 0x01 <= 0xFF000000)
 		{
 			if (r11 << 0x01 <= 0xFF000000)
 			{
-				bool v16_n = SLICE(r12, bool, 31);
-				ptr32 r8_n = (word32) Test(ULT,v16_n);
+				bool v17_n = SLICE(r12, bool, 31);
+				ptr32 r8_n = (word32) Test(ULT,v17_n);
 				if ((r11 ^ r12) >= 0x00)
 				{
-					if (Test(UGE,v16_n))
+					if (Test(UGE,v17_n))
 					{
 						if (r12 >= r11)
 						{

@@ -363,9 +363,9 @@ namespace Reko.UnitTests.Environments.Gameboy
             Given_HexString("32");
             AssertCode(     // ld	(hl-),a
                 "0|L--|0100(1): 3 instructions",
-                "1|L--|v4 = hl",
+                "1|L--|v5 = hl",
                 "2|L--|hl = hl - 1<i16>",
-                "3|L--|Mem0[v4:byte] = a");
+                "3|L--|Mem0[v5:byte] = a");
         }
 
         [Test]

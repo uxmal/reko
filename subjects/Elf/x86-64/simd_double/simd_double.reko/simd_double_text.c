@@ -112,8 +112,8 @@ void main()
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) qwLoc10_n);
 		else
 		{
-			real64 v24_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0 = SEQ(0x00, v24_n + v24_n);
+			real64 v25_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = SEQ(0x00, v25_n + v25_n);
 		}
 		*rcx_n = (real64) xmm0;
 		qwLoc10_n = (word64) qwLoc10_n + 1;
@@ -127,8 +127,8 @@ void main()
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
 		{
-			real64 v19_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
-			xmm0 = SEQ(0x00, v19_n + v19_n);
+			real64 v20_n = (real64) ((word64) qwLoc18_n + 1 >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = SEQ(0x00, v20_n + v20_n);
 		}
 		*rcx_n = (real64) xmm0;
 		qwLoc18_n = (word64) qwLoc18_n + 1;

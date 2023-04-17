@@ -64,7 +64,7 @@ word32 component(Eq_n ecx, word32 edx, uint32 esi, word64 rdi, int32 r8d)
 	word64 rcx;
 	Eq_n ecx = (word32) rcx;
 	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s ecx;
-	struct Eq_n * v16_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s ecx) << 0x03) + (uint64) (eax_n >> 0x03);
+	struct Eq_n * v17_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s ecx) << 0x03) + (uint64) (eax_n >> 0x03);
 	if (ecx > 0x10)
 	{
 l0000000000400EC1:
@@ -90,19 +90,19 @@ l0000000000400EC1:
 		case 0x0F:
 			goto l0000000000400EC1;
 		case 0x01:
-			rax_n = (uint64) ((word32) v16_n->b0000 >> 0x07 - ((byte) eax_n & 0x07) & 0x01);
+			rax_n = (uint64) ((word32) v17_n->b0000 >> 0x07 - ((byte) eax_n & 0x07) & 0x01);
 			break;
 		case 0x02:
-			rax_n = (uint64) ((word32) v16_n->b0000 >> 0x06 - ((byte) eax_n & 0x07) & 0x03);
+			rax_n = (uint64) ((word32) v17_n->b0000 >> 0x06 - ((byte) eax_n & 0x07) & 0x03);
 			break;
 		case 0x04:
-			rax_n = (uint64) ((word32) v16_n->b0000 >> 0x04 - ((byte) eax_n & 0x07) & 0x0F);
+			rax_n = (uint64) ((word32) v17_n->b0000 >> 0x04 - ((byte) eax_n & 0x07) & 0x0F);
 			break;
 		case 0x08:
-			rax_n = (uint64) v16_n->b0000;
+			rax_n = (uint64) v17_n->b0000;
 			break;
 		case 0x10:
-			rax_n = (uint64) ((word32) v16_n->b0001 + ((word32) v16_n->b0000 << 0x08));
+			rax_n = (uint64) ((word32) v17_n->b0001 + ((word32) v17_n->b0000 << 0x08));
 			break;
 		}
 		return (word32) rax_n;

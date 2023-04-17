@@ -10,6 +10,7 @@ void fn0C00_0000(Register byte al, Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // C:C
 // ds:ds
@@ -46,6 +47,7 @@ FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // al:al
 // SCZO:SCZO

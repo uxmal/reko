@@ -11,10 +11,10 @@ l0C00_0000:
 	// succ:  l0C00_0015
 l0C00_0015:
 	Mem16[0x5CE1<16>:si_13:word16] = 0xFFFF<16>
-	word16 v9_20 = Mem16[ds:0x9A26<16>:word16] - 1<16>
-	Mem21[ds:0x9A26<16>:word16] = v9_20
+	word16 v10_20 = Mem16[ds:0x9A26<16>:word16] - 1<16>
+	Mem21[ds:0x9A26<16>:word16] = v10_20
 	si_13 = si_13 + 0x26<16>
-	branch v9_20 != 0<16> l0C00_0015
+	branch v10_20 != 0<16> l0C00_0015
 	// succ:  l0C00_0023 l0C00_0015
 l0C00_0023:
 	return
@@ -34,10 +34,10 @@ l0C00_0000:
 	// succ:  l0C00_0015
 l0C00_0015:
 	(0x5CE1<16>->*si_13).w0000 = 0xFFFF<16>
-	word16 v9_20 = ds->w9A26 - 1<16>
-	ds->w9A26 = v9_20
+	word16 v10_20 = ds->w9A26 - 1<16>
+	ds->w9A26 = v10_20
 	si_13 = si_13 + 1<i32>
-	branch v9_20 != 0<16> l0C00_0015
+	branch v10_20 != 0<16> l0C00_0015
 	// succ:  l0C00_0023 l0C00_0015
 l0C00_0023:
 	return
@@ -124,7 +124,7 @@ T_16: (in Mem16[0x5CE1<16>:si_13 + 0<16>:word16] : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
-T_17: (in v9_20 : word16)
+T_17: (in v10_20 : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
@@ -160,7 +160,7 @@ T_25: (in 0<16> : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_26: (in v9_20 != 0<16> : bool)
+T_26: (in v10_20 != 0<16> : bool)
   Class: Eq_26
   DataType: bool
   OrigDataType: bool

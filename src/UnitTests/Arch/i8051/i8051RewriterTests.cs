@@ -291,9 +291,9 @@ namespace Reko.UnitTests.Arch.i8051
             Given_HexString("33");
             AssertCode(     // rlc	A
                 "0|L--|0000(1): 3 instructions",
-                "1|L--|v4 = (A & 0x80<8>) != 0<8>",
+                "1|L--|v5 = (A & 0x80<8>) != 0<8>",
                 "2|L--|A = __rcl<byte,byte>(A, 1<8>, C)",
-                "3|L--|C = v4");
+                "3|L--|C = v5");
         }
 
         [Test]
@@ -302,9 +302,9 @@ namespace Reko.UnitTests.Arch.i8051
             Given_HexString("13");
             AssertCode(     // rrc	A
                 "0|L--|0000(1): 3 instructions",
-                "1|L--|v4 = (A & 1<8>) != 0<8>",
+                "1|L--|v5 = (A & 1<8>) != 0<8>",
                 "2|L--|A = __rcr<byte,byte>(A, 1<8>, C)",
-                "3|L--|C = v4");
+                "3|L--|C = v5");
         }
 
         [Test]
@@ -371,9 +371,9 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xCE); // xch\tA,R6
             AssertCode(
                 "0|L--|0000(1): 3 instructions",
-                "1|L--|v2 = A",
+                "1|L--|v3 = A",
                 "2|L--|A = R6",
-                "3|L--|R6 = v2");
+                "3|L--|R6 = v3");
         }
 
         [Test]
@@ -418,10 +418,10 @@ namespace Reko.UnitTests.Arch.i8051
             Given_HexString("84");
             AssertCode(     // div	AB
                 "0|L--|0000(1): 6 instructions",
-                "1|L--|v4 = A /u B",
-                "2|L--|v5 = A %u B",
-                "3|L--|A = v4",
-                "4|L--|B = v5",
+                "1|L--|v5 = A /u B",
+                "2|L--|v6 = A %u B",
+                "3|L--|A = v5",
+                "4|L--|B = v6",
                 "5|L--|C = false",
                 "6|L--|O = false");
         }
@@ -555,9 +555,9 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xC4); // swap\tA
             AssertCode(
                 "0|L--|0000(1): 3 instructions",
-                "1|L--|v2 = A << 4<8>",
+                "1|L--|v3 = A << 4<8>",
                 "2|L--|A = A >>u 4<8>",
-                "3|L--|A = A | v2");
+                "3|L--|A = A | v3");
         }
 
         [Test]
@@ -566,11 +566,11 @@ namespace Reko.UnitTests.Arch.i8051
             Given_HexString("D6");
             AssertCode(     // xchd	A,@R0
                 "0|L--|0000(1): 5 instructions",
-                "1|L--|v2 = SLICE(A, word4, 0)",
-                "2|L--|v3 = Mem0[__data:R0:byte]",
-                "3|L--|A = SEQ(SLICE(A, word4, 4), SLICE(v3, word4, 0))",
-                "4|L--|v3 = SEQ(SLICE(v3, word4, 4), v2)",
-                "5|L--|Mem0[__data:R0:byte] = v3");
+                "1|L--|v3 = SLICE(A, word4, 0)",
+                "2|L--|v4 = Mem0[__data:R0:byte]",
+                "3|L--|A = SEQ(SLICE(A, word4, 4), SLICE(v4, word4, 0))",
+                "4|L--|v4 = SEQ(SLICE(v4, word4, 4), v3)",
+                "5|L--|Mem0[__data:R0:byte] = v4");
         }
     }
 }

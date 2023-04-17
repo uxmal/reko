@@ -42,6 +42,19 @@ namespace Reko.UnitTests.Core
             arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
         }
 
+        private void RunTest(string sExpected, Frame frame)
+        {
+            var sw = new StringWriter();
+            sw.WriteLine();
+            frame.Write(sw);
+            var sActual = sw.ToString();
+            if (sExpected != sActual)
+            {
+                Console.WriteLine(sActual);
+                Assert.AreEqual(sExpected, sActual);
+            }
+        }
+
 		[Test]
 		public void FrRegisterTest()
 		{
@@ -60,42 +73,63 @@ namespace Reko.UnitTests.Core
 			Identifier dx = f.EnsureRegister(Registers.dx);
 			Identifier dxax = f.EnsureSequence(PrimitiveType.Word32, dx.Storage, ax.Storage);
 
-			using (FileUnitTester fut = new FileUnitTester("Core/SequenceTest.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
+            var sExpected =
+            #region
+                @"
+// Mem0:Mem
+// fp:fp
+// %continuation:%continuation
+// ax:ax
+// dx:dx
+// dx_ax:Sequence dx:ax
+// return address size: 0
+";
+                #endregion
+            RunTest(sExpected, f);
 
 			Identifier dxax2 = f.EnsureSequence(PrimitiveType.Word32, dx.Storage, ax.Storage);
 			Assert.IsTrue(dxax2 == dxax);
 		}
 
-		[Test]
-		public void FrGrfTest()
-		{
-			var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
-			var f = new Frame(arch, PrimitiveType.Word16);
-			f.EnsureFlagGroup(arch.GetFlagGroup("SZ"));
-			using (FileUnitTester fut = new FileUnitTester("Core/FrGrfTest.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
-		}
+        [Test]
+        public void FrGrfTest()
+        {
+            var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
+            var f = new Frame(arch, PrimitiveType.Word16);
+            f.EnsureFlagGroup(arch.GetFlagGroup("SZ"));
+            var sExpected =
+                #region
+                @"
+// Mem0:Mem
+// fp:fp
+// %continuation:%continuation
+// SZ:SZ
+// return address size: 0
+";
+                #endregion
+            RunTest(sExpected, f);
+        }
 
 
-		[Test]
+        [Test]
 		public void FrLocals()
 		{
 			var f = new Frame(arch, PrimitiveType.Word16);
 			f.EnsureStackLocal(-2, PrimitiveType.Word16);
 			f.EnsureStackLocal(-4, PrimitiveType.Word32);
-			using (FileUnitTester fut = new FileUnitTester("Core/FrLocals.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
-			Assert.IsNotNull((StackStorage) f.Identifiers[2].Storage);
+            var sExpected =
+            #region Expected
+                @"
+// Mem0:Mem
+// fp:fp
+// %continuation:%continuation
+// wLoc02:Stack -0002
+// dwLoc04:Stack -0004
+// return address size: 0
+";
+                #endregion
+            RunTest(sExpected, f);
+            Assert.IsNotNull((StackStorage) f.Identifiers[3].Storage);
 		}
 
 		[Test]
@@ -106,17 +140,22 @@ namespace Reko.UnitTests.Core
 			Identifier dx = f.EnsureRegister(Registers.dx);
 			Identifier dx_ax = f.EnsureSequence(PrimitiveType.Word32, dx.Storage, ax.Storage);
 			SequenceStorage vDx_ax = (SequenceStorage) dx_ax.Storage;
-			using (FileUnitTester fut = new FileUnitTester("Core/FrSequenceAccess.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.TextWriter.WriteLine("Head({0}) = {1}", dx_ax.Name, vDx_ax.Elements[0].Name);
-				fut.TextWriter.WriteLine("Tail({0}) = {1}", dx_ax.Name, vDx_ax.Elements[1].Name);
+            var sExpected =
+            #region Expected
+                @"
+// Mem0:Mem
+// fp:fp
+// %continuation:%continuation
+// ax:ax
+// dx:dx
+// dx_ax:Sequence dx:ax
+// return address size: 0
+";
+            #endregion
+            RunTest(sExpected, f);
+        }
 
-				fut.AssertFilesEqual();
-			}
-		}
-
-		[Test]
+        [Test]
         [Ignore("")]
 		public void FrBindStackParameters()
 		{
@@ -134,16 +173,15 @@ namespace Reko.UnitTests.Core
 			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("foo", true, sig));
 			var ab = arch.CreateFrameApplicationBuilder(f, cs);
-            Instruction instr = ab.CreateInstruction(fn, sig, null); 
-			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.TextWriter.WriteLine(instr.ToString());
-				fut.AssertFilesEqual();
-			}
-		}
+            Instruction instr = ab.CreateInstruction(fn, sig, null);
+            var sExpected =
+            #region Expected
+                "@@@";
+            #endregion
+            RunTest(sExpected, f);
+        }
 
-		[Test]
+        [Test]
 		public void FrBindMixedParameters()
 		{
 			var f = new Frame(arch, PrimitiveType.Word16);
@@ -160,36 +198,53 @@ namespace Reko.UnitTests.Core
 			var fn = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("bar", true, sig));
 			var ab = new FrameApplicationBuilder(arch, f, cs);
             Instruction instr = ab.CreateInstruction(fn, sig, null);
-			using (FileUnitTester fut = new FileUnitTester("Core/FrBindMixedParameters.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.TextWriter.WriteLine(instr.ToString());
-				fut.AssertFilesEqual();
-			}
-		}
+            var sExpected =
+            #region Expected
+                @"
+// Mem0:Mem
+// fp:fp
+// %continuation:%continuation
+// ax:ax
+// cx:cx
+// wLoc02:Stack -0002
+// sp:sp
+// ss:ss
+// return address size: 0
+";
+            #endregion
+            RunTest(sExpected, f);
+        }
 
-		[Test]
+        [Test]
 		public void FrFpuStack()
 		{
 			var f = new Frame(arch, PrimitiveType.Word16);
 			f.EnsureFpuStackVariable(-1, PrimitiveType.Real64);
 			f.EnsureFpuStackVariable(-2, PrimitiveType.Real64);
 			f.EnsureFpuStackVariable(0, PrimitiveType.Real64);
-			
-			using (FileUnitTester fut = new FileUnitTester("Core/FrFpuStack.txt"))
-			{
-				f.Write(fut.TextWriter);
-				fut.AssertFilesEqual();
-			}
-		}
 
-		[Test]
+            var sExpected =
+            #region Expected
+                @"
+// Mem0:Mem
+// fp:fp
+// %continuation:%continuation
+// rLoc1:FPU -1
+// rLoc2:FPU -2
+// rArg0:FPU +0
+// return address size: 0
+";
+            #endregion
+            RunTest(sExpected, f);
+        }
+
+        [Test]
 		public void FrEnsureRegister()
 		{
 			var f = new Frame(arch, PrimitiveType.Word32);
 			f.EnsureRegister(RegisterStorage.Reg32("eax", 0));
-			Assert.AreEqual("eax", f.Identifiers[2].Name);
-			Assert.AreSame(PrimitiveType.Word32, f.Identifiers[2].DataType);
+			Assert.AreEqual("eax", f.Identifiers[3].Name);
+			Assert.AreSame(PrimitiveType.Word32, f.Identifiers[3].DataType);
 		}
 
 		[Test]

@@ -9,6 +9,7 @@ void fn0C00_0000(Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ds:ds
 // Top:Top
@@ -56,6 +57,7 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss
@@ -92,6 +94,7 @@ FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // bp:bp
 // ss:ss

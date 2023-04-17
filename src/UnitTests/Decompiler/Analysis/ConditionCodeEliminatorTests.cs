@@ -680,10 +680,10 @@ m1Loop:
 	c_16 = PHI((c, l1), (c_17, m1Loop))
 	l_11 = PHI((l, l1), (l_15, m1Loop))
 	h_3 = PHI((h, l1), (h_10, m1Loop))
-	v11_25 = SEQ(h_3, l_11) >>u 1<8>
-	a_8 = SLICE(v11_25, byte, 8)
+	v12_25 = SEQ(h_3, l_11) >>u 1<8>
+	a_8 = SLICE(v12_25, byte, 8)
 	h_10 = a_8
-	a_13 = SLICE(v11_25, byte, 0)
+	a_13 = SLICE(v12_25, byte, 0)
 	l_15 = a_13
 	c_17 = c_16 - 1<8>
 	branch c_17 != 0<8> m1Loop
@@ -762,24 +762,24 @@ l1:
 	// succ:  m0 m1
 m0:
 	r0_5 = r0 + r2
-	v13_19 = r0_5 == 0<32>
-	v10_16 = r0_5 <=u 0<32>
-	v7_13 = r0_5 >u 0<32>
+	v14_19 = r0_5 == 0<32>
+	v11_16 = r0_5 <=u 0<32>
+	v8_13 = r0_5 >u 0<32>
 	goto m2
 	// succ:  m2
 m1:
 	r0_3 = r2 - r0
-	v14_20 = r0_3 == 0<32>
-	v11_17 = r0_3 <=u 0<32>
-	v8_14 = r0_3 >u 0<32>
+	v15_20 = r0_3 == 0<32>
+	v12_17 = r0_3 <=u 0<32>
+	v9_14 = r0_3 >u 0<32>
 	// succ:  m2
 m2:
-	v9_15 = PHI((v10_16, m0), (v11_17, m1))
-	v6_12 = PHI((v7_13, m0), (v8_14, m1))
-	v12_18 = PHI((v13_19, m0), (v14_20, m1))
-	Mem8[0x123400<32>:int8] = CONVERT(v6_12, bool, int8)
-	Mem9[0x123402<32>:int8] = CONVERT(v9_15, bool, int8)
-	Mem11[0x123404<32>:int8] = CONVERT(v12_18, bool, int8)
+	v10_15 = PHI((v11_16, m0), (v12_17, m1))
+	v7_12 = PHI((v8_13, m0), (v9_14, m1))
+	v13_18 = PHI((v14_19, m0), (v15_20, m1))
+	Mem8[0x123400<32>:int8] = CONVERT(v7_12, bool, int8)
+	Mem9[0x123402<32>:int8] = CONVERT(v10_15, bool, int8)
+	Mem11[0x123404<32>:int8] = CONVERT(v13_18, bool, int8)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -825,9 +825,9 @@ ProcedureBuilder_entry:
 	def r0
 	// succ:  l1
 l1:
-	v9_13 = SEQ(r0, r1) << 1<8>
-	r1_2 = SLICE(v9_13, word16, 0)
-	r0_7 = SLICE(v9_13, word16, 16)
+	v10_13 = SEQ(r0, r1) << 1<8>
+	r1_2 = SLICE(v10_13, word16, 0)
+	r0_7 = SLICE(v10_13, word16, 16)
 	Mem9[0x1234<16>:word16] = r0_7
 	Mem10[0x1236<16>:word16] = r1_2
 	return
@@ -870,19 +870,19 @@ ProcedureBuilder_exit:
 	def c
 	// succ:  l1
 l1:
-	v11_18 = SEQ(SEQ(SEQ(h, l), b), c) >>u 1<8>
-	v10_17 = SLICE(v11_18, uint24, 8)
-	v9_16 = SLICE(v10_17, uint16, 8)
-	h_1 = SLICE(v9_16, byte, 8)
+	v12_18 = SEQ(SEQ(SEQ(h, l), b), c) >>u 1<8>
+	v11_17 = SLICE(v12_18, uint24, 8)
+	v10_16 = SLICE(v11_17, uint16, 8)
+	h_1 = SLICE(v10_16, byte, 8)
 	SZC_1 = cond(h_1)
 	C_1 = SLICE(SZC_1, bool, 0) (alias)
-	l_1 = SLICE(v9_16, byte, 0)
+	l_1 = SLICE(v10_16, byte, 0)
 	SZC_2 = cond(l_1)
 	C_2 = SLICE(SZC_2, bool, 0) (alias)
-	b = SLICE(v10_17, byte, 0)
+	b = SLICE(v11_17, byte, 0)
 	SZC_3 = cond(b)
 	C_3 = SLICE(SZC_3, bool, 0) (alias)
-	c_1 = SLICE(v11_18, byte, 0)
+	c_1 = SLICE(v12_18, byte, 0)
 	SZC_4 = cond(c_1)
 	return
 	// succ:  SsaProcedureBuilder_exit
@@ -1028,9 +1028,9 @@ m0Loop:
 	cx_10 = PHI((cx, l1), (cx_11, m0Loop))
 	dx_5 = PHI((dx, l1), (dx_8, m0Loop))
 	ax_2 = PHI((ax, l1), (ax_3, m0Loop))
-	v10_20 = SEQ(dx_5, ax_2) << 1<8>
-	ax_3 = SLICE(v10_20, word16, 0)
-	dx_8 = SLICE(v10_20, word16, 16)
+	v11_20 = SEQ(dx_5, ax_2) << 1<8>
+	ax_3 = SLICE(v11_20, word16, 0)
+	dx_8 = SLICE(v11_20, word16, 16)
 	cx_11 = cx_10 - 1<16>
 	branch cx_11 != 0<16> m0Loop
 	// succ:  m1Done m0Loop
@@ -1090,9 +1090,9 @@ ProcedureBuilder_entry:
 	def ax
 	// succ:  l1
 l1:
-	v7_9 = SEQ(dx, ax) >>u 1<16>
-	dx_2 = SLICE(v7_9, word16, 16)
-	ax_6 = SLICE(v7_9, word16, 0)
+	v8_9 = SEQ(dx, ax) >>u 1<16>
+	dx_2 = SLICE(v8_9, word16, 16)
+	ax_6 = SLICE(v8_9, word16, 0)
 	Mem7[0x1234<16>:word16] = ax_6
 	Mem8[0x1236<16>:word16] = dx_2
 	return
@@ -1139,25 +1139,25 @@ ProcedureBuilder_entry:
 	// succ:  m1
 m1:
 	r2_2 = r2 & 0x7F<32>
-	v6_20 = (r2 & 0x7F<32>) == 0<32>
+	v7_20 = (r2 & 0x7F<32>) == 0<32>
 	// succ:  m2C
 m2C:
 	ctr_12 = PHI((ctr, m1), (ctr_12, m2C), (ctr_13, m80))
-	v5_19 = PHI((v6_20, m1), (v5_19, m2C), (v7_21, m80))
+	v6_19 = PHI((v7_20, m1), (v6_19, m2C), (v8_21, m80))
 	r2_4 = PHI((r2_2, m1), (r2_5, m2C), (r2_14, m80))
 	r2_5 = r2_4 >>u 1<8>
 	branch r2_5 == 0<32> m2C
 	// succ:  m3 m2C
 m3:
-	branch v5_19 m80
+	branch v6_19 m80
 	// succ:  m4 m80
 m4:
 	r2_8 = Mem0[0x123400<32>:word32]
 	r2_9 = r2_8 & 0x7F<32>
-	v8_22 = (r2_8 & 0x7F<32>) == 0<32>
+	v9_22 = (r2_8 & 0x7F<32>) == 0<32>
 	// succ:  m80
 m80:
-	v7_21 = PHI((v5_19, m3), (v8_22, m4))
+	v8_21 = PHI((v6_19, m3), (v9_22, m4))
 	r2_14 = PHI((r2_5, m3), (r2_9, m4))
 	ctr_13 = ctr_12 - 1<i32>
 	branch ctr_13 != 0<32> m2C

@@ -258,8 +258,8 @@ namespace Reko.UnitTests.Arch.Altera
             Given_HexString("05004019");
             AssertCode(     // stb	r5,0(r3)
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = SLICE(r5, byte, 0)",
-                "2|L--|Mem0[r3:byte] = v3");
+                "1|L--|v4 = SLICE(r5, byte, 0)",
+                "2|L--|Mem0[r3:byte] = v4");
         }
 
         [Test]

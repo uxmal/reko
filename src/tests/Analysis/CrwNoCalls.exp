@@ -11,6 +11,7 @@ void fn0C00_0000(Register word16 ax, Register word16 bx, Register selector ds)
 // Return size: 0
 // Mem0:Mem
 // fp:fp
+// %continuation:%continuation
 // sp:sp
 // ax:ax
 // bx:bx

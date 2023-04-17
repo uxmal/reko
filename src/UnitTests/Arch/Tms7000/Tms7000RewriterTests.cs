@@ -380,9 +380,9 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0xD6, 0x05);
             AssertCode(
                    "0|L--|0100(2): 3 instructions",
-                   "1|L--|v4 = r5",
+                   "1|L--|v5 = r5",
                    "2|L--|r5 = b",
-                   "3|L--|b = v4");
+                   "3|L--|b = v5");
         }
     }
 }
