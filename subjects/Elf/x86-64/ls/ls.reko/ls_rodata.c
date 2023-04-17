@@ -34,42 +34,33 @@ word32 g_dw412CF0 = 0x00; // 0000000000412CF0
 Eq_n g_a412D00[] = // 0000000000412D00
 	{
 	};
-word32 g_a412EC0[] = // 0000000000412EC0
+void g_v412EC0 = ??void??; // 0000000000412EC0
+char * g_a412F00[] = // 0000000000412F00
 	{
 	};
-Eq_n g_a412F00[] = // 0000000000412F00
+void g_v412F50 = ??void??; // 0000000000412F50
+char * g_a412F80[] = // 0000000000412F80
 	{
 	};
-up32 g_a412F50[] = // 0000000000412F50
+void g_v412FB0 = ??void??; // 0000000000412FB0
+char * g_a412FE0[] = // 0000000000412FE0
 	{
 	};
-Eq_n g_a412F80[] = // 0000000000412F80
-	{
-	};
-word32 g_a412FB0[] = // 0000000000412FB0
-	{
-	};
-Eq_n g_a412FE0[] = // 0000000000412FE0
-	{
-	};
-up32 g_a413010[] = // 0000000000413010
-	{
-	};
-Eq_n g_a413040[] = // 0000000000413040
+void g_v413010 = ??void??; // 0000000000413010
+char * g_a413040[] = // 0000000000413040
 	{
 	};
 Eq_n g_t413080 = // 0000000000413080
 	{
 	};
-Eq_n g_a4135E0[] = // 00000000004135E0
+char * g_a4135E0[] = // 00000000004135E0
 	{
 	};
-up32 g_a4136B0[] = // 00000000004136B0
+void g_v4136B0 = ??void??; // 00000000004136B0
+char * g_a4136C0[] = // 00000000004136C0
 	{
 	};
-Eq_n g_a4136C0[] = // 00000000004136C0
-	{
-	};
+void g_v4136F0 = ??void??; // 00000000004136F0
 char * g_a413700[] = // 0000000000413700
 	{
 	};
@@ -77,30 +68,97 @@ byte g_a413728[] = // 0000000000413728
 	{
 	};
 byte g_b413733 = 0x30; // 0000000000413733
+void g_v413734 = ??void??; // 0000000000413734
 char g_str413736[] = "src/ls.c"; // 0000000000413736
 char g_str41373F[] = "sort_type != sort_version"; // 000000000041373F
 char g_str413766[] = "%b"; // 0000000000413766
+void g_v413771 = ??void??; // 0000000000413771
+void g_v41377E = ??void??; // 000000000041377E
+char g_str413783[] = "cannot access %s"; // 0000000000413783
+char g_str413794[] = "cannot read symbolic link %s"; // 0000000000413794
 byte g_b4137B1 = 117; // 00000000004137B1
+char g_str4137BB[] = "\nReport %s bugs to %s\n"; // 00000000004137BB
+char g_str4137E8[] = "%s home page: <%s>\n"; // 00000000004137E8
 char g_str4137FC[] = "GNU coreutils"; // 00000000004137FC
 char g_str413800[] = "coreutils"; // 0000000000413800
 char g_str413807[] = "ls"; // 0000000000413807
+char g_str41380A[] = "en_"; // 000000000041380A
 char g_str41380E[] = "vdir"; // 000000000041380E
 char g_str41380F[] = "dir"; // 000000000041380F
 char g_str41381C[] = "/usr/share/locale"; // 000000000041381C
 char g_str41382E[] = "QUOTING_STYLE"; // 000000000041382E
 char g_str41383C[] = "COLUMNS"; // 000000000041383C
 char g_str413844[] = "TABSIZE"; // 0000000000413844
+char g_str41384C[] = "invalid line width: %s"; // 000000000041384C
+char g_str413867[] = "invalid tab size: %s"; // 0000000000413867
 char g_str4138E1[] = "LS_BLOCK_SIZE"; // 00000000004138E1
 char g_str4138E4[] = "BLOCK_SIZE"; // 00000000004138E4
 char g_str4138F5[] = "TIME_STYLE"; // 00000000004138F5
+char g_str413900[] = "invalid time style format %s"; // 0000000000413900
+char g_str413928[] = "Valid arguments are:\n"; // 0000000000413928
+void g_v41393B = ??void??; // 000000000041393B
 char g_str41397F[] = "LS_COLORS"; // 000000000041397F
+char g_str413989[] = "target"; // 0000000000413989
+char g_str413990[] = "."; // 0000000000413990
 char g_str413992[] = "found"; // 0000000000413992
+char g_str413998[] = "cannot open directory %s"; // 0000000000413998
+char g_str4139B1[] = "reading directory %s"; // 00000000004139B1
+char g_str4139C6[] = "closing directory %s"; // 00000000004139C6
+char g_str4139DB[] = "total"; // 00000000004139DB
+void g_v4139E1 = ??void??; // 00000000004139E1
+char g_str4139E4[] = "//DIRED//"; // 00000000004139E4
+char g_str4139EE[] = "//SUBDIRED//"; // 00000000004139EE
+char g_str4139FB[] = "unrecognized prefix: %s"; // 00000000004139FB
 char g_str413A21[] = "r"; // 0000000000413A21
 byte g_b413C07 = 0x6D; // 0000000000413C07
+char g_str413C0F[] = "01;36"; // 0000000000413C0F
+void g_v413C4B = ??void??; // 0000000000413C4B
+char g_str413D60[] = "Try '%s --help' for more information.\n"; // 0000000000413D60
+char g_str413D88[] = "Usage: %s [OPTION]... [FILE]...\n"; // 0000000000413D88
+char g_str413DB0[] = "List information about the FILEs (the current directory by default).\nSort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n"; // 0000000000413DB0
+char g_str413E40[] = "\nMandatory arguments to long options are mandatory for short options too.\n"; // 0000000000413E40
+char g_str413E90[] = "  -a, --all                  do not ignore entries starting with .\n  -A, --almost-all           do not list implied . and ..\n      --author               with -l, print the author of each file\n  -b, --escape               print C-style escapes for nongraphic characters\n"; // 0000000000413E90
+char g_str413FA0[] = "      --block-size=SIZE      scale sizes by SIZE before printing them.  E.g.,\n                               '--block-size=M' prints sizes in units of\n                               1,048,576 bytes.  See SIZE format below.\n  -B, --ignore-backups       do not list implied entries ending with ~\n  -c                         with -lt: sort by, and show, ctime (time of last\n                               modification of file status information)\n                               with -l: show ctime and sort by name\n                               otherwise: sort by ctime, newest first\n"; // 0000000000413FA0
+char g_str4141E8[] = "  -C                         list entries by columns\n      --color[=WHEN]         colorize the output.  WHEN defaults to 'always'\n                               or can be 'never' or 'auto'.  More info below\n  -d, --directory            list directory entries instead of contents,\n                               and do not dereference symbolic links\n  -D, --dired                generate output designed for Emacs' dired mode\n"; // 00000000004141E8
+char g_str414398[] = "  -f                         do not sort, enable -aU, disable -ls --color\n  -F, --classify             append indicator (one of */=>@|) to entries\n      --file-type            likewise, except do not append '*'\n      --format=WORD          across -x, commas -m, horizontal -x, long -l,\n                               single-column -1, verbose -l, vertical -C\n      --full-time            like -l --time-style=full-iso\n"; // 0000000000414398
+char g_str414540[] = "  -g                         like -l, but do not list owner\n"; // 0000000000414540
+char g_str414580[] = "      --group-directories-first\n                             group directories before files.\n                               augment with a --sort option, but any\n                               use of --sort=none (-U) disables grouping\n"; // 0000000000414580
+char g_str414670[] = "  -G, --no-group             in a long listing, don't print group names\n  -h, --human-readable       with -l, print sizes in human readable format\n                               (e.g., 1K 234M 2G)\n      --si                   likewise, but use powers of 1000 not 1024\n"; // 0000000000414670
+char g_str414780[] = "  -H, --dereference-command-line\n                             follow symbolic links listed on the command line\n      --dereference-command-line-symlink-to-dir\n                             follow each command line symbolic link\n                             that points to a directory\n      --hide=PATTERN         do not list implied entries matching shell PATTERN\n                               (overridden by -a or -A)\n"; // 0000000000414780
+char g_str414928[] = "      --indicator-style=WORD  append indicator with style WORD to entry names:\n                               none (default), slash (-p),\n                               file-type (--file-type), classify (-F)\n  -i, --inode                print the index number of each file\n  -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN\n  -k, --kibibytes            use 1024-byte blocks\n"; // 0000000000414928
+char g_str414AC0[] = "  -l                         use a long listing format\n  -L, --dereference          when showing file information for a symbolic\n                               link, show information for the file the link\n                               references rather than for the link itself\n  -m                         fill width with a comma separated list of entries\n"; // 0000000000414AC0
+char g_str414C28[] = "  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs\n  -N, --literal              print raw entry names (don't treat e.g. control\n                               characters specially)\n  -o                         like -l, but do not list group information\n  -p, --indicator-style=slash\n                             append / indicator to directories\n"; // 0000000000414C28
+char g_str414DA0[] = "  -q, --hide-control-chars   print ? instead of non graphic characters\n      --show-control-chars   show non graphic characters as-is (default\n                             unless program is 'ls' and output is a terminal)\n  -Q, --quote-name           enclose entry names in double quotes\n      --quoting-style=WORD   use quoting style WORD for entry names:\n                               literal, locale, shell, shell-always, c, escape\n"; // 0000000000414DA0
+char g_str414F58[] = "  -r, --reverse              reverse order while sorting\n  -R, --recursive            list subdirectories recursively\n  -s, --size                 print the allocated size of each file, in blocks\n"; // 0000000000414F58
+char g_str415020[] = "  -S                         sort by file size\n      --sort=WORD            sort by WORD instead of name: none -U,\n                             extension -X, size -S, time -t, version -v\n      --time=WORD            with -l, show time as WORD instead of modification\n                             time: atime -u, access -u, use -u, ctime -c,\n                             or status -c; use specified time as sort key\n                             if --sort=time\n"; // 0000000000415020
+char g_str4151F0[] = "      --time-style=STYLE     with -l, show times using style STYLE:\n                             full-iso, long-iso, iso, locale, +FORMAT.\n                             FORMAT is interpreted like 'date'; if FORMAT is\n                             FORMAT1<newline>FORMAT2, FORMAT1 applies to\n                             non-recent files and FORMAT2 to recent files;\n                             if STYLE is prefixed with 'posix-', STYLE\n                             takes effect only outside the POSIX locale\n"; // 00000000004151F0
+char g_str4153F0[] = "  -t                         sort by modification time, newest first\n  -T, --tabsize=COLS         assume tab stops at each COLS instead of 8\n"; // 00000000004153F0
+char g_str415480[] = "  -u                         with -lt: sort by, and show, access time\n                               with -l: show access time and sort by name\n                               otherwise: sort by access time\n  -U                         do not sort; list entries in directory order\n  -v                         natural sort of (version) numbers within text\n"; // 0000000000415480
+char g_str4155E8[] = "  -w, --width=COLS           assume screen width instead of current value\n  -x                         list entries by lines instead of by columns\n  -X                         sort alphabetically by entry extension\n  -Z, --context              print any SELinux security context of each file\n  -1                         list one file per line\n"; // 00000000004155E8
+char g_str415748[] = "      --help     display this help and exit\n"; // 0000000000415748
+char g_str415778[] = "      --version  output version information and exit\n"; // 0000000000415778
+char g_str4157B0[] = "\nSIZE is an integer and optional unit (example: 10M is 10*1024*1024).  Units\nare K, M, G, T, P, E, Z, Y (powers of 1024) or KB, MB, ... (powers of 1000).\n"; // 00000000004157B0
+char g_str415850[] = "\nUsing color to distinguish file types is disabled both by default and\nwith --color=never.  With --color=auto, ls emits color codes only when\nstandard output is connected to a terminal.  The LS_COLORS environment\nvariable can change the settings.  Use the dircolors command to set it.\n"; // 0000000000415850
+char g_str415970[] = "\nExit status:\n 0  if OK,\n 1  if minor problems (e.g., cannot access subdirectory),\n 2  if serious trouble (e.g., cannot access command-line argument).\n"; // 0000000000415970
+char g_str415A30[] = "General help using GNU software: <http://www.gnu.org/gethelp/>\n"; // 0000000000415A30
+char g_str415A70[] = "Report %s translation bugs to <http://translationproject.org/team/>\n"; // 0000000000415A70
+char g_str415AB8[] = "For complete documentation, run: info coreutils '%s invocation'\n"; // 0000000000415AB8
+char g_str415B00[] = "ignoring invalid value of environment variable QUOTING_STYLE: %s"; // 0000000000415B00
+char g_str415B48[] = "ignoring invalid width in environment variable COLUMNS: %s"; // 0000000000415B48
+char g_str415B88[] = "ignoring invalid tab size in environment variable TABSIZE: %s"; // 0000000000415B88
 char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1"; // 0000000000415BC8
+char g_str415BF8[] = "  - +FORMAT (e.g., +%H:%M) for a 'date'-style format\n"; // 0000000000415BF8
+char g_str415C30[] = "error initializing month strings"; // 0000000000415C30
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })"; // 0000000000415C58
+char g_str415CE8[] = "cannot determine device and inode of %s"; // 0000000000415CE8
+char g_str415D10[] = "%s: not listing already-listed directory"; // 0000000000415D10
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0"; // 0000000000415D68
+char g_str415D98[] = "unparsable value for LS_COLORS environment variable"; // 0000000000415D98
 char g_str415DF8[] = "8.21"; // 0000000000415DF8
+char g_str415DFD[] = "invalid argument %s for %s"; // 0000000000415DFD
+char g_str415E18[] = "ambiguous argument %s for %s"; // 0000000000415E18
+char g_str415E35[] = "Valid arguments are:"; // 0000000000415E35
+char g_str415E54[] = "%s"; // 0000000000415E54
 char g_str415E6A[] = "POSIX"; // 0000000000415E6A
 Eq_n g_t415EE0 = // 0000000000415EE0
 	{
@@ -151,10 +209,9 @@ Eq_n g_t415F0C = // 0000000000415F0C
 	};
 char g_str415F24[] = "BLOCKSIZE"; // 0000000000415F24
 char g_str415F2E[] = "POSIXLY_CORRECT"; // 0000000000415F2E
-ui32 g_a415F50[] = // 0000000000415F50
-	{
-	};
-Eq_n g_a415F60[] = // 0000000000415F60
+char g_str415F3E[] = "eEgGkKmMpPtTyYzZ0"; // 0000000000415F3E
+void g_v415F50 = ??void??; // 0000000000415F50
+char * g_a415F60[] = // 0000000000415F60
 	{
 	};
 byte g_a415F78[] = // 0000000000415F78
@@ -168,16 +225,48 @@ real80 g_r415F90 = // 0000000000415F90
 void g_v415FA0 = ??void??; // 0000000000415FA0
 cu8 g_b415FD8 = 0x2F; // 0000000000415FD8
 cu8 g_b415FE0 = 0x6C; // 0000000000415FE0
-word32 g_a416460[] = // 0000000000416460
+Eq_n g_t415FE4 = // 0000000000415FE4
+	{
+		'\xE2',
+		0x80,
+		0x99,
+		0x00,
+		161,
+		~0x50,
+		0x00,
+		0x22,
+	};
+char g_str415FEB[] = "\""; // 0000000000415FEB
+Eq_n g_t415FF5 = // 0000000000415FF5
+	{
+		'`',
+		0x00,
+		115,
+		0x68,
+		101,
+		0x6C,
+		0x6C,
+		0x00,
+	};
+void g_v416460 = ??void??; // 0000000000416460
+char * g_a416480[] = // 0000000000416480
 	{
 	};
-Eq_n g_a416480[] = // 0000000000416480
-	{
-	};
+char g_str4168D3[] = "(C)"; // 00000000004168D3
 char g_str416919[] = ""; // 0000000000416919
+char g_str416930[] = "\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\n"; // 0000000000416930
+char g_str416B08[] = "Written by %s, %s, %s,\n%s, %s, %s, %s,\n%s, %s, and others.\n"; // 0000000000416B08
 <anonymous> * g_ptr416B48 = &g_t410800; // 0000000000416B48
+char g_str416BCF[] = "memory exhausted"; // 0000000000416BCF
 char g_str416BE0[] = "lib/xstrtol.c"; // 0000000000416BE0
 char g_str416BF0[] = "0 <= strtol_base && strtol_base <= 36"; // 0000000000416BF0
 char g_str416DC8[] = "xstrtoul"; // 0000000000416DC8
+char g_str416DD1[] = "invalid %s%s argument '%s'"; // 0000000000416DD1
+char g_str416DEA[] = "'"; // 0000000000416DEA
+char g_str416E10[] = "invalid suffix in %s%s argument '%s'"; // 0000000000416E10
 char g_str416FE8[] = "xstrtoumax"; // 0000000000416FE8
+Eq_n g_t416FF3 = // 0000000000416FF3
+	{
+		'/'
+	};
 char g_str417002[] = "CHARSETALIASDIR"; // 0000000000417002

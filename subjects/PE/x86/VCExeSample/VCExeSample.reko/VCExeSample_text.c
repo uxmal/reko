@@ -46,10 +46,10 @@ void test5()
 	gbl_c->vtbl->method04(gbl_c, 999, 1000.1F);
 }
 
-// 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
+// 00401120: void test6(Stack (ptr32 Eq_n) c, Stack int32 a, Stack int32 b)
 // Called from:
 //      nested_if_blocks_test8
-void test6(Eq_n c, int32 a, int32 b)
+void test6(cdecl_class * c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
 }

@@ -1,0 +1,138 @@
+void setInteger(word32 d, int32 value)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      setParameter
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+setInteger_entry:
+l00401000:
+	Mem10[d:word32] = value
+	return
+setInteger_exit:
+
+
+void setFloat(word32 d, real32 value)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      setParameter
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+setFloat_entry:
+l00401010:
+	Mem11[d + 4<i32>:real32] = value
+	return
+setFloat_exit:
+
+
+void setDouble(word32 d, real64 value)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      setParameter
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..63]
+// LiveOut:
+// Trashed:
+// Preserved:
+setDouble_entry:
+l00401020:
+	Mem11[d + 8<i32>:real64] = value
+	return
+setDouble_exit:
+
+
+void setParameter(word32 d, int32 type, void * value)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      main
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+setParameter_entry:
+l00401030:
+	branch type == 0<32> l00401050
+l00401050:
+	setInteger(d, Mem14[value:word32])
+l00401042:
+	branch type == 1<32> l0040106A
+l0040106A:
+	setFloat(d, Mem31[value:real32])
+l00401048:
+	branch type == 2<32> l00401087
+l00401087:
+	setDouble(d, Mem44[value:real64])
+l0040104E:
+l004010A4:
+	return
+setParameter_exit:
+
+
+ptr32 new_data_struct()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      main
+// MayUse: 
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
+new_data_struct_entry:
+l004010B0:
+	return operator new(0x10<32>)
+new_data_struct_exit:
+
+
+int32 main(int32 argc, char ** argv)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
+main_entry:
+	word32 dwLoc1C
+	word32 dwLoc14
+	word32 dwLoc10
+l004010D0:
+	word32 eax_10 = new_data_struct()
+	word32 dwLoc0C_158 = 1<32>
+l004010F0:
+	branch dwLoc0C_158 >= argc - 1<32> l004011EF
+l004011EF:
+	Mem21[0x00403018<p32>:word32] = Mem14[eax_10:word32]
+	Mem24[0x0040301C<p32>:word32] = Mem21[eax_10 + 4<i32>:word32]
+	Mem27[0x00403020<p32>:word32] = Mem24[eax_10 + 8<i32>:word32]
+	Mem29[0x00403024<p32>:word32] = Mem27[eax_10 + 12<i32>:word32]
+	free(eax_10)
+	return 0<32>
+main_exit:
+l004010FF:
+	branch strcmp(Mem42[argv + dwLoc0C_158 * 4<32>:word32], 0x4020D0<32>) != 0<32> l00401150
+l00401150:
+	branch strcmp(Mem54[argv + dwLoc0C_158 * 4<32>:word32], 0x4020D4<32>) != 0<32> l0040119E
+l0040119E:
+	branch strcmp(Mem66[argv + dwLoc0C_158 * 4<32>:word32], 0x4020D8<32>) != 0<32> l004011EA
+l004011B9:
+	dwLoc0C_158 = dwLoc0C_158 + 1<32>
+	Mem89[&dwLoc1C:real64] = atof(Mem79[argv + dwLoc0C_158 * 4<32>:word32])
+	setParameter(eax_10, 2<32>, &dwLoc1C)
+l0040116B:
+	dwLoc0C_158 = dwLoc0C_158 + 1<32>
+	Mem112[&dwLoc14:real32] = CONVERT(atof(Mem103[argv + dwLoc0C_158 * 4<32>:word32]), real64, real32)
+	setParameter(eax_10, 1<32>, &dwLoc14)
+l0040111A:
+	dwLoc0C_158 = dwLoc0C_158 + 1<32>
+	Mem134[&dwLoc10:word32] = atoi(Mem126[argv + dwLoc0C_158 * 4<32>:word32])
+	setParameter(eax_10, 0<32>, &dwLoc10)
+l004011EA:
+l004010E7:
+	dwLoc0C_158 = dwLoc0C_158 + 1<32>
+
+

@@ -1015,7 +1015,7 @@ ui32 MPU_vTaskSuspendAll(ptr32 cpsr)
 	vTaskSuspendAll();
 	if (r0_n != 0x01)
 	{
-		Eq_n r0_n = __mrs(cpsr);
+		ui32 r0_n = __mrs(cpsr);
 		__msr(cpsr, r0_n | 0x01);
 		r0_n = r0_n | 0x01;
 	}
