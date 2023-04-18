@@ -120,6 +120,7 @@ namespace Reko.Environments.MacOS.Classic
 
         public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
         {
+            m.MStore(proc.Frame.FramePointer, proc.Frame.Continuation);
             var ptrA5World = EnsureA5Pointer();
             var a5 = proc.Frame.EnsureRegister(Registers.a5);
             m.Assign(a5, ptrA5World);

@@ -1,4 +1,4 @@
-bool memcpy(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+bool memcpy(word32 r0, word32 r1, word32 r2, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -6,74 +6,64 @@ bool memcpy(word32 r0, word32 r1, word32 r2, word32 r4, word32 r5, word32 r6, wo
 //      prvCopyDataFromQueue
 //      xQueueCRReceive
 //      xQueueCRReceiveFromISR
-// MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
-// LiveOut: Z lr r4 r5 r6 r7
-// Trashed: NZCV lr r0 r1 r2 r3 r4 r5 r6 r7
-// Preserved: sp
+// MayUse:  r0:[0..31] r1:[0..31] r2:[0..31]
+// LiveOut: Z r4 r5 r6 r7
+// Trashed: NZCV lr r0 r1 r2 r3 r4 r5 r6 r7 sp
+// Preserved:
 memcpy_entry:
 l0000A5C4:
-	word32 r5_147 = r0
+	word32 r5_142 = r0
 	branch r2 <=u 0xF<32> l0000A62C
 l0000A5CC:
 	branch (r1 | r0) << 30<i32> != 0<32> l0000A642
 l0000A642:
-	r5_147 = r0
+	r5_142 = r0
 l0000A5D4:
-	word32 r4_27 = r1
-	word32 r3_28 = r0
-	word32 r5_35 = r0 + ((r2 - 0x10<32> >>u 4<i32>) + 1<32> << 4<i32>)
+	word32 r4_28 = r1
+	word32 r3_29 = r0
+	word32 r5_36 = r0 + ((r2 - 0x10<32> >>u 4<i32>) + 1<32> << 4<i32>)
 l0000A5E4:
-	Mem40[r3_28:word32] = Mem37[r4_27:word32]
-	Mem42[r3_28 + 4<i32>:word32] = Mem40[r4_27 + 4<i32>:word32]
-	Mem44[r3_28 + 8<i32>:word32] = Mem42[r4_27 + 8<i32>:word32]
-	Mem46[r3_28 + 12<i32>:word32] = Mem44[r4_27 + 12<i32>:word32]
-	r3_28 = r3_28 + 0x10<32>
-	r4_27 = r4_27 + 0x10<32>
-	branch r5_35 != r3_28 l0000A5E4
+	Mem41[r3_29:word32] = Mem38[r4_28:word32]
+	Mem43[r3_29 + 4<i32>:word32] = Mem41[r4_28 + 4<i32>:word32]
+	Mem45[r3_29 + 8<i32>:word32] = Mem43[r4_28 + 8<i32>:word32]
+	Mem47[r3_29 + 12<i32>:word32] = Mem45[r4_28 + 12<i32>:word32]
+	r3_29 = r3_29 + 0x10<32>
+	r4_28 = r4_28 + 0x10<32>
+	branch r5_36 != r3_29 l0000A5E4
 l0000A5FC:
-	word32 r6_54 = r2 - 0x10<32> & 0xFFFFFFF0<32>
-	r5_147 = r0 + (r6_54 + 0x10<32>)
-	r1 = r1 + (r6_54 + 0x10<32>)
+	word32 r6_55 = r2 - 0x10<32> & 0xFFFFFFF0<32>
+	r5_142 = r0 + (r6_55 + 0x10<32>)
+	r1 = r1 + (r6_55 + 0x10<32>)
 	branch (r2 & 0xF<32>) <=u 3<32> l0000A646
 l0000A646:
 	r2 = r2 & 0xF<32>
 l0000A60C:
-	word32 r6_65 = (r2 & 0xF<32>) - 4<32>
-	word32 r3_66 = 0<32>
-	word32 r4_68 = (r6_65 >>u 2<i32>) + 1<32>
+	word32 r6_66 = (r2 & 0xF<32>) - 4<32>
+	word32 r3_67 = 0<32>
+	word32 r4_69 = (r6_66 >>u 2<i32>) + 1<32>
 l0000A616:
-	Mem77[r5_147 + r3_66:word32] = Mem74[r1 + r3_66:word32]
-	r3_66 = r3_66 + 4<32>
-	branch r3_66 != r4_68 << 2<i32> l0000A616
+	Mem78[r5_142 + r3_67:word32] = Mem75[r1 + r3_67:word32]
+	r3_67 = r3_67 + 4<32>
+	branch r3_67 != r4_69 << 2<i32> l0000A616
 l0000A620:
-	word32 r3_85 = (r6_65 & 0xFFFFFFFC<32>) + 4<32>
+	word32 r3_86 = (r6_66 & 0xFFFFFFFC<32>) + 4<32>
 	r2 = r2 & 3<32>
-	r1 = r1 + r3_85
-	r5_147 = r5_147 + r3_85
+	r1 = r1 + r3_86
+	r5_142 = r5_142 + r3_86
 l0000A62C:
 	branch r2 == 0<32> l0000A63C
 l0000A630:
-	word32 r3_102 = 0<32>
+	word32 r3_103 = 0<32>
 l0000A632:
-	Mem101[r5_147 + r3_102:byte] = Mem97[r1 + r3_102:byte]
-	r3_102 = r3_102 + 1<32>
-	branch r3_102 != r2 l0000A632
+	Mem102[r5_142 + r3_103:byte] = Mem98[r1 + r3_103:byte]
+	r3_103 = r3_103 + 1<32>
+	branch r3_103 != r2 l0000A632
 l0000A63C:
-	word32 r4_134
-	word32 r5_135
-	word32 r6_136
-	word32 r7_137
-	word32 lr_138
-	byte NZCV_143
-	call lr (retsize: 0;)
-		uses: lr:lr,r0:r0,r1:lr,r2:r2_132,r4:r4,r5:r5,r6:r6,r7:r7
-		defs: lr:lr_138,NZCV:NZCV_143,r4:r4_134,r5:r5_135,r6:r6_136,r7:r7_137
-	r4Out = r4_134
-	r5Out = r5_135
-	r6Out = r6_136
-	r7Out = r7_137
-	lrOut = lr_138
-	return SLICE(NZCV_143, bool, 2)
+	r4Out = r4_129
+	r5Out = r5_130
+	r6Out = r6_131
+	r7Out = r7_132
+	return Z_183
 memcpy_exit:
 
 

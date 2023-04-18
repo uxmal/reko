@@ -10,30 +10,30 @@ word64 _init(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11,
 _init_entry:
 	ptr64 fp
 l0000000000000560:
-	word64 r15_33 = fp - 320<i64>
-	word64 r1_37 = Mem34[0x0000000000002038<p64>:word64]
-	branch r1_37 == 0<64> l0000000000000590
+	word64 r15_34 = fp - 320<i64>
+	word64 r1_38 = Mem35[0x0000000000002038<p64>:word64]
+	branch r1_38 == 0<64> l0000000000000590
 l000000000000058E:
-	call r1_37 (retsize: 0;)
+	call r1_38 (retsize: 0;)
 		uses: r10:r10,r11:r11,r12:0x0000000000002000<p64>,r13:r13,r14:0x0000000000000590<p64>,r6:r6,r7:r7,r8:r8,r9:r9
-		defs: r15:r15_41
+		defs: r15:r15_42
 l0000000000000590:
-	word64 v17_57 = r15_33 + 208<i64>
-	word64 r6_78
-	word64 r8_80
-	word64 r9_81
-	word64 r10_82
-	word64 r12_84
-	word64 r13_85
-	call Mem34[r15_33 + 272<i64>:word64] (retsize: 0;)
-		uses: r10:Mem34[v17_57 + 32<i64>:word64],r11:Mem34[v17_57 + 40<i64>:word64],r12:Mem34[v17_57 + 48<i64>:word64],r13:Mem34[v17_57 + 56<i64>:word64],r14:Mem34[v17_57 + 64<i64>:word64],r6:Mem34[v17_57:word64],r7:Mem34[v17_57 + 8<i64>:word64],r8:Mem34[v17_57 + 16<i64>:word64],r9:Mem34[v17_57 + 24<i64>:word64]
-		defs: r10:r10_82,r12:r12_84,r13:r13_85,r6:r6_78,r8:r8_80,r9:r9_81
-	r8Out = r8_80
-	r9Out = r9_81
-	r10Out = r10_82
-	r12Out = r12_84
-	r13Out = r13_85
-	return r6_78
+	word64 v17_58 = r15_34 + 208<i64>
+	word64 r6_79
+	word64 r8_81
+	word64 r9_82
+	word64 r10_83
+	word64 r12_85
+	word64 r13_86
+	call Mem35[r15_34 + 272<i64>:word64] (retsize: 0;)
+		uses: r10:Mem35[v17_58 + 32<i64>:word64],r11:Mem35[v17_58 + 40<i64>:word64],r12:Mem35[v17_58 + 48<i64>:word64],r13:Mem35[v17_58 + 56<i64>:word64],r14:Mem35[v17_58 + 64<i64>:word64],r6:Mem35[v17_58:word64],r7:Mem35[v17_58 + 8<i64>:word64],r8:Mem35[v17_58 + 16<i64>:word64],r9:Mem35[v17_58 + 24<i64>:word64]
+		defs: r10:r10_83,r12:r12_85,r13:r13_86,r6:r6_79,r8:r8_81,r9:r9_82
+	r8Out = r8_81
+	r9Out = r9_82
+	r10Out = r10_83
+	r12Out = r12_85
+	r13Out = r13_86
+	return r6_79
 _init_exit:
 
 

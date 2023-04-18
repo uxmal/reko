@@ -156,6 +156,10 @@ namespace Reko.Analysis
                     // this statement and the callee.
                     callGraph.AddEdge(stmCur, procCallee);
                 }
+            } else if (ci.Callee is Identifier id &&
+                id == ssa.Procedure.Frame.Continuation)
+            {
+                return ReplaceCallToContinuationWithReturn();
             }
             foreach (var use in ci.Uses)
             {
@@ -171,6 +175,20 @@ namespace Reko.Analysis
                 changed |= c;
             }
             return (ci, changed);
+        }
+
+        private (Instruction, bool) ReplaceCallToContinuationWithReturn()
+        {
+            var stm = stmCur!;
+            var block = stm.Block;
+            var iCall = block.Statements.IndexOf(stm);
+            for (int i = block.Statements.Count - 1; i >= iCall; --i)
+            {
+                ssa.DeleteStatement(block.Statements[i]);
+            }
+            var ret = new ReturnInstruction();
+            block.Statements.Add(stm.Address, ret);
+            return (ret, true);
         }
 
         public (Instruction, bool) VisitComment(CodeComment comment)

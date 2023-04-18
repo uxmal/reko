@@ -1,17 +1,12 @@
-void _fini(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, word64 r14)
+void _fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r10:[0..63] r11:[0..63] r12:[0..63] r13:[0..63] r14:[0..63] r6:[0..63] r7:[0..63] r8:[0..63] r9:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: CC r1 r10 r11 r12 r13 r14 r4 r6 r7 r8 r9
-// Preserved: r15
+// Trashed: CC r1 r10 r11 r12 r13 r14 r15 r4 r6 r7 r8 r9
+// Preserved:
 _fini_entry:
-	ptr64 fp
 l0000000000000890:
-	word64 r4_68
-	call r14 (retsize: 0;)
-		uses: r1:fp - 160<i64>,r10:r10,r11:r11,r12:r12,r13:r13,r14:r14,r4:r4_68,r6:r6,r7:r7,r8:r8,r9:r9,Stack +0030:r6,Stack +0038:r7,Stack +0040:r8,Stack +0048:r9,Stack +0050:r10,Stack +0058:r11,Stack +0060:r12,Stack +0068:r13,Stack +0070:r14,Stack +0078:fp - 160<i64>
-		defs: r4:r4_68
 	return
 _fini_exit:
 

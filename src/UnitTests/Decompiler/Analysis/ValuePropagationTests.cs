@@ -1589,5 +1589,38 @@ SsaProcedureBuilder_exit:
 
             AssertStringsEqual(sExpected, m.Ssa);
         }
+
+        [Test]
+        public void VpCallContinuation()
+        {
+            string sExpected =
+            #region Expected
+@"r2: orig: r2
+    def:  r2 = %continuation
+%continuation:%continuation
+    uses: r2 = %continuation
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r2 = %continuation
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var r2 = m.Reg32("r2", 1);
+            var sidCont = m.Ssa.Identifiers.Add(m.Frame.Continuation, null, false);
+            m.Assign(r2, sidCont.Identifier);
+            m.Call(r2, 0);
+            m.Return();
+
+            RunValuePropagator();
+
+            AssertStringsEqual(sExpected, m.Ssa);
+        }
     }
 }

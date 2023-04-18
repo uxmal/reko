@@ -4,73 +4,57 @@
 
 #include "example.h"
 
-// 0000000000000600: void _start(Register word64 r14)
-void _start(word64 r14)
+// 0000000000000600: void _start()
+void _start()
 {
+	ptr64 %continuation;
 	Eq_n fp;
 	struct Eq_n * r15_n = fp - 0x00A0 & ~0x0F;
 	r15_n->bFFFFFF50 = 0x00;
-	r15_n->qwFFFFFFF0 = r14;
+	r15_n->ptrFFFFFFF0 = %continuation;
 	r15_n->ptrFFFFFFF8 = r15_n - 0x00B0;
 	__libc_start_main();
 }
 
-// 0000000000000648: void deregister_tm_clones(Register (ptr64 code) r14)
+// 0000000000000648: void deregister_tm_clones()
 // Called from:
 //      __do_global_dtors_aux
-void deregister_tm_clones(<anonymous> * r14)
+void deregister_tm_clones()
 {
-	if (8303 - &g_b2068 > g_qw08C8)
-	{
-		<anonymous> * r1_n = g_ptr2030;
-		if (r1_n != null)
-		{
-			word64 r14_n;
-			r1_n();
-		}
-		else
-			r14();
-	}
-	else
-		r14();
+	if (8303 - &g_b2068 <= g_qw08C8)
+		return;
+	<anonymous> * r1_n = g_ptr2030;
+	if (r1_n == null)
+		return;
+	r1_n();
 }
 
-// 0000000000000680: void register_tm_clones(Register (ptr64 code) r14)
+// 0000000000000680: void register_tm_clones()
 // Called from:
 //      frame_dummy
-void register_tm_clones(<anonymous> * r14)
+void register_tm_clones()
 {
 	byte * r3_n = &g_b2068 - &g_b2068;
-	if ((r3_n >> 3) + ((r3_n >> 3) >>u 63) >> 1 != 0x00)
-	{
-		<anonymous> * r1_n = g_ptr2050;
-		if (r1_n != null)
-		{
-			word64 r14_n;
-			r1_n();
-		}
-		else
-			r14();
-	}
-	else
-		r14();
+	if ((r3_n >> 3) + ((r3_n >> 3) >>u 63) >> 1 == 0x00)
+		return;
+	<anonymous> * r1_n = g_ptr2050;
+	if (r1_n == null)
+		return;
+	r1_n();
 }
 
-// 00000000000006C8: void __do_global_dtors_aux(Register word64 r11, Register word64 r12, Register word64 r13, Register (ptr64 code) r14)
-void __do_global_dtors_aux(word64 r11, word64 r12, word64 r13, <anonymous> * r14)
+// 00000000000006C8: void __do_global_dtors_aux()
+void __do_global_dtors_aux()
 {
 	if (g_b2068 == 0x00)
 	{
 		if (g_b08D0 != g_b2028)
 			__cxa_finalize();
-		deregister_tm_clones(&g_t070E);
+		deregister_tm_clones();
 		g_b2068 = 0x01;
 	}
-	word64 r4_n;
-	r14();
 }
 
-<anonymous> g_t070E = <code>; // 000000000000070E
 // 0000000000000720: void frame_dummy()
 void frame_dummy()
 {
@@ -81,14 +65,13 @@ void frame_dummy()
 	if (g_b08D8 == g_b1E18)
 	{
 l0000000000000740:
-		Mem17 = Mem10;
+		Mem18 = Mem11;
 		struct Eq_n * v9_n = r15_n + 264;
 		r13_n = v9_n->ptr0000;
-		<anonymous> * r14_n = v9_n->ptr0008;
 		r15_n = v9_n->ptr0010;
 		if (CC_n)
 		{
-			register_tm_clones(r14_n);
+			register_tm_clones();
 			return;
 		}
 	}
@@ -168,9 +151,8 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 	r4_n();
 }
 
-// 0000000000000888: void __libc_csu_fini(Register (ptr64 code) r14)
-void __libc_csu_fini(<anonymous> * r14)
+// 0000000000000888: void __libc_csu_fini()
+void __libc_csu_fini()
 {
-	r14();
 }
 

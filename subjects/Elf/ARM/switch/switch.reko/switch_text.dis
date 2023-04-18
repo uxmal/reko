@@ -9,7 +9,7 @@ void _start(word32 dwArg00, char * ptrArg04, void (* ptrArg08)(), void (* ptrArg
 _start_exit:
 _start_entry:
 l00008334:
-	__libc_start_main(Mem14[0x00008364<p32>:word32], dwArg00, &ptrArg04, Mem14[0x00008368<p32>:word32], ptrArg08, ptrArg0C, ptrArg10)
+	__libc_start_main(Mem16[0x00008364<p32>:word32], dwArg00, &ptrArg04, Mem16[0x00008368<p32>:word32], ptrArg08, ptrArg0C, ptrArg10)
 	abort()
 
 
@@ -25,16 +25,16 @@ word32 call_gmon_start()
 call_gmon_start_entry:
 	word32 r10
 l0000836C:
-	word32 r10_10 = 0x00008380<p32> + Mem6[0x00008394<p32>:word32]
-	word32 r3_11 = Mem6[r10_10 + Mem6[0x00008398<p32>:word32]:word32]
-	branch r3_11 != 0<32> l00008388
+	word32 r10_11 = 0x00008380<p32> + Mem7[0x00008394<p32>:word32]
+	word32 r3_12 = Mem7[r10_11 + Mem7[0x00008398<p32>:word32]:word32]
+	branch r3_12 != 0<32> l00008388
 l00008388:
-	word32 r10_16
-	word32 pc_18
-	call r3_11 (retsize: 0;)
-		uses: lr:0x00008390<p32>,pc:pc_18,r10:r10_10
-		defs: pc:pc_18,r10:r10_16
-	return r10_16
+	word32 r10_17
+	word32 pc_19
+	call r3_12 (retsize: 0;)
+		uses: lr:0x00008390<p32>,pc:pc_19,r10:r10_11
+		defs: pc:pc_19,r10:r10_17
+	return r10_17
 l00008384_1:
 	return r10
 call_gmon_start_exit:
@@ -51,23 +51,23 @@ void __do_global_dtors_aux()
 // Preserved: sp
 __do_global_dtors_aux_entry:
 l0000839C:
-	word32 r5_10 = Mem8[0x000083F4<p32>:word32]
-	branch CONVERT(Mem8[r5_10:byte], byte, word32) == 0<32> l000083B0
+	word32 r5_11 = Mem9[0x000083F4<p32>:word32]
+	branch CONVERT(Mem9[r5_11:byte], byte, word32) == 0<32> l000083B0
 l000083B0:
-	word32 r4_14 = Mem8[0x000083F8<p32>:word32]
-	word32 r2_16 = Mem8[Mem8[r4_14:word32]:word32]
-	branch r2_16 == 0<32> l000083E8
+	word32 r4_15 = Mem9[0x000083F8<p32>:word32]
+	word32 r2_17 = Mem9[Mem9[r4_15:word32]:word32]
+	branch r2_17 == 0<32> l000083E8
 l000083E8:
-	Mem21[r5_10:byte] = 1<8>
+	Mem22[r5_11:byte] = 1<8>
 	return
 l000083C4:
-	word32 r3_26 = Mem8[r4_14:word32]
-	Mem28[r4_14:word32] = r3_26 + 4<32>
-	word32 pc_34
-	word32 r2_36
-	call r2_16 (retsize: 0;)
-		uses: lr:0x000083D8<p32>,pc:pc_34,r2:r2_36,r3:r3_26 + 4<32>,r4:r4_14,r5:r5_10
-		defs: pc:pc_34,r2:r2_36
+	word32 r3_27 = Mem9[r4_15:word32]
+	Mem29[r4_15:word32] = r3_27 + 4<32>
+	word32 pc_35
+	word32 r2_37
+	call r2_17 (retsize: 0;)
+		uses: lr:0x000083D8<p32>,pc:pc_35,r2:r2_37,r3:r3_27 + 4<32>,r4:r4_15,r5:r5_11
+		defs: pc:pc_35,r2:r2_37
 	return
 l000083AC_1:
 	return
@@ -79,7 +79,7 @@ void call___do_global_dtors_aux()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: lr
 // Preserved: sp
 call___do_global_dtors_aux_entry:
 l000083FC:
@@ -94,7 +94,7 @@ void frame_dummy()
 //      _init
 // MayUse: 
 // LiveOut:
-// Trashed: NZCV r0 r3
+// Trashed: NZCV lr r0 r3
 // Preserved: pc sp
 frame_dummy_entry:
 l00008404:
@@ -116,7 +116,7 @@ void call_frame_dummy()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: lr
 // Preserved: sp
 call_frame_dummy_entry:
 l0000842C:
@@ -132,7 +132,7 @@ word32 frobulate(word32 r0, word32 dwArg00)
 //      switcheroo
 // MayUse:  r0:[0..31] Stack +0000:[0..31]
 // LiveOut: fp sp
-// Trashed: NZCV fp ip r1 r2 r3 sp
+// Trashed: NZCV fp ip lr r1 r2 r3 sp
 // Preserved:
 frobulate_entry:
 l00008434:
@@ -148,17 +148,17 @@ word32 bazulate(word32 r0, word32 r1)
 //      switcheroo
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: fp
-// Trashed: NZCV fp ip r1 r2 r3 r4 sp
+// Trashed: NZCV fp ip lr r1 r2 r3 r4 sp
 // Preserved:
 bazulate_entry:
 l00008470:
-	word32 fp_24 = frobulate(r0, r1)
-	word32 r0_38 = __divsi3(r0 + r1, r0)
-	word32 sp_29 = <invalid>
-	word32 r0_47 = Mem19[fp_24 - 24<i32>:word32]
-	word32 fp_48 = frobulate(r0_47, Mem19[sp_29:word32])
-	__divsi3(r0_38, r0_47)
-	return Mem19[fp_48:word32]
+	word32 fp_25 = frobulate(r0, r1)
+	word32 r0_41 = __divsi3(r0 + r1, r0)
+	word32 sp_31 = <invalid>
+	word32 r0_50 = Mem20[fp_25 - 24<i32>:word32]
+	word32 fp_51 = frobulate(r0_50, Mem20[sp_31:word32])
+	__divsi3(r0_41, r0_50)
+	return Mem20[fp_51:word32]
 bazulate_exit:
 
 
@@ -169,11 +169,11 @@ word32 switcheroo(word32 r0)
 //      main
 // MayUse:  r0:[0..31]
 // LiveOut: fp
-// Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
+// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 sp
 // Preserved:
 switcheroo_entry:
 l000084D4:
-	word32 fp_36
+	word32 fp_38
 	branch r0 >u 6<32> l000084F4
 l000084F4:
 l000084F0_1:
@@ -181,13 +181,13 @@ l000084F0_1:
 l00008534:
 	bazulate(r0, r0)
 l00008520:
-	fp_36 = frobulate(r0 - 3<32>, r0)
+	fp_38 = frobulate(r0 - 3<32>, r0)
 l00008540:
-	fp_36 = bazulate(0<32>, 0<32>)
+	fp_38 = bazulate(0<32>, 0<32>)
 l00008514:
-	fp_36 = frobulate(r0, r0)
+	fp_38 = frobulate(r0, r0)
 l0000854C:
-	return Mem15[fp_36 - -4<i32>:word32]
+	return Mem16[fp_38 - -4<i32>:word32]
 switcheroo_exit:
 
 
@@ -196,7 +196,7 @@ void main(word32 r0)
 
 // MayUse:  r0:[0..31]
 // LiveOut:
-// Trashed: NZCV fp ip r0 r1 r2 r3 r4 sp
+// Trashed: NZCV fp ip lr r0 r1 r2 r3 r4 sp
 // Preserved:
 main_entry:
 l0000855C:
@@ -213,18 +213,18 @@ word32 __divsi3(word32 r0, word32 r1)
 //      bazulate
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: r0
-// Trashed: NZCV ip r0 r1 r2 r3
+// Trashed: NZCV ip lr r0 r1 r2 r3
 // Preserved: sp
 __divsi3_entry:
 l00008588:
-	word32 r1_10
-	word32 ip_5 = r0 ^ r1
-	word32 r3_135 = 1<32>
-	word32 r2_104 = 0<32>
-	r1_10 = r1
+	word32 r1_104
+	word32 ip_7 = r0 ^ r1
+	word32 r3_137 = 1<32>
+	word32 r2_106 = 0<32>
+	r1_104 = r1
 	branch r1 >= 0<32> l0000859C
 l00008598_1:
-	r1_10 = 0<32> - r1
+	r1_104 = 0<32> - r1
 l0000859C:
 	branch r1 == 0<32> l00008628
 l00008628:
@@ -235,82 +235,82 @@ l000085A0:
 l000085A4_1:
 	r0 = 0<32> - r0
 l000085A8:
-	branch r0 <u r1_10 l00008618
+	branch r0 <u r1_104 l00008618
 l000085B0:
-	bool v21_154 = r1_10 <u 0x10000000<32>
-	bool v18_151 = r1_10 >=u 0x10000000<32>
-	branch r1_10 >=u 0x10000000<32> l000085B8
+	bool v21_156 = r1_104 <u 0x10000000<32>
+	bool v18_153 = r1_104 >=u 0x10000000<32>
+	branch r1_104 >=u 0x10000000<32> l000085B8
 l000085B4_1:
-	v21_154 = r1_10 <u r0
-	v18_151 = r1_10 >=u r0
+	v21_156 = r1_104 <u r0
+	v18_153 = r1_104 >=u r0
 l000085B8:
-	branch v18_151 l000085C0
+	branch v18_153 l000085C0
 l000085B8_1:
-	r1_10 = r1_10 << 4<i32>
+	r1_104 = r1_104 << 4<i32>
 l000085BC_1:
-	r3_135 = r3_135 << 4<i32>
+	r3_137 = r3_137 << 4<i32>
 l000085C0:
-	branch v21_154 l000085B0
+	branch v21_156 l000085B0
 l000085C4:
-	bool v27_160 = r1_10 <u 0x80000000<32>
-	bool v24_157 = r1_10 >=u 0x80000000<32>
-	branch r1_10 >=u 0x80000000<32> l000085CC
+	bool v27_162 = r1_104 <u 0x80000000<32>
+	bool v24_159 = r1_104 >=u 0x80000000<32>
+	branch r1_104 >=u 0x80000000<32> l000085CC
 l000085C8_1:
-	v27_160 = r1_10 <u r0
-	v24_157 = r1_10 >=u r0
+	v27_162 = r1_104 <u r0
+	v24_159 = r1_104 >=u r0
 l000085CC:
-	branch v24_157 l000085D4
+	branch v24_159 l000085D4
 l000085CC_1:
-	r1_10 = r1_10 << 1<i32>
+	r1_104 = r1_104 << 1<i32>
 l000085D0_1:
-	r3_135 = r3_135 << 1<i32>
+	r3_137 = r3_137 << 1<i32>
 l000085D4:
-	branch v27_160 l000085C4
+	branch v27_162 l000085C4
 l000085D8:
-	branch r0 <u r1_10 l000085E4
+	branch r0 <u r1_104 l000085E4
 l000085DC_1:
-	r0 = r0 - r1_10
+	r0 = r0 - r1_104
 l000085E0_1:
-	r2_104 = r2_104 | r3_135
+	r2_106 = r2_106 | r3_137
 l000085E4:
-	branch r0 <u r1_10 >> 1<i32> l000085F0
+	branch r0 <u r1_104 >> 1<i32> l000085F0
 l000085E8_1:
-	r0 = r0 - (r1_10 >> 1<i32>)
+	r0 = r0 - (r1_104 >> 1<i32>)
 l000085EC_1:
-	r2_104 = r2_104 | r3_135 >> 1<i32>
+	r2_106 = r2_106 | r3_137 >> 1<i32>
 l000085F0:
-	branch r0 <u r1_10 >> 2<i32> l000085FC
+	branch r0 <u r1_104 >> 2<i32> l000085FC
 l000085F4_1:
-	r0 = r0 - (r1_10 >> 2<i32>)
+	r0 = r0 - (r1_104 >> 2<i32>)
 l000085F8_1:
-	r2_104 = r2_104 | r3_135 >> 2<i32>
+	r2_106 = r2_106 | r3_137 >> 2<i32>
 l000085FC:
-	branch r0 <u r1_10 >> 3<i32> l00008608
+	branch r0 <u r1_104 >> 3<i32> l00008608
 l00008600_1:
-	r0 = r0 - (r1_10 >> 3<i32>)
+	r0 = r0 - (r1_104 >> 3<i32>)
 l00008604_1:
-	r2_104 = r2_104 | r3_135 >> 3<i32>
+	r2_106 = r2_106 | r3_137 >> 3<i32>
 l00008608:
-	bool v33_166 = r0 != 0<32>
-	bool v30_163 = r0 == 0<32>
+	bool v33_168 = r0 != 0<32>
+	bool v30_165 = r0 == 0<32>
 	branch r0 == 0<32> l00008610
 l0000860C_1:
-	r3_135 = r3_135 >>u 4<i32>
-	v33_166 = r3_135 != 0<32>
-	v30_163 = r3_135 == 0<32>
+	r3_137 = r3_137 >>u 4<i32>
+	v33_168 = r3_137 != 0<32>
+	v30_165 = r3_137 == 0<32>
 l00008610:
-	branch v30_163 l00008614
+	branch v30_165 l00008614
 l00008610_1:
-	r1_10 = r1_10 >>u 4<i32>
+	r1_104 = r1_104 >>u 4<i32>
 l00008614:
-	branch v33_166 l000085D8
+	branch v33_168 l000085D8
 l00008618:
-	word32 r0_110 = r2_104
-	branch ip_5 >= 0<32> l00008624
+	word32 r0_112 = r2_106
+	branch ip_7 >= 0<32> l00008624
 l00008620_1:
-	r0_110 = 0<32> - r2_104
+	r0_112 = 0<32> - r2_106
 l00008624:
-	return r0_110
+	return r0_112
 __divsi3_exit:
 
 
@@ -321,7 +321,7 @@ void __div0(word32 r0)
 //      __divsi3
 // MayUse:  r0:[0..31]
 // LiveOut:
-// Trashed: NZCV
+// Trashed: NZCV lr
 // Preserved: r1 sp
 __div0_entry:
 l00008638:
@@ -344,14 +344,14 @@ void __libc_csu_init()
 // Preserved: sp
 __libc_csu_init_entry:
 l00008654:
-	word32 r10_20
-	word32 r4_23 = _init(out r10_20)
-	word32 r1_30 = Mem12[r10_20 + Mem12[0x000086A8<p32>:word32]:word32]
-	word32 r3_32 = Mem12[r10_20 + Mem12[0x000086AC<p32>:word32]:word32] - r1_30
-	branch r4_23 <u r3_32 >> 2<i32> l00008684
+	word32 r10_21
+	word32 r4_24 = _init(out r10_21)
+	word32 r1_31 = Mem13[r10_21 + Mem13[0x000086A8<p32>:word32]:word32]
+	word32 r3_33 = Mem13[r10_21 + Mem13[0x000086AC<p32>:word32]:word32] - r1_31
+	branch r4_24 <u r3_33 >> 2<i32> l00008684
 l00008684:
-	call Mem12[r1_30 + (r4_23 << 2<i32>):word32] (retsize: 0;)
-		uses: lr:0x00008694<p32>,r10:r10_20,r4:r4_23,r5:r3_32,r6:r1_30
+	call Mem13[r1_31 + (r4_24 << 2<i32>):word32] (retsize: 0;)
+		uses: lr:0x00008694<p32>,r10:r10_21,r4:r4_24,r5:r3_33,r6:r1_31
 	return
 l00008680_1:
 	return
@@ -367,18 +367,18 @@ void __libc_csu_fini()
 // Preserved: sp
 __libc_csu_fini_entry:
 l000086B0:
-	word32 r10_15 = 0x000086C8<p32> + Mem10[0x00008700<p32>:word32]
-	word32 r1_16 = Mem10[r10_15 + Mem10[0x00008704<p32>:word32]:word32]
-	word32 r3_18 = Mem10[r10_15 + Mem10[0x00008708<p32>:word32]:word32] - r1_16
-	word32 r4_21 = (r3_18 >> 2<i32>) - 1<32>
-	branch r3_18 >> 2<i32> == 0<32> l000086F8
+	word32 r10_16 = 0x000086C8<p32> + Mem11[0x00008700<p32>:word32]
+	word32 r1_17 = Mem11[r10_16 + Mem11[0x00008704<p32>:word32]:word32]
+	word32 r3_19 = Mem11[r10_16 + Mem11[0x00008708<p32>:word32]:word32] - r1_17
+	word32 r4_22 = (r3_19 >> 2<i32>) - 1<32>
+	branch r3_19 >> 2<i32> == 0<32> l000086F8
 l000086F8:
 l000086FC_thunk__fini:
 	_fini()
 	return
 l000086E0:
-	call Mem10[r1_16 + (r4_21 << 2<i32>):word32] (retsize: 0;)
-		uses: lr:0x000086EC<p32>,r10:r10_15,r4:r4_21,r5:r1_16
+	call Mem11[r1_17 + (r4_22 << 2<i32>):word32] (retsize: 0;)
+		uses: lr:0x000086EC<p32>,r10:r10_16,r4:r4_22,r5:r1_17
 	return
 __libc_csu_fini_exit:
 
@@ -395,17 +395,17 @@ word32 __do_global_ctors_aux()
 __do_global_ctors_aux_entry:
 	word32 r4
 l0000870C:
-	word32 r3_8 = Mem6[0x00008740<p32>:word32]
-	word32 r2_9 = Mem6[r3_8 - 4<i32>:word32]
-	branch r2_9 != 1<32> l00008724
+	word32 r3_9 = Mem7[0x00008740<p32>:word32]
+	word32 r2_10 = Mem7[r3_9 - 4<i32>:word32]
+	branch r2_10 != 1<32> l00008724
 l00008724:
-	word32 r4_16
-	word32 r3_18
-	word32 pc_19
-	call r2_9 (retsize: 0;)
-		uses: lr:0x00008730<p32>,pc:pc_19,r3:r3_18,r4:r3_8 - 4<32>
-		defs: pc:pc_19,r3:r3_18,r4:r4_16
-	return r4_16
+	word32 r4_17
+	word32 r3_19
+	word32 pc_20
+	call r2_10 (retsize: 0;)
+		uses: lr:0x00008730<p32>,pc:pc_20,r3:r3_19,r4:r3_9 - 4<32>
+		defs: pc:pc_20,r3:r3_19,r4:r4_17
+	return r4_17
 l00008720_1:
 	return r4
 __do_global_ctors_aux_exit:
@@ -416,7 +416,7 @@ void call___do_global_ctors_aux()
 
 // MayUse: 
 // LiveOut:
-// Trashed:
+// Trashed: lr
 // Preserved: sp
 call___do_global_ctors_aux_entry:
 l00008744:

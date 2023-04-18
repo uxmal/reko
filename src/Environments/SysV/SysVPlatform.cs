@@ -160,6 +160,12 @@ namespace Reko.Environments.SysV
         {
             switch (Architecture.Name)
             {
+            case "arm":
+            case "arm-thumb":
+                m.Assign(
+                    proc.Frame.EnsureRegister(Architecture.GetRegister("lr")!),
+                    proc.Frame.Continuation);
+                break;
             case "mips-be-32":
             case "mips-le-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
@@ -177,6 +183,10 @@ namespace Reko.Environments.SysV
                     0);
                 break;
             case "zSeries":
+                m.Assign(
+                    proc.Frame.EnsureRegister(Architecture.GetRegister("r14")!),
+                    proc.Frame.Continuation);
+
                 // Stack parameters are passed in starting at offset +160 from the 
                 // stack; everything at lower addresses is local to the called procedure's
                 // frame.

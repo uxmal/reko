@@ -1,28 +1,29 @@
-void _start(word64 r14)
+void _start()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r14:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved: r15
 // Terminates process
 _start_exit:
 _start_entry:
+	ptr64 %continuation
 	ptr64 fp
 l0000000000000600:
-	word64 r15_7 = fp - 160<i64> & 0xFFFFFFFFFFFFFFF0<64>
-	Mem10[r15_7 - 176<i64>:byte] = 0<8>
-	Mem14[r15_7 - 16<i64>:word64] = r14
-	Mem16[r15_7 - 8<i64>:word64] = r15_7 - 176<i64>
+	word64 r15_9 = fp - 160<i64> & 0xFFFFFFFFFFFFFFF0<64>
+	Mem12[r15_9 - 176<i64>:byte] = 0<8>
+	Mem15[r15_9 - 16<i64>:word64] = %continuation
+	Mem17[r15_9 - 8<i64>:word64] = r15_9 - 176<i64>
 	__libc_start_main()
 
 
-void deregister_tm_clones(word64 r14)
+void deregister_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      __do_global_dtors_aux
-// MayUse:  r14:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: CC r1 r14 r2 r5
 // Preserved: r15
@@ -30,80 +31,63 @@ deregister_tm_clones_entry:
 l0000000000000648:
 	branch 0x000000000000206F<p64> - 0x0000000000002068<p64> > Mem0[0x00000000000008C8<p64>:word64] l000000000000066A
 l000000000000066A:
-	word64 r1_11 = Mem0[0x0000000000002030<p64>:word64]
-	branch r1_11 != 0<64> l000000000000067C
+	word64 r1_13 = Mem0[0x0000000000002030<p64>:word64]
+	branch r1_13 != 0<64> l000000000000067C
 l000000000000067C:
-	word64 r14_18
-	call r1_11 (retsize: 0;)
-		uses: r14:r14_18
-		defs: r14:r14_18
+	call r1_13 (retsize: 0;)
 	return
 l000000000000067A_1:
-	call r14 (retsize: 0;)
-		uses: r14:r14
 	return
 l0000000000000668_1:
-	call r14 (retsize: 0;)
-		uses: r14:r14
 	return
 deregister_tm_clones_exit:
 
 
-void register_tm_clones(word64 r14)
+void register_tm_clones()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      frame_dummy
-// MayUse:  r14:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: CC r1 r14 r2 r3
 // Preserved: r15
 register_tm_clones_entry:
 l0000000000000680:
-	word64 r3_5 = 0x0000000000002068<p64> - 0x0000000000002068<p64>
-	branch (r3_5 >> 3<i32>) + ((r3_5 >> 3<i32>) >>u 63<i32>) >> 1<i32> != 0<64> l00000000000006A8
+	word64 r3_7 = 0x0000000000002068<p64> - 0x0000000000002068<p64>
+	branch (r3_7 >> 3<i32>) + ((r3_7 >> 3<i32>) >>u 63<i32>) >> 1<i32> != 0<64> l00000000000006A8
 l00000000000006A8:
-	word64 r1_13 = Mem0[0x0000000000002050<p64>:word64]
-	branch r1_13 != 0<64> l00000000000006BA
+	word64 r1_15 = Mem0[0x0000000000002050<p64>:word64]
+	branch r1_15 != 0<64> l00000000000006BA
 l00000000000006BA:
-	word64 r14_20
-	call r1_13 (retsize: 0;)
-		uses: r14:r14_20,r2:0x0000000000002068<p64>
-		defs: r14:r14_20
+	call r1_15 (retsize: 0;)
+		uses: r2:0x0000000000002068<p64>
 	return
 l00000000000006B8_1:
-	call r14 (retsize: 0;)
-		uses: r14:r14
 	return
 l00000000000006A6_1:
-	call r14 (retsize: 0;)
-		uses: r14:r14
 	return
 register_tm_clones_exit:
 
 
-void __do_global_dtors_aux(word64 r11, word64 r12, word64 r13, word64 r14)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r11:[0..63] r12:[0..63] r13:[0..63] r14:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: CC r1 r11 r12 r13 r14 r2 r4 r5
-// Preserved: r15
+// Trashed: CC r1 r11 r12 r13 r14 r15 r2 r4 r5
+// Preserved:
 __do_global_dtors_aux_entry:
 l00000000000006C8:
-	branch Mem16[0x0000000000002068<p64>:byte] != 0<8> l0000000000000712
+	branch Mem17[0x0000000000002068<p64>:byte] != 0<8> l0000000000000712
 l00000000000006E6:
-	branch Mem16[0x00000000000008D0<p64>:byte] == Mem16[0x0000000000002028<p64>:byte] l0000000000000708
+	branch Mem17[0x00000000000008D0<p64>:byte] == Mem17[0x0000000000002028<p64>:byte] l0000000000000708
 l00000000000006F6:
 	__cxa_finalize()
 l0000000000000708:
-	deregister_tm_clones(0x000000000000070E<p64>)
-	Mem34[0x0000000000002068<p64>:byte] = 1<8>
+	deregister_tm_clones()
+	Mem36[0x0000000000002068<p64>:byte] = 1<8>
 l0000000000000712:
-	word64 r4_56
-	call r14 (retsize: 0;)
-		uses: r11:r11,r12:r12,r13:r13,r14:r14,r4:r4_56
-		defs: r4:r4_56
 	return
 __do_global_dtors_aux_exit:
 
@@ -118,29 +102,28 @@ void frame_dummy()
 frame_dummy_entry:
 	ptr64 fp
 l0000000000000720:
-	word64 r13_11 = 0x00000000000008D8<p64>
-	word64 r15_12 = fp - 320<i64>
-	byte CC_43 = Mem10[0x00000000000008D8<p64>:byte] > Mem10[0x0000000000001E18<p64>:byte]
-	branch Mem10[0x00000000000008D8<p64>:byte] != Mem10[0x0000000000001E18<p64>:byte] l000000000000074C
+	word64 r13_12 = 0x00000000000008D8<p64>
+	word64 r15_13 = fp - 320<i64>
+	byte CC_44 = Mem11[0x00000000000008D8<p64>:byte] > Mem11[0x0000000000001E18<p64>:byte]
+	branch Mem11[0x00000000000008D8<p64>:byte] != Mem11[0x0000000000001E18<p64>:byte] l000000000000074C
 l0000000000000740:
-	Mem17 = Mem10 (alias)
-	word64 v9_16 = r15_12 + 264<i64>
-	r13_11 = Mem17[v9_16:word64]
-	word64 r14_20 = Mem17[v9_16 + 8<i64>:word64]
-	r15_12 = Mem17[v9_16 + 16<i64>:word64]
-	branch CC_43 l0000000000000680
+	Mem18 = Mem11 (alias)
+	word64 v9_17 = r15_13 + 264<i64>
+	r13_12 = Mem18[v9_17:word64]
+	r15_13 = Mem18[v9_17 + 16<i64>:word64]
+	branch CC_44 l0000000000000680
 l0000000000000746_thunk_register_tm_clones:
-	register_tm_clones(r14_20)
+	register_tm_clones()
 	return
 frame_dummy_exit:
 l000000000000074C:
-	word64 r1_31 = Mem10[0x0000000000002048<p64>:word64]
-	CC_43 = r1_31 > 0<64>
-	branch r1_31 == 0<64> l0000000000000740
+	word64 r1_32 = Mem11[0x0000000000002048<p64>:word64]
+	CC_44 = r1_32 > 0<64>
+	branch r1_32 == 0<64> l0000000000000740
 l0000000000000760:
-	call r1_31 (retsize: 0;)
-		uses: r13:r13_35,r14:0x0000000000000762<p64>
-		defs: CC:CC_43,r15:r15_37
+	call r1_32 (retsize: 0;)
+		uses: r13:r13_36,r14:0x0000000000000762<p64>
+		defs: CC:CC_44,r15:r15_38
 
 
 word64 fib(word64 r2, ptr64 & r10Out, ptr64 & r11Out)
@@ -156,31 +139,31 @@ word64 fib(word64 r2, ptr64 & r10Out, ptr64 & r11Out)
 fib_entry:
 	ptr64 fp
 l0000000000000768:
-	word64 r1_75
-	word64 r11_21 = fp - 328<i64>
-	word32 dwLocA4_114 = SLICE(r2, word32, 0)
+	word64 r1_76
+	word64 r11_22 = fp - 328<i64>
+	word32 dwLocA4_115 = SLICE(r2, word32, 0)
 	branch r2 >u 1<64> l0000000000000792
 l0000000000000792:
-	word64 r11_40
-	word64 r10_120
-	fib(CONVERT(dwLocA4_114 - 1<i32>, word32, int64), out r10_120, out r11_40)
-	word64 r10_62
-	word64 r2_67 = fib(CONVERT(Mem24[r11_40 + 164<i64>:word32] - 2<i32>, word32, int64), out r10_62, out r11_21)
-	r1_75 = SEQ(SLICE(r2_67, word32, 32), SLICE(r2_67 + r10_62, int32, 0))
+	word64 r11_41
+	word64 r10_121
+	fib(CONVERT(dwLocA4_115 - 1<i32>, word32, int64), out r10_121, out r11_41)
+	word64 r10_63
+	word64 r2_68 = fib(CONVERT(Mem25[r11_41 + 164<i64>:word32] - 2<i32>, word32, int64), out r10_63, out r11_22)
+	r1_76 = SEQ(SLICE(r2_68, word32, 32), SLICE(r2_68 + r10_63, int32, 0))
 l000000000000078A:
-	r1_75 = r2
+	r1_76 = r2
 l00000000000007CA:
-	word64 v29_86 = r11_21 + 248<i64>
-	word64 r1_81 = CONVERT(SLICE(r1_75, word32, 0), word32, int64)
-	word64 r10_99
-	word64 r11_100
-	word64 r2_104
-	call Mem24[r11_21 + 280<i64>:word64] (retsize: 0;)
-		uses: r1:r1_81,r10:Mem24[v29_86:word64],r11:Mem24[v29_86 + 8<i64>:word64],r12:Mem24[v29_86 + 16<i64>:word64],r13:Mem24[v29_86 + 24<i64>:word64],r14:Mem24[v29_86 + 32<i64>:word64],r2:r1_81
-		defs: r10:r10_99,r11:r11_100,r2:r2_104
-	r10Out = r10_99
-	r11Out = r11_100
-	return r2_104
+	word64 v29_87 = r11_22 + 248<i64>
+	word64 r1_82 = CONVERT(SLICE(r1_76, word32, 0), word32, int64)
+	word64 r10_100
+	word64 r11_101
+	word64 r2_105
+	call Mem25[r11_22 + 280<i64>:word64] (retsize: 0;)
+		uses: r1:r1_82,r10:Mem25[v29_87:word64],r11:Mem25[v29_87 + 8<i64>:word64],r12:Mem25[v29_87 + 16<i64>:word64],r13:Mem25[v29_87 + 24<i64>:word64],r14:Mem25[v29_87 + 32<i64>:word64],r2:r1_82
+		defs: r10:r10_100,r11:r11_101,r2:r2_105
+	r10Out = r10_100
+	r11Out = r11_101
+	return r2_105
 fib_exit:
 
 
@@ -193,11 +176,11 @@ void main(word64 r3)
 // Preserved: r15
 main_entry:
 l00000000000007E0:
-	word64 r11_29
-	word64 r10_70
-	word64 r1_38 = CONVERT(SLICE(fib(0xA<64>, out r10_70, out r11_29), word32, 0), word32, int64)
-	call Mem24[r11_29 + 288<i64>:word64] (retsize: 0;)
-		uses: r1:r1_38,r11:Mem24[r11_29 + 264<i64>:word64],r12:Mem24[r11_29 + 272<i64>:word64],r13:Mem24[r11_29 + 280<i64>:word64],r14:Mem24[r11_29 + 288<i64>:word64],r2:r1_38,r3:r3
+	word64 r11_30
+	word64 r10_71
+	word64 r1_39 = CONVERT(SLICE(fib(0xA<64>, out r10_71, out r11_30), word32, 0), word32, int64)
+	call Mem25[r11_30 + 288<i64>:word64] (retsize: 0;)
+		uses: r1:r1_39,r11:Mem25[r11_30 + 264<i64>:word64],r12:Mem25[r11_30 + 272<i64>:word64],r13:Mem25[r11_30 + 280<i64>:word64],r14:Mem25[r11_30 + 288<i64>:word64],r2:r1_39,r3:r3
 	return
 main_exit:
 
@@ -212,45 +195,43 @@ void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word
 __libc_csu_init_entry:
 	ptr64 fp
 l0000000000000820:
-	word64 r11_53 = 0x0000000000001E10<p64> - 0x0000000000001E08<p64>
-	word64 r15_29 = fp - 320<i64>
-	word64 r8_48
-	word64 r9_49
-	word64 r10_40
-	word64 r12_42
-	word64 r13_43
-	word64 r6_113 = _init(r6, r7, r4, r3, r2, r11, r13, out r8_48, out r9_49, out r10_40, out r12_42, out r13_43)
-	word64 r11_54 = r11_53 >> 3<i32>
-	branch r11_53 >> 3<i32> == 0<64> l0000000000000876
+	word64 r11_54 = 0x0000000000001E10<p64> - 0x0000000000001E08<p64>
+	word64 r15_30 = fp - 320<i64>
+	word64 r8_49
+	word64 r9_50
+	word64 r10_41
+	word64 r12_43
+	word64 r13_44
+	word64 r6_114 = _init(r6, r7, r4, r3, r2, r11, r13, out r8_49, out r9_50, out r10_41, out r12_43, out r13_44)
+	word64 r11_55 = r11_54 >> 3<i32>
+	branch r11_54 >> 3<i32> == 0<64> l0000000000000876
 l0000000000000856:
-	word64 r7_56 = 0x0000000000001E08<p64>
+	word64 r7_57 = 0x0000000000001E08<p64>
 l000000000000085A:
-	word64 r11_79
-	call Mem28[r7_56:word64] (retsize: 0;)
-		uses: r10:r10_64,r11:r11_69,r12:r12_70,r13:r13_71,r14:0x0000000000000872<p64>,r2:r10_64,r3:r9_62,r4:r8_60,r6:r6_72,r7:r7_57 + 8<i64>,r8:r8_60,r9:r9_62
-		defs: r10:r10_78,r11:r11_79,r12:r12_80,r13:r13_81,r15:r15_74,r2:r2_83,r3:r3_84,r6:r6_87,r7:r7_75,r8:r8_76,r9:r9_77
-	r11_54 = r11_79 - 1<i64>
-	branch r11_79 != 1<64> l000000000000085A
+	word64 r11_80
+	call Mem29[r7_57:word64] (retsize: 0;)
+		uses: r10:r10_65,r11:r11_70,r12:r12_71,r13:r13_72,r14:0x0000000000000872<p64>,r2:r10_65,r3:r9_63,r4:r8_61,r6:r6_73,r7:r7_58 + 8<i64>,r8:r8_61,r9:r9_63
+		defs: r10:r10_79,r11:r11_80,r12:r12_81,r13:r13_82,r15:r15_75,r2:r2_84,r3:r3_85,r6:r6_88,r7:r7_76,r8:r8_77,r9:r9_78
+	r11_55 = r11_80 - 1<i64>
+	branch r11_80 != 1<64> l000000000000085A
 l0000000000000876:
-	word64 v18_93 = r15_29 + 216<i64>
-	word64 r4_92 = Mem28[r15_29 + 272<i64>:word64]
-	call r4_92 (retsize: 0;)
-		uses: r10:Mem28[v18_93 + 24<i64>:word64],r11:Mem28[v18_93 + 32<i64>:word64],r12:Mem28[v18_93 + 40<i64>:word64],r13:Mem28[v18_93 + 48<i64>:word64],r14:Mem28[v18_93 + 56<i64>:word64],r2:r2_111,r3:r3_112,r4:r4_92,r6:r6_113,r7:Mem28[v18_93:word64],r8:Mem28[v18_93 + 8<i64>:word64],r9:Mem28[v18_93 + 16<i64>:word64]
+	word64 v18_94 = r15_30 + 216<i64>
+	word64 r4_93 = Mem29[r15_30 + 272<i64>:word64]
+	call r4_93 (retsize: 0;)
+		uses: r10:Mem29[v18_94 + 24<i64>:word64],r11:Mem29[v18_94 + 32<i64>:word64],r12:Mem29[v18_94 + 40<i64>:word64],r13:Mem29[v18_94 + 48<i64>:word64],r14:Mem29[v18_94 + 56<i64>:word64],r2:r2_112,r3:r3_113,r4:r4_93,r6:r6_114,r7:Mem29[v18_94:word64],r8:Mem29[v18_94 + 8<i64>:word64],r9:Mem29[v18_94 + 16<i64>:word64]
 	return
 __libc_csu_init_exit:
 
 
-void __libc_csu_fini(word64 r14)
+void __libc_csu_fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r14:[0..63]
+// MayUse: 
 // LiveOut:
-// Trashed: r14
-// Preserved: r15
+// Trashed: r14 r15
+// Preserved:
 __libc_csu_fini_entry:
 l0000000000000888:
-	call r14 (retsize: 0;)
-		uses: r14:r14
 	return
 __libc_csu_fini_exit:
 

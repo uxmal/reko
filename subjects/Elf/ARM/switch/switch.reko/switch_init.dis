@@ -9,11 +9,11 @@ word32 _init(ptr32 & r10Out)
 // Preserved: sp
 _init_entry:
 l000082F0:
-	word32 r10_8 = call_gmon_start()
+	word32 r10_9 = call_gmon_start()
 	frame_dummy()
-	word32 r4_24 = __do_global_ctors_aux()
-	r10Out = r10_8
-	return r4_24
+	word32 r4_26 = __do_global_ctors_aux()
+	r10Out = r10_9
+	return r4_26
 _init_exit:
 
 
