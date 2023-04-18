@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.WindowsForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -53,6 +54,7 @@ namespace Reko.Gui
             this.txtProcedureFilter = txtProcedureFilter;
             this.listProcedures = listProcedures;
             this.showHelpText = true;
+            UiTools.AddSelectAllHandler(txtProcedureFilter);
             txtProcedureFilter.GotFocus += TxtProcedureFilter_GotFocus;
             txtProcedureFilter.LostFocus += TxtProcedureFilter_LostFocus;
             txtProcedureFilter.TextChanged += TxtProcedureFilter_TextChanged;
