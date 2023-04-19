@@ -80,7 +80,8 @@ namespace Reko.Scanning
         {
             var symbol = ImageSymbol.Create(SymbolType.Code, arch, addr, procedureName);
             symbol.ProcessorState = state;
-            var worker = MakeSeedWorker(new(addr, symbol));
+            //$TODO: scannerv2 pass in provenance in parameters of interface method ScanProcedure.
+            var worker = MakeSeedWorker(new(addr, (symbol, ProvenanceType.Image)));
             EnqueueWorkers(new[] { worker });
             ProcessWorkers();
             return sr;
@@ -103,12 +104,29 @@ namespace Reko.Scanning
             }
         }
 
-        private Dictionary<Address, ImageSymbol> CollectSeeds()
+        /// <summary>
+        /// Collects the starting points, or seeds, of the recursive traversal
+        /// algorithm. User-provided information always takes precedence before
+        /// symbols obtained from the image.
+        /// </summary>
+        /// <returns>A dictionary of seeds, indexed by address.</returns>
+        private Dictionary<Address, (ImageSymbol, ProvenanceType)> CollectSeeds()
         {
-            var result = new Dictionary<Address, ImageSymbol>();
+            var result = new Dictionary<Address, (ImageSymbol, ProvenanceType)>();
+            foreach (var (addr, up) in program.User.Procedures)
+            {
+                //$TODO: scannerV2 how to respect no-decompile flag.
+                result.Add(addr, (ImageSymbol.Procedure(
+                    program.Architecture,
+                    addr,
+                    up.Name,
+                    null,
+                    up.Signature),
+                    ProvenanceType.UserInput));
+            }
             foreach (var sym in program.EntryPoints)
             {
-                result.Add(sym.Key, sym.Value);
+                result.TryAdd(sym.Key, (sym.Value, ProvenanceType.ImageEntrypoint));
             }
             foreach (var sym in program.ImageSymbols)
             {
@@ -116,20 +134,20 @@ namespace Reko.Scanning
                     sym.Value.Type == SymbolType.Procedure)
                     && IsExecutableAddress(sym.Value.Address))
                 {
-                    result.TryAdd(sym.Key, sym.Value);
+                    result.TryAdd(sym.Key, (sym.Value, ProvenanceType.Image));
                 }
             }
-            //$TODO: user-provided entry points.
             return result;
         }
 
-        private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, ImageSymbol> seed)
+        private ProcedureWorker? MakeSeedWorker(KeyValuePair<Address, (ImageSymbol, ProvenanceType)> seed)
         {
-            var name = seed.Value.Name ?? program.NamingPolicy.ProcedureName(seed.Key);
-            var proc = new Proc(seed.Key, ProvenanceType.Image, seed.Value.Architecture, name);
+            var (sym, provenance) = seed.Value;
+            var name = sym.Name ?? program.NamingPolicy.ProcedureName(seed.Key);
+            var proc = new Proc(seed.Key, provenance, sym.Architecture, name);
             if (sr.Procedures.TryAdd(proc.Address, proc))
             {
-                var state = seed.Value.ProcessorState ?? seed.Value.Architecture.CreateProcessorState();
+                var state = sym.ProcessorState ?? sym.Architecture.CreateProcessorState();
                 return new ProcedureWorker(this, proc, state, rejectMask, listener);
             }
             else

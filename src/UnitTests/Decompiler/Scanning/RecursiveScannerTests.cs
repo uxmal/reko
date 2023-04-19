@@ -71,6 +71,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     w.Write(" stub to '{0}'", trampoline.Procedure.Name);
                 }
                 w.WriteLine();
+                w.WriteLine("    provenance: {0}", proc.Provenance);
                 var it = new DfsIterator<RtlBlock>(g);
                 foreach (var block in it.PreOrder(cfg.Blocks[proc.Address]).OrderBy(b => b.Name))
                 {
@@ -91,6 +92,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     return (0,0)
@@ -115,6 +117,7 @@ l00001000: // l:4; ft:00001004
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:12; ft:0000100C
     // pred:
     r2 = 0x2A<32>
@@ -147,6 +150,7 @@ l00001000: // l:12; ft:0000100C
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:00001008
     // pred:
     r2 = r2 - 1<32>
@@ -190,6 +194,7 @@ l00001010: // l:8; ft:00001018
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     r2 = 0xA<32>
@@ -234,6 +239,7 @@ l0000100C: // l:8; ft:00001014
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:00001008
     // pred:
     r1 = 3<32>
@@ -246,6 +252,7 @@ l00001008: // l:8; ft:00001010
     // succ:
 
 define fn00001020
+    provenance: Scanning
 l00001020: // l:8; ft:00001028
     // pred:
     r1 = r1 *s r1
@@ -284,6 +291,7 @@ l00001020: // l:8; ft:00001028
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:12; ft:0000100C
     // pred:
     r1 = 0<32>
@@ -340,6 +348,7 @@ l00001018: // l:4; ft:0000101C
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:0000100C
     // pred:
     r1 = 0<32>
@@ -395,6 +404,7 @@ l0000101C: // l:4; ft:00001024
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     r1 = r2
@@ -453,6 +463,7 @@ l00001018: // l:4; ft:0000101C
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     call 00001030 (0)
@@ -463,12 +474,14 @@ l00001004: // l:4; ft:00001008
     // succ:
 
 define fn00001030
+    provenance: Scanning
 l00001030: // l:4; ft:00001034
     // pred:
     return (0,0)
     // succ:
 
 define fn00001040
+    provenance: ImageEntrypoint
 l00001040: // l:4; ft:00001044
     // pred:
     call 00001000 (0)
@@ -495,6 +508,7 @@ l00001044: // l:4; ft:00001048
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004 (INVALID)
     // pred:
     <invalid>
@@ -525,6 +539,7 @@ l00001000: // l:4; ft:00001004 (INVALID)
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:16; ft:00001010
     // pred:
     r1 = Mem0[0x00003000<p32>:word32]
@@ -560,6 +575,7 @@ l00001000: // l:16; ft:00001010
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:6; ft:00001006
     // pred:
     r1 = 4<32>
@@ -615,6 +631,7 @@ l0000100A: // l:4; ft:0000100E
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:00001008
     // pred:
     C = cond(r1 - 3<32>)
@@ -665,6 +682,7 @@ l00001040: // l:4; ft:00001044
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     r2 = 1<32>
@@ -701,6 +719,7 @@ l0000100C: // l:4; ft:00001010
             #region Expected
                 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     r2 = 1<32>
@@ -735,6 +754,7 @@ l0000100C: // l:4; ft:00001014
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:0000100C
     // pred:
     r2 = Mem0[0x123400<32>:word32]
@@ -774,6 +794,7 @@ l0000100C: // l:1; ft:0000100D (INVALID)
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:00001008
     // pred:
     r2 = Mem0[0x123400<32>:word32]
@@ -785,6 +806,7 @@ l00001008: // l:4; ft:0000100C
     // succ:
 
 define fn00001020 stub to 'malloc'
+    provenance: Scanning
 l00001020: // l:4; ft:00001024
     // pred:
     goto Mem0[0x3000<32>:word32]
@@ -823,6 +845,7 @@ l00001020: // l:4; ft:00001024
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:8; ft:00001008
     // pred:
     r2 = Mem0[0x123400<32>:word32]
@@ -839,6 +862,7 @@ l00001010: // l:4; ft:00001014
     // succ:
 
 define fn00001020 stub to 'malloc'
+    provenance: Scanning
 l00001020: // l:4; ft:00001024
     // pred:
     goto Mem0[0x3000<32>:word32]
@@ -868,12 +892,14 @@ l00001020: // l:4; ft:00001024
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004
     // pred:
     return (0,0)
     // succ:
 
 define bob
+    provenance: Image
 l00001100: // l:8; ft:00001108
     // pred:
     r2 = 0<32>
@@ -900,9 +926,35 @@ l00001100: // l:8; ft:00001108
             #region Expected
 @"
 define fn00001000
+    provenance: ImageEntrypoint
 l00001000: // l:4; ft:00001004 (INVALID)
     // pred:
     <invalid>
+    // succ:
+";
+            #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_UserProcedure_Overlapping_EntryPoint()
+        {
+            Given_EntryPoint(0x1000);
+            Given_UserProcedure(0x1000, "main", "int main(int c, char **v)");
+            Given_Trace(new RtlTrace(0x1000, InstrClass.Linear)
+            {
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define main
+    provenance: UserInput
+l00001000: // l:4; ft:00001004
+    // pred:
+    return (0,0)
     // succ:
 ";
             #endregion

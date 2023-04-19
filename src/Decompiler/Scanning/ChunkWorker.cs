@@ -172,7 +172,6 @@ namespace Reko.Scanning
                 // through to it.
                 return;
             }
-            var lastInstr = blockCaller.Instructions[^1];
             var fallThrough = new Edge(blockCaller.Address, blockCaller.FallThrough, EdgeType.Fallthrough);
             shScanner.RegisterEdge(fallThrough);
         }

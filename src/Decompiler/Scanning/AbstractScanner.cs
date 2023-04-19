@@ -430,25 +430,31 @@ namespace Reko.Scanning
                        b.FallThrough,
                        b.Length,
                        RenderType(b.Instructions[^1].Class),
-                       string.Join(", ",sr.Successors.TryGetValue(b.Address, out var succ)
-                            ? succ
-                            : new List<Address>()))));
+                       RenderSuccessors(sr, b))));
+
+            static string RenderSuccessors(ScanResultsV2 sr, RtlBlock b)
+            {
+                if (!sr.Successors.TryGetValue(b.Address, out var succ) ||
+                    succ.Count == 0)
+                    return "";
+                return " " + string.Join(", ", succ);
+            }
 
             static string RenderType(InstrClass t)
             {
                 if ((t & InstrClass.Zero) != 0)
-                    return "Zer ";
+                    return "Zer";
                 if ((t & InstrClass.Padding) != 0)
-                    return "Pad ";
+                    return "Pad";
                 if ((t & InstrClass.Call) != 0)
-                    return "Cal ";
+                    return "Cal";
                 if ((t & InstrClass.ConditionalTransfer) == InstrClass.ConditionalTransfer)
-                    return "Bra ";
+                    return "Bra";
                 if ((t & InstrClass.Transfer) != 0)
                     return "End";
                 if ((t & InstrClass.Terminates) != 0)
                     return "Trm";
-                return "Lin ";
+                return "Lin";
             }
         }
 

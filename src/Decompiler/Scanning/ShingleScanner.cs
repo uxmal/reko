@@ -22,9 +22,7 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -178,7 +176,7 @@ namespace Reko.Scanning
             ImageSegment segment, 
             BTreeDictionary<Address, RtlBlock> sortedBlocks)
         {
-            long Align(long value, int alignment)
+            static long Align(long value, int alignment)
             {
                 return alignment * ((value + (alignment - 1)) / alignment);
             }
@@ -253,24 +251,40 @@ namespace Reko.Scanning
             int blocksSplit = 0;
             foreach (var s in succs)
             {
-                if (!blocks.TryGetLowerBound(s, out var block))
+                var (block, isSplit) = EnsureBlock(s, blocks);
+                if (block is not null && isSplit)
                 {
-                    Debug.Fail("Edge going to hyperspace");
-                    continue; 
-                }
-
-                long offset = s - block.Address;
-                if (0 < offset && offset < block.Length)
-                {
-                    var newBlock = SplitBlockAt(block, s);
-                    if (newBlock is not null)
-                    {
-                        blocks.Add(newBlock.Address, newBlock);
-                        ++blocksSplit;
-                    }
+                    blocks.TryAdd(block.Address, block);
+                    ++blocksSplit;
                 }
             }
             return (cfg, blocksSplit);
+        }
+
+        private (RtlBlock?, bool) EnsureBlock(
+            Address addrBlock, 
+            BTreeDictionary<Address, RtlBlock> blocks)
+        {
+            if (!blocks.TryGetLowerBoundIndex(addrBlock, out var iBlock))
+            {
+                Debug.Fail("Edge going to hyperspace");
+                return (null, false);
+            }
+
+            for (; iBlock >= 0; --iBlock)
+            {
+                var block = blocks.Values[iBlock];
+                long offset = addrBlock - block.Address;
+                if (0 < offset && offset < block.Length)
+                {
+                    var newBlock = SplitBlockAt(block, addrBlock);
+                    if (newBlock is not null)
+                    {
+                        return (newBlock, true);
+                    }
+                }
+            }
+            return (null, false);
         }
 
         /// <summary>

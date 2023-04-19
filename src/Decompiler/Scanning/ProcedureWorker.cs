@@ -35,9 +35,9 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// This scanner worker will discover <see cref="RtlBlock"/>s by tracing
-    /// their execution flow statically. The tracing stops when <see cref="RtlReturn"/>
+    /// their execution flow. The tracing stops when <see cref="RtlReturn"/>
     /// instructions are encountered, or function calls to provably diverging
-    /// procedures (like exit() or ExitProcess()).
+    /// procedures (like exit(), longjmp(), or ExitProcess()).
     /// </summary>
     public class ProcedureWorker : AbstractProcedureWorker
     {

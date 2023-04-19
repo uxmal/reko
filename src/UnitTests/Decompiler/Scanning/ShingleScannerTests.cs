@@ -233,7 +233,23 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 });
         }
 
-        // Indirect jump
+        /// <summary>
+        /// Direct jump
+        /// </summary>
+        private void Jmp(uint uAddr, int len, uint uAddrDst)
+        {
+            var addr = Address.Ptr32(uAddr);
+            var addrDst = Address.Ptr32(uAddrDst);
+            clusters.Add(uAddr, new RtlInstructionCluster(addr, len,
+                new RtlGoto(addrDst, InstrClass.Transfer))
+            {
+                Class = InstrClass.Transfer
+            });
+        }
+
+        /// <summary>
+        /// Indirect jump
+        /// </summary>
         private void Jmpi(uint uAddr, int len, uint uAddrNext)
         {
             var addr = Address.Ptr32((uint) uAddr);
@@ -500,7 +516,6 @@ l00001008: // l:8; ft:00001010
             RunTest(sExpected);
         }
 
-
         [Test]
         public void Shsc_Blocks()
         {
@@ -694,7 +709,7 @@ l00001008: // l:8; ft:00001010
             var sExp =
             #region Expected
 @"
-00001000-0000100A (10): Cal 
+00001000-0000100A (10): Cal
 ";
             #endregion
             AssertBlocks(sExp, cfg.Blocks);
@@ -830,7 +845,7 @@ l00001008: // l:8; ft:00001010
             var sExp =
             #region Expected
 @"
-00001000-00001004 (4): Cal 
+00001000-00001004 (4): Cal
 ";
             #endregion
             AssertBlocks(sExp, cfg.Blocks);
@@ -874,6 +889,33 @@ l00001008: // l:8; ft:00001010
                 @"
 00001000-00001002 (2): Lin 00001002
 00001002-00001008 (6): End
+";
+            #endregion
+            AssertBlocks(sExp, sr.Blocks);
+        }
+
+        [Test]
+        public void Shsc_InfiniteLoop()
+        {
+            Lin(0x1000, 1, 0x1001);
+            Lin(0x1001, 1, 0x1002);
+            Lin(0x1002, 2, 0x1004);
+            Jmp(0x1004, 2, 0x1004);
+            End(0x1006, 1);
+
+            Lin(0x1003, 2, 0x1005);
+            Lin(0x1005, 1, 0x1006);
+
+            CreateScanner(0x1000);
+            var sr = scanner.ScanProgram();
+
+            var sExp =
+            #region Expected
+    @"
+00001000-00001004 (4): Lin 00001004
+00001003-00001006 (3): Lin 00001006
+00001004-00001006 (2): End 00001004
+00001006-00001007 (1): End
 ";
             #endregion
             AssertBlocks(sExp, sr.Blocks);
