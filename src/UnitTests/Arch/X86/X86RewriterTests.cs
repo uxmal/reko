@@ -1397,14 +1397,12 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest("F348A5");   // "rep\tmovsd"
             AssertCode(
-                 "0|L--|0000000140000000(3): 7 instructions",
-                 "1|T--|if (rcx == 0<64>) branch 0000000140000003",
-                 "2|L--|v4 = Mem0[rsi:word64]",
-                 "3|L--|Mem0[rdi:word64] = v4",
-                 "4|L--|rsi = rsi + 8<i64>", 
-                 "5|L--|rdi = rdi + 8<i64>",
-                 "6|L--|rcx = rcx - 1<64>",
-                 "7|T--|goto 0000000140000000");
+                 "0|L--|0000000140000000(3): 5 instructions",
+                 "1|L--|size = rcx *s 8<64>",
+                 "2|L--|memcpy(rdi, rsi, size)",
+                 "3|L--|rcx = 0<64>",
+                 "4|L--|rsi = rsi + size",
+                 "5|L--|rdi = rdi + size");
         }
 
         [Test]

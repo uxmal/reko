@@ -1121,11 +1121,7 @@ l000000000040383E:
 	mov	rsi,r12
 	mov	rdi,r14
 	mov	rcx,r13
-
-l0000000000403847:
 	rep cmpsb
-
-l0000000000403849:
 	jz	403828h
 
 l000000000040384B:
@@ -1397,11 +1393,7 @@ l0000000000403B86:
 	lea	rdi,[rsp+48h]
 	mov	esi,61B040h
 	mov	ecx,20h
-
-l0000000000403B95:
 	rep movsd
-
-l0000000000403B97:
 	mov	dword ptr [rsp+0C8h],10000000h
 	xor	r13b,r13b
 	mov	r14d,4049B0h
@@ -2829,11 +2821,7 @@ l0000000000404CFC:
 l0000000000404D00:
 	mov	edi,413733h
 	mov	ecx,2h
-
-l0000000000404D0A:
 	rep cmpsb
-
-l0000000000404D0C:
 	setnz	al
 	ret
 
@@ -6823,11 +6811,7 @@ l0000000000408093:
 	mov	rdi,[r14+0A8h]
 	mov	esi,4137B1h
 	mov	ecx,0Ah
-
-l00000000004080A4:
 	rep cmpsb
-
-l00000000004080A6:
 	setnz	r13b
 
 l00000000004080AA:
@@ -9551,11 +9535,7 @@ l000000000040AB98:
 	mov	rsi,rax
 	mov	edi,415E6Ah
 	mov	ecx,6h
-
-l000000000040ABA5:
 	rep cmpsb
-
-l000000000040ABA7:
 	setnz	al
 	add	rsp,8h
 	ret
@@ -13278,22 +13258,14 @@ l000000000040D6C8:
 	lea	rsi,[rax-6h]
 	mov	edi,415FD8h
 	mov	ecx,7h
-
-l000000000040D6D6:
 	rep cmpsb
-
-l000000000040D6D8:
 	jnz	40D703h
 
 l000000000040D6DA:
 	mov	ecx,3h
 	mov	rsi,rdx
 	mov	edi,415FE0h
-
-l000000000040D6E7:
 	rep cmpsb
-
-l000000000040D6E9:
 	mov	rbx,rdx
 	seta	sil
 	setc	cl
@@ -18915,11 +18887,7 @@ l00000000004117C8:
 	mov	edi,4137B1h
 	mov	ecx,0Ah
 	mov	rsi,rdx
-
-l00000000004117D8:
 	rep cmpsb
-
-l00000000004117DA:
 	jnz	4117BFh
 
 l00000000004117DC:

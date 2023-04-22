@@ -187,6 +187,17 @@ namespace Reko.Core.Intrinsics
             return MakeIntrinsic(signature);
         }
 
+        /// <summary>
+        /// Creates a return value of type pointer to <paramref name="dt" />.
+        /// </summary>
+        public IntrinsicProcedure PtrReturns(DataType dt)
+        {
+            // The '0' size below indicates that we don't know the size of the pointer.
+            // When IntrinsicProcedure.MakeInstance is called, the pointer
+            // size of the architecture is resolved.
+            return Returns(new Pointer(dt, 0));
+        }
+
         private IntrinsicProcedure MakeIntrinsic(FunctionType signature)
         {
             IntrinsicProcedure proc;

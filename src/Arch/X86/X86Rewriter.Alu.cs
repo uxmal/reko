@@ -1218,6 +1218,8 @@ namespace Reko.Arch.X86
         /// </summary>
         private void RewriteStringInstruction()
         {
+            if (RewriteStringIntrinsic())
+                return;
             var topOfLoop = instrCur.Address;
             Identifier? regCX = null;
             if (instrCur.repPrefix != 0)

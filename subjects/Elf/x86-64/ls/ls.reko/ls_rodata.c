@@ -12,7 +12,7 @@ ui32 g_a412C60[] = // 0000000000412C60
 	{
 	};
 char g_str412C95[] = "sort_files"; // 0000000000412C95
-char g_str412CA0[] = "posix-"; // 0000000000412CA0
+Eq_n g_t412CA0 = // 0000000000412CA0;
 char g_str412CA7[] = "main"; // 0000000000412CA7
 int32 g_a412CC0[13] = // 0000000000412CC0
 	{
@@ -67,7 +67,7 @@ char * g_a413700[] = // 0000000000413700
 byte g_a413728[] = // 0000000000413728
 	{
 	};
-byte g_b413733 = 0x30; // 0000000000413733
+Eq_n g_t413733 = // 0000000000413733;
 void g_v413734 = ??void??; // 0000000000413734
 char g_str413736[] = "src/ls.c"; // 0000000000413736
 char g_str41373F[] = "sort_type != sort_version"; // 000000000041373F
@@ -76,7 +76,7 @@ void g_v413771 = ??void??; // 0000000000413771
 void g_v41377E = ??void??; // 000000000041377E
 char g_str413783[] = "cannot access %s"; // 0000000000413783
 char g_str413794[] = "cannot read symbolic link %s"; // 0000000000413794
-byte g_b4137B1 = 117; // 00000000004137B1
+Eq_n g_t4137B1 = // 00000000004137B1;
 char g_str4137BB[] = "\nReport %s bugs to %s\n"; // 00000000004137BB
 char g_str4137E8[] = "%s home page: <%s>\n"; // 00000000004137E8
 char g_str4137FC[] = "GNU coreutils"; // 00000000004137FC
@@ -159,7 +159,7 @@ char g_str415DFD[] = "invalid argument %s for %s"; // 0000000000415DFD
 char g_str415E18[] = "ambiguous argument %s for %s"; // 0000000000415E18
 char g_str415E35[] = "Valid arguments are:"; // 0000000000415E35
 char g_str415E54[] = "%s"; // 0000000000415E54
-char g_str415E6A[] = "POSIX"; // 0000000000415E6A
+Eq_n g_t415E6A = // 0000000000415E6A;
 Eq_n g_t415EE0 = // 0000000000415EE0
 	{
 		
@@ -223,8 +223,8 @@ real80 g_r415F90 = // 0000000000415F90
 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3E, 0x40, 
 	};
 void g_v415FA0 = ??void??; // 0000000000415FA0
-cu8 g_b415FD8 = 0x2F; // 0000000000415FD8
-cu8 g_b415FE0 = 0x6C; // 0000000000415FE0
+Eq_n g_t415FD8 = // 0000000000415FD8;
+Eq_n g_t415FE0 = // 0000000000415FE0;
 Eq_n g_t415FE4 = // 0000000000415FE4
 	{
 		'\xE2',
