@@ -256,6 +256,7 @@ namespace Reko.Analysis
         private static bool IsStackStorageOfPreservedRegister(
             SsaState ssa,
             IReadOnlySet<RegisterStorage> trashedRegisters,
+            IReadOnlySet<RegisterStorage> preservedRegisters,
             CallBinding use)
         {
             if (use.Storage is not StackStorage)
@@ -264,7 +265,7 @@ namespace Reko.Analysis
                 return false;
             if (!(ssa.Identifiers[id].IsOriginal))
                 return false;
-            return IsPreservedRegister(trashedRegisters, id.Storage);
+            return IsPreservedRegister(trashedRegisters, preservedRegisters, id.Storage);
         }
 
         /// <summary>
@@ -274,14 +275,18 @@ namespace Reko.Analysis
         /// to be modified by the ABI of the processor or platform.
         /// </summary>
         /// <param name="trashedRegisters"></param>
+        /// <param name="preservedRegisters"></param>
         /// <param name="stg"></param>
         /// <returns></returns>
         private static bool IsPreservedRegister(
             IReadOnlySet<RegisterStorage> trashedRegisters,
+            IReadOnlySet<RegisterStorage> preservedRegisters,
             Storage stg)
         {
-            if (stg is not RegisterStorage)
+            if (stg is not RegisterStorage reg)
                 return false;
+            if (preservedRegisters.Any(r => r.Covers(reg)))
+                return true;
             if (trashedRegisters.Count == 0)
                 return false;
             return !trashedRegisters.Where(r => r.OverlapsWith(stg)).Any();
@@ -307,13 +312,15 @@ namespace Reko.Analysis
                     return;
             }
             var trashedRegisters = program.Platform.TrashedRegisters;
+            var preservedRegisters = program.Platform.PreservedRegisters;
             var platform = program.Platform;
             foreach (var use in ci.Uses.ToList())
             {
-                if (IsPreservedRegister(trashedRegisters, use.Storage) ||
+                if (IsPreservedRegister(trashedRegisters, preservedRegisters, use.Storage) ||
                     IsStackStorageOfPreservedRegister(
                         ssa,
                         trashedRegisters,
+                        preservedRegisters,
                         use) ||
                     (use.Storage is RegisterStorage reg &&
                      platform.IsImplicitArgumentRegister(reg)))

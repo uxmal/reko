@@ -44,6 +44,7 @@ namespace Reko.ImageLoaders.LLVM
             this.Name = "LLVM";
             this.StructureMemberAlignment = 4;  //$BUG: is arch-specific.
             this.TrashedRegisters = new HashSet<RegisterStorage>();
+            this.PreservedRegisters = new HashSet<RegisterStorage>();
         }
 #nullable enable
 
@@ -72,6 +73,7 @@ namespace Reko.ImageLoaders.LLVM
         public int StructureMemberAlignment { get; set; }
 
         public IReadOnlySet<RegisterStorage> TrashedRegisters { get; }
+        public IReadOnlySet<RegisterStorage> PreservedRegisters { get; }
 
 
         public Address AdjustProcedureAddress(Address addrCode)

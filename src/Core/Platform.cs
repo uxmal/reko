@@ -80,6 +80,8 @@ namespace Reko.Core
         /// <returns>A set of registers</returns>
         IReadOnlySet<RegisterStorage> TrashedRegisters { get; }
 
+        IReadOnlySet<RegisterStorage> PreservedRegisters { get; }
+
         /// <summary>
         /// The structure member alignment for this platform, measured in
         /// storage units (e.g. bytes). Objects larger than or equal to this
@@ -356,6 +358,7 @@ namespace Reko.Core
             this.PlatformProcedures = new Dictionary<Address, ExternalProcedure>();
             this.ProcedurePrologs = LoadProcedurePrologs();
             this.TrashedRegisters = new HashSet<RegisterStorage>(LoadTrashedRegisters());
+            this.PreservedRegisters = new HashSet<RegisterStorage>(LoadPreservedRegisters());
         }
 
         public IProcessorArchitecture Architecture { get; }
@@ -390,6 +393,7 @@ namespace Reko.Core
         public abstract string DefaultCallingConvention { get; }
 
         public virtual IReadOnlySet<RegisterStorage> TrashedRegisters { get; protected set; }
+        public virtual IReadOnlySet<RegisterStorage> PreservedRegisters { get; protected set; }
 
 
         /// <summary>
@@ -614,6 +618,18 @@ namespace Reko.Core
             if (pa is null)
                 return Array.Empty<RegisterStorage>();
             return pa.TrashedRegisters
+                .Select(r => Architecture.GetRegister(r))
+                .Where(r => r is { })
+                .ToArray()!;
+        }
+
+        protected RegisterStorage[] LoadPreservedRegisters()
+        {
+            var cfgSvc = Services?.GetService<IConfigurationService>();
+            var pa = cfgSvc?.GetEnvironment(this.PlatformIdentifier)?.Architectures?.SingleOrDefault(a => a.Name == Architecture.Name);
+            if (pa is null)
+                return Array.Empty<RegisterStorage>();
+            return pa.PreservedRegisters
                 .Select(r => Architecture.GetRegister(r))
                 .Where(r => r is { })
                 .ToArray()!;

@@ -271,6 +271,7 @@ namespace Reko.Analysis
                               sid.Identifier.Storage is not MemoryStorage &&
                               sid.Identifier.Storage is not StackStorage &&
                               sid.Identifier.Storage is not TemporaryStorage &&
+                              !IsPreservedByPlatform(sid.Identifier.Storage) &&
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
@@ -293,6 +294,16 @@ namespace Reko.Analysis
                 trace.Verbose("SsaTransform:   {0}", use);
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
+        }
+
+        //$TODO: make this a method of platform, as some
+        // platforms require register aliasing (EAX, AX, AL etc)
+        // and others don't.
+        private bool IsPreservedByPlatform(Storage storage)
+        {
+            return storage is RegisterStorage reg &&
+                    program.Platform.PreservedRegisters.
+                    Any(r => r.Covers(reg));
         }
 
         /// <summary>

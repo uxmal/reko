@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -52,6 +53,16 @@ namespace Reko.Environments.MacOS.Classic
             return reg.Number == Registers.a7.Number || reg.Number == Registers.a5.Number;
         }
 
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            //$TODO: consider making MacOSKeywords for MacOS-specific
+            // extensions to the C.
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
+        }
+
         private HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>
@@ -66,7 +77,7 @@ namespace Reko.Environments.MacOS.Classic
             switch (ccName)
             {
             case "pascal":
-            case "__pascal":
+            case "__pascal":    
                 return new PascalCallingConvention((M68kArchitecture) this.Architecture);
             default:
                 return new M68kCallingConvention((M68kArchitecture) this.Architecture);
@@ -123,7 +134,9 @@ namespace Reko.Environments.MacOS.Classic
             m.MStore(proc.Frame.FramePointer, proc.Frame.Continuation);
             var ptrA5World = EnsureA5Pointer();
             var a5 = proc.Frame.EnsureRegister(Registers.a5);
-            m.Assign(a5, ptrA5World);
+            //m.Assign(a5, this.A5World.Address);
+            m.Assign(a5, m.Word32((uint)(this.A5World.Address.Offset + this.A5Offset)));
+            //m.Assign(a5, ptrA5World);
         }
 
         private Identifier EnsureA5Pointer()

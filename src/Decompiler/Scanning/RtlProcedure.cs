@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Scanning
 {
@@ -65,6 +67,15 @@ namespace Reko.Scanning
         public override string ToString()
         {
             return $"RtlProcedure(entry: {Address}, blocks: {Blocks.Count})";
+        }
+
+        [Conditional("DEBUG")]
+        public void Dump()
+        {
+            Debug.Print("    {0}",
+                string.Join(",\r\n    ", this.Blocks
+                    .OrderBy(b => b.Address.ToLinear())
+                    .Select(b => b.Address)));
         }
     }
 }

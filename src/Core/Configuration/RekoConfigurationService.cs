@@ -208,10 +208,15 @@ namespace Reko.Core.Configuration
         private PlatformArchitectureDefinition LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
         {
             var sTrashedRegs = spa.TrashedRegisters ?? "";
+            var sPreservedRegs = spa.PreservedRegisters ?? "";
             return new PlatformArchitectureDefinition
             {
                 Name = spa.Name,
                 TrashedRegisters = sTrashedRegs
+                    .Split(',')
+                    .Select(s => s.Trim())
+                    .ToList(),
+                PreservedRegisters = sPreservedRegs
                     .Split(',')
                     .Select(s => s.Trim())
                     .ToList(),

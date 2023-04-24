@@ -256,6 +256,7 @@ test_exit:
                     var lex = new CLexer(r, CLexer.MsvcKeywords);
                     return new CParser(s ?? new ParserState(), lex);
                 }));
+            platform.Setup(p => p.PreservedRegisters).Returns(new HashSet<RegisterStorage>());
 
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             program.Platform = platform.Object;

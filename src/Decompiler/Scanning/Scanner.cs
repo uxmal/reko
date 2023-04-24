@@ -1141,10 +1141,7 @@ namespace Reko.Scanning
         private void Dump(RtlProcedure rtlProc)
         {
             Debug.Print("== {0} ===============", rtlProc.Address);
-            Debug.Print("    {0}",
-                string.Join(",\r\n    ", rtlProc.Blocks
-                    .OrderBy(b => b.Address.ToLinear())
-                    .Select(b => b.Address)));
+            rtlProc.Dump();
         }
 
 

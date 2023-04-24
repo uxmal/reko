@@ -357,6 +357,9 @@ namespace Reko.Core.Configuration
         [XmlElement("TrashedRegisters")]
         public string? TrashedRegisters;
 
+        [XmlElement("PreservedRegisters")]
+        public string? PreservedRegisters;
+
         [XmlArray("TypeLibraries")]
         [XmlArrayItem("TypeLibrary")]
         public TypeLibraryReference_v1[]? TypeLibraries;

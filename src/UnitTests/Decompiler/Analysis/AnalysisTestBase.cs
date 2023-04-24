@@ -471,6 +471,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 .Returns((ulong ul, bool b) => Address.Ptr32((uint) ul));
             platformMock.Setup(p => p.TrashedRegisters)
                 .Returns(new HashSet<RegisterStorage>());
+            platformMock.Setup(p => p.PreservedRegisters)
+                .Returns(new HashSet<RegisterStorage>());
             Given_Platform(platformMock.Object);
         }
 	}

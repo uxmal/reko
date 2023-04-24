@@ -99,6 +99,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var dynamicLinker = new Mock<IDynamicLinker>();
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.TrashedRegisters).Returns(new HashSet<RegisterStorage>());
+            platform.Setup(p => p.PreservedRegisters).Returns(new HashSet<RegisterStorage>());
             platform.Setup(p => p.PointerType).Returns(arch.PointerType);
             progBuilder.Program.Platform = platform.Object;
             progBuilder.Program.SegmentMap = segmentMap;
