@@ -117,7 +117,7 @@ l039A:
 l03A0:
 	branch Mem236[0x0F18<p16>:word16] <= 0<16> l03AE
 l03AE:
-	branch Mem255[0x0B5A<p16>:word16] - Mem255[0x0B5A<p16>:word16] <=u 0<16> l040A
+	branch Mem255[0x0B5A<p16>:word16] <=u Mem255[0x0B5A<p16>:word16] l040A
 l03B6:
 	Mem260[0x0B5E<p16>:word16] = Mem255[0x0B5A<p16>:word16]
 	Mem262[0x1166<16>:word16] = 0x101<16>
@@ -166,7 +166,7 @@ l02B0:
 l02B8:
 	r1_331 = r1_417 + 1<16>
 	r1_417 = r1_331
-	branch SLICE(r0_94, byte, 0) - Mem330[r1_417:byte] != 0<8> l02B8
+	branch SLICE(r0_94, byte, 0) != Mem330[r1_417:byte] l02B8
 l02BC:
 	call Mem330[(r1_331 - 0x2C7<16> << 1<i16>) + 0x2CC<16>:ptr16] (retsize: 0;)
 	return
@@ -270,7 +270,7 @@ l0504:
 l050A:
 	word16 r2_107 = 0<16>
 l050C:
-	branch r0_100 - Mem55[r2_107 + 0xDB8<16>:word16] == 0<16> l0524
+	branch r0_100 == Mem55[r2_107 + 0xDB8<16>:word16] l0524
 l0512:
 	word16 v46_119 = r1_73 - Mem55[r2_107 + 0xDB8<16>:word16]
 	branch v46_119 <u 0<16> l05B4
@@ -299,13 +299,13 @@ l058A:
 	sp_138 = sp_139 - 1<16>
 	r0_100 = fn0AB6(r0_153, r4_154, out r4, out r5_102)
 l0532:
-	branch Mem130[r5_102 + 0xEF0<16>:byte] - (SLICE(r3_131, byte, 0) + 4<8>) >u 0<8> l05AE
+	branch Mem130[r5_102 + 0xEF0<16>:byte] >u SLICE(r3_131, byte, 0) + 4<8> l05AE
 l05AE:
 	r0_100 = r0_100 + 2<16>
 	r1_126 = r1_126 - 1<16>
 	branch r1_126 != 0<16> l052C
 l053C:
-	branch Mem130[r5_102 + 0xEF0<16>:byte] - Mem130[r0_100:byte] <u 0<8> l05B4
+	branch Mem130[r5_102 + 0xEF0<16>:byte] <u Mem130[r0_100:byte] l05B4
 l0542:
 	word16 r1_197 = Mem130[r0_100:word16]
 	Mem199[r0_100:word16] = Mem130[r0_100:word16] | 0x8000<16>
@@ -422,16 +422,16 @@ l064A:
 	word16 r2_36 = Mem0[0x0F06<p16>:word16]
 l064E:
 	bool Z_29
-	branch SLICE(r3, byte, 0) - Mem0[r2_36 + 0xEE6<16>:byte] != 0<8> l0676
+	branch SLICE(r3, byte, 0) != Mem0[r2_36 + 0xEE6<16>:byte] l0676
 l0654:
 	branch Mem0[r2_36 + 0xEEC<16>:byte] < 0<8> l0676
 l065A:
-	branch SLICE(r1, byte, 0) - Mem0[r2_36 + 0xEE9<16>:byte] == 0<8> l0670
+	branch SLICE(r1, byte, 0) == Mem0[r2_36 + 0xEE9<16>:byte] l0670
 l0670:
 	Mem25[r2_36 + 0xEE6<16>:byte] = 0<8>
 	Z_29 = true
 l0660:
-	branch SLICE(r0, byte, 0) - Mem0[r2_36 + 0xEE9<16>:byte] != 0<8> l0676
+	branch SLICE(r0, byte, 0) != Mem0[r2_36 + 0xEE9<16>:byte] l0676
 l0676:
 	r2_36 = r2_36 - 1<16>
 	Z_29 = SLICE(cond(r2_36), bool, 2) (alias)
@@ -540,7 +540,7 @@ l06E0:
 l06E8:
 	branch Mem14[r2_173 + 0xEEC<16>:byte] <= 0<8> l07A0
 l06EE:
-	branch Mem14[0x0EF4<p16>:word16] - Mem14[0x0EF4<p16>:word16] == 0<16> l07A0
+	branch Mem14[0x0EF4<p16>:word16] == Mem14[0x0EF4<p16>:word16] l07A0
 l06F6:
 	word16 r5_145
 	word16 r0_49
@@ -564,9 +564,9 @@ l0730:
 l0744:
 	branch Mem80[0x0EFA<p16>:word16] != 0<16> l078A
 l074A:
-	branch r3_9 - Mem80[0x0F14<p16>:word16] <u 0<16> l078A
+	branch r3_9 <u Mem80[0x0F14<p16>:word16] l078A
 l0750:
-	branch r3_9 - 4<16> - Mem80[0x0F14<p16>:word16] >u 0<16> l078A
+	branch r3_9 - 4<16> >u Mem80[0x0F14<p16>:word16] l078A
 l075A:
 	word16 r4_112
 	word16 r4_118

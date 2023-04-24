@@ -212,7 +212,7 @@ l00E9:
 	Mem50[0x00B3<p16>:byte] = Mem46[0x00B3<p16>:byte] | 1<8>
 l00E8:
 l00EB:
-	byte a_66 = Mem52[0x00B6<p16>:byte] - Mem52[0x0015<p16>:byte] - CONVERT((Mem52[0x00B5<p16>:byte] - Mem52[0x0014<p16>:byte]) - CONVERT(SLICE(Mem52[0x00B3<p16>:ui16] - Mem52[0x0012<p16>:ui16], byte, 8) <u 0<8>, bool, byte) <u 0<8>, bool, byte)
+	byte a_66 = Mem52[0x00B6<p16>:byte] - Mem52[0x0015<p16>:byte] - CONVERT(Mem52[0x00B5<p16>:byte] - Mem52[0x0014<p16>:byte] <u CONVERT(SLICE(Mem52[0x00B3<p16>:ui16] - Mem52[0x0012<p16>:ui16], byte, 8) <u 0<8>, bool, byte), bool, byte)
 	branch !__in_bit(0<8>, 1<8>) l00F5
 l00F5:
 	ui16 v20_v19_123 = Mem71[0x00B3<p16>:ui16] - SEQ(a_73, Mem52[0x0012<p16>:byte])

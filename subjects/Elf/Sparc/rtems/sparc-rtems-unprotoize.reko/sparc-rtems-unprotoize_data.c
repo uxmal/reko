@@ -23,7 +23,7 @@ Eq_n line_buf.78 = // 00027F50
 	};
 Eq_n line_buf_size.79 = // 00027F54
 	{
-		null
+		0
 	};
 Eq_n g_t28000 = // 00028000
 	{

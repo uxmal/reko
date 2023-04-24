@@ -718,7 +718,7 @@ void fn00CE()
 		g_t00B6.u1 = (struct Eq_n *) __rcl<byte,byte>(g_t00B6.u1, 0x01, cond(v14_n));
 		if ((a_n & 0x01) != 0x00)
 			g_t00B3.u1 = (struct Eq_n *) (g_t00B3.u1 | 0x01);
-		byte a_n = g_t00B6.u1 - g_b0015 - (byte) ((g_t00B5.u1 - g_b0014) - (byte) (SLICE(g_t00B3.u0 - g_t0012.u1, byte, 8) < 0x00) < 0x00);
+		byte a_n = g_t00B6.u1 - g_b0015 - (byte) (g_t00B5.u1 - g_b0014 < (byte) (SLICE(g_t00B3.u0 - g_t0012.u1, byte, 8) < 0x00));
 		if (!__in_bit(0x00, 0x01))
 		{
 			ui16 v20_v19_n = g_t00B3.u0 - SEQ(a_n, g_t0012.u0);

@@ -202,7 +202,7 @@ Eq_n g_tFFDC = // 0000FFDC
 			&g_tE8650024,
 			&g_tBC0304A0,
 			&g_t3021FFC8,
-			-0x051EFFD0,
+			&g_tFAE10030,
 			&g_tEAE5001C,
 		}
 	};
@@ -273,7 +273,10 @@ word32 g_dw18E84 = 0x3021FFF8; // 00018E84
 struct Eq_n * g_ptr18E88 = &g_tFA610004; // 00018E88
 struct Eq_n * g_ptr18E8C = &g_t12610000; // 00018E8C
 struct Eq_n * g_ptr18E90 = &g_tF8B3000C; // 00018E90
-int32 g_dw18E9C = -0x80000000; // 00018E9C
+Eq_n g_t18E9C = // 00018E9C
+	{
+		-0x80000000
+	};
 struct Eq_n * g_ptr18EA0 = &g_t10330000; // 00018EA0
 byte * g_ptr18EA4 = &g_bEA610004; // 00018EA4
 word32 g_dw18EA8 = 0x30210008; // 00018EA8

@@ -12,7 +12,7 @@ l0000C02A:
 	word32 a6_141 = a1
 	word32 a4_56 = 0<i32>
 l0000C3DE:
-	branch Mem60[0x00FF0F04<p32>:word32] - Mem60[0x00FF0F08<p32>:word32] < 0<32> l0000C050
+	branch Mem60[0x00FF0F04<p32>:word32] < Mem60[0x00FF0F08<p32>:word32] l0000C050
 l0000C050:
 	word32 d3_71 = SEQ(SLICE(a4_56, word24, 8), Mem60[a0 + 4<i32> + a4_56:byte])
 	word16 v28_75 = SLICE(d3_71, word16, 0) & 0xFF<16> & 0xF0<16>

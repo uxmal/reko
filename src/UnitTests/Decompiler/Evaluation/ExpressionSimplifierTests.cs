@@ -1081,5 +1081,18 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("foo_1 >= 0x1234<32>", result.ToString());
         }
+
+        [Test]
+        public void Exs_Difference_Compared_to_zero()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Ne0(m.ISub(
+                m.Mem32(m.Word32(0x1234)),
+                m.Mem32(m.Word32(0x1238))));
+
+            var (result, changed) = exp.Accept(simplifier);
+
+            Assert.AreEqual("Mem0[0x1234<32>:word32] != Mem0[0x1238<32>:word32]", result.ToString());
+        }
     }
 }

@@ -64,7 +64,7 @@ l029C:
 l02A2:
 	Mem65[0x0082<p16>:word16] = r3_28
 	word16 r3_63 = r3_53 & 0x3F<16>
-	branch r3_28 - Mem65[0x0086<p16>:word16] >= 0<16> l02B4
+	branch r3_28 >= Mem65[0x0086<p16>:word16] l02B4
 l02B0:
 	Mem69[0x0086<p16>:word16] = r3_28
 l02B4:
@@ -1018,7 +1018,7 @@ l0E06:
 	word16 wLoc02_50 = 3<16>
 	word16 r1_11 = r1_7 + 2<16>
 	word16 r3_13 = r1_7 + 2<16>
-	branch Mem9[r1_7:word16] - Mem9[r1_7 + 2<16>:word16] < 0<16> l0E20
+	branch Mem9[r1_7:word16] < Mem9[r1_7 + 2<16>:word16] l0E20
 l0E1E:
 	wLoc02_50 = 4<16>
 l0E20:
@@ -1793,7 +1793,7 @@ l13BE:
 l13C6:
 	__wait()
 	fn1578()
-	branch r1_12 - Mem3[0x0070<p16>:word16] >u 0<16> l13C6
+	branch r1_12 >u Mem3[0x0070<p16>:word16] l13C6
 l13D2:
 	branch r0_4 < 0<16> l1388_in_fn13AA
 l1388_in_fn13AA:
@@ -1854,7 +1854,7 @@ l1586:
 	word16 r5_28 = Mem27[r4_130 + 0x168C<16>:word16]
 	branch r5_28 == 0<16> l15CC
 l15CC:
-	branch Mem27[0x0060<p16>:word16] - Mem27[0x0062<p16>:word16] == 0<16> l15E4
+	branch Mem27[0x0060<p16>:word16] == Mem27[0x0062<p16>:word16] l15E4
 l15D4:
 	word16 r0_36 = Mem27[0x0060<p16>:word16]
 	Mem37[0x0062<p16>:word16] = r0_36

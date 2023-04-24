@@ -72,7 +72,7 @@ l80000114:
 		uses: a0:a0_43,a2:a2_33,a6:a6_35,d0:d0_29,d1:d1_91,d2:d2_36
 		defs: a0:a0_43,a2:a2_40,a6:a6_39,d1:d1_91,d2:d2_41
 	d0_19 = Mem31[0x80002726<p32>:word32]
-	branch d2_23 - d0_19 >u 0<32> l80000114
+	branch d2_23 >u d0_19 l80000114
 l8000012C:
 	deregister_tm_clones()
 	branch null == 0<32> l80000144
@@ -167,7 +167,7 @@ _ZL9factoriali_entry:
 l8000033C:
 	word32 dwLoc08_32 = 2<i32>
 l8000034C:
-	branch dwLoc08_32 - dwArg04 > 0<32> l8000036A
+	branch dwLoc08_32 > dwArg04 l8000036A
 l8000036A:
 	return
 _ZL9factoriali_exit:
@@ -188,7 +188,7 @@ _ZL7pow_intdi_entry:
 l80000372:
 	word32 dwLoc08_46 = 0<32>
 l80000386:
-	branch dwLoc08_46 - dwArg0C >= 0<32> l800003A8
+	branch dwLoc08_46 >= dwArg0C l800003A8
 l800003A8:
 	return
 _ZL7pow_intdi_exit:
@@ -207,11 +207,11 @@ _Z11sine_taylordi_entry:
 l800003BC:
 	word32 dwLoc08_115 = 3<i32>
 l800003D6:
-	branch dwLoc08_115 - dwArg0C > 0<32> l80000428
+	branch dwLoc08_115 > dwArg0C l80000428
 l80000428:
 	word32 dwLoc08_118 = 5<i32>
 l8000042E:
-	branch dwLoc08_118 - dwArg0C > 0<32> l80000480
+	branch dwLoc08_118 > dwArg0C l80000480
 l80000480:
 	return
 _Z11sine_taylordi_exit:

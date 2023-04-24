@@ -103,13 +103,14 @@ namespace Reko.Evaluation
         }
 
         //$REVIEW: consider moving these predicates to OperatorTypeExtensions
-        private static bool IsIntComparison(OperatorType op)
+        private static bool IsIntComparison(Operator op)
         {
-            return op == OperatorType.Eq || op == OperatorType.Ne ||
-                   op == OperatorType.Ge || op == OperatorType.Gt ||
-                   op == OperatorType.Le || op == OperatorType.Lt ||
-                   op == OperatorType.Uge || op == OperatorType.Ugt ||
-                   op == OperatorType.Ule || op == OperatorType.Ult;
+            var type = op.Type;
+            return type == OperatorType.Eq || type == OperatorType.Ne ||
+                   type == OperatorType.Ge || type == OperatorType.Gt ||
+                   type == OperatorType.Le || type == OperatorType.Lt ||
+                   type == OperatorType.Uge || type == OperatorType.Ugt ||
+                   type == OperatorType.Ule || type == OperatorType.Ult;
         }
 
         private static bool IsFloatComparison(OperatorType op)
@@ -428,7 +429,7 @@ namespace Reko.Evaluation
 
             // (rel? id1 c) should just pass.
 
-            if (IsIntComparison(binExp.Operator.Type) && cRight != null && idLeft != null)
+            if (IsIntComparison(binExp.Operator) && cRight != null && idLeft != null)
                 return (binExp!, changed);
 
             // Floating point expressions with "integer" constants 
@@ -501,7 +502,7 @@ namespace Reko.Evaluation
             // (rel (- c e) 0 => (rel -c e) => (rel.Negate e c)
 
             if (binLeft != null && cRight != null && cRight.IsIntegerZero &&
-                IsIntComparison(binExp.Operator.Type) &&
+                IsIntComparison(binExp.Operator) &&
                 binLeft.Left is Constant cBinLeft)
             {
                 if (binLeft.Operator.Type == OperatorType.ISub)
@@ -520,7 +521,7 @@ namespace Reko.Evaluation
 
             // (rel (- e c1) c2) => (rel e c1+c2)
 
-            if (IsIntComparison(binExp.Operator.Type) &&
+            if (IsIntComparison(binExp.Operator) &&
                 binLeft != null && cLeftRight != null && cRight != null &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
@@ -564,6 +565,16 @@ namespace Reko.Evaluation
             if (e is not null)
             {
                 (e, _) = e.Accept(this);
+                return (e, true);
+            }
+            // (rel (- a b) 0) => (rel a b)
+            if (IsIntComparison(binExp.Operator) &&
+                binLeft is not null &&
+                binLeft.Operator.Type == OperatorType.ISub &&
+                right.IsZero)
+            {
+                e = new BinaryExpression(binExp.Operator, binExp.DataType,
+                    binLeft.Left, binLeft.Right);
                 return (e, true);
             }
             e = addMici.Match(binExp, ctx);

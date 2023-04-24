@@ -174,7 +174,7 @@ word32 fn0001152C()
 	word32 dwLoc0C;
 	<anonymous> ** r8_n = g_ptr13040;
 	struct Eq_n * sp_n = fp + -56;
-	if (g_ptr1303C - r8_n >= 0x00)
+	if (g_ptr1303C >= r8_n)
 	{
 		if (r8_n != null)
 		{

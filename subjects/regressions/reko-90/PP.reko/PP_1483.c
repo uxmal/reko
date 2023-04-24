@@ -31,7 +31,7 @@ Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, cu8 al, word16 cx, Eq_n bx, Eq_n 
 	Eq_n es = SLICE(es_di, selector, 16);
 	if (al != ss->*si)
 		return (word16) fn1483-0C55();
-	if (al - 0x8C - (byte) (al < ss->*si) != 0x00 && cx != 0x01)
+	if (al - 0x8C != (byte) (al < ss->*si) && cx != 0x01)
 	{
 		word16 ax_n;
 		struct Eq_n Eq_n::* bx_n;

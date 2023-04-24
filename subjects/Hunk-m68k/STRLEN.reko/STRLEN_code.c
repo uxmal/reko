@@ -114,7 +114,7 @@ l000010E6:
 				if (v32_n == 0x00)
 					goto l00001148;
 			} while (v32_n == 0x20 || v32_n == 0x09);
-			if (d3_n - d0_n->dw000C != 0x00)
+			if (d3_n != d0_n->dw000C)
 			{
 				*a6_n = a1_n;
 				++a6_n;

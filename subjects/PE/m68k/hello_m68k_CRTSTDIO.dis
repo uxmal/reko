@@ -19,9 +19,9 @@ l000015E8:
 	branch d0_25 == 0<32> l0000162A
 l00001602:
 	word32 d3_41
-	branch a2_23 - (a5_24 + -2656<i32>) != 0<32> l00001610
+	branch a2_23 != a5_24 + -2656<i32> l00001610
 l00001610:
-	branch a2_23 - (a5_24 + -2624<i32>) != 0<32> l00001628
+	branch a2_23 != a5_24 + -2624<i32> l00001628
 l00001618:
 	d3_41 = 1<i32>
 l0000160A:
@@ -395,7 +395,7 @@ l00001DAE:
 		uses: a2:dwArg04,a5:a5,a6:fp - 4<32>,d3:0<i32>,d4:d4_36,Stack +0004:Mem42[dwArg04 + 16<i32>:word32],Stack +0008:d0_34,Stack +000C:d4_36,Stack +0024:dwArg04
 		defs: a2:a2_50,a5:a5_56,a6:a6_49,a7:a7_48,d0:d0_54,d3:d3_52,d4:d4_51
 	a7_14 = a7_48 + 12<i32>
-	branch d0_54 - d4_51 != 0<32> l00001DD8
+	branch d0_54 != d4_51 l00001DD8
 l00001DD8:
 	__bset<word16>(Mem45[a2_18 + 15<i32>:byte], 5<16>, out Mem45[a2_18 + 15<i32>:byte])
 	d3_17 = -1<i32>
@@ -460,13 +460,13 @@ l00001E04:
 	word32 a2_100 = a5 + -2688<i32>
 	word32 d4_104 = 0<i32>
 	word32 d5_103 = 0<i32>
-	branch a5 + -2688<i32> - Mem25[a5 + -2048<i32>:word32] >u 0<32> l00001E64
+	branch a5 + -2688<i32> >u Mem25[a5 + -2048<i32>:word32] l00001E64
 l00001E64:
 	d3_105 = dwArg04
 l00001E1E:
 	d3_105 = dwArg04
 l00001E22:
-	branch d3_105 - d6_102 != 0<32> l00001E40
+	branch d3_105 != d6_102 l00001E40
 l00001E26:
 	branch (Mem45[a2_100 + 0xC<32>:word16] & 0x83<16>) == 0<16> l00001E40
 l00001E40:
@@ -482,7 +482,7 @@ l00001E4A:
 	word32 d7_81
 	word32 d0_87 = fn00001D24(a5, stackArg4, out d3_105, out d4_104, out d5_103, out d6_102, out d7_81, out a2_100, out a5, out a6_154)
 	a7_109 = a7_78 + 4<i32>
-	branch d0_87 - d7_81 != 0<32> l00001E58
+	branch d0_87 != d7_81 l00001E58
 l00001E56:
 	d5_103 = d0_87
 l00001E30:
@@ -493,12 +493,12 @@ l00001E30:
 	word32 stackArg4 = <invalid>
 	a7_109 = a7_98 + 4<i32>
 	word32 d7_101
-	branch fn00001D24(a5, stackArg4, out d3_105, out d4_104, out d5_103, out d6_102, out d7_101, out a2_100, out a5, out a6_154) - d7_101 == 0<32> l00001E58
+	branch fn00001D24(a5, stackArg4, out d3_105, out d4_104, out d5_103, out d6_102, out d7_101, out a2_100, out a5, out a6_154) == d7_101 l00001E58
 l00001E3C:
 	d4_104 = d4_104 + d6_102
 l00001E58:
 	a2_100 = a2_100 + 32<i32>
-	branch a2_100 - Mem118[a5 + -2048<i32>:word32] <=u 0<32> l00001E22
+	branch a2_100 <=u Mem118[a5 + -2048<i32>:word32] l00001E22
 l00001E62:
 l00001E68:
 	branch d3_105 == 1<i32> l00001E70
@@ -570,9 +570,9 @@ l00001EDA:
 	word32 d4_117 = 0<i32>
 	branch (Mem78[dwArg08 + 0xC<32>:word16] & 0x10C<16>) != 0<16> l00001F1C
 l00001EF8:
-	branch dwArg08 - (a5 + -2656<i32>) == 0<32> l00001F08
+	branch dwArg08 == a5 + -2656<i32> l00001F08
 l00001F00:
-	branch dwArg08 - (a5 + -2624<i32>) != 0<32> l00001F14
+	branch dwArg08 != a5 + -2624<i32> l00001F14
 l00001F08:
 	word32 a7_112
 	word32 d0_119
@@ -645,7 +645,7 @@ l00001F40:
 	a7_125 = a7_249 + 12<i32>
 	d4_117 = d0_256
 l00001FAE:
-	branch d4_117 - d5_183 == 0<32> l00001FC4
+	branch d4_117 == d5_183 l00001FC4
 l00001FC4:
 	word32 a7_285 = a7_125 + 4<i32>
 	word32 d0_278 = Mem276[a6_113 + 8<i32>:word32] & 0xFF<32>
@@ -686,7 +686,7 @@ l00001FD8:
 	word32 a7_17 = fp - 0x14<32>
 	word32 d3_22 = 0<i32>
 	word32 d4_25 = a5 + -2592<i32>
-	branch a5 + -2592<i32> - Mem19[a5 + -2048<i32>:word32] >u 0<32> l00002008
+	branch a5 + -2592<i32> >u Mem19[a5 + -2048<i32>:word32] l00002008
 l00001FF2:
 	word32 a7_30 = a7_17 - 4<i32>
 	Mem32[a7_30:word32] = d4_25
@@ -699,7 +699,7 @@ l00001FFE:
 	d3_22 = d3_22 + 1<32>
 l00002000:
 	d4_25 = d4_44 + 32<i32>
-	branch d4_44 + 32<i32> - Mem32[a5 + -2048<i32>:word32] <=u 0<32> l00001FF2
+	branch d4_44 + 32<i32> <=u Mem32[a5 + -2048<i32>:word32] l00001FF2
 l00002008:
 	return
 fn00001FD8_exit:

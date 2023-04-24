@@ -136,7 +136,7 @@ void fn0242(word16 r0, word16 * r1)
 		}
 		g_ptr0082 = r3_n;
 		cui16 r3_n = r3_n & 0x3F;
-		if (r3_n - g_ptr0086 < 0x00)
+		if (r3_n < g_ptr0086)
 			g_ptr0086 = r3_n;
 		*r5_n = r3_n | r2_n >> 0x01 | wLoc02_n;
 		++r5_n;
@@ -876,7 +876,7 @@ int16 fn0E06(int16 r0)
 	word16 wLoc02_n = 0x03;
 	word16 * r1_n = &r1_n->w0002;
 	word16 * r3_n = &r1_n->w0002;
-	if (r1_n->w0000 - r1_n->w0002 >= 0x00)
+	if (r1_n->w0000 >= r1_n->w0002)
 		wLoc02_n = 0x04;
 	fn0C90(r1_n, (byte) wLoc02_n);
 	do
@@ -1703,7 +1703,7 @@ void fn13AA(Eq_n ptrArg00)
 	{
 		__wait();
 		fn1578();
-	} while (r1_n - g_w0070 > 0x00);
+	} while (r1_n > g_w0070);
 	if (r0_n < 0x00)
 		return;
 	__reset();
@@ -1768,7 +1768,7 @@ void fn1578()
 		fn1674(r3_n, (word16) r4_n[0x0B4B] + 0x0A);
 		++r4_n;
 	}
-	if (g_ptr0060 - g_ptr0062 != 0x00)
+	if (g_ptr0060 != g_ptr0062)
 	{
 		struct Eq_n * r0_n = g_ptr0060;
 		g_ptr0062 = r0_n;

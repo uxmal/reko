@@ -17,11 +17,11 @@ void fn000015E8(word32 d3, word32 a2, ptr32 a5, word32 a6, word32 dwArg04)
 	if (d0_n == 0x00)
 		return;
 	int32 d3_n;
-	if (a2_n - (a5_n->aFFFFF578 + 0x0A) == 0x00)
+	if (a2_n == a5_n->aFFFFF578 + 0x0A)
 		d3_n = 0;
 	else
 	{
-		if (a2_n - (a5_n->aFFFFF578 + 18) != 0x00)
+		if (a2_n != a5_n->aFFFFF578 + 18)
 			return;
 		d3_n = 1;
 	}
@@ -264,7 +264,7 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 				struct Eq_n * a5_n;
 				Eq_n d4_n;
 				ptr32 d3_n;
-				(*((char *) &a5_n->dwFFFFF800 + 0x088A))();
+				(*((char *) &a5_n->ptrFFFFF800 + 0x088A))();
 				Eq_n a2_n = a7_n->t0004.u0;
 				ptr32 * a6_n = *a6_n;
 				d3Out = d3_n;
@@ -337,7 +337,7 @@ int32 fn00001D80(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, ptr32 &
 			word32 d0_n;
 			a5[0x0092]();
 			a7_n = a7_n + 0x0C;
-			if (d0_n - d4_n == 0x00)
+			if (d0_n == d4_n)
 			{
 				Eq_n d0_n = a2_n->t000C.u2;
 				if (!__btst<byte>((byte) d0_n, 0x07))
@@ -392,12 +392,12 @@ int32 fn00001E04(struct Eq_n * a5, int32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, 
 	struct Eq_n * a2_n = (char *) a5 - 2688;
 	int32 d4_n = 0;
 	int32 d5_n = 0;
-	if ((char *) a5 - 2688 - a5->dwFFFFF800 <= 0x00)
+	if ((char *) a5 - 2688 <= a5->dwFFFFF800)
 	{
 		d3_n = dwArg04;
 		do
 		{
-			if (d3_n - d6_n == 0x00 && (a2_n->w000C & 131) != 0x00)
+			if (d3_n == d6_n && (a2_n->w000C & 131) != 0x00)
 			{
 				a7_n->ptrFFFFFFFC = a2_n;
 				// Failed to bind call argument.
@@ -405,8 +405,8 @@ int32 fn00001E04(struct Eq_n * a5, int32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, 
 				struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
 				struct Eq_n * stackArg4 = (struct Eq_n *) <invalid>;
 				a7_n = (struct Eq_n *) &a7_n->t0004.u0;
-				word32 d7_n;
-				if (fn00001D24(a5, stackArg4, out d3_n, out d4_n, out d5_n, out d6_n, out d7_n, out a2_n, out a5, out a6_n) - d7_n != 0x00)
+				int32 d7_n;
+				if (fn00001D24(a5, stackArg4, out d3_n, out d4_n, out d5_n, out d6_n, out d7_n, out a2_n, out a5, out a6_n) != d7_n)
 					d4_n += d6_n;
 			}
 			else if (d3_n == 0x00 && !__btst<word32>(a2_n->dw000F, d6_n))
@@ -416,14 +416,14 @@ int32 fn00001E04(struct Eq_n * a5, int32 dwArg04, ptr32 & d3Out, ptr32 & d4Out, 
 				// Please report this issue at https://github.com/uxmal/reko
 				struct Eq_n * stackArg4 = (struct Eq_n *) <invalid>;
 				struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-				word32 d7_n;
+				int32 d7_n;
 				int32 d0_n = fn00001D24(a5, stackArg4, out d3_n, out d4_n, out d5_n, out d6_n, out d7_n, out a2_n, out a5, out a6_n);
 				a7_n = (struct Eq_n *) &a7_n->t0004.u0;
-				if (d0_n - d7_n == 0x00)
+				if (d0_n == d7_n)
 					d5_n = d0_n;
 			}
 			++a2_n;
-		} while (a2_n - a5->dwFFFFF800 <= 0x00);
+		} while (a2_n <= a5->dwFFFFF800);
 	}
 	else
 		d3_n = dwArg04;
@@ -469,7 +469,7 @@ l00001EDA:
 			int32 d4_n = 0;
 			if ((dwArg08->t000C.u1 & 0x010C) == 0x00)
 			{
-				if (dwArg08 - ((char *) a5 - 2656) == 0x00 || dwArg08 - ((char *) a5 - 2624) == 0x00)
+				if (dwArg08 == (char *) a5 - 2656 || dwArg08 == (char *) a5 - 2624)
 				{
 					word32 a7_n;
 					word32 d0_n;
@@ -541,7 +541,7 @@ l00001F1C:
 				a7_n = a7_n + 0x0C;
 				d4_n = d0_n;
 			}
-			if (d4_n - d5_n == 0x00)
+			if (d4_n == d5_n)
 			{
 				struct Eq_n * a7_n = a7_n + 1;
 				int32 d0_n = a6_n->dw0008 & 0xFF;
@@ -597,7 +597,7 @@ void fn00001FD8(struct Eq_n * a5)
 	ptr32 a7_n = fp - 0x14;
 	Eq_n d3_n = 0;
 	struct Eq_n * d4_n = (char *) a5 - 2592;
-	if ((char *) a5 - 2592 - a5->dwFFFFF800 <= 0x00)
+	if ((char *) a5 - 2592 <= a5->dwFFFFF800)
 	{
 		do
 		{
@@ -610,7 +610,7 @@ void fn00001FD8(struct Eq_n * a5)
 			if (fn00002068(d3_n, a5, *a7_n, out d3_n, out d4_n, out a5, out a6_n) != -1)
 				d3_n = (word32) d3_n.u0 + 1;
 			d4_n = d4_n + 32;
-		} while (d4_n + 32 - a5->dwFFFFF800 <= 0x00);
+		} while (d4_n + 32 <= a5->dwFFFFF800);
 	}
 }
 
@@ -672,7 +672,7 @@ int32 fn00002068(Eq_n d3, struct Eq_n * a5, struct Eq_n * dwArg04, union Eq_n & 
 			word32 a6_n;
 			word32 d0_n = fn00001D80(a5, dwArg04, out d3_n, out d4_n, out a2_n, out a5_n, out a6_n);
 			struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
-			a7_n->t0000.u0 = (struct Eq_n *) a2_n;
+			a7_n->t0000.u0 = (word32 *) a2_n;
 			ptr32 a5_n;
 			word32 a6_n;
 			struct Eq_n * a2_n = fn000020F0(a5_n, a7_n->t0000.u0, out a5_n, out a6_n);
@@ -738,7 +738,7 @@ int32 fn00002068(Eq_n d3, struct Eq_n * a5, struct Eq_n * dwArg04, union Eq_n & 
 word32 fn000020F0(ptr32 a5, Eq_n dwArg04, ptr32 & a5Out, ptr32 & a6Out)
 {
 	ptr32 fp;
-	word32 d0_n = dwArg04.u0[3];
+	word32 d0_n = *((word32) dwArg04 + 0x0C);
 	ptr32 * a6_n = fp - 0x04;
 	word32 * a7_n = fp - 0x08;
 	if (((word16) d0_n & 131) != 0x00 && !__btst<byte>((byte) d0_n, 0x03))

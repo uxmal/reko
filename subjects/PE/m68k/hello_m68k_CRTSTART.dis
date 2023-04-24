@@ -113,7 +113,7 @@ l000022C4:
 	call a5_55 + 194<i32> (retsize: 4;)
 		uses: a2:v8_63,a5:a5_55,a6:a6_53
 		defs: a0:a0_81,a2:a2_77,a5:a5_78,a6:a6_76,a7:a7_75
-	branch a2_77 - Mem70[a7_75:word32] == 0<32> l0000231C
+	branch a2_77 == Mem70[a7_75:word32] l0000231C
 l00002304:
 	__syscall<word16>(0xA1AD<16>)
 	Mem93[a6_76 + -4<i32>:word32] = a0_81
@@ -189,12 +189,12 @@ l000023B4:
 	word32 d5_17 = -1<i32>
 	word32 d4_18 = dwArg08
 	word32 d3_19 = dwArg04
-	branch dwArg08 - dwArg04 <=u 0<32> l000023DE
+	branch dwArg08 <=u dwArg04 l000023DE
 l000023CA:
 	word32 d0_26 = Mem16[d3_19:word32]
 	branch d0_26 == 0<32> l000023D8
 l000023D0:
-	branch d0_26 - d5_17 == 0<32> l000023D8
+	branch d0_26 == d5_17 l000023D8
 l000023D4:
 	word32 a0_42
 	word32 d0_43
@@ -203,7 +203,7 @@ l000023D4:
 		defs: a0:a0_42,a6:a6_38,d0:d0_43,d3:d3_41,d4:d4_40,d5:d5_39
 l000023D8:
 	d3_19 = d3_19 + 4<32>
-	branch d4_18 - d3_19 >u 0<32> l000023CA
+	branch d4_18 >u d3_19 l000023CA
 l000023DE:
 	return Mem16[a6_34:word32]
 fn000023B4_exit:
@@ -280,13 +280,13 @@ l0000243C:
 	word32 d1_13 = 0<i32>
 	word32 d2_15 = a5 + -1100<i32>
 l00002452:
-	branch dwArg04 - Mem10[d2_15:word32] == 0<32> l00002460
+	branch dwArg04 == Mem10[d2_15:word32] l00002460
 l00002458:
 	d2_15 = d2_15 + 8<32>
 	d1_13 = d1_13 + 1<32>
-	branch d2_15 - (a5 + -1012<i32>) <u 0<32> l00002452
+	branch d2_15 <u a5 + -1012<i32> l00002452
 l00002460:
-	branch dwArg04 - Mem10[(a5 + -1100<i32>) + d1_13 * 8<i32>:word32] != 0<32> l0000248E
+	branch dwArg04 != Mem10[(a5 + -1100<i32>) + d1_13 * 8<i32>:word32] l0000248E
 l0000246A:
 	word32 a0_43 = Mem10[a5 + -1096<i32> + d1_13 * 8<i32>:word32]
 	word32 a1_44 = a0_43

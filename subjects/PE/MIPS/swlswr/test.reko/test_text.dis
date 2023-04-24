@@ -279,7 +279,7 @@ fn0001152C_entry:
 l0001152C:
 	word32 r8_10 = Mem8[0x13040<32>:word32]
 	word32 sp_3 = fp + -56<i32>
-	branch Mem11[0x1303C<32>:word32] - r8_10 >= 0<32> l00011588
+	branch Mem11[0x1303C<32>:word32] >= r8_10 l00011588
 l00011588:
 	branch r8_10 == 0<32> l000115B0
 l000115A0:

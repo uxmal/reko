@@ -35,7 +35,7 @@ void __do_global_dtors_aux()
 	{
 		uint32 d0_n = dtor_idx.3228;
 		<anonymous> * a2_n[] = g_a80002714;
-		up32 d2_n = 0x00;
+		uint32 d2_n = 0x00;
 		if (d0_n < 0x00)
 		{
 			do
@@ -46,7 +46,7 @@ void __do_global_dtors_aux()
 				word32 d1_n;
 				a2_n[d0_n]();
 				d0_n = dtor_idx.3228;
-			} while (d2_n - d0_n > 0x00);
+			} while (d2_n > d0_n);
 		}
 		deregister_tm_clones();
 		if (0x00 != 0x00)
@@ -91,9 +91,9 @@ void sine_taylor(real64 rArg04)
 //      sine_taylor
 void factorial(int32 dwArg04)
 {
-	int32 dwLoc08_n = 2;
-	while (dwLoc08_n - dwArg04 <= 0x00)
-		++dwLoc08_n;
+	int32 dwLoc08_n;
+	for (dwLoc08_n = 2; dwLoc08_n <= dwArg04; ++dwLoc08_n)
+		;
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
@@ -101,27 +101,25 @@ void factorial(int32 dwArg04)
 //      sine_taylor
 void pow_int(real64 rArg04, int32 dwArg0C)
 {
-	int32 dwLoc08_n = 0x00;
-	while (dwLoc08_n - dwArg0C < 0x00)
-		++dwLoc08_n;
+	int32 dwLoc08_n;
+	for (dwLoc08_n = 0x00; dwLoc08_n < dwArg0C; ++dwLoc08_n)
+		;
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	int32 dwLoc08_n = 3;
-	while (dwLoc08_n - dwArg0C <= 0x00)
+	int32 dwLoc08_n;
+	for (dwLoc08_n = 3; dwLoc08_n <= dwArg0C; dwLoc08_n += 0x04)
 	{
 		pow_int(rArg04, dwLoc08_n);
 		factorial(dwLoc08_n);
-		dwLoc08_n += 0x04;
 	}
-	int32 dwLoc08_n = 5;
-	while (dwLoc08_n - dwArg0C <= 0x00)
+	int32 dwLoc08_n;
+	for (dwLoc08_n = 5; dwLoc08_n <= dwArg0C; dwLoc08_n += 0x04)
 	{
 		pow_int(rArg04, dwLoc08_n);
 		factorial(dwLoc08_n);
-		dwLoc08_n += 0x04;
 	}
 }
 

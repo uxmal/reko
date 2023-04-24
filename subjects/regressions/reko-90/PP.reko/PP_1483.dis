@@ -49,7 +49,7 @@ l1483_0C4D:
 l1483_0C53_thunk_fn1483_0C55:
 	return SLICE(fn1483_0C55(), word16, 0)
 l1483_0C1B:
-	branch al - 0x8C<8> - CONVERT(al <u Mem11[ss:si:byte], bool, byte) != 0<8> && cx != 1<16> l1483_0C6C
+	branch al - 0x8C<8> != CONVERT(al <u Mem11[ss:si:byte], bool, byte) && cx != 1<16> l1483_0C6C
 l1483_0C6C:
 	word16 ax_52
 	word16 bx_54

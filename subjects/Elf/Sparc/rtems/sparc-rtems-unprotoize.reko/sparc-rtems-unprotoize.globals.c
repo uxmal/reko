@@ -4,7 +4,7 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-union Eq_n * g_ptr0008; // 00000008
+Eq_n g_t0008;
 word32 g_dw000C; // 0000000C
 char g_b0064; // 00000064
 Eq_n g_t007B;
