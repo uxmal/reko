@@ -108,8 +108,8 @@ namespace Reko.Arch.Pdp.Pdp11
                 case Mnemonic.clr: RewriteClr(instr, m.Word16(0)); break;
                 case Mnemonic.clrb: RewriteClr(instr, m.Byte(0)); break;
                 case Mnemonic.clrflags: RewriteClrSetFlags(Constant.False); break;
-                case Mnemonic.cmp: RewriteCmp(); break;
-                case Mnemonic.cmpb: RewriteCmp(); break;
+                case Mnemonic.cmp: RewriteCmp(false); break;
+                case Mnemonic.cmpb: RewriteCmp(true); break;
                 case Mnemonic.com: RewriteCom(); break;
                 case Mnemonic.comb: RewriteCom(); break;
                 case Mnemonic.dec: RewriteIncDec(m.ISub); break;
@@ -542,6 +542,14 @@ namespace Reko.Arch.Pdp.Pdp11
                         tmp);
                     break;
                 case AddressMode.Indexed:
+                    if (r!.Storage == Registers.pc)
+                    {
+                        var addr = dasm.Current.Address + memOp.EffectiveAddress;
+                        m.Assign(tmp, gen(m.Mem(dasm.Current.DataWidth!, addr), src));
+                        m.Assign(m.Mem(dasm.Current.DataWidth!, addr), tmp);
+                    }
+                    else
+                    {
                     m.Assign(
                         tmp,
                         gen(
@@ -556,6 +564,7 @@ namespace Reko.Arch.Pdp.Pdp11
                             m.IAdd(
                                 r!, memOp.EffectiveAddress)),
                         tmp);
+                    }
                     break;
                 case AddressMode.IndexedDef:
                     if (r!.Storage == Registers.pc)

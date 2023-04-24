@@ -36,6 +36,17 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         public override Address LoadAddress => addrBase;
 
         [Test]
+        public void Pdp11Rw_add_imm_deferred()
+        {
+            Given_UInt16s(0x65F7, 0x0001, 0x0E52);
+            AssertCode(     // add #0001,@#1172
+                "0|L--|0200(6): 3 instructions",
+                "1|L--|v4 = Mem0[0x1052<p16>:word16] + 1<16>",
+                "2|L--|Mem0[0x1052<p16>:word16] = v4",
+                "3|L--|NZVC = cond(v4)");
+        }
+
+        [Test]
         public void Pdp11Rw_xor()
         {
             Given_UInt16s(0x7811);
@@ -95,6 +106,17 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
                 "4|L--|V = false",
                 "5|L--|N = false",
                 "6|L--|Z = true");
+        }
+
+        [Test]
+        public void Pdp11Rw_cmpb()
+        {
+            Given_UInt16s(0xA017, 0x0016);
+            AssertCode(
+                "0|L--|0200(4): 3 instructions",
+                "1|L--|v4 = SLICE(r0, byte, 0)",
+                "2|L--|v5 = v4 - 0x16<8>",
+                "3|L--|NZVC = cond(v5)");
         }
 
         [Test]

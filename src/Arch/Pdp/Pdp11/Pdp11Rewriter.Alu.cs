@@ -158,12 +158,14 @@ namespace Reko.Arch.Pdp.Pdp11
             }
         }
 
-        private void RewriteCmp()
+        private void RewriteCmp(bool useByte)
         {
-            var src = RewriteSrc(instr.Operands[0]);
-            var dst = RewriteSrc(instr.Operands[1]);
+            var src = RewriteSrc(instr.Operands[0], useByte);
+            var dst = RewriteSrc(instr.Operands[1], useByte);
             var tmp = binder.CreateTemporary(src.DataType);
-            m.Assign(tmp, m.ISub(dst, src));
+            // PDP-11 manual explicitly states that the src,dst
+            // operands are switched for cmp instructions.
+            m.Assign(tmp, m.ISub(src, dst));
             SetFlags(tmp, Registers.NZVC);
         }
 
