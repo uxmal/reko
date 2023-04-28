@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.ProcedureListToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="300" d:DesignHeight="400"
+             x:DataType="vm:ProcedureListToolViewModel">
+  <!--x:CompileBindings="True">-->
+  <Panel Focusable="True" HorizontalAlignment="Stretch">
+
+
+		<Grid RowDefinitions="Auto,Auto,Auto,*" ColumnDefinitions="*">
+			<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+				<Button Click="btnAll_Tapped">All</Button>
+				<Button Click="btnRoots_Tapped">Roots</Button>
+				<Button Click="btnLeaves_Tapped">Leaves</Button>
+			</StackPanel>
+			<TextBox
+				Grid.Row="1"
+				Watermark="Search procedures by name or address"
+				Text="{Binding ProcedureList.SearchCriterion}">
+			</TextBox>
+			<TextBlock Grid.Row="2" Text="{Binding ProcedureList.Procedures.Count}" DockPanel.Dock="Top"/>
+			<DataGrid Grid.Row="3"
+				Name="procList"
+				Items="{Binding ProcedureList.Procedures}"
+				DockPanel.Dock="Top"
+				RowBackground="{Binding #procList.AlternatingRowBackground}"
+				CanUserResizeColumns="True"
+				CanUserSortColumns="True"
+				AutoGenerateColumns="false"
+				DoubleTapped="procList_DoubleTapped">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
+					<DataGridTextColumn Header="Address" Binding="{Binding Address}" />
+					<DataGridTextColumn Header="Segment" Binding="{Binding Segment}" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</Grid>
+  </Panel>
+</UserControl>

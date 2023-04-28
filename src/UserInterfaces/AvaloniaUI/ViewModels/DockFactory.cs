@@ -52,9 +52,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         }
 
         public ProjectBrowserViewModel? ProjectBrowserTool { get; private set; }
-        public ProcedureListViewModel? ProcedureList { get; private set; }
-        public DiagnosticsViewModel? DiagnosticsList { get; private set; }
-        public CallGraphNavigatorToolViewModel? CallGraphNavigator { get; private set; } 
+        public ProcedureListToolViewModel? ProcedureListTool { get; private set; }
+        public DiagnosticsViewModel? DiagnosticsListTool { get; private set; }
+        public CallGraphNavigatorToolViewModel? CallGraphNavigatorTool { get; private set; } 
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
@@ -69,11 +69,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             
             this.ProjectBrowserTool =  new ProjectBrowserViewModel { Id = "Tool1", Title = "Project browser"};
-            this.ProcedureList = new ProcedureListViewModel {Id = "Tool2", Title = "Procedures"};
+            this.ProcedureListTool = new ProcedureListToolViewModel {Id = "Tool2", Title = "Procedures"};
 
-            this.DiagnosticsList = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
+            this.DiagnosticsListTool = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
             var toolFindResults = new FindResultsViewModel {Id = "Tool4", Title = "Find Results"};
-            this.CallGraphNavigator = new CallGraphNavigatorToolViewModel { Id = "Tool9", Title = "Call Graph Navigator"};
+            this.CallGraphNavigatorTool = new CallGraphNavigatorToolViewModel { Id = "Tool9", Title = "Call Graph Navigator"};
             var toolConsole = new ConsoleViewModel {Id = "Tool7", Title = "Console", CanClose = false, CanPin = false};
             var toolOutput = new OutputViewModel { Id = "Tool6", Title = "Output" };
 
@@ -91,7 +91,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                     new ToolDock
                     {
                         ActiveDockable = ProjectBrowserTool,
-                        VisibleDockables = CreateList<IDockable>(ProjectBrowserTool, ProcedureList),
+                        VisibleDockables = CreateList<IDockable>(ProjectBrowserTool, ProcedureListTool),
                         Alignment = Alignment.Left
                     }
                 )
@@ -106,11 +106,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 (
                     new ToolDock
                     {
-                        ActiveDockable = DiagnosticsList,
+                        ActiveDockable = DiagnosticsListTool,
                         VisibleDockables = CreateList<IDockable>(
-                            DiagnosticsList, 
+                            DiagnosticsListTool, 
                             toolFindResults,
-                            CallGraphNavigator,
+                            CallGraphNavigatorTool,
                             toolConsole,
                             toolOutput),
                         Alignment = Alignment.Left

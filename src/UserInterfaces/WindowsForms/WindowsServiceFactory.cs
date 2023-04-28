@@ -207,7 +207,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IProcedureListService CreateProcedureListService()
         {
-            return new ProcedureListService(services, mainForm.ProcedureListTab, mainForm.ProcedureFilter, mainForm.ProcedureList);
+            return new ProcedureListService(
+                services, 
+                mainForm.ProcedureListTab,
+                mainForm.ProcedureListPanel);
         }
 
         public IDecompiledFileService CreateDecompiledFileService()

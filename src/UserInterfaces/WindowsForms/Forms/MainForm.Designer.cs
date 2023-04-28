@@ -48,6 +48,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             btnDiagnosticFilter = new System.Windows.Forms.ToolStripButton();
             tabFindResults = new System.Windows.Forms.TabPage();
             listFindResults = new System.Windows.Forms.ListView();
+            tabCallGraphNavigator = new System.Windows.Forms.TabPage();
+            callGraphNavigatorView = new CallGraphNavigatorView();
             tabConsole = new System.Windows.Forms.TabPage();
             tabOutput = new System.Windows.Forms.TabPage();
             outputWindowPanel = new System.Windows.Forms.Panel();
@@ -60,19 +62,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl2 = new System.Windows.Forms.TabControl();
             tabProject = new System.Windows.Forms.TabPage();
             tabProcedures = new System.Windows.Forms.TabPage();
-            listProcedures = new System.Windows.Forms.ListView();
-            colProcAddress = new System.Windows.Forms.ColumnHeader();
-            colProcName = new System.Windows.Forms.ColumnHeader();
-            colProcSegment = new System.Windows.Forms.ColumnHeader();
-            txtProcedureFilter = new System.Windows.Forms.TextBox();
             tabDocuments = new System.Windows.Forms.TabControl();
-            tabCallGraphNavigator = new System.Windows.Forms.TabPage();
-            callGraphNavigatorView = new CallGraphNavigatorView();
+            procedureListPanel = new ProcedureListPanel();
             statusStrip.SuspendLayout();
             tabControl1.SuspendLayout();
             tabDiagnostics.SuspendLayout();
             diagnosticsToolstrip.SuspendLayout();
             tabFindResults.SuspendLayout();
+            tabCallGraphNavigator.SuspendLayout();
             tabOutput.SuspendLayout();
             outputWindowToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize) splitContainerMain).BeginInit();
@@ -86,7 +83,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl2.SuspendLayout();
             tabProject.SuspendLayout();
             tabProcedures.SuspendLayout();
-            tabCallGraphNavigator.SuspendLayout();
             SuspendLayout();
             // 
             // statusStrip
@@ -135,7 +131,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             treeBrowser.Margin = new System.Windows.Forms.Padding(4);
             treeBrowser.Name = "treeBrowser";
             treeBrowser.SelectedImageIndex = 0;
-            treeBrowser.Size = new System.Drawing.Size(191, 357);
+            treeBrowser.Size = new System.Drawing.Size(191, 344);
             treeBrowser.TabIndex = 0;
             // 
             // imlBrowser
@@ -171,7 +167,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl1.Margin = new System.Windows.Forms.Padding(4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new System.Drawing.Size(914, 196);
+            tabControl1.Size = new System.Drawing.Size(914, 209);
             tabControl1.TabIndex = 5;
             // 
             // tabDiagnostics
@@ -182,7 +178,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabDiagnostics.Margin = new System.Windows.Forms.Padding(4);
             tabDiagnostics.Name = "tabDiagnostics";
             tabDiagnostics.Padding = new System.Windows.Forms.Padding(4);
-            tabDiagnostics.Size = new System.Drawing.Size(906, 168);
+            tabDiagnostics.Size = new System.Drawing.Size(906, 181);
             tabDiagnostics.TabIndex = 1;
             tabDiagnostics.Text = "Diagnostics";
             tabDiagnostics.UseVisualStyleBackColor = true;
@@ -195,7 +191,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             listDiagnostics.Location = new System.Drawing.Point(4, 29);
             listDiagnostics.Margin = new System.Windows.Forms.Padding(4);
             listDiagnostics.Name = "listDiagnostics";
-            listDiagnostics.Size = new System.Drawing.Size(898, 135);
+            listDiagnostics.Size = new System.Drawing.Size(898, 148);
             listDiagnostics.SmallImageList = imageList;
             listDiagnostics.TabIndex = 2;
             listDiagnostics.UseCompatibleStateImageBehavior = false;
@@ -253,7 +249,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabFindResults.Margin = new System.Windows.Forms.Padding(4);
             tabFindResults.Name = "tabFindResults";
             tabFindResults.Padding = new System.Windows.Forms.Padding(4);
-            tabFindResults.Size = new System.Drawing.Size(906, 168);
+            tabFindResults.Size = new System.Drawing.Size(906, 181);
             tabFindResults.TabIndex = 0;
             tabFindResults.Text = "Find results";
             tabFindResults.UseVisualStyleBackColor = true;
@@ -265,16 +261,36 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             listFindResults.Location = new System.Drawing.Point(4, 4);
             listFindResults.Margin = new System.Windows.Forms.Padding(4);
             listFindResults.Name = "listFindResults";
-            listFindResults.Size = new System.Drawing.Size(898, 160);
+            listFindResults.Size = new System.Drawing.Size(898, 173);
             listFindResults.TabIndex = 0;
             listFindResults.UseCompatibleStateImageBehavior = false;
+            // 
+            // tabCallGraphNavigator
+            // 
+            tabCallGraphNavigator.Controls.Add(callGraphNavigatorView);
+            tabCallGraphNavigator.Location = new System.Drawing.Point(4, 24);
+            tabCallGraphNavigator.Name = "tabCallGraphNavigator";
+            tabCallGraphNavigator.Padding = new System.Windows.Forms.Padding(3);
+            tabCallGraphNavigator.Size = new System.Drawing.Size(906, 181);
+            tabCallGraphNavigator.TabIndex = 5;
+            tabCallGraphNavigator.Text = "Call Graph Navigator";
+            tabCallGraphNavigator.UseVisualStyleBackColor = true;
+            // 
+            // callGraphNavigatorView
+            // 
+            callGraphNavigatorView.Dock = System.Windows.Forms.DockStyle.Fill;
+            callGraphNavigatorView.Location = new System.Drawing.Point(3, 3);
+            callGraphNavigatorView.Name = "callGraphNavigatorView";
+            callGraphNavigatorView.Size = new System.Drawing.Size(900, 175);
+            callGraphNavigatorView.TabIndex = 0;
+            callGraphNavigatorView.ViewModel = null;
             // 
             // tabConsole
             // 
             tabConsole.Location = new System.Drawing.Point(4, 24);
             tabConsole.Margin = new System.Windows.Forms.Padding(4);
             tabConsole.Name = "tabConsole";
-            tabConsole.Size = new System.Drawing.Size(906, 168);
+            tabConsole.Size = new System.Drawing.Size(906, 181);
             tabConsole.TabIndex = 2;
             tabConsole.Text = "Console";
             tabConsole.UseVisualStyleBackColor = true;
@@ -287,7 +303,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabOutput.Margin = new System.Windows.Forms.Padding(4);
             tabOutput.Name = "tabOutput";
             tabOutput.Padding = new System.Windows.Forms.Padding(4);
-            tabOutput.Size = new System.Drawing.Size(906, 168);
+            tabOutput.Size = new System.Drawing.Size(906, 181);
             tabOutput.TabIndex = 4;
             tabOutput.Text = "Output";
             tabOutput.UseVisualStyleBackColor = true;
@@ -297,7 +313,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             outputWindowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             outputWindowPanel.Location = new System.Drawing.Point(4, 29);
             outputWindowPanel.Name = "outputWindowPanel";
-            outputWindowPanel.Size = new System.Drawing.Size(898, 135);
+            outputWindowPanel.Size = new System.Drawing.Size(898, 148);
             outputWindowPanel.TabIndex = 2;
             // 
             // outputWindowToolstrip
@@ -331,7 +347,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             splitContainerMain.Panel2.Controls.Add(tabControl1);
             splitContainerMain.Size = new System.Drawing.Size(914, 593);
-            splitContainerMain.SplitterDistance = 393;
+            splitContainerMain.SplitterDistance = 380;
             splitContainerMain.TabIndex = 9;
             // 
             // splitContainer2
@@ -348,7 +364,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(tabDocuments);
-            splitContainer2.Size = new System.Drawing.Size(914, 393);
+            splitContainer2.Size = new System.Drawing.Size(914, 380);
             splitContainer2.SplitterDistance = 207;
             splitContainer2.TabIndex = 0;
             // 
@@ -361,7 +377,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl2.Margin = new System.Windows.Forms.Padding(4);
             tabControl2.Name = "tabControl2";
             tabControl2.SelectedIndex = 0;
-            tabControl2.Size = new System.Drawing.Size(207, 393);
+            tabControl2.Size = new System.Drawing.Size(207, 380);
             tabControl2.TabIndex = 1;
             // 
             // tabProject
@@ -371,60 +387,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabProject.Margin = new System.Windows.Forms.Padding(4);
             tabProject.Name = "tabProject";
             tabProject.Padding = new System.Windows.Forms.Padding(4);
-            tabProject.Size = new System.Drawing.Size(199, 365);
+            tabProject.Size = new System.Drawing.Size(199, 352);
             tabProject.TabIndex = 0;
             tabProject.Text = "Project";
             tabProject.UseVisualStyleBackColor = true;
             // 
             // tabProcedures
             // 
-            tabProcedures.Controls.Add(listProcedures);
-            tabProcedures.Controls.Add(txtProcedureFilter);
+            tabProcedures.Controls.Add(procedureListPanel);
             tabProcedures.Location = new System.Drawing.Point(4, 24);
             tabProcedures.Margin = new System.Windows.Forms.Padding(4);
             tabProcedures.Name = "tabProcedures";
             tabProcedures.Padding = new System.Windows.Forms.Padding(4);
-            tabProcedures.Size = new System.Drawing.Size(199, 365);
+            tabProcedures.Size = new System.Drawing.Size(199, 352);
             tabProcedures.TabIndex = 1;
             tabProcedures.Text = "Procedures";
             tabProcedures.UseVisualStyleBackColor = true;
-            // 
-            // listProcedures
-            // 
-            listProcedures.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            listProcedures.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { colProcAddress, colProcName, colProcSegment });
-            listProcedures.FullRowSelect = true;
-            listProcedures.Location = new System.Drawing.Point(0, 30);
-            listProcedures.Margin = new System.Windows.Forms.Padding(4);
-            listProcedures.Name = "listProcedures";
-            listProcedures.Size = new System.Drawing.Size(198, 330);
-            listProcedures.TabIndex = 1;
-            listProcedures.UseCompatibleStateImageBehavior = false;
-            listProcedures.View = System.Windows.Forms.View.Details;
-            // 
-            // colProcAddress
-            // 
-            colProcAddress.Text = "Address";
-            colProcAddress.Width = 62;
-            // 
-            // colProcName
-            // 
-            colProcName.Text = "Name";
-            colProcName.Width = 200;
-            // 
-            // colProcSegment
-            // 
-            colProcSegment.Text = "Segment";
-            // 
-            // txtProcedureFilter
-            // 
-            txtProcedureFilter.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            txtProcedureFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            txtProcedureFilter.Location = new System.Drawing.Point(0, 0);
-            txtProcedureFilter.Margin = new System.Windows.Forms.Padding(4);
-            txtProcedureFilter.Name = "txtProcedureFilter";
-            txtProcedureFilter.Size = new System.Drawing.Size(198, 23);
-            txtProcedureFilter.TabIndex = 0;
             // 
             // tabDocuments
             // 
@@ -434,27 +412,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabDocuments.Margin = new System.Windows.Forms.Padding(4);
             tabDocuments.Name = "tabDocuments";
             tabDocuments.SelectedIndex = 0;
-            tabDocuments.Size = new System.Drawing.Size(703, 393);
+            tabDocuments.Size = new System.Drawing.Size(703, 380);
             tabDocuments.TabIndex = 0;
             // 
-            // tabCallGraphNavigator
+            // procedureListPanel1
             // 
-            tabCallGraphNavigator.Controls.Add(callGraphNavigatorView);
-            tabCallGraphNavigator.Location = new System.Drawing.Point(4, 24);
-            tabCallGraphNavigator.Name = "tabCallGraphNavigator";
-            tabCallGraphNavigator.Padding = new System.Windows.Forms.Padding(3);
-            tabCallGraphNavigator.Size = new System.Drawing.Size(906, 168);
-            tabCallGraphNavigator.TabIndex = 5;
-            tabCallGraphNavigator.Text = "Call Graph Navigator";
-            tabCallGraphNavigator.UseVisualStyleBackColor = true;
-            // 
-            // callGraphNavigatorView1
-            // 
-            callGraphNavigatorView.Dock = System.Windows.Forms.DockStyle.Fill;
-            callGraphNavigatorView.Location = new System.Drawing.Point(3, 3);
-            callGraphNavigatorView.Name = "callGraphNavigatorView1";
-            callGraphNavigatorView.Size = new System.Drawing.Size(900, 162);
-            callGraphNavigatorView.TabIndex = 0;
+            procedureListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            procedureListPanel.Location = new System.Drawing.Point(4, 4);
+            procedureListPanel.Name = "procedureListPanel1";
+            procedureListPanel.Size = new System.Drawing.Size(191, 344);
+            procedureListPanel.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -477,6 +444,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             diagnosticsToolstrip.ResumeLayout(false);
             diagnosticsToolstrip.PerformLayout();
             tabFindResults.ResumeLayout(false);
+            tabCallGraphNavigator.ResumeLayout(false);
             tabOutput.ResumeLayout(false);
             tabOutput.PerformLayout();
             outputWindowToolstrip.ResumeLayout(false);
@@ -492,8 +460,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             tabControl2.ResumeLayout(false);
             tabProject.ResumeLayout(false);
             tabProcedures.ResumeLayout(false);
-            tabProcedures.PerformLayout();
-            tabCallGraphNavigator.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -520,11 +486,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabProject;
         private System.Windows.Forms.TabPage tabProcedures;
-        private System.Windows.Forms.ListView listProcedures;
-        private System.Windows.Forms.ColumnHeader colProcAddress;
-        private System.Windows.Forms.ColumnHeader colProcName;
-        private System.Windows.Forms.TextBox txtProcedureFilter;
-        private System.Windows.Forms.ColumnHeader colProcSegment;
         private System.Windows.Forms.TabPage tabOutput;
         private System.Windows.Forms.ToolStrip outputWindowToolstrip;
         private System.Windows.Forms.ToolStripComboBox ddlOutputWindowSources;
@@ -537,6 +498,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.ToolStripStatusLabel statusLblSelection;
         private System.Windows.Forms.TabPage tabCallGraphNavigator;
         private CallGraphNavigatorView callGraphNavigatorView;
+        private ProcedureListPanel procedureListPanel;
     }
 }
 

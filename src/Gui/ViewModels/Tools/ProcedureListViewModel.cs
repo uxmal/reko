@@ -18,26 +18,25 @@
  */
 #endregion
 
-using Dock.Model.ReactiveUI.Controls;
-using ReactiveUI;
 using Reko.Core;
-using System;
+using Reko.Gui.Reactive;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
+namespace Reko.Gui.ViewModels.Tools
 {
     /// <summary>
     /// The view model for backing the procedure list view.
     /// </summary>
-    public class ProcedureListViewModel : Tool
+    public class ProcedureListViewModel : ChangeNotifyingObject
     {
-        private List<ProcedureItem> modelProcedures;
+        private readonly List<ProcedureItem> modelProcedures;
 
         public ProcedureListViewModel()
         {
             this.searchCriterion = "";
+            this.baseFilter = ProcedureBaseFilter.All;
             this.modelProcedures = new List<ProcedureItem>();
             this.procedures = new ObservableCollection<ProcedureItem>(modelProcedures);
         }
@@ -45,18 +44,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         public string SearchCriterion
         {
             get { return searchCriterion; }
-            set { 
-                if (string.IsNullOrEmpty(searchCriterion))
-                {
-                    this.Procedures = new ObservableCollection<ProcedureItem>(this.modelProcedures);
-                }
-                else
-                {
-                    var criterion = searchCriterion.Trim();
-                    this.Procedures = new ObservableCollection<ProcedureItem>(
-                        modelProcedures.Where(p => p.Name.Contains(criterion)));
-                }
+            set {
+                bool changed = this.searchCriterion != value;
                 this.RaiseAndSetIfChanged(ref searchCriterion, value, nameof(SearchCriterion));
+                if (changed) 
+                    Procedures = this.ApplyFilterCriteria();
             }
         }
         private string searchCriterion;
@@ -66,6 +58,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
             get { return procedures; }
             set { this.RaiseAndSetIfChanged(ref procedures, value, nameof(Procedures)); }
         }
+        private ObservableCollection<ProcedureItem> procedures;
 
         public ProcedureItem? SelectedProcedure
         {
@@ -74,29 +67,61 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
         }
         private ProcedureItem? procSelected;
 
-        private ObservableCollection<ProcedureItem> procedures;
+
+        public ProcedureBaseFilter BaseFilter
+        {
+            get { return baseFilter; }
+            set {
+                bool changed = baseFilter != value;
+                this.RaiseAndSetIfChanged(ref baseFilter, value);
+                if (changed)
+                    Procedures = ApplyFilterCriteria();
+            }
+        }
+        private ProcedureBaseFilter baseFilter;
+
 
 
         public void LoadProcedures(IEnumerable<(Program, Procedure)> procedures)
         {
             this.modelProcedures.Clear();
             this.modelProcedures.AddRange(procedures.Select(CreateProcedureItem));
-            this.Procedures = new(modelProcedures.Where(p => p.Name.Contains(searchCriterion.Trim())));
+            this.Procedures = ApplyFilterCriteria();
+        }
+
+        private ObservableCollection<ProcedureItem> ApplyFilterCriteria()
+        {
+            var filteredProcs = new ObservableCollection<ProcedureItem>();
+            if (modelProcedures.Count > 0)
+            {
+                var program = modelProcedures[0].Program;
+                foreach (var proc in modelProcedures)
+                {
+                    var c = searchCriterion.Trim();
+                    if (!string.IsNullOrWhiteSpace(c) &&
+                        !proc.Name.Contains(c) &&
+                        !proc.Address.Contains(c))
+                        continue;
+                    switch (this.baseFilter)
+                    {
+                    case ProcedureBaseFilter.Roots:
+                        if (!program.CallGraph.IsRootProcedure(proc.Procedure))
+                            continue;
+                        break;
+                    case ProcedureBaseFilter.Leaves:
+                        if (!program.CallGraph.IsLeafProcedure(proc.Procedure))
+                            continue;
+                        break;
+                    }
+                    filteredProcs.Add(proc);
+                }
+            }
+            return filteredProcs;
         }
 
         private ProcedureItem CreateProcedureItem((Program program, Procedure proc) pp)
         {
             return new ProcedureItem(pp.proc.Name, pp.proc.EntryAddress.ToString(), pp.program, pp.proc);
-        }
-
-        public void Show()
-        {
-            var ow = this.Owner;
-            if (ow is ToolDock toolDock)
-            {
-                toolDock.ActiveDockable = this;
-                toolDock.FocusedDockable = this;
-            }
         }
 
         public class ProcedureItem

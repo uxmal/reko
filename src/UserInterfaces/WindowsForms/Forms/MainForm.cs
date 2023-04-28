@@ -174,15 +174,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return tabProcedures; }
         }
 
-        public TextBox ProcedureFilter
-        {
-            get { return txtProcedureFilter; }
-        }
-
-        public ListView ProcedureList
-        {
-            get { return listProcedures; }
-        }
+        public ProcedureListPanel ProcedureListPanel => procedureListPanel;
 
         public ListView DiagnosticsList
         {

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 John Källén.
+ * Copyright (C) 1999-2023 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,15 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Reko.Gui.ViewModels.Tools;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class ProcedureListView : UserControl
+    public class ProcedureListToolView : UserControl
     {
-        public ProcedureListView()
+        public ProcedureListToolView()
         {
             InitializeComponent();
         }
@@ -38,14 +39,47 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             AvaloniaXamlLoader.Load(this);
         }
 
+        private ProcedureListViewModel? ViewModel
+        {
+            get
+            {
+                return (DataContext as ProcedureListToolViewModel)?.ProcedureList;
+            }
+        }
+
         private void procList_DoubleTapped(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ProcedureListViewModel vm)
+            var vm = ViewModel;
+            if (vm is null)
                 return;
             if (sender is DataGrid procList && procList.SelectedItem is ProcedureListViewModel.ProcedureItem item)
             { 
                 vm.SelectedProcedure = item;
             }
+        }
+
+        private void btnAll_Tapped(object sender, RoutedEventArgs e)
+        {
+            var vm = ViewModel;
+            if (vm is null)
+                return;
+            vm.BaseFilter = ProcedureBaseFilter.All;
+        }
+
+        private void btnRoots_Tapped(object sender, RoutedEventArgs e)
+        {
+            var vm = ViewModel;
+            if (vm is null)
+                return;
+            vm.BaseFilter = ProcedureBaseFilter.Roots;
+        }
+
+        private void btnLeaves_Tapped(object sender, RoutedEventArgs e)
+        {
+            var vm = ViewModel;
+            if (vm is null)
+                return;
+            vm.BaseFilter = ProcedureBaseFilter.Leaves;
         }
     }
 }

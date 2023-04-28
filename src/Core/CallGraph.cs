@@ -137,7 +137,17 @@ namespace Reko.Core
                 .Where(s => s.Block.Procedure != null);
 		}
 
-		public void Write(TextWriter wri)
+        public bool IsLeafProcedure(Procedure proc)
+        {
+            return graphProcs.Successors(proc).Count == 0;
+        }
+
+        public bool IsRootProcedure(Procedure proc)
+        {
+            return graphProcs.Predecessors(proc).Count == 0;
+        }
+
+        public void Write(TextWriter wri)
 		{
             var sl = graphProcs.Nodes.OrderBy(n => n.Name);
 			foreach (Procedure proc in sl)

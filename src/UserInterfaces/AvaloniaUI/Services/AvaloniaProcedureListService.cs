@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Tools;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.ComponentModel.Design;
@@ -33,9 +34,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
     public class AvaloniaProcedureListService : IProcedureListService
     {
         private readonly IServiceProvider services;
-        private readonly ProcedureListViewModel procedureVm;
+        private readonly ProcedureListToolViewModel procedureVm;
 
-        public AvaloniaProcedureListService(IServiceProvider services, ProcedureListViewModel procedureVm)
+        public AvaloniaProcedureListService(IServiceProvider services, ProcedureListToolViewModel procedureVm)
         {
             this.services = services;
             this.procedureVm = procedureVm;
@@ -47,9 +48,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             if (e.PropertyName == nameof(ProcedureListViewModel.SelectedProcedure))
             {
-                if (procedureVm.SelectedProcedure is null)
+                var pp = procedureVm.ProcedureList?.SelectedProcedure;
+                if (pp is null)
                     return;
-                var pp = procedureVm.SelectedProcedure;
                 services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
                 services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);
             }
@@ -65,7 +66,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Clear()
         {
-            procedureVm.Procedures.Clear();
+            procedureVm.ProcedureList?.Procedures.Clear();
         }
 
         public ValueTask<bool> ExecuteAsync(CommandID cmdId)
@@ -75,7 +76,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void Load(Project project)
         {
-            procedureVm.LoadProcedures(project.Programs.SelectMany(program =>
+            procedureVm.ProcedureList = new ProcedureListViewModel();
+            procedureVm.ProcedureList?.LoadProcedures(project.Programs.SelectMany(program =>
                 program.Procedures.Values.Select(p => (program, p))));
         }
 

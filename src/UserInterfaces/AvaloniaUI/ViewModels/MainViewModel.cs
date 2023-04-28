@@ -63,9 +63,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             }
 
             this.ProjectBrowser = dockFactory.ProjectBrowserTool!;
-            this.ProcedureList = dockFactory.ProcedureList!;
-            this.DiagnosticsList = dockFactory.DiagnosticsList!;
-            this.CallGraphNavigator = dockFactory.CallGraphNavigator!;
+            this.ProcedureList = dockFactory.ProcedureListTool!;
+            this.DiagnosticsList = dockFactory.DiagnosticsListTool!;
+            this.CallGraphNavigator = dockFactory.CallGraphNavigatorTool!;
 
             var cmdDefs = new CommandDefinitions();
             this.interactor = new MainFormInteractor(services);
@@ -90,7 +90,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public DiagnosticsViewModel DiagnosticsList { get; set; }
 
-        public ProcedureListViewModel ProcedureList { get; set; }
+        public ProcedureListToolViewModel ProcedureList { get; set; }
         public CallGraphNavigatorToolViewModel CallGraphNavigator { get; set; }
 
         public AvaloniaStatusBarService? Status { get; set; }

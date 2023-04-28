@@ -21,7 +21,9 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Tools;
 using Reko.UserInterfaces.WindowsForms;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -35,7 +37,8 @@ namespace Reko.Gui
 {
     public class ProcedureListService : IProcedureListService
     {
-        private const string HelpText = "Search procedures";
+        private const string HelpText = "Search procedures by name or address";
+
         private const int icolAddress = 0;
         private const int icolName = 1;
         private const int icolSegment = 2;
@@ -46,19 +49,24 @@ namespace Reko.Gui
         private readonly ListView listProcedures;
         private bool showHelpText;
         private List<ProgramProcedure> procs;
+        private ProcedureBaseFilter baseFilter;
 
-        public ProcedureListService(IServiceProvider services, TabPage tabPage, TextBox txtProcedureFilter, ListView listProcedures)
+        public ProcedureListService(IServiceProvider services, TabPage tabPage, ProcedureListPanel procedureListPanel)
         {
             this.services = services;
             this.tabPage = tabPage;
-            this.txtProcedureFilter = txtProcedureFilter;
-            this.listProcedures = listProcedures;
+            this.txtProcedureFilter = procedureListPanel.ProcedureFilter;
+            this.listProcedures = procedureListPanel.ProcedureList;
             this.showHelpText = true;
+            this.baseFilter = ProcedureBaseFilter.All;
             UiTools.AddSelectAllHandler(txtProcedureFilter);
             txtProcedureFilter.GotFocus += TxtProcedureFilter_GotFocus;
             txtProcedureFilter.LostFocus += TxtProcedureFilter_LostFocus;
             txtProcedureFilter.TextChanged += TxtProcedureFilter_TextChanged;
             listProcedures.DoubleClick += ListProcedures_DoubleClick;
+            procedureListPanel.AllProceduresMenuItem.Click += AllProceduresMenuItem_Click;
+            procedureListPanel.LeafProceduresMenuItem.Click += LeafProceduresMenuItem_Click;
+            procedureListPanel.RootProceduresMenuItem.Click += RootProceduresMenuItem_Click;
             services.RequireService<IDecompilerShellUiService>().SetContextMenu(listProcedures, Reko.Gui.MenuIds.CtxProcedureList);
             Clear();
         }
@@ -103,6 +111,8 @@ namespace Reko.Gui
             {
                 sProcs = sProcs.Where(sItem => FilterProcedure(searchText, sItem));
             }
+            sProcs = sProcs.Where(FilterProcedure);
+
             var items = sProcs.Select(CreateListItem).ToArray();
             if (items.Length == 0)
             {
@@ -299,10 +309,42 @@ namespace Reko.Gui
             ShowProcedures(procs);
         }
 
+
+        private void AllProceduresMenuItem_Click(object sender, EventArgs e)
+        {
+            this.baseFilter = ProcedureBaseFilter.All;
+            ShowProcedures(this.procs);
+        }
+
+        private void LeafProceduresMenuItem_Click(object sender, EventArgs e)
+        {
+            this.baseFilter = ProcedureBaseFilter.Leaves;
+            ShowProcedures(this.procs);
+        }
+
+        private void RootProceduresMenuItem_Click(object sender, EventArgs e)
+        {
+            this.baseFilter = ProcedureBaseFilter.Roots;
+            ShowProcedures(this.procs);
+        }
+
         private bool FilterProcedure(string searchtext, ProgramProcedure sItem)
         {
             return (sItem.Procedure.EntryAddress.ToString().Contains(searchtext) || 
                 sItem.Procedure.Name.Contains(searchtext));
+        }
+
+        private bool FilterProcedure(ProgramProcedure sItem)
+        {
+            switch (this.baseFilter)
+            {
+            default:
+                return true;
+            case ProcedureBaseFilter.Roots:
+                return sItem.Program.CallGraph.IsRootProcedure(sItem.Procedure);
+            case ProcedureBaseFilter.Leaves:
+                return sItem.Program.CallGraph.IsLeafProcedure(sItem.Procedure);
+            }
         }
 
         private void ListProcedures_DoubleClick(object sender, EventArgs e)
