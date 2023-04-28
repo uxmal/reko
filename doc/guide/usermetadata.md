@@ -97,8 +97,24 @@ exit(int exit_code);
 ```
 Reko is sensitive to this characteristic and will use it during both the scanning phase and the data flow analysis phase. C++ 11 defines the standard attribute `[[noreturn]]` which Reko treats as having the same semantics as `[[reko::characteristics({terminates:true})]]`.
 
+#### Specifying a custom varargs parser
+If a procedure requires varargs support, it can be specified by using the `varargs` characteristic:
+```C++
+[[reko::address("00123400")]]
+    [[reko::characteristics({varargs:"MyExtension.VarargsHandler"})]]
+printf(char * format, ...);
+```
+
+The parameter to the `varargs` characteristics is the fully qualified type name of a class that implements the 
+`Reko.Core.Analysis.IVarargsFormatParser` interface. Varargs format parsers for the well-established `*printf` 
+and `*scanf` function families are provided by the `Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc`
+and `Reko.Libraries.Libc.ScanfFormatParser,Reko.Libraries.Libc` classes, respectively.
+
 ### Specifying service procedures
-A service procedure is a procedure where one or more of the input parameters are used to choose different functionality. The MS-DOS `int 21h` service vector is a well-known example of this technique. To specify a service procedure based on an interrupt or system call, use the `[[reko::service]]` attribute. This attribute specifies the interrupt or system call number, and the register(s) used to select a particular function.
+A service procedure is a procedure where one or more of the input parameters are used to choose different services. The MS-DOS `int 21h` service vector is a well-known example of this technique, using the `ah`, `al` and other registers to select various
+operating environment services.
+
+To specify a service procedure based on an interrupt or system call, use the `[[reko::service]]` attribute. This attribute specifies the interrupt or system call number, and the register(s) used to select a particular function.
 
 The following example is a vastly simplified representation of the 32-bit i386 Linux `int 80h` service vector:
 ```C++

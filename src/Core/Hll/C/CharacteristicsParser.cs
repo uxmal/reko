@@ -42,6 +42,7 @@ namespace Reko.Core.Hll.C
                 return DefaultProcedureCharacteristics.Instance;
             bool terminates = false;
             bool alloca = false;
+            string? sVarargs = null;
             do
             {
                 var charName = Expect<string>(CTokenType.Id, "identifier");
@@ -53,11 +54,14 @@ namespace Reko.Core.Hll.C
                     terminates = (sTerminates == "true");
                     break;
                 case "alloca":
-                    var sAlloca = Expect <string>(CTokenType.Id, "true or false");
+                    var sAlloca = Expect<string>(CTokenType.Id, "true or false");
                     alloca = (sAlloca != "false" && sAlloca != "0");
                     break;
+                case "varargs":
+                    sVarargs = Expect<string>(CTokenType.StringLiteral, "string literal");
+                    break;
                 default:
-                    throw new CParserException($"Unexpected characteristic '{charName}'.");
+                    throw new CParserException($"Unexpected procedure characteristic '{charName}'.");
                 }
             } while (PeekAndDiscard(CTokenType.Comma));
             Expect(CTokenType.RBrace, "}");
@@ -65,6 +69,7 @@ namespace Reko.Core.Hll.C
             {
                 Terminates = terminates,
                 IsAlloca = alloca,
+                VarargsParserClass = sVarargs,
             };
         }
 

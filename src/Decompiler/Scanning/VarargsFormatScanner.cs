@@ -209,10 +209,7 @@ namespace Reko.Scanning
             var svc = services.RequireService<IPluginLoaderService>();
             var type = svc.GetType(varargsParserTypename);
             if (type is null)
-                throw new TypeLoadException(
-                    string.Format(
-                        "Unable to load {0} varargs parser.",
-                        chr.VarargsParserClass));
+                throw new TypeLoadException($"Unable to load {chr.VarargsParserClass} varargs parser.");
             var varargsParser = (IVarargsFormatParser)Activator.CreateInstance(
                 type,
                 program,

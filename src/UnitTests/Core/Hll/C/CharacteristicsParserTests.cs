@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core.Hll.C;
+using Reko.ImageLoaders.Elf.Relocators;
 using System.IO;
 
 namespace Reko.UnitTests.Core.Serialization
@@ -66,6 +67,16 @@ namespace Reko.UnitTests.Core.Serialization
             var result = chp.Parse();
 
             Assert.IsTrue(result.IsAlloca);
+        }
+
+        [Test]
+        public void Chp_Parse_varargs_class()
+        {
+            Given_Parser("[[reko::characteristics({varargs:\"My.Custom.Class\"})]]");
+
+            var result = chp.Parse();
+
+            Assert.AreEqual("My.Custom.Class", result.VarargsParserClass);
         }
     }
 }

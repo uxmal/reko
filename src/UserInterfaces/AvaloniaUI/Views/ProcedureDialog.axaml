@@ -45,6 +45,7 @@
 				<CheckBox Name="chkAlloca" IsChecked="{Binding IsAlloca}">
 					_Allocates stack memory (like alloca)
 				</CheckBox>
+				<TextBox Name="txtVarargsFormatParser" Text="{Binding VarargsFormatParser}" />
 			</StackPanel>
 		</Border>
 		<StackPanel HorizontalAlignment="Right"

@@ -48,219 +48,237 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabProcedure = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtSignature = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chkIsAlloca = new System.Windows.Forms.CheckBox();
-            this.chkTerminates = new System.Windows.Forms.CheckBox();
-            this.chkDecompile = new System.Windows.Forms.CheckBox();
-            this.chkMalloc = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtComment = new System.Windows.Forms.TextBox();
-            this.tabControl1.SuspendLayout();
-            this.tabProcedure.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
+            btnOK = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            txtName = new System.Windows.Forms.TextBox();
+            tabControl1 = new System.Windows.Forms.TabControl();
+            tabProcedure = new System.Windows.Forms.TabPage();
+            txtSignature = new System.Windows.Forms.TextBox();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            chkIsAlloca = new System.Windows.Forms.CheckBox();
+            chkTerminates = new System.Windows.Forms.CheckBox();
+            chkDecompile = new System.Windows.Forms.CheckBox();
+            chkMalloc = new System.Windows.Forms.CheckBox();
+            txtComment = new System.Windows.Forms.TextBox();
+            label4 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            txtVarargsFormatParser = new System.Windows.Forms.TextBox();
+            tabControl1.SuspendLayout();
+            tabProcedure.SuspendLayout();
+            groupBox1.SuspendLayout();
+            SuspendLayout();
             // 
             // btnOK
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(288, 483);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(88, 27);
-            this.btnOK.TabIndex = 10;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
+            btnOK.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            btnOK.Location = new System.Drawing.Point(288, 483);
+            btnOK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnOK.Name = "btnOK";
+            btnOK.Size = new System.Drawing.Size(88, 27);
+            btnOK.TabIndex = 10;
+            btnOK.Text = "OK";
+            btnOK.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(386, 483);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 27);
-            this.btnCancel.TabIndex = 11;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            btnCancel.Location = new System.Drawing.Point(386, 483);
+            btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(88, 27);
+            btnCancel.TabIndex = 11;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 14);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "&Name:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(7, 14);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(42, 15);
+            label1.TabIndex = 0;
+            label1.Text = "&Name:";
             // 
             // txtName
             // 
-            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(7, 32);
-            this.txtName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(459, 23);
-            this.txtName.TabIndex = 1;
+            txtName.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            txtName.Location = new System.Drawing.Point(7, 32);
+            txtName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtName.Name = "txtName";
+            txtName.Size = new System.Drawing.Size(459, 23);
+            txtName.TabIndex = 1;
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabProcedure);
-            this.tabControl1.Location = new System.Drawing.Point(1, 3);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(484, 473);
-            this.tabControl1.TabIndex = 10;
+            tabControl1.Controls.Add(tabProcedure);
+            tabControl1.Location = new System.Drawing.Point(1, 3);
+            tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new System.Drawing.Size(484, 473);
+            tabControl1.TabIndex = 10;
             // 
             // tabProcedure
             // 
-            this.tabProcedure.Controls.Add(this.txtSignature);
-            this.tabProcedure.Controls.Add(this.groupBox1);
-            this.tabProcedure.Controls.Add(this.txtComment);
-            this.tabProcedure.Controls.Add(this.txtName);
-            this.tabProcedure.Controls.Add(this.label4);
-            this.tabProcedure.Controls.Add(this.label3);
-            this.tabProcedure.Controls.Add(this.label1);
-            this.tabProcedure.Location = new System.Drawing.Point(4, 24);
-            this.tabProcedure.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabProcedure.Name = "tabProcedure";
-            this.tabProcedure.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tabProcedure.Size = new System.Drawing.Size(476, 445);
-            this.tabProcedure.TabIndex = 1;
-            this.tabProcedure.Text = "Procedure";
-            this.tabProcedure.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 63);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(60, 15);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "&Signature:";
+            tabProcedure.Controls.Add(txtSignature);
+            tabProcedure.Controls.Add(groupBox1);
+            tabProcedure.Controls.Add(txtComment);
+            tabProcedure.Controls.Add(txtName);
+            tabProcedure.Controls.Add(label4);
+            tabProcedure.Controls.Add(label3);
+            tabProcedure.Controls.Add(label1);
+            tabProcedure.Location = new System.Drawing.Point(4, 24);
+            tabProcedure.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabProcedure.Name = "tabProcedure";
+            tabProcedure.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabProcedure.Size = new System.Drawing.Size(476, 445);
+            tabProcedure.TabIndex = 1;
+            tabProcedure.Text = "Procedure";
+            tabProcedure.UseVisualStyleBackColor = true;
             // 
             // txtSignature
             // 
-            this.txtSignature.Location = new System.Drawing.Point(7, 82);
-            this.txtSignature.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtSignature.Multiline = true;
-            this.txtSignature.Name = "txtSignature";
-            this.txtSignature.Size = new System.Drawing.Size(455, 89);
-            this.txtSignature.TabIndex = 3;
+            txtSignature.Location = new System.Drawing.Point(7, 82);
+            txtSignature.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtSignature.Multiline = true;
+            txtSignature.Name = "txtSignature";
+            txtSignature.Size = new System.Drawing.Size(455, 89);
+            txtSignature.TabIndex = 3;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.chkIsAlloca);
-            this.groupBox1.Controls.Add(this.chkTerminates);
-            this.groupBox1.Controls.Add(this.chkDecompile);
-            this.groupBox1.Controls.Add(this.chkMalloc);
-            this.groupBox1.Location = new System.Drawing.Point(7, 253);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Size = new System.Drawing.Size(457, 173);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "C&haracteristics";
+            groupBox1.Controls.Add(txtVarargsFormatParser);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(chkIsAlloca);
+            groupBox1.Controls.Add(chkTerminates);
+            groupBox1.Controls.Add(chkDecompile);
+            groupBox1.Controls.Add(chkMalloc);
+            groupBox1.Location = new System.Drawing.Point(7, 253);
+            groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            groupBox1.Size = new System.Drawing.Size(457, 173);
+            groupBox1.TabIndex = 7;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "C&haracteristics";
             // 
             // chkIsAlloca
             // 
-            this.chkIsAlloca.AutoSize = true;
-            this.chkIsAlloca.Location = new System.Drawing.Point(8, 102);
-            this.chkIsAlloca.Name = "chkIsAlloca";
-            this.chkIsAlloca.Size = new System.Drawing.Size(215, 19);
-            this.chkIsAlloca.TabIndex = 9;
-            this.chkIsAlloca.Text = "&Allocates stack memory (like alloca)";
-            this.chkIsAlloca.UseVisualStyleBackColor = true;
+            chkIsAlloca.AutoSize = true;
+            chkIsAlloca.Location = new System.Drawing.Point(8, 102);
+            chkIsAlloca.Name = "chkIsAlloca";
+            chkIsAlloca.Size = new System.Drawing.Size(215, 19);
+            chkIsAlloca.TabIndex = 9;
+            chkIsAlloca.Text = "&Allocates stack memory (like alloca)";
+            chkIsAlloca.UseVisualStyleBackColor = true;
             // 
             // chkTerminates
             // 
-            this.chkTerminates.AutoSize = true;
-            this.chkTerminates.Location = new System.Drawing.Point(8, 77);
-            this.chkTerminates.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.chkTerminates.Name = "chkTerminates";
-            this.chkTerminates.Size = new System.Drawing.Size(233, 19);
-            this.chkTerminates.TabIndex = 8;
-            this.chkTerminates.Text = "Procedure &terminates process or thread";
-            this.chkTerminates.UseVisualStyleBackColor = true;
+            chkTerminates.AutoSize = true;
+            chkTerminates.Location = new System.Drawing.Point(8, 77);
+            chkTerminates.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkTerminates.Name = "chkTerminates";
+            chkTerminates.Size = new System.Drawing.Size(233, 19);
+            chkTerminates.TabIndex = 8;
+            chkTerminates.Text = "Procedure &terminates process or thread";
+            chkTerminates.UseVisualStyleBackColor = true;
             // 
             // chkDecompile
             // 
-            this.chkDecompile.AutoSize = true;
-            this.chkDecompile.Location = new System.Drawing.Point(7, 50);
-            this.chkDecompile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.chkDecompile.Name = "chkDecompile";
-            this.chkDecompile.Size = new System.Drawing.Size(206, 19);
-            this.chkDecompile.TabIndex = 7;
-            this.chkDecompile.Text = "&Decompile body of this procedure";
-            this.chkDecompile.UseVisualStyleBackColor = true;
+            chkDecompile.AutoSize = true;
+            chkDecompile.Location = new System.Drawing.Point(7, 50);
+            chkDecompile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkDecompile.Name = "chkDecompile";
+            chkDecompile.Size = new System.Drawing.Size(206, 19);
+            chkDecompile.TabIndex = 7;
+            chkDecompile.Text = "&Decompile body of this procedure";
+            chkDecompile.UseVisualStyleBackColor = true;
             // 
             // chkMalloc
             // 
-            this.chkMalloc.AutoSize = true;
-            this.chkMalloc.Location = new System.Drawing.Point(7, 22);
-            this.chkMalloc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.chkMalloc.Name = "chkMalloc";
-            this.chkMalloc.Size = new System.Drawing.Size(256, 19);
-            this.chkMalloc.TabIndex = 6;
-            this.chkMalloc.Text = "Allocates &heap memory (like malloc, calloc)";
-            this.chkMalloc.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 175);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 15);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "&Comment:";
+            chkMalloc.AutoSize = true;
+            chkMalloc.Location = new System.Drawing.Point(7, 22);
+            chkMalloc.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            chkMalloc.Name = "chkMalloc";
+            chkMalloc.Size = new System.Drawing.Size(256, 19);
+            chkMalloc.TabIndex = 6;
+            chkMalloc.Text = "Allocates &heap memory (like malloc, calloc)";
+            chkMalloc.UseVisualStyleBackColor = true;
             // 
             // txtComment
             // 
-            this.txtComment.Location = new System.Drawing.Point(7, 194);
-            this.txtComment.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.txtComment.Multiline = true;
-            this.txtComment.Name = "txtComment";
-            this.txtComment.Size = new System.Drawing.Size(460, 51);
-            this.txtComment.TabIndex = 5;
+            txtComment.Location = new System.Drawing.Point(7, 194);
+            txtComment.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtComment.Multiline = true;
+            txtComment.Name = "txtComment";
+            txtComment.Size = new System.Drawing.Size(460, 51);
+            txtComment.TabIndex = 5;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(7, 63);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(60, 15);
+            label4.TabIndex = 2;
+            label4.Text = "&Signature:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(7, 175);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(64, 15);
+            label3.TabIndex = 4;
+            label3.Text = "&Comment:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(8, 125);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(217, 15);
+            label2.TabIndex = 10;
+            label2.Text = "Use the following &varargs format parser:";
+            // 
+            // txtVarargsFor
+            // 
+            txtVarargsFormatParser.Location = new System.Drawing.Point(8, 143);
+            txtVarargsFormatParser.Name = "txtVarargsFor";
+            txtVarargsFormatParser.Size = new System.Drawing.Size(442, 23);
+            txtVarargsFormatParser.TabIndex = 11;
             // 
             // ProcedureDialog
             // 
-            this.AcceptButton = this.btnOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(484, 524);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.tabControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ProcedureDialog";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Edit Procedure";
-            this.tabControl1.ResumeLayout(false);
-            this.tabProcedure.ResumeLayout(false);
-            this.tabProcedure.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.ResumeLayout(false);
-
+            AcceptButton = btnOK;
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = btnCancel;
+            ClientSize = new System.Drawing.Size(484, 524);
+            Controls.Add(btnCancel);
+            Controls.Add(btnOK);
+            Controls.Add(tabControl1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ProcedureDialog";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Edit Procedure";
+            tabControl1.ResumeLayout(false);
+            tabProcedure.ResumeLayout(false);
+            tabProcedure.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -280,5 +298,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.CheckBox chkDecompile;
         private System.Windows.Forms.CheckBox chkTerminates;
         private System.Windows.Forms.CheckBox chkIsAlloca;
+        private System.Windows.Forms.TextBox txtVarargsFormatParser;
+        private System.Windows.Forms.Label label2;
     }
 }

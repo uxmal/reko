@@ -51,6 +51,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return txtSignature; }
         }
 
+        public TextBox Comment => txtComment;
+
         public CheckBox Decompile
         {
             get { return chkDecompile; }
@@ -70,6 +72,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             get { return chkTerminates; }
         }
+
+        public TextBox VarargsFormatParser => this.txtVarargsFormatParser;
 
         public Button OkButton { get { return btnOK; } }
 

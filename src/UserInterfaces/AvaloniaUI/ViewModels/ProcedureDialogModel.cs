@@ -45,6 +45,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.IsAllocator = userProc.Characteristics.Allocator;
             this.IsAlloca = userProc.Characteristics.IsAlloca;
             this.Terminates = userProc.Characteristics.Terminates;
+            this.VarargsFormatParser = userProc.Characteristics.VarargsParserClass;
             OnSignatureChanged();
         }
 
@@ -77,7 +78,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 {
                     Allocator = this.IsAllocator,
                     Terminates = this.Terminates,
-                    IsAlloca = this.IsAlloca
+                    IsAlloca = this.IsAlloca,
+                    VarargsParserClass = !string.IsNullOrWhiteSpace(this.VarargsFormatParser)
+                        ? this.VarargsFormatParser
+                        : null,
                 }
             };
             return procNew;
@@ -129,6 +133,13 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             set => this.RaiseAndSetIfChanged(ref terminates, value, nameof(Terminates));
         }
         private bool terminates;
+
+        public string? VarargsFormatParser
+        {
+            get => varargsFormatParser;
+            set => this.RaiseAndSetIfChanged(ref varargsFormatParser, value);
+        }
+        private string? varargsFormatParser;
 
         private void OnSignatureChanged()
         {

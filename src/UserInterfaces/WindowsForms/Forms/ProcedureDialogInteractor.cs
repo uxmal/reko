@@ -22,10 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
@@ -62,6 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             dlg.Allocator.Checked = proc.Characteristics.Allocator;
             dlg.IsAlloca.Checked = proc.Characteristics.IsAlloca;
             dlg.Terminates.Checked = proc.Characteristics.Terminates;
+            dlg.VarargsFormatParser.Text = proc.Characteristics.VarargsParserClass ?? "";
         }
 
         private void EnableProcedureName()
@@ -93,7 +91,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 Allocator = dlg.Allocator.Checked,
                 Terminates = dlg.Terminates.Checked,
-                IsAlloca = dlg.IsAlloca.Checked
+                IsAlloca = dlg.IsAlloca.Checked,
+                VarargsParserClass = dlg.VarargsFormatParser.Text.Length > 0
+                    ? dlg.VarargsFormatParser.Text
+                    : null
             };
             return procNew;
         }
