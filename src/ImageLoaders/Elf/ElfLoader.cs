@@ -437,6 +437,9 @@ namespace Reko.ImageLoaders.Elf
                 envName = "elf-neutral";
                 options["osabi"] = "linux";
                 break;
+            case ELFOSABI_OPENVMS:
+                envName = "openVMS";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
             }
@@ -488,13 +491,13 @@ namespace Reko.ImageLoaders.Elf
         public (List<string>, List<ElfDynamicEntry>) LoadDynamicSegment(EndianImageReader rdr)
         {
             var dynEntries = GetDynamicEntries(rdr).ToList();
-            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == ElfDynamicEntry.DT_STRTAB);
+            var deStrTab = GetDynamicStringTableFileOffset(dynEntries);
             if (deStrTab == null)
             {
                 //$REVIEW: is missing a string table worth a warning?
                 return (new List<string>(), new List<ElfDynamicEntry>());
             }
-            var offStrtab = AddressToFileOffset(deStrTab.UValue);
+            var offStrtab = AddressToFileOffset(deStrTab.Value);
             var dependencies = new List<string>();
             var dynamicEntries = new List<ElfDynamicEntry>();
             foreach (var de in dynEntries)
@@ -509,6 +512,17 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
             return (dependencies, dynamicEntries);
+        }
+
+        private ulong? GetDynamicStringTableFileOffset(List<ElfDynamicEntry> dynEntries)
+        {
+            var deStrTab = dynEntries.FirstOrDefault(de => de.Tag == ElfDynamicEntry.DT_STRTAB);
+            if (deStrTab is not null)
+                return deStrTab.UValue;
+            var dynstr = this.GetSectionInfoByName(".dynstr");
+            if (dynstr is not null)
+                return dynstr.FileOffset;
+            return null;
         }
 
         public SortedList<Address, ImageSymbol> CreateSymbolDictionaries(bool isExecutable)

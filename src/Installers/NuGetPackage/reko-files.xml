@@ -88,6 +88,7 @@
       <var id="var.Msdos.ProjectDir" >$SolutionDir$/Environments/Msdos/</var>
       <var id="var.Msdos.TargetPath" >$SolutionDir$/Environments/Msdos/$TargetDir$/Reko.Environments.Msdos.dll</var>
       <var id="var.NeoGeo.TargetPath" >$SolutionDir$/Environments/NeoGeo/$TargetDir$/Reko.Environments.NeoGeo.dll</var>
+      <var id="var.OpenVMS.TargetPath" >$SolutionDir$/Environments/OpenVMS/$TargetDir$/Reko.Environments.OpenVMS.dll</var>
       <var id="var.OS2.ProjectDir" >$SolutionDir$/Environments/OS2/</var>
       <var id="var.OS2.TargetPath" >$SolutionDir$/Environments/OS2/$TargetDir$/Reko.Environments.OS2.dll</var>
       <var id="var.Pdp10Env.TargetPath" >$SolutionDir$/Environments/Pdp10Env/$TargetDir$/Reko.Environments.Pdp10Env.dll</var>
@@ -219,6 +220,7 @@
       <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
       <File Source="$(var.Msdos.Design.TargetPath)" />
       <File Source="$(var.NeoGeo.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.OpenVMS.TargetPath)" nuget_target="f:" />
       <File Source="$(var.OS2.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Pdp10Env.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Ps3.TargetPath)" nuget_target="f:" />
