@@ -110,7 +110,8 @@ namespace Reko.Analysis
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
 		{
-			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
+            writer.WriteLine("// Procedure: " + Procedure.Name);
+            EmitRegisterValues("// MayUse: ", BitsUsed, writer);
 			writer.WriteLine();
             EmitStorageDataTypes("// DataTypes: ", LiveInDataTypes, writer);
 			EmitRegisters(arch, "// LiveOut:", grfLiveOut, BitsLiveOut.Keys, writer);
