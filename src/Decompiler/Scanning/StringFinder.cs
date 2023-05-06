@@ -78,9 +78,10 @@ namespace Reko.Scanning
 
         //$TODO: This assumes only ASCII values are valid.
         // How to deal with Swedish? Cyrillic? Chinese?
+        // Added common escaped characters for C strings.
         public static bool IsValid(char ch)
         {
-            return (' ' <= ch && ch < 0x7F);
+            return ((' ' <= ch && ch < 0x7F) || ( 0x07 <= ch && ch <= 0x0d));
         }
     }
 
