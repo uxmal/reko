@@ -311,6 +311,7 @@ namespace Reko.ImageLoaders.OdbgScript
             commands["wrta"] = DoWRTA;
 
             commands["reko.addseg"] = RekoAddSegmentReference;
+            commands["reko.db"] = RekoDumpBytes;
 
             #endregion
 #if LATER

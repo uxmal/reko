@@ -25,6 +25,7 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.ImageLoaders.OdbgScript
@@ -204,7 +205,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual void TE_Log(string message)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine(message);
         }
 
         public virtual bool WriteMemory(Address addr, int p, byte[] membuf)

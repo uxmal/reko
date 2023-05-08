@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
+using Reko.Core.Output;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -4188,6 +4189,33 @@ string filename, data;
                 }
             }
             return false;
+        }
+
+        private bool RekoDumpBytes(Expression[] args)
+        {
+            if (args.Length < 1)
+                return false;
+            ulong count = 0x80;
+            if (args.Length == 2 && !GetRulong(args[1], out count))
+                return false;
+            if (!GetAddress(args[0], out Address addr))
+                return false;
+            if (!this.Host.SegmentMap.TryFindSegment(addr, out var segment))
+                return false;
+            var mem = segment.MemoryArea;
+            long offset = addr - mem.BaseAddress;
+            if (offset < 0)
+                return false;
+            var rdr = arch.CreateImageReader(mem, addr, (int)count);
+            var memfmt = mem.Formatter;
+            var sw = new StringWriter();
+            var stm = new TextFormatter(sw);
+            var output = new TextMemoryFormatterOutput(stm);
+
+            memfmt.RenderMemory(rdr, System.Text.Encoding.ASCII, output);
+
+            Host.TE_Log(sw.ToString());
+            return true;
         }
     }
 }
