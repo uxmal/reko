@@ -34,6 +34,8 @@ namespace Reko.Arch.X86
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
 		public DataType dataWidth;	            // Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	        // width of the address mode.	// TODO: belongs in MemoryOperand
+
+        public RegisterStorage? SegmentOverride { get; set; }   // Segment override for this instruction.
         public byte OpMask { get; set; }        // EVEX Mask register to use.
         public byte MergingMode { get; set; }   // EVEX merging mode
         public bool Broadcast { get; set; }     // EVEX broadcast flag

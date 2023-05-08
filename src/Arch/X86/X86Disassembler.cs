@@ -200,6 +200,7 @@ namespace Reko.Arch.X86
                         : this.F2Prefix
                             ? 2 :
                             this.F3Prefix ? 3 : 0,
+                    SegmentOverride = this.SegmentOverride,
                     OpMask = this.OpMask,
                     MergingMode = (byte) this.EvexMergeMode,
                     Broadcast = this.EvexBroadcast,

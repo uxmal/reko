@@ -249,7 +249,7 @@ namespace Reko.Arch.X86
             if ((grf & Registers.P.FlagGroupBits) != 0) yield return Registers.P;
         }
 
-        private static RegisterStorage? GetSubregister(StorageDomain domain, BitRange range)
+        internal static RegisterStorage? GetSubregister(StorageDomain domain, BitRange range)
         {
             if (range.IsEmpty)
                 return null;

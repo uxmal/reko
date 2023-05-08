@@ -63,6 +63,12 @@ namespace Reko.Arch.X86
             RenderPrefix(instr, renderer);
 
             var s = new StringBuilder();
+            if (IsStringInstruction(instr))
+            {
+                RenderStringInstruction(instr, renderer, options);
+                return;
+            }
+
             RenderMnemonic(instr, s);
             renderer.WriteMnemonic(s.ToString());
 
@@ -76,25 +82,106 @@ namespace Reko.Arch.X86
         protected virtual void RenderMnemonic(X86Instruction instr, StringBuilder s)
         {
             s.Append(instr.MnemonicAsString);
+            if (IsStringInstruction(instr))
+            switch (instr.dataWidth.Size)
+            {
+            case 1: break;
+            case 2: s.Append('w'); break;
+            case 4: s.Append('d'); break;
+            case 8: s.Append('q'); break;
+            default: throw new ArgumentOutOfRangeException($"Unrecognized operand size {instr.dataWidth.Size}.");
+            }
+        }
+
+        private static bool IsStringInstruction(X86Instruction instr)
+        {
             switch (instr.Mnemonic)
             {
             case Mnemonic.ins:
+            case Mnemonic.insb:
             case Mnemonic.outs:
+            case Mnemonic.outsb:
             case Mnemonic.movs:
+            case Mnemonic.movsb:
             case Mnemonic.cmps:
+            case Mnemonic.cmpsb:
             case Mnemonic.stos:
+            case Mnemonic.stosb:
             case Mnemonic.lods:
+            case Mnemonic.lodsb:
             case Mnemonic.scas:
-                switch (instr.dataWidth.Size)
+            case Mnemonic.scasb:
+                return true;
+            default:
+                return false;
+            }
+        }
+
+        protected virtual void RenderStringInstruction(
+            X86Instruction instr, 
+            MachineInstructionRenderer renderer,
+            MachineInstructionRendererOptions options)
+        {
+            static RegisterStorage Reg(RegisterStorage reg, int bitsize)
+            {
+                return IntelArchitecture.GetSubregister(reg.Domain, new BitRange(0, bitsize))!;
+            }
+
+            static MemoryOperand MemDi(X86Instruction i)
+            {
+                return new MemoryOperand(i.dataWidth, Reg(Registers.di, i.addrWidth.BitSize), null)
                 {
-                case 1: s.Append('b'); break;
-                case 2: s.Append('w'); break;
-                case 4: s.Append('d'); break;
-                case 8: s.Append('q'); break;
-                default: throw new ArgumentOutOfRangeException($"Unrecognized operand size {instr.dataWidth.Size}.");
-                }
+                    SegOverride = i.SegmentOverride ?? RegisterStorage.None
+                };
+            }
+
+            static MemoryOperand MemSi(X86Instruction i)
+            {
+                return new MemoryOperand(i.dataWidth, Reg(Registers.si, i.addrWidth.BitSize), null)
+                {
+                    SegOverride = i.SegmentOverride ?? RegisterStorage.None
+                };
+            }
+
+            var s = new StringBuilder();
+            RenderMnemonic(instr, s);
+            renderer.WriteMnemonic(s.ToString());
+
+            if (instr.SegmentOverride is null || instr.SegmentOverride == RegisterStorage.None)
+                return;
+            var sep = options.OperandSeparator ?? ",";
+            MemoryOperand mem;
+            switch (instr.Mnemonic)
+            {
+            default:
+            case Mnemonic.ins:
+            case Mnemonic.insb:
+            case Mnemonic.outs:
+            case Mnemonic.outsb:
+                return;
+            case Mnemonic.cmps:
+            case Mnemonic.cmpsb:
+            case Mnemonic.movs:
+            case Mnemonic.movsb:
+                renderer.Tab();
+                RenderMemory(MemDi(instr), renderer, options.Flags);
+                renderer.WriteString(sep);
+                mem = MemSi(instr);
+                break;
+            case Mnemonic.lods:
+            case Mnemonic.lodsb:
+                renderer.Tab();
+                mem = MemSi(instr);
+                break;
+            case Mnemonic.scas:
+            case Mnemonic.scasb:
+            case Mnemonic.stos:
+            case Mnemonic.stosb:
+                renderer.Tab();
+                mem = MemDi(instr);
                 break;
             }
+            RenderMemory(mem, renderer, options.Flags);
         }
 
         protected virtual void RenderOperands(X86Instruction instr, MachineInstructionRendererOptions options, MachineInstructionRenderer renderer)

@@ -2827,7 +2827,10 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
 
-
- 
+        [Test]
+        public void X86Dis_segment_override_string_instr()
+        {
+            AssertCode16("rep movsb\tes:[di],es:[si]", "F3 26 A4");
+        }
     }
 }
