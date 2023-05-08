@@ -48,7 +48,7 @@ namespace Reko.Arch.X86
 
         protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") 
         { 
-            Level = TraceLevel.Warning 
+            Level = TraceLevel.Warning
         };
 
         public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
@@ -210,7 +210,7 @@ namespace Reko.Arch.X86
             switch (instr.Mnemonic)
             {
             default:
-                throw new NotImplementedException(string.Format("Instruction emulation for {0} not implemented yet.", instr));
+                throw new NotImplementedException($"Instruction emulation for {instr} not implemented yet.");
             case Mnemonic.adc: Adc(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.add: Add(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.and: And(instr.Operands[0], instr.Operands[1]); return;
@@ -234,12 +234,12 @@ namespace Reko.Arch.X86
             case Mnemonic.js: if ((Flags & Smask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jz: if ((Flags & Zmask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); return;
-            case Mnemonic.lodsb: Lods(PrimitiveType.Byte); return;
-            case Mnemonic.lods: Lods(instr.dataWidth); return;
+            case Mnemonic.lodsb: Lods(instr); return;
+            case Mnemonic.lods: Lods(instr); return;
             case Mnemonic.loop: Loop(instr.Operands[0]); return;
             case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); return;
-            case Mnemonic.movs: Movs(instr.dataWidth); return;
-            case Mnemonic.movsb: Movs(PrimitiveType.Byte); return;
+            case Mnemonic.movs: Movs(instr); return;
+            case Mnemonic.movsb: Movs(instr); return;
             case Mnemonic.nop: return;
             case Mnemonic.not: Not(instr.Operands[0]); return;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
@@ -252,12 +252,12 @@ namespace Reko.Arch.X86
             case Mnemonic.rcl: Rcl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.rol: Rol(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.sar: Sar(instr.Operands[0], instr.Operands[1]); return;
-            case Mnemonic.scasb: Scas(PrimitiveType.Byte); return;
+            case Mnemonic.scasb: Scas(instr); return;
             case Mnemonic.shl: Shl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.shr: Shr(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.stc: Flags |= Cmask; break;
             case Mnemonic.sti: Flags |= Imask; break;
-            case Mnemonic.stosb: Stos(PrimitiveType.Byte); break;
+            case Mnemonic.stosb: Stos(instr); break;
             case Mnemonic.sub: Sub(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.test: Test(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xor: Xor(instr.Operands[0], instr.Operands[1]); return;
@@ -281,7 +281,7 @@ namespace Reko.Arch.X86
             return ea;
         }
 
-        private TWord Read(MachineOperand op)
+        protected TWord Read(MachineOperand op)
         {
             if (op is RegisterStorage r)
             {
@@ -299,7 +299,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-        public override ulong ReadRegister(RegisterStorage r)
+        public override sealed ulong ReadRegister(RegisterStorage r)
         {
             return (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
         }
@@ -332,7 +332,7 @@ namespace Reko.Arch.X86
             throw new NotImplementedException();
         }
 
-        public override ulong WriteRegister(RegisterStorage r, ulong value)
+        public sealed override ulong WriteRegister(RegisterStorage r, ulong value)
         {
             Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
             return value;
@@ -489,11 +489,11 @@ namespace Reko.Arch.X86
                 (r == 0 ? Zmask : 0u);      // Zero
         }
 
-        protected abstract void Lods(DataType dt);
-        protected abstract void Movs(DataType dt);
+        protected abstract void Lods(X86Instruction instr);
+        protected abstract void Movs(X86Instruction instr);
 
-        protected abstract void Scas(DataType dt);
-        protected abstract void Stos(DataType dt);
+        protected abstract void Scas(X86Instruction instr);
+        protected abstract void Stos(X86Instruction instr);
 
         private void Sar(MachineOperand dst, MachineOperand src)
         {

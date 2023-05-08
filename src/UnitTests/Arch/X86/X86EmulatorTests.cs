@@ -856,6 +856,24 @@ namespace Reko.UnitTests.Arch.X86
             Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);
         }
 
+
+        [Test]
+        public void X86Emu_rcl16_0_carry_out()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Stc();
+                m.Mov(m.eax, 0x7FF02AAA);
+                m.Rcl(m.ax, 1);
+                m.Hlt();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual("7FF05555", emu.ReadRegister(Registers.eax).ToString("X8"));
+            Assert.IsTrue((emu.Flags & X86Emulator.Cmask) == 0);
+        }
+
         [Test]
         public void X86Emu_rcl8()
         {
@@ -1006,6 +1024,71 @@ namespace Reko.UnitTests.Arch.X86
 
             emu.Start();
             Assert.IsTrue((emu.Flags & X86Emulator.Cmask) != 0);    // should set C
+        }
+
+        [Test]
+        public void X86Emu_mov_ah()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.ax, 0x1234);
+                m.Mov(m.ah, 0xFFFF);
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.eax, 0xDDDDDDDD);
+            emu.Start();
+
+            Assert.AreEqual(0xDDDDFF34, emu.Registers[Registers.eax.Number]);
+        }
+
+        [Test]
+        public void X86Emu_stosb_segment_override()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.di, 0x1);
+                m.Mov(m.al, 0x42);
+                m.Db(0x3E);     // DS: override
+                m.Stosb();
+                m.Mov(m.al, 0x43);
+                m.Stosb();
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.es, 0x0820);
+            emu.WriteRegister(Registers.ds, 0x0830);
+
+            emu.Start();
+
+            Assert.IsTrue(emu.TryReadByte(Lin(0x830, 0x0001), out byte b));
+            Assert.AreEqual(0x42, b);
+            Assert.IsTrue(emu.TryReadByte(Lin(0x820, 0x0002), out b));
+            Assert.AreEqual(0x43, b);
+        }
+
+        [Test]
+        public void X86Emu_movsb_segment_override()
+        {
+            Given_MsdosCode(m =>
+            {
+                m.Mov(m.si, 0x1);
+                m.Mov(m.di, 0x4);
+                m.Db(0x3E);     // DS: override
+                m.Movsb();
+                m.Hlt();
+            });
+
+            emu.WriteRegister(Registers.ds, 0x0830);
+            emu.WriteRegister(Registers.es, 0x0820);
+            emu.WriteByte(Lin(0x830, 1), 0x42);
+            emu.WriteByte(Lin(0x820, 4), 0x43);
+            emu.WriteByte(Lin(0x830, 4), 0x44);
+
+            emu.Start();
+
+            Assert.IsTrue(emu.TryReadByte(Lin(0x830, 0x0004), out byte b));
+            Assert.AreEqual(0x42, b);
         }
     }
 }

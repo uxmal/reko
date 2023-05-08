@@ -54,18 +54,19 @@ namespace Reko.Arch.X86
             return GetEffectiveOffset(m);
         }
 
-        protected override void Lods(DataType dt)
+        protected override void Lods(X86Instruction instr)
         {
             throw new NotImplementedException();
         }
 
-        protected override void Movs(DataType dt)
+        protected override void Movs(X86Instruction instr)
         {
             throw new NotImplementedException();
         }
 
-        protected override void Scas(DataType dt)
+        protected override void Scas(X86Instruction instr)
         {
+            var dt = instr.dataWidth;
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax) & mask.value;
             var edi = ReadRegister(X86.Registers.edi);
@@ -77,7 +78,7 @@ namespace Reko.Arch.X86
             Flags |= (a == value ? Zmask : 0u);
         }
 
-        protected override void Stos(DataType dt)
+        protected override void Stos(X86Instruction dt)
         {
             throw new NotImplementedException();
         }

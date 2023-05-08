@@ -69,10 +69,11 @@ namespace Reko.Arch.X86
             return ToLinear(seg, off);
         }
 
-        protected override void Lods(DataType dt)
+        protected override void Lods(X86Instruction instr)
         {
-            var ds = (ushort) ReadRegister(X86.Registers.ds);
+            var ds = ReadSegmentRegister(instr, X86.Registers.ds);
             var si = (uint) ReadRegister(X86.Registers.si);
+            var dt = instr.dataWidth;
             var value = ReadMemory(ToLinear(ds, si), dt);
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax);
@@ -83,12 +84,13 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.si, si);
         }
 
-        protected override void Movs(DataType dt)
+        protected override void Movs(X86Instruction instr)
         {
-            var ds = (ushort) ReadRegister(X86.Registers.ds);
-            var es = (ushort) ReadRegister(X86.Registers.es);
+            var ds = ReadSegmentRegister(instr, X86.Registers.ds);
+            var es = ReadSegmentRegister(instr, X86.Registers.es);
             var si = (uint) ReadRegister(X86.Registers.si);
             var di = (uint) ReadRegister(X86.Registers.di);
+            var dt = instr.dataWidth;
             var value = ReadMemory(ToLinear(ds, si), dt);
             WriteMemory(value, ToLinear(es, di), dt);
             var delta = (uint)dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
@@ -98,11 +100,20 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.di, di);
         }
 
-        protected override void Scas(DataType dt)
+        private ushort ReadSegmentRegister(X86Instruction instr, RegisterStorage defaultRegister)
         {
+            var seg = instr.SegmentOverride is not null && instr.SegmentOverride != RegisterStorage.None
+                ? instr.SegmentOverride
+                : defaultRegister;
+            return (ushort) ReadRegister(seg);
+        }
+
+        protected override void Scas(X86Instruction instr)
+        {
+            var dt = instr.dataWidth;
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax) & mask.value;
-            var es = (ushort) ReadRegister(X86.Registers.es);
+            var es = ReadSegmentRegister(instr, X86.Registers.es);
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = ReadMemory(ToLinear(es, di), dt) & mask.value;
             var delta = dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
@@ -112,9 +123,10 @@ namespace Reko.Arch.X86
             Flags |= (a == value ? Zmask : 0u);
         }
 
-        protected override void Stos(DataType dt)
+        protected override void Stos(X86Instruction instr)
         {
-            var es = (ushort) ReadRegister(X86.Registers.es);
+            var dt = instr.dataWidth;
+            var es = ReadSegmentRegister(instr, X86.Registers.es);
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = (uint) (Registers[X86.Registers.rax.Number] & Bits.Mask(0, dt.BitSize));
             WriteMemory(value, ToLinear(es, di), dt);
@@ -122,6 +134,7 @@ namespace Reko.Arch.X86
             di += delta;
             WriteRegister(X86.Registers.di, di);
         }
+
 
         protected override uint Pop(DataType dt)
         {
@@ -194,6 +207,45 @@ namespace Reko.Arch.X86
         private string DumpInstr(X86Instruction instr)
         {
             return $"{instr.Address} XX {instr.ToString().ToUpper()}";
+        }
+
+        private string DumpMem(X86Instruction instr)
+        {
+                    string sValue = "???";
+            if (instr.Mnemonic == Mnemonic.lodsb || instr.Mnemonic == Mnemonic.movsb)
+            {
+                var ds = (uint) ReadRegister(X86.Registers.ds);
+                var si = (uint) ReadRegister(X86.Registers.si);
+                if (base.TryReadByte(ToLinear(ds, si), out var b))
+                    sValue = b.ToString("X2");
+                return $"DS:[{si:X4}]={sValue}";
+            }
+            if (instr.Mnemonic == Mnemonic.lods || instr.Mnemonic == Mnemonic.movs)
+            {
+                var ds = (uint) ReadRegister(X86.Registers.ds);
+                var si = (uint) ReadRegister(X86.Registers.si);
+                var w = base.ReadLeUInt16(ToLinear(ds, si));
+                sValue = w.ToString("X4");
+                return $"DS:[{si:X4}]={sValue}";
+            }
+            foreach (var op in instr.Operands)
+            {
+                if (op is MemoryOperand mem)
+                {
+                    try
+                    {
+                        var value = base.Read(mem);
+                        if (mem.Width.Size == 1)
+                            sValue = ((byte) value).ToString("X2");
+                        else 
+                            sValue = ((ushort) value).ToString("X4");
+                    } catch
+                    {
+                    }
+                    return $"{mem.ToString()}={sValue}";
+                }
+            }
+            return "";
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
