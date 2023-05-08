@@ -115,6 +115,7 @@ namespace Reko.Loading
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
             if (le == null || le.TypeName == null)
             {
+                Debug.Print("Signature of '{0}' recognized, but no loader is available for it.", signature.Name);
                 return loader;
             }
             var unpacker = Loader.CreateOuterImageLoader<ProgramImageLoader>(Services, le.TypeName, loader);

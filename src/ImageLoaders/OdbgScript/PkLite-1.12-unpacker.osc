@@ -1,0 +1,37 @@
+; Reko OllyDbg script for unpacking files packed with PKLITE v1.12, v1.15, v1.20
+
+var selector
+
+; Run until the retf that calls the unpacker and step into the retf
+bp cs:0128
+run
+sti
+
+;; Now inside the unpacker code. Execute the unpacking and intercept
+;; the relocations.
+
+; Break at the instruction after a relocation is done.
+bp cs:013B
+
+; Break at the point where the CS:IP have been put
+; into BX:AX and pushed onto the stack
+bp cs:0152
+
+relocation_loop:
+run
+
+cmp ip,0152
+je relocation_done
+
+; Read the relocation
+mov selector,[es:di],2
+;;; msg $"Relocation at {es}:{di} = {selector}"
+reko.addseg es:di,selector
+jmp relocation_loop
+
+relocation_done:
+; Single step into the original code.
+sti
+msg $"Entry point at {bx}:{ax}"
+dpe "dontcare",bx:ax
+ret
