@@ -4,7 +4,7 @@ void fn0C00_0000(segptr32 ds_bx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[ds_bx + 0<32>:word32] = Mem0[ds_bx + 4<i16>:word32]
+	Mem8[ds_bx + 0<32>:word32] = Mem0[ds_bx + 4<i32>:word32]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -16,11 +16,11 @@ T_3 (in ds_bx : segptr32)
 	trait_mem(T_6, 4)
 	trait_primitive(segptr32)
 	trait_mem(T_9, 0)
-T_4 (in 4<i16> : int16)
-	trait_primitive(int16)
-T_5 (in ds_bx + 4<i16> : segptr32)
+T_4 (in 4<i32> : int32)
+	trait_primitive(int32)
+T_5 (in ds_bx + 4<i32> : segptr32)
 	trait_primitive(segptr32)
-T_6 (in Mem0[ds_bx + 4<i16>:word32] : word32)
+T_6 (in Mem0[ds_bx + 4<i32>:word32] : word32)
 	trait_primitive(word32)
 T_7 (in 0<32> : word32)
 	trait_primitive(word32)

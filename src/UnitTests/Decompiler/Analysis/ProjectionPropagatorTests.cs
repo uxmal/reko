@@ -467,7 +467,7 @@ l1:
 	es_bx_1 = Mem5[ds:0x1234<16>:ptr32]
 	es_2 = SLICE(es_bx_1, selector, 16) (alias)
 	bx_3 = SLICE(es_bx_1, word16, 0) (alias)
-	Mem6[es_bx_1 + 4<i16>:byte] = 3<8>
+	Mem6[es_bx_1 + 4<i32>:byte] = 3<8>
 	return
 SsaProcedureBuilder_exit:
 ";

@@ -150,31 +150,50 @@ namespace Reko.Analysis
                         var sidLeft = ssa.Identifiers[idLeft];
                         e = FuseIdentifiers(MakeSegPtr(idLeft.DataType), sidSeg, sidLeft);
                         if (e != null)
+                        {
+                            var r = Extend(binEa.Right, e.DataType);
                             return new MemoryAccess(
                                 accessNew.MemoryId,
                                 new BinaryExpression(
                                     binEa.Operator,
                                     e.DataType,
                                     e,
-                                    binEa.Right),
+                                    r),
                                 accessNew.DataType);
+                        }
                     }
                     if (binEa.Right is Identifier idRight)
                     {
                         var sidRight = ssa.Identifiers[idRight];
                         e = FuseIdentifiers(MakeSegPtr(idRight.DataType), sidSeg, sidRight);
                         if (e != null)
+                        {
+                            var l = Extend(binEa.Left, e.DataType);
                             return new MemoryAccess(
                                 accessNew.MemoryId,
                                 new BinaryExpression(
                                     binEa.Operator,
                                     e.DataType,
-                                    binEa.Left,
+                                    l,
                                     e),
                                 accessNew.DataType);
+                        }
                     }
                 }
                 return accessNew;
+            }
+
+            private Expression Extend(Expression e, DataType dataType)
+            {
+                var dtExtended = PrimitiveType.Create(e.DataType.Domain, dataType.BitSize);
+                if (e is Constant c)
+                {
+                    return Constant.Create(dtExtended, c.ToInt64());
+                }
+                else
+                {
+                    return new Conversion(e, e.DataType, dtExtended);
+                }
             }
 
             private static DataType? MakeSegPtr(DataType dtEa)

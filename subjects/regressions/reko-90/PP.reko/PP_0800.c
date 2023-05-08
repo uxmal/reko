@@ -16038,7 +16038,7 @@ word32 fn0800_AFCB(Eq_n ds, Eq_n ptrArg02)
 			if (es_n->*di_n != 0x00)
 				break;
 		}
-		int16 cx_n = ~cx_n;
+		word16 cx_n = ~cx_n;
 		if (cx_n != 0x01)
 		{
 			Eq_n es_di_n = *((word32) ds + 9898);
@@ -16059,8 +16059,8 @@ word32 fn0800_AFCB(Eq_n ds, Eq_n ptrArg02)
 						break;
 					if (ah_n == al_n)
 					{
-						bool v26_n = es_di_n.u1[cx_n - 0x01] != 0x3D;
-						if (es_di_n.u1[cx_n - 0x01] == 0x3D)
+						bool v26_n = es_di_n.u1[(uipr32) (cx_n - 0x01)] != 0x3D;
+						if (es_di_n.u1[(uipr32) (cx_n - 0x01)] == 0x3D)
 						{
 							struct Eq_n * ds_n = SLICE(ptrArg02, selector, 16);
 							byte Eq_n::* si_n = (word16) ptrArg02;

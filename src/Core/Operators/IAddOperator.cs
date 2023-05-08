@@ -50,7 +50,9 @@ namespace Reko.Core.Operators
                 var dt1 = c1.DataType;
                 var dt2 = c2.DataType;
                 if ((dt1.Domain & dt2.Domain) == 0 &&
-                    (dt1.Domain | dt2.Domain) != Domain.Integer)
+                    ((dt1.Domain | dt2.Domain) != Domain.Integer) &&
+                     !(dt1.Domain | dt2.Domain).HasFlag(Domain.Pointer) &&
+                     !(dt1.Domain | dt2.Domain).HasFlag(Domain.SegPointer))
                     throw new ArgumentException(string.Format("Can't add types of disjoint domains {0} and {1}", c1.DataType, c2.DataType));
             }
             if (c2.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)

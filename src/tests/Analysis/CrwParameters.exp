@@ -153,7 +153,7 @@ fn0C00_002F_entry:
 l0C00_002F:
 	ax_7 = Mem0[ds_si:word16]
 	si_8 = si + 2<i16>
-	Mem9[ds_si + 4<i16>:word16] = 0<16>
+	Mem9[ds_si + 4<i32>:word16] = 0<16>
 	siOut = si_8
 	return ax_7
 	// succ:  fn0C00_002F_exit

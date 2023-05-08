@@ -27,7 +27,7 @@ real64 fn0C00_000C(segptr32 ds_bx)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	return Mem0[ds_bx:real64] + Mem0[ds_bx + 8<i16>:real64]
+	return Mem0[ds_bx:real64] + Mem0[ds_bx + 8<i32>:real64]
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
 
