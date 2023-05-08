@@ -71,7 +71,7 @@ namespace Reko.Arch.X86
 
         protected override void Lods(X86Instruction instr)
         {
-            var ds = ReadSegmentRegister(instr, X86.Registers.ds);
+            var ds = ReadSegmentRegister(instr.Operands[1], X86.Registers.ds);
             var si = (uint) ReadRegister(X86.Registers.si);
             var dt = instr.dataWidth;
             var value = ReadMemory(ToLinear(ds, si), dt);
@@ -86,8 +86,8 @@ namespace Reko.Arch.X86
 
         protected override void Movs(X86Instruction instr)
         {
-            var ds = ReadSegmentRegister(instr, X86.Registers.ds);
-            var es = ReadSegmentRegister(instr, X86.Registers.es);
+            var ds = ReadSegmentRegister(instr.Operands[1], X86.Registers.ds);
+            var es = ReadSegmentRegister(instr.Operands[0], X86.Registers.es);
             var si = (uint) ReadRegister(X86.Registers.si);
             var di = (uint) ReadRegister(X86.Registers.di);
             var dt = instr.dataWidth;
@@ -100,10 +100,11 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.di, di);
         }
 
-        private ushort ReadSegmentRegister(X86Instruction instr, RegisterStorage defaultRegister)
+        private ushort ReadSegmentRegister(MachineOperand op, RegisterStorage defaultRegister)
         {
-            var seg = instr.SegmentOverride is not null && instr.SegmentOverride != RegisterStorage.None
-                ? instr.SegmentOverride
+            var mem = (MemoryOperand) op;
+            var seg = mem.SegOverride is not null && mem.SegOverride != RegisterStorage.None
+                ? mem.SegOverride
                 : defaultRegister;
             return (ushort) ReadRegister(seg);
         }
@@ -113,7 +114,7 @@ namespace Reko.Arch.X86
             var dt = instr.dataWidth;
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax) & mask.value;
-            var es = ReadSegmentRegister(instr, X86.Registers.es);
+            var es = ReadSegmentRegister(instr.Operands[1], X86.Registers.es);
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = ReadMemory(ToLinear(es, di), dt) & mask.value;
             var delta = dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
@@ -126,7 +127,7 @@ namespace Reko.Arch.X86
         protected override void Stos(X86Instruction instr)
         {
             var dt = instr.dataWidth;
-            var es = ReadSegmentRegister(instr, X86.Registers.es);
+            var es = ReadSegmentRegister(instr.Operands[0], X86.Registers.es);
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = (uint) (Registers[X86.Registers.rax.Number] & Bits.Mask(0, dt.BitSize));
             WriteMemory(value, ToLinear(es, di), dt);

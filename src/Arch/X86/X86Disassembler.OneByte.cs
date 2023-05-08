@@ -198,10 +198,10 @@ namespace Reko.Arch.X86
                     dec: Instr186(Mnemonic.push, Ib),
                     dec66:Instr186(Mnemonic.pushw, Ib));
 				d[0x6B] = Instr186(Mnemonic.imul, Gv,Ev,Ib);
-				d[0x6C] = Instr186(Mnemonic.insb, InstrClass.Linear|InstrClass.Privileged, b);
-				d[0x6D] = Instr186(Mnemonic.ins, InstrClass.Linear | InstrClass.Privileged);
-				d[0x6E] = Instr186(Mnemonic.outsb, InstrClass.Linear | InstrClass.Privileged, b);
-				d[0x6F] = Instr186(Mnemonic.outs, InstrClass.Linear | InstrClass.Privileged);
+				d[0x6C] = Instr186(Mnemonic.insb, InstrClass.Linear | InstrClass.Privileged, Yb, DX);
+				d[0x6D] = Instr186(Mnemonic.ins, InstrClass.Linear | InstrClass.Privileged, Yv, DX);
+				d[0x6E] = Instr186(Mnemonic.outsb, InstrClass.Linear | InstrClass.Privileged, DX, Xb);
+				d[0x6F] = Instr186(Mnemonic.outs, InstrClass.Linear | InstrClass.Privileged, DX, Xv);
 
 				// 70
 				d[0x70] = Instr(Mnemonic.jo, InstrClass.Transfer|InstrClass.Conditional, Jb);
@@ -282,19 +282,19 @@ namespace Reko.Arch.X86
 				d[0xA1] = Instr(Mnemonic.mov, rAX,Ov);
 				d[0xA2] = Instr(Mnemonic.mov, Ob,AL);
 				d[0xA3] = Instr(Mnemonic.mov, Ov,rAX);
-				d[0xA4] = Instr(Mnemonic.movsb, b);
-				d[0xA5] = Instr(Mnemonic.movs);
-				d[0xA6] = Instr(Mnemonic.cmpsb, b);
-				d[0xA7] = Instr(Mnemonic.cmps);
+				d[0xA4] = Instr(Mnemonic.movsb, Yb, Xb);
+				d[0xA5] = Instr(Mnemonic.movs, Yv, Xv);
+				d[0xA6] = Instr(Mnemonic.cmpsb, Yb, Xb);
+				d[0xA7] = Instr(Mnemonic.cmps, Yv, Xv);
 
 				d[0xA8] = Instr(Mnemonic.test, AL,Ib);
 				d[0xA9] = Instr(Mnemonic.test, rAX,Iz);
-				d[0xAA] = Instr(Mnemonic.stosb, b);
-				d[0xAB] = Instr(Mnemonic.stos);
-				d[0xAC] = Instr(Mnemonic.lodsb, b);
-				d[0xAD] = Instr(Mnemonic.lods);
-				d[0xAE] = Instr(Mnemonic.scasb, b);
-				d[0xAF] = Instr(Mnemonic.scas);
+				d[0xAA] = Instr(Mnemonic.stosb, Yb, AL);
+				d[0xAB] = Instr(Mnemonic.stos, Yv, rAX);
+				d[0xAC] = Instr(Mnemonic.lodsb, AL, Xb);
+				d[0xAD] = Instr(Mnemonic.lods, rAX, Xv);
+				d[0xAE] = Instr(Mnemonic.scasb, AL, Yb);
+				d[0xAF] = Instr(Mnemonic.scas, rAX, Yv);
 
 				// B0
 				d[0xB0] = Instr(Mnemonic.mov, rb,Ib);

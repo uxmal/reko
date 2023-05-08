@@ -24,7 +24,9 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Reko.Arch.X86
@@ -122,66 +124,23 @@ namespace Reko.Arch.X86
             MachineInstructionRenderer renderer,
             MachineInstructionRendererOptions options)
         {
-            static RegisterStorage Reg(RegisterStorage reg, int bitsize)
+            static bool HasSegmentOverride(X86Instruction instr, int i)
             {
-                return IntelArchitecture.GetSubregister(reg.Domain, new BitRange(0, bitsize))!;
-            }
-
-            static MemoryOperand MemDi(X86Instruction i)
-            {
-                return new MemoryOperand(i.dataWidth, Reg(Registers.di, i.addrWidth.BitSize), null)
-                {
-                    SegOverride = i.SegmentOverride ?? RegisterStorage.None
-                };
-            }
-
-            static MemoryOperand MemSi(X86Instruction i)
-            {
-                return new MemoryOperand(i.dataWidth, Reg(Registers.si, i.addrWidth.BitSize), null)
-                {
-                    SegOverride = i.SegmentOverride ?? RegisterStorage.None
-                };
+                if (instr.Operands.Length <= i)
+                    return false;
+                return instr.Operands[i] is MemoryOperand mem &&
+                    mem.SegOverride != RegisterStorage.None;
             }
 
             var s = new StringBuilder();
             RenderMnemonic(instr, s);
             renderer.WriteMnemonic(s.ToString());
 
-            if (instr.SegmentOverride is null || instr.SegmentOverride == RegisterStorage.None)
+            // Only render the memory operands if they are needed.
+            if (!HasSegmentOverride(instr, 0) && !HasSegmentOverride(instr, 1))
                 return;
-            var sep = options.OperandSeparator ?? ",";
-            MemoryOperand mem;
-            switch (instr.Mnemonic)
-            {
-            default:
-            case Mnemonic.ins:
-            case Mnemonic.insb:
-            case Mnemonic.outs:
-            case Mnemonic.outsb:
-                return;
-            case Mnemonic.cmps:
-            case Mnemonic.cmpsb:
-            case Mnemonic.movs:
-            case Mnemonic.movsb:
-                renderer.Tab();
-                RenderMemory(MemDi(instr), renderer, options.Flags);
-                renderer.WriteString(sep);
-                mem = MemSi(instr);
-                break;
-            case Mnemonic.lods:
-            case Mnemonic.lodsb:
-                renderer.Tab();
-                mem = MemSi(instr);
-                break;
-            case Mnemonic.scas:
-            case Mnemonic.scasb:
-            case Mnemonic.stos:
-            case Mnemonic.stosb:
-                renderer.Tab();
-                mem = MemDi(instr);
-                break;
-            }
-            RenderMemory(mem, renderer, options.Flags);
+            renderer.Tab();
+            RenderOperands(instr, options, renderer);
         }
 
         protected virtual void RenderOperands(X86Instruction instr, MachineInstructionRendererOptions options, MachineInstructionRenderer renderer)

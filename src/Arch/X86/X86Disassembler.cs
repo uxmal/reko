@@ -200,7 +200,6 @@ namespace Reko.Arch.X86
                         : this.F2Prefix
                             ? 2 :
                             this.F3Prefix ? 3 : 0,
-                    SegmentOverride = this.SegmentOverride,
                     OpMask = this.OpMask,
                     MergingMode = (byte) this.EvexMergeMode,
                     Broadcast = this.EvexBroadcast,
@@ -1055,6 +1054,33 @@ namespace Reko.Arch.X86
 
         private static readonly Mutator<X86Disassembler> Ob = O(OperandType.b);
         private static readonly Mutator<X86Disassembler> Ov = O(OperandType.v);
+
+        /// <summary>
+        /// Memory access by the DS:rSI register pair or ES:rDI register pair.
+        /// </summary>
+        private static Mutator<X86Disassembler> XY(
+            OperandType opType,
+            RegisterStorage index)
+        {
+            return (u, d) =>
+            {
+                var width = d.OperandWidth(opType);
+                d.decodingContext.iWidth = width;
+                var rsi = d.GpRegFromBits(index.Number, d.decodingContext.addressWidth);
+                var mem = new MemoryOperand(d.OperandWidth(opType), rsi, null);
+                var segOverride = d.decodingContext.SegmentOverride;
+                if (segOverride is not null)
+                {
+                    mem.SegOverride = segOverride;
+                }
+                d.decodingContext.ops.Add(mem);
+                return true;
+            };
+        }
+        private static readonly Mutator<X86Disassembler> Xb = XY(OperandType.b, Registers.si);
+        private static readonly Mutator<X86Disassembler> Xv = XY(OperandType.v, Registers.si);
+        private static readonly Mutator<X86Disassembler> Yb = XY(OperandType.b, Registers.di);
+        private static readonly Mutator<X86Disassembler> Yv = XY(OperandType.v, Registers.di);
 
         /// <summary>
         /// MMX register operand specified by the reg field of the modRM byte.

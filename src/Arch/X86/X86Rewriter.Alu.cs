@@ -672,18 +672,6 @@ namespace Reko.Arch.X86
                 m.Fn(in_intrinsic.MakeInstance(dst.DataType), SrcOp(1)));
         }
 
-        private string IntelSizeSuffix(int size)
-        {
-            switch (size)
-            {
-            case 1: return "b";
-            case 2: return "w";
-            case 4: return "dw";
-            case 8: return "qw";
-            default: throw new ArgumentOutOfRangeException("Size is not 1,2,4 or 8");
-            }
-        }
-
         public void RewriteLahf()
         {
             //$TODO: it should actually be SCZAP, as the OF flag is not used but the AF one is
@@ -1162,21 +1150,29 @@ namespace Reko.Arch.X86
             m.Assign(arg1, m.Fn(intrinsic.MakeInstance(arg1.DataType), arg1, arg2, arg3));
         }
 
-        public MemoryAccess MemDi()
+        public MemoryAccess MemDi(MachineOperand op)
 		{
 			if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
 			{
-				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.es), RegDi, instrCur.dataWidth);
+                var mem = (MemoryOperand) op;
+                var seg = mem.SegOverride != RegisterStorage.None
+                    ? mem.SegOverride
+                    : Registers.es;
+                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, binder.EnsureRegister(seg), RegDi, instrCur.dataWidth);
 			}
 			else
 				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, instrCur.dataWidth);
 		}
 
-		public MemoryAccess MemSi()
+		public MemoryAccess MemSi(MachineOperand op)
 		{
 			if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
 			{
-				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, orw.AluRegister(Registers.ds), RegSi, instrCur.dataWidth);
+                var mem = (MemoryOperand) op;
+                var seg = mem.SegOverride != RegisterStorage.None
+                    ? mem.SegOverride
+                    : Registers.ds;
+				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, binder.EnsureRegister(seg), RegSi, instrCur.dataWidth);
 			}
 			else
 				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegSi, instrCur.dataWidth);
@@ -1243,33 +1239,32 @@ namespace Reko.Arch.X86
             case Mnemonic.cmpsb:
                 m.Assign(
                     binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                    m.Cond(m.ISub(MemSi(), MemDi())));
+                    m.Cond(m.ISub(MemSi(instrCur.Operands[0]), MemDi(instrCur.Operands[1]))));
                 incSi = true;
                 incDi = true;
                 break;
             case Mnemonic.lods:
             case Mnemonic.lodsb:
-                m.Assign(RegAl, MemSi());
+                m.Assign(RegAl, MemSi(instrCur.Operands[1]));
                 incSi = true;
                 break;
             case Mnemonic.movs:
             case Mnemonic.movsb:
                 Identifier tmp = binder.CreateTemporary(instrCur.dataWidth);
-                m.Assign(tmp, MemSi());
-                m.Assign(MemDi(), tmp);
+                m.Assign(tmp, MemSi(instrCur.Operands[1]));
+                m.Assign(MemDi(instrCur.Operands[0]), tmp);
                 incSi = true;
                 incDi = true;
                 break;
             case Mnemonic.ins:
             case Mnemonic.insb:
                 regDX = binder.EnsureRegister(Registers.dx);
-                m.Assign(MemDi(), m.Fn(in_intrinsic.MakeInstance(instrCur.dataWidth), regDX));
+                m.Assign(RegAl, m.Fn(in_intrinsic.MakeInstance(instrCur.dataWidth), regDX));
                 incDi = true;
                 break;
             case Mnemonic.outs:
             case Mnemonic.outsb:
                 regDX = binder.EnsureRegister(Registers.dx);
-                var suffix = NamingPolicy.Instance.Types.ShortPrefix(RegAl.DataType); 
                 m.SideEffect(m.Fn(out_intrinsic.MakeInstance(RegAl.DataType), regDX, RegAl));
                 incSi = true;
                 break;
@@ -1277,12 +1272,12 @@ namespace Reko.Arch.X86
             case Mnemonic.scasb:
                 m.Assign(
                     binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                    m.Cond(m.ISub(RegAl, MemDi())));
+                    m.Cond(m.ISub(RegAl, MemDi(instrCur.Operands[1]))));
                 incDi = true;
                 break;
             case Mnemonic.stos:
             case Mnemonic.stosb:
-                m.Assign(MemDi(), RegAl);
+                m.Assign(MemDi(instrCur.Operands[0]), RegAl);
                 incDi = true;
                 break;
             }

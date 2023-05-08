@@ -18116,7 +18116,7 @@ l0800_8728:
 	cli
 
 l0800_8733:
-	rep movsb
+	rep movsb	byte ptr es:[di],byte ptr es:[si]
 
 l0800_8736:
 	sti
@@ -19755,7 +19755,7 @@ l0800_8FC8:
 
 l0800_8FCB:
 	mov	es,[bp+0Eh]
-	lodsb
+	lodsb	al,es:[si]
 	or	al,al
 	jz	9042h
 
@@ -19837,7 +19837,7 @@ l0800_9045:
 	mov	byte ptr [bp-1h],20h
 
 l0800_9051:
-	lodsb
+	lodsb	al,es:[si]
 	cbw
 	mov	[bp+0Ch],si
 	xchg	di,ax
@@ -20164,14 +20164,14 @@ l0800_92BD:
 
 l0800_92BF:
 	pop	es
-	lodsb
+	lodsb	al,es:[si]
 	and	byte ptr [bp-1h],0EFh
 	cmp	al,5Eh
 	jnz	92D0h
 
 l0800_92CA:
 	or	byte ptr [bp-1h],10h
-	lodsb
+	lodsb	al,es:[si]
 
 l0800_92D0:
 	mov	ah,0h
@@ -20187,7 +20187,7 @@ l0800_92D2:
 	or	[bp+di-2Ah],ch
 
 l0800_92E4:
-	lodsb
+	lodsb	al,es:[si]
 	cmp	al,0h
 	jz	9313h
 
@@ -20208,7 +20208,7 @@ l0800_92F7:
 	jz	92D2h
 
 l0800_92FD:
-	lodsb
+	lodsb	al,es:[si]
 	sub	al,dl
 	jz	92E4h
 
@@ -21132,7 +21132,7 @@ l0800_9898:
 	les	si,[bp+6h]
 
 l0800_989B:
-	lodsb
+	lodsb	al,es:[si]
 	or	al,al
 	jz	98B3h
 
@@ -21155,7 +21155,7 @@ l0800_98B3:
 
 l0800_98B6:
 	mov	[bp-10h],si
-	lodsb
+	lodsb	al,es:[si]
 	cmp	al,25h
 	jz	98A5h
 
@@ -21170,7 +21170,7 @@ l0800_98BF:
 	jmp	98DDh
 
 l0800_98DB:
-	lodsb
+	lodsb	al,es:[si]
 
 l0800_98DD:
 	xor	ah,ah
@@ -21713,7 +21713,7 @@ l0800_9C0A:
 	jnz	9C15h
 
 l0800_9C0E:
-	lodsb
+	lodsb	al,es:[si]
 	call	984Fh
 	dec	cx
 	dec	bx
@@ -21737,7 +21737,7 @@ l0800_9C24:
 	sub	bx,cx
 
 l0800_9C26:
-	lodsb
+	lodsb	al,es:[si]
 	mov	ss:[di],al
 	inc	di
 	dec	byte ptr [bp-14h]
@@ -21805,7 +21805,7 @@ l0800_9C82:
 
 l0800_9C8D:
 	call	984Fh
-	lodsb
+	lodsb	al,es:[si]
 	or	al,al
 	jnz	9C8Dh
 
@@ -26413,7 +26413,7 @@ l0800_B9E2:
 	cld
 
 l0800_B9ED:
-	lodsb
+	lodsb	al,es:[si]
 	cmp	al,1Ah
 	jz	0BA21h
 

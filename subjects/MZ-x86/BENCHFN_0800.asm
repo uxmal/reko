@@ -372,7 +372,7 @@ __setargv proc
 	mov	es,[0090h]
 	mov	si,80h
 	xor	ah,ah
-	lodsb
+	lodsb	al,es:[si]
 	inc	ax
 	mov	bp,es
 	xchg	si,dx
@@ -532,7 +532,7 @@ l0800_0409:
 	add	bp,2h
 
 l0800_040F:
-	lodsb
+	lodsb	al,ss:[si]
 	or	al,al
 	loopne	040Fh
 
@@ -3094,7 +3094,7 @@ l0800_14F8:
 	jnz	1503h
 
 l0800_14FC:
-	lodsb
+	lodsb	al,es:[si]
 	call	1099h
 	dec	cx
 	dec	bx
@@ -3118,7 +3118,7 @@ l0800_1512:
 	sub	bx,cx
 
 l0800_1514:
-	lodsb
+	lodsb	al,es:[si]
 	mov	[di],al
 	inc	di
 	dec	byte ptr [bp-55h]

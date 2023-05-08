@@ -2830,7 +2830,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_segment_override_string_instr()
         {
-            AssertCode16("rep movsb\tes:[di],es:[si]", "F3 26 A4");
+            AssertCode16("rep movsb\tbyte ptr es:[di],byte ptr es:[si]", "F3 26 A4");
         }
     }
 }

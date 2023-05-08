@@ -4659,6 +4659,18 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_segment_override_string_instr()
+        {
+            Run16bitTest("26 A4");
+            AssertCode(     // movsb\tbyte ptr es:[di],byte ptr es:[si]
+                "0|L--|0C00:0000(2): 4 instructions",
+                "1|L--|v3 = Mem0[es:si:byte]",
+                "2|L--|Mem0[es:di:byte] = v3",
+                "3|L--|si = si + 1<i16>",
+                "4|L--|di = di + 1<i16>");
+        }
+
+        [Test]
         public void X86Rw_sqrtss()
         {
             Run64bitTest("F30F51C8");
