@@ -1383,7 +1383,7 @@ l00400A8C:
 	word32 r2_150 = fopen(r2_133 + 1685<i32>, 0x00409E44<p32>)
 	branch r2_150 == 0<32> l00400B20
 l00400AC4:
-	fprintf(r2_150, 0x00409E48<p32>, getpid())
+	fprintf(r2_150, "%d\n", getpid())
 	fclose(r2_150)
 l00400B20:
 	Mem194[Mem190[0x100008F4<32>:word32]:word32] = Mem190[Mem190[0x10000A40<32>:word32] + 0x38C<32>:word32]
@@ -3371,7 +3371,8 @@ l0040632C:
 l00406374:
 	branch Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>):word32] != 2<i32> l00406530
 l00406530:
-	printf(0x0040A6D8<p32>, Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], Mem48[Mem48[0x10000A40<32>:word32] + 4<i32> + dwLoc18_226 * 0x98<32>:word32])
+	word32 r2_94 = Mem48[0x10000A40<32>:word32] + 4<i32> + dwLoc18_226 * 0x98<32>
+	printf("-%c %s ", Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], Mem48[r2_94:word32])
 l004063B4:
 	word32 dwLoc14_229
 	branch (CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>) == 0<32> l00406474
@@ -3380,12 +3381,13 @@ l00406474:
 l0040641C:
 	dwLoc14_229 = tolower(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], int8, word32))
 l004064C8:
-	printf(0x0040A6D0<p32>, Mem169[Mem169[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>) + 4<32>:int8], SLICE(dwLoc14_229, char, 0))
+	word32 r1_180 = Mem169[0x10000A40<32>:word32] + (dwLoc18_226 * 0x98<32> + 8<i32>)
+	printf("-%c|%c ", Mem169[r1_180 + 4<32>:int8], SLICE(dwLoc14_229, char, 0))
 l004065BC:
 	dwLoc18_226 = dwLoc18_226 + 1<i32>
 l0040636C:
 l004065D0:
-	printf(0x0040A6E0<p32>)
+	printf("\n")
 	word32 r5_207 = <invalid>
 	return r5_207
 properties_print_usage_exit:
@@ -3525,7 +3527,8 @@ l0040697C:
 	word32 r5_30 = <invalid>
 	word32 r4_29 = <invalid>
 	strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x0040A74C<p32>, gmtime(&dwLoc28, r4_29, &dwLoc28, 0<32>, r5_30, r6_31, r7_33, 0x10008860<32>))
-	fprintf(r4, 0x0040A760<p32>, Mem75[Mem19[0x100008FC<32>:word32] + (r5 << 2<8>):word32], fp + -72<i32>, (SLICE(dwLoc24 *s 0x10624DD3<32>, word32, 32) >> 6<8>) - (dwLoc24 >> 0x1F<8>), r7)
+	word32 hi_69 = SLICE(dwLoc24 *s 0x10624DD3<32>, word32, 32)
+	fprintf(r4, "%s:%s.%03d:%s\n", Mem75[Mem19[0x100008FC<32>:word32] + (r5 << 2<8>):word32], fp + -72<i32>, (hi_69 >> 6<8>) - (dwLoc24 >> 0x1F<8>), r7)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
 	branch Mem106[Mem106[0x10000A28<32>:word32]:word32] == 0<32> l00406BCC

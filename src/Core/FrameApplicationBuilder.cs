@@ -101,7 +101,7 @@ namespace Reko.Core
 
         public Expression VisitStackStorage(StackStorage stack)
         {
-            return BindInStackArg(stack, site.SizeOfReturnAddressOnStack);
+            return BindInStackArg(stack, Site.SizeOfReturnAddressOnStack);
         }
 
         public override Expression BindInStackArg(StackStorage stack, int returnAdjustment)
@@ -109,10 +109,7 @@ namespace Reko.Core
             if (!arch.IsStackArgumentOffset(stack.StackOffset))
                 throw new InvalidOperationException("A local stack variable can't be used as a parameter.");
             var netOffset = stack.StackOffset - returnAdjustment;
-            return arch.CreateStackAccess(
-                binder,
-                netOffset,
-                stack.DataType);
+            return arch.CreateStackAccess(binder, netOffset, stack.DataType);
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

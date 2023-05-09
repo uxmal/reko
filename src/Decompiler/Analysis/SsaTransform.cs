@@ -530,7 +530,7 @@ namespace Reko.Analysis
             if (a is AliasAssignment)
                 return a;
             var src = a.Src.Accept(this);
-            Identifier idNew = this.RenameFrameAccesses ? a.Dst : NewDef(a.Dst, src, false);
+            Identifier idNew = this.RenameFrameAccesses ? a.Dst : NewDef(a.Dst, false);
             return new Assignment(idNew, src);
         }
 
@@ -554,6 +554,23 @@ namespace Reko.Analysis
             ProcedureBase? callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature.ParametersValid)
             {
+                if (Scanning.VarargsFormatScanner.IsVariadicParserKnown(callee.Signature, callee.Characteristics))
+                {
+                    if (ci.Uses.Count == 0)
+                    {
+                        // Capture non-varargs parameters.
+                        GenerateUseDefsVarargs(ci, callee);
+                        return ci;
+                    }
+                    if (this.RenameFrameAccesses)
+                    {
+                        foreach (var use in ci.Uses)
+                        {
+                            use.Expression = use.Expression.Accept(this);
+                        }
+                    }
+                    return ci;
+                }
                 // Signature is known: build the application immediately,
                 // after removing all uses of the old call.
                 ssa.RemoveUses(stmCur!);
@@ -580,7 +597,7 @@ namespace Reko.Analysis
 
         private ApplicationBuilder CreateApplicationBuilder(DataType dt, CallInstruction call)
         {
-            return  arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, call.CallSite);
+            return arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, call.CallSite);
         }
 
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow calleeFlow)
@@ -641,7 +658,7 @@ namespace Reko.Analysis
                     ci.Definitions.Add(
                         new CallBinding(
                             def,
-                            NewDef(d, ci.Callee, false)));
+                            NewDef(d, false)));
                 }
                 foreach (var de in calleeFlow.grfTrashed)
                 {
@@ -652,7 +669,7 @@ namespace Reko.Analysis
                         ci.Definitions.Add(
                             new CallBinding(
                                 grf,
-                                NewDef(d, ci.Callee, false)));
+                                NewDef(d, false)));
                     }
                 }
                 //$REVIEW: this is very x86/x87 specific; find a way to generalize
@@ -681,6 +698,31 @@ namespace Reko.Analysis
             }
         }
 
+        private void GenerateUseDefsVarargs(CallInstruction ci, ProcedureBase callee)
+        {
+            // Bind the stack pointer.
+            var sp = arch.StackRegister;
+            var sp_ssa = ssa.Procedure.Frame.EnsureRegister(sp).Accept(this);
+            ci.Uses.Add(new CallBinding(sp, sp_ssa));
+
+            //if (stmCur!.Address.Offset == )
+            var sig = callee.Signature;
+            var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite);
+            foreach (var param in sig.Parameters!)
+            {
+                var inArg = ab.BindInArg(param.Storage);
+                var e = inArg.Accept(this);
+                ci.Uses.Add(new CallBinding(param.Storage, e));
+            }
+            if (!callee.Signature.HasVoidReturn)
+            {
+                var stg = sig.ReturnValue!.Storage;
+                var retVal = (Identifier) ab.BindReturnValue(stg)!;
+                var e = TransformLValue(retVal, ci.Callee);
+                ci.Definitions.Add(new CallBinding(retVal.Storage, e));
+            }
+        }
+
         private List<CallBinding> CreateFpuStackTemporaryBindings(
             ProcedureFlow calleeFlow,
             Expression callee,
@@ -693,7 +735,7 @@ namespace Reko.Analysis
                 var name = $"rRet{def.FpuStackOffset - fpuStackDelta}";
                 var id = ssa.Procedure.Frame.CreateTemporary(
                     name, PrimitiveType.Word64); //$TODO: datatype?
-                var fpuDefId = NewDef(id, callee, false);
+                var fpuDefId = NewDef(id, false);
                 fpuDefs.Add(new CallBinding(def, fpuDefId));
             }
             return fpuDefs;
@@ -777,7 +819,7 @@ namespace Reko.Analysis
                 {
                     ci.Definitions.Add(new CallBinding(
                         calleeStg,
-                        NewDef(id, ci.Callee, false)));
+                        NewDef(id, false)));
                     existingDefs.Add(calleeStg);
                 }
             }
@@ -933,7 +975,7 @@ namespace Reko.Analysis
         }
 
         private Expression TransformLValue(Expression exp, Expression src)
-        { 
+        {
             if (exp is MemoryAccess acc)
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
@@ -946,14 +988,14 @@ namespace Reko.Analysis
                     ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur!);
                     ssa.Identifiers[acc.MemoryId].DefStatement = null!;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
-                    var idDst = NewDef(idFrame, src, false);
+                    var idDst = NewDef(idFrame, false);
                     return idDst;
                 }
                 else if (this.RenameFrameAccesses && IsConstFpuStackAccess(acc))
                 {
                     ssa.Identifiers[acc.MemoryId].DefStatement = null!;
-                    var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
-                    var idDst = NewDef(idFrame, src, false);
+                    var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant) acc.EffectiveAddress).ToInt32(), acc.DataType);
+                    var idDst = NewDef(idFrame, false);
                     return idDst;
                 }
                 else
@@ -972,8 +1014,13 @@ namespace Reko.Analysis
                     return new MemoryAccess(memId, ea, acc.DataType);
                 }
             }
-            else
+            else if (exp is Identifier id)
             {
+                Identifier idNew = NewDef(id, false);
+                return idNew;
+            }
+            else
+            { 
                 return exp.Accept(this);
             }
         }
@@ -997,7 +1044,7 @@ namespace Reko.Analysis
                 if (appl.Arguments[i] is OutArgument outArg &&
                     outArg.Expression is Identifier id)
                 {
-                    var idOut = NewDef(id, appl, true);
+                    var idOut = NewDef(id, true);
                     outArg = new OutArgument(outArg.DataType, idOut);
                     args[i] = outArg;
                 }
@@ -1056,7 +1103,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    exp = NewDef(id, outArg, true);
+                    exp = NewDef(id, true);
                 }
             }
             else
@@ -1066,7 +1113,7 @@ namespace Reko.Analysis
             return new OutArgument(outArg.DataType, exp);
         }
 
-        public Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
+        public Identifier NewDef(Identifier idOld, bool isSideEffect)
         {
             if (ssa.Identifiers.TryGetValue(idOld, out var sidOld))
             {

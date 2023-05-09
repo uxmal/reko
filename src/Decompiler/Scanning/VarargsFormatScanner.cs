@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.Core.Services;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
 
 namespace Reko.Scanning
 {
@@ -75,13 +76,14 @@ namespace Reko.Scanning
             }
             int iFormatArg = originalSig.Parameters!.Length - 1;
             var instr = ab.CreateInstruction(callee, expandedSig, chr);
-            ReplaceFormatArgumentWithFormatString(instr, iFormatArg);
+            ReplaceFormatArgumentWithFormatString(instr, iFormatArg, this.formatString!);
             return instr;
         }
 
         private void ReplaceFormatArgumentWithFormatString(
             Instruction instr,
-            int iFormatArg)
+            int iFormatArg,
+            StringConstant formatString)
         {
             Expression? eFnCall = instr switch
             {
@@ -95,8 +97,20 @@ namespace Reko.Scanning
             if (formatArg is Identifier idFormat)
             {
                 this.ctx.RemoveIdentifierUse(idFormat);
-                fnCall.Arguments[iFormatArg] = this.formatString!;
+                fnCall.Arguments[iFormatArg] = formatString;
             }
+            else if (formatArg is Constant)
+            {
+                fnCall.Arguments[iFormatArg] = formatString;
+            }
+        }
+
+        public static bool IsVariadicParserKnown(FunctionType? sig, ProcedureCharacteristics? chr)
+        {
+            return sig is not null &&
+                   sig.IsVariadic &&
+                   chr is not null && 
+                   VarargsParserSet(chr);
         }
 
         public bool TryScan(
@@ -107,13 +121,12 @@ namespace Reko.Scanning
             ApplicationBuilder ab,
             [MaybeNullWhen(false)] out VarargsResult result)
         {
-            if (sig is null || !sig.IsVariadic ||
-                chr is null || !VarargsParserSet(chr))
+            if (!IsVariadicParserKnown(sig, chr))
             {
                 result = null;
                 return false;
             }
-            var addrFormatString = ReadVarargsFormat(addrInstr, callee, sig, ab);
+            var addrFormatString = TryReadFormatStringAddress(addrInstr, callee, sig, ab);
             if (addrFormatString is null)
             {
                 result = null;
@@ -125,7 +138,9 @@ namespace Reko.Scanning
                 result = null;
                 return false;
             }
-            var argTypes = ParseVarargsFormat(chr.VarargsParserClass!, addrInstr, chr);
+            Debug.Assert(chr != null);
+            Debug.Assert(chr.VarargsParserClass != null);
+            var argTypes = ParseVarargsFormat(chr.VarargsParserClass, addrInstr, chr);
             var extendedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             result = new VarargsResult(extendedSig, addrFormatString, formatString);
             return true;
@@ -137,7 +152,7 @@ namespace Reko.Scanning
             return e;
         }
 
-        private Address? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig, ApplicationBuilder ab)
+        private Address? TryReadFormatStringAddress(Address addrInstr, Expression callee, FunctionType sig, ApplicationBuilder ab)
         {
             var formatIndex = sig.Parameters!.Length - 1;
             if (formatIndex < 0)

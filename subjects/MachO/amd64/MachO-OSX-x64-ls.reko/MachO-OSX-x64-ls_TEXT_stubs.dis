@@ -34,17 +34,16 @@ l0000000100004DB4:
 __maskrune_exit:
 
 
-void __snprintf_chk(word64 rcx, word32 edx, word64 rsi, word64 rdi, word64 r8)
+void __snprintf_chk(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0000000100003AA8
-// MayUse:  r8:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..31] rsi:[0..63]
+// MayUse:  r8:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: eax
 // Preserved: rsp
 __snprintf_chk_entry:
-	word64 rdx
 l0000000100004DBA:
 	__snprintf_chk(rdi, rsi, SLICE(rdx, int32, 0), rcx, r8, 0<32>)
 	return

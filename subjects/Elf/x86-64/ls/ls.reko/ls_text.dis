@@ -4026,10 +4026,10 @@ l0000000000409794:
 	__printf_chk(1<i32>, dcgettext(0<u64>, 0x4137BB<u64>, 5<i32>), 0<32>)
 	__printf_chk(1<i32>, dcgettext(0<u64>, 0x4137E8<u64>, 5<i32>), 0<32>)
 	fputs_unlocked(dcgettext(0<u64>, 0x415A30<u64>, 5<i32>), Mem11[0x000000000061A610<p64>:word64])
-	word64 rax_368 = setlocale(5<i32>, 0<u64>)
-	branch rax_368 == 0<64> l0000000000409BC8
+	word64 rax_377 = setlocale(5<i32>, 0<u64>)
+	branch rax_377 == 0<64> l0000000000409BC8
 l0000000000409BB2:
-	branch strncmp(rax_368, 0x41380A<u64>, 3<i32>) != 0<32> l0000000000409BFF
+	branch strncmp(rax_377, 0x41380A<u64>, 3<i32>) != 0<32> l0000000000409BFF
 l0000000000409BFF:
 	fn000000000040A390(Mem11[0x000000000061B200<p64>:word64])
 	__printf_chk(1<i32>, dcgettext(0<u64>, 0x415A70<u64>, 5<i32>), 0<32>)
@@ -9223,14 +9223,14 @@ void fn0000000000410630(word64 rcx, word64 rdx, word64 rsi, word64 rdi, word64 r
 // Preserved: r13 r14 r15
 fn0000000000410630_entry:
 l0000000000410630:
-	word64 r9_150
+	word64 r9_153
 	branch rsi == 0<64> l0000000000410A30
 l0000000000410A30:
 	__fprintf_chk(rdi, 1<i32>, "%s %s\n", rdx, rcx)
-	r9_150 = r9
+	r9_153 = r9
 l0000000000410650:
 	__fprintf_chk(rdi, 1<i32>, "%s (%s) %s\n", rsi, rdx, rcx)
-	r9_150 = rcx
+	r9_153 = rcx
 l000000000041066A:
 	word64 rax_66 = dcgettext(0<u64>, 0x4168D3<u64>, 5<i32>)
 	__fprintf_chk(rdi, 1<i32>, "Copyright %s %d Free Software Foundation, Inc.", rax_66, 2013<i32>)
@@ -9243,7 +9243,7 @@ l00000000004107A1:
 	return
 l00000000004106BE:
 	call Mem25[0x0000000000416B48<p64>:word64] (retsize: 0;)
-		uses: r8:0x7DD<u64>,r9:r9_150,rcx:rax_66,rdi:rax_85,rdx:5<u64>,rsi:rdi
+		uses: r8:0x7DD<u64>,r9:r9_153,rcx:rax_66,rdi:rax_85,rdx:5<u64>,rsi:rdi
 	return
 fn0000000000410630_exit:
 

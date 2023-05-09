@@ -130,6 +130,7 @@ namespace Reko.Analysis
             // be true.
             if (ctx.map.TryGetValue(reg, out CallBinding? cb))
                 return cb.Expression;
+
             // If the architecture has subregisters, we need a more
             // expensive test.
             //$TODO: perhaps this can be done with another level of lookup, 
@@ -197,10 +198,12 @@ namespace Reko.Analysis
         {
             Debug.Assert(ssaCaller.Procedure.Architecture.IsStackArgumentOffset(stack.StackOffset));
             int localOff = stack.StackOffset;
-            foreach (var de in map.Values
-                .Where(d => d.Storage is StackStorage))
+            // See if the stack argument has already been bound in the
+            // call instruction.
+            foreach (var de in map.Values)
             {
-                if (((StackStorage) de.Storage).StackOffset == localOff)
+                if (de.Storage is StackStorage stk &&
+                    stk.StackOffset == localOff)
                     return de.Expression;
             }
 

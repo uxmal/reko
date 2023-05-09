@@ -4,8 +4,8 @@
 
 #include "ipcalc.h"
 
-// 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr64 Eq_n) gp, Register int64 a0, Register (ptr64 (ptr64 char)) a1, Register word64 a7, Register word64 s5, Register word64 s11)
-void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word64 a7, word64 s5, word64 s11)
+// 0000000000015180: void fn0000000000015180(Register word64 ra, Register (ptr64 Eq_n) gp, Register int64 a0, Register (ptr64 (ptr64 char)) a1, Register (ptr64 char) a2, Register (ptr64 char) a3, Register (ptr64 char) a4, Register word64 a7, Register word64 s5, Register word64 s11, Register real64 fa3, Register real64 fa4)
+void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, char * a2, char * a3, char * a4, word64 a7, word64 s5, word64 s11, real64 fa3, real64 fa4)
 {
 	word64 qwLoc01A8;
 	char * ptrLoc01A0;
@@ -16,7 +16,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word6
 	int64 qwLoc0190;
 	Eq_n a5_n = gp->tFFFFF870.u0;
 	qwLoc01A8.dw0004 = 0x00;
-	Eq_n s0_n = 0;
+	char * s0_n = null;
 	do
 	{
 		char * a0_n = (uint64) getopt_long((int32) a0, a1, "cr:i46bho:gmnpsv", &g_t108E0, null);
@@ -45,7 +45,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word6
 			}
 			if (false)
 			{
-				__printf_chk(1, "ipcalc %s\n", 0x00);
+				__printf_chk(1, "ipcalc %s\n", a2);
 				goto l00000000000153DC;
 			}
 			if ((int64) qwLoc01A8.dw0004 != 0x00 && false)
@@ -58,28 +58,29 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, int64 a0, char ** a1, word6
 			word64 a6_n;
 			Eq_n a4_n;
 			int64 a0_n;
+			char * a4_n;
 			char * a5_n;
 			FILE * a0_n;
 			char * a0_n;
 			char * a5_n;
-			Eq_n s2_n;
+			char * s2_n;
 			if (false)
 			{
-				s2_n.u0 = 2;
+				s2_n = (char *) 2;
+				word64 a4_n;
 				word64 a1_n;
 				word64 a2_n;
 				word64 a3_n;
-				word64 a4_n;
-				if (fn0000000000017924(gp, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n) != 0x00 || true)
+				if (fn0000000000017924(gp, a0_n, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n) != 0x00 || true)
 					goto l00000000000153CC;
-				s0_n.u0 = 2;
+				s0_n = (char *) 2;
 				goto l0000000000015448;
 			}
-			word64 a1_n;
 			word64 a2_n;
+			word64 a1_n;
 			word64 a3_n;
 			word64 a4_n;
-			if (fn0000000000017924(gp, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n) == 0x00 && false)
+			if (fn0000000000017924(gp, a0_n, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n) == 0x00 && false)
 			{
 l0000000000015448:
 				s2_n = s0_n | 0x4000;
@@ -126,7 +127,7 @@ l00000000000153CC:
 l0000000000015964:
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: could not resolve %s\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: could not resolve %s\n", a3);
 				goto l00000000000153DC;
 			}
 l0000000000015458:
@@ -156,7 +157,7 @@ l0000000000015458:
 l0000000000015CB0:
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: cannot generate network with prefix: %u\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: cannot generate network with prefix: %u\n", (uint32) a3);
 				goto l00000000000153DC;
 			}
 			if (s1_n != 0x00)
@@ -188,7 +189,7 @@ l0000000000015CB0:
 				goto l0000000000015CB0;
 l00000000000154DC:
 			a5_n = a0_n;
-			if ((uint64) __asprintf_chk(&ptrLoc01A0, 1, "%s/%u", 0x00) == -1)
+			if ((uint64) __asprintf_chk(&ptrLoc01A0, 1, "%s/%u", a3, (uint32) a4) == -1)
 				goto l0000000000015CB0;
 			s1_n = ptrLoc01A0;
 			if (s1_n == null)
@@ -200,6 +201,7 @@ l0000000000015518:
 				if (strchr(s1_n, ':') == null)
 					goto l00000000000155D8;
 				qwLoc01A8.dw0004 = 0x01;
+				a4_n = (char *) 1;
 				if (s4_n != null)
 					goto l000000000001553C;
 				a0_n = strchr(s1_n, '/');
@@ -216,7 +218,7 @@ l00000000000155D8:
 l000000000001553C:
 				if ((int64) gp->dwFFFFF814 != 0x00)
 					goto l00000000000153D8;
-				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: unexpected argument: %s\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: unexpected argument: %s\n", a3);
 				fn0000000000015FCC(gp, 1);
 				goto l00000000000153DC;
 			}
@@ -238,18 +240,19 @@ l00000000000155E4:
 				{
 					a0_n = gp->ptrFFFFF880;
 l0000000000015B8C:
-					__fprintf_chk(a0_n, 1, "ipcalc: bad %s prefix: %s\n", 0x00);
+					__fprintf_chk(a0_n, 1, "ipcalc: bad %s prefix: %s\n", a3, a4);
 				}
 				goto l00000000000153D8;
 			}
 l00000000000155FC:
-			if ((int64) qwLoc01A8.dw0004 != 0x00)
+			a4_n = (int64) qwLoc01A8.dw0004;
+			if (a4_n != null)
 			{
 l0000000000015604:
-				a0_n = fn00000000000175BC(ra, gp, s1_n, s1_n, a5_n, &tLoc0188, s0_n, out a4_n);
+				a0_n = fn00000000000175BC(ra, gp, s1_n, s1_n, a5_n, &tLoc0188, s0_n, a4_n, fa3, fa4, out a4_n);
 			}
 			else
-				a0_n = fn0000000000016D74(ra, gp, s1_n, a5_n, &tLoc0188, s0_n, out a4_n);
+				a0_n = fn0000000000016D74(ra, gp, s1_n, a5_n, &tLoc0188, s0_n, a4_n, a5_n, a6_n, a7, fa3, fa4, out a4_n);
 			if (a0_n < 0x00)
 			{
 l00000000000153D8:
@@ -265,63 +268,63 @@ l00000000000153D8:
 			if ((s0_n & 8) == 0x00)
 			{
 				if ((s0_n & 0x0080) != 0x00)
-					__printf_chk(1, "NETMASK=%s\n", 0x00);
+					__printf_chk(1, "NETMASK=%s\n", a2);
 				if ((s0_n & 0x0200) != 0x00)
-					__printf_chk(1, "PREFIX=%u\n", 0x00);
+					__printf_chk(1, "PREFIX=%u\n", (uint32) a2);
 				if ((s0_n & 64) != 0x00 && (int64) qwLoc01A8.dw0004 == 0x00)
-					__printf_chk(1, "BROADCAST=%s\n", 0x00);
+					__printf_chk(1, "BROADCAST=%s\n", a2);
 				if ((s0_n & 0x0100) != 0x00)
-					__printf_chk(1, "NETWORK=%s\n", 0x00);
+					__printf_chk(1, "NETWORK=%s\n", a2);
 				if (s0_n << 0x2E < 0x00)
-					__printf_chk(1, "REVERSEDNS=%s\n", 0x00);
+					__printf_chk(1, "REVERSEDNS=%s\n", a2);
 				if ((s0_n & 0x0400) != 0x00 && tLoc0188.qw00A8 != 0x00)
-					__printf_chk(1, "MINADDR=%s\n", 0x00);
+					__printf_chk(1, "MINADDR=%s\n", a2);
 				if (s0_n << 0x34 < 0x00 && tLoc0188.qw00B0 != 0x00)
-					__printf_chk(1, "MAXADDR=%s\n", 0x00);
+					__printf_chk(1, "MAXADDR=%s\n", a2);
 				if (s0_n << 0x32 < 0x00)
 				{
 					char * s2_n = tLoc0188.ptr00B8;
 					if (s2_n != null)
 					{
 						if (strchr(s2_n, ' ') != null)
-							__printf_chk(1, "ADDRSPACE=\"%s\"\n", 0x00);
+							__printf_chk(1, "ADDRSPACE=\"%s\"\n", a2);
 						else
-							__printf_chk(1, "ADDRSPACE=%s\n", 0x00);
+							__printf_chk(1, "ADDRSPACE=%s\n", a2);
 					}
 				}
 				if (s0_n << 0x33 < 0x00)
 				{
 					if (strchr((char *) &tLoc0188 + 96, ' ') != null)
-						__printf_chk(1, "ADDRESSES=\"%s\"\n", 0x00);
+						__printf_chk(1, "ADDRESSES=\"%s\"\n", a2);
 					else
-						__printf_chk(1, "ADDRESSES=%s\n", 0x00);
+						__printf_chk(1, "ADDRESSES=%s\n", a2);
 				}
 				if ((s0_n & 1) != 0x00 && tLoc0188.qw0038 != 0x00)
-					__printf_chk(1, "HOSTNAME=%s\n", 0x00);
+					__printf_chk(1, "HOSTNAME=%s\n", a2);
 				if ((s0_n & 2) != 0x00)
-					__printf_chk(1, "ADDRESS=%s\n", 0x00);
+					__printf_chk(1, "ADDRESS=%s\n", a2);
 				if ((s0_n & 0xC000) == 0xC000)
 				{
 					if (tLoc0188.qw0048 != 0x00)
-						__printf_chk(1, "COUNTRYCODE=%s\n", 0x00);
+						__printf_chk(1, "COUNTRYCODE=%s\n", a2);
 					char * s0_n = tLoc0188.ptr0040;
 					if (s0_n != null)
 					{
 						if (strchr(s0_n, ' ') != null)
-							__printf_chk(1, "COUNTRY=\"%s\"\n", 0x00);
+							__printf_chk(1, "COUNTRY=\"%s\"\n", a2);
 						else
-							__printf_chk(1, "COUNTRY=%s\n", 0x00);
+							__printf_chk(1, "COUNTRY=%s\n", a2);
 					}
 					char * s0_n = tLoc0188.ptr0050;
 					if (s0_n != null)
 					{
 						if (strchr(s0_n, ' ') != null)
-							__printf_chk(1, "CITY=\"%s\"\n", 0x00);
+							__printf_chk(1, "CITY=\"%s\"\n", a2);
 						else
-							__printf_chk(1, "CITY=%s\n", 0x00);
+							__printf_chk(1, "CITY=%s\n", a2);
 					}
 					if (tLoc0188.qw0058 != 0x00)
-						__printf_chk(1, "COORDINATES=\"%s\"\n", 0x00);
+						__printf_chk(1, "COORDINATES=\"%s\"\n", a2);
 				}
 				goto l00000000000153DC;
 			}
@@ -498,20 +501,24 @@ l00000000000153DC:
 			char * a3_n = tLoc0188.ptr0058;
 			if (a3_n != null)
 			{
-				word64 a4_n;
-				word64 a5_n;
 				word64 a7_n;
 				word64 a6_n;
+				word64 a4_n;
+				word64 a5_n;
 				gp = fn000000000001654C(gp, a3_n, a4_n, a5_n, a6_n, a7, out a4_n, out a5_n, out a6_n, out a7_n);
 			}
 			goto l00000000000153DC;
 		}
 	} while (a0_n > (char *) 118);
 	<anonymous> * a5_n = (int64) (a0_n << 0x20 >> 0x1E)->dw102A0;
+	word64 a3_n;
+	word64 a2_n;
 	word64 a6_n;
 	word64 t1_n;
 	word64 t3_n;
 	word64 a7_n;
+	word64 fa3_n;
+	word64 fa4_n;
 	a5_n();
 }
 
@@ -623,22 +630,22 @@ void fn0000000000015FCC(struct Eq_n * gp, int64 a0)
 	}
 }
 
-// 00000000000163B0: Register (ptr64 char) fn00000000000163B0(Register (ptr64 Eq_n) gp)
+// 00000000000163B0: Register (ptr64 char) fn00000000000163B0(Register (ptr64 Eq_n) gp, Register (ptr64 char) a4)
 // Called from:
 //      fn00000000000175BC
-char * fn00000000000163B0(struct Eq_n * gp)
+char * fn00000000000163B0(struct Eq_n * gp, char * a4)
 {
 	ptr64 fp;
 	char bLocE8;
 	Eq_n a5_n = gp->tFFFFF870.u0;
-	__sprintf_chk(&bLocE8, 1, (size_t) 0x0080, "%.2x", 0x00);
+	__sprintf_chk(&bLocE8, 1, (size_t) 0x0080, "%.2x", (uint32) a4);
 	int64 s0_n = 1;
 	struct Eq_n * s1_n = fp + -0x00E6;
 	if (true)
 	{
 		do
 		{
-			__sprintf_chk(s1_n, 1, (size_t) 0x0080, "%.2x", 0x00);
+			__sprintf_chk(s1_n, 1, (size_t) 0x0080, "%.2x", (uint32) a4);
 			struct Eq_n * a4_n = s1_n + 1;
 			if ((s0_n & 1) != 0x00)
 			{
@@ -827,11 +834,11 @@ l00000000000167F4:
 	goto l00000000000167F4;
 }
 
-// 0000000000016830: Register (ptr64 char) fn0000000000016830(Register (ptr64 Eq_n) gp, Register (ptr64 char) a0)
+// 0000000000016830: Register (ptr64 char) fn0000000000016830(Register (ptr64 Eq_n) gp, Register (ptr64 char) a0, Register out Eq_n a4Out, Register out Eq_n a5Out)
 // Called from:
 //      fn00000000000168B8
 //      fn0000000000016D74
-char * fn0000000000016830(struct Eq_n * gp, char * a0)
+char * fn0000000000016830(struct Eq_n * gp, char * a0, union Eq_n & a4Out, union Eq_n & a5Out)
 {
 	Eq_n a5_n = gp->tFFFFF870.u0;
 	word32 dwLoc20_n = 0x00;
@@ -841,16 +848,24 @@ char * fn0000000000016830(struct Eq_n * gp, char * a0)
 		word64 a4_n;
 		dwLoc20_n = (word32) fn00000000000182B4((int64) (~0x00 << (int64) (0x20 - (word32) a0)), out a3_n, out a4_n);
 	}
+	Eq_n a5_n = gp->tFFFFF870.u0;
 	char * a0_n = (int64) dwLoc20_n;
-	if (a5_n == (gp->tFFFFF870).u0)
+	if (a5_n != a5_n)
+		__stack_chk_fail();
+	else
+	{
+		a4Out = a5_n;
+		a5Out = a5_n;
 		return a0_n;
-	__stack_chk_fail();
+	}
 }
 
 // 00000000000168B8: void fn00000000000168B8(Register (ptr64 Eq_n) gp, Register (ptr64 char) a1)
 void fn00000000000168B8(struct Eq_n * gp, char * a1)
 {
-	fn0000000000016830(gp, a1);
+	word64 a4_n;
+	word64 a5_n;
+	fn0000000000016830(gp, a1, out a4_n, out a5_n);
 }
 
 // 00000000000168E4: Register (ptr64 char) fn00000000000168E4(Register (ptr64 Eq_n) gp, Register (ptr64 char) a0, Register (ptr64 Eq_n) a1)
@@ -1089,10 +1104,10 @@ l0000000000016CB8:
 	goto l0000000000016CB8;
 }
 
-// 0000000000016D74: Register (ptr64 char) fn0000000000016D74(Register word64 ra, Register (ptr64 Eq_n) gp, Register (ptr64 char) a0, Register (ptr64 char) a1, Register (ptr64 Eq_n) a2, Register Eq_n a3, Register out Eq_n a4Out)
+// 0000000000016D74: Register (ptr64 char) fn0000000000016D74(Register word64 ra, Register (ptr64 Eq_n) gp, Register (ptr64 char) a0, Register (ptr64 char) a1, Register (ptr64 Eq_n) a2, Register (ptr64 char) a3, Register (ptr64 char) a4, Register (ptr64 char) a5, Register word64 a6, Register word64 a7, Register real64 fa3, Register real64 fa4, Register out Eq_n a4Out)
 // Called from:
 //      fn0000000000015180
-char * fn0000000000016D74(word64 ra, struct Eq_n * gp, char * a0, char * a1, struct Eq_n * a2, Eq_n a3, union Eq_n & a4Out)
+char * fn0000000000016D74(word64 ra, struct Eq_n * gp, char * a0, char * a1, struct Eq_n * a2, char * a3, char * a4, char * a5, word64 a6, word64 a7, real64 fa3, real64 fa4, union Eq_n & a4Out)
 {
 	word64 qwLoc01B8;
 	word64 qwLoc01B0;
@@ -1111,7 +1126,7 @@ char * fn0000000000016D74(word64 ra, struct Eq_n * gp, char * a0, char * a1, str
 	{
 		if ((int64) gp->dwFFFFF814 != 0x00)
 			goto l0000000000016E20;
-		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 address: %s\n", 0x00);
+		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 address: %s\n", a3);
 		a0_n = (char *) -1;
 l0000000000016E24:
 		if (a5_n != (gp->tFFFFF870).u0)
@@ -1136,7 +1151,7 @@ l0000000000016E24:
 			{
 				do
 				{
-					if ((uint64) __asprintf_chk(&ptrLoc0190, 1, "%s.0", 0x00) == -1)
+					if ((uint64) __asprintf_chk(&ptrLoc0190, 1, "%s.0", a3) == -1)
 					{
 						a0_n = gp->ptrFFFFF880;
 						goto l00000000000172C4;
@@ -1153,7 +1168,7 @@ l0000000000016E24:
 		{
 			if ((int64) gp->dwFFFFF814 == 0x00)
 			{
-				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 prefix %d\n", 0x00);
+				__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv4 prefix %d\n", (int32) a3);
 				a0_n = (char *) -1;
 				goto l0000000000016E24;
 			}
@@ -1181,7 +1196,9 @@ l0000000000016E24:
 	if (inet_ntop(2, &qwLoc01B8, &bLoc0188, 47) != null)
 	{
 		a2->ptr0000 = __strdup(&bLoc0188);
-		qwLoc01B0 = (word64) (word32) fn0000000000016830(gp, s5_n);
+		word64 a4_n;
+		word64 a5_n;
+		qwLoc01B0 = (word64) (word32) fn0000000000016830(gp, s5_n, out a4_n, out a5_n);
 		bLoc0188 = (char) 0x00;
 		if (inet_ntop(2, &qwLoc01B0, &bLoc0188, 16) == null)
 		{
@@ -1191,7 +1208,9 @@ l0000000000016E24:
 		a2->ptr0030 = __strdup(&bLoc0188);
 		int64 s0_n = (int64) qwLoc01B8;
 		a2->dw00A0 = (word32) s5_n;
-		qwLoc01A0 = (word64) (word32) (~fn0000000000016830(gp, s5_n) | s0_n);
+		word64 a5_n;
+		word64 a4_n;
+		qwLoc01A0 = (word64) (word32) (~fn0000000000016830(gp, s5_n, out a4_n, out a5_n) | s0_n);
 		bLoc0188 = (char) 0x00;
 		if (inet_ntop(2, &qwLoc01A0, &bLoc0188, 16) == null)
 		{
@@ -1200,11 +1219,13 @@ l0000000000016E24:
 		}
 		a2->ptr0028 = __strdup(&bLoc0188);
 		int64 s0_n = (int64) qwLoc01B8;
-		ui64 a0_n = fn0000000000016830(gp, s5_n);
+		word64 a4_n;
+		word64 a5_n;
+		ui64 a0_n = fn0000000000016830(gp, s5_n, out a4_n, out a5_n);
 		int64 a3_n = (int64) qwLoc01A0;
 		int64 s0_n = a0_n & s0_n;
 		qwLoc01A8 = (word64) (word32) s0_n;
-		a2->qw0018 = fn0000000000017F04(gp, s0_n, s5_n, s0_n, a3_n);
+		a2->qw0018 = fn0000000000017F04(gp, s0_n, s5_n, s0_n, a3_n, a4_n, a5_n, a6, a7);
 		bLoc0188 = (char) 0x00;
 		if (inet_ntop(2, &qwLoc01A8, &bLoc0188, 16) == null)
 		{
@@ -1216,8 +1237,8 @@ l0000000000016E24:
 		int64 s0_n = (int64) qwLoc01A8;
 		a2->ptr0020 = a0_n;
 		a2->qw00B8 = fn0000000000016B68(s0_n);
-		word64 a3_n;
 		word64 a4_n;
+		word64 a3_n;
 		int64 a0_n = fn00000000000182B4(s0_n, out a3_n, out a4_n);
 		int64 a5_n = (int64) ((word32) a0_n >> 24);
 		if (a0_n < 0x00)
@@ -1259,13 +1280,13 @@ l0000000000016E24:
 				a2->ptr00A8 = a0_n;
 				word64 a4_n;
 				word64 a3_n;
-				word64 a3_n;
 				word64 a4_n;
+				word64 a3_n;
 				ptrLoc0190 = (char *) (word32) fn00000000000182B4((int64) ((word32) fn00000000000182B4(~a5_n | (int64) qwLoc01A8, out a3_n, out a4_n) + -1), out a3_n, out a4_n);
 				if (inet_ntop(2, &ptrLoc0190, &bLoc0188, 47) != null)
 				{
 					a2->ptr00B0 = __strdup(&bLoc0188);
-					__snprintf_chk(&a2->b0060, (size_t) 64, 1, (size_t) 64, "%u", 0x00);
+					__snprintf_chk(&a2->b0060, (size_t) 64, 1, (size_t) 64, "%u", (uint32) a5);
 					goto l000000000001717C;
 				}
 				goto l0000000000017074;
@@ -1273,7 +1294,7 @@ l0000000000016E24:
 l00000000000172E8:
 			a0_n = gp->ptrFFFFF880;
 l00000000000172C4:
-			__fprintf_chk(a0_n, 1, "Memory allocation failure line %d\n", 0x00);
+			__fprintf_chk(a0_n, 1, "Memory allocation failure line %d\n", (int32) a3);
 			abort();
 		}
 		if (inet_ntop(2, &qwLoc0198, &bLoc0188, 16) == null)
@@ -1292,7 +1313,7 @@ l000000000001716C:
 			a2->b0061 = a5_n->b0001;
 l000000000001717C:
 			if (a3 << 0x31 < 0x00)
-				gp = fn0000000000017B40(ra, gp, (int64) qwLoc01B8, &a2->qw0038 + 1, &a2->qw0038 + 2, &a2->qw0038 + 3, &a2->qw0038 + 4, s5_n, a2, out s6_n);
+				gp = fn0000000000017B40(ra, gp, (int64) qwLoc01B8, &a2->qw0038 + 1, &a2->qw0038 + 2, &a2->qw0038 + 3, &a2->qw0038 + 4, a3 << 0x31, s5_n, a2, fa3, fa4, out s6_n);
 			if ((a3 & 1) == 0x00)
 			{
 l000000000001718C:
@@ -1305,7 +1326,7 @@ l000000000001718C:
 				goto l000000000001718C;
 			if ((int64) gp->dwFFFFF814 == 0x00)
 			{
-				__sprintf_chk(&bLoc0158, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", 0x00);
+				__sprintf_chk(&bLoc0158, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", a4);
 				herror(&bLoc0158);
 				a0_n = (char *) -1;
 				goto l0000000000016E24;
@@ -1419,10 +1440,10 @@ l0000000000017408:
 	return a0_n;
 }
 
-// 00000000000175BC: Register (ptr64 char) fn00000000000175BC(Register word64 ra, Register (ptr64 Eq_n) gp, Register (ptr64 char) s1, Register (ptr64 char) a0, Register (ptr64 char) a1, Register (ptr64 Eq_n) a2, Register Eq_n a3, Register out Eq_n a4Out)
+// 00000000000175BC: Register (ptr64 char) fn00000000000175BC(Register word64 ra, Register (ptr64 Eq_n) gp, Register (ptr64 char) s1, Register (ptr64 char) a0, Register (ptr64 char) a1, Register (ptr64 Eq_n) a2, Register (ptr64 char) a3, Register (ptr64 char) a4, Register real64 fa3, Register real64 fa4, Register out Eq_n a4Out)
 // Called from:
 //      fn0000000000015180
-char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, char * a1, struct Eq_n * a2, Eq_n a3, union Eq_n & a4Out)
+char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, char * a1, struct Eq_n * a2, char * a3, char * a4, real64 fa3, real64 fa4, union Eq_n & a4Out)
 {
 	word64 qwLoc0198;
 	word64 qwLoc0188;
@@ -1433,17 +1454,17 @@ char * fn00000000000175BC(word64 ra, struct Eq_n * gp, char * s1, char * a0, cha
 	memset(a2, 0, (size_t) 200);
 	struct Eq_n * s0_n = a2;
 	char * s2_n = a1;
-	Eq_n s6_n = a3;
+	char * s6_n = a3;
 	if ((uint64) inet_pton(0x0A, a0, &qwLoc0198) <= 0x00)
 	{
 		if ((int64) gp->dwFFFFF814 != 0x00)
 			goto l0000000000017770;
-		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 address: %s\n", 0x00);
+		__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 address: %s\n", a3);
 		a0_n = (char *) -1;
 		goto l0000000000017774;
 	}
-	a2->qw0008 = fn00000000000163B0(gp);
-	char * s3_n = &bLoc0168;
+	a2->qw0008 = fn00000000000163B0(gp, a4);
+	struct Eq_n * s3_n = &bLoc0168;
 	if (inet_ntop(0x0A, &qwLoc0198, &bLoc0168, 0x00FA) == null)
 	{
 l0000000000017768:
@@ -1475,7 +1496,8 @@ l0000000000017768:
 				union Eq_n * a3_n = &qwLoc0188;
 				do
 				{
-					a2_n->u0 = a5_n->u0 & a3_n->u0;
+					char * a4_n = (word64) a5_n->u0 & (word64) a3_n->u0;
+					a2_n->u0 = (byte) a4_n;
 					a5_n = (union Eq_n *) ((char *) a5_n + 1);
 					a3_n = (union Eq_n *) ((char *) a3_n + 1);
 					a2_n = (union Eq_n *) ((char *) a2_n + 1);
@@ -1483,7 +1505,7 @@ l0000000000017768:
 				if (inet_ntop(0x0A, &qwLoc0178, &bLoc0168, 0x00FA) != null)
 				{
 					a2->ptr0020 = __strdup(&bLoc0168);
-					a2->qw0010 = fn00000000000163B0(gp);
+					a2->qw0010 = fn00000000000163B0(gp, a4_n);
 					a2->qw00B8 = fn00000000000173D4(&qwLoc0178, s2_n);
 					a2->qw0018 = fn0000000000018118(gp, &qwLoc0178, s5_n);
 					if (s2_n == (char *) 0x0080)
@@ -1508,7 +1530,7 @@ l0000000000017768:
 l0000000000017740:
 						snprintf(&a2->qw0038 + 5, (size_t) 64, "%s", 0x00);
 						if (a3 << 0x31 < 0x00)
-							gp = fn0000000000017D10(ra, gp, s1, &qwLoc0198, &a2->qw0038 + 1, &a2->qw0038 + 2, &a2->qw0038 + 3, &a2->qw0038 + 4, a3, &qwLoc0188, out s0_n, out s3_n, out s6_n);
+							gp = fn0000000000017D10(ra, gp, s1, &qwLoc0198, &a2->qw0038 + 1, &a2->qw0038 + 2, &a2->qw0038 + 3, &a2->qw0038 + 4, a3 << 0x31, a3, &qwLoc0188, fa3, fa4, out s0_n, out s3_n, out s6_n);
 						if ((s6_n & 1) == 0x00)
 						{
 l0000000000017760:
@@ -1521,7 +1543,7 @@ l0000000000017760:
 							goto l0000000000017760;
 						if ((int64) gp->dwFFFFF814 == 0x00)
 						{
-							__sprintf_chk(s3_n, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", 0x00);
+							__sprintf_chk(s3_n, 1, (size_t) 0x00FA, "ipcalc: cannot find hostname for %s", a4);
 							herror(s3_n);
 						}
 l0000000000017770:
@@ -1533,14 +1555,14 @@ l0000000000017770:
 			}
 			if ((int64) gp->dwFFFFF814 != 0x00)
 				goto l0000000000017770;
-			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: error converting IPv6 prefix: %d\n", 0x00);
+			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: error converting IPv6 prefix: %d\n", (int32) a3);
 			a0_n = (char *) -1;
 		}
 		else
 		{
 			if ((int64) gp->dwFFFFF814 != 0x00)
 				goto l0000000000017770;
-			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 prefix: %d\n", 0x00);
+			__fprintf_chk(gp->ptrFFFFF880, 1, "ipcalc: bad IPv6 prefix: %d\n", (int32) a3);
 			a0_n = (char *) -1;
 		}
 l0000000000017774:
@@ -1554,12 +1576,12 @@ l0000000000017774:
 	}
 }
 
-// 0000000000017924: Register int64 fn0000000000017924(Register (ptr64 Eq_n) gp, Register out (ptr64 Eq_n) a1Out, Register out Eq_n a2Out, Register out Eq_n a3Out, Register out Eq_n a4Out, Register out Eq_n a6Out)
+// 0000000000017924: Register int64 fn0000000000017924(Register (ptr64 Eq_n) gp, Register (ptr64 char) a5, Register out (ptr64 Eq_n) a1Out, Register out Eq_n a2Out, Register out Eq_n a3Out, Register out Eq_n a4Out, Register out Eq_n a6Out)
 // Called from:
 //      fn0000000000015180
 //      fn0000000000017B40
 //      fn0000000000017D10
-int64 fn0000000000017924(struct Eq_n * gp, FILE & a1Out, union Eq_n & a2Out, union Eq_n & a3Out, union Eq_n & a4Out, union Eq_n & a6Out)
+int64 fn0000000000017924(struct Eq_n * gp, char * a5, FILE & a1Out, union Eq_n & a2Out, union Eq_n & a3Out, union Eq_n & a4Out, union Eq_n & a6Out)
 {
 	FILE * a1;
 	Eq_n a2;
@@ -1615,7 +1637,7 @@ int64 fn0000000000017924(struct Eq_n * gp, FILE & a1Out, union Eq_n & a2Out, uni
 			}
 			else
 			{
-				__snprintf_chk(&gp->tFFFFFCE0.u0, (size_t) 0x0100, 1, (size_t) 0x0100, "ipcalc: could not open %s\n", 0x00);
+				__snprintf_chk(&gp->tFFFFFCE0.u0, (size_t) 0x0100, 1, (size_t) 0x0100, "ipcalc: could not open %s\n", a5);
 				gp->dw0818 = ~0x00;
 				a3.u0 = 0x0100;
 				a4.u0 = 76376;
@@ -1641,21 +1663,22 @@ l0000000000017970:
 	goto l0000000000017970;
 }
 
-// 0000000000017B40: Register (ptr64 Eq_n) fn0000000000017B40(Register word64 ra, Register (ptr64 Eq_n) gp, Register int64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register (ptr64 char) s5, Register (ptr64 Eq_n) s6, Register out (ptr64 Eq_n) s6Out)
+// 0000000000017B40: Register (ptr64 Eq_n) fn0000000000017B40(Register word64 ra, Register (ptr64 Eq_n) gp, Register int64 a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register (ptr64 char) a5, Register (ptr64 char) s5, Register (ptr64 Eq_n) s6, Register real64 fa3, Register real64 fa4, Register out (ptr64 Eq_n) s6Out)
 // Called from:
 //      fn0000000000016D74
-struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, char * s5, struct Eq_n * s6, struct Eq_n & s6Out)
+struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, char * a5, char * s5, struct Eq_n * s6, real64 fa3, real64 fa4, struct Eq_n & s6Out)
 {
 	word64 a1_n;
 	word64 a2_n;
 	word64 a3_n;
 	word64 a4_n;
 	word64 a6_n;
-	if (fn0000000000017924(gp, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n) == 0x00)
+	if (fn0000000000017924(gp, a5, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n) == 0x00)
 	{
 		word64 a3_n;
 		word64 a4_n;
 		int64 a0_n = fn00000000000182B4(a0, out a3_n, out a4_n);
+		<anonymous> * a5_n = gp->ptrFFFFF868;
 		word64 s0_n;
 		word64 s1_n;
 		word64 s2_n;
@@ -1669,7 +1692,8 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 		word64 a3_n;
 		word64 a4_n;
 		struct Eq_n * gp_n;
-		gp->ptrFFFFF868();
+		a5_n();
+		<anonymous> * a5_n = gp_n->ptrFFFFF860;
 		struct Eq_n * a0_n;
 		word64 fa4_n;
 		word64 fa5_n;
@@ -1687,7 +1711,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 		word64 a2_n;
 		word64 a3_n;
 		word64 a4_n;
-		gp_n->ptrFFFFF860();
+		a5_n();
 		struct Eq_n * s0_n = a0_n;
 		if (a0_n != null)
 		{
@@ -1712,6 +1736,7 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 			a5_n();
 			if (a0_n < 0x00)
 				goto l0000000000017B84;
+			<anonymous> * a5_n = gp->ptrFFFFF858;
 			word64 s0_n;
 			word64 s1_n;
 			word64 s2_n;
@@ -1731,9 +1756,10 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp->ptrFFFFF858();
+			a5_n();
 			if (a0_n != null)
 				*s3_n = (char **) __strdup(a0_n);
+			<anonymous> * a5_n = gp_n->ptrFFFFF850;
 			word64 s0_n;
 			word64 s1_n;
 			char ** s2_n;
@@ -1753,15 +1779,17 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp_n->ptrFFFFF850();
+			a5_n();
 			if (a0_n != null)
 				*s2_n = (char **) __strdup(a0_n);
+			<anonymous> * a5_n = gp_n->ptrFFFFF848;
 			word64 fa4_n;
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp_n->ptrFFFFF848();
+			a5_n();
 		}
+		<anonymous> * a5_n = gp_n->ptrFFFFF860;
 		word64 a4_n;
 		word64 fa4_n;
 		word64 fa5_n;
@@ -1778,15 +1806,16 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 		struct Eq_n * a0_n;
 		word64 a2_n;
 		word64 a3_n;
-		gp_n->ptrFFFFF860();
+		a5_n();
 		struct Eq_n * s0_n = a0_n;
 		if (a0_n == null)
 		{
+			<anonymous> * a5_n = gp->ptrFFFFF860;
 			word64 fa4_n;
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp->ptrFFFFF860();
+			a5_n();
 			s0_n = a0_n;
 			if (a0_n == null)
 				goto l0000000000017B84;
@@ -1807,15 +1836,17 @@ struct Eq_n * fn0000000000017B40(word64 ra, struct Eq_n * gp, int64 a0, ptr64 a1
 		word64 fa3_n;
 		int64 a1_n;
 		word64 a2_n;
+		word64 a5_n;
 		a5_n();
 		if (a0_n != null)
 		{
 			char * a0_n = a0_n->ptr0020;
 			if (a0_n != null)
 				*s1_n = (char **) __strdup(a0_n);
-			if ((word64) (a0_n->r0034 == 0.0F) == 0x00)
+			a5_n = (word64) (a0_n->r0034 == 0.0F);
+			if (a5_n == 0x00)
 			{
-				__asprintf_chk(s4_n, 1, "%f,%f", 0x00);
+				__asprintf_chk(s4_n, 1, "%f,%f", fa3, fa4);
 				a2_n = 76672;
 				a1_n = 1;
 			}
@@ -1838,10 +1869,10 @@ l0000000000017B84:
 	}
 }
 
-// 0000000000017D10: Register (ptr64 Eq_n) fn0000000000017D10(Register word64 ra, Register (ptr64 Eq_n) gp, Register (ptr64 char) s1, Register (ptr64 word64) a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register Eq_n s6, Register (ptr64 word64) s7, Register out (ptr64 void) s0Out, Register out (ptr64 char) s3Out, Register out Eq_n s6Out)
+// 0000000000017D10: Register (ptr64 Eq_n) fn0000000000017D10(Register word64 ra, Register (ptr64 Eq_n) gp, Register (ptr64 char) s1, Register (ptr64 word64) a0, Register ptr64 a1, Register ptr64 a2, Register ptr64 a3, Register ptr64 a4, Register (ptr64 char) a5, Register (ptr64 char) s6, Register (ptr64 word64) s7, Register real64 fa3, Register real64 fa4, Register out (ptr64 void) s0Out, Register out (ptr64 char) s3Out, Register out (ptr64 char) s6Out)
 // Called from:
 //      fn00000000000175BC
-struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 * a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, Eq_n s6, word64 * s7, void & s0Out, char & s3Out, union Eq_n & s6Out)
+struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 * a0, ptr64 a1, ptr64 a2, ptr64 a3, ptr64 a4, char * a5, char * s6, word64 * s7, real64 fa3, real64 fa4, void & s0Out, char & s3Out, char & s6Out)
 {
 	void * s0;
 	char * s3;
@@ -1850,9 +1881,10 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 	word64 a3_n;
 	word64 a4_n;
 	word64 a6_n;
-	word64 a0_n = fn0000000000017924(gp, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n);
+	word64 a0_n = fn0000000000017924(gp, a5, out a1_n, out a2_n, out a3_n, out a4_n, out a6_n);
 	if (a0_n == 0x00)
 	{
+		<anonymous> * a5_n = gp->ptrFFFFF868;
 		word64 s0_n;
 		word64 s2_n;
 		word64 s3_n;
@@ -1866,7 +1898,8 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 		word64 a3_n;
 		word64 a4_n;
 		struct Eq_n * gp_n;
-		gp->ptrFFFFF868();
+		a5_n();
+		<anonymous> * a5_n = gp_n->ptrFFFFF860;
 		struct Eq_n * a0_n;
 		word64 fa4_n;
 		word64 fa5_n;
@@ -1884,7 +1917,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 		word64 a2_n;
 		word64 a3_n;
 		word64 a4_n;
-		gp_n->ptrFFFFF860();
+		a5_n();
 		struct Eq_n * s1_n = a0_n;
 		if (a0_n != null)
 		{
@@ -1913,6 +1946,7 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 			a3_n();
 			if (a0_n < 0x00)
 				goto l0000000000017D54;
+			<anonymous> * a5_n = gp->ptrFFFFF858;
 			word64 s0_n;
 			word64 s2_n;
 			word64 s3_n;
@@ -1932,9 +1966,10 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp->ptrFFFFF858();
+			a5_n();
 			if (a0_n != null)
 				*s4_n = (char **) __strdup(a0_n);
+			<anonymous> * a5_n = gp_n->ptrFFFFF850;
 			word64 s0_n;
 			word64 s2_n;
 			char ** s3_n;
@@ -1954,15 +1989,17 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp_n->ptrFFFFF850();
+			a5_n();
 			if (a0_n != null)
 				*s3_n = (char **) __strdup(a0_n);
+			<anonymous> * a5_n = gp_n->ptrFFFFF848;
 			word64 fa4_n;
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp_n->ptrFFFFF848();
+			a5_n();
 		}
+		<anonymous> * a5_n = gp_n->ptrFFFFF860;
 		word64 a2_n;
 		word64 a3_n;
 		word64 a4_n;
@@ -1979,15 +2016,16 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 		word64 s6_n;
 		word64 s7_n;
 		struct Eq_n * a0_n;
-		gp_n->ptrFFFFF860();
+		a5_n();
 		struct Eq_n * s1_n = a0_n;
 		if (a0_n == null)
 		{
+			<anonymous> * a5_n = gp->ptrFFFFF860;
 			word64 fa4_n;
 			word64 fa5_n;
 			word64 t1_n;
 			word64 fa3_n;
-			gp->ptrFFFFF860();
+			a5_n();
 			s1_n = a0_n;
 			if (a0_n == null)
 				goto l0000000000017D54;
@@ -2012,22 +2050,24 @@ struct Eq_n * fn0000000000017D10(word64 ra, struct Eq_n * gp, char * s1, word64 
 		word64 fa3_n;
 		int64 a1_n;
 		word64 a2_n;
+		word64 a5_n;
 		a3_n();
 		if (a0_n != null)
 		{
 			char * a0_n = a0_n->ptr0020;
 			if (a0_n != null)
 				*s2_n = (char **) __strdup(a0_n);
-			if ((word64) (a0_n->r0034 == 0.0F) == 0x00)
+			a5_n = (word64) (a0_n->r0034 == 0.0F);
+			if (a5_n == 0x00)
 			{
-				__asprintf_chk(s5_n, 1, "%f,%f", 0x00);
+				__asprintf_chk(s5_n, 1, "%f,%f", fa3, fa4);
 				a2_n = 76672;
 				a1_n = 1;
 			}
 		}
 		void * s0_n;
 		char * s3_n;
-		Eq_n s6_n;
+		char * s6_n;
 		struct Eq_n * gp_n;
 		word64 fa4_n;
 		word64 fa5_n;
@@ -2049,10 +2089,10 @@ l0000000000017D54:
 	}
 }
 
-// 0000000000017F04: Register int64 fn0000000000017F04(Register (ptr64 Eq_n) gp, Register int64 a0, Register (ptr64 char) a1, Register int64 a2, Register int64 a3)
+// 0000000000017F04: Register int64 fn0000000000017F04(Register (ptr64 Eq_n) gp, Register int64 a0, Register (ptr64 char) a1, Register int64 a2, Register int64 a3, Register word64 a4, Register word64 a5, Register word64 a6, Register word64 a7)
 // Called from:
 //      fn0000000000016D74
-int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, char * a1, int64 a2, int64 a3)
+int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, char * a1, int64 a2, int64 a3, word64 a4, word64 a5, word64 a6, word64 a7)
 {
 	char * ptrLoc50;
 	int64 a0_n;
@@ -2082,7 +2122,7 @@ int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, char * a1, int64 a2, int64 
 							word64 a3_n;
 							word64 a4_n;
 							fn00000000000182B4(a3, out a3_n, out a4_n);
-							a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.in-addr.arpa.", 0x00);
+							a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.in-addr.arpa.", (uint32) a3, (uint32) a4, (uint32) a5);
 						}
 						else
 						{
@@ -2092,7 +2132,7 @@ int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, char * a1, int64 a2, int64 
 							word64 a3_n;
 							word64 a4_n;
 							fn00000000000182B4(a3, out a3_n, out a4_n);
-							a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.in-addr.arpa.", 0x00);
+							a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.in-addr.arpa.", (uint32) a3, (uint32) a4, (uint32) a5, (uint32) a6);
 						}
 					}
 					else
@@ -2100,23 +2140,23 @@ int64 fn0000000000017F04(struct Eq_n * gp, int64 a0, char * a1, int64 a2, int64 
 						word64 a3_n;
 						word64 a4_n;
 						fn00000000000182B4(a2, out a3_n, out a4_n);
-						word64 a3_n;
 						word64 a4_n;
+						word64 a3_n;
 						fn00000000000182B4(a3, out a3_n, out a4_n);
-						a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.%u.in-addr.arpa.", 0x00);
+						a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u-%u.%u.%u.%u.in-addr.arpa.", (uint32) a3, (uint32) a4, (uint32) a5, (uint32) a6, (uint32) a7);
 					}
 				}
 				else
-					a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.in-addr.arpa.", 0x00);
+					a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.in-addr.arpa.", (uint32) a3);
 			}
 			else
-				a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.in-addr.arpa.", 0x00);
+				a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.in-addr.arpa.", (uint32) a3, (uint32) a4);
 		}
 		else
-			a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.in-addr.arpa.", 0x00);
+			a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.in-addr.arpa.", (uint32) a3, (uint32) a4, (uint32) a5);
 	}
 	else
-		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.%u.in-addr.arpa.", 0x00);
+		a0_n.u1 = (uint64) __asprintf_chk(&ptrLoc50, 1, "%u.%u.%u.%u.in-addr.arpa.", (uint32) a3, (uint32) a4, (uint32) a5, (uint32) a6);
 	if (a0_n != -1)
 	{
 		a0_n = ptrLoc50;

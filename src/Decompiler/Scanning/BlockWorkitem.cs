@@ -712,9 +712,18 @@ namespace Reko.Scanning
             CallSite site)
         {
             var ab = arch.CreateFrameApplicationBuilder(frame!, site);
-            if (vaScanner!.TryScan(ric!.Address, callee, sig, chr, ab, out var varargs))
+            if (VarargsFormatScanner.IsVariadicParserKnown(sig, chr))
             {
-                Emit(vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab));
+                if (vaScanner!.TryScan(ric!.Address, callee, sig, chr, ab, out var varargs))
+                {
+                    Emit(vaScanner.BuildInstruction(callee, sig, varargs.Signature, chr, ab));
+                }
+                else
+                {
+                    // We're unable to create the varargs application at this point,
+                    // try later during the SSA and ValuePropagation pass.
+                    Emit(new CallInstruction(callee, site));
+                }
             }
             else if (sig != null && sig.ParametersValid)
             {

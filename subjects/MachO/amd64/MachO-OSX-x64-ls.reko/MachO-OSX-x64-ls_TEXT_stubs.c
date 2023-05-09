@@ -24,12 +24,11 @@ void __maskrune()
 	__maskrune();
 }
 
-// 0000000100004DBA: void __snprintf_chk(Register Eq_n rcx, Register word32 edx, Register Eq_n rsi, Register Eq_n rdi, Register (ptr64 char) r8)
+// 0000000100004DBA: void __snprintf_chk(Register Eq_n rcx, Register uint64 rdx, Register Eq_n rsi, Register Eq_n rdi, Register (ptr64 char) r8)
 // Called from:
 //      fn0000000100003AA8
-void __snprintf_chk(Eq_n rcx, word32 edx, Eq_n rsi, Eq_n rdi, char * r8)
+void __snprintf_chk(Eq_n rcx, uint64 rdx, Eq_n rsi, Eq_n rdi, char * r8)
 {
-	word64 rdx;
 	__snprintf_chk(rdi, rsi, (int32) rdx, rcx, r8, 0x00);
 }
 

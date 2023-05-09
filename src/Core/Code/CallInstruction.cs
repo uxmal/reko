@@ -82,8 +82,20 @@ namespace Reko.Core.Code
 
     public class CallBinding
     {
+        /// <summary>
+        /// The <see cref="Storage"/> used for an argument to a call. The storage
+        /// is relative to the caller's frame.
+        /// </summary>
         public Storage Storage;
+
+        /// <summary>
+        /// The argument expression bound to a parameter of a call.
+        /// </summary>
         public Expression Expression;
+
+        /// <summary>
+        /// Argument bits used by the callee.
+        /// </summary>
         public BitRange BitRange;
 
         public CallBinding(Storage stg, Expression exp)

@@ -2146,10 +2146,14 @@ struct Eq_n * properties_print_usage(Eq_n r4)
 				dwLoc14_n = tolower((word32) (g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696)->a0004[0].ptr0000);
 			else
 				dwLoc14_n = toupper((word32) (g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696)->a0004[0].ptr0000);
-			printf("-%c|%c ", (g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696)->a0004[0].ptr0000, (char) dwLoc14_n);
+			struct Eq_n * r1_n = g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696;
+			printf("-%c|%c ", r1_n->t0004.u1, (char) dwLoc14_n);
 		}
 		else
-			printf("-%c %s ", (g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696)->a0004[0].ptr0000, g_ptr10000A40->a0004[dwLoc18_n].ptr0000);
+		{
+			char ** r2_n = (char *) &g_ptr10000A40->a0004->ptr0000 + dwLoc18_n * 0x98;
+			printf("-%c %s ", (g_ptr10000A40 + (dwLoc18_n * 0x98 + 8) / 0x0696)->a0004[0].ptr0000, *r2_n);
+		}
 		++dwLoc18_n;
 	}
 	printf("\n");
@@ -2259,7 +2263,8 @@ void log_string(FILE * r4, ui32 r5, char * r7, word32 ra)
 	struct Eq_n * r5_n = (struct Eq_n *) <invalid>;
 	struct Eq_n * r4_n = (struct Eq_n *) <invalid>;
 	strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", gmtime(&dwLoc28, r4_n, &dwLoc28, 0x00, r5_n, r6_n, r7_n, 0x10008860));
-	fprintf(r4, "%s:%s.%03d:%s\n", g_ptr100008FC[r5], fp + -72, (SLICE(dwLoc24 *s 274877907, word32, 32) >> 0x06) - (dwLoc24 >> 0x1F), r7);
+	int32 hi_n = SLICE(dwLoc24 *s 274877907, word32, 32);
+	fprintf(r4, "%s:%s.%03d:%s\n", g_ptr100008FC[r5], fp + -72, (hi_n >> 0x06) - (dwLoc24 >> 0x1F), r7);
 	fflush(r4);
 	++g_ptr10000878->dw0824;
 	if (*g_ptr10000A28 != 0x00)

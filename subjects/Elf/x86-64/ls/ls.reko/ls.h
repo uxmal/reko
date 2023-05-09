@@ -41075,7 +41075,7 @@ T_8474: (in fputs_unlocked(dcgettext(null, "General help using GNU software: <ht
   Class: Eq_8474
   DataType: int32
   OrigDataType: int32
-T_8475: (in rax_368 @ 0000000000409BA8 : (ptr64 char))
+T_8475: (in rax_377 @ 0000000000409BA8 : (ptr64 char))
   Class: Eq_8475
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)
@@ -41111,7 +41111,7 @@ T_8483: (in 0<64> @ 0000000000409BB0 : word64)
   Class: Eq_8475
   DataType: (ptr64 char)
   OrigDataType: word64
-T_8484: (in rax_368 == null @ 0000000000409BB0 : bool)
+T_8484: (in rax_377 == null @ 0000000000409BB0 : bool)
   Class: Eq_8484
   DataType: bool
   OrigDataType: bool
@@ -41291,7 +41291,7 @@ T_8528: (in 3<i32> @ 0000000000409BC6 : int32)
   Class: Eq_8526
   DataType: int32
   OrigDataType: int32
-T_8529: (in strncmp(rax_368, "en_", 3<i32>) @ 0000000000409BC6 : int32)
+T_8529: (in strncmp(rax_377, "en_", 3<i32>) @ 0000000000409BC6 : int32)
   Class: Eq_8529
   DataType: int32
   OrigDataType: int32
@@ -41299,7 +41299,7 @@ T_8530: (in 0<32> @ 0000000000409BC6 : word32)
   Class: Eq_8529
   DataType: int32
   OrigDataType: word32
-T_8531: (in strncmp(rax_368, "en_", 3<i32>) != 0<32> @ 0000000000409BC6 : bool)
+T_8531: (in strncmp(rax_377, "en_", 3<i32>) != 0<32> @ 0000000000409BC6 : bool)
   Class: Eq_8531
   DataType: bool
   OrigDataType: bool
@@ -72900,7 +72900,7 @@ T_16419: (in r9 @ 0000000000410622 : (ptr64 char))
   Class: Eq_324
   DataType: (ptr64 char)
   OrigDataType: up64
-T_16420: (in r9_150 @ 0000000000410630 : (ptr64 char))
+T_16420: (in r9_153 @ 0000000000410630 : (ptr64 char))
   Class: Eq_324
   DataType: (ptr64 char)
   OrigDataType: (ptr64 char)

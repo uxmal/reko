@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Scanning;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -101,7 +102,8 @@ namespace Reko.Analysis
                     if (eventListener.IsCanceled())
                         return;
                     this.stmCur = stm;
-                    changed |= Transform(stm);
+                    var c = Transform(stm);
+                    changed |= c;
                 }
             } while (changed);
         }
@@ -146,8 +148,8 @@ namespace Reko.Analysis
                 if (sig.ParametersValid)
                 {
                     var chr = pc.Procedure.Characteristics;
-                    RewriteCall(stmCur, ci, sig, chr);
-                    return (stmCur.Instruction, true);
+                    changed = RewriteCall(stmCur, ci, sig, chr);
+                    return (stmCur.Instruction, changed);
                 }
                 if (oldCallee != pc && pc.Procedure is Procedure procCallee)
                 {
@@ -262,12 +264,33 @@ namespace Reko.Analysis
 
         #endregion
 
-        private void RewriteCall(
+        private bool RewriteCall(
             Statement stm,
             CallInstruction ci,
             FunctionType sig,
             ProcedureCharacteristics? chr)
         {
+            if (VarargsFormatScanner.IsVariadicParserKnown(sig, chr))
+            {
+                bool changed = false;
+                //$REFACTOR: doing this in VisitCallInstruction already, consider moving those 
+                // loops over ci.Uses before special cases.
+                foreach (var use in ci.Uses)
+                {
+                    var (e, c) = use.Expression.Accept(eval);
+                    use.Expression = e;
+                    changed |= c;
+                }
+                var abb = new CallApplicationBuilder(this.ssa, stm, ci, true);
+                if (!va.TryScan(stmCur!.Address, ci.Callee, sig, chr, abb, out var vaResult))
+                    return changed;
+                //$TODO: we found a string, record it in globals.
+                // We can't do it immediately because we're inside a SCC. So hang 
+                // onto the string information and merge it in as a final pass.
+                stm.Instruction = va.BuildInstruction(ci.Callee, sig, vaResult.Signature, chr, abb);
+                ssam.AdjustSsa(stm, ci);
+                return true;
+            }
             ssam.AdjustRegisterAfterCall(
                 stm,
                 ci,
@@ -296,6 +319,7 @@ namespace Reko.Analysis
                 stm.Instruction = ab.CreateInstruction(ci.Callee, sig, chr);
             }
             ssam.AdjustSsa(stm, ci);
+            return true;
         }
 
         private (Expression, bool) ReplaceIndirectCallToImport(Expression e)

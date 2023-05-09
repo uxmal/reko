@@ -46,20 +46,21 @@ namespace Reko.Core
     /// </remarks>
     public abstract class ApplicationBuilder 
 	{
-        protected CallSite site;
         protected FunctionType? sigCallee;
 
         /// <summary>
         /// Creates an application builder that creates references
-        /// to the identifiers in the frame.
+        /// to the identifiers in the caller's frame.
         /// </summary>
         /// <param name="site">The call site of the calling instruction.</param>
         /// <param name="callee">The procedure being called.</param>
         /// <param name="sigCallee">The signature of the procedure being called.</param>
         public ApplicationBuilder(CallSite site)
         {
-            this.site = site;
+            this.Site = site;
         }
+
+        public CallSite Site { get; }
 
         public abstract Expression? BindInArg(Storage stg);
         public abstract Expression? BindInStackArg(StackStorage stg, int returnAdjustment);
@@ -100,7 +101,8 @@ namespace Reko.Core
             DataType dtOut = VoidType.Instance;
             if (!sigCallee.HasVoidReturn)
             {
-                expOut = BindReturnValue(sigCallee.ReturnValue?.Storage);
+                var bindingOut = BindReturnValue(sigCallee.ReturnValue?.Storage);
+                expOut = bindingOut;
                 dtOut = sigCallee.ReturnValue!.DataType;
             }
             var actuals = BindArguments(parameters, sigCallee.IsVariadic, chr).ToArray();
