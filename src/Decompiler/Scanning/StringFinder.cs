@@ -81,9 +81,7 @@ namespace Reko.Scanning
         // Added common escaped characters for C strings.
         public static bool IsValid(char ch)
         {
-            
             return ((ch >= ' ' && ch <= '~') || ( ch >= '\a' && ch <= '\r'));
-
         }
     }
 
