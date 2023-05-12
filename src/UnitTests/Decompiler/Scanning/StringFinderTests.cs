@@ -90,6 +90,24 @@ namespace Reko.UnitTests.Decompiler.Scanning
         }
 
         [Test]
+        public void StrFind_ValidCharacterRangeMatch()
+        {
+            Given_Image(0x06, 0, 0x07, 0, 0x0D, 0, 0x0E, 0, 0x1F, 00, 0x20, 0, 0x7E, 0, 0x7F, 0);
+
+            var sf = new StringFinder(program);
+            var hits = sf.FindStrings(new StringFinderCriteria(
+                StringType: StringType.NullTerminated(PrimitiveType.Char),
+                Encoding: Encoding.ASCII,
+                MinimumLength: 1,
+                CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
+            Assert.AreEqual(4, hits.Length);
+            Assert.AreEqual(Address.Ptr32(0x00400002), hits[0].Address);
+            Assert.AreEqual(Address.Ptr32(0x00400004), hits[1].Address);
+            Assert.AreEqual(Address.Ptr32(0x0040000A), hits[2].Address);
+            Assert.AreEqual(Address.Ptr32(0x0040000C), hits[3].Address);
+        }
+
+        [Test]
         public void StrFind_TwoMatch()
         {
             Given_Image(0x42, 0, 0x12, 0x43, 0x00);
