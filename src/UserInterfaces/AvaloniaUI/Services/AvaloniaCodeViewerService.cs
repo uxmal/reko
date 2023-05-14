@@ -46,6 +46,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             //$TODO:display the code of this procedure.
         }
 
+        public void DisplayProcedureControlGraph(Program program, Procedure proc)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DisplayStatement(Program program, Statement statement)
         {
             throw new NotImplementedException();
