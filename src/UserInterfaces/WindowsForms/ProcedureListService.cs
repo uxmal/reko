@@ -159,6 +159,7 @@ namespace Reko.Gui
                 {
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ViewGoToAddress:
+                case CmdIds.ViewCfgGraph:
                 case CmdIds.ShowCallGraphNavigator:
                     status.Status = singleItemSelected
                         ? MenuStatus.Enabled | MenuStatus.Visible
@@ -197,6 +198,9 @@ namespace Reko.Gui
                 case CmdIds.ShowCallGraphNavigator:
                     ShowCallGraphNavigator();
                     return true;
+                case CmdIds.ViewCfgGraph:
+                    ShowProcedureControlGraph();
+                    return true;
 #if DEBUG
                 case CmdIds.ProcedureDebugTrace:
                     DebugTraceSelectedProcedure();
@@ -232,6 +236,15 @@ namespace Reko.Gui
             {
                 services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
             }
+        }
+
+        private void ShowProcedureControlGraph()
+        {
+            var item = listProcedures.FocusedItem;
+            if (item == null || !item.Selected || item.Tag is not ProgramProcedure pp)
+                return;
+            services.RequireService<ISelectedAddressService>().SelectedProcedure = pp.Procedure;
+            services.RequireService<ICodeViewerService>().DisplayProcedureControlGraph(pp.Program, pp.Procedure);
         }
 
         private void ShowCallGraphNavigator()

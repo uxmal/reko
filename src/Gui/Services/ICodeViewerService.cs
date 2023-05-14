@@ -30,6 +30,7 @@ namespace Reko.Gui.Services
     public interface ICodeViewerService
     {
         void DisplayProcedure(Program program, Procedure proc, bool mixedMode);
+        void DisplayProcedureControlGraph(Program program, Procedure proc);
         void DisplayGlobals(Program program, ImageSegment segment);
         void DisplayDataType(Program program, DataType dt);
         void DisplayStatement(Program program, Statement statement);

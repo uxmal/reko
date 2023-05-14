@@ -390,7 +390,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     Copy();
                     return true;
                 case CmdIds.ViewCfgGraph:
-                    ViewGraph();
+                    ViewGraph(this.proc);
                     return true;
                 case CmdIds.ViewCfgCode:
                     ViewCode();
@@ -568,7 +568,7 @@ namespace Reko.UserInterfaces.WindowsForms
             selSvc.SelectedAddressRange = ProgramAddressRange.Create(program, addr, 1);
         }
 
-        public void ViewGraph()
+        public void ViewGraph(Procedure proc)
         {
             gViewer.Parent = combinedCodeView.Parent;
             using (var g = combinedCodeView.CreateGraphics())

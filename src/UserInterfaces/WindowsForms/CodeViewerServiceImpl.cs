@@ -58,6 +58,17 @@ namespace Reko.UserInterfaces.WindowsForms
             }
         }
 
+        public void DisplayProcedureControlGraph(Program program, Procedure proc)
+        {
+            if (proc is null)
+                return;
+            var pane = new CombinedCodeViewInteractor();
+            var windowType = typeof(CombinedCodeViewInteractor).Name;
+            var frame = ShowWindow(windowType, proc.Name, proc, pane);
+            ((CombinedCodeViewInteractor) frame.Pane).ViewGraph(proc);
+
+        }
+
         public void DisplayStatement(Program program, Statement stm)
         {
             var pane = new CombinedCodeViewInteractor();

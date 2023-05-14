@@ -250,6 +250,7 @@ namespace Reko.Gui
             new Placement { item=(int)CmdIds.EditProperties, container=GroupIds.GrpBrowser },
             new Placement { item=(int)CmdIds.ViewGoToAddress, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ViewFindWhatPointsHere, container=GroupIds.GrpBrowserProc },
+            new Placement { item=(int)CmdIds.ViewCfgGraph, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ShowCallGraphNavigator, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ActionEditSignature, container=GroupIds.GrpBrowserProc },
             new Placement { item=(int)CmdIds.ActionAssumeRegisterValues, container=GroupIds.GrpBrowserProc },
