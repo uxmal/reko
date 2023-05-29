@@ -170,7 +170,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             program.ImageSymbols.Add(imgsym.Address, imgsym);
         }
 
-        protected void Given_UserProcedure(uint uAddr, string name, string? csignature)
+        protected void Given_UserProcedure(uint uAddr, string name, string csignature)
         {
             var addr = Address.Ptr32(uAddr);
             program.User.Procedures.Add(addr, new UserProcedure(addr, name)

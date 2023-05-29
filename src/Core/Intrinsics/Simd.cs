@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,11 @@ namespace Reko.Core.Intrinsics
     /// </summary>
     public static class Simd
     {
-        public static readonly IntrinsicProcedure Add = IntrinsicBuilder.GenericBinary("__simd_add");
-        public static readonly IntrinsicProcedure FAdd = IntrinsicBuilder.GenericBinary("__simd_fadd");
+        public static readonly IntrinsicProcedure Add = IntrinsicBuilder.SimdBinary("__simd_add", Operator.IAdd);
+        public static readonly IntrinsicProcedure FAdd = IntrinsicBuilder.SimdBinary("__simd_fadd", Operator.FAdd);
         public static readonly IntrinsicProcedure FDiv = IntrinsicBuilder.GenericBinary("__simd_fdiv");
-        public static readonly IntrinsicProcedure FMul = IntrinsicBuilder.GenericBinary("__simd_fmul");
-        public static readonly IntrinsicProcedure FSub = IntrinsicBuilder.GenericBinary("__simd_fsub");
+        public static readonly IntrinsicProcedure FMul = IntrinsicBuilder.SimdBinary("__simd_fmul", Operator.FMul);
+        public static readonly IntrinsicProcedure FSub = IntrinsicBuilder.SimdBinary("__simd_fsub", Operator.FSub);
         public static readonly IntrinsicProcedure Max = IntrinsicBuilder.GenericBinary("__simd_max");
         public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericBinary("__simd_min");
         public static readonly IntrinsicProcedure Mul = IntrinsicBuilder.GenericBinary("__simd_mul");

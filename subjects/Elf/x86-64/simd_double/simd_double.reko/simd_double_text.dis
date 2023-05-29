@@ -168,7 +168,7 @@ l00000000000007A8:
 l0000000000000881:
 	branch qwLoc28_100 <u rax_31 l0000000000000820
 l0000000000000820:
-	Mem69[rsi + (qwLoc28_100 << 5<64>):word256] = __addp<real64[4]>(Mem42[rdx + (qwLoc28_100 << 5<64>):word256], Mem42[rcx + (qwLoc28_100 << 5<64>):word256])
+	Mem69[rsi + (qwLoc28_100 << 5<64>):word256] = __simd_fadd<real64[4]>(Mem42[rdx + (qwLoc28_100 << 5<64>):word256], Mem42[rcx + (qwLoc28_100 << 5<64>):word256])
 	qwLoc28_100 = qwLoc28_100 + 1<64>
 l000000000000088B:
 	return

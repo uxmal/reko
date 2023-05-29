@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -41,6 +42,7 @@ namespace Reko.Core.Intrinsics
     {
         private readonly string intrinsicName;
         private readonly bool hasSideEffect;
+        private readonly Operator? op;
         private readonly ProcedureCharacteristics characteristics;
         private readonly List<Identifier> parameters;
         private Func<Constant[], Constant>? applyConstants;
@@ -49,6 +51,15 @@ namespace Reko.Core.Intrinsics
 
         public IntrinsicBuilder(string intrinsicName, bool hasSideEffect) : this(intrinsicName, hasSideEffect, DefaultProcedureCharacteristics.Instance)
         {
+        }
+
+        public IntrinsicBuilder(string intrinsicName, Operator op, ProcedureCharacteristics? characteristics = null)
+        {
+            this.intrinsicName = intrinsicName;
+            this.op = op;
+            this.hasSideEffect = false;
+            this.characteristics = characteristics ?? DefaultProcedureCharacteristics.Instance;
+            this.parameters = new List<Identifier>();
         }
 
         public IntrinsicBuilder(string intrinsicName, bool hasSideEffect, ProcedureCharacteristics characteristics)
@@ -181,7 +192,14 @@ namespace Reko.Core.Intrinsics
             IntrinsicProcedure proc;
             if (this.genericTypes is not null)
             {
-                proc = new IntrinsicProcedure(intrinsicName, genericTypes, false, hasSideEffect, signature);
+                if (this.op is not null)
+                {
+                    proc = new SimdIntrinsic(intrinsicName, this.op, genericTypes, false, signature);
+                }
+                else
+                {
+                    proc = new IntrinsicProcedure(intrinsicName, genericTypes, false, hasSideEffect, signature);
+                }
             }
             else
             {
@@ -215,6 +233,15 @@ namespace Reko.Core.Intrinsics
         public static IntrinsicProcedure GenericBinary(string name)
         {
             return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        public static IntrinsicProcedure SimdBinary(string name, BinaryOperator op)
+        {
+            return new IntrinsicBuilder(name, op)
                 .GenericTypes("T")
                 .Param("T")
                 .Param("T")

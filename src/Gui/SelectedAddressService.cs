@@ -37,7 +37,6 @@ namespace Reko.Gui
 
         private ProgramAddressRange? addressRange;
         private Procedure? proc;
-        private long length;
 
         public SelectedAddressService()
         {

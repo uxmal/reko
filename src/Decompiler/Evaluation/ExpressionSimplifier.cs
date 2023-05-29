@@ -1606,6 +1606,7 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitSlice(Slice slice)
         {
+            bool changed;
             var e = slice.Expression;
             if (e is BinaryExpression bin)
             {
@@ -1627,7 +1628,12 @@ namespace Reko.Evaluation
                     }
                 }
             }
-            bool changed;
+            if (e is Application app &&
+                app.Procedure is ProcedureConstant pc &&
+                pc.Procedure is SimdIntrinsic simd)
+            {
+                return SliceSimdIntrisic(slice, simd, app);
+            }
             (e, changed) = e.Accept(this);
 
             // Is the slice the same size as the expression?
@@ -1695,6 +1701,17 @@ namespace Reko.Evaluation
                 }
             }
             return (slice, changed);
+        }
+
+        private (Expression e, bool changed) SliceSimdIntrisic(Slice slice, SimdIntrinsic simd, Application app)
+        {
+            var dtOutputLane = simd.OutputLaneType();
+            if (slice.Offset == 0  && //$TODO: even multiple of lane? 
+                slice.DataType.BitSize == dtOutputLane.BitSize)
+            {
+                return (simd.MakeSlice(app.Arguments, 0), true);
+            }
+            return (slice, false);
         }
 
         public virtual (Expression, bool) VisitStringConstant(StringConstant str)

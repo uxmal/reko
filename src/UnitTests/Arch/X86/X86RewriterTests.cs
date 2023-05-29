@@ -1744,7 +1744,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(7): 3 instructions",
                 "1|L--|v4 = xmm1",
                 "2|L--|v5 = Mem0[0x000000014000B102<p64>:word128]",
-                "3|L--|xmm1 = __addp<real32[4]>(v4, v5)");
+                "3|L--|xmm1 = __simd_fadd<real32[4]>(v4, v5)");
         }
 
         [Test]
@@ -1788,7 +1788,7 @@ namespace Reko.UnitTests.Arch.X86
                "0|L--|0000000140000000(7): 3 instructions",
                "1|L--|v4 = xmm0",
                "2|L--|v5 = Mem0[0x000000014000AA68<p64>:word128]",
-               "3|L--|xmm0 = __subp<real32[4]>(v4, v5)");
+               "3|L--|xmm0 = __simd_fsub<real32[4]>(v4, v5)");
         }
 
         [Test]
@@ -2201,7 +2201,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(8): 3 instructions",
                 "1|L--|v5 = ymm0",
                 "2|L--|v6 = Mem0[rbp - 144<i64>:word256]",
-                "3|L--|ymm0 = __addp<real64[4]>(v5, v6)");
+                "3|L--|ymm0 = __simd_fadd<real64[4]>(v5, v6)");
         }
 
         [Test]
@@ -2913,7 +2913,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(4): 3 instructions",
                 "1|L--|v5 = mm0",
                 "2|L--|v6 = Mem0[edx + 66<i32>:word64]",
-                "3|L--|mm0 = __padd<byte[8]>(v5, v6)");
+                "3|L--|mm0 = __simd_add<byte[8]>(v5, v6)");
         }
 
         [Test]
@@ -2924,7 +2924,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(4): 3 instructions",
                 "1|L--|v5 = mm0",
                 "2|L--|v6 = Mem0[edx + 66<i32>:word64]",
-                "3|L--|mm0 = __padd<word32[2]>(v5, v6)");
+                "3|L--|mm0 = __simd_add<word32[2]>(v5, v6)");
         }
 
         [Test]
@@ -2957,7 +2957,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(4): 3 instructions",
                 "1|L--|v5 = mm0",
                 "2|L--|v6 = Mem0[edx + 66<i32>:word64]",
-                "3|L--|mm0 = __padd<word16[4]>(v5, v6)");
+                "3|L--|mm0 = __simd_add<word16[4]>(v5, v6)");
         }
 
         [Test]
@@ -3622,7 +3622,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(3): 3 instructions",
                 "1|L--|v5 = mm1",
                 "2|L--|v6 = Mem0[eax:word64]",
-                "3|L--|mm1 = __padd<word64[1]>(v5, v6)");
+                "3|L--|mm1 = __simd_add<word64[1]>(v5, v6)");
         }
 
         [Test]
@@ -3826,7 +3826,7 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(4): 3 instructions",
                 "1|L--|v5 = xmm7",
                 "2|L--|v6 = xmm6",
-                "3|L--|xmm7 = __padd<word64[2]>(v5, v6)");
+                "3|L--|xmm7 = __simd_add<word64[2]>(v5, v6)");
         }
 
         [Test]

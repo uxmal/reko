@@ -84,14 +84,14 @@ Eq_108: (fn void ((ptr64 (arr Eq_292))))
 	T_108 (in free @ 00000000000007A0 : ptr64)
 	T_109 (in signature of free : void)
 Eq_128: (fn Eq_130 (Eq_130, Eq_130))
-	T_128 (in __addp<real64[4]> @ 0000000000000878 : ptr32)
-	T_129 (in signature of __addp : void)
+	T_128 (in __simd_fadd<real64[4]> @ 0000000000000878 : ptr32)
+	T_129 (in signature of __simd_fadd : void)
 Eq_130: (union "Eq_130" (word256 u0) ((arr real64 4) u1))
 	T_130 (in p1 @ 0000000000000878 : (arr real64 4))
 	T_131 (in p2 @ 0000000000000878 : (arr real64 4))
 	T_134 (in rdx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
 	T_137 (in rcx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
-	T_138 (in __addp<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
+	T_138 (in __simd_fadd<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
 	T_141 (in rsi[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
 Eq_146: (fn (ptr64 (arr Eq_292)) (uint64, Eq_82))
 	T_146 (in _mm_malloc @ 00000000000008B8 : ptr64)
@@ -656,11 +656,11 @@ T_127: (in qwLoc28_100 < rax_31 @ 0000000000000889 : bool)
   Class: Eq_127
   DataType: bool
   OrigDataType: bool
-T_128: (in __addp<real64[4]> @ 0000000000000878 : ptr32)
+T_128: (in __simd_fadd<real64[4]> @ 0000000000000878 : ptr32)
   Class: Eq_128
   DataType: (ptr32 Eq_128)
   OrigDataType: (ptr32 (fn T_138 (T_134, T_137)))
-T_129: (in signature of __addp : void)
+T_129: (in signature of __simd_fadd : void)
   Class: Eq_128
   DataType: (ptr32 Eq_128)
   OrigDataType: 
@@ -696,7 +696,7 @@ T_137: (in rcx[qwLoc28_100 * 0x20<64>] @ 0000000000000878 : word256)
   Class: Eq_130
   DataType: Eq_130
   OrigDataType: (union (word256 u0) ((arr real64 4) u1))
-T_138: (in __addp<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
+T_138: (in __simd_fadd<real64[4]>(rdx[qwLoc28_100].u1.u0, rcx[qwLoc28_100].u1.u0) @ 0000000000000878 : (arr real64 4))
   Class: Eq_130
   DataType: Eq_130
   OrigDataType: (arr real64 4)

@@ -422,7 +422,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vaddecuq: RewriteVaddecuq(); break;
                 case Mnemonic.vaddeuqm: RewriteTernaryOp(vaddeuqm); break;
                 case Mnemonic.vaddfp:
-                case Mnemonic.vaddfp128: RewriteVectorBinOp(vaddfp, PrimitiveType.Real32); break;
+                case Mnemonic.vaddfp128: RewriteVectorBinOp(Simd.FAdd, PrimitiveType.Real32); break;
                 case Mnemonic.vaddsbs: RewriteVectorBinOp(vadds, PrimitiveType.Int8); break;
                 case Mnemonic.vaddshs: RewriteVectorBinOp(vadds, PrimitiveType.Int16); break;
                 case Mnemonic.vaddsws: RewriteVectorBinOp(vadds, PrimitiveType.Int32); break;
@@ -615,7 +615,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.xori: RewriteXor(false); break;
                 case Mnemonic.xoris: RewriteXoris(); break;
                 case Mnemonic.xsaddsp: RewriteXsaddsp(); break;
-                case Mnemonic.xvadddp: RewriteVectorBinOp(vaddfp, PrimitiveType.Real64); break;
+                case Mnemonic.xvadddp: RewriteVectorBinOp(Simd.FAdd, PrimitiveType.Real64); break;
                 }
                 yield return m.MakeCluster(addr, 4, iclass);
             }
@@ -1044,7 +1044,6 @@ namespace Reko.Arch.PowerPC
         private static readonly IntrinsicProcedure vadduwm = IntrinsicBuilder.GenericBinary("__vadduwm");
         private static readonly IntrinsicProcedure vavg = IntrinsicBuilder.GenericBinary("__vector_average");
         private static readonly IntrinsicProcedure vaddeuqm = IntrinsicBuilder.Ternary("__vector_add_extended_modulo", PrimitiveType.UInt128);
-        private static readonly IntrinsicProcedure vaddfp = IntrinsicBuilder.GenericBinary("__vector_fp_add");
         private static readonly IntrinsicProcedure vaddm = IntrinsicBuilder.GenericBinary("__vector_add_modulo");
         private static readonly IntrinsicProcedure vadds = IntrinsicBuilder.GenericBinary("__vector_add_saturate");
         private static readonly IntrinsicProcedure vbperm = IntrinsicBuilder.GenericBinary("__vector_bit_permute");

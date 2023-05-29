@@ -34,19 +34,6 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaArchitecture : ProcessorArchitecture
     {
-        public XtensaArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options, null, null)
-        {
-            //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
-            // Fix this if encountering a big-endian binary.
-            this.Endianness = EndianServices.Little;
-
-            this.InstructionBitSize = 8;        // Instruction alignment, really.
-            this.FramePointerType = PrimitiveType.Ptr32;
-            this.PointerType = PrimitiveType.Ptr32;
-            this.WordWidth = PrimitiveType.Word32;
-            this.StackRegister = Registers.a1;
-        }
 
         private static readonly RegisterStorage[] aregs = new[]
         {
@@ -119,8 +106,6 @@ namespace Reko.Arch.Xtensa
         private static readonly RegisterStorage[] allRegs =
             aregs.Concat(bregs).Concat(fregs).ToArray();
 
-        private static readonly Dictionary<string, RegisterStorage> regsByName =
-            allRegs.ToDictionary(r => r.Name);
 
         private static readonly Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
@@ -159,6 +144,21 @@ namespace Reko.Arch.Xtensa
         private static readonly RegisterStorage[] uregs = Enumerable.Range(0, 0x100)
             .Select(n => new RegisterStorage($"user{n}", 0x800 + n, 0, PrimitiveType.Word32))
             .ToArray();
+
+        public XtensaArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options, allRegs.ToDictionary(r => r.Name), allRegs.ToDictionary(r => r.Domain))
+        {
+            //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
+            // Fix this if encountering a big-endian binary.
+            this.Endianness = EndianServices.Little;
+
+            this.InstructionBitSize = 8;        // Instruction alignment, really.
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.WordWidth = PrimitiveType.Word32;
+            this.StackRegister = Registers.a1;
+        }
+
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -278,11 +278,6 @@ namespace Reko.Arch.Xtensa
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
-        }
-
-        public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)
-        {
-            return regsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddress, [MaybeNullWhen(false)] out Address addr)

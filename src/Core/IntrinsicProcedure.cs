@@ -150,15 +150,20 @@ namespace Reko.Core
             while (!instanceCache.TryGetValue(key, out instance))
             {
                 var sig = base.MakeConcreteSignature(ptrSize, concreteTypes);
-                instance = new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
-                {
-                    Characteristics = this.Characteristics,
-                    EnclosingType = this.EnclosingType
-                };
+                instance = DoMakeInstance(concreteTypes, sig);
                 if (instanceCache.TryAdd(key, instance))
                     break;
             }
             return instance;
+        }
+
+        protected virtual IntrinsicProcedure DoMakeInstance(DataType[] concreteTypes, FunctionType sig)
+        {
+            return new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
+            {
+                Characteristics = this.Characteristics,
+                EnclosingType = this.EnclosingType
+            };
         }
 
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
