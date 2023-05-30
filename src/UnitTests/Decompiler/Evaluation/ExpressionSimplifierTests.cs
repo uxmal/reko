@@ -41,8 +41,6 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private Identifier foo64;
-        private Identifier vec1;
-        private Identifier vec2;
         private ProcedureBuilder m;
         private IntrinsicProcedure rolc_8;
         private Mock<IProcessorArchitecture> arch;
@@ -92,18 +90,12 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var mrFoo = RegisterStorage.Reg32("foo", 1);
             var mrFoo64 = RegisterStorage.Reg64("foo64", 2);
             var mrBar = RegisterStorage.Reg32("bar", 3);
-            var mrVec1 = new RegisterStorage("v1", 16, 0, PrimitiveType.Word128);
-            var mrVec2 = new RegisterStorage("v2", 17, 0, PrimitiveType.Word128);
             foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
             foo64 = new Identifier(mrFoo64.Name, mrFoo64.DataType, mrFoo64);
-            vec1 = Identifier.Create(mrVec1);
-            vec2 = Identifier.Create(mrVec2);
             var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);
             foo = coll.Add(foo, new Statement(Address.Ptr32(0), new Assignment(foo, src), null), false).Identifier;
             foo64 = coll.Add(foo64, new Statement(Address.Ptr32(0), new Assignment(foo64, Constant.Word64(1)), null), false).Identifier;
-            vec1 = CreateSsaAssignment(vec1, coll);
-            vec2 = CreateSsaAssignment(vec2, coll);
             return coll;
         }
 
@@ -1115,6 +1107,8 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Exs_Slice_Simd_FAdd()
         {
             Given_ExpressionSimplifier();
+            var vec1 = Given_Tmp("v1", PrimitiveType.Word128);
+            var vec2 = Given_Tmp("v2", PrimitiveType.Word128);
             var arrayType = new ArrayType(PrimitiveType.Real32, 4);
             var exp =
                 m.Slice(
