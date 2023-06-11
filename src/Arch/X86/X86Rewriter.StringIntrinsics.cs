@@ -105,7 +105,7 @@ namespace Reko.Arch.X86
                 "firstChange", instrCur.addrWidth);
             var size = m.SMul(regCx, instrCur.dataWidth.Size);
             m.Assign(result, m.Fn(Memcmp(), RegSi, RegDi, size));
-            m.Assign(firstChange, m.Fn(findFirstChange, RegSi, RegDi));
+            m.Assign(firstChange, m.Fn(FindFirstChange(), RegSi, RegDi));
             m.Assign(regCx, m.ISub(regCx, firstChange));
             m.Assign(RegSi, m.IAdd(RegSi, firstChange));
             m.Assign(RegDi, m.IAdd(RegDi, firstChange));
@@ -138,19 +138,24 @@ namespace Reko.Arch.X86
             return !direction.ToBoolean();
         }
 
+        private IntrinsicProcedure FindFirstChange()
+        {
+            return findFirstChange.ResolvePointers(arch.PointerType.BitSize);
+        }
+
         private IntrinsicProcedure Strlen()
         {
-            return CommonOps.Strlen;
+            return CommonOps.Strlen.ResolvePointers(arch.PointerType.BitSize);
         }
 
         private IntrinsicProcedure Memcpy()
         {
-            return CommonOps.Memcpy;
+            return CommonOps.Memcpy.ResolvePointers(arch.PointerType.BitSize);
         }
 
         private IntrinsicProcedure Memcmp()
         {
-            return CommonOps.Memcmp;
+            return CommonOps.Memcmp.ResolvePointers(arch.PointerType.BitSize);
         }
     }
 }

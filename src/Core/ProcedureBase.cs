@@ -180,7 +180,7 @@ namespace Reko.Core
         /// Resolves any 0-sized pointers, which are used to indicate pointers
         /// of unknown size.
         /// </summary>
-        private static DataType ResolvePointer(DataType dtGeneric, DataType dtConcrete, int ptrSize)
+        protected static DataType ResolvePointer(DataType dtGeneric, DataType dtConcrete, int ptrSize)
         {
             if (dtGeneric is Pointer ptr && ptr.BitSize == 0)
             {
