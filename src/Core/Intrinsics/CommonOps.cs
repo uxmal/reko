@@ -138,16 +138,16 @@ namespace Reko.Core.Intrinsics
 
         public static readonly IntrinsicProcedure Strlen = new IntrinsicBuilder("strlen", true)
             .PtrParam(PrimitiveType.Char)
-            .Returns(PrimitiveType.Int32);
+            .Returns(PrimitiveType.UInt32);
         public static readonly IntrinsicProcedure Memcpy = new IntrinsicBuilder("memcpy", true)
             .PtrParam(new UnknownType())
             .PtrParam(new UnknownType())
-            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.UInt32)
             .PtrReturns(new UnknownType());
         public static readonly IntrinsicProcedure Memcmp = new IntrinsicBuilder("memcmp", true)
             .PtrParam(new UnknownType())
             .PtrParam(new UnknownType())
-            .Param(PrimitiveType.Int32)
+            .Param(PrimitiveType.UInt32)
             .Returns(PrimitiveType.Int32);
 
         // System calls.

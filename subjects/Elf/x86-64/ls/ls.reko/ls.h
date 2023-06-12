@@ -3059,8 +3059,8 @@ Eq_1271: (fn (ptr64 Eq_1279) ((ptr64 word64), (ptr64 Eq_1274), Eq_1275))
 Eq_1274: <unknown>
 	T_1274 (in p2 @ 0000000000403B95 : (ptr64 <unknown>))
 	T_1277 (in 0x61B040<u64> @ 0000000000403B95 : uint64)
-Eq_1275: (union "Eq_1275" (int32 u0) (int64 u1))
-	T_1275 (in p3 @ 0000000000403B95 : int32)
+Eq_1275: (union "Eq_1275" (int64 u0) (uint32 u1))
+	T_1275 (in p3 @ 0000000000403B95 : uint32)
 	T_1278 (in 128<i64> @ 0000000000403B95 : int64)
 Eq_1279: <unknown>
 	T_1279 (in memcpy(&qwLoc0370, &g_t61B040, 128<i64>) @ 0000000000403B95 : (ptr64 <unknown>))
@@ -3866,8 +3866,8 @@ Eq_2736: (fn Eq_2743 (Eq_19, (ptr64 Eq_2739), Eq_2740))
 Eq_2739: <unknown>
 	T_2739 (in p2 @ 0000000000403849 : (ptr64 <unknown>))
 	T_2741 (in 0x412CA0<u64> @ 0000000000403849 : uint64)
-Eq_2740: (union "Eq_2740" (int32 u0) (int64 u1))
-	T_2740 (in p3 @ 0000000000403849 : int32)
+Eq_2740: (union "Eq_2740" (int64 u0) (uint32 u1))
+	T_2740 (in p3 @ 0000000000403849 : uint32)
 	T_2742 (in 6<i64> @ 0000000000403849 : int64)
 	T_3239 (in 2<i64> @ 0000000000404D0F : int64)
 	T_7251 (in 10<i64> @ 00000000004080A6 : int64)
@@ -12294,7 +12294,7 @@ T_1274: (in p2 @ 0000000000403B95 : (ptr64 <unknown>))
   Class: Eq_1274
   DataType: (ptr64 Eq_1274)
   OrigDataType: 
-T_1275: (in p3 @ 0000000000403B95 : int32)
+T_1275: (in p3 @ 0000000000403B95 : uint32)
   Class: Eq_1275
   DataType: Eq_1275
   OrigDataType: 
@@ -12308,8 +12308,8 @@ T_1277: (in 0x61B040<u64> @ 0000000000403B95 : uint64)
   OrigDataType: (ptr64 <unknown>)
 T_1278: (in 128<i64> @ 0000000000403B95 : int64)
   Class: Eq_1275
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_1279: (in memcpy(&qwLoc0370, &g_t61B040, 128<i64>) @ 0000000000403B95 : (ptr64 <unknown>))
   Class: Eq_1279
   DataType: (ptr64 Eq_1279)
@@ -18155,7 +18155,7 @@ T_2739: (in p2 @ 0000000000403849 : (ptr64 <unknown>))
   Class: Eq_2739
   DataType: (ptr64 Eq_2739)
   OrigDataType: 
-T_2740: (in p3 @ 0000000000403849 : int32)
+T_2740: (in p3 @ 0000000000403849 : uint32)
   Class: Eq_2740
   DataType: Eq_2740
   OrigDataType: 
@@ -18165,8 +18165,8 @@ T_2741: (in 0x412CA0<u64> @ 0000000000403849 : uint64)
   OrigDataType: (ptr64 <unknown>)
 T_2742: (in 6<i64> @ 0000000000403849 : int64)
   Class: Eq_2740
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_2743: (in memcmp(r12_3693, &g_t412CA0, 6<i64>) @ 0000000000403849 : int32)
   Class: Eq_2743
   DataType: Eq_2743
@@ -20154,8 +20154,8 @@ T_3238: (in 0x413733<u64> @ 0000000000404D0F : uint64)
   OrigDataType: (ptr64 <unknown>)
 T_3239: (in 2<i64> @ 0000000000404D0F : int64)
   Class: Eq_2740
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_3240: (in memcmp(rsi_12, &g_t413733, 2<i64>) @ 0000000000404D0F : int32)
   Class: Eq_3240
   DataType: Eq_3240
@@ -36287,8 +36287,8 @@ T_7250: (in Mem808[r14_129 + 168<i64>:word64] @ 00000000004080A6 : word64)
   OrigDataType: (ptr64 <unknown>)
 T_7251: (in 10<i64> @ 00000000004080A6 : int64)
   Class: Eq_2740
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_7252: (in memcmp(&g_t4137B1, r14_129[21<i32>], 10<i64>) @ 00000000004080A6 : int32)
   Class: Eq_7252
   DataType: Eq_7252
@@ -44955,8 +44955,8 @@ T_9412: (in 0x415E6A<u64> @ 000000000040ABAE : uint64)
   OrigDataType: (ptr64 <unknown>)
 T_9413: (in 6<i64> @ 000000000040ABAE : int64)
   Class: Eq_2740
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_9414: (in memcmp(rax_8, &g_t415E6A, 6<i64>) @ 000000000040ABAE : int32)
   Class: Eq_9414
   DataType: Eq_9414
@@ -58564,8 +58564,8 @@ T_12807: (in 0x415FD8<u64> @ 000000000040D6D8 : uint64)
   OrigDataType: (ptr64 <unknown>)
 T_12808: (in 7<i64> @ 000000000040D6D8 : int64)
   Class: Eq_2740
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_12809: (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<i64>) @ 000000000040D6D8 : int32)
   Class: Eq_12809
   DataType: Eq_12809
@@ -58609,7 +58609,7 @@ T_12818: (in 0x415FE0<u64> @ 000000000040D6E7 : uint64)
 T_12819: (in 3<i64> @ 000000000040D6E7 : int64)
   Class: Eq_2740
   DataType: Eq_2740
-  OrigDataType: (union (int32 u1) (int64 u0))
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_12820: (in memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<i64>) @ 000000000040D6E7 : int32)
   Class: Eq_12812
   DataType: Eq_12812
@@ -76521,8 +76521,8 @@ T_17292: (in 0x4137B1<u64> @ 00000000004117DA : uint64)
   OrigDataType: (ptr64 <unknown>)
 T_17293: (in 10<i64> @ 00000000004117DA : int64)
   Class: Eq_2740
-  DataType: int32
-  OrigDataType: (union (int32 u1) (int64 u0))
+  DataType: int64
+  OrigDataType: (union (int64 u0) (uint32 u1))
 T_17294: (in memcmp(rdx_19, &g_t4137B1, 10<i64>) @ 00000000004117DA : int32)
   Class: Eq_17294
   DataType: Eq_17294
@@ -80682,8 +80682,8 @@ typedef  * (Eq_1271)(word64 *,  *, Eq_1275);
 typedef void;
 
 typedef union Eq_1275 {
-	int32 u0;
-	int64 u1;
+	int64 u0;
+	uint32 u1;
 } Eq_1275;
 
 typedef void;
@@ -81035,8 +81035,8 @@ typedef Eq_2743 (Eq_2736)(Eq_19,  *, Eq_2740);
 typedef void;
 
 typedef union Eq_2740 {
-	int32 u0;
-	int64 u1;
+	int64 u0;
+	uint32 u1;
 } Eq_2740;
 
 typedef union Eq_2743 {
