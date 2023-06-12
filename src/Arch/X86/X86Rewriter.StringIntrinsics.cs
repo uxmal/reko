@@ -30,7 +30,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter
     {
-        private static readonly IntrinsicProcedure findFirstChange = new IntrinsicBuilder("__find_first_change__", false)
+        private static readonly IntrinsicProcedure findFirstDifference = new IntrinsicBuilder("__find_first_difference__", false)
             .PtrParam(new UnknownType())
             .PtrParam(new UnknownType())
             .Returns(new UnknownType());
@@ -101,14 +101,14 @@ namespace Reko.Arch.X86
             var regCx = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
             var result = binder.CreateTemporary(
                 "cmpResult", instrCur.addrWidth);
-            var firstChange = binder.CreateTemporary(
-                "firstChange", instrCur.addrWidth);
+            var firstDifference = binder.CreateTemporary(
+                "firstDifference", instrCur.addrWidth);
             var size = m.SMul(regCx, instrCur.dataWidth.Size);
             m.Assign(result, m.Fn(Memcmp(), RegSi, RegDi, size));
-            m.Assign(firstChange, m.Fn(FindFirstChange(), RegSi, RegDi));
-            m.Assign(regCx, m.ISub(regCx, firstChange));
-            m.Assign(RegSi, m.IAdd(RegSi, firstChange));
-            m.Assign(RegDi, m.IAdd(RegDi, firstChange));
+            m.Assign(firstDifference, m.Fn(FindFirstDifference(), RegSi, RegDi));
+            m.Assign(regCx, m.ISub(regCx, firstDifference));
+            m.Assign(RegSi, m.IAdd(RegSi, firstDifference));
+            m.Assign(RegDi, m.IAdd(RegDi, firstDifference));
             m.Assign(
                 binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                 m.Cond(result));
@@ -138,9 +138,9 @@ namespace Reko.Arch.X86
             return !direction.ToBoolean();
         }
 
-        private IntrinsicProcedure FindFirstChange()
+        private IntrinsicProcedure FindFirstDifference()
         {
-            return findFirstChange.ResolvePointers(arch.PointerType.BitSize);
+            return findFirstDifference.ResolvePointers(arch.PointerType.BitSize);
         }
 
         private IntrinsicProcedure Strlen()
