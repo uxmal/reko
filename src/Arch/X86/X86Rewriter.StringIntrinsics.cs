@@ -47,25 +47,25 @@ namespace Reko.Arch.X86
             case Mnemonic.scasb:
                 // repne scasb
                 if (IsRepNe())
-                    return RewriteScasbIntrinsic();
+                    return RewriteScasbToStrlen();
                 break;
             case Mnemonic.movs:
             case Mnemonic.movsb:
                 // rep movs
                 if (IsRep())
-                    return RewriteMovsIntrinsic();
+                    return RewriteMovsToMemcpy();
                 break;
             case Mnemonic.cmps:
             case Mnemonic.cmpsb:
                 // repe cmps
                 if (IsRepE())
-                    return RewriteCmpsIntrinsic();
+                    return RewriteCmpsToToFindFirstDifference();
                 break;
             }
             return false;
         }
 
-        private bool RewriteScasbIntrinsic()
+        private bool RewriteScasbToStrlen()
         {
             var cEax = state.GetRegister(Registers.eax);
             if (!cEax.IsZero)
@@ -84,7 +84,7 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        private bool RewriteMovsIntrinsic()
+        private bool RewriteMovsToMemcpy()
         {
             var regCx = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
             var size = binder.CreateTemporary("size", instrCur.addrWidth);
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        private bool RewriteCmpsIntrinsic()
+        private bool RewriteCmpsToToFindFirstDifference()
         {
             var regCx = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
             var result = binder.CreateTemporary(
