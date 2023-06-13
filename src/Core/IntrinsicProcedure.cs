@@ -169,6 +169,15 @@ namespace Reko.Core
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
             => MakeInstance(0, concreteTypes);
 
+        /// <summary>
+        /// Resolves any 0-sized pointers, which are used to indicate pointers
+        /// of unknown size.
+        /// </summary>
+        /// <param name="ptrSize">Size of pointers</param>
+        /// <returns>A newly instance of <see cref="IntrinsicProcedure"/> with
+        /// replaced pointers of unknown size to
+        /// <paramref name="ptrSize" />-sized ones.
+        /// </returns>
         public IntrinsicProcedure ResolvePointers(int ptrSize)
         {
             if (IsGeneric)
