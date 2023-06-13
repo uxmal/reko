@@ -85,8 +85,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
                     (RegisterStorage)r3.Storage
                 };
 
-
-
             this.programFlow = new ProgramDataFlow();
         }
 
@@ -858,7 +856,6 @@ proc1_exit:
                 m.MStore(m.Word32(0x012300), r1);
                 m.Return();
             });
-
         }
 
         [Test]
@@ -1388,7 +1385,6 @@ proc1_exit:
                 m.Return(b);
             });
         }
-
 
         [Test]
         public void SsaRegisterAlias()
@@ -2545,7 +2541,6 @@ proc1_exit:
             });
         }
 
-
         [Test]
         [Category(Categories.UnitTests)]
         public void SsaConditionCodeExactMatch()
@@ -2938,7 +2933,6 @@ proc1_exit:
         // R:        [----------]
         // R = SEQ(SLICE(W2), SLICE(W1))
 
-
         [Test(Description = "Ignore dead storage")]
         [Category(Categories.UnitTests)]
         public void SsaSubregisterAssignments()
@@ -3242,7 +3236,6 @@ proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
-
         }
 
         [Test]
@@ -3415,7 +3408,6 @@ proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
-
         }
 
         /// <summary>
@@ -3494,7 +3486,6 @@ proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
-
         }
 
         [Test]
@@ -4690,7 +4681,6 @@ Ssa_SliceSequence_exit:
                 m.Label("m4Skip");
                 m.MStore(m.Word32(0x0010110), bx);
                 m.MStore(m.Word32(0x0010114), ebx);
-
             });
 
             When_RunSsaTransform();
@@ -4855,6 +4845,45 @@ SsaUseRegisterHighSlice_exit:
                     { r1_r2, new BitRange(0, 64) }
                 },
             });
+
+            When_RunSsaTransform();
+
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void SsaUserSignatureArgNameAndTmpVarAreSame()
+        {
+            var proc = Given_Procedure("test", m =>
+            {
+                var tmp1 = m.Frame.CreateTemporary(
+                    "size", PrimitiveType.Word32);
+                m.Assign(tmp1, m.IAdd(r1, 1));
+                m.MStore(m.Word32(0x123400), tmp1);
+                var tmp2 = m.Frame.CreateTemporary(
+                    "size", PrimitiveType.Word32);
+                m.Assign(tmp2, m.ISub(r1, 1));
+                m.MStore(m.Word32(0x123404), tmp2);
+                m.Return();
+            });
+            proc.Signature = FunctionType.Action(
+                    new Identifier[] {
+                        new Identifier("size", PrimitiveType.Int32, r1.Storage),
+                    });
+            var sExp =
+            #region Expected
+@"test_entry:
+	def size
+	r1_2 = size
+l1:
+	size_3 = r1_2 + 1<32>
+	Mem4[0x123400<32>:word32] = size_3
+	size_5 = r1_2 - 1<32>
+	Mem6[0x123404<32>:word32] = size_5
+	return
+test_exit:
+";
+            #endregion
 
             When_RunSsaTransform();
 
