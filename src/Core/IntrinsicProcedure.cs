@@ -169,7 +169,62 @@ namespace Reko.Core
         public IntrinsicProcedure MakeInstance(params DataType[] concreteTypes)
             => MakeInstance(0, concreteTypes);
 
-		public override string ToString()
+        /// <summary>
+        /// Resolves any 0-sized pointers, which are used to indicate pointers
+        /// of unknown size.
+        /// </summary>
+        /// <param name="ptrSize">Size of pointers</param>
+        /// <returns>A newly instance of <see cref="IntrinsicProcedure"/> with
+        /// replaced pointers of unknown size to
+        /// <paramref name="ptrSize" />-sized ones.
+        /// </returns>
+        public IntrinsicProcedure ResolvePointers(int ptrSize)
+        {
+            if (IsGeneric)
+                throw new InvalidOperationException($"{Name} is generic.");
+            var sig = this.Signature;
+            if (sig is null)
+                throw new InvalidOperationException($"Cannot resolve pointers for null signature for {Name}.");
+            if (!sig.ParametersValid)
+                throw new InvalidOperationException($"Signature for {Name} is not valid.");
+            var parameters = new Identifier[sig.Parameters!.Length];
+            for (int i = 0; i < sig.Parameters.Length; ++i)
+            {
+                var param = sig.Parameters[i];
+                if (param.DataType is Pointer ptr)
+                {
+                    param = new Identifier(
+                        param.Name,
+                        ResolvePointer(param.DataType, ptr.Pointee, ptrSize),
+                        param.Storage);
+                }
+                parameters[i] = param;
+            }
+            FunctionType newSig;
+            if (sig.HasVoidReturn)
+            {
+                newSig = FunctionType.Action(parameters);
+            }
+            else
+            {
+                var ret = sig.ReturnValue;
+                if (ret.DataType is Pointer ptr)
+                {
+                    ret = new Identifier(
+                        ret.Name,
+                        ResolvePointer(ret.DataType, ptr.Pointee, ptrSize),
+                        ret.Storage);
+                }
+                newSig = FunctionType.Func(ret, parameters);
+            }
+            return new IntrinsicProcedure(this.Name, this.HasSideEffect, newSig)
+            {
+                Characteristics = this.Characteristics,
+                EnclosingType = this.EnclosingType
+            };
+        }
+
+        public override string ToString()
 		{
 			if (Signature != null)
 			{
