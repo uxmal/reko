@@ -856,7 +856,7 @@ l0930:
 	byte a_42
 	byte l_43
 	S_BDOSVER(out b_40, out h_41, out a_42, out l_43)
-	branch (~(0<8> - CONVERT(a_42 <u 0x30<8>, bool, byte)) & Mem0[0x168E<16>:byte]) >>u 1<8> >=u 0<8> l0953
+	branch (CONVERT(a_42 <u 0x30<8>, bool, byte) - 1<i8> & Mem0[0x168E<16>:byte]) >>u 1<8> >=u 0<8> l0953
 l0944:
 	Mem64[Mem0[0x168B<16>:word16] + 7<16>:byte] = Mem0[Mem0[0x168B<16>:word16] + 7<16>:byte] | 0x80<8>
 l0953:

@@ -2036,7 +2036,7 @@ l0000000000405C33:
 	rax_101 = 0<u64>
 	branch Mem0[0x000000000061B12C<p64>:word32] == 3<32> l0000000000405CB0
 l0000000000405CB0:
-	return ~(0<32> - CONVERT((esi & 0x49<32>) <u 1<32>, bool, word32)) & 0x2A<32>
+	return CONVERT((esi & 0x49<32>) <u 1<32>, bool, word32) - 1<i32> & 0x2A<32>
 l0000000000405C3E:
 	return SLICE(rax_101, word32, 0)
 fn0000000000405C20_exit:
@@ -5493,7 +5493,7 @@ l000000000040C0FF:
 	rdi_139 = CONVERT(SLICE(rdx_rax_132 /u rax_113, word32, 0), word32, uint64)
 	branch rax_113 <=u rdx_134 * 2<64> l000000000040C6E0
 l000000000040C6E0:
-	ecx_151 = ~(0<32> - CONVERT(rax_113 <u rdx_134 * 2<64>, bool, word32)) + 3<32> (alias)
+	ecx_151 = CONVERT(rax_113 <u rdx_134 * 2<64>, bool, word32) + 2<32> (alias)
 l000000000040C125:
 	ecx_151 = CONVERT(CONVERT(rdx_134 * 2<64> != 0<64>, bool, int8), int8, uint32) (alias)
 l000000000040BE43:
@@ -5538,7 +5538,7 @@ l000000000040C17D:
 l000000000040C160:
 	ecx_151 = CONVERT(ecx_262 != 0<32>, bool, word32) (alias)
 l000000000040C1A8:
-	ecx_151 = ~(0<32> - CONVERT(v23_62 <u ecx_262, bool, word32)) + 3<32> (alias)
+	ecx_151 = CONVERT(v23_62 <u ecx_262, bool, word32) + 2<32> (alias)
 l000000000040C168:
 	ebx_1288 = ebx_1288 + 1<32> (alias)
 	rdi_1510 = rdi_256 (alias)
@@ -8325,7 +8325,7 @@ l0000000000410403:
 	rax_1205 = 0x16E<u64>
 	branch r10d_1212 != ((edx_1225 >> 5<32>) - (r10d_1212 >> 0x1F<32>)) *s 0x64<32> l0000000000410453
 l0000000000410433:
-	rax_1205 = CONVERT(~(0<32> - CONVERT(r10d_1212 - ((edx_1225 >> 7<32>) - (r10d_1212 >> 0x1F<32>)) *s 0x190<32> <u 1<32>, bool, word32)) + 0x16E<32>, word32, uint64)
+	rax_1205 = CONVERT(CONVERT(r10d_1212 - ((edx_1225 >> 7<32>) - (r10d_1212 >> 0x1F<32>)) *s 0x190<32> <u 1<32>, bool, word32) + 0x16D<32>, word32, uint64)
 l0000000000410453:
 	word32 r10d_1277 = SLICE(r15_1147 + rax_1205, word32, 0)
 	word64 r8_1287 = CONVERT(r10d_1277 - edx_1151 + 0x17E<32>, word32, uint64)

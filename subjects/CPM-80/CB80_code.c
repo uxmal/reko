@@ -651,7 +651,7 @@ void fn0920()
 		cu8 a_n;
 		byte l_n;
 		S_BDOSVER(out b_n, out h_n, out a_n, out l_n);
-		if ((~(0x00 - (byte) (a_n < 0x30)) & g_b168E) >> 0x01 < 0x00)
+		if (((byte) (a_n < 0x30) - 1 & g_b168E) >> 0x01 < 0x00)
 			*((char *) g_t168B.u1 + 7) = (Fcb *) (*((char *) g_t168B.u1 + 7) | 0x80);
 		if (F_OPEN(g_t168B.u1) == ~0x00)
 		{
