@@ -450,7 +450,7 @@ l00401637:
 l00401630:
 	eax_23 = crt_atexit()
 l00401642:
-	return ~(0<32> - CONVERT(eax_23 != 0<32>, bool, word32)) & dwArg04
+	return CONVERT(eax_23 != 0<32>, bool, word32) - 1<i32> & dwArg04
 fn00401613_exit:
 
 

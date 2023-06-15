@@ -2229,7 +2229,7 @@ ui32 fn0000000000405C20(word32 ecx, word32 edx, ui32 esi, byte dil)
 		{
 			rax_n = 0x00;
 			if (g_dw61B12C == 0x03)
-				return ~(0x00 - (word32) ((esi & 0x49) < 0x01)) & 0x2A;
+				return (word32) ((esi & 0x49) < 0x01) - 1 & 0x2A;
 			return (word32) rax_n;
 		}
 		rcx_n = SEQ(rcx_56_8_n, (int8) ((esi & 0xF000) == 0x4000));
@@ -5390,7 +5390,7 @@ struct Eq_n * fn000000000040BD70(Eq_n rcx, ui32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8
 			if (rax_n > rdx_n * 0x02)
 				ecx_n.u1 = (uint32) (int8) (rdx_n * 0x02 != 0x00);
 			else
-				ecx_n = ~(0x00 - (word32) (rax_n < rdx_n * 0x02)) + 0x03;
+				ecx_n = (word32) (rax_n < rdx_n * 0x02) + 0x02;
 l000000000040C12D:
 			uint64 r9_n = (uint64) (edx & 0x10);
 			Eq_n edi_n = (word32) rdi_n;
@@ -5418,7 +5418,7 @@ l000000000040C12D:
 						edi_n = (word32) rdi_n;
 						word32 ecx_n = ecx_n + r14d_n;
 						if (v23_n <= r14d_n)
-							ecx_n = ~(0x00 - (word32) (v23_n < ecx_n)) + 0x03;
+							ecx_n = (word32) (v23_n < ecx_n) + 0x02;
 						else
 							ecx_n = (word32) (ecx_n != 0x00);
 						++ebx_n;
@@ -8058,7 +8058,7 @@ l000000000040F0B8:
 												int32 edx_n = SLICE(r10d_n *s64 1374389535, word32, 32);
 												rax_n = 366;
 												if (r10d_n == ((edx_n >> 0x05) - (r10d_n >> 0x1F)) *s 100)
-													rax_n = (uint64) (~(0x00 - (word32) (r10d_n - ((edx_n >> 0x07) - (r10d_n >> 0x1F)) *s 400 < 0x01)) + 366);
+													rax_n = (uint64) ((word32) (r10d_n - ((edx_n >> 0x07) - (r10d_n >> 0x1F)) *s 400 < 0x01) + 0x016D);
 											}
 											word32 r10d_n = (word32) (r15_n + rax_n);
 											uint64 r8_n = (uint64) (r10d_n - edx_n + 0x017E);

@@ -1736,7 +1736,7 @@ l57AE:
 					{
 						ui16 v136_n = r5_n.u1->t0000.u1;
 						r5_n += 0x02;
-						dwLoc1C_n = SEQ(~(0x00 - (word16) (v136_n * 0x02 < 0x00)), v136_n);
+						dwLoc1C_n = SEQ((word16) (v136_n * 0x02 < 0x00) - 1, v136_n);
 					}
 					word16 wLoc1C_n = (word16) dwLoc1C_n;
 					ci16 wLoc1A_n = SLICE(dwLoc1C_n, word16, 16);

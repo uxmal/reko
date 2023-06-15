@@ -57,6 +57,7 @@ namespace Reko.Evaluation
         private static readonly Shl_mul_e_Rule shMul;
         private static readonly ShiftShift_c_c_Rule shiftShift;
         private static readonly NegSub_Rule negSub;
+        private static readonly CompSub_Rule compSub;
         private static readonly Mps_Constant_Rule mpsRule;
         private static readonly BinOpWithSelf_Rule binopWithSelf;
         private static readonly ConstDivisionImplementedByMultiplication constDiv;
@@ -1776,6 +1777,11 @@ namespace Reko.Evaluation
             {
                 return (e, true);
             }
+            e = compSub.Match(unary);
+            if (e is not null)
+            {
+                return (e, true);
+            }
 
             // (!-exp) >= (!exp)
             e = logicalNotFollowedByNeg.Match(unary);
@@ -1884,6 +1890,7 @@ namespace Reko.Evaluation
             sliceMem = new SliceMem_Rule();
             sliceSegPtr = new SliceSegmentedPointer_Rule();
             negSub = new NegSub_Rule();
+            compSub = new();
             constConstBin = new ConstConstBin_Rule();
             shAdd = new Shl_add_Rule();
             shMul = new Shl_mul_e_Rule();

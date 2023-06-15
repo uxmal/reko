@@ -2244,7 +2244,7 @@ l57AE:
 l57E6:
 	word16 v136_186 = Mem176[r5_112:word16]
 	r5_112 = r5_112 + 2<16>
-	dwLoc1C_2077 = SEQ(~(0<16> - CONVERT(v136_186 * 2<16> <u 0<16>, bool, word16)), v136_186) (alias)
+	dwLoc1C_2077 = SEQ(CONVERT(v136_186 * 2<16> <u 0<16>, bool, word16) - 1<i16>, v136_186) (alias)
 l57B4:
 	r5_112 = r5_112 + 4<16>
 	dwLoc1C_2077 = Mem209[r5_112:word32] (alias)
