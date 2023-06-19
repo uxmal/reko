@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void UseToString()
 		{
-			var reg_edx = new RegisterStorage("edx",1, 0,PrimitiveType.Word32);
+			var reg_edx = RegisterStorage.Reg32("edx", 1);
 			var id1 = new Identifier("foo", PrimitiveType.Word32, null);
 			var use = new UseInstruction(id1);
 			Assert.AreEqual("use foo", use.ToString());

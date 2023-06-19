@@ -109,8 +109,7 @@ namespace Reko.Core.Lib
 
         private InvalidCastException InvalidCast(Type type)
         {
-            return new InvalidCastException(string.Format("Invalid cast from '{0}' to '{1}'.",
-                type.Name, GetType().Name));
+            return new InvalidCastException($"Invalid cast from '{type.Name}' to '{GetType().Name}'.");
         }
 
         TypeCode IConvertible.GetTypeCode()

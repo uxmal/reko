@@ -123,12 +123,12 @@ namespace Reko.Core.Machine
         /// </param>
         public static string FormatValue(Constant c, bool forceSignForSignedIntegers = true, string integerFormat = "{0}{1}")
         {
-            var pt = (PrimitiveType)c.DataType;
-            if (pt.Domain == Domain.SignedInt)
+            var dt = c.DataType;
+            if (dt.Domain == Domain.SignedInt)
             {
                 return FormatSignedValue(c, forceSignForSignedIntegers, integerFormat);
             }
-            else if (pt.Domain == Domain.Real)
+            else if (dt.Domain == Domain.Real)
             {
                 var str = c.ToReal64().ToString("G", CultureInfo.InvariantCulture);
                 if (str.IndexOfAny(floatSpecials) < 0)

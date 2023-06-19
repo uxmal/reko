@@ -29,7 +29,7 @@ namespace Reko.Core.Lib
     /// <summary>
     /// Represents a bitfield inside a machine code instruction.
     /// </summary>
-    public struct Bitfield
+    public readonly struct Bitfield
     {
         /// <summary>
         /// The bit position within an instruction. Bit positions are numbered
@@ -178,7 +178,6 @@ namespace Reko.Core.Lib
             return n;
         }
 
-        
         /// <summary>
         /// Reads a sequence of bit field values and returns the sign extension of
         /// the concatenation of /// those values.

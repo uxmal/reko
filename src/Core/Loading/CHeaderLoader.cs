@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Reko.Core
+namespace Reko.Core.Loading
 {
     /// <summary>
     /// This class loads C header files -- with optional Reko-specific

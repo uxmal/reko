@@ -30,23 +30,23 @@ namespace Reko.Arch.Pdp.Pdp11
 {
     public class Registers
     {
-        public static RegisterStorage r0 = RegisterStorage.Reg16("r0", 0);
-        public static RegisterStorage r1 = RegisterStorage.Reg16("r1", 1);
-        public static RegisterStorage r2 = RegisterStorage.Reg16("r2", 2);
-        public static RegisterStorage r3 = RegisterStorage.Reg16("r3", 3);
-        public static RegisterStorage r4 = RegisterStorage.Reg16("r4", 4);
-        public static RegisterStorage r5 = RegisterStorage.Reg16("r5", 5);
-        public static RegisterStorage sp = RegisterStorage.Reg16("sp", 6);
-        public static RegisterStorage pc = RegisterStorage.Reg16("pc", 7);
+        public static readonly RegisterStorage r0 = RegisterStorage.Reg16("r0", 0);
+        public static readonly RegisterStorage r1 = RegisterStorage.Reg16("r1", 1);
+        public static readonly RegisterStorage r2 = RegisterStorage.Reg16("r2", 2);
+        public static readonly RegisterStorage r3 = RegisterStorage.Reg16("r3", 3);
+        public static readonly RegisterStorage r4 = RegisterStorage.Reg16("r4", 4);
+        public static readonly RegisterStorage r5 = RegisterStorage.Reg16("r5", 5);
+        public static readonly RegisterStorage sp = RegisterStorage.Reg16("sp", 6);
+        public static readonly RegisterStorage pc = RegisterStorage.Reg16("pc", 7);
 
-        public static RegisterStorage psw = RegisterStorage.Reg16("psw", 12);
+        public static readonly RegisterStorage psw = RegisterStorage.Reg16("psw", 12);
 
-        public static RegisterStorage ac0 = new RegisterStorage("ac0", 16, 0, PrimitiveType.Real64);
-        public static RegisterStorage ac1 = new RegisterStorage("ac1", 17, 0, PrimitiveType.Real64);
-        public static RegisterStorage ac2 = new RegisterStorage("ac2", 18, 0, PrimitiveType.Real64);
-        public static RegisterStorage ac3 = new RegisterStorage("ac3", 19, 0, PrimitiveType.Real64);
-        public static RegisterStorage ac4 = new RegisterStorage("ac4", 20, 0, PrimitiveType.Real64);
-        public static RegisterStorage ac5 = new RegisterStorage("ac5", 21, 0, PrimitiveType.Real64);
+        public static readonly RegisterStorage ac0 = new RegisterStorage("ac0", 16, 0, PrimitiveType.Real64);
+        public static readonly RegisterStorage ac1 = new RegisterStorage("ac1", 17, 0, PrimitiveType.Real64);
+        public static readonly RegisterStorage ac2 = new RegisterStorage("ac2", 18, 0, PrimitiveType.Real64);
+        public static readonly RegisterStorage ac3 = new RegisterStorage("ac3", 19, 0, PrimitiveType.Real64);
+        public static readonly RegisterStorage ac4 = new RegisterStorage("ac4", 20, 0, PrimitiveType.Real64);
+        public static readonly RegisterStorage ac5 = new RegisterStorage("ac5", 21, 0, PrimitiveType.Real64);
 
         public static readonly FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N", PrimitiveType.Bool);
         public static readonly FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z", PrimitiveType.Bool);

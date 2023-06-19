@@ -84,7 +84,7 @@ namespace Reko.Core.Collections
 
         public override string ToString()
         {
-            return string.Format("[{0}, {1}]", this.Start.ToString(), this.End.ToString());
+            return $"[{this.Start}, {this.End}]";
         }
 
         public Interval<T> Intersect(Interval<T> that)

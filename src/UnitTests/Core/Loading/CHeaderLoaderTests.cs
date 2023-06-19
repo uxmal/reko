@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Core
+namespace Reko.UnitTests.Core.Loading
 {
     [TestFixture]
     public class CHeaderLoaderTests
