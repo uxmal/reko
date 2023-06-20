@@ -45,9 +45,12 @@ namespace Reko.Typing
 		public override Expression VisitMemoryAccess(MemoryAccess access)
         {
             var ea = access.EffectiveAddress.Accept(this);
+            var segptr = ea as SegmentedPointer;
+            if (segptr is not null)
+                ea = segptr.Offset;
             if (aem.Match(ea))
             {
-                if (aem.ArrayPointer == null)
+                if (aem.ArrayPointer is null)
                 {
                     aem.ArrayPointer = Constant.Create(
                         PrimitiveType.Create(
@@ -55,9 +58,18 @@ namespace Reko.Typing
                             ea.DataType.BitSize),
                         0);
                 }
-                return aem.Transform(null, access.DataType);
+                return aem.Transform(segptr?.BasePointer, access.DataType);
             }
-            var newEa = ExtendEffectiveAddress(ea);
+            Expression newEa;
+            if (segptr is not null)
+            {
+                newEa = ExtendEffectiveAddress(segptr.Offset);
+                newEa = new SegmentedPointer(segptr.DataType, segptr.BasePointer, newEa);
+            }
+            else
+            {
+                newEa = ExtendEffectiveAddress(ea);
+            }
             return new MemoryAccess(access.MemoryId, newEa, access.DataType);
         }
 
@@ -98,17 +110,11 @@ namespace Reko.Typing
             return newEa;
         }
 
-        public override Expression VisitSegmentedAccess(SegmentedAccess access)
+        public override Expression VisitSegmentedAddress(SegmentedPointer address)
         {
-            var ea = access.EffectiveAddress.Accept(this);
-            if (aem.Match(ea))
-            {
-                return aem.Transform(access.BasePointer, access.DataType);
-            }
-            ea = ExtendEffectiveAddress(ea);
-            var memId = access.MemoryId;
-            var basePtr = access.BasePointer;
-            return new SegmentedAccess(memId, basePtr, ea, access.DataType);
+            var ea = address.Offset.Accept(this);
+            var basePtr = address.BasePointer;
+            return new SegmentedPointer(address.DataType, basePtr, ea);
         }
 
 		public void Transform(Program program)

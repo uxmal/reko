@@ -1253,7 +1253,10 @@ namespace Reko.Evaluation
             Expression fusedEa;
             if (ea is null)
             {
-                fusedEa = Constant.Create(access.EffectiveAddress.DataType, (ulong)offsetFused);
+                var dtEa = (access.EffectiveAddress is SegmentedPointer segptr)
+                    ? segptr.Offset.DataType
+                    : access.EffectiveAddress.DataType;
+                fusedEa = Constant.Create(dtEa, (ulong)offsetFused);
             }
             else
             {
@@ -1275,20 +1278,20 @@ namespace Reko.Evaluation
             MemoryAccess access;
             Expression? seg;
             Expression ea;
-            if (expression is SegmentedAccess segmem)
+            if (expression is not MemoryAccess mem)
+                return (null, null, null, 0);
+            
+            access = mem;
+            if (mem.EffectiveAddress is SegmentedPointer segptr)
             {
-                access = segmem;
-                seg = segmem.BasePointer;
-                ea = segmem.EffectiveAddress;
+                seg = segptr.BasePointer;
+                ea = segptr.Offset;
             }
-            else if (expression is MemoryAccess mem)
+            else
             {
-                access = mem;
                 seg = null;
                 ea = mem.EffectiveAddress;
             }
-            else
-                return (null, null, null, 0);
 
             long offset = 0;
             Expression? eaStripped = ea;
@@ -1572,10 +1575,10 @@ namespace Reko.Evaluation
             return (sc, false);
         }
 
-        public virtual (Expression, bool) VisitSegmentedAccess(SegmentedAccess segMem)
+        public virtual (Expression, bool) VisitSegmentedAddress(SegmentedPointer segptr)
         {
-            var (basePtr, bChanged) = segMem.BasePointer.Accept(this);
-            var (offset, oChanged) = segMem.EffectiveAddress.Accept(this);
+            var (basePtr, bChanged) = segptr.BasePointer.Accept(this);
+            var (offset, oChanged) = segptr.Offset.Accept(this);
             bool changed = bChanged | oChanged;
             var e = scaledIndexRule.Match(offset, ctx);
             if (e is not null)
@@ -1586,21 +1589,14 @@ namespace Reko.Evaluation
             if (basePtr is Constant cBase && offset is Constant cOffset)
             {
                 var addr = ctx.MakeSegmentedAddress(cBase, cOffset);
-                var mem = new MemoryAccess(segMem.MemoryId, addr, segMem.DataType);
-                return (ctx.GetValue(mem, segmentMap), true);
+                addr.DataType = segptr.DataType;
+                return (addr, true);
             }
-            var value = new SegmentedAccess(segMem.MemoryId, basePtr, offset, segMem.DataType);
+            var value = new SegmentedPointer(segptr.DataType, basePtr, offset);
             e = sliceSegPtr.Match(value, ctx);
             if (e is not null)
             {
                 return (e, true);
-            }
-            var newVal = ctx.GetValue(value, segmentMap);
-            if (newVal != value)
-            {
-                ctx.RemoveExpressionUse(value);
-                ctx.UseExpression(newVal);
-                return (newVal, changed);
             }
             return (value, changed);
         }

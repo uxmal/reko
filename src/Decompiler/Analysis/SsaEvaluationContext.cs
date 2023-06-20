@@ -90,11 +90,6 @@ namespace Reko.Analysis
             return access;
         }
 
-        public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
-        {
-            return access;
-        }
-
         public Expression? GetDefiningExpression(Identifier id)
         {
             return ssaIds[id].GetDefiningExpression();

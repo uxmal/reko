@@ -1,14 +1,16 @@
 // Equivalence classes ////////////
 Eq_1: word16
 	T_1 (in ds : word16)
-Eq_2: (memptr T_1 (struct (4 T_5 t0004)))
+Eq_2: (memptr T_1 (struct (4 T_6 t0004)))
 	T_2 (in bx : word16)
 Eq_3: word16
 	T_3 (in 4<16> : word16)
 Eq_4: word16
 	T_4 (in bx + 4<16> : word16)
-Eq_5: word16
-	T_5 (in Mem0[ds:bx + 4<16>:word16] : word16)
+Eq_5: segptr32
+	T_5 (in ds:bx + 4<16> : segptr32)
+Eq_6: word16
+	T_6 (in Mem0[ds:bx + 4<16>:word16] : word16)
 // Type Variables ////////////
 T_1: (in ds : word16)
   Class: Eq_1
@@ -16,8 +18,8 @@ T_1: (in ds : word16)
   OrigDataType: word16
 T_2: (in bx : word16)
   Class: Eq_2
-  DataType: (memptr T_1 (struct (4 T_5 t0004)))
-  OrigDataType: (memptr T_1 (struct (4 T_5 t0004)))
+  DataType: (memptr T_1 (struct (4 T_6 t0004)))
+  OrigDataType: (memptr T_1 (struct (4 T_6 t0004)))
 T_3: (in 4<16> : word16)
   Class: Eq_3
   DataType: word16
@@ -26,7 +28,11 @@ T_4: (in bx + 4<16> : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_5: (in Mem0[ds:bx + 4<16>:word16] : word16)
+T_5: (in ds:bx + 4<16> : segptr32)
   Class: Eq_5
+  DataType: segptr32
+  OrigDataType: segptr32
+T_6: (in Mem0[ds:bx + 4<16>:word16] : word16)
+  Class: Eq_6
   DataType: word16
   OrigDataType: word16

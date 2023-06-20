@@ -692,6 +692,10 @@ namespace Reko.Arch.X86
                 if (src is MemoryAccess load)
                 {
                     src = load.EffectiveAddress;
+                    if (src is SegmentedPointer segptr)
+                    {
+                        src = segptr.Offset;
+                    }
                 }
                 else
                 {
@@ -1150,42 +1154,28 @@ namespace Reko.Arch.X86
             m.Assign(arg1, m.Fn(intrinsic.MakeInstance(arg1.DataType), arg1, arg2, arg3));
         }
 
-        public MemoryAccess MemDi(MachineOperand op)
-		{
-			if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
-			{
-                var mem = (MemoryOperand) op;
+        public MemoryAccess MemIndex(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
+        {
+            Expression ea = indexRegister;
+            if (arch.ProcessorMode.PointerType.Domain == Domain.SegPointer)
+            {
+                var mem = (MemoryOperand) instrCur.Operands[iOp];
                 var seg = mem.SegOverride != RegisterStorage.None
                     ? mem.SegOverride
-                    : Registers.es;
-                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, binder.EnsureRegister(seg), RegDi, instrCur.dataWidth);
-			}
-			else
-				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegDi, instrCur.dataWidth);
-		}
-
-		public MemoryAccess MemSi(MachineOperand op)
-		{
-			if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
-			{
-                var mem = (MemoryOperand) op;
-                var seg = mem.SegOverride != RegisterStorage.None
-                    ? mem.SegOverride
-                    : Registers.ds;
-				return new SegmentedAccess(MemoryIdentifier.GlobalMemory, binder.EnsureRegister(seg), RegSi, instrCur.dataWidth);
-			}
-			else
-				return new MemoryAccess(MemoryIdentifier.GlobalMemory, RegSi, instrCur.dataWidth);
-		}
+                    : defaultSeg;
+                ea = new SegmentedPointer(arch.ProcessorMode.PointerType, binder.EnsureRegister(seg), ea);
+            }
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, instrCur.dataWidth);
+        }
 
         public MemoryAccess Mem(Expression defaultSegment, Expression effectiveAddress)
         {
-            if (arch.ProcessorMode != ProcessorMode.Protected32)
+            var ptrType = arch.ProcessorMode.PointerType;
+            if (ptrType.Domain == Domain.SegPointer)
             {
-                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, defaultSegment, effectiveAddress, instrCur.dataWidth);
+                effectiveAddress = new SegmentedPointer(ptrType, defaultSegment, effectiveAddress);
             }
-            else
-                return new MemoryAccess(MemoryIdentifier.GlobalMemory, effectiveAddress, instrCur.dataWidth);
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, effectiveAddress, instrCur.dataWidth);
         }
 
 		public Identifier RegAl
@@ -1231,7 +1221,8 @@ namespace Reko.Arch.X86
             bool incSi = false;
             bool incDi = false;
             var incOperator = GetIncrementOperator();
-
+            var ds = Registers.ds;
+            var es = Registers.es;
             Identifier regDX;
             switch (instrCur.Mnemonic)
             {
@@ -1241,20 +1232,20 @@ namespace Reko.Arch.X86
             case Mnemonic.cmpsb:
                 m.Assign(
                     binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                    m.Cond(m.ISub(MemSi(instrCur.Operands[0]), MemDi(instrCur.Operands[1]))));
+                    m.Cond(m.ISub(MemIndex(0, ds, RegSi), MemIndex(1, es, RegDi))));
                 incSi = true;
                 incDi = true;
                 break;
             case Mnemonic.lods:
             case Mnemonic.lodsb:
-                m.Assign(RegAl, MemSi(instrCur.Operands[1]));
+                m.Assign(RegAl, MemIndex(1, ds, RegSi));
                 incSi = true;
                 break;
             case Mnemonic.movs:
             case Mnemonic.movsb:
                 Identifier tmp = binder.CreateTemporary(instrCur.dataWidth);
-                m.Assign(tmp, MemSi(instrCur.Operands[1]));
-                m.Assign(MemDi(instrCur.Operands[0]), tmp);
+                m.Assign(tmp, MemIndex(1, ds, RegSi));
+                m.Assign(MemIndex(0, es, RegDi), tmp);
                 incSi = true;
                 incDi = true;
                 break;
@@ -1274,12 +1265,12 @@ namespace Reko.Arch.X86
             case Mnemonic.scasb:
                 m.Assign(
                     binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
-                    m.Cond(m.ISub(RegAl, MemDi(instrCur.Operands[1]))));
+                    m.Cond(m.ISub(RegAl, MemIndex(1, es, RegDi))));
                 incDi = true;
                 break;
             case Mnemonic.stos:
             case Mnemonic.stosb:
-                m.Assign(MemDi(instrCur.Operands[0]), RegAl);
+                m.Assign(MemIndex(0, es, RegDi), RegAl);
                 incDi = true;
                 break;
             }

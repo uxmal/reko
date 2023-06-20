@@ -25,14 +25,14 @@ SegMem3Mock_exit:
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (8000 (ptr16 Eq_2) ptr8000) (17960 (ptr16 Eq_3) ptr17960))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (segment "Eq_2" (66 word16 w0066) (5420 word16 w5420) (5422 (ptr16 Eq_6) ptr5422))
+Eq_2: (segment "Eq_2" (66 word16 w0066) (5420 word16 w5420) (5422 (ptr16 Eq_7) ptr5422))
 	T_2 (in 0x800<16> : selector)
-	T_5 (in Mem0[0x1796<16>:1<16>:word16] : word16)
+	T_6 (in Mem0[0x1796<16>:1<16>:word16] : word16)
 Eq_3: (segment "Eq_3" (1 (ptr16 Eq_2) ptr0001))
 	T_3 (in 0x1796<16> : selector)
-Eq_6: (segment "Eq_6")
-	T_6 (in ds : selector)
-	T_8 (in Mem0[0x800<16>:0x5422<16>:word16] : word16)
+Eq_7: (segment "Eq_7")
+	T_7 (in ds : selector)
+	T_10 (in Mem0[0x800<16>:0x5422<16>:word16] : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -41,44 +41,60 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in 0x800<16> : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (66 T_12 t0066) (5420 T_10 t5420) (5422 T_8 t5422)))
+  OrigDataType: (ptr16 (segment (66 T_16 t0066) (5420 T_13 t5420) (5422 T_10 t5422)))
 T_3: (in 0x1796<16> : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
-  OrigDataType: (ptr16 (segment (1 T_5 t0001)))
+  OrigDataType: (ptr16 (segment (1 T_6 t0001)))
 T_4: (in 1<16> : word16)
   Class: Eq_4
   DataType: (memptr (ptr16 Eq_3) (ptr16 Eq_2))
-  OrigDataType: (memptr T_3 (struct (0 T_5 t0000)))
-T_5: (in Mem0[0x1796<16>:1<16>:word16] : word16)
+  OrigDataType: (memptr T_3 (struct (0 T_6 t0000)))
+T_5: (in 0x1796<16>:1<16> : segptr32)
+  Class: Eq_5
+  DataType: segptr32
+  OrigDataType: segptr32
+T_6: (in Mem0[0x1796<16>:1<16>:word16] : word16)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: word16
-T_6: (in ds : selector)
-  Class: Eq_6
-  DataType: (ptr16 Eq_6)
-  OrigDataType: (ptr16 (segment))
-T_7: (in 0x5422<16> : word16)
+T_7: (in ds : selector)
   Class: Eq_7
-  DataType: (memptr (ptr16 Eq_2) (ptr16 Eq_6))
-  OrigDataType: (memptr T_2 (struct (0 T_8 t0000)))
-T_8: (in Mem0[0x800<16>:0x5422<16>:word16] : word16)
-  Class: Eq_6
-  DataType: (ptr16 Eq_6)
-  OrigDataType: word16
-T_9: (in 0x5420<16> : word16)
-  Class: Eq_9
-  DataType: (memptr (ptr16 Eq_2) word16)
+  DataType: (ptr16 Eq_7)
+  OrigDataType: (ptr16 (segment))
+T_8: (in 0x5422<16> : word16)
+  Class: Eq_8
+  DataType: (memptr (ptr16 Eq_2) (ptr16 Eq_7))
   OrigDataType: (memptr T_2 (struct (0 T_10 t0000)))
-T_10: (in Mem0[0x800<16>:0x5420<16>:word16] : word16)
-  Class: Eq_10
-  DataType: word16
+T_9: (in 0x800<16>:0x5422<16> : segptr32)
+  Class: Eq_9
+  DataType: segptr32
+  OrigDataType: segptr32
+T_10: (in Mem0[0x800<16>:0x5422<16>:word16] : word16)
+  Class: Eq_7
+  DataType: (ptr16 Eq_7)
   OrigDataType: word16
-T_11: (in 0x66<16> : word16)
+T_11: (in 0x5420<16> : word16)
   Class: Eq_11
   DataType: (memptr (ptr16 Eq_2) word16)
-  OrigDataType: (memptr T_2 (struct (0 T_12 t0000)))
-T_12: (in Mem0[0x800<16>:0x66<16>:word16] : word16)
-  Class: Eq_10
+  OrigDataType: (memptr T_2 (struct (0 T_13 t0000)))
+T_12: (in 0x800<16>:0x5420<16> : segptr32)
+  Class: Eq_12
+  DataType: segptr32
+  OrigDataType: segptr32
+T_13: (in Mem0[0x800<16>:0x5420<16>:word16] : word16)
+  Class: Eq_13
+  DataType: word16
+  OrigDataType: word16
+T_14: (in 0x66<16> : word16)
+  Class: Eq_14
+  DataType: (memptr (ptr16 Eq_2) word16)
+  OrigDataType: (memptr T_2 (struct (0 T_16 t0000)))
+T_15: (in 0x800<16>:0x66<16> : segptr32)
+  Class: Eq_15
+  DataType: segptr32
+  OrigDataType: segptr32
+T_16: (in Mem0[0x800<16>:0x66<16>:word16] : word16)
+  Class: Eq_13
   DataType: word16
   OrigDataType: word16

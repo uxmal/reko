@@ -488,10 +488,10 @@ namespace Reko.Analysis
             throw new NotImplementedException();
         }
 
-        public BitRange VisitSegmentedAccess(SegmentedAccess access)
+        public BitRange VisitSegmentedAddress(SegmentedPointer access)
         {
             var useBase = access.BasePointer.Accept(this);
-            var useEa = access.EffectiveAddress.Accept(this);
+            var useEa = access.Offset.Accept(this);
             return useBase | useEa;
         }
 

@@ -12,7 +12,7 @@ Eq_1: (struct "Globals" (8000 (ptr16 Eq_2) ptr8000))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment)
 	T_2 (in 0x800<16> : selector)
-	T_5 (in Mem0[cs:1<32>:word16] : word16)
+	T_6 (in Mem0[cs:1<32>:word16] : word16)
 Eq_3: (segment (1 (ptr16 Eq_2) ptr0001))
 	T_3 (in cs : selector)
 Eq_4: (struct (0 (ptr16 Eq_2) ptr0000))
@@ -29,12 +29,16 @@ T_2: (in 0x800<16> : selector)
 T_3: (in cs : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
-  OrigDataType: (ptr16 (segment (1 T_5 t0001)))
+  OrigDataType: (ptr16 (segment (1 T_6 t0001)))
 T_4: (in 1<32> : word32)
   Class: Eq_4
   DataType: (memptr (ptr16 Eq_3) Eq_4)
-  OrigDataType: (memptr T_3 (struct (0 T_5 t0000)))
-T_5: (in Mem0[cs:1<32>:word16] : word16)
+  OrigDataType: (memptr T_3 (struct (0 T_6 t0000)))
+T_5: (in cs:1<32> : segptr48)
+  Class: Eq_5
+  DataType: segptr48
+  OrigDataType: segptr48
+T_6: (in Mem0[cs:1<32>:word16] : word16)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: word16

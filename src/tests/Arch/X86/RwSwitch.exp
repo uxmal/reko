@@ -11,7 +11,7 @@ l0C00_0000:
 	ds = Mem0[ss:sp:selector]
 	sp = sp + 2<i16>
 	bl = Mem0[ds:si:byte]
-	v14 = bl
+	v15 = bl
 	SCZO = cond(bl - 2<8>)
 	branch Test(UGT,CZ) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
@@ -21,7 +21,7 @@ l0C00_0009:
 	C = false
 	bx = bx + bx
 	SCZO = cond(bx)
-	switch (v14) { l0C00_0017 l0C00_001B l0C00_001F }
+	switch (v15) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:
 	ax = 1<16>

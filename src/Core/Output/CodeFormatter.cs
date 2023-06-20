@@ -74,6 +74,7 @@ namespace Reko.Core.Output
 		{
             precedences = new Dictionary<OperatorType, int>
             {
+                [(OperatorType)(-1)] = 0,
                 [OperatorType.Not] = 2,         //$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
                 [OperatorType.Neg] = 2,
                 [OperatorType.FNeg] = 2,
@@ -269,7 +270,6 @@ namespace Reko.Core.Output
                 InnerFormatter.Write("<invalid>");
                 return;
             }
-
             if (pt != null)
             {
                 switch (pt.Domain)
@@ -434,17 +434,11 @@ namespace Reko.Core.Output
 			InnerFormatter.Write("]");
 		}
 
-        public void VisitSegmentedAccess(SegmentedAccess access)
+        public void VisitSegmentedAddress(SegmentedPointer segptr)
         {
-            access.MemoryId.Accept(this);
-            InnerFormatter.Write("[");
-            WriteExpression(access.BasePointer);
+            WriteExpression(segptr.BasePointer);
             InnerFormatter.Write(":");
-            WriteExpression(access.EffectiveAddress);
-            InnerFormatter.Write(":");
-            Debug.Assert(access.DataType != null);
-            InnerFormatter.Write(access.DataType?.ToString() ?? "");
-            InnerFormatter.Write("]");
+            WriteExpression(segptr.Offset);
         }
 
         public void VisitMkSequence(MkSequence seq)
@@ -995,7 +989,7 @@ namespace Reko.Core.Output
             case Domain.Offset:
                 return (unsignedConstantFormatStrings[type.Size], "<p{0}>");
             case Domain.SegPointer:
-                return ("{0:X}", "p{0}");
+                return ("{0:X}", "<p{0}>");
             default:
                 if (value is BigInteger sbig)
                 {

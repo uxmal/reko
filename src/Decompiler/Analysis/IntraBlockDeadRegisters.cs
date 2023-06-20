@@ -210,10 +210,10 @@ namespace Reko.Analysis
                 throw new NotImplementedException();
             }
 
-            public bool VisitSegmentedAccess(SegmentedAccess access)
+            public bool VisitSegmentedAddress(SegmentedPointer address)
             {
-                access.BasePointer.Accept(this);
-                access.EffectiveAddress.Accept(this);
+                address.BasePointer.Accept(this);
+                address.Offset.Accept(this);
                 return false;
             }
 

@@ -15,10 +15,10 @@ Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_3: (segment (300 segptr32 ptr0300) (302 word16 w0302) (304 word16 w0304))
 	T_3 (in ds : selector)
-Eq_12: (segment)
-	T_12 (in SLICE(es_bx, selector, 16) : selector)
-Eq_13: (struct (4 word16 w0004))
-	T_13 (in SLICE(es_bx, word16, 0) : word16)
+Eq_15: (segment)
+	T_15 (in SLICE(es_bx, selector, 16) : selector)
+Eq_16: (struct (4 word16 w0004))
+	T_16 (in SLICE(es_bx, word16, 0) : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -31,64 +31,84 @@ T_2: (in 0x1234<16> : word16)
 T_3: (in ds : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
-  OrigDataType: (ptr16 (segment (300 T_2 t0300) (302 T_8 t0302) (304 T_18 t0304)))
+  OrigDataType: (ptr16 (segment (300 T_2 t0300) (302 T_10 t0302) (304 T_23 t0304)))
 T_4: (in 0x300<16> : word16)
   Class: Eq_4
   DataType: (memptr (ptr16 Eq_3) segptr32)
-  OrigDataType: (memptr T_3 (struct (0 T_5 t0000)))
-T_5: (in Mem0[ds:0x300<16>:word16] : word16)
+  OrigDataType: (memptr T_3 (struct (0 T_6 t0000)))
+T_5: (in ds:0x300<16> : segptr32)
+  Class: Eq_5
+  DataType: segptr32
+  OrigDataType: segptr32
+T_6: (in Mem0[ds:0x300<16>:word16] : word16)
   Class: Eq_2
   DataType: segptr32
   OrigDataType: word16
-T_6: (in 0x5550<16> : word16)
-  Class: Eq_6
-  DataType: word16
-  OrigDataType: word16
-T_7: (in 0x302<16> : word16)
+T_7: (in 0x5550<16> : word16)
   Class: Eq_7
-  DataType: (memptr (ptr16 Eq_3) word16)
-  OrigDataType: (memptr T_3 (struct (0 T_8 t0000)))
-T_8: (in Mem0[ds:0x302<16>:word16] : word16)
-  Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_9: (in 0x300<16> : word16)
-  Class: Eq_9
-  DataType: (memptr (ptr16 Eq_3) segptr32)
+T_8: (in 0x302<16> : word16)
+  Class: Eq_8
+  DataType: (memptr (ptr16 Eq_3) word16)
   OrigDataType: (memptr T_3 (struct (0 T_10 t0000)))
-T_10: (in Mem0[ds:0x300<16>:segptr32] : segptr32)
-  Class: Eq_2
+T_9: (in ds:0x302<16> : segptr32)
+  Class: Eq_9
   DataType: segptr32
   OrigDataType: segptr32
-T_11: (in es_bx : segptr32)
-  Class: Eq_2
-  DataType: segptr32
-  OrigDataType: segptr32
-T_12: (in SLICE(es_bx, selector, 16) : selector)
+T_10: (in Mem0[ds:0x302<16>:word16] : word16)
+  Class: Eq_7
+  DataType: word16
+  OrigDataType: word16
+T_11: (in 0x300<16> : word16)
+  Class: Eq_11
+  DataType: (memptr (ptr16 Eq_3) segptr32)
+  OrigDataType: (memptr T_3 (struct (0 T_13 t0000)))
+T_12: (in ds:0x300<16> : segptr32)
   Class: Eq_12
-  DataType: (ptr16 Eq_12)
-  OrigDataType: (ptr16 (segment))
-T_13: (in SLICE(es_bx, word16, 0) : word16)
-  Class: Eq_13
-  DataType: (memptr (ptr16 Eq_12) Eq_13)
-  OrigDataType: (memptr T_12 (struct (4 T_16 t0004)))
-T_14: (in 4<16> : word16)
-  Class: Eq_14
-  DataType: word16
-  OrigDataType: word16
-T_15: (in SLICE(es_bx, word16, 0) + 4<16> : word16)
+  DataType: segptr32
+  OrigDataType: segptr32
+T_13: (in Mem0[ds:0x300<16>:segptr32] : segptr32)
+  Class: Eq_2
+  DataType: segptr32
+  OrigDataType: segptr32
+T_14: (in es_bx : segptr32)
+  Class: Eq_2
+  DataType: segptr32
+  OrigDataType: segptr32
+T_15: (in SLICE(es_bx, selector, 16) : selector)
   Class: Eq_15
-  DataType: word16
-  OrigDataType: word16
-T_16: (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 4<16>:word16] : word16)
+  DataType: (ptr16 Eq_15)
+  OrigDataType: (ptr16 (segment))
+T_16: (in SLICE(es_bx, word16, 0) : word16)
   Class: Eq_16
-  DataType: word16
-  OrigDataType: word16
-T_17: (in 0x304<16> : word16)
+  DataType: (memptr (ptr16 Eq_15) Eq_16)
+  OrigDataType: (memptr T_15 (struct (4 T_20 t0004)))
+T_17: (in 4<16> : word16)
   Class: Eq_17
+  DataType: word16
+  OrigDataType: word16
+T_18: (in SLICE(es_bx, word16, 0) + 4<16> : word16)
+  Class: Eq_18
+  DataType: word16
+  OrigDataType: word16
+T_19: (in SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 4<16> : segptr32)
+  Class: Eq_19
+  DataType: segptr32
+  OrigDataType: segptr32
+T_20: (in Mem0[SLICE(es_bx, selector, 16):SLICE(es_bx, word16, 0) + 4<16>:word16] : word16)
+  Class: Eq_20
+  DataType: word16
+  OrigDataType: word16
+T_21: (in 0x304<16> : word16)
+  Class: Eq_21
   DataType: (memptr (ptr16 Eq_3) word16)
-  OrigDataType: (memptr T_3 (struct (0 T_18 t0000)))
-T_18: (in Mem0[ds:0x304<16>:word16] : word16)
-  Class: Eq_16
+  OrigDataType: (memptr T_3 (struct (0 T_23 t0000)))
+T_22: (in ds:0x304<16> : segptr32)
+  Class: Eq_22
+  DataType: segptr32
+  OrigDataType: segptr32
+T_23: (in Mem0[ds:0x304<16>:word16] : word16)
+  Class: Eq_20
   DataType: word16
   OrigDataType: word16

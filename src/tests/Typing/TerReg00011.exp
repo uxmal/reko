@@ -74,8 +74,8 @@ Eq_6: (union "Eq_6" (int16 u0) ((memptr (ptr16 Eq_25) byte) u1))
 	T_6 (in bx_36 : Eq_6)
 	T_7 (in 0xFFF<16> : cui16)
 	T_9 (in bx_39 : word16)
-	T_29 (in 1<16> : word16)
-	T_34 (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
+	T_30 (in 1<16> : word16)
+	T_35 (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
 Eq_25: (segment "Eq_25")
 	T_25 (in 0x4DE1<16> : selector)
 // Type Variables ////////////
@@ -187,35 +187,39 @@ T_27: (in bx_39 + 0<16> : word16)
   Class: Eq_27
   DataType: word16
   OrigDataType: word16
-T_28: (in Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] : byte)
+T_28: (in 0x4DE1<16>:bx_39 + 0<16> : segptr32)
+  Class: Eq_28
+  DataType: segptr32
+  OrigDataType: segptr32
+T_29: (in Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] : byte)
   Class: Eq_24
-  DataType: byte
+  DataType: Eq_6
   OrigDataType: byte
-T_29: (in 1<16> : word16)
+T_30: (in 1<16> : word16)
   Class: Eq_6
   DataType: int16
   OrigDataType: int16
-T_30: (in bx_39 - 1<16> : word16)
-  Class: Eq_30
-  DataType: (memptr (ptr16 Eq_25) byte)
-  OrigDataType: (memptr T_25 (struct (0 T_28 t0000)))
-T_31: (in SLICE(bx_39 - 1<16>, byte, 8) : byte)
+T_31: (in bx_39 - 1<16> : word16)
   Class: Eq_31
-  DataType: byte
-  OrigDataType: byte
-T_32: (in 1<8> : byte)
+  DataType: (memptr (ptr16 Eq_25) byte)
+  OrigDataType: (memptr T_25 (struct (0 T_29 t0000)))
+T_32: (in SLICE(bx_39 - 1<16>, byte, 8) : byte)
   Class: Eq_32
   DataType: byte
   OrigDataType: byte
-T_33: (in bl_10 - 1<8> : byte)
+T_33: (in 1<8> : byte)
   Class: Eq_33
   DataType: byte
   OrigDataType: byte
-T_34: (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
+T_34: (in bl_10 - 1<8> : byte)
+  Class: Eq_34
+  DataType: byte
+  OrigDataType: byte
+T_35: (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
   Class: Eq_6
   DataType: Eq_6
   OrigDataType: word16
-T_35: (in bx_39 >= 1<16> : bool)
-  Class: Eq_35
+T_36: (in bx_39 >= 1<16> : bool)
+  Class: Eq_36
   DataType: bool
   OrigDataType: bool

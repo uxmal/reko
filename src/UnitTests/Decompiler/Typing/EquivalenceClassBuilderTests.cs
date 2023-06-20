@@ -80,9 +80,12 @@ namespace Reko.UnitTests.Decompiler.Typing
 		{
 			Identifier ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
 			Identifier bx = new Identifier("bx", PrimitiveType.Word16, null);
-			SegmentedAccess mps = new SegmentedAccess(MemoryIdentifier.GlobalMemory, ds, bx, PrimitiveType.Word32);
+			MemoryAccess mps = new MemoryAccess(
+                MemoryIdentifier.GlobalMemory,
+                SegmentedPointer.Create(ds, bx),
+                PrimitiveType.Word32);
 			mps.Accept(eqb);
-			Assert.AreEqual("T_3", TypeVar(mps).Name);
+			Assert.AreEqual("T_4", TypeVar(mps).Name);
 		}
 
         [Test]

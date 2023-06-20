@@ -18,7 +18,7 @@ T_2: (in 0x1234<16> : word16)
 T_3: (in bx : word16)
   Class: Eq_2
   DataType: (memptr (ptr16 Eq_5) (struct (0 word16 w0000)))
-  OrigDataType: (memptr T_5 (struct (0 T_6 t0000)))
+  OrigDataType: (memptr T_5 (struct (0 T_7 t0000)))
 T_4: (in 0x42<16> : word16)
   Class: Eq_4
   DataType: word16
@@ -27,7 +27,11 @@ T_5: (in ds : selector)
   Class: Eq_5
   DataType: (ptr16 (segment (1234 (struct (0 word16 w0000)) t1234)))
   OrigDataType: (ptr16 (segment))
-T_6: (in Mem0[ds:bx:word16] : word16)
+T_6: (in ds:bx : segptr32)
+  Class: Eq_6
+  DataType: segptr32
+  OrigDataType: segptr32
+T_7: (in Mem0[ds:bx:word16] : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16

@@ -124,10 +124,10 @@ namespace Reko.Analysis
                 return true;
             }
 
-            public override Expression VisitSegmentedAccess(SegmentedAccess access)
+            public override Expression VisitSegmentedAddress(SegmentedPointer address)
             {
-                Expression? e = base.VisitSegmentedAccess(access);
-                if (e is not SegmentedAccess accessNew)
+                Expression? e = base.VisitSegmentedAddress(address);
+                if (e is not SegmentedPointer accessNew)
                     return e;
 
                 if (accessNew.BasePointer is not Identifier idSeg)
@@ -135,15 +135,15 @@ namespace Reko.Analysis
                 if (sac.AssociatedIdentifier(idSeg) is null)
                     return e;
                 var sidSeg = ssa.Identifiers[idSeg];
-                if (accessNew.EffectiveAddress is Identifier idEa)
+                if (accessNew.Offset is Identifier idEa)
                 {
                     var sidEa = ssa.Identifiers[idEa];
                     var sids = new[] { sidSeg, sidEa };
                     e = FuseIdentifiers(MakeSegPtr(idEa.DataType), sids);
-                    if (e != null)
-                        return new MemoryAccess(accessNew.MemoryId, e, accessNew.DataType);
+                    if (e is not null)
+                        return e;
                 }
-                else if (accessNew.EffectiveAddress is BinaryExpression binEa)
+                else if (accessNew.Offset is BinaryExpression binEa)
                 {
                     if (binEa.Left is Identifier idLeft)
                     {
@@ -152,14 +152,11 @@ namespace Reko.Analysis
                         if (e != null)
                         {
                             var r = Extend(binEa.Right, e.DataType);
-                            return new MemoryAccess(
-                                accessNew.MemoryId,
-                                new BinaryExpression(
+                            return new BinaryExpression(
                                     binEa.Operator,
                                     e.DataType,
                                     e,
-                                    r),
-                                accessNew.DataType);
+                                    r);
                         }
                     }
                     if (binEa.Right is Identifier idRight)
@@ -169,14 +166,11 @@ namespace Reko.Analysis
                         if (e != null)
                         {
                             var l = Extend(binEa.Left, e.DataType);
-                            return new MemoryAccess(
-                                accessNew.MemoryId,
-                                new BinaryExpression(
+                            return new BinaryExpression(
                                     binEa.Operator,
                                     e.DataType,
                                     l,
-                                    e),
-                                accessNew.DataType);
+                                    e);
                         }
                     }
                 }

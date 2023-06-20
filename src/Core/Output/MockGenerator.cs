@@ -534,11 +534,24 @@ namespace Reko.Core.Output
 
         void IExpressionVisitor.VisitMemoryAccess(MemoryAccess access)
         {
-            Method("Mem");
-            access.DataType.Accept(this);
-            writer.Write(", ");
-            access.EffectiveAddress.Accept(this);
-            writer.Write(")");
+            if (access.EffectiveAddress is SegmentedPointer segptr)
+            {
+                Method("SegMem");
+                access.DataType.Accept(this);
+                writer.Write(", ");
+                segptr.BasePointer.Accept(this);
+                writer.Write(", ");
+                segptr.Offset.Accept(this);
+                writer.Write(")");
+            }
+            else
+            {
+                Method("Mem");
+                access.DataType.Accept(this);
+                writer.Write(", ");
+                access.EffectiveAddress.Accept(this);
+                writer.Write(")");
+            }
         }
 
         void IExpressionVisitor.VisitMkSequence(MkSequence seq)
@@ -579,15 +592,9 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
-        void IExpressionVisitor.VisitSegmentedAccess(SegmentedAccess access)
+        void IExpressionVisitor.VisitSegmentedAddress(SegmentedPointer address)
         {
-            Method("SegMem");
-            access.DataType.Accept(this);
-            writer.Write(", ");
-            access.BasePointer.Accept(this);
-            writer.Write(", ");
-            access.EffectiveAddress.Accept(this);
-            writer.Write(")");
+            throw new NotImplementedException();
         }
 
         void IExpressionVisitor.VisitSlice(Slice slice)

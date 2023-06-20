@@ -297,9 +297,9 @@ namespace Reko.Typing
 			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
 		}
 
-		public void VisitSegmentedAccess(SegmentedAccess access)
+		public void VisitSegmentedAddress(SegmentedPointer access)
 		{
-			handler.MemAccessTrait(basePointer, access, access.DataType.BitSize, eField!, 0);
+            access.Offset.Accept(this);
 		}
 
         public void VisitOutArgument(OutArgument outArg)

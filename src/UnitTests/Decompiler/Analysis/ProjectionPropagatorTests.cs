@@ -27,14 +27,10 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Z80Registers = Reko.Arch.Z80.Registers;
-using X86Registers = Reko.Arch.X86.Registers;
-using Reko.Arch.X86;
 using System.ComponentModel.Design;
+using System.IO;
+using X86Registers = Reko.Arch.X86.Registers;
+using Z80Registers = Reko.Arch.Z80.Registers;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {

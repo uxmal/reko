@@ -115,17 +115,17 @@ namespace Reko.Analysis
 
 		#region InstructionVisitorMembers
 
-		public override void VisitSegmentedAccess(SegmentedAccess access)
+		public override void VisitSegmentedAddress(SegmentedPointer segptr)
 		{
-            if (access.BasePointer is not Identifier pointer)
+            if (segptr.BasePointer is not Identifier pointer)
                 return;
-            switch (access.EffectiveAddress)
+            switch (segptr.Offset)
             {
             case Identifier id:
                 Associate(pointer, id);
                 return;
             case BinaryExpression bin:
-                if (bin.Operator == BinaryOperator.IAdd && bin.Left is Identifier mp)
+                if (bin.Operator.Type == OperatorType.IAdd && bin.Left is Identifier mp)
                 {
                     Associate(pointer, mp);
                 }

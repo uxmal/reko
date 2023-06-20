@@ -545,17 +545,22 @@ namespace Reko.Typing
 		{
             access.EffectiveAddress.Accept(this);
 			var dt = handler.DataTypeTrait(access, access.DataType);
-			CollectEffectiveAddress(access, access.EffectiveAddress);
+            if (access.EffectiveAddress is SegmentedPointer segptr)
+            {
+                CollectEffectiveAddress(segptr.BasePointer, segptr.BasePointer.DataType.BitSize, access, segptr.Offset);
+            }
+            else
+            {
+                CollectEffectiveAddress(access, access.EffectiveAddress);
+            }
             return dt;
 		}
 
-		public DataType VisitSegmentedAccess(SegmentedAccess access)
+		public DataType VisitSegmentedAddress(SegmentedPointer addr)
 		{
-            access.BasePointer.Accept(this);
-            access.EffectiveAddress.Accept(this);
-			TypeVariable tAccess = store.GetTypeVariable(access);
-			var dt = handler.DataTypeTrait(access, access.DataType);
-			CollectEffectiveAddress(access.BasePointer, access.BasePointer.DataType.BitSize, access, access.EffectiveAddress);
+            addr.BasePointer.Accept(this);
+            addr.Offset.Accept(this);
+			var dt = handler.DataTypeTrait(addr, addr.DataType);
             return dt;
 		}
 

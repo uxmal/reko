@@ -320,11 +320,11 @@ namespace Reko.Typing
             }
         }
 
-		public override void VisitSegmentedAccess(SegmentedAccess access)
+		public override void VisitSegmentedAddress(SegmentedPointer address)
 		{
-			access.BasePointer.Accept(this);
-			access.EffectiveAddress.Accept(this);
-			EnsureTypeVariable(access);
+			address.BasePointer.Accept(this);
+			address.Offset.Accept(this);
+			EnsureTypeVariable(address);
 		}
 
 		public override void VisitPhiAssignment(PhiAssignment phi)

@@ -230,11 +230,6 @@ namespace Reko.Analysis
                 return InvalidConstant.Create(access.DataType);
             }
 
-            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
-            {
-                return InvalidConstant.Create(access.DataType);
-            }
-
             public Expression GetValue(Application appl)
             {
                 return InvalidConstant.Create(appl.DataType);

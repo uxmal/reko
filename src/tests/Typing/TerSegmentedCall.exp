@@ -25,12 +25,12 @@ l1:
 SegmentedCallFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (27000 (ptr16 Eq_6) ptr27000))
+Eq_1: (struct "Globals" (27000 (ptr16 Eq_7) ptr27000))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (segment "Eq_2" (2040 (memptr (ptr16 Eq_6) code) ptr2040))
+Eq_2: (segment "Eq_2" (2040 (memptr (ptr16 Eq_7) code) ptr2040))
 	T_2 (in ds : selector)
-Eq_6: (segment "Eq_6")
-	T_6 (in 0x2700<16> : selector)
+Eq_7: (segment "Eq_7")
+	T_7 (in 0x2700<16> : selector)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -39,24 +39,28 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (2040 T_4 t2040)))
+  OrigDataType: (ptr16 (segment (2040 T_5 t2040)))
 T_3: (in 0x2040<16> : word16)
   Class: Eq_3
-  DataType: (memptr (ptr16 Eq_2) (memptr (ptr16 Eq_6) code))
-  OrigDataType: (memptr T_2 (struct (0 T_4 t0000)))
-T_4: (in Mem0[ds:0x2040<16>:word16] : word16)
+  DataType: (memptr (ptr16 Eq_2) (memptr (ptr16 Eq_7) code))
+  OrigDataType: (memptr T_2 (struct (0 T_5 t0000)))
+T_4: (in ds:0x2040<16> : segptr32)
   Class: Eq_4
-  DataType: (memptr (ptr16 Eq_6) code)
+  DataType: segptr32
+  OrigDataType: segptr32
+T_5: (in Mem0[ds:0x2040<16>:word16] : word16)
+  Class: Eq_5
+  DataType: (memptr (ptr16 Eq_7) code)
   OrigDataType: word16
-T_5: (in bx : word16)
-  Class: Eq_4
-  DataType: (memptr (ptr16 Eq_6) code)
-  OrigDataType: (memptr T_6 code)
-T_6: (in 0x2700<16> : selector)
-  Class: Eq_6
-  DataType: (ptr16 Eq_6)
-  OrigDataType: (ptr16 (segment))
-T_7: (in SEQ(0x2700<16>, bx) : ptr32)
+T_6: (in bx : word16)
+  Class: Eq_5
+  DataType: (memptr (ptr16 Eq_7) code)
+  OrigDataType: (memptr T_7 code)
+T_7: (in 0x2700<16> : selector)
   Class: Eq_7
+  DataType: (ptr16 Eq_7)
+  OrigDataType: (ptr16 (segment))
+T_8: (in SEQ(0x2700<16>, bx) : ptr32)
+  Class: Eq_8
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)

@@ -262,13 +262,12 @@ namespace Reko.Core.Code
 			return pc;
 		}
 
-		public virtual Expression VisitSegmentedAccess(SegmentedAccess access)
-		{
-			var basePtr = access.BasePointer.Accept(this);
-			var ea = access.EffectiveAddress.Accept(this);
-			var memId = (MemoryIdentifier) access.MemoryId.Accept(this);
-			return new SegmentedAccess(memId, basePtr, ea, access.DataType);
-		}
+        public virtual Expression VisitSegmentedAddress(SegmentedPointer address)
+        {
+            var sel = address.BasePointer.Accept(this);
+            var offset = address.Offset.Accept(this);
+            return new SegmentedPointer(address.DataType, sel, offset);
+        }
 
         public virtual Expression VisitScopeResolution(ScopeResolution scope)
 		{

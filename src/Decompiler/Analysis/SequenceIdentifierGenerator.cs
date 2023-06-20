@@ -144,14 +144,15 @@ namespace Reko.Analysis
                 return null;
             Expression ea;
             if (store.Dst is MemoryAccess access)
-                ea = access.EffectiveAddress;
-            else
             {
-                if (store.Dst is SegmentedAccess segAccess)
-                    ea = segAccess.EffectiveAddress;
-                else
-                    return null;
+                ea = access.EffectiveAddress;
+                if (ea is SegmentedPointer segptr)
+                {
+                    ea = segptr.Offset;
+                }
             }
+            else
+                return null;
             Constant? offset = null;
             if (ea is Identifier)
                 offset = Constant.Zero(ea.DataType);

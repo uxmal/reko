@@ -117,14 +117,16 @@ namespace Reko.Analysis
                     ExpressionMatcher.AnyDataType("dt")));
 
             segMemOffset = new ExpressionMatcher(
-                new SegmentedAccess(
+                new MemoryAccess(
                     MemoryIdentifier.GlobalMemory,
-                    ExpressionMatcher.AnyId(),
-                    new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op"),
-                        VoidType.Instance,
-                        ExpressionMatcher.AnyExpression("base"),
-                        ExpressionMatcher.AnyConstant("Offset")),
+                    new SegmentedPointer(
+                        ExpressionMatcher.AnyDataType(null),
+                        ExpressionMatcher.AnyId(),
+                        new BinaryExpression(
+                            ExpressionMatcher.AnyOperator("op"),
+                            VoidType.Instance,
+                            ExpressionMatcher.AnyExpression("base"),
+                            ExpressionMatcher.AnyConstant("Offset"))),
                     ExpressionMatcher.AnyDataType("dt")));
         }
 
@@ -416,14 +418,7 @@ namespace Reko.Analysis
 
         private static Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)
         {
-            if (mem is SegmentedAccess segmem)
-            {
-                return new SegmentedAccess(segmem.MemoryId, segmem.BasePointer, segmem.EffectiveAddress, totalSize);
-            }
-            else
-            {
-                return new MemoryAccess(mem.MemoryId, mem.EffectiveAddress, totalSize);
-            }
+            return new MemoryAccess(mem.MemoryId, mem.EffectiveAddress, totalSize);
         }
 
         public class CondMatch

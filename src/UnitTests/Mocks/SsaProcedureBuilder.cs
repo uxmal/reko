@@ -186,15 +186,11 @@ namespace Reko.UnitTests.Mocks
                     Ssa.Identifiers[memId].DefStatement = stm;
                     var ea = access.EffectiveAddress;
                     var dt = access.DataType;
-                    if (store.Dst is SegmentedAccess sa)
+                    if (access.EffectiveAddress is SegmentedPointer segptr)
                     {
-                        var basePtr = sa.BasePointer;
-                        store.Dst = new SegmentedAccess(memId, basePtr, ea, dt);
+                        ea = SegmentedPointer.Create(segptr.BasePointer, segptr.Offset);
                     }
-                    else
-                    {
-                        store.Dst = new MemoryAccess(memId, ea, dt);
-                    }
+                    store.Dst = new MemoryAccess(memId, ea, dt);
                 }
                 break;
             case CallInstruction call:
@@ -312,13 +308,12 @@ namespace Reko.UnitTests.Mocks
                 access.DataType);
         }
 
-        public override SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
+        public override MemoryAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
             var memId = AddMemIdToSsa(access.MemoryId);
-            return new SegmentedAccess(
+            return new MemoryAccess(
                 memId,
-                access.BasePointer,
                 access.EffectiveAddress,
                 access.DataType);
         }

@@ -339,23 +339,22 @@ namespace Reko.Core.Expressions
                 {
                     return ((ScopeResolution) obj).DataType.ToString().GetHashCode();
                 });
-            Add(typeof(SegmentedAccess),
+            Add(typeof(SegmentedPointer),
                 (ea, eb) =>
                 {
-                    SegmentedAccess a = (SegmentedAccess) ea, b = (SegmentedAccess) eb;
+                    SegmentedPointer a = (SegmentedPointer) ea, b = (SegmentedPointer) eb;
                     return
                         EqualsImpl(a.BasePointer, b.BasePointer) &&
-                        EqualsImpl(a.MemoryId, b.MemoryId) &&
                         a.DataType == b.DataType &&
-                        EqualsImpl(a.EffectiveAddress, b.EffectiveAddress);
+                        EqualsImpl(a.Offset, b.Offset);
                 },
                 obj =>
                 {
-                    SegmentedAccess m = (SegmentedAccess) obj;
-                    return GetHashCodeImpl(m.MemoryId) ^
+                    SegmentedPointer m = (SegmentedPointer) obj;
+                    return 
                         m.DataType.GetHashCode() ^
-                        47 * GetHashCodeImpl(m.EffectiveAddress) ^
-                        GetHashCodeImpl(m.BasePointer);
+                        47 * GetHashCodeImpl(m.BasePointer) ^
+                        GetHashCodeImpl(m.Offset);
                 });
 
             Add(typeof(ArrayAccess),

@@ -63,5 +63,21 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             Assert.IsNotNull(e);
 			Assert.AreEqual("Mem0[ptr + 0<32>:word16]", e.ToString());
 		}
+
+        [Test]
+        public void SliceMem_SegmentedAccess()
+        {
+            var s = new Slice(PrimitiveType.Byte,
+                new MemoryAccess(
+                    MemoryIdentifier.GlobalMemory,
+                    SegmentedPointer.Create(
+                        new Identifier("seg", PrimitiveType.Word16, null),
+                        new Identifier("ptr", PrimitiveType.Word16, null)),
+                    PrimitiveType.Word16), 0);
+            var r = new SliceMem_Rule();
+            var e = r.Match(s, ctx.Object);
+            Assert.IsNotNull(e);
+            Assert.AreEqual("Mem0[seg:ptr + 0<16>:byte]", e.ToString());
+        }
 	}
 }

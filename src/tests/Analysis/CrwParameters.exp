@@ -58,8 +58,8 @@ Register word16 fn0C00_0025(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// ds:ds
 // si:si
+// ds:ds
 // Top:Top
 // ds_si:Sequence ds:si
 // siOut:Out:si
@@ -138,8 +138,8 @@ Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// ds:ds
 // si:si
+// ds:ds
 // Top:Top
 // ds_si:Sequence ds:si
 // siOut:Out:si
@@ -172,8 +172,8 @@ Register word16 fn0C00_0036(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// ds:ds
 // si:si
+// ds:ds
 // Top:Top
 // ds_si:Sequence ds:si
 // siOut:Out:si

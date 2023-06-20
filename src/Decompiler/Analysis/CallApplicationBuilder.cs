@@ -327,12 +327,6 @@ Please report this issue at https://github.com/uxmal/reko";
                 this.mid = access.MemoryId;
                 base.VisitMemoryAccess(access);
             }
-
-            public override void VisitSegmentedAccess(SegmentedAccess access)
-            {
-                this.mid = access.MemoryId;
-                base.VisitSegmentedAccess(access);
-            }
         }
     }
 

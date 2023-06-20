@@ -36,6 +36,8 @@ namespace Reko.Core.Expressions
 	{
 		public FieldAccess(DataType fieldType, Expression expr, Field field) : base(fieldType)
 		{
+            if (field.Name.Contains("9A2E"))
+                _ = this; //$DEBUG
 			this.Structure = expr; this.Field = field;
 		}
 

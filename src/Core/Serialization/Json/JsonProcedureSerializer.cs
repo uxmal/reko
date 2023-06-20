@@ -360,7 +360,7 @@ namespace Reko.Core.Serialization.Json
             throw new NotImplementedException();
         }
 
-        public void VisitSegmentedAccess(SegmentedAccess access)
+        public void VisitSegmentedAddress(SegmentedPointer address)
         {
             throw new NotImplementedException();
         }

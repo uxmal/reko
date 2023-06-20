@@ -225,11 +225,15 @@ namespace Reko.Scanning
             case Identifier id:
                 state.SetValue(id, value);
                 return;
-            case SegmentedAccess smem:
-                state.SetValueEa(smem.BasePointer, GetValue(smem.EffectiveAddress), value);
-                return;
             case MemoryAccess mem:
-                state.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                if (mem.EffectiveAddress is SegmentedPointer segptr)
+                {
+                    state.SetValueEa(segptr.BasePointer, GetValue(segptr.Offset), value);
+                }
+                else
+                {
+                    state.SetValueEa(GetValue(mem.EffectiveAddress), value);
+                }
                 return;
             }
         }

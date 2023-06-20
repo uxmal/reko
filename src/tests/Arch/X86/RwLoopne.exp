@@ -14,8 +14,8 @@
 // Z:Z
 // ax:ax
 // C:C
-// es:es
 // di:di
+// es:es
 // Top:Top
 // return address size: 2
 define fn0C00_0000

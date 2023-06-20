@@ -185,12 +185,13 @@ namespace Reko.Scanning
 
         private Address? ForceToAddress(Expression arg)
         {
-            if (arg is InvalidConstant)
-                return null;
-            if (arg is Address addr)
-                return addr;
-            if (arg is Constant c)
+            switch (arg)
             {
+            case InvalidConstant:
+                return null;
+            case Address addr:
+                return addr;
+            case Constant c:
                 if (c.DataType.Size < host.Architecture.PointerType.Size &&
                     host.Architecture.PointerType == PrimitiveType.SegPtr32)
                 {
@@ -198,14 +199,13 @@ namespace Reko.Scanning
                     return host.Architecture.MakeSegmentedAddress(Constant.Word16(sel), c);
                 }
                 return host.Architecture.MakeAddressFromConstant(c, true);
-            }
-            if (arg is MkSequence seq)
-            {
+            case MkSequence seq:
                 if (seq.Expressions.Length == 2 &&
                     seq.Expressions[0] is Constant hd && seq.Expressions[1] is Constant tl)
                 {
                     return host.Architecture.MakeSegmentedAddress(hd, tl);
                 }
+                break;
             }
             return null;
         }
@@ -377,11 +377,6 @@ namespace Reko.Scanning
             }
 
             public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
-            {
-                return access;
-            }
-
-            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
             {
                 return access;
             }
@@ -781,47 +776,46 @@ namespace Reko.Scanning
 
             var seLeft = binExp.Left.Accept(this, ctx);
             var seRight = binExp.Right.Accept(this, ctx);
-            if (seLeft == null && seRight == null)
+            if (seLeft is null && seRight is null)
                 return null;
             //$TODO: addOrSub
             switch (opType)
             {
             case OperatorType.ISub:
             case OperatorType.IAdd:
-                if (this.Live != null && (ctx.Type & ContextType.Condition) != 0)
+                if (this.Live is null || (ctx.Type & ContextType.Condition) == 0)
+                    break;
+                var domLeft = DomainOf(seLeft!.SrcExpr);
+                if (Live.Count > 0)
                 {
-                    var domLeft = DomainOf(seLeft!.SrcExpr);
-                    if (Live.Count > 0)
+                    foreach (var live in Live)
                     {
-                        foreach (var live in Live)
+                        if (live.Value.Type != ContextType.Jumptable)
+                            continue;
+                        if (IsBoundaryCheck(binExp, domLeft, live.Key))
                         {
-                            if (live.Value.Type != ContextType.Jumptable)
-                                continue;
-                            if (IsBoundaryCheck(binExp, domLeft, live.Key))
-                            {
-                                return FoundBoundaryCheck(binExp, live.Key);
-                            }
-                        }
-                        if (IsBoundaryCheck(binExp, domLeft, this.assignLhs!))
-                        {
-                            return FoundBoundaryCheck(binExp, this.assignLhs!);
+                            return FoundBoundaryCheck(binExp, live.Key);
                         }
                     }
-                    else
+                    if (IsBoundaryCheck(binExp, domLeft, this.assignLhs!))
                     {
-                        // We have no live variables, which means this subtraction instruction
-                        // is both computing the jumptable index and also performing the 
-                        // comparison.
-                        this.JumpTableIndex = assignLhs;
-                        this.JumpTableIndexToUse = assignLhs;
-                        this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs!, binExp.Right as Constant);
-                        BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", assignLhs!, JumpTableIndexInterval);
-                        return new SlicerResult
-                        {
-                            SrcExpr = null,     // the jump table expression already has the correct shape.
-                            Stop = true
-                        };
+                        return FoundBoundaryCheck(binExp, this.assignLhs!);
                     }
+                }
+                else
+                {
+                    // We have no live variables, which means this subtraction instruction
+                    // is both computing the jumptable index and also performing the 
+                    // comparison.
+                    this.JumpTableIndex = assignLhs;
+                    this.JumpTableIndexToUse = assignLhs;
+                    this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs!, binExp.Right as Constant);
+                    BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", assignLhs!, JumpTableIndexInterval);
+                    return new SlicerResult
+                    {
+                        SrcExpr = null,     // the jump table expression already has the correct shape.
+                        Stop = true
+                    };
                 }
                 break;
             case OperatorType.And:
@@ -1118,10 +1112,9 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public SlicerResult? VisitSegmentedAccess(SegmentedAccess access, BackwardSlicerContext ctx)
+        public SlicerResult? VisitSegmentedAddress(SegmentedPointer address, BackwardSlicerContext ctx)
         {
-            var sr = access.EffectiveAddress.Accept(this, ctx);
-            return sr;
+            return address.Offset.Accept(this, ctx);
         }
 
         public SlicerResult VisitSideEffect(RtlSideEffect side)

@@ -45,17 +45,17 @@ namespace Reko.Evaluation
         {
         }
 
-        public Expression? Match(SegmentedAccess segMem, EvaluationContext ctx)
+        public Expression? Match(SegmentedPointer segptr, EvaluationContext ctx)
         {
-            if (segMem.BasePointer is not Identifier seg)
+            if (segptr.BasePointer is not Identifier seg)
                 return null;
 
-            Identifier? segPtr = null;
-            var off = segMem.EffectiveAddress;
+            Identifier? basePtr = null;
+            var off = segptr.Offset;
             if (off is Identifier idOff)
             {
                 // [seg:idOff] => [seg_idOff]
-                segPtr = SlicedSegPointer(seg, idOff, ctx);
+                basePtr = SlicedSegPointer(seg, idOff, ctx);
             }
             else
             {
@@ -65,32 +65,32 @@ namespace Reko.Evaluation
                 if (idOff2 != null)
                 {
                     // [seg:idOff +/- C] => [seg_idOff + C]
-                    segPtr = SlicedSegPointer(seg, idOff2, ctx);
+                    basePtr = SlicedSegPointer(seg, idOff2, ctx);
                 }
                 idOff = idOff2!;
             }
-            if (segPtr is null)
+            if (basePtr is null)
                 return null;
 
             ctx.RemoveIdentifierUse(seg);
             ctx.RemoveIdentifierUse(idOff!);
             Expression ea;
-            if (segMem!.EffectiveAddress == idOff)
+            if (segptr!.Offset == idOff)
             {
-                ea = segPtr;
+                ea = basePtr;
             }
             else
             {
-                var bin = (BinaryExpression) segMem.EffectiveAddress;
+                var bin = (BinaryExpression) segptr.Offset;
                 if (bin.Left == idOff)
                 {
-                    ea = new BinaryExpression(bin.Operator, segPtr!.DataType, segPtr!, bin.Right);
+                    ea = new BinaryExpression(bin.Operator, basePtr!.DataType, basePtr!, bin.Right);
                 }
                 else
                     throw new NotImplementedException();
             }
-            ctx.UseExpression(segPtr!);
-            return new MemoryAccess(segMem.MemoryId, ea, segMem.DataType);
+            ctx.UseExpression(basePtr!);
+            return ea;
         }
 
         /// <summary>

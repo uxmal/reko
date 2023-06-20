@@ -509,7 +509,7 @@ namespace Reko.Scanning
                 return;
             if (vector.DataType.Domain == Domain.SignedInt)
                 return;
-            if (mem is SegmentedAccess segmem)
+            if (mem.EffectiveAddress is SegmentedPointer segmem)
             {
                 var (e, _) = segmem.BasePointer.Accept(eval);
                 if (e is Constant selector)

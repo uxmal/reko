@@ -36,44 +36,56 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (5400 T_9 t5400) (5404 T_5 t5404)))
+  OrigDataType: (ptr16 (segment (5400 T_11 t5400) (5404 T_6 t5404)))
 T_3: (in ds2 : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (5404 T_12 t5404)))
+  OrigDataType: (ptr16 (segment (5404 T_15 t5404)))
 T_4: (in 0x5404<16> : word16)
   Class: Eq_4
   DataType: (memptr (ptr16 Eq_2) ci16)
-  OrigDataType: (memptr T_2 (struct (0 T_5 t0000)))
-T_5: (in Mem0[ds:0x5404<16>:word16] : word16)
+  OrigDataType: (memptr T_2 (struct (0 T_6 t0000)))
+T_5: (in ds:0x5404<16> : segptr32)
   Class: Eq_5
+  DataType: segptr32
+  OrigDataType: segptr32
+T_6: (in Mem0[ds:0x5404<16>:word16] : word16)
+  Class: Eq_6
   DataType: ci16
   OrigDataType: ci16
-T_6: (in 0x14<16> : word16)
-  Class: Eq_5
+T_7: (in 0x14<16> : word16)
+  Class: Eq_6
   DataType: ci16
   OrigDataType: ci16
-T_7: (in ds->w5404 < 0x14<16> : bool)
-  Class: Eq_7
-  DataType: bool
-  OrigDataType: bool
-T_8: (in 0x5400<16> : word16)
+T_8: (in ds->w5404 < 0x14<16> : bool)
   Class: Eq_8
-  DataType: (memptr (ptr16 Eq_2) bool)
-  OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
-T_9: (in Mem0[ds:0x5400<16>:bool] : bool)
-  Class: Eq_7
   DataType: bool
   OrigDataType: bool
-T_10: (in 0<16> : word16)
-  Class: Eq_5
+T_9: (in 0x5400<16> : word16)
+  Class: Eq_9
+  DataType: (memptr (ptr16 Eq_2) bool)
+  OrigDataType: (memptr T_2 (struct (0 T_11 t0000)))
+T_10: (in ds:0x5400<16> : segptr32)
+  Class: Eq_10
+  DataType: segptr32
+  OrigDataType: segptr32
+T_11: (in Mem0[ds:0x5400<16>:bool] : bool)
+  Class: Eq_8
+  DataType: bool
+  OrigDataType: bool
+T_12: (in 0<16> : word16)
+  Class: Eq_6
   DataType: ci16
   OrigDataType: word16
-T_11: (in 0x5404<16> : word16)
-  Class: Eq_11
+T_13: (in 0x5404<16> : word16)
+  Class: Eq_13
   DataType: (memptr (ptr16 Eq_2) ci16)
-  OrigDataType: (memptr T_3 (struct (0 T_12 t0000)))
-T_12: (in Mem0[ds2:0x5404<16>:word16] : word16)
-  Class: Eq_5
+  OrigDataType: (memptr T_3 (struct (0 T_15 t0000)))
+T_14: (in ds2:0x5404<16> : segptr32)
+  Class: Eq_14
+  DataType: segptr32
+  OrigDataType: segptr32
+T_15: (in Mem0[ds2:0x5404<16>:word16] : word16)
+  Class: Eq_6
   DataType: ci16
   OrigDataType: word16

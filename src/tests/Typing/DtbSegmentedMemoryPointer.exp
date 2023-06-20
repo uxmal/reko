@@ -15,34 +15,42 @@ SegmentedMemoryPointerMock_exit:
 // Equivalence classes ////////////
 Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (memptr T_4 (struct (0 T_7 t0000) (2 T_18 t0002)))
+Eq_2: (memptr T_4 (struct (0 T_8 t0000) (2 T_22 t0002)))
 	T_2 (in 1<16> : word16)
 	T_3 (in si : word16)
-Eq_4: (ptr16 (segment (1234 T_15 t1234)))
+Eq_4: (ptr16 (segment (1234 T_18 t1234)))
 	T_4 (in cs : selector)
 Eq_5: word16
 	T_5 (in 0<16> : word16)
 Eq_6: word16
 	T_6 (in si + 0<16> : word16)
-Eq_7: word16
-	T_7 (in Mem0[cs:si + 0<16>:word16] : word16)
-	T_8 (in ax : word16)
-	T_13 (in Mem0[cs:si2 + 0<16>:word16] : word16)
-	T_15 (in Mem0[cs:0x1234<16>:word16] : word16)
-	T_18 (in Mem0[cs:si + 2<16>:word16] : word16)
-Eq_9: (memptr T_4 (struct (0 T_13 t0000)))
-	T_9 (in 5<16> : word16)
-	T_10 (in si2 : word16)
-Eq_11: word16
-	T_11 (in 0<16> : word16)
+Eq_7: segptr32
+	T_7 (in cs:si + 0<16> : segptr32)
+Eq_8: word16
+	T_8 (in Mem0[cs:si + 0<16>:word16] : word16)
+	T_9 (in ax : word16)
+	T_15 (in Mem0[cs:si2 + 0<16>:word16] : word16)
+	T_18 (in Mem0[cs:0x1234<16>:word16] : word16)
+	T_22 (in Mem0[cs:si + 2<16>:word16] : word16)
+Eq_10: (memptr T_4 (struct (0 T_15 t0000)))
+	T_10 (in 5<16> : word16)
+	T_11 (in si2 : word16)
 Eq_12: word16
-	T_12 (in si2 + 0<16> : word16)
-Eq_14: (memptr T_4 (struct (0 T_15 t0000)))
-	T_14 (in 0x1234<16> : word16)
-Eq_16: word16
-	T_16 (in 2<16> : word16)
-Eq_17: (memptr T_4 (struct (0 T_7 t0000)))
-	T_17 (in si + 2<16> : word16)
+	T_12 (in 0<16> : word16)
+Eq_13: word16
+	T_13 (in si2 + 0<16> : word16)
+Eq_14: segptr32
+	T_14 (in cs:si2 + 0<16> : segptr32)
+Eq_16: (memptr T_4 (struct (0 T_18 t0000)))
+	T_16 (in 0x1234<16> : word16)
+Eq_17: segptr32
+	T_17 (in cs:0x1234<16> : segptr32)
+Eq_19: word16
+	T_19 (in 2<16> : word16)
+Eq_20: (memptr T_4 (struct (0 T_8 t0000)))
+	T_20 (in si + 2<16> : word16)
+Eq_21: segptr32
+	T_21 (in cs:si + 2<16> : segptr32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -50,16 +58,16 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in 1<16> : word16)
   Class: Eq_2
-  DataType: (memptr T_4 (struct (0 T_7 t0000) (2 T_18 t0002)))
+  DataType: (memptr T_4 (struct (0 T_8 t0000) (2 T_22 t0002)))
   OrigDataType: word16
 T_3: (in si : word16)
   Class: Eq_2
-  DataType: (memptr T_4 (struct (0 T_7 t0000) (2 T_18 t0002)))
-  OrigDataType: (memptr T_4 (struct (0 T_7 t0000) (2 T_18 t0002)))
+  DataType: (memptr T_4 (struct (0 T_8 t0000) (2 T_22 t0002)))
+  OrigDataType: (memptr T_4 (struct (0 T_8 t0000) (2 T_22 t0002)))
 T_4: (in cs : selector)
   Class: Eq_4
-  DataType: (ptr16 (segment (1234 T_15 t1234)))
-  OrigDataType: (ptr16 (segment (1234 T_15 t1234)))
+  DataType: (ptr16 (segment (1234 T_18 t1234)))
+  OrigDataType: (ptr16 (segment (1234 T_18 t1234)))
 T_5: (in 0<16> : word16)
   Class: Eq_5
   DataType: word16
@@ -68,51 +76,67 @@ T_6: (in si + 0<16> : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in Mem0[cs:si + 0<16>:word16] : word16)
+T_7: (in cs:si + 0<16> : segptr32)
   Class: Eq_7
+  DataType: segptr32
+  OrigDataType: segptr32
+T_8: (in Mem0[cs:si + 0<16>:word16] : word16)
+  Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_8: (in ax : word16)
-  Class: Eq_7
+T_9: (in ax : word16)
+  Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_9: (in 5<16> : word16)
-  Class: Eq_9
-  DataType: (memptr T_4 (struct (0 T_13 t0000)))
+T_10: (in 5<16> : word16)
+  Class: Eq_10
+  DataType: (memptr T_4 (struct (0 T_15 t0000)))
   OrigDataType: word16
-T_10: (in si2 : word16)
-  Class: Eq_9
-  DataType: (memptr T_4 (struct (0 T_13 t0000)))
-  OrigDataType: (memptr T_4 (struct (0 T_13 t0000)))
-T_11: (in 0<16> : word16)
-  Class: Eq_11
-  DataType: word16
-  OrigDataType: word16
-T_12: (in si2 + 0<16> : word16)
+T_11: (in si2 : word16)
+  Class: Eq_10
+  DataType: (memptr T_4 (struct (0 T_15 t0000)))
+  OrigDataType: (memptr T_4 (struct (0 T_15 t0000)))
+T_12: (in 0<16> : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
-T_13: (in Mem0[cs:si2 + 0<16>:word16] : word16)
-  Class: Eq_7
+T_13: (in si2 + 0<16> : word16)
+  Class: Eq_13
   DataType: word16
   OrigDataType: word16
-T_14: (in 0x1234<16> : word16)
+T_14: (in cs:si2 + 0<16> : segptr32)
   Class: Eq_14
-  DataType: (memptr T_4 (struct (0 T_15 t0000)))
-  OrigDataType: (memptr T_4 (struct (0 T_15 t0000)))
-T_15: (in Mem0[cs:0x1234<16>:word16] : word16)
-  Class: Eq_7
+  DataType: segptr32
+  OrigDataType: segptr32
+T_15: (in Mem0[cs:si2 + 0<16>:word16] : word16)
+  Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_16: (in 2<16> : word16)
+T_16: (in 0x1234<16> : word16)
   Class: Eq_16
+  DataType: (memptr T_4 (struct (0 T_18 t0000)))
+  OrigDataType: (memptr T_4 (struct (0 T_18 t0000)))
+T_17: (in cs:0x1234<16> : segptr32)
+  Class: Eq_17
+  DataType: segptr32
+  OrigDataType: segptr32
+T_18: (in Mem0[cs:0x1234<16>:word16] : word16)
+  Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_17: (in si + 2<16> : word16)
-  Class: Eq_17
-  DataType: (memptr T_4 (struct (0 T_7 t0000)))
-  OrigDataType: (memptr T_4 (struct (0 T_7 t0000)))
-T_18: (in Mem0[cs:si + 2<16>:word16] : word16)
-  Class: Eq_7
+T_19: (in 2<16> : word16)
+  Class: Eq_19
+  DataType: word16
+  OrigDataType: word16
+T_20: (in si + 2<16> : word16)
+  Class: Eq_20
+  DataType: (memptr T_4 (struct (0 T_8 t0000)))
+  OrigDataType: (memptr T_4 (struct (0 T_8 t0000)))
+T_21: (in cs:si + 2<16> : segptr32)
+  Class: Eq_21
+  DataType: segptr32
+  OrigDataType: segptr32
+T_22: (in Mem0[cs:si + 2<16>:word16] : word16)
+  Class: Eq_8
   DataType: word16
   OrigDataType: word16

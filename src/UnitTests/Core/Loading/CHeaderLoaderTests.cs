@@ -25,10 +25,8 @@ using Reko.Core.Hll.C;
 using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Core.Loading

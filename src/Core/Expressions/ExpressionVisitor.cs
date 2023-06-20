@@ -49,7 +49,7 @@ namespace Reko.Core.Expressions
 		void VisitPointerAddition(PointerAddition pa);
 		void VisitProcedureConstant(ProcedureConstant pc);
 		void VisitScopeResolution(ScopeResolution scopeResolution);
-		void VisitSegmentedAccess(SegmentedAccess access);
+		void VisitSegmentedAddress(SegmentedPointer address);
         void VisitSlice(Slice slice);
         void VisitStringConstant(StringConstant str);
         void VisitTestCondition(TestCondition tc);
@@ -79,7 +79,7 @@ namespace Reko.Core.Expressions
         T VisitPointerAddition(PointerAddition pa);
         T VisitProcedureConstant(ProcedureConstant pc);
         T VisitScopeResolution(ScopeResolution scopeResolution);
-        T VisitSegmentedAccess(SegmentedAccess access);
+        T VisitSegmentedAddress(SegmentedPointer address);
         T VisitSlice(Slice slice);
         T VisitStringConstant(StringConstant str);
         T VisitTestCondition(TestCondition tc);
@@ -108,7 +108,7 @@ namespace Reko.Core.Expressions
         T VisitPointerAddition(PointerAddition pa, C ctx);
         T VisitProcedureConstant(ProcedureConstant pc, C ctx);
         T VisitScopeResolution(ScopeResolution scopeResolution, C ctx);
-        T VisitSegmentedAccess(SegmentedAccess access, C ctx);
+        T VisitSegmentedAddress(SegmentedPointer address, C ctx);
         T VisitSlice(Slice slice, C ctx);
         T VisitStringConstant(StringConstant str, C ctx);
         T VisitTestCondition(TestCondition tc, C ctx);
@@ -231,11 +231,10 @@ namespace Reko.Core.Expressions
 			tc.Expression.Accept(this);
 		}
 
-        public void VisitSegmentedAccess(SegmentedAccess access)
+        public void VisitSegmentedAddress(SegmentedPointer address)
         {
-            access.MemoryId.Accept(this);
-            access.BasePointer.Accept(this);
-            access.EffectiveAddress.Accept(this);
+            address.BasePointer.Accept(this);
+            address.Offset.Accept(this);
         }
 
         public void VisitScopeResolution(ScopeResolution scope)
@@ -365,7 +364,7 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
-        public virtual T VisitSegmentedAccess(SegmentedAccess access)
+        public virtual T VisitSegmentedAddress(SegmentedPointer address)
         {
             throw new NotImplementedException();
         }

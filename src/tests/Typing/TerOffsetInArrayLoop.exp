@@ -59,7 +59,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in ds : (ptr16 Eq_2))
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (5388 T_17 t5388)))
+  OrigDataType: (ptr16 (segment (5388 T_18 t5388)))
 T_3: (in cx : word16)
   Class: Eq_3
   DataType: word16
@@ -84,39 +84,43 @@ T_8: (in di_3 + 0<16> : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_9: (in Mem6[ds:di_3 + 0<16>:word16] : word16)
+T_9: (in ds:di_3 + 0<16> : segptr32)
+  Class: Eq_9
+  DataType: segptr32
+  OrigDataType: segptr32
+T_10: (in Mem6[ds:di_3 + 0<16>:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_10: (in 2<16> : word16)
-  Class: Eq_10
+T_11: (in 2<16> : word16)
+  Class: Eq_11
   DataType: int16
   OrigDataType: int16
-T_11: (in di_3 + 2<16> : word16)
+T_12: (in di_3 + 2<16> : word16)
   Class: Eq_4
   DataType: (memptr (ptr16 Eq_2) word16)
   OrigDataType: (memptr T_2 (struct 0002 (0 word16 w0000)))
-T_12: (in 1<16> : word16)
-  Class: Eq_12
+T_13: (in 1<16> : word16)
+  Class: Eq_13
   DataType: word16
   OrigDataType: word16
-T_13: (in cx - 1<16> : word16)
+T_14: (in cx - 1<16> : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_14: (in 0<16> : word16)
+T_15: (in 0<16> : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_15: (in cx != 0<16> : bool)
-  Class: Eq_15
+T_16: (in cx != 0<16> : bool)
+  Class: Eq_16
   DataType: bool
   OrigDataType: bool
-T_16:
-  Class: Eq_16
-  DataType: word16
-  OrigDataType: (struct 0002 (0 T_9 t0000))
 T_17:
   Class: Eq_17
+  DataType: word16
+  OrigDataType: (struct 0002 (0 T_10 t0000))
+T_18:
+  Class: Eq_18
   DataType: (arr word16)
-  OrigDataType: (arr T_16)
+  OrigDataType: (arr T_17)

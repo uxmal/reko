@@ -197,15 +197,15 @@ namespace Reko.Evaluation
             throw new NotImplementedException();
         }
 
-        public Expression VisitSegmentedAccess(SegmentedAccess access)
+        public Expression VisitSegmentedAddress(SegmentedPointer addr)
         {
-            var seg = access.BasePointer.Accept(this);
+            var seg = addr.BasePointer.Accept(this);
             if (seg is InvalidConstant)
                 return seg;
-            var off = access.EffectiveAddress.Accept(this);
+            var off = addr.Offset.Accept(this);
             if (off is InvalidConstant)
                 return off;
-            return new SegmentedAccess(access.MemoryId, seg, off, access.DataType);
+            return new SegmentedPointer(addr.DataType, seg, off);
         }
 
         public Expression VisitSlice(Slice slice)

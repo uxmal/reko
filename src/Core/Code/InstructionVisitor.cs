@@ -271,11 +271,10 @@ namespace Reko.Core.Code
 			tc.Expression.Accept(this);
 		}
 
-        public virtual void VisitSegmentedAccess(SegmentedAccess access)
+        public virtual void VisitSegmentedAddress(SegmentedPointer access)
         {
-            access.MemoryId.Accept(this);
             access.BasePointer.Accept(this);
-            access.EffectiveAddress.Accept(this);
+            access.Offset.Accept(this);
         }
 
         public virtual void VisitScopeResolution(ScopeResolution scope)

@@ -365,11 +365,6 @@ namespace Reko.Analysis
                 return value;
             }
 
-            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
-            {
-                return access;
-            }
-
             public Expression GetValue(Application appl)
             {
                 return appl;

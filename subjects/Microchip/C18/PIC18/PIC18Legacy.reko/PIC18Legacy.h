@@ -165,7 +165,7 @@ T_25: (in __tblrd(TBLPTR, 1<8>) @ 00001C : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_26: (in 00C5 @ 000020 : ptr16)
+T_26: (in 00C5 @ 000020 : 16)
   Class: Eq_26
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_2 t0000)))
@@ -185,7 +185,7 @@ T_30: (in __tblrd(TBLPTR, 1<8>) @ 000022 : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_31: (in 00C6 @ 000026 : ptr16)
+T_31: (in 00C6 @ 000026 : 16)
   Class: Eq_31
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_2 t0000)))
@@ -241,7 +241,7 @@ T_44: (in __tblrd(TBLPTR, 1<8>) @ 000030 : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_45: (in 00C0 @ 000034 : ptr16)
+T_45: (in 00C0 @ 000034 : 16)
   Class: Eq_45
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_46 t0000)))
@@ -261,7 +261,7 @@ T_49: (in __tblrd(TBLPTR, 1<8>) @ 000036 : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_50: (in 00C1 @ 00003A : ptr16)
+T_50: (in 00C1 @ 00003A : 16)
   Class: Eq_50
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_51 t0000)))
@@ -281,7 +281,7 @@ T_54: (in __tblrd(TBLPTR, 1<8>) @ 00003C : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_55: (in 00C2 @ 000040 : ptr16)
+T_55: (in 00C2 @ 000040 : 16)
   Class: Eq_55
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_56 t0000)))
@@ -361,7 +361,7 @@ T_74: (in __tblrd(TBLPTR, 1<8>) @ 000054 : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_75: (in 00C3 @ 000058 : ptr16)
+T_75: (in 00C3 @ 000058 : 16)
   Class: Eq_75
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_2 t0000)))
@@ -381,7 +381,7 @@ T_79: (in __tblrd(TBLPTR, 1<8>) @ 00005A : void)
   Class: Eq_25
   DataType: void
   OrigDataType: void
-T_80: (in 00C4 @ 00005E : ptr16)
+T_80: (in 00C4 @ 00005E : 16)
   Class: Eq_80
   DataType: (ptr16 cu8)
   OrigDataType: (ptr16 (struct (0 T_2 t0000)))
@@ -697,7 +697,7 @@ T_158: (in Data16[FSR1 + 1<16>:byte] @ 0000F4 : byte)
   Class: Eq_156
   DataType: byte
   OrigDataType: byte
-T_159: (in 00CA @ 0000E0 : ptr16)
+T_159: (in 00CA @ 0000E0 : 16)
   Class: Eq_159
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 (struct (0 T_160 t0000)))

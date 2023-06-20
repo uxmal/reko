@@ -289,8 +289,17 @@ namespace Reko.Typing
         public override Expression VisitMemoryAccess(MemoryAccess access)
         {
             var oldBase = this.basePtr;
-            this.basePtr = null;
-            var ea = Rewrite(access.EffectiveAddress, access.DataType);
+            Expression ea;
+            if (access.EffectiveAddress is SegmentedPointer segptr)
+            {
+                this.basePtr = segptr.BasePointer;
+                ea = Rewrite(segptr.Offset, access.DataType);
+            }
+            else
+            {
+                this.basePtr = null;
+                ea = Rewrite(access.EffectiveAddress, access.DataType);
+            }
             this.basePtr = oldBase;
             return ea;
         }
@@ -332,24 +341,24 @@ namespace Reko.Typing
             return newSeq2;
         }
 
-        public override Expression VisitSegmentedAccess(SegmentedAccess access)
+        public override Expression VisitSegmentedAddress(SegmentedPointer address)
         {
             var oldBase = this.basePtr;
             this.basePtr = null;
-            var basePtr = Rewrite(access.BasePointer, null);
+            var basePtr = Rewrite(address.BasePointer, null);
             Expression result;
-            if (access.EffectiveAddress is Constant cEa)
+            if (address.Offset is Constant cEa)
             {
                 uint uOffset = cEa.ToUInt32();
                 result = RewriteComplexExpression(
-                    basePtr, Constant.UInt32(uOffset), 0, access.DataType);
+                    basePtr, Constant.UInt32(uOffset), 0, address.DataType);
             }
             else
             {
                 this.basePtr = basePtr;
-                result = Rewrite(access.EffectiveAddress, access.DataType);
+                result = Rewrite(address.Offset, address.DataType);
             }
-            store.SetTypeVariable(result, store.GetTypeVariable(access));
+            store.SetTypeVariable(result, store.GetTypeVariable(address));
             this.basePtr = oldBase;
             return result;
         }

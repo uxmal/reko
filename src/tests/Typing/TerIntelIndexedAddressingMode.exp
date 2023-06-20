@@ -35,11 +35,11 @@ IntelIndexedAddressingMode_exit:
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_4: (segment "Eq_4" (CA4 (memptr (ptr16 Eq_4) Eq_15) ptr0CA4) (1C0A int16 w1C0A) (7070 word16 w7070))
+Eq_4: (segment "Eq_4" (CA4 (memptr (ptr16 Eq_4) Eq_18) ptr0CA4) (1C0A int16 w1C0A) (7070 word16 w7070))
 	T_4 (in ds : word16)
-Eq_15: (struct "Eq_15" (A (arr byte) a000A))
-	T_15 (in Mem0[ds:0xCA4<16>:word16] : word16)
-	T_16 (in bx : word16)
+Eq_18: (struct "Eq_18" (A (arr byte) a000A))
+	T_18 (in Mem0[ds:0xCA4<16>:word16] : word16)
+	T_19 (in bx : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -56,80 +56,96 @@ T_3: (in r63 : word32)
 T_4: (in ds : word16)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
-  OrigDataType: (ptr16 (segment (CA4 T_15 t0CA4) (1C0A T_11 t1C0A) (7070 T_6 t7070)))
+  OrigDataType: (ptr16 (segment (CA4 T_18 t0CA4) (1C0A T_13 t1C0A) (7070 T_7 t7070)))
 T_5: (in 0x7070<16> : word16)
   Class: Eq_5
   DataType: (memptr (ptr16 Eq_4) word16)
-  OrigDataType: (memptr T_4 (struct (0 T_6 t0000)))
-T_6: (in Mem0[ds:0x7070<16>:word16] : word16)
+  OrigDataType: (memptr T_4 (struct (0 T_7 t0000)))
+T_6: (in ds:0x7070<16> : segptr32)
   Class: Eq_6
+  DataType: segptr32
+  OrigDataType: segptr32
+T_7: (in Mem0[ds:0x7070<16>:word16] : word16)
+  Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_7: (in es : word16)
-  Class: Eq_6
+T_8: (in es : word16)
+  Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_8: (in 0x4A<16> : word16)
-  Class: Eq_8
+T_9: (in 0x4A<16> : word16)
+  Class: Eq_9
   DataType: int16
   OrigDataType: word16
-T_9: (in ax : word16)
-  Class: Eq_8
+T_10: (in ax : word16)
+  Class: Eq_9
   DataType: int16
   OrigDataType: int16
-T_10: (in 0x1C0A<16> : word16)
-  Class: Eq_10
-  DataType: (memptr (ptr16 Eq_4) int16)
-  OrigDataType: (memptr T_4 (struct (0 T_11 t0000)))
-T_11: (in Mem0[ds:0x1C0A<16>:word16] : word16)
+T_11: (in 0x1C0A<16> : word16)
   Class: Eq_11
-  DataType: int16
-  OrigDataType: int16
-T_12: (in ax *s ds->w1C0A : int16)
+  DataType: (memptr (ptr16 Eq_4) int16)
+  OrigDataType: (memptr T_4 (struct (0 T_13 t0000)))
+T_12: (in ds:0x1C0A<16> : segptr32)
   Class: Eq_12
+  DataType: segptr32
+  OrigDataType: segptr32
+T_13: (in Mem0[ds:0x1C0A<16>:word16] : word16)
+  Class: Eq_13
   DataType: int16
   OrigDataType: int16
-T_13: (in si : word16)
-  Class: Eq_12
-  DataType: int16
-  OrigDataType: int16
-T_14: (in 0xCA4<16> : word16)
+T_14: (in ax *s ds->w1C0A : int16)
   Class: Eq_14
-  DataType: (memptr (ptr16 Eq_4) (memptr (ptr16 Eq_4) Eq_15))
-  OrigDataType: (memptr T_4 (struct (0 T_15 t0000)))
-T_15: (in Mem0[ds:0xCA4<16>:word16] : word16)
-  Class: Eq_15
-  DataType: (memptr (ptr16 Eq_4) Eq_15)
-  OrigDataType: word16
-T_16: (in bx : word16)
-  Class: Eq_15
-  DataType: (memptr (ptr16 Eq_4) Eq_15)
-  OrigDataType: (memptr T_4 (struct (A (arr T_22) a000A)))
-T_17: (in 0xF8<8> : byte)
-  Class: Eq_17
-  DataType: byte
-  OrigDataType: byte
-T_18: (in 0xA<16> : word16)
-  Class: Eq_18
   DataType: int16
   OrigDataType: int16
-T_19: (in bx + 0xA<16> : word16)
-  Class: Eq_19
-  DataType: (memptr (ptr16 Eq_4) byte)
-  OrigDataType: (memptr T_4 (struct (0 (arr T_22) a0000)))
-T_20: (in bx + 0xA<16> + si : word16)
-  Class: Eq_20
-  DataType: (memptr (ptr16 Eq_4) byte)
-  OrigDataType: (memptr T_4 (struct (0 T_21 t0000)))
-T_21: (in Mem0[ds:bx + 0xA<16> + si:byte] : byte)
+T_15: (in si : word16)
+  Class: Eq_14
+  DataType: int16
+  OrigDataType: int16
+T_16: (in 0xCA4<16> : word16)
+  Class: Eq_16
+  DataType: (memptr (ptr16 Eq_4) (memptr (ptr16 Eq_4) Eq_18))
+  OrigDataType: (memptr T_4 (struct (0 T_18 t0000)))
+T_17: (in ds:0xCA4<16> : segptr32)
   Class: Eq_17
+  DataType: segptr32
+  OrigDataType: segptr32
+T_18: (in Mem0[ds:0xCA4<16>:word16] : word16)
+  Class: Eq_18
+  DataType: (memptr (ptr16 Eq_4) Eq_18)
+  OrigDataType: word16
+T_19: (in bx : word16)
+  Class: Eq_18
+  DataType: (memptr (ptr16 Eq_4) Eq_18)
+  OrigDataType: (memptr T_4 (struct (A (arr T_26) a000A)))
+T_20: (in 0xF8<8> : byte)
+  Class: Eq_20
   DataType: byte
   OrigDataType: byte
-T_22:
+T_21: (in 0xA<16> : word16)
+  Class: Eq_21
+  DataType: int16
+  OrigDataType: int16
+T_22: (in bx + 0xA<16> : word16)
   Class: Eq_22
-  DataType: byte
-  OrigDataType: (struct 0001 (0 T_21 t0000))
-T_23:
+  DataType: (memptr (ptr16 Eq_4) byte)
+  OrigDataType: (memptr T_4 (struct (0 (arr T_26) a0000)))
+T_23: (in bx + 0xA<16> + si : word16)
   Class: Eq_23
+  DataType: (memptr (ptr16 Eq_4) byte)
+  OrigDataType: (memptr T_4 (struct (0 T_25 t0000)))
+T_24: (in ds:bx + 0xA<16> + si : segptr32)
+  Class: Eq_24
+  DataType: segptr32
+  OrigDataType: segptr32
+T_25: (in Mem0[ds:bx + 0xA<16> + si:byte] : byte)
+  Class: Eq_20
+  DataType: byte
+  OrigDataType: byte
+T_26:
+  Class: Eq_26
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_25 t0000))
+T_27:
+  Class: Eq_27
   DataType: (arr byte)
-  OrigDataType: (arr T_22)
+  OrigDataType: (arr T_26)

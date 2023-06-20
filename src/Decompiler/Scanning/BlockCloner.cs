@@ -290,13 +290,12 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public Expression VisitSegmentedAccess(SegmentedAccess access)
+        public Expression VisitSegmentedAddress(SegmentedPointer address)
         {
-            return new SegmentedAccess(
-                access.MemoryId,
-                access.BasePointer.Accept(this),
-                access.EffectiveAddress.Accept(this),
-                access.DataType);
+            return new SegmentedPointer(
+                address.DataType,
+                address.BasePointer.Accept(this),
+                address.Offset.Accept(this));
         }
 
         public Expression VisitSlice(Slice slice)

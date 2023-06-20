@@ -980,7 +980,7 @@ namespace Reko.Analysis
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
                 {
-                    if (acc is SegmentedAccess segacc && segacc.BasePointer is Identifier idSeg)
+                    if (acc.EffectiveAddress is SegmentedPointer segptr && segptr.BasePointer is Identifier idSeg)
                     {
                         ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
                     }
@@ -1000,17 +1000,10 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    Expression? basePtr = null;
-                    if (acc is SegmentedAccess sa)
-                    {
-                        basePtr = sa.BasePointer.Accept(this);
-                    }
                     var ea = acc.EffectiveAddress.Accept(this);
                     var memId = acc.MemoryId;
                     if (!this.RenameFrameAccesses)
                         memId = UpdateMemoryIdentifier(memId, true);
-                    if (basePtr != null)
-                        return new SegmentedAccess(memId, basePtr, ea, acc.DataType);
                     return new MemoryAccess(memId, ea, acc.DataType);
                 }
             }
@@ -1146,6 +1139,10 @@ namespace Reko.Analysis
             {
                 if (IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
                 {
+                    if (access.EffectiveAddress is SegmentedPointer segptr && segptr.BasePointer is Identifier idSeg)
+                    {
+                        ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
+                    }
                     ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
                     ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
                     var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
@@ -1198,27 +1195,11 @@ namespace Reko.Analysis
             return new MemoryAccess(memId, ea, access.DataType);
         }
 
-        public override Expression VisitSegmentedAccess(SegmentedAccess access)
+        public override Expression VisitSegmentedAddress(SegmentedPointer segptr)
         {
-            if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
-            {
-                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
-                if (access.BasePointer is Identifier idSeg)
-                {
-                    ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
-                }
-                ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
-                var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame, stmCur!, true);
-                return idNew;
-            }
-            else
-            {
-                var basePtr = access.BasePointer.Accept(this);
-                var ea = access.EffectiveAddress.Accept(this);
-                var memId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur!, false);
-                return new SegmentedAccess(memId, basePtr, ea, access.DataType);
-            }
+            var basePtr = segptr.BasePointer.Accept(this);
+            var ea = segptr.Offset.Accept(this);
+            return new SegmentedPointer(segptr.DataType, basePtr, ea);
         }
 
         private MemoryIdentifier UpdateMemoryIdentifier(MemoryIdentifier memId, bool storing)
@@ -1237,6 +1218,8 @@ namespace Reko.Analysis
 
         private static bool IsFrameAccess(Procedure proc, Expression e)
         {
+            if (e is SegmentedPointer segptr)
+                e = segptr.Offset;
             if (e == proc.Frame.FramePointer)
                 return true;
             if (e is not BinaryExpression bin)
@@ -1255,6 +1238,8 @@ namespace Reko.Analysis
 
         private static Identifier EnsureStackVariable(Procedure proc, Expression effectiveAddress, DataType dt)
         {
+            if (effectiveAddress is SegmentedPointer segptr)
+                effectiveAddress = segptr.Offset;
             if (effectiveAddress == proc.Frame.FramePointer)
                 return proc.Frame.EnsureStackVariable(0, dt);
             var bin = (BinaryExpression)effectiveAddress;

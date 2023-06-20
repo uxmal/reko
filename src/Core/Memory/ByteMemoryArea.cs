@@ -144,26 +144,6 @@ namespace Reko.Core.Memory
 			return seg;
 		}
 
-		private static double IntPow(double b, int e)
-		{
-			double acc = 1.0;
-
-			while (e != 0)
-			{
-				if ((e & 1) == 1)
-				{
-					acc *= b;
-					--e;
-				}
-				else
-				{
-					b *= b;
-					e >>= 1;
-				}
-			}
-			return acc;
-		}
-
         public Constant? ReadRelocation(long imageOffset)
         {
             return Relocations[BaseAddress.ToLinear() + (ulong) imageOffset];

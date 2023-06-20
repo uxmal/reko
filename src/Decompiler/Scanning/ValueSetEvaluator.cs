@@ -241,54 +241,38 @@ namespace Reko.Scanning
                     .ToArray());
         }
 
-        private Constant ReadValue(DataType dt, Expression eAddr)
+        private Expression ReadValue(DataType dt, Expression eAddr)
         {
-            if (eAddr is Constant cAddr)
+            if (eAddr is not Address addr)
             {
-                var addr = arch.MakeAddressFromConstant(cAddr, false)!;
-                if (!segmentMap.TryFindSegment(addr, out ImageSegment? seg))
+                if (eAddr is not Constant cAddr)
+                    throw new NotImplementedException($"Don't know how to read from {eAddr}");
+                addr = arch.MakeAddressFromConstant(cAddr, false);
+            }
+            if (!segmentMap.TryFindSegment(addr, out ImageSegment? seg))
+                return InvalidConstant.Create(dt);
+            var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
+            memAccesses[addr] = dt;
+            if (dt == PrimitiveType.SegPtr32)
+            {
+                var addrRead = arch.ReadCodeAddress(dt.Size, rdr, null);
+                if (addrRead is not null)
+                {
+                    return addrRead;
+                }
+                else
+                {
+                    //$REVIEW we want a warning here. OR the caller.
                     return InvalidConstant.Create(dt);
-                var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
-                memAccesses[addr] = dt;
-                if (!rdr.TryRead((PrimitiveType)dt, out var c))
+                }
+            }
+            else
+            {
+                if (!rdr.TryRead((PrimitiveType) dt, out var c))
                     return InvalidConstant.Create(dt);
                 else
                     return c;
             }
-            throw new NotImplementedException();
-        }
-
-        private Expression ReadSegmentedValue(DataType dt, Constant seg, Expression eOff)
-        {
-            if (eOff is Constant off)
-            {
-                var addr = arch.MakeSegmentedAddress(seg, off);
-                if (!segmentMap.TryFindSegment(addr, out ImageSegment? segment))
-                    return InvalidConstant.Create(dt);
-                var rdr = arch.CreateImageReader(segment.MemoryArea, addr);
-                memAccesses[addr] = dt;
-                if (dt == PrimitiveType.SegPtr32)
-                {
-                    var addrRead = arch.ReadCodeAddress(dt.Size, rdr, null);
-                    if (addrRead != null)
-                    {
-                        return addrRead;
-                    }
-                    else
-                    {
-                        //$REVIEW we want a warning here. OR the caller.
-                        return InvalidConstant.Create(dt);
-                    }
-                }
-                else
-                {
-                    if (!rdr.TryRead((PrimitiveType) dt, out var v))
-                        return InvalidConstant.Create(dt);
-                    else
-                        return v;
-                }
-            }
-            throw new NotImplementedException();
         }
 
         public ValueSet VisitMkSequence(MkSequence seq, BitRange bitRange)
@@ -342,7 +326,7 @@ namespace Reko.Scanning
                 cSeg.DataType == PrimitiveType.SegmentSelector)
             {
                 // Special case for segmented pointers.
-                //$TODO: we really need a special MkSegmentedPointer expression type.
+                //$TODO: we have SegmentedAddress, let's use that.
                 return arch.MakeSegmentedAddress(cSeg, (Constant) off); 
             }
             exps[^1] = (Constant) off;
@@ -383,15 +367,21 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public ValueSet VisitSegmentedAccess(SegmentedAccess access, BitRange bitRange)
+        public ValueSet VisitSegmentedAddress(SegmentedPointer address, BitRange bitRange)
         {
-            if (context.TryGetValue(access, out ValueSet? value))
+            Expression MakeAddress(DataType dataType, Constant selector, Expression offset)
+            {
+                var cOffset = (Constant) offset;
+                return arch.MakeSegmentedAddress(selector, cOffset);
+            }
+
+            if (context.TryGetValue(address, out ValueSet? value))
             {
                 return value;
             }
-            var vs = access.EffectiveAddress.Accept(this, bitRange);
+            var vs = address.Offset.Accept(this, bitRange);
 
-            var vaSeg = access.BasePointer.Accept(this, bitRange);
+            var vaSeg = address.BasePointer.Accept(this, bitRange);
             if (vaSeg == ValueSet.Any)
                 return vaSeg;
             var segs = vaSeg.Values.ToArray();
@@ -400,11 +390,11 @@ namespace Reko.Scanning
             if (segs[0] is not Constant cSeg)
                 return ValueSet.Any;
 
-            var vsOff = access.EffectiveAddress.Accept(this, bitRange);
+            var vsOff = address.Offset.Accept(this, bitRange);
             return new ConcreteValueSet(
                 vsOff.DataType,
                 vsOff.Values
-                    .Select(v => ReadSegmentedValue(access.DataType, cSeg, v))
+                    .Select(v => MakeAddress(address.DataType, cSeg, v))
                     .ToArray());
         }
 

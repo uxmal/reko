@@ -119,7 +119,6 @@ namespace Reko.Core
             if (dst is Identifier)
                 throw new ArgumentException("Use the 'Assign' method for identifiers.", nameof(dst));
             if (dst is MemoryAccess ||
-                dst is SegmentedAccess ||
                 dst is FieldAccess ||
                 dst is ArrayAccess ||
                 dst is MemberPointerSelector ||
@@ -160,7 +159,7 @@ namespace Reko.Core
         /// <param name="src">R-Value.</param>
         public Statement SStore(Expression basePtr, Expression ea, Expression src)
         {
-            var s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
+            var s = new Store(this.SegMem(src.DataType, basePtr, ea), src);
             return Emit(s);
         }
 

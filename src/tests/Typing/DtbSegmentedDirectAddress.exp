@@ -1,10 +1,12 @@
 // Equivalence classes ////////////
-Eq_2: (ptr16 (struct (200 T_4 t0200)))
+Eq_2: (ptr16 (struct (200 T_5 t0200)))
 	T_2 (in ds : word16)
-Eq_3: (memptr T_2 (struct (0 T_4 t0000)))
+Eq_3: (memptr T_2 (struct (0 T_5 t0000)))
 	T_3 (in 0x200<16> : word16)
-Eq_4: byte
-	T_4 (in Mem0[ds:0x200<16>:byte] : byte)
+Eq_4: segptr32
+	T_4 (in ds:0x200<16> : segptr32)
+Eq_5: byte
+	T_5 (in Mem0[ds:0x200<16>:byte] : byte)
 // Type Variables ////////////
 T_1: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -12,13 +14,17 @@ T_1: (in globals : (ptr32 (struct "Globals")))
   OrigDataType: 
 T_2: (in ds : word16)
   Class: Eq_2
-  DataType: (ptr16 (struct (200 T_4 t0200)))
-  OrigDataType: (ptr16 (struct (200 T_4 t0200)))
+  DataType: (ptr16 (struct (200 T_5 t0200)))
+  OrigDataType: (ptr16 (struct (200 T_5 t0200)))
 T_3: (in 0x200<16> : word16)
   Class: Eq_3
-  DataType: (memptr T_2 (struct (0 T_4 t0000)))
-  OrigDataType: (memptr T_2 (struct (0 T_4 t0000)))
-T_4: (in Mem0[ds:0x200<16>:byte] : byte)
+  DataType: (memptr T_2 (struct (0 T_5 t0000)))
+  OrigDataType: (memptr T_2 (struct (0 T_5 t0000)))
+T_4: (in ds:0x200<16> : segptr32)
   Class: Eq_4
+  DataType: segptr32
+  OrigDataType: segptr32
+T_5: (in Mem0[ds:0x200<16>:byte] : byte)
+  Class: Eq_5
   DataType: byte
   OrigDataType: byte

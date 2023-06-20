@@ -48,7 +48,6 @@ namespace Reko.Core.Types
         
         public Formatter VisitArray(ArrayType at)
         {
-            
             writer.Write("(arr ");
             if (this.nesting < 90)
             {

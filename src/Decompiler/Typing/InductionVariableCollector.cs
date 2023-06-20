@@ -76,11 +76,6 @@ namespace Reko.Typing
             return null;
         }
 
-        public override LinearInductionVariable? VisitSegmentedAccess(SegmentedAccess access)
-        {
-            return null;
-        }
-
         public LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable? iv, Operator op, Constant? c)
         {
             if (iv == null || c == null)

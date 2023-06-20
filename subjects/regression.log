@@ -136,9 +136,9 @@ l0800_17AE: warning: Non-integral switch expression
 00000004: warning: Expected sizes of arrays to have been determined by now
 000000FF: error: Failed to write global variable g_t00FF.
     Index was outside the bounds of the array.
-       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 683
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 276
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 228
+       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 663
+   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 256
+   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 208
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 222
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 245
    at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 616
@@ -152,9 +152,9 @@ l0800_17AE: warning: Non-integral switch expression
 00000004: warning: Expected sizes of arrays to have been determined by now
 000000FF: error: Failed to write global variable g_t00FF.
     Index was outside the bounds of the array.
-       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 683
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 276
-   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 228
+       at Reko.Core.Memory.ByteMemoryArea.TryReadByte(Byte[] img, Int64 off, Byte& b) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 663
+   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Byte[] abImage, Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 256
+   at Reko.Core.Memory.ByteMemoryArea.TryReadLe(Int64 imageOffset, DataType type, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteMemoryArea.cs:line 208
    at Reko.Core.Memory.ByteImageReader.TryReadLe(DataType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\ByteImageReader.cs:line 222
    at Reko.Core.Memory.LeImageReader.TryRead(PrimitiveType dataType, Constant& c) in d:\dev\uxmal\reko\master\src\Core\Memory\EndianImageReader.cs:line 245
    at Reko.Core.ProcessorArchitecture.TryRead(EndianImageReader rdr, PrimitiveType dt, Constant& value) in d:\dev\uxmal\reko\master\src\Core\IProcessorArchitecture.cs:line 616
@@ -1130,8 +1130,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -1420,7 +1420,7 @@ fn0001B2AC: error: An error occurred while rewriting procedure to high-level lan
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 95
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 97
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
 fn0001B2CC: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 000171BC: warning: Expected sizes of arrays to have been determined by now
@@ -1595,10 +1595,7 @@ fn0800_8F97: error: An internal error occurred while building the expressions of
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 225
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
-l0800_031A: warning: Non-integral switch expression
 l0800_0663: warning: Non-integral switch expression
-l0800_0EE8: warning: Non-integral switch expression
-l0800_11D8: warning: Non-integral switch expression
 
 === scripting\pyFuncNames
 IronPython 3.4.0b1
@@ -2446,7 +2443,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -2454,7 +2451,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 147
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 82
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -2513,4 +2510,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 89 binaries in 69.00 seconds.
+Decompiled 89 binaries in 77.07 seconds.

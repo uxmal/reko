@@ -1090,9 +1090,12 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public virtual SegmentedAccess SegMem(MemoryIdentifier mid, DataType dt, Expression basePtr, Expression offset)
+        public virtual MemoryAccess SegMem(MemoryIdentifier mid, DataType dt, Expression basePtr, Expression offset)
         {
-            return new SegmentedAccess(mid, basePtr, offset, dt);
+            int segptrBitsize = basePtr.DataType.BitSize + offset.DataType.BitSize;
+            return new MemoryAccess(mid, 
+                new SegmentedPointer(PrimitiveType.Create(Domain.SegPointer, segptrBitsize), basePtr, offset),
+                dt);
         }
 
         /// <summary>
@@ -1103,7 +1106,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public virtual SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression offset)
+        public virtual MemoryAccess SegMem(DataType dt, Expression basePtr, Expression offset)
         {
             return SegMem(MemoryIdentifier.GlobalMemory, dt, basePtr, offset);
         }
@@ -1115,7 +1118,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public SegmentedAccess SegMem8(Expression basePtr, Expression ptr)
+        public MemoryAccess SegMem8(Expression basePtr, Expression ptr)
         {
             return SegMem(PrimitiveType.Byte, basePtr, ptr);
         }
@@ -1127,7 +1130,7 @@ namespace Reko.Core.Expressions
         /// <param name="basePtr">Base pointer or segment selector.</param>
         /// <param name="offset">Offset from base pointer.</param>
         /// <returns>A segmented memory access expression.</returns>
-        public SegmentedAccess SegMem16(Expression basePtr, Expression ptr)
+        public MemoryAccess SegMem16(Expression basePtr, Expression ptr)
         {
             return SegMem(PrimitiveType.Word16, basePtr, ptr);
         }

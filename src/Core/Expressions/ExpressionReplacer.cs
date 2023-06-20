@@ -187,13 +187,13 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
-        public Expression VisitSegmentedAccess(SegmentedAccess access)
+        public Expression VisitSegmentedAddress(SegmentedPointer address)
         {
-            if (cmp.Equals(access, original))
+            if (cmp.Equals(address, original))
                 return replacement;
-            var seg = access.BasePointer.Accept(this);
-            var off = access.EffectiveAddress.Accept(this);
-            return new SegmentedAccess(access.MemoryId, seg, off, access.DataType);
+            var sel = address.BasePointer.Accept(this);
+            var off = address.Offset.Accept(this);
+            return new SegmentedPointer(address.DataType, sel, off);
         }
 
         public Expression VisitSlice(Slice slice)

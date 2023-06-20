@@ -27,8 +27,8 @@ Eq_2: (segment "seg0C00_t" 0012)
 	T_2 (in seg0C00 : selector)
 Eq_3: (struct (4 (memptr Eq_4 Eq_3) ptr0004))
 	T_3 (in bx : word16)
-	T_13 (in Mem0[ds:bx + 4<i16>:word16] : word16)
-	T_14 (in 0<16> : word16)
+	T_15 (in Mem0[ds:bx + 4<i16>:word16] : word16)
+	T_16 (in 0<16> : word16)
 Eq_4: (segment (0 Eq_3 t0000) (200 word16 w0200))
 	T_4 (in ds : selector)
 // Type Variables ////////////
@@ -43,11 +43,11 @@ T_2: (in seg0C00 : selector)
 T_3: (in bx : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_4) Eq_3)
-  OrigDataType: (memptr T_4 (struct (4 T_13 t0004)))
+  OrigDataType: (memptr T_4 (struct (4 T_15 t0004)))
 T_4: (in ds : selector)
   Class: Eq_4
   DataType: (ptr16 Eq_4)
-  OrigDataType: (ptr16 (segment (200 T_8 t0200)))
+  OrigDataType: (ptr16 (segment (200 T_9 t0200)))
 T_5: (in ax_12 : word16)
   Class: Eq_5
   DataType: word16
@@ -59,36 +59,44 @@ T_6: (in 0<16> : word16)
 T_7: (in 0x200<16> : word16)
   Class: Eq_7
   DataType: (memptr (ptr16 Eq_4) word16)
-  OrigDataType: (memptr T_4 (struct (0 T_8 t0000)))
-T_8: (in Mem14[ds:0x200<16>:word16] : word16)
+  OrigDataType: (memptr T_4 (struct (0 T_9 t0000)))
+T_8: (in ds:0x200<16> : segptr32)
+  Class: Eq_8
+  DataType: segptr32
+  OrigDataType: segptr32
+T_9: (in Mem14[ds:0x200<16>:word16] : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_9: (in 1<16> : word16)
-  Class: Eq_9
+T_10: (in 1<16> : word16)
+  Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_10: (in ax_12 + 1<16> : word16)
+T_11: (in ax_12 + 1<16> : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_11: (in 4<i16> : int16)
-  Class: Eq_11
+T_12: (in 4<i16> : int16)
+  Class: Eq_12
   DataType: int16
   OrigDataType: int16
-T_12: (in bx + 4<i16> : word16)
-  Class: Eq_12
+T_13: (in bx + 4<i16> : word16)
+  Class: Eq_13
   DataType: word16
   OrigDataType: word16
-T_13: (in Mem0[ds:bx + 4<i16>:word16] : word16)
+T_14: (in ds:bx + 4<i16> : segptr32)
+  Class: Eq_14
+  DataType: segptr32
+  OrigDataType: segptr32
+T_15: (in Mem0[ds:bx + 4<i16>:word16] : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_4) Eq_3)
   OrigDataType: word16
-T_14: (in 0<16> : word16)
+T_16: (in 0<16> : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_4) Eq_3)
   OrigDataType: word16
-T_15: (in bx == 0<16> : bool)
-  Class: Eq_15
+T_17: (in bx == 0<16> : bool)
+  Class: Eq_17
   DataType: bool
   OrigDataType: bool

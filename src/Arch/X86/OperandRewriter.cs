@@ -113,7 +113,7 @@ namespace Reko.Arch.X86
                 {
                     seg = AluRegister(mem.DefaultSegment);
                 }
-                return new SegmentedAccess(MemoryIdentifier.GlobalMemory, seg, expr, dt);
+                return m.SegMem(dt, seg, expr);
             }
             else
             {
@@ -258,7 +258,11 @@ namespace Reko.Arch.X86
 
         public override MemoryAccess StackAccess(Expression expr, DataType dt)
         {
-            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, AluRegister(Registers.ss), expr, dt);
+            return new MemoryAccess(MemoryIdentifier.GlobalMemory, 
+                new SegmentedPointer(
+                    arch.ProcessorMode.PointerType,
+                    AluRegister(Registers.ss), expr),
+                dt);
         }
     }
 

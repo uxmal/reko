@@ -91,7 +91,7 @@ namespace Reko.Core.Expressions
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, CreateEffectiveAddress(baseRegister, offset), dt);
         }
 
-        protected static Expression CreateEffectiveAddress(Expression baseRegister, int offset)
+        public static Expression CreateEffectiveAddress(Expression baseRegister, int offset)
         {
             if (offset == 0)
                 return baseRegister;
@@ -102,46 +102,4 @@ namespace Reko.Core.Expressions
                     Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
         }
     }
-
-    /// <summary>
-    /// Segmented memory access that models x86 segmented memory addressing.
-    /// </summary>
-    public class SegmentedAccess : MemoryAccess
-    {
-        public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
-        {
-            this.BasePointer = basePtr;
-        }
-
-        /// <summary>
-        /// The base pointer models the segment selector in segmented addresses.
-        /// </summary>
-        public Expression BasePointer { get; }
-
-        public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
-        {
-            return v.VisitSegmentedAccess(this, context);
-        }
-
-        public override T Accept<T>(ExpressionVisitor<T> visit)
-        {
-            return visit.VisitSegmentedAccess(this);
-        }
-
-        public override void Accept(IExpressionVisitor visit)
-        {
-            visit.VisitSegmentedAccess(this);
-        }
-
-        public override Expression CloneExpression()
-        {
-            return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
-        }
-
-        public static SegmentedAccess Create(Expression segRegister, Expression baseRegister, int offset, DataType dt)
-        {
-            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, segRegister, CreateEffectiveAddress(baseRegister, offset), dt);
-        }
-    }
-
 }

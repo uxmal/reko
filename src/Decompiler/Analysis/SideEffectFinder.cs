@@ -99,13 +99,6 @@ namespace Reko.Analysis
 			flags |= SideEffectFlags.Load;
 		}
 
-		public override void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			base.VisitSegmentedAccess(access);
-			flags |= SideEffectFlags.Load;
-		}
-
-
 		public override void VisitStore(Store store)
 		{
 			store.Dst.Accept(this);

@@ -470,11 +470,11 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        Expression ExpressionVisitor<Expression, Procedure>.VisitSegmentedAccess(SegmentedAccess access, Procedure ctx)
+        Expression ExpressionVisitor<Expression, Procedure>.VisitSegmentedAddress(SegmentedPointer addr, Procedure ctx)
         {
-            var selector = access.BasePointer.Accept(this, ctx);
-            var ea = access.EffectiveAddress.Accept(this, ctx);
-            return new SegmentedAccess(access.MemoryId, selector, ea, access.DataType);
+            var selector = addr.BasePointer.Accept(this, ctx);
+            var ea = addr.Offset.Accept(this, ctx);
+            return new SegmentedPointer(addr.DataType, selector, ea);
         }
 
         Expression ExpressionVisitor<Expression, Procedure>.VisitSlice(Slice slice, Procedure ctx)

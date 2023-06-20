@@ -60,8 +60,6 @@ namespace Reko.Analysis
             // Do not add memory identifier to uses
             if (store.Dst is MemoryAccess access)
             {
-                if (access is SegmentedAccess sa)
-                    sa.BasePointer.Accept(this);
                 access.EffectiveAddress.Accept(this);
                 return;
             }

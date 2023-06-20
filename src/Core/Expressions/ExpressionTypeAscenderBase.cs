@@ -380,19 +380,14 @@ namespace Reko.Core.Expressions
 
         public DataType VisitMemoryAccess(MemoryAccess access)
         {
-            return VisitMemoryAccessCommon(access, access.EffectiveAddress);
-        }
-
-        public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
-        {
-            var dtEa = ea.Accept(this);
+            var dtEa = access.EffectiveAddress.Accept(this);
             var ptEa = GetPossibleFieldType(dtEa, 0);
-            if (ptEa == null)
+            if (ptEa is null)
             {
                 ptEa = dtEa.ResolveAs<Pointer>();
             }
             DataType dt;
-            if (ptEa != null)
+            if (ptEa is not null)
             {
                 //$REVIEW: what if sizeof(access) != sizeof(field_at_0)?
                 dt = ptEa.Pointee;
@@ -457,10 +452,12 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
-        public DataType VisitSegmentedAccess(SegmentedAccess access)
+        public DataType VisitSegmentedAddress(SegmentedPointer address)
         {
-            access.BasePointer.Accept(this);
-            return VisitMemoryAccessCommon(access, access.EffectiveAddress);
+            var dtBase = address.BasePointer.Accept(this);
+            var dtOffset =  address.Offset.Accept(this);
+            var segptrType = PrimitiveType.Create(Domain.SegPointer, address.DataType.BitSize);
+            return RecordDataType(segptrType, address);
         }
 
         public DataType VisitSlice(Slice slice)

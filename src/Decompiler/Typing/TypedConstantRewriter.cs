@@ -247,7 +247,7 @@ namespace Reko.Typing
                 : (Expression) new ScopeResolution(baseType);
 
             var dt = memptr.Pointee.ResolveAs<DataType>()!;
-            var f = EnsureFieldAtOffset(baseType, dt, c!.ToInt32());
+            var f = EnsureFieldAtOffset(baseType, dt, (int)c!.ToUInt32());
             Expression ex = new FieldAccess(memptr.Pointee, baseExpr, f);
 			if (Dereferenced)
 			{

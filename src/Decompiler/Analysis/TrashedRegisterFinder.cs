@@ -699,16 +699,6 @@ namespace Reko.Analysis
                 return new List<Statement>();
             }
 
-            public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
-            {
-                var offset = this.GetFrameOffset(access.EffectiveAddress);
-                if (offset.HasValue && StackState.TryGetValue(offset.Value, out Expression? value))
-                {
-                    return value;
-                }
-                return InvalidConstant.Create(access.DataType);
-            }
-
             public Expression GetValue(Application appl)
             {
                 var args = appl.Arguments;
@@ -848,6 +838,8 @@ namespace Reko.Analysis
 
             private int? GetFrameOffset(Expression effectiveAddress)
             {
+                if (effectiveAddress is SegmentedPointer segptr)
+                    effectiveAddress = segptr.Offset;
                 if (effectiveAddress is not BinaryExpression ea || ea.Left != FramePointer)
                     return null;
                 if (ea.Right is not Constant o)

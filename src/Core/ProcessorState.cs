@@ -140,6 +140,16 @@ namespace Reko.Core
 
         public Expression GetValue(MemoryAccess access, IReadOnlySegmentMap segmentMap)
         {
+            if (access.EffectiveAddress is SegmentedPointer segptr)
+            {
+                if (GetStackOffset(segptr.Offset, out var segStackOffset))
+                {
+                    if (stackState.TryGetValue(segStackOffset, out var value) &&
+                        value.DataType.BitSize == access.DataType.BitSize)
+                        return value;
+                }
+                return InvalidConstant.Create(access.DataType);
+            }
             if (access.EffectiveAddress is Constant constAddr)
             {
                 // This can only happen on linear architectures.
@@ -155,17 +165,6 @@ namespace Reko.Core
             if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
             {
                 if (stackState.TryGetValue(stackOffset, out var value))
-                    return value;
-            }
-            return InvalidConstant.Create(access.DataType);
-        }
-
-        public Expression GetValue(SegmentedAccess access, IReadOnlySegmentMap segmentMap)
-        {
-            if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
-            {
-                if (stackState.TryGetValue(stackOffset, out var value) && 
-                    value.DataType.BitSize == access.DataType.BitSize)
                     return value;
             }
             return InvalidConstant.Create(access.DataType);

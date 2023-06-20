@@ -2484,8 +2484,8 @@ l0800_1AE8_thunk_fn0800_1AEB:
 l0800_1A8A:
 	si_189 = si_201
 	bx = ax_220 >>u 3<8>
-	byte al_313 = Mem216[ss:fp + 2<16>:byte]
-	branch (Mem216[ss:fp - 34<i16> + (ax_220 >>u 3<8>):byte] & 1<8> << (Mem216[ss:fp + 2<16>:byte] & 7<8>)) == 0<8> l0800_1AA7
+	byte al_313 = Mem216[ss:fp + 0x0002<p16>:byte]
+	branch (Mem216[ss:fp - 34<i16> + (ax_220 >>u 3<8>):byte] & 1<8> << (Mem216[ss:fp + 0x0002<p16>:byte] & 7<8>)) == 0<8> l0800_1AA7
 l0800_1AA7:
 	branch (bLoc2B_1049 & 0x10<8>) == 0<8> l0800_1AB6
 l0800_1A9F:
@@ -2659,7 +2659,7 @@ l0800_19DD:
 		defs: ax:ax_668,bx:bx_670,dx:dx_671
 	wLoc28_1038 = wLoc28_1038 + 1<16>
 	wLoc04 = wArg06
-	byte al_681 = Mem663[ss:fp + 2<16>:byte]
+	byte al_681 = Mem663[ss:fp + 0x0002<p16>:byte]
 	branch (bLoc2B_1042 & 1<8>) != 0<8> l0800_19F0
 l0800_19EF:
 	Mem682[es:di:byte] = al_681
@@ -3141,7 +3141,7 @@ l0800_1BE6:
 	wLoc06_538 = v10_27
 	sp_115 = sp_38 + 2<i16>
 	word16 ax_116 = ax_40
-	byte al_51 = Mem33[ss:fp + 2<16>:byte]
+	byte al_51 = Mem33[ss:fp + 0x0002<p16>:byte]
 	branch ax_40 < 0<16> l0800_1C5A
 l0800_1BF4:
 	word16 ax_52 = CONVERT(al_51, byte, int16)
@@ -3196,7 +3196,7 @@ l0800_1C89:
 	call SEQ(0x800<16>, wArg02) (retsize: 2;)
 		defs: ax:ax_150,sp:sp_148
 	wLoc06_538 = wLoc06_538 + 1<16>
-	byte al_158 = Mem145[ss:fp + 2<16>:byte]
+	byte al_158 = Mem145[ss:fp + 0x0002<p16>:byte]
 	sp_115 = sp_148 + 2<i16>
 	wArg08 = 8<16>
 	branch al_158 == 0x78<8> l0800_1CA0
@@ -3245,7 +3245,7 @@ l0800_1C45:
 	call SEQ(0x800<16>, wArg02) (retsize: 2;)
 		defs: ax:ax_266,sp:sp_264
 	wLoc06_538 = wLoc06_538 + 1<16>
-	byte al_273 = Mem263[ss:fp + 2<16>:byte]
+	byte al_273 = Mem263[ss:fp + 0x0002<p16>:byte]
 	sp_115 = sp_264 + 2<i16>
 	branch al_273 == 0x78<8> l0800_1CA5
 l0800_1C53:

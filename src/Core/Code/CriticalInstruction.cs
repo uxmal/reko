@@ -182,9 +182,9 @@ namespace Reko.Core.Code
 
         public bool VisitScopeResolution(ScopeResolution sc) => false;
 
-        public bool VisitSegmentedAccess(SegmentedAccess segmem) =>
-            segmem.BasePointer.Accept(this) ||
-            segmem.EffectiveAddress.Accept(this);
+        public bool VisitSegmentedAddress(SegmentedPointer segptr) =>
+            segptr.BasePointer.Accept(this) ||
+            segptr.Offset.Accept(this);
 
         public bool VisitSlice(Slice slice) =>
             slice.Expression.Accept(this);

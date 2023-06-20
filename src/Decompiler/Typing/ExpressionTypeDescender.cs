@@ -563,7 +563,16 @@ namespace Reko.Typing
 
         public bool VisitMemoryAccess(MemoryAccess access, TypeVariable tv)
         {
-            return VisitMemoryAccess(null, TypeVar(access), access.EffectiveAddress, globals);
+            if (access.EffectiveAddress is SegmentedPointer segptr)
+            {
+                var seg = factory.CreateStructureType(null, 0);
+                seg.IsSegment = true;
+                MeetDataType(segptr.BasePointer, factory.CreatePointer(seg, segptr.BasePointer.DataType.BitSize));
+                segptr.BasePointer.Accept(this, TypeVar(segptr.BasePointer));
+                return VisitMemoryAccess(segptr.BasePointer, TypeVar(access), segptr.Offset, segptr.BasePointer);
+            }
+            else
+                return VisitMemoryAccess(null, TypeVar(access), access.EffectiveAddress, globals);
         }
 
         private bool VisitMemoryAccess(Expression? basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals)
@@ -854,14 +863,14 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        public bool VisitSegmentedAccess(SegmentedAccess access, TypeVariable tv)
+        public bool VisitSegmentedAddress(SegmentedPointer address, TypeVariable tv)
         {
             var seg = factory.CreateStructureType(null, 0);
             seg.IsSegment = true;
-            MeetDataType(access.BasePointer, factory.CreatePointer(seg, access.BasePointer.DataType.BitSize));
-            access.BasePointer.Accept(this, TypeVar(access.BasePointer));
-
-            return VisitMemoryAccess(access.BasePointer, TypeVar(access), access.EffectiveAddress, access.BasePointer);
+            MeetDataType(address.BasePointer, factory.CreatePointer(seg, address.BasePointer.DataType.BitSize));
+            address.BasePointer.Accept(this, TypeVar(address.BasePointer));
+            //$TODO: if tv.DataType is a pointer?.
+            return false;
         }
 
         public bool VisitSlice(Slice slice, TypeVariable tv)

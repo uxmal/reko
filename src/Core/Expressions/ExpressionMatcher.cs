@@ -251,17 +251,17 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
-        bool ExpressionVisitor<bool, ExpressionMatch>.VisitSegmentedAccess(SegmentedAccess access, ExpressionMatch m)
+        bool ExpressionVisitor<bool, ExpressionMatch>.VisitSegmentedAddress(SegmentedPointer address, ExpressionMatch m)
         {
-            if (m.Pattern is not SegmentedAccess smp)
+            if (m.Pattern is not SegmentedPointer msa)
                 return false;
-            if (smp.DataType is not WildDataType &&
-                smp.DataType.BitSize != access.DataType.BitSize)
+            if (msa.DataType is not WildDataType &&
+                msa.DataType.BitSize != address.DataType.BitSize)
                 return false;
 
             return
-                Match(smp.BasePointer, access.BasePointer, m) &&
-                Match(smp.EffectiveAddress, access.EffectiveAddress, m);
+                Match(msa.BasePointer , address.BasePointer, m) &&
+                Match(msa.Offset, address.Offset, m);
         }
 
         bool ExpressionVisitor<bool, ExpressionMatch>.VisitSlice(Slice slice, ExpressionMatch m)
@@ -367,7 +367,7 @@ namespace Reko.Core.Expressions
 
             public override object GetValue()
             {
-                throw new InvalidOperationException();
+                return "<wild>";
             }
 
             public override int GetHashOfValue()

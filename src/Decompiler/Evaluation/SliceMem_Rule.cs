@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Operators;
 using System;
 
@@ -39,37 +40,33 @@ namespace Reko.Evaluation
             if (slice.Expression is not MemoryAccess acc)
                 return null;
 
-            var b = acc.EffectiveAddress;
-			Constant offset = Constant.Create(b.DataType, 0);
+            var ea = acc.EffectiveAddress;
+            var segptr = ea as SegmentedPointer;
+            if (segptr is not null)
+                ea = segptr.Offset;
+			Constant offset = Constant.Create(ea.DataType, 0);
 			BinaryOperator op = Operator.IAdd;
-            if (b is BinaryExpression ea)
+            if (ea is BinaryExpression bin)
             {
-                if (ea.Right is Constant c)
+                if (bin.Right is Constant c)
                 {
                     offset = c;
-                    b = ea.Left;
+                    ea = bin.Left;
                 }
-            }
-            else
-            {
-                b = acc.EffectiveAddress;
             }
             int bitBegin = slice.Offset;
 			int bitEnd = bitBegin + slice.DataType.BitSize;
 			if (0 <= bitBegin && bitEnd <= acc.DataType.BitSize)
 			{
                 //$REVIEW: endianness?
-                offset = op.ApplyConstants(offset, Constant.Create(acc.EffectiveAddress.DataType, slice.Offset / ctx.MemoryGranularity));
-                var newEa = new BinaryExpression(op, offset.DataType, b, offset);
-                if (acc is SegmentedAccess seg)
+                offset = op.ApplyConstants(offset, Constant.Create(ea.DataType, slice.Offset / ctx.MemoryGranularity));
+                Expression newEa = new BinaryExpression(op, offset.DataType, ea, offset);
+                if (segptr is not null)
                 {
-                    b = new SegmentedAccess(seg.MemoryId, seg.BasePointer, newEa, slice.DataType);
+                    newEa = SegmentedPointer.Create(segptr.BasePointer, newEa);
                 }
-                else
-                {
-                    b = new MemoryAccess(acc.MemoryId, newEa, slice.DataType);
-                }
-                return b;
+                ea = new MemoryAccess(acc.MemoryId, newEa, slice.DataType);
+                return ea;
 			}
 			return null;
 		}
