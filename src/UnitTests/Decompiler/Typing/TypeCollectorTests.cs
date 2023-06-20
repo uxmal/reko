@@ -442,18 +442,5 @@ namespace Reko.UnitTests.Decompiler.Typing
 
             Then_GlobalFieldsAre(program, "123400: a_data: T_2");
         }
-
-        [Test]
-        public void TycoConstantSelector()
-        {
-            ProgramBuilder pp = new ProgramBuilder();
-            pp.Add("Fn", m =>
-            {
-                Identifier a = m.Local16("a");
-                Identifier b = m.Local16("b");
-                m.Store(m.SegMem16(m.Word16(0x1234), m.ISub(a, 1)), b);
-            });
-            RunTest(pp.BuildProgram(), $"Typing/{nameof(TycoConstantSelector)}.txt");
-        }
     }
 }

@@ -978,7 +978,12 @@ namespace Reko.Scanning
         public SlicerResult? VisitConversion(Conversion conversion, BackwardSlicerContext ctx)
         {
             var range = new BitRange(0, (short) conversion.DataType.BitSize);
-            return conversion.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
+            var se = conversion.Expression.Accept(this, new BackwardSlicerContext(ctx.Type, range));
+            if (se is not null && se.SrcExpr is not null)
+            {
+                se.SrcExpr = new Conversion(se.SrcExpr, se.SrcExpr.DataType, conversion.DataType);
+            }
+            return se;
         }
 
         public SlicerResult VisitDereference(Dereference deref, BackwardSlicerContext ctx)

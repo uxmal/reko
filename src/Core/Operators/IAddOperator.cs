@@ -35,14 +35,20 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
-            if (c1.DataType.IsPointer && (c2.DataType.Domain & Domain.Integer) != 0)
+            var d1 = c1.DataType.Domain;
+            var d2 = c2.DataType.Domain;
+            var bitSize = Math.Max(c1.DataType.BitSize, c2.DataType.BitSize);
+            var isPointy1 = (d1 & (Domain.Pointer | Domain.Offset)) != 0;
+            var isPointy2 = (d2 & (Domain.Pointer | Domain.Offset)) != 0;
+
+            if (isPointy1 && (c2.DataType.Domain & Domain.Integer) != 0)
             {
-                var dt = PrimitiveType.Create(Domain.Pointer, c1.DataType.BitSize);
+                var dt = PrimitiveType.Create(d1, c1.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
             }
-            else if (c2.DataType.IsPointer && (c1.DataType.Domain & Domain.Integer) != 0)
+            else if (isPointy2 && (c1.DataType.Domain & Domain.Integer) != 0)
             {
-                var dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
+                var dt = PrimitiveType.Create(d2, c2.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
             }
             else

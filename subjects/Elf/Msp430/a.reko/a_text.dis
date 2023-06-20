@@ -164,7 +164,7 @@ msp430_compute_modulator_bits_entry:
 	word20 r14 = SLICE(r15_r14, word20, 0)
 	word20 r15 = SLICE(r15_r14, word20, 20)
 l0000420E:
-	word16 v17_39 = Mem26[fp + 2<32>:word16]
+	word16 v17_39 = Mem26[fp + 2<16>:word16]
 	word20 r12_45 = fn00005B04(r15_r14, r13_r12)
 	ui40 r9_r8_209 = fn00005ADC(r14, r15, r12_45, 0<16>) - r13_r12
 	branch v17_39 == 0<16> l00004274
@@ -211,9 +211,9 @@ init_uart_isr_entry:
 	ptr16 fp
 	byte bLoc10 = SLICE(wLoc10, byte, 0)
 l000042CC:
-	word16 v16_34 = Mem23[fp + 2<32>:word16]
-	word16 v17_37 = Mem23[fp + 4<32>:word16]
-	byte v18_41 = Mem23[fp + 6<32>:byte]
+	word16 v16_34 = Mem23[fp + 2<16>:word16]
+	word16 v17_37 = Mem23[fp + 4<16>:word16]
+	byte v18_41 = Mem23[fp + 6<16>:byte]
 	Mem47[0x0218<p16>:word16] = Mem23[0x0218<p16>:word16] + 1<16>
 	word20 r15_52
 	word20 sr_53 = xQueueCreate(sr & 0xFFF7<16>, v18_41, out r15_52)
@@ -389,7 +389,7 @@ vRxISR_entry:
 	ptr16 fp
 l4450:
 	word20 r15_27
-	word20 sr_28 = xQueueSendFromISR(sr, 0<16>, fp - 0xA<32>, Mem18[0x021C<p16>:word16], out r15_27)
+	word20 sr_28 = xQueueSendFromISR(sr, 0<16>, fp - 0xA<16>, Mem18[0x021C<p16>:word16], out r15_27)
 	branch r15_27 == 0<20> l4474
 l4470:
 	word20 r11_102
@@ -414,7 +414,7 @@ vTxISR_entry:
 	struct <anonymous> tLoc0C
 	byte bLoc0A
 l4480:
-	branch xQueueReceiveFromISR(sr, &tLoc0C, fp - 0xA<32>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
+	branch xQueueReceiveFromISR(sr, &tLoc0C, fp - 0xA<16>, Mem14[0x021E<p16>:word16]) == 1<16> l44A2
 l44A2:
 	Mem35[0x007F<p16>:byte] = bLoc0A
 l449C:
@@ -2286,7 +2286,7 @@ l570C:
 	word16 wLoc20_1050 = v116_262
 	branch v116_262 == 0<16> l5756
 l5756:
-	wLoc20_1050 = fp - 0x4C<32>
+	wLoc20_1050 = fp - 0x4C<16>
 l571A:
 	byte bLoc20_1061 = SLICE(wLoc20_1050, byte, 0)
 	branch r11_278 < 0<20> l5740
@@ -2343,17 +2343,17 @@ l5620:
 l5628:
 	bLoc1E_1013 = bLoc1E_1013 & 0xFFDF<16>
 l562E:
-	word16 wLoc20_1083 = fp - 0x24<32>
-	byte bLoc20_1139 = SLICE(CONVERT(fp, ptr16, uipr32), byte, 0) - 0x24<8>
-	byte bLoc1F_1250 = SLICE(fp - 0x24<32>, byte, 8)
+	word16 wLoc20_1119
+	byte bLoc20_1139 = SLICE(fp, byte, 0) - 0x24<8>
+	byte bLoc1F_1250 = SLICE(fp - 0x24<16>, byte, 8)
 	branch wLoc1C_1085 != 0<16> l564A
 l563E:
-	wLoc20_1083 = SLICE(CONVERT(fp, ptr16, uipr32), word16, 0) - 0x24<16> (alias)
 	branch wLoc1A_1092 != 0<16> l564A
 l5644:
-	wLoc20_1083 = SEQ(bLoc1F_1250, bLoc20_1139) (alias)
+	wLoc20_1119 = SEQ(bLoc1F_1250, bLoc20_1139) (alias)
 	branch r11_278 == 0<8> l56C6
 l564A:
+	wLoc20_1119 = fp - 0x24<16>
 	word16 wLoc14_1668 = CONVERT(bLoc18_1043, byte, uint16)
 	word32 dwLoc1C_2057 = dwLoc1C_2060
 l5658:
@@ -2379,15 +2379,15 @@ l56F8:
 l568E:
 	r4_436 = r14_425 + 0x30<16>
 l5692:
-	wLoc20_1083 = wLoc20_2100 + 0xFFFF<16>
-	Mem455[wLoc20_1083:byte] = r4_436
+	wLoc20_1119 = wLoc20_2100 + 0xFFFF<16>
+	Mem455[wLoc20_1119:byte] = r4_436
 	ui40 r15_r14_2099
 	ui40 r13_r12_2098
 	fn00005B4E(CONVERT(wLoc14_1668, word16, uint40), r8_427, wLoc1C_1108, wLoc1A_1109, out r13_r12_2098, out r15_r14_2099, out r8)
 	word20 r13_467 = <invalid>
 	word20 r12_466 = <invalid>
 	dwLoc1C_2057 = SEQ(r13_467, r12_466) (alias)
-	wLoc20_2100 = wLoc20_1083
+	wLoc20_2100 = wLoc20_1119
 	branch bLoc16_1107 != 0<8> l5658
 l56C0:
 	dwLoc1C_2060 = SEQ(r13_467, r12_466) (alias)
@@ -2400,17 +2400,17 @@ l56D8:
 	branch r4_436 == 0x30<16> l56C6
 l56DE:
 	Mem498[wLoc20_2100 + 0xFFFE<16>:byte] = 0x30<16>
-	wLoc20_1083 = SEQ(SLICE(wLoc20_2100 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_2100, byte, 0) + 0xFE<8>) (alias)
+	wLoc20_1119 = SEQ(SLICE(wLoc20_2100 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_2100, byte, 0) + 0xFE<8>) (alias)
 	dwLoc1C_2060 = SEQ(r13_467, r12_466) (alias)
 l56C6:
-	r9_296 = fp - 0x4C<32> - SLICE(wLoc20_1083, byte, 0) + 0x28<16>
-	wLoc20_1248 = wLoc20_1083 (alias)
+	r9_296 = fp - 0x4C<16> - SLICE(wLoc20_1119, byte, 0) + 0x28<16>
+	wLoc20_1248 = wLoc20_1119 (alias)
 	dwLoc1C_2073 = dwLoc1C_2060 (alias)
 l54E6:
 	branch r7_257 != 0<20> l54EE
 l54EE:
 l54F6:
-	wLoc20_1248 = fp - 0x4C<32>
+	wLoc20_1248 = fp - 0x4C<16>
 	r9_296 = 1<8>
 l54F8:
 	bLoc24_1016 = 0<8>
@@ -2444,12 +2444,12 @@ l5542:
 	branch bLoc24_1016 != 0<20> l55E4
 l55E4:
 	r14_581 = 1<16>
-	r15_584 = fp - 0x24<32>
+	r15_584 = fp - 0x24<16>
 l5546:
 	branch (bLoc1E_1013 & 0x40<16>) == 0<8> l5576
 l554E:
 	r14_581 = 2<16>
-	r15_584 = fp - 0x22<32>
+	r15_584 = fp - 0x22<16>
 l556A:
 	branch PRINT(r14_581, r15_584) >= 0<20> l5576
 l5576:

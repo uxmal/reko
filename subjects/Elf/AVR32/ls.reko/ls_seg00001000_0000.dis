@@ -13555,7 +13555,7 @@ l0000B49E:
 l0000B49E_1:
 	r12_904 = 0<32>
 l0000B42C:
-	branch SLICE(r3_875, word2, 0) == 1<32> l0000B43A
+	branch SLICE(r3_875, word2, 0) == 1<2> l0000B43A
 l0000B43A:
 	branch false l0000B448
 l0000B448:
