@@ -519,8 +519,6 @@ Eq_829: (struct "Eq_829" (FFFFFFEC Eq_95 tFFFFFFEC) (FFFFFFF0 ui32 dwFFFFFFF0) (
 	T_832 (in fp - 8<i32> - dwArg08 @ 00401998 : word32)
 Eq_858: (segment "Eq_858" (0 word32 dw0000))
 	T_858 (in fs @ 004019C6 : (ptr32 Eq_858))
-Eq_865: (union "Eq_865" (ptr32 u0) ((memptr (ptr32 Eq_858) word32) u1))
-	T_865 (in 0x00000000<p32> @ 004019C9 : ptr32)
 Eq_882: (fn Eq_659 (Eq_89))
 	T_882 (in IsProcessorFeaturePresent @ 00401A1E : ptr32)
 	T_883 (in signature of IsProcessorFeaturePresent : void)
@@ -3991,11 +3989,11 @@ T_864: (in Mem0[ebp + -16<i32>:word32] @ 004019C9 : word32)
   Class: Eq_864
   DataType: word32
   OrigDataType: word32
-T_865: (in 0x00000000<p32> @ 004019C9 : ptr32)
+T_865: (in 0<32> @ 004019C9 : word32)
   Class: Eq_865
-  DataType: Eq_865
-  OrigDataType: (union (ptr32 u0) ((memptr T_858 (struct (0 word32 dw0000))) u1))
-T_866: (in Mem8[fs:0x00000000<p32>:word32] @ 004019C9 : word32)
+  DataType: (memptr (ptr32 Eq_858) word32)
+  OrigDataType: (memptr T_858 (struct (0 T_866 t0000)))
+T_866: (in Mem8[fs:0<32>:word32] @ 004019C9 : word32)
   Class: Eq_864
   DataType: word32
   OrigDataType: word32
@@ -5232,11 +5230,6 @@ typedef struct Eq_829 {
 typedef struct Eq_858 {
 	word32 dw0000;	// 0
 } Eq_858;
-
-typedef union Eq_865 {
-	ptr32 u0;
-	word32 Eq_858::* u1;
-} Eq_865;
 
 typedef BOOL (Eq_882)(Eq_89);
 

@@ -33,8 +33,8 @@ namespace Reko.UnitTests.Arch.X86
     [TestFixture] 
     public class X86Disassembler_32bit_Tests : DisassemblerTestBase<X86Instruction>
     {
-        private X86ArchitectureFlat32 arch;
-        private Address addr;
+        private readonly X86ArchitectureFlat32 arch;
+        private readonly Address addr;
 
         public X86Disassembler_32bit_Tests()
         {
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Arch.X86
             var instr = DisassembleBytes(0x8B, 0x15, 0x22, 0x33, 0x44, 0x55, 0x66);
             Assert.AreEqual("mov\tedx,[55443322h]", instr.ToString()); 
             var memOp = (MemoryOperand) instr.Operands[1];
-            Assert.AreEqual("ptr32", memOp.Offset.DataType.ToString());
+            Assert.AreEqual("word32", memOp.Offset.DataType.ToString());
         }
 
         [Test]

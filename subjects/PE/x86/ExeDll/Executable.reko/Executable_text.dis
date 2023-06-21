@@ -828,7 +828,7 @@ fn004019C6_entry:
 	word32 dwArg0C
 	word32 dwArg10
 l004019C6:
-	Mem8[fs:0x00000000<p32>:word32] = Mem0[ebp - 16<i32>:word32]
+	Mem8[fs:0<32>:word32] = Mem0[ebp - 16<i32>:word32]
 	word32 ebp_19 = Mem8[ebp:word32]
 	Mem22[ebp:word32] = dwArg00
 	ebpOut = ebp_19

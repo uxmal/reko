@@ -1787,10 +1787,10 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
                         }
                         else
                         {
-                            offsetWidth = PrimitiveType.Ptr32;
                             b = RegisterStorage.None;
+                            offsetWidth = PrimitiveType.Word32;
                         }
-					}
+                    }
 					else
 					{
                         b = RegFromBitsRexB(rm, decodingContext.addressWidth, GpRegFromBits);

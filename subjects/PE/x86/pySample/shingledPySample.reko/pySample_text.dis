@@ -611,7 +611,7 @@ fn1000182D_entry:
 	selector fs
 	word32 dwArg08
 l1000182D:
-	Mem8[fs:0x00000000<p32>:word32] = Mem0[ebp - 16<i32>:word32]
+	Mem8[fs:0<32>:word32] = Mem0[ebp - 16<i32>:word32]
 	Mem22[ebp:word32] = dwArg00
 	return dwArg08
 fn1000182D_exit:

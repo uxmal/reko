@@ -584,8 +584,6 @@ Eq_990: (struct "Eq_990" (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 ui32 dwFFFFFFF0)
 	T_993 (in fp - 8<i32> - dwArg08 @ 10001800 : word32)
 Eq_1020: (segment "Eq_1020" (0 word32 dw0000))
 	T_1020 (in fs @ 1000182D : (ptr32 Eq_1020))
-Eq_1025: (union "Eq_1025" (ptr32 u0) ((memptr (ptr32 Eq_1020) word32) u1))
-	T_1025 (in 0x00000000<p32> @ 10001830 : ptr32)
 Eq_1030: LARGE_INTEGER
 	T_1030 (in tLoc14 @ 10001864 : Eq_1030)
 Eq_1031: (struct "_FILETIME" 0008 (0 DWORD dwLowDateTime) (4 DWORD dwHighDateTime))
@@ -4740,11 +4738,11 @@ T_1024: (in Mem0[ebp + -16<i32>:word32] @ 10001830 : word32)
   Class: Eq_1024
   DataType: word32
   OrigDataType: word32
-T_1025: (in 0x00000000<p32> @ 10001830 : ptr32)
+T_1025: (in 0<32> @ 10001830 : word32)
   Class: Eq_1025
-  DataType: Eq_1025
-  OrigDataType: (union (ptr32 u0) ((memptr T_1020 (struct (0 word32 dw0000))) u1))
-T_1026: (in Mem8[fs:0x00000000<p32>:word32] @ 10001830 : word32)
+  DataType: (memptr (ptr32 Eq_1020) word32)
+  OrigDataType: (memptr T_1020 (struct (0 T_1026 t0000)))
+T_1026: (in Mem8[fs:0<32>:word32] @ 10001830 : word32)
   Class: Eq_1024
   DataType: word32
   OrigDataType: word32
@@ -5610,11 +5608,6 @@ typedef struct Eq_990 {
 typedef struct Eq_1020 {
 	word32 dw0000;	// 0
 } Eq_1020;
-
-typedef union Eq_1025 {
-	ptr32 u0;
-	word32 Eq_1020::* u1;
-} Eq_1025;
 
 typedef LARGE_INTEGER Eq_1030;
 
