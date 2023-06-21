@@ -493,6 +493,10 @@ namespace Reko.Arch.i8051
                 {
                     throw new NotImplementedException();
                 }
+                if (ea.DataType.BitSize < 16)
+                {
+                    ea = m.Convert(ea, PrimitiveType.Byte, PrimitiveType.Word16);
+                }
                 if (dataMemory != null)
                 {
                     return m.SegMem(mem.Width, binder.EnsureRegister(dataMemory), ea);

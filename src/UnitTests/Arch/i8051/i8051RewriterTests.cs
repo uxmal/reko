@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x27); // add\tA,@R1
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A + Mem0[__data:R1:byte]",
+                "1|L--|A = A + Mem0[__data:CONVERT(R1, byte, word16):byte]",
                 "2|L--|CAOP = cond(A)");
 
             Given_Bytes(0x2B); // add\tA,R3
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x56); // anl\tA,@R0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A & Mem0[__data:R0:byte]",
+                "1|L--|A = A & Mem0[__data:CONVERT(R0, byte, word16):byte]",
                 "2|L--|P = cond(A)");
         }
 
@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xF2); // movx\t@R0,A
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|Mem0[__data:R0:byte] = A");
+                "1|L--|Mem0[__data:CONVERT(R0, byte, word16):byte] = A");
         }
 
         [Test]
@@ -313,7 +313,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x67); // xrl\tA,@R1
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A ^ Mem0[__data:R1:byte]",
+                "1|L--|A = A ^ Mem0[__data:CONVERT(R1, byte, word16):byte]",
                 "2|L--|P = cond(A)");
         }
 
@@ -567,10 +567,10 @@ namespace Reko.UnitTests.Arch.i8051
             AssertCode(     // xchd	A,@R0
                 "0|L--|0000(1): 5 instructions",
                 "1|L--|v3 = SLICE(A, word4, 0)",
-                "2|L--|v4 = Mem0[__data:R0:byte]",
+                "2|L--|v4 = Mem0[__data:CONVERT(R0, byte, word16):byte]",
                 "3|L--|A = SEQ(SLICE(A, word4, 4), SLICE(v4, word4, 0))",
                 "4|L--|v4 = SEQ(SLICE(v4, word4, 4), v3)",
-                "5|L--|Mem0[__data:R0:byte] = v4");
+                "5|L--|Mem0[__data:CONVERT(R0, byte, word16):byte] = v4");
         }
     }
 }
