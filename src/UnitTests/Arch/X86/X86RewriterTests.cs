@@ -875,9 +875,9 @@ namespace Reko.UnitTests.Arch.X86
             });
             AssertCode(
                 "0|T--|0C00:0000(2): 1 instructions",
-                "1|T--|call SEQ(0xC00<16>, bx) (2)",
+                "1|T--|call 0xC00<16>:bx (2)",
                 "2|T--|0C00:0002(3): 1 instructions",
-                "3|T--|call SEQ(0xC00<16>, Mem0[ds:bx + 4<i16>:word16]) (2)",
+                "3|T--|call 0xC00<16>:Mem0[ds:bx + 4<i16>:word16] (2)",
                 "4|T--|0C00:0005(3): 1 instructions",
                 "5|T--|call Mem0[ds:bx + 8<i16>:segptr32] (4)");
         }

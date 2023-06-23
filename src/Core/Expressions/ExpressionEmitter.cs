@@ -1136,6 +1136,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a <see cref="SegmentedPointer"/>.
+        /// </summary>
+        /// <param name="basePtr">Base or segment of the pointer.</param>
+        /// <param name="offset">Offset of the pointer.</param>
+        /// <returns>A segmented pointer expression.</returns>
+        public SegmentedPointer SegPtr(Expression basePtr, Expression offset)
+        {
+            return SegmentedPointer.Create(basePtr, offset);
+        }
+
+        /// <summary>
         /// Generates an integer multiplication. No assumption about signedness is made.
         /// </summary>
         /// <param name="left">Multiplicand.</param>

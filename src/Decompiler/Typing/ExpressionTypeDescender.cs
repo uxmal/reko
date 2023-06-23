@@ -865,11 +865,23 @@ namespace Reko.Typing
 
         public bool VisitSegmentedAddress(SegmentedPointer address, TypeVariable tv)
         {
+            var basePtr = address.BasePointer;
+            var off = address.Offset;
             var seg = factory.CreateStructureType(null, 0);
             seg.IsSegment = true;
-            MeetDataType(address.BasePointer, factory.CreatePointer(seg, address.BasePointer.DataType.BitSize));
-            address.BasePointer.Accept(this, TypeVar(address.BasePointer));
-            //$TODO: if tv.DataType is a pointer?.
+            MeetDataType(address.BasePointer, factory.CreatePointer(seg, basePtr.DataType.BitSize));
+            basePtr.Accept(this, TypeVar(address.BasePointer));
+            var dtSegPtr = DataTypeOf(address);
+            if (dtSegPtr is Pointer ptr)
+            {
+                MeetDataType(off, MemberPointerTo(TypeVar(basePtr), ptr.Pointee, DataTypeOf(off).BitSize));
+            }
+            else if (dtSegPtr.IsPointer)
+            {
+                MeetDataType(off, MemberPointerTo(TypeVar(basePtr), new UnknownType(), DataTypeOf(off).BitSize));
+            }
+            basePtr.Accept(this, TypeVar(basePtr));
+            off.Accept(this, TypeVar(off));
             return false;
         }
 

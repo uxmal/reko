@@ -1496,5 +1496,41 @@ main_exit:
             });
             RunStringTest(pb.BuildProgram(), sExp);
         }
+
+        [Test]
+        public void TerCallSegmentedPtr()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	call 0xC00<16>:bx + 4<16> (retsize: 4;)
+main_exit:
+
+// After ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	(0xC00<16>->*((char *) bx + 4<i32>))()
+main_exit:
+
+";
+            #endregion
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var bx = m.Register(RegisterStorage.Reg16("bx", 3));
+                m.Call(m.SegPtr(m.Word16(0xC00), m.IAdd(bx, 4)), 4);
+            });
+            RunStringTest(pb.BuildProgram(), sExp);
+        }
     }
 }

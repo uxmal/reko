@@ -111,7 +111,7 @@ namespace Reko.Typing
                     return addr;
                 }
                 var ptrSeg = store.GetTypeVariable(segId).DataType.ResolveAs<Pointer>();
-                if (ptrSeg == null)
+                if (ptrSeg is null)
                 {
                     //$TODO: what should the warning be?
                     //$BUG: create a fake field for now.
@@ -128,15 +128,7 @@ namespace Reko.Typing
                 this.c = Constant.Create(
                     PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
-                DataType pointee;
-                if (dt != null)
-                {
-                    pointee = dt.Pointee;
-                }
-                else
-                {
-                    pointee = new UnknownType();
-                }
+                DataType pointee = dt?.Pointee ?? new UnknownType();
 
                 var f = EnsureFieldAtOffset(baseType, pointee, c.ToInt32());
                 Expression ex = new FieldAccess(f.DataType, new Dereference(ptrSeg, segId), f);

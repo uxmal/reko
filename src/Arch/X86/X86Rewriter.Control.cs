@@ -130,7 +130,7 @@ namespace Reko.Arch.X86
                         return;
                     }
                     var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector!.Value);
-                    target = m.Seq(seg, target);
+                    target = m.SegPtr(seg, target);
                 }
                 m.Call(target, (byte) opsize.Size);
             }

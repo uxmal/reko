@@ -355,8 +355,13 @@ namespace Reko.Typing
             }
             else
             {
+                var newOffset = Rewrite(address.Offset, null);
                 this.basePtr = basePtr;
-                result = Rewrite(address.Offset, address.DataType);
+                result = RewriteComplexExpression(
+                    newOffset,
+                    null,
+                    0,
+                    dereferencedType);
             }
             store.SetTypeVariable(result, store.GetTypeVariable(address));
             this.basePtr = oldBase;

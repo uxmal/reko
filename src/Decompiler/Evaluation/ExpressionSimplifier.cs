@@ -1126,7 +1126,10 @@ namespace Reko.Evaluation
                     PrimitiveType t;
                     if (tHead.Domain == Domain.Selector)            //$REVIEW: seems to require Address, SegmentedAddress?
                     {
-                        t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
+                        //$TODO: now that there is a SegmentPointer class available,
+                        // consider removing this special case code, since it already
+                        // is implemented for SegmentPointer
+                        t = PrimitiveType.Create(Domain.SegPointer, tHead.BitSize + tTail.BitSize);
                         return (ctx.MakeSegmentedAddress(c1, c2), true);
                     }
                     else if (tTail.Domain != Domain.Real)
