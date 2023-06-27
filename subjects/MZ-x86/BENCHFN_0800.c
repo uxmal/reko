@@ -236,9 +236,8 @@ void __setargv(struct Eq_n * ds, Eq_n wArg00)
 	seg0800->t0330 = wArg00;
 	seg0800->ptr0332 = ds;
 	struct Eq_n * es_n = ds->ptr0090;
-	word16 si_n = ds->w008A;
 	uint16 ax_n = (uint16) es_n->b0080;
-	byte Eq_n::* si_n = si_n + 0x02;
+	word16 si_n = ds->w008A;
 	word16 cx_n = 0x01;
 	es_n = es_n;
 	if (ds->b0092 >= 0x03)
@@ -269,28 +268,18 @@ l0800_nE7:
 	{
 		ss->*((word16) di_n - 2) = cx_n;
 		word16 cx_n = cx_n - 0x01;
-		di_n = di_n;
-		while (true)
-		{
-			Eq_n di_n;
-			if (cx_n == 0x00)
-				break;
-			ss->*di_n = es_n->*si_n;
-			++si_n;
-			di_n = (word16) di_n + 1;
-			--cx_n;
-		}
+		Eq_n size_n = (cx_n == 0x00 ? 0x00010000 : cx_n) * 0x01;
+		memcpy(di_n, si_n + 0x02, size_n);
+		word16 di_n = di_n + size_n;
 		ss->*di_n = 0x00;
-		Eq_n di_n = (word16) di_n + 1;
 		word16 si_n = 0x81;
 		Eq_n cx_n = ax_n + 0x01;
-		word16 ax_n = cx_n;
-		word16 bx_n = cx_n + 0x01;
+		word16 ax_n = 0x00;
 		do
 		{
 l0800_nA3:
 			word16 ax_n;
-			fn0800-03BF(si_n, di_n, ax_n, cx_n, out ax_n, out cx_n, out si_n);
+			fn0800-03BF(si_n, (word16) di_n + 1, ax_n, cx_n, out ax_n, out cx_n, out si_n);
 			bool Z_n = <invalid>;
 			bool C_n = <invalid>;
 			if (!(Z_n | C_n))
@@ -299,15 +288,14 @@ l0800_nA3:
 				{
 					if (C_n)
 					{
-						word16 cx_n = (word16) (ss->*((word16) di_n - 2)) + cx_n;
+						word16 cx_n = ss->*((char *) di_n - 2);
 						struct Eq_n * ds_n = seg0800->ptr0332;
-						ds_n->w0084 = bx_n;
-						Eq_n bx_n = (bx_n + 0x01) * 0x02;
+						ds_n->w0084 = 0x01;
 						Eq_n si_n = di_n;
-						Eq_n bp_n = di_n - bx_n;
-						if (bp_n < 0x00)
+						Eq_n bp_n = di_n - 0x04;
+						if (di_n < 0x04)
 							goto l0800_nE7;
-						ds_n->t0086 = bp_n;
+						ds_n->t0086 = di_n - 0x04;
 						while (cx_n != 0x00)
 						{
 							ss->*bp_n = si_n;
@@ -325,7 +313,7 @@ l0800_nA3:
 						seg0800->t0330();
 						return;
 					}
-					fn0800-03BF(si_n, di_n, ax_n, cx_n, out ax_n, out cx_n, out si_n);
+					fn0800-03BF(si_n, (word16) di_n + 1, ax_n, cx_n, out ax_n, out cx_n, out si_n);
 					bool Z_n = <invalid>;
 					C_n = <invalid>;
 				} while (Z_n | C_n);
@@ -380,18 +368,9 @@ void __setenvp(struct Eq_n * ds)
 {
 	cu16 cx_n = ds->w008A;
 	Eq_n ax_n = _malloc(ds, cx_n);
-	cu16 cx_n = cx_n;
-	Eq_n di_n = ax_n;
 	if (ax_n != 0x00)
 	{
-		struct Eq_n * ds_n = ds->ptr008C;
-		byte Eq_n::* si_n = Eq_n::a0000;
-		for (; cx_n != 0x00; --cx_n)
-		{
-			ds->*di_n = ds_n->*si_n;
-			++si_n;
-			di_n = (word16) di_n + 1;
-		}
+		memcpy(ax_n, *ds->ptr008C, (cx_n == 0x00 ? 0x00010000 : cx_n) * 0x01);
 		Eq_n ax_n = _malloc(ds, ds->w008E);
 		ds->t0088 = ax_n;
 		Eq_n di_n = ax_n;

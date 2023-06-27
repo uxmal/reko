@@ -598,7 +598,7 @@ d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm: error: An internal error occu
    at Reko.Analysis.UsedRegisterFinder.Classify(SsaIdentifier sid) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 159
    at Reko.Analysis.UsedRegisterFinder.Classify(SsaState ssa, SsaIdentifier sid, Storage storage, Boolean ignoreUseInstructions) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 140
    at Reko.Analysis.UsedRegisterFinder.ComputeLiveIn(SsaState ssaState, Boolean ignoreUse) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 81
-   at Reko.Analysis.SccWorker.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SccWorker.cs:line 131
+   at Reko.Analysis.SccWorker.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SccWorker.cs:line 128
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 178
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 127
    at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 111
@@ -1130,8 +1130,8 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 fn00008FF2: error: An error occurred while rewriting procedure to high-level language.
     Can't collapse fn00008FF2_entry (Tail) => l00008FF0_thunk_fn00008FF2) in procedure fn00008FF2
-       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 960
-   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 906
+       at Reko.Structure.StructureAnalysis.CollapseToTailRegion(Region from, Region to, AbsynStatement stm) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 982
+   at Reko.Structure.StructureAnalysis.VirtualizeEdge(VirtualEdge vEdge) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 932
    at Reko.Structure.StructureAnalysis.VirtualizeReturn(Region n) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 312
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 285
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 172
@@ -1806,7 +1806,9 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
        at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 127
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 131
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 100
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 57
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 225
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
@@ -2520,4 +2522,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 89 binaries in 72.75 seconds.
+Decompiled 89 binaries in 83.35 seconds.

@@ -431,6 +431,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var follow = new Block(proc, Address.SegPtr(0x0C00, 0), "follow"); // the code that follows the 'rep movsw'
             BuildTest16(m =>
             {
+                m.Std();
                 m.Rep();
                 m.Movsw();
                 m.Mov(m.bx, m.dx);
@@ -442,14 +443,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
                 scanner.SetupSequence(x => x.EnqueueJumpTarget(
                     It.IsNotNull<Address>(),
-                    It.Is<Address>(a => a.Offset == 2),
+                    It.Is<Address>(a => a.Offset == 0x0003),
                     proc,
                     It.IsAny<ProcessorState>()))
                         .Returns(follow)
                         .Returns(block);
                 scanner.Setup(x => x.EnqueueJumpTarget(
                     It.IsNotNull<Address>(),
-                    It.Is<Address>(a => a.Offset == 0),
+                    It.Is<Address>(a => a.Offset == 0x0001),
                     proc,
                     It.IsAny<ProcessorState>())).Returns(block);
                 scanner.Setup(x => x.TerminateBlock(
@@ -461,7 +462,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             });
             follow.Procedure = proc;
             wi.Process();
-            Assert.AreEqual("l0C00_0000_1", block.Succ[0].DisplayName, "block should loop back onto itself");
+            Assert.AreEqual("l0C00_0001_1", block.Succ[0].DisplayName, "block should loop back onto itself");
             Assert.AreEqual("follow", block.Succ[1].DisplayName, "block should terminate if cx == 0 check is true");
         }
 
