@@ -222,7 +222,7 @@ void _exit(struct Eq_n * ds, word16 wArg02)
 		if (ax_n == 0x00)
 			break;
 		ui16 bx_n = ds->w023E;
-		(seg0800->*(ds->a05E8)[bx_n])();
+		(seg0800->*((ds->a05E8))[0][bx_n])();
 	}
 	(seg0800->*ds->ptr0234)();
 	(seg0800->*ds->ptr0236)();
@@ -797,12 +797,12 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 	mp16 fp;
 	byte bLoc03;
 	Eq_n ax_n;
-	if (wArg06 >= 0x01 && ((ds->a0482)[wArg02] & 0x0200) == 0x00)
+	if (wArg06 >= 0x01 && (((ds->a0482))[0][wArg02] & 0x0200) == 0x00)
 	{
 		do
 		{
 			Eq_n ax_n = __read(ds, wArg02, wArg04, wArg06);
-			if (ax_n < 0x01 || ((ds->a0482)[wArg02] & 0x8000) != 0x00)
+			if (ax_n < 0x01 || (((ds->a0482))[0][wArg02] & 0x8000) != 0x00)
 			{
 				ax_n = ax_n;
 				return ax_n;
@@ -818,7 +818,7 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 				{
 					word16 dx_n;
 					_lseek(ds, wArg02, SEQ(0x00 - (word16) (cx_n != 0x00), -cx_n), 0x02, out dx_n);
-					ds->a0482[wArg02] |= 0x0200;
+					ds->a0482[0][wArg02] = ds->a0482[0][wArg02] | 0x0200;
 					goto l0800_nAA7;
 				}
 				if (al_n != 0x0D)
@@ -866,9 +866,9 @@ Eq_n _write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 	Eq_n ax_n;
 	if (wArg06 >= 0x01)
 	{
-		if ((ds->a0482[wArg02] & 0x8000) == 0x00)
+		if ((ds->a0482[0][wArg02] & 0x8000) == 0x00)
 		{
-			ds->a0482[wArg02] &= ~0x0200;
+			ds->a0482[0][wArg02] = ds->a0482[0][wArg02] & ~0x0200;
 			Eq_n wLoc86_n = wArg04;
 			Eq_n wLoc8A_n = wArg06;
 			Eq_n si_n = fp - 0x84;
@@ -934,7 +934,7 @@ Eq_n _write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 //      _fputc
 Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 {
-	if ((ds->a0482[wArg02] & 0x0800) != 0x00)
+	if ((ds->a0482[0][wArg02] & 0x0800) != 0x00)
 	{
 		word16 dx_n;
 		_lseek(ds, wArg02, 0x00, 0x02, out dx_n);
@@ -943,7 +943,7 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 	Eq_n ax_n;
 	if (!msdos_write_file(wArg02, wArg06, wArg04, out ax_n))
 	{
-		ds->a0482[wArg02] |= 0x1000;
+		ds->a0482[0][wArg02] = ds->a0482[0][wArg02] | 0x1000;
 		ax_n = ax_n;
 	}
 	else
@@ -959,7 +959,7 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 //      _tell
 Eq_n _lseek(struct Eq_n * ds, int16 wArg02, int32 * dwArg04, byte bArg08, ptr16 & dxOut)
 {
-	ds->a0482[wArg02] &= ~0x0200;
+	ds->a0482[0][wArg02] = ds->a0482[0][wArg02] & ~0x0200;
 	Eq_n ax_n = (word16) dx_ax_n;
 	ptr16 dx_n = SLICE(dx_ax_n, word16, 16);
 	int32 * dx_ax_n;
@@ -1042,7 +1042,7 @@ l0800_nCA4:
 Eq_n _eof(struct Eq_n * ds, int16 wArg02)
 {
 	Eq_n ax_n;
-	if ((ds->a0482[wArg02] & 0x0200) != 0x00)
+	if ((ds->a0482[0][wArg02] & 0x0200) != 0x00)
 	{
 		ax_n.u0 = 0x01;
 		return ax_n;

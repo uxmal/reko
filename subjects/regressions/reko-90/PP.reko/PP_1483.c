@@ -543,11 +543,11 @@ segptr32 fn1483-1BB8(byte * ds_si, byte al, byte ah, ui16 cx, Eq_n dx, Eq_n bx, 
 	return SEQ(ss_n, bp_n);
 }
 
-// 1483:1BB9: Register Eq_n fn1483-1BB9(Register Eq_n ax, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n bp, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register out Eq_n cxOut, Register out Eq_n dhOut, Register out ptr16 bxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n esOut, Register out Eq_n dsOut)
+// 1483:1BB9: Register Eq_n fn1483-1BB9(Register Eq_n ax, Register ui16 cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n bp, Register (arr Eq_n) si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register out Eq_n cxOut, Register out Eq_n dhOut, Register out ptr16 bxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n esOut, Register out Eq_n dsOut)
 // Called from:
 //      fn1483-1B91
 //      fn1483-1BB8
-Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, union Eq_n & cxOut, union Eq_n & dhOut, ptr16 & bxOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & esOut, union Eq_n & dsOut)
+Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n si[], Eq_n di, Eq_n es, Eq_n ds, union Eq_n & cxOut, union Eq_n & dhOut, ptr16 & bxOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & esOut, union Eq_n & dsOut)
 {
 	Eq_n fp;
 	bool C;
@@ -646,16 +646,16 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, Eq_n dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, 
 				return ax_n - 34302;
 			}
 			(ss->*sp_n).tFFFFFFFE.u0 = 25445;
-			di.u0 = (&ss->a0000->t0000.u0)[(&(ds->*bx.u0).b2CF2)[17784] *16 0x46];
-			si = (&ss->t0002)[(&(ds->*bx.u0).b2CF2)[17784]];
-			bx = (&ss->t0008)[(&(ds->*bx.u0).b2CF2)[17784]];
-			dh_n = (byte) (&ss->t000B)[ds->*((word16) bx + 29290)];
-			cl_n = (byte) (&ss->t000C)[ds->*((word16) bx + 29290)];
-			al_n = (byte) (&ss->t000E)[ds->*((word16) bx + 29290)];
-			sp_n = ds->*((word16) bx + 29290) *s 0x46 + 0x10;
+			di.u0 = (*ss)[(&(ds->*bx.u0).b2CF2)[17784]].t0000.u0;
+			si = (Eq_n (*)[]) (&ss->t0002.a0000)[0].t0000[(&(ds->*bx.u0).b2CF2)[17784]].t0000.u0;
+			bx.u0 = (&ss->t0008.a0000)[0].t0000[(&(ds->*bx.u0).b2CF2)[17784]].t0000.u0;
+			dh_n = ss->a000B[0].b0000[(&(ds->*bx.u0).b2CF2)[17784]].b0000;
+			cl_n = (byte) ss->a000B[0].b0001[(&(ds->*bx.u0).b2CF2)[17784]];
+			al_n = (byte) ss->a000B[0].b0003[(&(ds->*bx.u0).b2CF2)[17784]];
+			sp_n = (&(ds->*bx.u0).b2CF2)[17784] *s16 0x46 + 0x10;
 		}
 		bp = ds->*((word16) si + 101) *s 14948;
-		*((word16) si + ds->*((word16) si + 101) * 14948) &= al_n;
+		(&&(ss->*(ss->*si).b0000))[(&si[0].b0000)[101]].b0000 = si[(&si[0].b0000)[101]].b0000 & al_n;
 		byte dh_n = dh_n ^ Mem174[ds:bx + di:byte];
 		word16 ax_n = __in<word16>(0x0C);
 		Mem189[ds:0x2CF2:byte] = Mem174[ds:0x2CF2:byte] ^ cl_n;

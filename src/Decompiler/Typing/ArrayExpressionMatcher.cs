@@ -144,7 +144,7 @@ namespace Reko.Typing
 		{
             if (baseptr != null)
             {
-                ArrayPointer = new MkSequence(dtPointer, baseptr, ArrayPointer!);
+                ArrayPointer = new SegmentedPointer(dtPointer, baseptr, ArrayPointer!);
             }
 			return new ArrayAccess(
                 dtAccess, 

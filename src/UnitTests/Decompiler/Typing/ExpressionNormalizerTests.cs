@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             Expression e = m.SegMem(PrimitiveType.Int16, ds, m.IAdd(m.IMul(bx, 2), 0x42));
             Assert.AreEqual("Mem0[ds:bx * 2<16> + 0x42<16>:int16]", e.ToString());
             e = e.Accept(aen);
-            Assert.AreEqual("SEQ(ds, 0x42<16>)[bx * 2<16>]", e.ToString());
+            Assert.AreEqual("ds:0x42<16>[bx * 2<16>]", e.ToString());
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             Expression e = m.SegMem(PrimitiveType.Int32, ds, m.Shl(bx, 2));
             Assert.AreEqual("Mem0[ds:bx << 2<8>:int32]", e.ToString());
             e = e.Accept(aen);
-            Assert.AreEqual("SEQ(ds, 0<16>)[bx * 4<16>]", e.ToString());
+            Assert.AreEqual("ds:0<16>[bx * 4<16>]", e.ToString());
         }
 
         // Seems unlikely, but sometimes important arrays are located at address 0 in memory.

@@ -4,7 +4,7 @@ define SegmentedArray
 SegmentedArray_entry:
 	// succ:  l1
 l1:
-	Mem0[ds:0x1234<16>:word16] = SEQ(ds, 0x5388<16>)[bx * 2<16>]
+	Mem0[ds:0x1234<16>:word16] = ds:0x5388<16>[bx * 2<16>]
 SegmentedArray_exit:
 
 // Equivalence classes ////////////
@@ -20,15 +20,15 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment (1234 T_11 t1234) (5388 T_13 t5388)))
+  OrigDataType: (ptr16 (segment (1234 T_11 t1234)))
 T_3: (in 0x5388<16> : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_2) word16)
-  OrigDataType: (memptr T_2 T_13)
-T_4: (in SEQ(ds, 0x5388<16>) : ptr32)
+  OrigDataType: (memptr T_2 (struct (0 (arr T_12) a0000)))
+T_4: (in ds:0x5388<16> : ptr32)
   Class: Eq_4
   DataType: (ptr32 (arr word16))
-  OrigDataType: (ptr32 T_13)
+  OrigDataType: (ptr32 (struct (0 (arr T_12) a0000)))
 T_5: (in bx : word16)
   Class: Eq_5
   DataType: ui16
@@ -41,7 +41,7 @@ T_7: (in bx * 2<16> : word16)
   Class: Eq_7
   DataType: ui16
   OrigDataType: ui16
-T_8: (in SEQ(ds, 0x5388<16>)[bx * 2<16>] : word16)
+T_8: (in ds:0x5388<16>[bx * 2<16>] : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16

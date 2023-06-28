@@ -38,7 +38,18 @@ namespace Reko.UnitTests.Decompiler.Typing
 		private Constant off;
 		private Identifier r;
 
-		[Test]
+        [SetUp]
+        public void Setup()
+        {
+            m = new ProcedureBuilder();
+            i = m.Local32("i");
+            c = m.Int32(16);
+            off = m.Int32(42);
+            r = m.Local32("r");
+            aem = new ArrayExpressionMatcher(PrimitiveType.Ptr32);
+        }
+
+        [Test]
 		public void Pattern1()
 		{
 			Expression e = m.SMul(i, c);
@@ -86,15 +97,16 @@ namespace Reko.UnitTests.Decompiler.Typing
             Assert.AreEqual(8, aem.ElementSize.ToInt32());
         }
 
-        [SetUp]
-		public void Setup()
-		{
-			m = new ProcedureBuilder();
-			i = m.Local32("i");
-			c = m.Int32(16);
-			off = m.Int32(42);
-			r = m.Local32("r");
-			aem = new ArrayExpressionMatcher(PrimitiveType.Ptr32);
-		}
-	}
+        [Test]
+        public void Aem_segmented_ptr()
+        {
+            Expression e = m.IAdd(
+                m.SegPtr(m.Local16("seg"), m.Word16(0x1234)),
+                m.IMul(i, 4));
+            Assert.IsTrue(aem.Match(e));
+            Assert.AreEqual("seg:0x1234<16>", aem.ArrayPointer.ToString());
+            Assert.AreEqual("i", aem.Index.ToString());
+            Assert.AreEqual(4, aem.ElementSize.ToInt32());
+        }
+    }
 }

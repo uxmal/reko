@@ -37,10 +37,6 @@ namespace Reko.Core.Expressions
             if (exprs.Length < 1)
                 throw new ArgumentException("A sequence must have a least one expression.");
             this.Expressions = exprs;
-            if (exprs.Length == 2 && exprs[0] is Constant c &&
-                c.IsValid &&
-                c.ToUInt32() == 0x800)
-                _ = this; //$DEBUG
         }
 
         public Expression[] Expressions { get; }

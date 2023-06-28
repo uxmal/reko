@@ -5,7 +5,7 @@ IntelIndexedAddressingMode_entry:
 	word16 ds
 	// succ:  l1
 l1:
-	SEQ(ds, Mem0[ds:0xCA4<16>:word16] + 0xA<16>)[Mem0[ds:0x1C0A<16>:word16] * 0x4A<16>] = 0xF8<8>
+	ds:Mem0[ds:0xCA4<16>:word16] + 0xA<16>[Mem0[ds:0x1C0A<16>:word16] * 0x4A<16>] = 0xF8<8>
 	return
 	// succ:  IntelIndexedAddressingMode_exit
 IntelIndexedAddressingMode_exit:
@@ -19,7 +19,6 @@ T_2 (in ds : word16)
 	trait_mem(T_6, CA4)
 	trait_primitive(word16)
 	trait_mem(T_12, 1C0A)
-	trait_mem_array(0, 74, 0, T_15)
 T_3 (in 0xF8<8> : byte)
 	trait_primitive(byte)
 T_4 (in 0xCA4<16> : word16)
@@ -29,11 +28,12 @@ T_5 (in ds:0xCA4<16> : segptr32)
 	trait_primitive(segptr32)
 T_6 (in Mem0[ds:0xCA4<16>:word16] : word16)
 	trait_primitive(word16)
+	trait_mem_array(A, 74, 0, T_15)
 T_7 (in 0xA<16> : word16)
 	trait_primitive(word16)
 T_8 (in Mem0[ds:0xCA4<16>:word16] + 0xA<16> : word16)
 	trait_primitive(word16)
-T_9 (in SEQ(ds, Mem0[ds:0xCA4<16>:word16] + 0xA<16>) : ptr32)
+T_9 (in ds:Mem0[ds:0xCA4<16>:word16] + 0xA<16> : ptr32)
 	trait_primitive(ptr32)
 T_10 (in 0x1C0A<16> : word16)
 	trait_primitive(word16)
@@ -48,6 +48,6 @@ T_13 (in 0x4A<16> : word16)
 	trait_primitive(ui16)
 T_14 (in Mem0[ds:0x1C0A<16>:word16] * 0x4A<16> : word16)
 	trait_primitive(ui16)
-T_15 (in SEQ(ds, Mem0[ds:0xCA4<16>:word16] + 0xA<16>)[Mem0[ds:0x1C0A<16>:word16] * 0x4A<16>] : byte)
+T_15 (in ds:Mem0[ds:0xCA4<16>:word16] + 0xA<16>[Mem0[ds:0x1C0A<16>:word16] * 0x4A<16>] : byte)
 	trait_primitive(byte)
 	trait_equal(T_3)

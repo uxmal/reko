@@ -43,7 +43,7 @@ l0C00_0023:
 	// succ:  l0C00_0029 l0C00_003C
 l0C00_0029:
 	Mem11[ds:0x53BA<16>:word16] = bx
-	fn0C00_0046(0x4400<16>, SEQ(ds, 0x5388<16>)[bx * 2<16>], 0<16>, ds)
+	fn0C00_0046(0x4400<16>, ds:0x5388<16>[bx * 2<16>], 0<16>, ds)
 	// succ:  l0C00_003C
 l0C00_003C:
 	return
@@ -131,8 +131,8 @@ T_13: (in bx : word16)
   OrigDataType: int16
 T_14: (in ds : selector)
   Class: Eq_5
-  DataType: (ptr16 (segment (5388 T_79 t5388) (53B8 T_42 t53B8) (53BA T_4 t53BA)))
-  OrigDataType: (ptr16 (segment (5388 T_79 t5388) (53B8 T_42 t53B8) (53BA T_4 t53BA)))
+  DataType: (ptr16 (segment (53B8 T_42 t53B8) (53BA T_4 t53BA)))
+  OrigDataType: (ptr16 (segment (53B8 T_42 t53B8) (53BA T_4 t53BA)))
 T_15: (in fn0C00_001D(bx, ds) : void)
   Class: Eq_15
   DataType: void
@@ -291,12 +291,12 @@ T_53: (in 0x4400<16> : word16)
   OrigDataType: word16
 T_54: (in 0x5388<16> : word16)
   Class: Eq_54
-  DataType: (memptr T_14 T_79)
-  OrigDataType: (memptr T_14 T_79)
-T_55: (in SEQ(ds, 0x5388<16>) : segptr32)
+  DataType: (memptr T_14 (struct (0 (arr T_78) a0000)))
+  OrigDataType: (memptr T_14 (struct (0 (arr T_78) a0000)))
+T_55: (in ds:0x5388<16> : segptr32)
   Class: Eq_55
-  DataType: (ptr32 T_79)
-  OrigDataType: (ptr32 T_79)
+  DataType: (ptr32 (struct (0 (arr T_78) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_78) a0000)))
 T_56: (in 2<16> : word16)
   Class: Eq_56
   DataType: ui16
@@ -305,7 +305,7 @@ T_57: (in bx * 2<16> : word16)
   Class: Eq_57
   DataType: ui16
   OrigDataType: ui16
-T_58: (in SEQ(ds, 0x5388<16>)[bx * 2<16>] : word16)
+T_58: (in ds:0x5388<16>[bx * 2<16>] : word16)
   Class: Eq_50
   DataType: word16
   OrigDataType: word16
@@ -313,7 +313,7 @@ T_59: (in 0<16> : word16)
   Class: Eq_51
   DataType: word16
   OrigDataType: word16
-T_60: (in fn0C00_0046(0x4400<16>, SEQ(ds, 0x5388<16>)[bx * 2<16>], 0<16>, ds) : void)
+T_60: (in fn0C00_0046(0x4400<16>, ds:0x5388<16>[bx * 2<16>], 0<16>, ds) : void)
   Class: Eq_60
   DataType: void
   OrigDataType: void
