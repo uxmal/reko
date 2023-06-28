@@ -4842,7 +4842,7 @@ namespace Reko.UnitTests.Arch.X86
             Run16bitTest("F3 A4");
             AssertCode(
                 "0|L--|0C00:0000(2): 5 instructions",
-                "1|L--|size = cx *u 1<16>",
+                "1|L--|size = (cx == 0<16> ? 0x10000<u32> : cx) *u 1<u32>",
                 "2|L--|memcpy(es:di, ds:si, size)",
                 "3|L--|cx = 0<16>",
                 "4|L--|si = si + size",
