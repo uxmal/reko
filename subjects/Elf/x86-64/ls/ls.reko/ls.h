@@ -6466,13 +6466,13 @@ Eq_14117: (struct "Eq_14117" 0038 (18 word64 qw0018))
 	T_14117 (in &tLoc48 @ 000000000040EA46 : (ptr64 (struct 0038)))
 Eq_14123: (struct "Eq_14123" 0038 (20 word64 qw0020))
 	T_14123 (in &tLoc48 @ 000000000040EA52 : (ptr64 (struct 0038)))
-Eq_14128: (struct "Eq_14128" 0038 (C uint32 dw000C))
+Eq_14128: (struct "Eq_14128" 0038 (9 uint32 dw0009))
 	T_14128 (in &tLoc48 @ 000000000040EA5E : (ptr64 (struct 0038)))
 Eq_14134: (struct "Eq_14134" 0038 (28 word64 qw0028))
 	T_14134 (in &tLoc48 @ 000000000040EA63 : (ptr64 (struct 0038)))
 Eq_14140: (struct "Eq_14140" 0038 (30 word64 qw0030))
 	T_14140 (in &tLoc48 @ 000000000040EA6F : (ptr64 (struct 0038)))
-Eq_14153: (struct "Eq_14153" 0038 (C ui32 dw000C))
+Eq_14153: (struct "Eq_14153" 0038 (9 ui32 dw0009))
 	T_14153 (in &tLoc48 @ 000000000040EA87 : (ptr64 (struct 0038)))
 Eq_14193: int32_t
 	T_14193 (in rax_22 @ 000000000040EC43 : (ptr64 (ptr64 Eq_14193)))
@@ -63860,16 +63860,16 @@ T_14127: (in r9d_42 @ 000000000040EA5E : uint32)
 T_14128: (in &tLoc48 @ 000000000040EA5E : (ptr64 (struct 0038)))
   Class: Eq_14128
   DataType: (ptr64 Eq_14128)
-  OrigDataType: (ptr64 (struct 0038 (C T_14131 t000C)))
-T_14129: (in 12<i64> @ 000000000040EA5E : int64)
+  OrigDataType: (ptr64 (struct 0038 (9 T_14131 t0009)))
+T_14129: (in 9<i64> @ 000000000040EA5E : int64)
   Class: Eq_14129
   DataType: int64
   OrigDataType: int64
-T_14130: (in &tLoc48 + 12<i64> @ 000000000040EA5E : word64)
+T_14130: (in &tLoc48 + 9<i64> @ 000000000040EA5E : word64)
   Class: Eq_14130
   DataType: ptr64
   OrigDataType: ptr64
-T_14131: (in Mem35[&tLoc48 + 12<i64>:word32] @ 000000000040EA5E : word32)
+T_14131: (in Mem35[&tLoc48 + 9<i64>:word32] @ 000000000040EA5E : word32)
   Class: Eq_14127
   DataType: uint32
   OrigDataType: word32
@@ -63960,16 +63960,16 @@ T_14152: (in ((r9d_42 >> 0x1A<8> ^ 1<32>) & 1<32>) << 0x1A<8> ^ r9d_42 @ 0000000
 T_14153: (in &tLoc48 @ 000000000040EA87 : (ptr64 (struct 0038)))
   Class: Eq_14153
   DataType: (ptr64 Eq_14153)
-  OrigDataType: (ptr64 (struct 0038 (C T_14156 t000C)))
-T_14154: (in 12<i64> @ 000000000040EA87 : int64)
+  OrigDataType: (ptr64 (struct 0038 (9 T_14156 t0009)))
+T_14154: (in 9<i64> @ 000000000040EA87 : int64)
   Class: Eq_14154
   DataType: int64
   OrigDataType: int64
-T_14155: (in &tLoc48 + 12<i64> @ 000000000040EA87 : word64)
+T_14155: (in &tLoc48 + 9<i64> @ 000000000040EA87 : word64)
   Class: Eq_14155
   DataType: ptr64
   OrigDataType: ptr64
-T_14156: (in Mem65[&tLoc48 + 12<i64>:word32] @ 000000000040EA87 : word32)
+T_14156: (in Mem65[&tLoc48 + 9<i64>:word32] @ 000000000040EA87 : word32)
   Class: Eq_14152
   DataType: ui32
   OrigDataType: word32
@@ -83130,7 +83130,7 @@ typedef struct Eq_14123 {	// size: 56 38
 } Eq_14123;
 
 typedef struct Eq_14128 {	// size: 56 38
-	uint32 dw000C;	// C
+	uint32 dw0009;	// 9
 } Eq_14128;
 
 typedef struct Eq_14134 {	// size: 56 38
@@ -83142,7 +83142,7 @@ typedef struct Eq_14140 {	// size: 56 38
 } Eq_14140;
 
 typedef struct Eq_14153 {	// size: 56 38
-	ui32 dw000C;	// C
+	ui32 dw0009;	// 9
 } Eq_14153;
 
 typedef int32_t Eq_14193;

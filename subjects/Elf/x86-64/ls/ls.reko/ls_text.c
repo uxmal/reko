@@ -7518,10 +7518,10 @@ void fn000000000040EAB0(Eq_n rdi, struct Eq_n * fs)
 	tLoc48.qw0010 = g_qw61B330;
 	tLoc48.qw0018 = g_qw61B338;
 	tLoc48.qw0020 = g_qw61B340;
-	uint32 r9d_n = tLoc48.dw000C;
+	uint32 r9d_n = tLoc48.dw0009;
 	tLoc48.qw0028 = g_qw61B348;
 	tLoc48.qw0030 = g_qw61B350;
-	tLoc48.dw000C = ((r9d_n >> 0x1A ^ 0x01) & 0x01) << 0x1A ^ r9d_n;
+	tLoc48.dw0009 = ((r9d_n >> 0x1A ^ 0x01) & 0x01) << 0x1A ^ r9d_n;
 	word64 r8_n;
 	word64 r9_n;
 	fn000000000040E450(&tLoc48, ~0x00, rdi, 0x00, fs, out r8_n, out r9_n);

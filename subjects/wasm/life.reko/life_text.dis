@@ -26,7 +26,7 @@ l000C0060:
 	word32 loc13_105 = 0<32>
 l000C00AC:
 	arg0_1 = 0<32>
-	word32 v16_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x73<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x75<32>:byte], byte, word32)
+	word32 v16_91 = Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAD<32>:byte] + Mem61[arg0_1 * 0x2710<32> + 0xFFFFFFAB<32>:byte] + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x10<32>:byte], byte, word32) + CONVERT(Mem61[arg0_1 * 0x2710<32> + 0x12<32>:byte], byte, word32)
 	branch v16_91 == 3<32> l000C011F
 l000C011F:
 	loc13_105 = 1<32>

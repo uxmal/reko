@@ -14435,7 +14435,7 @@ l000225E8:
 l000222F8:
 	ui32 r26_n = 0x01;
 	int32 r29_n = 0x00;
-	Eq_n r3_n = 0x02;
+	Eq_n r3_n = 0x01;
 	while (true)
 	{
 		int32 r19_n = (int32) *((word32) r3_n + r22_n);
@@ -16918,7 +16918,7 @@ l00029260:
 			int32 r29_n = 0x01;
 			int32 r22_n = 0x00;
 			int32 r28_n = 0x0100;
-			Eq_n r3_n = 0x02;
+			Eq_n r3_n = 0x01;
 			while (true)
 			{
 				word32 r25_n = CONVERT(Mem231[r3_n + r23_n:word16], word16, int32);

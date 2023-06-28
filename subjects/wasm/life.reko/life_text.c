@@ -22,14 +22,14 @@ void update_gen(ui32 arg0)
 			Eq_n loc7_n = false;
 			word32 loc13_n = 0x00;
 			arg0_n = 0x00;
-			Eq_n v16_n = (word80000) ((Eq_n[]) ~0x52)[arg0_n] + (((Eq_n[]) ~0x54))[arg0_n].b0000 + (word32) ((Eq_n[]) 115)[arg0_n] + (word32) ((Eq_n[]) 117)[arg0_n];
+			Eq_n v16_n = (word80000) ((Eq_n[]) ~0x52)[arg0_n] + (((Eq_n[]) ~0x54))[arg0_n].b0000 + (word32) ((Eq_n[]) 0x10)[arg0_n] + (word32) ((Eq_n[]) 0x12)[arg0_n];
 			switch (v16_n)
 			{
 			case 0x03:
 				loc13_n = 0x01;
 				break;
 			case 0x02:
-				loc13_n = (word32) ((Eq_n[]) 0x10)[arg0_n];
+				loc13_n = (word32) ((Eq_n[]) 0x10)[arg0_n].b0000;
 				break;
 			}
 			*v16_n = (byte) loc13_n;

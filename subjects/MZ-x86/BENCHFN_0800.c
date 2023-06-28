@@ -1722,9 +1722,9 @@ word16 fn0800-108C(byte Eq_n::* di, struct Eq_n * es)
 		--cx_n;
 		di_n = di;
 		if (es->*di_n != 0x00)
-			return ~cx_n - 0x01;
+			return -cx_n;
 	}
-	return ~cx_n - 0x01;
+	return -cx_n;
 }
 
 // 0800:1099: Register word16 fn0800-1099(Sequence (ptr32 byte) ds_di, Sequence (ptr32 Eq_n) ss_bp, Register byte al, Register Eq_n cx, Register ci16 dx, Register Eq_n bx)

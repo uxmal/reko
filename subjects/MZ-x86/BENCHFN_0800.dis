@@ -2100,7 +2100,7 @@ l0800_1092_1:
 	di_45 = di
 	branch Mem7[es:di_45:byte] == 0<8> l0800_1092
 l0800_1094:
-	return ~cx_12 - 1<16>
+	return -cx_12
 fn0800_108C_exit:
 
 
