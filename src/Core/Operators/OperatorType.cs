@@ -88,6 +88,24 @@ namespace Reko.Core.Operators
 
     public static class OperatorTypeExtensions
     {
+
+        public static bool Commutes(this OperatorType op)
+        {
+            return op switch
+            {
+                Operators.OperatorType.IAdd or
+                Operators.OperatorType.FAdd or
+                Operators.OperatorType.And or
+                Operators.OperatorType.SMul or
+                Operators.OperatorType.UMul or
+                Operators.OperatorType.IMul or
+                Operators.OperatorType.FMul or
+                Operators.OperatorType.Or or
+                Operators.OperatorType.Xor => true,
+                _ => false
+            };
+        }
+
         /// <summary>
         /// Returns whether the <see cref="OperatorType"/> is an integer
         /// addition or subtraction.

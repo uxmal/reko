@@ -338,7 +338,7 @@ namespace Reko.Evaluation
             bool changed = lChanged | rChanged;
             Constant? cLeft = left as Constant;
             Constant? cRight = right as Constant;
-            if (cLeft != null && BinaryExpression.Commutes(binExp.Operator.Type))
+            if (cLeft is not null && binExp.Operator.Type.Commutes())
             {
                 cRight = cLeft; left = right; right = cLeft;
             }
@@ -349,22 +349,36 @@ namespace Reko.Evaluation
             var sameBitsize = left.DataType.BitSize == right.DataType.BitSize;
             if (cRight != null)
             {
-                // (- X 0) ==> X
-                // (+ X 0) ==> X
-                if (cRight.IsIntegerZero && binExp.Operator.Type.IsAddOrSub())
+                switch (binExp.Operator.Type)
                 {
-                    //$HACK: we neglected to zero-extend Carry flags in adc/sbc
-                    // type instructions, and here it bites us. Work around by
-                    // zero-extending now. The real fix is to zero-extend carry flags 
-                    // properly.
-                    if (cRight.DataType.BitSize > left.DataType.BitSize)
+                case OperatorType.IAdd:
+                case OperatorType.ISub:
+                    // (- X 0) ==> X
+                    // (+ X 0) ==> X
+                    if (cRight.IsIntegerZero)
                     {
-                        return (m.Convert(left, left.DataType, cRight.DataType), true);
+                        //$HACK: we neglected to zero-extend Carry flags in adc/sbc
+                        // type instructions, and here it bites us. Work around by
+                        // zero-extending now. The real fix is to zero-extend carry flags 
+                        // properly.
+                        if (cRight.DataType.BitSize > left.DataType.BitSize)
+                        {
+                            return (m.Convert(left, left.DataType, cRight.DataType), true);
+                        }
+                        return (left, true);
                     }
-                    return (left, true);
-                }
-                if (binExp.Operator.Type == OperatorType.Or)
-                {
+                    else if (!cRight.IsReal && cRight.IsIntegerOne)
+                    {
+                        if (left is UnaryExpression u &&
+                            u.Operator.Type == OperatorType.Comp)
+                        {
+                            (e, _) = m.Neg(u.Expression).Accept(this);
+                            return (e, true);
+                        }
+                    }
+                    break;
+                case OperatorType.Or:
+                
                     if (cRight.IsIntegerZero)
                     {
                         return (left, true);
@@ -375,9 +389,8 @@ namespace Reko.Evaluation
                         ctx.RemoveExpressionUse(left);
                         return (right, true);
                     }
-                }
-                if (binExp.Operator.Type == OperatorType.And)
-                {
+                    break;
+                case OperatorType.And:
                     if (cRight.IsIntegerZero && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
                         ctx.RemoveExpressionUse(left);
@@ -387,9 +400,8 @@ namespace Reko.Evaluation
                     {
                         return (left, true);
                     }
-                }
-                if (binExp.Operator.Type == OperatorType.Xor)
-                {
+                    break;
+                case OperatorType.Xor:
                     if (cRight.IsIntegerZero)
                     {
                         return (left, true);
@@ -399,18 +411,16 @@ namespace Reko.Evaluation
                         (e, _) = new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
                         return (e, true);
                     }
-                }
-                if (binExp.Operator.Type == OperatorType.IAdd)
-                {
-                    if (!cRight.IsReal && cRight.IsIntegerOne)
+                    break;
+
+                case OperatorType.IMul:
+                case OperatorType.SMul:
+                case OperatorType.UMul:
+                    if (cRight.ToUInt64() == 1)
                     {
-                        if (left is UnaryExpression u &&
-                            u.Operator.Type == OperatorType.Comp)
-                        {
-                            (e, _) = m.Neg(u.Expression).Accept(this);
-                            return (e, true);
-                        }
+                        return (binExp.Left, true);
                     }
+                    break;
                 }
             }
 
@@ -1237,7 +1247,6 @@ namespace Reko.Evaluation
             var (access, seg, ea, offset) = AsMemoryAccess(elems[0]);
             if (access is null)
                 return null;
-            var fused = new List<Expression>();
             var offsetFused = offset;
             for (int i = 1; i < elems.Length; ++i)
             {
@@ -1733,6 +1742,12 @@ namespace Reko.Evaluation
             }
         }
 
+        /// <summary>
+        /// Returns true if a slice may be safely taken of an expression.
+        /// </summary>
+        /// <param name="slice"></param>
+        /// <param name="bin"></param>
+        /// <returns></returns>
         private static bool CanBeSliced(Slice slice, BinaryExpression bin)
         {
             return bin.Operator.Type switch

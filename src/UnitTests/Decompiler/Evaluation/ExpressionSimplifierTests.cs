@@ -1118,5 +1118,23 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("SLICE(v1_3, real32, 0) + SLICE(v2_4, real32, 0)", result.ToString());
         }
+
+        [Test]
+        public void Exs_signed_multiply_with_one()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.SMul(foo, 1);
+            var (result, _) = exp.Accept(simplifier);
+            Assert.AreEqual("foo_1", result.ToString());
+        }
+
+        [Test]
+        public void Exs_unsigned_multiply_with_one()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.UMul(foo, 1);
+            var (result, _) = exp.Accept(simplifier);
+            Assert.AreEqual("foo_1", result.ToString());
+        }
     }
 }

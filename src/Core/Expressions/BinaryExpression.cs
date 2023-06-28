@@ -80,26 +80,6 @@ namespace Reko.Core.Expressions
                 Left);
         }
 
-		public bool Commutes()
-		{
-			return Commutes(Operator.Type);
-		}
-
-        //$TODO: move to extension class for OperatorType.
-		public static bool Commutes(OperatorType op)
-		{
-			return
-                op == Operators.OperatorType.IAdd ||
-                op == Operators.OperatorType.FAdd ||
-                op == Operators.OperatorType.And ||
-                op == Operators.OperatorType.SMul ||
-                op == Operators.OperatorType.UMul ||
-                op == Operators.OperatorType.IMul ||
-                op == Operators.OperatorType.FMul ||
-                op == Operators.OperatorType.Or ||
-                op == Operators.OperatorType.Xor;
-		}
-
 		public override Expression Invert()
 		{
             switch (Operator.Type)
