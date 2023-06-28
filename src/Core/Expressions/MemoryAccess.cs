@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,63 @@ namespace Reko.Core.Expressions
                     baseRegister.DataType,
                     baseRegister,
                     Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
+        }
+
+        /// <summary>
+        /// Unpacks a <see cref="MemoryAccess"/> into its components. The displacement of a memory access
+        /// is very frequently used in analyses.
+        /// </summary>
+        /// <returns>
+        /// A 3-tuple of consisting of a base pointer (if the effective address is a <see cref="SegmentedPointer"/>),
+        /// the effective address, stripped of any displacement, and the displacement.
+        /// </returns>
+        public (Expression? basePtr, Expression? address, long displacement) Unpack()
+        {
+            Expression? seg;
+            Expression ea;
+            if (this.EffectiveAddress is SegmentedPointer segptr)
+            {
+                seg = segptr.BasePointer;
+                ea = segptr.Offset;
+            }
+            else
+            {
+                seg = null;
+                ea = this.EffectiveAddress;
+            }
+            long offset = 0;
+            Expression? eaStripped = ea;
+            if (ea is Constant global)
+            {
+                offset = global.ToInt64();
+                eaStripped = null;
+            }
+            else if (ea is Address addr)
+            {
+                offset = (long) addr.Offset;
+                eaStripped = null;
+                if (addr.Selector.HasValue)
+                {
+                    seg = Constant.Create(PrimitiveType.SegmentSelector, addr.Selector.Value);
+                }
+            }
+            else if (ea is BinaryExpression bin)
+            {
+                if (bin.Right is Constant c)
+                {
+                    if (bin.Operator.Type == OperatorType.IAdd)
+                    {
+                        offset = c.ToInt64();
+                        eaStripped = bin.Left;
+                    }
+                    else if (bin.Operator.Type == OperatorType.ISub)
+                    {
+                        offset = -c.ToInt64();
+                        eaStripped = bin.Left;
+                    }
+                }
+            }
+            return (seg, eaStripped, offset);
         }
     }
 }

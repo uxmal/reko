@@ -1244,14 +1244,17 @@ namespace Reko.Evaluation
 
         private Expression? FuseAdjacentMemoryAccesses(DataType dt, Expression[] elems)
         {
-            var (access, seg, ea, offset) = AsMemoryAccess(elems[0]);
-            if (access is null)
+            if (elems[0] is not MemoryAccess access)
                 return null;
+
+            var (seg, ea, offset) = access.Unpack();
             var offsetFused = offset;
             for (int i = 1; i < elems.Length; ++i)
             {
-                var (accNew, segNew, eaNew, offNew) = AsMemoryAccess(elems[i]);
-                if (accNew == null)
+                if (elems[i] is not MemoryAccess accNew)
+                    return null;
+                var (segNew, eaNew, offNew) = accNew.Unpack();
+                if (accNew is null)
                     return null;
                 if (cmp.Equals(seg, segNew) &&
                     cmp.Equals(ea, eaNew) &&
@@ -1283,57 +1286,6 @@ namespace Reko.Evaluation
                 ctx.RemoveExpressionUse(e);
             ctx.UseExpression(result);
             return result;
-        }
-
-        private (MemoryAccess? access, Expression? seg, Expression? ea, long offset) AsMemoryAccess(Expression expression)
-        {
-            MemoryAccess access;
-            Expression? seg;
-            Expression ea;
-            if (expression is not MemoryAccess mem)
-                return (null, null, null, 0);
-            
-            access = mem;
-            if (mem.EffectiveAddress is SegmentedPointer segptr)
-            {
-                seg = segptr.BasePointer;
-                ea = segptr.Offset;
-            }
-            else
-            {
-                seg = null;
-                ea = mem.EffectiveAddress;
-            }
-
-            long offset = 0;
-            Expression? eaStripped = ea;
-            if (ea is Constant global)
-            {
-                offset = global.ToInt64();
-                eaStripped = null;
-            }
-            else if (ea is Address addr && !addr.Selector.HasValue)
-            {
-                offset = (long) addr.ToLinear();
-                eaStripped = null;
-            }
-            else if (ea is BinaryExpression bin)
-            {
-                if (bin.Right is Constant c)
-                {
-                    if (bin.Operator.Type == OperatorType.IAdd)
-                    {
-                        offset = c.ToInt64();
-                        eaStripped = bin.Left;
-                    }
-                    else if (bin.Operator.Type == OperatorType.ISub)
-                    {
-                        offset = -c.ToInt64();
-                        eaStripped = bin.Left;
-                    }
-                }
-            }
-            return (access, seg, eaStripped, offset);
         }
 
         private Expression? FuseAdjacentSlices(DataType dataType, Expression[] elems)

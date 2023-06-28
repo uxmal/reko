@@ -120,8 +120,21 @@ namespace Reko.Core
         public override IEnumerable<Expression> Children => Array.Empty<Expression>();
         public abstract bool IsNull { get; }
         public abstract ulong Offset { get; }
-        public abstract ushort? Selector { get; }			// Segment selector; return null if the address is linear.
-        public abstract Address NewOffset(ulong offset);    // Creates an address with same selector, different offset; no-op for linear addresses.
+
+        /// <summary>
+        /// If this is a segmented address, returns the segment selector. If this is a 
+        /// linear address, returns null.
+        /// </summary>
+        public abstract ushort? Selector { get; }
+
+        /// <summary>
+        /// Creates an address with same selector, but a different offset.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns>An address whose offset is <paramref name="offset"/>, and whose selector is the same
+        /// as the original address.
+        /// </returns>
+        public abstract Address NewOffset(ulong offset);
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
