@@ -16912,14 +16912,11 @@ l0000D152:
 	Mem479[lr_476 + -12<i32>:word32] = r4_473
 	Mem480[lr_476 + -16<i32>:word32] = r5_472
 	word32 r4_481 = sp_371 + 0x10<32>
-	word64 r3_r2_483 = Mem480[r4_481 + 8<i32>:word64]
 	word64 r5_r4_486 = Mem480[r4_481:word64]
 	word32 r9_487 = Mem480[sp_371 + 160<i32>:word32]
 	r12_447 = Mem480[sp_371 + 172<i32>:word32]
-	Mem490[lr_476 + 0xC<32>:word32] = SLICE(r3_r2_483, word32, 0)
-	Mem492[lr_476 + 8<32>:word32] = SLICE(r3_r2_483, word32, 32)
-	Mem494[lr_476 + 4<32>:word32] = SLICE(r5_r4_486, word32, 0)
-	Mem496[lr_476:word32] = SLICE(r5_r4_486, word32, 32)
+	Mem492[lr_476 + 8<i32>:word64] = Mem480[r4_481 + 8<i32>:word64]
+	Mem496[lr_476:word64] = r5_r4_486
 	Mem497[lr_476 + -24<i32>:word32] = r9_487
 	Mem500[lr_476 + 32<i32>:word64] = r11_r10_467
 l0000D1B0:

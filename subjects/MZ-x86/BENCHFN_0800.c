@@ -33,18 +33,10 @@ void __exit()
 void fn0800-0162(struct Eq_n * ds)
 {
 	struct Eq_n * cs;
-	word32 es_bx_n = msdos_get_interrupt_vector(0x00);
-	ds->w0074 = (word16) es_bx_n;
-	ds->ptr0076 = SLICE(es_bx_n, selector, 16);
-	word32 es_bx_n = msdos_get_interrupt_vector(0x04);
-	ds->w0078 = (word16) es_bx_n;
-	ds->ptr007A = SLICE(es_bx_n, selector, 16);
-	word32 es_bx_n = msdos_get_interrupt_vector(0x05);
-	ds->w007C = (word16) es_bx_n;
-	ds->ptr007E = SLICE(es_bx_n, selector, 16);
-	word32 es_bx_n = msdos_get_interrupt_vector(0x06);
-	ds->w0080 = (word16) es_bx_n;
-	ds->ptr0082 = SLICE(es_bx_n, selector, 16);
+	ds->dw0074 = msdos_get_interrupt_vector(0x00);
+	ds->dw0078 = msdos_get_interrupt_vector(0x04);
+	ds->dw007C = msdos_get_interrupt_vector(0x05);
+	ds->dw0080 = msdos_get_interrupt_vector(0x06);
 	msdos_set_interrupt_vector(0x00, &cs->t0158);
 }
 
@@ -170,9 +162,7 @@ void _main(ci16 cx, ci16 dx, word16 bx, struct Eq_n * es, Eq_n ds)
 		if (dx_n >= (ss->*bp_n).wFFFFFFFE && (dx_n > (ss->*bp_n).wFFFFFFFE || ax_n > ((ss->*bp_n).tFFFFFFFC).u1))
 			break;
 		_f0();
-		ui32 v17_v15_n = (ss->*bp_n).tFFFFFFF8.u0 + 0x01;
-		(ss->*bp_n).tFFFFFFF8.u1 = (cup16) (word16) v17_v15_n;
-		(ss->*bp_n).wFFFFFFFA = SLICE(v17_v15_n, word16, 16);
+		(ss->*bp_n).tFFFFFFF8.u0 = (ui32) ((ss->*bp_n).tFFFFFFF8.u0 + 0x01);
 	}
 	(ss->*sp_n).w0002 = 0x01CE;
 	_printf(cx_n, dx_n, bx_n, ds, (ss->*sp_n).w0002);

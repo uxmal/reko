@@ -113,8 +113,11 @@ namespace Reko.Analysis
                 var prj = new ProjectionPropagator(ssa, sac);
                 prj.Transform();
                 dfa.DumpWatchedProcedure("prpr", "After projection propagation", ssa.Procedure);
-                //var stfu = new StoreFuser(ssa);
-                //DumpWatchedProcedure("stfu", "After store fusion", ssa.Procedure);
+
+                // Stores of sliced long variables can be fused.
+                var stfu = new StoreFuser(ssa, eventListener);
+                stfu.Transform();
+                dfa.DumpWatchedProcedure("stfu", "After store fusion", ssa.Procedure);
             }
 
             var uid = new UsedRegisterFinder(program, flow, procs, this.eventListener);

@@ -366,8 +366,7 @@ void fn063E(byte b, Eq_n c, byte d, Eq_n e)
 			struct Eq_n * de_n;
 			word16 hl_n;
 			fn1348(&g_t1676, (uint16) g_b167A * 0x02 + 0x0227, out de_n, out hl_n);
-			de_n->bFFFFFFFF = (byte) hl_n;
-			de_n->b0000 = SLICE(hl_n, byte, 8);
+			de_n->wFFFFFFFF = hl_n;
 			g_b167B = 0x01;
 			++g_b167C;
 		}

@@ -14612,14 +14612,11 @@ l0000D152:
 		lr_n->dwFFFFFFF4 = r4_n;
 		lr_n->dwFFFFFFF0 = r5_n;
 		struct Eq_n * r4_n = &sp_n->dw000C + 1;
-		word64 r3_r2_n = r4_n->qw0008;
 		word64 r5_r4_n = r4_n->qw0000;
 		word32 r9_n = sp_n->dw00A0;
 		r12_n = sp_n->ptr00AC;
-		lr_n->dw000C = (word32) r3_r2_n;
-		lr_n->dw0008 = SLICE(r3_r2_n, word32, 32);
-		lr_n->dw0004 = (word32) r5_r4_n;
-		lr_n->dw0000 = SLICE(r5_r4_n, word32, 32);
+		lr_n->qw0008 = r4_n->qw0008;
+		lr_n->qw0000 = r5_r4_n;
 		lr_n->dwFFFFFFE8 = r9_n;
 		lr_n->qw0020 = r11_r10_n;
 		return r12_n;

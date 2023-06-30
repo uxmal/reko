@@ -44,18 +44,10 @@ void fn0800_0162(selector ds)
 fn0800_0162_entry:
 	selector cs
 l0800_0162:
-	word32 es_bx_10 = msdos_get_interrupt_vector(0<8>)
-	Mem12[ds:0x74<16>:word16] = SLICE(es_bx_10, word16, 0)
-	Mem14[ds:0x76<16>:word16] = SLICE(es_bx_10, selector, 16)
-	word32 es_bx_17 = msdos_get_interrupt_vector(4<8>)
-	Mem19[ds:0x78<16>:word16] = SLICE(es_bx_17, word16, 0)
-	Mem21[ds:0x7A<16>:word16] = SLICE(es_bx_17, selector, 16)
-	word32 es_bx_24 = msdos_get_interrupt_vector(5<8>)
-	Mem26[ds:0x7C<16>:word16] = SLICE(es_bx_24, word16, 0)
-	Mem28[ds:0x7E<16>:word16] = SLICE(es_bx_24, selector, 16)
-	word32 es_bx_31 = msdos_get_interrupt_vector(6<8>)
-	Mem33[ds:0x80<16>:word16] = SLICE(es_bx_31, word16, 0)
-	Mem35[ds:0x82<16>:word16] = SLICE(es_bx_31, selector, 16)
+	Mem14[ds:0x74<16>:word32] = msdos_get_interrupt_vector(0<8>)
+	Mem21[ds:0x78<16>:word32] = msdos_get_interrupt_vector(4<8>)
+	Mem28[ds:0x7C<16>:word32] = msdos_get_interrupt_vector(5<8>)
+	Mem35[ds:0x80<16>:word32] = msdos_get_interrupt_vector(6<8>)
 	msdos_set_interrupt_vector(0<8>, SEQ(cs, 0x158<16>))
 	return
 fn0800_0162_exit:
@@ -256,9 +248,7 @@ l0800_02B4:
 	branch ax_78 <=u Mem76[ss:bp_36 - 4<i16>:word16] l0800_029C
 l0800_029C:
 	_f0()
-	ui32 v17_v15_124 = Mem88[ss:bp_36 - 8<i16>:ui32] + 1<32>
-	Mem88[ss:bp_36 - 8<i16>:word16] = SLICE(v17_v15_124, word16, 0)
-	Mem92[ss:bp_36 - 6<i16>:word16] = SLICE(v17_v15_124, word16, 16)
+	Mem92[ss:bp_36 - 8<i16>:ui32] = Mem88[ss:bp_36 - 8<i16>:ui32] + 1<32>
 l0800_02B9:
 	Mem100[ss:sp_43 + 2<16>:word16] = 0x1CE<16>
 	_printf(cx_51, dx_77, bx_37, ds, Mem100[ss:sp_43 + 2<16>:word16])

@@ -499,8 +499,7 @@ l0678:
 	word16 de_104
 	word16 hl_105
 	fn1348(0x1676<16>, CONVERT(Mem29[0x167A<16>:byte], byte, uint16) * 2<16> + 0x227<16>, out de_104, out hl_105)
-	Mem115[de_104 - 1<16>:byte] = SLICE(hl_105, byte, 0)
-	Mem118[de_104:byte] = SLICE(hl_105, byte, 8)
+	Mem118[de_104 - 1<i16>:word16] = hl_105
 	Mem120[0x167B<16>:byte] = 1<8>
 	Mem122[0x167C<16>:byte] = Mem120[0x167C<16>:byte] + 1<8>
 

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Hll.Pascal;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
@@ -48,7 +49,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var m = new SsaProcedureBuilder(arch);
             builder(m);
 
-            var stfu = new StoreFuser(m.Ssa);
+            var stfu = new StoreFuser(m.Ssa, new FakeDecompilerEventListener());
             stfu.Transform();
 
             var sw = new StringWriter();
@@ -65,7 +66,6 @@ namespace Reko.UnitTests.Decompiler.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         public void Stfu_LittleEndian()
         {
             var sExp =
@@ -75,7 +75,7 @@ l1:
 	id = Mem3[0x123400<32>:word32]
 	idLo = SLICE(id, word16, 0) (alias)
 	ilHi = SLICE(id, word16, 16) (alias)
-	Mem4[0x123404<32>:word32] = id
+	Mem5[0x00123404<p32>:word32] = id
 SsaProcedureBuilder_exit:
 ";
             #endregion
@@ -92,5 +92,103 @@ SsaProcedureBuilder_exit:
                 m.MStore(m.Word32(0x00123406), idHi);
             });
         }
+
+
+        [Test]
+        public void Stfu_LittleEndian_4_slices()
+        {
+            var sExp =
+        #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	id = Mem5[0x123400<32>:word32]
+	s0 = SLICE(id, byte, 0) (alias)
+	s1 = SLICE(id, byte, 8) (alias)
+	s2 = SLICE(id, byte, 16) (alias)
+	s3 = SLICE(id, byte, 24) (alias)
+	Mem9[0x00123404<p32>:word32] = id
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var id = m.Reg32("id");
+                var s0 = m.Reg8("s0");
+                var s1 = m.Reg8("s1");
+                var s2 = m.Reg8("s2");
+                var s3 = m.Reg8("s3");
+
+                m.Assign(id, m.Mem32(m.Word32(0x00123400)));
+                m.Alias(s0, m.Slice(id, s0.DataType, 0));
+                m.Alias(s1, m.Slice(id, s1.DataType, 8));
+                m.Alias(s2, m.Slice(id, s2.DataType, 16));
+                m.Alias(s3, m.Slice(id, s3.DataType, 24));
+                m.MStore(m.Word32(0x00123404), s0);
+                m.MStore(m.Word32(0x00123405), s1);
+                m.MStore(m.Word32(0x00123406), s2);
+                m.MStore(m.Word32(0x00123407), s3);
+            });
+        }
+
+        [Test(Description = "The slice(s) don't cover the whole variable.")]
+        public void Stfu_NotEnoughSlices()
+        {
+            var sExp =
+            #region Expected
+               @"SsaProcedureBuilder_entry:
+l1:
+	id = Mem2[0x123400<32>:word32]
+	idLo = SLICE(id, word16, 0) (alias)
+	Mem3[0x123404<32>:word16] = idLo
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var id = m.Reg32("id");
+                var idLo = m.Reg16("idLo");
+
+                m.Assign(id, m.Mem32(m.Word32(0x00123400)));
+                m.Alias(idLo, m.Slice(id, idLo.DataType, 0));
+                m.MStore(m.Word32(0x00123404), idLo);
+            });
+        }
+
+
+        [Test]
+        public void Stfu_Gap_in_slices()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	id = Mem4[0x123400<32>:word32]
+	s0 = SLICE(id, byte, 0) (alias)
+	s1 = SLICE(id, byte, 8) (alias)
+	s2 = SLICE(id, byte, 24) (alias)
+	Mem5[0x123404<32>:byte] = s0
+	Mem6[0x123405<32>:byte] = s1
+	Mem7[0x123406<32>:byte] = s2
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var id = m.Reg32("id");
+                var s0 = m.Reg8("s0");
+                var s1 = m.Reg8("s1");
+                var s2 = m.Reg8("s2");
+
+                m.Assign(id, m.Mem32(m.Word32(0x00123400)));
+                m.Alias(s0, m.Slice(id, s0.DataType, 0));
+                m.Alias(s1, m.Slice(id, s1.DataType, 8));
+                m.Alias(s2, m.Slice(id, s2.DataType, 24));
+                m.MStore(m.Word32(0x00123404), s0);
+                m.MStore(m.Word32(0x00123405), s1);
+                m.MStore(m.Word32(0x00123406), s2);
+            });
+        }
+
     }
 }
