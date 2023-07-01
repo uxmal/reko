@@ -74,8 +74,8 @@ namespace Reko.Arch.X86
             var di = RegDi;
             m.Assign(size, m.IAddS(m.Fn(Strlen(), MemIndexPtr(0, Registers.es, di)), 1));
             var cx = RegCx;
-            m.Assign(cx, m.ISub(cx, size));
-            m.Assign(di, m.IAdd(di, size));
+            m.Assign(cx, m.ISub(cx, MaybeSlice(cx.DataType, size)));
+            m.Assign(di, m.IAdd(di, MaybeSlice(cx.DataType, size)));
             m.Assign(
                 binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                 m.Cond(m.Const(instrCur.dataWidth, 0)));
@@ -85,29 +85,26 @@ namespace Reko.Arch.X86
         private bool RewriteMovsToMemcpy()
         {
             var regCx = RegCx;
-            var size = binder.CreateTemporary("size", instrCur.addrWidth);
-            m.Assign(size, MakeSizeExpression(regCx));
+            var sizeExpr = MakeSizeExpression(regCx);
+            var size = binder.CreateTemporary("size", sizeExpr.DataType);
+            m.Assign(size, sizeExpr);
             var si = RegSi;
             var di = RegDi;
             m.SideEffect(m.Fn(Memcpy(), MemIndexPtr(0, Registers.es, di), MemIndexPtr(1, Registers.ds, si), size));
             m.Assign(regCx, m.Const(regCx.DataType, 0));
-            m.Assign(si, m.IAdd(si, size));
-            m.Assign(di, m.IAdd(di, size));
+            m.Assign(si, m.IAdd(si, MaybeSlice(regCx.DataType, size)));
+            m.Assign(di, m.IAdd(di, MaybeSlice(regCx.DataType, size)));
             return true;
         }
 
         private Expression MakeSizeExpression(Identifier regCx)
         {
-            Expression e = regCx;
-            if (arch.PointerType.Domain == Domain.SegPointer)
+            var dt = regCx.DataType;
+            if (dt.BitSize == 16)
             {
-                e = m.Conditional(
-                    PrimitiveType.UInt32,
-                    m.Eq0(regCx),
-                    Constant.UInt32(0x10000),
-                    e);
+                dt = PrimitiveType.UInt32;
             }
-            return m.UMul(e, (uint) instrCur.dataWidth.Size);
+            return m.UMul(dt, regCx, Constant.Create(regCx.DataType, instrCur.dataWidth.Size));
         }
 
         private bool RewriteCmpsToToFindFirstDifference()

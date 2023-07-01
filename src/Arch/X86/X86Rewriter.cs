@@ -707,7 +707,7 @@ namespace Reko.Arch.X86
             {
                 var tmp = binder.CreateTemporary(opDst.Width);
                 m.Assign(tmp, src);
-                var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst, state);
+                var ea = orw.CreateMemoryAccess(instrCur, (MemoryOperand)opDst);
                 m.Assign(ea, tmp);
                 dst = tmp;
             }

@@ -3059,11 +3059,11 @@ Eq_1271: (fn (ptr64 Eq_1279) ((ptr64 word64), (ptr64 Eq_1274), Eq_1275))
 Eq_1274: <unknown>
 	T_1274 (in p2 @ 0000000000403B95 : (ptr64 <unknown>))
 	T_1277 (in 0x61B040<u64> @ 0000000000403B95 : uint64)
-Eq_1275: (union "Eq_1275" (uint32 u0) (uint64 u1))
+Eq_1275: (union "Eq_1275" (uint32 u0) (word64 u1))
 	T_1275 (in p3 @ 0000000000403B95 : uint32)
-	T_1278 (in 0x80<u64> @ 0000000000403B95 : uint64)
+	T_1278 (in 0x80<64> @ 0000000000403B95 : word64)
 Eq_1279: <unknown>
-	T_1279 (in memcpy(&qwLoc0370, &g_t61B040, 0x80<u64>) @ 0000000000403B95 : (ptr64 <unknown>))
+	T_1279 (in memcpy(&qwLoc0370, &g_t61B040, 0x80<64>) @ 0000000000403B95 : (ptr64 <unknown>))
 Eq_1298: (fn int32 (int32, Eq_19, (ptr64 Eq_1302)))
 	T_1298 (in sigaction @ 0000000000403BDF : ptr64)
 	T_1299 (in signature of sigaction : void)
@@ -3866,17 +3866,17 @@ Eq_2736: (fn Eq_2743 (Eq_19, (ptr64 Eq_2739), Eq_2740))
 Eq_2739: <unknown>
 	T_2739 (in p2 @ 0000000000403849 : (ptr64 <unknown>))
 	T_2741 (in 0x412CA0<u64> @ 0000000000403849 : uint64)
-Eq_2740: (union "Eq_2740" (uint32 u0) (uint64 u1))
+Eq_2740: (union "Eq_2740" (uint32 u0) (word64 u1))
 	T_2740 (in p3 @ 0000000000403849 : uint32)
-	T_2742 (in 6<u64> @ 0000000000403849 : uint64)
-	T_3239 (in 2<u64> @ 0000000000404D0F : uint64)
-	T_7264 (in 0xA<u64> @ 00000000004080A6 : uint64)
-	T_9426 (in 6<u64> @ 000000000040ABAE : uint64)
-	T_12819 (in 7<u64> @ 000000000040D6D8 : uint64)
-	T_12830 (in 3<u64> @ 000000000040D6E7 : uint64)
-	T_17305 (in 0xA<u64> @ 00000000004117DA : uint64)
+	T_2742 (in 6<64> @ 0000000000403849 : word64)
+	T_3239 (in 2<64> @ 0000000000404D0F : word64)
+	T_7264 (in 0xA<64> @ 00000000004080A6 : word64)
+	T_9426 (in 6<64> @ 000000000040ABAE : word64)
+	T_12819 (in 7<64> @ 000000000040D6D8 : word64)
+	T_12830 (in 3<64> @ 000000000040D6E7 : word64)
+	T_17305 (in 0xA<64> @ 00000000004117DA : word64)
 Eq_2743: (union "Eq_2743" (int32 u0) (word64 u1))
-	T_2743 (in memcmp(r12_3693, &g_t412CA0, 6<u64>) @ 0000000000403849 : int32)
+	T_2743 (in memcmp(r12_3693, &g_t412CA0, 6<64>) @ 0000000000403849 : int32)
 	T_2744 (in 0<64> @ 0000000000403849 : word64)
 Eq_2751: (fn byte (word32))
 	T_2751 (in fn000000000040AB70 @ 0000000000403834 : ptr64)
@@ -3938,7 +3938,7 @@ Eq_3237: <unknown>
 	T_3237 (in p2 @ 0000000000404D0F : (ptr64 <unknown>))
 	T_3238 (in 0x413733<u64> @ 0000000000404D0F : uint64)
 Eq_3240: (union "Eq_3240" (int32 u0) (word64 u1))
-	T_3240 (in memcmp(rsi_12, &g_t413733, 2<u64>) @ 0000000000404D0F : int32)
+	T_3240 (in memcmp(rsi_12, &g_t413733, 2<64>) @ 0000000000404D0F : int32)
 	T_3241 (in 0<64> @ 0000000000404D0F : word64)
 Eq_3281: (fn void (Eq_19))
 	T_3281 (in free @ 0000000000404D97 : ptr64)
@@ -4781,7 +4781,7 @@ Eq_7258: <unknown>
 	T_7258 (in p1 @ 00000000004080A6 : (ptr64 <unknown>))
 	T_7260 (in 0x4137B1<u64> @ 00000000004080A6 : uint64)
 Eq_7265: (union "Eq_7265" (int32 u0) (word64 u1))
-	T_7265 (in memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<u64>) @ 00000000004080A6 : int32)
+	T_7265 (in memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<64>) @ 00000000004080A6 : int32)
 	T_7266 (in 0<64> @ 00000000004080A6 : word64)
 Eq_7300: (fn Eq_6986 (int32, Eq_19, (ptr64 Eq_7304)))
 	T_7300 (in __xstat @ 00000000004088C5 : ptr64)
@@ -5247,7 +5247,7 @@ Eq_9424: <unknown>
 	T_9424 (in p2 @ 000000000040ABAE : (ptr64 <unknown>))
 	T_9425 (in 0x415E6A<u64> @ 000000000040ABAE : uint64)
 Eq_9427: (union "Eq_9427" (int32 u0) (word64 u1))
-	T_9427 (in memcmp(rax_8, &g_t415E6A, 6<u64>) @ 000000000040ABAE : int32)
+	T_9427 (in memcmp(rax_8, &g_t415E6A, 6<64>) @ 000000000040ABAE : int32)
 	T_9428 (in 0<64> @ 000000000040ABAE : word64)
 Eq_9499: (fn void ())
 	T_9499 (in abort @ 000000000040AC9D : ptr64)
@@ -6234,11 +6234,11 @@ Eq_12815: <unknown>
 	T_12815 (in p2 @ 000000000040D6D8 : (ptr64 <unknown>))
 	T_12818 (in 0x415FD8<u64> @ 000000000040D6D8 : uint64)
 Eq_12820: (union "Eq_12820" (int32 u0) (word64 u1))
-	T_12820 (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<u64>) @ 000000000040D6D8 : int32)
+	T_12820 (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<64>) @ 000000000040D6D8 : int32)
 	T_12821 (in 0<64> @ 000000000040D6D8 : word64)
 Eq_12823: (union "Eq_12823" (int32 u0) (up64 u1))
 	T_12823 (in cmpResult_48 @ 000000000040D6E7 : word64)
-	T_12831 (in memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<u64>) @ 000000000040D6E7 : int32)
+	T_12831 (in memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<64>) @ 000000000040D6E7 : int32)
 	T_12833 (in 0<64> @ 000000000040D6F6 : word64)
 	T_12836 (in 0<64> @ 000000000040D6F6 : word64)
 Eq_12824: (fn Eq_12823 ((ptr64 char), (ptr64 Eq_12827), Eq_2740))
@@ -6889,7 +6889,7 @@ Eq_17303: <unknown>
 	T_17303 (in p2 @ 00000000004117DA : (ptr64 <unknown>))
 	T_17304 (in 0x4137B1<u64> @ 00000000004117DA : uint64)
 Eq_17306: (union "Eq_17306" (int32 u0) (word64 u1))
-	T_17306 (in memcmp(rdx_19, &g_t4137B1, 0xA<u64>) @ 00000000004117DA : int32)
+	T_17306 (in memcmp(rdx_19, &g_t4137B1, 0xA<64>) @ 00000000004117DA : int32)
 	T_17307 (in 0<64> @ 00000000004117DA : word64)
 Eq_17309: (fn void (Eq_3295))
 	T_17309 (in freecon @ 00000000004117DF : ptr64)
@@ -12306,11 +12306,11 @@ T_1277: (in 0x61B040<u64> @ 0000000000403B95 : uint64)
   Class: Eq_1274
   DataType: (ptr64 Eq_1274)
   OrigDataType: (ptr64 <unknown>)
-T_1278: (in 0x80<u64> @ 0000000000403B95 : uint64)
+T_1278: (in 0x80<64> @ 0000000000403B95 : word64)
   Class: Eq_1275
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_1279: (in memcpy(&qwLoc0370, &g_t61B040, 0x80<u64>) @ 0000000000403B95 : (ptr64 <unknown>))
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_1279: (in memcpy(&qwLoc0370, &g_t61B040, 0x80<64>) @ 0000000000403B95 : (ptr64 <unknown>))
   Class: Eq_1279
   DataType: (ptr64 Eq_1279)
   OrigDataType: (ptr64 <unknown>)
@@ -18163,11 +18163,11 @@ T_2741: (in 0x412CA0<u64> @ 0000000000403849 : uint64)
   Class: Eq_2739
   DataType: (ptr64 Eq_2739)
   OrigDataType: (ptr64 <unknown>)
-T_2742: (in 6<u64> @ 0000000000403849 : uint64)
+T_2742: (in 6<64> @ 0000000000403849 : word64)
   Class: Eq_2740
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_2743: (in memcmp(r12_3693, &g_t412CA0, 6<u64>) @ 0000000000403849 : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_2743: (in memcmp(r12_3693, &g_t412CA0, 6<64>) @ 0000000000403849 : int32)
   Class: Eq_2743
   DataType: Eq_2743
   OrigDataType: int32
@@ -18175,7 +18175,7 @@ T_2744: (in 0<64> @ 0000000000403849 : word64)
   Class: Eq_2743
   DataType: word64
   OrigDataType: word64
-T_2745: (in memcmp(r12_3693, &g_t412CA0, 6<u64>) == 0<64> @ 0000000000403849 : bool)
+T_2745: (in memcmp(r12_3693, &g_t412CA0, 6<64>) == 0<64> @ 0000000000403849 : bool)
   Class: Eq_2745
   DataType: bool
   OrigDataType: bool
@@ -20152,11 +20152,11 @@ T_3238: (in 0x413733<u64> @ 0000000000404D0F : uint64)
   Class: Eq_3237
   DataType: (ptr64 Eq_3237)
   OrigDataType: (ptr64 <unknown>)
-T_3239: (in 2<u64> @ 0000000000404D0F : uint64)
+T_3239: (in 2<64> @ 0000000000404D0F : word64)
   Class: Eq_2740
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_3240: (in memcmp(rsi_12, &g_t413733, 2<u64>) @ 0000000000404D0F : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_3240: (in memcmp(rsi_12, &g_t413733, 2<64>) @ 0000000000404D0F : int32)
   Class: Eq_3240
   DataType: Eq_3240
   OrigDataType: int32
@@ -20164,15 +20164,15 @@ T_3241: (in 0<64> @ 0000000000404D0F : word64)
   Class: Eq_3240
   DataType: word64
   OrigDataType: word64
-T_3242: (in memcmp(rsi_12, &g_t413733, 2<u64>) != 0<64> @ 0000000000404D0F : bool)
+T_3242: (in memcmp(rsi_12, &g_t413733, 2<64>) != 0<64> @ 0000000000404D0F : bool)
   Class: Eq_3242
   DataType: bool
   OrigDataType: bool
-T_3243: (in CONVERT(memcmp(rsi_12, &g_t413733, 2<u64>) != 0<64>, bool, int8) @ 0000000000404D0F : int8)
+T_3243: (in CONVERT(memcmp(rsi_12, &g_t413733, 2<64>) != 0<64>, bool, int8) @ 0000000000404D0F : int8)
   Class: Eq_3243
   DataType: int8
   OrigDataType: int8
-T_3244: (in CONVERT(CONVERT(memcmp(rsi_12, &g_t413733, 2<u64>) != 0<64>, bool, int8), int8, uint64) @ 0000000000404D0F : uint64)
+T_3244: (in CONVERT(CONVERT(memcmp(rsi_12, &g_t413733, 2<64>) != 0<64>, bool, int8), int8, uint64) @ 0000000000404D0F : uint64)
   Class: Eq_3205
   DataType: uint64
   OrigDataType: uint64
@@ -36337,11 +36337,11 @@ T_7263: (in Mem808[r14_129 + 168<i64>:word64] @ 00000000004080A6 : word64)
   Class: Eq_7223
   DataType: (ptr64 char)
   OrigDataType: (ptr64 <unknown>)
-T_7264: (in 0xA<u64> @ 00000000004080A6 : uint64)
+T_7264: (in 0xA<64> @ 00000000004080A6 : word64)
   Class: Eq_2740
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_7265: (in memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<u64>) @ 00000000004080A6 : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_7265: (in memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<64>) @ 00000000004080A6 : int32)
   Class: Eq_7265
   DataType: Eq_7265
   OrigDataType: int32
@@ -36349,11 +36349,11 @@ T_7266: (in 0<64> @ 00000000004080A6 : word64)
   Class: Eq_7265
   DataType: word64
   OrigDataType: word64
-T_7267: (in memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<u64>) != 0<64> @ 00000000004080A6 : bool)
+T_7267: (in memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<64>) != 0<64> @ 00000000004080A6 : bool)
   Class: Eq_7267
   DataType: bool
   OrigDataType: bool
-T_7268: (in CONVERT(memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<u64>) != 0<64>, bool, int8) @ 00000000004080A6 : int8)
+T_7268: (in CONVERT(memcmp(&g_t4137B1, r14_129[21<i32>], 0xA<64>) != 0<64>, bool, int8) @ 00000000004080A6 : int8)
   Class: Eq_7199
   DataType: int8
   OrigDataType: int8
@@ -45005,11 +45005,11 @@ T_9425: (in 0x415E6A<u64> @ 000000000040ABAE : uint64)
   Class: Eq_9424
   DataType: (ptr64 Eq_9424)
   OrigDataType: (ptr64 <unknown>)
-T_9426: (in 6<u64> @ 000000000040ABAE : uint64)
+T_9426: (in 6<64> @ 000000000040ABAE : word64)
   Class: Eq_2740
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_9427: (in memcmp(rax_8, &g_t415E6A, 6<u64>) @ 000000000040ABAE : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_9427: (in memcmp(rax_8, &g_t415E6A, 6<64>) @ 000000000040ABAE : int32)
   Class: Eq_9427
   DataType: Eq_9427
   OrigDataType: int32
@@ -45017,11 +45017,11 @@ T_9428: (in 0<64> @ 000000000040ABAE : word64)
   Class: Eq_9427
   DataType: word64
   OrigDataType: word64
-T_9429: (in memcmp(rax_8, &g_t415E6A, 6<u64>) != 0<64> @ 000000000040ABAE : bool)
+T_9429: (in memcmp(rax_8, &g_t415E6A, 6<64>) != 0<64> @ 000000000040ABAE : bool)
   Class: Eq_9429
   DataType: bool
   OrigDataType: bool
-T_9430: (in CONVERT(memcmp(rax_8, &g_t415E6A, 6<u64>) != 0<64>, bool, int8) @ 000000000040ABAE : int8)
+T_9430: (in CONVERT(memcmp(rax_8, &g_t415E6A, 6<64>) != 0<64>, bool, int8) @ 000000000040ABAE : int8)
   Class: Eq_9403
   DataType: int8
   OrigDataType: int8
@@ -58606,11 +58606,11 @@ T_12818: (in 0x415FD8<u64> @ 000000000040D6D8 : uint64)
   Class: Eq_12815
   DataType: (ptr64 Eq_12815)
   OrigDataType: (ptr64 <unknown>)
-T_12819: (in 7<u64> @ 000000000040D6D8 : uint64)
+T_12819: (in 7<64> @ 000000000040D6D8 : word64)
   Class: Eq_2740
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_12820: (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<u64>) @ 000000000040D6D8 : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_12820: (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<64>) @ 000000000040D6D8 : int32)
   Class: Eq_12820
   DataType: Eq_12820
   OrigDataType: int32
@@ -58618,7 +58618,7 @@ T_12821: (in 0<64> @ 000000000040D6D8 : word64)
   Class: Eq_12820
   DataType: word64
   OrigDataType: word64
-T_12822: (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<u64>) != 0<64> @ 000000000040D6D8 : bool)
+T_12822: (in memcmp(rax_22 - (char *) 6<i64>, &g_t415FD8, 7<64>) != 0<64> @ 000000000040D6D8 : bool)
   Class: Eq_12822
   DataType: bool
   OrigDataType: bool
@@ -58650,11 +58650,11 @@ T_12829: (in 0x415FE0<u64> @ 000000000040D6E7 : uint64)
   Class: Eq_12827
   DataType: (ptr64 Eq_12827)
   OrigDataType: (ptr64 <unknown>)
-T_12830: (in 3<u64> @ 000000000040D6E7 : uint64)
+T_12830: (in 3<64> @ 000000000040D6E7 : word64)
   Class: Eq_2740
   DataType: Eq_2740
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_12831: (in memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<u64>) @ 000000000040D6E7 : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_12831: (in memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<64>) @ 000000000040D6E7 : int32)
   Class: Eq_12823
   DataType: Eq_12823
   OrigDataType: int32
@@ -76567,11 +76567,11 @@ T_17304: (in 0x4137B1<u64> @ 00000000004117DA : uint64)
   Class: Eq_17303
   DataType: (ptr64 Eq_17303)
   OrigDataType: (ptr64 <unknown>)
-T_17305: (in 0xA<u64> @ 00000000004117DA : uint64)
+T_17305: (in 0xA<64> @ 00000000004117DA : word64)
   Class: Eq_2740
   DataType: uint32
-  OrigDataType: (union (uint32 u1) (uint64 u0))
-T_17306: (in memcmp(rdx_19, &g_t4137B1, 0xA<u64>) @ 00000000004117DA : int32)
+  OrigDataType: (union (uint32 u1) (word64 u0))
+T_17306: (in memcmp(rdx_19, &g_t4137B1, 0xA<64>) @ 00000000004117DA : int32)
   Class: Eq_17306
   DataType: Eq_17306
   OrigDataType: int32
@@ -76579,7 +76579,7 @@ T_17307: (in 0<64> @ 00000000004117DA : word64)
   Class: Eq_17306
   DataType: word64
   OrigDataType: word64
-T_17308: (in memcmp(rdx_19, &g_t4137B1, 0xA<u64>) != 0<64> @ 00000000004117DA : bool)
+T_17308: (in memcmp(rdx_19, &g_t4137B1, 0xA<64>) != 0<64> @ 00000000004117DA : bool)
   Class: Eq_17308
   DataType: bool
   OrigDataType: bool
@@ -80739,7 +80739,7 @@ typedef void;
 
 typedef union Eq_1275 {
 	uint32 u0;
-	uint64 u1;
+	word64 u1;
 } Eq_1275;
 
 typedef void;
@@ -81092,7 +81092,7 @@ typedef void;
 
 typedef union Eq_2740 {
 	uint32 u0;
-	uint64 u1;
+	word64 u1;
 } Eq_2740;
 
 typedef union Eq_2743 {
