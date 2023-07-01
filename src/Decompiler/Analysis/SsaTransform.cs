@@ -1169,7 +1169,7 @@ namespace Reko.Analysis
                 {
                     //$HEURKAPETE
                     // Replace id + c  where id = cOther with c
-                    c = bin.Operator.ApplyConstants(cOther, c);
+                    c = bin.Operator.ApplyConstants(bin.DataType, cOther, c);
                     sid.Uses.Remove(stmCur!);
                 }
                 else

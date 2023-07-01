@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -27,11 +28,11 @@ namespace Reko.Core.Operators
     {
         internal FDivOperator() : base(OperatorType.FDiv) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
-                return InvalidConstant.Create(c1.DataType);
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToReal64() / c2.ToReal64());
+                return InvalidConstant.Create(dt);
+            return BuildConstant(dt, c2.DataType, c1.ToReal64() / c2.ToReal64());
         }
 
         public override string AsCompound()

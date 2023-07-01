@@ -66,7 +66,7 @@ namespace Reko.Core.Operators
 	{
         internal CandOperator() : base(OperatorType.Cand) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (c1.IsZero)
                 return c1;
@@ -83,7 +83,7 @@ namespace Reko.Core.Operators
 	{
         internal CorOperator() : base(OperatorType.Cor) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!c1.IsZero)
                 return c1;
@@ -100,11 +100,11 @@ namespace Reko.Core.Operators
 	{
         internal EqOperator() : base(OperatorType.Eq) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
-            return c1.ToInt32() == c2.ToInt32() ? Constant.True() : Constant.False();
+            return c1.ToInt64() == c2.ToInt64() ? Constant.True() : Constant.False();
 		}
 
         public override Operator Invert() => Ne;
@@ -116,11 +116,11 @@ namespace Reko.Core.Operators
 	{
         internal NeOperator() : base(OperatorType.Ne) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return InvalidConstant.Create(c1.DataType);
-            return c1.ToInt32() != c2.ToInt32()
+                return InvalidConstant.Create(dt);
+            return c1.ToInt64() != c2.ToInt64()
 				? Constant.True() 
 				: Constant.False();
 		}

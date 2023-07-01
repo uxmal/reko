@@ -159,9 +159,12 @@ namespace Reko.Analysis
                 // not been visited, or are computed destinations  (e.g. vtables)
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
+                if (proc.EntryAddress.Offset == 0)
+                    _ = this; //$DEBUG
                 var sst = new SsaTransform(program, proc, sccProcs!, this.dynamicLinker, this.flow);
                 var ssa = sst.Transform();
                 dfa.DumpWatchedProcedure("ssa", "After SSA", ssa);
+
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();
@@ -178,6 +181,8 @@ namespace Reko.Analysis
                 // sites.
                 var vp = new ValuePropagator(program, ssa, this.dynamicLinker, services);
                 vp.Transform();
+                if (ssa.Procedure.EntryAddress.Offset == 0)
+                    _ = this; //$DEBUG
                 dfa.DumpWatchedProcedure("vp", "After first VP", ssa);
 
                 // Value propagation may uncover more opportunities.

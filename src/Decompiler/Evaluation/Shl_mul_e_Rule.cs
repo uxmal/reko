@@ -51,7 +51,7 @@ namespace Reko.Evaluation
 
             var e = bLeft.Left;
             var dt = b.DataType;
-			return new BinaryExpression(op, dt, e, Operator.Shl.ApplyConstants(cMul, cShift));
+			return new BinaryExpression(op, dt, e, Operator.Shl.ApplyConstants(cMul.DataType, cMul, cShift));
 		}
 	}
 }

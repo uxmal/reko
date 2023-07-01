@@ -33,7 +33,7 @@ namespace Reko.Core.Operators
     {
         internal ReqOperator() : base(OperatorType.Feq) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -50,7 +50,7 @@ namespace Reko.Core.Operators
     {
         internal RneOperator() : base(OperatorType.Fne) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -68,7 +68,7 @@ namespace Reko.Core.Operators
 	{
         internal RltOperator() : base(OperatorType.Flt) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -86,7 +86,7 @@ namespace Reko.Core.Operators
 	{
         internal RgtOperator() : base(OperatorType.Fgt) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -105,7 +105,7 @@ namespace Reko.Core.Operators
 	{
         internal RleOperator() : base(OperatorType.Fle) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -123,7 +123,7 @@ namespace Reko.Core.Operators
 	{
         internal RgeOperator() : base(OperatorType.Fge) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

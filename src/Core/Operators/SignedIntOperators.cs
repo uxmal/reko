@@ -33,7 +33,7 @@ namespace Reko.Core.Operators
 	{
         internal LtOperator() : base(OperatorType.Lt) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -52,7 +52,7 @@ namespace Reko.Core.Operators
 	{
         internal GtOperator() : base(OperatorType.Gt) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -71,7 +71,7 @@ namespace Reko.Core.Operators
 	{
         internal LeOperator() : base(OperatorType.Le) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -90,7 +90,7 @@ namespace Reko.Core.Operators
 	{
         internal GeOperator() : base(OperatorType.Ge) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

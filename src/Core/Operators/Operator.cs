@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -90,7 +91,7 @@ namespace Reko.Core.Operators
 
         public OperatorType Type { get; }
 
-        public virtual Constant ApplyConstants(Constant c1, Constant c2)
+        public virtual Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             throw new NotSupportedException();
         }

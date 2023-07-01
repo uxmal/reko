@@ -122,6 +122,8 @@ namespace Reko.Analysis
 
         public (Instruction, bool) VisitAssignment(Assignment a)
         {
+            if (a.Dst.ToString() == "size_99")
+                _ = this; //$DEBUG
             bool changed;
             (a.Src, changed) = a.Src.Accept(eval);
             var (src, changed2) = ReplaceIndirectCallToImport(a.Src);

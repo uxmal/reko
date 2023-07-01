@@ -96,9 +96,9 @@ namespace Reko.Core
         public void AddIncrement(Constant c)
         {
             if (Initial != null)
-                Initial = Operator.IAdd.ApplyConstants(Initial, c);
+                Initial = Operator.IAdd.ApplyConstants(Initial.DataType, Initial, c);
             if (Final != null)
-                Final = Operator.IAdd.ApplyConstants(Final, c);
+                Final = Operator.IAdd.ApplyConstants(Final.DataType, Final, c);
         }
 
 		public LinearInductionVariable Scale(Constant c)
@@ -108,10 +108,10 @@ namespace Reko.Core
 			Constant? final = Final;
 
 			if (initial != null)
-				initial = Operator.SMul.ApplyConstants(initial, c);
-			delta = Operator.SMul.ApplyConstants(delta, c);
+				initial = Operator.SMul.ApplyConstants(initial.DataType, initial, c);
+			delta = Operator.SMul.ApplyConstants(delta.DataType, delta, c);
 			if (final != null)
-				final = Operator.SMul.ApplyConstants(final, c);
+				final = Operator.SMul.ApplyConstants(final.DataType, final, c);
 			return new LinearInductionVariable(initial, delta, final, IsSigned);
 		}
 

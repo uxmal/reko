@@ -50,7 +50,7 @@ namespace Reko.Evaluation
 				op,
 				e.DataType,
 				e,
-				Operator.IAdd.ApplyConstants(c1, c2));
+				Operator.IAdd.ApplyConstants(b.DataType, c1, c2));
 		}
 	}
 }

@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Core
             var dt = PrimitiveType.Create(Domain.UnsignedInt,5);
             var c1 = Constant.Create(dt, 16);
             var c2 = Constant.Create(dt, 19);
-            var sum = Operator.IAdd.ApplyConstants(c1, c2);
+            var sum = Operator.IAdd.ApplyConstants(dt, c1, c2);
             Assert.AreEqual("3<u5>", sum.ToString(), "Silent overflow is not working.");
         }
 

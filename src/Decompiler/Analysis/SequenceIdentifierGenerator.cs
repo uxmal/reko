@@ -105,7 +105,7 @@ namespace Reko.Analysis
 
         private void ReplaceStores(SsaIdentifier sid, StoreOffset stoTail, StoreOffset stoHead)
         {
-            if (Operator.Lt.ApplyConstants(stoTail.Offset, stoHead.Offset).ToBoolean())
+            if (Operator.Lt.ApplyConstants(stoTail.Offset.DataType, stoTail.Offset, stoHead.Offset).ToBoolean())
             {
                 stoTail.Store.Dst.DataType = sid.Identifier.DataType;
                 stoTail.Store.Src = sid.Identifier;

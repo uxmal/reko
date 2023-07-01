@@ -19,11 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
@@ -31,7 +27,7 @@ namespace Reko.Core.Operators
     {
         internal UModOperator() : base(OperatorType.UMod) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c2.DataType);

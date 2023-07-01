@@ -121,11 +121,6 @@ namespace Reko.Evaluation
                    op == OperatorType.Fle || op == OperatorType.Flt;
         }
 
-        public static Constant ApplyConstants(BinaryOperator op, Constant l, Constant r)
-        {
-            return op.ApplyConstants(l, r);
-        }
-
         public virtual (Expression, bool) VisitAddress(Address addr)
         {
             return (addr, false);
@@ -208,7 +203,7 @@ namespace Reko.Evaluation
                 {
                     if (appInner.Arguments[1] is Constant cInner)
                     {
-                        var cTot = Operator.IAdd.ApplyConstants(cOuter, cInner);
+                        var cTot = Operator.IAdd.ApplyConstants(cOuter.DataType, cOuter, cInner);
                         return new Application(
                             appl.Procedure,
                             appl.DataType,
@@ -474,13 +469,13 @@ namespace Reko.Evaluation
                     Constant c;
                     if (binLeft.Operator == binOperator)
                     {
-                        c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
+                        c = Operator.IAdd.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                     }
                     else
                     {
                         if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
                         {
-                            c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                            c = Operator.ISub.ApplyConstants(binExp.DataType, cRight, cLeftRight);
                         }
                         else
                         {
@@ -488,7 +483,7 @@ namespace Reko.Evaluation
                                 binOperator.Type == OperatorType.IAdd
                                     ? Operator.ISub
                                     : Operator.IAdd;
-                            c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                            c = Operator.ISub.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                         }
                     }
                     if (c.IsIntegerZero)
@@ -497,7 +492,7 @@ namespace Reko.Evaluation
                 }
                 if (binExp.Operator.Type == OperatorType.IMul && binLeft.Operator.Type == OperatorType.IMul)
                 {
-                    var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
+                    var c = Operator.IMul.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                     if (c.IsIntegerZero && !CriticalInstruction.IsCritical(binLeft))
                     {
                         ctx.RemoveExpressionUse(binLeft);
@@ -544,7 +539,7 @@ namespace Reko.Evaluation
                         !cRight.IsIntegerZero)
                     {
                         ctx.UseExpression(binLeft.Left);
-                        var c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
+                        var c = Operator.IAdd.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                         return (m.Cor(
                             new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
                             m.Ult(binLeft.Left, cLeftRight)),
@@ -554,7 +549,7 @@ namespace Reko.Evaluation
                     {
                         ctx.RemoveIdentifierUse(idLeft!);
                         var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
-                        var c = op.ApplyConstants(cLeftRight, cRight);
+                        var c = op.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                         return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
                     }
                 }
@@ -562,7 +557,7 @@ namespace Reko.Evaluation
                 {
                     ctx.RemoveIdentifierUse(idLeft!);
                     var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
-                    var c = op.ApplyConstants(cLeftRight, cRight);
+                    var c = op.ApplyConstants(binExp.DataType, cLeftRight, cRight);
                     var opCmp = ((ConditionalOperator) binExp.Operator).ToUnsigned();
                     return (new BinaryExpression(opCmp, PrimitiveType.Bool, binLeft.Left, c), true);
                 }
@@ -853,19 +848,6 @@ namespace Reko.Evaluation
                 }
             }
             return null;
-        }
-
-
-        //$TODO: rename to 'ApplyConstants'
-        public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
-        {
-            PrimitiveType lType = (PrimitiveType) l.DataType;
-            PrimitiveType rType = (PrimitiveType) r.DataType;
-            if ((lType.Domain & rType.Domain) != 0)
-            {
-                return ((BinaryOperator) op).ApplyConstants(l, r);
-            }
-            throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
         }
 
         public virtual (Expression, bool) VisitConversion(Conversion conversion)

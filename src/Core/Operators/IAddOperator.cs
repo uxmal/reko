@@ -31,10 +31,10 @@ namespace Reko.Core.Operators
 	{
         internal IAddOperator() : base(OperatorType.IAdd) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return InvalidConstant.Create(c1.DataType);
+                return InvalidConstant.Create(dt);
             var d1 = c1.DataType.Domain;
             var d2 = c2.DataType.Domain;
             var bitSize = Math.Max(c1.DataType.BitSize, c2.DataType.BitSize);
@@ -43,12 +43,12 @@ namespace Reko.Core.Operators
 
             if (isPointy1 && (c2.DataType.Domain & Domain.Integer) != 0)
             {
-                var dt = PrimitiveType.Create(d1, c1.DataType.BitSize);
+                dt = PrimitiveType.Create(d1, c1.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
             }
             else if (isPointy2 && (c1.DataType.Domain & Domain.Integer) != 0)
             {
-                var dt = PrimitiveType.Create(d2, c2.DataType.BitSize);
+                dt = PrimitiveType.Create(d2, c2.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
             }
             else

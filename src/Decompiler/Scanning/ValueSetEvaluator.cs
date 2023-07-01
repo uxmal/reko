@@ -98,7 +98,7 @@ namespace Reko.Scanning
                 return new IntervalValueSet(
                     cLeft.DataType,
                     StridedInterval.Constant(
-                        binExp.Operator.ApplyConstants(cLeft, cRight)));
+                        binExp.Operator.ApplyConstants(cLeft.DataType, cLeft, cRight)));
             }
 
             if (cLeft == null && cRight != null)

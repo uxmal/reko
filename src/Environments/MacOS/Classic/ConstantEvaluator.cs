@@ -60,10 +60,10 @@ namespace Reko.Environments.MacOS.Classic
                 return InvalidConstant.Create(eLeft.DataType);  // eLeft is intentional to handle shifts
             return binExp.Op switch
             {
-                TokenType.Plus => Operator.ISub.ApplyConstants(cLeft, cRight),
-                TokenType.Minus => Operator.ISub.ApplyConstants(cLeft, cRight),
-                TokenType.Star => Operator.IMul.ApplyConstants(cLeft, cRight),
-                TokenType.Slash => Operator.FDiv.ApplyConstants(cLeft, cRight),
+                TokenType.Plus => Operator.ISub.ApplyConstants(cLeft.DataType, cLeft, cRight),
+                TokenType.Minus => Operator.ISub.ApplyConstants(cLeft.DataType, cLeft, cRight),
+                TokenType.Star => Operator.IMul.ApplyConstants(cLeft.DataType, cLeft, cRight),
+                TokenType.Slash => Operator.FDiv.ApplyConstants(cLeft.DataType, cLeft, cRight),
                 _ => throw new NotImplementedException(),
             };
         }

@@ -96,7 +96,7 @@ namespace Reko.Analysis
                 branch.Condition is BinaryExpression exp &&
                 exp.Right is Constant c)
             {
-                exp.Right = Operator.ISub.ApplyConstants(c, use.Increment!);
+                exp.Right = Operator.ISub.ApplyConstants(c.DataType, c, use.Increment!);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Reko.Analysis
                 return false;
             if (ass.Src is Constant c)
             {
-                ass.Src = Operator.IAdd.ApplyConstants(c, use.Increment!);
+                ass.Src = Operator.IAdd.ApplyConstants(c.DataType, c, use.Increment!);
             }
             else
             {

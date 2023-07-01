@@ -40,7 +40,7 @@ namespace Reko.Evaluation
 			{
                 if (op is ConditionalOperator)
                 {
-                    var result = op.ApplyConstants(cLeft!, cRight);
+                    var result = op.ApplyConstants(binExp.DataType, cLeft!, cRight);
                     result.DataType = dtResult!;
                     return result;
                 }
@@ -54,7 +54,7 @@ namespace Reko.Evaluation
                     {
                         dtResult = cRight.DataType;
                     }
-                    var result = op!.ApplyConstants(cLeft, cRight);
+                    var result = op.ApplyConstants(binExp.DataType, cLeft, cRight);
                     result.DataType = dtResult!;
                     return result;
                 }

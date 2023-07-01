@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -27,7 +28,7 @@ namespace Reko.Core.Operators
 	{
         internal XorOperator() : base(OperatorType.Xor) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

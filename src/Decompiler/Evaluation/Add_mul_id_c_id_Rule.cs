@@ -79,8 +79,8 @@ namespace Reko.Evaluation
             ctx.RemoveIdentifierUse(id);
             var op = Operator.IAdd;
             var c = swapped
-                ? op.ApplyConstants(cOne, cInner)
-                : op.ApplyConstants(cInner, cOne);
+                ? op.ApplyConstants(cOne.DataType, cOne, cInner)
+                : op.ApplyConstants(cInner.DataType, cInner, cOne);
 
             return new BinaryExpression(bin.Operator, id.DataType, id, c);
 		}

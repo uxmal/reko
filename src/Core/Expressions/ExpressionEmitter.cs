@@ -1230,7 +1230,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Multiplicand.</param>
         /// <param name="right">Multiplier.</param>
         /// <returns>An unsigned integer multiplication expression</returns>
-        public Expression UMul(PrimitiveType dtProduct, Expression left, Expression right)
+        public Expression UMul(DataType dtProduct, Expression left, Expression right)
         {
             return new BinaryExpression(Operator.UMul, dtProduct, left, right);
         }

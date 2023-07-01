@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -30,12 +31,12 @@ namespace Reko.Core.Operators
 	{
         internal SMulOperator() : base(OperatorType.SMul) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
 
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c2.ToInt32());
+            return Constant.Create(dt, c1.ToInt64() * c2.ToInt64());
 		}
 
         public override string AsCompound()

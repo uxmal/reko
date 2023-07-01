@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -27,17 +28,17 @@ namespace Reko.Core.Operators
 	{
         internal AndOperator() : base(OperatorType.And) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
             if (c2.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
             {
-                return BuildConstant(c1.DataType, c2.DataType, c1.ToUInt64() & c2.ToUInt64());
+                return BuildConstant(dt, c2.DataType, c1.ToUInt64() & c2.ToUInt64());
             }
             else
             {
-                return BuildConstant(c1.DataType, c2.DataType, c1.ToBigInteger() & c2.ToBigInteger());
+                return BuildConstant(dt, c2.DataType, c1.ToBigInteger() & c2.ToBigInteger());
             }
 		}
 
