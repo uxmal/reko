@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Core.Operators
         {
             var c1 = Constant.Create(new Pointer(PrimitiveType.Int32, 32), 0x00120000);
             var c2 = Constant.Create(PrimitiveType.Int32, 0x3400);
-            var sum = Operator.IAdd.ApplyConstants(c1, c2);
+            var sum = Operator.IAdd.ApplyConstants(c1.DataType, c1, c2);
 
             Assert.AreEqual("0x00123400<p32>", sum.ToString());
             Assert.AreEqual("ptr32", sum.DataType.ToString());
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Core.Operators
         {
             var c1 = Constant.Create(PrimitiveType.Offset16, 0x1200);
             var c2 = Constant.Create(PrimitiveType.Int16, 0x0034);
-            var sum = Operator.IAdd.ApplyConstants(c1, c2);
+            var sum = Operator.IAdd.ApplyConstants(c1.DataType, c1, c2);
 
             Assert.AreEqual("0x1234<p16>", sum.ToString());
             Assert.AreEqual("mp16", sum.DataType.ToString());
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Operators
         {
             var c1 = Constant.Create(PrimitiveType.Int16, 0x0034);
             var c2 = Constant.Create(PrimitiveType.Offset16, 0x1200);
-            var sum = Operator.IAdd.ApplyConstants(c1, c2);
+            var sum = Operator.IAdd.ApplyConstants(c1.DataType, c1, c2);
 
             Assert.AreEqual("0x1234<p16>", sum.ToString());
             Assert.AreEqual("mp16", sum.DataType.ToString());

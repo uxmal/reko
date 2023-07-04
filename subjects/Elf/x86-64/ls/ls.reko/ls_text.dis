@@ -185,7 +185,7 @@ l00000000004045DB_1:
 l00000000004045DF:
 l0000000000403816:
 l000000000040383E:
-	branch memcmp(r12_3693, 0x412CA0<u64>, 6<i64>) == 0<64> l0000000000403828
+	branch memcmp(r12_3693, 0x412CA0<u64>, 6<64>) == 0<64> l0000000000403828
 l0000000000403828:
 	branch fn000000000040AB70(2<32>) == 0<8> l0000000000403301
 l000000000040383A:
@@ -418,7 +418,7 @@ l0000000000403B7C:
 	word56 r13_56_8_3722 = SLICE(r13_1601, word56, 8)
 	branch r13_1601 != 0xFFFFFFFFFFBED370<64> l0000000000403B51
 l0000000000403B86:
-	memcpy(&qwLoc0370, 0x61B040<u64>, 128<i64>)
+	memcpy(&qwLoc0370, 0x61B040<u64>, 0x80<64>)
 	word64 r13_1645 = SEQ(r13_56_8_3722, 0<8>) + 4271296<i64>
 l0000000000403BAB:
 	word32 r15d_1651 = Mem1646[r13_1645 + 0<i64>:word32]
@@ -1348,7 +1348,7 @@ l0000000000404CF1:
 	rax_23 = 1<u64>
 	branch rdx_11 == 2<64> l0000000000404D00
 l0000000000404D00:
-	return CONVERT(CONVERT(memcmp(rsi_12, 0x413733<u64>, 2<i64>) != 0<64>, bool, int8), int8, uint64)
+	return CONVERT(CONVERT(memcmp(rsi_12, 0x413733<u64>, 2<64>) != 0<64>, bool, int8), int8, uint64)
 l0000000000404CFC:
 	return rax_23
 fn0000000000404CD0_exit:
@@ -3653,7 +3653,7 @@ l00000000004089D0:
 l00000000004084B4:
 	Mem903[r14_129 + 180<i64>:word32] = 0<32>
 l0000000000408093:
-	r13b_1035 = CONVERT(memcmp(0x4137B1<u64>, Mem808[r14_129 + 168<i64>:word64], 10<i64>) != 0<64>, bool, int8)
+	r13b_1035 = CONVERT(memcmp(0x4137B1<u64>, Mem808[r14_129 + 168<i64>:word64], 0xA<64>) != 0<64>, bool, int8)
 l00000000004080AA:
 	word32 ecx_1008
 	word32 edx_1091 = edx_673
@@ -4634,7 +4634,7 @@ l000000000040AB80:
 l000000000040AB85:
 	branch Mem0[rax_8 + 1<i64>:byte] != 0<8> l000000000040AB98
 l000000000040AB98:
-	return CONVERT(memcmp(rax_8, 0x415E6A<u64>, 6<i64>) != 0<64>, bool, int8)
+	return CONVERT(memcmp(rax_8, 0x415E6A<u64>, 6<64>) != 0<64>, bool, int8)
 l000000000040AB8B:
 	return 0<8>
 fn000000000040AB70_exit:
@@ -6685,9 +6685,9 @@ l000000000040D6A9:
 l000000000040D6B8:
 	branch rax_22 + 1<i64> - rdi <= 6<64> l000000000040D703
 l000000000040D6C8:
-	branch memcmp(rax_22 - 6<i64>, 0x415FD8<u64>, 7<i64>) != 0<64> l000000000040D703
+	branch memcmp(rax_22 - 6<i64>, 0x415FD8<u64>, 7<64>) != 0<64> l000000000040D703
 l000000000040D6DA:
-	word64 cmpResult_48 = memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<i64>)
+	word64 cmpResult_48 = memcmp(rax_22 + 1<i64>, 0x415FE0<u64>, 3<64>)
 	rbx_10 = rax_22 + 1<i64>
 	branch CONVERT(cmpResult_48 >u 0<64>, bool, int8) != CONVERT(cmpResult_48 <u 0<64>, bool, int8) l000000000040D703
 l000000000040D6F8:
@@ -9932,7 +9932,7 @@ l00000000004117B8:
 	branch edi == 0xA<32> l00000000004117C8
 l00000000004117C8:
 	word64 rdx_19 = Mem0[rsi:word64]
-	branch memcmp(rdx_19, 0x4137B1<u64>, 10<i64>) != 0<64> l00000000004117BF
+	branch memcmp(rdx_19, 0x4137B1<u64>, 0xA<64>) != 0<64> l00000000004117BF
 l00000000004117DC:
 	freecon(rdx_19)
 	Mem34[__errno_location():word32] = 0x3D<32>

@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core
         {
             var c1 = Constant.Create(PrimitiveType.Ptr16, 0x402);
             var c2 = Constant.Create(PrimitiveType.Byte, 0xFE);
-            Constant c3 = Operator.IAdd.ApplyConstants(c1, c2);
+            Constant c3 = Operator.IAdd.ApplyConstants(c1.DataType, c1, c2);
             Assert.AreEqual(0x500, (int) c3.ToInt64());
         }
 
@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core
 			Constant c1 = Constant.Word32(1);
 			Constant c2 = Constant.Word32(2);
 			BinaryOperator op = Operator.And;
-			Constant c3 = op.ApplyConstants(c1, c2);
+			Constant c3 = op.ApplyConstants(c1.DataType, c1, c2);
 			Assert.AreEqual(0, c3.ToInt32());
 		}
 
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core
 			Constant c1 = Constant.Word32(1);
 			Constant c2 = Constant.Word32(2);
 			BinaryOperator op = Operator.Or;
-			Constant c3 = op.ApplyConstants(c1, c2);
+			Constant c3 = op.ApplyConstants(c1.DataType, c1, c2);
 			Assert.AreEqual(3, c3.ToInt32());
 		}
 
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Core
 		{
 			Constant c1 = Constant.Word32(a);
 			Constant c2 = Constant.Word32(b);
-			Constant c3 = op.ApplyConstants(c1, c2);
+			Constant c3 = op.ApplyConstants(c1.DataType, c1, c2);
 			Assert.AreEqual(expected, (int) c3.ToInt64());
 		}
 

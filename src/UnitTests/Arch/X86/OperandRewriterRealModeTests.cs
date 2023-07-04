@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Arch.X86
 				PrimitiveType.Byte,
 				Registers.bx,
 				Constant.Int32(32));
-			var e = orw.CreateMemoryAccess(instr, m, state);
+			var e = orw.CreateMemoryAccess(instr, m);
 			Assert.AreEqual("Mem0[ds:bx + 0x20<16>:byte]", e.ToString());
 		}
 	}

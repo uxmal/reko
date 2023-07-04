@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Core.Operators
             big = big * big;
             var numerator = new BigConstant(PrimitiveType.Int128, big);
             var denominator = Constant.Int64(10);
-            var result = Operator.IMod.ApplyConstants(numerator, denominator);
+            var result = Operator.IMod.ApplyConstants(denominator.DataType, numerator, denominator);
             Assert.AreEqual("9<i64>", result.ToString());
             Assert.IsInstanceOf<Constant>(result);
         }

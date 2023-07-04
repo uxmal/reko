@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core.Operators
             big = big * 1000;
             var numerator = new BigConstant(PrimitiveType.Int128, big);
             var denominator = Constant.UInt64(1000);
-            var result = Operator.UDiv.ApplyConstants(numerator, denominator);
+            var result = Operator.UDiv.ApplyConstants(denominator.DataType, numerator, denominator);
             Assert.AreEqual("0xFFFFFFFFFFFFFFFF<u64>", result.ToString());
             Assert.IsInstanceOf<Constant>(result);
         }
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Core.Operators
             var big = new BigInteger(Enumerable.Range(0, 16).Select(_ => (byte) 0xFF).ToArray());
             var numerator = new BigConstant(PrimitiveType.Int128, big);
             var denominator = Constant.UInt64(3);
-            var result = Operator.UDiv.ApplyConstants(numerator, denominator);
+            var result = Operator.UDiv.ApplyConstants(denominator.DataType, numerator, denominator);
             Assert.AreEqual("0x5555555555555555<u64>", result.ToString());
             Assert.IsInstanceOf<Constant>(result);
 

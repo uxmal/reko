@@ -638,7 +638,7 @@ l000000000040380D:
 					if (rax_n == 0x00)
 						r12_n.u0 = 4274215;
 				}
-				while (memcmp(r12_n, &g_t412CA0, 6) == 0x00)
+				while (memcmp(r12_n, &g_t412CA0, 0x06) == 0x00)
 				{
 					if (fn000000000040AB70(0x02) == 0x00)
 						goto l0000000000403301;
@@ -889,7 +889,7 @@ l0000000000403AE2:
 									++r13_n;
 									word56 r13_56_8_n = SLICE(r13_n, word56, 8);
 								} while (r13_n != (word32 *) ~0x00412C8F);
-								memcpy(&qwLoc0370, &g_t61B040, 0x0080);
+								memcpy(&qwLoc0370, &g_t61B040, 0x80);
 								word32 * r13_n = SEQ(r13_56_8_n, 0x00) + 0x00412CC0;
 								do
 								{
@@ -1681,7 +1681,7 @@ uint64 fn0000000000404CD0(word32 edi)
 		return (uint64) (int8) (*rsi_n != 0x30);
 	rax_n = 0x01;
 	if (rdx_n == 0x02)
-		return (uint64) (int8) (memcmp(rsi_n, &g_t413733, 2) != 0x00);
+		return (uint64) (int8) (memcmp(rsi_n, &g_t413733, 0x02) != 0x00);
 	return rax_n;
 }
 
@@ -4613,7 +4613,7 @@ int8 fn000000000040AB70(word32 edi)
 	if (rax_n == null)
 		return 0x01;
 	if (rax_n->b0000 != 0x43 || rax_n->b0001 != 0x00)
-		return (int8) (memcmp(rax_n, &g_t415E6A, 6) != 0x00);
+		return (int8) (memcmp(rax_n, &g_t415E6A, 0x06) != 0x00);
 	return 0x00;
 }
 
@@ -6510,9 +6510,9 @@ void fn000000000040D6A0(Eq_n rdi)
 	else
 	{
 		char * rax_n = strrchr(rdi, '/');
-		if (rax_n != null && ((rax_n + 1) - rdi > 0x06 && memcmp(rax_n - (char *) 6, &g_t415FD8, 7) == 0x00))
+		if (rax_n != null && ((rax_n + 1) - rdi > 0x06 && memcmp(rax_n - (char *) 6, &g_t415FD8, 0x07) == 0x00))
 		{
-			word64 cmpResult_n = memcmp(rax_n + 1, 4284384, 3);
+			word64 cmpResult_n = memcmp(rax_n + 1, 4284384, 0x03);
 			rbx_n = rax_n + 1;
 			if ((int8) (cmpResult_n > 0x00) == (int8) (cmpResult_n < 0x00))
 			{

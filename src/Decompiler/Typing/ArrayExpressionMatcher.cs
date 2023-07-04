@@ -66,7 +66,7 @@ namespace Reko.Typing
             case OperatorType.Shl:
                 if (b.Right is Constant cShl)
                 {
-                    ElementSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), cShl);
+                    ElementSize = b.Operator.ApplyConstants(b.Left.DataType, Constant.Create(b.Left.DataType, 1), cShl);
                     Index = b.Left;
                     return true;
                 }

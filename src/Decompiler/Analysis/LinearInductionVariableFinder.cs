@@ -78,7 +78,7 @@ namespace Reko.Analysis
 				if (IsIdUsedOnlyBy(ctx.PhiIdentifier, ctx.TestStatement, ctx.DeltaStatement))
 				{
 					// The only use inside the loop is the increment, so we never see the initial value.
-					ctx.InitialValue = Operator.IAdd.ApplyConstants(ctx.InitialValue, ctx.DeltaValue);
+					ctx.InitialValue = Operator.IAdd.ApplyConstants(ctx.InitialValue.DataType, ctx.InitialValue, ctx.DeltaValue);
 				}
 			}
 
@@ -98,7 +98,7 @@ namespace Reko.Analysis
                 DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier!) &&
                 BranchTrueIntoLoop())
             {
-                testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue!);
+                testValue = Operator.IAdd.ApplyConstants(testValue.DataType, testValue, ctx.DeltaValue!);
             }
             Identifier idNew = ((Assignment) ctx.DeltaStatement!.Instruction).Dst;
             if (!IsSingleUsingStatement(ctx.TestStatement!, idNew))
@@ -107,7 +107,7 @@ namespace Reko.Analysis
                     DominatesAllUses(ctx.TestStatement, ctx.PhiIdentifier!)))
                 {
                     // A use is made of the variable between increment and test.
-                    testValue = Operator.IAdd.ApplyConstants(testValue, ctx.DeltaValue!);
+                    testValue = Operator.IAdd.ApplyConstants(testValue.DataType, testValue, ctx.DeltaValue!);
                 }
             }
             return testValue;

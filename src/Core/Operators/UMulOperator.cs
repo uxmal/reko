@@ -31,7 +31,7 @@ namespace Reko.Core.Operators
 	{
         internal UMulOperator() : base(OperatorType.UMul) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(PrimitiveType.Bool);
@@ -39,11 +39,11 @@ namespace Reko.Core.Operators
 			{
                 //$BUG: we're truncating here. We need a way to pass in the expected result as a first parameter
                 // dtResult.
-				return BuildConstant(c1.DataType, c2.DataType, unchecked((long) (c1.ToUInt64() * c2.ToUInt64())));
+				return Constant.Create(dt, unchecked((long) (c1.ToUInt64() * c2.ToUInt64())));
 			}
 			catch	//$HACK: sometimes we get -ive numbers here, at which point .NET casts fail; attempt to use signed integers instead.
 			{
-				return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() * c1.ToInt32());
+				return Constant.Create(dt, c1.ToInt64() * c1.ToInt64());
 			}
 		}
 

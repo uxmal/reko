@@ -33,7 +33,7 @@ namespace Reko.Core.Operators
 	{
         internal UltOperator() : base(OperatorType.Ult) { }
 
-		public override Constant ApplyConstants(Constant c1, Constant c2)
+		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -53,7 +53,7 @@ namespace Reko.Core.Operators
 	{
         internal UgtOperator() : base(OperatorType.Ugt) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -73,7 +73,7 @@ namespace Reko.Core.Operators
 	{
         internal UleOperator() : base(OperatorType.Ule) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
@@ -94,7 +94,7 @@ namespace Reko.Core.Operators
 	{
         internal UgeOperator() : base(OperatorType.Uge) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

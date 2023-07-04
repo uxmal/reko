@@ -28,10 +28,10 @@ namespace Reko.Core.Operators
 	{
         internal SarOperator() : base(OperatorType.Sar) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return InvalidConstant.Create(c1.DataType);
+                return InvalidConstant.Create(dt);
             return Constant.Create(
                 PrimitiveType.Create(Domain.SignedInt, c1.DataType.BitSize),
                 c1.ToInt64() >> c2.ToInt32());

@@ -290,14 +290,14 @@ namespace Reko.Scanning
         private static Expression AddValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
-                return Operator.IAdd.ApplyConstants(cLeft, cRight);
+                return Operator.IAdd.ApplyConstants(cLeft.DataType, cLeft, cRight);
             throw new NotImplementedException();
         }
 
         private static Expression MulValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
-                return Operator.IMul.ApplyConstants(cLeft, cRight);
+                return Operator.IMul.ApplyConstants(cLeft.DataType, cLeft, cRight);
             throw new NotImplementedException();
         }
 
@@ -309,7 +309,7 @@ namespace Reko.Scanning
         private static Expression ShlValue(Expression eLeft, Constant cRight)
         {
             if (eLeft is Constant cLeft)
-                return Operator.Shl.ApplyConstants(cLeft, cRight);
+                return Operator.Shl.ApplyConstants(cLeft.DataType, cLeft, cRight);
             throw new NotImplementedException();
         }
 
@@ -338,7 +338,7 @@ namespace Reko.Scanning
             if (eLeft is Constant cLeft)
             {
                 if (cLeft.IsValid)
-                    return Operator.ISub.ApplyConstants(cLeft, cRight);
+                    return Operator.ISub.ApplyConstants(cLeft.DataType, cLeft, cRight);
                 else
                     return cLeft;
             }

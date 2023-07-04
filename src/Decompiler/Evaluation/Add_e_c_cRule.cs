@@ -57,7 +57,7 @@ namespace Reko.Evaluation
 				cRight = cRight.Negate();
 
 			BinaryOperator op = Operator.IAdd;
-			Constant c = op.ApplyConstants(cLeftRight, cRight);
+			Constant c = op.ApplyConstants(cLeftRight.DataType, cLeftRight, cRight);
 			if (c.IsNegative)
 			{
 				c = c.Negate();

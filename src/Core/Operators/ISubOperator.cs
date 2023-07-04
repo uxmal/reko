@@ -32,18 +32,18 @@ namespace Reko.Core.Operators
 	{
         internal ISubOperator() : base(OperatorType.ISub) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);
             if (c1.DataType.IsPointer && c2.DataType.IsIntegral)
             {
-                var dt = PrimitiveType.Create(Domain.Pointer, c1.DataType.BitSize);
+                dt = PrimitiveType.Create(Domain.Pointer, c1.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() - c2.ToUInt64());
             }
             else if (c2.DataType.IsPointer && c1.DataType.IsIntegral)
             {
-                var dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
+                dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() - c2.ToUInt64());
             }
             else if (c1.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
@@ -75,7 +75,7 @@ namespace Reko.Core.Operators
     {
         internal USubOperator() : base(OperatorType.USub) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

@@ -21,14 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Operators;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -1154,7 +1149,7 @@ namespace Reko.Arch.X86
             m.Assign(arg1, m.Fn(intrinsic.MakeInstance(arg1.DataType), arg1, arg2, arg3));
         }
 
-        public MemoryAccess MemIndex(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
+        public Expression MemIndexPtr(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
         {
             Expression ea = indexRegister;
             if (arch.ProcessorMode.PointerType.Domain == Domain.SegPointer)
@@ -1165,6 +1160,12 @@ namespace Reko.Arch.X86
                     : defaultSeg;
                 ea = new SegmentedPointer(arch.ProcessorMode.PointerType, binder.EnsureRegister(seg), ea);
             }
+            return ea;
+        }
+
+        public MemoryAccess MemIndex(int iOp, RegisterStorage defaultSeg, Identifier indexRegister)
+        {
+            var ea = MemIndexPtr(iOp, defaultSeg, indexRegister);
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, instrCur.dataWidth);
         }
 
@@ -1183,7 +1184,12 @@ namespace Reko.Arch.X86
 			get { return orw.AluRegister(Registers.rax, instrCur.dataWidth); }
 		}
 
-		public Identifier RegDi
+        public Identifier RegCx
+        {
+            get { return orw.AluRegister(Registers.rcx, instrCur.addrWidth); }
+        }
+
+        public Identifier RegDi
 		{
 			get { return orw.AluRegister(Registers.rdi, instrCur.addrWidth); }
 		}

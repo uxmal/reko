@@ -121,9 +121,9 @@ namespace Reko.Arch.X86
             }
         }
 
-        public virtual bool IsSegmentedAccessRequired { get { return false; } }
+        public virtual bool IsSegmentedAccessRequired => false;
 
-        public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand memoryOperand, X86State state)
+        public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand memoryOperand)
         {
             return CreateMemoryAccess(instr, memoryOperand, memoryOperand.Width);
         }

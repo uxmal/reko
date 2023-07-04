@@ -539,8 +539,6 @@ l0800_0530:
 l0800_0532:
 	dec	di
 	mov	cx,5h
-
-l0800_0536:
 	rep movsb
 
 l0800_0538:
@@ -898,17 +896,9 @@ l0800_07BD:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_07CC:
 	rep movsw
-
-l0800_07CE:
 	adc	cx,cx
-
-l0800_07D0:
 	rep movsb
-
-l0800_07D2:
 	pop	ds
 	push	ds
 	mov	ax,42E3h
@@ -943,11 +933,7 @@ l0800_0800:
 l0800_0802:
 	dec	di
 	mov	cx,2h
-
-l0800_0806:
 	rep movsb
-
-l0800_0808:
 	jmp	0869h
 
 l0800_080A:
@@ -974,17 +960,9 @@ l0800_081E:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_082D:
 	rep movsw
-
-l0800_082F:
 	adc	cx,cx
-
-l0800_0831:
 	rep movsb
-
-l0800_0833:
 	pop	ds
 	push	ds
 	mov	ax,427Eh
@@ -1019,8 +997,6 @@ l0800_0861:
 l0800_0863:
 	dec	di
 	mov	cx,2h
-
-l0800_0867:
 	rep movsb
 
 l0800_0869:
@@ -1078,11 +1054,7 @@ l0800_08BB:
 l0800_08BD:
 	dec	di
 	mov	cx,2h
-
-l0800_08C1:
 	rep movsb
-
-l0800_08C3:
 	cmp	word ptr [2E31h],8000h
 	jbe	08D1h
 
@@ -1107,11 +1079,7 @@ l0800_08E6:
 l0800_08E8:
 	dec	di
 	mov	cx,2h
-
-l0800_08EC:
 	rep movsb
-
-l0800_08EE:
 	cmp	word ptr [2E31h],1000h
 	jbe	08FCh
 
@@ -1148,8 +1116,6 @@ l0800_0925:
 l0800_0927:
 	dec	di
 	mov	cx,2h
-
-l0800_092B:
 	rep movsb
 
 l0800_092D:
@@ -1170,8 +1136,6 @@ l0800_0941:
 l0800_0943:
 	dec	di
 	mov	cx,2h
-
-l0800_0947:
 	rep movsb
 
 l0800_0949:
@@ -1188,11 +1152,7 @@ l0800_0956:
 l0800_0958:
 	dec	di
 	mov	cx,5h
-
-l0800_095C:
 	rep movsb
-
-l0800_095E:
 	cmp	word ptr [2A25h],0h
 	jnz	0987h
 
@@ -1346,11 +1306,7 @@ l0800_0A5E:
 l0800_0A60:
 	not	cx
 	sub	di,cx
-
-l0800_0A64:
 	rep cmpsb
-
-l0800_0A66:
 	jz	0A6Dh
 
 l0800_0A68:
@@ -1714,11 +1670,7 @@ l0800_0CB9:
 l0800_0CBB:
 	not	cx
 	sub	di,cx
-
-l0800_0CBF:
 	rep cmpsb
-
-l0800_0CC1:
 	jz	0CC8h
 
 l0800_0CC3:
@@ -1768,17 +1720,9 @@ l0800_0CF7:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_0D06:
 	rep movsw
-
-l0800_0D08:
 	adc	cx,cx
-
-l0800_0D0A:
 	rep movsb
-
-l0800_0D0C:
 	pop	ds
 
 l0800_0D0D:
@@ -3745,17 +3689,9 @@ l0800_1BA3:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_1BB2:
 	rep movsw
-
-l0800_1BB4:
 	adc	cx,cx
-
-l0800_1BB6:
 	rep movsb
-
-l0800_1BB8:
 	pop	ds
 	cmp	word ptr [2A25h],8h
 	jnz	1C29h
@@ -4373,17 +4309,9 @@ l0800_202E:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_203D:
 	rep movsw
-
-l0800_203F:
 	adc	cx,cx
-
-l0800_2041:
 	rep movsb
-
-l0800_2043:
 	pop	ds
 	mov	es,[bp-2h]
 	add	bx,[bp-8h]
@@ -4495,17 +4423,9 @@ l0800_2121:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_2130:
 	rep movsw
-
-l0800_2132:
 	adc	cx,cx
-
-l0800_2134:
 	rep movsb
-
-l0800_2136:
 	pop	ds
 	les	di,[bp-4h]
 	xor	ax,ax
@@ -5580,11 +5500,7 @@ l0800_28D4:
 l0800_28D6:
 	not	cx
 	sub	di,cx
-
-l0800_28DA:
 	rep cmpsb
-
-l0800_28DC:
 	jz	28E3h
 
 l0800_28DE:
@@ -5694,11 +5610,7 @@ l0800_296F:
 l0800_2971:
 	not	cx
 	sub	di,cx
-
-l0800_2975:
 	rep cmpsb
-
-l0800_2977:
 	jz	297Eh
 
 l0800_2979:
@@ -5901,17 +5813,9 @@ l0800_2AB5:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_2AC4:
 	rep movsw
-
-l0800_2AC6:
 	adc	cx,cx
-
-l0800_2AC8:
 	rep movsb
-
-l0800_2ACA:
 	pop	ds
 	les	di,[bp+0Ch]
 	push	es
@@ -5943,11 +5847,7 @@ l0800_2AF3:
 l0800_2AF5:
 	dec	di
 	pop	cx
-
-l0800_2AF7:
 	rep movsb
-
-l0800_2AF9:
 	mov	ds,dx
 	les	di,[45AAh]
 	mov	cx,0FFFFh
@@ -6090,11 +5990,7 @@ l0800_2BD8:
 l0800_2BDA:
 	not	cx
 	sub	di,cx
-
-l0800_2BDE:
 	rep cmpsb
-
-l0800_2BE0:
 	jz	2BE7h
 
 l0800_2BE2:
@@ -6596,17 +6492,9 @@ l0800_2EDB:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_2EEA:
 	rep movsw
-
-l0800_2EEC:
 	adc	cx,cx
-
-l0800_2EEE:
 	rep movsb
-
-l0800_2EF0:
 	pop	ds
 	inc	word ptr [4617h]
 	mov	ax,1h
@@ -6772,17 +6660,9 @@ l0800_302A:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_3039:
 	rep movsw
-
-l0800_303B:
 	adc	cx,cx
-
-l0800_303D:
 	rep movsb
-
-l0800_303F:
 	pop	ds
 	inc	word ptr [4617h]
 	inc	word ptr [4652h]
@@ -6939,11 +6819,7 @@ l0800_3132:
 l0800_3134:
 	dec	di
 	pop	cx
-
-l0800_3136:
 	rep movsb
-
-l0800_3138:
 	mov	ds,[bp-2h]
 	push	word ptr [bp+6h]
 	push	word ptr [bp+4h]
@@ -6965,11 +6841,7 @@ l0800_315A:
 l0800_315C:
 	not	cx
 	sub	di,cx
-
-l0800_3160:
 	rep cmpsb
-
-l0800_3162:
 	jz	3169h
 
 l0800_3164:
@@ -6998,11 +6870,7 @@ l0800_3181:
 l0800_3183:
 	not	cx
 	sub	di,cx
-
-l0800_3187:
 	rep cmpsb
-
-l0800_3189:
 	jz	3190h
 
 l0800_318B:
@@ -7179,11 +7047,7 @@ l0800_32AE:
 l0800_32B0:
 	dec	di
 	pop	cx
-
-l0800_32B2:
 	rep movsb
-
-l0800_32B4:
 	mov	ds,dx
 	dec	word ptr [09ACh]
 	mov	bx,[09ACh]
@@ -7224,17 +7088,9 @@ l0800_32E9:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_32F8:
 	rep movsw
-
-l0800_32FA:
 	adc	cx,cx
-
-l0800_32FC:
 	rep movsb
-
-l0800_32FE:
 	pop	ds
 	push	ss
 	pop	es
@@ -7249,11 +7105,7 @@ l0800_330C:
 l0800_330E:
 	dec	di
 	mov	cx,4h
-
-l0800_3312:
 	rep movsb
-
-l0800_3314:
 	push	ss
 	lea	ax,[bp-66h]
 	push	ax
@@ -7344,11 +7196,7 @@ l0800_33A0:
 l0800_33A2:
 	not	cx
 	sub	di,cx
-
-l0800_33A6:
 	rep cmpsb
-
-l0800_33A8:
 	jz	33AFh
 
 l0800_33AA:
@@ -7372,8 +7220,6 @@ l0800_33BF:
 l0800_33C1:
 	dec	di
 	mov	cx,5h
-
-l0800_33C5:
 	rep movsb
 
 l0800_33C7:
@@ -7421,11 +7267,7 @@ l0800_33F1:
 	mov	si,4641h
 	mov	cx,2h
 	xor	ax,ax
-
-l0800_33FE:
 	rep cmpsb
-
-l0800_3400:
 	jz	3407h
 
 l0800_3402:
@@ -7443,11 +7285,7 @@ l0800_340B:
 	mov	si,4641h
 	mov	cx,3h
 	xor	ax,ax
-
-l0800_3418:
 	rep cmpsb
-
-l0800_341A:
 	jz	3421h
 
 l0800_341C:
@@ -7504,17 +7342,9 @@ l0800_345D:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_346C:
 	rep movsw
-
-l0800_346E:
 	adc	cx,cx
-
-l0800_3470:
 	rep movsb
-
-l0800_3472:
 	pop	ds
 
 l0800_3473:
@@ -7558,11 +7388,7 @@ l0800_3494:
 	mov	si,4641h
 	mov	cx,2h
 	xor	ax,ax
-
-l0800_34A1:
 	rep cmpsb
-
-l0800_34A3:
 	jz	34AAh
 
 l0800_34A5:
@@ -7580,11 +7406,7 @@ l0800_34AE:
 	mov	si,4641h
 	mov	cx,3h
 	xor	ax,ax
-
-l0800_34BB:
 	rep cmpsb
-
-l0800_34BD:
 	jz	34C4h
 
 l0800_34BF:
@@ -7630,17 +7452,9 @@ l0800_34ED:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_34FC:
 	rep movsw
-
-l0800_34FE:
 	adc	cx,cx
-
-l0800_3500:
 	rep movsb
-
-l0800_3502:
 	pop	ds
 
 l0800_3503:
@@ -7716,17 +7530,9 @@ l0800_354D:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_355C:
 	rep movsw
-
-l0800_355E:
 	adc	cx,cx
-
-l0800_3560:
 	rep movsb
-
-l0800_3562:
 	pop	ds
 	push	ss
 	pop	es
@@ -7766,11 +7572,7 @@ l0800_3594:
 l0800_3596:
 	dec	di
 	pop	cx
-
-l0800_3598:
 	rep movsb
-
-l0800_359A:
 	mov	ds,[bp-16h]
 	pop	di
 	pop	si
@@ -7840,17 +7642,9 @@ l0800_35E7:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_35F6:
 	rep movsw
-
-l0800_35F8:
 	adc	cx,cx
-
-l0800_35FA:
 	rep movsb
-
-l0800_35FC:
 	pop	ds
 	push	ss
 	pop	es
@@ -7890,11 +7684,7 @@ l0800_362E:
 l0800_3630:
 	dec	di
 	pop	cx
-
-l0800_3632:
 	rep movsb
-
-l0800_3634:
 	mov	ds,[bp-16h]
 	pop	di
 	pop	si
@@ -8123,17 +7913,9 @@ l0800_377E:
 	pop	es
 	push	ds
 	mov	ds,ax
-
-l0800_378D:
 	rep movsw
-
-l0800_378F:
 	adc	cx,cx
-
-l0800_3791:
 	rep movsb
-
-l0800_3793:
 	pop	ds
 	jmp	37A6h
 
@@ -8161,11 +7943,7 @@ l0800_37B3:
 l0800_37B5:
 	dec	di
 	mov	cx,0Dh
-
-l0800_37B9:
 	rep movsb
-
-l0800_37BB:
 	pop	di
 	pop	si
 	ret
@@ -8907,11 +8685,7 @@ l0800_3CBE:
 l0800_3CC0:
 	dec	di
 	mov	cx,0Dh
-
-l0800_3CC4:
 	rep movsb
-
-l0800_3CC6:
 	push	ds
 	mov	ax,0A61h
 	push	ax
@@ -13397,11 +13171,7 @@ l0800_5E7E:
 
 l0800_5E80:
 	xor	ax,ax
-
-l0800_5E82:
 	rep cmpsb
-
-l0800_5E84:
 	jz	5E8Bh
 
 l0800_5E86:
@@ -13428,17 +13198,9 @@ l0800_5EA1:
 
 l0800_5EA5:
 	shr	cx,1h
-
-l0800_5EA7:
 	rep movsw
-
-l0800_5EA9:
 	adc	cx,cx
-
-l0800_5EAB:
 	rep movsb
-
-l0800_5EAD:
 	mov	cx,dx
 	xor	ax,ax
 
@@ -14307,11 +14069,7 @@ l0800_66D0:
 
 l0800_66D2:
 	xor	ax,ax
-
-l0800_66D4:
 	rep cmpsb
-
-l0800_66D6:
 	jz	66DDh
 
 l0800_66D8:
@@ -14338,17 +14096,9 @@ l0800_66F3:
 
 l0800_66F7:
 	shr	cx,1h
-
-l0800_66F9:
 	rep movsw
-
-l0800_66FB:
 	adc	cx,cx
-
-l0800_66FD:
 	rep movsb
-
-l0800_66FF:
 	mov	cx,dx
 	xor	ax,ax
 
@@ -17990,11 +17740,7 @@ l0800_86B1:
 	mov	cl,3h
 	add	cl,bh
 	add	cl,cl
-
-l0800_86B7:
 	rep movsw
-
-l0800_86B9:
 	jmp	8745h
 
 l0800_86BC:
@@ -18114,11 +17860,7 @@ l0800_8728:
 	dec	si
 	sub	si,bx
 	cli
-
-l0800_8733:
 	rep movsb	byte ptr es:[di],byte ptr es:[si]
-
-l0800_8736:
 	sti
 	mov	si,bp
 	jmp	8745h
@@ -18535,11 +18277,7 @@ l0800_893E:
 	mov	cx,ax
 	push	ds
 	mov	ds,[2E6Fh]
-
-l0800_8957:
 	rep cmpsb
-
-l0800_8959:
 	jz	895Ch
 
 l0800_895B:
@@ -22348,11 +22086,7 @@ l0800_A01F:
 	mov	di,4h
 	mov	si,di
 	mov	cx,6h
-
-l0800_A033:
 	rep movsw
-
-l0800_A035:
 	or	dx,dx
 	jz	0A070h
 
@@ -22378,11 +22112,7 @@ l0800_A052:
 	shl	cx,1h
 	shl	cx,1h
 	shl	cx,1h
-
-l0800_A058:
 	rep movsw
-
-l0800_A05A:
 	sub	dx,1000h
 	jbe	0A070h
 
@@ -24867,11 +24597,7 @@ l0800_B01D:
 l0800_B025:
 	push	ds
 	lds	si,[bp+4h]
-
-l0800_B029:
 	rep cmpsb
-
-l0800_B02B:
 	pop	ds
 	xchg	bx,cx
 	jnz	0B002h
@@ -24903,11 +24629,7 @@ fn0800_B03B proc
 	mov	cx,[bp+0Ch]
 	shr	cx,1h
 	cld
-
-l0800_B04E:
 	rep movsw
-
-l0800_B050:
 	jnc	0B053h
 
 l0800_B052:
@@ -25032,11 +24754,7 @@ l0800_B0DE:
 	sub	si,ax
 	sub	di,ax
 	shr	cx,1h
-
-l0800_B0E4:
 	rep movsw
-
-l0800_B0E6:
 	jnc	0B0EDh
 
 l0800_B0E8:
@@ -27037,11 +26755,7 @@ l0800_BF8D:
 
 l0800_BF8F:
 	shr	cx,1h
-
-l0800_BF91:
 	rep movsw
-
-l0800_BF93:
 	jnc	0BF96h
 
 l0800_BF95:
@@ -27083,11 +26797,7 @@ l0800_BFB0:
 	mov	ax,es
 	mov	ds,ax
 	les	di,[bp+4h]
-
-l0800_BFBA:
 	rep movsb
-
-l0800_BFBC:
 	pop	ds
 	mov	dx,[bp+6h]
 	mov	ax,[bp+4h]
@@ -27163,11 +26873,7 @@ l0800_C000:
 	mov	cx,bx
 	mov	di,si
 	lds	si,[bp+4h]
-
-l0800_C009:
 	rep cmpsb
-
-l0800_C00B:
 	mov	al,[si-1h]
 	mov	bl,es:[di-1h]
 	xor	ah,ah
@@ -27209,11 +26915,7 @@ l0800_C032:
 	mov	ds,di
 	les	di,[bp+4h]
 	xchg	bx,cx
-
-l0800_C03E:
 	rep movsb
-
-l0800_C040:
 	mov	cx,bx
 
 l0800_C042:

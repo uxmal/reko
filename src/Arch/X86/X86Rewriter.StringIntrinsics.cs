@@ -37,9 +37,6 @@ namespace Reko.Arch.X86
 
         private bool RewriteStringIntrinsic()
         {
-            //$TODO: supported segmented mode.
-            if (arch.ProcessorMode.PointerType == PrimitiveType.SegPtr32)
-                return false;
             if (!IsAutoIncrementingMode())
                 return false;
             switch (instrCur.Mnemonic)
@@ -74,10 +71,11 @@ namespace Reko.Arch.X86
             if (!cEcx.IsMaxUnsigned)
                 return false;
             var size = binder.CreateTemporary("size", instrCur.addrWidth);
-            m.Assign(size, m.IAddS(m.Fn(Strlen(), RegDi), 1));
-            var regCx = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
-            m.Assign(regCx, m.ISub(regCx, size));
-            m.Assign(RegDi, m.IAdd(RegDi, size));
+            var di = RegDi;
+            m.Assign(size, m.IAddS(m.Fn(Strlen(), MemIndexPtr(0, Registers.es, di)), 1));
+            var cx = RegCx;
+            m.Assign(cx, m.ISub(cx, MaybeSlice(cx.DataType, size)));
+            m.Assign(di, m.IAdd(di, MaybeSlice(cx.DataType, size)));
             m.Assign(
                 binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                 m.Cond(m.Const(instrCur.dataWidth, 0)));
@@ -86,29 +84,45 @@ namespace Reko.Arch.X86
 
         private bool RewriteMovsToMemcpy()
         {
-            var regCx = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
-            var size = binder.CreateTemporary("size", instrCur.addrWidth);
-            m.Assign(size, m.SMul(regCx, instrCur.dataWidth.Size));
-            m.SideEffect(m.Fn(Memcpy(), RegDi, RegSi, size));
+            var regCx = RegCx;
+            var sizeExpr = MakeSizeExpression(regCx);
+            var size = binder.CreateTemporary("size", sizeExpr.DataType);
+            m.Assign(size, sizeExpr);
+            var si = RegSi;
+            var di = RegDi;
+            m.SideEffect(m.Fn(Memcpy(), MemIndexPtr(0, Registers.es, di), MemIndexPtr(1, Registers.ds, si), size));
             m.Assign(regCx, m.Const(regCx.DataType, 0));
-            m.Assign(RegSi, m.IAdd(RegSi, size));
-            m.Assign(RegDi, m.IAdd(RegDi, size));
+            m.Assign(si, m.IAdd(si, MaybeSlice(regCx.DataType, size)));
+            m.Assign(di, m.IAdd(di, MaybeSlice(regCx.DataType, size)));
             return true;
+        }
+
+        private Expression MakeSizeExpression(Identifier regCx)
+        {
+            var dt = regCx.DataType;
+            if (dt.BitSize == 16)
+            {
+                dt = PrimitiveType.UInt32;
+            }
+            return m.UMul(dt, regCx, Constant.Create(regCx.DataType, instrCur.dataWidth.Size));
         }
 
         private bool RewriteCmpsToToFindFirstDifference()
         {
-            var regCx = orw.AluRegister(Registers.rcx, instrCur.addrWidth);
+            var regCx = RegCx;
             var result = binder.CreateTemporary(
                 "cmpResult", instrCur.addrWidth);
             var firstDifference = binder.CreateTemporary(
                 "firstDifference", instrCur.addrWidth);
-            var size = m.SMul(regCx, instrCur.dataWidth.Size);
-            m.Assign(result, m.Fn(Memcmp(), RegSi, RegDi, size));
-            m.Assign(firstDifference, m.Fn(FindFirstDifference(), RegSi, RegDi));
-            m.Assign(regCx, m.ISub(regCx, firstDifference));
-            m.Assign(RegSi, m.IAdd(RegSi, firstDifference));
-            m.Assign(RegDi, m.IAdd(RegDi, firstDifference));
+            var size = MakeSizeExpression(regCx);
+            var si = RegSi;
+            var di = RegDi;
+            var cx = RegCx;
+            m.Assign(result, m.Fn(Memcmp(), MemIndexPtr(0, Registers.ds, si), MemIndexPtr(1, Registers.es, di), size));
+            m.Assign(firstDifference, m.Fn(FindFirstDifference(), MemIndexPtr(0, Registers.ds, si), MemIndexPtr(1, Registers.es, di)));
+            m.Assign(cx, m.ISub(cx, firstDifference));
+            m.Assign(si, m.IAdd(si, firstDifference));
+            m.Assign(di, m.IAdd(di, firstDifference));
             m.Assign(
                 binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                 m.Cond(result));

@@ -155,7 +155,7 @@ namespace Reko.Environments.Windows
                 return null;
             var hi = (Constant)matches[0].CapturedExpression("hi")!;
             var lo = (Constant)matches[1].CapturedExpression("lo")!;
-            var c = Operator.IAdd.ApplyConstants(hi, lo);
+            var c = Operator.IAdd.ApplyConstants(hi.DataType, hi, lo);
             var addrTarget = MakeAddressFromConstant(c, false);
             if (addrTarget is null)
                 return null;
@@ -190,7 +190,7 @@ namespace Reko.Environments.Windows
                 return null;
             var hi = (Constant)matches[0].CapturedExpression("hi")!;
             var lo = (Constant)matches[1].CapturedExpression("lo")!;
-            var c = Operator.IAdd.ApplyConstants(hi, lo);
+            var c = Operator.IAdd.ApplyConstants(hi.DataType, hi, lo);
             var addrTarget = MakeAddressFromConstant(c, false);
             if (addrTarget is null)
                 return null;

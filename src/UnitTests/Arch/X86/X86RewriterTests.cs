@@ -1398,7 +1398,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("F348A5");   // "rep\tmovsd"
             AssertCode(
                  "0|L--|0000000140000000(3): 5 instructions",
-                 "1|L--|size = rcx *s 8<64>",
+                 "1|L--|size = rcx *u 8<64>",
                  "2|L--|memcpy(rdi, rsi, size)",
                  "3|L--|rcx = 0<64>",
                  "4|L--|rsi = rsi + size",
@@ -4834,6 +4834,34 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(     // wrpkru
                 "0|L--|0000000140000000(3): 1 instructions",
                 "1|L--|__wrpkru(eax)");
+        }
+
+        [Test]
+        public void X86Rw_movsb_16bit()
+        {
+            Run16bitTest("F3 A4");
+            AssertCode(
+                "0|L--|0C00:0000(2): 5 instructions",
+                "1|L--|size = cx *u32 1<16>",
+                "2|L--|memcpy(es:di, ds:si, size)",
+                "3|L--|cx = 0<16>",
+                "4|L--|si = si + SLICE(size, word16, 0)",
+                "5|L--|di = di + SLICE(size, word16, 0)");
+        }
+
+        [Test]
+        public void X86Rw_movsd_16bit()
+        {
+            Run16bitTest("B9 00 40 66 F3 A5");
+            AssertCode(
+                "0|L--|0C00:0000(3): 1 instructions",
+                "1|L--|cx = 0x4000<16>",
+                "2|L--|0C00:0003(3): 5 instructions",
+                "3|L--|size = cx *u32 4<16>",
+                "4|L--|memcpy(es:di, ds:si, size)",
+                "5|L--|cx = 0<16>",
+                "6|L--|si = si + SLICE(size, word16, 0)",
+                "7|L--|di = di + SLICE(size, word16, 0)");
         }
 
         /*

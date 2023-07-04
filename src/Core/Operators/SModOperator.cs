@@ -19,11 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Core.Types;
 
 namespace Reko.Core.Operators
 {
@@ -31,14 +27,14 @@ namespace Reko.Core.Operators
     {
         internal SModOperator() : base(OperatorType.SMod) { }
 
-        public override Constant ApplyConstants(Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c2.DataType);
             if (c2.IsIntegerZero)
                 return InvalidConstant.Create(c1.DataType);
             if (c1 is BigConstant bc1)
-                return Constant.Create(c2.DataType, bc1.Value % c2.ToBigInteger());
+                return Constant.Create(dt, bc1.Value % c2.ToBigInteger());
             return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() % c2.ToInt64());
         }
 

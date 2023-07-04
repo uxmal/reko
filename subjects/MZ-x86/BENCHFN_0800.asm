@@ -416,11 +416,7 @@ l0800_0387:
 	mov	es,ax
 	push	cx
 	dec	cx
-
-l0800_0393:
 	rep movsb
-
-l0800_0395:
 	xor	al,al
 	stosb
 	mov	ds,bp
@@ -561,11 +557,7 @@ l0800_0430:
 	mov	ds,[008Ch]
 	xor	si,si
 	cld
-
-l0800_043A:
 	rep movsb
-
-l0800_043C:
 	pop	ds
 	mov	di,ax
 	push	es

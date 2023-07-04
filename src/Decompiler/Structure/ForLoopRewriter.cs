@@ -319,7 +319,7 @@ namespace Reko.Structure
                 return false;
             if (!(candidate.Initializer.Src is Constant cInit))
                 return false;
-            return cond.Operator.ApplyConstants(cInit, cRight).ToBoolean();
+            return cond.Operator.ApplyConstants(cInit.DataType, cInit, cRight).ToBoolean();
         }
 
         private AbsynFor MakeForLoop(ForLoopCandidate candidate, List<AbsynStatement> stmts)
