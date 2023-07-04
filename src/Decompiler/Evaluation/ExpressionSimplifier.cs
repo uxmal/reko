@@ -219,7 +219,7 @@ namespace Reko.Evaluation
         {
             Debug.Assert(args.Length == 3);
             return args[1] is Constant sh &&
-                sh.ToInt32() == 1 &&
+                sh.IsIntegerOne &&
                 args[2] is Constant c &&
                 c.IsIntegerZero;
         }
@@ -411,7 +411,7 @@ namespace Reko.Evaluation
                 case OperatorType.IMul:
                 case OperatorType.SMul:
                 case OperatorType.UMul:
-                    if (cRight.ToUInt64() == 1)
+                    if (cRight.IsIntegerOne)
                     {
                         return (binExp.Left, true);
                     }
@@ -1236,8 +1236,6 @@ namespace Reko.Evaluation
                 if (elems[i] is not MemoryAccess accNew)
                     return null;
                 var (segNew, eaNew, offNew) = accNew.Unpack();
-                if (accNew is null)
-                    return null;
                 if (cmp.Equals(seg, segNew) &&
                     cmp.Equals(ea, eaNew) &&
                     ctx.Endianness.OffsetsAdjacent(offNew, offset, accNew.DataType.Size))
