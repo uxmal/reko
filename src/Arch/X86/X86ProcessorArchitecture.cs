@@ -18,32 +18,34 @@
  */
 #endregion
 
+using Reko.Analysis;
+using Reko.Arch.X86.Analysis;
 using Reko.Core;
+using Reko.Core.Assemblers;
+using Reko.Core.Code;
 using Reko.Core.Collections;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Reko.Core.Code;
-using Reko.Core.Operators;
-using Reko.Core.Assemblers;
-using Reko.Core.Memory;
-using Reko.Core.Emulation;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Arch.X86
 {
     using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
 
-	// X86 flag masks.
+    // X86 flag masks.
 
-	[Flags]
+    [Flags]
 	public enum FlagM : byte
 	{
 		SF = 1,             // sign
@@ -94,6 +96,13 @@ namespace Reko.Arch.X86
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             return mode.CreateEmulator(this, segmentMap, envEmulator);
+        }
+
+        public override T? CreateExtension<T>() where T : class
+        {
+            if (typeof(IAnalysisFactory).IsAssignableFrom(typeof(T)))
+                return (T) (object) new X86AnalysisFactory();
+            return default;
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

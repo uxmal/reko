@@ -237,6 +237,17 @@ namespace Reko.Core
         /// <param name="addr">Address to start writing at.</param>
         /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+
+        /// <summary>
+        /// For a given type <typeparamref name="T"/>, returns this architecture's support
+        /// for that type.
+        /// </summary>
+        /// <typeparam name="T">Type of extension.</typeparam>
+        /// <returns>An instance of that extension, or null of this architecture doesn't
+        /// support the extension.
+        /// </returns>
+        T? CreateExtension<T>() where T : class;
+
         string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr);
 
         /// <summary>
@@ -605,6 +616,7 @@ namespace Reko.Core
 
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
+        public virtual T? CreateExtension<T>() where T : class => default;
         public Frame CreateFrame() { return new Frame(this, FramePointerType); }
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
         public EndianImageReader CreateImageReader(MemoryArea mem, Address addr, long cbUnits) => this.Endianness.CreateImageReader(mem, addr, cbUnits);
@@ -781,4 +793,6 @@ namespace Reko.Core
 
         public abstract bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
     }
+
+    public interface IExtension { }
 }
