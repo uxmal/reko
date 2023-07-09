@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-32</arch>
+  <input>
+    <location>strcpyChain.bin</location>
+    <asmDir>strcpyChain.reko</asmDir>
+    <srcDir>strcpyChain.reko</srcDir>
+    <includeDir>strcpyChain.reko</includeDir>
+    <resources>strcpyChain.reko\resources</resources>
+    <user>
+      <address>12340000</address>
+      <loader>raw</loader>
+      <processor name="x86-protected-32" />
+      <platform name="default" />
+      <procedure name="fn12340000">
+        <address>12340000</address>
+      </procedure>
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>
