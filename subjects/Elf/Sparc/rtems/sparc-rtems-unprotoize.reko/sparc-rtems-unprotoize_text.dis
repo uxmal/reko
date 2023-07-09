@@ -2181,7 +2181,7 @@ l00013250:
 	word32 i2_561
 	word32 i6_562
 	xmalloc(out i1_560, out i2_561, out i6_562)
-	Mem232[l0 + 1<32> + l0:byte] = 0<8>
+	Mem232[l0 * 2<32> + 1<32>:byte] = 0<8>
 	word32 l2_563
 	l0 = safe_read(o0_210, l0 + 1<32>, l0, out l1, out l2_563)
 	branch o0_210 == l0 l00013278_ds_t

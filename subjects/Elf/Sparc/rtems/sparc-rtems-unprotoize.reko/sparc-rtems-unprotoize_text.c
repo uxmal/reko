@@ -1777,7 +1777,7 @@ l00013218:
 			word32 i2_n;
 			word32 i6_n;
 			xmalloc(out i1_n, out i2_n, out i6_n);
-			Mem232[l0 + 0x01 + l0:byte] = 0x00;
+			((Eq_n[]) 0x01)[l0].b0000 = 0x00;
 			word32 l2_n;
 			l0 = safe_read(o0_n, l0 + 0x01, l0, out l1, out l2_n);
 			if (o0_n != l0 || close(o0_n) != 0x00)

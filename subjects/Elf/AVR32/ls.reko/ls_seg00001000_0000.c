@@ -17161,7 +17161,7 @@ l0000ED24:
 					if (r2_n <= r5_n)
 					{
 						r2_n.u0 = r5_n.u0 + 1;
-						if (r5_n.u0 + 1 < r5_n)
+						if (false)
 							r2_n.u0 = ~0x00;
 					}
 					if (r2_n > g_tEE50.u0)
@@ -17272,7 +17272,7 @@ l0000EEA0:
 						if (r2_n <= r5_n)
 						{
 							r2_n.u0 = r5_n.u0 + 1;
-							if (r5_n.u0 + 1 < r5_n)
+							if (false)
 								r2_n.u0 = ~0x00;
 						}
 						if (r2_n > g_tEFB0.u0)
@@ -17511,7 +17511,7 @@ l0000F0DA:
 					if (r2_n <= r7_n)
 					{
 						r2_n.u0 = r7_n.u0 + 1;
-						if (r7_n.u0 + 1 < r7_n)
+						if (false)
 							r2_n.u0 = ~0x00;
 					}
 					if (r2_n > g_tF26C.u0)

@@ -246,7 +246,7 @@ l00002774:
 	Mem15[a5 + -1328<i32>:word32] = a0
 	word32 d0_13 = a0
 	word32 d1_18 = a0 + 8<32>
-	branch a0 + 0xFF8<32> <=u a0 l00002794
+	branch false l00002794
 l00002788:
 	Mem26[d0_13:word32] = d1_79
 	d0_13 = d1_79

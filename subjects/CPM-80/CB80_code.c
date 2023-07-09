@@ -926,8 +926,7 @@ void fn0DCB()
 void fn0E63(byte c)
 {
 	g_b16A6 = c;
-	uint16 bc_n = (uint16) fn0C93();
-	union Eq_n * hl_n = bc_n + 0x152C + bc_n;
+	union Eq_n * hl_n = (uint16) fn0C93() * 0x02 + 0x152C;
 	g_t1521.u1 = hl_n->u1;
 	while (true)
 	{

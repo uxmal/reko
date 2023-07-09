@@ -749,7 +749,7 @@ Eq_2054: (fn Eq_79 (Eq_2030))
 	T_2054 (in fn0D64 @ 0D88 : ptr16)
 	T_2055 (in signature of fn0D64 @ 0D64 : void)
 Eq_2091: (fn byte ())
-	T_2091 (in fn0C93 @ 0E70 : ptr16)
+	T_2091 (in fn0C93 @ 0E71 : ptr16)
 	T_2092 (in signature of fn0C93 @ 0C93 : void)
 Eq_2123: (fn Eq_79 (Eq_2125))
 	T_2123 (in fn0EAB @ 0E95 : ptr16)
@@ -9191,11 +9191,11 @@ T_2089: (in Mem5[0x16A6<16>:byte] @ 0E66 : byte)
   Class: Eq_2087
   DataType: byte
   OrigDataType: byte
-T_2090: (in bc_16 @ 0E70 : uint16)
+T_2090: (in hl_18 @ 0E71 : (ptr16 Eq_2033))
   Class: Eq_2090
-  DataType: uint16
-  OrigDataType: uint16
-T_2091: (in fn0C93 @ 0E70 : ptr16)
+  DataType: (ptr16 Eq_2033)
+  OrigDataType: (ptr16 (struct (0 T_2101 t0000)))
+T_2091: (in fn0C93 @ 0E71 : ptr16)
   Class: Eq_2091
   DataType: (ptr16 Eq_2091)
   OrigDataType: (ptr16 (fn T_2093 ()))
@@ -9203,38 +9203,38 @@ T_2092: (in signature of fn0C93 @ 0C93 : void)
   Class: Eq_2091
   DataType: (ptr16 Eq_2091)
   OrigDataType: 
-T_2093: (in fn0C93() @ 0E70 : byte)
+T_2093: (in fn0C93() @ 0E71 : byte)
   Class: Eq_2093
   DataType: byte
   OrigDataType: byte
-T_2094: (in CONVERT(fn0C93(), byte, uint16) @ 0E70 : uint16)
-  Class: Eq_2090
+T_2094: (in CONVERT(fn0C93(), byte, uint16) @ 0E71 : uint16)
+  Class: Eq_2094
   DataType: uint16
   OrigDataType: uint16
-T_2095: (in hl_18 @ 0E71 : (ptr16 Eq_2033))
+T_2095: (in 2<16> @ 0E71 : word16)
   Class: Eq_2095
-  DataType: (ptr16 Eq_2033)
-  OrigDataType: (ptr16 (struct (0 T_2101 t0000)))
-T_2096: (in 0x152C<16> @ 0E71 : word16)
+  DataType: ui16
+  OrigDataType: ui16
+T_2096: (in (uint16) fn0C93() * 2<16> @ 0E71 : word16)
   Class: Eq_2096
+  DataType: ui16
+  OrigDataType: ui16
+T_2097: (in 0x152C<16> @ 0E71 : word16)
+  Class: Eq_2097
   DataType: word16
   OrigDataType: word16
-T_2097: (in bc_16 + 0x152C<16> @ 0E71 : word16)
-  Class: Eq_2097
-  DataType: uint16
-  OrigDataType: uint16
-T_2098: (in bc_16 + 0x152C<16> + bc_16 @ 0E71 : word16)
-  Class: Eq_2095
+T_2098: (in (uint16) fn0C93() * 2<16> + 0x152C<16> @ 0E71 : word16)
+  Class: Eq_2090
   DataType: (ptr16 Eq_2033)
-  OrigDataType: uint16
+  OrigDataType: ui16
 T_2099: (in 0<16> @ 0E76 : word16)
   Class: Eq_2099
   DataType: word16
   OrigDataType: word16
 T_2100: (in hl_18 + 0<16> @ 0E76 : word16)
   Class: Eq_2100
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: ui16
+  OrigDataType: ui16
 T_2101: (in Mem5[hl_18 + 0<16>:word16] @ 0E76 : word16)
   Class: Eq_2033
   DataType: Eq_2033

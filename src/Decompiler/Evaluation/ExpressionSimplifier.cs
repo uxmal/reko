@@ -696,6 +696,22 @@ namespace Reko.Evaluation
 
         private (Expression, bool) PreVisitBinaryExpression(BinaryExpression binExp)
         {
+            // ((id+/-e)+/-id) ==> ((id+/-id)+/-e)
+            if (binExp.Operator.Type.IsAddOrSub() &&
+                binExp.Left is BinaryExpression binLeft &&
+                binLeft.Operator.Type.IsAddOrSub() &&
+                binLeft.Left is Identifier idLeftLeft &&
+                binExp.Right is Identifier idRight &&
+                idLeftLeft == idRight)
+            {
+                binExp = new BinaryExpression(
+                    binLeft.Operator, binExp.DataType,
+                    new BinaryExpression(
+                        binExp.Operator, binLeft.DataType,
+                        binLeft.Left, binExp.Right),
+                    binLeft.Right);
+                return (binExp, true);
+            }
             // (+ id1 id1) ==> (* id1 2)
             var e = add2ids.Match(binExp, ctx);
             if (e is not null)

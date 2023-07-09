@@ -224,8 +224,7 @@ l0000000100001F1A:
 	Eq_n r14b_n = rax_n.u0->b0000;
 	if (r14b_n == 0x00)
 		goto l0000000100001E77;
-	Eq_n rax_n = strlen(rax_n);
-	Eq_n rax_n = malloc((word64) rax_n + ((word64) rax_n + 2));
+	Eq_n rax_n = malloc(strlen(rax_n) * 0x02 + 2);
 	if (rax_n != 0x00)
 	{
 		struct Eq_n * rax_n;
@@ -1006,7 +1005,7 @@ void fn000000010000328E(Eq_n rdi)
 		if (eax_n <= r15d_n)
 		{
 			r12b_n = r15_n->b5411;
-			rax_n = qwLoc40_n + 1 + qwLoc40_n + 0x100005411;
+			rax_n = qwLoc40_n * 0x02 + 1 + 0x100005411;
 		}
 		else
 		{
