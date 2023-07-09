@@ -57,6 +57,6 @@ namespace Reko.Analysis
         PreSsa = 0,
         AfterRegisterSsa = 1000,
         AfterStackSsa = 2000,
-
+        AfterExpressionCoalescing = 4000,
     }
 }

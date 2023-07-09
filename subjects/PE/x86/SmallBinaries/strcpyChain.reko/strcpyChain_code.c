@@ -7,11 +7,9 @@
 // 12340000: void fn12340000()
 void fn12340000()
 {
-	uint32 size_n = strlen(&g_b12340030) + 1;
-	uint32 size_n = (size_n >> 0x02) * 0x04;
-	memcpy(&g_t12340034, &g_b12340030, size_n);
-	memcpy(size_n + 0x12340034, size_n + 0x12340030, size_n & 0x03);
+	size_n = strlen(&g_b12340030) + 1;
+	strcpy(&g_b12340034, &g_b12340030);
 }
 
 char g_b12340030 = 's'; // 12340030
-Eq_n g_t12340034 = // 12340034;
+char g_b12340034 = 's'; // 12340034

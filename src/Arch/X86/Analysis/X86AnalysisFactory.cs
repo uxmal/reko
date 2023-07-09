@@ -35,6 +35,10 @@ namespace Reko.Arch.X86.Analysis
             {
                 return new[] { new FstswAnalysis(ctx.Program, ctx.EventListener) };
             }
+            if (stage == AnalysisStage.AfterExpressionCoalescing)
+            {
+                return new[] { new StrcpyChainRewiter(ctx) };
+            }
             return Array.Empty<IAnalysis<SsaState>>();
         }
     }

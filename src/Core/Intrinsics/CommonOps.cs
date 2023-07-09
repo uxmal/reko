@@ -149,6 +149,10 @@ namespace Reko.Core.Intrinsics
             .PtrParam(new UnknownType())
             .Param(PrimitiveType.UInt32)
             .Returns(PrimitiveType.Int32);
+        public static readonly IntrinsicProcedure Strcpy = new IntrinsicBuilder("strcpy", true)
+            .PtrParam(PrimitiveType.Char)
+            .PtrParam(PrimitiveType.Char)
+            .PtrReturns(PrimitiveType.Char);
 
         // System calls.
         public static readonly IntrinsicProcedure Syscall = new IntrinsicBuilder("__syscall", true)
