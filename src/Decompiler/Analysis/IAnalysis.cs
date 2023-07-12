@@ -28,11 +28,23 @@ namespace Reko.Analysis
 {
     public interface IAnalysis<T> where T : class
     {
-
+        /// <summary>
+        /// Short identifier of the analysis.
+        /// </summary>
         string Id { get; }
 
+        /// <summary>
+        /// Human readable description of the analysis.
+        /// </summary>
         string Description { get; }
 
+        /// <summary>
+        /// Perform an analysis and possible transformation on the provided <paramref name="subject"/>.
+        /// </summary>
+        /// <param name="subject">The object to analyzer and transform.</param>
+        /// <returns>A pair consisting of a possibly mutated subject and a boolean flag indicating
+        /// whether mutation in fact happened.
+        /// </returns>
         (T, bool) Transform(T subject);
 
     }
