@@ -16744,8 +16744,7 @@ Eq_n fn0800_BFE6(<unknown> * ptrArg02, <unknown>* ptrArg06, Eq_n wArg0A)
 			--cx_n;
 			di_n = di_n;
 		} while (es_n->*di_n == 0x00);
-		Eq_n bx_n = wArg0A - cx_n;
-		memcmp(ptrArg02, ptrArg06, bx_n);
+		memcmp(ptrArg02, ptrArg06, wArg0A - cx_n);
 		int16 firstDifference_n = __find_first_difference__(ptrArg02, ptrArg06);
 		ax_n = ((char *) (word16) ptrArg02 + firstDifference_n)[-1] - (di_n + firstDifference_n)[-1];
 	}

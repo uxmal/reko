@@ -7680,10 +7680,10 @@ l000000000040EA00:
 	Mem31[&tLoc48 + 16<i64>:word64] = Mem29[0x000000000061B330<p64>:word64]
 	Mem33[&tLoc48 + 24<i64>:word64] = Mem31[0x000000000061B338<p64>:word64]
 	Mem35[&tLoc48 + 32<i64>:word64] = Mem33[0x000000000061B340<p64>:word64]
-	word32 r9d_42 = Mem35[&tLoc48 + 9<i64>:word32]
+	word32 r9d_42 = Mem35[&tLoc48 + 12<i64>:word32]
 	Mem39[&tLoc48 + 40<i64>:word64] = Mem35[0x000000000061B348<p64>:word64]
 	Mem41[&tLoc48 + 48<i64>:word64] = Mem39[0x000000000061B350<p64>:word64]
-	Mem65[&tLoc48 + 9<i64>:word32] = ((r9d_42 >>u 0x1A<8> ^ 1<32>) & 1<32>) << 0x1A<8> ^ r9d_42
+	Mem65[&tLoc48 + 12<i64>:word32] = ((r9d_42 >>u 0x1A<8> ^ 1<32>) & 1<32>) << 0x1A<8> ^ r9d_42
 	word64 r8_88
 	word64 r9_89
 	fn000000000040E450(&tLoc48, 0xFFFFFFFFFFFFFFFF<64>, rdi, 0<32>, fs, out r8_88, out r9_89)

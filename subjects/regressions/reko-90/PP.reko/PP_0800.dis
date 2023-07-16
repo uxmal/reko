@@ -19051,8 +19051,7 @@ l0800_BFFE_1:
 	di_122 = di_30
 	branch Mem14[es_81:di_122:byte] == 0<8> l0800_BFFE
 l0800_C000:
-	word16 bx_39 = wArg0A - cx_22
-	memcmp(ptrArg02, ptrArg06, bx_39)
+	memcmp(ptrArg02, ptrArg06, wArg0A - cx_22)
 	word16 firstDifference_54 = __find_first_difference__(ptrArg02, ptrArg06)
 	ax_21 = Mem14[SLICE(ptrArg02, selector, 16):SLICE(ptrArg02, word16, 0) + firstDifference_54 - 1<i16>:byte] - Mem14[es_81:(di_19 + firstDifference_54) - 1<i16>:byte]
 l0800_C018:
