@@ -12,18 +12,18 @@ Eq_16: (union "Eq_16" (bool u0) (word32 u1))
 	T_55 (in 0<32> @ 000C014F : word32)
 Eq_21: (union "Eq_21" (byte u0) (word32 u1))
 	T_21 (in v16_91 @ 000C0104 : Eq_21)
-	T_39 (in (word80000) ((Eq_58[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_60[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_62[]) 0x10<32>)[arg0_1] + (word32) ((Eq_64[]) 0x12<32>)[arg0_1] @ 000C0104 : word32)
+	T_39 (in (word80000) ((Eq_58[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_60[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_62[]) 0x73<32>)[arg0_1] + (word32) ((Eq_64[]) 0x75<32>)[arg0_1] @ 000C0104 : word32)
 	T_40 (in 3<32> @ 000C010A : word32)
 	T_42 (in 2<32> @ 000C0111 : word32)
 Eq_58: (struct "Eq_58" 2710 (2 byte b0002))
 	T_58
-Eq_60: (struct "Eq_60" 2710 (0 byte b0000) (2 byte b0002) (65 byte b0065) (67 byte b0067))
+Eq_60: (struct "Eq_60" 2710 (0 byte b0000) (2 byte b0002) (65 byte b0065) (C8 byte b00C8) (CA byte b00CA))
 	T_60
-Eq_62: (struct "Eq_62" 2710 (65 byte b0065))
+Eq_62: (struct "Eq_62" 2710 (C8 byte b00C8))
 	T_62
-Eq_64: (struct "Eq_64" 2710 (67 byte b0067))
+Eq_64: (struct "Eq_64" 2710 (CA byte b00CA))
 	T_64
-Eq_66: (struct "Eq_66" 2710 (0 byte b0000))
+Eq_66: (struct "Eq_66" 2710 (65 byte b0065))
 	T_66
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -142,7 +142,7 @@ T_29: (in 0xFFFFFFAD<32>[arg0_1 * 0x2710<32>] + 0xFFFFFFAB<32>[arg0_1 * 0x2710<3
   Class: Eq_29
   DataType: byte
   OrigDataType: byte
-T_30: (in 0x10<32> @ 000C0104 : word32)
+T_30: (in 0x73<32> @ 000C0104 : word32)
   Class: Eq_30
   DataType: (ptr32 (arr Eq_62))
   OrigDataType: (ptr32 (struct (0 (arr T_62) a0000)))
@@ -150,19 +150,19 @@ T_31: (in arg0_1 * 0x2710<32> @ 000C0104 : word32)
   Class: Eq_31
   DataType: ui32
   OrigDataType: ui32
-T_32: (in 0x10<32>[arg0_1 * 0x2710<32>] @ 000C0104 : byte)
+T_32: (in 0x73<32>[arg0_1 * 0x2710<32>] @ 000C0104 : byte)
   Class: Eq_32
   DataType: byte
   OrigDataType: byte
-T_33: (in CONVERT(0x10<32>[arg0_1 * 0x2710<32>], byte, word32) @ 000C0104 : word32)
+T_33: (in CONVERT(0x73<32>[arg0_1 * 0x2710<32>], byte, word32) @ 000C0104 : word32)
   Class: Eq_33
   DataType: word32
   OrigDataType: word32
-T_34: (in (word80000) ((Eq_58[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_60[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_62[]) 0x10<32>)[arg0_1] @ 000C0104 : word32)
+T_34: (in (word80000) ((Eq_58[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_60[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_62[]) 0x73<32>)[arg0_1] @ 000C0104 : word32)
   Class: Eq_34
   DataType: byte
   OrigDataType: byte
-T_35: (in 0x12<32> @ 000C0104 : word32)
+T_35: (in 0x75<32> @ 000C0104 : word32)
   Class: Eq_35
   DataType: (ptr32 (arr Eq_64))
   OrigDataType: (ptr32 (struct (0 (arr T_64) a0000)))
@@ -170,15 +170,15 @@ T_36: (in arg0_1 * 0x2710<32> @ 000C0104 : word32)
   Class: Eq_36
   DataType: ui32
   OrigDataType: ui32
-T_37: (in 0x12<32>[arg0_1 * 0x2710<32>] @ 000C0104 : byte)
+T_37: (in 0x75<32>[arg0_1 * 0x2710<32>] @ 000C0104 : byte)
   Class: Eq_37
   DataType: byte
   OrigDataType: byte
-T_38: (in CONVERT(0x12<32>[arg0_1 * 0x2710<32>], byte, word32) @ 000C0104 : word32)
+T_38: (in CONVERT(0x75<32>[arg0_1 * 0x2710<32>], byte, word32) @ 000C0104 : word32)
   Class: Eq_38
   DataType: word32
   OrigDataType: word32
-T_39: (in (word80000) ((Eq_58[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_60[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_62[]) 0x10<32>)[arg0_1] + (word32) ((Eq_64[]) 0x12<32>)[arg0_1] @ 000C0104 : word32)
+T_39: (in (word80000) ((Eq_58[]) 0xFFFFFFAD<32>)[arg0_1] + (((Eq_60[]) 0xFFFFFFAB<32>))[arg0_1].b0000 + (word32) ((Eq_62[]) 0x73<32>)[arg0_1] + (word32) ((Eq_64[]) 0x75<32>)[arg0_1] @ 000C0104 : word32)
   Class: Eq_21
   DataType: Eq_21
   OrigDataType: byte
@@ -317,18 +317,19 @@ typedef struct Eq_60 {	// size: 10000 2710
 	byte b0000;	// 0
 	byte b0002;	// 2
 	byte b0065;	// 65
-	byte b0067;	// 67
+	byte b00C8;	// C8
+	byte b00CA;	// CA
 } Eq_60;
 
 typedef struct Eq_62 {	// size: 10000 2710
-	byte b0065;	// 65
+	byte b00C8;	// C8
 } Eq_62;
 
 typedef struct Eq_64 {	// size: 10000 2710
-	byte b0067;	// 67
+	byte b00CA;	// CA
 } Eq_64;
 
 typedef struct Eq_66 {	// size: 10000 2710
-	byte b0000;	// 0
+	byte b0065;	// 65
 } Eq_66;
 

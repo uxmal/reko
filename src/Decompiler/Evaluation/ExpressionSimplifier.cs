@@ -413,7 +413,7 @@ namespace Reko.Evaluation
                 case OperatorType.UMul:
                     if (cRight.IsIntegerOne)
                     {
-                        return (binExp.Left, true);
+                        return (left, true);
                     }
                     break;
                 }
