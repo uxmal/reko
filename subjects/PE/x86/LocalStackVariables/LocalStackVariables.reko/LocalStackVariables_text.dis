@@ -20,25 +20,25 @@ l00401000:
 	// res = GetMin(&s1, &s2)
 	// s1.i = 100
 	word32 eax_26 = GetMin(&tLoc2C, &tLoc1C)
-	Mem36[&tLoc2C:word32] = 0x64<32>
+	Mem37[&tLoc2C:word32] = 0x64<32>
 	// res->i = 5
-	Mem38[eax_26:word32] = 5<32>
+	Mem39[eax_26:word32] = 5<32>
 	// res->d = 5.0
-	Mem42[eax_26 + 8<i32>:real64] = Mem38[0x004020F0<p32>:real64]
+	Mem43[eax_26 + 8<i32>:real64] = Mem39[0x004020F0<p32>:real64]
 	// printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)
-	printf(0x4020C8<32>, Mem55[&tLoc2C:word32], Mem51[&tLoc2C + 8<i32>:real64], Mem47[&tLoc1C:word32], Mem42[&tLoc1C + 8<i32>:real64])
+	printf(0x4020C8<32>, Mem56[&tLoc2C:word32], Mem52[&tLoc2C + 8<i32>:real64], Mem48[&tLoc1C:word32], Mem43[&tLoc1C + 8<i32>:real64])
 	// gbl_s = &s2
-	Mem65[0x00403018<p32>:word32] = &tLoc1C
+	Mem66[0x00403018<p32>:word32] = &tLoc1C
 	// s2.i = 2
-	Mem66[&tLoc1C:word32] = 2<32>
+	Mem67[&tLoc1C:word32] = 2<32>
 	// s2.d = 2.0
-	Mem69[&tLoc1C + 8<i32>:real64] = Mem66[0x004020E8<p32>:real64]
+	Mem70[&tLoc1C + 8<i32>:real64] = Mem67[0x004020E8<p32>:real64]
 	// gbl_s->i = 3
-	Mem72[Mem69[0x00403018<p32>:word32]:word32] = 3<32>
+	Mem73[Mem70[0x00403018<p32>:word32]:word32] = 3<32>
 	// gbl_s->d = 3.0
-	Mem76[Mem72[0x00403018<p32>:word32] + 8<i32>:real64] = Mem72[0x004020E0<p32>:real64]
+	Mem77[Mem73[0x00403018<p32>:word32] + 8<i32>:real64] = Mem73[0x004020E0<p32>:real64]
 	// printf("%d %f\n", s2.i, s2.d)
-	printf(0x4020D8<32>, Mem81[&tLoc1C:word32], Mem76[&tLoc1C + 8<i32>:real64])
+	printf(0x4020D8<32>, Mem82[&tLoc1C:word32], Mem77[&tLoc1C + 8<i32>:real64])
 	return 0<32>
 main_exit:
 
@@ -50,26 +50,26 @@ word32 GetMin(word32 dwArg04, word32 dwArg08)
 //      main
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax
-// Trashed: SCZO eax ecx edx FPU -1 FPUF Top
+// Trashed: SCZOP eax ecx edx FPU -1 FPUF Top
 // Preserved: ebp esp
 GetMin_entry:
 l004010D0:
-	word32 eax_25
+	word32 eax_30
 	branch Mem6[dwArg04:word32] >= Mem6[dwArg08:word32] l004010E4
 l004010E4:
 	branch Mem6[dwArg04:word32] >= Mem6[dwArg08:word32] l004010F5
 l004010F5:
 	branch Mem6[dwArg08 + 8<i32>:real64] <= Mem6[dwArg04 + 8<i32>:real64] l0040110F
 l0040110F:
-	eax_25 = dwArg08
+	eax_30 = dwArg08
 l00401108:
-	eax_25 = dwArg04
+	eax_30 = dwArg04
 l004010F0:
-	eax_25 = dwArg08
+	eax_30 = dwArg08
 l004010DF:
-	eax_25 = dwArg04
+	eax_30 = dwArg04
 l00401112:
-	return eax_25
+	return eax_30
 GetMin_exit:
 
 

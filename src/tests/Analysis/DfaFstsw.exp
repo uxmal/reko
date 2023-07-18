@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  bx:[0..15] ds:[0..15] FPU +0:[0..63] si:[0..15]
 // LiveOut:
-// Trashed: SCZO FPUF Top
+// Trashed: SCZOP ax FPUF Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -13,7 +13,7 @@ l0C00_0000:
 	branch rArg0 <= Mem0[ds:bx:real32] l0C00_000D
 	// succ:  l0C00_0009 l0C00_000D
 l0C00_0009:
-	Mem12[ds:si:word16] = 4<16>
+	Mem17[ds:si:word16] = 4<16>
 	// succ:  l0C00_000D
 l0C00_000D:
 	return

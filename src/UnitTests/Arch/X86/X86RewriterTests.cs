@@ -910,93 +910,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_FstswSahf()
-        {
-            Run16bitTest(m =>
-            {
-                m.Fstsw(m.ax);
-                m.Sahf();
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|SCZO = FPUF");
-        }
-
-        [Test]
-        public void X86rw_Lahf()
-        {
-            Run16bitTest(m =>
-            {
-                m.Lahf();
-            });
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|ah = SCZOP");
-        }
-
-        [Test]
-        public void X86rw_FstswTestAhEq()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("foo");
-                m.Fcompp();
-                m.Fstsw(m.ax);
-                m.Test(m.ah, m.Const(0x44));
-                m.Jpe("foo");
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])",
-                "2|L--|Top = Top + 2<i8>",
-                "3|T--|0C00:0002(7): 2 instructions",
-                "4|L--|SCZO = FPUF",
-                "5|T--|if (Test(NE,FPUF)) branch 0C00:0000");
-        }
-
-        [Test]
-        public void X86Rw_fstsw_InterleavedInstructions()
-        {
-            Run32bitTest(
-                "D9 44 24 14" +         // fld dword ptr[esp + 14h]
-                "D8 D9" +               // fcomp st(0),st(1)
-                "DF E0" +               // fstsw ax
-                "DD D8" +               // fstp st(0)
-                "F6 C4 05" +            // test ah,5h
-                "0F 8B 2E FF FF FF");   // jpo 41E652h
-            AssertCode(
-                "0|L--|10000000(4): 2 instructions",
-                "1|L--|Top = Top - 1<i8>",
-                "2|L--|ST[Top:real64] = CONVERT(Mem0[esp + 20<i32>:real32], real32, real64)",
-                "3|L--|10000004(2): 2 instructions",
-                "4|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])",
-                "5|L--|Top = Top + 1<i8>",
-                "6|T--|10000006(13): 4 instructions",
-                "7|L--|ST[Top:real64] = ST[Top:real64]",
-                "8|L--|Top = Top + 1<i8>",
-                "9|L--|SCZO = FPUF",
-                "10|T--|if (Test(LT,FPUF)) branch 0FFFFF41");
-        }
-
-        [Test]
-        public void X86rw_FstswTestMov()
-        {
-            Run32bitTest(m =>
-            {
-                m.Label("foo");
-                m.Fstsw(m.ax);
-                m.Test(m.ah, 0x41);
-                m.Mov(m.eax, m.DwordPtr(m.esp, 4));
-                m.Jnz("foo");
-            });
-            AssertCode(
-                "0|T--|10000000(12): 3 instructions",
-                "1|L--|SCZO = FPUF",
-                "2|L--|eax = Mem0[esp + 4<i32>:word32]",
-                "3|T--|if (Test(LE,FPUF)) branch 10000000");
-        }
-
-        [Test]
         public void X86rw_sar()
         {
             Run16bitTest(m =>
@@ -2622,6 +2535,18 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|S--|10000000(2): 1 instructions",
                 "1|L--|__invd()");
+        }
+
+        [Test]
+        public void X86rw_Lahf()
+        {
+            Run16bitTest(m =>
+            {
+                m.Lahf();
+            });
+            AssertCode(
+                "0|L--|0C00:0000(1): 1 instructions",
+                "1|L--|ah = SCZOP");
         }
 
         [Test]
@@ -4317,81 +4242,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|v5 = Mem0[esi - 2<i32>:word32] + 0xFFFFFFFF<32> + C",
                 "2|L--|Mem0[esi - 2<i32>:word32] = v5",
                 "3|L--|SCZO = cond(v5)");
-        }
-
-        [Test]
-        public void X86Rw_fstsw_and_cmp_jz__eq()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "80 E4 45" +    // and	ah,45
-                "80 FC 40" +    // cmp	ah,40
-                "74 02");       // jz	$+4
-            AssertCode(
-                "0|T--|10000000(10): 1 instructions",
-                "1|T--|if (Test(EQ,FPUF)) branch 1000000C");
-        }
-
-        // If you XOR with 0x40 and you get a 0 result, AH
-        // must have been 0x40 before the XOR and after the
-        // AND, which according to the Intel manuals means
-        // only the C3 bit is set, i.e. "equals".
-        [Test]
-        public void X86Rw_fstsw_and_xor_40_jz__ne()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "80 E4 45" +    // and	ah,45
-                "80 F4 40" +    // xor ah, 40
-                "74 02");       // jz	$+4
-            AssertCode(
-                "0|T--|10000000(10): 1 instructions",
-                "1|T--|if (Test(EQ,FPUF)) branch 1000000C");
-        }
-
-        [Test]
-        public void X86Rw_fstsw_test_45_jz__gt()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "F6 C4 45" +    // test	ah,45
-                "74 02");       // jz	0804849B
-            AssertCode(
-                "0|T--|10000000(7): 2 instructions",
-                "1|L--|SCZO = FPUF",
-                "2|T--|if (Test(GT,FPUF)) branch 10000009");
-        }
-
-        [Test]
-        public void X86Rw_fstsw_ah_44_pe()
-        {
-            Run32bitTest(
-                "D8 5C 24 24" + // fcomp dword ptr [esp+24h]
-                "DF E0" +       // fstsw ax
-                "89 54 24 2C" + // mov [esp+2Ch],edx
-                "F6 C4 44" +    // test ah,44h
-                "7A 26");       // jpe 0D2316h
-            AssertCode(
-                "0|L--|10000000(4): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top:real64] - Mem0[esp + 36<i32>:real32])",
-                "2|L--|Top = Top + 1<i8>",
-                "3|T--|10000004(11): 3 instructions",
-                "4|L--|Mem0[esp + 44<i32>:word32] = edx",
-                "5|L--|SCZO = FPUF",
-                "6|T--|if (Test(NE,FPUF)) branch 10000035");
-        }
-
-        [Test]
-        public void X86Rw_fstsw_test_05_jz__ge()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "F6 C4 05" +    // test	ah,05 -- ge
-                "74 02");       // jz	080484BE
-            AssertCode(
-                "0|T--|10000000(7): 2 instructions",
-                "1|L--|SCZO = FPUF",
-                "2|T--|if (Test(GE,FPUF)) branch 10000009");
         }
 
         [Test]

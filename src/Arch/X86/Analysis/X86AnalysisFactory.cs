@@ -19,9 +19,7 @@
 #endregion
 
 using Reko.Analysis;
-using Reko.Core;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Reko.Arch.X86.Analysis
 {
@@ -35,7 +33,7 @@ namespace Reko.Arch.X86.Analysis
         {
             if (stage == AnalysisStage.AfterRegisterSsa)
             {
-                return new[] { new DummyAnalysis(ssa, ctx) };
+                return new[] { new FstswAnalysis(ctx.Program, ctx.EventListener) };
             }
             return Array.Empty<IAnalysis<SsaState>>();
         }

@@ -26,7 +26,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

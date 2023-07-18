@@ -1418,6 +1418,9 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure fsqrt_intrinsic;
         private static readonly IntrinsicProcedure fstcw_intrinsic;
         private static readonly IntrinsicProcedure fstenv_intrinsic;
+        internal static readonly IntrinsicProcedure fstsw_intrinsic = new IntrinsicBuilder("__fstsw", false)
+            .Param(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Word16);
         private static readonly IntrinsicProcedure fxrstor_intrinsic;
         private static readonly IntrinsicProcedure fxsave_intrinsic;
         private static readonly IntrinsicProcedure getsec_intrinsic;

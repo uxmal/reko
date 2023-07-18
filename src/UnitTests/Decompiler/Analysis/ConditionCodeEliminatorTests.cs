@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Arch.X86.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
@@ -139,6 +140,11 @@ namespace Reko.UnitTests.Decompiler.Analysis
 
                 var larw = new LongAddRewriter(ssa, listener);
                 larw.Transform();
+
+                // This is x86-specific, but harmless when run on
+                // non-x86 programs.
+                var fstsw = new FstswAnalysis(program, listener);
+                (ssa, _) = fstsw.Transform(ssa);
 
                 var cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();

@@ -261,7 +261,7 @@ namespace Reko.Analysis
             }
         }
 
-        private SsaState RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
+        public SsaState RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
         {
             if (analysisFactory is null)
                 return ssa;

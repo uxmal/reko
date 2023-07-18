@@ -206,11 +206,6 @@ namespace Reko.Arch.X86
                 };
             }
 
-            internal bool IsSegmentOverrideActive()
-            {
-                return this.isSegmentOverrideActive;
-            }
-
             internal RegisterStorage SegmentOverride
             {
                 get

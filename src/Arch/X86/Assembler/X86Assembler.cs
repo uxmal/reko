@@ -1226,6 +1226,23 @@ namespace Reko.Arch.X86.Assembler
             ProcessFpuCommon(0xD8, 0xD8, 0, false, false, op);
         }
 
+        public void Fcomp(ParsedOperand op)
+        {
+            if (op.Operand is MemoryOperand mem)
+            {
+                EmitOpcode(0xD8, mem.Width);
+                EmitModRM(3, op);
+            }
+            else
+                throw new NotImplementedException($"fcomp {op}");
+        }
+
+        public void Fcompp()
+        {
+            emitter.EmitByte(0xDE);
+            emitter.EmitByte(0xD9);
+        }
+
         public void Fiadd(ParsedOperand operand)
         {
             var dataWidth = EnsureValidOperandSize(operand);
@@ -2047,13 +2064,6 @@ namespace Reko.Arch.X86.Assembler
         {
             EmitOpcode(0xFD, null);
         }
-
-        public void Fcompp()
-        {
-            emitter.EmitByte(0xDE);
-            emitter.EmitByte(0xD9);
-        }
-
 
         internal void DbDup(int by, int count)
         {

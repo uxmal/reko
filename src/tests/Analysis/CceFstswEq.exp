@@ -8,16 +8,16 @@ fn0C00_0000_entry:
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	rLoc1_17 = Mem0[ds:si:real64]
-	rLoc2_18 = 0.0
-	branch rLoc2_18 != rLoc1_17 l0C00_0012
+	rLoc1_22 = Mem0[ds:si:real64]
+	rLoc2_23 = 0.0
+	branch rLoc2_23 != rLoc1_22 l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
-	Mem16[ds:di:word16] = 1<16>
+	Mem21[ds:di:word16] = 1<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0012:
-	Mem15[ds:di:word16] = 0<16>
+	Mem20[ds:di:word16] = 0<16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -120,13 +120,6 @@ namespace Reko.UnitTests.Arch.X86
 		}
 
 		[Test]
-        [Category(Categories.IntegrationTests)]
-        public void RwReg00004()
-		{
-			RunTest("Fragments/regressions/r00004.asm", "Arch/X86/RwReg00004.txt");
-		}
-
-		[Test]
 		public void RwReg00006()
 		{
 			RunTest("Fragments/regressions/r00006.asm", "Arch/X86/RwReg00006.txt");
