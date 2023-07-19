@@ -7,21 +7,23 @@
 // bx:bx
 // ds:ds
 // cx:cx
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // si:si
 // SCZO:SCZO
 // di:di
-// v12:v12
 // v13:v13
+// v14:v14
 // es:es
-// v15:v15
 // v16:v16
-// v17:v17
+// SZO:SZO
 // v18:v18
 // v19:v19
 // v20:v20
 // v21:v21
+// v22:v22
+// v23:v23
 // Top:Top
 // return address size: 2
 define fn0C00_0000
@@ -32,9 +34,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	bx = Mem0[ds:0x3E<16>:word16]
 	cx = Mem0[ds:0x3E<16>:word16]
-	v12 = bx
+	v13 = bx
 	bx = bx & 7<16>
-	SZO = cond(bx)
+	SZ = cond(bx)
+	O = false
 	C = false
 	si = Mem0[ds:0x40<16>:word16]
 	bx = bx + bx
@@ -44,53 +47,53 @@ l0C00_0000:
 	di = Mem0[ds:0x42<16>:word16]
 	cx = cx >>u 3<16>
 	SCZO = cond(cx)
-	switch (v12) { l0C00_0020 l0C00_0027 l0C00_0026 l0C00_0025 l0C00_0024 l0C00_0023 l0C00_0022 l0C00_0021 }
+	switch (v13) { l0C00_0020 l0C00_0027 l0C00_0026 l0C00_0025 l0C00_0024 l0C00_0023 l0C00_0022 l0C00_0021 }
 	// succ:  l0C00_0020 l0C00_0027 l0C00_0026 l0C00_0025 l0C00_0024 l0C00_0023 l0C00_0022 l0C00_0021
 l0C00_0020:
-	v13 = Mem0[ds:si:word16]
-	Mem0[es:di:word16] = v13
+	v14 = Mem0[ds:si:word16]
+	Mem0[es:di:word16] = v14
 	si = si + 2<i16>
 	di = di + 2<i16>
 	// succ:  l0C00_0021
 l0C00_0021:
-	v17 = Mem0[ds:si:word16]
-	Mem0[es:di:word16] = v17
-	si = si + 2<i16>
-	di = di + 2<i16>
-	// succ:  l0C00_0022
-l0C00_0022:
-	v18 = Mem0[ds:si:word16]
-	Mem0[es:di:word16] = v18
-	si = si + 2<i16>
-	di = di + 2<i16>
-	// succ:  l0C00_0023
-l0C00_0023:
 	v19 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v19
 	si = si + 2<i16>
 	di = di + 2<i16>
-	// succ:  l0C00_0024
-l0C00_0024:
+	// succ:  l0C00_0022
+l0C00_0022:
 	v20 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v20
 	si = si + 2<i16>
 	di = di + 2<i16>
-	// succ:  l0C00_0025
-l0C00_0025:
-	v16 = Mem0[ds:si:word16]
-	Mem0[es:di:word16] = v16
-	si = si + 2<i16>
-	di = di + 2<i16>
-	// succ:  l0C00_0026
-l0C00_0026:
+	// succ:  l0C00_0023
+l0C00_0023:
 	v21 = Mem0[ds:si:word16]
 	Mem0[es:di:word16] = v21
 	si = si + 2<i16>
 	di = di + 2<i16>
+	// succ:  l0C00_0024
+l0C00_0024:
+	v22 = Mem0[ds:si:word16]
+	Mem0[es:di:word16] = v22
+	si = si + 2<i16>
+	di = di + 2<i16>
+	// succ:  l0C00_0025
+l0C00_0025:
+	v18 = Mem0[ds:si:word16]
+	Mem0[es:di:word16] = v18
+	si = si + 2<i16>
+	di = di + 2<i16>
+	// succ:  l0C00_0026
+l0C00_0026:
+	v23 = Mem0[ds:si:word16]
+	Mem0[es:di:word16] = v23
+	si = si + 2<i16>
+	di = di + 2<i16>
 	// succ:  l0C00_0027
 l0C00_0027:
-	v15 = Mem0[ds:si:word16]
-	Mem0[es:di:word16] = v15
+	v16 = Mem0[ds:si:word16]
+	Mem0[es:di:word16] = v16
 	si = si + 2<i16>
 	di = di + 2<i16>
 	cx = cx - 1<16>

@@ -69,9 +69,9 @@ Eq_125: (fn void ())
 Eq_129: (union "Eq_129" (int64 u0) (ptr64 u1))
 	T_129 (in 0000000000600E18 @ 0000000000400731 : ptr64)
 Eq_136: (union "Eq_136" (int64 u0) (uint64 u1))
-	T_136 (in rbx_45 @ 0000000000400746 : Eq_136)
+	T_136 (in rbx_47 @ 0000000000400746 : Eq_136)
 	T_137 (in 0<u64> @ 0000000000400746 : uint64)
-	T_142 (in rbx_45 + 1<64> @ 000000000040075D : word64)
+	T_142 (in rbx_47 + 1<64> @ 000000000040075D : word64)
 	T_143 (in rbp_31 >> 3<64> @ 0000000000400764 : word64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
@@ -270,7 +270,7 @@ T_49: (in 1<8> @ 0000000000400532 : byte)
   Class: Eq_43
   DataType: byte
   OrigDataType: byte
-T_50: (in Mem17[0x0000000000601040<p64>:byte] @ 0000000000400532 : byte)
+T_50: (in Mem18[0x0000000000601040<p64>:byte] @ 0000000000400532 : byte)
   Class: Eq_43
   DataType: byte
   OrigDataType: byte
@@ -614,7 +614,7 @@ T_135: (in rbp_31 >> 3<64> == 0<64> @ 0000000000400744 : bool)
   Class: Eq_135
   DataType: bool
   OrigDataType: bool
-T_136: (in rbx_45 @ 0000000000400746 : Eq_136)
+T_136: (in rbx_47 @ 0000000000400746 : Eq_136)
   Class: Eq_136
   DataType: Eq_136
   OrigDataType: word64
@@ -626,11 +626,11 @@ T_138: (in 8<64> @ 0000000000400759 : word64)
   Class: Eq_138
   DataType: ui64
   OrigDataType: ui64
-T_139: (in rbx_45 * 8<64> @ 0000000000400759 : word64)
+T_139: (in rbx_47 * 8<64> @ 0000000000400759 : word64)
   Class: Eq_139
   DataType: ui64
   OrigDataType: ui64
-T_140: (in 0x0000000000600E10<p64>[rbx_45 * 8<64>] @ 0000000000400759 : word64)
+T_140: (in 0x0000000000600E10<p64>[rbx_47 * 8<64>] @ 0000000000400759 : word64)
   Class: Eq_140
   DataType: (ptr64 code)
   OrigDataType: (ptr64 code)
@@ -638,7 +638,7 @@ T_141: (in 1<64> @ 000000000040075D : word64)
   Class: Eq_141
   DataType: word64
   OrigDataType: word64
-T_142: (in rbx_45 + 1<64> @ 000000000040075D : word64)
+T_142: (in rbx_47 + 1<64> @ 000000000040075D : word64)
   Class: Eq_136
   DataType: Eq_136
   OrigDataType: uint64
@@ -646,7 +646,7 @@ T_143: (in rbp_31 >> 3<64> @ 0000000000400764 : word64)
   Class: Eq_136
   DataType: Eq_136
   OrigDataType: int64
-T_144: (in rbp_31 >> 3<64> != rbx_45 @ 0000000000400764 : bool)
+T_144: (in rbp_31 >> 3<64> != rbx_47 @ 0000000000400764 : bool)
   Class: Eq_144
   DataType: bool
   OrigDataType: bool

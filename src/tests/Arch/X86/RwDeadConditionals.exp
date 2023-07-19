@@ -5,7 +5,8 @@
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // cx:cx
 // bx:bx
@@ -20,7 +21,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax = ax ^ ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	cx = Mem0[ds:bx:word16]
 	// succ:  l0C00_0004

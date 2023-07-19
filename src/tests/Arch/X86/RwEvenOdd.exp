@@ -32,9 +32,11 @@ fn0C00_0000_exit:
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // Z:Z
+// SZO:SZO
 // al:al
 // Top:Top
 // return address size: 2
@@ -45,7 +47,8 @@ fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
 	ax = ax | ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	branch Test(EQ,Z) l0C00_001D
 	// succ:  l0C00_0019 l0C00_001D
@@ -70,9 +73,11 @@ fn0C00_0015_exit:
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // Z:Z
+// SZO:SZO
 // al:al
 // Top:Top
 // return address size: 2
@@ -83,7 +88,8 @@ fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
 	ax = ax | ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	branch Test(EQ,Z) l0C00_0028
 	// succ:  l0C00_0024 l0C00_0028
@@ -97,7 +103,8 @@ l0C00_0025_thunk_fn0C00_0015:
 	// succ:  fn0C00_0020_exit
 l0C00_0028:
 	al = al ^ al
-	SZO = cond(al)
+	SZ = cond(al)
+	O = false
 	C = false
 	return
 	// succ:  fn0C00_0020_exit

@@ -23,7 +23,7 @@ void call_gmon_start()
 //      _init
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax Top
+// Trashed: SCZOP rax Top
 // Preserved: rsp
 call_gmon_start_entry:
 l000000000040043C:
@@ -42,7 +42,7 @@ void deregister_tm_clones()
 //      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi Top
+// Trashed: SCZOP rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000400460:
@@ -65,7 +65,7 @@ void register_tm_clones()
 //      frame_dummy
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi Top
+// Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l0000000000400490:
@@ -87,13 +87,13 @@ void __do_global_dtors_aux()
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
-// Preserved: rbp rsp
+// Preserved: P rbp rsp
 __do_global_dtors_aux_entry:
 l00000000004004D0:
 	branch Mem0[0x0000000000601038<p64>:byte] != 0<8> l00000000004004EA
 l00000000004004D9:
 	deregister_tm_clones()
-	Mem19[0x0000000000601038<p64>:byte] = 1<8>
+	Mem20[0x0000000000601038<p64>:byte] = 1<8>
 l00000000004004EA:
 	return
 __do_global_dtors_aux_exit:
@@ -104,7 +104,7 @@ void frame_dummy()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi Top
+// Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l00000000004004F0:
@@ -130,25 +130,25 @@ word32 verify(word64 rdi)
 //      main
 // MayUse:  rdi:[0..63]
 // LiveOut: rax
-// Trashed: SCZO rax rcx rdx rsi Top
+// Trashed: SCZOP rax rcx rdx rsi Top
 // Preserved: rbp rsp
 verify_entry:
 l0000000000400520:
-	word32 dwLoc0C_130 = 0<32>
+	word32 dwLoc0C_131 = 0<32>
 l00000000004005A1:
-	word64 rax_117
-	branch Mem12[rdi + CONVERT(dwLoc0C_130, word32, int64):byte] != 0<8> l0000000000400531
+	word64 rax_118
+	branch Mem12[rdi + CONVERT(dwLoc0C_131, word32, int64):byte] != 0<8> l0000000000400531
 l0000000000400531:
-	byte al_42 = SLICE(dwLoc0C_130, byte, 0) ^ Mem12[rdi + CONVERT(dwLoc0C_130, word32, int64):byte]
-	branch Mem103[CONVERT(dwLoc0C_130, word32, int64) + 6295584<i64>:byte] == (SLICE(CONVERT(al_42, byte, word32) >> 8<8> - ((SLICE(dwLoc0C_130, byte, 0) ^ 9<8>) & 3<8>), byte, 0) | al_42 << ((SLICE(dwLoc0C_130, byte, 0) ^ 9<8>) & 3<8>)) + 8<8> l000000000040059D
+	byte al_43 = SLICE(dwLoc0C_131, byte, 0) ^ Mem12[rdi + CONVERT(dwLoc0C_131, word32, int64):byte]
+	branch Mem104[CONVERT(dwLoc0C_131, word32, int64) + 6295584<i64>:byte] == (SLICE(CONVERT(al_43, byte, word32) >> 8<8> - ((SLICE(dwLoc0C_131, byte, 0) ^ 9<8>) & 3<8>), byte, 0) | al_43 << ((SLICE(dwLoc0C_131, byte, 0) ^ 9<8>) & 3<8>)) + 8<8> l000000000040059D
 l000000000040059D:
-	dwLoc0C_130 = dwLoc0C_130 + 1<32>
+	dwLoc0C_131 = dwLoc0C_131 + 1<32>
 l0000000000400596:
-	rax_117 = 0<u64>
+	rax_118 = 0<u64>
 l00000000004005B9:
-	rax_117 = CONVERT(dwLoc0C_130 == 0x17<32>, bool, uint64)
+	rax_118 = CONVERT(dwLoc0C_131 == 0x17<32>, bool, uint64)
 l00000000004005C3:
-	return SLICE(rax_117, word32, 0)
+	return SLICE(rax_118, word32, 0)
 verify_exit:
 
 
@@ -157,7 +157,7 @@ void main(word64 rsi, word32 edi)
 
 // MayUse:  edi:[0..31] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO rax rcx rdi rdx rsi Top
+// Trashed: SCZOP rax rcx rdi rdx rsi Top
 // Preserved: rbp rsp
 main_entry:
 l00000000004005C5:
@@ -181,7 +181,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi Top
+// Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word64 rdi
@@ -191,12 +191,12 @@ l0000000000400620:
 	word64 rbp_19 = 0x0000000000600E00<p64> - 0x0000000000600DF8<p64>
 	branch rbp_19 >> 3<64> == 0<64> l0000000000400686
 l000000000040066A:
-	word64 rbx_39 = 0<u64>
+	word64 rbx_41 = 0<u64>
 l0000000000400670:
-	call Mem17[0x0000000000600DF8<p64> + rbx_39 * 8<64>:word64] (retsize: 8;)
+	call Mem17[0x0000000000600DF8<p64> + rbx_41 * 8<64>:word64] (retsize: 8;)
 		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_39 = rbx_39 + 1<64>
-	branch rbx_39 != rbp_19 >> 3<64> l0000000000400670
+	rbx_41 = rbx_41 + 1<64>
+	branch rbx_41 != rbp_19 >> 3<64> l0000000000400670
 l0000000000400686:
 	return
 __libc_csu_init_exit:

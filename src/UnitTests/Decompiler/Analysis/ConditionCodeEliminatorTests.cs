@@ -18,20 +18,20 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.ComponentModel.Design;
-using Reko.Core.Services;
-using Reko.Core.Intrinsics;
+using System.IO;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -1232,6 +1232,45 @@ ProcedureBuilder_exit:
                 m.Assign(C, m.Cond(r2));
                 m.Assign(r3, m.Convert(C, PrimitiveType.Bool, PrimitiveType.Word32));
                 m.Return(r3);
+            });
+        }
+
+        [Test]
+        public void CceRegression00939()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def eax
+	// succ:  foo
+foo:
+	branch eax <= 0<32> foo
+	// succ:  l1 foo
+l1:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var eax = m.Reg32("eax", 1);
+                var psw = RegisterStorage.Reg32("psw", 4);
+                var SZ = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0C, "SZ", PrimitiveType.Byte));
+                var SZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0E, "SZO", PrimitiveType.Byte));
+                var O = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x02, "O", PrimitiveType.Bool));
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x01, "C", PrimitiveType.Bool));
+                m.Label("foo");
+                m.Assign(eax, m.Or(eax, eax));
+                m.Assign(SZ, m.Cond(eax));
+                m.Assign(O, 0);
+                m.Assign(C, 0);
+                m.BranchIf(m.Test(ConditionCode.LE, SZO), "foo");
+                m.Return();
             });
         }
     }

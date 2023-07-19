@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0000:[0..31] Stack +0004:[0..31]
 // LiveOut:
-// Trashed: SCZO eax ecx edx
+// Trashed: SCZOP eax ecx edx
 // Preserved: esp
 // fn00400000
 // Return size: 0
@@ -10,7 +10,7 @@ void fn00400000(word32 dwArg00, word32 dwArg04)
 fn00400000_entry:
 	// succ:  l00400000
 l00400000:
-	Mem11[0x02000000<p32>:word32] = fn0040000C(dwArg00, dwArg04)
+	Mem12[0x02000000<p32>:word32] = fn0040000C(dwArg00, dwArg04)
 	return
 	// succ:  fn00400000_exit
 fn00400000_exit:
@@ -19,7 +19,7 @@ fn00400000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax
-// Trashed: SCZO eax ecx edx
+// Trashed: SCZOP eax ecx edx
 // Preserved: ebp ebx edi esi esp
 // fn0040000C
 // Return size: 0
@@ -36,11 +36,11 @@ l0040000C:
 l0040002E:
 	// succ:  l00400031
 l00400031:
-	word32 ecx_31 = Mem22[eax_23 + 12<i32>:word32]
-	branch dwArg08 <u ecx_31 l00400041
+	word32 ecx_32 = Mem22[eax_23 + 12<i32>:word32]
+	branch dwArg08 <u ecx_32 l00400041
 	// succ:  l00400038 l00400041
 l00400038:
-	branch dwArg08 <u Mem22[eax_23 + 8<i32>:word32] + ecx_31 l0040004D
+	branch dwArg08 <u Mem22[eax_23 + 8<i32>:word32] + ecx_32 l0040004D
 	// succ:  l00400041 l0040004D
 l00400041:
 	edx_20 = edx_20 + 1<32>

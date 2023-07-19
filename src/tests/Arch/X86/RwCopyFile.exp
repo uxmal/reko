@@ -15,7 +15,8 @@
 // al:al
 // bx:bx
 // cx:cx
-// SZO:SZO
+// SZ:SZ
+// O:O
 // Z:Z
 // Top:Top
 // return address size: 2
@@ -56,7 +57,8 @@ l0C00_002A:
 	// succ:  l0C00_003A l0C00_003E
 l0C00_003A:
 	ax = ax | ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	branch Test(NE,Z) l0C00_001F
 	// succ:  l0C00_003E l0C00_001F

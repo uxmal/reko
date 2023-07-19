@@ -81,6 +81,7 @@ namespace Reko.Arch.X86
         public static readonly FlagGroupStorage SO;
         public static readonly FlagGroupStorage SZ;
         public static readonly FlagGroupStorage SZO;
+        public static readonly FlagGroupStorage SZP;
 
         public static readonly RegisterStorage eflags;
 
@@ -367,6 +368,7 @@ namespace Reko.Arch.X86
             SO = FlagRegister("SO", eflags, FlagM.SF | FlagM.OF);
             SZ = FlagRegister("SZ", eflags, FlagM.SF | FlagM.ZF);
             SZO = FlagRegister("SZO", eflags, FlagM.SF | FlagM.ZF | FlagM.OF);
+            SZP = FlagRegister("SZP", eflags, FlagM.SF | FlagM.ZF | FlagM.PF);
             EflagsBits = new FlagGroupStorage[] { S, C, Z, D, O, P };
 
             FPUF = factory.Reg("FPUF", PrimitiveType.Word16);

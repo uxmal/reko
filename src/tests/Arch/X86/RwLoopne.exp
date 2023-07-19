@@ -13,6 +13,8 @@
 // SCZO:SCZO
 // Z:Z
 // ax:ax
+// SZ:SZ
+// O:O
 // C:C
 // di:di
 // es:es
@@ -43,7 +45,8 @@ l0C00_000D:
 	ax = Mem0[ds:si:word16]
 	si = si + 2<i16>
 	al = al ^ al
-	SZO = cond(al)
+	SZ = cond(al)
+	O = false
 	C = false
 	// succ:  l0C00_0014
 l0C00_0014:

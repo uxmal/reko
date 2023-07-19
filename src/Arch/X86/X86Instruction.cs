@@ -147,10 +147,11 @@ namespace Reko.Arch.X86
 			case Mnemonic.andn:
 			case Mnemonic.or:
             case Mnemonic.sahf:
-            case Mnemonic.test:
             case Mnemonic.xadd:
             case Mnemonic.xor:
                 return Registers.SCZO;
+            case Mnemonic.test:
+                return Registers.SCZOP;
 			default:
 				return null;
 			}

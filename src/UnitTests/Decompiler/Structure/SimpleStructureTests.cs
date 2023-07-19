@@ -316,7 +316,7 @@ ret
             var sExp =
 @"void fn00100000(word32 dwArg00, word32 dwArg04)
 {
-	Mem11[0x02000000<p32>:word32] = fn0010000C(dwArg00, dwArg04);
+	Mem12[0x02000000<p32>:word32] = fn0010000C(dwArg00, dwArg04);
 }
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)
@@ -329,8 +329,8 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 	{
 		do
 		{
-			word32 ecx_31 = Mem22[eax_23 + 12<i32>:word32];
-			if (dwArg08 >=u ecx_31 && dwArg08 <u Mem22[eax_23 + 8<i32>:word32] + ecx_31)
+			word32 ecx_32 = Mem22[eax_23 + 12<i32>:word32];
+			if (dwArg08 >=u ecx_32 && dwArg08 <u Mem22[eax_23 + 8<i32>:word32] + ecx_32)
 				return eax_23;
 			++edx_20;
 			eax_23 += 0x28<32>;

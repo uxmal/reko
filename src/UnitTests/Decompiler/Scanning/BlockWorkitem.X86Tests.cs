@@ -399,13 +399,14 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp =
-                "\tv8 = bx" + nl +
+                "\tv9 = bx" + nl +
                 "\tbx = bx & 3<16>" + nl +
-                "\tSZO = cond(bx)" + nl +
+                "\tSZ = cond(bx)" + nl +
+                "\tO = false" + nl +
                 "\tC = false" + nl +
                 "\tbx = bx + bx" + nl + 
                 "\tSCZO = cond(bx)" + nl +
-                "\tswitch (v8) { foo1 foo2 foo3 foo4 }" + nl;
+                "\tswitch (v9) { foo1 foo2 foo3 foo4 }" + nl;
             Assert.AreEqual(sExp, sw.ToString());
             Assert.IsTrue(proc.ControlGraph.Blocks.Contains(block));
             scanner.Verify();
@@ -497,7 +498,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var sExp =
                 "testblock:" + nl +
                 "\tesi = esi ^ esi" + nl +
-                "\tSZO = cond(esi)" + nl +
+                "\tSZ = cond(esi)" + nl +
+                "\tO = false" + nl +
                 "\tC = false" + nl + 
                 "\tesi = esi + 1<32>" + nl +
                 "\tSZO = cond(esi)" + nl +

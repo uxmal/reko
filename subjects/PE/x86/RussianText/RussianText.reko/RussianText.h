@@ -235,7 +235,7 @@ T_29: (in signature of __CRTL_TLS_ExitThread : void)
   Class: Eq_29
   DataType: Eq_29
   OrigDataType: 
-T_30: (in Mem24[0x0040208B<p32>:word32] @ 00401137 : word32)
+T_30: (in Mem25[0x0040208B<p32>:word32] @ 00401137 : word32)
   Class: Eq_8
   DataType: uint32
   OrigDataType: up32
@@ -419,7 +419,7 @@ T_75: (in &tLoc0C + 4<i32> @ 004011D4 : word32)
   Class: Eq_75
   DataType: ptr32
   OrigDataType: ptr32
-T_76: (in Mem27[&tLoc0C + 4<i32>:word32] @ 004011D4 : word32)
+T_76: (in Mem29[&tLoc0C + 4<i32>:word32] @ 004011D4 : word32)
   Class: Eq_50
   DataType: (ptr32 void)
   OrigDataType: word32

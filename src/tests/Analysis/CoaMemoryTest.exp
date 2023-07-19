@@ -28,9 +28,9 @@ bx_11: orig: bx
 Mem12: orig: Mem0
     def:  Mem12[ds:si + 0x4D4<16>:word16] = si + 2<i16>
 ax_13: orig: ax
-SZO_14: orig: SZO
-C_15: orig: C
-O_16: orig: O
+SZ_14: orig: SZ
+O_15: orig: O
+C_16: orig: C
 S_17: orig: S
 Z_18: orig: Z
 // fn0C00_0000

@@ -10,27 +10,27 @@ l0C00_0000:
 	dx_7 = Mem0[ds:0x202<16>:word16]
 	cx_8 = Mem0[ds:0x204<16>:word16]
 	bx_9 = Mem0[ds:0x206<16>:word16]
-	dx_ax_45 = SEQ(dx_7, ax_6)
-	bx_cx_46 = SEQ(bx_9, cx_8)
-	dx_ax_47 = dx_ax_45 + bx_cx_46
-	ax_10 = SLICE(dx_ax_47, word16, 0) (alias)
-	dx_13 = SLICE(dx_ax_47, word16, 16) (alias)
+	dx_ax_46 = SEQ(dx_7, ax_6)
+	bx_cx_47 = SEQ(bx_9, cx_8)
+	dx_ax_48 = dx_ax_46 + bx_cx_47
+	ax_10 = SLICE(dx_ax_48, word16, 0) (alias)
+	dx_13 = SLICE(dx_ax_48, word16, 16) (alias)
 	Mem15[ds:0x208<16>:word16] = ax_10
 	Mem16[ds:0x20A<16>:word16] = dx_13
 	ax_17 = Mem16[ds:0x210<16>:word16]
 	dx_18 = Mem16[ds:0x212<16>:word16]
 	es_cx_19 = Mem16[ds:0x214<16>:segptr32]
-	dx_ax_48 = SEQ(dx_18, ax_17)
-	dx_ax_50 = dx_ax_48 - es_cx_19
-	ax_23 = SLICE(dx_ax_50, word16, 0) (alias)
-	dx_27 = SLICE(dx_ax_50, word16, 16) (alias)
+	dx_ax_49 = SEQ(dx_18, ax_17)
+	dx_ax_51 = dx_ax_49 - es_cx_19
+	ax_23 = SLICE(dx_ax_51, word16, 0) (alias)
+	dx_27 = SLICE(dx_ax_51, word16, 16) (alias)
 	Mem25[ds:0x218<16>:word16] = ax_23
 	Mem29[ds:0x21A<16>:word16] = dx_27
-	cl_33 = Mem29[ds:0x220<16>:byte]
-	ax_36 = CONVERT(cl_33 <u 0x30<8>, bool, word16)
-	cl_38 = Mem29[ds:0x221<16>:byte]
-	ax_42 = ax_36 * 2<16> + CONVERT(cl_38 >=u 0x3A<8>, bool, word16)
-	Mem44[ds:0x222<16>:word16] = ax_42
+	cl_34 = Mem29[ds:0x220<16>:byte]
+	ax_37 = CONVERT(cl_34 <u 0x30<8>, bool, word16)
+	cl_39 = Mem29[ds:0x221<16>:byte]
+	ax_43 = ax_37 * 2<16> + CONVERT(cl_39 >=u 0x3A<8>, bool, word16)
+	Mem45[ds:0x222<16>:word16] = ax_43
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

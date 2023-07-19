@@ -29,13 +29,13 @@ void fn0C00_0015(segptr32 ptrArg02)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
-	selector ds_35 = SLICE(ptrArg02, selector, 16)
+	selector ds_36 = SLICE(ptrArg02, selector, 16)
 	word16 si_15 = SLICE(ptrArg02, word16, 0)
-	selector es_37 = SLICE(ptrArg02, selector, 16)
-	word16 di_32 = SLICE(ptrArg02, word16, 0)
+	selector es_38 = SLICE(ptrArg02, selector, 16)
+	word16 di_33 = SLICE(ptrArg02, word16, 0)
 	// succ:  l0C00_001F
 l0C00_001F:
-	byte al_17 = Mem16[ds_35:si_15:byte]
+	byte al_17 = Mem16[ds_36:si_15:byte]
 	si_15 = si_15 + 1<i16>
 	branch al_17 == 0<8> l0C00_002C
 	// succ:  l0C00_0024 l0C00_002C
@@ -43,8 +43,8 @@ l0C00_0024:
 	branch al_17 == 0x20<8> l0C00_001F
 	// succ:  l0C00_0028 l0C00_001F
 l0C00_0028:
-	Mem33[es_37:di_32:byte] = al_17
-	di_32 = di_32 + 1<i16>
+	Mem34[es_38:di_33:byte] = al_17
+	di_33 = di_33 + 1<i16>
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_002C:
@@ -64,13 +64,13 @@ word16 fn0C00_002F(segptr32 ptrArg02)
 fn0C00_002F_entry:
 	// succ:  l0C00_002F
 l0C00_002F:
-	selector ds_35 = SLICE(ptrArg02, selector, 16)
-	word16 si_17 = SLICE(ptrArg02, word16, 0)
+	selector ds_37 = SLICE(ptrArg02, selector, 16)
+	word16 si_18 = SLICE(ptrArg02, word16, 0)
 	word16 cx_13 = 0<16>
 	// succ:  l0C00_0038
 l0C00_0038:
-	si_17 = si_17 + 1<i16>
-	branch Mem11[ds_35:si_17:byte] == 0<8> l0C00_0041
+	si_18 = si_18 + 1<i16>
+	branch Mem11[ds_37:si_18:byte] == 0<8> l0C00_0041
 	// succ:  l0C00_003D l0C00_0041
 l0C00_003D:
 	cx_13 = cx_13 + 1<16>

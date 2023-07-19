@@ -21,22 +21,22 @@ l0C00_0015:
 	ax_11 = 0<16>
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_24
-	Mem19[ds:0x300<16>:word16] = ax_11
+	word16 ax_25
+	Mem20[ds:0x300<16>:word16] = ax_11
 	branch ax_11 != 0xA<16> l0C00_002E
 	// succ:  l0C00_0023 l0C00_002E
 l0C00_0023:
 	branch ax_11 != 0xB<16> l0C00_002E
 	// succ:  l0C00_0028 l0C00_002E
 l0C00_0028:
-	ax_24 = 1<16>
+	ax_25 = 1<16>
 	goto l0C00_0030
 	// succ:  l0C00_0030
 l0C00_002E:
-	ax_24 = 0<16>
+	ax_25 = 0<16>
 	// succ:  l0C00_0030
 l0C00_0030:
-	Mem31[ds:0x302<16>:word16] = ax_24
+	Mem33[ds:0x302<16>:word16] = ax_25
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -61,21 +61,21 @@ l0C00_0015:
 	ax_11 = 0<16>
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_24
-	Mem19[ds:0x300<16>:word16] = ax_11
+	word16 ax_25
+	Mem20[ds:0x300<16>:word16] = ax_11
 	branch ax_11 != 0xA<16> || ax_11 != 0xB<16> l0C00_002E
 	goto l0C00_0028
 	// succ:  l0C00_0028 l0C00_002E
 l0C00_0023:
 l0C00_0028:
-	ax_24 = 1<16>
+	ax_25 = 1<16>
 	goto l0C00_0030
 	// succ:  l0C00_0030
 l0C00_002E:
-	ax_24 = 0<16>
+	ax_25 = 0<16>
 	// succ:  l0C00_0030
 l0C00_0030:
-	Mem31[ds:0x302<16>:word16] = ax_24
+	Mem33[ds:0x302<16>:word16] = ax_25
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

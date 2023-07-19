@@ -251,11 +251,11 @@ void fn004014AD(word32 ebx, Eq_n edi, Eq_n dwArg04)
 	{
 		fn00401774(0x05);
 		int3();
-		word32 edi_n;
 		word32 ebp_n;
 		word32 esi_n;
 		word32 edx_n;
 		word32 ebx_n;
+		word32 edi_n;
 		fn00401544(ebx, dwArg04, edi, out edx_n, out ebx_n, out ebp_n, out esi_n, out edi_n);
 	}
 }
@@ -362,9 +362,9 @@ void fn00401663()
 	else
 	{
 		GetSystemTimeAsFileTime(&tLoc10);
-		ui32 v15_n = tLoc10.dwHighDateTime ^ tLoc10.dwLowDateTime ^ GetCurrentThreadId() ^ GetCurrentProcessId();
+		ui32 v17_n = tLoc10.dwHighDateTime ^ tLoc10.dwLowDateTime ^ GetCurrentThreadId() ^ GetCurrentProcessId();
 		QueryPerformanceCounter(&tLoc18);
-		Eq_n ecx_n = tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v15_n ^ fp - 8;
+		Eq_n ecx_n = tLoc18.dw0004 ^ (tLoc18.u).LowPart ^ v17_n ^ fp - 8;
 		if (ecx_n == 0xBB40E64E)
 			ecx_n.u0 = ~0x44BF19B0;
 		else if ((ecx_n & 0xFFFF0000) == 0x00)

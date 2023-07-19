@@ -3,7 +3,7 @@ void fn0000000000400428()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax Top
+// Trashed: SCZOP rax Top
 // Preserved: rsp
 fn0000000000400428_entry:
 l0000000000400428:

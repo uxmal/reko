@@ -891,7 +891,7 @@ l0000000100002E3A:
 					{
 						getbsize();
 						Eq_n rax_n = g_t6548.u0;
-						Mem591[0x0000000100006548<p64>:word64] = (rax_n >> 0x3F >>u 55) + rax_n >> 0x09;
+						Mem627[0x0000000100006548<p64>:word64] = (rax_n >> 0x3F >>u 55) + rax_n >> 0x09;
 					}
 					goto l0000000100002E3A;
 				}
@@ -1042,7 +1042,7 @@ void fn000000010000328E(Eq_n rdi)
 				break;
 			Eq_n rax_n = (word64) r13_n + 1;
 			eax_24_8_n = SLICE(rax_n, word24, 8);
-			r12b_n = Mem146[fp - 49 + r13_n:byte];
+			r12b_n = Mem152[fp - 49 + r13_n:byte];
 			r13_n = rax_n;
 		}
 		++qwLoc48_n;
@@ -1265,9 +1265,9 @@ void fn00000001000035A9(struct Eq_n * rdi)
 		printf("%*qu ");
 	if (g_dw6564 != 0x00)
 		fn00000001000034AC((word32) rbx_n->w0004);
+	word64 r15_n;
 	word64 r14_n;
 	struct Eq_n * rbx_n;
-	word64 r15_n;
 	word32 r12d_n;
 	word64 rbp_n;
 	fn000000010000356F((char *) &rdi->ptr0060 + 8, out rbx_n, out rbp_n, out r12d_n, out r14_n, out r15_n);

@@ -10,15 +10,18 @@
 // ecx:ecx
 // edx:edx
 // SCZO:SCZO
-// SZO:SZO
+// SZP:SZP
+// O:O
 // C:C
 // Z:Z
 // Top:Top
 // esi:esi
 // edi:edi
+// SZ:SZ
+// SZO:SZO
 // FPUF:FPUF
-// v17:v17
-// v18:v18
+// v20:v20
+// v21:v21
 // SO:SO
 // return address size: 4
 define fn10000000
@@ -44,7 +47,8 @@ l10000000:
 	eax = CONVERT(Mem0[eax:word16], word16, int32)
 	ecx = ecx - eax
 	SCZO = cond(ecx)
-	SZO = cond(ebp & ebp)
+	SZP = cond(ebp & ebp)
+	O = false
 	C = false
 	Mem0[esp + 20<i32>:word32] = ecx
 	Mem0[edx:word32] = ecx
@@ -58,7 +62,8 @@ l10000035:
 	esp = esp - 4<i32>
 	Mem0[esp:word32] = edi
 	esi = esi ^ esi
-	SZO = cond(esi)
+	SZ = cond(esi)
+	O = false
 	C = false
 	edi = 0x186A0<32>
 	Mem0[esp + 20<i32>:real32] = CONVERT(ST[Top:real64], real64, real32)
@@ -94,17 +99,17 @@ l10000072:
 	// succ:  l1000007F
 l1000007F:
 	ST[Top:real64] = ST[Top:real64] * Mem0[0x10033290<p32>:real64]
-	v17 = ST[Top:real64]
+	v20 = ST[Top:real64]
 	Top = Top - 1<i8>
-	ST[Top:real64] = v17
+	ST[Top:real64] = v20
 	call fn1000010A (retsize: 4;)
 	ecx = eax
 	Mem0[esp + 28<i32>:word32] = ecx
 	Top = Top - 1<i8>
 	ST[Top:real64] = CONVERT(Mem0[esp + 28<i32>:int32], int32, real64)
-	v18 = ST[Top + 1<i8>:real64]
+	v21 = ST[Top + 1<i8>:real64]
 	Top = Top - 1<i8>
-	ST[Top:real64] = v18
+	ST[Top:real64] = v21
 	FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])
 	Top = Top + 2<i8>
 	SCZO = FPUF

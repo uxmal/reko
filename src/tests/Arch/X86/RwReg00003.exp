@@ -5,7 +5,8 @@
 // %continuation:%continuation
 // sp:sp
 // ecx:ecx
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // ds:ds
 // Top:Top
@@ -19,7 +20,8 @@ l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
 	call fn0C00_0010 (retsize: 2;)
 	ecx = ecx ^ ecx
-	SZO = cond(ecx)
+	SZ = cond(ecx)
+	O = false
 	C = false
 	Mem0[ds:0x310<16>:word32] = ecx
 	return
@@ -51,7 +53,8 @@ fn0C00_000F_exit:
 // %continuation:%continuation
 // sp:sp
 // ch:ch
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // cl:cl
 // ds:ds
@@ -65,7 +68,8 @@ fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
 	ch = ch ^ ch
-	SZO = cond(ch)
+	SZ = cond(ch)
+	O = false
 	C = false
 	cl = Mem0[ds:0x300<16>:byte]
 	branch cx == 0<16> l0C00_001E

@@ -3,7 +3,7 @@ void _init()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax Top
+// Trashed: SCZOP rax Top
 // Preserved: rsp
 _init_entry:
 l0000000000402168:

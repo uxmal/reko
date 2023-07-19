@@ -174,19 +174,19 @@ void const_div_test10(word32 dwArg04)
 
 // MayUse:  Stack +0004:[0..31]
 // LiveOut:
-// Trashed: SCZO eax ecx edx Top
+// Trashed: SCZOP eax ecx edx Top
 // Preserved: ebp esp
 const_div_test10_entry:
 l004012A0:
-	word32 eax_18 = 0xA<32>
-	word32 ecx_20 = 3<32>
+	word32 eax_19 = 0xA<32>
+	word32 ecx_21 = 3<32>
 	branch dwArg04 == 0<32> l004012BA
 l004012B4:
-	eax_18 = 3<u32>
-	ecx_20 = 1<u32>
+	eax_19 = 3<u32>
+	ecx_21 = 1<u32>
 l004012BA:
-	Mem22[0x0040302C<p32>:word32] = ecx_20
-	Mem24[0x00403030<p32>:word32] = eax_18
+	Mem23[0x0040302C<p32>:word32] = ecx_21
+	Mem25[0x00403030<p32>:word32] = eax_19
 	return
 const_div_test10_exit:
 
@@ -197,20 +197,20 @@ void loop_test11(real64 rArg04)
 // MayUse:  Stack +0004:[0..63]
 // LiveOut:
 // Trashed: SCZO Top
-// Preserved: eax ebp ecx edx esp FPU -1 FPUF
+// Preserved: P eax ebp ecx edx esp FPU -1 FPUF
 loop_test11_entry:
 l004012D0:
-	word32 dwLoc08_100 = 5<32>
+	word32 dwLoc08_102 = 5<32>
 l004012DD:
-	branch dwLoc08_100 <= 0<32> l00401329
+	branch dwLoc08_102 <= 0<32> l00401329
 l00401329:
 	return
 loop_test11_exit:
 l004012E3:
-	word32 eax_19 = dwLoc08_100 & 0x80000001<32>
-	branch (dwLoc08_100 & 0x80000001<32>) >= 0<32> l004012F2
+	word32 eax_19 = dwLoc08_102 & 0x80000001<32>
+	branch (dwLoc08_102 & 0x80000001<32>) >= 0<32> l004012F2
 l004012ED:
-	eax_19 = ((dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32>
+	eax_19 = ((dwLoc08_102 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32>
 l004012F2:
 	branch eax_19 != 0<32> l0040130D
 l0040130D:
@@ -218,7 +218,7 @@ l0040130D:
 l004012F6:
 	loop_test9(CONVERT(rArg04, real64, real32))
 l0040131E:
-	dwLoc08_100 = dwLoc08_100 - 1<32>
+	dwLoc08_102 = dwLoc08_102 - 1<32>
 
 
 void nested_structs_test12(word32 dwArg04)

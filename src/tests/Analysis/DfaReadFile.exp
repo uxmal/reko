@@ -16,7 +16,7 @@ l0C00_0000:
 l0C00_0015:
 	fn0C00_001F(1<8>)
 l0C00_001A:
-	Mem20[0D00:0302:word16] = ax_13
+	Mem22[0D00:0302:word16] = ax_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

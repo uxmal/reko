@@ -19,7 +19,7 @@ word16 fn0C00_000B(word16 si, selector ds)
 fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
-	word16 dx_38 = 0<16>
+	word16 dx_39 = 0<16>
 	word16 cx_17 = 0<16>
 	branch Mem0[ds:si:byte] != 0x2D<8> l0C00_001B
 	// succ:  l0C00_0016 l0C00_001B
@@ -43,27 +43,27 @@ l0C00_0026:
 	branch al_22 <u 0x30<8> l0C00_003C
 	// succ:  l0C00_002A l0C00_003C
 l0C00_002A:
-	word16 ax_49 = CONVERT(al_22 - 0x30<8>, byte, uint16)
+	word16 ax_50 = CONVERT(al_22 - 0x30<8>, byte, uint16)
 	branch al_22 >u 0x39<8> l0C00_003C
 	// succ:  l0C00_002E l0C00_003C
 l0C00_002E:
-	dx_38 = dx_38 * 0xA<16> + ax_49
+	dx_39 = dx_39 * 0xA<16> + ax_50
 	goto l0C00_0021
 	// succ:  l0C00_0021
 l0C00_003C:
 	branch cx_17 >= 0<16> l0C00_0042
 	// succ:  l0C00_0040 l0C00_0042
 l0C00_0040:
-	dx_38 = -dx_38
+	dx_39 = -dx_39
 	// succ:  l0C00_0042
 l0C00_0042:
-	return dx_38
+	return dx_39
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
 
 word16 fn0C00_000B(word16 si, selector ds)
 {
-	word16 dx_38 = 0<16>;
+	word16 dx_39 = 0<16>;
 	word16 cx_17 = 0<16>;
 	switch (Mem0[ds:si:byte])
 	{
@@ -81,13 +81,13 @@ word16 fn0C00_000B(word16 si, selector ds)
 		++si;
 		if (al_22 == 0<8> || al_22 <u 0x30<8>)
 			break;
-		word16 ax_49 = CONVERT(al_22 - 0x30<8>, byte, uint16);
+		word16 ax_50 = CONVERT(al_22 - 0x30<8>, byte, uint16);
 		if (al_22 >u 0x39<8>)
 			break;
-		dx_38 = dx_38 * 0xA<16> + ax_49;
+		dx_39 = dx_39 * 0xA<16> + ax_50;
 	}
 	if (cx_17 < 0<16>)
-		dx_38 = -dx_38;
-	return dx_38;
+		dx_39 = -dx_39;
+	return dx_39;
 }
 ===========================

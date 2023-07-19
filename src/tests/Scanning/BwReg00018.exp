@@ -6,12 +6,14 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	ecx = Mem0[esi + 108<i32>:word32]
-	SZO = cond(ecx & ecx)
+	SZP = cond(ecx & ecx)
+	O = false
 	C = false
 	branch Test(NE,Z) l10000012
 	// succ:  l10000007 l10000012
 l10000007:
-	SZO = cond(ebp & ebp)
+	SZP = cond(ebp & ebp)
+	O = false
 	C = false
 	branch Test(EQ,Z) l10000021
 	// succ:  l1000000B l10000021

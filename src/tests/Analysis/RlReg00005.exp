@@ -29,37 +29,37 @@ fn0C00_000C_entry:
 l0C00_000C:
 	di_7 = 0x7E0F<16>
 	cx_8 = 0xC<16>
-	v20_43 = true
+	v21_45 = true
 l0C00_0019:
-	v19_42 = PHI((v20_43, l0C00_000C), (v21_44, l0C00_0019_1))
-	di_15 = PHI((di_7, l0C00_000C), (di_18, l0C00_0019_1))
-	cx_12 = PHI((cx_8, l0C00_000C), (cx_19, l0C00_0019_1))
-	ch_55 = SLICE(cx_12, byte, 8) (alias)
-	branch cx_12 == 0<16> l0C00_001B
+	v20_44 = PHI((v21_45, l0C00_000C), (v22_46, l0C00_0019_1))
+	di_16 = PHI((di_7, l0C00_000C), (di_19, l0C00_0019_1))
+	cx_13 = PHI((cx_8, l0C00_000C), (cx_20, l0C00_0019_1))
+	ch_57 = SLICE(cx_13, byte, 8) (alias)
+	branch cx_13 == 0<16> l0C00_001B
 l0C00_0019_1:
-	v21_44 = Mem0[ds:di_15:byte] == 0<8>
-	di_18 = di_15 + 1<i16>
-	cx_19 = cx_12 - 1<16>
-	ch_56 = SLICE(cx_19, byte, 8) (alias)
-	branch Mem0[ds:di_15:byte] != 0<8> l0C00_0019
+	v22_46 = Mem0[ds:di_16:byte] == 0<8>
+	di_19 = di_16 + 1<i16>
+	cx_20 = cx_13 - 1<16>
+	ch_58 = SLICE(cx_20, byte, 8) (alias)
+	branch Mem0[ds:di_16:byte] != 0<8> l0C00_0019
 l0C00_001B:
-	ch_54 = PHI((ch_55, l0C00_0019), (ch_56, l0C00_0019_1))
-	di_30 = PHI((di_15, l0C00_0019), (di_18, l0C00_0019_1))
-	v18_41 = PHI((v19_42, l0C00_0019), (v21_44, l0C00_0019_1))
-	branch v18_41 l0C00_002D
+	ch_56 = PHI((ch_57, l0C00_0019), (ch_58, l0C00_0019_1))
+	di_32 = PHI((di_16, l0C00_0019), (di_19, l0C00_0019_1))
+	v19_43 = PHI((v20_44, l0C00_0019), (v22_46, l0C00_0019_1))
+	branch v19_43 l0C00_002D
 l0C00_001D:
-	ah_32 = Mem0[ds:di_30 + 1<i16>:byte]
-	ax_34 = SEQ(ah_32, 0<8>) (alias)
-	cx_35 = __bsr<word16>(ax_34)
-	cx_36 = cx_35 - 8<16>
-	bx_38 = di_30 - 0x7E03<16>
+	ah_34 = Mem0[ds:di_32 + 1<i16>:byte]
+	ax_36 = SEQ(ah_34, 0<8>) (alias)
+	cx_37 = __bsr<word16>(ax_36)
+	cx_38 = cx_37 - 8<16>
+	bx_40 = di_32 - 0x7E03<16>
 	return
 l0C00_002D:
-	bx_24 = 0<16>
-	cx_57 = SEQ(ch_54, 0<8>) (alias)
+	bx_25 = 0<16>
+	cx_59 = SEQ(ch_56, 0<8>) (alias)
 	return
 fn0C00_000C_exit:
-	cx_53 = PHI((cx_36, l0C00_001D), (cx_57, l0C00_002D))
-	bx_50 = PHI((bx_38, l0C00_001D), (bx_24, l0C00_002D))
-	use bx_50
-	use cx_53
+	cx_55 = PHI((cx_38, l0C00_001D), (cx_59, l0C00_002D))
+	bx_52 = PHI((bx_40, l0C00_001D), (bx_25, l0C00_002D))
+	use bx_52
+	use cx_55

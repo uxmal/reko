@@ -299,18 +299,18 @@ Eq_n fn100015CF(ptr32 ebx, ptr32 esi, word32 edi)
 		lock(0x08);
 		void * ecx_n = esp_n->ptr0000;
 		ebp_n->dwFFFFFFFC = 0x00;
-		void * v15_n = g_ptr100033B4;
+		void * v16_n = g_ptr100033B4;
 		ebp_n->tFFFFFFE4 = _decode_pointer(esp_n->ptr0000);
-		void * v16_n = g_ptr100033B0;
+		void * v17_n = g_ptr100033B0;
 		ebp_n->ptrFFFFFFE0 = _decode_pointer(esp_n->ptrFFFFFFFC);
-		Eq_n v17_n = ebp_n->t0008.u0;
+		Eq_n v18_n = ebp_n->t0008.u0;
 		ebp_n->tFFFFFFDC.u0 = (_onexit_t) __dllonexit(esp_n->tFFFFFFF0.u0, esp_n->ptrFFFFFFF4, esp_n->ptrFFFFFFF8);
-		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v17_n, ebp_n - 28, ebp_n - 32, v16_n, v15_n);
+		g_ptr100033B4 = encode_pointer(ecx_n, ebp_n->tFFFFFFE4, v18_n, ebp_n - 28, ebp_n - 32, v17_n, v16_n);
 		g_ptr100033B0 = encode_pointer(ebp_n->ptrFFFFFFE0);
 		ebp_n->dwFFFFFFFC = ~0x01;
 		fn10001665();
 		esp_n = esp_n + 0x1C;
-		eax_n = Mem83[ebp_n + -36:word32];
+		eax_n = Mem84[ebp_n + -36:word32];
 	}
 	fn1000182D(ebp_n, esp_n->tFFFFFFFC.u0);
 	return eax_n;

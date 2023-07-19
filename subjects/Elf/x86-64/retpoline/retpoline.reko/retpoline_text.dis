@@ -23,7 +23,7 @@ void deregister_tm_clones()
 //      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi Top
+// Trashed: SCZOP rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l00000000004004B0:
@@ -46,7 +46,7 @@ void register_tm_clones()
 //      frame_dummy
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rsi Top
+// Trashed: SCZOP rax rdi rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l00000000004004E0:
@@ -68,7 +68,7 @@ void __do_global_dtors_aux()
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
-// Preserved: rbp rsp
+// Preserved: P rbp rsp
 __do_global_dtors_aux_entry:
 l0000000000400520:
 	branch Mem0[0x0000000000601040<p64>:byte] != 0<8> l0000000000400540
@@ -76,7 +76,7 @@ l0000000000400540:
 	return
 l0000000000400529:
 	deregister_tm_clones()
-	Mem17[0x0000000000601040<p64>:byte] = 1<8>
+	Mem18[0x0000000000601040<p64>:byte] = 1<8>
 	return
 __do_global_dtors_aux_exit:
 
@@ -86,7 +86,7 @@ void frame_dummy()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rsi Top
+// Trashed: SCZOP rax rdi rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l0000000000400550:
@@ -210,7 +210,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi Top
+// Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word64 rdi
@@ -220,12 +220,12 @@ l0000000000400710:
 	word64 rbp_31 = 0x0000000000600E18<p64> - 0x0000000000600E10<p64>
 	branch rbp_31 >> 3<64> == 0<64> l0000000000400766
 l0000000000400746:
-	word64 rbx_45 = 0<u64>
+	word64 rbx_47 = 0<u64>
 l0000000000400750:
-	call Mem26[0x0000000000600E10<p64> + rbx_45 * 8<64>:word64] (retsize: 8;)
+	call Mem26[0x0000000000600E10<p64> + rbx_47 * 8<64>:word64] (retsize: 8;)
 		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_45 = rbx_45 + 1<64>
-	branch rbp_31 >> 3<64> != rbx_45 l0000000000400750
+	rbx_47 = rbx_47 + 1<64>
+	branch rbp_31 >> 3<64> != rbx_47 l0000000000400750
 l0000000000400766:
 	return
 __libc_csu_init_exit:

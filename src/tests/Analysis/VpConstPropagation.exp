@@ -8,25 +8,27 @@ Top_3: orig: Top
     def:  Top_3 = 0<i8>
 ax_4: orig: ax
     def:  ax_4 = 0<16>
-    uses: SZO_5 = cond(ax_4)
-          Mem8[ds:0x300<16>:word16] = ax_4
-          Mem9[ds:0x302<16>:word16] = ax_4
-          Mem10[ds:0x304<16>:word16] = ax_4
-SZO_5: orig: SZO
-    def:  SZO_5 = cond(ax_4)
-C_6: orig: C
-    def:  C_6 = false
+    uses: SZ_5 = cond(ax_4)
+          Mem9[ds:0x300<16>:word16] = ax_4
+          Mem10[ds:0x302<16>:word16] = ax_4
+          Mem11[ds:0x304<16>:word16] = ax_4
+SZ_5: orig: SZ
+    def:  SZ_5 = cond(ax_4)
+O_6: orig: O
+    def:  O_6 = false
+C_7: orig: C
+    def:  C_7 = false
 ds:ds
     def:  def ds
-    uses: Mem8[ds:0x300<16>:word16] = ax_4
-          Mem9[ds:0x302<16>:word16] = ax_4
-          Mem10[ds:0x304<16>:word16] = ax_4
-Mem8: orig: Mem0
-    def:  Mem8[ds:0x300<16>:word16] = ax_4
+    uses: Mem9[ds:0x300<16>:word16] = ax_4
+          Mem10[ds:0x302<16>:word16] = ax_4
+          Mem11[ds:0x304<16>:word16] = ax_4
 Mem9: orig: Mem0
-    def:  Mem9[ds:0x302<16>:word16] = ax_4
+    def:  Mem9[ds:0x300<16>:word16] = ax_4
 Mem10: orig: Mem0
-    def:  Mem10[ds:0x304<16>:word16] = ax_4
+    def:  Mem10[ds:0x302<16>:word16] = ax_4
+Mem11: orig: Mem0
+    def:  Mem11[ds:0x304<16>:word16] = ax_4
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -38,11 +40,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_4 = 0<16>
-	SZO_5 = cond(ax_4)
-	C_6 = false
-	Mem8[ds:0x300<16>:word16] = ax_4
-	Mem9[ds:0x302<16>:word16] = ax_4
-	Mem10[ds:0x304<16>:word16] = ax_4
+	SZ_5 = cond(ax_4)
+	O_6 = false
+	C_7 = false
+	Mem9[ds:0x300<16>:word16] = ax_4
+	Mem10[ds:0x302<16>:word16] = ax_4
+	Mem11[ds:0x304<16>:word16] = ax_4
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -56,21 +59,23 @@ Top_3: orig: Top
     def:  Top_3 = 0<i8>
 ax_4: orig: ax
     def:  ax_4 = 0<16>
-SZO_5: orig: SZO
-    def:  SZO_5 = cond(0<16>)
-C_6: orig: C
-    def:  C_6 = false
+SZ_5: orig: SZ
+    def:  SZ_5 = cond(0<16>)
+O_6: orig: O
+    def:  O_6 = false
+C_7: orig: C
+    def:  C_7 = false
 ds:ds
     def:  def ds
-    uses: Mem8[ds:0x300<16>:word16] = 0<16>
-          Mem9[ds:0x302<16>:word16] = 0<16>
-          Mem10[ds:0x304<16>:word16] = 0<16>
-Mem8: orig: Mem0
-    def:  Mem8[ds:0x300<16>:word16] = 0<16>
+    uses: Mem9[ds:0x300<16>:word16] = 0<16>
+          Mem10[ds:0x302<16>:word16] = 0<16>
+          Mem11[ds:0x304<16>:word16] = 0<16>
 Mem9: orig: Mem0
-    def:  Mem9[ds:0x302<16>:word16] = 0<16>
+    def:  Mem9[ds:0x300<16>:word16] = 0<16>
 Mem10: orig: Mem0
-    def:  Mem10[ds:0x304<16>:word16] = 0<16>
+    def:  Mem10[ds:0x302<16>:word16] = 0<16>
+Mem11: orig: Mem0
+    def:  Mem11[ds:0x304<16>:word16] = 0<16>
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -82,11 +87,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_4 = 0<16>
-	SZO_5 = cond(0<16>)
-	C_6 = false
-	Mem8[ds:0x300<16>:word16] = 0<16>
-	Mem9[ds:0x302<16>:word16] = 0<16>
-	Mem10[ds:0x304<16>:word16] = 0<16>
+	SZ_5 = cond(0<16>)
+	O_6 = false
+	C_7 = false
+	Mem9[ds:0x300<16>:word16] = 0<16>
+	Mem10[ds:0x302<16>:word16] = 0<16>
+	Mem11[ds:0x304<16>:word16] = 0<16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

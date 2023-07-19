@@ -243,38 +243,66 @@ namespace Reko.Analysis
 			gf.FindDefiningExpression(sid);
 			
 			Expression? e = gf.DefiningExpression;
-			if (e == null)
+			if (e is null)
 			{
 				return sid.Identifier;
 			}
 
-            switch (e)
-			{
-            case BinaryExpression _:
-				if (gf.IsNegated)
-					e = e.Invert();
-                if (forceIdentifier)
+            while (e is not null)
+            {
+                switch (e)
                 {
-                    e = InsertNewAssignment(e, cc, sid);
+                case BinaryExpression bin:
+                    // The following hack for Or deals with expressions like
+                    // (SCZ|O) where O is always false.
+                    if (bin.Operator.Type == OperatorType.Or)
+                    {
+                        if (IsZero(bin.Left) && bin.Right is Identifier idRight)
+                        {
+                            e = ssa.Identifiers[idRight].GetDefiningExpression();
+                            continue;
+                        }
+                        else if (IsZero(bin.Right) && bin.Left is Identifier idLeft)
+                        {
+                            e = ssa.Identifiers[idLeft].GetDefiningExpression();
+                            continue;
+                        }
+                    }
+                    if (gf.IsNegated)
+                        e = e.Invert();
+
+                    if (forceIdentifier)
+                    {
+                        e = InsertNewAssignment(e, cc, sid);
+                    }
+                    return e;
+                case ConditionOf cof:
+                    if (cof.Expression is not BinaryExpression condBinDef)
+                        condBinDef = CmpExpressionToZero(cof.Expression);
+                    Expression newCond = ComparisonFromConditionCode(cc, condBinDef, gf.IsNegated);
+                    if (forceIdentifier)
+                    {
+                        newCond = InsertNewAssignment(newCond, cc, sid);
+                    }
+                    return newCond;
+                case Application _:
+                    return sid.Identifier;
+                case PhiFunction phi:
+                    return InsertNewPhi(sid, cc, phi);
+                default:
+                    throw new NotImplementedException("NYI: e: " + e.ToString());
                 }
-				return e;
-            case ConditionOf cof:
-                if (cof.Expression is not BinaryExpression condBinDef)
-                    condBinDef = CmpExpressionToZero(cof.Expression);
-                Expression newCond = ComparisonFromConditionCode(cc, condBinDef, gf.IsNegated);
-                if (forceIdentifier)
-                {
-                    newCond = InsertNewAssignment(newCond, cc, sid);
-                }
-                return newCond;
-            case Application _:
-				return sid.Identifier;
-            case PhiFunction phi:
-                return InsertNewPhi(sid, cc, phi);
-            default:
-			throw new NotImplementedException("NYI: e: " + e.ToString());
+            }
+            return sid.Identifier;
 		}
-		}
+
+        private bool IsZero(Expression expr)
+        {
+            return (expr is Identifier id &&
+                ssa.Identifiers[id].DefStatement?.Instruction is Assignment ass &&
+                ass.Src is Constant c &&
+                c.IsZero);
+        }
 
         private Identifier InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi)
         {

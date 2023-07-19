@@ -91,14 +91,14 @@ Register word16 fn0C00_0027(Sequence segptr32 ds_si, Register out ptr16 siOut)
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // si:si
 // Z:Z
 // ds:ds
 // Top:Top
 // S:S
-// O:O
 // ds_si:Sequence ds:si
 // siOut:Out:si
 // return address size: 2
@@ -110,18 +110,18 @@ fn0C00_0027_entry:
 	// succ:  l0C00_0027
 l0C00_0027:
 	ax_4 = 0<16>
-	si_8 = si
+	si_9 = si
 	branch si == 0<16> l0C00_002E
 	// succ:  l0C00_002D l0C00_002E
 l0C00_002D:
-	ax_14 = Mem0[ds_si:word16]
-	si_15 = si + 2<i16>
+	ax_16 = Mem0[ds_si:word16]
+	si_17 = si + 2<i16>
 	// succ:  l0C00_002E
 l0C00_002E:
-	si_22 = PHI((si_8, l0C00_0027), (si_15, l0C00_002D))
-	ax_16 = PHI((ax_4, l0C00_0027), (ax_14, l0C00_002D))
-	siOut = si_22
-	return ax_16
+	si_23 = PHI((si_9, l0C00_0027), (si_17, l0C00_002D))
+	ax_18 = PHI((ax_4, l0C00_0027), (ax_16, l0C00_002D))
+	siOut = si_23
+	return ax_18
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
 Register word16 fn0C00_002F(Sequence segptr32 ds_si, Register out ptr16 siOut)

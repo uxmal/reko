@@ -79,20 +79,21 @@ Register word16 fn0C00_0014(Register word16 ax)
 // %continuation:%continuation
 // sp:sp
 // di:di
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // ax:ax
+// SZO:SZO
 // Top:Top
 // S:S
 // Z:Z
-// O:O
 // return address size: 2
 word16 fn0C00_0014(word16 ax)
 fn0C00_0014_entry:
 	def ax
 	// succ:  l0C00_0014
 l0C00_0014:
-	ax_8 = ax - 1<16>
-	return ax_8
+	ax_9 = ax - 1<16>
+	return ax_9
 	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:

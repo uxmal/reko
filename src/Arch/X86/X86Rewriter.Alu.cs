@@ -582,7 +582,8 @@ namespace Reko.Arch.X86
                     SrcOp(1),
                     0);
             }
-            EmitCcInstr(SrcOp(0), Registers.SZO);
+            EmitCcInstr(SrcOp(0), Registers.SZ);
+            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
@@ -1336,7 +1337,8 @@ namespace Reko.Arch.X86
                 SrcOp(0),
                 SrcOp(1));
 
-            EmitCcInstr(src, Registers.SZO);
+            EmitCcInstr(src, Registers.SZP);
+            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 

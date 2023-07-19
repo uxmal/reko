@@ -21,7 +21,7 @@ void fn00000000004004B0()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi Top
+// Trashed: SCZOP rax rdi Top
 // Preserved: rbp rsp
 fn00000000004004B0_entry:
 l00000000004004B0:

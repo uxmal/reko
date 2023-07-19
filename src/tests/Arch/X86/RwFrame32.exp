@@ -37,10 +37,12 @@ fn10000000_exit:
 // SCZO:SCZO
 // Z:Z
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // eax:eax
 // edx:edx
+// SZP:SZP
 // SO:SO
 // cx:cx
 // Top:Top
@@ -62,7 +64,8 @@ l10000017:
 	// succ:  l10000027 l1000002F
 l10000027:
 	ax = ax ^ ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	goto l1000005E
 	// succ:  l1000005E
@@ -70,7 +73,8 @@ l1000002F:
 	eax = CONVERT(Mem0[ebp - 4<i32>:word16], word16, int32)
 	ecx = Mem0[ebp + 8<i32>:word32]
 	edx = CONVERT(Mem0[ecx + eax:byte], byte, int32)
-	SZO = cond(edx & edx)
+	SZP = cond(edx & edx)
+	O = false
 	C = false
 	branch Test(EQ,Z) l1000005A
 	// succ:  l1000003E l1000005A

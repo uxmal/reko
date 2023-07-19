@@ -48,14 +48,15 @@ Register byte fn0C00_0015(Register word16 ax)
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // Z:Z
+// SZO:SZO
 // al:al
 // Top:Top
 // SCZO:SCZO
 // S:S
-// O:O
 // ah:ah
 // return address size: 2
 byte fn0C00_0015(word16 ax)
@@ -63,18 +64,18 @@ fn0C00_0015_entry:
 	def ax
 	// succ:  l0C00_0015
 l0C00_0015:
-	ah_17 = SLICE(ax, byte, 8) (alias)
+	ah_18 = SLICE(ax, byte, 8) (alias)
 	branch ax == 0<16> l0C00_001D
 	// succ:  l0C00_0019 l0C00_001D
 l0C00_0019:
 	// succ:  l0C00_001A_thunk_fn0C00_0020
 l0C00_001A_thunk_fn0C00_0020:
-	ax_13 = SEQ(0<8>, fn0C00_0020(ax - 1<16>))
-	return SLICE(ax_13, byte, 0)
+	ax_14 = SEQ(0<8>, fn0C00_0020(ax - 1<16>))
+	return SLICE(ax_14, byte, 0)
 	// succ:  fn0C00_0015_exit
 l0C00_001D:
-	ax_18 = SEQ(ah_17, 1<8>) (alias)
-	return SLICE(ax_18, byte, 0)
+	ax_19 = SEQ(ah_18, 1<8>) (alias)
+	return SLICE(ax_19, byte, 0)
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
 Register byte fn0C00_0020(Register word16 ax)
@@ -91,14 +92,15 @@ Register byte fn0C00_0020(Register word16 ax)
 // %continuation:%continuation
 // sp:sp
 // ax:ax
-// SZO:SZO
+// SZ:SZ
+// O:O
 // C:C
 // Z:Z
+// SZO:SZO
 // al:al
 // Top:Top
 // SCZO:SCZO
 // S:S
-// O:O
 // ah:ah
 // return address size: 2
 byte fn0C00_0020(word16 ax)
@@ -106,17 +108,17 @@ fn0C00_0020_entry:
 	def ax
 	// succ:  l0C00_0020
 l0C00_0020:
-	ah_19 = SLICE(ax, byte, 8) (alias)
+	ah_21 = SLICE(ax, byte, 8) (alias)
 	branch ax == 0<16> l0C00_0028
 	// succ:  l0C00_0024 l0C00_0028
 l0C00_0024:
 	// succ:  l0C00_0025_thunk_fn0C00_0015
 l0C00_0025_thunk_fn0C00_0015:
-	ax_15 = SEQ(0<8>, fn0C00_0015(ax - 1<16>))
-	return SLICE(ax_15, byte, 0)
+	ax_17 = SEQ(0<8>, fn0C00_0015(ax - 1<16>))
+	return SLICE(ax_17, byte, 0)
 	// succ:  fn0C00_0020_exit
 l0C00_0028:
-	ax_20 = SEQ(ah_19, 0<8>) (alias)
-	return SLICE(ax_20, byte, 0)
+	ax_22 = SEQ(ah_21, 0<8>) (alias)
+	return SLICE(ax_22, byte, 0)
 	// succ:  fn0C00_0020_exit
 fn0C00_0020_exit:

@@ -10,7 +10,7 @@ Top_3: orig: Top
 bp_4: orig: bp
     def:  bp_4 = sp_2
     uses: ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
-          sp_14 = bp_4
+          sp_15 = bp_4
           use bp_4
 ss:ss
     def:  def ss
@@ -24,34 +24,33 @@ ax_7: orig: ax
           ax_8 = ax_7 | ax_7
 ax_8: orig: ax
     def:  ax_8 = ax_7 | ax_7
-    uses: SZO_9 = cond(ax_8)
-          ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
-SZO_9: orig: SZO
-    def:  SZO_9 = cond(ax_8)
-    uses: Z_11 = SLICE(SZO_9, bool, 2) (alias)
-          O_18 = SLICE(SZO_9, bool, 4) (alias)
-          S_20 = SLICE(SZO_9, bool, 0) (alias)
-C_10: orig: C
-    def:  C_10 = false
-    uses: use C_10
-Z_11: orig: Z
-    def:  Z_11 = SLICE(SZO_9, bool, 2) (alias)
-    uses: branch Test(NE,Z_11) l0C00_000C
-          use Z_11
-ax_12: orig: ax
-    def:  ax_12 = 0xFFFF<16>
-    uses: ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
-ax_15: orig: ax
-    def:  ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
-    uses: use ax_15
-sp_14: orig: sp
-    def:  sp_14 = bp_4
-    uses: use sp_14
-O_18: orig: O
-    def:  O_18 = SLICE(SZO_9, bool, 4) (alias)
-    uses: use O_18
+    uses: SZ_9 = cond(ax_8)
+          ax_16 = PHI((ax_8, l0C00_0000), (ax_13, l0C00_0009))
+SZ_9: orig: SZ
+    def:  SZ_9 = cond(ax_8)
+    uses: Z_12 = SLICE(SZ_9, bool, 2) (alias)
+          S_20 = SLICE(SZ_9, bool, 0) (alias)
+O_10: orig: O
+    def:  O_10 = false
+    uses: use O_10
+C_11: orig: C
+    def:  C_11 = false
+    uses: use C_11
+Z_12: orig: Z
+    def:  Z_12 = SLICE(SZ_9, bool, 2) (alias)
+    uses: branch Test(NE,Z_12) l0C00_000C
+          use Z_12
+ax_13: orig: ax
+    def:  ax_13 = 0xFFFF<16>
+    uses: ax_16 = PHI((ax_8, l0C00_0000), (ax_13, l0C00_0009))
+ax_16: orig: ax
+    def:  ax_16 = PHI((ax_8, l0C00_0000), (ax_13, l0C00_0009))
+    uses: use ax_16
+sp_15: orig: sp
+    def:  sp_15 = bp_4
+    uses: use sp_15
 S_20: orig: S
-    def:  S_20 = SLICE(SZO_9, bool, 0) (alias)
+    def:  S_20 = SLICE(SZ_9, bool, 0) (alias)
     uses: use S_20
 // fn0C00_0000
 // Return size: 2
@@ -67,28 +66,28 @@ l0C00_0000:
 	bp_4 = sp_2
 	ax_7 = Mem0[ss:bp_4 + 6<i16>:word16]
 	ax_8 = ax_7 | ax_7
-	SZO_9 = cond(ax_8)
-	Z_11 = SLICE(SZO_9, bool, 2) (alias)
-	O_18 = SLICE(SZO_9, bool, 4) (alias)
-	S_20 = SLICE(SZO_9, bool, 0) (alias)
-	C_10 = false
-	branch Test(NE,Z_11) l0C00_000C
+	SZ_9 = cond(ax_8)
+	Z_12 = SLICE(SZ_9, bool, 2) (alias)
+	S_20 = SLICE(SZ_9, bool, 0) (alias)
+	O_10 = false
+	C_11 = false
+	branch Test(NE,Z_12) l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
-	ax_12 = 0xFFFF<16>
+	ax_13 = 0xFFFF<16>
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
-	sp_14 = bp_4
+	ax_16 = PHI((ax_8, l0C00_0000), (ax_13, l0C00_0009))
+	sp_15 = bp_4
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use ax_15
+	use ax_16
 	use bp_4
-	use C_10
-	use O_18
+	use C_11
+	use O_10
 	use S_20
-	use sp_14
+	use sp_15
 	use Top_3
-	use Z_11
+	use Z_12
 

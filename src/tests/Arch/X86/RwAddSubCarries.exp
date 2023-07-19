@@ -13,7 +13,8 @@
 // C:C
 // es_cx:Sequence es:cx
 // es:es
-// SZO:SZO
+// SZ:SZ
+// O:O
 // cl:cl
 // Top:Top
 // return address size: 2
@@ -44,7 +45,8 @@ l0C00_0000:
 	SCZO = cond(dx)
 	Mem0[ds:0x21A<16>:word16] = dx
 	ax = ax ^ ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	cl = Mem0[ds:0x220<16>:byte]
 	SCZO = cond(cl - 0x30<8>)

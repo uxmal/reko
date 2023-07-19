@@ -50,18 +50,21 @@ namespace Reko.UnitTests.Decompiler.Structure
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
 		public void CfgcIf()
-		{
+        {
 			RunTest("Fragments/if.asm", "Structure/CfgcIf.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CfgcNestedIf()
-		{
+        {
 			RunTest("Fragments/nested_ifs.asm", "Structure/CfgcNestedIf.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CfgcForkedLoop()
 		{
 			RunTest("Fragments/forkedloop.asm", "Structure/CfgcForkedLoop.txt");

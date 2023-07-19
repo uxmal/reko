@@ -1070,7 +1070,7 @@ T_202: (in dwArg04 @ 00401245 : word32)
   Class: Eq_202
   DataType: word32
   OrigDataType: word32
-T_203: (in eax_18 @ 004012A3 : uint32)
+T_203: (in eax_19 @ 004012A3 : uint32)
   Class: Eq_203
   DataType: uint32
   OrigDataType: uint32
@@ -1078,7 +1078,7 @@ T_204: (in 0xA<32> @ 004012A3 : word32)
   Class: Eq_203
   DataType: uint32
   OrigDataType: word32
-T_205: (in ecx_20 @ 004012A8 : uint32)
+T_205: (in ecx_21 @ 004012A8 : uint32)
   Class: Eq_205
   DataType: uint32
   OrigDataType: uint32
@@ -1098,7 +1098,7 @@ T_209: (in 0040302C @ 004012BA : ptr32)
   Class: Eq_209
   DataType: (ptr32 uint32)
   OrigDataType: (ptr32 (struct (0 T_210 t0000)))
-T_210: (in Mem22[0x0040302C<p32>:word32] @ 004012BA : word32)
+T_210: (in Mem23[0x0040302C<p32>:word32] @ 004012BA : word32)
   Class: Eq_205
   DataType: uint32
   OrigDataType: word32
@@ -1106,7 +1106,7 @@ T_211: (in 00403030 @ 004012C0 : ptr32)
   Class: Eq_211
   DataType: (ptr32 uint32)
   OrigDataType: (ptr32 (struct (0 T_212 t0000)))
-T_212: (in Mem24[0x00403030<p32>:word32] @ 004012C0 : word32)
+T_212: (in Mem25[0x00403030<p32>:word32] @ 004012C0 : word32)
   Class: Eq_203
   DataType: uint32
   OrigDataType: word32
@@ -1122,7 +1122,7 @@ T_215: (in rArg04 @ 004012B8 : real64)
   Class: Eq_140
   DataType: real64
   OrigDataType: real64
-T_216: (in dwLoc08_100 @ 004012D6 : int32)
+T_216: (in dwLoc08_102 @ 004012D6 : int32)
   Class: Eq_216
   DataType: int32
   OrigDataType: int32
@@ -1138,11 +1138,11 @@ T_219: (in 0x80000001<32> @ 004012E6 : word32)
   Class: Eq_219
   DataType: ui32
   OrigDataType: ui32
-T_220: (in dwLoc08_100 & 0x80000001<32> @ 004012E6 : word32)
+T_220: (in dwLoc08_102 & 0x80000001<32> @ 004012E6 : word32)
   Class: Eq_218
   DataType: ui32
   OrigDataType: ui32
-T_221: (in dwLoc08_100 & 0x80000001<32> @ 004012EB : word32)
+T_221: (in dwLoc08_102 & 0x80000001<32> @ 004012EB : word32)
   Class: Eq_221
   DataType: int32
   OrigDataType: int32
@@ -1150,7 +1150,7 @@ T_222: (in 0<32> @ 004012EB : word32)
   Class: Eq_221
   DataType: int32
   OrigDataType: int32
-T_223: (in (dwLoc08_100 & 0x80000001<32>) >= 0<32> @ 004012EB : bool)
+T_223: (in (dwLoc08_102 & 0x80000001<32>) >= 0<32> @ 004012EB : bool)
   Class: Eq_223
   DataType: bool
   OrigDataType: bool
@@ -1162,7 +1162,7 @@ T_225: (in eax_19 != 0<32> @ 004012F4 : bool)
   Class: Eq_225
   DataType: bool
   OrigDataType: bool
-T_226: (in dwLoc08_100 & 0x80000001<32> @ 004012F1 : word32)
+T_226: (in dwLoc08_102 & 0x80000001<32> @ 004012F1 : word32)
   Class: Eq_226
   DataType: ui32
   OrigDataType: ui32
@@ -1170,7 +1170,7 @@ T_227: (in 1<32> @ 004012F1 : word32)
   Class: Eq_227
   DataType: ui32
   OrigDataType: ui32
-T_228: (in (dwLoc08_100 & 0x80000001<32>) - 1<32> @ 004012F1 : word32)
+T_228: (in (dwLoc08_102 & 0x80000001<32>) - 1<32> @ 004012F1 : word32)
   Class: Eq_228
   DataType: ui32
   OrigDataType: ui32
@@ -1178,7 +1178,7 @@ T_229: (in 0xFFFFFFFE<32> @ 004012F1 : word32)
   Class: Eq_229
   DataType: ui32
   OrigDataType: ui32
-T_230: (in (dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32> @ 004012F1 : word32)
+T_230: (in (dwLoc08_102 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32> @ 004012F1 : word32)
   Class: Eq_230
   DataType: ui32
   OrigDataType: ui32
@@ -1186,7 +1186,7 @@ T_231: (in 1<32> @ 004012F1 : word32)
   Class: Eq_231
   DataType: word32
   OrigDataType: word32
-T_232: (in ((dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32> @ 004012F1 : word32)
+T_232: (in ((dwLoc08_102 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32> @ 004012F1 : word32)
   Class: Eq_218
   DataType: ui32
   OrigDataType: ui32
@@ -1222,7 +1222,7 @@ T_240: (in 1<32> @ 00401324 : word32)
   Class: Eq_240
   DataType: ui32
   OrigDataType: ui32
-T_241: (in dwLoc08_100 - 1<32> @ 00401324 : word32)
+T_241: (in dwLoc08_102 - 1<32> @ 00401324 : word32)
   Class: Eq_216
   DataType: int32
   OrigDataType: ui32
@@ -1230,7 +1230,7 @@ T_242: (in 0<32> @ 004012E1 : word32)
   Class: Eq_216
   DataType: int32
   OrigDataType: int32
-T_243: (in dwLoc08_100 <= 0<32> @ 004012E1 : bool)
+T_243: (in dwLoc08_102 <= 0<32> @ 004012E1 : bool)
   Class: Eq_243
   DataType: bool
   OrigDataType: bool

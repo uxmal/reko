@@ -7,19 +7,19 @@ ds:ds
           v8_13 = Mem11[ds:0x106<16>:word16] - Mem11[ds:0x104<16>:word16]
           Mem14[ds:0x106<16>:word16] = v8_13
           Mem17[ds:0xF01<16>:byte] = 1<8>
-          Mem25[ds:0xF02<16>:byte] = 1<8>
-          Mem32[ds:0xF03<16>:byte] = 1<8>
-          Mem49[ds:0xF04<16>:byte] = 1<8>
-          Mem55[ds:0xF05<16>:byte] = 1<8>
-          Mem75[ds:0xF07<16>:byte] = 1<8>
+          Mem26[ds:0xF02<16>:byte] = 1<8>
+          Mem33[ds:0xF03<16>:byte] = 1<8>
+          Mem50[ds:0xF04<16>:byte] = 1<8>
+          Mem57[ds:0xF05<16>:byte] = 1<8>
+          Mem77[ds:0xF07<16>:byte] = 1<8>
           branch Mem0[ds:0x102<16>:word16] == Mem0[ds:0x100<16>:word16] l0C00_000F
-          branch Mem27[ds:0x10A<16>:word16] >=u Mem27[ds:0x10C<16>:word16] l0C00_003D
-          branch (Mem51[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
+          branch Mem28[ds:0x10A<16>:word16] >=u Mem28[ds:0x10C<16>:word16] l0C00_003D
+          branch (Mem52[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
           branch Mem0[ds:0x102<16>:word16] == Mem0[ds:0x100<16>:word16] l0C00_000F
           v8_13 = Mem11[ds:0x106<16>:word16] - Mem11[ds:0x104<16>:word16]
           branch (Mem19[ds:0x106<16>:word16] & Mem19[ds:0x108<16>:word16]) == 0<16> l0C00_002D
           branch (Mem19[ds:0x106<16>:word16] & Mem19[ds:0x108<16>:word16]) == 0<16> l0C00_002D
-          branch Mem27[ds:0x10A<16>:word16] >=u Mem27[ds:0x10C<16>:word16] l0C00_003D
+          branch Mem28[ds:0x10A<16>:word16] >=u Mem28[ds:0x10C<16>:word16] l0C00_003D
 Mem0:Mem
     def:  def Mem0
     uses: branch Mem0[ds:0x102<16>:word16] == Mem0[ds:0x100<16>:word16] l0C00_000F
@@ -50,67 +50,70 @@ Mem17: orig: Mem0
     uses: Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
 Mem19: orig: Mem0
     def:  Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
-    uses: Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
+    uses: Mem28 = PHI((Mem19, l0C00_001E), (Mem26, l0C00_0028))
           branch (Mem19[ds:0x106<16>:word16] & Mem19[ds:0x108<16>:word16]) == 0<16> l0C00_002D
           branch (Mem19[ds:0x106<16>:word16] & Mem19[ds:0x108<16>:word16]) == 0<16> l0C00_002D
 ax_20: orig: ax
 ax_21: orig: ax
-SZO_22: orig: SZO
-C_23: orig: C
-Z_24: orig: Z
-Mem25: orig: Mem0
-    def:  Mem25[ds:0xF02<16>:byte] = 1<8>
-    uses: Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
-Mem27: orig: Mem0
-    def:  Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
-    uses: branch Mem27[ds:0x10A<16>:word16] >=u Mem27[ds:0x10C<16>:word16] l0C00_003D
-          branch Mem27[ds:0x10A<16>:word16] >=u Mem27[ds:0x10C<16>:word16] l0C00_003D
-ax_28: orig: ax
-SCZO_29: orig: SCZO
-C_30: orig: C
+SZ_22: orig: SZ
+O_23: orig: O
+C_24: orig: C
+Z_25: orig: Z
+Mem26: orig: Mem0
+    def:  Mem26[ds:0xF02<16>:byte] = 1<8>
+    uses: Mem28 = PHI((Mem19, l0C00_001E), (Mem26, l0C00_0028))
+Mem28: orig: Mem0
+    def:  Mem28 = PHI((Mem19, l0C00_001E), (Mem26, l0C00_0028))
+    uses: branch Mem28[ds:0x10A<16>:word16] >=u Mem28[ds:0x10C<16>:word16] l0C00_003D
+          branch Mem28[ds:0x10A<16>:word16] >=u Mem28[ds:0x10C<16>:word16] l0C00_003D
+ax_29: orig: ax
+SCZO_30: orig: SCZO
 C_31: orig: C
-Mem32: orig: Mem0
-    def:  Mem32[ds:0xF03<16>:byte] = 1<8>
-sp_37: orig: sp
+C_32: orig: C
+Mem33: orig: Mem0
+    def:  Mem33[ds:0xF03<16>:byte] = 1<8>
+sp_38: orig: sp
+P_91: orig: P
+S_93: orig: S
 ss:ss
     def:  def ss
-    uses: Mem68[ss:bp - 0xA<16>:byte] = 1<8>
-Mem43: orig: Mem0
-    uses: Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
-S_44: orig: S
-C_45: orig: C
-Z_46: orig: Z
-O_47: orig: O
-Mem49: orig: Mem0
-    def:  Mem49[ds:0xF04<16>:byte] = 1<8>
-    uses: Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
-S_87: orig: S
-Mem51: orig: Mem0
-    def:  Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
-    uses: branch (Mem51[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
-SZO_52: orig: SZO
-C_53: orig: C
-Z_54: orig: Z
-Mem55: orig: Mem0
-    def:  Mem55[ds:0xF05<16>:byte] = 1<8>
-C_84: orig: C
+    uses: Mem70[ss:bp - 0xA<16>:byte] = 1<8>
+Mem44: orig: Mem0
+    uses: Mem52 = PHI((Mem44, l0C00_003D), (Mem50, l0C00_0044))
+S_45: orig: S
+C_46: orig: C
+Z_47: orig: Z
+O_48: orig: O
+Mem50: orig: Mem0
+    def:  Mem50[ds:0xF04<16>:byte] = 1<8>
+    uses: Mem52 = PHI((Mem44, l0C00_003D), (Mem50, l0C00_0044))
+Mem52: orig: Mem0
+    def:  Mem52 = PHI((Mem44, l0C00_003D), (Mem50, l0C00_0044))
+    uses: branch (Mem52[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
+SZP_53: orig: SZP
+O_54: orig: O
+C_55: orig: C
+Z_56: orig: Z
+Mem57: orig: Mem0
+    def:  Mem57[ds:0xF05<16>:byte] = 1<8>
+C_86: orig: C
 bp:bp
     def:  def bp
-    uses: Mem68[ss:bp - 0xA<16>:byte] = 1<8>
+    uses: Mem70[ss:bp - 0xA<16>:byte] = 1<8>
           branch bp < 0x10<16> l0C00_005F
           branch !OVERFLOW<word16>((bp - 0x10<16>) * 2<16>) l0C00_0068
-bp_63: orig: bp
-SCZO_64: orig: SCZO
-SO_65: orig: SO
-Mem68: orig: Mem0
-    def:  Mem68[ss:bp - 0xA<16>:byte] = 1<8>
-bp_70: orig: bp
-SCZO_71: orig: SCZO
-O_72: orig: O
-wLoc02_76: orig: wLoc02
-Mem75: orig: Mem0
-    def:  Mem75[ds:0xF07<16>:byte] = 1<8>
-Z_101: orig: Z
+bp_65: orig: bp
+SCZO_66: orig: SCZO
+SO_67: orig: SO
+Mem70: orig: Mem0
+    def:  Mem70[ss:bp - 0xA<16>:byte] = 1<8>
+bp_72: orig: bp
+SCZO_73: orig: SCZO
+O_74: orig: O
+wLoc02_78: orig: wLoc02
+Mem77: orig: Mem0
+    def:  Mem77[ds:0xF07<16>:byte] = 1<8>
+Z_107: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bp, selector ds)
@@ -140,39 +143,39 @@ l0C00_001E:
 	branch (Mem19[ds:0x106<16>:word16] & Mem19[ds:0x108<16>:word16]) == 0<16> l0C00_002D
 	// succ:  l0C00_0028 l0C00_002D
 l0C00_0028:
-	Mem25[ds:0xF02<16>:byte] = 1<8>
+	Mem26[ds:0xF02<16>:byte] = 1<8>
 	// succ:  l0C00_002D
 l0C00_002D:
-	Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
-	branch Mem27[ds:0x10A<16>:word16] >=u Mem27[ds:0x10C<16>:word16] l0C00_003D
+	Mem28 = PHI((Mem19, l0C00_001E), (Mem26, l0C00_0028))
+	branch Mem28[ds:0x10A<16>:word16] >=u Mem28[ds:0x10C<16>:word16] l0C00_003D
 	// succ:  l0C00_0038 l0C00_003D
 l0C00_0038:
-	Mem32[ds:0xF03<16>:byte] = 1<8>
+	Mem33[ds:0xF03<16>:byte] = 1<8>
 	// succ:  l0C00_003D
 l0C00_003D:
 	branch fn0C00_0069(3<16>) l0C00_0049
 	// succ:  l0C00_0044 l0C00_0049
 l0C00_0044:
-	Mem49[ds:0xF04<16>:byte] = 1<8>
+	Mem50[ds:0xF04<16>:byte] = 1<8>
 	// succ:  l0C00_0049
 l0C00_0049:
-	Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
-	branch (Mem51[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
+	Mem52 = PHI((Mem44, l0C00_003D), (Mem50, l0C00_0044))
+	branch (Mem52[ds:0x10E<16>:word16] & 0x1FF<16>) == 0<16> l0C00_0056
 	// succ:  l0C00_0051 l0C00_0056
 l0C00_0051:
-	Mem55[ds:0xF05<16>:byte] = 1<8>
+	Mem57[ds:0xF05<16>:byte] = 1<8>
 	// succ:  l0C00_0056
 l0C00_0056:
 	branch bp < 0x10<16> l0C00_005F
 	// succ:  l0C00_005B l0C00_005F
 l0C00_005B:
-	Mem68[ss:bp - 0xA<16>:byte] = 1<8>
+	Mem70[ss:bp - 0xA<16>:byte] = 1<8>
 	// succ:  l0C00_005F
 l0C00_005F:
 	branch !OVERFLOW<word16>((bp - 0x10<16>) * 2<16>) l0C00_0068
 	// succ:  l0C00_0063 l0C00_0068
 l0C00_0063:
-	Mem75[ds:0xF07<16>:byte] = 1<8>
+	Mem77[ds:0xF07<16>:byte] = 1<8>
 	// succ:  l0C00_0068
 l0C00_0068:
 	return

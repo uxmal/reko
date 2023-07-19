@@ -451,7 +451,7 @@ T_71: (in new_data_struct() @ 004010D6 : ptr32)
   Class: Eq_5
   DataType: (ptr32 Eq_5)
   OrigDataType: ptr32
-T_72: (in dwLoc0C_158 @ 004010DE : int32)
+T_72: (in dwLoc0C_162 @ 004010DE : int32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
@@ -471,7 +471,7 @@ T_76: (in argc - 1<32> @ 004010F9 : word32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
-T_77: (in dwLoc0C_158 >= argc - 1<32> @ 004010F9 : bool)
+T_77: (in dwLoc0C_162 >= argc - 1<32> @ 004010F9 : bool)
   Class: Eq_77
   DataType: bool
   OrigDataType: bool
@@ -607,11 +607,11 @@ T_108: (in 4<32> @ 00401118 : word32)
   Class: Eq_108
   DataType: ui32
   OrigDataType: ui32
-T_109: (in dwLoc0C_158 * 4<32> @ 00401118 : word32)
+T_109: (in dwLoc0C_162 * 4<32> @ 00401118 : word32)
   Class: Eq_109
   DataType: ui32
   OrigDataType: ui32
-T_110: (in argv[dwLoc0C_158 * 4<32>] @ 00401118 : word32)
+T_110: (in argv[dwLoc0C_162 * 4<32>] @ 00401118 : word32)
   Class: Eq_105
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
@@ -619,7 +619,7 @@ T_111: (in 0x4020D0<32> @ 00401118 : word32)
   Class: Eq_106
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_112: (in strcmp(argv[dwLoc0C_158].u0, "i32") @ 00401118 : int32)
+T_112: (in strcmp(argv[dwLoc0C_162].u0, "i32") @ 00401118 : int32)
   Class: Eq_112
   DataType: int32
   OrigDataType: int32
@@ -627,7 +627,7 @@ T_113: (in 0<32> @ 00401118 : word32)
   Class: Eq_112
   DataType: int32
   OrigDataType: word32
-T_114: (in strcmp(argv[dwLoc0C_158].u0, "i32") != 0<32> @ 00401118 : bool)
+T_114: (in strcmp(argv[dwLoc0C_162].u0, "i32") != 0<32> @ 00401118 : bool)
   Class: Eq_114
   DataType: bool
   OrigDataType: bool
@@ -651,11 +651,11 @@ T_119: (in 4<32> @ 00401169 : word32)
   Class: Eq_119
   DataType: ui32
   OrigDataType: ui32
-T_120: (in dwLoc0C_158 * 4<32> @ 00401169 : word32)
+T_120: (in dwLoc0C_162 * 4<32> @ 00401169 : word32)
   Class: Eq_120
   DataType: ui32
   OrigDataType: ui32
-T_121: (in argv[dwLoc0C_158 * 4<32>] @ 00401169 : word32)
+T_121: (in argv[dwLoc0C_162 * 4<32>] @ 00401169 : word32)
   Class: Eq_117
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
@@ -663,7 +663,7 @@ T_122: (in 0x4020D4<32> @ 00401169 : word32)
   Class: Eq_118
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_123: (in strcmp(argv[dwLoc0C_158].u0, "r32") @ 00401169 : int32)
+T_123: (in strcmp(argv[dwLoc0C_162].u0, "r32") @ 00401169 : int32)
   Class: Eq_123
   DataType: int32
   OrigDataType: int32
@@ -671,7 +671,7 @@ T_124: (in 0<32> @ 00401169 : word32)
   Class: Eq_123
   DataType: int32
   OrigDataType: word32
-T_125: (in strcmp(argv[dwLoc0C_158].u0, "r32") != 0<32> @ 00401169 : bool)
+T_125: (in strcmp(argv[dwLoc0C_162].u0, "r32") != 0<32> @ 00401169 : bool)
   Class: Eq_125
   DataType: bool
   OrigDataType: bool
@@ -679,7 +679,7 @@ T_126: (in 1<32> @ 00401120 : word32)
   Class: Eq_126
   DataType: word32
   OrigDataType: word32
-T_127: (in dwLoc0C_158 + 1<32> @ 00401120 : word32)
+T_127: (in dwLoc0C_162 + 1<32> @ 00401120 : word32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
@@ -699,15 +699,15 @@ T_131: (in 4<32> @ 00401136 : word32)
   Class: Eq_131
   DataType: ui32
   OrigDataType: ui32
-T_132: (in dwLoc0C_158 * 4<32> @ 00401136 : word32)
+T_132: (in dwLoc0C_162 * 4<32> @ 00401136 : word32)
   Class: Eq_132
   DataType: ui32
   OrigDataType: ui32
-T_133: (in argv[dwLoc0C_158 * 4<32>] @ 00401136 : word32)
+T_133: (in argv[dwLoc0C_162 * 4<32>] @ 00401136 : word32)
   Class: Eq_130
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_134: (in atoi(argv[dwLoc0C_158].u0) @ 00401136 : int32)
+T_134: (in atoi(argv[dwLoc0C_162].u0) @ 00401136 : int32)
   Class: Eq_134
   DataType: int32
   OrigDataType: int32
@@ -723,7 +723,7 @@ T_137: (in &dwLoc10 + 0<32> @ 00401136 : word32)
   Class: Eq_137
   DataType: ptr32
   OrigDataType: ptr32
-T_138: (in Mem134[&dwLoc10 + 0<32>:word32] @ 00401136 : word32)
+T_138: (in Mem138[&dwLoc10 + 0<32>:word32] @ 00401136 : word32)
   Class: Eq_134
   DataType: int32
   OrigDataType: word32
@@ -759,7 +759,7 @@ T_146: (in 1<32> @ 004010ED : word32)
   Class: Eq_146
   DataType: word32
   OrigDataType: word32
-T_147: (in dwLoc0C_158 + 1<32> @ 004010ED : word32)
+T_147: (in dwLoc0C_162 + 1<32> @ 004010ED : word32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
@@ -783,11 +783,11 @@ T_152: (in 4<32> @ 004011B7 : word32)
   Class: Eq_152
   DataType: ui32
   OrigDataType: ui32
-T_153: (in dwLoc0C_158 * 4<32> @ 004011B7 : word32)
+T_153: (in dwLoc0C_162 * 4<32> @ 004011B7 : word32)
   Class: Eq_153
   DataType: ui32
   OrigDataType: ui32
-T_154: (in argv[dwLoc0C_158 * 4<32>] @ 004011B7 : word32)
+T_154: (in argv[dwLoc0C_162 * 4<32>] @ 004011B7 : word32)
   Class: Eq_150
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
@@ -795,7 +795,7 @@ T_155: (in 0x4020D8<32> @ 004011B7 : word32)
   Class: Eq_151
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_156: (in strcmp(argv[dwLoc0C_158].u0, "r64") @ 004011B7 : int32)
+T_156: (in strcmp(argv[dwLoc0C_162].u0, "r64") @ 004011B7 : int32)
   Class: Eq_156
   DataType: int32
   OrigDataType: int32
@@ -803,7 +803,7 @@ T_157: (in 0<32> @ 004011B7 : word32)
   Class: Eq_156
   DataType: int32
   OrigDataType: word32
-T_158: (in strcmp(argv[dwLoc0C_158].u0, "r64") != 0<32> @ 004011B7 : bool)
+T_158: (in strcmp(argv[dwLoc0C_162].u0, "r64") != 0<32> @ 004011B7 : bool)
   Class: Eq_158
   DataType: bool
   OrigDataType: bool
@@ -811,7 +811,7 @@ T_159: (in 1<32> @ 00401171 : word32)
   Class: Eq_159
   DataType: word32
   OrigDataType: word32
-T_160: (in dwLoc0C_158 + 1<32> @ 00401171 : word32)
+T_160: (in dwLoc0C_162 + 1<32> @ 00401171 : word32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
@@ -831,19 +831,19 @@ T_164: (in 4<32> @ 00401187 : word32)
   Class: Eq_164
   DataType: ui32
   OrigDataType: ui32
-T_165: (in dwLoc0C_158 * 4<32> @ 00401187 : word32)
+T_165: (in dwLoc0C_162 * 4<32> @ 00401187 : word32)
   Class: Eq_165
   DataType: ui32
   OrigDataType: ui32
-T_166: (in argv[dwLoc0C_158 * 4<32>] @ 00401187 : word32)
+T_166: (in argv[dwLoc0C_162 * 4<32>] @ 00401187 : word32)
   Class: Eq_163
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_167: (in atof(argv[dwLoc0C_158].u0) @ 00401187 : real64)
+T_167: (in atof(argv[dwLoc0C_162].u0) @ 00401187 : real64)
   Class: Eq_167
   DataType: real64
   OrigDataType: real64
-T_168: (in CONVERT(atof(argv[dwLoc0C_158].u0), real64, real32) @ 00401187 : real32)
+T_168: (in CONVERT(atof(argv[dwLoc0C_162].u0), real64, real32) @ 00401187 : real32)
   Class: Eq_168
   DataType: real32
   OrigDataType: real32
@@ -859,7 +859,7 @@ T_171: (in &dwLoc14 + 0<32> @ 00401187 : word32)
   Class: Eq_171
   DataType: ptr32
   OrigDataType: ptr32
-T_172: (in Mem112[&dwLoc14 + 0<32>:real32] @ 00401187 : real32)
+T_172: (in Mem116[&dwLoc14 + 0<32>:real32] @ 00401187 : real32)
   Class: Eq_168
   DataType: real32
   OrigDataType: real32
@@ -895,7 +895,7 @@ T_180: (in 1<32> @ 004011BF : word32)
   Class: Eq_180
   DataType: word32
   OrigDataType: word32
-T_181: (in dwLoc0C_158 + 1<32> @ 004011BF : word32)
+T_181: (in dwLoc0C_162 + 1<32> @ 004011BF : word32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
@@ -915,15 +915,15 @@ T_185: (in 4<32> @ 004011D5 : word32)
   Class: Eq_185
   DataType: ui32
   OrigDataType: ui32
-T_186: (in dwLoc0C_158 * 4<32> @ 004011D5 : word32)
+T_186: (in dwLoc0C_162 * 4<32> @ 004011D5 : word32)
   Class: Eq_186
   DataType: ui32
   OrigDataType: ui32
-T_187: (in argv[dwLoc0C_158 * 4<32>] @ 004011D5 : word32)
+T_187: (in argv[dwLoc0C_162 * 4<32>] @ 004011D5 : word32)
   Class: Eq_184
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)
-T_188: (in atof(argv[dwLoc0C_158].u0) @ 004011D5 : real64)
+T_188: (in atof(argv[dwLoc0C_162].u0) @ 004011D5 : real64)
   Class: Eq_188
   DataType: real64
   OrigDataType: real64
@@ -939,7 +939,7 @@ T_191: (in &dwLoc1C + 0<32> @ 004011D5 : word32)
   Class: Eq_191
   DataType: ptr32
   OrigDataType: ptr32
-T_192: (in Mem89[&dwLoc1C + 0<32>:real64] @ 004011D5 : real64)
+T_192: (in Mem93[&dwLoc1C + 0<32>:real64] @ 004011D5 : real64)
   Class: Eq_188
   DataType: real64
   OrigDataType: real64

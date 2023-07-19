@@ -4,23 +4,23 @@ void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_14 = 0<16>
-	word16 cx_17 = 4<16>
-	word16 di_20 = 4<16>
+	word16 dx_15 = 0<16>
+	word16 cx_18 = 4<16>
+	word16 di_21 = 4<16>
 	// succ:  l0C00_0008
 l0C00_0008:
 	si = si + 2<i16>
-	dx_14 = dx_14 + Mem0[ds:si:word16]
-	cx_17 = cx_17 - 1<16>
-	branch cx_17 != 0<16> l0C00_0008
+	dx_15 = dx_15 + Mem0[ds:si:word16]
+	cx_18 = cx_18 - 1<16>
+	branch cx_18 != 0<16> l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
 l0C00_000D:
-	cx_17 = 4<16>
-	di_20 = di_20 - 1<16>
-	branch di_20 != 0<16> l0C00_0008
+	cx_18 = 4<16>
+	di_21 = di_21 - 1<16>
+	branch di_21 != 0<16> l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
-	Mem24[ds:0x300<16>:word16] = dx_14
+	Mem25[ds:0x300<16>:word16] = dx_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

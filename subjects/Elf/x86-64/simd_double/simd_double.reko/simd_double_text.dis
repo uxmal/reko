@@ -23,7 +23,7 @@ void deregister_tm_clones()
 //      __do_global_dtors_aux
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi Top
+// Trashed: SCZOP rax rdi Top
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000000650:
@@ -45,7 +45,7 @@ void register_tm_clones()
 //      frame_dummy
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rsi Top
+// Trashed: SCZOP rax rdi rsi Top
 // Preserved: rbp rsp
 register_tm_clones_entry:
 l0000000000000690:
@@ -67,7 +67,7 @@ void __do_global_dtors_aux()
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rdi Top
-// Preserved: rbp rsp
+// Preserved: P rbp rsp
 __do_global_dtors_aux_entry:
 l00000000000006E0:
 	branch Mem0[0x0000000000201048<p64>:byte] != 0<8> l0000000000000718
@@ -79,7 +79,7 @@ l00000000000006F7:
 	__cxa_finalize(Mem10[0x0000000000201040<p64>:word64])
 l0000000000000703:
 	deregister_tm_clones()
-	Mem22[0x0000000000201048<p64>:byte] = 1<8>
+	Mem23[0x0000000000201048<p64>:byte] = 1<8>
 	return
 __do_global_dtors_aux_exit:
 
@@ -89,7 +89,7 @@ void frame_dummy()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rax rdi rsi Top
+// Trashed: SCZOP rax rdi rsi Top
 // Preserved: rbp rsp
 frame_dummy_entry:
 l0000000000000720:
@@ -106,31 +106,31 @@ word64 _mm_malloc(word64 rsi, word64 rdi)
 //      main
 // MayUse:  rdi:[0..63] rsi:[0..63]
 // LiveOut: rax
-// Trashed: SCZO rax rdi Top
+// Trashed: SCZOP rax rdi Top
 // Preserved: rbp rcx rdi rdx rsi rsp
 _mm_malloc_entry:
 	ptr64 fp
 	word64 qwLoc10
 l000000000000072A:
-	word64 rax_43
-	word64 qwLoc28_55 = rsi
+	word64 rax_44
+	word64 qwLoc28_56 = rsi
 	branch rsi != 1<64> l000000000000074F
 l000000000000074F:
 	branch rsi == 2<64> l000000000000075D
 l0000000000000756:
 	branch rsi != 4<64> l0000000000000765
 l000000000000075D:
-	qwLoc28_55 = 8<64>
+	qwLoc28_56 = 8<64>
 l0000000000000765:
-	branch SLICE(posix_memalign(qwLoc28_55, fp - 16<i64>, rdi, qwLoc28_55), word32, 0) != 0<32> l0000000000000786
+	branch SLICE(posix_memalign(qwLoc28_56, fp - 16<i64>, rdi, qwLoc28_56), word32, 0) != 0<32> l0000000000000786
 l0000000000000786:
-	rax_43 = 0<u64>
+	rax_44 = 0<u64>
 l0000000000000780:
-	rax_43 = qwLoc10
+	rax_44 = qwLoc10
 l0000000000000741:
-	rax_43 = malloc(rdi)
+	rax_44 = malloc(rdi)
 l000000000000078B:
-	return rax_43
+	return rax_44
 _mm_malloc_exit:
 
 
@@ -180,64 +180,64 @@ void main()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO r10 rax rcx rdi rdx rsi Top xmm0 ymm1
+// Trashed: SCZOP r10 rax rcx rdi rdx rsi Top xmm0 ymm1
 // Preserved: rbp rsp
 main_entry:
 	word128 xmm0
 l0000000000000898:
 	word64 rax_16 = _mm_malloc(0x20<u64>, 0x2000<64>)
-	word64 rax_29 = _mm_malloc(0x20<u64>, 0x2000<64>)
-	word64 rax_42 = _mm_malloc(0x20<u64>, 0x2000<64>)
-	word64 qwLoc10_204 = 0<64>
+	word64 rax_30 = _mm_malloc(0x20<u64>, 0x2000<64>)
+	word64 rax_44 = _mm_malloc(0x20<u64>, 0x2000<64>)
+	word64 qwLoc10_211 = 0<64>
 l000000000000093F:
-	branch qwLoc10_204 <u 0x400<64> l00000000000008FD
+	branch qwLoc10_211 <u 0x400<64> l00000000000008FD
 l00000000000008FD:
-	word64 rcx_58 = qwLoc10_204 * 8<64> + rax_16
-	word32 eax_65 = SLICE(qwLoc10_204, word32, 0)
-	branch qwLoc10_204 < 0<64> l0000000000000921
+	word64 rcx_61 = qwLoc10_211 * 8<64> + rax_16
+	word32 eax_69 = SLICE(qwLoc10_211, word32, 0)
+	branch qwLoc10_211 < 0<64> l0000000000000921
 l0000000000000921:
-	real64 v25_71 = CONVERT(qwLoc10_204 >>u 1<64> | CONVERT(eax_65 & 1<32>, word32, uint64), word64, real64)
-	xmm0 = SEQ(0<64>, v25_71 + v25_71)
+	real64 v27_76 = CONVERT(qwLoc10_211 >>u 1<64> | CONVERT(eax_69 & 1<32>, word32, uint64), word64, real64)
+	xmm0 = SEQ(0<64>, v27_76 + v27_76)
 l000000000000091A:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_204, word64, real64))
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc10_211, word64, real64))
 l0000000000000936:
-	Mem80[rcx_58:real64] = SLICE(xmm0, real64, 0)
-	qwLoc10_204 = qwLoc10_204 + 1<64>
+	Mem85[rcx_61:real64] = SLICE(xmm0, real64, 0)
+	qwLoc10_211 = qwLoc10_211 + 1<64>
 l0000000000000949:
-	word64 qwLoc18_210 = 0<64>
+	word64 qwLoc18_217 = 0<64>
 l0000000000000998:
-	branch qwLoc18_210 <u 0x400<64> l0000000000000953
+	branch qwLoc18_217 <u 0x400<64> l0000000000000953
 l0000000000000953:
-	word32 eax_102 = SLICE(qwLoc18_210, word32, 0) + 1<32>
-	word64 rcx_96 = qwLoc18_210 * 8<64> + rax_29
-	branch qwLoc18_210 < 1<64> l000000000000097A
+	word32 eax_108 = SLICE(qwLoc18_217, word32, 0) + 1<32>
+	word64 rcx_101 = qwLoc18_217 * 8<64> + rax_30
+	branch qwLoc18_217 < 1<64> l000000000000097A
 l000000000000097A:
-	real64 v20_108 = CONVERT(qwLoc18_210 + 1<64> >>u 1<64> | CONVERT(eax_102 & 1<32>, word32, uint64), word64, real64)
-	xmm0 = SEQ(0<64>, v20_108 + v20_108)
+	real64 v22_115 = CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), word64, real64)
+	xmm0 = SEQ(0<64>, v22_115 + v22_115)
 l0000000000000973:
-	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_210 + 1<64>, word64, real64))
+	xmm0 = SEQ(SLICE(xmm0, word64, 64), CONVERT(qwLoc18_217 + 1<64>, word64, real64))
 l000000000000098F:
-	Mem117[rcx_96:real64] = SLICE(xmm0, real64, 0)
-	qwLoc18_210 = qwLoc18_210 + 1<64>
+	Mem124[rcx_101:real64] = SLICE(xmm0, real64, 0)
+	qwLoc18_217 = qwLoc18_217 + 1<64>
 l00000000000009A2:
-	word64 qwLoc20_216 = 0<64>
+	word64 qwLoc20_223 = 0<64>
 l00000000000009CC:
-	branch qwLoc20_216 <u 0x400<64> l00000000000009AC
+	branch qwLoc20_223 <u 0x400<64> l00000000000009AC
 l00000000000009AC:
-	Mem133[rax_42 + qwLoc20_216 * 8<64>:real64] = 0.0
-	qwLoc20_216 = qwLoc20_216 + 1<64>
+	Mem140[rax_44 + qwLoc20_223 * 8<64>:real64] = 0.0
+	qwLoc20_223 = qwLoc20_223 + 1<64>
 l00000000000009D6:
-	vec_add(rax_29, rax_16, rax_42, 0x400<64>)
-	word64 qwLoc28_225 = 0<64>
+	vec_add(rax_30, rax_16, rax_44, 0x400<64>)
+	word64 qwLoc28_232 = 0<64>
 l0000000000000A2D:
-	branch qwLoc28_225 <u 0x400<64> l00000000000009F8
+	branch qwLoc28_232 <u 0x400<64> l00000000000009F8
 l00000000000009F8:
-	printf("%g\n", Mem154[rax_42 + qwLoc28_225 * 8<64>:word64])
-	qwLoc28_225 = qwLoc28_225 + 1<64>
+	printf("%g\n", Mem161[rax_44 + qwLoc28_232 * 8<64>:word64])
+	qwLoc28_232 = qwLoc28_232 + 1<64>
 l0000000000000A37:
 	_mm_free(rax_16)
-	_mm_free(rax_29)
-	_mm_free(rax_42)
+	_mm_free(rax_30)
+	_mm_free(rax_44)
 	return
 main_exit:
 
@@ -247,7 +247,7 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 
 // MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
 // LiveOut:
-// Trashed: SCZO rax rdi rdx rsi Top
+// Trashed: SCZOP rax rdi rdx rsi Top
 // Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
 	word64 rdi
@@ -257,12 +257,12 @@ l0000000000000A70:
 	word64 rbp_31 = 0x0000000000200DF0<p64> - 0x0000000000200DE8<p64>
 	branch rbp_31 >> 3<64> == 0<64> l0000000000000AC6
 l0000000000000AA6:
-	word64 rbx_45 = 0<u64>
+	word64 rbx_47 = 0<u64>
 l0000000000000AB0:
-	call Mem26[0x0000000000200DE8<p64> + rbx_45 * 8<64>:word64] (retsize: 8;)
+	call Mem26[0x0000000000200DE8<p64> + rbx_47 * 8<64>:word64] (retsize: 8;)
 		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
-	rbx_45 = rbx_45 + 1<64>
-	branch rbp_31 >> 3<64> != rbx_45 l0000000000000AB0
+	rbx_47 = rbx_47 + 1<64>
+	branch rbp_31 >> 3<64> != rbx_47 l0000000000000AB0
 l0000000000000AC6:
 	return
 __libc_csu_init_exit:

@@ -34,6 +34,8 @@ fn0C00_0000_exit:
 // SCZO:SCZO
 // SZO:SZO
 // ax:ax
+// SZ:SZ
+// O:O
 // C:C
 // Top:Top
 // return address size: 2
@@ -48,7 +50,8 @@ l0C00_000C:
 	// succ:  l0C00_0011 l0C00_0014
 l0C00_0011:
 	ax = ax ^ ax
-	SZO = cond(ax)
+	SZ = cond(ax)
+	O = false
 	C = false
 	return
 	// succ:  fn0C00_000C_exit

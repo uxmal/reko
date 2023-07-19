@@ -2,7 +2,7 @@
 // Return size: 0
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	word16 ax_20 = 0<16>
+	word16 ax_22 = 0<16>
 	word16 bx_10 = Mem0[ds:0x200<16>:word16]
 	goto l0C00_0006
 	// succ:  l0C00_0006
@@ -11,32 +11,32 @@ l0C00_0006:
 	branch bx_10 == 0<16> l0C00_001A
 	// succ:  l0C00_000A l0C00_001A
 l0C00_000A:
-	Mem16[ds:0x204<16>:word16] = bx_10
-	branch Mem16[ds:bx_10:word16] == 0xFFFF<16> l0C00_001A
+	Mem18[ds:0x204<16>:word16] = bx_10
+	branch Mem18[ds:bx_10:word16] == 0xFFFF<16> l0C00_001A
 	// succ:  l0C00_0013 l0C00_001A
 l0C00_0013:
-	bx_10 = Mem16[ds:bx_10 + 4<i16>:word16]
-	ax_20 = ax_20 + 1<16>
+	bx_10 = Mem18[ds:bx_10 + 4<i16>:word16]
+	ax_22 = ax_22 + 1<16>
 	goto l0C00_0006
 	// succ:  l0C00_0006
 l0C00_001A:
-	Mem22[ds:0x300<16>:word16] = ax_20
+	Mem24[ds:0x300<16>:word16] = ax_22
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)
 {
-	word16 ax_20 = 0<16>;
+	word16 ax_22 = 0<16>;
 	word16 bx_10 = Mem0[ds:0x200<16>:word16];
 	while (bx_10 != 0<16>)
 	{
-		Mem16[ds:0x204<16>:word16] = bx_10;
-		if (Mem16[ds:bx_10:word16] == 0xFFFF<16>)
+		Mem18[ds:0x204<16>:word16] = bx_10;
+		if (Mem18[ds:bx_10:word16] == 0xFFFF<16>)
 			break;
-		bx_10 = Mem16[ds:bx_10 + 4<i16>:word16];
-		++ax_20;
+		bx_10 = Mem18[ds:bx_10 + 4<i16>:word16];
+		++ax_22;
 	}
-	Mem22[ds:0x300<16>:word16] = ax_20;
+	Mem24[ds:0x300<16>:word16] = ax_22;
 }
 ===========================
