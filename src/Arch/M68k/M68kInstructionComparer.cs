@@ -55,9 +55,9 @@ namespace Reko.Arch.M68k
             case RegisterStorage regA:
                 var regB = (RegisterStorage) opB;
                 return NormalizeRegisters || regA == regB;
-            case M68kImmediateOperand immA:
-                var immB = (M68kImmediateOperand) opB;
-                return CompareValues(immA.Constant, immB.Constant);
+            case ImmediateOperand immA:
+                var immB = (ImmediateOperand) opB;
+                return CompareValues(immA.Value, immB.Value);
             case PredecrementMemoryOperand preA:
                 var preB = (PredecrementMemoryOperand) opB;
                 return CompareRegisters(preA.Register, preB.Register);
@@ -116,11 +116,11 @@ namespace Reko.Arch.M68k
                     return 0;
                 else
                     return rop.GetHashCode();
-            case M68kImmediateOperand immop:
+            case ImmediateOperand immop:
                 if (NormalizeConstants)
                     return 0;
                 else
-                    return immop.Constant.GetHashCode();
+                    return immop.Value.GetHashCode();
             case M68kAddressOperand addrOp:
                 if (NormalizeConstants)
                     return 0;

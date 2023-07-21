@@ -450,8 +450,8 @@ namespace Reko.Arch.PowerPC
                         InstructionClass = iclass,
                         Operands = new MachineOperand[]
                         {
-                            new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
-                            new ImmediateOperand(Constant.Byte((byte)((wInstr >> 16) & 0x1F))),
+                            ImmediateOperand.Byte((byte)((wInstr >> 21) & 0x1F)),
+                            ImmediateOperand.Byte((byte)((wInstr >> 16) & 0x1F)),
                         }
                     };
                 case 0: mnemonic = link ? Mnemonic.bgelrl : Mnemonic.bgelr; break;
@@ -486,7 +486,7 @@ namespace Reko.Arch.PowerPC
                     InstructionClass = base.iclass,
                     Operands = new MachineOperand[] {
                         reg,
-                        new ImmediateOperand(Constant.Word16((ushort)spr))
+                        ImmediateOperand.Word16((ushort) spr)
                     }
                 };
             }

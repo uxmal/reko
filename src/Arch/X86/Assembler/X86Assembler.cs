@@ -194,22 +194,22 @@ namespace Reko.Arch.X86.Assembler
 
         public void Rcl(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x02, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x02, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Rcr(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x03, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x03, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Rol(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x00, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x00, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Ror(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x01, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x01, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Sahf()
@@ -224,7 +224,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Sar(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x07, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x07, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Sar(ParsedOperand op1, ParsedOperand op2)
@@ -234,12 +234,12 @@ namespace Reko.Arch.X86.Assembler
 
         public void Shl(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x04, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x04, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Shr(ParsedOperand dst, byte c)
         {
-            ProcessShiftRotation(0x05, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));
+            ProcessShiftRotation(0x05, dst, new ParsedOperand(ImmediateOperand.Byte(c)));
         }
 
         public void Shr(ParsedOperand dst, ParsedOperand sh)
@@ -404,7 +404,7 @@ namespace Reko.Arch.X86.Assembler
                 }
                 else
                 {
-                    if (!(ops[2].Operand is ImmediateOperand op3))
+                    if (ops[2].Operand is not ImmediateOperand op3)
                         throw new ApplicationException("Third operand must be an immediate value");
                     if (IsSignedByte(op3.Value.ToInt32()))
                     {

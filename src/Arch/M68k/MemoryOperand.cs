@@ -37,7 +37,6 @@ namespace Reko.Arch.M68k
 
     public interface M68kOperandVisitor<T>
     {
-        T Visit(M68kImmediateOperand imm);
         T Visit(MemoryOperand mem);
         T Visit(PredecrementMemoryOperand pre);
         T Visit(M68kAddressOperand addressOperand);
@@ -59,6 +58,7 @@ namespace Reko.Arch.M68k
         public abstract T Accept<T>(M68kOperandVisitor<T> visitor);
     }
 
+    [Obsolete("", true)]
     public class M68kImmediateOperand : M68kOperandImpl
     {
         public M68kImmediateOperand(Constant cons) : base((PrimitiveType)cons.DataType)
@@ -70,7 +70,7 @@ namespace Reko.Arch.M68k
 
         public override T Accept<T>(M68kOperandVisitor<T> visitor)
         {
-            return visitor.Visit(this);
+            return default!;
         }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)

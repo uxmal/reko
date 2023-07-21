@@ -1103,7 +1103,7 @@ namespace Reko.Arch.Arm.AArch64
                 var number = (byte)Bitfield.ReadFields(bitfields, u);
                 var op = opField.Read(u);
                 var cmode = cmodeField.Read(u);
-                var imm = new ImmediateOperand(Constant.Byte(number));
+                var imm = ImmediateOperand.Byte(number);
                 d.state.ops.Add(imm);
                 return true;
             };

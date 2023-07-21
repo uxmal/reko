@@ -225,7 +225,7 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.Int32(value));
         }
 
-        public static AbstractMachineOperand Int16(short value)
+        public static ImmediateOperand Int16(short value)
         {
             return new ImmediateOperand(Constant.Int16(value));
         }

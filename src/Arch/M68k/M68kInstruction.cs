@@ -41,12 +41,12 @@ namespace Reko.Arch.M68k
         {
             if (Mnemonic == Mnemonic.illegal && Operands.Length > 0 && options.Platform != null)
             {
-                var imm = (M68kImmediateOperand) Operands[0];
+                var imm = (ImmediateOperand) Operands[0];
                 // MacOS uses invalid opcodes to invoke Macintosh Toolbox services. 
                 // We may have to generalize the Platform API to allow specifying 
                 // the opcode of the invoking instruction, to disambiguate from 
                 // "legitimate" TRAP calls.
-                var svc = options.Platform.FindService((int)imm.Constant.ToUInt32(), null, null);
+                var svc = options.Platform.FindService((int)imm.Value.ToUInt32(), null, null);
                 if (svc != null)
                 {
                     renderer.WriteString(svc.Name!);
@@ -66,11 +66,21 @@ namespace Reko.Arch.M68k
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
+            if (op is ImmediateOperand immOp)
+            {
+                renderer.WriteString("#");
+                renderer.WriteString(
+                    AbstractMachineOperand.FormatValue(
+                        immOp.Value,
+                        false,
+                        M68kDisassembler.HexStringFormat));
+                return;
+            }
+            else if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
                 var uAddr = Address.ToUInt32();
                 if (memOp.Offset != null)
-                    uAddr = (uint)(uAddr + memOp.Offset.ToInt32());
+                    uAddr = (uint) (uAddr + memOp.Offset.ToInt32());
                 var addr = Address.Ptr32(uAddr);
                 if ((options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
@@ -82,6 +92,15 @@ namespace Reko.Arch.M68k
                     op.Render(renderer, options);
                     renderer.AddAnnotation(addr.ToString());
                 }
+                return;
+            }
+            else if (op is BitfieldOperand bfOp)
+            {
+                renderer.WriteChar('{');
+                RenderOperand(bfOp.BitOffset, renderer, options);
+                renderer.WriteChar(':');
+                RenderOperand(bfOp.BitWidth, renderer, options);
+                renderer.WriteChar('}');
                 return;
             }
             op.Render(renderer, options);

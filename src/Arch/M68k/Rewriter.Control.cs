@@ -180,7 +180,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteRtd()
         {
-            int extraBytesPopped = ((M68kImmediateOperand) this.instr.Operands[0]).Constant.ToInt32();
+            int extraBytesPopped = ((ImmediateOperand) this.instr.Operands[0]).Value.ToInt32();
             m.Return(4, extraBytesPopped);
         }
 

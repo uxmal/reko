@@ -628,7 +628,7 @@ namespace Reko.Arch.X86
             if (!dasm.TryReadLeUInt16(out ushort seg))
                 return false;
             var addr = dasm.mode.CreateSegmentedAddress(seg, off);
-            if (addr == null)
+            if (addr is null)
                 return false;
             var aop = AddressOperand.Create(addr);
             aop.Width = PrimitiveType.SegPtr32; //$BUG: in 32-bit code this is SegPtr48
@@ -1435,7 +1435,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool n1(uint u, X86Disassembler d)
         {
-            var op = new ImmediateOperand(Constant.Byte(1));
+            var op = ImmediateOperand.Byte(1);
             d.decodingContext.ops.Add(op);
             return true;
         }
@@ -1445,7 +1445,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool n3(uint u, X86Disassembler d)
         {
-            var op = new ImmediateOperand(Constant.Byte(3));
+            var op = ImmediateOperand.Byte(3);
             d.decodingContext.ops.Add(op);
             return true;
         }

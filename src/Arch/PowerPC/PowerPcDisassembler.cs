@@ -133,14 +133,14 @@ namespace Reko.Arch.PowerPC
         // Signed integer in bottom 16 bits of instruction.
         internal static bool S(uint wInstr, PowerPcDisassembler dasm)
         {
-            dasm.ops.Add(new ImmediateOperand(Constant.Int16((short) wInstr)));
+            dasm.ops.Add(ImmediateOperand.Int16((short) wInstr));
             return true;
         }
 
         // Unsigned integer in bottom 16 bits of instruction.
         internal static bool U(uint wInstr, PowerPcDisassembler dasm)
         {
-            dasm.ops.Add(new ImmediateOperand(Constant.Word16((ushort) wInstr)));
+            dasm.ops.Add(ImmediateOperand.Word16((ushort) wInstr));
             return true;
         }
 
@@ -394,7 +394,7 @@ namespace Reko.Arch.PowerPC
             var field = new Bitfield(pos, len);
             return (u, d) =>
             {
-                var op = new ImmediateOperand(Constant.Byte((byte) field.Read(u)));
+                var op = ImmediateOperand.Byte((byte) field.Read(u));
                 d.ops.Add(op);
                 return true;
             };
@@ -447,7 +447,7 @@ namespace Reko.Arch.PowerPC
             var field = new Bitfield(bitOffset, len);
             return (u, d) =>
             {
-                var op = new ImmediateOperand(Constant.Int32(field.ReadSigned(u)));
+                var op = ImmediateOperand.Int32(field.ReadSigned(u));
                 d.ops.Add(op);
                 return true;
             };

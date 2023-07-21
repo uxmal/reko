@@ -389,7 +389,7 @@ namespace Reko.Arch.Sparc
         private static ImmediateOperand GetImmOperand(uint wInstr, int bits)
         {
             uint imm = wInstr & ((1u << bits) - 1);
-            return new ImmediateOperand(Constant.Word32(imm));
+            return ImmediateOperand.Word32(imm);
         }
 
         internal static bool Pred(uint wInstr, SparcDisassembler dasm)

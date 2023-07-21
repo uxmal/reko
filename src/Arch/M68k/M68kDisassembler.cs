@@ -461,11 +461,11 @@ namespace Reko.Arch.M68k
         private MachineOperand? get_ea_mode_str_16(uint instruction) { return get_ea_mode_str(instruction, PrimitiveType.Word16); }
         private MachineOperand? get_ea_mode_str_32(uint instruction) { return get_ea_mode_str(instruction, PrimitiveType.Word32); }
 
-        private bool get_imm_str_s8(out M68kImmediateOperand imm) { return TryGetSignedImmediate(0, out imm); }
-        private bool get_imm_str_s16(out M68kImmediateOperand imm) { return TryGetSignedImmediate(1, out imm); }
-        private bool get_imm_str_s32(out M68kImmediateOperand imm) { return TryGetSignedImmediate(2, out imm); }
+        private bool get_imm_str_s8(out ImmediateOperand imm) { return TryGetSignedImmediate(0, out imm); }
+        private bool get_imm_str_s16(out ImmediateOperand imm) { return TryGetSignedImmediate(1, out imm); }
+        private bool get_imm_str_s32(out ImmediateOperand imm) { return TryGetSignedImmediate(2, out imm); }
 
-        private bool get_imm_str_u8(out M68kImmediateOperand  imm) { return get_imm_str_u(PrimitiveType.Byte, out imm); }
+        private bool get_imm_str_u8(out ImmediateOperand  imm) { return get_imm_str_u(PrimitiveType.Byte, out imm); }
 
         private static RegisterStorage get_data_reg(uint d) { return Registers.DataRegister(d); }
         private static RegisterStorage get_addr_reg(uint a) { return Registers.AddressRegister(a); }
@@ -516,31 +516,31 @@ namespace Reko.Arch.M68k
         /// <summary>
         /// Build a signed immediate operand from the instruction stream.
         /// </summary>
-        private bool TryGetSignedImmediate(uint size, out M68kImmediateOperand imm)
+        private bool TryGetSignedImmediate(uint size, out ImmediateOperand imm)
         {
             imm = default!;
             if (size == 0)
             {
                 if (!TryReadImm8(out byte b))
                     return false;
-                imm = new M68kImmediateOperand(Constant.SByte((sbyte)b));
+                imm = ImmediateOperand.SByte((sbyte)b);
             }
             else if (size == 1)
             {
                 if (!rdr.TryReadBeInt16(out short s))
                     return false;
-                imm = new M68kImmediateOperand(Constant.Int16(s));
+                imm = ImmediateOperand.Int16(s);
             }
             else
             {
                 if (!rdr.TryReadBeInt32(out int i))
                     return false;
-                imm = new M68kImmediateOperand(Constant.Int32(i));
+                imm = ImmediateOperand.Int32(i);
             }
             return true;
         }
 
-        private bool get_imm_str_u(PrimitiveType dt, out M68kImmediateOperand imm)
+        private bool get_imm_str_u(PrimitiveType dt, out ImmediateOperand imm)
         {
             Constant? c;
             imm = default!;
@@ -570,7 +570,7 @@ namespace Reko.Arch.M68k
                     c = Constant.Word32(ui);
                 }
             }
-            imm = new M68kImmediateOperand(c);
+            imm = new ImmediateOperand(c);
             return true;
         }
 
@@ -818,7 +818,7 @@ namespace Reko.Arch.M68k
                 {
                     return null;
                 }
-                return new M68kImmediateOperand(coff);
+                return new ImmediateOperand(coff);
             }
             return null;
         }
@@ -872,7 +872,7 @@ namespace Reko.Arch.M68k
             if (trace.TraceVerbose) Debug.Print("dc.w    ${0:X4}; opcode 1010", uInstr);
             dasm.iclass = InstrClass.Invalid;
             dasm.mnemonic = Mnemonic.illegal;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.Word16((ushort) uInstr)));
+            dasm.ops.Add(ImmediateOperand.Word16((ushort) uInstr));
             return true;
         }
 
@@ -919,7 +919,7 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68010_PLUS);
             dasm.mnemonic = Mnemonic.bkpt;
             dasm.iclass = InstrClass.Privileged|InstrClass.Linear;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (uInstr & 7))));
+            dasm.ops.Add(ImmediateOperand.Byte((byte) (uInstr & 7)));
             return true;
         }
 
@@ -936,13 +936,13 @@ namespace Reko.Arch.M68k
             if (BIT_B(extension))
                 offset = get_data_reg((uint)(extension >> 6) & 7);
             else
-                offset = new M68kImmediateOperand(Constant.Byte((byte)((extension >> 6) & 31)));
+                offset = ImmediateOperand.Byte((byte)((extension >> 6) & 31));
 
             MachineOperand srcOp;
             if (BIT_5(extension))
                 srcOp = Registers.DataRegister(extension & 7);
             else
-                srcOp = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
+                srcOp = ImmediateOperand.UInt32(g_5bit_data_table[extension & 31]);
 
             dasm.mnemonic = Mnemonic.bfchg;
             var op = dasm.get_ea_mode_str_8(uInstr);
@@ -966,11 +966,11 @@ namespace Reko.Arch.M68k
             if (BIT_B(extension))
                 offset = get_data_reg((uint)(extension >> 6) & 7);
             else
-                offset = new M68kImmediateOperand(Constant.Byte((byte)((extension >> 6) & 31)));
+                offset = ImmediateOperand.Byte((byte)((extension >> 6) & 31));
             if (BIT_5(extension))
                 width = Registers.DataRegister(extension & 7);
             else
-                width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
+                width = ImmediateOperand.UInt32(g_5bit_data_table[extension & 31]);
             dasm.mnemonic = Mnemonic.bfclr;
             var op = dasm.get_ea_mode_str_8(uInstr);
             if (op is null)
@@ -991,12 +991,12 @@ namespace Reko.Arch.M68k
             if (BIT_B(extension))
                 offset = get_data_reg((uint)(extension >> 6) & 7);
             else
-                offset = new M68kImmediateOperand(Constant.Byte((byte) ((extension >> 6) & 31)));
+                offset = ImmediateOperand.Byte((byte)((extension >> 6) & 31));
             MachineOperand width;
             if (BIT_5(extension))
                 width = Registers.DataRegister(extension & 7);
             else
-                width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
+                width = ImmediateOperand.UInt32(g_5bit_data_table[extension & 31]);
             dasm.mnemonic = Mnemonic.bfexts;
             dasm.ops.Add(get_data_reg((uint)(extension >> 12) & 7));
             var op = dasm.get_ea_mode_str_8(uInstr);
@@ -1039,10 +1039,10 @@ namespace Reko.Arch.M68k
 
             var offset = BIT_B(extension)
                 ? Registers.DataRegister((extension >> 6) & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
+                : (MachineOperand) ImmediateOperand.Int32((extension >> 6) & 31);
             var width = BIT_5(extension)
                 ? Registers.DataRegister(extension & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int) g_5bit_data_table[extension & 31]));
+                : (MachineOperand) ImmediateOperand.Int32((int) g_5bit_data_table[extension & 31]);
             dasm.mnemonic = Mnemonic.bfffo;
             dasm.ops.Add(get_data_reg((uint)(extension >> 12) & 7));
             var op = dasm.get_ea_mode_str_8(uInstr);
@@ -1062,10 +1062,10 @@ namespace Reko.Arch.M68k
 
             var offset = BIT_B(extension)
                 ? Registers.DataRegister((extension >> 6) & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
+                : (MachineOperand) ImmediateOperand.Int32((extension >> 6) & 31);
             var width = BIT_5(extension)
                 ? Registers.DataRegister(extension & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int)g_5bit_data_table[extension & 31]));
+                : (MachineOperand) ImmediateOperand.Int32((int)g_5bit_data_table[extension & 31]);
             dasm.mnemonic = Mnemonic.bfins;
             dasm.ops.Add(Registers.DataRegister((extension >> 12) & 7));
             var op = dasm.get_ea_mode_str_8(uInstr);
@@ -1084,10 +1084,10 @@ namespace Reko.Arch.M68k
                 return false;
             var offset = BIT_B(extension)
                 ? Registers.DataRegister((extension >> 6) & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
+                : (MachineOperand) ImmediateOperand.Int32((extension >> 6) & 31);
             var width = BIT_5(extension)
                 ? Registers.DataRegister(extension & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int)g_5bit_data_table[extension & 31]));
+                : (MachineOperand) ImmediateOperand.Int32((int)g_5bit_data_table[extension & 31]);
             dasm.mnemonic = Mnemonic.bfins;
             var op = dasm.get_ea_mode_str_8(uInstr);
             if (op is null)
@@ -1106,10 +1106,10 @@ namespace Reko.Arch.M68k
 
             var offset = BIT_B(extension)
                 ? Registers.DataRegister((extension >> 6) & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
+                : (MachineOperand) ImmediateOperand.Int32((extension >> 6) & 31);
             var width = BIT_5(extension)
                 ? Registers.DataRegister(extension & 7)
-                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int) g_5bit_data_table[extension & 31]));
+                : (MachineOperand) ImmediateOperand.Int32((int)g_5bit_data_table[extension & 31]);
             dasm.mnemonic = Mnemonic.bftst;
             var op = dasm.get_ea_mode_str_8(uInstr);
             if (op is null)
@@ -1126,7 +1126,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.mnemonic = Mnemonic.callm;
             dasm.iclass = InstrClass.Transfer|InstrClass.Call;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.Byte(b)));
+            dasm.ops.Add(ImmediateOperand.Byte(b));
             var op = dasm.get_ea_mode_str_8(uInstr);
             if (op is null)
                 return false;
@@ -1465,7 +1465,10 @@ namespace Reko.Arch.M68k
                 return false;
             if (!dasm.rdr.TryReadBeUInt32(out uint u))
                 return false;
-            dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", (uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f], new M68kImmediateOperand(Constant.UInt32(u)), extension2);
+            dasm.g_dasm_str = string.Format("%dtrap%-4s %s; (extension = %x) (2-3)", 
+                (uInstr >> 9) & 7, g_cpcc[extension1 & 0x3f],
+                ImmediateOperand.UInt32(u),
+                extension2);
             return false;
         }
 
@@ -1575,7 +1578,7 @@ namespace Reko.Arch.M68k
             if ((((dasm.fpWord >> 13) & 0x7) == 2) && (((dasm.fpWord >> 10) & 0x7) == 7))
             {
                 dasm.mnemonic = Mnemonic.fmovecr;
-                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (dasm.fpWord & 0x7f))));
+                dasm.ops.Add(ImmediateOperand.Byte((byte) (dasm.fpWord & 0x7f)));
                 dasm.ops.Add(dasm.get_fp_reg((int) dst_reg));
                 return true;
             }
@@ -1959,7 +1962,7 @@ namespace Reko.Arch.M68k
                 reg_name = dasm.get_ctrl_reg("SRP", regNumber);
                 break;
             default:
-                reg_name = new M68kImmediateOperand(Constant.Int16((short)(extension & 0xfff)));
+                reg_name = ImmediateOperand.Int16((short)(extension & 0xfff));
                 break;
             }
 
@@ -2099,7 +2102,7 @@ namespace Reko.Arch.M68k
             dasm.mnemonic = Mnemonic.move16;
             dasm.iclass = InstrClass.Linear;
             dasm.ops.Add(dasm.get_post_inc((int) uInstr & 7, PrimitiveType.Word128));
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp2)));
+            dasm.ops.Add(ImmediateOperand.UInt32(uOp2));
             return true;
         }
 
@@ -2110,7 +2113,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.mnemonic = Mnemonic.move16;
             dasm.iclass = InstrClass.Linear;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
+            dasm.ops.Add(ImmediateOperand.UInt32(uOp1));
             dasm.ops.Add(dasm.get_post_inc((int)uInstr & 7, PrimitiveType.Word128));
             return true;
         }
@@ -2122,7 +2125,7 @@ namespace Reko.Arch.M68k
                 return false;
             dasm.mnemonic = Mnemonic.move16;
             dasm.ops.Add(new MemoryOperand(PrimitiveType.Word128, Registers.AddressRegister(uInstr & 7)));
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp2)));
+            dasm.ops.Add(ImmediateOperand.UInt32(uOp2));
             return true;
         }
 
@@ -2133,7 +2136,7 @@ namespace Reko.Arch.M68k
                 return false;
 
             dasm.mnemonic = Mnemonic.move16;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
+            dasm.ops.Add(ImmediateOperand.UInt32(uOp1));
             dasm.ops.Add(new MemoryOperand(PrimitiveType.Word128, Registers.AddressRegister(uInstr & 7)));
             return true;
         }
@@ -2167,7 +2170,7 @@ namespace Reko.Arch.M68k
             dasm.iclass = InstrClass.Linear;
             dasm.ops.Add(get_data_reg(uInstr & 7));
             dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
+            dasm.ops.Add(ImmediateOperand.UInt16(uImm));
             return true;
         }
 
@@ -2180,7 +2183,7 @@ namespace Reko.Arch.M68k
             dasm.iclass = InstrClass.Linear;
             dasm.ops.Add(dasm.get_pre_dec(uInstr, 0, PrimitiveType.Word16));
             dasm.ops.Add(dasm.get_pre_dec(uInstr, 9, PrimitiveType.Word16));
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
+            dasm.ops.Add(ImmediateOperand.UInt16(uImm));
             return true;
         }
 
@@ -2247,7 +2250,7 @@ namespace Reko.Arch.M68k
         {
             dasm.mnemonic = Mnemonic.trap;
             dasm.iclass = InstrClass.Call | InstrClass.Transfer;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (uInstr & 0xf))));
+            dasm.ops.Add(ImmediateOperand.Byte((byte)(uInstr & 0xf)));
             return true;
         }
 
@@ -2269,7 +2272,7 @@ namespace Reko.Arch.M68k
 
             dasm.mnemonic = g_trapcc[(uInstr >> 8) & 0xf];
             dasm.iclass = InstrClass.Call | InstrClass.Transfer;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
+            dasm.ops.Add(ImmediateOperand.UInt16(uImm));
             return true;
         }
 
@@ -2281,7 +2284,7 @@ namespace Reko.Arch.M68k
 
             dasm.mnemonic = g_trapcc[(uInstr >> 8) & 0xf];
             dasm.iclass = InstrClass.Call | InstrClass.Transfer;
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt32(uOp1)));
+            dasm.ops.Add(ImmediateOperand.UInt32(uOp1));
             return true;
         }
 
@@ -2294,7 +2297,7 @@ namespace Reko.Arch.M68k
             dasm.iclass = InstrClass.Linear;
             dasm.ops.Add(get_data_reg(uInstr & 7));
             dasm.ops.Add(get_data_reg((uInstr >> 9) & 7));
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
+            dasm.ops.Add(ImmediateOperand.UInt16(uImm));
             return true;
         }
 
@@ -2307,7 +2310,7 @@ namespace Reko.Arch.M68k
             dasm.iclass = InstrClass.Linear;
             dasm.ops.Add(dasm.get_pre_dec(uInstr, 0, PrimitiveType.Word16));
             dasm.ops.Add(dasm.get_pre_dec(uInstr, 9, PrimitiveType.Word16));
-            dasm.ops.Add(new M68kImmediateOperand(Constant.UInt16(uImm)));
+            dasm.ops.Add(ImmediateOperand.UInt16(uImm));
             return true;
         }
 
@@ -2336,7 +2339,7 @@ namespace Reko.Arch.M68k
                 {
                     dasm.mnemonic = Mnemonic.pload;
                     dasm.iclass = InstrClass.Linear;
-                    dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7))));
+                    dasm.ops.Add(ImmediateOperand.Byte((byte) ((modes >> 10) & 7)));
                     dasm.ops.Add(op);
                     return true;
                 }
@@ -2345,7 +2348,7 @@ namespace Reko.Arch.M68k
                     dasm.mnemonic = Mnemonic.pload;
                     dasm.iclass = InstrClass.Linear;
                     dasm.ops.Add(op);
-                    dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 10) & 7))));
+                    dasm.ops.Add(ImmediateOperand.Byte((byte)((modes >> 10) & 7)));
                     return true;
                 }
             }
@@ -2354,8 +2357,8 @@ namespace Reko.Arch.M68k
             {
                 dasm.mnemonic = Mnemonic.pflushr;
                 dasm.iclass = InstrClass.Linear | InstrClass.Privileged;
-                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f))));
-                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) ((modes >> 5) & 0xf))));
+                dasm.ops.Add(ImmediateOperand.Byte((byte)(modes & 0x1f)));
+                dasm.ops.Add(ImmediateOperand.Byte((byte)((modes >> 5) & 0xf)));
                 dasm.ops.Add(op);
                 return true;
             }
@@ -2395,7 +2398,7 @@ namespace Reko.Arch.M68k
                     return false;
                 dasm.mnemonic = Mnemonic.ptest;
                 dasm.iclass = InstrClass.Linear | InstrClass.Privileged;
-                dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f))));
+                dasm.ops.Add(ImmediateOperand.Byte((byte)(modes & 0x1F)));
                 dasm.ops.Add(op);
                 return true;
             }
@@ -2616,7 +2619,7 @@ namespace Reko.Arch.M68k
             d.rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
             if (!d.rdr.TryRead(PrimitiveType.Byte, out var c))
                 return false;
-            d.ops.Add(new M68kImmediateOperand(c));
+            d.ops.Add(new ImmediateOperand(c));
             return true;
         }
 
@@ -2624,7 +2627,7 @@ namespace Reko.Arch.M68k
         {
             if (!d.rdr.TryRead(PrimitiveType.Word16, out var c))
                 return false;
-            d.ops.Add(new M68kImmediateOperand(c));
+            d.ops.Add(new ImmediateOperand(c));
             return true;
         }
 
@@ -2632,7 +2635,7 @@ namespace Reko.Arch.M68k
         {
             if (!d.rdr.TryRead(PrimitiveType.Word32, out var c))
                 return false;
-            d.ops.Add(new M68kImmediateOperand(c));
+            d.ops.Add(new ImmediateOperand(c));
             return true;
         }
 
@@ -2644,7 +2647,7 @@ namespace Reko.Arch.M68k
                 return Ib(uInstr, d);
             if (!d.rdr.TryRead(d.dataWidth, out var c))
                 return false;
-            d.ops.Add(new M68kImmediateOperand(c));
+            d.ops.Add(new ImmediateOperand(c));
             return true;
         }
 
@@ -2656,7 +2659,7 @@ namespace Reko.Arch.M68k
                 int v = ((int) u >> bitOffset) & mask;
                 if (v == 0)
                     v = zeroValue;
-                d.ops.Add(new M68kImmediateOperand(Constant.Create(dt, v)));
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
                 return true;
             };
         }

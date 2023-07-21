@@ -177,15 +177,15 @@ namespace Reko.Arch.Z80
                         //$TODO: some kind volunteer could implement the unofficial opcodes.
                         return dasm.CreateInvalidInstruction();
                     case 1:
-                        dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
+                        dasm.ops.Add(ImmediateOperand.Byte((byte)((op >> 3) & 0x07)));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
                         return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.bit);
                     case 2:
-                        dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
+                        dasm.ops.Add(ImmediateOperand.Byte((byte)((op >> 3) & 0x07)));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
                         return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.res);
                     case 3:
-                        dasm.ops.Add(new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))));
+                        dasm.ops.Add(ImmediateOperand.Byte((byte)((op >> 3) & 0x07)));
                         dasm.ops.Add(new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte));
                         return dasm.MakeInstruction(InstrClass.Linear, Mnemonic.set);
                     }

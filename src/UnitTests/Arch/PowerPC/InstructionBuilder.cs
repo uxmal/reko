@@ -119,12 +119,12 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public void Bctr()
         {
-            Add(new PowerPcInstruction(Mnemonic.bcctr, new ImmediateOperand(Constant.Byte(0x20)), null, null, false));
+            Add(new PowerPcInstruction(Mnemonic.bcctr, ImmediateOperand.Byte(0x20), null, null, false));
         }
 
         public void Oris(RegisterStorage rA, RegisterStorage rS, ushort val)
         {
-            Add(new PowerPcInstruction(Mnemonic.oris, rA, rS, new ImmediateOperand(Constant.Word16(val)), false));
+            Add(new PowerPcInstruction(Mnemonic.oris, rA, rS, ImmediateOperand.Word16(val), false));
         }
 
         public void Add(RegisterStorage rT, RegisterStorage rA, RegisterStorage rB)
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public void Lis(RegisterStorage r, ushort uimm)
         {
-            Add(new PowerPcInstruction(Mnemonic.oris, r, r, new ImmediateOperand(Constant.Word16(uimm)), false));
+            Add(new PowerPcInstruction(Mnemonic.oris, r, r, ImmediateOperand.Word16(uimm), false));
         }
 
         public void Lwzu(RegisterStorage rD, short offset, RegisterStorage rA)

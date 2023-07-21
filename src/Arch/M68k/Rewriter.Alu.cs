@@ -637,7 +637,7 @@ namespace Reko.Arch.M68k
 
         public void RewriteMoveq()
         {
-            var opSrc = (sbyte) ((M68kImmediateOperand) instr.Operands[0]).Constant.ToInt32();
+            var opSrc = (sbyte) ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
             var opDst = binder.EnsureRegister((RegisterStorage)instr.Operands[1]);
             m.Assign(opDst, Constant.Int32(opSrc));
             LogicalConditions(opDst);
@@ -741,7 +741,7 @@ namespace Reko.Arch.M68k
         {
             var aReg = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var aSp = binder.EnsureRegister(arch.StackRegister);
-            var imm = ((M68kImmediateOperand) instr.Operands[1]).Constant.ToInt32();
+            var imm = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
             m.Assign(aSp, m.ISub(aSp, 4));
             m.Assign(m.Mem32(aSp), aReg);
             m.Assign(aReg, aSp);

@@ -21,12 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
-using Reko.Core.Rtl;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.M68k
 {
@@ -173,8 +170,8 @@ namespace Reko.Arch.M68k
 
         private void RewriteFmovecr()
         {
-            var opSrc = (M68kImmediateOperand)instr.Operands[0];
-            int n = opSrc.Constant.ToInt32();
+            var opSrc = (ImmediateOperand)instr.Operands[0];
+            int n = opSrc.Value.ToInt32();
             Expression src;
             if (fpuRomConstants.TryGetValue(n, out double d))
             {
@@ -183,7 +180,7 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                src = m.Fn(fmovecr_intrinic, opSrc.Constant);
+                src = m.Fn(fmovecr_intrinic, opSrc.Value);
             }
             var dst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(dst, src);

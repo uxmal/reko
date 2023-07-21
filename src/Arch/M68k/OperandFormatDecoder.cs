@@ -132,7 +132,7 @@ namespace Reko.Arch.M68k
                     {
                         if (EXT_EFFECTIVE_ZERO(extension))
                         {
-                            op = new M68kImmediateOperand(Constant.Word32(0));
+                            op = ImmediateOperand.Word32(0);
                             return true;
                         }
                         Constant? @base = null;
@@ -202,7 +202,7 @@ namespace Reko.Arch.M68k
                     {
                         op = default!; return false;
                     }
-                    op = new M68kImmediateOperand(coff);
+                    op = new ImmediateOperand(coff);
                     return true;
                 default:
                     op = default!;
@@ -312,11 +312,6 @@ namespace Reko.Arch.M68k
         private static RegisterStorage DataRegisterOperand(ushort opcode, int bitOffset)
         {
             return Registers.GetRegister((opcode >> bitOffset) & 0x7);
-        }
-
-        private static M68kImmediateOperand SignedImmediateByte(ushort opcode, int bitOffset, int mask)
-        {
-            return new M68kImmediateOperand(Constant.Create(PrimitiveType.SByte, (opcode >> bitOffset) & mask));
         }
     }
 }

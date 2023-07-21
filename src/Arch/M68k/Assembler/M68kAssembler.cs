@@ -128,8 +128,8 @@ namespace Reko.Arch.M68k.Assembler
             case M68kAddressOperand addrOp:
                 Imm(addrOp.Width.Size, addrOp.Address.ToUInt32());
                 return 0x39;
-            case M68kImmediateOperand immOp:
-                Imm(immOp.Width.Size, immOp.Constant.ToUInt32());
+            case ImmediateOperand immOp:
+                Imm(immOp.Width.Size, immOp.Value.ToUInt32());
                 return 0x3C;
             }
             throw new NotImplementedException(op.ToString());
