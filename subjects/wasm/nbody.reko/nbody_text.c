@@ -160,7 +160,7 @@ real64 _run(int32 arg0)
 		{
 			do
 				;
-			while (v10_n != ~0x03);
+			while (v10_n != 0x04);
 		}
 		if (v10_n == 0x05)
 			break;

@@ -751,7 +751,7 @@ l0BEE:
 l0B2C:
 	word16 r3_42 = Mem31[0x2610<p16>:word16] - Mem31[0x34B4<p16>:word16]
 	word16 r2_44 = Mem31[0x2612<p16>:word16] - Mem31[0x267C<p16>:word16]
-	branch r2_44 == 3<16> l0B48
+	branch r2_44 == 0xFFFD<16> l0B48
 l0B48:
 	fn0C36(0<16>, Mem50[0x2610<p16>:word16] - Mem50[0x267A<p16>:word16] + 0x19<16>)
 l0B44:

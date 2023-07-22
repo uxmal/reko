@@ -2299,11 +2299,11 @@ T_541: (in v10_77 >= 5<32> @ 000E06CE : bool)
   Class: Eq_541
   DataType: bool
   OrigDataType: bool
-T_542: (in 0xFFFFFFFC<32> @ 000E0757 : word32)
+T_542: (in 4<32> @ 000E0757 : word32)
   Class: Eq_524
   DataType: int32
   OrigDataType: word32
-T_543: (in v10_77 != 0xFFFFFFFC<32> @ 000E0757 : bool)
+T_543: (in v10_77 != 4<32> @ 000E0757 : bool)
   Class: Eq_543
   DataType: bool
   OrigDataType: bool

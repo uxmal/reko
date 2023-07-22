@@ -28,7 +28,7 @@ void __adddf3(Eq_n r4, Eq_n r5, uint32 r6, Eq_n r7)
 				if ((r9_n | r6 << 0x03) == 0x00)
 					goto l0804D052;
 				r7_n = (word32) r11_n.u0 - 1;
-				if (r11_n == ~0x00)
+				if (r11_n == 0x01)
 				{
 					Eq_n r6_n = (r4 << 0x03) + (r6 << 0x03);
 					r10_n.u0 = 0x01;
@@ -193,7 +193,7 @@ l0804D1F8:
 		r10_n = (word32) r13_n.u0 + 1;
 		if (((word32) r13_n.u0 + 1 & 0x07FF) >= 0x02)
 		{
-			if (r13_n == ~0x07FD)
+			if (r13_n == 0x07FE)
 			{
 l0804D060:
 				r8_n.u0 = 0x00;
@@ -284,7 +284,7 @@ l0804D052:
 				goto l0804D27A;
 			}
 			r7_n = (word32) r11_n.u0 - 1;
-			if (r11_n == ~0x00)
+			if (r11_n == 0x01)
 			{
 				Eq_n r6_n = (r4 << 0x03) - (r6 << 0x03);
 				r10_n.u0 = 0x01;
@@ -423,7 +423,7 @@ l0804D548:
 			goto l0804D27A;
 		}
 		int32 r10_n = r10_n - r13_n;
-		if (r10_n < ~0x1E)
+		if (r10_n < 0x1F)
 		{
 			word32 r7_n = 0x20 - (r10_n + 0x01);
 			r12_n = r8_n << r7_n | r12_n >> r10_n + 0x01 | (word32) (r12_n << r7_n > 0x00);
@@ -433,7 +433,7 @@ l0804D548:
 		{
 			ui32 r7_n = 0x00;
 			uint32 r10_n = r8_n >> r10_n + ~0x1E;
-			if (r10_n != ~0x1E)
+			if (r10_n != 0x1F)
 				r7_n = r8_n << -(r10_n + 0x01);
 			r12_n = r10_n | (word32) ((r12_n | r7_n) > 0x00);
 			r8_n.u0 = 0x00;

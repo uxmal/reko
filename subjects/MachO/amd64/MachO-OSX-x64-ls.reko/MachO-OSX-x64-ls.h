@@ -727,7 +727,7 @@ Eq_927: (union "Eq_927" (int32 u0) (up32 u1))
 	T_927 (in eax_138 @ 0000000100002B75 : Eq_927)
 	T_934 (in getopt("1@ABCFGHLOPRSTUWabcdefghiklmnopqrstuvwx", rsi, edi) @ 0000000100002B75 : word32)
 	T_935 (in 0x30<32> @ 0000000100002B7D : word32)
-	T_937 (in 0xFFFFFF88<32> @ 00000001000027B9 : word32)
+	T_937 (in 0x78<32> @ 00000001000027B9 : word32)
 	T_939 (in 0xFFFFFFFF<32> @ 0000000100002B86 : word32)
 Eq_928: (fn Eq_927 ((ptr64 char), (ptr64 (ptr64 char)), int32))
 	T_928 (in getopt @ 0000000100002B75 : ptr64)
@@ -5187,11 +5187,11 @@ T_936: (in eax_138 > 0x30<32> @ 0000000100002B7D : bool)
   Class: Eq_936
   DataType: bool
   OrigDataType: bool
-T_937: (in 0xFFFFFF88<32> @ 00000001000027B9 : word32)
+T_937: (in 0x78<32> @ 00000001000027B9 : word32)
   Class: Eq_927
   DataType: up32
   OrigDataType: up32
-T_938: (in eax_138 > 0xFFFFFF88<32> @ 00000001000027B9 : bool)
+T_938: (in eax_138 > 0x78<32> @ 00000001000027B9 : bool)
   Class: Eq_938
   DataType: bool
   OrigDataType: bool
@@ -7051,19 +7051,19 @@ T_1402: (in 0<u64> @ 0000000100003307 : uint64)
   Class: Eq_1401
   DataType: uint64
   OrigDataType: uint64
-T_1403: (in 0xC9<8> @ 000000010000331F : byte)
+T_1403: (in 0x37<8> @ 000000010000331F : byte)
   Class: Eq_1389
   DataType: cu8
   OrigDataType: cu8
-T_1404: (in r12b_154 > 0xC9<8> @ 000000010000331F : bool)
+T_1404: (in r12b_154 > 0x37<8> @ 000000010000331F : bool)
   Class: Eq_1404
   DataType: bool
   OrigDataType: bool
-T_1405: (in 0x98<8> @ 000000010000335A : byte)
+T_1405: (in 0x68<8> @ 000000010000335A : byte)
   Class: Eq_1389
   DataType: cu8
   OrigDataType: cu8
-T_1406: (in r12b_154 > 0x98<8> @ 000000010000335A : bool)
+T_1406: (in r12b_154 > 0x68<8> @ 000000010000335A : bool)
   Class: Eq_1406
   DataType: bool
   OrigDataType: bool
@@ -7163,11 +7163,11 @@ T_1430: (in r13_113 != 1<64> @ 00000001000033C4 : bool)
   Class: Eq_1430
   DataType: bool
   OrigDataType: bool
-T_1431: (in 0xB8<8> @ 0000000100003371 : byte)
+T_1431: (in 0x48<8> @ 0000000100003371 : byte)
   Class: Eq_1389
   DataType: cu8
   OrigDataType: cu8
-T_1432: (in r12b_154 > 0xB8<8> @ 0000000100003371 : bool)
+T_1432: (in r12b_154 > 0x48<8> @ 0000000100003371 : bool)
   Class: Eq_1432
   DataType: bool
   OrigDataType: bool

@@ -536,7 +536,7 @@ void xQueueGiveFromISR(struct Eq_n * r0, word32 * r1, word32 cpsr)
 	}
 	int32 r3_n = (int32) r0->b0045;
 	r0->dw0038 = r2_n + 0x01;
-	if (r2_n != 0x01)
+	if (r2_n != ~0x00)
 		r0->b0045 = (int8) r3_n + 1;
 	else if (r0->dw0024 != 0x00 && (xTaskRemoveFromEventList(&r0->dw0024) != 0x00 && r1 != null))
 	{
@@ -1202,7 +1202,7 @@ word32 xTaskIncrementTick()
 	}
 	up32 r7_n = r4_n->dw0080;
 	r4_n->dw0080 = r7_n + 0x01;
-	if (r7_n == 0x01)
+	if (r7_n == ~0x00)
 	{
 		struct Eq_n * r3_n = r4_n->ptr006C;
 		r4_n->ptr006C = r4_n->ptr0070;

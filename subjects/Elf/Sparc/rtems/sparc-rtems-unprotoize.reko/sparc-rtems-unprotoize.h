@@ -2404,7 +2404,7 @@ Eq_5726: (struct "Eq_5726" (0 (arr Eq_8467) a0000))
 Eq_5727: (union "Eq_5727" (int32 u0) (uint32 u1))
 	T_5727 (in o5_113 @ 00015584 : Eq_5727)
 	T_5783 (in o0_159 @ 000155FC : Eq_5727)
-	T_5789 (in 0xFFFFFFFF<32> @ 00015608 : word32)
+	T_5789 (in 1<32> @ 00015608 : word32)
 	T_5792 (in l2_131 >> 2<32> @ 000155F8 : word32)
 Eq_5729: (struct "Eq_5729" (4 (ptr32 Eq_5729) ptr0004))
 	T_5729 (in l1_133 @ 00015584 : (ptr32 Eq_5729))
@@ -19178,11 +19178,11 @@ T_3941: (in l1_251 @ 00013BC8 : Eq_263)
   Class: Eq_263
   DataType: Eq_263
   OrigDataType: (ptr32 int8)
-T_3942: (in 0xFFFFFFFF<32> @ 00013BCC : word32)
+T_3942: (in 1<32> @ 00013BCC : word32)
   Class: Eq_3917
   DataType: word32
   OrigDataType: word32
-T_3943: (in i1_57 == 0xFFFFFFFF<32> @ 00013BCC : bool)
+T_3943: (in i1_57 == 1<32> @ 00013BCC : bool)
   Class: Eq_3943
   DataType: bool
   OrigDataType: bool
@@ -19202,11 +19202,11 @@ T_3947: (in CONVERT(Mem0[l1_20 + 0<32>:int8], int8, int32) @ 00013BC4 : int32)
   Class: Eq_3899
   DataType: int32
   OrigDataType: int32
-T_3948: (in 0xFFFFFFFF<32> @ 00013CA4 : word32)
+T_3948: (in 1<32> @ 00013CA4 : word32)
   Class: Eq_3917
   DataType: word32
   OrigDataType: word32
-T_3949: (in i1_57 != 0xFFFFFFFF<32> @ 00013CA4 : bool)
+T_3949: (in i1_57 != 1<32> @ 00013CA4 : bool)
   Class: Eq_3940
   DataType: bool
   OrigDataType: bool
@@ -26574,11 +26574,11 @@ T_5788: (in o0_159 + 0xFFFFFFFF<32> @ 00015604 : word32)
   Class: Eq_5786
   DataType: int32
   OrigDataType: word32
-T_5789: (in 0xFFFFFFFF<32> @ 00015608 : word32)
+T_5789: (in 1<32> @ 00015608 : word32)
   Class: Eq_5727
   DataType: int32
   OrigDataType: int32
-T_5790: (in o0_159 < 0xFFFFFFFF<32> @ 00015608 : bool)
+T_5790: (in o0_159 < 1<32> @ 00015608 : bool)
   Class: Eq_5790
   DataType: bool
   OrigDataType: bool
@@ -36048,19 +36048,19 @@ T_8151: (in o3_436 @ 00016E40 : up32)
   Class: Eq_8151
   DataType: up32
   OrigDataType: up32
-T_8152: (in 0x1E61<32> @ 00016E40 : word32)
+T_8152: (in 0xFFFFE19F<32> @ 00016E40 : word32)
   Class: Eq_8151
   DataType: up32
   OrigDataType: up32
-T_8153: (in o3_436 < 0x1E61<32> @ 00016E40 : bool)
+T_8153: (in o3_436 < 0xFFFFE19F<32> @ 00016E40 : bool)
   Class: Eq_8153
   DataType: bool
   OrigDataType: bool
-T_8154: (in CONVERT(o3_436 <u 0x1E61<32>, bool, word32) @ 00016E40 : word32)
+T_8154: (in CONVERT(o3_436 <u 0xFFFFE19F<32>, bool, word32) @ 00016E40 : word32)
   Class: Eq_8154
   DataType: word32
   OrigDataType: word32
-T_8155: (in o2_440 + (word32) (o3_436 < 0x1E61<32>) @ 00016E40 : word32)
+T_8155: (in o2_440 + (word32) (o3_436 < 0xFFFFE19F<32>) @ 00016E40 : word32)
   Class: Eq_8149
   DataType: word32
   OrigDataType: word32

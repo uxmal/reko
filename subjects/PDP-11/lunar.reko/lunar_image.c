@@ -676,7 +676,7 @@ void fn0B06(int16 r3, struct Eq_n * r4, word16 * r5)
 	{
 		word16 * r3_n = g_w2610 - g_w34B4;
 		word16 r2_n = g_w2612 - g_w267C;
-		if (r2_n == 0x03)
+		if (r2_n == ~0x02)
 			fn0C36(0x00, g_w2610 - g_w267A + 0x19);
 		else
 			fn0C36(r2_n + 0x03, r3_n);

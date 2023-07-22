@@ -5,8 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
-		(FFFFFFEC Eq_2043 tFFFFFFEC)
-		(695 Eq_995 t0695)
+		(FFFFF96B Eq_995 tFFFFF96B)
 		(400620 code t400620)
 		(40072C code t40072C)
 		(4053F0 code t4053F0)
@@ -640,7 +639,7 @@ Eq_995: (struct "Eq_995"
 	T_995 (in Mem25[0x10000A40<32>:word32] @ 004009B4 : word32)
 	T_1001 (in r2_133 @ 00400A54 : (ptr32 Eq_995))
 	T_1003 (in Mem132[0x10000A40<32>:word32] @ 00400A54 : word32)
-	T_1004 (in 0x695<32> @ 00400A6C : word32)
+	T_1004 (in 0xFFFFF96B<32> @ 00400A6C : word32)
 	T_1032 (in Mem190[0x10000A40<32>:word32] @ 00400B34 : word32)
 	T_1042 (in Mem194[0x10000A40<32>:word32] @ 00400B4C : word32)
 	T_1051 (in Mem198[0x10000A40<32>:word32] @ 00400B6C : word32)
@@ -653,7 +652,7 @@ Eq_995: (struct "Eq_995"
 	T_1198 (in Mem364[0x10000A40<32>:word32] @ 00400E1C : word32)
 	T_1222 (in Mem420[0x10000A40<32>:word32] @ 00400E80 : word32)
 	T_1227 (in Mem417[0x10000A40<32>:word32] @ 00400E80 : word32)
-	T_1285 (in 0x695<32> @ 00401B14 : word32)
+	T_1285 (in 0xFFFFF96B<32> @ 00401B14 : word32)
 	T_4509 (in Mem293[0x10000A40<32>:word32] @ 00405A68 : word32)
 	T_4523 (in Mem355[0x10000A40<32>:word32] @ 00405AA8 : word32)
 	T_4534 (in Mem367[0x10000A40<32>:word32] @ 00405BB0 : word32)
@@ -1923,14 +1922,14 @@ Eq_5808: (union "Eq_5808" (int32 u0) (uint32 u1))
 	T_5932 (in Mem114[r6 + 0xC<32>:word32] @ 0040799C : word32)
 	T_5938 (in Mem117[r6 + 0xC<32>:word32] @ 00407984 : word32)
 	T_5945 (in Mem120[r6 + 0xC<32>:word32] @ 004079A0 : word32)
-	T_5946 (in 0xC0000001<32> @ 004079B4 : word32)
+	T_5946 (in 0x3FFFFFFF<32> @ 004079B4 : word32)
 	T_5959 (in r7_102 & 1<32> | r7_102 >> 1<8> @ 00407A24 : word32)
 	T_5962 (in Mem153[r6 + 0xC<32>:word32] @ 00407A24 : word32)
 	T_5976 (in 0<32> @ 00407A08 : word32)
 	T_5986 (in r5_129 @ 004079BC : Eq_5808)
 	T_5988 (in r7_102 << 1<8> @ 004079BC : word32)
 	T_5991 (in Mem139[r6 + 0xC<32>:word32] @ 004079DC : word32)
-	T_5992 (in 0xC0000001<32> @ 004079E0 : word32)
+	T_5992 (in 0x3FFFFFFF<32> @ 004079E0 : word32)
 Eq_6002: (fn void ((ptr32 uint32), (ptr32 Eq_6005)))
 	T_6002 (in __unpack_f @ 00407A6C : ptr32)
 	T_6003 (in signature of __unpack_f @ 00409540 : void)
@@ -6359,11 +6358,11 @@ T_1003: (in Mem132[0x10000A40<32>:word32] @ 00400A54 : word32)
   Class: Eq_995
   DataType: (ptr32 Eq_995)
   OrigDataType: word32
-T_1004: (in 0x695<32> @ 00400A6C : word32)
+T_1004: (in 0xFFFFF96B<32> @ 00400A6C : word32)
   Class: Eq_995
   DataType: (ptr32 Eq_995)
   OrigDataType: word32
-T_1005: (in r2_133 == (struct Eq_995 *) 0x695<32> @ 00400A6C : bool)
+T_1005: (in r2_133 == (struct Eq_995 *) 0xFFFFF96B<32> @ 00400A6C : bool)
   Class: Eq_1005
   DataType: bool
   OrigDataType: bool
@@ -7493,11 +7492,11 @@ T_1284: (in slist_destroy(r2_325, ra) @ 00401AFC : void)
   Class: Eq_1284
   DataType: void
   OrigDataType: void
-T_1285: (in 0x695<32> @ 00401B14 : word32)
+T_1285: (in 0xFFFFF96B<32> @ 00401B14 : word32)
   Class: Eq_995
   DataType: (ptr32 Eq_995)
   OrigDataType: word32
-T_1286: (in r2_133 == (struct Eq_995 *) 0x695<32> @ 00401B14 : bool)
+T_1286: (in r2_133 == (struct Eq_995 *) 0xFFFFF96B<32> @ 00401B14 : bool)
   Class: Eq_1286
   DataType: bool
   OrigDataType: bool
@@ -14844,11 +14843,11 @@ T_3114: (in (word32) dwLoc18_205->b0001 == 13<i32> @ 004035C4 : bool)
   Class: Eq_3114
   DataType: bool
   OrigDataType: bool
-T_3115: (in 0xFFFFFFFE<32> @ 0040364C : word32)
+T_3115: (in 2<32> @ 0040364C : word32)
   Class: Eq_2910
   DataType: int32
   OrigDataType: int32
-T_3116: (in dwLoc14_181 <= 0xFFFFFFFE<32> @ 0040364C : bool)
+T_3116: (in dwLoc14_181 <= 2<32> @ 0040364C : bool)
   Class: Eq_3116
   DataType: bool
   OrigDataType: bool
@@ -26210,15 +26209,15 @@ T_5945: (in Mem120[r6 + 0xC<32>:word32] @ 004079A0 : word32)
   Class: Eq_5808
   DataType: Eq_5808
   OrigDataType: word32
-T_5946: (in 0xC0000001<32> @ 004079B4 : word32)
+T_5946: (in 0x3FFFFFFF<32> @ 004079B4 : word32)
   Class: Eq_5808
   DataType: int32
   OrigDataType: up32
-T_5947: (in r7_102 > 0xC0000001<32> @ 004079B4 : bool)
+T_5947: (in r7_102 > 0x3FFFFFFF<32> @ 004079B4 : bool)
   Class: Eq_5947
   DataType: bool
   OrigDataType: bool
-T_5948: (in CONVERT(r7_102 >u 0xC0000001<32>, bool, word32) @ 004079B4 : word32)
+T_5948: (in CONVERT(r7_102 >u 0x3FFFFFFF<32>, bool, word32) @ 004079B4 : word32)
   Class: Eq_5948
   DataType: word32
   OrigDataType: word32
@@ -26226,7 +26225,7 @@ T_5949: (in 0<32> @ 004079B4 : word32)
   Class: Eq_5948
   DataType: word32
   OrigDataType: word32
-T_5950: (in (word32) (r7_102 > 0xC0000001<32>) != 0<32> @ 004079B4 : bool)
+T_5950: (in (word32) (r7_102 > 0x3FFFFFFF<32>) != 0<32> @ 004079B4 : bool)
   Class: Eq_5950
   DataType: bool
   OrigDataType: bool
@@ -26394,15 +26393,15 @@ T_5991: (in Mem139[r6 + 0xC<32>:word32] @ 004079DC : word32)
   Class: Eq_5808
   DataType: Eq_5808
   OrigDataType: word32
-T_5992: (in 0xC0000001<32> @ 004079E0 : word32)
+T_5992: (in 0x3FFFFFFF<32> @ 004079E0 : word32)
   Class: Eq_5808
   DataType: int32
   OrigDataType: up32
-T_5993: (in r5_129 > 0xC0000001<32> @ 004079E0 : bool)
+T_5993: (in r5_129 > 0x3FFFFFFF<32> @ 004079E0 : bool)
   Class: Eq_5993
   DataType: bool
   OrigDataType: bool
-T_5994: (in CONVERT(r5_129 >u 0xC0000001<32>, bool, word32) @ 004079E0 : word32)
+T_5994: (in CONVERT(r5_129 >u 0x3FFFFFFF<32>, bool, word32) @ 004079E0 : word32)
   Class: Eq_5994
   DataType: word32
   OrigDataType: word32
@@ -26410,7 +26409,7 @@ T_5995: (in 0<32> @ 004079E0 : word32)
   Class: Eq_5994
   DataType: word32
   OrigDataType: word32
-T_5996: (in (word32) (r5_129 > 0xC0000001<32>) == 0<32> @ 004079E0 : bool)
+T_5996: (in (word32) (r5_129 > 0x3FFFFFFF<32>) == 0<32> @ 004079E0 : bool)
   Class: Eq_5996
   DataType: bool
   OrigDataType: bool
@@ -34948,8 +34947,7 @@ T_8129:
   OrigDataType: 
 */
 typedef struct Globals {
-	Eq_2043 tFFFFFFEC;	// FFFFFFEC
-	Eq_995 t0695;	// 695
+	Eq_995 tFFFFF96B;	// FFFFF96B
 	<anonymous> t400620;	// 400620
 	<anonymous> t40072C;	// 40072C
 	<anonymous> t4053F0;	// 4053F0

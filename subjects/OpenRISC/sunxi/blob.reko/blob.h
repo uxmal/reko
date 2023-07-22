@@ -26982,11 +26982,11 @@ T_5178: (in 0xFFFFFFE9<32> @ 00007994 : word32)
   Class: Eq_5107
   DataType: int32
   OrigDataType: word32
-T_5179: (in 0xFFFFFFFE<32> @ 000079F8 : word32)
+T_5179: (in 2<32> @ 000079F8 : word32)
   Class: Eq_4930
   DataType: ui32
   OrigDataType: word32
-T_5180: (in r11_53 == 0xFFFFFFFE<32> @ 000079F8 : bool)
+T_5180: (in r11_53 == 2<32> @ 000079F8 : bool)
   Class: Eq_5180
   DataType: bool
   OrigDataType: bool

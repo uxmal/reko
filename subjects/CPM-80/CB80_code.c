@@ -793,7 +793,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		Mem354[Mem320[5771:word16] + (CONVERT(Mem320[0x1697:byte], byte, uint16) + 0x01):byte] = fn03E6(Mem320[Mem320[5771:word16] + (CONVERT(Mem320[0x1697:byte], byte, uint16) + 0x01):byte]);
 		cu8 a_n = g_b1697;
 		g_b1697 = a_n + 0x01;
-		if (a_n == 0x01)
+		if (a_n == ~0x00)
 			break;
 	}
 	g_b1697 = 0x00;
@@ -808,7 +808,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 		cu8 a_n = g_b1697;
 		g_b1697 = a_n + 0x01;
 		C_n = (bool) cond(hl_n);
-	} while (a_n != 0x01);
+	} while (a_n != ~0x00);
 	afOut = SEQ(0x01, f);
 	return C_n;
 }
@@ -819,7 +819,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 word16 fn0B74()
 {
 	byte f;
-	return SEQ(0x00 - (byte) (g_t1696.u0 < ~0x00) & 0x00 - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3] < 0x2F), f);
+	return SEQ(0x00 - (byte) (g_t1696.u0 < 0x01) & 0x00 - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3] < 0x2F), f);
 }
 
 // 0B91: void fn0B91()
@@ -836,7 +836,7 @@ void fn0B91()
 //      fn100A
 void fn0BE4(byte f)
 {
-	byte a_n = 0x00 - (byte) (g_b138A < ~0x01);
+	byte a_n = 0x00 - (byte) (g_b138A < 0x02);
 	if ((0x00 - (byte) (g_b14F3 < 0x03) & a_n) >> 0x01 < 0x00)
 	{
 		if (g_b14F6 != 0x01)
@@ -983,7 +983,7 @@ void fn100A(word16 af)
 	while (true)
 	{
 		byte f_n = (byte) af;
-		if ((0x00 - (byte) (g_b14FF < 0x0E) & (0x00 - (byte) (g_b16A8 < ~0x00) & (0x00 - (byte) (g_b16A8 < 0x03) & SLICE(af, byte, 8)))) >> 0x01 >= 0x00)
+		if ((0x00 - (byte) (g_b14FF < 0x0E) & (0x00 - (byte) (g_b16A8 < 0x01) & (0x00 - (byte) (g_b16A8 < ~0x02) & SLICE(af, byte, 8)))) >> 0x01 >= 0x00)
 			break;
 		cu8 a_n = g_b14FF;
 		g_b14FF = a_n + 0x01;
@@ -996,14 +996,14 @@ void fn100A(word16 af)
 		fn05CE(0x0369);
 		fn0387();
 	}
-	while ((0x00 - (byte) (g_b16A8 < ~0x00) & 0x00 - (byte) (g_b16A8 < 0x03)) >> 0x01 < 0x00)
+	while ((0x00 - (byte) (g_b16A8 < 0x01) & 0x00 - (byte) (g_b16A8 < ~0x02)) >> 0x01 < 0x00)
 		g_b16A8 = fn045B();
 	g_b16A8 = fn045B();
 	while (true)
 	{
-		byte a_n = 0x00 - (byte) (g_b16A8 < 0x01);
+		byte a_n = 0x00 - (byte) (g_b16A8 < ~0x00);
 		word16 bc_n = SEQ(a_n, a_n);
-		if ((0x00 - (byte) (g_b16A8 < ~0x00) & a_n) >> 0x01 >= 0x00)
+		if ((0x00 - (byte) (g_b16A8 < 0x01) & a_n) >> 0x01 >= 0x00)
 			break;
 		if (g_b16A8 == 0x20)
 			fn1262();
@@ -1080,10 +1080,10 @@ void fn100A(word16 af)
 		case 44:
 			g_b16A8 = fn045B();
 			break;
-		case 0x02:
+		case ~0x01:
 			g_b16A8 = fn045B();
 			fn1262();
-			if (g_b16A8 != 0x04)
+			if (g_b16A8 != 252)
 				g_b16A8 = 0x5D;
 			else
 				g_b16A8 = fn045B();

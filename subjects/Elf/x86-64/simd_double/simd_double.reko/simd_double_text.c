@@ -123,7 +123,7 @@ void main()
 	{
 		ui32 eax_n = (word32) qwLoc18_n + 0x01;
 		real64 * rcx_n = &(rax_n + (qwLoc18_n * 0x08) /64 32)->u0;
-		if (qwLoc18_n >= 0x01)
+		if (qwLoc18_n >= ~0x00)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
 		else
 		{

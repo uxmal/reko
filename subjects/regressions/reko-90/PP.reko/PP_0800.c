@@ -7377,7 +7377,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			{
 				(ss->*((word32) sp_n - 2)).u0 = 0x01;
 				word16 dx_n = Mem326[ds_n:0x2A07:word16];
-				Mem339[ss:sp_n + -4:word16] = -SLICE(SEQ(Mem326[ds_n:0x2A09:word16], dx_n) + 0x02, word16, 16) - (dx_n != 0x02);
+				Mem339[ss:sp_n + -4:word16] = -SLICE(SEQ(Mem326[ds_n:0x2A09:word16], dx_n) + 0x02, word16, 16) - (dx_n != ~0x01);
 				ss->*((word32) sp_n - 6) = -((word16) dx_n.u1 + 2);
 				Mem344[ss:sp_n + -8:word16] = Mem341[ds_n:10721:word16];
 				Mem347[ss:sp_n + -0x0A:word16] = Mem344[ds_n:10719:word16];
@@ -8467,7 +8467,7 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 				} while (si_n != ((ss->*bp_n).tFFFFFFDC).u0);
 				(ss->*((word32) sp_n + 2)).u0 = 0x01;
 				Eq_n ax_n = (ss->*bp_n).tFFFFFFDE.u0;
-				ss->*sp_n = (ss->*bp_n).wFFFFFFC8 - (ax_n != 0x03);
+				ss->*sp_n = (ss->*bp_n).wFFFFFFC8 - (ax_n != ~0x02);
 				ss->*((word32) sp_n - 2) = -((word32) ax_n + 3);
 				Mem924[ss:sp_n + -4:word16] = Mem920[ds_n:10721:word16];
 				Mem927[ss:sp_n + -6:word16] = Mem924[ds_n:10719:word16];
@@ -9667,7 +9667,7 @@ word16 fn0800-741D(Eq_n ds, union Eq_n & dxOut)
 			Eq_n sp_n = <invalid>;
 			(ss->*((word32) sp_n + 6)).u0 = 0x01;
 			word16 dx_n = Mem239[ds_n:0x2A03:word16];
-			Mem252[ss:sp_n + 0x04:word16] = -SLICE(SEQ(Mem239[ds_n:0x2A05:word16], dx_n) + 0x02, word16, 16) - (dx_n != 0x02);
+			Mem252[ss:sp_n + 0x04:word16] = -SLICE(SEQ(Mem239[ds_n:0x2A05:word16], dx_n) + 0x02, word16, 16) - (dx_n != ~0x01);
 			ss->*((word32) sp_n + 2) = -((word16) dx_n.u1 + 2);
 			Mem257[ss:sp_n + 0x00:word16] = Mem254[ds_n:10721:word16];
 			Mem260[ss:sp_n + -2:word16] = Mem257[ds_n:10719:word16];
@@ -16945,7 +16945,7 @@ l0800_C26F:
 	int32 dwArg02_n = SEQ(v53_n, ax_n + 0x01);
 	if ((ptrArg06->w0000 & 0x03) == 0x00)
 	{
-		if (v53_n >= 0x00 && (v53_n > 0x00 || ax_n > ~0x3A))
+		if (v53_n >= 0x00 && (v53_n > 0x00 || ax_n > 0x3B))
 			dwArg02_n = dx_ax_n;
 		else
 		{
@@ -16953,7 +16953,7 @@ l0800_C26F:
 			if (v53_n == 0x00)
 			{
 				dwArg02_n = SEQ(v53_n, ax_n + 0x01);
-				if (ax_n == ~0x3A)
+				if (ax_n == 0x3B)
 				{
 					ptrArg06->b0003 = 0x02;
 					ptrArg06->b0002 = 0x1D;

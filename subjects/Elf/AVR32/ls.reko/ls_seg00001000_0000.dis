@@ -6595,7 +6595,7 @@ l000074E2:
 	r10_1086 = r11_1093 + 4<32>
 	branch r9_1089 >u Mem76[0x0000762E<p32>:word32] l00007736
 l000074F2:
-	branch r11_1093 <=u 1<32> l00007736
+	branch r11_1093 <=u 0xFFFFFFFF<32> l00007736
 l000074F8:
 	branch r11_1093 >u 0x1F3B<32> l00007736
 l00007500:
@@ -6629,7 +6629,7 @@ l0000745C:
 	r9_1089 = r10_1086 + 4<32>
 	branch r12_208 >u Mem199[0x000074CC<p32>:word32] l00007736
 l0000746C:
-	branch r10_1086 <=u 1<32> l00007736
+	branch r10_1086 <=u 0xFFFFFFFF<32> l00007736
 l00007472:
 	branch r10_1086 >u 0x1F3B<32> l00007736
 l0000747A:
@@ -8749,7 +8749,7 @@ l000087E0:
 	call Mem69[r6_152 + 188<i32>:word32] (retsize: 0;)
 		uses: lr:lr_50,r0:sp_41,r1:r1_43,r10:0<32>,r11:r7_49 - 0xC<32>,r12:0<32>,r2:0<32>,r3:0<32>,r4:r7_49 - 8<32>,r5:r5_47,r6:r6_48,r7:r7_49,r9:r7_49 - 8<32>
 		defs: lr:lr_79,r0:r0_71,r1:r1_72,r10:r10_82,r11:r11_81,r12:r12_80,r2:r2_73,r3:r3_74,r4:r4_75,r6:r6_77,r7:r7_78
-	branch r12_80 == 1<32> l0000890C
+	branch r12_80 == 0xFFFFFFFF<32> l0000890C
 l00008802:
 	byte VNZC_105
 	word32 r4_118
@@ -8777,7 +8777,7 @@ l00008820:
 		uses: lr:lr_143,r0:r0_138,r1:r1_139,r10:0<32>,r11:r7_132 - 0x10<32>,r12:0<32>,r2:r2_140,r3:r3_141,r4:r4_130,r5:r5_142,r6:r6_136,r7:r7_132,r9:r4_130
 		defs: lr:lr_154,r0:r0_146,r1:r1_147,r10:r10_157,r11:r11_156,r12:r12_155,r3:r3_149,r4:r4_150,r5:r5_151,r6:r6_152,r7:r7_153
 	r2_161 = r12_155 + 1<32>
-	branch r12_155 == 1<32> l0000890C
+	branch r12_155 == 0xFFFFFFFF<32> l0000890C
 l0000890C:
 	word32 r5_166 = Mem165[r7_153 + -16<i32>:word32]
 	word32 r1_181
@@ -13555,7 +13555,7 @@ l0000B49E:
 l0000B49E_1:
 	r12_904 = 0<32>
 l0000B42C:
-	branch SLICE(r3_875, word2, 0) == 1<2> l0000B43A
+	branch SLICE(r3_875, word2, 0) == 1<32> l0000B43A
 l0000B43A:
 	branch false l0000B448
 l0000B448:
@@ -15835,21 +15835,21 @@ l0000C102:
 l0000C108:
 	branch r12 >u 0x4DFF<32> l0000C2DA
 l0000C114:
-	branch r12 <=u 0xFFFF285D<32> l0000C2DA
+	branch r12 <=u 0xD7A3<32> l0000C2DA
 l0000C124:
-	branch r12 <=u 0xFFFF0501<32> l0000C2DA
+	branch r12 <=u 0xFAFF<32> l0000C2DA
 l0000C134:
-	branch r12 <=u 0xFFFF01E1<32> l0000C2DA
+	branch r12 <=u 0xFE1F<32> l0000C2DA
 l0000C142:
-	branch r12 <=u 0xFFFF0191<32> l0000C2DA
+	branch r12 <=u 0xFE6F<32> l0000C2DA
 l0000C152:
-	branch r12 <=u 0xFFFF00A0<32> l0000C2DA
+	branch r12 <=u 0xFF60<32> l0000C2DA
 l0000C162:
-	branch r12 <=u 0xFFFF001A<32> l0000C2DA
+	branch r12 <=u 0xFFE6<32> l0000C2DA
 l0000C170:
-	branch r12 <=u 0xFFFD592A<32> l0000C2DA
+	branch r12 <=u 0x2A6D6<32> l0000C2DA
 l0000C180:
-	branch r12 <=u 0xFFFD05E3<32> l0000C2DA
+	branch r12 <=u 0x2FA1D<32> l0000C2DA
 l0000C190:
 	branch r12 >u 0xFF60<32> l0000C2DE
 l0000C19C:
@@ -17005,7 +17005,7 @@ l0000D258:
 	branch N_68 | V_67 l0000D284
 l0000D284:
 	word32 r8_74 = dwLoc38 + 7<32>
-	branch dwLoc38 >u 1<32> l0000D294
+	branch dwLoc38 >u 0xFFFFFFFF<32> l0000D294
 l0000D290_1:
 	r8_74 = 0xFFFFFFFF<32>
 l0000D294:

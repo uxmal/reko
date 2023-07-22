@@ -4,6 +4,5 @@
 
 #include "redir.h"
 
-Eq_n g_t0695;
 Eq_n g_t10008860;
-Eq_n g_tFFFFFFEC;
+Eq_n g_tFFFFF96B;

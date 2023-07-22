@@ -8121,7 +8121,7 @@ l0800_5255:
 l0800_5263:
 	Mem326[ss:sp_313 - 2<i16>:word16] = 1<16>
 	word16 dx_328 = Mem326[ds_309:0x2A07<16>:word16]
-	Mem339[ss:sp_313 - 4<i16>:word16] = -SLICE(SEQ(Mem326[ds_309:0x2A09<16>:word16], dx_328) + 2<32>, word16, 16) - (dx_328 != 2<16>)
+	Mem339[ss:sp_313 - 4<i16>:word16] = -SLICE(SEQ(Mem326[ds_309:0x2A09<16>:word16], dx_328) + 2<32>, word16, 16) - (dx_328 != 0xFFFE<16>)
 	Mem341[ss:sp_313 - 6<i16>:word16] = -(dx_328 + 2<16>)
 	Mem344[ss:sp_313 - 8<i16>:word16] = Mem341[ds_309:0x29E1<16>:word16]
 	Mem347[ss:sp_313 - 10<i16>:word16] = Mem344[ds_309:0x29DF<16>:word16]
@@ -9401,7 +9401,7 @@ l0800_6199:
 l0800_61B9:
 	Mem908[ss:sp_797 + 2<16>:word16] = 1<16>
 	word16 ax_910 = Mem908[ss:bp_1046 - 34<i16>:word16]
-	Mem918[ss:sp_797:word16] = Mem908[ss:bp_1046 - 56<i16>:word16] - (ax_910 != 3<16>)
+	Mem918[ss:sp_797:word16] = Mem908[ss:bp_1046 - 56<i16>:word16] - (ax_910 != 0xFFFD<16>)
 	Mem920[ss:sp_797 - 2<16>:word16] = -(ax_910 + 3<16>)
 	Mem924[ss:sp_797 - 4<16>:word16] = Mem920[ds_808:0x29E1<16>:word16]
 	Mem927[ss:sp_797 - 6<16>:word16] = Mem924[ds_808:0x29DF<16>:word16]
@@ -10713,7 +10713,7 @@ l0800_7469:
 	word16 sp_231 = <invalid>
 	Mem239[ss:sp_231 + 6<16>:word16] = 1<16>
 	word16 dx_241 = Mem239[ds_227:0x2A03<16>:word16]
-	Mem252[ss:sp_231 + 4<16>:word16] = -SLICE(SEQ(Mem239[ds_227:0x2A05<16>:word16], dx_241) + 2<32>, word16, 16) - (dx_241 != 2<16>)
+	Mem252[ss:sp_231 + 4<16>:word16] = -SLICE(SEQ(Mem239[ds_227:0x2A05<16>:word16], dx_241) + 2<32>, word16, 16) - (dx_241 != 0xFFFE<16>)
 	Mem254[ss:sp_231 + 2<16>:word16] = -(dx_241 + 2<16>)
 	Mem257[ss:sp_231:word16] = Mem254[ds_227:0x29E1<16>:word16]
 	Mem260[ss:sp_231 - 2<i16>:word16] = Mem257[ds_227:0x29DF<16>:word16]
@@ -19286,13 +19286,13 @@ l0800_C2F3:
 l0800_C2F9:
 	branch v53_446 > 0<16> l0800_C301
 l0800_C2FB:
-	branch ax_430 <=u 0xFFC5<16> l0800_C30B
+	branch ax_430 <=u 0x3B<16> l0800_C30B
 l0800_C30B:
 	dwArg02_843 = SEQ(v53_446, ax_430 + 1<16>) (alias)
 	branch v53_446 != 0<16> l0800_C326
 l0800_C311:
 	dwArg02_843 = SEQ(v53_446, ax_430 + 1<16>) (alias)
-	branch ax_430 != 0xFFC5<16> l0800_C326
+	branch ax_430 != 0x3B<16> l0800_C326
 l0800_C317:
 	Mem470[ptrArg06 + 3<i16>:byte] = 2<8>
 	Mem471[ptrArg06 + 2<i16>:byte] = 0x1D<8>

@@ -1376,7 +1376,7 @@ l00400A00:
 	close(2<i32>)
 l00400A54:
 	word32 r2_133 = Mem132[0x10000A40<32>:word32]
-	branch r2_133 == 0x695<32> l00400B20
+	branch r2_133 == 0xFFFFF96B<32> l00400B20
 l00400A74:
 	branch CONVERT(Mem136[r2_133 + 1685<i32>:int8], int8, word32) == 0<32> l00400B20
 l00400A8C:
@@ -1669,7 +1669,7 @@ l00401AD4:
 	call Mem470[r28_1010 - 0x7ED0<32>:word32] (retsize: 0;)
 		uses: r4:r2_296,r5:r5_479
 	slist_destroy(r2_325, ra)
-	branch r2_133 == 0x695<32> l00401B50
+	branch r2_133 == 0xFFFFF96B<32> l00401B50
 l00401B1C:
 	branch CONVERT(Mem470[r2_133 + 1685<i32>:int8], int8, word32) == 0<32> l00401B50
 l00401B34:
@@ -2275,7 +2275,7 @@ l004035D4:
 l004035F0:
 	branch CONVERT(Mem116[dwLoc18_205 + 2<i32>:int8], int8, word32) == 13<i32> l00403614
 l00403614:
-	branch dwLoc14_181 <= 0xFFFFFFFE<32> l0040367C
+	branch dwLoc14_181 <= 2<32> l0040367C
 l0040367C:
 	Mem150[r4 + 0x1788<32>:word32] = r4 + 4024<i32>
 	Mem152[r4 + 0x178C<32>:word32] = 0<32>
@@ -4021,14 +4021,14 @@ l00407980:
 	Mem118[r6 + 4<32>:word32] = 0<32>
 l004079A0:
 	r7_102 = Mem120[r6 + 0xC<32>:word32]
-	branch CONVERT(r7_102 >u 0xC0000001<32>, bool, word32) != 0<32> l004079B8_ds_t
+	branch CONVERT(r7_102 >u 0x3FFFFFFF<32>, bool, word32) != 0<32> l004079B8_ds_t
 l004079B8_ds_t:
 l004079B8_ds_f:
 l004079BC:
 	Mem138[r6 + 8<32>:word32] = Mem131[r6 + 8<32>:word32] + -1<i32>
 	word32 r5_129 = r7_102 << 1<8>
 	Mem139[r6 + 0xC<32>:word32] = r5_129
-	branch CONVERT(r5_129 >u 0xC0000001<32>, bool, word32) == 0<32> l004079E4_ds_t
+	branch CONVERT(r5_129 >u 0x3FFFFFFF<32>, bool, word32) == 0<32> l004079E4_ds_t
 l004079E4_ds_t:
 	r7_102 = r5_129
 l004079E4_ds_f:

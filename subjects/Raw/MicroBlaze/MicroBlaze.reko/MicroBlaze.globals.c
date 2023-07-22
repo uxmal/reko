@@ -362,4 +362,3 @@ word32 g_a1D1D0[] = // 0001D1D0
 	};
 byte g_bFFFF8E64; // FFFF8E64
 byte g_bFFFFD644; // FFFFD644
-Eq_n g_tFFFFFFFA;

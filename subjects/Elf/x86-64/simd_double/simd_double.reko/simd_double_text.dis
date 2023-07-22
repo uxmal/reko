@@ -210,7 +210,7 @@ l0000000000000998:
 l0000000000000953:
 	word32 eax_108 = SLICE(qwLoc18_217, word32, 0) + 1<32>
 	word64 rcx_101 = qwLoc18_217 * 8<64> + rax_30
-	branch qwLoc18_217 < 1<64> l000000000000097A
+	branch qwLoc18_217 < 0xFFFFFFFFFFFFFFFF<64> l000000000000097A
 l000000000000097A:
 	real64 v22_115 = CONVERT(qwLoc18_217 + 1<64> >>u 1<64> | CONVERT(eax_108 & 1<32>, word32, uint64), word64, real64)
 	xmm0 = SEQ(0<64>, v22_115 + v22_115)

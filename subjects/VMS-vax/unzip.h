@@ -10893,11 +10893,11 @@ T_1417: (in r3_899 + 2<i32> @ 00008ADD : word32)
   Class: Eq_1417
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_1418: (in 1<32> @ 00008AE2 : word32)
+T_1418: (in 0xFFFFFFFF<32> @ 00008AE2 : word32)
   Class: Eq_1405
   DataType: word32
   OrigDataType: word32
-T_1419: (in r4_906 != 1<32> @ 00008AE2 : bool)
+T_1419: (in r4_906 != 0xFFFFFFFF<32> @ 00008AE2 : bool)
   Class: Eq_1419
   DataType: bool
   OrigDataType: bool
@@ -78097,11 +78097,11 @@ T_18126: (in r2_4853 + 1<32> @ 000145AC : word32)
   Class: Eq_18093
   DataType: int32
   OrigDataType: word32
-T_18127: (in 0xFFFFFFF2<32> @ 000145AC : word32)
+T_18127: (in 0xE<32> @ 000145AC : word32)
   Class: Eq_18122
   DataType: int32
   OrigDataType: int32
-T_18128: (in r2_4853 <= 0xFFFFFFF2<32> @ 000145AC : bool)
+T_18128: (in r2_4853 <= 0xE<32> @ 000145AC : bool)
   Class: Eq_18128
   DataType: bool
   OrigDataType: bool

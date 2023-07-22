@@ -1301,7 +1301,7 @@ void traverse(word32 r5, word32 r6, word32 r8, word32 r9, word32 r11, word32 r13
 				}
 				r13_n = r0_n;
 				uint32 r2_n = (uint32) r0_n->w0048;
-			} while (r2_n > ~0x06);
+			} while (r2_n > 0x07);
 			Eq_n r2_n = g_a402AC0[r2_n + ~0x00];
 			(*((word32) r2_n + 4205246))();
 		}
@@ -1433,7 +1433,7 @@ void ls_main(word32 r4, word32 r5, word32 r8, word32 r9, word32 r10, word32 r11,
 	(*((word32) 0x00402C96 + r1_n))();
 	if (r0_n != ~0x00)
 	{
-		if (r0_n <= ~0x77)
+		if (r0_n <= 0x78)
 		{
 			Eq_n r1_n = g_a402D6C[r0_n + ~0x30];
 			(0x00402D6C<p32> + r1_n)();
@@ -1912,7 +1912,7 @@ void printtotal(struct Eq_n * r4, word32 pr)
 			r8_n = g_dw4035B0;
 		int32 r3_n = *g_ptr4035B4[r12_n / 4];
 		word32 r0_n = r4->dw0004;
-		word32 r1_n = 0x00 - (r3_n < ~0x00);
+		word32 r1_n = 0x00 - (r3_n < 0x01);
 		int32 r2_n = g_dw4035B8;
 		word32 r8_n;
 		word32 r0_n;
@@ -1976,7 +1976,7 @@ void __sputc.constprop.3(Eq_n r4, word32 pr)
 	int32 r3_n = g_dw403614;
 	struct Eq_n * r2_n = r12_n[r3_n / 4];
 	int32 r1_n = r2_n->dw0060;
-	if (r1_n < ~0x00)
+	if (r1_n < 0x01)
 	{
 		r2_n->dw0060 = r1_n + ~0x00;
 		if (r1_n + ~0x00 < r2_n->dw0070 || r4 == 0x0A)
@@ -2233,7 +2233,7 @@ void printaname(struct Eq_n * r4, word32 r6, word32 r9, word32 pr)
 			if (*g_ptr403960[r12_n / 4] != 0x00)
 				r9_n = g_dw403964;
 			int32 r3_n = *g_ptr403968[r12_n / 4];
-			word32 r1_n = 0x00 - (r3_n < ~0x00);
+			word32 r1_n = 0x00 - (r3_n < 0x01);
 			int32 r2_n = g_dw40396C;
 			word32 r8_n;
 			word32 r0_n;
@@ -3116,7 +3116,7 @@ void printwc(word32 r4, word32 r5, word32 r8, word32 r9, word32 r12, word32 pr)
 	{
 		if (r0_n == 0x00)
 			return;
-		if (*((word32) (r0_n + ~0x00) + r15_n) == 0x00 && r0_n == ~0x00)
+		if (*((word32) (r0_n + ~0x00) + r15_n) == 0x00 && r0_n == 0x01)
 			return;
 	}
 	else if (r0_n == 0x00)

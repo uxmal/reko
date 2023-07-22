@@ -2822,7 +2822,7 @@ l00014154:
 											int32 r2_n;
 											(*((word32) r9_n + 2))();
 											r2_n = r2_n + 0x01;
-										} while (r2_n <= ~0x0D);
+										} while (r2_n <= 0x0E);
 										fp_n->bFFFFFF64 = 0x00;
 										sp_n->ptrFFFFFFFC = 0x00;
 										sp_n->ptrFFFFFFF8 = (struct Eq_n *) ((char *) fp_n - 188);

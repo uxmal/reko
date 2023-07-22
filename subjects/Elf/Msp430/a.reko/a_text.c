@@ -192,7 +192,7 @@ ui20 init_uart_isr(Eq_n r14_r13, ui20 sr, Eq_n r15)
 	{
 		word16 v31_n = usCriticalNesting;
 		usCriticalNesting = v31_n + ~0x00;
-		if (v31_n == ~0x00)
+		if (v31_n == 0x01)
 			sr_n |= 0x08;
 	}
 	return sr_n;
@@ -270,7 +270,7 @@ l00004420:
 			{
 				word16 v15_n = usCriticalNesting;
 				usCriticalNesting = v15_n + ~0x00;
-				if (v15_n == ~0x00)
+				if (v15_n == 0x01)
 					sr_n |= 0x08;
 			}
 			r15Out.u0 = 0x01;
@@ -355,7 +355,7 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 		{
 			word16 v45_n = usCriticalNesting;
 			usCriticalNesting = v45_n + ~0x00;
-			if (v45_n == ~0x00)
+			if (v45_n == 0x01)
 				sr_n = sr_n & ~0x08 | 0x08;
 		}
 	}
@@ -395,7 +395,7 @@ void vTaskDelete(ui20 sr, Eq_n r15)
 	{
 		word16 v16_n = usCriticalNesting;
 		usCriticalNesting = v16_n + ~0x00;
-		if (v16_n == ~0x00)
+		if (v16_n == 0x01)
 			sr_n = sr & ~0x08 | 0x08;
 	}
 	if (r15 == 0x00)
@@ -540,7 +540,7 @@ ui20 vTaskSuspendAll(ui20 sr)
 	{
 		word16 v10_n = usCriticalNesting;
 		usCriticalNesting = v10_n + ~0x00;
-		if (v10_n == ~0x00)
+		if (v10_n == 0x01)
 			sr_n = sr & ~0x08 | 0x08;
 	}
 	return sr_n;
@@ -561,7 +561,7 @@ ui20 xTaskResumeAll(ui20 sr, union Eq_n & r15Out)
 	uxSchedulerSuspended = v11_n + ~0x00;
 	Eq_n r8_n = 0x00;
 	ui20 sr_n = sr & ~0x08;
-	if (v11_n == ~0x00 && uxCurrentNumberOfTasks != 0x00)
+	if (v11_n == 0x01 && uxCurrentNumberOfTasks != 0x00)
 	{
 		Eq_n r9_n = 0x00;
 		while (true)
@@ -593,7 +593,7 @@ ui20 xTaskResumeAll(ui20 sr, union Eq_n & r15Out)
 					vTaskIncrementTick();
 					word16 v34_n = uxMissedTicks;
 					uxMissedTicks = v34_n + ~0x00;
-				} while (v34_n != ~0x00);
+				} while (v34_n != 0x01);
 			}
 			r9_n.u1 = 0x01;
 		}
@@ -609,7 +609,7 @@ ui20 xTaskResumeAll(ui20 sr, union Eq_n & r15Out)
 	{
 		word16 v23_n = usCriticalNesting;
 		usCriticalNesting = v23_n + ~0x00;
-		if (v23_n == ~0x00)
+		if (v23_n == 0x01)
 			sr_n |= 0x08;
 	}
 	r15Out = r8_n;
@@ -628,11 +628,11 @@ ui20 xTaskGetTickCount(ui20 sr, union Eq_n & r15Out)
 	usCriticalNesting = v5_n + 0x01;
 	ui20 sr_n = sr & ~0x08;
 	Eq_n r15_n = xTickCount.u0;
-	if (v5_n != 0x01)
+	if (v5_n != ~0x00)
 	{
 		word16 v10_n = usCriticalNesting;
 		usCriticalNesting = v10_n + ~0x00;
-		if (v10_n == ~0x00)
+		if (v10_n == 0x01)
 			sr_n = sr & ~0x08 | 0x08;
 	}
 	r15Out = r15_n;
@@ -644,7 +644,7 @@ void uxTaskGetNumberOfTasks()
 {
 	word16 v5_n = usCriticalNesting;
 	usCriticalNesting = v5_n + 0x01;
-	if (v5_n != 0x01)
+	if (v5_n != ~0x00)
 	{
 		word16 v10_n = usCriticalNesting;
 		usCriticalNesting = v10_n + ~0x00;
@@ -661,7 +661,7 @@ void vTaskIncrementTick()
 	{
 		Eq_n v9_n = xTickCount.u0;
 		xTickCount.u0 = (word16) v9_n.u0 + 1;
-		if (v9_n == 0x01)
+		if (v9_n == ~0x00)
 		{
 			Eq_n v10_n = pxDelayedTaskList.u0;
 			pxDelayedTaskList.u0 = pxOverflowDelayedTaskList.u0;
@@ -840,7 +840,7 @@ ui20 prvCheckTasksWaitingTermination(ui20 sr)
 			{
 				word16 v20_n = usCriticalNesting;
 				usCriticalNesting = v20_n + ~0x00;
-				if (v20_n == ~0x00)
+				if (v20_n == 0x01)
 					sr = sr & ~0x08 | 0x08;
 			}
 			prvDeleteTCB();
@@ -1043,7 +1043,7 @@ ui20 xQueueSend(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v17_n = usCriticalNesting;
 		usCriticalNesting = v17_n + ~0x00;
-		if (v17_n == ~0x00)
+		if (v17_n == 0x01)
 			sr_n = sr_n & ~0x08 | 0x08;
 	}
 	word20 r15_n;
@@ -1070,14 +1070,14 @@ ui20 xQueueSend(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 		{
 			word16 v39_n = usCriticalNesting;
 			usCriticalNesting = v39_n + ~0x00;
-			if (v39_n == ~0x00)
+			if (v39_n == 0x01)
 				sr_n = sr_n & ~0x08 | 0x08;
 		}
 		if (usCriticalNesting != 0x00)
 		{
 			word16 v41_n = usCriticalNesting;
 			usCriticalNesting = v41_n + ~0x00;
-			if (v41_n == ~0x00)
+			if (v41_n == 0x01)
 				sr_n |= 0x08;
 		}
 	}
@@ -1101,7 +1101,7 @@ ui20 xQueueSend(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v23_n = usCriticalNesting;
 		usCriticalNesting = v23_n + ~0x00;
-		if (v23_n == ~0x00)
+		if (v23_n == 0x01)
 			sr_n |= 0x08;
 	}
 	ui20 sr_n;
@@ -1174,7 +1174,7 @@ ui20 xQueueReceive(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v17_n = usCriticalNesting;
 		usCriticalNesting = v17_n + ~0x00;
-		if (v17_n == ~0x00)
+		if (v17_n == 0x01)
 			sr_n = sr_n & ~0x08 | 0x08;
 	}
 	word20 r15_n;
@@ -1201,14 +1201,14 @@ ui20 xQueueReceive(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 		{
 			word16 v34_n = usCriticalNesting;
 			usCriticalNesting = v34_n + ~0x00;
-			if (v34_n == ~0x00)
+			if (v34_n == 0x01)
 				sr_n = sr_n & ~0x08 | 0x08;
 		}
 		if (usCriticalNesting != 0x00)
 		{
 			word16 v39_n = usCriticalNesting;
 			usCriticalNesting = v39_n + ~0x00;
-			if (v39_n == ~0x00)
+			if (v39_n == 0x01)
 				sr_n |= 0x08;
 		}
 	}
@@ -1234,7 +1234,7 @@ ui20 xQueueReceive(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v28_n = usCriticalNesting;
 		usCriticalNesting = v28_n + ~0x00;
-		if (v28_n == ~0x00)
+		if (v28_n == 0x01)
 			sr_n |= 0x08;
 	}
 	ui20 sr_n;
@@ -1294,7 +1294,7 @@ void uxQueueMessagesWaiting()
 {
 	word16 v5_n = usCriticalNesting;
 	usCriticalNesting = v5_n + 0x01;
-	if (v5_n != 0x01)
+	if (v5_n != ~0x00)
 	{
 		word16 v10_n = usCriticalNesting;
 		usCriticalNesting = v10_n + ~0x00;
@@ -1319,7 +1319,7 @@ ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	r15.u2->w0030 = v10_n + ~0x00;
 	Eq_n r10_n = 0x00;
 	ui20 sr_n = sr & ~0x08;
-	if (v10_n >= ~0x00)
+	if (v10_n >= 0x01)
 	{
 		r15.u2->w0030 = ~0x00;
 		if (r15.u2->w0018 != 0x00 && xTaskRemoveFromEventList(&(r15.u2)->w0018) != 0x00)
@@ -1329,14 +1329,14 @@ ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v15_n = usCriticalNesting;
 		usCriticalNesting = v15_n + ~0x00;
-		if (v15_n == ~0x00)
+		if (v15_n == 0x01)
 			sr_n = sr & ~0x08 | 0x08;
 	}
 	++usCriticalNesting;
 	ci16 v17_n = r15.u2->w002E;
 	r15.u2->w002E = v17_n + ~0x00;
 	ui20 sr_n = sr_n & ~0x08;
-	if (v17_n >= ~0x00)
+	if (v17_n >= 0x01)
 	{
 		r15.u2->w002E = ~0x00;
 		if (r15.u2->w0008 != 0x00 && xTaskRemoveFromEventList(&(r15.u2)->w0008) != 0x00)
@@ -1346,7 +1346,7 @@ ui20 prvUnlockQueue(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v20_n = usCriticalNesting;
 		usCriticalNesting = v20_n + ~0x00;
-		if (v20_n == ~0x00)
+		if (v20_n == 0x01)
 			sr_n |= 0x08;
 	}
 	r15Out = r10_n;
@@ -1367,7 +1367,7 @@ ui20 prvIsQueueEmpty(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v12_n = usCriticalNesting;
 		usCriticalNesting = v12_n + ~0x00;
-		if (v12_n == ~0x00)
+		if (v12_n == 0x01)
 			sr_n = sr & ~0x08 | 0x08;
 	}
 	r15Out = r14_n;
@@ -1388,7 +1388,7 @@ ui20 prvIsQueueFull(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	{
 		word16 v13_n = usCriticalNesting;
 		usCriticalNesting = v13_n + ~0x00;
-		if (v13_n == ~0x00)
+		if (v13_n == 0x01)
 			sr_n = sr & ~0x08 | 0x08;
 	}
 	r15Out = r14_n;
@@ -1557,7 +1557,7 @@ struct Eq_n * PRINT(Eq_n r14, struct Eq_n * r15)
 			}
 			++total_len;
 			r11_n = r11_n + ~0x00;
-		} while (r11_n != ~0x00);
+		} while (r11_n != 0x01);
 	}
 	r15_n = (struct Eq_n *) 0x01;
 	return r15_n;
@@ -1688,7 +1688,7 @@ l58A8:
 						bLoc1E_n |= 0x20;
 					goto l53E8;
 				}
-				if (r7_n >= ~0x39)
+				if (r7_n >= 0x3A)
 				{
 					Eq_n r13_n = 0x00;
 					do
@@ -1699,7 +1699,7 @@ l58A8:
 						r13_n = r13_n + ~0x2F;
 						r7_n = v54_n;
 						++r6_n;
-					} while (v54_n >= ~0x39);
+					} while (v54_n >= 0x3A);
 					bLoc1D_n = r13_n + ~0x2F;
 					continue;
 				}
@@ -1986,7 +1986,7 @@ l5576:
 				goto l53E8;
 			}
 			Eq_n r13_n = 0x00;
-			if (v47_n >= ~0x39)
+			if (v47_n >= 0x3A)
 			{
 				do
 				{
@@ -1995,7 +1995,7 @@ l5576:
 					r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n) + ~0x2F;
 					r7_n = v49_n;
 					++r6_n;
-				} while (v49_n >= ~0x39);
+				} while (v49_n >= 0x3A);
 			}
 			Eq_n r15_n = r13_n;
 			if (r13_n < ~0x00)
