@@ -4,6 +4,6 @@
 
 #include "fft.h"
 
-Eq_n g_a0001[15];
-Eq_n g_a0002[15];
+Eq_n g_a0001[13];
+Eq_n g_a0002[13];
 Eq_n g_a8090[];

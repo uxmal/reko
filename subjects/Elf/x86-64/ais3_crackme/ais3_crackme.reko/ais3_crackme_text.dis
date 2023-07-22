@@ -46,7 +46,7 @@ void deregister_tm_clones()
 // Preserved: rbp rsp
 deregister_tm_clones_entry:
 l0000000000400460:
-	branch false l0000000000400477
+	branch true l0000000000400477
 l0000000000400477:
 	branch true l0000000000400475
 l0000000000400481:

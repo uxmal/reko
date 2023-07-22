@@ -46,7 +46,7 @@ l00008050:
 	Mem49[sp_7:word16] = r1_44 + 1<16>
 	er1_16_16 = SLICE(SEQ(er1_16_16, r1_44) + 1<32>, word16, 16) (alias)
 	r3_1208 = r3_1024
-	branch r1_44 <= 3<16> l00008050
+	branch r1_44 <= 0xFFFD<16> l00008050
 l0000806E:
 	word16 er5_16_16_1033 = SLICE(er5_1188 + 1<32>, word16, 16)
 	er5_1188 = SEQ(er5_16_16_1033, r5_24 + 1<16>) (alias)
@@ -218,7 +218,7 @@ l000082B2:
 	word16 r1_525 = Mem524[sp_7:word16]
 	Mem530[sp_7:word16] = r1_525 + 1<16>
 	er1_16_16 = SLICE(SEQ(er1_16_16, r1_525) + 1<32>, word16, 16) (alias)
-	branch r1_525 > 3<16> l000082E0
+	branch r1_525 > 0xFFFD<16> l000082E0
 l000082E0:
 	word16 r5_534 = Mem530[sp_7 + 12<i32>:word16]
 	branch r5_534 > 3<16> l000082F0
@@ -477,7 +477,7 @@ l00008628:
 	word16 r5_107 = Mem102[sp_7 + 8<i32>:word16]
 	Mem114[sp_7 + 8<i32>:word16] = r5_107 + 1<16>
 	er5_16_16 = SLICE(SEQ(er5_16_16, r5_107) + 1<32>, word16, 16) (alias)
-	branch r5_107 > 4<16> l0000863E
+	branch r5_107 > 0xFFFC<16> l0000863E
 l0000863E:
 	Mem120[sp_7 + 8<i32>:word16] = 0<16>
 l00008644:
@@ -514,7 +514,7 @@ l000086B0:
 	branch SLICE(er1_202, word16, 0) <= 4<16> l0000866C
 l000086C6:
 	Mem210[sp_7 + 8<i32>:word16] = r6_126 + 1<16>
-	branch r6_126 > 2<16> l000086D8
+	branch r6_126 > 0xFFFE<16> l000086D8
 l000086D8:
 	Mem217[sp_7 + 8<i32>:word16] = 0<16>
 l000086DE:
@@ -550,7 +550,7 @@ l00008778:
 	branch r1_312 > 2<16> l00008788
 l00008788:
 	Mem317[sp_7 + 8<i32>:word16] = r6_223 + 1<16>
-	branch r6_223 > 2<16> l0000879A
+	branch r6_223 > 0xFFFE<16> l0000879A
 l0000879A:
 	Mem324[sp_7 + 8<i32>:word16] = 0<16>
 l000087A0:
@@ -584,7 +584,7 @@ l00008832:
 l00008842:
 	Mem424[sp_7 + 8<i32>:word16] = r6_330 + 1<16>
 	word32 er2_529 = SEQ(er2_16_16, 3<16>)
-	branch r6_330 > 2<16> l00008854
+	branch r6_330 > 0xFFFE<16> l00008854
 l00008854:
 	word32 er0_521 = SEQ(er0_16_16, Mem424[sp_7 + 6<i32>:word16])
 	word32 er4_531 = SEQ(er4_16_16, Mem424[sp_7 - 2<i32>:word16])
@@ -707,13 +707,13 @@ l00008928:
 	r3_124 = r3_179 + 1<16> (alias)
 	er3_16_16_180 = SLICE(SEQ(er3_16_16_180, r3_179) + 1<32>, word16, 16) (alias)
 	er6_615 = er6_154
-	branch r3_179 <= 3<16> l00008928
+	branch r3_179 <= 0xFFFD<16> l00008928
 l0000895C:
 	word16 r5_187 = Mem178[sp_14 + 16<i32>:word16]
 	Mem191[sp_14 + 16<i32>:word16] = r5_187 + 1<16>
 	er5_16_16 = SLICE(SEQ(er5_16_16, r5_187) + 1<32>, word16, 16) (alias)
 	er6_16_16_528 = er6_16_16_526
-	branch r5_187 <= 4<16> l00008908
+	branch r5_187 <= 0xFFFC<16> l00008908
 l0000896E:
 	Mem195[sp_14 + 28<i32>:word16] = r4_177
 l000088D8:
@@ -815,7 +815,7 @@ l00008AB0:
 	er0_541 = er0_437 (alias)
 	er1_554 = SEQ(er1_16_16_512, r1) (alias)
 	er2_568 = SEQ(er2_16_16, 4<16>) (alias)
-	branch r5_462 > 3<16> l00008ADC
+	branch r5_462 > 0xFFFD<16> l00008ADC
 l00008ADC:
 	ptr32 sp_473 = sp_14 + 2<i32>
 	word32 er4_575 = SEQ(er4_16_16, Mem474[sp_473 + 2<i32>:word16])

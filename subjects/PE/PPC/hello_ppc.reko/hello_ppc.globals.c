@@ -17,5 +17,6 @@ word32 g_dw1FF8; // 00001FF8
 Eq_n g_tFFFFFF98;
 Eq_n g_tFFFFFFA0;
 Eq_n g_tFFFFFFBF;
+Eq_n g_tFFFFFFE9;
 Eq_n g_tFFFFFFFD;
 Eq_n g_tFFFFFFFF;

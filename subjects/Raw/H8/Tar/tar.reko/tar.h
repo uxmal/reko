@@ -1022,11 +1022,11 @@ T_80: (in SLICE(SEQ(er1_16_16, r1_44) + 1<32>, word16, 16) @ 00008064 : word16)
   Class: Eq_22
   DataType: word16
   OrigDataType: word16
-T_81: (in 3<16> @ 0000806C : word16)
+T_81: (in 0xFFFD<16> @ 0000806C : word16)
   Class: Eq_68
   DataType: int16
   OrigDataType: ci16
-T_82: (in r1_44 <= 3<16> @ 0000806C : bool)
+T_82: (in r1_44 <= 0xFFFD<16> @ 0000806C : bool)
   Class: Eq_82
   DataType: bool
   OrigDataType: bool
@@ -2766,11 +2766,11 @@ T_516: (in SLICE(SEQ(er1_16_16, r1_525) + 1<32>, word16, 16) @ 000082CE : word16
   Class: Eq_22
   DataType: word16
   OrigDataType: word16
-T_517: (in 3<16> @ 000082DA : word16)
+T_517: (in 0xFFFD<16> @ 000082DA : word16)
   Class: Eq_68
   DataType: int16
   OrigDataType: ci16
-T_518: (in r1_525 > 3<16> @ 000082DA : bool)
+T_518: (in r1_525 > 0xFFFD<16> @ 000082DA : bool)
   Class: Eq_518
   DataType: bool
   OrigDataType: bool
@@ -6534,11 +6534,11 @@ T_1456: (in SLICE(SEQ(er5_16_16, r5_107) + 1<32>, word16, 16) @ 0000862C : word1
   Class: Eq_1333
   DataType: word16
   OrigDataType: word16
-T_1457: (in 4<16> @ 00008638 : word16)
+T_1457: (in 0xFFFC<16> @ 00008638 : word16)
   Class: Eq_1356
   DataType: int16
   OrigDataType: ci16
-T_1458: (in r5_107 > 4<16> @ 00008638 : bool)
+T_1458: (in r5_107 > 0xFFFC<16> @ 00008638 : bool)
   Class: Eq_1458
   DataType: bool
   OrigDataType: bool
@@ -6942,11 +6942,11 @@ T_1558: (in Mem210[sp_7 + 8<i32>:word16] @ 000086C6 : word16)
   Class: Eq_1356
   DataType: int16
   OrigDataType: word16
-T_1559: (in 2<16> @ 000086D2 : word16)
+T_1559: (in 0xFFFE<16> @ 000086D2 : word16)
   Class: Eq_1356
   DataType: int16
   OrigDataType: ci16
-T_1560: (in r6_126 > 2<16> @ 000086D2 : bool)
+T_1560: (in r6_126 > 0xFFFE<16> @ 000086D2 : bool)
   Class: Eq_1560
   DataType: bool
   OrigDataType: bool
@@ -7314,11 +7314,11 @@ T_1651: (in Mem317[sp_7 + 8<i32>:word16] @ 00008788 : word16)
   Class: Eq_1356
   DataType: int16
   OrigDataType: word16
-T_1652: (in 2<16> @ 00008794 : word16)
+T_1652: (in 0xFFFE<16> @ 00008794 : word16)
   Class: Eq_1356
   DataType: int16
   OrigDataType: ci16
-T_1653: (in r6_223 > 2<16> @ 00008794 : bool)
+T_1653: (in r6_223 > 0xFFFE<16> @ 00008794 : bool)
   Class: Eq_1653
   DataType: bool
   OrigDataType: bool
@@ -7834,11 +7834,11 @@ T_1781: (in SEQ(er2_16_16, 3<16>) @ 0000884C : word32)
   Class: Eq_1326
   DataType: ptr32
   OrigDataType: word32
-T_1782: (in 2<16> @ 0000884E : word16)
+T_1782: (in 0xFFFE<16> @ 0000884E : word16)
   Class: Eq_1356
   DataType: int16
   OrigDataType: ci16
-T_1783: (in r6_330 > 2<16> @ 0000884E : bool)
+T_1783: (in r6_330 > 0xFFFE<16> @ 0000884E : bool)
   Class: Eq_1783
   DataType: bool
   OrigDataType: bool
@@ -9520,11 +9520,11 @@ T_2197: (in er2_568 @ 00008AD4 : ptr32)
   Class: Eq_1892
   DataType: ptr32
   OrigDataType: word32
-T_2198: (in 3<16> @ 00008AD6 : word16)
+T_2198: (in 0xFFFD<16> @ 00008AD6 : word16)
   Class: Eq_2175
   DataType: int16
   OrigDataType: ci16
-T_2199: (in r5_462 > 3<16> @ 00008AD6 : bool)
+T_2199: (in r5_462 > 0xFFFD<16> @ 00008AD6 : bool)
   Class: Eq_2199
   DataType: bool
   OrigDataType: bool
@@ -10596,11 +10596,11 @@ T_2466: (in SLICE(SEQ(er3_16_16_180, r3_179) + 1<32>, word16, 16) @ 00008952 : w
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_2467: (in 3<16> @ 0000895A : word16)
+T_2467: (in 0xFFFD<16> @ 0000895A : word16)
   Class: Eq_2435
   DataType: ci16
   OrigDataType: ci16
-T_2468: (in r3_179 <= 3<16> @ 0000895A : bool)
+T_2468: (in r3_179 <= 0xFFFD<16> @ 0000895A : bool)
   Class: Eq_2468
   DataType: bool
   OrigDataType: bool
@@ -10656,11 +10656,11 @@ T_2481: (in SLICE(SEQ(er5_16_16, r5_187) + 1<32>, word16, 16) @ 00008960 : word1
   Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_2482: (in 4<16> @ 0000896C : word16)
+T_2482: (in 0xFFFC<16> @ 0000896C : word16)
   Class: Eq_2054
   DataType: int16
   OrigDataType: ci16
-T_2483: (in r5_187 <= 4<16> @ 0000896C : bool)
+T_2483: (in r5_187 <= 0xFFFC<16> @ 0000896C : bool)
   Class: Eq_2483
   DataType: bool
   OrigDataType: bool

@@ -4414,7 +4414,7 @@ l0001530A:
 	word32 r6_21 = Mem20[ap + 24<i32>:word32]
 	branch Mem23[r5 + 136<i32>:word32] > 0<32> l0001535C
 l0001535C:
-	branch true l000153B8
+	branch false l000153B8
 l00015381:
 l00015384:
 	word32 r7_64
@@ -4466,7 +4466,7 @@ l00015896:
 	word32 r6_21 = Mem20[ap + 24<i32>:word32]
 	branch Mem23[r5 + 136<i32>:word32] > 0<32> l000158E8
 l000158E8:
-	branch true l00015944
+	branch false l00015944
 l0001590D:
 l00015910:
 	word32 r7_64
@@ -4517,7 +4517,7 @@ l00015E22:
 	word32 r3_49 = 0<32>
 	branch Mem18[r6 + 136<i32>:word32] > 0<32> l00015E62
 l00015E62:
-	branch true l00015EC0
+	branch false l00015EC0
 l00015E89:
 l00015E8C:
 	word32 r7_59
@@ -4567,7 +4567,7 @@ l000162E6:
 	word32 r3_49 = 0<32>
 	branch Mem18[r6 + 136<i32>:word32] > 0<32> l00016326
 l00016326:
-	branch true l00016384
+	branch false l00016384
 l0001634D:
 l00016350:
 	word32 r7_59
@@ -6036,7 +6036,7 @@ l00018EF3:
 	r4_637 = SEQ(SLICE(r4_642, word24, 8), SLICE(r3, byte, 0))
 l00018EFC:
 	word32 r2_702
-	branch SLICE(r5_1047 - r4_637, byte, 0) != 0<8> l00018F18
+	branch SLICE(r5_1047, byte, 0) != SLICE(r4_637, byte, 0) l00018F18
 l00018F18:
 	r2_702 = 0<32>
 l00018F01:

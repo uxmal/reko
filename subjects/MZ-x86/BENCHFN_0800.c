@@ -765,12 +765,12 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 	mp16 fp;
 	byte bLoc03;
 	Eq_n ax_n;
-	if (wArg06 >= 0x01 && (((ds->a0482))[0][wArg02] & 0x0200) == 0x00)
+	if (wArg06 >= ~0x00 && (((ds->a0482))[0][wArg02] & 0x0200) == 0x00)
 	{
 		do
 		{
 			Eq_n ax_n = __read(ds, wArg02, wArg04, wArg06);
-			if (ax_n < 0x01 || (((ds->a0482))[0][wArg02] & 0x8000) != 0x00)
+			if (ax_n < ~0x00 || (((ds->a0482))[0][wArg02] & 0x8000) != 0x00)
 			{
 				ax_n = ax_n;
 				return ax_n;
@@ -832,7 +832,7 @@ Eq_n _write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 {
 	Eq_n fp;
 	Eq_n ax_n;
-	if (wArg06 >= 0x01)
+	if (wArg06 >= ~0x00)
 	{
 		if ((ds->a0482[0][wArg02] & 0x8000) == 0x00)
 		{
@@ -2501,7 +2501,7 @@ l0800_nBBB:
 			}
 			goto l0800_nBC7;
 		}
-		if (bl_n <= 0x5A)
+		if (bl_n <= 0x5A && bl_n >= 0x30)
 			bl_n = bl_n - 55;
 		else
 			bl_n = bl_n - 0x57;

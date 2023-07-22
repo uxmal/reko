@@ -1330,7 +1330,7 @@ void fn0000000000404890(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 // 00000000004048C0: void fn00000000004048C0()
 void fn00000000004048C0()
 {
-	if (true || true)
+	if (false || true)
 		return;
 	null();
 }
@@ -2026,7 +2026,7 @@ l0000000000405460:
 							r15_n = r13_n;
 							r12.u0 = (byte) r12.u0 + 1;
 							++rbx_n;
-							if (true)
+							if (r13_n >= r13_n)
 								goto l0000000000405502;
 							goto l0000000000405440;
 						}
@@ -5051,7 +5051,7 @@ word32 fn000000000040B710(Eq_n rsi, struct Eq_n * rdi)
 			rsi.u0 = (int64) v17_n;
 	}
 	Eq_n rax_n = fn000000000040ABC0(rsi);
-	if (rax_n > 0x1FFFFFFFFFFFFFFF)
+	if (rax_n > 0x1FFFFFFFFFFFFFFF || rax_n < 1)
 		return 0x00;
 	if (rdi->t0010.u3 == rax_n)
 		return 0x01;
@@ -5459,7 +5459,7 @@ l000000000040C4DB:
 								if (eax_n != ~0x08)
 									goto l000000000040C4DB;
 								r10_n = (word64) rax_n.u1 + 1;
-								if (rax_n == 0x09)
+								if (rax_n == ~0x08)
 								{
 									r8_n = (struct Eq_n *) &rsi.u2->u1.b0288;
 									ecx_n.u0 = 0x00;
@@ -6269,7 +6269,7 @@ l000000000040D2C3:
 								goto l000000000040D369;
 							rbp_n = r13_n;
 							++r12d_n;
-							if (false)
+							if (r13_n <= r13_n)
 								goto l000000000040D401;
 							goto l000000000040D2AC;
 						}

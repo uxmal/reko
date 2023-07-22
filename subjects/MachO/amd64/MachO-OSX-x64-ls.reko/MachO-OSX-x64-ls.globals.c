@@ -4,7 +4,6 @@
 
 #include "MachO-OSX-x64-ls.h"
 
-Eq_n g_t0014;
 Eq_n g_t0018;
 word32 g_a2684[];
 <anonymous> g_t30C8; // 00000000000030C8
@@ -137,3 +136,4 @@ Eq_n g_a65F0[];
 Eq_n g_a65F4[];
 struct Eq_n g_t65F8;
 int64 g_qw6680; // 0000000000006680
+Eq_n g_tFFFFFFEC;

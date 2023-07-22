@@ -1977,7 +1977,7 @@ union Eq_n * fn00402CE0(union Eq_n * r2, struct Eq_n * r3, int32 r4, struct Eq_n
 			r30_n->ptr0004 = r3;
 			r30_n->ptr0004 = r3 & ~0x02 | 0x01;
 			r3->ptr0000 = r30_n;
-			if (r3_n < 0x01)
+			if (r3_n < ~0x00)
 			{
 				fn00402DEC();
 				r31_n = (struct Eq_n *) (&r2_n->u0)[0x0068];
@@ -2686,7 +2686,7 @@ union Eq_n * fn00403B08(union Eq_n * r2, struct Eq_n * r3, ptr32 r29, word32 r30
 	v4->ptr0000 = r29;
 	v4->dw0004 = r30;
 	v4->dw0008 = r31;
-	if (r3 >= (struct Eq_n *) 0x17)
+	if (r3 >= (struct Eq_n *) ~0x16)
 	{
 		r29Out = r29;
 		&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;

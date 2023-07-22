@@ -19,7 +19,7 @@ Eq_n reverse(Eq_n gp0, struct Eq_n & gp14Out)
 		if ((__shift_arithmetic<word16,word16>(gp0, gp1_n) & 0x01) != 0x00)
 			gp0_n |= __shift_logical<word16,word16>(0x01, 0x03 - gp1_n);
 		gp1_n = gp1_n + 0x01;
-	} while (gp1_n <= 0x02);
+	} while (gp1_n <= ~0x01);
 	gp14Out = fp;
 	return gp0_n;
 }
@@ -42,7 +42,7 @@ int16 init_fft(ptr16 & gp4Out)
 		g_aFFFF8060[gp0_n] = (struct Eq_n) gp4_gp5_gp6_n;
 		ptr16 gp4_n = SLICE(gp4_gp5_gp6_n, word16, 32);
 		gp3_n = (word16) gp3_n.u0 + 1;
-	} while (gp3_n <= 0x0E);
+	} while (gp3_n <= ~0x0D);
 	gp4Out = gp4_n;
 	return (word16) gp3_n.u0 + 1;
 }
@@ -65,7 +65,7 @@ struct Eq_n * compute_output()
 		*((word16) gp14_n[1].w0002 + 0x0000808E) = (struct Eq_n) sqrt((word32) gp5_gp6_gp7_n, (word16) gp5_gp6_gp7_n, out gp14_n);
 		ci16 gp9_n = gp14_n[2];
 		gp9_n = gp9_n + 0x01;
-	} while (gp9_n <= 0x0E);
+	} while (gp9_n <= ~0x0D);
 	return gp14_n;
 }
 
@@ -133,7 +133,7 @@ void main()
 		gp14_n = pr_fp_num((word32) gp0_gp1_gp2_n);
 		Eq_n gp3_n = gp14_n[1];
 		gp3_n = (word32) gp3_n + 1;
-	} while (gp3_n <= 0x07);
+	} while (gp3_n <= ~0x06);
 }
 
 // 0226: Register cui16 frex(Register cui16 gp1, Register (ptr16 (ptr16 Eq_n)) gp3)

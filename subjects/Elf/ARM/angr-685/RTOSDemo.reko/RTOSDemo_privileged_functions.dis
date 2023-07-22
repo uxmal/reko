@@ -1186,7 +1186,7 @@ l00000A6C:
 	word32 r4_37 = CONVERT(Mem36[r0 + 100<i32>:byte], byte, word32)
 	Mem41[r0 + 100<i32>:byte] = 2<8>
 	word32 r4_43 = CONVERT(SLICE(r4_37, byte, 0), byte, uint32)
-	branch r2 >u 4<32> l00000A8C
+	branch r2 >u 4<32> || r2 <u 1<32> l00000A8C
 l00000A7E:
 	switch (r2 - 1<32>) { l00000AF6 l00000A9A l00000A8A l00000A86 }
 l00000A86:
@@ -1241,7 +1241,7 @@ l00000B2A:
 	word32 r4_27 = CONVERT(Mem26[r0 + 100<i32>:byte], byte, word32)
 	Mem32[r0 + 100<i32>:byte] = 2<8>
 	word32 r4_34 = CONVERT(SLICE(r4_27, byte, 0), byte, uint32)
-	branch r2 >u 4<32> l00000B4A
+	branch r2 >u 4<32> || r2 <u 1<32> l00000B4A
 l00000B3C:
 	switch (r2 - 1<32>) { l00000B94 l00000B58 l00000B48 l00000B44 }
 l00000B44:

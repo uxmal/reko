@@ -1047,12 +1047,12 @@ _read_entry:
 	byte bLoc03
 l0800_09F7:
 	word16 ax_153
-	branch wArg06 <u 1<16> l0800_0A15
+	branch wArg06 <u 0xFFFF<16> l0800_0A15
 l0800_0A08:
 	branch (Mem15[ds:(wArg02 << 1<16>) + 0x482<16>:word16] & 0x200<16>) == 0<16> l0800_0A1A
 l0800_0A1A:
 	word16 ax_40 = __read(ds, wArg02, wArg04, wArg06)
-	branch ax_40 <u 1<16> l0800_0A42
+	branch ax_40 <u 0xFFFF<16> l0800_0A42
 l0800_0A35:
 	branch (Mem46[ds:(wArg02 << 1<16>) + 0x482<16>:word16] & 0x8000<16>) == 0<16> l0800_0A48
 l0800_0A48:
@@ -1132,7 +1132,7 @@ _write_entry:
 	mp16 fp
 l0800_0ACF:
 	word16 ax_141
-	branch wArg06 >=u 1<16> l0800_0AE6
+	branch wArg06 >=u 0xFFFF<16> l0800_0AE6
 l0800_0AE6:
 	branch (Mem15[ds:(wArg02 << 1<16>) + 0x482<16>:word16] & 0x8000<16>) == 0<16> l0800_0B05
 l0800_0B05:
@@ -3059,7 +3059,7 @@ l0800_1B9E:
 l0800_1BA4:
 	branch bl_8 <=u 0x39<8> l0800_1BBB
 l0800_1BA9:
-	branch bl_8 >u 0x5A<8> l0800_1BB3
+	branch bl_8 >u 0x5A<8> || bl_8 <u 0x30<8> l0800_1BB3
 l0800_1BB3:
 	bl_16 = bl_8 - 0x57<8>
 l0800_1BAE:

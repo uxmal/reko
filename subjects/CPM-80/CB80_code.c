@@ -260,7 +260,7 @@ bool fn056B(ptr16 bc, ptr16 & bcOut)
 		if (a_n == 0x0A)
 		{
 			cu8 a_n = g_b14F3;
-			C_n = (bool) cond(a_n);
+			C_n = (bool) cond(a_n - 0x00);
 			if (a_n != 0x00)
 				++g_b14FD;
 		}

@@ -2283,7 +2283,7 @@ struct Eq_n * fn0000C6FA(struct Eq_n * r6, struct Eq_n * r7, struct Eq_n * r8, s
 		word32 r1_n;
 		ptr32 r4_n;
 		(*((word32) g_ptr192C4 + 2))();
-		if (r0_n + r6_n->dw10CE8 <= 242)
+		if (r0_n + r6_n->dw10CE8 <= ~0xF1)
 		{
 			if (r6_n->dw10CE8 == 0x00)
 			{

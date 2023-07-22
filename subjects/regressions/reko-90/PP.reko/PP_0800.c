@@ -8219,7 +8219,7 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 	struct Eq_n Eq_n::* bp_n = fp - 2;
 	mp16 sp_n = fp - 0x3E;
 	Eq_n cx_n = 0x04;
-	if (false)
+	if (true)
 		cx_n.u0 = 0x03;
 	word16 ax_n = 0x00;
 	Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002202), cx_n);
@@ -8805,7 +8805,7 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 	{
 		mp16 sp_n = fp - 0x0A;
 		Eq_n cx_n = 0x04;
-		if (false)
+		if (true)
 			cx_n.u0 = 0x03;
 		word16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002206), cx_n);
@@ -12624,7 +12624,7 @@ l0800_nAF:
 			}
 			goto l0800_nAD;
 		}
-		if (bl_n <= 0x5A)
+		if (bl_n <= 0x5A && bl_n >= 0x30)
 			bl_n = bl_n - 55;
 		else
 			bl_n = bl_n - 0x57;
@@ -16303,13 +16303,13 @@ Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08, ptr16 & dxOut
 	Eq_n ax_n;
 	if (wArg02 >=u Mem15[ds:9448:word16])
 		ax_n = fn0800-8D2B(ds, 0x06);
-	else if (wArg08 >= 0x01 && ((*((word32) ds + 9450))[wArg02] & 0x0200) == 0x00)
+	else if (wArg08 >= ~0x00 && ((*((word32) ds + 9450))[wArg02] & 0x0200) == 0x00)
 	{
 		do
 		{
 			byte ch_n;
 			Eq_n ax_n = fn0800-8F50(ds, wArg02, ptrArg04, wArg08, out ch_n, out dx);
-			if (ax_n < 0x01 || ((*((word32) ds + 9450))[wArg02] & 0x4000) == 0x00)
+			if (ax_n < ~0x00 || ((*((word32) ds + 9450))[wArg02] & 0x4000) == 0x00)
 			{
 				ax_n = ax_n;
 				goto l0800_BA44;
@@ -17100,7 +17100,7 @@ Eq_n fn0800_C632(Eq_n ds, Eq_n wArg02, Eq_n dwArg04, Eq_n wArg08, union Eq_n & d
 	Eq_n ax_n;
 	if (wArg02 >=u Mem15[ds:9448:word16])
 		ax_n = fn0800-8D2B(ds, 0x06);
-	else if (wArg08 < 0x01)
+	else if (wArg08 < ~0x00)
 		ax_n.u0 = 0x00;
 	else
 	{

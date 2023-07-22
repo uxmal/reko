@@ -7,7 +7,7 @@
 // 10071000: Register (ptr32 char) get(Stack uint32 n)
 char * get(uint32 n)
 {
-	if (n > 0x02)
+	if (n > ~0x01)
 		return "other";
 	switch (n)
 	{

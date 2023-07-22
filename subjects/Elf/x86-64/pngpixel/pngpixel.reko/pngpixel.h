@@ -433,7 +433,7 @@ T_36: (in __halt() @ 0000000000400CF9 : void)
   Class: Eq_36
   DataType: void
   OrigDataType: void
-T_37: (in false @ 0000000000400D13 : bool)
+T_37: (in true @ 0000000000400D13 : bool)
   Class: Eq_37
   DataType: bool
   OrigDataType: bool

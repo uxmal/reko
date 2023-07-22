@@ -1049,7 +1049,7 @@ void fn000000010000328E(Eq_n rdi)
 		++qwLoc40_n;
 		r15_n = SEQ(SLICE((char *) r15_n + 2, word32, 32), r15d_n + 0x02);
 		r15_n = r15_n;
-	} while (r15_n != (struct Eq_n *) 0x14);
+	} while (r15_n != (struct Eq_n *) ~0x13);
 }
 
 // 00000001000033F4: void fn00000001000033F4(Register word32 edi)

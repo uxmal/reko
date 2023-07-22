@@ -34,8 +34,8 @@ Eq_1: (struct "Globals"
 		(FFFF806A word32 dwFFFF806A)
 		(FFFF806C word16 wFFFF806C)
 		(FFFF806E (struct "Eq_748" 0001 (0 word16 w0000) (1 word16 w0001) (2 word16 w0002) (3 word16 w0003)) tFFFF806E)
-		(1 (arr Eq_1250 15) a0001)
-		(2 (arr Eq_1268 15) a0002)
+		(1 (arr Eq_1250 13) a0001)
+		(2 (arr Eq_1268 13) a0002)
 		(579 Eq_953 t0579)
 		(57C Eq_953 t057C)
 		(57F real48 r057F)
@@ -117,7 +117,7 @@ Eq_20: (union "Eq_20" (int16 u0) ((ptr32 Eq_1287) u1))
 	T_69 (in gp3_26 @ 013A : Eq_20)
 	T_72 (in Mem12[gp14_11 + 1<16>:word16] @ 013A : word16)
 	T_90 (in gp3_26 + 1<16> @ 0147 : word16)
-	T_91 (in 0xE<16> @ 0149 : word16)
+	T_91 (in 0xFFF2<16> @ 0149 : word16)
 	T_112 (in SEQ(gp8_11, gp9_6) @ 015E : word32)
 	T_115 (in Mem47[gp14_46 + 1<16>:word32] @ 015E : word32)
 	T_131 (in Mem47[gp14_46 + 1<16>:word16] @ 0164 : word16)
@@ -127,7 +127,7 @@ Eq_20: (union "Eq_20" (int16 u0) ((ptr32 Eq_1287) u1))
 	T_380 (in gp3_128 @ 021D : Eq_20)
 	T_383 (in Mem108[gp14_107 + 1<16>:word16] @ 021D : word16)
 	T_385 (in gp3_128 + 1<16> @ 021F : word16)
-	T_386 (in 7<16> @ 0221 : word16)
+	T_386 (in 0xFFF9<16> @ 0221 : word16)
 Eq_21: (struct "Eq_21" 0001 (1 word16 w0001))
 	T_21 (in gp14Out @ 0114 : (ptr16 Eq_21))
 	T_23 (in out gp14_29 @ 0114 : ptr16)
@@ -555,11 +555,11 @@ T_32: (in gp1_13 + 1<16> @ 0128 : word16)
   Class: Eq_28
   DataType: word16
   OrigDataType: word16
-T_33: (in 2<16> @ 012A : word16)
+T_33: (in 0xFFFE<16> @ 012A : word16)
   Class: Eq_30
   DataType: ci16
   OrigDataType: ci16
-T_34: (in gp1_13 <= 2<16> @ 012A : bool)
+T_34: (in gp1_13 <= 0xFFFE<16> @ 012A : bool)
   Class: Eq_34
   DataType: bool
   OrigDataType: bool
@@ -787,11 +787,11 @@ T_90: (in gp3_26 + 1<16> @ 0147 : word16)
   Class: Eq_20
   DataType: Eq_20
   OrigDataType: ui16
-T_91: (in 0xE<16> @ 0149 : word16)
+T_91: (in 0xFFF2<16> @ 0149 : word16)
   Class: Eq_20
   DataType: int16
   OrigDataType: ci16
-T_92: (in gp3_26 <= 0xE<16> @ 0149 : bool)
+T_92: (in gp3_26 <= 0xFFF2<16> @ 0149 : bool)
   Class: Eq_92
   DataType: bool
   OrigDataType: bool
@@ -987,11 +987,11 @@ T_140: (in gp9_67 + 1<16> @ 0168 : word16)
   Class: Eq_99
   DataType: uint16
   OrigDataType: word16
-T_141: (in 0xE<16> @ 016A : word16)
+T_141: (in 0xFFF2<16> @ 016A : word16)
   Class: Eq_135
   DataType: ci16
   OrigDataType: ci16
-T_142: (in gp9_67 <= 0xE<16> @ 016A : bool)
+T_142: (in gp9_67 <= 0xFFF2<16> @ 016A : bool)
   Class: Eq_142
   DataType: bool
   OrigDataType: bool
@@ -1981,11 +1981,11 @@ T_385: (in gp3_128 + 1<16> @ 021F : word16)
   Class: Eq_20
   DataType: Eq_20
   OrigDataType: word16
-T_386: (in 7<16> @ 0221 : word16)
+T_386: (in 0xFFF9<16> @ 0221 : word16)
   Class: Eq_20
   DataType: int16
   OrigDataType: ci16
-T_387: (in gp3_128 <= 7<16> @ 0221 : bool)
+T_387: (in gp3_128 <= 0xFFF9<16> @ 0221 : bool)
   Class: Eq_387
   DataType: bool
   OrigDataType: bool
@@ -5443,16 +5443,16 @@ T_1250:
   OrigDataType: (struct 0001 (0 T_64 t0000))
 T_1251:
   Class: Eq_1251
-  DataType: (arr Eq_1250 15)
-  OrigDataType: (arr T_1250 15)
+  DataType: (arr Eq_1250 13)
+  OrigDataType: (arr T_1250 13)
 T_1252:
   Class: Eq_1250
   DataType: Eq_1250
   OrigDataType: (struct 0001 (0 T_72 t0000))
 T_1253:
   Class: Eq_1253
-  DataType: (arr Eq_1250 15)
-  OrigDataType: (arr T_1252 15)
+  DataType: (arr Eq_1250 13)
+  OrigDataType: (arr T_1252 13)
 T_1254:
   Class: Eq_1254
   DataType: Eq_1254
@@ -5499,24 +5499,24 @@ T_1264:
   OrigDataType: (struct 0001 (0 T_115 t0000))
 T_1265:
   Class: Eq_1265
-  DataType: (arr Eq_1250 15)
-  OrigDataType: (arr T_1264 15)
+  DataType: (arr Eq_1250 13)
+  OrigDataType: (arr T_1264 13)
 T_1266:
   Class: Eq_1250
   DataType: Eq_1250
   OrigDataType: (struct 0001 (0 T_131 t0000))
 T_1267:
   Class: Eq_1267
-  DataType: (arr Eq_1250 15)
-  OrigDataType: (arr T_1266 15)
+  DataType: (arr Eq_1250 13)
+  OrigDataType: (arr T_1266 13)
 T_1268:
   Class: Eq_1268
   DataType: Eq_1268
   OrigDataType: (struct 0001 (0 T_138 t0000))
 T_1269:
   Class: Eq_1269
-  DataType: (arr Eq_1268 15)
-  OrigDataType: (arr T_1268 15)
+  DataType: (arr Eq_1268 13)
+  OrigDataType: (arr T_1268 13)
 T_1270:
   Class: Eq_1270
   DataType: Eq_1270
@@ -5571,16 +5571,16 @@ T_1282:
   OrigDataType: (struct 0001 (0 T_374 t0000))
 T_1283:
   Class: Eq_1283
-  DataType: (arr Eq_1250 8)
-  OrigDataType: (arr T_1282 8)
+  DataType: (arr Eq_1250 6)
+  OrigDataType: (arr T_1282 6)
 T_1284:
   Class: Eq_1250
   DataType: Eq_1250
   OrigDataType: (struct 0001 (0 T_383 t0000))
 T_1285:
   Class: Eq_1285
-  DataType: (arr Eq_1250 8)
-  OrigDataType: (arr T_1284 8)
+  DataType: (arr Eq_1250 6)
+  OrigDataType: (arr T_1284 6)
 T_1286:
   Class: Eq_1286
   DataType: Eq_1286
@@ -5618,8 +5618,8 @@ struct Globals {
 	word32 dwFFFF806A;	// FFFF806A
 	word16 wFFFF806C;	// FFFF806C
 	struct Eq_748 tFFFF806E;	// FFFF806E
-	Eq_1250 a0001[15];	// 1
-	Eq_1268 a0002[15];	// 2
+	Eq_1250 a0001[13];	// 1
+	Eq_1268 a0002[13];	// 2
 	Eq_953 t0579;	// 579
 	Eq_953 t057C;	// 57C
 	real48 r057F;	// 57F

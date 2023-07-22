@@ -7,7 +7,7 @@ char * get(uint32 n)
 // Preserved:
 get_entry:
 l10071000:
-	branch n >u 2<32> l10071029
+	branch n >u 0xFFFFFFFE<32> l10071029
 l10071029:
 	return 0x10072000<p32>
 l1007100A:

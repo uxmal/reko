@@ -1016,7 +1016,27 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitConditionOf(ConditionOf c)
         {
-            var (e, changed) = c.Expression.Accept(this);
+            Expression e;
+            bool changed;
+            // It's unsafe to simplify 'cond(x - y)'. This operation actually
+            // requires flags of expression, not expression itseft.So
+            // ConditionCodeEliminator should do its work before. For instance
+            // we have cond(x - y) where x = y + 1 and can't simplify it to
+            // cond((y + 1) - y) => cond(1). 'y + 1 > y' can be used as test
+            // for overflow.
+            if (c.Expression is BinaryExpression bin &&
+                bin.Operator.Type == OperatorType.ISub)
+            {
+                var (left, changedLeft) = bin.Left.Accept(this);
+                var (right, changedRight) = bin.Right.Accept(this);
+                e = new BinaryExpression(
+                    bin.Operator, bin.DataType, left, right);
+                changed = changedLeft || changedRight;
+            }
+            else
+            {
+                (e, changed) = c.Expression.Accept(this);
+            }
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
             // we leave that as an exercise to re reader
             if (changed)

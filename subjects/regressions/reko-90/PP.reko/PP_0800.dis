@@ -9117,7 +9117,7 @@ l0800_5E64:
 	word16 bp_1029 = fp - 2<i16>
 	word16 sp_122 = fp - 0x3E<16>
 	word16 cx_23 = 4<16>
-	branch true l0800_5E80
+	branch false l0800_5E80
 l0800_5E7E:
 	cx_23 = 3<16>
 l0800_5E80:
@@ -9761,7 +9761,7 @@ l0800_66AD:
 l0800_66BE:
 	word16 sp_130 = fp - 0xA<16>
 	word16 cx_31 = 4<16>
-	branch true l0800_66D2
+	branch false l0800_66D2
 l0800_66D0:
 	cx_31 = 3<16>
 l0800_66D2:
@@ -14242,7 +14242,7 @@ l0800_9485:
 l0800_948B:
 	branch bl_8 <=u 0x39<8> l0800_94A2
 l0800_9490:
-	branch bl_8 >u 0x5A<8> l0800_949A
+	branch bl_8 >u 0x5A<8> || bl_8 <u 0x30<8> l0800_949A
 l0800_949A:
 	bl_16 = bl_8 - 0x57<8>
 l0800_9495:
@@ -18498,13 +18498,13 @@ l0800_B97F:
 	word16 ax_173
 	branch wArg02 <u Mem15[ds:0x24E8<16>:word16] l0800_B99A
 l0800_B99A:
-	branch wArg08 <u 1<16> l0800_B9B0
+	branch wArg08 <u 0xFFFF<16> l0800_B9B0
 l0800_B9A3:
 	branch (Mem15[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] & 0x200<16>) == 0<16> l0800_B9B5
 l0800_B9B5:
 	byte ch_346
 	word16 ax_46 = fn0800_8F50(ds, wArg02, ptrArg04, wArg08, out ch_346, out dx)
-	branch ax_46 <u 1<16> l0800_B9DD
+	branch ax_46 <u 0xFFFF<16> l0800_B9DD
 l0800_B9D0:
 	branch (Mem55[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] & 0x4000<16>) != 0<16> l0800_B9E2
 l0800_B9E2:
@@ -19504,7 +19504,7 @@ l0800_C632:
 	word16 ax_123
 	branch wArg02 <u Mem15[ds:0x24E8<16>:word16] l0800_C64E
 l0800_C64E:
-	branch wArg08 >=u 1<16> l0800_C65C
+	branch wArg08 >=u 0xFFFF<16> l0800_C65C
 l0800_C65C:
 	branch (Mem15[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] & 0x800<16>) == 0<16> l0800_C677
 l0800_C668:

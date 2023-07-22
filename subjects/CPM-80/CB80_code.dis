@@ -347,7 +347,7 @@ l05C9:
 	Mem48[0x14F6<16>:byte] = Mem5[0x14F6<16>:byte] + 1<8>
 l05BA:
 	byte a_50 = Mem5[0x14F3<16>:byte]
-	C_66 = SLICE(cond(a_50), bool, 0) (alias)
+	C_66 = SLICE(cond(a_50 - 0<8>), bool, 0) (alias)
 	branch a_50 == 0<8> l05C6
 l05C2:
 	Mem54[0x14FD<16>:byte] = Mem5[0x14FD<16>:byte] + 1<8>

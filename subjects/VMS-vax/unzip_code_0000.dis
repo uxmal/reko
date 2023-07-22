@@ -1345,7 +1345,7 @@ word32 fn000098D6(word32 r0, word32 r2, word32 r3, word32 r4, word32 ap)
 // Preserved:
 fn000098D6_entry:
 l000098D6:
-	branch 0xFFFE77D4<p32> != 0<32> l000098FA
+	branch 0xFFFE77D4<p32> != 0x00000000<p32> l000098FA
 l000098FA:
 	word32 r0_17
 	branch Mem0[ap + 4<i32>:word32] == 0<32> l00009904
@@ -3077,7 +3077,7 @@ l0000C921:
 	call Mem120[0x000192C4<p32>:word32] + 2<i32> (retsize: 4;)
 		uses: ap:ap,fp:fp,pc:pc_132,r1:r1_746,r2:r2_131,r3:r3_134,r4:r4_747,r5:r5_748,r6:r6,r7:r7,r8:r8_135,Stack +0004:r7 + 0xC701<32>
 		defs: fp:fp_128,pc:pc_132,r0:r0_130,r1:r1_746,r10:r10_125,r2:r2_131,r3:r3_134,r4:r4_747,r5:r5_748,r6:r6_129,r7:r7_133,r8:r8_135,r9:r9_127
-	branch r0_130 + Mem120[r6_129 + 0x10CE8<32>:word32] <=u 0xF2<32> l0000C945
+	branch r0_130 + Mem120[r6_129 + 0x10CE8<32>:word32] <=u 0xFFFFFF0E<32> l0000C945
 l0000C945:
 	branch Mem120[r6_129 + 0x10CE8<32>:word32] != 0<32> l0000C974
 l0000C94D:

@@ -8,6 +8,7 @@ Eq_1: (struct "Globals"
 		(FFFFFF98 Eq_2996 tFFFFFF98)
 		(FFFFFFA0 Eq_2488 tFFFFFFA0)
 		(FFFFFFBF Eq_2996 tFFFFFFBF)
+		(FFFFFFE9 Eq_2879 tFFFFFFE9)
 		(FFFFFFFD Eq_2194 tFFFFFFFD)
 		(FFFFFFFF Eq_90 tFFFFFFFF)
 		(1 Eq_2194 t0001)
@@ -1490,7 +1491,7 @@ Eq_2879: (struct "Eq_2879" 000C (4 word32 dw0004))
 	T_4271 (in r3 @ 00403294 : (ptr32 Eq_2879))
 	T_4284 (in 0x16<32> @ 00403294 : word32)
 	T_4585 (in r30 @ 00403570 : (ptr32 Eq_2879))
-	T_5074 (in 0x17<32> @ 00403B24 : word32)
+	T_5074 (in 0xFFFFFFE9<32> @ 00403B24 : word32)
 	T_5083 (in r3 @ 00403BB0 : (ptr32 Eq_2879))
 	T_5105 (in r10_6 @ 00403C24 : (ptr32 Eq_2879))
 	T_5108 (in Mem0[r2 + 244<i32>:word32] @ 00403C24 : word32)
@@ -17303,11 +17304,11 @@ T_3842: (in Mem111[r3 + 0<32>:word32] @ 00402DCC : word32)
   Class: Eq_3623
   DataType: (ptr32 Eq_3623)
   OrigDataType: word32
-T_3843: (in 1<32> @ 00402DD0 : word32)
+T_3843: (in 0xFFFFFFFF<32> @ 00402DD0 : word32)
   Class: Eq_3789
   DataType: int32
   OrigDataType: int32
-T_3844: (in r3_84 >= 1<32> @ 00402DD0 : bool)
+T_3844: (in r3_84 >= 0xFFFFFFFF<32> @ 00402DD0 : bool)
   Class: Eq_3844
   DataType: bool
   OrigDataType: bool
@@ -22227,11 +22228,11 @@ T_5073: (in Mem13[v4 + 8<i32>:word32] @ 00403B0C : word32)
   Class: Eq_4253
   DataType: word32
   OrigDataType: word32
-T_5074: (in 0x17<32> @ 00403B24 : word32)
+T_5074: (in 0xFFFFFFE9<32> @ 00403B24 : word32)
   Class: Eq_2879
   DataType: (ptr32 Eq_2879)
   OrigDataType: int32
-T_5075: (in r3 >= (struct Eq_2879 *) 0x17<32> @ 00403B24 : bool)
+T_5075: (in r3 >= (struct Eq_2879 *) 0xFFFFFFE9<32> @ 00403B24 : bool)
   Class: Eq_5075
   DataType: bool
   OrigDataType: bool
@@ -24552,6 +24553,7 @@ typedef struct Globals {
 	Eq_2996 tFFFFFF98;	// FFFFFF98
 	Eq_2488 tFFFFFFA0;	// FFFFFFA0
 	Eq_2996 tFFFFFFBF;	// FFFFFFBF
+	Eq_2879 tFFFFFFE9;	// FFFFFFE9
 	Eq_2194 tFFFFFFFD;	// FFFFFFFD
 	Eq_90 tFFFFFFFF;	// FFFFFFFF
 	Eq_2194 t0001;	// 1

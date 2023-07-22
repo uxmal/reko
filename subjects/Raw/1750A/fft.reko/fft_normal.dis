@@ -20,7 +20,7 @@ l0122:
 	gp0_25 = gp0_25 | __shift_logical<word16,word16>(1<16>, 3<16> - gp1_13)
 l0128:
 	gp1_12 = gp1_13 + 1<16>
-	branch gp1_13 <= 2<16> l011B
+	branch gp1_13 <= 0xFFFE<16> l011B
 l012B:
 	gp14Out = fp
 	return gp0_25
@@ -50,7 +50,7 @@ l0132:
 	Mem41[gp0_13 * 3<16> + 0x8060<16>:real48] = gp4_gp5_gp6_36
 	word16 gp4_37 = SLICE(gp4_gp5_gp6_36, word16, 32)
 	gp3_42 = gp3_26 + 1<16>
-	branch gp3_26 <= 0xE<16> l0132
+	branch gp3_26 <= 0xFFF2<16> l0132
 l014A:
 	gp4Out = gp4_37
 	return gp3_26 + 1<16>
@@ -80,7 +80,7 @@ l0152:
 	Mem66[Mem47[gp14_46 + 1<16>:word16] + 0x8090<16>:real48] = sqrt(SLICE(gp5_gp6_gp7_36, word32, 0), SLICE(gp5_gp6_gp7_36, word16, 0), out gp14_46)
 	word16 gp9_67 = Mem66[gp14_46 + 2<16>:word16]
 	gp9_6 = gp9_67 + 1<16>
-	branch gp9_67 <= 0xE<16> l0152
+	branch gp9_67 <= 0xFFF2<16> l0152
 l016B:
 	return gp14_46
 compute_output_exit:
@@ -170,7 +170,7 @@ l0214:
 	gp14_107 = pr_fp_num(SLICE(gp0_gp1_gp2_101, word32, 0))
 	word16 gp3_128 = Mem108[gp14_107 + 1<16>:word16]
 	gp3_129 = gp3_128 + 1<16>
-	branch gp3_128 <= 7<16> l0214
+	branch gp3_128 <= 0xFFF9<16> l0214
 l0222:
 	return
 main_exit:

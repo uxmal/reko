@@ -32,11 +32,11 @@ T_4: (in n @ 10071008 : uint32)
   Class: Eq_4
   DataType: uint32
   OrigDataType: uint32
-T_5: (in 2<32> @ 10071008 : word32)
+T_5: (in 0xFFFFFFFE<32> @ 10071008 : word32)
   Class: Eq_4
   DataType: uint32
   OrigDataType: up32
-T_6: (in n > 2<32> @ 10071008 : bool)
+T_6: (in n > 0xFFFFFFFE<32> @ 10071008 : bool)
   Class: Eq_6
   DataType: bool
   OrigDataType: bool

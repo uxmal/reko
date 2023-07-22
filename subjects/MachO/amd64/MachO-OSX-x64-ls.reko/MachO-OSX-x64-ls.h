@@ -5,7 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
-		(14 Eq_1384 t0014)
+		(FFFFFFEC Eq_1384 tFFFFFFEC)
 		(18 Eq_36 t0018)
 		(2684 (arr word32) a2684)
 		(30C8 code t30C8)
@@ -820,7 +820,7 @@ Eq_1384: (struct "Eq_1384" (5411 cu8 b5411))
 	T_1385 (in 0<64> @ 00000001000032D0 : word64)
 	T_1391 (in r15_318 @ 00000001000032ED : word64)
 	T_1462 (in SEQ(SLICE(r15_318 + 2<64>, word32, 32), r15d_49 + 2<32>) @ 00000001000032D0 : word64)
-	T_1463 (in 0x14<64> @ 00000001000033DF : word64)
+	T_1463 (in 0xFFFFFFFFFFFFFFEC<64> @ 00000001000033DF : word64)
 Eq_1402: (union "Eq_1402" (int64 u0) (uint64 u1))
 	T_1402 (in r13_108 @ 0000000100003307 : Eq_1402)
 	T_1403 (in 0<u64> @ 0000000100003307 : uint64)
@@ -7290,11 +7290,11 @@ T_1462: (in SEQ(SLICE(r15_318 + 2<64>, word32, 32), r15d_49 + 2<32>) @ 000000010
   Class: Eq_1384
   DataType: (ptr64 Eq_1384)
   OrigDataType: word64
-T_1463: (in 0x14<64> @ 00000001000033DF : word64)
+T_1463: (in 0xFFFFFFFFFFFFFFEC<64> @ 00000001000033DF : word64)
   Class: Eq_1384
   DataType: (ptr64 Eq_1384)
   OrigDataType: word64
-T_1464: (in r15_318 != (struct Eq_1384 *) 0x14<64> @ 00000001000033DF : bool)
+T_1464: (in r15_318 != (struct Eq_1384 *) 0xFFFFFFFFFFFFFFEC<64> @ 00000001000033DF : bool)
   Class: Eq_1464
   DataType: bool
   OrigDataType: bool
@@ -16424,7 +16424,7 @@ typedef struct Eq_37;
 struct _acl;
 struct Eq_1380;
 struct Globals {
-	Eq_1384 t0014;	// 14
+	Eq_1384 tFFFFFFEC;	// FFFFFFEC
 	Eq_36 t0018;	// 18
 	word32 a2684[];	// 2684
 	<anonymous> t30C8;	// 30C8
