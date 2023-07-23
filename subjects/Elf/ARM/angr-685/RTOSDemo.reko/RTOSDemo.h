@@ -6164,11 +6164,11 @@ T_844: (in Mem32[r0 + 56<i32>:word32] @ 000004EA : word32)
   Class: Eq_825
   DataType: up32
   OrigDataType: word32
-T_845: (in 1<32> @ 000004EE : word32)
+T_845: (in 0xFFFFFFFF<32> @ 000004EE : word32)
   Class: Eq_825
   DataType: up32
   OrigDataType: word32
-T_846: (in r2_17 == 1<32> @ 000004EE : bool)
+T_846: (in r2_17 == 0xFFFFFFFF<32> @ 000004EE : bool)
   Class: Eq_846
   DataType: bool
   OrigDataType: bool
@@ -11768,11 +11768,11 @@ T_2217: (in Mem33[r4_21 + 128<i32>:word32] @ 00000D80 : word32)
   Class: Eq_2209
   DataType: up32
   OrigDataType: word32
-T_2218: (in 1<32> @ 00000D84 : word32)
+T_2218: (in 0xFFFFFFFF<32> @ 00000D84 : word32)
   Class: Eq_2209
   DataType: up32
   OrigDataType: word32
-T_2219: (in r7_30 != 1<32> @ 00000D84 : bool)
+T_2219: (in r7_30 != 0xFFFFFFFF<32> @ 00000D84 : bool)
   Class: Eq_2219
   DataType: bool
   OrigDataType: bool

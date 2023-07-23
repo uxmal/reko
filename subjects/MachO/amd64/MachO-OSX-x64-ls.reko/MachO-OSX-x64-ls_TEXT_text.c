@@ -545,7 +545,7 @@ l0000000100002B5E:
 			Eq_n eax_n = getopt("1@ABCFGHLOPRSTUWabcdefghiklmnopqrstuvwx", rsi, edi);
 			if (eax_n <= 0x30)
 				break;
-			if (eax_n > ~0x77)
+			if (eax_n > 0x78)
 				goto l0000000100002B56;
 			Eq_n rax_n;
 			Eq_n rax_n;
@@ -1017,16 +1017,16 @@ void fn000000010000328E(Eq_n rdi)
 		Eq_n r13_n = 0x00;
 		while (true)
 		{
-			if (r12b_n <= 0xC9)
+			if (r12b_n <= 55)
 			{
 				(r14_n - 8)[r13_n] = (int32) r12b_n + ~0x2F;
 				if (bx_n == 0x00)
 					fputs(*__stderrp, "warn: LSCOLORS should use characters a-h instead of 0-9 (see the manual page)\n");
 				bx_n = 0x01;
 			}
-			else if (r12b_n <= 0x98)
+			else if (r12b_n <= 0x68)
 				(r14_n - 8)[r13_n] = (int32) r12b_n + ~0x60;
-			else if (r12b_n <= 0xB8)
+			else if (r12b_n <= 0x48)
 			{
 				(r14_n - 8)[r13_n] = (int32) r12b_n + ~0x40;
 				r14_n->a0000[0] = 0x01;

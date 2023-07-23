@@ -2693,11 +2693,11 @@ l00013BC8:
 	word32 i0_444
 	bool v34_566
 	word32 l1_251
-	branch i1_57 == 0xFFFFFFFF<32> l00013BD0_ds_t
+	branch i1_57 == 1<32> l00013BD0_ds_t
 l00013BD0_ds_t:
 	l1_251 = l1_20 + 1<32>
 l00013CA4:
-	v34_566 = i1_57 != 0xFFFFFFFF<32>
+	v34_566 = i1_57 != 1<32>
 l00013BD0_ds_f:
 	word32 l1_81 = l1_20 + 1<32>
 l00013BD4:
@@ -3750,7 +3750,7 @@ l000155FC:
 	o5_113 = o0_159
 	i1_157 = l0_100 + 8<32>
 	word32 o3_162 = o0_159 + 0xFFFFFFFF<32>
-	branch o0_159 < 0xFFFFFFFF<32> l0001560C_ds_t
+	branch o0_159 < 1<32> l0001560C_ds_t
 l0001560C_ds_t:
 	g2_158 = l1_133 + 8<32>
 l0001560C_ds_f:
@@ -5366,7 +5366,7 @@ l00016E2C_ds_f:
 	word32 o3_436 = SLICE(o2_o3_433, word32, 0)
 	word32 o2_440 = SLICE(o2_o3_433, word32, 32)
 l00016E30:
-	word32 o2_442 = o2_440 + CONVERT(o3_436 <u 0x1E61<32>, bool, word32)
+	word32 o2_442 = o2_440 + CONVERT(o3_436 <u 0xFFFFE19F<32>, bool, word32)
 	branch l3_413 + 1<32> <= l5_419 l00016E50_ds_t
 l00016E50_ds_t:
 	Mem448[l4_418:word64] = SEQ(o2_442, o3_436 + 0x1E61<32>)

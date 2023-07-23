@@ -244,7 +244,7 @@ Eq_n __divsi3(Eq_n r0, Eq_n r1)
 void __div0(Eq_n r0)
 {
 	__syscall<word32>(0x00900014);
-	if (r0 >= 1000)
+	if (r0 >= ~0x03E7)
 		return;
 	__syscall<word32>(0x00900025);
 }
@@ -287,7 +287,7 @@ word32 __do_global_ctors_aux()
 	word32 r4;
 	struct Eq_n * r3_n = g_ptr8740;
 	<anonymous> * r2_n = r3_n->ptrFFFFFFFC;
-	if (r2_n == (<anonymous> *) 0x01)
+	if (r2_n == (<anonymous> *) ~0x00)
 		return r4;
 	word32 r4_n;
 	word32 r3_n;

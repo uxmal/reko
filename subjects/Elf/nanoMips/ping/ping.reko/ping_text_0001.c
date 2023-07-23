@@ -118,18 +118,18 @@ void __truncdfsf2(Eq_n r4, Eq_n r5)
 	if ((r10_n.u11 + 1 & 0x07FF) >= 0x02)
 	{
 		r8_n.u3 = (word32) r10_n - 896;
-		if (r10_n > ~0x047D)
+		if (r10_n > 1150)
 		{
 			r7_n.u0 = 0x00;
 			r8_n.u0 = 0xFF;
 			goto l004102FC;
 		}
-		if (r10_n > ~0x037F)
+		if (r10_n > 0x0380)
 		{
 			r7_n = r9_n << 0x03 | ((r4 << 0x03) >> 0x1D | (word32) (r4 << 0x06 > 0x00));
 			goto l004102C8;
 		}
-		if (r10_n < ~0x0368)
+		if (r10_n < 0x0369)
 		{
 			r7_n.u0 = 0x01;
 			r8_n.u0 = 0x00;

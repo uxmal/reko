@@ -181,7 +181,7 @@ Eq_42: (union "Eq_42" (cu8 u0) ((ptr16 byte) u1))
 	T_1754 (in Mem320[Mem320[0x168B<16>:word16] + (CONVERT(Mem320[0x1697<16>:byte], byte, uint16) + 1<16>):byte] @ 0B2D : byte)
 	T_1791 (in Mem364[Mem364[0x168B<16>:word16] + (CONVERT(Mem364[0x1697<16>:byte], byte, uint16) + 9<16>):byte] @ 0B55 : byte)
 	T_1828 (in Mem22[0x1696<16>:byte] @ 0B90 : byte)
-	T_1829 (in 0xFF<8> @ 0B90 : byte)
+	T_1829 (in 1<8> @ 0B90 : byte)
 	T_1854 (in Mem5[0x1696<16>:byte] @ 0B96 : byte)
 	T_1856 (in g_t1696.u0 - 1<8> @ 0B96 : byte)
 	T_1858 (in Mem8[0x1696<16>:byte] @ 0B96 : byte)
@@ -7919,11 +7919,11 @@ T_1771: (in Mem358[0x1697<16>:byte] @ 0B32 : byte)
   Class: Eq_1481
   DataType: cu8
   OrigDataType: byte
-T_1772: (in 1<8> @ 0B35 : byte)
+T_1772: (in 0xFF<8> @ 0B35 : byte)
   Class: Eq_1481
   DataType: cu8
   OrigDataType: byte
-T_1773: (in a_355 != 1<8> @ 0B35 : bool)
+T_1773: (in a_355 != 0xFF<8> @ 0B35 : bool)
   Class: Eq_1773
   DataType: bool
   OrigDataType: bool
@@ -8087,11 +8087,11 @@ T_1813: (in SLICE(cond(hl_396), bool, 0) @ 0B65 : bool)
   Class: Eq_1330
   DataType: Eq_1330
   OrigDataType: bool
-T_1814: (in 1<8> @ 0B6E : byte)
+T_1814: (in 0xFF<8> @ 0B6E : byte)
   Class: Eq_1481
   DataType: cu8
   OrigDataType: byte
-T_1815: (in a_399 != 1<8> @ 0B6E : bool)
+T_1815: (in a_399 != 0xFF<8> @ 0B6E : bool)
   Class: Eq_1815
   DataType: bool
   OrigDataType: bool
@@ -8147,19 +8147,19 @@ T_1828: (in Mem22[0x1696<16>:byte] @ 0B90 : byte)
   Class: Eq_42
   DataType: Eq_42
   OrigDataType: cu8
-T_1829: (in 0xFF<8> @ 0B90 : byte)
+T_1829: (in 1<8> @ 0B90 : byte)
   Class: Eq_42
   DataType: cu8
   OrigDataType: cu8
-T_1830: (in g_t1696.u0 < 0xFF<8> @ 0B90 : bool)
+T_1830: (in g_t1696.u0 < 1<8> @ 0B90 : bool)
   Class: Eq_1830
   DataType: bool
   OrigDataType: bool
-T_1831: (in CONVERT(Mem22[0x1696<16>:byte] <u 0xFF<8>, bool, byte) @ 0B90 : byte)
+T_1831: (in CONVERT(Mem22[0x1696<16>:byte] <u 1<8>, bool, byte) @ 0B90 : byte)
   Class: Eq_1831
   DataType: byte
   OrigDataType: byte
-T_1832: (in 0<8> - (byte) (g_t1696.u0 < 0xFF<8>) @ 0B90 : byte)
+T_1832: (in 0<8> - (byte) (g_t1696.u0 < 1<8>) @ 0B90 : byte)
   Class: Eq_1832
   DataType: byte
   OrigDataType: byte
@@ -8211,11 +8211,11 @@ T_1844: (in 0<8> - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3<i32>] < 0x2F<8>) 
   Class: Eq_1844
   DataType: byte
   OrigDataType: byte
-T_1845: (in 0<8> - (byte) (g_t1696.u0 < 0xFF<8>) & 0<8> - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3<i32>] < 0x2F<8>) @ 0B90 : byte)
+T_1845: (in 0<8> - (byte) (g_t1696.u0 < 1<8>) & 0<8> - (byte) ((g_t1692.u1)[(uint16) g_b1697 /16 3<i32>] < 0x2F<8>) @ 0B90 : byte)
   Class: Eq_1845
   DataType: byte
   OrigDataType: byte
-T_1846: (in SEQ(0<8> - CONVERT(Mem22[0x1696<16>:byte] <u 0xFF<8>, bool, byte) & 0<8> - CONVERT(Mem0[Mem0[0x1692<16>:word16] + CONVERT(Mem0[0x1697<16>:byte], byte, uint16):byte] <u 0x2F<8>, bool, byte), f) @ 0B90 : word16)
+T_1846: (in SEQ(0<8> - CONVERT(Mem22[0x1696<16>:byte] <u 1<8>, bool, byte) & 0<8> - CONVERT(Mem0[Mem0[0x1692<16>:word16] + CONVERT(Mem0[0x1697<16>:byte], byte, uint16):byte] <u 0x2F<8>, bool, byte), f) @ 0B90 : word16)
   Class: Eq_1824
   DataType: word16
   OrigDataType: word16
@@ -8287,19 +8287,19 @@ T_1863: (in Mem0[0x138A<16>:byte] @ 0BEB : byte)
   Class: Eq_1863
   DataType: cu8
   OrigDataType: cu8
-T_1864: (in 0xFE<8> @ 0BEB : byte)
+T_1864: (in 2<8> @ 0BEB : byte)
   Class: Eq_1863
   DataType: cu8
   OrigDataType: cu8
-T_1865: (in g_b138A < 0xFE<8> @ 0BEB : bool)
+T_1865: (in g_b138A < 2<8> @ 0BEB : bool)
   Class: Eq_1865
   DataType: bool
   OrigDataType: bool
-T_1866: (in CONVERT(Mem0[0x138A<16>:byte] <u 0xFE<8>, bool, byte) @ 0BEB : byte)
+T_1866: (in CONVERT(Mem0[0x138A<16>:byte] <u 2<8>, bool, byte) @ 0BEB : byte)
   Class: Eq_1866
   DataType: byte
   OrigDataType: byte
-T_1867: (in 0<8> - (byte) (g_b138A < 0xFE<8>) @ 0BEB : byte)
+T_1867: (in 0<8> - (byte) (g_b138A < 2<8>) @ 0BEB : byte)
   Class: Eq_963
   DataType: byte
   OrigDataType: byte
@@ -9639,19 +9639,19 @@ T_2201: (in Mem22[0x16A8<16>:byte] @ 102F : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2202: (in 0xFF<8> @ 102F : byte)
+T_2202: (in 1<8> @ 102F : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2203: (in g_b16A8 < 0xFF<8> @ 102F : bool)
+T_2203: (in g_b16A8 < 1<8> @ 102F : bool)
   Class: Eq_2203
   DataType: bool
   OrigDataType: bool
-T_2204: (in CONVERT(Mem22[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) @ 102F : byte)
+T_2204: (in CONVERT(Mem22[0x16A8<16>:byte] <u 1<8>, bool, byte) @ 102F : byte)
   Class: Eq_2204
   DataType: byte
   OrigDataType: byte
-T_2205: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) @ 102F : byte)
+T_2205: (in 0<8> - (byte) (g_b16A8 < 1<8>) @ 102F : byte)
   Class: Eq_2205
   DataType: byte
   OrigDataType: byte
@@ -9667,19 +9667,19 @@ T_2208: (in Mem6[0x16A8<16>:byte] @ 102F : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2209: (in 3<8> @ 102F : byte)
+T_2209: (in 0xFD<8> @ 102F : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2210: (in g_b16A8 < 3<8> @ 102F : bool)
+T_2210: (in g_b16A8 < 0xFD<8> @ 102F : bool)
   Class: Eq_2210
   DataType: bool
   OrigDataType: bool
-T_2211: (in CONVERT(Mem6[0x16A8<16>:byte] <u 3<8>, bool, byte) @ 102F : byte)
+T_2211: (in CONVERT(Mem6[0x16A8<16>:byte] <u 0xFD<8>, bool, byte) @ 102F : byte)
   Class: Eq_2211
   DataType: byte
   OrigDataType: byte
-T_2212: (in 0<8> - (byte) (g_b16A8 < 3<8>) @ 102F : byte)
+T_2212: (in 0<8> - (byte) (g_b16A8 < 0xFD<8>) @ 102F : byte)
   Class: Eq_2212
   DataType: byte
   OrigDataType: byte
@@ -9687,15 +9687,15 @@ T_2213: (in SLICE(af, byte, 8) @ 102F : byte)
   Class: Eq_2213
   DataType: byte
   OrigDataType: byte
-T_2214: (in 0<8> - (byte) (g_b16A8 < 3<8>) & SLICE(af, byte, 8) @ 102F : byte)
+T_2214: (in 0<8> - (byte) (g_b16A8 < 0xFD<8>) & SLICE(af, byte, 8) @ 102F : byte)
   Class: Eq_2214
   DataType: byte
   OrigDataType: byte
-T_2215: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) & (0<8> - (byte) (g_b16A8 < 3<8>) & SLICE(af, byte, 8)) @ 102F : byte)
+T_2215: (in 0<8> - (byte) (g_b16A8 < 1<8>) & (0<8> - (byte) (g_b16A8 < 0xFD<8>) & SLICE(af, byte, 8)) @ 102F : byte)
   Class: Eq_2215
   DataType: byte
   OrigDataType: byte
-T_2216: (in 0<8> - (byte) (g_b14FF < 0xE<8>) & (0<8> - (byte) (g_b16A8 < 0xFF<8>) & (0<8> - (byte) (g_b16A8 < 3<8>) & SLICE(af, byte, 8))) @ 102F : byte)
+T_2216: (in 0<8> - (byte) (g_b14FF < 0xE<8>) & (0<8> - (byte) (g_b16A8 < 1<8>) & (0<8> - (byte) (g_b16A8 < 0xFD<8>) & SLICE(af, byte, 8))) @ 102F : byte)
   Class: Eq_2216
   DataType: bcu8
   OrigDataType: bcu8
@@ -9703,7 +9703,7 @@ T_2217: (in 1<8> @ 102F : byte)
   Class: Eq_2217
   DataType: byte
   OrigDataType: byte
-T_2218: (in (0<8> - (byte) (g_b14FF < 0xE<8>) & (0<8> - (byte) (g_b16A8 < 0xFF<8>) & (0<8> - (byte) (g_b16A8 < 3<8>) & SLICE(af, byte, 8)))) >> 1<8> @ 102F : byte)
+T_2218: (in (0<8> - (byte) (g_b14FF < 0xE<8>) & (0<8> - (byte) (g_b16A8 < 1<8>) & (0<8> - (byte) (g_b16A8 < 0xFD<8>) & SLICE(af, byte, 8)))) >> 1<8> @ 102F : byte)
   Class: Eq_2218
   DataType: uint8
   OrigDataType: uint8
@@ -9711,7 +9711,7 @@ T_2219: (in 0<8> @ 102F : byte)
   Class: Eq_2218
   DataType: uint8
   OrigDataType: cu8
-T_2220: (in (0<8> - (byte) (g_b14FF < 0xE<8>) & (0<8> - (byte) (g_b16A8 < 0xFF<8>) & (0<8> - (byte) (g_b16A8 < 3<8>) & SLICE(af, byte, 8)))) >> 1<8> >= 0<8> @ 102F : bool)
+T_2220: (in (0<8> - (byte) (g_b14FF < 0xE<8>) & (0<8> - (byte) (g_b16A8 < 1<8>) & (0<8> - (byte) (g_b16A8 < 0xFD<8>) & SLICE(af, byte, 8)))) >> 1<8> >= 0<8> @ 102F : bool)
   Class: Eq_2220
   DataType: bool
   OrigDataType: bool
@@ -9851,19 +9851,19 @@ T_2254: (in Mem76[0x16A8<16>:byte] @ 1075 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2255: (in 0xFF<8> @ 1075 : byte)
+T_2255: (in 1<8> @ 1075 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2256: (in g_b16A8 < 0xFF<8> @ 1075 : bool)
+T_2256: (in g_b16A8 < 1<8> @ 1075 : bool)
   Class: Eq_2256
   DataType: bool
   OrigDataType: bool
-T_2257: (in CONVERT(Mem76[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) @ 1075 : byte)
+T_2257: (in CONVERT(Mem76[0x16A8<16>:byte] <u 1<8>, bool, byte) @ 1075 : byte)
   Class: Eq_2257
   DataType: byte
   OrigDataType: byte
-T_2258: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) @ 1075 : byte)
+T_2258: (in 0<8> - (byte) (g_b16A8 < 1<8>) @ 1075 : byte)
   Class: Eq_2258
   DataType: byte
   OrigDataType: byte
@@ -9879,23 +9879,23 @@ T_2261: (in Mem64[0x16A8<16>:byte] @ 1075 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2262: (in 3<8> @ 1075 : byte)
+T_2262: (in 0xFD<8> @ 1075 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2263: (in g_b16A8 < 3<8> @ 1075 : bool)
+T_2263: (in g_b16A8 < 0xFD<8> @ 1075 : bool)
   Class: Eq_2263
   DataType: bool
   OrigDataType: bool
-T_2264: (in CONVERT(Mem64[0x16A8<16>:byte] <u 3<8>, bool, byte) @ 1075 : byte)
+T_2264: (in CONVERT(Mem64[0x16A8<16>:byte] <u 0xFD<8>, bool, byte) @ 1075 : byte)
   Class: Eq_2264
   DataType: byte
   OrigDataType: byte
-T_2265: (in 0<8> - (byte) (g_b16A8 < 3<8>) @ 1075 : byte)
+T_2265: (in 0<8> - (byte) (g_b16A8 < 0xFD<8>) @ 1075 : byte)
   Class: Eq_2265
   DataType: byte
   OrigDataType: byte
-T_2266: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) & 0<8> - (byte) (g_b16A8 < 3<8>) @ 1075 : byte)
+T_2266: (in 0<8> - (byte) (g_b16A8 < 1<8>) & 0<8> - (byte) (g_b16A8 < 0xFD<8>) @ 1075 : byte)
   Class: Eq_2266
   DataType: bcu8
   OrigDataType: bcu8
@@ -9903,7 +9903,7 @@ T_2267: (in 1<8> @ 1075 : byte)
   Class: Eq_2267
   DataType: byte
   OrigDataType: byte
-T_2268: (in (0<8> - (byte) (g_b16A8 < 0xFF<8>) & 0<8> - (byte) (g_b16A8 < 3<8>)) >> 1<8> @ 1075 : byte)
+T_2268: (in (0<8> - (byte) (g_b16A8 < 1<8>) & 0<8> - (byte) (g_b16A8 < 0xFD<8>)) >> 1<8> @ 1075 : byte)
   Class: Eq_2268
   DataType: uint8
   OrigDataType: uint8
@@ -9911,7 +9911,7 @@ T_2269: (in 0<8> @ 1075 : byte)
   Class: Eq_2268
   DataType: uint8
   OrigDataType: cu8
-T_2270: (in (0<8> - (byte) (g_b16A8 < 0xFF<8>) & 0<8> - (byte) (g_b16A8 < 3<8>)) >> 1<8> >= 0<8> @ 1075 : bool)
+T_2270: (in (0<8> - (byte) (g_b16A8 < 1<8>) & 0<8> - (byte) (g_b16A8 < 0xFD<8>)) >> 1<8> >= 0<8> @ 1075 : bool)
   Class: Eq_2270
   DataType: bool
   OrigDataType: bool
@@ -10243,11 +10243,11 @@ T_2352: (in Mem314[0x16A8<16>:byte] @ 11D6 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: byte
-T_2353: (in 2<8> @ 11D6 : byte)
+T_2353: (in 0xFE<8> @ 11D6 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: byte
-T_2354: (in g_b16A8 != 2<8> @ 11D6 : bool)
+T_2354: (in g_b16A8 != 0xFE<8> @ 11D6 : bool)
   Class: Eq_2354
   DataType: bool
   OrigDataType: bool
@@ -10347,11 +10347,11 @@ T_2378: (in Mem334[0x16A8<16>:byte] @ 11E9 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: byte
-T_2379: (in 4<8> @ 11E9 : byte)
+T_2379: (in 0xFC<8> @ 11E9 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: byte
-T_2380: (in g_b16A8 == 4<8> @ 11E9 : bool)
+T_2380: (in g_b16A8 == 0xFC<8> @ 11E9 : bool)
   Class: Eq_2380
   DataType: bool
   OrigDataType: bool
@@ -10395,19 +10395,19 @@ T_2390: (in Mem100[0x16A8<16>:byte] @ 1090 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2391: (in 1<8> @ 1090 : byte)
+T_2391: (in 0xFF<8> @ 1090 : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2392: (in g_b16A8 < 1<8> @ 1090 : bool)
+T_2392: (in g_b16A8 < 0xFF<8> @ 1090 : bool)
   Class: Eq_2392
   DataType: bool
   OrigDataType: bool
-T_2393: (in CONVERT(Mem100[0x16A8<16>:byte] <u 1<8>, bool, byte) @ 1090 : byte)
+T_2393: (in CONVERT(Mem100[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) @ 1090 : byte)
   Class: Eq_2393
   DataType: byte
   OrigDataType: byte
-T_2394: (in 0<8> - (byte) (g_b16A8 < 1<8>) @ 1090 : byte)
+T_2394: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) @ 1090 : byte)
   Class: Eq_2326
   DataType: byte
   OrigDataType: byte
@@ -10427,23 +10427,23 @@ T_2398: (in Mem112[0x16A8<16>:byte] @ 109E : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2399: (in 0xFF<8> @ 109E : byte)
+T_2399: (in 1<8> @ 109E : byte)
   Class: Eq_2201
   DataType: cu8
   OrigDataType: cu8
-T_2400: (in g_b16A8 < 0xFF<8> @ 109E : bool)
+T_2400: (in g_b16A8 < 1<8> @ 109E : bool)
   Class: Eq_2400
   DataType: bool
   OrigDataType: bool
-T_2401: (in CONVERT(Mem112[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) @ 109E : byte)
+T_2401: (in CONVERT(Mem112[0x16A8<16>:byte] <u 1<8>, bool, byte) @ 109E : byte)
   Class: Eq_2401
   DataType: byte
   OrigDataType: byte
-T_2402: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) @ 109E : byte)
+T_2402: (in 0<8> - (byte) (g_b16A8 < 1<8>) @ 109E : byte)
   Class: Eq_2402
   DataType: byte
   OrigDataType: byte
-T_2403: (in 0<8> - (byte) (g_b16A8 < 0xFF<8>) & a_107 @ 109E : byte)
+T_2403: (in 0<8> - (byte) (g_b16A8 < 1<8>) & a_107 @ 109E : byte)
   Class: Eq_2403
   DataType: bcu8
   OrigDataType: bcu8
@@ -10451,7 +10451,7 @@ T_2404: (in 1<8> @ 109E : byte)
   Class: Eq_2404
   DataType: byte
   OrigDataType: byte
-T_2405: (in (0<8> - (byte) (g_b16A8 < 0xFF<8>) & a_107) >> 1<8> @ 109E : byte)
+T_2405: (in (0<8> - (byte) (g_b16A8 < 1<8>) & a_107) >> 1<8> @ 109E : byte)
   Class: Eq_2405
   DataType: uint8
   OrigDataType: uint8
@@ -10459,7 +10459,7 @@ T_2406: (in 0<8> @ 109E : byte)
   Class: Eq_2405
   DataType: uint8
   OrigDataType: cu8
-T_2407: (in (0<8> - (byte) (g_b16A8 < 0xFF<8>) & a_107) >> 1<8> >= 0<8> @ 109E : bool)
+T_2407: (in (0<8> - (byte) (g_b16A8 < 1<8>) & a_107) >> 1<8> >= 0<8> @ 109E : bool)
   Class: Eq_2407
   DataType: bool
   OrigDataType: bool

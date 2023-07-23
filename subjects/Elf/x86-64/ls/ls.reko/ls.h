@@ -2693,7 +2693,7 @@ Eq_307: (union "Eq_307" (int64 u0) (uint64 u1))
 	T_11410 (in rax_1379 *s64 r14_1375 @ 000000000040C640 : int64)
 Eq_310: (union "Eq_310" (int32 u0) (up32 u1))
 	T_310 (in eax_425 @ 0000000000402B64 : Eq_310)
-	T_311 (in 0xFFFFFF71<32> @ 0000000000402B64 : word32)
+	T_311 (in 0x8F<32> @ 0000000000402B64 : word32)
 	T_644 (in getopt_long(edi, rsi, "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1", &g_t413080, &tLoc0380) @ 0000000000402B4C : int32)
 	T_645 (in 0xFFFFFFFF<32> @ 0000000000402B54 : word32)
 Eq_313: (fn void (int32))
@@ -8438,11 +8438,11 @@ T_310: (in eax_425 @ 0000000000402B64 : Eq_310)
   Class: Eq_310
   DataType: Eq_310
   OrigDataType: (union (int32 u1) (up32 u0))
-T_311: (in 0xFFFFFF71<32> @ 0000000000402B64 : word32)
+T_311: (in 0x8F<32> @ 0000000000402B64 : word32)
   Class: Eq_310
   DataType: up32
   OrigDataType: up32
-T_312: (in eax_425 > 0xFFFFFF71<32> @ 0000000000402B64 : bool)
+T_312: (in eax_425 > 0x8F<32> @ 0000000000402B64 : bool)
   Class: Eq_312
   DataType: bool
   OrigDataType: bool
@@ -51934,11 +51934,11 @@ T_11150: (in eax_258 + 1<32> @ 000000000040C4CF : word32)
   Class: Eq_11031
   DataType: Eq_11031
   OrigDataType: uint32
-T_11151: (in 0xFFFFFFF7<32> @ 000000000040C4D5 : word32)
+T_11151: (in 9<32> @ 000000000040C4D5 : word32)
   Class: Eq_11014
   DataType: uint32
   OrigDataType: word32
-T_11152: (in eax_258 == 0xFFFFFFF7<32> @ 000000000040C4D5 : bool)
+T_11152: (in eax_258 == 9<32> @ 000000000040C4D5 : bool)
   Class: Eq_11152
   DataType: bool
   OrigDataType: bool

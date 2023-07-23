@@ -1627,7 +1627,7 @@ l00402114:
 	branch ctr_63 != 0<32> l00402114
 l00402138:
 	fn00404074(r2)
-	branch fp == 0xFFFFFFA0<32> l00402184
+	branch fp == 0x60<32> l00402184
 l00402184:
 	word32 r11_106 = 0<32>
 	word32 ctr_107 = 5<32>
@@ -1642,7 +1642,7 @@ l00402190:
 	branch ctr_107 != 0<32> l00402190
 l004021B4:
 	fn00403F3C(dwLoc84)
-	branch fp == 0xFFFFFFA0<32> l004021F8
+	branch fp == 0x60<32> l004021F8
 l004021F8:
 	r3Out = 0<32>
 	r29Out = <invalid>
@@ -1998,7 +1998,7 @@ l00402844:
 	fn00404014(r2)
 	r3_128 = fp + 0xFFFFFF98<32>
 	r2 = dwLoc8C
-	branch fp != 0xFFFFFFBF<32> l00402920
+	branch fp != 0x41<32> l00402920
 l0040287C:
 	word32 r11_183 = 0<32>
 	word32 ctr_185 = 5<32>
@@ -2015,7 +2015,7 @@ l004028AC:
 	fn0040402C(dwLoc8C)
 	r3_128 = fp + 0xFFFFFF98<32>
 	r2 = dwLoc8C
-	branch fp != 0xFFFFFF98<32> l00402920
+	branch fp != 0x68<32> l00402920
 l004028D0:
 	word32 r11_214 = 0<32>
 	word32 ctr_216 = 5<32>
@@ -2136,7 +2136,7 @@ l00402AB0:
 	branch true l00402B04
 l00402AD0:
 	fn00403FB4(dwLoc0244)
-	branch fp != 0xFFFFFDE0<32> l00402AF4
+	branch fp != 0x220<32> l00402AF4
 l00402AF4:
 	r11 = CONVERT(Mem33[0xBFF<32>:byte], byte, int32) & 0xFF<32>
 l00402AE8:
@@ -2982,7 +2982,7 @@ l004037C4:
 	branch ctr_68 != 0<32> l004037C4
 l004037E8:
 	fn00403F54(r2)
-	branch fp != 0xFFFFFFA0<32> l00403840
+	branch fp != 0x60<32> l00403840
 l00403800:
 	word32 r11_100 = 0<32>
 	word32 ctr_109 = 5<32>
@@ -2998,7 +2998,7 @@ l0040380C:
 l00403830:
 	fn00403F6C(dwLoc0184)
 l00403840:
-	branch fp == 0xFFFFFFA0<32> l00403868
+	branch fp == 0x60<32> l00403868
 l00403868:
 	r3Out = 0<32>
 	r29Out = dwLoc10
@@ -3059,7 +3059,7 @@ l004038E4:
 	branch Mem29[r10_59 + (r3 << 2<8>):word32] != 0xFFFFFFFF<32> l00403904
 l00403904:
 	fn00403F24(r2)
-	branch fp == 0xFFFFFFA0<32> l0040394C
+	branch fp == 0x60<32> l0040394C
 l0040394C:
 	word32 r11_75 = 0<32>
 	word32 ctr_77 = 5<32>

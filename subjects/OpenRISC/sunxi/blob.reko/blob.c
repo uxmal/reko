@@ -2142,7 +2142,7 @@ l0000799C:
 		goto l000079E0;
 	}
 	r2_n->t0010.u0 = (int32) r8_n;
-	if (r11_n != ~0x01)
+	if (r11_n != 0x02)
 	{
 		Eq_n r3_n;
 		if (r8_n >> 0x10 != (r8_n & 0xFFFF))

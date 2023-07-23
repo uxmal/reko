@@ -5164,11 +5164,11 @@ T_1061: (in g_w2612 - g_w267C @ 0B38 : word16)
   Class: Eq_1056
   DataType: word16
   OrigDataType: word16
-T_1062: (in 3<16> @ 0B42 : word16)
+T_1062: (in 0xFFFD<16> @ 0B42 : word16)
   Class: Eq_1056
   DataType: word16
   OrigDataType: word16
-T_1063: (in r2_44 == 3<16> @ 0B42 : bool)
+T_1063: (in r2_44 == 0xFFFD<16> @ 0B42 : bool)
   Class: Eq_1063
   DataType: bool
   OrigDataType: bool

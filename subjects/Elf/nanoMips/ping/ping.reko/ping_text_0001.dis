@@ -140,16 +140,16 @@ l004102DC:
 	r7_15 = CONVERT(r7_15 >u 0<32>, bool, word32)
 l00410246:
 	r8_16 = r10_6 + 0xFFFFFC80<32>
-	branch r10_6 > 0xFFFFFB82<32> l004102F6
+	branch r10_6 > 0x47E<32> l004102F6
 l004102F6:
 	r7_15 = 0<32>
 	r8_16 = 0xFF<32>
 l00410252:
-	branch r10_6 > 0xFFFFFC80<32> l004102B6
+	branch r10_6 > 0x380<32> l004102B6
 l004102B6:
 	r7_15 = r9_10 << 3<32> | ((r4 << 3<32>) >>u 0x1D<32> | CONVERT(r4 << 6<32> >u 0<32>, bool, word32))
 l00410256:
-	branch r10_6 < 0xFFFFFC97<32> l00410332
+	branch r10_6 < 0x369<32> l00410332
 l00410332:
 	r7_15 = 1<32>
 	r8_16 = 0<32>

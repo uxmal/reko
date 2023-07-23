@@ -326,7 +326,7 @@ void __div0(word32 r0)
 __div0_entry:
 l00008638:
 	__syscall<word32>(0x900014<32>)
-	branch r0 <u 0x3E8<32> l00008648
+	branch r0 <u 0xFFFFFC18<32> l00008648
 l00008648:
 	__syscall<word32>(0x900025<32>)
 	return
@@ -397,7 +397,7 @@ __do_global_ctors_aux_entry:
 l0000870C:
 	word32 r3_9 = Mem7[0x00008740<p32>:word32]
 	word32 r2_10 = Mem7[r3_9 - 4<i32>:word32]
-	branch r2_10 != 1<32> l00008724
+	branch r2_10 != 0xFFFFFFFF<32> l00008724
 l00008724:
 	word32 r4_17
 	word32 r3_19

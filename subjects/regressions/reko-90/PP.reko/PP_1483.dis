@@ -223,7 +223,7 @@ l1483_0CED:
 	Mem15[es_di:word16] = ax
 	bool C_27 = SLICE(cond(v9_10), bool, 1)
 	word16 bx_25 = SEQ(bh_24, bl_17 + 1<8>)
-	branch bl_17 != 1<8> l1483_0CE5_in_fn1483_0CED
+	branch bl_17 != 0xFF<8> l1483_0CE5_in_fn1483_0CED
 l1483_0CE5_in_fn1483_0CED:
 	esOut = es
 	return di + 2<i16>
@@ -403,7 +403,7 @@ l1483_0D69:
 	bool P_334 = Mem166[ss:sp_113 + 0x12<16>:bool]
 	word16 sp_176 = sp_113 - 16<i16>
 	byte cl_462 = SLICE(cx_115, byte, 0) - 1<8>
-	word16 dx_494 = SEQ(dh_140 - SLICE(bx_138, byte, 8) - CONVERT(al_167 <u 0x2A<8>, bool, byte), SLICE(dx_117, byte, 0))
+	word16 dx_494 = SEQ(dh_140 - SLICE(bx_138, byte, 8) - CONVERT(al_167 <u 0xD6<8>, bool, byte), SLICE(dx_117, byte, 0))
 	byte ch_497 = SLICE(cx_115 - 1<16>, byte, 8)
 	branch sp_113 - 18<i16> && cx_115 != 1<16> l1483_0D99
 l1483_0D99:

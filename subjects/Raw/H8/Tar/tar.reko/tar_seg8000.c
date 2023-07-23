@@ -43,7 +43,7 @@ word32 fn00008032(word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, ui16 r4, ui
 		} while (r1_n <= 0x03);
 		word16 er5_16_16_n = SLICE(er5_n + 0x01, word16, 16);
 		er5_n = SEQ(er5_16_16_n, r5_n + 0x01);
-	} while (r5_n <= ~0x03);
+	} while (r5_n <= 0x04);
 	word32 er5_n = SEQ(er5_16_16_n, 0x00);
 	while (true)
 	{
@@ -129,7 +129,7 @@ word32 fn00008032(word16 er1_16_n, word16 er2_16_n, word16 er3_16_n, ui16 r4, ui
 			sp_n->w0000 = r4_n;
 		} while (r4_n <= 0x02);
 		word16 er5_16_16_n = SLICE(er5_n + 0x01, word16, 16);
-		if (r5_n > ~0x03)
+		if (r5_n > 0x04)
 			break;
 		er5_n = SEQ(er5_16_16_n, r5_n + 0x01);
 	}
@@ -1257,7 +1257,7 @@ word32 fn00009478(word16 er0_16_n, word16 er1_16_n, word16 er2_16_n, word16 er3_
 			word16 er0_16_16_n = SLICE(er0_n + 0x01, word16, 16);
 			er0_n = SEQ(er0_16_16_n, r0_n + 0x01);
 			er2_16_n = er2_16_16_n;
-		} while (r0_n <= ~0x03);
+		} while (r0_n <= 0x04);
 		word16 * er2_n = SEQ(er2_16_16_n, ~0x610F);
 		word32 er3_n = SEQ(er3_16_n, 0x00);
 		do

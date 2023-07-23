@@ -105,7 +105,7 @@ l0000000000402B30:
 		Eq_n eax_n = getopt_long(edi, rsi, "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1", &g_t413080, &tLoc0380);
 		if (eax_n != ~0x00)
 		{
-			if (eax_n <= ~0x8E)
+			if (eax_n <= 0x8F)
 			{
 				switch ((word32) eax_n)
 				{
@@ -5456,7 +5456,7 @@ l000000000040C4DB:
 							else
 							{
 								edi_n = eax_n + 0x01;
-								if (eax_n != ~0x08)
+								if (eax_n != 0x09)
 									goto l000000000040C4DB;
 								r10_n = (word64) rax_n.u1 + 1;
 								if (rax_n == 0x09)

@@ -5,7 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals"
-		(1 code t0001)
+		(FFFFFFFF code tFFFFFFFF)
 		(8364 (ptr32 Eq_22) ptr8364)
 		(8368 (ptr32 Eq_25) ptr8368)
 		(8394 int32 dw8394)
@@ -111,7 +111,7 @@ Eq_103: (union "Eq_103" (int32 u0) (uint32 u1))
 	T_251 (in 0<32> @ 0000860C : word32)
 	T_255 (in r2_106 | r3_137 >> 3<i32> @ 00008604 : word32)
 	T_263 (in r1_104 >> 4<i32> @ 00008610 : word32)
-	T_269 (in 0x3E8<32> @ 00008644 : word32)
+	T_269 (in 0xFFFFFC18<32> @ 00008644 : word32)
 Eq_106: (fn Eq_103 (Eq_103, Eq_103))
 	T_106 (in __divsi3 @ 00008460 : ptr32)
 	T_107 (in signature of __divsi3 @ 00008588 : void)
@@ -1250,11 +1250,11 @@ T_268: (in __syscall<word32>(0x900014<32>) @ 0000863C : void)
   Class: Eq_268
   DataType: void
   OrigDataType: void
-T_269: (in 0x3E8<32> @ 00008644 : word32)
+T_269: (in 0xFFFFFC18<32> @ 00008644 : word32)
   Class: Eq_103
   DataType: int32
   OrigDataType: up32
-T_270: (in r0 < 0x3E8<32> @ 00008644 : bool)
+T_270: (in r0 < 0xFFFFFC18<32> @ 00008644 : bool)
   Class: Eq_270
   DataType: bool
   OrigDataType: bool
@@ -1514,11 +1514,11 @@ T_334: (in Mem7[r3_9 + -4<i32>:word32] @ 00008714 : word32)
   Class: Eq_331
   DataType: (ptr32 code)
   OrigDataType: word32
-T_335: (in 1<32> @ 00008720 : word32)
+T_335: (in 0xFFFFFFFF<32> @ 00008720 : word32)
   Class: Eq_331
   DataType: (ptr32 code)
   OrigDataType: word32
-T_336: (in r2_10 != (<anonymous> *) 1<32> @ 00008720 : bool)
+T_336: (in r2_10 != (<anonymous> *) 0xFFFFFFFF<32> @ 00008720 : bool)
   Class: Eq_336
   DataType: bool
   OrigDataType: bool
@@ -1568,7 +1568,7 @@ T_347:
   OrigDataType: (arr T_346)
 */
 typedef struct Globals {
-	<anonymous> t0001;	// 1
+	<anonymous> tFFFFFFFF;	// FFFFFFFF
 	int32 (* ptr8364)(int32 r0, char ** r1, char ** r2);	// 8364
 	void (* ptr8368)();	// 8368
 	int32 dw8394;	// 8394

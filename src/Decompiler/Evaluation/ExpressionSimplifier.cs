@@ -549,7 +549,7 @@ namespace Reko.Evaluation
                     {
                         ctx.RemoveIdentifierUse(idLeft!);
                         var op = binLeft.Operator.Type == OperatorType.IAdd ? Operator.ISub : Operator.IAdd;
-                        var c = op.ApplyConstants(binExp.DataType, cLeftRight, cRight);
+                        var c = op.ApplyConstants(binExp.DataType, cRight, cLeftRight);
                         return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
                     }
                 }

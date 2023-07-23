@@ -1062,11 +1062,11 @@ T_90: (in SEQ(er5_16_16_1033, r5_24 + 1<16>) @ 00008046 : word32)
   Class: Eq_54
   DataType: word32
   OrigDataType: word32
-T_91: (in 0xFFFC<16> @ 00008076 : word16)
+T_91: (in 4<16> @ 00008076 : word16)
   Class: Eq_87
   DataType: int16
   OrigDataType: ci16
-T_92: (in r5_24 <= 0xFFFC<16> @ 00008076 : bool)
+T_92: (in r5_24 <= 4<16> @ 00008076 : bool)
   Class: Eq_92
   DataType: bool
   OrigDataType: bool
@@ -1746,11 +1746,11 @@ T_261: (in r5_66 @ 000081BA : int16)
   Class: Eq_68
   DataType: int16
   OrigDataType: int16
-T_262: (in 0xFFFC<16> @ 000081BA : word16)
+T_262: (in 4<16> @ 000081BA : word16)
   Class: Eq_68
   DataType: int16
   OrigDataType: ci16
-T_263: (in r5_66 > 0xFFFC<16> @ 000081BA : bool)
+T_263: (in r5_66 > 4<16> @ 000081BA : bool)
   Class: Eq_263
   DataType: bool
   OrigDataType: bool
@@ -16811,11 +16811,11 @@ T_4018: (in SEQ(er0_16_16_1080, r0_131 + 1<16>) @ 000094F0 : word32)
   Class: Eq_4011
   DataType: word32
   OrigDataType: word32
-T_4019: (in 0xFFFC<16> @ 00009512 : word16)
+T_4019: (in 4<16> @ 00009512 : word16)
   Class: Eq_4015
   DataType: int16
   OrigDataType: ci16
-T_4020: (in r0_131 <= 0xFFFC<16> @ 00009512 : bool)
+T_4020: (in r0_131 <= 4<16> @ 00009512 : bool)
   Class: Eq_4020
   DataType: bool
   OrigDataType: bool

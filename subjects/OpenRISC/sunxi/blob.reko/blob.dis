@@ -2513,7 +2513,7 @@ l0000799C:
 l000079C0_ds_t:
 	Mem475[r2_28 + 16<i32>:word32] = r8_464
 l000079F4:
-	branch r11_53 == 0xFFFFFFFE<32> l000079FC_ds_t
+	branch r11_53 == 2<32> l000079FC_ds_t
 l000079FC_ds_t:
 l000079FC_ds_f:
 l00007A00:

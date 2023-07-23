@@ -530,7 +530,7 @@ l00000500:
 l000004E2:
 	word32 r3_31 = CONVERT(Mem12[r0 + 69<i32>:byte], byte, int32)
 	Mem32[r0 + 56<i32>:word32] = r2_17 + 1<32>
-	branch r2_17 == 1<32> l00000508
+	branch r2_17 == 0xFFFFFFFF<32> l00000508
 l00000508:
 	branch Mem32[r0 + 36<i32>:word32] == 0<32> l000004F8
 l0000050E:
@@ -1431,7 +1431,7 @@ l00000E38:
 l00000D7A:
 	word32 r7_30 = Mem20[r4_21 + 128<i32>:word32]
 	Mem33[r4_21 + 128<i32>:word32] = r7_30 + 1<32>
-	branch r7_30 != 1<32> l00000DA8
+	branch r7_30 != 0xFFFFFFFF<32> l00000DA8
 l00000D86:
 	word32 r3_34 = Mem33[r4_21 + 108<i32>:word32]
 	Mem36[r4_21 + 108<i32>:word32] = Mem33[r4_21 + 112<i32>:word32]

@@ -621,7 +621,7 @@ void main(int32 r4, char * r5[], word32 r16, word32 ra)
 		close(2);
 	}
 	struct Eq_n * r2_n = g_ptr10000A40;
-	if (r2_n != (struct Eq_n *) 0x0695 && (word32) r2_n->b0695 != 0x00)
+	if (r2_n != (struct Eq_n *) ~0x0694 && (word32) r2_n->b0695 != 0x00)
 	{
 		FILE * r2_n = fopen(&r2_n->b0695, "w");
 		if (r2_n != null)
@@ -854,7 +854,7 @@ l00401AA4:
 			}
 			r28_n->ptrFFFF8130();
 			slist_destroy(r2_n, ra);
-			if (r2_n != (struct Eq_n *) 0x0695 && (word32) r2_n->b0695 != 0x00)
+			if (r2_n != (struct Eq_n *) ~0x0694 && (word32) r2_n->b0695 != 0x00)
 				unlink(&r2_n->b0695);
 			exit(0x00);
 		}
@@ -1321,7 +1321,7 @@ word32 client_check_reply_http(struct Eq_n * r4)
 			dwLoc14_n += -2;
 			dwLoc18_n = (struct Eq_n *) &dwLoc18_n->b0001;
 		} while ((word32) (dwLoc14_n < 2) != 0x00 || (word32) dwLoc18_n->b0001 != 0x0A && (word32) dwLoc18_n->b0001 != 0x0D || (word32) dwLoc18_n->b0002 != 0x0A && (word32) dwLoc18_n->b0002 != 0x0D);
-		if (dwLoc14_n > ~0x01)
+		if (dwLoc14_n > 0x02)
 		{
 			r4->ptr1788 = (struct Eq_n *) (&dwLoc18_n->b0002 + 1);
 			r4->dw178C = dwLoc14_n + -2;
@@ -2603,14 +2603,14 @@ void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 						r6->t000C.u0 = (int32) -r3_n;
 					}
 					r7_n.u0 = r6->t000C.u0;
-					if ((word32) (r7_n > 0xC0000001) == 0x00)
+					if ((word32) (r7_n > 0x3FFFFFFF) == 0x00)
 					{
 						while (true)
 						{
 							r6->dw0008 += -1;
 							Eq_n r5_n = r7_n << 0x01;
 							r6->t000C.u0 = (int32) r5_n;
-							if ((word32) (r5_n > 0xC0000001) != 0x00)
+							if ((word32) (r5_n > 0x3FFFFFFF) != 0x00)
 								break;
 							r7_n = r5_n;
 						}

@@ -2164,7 +2164,7 @@ l00013BAC:
 		Eq_n i0_n;
 		bool v34_n;
 		Eq_n l1_n;
-		if (i1_n != ~0x00)
+		if (i1_n != 0x01)
 		{
 			struct Eq_n * l1_n = l1_n + 1;
 			int32 o0_n;
@@ -2214,7 +2214,7 @@ l00013BAC:
 		else
 		{
 			l1_n.u0 = l1_n + 1;
-			v34_n = i1_n != ~0x00;
+			v34_n = i1_n != 0x01;
 		}
 		if (!v34_n)
 		{
@@ -3046,7 +3046,7 @@ void _obstack_newchunk(struct Eq_n * o0, word32 o1, word32 o3, word32 o4, word32
 		o5_n = o0_n;
 		i1_n = (struct Eq_n *) ((char *) &l0_n->ptr0004 + 4);
 		int32 o3_n = (word32) o0_n - 1;
-		if (o0_n >= ~0x00)
+		if (o0_n >= 0x01)
 		{
 			g2_n = (struct Eq_n *) ((char *) &l1_n->ptr0004 + 4);
 			word32 * o4_n = l0_n + (((word32) o0_n - 1 << 0x02) + 0x08) / 8;
@@ -4320,7 +4320,7 @@ union Eq_n * mkstemps(union Eq_n * o0, Eq_n o1)
 				word64 o2_o3_n = *l4_n;
 				up32 o3_n = (word32) o2_o3_n;
 				word32 o2_n = SLICE(o2_o3_n, word32, 32);
-				word32 o2_n = o2_n + (word32) (o3_n < 7777);
+				word32 o2_n = o2_n + (word32) (o3_n < ~0x1E60);
 				if (l3_n + 0x01 > l5_n)
 				{
 					*l4_n = SEQ(o2_n, o3_n + 7777);

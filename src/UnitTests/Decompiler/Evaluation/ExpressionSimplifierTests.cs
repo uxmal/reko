@@ -1136,5 +1136,14 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var (result, _) = exp.Accept(simplifier);
             Assert.AreEqual("foo_1", result.ToString());
         }
+
+        [Test]
+        public void Exs_regression_1271()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Lt(m.IAdd(foo, 3), m.Word32(9));
+            var (result, _) = exp.Accept(simplifier);
+            Assert.AreEqual("foo_1 < 6<32>", result.ToString());
+        }
     }
 }

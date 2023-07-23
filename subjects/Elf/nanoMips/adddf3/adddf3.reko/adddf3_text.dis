@@ -170,7 +170,7 @@ l0804D30E:
 	branch (r9_150 | r6 << 3<32>) == 0<32> l0804D052
 l0804D316:
 	r7_151 = r11_22 + 0xFFFFFFFF<32>
-	branch r11_22 != 0xFFFFFFFF<32> l0804D340
+	branch r11_22 != 1<32> l0804D340
 l0804D340:
 	branch r11_22 == 0x7FF<32> l0804D0FE
 l0804D344:
@@ -233,11 +233,11 @@ l0804D5E2:
 	r8_12 = __ins<word32,word32>(r8_227, 0<32>, 7<32>, 1<32>)
 l0804D576:
 	word32 r10_241 = r10_223 - r13_11
-	branch r10_241 >= 0xFFFFFFE1<32> l0804D5BC
+	branch r10_241 >= 0x1F<32> l0804D5BC
 l0804D5BC:
 	word32 r7_244 = 0<32>
 	word32 r10_245 = r8_227 >>u r10_241 + 0xFFFFFFE1<32>
-	branch r10_241 == 0xFFFFFFE1<32> l0804D5D2
+	branch r10_241 == 0x1F<32> l0804D5D2
 l0804D5CA:
 	r7_244 = r8_227 << -(r10_241 + 1<32>)
 l0804D5D2:
@@ -256,7 +256,7 @@ l0804D240:
 	r10_14 = r13_11 + 1<32>
 	branch (r13_11 + 1<32> & 0x7FF<32>) >= 2<32> l0804D2E2
 l0804D2E2:
-	branch r13_11 == 0xFFFFF802<32> l0804D060
+	branch r13_11 == 0x7FE<32> l0804D060
 l0804D2E6:
 	word32 r6_268 = (r4 << 3<32>) + (r6 << 3<32>)
 	word32 r2_272 = r8_12 + r9_150 + CONVERT(r6_268 <u r4 << 3<32>, bool, word32)
@@ -379,7 +379,7 @@ l0804D04C:
 	branch (r9_150 | r6 << 3<32>) != 0<32> l0804D0B4
 l0804D0B4:
 	r7_371 = r11_22 + 0xFFFFFFFF<32>
-	branch r11_22 != 0xFFFFFFFF<32> l0804D0FA
+	branch r11_22 != 1<32> l0804D0FA
 l0804D0FA:
 	branch r11_22 != 0x7FF<32> l0804D12C
 l0804D12C:

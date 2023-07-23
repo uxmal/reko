@@ -5688,7 +5688,7 @@ Eq_n fn00007358(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_
 							r9_n = (r4_n - (r7_n->tFFFFFFE0).u0 >> 2) + 0x01;
 						r11_n = r9_n << 0x02;
 						r10_n.u4 = r11_n.u0 + 4;
-						if (r9_n > g_t762E.u0 || (r11_n <= 0x01 || r11_n > 7995))
+						if (r9_n > g_t762E.u0 || (r11_n <= ~0x00 || r11_n > 7995))
 							break;
 						Eq_n r8_n = r7_n->tFFFFFFE0.u0;
 						word32 * r12_n;
@@ -5719,7 +5719,7 @@ Eq_n fn00007358(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_
 			}
 			r10_n = r12_n << 0x02;
 			&r9_n.u0->t0000.u0 = &r10_n.u6->u0 + 1;
-			if (r12_n > g_t74CC.u0 || (r10_n <= 0x01 || r10_n > 7995))
+			if (r12_n > g_t74CC.u0 || (r10_n <= ~0x00 || r10_n > 7995))
 				break;
 			word32 r9_n = r7_n->tFFFFFFE0.u0;
 			struct Eq_n * sp_n;
@@ -7664,7 +7664,7 @@ bool fn000087C0(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r6, 
 		word32 r3_n;
 		word32 r12_n;
 		r6_n->ptr00BC();
-		if (r12_n != 0x01)
+		if (r12_n != ~0x00)
 		{
 			byte VNZC_n;
 			word32 r4_n;
@@ -7684,7 +7684,7 @@ bool fn000087C0(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r6, 
 			word32 r12_n;
 			r6_n->ptr00BC();
 			r2_n = r12_n + 0x01;
-			if (r12_n != 0x01)
+			if (r12_n != ~0x00)
 			{
 				byte VNZC_n;
 				word32 sp_n;
@@ -13629,7 +13629,7 @@ byte fn0000C058(Eq_n r0, struct Eq_n * r11, Eq_n r12, union Eq_n & r0Out, union 
 			if (r12 > 917999)
 			{
 l0000C0E4:
-				if (r12 <= 4447 || (r12 <= 0x232A || r12 <= 42191 && (r12 != 0x303F && r12 > 0x4DFF)) || (r12 <= ~0xD7A2 || (r12 <= ~0xFAFE || (r12 <= ~0xFE1E || (r12 <= ~0xFE6E || (r12 <= ~0xFF5F || (r12 <= ~0xFFE5 || (r12 <= ~0x0002A6D5 || r12 <= ~0x0002FA1C))))))))
+				if (r12 <= 4447 || (r12 <= 0x232A || r12 <= 42191 && (r12 != 0x303F && r12 > 0x4DFF)) || (r12 <= 55203 || (r12 <= 0xFAFF || (r12 <= 65055 || (r12 <= 0xFE6F || (r12 <= 0xFF60 || (r12 <= 0xFFE6 || (r12 <= 0x0002A6D6 || r12 <= 195101))))))))
 					goto l0000C2DA;
 l0000C190:
 				if (r12 > 0xFF60 || r12 == 0x20A9)
@@ -14748,7 +14748,7 @@ l0000E676:
 		goto l0000E3DE;
 	}
 	Eq_n r8_n = dwLoc38 + 0x07;
-	if (dwLoc38 <= 0x01)
+	if (dwLoc38 <= ~0x00)
 		r8_n.u0 = ~0x00;
 	Eq_n r9_n = r8_n.u1 + dwLoc34;
 	if (r9_n < r8_n)

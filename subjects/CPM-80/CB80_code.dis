@@ -981,7 +981,7 @@ l0B0D:
 	Mem354[Mem320[0x168B<16>:word16] + (CONVERT(Mem320[0x1697<16>:byte], byte, uint16) + 1<16>):byte] = fn03E6(Mem320[Mem320[0x168B<16>:word16] + (CONVERT(Mem320[0x1697<16>:byte], byte, uint16) + 1<16>):byte])
 	byte a_355 = Mem354[0x1697<16>:byte]
 	Mem358[0x1697<16>:byte] = a_355 + 1<8>
-	branch a_355 != 1<8> l0B04
+	branch a_355 != 0xFF<8> l0B04
 l0B38:
 	Mem361[0x1697<16>:byte] = 0<8>
 l0B3D:
@@ -994,7 +994,7 @@ l0B46:
 	byte a_399 = Mem398[0x1697<16>:byte]
 	Mem402[0x1697<16>:byte] = a_399 + 1<8>
 	C_366 = SLICE(cond(hl_396), bool, 0) (alias)
-	branch a_399 != 1<8> l0B3D
+	branch a_399 != 0xFF<8> l0B3D
 l0B71:
 	afOut = SEQ(1<8>, f)
 	return C_366
@@ -1030,7 +1030,7 @@ word16 fn0B74()
 fn0B74_entry:
 	byte f
 l0B74:
-	return SEQ(0<8> - CONVERT(Mem22[0x1696<16>:byte] <u 0xFF<8>, bool, byte) & 0<8> - CONVERT(Mem0[Mem0[0x1692<16>:word16] + CONVERT(Mem0[0x1697<16>:byte], byte, uint16):byte] <u 0x2F<8>, bool, byte), f)
+	return SEQ(0<8> - CONVERT(Mem22[0x1696<16>:byte] <u 1<8>, bool, byte) & 0<8> - CONVERT(Mem0[Mem0[0x1692<16>:word16] + CONVERT(Mem0[0x1697<16>:byte], byte, uint16):byte] <u 0x2F<8>, bool, byte), f)
 fn0B74_exit:
 
 
@@ -1062,7 +1062,7 @@ void fn0BE4(byte f)
 // Preserved:
 fn0BE4_entry:
 l0BE4:
-	byte a_9 = 0<8> - CONVERT(Mem0[0x138A<16>:byte] <u 0xFE<8>, bool, byte)
+	byte a_9 = 0<8> - CONVERT(Mem0[0x138A<16>:byte] <u 2<8>, bool, byte)
 	branch (0<8> - CONVERT(Mem13[0x14F3<16>:byte] <u 3<8>, bool, byte) & a_9) >>u 1<8> >=u 0<8> l0C1A
 l0BFC:
 	branch Mem13[0x14F6<16>:byte] == 1<8> l0C07
@@ -1295,20 +1295,20 @@ fn100A_exit:
 fn100A_entry:
 l100A:
 	byte f_110 = SLICE(af, byte, 0)
-	branch (0<8> - CONVERT(Mem36[0x14FF<16>:byte] <u 0xE<8>, bool, byte) & (0<8> - CONVERT(Mem22[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) & (0<8> - CONVERT(Mem6[0x16A8<16>:byte] <u 3<8>, bool, byte) & SLICE(af, byte, 8)))) >>u 1<8> >=u 0<8> l104D
+	branch (0<8> - CONVERT(Mem36[0x14FF<16>:byte] <u 0xE<8>, bool, byte) & (0<8> - CONVERT(Mem22[0x16A8<16>:byte] <u 1<8>, bool, byte) & (0<8> - CONVERT(Mem6[0x16A8<16>:byte] <u 0xFD<8>, bool, byte) & SLICE(af, byte, 8)))) >>u 1<8> >=u 0<8> l104D
 l104D:
 	branch Mem36[0x14FF<16>:byte] != 0<8> l105E
 l1055:
 	fn05CE(0x369<16>)
 	fn0387()
 l105E:
-	branch (0<8> - CONVERT(Mem76[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) & 0<8> - CONVERT(Mem64[0x16A8<16>:byte] <u 3<8>, bool, byte)) >>u 1<8> >=u 0<8> l1081
+	branch (0<8> - CONVERT(Mem76[0x16A8<16>:byte] <u 1<8>, bool, byte) & 0<8> - CONVERT(Mem64[0x16A8<16>:byte] <u 0xFD<8>, bool, byte)) >>u 1<8> >=u 0<8> l1081
 l1081:
 	Mem99[0x16A8<16>:byte] = fn045B()
 l1087:
-	byte a_107 = 0<8> - CONVERT(Mem100[0x16A8<16>:byte] <u 1<8>, bool, byte)
+	byte a_107 = 0<8> - CONVERT(Mem100[0x16A8<16>:byte] <u 0xFF<8>, bool, byte)
 	word16 bc_135 = SEQ(a_107, a_107)
-	branch (0<8> - CONVERT(Mem112[0x16A8<16>:byte] <u 0xFF<8>, bool, byte) & a_107) >>u 1<8> >=u 0<8> l11FD
+	branch (0<8> - CONVERT(Mem112[0x16A8<16>:byte] <u 1<8>, bool, byte) & a_107) >>u 1<8> >=u 0<8> l11FD
 l11FD:
 	branch Mem112[0x14F3<16>:byte] != 1<8> l120F
 l1205:
@@ -1409,11 +1409,11 @@ l11B5:
 	fn1262()
 	branch Mem314[0x16A8<16>:byte] != 0x2C<8> l11CF
 l11CF:
-	branch Mem314[0x16A8<16>:byte] != 2<8> l11FA
+	branch Mem314[0x16A8<16>:byte] != 0xFE<8> l11FA
 l11D9:
 	Mem334[0x16A8<16>:byte] = fn045B()
 	fn1262()
-	branch Mem334[0x16A8<16>:byte] == 4<8> l11F4
+	branch Mem334[0x16A8<16>:byte] == 0xFC<8> l11F4
 l11F4:
 	Mem351[0x16A8<16>:byte] = fn045B()
 l11EC:

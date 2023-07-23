@@ -179,7 +179,7 @@ word16 Eq_n::* fn1483-0CED(word16 * es_di, struct Eq_n * ss_bp, word16 ax, ui16 
 	*es_di = ax;
 	bool C_n = SLICE(cond(v9_n), bool, 1);
 	byte Eq_n::* bx_n = SEQ(bh_n, bl_n + 0x01);
-	if (bl_n != 0x01)
+	if (bl_n != ~0x00)
 	{
 		esOut = es;
 		return di + 1;
@@ -333,7 +333,7 @@ segptr32 fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx,
 	bool P_n = ss->*((word16) sp_n + 18);
 	struct Eq_n Eq_n::* sp_n = sp_n - 16;
 	byte cl_n = (byte) cx_n - 0x01;
-	Eq_n dx_n = SEQ(dh_n - SLICE(bx_n, byte, 8) - (byte) (al_n < 0x2A), (byte) dx_n);
+	Eq_n dx_n = SEQ(dh_n - SLICE(bx_n, byte, 8) - (byte) (al_n < ~0x29), (byte) dx_n);
 	byte ch_n = SLICE(cx_n - 0x01, byte, 8);
 	if (!(sp_n - 18) || cx_n == 0x01)
 	{

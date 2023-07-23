@@ -344,7 +344,7 @@ l0000887B:
 				word32 r2_n;
 				word32 ap_n;
 				(*((word32) r3_n + 2))();
-				if (r4_n == 0x01)
+				if (r4_n == ~0x00)
 				{
 					sp_n->dwFFFFFFFC = 0x00;
 					sp_n->dwFFFFFFF8 = r5_n + 0x0711;

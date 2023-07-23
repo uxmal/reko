@@ -1372,7 +1372,7 @@ union Eq_n * fn004020BC(union Eq_n * r2, struct Eq_n * r3, ptr32 r29, ptr32 r30,
 					r11_n = r11_n + 0x0C;
 				}
 				fn00404074(r2);
-				if (fp == (struct Eq_n *) ~0x5F)
+				if (fp == (struct Eq_n *) 0x60)
 				{
 					int32 r11_n = 0x00;
 					word32 ctr_n;
@@ -1386,7 +1386,7 @@ union Eq_n * fn004020BC(union Eq_n * r2, struct Eq_n * r3, ptr32 r29, ptr32 r30,
 						r11_n = r11_n + 0x0C;
 					}
 					fn00403F3C(dwLoc84);
-					if (fp == (struct Eq_n *) ~0x5F)
+					if (fp == (struct Eq_n *) 0x60)
 					{
 						r3Out = 0x00;
 						&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
@@ -1705,7 +1705,7 @@ union Eq_n * fn004026B8(union Eq_n * r2, struct Eq_n * r3, word32 r5, ptr32 r26,
 				fn00404014(r2);
 				r3_n = (word32 (*)[][]) fp->aFFFFFF98;
 				r2 = dwLoc8C;
-				if (fp == (struct Eq_n *) ~0x40)
+				if (fp == (struct Eq_n *) 0x41)
 				{
 					int32 r11_n = 0x00;
 					word32 ctr_n;
@@ -1721,7 +1721,7 @@ union Eq_n * fn004026B8(union Eq_n * r2, struct Eq_n * r3, word32 r5, ptr32 r26,
 					fn0040402C(dwLoc8C);
 					r3_n = (word32 (*)[][]) fp->aFFFFFF98;
 					r2 = dwLoc8C;
-					if (fp == (struct Eq_n *) ~0x67)
+					if (fp == (struct Eq_n *) 0x68)
 					{
 						int32 r11_n = 0x00;
 						word32 ctr_n;
@@ -1851,7 +1851,7 @@ void fn00402A24(union Eq_n * r2, Eq_n r3, Eq_n r4, Eq_n r5, ui32 r11, word32 r13
 		if (false)
 		{
 			fn00403FB4(dwLoc0244);
-			if (fp == ~0x021F)
+			if (fp == 0x0220)
 				r11 = *(ui32 *) 288 & 0xFF;
 			else
 				r11 = (int32) *(byte *) 0x0BFF & 0xFF;
@@ -2523,7 +2523,7 @@ union Eq_n * fn00403744(union Eq_n * r2, Eq_n r3, struct Eq_n * r29, ptr32 r30, 
 				r11_n = r11_n + 0x0C;
 			}
 			fn00403F54(r2);
-			if (fp == (struct Eq_n *) ~0x5F)
+			if (fp == (struct Eq_n *) 0x60)
 			{
 				int32 r11_n = 0x00;
 				word32 ctr_n;
@@ -2538,7 +2538,7 @@ union Eq_n * fn00403744(union Eq_n * r2, Eq_n r3, struct Eq_n * r29, ptr32 r30, 
 				}
 				fn00403F6C(dwLoc0184);
 			}
-			if (fp == (struct Eq_n *) ~0x5F)
+			if (fp == (struct Eq_n *) 0x60)
 			{
 				r3Out = 0x00;
 				r29Out = dwLoc10;
@@ -2594,7 +2594,7 @@ union Eq_n * fn00403898(union Eq_n * r2, struct Eq_n * r3, ptr32 r28, word32 r29
 				else
 				{
 					fn00403F24(r2);
-					if (fp != (struct Eq_n *) ~0x5F)
+					if (fp != (struct Eq_n *) 0x60)
 					{
 						fn00403104(dwLoc84, fp->aFFFFFFA0);
 						r3Out = ~0x00;

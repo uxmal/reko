@@ -21,7 +21,7 @@ word32 g_dw0545; // 00000545
 word32 g_dw0554; // 00000554
 word32 g_dw0555; // 00000555
 byte g_b07C0; // 000007C0
-Eq_n g_t07C7;
+Eq_n g_t07FE;
 byte g_b083B; // 0000083B
 Eq_n g_t0882;
 Eq_n g_t0886;
@@ -37,7 +37,7 @@ Eq_n g_t091B;
 Eq_n g_t0949;
 Eq_n g_t0955;
 Eq_n g_t0959;
-Eq_n g_t0B90;
+Eq_n g_t0BFE;
 Eq_n g_tF4240;
 Eq_n g_t147AE14;
 Eq_n g_t4120000;
@@ -79,7 +79,7 @@ Eq_n g_t41202C8;
 Eq_n g_t41202CC;
 Eq_n g_a7FFFFFFF[];
 Eq_n g_tFBEE0054;
-Eq_n g_tFFFFF402;
-Eq_n g_tFFFFF802;
+Eq_n g_tFFFFF470;
+Eq_n g_tFFFFF839;
 Eq_n g_tFFFFFC02;
 byte g_bFFFFFFFF; // FFFFFFFF

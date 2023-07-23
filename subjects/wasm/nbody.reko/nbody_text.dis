@@ -194,7 +194,7 @@ l000E0672:
 	word32 v10_77 = arg0_170 + 1<32>
 	branch v10_77 >= 5<32> l000E075B
 l000E06D0:
-	branch v10_77 != 0xFFFFFFFC<32> l000E06D0
+	branch v10_77 != 4<32> l000E06D0
 l000E0759:
 l000E075B:
 	branch v10_77 == 5<32> l000E0769
