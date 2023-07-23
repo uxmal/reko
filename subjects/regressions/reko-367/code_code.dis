@@ -26,16 +26,16 @@ real96 fn80000132(real96 rArg04, real96 rArg10)
 fn80000132_entry:
 l80000132:
 	real96 fp0_11 = Mem10[0x800004FC<p32>:real96]
-	word32 dwLoc14_53 = 0<32>
+	word32 dwLoc14_55 = 0<32>
 l8000014A:
-	real96 rLoc10_65 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64))
-	branch CONVERT(dwLoc14_53, word32, real96) >= rArg10 l80000172
+	real96 rLoc10_67 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64))
+	branch CONVERT(dwLoc14_55, word32, real96) >= rArg10 l80000172
 l80000172:
 	return fp0_11
 fn80000132_exit:
 l8000015A:
-	fp0_11 = rLoc10_65 * rArg04
-	dwLoc14_53 = dwLoc14_53 + 1<32>
+	fp0_11 = rLoc10_67 * rArg04
+	dwLoc14_55 = dwLoc14_55 + 1<32>
 
 
 real96 fn8000018E(real96 rArg04)
@@ -52,16 +52,16 @@ real96 fn8000018E(real96 rArg04)
 fn8000018E_entry:
 l8000018E:
 	real96 fp0_11 = Mem10[0x80000508<p32>:real96]
-	word32 dwLoc14_52 = 1<i32>
+	word32 dwLoc14_56 = 1<i32>
 l800001A8:
-	real96 rLoc10_64 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64))
-	branch CONVERT(dwLoc14_52, word32, real96) > rArg04 l800001D4
+	real96 rLoc10_68 = SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64))
+	branch CONVERT(dwLoc14_56, word32, real96) > rArg04 l800001D4
 l800001D4:
 	return fp0_11
 fn8000018E_exit:
 l800001B8:
-	fp0_11 = rLoc10_64 *96 CONVERT(CONVERT(dwLoc14_52, word32, real96), real96, real80)
-	dwLoc14_52 = dwLoc14_52 + 1<32>
+	fp0_11 = rLoc10_68 *96 CONVERT(CONVERT(dwLoc14_56, word32, real96), real96, real80)
+	dwLoc14_56 = dwLoc14_56 + 1<32>
 
 
 real96 fn800001F2(real96 rArg04)
@@ -76,21 +76,21 @@ real96 fn800001F2(real96 rArg04)
 // Preserved: X a6 a7 d2 fp2
 fn800001F2_entry:
 l800001F2:
-	real96 rLoc1C_114 = Mem15[0x80000514<p32>:real96]
-	word32 dwLoc20_119 = 3<i32>
-	fp1_83 = rArg04
+	real96 rLoc1C_101 = Mem15[0x80000514<p32>:real96]
+	word32 dwLoc20_102 = 3<i32>
+	fp1_87 = rArg04
 l8000021C:
-	real96 fp1_83
-	real96 rLoc10_115 = SEQ(SLICE(fp1_83, word32, 0), SLICE(fp1_83, word32, 32), SLICE(fp1_83, word32, 64))
-	branch dwLoc20_119 > 100<i32> l8000028A
+	real96 fp1_87
+	real96 rLoc10_119 = SEQ(SLICE(fp1_87, word32, 0), SLICE(fp1_87, word32, 32), SLICE(fp1_87, word32, 64))
+	branch dwLoc20_102 > 100<i32> l8000028A
 l8000028A:
-	return fp1_83
+	return fp1_87
 fn800001F2_exit:
 l80000224:
-	real96 fp0_81 = fn80000132(rArg04, CONVERT(dwLoc20_119, word32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_119, word32, real96)), real96, real80) * rLoc1C_114
-	fp1_83 = rLoc10_115 + CONVERT(fp0_81, real96, real80)
-	rLoc1C_114 = fp0_81
-	dwLoc20_119 = dwLoc20_119 + 2<32>
+	real96 fp0_85 = fn80000132(rArg04, CONVERT(dwLoc20_102, word32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_102, word32, real96)), real96, real80) * rLoc1C_101
+	fp1_87 = rLoc10_119 + CONVERT(fp0_85, real96, real80)
+	rLoc1C_101 = fp0_85
+	dwLoc20_102 = dwLoc20_102 + 2<32>
 
 
 real96 fn800002AE(real96 rArg04)
@@ -106,19 +106,19 @@ real96 fn800002AE(real96 rArg04)
 fn800002AE_entry:
 l800002AE:
 	real96 fp0_14 = Mem13[0x80000520<p32>:real96]
-	real96 rLoc1C_113 = Mem15[0x8000052C<p32>:real96]
-	word32 dwLoc20_118 = 2<i32>
+	real96 rLoc1C_100 = Mem15[0x8000052C<p32>:real96]
+	word32 dwLoc20_101 = 2<i32>
 l800002DA:
-	real96 rLoc10_114 = SEQ(SLICE(fp0_14, word32, 0), SLICE(fp0_14, word32, 32), SLICE(fp0_14, word32, 64))
-	branch dwLoc20_118 > 100<i32> l80000348
+	real96 rLoc10_118 = SEQ(SLICE(fp0_14, word32, 0), SLICE(fp0_14, word32, 32), SLICE(fp0_14, word32, 64))
+	branch dwLoc20_101 > 100<i32> l80000348
 l80000348:
 	return fp0_14
 fn800002AE_exit:
 l800002E2:
-	real96 fp0_81 = fn80000132(rArg04, CONVERT(dwLoc20_118, word32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_118, word32, real96)), real96, real80) * rLoc1C_113
-	fp0_14 = rLoc10_114 + CONVERT(fp0_81, real96, real80)
-	rLoc1C_113 = fp0_81
-	dwLoc20_118 = dwLoc20_118 + 2<32>
+	real96 fp0_85 = fn80000132(rArg04, CONVERT(dwLoc20_101, word32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_101, word32, real96)), real96, real80) * rLoc1C_100
+	fp0_14 = rLoc10_118 + CONVERT(fp0_85, real96, real80)
+	rLoc1C_100 = fp0_85
+	dwLoc20_101 = dwLoc20_101 + 2<32>
 
 
 void fn8000036C(real96 rArg04)

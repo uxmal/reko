@@ -86,11 +86,11 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 	word32 dwLoc18;
 	word32 dwLoc1C;
 	word32 dwLoc20;
-	byte v16_n = *dwArg08;
+	byte v18_n = *dwArg08;
 	Eq_n dwLoc0C_n = 0;
-	uip32 d6_n = SEQ(SLICE(d6, word24, 8), v16_n);
+	uip32 d6_n = SEQ(SLICE(d6, word24, 8), v18_n);
 	byte * dwArg08_n = dwArg08 + 1;
-	if (v16_n != 0x00)
+	if (v18_n != 0x00)
 	{
 		while (true)
 		{

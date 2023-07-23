@@ -164,8 +164,8 @@ int32 fn00002644(struct Eq_n * a5, Eq_n dwArg04, struct Eq_n & a5Out, word32 & a
 //      fn00002BB4
 struct Eq_n * fn0000273C(struct Eq_n * a0, struct Eq_n * a5, struct Eq_n & a0Out)
 {
-	struct Eq_n * d0_n;
 	struct Eq_n * a0_n;
+	struct Eq_n * d0_n;
 	if (a5->ptrFFFFFAD0 == null)
 	{
 		d0_n = fn0000275C(a0, a5, out a0_n);

@@ -598,7 +598,7 @@ namespace Reko.Arch.M68k
             m.Assign(m.Mem32(sp), ea);
         }
 
-        public void RewriteMove(bool setFlag)
+        public void RewriteMove(bool setFlags)
         {
             if (GetRegister(0) == Registers.ccr)
             {
@@ -615,17 +615,15 @@ namespace Reko.Arch.M68k
             }
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth ?? (PrimitiveType)opSrc.DataType, opSrc, (s, d) => s);
-            if (opDst == null)
+            if (opDst is null)
             {
                 EmitInvalid();
                 return;
             }
             var isSr = GetRegister(0) == Registers.sr || GetRegister(1) == Registers.sr;
-            if (setFlag && !isSr)
+            if (setFlags && !isSr)
             {
-                m.Assign(
-                    binder.EnsureFlagGroup(Registers.CVZN),
-                    m.Cond(opDst));
+                LogicalConditions(opDst);
             }
         }
 
@@ -642,9 +640,7 @@ namespace Reko.Arch.M68k
             var opSrc = (sbyte) ((M68kImmediateOperand) instr.Operands[0]).Constant.ToInt32();
             var opDst = binder.EnsureRegister((RegisterStorage)instr.Operands[1]);
             m.Assign(opDst, Constant.Int32(opSrc));
-            m.Assign(
-                binder.EnsureFlagGroup(Registers.CVZN),
-                m.Cond(opDst));
+            LogicalConditions(opDst);
         }
 
         public IEnumerable<Identifier> RegisterMaskIncreasing(bool isReal, uint bitSet, Func<int,RegisterStorage> regGenerator)
