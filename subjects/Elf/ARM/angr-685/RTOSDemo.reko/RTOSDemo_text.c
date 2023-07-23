@@ -412,7 +412,7 @@ bool xQueueCRSend(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, unio
 		{
 			word32 r0_n;
 			xCoRoutineRemoveFromEventList(&r0->dw0024, out r0_n);
-			Z_n = SLICE(cond(r0_n), bool, 2);
+			Z_n = SLICE(cond(r0_n - 0x00), bool, 2);
 			if (r0_n != 0x00)
 			{
 				r0_n.u0 = ~0x04;
@@ -445,7 +445,7 @@ bool xQueueCRReceive(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, u
 	Eq_n r5_n = r0->t0038.u0;
 	if (r5_n == 0x00)
 	{
-		bool Z_n = SLICE(cond(r2), bool, 2);
+		bool Z_n = SLICE(cond(r2 - 0x00), bool, 2);
 		if (r2 != 0x00)
 		{
 			bool Z_n = vCoRoutineAddToDelayedList(r2, (char *) &r0->ptr000C + 24);
@@ -490,7 +490,7 @@ bool xQueueCRReceive(struct Eq_n * r0, struct Eq_n * r1, Eq_n r2, word32 cpsr, u
 		{
 			word32 r0_n;
 			xCoRoutineRemoveFromEventList(&r4_n->dw0010, out r0_n);
-			Z = SLICE(cond(r0_n), bool, 2);
+			Z = SLICE(cond(r0_n - 0x00), bool, 2);
 			if (r0_n != 0x00)
 			{
 				r0_n.u0 = ~0x04;
@@ -2319,7 +2319,7 @@ void SSIConfig(struct Eq_n * r0, ui32 r1, ui32 r2, uint32 r3, ui32 dwArg00)
 	{
 		r4_n += 0x02;
 		uint32 r2_n = r3_n /u r4_n;
-	} while (r2_n > 0x0100);
+	} while (r2_n > 0x0100 || r2_n < 0x01);
 	r0->dw0010 = r4_n;
 	r0->dw0000 = dwArg00 - 0x01 | (r1 & 0x30 | r1 << 0x06) | r2_n - 0x01 << 0x08;
 }

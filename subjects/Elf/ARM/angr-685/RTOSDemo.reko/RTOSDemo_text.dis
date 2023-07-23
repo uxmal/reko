@@ -516,7 +516,7 @@ l000083C0:
 l000083EE:
 	word32 r0_92
 	xCoRoutineRemoveFromEventList(r0 + 0x24<32>, out r0_92)
-	Z_101 = SLICE(cond(r0_92), bool, 2) (alias)
+	Z_101 = SLICE(cond(r0_92 - 0<32>), bool, 2) (alias)
 	branch r0_92 == 0<32> l000083CE
 l000083FA:
 	r0_102 = 0xFFFFFFFB<32>
@@ -582,7 +582,7 @@ l00008466:
 l00008478:
 	word32 r0_62
 	xCoRoutineRemoveFromEventList(r4_49 + 0x10<32>, out r0_62)
-	Z = SLICE(cond(r0_62), bool, 2) (alias)
+	Z = SLICE(cond(r0_62 - 0<32>), bool, 2) (alias)
 	branch r0_62 == 0<32> l0000846E
 l00008484:
 	r0_141 = 0xFFFFFFFB<32>
@@ -599,7 +599,7 @@ l00008440:
 	r6Out = r6
 	return Z
 l00008418:
-	bool Z_97 = SLICE(cond(r2), bool, 2)
+	bool Z_97 = SLICE(cond(r2 - 0<32>), bool, 2)
 	branch r2 != 0<32> l0000848A
 l0000848A:
 	bool Z_106 = vCoRoutineAddToDelayedList(r2, r0 + 0x24<32>)
@@ -3342,7 +3342,7 @@ l00009A04:
 l00009A0C:
 	r4_44 = r4_44 + 2<32>
 	word32 r2_51 = r3_43 /u r4_44
-	branch r2_51 >u 0x100<32> l00009A0C
+	branch r2_51 >u 0x100<32> || r2_51 <u 1<32> l00009A0C
 l00009A18:
 	Mem67[r0 + 16<i32>:word32] = r4_44
 	Mem68[r0:word32] = dwArg00 - 1<32> | (r1 & 0x30<32> | r1 << 6<u32>) | r2_51 - 1<32> << 8<u32>

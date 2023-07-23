@@ -28,7 +28,7 @@ void call_gmon_start()
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (true || true)
+	if (false || true)
 		return;
 	null();
 }

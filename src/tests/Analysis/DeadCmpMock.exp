@@ -3,7 +3,7 @@ r63_2: orig: r63
 r0:r0
     def:  def r0
     uses: r0_6 = r0 + r1
-          branch r0 == 0<32> skip
+          branch r0 == 0<i32> skip
           r0_7 = PHI((r0, l1), (r0_6, l2))
 Z_4: orig: Z
 r1:r1
@@ -25,7 +25,7 @@ CmpMock_entry:
 	def r1
 	// succ:  l1
 l1:
-	branch r0 == 0<32> skip
+	branch r0 == 0<i32> skip
 	// succ:  l2 skip
 l2:
 	r0_6 = r0 + r1

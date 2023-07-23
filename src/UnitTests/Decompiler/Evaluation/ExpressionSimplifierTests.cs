@@ -119,6 +119,19 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             return ssaIds.Add(tmp, new Statement(Address.Ptr32(0), new Assignment(tmp, defExpr), null), false).Identifier;
         }
 
+        private Expression RunExpressionSimplifier(
+            Expression e, int maxTimes = 2)
+        {
+            for (int i = 0; i < maxTimes; i++)
+            {
+                bool changed;
+                (e, changed) = e.Accept(simplifier);
+                if (!changed)
+                    break;
+            }
+            return e;
+        }
+
         private void AssertChanged(string expected, (Expression, bool) result)
         {
             var (e, changed) = result;
@@ -526,10 +539,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
                     m.Word32(1)),
                 PrimitiveType.Byte);
 
-            (expr, _) = expr.Accept(simplifier);
-            var result = expr.Accept(simplifier);
+            expr = RunExpressionSimplifier(expr);
 
-            AssertChanged("!foo_1", result);
+            Assert.AreEqual("!foo_1", expr.ToString());
         }
 
         [Test]
@@ -1144,6 +1156,50 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             var exp = m.Lt(m.IAdd(foo, 3), m.Word32(9));
             var (result, _) = exp.Accept(simplifier);
             Assert.AreEqual("foo_1 < 6<32>", result.ToString());
+        }
+
+        [Test]
+        public void Exs_id_plus_e_plus_id()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.IAdd(m.IAdd(foo, 1), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("foo_1 * 2<32> + 1<32>", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_id_plus_e_minus_id()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.ISub(m.IAdd(foo, 2), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("2<32>", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_id_minus_e_plus_id()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.IAdd(m.ISub(foo, 3), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("foo_1 * 2<32> - 3<32>", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_id_minus_e_minus_id()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.ISub(m.ISub(foo, 4), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("0xFFFFFFFC<32>", exp.ToString());
         }
     }
 }

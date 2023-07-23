@@ -723,7 +723,7 @@ l0000000140001CE9:
 	if (r11d_n == 0x00)
 	{
 		r8_n = r8_n;
-		if (true)
+		if (false)
 		{
 			r8_n = (uint64) (r8d_n | 0x04);
 			g_dw40003614 = (word32) r8_n;
