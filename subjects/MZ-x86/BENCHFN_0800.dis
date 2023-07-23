@@ -3059,7 +3059,7 @@ l0800_1B9E:
 l0800_1BA4:
 	branch bl_8 <=u 0x39<8> l0800_1BBB
 l0800_1BA9:
-	branch bl_8 >u 0x5A<8> l0800_1BB3
+	branch bl_8 >u 0x5A<8> || bl_8 <u 0x30<8> l0800_1BB3
 l0800_1BB3:
 	bl_16 = bl_8 - 0x57<8>
 l0800_1BAE:

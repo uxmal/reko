@@ -67,8 +67,7 @@ l0000000100001C32:
 	byte r14b_63 = Mem60[rax_47:byte]
 	branch r14b_63 == 0<8> l0000000100001E77
 l0000000100001C41:
-	word64 rax_69 = strlen(rax_47)
-	word64 rax_71 = malloc(rax_69 + 2<i64> + rax_69)
+	word64 rax_71 = malloc(strlen(rax_47) * 2<64> + 2<i64>)
 	branch rax_71 == 0<64> l0000000100002337
 l0000000100001C5C:
 	word64 rax_103
@@ -999,7 +998,7 @@ l00000001000032F6:
 	r12b_154 = Mem49[qwLoc48_209 - 1<i64>:byte]
 l00000001000032DD:
 	r12b_154 = Mem49[r15_334 + 0x0000000100005411<p64>:byte]
-	rax_54 = qwLoc40_211 + 1<i64> + qwLoc40_211 + 0x0000000100005411<p64>
+	rax_54 = qwLoc40_211 * 2<64> + 1<i64> + 0x0000000100005411<p64>
 l00000001000032FE:
 	word24 eax_24_8_195 = SLICE(rax_54, word24, 8)
 	word64 r13_113 = 0<u64>

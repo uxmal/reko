@@ -193,7 +193,7 @@ int32 fn0000275C(struct Eq_n * a0, struct Eq_n * a5, struct Eq_n & a0Out)
 		a5->ptrFFFFFAD0 = a0;
 		struct Eq_n * d0_n = a0;
 		struct Eq_n * d1_n = (char *) &a0->t0004 + 4;
-		if (&a0->dw0FF8 > a0)
+		if (true)
 		{
 			do
 			{

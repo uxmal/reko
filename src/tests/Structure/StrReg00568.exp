@@ -44,7 +44,7 @@ l0C00_0026:
 	// succ:  l0C00_002A l0C00_003C
 l0C00_002A:
 	word16 ax_50 = CONVERT(al_22 - 0x30<8>, byte, uint16)
-	branch al_22 >u 0x39<8> l0C00_003C
+	branch al_22 >u 0x39<8> || al_22 <u 0x30<8> l0C00_003C
 	// succ:  l0C00_002E l0C00_003C
 l0C00_002E:
 	dx_39 = dx_39 * 0xA<16> + ax_50
@@ -82,7 +82,7 @@ word16 fn0C00_000B(word16 si, selector ds)
 		if (al_22 == 0<8> || al_22 <u 0x30<8>)
 			break;
 		word16 ax_50 = CONVERT(al_22 - 0x30<8>, byte, uint16);
-		if (al_22 >u 0x39<8>)
+		if (al_22 >u 0x39<8> || al_22 <u 0x30<8>)
 			break;
 		dx_39 = dx_39 * 0xA<16> + ax_50;
 	}

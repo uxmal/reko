@@ -347,7 +347,7 @@ l05C9:
 	Mem48[0x14F6<16>:byte] = Mem5[0x14F6<16>:byte] + 1<8>
 l05BA:
 	byte a_50 = Mem5[0x14F3<16>:byte]
-	C_66 = SLICE(cond(a_50), bool, 0) (alias)
+	C_66 = SLICE(cond(a_50 - 0<8>), bool, 0) (alias)
 	branch a_50 == 0<8> l05C6
 l05C2:
 	Mem54[0x14FD<16>:byte] = Mem5[0x14FD<16>:byte] + 1<8>
@@ -1216,8 +1216,7 @@ void fn0E63(byte c)
 fn0E63_entry:
 l0E63:
 	Mem5[0x16A6<16>:byte] = c
-	word16 bc_16 = CONVERT(fn0C93(), byte, uint16)
-	word16 hl_18 = bc_16 + 0x152C<16> + bc_16
+	word16 hl_18 = CONVERT(fn0C93(), byte, uint16) * 2<16> + 0x152C<16>
 	Mem28[0x1521<16>:word16] = Mem5[hl_18:word16]
 l0E79:
 	word16 hl_33 = <invalid>

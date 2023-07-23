@@ -967,7 +967,7 @@ void xTaskGenericNotify(struct Eq_n * r0, ui32 r1, up32 r2, ui32 * r3, word32 cp
 	word32 r4_n = (word32) r0->b0064;
 	r0->b0064 = 0x02;
 	uint32 r4_n = (uint32) (byte) r4_n;
-	if (r2 <= 0x04)
+	if (r2 <= 0x04 && r2 >= 0x01)
 	{
 		switch (r2)
 		{
@@ -1025,7 +1025,7 @@ void xTaskGenericNotifyFromISR(struct Eq_n * r0, ui32 r1, up32 r2, ui32 * r3, wo
 	word32 r4_n = (word32) r0->b0064;
 	r0->b0064 = 0x02;
 	uint32 r4_n = (uint32) (byte) r4_n;
-	if (r2 <= 0x04)
+	if (r2 <= 0x04 && r2 >= 0x01)
 	{
 		switch (r2)
 		{

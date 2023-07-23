@@ -233,7 +233,7 @@ T_38: (in __gmon_start__() @ 000000000040044C : word64)
   Class: Eq_38
   DataType: word64
   OrigDataType: word64
-T_39: (in false @ 0000000000400473 : bool)
+T_39: (in true @ 0000000000400473 : bool)
   Class: Eq_39
   DataType: bool
   OrigDataType: bool

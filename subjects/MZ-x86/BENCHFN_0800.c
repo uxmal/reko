@@ -2501,7 +2501,7 @@ l0800_nBBB:
 			}
 			goto l0800_nBC7;
 		}
-		if (bl_n <= 0x5A)
+		if (bl_n <= 0x5A && bl_n >= 0x30)
 			bl_n = bl_n - 55;
 		else
 			bl_n = bl_n - 0x57;

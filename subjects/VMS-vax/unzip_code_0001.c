@@ -3728,7 +3728,7 @@ void fn0001530A(Eq_n r0, struct Eq_n * r5, ptr32 r11, struct Eq_n * ap, union Eq
 	struct Eq_n * r6_n = ap->ptr0018;
 	if (r5->dw0088 > 0x00)
 	{
-		if (false)
+		if (true)
 		{
 			do
 			{
@@ -3771,7 +3771,7 @@ void fn00015896(Eq_n r0, struct Eq_n * r5, ptr32 r11, struct Eq_n * ap, union Eq
 	struct Eq_n * r6_n = ap->ptr0018;
 	if (r5->dw0088 > 0x00)
 	{
-		if (false)
+		if (true)
 		{
 			do
 			{
@@ -3813,7 +3813,7 @@ void fn00015E22(Eq_n r0, struct Eq_n * r6, ptr32 r11, struct Eq_n * ap, union Eq
 	ui32 r3_n = 0x00;
 	if (r6->dw0088 > 0x00)
 	{
-		if (false)
+		if (true)
 		{
 			do
 			{
@@ -3855,7 +3855,7 @@ void fn000162E6(Eq_n r0, struct Eq_n * r6, ptr32 r11, struct Eq_n * ap, union Eq
 	ui32 r3_n = 0x00;
 	if (r6->dw0088 > 0x00)
 	{
-		if (false)
+		if (true)
 		{
 			do
 			{
@@ -5208,7 +5208,7 @@ l00018E4F:
 		else
 			r4_n = SEQ(SLICE(r4_n, word24, 8), *ap->ptr0008);
 		ptr32 r2_n;
-		if ((byte) (r5_n - r4_n) == 0x00)
+		if ((byte) r5_n == (byte) r4_n)
 		{
 			struct Eq_n * sp_n = sp_n - 0x04;
 			sp_n->dw0000 = ap->dw000C;

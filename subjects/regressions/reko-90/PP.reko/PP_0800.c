@@ -8219,7 +8219,7 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 	struct Eq_n Eq_n::* bp_n = fp - 2;
 	mp16 sp_n = fp - 0x3E;
 	Eq_n cx_n = 0x04;
-	if (false)
+	if (true)
 		cx_n.u0 = 0x03;
 	word16 ax_n = 0x00;
 	Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002202), cx_n);
@@ -8805,7 +8805,7 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 	{
 		mp16 sp_n = fp - 0x0A;
 		Eq_n cx_n = 0x04;
-		if (false)
+		if (true)
 			cx_n.u0 = 0x03;
 		word16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002206), cx_n);
@@ -12624,7 +12624,7 @@ l0800_nAF:
 			}
 			goto l0800_nAD;
 		}
-		if (bl_n <= 0x5A)
+		if (bl_n <= 0x5A && bl_n >= 0x30)
 			bl_n = bl_n - 55;
 		else
 			bl_n = bl_n - 0x57;

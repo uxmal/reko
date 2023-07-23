@@ -19,7 +19,7 @@ void _start(void (* rdx)(), word32 dwArg00, char * ptrArg08)
 //      __do_global_dtors_aux
 void deregister_tm_clones()
 {
-	if (false || true)
+	if (true || true)
 		return;
 	null();
 }

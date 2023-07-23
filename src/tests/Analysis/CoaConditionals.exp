@@ -196,7 +196,7 @@ sp_11: orig: sp
 wLoc02_12: orig: wLoc02
 wArg02:Stack +0002
     def:  def wArg02
-    uses: return SLICE(cond(wArg02), bool, 1)
+    uses: return SLICE(cond(wArg02 - 0<16>), bool, 1)
 C_14: orig: C
 O_15: orig: O
 S_16: orig: S
@@ -208,7 +208,7 @@ fn0C00_0069_entry:
 	def wArg02
 	// succ:  l0C00_0069
 l0C00_0069:
-	return SLICE(cond(wArg02), bool, 1)
+	return SLICE(cond(wArg02 - 0<16>), bool, 1)
 	// succ:  fn0C00_0069_exit
 fn0C00_0069_exit:
 

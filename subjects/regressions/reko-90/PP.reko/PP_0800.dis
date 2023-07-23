@@ -9117,7 +9117,7 @@ l0800_5E64:
 	word16 bp_1046 = fp - 2<i16>
 	word16 sp_126 = fp - 0x3E<16>
 	word16 cx_23 = 4<16>
-	branch true l0800_5E80
+	branch false l0800_5E80
 l0800_5E7E:
 	cx_23 = 3<16>
 l0800_5E80:
@@ -9761,7 +9761,7 @@ l0800_66AD:
 l0800_66BE:
 	word16 sp_134 = fp - 0xA<16>
 	word16 cx_31 = 4<16>
-	branch true l0800_66D2
+	branch false l0800_66D2
 l0800_66D0:
 	cx_31 = 3<16>
 l0800_66D2:
@@ -14242,7 +14242,7 @@ l0800_9485:
 l0800_948B:
 	branch bl_8 <=u 0x39<8> l0800_94A2
 l0800_9490:
-	branch bl_8 >u 0x5A<8> l0800_949A
+	branch bl_8 >u 0x5A<8> || bl_8 <u 0x30<8> l0800_949A
 l0800_949A:
 	bl_16 = bl_8 - 0x57<8>
 l0800_9495:
