@@ -39,7 +39,7 @@ namespace Reko.Evaluation
             BinaryExpression? binEaLeft = null;
             BinaryExpression? binEaRight = null;
             Identifier? idEa = null;
-            Expression? defIndex = null;
+            Expression? defIndex;
 
             if (ea is BinaryExpression bin)
             {

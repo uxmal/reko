@@ -127,5 +127,30 @@ namespace Reko.Core.Operators
         {
             return self == OperatorType.Shl || self == OperatorType.Shr || self == OperatorType.Sar;
         }
+
+        public static bool IsIntComparison(this OperatorType type)
+        {
+            return type switch
+            {
+
+                OperatorType.Eq or OperatorType.Ne or
+                OperatorType.Ge or OperatorType.Gt or
+                OperatorType.Le or OperatorType.Lt or
+                OperatorType.Uge or OperatorType.Ugt or
+                OperatorType.Ule or OperatorType.Ult => true,
+                _ => false
+            };
+        }
+
+        public static bool IsFloatComparison(this OperatorType type)
+        {
+            return type switch
+            {
+                OperatorType.Feq or OperatorType.Fne or
+                OperatorType.Fge or OperatorType.Fgt or
+                OperatorType.Fle or OperatorType.Flt => true,
+                _ => false
+            };
+        }
     }
 }
