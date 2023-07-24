@@ -7,7 +7,6 @@ void fn12340000()
 // Preserved: esp
 fn12340000_entry:
 l12340000:
-	size_8 = strlen(0x12340030<32>) + 1<i32>
 	strcpy(0x12340034<32>, 0x12340030<32>)
 	return
 fn12340000_exit:

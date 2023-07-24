@@ -136,7 +136,7 @@ namespace Reko.Core.Intrinsics
             .Param("T")
             .Void();
 
-        public static readonly IntrinsicProcedure Strlen = new IntrinsicBuilder("strlen", true)
+        public static readonly IntrinsicProcedure Strlen = new IntrinsicBuilder("strlen", false)
             .PtrParam(PrimitiveType.Char)
             .Returns(PrimitiveType.UInt32);
         public static readonly IntrinsicProcedure Memcpy = new IntrinsicBuilder("memcpy", true)
