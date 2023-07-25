@@ -2521,4 +2521,4 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 90 binaries in 66.54 seconds.
+Decompiled 90 binaries in 65.34 seconds.

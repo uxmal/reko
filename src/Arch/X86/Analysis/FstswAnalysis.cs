@@ -23,7 +23,6 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using System;
@@ -208,6 +207,9 @@ namespace Reko.Arch.X86.Analysis
                         ReplaceWithFpufCopy(use, ass.Dst, sidFpuf);
                         changed = true;
                         break;
+                    case MkSequence _:
+                        // An aliasing use of ax or ah; eax = SEQ(<stuff>, ax) can be ignored.
+                        continue;
                     default:
                         throw new NotImplementedException($"Fstsw of {ass} not implemented yet.");
                     }

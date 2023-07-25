@@ -504,5 +504,33 @@ l00100000:
                 m.Ret();
             });
         }
+
+
+        [Test]
+        public void Fstsw_through_alias()
+        {
+            RunTest(@"
+l00100000:
+	ax_4 = __fstsw(FPUF)
+	ah_5 = SLICE(ax_4, byte, 8) (alias)
+	SZP_6 = cond(ah_5 & 0x41<8>)
+	Z_9 = SLICE(SZP_6, bool, 2) (alias)
+	O_7 = false
+	C_8 = false
+	eax_12 = SEQ(eax_16_16, ax_4) (alias)
+	branch Test(GT,FPUF) l00100000
+",
+                m =>
+                {
+                    m.Label("foo");
+                    m.Fstsw(m.ax);
+                    m.Test(m.ah, 0x41);
+                    m.Jz("foo");
+
+                    m.Label("m1");
+                    m.Or(m.eax, m.Imm(0xFFFFFFFF));
+                    m.Ret();
+                });
+        }
     }
 }
