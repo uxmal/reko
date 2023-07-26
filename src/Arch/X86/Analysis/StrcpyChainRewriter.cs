@@ -129,9 +129,13 @@ namespace Reko.Arch.X86.Analysis
         {
             firstSize = GetDefiningExpression(ssa, firstSize);
             lastSize = GetDefiningExpression(ssa, lastSize);
-            if (!IsAlignment4(firstSize, out var strSize1))
+            // if expression like (size >> log2(alignment)) * alignment
+            if (!IsAlignment(firstSize, out var strSize1, out var alignment))
                 return false;
-            if (!IsModulo4(lastSize, out var strSize2))
+            // if expression like (size & (n - 1))
+            if (!IsModulo(lastSize, out var strSize2, out var n))
+                return false;
+            if (alignment != n)
                 return false;
             if (!cmp.Equals(strSize1, strSize2))
                 return false;
@@ -141,41 +145,49 @@ namespace Reko.Arch.X86.Analysis
             return true;
         }
 
-        private bool IsAlignment4(
+        private bool IsAlignment(
             Expression e,
-            [MaybeNullWhen(false)] out Expression value)
+            [MaybeNullWhen(false)] out Expression value,
+            out long alignment)
         {
             value = null;
+            alignment = 0;
             if (e is not BinaryExpression bin)
                 return false;
             if (bin.Operator.Type != OperatorType.SMul &&
                 bin.Operator.Type != OperatorType.UMul &&
                 bin.Operator.Type != OperatorType.IMul)
                 return false;
-            if (bin.Right is not Constant cRight || cRight.ToInt64() != 4)
+            if (bin.Right is not Constant cRight)
                 return false;
             if (bin.Left is not BinaryExpression leftBin)
                 return false;
             if (leftBin.Operator.Type != OperatorType.Shr)
                 return false;
-            if (leftBin.Right is not Constant cShr || cShr.ToInt64() != 2)
+            if (leftBin.Right is not Constant cShr)
+                return false;
+            if ((1 << cShr.ToInt32()) != cRight.ToInt64())
                 return false;
             value = leftBin.Left;
+            alignment = cRight.ToInt64();
             return true;
         }
 
-        private bool IsModulo4(
+        private bool IsModulo(
             Expression e,
-            [MaybeNullWhen(false)] out Expression value)
+            [MaybeNullWhen(false)] out Expression value,
+            out long n)
         {
             value = null;
+            n = 0;
             if (e is not BinaryExpression bin)
                 return false;
             if (bin.Operator.Type != OperatorType.And)
                 return false;
-            if (bin.Right is not Constant cAnd || cAnd.ToInt64() != 3)
+            if (bin.Right is not Constant cAnd)
                 return false;
             value = bin.Left;
+            n = cAnd.ToInt64() + 1;
             return true;
         }
 
