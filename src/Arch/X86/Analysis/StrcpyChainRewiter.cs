@@ -134,15 +134,15 @@ namespace Reko.Arch.X86.Analysis
             SsaState ssa, Expression firstSize, Expression lastSize,
             Expression str)
         {
-            firstSize = Expand(ssa, firstSize);
-            lastSize = Expand(ssa, lastSize);
+            firstSize = GetDefiningExpression(ssa, firstSize);
+            lastSize = GetDefiningExpression(ssa, lastSize);
             if (!IsAlignment4(firstSize, out var strSize1))
                 return false;
             if (!IsModulo4(lastSize, out var strSize2))
                 return false;
             if (!cmp.Equals(strSize1, strSize2))
                 return false;
-            var strSize = Expand(ssa, strSize1);
+            var strSize = GetDefiningExpression(ssa, strSize1);
             if (!IsStrlenInc1(strSize, str))
                 return false;
             return true;
@@ -207,7 +207,7 @@ namespace Reko.Arch.X86.Analysis
             return true;
         }
 
-        private Expression Expand(SsaState ssa, Expression e)
+        private Expression GetDefiningExpression(SsaState ssa, Expression e)
         {
             if (e is not Identifier id)
                 return e;
