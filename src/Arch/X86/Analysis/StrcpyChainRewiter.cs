@@ -92,27 +92,20 @@ namespace Reko.Arch.X86.Analysis
         private bool TryRewriteStrcpy(
             SsaState ssa, Statement firstStm, Statement lastStm)
         {
-            if (!AsMemcpy(
-                    firstStm,
-                    out var firstDst,
-                    out var firstSrc,
-                    out var firstSize))
+            if (!AsMemcpy(firstStm, out var firstMemcpy))
                 return false;
-            if (!AsMemcpy(
-                    lastStm,
-                    out var lastDst,
-                    out var lastSrc,
-                    out var lastSize))
+            if (!AsMemcpy(lastStm, out var lastMemcpy))
                 return false;
-            if (!IsAdjacent(firstDst, lastDst, firstSize))
+            if (!IsAdjacent(firstMemcpy.Dst, lastMemcpy.Dst, firstMemcpy.Size))
                 return false;
-            if (!IsAdjacent(firstSrc, lastSrc, firstSize))
+            if (!IsAdjacent(firstMemcpy.Src, lastMemcpy.Src, firstMemcpy.Size))
                 return false;
-            if (!IsStrSize(ssa, firstSize, lastSize, firstSrc))
+            if (!IsStrSize(
+                    ssa, firstMemcpy.Size, lastMemcpy.Size, firstMemcpy.Src))
                 return false;
             firstStm.Instruction = new SideEffect(
-                m.Fn(Strcpy(ssa), firstDst, firstSrc));
-            ssa.RemoveUses(firstStm, firstSize);
+                m.Fn(Strcpy(ssa), firstMemcpy.Dst, firstMemcpy.Src));
+            ssa.RemoveUses(firstStm, firstMemcpy.Size);
             ssa.DeleteStatement(lastStm);
             return true;
         }
@@ -217,22 +210,16 @@ namespace Reko.Arch.X86.Analysis
 
         private bool AsMemcpy(
             Statement stm,
-            [MaybeNullWhen(false)] out Expression dst,
-            [MaybeNullWhen(false)] out Expression src,
-            [MaybeNullWhen(false)] out Expression size)
+            [MaybeNullWhen(false)] out MemcpyArguments memcpy)
         {
-            src = null;
-            dst = null;
-            size = null;
+            memcpy = null;
             if (stm.Instruction is not SideEffect side)
                 return false;
             if (!IsCallToIntrinsicProcedure(
                 side.Expression, CommonOps.Memcpy, out var app)
             )
                 return false;
-            dst = app.Arguments[0];
-            src =  app.Arguments[1];
-            size = app.Arguments[2];
+            memcpy = new(app.Arguments);
             return true;
         }
 
@@ -258,6 +245,18 @@ namespace Reko.Arch.X86.Analysis
         {
             return CommonOps.Strcpy.ResolvePointers(
                 ssa.Procedure.Architecture.PointerType.BitSize);
+        }
+
+        private class MemcpyArguments
+        {
+            public readonly Expression Dst;
+            public readonly Expression Src;
+            public readonly Expression Size;
+
+            public MemcpyArguments(Expression[] args)
+            {
+                (Dst, Src, Size) = (args[0], args[1], args[2]);
+            }
         }
     }
 }
