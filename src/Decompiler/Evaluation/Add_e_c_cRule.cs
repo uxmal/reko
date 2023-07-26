@@ -48,7 +48,7 @@ namespace Reko.Evaluation
                 return null;
             if (!binExp.Operator.Type.IsAddOrSub())
 				return null;
-            if (cRight.IsReal || cRight.IsReal)
+            if (cLeftRight.IsReal || cRight.IsReal)
                 return null;
 
 			if (binLeft.Operator.Type == OperatorType.ISub)
