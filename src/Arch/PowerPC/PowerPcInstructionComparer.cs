@@ -72,7 +72,7 @@ namespace Reko.Arch.PowerPC
             case MemoryOperand memA:
                 var memB = (MemoryOperand) opB;
                 return CompareRegisters(memA.BaseRegister, memB.BaseRegister) &&
-                    memB.Offset == memB.Offset;
+                    memA.Offset == memB.Offset;
             case ConditionOperand cA:
                 var cB = (ConditionOperand) opB;
                 return cA.condition == cB.condition;
