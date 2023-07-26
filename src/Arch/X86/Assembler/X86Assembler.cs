@@ -1033,7 +1033,7 @@ namespace Reko.Arch.X86.Assembler
                 {
                     if (ops[1].Operand.Width == null)
                         ops[1].Operand.Width = w;
-                    else if (ops[0].Operand.Width != ops[0].Operand.Width)
+                    else if (ops[0].Operand.Width != ops[1].Operand.Width)
                         Error("Operand widths don't match");
                 }
             }
