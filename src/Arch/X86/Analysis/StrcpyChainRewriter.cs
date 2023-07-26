@@ -54,20 +54,20 @@ namespace Reko.Arch.X86.Analysis
     ///     ret
     /// </code>
     /// </remarks>
-    public class StrcpyChainRewiter : IAnalysis<SsaState>
+    public class StrcpyChainRewriter : IAnalysis<SsaState>
     {
         private readonly AnalysisContext ctx;
         private readonly ExpressionEmitter m;
         private readonly ExpressionValueComparer cmp;
 
-        public StrcpyChainRewiter(AnalysisContext ctx)
+        public StrcpyChainRewriter(AnalysisContext ctx)
         {
             this.ctx = ctx;
             this.m = new();
             this.cmp = new();
         }
 
-        public string Id => "strcpy-chain-rewiter";
+        public string Id => "strcpy-chain-rewriter";
 
         public string Description => "Rewite scasb/movsd/movsb sequence as strcpy";
 

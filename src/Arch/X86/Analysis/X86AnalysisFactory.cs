@@ -37,7 +37,7 @@ namespace Reko.Arch.X86.Analysis
             }
             if (stage == AnalysisStage.AfterExpressionCoalescing)
             {
-                return new[] { new StrcpyChainRewiter(ctx) };
+                return new[] { new StrcpyChainRewriter(ctx) };
             }
             return Array.Empty<IAnalysis<SsaState>>();
         }
