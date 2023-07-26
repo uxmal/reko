@@ -192,13 +192,9 @@ namespace Reko.Arch.X86.Analysis
                 return false;
             if (bin.Operator.Type != OperatorType.IAdd)
                 return false;
-            if (bin.Left is not Application app)
-                return false;
-            if (app.Procedure is not ProcedureConstant pc)
-                return false;
-            if (pc.Procedure is not IntrinsicProcedure intrinsic)
-                return false;
-            if (intrinsic.Name != CommonOps.Strlen.Name)
+            if (!IsCallToIntrinsicProcedure(
+                bin.Left, CommonOps.Strlen, out var app)
+            )
                 return false;
             if (!cmp.Equals(str, app.Arguments[0]))
                 return false;
@@ -229,20 +225,32 @@ namespace Reko.Arch.X86.Analysis
             dst = null;
             size = null;
             if (stm.Instruction is not SideEffect side)
-            {
                 return false;
-            }
-            if (side.Expression is not Application app)
-                return false;
-            if (app.Procedure is not ProcedureConstant pc)
-                return false;
-            if (pc.Procedure is not IntrinsicProcedure intrinsic)
-                return false;
-            if (intrinsic.Name != CommonOps.Memcpy.Name)
+            if (!IsCallToIntrinsicProcedure(
+                side.Expression, CommonOps.Memcpy, out var app)
+            )
                 return false;
             dst = app.Arguments[0];
             src =  app.Arguments[1];
             size = app.Arguments[2];
+            return true;
+        }
+
+        private bool IsCallToIntrinsicProcedure(
+            Expression e,
+            IntrinsicProcedure intrinsic,
+            [MaybeNullWhen(false)] out Application app)
+        {
+            app = null;
+            if (e is not Application foundApp)
+                return false;
+            if (foundApp.Procedure is not ProcedureConstant pc)
+                return false;
+            if (pc.Procedure is not IntrinsicProcedure foundIntrinsic)
+                return false;
+            if (foundIntrinsic.Name != intrinsic.Name)
+                return false;
+            app = foundApp;
             return true;
         }
 
