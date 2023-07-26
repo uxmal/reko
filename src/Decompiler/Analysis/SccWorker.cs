@@ -166,7 +166,7 @@ namespace Reko.Analysis
                 var ssa = sst.Transform();
                 dfa.DumpWatchedProcedure("ssa", "After SSA", ssa);
 
-                ssa = RunAnalyses(analysisFactory, context, AnalysisStage.AfterRegisterSsa, ssa);
+                ssa = dfa.RunAnalyses(analysisFactory, context, AnalysisStage.AfterRegisterSsa, ssa);
 
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
@@ -259,22 +259,6 @@ namespace Reko.Analysis
                     .ReportProcedure($"analysis_{99:00}_crash.txt", banner, proc);
                 throw;
             }
-        }
-
-        public SsaState RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
-        {
-            if (analysisFactory is null)
-                return ssa;
-            var procSpecificAnalyses = analysisFactory.CreateSsaAnalyses(AnalysisStage.AfterRegisterSsa, ssa, context);
-            if (procSpecificAnalyses is null)
-                return ssa;
-            foreach (var analysis in procSpecificAnalyses)
-            {
-                var (ssaNew, _) = analysis.Transform(ssa);
-                dfa.DumpWatchedProcedure(analysis.Id, analysis.Description, ssa);
-                ssa = ssaNew;
-            }
-            return ssa;
         }
 
         private static bool IsStackStorageOfPreservedRegister(
