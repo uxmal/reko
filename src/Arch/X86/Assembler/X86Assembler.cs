@@ -574,7 +574,7 @@ namespace Reko.Arch.X86.Assembler
                 {
                     if (IsSegmentRegister(regOpDst))
                         Error("Cannot assign between two segment registers");
-                    if (ops[0].Operand.Width != PrimitiveType.Word16)
+                    if (ops[0].Operand.Width.BitSize != 16)
                         Error(string.Format("Values assigned to/from segment registers must be 16 bits wide"));
                     EmitOpcode(0x8C, PrimitiveType.Word16);
                     EmitModRM(RegisterEncoding(regOpSrc), ops[0]);
@@ -584,7 +584,7 @@ namespace Reko.Arch.X86.Assembler
                 int isWord = IsWordWidth(regOpDst);
                 if (regOpSrc != null)
                 {
-                    if (regOpSrc.DataType != regOpDst.DataType)
+                    if (regOpSrc.DataType.BitSize > regOpDst.DataType.BitSize)
                         this.Error(string.Format("size mismatch between {0} and {1}", regOpSrc, regOpDst));
                     EmitOpcode(0x8A | (isWord & 1), dataWidth);
                     modRm.EmitModRM(reg, regOpSrc);
@@ -976,7 +976,7 @@ namespace Reko.Arch.X86.Assembler
 
         private void EmitOffset(Constant v)
         {
-            if (v == null)
+            if (v is null)
                 return;
             emitter.EmitLe((PrimitiveType) v.DataType, v.ToInt32());
         }
@@ -1016,7 +1016,7 @@ namespace Reko.Arch.X86.Assembler
             DataType? w = ops[0].Operand.Width;
             if (count == 1 && ops[0].Operand.Width == null)
             {
-                Error("Width of the first operand is unknown");
+                Error("The width of the first operand is unknown.");
                 return null;
             }
             if (count == 2)
@@ -1024,16 +1024,16 @@ namespace Reko.Arch.X86.Assembler
                 if (w is null)
                 {
                     w = ops[1].Operand.Width;
-                    if (w == null)
-                        Error("Width of the first operand is unknown");
+                    if (w is null)
+                        Error("The width of the first operand is unknown");
                     else
                         ops[0].Operand.Width = w;
                 }
                 else
                 {
-                    if (ops[1].Operand.Width == null)
+                    if (ops[1].Operand.Width is null)
                         ops[1].Operand.Width = w;
-                    else if (ops[0].Operand.Width != ops[1].Operand.Width)
+                    else if (ops[0].Operand.Width.BitSize < ops[1].Operand.Width.BitSize)
                         Error("Operand widths don't match");
                 }
             }
