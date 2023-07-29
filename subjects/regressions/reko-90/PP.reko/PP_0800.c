@@ -519,7 +519,7 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 					}
 					cu16 cx_n = ~cx_n;
 					word16 di_n = di_n - cx_n;
-					Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(*((word32) ds + 17022), di_n, size_n);
 					memcpy((word16) size_n + 17022, &(wLoc04_n->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 					dx = fn0800-0C6C(ds, SEQ(ds, 17022));
@@ -560,7 +560,7 @@ Eq_n fn0800-0541(Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & dsOut)
 					}
 					cu16 cx_n = ~cx_n;
 					word16 di_n = di_n - cx_n;
-					Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(*((word32) ds + 17123), di_n, size_n);
 					memcpy((word16) size_n + 17123, &(wLoc04_n->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 					dx = fn0800-0C6C(ds, SEQ(ds, 17123));
@@ -1037,7 +1037,7 @@ word16 fn0800-0C93(Eq_n ds, Eq_n dwArg02, union Eq_n & dxOut)
 		}
 		uint16 cx_n = ~cx_n;
 		mp16 di_n = di_n - cx_n;
-		Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+		uint32 size_n = (cx_n >> 0x01) *32 0x02;
 		memcpy(*((word32) ds + 10004), di_n, size_n);
 		memcpy((word16) size_n + 10004, &(ss->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 		cx_n.u0 = 0x00;
@@ -2396,7 +2396,7 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & bpOut, union Eq_n & dsO
 			(ss->*sp_n).t0000.u0 = (wchar_t) ds_n;
 			cu16 cx_n = ~cx_n;
 			word16 di_n = di_n - cx_n;
-			Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+			uint32 size_n = (cx_n >> 0x01) *32 0x02;
 			memcpy(&(es_n->*di_n.u4), di_n, size_n);
 			memcpy(&(es_n->*(di_n.u4 + (word16) size_n)), &(es_n->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 			Eq_n ds_n = (ss->*sp_n).t0000.u8.u1;
@@ -2832,7 +2832,7 @@ word16 fn0800-1E5E(Eq_n ds, struct Eq_n & dsOut)
 	ss->*((word32) sp_n - 2) = ds;
 	cu16 cx_n = ~cx_n;
 	word16 di_n = di_n - cx_n;
-	Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(di_n, di_n, size_n);
 	memcpy(&(es_n->*((char *) di_n + (word16) size_n)), &(wArg04_n->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 	Eq_n ds_n = ss->*((word32) sp_n - 2);
@@ -2888,7 +2888,7 @@ byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 	}
 	cu16 cx_n = ~cx_n;
 	word16 di_n = di_n - cx_n;
-	Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(bx_n - 0x01, di_n, size_n);
 	memcpy(bx_n - 0x01 + (word16) size_n, &(psegArg04_n->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 	Eq_n es_n = dx_n;
@@ -3749,7 +3749,7 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, Eq_n ptrAr
 					}
 					cu16 cx_n = ~cx_n;
 					word16 di_n = di_n - cx_n;
-					Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(ptrArg0A, di_n, size_n);
 					memcpy(ptrArg0A + SLICE(size_n, word16, 0), es_n:di_n + SLICE(size_n, word16, 0), CONVERT(SLICE(cond(cx_n >>u 0x01), bool, 1), bool, word16));
 					selector es_n = Mem329[ds:0x45AC:selector];
@@ -4214,7 +4214,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 			}
 			cu16 cx_n = ~cx_n;
 			word16 di_n = di_n - cx_n;
-			Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+			uint32 size_n = (cx_n >> 0x01) *32 0x02;
 			memcpy(ptrArg02, di_n, size_n);
 			memcpy(ptrArg02 + SLICE(size_n, word16, 0), ds:di_n + SLICE(size_n, word16, 0), CONVERT(SLICE(cond(cx_n >>u 0x01), bool, 1), bool, word16));
 			Mem387[ds:0x4617:word16] = Mem373[ds:0x4617:word16] + 0x01;
@@ -4294,7 +4294,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n ds, Eq_n ptrArg02, union Eq_n
 			}
 			cu16 cx_n = ~cx_n;
 			word16 di_n = di_n - cx_n;
-			Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+			uint32 size_n = (cx_n >> 0x01) *32 0x02;
 			memcpy(ptrArg02, di_n, size_n);
 			memcpy(ptrArg02 + SLICE(size_n, word16, 0), ds:di_n + SLICE(size_n, word16, 0), CONVERT(SLICE(cond(cx_n >>u 0x01), bool, 1), bool, word16));
 			Mem699[ds:0x4617:word16] = Mem685[ds:0x4617:word16] + 0x01;
@@ -4522,7 +4522,7 @@ word16 fn0800-32CD(Eq_n ds, Eq_n dwArg02, byte Eq_n::* wArg06, Eq_n psegArg08, w
 	}
 	cu16 cx_n = ~cx_n;
 	word16 di_n = di_n - cx_n;
-	Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(fp - 0x0068, di_n, size_n);
 	memcpy(fp - 0x0068 + (word16) size_n, &(psegArg08->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 	byte Eq_n::* di_n = fp - 0x0068;
@@ -4645,7 +4645,7 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, Eq_n dwArg08, ptr16 & cxO
 					}
 					cu16 cx_n = ~cx_n;
 					word16 di_n = di_n - cx_n;
-					Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+					uint32 size_n = (cx_n >> 0x01) *32 0x02;
 					memcpy(ptrArg02, di_n, size_n);
 					memcpy(ptrArg02 + SLICE(size_n, word16, 0), ds:di_n + SLICE(size_n, word16, 0), CONVERT(SLICE(cond(cx_n >>u 0x01), bool, 1), bool, word16));
 					cx_n = 0x00;
@@ -4718,7 +4718,7 @@ word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, cui16 wArg06, ptr16 & cxOut, union Eq
 		}
 		cu16 cx_n = ~cx_n;
 		word16 di_n = di_n - cx_n;
-		Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+		uint32 size_n = (cx_n >> 0x01) *32 0x02;
 		memcpy(ptrArg02, di_n, size_n);
 		memcpy(ptrArg02 + SLICE(size_n, word16, 0), ds:di_n + SLICE(size_n, word16, 0), CONVERT(SLICE(cond(cx_n >>u 0x01), bool, 1), bool, word16));
 		cx_n = 0x00;
@@ -4756,7 +4756,7 @@ Eq_n fn0800-3509(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, ptr16 & bxOut)
 	}
 	uint16 cx_n = ~cx_n;
 	mp16 di_n = di_n - cx_n;
-	Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(&(psegArg04->*wArg02.u4), di_n, size_n);
 	memcpy(&(psegArg04->*(wArg02.u4 + (word16) size_n)), &(ss->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 	byte Eq_n::* di_n = fp - 90;
@@ -4810,7 +4810,7 @@ byte fn0800-35A3(Eq_n wArg02, Eq_n psegArg04, Eq_n dwArg06, union Eq_n & dxOut)
 	}
 	uint16 cx_n = ~cx_n;
 	mp16 di_n = di_n - cx_n;
-	Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+	uint32 size_n = (cx_n >> 0x01) *32 0x02;
 	memcpy(&(psegArg04->*wArg02.u4), di_n, size_n);
 	memcpy(&(psegArg04->*(wArg02.u4 + (word16) size_n)), &(ss->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 	byte Eq_n::* di_n = fp - 22;
@@ -4974,7 +4974,7 @@ Eq_n fn0800-3764(Eq_n ds)
 		}
 		cu16 cx_n = ~cx_n;
 		word16 di_n = di_n - cx_n;
-		Eq_n size_n = (cx_n >> 0x01) *32 0x02;
+		uint32 size_n = (cx_n >> 0x01) *32 0x02;
 		memcpy(*((word32) ds + 0x000044DC), di_n, size_n);
 		memcpy((word16) size_n + 0x44DC, &(ds->*((char *) di_n + (word16) size_n)), (word16) SLICE(cond(cx_n >> 0x01), bool, 1));
 	}
@@ -8220,7 +8220,7 @@ word16 fn0800-5E64(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 	mp16 sp_n = fp - 0x3E;
 	Eq_n cx_n = 0x04;
 	if (true)
-		cx_n.u0 = 0x03;
+		cx_n.u1 = 0x03;
 	word16 ax_n = 0x00;
 	Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002202), cx_n);
 	if (cmpResult_n != 0x00)
@@ -8806,7 +8806,7 @@ word16 fn0800-669C(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 		mp16 sp_n = fp - 0x0A;
 		Eq_n cx_n = 0x04;
 		if (true)
-			cx_n.u0 = 0x03;
+			cx_n.u1 = 0x03;
 		word16 ax_n = 0x00;
 		Eq_n cmpResult_n = memcmp(*((word32) ds + 17009), *((word32) ds + 0x00002206), cx_n);
 		if (cmpResult_n != 0x00)
@@ -10897,7 +10897,7 @@ l0800_n:
 			}
 			al_n = al_n * 0x02;
 			bool v39_n = al_n >= 0x00;
-			cx_n.u2 = (uint16) ((bool) C_n.u0 + 4);
+			cx_n.u1 = (uint16) ((bool) C_n.u0 + 4);
 			if (al_n == 0x00)
 			{
 				al_n = ds_n->*si_n *8 0x02 + (byte) (al_n < 0x00);
