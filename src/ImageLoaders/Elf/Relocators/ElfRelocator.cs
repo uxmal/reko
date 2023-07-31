@@ -230,7 +230,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     }
                     else
                     {
-                        var listener = Loader.Services.RequireService<DecompilerEventListener>();
+                        var listener = Loader.Services.RequireService<IEventListener>();
                         listener.Warn("Invalid value for DT_PLTREL: {0}", pltrel.UValue);
                         continue;
                     }

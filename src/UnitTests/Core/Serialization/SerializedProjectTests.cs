@@ -50,14 +50,14 @@ namespace Reko.UnitTests.Core.Serialization
         private Mock<IProcessorArchitecture> arch;
         private Mock<IPlatform> platform;
         private Mock<IConfigurationService> cfgSvc;
-        private Mock<DecompilerEventListener> listener;
+        private Mock<IEventListener> listener;
 
         [SetUp]
         public void Setup()
         {
             this.mockFactory = new CommonMockFactory();
             this.cfgSvc = new Mock<IConfigurationService>();
-            this.listener = new Mock<DecompilerEventListener>();
+            this.listener = new Mock<IEventListener>();
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
             sc.AddService<IConfigurationService>(cfgSvc.Object);

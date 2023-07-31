@@ -19,27 +19,24 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Typing;
-using System;
+using Reko.Services;
 using System.Diagnostics;
 
 namespace Reko.Evaluation
 {
-	/// <summary>
-	/// Implements constant propagation. Addresses are considered
+    /// <summary>
+    /// Implements constant propagation. Addresses are considered
     /// constants.
-	/// </summary>
+    /// </summary>
     public class IdConstant
     {
         public IdConstant()
         {
         }
 
-        public Expression? Match(Identifier id, EvaluationContext ctx, Unifier unifier, DecompilerEventListener listener)
+        public Expression? Match(Identifier id, EvaluationContext ctx, Unifier unifier, IDecompilerEventListener listener)
         {
             var src = ctx.GetValue(id);
             var cSrc = src as Constant;

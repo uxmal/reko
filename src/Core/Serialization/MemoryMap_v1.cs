@@ -60,7 +60,7 @@ namespace Reko.Core.Serialization
             return mmap;
         }
 
-        public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, DecompilerEventListener listener)
+        public static ImageSegment? LoadSegment(MemorySegment_v1 segment, IPlatform platform, IEventListener listener)
         {
             if (segment.Name is null)
             {

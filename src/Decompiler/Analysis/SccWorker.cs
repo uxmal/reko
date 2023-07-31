@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,7 +50,7 @@ namespace Reko.Analysis
         private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;  //$MUTABLE
         private readonly IReadOnlySet<Procedure> sccProcs;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
 
         public SccWorker(
             DataFlowAnalysis dfa,
@@ -64,7 +65,7 @@ namespace Reko.Analysis
             this.program = dfa.Program;
             this.flow = dfa.ProgramDataFlow;
             this.sccProcs = sccProcs.ToHashSet();
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
         }
 
         /// <summary>

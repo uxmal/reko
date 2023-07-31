@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -84,7 +85,8 @@ namespace Reko.UnitTests.Arch.X86.Analysis
         private static void DoRunTest(string sExpected, ServiceContainer sc, Program program)
         {
             var listener = new FakeDecompilerEventListener();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
             var dynlinker = new Mock<IDynamicLinker>().Object;
             var scanner = new Scanner(program, new TypeLibrary(), dynlinker, sc);
             scanner.ScanImage();

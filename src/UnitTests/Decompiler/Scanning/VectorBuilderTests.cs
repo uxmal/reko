@@ -45,9 +45,9 @@ namespace Reko.UnitTests.Decompiler.Scanning
         [SetUp]
         public void Setup()
         {
-            var eventListener = new Mock<DecompilerEventListener>();
+            var eventListener = new Mock<IEventListener>();
             sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(eventListener.Object);
+            sc.AddService<IEventListener>(eventListener.Object);
         }
 
         private void Given_Program(byte [] bytes)

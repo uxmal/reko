@@ -18,32 +18,24 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Core
+namespace Reko.Services
 {
-    public class AddressContext
+    /// <summary>
+    /// A specialization of the <see cref="IEventListener"/> with
+    /// decompiler-specific additions.
+    /// </summary>
+    public interface IDecompilerEventListener : IEventListener
     {
-        private readonly Program program;
-        private readonly Address addr;
-        private readonly IEventListener eventListener;
+        void OnProcedureFound(Program program, Address addrProc);
+    }
 
-        public AddressContext(Program program, Address addr, IEventListener eventListener)
-        {
-            this.program = program;
-            this.addr = addr;
-            this.eventListener = eventListener;
-        }
+    public class NullDecompilerEventListener : NullEventListener, IDecompilerEventListener
+    {
+        public static new IDecompilerEventListener Instance { get; } = new NullDecompilerEventListener();
 
-        public void Warn(string format, params object [] args)
-        {
-            eventListener.Warn(
-               eventListener.CreateAddressNavigator(program, addr),
-               string.Format(format, args));
-        }
+        public void OnProcedureFound(Program program, Address addrProc) { }
     }
 }

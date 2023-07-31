@@ -74,7 +74,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             fileImage = new byte[0x4000];
             writer = new LeImageWriter(fileImage);
             var cfgSvc = new Mock<IConfigurationService>();
-            var dcSvc = new Mock<DecompilerEventListener>();
+            var dcSvc = new Mock<IEventListener>();
             Given_i386_Architecture();
             this.win32 = new Mock<Win32Platform>(sc, arch_386.Object) { CallBase = true };
             // Avoid complications with the FindMainProcedure call.
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 It.IsAny<IServiceProvider>(),
                 It.IsAny<IProcessorArchitecture>())).Returns(win32.Object);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
-            sc.AddService<DecompilerEventListener>(dcSvc.Object);
+            sc.AddService<IEventListener>(dcSvc.Object);
         }
 
         private void Given_i386_Architecture()

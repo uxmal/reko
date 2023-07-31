@@ -201,7 +201,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case Ppc64Rt.R_PPC64_JMP_SLOT:
                 return (addr, null);
             default:
-                var listener = this.loader.Services.RequireService<DecompilerEventListener>();
+                var listener = this.loader.Services.RequireService<IEventListener>();
                 var loc = listener.CreateAddressNavigator(program, addr);
                 listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
                 return (addr, null);

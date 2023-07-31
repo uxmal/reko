@@ -35,11 +35,11 @@ namespace Reko.Core.Output
         private readonly HashSet<Address> visited;
         private readonly DataTypeComparer cmp;
         private readonly StructureFieldCollection globalFields;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private int recursionGuard;
         private EndianImageReader rdr; 
 
-        public GlobalObjectTracer(Program program, WorkList<(StructureField, Address)> wl, DecompilerEventListener eventListener)
+        public GlobalObjectTracer(Program program, WorkList<(StructureField, Address)> wl, IEventListener eventListener)
         {
             this.program = program;
             this.wl = wl;

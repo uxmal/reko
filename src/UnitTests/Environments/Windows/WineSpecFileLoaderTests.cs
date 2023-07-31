@@ -40,14 +40,14 @@ namespace Reko.UnitTests.Environments.Windows
         private IPlatform platform;
         private WineSpecFileLoader wsfl;
         private ServiceContainer sc;
-        private Mock<DecompilerEventListener> listener;
+        private Mock<IEventListener> listener;
 
         [SetUp]
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            this.listener = new Mock<DecompilerEventListener>();
-            this.sc.AddService<DecompilerEventListener>(listener.Object);
+            this.listener = new Mock<IEventListener>();
+            this.sc.AddService<IEventListener>(listener.Object);
         }
 
         private void Given_WineSpecLoader_16(string filename, string contents)

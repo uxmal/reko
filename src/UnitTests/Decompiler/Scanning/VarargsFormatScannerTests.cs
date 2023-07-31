@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 RegId(null,  sysV_ppc, "r3", CStringType32())) { IsVariadic = true };
             this.addrInstr = Address.Ptr32(0x123400);
             this.listener = new FakeDecompilerEventListener();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
             this.dummyPc = new ProcedureConstant(PrimitiveType.Ptr32, new ExternalProcedure("dummy", x86PrintfSig));
         }
 

@@ -24,6 +24,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,7 +52,7 @@ namespace Reko.Analysis
         private readonly ProgramDataFlow dataFlow;
         private readonly IDynamicLinker dynamicLinker;
         private readonly IServiceProvider services;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
 
         public UnusedOutValuesRemover(
             Program program,
@@ -65,7 +66,7 @@ namespace Reko.Analysis
             this.ssaStates = ssaStates;
             this.dynamicLinker = dynamicLinker;
             this.services = services;
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
             this.wl = new WorkList<SsaState>();
             this.procToSsa = ssaStates
                 .ToDictionary(s => s.Procedure);

@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Gui.Forms
             var project = new Project(ImageLocation.FromUri("/home/bob/reko.project"));
             project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
 
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new Reko.Decompiler(project, sc);

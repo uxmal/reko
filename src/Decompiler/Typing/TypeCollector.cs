@@ -20,10 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Code;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
-using System.Collections.Generic;
 
 namespace Reko.Typing
 {
@@ -37,7 +36,7 @@ namespace Reko.Typing
         private readonly Program program;
         private readonly ExpressionTypeAscender asc;
         private readonly ExpressionTypeDescender desc;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private Statement? stmCur;
         private bool seenPhi;
 
@@ -45,7 +44,7 @@ namespace Reko.Typing
             TypeFactory factory, 
             TypeStore store,
             Program program,
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
         {
             this.factory = factory;
             this.store = store;

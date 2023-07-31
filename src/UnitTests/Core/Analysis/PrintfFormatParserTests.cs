@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Core.Analysis
     public class PrintfFormatParserTests
     {
         private PrintfFormatParser parser;
-        private Mock<DecompilerEventListener> eventListener;
+        private Mock<IEventListener> eventListener;
         private ServiceContainer sc;
         private Program program;
 
@@ -42,8 +42,8 @@ namespace Reko.UnitTests.Core.Analysis
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            this.eventListener = new Mock<DecompilerEventListener>();
-            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener.Object);
+            this.eventListener = new Mock<IEventListener>();
+            this.sc.AddService(typeof(IEventListener), this.eventListener.Object);
             var arch = new Mock<IProcessorArchitecture>();
             var platform = new Mock<IPlatform>();
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);

@@ -31,10 +31,10 @@ using System.Threading.Tasks;
 namespace Reko.Core.Services
 {
     /// <summary>
-    /// This interface is used by the worker thread to communicate with the 
+    /// This interface is used by low-level code to communicate with the 
     /// driver, be it a command line or a GUI.
     /// </summary>
-    public interface DecompilerEventListener
+    public interface IEventListener
     {
         IProgressIndicator Progress { get; }
 
@@ -63,14 +63,20 @@ namespace Reko.Core.Services
         void Error(ICodeLocation location, Exception ex, string message, params object[] args);
         void Error(ScriptError scriptError);
 
+        /// <summary>
+        /// This method is called to determine whether the caller should quit
+        /// gracefully.
+        /// </summary>
+        /// <returns>True if cancellation has been requested, false if not.
+        /// </returns>
         bool IsCanceled();
     }
 
-    public class NullDecompilerEventListener : DecompilerEventListener
+    public class NullEventListener : IEventListener
     {
-        public static DecompilerEventListener Instance { get; } = new NullDecompilerEventListener();
+        public static IEventListener Instance { get; } = new NullEventListener();
 
-        #region DecompilerEventListener Members
+        #region IEventListener Members
 
         public IProgressIndicator Progress => NullProgressIndicator.Instance;
 

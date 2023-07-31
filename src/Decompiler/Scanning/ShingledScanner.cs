@@ -25,6 +25,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,9 +63,9 @@ namespace Reko.Scanning
         private readonly ScanResults sr;
         private readonly IRewriterHost host;
         private readonly IStorageBinder storageBinder;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
 
-        public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
+        public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, IDecompilerEventListener eventListener)
         {
             this.program = program;
             this.host = host;

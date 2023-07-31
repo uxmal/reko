@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
             var sc = new ServiceContainer();
             var listener = new FakeDecompilerEventListener();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             doms = proc.CreateBlockDominatorGraph();
 

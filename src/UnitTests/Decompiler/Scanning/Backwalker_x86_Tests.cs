@@ -38,6 +38,7 @@ using System.Collections.Generic;
 using Reko.Core.Services;
 using Reko.Core.Lib;
 using Moq;
+using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -152,7 +153,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var fsSvc = new FileSystemServiceImpl();
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
-            sc.AddService<DecompilerEventListener>(el);
+            sc.AddService<IEventListener>(el);
+            sc.AddService<IDecompilerEventListener>(el);
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))

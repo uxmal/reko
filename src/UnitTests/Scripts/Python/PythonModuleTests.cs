@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Scripts.Python
         {
             this.services = new ServiceContainer();
             var eventListener = new FakeDecompilerEventListener();
-            services.AddService<DecompilerEventListener>(eventListener);
+            services.AddService<IEventListener>(eventListener);
             var cfgSvcMock = new Mock<IConfigurationService>();
             cfgSvcMock
                 .Setup(

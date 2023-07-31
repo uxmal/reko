@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
             this.addUseInstructions = false;
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, RegisterStorage.Reg32("r1", 1));

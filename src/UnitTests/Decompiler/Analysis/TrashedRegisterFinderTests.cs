@@ -27,6 +27,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sbExpected = new StringBuilder();
             this.services = new ServiceContainer();
-            this.services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            this.services.AddService<IEventListener>(new FakeDecompilerEventListener());
             this.fnExit = new ExternalProcedure(
                 "exit",
                 FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32))),

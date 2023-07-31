@@ -111,7 +111,7 @@ namespace Reko.ImageLoaders.MzExe
             }
             catch (Exception ex)
             {
-                var listener = Services.RequireService<DecompilerEventListener>();
+                var listener = Services.RequireService<IEventListener>();
                 listener.Error(
                     new NullCodeLocation(ImageLocation.FilesystemPath),
                     ex,

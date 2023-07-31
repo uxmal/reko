@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.Scanning;
+using Reko.Services;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace Reko.Analysis
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaMutator ssam;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly Scanning.VarargsFormatScanner va;
         private Statement? stmCur;      //$REFACTOR: try to make this a context paramter.
 
@@ -70,7 +71,7 @@ namespace Reko.Analysis
             this.callGraph = program.CallGraph;
             this.arch = ssa.Procedure.Architecture;
             this.dynamicLinker = dynamicLinker;
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
             this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
             this.eval = new ExpressionSimplifier(program.SegmentMap, evalCtx, eventListener);

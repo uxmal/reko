@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace Reko.Scanning
         protected readonly IServiceProvider services;
         protected readonly Program program;
         protected readonly ScanResultsV2 sr;
-        protected readonly DecompilerEventListener listener;
+        protected readonly IDecompilerEventListener listener;
         protected readonly ConcurrentDictionary<Address, Address> blockStarts;
         protected readonly ConcurrentDictionary<Address, Address> blockEnds;
         protected readonly InstrClass rejectMask;
@@ -59,7 +60,7 @@ namespace Reko.Scanning
             Program program,
             ScanResultsV2 sr,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener,
+            IDecompilerEventListener listener,
             IServiceProvider services)
         {
             this.services = services;
@@ -463,13 +464,13 @@ namespace Reko.Scanning
             private readonly IServiceProvider services;
             private readonly Program program;
             private readonly IDynamicLinker dynamicLinker;
-            private readonly DecompilerEventListener listener;
+            private readonly IDecompilerEventListener listener;
 
             public RewriterHost(
                 IServiceProvider services,
                 Program program,
                 IDynamicLinker dynamicLinker,
-                DecompilerEventListener listener)
+                IDecompilerEventListener listener)
             {
                 this.services = services;
                 this.program = program;

@@ -50,7 +50,7 @@ namespace Reko.Core.Output
 
         public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(
             string fileExtension,
-            DecompilerEventListener listener)
+            IEventListener listener)
         {
             Debug.Assert(fileExtension.Length > 0 && fileExtension[0] == '.');
 

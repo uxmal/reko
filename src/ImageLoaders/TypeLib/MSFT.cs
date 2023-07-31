@@ -31,9 +31,9 @@ namespace Reko.ImageLoaders.TypeLib
 {
     public class MSFT
     {
-        private DecompilerEventListener listener;
+        private IEventListener listener;
 
-        public MSFT(DecompilerEventListener listener)
+        public MSFT(IEventListener listener)
         {
             this.listener = listener;
         }

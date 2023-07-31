@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private ServiceContainer sc;
         private Project project;
         private ByteMemoryArea bmem;
-        private DecompilerEventListener eventListener;
+        private IDecompilerEventListener eventListener;
 
         public class TestScanner : Scanner
         {
@@ -89,7 +89,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var r1 = fakeArch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
@@ -264,7 +265,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             {
                 KnownProcedures = new HashSet<Address>(),
             };
-            return new DataScanner(program, sr,  eventListener);
+            return new DataScanner(program, sr, eventListener);
         }
 
         [Test]

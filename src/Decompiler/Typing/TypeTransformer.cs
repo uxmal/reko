@@ -21,36 +21,37 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Reko.Typing
 {
-	/// <summary>Performs transformations on the generated data types to make them 
-	/// legal C-like data types.</summary>
-	/// <remarks>
-	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
-	/// </remarks>
-	public class TypeTransformer : IDataTypeVisitor<DataType>
+    /// <summary>Performs transformations on the generated data types to make them 
+    /// legal C-like data types.</summary>
+    /// <remarks>
+    /// Much of the type inference code in this namespace was inspired by the master's thesis
+    /// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
+    /// </remarks>
+    public class TypeTransformer : IDataTypeVisitor<DataType>
 	{
 		private bool changed;
 		private TypeFactory factory;
 		private TypeStore store;
         private Program program;
 		private Unifier unifier;
-        private DecompilerEventListener eventListener;
+        private IDecompilerEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types") { Level = TraceLevel.Verbose };
         private readonly Dictionary<DataType, DataType> visitedTypes;
 
         public TypeTransformer(TypeFactory factory, TypeStore store, Program program)
-            : this(factory, store, program, new NullDecompilerEventListener())
+            : this(factory, store, program, NullDecompilerEventListener.Instance)
         {
         }
 
-		public TypeTransformer(TypeFactory factory, TypeStore store, Program program, DecompilerEventListener eventListener)
+		public TypeTransformer(TypeFactory factory, TypeStore store, Program program, IDecompilerEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;

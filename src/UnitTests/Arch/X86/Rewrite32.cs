@@ -27,6 +27,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,8 @@ namespace Reko.UnitTests.Arch.X86
                 .Returns((string[] s) => RekoConfigurationService.MakeInstallationRelativePath(s));
             services.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
             services.AddService(typeof(IConfigurationService), configSvc.Object);
-            services.AddService(typeof(DecompilerEventListener), eventListener);
+            services.AddService(typeof(IEventListener), eventListener);
+            services.AddService(typeof(IDecompilerEventListener), eventListener);
             services.AddService(typeof(CancellationTokenSource), new CancellationTokenSource());
             services.AddService(typeof(IFileSystemService),new FileSystemServiceImpl());
             arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());

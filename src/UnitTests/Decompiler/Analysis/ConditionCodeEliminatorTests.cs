@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             var listener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
             var dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             foreach (var proc in program.Procedures.Values)
             {

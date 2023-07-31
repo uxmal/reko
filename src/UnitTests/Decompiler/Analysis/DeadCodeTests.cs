@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
             var listener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)

@@ -162,7 +162,7 @@ namespace Reko.ImageLoaders.Coff
             {
                 if (segToSet != null)
                 {
-                    Services.RequireService<DecompilerEventListener>().Warn("Multiple XCoff {0} sections found, ignoring.", flag);
+                    Services.RequireService<IEventListener>().Warn("Multiple XCoff {0} sections found, ignoring.", flag);
                     Debug.WriteLine("  ?Dup?");
                 }
                 else

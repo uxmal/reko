@@ -29,6 +29,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private Dictionary<uint, RtlInstructionCluster> clusters = default!;
         private RelocationDictionary rd;
         private readonly Identifier id;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
 
         public ShingleScannerTests()
         {
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private List<ChunkWorker> When_MakeScanChunks()
         {
             var dynLinker = new Mock<IDynamicLinker>();
-            var listener = new Mock<DecompilerEventListener>();
+            var listener = new Mock<IDecompilerEventListener>();
             var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object, new ServiceContainer());
             var chunks = scanner.MakeScanChunks();
             return chunks;
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void RunTest(string sExpected)
         {
             var dynLinker = new Mock<IDynamicLinker>();
-            var listener = new Mock<DecompilerEventListener>();
+            var listener = new Mock<IDecompilerEventListener>();
             var scanner = new ShingleScanner(program, cfg, dynLinker.Object, listener.Object, new ServiceContainer());
             var cfgNew = scanner.ScanProgram();
             scanner.RegisterPredecessors();

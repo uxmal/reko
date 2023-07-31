@@ -58,7 +58,8 @@ namespace Reko.CmdLine
             var fsSvc = new FileSystemServiceImpl();
             var dcSvc = new DecompilerService();
             services.AddService<IDecompilerService>(dcSvc);
-            services.AddService<DecompilerEventListener>(listener);
+            services.AddService<IEventListener>(listener);
+            services.AddService<IDecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
             services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
             services.AddService<IFileSystemService>(fsSvc);

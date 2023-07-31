@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,9 +51,9 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private readonly Storage stackPointer;
         private readonly Storage framePointer;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
 
-        public ArgumentGuesser(IPlatform platform, SsaState ssa, DecompilerEventListener eventListener)
+        public ArgumentGuesser(IPlatform platform, SsaState ssa, IDecompilerEventListener eventListener)
         {
             this.platform = platform;
             this.ssa = ssa;

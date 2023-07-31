@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Memory;
-using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,7 +46,7 @@ namespace Reko.Scanning
             Program program,
             ScanResultsV2 sr,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener,
+            IDecompilerEventListener listener,
             IServiceProvider services)
             : base(program, sr, dynamicLinker, listener, services)
         {

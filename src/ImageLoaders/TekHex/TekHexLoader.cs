@@ -44,7 +44,7 @@ namespace Reko.ImageLoaders.TekHex
         private readonly List<Symbol> symbols;
         private readonly SortedList<Address, List<byte>> mems;
         private readonly List<ImageSymbol> entryPoints; 
-        private readonly DecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private int nLines;
         private uint uAddrLast;
         private List<byte>? abCur;
@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.TekHex
             this.symbols = new List<Symbol>();
             this.mems = new SortedList<Address, List<byte>>();
             this.entryPoints = new List<ImageSymbol>(); 
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IEventListener>();
         }
 
         public override Address PreferredBaseAddress 

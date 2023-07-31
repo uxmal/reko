@@ -50,10 +50,10 @@ namespace Reko.Core
     {
         private readonly Project project;
         private readonly Program program;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly Dictionary<string, ImageSymbol> localProcs;
 
-        public DynamicLinker(Project project, Program program, DecompilerEventListener eventListener)
+        public DynamicLinker(Project project, Program program, IEventListener eventListener)
         {
             this.project = project ?? throw new ArgumentNullException(nameof(project));
             this.program = program;

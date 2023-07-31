@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Decompiler.Loading
     public class SymbolLoadingServiceTests
     {
         private Mock<IConfigurationService> cfgSvc;
-        private Mock<DecompilerEventListener> eventListener;
+        private Mock<IEventListener> eventListener;
         private Mock<IFileSystemService> fsSvc;
         private ServiceContainer sc;
 
@@ -43,12 +43,12 @@ namespace Reko.UnitTests.Decompiler.Loading
         public void Setup()
         {
             sc = new ServiceContainer();
-            this.eventListener = new Mock<DecompilerEventListener>();
+            this.eventListener = new Mock<IEventListener>();
             cfgSvc = new Mock<IConfigurationService>();
             fsSvc = new Mock<IFileSystemService>();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
-            sc.AddService<DecompilerEventListener>(eventListener.Object);
+            sc.AddService<IEventListener>(eventListener.Object);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 

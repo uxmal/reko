@@ -20,7 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Collections;
-using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace Reko.Scanning
         public RecursiveScanner(
             Program program,
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener,
+            IDecompilerEventListener listener,
             IServiceProvider services)
             : this(program, new ScanResultsV2(), dynamicLinker, listener, services)
         { }
@@ -56,7 +56,7 @@ namespace Reko.Scanning
             Program program, 
             ScanResultsV2 sr, 
             IDynamicLinker dynamicLinker,
-            DecompilerEventListener listener,
+            IDecompilerEventListener listener,
             IServiceProvider services)
             : base(program, sr, dynamicLinker, listener, services)
         {

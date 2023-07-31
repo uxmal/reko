@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.MzExe
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
         private readonly Dictionary<uint, (Address, ImportReference)> importStubs;
-        private readonly DecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly uint lfaNew;
         private IProcessorArchitecture arch;
         private LXHeader hdr;
@@ -68,7 +68,7 @@ namespace Reko.ImageLoaders.MzExe
         public LeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw, uint e_lfanew) 
             : base(services, imageLocation, imgRaw)
         {
-            listener = Services.RequireService<DecompilerEventListener>();
+            listener = Services.RequireService<IEventListener>();
             lfaNew = e_lfanew;
             importStubs = new Dictionary<uint, (Address, ImportReference)>();
             imageSymbols = new SortedList<Address, ImageSymbol>();

@@ -80,7 +80,7 @@ namespace Reko.Core.Configuration
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
                 var fsSvc = services.RequireService<IFileSystemService>();
-                var listener = services.RequireService<DecompilerEventListener>();
+                var listener = services.RequireService<IEventListener>();
                 try
                 {
                     var filePath = cfgSvc.GetInstallationRelativePath(MemoryMapFile!);

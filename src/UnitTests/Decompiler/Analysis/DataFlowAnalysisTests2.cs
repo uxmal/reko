@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
         }
 
         private void AssertProgram(string sExp, Program program)

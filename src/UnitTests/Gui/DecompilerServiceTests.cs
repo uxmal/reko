@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Gui
             sc = new ServiceContainer();
             svc = new DecompilerService();
             sc.AddService(typeof(IDecompilerService), svc);
-            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            sc.AddService(typeof(IEventListener), new FakeDecompilerEventListener());
         }
         
         [Test]

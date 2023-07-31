@@ -22,17 +22,16 @@ using Reko.Core;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Services;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Mocks
 {
-    public class FakeDecompilerEventListener : DecompilerEventListener, IWorkerDialogService
+    public class FakeDecompilerEventListener : IDecompilerEventListener, IWorkerDialogService
     {
         private string lastDiagnostic;
         private bool finishedCalled;
@@ -223,6 +222,10 @@ namespace Reko.UnitTests.Mocks
         public ICodeLocation CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture _, Address addrIndirectJump, Address addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
+        }
+
+        public void OnProcedureFound(Program program, Address addr)
+        {
         }
 
         #region IWorkerDialogService Members

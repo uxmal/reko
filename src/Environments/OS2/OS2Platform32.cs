@@ -54,7 +54,7 @@ namespace Reko.Environments.OS2
         {
             if (vector == 0x21)
             {
-                var listener = Services.GetService<DecompilerEventListener>();
+                var listener = Services.GetService<IEventListener>();
                 if (listener is null)
                     return null;
                 listener.Warn($"{state?.InstructionPointer.ToString() ?? "???"}: No support for protected mode MS-DOS in LE executables yet.");

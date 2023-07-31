@@ -27,6 +27,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -77,7 +78,7 @@ namespace Reko.Scanning
             this.eval = new ExpressionSimplifier(
                 program.SegmentMap,
                 state,
-                scanner.Services.RequireService<DecompilerEventListener>());
+                scanner.Services.RequireService<IDecompilerEventListener>());
             this.addrStart = addr;
             this.blockCur = null;
             this.rejectMask = program.User.Heuristics.Contains(ScannerHeuristics.Unlikely)
@@ -1004,7 +1005,7 @@ namespace Reko.Scanning
             List<Address> vector;
             ImageMapVectorTable imgVector;
             Expression switchExp;
-            var eventListener = this.scanner.Services.RequireService<DecompilerEventListener>();
+            var eventListener = this.scanner.Services.RequireService<IDecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out var indJump))
             {
                 // Trust the user knows what they're doing.
@@ -1127,7 +1128,7 @@ namespace Reko.Scanning
             RtlTransfer xfer)
         {
             Debug.Assert(!(xfer.Target is Address || xfer.Target is Constant), $"This should not be a constant {xfer}.");
-            var listener = scanner.Services.RequireService<DecompilerEventListener>();
+            var listener = scanner.Services.RequireService<IDecompilerEventListener>();
 
             var bwsHost = new BackwardSlicerHost(program, this.arch);
             var rtlBlock = bwsHost.GetRtlBlock(blockCur!);

@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 SegmentMap = segmentMap,
             };
             sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
         }
 
         private ExternalProcedure CreateExternalProcedure(

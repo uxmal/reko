@@ -121,7 +121,7 @@ namespace Reko.Gui.Forms
             var imageUri = ImageLocation.FromUri(file);
             bool exceptionThrown = !await svc.StartBackgroundWork("Opening file", () =>
             {
-                var eventListener = Services.RequireService<DecompilerEventListener>();
+                var eventListener = Services.RequireService<IEventListener>();
                 eventListener.Progress.ShowStatus("Loading file.");
                 loadedImage = ldr.Load(imageUri);
                 eventListener.Progress.ShowStatus("Loaded file.");
@@ -178,7 +178,7 @@ namespace Reko.Gui.Forms
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             if (!await svc.StartBackgroundWork("Loading program", delegate ()
             {
-                var eventListener = Services.RequireService<DecompilerEventListener>();
+                var eventListener = Services.RequireService<IEventListener>();
                 eventListener.Progress.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
                 details.Location = imageUri;
@@ -275,7 +275,7 @@ namespace Reko.Gui.Forms
             var svc = Services.RequireService<IWorkerDialogService>();
             await svc.StartBackgroundWork("Loading program", delegate()
             {
-                var eventListener = Services.RequireService<DecompilerEventListener>();
+                var eventListener = Services.RequireService<IEventListener>();
                 eventListener.Progress.ShowStatus("Assembling program.");
                 var asmFileLocation = ImageLocation.FromUri(file);
                 var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, null!);

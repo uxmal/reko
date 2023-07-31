@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -59,7 +60,7 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private readonly IProcessorArchitecture arch;
         private readonly ExpressionEmitter m;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
 
         private record Candidate(
             BitRange Slice, 
@@ -69,7 +70,7 @@ namespace Reko.Analysis
             Expression? EffectiveAddress, 
             long Displacement);
 
-        public StoreFuser(SsaState ssa, DecompilerEventListener listener)
+        public StoreFuser(SsaState ssa, IDecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;

@@ -160,7 +160,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     if ((symbol.Value & 0b11) != 0)
                     {
-                        var eventListener = loader.Services.RequireService<DecompilerEventListener>();
+                        var eventListener = loader.Services.RequireService<IEventListener>();
                         var loc = eventListener.CreateAddressNavigator(program, addr);
                         eventListener.Warn(loc, "Section {0}: unsupported interworking call (ARM -> Thumb)", referringSection?.Name ?? "<null>");
                         return (addr, null);
@@ -192,7 +192,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                     if ((int)offset <= -0x02000000 || (int)offset >= 0x02000000)
                     {
-                        var eventListener = loader.Services.RequireService<DecompilerEventListener>();
+                        var eventListener = loader.Services.RequireService<IEventListener>();
                         var loc = eventListener.CreateAddressNavigator(program, addr);
                         eventListener.Warn(loc, "section {0} relocation at {1} out of range", referringSection?.Name ?? "<null>", addr);
                         return (addr, null);

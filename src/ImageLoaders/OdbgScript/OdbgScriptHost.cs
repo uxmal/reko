@@ -92,7 +92,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual bool DialogMSG(string msg, out int input)
         {
-            loader.Services.RequireService<DecompilerEventListener>().Info(msg);
+            loader.Services.RequireService<IEventListener>().Info(msg);
             input = 0;
             return true;
         }
@@ -130,7 +130,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual void MsgError(string message)
         {
-            loader.Services.RequireService<DecompilerEventListener>().Error(message);
+            loader.Services.RequireService<IEventListener>().Error(message);
         }
 
         public virtual bool TE_GetMemoryInfo(Address addr, out MEMORY_BASIC_INFORMATION MemInfo)

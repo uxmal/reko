@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform platform;
         private SizeSpecificLoader innerLoader;
         private Program program;
-        private DecompilerEventListener listener;
+        private IEventListener listener;
 
         private ushort machine;
 		private short optionalHeaderSize;
@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.MzExe
         public PeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte [] img, uint peOffset) 
             : base(services, imageLocation, img)
 		{
-            listener = services.RequireService<DecompilerEventListener>();
+            listener = services.RequireService<IEventListener>();
             EndianImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
 				rdr.ReadByte() != 'E' ||

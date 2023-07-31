@@ -18,33 +18,30 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Diagnostics;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Gathers type information, infers structure, union, and array types,
-	/// then rewrites the program as appropriate to incorporate the inferred
+    /// <summary>
+    /// Gathers type information, infers structure, union, and array types,
+    /// then rewrites the program as appropriate to incorporate the inferred
     /// types. Much of the type inference code in this namespace was inspired
     /// by the master's thesis "Entwicklung eines Typanalysesystem für einen
     /// Decompiler", 2004, by Raimar Falke.
-	/// </summary>
-	public class TypeAnalyzer
+    /// </summary>
+    public class TypeAnalyzer
 	{
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(TypeAnalyzer), "Traces the progress of the type analysis") { Level = TraceLevel.Verbose };
 
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
 
 		private TypeFactory? factory;
 		private TypeStore? store;
@@ -57,7 +54,7 @@ namespace Reko.Typing
 		private ComplexTypeNamer? ctn;
 		private TypedExpressionRewriter? ter;
 
-		public TypeAnalyzer(DecompilerEventListener eventListener)
+		public TypeAnalyzer(IDecompilerEventListener eventListener)
 		{
 			this.eventListener = eventListener;
 		}

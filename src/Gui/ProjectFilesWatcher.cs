@@ -43,7 +43,7 @@ namespace Reko.Gui
         public const int MsecReloadDelay = 200;
 
         private readonly IDecompilerService decompilerSvc;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly ILoader loader;
         private readonly FileWatchersMap scriptWatchers;
         private readonly ConcurrentDictionary<string, bool> changedFiles;
@@ -53,7 +53,7 @@ namespace Reko.Gui
         public ProjectFilesWatcher(IServiceProvider services)
         {
             this.decompilerSvc = services.RequireService<IDecompilerService>();
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IEventListener>();
             this.loader = services.RequireService<ILoader>();
             this.Decompiler = decompilerSvc.Decompiler;
             decompilerSvc.DecompilerChanged += OnDecompilerChanged;

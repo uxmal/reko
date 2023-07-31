@@ -54,6 +54,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         private readonly IServiceProvider services;
+        private readonly IEventBus eventBus;
         private LowLevelView control;
         private TypeMarker typeMarker;
         private Program program;
@@ -63,9 +64,12 @@ namespace Reko.UserInterfaces.WindowsForms
         public LowLevelViewInteractor(IServiceProvider services)
         {
             this.services = services;
+            this.eventBus = this.services.RequireService<IEventBus>();
+            eventBus.ProcedureFound += EventBus_ProcedureFound;
         }
 
-        public LowLevelView Control { get { return control; } }
+
+        public LowLevelView Control => control;
         public IWindowFrame Frame { get; set; }
 
         public Program Program
@@ -115,6 +119,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var uiService = services.RequireService<IDecompilerShellUiService>();
             this.control = new LowLevelView();
+            this.control.Disposed += Control_Disposed;
             this.Control.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
 
@@ -154,6 +159,11 @@ namespace Reko.UserInterfaces.WindowsForms
             return control;
         }
 
+        private void Control_Disposed(object sender, EventArgs e)
+        {
+            eventBus.ProcedureFound -= EventBus_ProcedureFound;
+            control.Disposed -= Control_Disposed;
+        }
 
         public void SetSite(IServiceProvider services)
         {
@@ -726,5 +736,13 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.VisualizerControl.Visualizer = (Visualizer)item.Value;
         }
 
+        private void EventBus_ProcedureFound(object sender, (Program, Address) e)
+        {
+            if (this.control is null)
+                return;
+            this.control.ImageMapView.Invalidate();
+            this.control.MemoryView.Invalidate();
+            this.control.DisassemblyView.Invalidate();
+        }
     }
 }

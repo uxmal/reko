@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core.Serialization
         private Mock<IProcessorArchitecture> arch;
         private Mock<IConfigurationService> cfgSvc;
         private Mock<IPlatform> platform;
-        private Mock<DecompilerEventListener> listener;
+        private Mock<IEventListener> listener;
 
 
         [SetUp]
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.sc = new ServiceContainer();
             loader = new Mock<ILoader>();
             arch = new Mock<IProcessorArchitecture>();
-            this.listener = new Mock<DecompilerEventListener>();
+            this.listener = new Mock<IEventListener>();
             Address dummy;
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.TryParseAddress(It.IsAny<string>(), out dummy))

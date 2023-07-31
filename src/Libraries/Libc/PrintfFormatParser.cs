@@ -184,7 +184,7 @@ namespace Reko.Libraries.Libc
                     size == PrintfSize.Long ? PrimitiveType.WChar : PrimitiveType.Char,
                     this.pointerSize);
             default:
-                var el = this.services.RequireService<DecompilerEventListener>();
+                var el = this.services.RequireService<IEventListener>();
                 el.Warn(
                     el.CreateAddressNavigator(program, addr),
                     "The format specifier '%{0}' passed to *printf is not known.", cDomain);

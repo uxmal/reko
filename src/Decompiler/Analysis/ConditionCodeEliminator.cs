@@ -25,8 +25,8 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -61,14 +61,14 @@ namespace Reko.Analysis
         private readonly SsaMutator mutator;
 		private readonly SsaIdentifierCollection ssaIds;
         private readonly IReadOnlyProgram program;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly ExpressionEmitter m;
         private readonly HashSet<Identifier> aliases;
         private readonly Dictionary<(Identifier, ConditionCode), SsaIdentifier> generatedIds;
 		private SsaIdentifier? sidGrf;
         private Statement? useStm;
 
-        public ConditionCodeEliminator(IReadOnlyProgram program, SsaState ssa, DecompilerEventListener listener)
+        public ConditionCodeEliminator(IReadOnlyProgram program, SsaState ssa, IDecompilerEventListener listener)
 		{
             this.ssa = ssa;
             this.mutator = new SsaMutator(ssa);

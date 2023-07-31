@@ -38,7 +38,7 @@ namespace Reko.Scripts.Python
     public class PythonModule : ScriptFile
     {
         private readonly TextWriter outputWriter;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
         private readonly IConfigurationService cfgSvc;
         private readonly IFileSystemService fsSvc;
         private RekoEventsAPI eventsAPI;
@@ -49,7 +49,7 @@ namespace Reko.Scripts.Python
             if (scriptLocation.HasFragments)
                 throw new NotSupportedException("Loading scripts inside archives is not supported yet.");
             var filename = scriptLocation.FilesystemPath;
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IEventListener>();
             this.cfgSvc = services.RequireService<IConfigurationService>();
             this.fsSvc = services.RequireService<IFileSystemService>();
             var outputService = services.RequireService<IOutputService>();
@@ -94,7 +94,7 @@ namespace Reko.Scripts.Python
 
         private static RekoEventsAPI Evaluate(
             TextWriter outputWriter,
-            DecompilerEventListener eventListener,
+            IEventListener eventListener,
             IConfigurationService cfgSvc,
             IFileSystemService fsSvc,
             string script,

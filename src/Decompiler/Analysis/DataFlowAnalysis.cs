@@ -26,6 +26,7 @@ using Reko.Core.Hll.C;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,7 +49,7 @@ namespace Reko.Analysis
 	{
         private readonly IDynamicLinker dynamicLinker;
         private readonly IServiceProvider services;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly Dictionary<string, int> phaseNumbering;
 
         public DataFlowAnalysis(
@@ -59,7 +60,7 @@ namespace Reko.Analysis
 			this.Program = program;
             this.dynamicLinker = dynamicLinker;
             this.services = services;
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
 			this.ProgramDataFlow = new ProgramDataFlow(program);
             this.phaseNumbering = new Dictionary<string, int>();
 		}

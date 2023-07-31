@@ -22,10 +22,9 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
-using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
-using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -170,7 +169,7 @@ namespace Reko.Scanning
                     {
                         if (services != null)
                         {
-                            var diagSvc = services.RequireService<DecompilerEventListener>();
+                            var diagSvc = services.RequireService<IDecompilerEventListener>();
                             diagSvc.Warn(
                                 diagSvc.CreateAddressNavigator(program, addrTable),
                                 "The call or jump table has invalid addresses; stopping.");

@@ -32,11 +32,11 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class Arm64Relocator : Relocator
     {
-        private readonly DecompilerEventListener eventListener;
+        private readonly IEventListener eventListener;
 
         public Arm64Relocator(IServiceProvider services, Program program) : base(program)
         {
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IEventListener>();
         }
 
         // https://docs.microsoft.com/en-us/windows/win32/debug/pe-format

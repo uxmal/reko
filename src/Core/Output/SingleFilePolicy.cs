@@ -41,7 +41,7 @@ namespace Reko.Core.Output
             this.defaultDataFile = "";
         }
 
-        public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(string fileExtension, DecompilerEventListener listener)
+        public override Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(string fileExtension, IEventListener listener)
         {
             this.defaultFile = Path.ChangeExtension(program.Name, fileExtension);
             this.defaultDataFile = Path.ChangeExtension(program.Name, "globals" + fileExtension);

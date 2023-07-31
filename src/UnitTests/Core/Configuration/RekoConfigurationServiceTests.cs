@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Configuration
             this.sc = new ServiceContainer();
             this.listener = new FakeDecompilerEventListener();
             this.pluginSvc = new Mock<IPluginLoaderService>();
-            sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IEventListener>(listener);
             sc.AddService<IPluginLoaderService>(pluginSvc.Object);
         }
 

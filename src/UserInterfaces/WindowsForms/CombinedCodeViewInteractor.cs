@@ -59,6 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private Procedure proc;
         private CombinedCodeView combinedCodeView;
         private NavigationInteractor<Address> navInteractor;
+        private IEventBus eventBus;
 
         private SortedList<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
@@ -285,6 +286,8 @@ namespace Reko.UserInterfaces.WindowsForms
                 this.combinedCodeView.PreviewTimer,
                 this.combinedCodeView.MixedCodeDataView);
 
+            this.eventBus = services.RequireService<IEventBus>();
+            combinedCodeView.Disposed += CombinedCodeView_Disposed;
             return combinedCodeView;
         }
 
@@ -749,6 +752,16 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             var blockData = userObj.UserData as CfgBlockNode;
 			Debug.Print("Node: {0}", blockData.Block.DisplayName);
+        }
+
+        private void CombinedCodeView_Disposed(object sender, EventArgs e)
+        {
+            eventBus.ProcedureFound -= EventBus_ProcedureFound;
+        }
+
+        private void EventBus_ProcedureFound(object sender, (Program, Address) e)
+        {
+            combinedCodeView.MixedCodeDataView.RecomputeLayout();
         }
     }
 }

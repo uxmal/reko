@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,13 +42,13 @@ namespace Reko.Typing
 
 		private readonly TypeFactory factory;
 		private readonly TypeStore store;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly Dictionary<ushort, TypeVariable> segTypevars;
         private readonly Dictionary<string, EquivalenceClass> typeReferenceClasses;
 		private FunctionType? signature;
         private Statement? stmCur;
 
-		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store, DecompilerEventListener listener)
+		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store, IDecompilerEventListener listener)
         {
 			this.factory = factory;
 			this.store = store;

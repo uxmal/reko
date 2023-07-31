@@ -36,6 +36,7 @@ using System.Threading;
 using Reko.Core.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ConstrainedExecution;
+using Reko.Services;
 
 namespace Reko.Scanning
 {
@@ -61,7 +62,7 @@ namespace Reko.Scanning
 
         private static readonly TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
 
-        protected DecompilerEventListener eventListener;
+        protected IDecompilerEventListener eventListener;
 
         private readonly TypeLibrary metadata;
         private readonly SegmentMap segmentMap;
@@ -82,13 +83,13 @@ namespace Reko.Scanning
             TypeLibrary metadata,
             IDynamicLinker dynamicLinker,
             IServiceProvider services)
-            : base(program, services.RequireService<DecompilerEventListener>())
+            : base(program, services.RequireService<IDecompilerEventListener>())
         {
             this.metadata = metadata;
             this.segmentMap = program.SegmentMap;
             this.dynamicLinker = dynamicLinker;
             this.Services = services;
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (segmentMap == null)
                 throw new InvalidOperationException("Program must have an segment map.");
@@ -642,6 +643,7 @@ namespace Reko.Scanning
             var usb = new UserSignatureBuilder(Program);
             usb.BuildSignature(addr, proc);
             cinj.InjectComments(proc);
+            this.eventListener.OnProcedureFound(Program, addr);
             return proc;
         }
 
@@ -834,7 +836,6 @@ namespace Reko.Scanning
             return blockNew;
         }
 
-
         public virtual void ScanImage()
         {
             // Find all blobs of data, and potentially pointers to code.
@@ -850,7 +851,6 @@ namespace Reko.Scanning
             }
             RemoveRedundantGotos();
         }
-
 
         [Conditional("DEBUG")]
         private static void Dump(string title, IEnumerable<Block> blocks)

@@ -67,7 +67,7 @@ namespace Reko.Scanning
 
 
         //$REVIEW: these methods don't belong here. 
-        // Callers should use DecompilerEventListener or IRewriterHost.
+        // Callers should use IDecompilerEventListener or IRewriterHost.
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message, params object[] args);

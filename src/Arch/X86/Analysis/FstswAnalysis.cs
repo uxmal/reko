@@ -81,10 +81,10 @@ namespace Reko.Arch.X86.Analysis
     public class FstswAnalysis : IAnalysis<SsaState>
     {
         private readonly IReadOnlyProgram program;
-        private readonly DecompilerEventListener listener;
+        private readonly IEventListener listener;
         private SsaState ssa;
 
-        public FstswAnalysis(IReadOnlyProgram program, DecompilerEventListener listener)
+        public FstswAnalysis(IReadOnlyProgram program, IEventListener listener)
         {
             this.program = program;
             this.ssa = default!;

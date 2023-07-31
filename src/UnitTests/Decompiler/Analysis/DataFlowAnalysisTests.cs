@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             SetCSignatures(program);
             var dynamicLinker = new Mock<IDynamicLinker>();
             var sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
             // Uncommenting the below line is useful for debugging, but slows down the unit tests
 //            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
             dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);

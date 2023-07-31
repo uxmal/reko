@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.Output
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
         }
 
         private ImageWriter Given_Memory(uint address)

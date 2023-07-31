@@ -56,7 +56,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             //$TODO: this is a hard dependency on the file system.
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var decompilerEventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(decompilerEventListener);
+            sc.AddService<IDecompilerEventListener>(decompilerEventListener);
         }
 
         protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, TextWriter w)
@@ -242,8 +244,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(fakeConfigService);
-            sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var location = ImageLocation.FromUri(FileUnitTester.MapTestPath(configFile));
@@ -273,7 +275,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(fakeConfigService);
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var project = new Project

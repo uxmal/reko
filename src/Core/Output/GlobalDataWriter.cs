@@ -116,7 +116,7 @@ namespace Reko.Core.Output
             }
             catch (Exception ex)
             {
-                var dc = services.RequireService<DecompilerEventListener>();
+                var dc = services.RequireService<IEventListener>();
                 dc.Error(
                     dc.CreateAddressNavigator(program, addr),
                     ex,
@@ -156,7 +156,7 @@ namespace Reko.Core.Output
             }
             catch (Exception ex)
             {
-                var dc = services.RequireService<DecompilerEventListener>();
+                var dc = services.RequireService<IEventListener>();
                 dc.Error(
                     dc.CreateAddressNavigator(program, address),
                     ex,
@@ -198,7 +198,7 @@ namespace Reko.Core.Output
         {
             if (at.Length == 0)
             {
-                var dc = services.RequireService<DecompilerEventListener>();
+                var dc = services.RequireService<IEventListener>();
                 dc.Warn(
                     dc.CreateAddressNavigator(program, rdr.Address),
                     "Expected sizes of arrays to have been determined by now");

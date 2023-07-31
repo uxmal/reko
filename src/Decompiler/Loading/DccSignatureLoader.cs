@@ -31,6 +31,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -344,7 +345,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         // This procedure is called to initialise the library check code 
         public bool SetupLibCheck(IServiceProvider services)
         {
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
             string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName!);
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -359,7 +360,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
 
         public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
         {
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             var rdr = new ByteImageReader(bytes);
             ushort w, len;
             int i;
@@ -482,7 +483,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         /// </summary>
         public bool LibCheck(IServiceProvider services, Procedure proc, Address addr)
         {
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             long fileOffset;
             int h;
             // i, j, arg;
@@ -886,7 +887,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         */
         void readProtoFile(IServiceProvider services)
         {
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             var cfgSvc = services.RequireService<IConfigurationService>();
             var szProFName = cfgSvc.GetInstallationRelativePath("msdos", DCCLIBS); /* Full name of dclibs.lst */
             var fsSvc = services.RequireService<IFileSystemService>();

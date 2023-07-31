@@ -62,7 +62,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var sc = new ServiceContainer();
             var eventListener = new FakeDecompilerEventListener();
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var entryPoints = new List<ImageSymbol>();

@@ -99,7 +99,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     !dynent.TryGetValue(ElfDynamicEntry.Mips.DT_MIPS_SYMTABNO, out var symbol_count) ||
                     !dynent.TryGetValue(ElfDynamicEntry.DT_PLTGOT, out var gotaddr))
                 {
-                    var listener = loader.Services.RequireService<DecompilerEventListener>();
+                    var listener = loader.Services.RequireService<IEventListener>();
                     listener.Warn("Required MIPS .dynamic information is missing from this binary. This will degrade decompilation output.");
                     continue;
                 }

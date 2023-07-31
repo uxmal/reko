@@ -18,19 +18,20 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
-using Reko.Core.Services;
-using System.Diagnostics.CodeAnalysis;
+using Reko.Services;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Reko.Scanning
 {
@@ -60,7 +61,7 @@ namespace Reko.Scanning
             this.eval = new ExpressionSimplifier(
                 program.SegmentMap,
                 ctx,
-                services.RequireService<DecompilerEventListener>());
+                services.RequireService<IDecompilerEventListener>());
         }
 
         public Instruction BuildInstruction(
@@ -187,7 +188,7 @@ namespace Reko.Scanning
 
         private void WarnUnableToDetermineFormatString(Address addrInstr, Expression callee)
         {
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             listener.Warn(
                 //$TODO: get address of call instruction
                 listener.CreateAddressNavigator(this.program, addrInstr),

@@ -35,7 +35,7 @@ namespace Reko.Gui
     /// </summary>
     public interface IServiceFactory
     {
-        DecompilerEventListener CreateDecompilerEventListener();
+        IDecompilerEventListener CreateDecompilerEventListener();
         IArchiveBrowserService CreateArchiveBrowserService();
         ICodeViewerService CreateCodeViewerService();
         ITextFileEditorService CreateTextFileEditorService();
@@ -76,5 +76,6 @@ namespace Reko.Gui
         IBaseAddressFinderService CreateBaseAddressFinderService();
         IStructureEditorService CreateStructureEditorService();
         ICallGraphNavigatorService CreateCallGraphNavigatorService();
+        IEventBus CreateEventBus();
     }
 }

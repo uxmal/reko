@@ -37,13 +37,13 @@ namespace Reko.ImageLoaders.Nro
     {
         public const UInt32 MAGIC = 0x304f524e; //NRO0 in Little Endian
 
-        private DecompilerEventListener decompilerEventListener;
+        private IEventListener eventListener;
         private LeImageReader rdr;
 
         public NroLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
             : base(services, imageLocation, imgRaw)
         {
-            decompilerEventListener = services.RequireService<DecompilerEventListener>();
+            eventListener = services.RequireService<IEventListener>();
             rdr = new LeImageReader(RawImage, 0);
         }
 
