@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,10 +39,10 @@ namespace Reko.Analysis
     public class CallRewriter
 	{
 		private readonly ProgramDataFlow mpprocflow;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly IPlatform platform;
 
-        public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, DecompilerEventListener listener) 
+        public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, IDecompilerEventListener listener) 
 		{
             this.platform = platform;
 			this.mpprocflow = mpprocflow;
@@ -52,7 +53,7 @@ namespace Reko.Analysis
             IPlatform platform, 
             List<SsaTransform> ssts,
             ProgramDataFlow summaries,
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
 		{
 			var crw = new CallRewriter(platform, summaries, eventListener);
 			foreach (SsaTransform sst in ssts)

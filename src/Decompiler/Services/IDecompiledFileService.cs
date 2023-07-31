@@ -102,9 +102,9 @@ namespace Reko.Services
     {
         private readonly IServiceProvider services;
         private readonly IFileSystemService fsSvc;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
 
-        public DecompiledFileService(IServiceProvider services, IFileSystemService fsSvc, DecompilerEventListener listener)
+        public DecompiledFileService(IServiceProvider services, IFileSystemService fsSvc, IDecompilerEventListener listener)
         {
             this.services = services;
             this.fsSvc = fsSvc;

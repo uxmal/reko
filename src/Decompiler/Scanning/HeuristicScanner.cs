@@ -24,6 +24,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,7 +50,7 @@ namespace Reko.Scanning
     {
         private readonly Program program;
         private readonly IRewriterHost host;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly IStorageBinder storageBinder;
         private readonly RtlBlock invalidBlock;
         private readonly IStorageBinder binder;
@@ -58,7 +59,7 @@ namespace Reko.Scanning
             IServiceProvider services,
             Program program, 
             IRewriterHost host, 
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
         {
             this.Services = services;
             this.program = program;

@@ -21,13 +21,13 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
+using Reko.Services;
 using System.Collections.Generic;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Replaces references to classes which are PrimitiveType, Pointer to T, or
+    /// <summary>
+    /// Replaces references to classes which are PrimitiveType, Pointer to T, or
     /// Pointer to Array of T
     /// with the actual primitive type or (ptr T) respectively.
     /// </summary>
@@ -37,18 +37,18 @@ namespace Reko.Typing
     /// If a expression e2 as the type [[e2] = Eq1 where Eq1 is Pointer(T)
     /// then after this transformation [[e2]] = Pointer(T)
     /// </remarks>
-	public class PtrPrimitiveReplacer : DataTypeTransformer
+    public class PtrPrimitiveReplacer : DataTypeTransformer
 	{
 		private readonly TypeFactory factory;
 		private readonly TypeStore store; 
         private readonly Program program;
         private readonly HashSet<EquivalenceClass> classesVisited;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private int recursionGuard;
         private int nestCount;
         private bool changed;
 
-        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program, DecompilerEventListener eventListener)
+        public PtrPrimitiveReplacer(TypeFactory factory, TypeStore store, Program program, IDecompilerEventListener eventListener)
 		{
 			this.factory = factory;
 			this.store = store;

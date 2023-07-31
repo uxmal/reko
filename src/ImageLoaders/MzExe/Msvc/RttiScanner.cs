@@ -44,10 +44,10 @@ namespace Reko.ImageLoaders.MzExe.Msvc
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
         private readonly IRttiHelper rttiHelper;
-        private readonly DecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly ImageSegment[] roSegments;
 
-        public RttiScanner(Program program, DecompilerEventListener listener)
+        public RttiScanner(Program program, IEventListener listener)
         {
             this.program = program;
             this.arch = program.Architecture;

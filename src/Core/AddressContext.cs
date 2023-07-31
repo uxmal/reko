@@ -30,19 +30,19 @@ namespace Reko.Core
     {
         private readonly Program program;
         private readonly Address addr;
-        private readonly DecompilerEventListener decompilerEventListener;
+        private readonly IEventListener eventListener;
 
-        public AddressContext(Program program, Address addr, DecompilerEventListener decompilerEventListener)
+        public AddressContext(Program program, Address addr, IEventListener eventListener)
         {
             this.program = program;
             this.addr = addr;
-            this.decompilerEventListener = decompilerEventListener;
+            this.eventListener = eventListener;
         }
 
         public void Warn(string format, params object [] args)
         {
-            decompilerEventListener.Warn(
-               decompilerEventListener.CreateAddressNavigator(program, addr),
+            eventListener.Warn(
+               eventListener.CreateAddressNavigator(program, addr),
                string.Format(format, args));
         }
     }

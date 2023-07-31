@@ -23,6 +23,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace Reko.Scanning
             Proc proc,
             ProcessorState state,
             InstrClass rejectMask,
-            DecompilerEventListener listener)
+            IDecompilerEventListener listener)
             : base(scanner, rejectMask, listener)
         {
             this.recScanner = scanner;

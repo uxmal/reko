@@ -66,14 +66,14 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var sc = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
             var openv = new Mock<PlatformDefinition>();
-            var listener = new Mock<DecompilerEventListener>();
+            var listener = new Mock<IEventListener>();
             var arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var platform = new SegaGenesisPlatform(sc, arch);
             cfgSvc.Setup(c => c.GetArchitecture("m68k")).Returns(arch);
             cfgSvc.Setup(c => c.GetEnvironment("sega-genesis")).Returns(openv.Object);
             openv.Setup(o => o.Load(sc, arch)).Returns(platform);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
-            sc.AddService<DecompilerEventListener>(listener.Object);
+            sc.AddService<IEventListener>(listener.Object);
             Given_AbsoluteMemoryMap(platform);
 
             var rawBytes = new byte[0x300];

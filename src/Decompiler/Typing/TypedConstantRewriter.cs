@@ -21,8 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -30,23 +30,23 @@ using System.Linq;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Rewrites a constant based on its type.
-	/// </summary>
-	public class TypedConstantRewriter : IDataTypeVisitor<Expression>
+    /// <summary>
+    /// Rewrites a constant based on its type.
+    /// </summary>
+    public class TypedConstantRewriter : IDataTypeVisitor<Expression>
 	{
         private readonly Program program;
         private readonly ITypeStore store;
         private readonly IPlatform platform;
 		private readonly Identifier globals;
         private readonly Dictionary<ushort, Identifier> mpSelectorToSegId;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private Constant? c;
         private Expression? basePtr;
 		private PrimitiveType? pOrig;
         private DataType? dtResult;
 
-        public TypedConstantRewriter(Program program, ITypeStore store, DecompilerEventListener eventListener)
+        public TypedConstantRewriter(Program program, ITypeStore store, IDecompilerEventListener eventListener)
 		{
             this.program = program;
             this.store = store;

@@ -42,14 +42,15 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private Program program;
         private Scanner scanner;
         private ServiceContainer sc;
-        private Mock<DecompilerEventListener> listener;
+        private Mock<IDecompilerEventListener> listener;
 
         [SetUp]
         public void Setup()
         {
             sc = new ServiceContainer();
-            listener = new Mock<DecompilerEventListener>();
-            sc.AddService<DecompilerEventListener>(listener.Object);
+            listener = new Mock<IDecompilerEventListener>();
+            sc.AddService<IEventListener>(listener.Object);
+            sc.AddService<IDecompilerEventListener>(listener.Object);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
         }
 

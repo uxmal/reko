@@ -25,25 +25,26 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Services;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Threading;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
     /// <summary>
-    /// Implements the IWorkerDialogService and DecompilerEventListener services for the Windows Forms GUI.
+    /// Implements the IWorkerDialogService and IEventListener services for the Windows Forms GUI.
     /// </summary>
-    public class WindowsDecompilerEventListener : IWorkerDialogService, DecompilerEventListener
+    public class WindowsDecompilerEventListener : IWorkerDialogService, IDecompilerEventListener
     {
         private IWorkerDialog dlg;
         private Action task;
         private IServiceProvider sp;
         private IDecompilerShellUiService uiSvc;
         private IDiagnosticsService diagnosticSvc;
+        private IEventBus eventBus;
         private Exception lastException;
 
         private string status;
@@ -56,6 +57,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.sp = sp;
             uiSvc = sp.GetService<IDecompilerShellUiService>();
             diagnosticSvc = sp.GetService<IDiagnosticsService>();
+            eventBus = sp.GetService<IEventBus>();
             this.Progress = new ProgressIndicator(this);
         }
 
@@ -193,7 +195,7 @@ namespace Reko.UserInterfaces.WindowsForms
             dlg.Close();
         }
 
-        #region DecompilerEventListener Members
+        #region IDecompilerEventListener Members
 
         public void Info(string message)
         {
@@ -290,24 +292,29 @@ namespace Reko.UserInterfaces.WindowsForms
             return new AddressNavigator(program, addr, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateBlockNavigator(IReadOnlyProgram program, Block block)
+        ICodeLocation IEventListener.CreateBlockNavigator(IReadOnlyProgram program, Block block)
         {
             return new BlockNavigator(program, block, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc)
+        ICodeLocation IEventListener.CreateProcedureNavigator(IReadOnlyProgram program, Procedure proc)
         {
             return new ProcedureNavigator(program, proc, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateStatementNavigator(IReadOnlyProgram program, Statement stm)
+        ICodeLocation IEventListener.CreateStatementNavigator(IReadOnlyProgram program, Statement stm)
         {
             return new StatementNavigator(program, stm, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride)
+        ICodeLocation IEventListener.CreateJumpTableNavigator(IReadOnlyProgram program, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride)
         {
             return new JumpVectorNavigator(program, arch, addrIndirectJump, addrVector, stride, sp);
+        }
+
+        public void OnProcedureFound(Program program, Address address)
+        {
+            eventBus?.RaiseProcedureFound(program, address);
         }
 
         private void ShowStatus(string newStatus)
@@ -320,7 +327,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
 
         // Is usually called on a worker thread.
-        bool DecompilerEventListener.IsCanceled()
+        bool IEventListener.IsCanceled()
         {
             return this.isCanceled;
         }

@@ -151,6 +151,9 @@ namespace Reko.Gui.Forms
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
 
+            var eventBus = svcFactory.CreateEventBus();
+            sc.AddService<IEventBus>(eventBus);
+
             var cmdFactory = new Commands.CommandFactory(sc);
             sc.AddService<ICommandFactory>(cmdFactory);
 
@@ -183,7 +186,8 @@ namespace Reko.Gui.Forms
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
-            sc.AddService<DecompilerEventListener>(del);
+            sc.AddService<IEventListener>(del);
+            sc.AddService<IDecompilerEventListener>(del);
 
             sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
 
@@ -343,7 +347,7 @@ namespace Reko.Gui.Forms
                 Services,
                 loader,
                 this.decompilerSvc.Decompiler!.Project!,
-                Services.RequireService<DecompilerEventListener>());
+                Services.RequireService<IEventListener>());
             var metadataUri = ImageLocation.FromUri(fileName);
             try
             {

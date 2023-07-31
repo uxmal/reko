@@ -67,7 +67,7 @@ namespace Reko.Environments.Msdos
         /// <returns></returns>
         public ImageSymbol? FindMainAddress()
         {
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IEventListener>();
             Address? addrEntry;
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if

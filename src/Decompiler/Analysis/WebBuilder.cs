@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,13 +45,17 @@ namespace Reko.Analysis
         private readonly Program program;
 		private readonly SsaState ssa;
 		private readonly SsaIdentifierCollection ssaIds;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
 		private readonly BlockDominatorGraph doms;
 		private readonly Dictionary<Identifier,LinearInductionVariable> ivs;
 		private readonly Dictionary<Identifier, Web> webOf;
 		private readonly List<Web> webs;
 
-        public WebBuilder(Program program, SsaState ssa, Dictionary<Identifier,LinearInductionVariable> ivs,DecompilerEventListener listener)
+        public WebBuilder(
+            Program program, 
+            SsaState ssa, 
+            Dictionary<Identifier,LinearInductionVariable> ivs, 
+            IDecompilerEventListener listener)
         {
             this.program = program;
             this.ssa = ssa;

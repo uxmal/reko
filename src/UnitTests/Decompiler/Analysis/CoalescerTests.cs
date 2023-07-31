@@ -31,6 +31,7 @@ using Reko.Core.Expressions;
 using System.Linq;
 using Reko.Core.Services;
 using NUnit.Framework.Constraints;
+using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -60,7 +61,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         protected override void RunTest(Program program, TextWriter fut)
         {
             IDynamicLinker dynamicLinker = null;
-            var listener = sc.RequireService<DecompilerEventListener>();
+            var listener = sc.RequireService<IDecompilerEventListener>();
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             var ssts = dfa.UntangleProcedures();
 

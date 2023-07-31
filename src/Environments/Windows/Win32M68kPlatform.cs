@@ -56,7 +56,7 @@ namespace Reko.Environments.Windows
 
 		public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
 		{
-			Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
+			Services.RequireService<IEventListener>().Warn(new NullCodeLocation(program.Name),
 				"Win32 M68k main procedure finder not supported.");
 			return null;
 		}

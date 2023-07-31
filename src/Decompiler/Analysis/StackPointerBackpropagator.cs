@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +56,9 @@ namespace Reko.Analysis
     {
         private readonly SsaState ssa;
         private readonly ExpressionEmitter m;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
 
-        public StackPointerBackpropagator(SsaState ssa, DecompilerEventListener listener)
+        public StackPointerBackpropagator(SsaState ssa, IDecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.m = new ExpressionEmitter();

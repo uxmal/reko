@@ -47,7 +47,7 @@ namespace Reko.Core.Serialization
 
         private readonly ILoader loader;
         private readonly Project project;
-        private readonly DecompilerEventListener listener;
+        private readonly IEventListener listener;
         private IPlatform? platform;
         private IProcessorArchitecture? arch;
 
@@ -55,7 +55,7 @@ namespace Reko.Core.Serialization
             IServiceProvider services,
             ILoader loader,
             ImageLocation location,
-            DecompilerEventListener listener)
+            IEventListener listener)
             : this(services, loader, new Project(location), listener)
         {
         }
@@ -64,7 +64,7 @@ namespace Reko.Core.Serialization
             IServiceProvider services,
             ILoader loader,
             Project project,
-            DecompilerEventListener listener)
+            IEventListener listener)
             : base(services)
         {
             this.loader = loader;

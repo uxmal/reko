@@ -29,6 +29,7 @@ using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             pb = new ProgramBuilder();
             ssaStates = new List<SsaState>();
             eventListener = new FakeDecompilerEventListener();
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
         }
 
         private class NestedProgram

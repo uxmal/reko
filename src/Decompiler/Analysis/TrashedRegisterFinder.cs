@@ -24,9 +24,9 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,7 +42,7 @@ namespace Reko.Analysis
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
         private readonly IReadOnlyCallGraph callGraph;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly WorkStack<Block> worklist;
         private readonly Dictionary<Procedure, SsaState> ssas;
         private readonly ExpressionValueComparer cmp;
@@ -60,7 +60,7 @@ namespace Reko.Analysis
             IReadOnlyProgram program,
             ProgramDataFlow flow,
             IEnumerable<SsaTransform> sccGroup,
-            DecompilerEventListener listener)
+            IDecompilerEventListener listener)
         {
             this.arch = program.Architecture;
             this.segmentMap = program.SegmentMap;

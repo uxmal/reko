@@ -27,11 +27,11 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class x86_64Relocator : Relocator
     {
-        private DecompilerEventListener dcSvc;
+        private IEventListener dcSvc;
 
         public x86_64Relocator(IServiceProvider services, Program program) : base(program)
         {
-            this.dcSvc = services.RequireService<DecompilerEventListener>();
+            this.dcSvc = services.RequireService<IEventListener>();
         }
 
         private const ushort RelocationAbsolute = 0;

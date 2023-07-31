@@ -31,6 +31,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
-            var eventListener = new Mock<DecompilerEventListener>();
+            var eventListener = new Mock<IDecompilerEventListener>();
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             env.Setup(c => c.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(c => c.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
@@ -69,7 +70,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
-            sc.AddService<DecompilerEventListener>(eventListener.Object);
+            sc.AddService<IEventListener>(eventListener.Object);
+            sc.AddService<IDecompilerEventListener>(eventListener.Object);
         }
 
         private void BuildTest32(Action<X86Assembler> m)

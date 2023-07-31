@@ -24,7 +24,6 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
 using Reko.Loading;
@@ -53,7 +52,9 @@ namespace Reko.UnitTests.Decompiler.Structure
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var decompilerEventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(decompilerEventListener);
+            sc.AddService<IDecompilerEventListener>(decompilerEventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             var ldr = new Loader(sc);
@@ -72,7 +73,9 @@ namespace Reko.UnitTests.Decompiler.Structure
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             program = ldr.AssembleExecutable(
@@ -86,7 +89,9 @@ namespace Reko.UnitTests.Decompiler.Structure
         protected Program RewriteX86RealFragment(string asmFragment, Address addrBase)
         {
             sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             var asm = new X86TextAssembler(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()));
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
@@ -99,7 +104,9 @@ namespace Reko.UnitTests.Decompiler.Structure
         protected Program RewriteX86_32Fragment(string asmFragment, Address addrBase)
         {
             sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var asm = new X86TextAssembler(arch);
             program = asm.AssembleFragment(addrBase, asmFragment);

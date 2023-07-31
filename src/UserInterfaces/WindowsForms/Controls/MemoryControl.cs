@@ -420,11 +420,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 if (this.imageMap == value)
                     return;
-                if (imageMap is not null)
-                    imageMap.MapChanged -= imageMap_MapChanged;
                 imageMap = value;
-                if (imageMap is not null)
-                    imageMap.MapChanged += imageMap_MapChanged;
                 Invalidate();
             }
         }

@@ -74,7 +74,7 @@ namespace Reko.Core.Output
         /// <returns></returns>
         public abstract Dictionary<string, IDictionary<Address, IAddressable>> GetObjectPlacements(
             string fileExtension,
-            DecompilerEventListener listener);
+            IEventListener listener);
 
         /// <summary>
         /// Returns a placement mapping for rendering low-level items.

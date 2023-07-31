@@ -120,7 +120,7 @@ namespace Reko.Environments.Windows
             }
             catch
             {
-                Services.RequireService<DecompilerEventListener>().Warn(
+                Services.RequireService<IEventListener>().Warn(
                     new NullCodeLocation(moduleName),
                     "Line {0} in the Wine spec file could not be read; skipping.",
                     lexer.lineNumber);

@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -95,7 +96,7 @@ namespace Reko.Scanning
         public Address? GuardInstrAddress => state?.GuardInstrAddress; 
 
 
-        public TableExtent? DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, DecompilerEventListener listener)
+        public TableExtent? DiscoverTableExtent(Address addrSwitch, RtlTransfer xfer, IDecompilerEventListener listener)
         {
             if (!Start(rtlBlock, host.BlockInstructionCount(rtlBlock) - 1, xfer.Target))
             {

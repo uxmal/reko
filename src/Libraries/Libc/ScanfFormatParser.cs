@@ -168,7 +168,7 @@ namespace Reko.Libraries.Libc
                 domain = Domain.Pointer;
                 break;
             default:
-                var el = this.services.RequireService<DecompilerEventListener>();
+                var el = this.services.RequireService<IEventListener>();
                 el.Warn(
                     el.CreateAddressNavigator(program, addr),
                     "The format specifier '%{0}' passed to *scanf is not known.", cDomain);

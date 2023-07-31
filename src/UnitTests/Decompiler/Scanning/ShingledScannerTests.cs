@@ -32,6 +32,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using Reko.Scanning;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -175,7 +176,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void Given_Scanner()
         {
             this.host = new Mock<IRewriterHost>();
-            var dev = new Mock<DecompilerEventListener>();
+            var dev = new Mock<IDecompilerEventListener>();
             host.Setup(h => h.GetImport(
                 It.IsAny<Address>(),
                 It.IsAny<Address>())).Returns((Expression)null);

@@ -32,12 +32,12 @@ namespace Reko.ImageLoaders.MzExe.Pe
         private const ushort RelocationLow = 2;
         private const ushort RelocationHighLow = 3;
 
-        private DecompilerEventListener dcSvc;
+        private IEventListener dcSvc;
 
         public i386Relocator(IServiceProvider services, Program program)
          : base(program)
         {
-            this.dcSvc = services.RequireService<DecompilerEventListener>();
+            this.dcSvc = services.RequireService<IEventListener>();
         }
 
         public override void ApplyRelocation(Address baseOfImage, uint page, EndianImageReader rdr, RelocationDictionary relocations)

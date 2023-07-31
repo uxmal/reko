@@ -27,6 +27,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
         }
 
         private void AssertProgram(string sExp, Program program)

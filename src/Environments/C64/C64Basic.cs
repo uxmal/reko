@@ -149,7 +149,7 @@ namespace Reko.Environments.C64
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            Services.RequireService<DecompilerEventListener>().Warn(
+            Services.RequireService<IEventListener>().Warn(
                 "Basic doesn't have the notion of a parameter stack.");
             var stg = new TemporaryStorage("sp" + cbOffset, 0, dataType);
             return new Identifier("sp" + cbOffset, dataType, stg);

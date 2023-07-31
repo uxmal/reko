@@ -26,6 +26,7 @@ using Reko.Core.Hll.C;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,7 +49,7 @@ namespace Reko.Analysis
 	{
         private readonly IDynamicLinker dynamicLinker;
         private readonly IServiceProvider services;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly Dictionary<string, int> phaseNumbering;
 
         public DataFlowAnalysis(
@@ -59,7 +60,7 @@ namespace Reko.Analysis
 			this.Program = program;
             this.dynamicLinker = dynamicLinker;
             this.services = services;
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
 			this.ProgramDataFlow = new ProgramDataFlow(program);
             this.phaseNumbering = new Dictionary<string, int>();
 		}
@@ -198,6 +199,10 @@ namespace Reko.Analysis
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
+                var analysisFactory = ssa.Procedure.Architecture.CreateExtension<IAnalysisFactory>();
+                var context = new AnalysisContext(
+                    Program, new HashSet<Procedure>() { ssa.Procedure },
+                    dynamicLinker, services, eventListener);
                 try
                 {
                     if (Program.User.Heuristics.Contains(AnalysisHeuristics.AggressiveBranchRemoval))
@@ -225,6 +230,8 @@ namespace Reko.Analysis
                     vp.Transform();
 
                     DumpWatchedProcedure("postcoa", "After expression coalescing", ssa.Procedure);
+
+                    ssa = RunAnalyses(analysisFactory, context, AnalysisStage.AfterExpressionCoalescing, ssa);
 
                     var liv = new LinearInductionVariableFinder(
                         ssa,
@@ -259,6 +266,22 @@ namespace Reko.Analysis
                 }
                 eventListener.Progress.Advance(1);
             }
+        }
+
+        public SsaState RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
+        {
+            if (analysisFactory is null)
+                return ssa;
+            var procSpecificAnalyses = analysisFactory.CreateSsaAnalyses(stage, ssa, context);
+            if (procSpecificAnalyses is null)
+                return ssa;
+            foreach (var analysis in procSpecificAnalyses)
+            {
+                var (ssaNew, _) = analysis.Transform(ssa);
+                DumpWatchedProcedure(analysis.Id, analysis.Description, ssa);
+                ssa = ssaNew;
+            }
+            return ssa;
         }
 
         [Conditional("DEBUG")]

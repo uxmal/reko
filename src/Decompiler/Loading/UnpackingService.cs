@@ -24,13 +24,13 @@ using Reko.Core.IO;
 using Reko.Core.Lib;
 using Reko.Core.Loading;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 /// https://sourceforge.net/p/odbgscript/code/HEAD/tree/OllyLangCommands.cpp Olly
 /// https://plusvic.github.io/yara/
@@ -73,7 +73,7 @@ namespace Reko.Loading
                 }
                 catch (Exception ex)
                 {
-                    Services.RequireService<DecompilerEventListener>().Error(
+                    Services.RequireService<IDecompilerEventListener>().Error(
                         new NullCodeLocation(sfe.Filename),
                         ex,
                         "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.TypeName);
@@ -102,7 +102,7 @@ namespace Reko.Loading
         /// the original loader is returned.</returns>
         public ProgramImageLoader FindUnpackerBySignature(ProgramImageLoader loader, uint entryPointOffset)
         {
-            var listener = Services.RequireService<DecompilerEventListener>();
+            var listener = Services.RequireService<IDecompilerEventListener>();
 
             // $TODO: the code below triggers the creation of the suffix array
             // The suffix array is currently unused but the algorithm that generates it scales poorly
@@ -169,7 +169,7 @@ namespace Reko.Loading
         private object EnsureSuffixArray(string filename, byte[] image)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var listener = Services.RequireService<DecompilerEventListener>();
+            var listener = Services.RequireService<IDecompilerEventListener>();
             Stream? stm = null;
             try
             {

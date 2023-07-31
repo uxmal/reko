@@ -542,7 +542,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public void RecomputeLayout()
         {
             Invalidate();
-            if (services == null)
+            if (services is null)
                 return;
             var g = CreateGraphics();
             ComputeLayout(g);

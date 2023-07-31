@@ -47,7 +47,7 @@ namespace Reko.Core.Hll.C
         /// For each procedure, either use a user-supplied signature, 
         /// or the predefined one.
         /// </summary>
-        public void BuildSignatures(DecompilerEventListener listener)
+        public void BuildSignatures(IEventListener listener)
         {
             foreach (var de in program.Procedures)
             {

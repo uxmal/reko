@@ -22,13 +22,11 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Expressions;
-using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Analysis
 {
@@ -61,7 +59,7 @@ namespace Reko.Analysis
     public class SparseValuePropagation
     {
         private readonly SsaState ssa;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly ExpressionValueComparer cmp;
         private readonly SparseEvaluationContext ctx;
         private readonly Evaluation.ExpressionSimplifier eval;
@@ -69,7 +67,7 @@ namespace Reko.Analysis
         public SparseValuePropagation(
             SsaState ssa,
             Program program,
-            DecompilerEventListener listener)
+            IDecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.listener = listener;

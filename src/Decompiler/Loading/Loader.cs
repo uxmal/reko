@@ -26,6 +26,7 @@ using Reko.Core.Memory;
 using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -104,7 +105,7 @@ namespace Reko.Loading
             byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
 
             var project = new Project(imageLocation);
-            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<DecompilerEventListener>());
+            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<IDecompilerEventListener>());
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             project = projectLoader.LoadProject(image);
             if (project is not null)
@@ -342,7 +343,7 @@ namespace Reko.Loading
                 : cfgSvc.GetRawFile(DefaultToFormat);
             if (rawFile is null)
             {
-                this.Services.RequireService<DecompilerEventListener>().Warn(
+                this.Services.RequireService<IDecompilerEventListener>().Warn(
                     new NullCodeLocation(imageLocation.FilesystemPath),
                     "The format of the file is unknown.");
                 return null;
@@ -579,7 +580,7 @@ namespace Reko.Loading
         {
             if (script == null || !script.Enabled || script.Script == null)
                 return;
-            var eventListener = Services.RequireService<DecompilerEventListener>();
+            var eventListener = Services.RequireService<IDecompilerEventListener>();
             IScriptInterpreter interpreter;
             try
             {

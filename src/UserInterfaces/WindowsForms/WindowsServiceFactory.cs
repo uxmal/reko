@@ -32,6 +32,8 @@ using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -107,7 +109,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return new Loader(services);
         }
 
-        public DecompilerEventListener CreateDecompilerEventListener()
+        public IDecompilerEventListener CreateDecompilerEventListener()
         {
             return new WindowsDecompilerEventListener(services);
         }
@@ -152,8 +154,8 @@ namespace Reko.UserInterfaces.WindowsForms
             var srSvc = services.RequireService<ISearchResultService>();
             var diagnosticsSvc = services.RequireService<IDiagnosticsService>();
             var tchSvc = new TabControlHost(services, mainForm.TabControl);
-            tchSvc.Attach((IWindowPane)srSvc, mainForm.FindResultsPage);
-            tchSvc.Attach((IWindowPane)diagnosticsSvc, mainForm.DiagnosticsPage);
+            tchSvc.Attach((IWindowPane) srSvc, mainForm.FindResultsPage);
+            tchSvc.Attach((IWindowPane) diagnosticsSvc, mainForm.DiagnosticsPage);
 
             return tchSvc;
         }
@@ -208,7 +210,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public IProcedureListService CreateProcedureListService()
         {
             return new ProcedureListService(
-                services, 
+                services,
                 mainForm.ProcedureListTab,
                 mainForm.ProcedureListPanel);
         }
@@ -216,7 +218,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public IDecompiledFileService CreateDecompiledFileService()
         {
             var fsSvc = services.RequireService<IFileSystemService>();
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             var svc = new DecompiledFileService(services, fsSvc, listener);
             return svc;
         }
@@ -267,5 +269,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new CallGraphNavigatorService(this.services, mainForm.CallGraphNavigatorView);
         }
+
+        public IEventBus CreateEventBus()
+        {
+            Debug.Assert(SynchronizationContext.Current is not null);
+            return new EventBus(SynchronizationContext.Current);
+        } 
     }
 }

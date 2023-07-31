@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,14 +35,14 @@ namespace Reko.Analysis
         public IReadOnlySet<Procedure> SccProcedures { get; }
         public IDynamicLinker DynamicLinker { get; }
         public IServiceProvider Services { get; }
-        public DecompilerEventListener EventListener { get; }
+        public IDecompilerEventListener EventListener { get; }
 
         public AnalysisContext(
             IReadOnlyProgram program,
             IReadOnlySet<Procedure> sccprocs,
             IDynamicLinker dynamicLinker,
             IServiceProvider services,
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
         {
             this.Program = program;
             this.SccProcedures = sccprocs;
@@ -57,6 +58,6 @@ namespace Reko.Analysis
         PreSsa = 0,
         AfterRegisterSsa = 1000,
         AfterStackSsa = 2000,
-
+        AfterExpressionCoalescing = 4000,
     }
 }

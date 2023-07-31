@@ -203,7 +203,7 @@ namespace Reko.Core
             FunctionType newSig;
             if (sig.HasVoidReturn)
             {
-                newSig = FunctionType.Action(parameters);
+                newSig = FunctionType.CreateUserDefined(null, parameters);
             }
             else
             {
@@ -215,7 +215,7 @@ namespace Reko.Core
                         ResolvePointer(ret.DataType, ptr.Pointee, ptrSize),
                         ret.Storage);
                 }
-                newSig = FunctionType.Func(ret, parameters);
+                newSig = FunctionType.CreateUserDefined(ret, parameters);
             }
             return new IntrinsicProcedure(this.Name, this.HasSideEffect, newSig)
             {

@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 	/// </summary>
 	public abstract class TypingTestBase
 	{
-        private DecompilerEventListener eventListener;
+        private IDecompilerEventListener eventListener;
 
         public TypingTestBase()
         {
@@ -98,7 +98,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             eventListener = new FakeDecompilerEventListener();
             sc.AddService<IConfigurationService>(config);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
@@ -108,7 +109,8 @@ namespace Reko.UnitTests.Decompiler.Typing
             var cfg = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             svc.AddService<IConfigurationService>(cfg);
-            svc.AddService<DecompilerEventListener>(eventListener);
+            svc.AddService<IEventListener>(eventListener);
+            svc.AddService<IDecompilerEventListener>(eventListener);
             svc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             ILoader ldr = new Loader(svc);
             var fileUri = ImageLocation.FromUri(FileUnitTester.MapTestPath(hexFile));

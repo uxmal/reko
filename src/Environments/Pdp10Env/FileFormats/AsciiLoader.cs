@@ -74,7 +74,7 @@ namespace Reko.Environments.Pdp10Env.FileFormats
 
             if (this.ImageLocation.EndsWith(".dmp"))
             {
-                var listener = Services.RequireService<DecompilerEventListener>();
+                var listener = Services.RequireService<IEventListener>();
                 listener.Info("Treating .dmp as a PDP-10 dump file");
                 addrLoad = new Address18((uint)Pdp10Architecture.OctalStringToWord("74"));
             }

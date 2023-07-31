@@ -235,15 +235,5 @@ namespace Reko.UnitTests.Core
             CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
             CheckImageMapSizes(map, 0x100, 0x4, 0x100);
         }
-
-        [Test]
-        public void Im_FireChangeEvent()
-        {
-            var map = new ImageMap(addrBase);
-            var mapChangedFired = false;
-            map.MapChanged += (sender, e) => { mapChangedFired = true; };
-            map.AddItem(addrBase, new ImageMapItem(addrBase) { DataType = new CodeType() });
-            Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
-        }
 	}
 }

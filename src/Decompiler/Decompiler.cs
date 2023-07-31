@@ -43,7 +43,7 @@ namespace Reko
 	{
 		private readonly IDecompiledFileService host;
 		private IScanner? scanner;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly IServiceProvider services;
 
         public Decompiler(Project project, IServiceProvider services)
@@ -51,7 +51,7 @@ namespace Reko
             this.project = project;
             this.services = services ?? throw new ArgumentNullException(nameof(services));
             this.host = services.RequireService<IDecompiledFileService>();
-            this.eventListener = services.RequireService<DecompilerEventListener>();
+            this.eventListener = services.RequireService<IDecompilerEventListener>();
             BuildImageMaps();
         }
 
@@ -94,7 +94,7 @@ namespace Reko
         {
             if (project is null)
                 return;
-            var eventListener = services.RequireService<DecompilerEventListener>();
+            var eventListener = services.RequireService<IDecompilerEventListener>();
             foreach (var program in project.Programs)
             {
                 try

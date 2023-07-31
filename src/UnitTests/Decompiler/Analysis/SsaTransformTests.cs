@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            var eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IDecompilerEventListener>(eventListener);
             this.addUseInstructions = false;
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, RegisterStorage.Reg32("r1", 1));

@@ -462,7 +462,7 @@ namespace Reko.Core
         {
             if (this.MemoryMap == null || this.MemoryMap.Segments == null)
                 return null;
-            var listener = Services.RequireService<DecompilerEventListener>();
+            var listener = Services.RequireService<IEventListener>();
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, listener))
                 .Where(s => s != null)
                 .ToSortedList(s => s!.Address, s => s!);

@@ -50,7 +50,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case Aarch64Rt.R_AARCH64_GLOB_DAT:  // A + S
                 break;
             default:
-                var listener = this.loader.Services.RequireService<DecompilerEventListener>();
+                var listener = this.loader.Services.RequireService<IEventListener>();
                 var loc = listener.CreateAddressNavigator(program, addr);
                 listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
                 return (addr, null);

@@ -48,7 +48,7 @@ namespace Reko.Gui.Forms
         {
             try
             {
-                var listener = Services.RequireService<DecompilerEventListener>();
+                var listener = Services.RequireService<IEventListener>();
                 if (listener.IsCanceled())
                     return;
                 workerDialogSvc.SetCaption("Reconstructing datatypes.");

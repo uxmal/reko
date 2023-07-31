@@ -28,6 +28,7 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -50,12 +51,12 @@ namespace Reko.UnitTests.Decompiler.Scanning
         protected Program program;
         protected ImageSegment segment;
         protected Mock<IRewriterHost> host;
-        protected Mock<DecompilerEventListener> eventListener;
+        protected Mock<IDecompilerEventListener> eventListener;
         private ByteMemoryArea bmem;
 
         public virtual void Setup()
         {
-            eventListener = new Mock<DecompilerEventListener>();
+            eventListener = new Mock<IDecompilerEventListener>();
         }
 
         protected ByteMemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)

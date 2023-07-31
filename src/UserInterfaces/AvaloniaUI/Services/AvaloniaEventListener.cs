@@ -24,6 +24,7 @@ using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
-    public class AvaloniaEventListener : DecompilerEventListener, IWorkerDialogService
+    public class AvaloniaEventListener : IDecompilerEventListener, IWorkerDialogService
     {
         private IServiceProvider services;
         private IDiagnosticsService diagnosticSvc;
@@ -170,12 +171,17 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void ShowError(string failedOperation, Exception ex)
         {
-            //$TODO: should log this in DecompilerEventListener.
+            //$TODO: should log this in IDecompilerEventListener.
             uiSyncCtx?.Post(delegate
             {
                 var loc = new NullCodeLocation("");
                 Error(loc, ex, failedOperation);
             }, null);
+        }
+
+        public void OnProcedureFound(Program program, Address addrProc)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -263,7 +269,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         #region DecompilerEventListener Members
 
         // Is usually called on a worker thread.
-        bool DecompilerEventListener.IsCanceled()
+        bool IEventListener.IsCanceled()
         {
             return this.isCanceled;
         }

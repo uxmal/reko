@@ -23,6 +23,7 @@ using Reko.Core.Collections;
 using Reko.Core.Graphs;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -44,11 +45,11 @@ namespace Reko.Scanning
 
         private readonly ScanResultsV2 sr;
         private readonly ScanResultsGraph srGraph;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly HashSet<Address> procedures;
         private readonly IDictionary<Address, RtlBlock> mpAddrToBlock;
 
-        public ProcedureDetector(ScanResultsV2 sr, DecompilerEventListener listener)
+        public ProcedureDetector(ScanResultsV2 sr, IDecompilerEventListener listener)
         {
             this.sr = sr;
             this.srGraph = sr.ICFG;

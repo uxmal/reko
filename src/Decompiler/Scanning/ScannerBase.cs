@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -29,10 +30,10 @@ namespace Reko.Scanning
 {
     public abstract class ScannerBase
     {
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly Dictionary<Address, UserProcedure> noDecompiledProcs;
  
-        public ScannerBase(Program program, DecompilerEventListener eventListener)
+        public ScannerBase(Program program, IDecompilerEventListener eventListener)
         {
             this.Program = program;
             this.eventListener = eventListener;

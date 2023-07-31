@@ -22,11 +22,12 @@ using Reko.Core;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 
 namespace Reko.CmdLine
 {
-    public class CmdLineListener : DecompilerEventListener
+    public class CmdLineListener : IDecompilerEventListener
     {
         private bool isCanceled;
         private bool needsNewLine;
@@ -183,6 +184,9 @@ namespace Reko.CmdLine
         }
 
 
+        public void OnProcedureFound(Program program, Address address)
+        {
+        }
 
 
 

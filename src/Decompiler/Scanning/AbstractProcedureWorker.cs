@@ -23,6 +23,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,11 +48,11 @@ namespace Reko.Scanning
 
         private readonly AbstractScanner scanner;
         private readonly InstrClass rejectMask;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly IStorageBinder binder;
         private readonly Dictionary<Address, List<Address>> miniCfg;
 
-        protected AbstractProcedureWorker(AbstractScanner scanner, InstrClass rejectMask, DecompilerEventListener listener)
+        protected AbstractProcedureWorker(AbstractScanner scanner, InstrClass rejectMask, IDecompilerEventListener listener)
         {
             this.scanner = scanner;
             this.rejectMask = rejectMask;

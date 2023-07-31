@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -55,7 +56,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
 		{
 			var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
 			var dfa = new DataFlowAnalysis(
                 program, 
                 dynamicLinker.Object, 

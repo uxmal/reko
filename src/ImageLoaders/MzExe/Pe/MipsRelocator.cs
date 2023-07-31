@@ -27,11 +27,11 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class MipsRelocator : Relocator
     {
-        private DecompilerEventListener dcSvc;
+        private IEventListener dcSvc;
 
         public MipsRelocator(IServiceProvider services, Program program) : base(program)
         {
-            dcSvc = services.RequireService<DecompilerEventListener>();
+            dcSvc = services.RequireService<IEventListener>();
         }
 
 public const short 	IMAGE_REL_MIPS_ABSOLUTE    	=  0x0000; // This relocation is ignored. 

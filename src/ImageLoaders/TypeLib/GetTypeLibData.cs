@@ -15,9 +15,9 @@ namespace Reko.ImageLoaders.TypeLib
 
     public class GetTypeLibDatax
 {
-        private DecompilerEventListener listener;
+        private IEventListener listener;
 
-        public GetTypeLibDatax(DecompilerEventListener listener)
+        public GetTypeLibDatax(IEventListener listener)
         {
             this.listener = listener;
         }

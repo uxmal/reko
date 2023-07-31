@@ -135,7 +135,7 @@ namespace Reko.ImageLoaders.IntelHex
 
         #region Locals
 
-        private DecompilerEventListener listener;
+        private IEventListener listener;
 
         #endregion
 
@@ -186,7 +186,7 @@ namespace Reko.ImageLoaders.IntelHex
             IPlatform platform,
             List<UserSegment> segments)
         {
-            listener = Services.RequireService<DecompilerEventListener>();
+            listener = Services.RequireService<IEventListener>();
             var memChunks = new MemoryChunksList();
             Address? addrEp = null;
             Address addrBase = MakeZeroAddress(arch);

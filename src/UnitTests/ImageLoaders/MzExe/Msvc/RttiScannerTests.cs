@@ -39,7 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Msvc
     {
         private ByteMemoryArea mem = default!;
         private Program program = default!;
-        private DecompilerEventListener listener = default!;
+        private IEventListener listener = default!;
 
         [SetUp]
         public void Setup()

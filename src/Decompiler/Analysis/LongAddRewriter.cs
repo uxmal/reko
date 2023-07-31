@@ -24,8 +24,8 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,10 +66,10 @@ namespace Reko.Analysis
 
         private readonly SsaState ssa;
         private readonly IProcessorArchitecture arch;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private Expression? dst;
 
-        public LongAddRewriter(SsaState ssa, DecompilerEventListener listener)
+        public LongAddRewriter(SsaState ssa, IDecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;

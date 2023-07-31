@@ -24,6 +24,7 @@ using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Services;
 using System.Diagnostics;
 using System.Linq;
 
@@ -68,10 +69,10 @@ namespace Reko.Analysis
         private static readonly TraceSwitch trace = new (nameof(AdjacentBranchCollector), nameof(AdjacentBranchCollector)) { Level = TraceLevel.Error };
 
         private readonly Procedure proc;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly ExpressionValueComparer cmp;
 
-        public static void Transform(Program program, DecompilerEventListener eventListener)
+        public static void Transform(Program program, IDecompilerEventListener eventListener)
         {
             foreach (var proc in program.Procedures.Values)
             {
@@ -82,7 +83,7 @@ namespace Reko.Analysis
             }
         }
 
-        public AdjacentBranchCollector(Procedure proc, DecompilerEventListener listener)
+        public AdjacentBranchCollector(Procedure proc, IDecompilerEventListener listener)
         {
             this.proc = proc;
             this.listener = listener;

@@ -47,16 +47,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 if (program != null)
                 {
-                    if (program.ImageMap != null)
-                        program.ImageMap.MapChanged -= ImageMap_MapChanged;
                     program.User.Annotations
                         .AnnotationChanged -= AnnotationChanged;
                 }
                 program = value;
                 if (program != null)
                 {
-                    if (program.ImageMap != null)
-                        program.ImageMap.MapChanged += ImageMap_MapChanged;
                     program.User.Annotations
                         .AnnotationChanged += AnnotationChanged;
                 }
@@ -128,14 +124,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.Model = model;
         }
 
-        private void ImageMap_MapChanged(object sender, EventArgs e)
-        {
-            if (InvokeRequired)
-                BeginInvoke(new Action(RefreshModel));
-            else
-                RefreshModel();
-        }
-
         private void AnnotationChanged(object sender, EventArgs e)
         {
             if (InvokeRequired)
@@ -146,8 +134,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void MixedCodeDataControl_Disposed(object sender, EventArgs e)
         {
-            if (program != null)
-                program.ImageMap.MapChanged -= ImageMap_MapChanged;
         }
 
         public Address GetAnchorAddress()

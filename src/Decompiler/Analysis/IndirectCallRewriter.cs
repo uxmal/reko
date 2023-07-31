@@ -18,13 +18,13 @@
  */
 #endregion
 
-using System;
-using System.Linq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
+using System;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -46,13 +46,13 @@ namespace Reko.Analysis
         private readonly IndirectCallTypeAscender asc;
         private readonly IndirectCallExpander expander;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly SsaMutator ssam;
 
         public IndirectCallRewriter(
             IReadOnlyProgram program,
             SsaState ssa,
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
         {
             this.program = program;
             this.proc = ssa.Procedure;

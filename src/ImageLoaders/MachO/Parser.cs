@@ -586,7 +586,7 @@ namespace Reko.ImageLoaders.MachO
         {
             if (dysymtab != null)
             {
-                var listener = ldr.Services.RequireService<Reko.Core.Services.DecompilerEventListener>();
+                var listener = ldr.Services.RequireService<Reko.Core.Services.IEventListener>();
                 listener.Warn("Multiple dysymtab commands found.");
             }
             this.dysymtab = new DySymtab();

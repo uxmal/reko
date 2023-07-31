@@ -75,11 +75,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             get { return imageMap; } 
             set {
-                if (imageMap != null)
-                    imageMap.MapChanged -= imageMap_MapChanged;
                 imageMap = value; 
-                if (imageMap != null)
-                    imageMap.MapChanged += imageMap_MapChanged;
                 OnImageMapChanged(); 
             } 
         }

@@ -105,7 +105,7 @@ namespace Reko.ImageLoaders.MzExe
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
         private readonly Dictionary<uint, (Address, ImportReference)> importStubs;
-        private readonly DecompilerEventListener listener;
+        private readonly IEventListener listener;
         private readonly uint lfaNew;
         private ByteMemoryArea mem;
         private SegmentMap segmentMap;
@@ -129,7 +129,7 @@ namespace Reko.ImageLoaders.MzExe
         public NeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes, uint e_lfanew)
             : base(services, imageLocation, rawBytes)
         {
-            this.listener = Services.RequireService<DecompilerEventListener>();
+            this.listener = Services.RequireService<IEventListener>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, (Address, ImportReference)>();
             this.imageSymbols = new SortedList<Address, ImageSymbol>();

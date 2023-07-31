@@ -22,11 +22,10 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace Reko.Typing
@@ -45,12 +44,12 @@ namespace Reko.Typing
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
         private readonly Unifier unifier;
+        private readonly IDecompilerEventListener eventListener;
         private DataType? dereferencedType;
         private Expression? basePtr;
         private Statement? stmCur;
-        private readonly DecompilerEventListener eventListener;
 
-        public TypedExpressionRewriter(Program program, TypeStore store, DecompilerEventListener eventListener)
+        public TypedExpressionRewriter(Program program, TypeStore store, IDecompilerEventListener eventListener)
         {
             this.program = program;
             this.store = store;

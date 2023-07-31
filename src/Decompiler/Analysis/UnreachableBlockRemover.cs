@@ -20,9 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Code;
-using Reko.Core.Graphs;
 using Reko.Core.Expressions;
-using Reko.Core.Services;
+using Reko.Core.Graphs;
+using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -36,10 +36,10 @@ namespace Reko.Analysis
     public class UnreachableBlockRemover
     {
         private readonly SsaState ssa;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly BlockGraph cfg;
 
-        public UnreachableBlockRemover(SsaState ssa, DecompilerEventListener listener)
+        public UnreachableBlockRemover(SsaState ssa, IDecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.listener = listener;

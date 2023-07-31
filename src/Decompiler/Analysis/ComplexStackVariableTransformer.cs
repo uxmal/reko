@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace Reko.Analysis
     {
         private readonly SsaState ssa;
         private readonly IntervalTree<int, DataType> escapedFrameIntervals;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private readonly Dictionary<int, SsaIdentifier> frameIds;
         private Statement stmCur;
         private readonly ExpressionEmitter m;
@@ -49,7 +50,7 @@ namespace Reko.Analysis
         public ComplexStackVariableTransformer(
             SsaState ssa,
             IntervalTree<int, DataType> escapedFrameIntervals,
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
         {
             this.ssa = ssa;
             this.escapedFrameIntervals = escapedFrameIntervals;

@@ -55,43 +55,25 @@ namespace Reko.Gui.Commands
             var brSvc = Services.RequireService<IProjectBrowserService>();
             var procsSvc = Services.RequireService<IProcedureListService>();
 
-            try
-            {
-                //$HACK: we have to stop events while this is happening. This is gross
-                // but the future EventBus implementation will clear this up.
-                foreach (var program in addresses.Select(a => a.Program).Distinct())
+            var sArch = await DetermineArchitecture();
+            var userProcs =
+                from hit in addresses
+                let uProc = DoScanProcedure(hit, sArch)
+                where uProc != null
+                select new
                 {
-                    program.ImageMap.PauseEventHandler();
-                }
-                var sArch = await DetermineArchitecture();
-                var userProcs =
-                    from hit in addresses
-                    let uProc = DoScanProcedure(hit, sArch)
-                    where uProc != null
-                    select new
+                    hit.Program,
+                    hit.Address,
+                    UserProc = new Procedure_v1
                     {
-                        hit.Program,
-                        hit.Address,
-                        UserProc = new Procedure_v1
-                        {
-                            Address = hit.Address.ToString(),
-                            Name = uProc.Name
-                        }
-                    };
+                        Address = hit.Address.ToString(),
+                        Name = uProc.Name
+                    }
+                };
 
-                foreach (var up in userProcs)
-                {
-                    up.Program.EnsureUserProcedure(up.Address, up.UserProc.Name);
-                }
-            }
-            finally
+            foreach (var up in userProcs)
             {
-                //$HACK: we have to stop events while this is happening. This is gross
-                // but the future EventBus implementation will clear this up.
-                foreach (var program in addresses.Select(a => a.Program).Distinct())
-                {
-                    program.ImageMap.UnpauseEventHandler();
-                }
+                up.Program.EnsureUserProcedure(up.Address, up.UserProc.Name);
             }
 
             //$REVIEW: browser service should listen to changes in UserProcedures, no?

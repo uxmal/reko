@@ -21,12 +21,10 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {
@@ -48,7 +46,7 @@ namespace Reko.Analysis
         private readonly HashSet<RegisterStorage> deadRegs;
         private uint deadFlags;
 
-        public static void Apply(Program program, DecompilerEventListener eventListener)
+        public static void Apply(Program program, IDecompilerEventListener eventListener)
         {
             foreach (var block in program.Procedures.Values.SelectMany(p => p.ControlGraph.Blocks))
             {

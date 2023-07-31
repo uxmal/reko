@@ -18,10 +18,10 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 
@@ -63,7 +63,7 @@ namespace Reko.Loading
             }
             catch
             {
-                var eventListener = services.RequireService<DecompilerEventListener>();
+                var eventListener = services.RequireService<IDecompilerEventListener>();
                 eventListener.Error("Symbol source {0} in the Reko configuration failed to load.", symSrcDef.Name!);
                 return null;
             }

@@ -20,20 +20,18 @@
 
 using Reko.Core;
 using Reko.Core.Absyn;
-using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Operators;
-using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Structure
 {
@@ -61,10 +59,10 @@ namespace Reko.Structure
         private DominatorGraph<Region> postDoms;
         private Queue<(Region, ISet<Region>)> unresolvedCycles;
         private Queue<Region> unresolvedSwitches;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
 
 #nullable disable
-        public StructureAnalysis(DecompilerEventListener listener, Program program, Procedure proc)
+        public StructureAnalysis(IDecompilerEventListener listener, Program program, Procedure proc)
         {
             this.eventListener = listener;
             this.program = program;

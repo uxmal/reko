@@ -39,7 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
         }
 
         [Test]

@@ -55,7 +55,7 @@ namespace Reko.Core.Services
         {
             var cfgSvc = services.RequireService<IConfigurationService>();
             var fsSvc = services.RequireService<IFileSystemService>();
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IEventListener>();
             try
             {
                 if (tlElement.Name == null)
@@ -90,7 +90,7 @@ namespace Reko.Core.Services
             else
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
-                var listener = services.RequireService<DecompilerEventListener>();
+                var listener = services.RequireService<IEventListener>();
                 var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader!);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {

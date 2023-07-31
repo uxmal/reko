@@ -35,8 +35,8 @@ namespace Reko.UnitTests.Decompiler.Loading
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            var listener = new Mock<DecompilerEventListener>();
-            sc.AddService<DecompilerEventListener>(listener.Object);
+            var listener = new Mock<IEventListener>();
+            sc.AddService<IEventListener>(listener.Object);
         }
 
         /*

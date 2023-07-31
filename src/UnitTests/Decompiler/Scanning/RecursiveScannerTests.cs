@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Graphs;
 using Reko.Core.Services;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.ComponentModel.Design;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void RunTest(string sExpected)
         {
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
-            var listener = new Mock<DecompilerEventListener>().Object;
+            var listener = new Mock<IDecompilerEventListener>().Object;
             var scanner = new RecursiveScanner(program, dynamicLinker, listener, new ServiceContainer());
             var cfg = scanner.ScanProgram();
             scanner.RegisterPredecessors();

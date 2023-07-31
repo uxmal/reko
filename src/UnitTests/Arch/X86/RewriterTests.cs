@@ -89,7 +89,8 @@ namespace Reko.UnitTests.Arch.X86
             env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IEventListener>(eventListener);
+            sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
 

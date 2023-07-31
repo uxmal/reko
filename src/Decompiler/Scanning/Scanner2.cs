@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,7 +34,7 @@ namespace Reko.Scanning
         private static readonly TraceSwitch trace = new(nameof(Scanner2), "");
 
         private readonly IServiceProvider services;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
         private readonly Program program;
         private readonly TypeLibrary metadata;
         private readonly IDynamicLinker dynamicLinker;
@@ -48,7 +49,7 @@ namespace Reko.Scanning
             this.metadata = metadata;
             this.dynamicLinker = dynamicLinker;
             this.services = services;
-            this.listener = services.RequireService<DecompilerEventListener>();
+            this.listener = services.RequireService<IDecompilerEventListener>();
         }
 
         public void ScanImage()

@@ -436,8 +436,8 @@ namespace Reko.Core.Configuration
             var options = new Dictionary<string, object>();
             if (model is null)
             {
-                var listener = services.GetService<DecompilerEventListener>() ??
-                    new NullDecompilerEventListener();
+                var listener = services.GetService<IEventListener>() ??
+                    new NullEventListener();
                 listener.Warn($"Model '{modelName}' is not defined for architecture '{archLabel}'.");
             }
             else if (model.Options != null)

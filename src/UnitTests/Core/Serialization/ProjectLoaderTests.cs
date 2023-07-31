@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core.Serialization
         private Dictionary<string, object> loadedOptions;
         private Mock<ITypeLibraryLoaderService> tlSvc;
         private Mock<PlatformDefinition> oe;
-        private Mock<DecompilerEventListener> listener;
+        private Mock<IEventListener> listener;
 
         [SetUp]
         public void Setup()
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.mockFactory = new CommonMockFactory();
             this.sc = new ServiceContainer();
             this.cfgSvc = new Mock<IConfigurationService>();
-            this.listener = new Mock<DecompilerEventListener>();
+            this.listener = new Mock<IEventListener>();
             this.sc.AddService(cfgSvc.Object);
         }
 

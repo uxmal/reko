@@ -22,11 +22,10 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
+using Reko.Services;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using static Reko.Scanning.ProcedureDetector;
 
 namespace Reko.Scanning
 {
@@ -47,7 +46,7 @@ namespace Reko.Scanning
             Address addrStart,
             int chunkUnits,
             InstrClass rejectMask,
-            DecompilerEventListener listener)
+            IDecompilerEventListener listener)
             : base(scanner, rejectMask, listener)
         {
             this.shScanner = scanner;

@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Reko.Analysis
         private readonly IReadOnlyProgram program;
         private readonly ProgramDataFlow flow;
         private readonly SsaState ssa;
-        private readonly DecompilerEventListener eventListener;
+        private readonly IDecompilerEventListener eventListener;
         private Context ctx;
         private ExpressionSimplifier eval;
         private IntervalTree<int, DataType> intervals;
@@ -52,7 +53,7 @@ namespace Reko.Analysis
             IReadOnlyProgram program,
             ProgramDataFlow flow,
             SsaState ssa,
-            DecompilerEventListener eventListener)
+            IDecompilerEventListener eventListener)
         {
             this.program = program;
             this.flow = flow;

@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<IDecompilerShellUiService>(new Mock<IDecompilerShellUiService>().Object);
             sc.AddService<IDecompilerService>(new DecompilerService());
             sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IProjectBrowserService>(browserSvc.Object);
             sc.AddService<ILowLevelViewService>(memSvc.Object);
             sc.AddService<ILoader>(loader.Object);

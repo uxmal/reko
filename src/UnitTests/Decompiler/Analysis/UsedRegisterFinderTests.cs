@@ -25,6 +25,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             progBuilder.Program.Platform = platform.Object;
             progBuilder.Program.SegmentMap = segmentMap;
             var sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
             var sst = new SsaTransform(
                 progBuilder.Program,
                 proc,

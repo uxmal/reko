@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,9 +53,9 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private readonly SsaMutator ssam;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
-        private readonly DecompilerEventListener listener;
+        private readonly IDecompilerEventListener listener;
 
-        public FpuStackReturnGuesser(SsaState ssa, DecompilerEventListener listener)
+        public FpuStackReturnGuesser(SsaState ssa, IDecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.ssam = new SsaMutator(ssa);

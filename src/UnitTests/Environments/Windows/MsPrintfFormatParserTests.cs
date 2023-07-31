@@ -34,15 +34,15 @@ namespace Reko.UnitTests.Environments.Windows
     {
         private MsPrintfFormatParser parser;
         private ServiceContainer sc;
-        private Mock<DecompilerEventListener> eventListener;
+        private Mock<IEventListener> eventListener;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            this.eventListener = new Mock<DecompilerEventListener>();
-            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener.Object);
+            this.eventListener = new Mock<IEventListener>();
+            this.sc.AddService(typeof(IEventListener), this.eventListener.Object);
             var arch = new Mock<IProcessorArchitecture>();
             var platform = new Mock<IPlatform>();
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);

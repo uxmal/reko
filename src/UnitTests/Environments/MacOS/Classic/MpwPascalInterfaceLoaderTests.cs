@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
     {
         private MacOSClassic platform;
         private TypeLibrary tlib;
-        private Mock<DecompilerEventListener> listener;
+        private Mock<IEventListener> listener;
         private ServiceContainer sc;
 
         [SetUp]
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             this.sc = new ServiceContainer();
             this.platform = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k", new Dictionary<string, object>()));
             this.tlib = new TypeLibrary();
-            this.listener = new Moq.Mock<DecompilerEventListener>();
+            this.listener = new Moq.Mock<IEventListener>();
             this.sc.AddService(listener.Object);
         }
 

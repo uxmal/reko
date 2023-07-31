@@ -76,7 +76,7 @@ namespace Reko.ImageLoaders.Xex
 
         private Memory<byte> peMem;
 
-        private DecompilerEventListener decompilerEventListener;
+        private IEventListener eventListener;
 
         public XexLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw) : base(services, imageLocation, imgRaw)
         {
@@ -86,7 +86,7 @@ namespace Reko.ImageLoaders.Xex
             security_info = new xex2_security_info();
             opt_file_format_info = new xex2_opt_file_format_info();
             session_key = new byte[16];
-            decompilerEventListener = services.RequireService<DecompilerEventListener>();
+            eventListener = services.RequireService<IEventListener>();
         }
 
         public override Address PreferredBaseAddress

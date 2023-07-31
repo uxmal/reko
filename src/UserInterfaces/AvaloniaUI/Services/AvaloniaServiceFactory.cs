@@ -32,6 +32,7 @@ using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
@@ -70,7 +71,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public IDecompiledFileService CreateDecompiledFileService()
         {
             var fsSvc = services.RequireService<IFileSystemService>();
-            var listener = services.RequireService<DecompilerEventListener>();
+            var listener = services.RequireService<IDecompilerEventListener>();
             var svc = new DecompiledFileService(services, fsSvc, listener);
             return svc;
         }
@@ -80,7 +81,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             return RekoConfigurationService.Load(services);
         }
 
-        public DecompilerEventListener CreateDecompilerEventListener()
+        public IDecompilerEventListener CreateDecompilerEventListener()
         {
             return new AvaloniaEventListener(services);
         }
@@ -257,6 +258,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public ICallGraphNavigatorService CreateCallGraphNavigatorService()
         {
             return new AvaloniaCallGraphNavigatorService(this.services, mainViewModel);
+        }
+
+        public IEventBus CreateEventBus()
+        {
+            Debug.Assert(SynchronizationContext.Current is not null);
+            return new EventBus(SynchronizationContext.Current);
         }
     }
 }
