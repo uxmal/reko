@@ -1694,7 +1694,7 @@ l58A8:
 					do
 					{
 						ui20 r14_n = r13_n *20 0x02;
-						ui20 r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n);
+						ui20 r13_n = r13_n *20 0x04 + r14_n + r14_n * 0x02 + (int16) ((byte) r7_n);
 						Eq_n v54_n = r6_n->b0000;
 						r13_n = r13_n + ~0x2F;
 						r7_n = v54_n;
@@ -1992,7 +1992,7 @@ l5576:
 				{
 					ui20 r14_n = r13_n *20 0x02;
 					Eq_n v49_n = r6_n->b0000;
-					r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n) + ~0x2F;
+					r13_n = r13_n *20 0x04 + r14_n + r14_n * 0x02 + (int16) ((byte) r7_n) + ~0x2F;
 					r7_n = v49_n;
 					++r6_n;
 				} while (v49_n >= 0x3A);

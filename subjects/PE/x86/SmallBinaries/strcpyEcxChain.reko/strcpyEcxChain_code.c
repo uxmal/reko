@@ -7,11 +7,7 @@
 // 12340000: void fn12340000(Register (ptr32 char) ecx)
 void fn12340000(char * ecx)
 {
-	Eq_n size_n = strlen(ecx) + 1;
-	word32 edi_n = ecx + size_n - size_n;
-	Eq_n size_n = (size_n >> 0x02) * 0x04;
-	memcpy(&g_t12340034, edi_n, size_n);
-	memcpy((word32) size_n + 0x12340034, edi_n + size_n, size_n & 0x03);
+	strcpy(&g_b12340034, ecx);
 }
 
-Eq_n g_t12340034 = // 12340034;
+char g_b12340034 = 's'; // 12340034

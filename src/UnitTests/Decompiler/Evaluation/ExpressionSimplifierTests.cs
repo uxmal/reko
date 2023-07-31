@@ -1201,5 +1201,53 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("0xFFFFFFFC<32>", exp.ToString());
         }
+
+        [Test]
+        public void Exs_e_plus_id_plus_id()
+        {
+            Given_ExpressionSimplifier();
+            var e = Given_Tmp("e", PrimitiveType.Word32);
+            Expression exp = m.IAdd(m.IAdd(e, foo), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("e_3 + foo_1 * 2<32>", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_e_plus_id_minus_id()
+        {
+            Given_ExpressionSimplifier();
+            var e = Given_Tmp("e", PrimitiveType.Word32);
+            Expression exp = m.ISub(m.IAdd(e, foo), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("e_3", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_e_minus_id_plus_id()
+        {
+            Given_ExpressionSimplifier();
+            var e = Given_Tmp("e", PrimitiveType.Word32);
+            Expression exp = m.IAdd(m.ISub(e, foo), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("e_3", exp.ToString());
+        }
+
+        [Test]
+        public void Exs_e_minus_id_minus_id()
+        {
+            Given_ExpressionSimplifier();
+            var e = Given_Tmp("e", PrimitiveType.Word32);
+            Expression exp = m.ISub(m.ISub(e, foo), foo);
+
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("e_3 - foo_1 * 2<32>", exp.ToString());
+        }
     }
 }
