@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var listener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
             sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)

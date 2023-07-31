@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             this.dynamicLinker = new Mock<IDynamicLinker>();
             this.sbExpected = new StringBuilder();
             this.services = new ServiceContainer();
-            this.services.AddService<IEventListener>(new FakeDecompilerEventListener());
+            this.services.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
             this.fnExit = new ExternalProcedure(
                 "exit",
                 FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackStorage(4, PrimitiveType.Int32))),

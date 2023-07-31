@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             progBuilder.Program.Platform = platform.Object;
             progBuilder.Program.SegmentMap = segmentMap;
             var sc = new ServiceContainer();
-            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
             var sst = new SsaTransform(
                 progBuilder.Program,
                 proc,

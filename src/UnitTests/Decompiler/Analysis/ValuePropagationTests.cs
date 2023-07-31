@@ -29,6 +29,7 @@ using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Services;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
@@ -73,7 +74,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 SegmentMap = segmentMap,
             };
             sc = new ServiceContainer();
-            sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
         }
 
         private ExternalProcedure CreateExternalProcedure(

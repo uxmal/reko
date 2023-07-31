@@ -36,6 +36,7 @@ using System.IO;
 using System.ComponentModel.Design;
 using Reko.Core.Services;
 using System.Runtime.InteropServices;
+using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
@@ -308,7 +309,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			m.Add(new IntelIndexedAddressingMode());
 			Program program = m.BuildProgram();
             var sc = new ServiceContainer();
-            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, sc);
 			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoIntelIndexedAddressingMode.txt");
@@ -321,7 +322,7 @@ namespace Reko.UnitTests.Decompiler.Typing
 			m.Add(new TreeFindMock());
 			Program program = m.BuildProgram();
             var sc = new ServiceContainer();
-            sc.AddService<IEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IDecompilerEventListener>(new FakeDecompilerEventListener());
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, sc);
 			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoTreeFind.txt");

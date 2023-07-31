@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.Design;
+using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
@@ -348,6 +349,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var sc = new ServiceContainer();
             var listener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             doms = proc.CreateBlockDominatorGraph();
 

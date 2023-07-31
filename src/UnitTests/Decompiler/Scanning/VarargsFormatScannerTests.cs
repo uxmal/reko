@@ -33,10 +33,10 @@ using Reko.Core.Types;
 using Reko.Environments.SysV;
 using Reko.Environments.Windows;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Security.Policy;
 using System.Text;
 
 namespace Reko.UnitTests.Decompiler.Scanning
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 RegId(null,  sysV_ppc, "r3", CStringType32())) { IsVariadic = true };
             this.addrInstr = Address.Ptr32(0x123400);
             this.listener = new FakeDecompilerEventListener();
-            sc.AddService<IEventListener>(listener);
+            sc.AddService<IDecompilerEventListener>(listener);
             this.dummyPc = new ProcedureConstant(PrimitiveType.Ptr32, new ExternalProcedure("dummy", x86PrintfSig));
         }
 

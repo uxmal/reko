@@ -37,6 +37,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Reko.Core.Memory;
+using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             r2 = new Identifier("r2", PrimitiveType.Word32, RegisterStorage.Reg32("r2", 2));
             sp = new Identifier("sp", PrimitiveType.Word32, RegisterStorage.Reg32("sp", 15));
             var sc = new ServiceContainer();
-            var listener = new Mock<IEventListener>();
+            var listener = new Mock<IDecompilerEventListener>();
             scanner = new Mock<IScannerServices>();
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
@@ -89,6 +90,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                     new FrameApplicationBuilder(arch.Object, frame, site));
             scanner.Setup(s => s.Services).Returns(sc);
             sc.AddService<IEventListener>(listener.Object);
+            sc.AddService<IDecompilerEventListener>(listener.Object);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr)

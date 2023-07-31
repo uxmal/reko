@@ -25,6 +25,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Loading;
+using Reko.Services;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Decompiler.Loading
         private ServiceContainer sc;
         private Mock<IConfigurationService> cfgSvc;
         private Mock<IFileSystemService> fsSvc;
-        private Mock<IEventListener> listener;
+        private Mock<IDecompilerEventListener> listener;
 
         [SetUp]
         public void Setup()
@@ -65,9 +66,9 @@ namespace Reko.UnitTests.Decompiler.Loading
             sc = new ServiceContainer();
             cfgSvc = new Mock<IConfigurationService>();
             fsSvc = new Mock<IFileSystemService>();
-            listener = new Mock<IEventListener>();
+            listener = new Mock<IDecompilerEventListener>();
             sc.AddService<IFileSystemService>(fsSvc.Object);
-            sc.AddService<IEventListener>(listener.Object);
+            sc.AddService<IDecompilerEventListener>(listener.Object);
             sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
