@@ -1,0 +1,18 @@
+void fn12340000(word32 ecx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31]
+// LiveOut:
+// Trashed: SCZO eax ecx edi edx esi
+// Preserved: esp
+fn12340000_entry:
+l12340000:
+	word32 size_8 = strlen(ecx) + 1<i32>
+	word32 edi_12 = ecx + size_8 - size_8
+	word32 size_17 = (size_8 >>u 2<32>) *u 4<32>
+	memcpy(0x12340034<32>, edi_12, size_17)
+	memcpy(size_17 + 0x12340034<32>, edi_12 + size_17, size_8 & 3<32>)
+	return
+fn12340000_exit:
+
+
