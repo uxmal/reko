@@ -18,14 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Arch.X86;
 using NUnit.Framework;
-using System;
+using Reko.Core;
 
 namespace Reko.UnitTests.Arch.X86.Assembler
 {
-	[TestFixture]
+    [TestFixture]
 	public class AssemblerAdvanced : AssemblerBase
 	{
 		[Test]
