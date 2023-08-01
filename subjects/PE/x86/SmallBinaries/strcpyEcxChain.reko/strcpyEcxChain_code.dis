@@ -1,0 +1,14 @@
+void fn12340000(word32 ecx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31]
+// LiveOut:
+// Trashed: SCZO eax ecx edi edx esi
+// Preserved: esp
+fn12340000_entry:
+l12340000:
+	strcpy(0x12340034<32>, ecx)
+	return
+fn12340000_exit:
+
+

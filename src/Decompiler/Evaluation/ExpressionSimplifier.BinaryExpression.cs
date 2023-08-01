@@ -465,20 +465,50 @@ namespace Reko.Evaluation
         private (Expression, bool) PreVisitBinaryExpression(BinaryExpression binExp)
         {
             // ((id+/-e)+/-id) ==> ((id+/-id)+/-e)
+            // ((e+/-id)+/-id) ==> (e+/(id+/-id))
             if (binExp.Operator.Type.IsAddOrSub() &&
                 binExp.Left is BinaryExpression binLeft &&
                 binLeft.Operator.Type.IsAddOrSub() &&
-                binLeft.Left is Identifier idLeftLeft &&
-                binExp.Right is Identifier idRight &&
-                idLeftLeft == idRight)
+                binExp.Right is Identifier idRight)
             {
-                binExp = new BinaryExpression(
-                    binLeft.Operator, binExp.DataType,
-                    new BinaryExpression(
-                        binExp.Operator, binLeft.DataType,
-                        binLeft.Left, binExp.Right),
-                    binLeft.Right);
-                return (binExp, true);
+                if (binLeft.Left is Identifier idLeftLeft &&
+                    idLeftLeft == idRight)
+                {
+                    binExp = new BinaryExpression(
+                        binLeft.Operator, binExp.DataType,
+                        new BinaryExpression(
+                            binExp.Operator, binLeft.DataType,
+                            binLeft.Left, binExp.Right),
+                        binLeft.Right);
+                    return (binExp, true);
+                }
+                if (binLeft.Right is Identifier idLeftRight &&
+                    idLeftRight == idRight)
+                {
+                    if (
+                        binLeft.Operator.Type.Commutes() ==
+                        binExp.Operator.Type.Commutes())
+                    {
+                        // ((e+id)+id) ==> (e+id*2)
+                        // ((e-id)-id) ==> (e-id*2)
+                        binExp = new BinaryExpression(
+                            binLeft.Operator, binExp.DataType,
+                            binLeft.Left,
+                            new BinaryExpression(
+                                Operator.IMul, idRight.DataType, idRight,
+                                Constant.Create(idRight.DataType, 2)));
+                        ctx.RemoveIdentifierUse(idRight);
+                        return (binExp, true);
+                    }
+                    else
+                    {
+                        // ((e+id)-id) ==> e
+                        // ((e-id)+id) ==> e
+                        ctx.RemoveIdentifierUse(idRight);
+                        ctx.RemoveIdentifierUse(idRight);
+                        return (binLeft.Left, true);
+                    }
+                }
             }
             // (+ id1 id1) ==> (* id1 2)
             var e = add2ids.Match(binExp, ctx);
