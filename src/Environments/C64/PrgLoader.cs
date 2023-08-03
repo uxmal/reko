@@ -49,6 +49,7 @@ namespace Reko.Environments.C64
             ushort preferredAddress = ByteMemoryArea.ReadLeUInt16(RawImage, 0);
             ushort alignedAddress = (ushort) (preferredAddress & ~0xF);
             int pad = preferredAddress - alignedAddress;
+#if NOT_OLD
             while (pad-- > 0)
                 stm.WriteByte(0);
             stm.Write(RawImage, 2, RawImage.Length - 2);
@@ -95,5 +96,53 @@ namespace Reko.Environments.C64
             segMap.AddSegment(new ImageSegment("code", addrStart, bmem, AccessMode.ReadWriteExecute));
             return segMap;
         }
+#else
+            var c64Ram = new ByteMemoryArea(
+                Address.Ptr16(0),
+                new byte[0x10000]);
+            Array.Copy(RawImage, 2, c64Ram.Bytes, preferredAddress, RawImage.Length - 2);
+            var rdr = new C64BasicReader(c64Ram, 0x0801);
+            var lines = rdr.ToSortedList(line => line.LineNumber, line => line);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = new C64Basic(Services, lines);
+            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
+            var arch6502 = cfgSvc.GetArchitecture("m6502")!;
+            SegmentMap segMap = CreateSegmentMap(platform, c64Ram, Address.Ptr16(alignedAddress), lines);
+            var program = new Program(segMap, arch, platform);
+            program.Architectures.Add(arch6502.Name, arch6502);
+            var addrBasic = lines.Values[0].Address;
+            var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
+            program.EntryPoints.Add(sym.Address, sym);
+            AddLineNumberSymbols(lines, program);
+            return program;
+        }
+
+        private void AddLineNumberSymbols(SortedList<ushort, C64BasicInstruction> lines, Program program)
+        {
+            foreach (var line in lines.Values)
+            {
+                var sym = ImageSymbol.Location(program.Architecture, line.Address);
+                sym.Name = $"L{line.LineNumber}";
+                program.ImageSymbols.Add(line.Address, sym);
+            }
+        }
+
+        private SegmentMap CreateSegmentMap(
+            IPlatform platform, 
+            ByteMemoryArea c64Ram, 
+            Address addrStart,
+            IDictionary<ushort, C64BasicInstruction> lines)
+        {
+            var segMap = platform.CreateAbsoluteMemoryMap()!;
+            if (lines.Count > 0)
+            {
+                segMap.AddSegment(new ImageSegment("basic", addrStart, c64Ram, AccessMode.ReadExecute));
+                var lastLine = lines.Values.OrderByDescending(l => l.Address).First();
+                addrStart = lastLine.Address + lastLine.Line.Length;
+            }
+            segMap.AddSegment(new ImageSegment("code", addrStart, c64Ram, AccessMode.ReadWriteExecute));
+            return segMap;
+        }
+#endif
     }
 }
