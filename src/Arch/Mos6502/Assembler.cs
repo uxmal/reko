@@ -165,6 +165,22 @@ namespace Reko.Arch.Mos6502
             EmitRelativeTarget(target, PrimitiveType.Byte);
         }
 
+        public void Bpl(string target)
+        {
+            m.EmitByte(0x10);
+            EmitRelativeTarget(target, PrimitiveType.Byte);
+        }
+
+        public void Clc()
+        {
+            m.EmitByte(0x18);
+        }
+
+        public void Cmp(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.cmp, op.Operand);
+        }
+
         public void Cpy(ParsedOperand op)
         {
             EmitOpcodeOperand(Mnemonic.cpy, op.Operand);
@@ -246,6 +262,11 @@ namespace Reko.Arch.Mos6502
         public void Rts()
         {
             m.EmitByte(0x60);
+        }
+
+        public void Sbc(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.sbc, op.Operand);
         }
 
         public void Sei()
@@ -425,6 +446,17 @@ namespace Reko.Arch.Mos6502
                     Abs   = 0x0E,
                     AbsX  = 0x1E,
                 } },
+                { Mnemonic.cmp, new InstrOpcodes
+                {
+                    Imm  = 0xC9,
+                    Zp   = 0xC5,
+                    ZpX  = 0xD5,
+                    Abs  = 0xCD,
+                    AbsX = 0xDD,
+                    AbsY = 0xD9,
+                    IndX = 0xC1,
+                    IndY = 0xD1,
+                } },
                 { Mnemonic.cpx, new InstrOpcodes
                 {
                     Imm = 0xE0,
@@ -473,6 +505,16 @@ namespace Reko.Arch.Mos6502
                     ZpX   = 0x36,
                     Abs   = 0x2E,
                     AbsX  = 0x3E,
+                } },
+                { Mnemonic.sbc, new InstrOpcodes {
+                    Imm = 0xE9,
+                    Zp = 0xE5,
+                    ZpX = 0xF5,
+                    Abs = 0xED,
+                    AbsX  = 0xFD,
+                    AbsY = 0xF9,
+                    IndX = 0xE1,
+                    IndY = 0xF1,
                 } },
                 { Mnemonic.sta, new InstrOpcodes {
                     Zp = 0x85,

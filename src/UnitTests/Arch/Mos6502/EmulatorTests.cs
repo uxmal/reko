@@ -35,6 +35,12 @@ namespace Reko.UnitTests.Arch.Mos6502
     [TestFixture]
     public class EmulatorTests
     {
+        private const byte C = Mos6502Emulator.Cmask;
+        private const byte N = Mos6502Emulator.Nmask;
+        private const byte V = Mos6502Emulator.Vmask;
+        private const byte NC = (byte) (N | C);
+        private const byte VC = (byte) (V | C);
+
         private readonly ServiceContainer sc;
         private readonly Mos6502Architecture arch;
         private Mos6502Emulator emu;
@@ -68,7 +74,22 @@ namespace Reko.UnitTests.Arch.Mos6502
         }
 
         [Test]
-        public void Emu6502_asl_adc_overflow()
+        public void Emu6502_adc_carry()
+        {
+            Given_Code(m =>
+            {
+                m.Adc(m.i8(0x1));
+            });
+            emu.WriteRegister(Registers.a, 0x00);
+            emu.WriteRegister(Registers.p, C);
+
+            emu.Start();
+
+            Assert.AreEqual(0x02, emu.ReadRegister(Registers.a));
+            Assert.AreEqual(0x00, emu.ReadRegister(Registers.p));
+        }
+        [Test]
+        public void Emu6502_adc_overflow()
         {
             Given_Code(m =>
             {
@@ -100,6 +121,22 @@ namespace Reko.UnitTests.Arch.Mos6502
         }
 
         [Test]
+        public void Emu6502_asl_acc_shift_out_0()
+        {
+            Given_Code(m =>
+            {
+                m.Asl(Registers.a);
+            });
+            emu.WriteRegister(Registers.a, 0x2A);
+            emu.WriteRegister(Registers.p, VC);
+
+            emu.Start();
+
+            Assert.AreEqual(0x54, emu.ReadRegister(Registers.a));
+            Assert.AreEqual(V, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
         public void Emu6502_asl_zp()
         {
             Given_Code(m =>
@@ -117,6 +154,35 @@ namespace Reko.UnitTests.Arch.Mos6502
         }
 
         [Test]
+        public void Emu6502_clc()
+        {
+            Given_Code(m =>
+            {
+                m.Clc();
+            });
+            emu.WriteRegister(Registers.p, C);
+
+            emu.Start();
+
+            Assert.AreEqual(0x00, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_cmp()
+        {
+            Given_Code(m =>
+            {
+                m.Cmp(m.i8(7));
+            });
+            emu.WriteRegister(Registers.a, 6);
+
+            emu.Start();
+
+            Assert.AreEqual(NC, emu.ReadRegister(Registers.p));
+        }
+
+
+        [Test]
         public void Emu6502_cpy()
         {
             Given_Code(m =>
@@ -128,7 +194,7 @@ namespace Reko.UnitTests.Arch.Mos6502
 
             emu.Start();
 
-            Assert.AreEqual(0x81, emu.ReadRegister(Registers.p));
+            Assert.AreEqual(C, emu.ReadRegister(Registers.p));
         }
 
         [Test]
@@ -219,6 +285,24 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(0x42, b);
         }
 
+        [Test]
+        public void Emu6502_sta_indirect_indexed()
+        {
+            Given_Code(m =>
+            {
+                m.Sta(m.iy(0xFC));      // sta ($FC),y
+            });
+            emu.WriteRegister(Registers.a, 0x42);
+            emu.WriteRegister(Registers.y, 4);
+            emu.WriteLeUInt16(0x00FC, 0x0080);
+            emu.WriteByte(0x0084, 0x23);
+
+            emu.Start();
+
+            emu.TryReadByte(0x0084, out byte b);
+            Assert.AreEqual(0x42, b);
+        }
+
 
         [Test]
         public void Emu6502_dey()
@@ -255,6 +339,24 @@ namespace Reko.UnitTests.Arch.Mos6502
                 m.Ldx(m.i8(2));         // xx yy    ldx
                 m.Dex();                // CA       dex
                 m.Bne("skip");          // D0 xx    bne
+                m.Ldx(m.i8(0x42));
+                m.Label("skip");
+                m.Nop();
+            });
+            emu.Start();
+
+            Assert.AreEqual(0x01, emu.ReadRegister(Registers.x));
+            Assert.AreEqual(0, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_bpl()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.i8(2));         // xx yy    ldx
+                m.Dex();                // CA       dex
+                m.Bpl("skip");          // D0 xx    bne
                 m.Ldx(m.i8(0x42));
                 m.Label("skip");
                 m.Nop();
@@ -311,8 +413,8 @@ namespace Reko.UnitTests.Arch.Mos6502
             {
                 m.Rol(m.zp(0x42));
             });
-            emu.WriteByte(0x42, 0xAA);
-            emu.WriteRegister(Registers.p, 1);
+            emu.WriteByte(0x0042, 0xAA);
+            emu.WriteRegister(Registers.p, C);
 
             emu.Start();
 
@@ -342,6 +444,22 @@ namespace Reko.UnitTests.Arch.Mos6502
             emu.Start();
 
             Assert.AreEqual(0x03, emu.ReadRegister(Registers.x));
+        }
+
+        [Test]
+        public void Emu6502_sbc()
+        {
+            Given_Code(m =>
+            {
+                m.Sbc(m.zp(0xF0));
+            });
+            emu.WriteRegister(Registers.a, 0x05);
+            emu.WriteRegister(Registers.p, C);
+            emu.WriteByte(0xF0, 0x3);
+
+            emu.Start();
+
+            Assert.AreEqual(0x02, emu.ReadRegister(Registers.a));
         }
 
         [Test]

@@ -29,6 +29,7 @@ using Reko.Core.Machine;
 namespace Reko.Arch.Mos6502
 {
     // http://www.obelisk.me.uk/6502/
+    // https://www.masswerk.at/6502/6502_instruction_set.html
     public class Mos6502Emulator : EmulatorBase
     {
         public const byte Cmask = 1;
@@ -135,72 +136,104 @@ namespace Reko.Arch.Mos6502
             if (trace.Level != TraceLevel.Verbose)
                 return;
             var instr = dasm!.Current;
-            Debug.Print("emu: {0} {1,-15} {2}", instr.Address, instr, DumpRegs());
+            Debug.Print("emu: {0} {1,-15} {2}", instr.Address, instr, DumpRegs(instr));
         }
 
-        private string DumpRegs()
+        private string DumpRegs(Instruction instr)
         {
-            return string.Join("", dumpRegs
+            var s = string.Join("", dumpRegs
                 .Select(r => $" {r.Name} {regs[r.Number]:X2}"));
+            if (instr.Operands.Length == 0)
+                return s;
+            var op = (Operand) instr.Operands[0];
+            ushort ea;
+            switch (op.Mode)
+            {
+            default:
+                return s;
+            case AddressMode.ZeroPage:
+                ea = op.Offset!.ToByte();
+                break;
+            case AddressMode.Absolute:
+                ea = op.Offset!.ToUInt16();
+                break;
+            case AddressMode.AbsoluteX:
+            case AddressMode.AbsoluteY:
+                // Treat y as unsigned.
+                ea = (ushort) (regs[op.Register!.Number] + op.Offset!.ToUInt16());
+                break;
+            case AddressMode.IndirectIndexed:
+                ea = ReadLeUInt16(op.Offset!.ToUInt16());
+                ea += regs[op.Register!.Number];
+                break;
+            }
+            
+            try { 
+            return $"{s} [{ea:X4}] = {(byte)ReadMemory(op, ea):X2}";
+            } catch
+            {
+                return $"{s} [{ea:X4}] = ?? (probably a bug)";
+            }
         }
 
         private void Execute(Instruction instr)
         {
             byte b;
-            ushort C;
+            MachineOperand op = instr.Operands.Length > 0
+                ? instr.Operands[0]
+                : null!;
             switch (instr.Mnemonic)
             {
             default:
                 throw new NotImplementedException($"Instruction emulation for {instr} not implemented yet.");
             case Mnemonic.adc:
-                Adc(instr.Operands[0]);
+                Adc(op);
                 return;
             case Mnemonic.asl:
-                b = (byte) Read(instr.Operands[0]);
-                C = ((b & 0x80) != 0) ? Cmask : (ushort)0;
-                Write(instr.Operands[0], (byte)(b << 1));
-                regs[Registers.p.Number] |= C;
+                b = (byte) Read(op);
+                SetFlag((b & 0x80) != 0, Cmask);
+                Write(op, (byte)(b << 1));
                 NZ(b);
                 return;
-            case Mnemonic.bcc: if ((regs[Registers.p.Number] & Cmask) == 0) Jump(instr.Operands[0]); return;
-            case Mnemonic.beq: if ((regs[Registers.p.Number] & Zmask) != 0) Jump(instr.Operands[0]); return;
-            case Mnemonic.bne: if ((regs[Registers.p.Number] & Zmask) == 0) Jump(instr.Operands[0]); return;
-            case Mnemonic.cpy: Cmp(Registers.y, instr.Operands[0]);return;
+            case Mnemonic.bcc: if ((regs[Registers.p.Number] & Cmask) == 0) Jump(op); return;
+            case Mnemonic.bcs: if ((regs[Registers.p.Number] & Cmask) != 0) Jump(op); return;
+            case Mnemonic.beq: if ((regs[Registers.p.Number] & Zmask) != 0) Jump(op); return;
+            case Mnemonic.bne: if ((regs[Registers.p.Number] & Zmask) == 0) Jump(op); return;
+            case Mnemonic.bpl: if ((regs[Registers.p.Number] & Nmask) == 0) Jump(op); return;
+            case Mnemonic.clc: regs[Registers.p.Number] &= unchecked((ushort)~Cmask); return;
+            case Mnemonic.cli: regs[Registers.p.Number] &= unchecked((ushort)~Imask); return;
+            case Mnemonic.cmp: Cmp(Registers.a, op);return;
+            case Mnemonic.cpy: Cmp(Registers.y, op);return;
             case Mnemonic.dec:
-                b = (byte) (Read(instr.Operands[0]) - 1);
-                Write(instr.Operands[0], b);
+                b = (byte) (Read(op) - 1);
+                Write(op, b);
                 NZ(b);
                 return;
             case Mnemonic.dex: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)-1)); return;
             case Mnemonic.dey: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)-1)); return;
             case Mnemonic.inc:
-                b = (byte) (Read(instr.Operands[0]) + 1);
-                Write(instr.Operands[0], b);
+                b = (byte) (Read(op) + 1);
+                Write(op, b);
                 NZ(b);
                 return;
             case Mnemonic.inx: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)+1)); return;
             case Mnemonic.iny: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)+1)); return;
-            case Mnemonic.jmp: Jump(instr.Operands[0]); return;
-            case Mnemonic.jsr: Jsr(instr.Operands[0]); return;
-            case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
-            case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(instr.Operands[0])); return;
-            case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
+            case Mnemonic.jmp: Jump(op); return;
+            case Mnemonic.jsr: Jsr(op); return;
+            case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(op)); return;
+            case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(op)); return;
+            case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(op)); return;
             case Mnemonic.nop: return;
             case Mnemonic.pha: Push((byte)regs[Registers.a.Number]); return;
-            case Mnemonic.pla: Pop(Registers.a); break;
-            case Mnemonic.rol:
-                b = (byte) Read(instr.Operands[0]);
-                C = ((b & 0x80) != 0) ? Cmask : (ushort) 0;
-                Write(instr.Operands[0], (byte) ((b << 1)|C));
-                regs[Registers.p.Number] |= C;
-                NZ(b);
-                return;
+            case Mnemonic.pla: Pop(Registers.a); return;
+            case Mnemonic.rol: Rol(op); return;
             case Mnemonic.rts: Rts(); return;
+            case Mnemonic.sbc: Sbc(op); return;
             case Mnemonic.sec: regs[Registers.p.Number] |= Cmask; return;
             case Mnemonic.sei: regs[Registers.p.Number] |= Imask; return;
-            case Mnemonic.sta: Write(instr.Operands[0], regs[Registers.a.Number]); return;
-            case Mnemonic.stx: Write(instr.Operands[0], regs[Registers.x.Number]); return;
-            case Mnemonic.sty: Write(instr.Operands[0], regs[Registers.y.Number]); return;
+            case Mnemonic.sta: Write(op, regs[Registers.a.Number]); return;
+            case Mnemonic.stx: Write(op, regs[Registers.x.Number]); return;
+            case Mnemonic.sty: Write(op, regs[Registers.y.Number]); return;
             case Mnemonic.tax: TransferNZ(Registers.a, Registers.x); return;
             case Mnemonic.tay: TransferNZ(Registers.a, Registers.y); return;
             case Mnemonic.txa: TransferNZ(Registers.x, Registers.a); return;
@@ -211,13 +244,28 @@ namespace Reko.Arch.Mos6502
         private void Adc(MachineOperand op)
         {
             var a = (byte) regs[Registers.a.Number];
-            var v = (byte) Read(op);
-            var s = (byte) (a + v);
-            regs[Registers.a.Number] = s;
-            NZ(s);
             var p = (byte) regs[Registers.p.Number];
+            var v = (byte) Read(op);
+            var s = (byte) (a + v + (p&Cmask));
+            regs[Registers.a.Number] = s;
+            p = NZ(s, p);
             p &= unchecked((byte) ~(Cmask|Vmask));
             p |= (byte) (s < a ? Cmask : 0);
+            p |= (byte) (((a ^ s) & (a ^ s) & 0x80) != 0 ? Vmask : 0);
+            regs[Registers.p.Number] = p;
+        }
+
+        private void Sbc(MachineOperand op)
+        {
+            var a = (byte) regs[Registers.a.Number];
+            var v = (byte) Read(op);
+            var p = (byte) regs[Registers.p.Number];
+            var ss = (a + ~v + (p&Cmask));
+            var s = (byte) ss;
+            regs[Registers.a.Number] = s;
+            p = NZ(s, p);
+            p &= unchecked((byte) ~(Cmask | Vmask));
+            p |= (byte) (ss > 0xFF ? Cmask : 0);
             p |= (byte) (((a ^ s) & (a ^ s) & 0x80) != 0 ? Vmask : 0);
             regs[Registers.p.Number] = p;
         }
@@ -227,9 +275,8 @@ namespace Reko.Arch.Mos6502
             var a = (byte)regs[reg.Number];
             var b = Read(op);
             var r = (byte)(a - b);
-            
-            NZ(b);
             var p = (byte) regs[Registers.p.Number];
+            p = NZ(r, p);
             p &= unchecked((byte)~Cmask);
             p |= (byte)(r > a ? Cmask : 0);
             regs[Registers.p.Number] = p;
@@ -248,6 +295,17 @@ namespace Reko.Arch.Mos6502
             InstructionPointer = Address.Ptr16(((Operand) op).Offset!.ToUInt16());
         }
 
+        private void Rol(MachineOperand op)
+        {
+            var p = regs[Registers.p.Number];
+            var oldC = p & Cmask;
+            byte b = (byte) Read(op);
+            p = SetFlag((b & 0x80) != 0, Cmask, p);
+            Write(op, (byte) ((b << 1) | oldC));
+            p = NZ(b, p);
+            regs[Registers.p.Number] = p;
+            return;
+        }
         private void Rts()
         {
             var lsb = Pop();
@@ -345,6 +403,10 @@ namespace Reko.Arch.Mos6502
                 // Treat x or y as unsigned.
                 ea = (ushort) (regs[op.Register!.Number] + op.Offset!.ToUInt16());
                 break;
+            case AddressMode.IndirectIndexed:
+                ea = ReadLeUInt16(op.Offset!.ToUInt16());
+                ea += regs[op.Register!.Number];
+                break;
             }
             WriteMemory(op, ea, value);
         }
@@ -378,12 +440,33 @@ namespace Reko.Arch.Mos6502
         private void NZ(ulong value)
         {
             var p = regs[Registers.p.Number];
-            p &= unchecked((ushort)~(Nmask | Zmask));
+            p = NZ(value, p);
+            regs[Registers.p.Number] = p;
+        }
+
+        private static byte NZ(ulong value, ushort p)
+        {
+            p &= unchecked((ushort) ~(Nmask | Zmask));
             if (value == 0)
                 p |= Zmask;
             if ((value & 0x80) != 0)
                 p |= Nmask;
-            regs[Registers.p.Number] = p;
+            return (byte) p;
+        }
+
+        private void SetFlag(bool condition, ushort mask)
+        {
+            var i = Registers.p.Number;
+            var p = regs[i];
+            p = SetFlag(condition, mask, p);
+            regs[i] = p;
+        }
+
+        private static ushort SetFlag(bool condition, ushort mask, ushort p)
+        {
+            ushort value = condition ? mask : (ushort) 0;
+            p = (ushort) ((p & ~mask) | value);
+            return p;
         }
     }
 }
