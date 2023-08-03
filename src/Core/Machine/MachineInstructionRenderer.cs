@@ -18,13 +18,9 @@
  */
 #endregion
 
-using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Reko.Core.Machine

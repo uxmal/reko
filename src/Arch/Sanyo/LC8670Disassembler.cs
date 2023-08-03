@@ -61,7 +61,7 @@ namespace Reko.Arch.Sanyo
         public override LC8670Instruction NotYetImplemented(string message)
         {
             var testSvc = arch.Services.GetService<ITestGenerationService>();
-            testSvc?.ReportMissingDecoder("LC86104Dis", Address.Ptr16(0x0100), rdr, message);
+            testSvc?.ReportMissingDecoder("LC86104Dis", this.addr, rdr, message);
             return CreateInvalidInstruction();
         }
 
