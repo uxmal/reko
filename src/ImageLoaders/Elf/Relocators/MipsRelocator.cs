@@ -285,7 +285,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
         {
-            if (symbol is null || loader.Sections.Count <= symbol.SectionIndex)
+            var mipsRt = (MIPSrt) (rel.Info & 0xFF);
+            if (symbol is null ||
+                loader.Sections.Count <= symbol.SectionIndex ||
+                mipsRt == MIPSrt.R_MIPS_NONE)
                 return (null, null);
             Address addr;
             uint P;
@@ -311,7 +314,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 ? (uint) rel.Addend.Value
                 : w;
 
-            var mipsRt = (MIPSrt) (rel.Info & 0xFF);
             switch (mipsRt)
             {
             case MIPSrt.R_MIPS_NONE:

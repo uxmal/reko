@@ -136,6 +136,14 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             Assert.AreEqual(0x13379334, orValue, $"Was {orValue:X8}");
         }
 
+        [Test(Description = "Some relocations have 0 addresses.")]
+        public void ElfRel_Mips_None()
+        {
+            var symbol = Given_symbol(0, "", ElfSymbolType.STT_NOTYPE, 0, 0);
+            var rel = Given_rel(0, 0, type: MIPSrt.R_MIPS_NONE);
+            Given_Relocator();
+            relocator.RelocateEntry(program, symbol, null, rel);
+        }
     }
 }
 
