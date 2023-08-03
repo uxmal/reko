@@ -93,6 +93,8 @@ namespace Reko.Core.Graphs
         {
             if (AdjacencyList.TryGetValue(nodeFrom, out var succs))
                 succs.Remove(nodeTo);
+            if (predecessors.TryGetValue(nodeTo, out var preds))
+                preds.Remove(nodeFrom);
         }
 
         public ICollection<T> Successors(T node)
