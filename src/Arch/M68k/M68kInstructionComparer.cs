@@ -36,9 +36,9 @@ namespace Reko.Arch.M68k
             var a = (M68kInstruction)x;
             var b = (M68kInstruction)y;
             return
-                Compare(a.Operands[0], a.Operands[0]) &&
-                Compare(a.Operands[1], a.Operands[1]) &&
-                Compare(a.Operands[2], a.Operands[2]);
+                Compare(a.Operands[0], b.Operands[0]) &&
+                Compare(a.Operands[1], b.Operands[1]) &&
+                Compare(a.Operands[2], b.Operands[2]);
         }
 
         private bool Compare(MachineOperand opA, MachineOperand opB)

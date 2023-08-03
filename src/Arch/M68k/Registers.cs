@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Reko.Arch.M68k
@@ -59,7 +60,6 @@ namespace Reko.Arch.M68k
 
         public static readonly RegisterStorage ccr;
         public static readonly RegisterStorage sr;
-        public static readonly RegisterStorage usp;
         public static readonly RegisterStorage pc;
         public static readonly RegisterStorage fpsr;
 
@@ -77,10 +77,30 @@ namespace Reko.Arch.M68k
         public static readonly FlagGroupStorage CZNX;
         public static readonly FlagGroupStorage CVZNX;
 
+        public static readonly RegisterStorage VAL;
+        public static readonly RegisterStorage SFC;
+        public static readonly RegisterStorage DFC;
+        public static readonly RegisterStorage VBR;
+        public static readonly RegisterStorage CACR;
+        public static readonly RegisterStorage CAAR;
+        public static readonly RegisterStorage usp;
+        public static readonly RegisterStorage MSP;
+        public static readonly RegisterStorage ISP;
+        public static readonly RegisterStorage TC;
+        public static readonly RegisterStorage ITT0;
+        public static readonly RegisterStorage ITT1;
+        public static readonly RegisterStorage DTT0;
+        public static readonly RegisterStorage DTT1;
+        public static readonly RegisterStorage MMUSR;
+        public static readonly RegisterStorage URP;
+        public static readonly RegisterStorage SRP;
+
         internal static RegisterStorage[] regs;
         internal static FlagGroupStorage[] flags;
+        internal static readonly RegisterStorage[] mmuregs;
         internal static int Max;
         internal static readonly Dictionary<string, RegisterStorage> regsByName;
+        internal static readonly Dictionary<uint, RegisterStorage> sregsByCode;
 
         static Registers()
         {
@@ -113,7 +133,6 @@ namespace Reko.Arch.M68k
 
             ccr = RegisterStorage.Reg8("ccr", 24);
             sr = RegisterStorage.Reg16("sr", 25);
-            usp = RegisterStorage.Reg32("usp", 26);
             pc = RegisterStorage.Reg32("pc", 27);
             fpsr = RegisterStorage.Reg32("fpsr", 28);
 
@@ -163,13 +182,50 @@ namespace Reko.Arch.M68k
 
                 ccr,
                 sr,
-                usp,
                 pc,
                 fpsr,
             };
 
             regsByName = regs.ToDictionary(r => r.Name, StringComparer.InvariantCultureIgnoreCase);
             flags = new[] { C, V, Z, N, X };
+
+            var sregFactory = new StorageFactory(StorageDomain.SystemRegister);
+            sregsByCode = new Dictionary<uint, RegisterStorage>();
+            static RegisterStorage CreateSystemRegister(StorageFactory factory, string name, uint code)
+            {
+                var r = factory.Reg32(name);
+                sregsByCode.Add(code, r);
+                return r;
+            }
+            VAL = CreateSystemRegister(sregFactory, "VAL", 0x2800);
+            SFC = CreateSystemRegister(sregFactory, "SFC", 0x000);
+            DFC = CreateSystemRegister(sregFactory, "DFC", 0x001);
+            usp = CreateSystemRegister(sregFactory, "usp", 0x800);
+            VBR = CreateSystemRegister(sregFactory, "VBR", 0x801);
+            CACR = CreateSystemRegister(sregFactory, "CACR", 0x002);
+            CAAR = CreateSystemRegister(sregFactory, "CAAR", 0x802);
+            MSP = CreateSystemRegister(sregFactory, "MSP", 0x803);
+            ISP = CreateSystemRegister(sregFactory, "ISP", 0x804);
+            TC = CreateSystemRegister(sregFactory, "TC", 0x003);
+            ITT0 = CreateSystemRegister(sregFactory, "ITT0", 0x004);
+            ITT1 = CreateSystemRegister(sregFactory, "ITT1", 0x005);
+            DTT0 = CreateSystemRegister(sregFactory, "DTT0", 0x006);
+            DTT1 = CreateSystemRegister(sregFactory, "DTT1", 0x007);
+            MMUSR = CreateSystemRegister(sregFactory, "MMUSR", 0x805);
+            URP = CreateSystemRegister(sregFactory, "URP", 0x806);
+            SRP = CreateSystemRegister(sregFactory, "SRP", 0x807);
+
+            mmuregs = new RegisterStorage[8]
+                {
+                TC,
+                sregFactory.Reg32("drp"),
+            SRP,
+                sregFactory.Reg32("crp"),
+               sregFactory.Reg32("cal"),
+               VAL,
+               sregFactory.Reg32("sccr"),
+               sregFactory.Reg32("acr"),
+            };
         }
 
         public static RegisterStorage GetRegister(int reg)

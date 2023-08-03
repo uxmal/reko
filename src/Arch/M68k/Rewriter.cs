@@ -300,6 +300,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
                 case Mnemonic.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.X))); break;
                 case Mnemonic.swap: RewriteSwap(); break;
+                case Mnemonic.tas: RewriteTas(); break;
                 case Mnemonic.trap: RewriteTrap(); break;
                 case Mnemonic.trapcc: RewriteTrapCc(ConditionCode.UGE, Registers.C); break;
                 case Mnemonic.trapcs: RewriteTrapCc(ConditionCode.ULT, Registers.C); break;
@@ -318,8 +319,6 @@ VS Overflow Set 1001 V
                 case Mnemonic.trapv: RewriteTrapCc(ConditionCode.OV, Registers.V); break;
                 case Mnemonic.trapvc: RewriteTrapCc(ConditionCode.NO, Registers.V); break;
                 case Mnemonic.trapvs: RewriteTrapCc(ConditionCode.OV, Registers.V); break;
-
-                case Mnemonic.tas: RewriteTas(); break;
                 case Mnemonic.tst: RewriteTst(); break;
                 case Mnemonic.unlk: RewriteUnlk(); break;
                 case Mnemonic.unpk: RewriteUnpk(); break;
@@ -432,7 +431,8 @@ VS Overflow Set 1001 V
             .Returns(PrimitiveType.Bool);
         static readonly IntrinsicProcedure movec_intrinsic = new IntrinsicBuilder("__movec", true)
             .GenericTypes("T")
-            .Void();
+            .Param("T")
+            .Returns("T");
         static readonly IntrinsicProcedure movep_intrinsic = new IntrinsicBuilder("__movep", true)
             .GenericTypes("T")
             .Param("T")
@@ -461,11 +461,18 @@ VS Overflow Set 1001 V
 
         static readonly IntrinsicProcedure reset_intrinsic = new IntrinsicBuilder("__reset", true)
             .Void();
+
         static readonly IntrinsicProcedure stop_intrinsic = new IntrinsicBuilder("__stop", true)
             .Void();
         static readonly IntrinsicProcedure swap_intrinsic = new IntrinsicBuilder("__swap", true)
             .Param(PrimitiveType.Word32)
             .Returns(PrimitiveType.Word32);
+
+        static readonly IntrinsicProcedure tas_instrinsic = new IntrinsicBuilder("__test_and_set", true)
+            .Param(PrimitiveType.Byte)
+            .OutParam(PrimitiveType.Byte)
+            .Returns(PrimitiveType.Byte);
+
         static readonly IntrinsicProcedure unpk_intrinsic = new IntrinsicBuilder("__unpk", false)
             .Param(PrimitiveType.UInt16)
             .Param(PrimitiveType.UInt16)

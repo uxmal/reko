@@ -114,8 +114,10 @@ namespace Reko.Arch.M68k
 
         private void RewriteTas()
         {
-            //$TODO: need to implement this using operand rewriter.
-            EmitInvalid();
+            orw.DataWidth = PrimitiveType.Byte;
+            var tmp = orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var zn = binder.EnsureFlagGroup(Registers.ZN);
+            m.Assign(zn, m.Fn(tas_instrinsic, tmp, m.Out(orw.DataWidth, tmp)));
         }
     }
 }

@@ -909,6 +909,15 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_movec()
+        {
+            Given_UInt16s(0x4E7A, 0xC800);
+            AssertCode( // movec\tUSP,a4
+                "0|S--|00010000(4): 1 instructions",
+                "1|L--|a4 = __movec<word32>(usp)");
+        }
+
+        [Test]
         public void M68krw_ori()
         {
             Given_UInt16s(0x0038, 0x584F, 0x4000);
@@ -1818,14 +1827,13 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        [Ignore("Need an OperandRewriter mode where the [a6] is returned to the caller.")]
         public void M68krw_tas()
         {
             Given_UInt16s(0x4AE6);    // tas -(a6)
             AssertCode(
-                "0|L--|00010000(4): 2 instructions",
-                "1|L--|a6 = a6 - 1",
-                "2|L--|ZN = __tas(Mem0[a6:byte])");
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|a6 = a6 - 1<i32>",
+                "2|L--|ZN = __test_and_set(Mem0[a6:byte], out Mem0[a6:byte])");
         }
 
         [Test]

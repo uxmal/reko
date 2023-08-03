@@ -31,6 +31,7 @@ namespace Reko.Arch.M68k
     public class M68kInstruction : MachineInstruction
     {
         public Mnemonic Mnemonic { get; set; }
+
         public PrimitiveType? DataWidth { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
@@ -106,7 +107,7 @@ namespace Reko.Arch.M68k
             op.Render(renderer, options);
         }
 
-        private string DataSizeSuffix(PrimitiveType dataWidth)
+        private static string DataSizeSuffix(PrimitiveType dataWidth)
         {
             if (dataWidth.Domain == Domain.Real)
             {
@@ -128,7 +129,7 @@ namespace Reko.Arch.M68k
                 case 64: return ".q";
                 }
             }
-            throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
+            throw new InvalidOperationException($"Unsupported data width {dataWidth.BitSize}.");
         }
     }
 }

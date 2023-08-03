@@ -58,28 +58,6 @@ namespace Reko.Arch.M68k
         public abstract T Accept<T>(M68kOperandVisitor<T> visitor);
     }
 
-    [Obsolete("", true)]
-    public class M68kImmediateOperand : M68kOperandImpl
-    {
-        public M68kImmediateOperand(Constant cons) : base((PrimitiveType)cons.DataType)
-        {
-            Constant = cons;
-        }
-
-        public Constant Constant { get; private set; }
-
-        public override T Accept<T>(M68kOperandVisitor<T> visitor)
-        {
-            return default!;
-        }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
-        {
-            renderer.WriteString("#");
-            renderer.WriteString(FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
-        }
-    }
-
     public class DoubleRegisterOperand : M68kOperandImpl
     {
         public DoubleRegisterOperand(RegisterStorage reg1, RegisterStorage reg2) : base(PrimitiveType.Word64)

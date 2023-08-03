@@ -157,6 +157,18 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68kdis_BeqaW()
+        {
+            RunTest("beq\t$10000000", 0x6700, 0xFFFE);
+        }
+
+        [Test]
+        public void M68kdis_BltL()
+        {
+            RunTest("blt\t$10000000", 0x6DFF, 0xFFFF, 0xFFFE);
+        }
+
+        [Test]
         public void M68kdis_bchg()
         {
             RunTest("bchg.l\td0,d0", 0x0140);
@@ -782,6 +794,35 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_fsqrt()
         {
             RunTest("fsqrt.s\td4,fp0", 0xF204, 0x4404);
+        }
+
+        [Test]
+        public void M68kdis_movec_to_addr_reg()
+        {
+            RunTest("movec\tusp,a4", 0x4E7A, 0xC800);
+        }
+
+        [Test]
+        public void M68kdis_movec_to_data_reg()
+        {
+            RunTest("movec\tusp,d4", 0x4E7A, 0x4800);
+        }
+
+        [Test]
+        public void M68kdis_movec_from_data_reg()
+        {
+            RunTest("movec\td4,usp", 0x4E7B, 0x4800);
+        }
+
+        [Test]
+        public void M68kdis_move_from_usp()
+        {
+            RunTest("move\tusp,a4", 0x4E6C, 0xC800);
+        }
+        [Test]
+        public void M68kdis_move_to_usp()
+        {
+            RunTest("move\ta4,usp", 0x4E64, 0xC800);
         }
     }
 }
