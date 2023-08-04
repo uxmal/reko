@@ -130,7 +130,11 @@ namespace Reko.Core.Graphs
                 var succs = new HashSet<int>();
                 foreach (var s in graph.Successors(n))
                 {
-                    succs.Add(mapping[s]);
+                    var ms = mapping[s];
+                    if (mn != ms)
+                    {
+                        succs.Add(ms);
+                    }
                 }
                 foreach (var s in succs)
                 { 
@@ -215,7 +219,7 @@ namespace Reko.Core.Graphs
     /// <typeparam name="TNode">The type of the nodes in the graph.</typeparam>
     /// <param name="Graph">The condensation of a graph. It is a theorem of
     /// graph theory that this is a directed acyclic graph (DAG).</param>
-    /// <param name="Members">A mapping from each node in the SCC to
+    /// <param name="Members">A mapping from each node in the SCC graph to
     /// the nodes in the original graph of which it consists.</param>
     public record Condensation<TNode>(
         DirectedGraph<int> Graph,
