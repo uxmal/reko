@@ -104,7 +104,7 @@ namespace Reko
                     var ir = new DynamicLinker(project, program, eventListener);
                     var dfa = new DataFlowAnalysis(program, ir, services);
                     dfa.ClearTestFiles();
-                    var ssas = new List<SsaTransform>();
+                    IReadOnlyCollection<SsaTransform> ssas = new List<SsaTransform>();
                     if (program.NeedsSsaTransform)
                     {
                         eventListener.Progress.ShowStatus("Performing interprocedural analysis.");

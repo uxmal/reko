@@ -51,7 +51,7 @@ namespace Reko.Analysis
 
 		public static void Rewrite(
             IPlatform platform, 
-            List<SsaTransform> ssts,
+            IReadOnlyCollection<SsaTransform> ssts,
             ProgramDataFlow summaries,
             IDecompilerEventListener eventListener)
 		{
