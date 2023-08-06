@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -86,5 +88,58 @@ namespace Reko.Core.Graphs
         }
 
         #endregion
+
+        public bool Validate()
+        {
+            // p -> sedges
+            var p2s_edges = new List<(Block, Block)>();
+            var s2p_edges = new List<(Block, Block)>();
+            foreach (var b in blocks)
+            {
+                p2s_edges.AddRange(b.Succ.Select(s => (b, s)));
+                s2p_edges.AddRange(b.Pred.Select(p => (p, b)));
+            }
+            static int Cmp((Block, Block) a, (Block, Block) b)
+            {
+                int d = a.Item1.Id.CompareTo(b.Item1.Id);
+                if (d != 0)
+                    return d;
+                return a.Item2.Id.CompareTo(b.Item2.Id);
+
+            }
+
+            bool Dump(int iBad)
+            {
+                for (int i = 0; i < Math.Max(p2s_edges.Count, s2p_edges.Count); ++i)
+                {
+                    Debug.Print("{0}:{1,-55} {2} {3}",
+                        i,
+                        i < p2s_edges.Count ? p2s_edges[i] : "***",
+                        i < s2p_edges.Count ? s2p_edges[i] : "***",
+                        i == iBad ? "<--" : "");
+                }
+                return false;
+            }
+
+            p2s_edges.Sort(Cmp);
+            s2p_edges.Sort(Cmp);
+            int i;
+            for (i = 0; i < Math.Min(p2s_edges.Count, s2p_edges.Count); ++i)
+            {
+                if (p2s_edges[i] != s2p_edges[i])
+                {
+                    return Dump(i);
+                }
+            }
+            if (i < p2s_edges.Count)
+            {
+                Dump(i);
+            }
+            if (i < s2p_edges.Count)
+            {
+                return Dump(i);
+            }
+            return true;
+        }
     }
 }
