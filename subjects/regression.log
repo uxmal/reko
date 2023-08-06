@@ -600,7 +600,7 @@ d:\dev\uxmal\reko\master\subjects\wasm\hello.wasm: error: An internal error occu
    at Reko.Analysis.UsedRegisterFinder.ComputeLiveIn(SsaState ssaState, Boolean ignoreUse) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\UsedRegisterFinder.cs:line 81
    at Reko.Analysis.SccWorker.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SccWorker.cs:line 132
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 179
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 128
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 129
    at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 111
 fn00116E5E: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00117125' was not present in the dictionary.
@@ -1392,7 +1392,7 @@ fn0000000100003AA8: error: An internal error occurred while building the express
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 234
+   at Reko.Analysis.DataFlowAnalysis.<BuildExpressionTrees>b__17_0(SsaTransform sst) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
 l0000000100003AE7: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000000100003AA8: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000000100004703' was not present in the dictionary.
@@ -1570,7 +1570,6 @@ l0000000000400E2D: warning: Non-integral switch expression
 *** regressions\reko-90\PP
 Borland C v3 runtime detected
 0800:9337: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
-1483:1DB0: warning: x86 instruction 'phsubsw' is not supported yet.
 1483:0D6F: warning: Call target address 1483:8A82 is invalid.
 1483:0DFC: warning: Call target address 1483:E62A is invalid.
 1483:0E06: warning: Procedure fn1483_0D3F previously had a return address of 4 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
@@ -1582,17 +1581,17 @@ Borland C v3 runtime detected
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 fn0800_9828: error: An error occurred while renaming variables.
     Sequence contains no matching element
+fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
+    Dominator graph calculation timed out.
        at System.Linq.ThrowHelper.ThrowNoMatchException()
    at Reko.Analysis.SsaLivenessAnalysis.BuildInterferenceGraph(SsaIdentifierCollection ssaIds) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 90
    at Reko.Analysis.SsaLivenessAnalysis..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaLiveness.cs:line 61
    at Reko.Analysis.LiveCopyInserter..ctor(SsaState ssa) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\LiveCopyInserter.cs:line 40
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 108
-fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
-    Dominator graph calculation timed out.
        at Reko.Core.Graphs.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 233
    at Reko.Core.Graphs.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 162
    at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 44
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 234
+   at Reko.Analysis.DataFlowAnalysis.<BuildExpressionTrees>b__17_0(SsaTransform sst) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 l0800_0663: warning: Non-integral switch expression
 0800:4F14: warning: Expected sizes of arrays to have been determined by now
@@ -1857,6 +1856,8 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 0F2A: warning: Expected sizes of arrays to have been determined by now
 
 === PE\x86\SmallBinaries\strcpyChain
+
+=== PE\x86\SmallBinaries\strcpyEcxChain
 
 === Hunk-m68k\STRLEN
 
@@ -2433,16 +2434,6 @@ Error: Unable to load metadata file windows32.xml.
 0000A9E4: warning: Call target address 40009A48 is invalid.
 fn0000802E: error: An internal error occurred while building the expressions of fn0000802E
     The given key 'fn0000802E_exit' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 234
-fn00009746: error: An internal error occurred while building the expressions of fn00009746
-    The given key 'l00009858' was not present in the dictionary.
-       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees(List`1 ssts) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 234
 fn000125CA: error: An error occurred while renaming variables.
     Value cannot be null. (Parameter 'key')
        at System.Collections.Generic.Dictionary`2.FindValue(TKey key)
@@ -2451,6 +2442,16 @@ fn000125CA: error: An error occurred while renaming variables.
    at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 61
    at Reko.Analysis.WebBuilder.InsertDeclarations() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 91
    at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 117
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.<BuildExpressionTrees>b__17_0(SsaTransform sst) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
+fn00009746: error: An internal error occurred while building the expressions of fn00009746
+    The given key 'l00009858' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Analysis.DataFlowAnalysis.<BuildExpressionTrees>b__17_0(SsaTransform sst) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 256
 l00008081: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000802E: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l00008318' was not present in the dictionary.
@@ -2521,4 +2522,4 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 90 binaries in 65.77 seconds.
+Decompiled 91 binaries in 61.32 seconds.

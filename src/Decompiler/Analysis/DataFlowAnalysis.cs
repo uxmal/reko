@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reko.Analysis
 {
@@ -217,7 +218,7 @@ namespace Reko.Analysis
         public void BuildExpressionTrees(IReadOnlyCollection<SsaTransform> ssts)
         {
             eventListener.Progress.ShowProgress("Building expressions.", 0, Program.Procedures.Count);
-            foreach (var sst in ssts)
+            Parallel.ForEach(ssts, sst =>
             {
                 var ssa = sst.SsaState;
                 var analysisFactory = ssa.Procedure.Architecture.CreateExtension<IAnalysisFactory>();
@@ -236,7 +237,7 @@ namespace Reko.Analysis
                     }
 
                     DumpWatchedProcedure("precoa", "Before expression coalescing", ssa.Procedure);
-                    
+
                     // Procedures should be untangled from each other. Now process
                     // each one separately.
                     DeadCode.Eliminate(ssa);
@@ -286,7 +287,7 @@ namespace Reko.Analysis
                         ssa.Procedure.Name);
                 }
                 eventListener.Progress.Advance(1);
-            }
+            });
         }
 
         public SsaState RunAnalyses(IAnalysisFactory? analysisFactory, AnalysisContext context, AnalysisStage stage, SsaState ssa)
