@@ -245,6 +245,37 @@ namespace Reko.Arch.X86
             m.Assign(dst, m.Dpb(dst, ret, 0));
         }
 
+        private void RewritePackedHorizonal(IntrinsicProcedure intrinsic, PrimitiveType elementType)
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            int wideDataWidth = src.DataType.BitSize + dst.DataType.BitSize;
+            var dtSrc = new ArrayType(elementType, wideDataWidth / elementType.BitSize);
+            var dtDst = CreatePackedArrayType(elementType, dst.DataType);
+            Identifier idWideData;
+            if (src is MemoryAccess memSrc)
+            {
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, memSrc);
+                idWideData = binder.EnsureSequence(dtSrc, ((Identifier) dst).Storage, tmp.Storage);
+                m.Assign(idWideData, m.Seq(dst, tmp));
+            }
+            else if (dst is MemoryAccess memDst)
+            {
+                var tmp = binder.CreateTemporary(dst.DataType);
+                m.Assign(tmp, memDst);
+                idWideData = binder.EnsureSequence(dtSrc, tmp.Storage, ((Identifier) src).Storage);
+                m.Assign(idWideData, m.Seq(tmp, src));
+            }
+            else
+            {
+                idWideData = binder.EnsureSequence(dtSrc, ((Identifier) dst).Storage, ((Identifier) src).Storage);
+                m.Assign(idWideData, m.Seq(dst, src));
+            }
+            intrinsic = intrinsic.MakeInstance(dtSrc, dtDst);
+            EmitCopy(instrCur.Operands[0], m.Fn(intrinsic, idWideData), 0);
+        }
+
         private void RewritePavg(IntrinsicProcedure intrinsic, PrimitiveType elementType)
         {
             var dst = SrcOp(0);
@@ -252,7 +283,6 @@ namespace Reko.Arch.X86
             var src = SrcOp(1, arrayType);
             m.Assign(dst, m.Fn(intrinsic.MakeInstance(arrayType), dst, src));
         }
-
         private void RewritePbroadcast(bool isVex, IntrinsicProcedure intrinsic, PrimitiveType elementType)
         {
             var src = MaybeSlice(elementType, SrcOp(1));

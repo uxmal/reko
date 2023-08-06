@@ -478,6 +478,12 @@ namespace Reko.Arch.X86
                 case Mnemonic.pdep: RewritePdep(); break;
                 case Mnemonic.pext: RewritePext(); break;
                 case Mnemonic.pextrw: case Mnemonic.vextrw:  RewritePextrw(); break;
+                case Mnemonic.phaddd: RewritePackedHorizonal(phadd_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.phaddsw: RewritePackedHorizonal(phadds_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.phaddw: RewritePackedHorizonal(phadd_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.phsubd: RewritePackedHorizonal(phsub_intrinsic, PrimitiveType.Word32); break;
+                case Mnemonic.phsubsw: RewritePackedHorizonal(phsubs_intrinsic, PrimitiveType.Int16); break;
+                case Mnemonic.phsubw: RewritePackedHorizonal(phsub_intrinsic, PrimitiveType.Word16); break;
                 case Mnemonic.pinsrd: RewritePinsr(false, pinsr_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.vpinsrd: RewritePinsr(true, pinsr_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.pinsrw: RewritePinsr(false, pinsr_intrinsic, PrimitiveType.Word16); break;
@@ -1305,6 +1311,14 @@ namespace Reko.Arch.X86
                 .Returns("T");
         }
 
+        private static IntrinsicProcedure GenericUnaryIntrinsic_DifferentTypes(string name)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("TSrc", "TDst")
+                .Param("TSrc")
+                .Returns("TDst");
+        }
+
         private static IntrinsicProcedure GenericBinaryIntrinsic(string name)
         {
             return new IntrinsicBuilder(name, false)
@@ -1472,6 +1486,10 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure pdep_intrinsic;
         private static readonly IntrinsicProcedure pext_intrinsic;
         private static readonly IntrinsicProcedure pextrw_intrinsic;
+        private static readonly IntrinsicProcedure phadd_intrinsic = GenericUnaryIntrinsic_DifferentTypes("__phad");
+        private static readonly IntrinsicProcedure phadds_intrinsic = GenericUnaryIntrinsic_DifferentTypes("__phadds");
+        private static readonly IntrinsicProcedure phsub_intrinsic = GenericUnaryIntrinsic_DifferentTypes("__phsub");
+        private static readonly IntrinsicProcedure phsubs_intrinsic = GenericUnaryIntrinsic_DifferentTypes("__phsubs");
         private static readonly IntrinsicProcedure pinsr_intrinsic;
         private static readonly IntrinsicProcedure pmaddubsw_intrinsic;
         private static readonly IntrinsicProcedure pmaddwd_intrinsic = GenericBinaryIntrinsic_DifferentTypes("__pmaddwd");
