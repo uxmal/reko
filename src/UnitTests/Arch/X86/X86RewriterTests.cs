@@ -35,7 +35,6 @@ namespace Reko.UnitTests.Arch.X86
     [TestFixture]
     partial class X86RewriterTests : Arch.RewriterTestBase
     {
-        private readonly IntelArchitecture arch16;
         private readonly IntelArchitecture arch32;
         private readonly IntelArchitecture arch64;
         private readonly Address baseAddr16;
@@ -49,10 +48,8 @@ namespace Reko.UnitTests.Arch.X86
         public X86RewriterTests()
         {
             var sc = CreateServiceContainer();
-            arch16 = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             arch32 = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             arch64 = new X86ArchitectureFlat64(sc, "x86-protected-64", new Dictionary<string, object>());
-            baseAddr16 = Address.SegPtr(0x0C00, 0x0000);
             baseAddr32 = Address.Ptr32(0x10000000);
             baseAddr64 = Address.Ptr64(0x140000000ul);
         }
@@ -68,15 +65,6 @@ namespace Reko.UnitTests.Arch.X86
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
-        private X86Assembler Create16bitAssembler()
-        {
-            arch = arch16;
-            baseAddr = baseAddr16;
-            var asm = new X86Assembler(arch, baseAddr16, new List<ImageSymbol>());
-            host = new RewriterHost(arch, asm.ImportReferences);
-            return asm;
-        }
-
         private X86Assembler Create32bitAssembler()
         {
             arch = arch32;
@@ -86,32 +74,11 @@ namespace Reko.UnitTests.Arch.X86
             return asm;
         }
 
-        private void Run16bitTest(Action<X86Assembler> fn)
-        {
-            var m = Create16bitAssembler();
-            fn(m);
-            Given_MemoryArea(m.GetImage().SegmentMap.Segments.Values.First().MemoryArea);
-        }
-
         private void Run32bitTest(Action<X86Assembler> fn)
         {
             var m = Create32bitAssembler();
             fn(m);
             Given_MemoryArea(m.GetImage().SegmentMap.Segments.Values.First().MemoryArea);
-        }
-
-        private void Run16bitTest(params byte[] bytes)
-        {
-            arch = arch16;
-            Given_MemoryArea(new ByteMemoryArea(baseAddr16, bytes));
-            host = new RewriterHost(null);
-        }
-
-        private void Run16bitTest(string hexBytes)
-        {
-            arch = arch16;
-            Given_MemoryArea(new ByteMemoryArea(baseAddr16, BytePattern.FromHexBytes(hexBytes)));
-            host = new RewriterHost(null);
         }
 
         private void Run32bitTest(params byte[] bytes)
@@ -143,100 +110,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_MovAxBx()
-        {
-            Run16bitTest(m =>
-            {
-                m.Mov(m.ax, m.bx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 1 instructions",
-                "1|L--|ax = bx");
-        }
-
-        [Test]
-        public void X86rw_mov_stackArgument()
-        {
-            Run16bitTest(m =>
-            {
-                m.Mov(m.ax, m.MemW(Registers.bp, -8));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|ax = Mem0[ss:bp - 8<i16>:word16]");
-        }
-
-        [Test]
-        public void X86rw_add_reg_mem()
-        {
-            Run16bitTest(m =>
-            {
-                m.Add(m.ax, m.MemW(Registers.si, 4));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 2 instructions",
-                "1|L--|ax = ax + Mem0[ds:si + 4<i16>:word16]",
-                "2|L--|SCZO = cond(ax)");
-        }
-
-        [Test]
-        public void X86rw_AddToMem()
-        {
-            Run16bitTest(m =>
-            {
-                m.Add(m.WordPtr(0x1000), 3);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(5): 3 instructions",
-                "1|L--|v4 = Mem0[ds:0x1000<16>:word16] + 3<16>",
-                "2|L--|Mem0[ds:0x1000<16>:word16] = v4",
-                "3|L--|SCZO = cond(v4)");
-        }
-
-        [Test]
-        public void X86rw_Sub()
-        {
-            Run16bitTest(m =>
-            {
-                m.Sub(m.ecx, 0x12345);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(7): 2 instructions",
-                "1|L--|ecx = ecx - 0x12345<32>",
-                "2|L--|SCZO = cond(ecx)");
-        }
-
-        [Test]
-        public void X86rw_Or()
-        {
-            Run16bitTest(m =>
-            {
-                m.Or(m.ax, m.dx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 4 instructions",
-                "1|L--|ax = ax | dx",
-                "2|L--|SZ = cond(ax)",
-                "3|L--|O = false",
-                "4|L--|C = false");
-        }
-
-        [Test]
-        public void X86rw_And()
-        {
-            Run16bitTest(m =>
-            {
-                m.And(m.si, m.Imm(0x32));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 4 instructions",
-                "1|L--|si = si & 0x32<16>",
-                "2|L--|SZ = cond(si)",
-                "3|L--|O = false",
-                "4|L--|C = false");
-        }
-
-        [Test]
         public void X86Rw_andnpd()
         {
             Run64bitTest("660F55D9");
@@ -246,136 +119,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_Xor()
-        {
-            Run16bitTest(m =>
-            {
-                m.Xor(m.eax, m.eax);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 4 instructions",
-                "1|L--|eax = eax ^ eax",
-                "2|L--|SZ = cond(eax)",
-                "3|L--|O = false",
-                "4|L--|C = false");
-        }
-
-        [Test]
-        public void X86rw_Test()
-        {
-            Run16bitTest(m =>
-            {
-                m.Test(m.edi, m.Imm(0xFFFFFFFFu));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(7): 3 instructions",
-                "1|L--|SZP = cond(edi & 0xFFFFFFFF<32>)",
-                "2|L--|O = false",
-                "3|L--|C = false");
-        }
-
-        [Test]
-        public void X86rw_Cmp()
-        {
-            Run16bitTest(m =>
-            {
-                m.Cmp(m.ebx, 3);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(4): 1 instructions",
-                "1|L--|SCZO = cond(ebx - 3<32>)");
-        }
-
-        [Test]
         public void X86Rw_cmpss()
         {
             Run64bitTest("F30FC2C805");
             AssertCode(     // cmpnltss	xmm1,xmm0,5h
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|xmm1 = SLICE(xmm1, real32, 0) >= SLICE(xmm0, real32, 0) ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
-        }
-
-        [Test]
-        public void X86rw_PushPop()
-        {
-            Run16bitTest(m =>
-            {
-                m.Push(m.eax);
-                m.Pop(m.ebx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|sp = sp - 4<i16>",
-                "2|L--|Mem0[ss:sp:word32] = eax",
-                "3|L--|0C00:0002(2): 2 instructions",
-                "4|L--|ebx = Mem0[ss:sp:word32]",
-                "5|L--|sp = sp + 4<i16>");
-        }
-
-        [Test]
-        public void X86rw_Jmp()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("lupe");
-                m.Jmp("lupe");
-            });
-            AssertCode(
-                "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|goto 0C00:0000");
-        }
-
-        [Test]
-        public void X86rw_JmpIndirect()
-        {
-            Run16bitTest(m =>
-            {
-                m.Jmp(m.WordPtr(m.bx, 0x10));
-            });
-            AssertCode(
-                "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|goto Mem0[ds:bx + 16<i16>:word16]");
-        }
-
-        [Test]
-        public void X86Rw_jmpf_indirect()
-        {
-            Run16bitTest("FF6F34");
-            AssertCode(
-                "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|goto Mem0[ds:bx + 52<i16>:segptr32]");
-        }
-
-        [Test]
-        public void X86rw_Jne()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("lupe");
-                m.Jnz("lupe");
-                m.Xor(m.ax, m.ax);
-            });
-            AssertCode(
-                "0|T--|0C00:0000(2): 1 instructions",
-                "1|T--|if (Test(NE,Z)) branch 0C00:0000",
-                "2|L--|0C00:0002(2): 4 instructions",
-                "3|L--|ax = ax ^ ax",
-                "4|L--|SZ = cond(ax)",
-                "5|L--|O = false",
-                "6|L--|C = false");
-        }
-
-        [Test]
-        public void X86rw_Call16bit()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("self");
-                m.Call("self");
-            });
-            AssertCode(
-                "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|call 0C00:0000 (2)");
         }
 
         [Test]
@@ -403,157 +152,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|ebx = __bswap<word32>(ebx)");
         }
 
-        [Test]
-        public void X86rw_IntInstruction()
-        {
-            Run16bitTest(m =>
-            {
-                m.Mov(m.ax, 0x4C00);
-                m.Int(0x21);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|ax = 0x4C00<16>",
-                "2|T--|0C00:0003(2): 1 instructions",
-                "3|L--|__syscall<byte>(0x21<8>)");
-        }
-
-        [Test]
-        public void X86rw_InInstruction()
-        {
-            Run16bitTest(m =>
-            {
-                m.In(m.al, m.dx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|al = __in<byte>(dx)");
-        }
-
-        [Test]
-        public void X86rw_RetInstruction()
-        {
-            Run16bitTest(m =>
-            {
-                m.Ret();
-            });
-            AssertCode(
-                "0|R--|0C00:0000(1): 1 instructions",
-                "1|R--|return (2,0)");
-        }
-
-        [Test]
-        public void X86rw_RealModeReboot()
-        {
-            Run16bitTest(m =>
-            {
-                m.JmpF(Address.SegPtr(0xF000, 0xFFF0));
-            });
-            AssertCode(
-                "0|T--|0C00:0000(5): 1 instructions",
-                "1|L--|__bios_reboot()");
-        }
-
-        [Test]
-        public void X86rw_RetNInstruction()
-        {
-            Run16bitTest(m =>
-            {
-                m.Ret(8);
-            });
-            AssertCode(
-                "0|R--|0C00:0000(3): 1 instructions",
-                "1|R--|return (2,8)");
-        }
-
-        [Test]
-        public void X86rw_Loop()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("lupe");
-                m.Loop("lupe");
-            });
-            AssertCode(
-                "0|T--|0C00:0000(2): 2 instructions",
-                "1|L--|cx = cx - 1<16>",
-                "2|T--|if (cx != 0<16>) branch 0C00:0000");
-        }
-
-        [Test]
-        public void X86rw_Loope()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("lupe");
-                m.Loope("lupe");
-                m.Mov(m.bx, m.ax);
-            });
-            AssertCode(
-                "0|T--|0C00:0000(2): 2 instructions",
-                "1|L--|cx = cx - 1<16>",
-                "2|T--|if (Test(EQ,Z) && cx != 0<16>) branch 0C00:0000",
-                "3|L--|0C00:0002(2): 1 instructions",
-                "4|L--|bx = ax");
-        }
-
-        [Test]
-        public void X86rw_adc()
-        {
-            Run16bitTest(m =>
-            {
-                m.Adc(m.WordPtr(0x100), m.ax);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(4): 3 instructions",
-                "1|L--|v6 = Mem0[ds:0x100<16>:word16] + ax + C",
-                "2|L--|Mem0[ds:0x100<16>:word16] = v6",
-                "3|L--|SCZO = cond(v6)");
-        }
-
-        [Test]
-        public void X86rw_lea()
-        {
-            Run16bitTest(m =>
-            {
-                m.Lea(m.bx, m.MemW(Registers.bx, 4));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|bx = bx + 4<i16>");
-        }
-
-        [Test]
-        public void X86rw_Enter()
-        {
-            Run16bitTest(m =>
-            {
-                m.Enter(16, 0);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(4): 4 instructions",
-                "1|L--|sp = sp - 2<i16>",
-                "2|L--|Mem0[ss:sp:word16] = bp",
-                "3|L--|bp = sp",
-                "4|L--|sp = sp - 16<i16>");
-        }
-
-        [Test]
-        public void X86rw_Neg()
-        {
-            // Intel manual states that the C flag is set 
-            // to 0 if the _source_ operand is 0.
-            Run16bitTest(m =>
-            {
-                m.Neg(m.ecx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 3 instructions",
-                "1|L--|C = ecx != 0<32>",
-                "2|L--|ecx = -ecx",
-                "3|L--|SZO = cond(ecx)");
-        }
-
         [Test] 
         public void X86rw_Neg_mem()
         {
@@ -568,96 +166,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_Not()
-        {
-            Run16bitTest(m =>
-            {
-                m.Not(m.bx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 1 instructions",
-                "1|L--|bx = ~bx");
-        }
-
-        [Test]
-        public void X86rw_out()
-        {
-            Run16bitTest(m =>
-            {
-                m.Out(m.dx, m.al);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|__out<byte>(dx, al)");
-        }
-
-        [Test]
-        public void X86rw_Jcxz()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("lupe");
-                m.Jcxz("lupe");
-            });
-            AssertCode(
-                "0|T--|0C00:0000(2): 1 instructions",
-                "1|T--|if (cx == 0<16>) branch 0C00:0000");
-        }
-
-        [Test]
-        public void X86rw_RepLodsw()
-        {
-            Run16bitTest(m =>
-            {
-                m.Rep();
-                m.Lodsw();
-                m.Xor(m.ax, m.ax);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 5 instructions",
-                "1|T--|if (cx == 0<16>) branch 0C00:0002",
-                "2|L--|ax = Mem0[ds:si:word16]",
-                "3|L--|si = si + 2<i16>",
-                "4|L--|cx = cx - 1<16>",
-                "5|T--|goto 0C00:0000",
-                "6|L--|0C00:0002(2): 4 instructions",
-                "7|L--|ax = ax ^ ax",
-                "8|L--|SZ = cond(ax)",
-                "9|L--|O = false",
-                "10|L--|C = false");
-        }
-
-        [Test]
-        public void X86rw_shld()
-        {
-            Run16bitTest(m =>
-            {
-                m.Shld(m.edx, m.eax, m.cl);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(4): 1 instructions",
-                "1|L--|edx = __shld<word32>(edx, eax, cl)");
-        }
-
-        [Test]
         public void X86Rw_shlx()
         {
             Run64bitTest("C44289F7C6");
             AssertCode(     // shlx	r8,r14,r14
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|r8 = r14 << r14");
-        }
-
-        [Test]
-        public void X86rw_shrd()
-        {
-            Run16bitTest(m =>
-            {
-                m.Shrd(m.eax, m.edx, 4);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(5): 1 instructions",
-                "1|L--|eax = __shrd<word32>(eax, edx, 4<8>)");
         }
 
         [Test]
@@ -684,15 +198,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_frstpm()
-        {
-            Run16bitTest("DBE5");
-            AssertCode(     // frstpm
-                "0|L--|0C00:0000(2): 1 instructions",
-                "1|L--|__frstpm()");
-        }
-
-        [Test]
         public void X86rw_fstp()
         {
             Run32bitTest(m =>
@@ -706,68 +211,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_RepScasb()
-        {
-            Run16bitTest(m =>
-            {
-                m.Rep();
-                m.Scasb();
-                m.Ret();
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 5 instructions",
-                "1|T--|if (cx == 0<16>) branch 0C00:0002",
-                "2|L--|SCZO = cond(al - Mem0[es:di:byte])",
-                "3|L--|di = di + 1<i16>",
-                "4|L--|cx = cx - 1<16>",
-                "5|T--|if (Test(NE,Z)) branch 0C00:0000",
-                "6|R--|0C00:0002(1): 1 instructions",
-                "7|R--|return (2,0)");
-        }
-
-        [Test]
-        public void X86rw_les_bx_stack()
-        {
-            Run16bitTest(m =>
-            {
-                m.Les(m.bx, m.MemW(Registers.bp, 6));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|es_bx = Mem0[ss:bp + 6<i16>:segptr32]");
-        }
-
-        [Test]
-        public void X86rw_fiadd()
-        {
-            Run16bitTest(m =>
-            {
-                m.Fiadd(m.WordPtr(m.bx, 0));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|ST[Top:real64] = ST[Top:real64] + CONVERT(Mem0[ds:bx:int16], int16, real64)");
-        }
-
-        /// <summary>
-        /// Captures the side effect of setting OF = 0 and CF = 0
-        /// </summary>
-        [Test]
-        public void X86rw_and()
-        {
-            Run16bitTest(m =>
-            {
-                m.And(m.ax, m.Const(8));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 4 instructions",
-                "1|L--|ax = ax & 8<16>",
-                "2|L--|SZ = cond(ax)",
-                "3|L--|O = false",
-                "4|L--|C = false");
-        }
-
-        [Test]
         public void X86rw_andn()
         {
             Run64bitTest("C4E278F2CB"); //andn\tecx,eax,ebx
@@ -778,88 +221,6 @@ namespace Reko.UnitTests.Arch.X86
                 "3|L--|SZ = cond(ecx)",
                 "4|L--|O = false",
                 "5|L--|C = false");
-        }
-
-        [Test(Description = "Captures the side effect of setting OF = 0 and CF = 0")]
-        public void X86rw_RewriteTest()
-        {
-            Run16bitTest(m =>
-            {
-                m.Test(m.ax, m.Const(8));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(4): 3 instructions",
-                "1|L--|SZP = cond(ax & 8<16>)",
-                "2|L--|O = false",
-                "3|L--|C = false");
-        }
-
-        [Test]
-        public void X86rw_RewriteImul()
-        {
-            Run16bitTest(m =>
-            {
-                m.Imul(m.cx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|dx_ax = cx *s32 ax",
-                "2|L--|SCZO = cond(dx_ax)");
-        }
-
-        [Test]
-        public void X86rw_RewriteMul()
-        {
-            Run16bitTest(m =>
-            {
-                m.Mul(m.cx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|dx_ax = cx *u32 ax",
-                "2|L--|SCZO = cond(dx_ax)");
-        }
-
-        [Test]
-        public void X86rw_RewriteFmul()
-        {
-            Run16bitTest(m =>
-            {
-                m.Fmul(m.St(1));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 1 instructions",
-                "1|L--|ST[Top:real64] = ST[Top:real64] * ST[Top + 1<i8>:real64]");
-        }
-
-        [Test]
-        public void X86rw_RewriteDivWithRemainder()
-        {
-            Run16bitTest(m =>
-            {
-                m.Div(m.cx);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 4 instructions",
-                "1|L--|v6 = dx_ax",
-                "2|L--|dx = CONVERT(v6 %u cx, word32, uint16)",
-                "3|L--|ax = CONVERT(v6 /u cx, word16, uint16)",
-                "4|L--|SCZO = cond(ax)");
-        }
-
-        [Test]
-        public void X86rw_RewriteIdivWithRemainder()
-        {
-            Run16bitTest(m =>
-            {
-                m.Idiv(m.cx);
-            });
-            AssertCode(
-                    "0|L--|0C00:0000(2): 4 instructions",
-                    "1|L--|v6 = dx_ax",
-                    "2|L--|dx = CONVERT(v6 %s cx, word32, int16)",
-                    "3|L--|ax = CONVERT(v6 /16 cx, word16, int16)",
-                    "4|L--|SCZO = cond(ax)");
         }
 
         [Test]
@@ -876,80 +237,12 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_IndirectCalls()
-        {
-            Run16bitTest(m =>
-            {
-                m.Call(m.bx);
-                m.Call(m.WordPtr(m.bx, 4));
-                m.Call(m.DwordPtr(m.bx, 8));
-            });
-            AssertCode(
-                "0|T--|0C00:0000(2): 1 instructions",
-                "1|T--|call 0xC00<16>:bx (2)",
-                "2|T--|0C00:0002(3): 1 instructions",
-                "3|T--|call 0xC00<16>:Mem0[ds:bx + 4<i16>:word16] (2)",
-                "4|T--|0C00:0005(3): 1 instructions",
-                "5|T--|call Mem0[ds:bx + 8<i16>:segptr32] (4)");
-        }
-
-        [Test]
-        public void X86rw_RewriteJp()
-        {
-            Run16bitTest(m =>
-            {
-                m.Label("foo");
-                m.Jpe("foo");
-                m.Jpo("foo");
-            });
-            AssertCode(
-                "0|T--|0C00:0000(2): 1 instructions",
-                "1|T--|if (Test(PE,P)) branch 0C00:0000",
-                "2|T--|0C00:0002(2): 1 instructions",
-                "3|T--|if (Test(PO,P)) branch 0C00:0000");
-        }
-
-        [Test]
-        public void X86rw_sar()
-        {
-            Run16bitTest(m =>
-            {
-                m.Sar(m.ax, 1);
-                m.Sar(m.bx, m.cl);
-                m.Sar(m.dx, 4);
-            });
-            AssertCode(
-                "0|L--|0C00:0000(2): 3 instructions",
-                "1|L--|ax = ax >> 1<16>",
-                "2|L--|SCZ = cond(ax)",
-                "3|L--|O = false",
-                "4|L--|0C00:0002(2): 2 instructions",
-                "5|L--|bx = bx >> cl",
-                "6|L--|SCZ = cond(bx)",
-                "7|L--|0C00:0004(3): 2 instructions",
-                "8|L--|dx = dx >> 4<16>",
-                "9|L--|SCZ = cond(dx)");
-        }
-
-        [Test]
         public void X86Rw_sarx()
         {
             Run64bitTest("C462D2F7C1");
             AssertCode(     // sarx	r8,rcx,rbp
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|r8 = rcx >> rbp");
-        }
-
-        [Test]
-        public void X86rw_Xlat16()
-        {
-            Run16bitTest(m =>
-            {
-                m.Xlat();
-            });
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|al = Mem0[ds:bx + CONVERT(al, uint8, uint16):byte]");
         }
 
         [Test]
@@ -1036,23 +329,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_Pushf_Popf()
-        {
-            Run16bitTest((m) =>
-            {
-                m.Pushf();
-                m.Popf();
-            });
-            AssertCode(
-                "0|L--|0C00:0000(1): 2 instructions",
-                "1|L--|sp = sp - 2<i16>",
-                "2|L--|Mem0[ss:sp:word16] = SCZDOP",
-                "3|L--|0C00:0001(1): 2 instructions",
-                "4|L--|SCZDOP = Mem0[ss:sp:word16]",
-                "5|L--|sp = sp + 2<i16>");
-        }
-
-        [Test]
         public void X86rw_std_Lodsw()
         {
             Run32bitTest(m =>
@@ -1073,18 +349,6 @@ namespace Reko.UnitTests.Arch.X86
                 "7|L--|10000004(2): 2 instructions",
                 "8|L--|ax = Mem0[esi:word16]",
                 "9|L--|esi = esi + 2<i32>");
-        }
-
-        [Test]
-        public void X86rw_les_bx()
-        {
-            Run16bitTest(m =>
-            {
-                m.Les(m.bx, m.DwordPtr(m.bx, 0));
-            });
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|es_bx = Mem0[ds:bx:segptr32]");
         }
 
         [Test]
@@ -1171,7 +435,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|H--|__xabort(0x42<8>)");
         }
 
-
         [Test]
         public void X86rw_Xadd()
         {
@@ -1190,7 +453,6 @@ namespace Reko.UnitTests.Arch.X86
               "0|L--|10000000(4): 1 instructions",
               "1|L--|eax = CONVERT(SLICE(xmm3, real64, 0), real64, int32)");
         }
-
 
         [Test]
         public void X86rw_fucompp()
@@ -1305,7 +567,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|rax = Mem0[0x0000000140100007<p64>:word64]");
         }
 
-
         [Test]
         public void X86rw_64_sub_immediate_dword()
         {
@@ -1348,15 +609,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_push_cs_call_near()
-        {
-            Run16bitTest("0EE84232");
-            AssertCode(
-                "0|T--|0C00:0000(4): 1 instructions",
-                "1|T--|call 0C00:3246 (4)");
-        }
-
-        [Test]
         public void X86rw_fstp_real32()
         {
             Run32bitTest("d91c24");
@@ -1375,16 +627,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|__lock()",
                 "2|L--|10000001(3): 1 instructions",
                 "3|L--|Z = __cmpxchg<byte>(Mem0[ebx:byte], ah, al, out al)");
-        }
-
-        [Test]
-        public void X86rw_fld_real32()
-        {
-            Run16bitTest("D94440"); // fld word ptr [foo]
-            AssertCode(
-                "0|L--|0C00:0000(3): 2 instructions",
-                "1|L--|Top = Top - 1<i8>",
-                "2|L--|ST[Top:real64] = CONVERT(Mem0[ds:si + 64<i16>:real32], real32, real64)");
         }
 
         [Test]
@@ -1425,28 +667,6 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(3): 2 instructions",
                 "1|L--|xmm6[2<i32>] = xmm3[0<i32>]",
                 "2|L--|xmm6[3<i32>] = xmm3[1<i32>]");
-        }
-
-        [Test]
-        public void X86rw_fyl2x()
-        {
-            Run16bitTest("d9f1");
-            AssertCode(
-                "0|L--|0C00:0000(2): 3 instructions",
-                "1|L--|ST[Top + 1<i8>:real64] = ST[Top + 1<i8>:real64] * lg2(ST[Top:real64])",
-                "2|L--|FPUF = cond(ST[Top + 1<i8>:real64])",
-                "3|L--|Top = Top + 1<i8>");
-        }
-
-        [Test]
-        public void X86rw_fyl2xp1()
-        {
-            Run16bitTest("D9F9");
-            AssertCode(
-                "0|L--|0C00:0000(2): 3 instructions",
-                "1|L--|ST[Top + 1<i8>:real64] = ST[Top + 1<i8>:real64] * lg2(ST[Top:real64] + 1.0)",
-                "2|L--|FPUF = cond(ST[Top + 1<i8>:real64])",
-                "3|L--|Top = Top + 1<i8>");
         }
 
         [Test]
@@ -1782,26 +1002,6 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(     // ret 0001
                 "0|---|0000000140000000(3): 1 instructions",
                 "1|---|<invalid>");
-        }
-
-        [Test]
-        public void X86rw_fptan()
-        {
-            Run16bitTest("D9F2");
-            AssertCode(     // fptan
-                "0|L--|0C00:0000(2): 3 instructions",
-                "1|L--|ST[Top:real64] = tan(ST[Top:real64])",
-                "2|L--|Top = Top - 1<i8>",
-                "3|L--|ST[Top:real64] = 1.0");
-        }
-
-        [Test]
-        public void X86rw_f2xm1()
-        {
-            Run16bitTest("D9F0");
-            AssertCode(     // f2xm1
-                "0|L--|0C00:0000(2): 1 instructions",
-                "1|L--|ST[Top:real64] = pow(2.0, ST[Top:real64]) - 1.0");
         }
 
         [Test]
@@ -2253,7 +1453,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|C = __btr<word32>(ebx, 0<8>, out ebx)");
         }
 
-
         [Test]
         public void X86rw_bts()
         {
@@ -2538,18 +1737,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86rw_Lahf()
-        {
-            Run16bitTest(m =>
-            {
-                m.Lahf();
-            });
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|ah = SCZOP");
-        }
-
-        [Test]
         public void X86rw_lar()
         {
             Run32bitTest("0F024242");    // lar\teax,word ptr [edx+42]
@@ -2678,7 +1865,6 @@ namespace Reko.UnitTests.Arch.X86
                 "3|L--|xmm0 = __unpcklp<real64[2]>(v5, v6)");
         }
 
-
         [Test]
         public void X86rw_wbinvd()
         {
@@ -2796,7 +1982,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|Mem0[edx + 66<i32>:word128] = xmm0");
         }
 
-
         [Test]
         public void X86rw_movntq()
         {
@@ -2805,7 +1990,6 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|Mem0[edx + 66<i32>:word64] = mm0");
         }
-
 
         [Test]
         public void X86rw_orps()
@@ -3048,7 +2232,6 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|v6 = Mem0[edx + 66<i32>:(arr byte 8)]",
                 "3|L--|mm0 = __pcmpgt<byte[8]>(v5, v6)");
         }
-
 
         [Test]
         public void X86rw_pcmpgtw()
@@ -3598,8 +2781,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|__fxsave()");
         }
 
-
-
         [Test]
         public void X86Rw_fxtract()
         {
@@ -3829,7 +3010,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|---|<invalid>");
         }
 
-
         [Test]
         public void X86Rw_cvtss2sd()
         {
@@ -3839,7 +3019,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|v4 = CONVERT(Mem0[0x00000001403247BE<p64>:real32], real32, real64)",
                 "2|L--|xmm1 = SEQ(SLICE(xmm1, word64, 64), v4)");
         }
-
 
         [Test]
         public void X86Rw_cvtsd2ss()
@@ -3952,8 +3131,6 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(4): 1 instructions",
                 "1|L--|ebx = __movbe<word32>(eax)");
         }
-
-
 
         [Test]
         public void X86Rw_sha1msg2()
@@ -4169,15 +3346,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_cwd()
-        {
-            Run16bitTest("99"); // cwd
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|dx_ax = CONVERT(ax, int16, int32)");
-        }
-
-        [Test]
         public void X86Rw_cdq()
         {
             Run32bitTest("99"); // cdq
@@ -4186,7 +3354,6 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|edx_eax = CONVERT(eax, int32, int64)");
         }
 
-
         [Test]
         public void X86Rw_cqo()
         {
@@ -4194,16 +3361,6 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|0000000140000000(2): 1 instructions",
                 "1|L--|rdx_rax = CONVERT(rax, int64, int128)");
-        }
-
-
-        [Test]
-        public void X86Rw_cbw()
-        {
-            Run16bitTest("98"); // cbw
-            AssertCode(
-                "0|L--|0C00:0000(1): 1 instructions",
-                "1|L--|ax = CONVERT(al, int8, int16)");
         }
 
         [Test]
@@ -4520,18 +3677,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_segment_override_string_instr()
-        {
-            Run16bitTest("26 A4");
-            AssertCode(     // movsb\tbyte ptr es:[di],byte ptr es:[si]
-                "0|L--|0C00:0000(2): 4 instructions",
-                "1|L--|v3 = Mem0[es:si:byte]",
-                "2|L--|Mem0[es:di:byte] = v3",
-                "3|L--|si = si + 1<i16>",
-                "4|L--|di = di + 1<i16>");
-        }
-
-        [Test]
         public void X86Rw_sqrtss()
         {
             Run64bitTest("F30F51C8");
@@ -4698,77 +3843,5 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(3): 1 instructions",
                 "1|L--|__wrpkru(eax)");
         }
-
-        [Test]
-        public void X86Rw_movsb_16bit()
-        {
-            Run16bitTest("F3 A4");
-            AssertCode(
-                "0|L--|0C00:0000(2): 5 instructions",
-                "1|L--|size = cx *u32 1<16>",
-                "2|L--|memcpy(es:di, ds:si, size)",
-                "3|L--|cx = 0<16>",
-                "4|L--|si = si + SLICE(size, word16, 0)",
-                "5|L--|di = di + SLICE(size, word16, 0)");
-        }
-
-        [Test]
-        public void X86Rw_movsd_16bit()
-        {
-            Run16bitTest("B9 00 40 66 F3 A5");
-            AssertCode(
-                "0|L--|0C00:0000(3): 1 instructions",
-                "1|L--|cx = 0x4000<16>",
-                "2|L--|0C00:0003(3): 5 instructions",
-                "3|L--|size = cx *u32 4<16>",
-                "4|L--|memcpy(es:di, ds:si, size)",
-                "5|L--|cx = 0<16>",
-                "6|L--|si = si + SLICE(size, word16, 0)",
-                "7|L--|di = di + SLICE(size, word16, 0)");
-        }
-
-        /*
-        [Test]
-        public void X86Rw_fstsw_and_cmp_jz()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "80 E4 45" +    // and	ah,45
-                "80 FC 40" +    // cmp	ah,40
-                "74 02");       // jz	$+4
-            AssertCode("@@@");
-        }
-
-        [Test]
-        public void X86Rw_fstsw_and_cmp_jz()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "80 E4 45" +    // and	ah,45
-                "80 FC 40" +    // cmp	ah,40
-                "74 02");       // jz	$+4
-            AssertCode("@@@");
-        }
-        [Test]
-        public void X86Rw_fstsw_and_cmp_jz()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "80 E4 45" +    // and	ah,45
-                "80 FC 40" +    // cmp	ah,40
-                "74 02");       // jz	$+4
-            AssertCode("@@@");
-        }
-        [Test]
-        public void X86Rw_fstsw_and_cmp_jz()
-        {
-            Run32bitTest(
-                "DF E0" +       // fstsw	ax
-                "80 E4 45" +    // and	ah,45
-                "80 FC 40" +    // cmp	ah,40
-                "74 02");       // jz	$+4
-            AssertCode("@@@");
-        }
-        */
     }
 }
