@@ -779,7 +779,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("014405F203C183F6");
             AssertCode(     // { r3 = vsubh(r1,r3); p1 = cmp.eq(r5,r4) }
                 "0|L--|00100000(8): 2 instructions",
-                "1|L--|r3 = __simd_add<int16[2]>(r1, r3)",
+                "1|L--|r3 = __simd_sub<int16[2]>(r1, r3)",
                 "2|L--|p1 = r5 == r4");
         }
     }

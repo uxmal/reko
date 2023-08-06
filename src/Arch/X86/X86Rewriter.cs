@@ -537,16 +537,19 @@ namespace Reko.Arch.X86
                 case Mnemonic.vpor: RewritePor(); break;
                 case Mnemonic.pshufd: RewritePshuf(pshuf_intrinsic, PrimitiveType.Word32); break;
                 case Mnemonic.pshufw: RewritePshuf(pshuf_intrinsic, PrimitiveType.Word16); break;
-                case Mnemonic.psubb: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Byte); break;
-                case Mnemonic.psubd: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Word32); break;
-                case Mnemonic.vpsubd: RewritePackedBinop(true, psub_intrinsic, PrimitiveType.Word32); break;
-                case Mnemonic.psubq: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Word64); break;
+                case Mnemonic.psubb: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Byte); break;
+                case Mnemonic.vpsubb: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Byte); break;
+                case Mnemonic.psubd: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Word32); break;
+                case Mnemonic.vpsubd: RewritePackedBinop(true, Simd.Sub, PrimitiveType.Word32); break;
+                case Mnemonic.psubq: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Word64); break;
+                case Mnemonic.vpsubq: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Word64); break;
                 case Mnemonic.psubsb: RewritePackedBinop(false, psubs_intrinsic, PrimitiveType.SByte); break;
                 case Mnemonic.psubsw: RewritePackedBinop(false, psubs_intrinsic, PrimitiveType.Int16); break;
                 case Mnemonic.vpsubsw: RewritePackedBinop(true, psubs_intrinsic, PrimitiveType.Int16); break;
                 case Mnemonic.psubusb: RewritePackedBinop(false, psubus_intrinsic, PrimitiveType.UInt8); break;
                 case Mnemonic.psubusw: RewritePackedBinop(false, psubus_intrinsic, PrimitiveType.UInt16); break;
-                case Mnemonic.psubw: RewritePackedBinop(false, psub_intrinsic, PrimitiveType.Word16); break;
+                case Mnemonic.psubw: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Word16); break;
+                case Mnemonic.vpsubw: RewritePackedBinop(false, Simd.Sub, PrimitiveType.Word16); break;
                 case Mnemonic.punpckhbw: RewritePunpckhbw(); break;
                 case Mnemonic.punpckhdq: RewritePunpckhdq(); break;
                 case Mnemonic.punpckhwd: RewritePunpckhwd(); break;
@@ -616,8 +619,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.vshufps: RewritePackedTernaryop(true, shufp_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.sldt: RewriteSxdt(sldt_intrinsic); break;
                 case Mnemonic.smsw: RewriteSmsw(); break;
-                case Mnemonic.sqrtpd: RewritePackedUnaryop(sqrtp_intrinsic, PrimitiveType.Real64); break;
-                case Mnemonic.sqrtps: RewritePackedUnaryop(sqrtp_intrinsic, PrimitiveType.Real32); break;
+                case Mnemonic.sqrtpd: RewritePackedUnaryop(Simd.Sqrt, PrimitiveType.Real64); break;
+                case Mnemonic.sqrtps: RewritePackedUnaryop(Simd.Sqrt, PrimitiveType.Real32); break;
                 case Mnemonic.sqrtsd: RewriteSqrtsd(sqrt_intrinsic, PrimitiveType.Real64); break;
                 case Mnemonic.sqrtss: RewriteSqrtsd(fsqrt_intrinsic, PrimitiveType.Real32); break;
                 case Mnemonic.stc: RewriteSetFlag(Registers.C, Constant.True()); break;
@@ -1181,6 +1184,7 @@ namespace Reko.Arch.X86
                 .Param(PrimitiveType.Byte)
                 .Returns("T");
 
+
             rdmsr_intrinsic = new IntrinsicBuilder("__rdmsr", true)
                 .Param(word32)
                 .Returns(PrimitiveType.Word64);
@@ -1517,7 +1521,11 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure psll_intrinsic;
         private static readonly IntrinsicProcedure psra_intrinsic;
         private static readonly IntrinsicProcedure psrl_intrinsic;
-        private static readonly IntrinsicProcedure psub_intrinsic = GenericBinaryIntrinsic("__psub");
+        private static readonly IntrinsicProcedure psrldq_intrinsic = new IntrinsicBuilder("__psrldq", false)
+            .GenericTypes("T")
+            .Param("T")
+            .Param(PrimitiveType.Int32)
+            .Returns("T");
         private static readonly IntrinsicProcedure psubs_intrinsic = GenericBinaryIntrinsic("__psubs");
         private static readonly IntrinsicProcedure psubus_intrinsic = GenericBinaryIntrinsic("__psubus");
         private static readonly IntrinsicProcedure punpckhbw_intrinsic = GenericBinaryIntrinsic("__punpckhbw");
@@ -1556,10 +1564,8 @@ namespace Reko.Arch.X86
         private static readonly IntrinsicProcedure sldt_intrinsic;
         private static readonly IntrinsicProcedure smsw_intrinsic;
         private static readonly IntrinsicProcedure sqrt_intrinsic;
-        private static readonly IntrinsicProcedure sqrtp_intrinsic = GenericUnaryIntrinsic("__sqrtp");
         private static readonly IntrinsicProcedure sti_intrinsic;
         private static readonly IntrinsicProcedure str_intrinsic;
-        private static readonly IntrinsicProcedure subp_intrinsic = GenericBinaryIntrinsic("__subp");
         private static readonly IntrinsicProcedure syscall_intrinsic;
         private static readonly IntrinsicProcedure sysenter_intrinsic;
         private static readonly IntrinsicProcedure sysexit_intrinsic;

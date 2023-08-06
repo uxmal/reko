@@ -686,7 +686,7 @@ namespace Reko.Arch.X86
             if (dstType is null)
             {
                 m.Assign(dst, m.Fn(intrinsic.MakeInstance(srcArrayType), tmp1));
-        }
+            }
             else
             {
                 var dstArrayType = CreatePackedArrayType(dstType, dst.DataType);
@@ -709,11 +709,11 @@ namespace Reko.Arch.X86
         private void RewritePsrldq(bool isVex)
         {
             bool has3Ops = instrCur.Operands.Length == 3;
-            var src1 = SrcOp(has3Ops ? 1 : 0);
-            var src2 = SrcOp(has3Ops ? 2 : 1);
+            var src = SrcOp(has3Ops ? 1 : 0);
+            var shift =(int) ((ImmediateOperand) instrCur.Operands[has3Ops ? 2 : 1]).Value.ToUInt32();
+            var dtArray = this.CreatePackedArrayType(src.DataType, PrimitiveType.Word128);
+            var tmp = m.Fn(psrldq_intrinsic.MakeInstance(dtArray), src, Constant.Int32(shift * 8));
             var dst = SrcOp(0);
-            var tmp = binder.CreateTemporary(PrimitiveType.Word128);
-            m.Assign(tmp, m.Slice(src1, tmp.DataType));  // Low 128 bits
             VexAssign(isVex, dst, tmp);
         }
 

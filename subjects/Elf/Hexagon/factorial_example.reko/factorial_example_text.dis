@@ -10656,7 +10656,7 @@ l0000AF34:
 	r3 = 1<32>
 	r5 = CONVERT(SLICE(r1, ui19, 3), ui19, uint32)
 	r4 = htid
-	r3 = __simd_add<int16[2]>(r1, r3)
+	r3 = __simd_sub<int16[2]>(r1, r3)
 	p1 = r5 == r4
 	return
 	// succ:  fn0000AF34_exit
