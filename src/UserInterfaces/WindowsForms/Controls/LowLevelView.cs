@@ -41,6 +41,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         IButton btnBackWrapped;
         IButton btnFwdWrapped;
         IComboBox ddlVisualizerWrapped;
+        IComboBox ddlArchitectureWrapped;
+        IComboBox ddlModelWrapped;
         Address addrCurrent;
 
         public LowLevelView()
@@ -52,6 +54,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             btnFwdWrapped = new ToolStripButtonWrapper(btnForward);
             btnGoWrapped = new ToolStripButtonWrapper(btnGo);
             ddlVisualizerWrapped = new ComboBoxWrapper(ddlVisualizer);
+            ddlArchitectureWrapped = new ToolStripComboBoxWrapper(ddlArchitecture);
+            ddlModelWrapped = new ToolStripComboBoxWrapper(ddlModel);
+
+            //$TODO: come up with a way to allow user to twiddle
+            // all the features (like big/little endian).
+            toolStripLabel3.Visible = false;
+            ddlModel.Visible = false;
         }
 
         public IButton ToolbarBackButton { get { return btnBackWrapped; } }
@@ -83,10 +92,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         IButton INavigableControl<Address>.BackButton { get { return btnBackWrapped; } }
         IButton INavigableControl<Address>.ForwardButton { get { return btnFwdWrapped; } }
 
+        public IComboBox ToolbarArchitecture => ddlArchitectureWrapped;
+
         public Address CurrentAddress
         {
             get { return addrCurrent; }
-            set {
+            set
+            {
                 if (Address.Compare(addrCurrent, value) == 0)
                     return;
                 addrCurrent = value;

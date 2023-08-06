@@ -28,279 +28,322 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LowLevelView));
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.btnBack = new System.Windows.Forms.ToolStripButton();
-            this.btnForward = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.txtAddress = new System.Windows.Forms.ToolStripTextBox();
-            this.btnGo = new System.Windows.Forms.ToolStripButton();
-            this.lowLeveImages = new System.Windows.Forms.ImageList(this.components);
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.memCtrl = new Reko.UserInterfaces.WindowsForms.Controls.MemoryControl();
-            this.lblMemoryView = new System.Windows.Forms.Label();
-            this.dasmCtrl = new Reko.UserInterfaces.WindowsForms.Controls.DisassemblyControl();
-            this.lblDisassembly = new System.Windows.Forms.Label();
-            this.visualizerControl = new Reko.UserInterfaces.WindowsForms.Controls.VisualizerControl();
-            this.label1 = new System.Windows.Forms.Label();
-            this.imageMapControl1 = new Reko.UserInterfaces.WindowsForms.Controls.ImageMapView();
-            this.ddlVisualizer = new System.Windows.Forms.ComboBox();
-            this.toolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.SuspendLayout();
+            System.Text.ASCIIEncoding asciiEncodingSealed1 = new System.Text.ASCIIEncoding();
+            System.Text.DecoderReplacementFallback decoderReplacementFallback1 = new System.Text.DecoderReplacementFallback();
+            System.Text.EncoderReplacementFallback encoderReplacementFallback1 = new System.Text.EncoderReplacementFallback();
+            EmptyEditorModel emptyEditorModel1 = new EmptyEditorModel();
+            toolStrip = new System.Windows.Forms.ToolStrip();
+            btnBack = new System.Windows.Forms.ToolStripButton();
+            btnForward = new System.Windows.Forms.ToolStripButton();
+            toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            txtAddress = new System.Windows.Forms.ToolStripTextBox();
+            btnGo = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            ddlArchitecture = new System.Windows.Forms.ToolStripComboBox();
+            toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            ddlModel = new System.Windows.Forms.ToolStripComboBox();
+            lowLeveImages = new System.Windows.Forms.ImageList(components);
+            splitContainer2 = new System.Windows.Forms.SplitContainer();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            memCtrl = new MemoryControl();
+            lblMemoryView = new System.Windows.Forms.Label();
+            dasmCtrl = new DisassemblyControl();
+            lblDisassembly = new System.Windows.Forms.Label();
+            ddlVisualizer = new System.Windows.Forms.ComboBox();
+            visualizerControl = new VisualizerControl();
+            label1 = new System.Windows.Forms.Label();
+            imageMapControl1 = new ImageMapView();
+            toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            SuspendLayout();
             // 
             // toolStrip
             // 
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnBack,
-            this.btnForward,
-            this.toolStripLabel1,
-            this.toolStripSeparator1,
-            this.txtAddress,
-            this.btnGo});
-            this.toolStrip.Location = new System.Drawing.Point(0, 23);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(858, 25);
-            this.toolStrip.TabIndex = 3;
-            this.toolStrip.Text = "toolStrip1";
+            toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { btnBack, btnForward, toolStripLabel1, toolStripSeparator1, txtAddress, btnGo, toolStripSeparator2, toolStripLabel2, ddlArchitecture, toolStripLabel3, ddlModel });
+            toolStrip.Location = new System.Drawing.Point(0, 27);
+            toolStrip.Name = "toolStrip";
+            toolStrip.Size = new System.Drawing.Size(1001, 25);
+            toolStrip.TabIndex = 3;
+            toolStrip.Text = "toolStrip1";
             // 
             // btnBack
             // 
-            this.btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnBack.Image = global::Reko.UserInterfaces.WindowsForms.Resources.Back;
-            this.btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(23, 22);
-            this.btnBack.Text = "Back";
+            btnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btnBack.Image = Resources.Back;
+            btnBack.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnBack.Name = "btnBack";
+            btnBack.Size = new System.Drawing.Size(23, 22);
+            btnBack.Text = "Back";
             // 
             // btnForward
             // 
-            this.btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnForward.Image = global::Reko.UserInterfaces.WindowsForms.Resources.Forward;
-            this.btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnForward.Name = "btnForward";
-            this.btnForward.Size = new System.Drawing.Size(23, 22);
-            this.btnForward.Text = "Forward";
+            btnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            btnForward.Image = Resources.Forward;
+            btnForward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnForward.Name = "btnForward";
+            btnForward.Size = new System.Drawing.Size(23, 22);
+            btnForward.Text = "Forward";
             // 
             // toolStripLabel1
             // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(49, 22);
-            this.toolStripLabel1.Text = "Address";
+            toolStripLabel1.Name = "toolStripLabel1";
+            toolStripLabel1.Size = new System.Drawing.Size(49, 22);
+            toolStripLabel1.Text = "Address";
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // txtAddress
             // 
-            this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(100, 25);
+            txtAddress.Name = "txtAddress";
+            txtAddress.Size = new System.Drawing.Size(116, 25);
             // 
             // btnGo
             // 
-            this.btnGo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGo.Image = ((System.Drawing.Image)(resources.GetObject("btnGo.Image")));
-            this.btnGo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(26, 22);
-            this.btnGo.Text = "Go";
+            btnGo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            btnGo.Image = (System.Drawing.Image) resources.GetObject("btnGo.Image");
+            btnGo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            btnGo.Name = "btnGo";
+            btnGo.Size = new System.Drawing.Size(26, 22);
+            btnGo.Text = "Go";
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Margin = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel2
+            // 
+            toolStripLabel2.Name = "toolStripLabel2";
+            toolStripLabel2.Size = new System.Drawing.Size(72, 22);
+            toolStripLabel2.Text = "Architecture";
+            // 
+            // ddlArchitecture
+            // 
+            ddlArchitecture.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            ddlArchitecture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            ddlArchitecture.Name = "ddlArchitecture";
+            ddlArchitecture.Size = new System.Drawing.Size(121, 25);
+            // 
+            // toolStripLabel3
+            // 
+            toolStripLabel3.Name = "toolStripLabel3";
+            toolStripLabel3.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            toolStripLabel3.Size = new System.Drawing.Size(46, 22);
+            toolStripLabel3.Text = "Model";
+            // 
+            // ddlModel
+            // 
+            ddlModel.Name = "ddlModel";
+            ddlModel.Size = new System.Drawing.Size(121, 25);
             // 
             // lowLeveImages
             // 
-            this.lowLeveImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.lowLeveImages.ImageSize = new System.Drawing.Size(16, 16);
-            this.lowLeveImages.TransparentColor = System.Drawing.Color.Transparent;
+            lowLeveImages.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            lowLeveImages.ImageSize = new System.Drawing.Size(16, 16);
+            lowLeveImages.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // splitContainer2
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 48);
-            this.splitContainer2.Name = "splitContainer2";
+            splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer2.Location = new System.Drawing.Point(0, 52);
+            splitContainer2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer1);
+            splitContainer2.Panel1.Controls.Add(splitContainer1);
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.ddlVisualizer);
-            this.splitContainer2.Panel2.Controls.Add(this.visualizerControl);
-            this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Size = new System.Drawing.Size(858, 433);
-            this.splitContainer2.SplitterDistance = 692;
-            this.splitContainer2.TabIndex = 5;
+            splitContainer2.Panel2.Controls.Add(ddlVisualizer);
+            splitContainer2.Panel2.Controls.Add(visualizerControl);
+            splitContainer2.Panel2.Controls.Add(label1);
+            splitContainer2.Size = new System.Drawing.Size(1001, 503);
+            splitContainer2.SplitterDistance = 807;
+            splitContainer2.SplitterWidth = 5;
+            splitContainer2.TabIndex = 5;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.memCtrl);
-            this.splitContainer1.Panel1.Controls.Add(this.lblMemoryView);
+            splitContainer1.Panel1.Controls.Add(memCtrl);
+            splitContainer1.Panel1.Controls.Add(lblMemoryView);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.dasmCtrl);
-            this.splitContainer1.Panel2.Controls.Add(this.lblDisassembly);
-            this.splitContainer1.Size = new System.Drawing.Size(692, 433);
-            this.splitContainer1.SplitterDistance = 255;
-            this.splitContainer1.TabIndex = 1;
+            splitContainer1.Panel2.Controls.Add(dasmCtrl);
+            splitContainer1.Panel2.Controls.Add(lblDisassembly);
+            splitContainer1.Size = new System.Drawing.Size(807, 503);
+            splitContainer1.SplitterDistance = 296;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 1;
             // 
             // memCtrl
             // 
-            this.memCtrl.Architecture = null;
-            this.memCtrl.BytesPerRow = ((uint)(16u));
-            this.memCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            //this.memCtrl.Encoding = ((System.Text.Encoding)(resources.GetObject("memCtrl.Encoding")));
-            this.memCtrl.ImageMap = null;
-            this.memCtrl.Procedures = null;
-            this.memCtrl.Location = new System.Drawing.Point(0, 18);
-            this.memCtrl.Name = "memCtrl";
-            this.memCtrl.SegmentMap = null;
-            this.memCtrl.SelectedAddress = null;
-            this.memCtrl.Services = null;
-            this.memCtrl.Size = new System.Drawing.Size(692, 237);
-            this.memCtrl.TabIndex = 0;
-            this.memCtrl.Text = "memoryControl1";
-            this.memCtrl.TopAddress = null;
-            this.memCtrl.WordSize = ((uint)(1u));
+            memCtrl.Architecture = null;
+            memCtrl.BytesPerRow =  16U;
+            memCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            memCtrl.ImageMap = null;
+            memCtrl.IsTextSideSelected = false;
+            memCtrl.Location = new System.Drawing.Point(0, 21);
+            memCtrl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            memCtrl.Name = "memCtrl";
+            memCtrl.Procedures = null;
+            memCtrl.SegmentMap = null;
+            memCtrl.SelectedAddress = null;
+            memCtrl.Services = null;
+            memCtrl.Size = new System.Drawing.Size(807, 275);
+            memCtrl.TabIndex = 0;
+            memCtrl.Text = "memoryControl1";
+            memCtrl.TopAddress = null;
+            memCtrl.WordSize =  1U;
             // 
             // lblMemoryView
             // 
-            this.lblMemoryView.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.lblMemoryView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblMemoryView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMemoryView.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.lblMemoryView.Location = new System.Drawing.Point(0, 0);
-            this.lblMemoryView.Name = "lblMemoryView";
-            this.lblMemoryView.Size = new System.Drawing.Size(692, 18);
-            this.lblMemoryView.TabIndex = 1;
-            this.lblMemoryView.Text = "Memory View";
-            this.lblMemoryView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblMemoryView.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            lblMemoryView.Dock = System.Windows.Forms.DockStyle.Top;
+            lblMemoryView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            lblMemoryView.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            lblMemoryView.Location = new System.Drawing.Point(0, 0);
+            lblMemoryView.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblMemoryView.Name = "lblMemoryView";
+            lblMemoryView.Size = new System.Drawing.Size(807, 21);
+            lblMemoryView.TabIndex = 1;
+            lblMemoryView.Text = "Memory View";
+            lblMemoryView.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // dasmCtrl
             // 
-            this.dasmCtrl.BackColor = System.Drawing.SystemColors.Window;
-            this.dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dasmCtrl.Location = new System.Drawing.Point(0, 18);
-            this.dasmCtrl.Model = emptyEditorModel2;
-            this.dasmCtrl.Name = "dasmCtrl";
-            this.dasmCtrl.Program = null;
-            this.dasmCtrl.SelectedObject = null;
-            this.dasmCtrl.Services = null;
-            this.dasmCtrl.ShowPcRelative = false;
-            this.dasmCtrl.Size = new System.Drawing.Size(692, 156);
-            this.dasmCtrl.StartAddress = null;
-            this.dasmCtrl.StyleClass = null;
-            this.dasmCtrl.TabIndex = 0;
-            this.dasmCtrl.Text = "disassemblyControl1";
-            this.dasmCtrl.TopAddress = null;
+            dasmCtrl.Architecture = null;
+            dasmCtrl.BackColor = System.Drawing.SystemColors.Window;
+            dasmCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            dasmCtrl.Location = new System.Drawing.Point(0, 21);
+            dasmCtrl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dasmCtrl.Model = emptyEditorModel1;
+            dasmCtrl.Name = "dasmCtrl";
+            dasmCtrl.Program = null;
+            dasmCtrl.SelectedObject = null;
+            dasmCtrl.Services = null;
+            dasmCtrl.ShowPcRelative = false;
+            dasmCtrl.Size = new System.Drawing.Size(807, 181);
+            dasmCtrl.StartAddress = null;
+            dasmCtrl.StyleClass = null;
+            dasmCtrl.TabIndex = 0;
+            dasmCtrl.Text = "disassemblyControl1";
+            dasmCtrl.TopAddress = null;
             // 
             // lblDisassembly
             // 
-            this.lblDisassembly.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.lblDisassembly.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblDisassembly.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDisassembly.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.lblDisassembly.Location = new System.Drawing.Point(0, 0);
-            this.lblDisassembly.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lblDisassembly.Name = "lblDisassembly";
-            this.lblDisassembly.Size = new System.Drawing.Size(692, 18);
-            this.lblDisassembly.TabIndex = 1;
-            this.lblDisassembly.Text = "Disassembly";
-            this.lblDisassembly.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // visualizerControl
-            // 
-            this.visualizerControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.visualizerControl.LineLength = 64;
-            this.visualizerControl.Location = new System.Drawing.Point(0, 18);
-            this.visualizerControl.Name = "visualizerControl";
-            this.visualizerControl.Program = null;
-            this.visualizerControl.Services = null;
-            this.visualizerControl.Size = new System.Drawing.Size(162, 390);
-            this.visualizerControl.TabIndex = 0;
-            this.visualizerControl.Visualizer = null;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(162, 18);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Byte Map";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // imageMapControl1
-            // 
-            this.imageMapControl1.BackColor = System.Drawing.SystemColors.Control;
-            this.imageMapControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.imageMapControl1.Granularity = ((long)(1));
-            this.imageMapControl1.ImageMap = null;
-            this.imageMapControl1.Location = new System.Drawing.Point(0, 0);
-            this.imageMapControl1.Name = "imageMapControl1";
-            this.imageMapControl1.Offset = ((long)(0));
-            this.imageMapControl1.SegmentMap = null;
-            this.imageMapControl1.SelectedAddress = null;
-            this.imageMapControl1.Size = new System.Drawing.Size(858, 23);
-            this.imageMapControl1.TabIndex = 4;
-            this.imageMapControl1.Text = "imageMapControl1";
+            lblDisassembly.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            lblDisassembly.Dock = System.Windows.Forms.DockStyle.Top;
+            lblDisassembly.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            lblDisassembly.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            lblDisassembly.Location = new System.Drawing.Point(0, 0);
+            lblDisassembly.Margin = new System.Windows.Forms.Padding(4, 0, 4, 3);
+            lblDisassembly.Name = "lblDisassembly";
+            lblDisassembly.Size = new System.Drawing.Size(807, 21);
+            lblDisassembly.TabIndex = 1;
+            lblDisassembly.Text = "Disassembly";
+            lblDisassembly.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ddlVisualizer
             // 
-            this.ddlVisualizer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ddlVisualizer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlVisualizer.FormattingEnabled = true;
-            this.ddlVisualizer.Location = new System.Drawing.Point(0, 409);
-            this.ddlVisualizer.Name = "ddlVisualizer";
-            this.ddlVisualizer.Size = new System.Drawing.Size(121, 21);
-            this.ddlVisualizer.TabIndex = 3;
+            ddlVisualizer.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            ddlVisualizer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            ddlVisualizer.FormattingEnabled = true;
+            ddlVisualizer.Location = new System.Drawing.Point(0, 475);
+            ddlVisualizer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ddlVisualizer.Name = "ddlVisualizer";
+            ddlVisualizer.Size = new System.Drawing.Size(140, 23);
+            ddlVisualizer.TabIndex = 3;
+            // 
+            // visualizerControl
+            // 
+            visualizerControl.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            visualizerControl.LineLength = 16;
+            visualizerControl.Location = new System.Drawing.Point(0, 21);
+            visualizerControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            visualizerControl.Name = "visualizerControl";
+            visualizerControl.Program = null;
+            visualizerControl.Services = null;
+            visualizerControl.Size = new System.Drawing.Size(188, 453);
+            visualizerControl.TabIndex = 0;
+            visualizerControl.Visualizer = null;
+            // 
+            // label1
+            // 
+            label1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            label1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            label1.Location = new System.Drawing.Point(0, 0);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(189, 21);
+            label1.TabIndex = 2;
+            label1.Text = "Byte Map";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // imageMapControl1
+            // 
+            imageMapControl1.BackColor = System.Drawing.SystemColors.Control;
+            imageMapControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            imageMapControl1.Granularity =  1L;
+            imageMapControl1.ImageMap = null;
+            imageMapControl1.Location = new System.Drawing.Point(0, 0);
+            imageMapControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            imageMapControl1.Name = "imageMapControl1";
+            imageMapControl1.Offset =  0L;
+            imageMapControl1.SegmentMap = null;
+            imageMapControl1.SelectedAddress = null;
+            imageMapControl1.Size = new System.Drawing.Size(1001, 27);
+            imageMapControl1.TabIndex = 4;
+            imageMapControl1.Text = "imageMapControl1";
             // 
             // LowLevelView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitContainer2);
-            this.Controls.Add(this.toolStrip);
-            this.Controls.Add(this.imageMapControl1);
-            this.Name = "LowLevelView";
-            this.Size = new System.Drawing.Size(858, 481);
-            this.toolStrip.ResumeLayout(false);
-            this.toolStrip.PerformLayout();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(splitContainer2);
+            Controls.Add(toolStrip);
+            Controls.Add(imageMapControl1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "LowLevelView";
+            Size = new System.Drawing.Size(1001, 555);
+            toolStrip.ResumeLayout(false);
+            toolStrip.PerformLayout();
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize) splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize) splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -322,5 +365,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private VisualizerControl visualizerControl;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ddlVisualizer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripComboBox ddlArchitecture;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripComboBox ddlModel;
     }
 }

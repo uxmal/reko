@@ -39,6 +39,7 @@ namespace Reko.WindowsItp
                         new Dictionary<string, object>()),
                     SegmentMap = segmentMap
                 },
+                null,
                 seg);
             disassemblyControl1.StartAddress = mem.BaseAddress;
         }

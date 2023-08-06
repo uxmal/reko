@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Reko.Gui.Components;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
@@ -56,12 +57,23 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private Program program;
 
         [Browsable(false)]
-        public Address StartAddress { get { return startAddress; } set { startAddress = value; StartAddressChanged?.Invoke(this, EventArgs.Empty); } }
+        public Address StartAddress { 
+            get { return startAddress; }
+            set { 
+                startAddress = value; StartAddressChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
         public event EventHandler StartAddressChanged;
         private Address startAddress;
 
         [Browsable(false)]
-        public Address TopAddress { get { return topAddress; } set { topAddress = value; TopAddressChanged?.Invoke(this, EventArgs.Empty); } }
+        public Address TopAddress
+        {
+            get { return topAddress; } 
+            set { 
+                topAddress = value; TopAddressChanged?.Invoke(this, EventArgs.Empty); 
+            }
+        }
         public event EventHandler TopAddressChanged;
         private Address topAddress;
 
@@ -78,6 +90,25 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
         public event EventHandler SelectedObjectChanged;
         private object selectedObject;
+
+        /// <summary>
+        /// Architecture to use when displaying disassembly. Can be used
+        /// to override the architecture from the <see cref="Program"/>
+        /// property.
+        /// </summary>
+        [Browsable(false)]
+        public IProcessorArchitecture Architecture
+        {
+            get { return this.arch;}
+            set
+            {
+                if (this.arch == value)
+                    return;
+                this.arch = value;
+                DisassemblyControl_StateChange(this, EventArgs.Empty);
+            }
+        }
+        private IProcessorArchitecture arch;
 
         public bool ShowPcRelative
         {
@@ -108,7 +139,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 else
                 {
                     var addr = topAddress;
-                    this.dasmModel = new DisassemblyTextModel(program, segment);
+                    this.dasmModel = new DisassemblyTextModel(program, this.Architecture, segment);
                     Model = dasmModel;
                     dasmModel.MoveToAddress(addr);
                 }

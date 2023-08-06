@@ -44,19 +44,21 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     public class DisassemblyTextModel : TextViewModel
     {
         private readonly Program program;
+        private readonly IProcessorArchitecture arch;
         private readonly MemoryArea mem;
         private readonly Address addrStart;
         private readonly long offsetStart;
         private readonly long offsetEnd;
         private long offset;
 
-        public DisassemblyTextModel(Program program, ImageSegment segment)
+        public DisassemblyTextModel(Program program, IProcessorArchitecture arch, ImageSegment segment)
         {
             this.program = program ?? throw new ArgumentNullException(nameof(program));
             if (segment is null)
                 throw new ArgumentNullException(nameof(segment));
             if (segment.MemoryArea == null)
                 throw new ArgumentException(nameof(segment), "ImageSegment must have a valid memory area.");
+            this.arch = arch;
             this.mem = segment.MemoryArea;
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
@@ -83,36 +85,48 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public LineSpan[] GetLineSpans(int count)
         {
             var lines = new List<LineSpan>();
-            if (program.Architecture != null)
+            try
             {
-                var addr = Align(addrStart + offset, program.Architecture.CodeMemoryGranularity);
-                if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg) &&
-                    seg.MemoryArea != null &&
-                    seg.MemoryArea.IsValidAddress(addr))
+                var arch = CurrentArchitecture();
+                if (arch is not null)
                 {
-                    var options = new MachineInstructionRendererOptions(
-                        flags: ShowPcRelative
-                            ? MachineInstructionRendererFlags.None
-                            : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
-                    var arch = GetArchitectureForAddress(addr);
-                    var cellBitSize = seg.MemoryArea.CellBitSize;
-                    var dasm = program.CreateDisassembler(arch, addr).GetEnumerator();
-                    while (count != 0 && dasm.MoveNext())
+                    var addr = Align(arch, addrStart + offset, arch.CodeMemoryGranularity);
+                    if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg) &&
+                        seg.MemoryArea != null &&
+                        seg.MemoryArea.IsValidAddress(addr))
                     {
-                        var instr = dasm.Current;
-                        var asmLine = RenderAsmLine(
-                                instr.Address - addrStart, program, arch, instr, options);
-                        lines.Add(asmLine);
-                        --count;
-                        offset += instr.Length;
+                        var options = new MachineInstructionRendererOptions(
+                            flags: ShowPcRelative
+                                ? MachineInstructionRendererFlags.None
+                                : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
+                        arch = GetArchitectureForAddress(addr);
+                        var cellBitSize = seg.MemoryArea.CellBitSize;
+                        var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
+                        var dasm = arch.CreateDisassembler(rdr).GetEnumerator();
+                        while (count != 0 && dasm.MoveNext())
+                        {
+                            var instr = dasm.Current;
+                            var asmLine = RenderAsmLine(
+                                    instr.Address - addrStart, program, arch, instr, options);
+                            lines.Add(asmLine);
+                            --count;
+                            offset += instr.Length;
+                        }
                     }
                 }
+            } 
+            catch (Exception e)
+            {
+                Debug.Print("Exception when rendering lines. {0}", e.Message);
+                return Array.Empty<LineSpan>();
             }
             return lines.ToArray();
         }
 
         private IProcessorArchitecture GetArchitectureForAddress(Address addr)
         {
+            if (this.arch is not null)
+                return this.arch;
             IProcessorArchitecture arch = null;
             // Try to find a basic block at this address and use its architecture.
             if (program.ImageMap.TryFindItem(addr, out var item) &&
@@ -144,9 +158,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return new LineSpan(position, addr, line.ToArray());
         }
 
-        private Address Align(Address addr, int bitGranularity)
+        private Address Align(IProcessorArchitecture arch, Address addr, int bitGranularity)
         {
-            var arch = program.Architecture;
             uint addrAlign = (uint)Math.Max(arch.InstructionBitSize / bitGranularity, 1);
             ulong linear = addr.ToLinear();
             var rem = linear % addrAlign;
@@ -202,7 +215,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 byteOffset = Math.Abs(byteOffset);
             int bitSize;
             int unitSize;
-            if (program.Architecture != null)
+            var arch = CurrentArchitecture();
+            if (arch is not null)
             {
                 bitSize = program.Architecture.InstructionBitSize;
                 unitSize = program.Architecture.MemoryGranularity;
@@ -212,7 +226,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 bitSize = 8;
                 unitSize = 8;
             }
-            return (int)(unitSize * byteOffset / bitSize);
+            return (int) (unitSize * byteOffset / bitSize);
+        }
+
+        private IProcessorArchitecture CurrentArchitecture()
+        {
+            return this.arch ?? program.Architecture;
         }
 
         /// <summary>

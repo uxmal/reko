@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Output;
@@ -96,8 +97,9 @@ namespace Reko.UserInterfaces.WindowsForms
                 var seg = program.SegmentMap.Segments.Values.FirstOrDefault();
                 if (seg is null)
                     return;
+                PopulateArchitectures();
                 control.DisassemblyView.Program = value;
-                control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
+                control.DisassemblyView.Model = new DisassemblyTextModel(value, null, seg);
                 control.ImageMapView.ImageMap = value.ImageMap;
                 control.ImageMapView.SegmentMap = value.SegmentMap;
                 control.ImageMapView.Granularity = value.SegmentMap.GetExtent();
@@ -114,6 +116,18 @@ namespace Reko.UserInterfaces.WindowsForms
                 control.CurrentAddress = value;
             }
         }
+
+        public virtual IProcessorArchitecture SelectedArchitecture
+        {
+            get { return this.archSelected; }
+            set
+            {
+                if (archSelected == value)
+                    return;
+                this.archSelected = value;
+            }
+        }
+        private IProcessorArchitecture archSelected;
 
         public object CreateControl()
         {
@@ -142,6 +156,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
+            PopulateArchitectures();
+            this.control.ToolbarArchitecture.SelectedIndexChanged += ToolbarArchitecture_SelectedIndexChanged;
 
             this.navInteractor = new NavigationInteractor<Address>();
             this.Control.ToolbarBackButton.Click += delegate {  this.Control.CurrentAddress = this.navInteractor.NavigateBack(); };
@@ -200,6 +216,22 @@ namespace Reko.UserInterfaces.WindowsForms
                 new ListOption("Code and data", new CodeDataVisualizer()));
             this.Control.VisualizerList.Items.Add(
                 new ListOption("Heat map", new HeatmapVisualizer()));
+        }
+
+        private void PopulateArchitectures()
+        {
+            var ddl = this.Control.ToolbarArchitecture;
+            ddl.Items.Clear();
+            ddl.Items.Add(new ListOption("(Default)", null));
+            var cfgSvc = services?.GetService<IConfigurationService>();
+            if (cfgSvc is null)
+                return;
+            foreach (var arch in cfgSvc.GetArchitectures().OrderBy(a => a.Description))
+            {
+                var choice = new ListOption(arch.Description ?? arch.Name!, arch.Name);
+                ddl.Items.Add(choice);
+            }
+            ddl.SelectedIndex = 0;
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -650,7 +682,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
             {
-                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, seg);
+                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, SelectedArchitecture, seg);
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }
@@ -719,6 +751,19 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             NavigateToToolbarAddress();
         }
+
+        private void ToolbarArchitecture_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            IProcessorArchitecture arch = null;
+            var archName = ((ListOption) this.control.ToolbarArchitecture.SelectedItem)?.Value as string;
+            if (archName is not null)
+            {
+                arch = services.GetService<IConfigurationService>()?.GetArchitecture(archName);
+            }
+            this.SelectedArchitecture = arch;
+            this.control.DisassemblyView.Architecture = arch;
+        }
+
 
         private void DisassemblyControl_Navigate(object sender, EditorNavigationArgs e)
         {
