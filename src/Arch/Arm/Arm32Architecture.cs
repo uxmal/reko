@@ -27,6 +27,7 @@ using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -43,7 +44,8 @@ namespace Reko.Arch.Arm
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
 #endif
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        //$BUG: global shared mutable state...
+        private ConcurrentDictionary<uint, FlagGroupStorage> flagGroups;
 
         public Arm32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, Registers.ByName, Registers.ByDomain)
@@ -54,7 +56,7 @@ namespace Reko.Arch.Arm
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             StackRegister = Registers.sp;
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            this.flagGroups = new ConcurrentDictionary<uint, FlagGroupStorage>();
 #if NATIVE
 
             var unk = CreateNativeArchitecture("arm");
@@ -203,21 +205,21 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out var f))
+            FlagGroupStorage? f;
+            while (!flagGroups.TryGetValue(grf, out f))
             {
-                return f;
-            }
-
-            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var flagregister =
+                var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+                var flagregister =
 #if NATIVE
                 this.regsByName["cpsr"];
 #else
-                Registers.cpsr;
+                    Registers.cpsr;
 #endif
-            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
-            flagGroups.Add(grf, fl);
-            return fl;
+                f = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
+                if (flagGroups.TryAdd(grf, f))
+                    return f;
+            }
+            return f;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
