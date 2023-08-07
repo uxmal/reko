@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Controls
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     partial class ImageSegmentView
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.TextViewing.EmptyEditorModel();
             this.textView1 = new Reko.UserInterfaces.WindowsForms.Controls.TextView();
             this.SuspendLayout();
             // 

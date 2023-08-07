@@ -20,10 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.WindowsForms.Controls
+namespace Reko.Gui.TextViewing
 {
     /// <summary>
     /// Describes a source of textual data as a list of lines,
@@ -35,7 +36,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// can span differing number of bytes (e.g. x86, M68k). The calculation of an exact 
     /// line count is expensive in such circumstances, so we opt for an estimate.
     /// </remarks>
-    public interface TextViewModel
+    public interface ITextViewModel
     {
         object CurrentPosition { get; }
 
@@ -46,7 +47,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <summary>
         /// Estimated number of lines in the model.
         /// </summary>
-        int LineCount { get; } 
+        int LineCount { get; }
 
         /// <summary>
         /// Compares two positions.
@@ -78,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         /// <param name="count"></param>
         /// <returns>Array of LineSpans.</returns>
-        LineSpan [] GetLineSpans(int count);
+        LineSpan[] GetLineSpans(int count);
 
         /// <summary>
         /// Returns the current position as a fraction.
@@ -94,94 +95,5 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <param name="numer"></param>
         /// <param name="denom"></param>
         void SetPositionAsFraction(int numer, int denom);
-    }
-
-    /// <summary>
-    /// A null object to use when there is no Editor.
-    /// </summary>
-    public class EmptyEditorModel : TextViewModel
-    {
-        public object CurrentPosition => this;
-        public object StartPosition => this;
-        public object EndPosition => this;
-        public int LineCount => 0;
-
-        public EmptyEditorModel()
-        {
-        }
-
-        public int MoveToLine(object position, int offset)
-        {
-            return 0;
-        }
-
-        public int ComparePositions(object a, object b)
-        {
-            return 0;
-        }
-
-        public LineSpan[] GetLineSpans(int count)
-        {
-            return new LineSpan[0];
-        }
-
-        public (int, int) GetPositionAsFraction()
-        {
-            return (0, 1);
-        }
-
-        public void SetPositionAsFraction(int numer, int denom)
-        {
-        }
-    }
-
-    /// <summary>
-    /// A TextSpan describes a span of text that has the same
-    /// formatting attributes and behaviour.
-    /// </summary>
-    public abstract class TextSpan
-    {
-        private static StringFormat stringFormat;
-
-        static TextSpan()
-        {
-            stringFormat = new StringFormat(StringFormat.GenericTypographic);
-            stringFormat.FormatFlags |=
-                StringFormatFlags.MeasureTrailingSpaces;
-        }
-
-        public abstract string GetText();
-        public string Style { get; set; }
-        public object tag;
-        public object Tag { get { return tag; } set { tag = value; if (value is Reko.Core.Address) value.ToString(); } }
-        public int ContextMenuID { get; set; }
-
-        public virtual SizeF GetSize(string text, Font font, Graphics g)
-        {
-            var sz = TextRenderer.MeasureText(
-               g, text, font, new Size(0, 0),
-               TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
-            return sz;
-        }
-    }
-
-    /// <summary>
-    /// A line span corresponds to a line of text. A line 
-    /// of text consists of multiple text spans.
-    /// </summary>
-    public struct LineSpan
-    {
-        public readonly object Position;
-        public readonly TextSpan[] TextSpans;
-        public readonly object Tag;
-        public string Style;
-
-        public LineSpan(object position, object tag, params TextSpan[] textSpans)
-        {
-            this.Position = position;
-            this.TextSpans = textSpans;
-            this.Tag = tag;
-            this.Style = default!;
-        }
     }
 }

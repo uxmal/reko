@@ -27,6 +27,7 @@ using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
@@ -375,7 +376,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             });
         }
 
-        private TextViewModel GenerateSimulatedHllCode()
+        private ITextViewModel GenerateSimulatedHllCode()
         {
             var code = new List<AbsynStatement>();
             var ase = new Structure.AbsynStatementEmitter(code);

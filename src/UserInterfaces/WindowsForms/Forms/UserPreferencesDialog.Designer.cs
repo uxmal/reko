@@ -29,8 +29,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.TextViewing.EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel2 = new Reko.Gui.TextViewing.EmptyEditorModel();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserPreferencesDialog));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();

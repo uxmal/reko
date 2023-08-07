@@ -64,8 +64,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ILowLevelViewInteractor CreateLowLevelViewPane(Program program)
         {
-            var llvm = new LowLevelViewModel(services);
-            return new LowLevelDocumentViewModel(llvm, program);
+            var llvm = new LowLevelViewModel(services, program);
+            return new LowLevelDocumentViewModel(llvm);
         }
     }
 }

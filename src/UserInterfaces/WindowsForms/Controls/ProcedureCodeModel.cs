@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Output;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using System;
 using System.Diagnostics;
 
@@ -29,7 +30,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// <summary>
     /// Provides a text model that use to show code of procedure.
     /// </summary>
-    public class ProcedureCodeModel : TextViewModel
+    public class ProcedureCodeModel : ITextViewModel
     {
         private readonly Procedure proc;
         private int position;
@@ -81,7 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     }
                 }
                 else
-                    line = new LineSpan(p + i, null, new TextSpan[] { new EmptyTextSpan() });
+                    line = new LineSpan(p + i, null, new ITextSpan[] { new EmptyTextSpan() });
                 Debug.Assert((int) line.Position == p + i);
                 spans[i] = line;
             }

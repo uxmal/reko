@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Controls
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     partial class CombinedCodeView
     {
@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CombinedCodeView));
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.TextViewing.EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel2 = new Reko.Gui.TextViewing.EmptyEditorModel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();

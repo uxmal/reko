@@ -29,6 +29,7 @@ using Reko.Gui;
 using Reko.Gui.Components;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;

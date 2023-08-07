@@ -20,12 +20,12 @@
 
 using Reko.Core.Output;
 using Reko.Core.Types;
+using Reko.Gui.TextViewing;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Drawing;
 using System.Text;
-using Reko.UserInterfaces.WindowsForms.Controls;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -35,14 +35,14 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class TextSpanFormatter : Formatter
     {
-        private List<(object, List<TextSpan>)> textLines;
-        private List<TextSpan> currentLine;
+        private List<(object, List<ITextSpan>)> textLines;
+        private List<ITextSpan> currentLine;
         private object currentLineTag;
         private FixedTextSpan currentSpan;
         
         public TextSpanFormatter()
         {
-            this.textLines = new List<(object, List<TextSpan>)>();
+            this.textLines = new List<(object, List<ITextSpan>)>();
             this.currentLineTag = null;
         }
 
@@ -52,7 +52,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 .ToArray();
         }
 
-        public TextViewModel GetModel()
+        public ITextViewModel GetModel()
         {
             return new TextSpanModel(GetLines());
         }
@@ -157,7 +157,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (currentLine == null)
             {
-                currentLine = new List<TextSpan>();
+                currentLine = new List<ITextSpan>();
                 this.textLines.Add((currentLineTag, currentLine));
             }
             if (currentSpan == null)
@@ -168,7 +168,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return currentSpan;
         }
 
-        private class TextSpanModel : TextViewModel
+        private class TextSpanModel : ITextViewModel
         {
             private LineSpan[] lines;
             private int position;

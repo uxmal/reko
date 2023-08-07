@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 John Källén.
+ * Copyright (C) 1999-2023 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,10 +34,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
     {
         public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
 
-        public LowLevelDocumentViewModel(LowLevelViewModel llvm, Program program)
+        public LowLevelDocumentViewModel(LowLevelViewModel llvm)
         {
             this.ViewModel = llvm;
-            this.Program = program;
         }
 
         public LowLevelViewModel ViewModel { get; }

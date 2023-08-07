@@ -33,7 +33,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             System.Text.ASCIIEncoding asciiEncodingSealed1 = new System.Text.ASCIIEncoding();
             System.Text.DecoderReplacementFallback decoderReplacementFallback1 = new System.Text.DecoderReplacementFallback();
             System.Text.EncoderReplacementFallback encoderReplacementFallback1 = new System.Text.EncoderReplacementFallback();
-            EmptyEditorModel emptyEditorModel1 = new EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.TextViewing.EmptyEditorModel();
             toolStrip = new System.Windows.Forms.ToolStrip();
             btnBack = new System.Windows.Forms.ToolStripButton();
             btnForward = new System.Windows.Forms.ToolStripButton();

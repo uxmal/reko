@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -446,8 +447,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <summary>
         /// The Model provides text spans that the TextView uses to render itself.
         /// </summary>
-        public TextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); } }
-        private TextViewModel model;
+        public ITextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); } }
+        private ITextViewModel model;
         protected virtual void OnModelChanged(EventArgs e)
         {
             this.cursorPos = new TextPointer(model.CurrentPosition, 0, 0);

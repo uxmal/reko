@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,18 +33,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </summary>
     public class TextViewLayout
     {
-        private TextViewModel model;
+        private ITextViewModel model;
         private SortedList<float, LayoutLine> visibleLines;
         private Font defaultFont;
 
-        public TextViewLayout(TextViewModel model, Font defaultFont)
+        public TextViewLayout(ITextViewModel model, Font defaultFont)
         {
             this.model = model;
             this.visibleLines = new SortedList<float, LayoutLine>();
             this.defaultFont = defaultFont;
         }
 
-        private TextViewLayout(TextViewModel model, Font defaultFont, SortedList<float, LayoutLine> visibleLines)
+        private TextViewLayout(ITextViewModel model, Font defaultFont, SortedList<float, LayoutLine> visibleLines)
         {
             this.model = model;
             this.defaultFont = defaultFont;
@@ -60,7 +61,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <param name="defaultFont"></param>
         /// <param name="styleStack"></param>
         /// <returns></returns>
-        public static TextViewLayout AllLines(TextViewModel model, Graphics g, Font defaultFont, StyleStack styleStack)
+        public static TextViewLayout AllLines(ITextViewModel model, Graphics g, Font defaultFont, StyleStack styleStack)
         {
             model.MoveToLine(model.StartPosition, 0);
             var rcLine = new RectangleF();
@@ -77,7 +78,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
 
-        public static TextViewLayout VisibleLines(TextViewModel model, Size size, Graphics g, Font defaultFont, StyleStack styleStack)
+        public static TextViewLayout VisibleLines(ITextViewModel model, Size size, Graphics g, Font defaultFont, StyleStack styleStack)
         {
             var szClient = new SizeF(size);
             var rcLine = new RectangleF(0, 0, szClient.Width, 0);
@@ -225,12 +226,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private class Builder
         {
             private Graphics g;
-            private TextViewModel model;
+            private ITextViewModel model;
             private StyleStack styleStack;
             private Font defaultFont;
             private SortedList<float, LayoutLine> visibleLines;
 
-            public Builder(TextViewModel model, Graphics g, StyleStack styleStack, Font defaultFont)
+            public Builder(ITextViewModel model, Graphics g, StyleStack styleStack, Font defaultFont)
             {
                 this.model = model;
                 this.g = g;
@@ -286,11 +287,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             /// <param name="rcLine"></param>
             /// <param name="g"></param>
             /// <returns></returns>
-            private LayoutSpan[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine)
+            private LayoutSpan[] ComputeSpanLayouts(IEnumerable<ITextSpan> spans, RectangleF rcLine)
             {
                 var spanLayouts = new List<LayoutSpan>();
                 var pt = new PointF(rcLine.Left, rcLine.Top);
-                foreach (var span in spans)
+                foreach (TextSpan span in spans)
                 {
                     styleStack.PushStyle(span.Style);
                     var text = span.GetText();

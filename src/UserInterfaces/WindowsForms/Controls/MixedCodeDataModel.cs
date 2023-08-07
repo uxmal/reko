@@ -23,6 +23,7 @@ using Reko.Core.Collections;
 using Reko.Core.Machine;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +35,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// <summary>
     /// Provides a text model that mixes code and data.
     /// </summary>
-    public partial class MixedCodeDataModel : TextViewModel
+    public partial class MixedCodeDataModel : ITextViewModel
     {
         const int BytesPerLine = 16;
 

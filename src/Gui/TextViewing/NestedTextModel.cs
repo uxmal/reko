@@ -18,25 +18,25 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
-namespace Reko.UserInterfaces.WindowsForms.Controls
+namespace Reko.Gui.TextViewing
 {
     /// <summary>
     /// Supports nesting text models.
     /// </summary>
-    public class NestedTextModel : TextViewModel
+    public class NestedTextModel : ITextViewModel
     {
         private Location position;
 
         public NestedTextModel()
         {
             this.Nodes = new NodeCollection(this);
+            this.position = default!;
+            this.StartPosition = default!;
+            this.EndPosition = default!;
         }
 
         private class Location
@@ -135,7 +135,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (offset >= 0)
             {
                 object subPos = this.position.InnerLocation;
-                TextViewModel model = this.Nodes[this.position.iModel].Model;
+                ITextViewModel model = this.Nodes[this.position.iModel].Model;
                 for (int i = this.position.iModel; i < this.Nodes.Count; ++i)
                 {
                     int moved = this.Nodes[i].Model.MoveToLine(subPos, offset);
@@ -207,7 +207,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.outer = outer;
             }
 
-            public void Add(TextViewModel model)
+            public void Add(ITextViewModel model)
             {
                 Add(new TextModelNode(model));
             }
@@ -236,7 +236,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 UpdatePositions();
             }
 
-            public void AddRange(IEnumerable<TextViewModel> models)
+            public void AddRange(IEnumerable<ITextViewModel> models)
             {
                 updatePositions = false;
                 foreach (var m in models)
@@ -275,13 +275,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
     public class TextModelNode
     {
-        public TextModelNode(TextViewModel model)
+        public TextModelNode(ITextViewModel model)
         {
             this.Model = model;
             this.cLines = model.LineCount;
         }
 
-        public TextViewModel Model { get; private set; }
+        public ITextViewModel Model { get; private set; }
         public TextModelNode Parent { get; set; }
         public NestedTextModel NestedTextModel { get; set; }
 

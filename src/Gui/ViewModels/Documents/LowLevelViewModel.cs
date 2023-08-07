@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 John Källén.
+ * Copyright (C) 1999-2023 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,9 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui.Reactive;
-using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Gui.ViewModels.Documents
 {
@@ -35,9 +32,10 @@ namespace Reko.Gui.ViewModels.Documents
     {
         private readonly IServiceProvider services;
 
-        public LowLevelViewModel(IServiceProvider services)
+        public LowLevelViewModel(IServiceProvider services, Program program)
         {
             this.services = services;
+            this.Program = program;
             this.Architectures = BuildArchitectureViewModel();
         }
 
@@ -45,7 +43,7 @@ namespace Reko.Gui.ViewModels.Documents
         public ListOption[] Architectures { get; set; }
 
         public Program Program { get; set; }
-        public Address SelectedAddress { get; set; }
+        public Address? SelectedAddress { get; set; }
 
         /// <summary>
         /// The CPU architecture chosen by the user.

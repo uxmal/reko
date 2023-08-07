@@ -23,6 +23,7 @@ using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Diagnostics;
@@ -35,7 +36,7 @@ namespace Reko.UserInterfaces.WindowsForms
     {
         public IUiPreferencesService UiPreferences { get; set; }
         public Block Block { get; set; }
-        public TextViewModel TextModel { get; set; }
+        public ITextViewModel TextModel { get; set; }
         public TextViewLayout Layout { get; set; }
 
         /// <summary>

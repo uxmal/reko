@@ -32,6 +32,7 @@ using System;
 using Microsoft.Msagl.GraphViewerGdi;
 using C2 = Microsoft.Msagl.Drawing.Color;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -123,7 +124,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return node;
         }
 
-        private TextViewModel GenerateTextModel(Block b)
+        private ITextViewModel GenerateTextModel(Block b)
         {
             var tsf = new TextSpanFormatter();
             var fmt = new AbsynCodeFormatter(tsf);

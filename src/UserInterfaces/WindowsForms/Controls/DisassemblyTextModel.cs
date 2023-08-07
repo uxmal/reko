@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
+using Reko.Gui.TextViewing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,7 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// number of lines the disassembly would have had (overestimating is safe)
     /// and then render accordingly.
     /// </remarks>
-    public class DisassemblyTextModel : TextViewModel
+    public class DisassemblyTextModel : ITextViewModel
     {
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
@@ -146,7 +147,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             MachineInstruction instr,
             MachineInstructionRendererOptions options)
         {
-            var line = new List<TextSpan>();
+            var line = new List<ITextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
             var rdr = program.CreateImageReader(arch, instr.Address);

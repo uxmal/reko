@@ -20,10 +20,10 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using System.Collections.Generic;
-using System;
-using System.Text;
+using Reko.Gui.TextViewing;
 using Reko.UserInterfaces.WindowsForms.Controls;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -36,12 +36,16 @@ namespace Reko.UserInterfaces.WindowsForms
         private readonly IProcessorArchitecture arch;
         private readonly MachineInstruction instr;
         private StringBuilder sb = new StringBuilder();
-        private List<TextSpan> line;
+        private List<ITextSpan> line;
         private List<string> annotations;
         private string mnemonicStyle;
         private Address addrInstr;
 
-        public DisassemblyFormatter(Program program, IProcessorArchitecture arch, MachineInstruction instr, List<TextSpan> line)
+        public DisassemblyFormatter(
+            Program program, 
+            IProcessorArchitecture arch, 
+            MachineInstruction instr, 
+            List<ITextSpan> line)
         {
             this.program = program;
             this.arch = arch;

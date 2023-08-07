@@ -29,7 +29,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SegmentEditorDialog));
-            Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel emptyEditorModel3 = new Reko.UserInterfaces.WindowsForms.Controls.EmptyEditorModel();
+            Reko.Gui.TextViewing.EmptyEditorModel emptyEditorModel3 = new Reko.Gui.TextViewing.EmptyEditorModel();
             this.txtFileOffset = new System.Windows.Forms.TextBox();
             this.memView = new Reko.UserInterfaces.WindowsForms.Controls.MemoryControl();
             this.txtLength = new System.Windows.Forms.TextBox();

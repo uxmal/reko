@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.Gui.TextViewing;
 using System;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
