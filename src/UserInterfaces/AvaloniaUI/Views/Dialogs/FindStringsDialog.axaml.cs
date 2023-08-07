@@ -18,37 +18,45 @@
  */
 #endregion
 
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using Reko.Gui;
 using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
-using System;
 
-namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 {
-    internal class FindStringsDialogInteractor
+    public partial class FindStringsDialog : Window, IDialog<StringFinderCriteria?>
     {
-        private FindStringsDialog dlg;
-        private readonly FindStringsViewModel viewModel;
-
-        public FindStringsDialogInteractor()
+        public FindStringsDialog()
         {
-            this.viewModel = new FindStringsViewModel();
+            InitializeComponent();
         }
 
-        public void Attach(FindStringsDialog dlg)
+        public StringFinderCriteria? Value { get; private set; }
+
+        public string? Text { get => this.Title; set => this.Title = value; }
+
+        public void Dispose()
         {
-            this.dlg = dlg;
-            dlg.Load += Dialog_Load;
         }
 
-        private void Dialog_Load(object sender, EventArgs e)
+        private void InitializeComponent()
         {
-            dlg.StringKindList.SelectedIndex = 0;
-            dlg.CharacterSizeList.SelectedIndex = 0;
+            AvaloniaXamlLoader.Load(this);
         }
 
-        public StringFinderCriteria GetCriteria() => viewModel.GetCriteria(
-            dlg.CharacterSizeList.SelectedIndex,
-            dlg.StringKindList.SelectedIndex,
-            dlg.MinLength);
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            this.Value = ((FindStringsViewModel?) DataContext)?.GetCriteria();
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Value = null;
+            this.Close();
+        }
     }
 }

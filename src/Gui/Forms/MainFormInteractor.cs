@@ -725,9 +725,9 @@ namespace Reko.Gui.Forms
         {
             using (var dlgStrings = dlgFactory.CreateFindStringDialog())
             {
-                if (await uiSvc.ShowModalDialog(dlgStrings) == DialogResult.OK)
+                var criteria = await uiSvc.ShowModalDialog(dlgStrings);
+                if (criteria is not null)
                 {
-                    var criteria = dlgStrings.GetCriteria();
                     var hits = this.decompilerSvc.Decompiler!.Project.Programs
                         .SelectMany(p => new StringFinder(p).FindStrings(criteria));
                     srSvc.ShowAddressSearchResults(

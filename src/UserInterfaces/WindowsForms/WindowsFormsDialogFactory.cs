@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Scanning;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections;
@@ -96,7 +97,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlg;
         }
 
-        public IFindStringsDialog CreateFindStringDialog()
+        public IDialog<StringFinderCriteria> CreateFindStringDialog()
         {
             return new FindStringsDialog();
         }

@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
+		x:DataType="vm:FindStringsViewModel"
+		x:CompileBindings="True"
+		Width="480" Height="150"
+        mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="150"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.FindStringsDialog"
+        Title="Find Possible Strings">
+	<StackPanel Margin="10" Spacing="6">
+		
+	<Grid ColumnDefinitions="2*,4*" RowDefinitions="auto,auto,auto">
+		<Grid.Styles>
+			<Style Selector="ComboBox">
+				<Setter Property="Width" Value="300" />
+				<Setter Property="HorizontalAlignment" Value="Left" />
+			</Style>
+			<Style Selector="Label">
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</Grid.Styles>
+		<Label Grid.Row="0" Grid.Column="0">_Character size:</Label>
+		<Label Grid.Row="1" Grid.Column="0">_Length specified:</Label>
+		<Label Grid.Row="2" Grid.Column="0">_Minimum length:</Label>
+
+		<ComboBox Grid.Row="0" Grid.Column="1"
+				  SelectedIndex="{Binding CharacterType}">
+			<ComboBox.Items>
+				<TextBlock>8 bits (e.g. UTF-8)</TextBlock>
+				<TextBlock>16 bits little endian (e.g. UTF-16LE)</TextBlock>
+				<TextBlock>16 bits big endian (e.g. UTF-16BE)</TextBlock>
+			</ComboBox.Items>
+		</ComboBox>
+
+		<ComboBox Grid.Row="1" Grid.Column="1"
+				  SelectedIndex="{Binding StringKind}">
+			<ComboBox.Items>
+				<TextBlock>C-style (NUL-delimited)</TextBlock>
+				<TextBlock>8-bit size prefix</TextBlock>
+				<TextBlock>16-bit size prefix</TextBlock>
+				<TextBlock>32-bit size prefix</TextBlock>
+			</ComboBox.Items>
+		</ComboBox>
+
+		<NumericUpDown 
+			Grid.Row="2" Grid.Column="1"
+			Minimum="1"
+			Maximum="65553"
+			Width="140"
+			HorizontalAlignment="Left"
+			Value="{Binding MinLength}">
+		</NumericUpDown>
+	</Grid>
+		<StackPanel Orientation="Horizontal"
+					Spacing="6"
+					HorizontalAlignment="Right">
+			<Button Tapped="btnOK_Click">OK</Button>
+			<Button Tapped="btnCancel_Click">Cancel</Button>
+		</StackPanel>
+	</StackPanel>
+
+</Window>

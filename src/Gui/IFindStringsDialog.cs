@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2023 John Källén.
  *
@@ -19,9 +19,11 @@
 #endregion
 
 using Reko.Scanning;
+using System;
 
 namespace Reko.Gui
 {
+    [Obsolete]
     public interface IFindStringsDialog : IDialog
     {
         int MinLength { get; set; }

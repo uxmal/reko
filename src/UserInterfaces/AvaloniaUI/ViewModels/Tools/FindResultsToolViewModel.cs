@@ -18,31 +18,14 @@
  */
 #endregion
 
-using Reko.Core.Types;
-using Reko.Gui;
-using Reko.Scanning;
-using System;
-using System.Windows.Forms;
+using Dock.Model.ReactiveUI.Controls;
+using Reko.Gui.ViewModels.Tools;
 
-namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools
 {
-    public partial class FindStringsDialog : Form, IDialog<StringFinderCriteria>
+    public class FindResultsToolViewModel : Tool
     {
-        private FindStringsDialogInteractor interactor;
+        public FindResultsViewModel ViewModel { get; set; } = null!;
 
-        public FindStringsDialog()
-        {
-            InitializeComponent();
-            this.interactor = new FindStringsDialogInteractor();
-            this.interactor.Attach(this);
-        }
-
-        public int MinLength => Convert.ToInt32(this.numericUpDown1.Value);
-
-        public ComboBox CharacterSizeList => ddlCharSize;
-
-        public ComboBox StringKindList => ddlStringKind;
-
-        public StringFinderCriteria Value => interactor.GetCriteria();
     }
 }

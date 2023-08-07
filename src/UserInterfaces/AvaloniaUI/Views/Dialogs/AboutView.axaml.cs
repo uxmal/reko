@@ -31,7 +31,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
             InitializeComponent();
         }
 
-        public string? Text { get; set; }
+        public string? Text { get => this.Title; set => this.Title = value; }
 
         public void Dispose()
         {

@@ -23,6 +23,7 @@ using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Scanning;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace Reko.Gui
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();
         ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
-        IFindStringsDialog CreateFindStringDialog();
+        IDialog<StringFinderCriteria?> CreateFindStringDialog();
         IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
         IDialog<LoadDetails?> CreateOpenAsDialog(string initialFilename);
         IDialog<UserProcedure?> CreateProcedureDialog(Program program, UserProcedure proc);

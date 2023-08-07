@@ -28,16 +28,16 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     internal class AvaloniaSearchResultService : ISearchResultService
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public AvaloniaSearchResultService(IServiceProvider services)
         {
             this.services = services;
         }
 
-        public void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails code)
+        public void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails details)
         {
-            throw new NotImplementedException();
+            ShowSearchResults(new AddressSearchResult(services, hits, details));
         }
 
         public void ShowSearchResults(ISearchResult result)

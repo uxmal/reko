@@ -26,6 +26,7 @@ using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Dialogs;
+using Reko.Scanning;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.Views;
 using Reko.UserInterfaces.AvaloniaUI.Views.Dialogs;
@@ -99,9 +100,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IFindStringsDialog CreateFindStringDialog()
+        public IDialog<StringFinderCriteria?> CreateFindStringDialog()
         {
-            throw new NotImplementedException();
+            return new FindStringsDialog
+            {
+                DataContext = new FindStringsViewModel()
+            };
         }
 
         public IJumpTableDialog CreateJumpTableDialog(Program program, IProcessorArchitecture arch, MachineInstruction instrIndirectJmp, Address addrVector, int stride)
