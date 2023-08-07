@@ -167,9 +167,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             await msgBox.Show(mainWindow);
         }
 
-        public ValueTask<DialogResult> ShowModalDialog(IDialog dlg)
+        public async ValueTask<DialogResult> ShowModalDialog(IDialog dlg)
         {
-            throw new NotImplementedException();
+            //$BUG: need to change all dialogs to se the other overload of ShowModalDialog
+            await ((Window) dlg).ShowDialog(mainWindow);
+            return DialogResult.OK;
         }
 
         public async ValueTask<TResult> ShowModalDialog<TResult>(IDialog<TResult> dlg)

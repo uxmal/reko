@@ -1,0 +1,48 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
+		Width="450"
+		Height="320"
+        mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="300"
+		x:DataType="vm:AboutViewModel"
+		x:CompileBindings="True"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.AboutView"
+        Title="AboutView">
+	<Grid Margin="10"
+		RowDefinitions="*,Auto"
+		ColumnDefinitions="1*,4*">
+		<Grid.Styles>
+			<!--			
+			<Style Selector="Label">
+				<Setter Property="Background" Value="#90FF90" />
+			</Style>-->
+		</Grid.Styles>
+		<Label Grid.Column="0" Grid.Row="0">
+			&lt;Icon&gt;
+		</Label>
+		<StackPanel Grid.Column="1" Grid.Row="0" Spacing="20">
+			<Label FontSize="20" FontWeight="Bold">Reko Decompiler</Label>
+			<StackPanel>
+				<Label Content="{Binding Version}" />
+				<Label Content="{Binding GitHash}" />
+			</StackPanel>
+			<TextBlock TextWrapping="Wrap" Text="{x:Static vm:AboutViewModel.CopyLeft}" />
+			<Button 
+				Foreground="Blue"
+				Cursor="Hand"
+				BorderThickness="0"
+				Background="Transparent"
+				Padding="0">
+				<Button.Styles>
+					<Style Selector="TextBlock">
+						<Setter Property="TextDecorations" Value="Underline" />
+					</Style>
+				</Button.Styles>
+				https://github.com/uxmal/reko
+			</Button>
+		</StackPanel>
+		<Button Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right">OK</Button>
+	</Grid>
+</Window>

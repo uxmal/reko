@@ -25,8 +25,11 @@ using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels;
+using Reko.Gui.ViewModels.Dialogs;
+using Reko.Scanning;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.Views;
+using Reko.UserInterfaces.AvaloniaUI.Views.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -44,7 +47,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IAboutDialog CreateAboutDialog()
         {
-            throw new NotImplementedException();
+            var vm = new AboutViewModel();
+            var view = new AboutView()
+            {
+                DataContext = vm
+            };
+            return view;
         }
 
         public IAddressPromptDialog CreateAddressPromptDialog()

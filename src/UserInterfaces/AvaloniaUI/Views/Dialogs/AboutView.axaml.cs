@@ -18,15 +18,28 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+using Reko.Gui.Forms;
 
-namespace Reko.Gui.Forms
+namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 {
-    public interface IAboutDialog : IDialog
+    public partial class AboutView : Window, IAboutDialog
     {
+        public AboutView()
+        {
+            InitializeComponent();
+        }
+
+        public string? Text { get; set; }
+
+        public void Dispose()
+        {
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
     }
 }
