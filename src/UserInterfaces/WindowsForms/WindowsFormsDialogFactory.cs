@@ -27,6 +27,7 @@ using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -61,9 +62,12 @@ namespace Reko.UserInterfaces.WindowsForms
 			return new AddressPromptDialog();
 		}
 
-        public IArchiveBrowserDialog CreateArchiveBrowserDialog()
+        public IArchiveBrowserDialog CreateArchiveBrowserDialog(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
-            return new ArchiveBrowserDialog();
+            return new ArchiveBrowserDialog()
+            {
+                ArchiveEntries = archiveEntries
+            };
         }
 
         public IAssembleFileDialog CreateAssembleFileDialog()

@@ -36,7 +36,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public ArchiveBrowserDialog()
         {
             InitializeComponent();
-            var interactor = new ArchiveBrowserService.ArchiveBrowserInteractor();
+            var interactor = new ArchiveBrowserInteractor();
             interactor.Attach(this);
         }
 
@@ -54,10 +54,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             }
         }
 
-        public ArchivedFile GetSelectedFile()
-        {
-            ArchivedFile file = SelectedArchiveEntry as ArchivedFile;
-            return file;
-        }
+        public ArchivedFile Value => SelectedArchiveEntry as ArchivedFile;
     }
 }

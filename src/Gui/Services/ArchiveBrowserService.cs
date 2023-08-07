@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core.Loading;
+using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
@@ -26,25 +28,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UserInterfaces.AvaloniaUI.Services
+namespace Reko.Gui.Services
 {
-    public class AvaloniaArchiveBrowserService : IArchiveBrowserService
+    public class ArchiveBrowserService : IArchiveBrowserService
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
-        public AvaloniaArchiveBrowserService(IServiceProvider services)
+        public ArchiveBrowserService(IServiceProvider services)
         {
             this.services = services;
         }
 
-        public ValueTask<ArchivedFile?> SelectFileFromArchive(IArchive archive)
+        public async ValueTask<ArchivedFile?> SelectFileFromArchive(IArchive archive)
         {
-            throw new NotImplementedException();
-        }
-
-        public ValueTask<ArchivedFile?> UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
-        {
-            throw new NotImplementedException();
+            var dlgFactory = services.GetService<IDialogFactory>();
+            if (dlgFactory is null)
+                return null;
+            var uiSvc = services.GetService<IDecompilerShellUiService>();
+            if (uiSvc is null)
+                return null;
+            using var dlg = dlgFactory.CreateArchiveBrowserDialog(archive.RootEntries);
+            return await uiSvc.ShowModalDialog(dlg);
         }
     }
 }

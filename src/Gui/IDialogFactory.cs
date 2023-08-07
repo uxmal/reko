@@ -38,7 +38,7 @@ namespace Reko.Gui
     public interface IDialogFactory
     {
         IAboutDialog CreateAboutDialog();
-        IArchiveBrowserDialog CreateArchiveBrowserDialog();
+        IArchiveBrowserDialog CreateArchiveBrowserDialog(ICollection<ArchiveDirectoryEntry> archiveEntries);
         IAssembleFileDialog CreateAssembleFileDialog();
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();

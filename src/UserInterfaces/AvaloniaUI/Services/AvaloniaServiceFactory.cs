@@ -55,7 +55,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IArchiveBrowserService CreateArchiveBrowserService()
         {
-            return new AvaloniaArchiveBrowserService(this.services);
+            return new ArchiveBrowserService(this.services);
         }
 
         public ICallGraphViewService CreateCallGraphViewService()

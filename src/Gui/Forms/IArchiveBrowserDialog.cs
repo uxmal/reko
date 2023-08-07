@@ -27,10 +27,8 @@ using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {
-    public interface IArchiveBrowserDialog : IDialog
+    public interface IArchiveBrowserDialog : IDialog<ArchivedFile?>
     {
         ICollection<ArchiveDirectoryEntry> ArchiveEntries { get; set; }
-
-        ArchivedFile GetSelectedFile();
     }
 }

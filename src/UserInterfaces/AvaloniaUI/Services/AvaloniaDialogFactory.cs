@@ -26,7 +26,6 @@ using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels;
 using Reko.Gui.ViewModels.Dialogs;
-using Reko.Scanning;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels;
 using Reko.UserInterfaces.AvaloniaUI.Views;
 using Reko.UserInterfaces.AvaloniaUI.Views.Dialogs;
@@ -60,9 +59,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IArchiveBrowserDialog CreateArchiveBrowserDialog()
+        public IArchiveBrowserDialog CreateArchiveBrowserDialog(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
-            throw new NotImplementedException();
+            var vm = new ArchiveBrowserViewModel(archiveEntries);
+            var dlg = new ArchiveBrowserDialog()
+            {
+                DataContext = vm
+            };
+            return dlg;
         }
 
         public IAssembleFileDialog CreateAssembleFileDialog()

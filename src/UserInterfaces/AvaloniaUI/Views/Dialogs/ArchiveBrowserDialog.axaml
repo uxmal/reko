@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.Gui"
+		xmlns:loading="using:Reko.Core.Loading"
+		x:DataType="vm:ViewModels.Dialogs.ArchiveBrowserViewModel"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.ArchiveBrowserDialog"
+		Width="600" Height="480"
+        Title="Archive Browser">
+	<Grid Margin="10"
+		  RowDefinitions="*,Auto">
+		<Border BorderThickness="1">
+			<TreeView Name="ArchiveItems"
+					  Items="{Binding ArchiveEntries}"
+					  SelectedItem="{Binding SelectedArchiveEntry}">
+				<TreeView.DataTemplates>
+					<TreeDataTemplate DataType="loading:ArchivedFolder"
+									ItemsSource="{Binding Entries}">
+						<TextBlock Text="{Binding Name}"/>
+					</TreeDataTemplate>
+					<TreeDataTemplate DataType="loading:ArchivedFile">
+						<TextBlock Text="{Binding Name}"/>
+					</TreeDataTemplate>
+				</TreeView.DataTemplates>
+			</TreeView>
+		</Border>
+		<StackPanel Grid.Row="1"
+					Orientation="Horizontal"
+					HorizontalAlignment="Right"
+					Spacing="5"
+					Margin="0,5,0,0">
+			<Button Tapped="btnOK_Click" IsEnabled="{Binding OkEnabled}">OK</Button>
+			<Button Tapped="btnCancel_Click">Cancel</Button>
+		</StackPanel>
+	</Grid>
+</Window>

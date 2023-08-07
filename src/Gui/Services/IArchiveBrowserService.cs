@@ -39,7 +39,5 @@ namespace Reko.Gui.Services
         /// null otherwise.
         /// </returns>
         ValueTask<ArchivedFile?> SelectFileFromArchive(IArchive archive);
-
-        ValueTask<ArchivedFile?> UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
     }
 }
