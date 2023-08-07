@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		     xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
+             mc:Ignorable="d" d:DesignWidth="800"
+			 x:CompileBindings="True"
+			 d:DesignHeight="450"
+	         x:DataType="vm:LowLevelDocumentViewModel"
+             x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Documents.LowLevelDocumentView">
+	<Grid
+		RowDefinitions="22,*,*"
+		ColumnDefinitions="*">
+		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+				<StackPanel.Styles>
+					<Style Selector="TemplatedControl">
+						<Setter	Property="FontSize" Value="10.5" />
+					</Style>
+					<Style Selector="ComboBox">
+						<Setter Property="Padding" Value="1" />
+					</Style>
+				</StackPanel.Styles>
+				<Label VerticalAlignment="Center">Architectures</Label>
+				<ComboBox Items="{Binding ViewModel.Architectures}"
+						 SelectedItem="{Binding ViewModel.SelectedArchitectureOption}"  />
+			</StackPanel>
+		<Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+			<Label Background="#FFE0E0" VerticalAlignment="Center">Memory View placeholder</Label>
+		</Border>
+		<Border Grid.Row="2" Grid.Column="0">
+			<Label Background="#E0FFE0">Disassembly View placeholder</Label>
+		</Border>
+	</Grid>
+</UserControl>

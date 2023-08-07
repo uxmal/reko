@@ -54,6 +54,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             return new HexDisassemblerController();
         }
 
+        public ILowLevelViewInteractor CreateLowLevelViewPane(Program program)
+        {
+            return new LowLevelViewInteractor(services, program);
+        }
+
         public IWindowPane CreateSegmentListPane(Program program)
         {
             return new SegmentListViewInteractor(program);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2023 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,26 @@
  */
 #endregion
 
-using Reko.Gui.Services;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using Reko.Gui.ViewModels.Documents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
-    public class WindowsLowLevelViewService : LowLevelViewService
+    public partial class LowLevelDocumentView : UserControl
     {
-        public WindowsLowLevelViewService(IServiceProvider services) : base(services)
+        public LowLevelDocumentView()
         {
+            InitializeComponent();
         }
 
-        public override ILowLevelViewInteractor CreateMemoryViewInteractor()
+        public LowLevelViewModel ViewModel => ((LowLevelDocumentViewModel) DataContext!).ViewModel;
+
+
+        private void InitializeComponent()
         {
-            return new LowLevelViewInteractor(Services);
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }

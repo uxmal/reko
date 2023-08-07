@@ -63,14 +63,14 @@ namespace Reko.UserInterfaces.WindowsForms
         private bool ignoreAddressChange;
         private NavigationInteractor<Address> navInteractor;
 
-        public LowLevelViewInteractor(IServiceProvider services)
+        public LowLevelViewInteractor(IServiceProvider services, Program program)
         {
             this.services = services;
             this.eventBus = this.services.RequireService<IEventBus>();
             eventBus.ProcedureFound += EventBus_ProcedureFound;
             this.viewModel = new LowLevelViewModel(services);
+            this.Program = program;
         }
-
 
         public LowLevelView Control => control;
         public IWindowFrame Frame { get; set; }
@@ -89,23 +89,10 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void OnProgramChanged(Program value)
         {
-            if (value is not null)
+            if (value is not null && control is not null)
             {
-                control.MemoryView.ImageMap = value.ImageMap;
-                control.MemoryView.Procedures = value.Procedures;
-                control.MemoryView.SegmentMap = value.SegmentMap;
-                control.MemoryView.Architecture = value.Architecture;
-                control.DisassemblyView.Program = value;
-                var seg = program.SegmentMap.Segments.Values.FirstOrDefault();
-                if (seg is null)
-                    return;
-                PopulateArchitectures();
-                control.DisassemblyView.Program = value;
-                control.DisassemblyView.Model = new DisassemblyTextModel(value, null, seg);
-                control.ImageMapView.ImageMap = value.ImageMap;
-                control.ImageMapView.SegmentMap = value.SegmentMap;
-                control.ImageMapView.Granularity = value.SegmentMap.GetExtent();
-                control.VisualizerControl.Program = value;
+                PopulateControls();
+
             }
             return;
         }
@@ -119,17 +106,6 @@ namespace Reko.UserInterfaces.WindowsForms
             }
         }
 
-        public virtual IProcessorArchitecture SelectedArchitecture
-        {
-            get { return this.archSelected; }
-            set
-            {
-                if (archSelected == value)
-                    return;
-                this.archSelected = value;
-            }
-        }
-        private IProcessorArchitecture archSelected;
 
         public object CreateControl()
         {
@@ -151,6 +127,8 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.DisassemblyView.Services = this.services;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
+            PopulateControls();
+
             this.Control.VisualizerControl.Services = services;
             PopulateVisualizers();
             this.Control.VisualizerList.SelectedIndexChanged += VisualizerList_SelectedIndexChanged;
@@ -158,7 +136,6 @@ namespace Reko.UserInterfaces.WindowsForms
 
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
-            PopulateArchitectures();
             this.control.ToolbarArchitecture.SelectedIndexChanged += ToolbarArchitecture_SelectedIndexChanged;
 
             this.navInteractor = new NavigationInteractor<Address>();
@@ -218,6 +195,26 @@ namespace Reko.UserInterfaces.WindowsForms
                 new ListOption("Code and data", new CodeDataVisualizer()));
             this.Control.VisualizerList.Items.Add(
                 new ListOption("Heat map", new HeatmapVisualizer()));
+        }
+
+        private void PopulateControls()
+        {
+            Program program = this.Program;
+            control.MemoryView.ImageMap = program.ImageMap;
+            control.MemoryView.Procedures = program.Procedures;
+            control.MemoryView.SegmentMap = program.SegmentMap;
+            control.MemoryView.Architecture = program.Architecture;
+            control.DisassemblyView.Program = program;
+            var seg = this.program.SegmentMap.Segments.Values.FirstOrDefault();
+            if (seg is null)
+                return;
+            PopulateArchitectures();
+            control.DisassemblyView.Program = program;
+            control.DisassemblyView.Model = new DisassemblyTextModel(program, null, seg);
+            control.ImageMapView.ImageMap = program.ImageMap;
+            control.ImageMapView.SegmentMap = program.SegmentMap;
+            control.ImageMapView.Granularity = program.SegmentMap.GetExtent();
+            control.VisualizerControl.Program = program;
         }
 
         private void PopulateArchitectures()
@@ -679,7 +676,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
             {
-                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, SelectedArchitecture, seg);
+                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, viewModel.SelectedArchitecture, seg);
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }
@@ -751,14 +748,8 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void ToolbarArchitecture_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IProcessorArchitecture arch = null;
-            var archName = ((ListOption) this.control.ToolbarArchitecture.SelectedItem)?.Value as string;
-            if (archName is not null)
-            {
-                arch = services.GetService<IConfigurationService>()?.GetArchitecture(archName);
-            }
-            this.SelectedArchitecture = arch;
-            this.control.DisassemblyView.Architecture = arch;
+            viewModel.SelectedArchitectureOption = (ListOption) this.control.ToolbarArchitecture.SelectedItem;
+            this.control.DisassemblyView.Architecture = this.viewModel.SelectedArchitecture;
         }
 
 

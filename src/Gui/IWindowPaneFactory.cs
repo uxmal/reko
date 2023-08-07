@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Loading;
+using Reko.Gui.ViewModels.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,5 +39,6 @@ namespace Reko.Gui
         IWindowPane CreateHexDisassemblerPane();
         IWindowPane CreateSegmentListPane(Program program);
         IWindowPane CreateStructureEditorPane(Program program);
+        ILowLevelViewInteractor CreateLowLevelViewPane(Program program);
     }
 }

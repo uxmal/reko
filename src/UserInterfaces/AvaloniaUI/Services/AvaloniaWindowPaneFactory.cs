@@ -61,5 +61,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             var seVm = new StructureEditorViewModel(services, program);
             return new StructureEditorDocumentViewModel(seVm);
         }
+
+        public ILowLevelViewInteractor CreateLowLevelViewPane(Program program)
+        {
+            var llvm = new LowLevelViewModel(services);
+            return new LowLevelDocumentViewModel(llvm, program);
+        }
     }
 }

@@ -27,7 +27,7 @@ using System.Linq;
 
 namespace Reko.Gui.Services
 {
-    public abstract class LowLevelViewService : ViewService, ILowLevelViewService
+    public sealed class LowLevelViewService : ViewService, ILowLevelViewService
     {
         private readonly ISelectedAddressService selAddrSvc;
 
@@ -68,17 +68,21 @@ namespace Reko.Gui.Services
 
         private ILowLevelViewInteractor ShowWindowImpl(Program program)
         {
-            var llvi = CreateMemoryViewInteractor();
+            var llvi = CreateMemoryViewInteractor(program);
             llvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
             var frame = base.ShowWindow(ILowLevelViewService.ViewWindowType, "Memory View", program, llvi);
             llvi = (ILowLevelViewInteractor)frame.Pane ?? llvi;
-            llvi.Program = program;
+            //llvi.Program = program;
             return llvi;
         }
 
         #endregion
 
-        public abstract ILowLevelViewInteractor CreateMemoryViewInteractor();
+        public ILowLevelViewInteractor CreateMemoryViewInteractor(Program program)
+        {
+            var wpf = Services.RequireService<IWindowPaneFactory>();
+            return wpf.CreateLowLevelViewPane(program);
+        }
 
         private void mvi_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {

@@ -91,7 +91,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ILowLevelViewService CreateMemoryViewService()
         {
-            return new WindowsLowLevelViewService(services);
+            return new LowLevelViewService(services);
         }
 
         public IDisassemblyViewService CreateDisassemblyViewService()

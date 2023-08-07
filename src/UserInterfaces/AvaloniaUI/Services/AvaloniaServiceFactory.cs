@@ -135,7 +135,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ILowLevelViewService CreateMemoryViewService()
         {
-            return new AvaloniaMemoryViewService(services);
+            return new LowLevelViewService(services);
         }
 
         public IOutputService CreateOutputService()
