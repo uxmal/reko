@@ -24,7 +24,7 @@ namespace Reko.Gui.TextViewing
     {
         string GetText();
         string Style { get; set; }
-        object Tag { get; set; }
+        object? Tag { get; set; }
         public int ContextMenuID { get; set; }
     }
 }

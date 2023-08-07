@@ -93,7 +93,6 @@ namespace Reko.UserInterfaces.WindowsForms
             }
             catch
             {
-
             }
         }
 

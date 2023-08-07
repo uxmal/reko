@@ -34,10 +34,10 @@ namespace Reko.Gui.TextViewing
     {
         public readonly object Position;
         public readonly ITextSpan[] TextSpans;
-        public readonly object Tag;
+        public readonly object? Tag;
         public string Style;
 
-        public LineSpan(object position, object tag, params ITextSpan[] textSpans)
+        public LineSpan(object position, object? tag, params ITextSpan[] textSpans)
         {
             this.Position = position;
             this.TextSpans = textSpans;

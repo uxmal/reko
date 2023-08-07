@@ -18,214 +18,21 @@
  */
 #endregion
 
-using Reko.Core.Output;
-using Reko.Core.Types;
-using Reko.Gui.TextViewing;
-using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Reko.Gui.TextViewing;
+using Reko.UserInterfaces.WindowsForms.Controls;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    /// <summary>
-    /// Implements a formatter that renders text into
-    /// a TextViewModel that can be used with a TextView.
-    /// </summary>
-    public class TextSpanFormatter : Formatter
+    public class TextSpanFormatter : AbstractTextSpanFormatter
     {
-        private List<(object, List<ITextSpan>)> textLines;
-        private List<ITextSpan> currentLine;
-        private object currentLineTag;
-        private FixedTextSpan currentSpan;
-        
-        public TextSpanFormatter()
+        protected override ITextSpan CreateFixedTextSpan(string text)
         {
-            this.textLines = new List<(object, List<ITextSpan>)>();
-            this.currentLineTag = null;
-        }
-
-        public LineSpan[] GetLines()
-        {
-            return textLines.Select((l, i) => new LineSpan(i, l.Item1, l.Item2.ToArray()))
-                .ToArray();
-        }
-
-        public ITextViewModel GetModel()
-        {
-            return new TextSpanModel(GetLines());
-        }
-
-        public override void Begin(object tag)
-        {
-            this.currentLineTag = tag;
-        }
-
-        public override void Terminate()
-        {
-            currentSpan = null;
-            currentLine = null;
-            currentLineTag = null;
-        }
-
-        public override void Write(string s)
-        {
-            EnsureSpan().Text.Append(s);
-        }
-
-        public override Formatter Write(char ch)
-        {
-            EnsureSpan().Text.Append(ch);
-            return this;
-        }
-
-        public override void Write(string format, params object[] arguments)
-        {
-            EnsureSpan().Text.AppendFormat(format, arguments);
-        }
-
-        public override void WriteComment(string comment)
-        {
-            currentSpan = null;
-            var span = EnsureSpan();
-            span.Style = "cmt";
-            span.Text.Append(comment);
-            currentSpan = null;
-        }
-
-        public override void WriteHyperlink(string text, object href)
-        {
-            currentSpan = null;
-            var span = EnsureSpan();
-            span.Style = "link";
-            span.Text.Append(text);
-            span.Tag = href;
-            currentSpan = null;
-        }
-
-        public override void WriteLabel(string label, object block)
-        {
-            currentSpan = null;
-            var span = EnsureSpan();
-            span.Style = "label";
-            span.Text.Append(label);
-            span.Tag = block;
-            currentSpan = null;
-        }
-
-        public override void WriteKeyword(string keyword)
-        {
-            currentSpan = null;
-            var span = EnsureSpan();
-            span.Style = "code-kw";
-            span.Text.Append(keyword);
-            currentSpan = null;
-        }
-
-        public override void WriteType(string typeName, DataType dt)
-        {
-            currentSpan = null;
-            var span = EnsureSpan();
-            span.Style = "type";
-            span.Text.Append(typeName);
-            span.Tag = dt;
-            currentSpan = null;
-        }
-
-        public override void WriteLine()
-        {
-            currentSpan = null;
-            currentLine = null;
-        }
-
-        public override void WriteLine(string s)
-        {
-            EnsureSpan().Text.Append(s);
-            currentSpan = null;
-            currentLine = null;
-        }
-
-        public override void WriteLine(string format, params object[] arguments)
-        {
-            EnsureSpan().Text.AppendFormat(format, arguments);
-            currentSpan = null;
-            currentLine = null;
-        }
-
-        private FixedTextSpan EnsureSpan()
-        {
-            if (currentLine == null)
-            {
-                currentLine = new List<ITextSpan>();
-                this.textLines.Add((currentLineTag, currentLine));
-            }
-            if (currentSpan == null)
-            {
-                currentSpan = new FixedTextSpan();
-                this.currentLine.Add(currentSpan);
-            }
-            return currentSpan;
-        }
-
-        private class TextSpanModel : ITextViewModel
-        {
-            private LineSpan[] lines;
-            private int position;
-
-            public TextSpanModel(LineSpan[] lines)
-            {
-                this.lines = lines;
-            }
-
-            public int LineCount { get { return lines.Length; } }
-
-            public int ComparePositions(object a, object b)
-            {
-                return ((int)a).CompareTo((int)b);
-            }
-
-            public object CurrentPosition { get { return position; } }
-
-            public object StartPosition { get { return 0; } }
-
-            public object EndPosition { get { return lines.Length; } }
-
-            public int MoveToLine(object position, int offset)
-            {
-                int orig = (int)position;
-                this.position = orig + offset;
-                if (this.position < 0)
-                    this.position = 0;
-                if (this.position >= lines.Length)
-                    this.position = lines.Length;
-                return this.position - orig;
-            }
-
-            public LineSpan[] GetLineSpans(int count)
-            {
-                int p = (int)position;
-                int c = Math.Min(count, lines.Length - p);
-                if (c <= 0)
-                    return new LineSpan[0];
-                var spans = new LineSpan[c];
-                for (int i = 0; i < c; ++i)
-                {
-                    spans[i] = lines[p+i];
-                }
-                position = p + c;
-                return spans;
-            }
-
-            public (int, int) GetPositionAsFraction()
-            {
-                return ((int)position, lines.Length);
-            }
-
-            public void SetPositionAsFraction(int numer, int denom)
-            {
-                position = (int) (Math.BigMul(numer, lines.Length) / denom);
-            }
+            return new FixedTextSpan(text);
         }
 
         /// <summary>
@@ -233,16 +40,16 @@ namespace Reko.UserInterfaces.WindowsForms
         /// </summary>
         private class FixedTextSpan : TextSpan
         {
-            public StringBuilder Text;
+            private readonly string text;
 
-            public FixedTextSpan()
+            public FixedTextSpan(string text)
             {
-                this.Text = new StringBuilder();
+                this.text = text;
             }
 
             public override string GetText()
             {
-                return Text.ToString();
+                return text;
             }
         }
     }

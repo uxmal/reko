@@ -250,7 +250,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     Extent = LineExtent(rcLine, spans),
                     Spans = spans,
                 };
-                this.visibleLines.Add(rcLine.Top, ll);
+                try
+                {
+                    this.visibleLines.Add(rcLine.Top, ll);
+                } catch
+                {
+                    MeasureLineHeight(line);
+                }
+                if (cyLine == 0)
+                    _ = this; //$DEBUG
                 rcLine.Offset(0, cyLine);
             }
 

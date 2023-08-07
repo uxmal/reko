@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2023 Pavel Tomin.
+ * Copyright (C) 1999-2023 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,152 +19,34 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Output;
 using Reko.Gui.Services;
 using Reko.Gui.TextViewing;
-using System;
-using System.Diagnostics;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     /// <summary>
     /// Provides a text model that use to show code of procedure.
     /// </summary>
-    public class ProcedureCodeModel : ITextViewModel
+    public class ProcedureCodeModel : AbstractProcedureCodeModel
     {
-        private readonly Procedure proc;
-        private int position;
-        private LineSpan[] lines;      // The procedure, rendered into line spans
-        private int numLines;
-        private readonly ISelectedAddressService selSvc;
-
         public ProcedureCodeModel(Procedure proc, ISelectedAddressService selSvc)
+                : base(proc, selSvc)
         {
-            this.proc = proc;
-            this.numLines = CountLines();
-            this.selSvc = selSvc;
         }
 
-        public object CurrentPosition { get { return position; } }
-
-        public object EndPosition { get { return LineCount; } }
-
-        public int LineCount { get { return numLines + NumEmptyLinesAfter; } }
-
-        public object StartPosition { get { return 0; } }
-
-        public int NumEmptyLinesAfter { get; set; }
-
-        public int ComparePositions(object a, object b)
+        protected override ITextSpan CreateEmptyTextSpan()
         {
-            return ((int)a).CompareTo((int)b);
+            return new EmptyTextSpan();
         }
 
-        public LineSpan[] GetLineSpans(int count)
+        protected override AbstractTextSpanFormatter CreateTextSpanFormatter()
         {
-            EnsureLines();
-            int p = (int)position;
-            int c = Math.Min(count, LineCount - p);
-            if (c <= 0)
-                return new LineSpan[0];
-            var spans = new LineSpan[c];
-            for (int i = 0; i < c; ++i)
-            {
-                LineSpan line;
-                if ((p + i) < lines.Length)
-                {
-                    line = lines[p + i];
-                    if (line.Tag is ulong uAddr && 
-                        this.selSvc.SelectedAddressRange is not null &&
-                        uAddr == this.selSvc.SelectedAddressRange.Address.ToLinear())
-                    {
-                        line.Style = "mirrored";
-                    }
-                }
-                else
-                    line = new LineSpan(p + i, null, new ITextSpan[] { new EmptyTextSpan() });
-                Debug.Assert((int) line.Position == p + i);
-                spans[i] = line;
-            }
-            position = p + c;
-            return spans;
-        }
-
-        public (int, int) GetPositionAsFraction()
-        {
-            return (position, LineCount);
-        }
-
-        public int MoveToLine(object position, int offset)
-        {
-            int orig = (int)position;
-            this.position = orig + offset;
-            if (this.position < 0)
-                this.position = 0;
-            if (this.position >= LineCount)
-                this.position = LineCount;
-            return this.position - orig;
-        }
-
-        public void SetPositionAsFraction(int numer, int denom)
-        {
-            position = (int)(Math.BigMul(numer, LineCount) / denom);
-        }
-
-        private void EnsureLines()
-        {
-            if (lines != null)
-                return;
-            var tsf = new TextSpanFormatter();
-            WriteCode(tsf);
-            lines = tsf.GetLines();
-        }
-
-        private int CountLines()
-        {
-            var lineCounter = new LineCounterFormatter();
-            WriteCode(lineCounter);
-            return lineCounter.NumLines;
-        }
-
-        private void WriteCode(Formatter tsf)
-        {
-            var fmt = new AbsynCodeFormatter(tsf);
-            fmt.InnerFormatter.UseTabs = false;
-            fmt.Write(proc);
-        }
-
-        private class LineCounterFormatter : NullFormatter
-        {
-            public int NumLines { get; private set; }
-
-            public override void Terminate()
-            {
-                NumLines++;
-            }
-
-            public override void WriteLine()
-            {
-                NumLines++;
-            }
-
-            public override void WriteLine(string s)
-            {
-                NumLines++;
-            }
-
-            public override void WriteLine(string format, params object[] arguments)
-            {
-                NumLines++;
-            }
+            return new TextSpanFormatter();
         }
 
         private class EmptyTextSpan : TextSpan
         {
-            public override string GetText()
-            {
-                return "";
-            }
+            public override string GetText() => "";
         }
     }
 }

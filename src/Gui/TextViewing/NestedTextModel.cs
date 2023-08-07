@@ -282,8 +282,7 @@ namespace Reko.Gui.TextViewing
         }
 
         public ITextViewModel Model { get; private set; }
-        public TextModelNode Parent { get; set; }
-        public NestedTextModel NestedTextModel { get; set; }
+        public TextModelNode? Parent { get; set; }
 
         internal int cLines;
     }
