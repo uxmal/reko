@@ -56,6 +56,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private readonly IServiceProvider services;
         private readonly IEventBus eventBus;
+        private readonly LowLevelViewModel viewModel;
         private LowLevelView control;
         private TypeMarker typeMarker;
         private Program program;
@@ -67,6 +68,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.services = services;
             this.eventBus = this.services.RequireService<IEventBus>();
             eventBus.ProcedureFound += EventBus_ProcedureFound;
+            this.viewModel = new LowLevelViewModel(services);
         }
 
 
@@ -222,14 +224,9 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var ddl = this.Control.ToolbarArchitecture;
             ddl.Items.Clear();
-            ddl.Items.Add(new ListOption("(Default)", null));
-            var cfgSvc = services?.GetService<IConfigurationService>();
-            if (cfgSvc is null)
-                return;
-            foreach (var arch in cfgSvc.GetArchitectures().OrderBy(a => a.Description))
+            foreach (var option in viewModel.Architectures)
             {
-                var choice = new ListOption(arch.Description ?? arch.Name!, arch.Name);
-                ddl.Items.Add(choice);
+                ddl.Items.Add(option);
             }
             ddl.SelectedIndex = 0;
         }
