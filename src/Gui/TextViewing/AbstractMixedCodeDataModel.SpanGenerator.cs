@@ -32,9 +32,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
-namespace Reko.UserInterfaces.WindowsForms.Controls
+namespace Reko.Gui.TextViewing
 {
-    public partial class MixedCodeDataModel
+    public abstract partial class AbstractMixedCodeDataModel
     {
         private bool TryReadComment(out LineSpan line)
         {
@@ -44,7 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 line = new LineSpan(
                     curPos,
                     curPos.Address,
-                    new MemoryTextSpan(
+                    CreateMemoryTextSpan(
                         $"; {commentLines[curPos.Offset]}",
                         UiStyles.CodeComment));
                 curPos = Pos(curPos.Address, curPos.Offset + 1);
@@ -130,9 +130,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             ModelPosition pos)
         {
             SpanGenerator sp;
-            if (item is ImageMapBlock b && b.Block.Procedure != null)
+            if (item is ImageMapBlock b && b.Block?.Procedure != null)
             {
                 sp = new AsmSpanifyer(
+                    this,
                     program, 
                     b.Block.Procedure.Architecture,
                     instructions[b], 
@@ -141,7 +142,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
             else
             {
-                sp = new MemSpanifyer(program, mem, item, pos);
+                sp = new MemSpanifyer(this,program, mem, item, pos);
             }
             return sp;
         }
@@ -165,6 +166,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private class AsmSpanifyer : SpanGenerator
         {
+            private readonly AbstractMixedCodeDataModel model;
             private readonly Program program;
             private readonly IProcessorArchitecture arch;
             private readonly MachineInstruction[] instrs;
@@ -173,12 +175,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             private readonly Address addrSelected;
 
             public AsmSpanifyer(
+                AbstractMixedCodeDataModel model,
                 Program program,
                 IProcessorArchitecture arch,
                 MachineInstruction[] instrs,
                 ModelPosition pos,
                 Address addrSelected)
             {
+                this.model = model;
                 this.instrs = instrs;
                 this.arch = arch;
                 var addr = pos.Address;
@@ -196,7 +200,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 ++offset;
                 var options = new MachineInstructionRendererOptions(
                     flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress);
-                var asmLine = DisassemblyTextModel.RenderAsmLine(
+
+                var asmLine = model.RenderAssemblerLine(
                     position,
                     program,
                     arch,
@@ -213,26 +218,31 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
+        protected abstract LineSpan RenderAssemblerLine(object position, Program program, IProcessorArchitecture arch, MachineInstruction instr, MachineInstructionRendererOptions options);
+
         private class MemSpanifyer : SpanGenerator, IMemoryFormatterOutput
         {
+            private readonly AbstractMixedCodeDataModel model;
             private readonly Program program;
             private readonly MemoryArea mem;
             private readonly ImageMapItem item;
-            private readonly List<TextSpan> line;
+            private readonly List<ITextSpan> line;
             private readonly StringBuilder sbText;
             private ModelPosition position;
 
             public MemSpanifyer(
+                AbstractMixedCodeDataModel model,
                 Program program,
                 MemoryArea mem,
                 ImageMapItem item,
                 ModelPosition pos)
             {
+                this.model = model;
                 this.program = program;
                 this.mem = mem;
                 this.item = item;
                 this.position = pos;
-                this.line = new List<TextSpan>();
+                this.line = new List<ITextSpan>();
                 this.sbText = new StringBuilder();
             }
 
@@ -261,19 +271,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             public void RenderAddress(Address addr)
             {
-                line.Add(new AddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
+                line.Add(model.CreateAddressSpan(addr.ToString(), addr, UiStyles.MemoryWindow));
             }
 
             public void RenderUnit(Address addr, string sUnit)
             {
-                line.Add(new MemoryTextSpan(" ", UiStyles.MemoryWindow));
-                line.Add(new MemoryTextSpan(addr, sUnit, UiStyles.MemoryWindow));
+                line.Add(model.CreateMemoryTextSpan(" ", UiStyles.MemoryWindow));
+                line.Add(model.CreateMemoryTextSpan(addr, sUnit, UiStyles.MemoryWindow));
             }
 
             public void RenderFillerSpan(int nChunks, int nCellsPerChunk)
             {
                 var nCells = (1 + nCellsPerChunk) * nChunks;
-                line.Add(new MemoryTextSpan(new string(' ', nCells), UiStyles.MemoryWindow));
+                line.Add(model.CreateMemoryTextSpan(new string(' ', nCells), UiStyles.MemoryWindow));
             }
 
             public void RenderUnitAsText(Address addr, string sUnit)
@@ -288,7 +298,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             public void EndLine(Constant[] bytes)
             {
-                line.Add(new MemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
+                line.Add(model.CreateMemoryTextSpan(sbText.ToString(), UiStyles.MemoryWindow));
             }
         }
 
@@ -299,64 +309,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return Array.FindIndex(
                 instrs,
                 i => i.Contains(addr));
-        }
-
-        /// <summary>
-        /// An segment of memory
-        /// </summary>
-        public class MemoryTextSpan : TextSpan
-        {
-            private readonly string text;
-
-            public Address Address { get; private set; }
-
-            public MemoryTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public MemoryTextSpan(Address address, string text, string style) : this(text, style)
-            {
-                this.Tag = this;
-                this.Address = address;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-
-            public override SizeF GetSize(string text, Font font, Graphics g)
-            {
-                SizeF sz = base.GetSize(text, font, g);
-                return sz;
-            }
-        }
-
-        /// <summary>
-        /// An inert text span is not clickable nor has a context menu.
-        /// </summary>
-        public class InertTextSpan : TextSpan
-        {
-            private readonly string text;
-
-            public InertTextSpan(string text, string style)
-            {
-                this.text = text;
-                base.Style = style;
-            }
-
-            public override string GetText()
-            {
-                return text;
-            }
-
-            public override SizeF GetSize(string text, Font font, Graphics g)
-            {
-                SizeF sz = base.GetSize(text, font, g);
-                return sz;
-            }
         }
 
     }

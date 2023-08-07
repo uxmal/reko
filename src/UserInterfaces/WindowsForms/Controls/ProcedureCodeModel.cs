@@ -25,7 +25,7 @@ using Reko.Gui.TextViewing;
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     /// <summary>
-    /// Provides a text model that use to show code of procedure.
+    /// Provides a text model that use to show code of a procedure.
     /// </summary>
     public class ProcedureCodeModel : AbstractProcedureCodeModel
     {

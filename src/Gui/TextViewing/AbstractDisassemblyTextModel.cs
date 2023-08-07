@@ -88,7 +88,7 @@ namespace Reko.Gui.TextViewing
                 if (arch is not null)
                 {
                     var addr = Align(arch, addrStart + offset, arch.CodeMemoryGranularity);
-                    if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg) &&
+                    if (program.SegmentMap.TryFindSegment(addr, out ImageSegment? seg) &&
                         seg.MemoryArea != null &&
                         seg.MemoryArea.IsValidAddress(addr))
                     {
@@ -124,7 +124,7 @@ namespace Reko.Gui.TextViewing
         {
             if (this.arch is not null)
                 return this.arch;
-            IProcessorArchitecture arch = null;
+            IProcessorArchitecture? arch = null;
             // Try to find a basic block at this address and use its architecture.
             if (program.ImageMap.TryFindItem(addr, out var item) &&
                 item is ImageMapBlock imb &&
