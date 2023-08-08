@@ -274,7 +274,7 @@ namespace Reko.Core.Machine
 
         /// <summary>
         /// Creates a sparsely populated <see cref="MaskDecoder{TDasm, TMnemonic, TInstr}"/> where 
-        /// most of the decoders are <paramref name="defaultDecoder"/>.
+        /// most of the decoders default to <paramref name="defaultDecoder"/>.
         /// </summary>
         public static MaskDecoder<TDasm, TMnemonic, TInstr> Sparse<TDasm>(
             int bitPosition, int bits, string tag,
@@ -299,7 +299,7 @@ namespace Reko.Core.Machine
 
         /// <summary>
         /// Creates a sparsely populated <see cref="WideMaskDecoder{TDasm, TMnemonic, TInstr}"/> where 
-        /// most of the wide decoders are <paramref name="defaultDecoder"/>.
+        /// most of the wide decoders default to <paramref name="defaultDecoder"/>.
         /// </summary>
         protected static WideMaskDecoder<TDasm, TMnemonic, TInstr> WideSparse<TDasm>(
             int bitPosition, int bits, string tag,
