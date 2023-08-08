@@ -168,7 +168,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public ISearchResultService CreateSearchResultService()
         {
-            return new AvaloniaSearchResultService(services);
+            return new AvaloniaSearchResultService(mainViewModel.SearchResults, services);
+
         }
 
         public ISelectedAddressService CreateSelectedAddressService()

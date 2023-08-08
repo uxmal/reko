@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
 using System.Collections.Generic;
 
@@ -28,10 +29,12 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
     internal class AvaloniaSearchResultService : ISearchResultService
     {
+        private readonly SearchResultsToolViewModel searchResults;
         private readonly IServiceProvider services;
 
-        public AvaloniaSearchResultService(IServiceProvider services)
+        public AvaloniaSearchResultService(SearchResultsToolViewModel searchResultsVm, IServiceProvider services)
         {
+            this.searchResults = searchResultsVm;
             this.services = services;
         }
 
@@ -42,7 +45,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void ShowSearchResults(ISearchResult result)
         {
-            throw new NotImplementedException();
+            searchResults.Show(result);
         }
     }
 }

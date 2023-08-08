@@ -65,6 +65,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.ProjectBrowser = dockFactory.ProjectBrowserTool!;
             this.ProcedureList = dockFactory.ProcedureListTool!;
             this.DiagnosticsList = dockFactory.DiagnosticsListTool!;
+            this.SearchResults = dockFactory.SearchResultsTool!;
             this.CallGraphNavigator = dockFactory.CallGraphNavigatorTool!;
 
             var cmdDefs = new CommandDefinitions();
@@ -89,6 +90,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public ProjectBrowserViewModel ProjectBrowser { get; set; }
 
         public DiagnosticsViewModel DiagnosticsList { get; set; }
+
+        public SearchResultsToolViewModel SearchResults { get; set; }
 
         public ProcedureListToolViewModel ProcedureList { get; set; }
         public CallGraphNavigatorToolViewModel CallGraphNavigator { get; set; }

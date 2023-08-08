@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.FindResultsView"
+﻿<UserControl x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Tools.SearchResultsToolView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,12 +6,15 @@
              xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400"
-             x:DataType="vm:FindResultsViewModel" x:CompileBindings="True">
+             x:DataType="vm:SearchResultsToolViewModel" x:CompileBindings="True">
   <Grid Focusable="True">
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <TextBlock Text="{Binding Id}" Padding="2" />
-      <TextBlock Text="{Binding Title}" Padding="2" />
-      <TextBlock Text="{Binding Context}" Padding="2" />
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="2">
+      <TextBlock Text="{Binding Id}" />
+      <TextBlock Text="{Binding Title}" />
+      <TextBlock Text="{Binding Context}" />
+	  <TextBlock Text="{Binding Friend}" />
+		<DataGrid Name="gridResults" Items="{Binding SearchResults}">
+		</DataGrid>
     </StackPanel>
   </Grid>
 </UserControl>

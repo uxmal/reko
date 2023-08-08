@@ -54,6 +54,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
         public ProjectBrowserViewModel? ProjectBrowserTool { get; private set; }
         public ProcedureListToolViewModel? ProcedureListTool { get; private set; }
         public DiagnosticsViewModel? DiagnosticsListTool { get; private set; }
+        public SearchResultsToolViewModel? SearchResultsTool { get; private set; }
         public CallGraphNavigatorToolViewModel? CallGraphNavigatorTool { get; private set; } 
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
@@ -72,7 +73,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
             this.ProcedureListTool = new ProcedureListToolViewModel {Id = "Tool2", Title = "Procedures"};
 
             this.DiagnosticsListTool = new DiagnosticsViewModel(syncCtx, services) {Id = "Tool3", Title = "Diagnostics"};
-            var toolFindResults = new FindResultsToolViewModel {Id = "Tool4", Title = "Find Results"};
+            this.SearchResultsTool = new SearchResultsToolViewModel {Id = "Tool4", Title = "Find Results"};
             this.CallGraphNavigatorTool = new CallGraphNavigatorToolViewModel { Id = "Tool9", Title = "Call Graph Navigator"};
             var toolConsole = new ConsoleViewModel {Id = "Tool7", Title = "Console", CanClose = false, CanPin = false};
             var toolOutput = new OutputViewModel { Id = "Tool6", Title = "Output" };
@@ -109,7 +110,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                         ActiveDockable = DiagnosticsListTool,
                         VisibleDockables = CreateList<IDockable>(
                             DiagnosticsListTool, 
-                            toolFindResults,
+                            SearchResultsTool,
                             CallGraphNavigatorTool,
                             toolConsole,
                             toolOutput),

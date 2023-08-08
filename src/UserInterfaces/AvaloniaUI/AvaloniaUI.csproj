@@ -45,6 +45,9 @@
     <Compile Update="Views\Tools\CallGraphNavigatorToolView.axaml.cs">
       <DependentUpon>CallGraphNavigatorToolView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Tools\SearchResultsToolView.axaml.cs">
+      <DependentUpon>SearchResultsToolView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Tools\ProcedureListToolView.axaml.cs">
       <DependentUpon>ProcedureListToolView.axaml</DependentUpon>
     </Compile>
