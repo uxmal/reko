@@ -34,7 +34,7 @@ namespace Reko.Gui.TextViewing
         private readonly Procedure proc;
         private int position;
         private LineSpan[]? lines;      // The procedure, rendered into line spans
-        private int numLines;
+        private readonly int numLines;
         private readonly ISelectedAddressService selSvc;
 
         public AbstractProcedureCodeModel(Procedure proc, ISelectedAddressService selSvc)
@@ -65,7 +65,7 @@ namespace Reko.Gui.TextViewing
             int p = (int)position;
             int c = Math.Min(count, LineCount - p);
             if (c <= 0)
-                return new LineSpan[0];
+                return Array.Empty<LineSpan>();
             var spans = new LineSpan[c];
             for (int i = 0; i < c; ++i)
             {

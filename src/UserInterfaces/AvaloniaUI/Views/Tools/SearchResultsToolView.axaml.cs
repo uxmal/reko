@@ -19,14 +19,10 @@
 #endregion
 
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
-using Avalonia.Data;
 using Avalonia.Markup.Xaml;
-using AvaloniaEdit.Utils;
 using Reko.Gui;
 using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools

@@ -109,7 +109,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlg;
         }
 
-        public IDialog<LoadDetails?> CreateOpenAsDialog(string initialFilename)
+        public IDialog<LoadDetails> CreateOpenAsDialog(string initialFilename)
         {
             var dlg = new OpenAsDialog
             {

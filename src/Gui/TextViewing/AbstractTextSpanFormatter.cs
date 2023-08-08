@@ -183,7 +183,7 @@ namespace Reko.Gui.TextViewing
 
         private class TextSpanModel : ITextViewModel
         {
-            private LineSpan[] lines;
+            private readonly LineSpan[] lines;
             private int position;
 
             public TextSpanModel(LineSpan[] lines)
