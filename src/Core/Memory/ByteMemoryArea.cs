@@ -20,12 +20,10 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
-using System.Diagnostics;
-using System.IO;
+using System.Buffers.Binary;
 
 namespace Reko.Core.Memory
 {
@@ -336,15 +334,8 @@ namespace Reko.Core.Memory
         {
             if (off + 8 <= image.Length)
             {
-                value =
-                    ((long)image[off] << 56) |
-                    ((long)image[off + 1] << 48) |
-                    ((long)image[off + 2] << 40) |
-                    ((long)image[off + 3] << 32) |
-                    ((long)image[off + 4] << 24) |
-                    ((long)image[off + 5] << 16) |
-                    ((long)image[off + 6] << 8) |
-                    ((long)image[off + 7]);
+                var span = image.AsSpan((int) off, 8);
+                value = BinaryPrimitives.ReadInt64BigEndian(span);
                 return true;
             }
             else
@@ -358,15 +349,8 @@ namespace Reko.Core.Memory
         {
             if (off + 8 <= image.Length)
             {
-                value =
-                    ((ulong)image[off] << 56) |
-                    ((ulong)image[off + 1] << 48) |
-                    ((ulong)image[off + 2] << 40) |
-                    ((ulong)image[off + 3] << 32) |
-                    ((ulong)image[off + 4] << 24) |
-                    ((ulong)image[off + 5] << 16) |
-                    ((ulong)image[off + 6] << 8) |
-                    ((ulong)image[off + 7]);
+                var span = image.AsSpan((int) off, 8);
+                value = BinaryPrimitives.ReadUInt64BigEndian(span);
                 return true;
             }
             else
@@ -375,31 +359,19 @@ namespace Reko.Core.Memory
                 return false;
             }
         }
+
         public static long ReadBeInt64(byte[] image, long off)
         {
-            return ((long)image[off] << 56) |
-                   ((long)image[off + 1] << 48) |
-                   ((long)image[off + 2] << 40) |
-                   ((long)image[off + 3] << 32) |
-                   ((long)image[off + 4] << 24) |
-                   ((long)image[off + 5] << 16) |
-                   ((long)image[off + 6] << 8) |
-                   ((long)image[off + 7]);
+            var span = image.AsSpan((int) off, 8);
+            return BinaryPrimitives.ReadInt64BigEndian(span);
         }
 
         public static bool TryReadLeInt64(byte[] image, long off, out long value)
         {
             if (off + 8 <= image.Length)
             {
-                value =
-                    (long)image[off] |
-                    ((long)image[off + 1] << 8) |
-                    ((long)image[off + 2] << 16) |
-                    ((long)image[off + 3] << 24) |
-                    ((long)image[off + 4] << 32) |
-                    ((long)image[off + 5] << 40) |
-                    ((long)image[off + 6] << 48) |
-                    ((long)image[off + 7] << 56);
+                var span = image.AsSpan((int) off, 8);
+                value = BinaryPrimitives.ReadInt64LittleEndian(span);
                 return true;
             }
             else
@@ -413,15 +385,8 @@ namespace Reko.Core.Memory
         {
             if (off + 8 <= image.Length)
             {
-                value =
-                     (ulong)image[off] |
-                    ((ulong)image[off + 1] << 8) |
-                    ((ulong)image[off + 2] << 16) |
-                    ((ulong)image[off + 3] << 24) |
-                    ((ulong)image[off + 4] << 32) |
-                    ((ulong)image[off + 5] << 40) |
-                    ((ulong)image[off + 6] << 48) |
-                    ((ulong)image[off + 7] << 56);
+                var span = image.AsSpan((int) off, 8);
+                value = BinaryPrimitives.ReadUInt64LittleEndian(span);
                 return true;
             }
             else
@@ -430,17 +395,11 @@ namespace Reko.Core.Memory
                 return false;
             }
         }
+
         public static long ReadLeInt64(byte[] image, long off)
         {
-            return 
-                (long) image[off] |
-                ((long)image[off+1] << 8) |
-                ((long)image[off+2] << 16) | 
-                ((long)image[off+3] << 24) |
-                ((long)image[off+4] << 32) |
-                ((long)image[off+5] << 40) |
-                ((long)image[off+6] << 48) |
-                ((long)image[off+7] << 56);
+            var span = image.AsSpan((int) off, 8);
+            return BinaryPrimitives.ReadInt64LittleEndian(span);
         }
 
         //$REVIEW: consider making this an extension method hosted in x86.
@@ -458,23 +417,16 @@ namespace Reko.Core.Memory
 
         public static int ReadBeInt32(byte[] abImage, long off)
         {
-            int u =
-                ((int)abImage[off] << 24) |
-                ((int)abImage[off + 1] << 16) |
-                ((int)abImage[off + 2] << 8) |
-                abImage[off + 3];
-            return u;
+            var span = abImage.AsSpan((int) off, 4);
+            return BinaryPrimitives.ReadInt32BigEndian(span);
         }
 
         public static bool TryReadBeInt32(byte[] abImage, long off, out int value)
         {
             if (off <= abImage.Length - 4)
             {
-                value =
-                    ((int)abImage[off] << 24) |
-                    ((int)abImage[off + 1] << 16) |
-                    ((int)abImage[off + 2] << 8) |
-                    abImage[off + 3];
+                var span = abImage.AsSpan((int) off, 4);
+                value = BinaryPrimitives.ReadInt32BigEndian(span);
                 return true;
             }
             else
@@ -488,10 +440,8 @@ namespace Reko.Core.Memory
         {
             if (off <= abImage.Length - 4)
             {
-                value = abImage[off] |
-                   ((int)abImage[off + 1] << 8) |
-                   ((int)abImage[off + 2] << 16) |
-                   ((int)abImage[off + 3] << 24);
+                var span = abImage.AsSpan((int) off, 4);
+                value = BinaryPrimitives.ReadInt32LittleEndian(span);
                 return true;
             }
             else
@@ -503,12 +453,10 @@ namespace Reko.Core.Memory
 
         public static bool TryReadLeUInt32(byte[] abImage, long off, out uint value)
         {
-            if ((long) off <= abImage.Length - 4)
+            if (off <= abImage.Length - 4)
             {
-                value = abImage[off] |
-                   ((uint)abImage[off + 1] << 8) |
-                   ((uint)abImage[off + 2] << 16) |
-                   ((uint)abImage[off + 3] << 24);
+                var span = abImage.AsSpan((int) off, 4);
+                value = BinaryPrimitives.ReadUInt32LittleEndian(span);
                 return true;
             }
             else
@@ -522,11 +470,8 @@ namespace Reko.Core.Memory
         {
             if ((long)off <= abImage.Length - 4)
             {
-                value =
-                    ((uint)abImage[off] << 24) |
-                    ((uint)abImage[off + 1] << 16) |
-                    ((uint)abImage[off + 2] << 8) |
-                    abImage[off + 3];
+                var span = abImage.AsSpan((int) off, 4);
+                value = BinaryPrimitives.ReadUInt32BigEndian(span);
                 return true;
             }
             else
@@ -538,18 +483,17 @@ namespace Reko.Core.Memory
 
         public static int ReadLeInt32(byte[] abImage, long off)
         {
-            int u = abImage[off] |
-                ((int)abImage[off + 1] << 8) |
-                ((int)abImage[off + 2] << 16) |
-                ((int)abImage[off + 3] << 24);
-            return u;
+            var span = abImage.AsSpan((int) off, 4);
+            return BinaryPrimitives.ReadInt32LittleEndian(span);
         }
+
 
         public static bool TryReadBeInt16(byte[] img, long offset, out short value)
         {
             if (offset <= img.Length - 2)
             {
-                value = (short)(img[offset] << 8 | img[offset + 1]);
+                var span = img.AsSpan((int) offset, 2);
+                value = BinaryPrimitives.ReadInt16BigEndian(span);
                 return true;
             }
             else
@@ -563,7 +507,8 @@ namespace Reko.Core.Memory
         {
             if (offset <= img.Length - 2)
             {
-                value = (ushort)(img[offset] << 8 | img[offset + 1]);
+                var span = img.AsSpan((int) offset, 2);
+                value = BinaryPrimitives.ReadUInt16BigEndian(span);
                 return true;
             }
             else
@@ -577,7 +522,8 @@ namespace Reko.Core.Memory
         {
             if (offset <= img.Length - 2)
             {
-                value = (short)(img[offset] | img[offset + 1] << 8);
+                var span = img.AsSpan((int) offset, 2);
+                value = BinaryPrimitives.ReadInt16LittleEndian(span);
                 return true;
             }
             else
@@ -589,12 +535,14 @@ namespace Reko.Core.Memory
 
         public static short ReadBeInt16(byte[] img, long offset)
         {
-            return (short)(img[offset] << 8 | img[offset + 1]);
+            var span = img.AsSpan((int) offset, 2);
+            return BinaryPrimitives.ReadInt16BigEndian(span);
         }
 
         public static short ReadLeInt16(byte[] abImage, long offset)
         {
-            return (short)(abImage[offset] + (abImage[offset + 1] << 8));
+            var span = abImage.AsSpan((int) offset, 2);
+            return BinaryPrimitives.ReadInt16LittleEndian(span);
         }
 
         public static bool TryReadLeUInt16(byte[] abImage, long offset, out ushort us)

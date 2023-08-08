@@ -23,13 +23,16 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Types;
+using System;
 
 namespace Reko.UnitTests.Core.Memory
 {
     [TestFixture]
 	public class ByteMemoryAreaTests
 	{
-		[Test]
+        private static byte[] eightBytes = new byte[] { 0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0 };
+
+        [Test]
 		public void PriReadLiterals()
 		{
 			var bytes = new byte [] { 
@@ -87,5 +90,18 @@ namespace Reko.UnitTests.Core.Memory
 			Assert.AreSame(PrimitiveType.Int32, c.DataType);
 			Assert.AreEqual("-2<i32>", c.ToString());
 		}
-	}
+
+        [Test]
+        public void Bma_ReadLeUInt64()
+        {
+            ulong value = ByteMemoryArea.ReadBeUInt64(eightBytes, 0);
+            Assert.AreEqual(0x123456789ABCDEF0, value);
+        }
+
+        [Test]
+        public void Bma_ReadLeUInt64_Throws()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => ByteMemoryArea.ReadBeUInt64(eightBytes, 4));
+        }
+    }
 }
