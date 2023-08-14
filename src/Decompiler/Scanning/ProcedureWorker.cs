@@ -22,15 +22,13 @@ using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
 using Reko.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Scanning
 {
@@ -45,6 +43,7 @@ namespace Reko.Scanning
         private readonly RecursiveScanner recScanner;
         private readonly Proc proc;
         private readonly WorkList<BlockWorker> workList;
+        private readonly ConcurrentDictionary<Address, Address> suspendedCalls;
         private readonly ConcurrentQueue<WaitingCaller> callersWaitingForReturn;
 
         public ProcedureWorker(
@@ -53,11 +52,12 @@ namespace Reko.Scanning
             ProcessorState state,
             InstrClass rejectMask,
             IDecompilerEventListener listener)
-            : base(scanner, rejectMask, listener)
+            : base(scanner, proc.Address, rejectMask, listener)
         {
             this.recScanner = scanner;
             this.proc = proc;
             this.workList = new WorkList<BlockWorker>();
+            this.suspendedCalls = new();
             this.callersWaitingForReturn = new();
             AddJob(proc.Address, state);
         }
@@ -79,20 +79,37 @@ namespace Reko.Scanning
                 {
                     if (!recScanner.TryRegisterBlockStart(work.Address, proc.Address))
                         continue;
-                    log.Verbose("    {0}: Parsing block at {1}", proc.Address, work.Address);
-                    var (block,state) = work.ParseBlock();
+                    log.Verbose("    {0}: Parsing block at {1}", this.Address, work.Address);
+                    var (block, subinstrTargets, state) = work.ParseBlock();
                     if (block is not null && block.IsValid)
                     {
-                        HandleBlockEnd(block, work.Trace, state);
+                        HandleBlockEnd(block, work.Trace, subinstrTargets, state);
                     }
                     else
                     {
                         HandleBadBlock(work.Address);
                     }
                 }
+
+                static string AbbreviatedList(ICollection<Address> addresses)
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendFormat("{0} [", addresses.Count);
+                    sb.Append(string.Join(",", addresses.Take(4)));
+                    if (addresses.Count > 4)
+                        sb.Append("...");
+                    sb.Append("]");
+                    return sb.ToString();
+                }
+
                 //$TODO: Check for indirects
                 //$TODO: Check for calls.
-                log.Inform("    {0}: Finished", proc.Name);
+                log.Inform("    {0}: No more work items; waiting for {1} callees; {2} suspended callers",
+                    proc.Name,
+                    AbbreviatedList(this.suspendedCalls.Keys),
+                    AbbreviatedList(this.callersWaitingForReturn.Select(w => w.CallAddress).ToList()));
+                //$TODO: could this be a race condition? someone may have snuck a work item onto the queue.
+                recScanner.OnWorkerCompleted(this, suspendedCalls.Count);
                 return;
             }
         }
@@ -111,6 +128,16 @@ namespace Reko.Scanning
 
         public override bool TryMarkVisited(Address addr) => true;
 
+        public void UnsuspendCall(Address addrCall)
+        {
+            var removed = this.suspendedCalls.TryRemove(addrCall, out var addrDest);
+            log.Verbose("    {0}: Removing suspended call at {1} to {2} {3}",
+                this.Address,
+                addrCall,
+                addrDest?.ToString() ?? "<null>",
+                removed ? "succeeded" : "failed");
+        }
+
         protected override void ProcessCall(RtlBlock block, Edge edge, ProcessorState state)
         {
             switch (recScanner.GetProcedureReturnStatus(edge.To))
@@ -118,19 +145,20 @@ namespace Reko.Scanning
             case ReturnStatus.Diverges:
                 return;
             case ReturnStatus.Returns:
+                // If the fallthrough address is not executable, it means the 
+                // called procedure (if valid) never returns.
                 if (!recScanner.IsExecutableAddress(block.FallThrough))
                     return;
                 var fallThrough = new Edge(block.Address, block.FallThrough, EdgeType.Fallthrough);
                 recScanner.RegisterEdge(fallThrough);
                 AddJob(fallThrough.To, state);
-                log.Verbose("    {0}: added edge to {1}", fallThrough.From, fallThrough.To);
+                log.Verbose("    {0}: added edge from {1} to {2}", this.Address, fallThrough.From, fallThrough.To);
                 return;
             }
-            // The target procedure has not been processed yet, so try to suspend
-            // this worker waiting for the target procedure to finish. Suspending
-            // this worker will always succeed.
-            
-            recScanner.TrySuspendWorker(this);
+
+            // We can't tell if the target procedure will terminate or not. We add
+            // an unresolved call, but continue working.
+            this.suspendedCalls.TryAdd(edge.From, edge.To);
 
             // Try starting a worker for the callee.
             if (recScanner.TryStartProcedureWorker(edge.To, state, out var calleeWorker))
@@ -142,21 +170,24 @@ namespace Reko.Scanning
                     state);
 
                 calleeWorker.TryEnqueueCaller(waitingCaller);
-                log.Verbose("    {0}: suspended, waiting for {1} to return", proc.Address, calleeWorker.Procedure.Address);
+                log.Verbose("    {0}: suspended block {1}, waiting for {2} to return",
+                    this.Address, block.Address, calleeWorker.Procedure.Address);
             }
             else
-                throw new NotImplementedException("Couldn't start procedure worker");
+                throw new NotImplementedException("Couldn't start procedure worker.");
         }
 
+        /// <inheritdoc />
         protected override void ProcessReturn()
         {
-            // By setting the procedure return status, other threads will
+            // By setting the procedure return status, other workers will
             // no longer enqueue callers in callersWaitingForReturn since
             // the return status of the procedure is known.
             recScanner.SetProcedureReturnStatus(proc.Address, ReturnStatus.Returns);
+            log.Verbose("    {0}: resolved as returning", proc.Address);
             while (callersWaitingForReturn.TryDequeue(out var wc))
             {
-                log.Verbose("   {0}: resuming worker {1} at {2}", proc.Address, wc.Worker.Procedure.Address, wc.FallthroughAddress);
+                log.Verbose("        {0}: resuming worker {1} at {2}", proc.Address, wc.Worker.Procedure.Address, wc.FallthroughAddress);
                 recScanner.ResumeWorker(
                     wc.Worker, wc.CallAddress, wc.FallthroughAddress, wc.State);
             }
@@ -171,7 +202,7 @@ namespace Reko.Scanning
 
         public bool TryEnqueueCaller(WaitingCaller waitingCaller)
         {
-            callersWaitingForReturn.Enqueue(waitingCaller);
+            this.callersWaitingForReturn.Enqueue(waitingCaller);
             return true;
         }
 

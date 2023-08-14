@@ -54,7 +54,7 @@ namespace Reko.Scanning
                 Address? addrStartRun = null;
                 int cValid = 0;
                 var charType = (PrimitiveType)criteria.StringType.ElementType;
-                while (rdr.IsValid && rdr.TryRead(charType, out var c))
+                while (rdr.TryRead(charType, out var c))
                 {
                     var ch = (char)c.ToInt32();
                     if (!IsValid(ch))

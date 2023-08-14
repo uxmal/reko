@@ -23,7 +23,6 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
-using Reko.Core.Services;
 using Reko.Scanning;
 using Reko.Services;
 using Reko.UnitTests.Mocks;
@@ -535,17 +534,25 @@ l00001000: // l:4; ft:00001004 (INVALID)
                 m => m.Assign(m.Mem32(m.Ptr32(0x4000)), r2),
                 m => m.Return(0,0)
             });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(m.Mem32(m.Ptr32(0x4000)), r2),
+                m => m.Return(0, 0)
+            });
 
             var sExpected =
             #region Expected
 @"
 define fn00001000
     provenance: ImageEntrypoint
-l00001000: // l:16; ft:00001010
+l00001000: // l:8; ft:00001008
     // pred:
     r1 = Mem0[0x00003000<p32>:word32]
     if (r1 == 0<32>) branch 00001008
     r2 = r2 / r1
+    // succ: l00001008 l00001008
+l00001008: // l:8; ft:00001010
+    // pred: l00001000 l00001000
     Mem0[0x00004000<p32>:word32] = r2
     return (0,0)
     // succ:
@@ -959,6 +966,168 @@ l00001000: // l:4; ft:00001004
     // succ:
 ";
             #endregion
+
+            RunTest(sExpected);
+        }
+
+        [Test]
+        public void RecScan_Endless_procedure_cycle()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Call(Address.Ptr32(0x1040), 0),
+            });
+            Given_Trace(new RtlTrace(0x1004)
+            {
+                m => m.Return(0, 0)
+            });
+
+            Given_Trace(new RtlTrace(0x1040)
+            {
+                m => m.Call(Address.Ptr32(0x1050), 0)
+            });
+            Given_Trace(new RtlTrace(0x1044)
+            { 
+                m => m.Return(0, 0)
+            });
+
+            Given_Trace(new RtlTrace(0x1050)
+            {
+                m => m.Call(Address.Ptr32(0x1040), 0)
+            });
+            Given_Trace(new RtlTrace(0x1054)
+            { 
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+@"
+define fn00001000
+    provenance: ImageEntrypoint
+l00001000: // l:4; ft:00001004
+    // pred:
+    call 00001040 (0)
+    // succ:
+
+define fn00001040
+    provenance: Scanning
+l00001040: // l:4; ft:00001044
+    // pred:
+    call 00001050 (0)
+    // succ:
+
+define fn00001050
+    provenance: Scanning
+l00001050: // l:4; ft:00001054
+    // pred:
+    call 00001040 (0)
+    // succ:
+";
+            RunTest(sExpected);
+        }
+
+        [Test(Description = "Handle sub-instruction cfg resulting from 'scasxx' instructions")]
+        public void RecScan_scasw()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, m.Mem32(m.Word32(0x00123000))),
+                m =>
+                {
+                    m.BranchInMiddleOfInstruction(m.Eq0(r1), Address.Ptr32(0x1008), InstrClass.ConditionalTransfer);
+                    m.BranchInMiddleOfInstruction(m.Eq(r2, m.Mem32(r1)), Address.Ptr32(0x1008), InstrClass.ConditionalTransfer);
+                    m.Assign(r1, m.ISub(r1, 4));
+                    m.Goto(Address.Ptr32(0x1004));
+                }
+            });
+            Given_Trace(new RtlTrace(0x1004)
+            {
+                 m =>
+                {
+                    m.BranchInMiddleOfInstruction(m.Eq0(r1), Address.Ptr32(0x1008), InstrClass.ConditionalTransfer);
+                    m.BranchInMiddleOfInstruction(m.Eq(r2, m.Mem32(r1)), Address.Ptr32(0x1008), InstrClass.ConditionalTransfer);
+                    m.Assign(r1, m.ISub(r1, 4));
+                    m.Goto(Address.Ptr32(0x1004));
+                }
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(m.Mem32(m.Word32(0x00123400)), r1),
+                m => m.Return(0, 0)
+            });
+
+            var sExpected = @"
+define fn00001000
+    provenance: ImageEntrypoint
+l00001000: // l:4; ft:00001004
+    // pred:
+    r1 = Mem0[0x123000<32>:word32]
+    // succ: l00001004
+l00001004: // l:4; ft:00001008
+    // pred: l00001000 l00001004
+    if (r1 == 0<32>) branch 00001008
+    if (r2 == Mem0[r1:word32]) branch 00001008
+    r1 = r1 - 4<32>
+    goto 00001004
+    // succ: l00001004 l00001008 l00001008
+l00001008: // l:8; ft:00001010
+    // pred: l00001004 l00001004
+    Mem0[0x123400<32>:word32] = r1
+    return (0,0)
+    // succ:
+";
+
+            RunTest(sExpected);
+        }
+
+        [Test(Description = "Handle Z80- and ARM-style conditional calls")]
+        public void RecScan_ConditionalCall()
+        {
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r2, m.Mem32(m.Word32(0x00123000))),
+                m =>
+                {
+                    m.BranchInMiddleOfInstruction(m.Eq0(r1), Address.Ptr32(0x1008), InstrClass.ConditionalTransfer);
+                    m.Call(Address.Ptr32(0x1010), 0);
+                }
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(m.Mem32(m.Word32(0x00123400)), r1),
+                m => m.Return(0, 0)
+            });
+
+            Given_Trace(new RtlTrace(0x1010)
+            {
+                m => m.Return(0, 0)
+            });
+
+            var sExpected = @"
+define fn00001000
+    provenance: ImageEntrypoint
+l00001000: // l:8; ft:00001008
+    // pred:
+    r2 = Mem0[0x123000<32>:word32]
+    if (r1 == 0<32>) branch 00001008
+    call 00001010 (0)
+    // succ: l00001008 l00001008
+l00001008: // l:8; ft:00001010
+    // pred: l00001000 l00001000
+    Mem0[0x123400<32>:word32] = r1
+    return (0,0)
+    // succ:
+
+define fn00001010
+    provenance: Scanning
+l00001010: // l:4; ft:00001014
+    // pred:
+    return (0,0)
+    // succ:
+";
 
             RunTest(sExpected);
         }

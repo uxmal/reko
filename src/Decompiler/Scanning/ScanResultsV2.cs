@@ -44,6 +44,8 @@ namespace Reko.Scanning
             this.NoDecompiles = new();
             this.ICFG = new ScanResultsGraph(this);
             this.WatchedAddresses = new HashSet<Address>();
+
+            this.ProcReturnStatus = new();
         }
 
         /// <summary>
@@ -105,7 +107,9 @@ namespace Reko.Scanning
         public ConcurrentDictionary<Address, Trampoline> TrampolineStubEnds { get; }
 
         public ConcurrentDictionary<Address, ExternalProcedure> NoDecompiles { get; }
-        
+
+        public ConcurrentDictionary<Address, Reko.Scanning.ReturnStatus> ProcReturnStatus { get; }
+
         /// <summary>
         /// The interprocedural control graph formed by <see cref="Successors"/> and
         /// <see cref="Predecessors"/>.

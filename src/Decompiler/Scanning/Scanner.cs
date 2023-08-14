@@ -37,6 +37,7 @@ using Reko.Core.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ConstrainedExecution;
 using Reko.Services;
+using System.IO;
 
 namespace Reko.Scanning
 {
@@ -60,7 +61,7 @@ namespace Reko.Scanning
         private const int PriorityVector = 4;
         private const int PriorityBlockPromote = 3;
 
-        private static readonly TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
+        private static readonly TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner") { Level = TraceLevel.Info };
 
         protected IDecompilerEventListener eventListener;
 
@@ -838,18 +839,43 @@ namespace Reko.Scanning
 
         public virtual void ScanImage()
         {
+            trace.Inform("= Loaded file ======");
+            trace.Inform("{0} entry points", Program.EntryPoints.Count);
+            trace.Inform("{0} symbols", Program.ImageSymbols.Count);
+            trace.Inform("{0} executable bytes",
+                Program.SegmentMap.Segments.Values
+                    .Where(s => s.IsExecutable)
+                    .Sum(s => s.MemoryArea.Length));
+
             // Find all blobs of data, and potentially pointers to code.
             ScanDataItems();
 
             // Find all reachable procedures.
-            ScanProceduresRecursively();
+            trace.Inform("= Recursive scan ======");
+            var recTime = Time(ScanProceduresRecursively);
+            trace.Inform("Found {0} procs", Program.Procedures.Count);
+            trace.Inform("      {0} basic blocks", Program.Procedures.Values.Sum(p => p.ControlGraph.Blocks.Count));
+            trace.Inform("      in {0} msec", (int) recTime.TotalMilliseconds);
 
             if (Program.User.Heuristics.Contains("shingle"))
             {
-                // Use has requested shingle scanning of unscanned areas.
-                ShingleScanProcedures();
+                // User has requested shingle scanning of unscanned areas.
+                var shTime = Time(ShingleScanProcedures);
+                trace.Inform("Found {0} procs", Program.Procedures.Count);
+                trace.Inform("      {0} basic blocks", Program.Procedures.Values.Sum(p => p.ControlGraph.Blocks.Count));
+                trace.Inform("      in {0} msec", (int) shTime.TotalMilliseconds);
             }
+            // Scanner.DumpGraph(Program);
             RemoveRedundantGotos();
+        }
+
+        private TimeSpan Time(Action fn)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            fn();
+            stopwatch.Stop();
+            return stopwatch.Elapsed;
         }
 
         [Conditional("DEBUG")]
@@ -1179,6 +1205,70 @@ namespace Reko.Scanning
                 return sProc.Decompile;
             }
             return true;
+        }
+
+        public static void DumpGraph(Program program)
+        {
+            if (program.DisassemblyDirectory is null)
+                return;
+            var scanner_txt = Path.Combine(program.DisassemblyDirectory, "scanner.txt");
+            using StreamWriter output = File.CreateText(scanner_txt);
+            output.WriteLine("== V1 ===============");
+            foreach (var proc in program.Procedures.Values)
+            {
+                var callers = string.Join(",", program.CallGraph.FindCallerStatements(proc)
+                    .Select(s => s.Block?.Address?.ToString() ?? "<null>"));
+                output.WriteLine("{0}:{1}", proc.EntryAddress, proc.Characteristics.Terminates ? " <Terminates>" : "");
+                output.WriteLine("    {0}", callers);
+            }
+            output.WriteLine("== Blocks ===============");
+
+            foreach (var block in program.Procedures.Values
+                .SelectMany(p => p.ControlGraph.Blocks)
+                .Where(b => b != b.Procedure.EntryBlock)
+                .Distinct()
+                .OrderBy(b => b.Address))
+            {
+                output.WriteLine(block.Address);
+                for (int i =0; i < block.Statements.Count-1; ++i)
+                {
+                    var stm = block.Statements[i];
+                    if (stm.Instruction is CallInstruction)
+                    {
+                        var addrNext = block.Statements[i + 1].Address;
+                        output.WriteLine("    {0}", block.Statements[i + 1].Address);
+                        output.WriteLine(addrNext);
+                    }
+                }
+                output.WriteLine("    {0}", string.Join(",", block.Succ
+                    .Where(b => b != b.Procedure.ExitBlock)
+                    .Select(b => b.Address)));
+            }
+            output.WriteLine();
+        }
+
+        public static void DumpGraph(Program program, ScanResultsV2 cfg)
+        {
+            if (program.DisassemblyDirectory is null)
+                return;
+            var scannerv2_txt = Path.Combine(program.DisassemblyDirectory, "scannerv2.txt");
+            using StreamWriter output = File.CreateText(scannerv2_txt);
+            output.WriteLine("== V2 ===============");
+            foreach (var (a, rs) in cfg.ProcReturnStatus.OrderBy(e => e.Key))
+            {
+                output.WriteLine("{0}:{1}", a, rs != ReturnStatus.Returns? " <Terminates>" : "");
+            }
+            output.WriteLine("== Blocks ===============");
+            foreach (var block in cfg.Blocks.Values
+                .OrderBy(b => b.Address))
+            {
+                output.WriteLine(block.Address);
+                IEnumerable<Address> succ = cfg.Successors.TryGetValue(block.Address, out var succs)
+                    ? succs
+                    : Array.Empty<Address>();
+                output.WriteLine("    {0}", string.Join(",", succ));
+            }
+            output.WriteLine();
         }
 
         /*

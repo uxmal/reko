@@ -60,6 +60,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             arch.Setup(a => a.Name).Returns("FakeCpu");
             arch.Setup(a => a.InstructionBitSize).Returns(instrBitSize);
+            arch.Setup(a => a.CodeMemoryGranularity).Returns(8);
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);

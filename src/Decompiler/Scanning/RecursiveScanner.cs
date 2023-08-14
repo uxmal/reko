@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Collections;
+using Reko.Core.Diagnostics;
 using Reko.Services;
 using System;
 using System.Collections.Concurrent;
@@ -39,10 +39,9 @@ namespace Reko.Scanning
     /// </summary>
     public class RecursiveScanner : AbstractScanner
     {
-        private readonly WorkList<ProcedureWorker> wl;
+        private readonly ConcurrentQueue<ProcedureWorker> wl;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> activeWorkers;
         private readonly ConcurrentDictionary<Address, ProcedureWorker> suspendedWorkers; 
-        private readonly ConcurrentDictionary<Address, ReturnStatus> procReturnStatus;
 
         public RecursiveScanner(
             Program program,
@@ -60,10 +59,9 @@ namespace Reko.Scanning
             IServiceProvider services)
             : base(program, sr, dynamicLinker, listener, services)
         {
-            this.wl = new WorkList<ProcedureWorker>();
+            this.wl = new ConcurrentQueue<ProcedureWorker>();
             this.activeWorkers = new();
             this.suspendedWorkers = new();
-            this.procReturnStatus = new();
         }
 
         protected override ProvenanceType Provenance => ProvenanceType.Scanning;
@@ -81,6 +79,7 @@ namespace Reko.Scanning
             var symbol = ImageSymbol.Create(SymbolType.Code, arch, addr, procedureName);
             symbol.ProcessorState = state;
             //$TODO: scannerv2 pass in provenance in parameters of interface method ScanProcedure.
+            //$TODO: add existing Procedures
             var worker = MakeSeedWorker(new(addr, (symbol, ProvenanceType.Image)));
             EnqueueWorkers(new[] { worker });
             ProcessWorkers();
@@ -99,7 +98,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    wl.Add(worker);
+                    wl.Enqueue(worker);
                 }
             }
         }
@@ -174,7 +173,7 @@ namespace Reko.Scanning
 
         private void ProcessWorkers()
         {
-            while (wl.TryGetWorkItem(out var worker))
+            while (wl.TryDequeue(out var worker))
             {
                 worker.Run();
             }
@@ -203,7 +202,7 @@ namespace Reko.Scanning
                 worker = new ProcedureWorker(this, proc, state, rejectMask, listener);
                 if (activeWorkers.TryAdd(addrProc, worker))
                 {
-                    wl.Add(worker);
+                    wl.Enqueue(worker);
                     return true;
                 }
             }
@@ -212,35 +211,56 @@ namespace Reko.Scanning
 
         public bool TrySuspendWorker(ProcedureWorker worker)
         {
+            trace.Verbose("    {0}: Suspending...", worker.Procedure.Address);
+
             if (activeWorkers.TryRemove(worker.Procedure.Address, out var w))
             {
+                trace.Verbose("    {0}: removed from active workers", worker.Procedure.Address);
                 Debug.Assert(worker == w);
             }
             if (!suspendedWorkers.TryAdd(worker.Procedure.Address, worker))
             {
                 //$Already suspended.
+                trace.Verbose("    {0}: already on suspended workers", worker.Procedure.Address);
             }
             return true;
         }
 
+        /// <summary>
+        /// Given the address of a called procedure, returns its 
+        /// <see cref="ReturnStatus"/>.
+        /// </summary>
+        /// <param name="addrProc">The address of the procedure.</param>
+        /// <returns>The current <see cref="ReturnStatus"/> for the procedure.
+        /// </returns>
+        /// <remarks>This is shared mutable state, take appropriate measures
+        /// when getting this value.
+        /// </remarks>
         public ReturnStatus GetProcedureReturnStatus(Address addrProc)
         {
-            return this.procReturnStatus.TryGetValue(addrProc, out var status)
+            return this.sr.ProcReturnStatus.TryGetValue(addrProc, out var status)
                 ? status
                 : ReturnStatus.Unknown;
         }
 
+        /// <summary>
+        /// Sets the return status of a procedure. If the return status is not
+        /// known yet, the provided value is accepted. If the return status 
+        /// already has a value, change it only if the old status was not 
+        /// "Returns".
+        /// <param name="address">The address of a procedure.</param>
+        /// <param name="returns">The new return status. </param>
         public void SetProcedureReturnStatus(Address address, ReturnStatus returns)
         {
-            if (this.procReturnStatus.TryAdd(address, returns))
+            if (this.sr.ProcReturnStatus.TryAdd(address, returns))
             {
                 return;
             }
-            if (this.procReturnStatus.TryGetValue(address, out var oldRet))
+            if (this.sr.ProcReturnStatus.TryGetValue(address, out var oldRet))
             {
                 if (oldRet == ReturnStatus.Returns)
                     return;
-                this.procReturnStatus[address] = returns;
+                this.sr.ProcReturnStatus[address] = returns;
             }
         }
 
@@ -251,6 +271,7 @@ namespace Reko.Scanning
             ProcessorState state)
         {
             RegisterEdge(new Edge(addrCaller, addrFallthrough, EdgeType.Fallthrough));
+            worker.UnsuspendCall(addrCaller);
             worker.AddJob(addrFallthrough, state);
             if (!suspendedWorkers.TryRemove(worker.Procedure.Address, out var w))
             {
@@ -259,18 +280,34 @@ namespace Reko.Scanning
                     throw new Exception("Expected active worker!");
                 return;
             }
-            else
-            {
-                Debug.Assert(worker == w);
-            }
+            Debug.Assert(worker == w);
+            //$TODO: move the line below to the top of the method to avoid a gap
+            // when the worker is in limbo? 
             activeWorkers.TryAdd(worker.Procedure.Address, worker);
-            wl.Add(worker);
+            wl.Enqueue(worker);
+        }
+
+        public void OnWorkerCompleted(ProcedureWorker worker, int waitingCalls)
+        {
+            var removed = activeWorkers.TryRemove(worker.Procedure.Address, out _);
+            Debug.Assert(removed, "Procedure worker should have been on the active list.");
+
+            // If there are no more waiting calls, the worker has run
+            // out of things to do. It can be discarded.
+            if (waitingCalls == 0)
+            {
+                trace.Verbose("Procedure worker {0} is retired.", worker.Procedure.Address);
+                return;
+            }
+
+            // If there are waiting calls, we must suspend this worker.
+            var suspended = TrySuspendWorker(worker);
         }
     }
 
     /// <summary>
     /// This class represents a <see cref="ProcedureWorker"/> that is 
-    /// waiting until another ProcedureWorker discoveres whether a callee
+    /// waiting until another ProcedureWorker discovers whether a callee
     /// procedure returns or not.
     /// </summary>
     /// <param name="Worker"></param>

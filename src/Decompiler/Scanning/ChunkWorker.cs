@@ -47,17 +47,14 @@ namespace Reko.Scanning
             int chunkUnits,
             InstrClass rejectMask,
             IDecompilerEventListener listener)
-            : base(scanner, rejectMask, listener)
+            : base(scanner, addrStart, rejectMask, listener)
         {
             this.shScanner = scanner;
             this.Architecture = arch;
-            this.Address = addrStart;
             this.Length = chunkUnits;
             this.blockNos = new int[chunkUnits];
             this.blockStarts = new();
         }
-
-        public Address Address { get; }
 
         public IProcessorArchitecture Architecture { get; }
 
@@ -81,13 +78,13 @@ namespace Reko.Scanning
                         break;
                     var trace = MakeTrace(addrNext, state); //$BUG: we should be reusing the trace if at all possible
                     var job = AddJob(addrNext, trace, state);
-                    var (block, newState) = job.ParseBlock();
+                    var (block, subinstrTargets, newState) = job.ParseBlock();
                     if (block is null)
                         break;
                     blockStarts.Add(addrNext, block);
                     if (block.IsValid)
                     {
-                        HandleBlockEnd(block, job.Trace, newState);
+                        HandleBlockEnd(block, job.Trace, subinstrTargets, newState);
                     }
                     else
                     {

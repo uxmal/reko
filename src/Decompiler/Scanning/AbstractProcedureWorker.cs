@@ -22,15 +22,12 @@ using Reko.Core;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
-using Reko.Core.Services;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
@@ -52,14 +49,21 @@ namespace Reko.Scanning
         private readonly IStorageBinder binder;
         private readonly Dictionary<Address, List<Address>> miniCfg;
 
-        protected AbstractProcedureWorker(AbstractScanner scanner, InstrClass rejectMask, IDecompilerEventListener listener)
+        protected AbstractProcedureWorker(
+            AbstractScanner scanner, 
+            Address address, 
+            InstrClass rejectMask, 
+            IDecompilerEventListener listener)
         {
             this.scanner = scanner;
+            this.Address = address;
             this.rejectMask = rejectMask;
             this.listener = listener;
             this.binder = new StorageBinder();
             this.miniCfg = new Dictionary<Address, List<Address>>();
         }
+
+        public Address Address { get; }
 
         /// <summary>
         /// Handle the situation when a control transfer instruction (CTI) has
@@ -67,14 +71,17 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="block">The unsealed block we are currently building</param>
         /// <param name="trace">A source of <see cref="RtlInstructionCluster"/>s.</param>
+        /// <param name="subinstrTargets">A possibly null list of addresses that are
+        /// targeted by sub-instructions.</param>
         /// <param name="state">Current simulated processor state.</param>
         /// <returns>The completed basic block.</returns>
         public RtlBlock HandleBlockEnd(
             RtlBlock block,
             IEnumerator<RtlInstructionCluster> trace,
+            List<Address>? subinstrTargets,
             ProcessorState state)
         {
-            log.Verbose("    {0}: Finished block", block.Address);
+            log.Verbose("    {0}: Finished block at {1}", this.Address, block.Address);
             var lastCluster = block.Instructions[^1];
             var lastInstr = lastCluster.Instructions[^1];
             var lastAddr = lastCluster.Address;
@@ -92,13 +99,13 @@ namespace Reko.Scanning
                         // ARM Thumb IT instruction, which puts state in the trace.
                         RegisterEdge(edge);
                         AddFallthroughJob(edge.To, trace, state);
-                        log.Verbose("    {0}: added edge to {1}", edge.From, edge.To);
+                        log.Verbose("    {0}: added edge from {1} to {2}", this.Address, edge.From, edge.To);
                         break;
                     case EdgeType.Jump:
                         // Start a new trace somewhere else.
                         RegisterEdge(edge);
                         AddJob(edge.To, state);
-                        log.Verbose("    {0}: added edge to {1}", edge.From, edge.To);
+                        log.Verbose("    {0}: added edge from {1} to {2}", this.Address, edge.From, edge.To);
                         break;
                     case EdgeType.Call:
                         // Processing calls may involve "parking" this worker while
@@ -112,12 +119,22 @@ namespace Reko.Scanning
                         throw new NotImplementedException($"{edge.Type} edge not handled yet.");
                     }
                 }
+                if (subinstrTargets is not null)
+                {
+                    foreach (var addrTarget in subinstrTargets)
+                    {
+                        var edge = new Edge(block.Address, addrTarget, EdgeType.Jump);
+                        RegisterEdge(edge);
+                        AddJob(addrTarget, state);
+                        log.Verbose("    {0}: added sub-instruction edge from {1} to {2}", this.Address, edge.From, edge.To);
+                    }
+                }
             }
             else
             {
                 // Some other thread reached the end of this block first. We now 
                 // have potentially two blocks sharing the same end address.
-                log.Verbose("    {0}: Splitting block at [{1}-{2}]", block.Address, block.Address, lastAddr);
+                log.Verbose("    {0}: Splitting block at [{1}-{2}]", this.Address, block.Address, lastAddr);
                 scanner.SplitBlockEndingAt(block, lastAddr);
             }
             return block;

@@ -31,7 +31,7 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// This class processes a linear sequence of instructions, resulting in
-    /// an <see cref="RtlBlock"/>
+    /// an <see cref="RtlBlock"/>.
     /// </summary>
     public class BlockWorker
     {
@@ -79,17 +79,19 @@ namespace Reko.Scanning
         /// run off the end of a trace (denoting invalid code).
         /// </summary>
         /// <returns>
-        /// A pair of a completed <see cref="RtlBlock"/> and an updated <see cref="ProcessorState"/>.
+        /// A pair of a completed <see cref="RtlBlock"/>, a possibly null list 
+        /// of sub-instruction branches, and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of the trace, the returned block will be
         /// marked as invalid.
         /// </returns>
-        public (RtlBlock?, ProcessorState) ParseBlock()
+        public (RtlBlock?, List<Address>?, ProcessorState) ParseBlock()
         {
             var instrs = new List<RtlInstructionCluster>();
             var trace = this.Trace;
             var state = this.state;
             var addrLast = this.Address;
             log.Inform("ParseBlock({0})", this.Address);
+            List<Address>? subinstrBranches = new();
             while (trace.MoveNext())
             {
                 var cluster = trace.Current;
@@ -106,17 +108,17 @@ namespace Reko.Scanning
                         // Couldn't split a block; it means we're outside of our 
                         // scanning area, so this whole block is invalid.
                         log.Verbose("    Unable to find instruction at {0}, stopping", addrLast);
-                        return (null, state);
+                        return (null, null, state);
                     }
                     log.Verbose("    Fell through to {0}, stopping", cluster.Address);
                     var block = MakeFallthroughBlock(this.Address, addrLast, instrs);
-                    return (block, state);
+                    return (block, subinstrBranches, state);
                 }
                 if ((cluster.Class & this.rejectMask) != 0)
                 {
                     instrs.Add(new RtlInstructionCluster(cluster.Address, cluster.Length, new RtlInvalid()));
                     var size = addrLast - this.Address + cluster.Length;
-                    return (MakeInvalidBlock(instrs, size), state);
+                    return (MakeInvalidBlock(instrs, size), subinstrBranches, state);
                 }
                 foreach (var rtl in cluster.Instructions)
                 {
@@ -129,19 +131,25 @@ namespace Reko.Scanning
                     case RtlSideEffect side:
                         if (HandleSideEffect(side, state))
                         { 
-                            return MakeBlock(instrs, state, side);
+                            return (MakeBlock(instrs, side), subinstrBranches, state);
                         }
                         continue;
-                    case RtlNop _:
+                    case RtlNop:
                         continue;
-                    case RtlInvalid _:
+                    case RtlInvalid:
                         instrs.Add(cluster);
                         var size = addrLast - this.Address + cluster.Length;
-                        return (MakeInvalidBlock(instrs, size), state);
+                        return (MakeInvalidBlock(instrs, size), subinstrBranches,  state);
                     case RtlBranch branch:
-                        //Expand sub-instruction statements in a later pass.
                         if (branch.NextStatementRequiresLabel)
                         {
+                            // This is an internal branch, we can't create a block
+                            // for it yet.
+                            if (branch.Target is Address addrBranch)
+                            {
+                                subinstrBranches ??= new List<Address>();
+                                subinstrBranches.Add(addrBranch);
+                            }
                             continue;
                         }
                         break;
@@ -158,26 +166,33 @@ namespace Reko.Scanning
                         var block = MakeFallthroughBlock(this.Address, cluster.Address, instrs);
                         scanner.RegisterEdge(new Edge(this.Address, cluster.Address, EdgeType.Fallthrough));
                         if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
-                            return (block, state);
+                            return (block, subinstrBranches, state);
                         this.Address = cluster.Address;
                         instrs = new List<RtlInstructionCluster>();
                     }
-                    return MakeBlock(instrs, state, rtl);
+                    return (MakeBlock(instrs, rtl), subinstrBranches, state);
                 }
                 if (IsPaddingBoundary(cluster, instrs))
                 {
                     var block = MakeFallthroughBlock(this.Address, cluster.Address, instrs);
                     scanner.RegisterEdge(new Edge(this.Address, cluster.Address, EdgeType.Fallthrough));
                     if (!scanner.TryRegisterBlockStart(cluster.Address, this.Address))
-                        return (block, state);
+                        return (block, subinstrBranches, state);
                     this.Address = cluster.Address;
                     instrs = new List<RtlInstructionCluster>();
+                }
+                if (subinstrBranches.Count > 0)
+                {
+                    instrs.Add(cluster);
+                    var addrNext = cluster.Address + cluster.Length;
+                    var block = MakeFallthroughBlock(this.Address, addrNext, instrs);
+                    return (block, subinstrBranches, state);
                 }
                 instrs.Add(cluster);
             }
             // Fell off the end of the trace, mark as bad.
             var length = addrLast - this.Address;
-            return (MakeInvalidBlock(instrs, length), state);
+            return (MakeInvalidBlock(instrs, length), null, state);
         }
 
         /// <summary>
@@ -355,9 +370,8 @@ namespace Reko.Scanning
         /// A pair of a completed <see cref="Block"/> and an updated <see cref="ProcessorState"/>.
         /// If parsing runs off the end of the trace, the block reference will be null.
         /// </returns>
-        private (RtlBlock?, ProcessorState) MakeBlock(
+        private RtlBlock? MakeBlock(
             List<RtlInstructionCluster> instrs,
-            ProcessorState state,
             RtlInstruction rtlLast)
         {
             // We are positioned at the CTI.
@@ -371,13 +385,13 @@ namespace Reko.Scanning
                 !scanner.IsExecutableAddress(addrTarget))
             {
                 instrs.Add(new RtlInstructionCluster(cluster.Address, cluster.Length, new RtlInvalid()));
-                return (MakeInvalidBlock(instrs, size), state);
+                return MakeInvalidBlock(instrs, size);
             }
 
             if (rtlLast.Class.HasFlag(InstrClass.Delay))
             {
                 if (!TryStealDelaySlot(cluster, instrs))
-                    return (MakeInvalidBlock(instrs, size), state);
+                    return MakeInvalidBlock(instrs, size);
             }
             else
             {
@@ -392,7 +406,7 @@ namespace Reko.Scanning
                 size,
                 addrFallthrough,
                 instrs);
-            return (block, state);
+            return block;
         }
 
         /// <summary>
@@ -409,7 +423,7 @@ namespace Reko.Scanning
             var arch = this.state.Architecture;
             if (size <= 0 || instrs.Count == 0)
             {
-                size = arch.InstructionBitSize / arch.MemoryGranularity;
+                size = arch.InstructionBitSize / arch.CodeMemoryGranularity;
                 instrs.Add(new RtlInstructionCluster(this.Address, (int)size, new RtlInvalid()));
             }
             var block = scanner.RegisterBlock(

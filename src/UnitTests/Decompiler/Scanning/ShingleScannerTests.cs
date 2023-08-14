@@ -363,6 +363,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
             arch.Setup(a => a.InstructionBitSize).Returns(8);
             arch.Setup(a => a.MemoryGranularity).Returns(8);
+            arch.Setup(a => a.CodeMemoryGranularity).Returns(8);
             arch.Setup(a => a.CreateProcessorState()).Returns(new Func<ProcessorState>(() =>
                 new DefaultProcessorState(arch.Object)));
             arch.Setup(a => a.CreateImageReader(
