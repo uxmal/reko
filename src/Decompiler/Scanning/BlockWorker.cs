@@ -75,6 +75,12 @@ namespace Reko.Scanning
         public IEnumerator<RtlInstructionCluster> Trace { get; }
 
         /// <summary>
+        /// If not null, the address of a previously scanned block
+        /// that ends in a call.
+        /// </summary>
+        public Address? CallerBlockAddress { get; set; }
+
+        /// <summary>
         /// Performs a linear scan, stopping when a CTI is encountered, or we
         /// run off the end of a trace (denoting invalid code).
         /// </summary>

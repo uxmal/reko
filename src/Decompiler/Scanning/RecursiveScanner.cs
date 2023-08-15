@@ -156,21 +156,6 @@ namespace Reko.Scanning
             }
         }
 
-        private ProcedureWorker? MakeProcedureWorker(KeyValuePair<Address, Proc> de)
-        {
-            var name = program.NamingPolicy.ProcedureName(de.Key);
-            var proc = new Proc(de.Key, ProvenanceType.Scanning, de.Value.Architecture, name);
-            if (sr.Procedures.TryAdd(proc.Address, proc))
-            {
-                var state = proc.Architecture.CreateProcessorState();
-                return new ProcedureWorker(this, proc, state, rejectMask, listener);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         private void ProcessWorkers()
         {
             while (wl.TryDequeue(out var worker))
@@ -270,9 +255,8 @@ namespace Reko.Scanning
             Address addrFallthrough, 
             ProcessorState state)
         {
-            RegisterEdge(new Edge(addrCaller, addrFallthrough, EdgeType.Fallthrough));
             worker.UnsuspendCall(addrCaller);
-            worker.AddJob(addrFallthrough, state);
+            worker.AddCallFallthroughJob(addrCaller, addrFallthrough, state);
             if (!suspendedWorkers.TryRemove(worker.Procedure.Address, out var w))
             {
                 // Tried to resume not suspended worker

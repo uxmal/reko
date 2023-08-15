@@ -333,6 +333,12 @@ namespace Reko.Scanning
             IEnumerator<RtlInstructionCluster> trace,
             ProcessorState state);
 
+        public void AddCallFallthroughJob(Address addrCaller, Address addrFallthrough, ProcessorState state)
+        {
+            var blockWorker = AddJob(addrFallthrough, state);
+            blockWorker.CallerBlockAddress = addrCaller;
+        }
+
         /// <summary>
         /// Add a job, using the provided trace of <see cref="RtlInstructionCluster"/>s, and
         /// hinting that this trace is to be reused because the scanning process is crossing

@@ -1131,5 +1131,91 @@ l00001010: // l:4; ft:00001014
 
             RunTest(sExpected);
         }
+
+        [Test]
+        public void RecScan_NestedTailCalls()
+        {
+            // Based on the following fragment:
+            // 9810 8A C6    mov al, dh
+            // 9812 E8 02 00 call 9817h
+            // 9815 8A C2    mov al, dl
+
+            // 9817 D4 10    aam 10h
+            // 9819 86 E0    xchg al,ah
+            // 981B E8 02 00 call 9820h
+            // 981E 86 E0    xchg al,ah
+
+            // 9820 04 90    add al,90h
+            // 9822 27 daa
+            // 9823 14 40    adc al,40h
+            // 9825 27       daa
+            // 9826 AA       stosb
+            // 9827 C3       ret
+            Given_EntryPoint(0x1000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                m => m.Assign(r1, r2),
+                m => m.Call(Address.Ptr32(0x1008),0)
+            });
+            Given_Trace(new RtlTrace(0x1008)
+            {
+                m => m.Assign(r2, r1),
+                m => m.Call(Address.Ptr32(0x1010), 0)
+            });
+            Given_Trace(new RtlTrace(0x1010)
+            {
+                m => m.Assign(r2, m.IAdd(r1, r2)),
+                m => m.Assign(r2, m.IAdd(r2, 0x40)),
+                m => m.Return(0, 0)
+            });
+
+            var sExpected =
+            #region Expected
+                @"
+define fn00001000
+    provenance: ImageEntrypoint
+l00001000: // l:8; ft:00001008
+    // pred:
+    r1 = r2
+    call 00001008 (0)
+    // succ: l00001008
+l00001008: // l:8; ft:00001010
+    // pred: l00001000
+    r2 = r1
+    call 00001010 (0)
+    // succ: l00001010
+l00001010: // l:12; ft:0000101C
+    // pred: l00001008
+    r2 = r1 + r2
+    r2 = r2 + 0x40<32>
+    return (0,0)
+    // succ:
+
+define fn00001008
+    provenance: Scanning
+l00001008: // l:8; ft:00001010
+    // pred: l00001000
+    r2 = r1
+    call 00001010 (0)
+    // succ: l00001010
+l00001010: // l:12; ft:0000101C
+    // pred: l00001008
+    r2 = r1 + r2
+    r2 = r2 + 0x40<32>
+    return (0,0)
+    // succ:
+
+define fn00001010
+    provenance: Scanning
+l00001010: // l:12; ft:0000101C
+    // pred: l00001008
+    r2 = r1 + r2
+    r2 = r2 + 0x40<32>
+    return (0,0)
+    // succ:
+";
+            #endregion
+            RunTest(sExpected);
+        }
     }
 }

@@ -77,8 +77,18 @@ namespace Reko.Scanning
             {
                 while (workList.TryGetWorkItem(out var work))
                 {
-                    if (!recScanner.TryRegisterBlockStart(work.Address, proc.Address))
+                    bool newBlockCreated = recScanner.TryRegisterBlockStart(work.Address, proc.Address);
+                    if (work.CallerBlockAddress is not null)
+                    {
+                        ProcessFallthroughAfterCall(work, work.CallerBlockAddress, newBlockCreated);
+                    }
+
+                    // Nothing to do if the block aready existed.
+                    if (!newBlockCreated)
+                    {
                         continue;
+                    }
+
                     log.Verbose("    {0}: Parsing block at {1}", this.Address, work.Address);
                     var (block, subinstrTargets, state) = work.ParseBlock();
                     if (block is not null && block.IsValid)
@@ -112,6 +122,22 @@ namespace Reko.Scanning
                 recScanner.OnWorkerCompleted(this, suspendedCalls.Count);
                 return;
             }
+        }
+
+        private void ProcessFallthroughAfterCall(BlockWorker work, Address addrCallBlock, bool newBlockCreated)
+        {
+            var edge = new Edge(addrCallBlock, work.Address, EdgeType.Fallthrough);
+            RegisterEdge(edge);
+            if (newBlockCreated)
+                return;
+            // We fell through a call, and landed on an already 
+            // existing basic block. We guess that this is a
+            // tail call to another procedure, and further assume that
+            // the other procedure returns. Later passes of the 
+            // scanner (notably the ProcedureBuilder) can improve
+            // this guess. We will now behave as we had seen
+            // a "return" immediately after the call.
+            this.ProcessReturn();
         }
 
         public override BlockWorker AddJob(Address addr, IEnumerator<RtlInstructionCluster> trace, ProcessorState state)
