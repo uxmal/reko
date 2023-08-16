@@ -48,11 +48,9 @@ namespace Reko.Scanning
             IDynamicLinker dynamicLinker,
             IDecompilerEventListener listener,
             IServiceProvider services)
-            : base(program, sr, dynamicLinker, listener, services)
+            : base(program, sr, ProvenanceType.Heuristic, dynamicLinker, listener, services)
         {
         }
-
-        protected override ProvenanceType Provenance => ProvenanceType.Heuristic;
 
         public ScanResultsV2 ScanProgram()
         {
@@ -242,6 +240,7 @@ namespace Reko.Scanning
         {
             var blocks = new BTreeDictionary<Address, RtlBlock>(cfg.Blocks);
 
+            // These are the blocks that we need.
             var succs = cfg.Successors.Values
                 .SelectMany(e => e)
                 .Concat(cfg.SpeculativeProcedures.Keys)

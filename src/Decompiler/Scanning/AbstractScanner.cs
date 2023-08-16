@@ -59,6 +59,7 @@ namespace Reko.Scanning
         protected AbstractScanner(
             Program program,
             ScanResultsV2 sr,
+            ProvenanceType provenance,
             IDynamicLinker dynamicLinker,
             IDecompilerEventListener listener,
             IServiceProvider services)
@@ -66,6 +67,7 @@ namespace Reko.Scanning
             this.services = services;
             this.program = program;
             this.sr = sr;
+            this.Provenance = provenance;
             this.host = new RewriterHost(services, program, dynamicLinker, listener);
             this.listener = listener;
             this.blockStarts = new ConcurrentDictionary<Address, Address>();
@@ -79,7 +81,7 @@ namespace Reko.Scanning
                 : 0;
         }
 
-        protected abstract ProvenanceType Provenance { get; }
+        protected ProvenanceType Provenance { get; }
 
         /// <summary>
         /// Returns true if the given address is inside an executable

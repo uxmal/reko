@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             var listener = new Mock<IDecompilerEventListener>().Object;
-            var scanner = new RecursiveScanner(program, dynamicLinker, listener, new ServiceContainer());
+            var scanner = new RecursiveScanner(program, ProvenanceType.Scanning, dynamicLinker, listener, new ServiceContainer());
             var cfg = scanner.ScanProgram();
             scanner.RegisterPredecessors();
             var sw = new StringWriter();

@@ -111,7 +111,7 @@ namespace Reko.Scanning
 
         public ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string? procedureName, ProcessorState state)
         {
-            var scanner = new RecursiveScanner(program, dynamicLinker, listener, services);
+            var scanner = new RecursiveScanner(program, ProvenanceType.Scanning, dynamicLinker, listener, services);
             //$TODO: handle existing procedures.
             var sr = scanner.ScanProcedure(arch, addr, procedureName, state);
             var procDetector = new ProcedureDetector(sr, listener);

@@ -45,32 +45,31 @@ namespace Reko.Scanning
 
         public RecursiveScanner(
             Program program,
+            ProvenanceType provenance,
             IDynamicLinker dynamicLinker,
             IDecompilerEventListener listener,
             IServiceProvider services)
-            : this(program, new ScanResultsV2(), dynamicLinker, listener, services)
+            : this(program, new ScanResultsV2(), provenance, dynamicLinker, listener, services)
         { }
 
         public RecursiveScanner(
             Program program, 
-            ScanResultsV2 sr, 
+            ScanResultsV2 sr,
+            ProvenanceType provenance,
             IDynamicLinker dynamicLinker,
             IDecompilerEventListener listener,
             IServiceProvider services)
-            : base(program, sr, dynamicLinker, listener, services)
+            : base(program, sr, provenance, dynamicLinker, listener, services)
         {
             this.wl = new ConcurrentQueue<ProcedureWorker>();
             this.activeWorkers = new();
             this.suspendedWorkers = new();
         }
 
-        protected override ProvenanceType Provenance => ProvenanceType.Scanning;
-        
         public ScanResultsV2 ScanProgram()
         {
             var seeds = CollectSeeds();
-            EnqueueWorkers(seeds.Select(MakeSeedWorker));
-            ProcessWorkers();
+            ProcessWorkers(seeds.Select(MakeSeedWorker));
             return sr;
         }
 
@@ -81,26 +80,8 @@ namespace Reko.Scanning
             //$TODO: scannerv2 pass in provenance in parameters of interface method ScanProcedure.
             //$TODO: add existing Procedures
             var worker = MakeSeedWorker(new(addr, (symbol, ProvenanceType.Image)));
-            EnqueueWorkers(new[] { worker });
-            ProcessWorkers();
+            ProcessWorkers(new[] { worker });
             return sr;
-        }
-
-        private void EnqueueWorkers(IEnumerable<ProcedureWorker?> workers)
-        {
-            foreach (var worker in workers)
-            {
-                if (worker is null)
-                    continue;
-                if (!this.activeWorkers.TryAdd(worker.Procedure.Address, worker))
-                {
-                    Debug.Print("RecScan: worker for {0} already enqueued.", worker.Procedure.Address);
-                }
-                else
-                {
-                    wl.Enqueue(worker);
-                }
-            }
         }
 
         /// <summary>
@@ -156,11 +137,35 @@ namespace Reko.Scanning
             }
         }
 
-        private void ProcessWorkers()
+        public ProcedureWorker? MakeHeuristicWorker(IProcessorArchitecture arch, Address address)
         {
-            while (wl.TryDequeue(out var worker))
+            var name = program.NamingPolicy.ProcedureName(address);
+            var proc = new Proc(address, ProvenanceType.Heuristic, arch, name);
+            if (sr.Procedures.TryAdd(address, proc))
             {
-                worker.Run();
+                var state = arch.CreateProcessorState();
+                return new ProcedureWorker(this, proc, state, rejectMask, listener);
+            }
+            else
+            {
+                // A procedure appears to already exist at the given address.
+                return null;
+            }
+        }
+
+        public void ProcessWorkers(IEnumerable<ProcedureWorker?> seeds)
+        {
+            foreach (var worker in seeds)
+            {
+                if (worker is null ||
+                    !this.activeWorkers.TryAdd(worker.Procedure.Address, worker))
+                    continue;
+
+                this.wl.Enqueue(worker);
+                while (wl.TryDequeue(out var w))
+                {
+                    w.Run();
+                }
             }
         }
 
@@ -252,7 +257,7 @@ namespace Reko.Scanning
         public void ResumeWorker(
             ProcedureWorker worker,
             Address addrCaller,
-            Address addrFallthrough, 
+            Address addrFallthrough,
             ProcessorState state)
         {
             worker.UnsuspendCall(addrCaller);

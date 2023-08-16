@@ -39,26 +39,13 @@ Dependencies
 
 Relocations
 
-*** regressions\reko-351\a
+=== regressions\reko-351\a
 800000A6: warning: Call target address 00000000 is invalid.
 80000120: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 80000140: warning: Call target address 00000000 is invalid.
 8000017A: warning: Call target address 00000000 is invalid.
 8000019A: warning: Call target address 00000000 is invalid.
 800000DC: warning: Call target address 00000000 is invalid.
-d:\dev\uxmal\reko\master\subjects\regressions\reko-351\a.out: error: An internal error occurred while scanning d:\dev\uxmal\reko\master\subjects\regressions\reko-351\a.out.
-    The process cannot access the file 'd:\tmp\scanner.txt' because it is being used by another process.
-       at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
-   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategy(FileStream fileStream, String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
-   at System.IO.StreamWriter.ValidateArgsAndOpenPath(String path, Boolean append, Encoding encoding, Int32 bufferSize)
-   at System.IO.File.CreateText(String path)
-   at Reko.Scanning.Scanner.DumpGraph(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1212
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 868
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
 80002714: warning: Expected sizes of arrays to have been determined by now
 80002714: warning: Expected sizes of arrays to have been determined by now
 
@@ -219,20 +206,7 @@ d:\dev\uxmal\reko\master\subjects\Elf\IA64\bash\elf-Linux-ia64-bash: error: An i
    at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
    at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
 
-*** Elf\zSeries\fib\example
-d:\dev\uxmal\reko\master\subjects\Elf\zSeries\fib\example: error: An internal error occurred while scanning d:\dev\uxmal\reko\master\subjects\Elf\zSeries\fib\example.
-    The process cannot access the file 'd:\tmp\scanner.txt' because it is being used by another process.
-       at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
-   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategy(FileStream fileStream, String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
-   at System.IO.StreamWriter.ValidateArgsAndOpenPath(String path, Boolean append, Encoding encoding, Int32 bufferSize)
-   at System.IO.File.CreateText(String path)
-   at Reko.Scanning.Scanner.DumpGraph(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1212
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 868
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
+=== Elf\zSeries\fib\example
 
 === scripting\Exceptions
 IronPython 3.4.0b1
@@ -673,20 +647,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
 00401380: warning: User procedure 'gbl_nested_structs_test14' has been marked 'no decompile' but its signature has not been specified.
 0040165F: warning: User procedure 'Win32CrtStartup' has been marked 'no decompile' but its signature has not been specified.
 
-*** regressions\snowman-74\int16
-d:\dev\uxmal\reko\master\subjects\regressions\snowman-74\int16.dll: error: An internal error occurred while scanning d:\dev\uxmal\reko\master\subjects\regressions\snowman-74\int16.dll.
-    The process cannot access the file 'd:\tmp\scanner.txt' because it is being used by another process.
-       at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
-   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategy(FileStream fileStream, String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
-   at System.IO.StreamWriter.ValidateArgsAndOpenPath(String path, Boolean append, Encoding encoding, Int32 bufferSize)
-   at System.IO.File.CreateText(String path)
-   at Reko.Scanning.Scanner.DumpGraph(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1212
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 868
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
+=== regressions\snowman-74\int16
 
 === Elf\RiscV\ipcalc\ipcalc
 0000000000017B34: warning: Unable to determine format string for call to '__snprintf_chk'.
@@ -1657,20 +1618,7 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 1000142C: warning: Call target address 00000000 is invalid.
 10001458: warning: Call target address 00000000 is invalid.
 
-*** Elf\MIPS\redir\redir
-d:\dev\uxmal\reko\master\subjects\Elf\MIPS\redir\redir: error: An internal error occurred while scanning d:\dev\uxmal\reko\master\subjects\Elf\MIPS\redir\redir.
-    The process cannot access the file 'd:\tmp\scanner.txt' because it is being used by another process.
-       at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
-   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategy(FileStream fileStream, String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
-   at System.IO.StreamWriter.ValidateArgsAndOpenPath(String path, Boolean append, Encoding encoding, Int32 bufferSize)
-   at System.IO.File.CreateText(String path)
-   at Reko.Scanning.Scanner.DumpGraph(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1212
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 868
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
+=== Elf\MIPS\redir\redir
 004006B8: warning: Unable to resolve imported reference __deregister_frame_info.
 00400740: warning: Unable to resolve imported reference __register_frame_info.
 00401DE8: warning: Unable to resolve imported reference inet_ntoa.
@@ -1787,7 +1735,7 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 10001904: warning: Unable to guess parameters of MSVCR80.dll!_unlock.
 10001698: warning: Call target address 00000000 is invalid.
 
-*** Elf\x86-64\simd_double\simd_double
+=== Elf\x86-64\simd_double\simd_double
 00000000000005A4: warning: Unable to resolve imported reference __gmon_start__.
 0000000000000667: warning: Unable to resolve imported reference _ITM_deregisterTMCloneTable.
 0000000000000777: warning: Unable to resolve imported reference posix_memalign.
@@ -1796,19 +1744,6 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
 0000000000000600: warning: Unable to resolve imported reference posix_memalign.
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
-d:\dev\uxmal\reko\master\subjects\Elf\x86-64\simd_double\simd_double: error: An internal error occurred while scanning d:\dev\uxmal\reko\master\subjects\Elf\x86-64\simd_double\simd_double.
-    The process cannot access the file 'd:\tmp\scanner.txt' because it is being used by another process.
-       at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
-   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategy(FileStream fileStream, String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
-   at System.IO.StreamWriter.ValidateArgsAndOpenPath(String path, Boolean append, Encoding encoding, Int32 bufferSize)
-   at System.IO.File.CreateText(String path)
-   at Reko.Scanning.Scanner.DumpGraph(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1212
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 868
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
 0000000000200DE8: warning: Expected sizes of arrays to have been determined by now
 0000000000200DE8: warning: Expected sizes of arrays to have been determined by now
 
@@ -1956,20 +1891,7 @@ l000084F0_1: warning: Non-integral switch expression
 0000000000600E10: warning: Expected sizes of arrays to have been determined by now
 0000000000600E10: warning: Expected sizes of arrays to have been determined by now
 
-*** Elf\MIPS\swlswr\test
-d:\dev\uxmal\reko\master\subjects\Elf\MIPS\swlswr\test: error: An internal error occurred while scanning d:\dev\uxmal\reko\master\subjects\Elf\MIPS\swlswr\test.
-    The process cannot access the file 'd:\tmp\scanner.txt' because it is being used by another process.
-       at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
-   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
-   at System.IO.Strategies.FileStreamHelpers.ChooseStrategy(FileStream fileStream, String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, Int64 preallocationSize)
-   at System.IO.StreamWriter.ValidateArgsAndOpenPath(String path, Boolean append, Encoding encoding, Int32 bufferSize)
-   at System.IO.File.CreateText(String path)
-   at Reko.Scanning.Scanner.DumpGraph(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1212
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 868
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 474
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 452
+=== Elf\MIPS\swlswr\test
 000005A0: warning: Unable to resolve imported reference __gmon_start__.
 000005AC: warning: Unable to resolve imported reference __gmon_start__.
 00000728: warning: Unable to resolve imported reference __cxa_finalize.
@@ -2536,7 +2458,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -2544,7 +2466,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Graphs.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 193
-   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 46
+   at Reko.Core.Graphs.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Graphs\DominatorGraph.cs:line 47
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 551
@@ -2601,4 +2523,4 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\VCExeSample\VCExeSample
 Signature of 'Microsoft Visual C++ 8' detected.
 
-Decompiled 91 binaries in 74.94 seconds.
+Decompiled 91 binaries in 88.60 seconds.
