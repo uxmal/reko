@@ -177,7 +177,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return bmp;
 
             var bgPattern = new[] { Color.FromArgb(0x7F,0,0), Color.FromArgb(0x30,0x00,0x00) };
-            var addrStart = bmem.BaseAddress + vscroll.Value;
+            var addrStart = bmem.BaseAddress + vscroll.Value * LineLength;
+            Debug.Print("Visualizer: {0} {1:X}", addrStart, vscroll.Value);
             var bytesOnScreen = LinesOnScreen * LineLength;
             var colors = visualizer.RenderBuffer(program, bmem, addrStart, bytesOnScreen, null);
             int x = 0;
@@ -274,7 +275,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             else
             {
                 this.LineLength = visualizer.DefaultLineLength;
-                this.vscroll.SmallChange = LineLength;
+                this.vscroll.SmallChange = 1;
                 this.pixelSize = visualizer.DefaultZoom;
             }
             this.Invalidate();
@@ -315,10 +316,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void UpdateScrollbar()
         {
             var bytesOnScreen = LineLength * LinesOnScreen;
-            if (program == null ||
-                bmem == null ||
+            if (program is null ||
+                bmem is null ||
                 bytesOnScreen >= bmem.Bytes.Length ||
-                visualizer != null && !visualizer.ShowScrollbar)
+                visualizer is not null && !visualizer.ShowScrollbar)
             {
                 this.vscroll.Value = 0;
                 this.vscroll.Enabled = false;
@@ -326,10 +327,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             else
             {
                 this.vscroll.Enabled = true;
-                this.vscroll.Maximum = bmem.Bytes.Length;// - bytesOnScreen;
-                this.vscroll.LargeChange = bytesOnScreen;
-                this.vscroll.SmallChange = LineLength;
-                trace.Verbose($"VisCtrl: mem bytes {bmem.Bytes.Length}, small = {LineLength}, large = {bytesOnScreen}, max={vscroll.Maximum}");
+                this.vscroll.Maximum = bmem.Bytes.Length /* - bytesOnScreen */ / LineLength;
+                this.vscroll.LargeChange = LinesOnScreen;
+                this.vscroll.SmallChange = 1;
+                trace.Verbose($"VisCtrl: mem bytes {bmem.Bytes.Length}, small = 1, large = {LinesOnScreen}, max={vscroll.Maximum}");
             }
         }
 
@@ -341,7 +342,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <returns></returns>
         private Point PositionFromAddress(Address addr)
         {
-            var offset = (addr - bmem.BaseAddress) - vscroll.Value;
+            var offset = (addr - bmem.BaseAddress) - (vscroll.Value * LineLength);
             int x = (int)offset % this.LineLength;
             int y = (int)offset / this.LineLength;
             return new Point(x * pixelSize, y * pixelSize);
@@ -360,7 +361,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             int y = pt.Y / pixelSize;
             if (x < 0 || x >= this.LineLength)
                 return null;
-            return bmem.BaseAddress + (vscroll.Value + y * LineLength + x);
+            return bmem.BaseAddress + ((vscroll.Value + y) * LineLength + x);
         }
     }
 }

@@ -90,13 +90,11 @@ namespace Reko.Gui.Visualizers
                     colors[i] |= 0xFF;
             }
 
-            foreach (var de in offsets)
+            foreach (var (k, len) in offsets)
             {
-                var k = de.Key;
-                var v = de.Value;
-                for (var i = 0; i < v; ++i)
+                for (var i = 0; i < len; ++i)
                 {
-                    var c = bmem.Bytes[k + i];
+                    var c = bmem.Bytes[k + i + iStart];
                     var r = c + (255 - 126);
                     var g = 0;
                     if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9')
