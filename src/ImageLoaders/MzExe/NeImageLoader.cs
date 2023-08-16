@@ -292,7 +292,7 @@ namespace Reko.ImageLoaders.MzExe
             }
             foreach (var ep in entryPoints.Where(e => e != null && e.Type != SymbolType.Data))
             {
-                program.EntryPoints.Add(ep!.Address, ep);
+                program.EntryPoints.TryAdd(ep!.Address, ep);
             }
             foreach (var sym in imageSymbols)
             {
