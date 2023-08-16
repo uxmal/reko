@@ -88,7 +88,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 Address = this.addr,
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 
@@ -685,7 +685,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     Mnemonic = dasm.opSize!.Size == 2 ? Mnemonic.ldirw : Mnemonic.ldir,
                     InstructionClass = InstrClass.Linear,
-                    Operands = new MachineOperand[0],
+                    Operands = Array.Empty<MachineOperand>(),
                     Address = dasm.addr
                 };
             }

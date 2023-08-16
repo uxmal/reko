@@ -39,7 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.CodeView
         [SetUp]
         public void Setup()
         {
-            typeSection = new byte[0];
+            typeSection = System.Array.Empty<byte>();
         }
 
         private void Given_TypeSection(string hexbytes)

@@ -142,7 +142,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public virtual StartPattern[] GetStartPatterns()
         {
-            return new StartPattern[0];
+            return Array.Empty<StartPattern>();
         }
 
         /// <summary>

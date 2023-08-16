@@ -18,6 +18,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
@@ -78,7 +79,8 @@ namespace Reko.Arch.V850
             return new V850Instruction
             {
                 Mnemonic = Mnemonic.invalid,
-                Operands = MachineInstruction.NoOperands,
+                InstructionClass = InstrClass.Invalid,
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 

@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.Arc
@@ -86,7 +87,7 @@ namespace Reko.Arch.Arc
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

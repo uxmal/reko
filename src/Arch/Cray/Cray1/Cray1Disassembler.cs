@@ -77,7 +77,7 @@ namespace Reko.Arch.Cray.Cray1
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

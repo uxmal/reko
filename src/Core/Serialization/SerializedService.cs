@@ -62,7 +62,7 @@ namespace Reko.Core.Serialization
             }
             if (svc.SyscallInfo.RegisterValues == null)
 			{
-				svc.SyscallInfo.RegisterValues = new RegValue[0];
+				svc.SyscallInfo.RegisterValues = Array.Empty<RegValue>();
 			}
             var loader = new TypeLibraryDeserializer(platform, true, library);
 			var sser = new ProcedureSerializer(platform, loader, "stdapi");

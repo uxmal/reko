@@ -37,7 +37,7 @@ namespace Reko.Core.Lib
         public static SuffixArray<byte> Create(byte[] arr)
         {
             if (arr == null)
-                arr = new byte[0];
+                arr = Array.Empty<byte>();
             return new SuffixArray<byte>(arr);
         }
 
@@ -71,7 +71,7 @@ namespace Reko.Core.Lib
             m_str = str;
             if (m_str == null)
             {
-                m_str = new T[0];
+                m_str = Array.Empty<T>();
             }
             m_sa = new int[m_str.Length];
             m_isa = new int[m_str.Length];

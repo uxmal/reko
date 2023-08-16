@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Arch.X86
 
 		public Procedure[] GetProceduresFromVector(Address addrCaller, int cbReturnAddress)
 		{
-			return new Procedure[0];
+			return Array.Empty<Procedure>();
 		}
 
         public Expression GetImport(Address addrTunk, Address addrInstruction)
@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Arch.X86
 
 		public Procedure [] GetProceduresFromVector(Address vectorAddress)
 		{
-			return new Procedure[0];
+			return Array.Empty<Procedure>();
 		}
 
 		public ByteMemoryArea Image

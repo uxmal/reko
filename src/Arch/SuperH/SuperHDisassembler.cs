@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.SuperH
@@ -80,7 +81,7 @@ namespace Reko.Arch.SuperH
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

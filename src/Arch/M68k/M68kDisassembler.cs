@@ -199,7 +199,7 @@ namespace Reko.Arch.M68k
             {
                 Mnemonic = Mnemonic.illegal,
                 InstructionClass = InstrClass.Invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 
@@ -300,7 +300,7 @@ namespace Reko.Arch.M68k
         private static InstrDecoder Instr(uint mask, uint match, uint ea_mask, Mnemonic mnemonic, InstrClass iclass = InstrClass.Linear)
         {
             return new InstrDecoder(
-                new Mutator[0],
+                Array.Empty<Mutator>(),
                 mask,
                 match,
                 ea_mask,
@@ -2996,7 +2996,7 @@ namespace Reko.Arch.M68k
 };
         }
 
-        private static readonly InstrDecoder illegal = new InstrDecoder(new Mutator[0], 0, 0, 0, Mnemonic.illegal);
+        private static readonly InstrDecoder illegal = new InstrDecoder(Array.Empty<Mutator>(), 0, 0, 0, Mnemonic.illegal);
 
         // Check if opcode is using a valid ea mode
         static bool valid_ea(uint opcode, uint mask)

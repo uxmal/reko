@@ -87,7 +87,7 @@ namespace Reko.Arch.Sparc
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
-                Operands = MachineInstruction.NoOperands,
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 

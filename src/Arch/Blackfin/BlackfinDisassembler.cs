@@ -80,7 +80,7 @@ namespace Reko.Arch.Blackfin
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
-                Operands = new MachineOperand[0]
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

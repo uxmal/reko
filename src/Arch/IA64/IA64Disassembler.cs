@@ -125,7 +125,7 @@ namespace Reko.Arch.IA64
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

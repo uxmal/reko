@@ -107,7 +107,7 @@ namespace Reko.ImageLoaders.WebAssembly
             }
             else
             {
-                bytes = new byte[0];
+                bytes = Array.Empty<byte>();
             }
             var rdr2 = new WasmImageReader(bytes);
             switch (type)

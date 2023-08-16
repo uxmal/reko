@@ -103,13 +103,13 @@ namespace Reko.Core.Configuration
             {
                 return new PlatformHeuristics
                 {
-                    ProcedurePrologs = new MaskedPattern[0],
+                    ProcedurePrologs = Array.Empty<MaskedPattern>(),
                 };
             }
             MaskedPattern[] prologs;
             if (heuristics.ProcedurePrologs == null)
             {
-                prologs = new MaskedPattern[0];
+                prologs = Array.Empty<MaskedPattern>();
             }
             else
             {

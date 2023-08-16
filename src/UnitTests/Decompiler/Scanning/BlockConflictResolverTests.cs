@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void ResolveBlockConflicts(ScanResultsV2 sr)
         {
             var hps = new BlockConflictResolver(null, sr, null, null);
-            hps.ResolveBlockConflicts(new Address[0]);
+            hps.ResolveBlockConflicts(Array.Empty<Address>());
         }
 
         [Test]

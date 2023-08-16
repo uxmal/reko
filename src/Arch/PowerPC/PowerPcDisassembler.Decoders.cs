@@ -435,7 +435,7 @@ namespace Reko.Arch.PowerPC
                     return new PowerPcInstruction(Mnemonic.blr)
                     {
                         InstructionClass = InstrClass.Transfer|InstrClass.Return,
-                        Operands = new MachineOperand[0]
+                        Operands = Array.Empty<MachineOperand>()
                     };
                 }
 

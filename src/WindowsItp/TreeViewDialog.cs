@@ -94,7 +94,7 @@ namespace Reko.WindowsItp
             int n;
             if (!int.TryParse(txtItems.Text, out n) ||
                 n <= 0)
-                return new ITreeNode[0];
+                return Array.Empty<ITreeNode>();
             var objs = Enumerable.Range(0, n)
                 .Select(i => new BrowseObject { Index = i });
             var nodes = objs.Select(o => new
@@ -123,7 +123,7 @@ namespace Reko.WindowsItp
             int n;
             if (!int.TryParse(txtItems.Text, out n) ||
                 n <= 0)
-                return new ITreeNode[0];
+                return Array.Empty<ITreeNode>();
             return Enumerable.Range(0, n)
                             .Select(i => {
                                 var node = wrappedTree.CreateNode();

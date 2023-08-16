@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Mocks
 
         public ICollection<SignatureFileDefinition> GetSignatureFiles()
         {
-            return new SignatureFileDefinition[0];
+            return Array.Empty<SignatureFileDefinition>();
         }
 
         public string GetInstallationRelativePath(params string[] pathComponents)

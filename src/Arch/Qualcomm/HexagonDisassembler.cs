@@ -147,7 +147,7 @@ namespace Reko.Arch.Qualcomm
 
         private HexagonInstruction CreateInvalidInstruction(Address addr)
         {
-            return new HexagonInstruction(addr, Mnemonic.Invalid, MachineInstruction.NoOperands)
+            return new HexagonInstruction(addr, Mnemonic.Invalid, Array.Empty<MachineOperand>())
             {
                 InstructionClass = InstrClass.Invalid
             };
@@ -1194,7 +1194,7 @@ namespace Reko.Arch.Qualcomm
             public override HexagonInstruction Decode(uint uInstr, HexagonDisassembler dasm)
             {
                 dasm.NotYetImplemented(message);
-                return new HexagonInstruction(dasm.addrInstr, Mnemonic.Invalid, MachineInstruction.NoOperands)
+                return new HexagonInstruction(dasm.addrInstr, Mnemonic.Invalid, Array.Empty<MachineOperand>())
                 {
                     InstructionClass = InstrClass.Invalid,
                     Length = 4,

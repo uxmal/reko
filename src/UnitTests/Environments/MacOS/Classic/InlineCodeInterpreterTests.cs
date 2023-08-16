@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var ici = new InlineCodeInterpreter(constants);
             var ssig = new SerializedSignature
             {
-                Arguments = new Argument_v1[0],
+                Arguments = System.Array.Empty<Argument_v1>(),
             };
             var svc = ici.BuildSystemCallFromMachineCode("DisableIdle", ssig, Opcodes(0x7001, 0xA485));
 
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var ici = new InlineCodeInterpreter(constants);
             var ssig = new SerializedSignature
             {
-                Arguments = new Argument_v1[0],
+                Arguments = System.Array.Empty<Argument_v1>(),
                 ReturnValue = new Argument_v1 { Type = PrimitiveType_v1.Int16() }
             };
             var svc = ici.BuildSystemCallFromMachineCode("CountADBs", ssig, Opcodes(0xA077, 0x3E80));
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var ici = new InlineCodeInterpreter(constants);
             var ssig = new SerializedSignature
             {
-                Arguments = new Argument_v1[0],
+                Arguments = System.Array.Empty<Argument_v1>(),
                 ReturnValue = new Argument_v1
                 {
                     Type = new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = 4 }
@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             var ici = new InlineCodeInterpreter(constants);
             var ssig = new SerializedSignature
             {
-                Arguments = new Argument_v1[0]
+                Arguments = System.Array.Empty<Argument_v1>()
             };
 
             var svc = ici.BuildSystemCallFromMachineCode(

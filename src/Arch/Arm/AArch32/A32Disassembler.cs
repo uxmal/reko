@@ -297,7 +297,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

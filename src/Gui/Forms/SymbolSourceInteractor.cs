@@ -111,7 +111,7 @@ namespace Reko.Gui.Forms
             }
             catch
             {
-                return new object[0];
+                return Array.Empty<object>();
             }
         }
 

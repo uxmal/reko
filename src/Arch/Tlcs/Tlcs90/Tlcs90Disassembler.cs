@@ -87,7 +87,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 Mnemonic = Mnemonic.invalid,
                 InstructionClass = InstrClass.Invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

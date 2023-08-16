@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Mocks
             {
                 if (ignoreUnknownTraces)
                 {
-                    return new RtlInstructionCluster[0];
+                    return Array.Empty<RtlInstructionCluster>();
                 }
                 else
                 {

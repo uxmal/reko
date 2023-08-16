@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Reko.Core.Memory;
+using System;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -329,7 +330,7 @@ struct test g_t1004 = // 00001004
                     {
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
-                        { 8, new Pointer(FunctionType.Action(new Identifier[0]), 32) }
+                        { 8, new Pointer(FunctionType.Action(Array.Empty<Identifier>()), 32) }
                     }
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");

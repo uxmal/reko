@@ -20,6 +20,7 @@
 
 #pragma warning disable IDE1006
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
@@ -67,7 +68,7 @@ namespace Reko.Arch.XCore
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

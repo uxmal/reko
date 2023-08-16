@@ -27,13 +27,11 @@ namespace Reko.Core.Machine
     /// </summary>
     public abstract class MachineInstruction
     {
-        public static readonly MachineOperand[] NoOperands = Array.Empty<MachineOperand>();
-
         private Address? addr;      //$REFACTOR: in C# 9, there will be 'init' properties.
 
         public MachineInstruction()
         {
-            this.Operands = NoOperands;
+            this.Operands = Array.Empty<MachineOperand>();
         }
 
         //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)

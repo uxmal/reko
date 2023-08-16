@@ -74,7 +74,7 @@ namespace Reko.Arch.H8
             {
                 Mnemonic = Mnemonic.Invalid,
                 InstructionClass = InstrClass.Invalid,
-                Operands = MachineInstruction.NoOperands,
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 

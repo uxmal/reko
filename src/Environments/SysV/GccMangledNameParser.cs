@@ -119,7 +119,7 @@ namespace Reko.Environments.SysV
                         // n is the name of a template.
                         AddSubstitution(n);
                         var args = TemplateArgs();
-                        var tmplate = new SerializedTemplate(new string[0], n, args);
+                        var tmplate = new SerializedTemplate(Array.Empty<string>(), n, args);
                         AddSubstitution(tmplate);
                         prefixes.Add(tmplate);
                         return prefixes;

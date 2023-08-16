@@ -69,7 +69,7 @@ namespace Reko.Gui.Visualizers
 
         public VisualAnnotation[] RenderAnnotations(Program program, Address addrStart, int length, int? mouse)
         {
-            return new VisualAnnotation[0];
+            return Array.Empty<VisualAnnotation>();
         }
     }
 }

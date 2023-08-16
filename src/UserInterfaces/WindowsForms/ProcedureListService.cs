@@ -82,7 +82,7 @@ namespace Reko.Gui
             this.showHelpText = true;
             this.txtProcedureFilter.Text = HelpText;
             this.txtProcedureFilter.ForeColor = System.Drawing.SystemColors.GrayText;
-            ShowProcedures(new ProgramProcedure[0]);
+            ShowProcedures(Array.Empty<ProgramProcedure>());
         }
 
         public void Load(Project project)

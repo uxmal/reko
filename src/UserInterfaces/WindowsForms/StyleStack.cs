@@ -60,7 +60,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public void PushStyle(string styleSelector)
         {
             if (styleSelector == null)
-                stack.Add(new string[0]);
+                stack.Add(Array.Empty<string>());
             else
                 stack.Add(styleSelector.Split(' '));
         }

@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Mocks
 
         public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            writer("test.dis", new Procedure[0], intermediate);
+            writer("test.dis", Array.Empty<Procedure>(), intermediate);
         }
 
         public void WriteTypes(Program program, Action<string, TextWriter> writer)
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Mocks
 
         public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            writer("test.c", new Procedure[0], decompiled);
+            writer("test.c", Array.Empty<Procedure>(), decompiled);
         }
 
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)

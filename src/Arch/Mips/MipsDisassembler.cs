@@ -95,7 +95,7 @@ namespace Reko.Arch.Mips
                 InstructionClass = InstrClass.Invalid,
                 Address = this.addr,
                 Length = 4,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 

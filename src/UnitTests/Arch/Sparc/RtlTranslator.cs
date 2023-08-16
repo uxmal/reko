@@ -120,7 +120,7 @@ private void emit(RtlInstruction[] rtlInstruction)
         //        nPC = 0x42,     // next pc if branch
         //        a = false,      // annul
 
-        //        I_c = new int[0] // Rtl to execute.
+        //        I_c = Array.Empty<int>() // Rtl to execute.
         //    };
         //}
         }

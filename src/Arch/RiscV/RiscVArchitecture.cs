@@ -219,7 +219,7 @@ namespace Reko.Arch.RiscV
             }
             else
             {
-                this.FpRegs = new RegisterStorage[0];
+                this.FpRegs = Array.Empty<RegisterStorage>();
             }
 
 

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Services;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -115,7 +116,7 @@ namespace Reko.Gui.Design
             }
             else
             {
-                return new TreeNodeDesigner[0];
+                return Array.Empty<TreeNodeDesigner>();
             }
         }
 

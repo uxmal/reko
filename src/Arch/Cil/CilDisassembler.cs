@@ -52,7 +52,7 @@ namespace Reko.Arch.Cil
             instr = new CilInstruction
             {
                 Address = addr,
-                Operands = MachineInstruction.NoOperands,
+                Operands = Array.Empty<MachineOperand>(),
             };
             switch (opcode)
             {
@@ -905,7 +905,7 @@ namespace Reko.Arch.Cil
             {
                 InstructionClass = InstrClass.Invalid,
                 Opcode = default(OpCode),
-                Operands = MachineInstruction.NoOperands,
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 

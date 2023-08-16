@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System;
+
 namespace Reko.Gui.TextViewing
 {
     /// <summary>
@@ -47,7 +49,7 @@ namespace Reko.Gui.TextViewing
 
         public LineSpan[] GetLineSpans(int count)
         {
-            return new LineSpan[0];
+            return Array.Empty<LineSpan>();
         }
 
         public (int, int) GetPositionAsFraction()

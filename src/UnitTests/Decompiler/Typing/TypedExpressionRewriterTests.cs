@@ -590,7 +590,7 @@ namespace Reko.UnitTests.Decompiler.Typing
                     "rand",
                     FunctionType.Func(
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
-                        new Identifier[0]));
+                        Array.Empty<Identifier>()));
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(ax, m.Fn(rand));
                 m.MStore(m.Word16(0x1300), ax);

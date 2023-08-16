@@ -78,7 +78,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcInstruction(Mnemonic.illegal)
             {
                 InstructionClass = InstrClass.Invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 
@@ -700,7 +700,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcInstruction(Mnemonic.nyi)
             {
                 InstructionClass = InstrClass.Invalid,
-                Operands = MachineInstruction.NoOperands
+                Operands = Array.Empty<MachineOperand>()
             };
         }
     }

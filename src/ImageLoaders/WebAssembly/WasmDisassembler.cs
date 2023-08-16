@@ -25,6 +25,7 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -77,7 +78,7 @@ namespace Reko.ImageLoaders.WebAssembly
             var instr = new WasmInstruction(Mnemonic.unreachable)
             {
                 InstructionClass = InstrClass.Invalid,
-                Operands = MachineInstruction.NoOperands,
+                Operands = Array.Empty<MachineOperand>()
             };
             return instr;
         }

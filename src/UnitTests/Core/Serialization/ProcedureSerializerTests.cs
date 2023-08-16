@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Core.Serialization
                 new SequenceStorage(PrimitiveType.SegPtr32, Registers.es, Registers.bx));
             Given_ProcedureSerializer("stdapi");
 
-            SerializedSignature ssig = ser.Serialize(new FunctionType(seq, new Identifier[0]));
+            SerializedSignature ssig = ser.Serialize(new FunctionType(seq, Array.Empty<Identifier>()));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
         }
 
@@ -308,7 +308,7 @@ namespace Reko.UnitTests.Core.Serialization
                 Convention = "__thiscall",
                 EnclosingType = new TypeReference_v1 { TypeName = "bob" },
                 ReturnValue = new Argument_v1 { Type = new VoidType_v1() },
-                Arguments = new Argument_v1[0]
+                Arguments = Array.Empty<Argument_v1>()
             };
             Given_ProcedureSerializer("__thiscall");
 

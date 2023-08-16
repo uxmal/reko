@@ -57,19 +57,19 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         {
             var sections = new List<Section>
             {
-                new ImportSection(".imports", new byte[0], new List<Import>
+                new ImportSection(".imports", Array.Empty<byte>(), new List<Import>
                 {
                     new Import { Module="env", Name="malloc", Index=0, Type = SymbolType.ExternalProcedure }
                 }),
-                new ExportSection(".exports", new byte[0], new List<ExportEntry>
+                new ExportSection(".exports", Array.Empty<byte>(), new List<ExportEntry>
                 {
                     new ExportEntry { Name = "ble", Type = SymbolType.Procedure, Index = 1 },
                 }),
-                new CodeSection(".text", new byte[0], new List<FunctionDefinition>
+                new CodeSection(".text", Array.Empty<byte>(), new List<FunctionDefinition>
                 {
                     new FunctionDefinition(0, 42, Array.Empty<LocalVariable>(), Array.Empty<byte>())
                 }),
-                new FunctionSection(".funcs", new byte[0],new List<uint>
+                new FunctionSection(".funcs", Array.Empty<byte>(),new List<uint>
                 {
                     0
                 })

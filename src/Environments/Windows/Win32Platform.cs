@@ -71,10 +71,10 @@ namespace Reko.Environments.Windows
                         SyscallInfo = new SyscallInfo
                         {
                             Vector = 3,
-                            RegisterValues = new RegValue[0],
+                            RegisterValues = Array.Empty<RegValue>(),
                         },
                         Name = "int3",
-                        Signature = FunctionType.Action(new Identifier[0]),
+                        Signature = FunctionType.Action(Array.Empty<Identifier>()),
                         Characteristics = new ProcedureCharacteristics(),
                     }
                 },
@@ -85,7 +85,7 @@ namespace Reko.Environments.Windows
                         SyscallInfo = new SyscallInfo
                         {
                             Vector = 0x29,
-                            RegisterValues = new RegValue[0]
+                            RegisterValues = Array.Empty<RegValue>()
                         },
                         Name = "__fastfail",
                         Signature = FunctionType.Action(

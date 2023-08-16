@@ -636,7 +636,7 @@ namespace Reko.ImageLoaders.Xex
         {
             magic = new byte[4];
             security_info = new xex2_security_info();
-            opt_headers= new xex2_opt_header[0];
+            opt_headers= Array.Empty<xex2_opt_header>();
         }
 
         public xex2_header(SpanStream r)
@@ -714,7 +714,7 @@ namespace Reko.ImageLoaders.Xex
             xgd2_media_id = new byte[0x10];
             aes_key = new byte[0x10];
             header_digest = new byte[0x14];
-            page_descriptors = new xex2_page_descriptor[0];
+            page_descriptors = Array.Empty<xex2_page_descriptor>();
         }
 
         public xex2_security_info(SpanStream r)

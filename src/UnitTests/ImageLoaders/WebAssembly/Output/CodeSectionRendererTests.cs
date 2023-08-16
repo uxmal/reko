@@ -57,7 +57,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly.Output
             int iStart = this.bytes.Count;
             var byteCodes = BytePattern.FromHexBytes(string.Join("", hexbytes));
             this.bytes.AddRange(byteCodes);
-            this.fns.Add((new LocalVariable[0], iStart, this.bytes.Count));
+            this.fns.Add((Array.Empty<LocalVariable>(), iStart, this.bytes.Count));
         }
 
         private void Given_CodeSectionRenderer()

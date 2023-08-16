@@ -71,7 +71,7 @@ namespace Reko.Arch.Alpha
             return new AlphaInstruction {
                 Mnemonic = Mnemonic.invalid,
                 InstructionClass = InstrClass.Invalid,
-                Operands = new MachineOperand[0]
+                Operands = Array.Empty<MachineOperand>()
             };
         }
 
@@ -325,7 +325,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction {
                     Mnemonic = opcode.Item1,
                     InstructionClass = opcode.Item2,
-                    Operands = new MachineOperand[0]
+                    Operands = Array.Empty<MachineOperand>()
                 };
             }
         }

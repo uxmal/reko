@@ -413,7 +413,7 @@ SsaProcedureBuilder_exit:
                 var h_1 = m.Reg("h_1", Z80Registers.h);
                 var l_2 = m.Reg("l_2", Z80Registers.l);
                 m.Call("dont_care", 2,
-                    new Identifier[0],
+                    Array.Empty<Identifier>(),
                     new[] { h_1, l_2 });
                 m.MStore(m.Word16(0x1234), m.Seq(h_1, l_2));
                 m.Return();
@@ -444,7 +444,7 @@ SsaProcedureBuilder_exit:
                 var h_1 = m.Reg("h_1", Z80Registers.h);
                 var l_2 = m.Reg("l_2", Z80Registers.l);
                 m.Call("dont_care", 2,
-                    new Identifier[0],
+                    Array.Empty<Identifier>(),
                     new[] { h_1, l_2 });
                 m.MStore(m.Word16(0x1234), m.Seq(h_1, l_2));
                 m.MStore(m.Word16(0x1236), m.Seq(h_1, l_2));

@@ -243,7 +243,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         private Argument_v1[] TranslateArgs(int parameterCount, int parameterTypeList)
         {
             if (parameterCount == 0)
-                return new Argument_v1[0];
+                return System.Array.Empty<Argument_v1>();
             var parameterList = (object[]) dictionary[parameterTypeList].Leaves![0];
             if (parameterCount != parameterList.Length)
                 throw new FormatException();

@@ -231,7 +231,7 @@ namespace Reko.UnitTests.Decompiler.Loading
                 .Returns(true);
 
             var ldr = new Loader(sc);
-            var program = ldr.LoadRawImage(new byte[0], Address.Ptr32(0x00123400), new LoadDetails
+            var program = ldr.LoadRawImage(Array.Empty<byte>(), Address.Ptr32(0x00123400), new LoadDetails
             {
                 Location = ImageLocation.FromUri("file:foo.bin"),
                 ArchitectureName = "mmix",

@@ -188,7 +188,7 @@ namespace Reko.Core.Memory
         {
             int avail = Math.Min((int) length, bytes.Length - (int) off);
             if (avail <= 0)
-                return new byte[0];
+                return Array.Empty<byte>();
             byte[] dst = new byte[avail];
             Array.Copy(bytes, (int) off, dst, 0, avail);
             Offset += length;

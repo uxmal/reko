@@ -97,7 +97,7 @@ namespace Reko.Arch.Msp430
                     {
                         instr.Mnemonic = Mnemonics.ret;
                         instr.InstructionClass |= InstrClass.Return;
-                        instr.Operands = MachineInstruction.NoOperands;
+                        instr.Operands = Array.Empty<MachineOperand>();
                     }
                     else
                     {
@@ -456,7 +456,7 @@ namespace Reko.Arch.Msp430
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonics.invalid,
-                Operands = new MachineOperand[0],
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 

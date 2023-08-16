@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System.Collections.Generic;
+using System;
 
 namespace Reko.Arch.Avr.Avr32
 {
@@ -89,7 +90,7 @@ namespace Reko.Arch.Avr.Avr32
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.invalid,
                 Condition = Avr32Condition.al,
-                Operands = new MachineOperand[0],
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 

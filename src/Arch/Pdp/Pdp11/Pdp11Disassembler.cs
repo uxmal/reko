@@ -84,7 +84,7 @@ namespace Reko.Arch.Pdp.Pdp11
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
-                Operands = MachineInstruction.NoOperands
+                Operands = System.Array.Empty<MachineOperand>()
             };
         }
 

@@ -181,7 +181,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var exps = new List<Expression>();
             var exp = Expression();
             if (exp == null)
-                return new Expression[0];
+                return Array.Empty<Expression>();
             exps.Add(exp);
             while (PeekAndDiscard(TokenType.Comma))
             {

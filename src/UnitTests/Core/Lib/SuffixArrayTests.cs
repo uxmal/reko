@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Core.Lib
         public void TestSearch5()
         {
             var sa = SuffixArray.Create("yakawow");
-            Assert.AreEqual(sa.IndexOf(new char[0]), -1, "Wrong index");
+            Assert.AreEqual(sa.IndexOf(Array.Empty<char>()), -1, "Wrong index");
         }
 
         public void DumpSortedArray(SuffixArray<char> sa)

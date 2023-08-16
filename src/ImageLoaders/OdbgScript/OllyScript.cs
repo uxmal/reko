@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.OdbgScript
             public bool IsCommand;
             public string? Command;
             public Func<Expression[], bool>? CommandPtr;
-            public Expression[] Args = new Expression[0];
+            public Expression[] Args = Array.Empty<Expression>();
 
             public override string ToString()
             {

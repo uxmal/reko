@@ -83,7 +83,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                parms = new Argument_v1[0];
+                parms = Array.Empty<Argument_v1>();
             }
             return new SerializedSignature
             {

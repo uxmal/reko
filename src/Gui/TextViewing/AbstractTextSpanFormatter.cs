@@ -220,7 +220,7 @@ namespace Reko.Gui.TextViewing
                 int p = (int)position;
                 int c = Math.Min(count, lines.Length - p);
                 if (c <= 0)
-                    return new LineSpan[0];
+                    return Array.Empty<LineSpan>();
                 var spans = new LineSpan[c];
                 for (int i = 0; i < c; ++i)
                 {

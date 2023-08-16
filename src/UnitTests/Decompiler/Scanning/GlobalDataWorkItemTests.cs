@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var ft = FunctionType.Func(
                 new Identifier("", PrimitiveType.Real32, null),
-                new Identifier[0]);
+                Array.Empty<Identifier>());
             var str = new StructureType("str", 0);
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft,  32), "func"),
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
 
             var ft = FunctionType.Func(
                 new Identifier("", PrimitiveType.Real32, null),
-                new Identifier[0]);
+                Array.Empty<Identifier>());
             var str = new StructureType();
             str.Fields.AddRange(new StructureField[]
             {
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             Given_Program(addr, new byte[4]);
             var ft = FunctionType.Func(
                new Identifier("", PrimitiveType.Real32, null),
-               new Identifier[0]);
+               Array.Empty<Identifier>());
             scanner.Setup(s => s.EnqueueUserProcedure(
                 It.IsNotNull<IProcessorArchitecture>(),
                 addr,

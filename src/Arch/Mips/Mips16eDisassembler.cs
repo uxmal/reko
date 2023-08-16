@@ -89,7 +89,7 @@ namespace Reko.Arch.Mips
             {
                 InstructionClass = InstrClass.Invalid,
                 Mnemonic = Mnemonic.illegal,
-                Operands = MachineInstruction.NoOperands,
+                Operands = Array.Empty<MachineOperand>(),
             };
         }
 
