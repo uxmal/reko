@@ -62,11 +62,6 @@ namespace Reko.Core
 
     public class NullRewriterHost : IRewriterHost
     {
-        public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
-        {
-            throw new NotSupportedException();
-        }
-
         public Constant? GlobalRegisterValue => null;
 
         public void Error(Address address, string format, params object[] args)
