@@ -129,13 +129,13 @@ namespace Reko.Analysis
                     ExpressionMatcher.AnyDataType("dt")));
         }
 
-        public void CreateLongInstruction(AddSubCandidate loCandidate, AddSubCandidate hiCandidate)
+        public void CreateLongBinaryInstruction(Candidate loCandidate, Candidate hiCandidate)
         {
             var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
                 loCandidate.Dst!.DataType.BitSize + hiCandidate.Dst!.DataType.BitSize);
             var left = CreateWideExpression(loCandidate.Left, hiCandidate.Left, totalSize);
-            var right = CreateWideExpression(loCandidate.Right, hiCandidate.Right, totalSize);
+            var right = CreateWideExpression(loCandidate.Right!, hiCandidate.Right!, totalSize);
             this.dst = CreateWideExpression(loCandidate.Dst, hiCandidate.Dst, totalSize);
             var stmts = hiCandidate.Statement!.Block.Statements;
             var addr = hiCandidate.Statement.Address;
@@ -156,7 +156,7 @@ namespace Reko.Analysis
                 stmMkRight = stmts.Insert(
                     iStm++,
                     addr,
-                    CreateMkSeq(right, hiCandidate.Right, loCandidate.Right));
+                    CreateMkSeq(right, hiCandidate.Right!, loCandidate.Right!));
                 right = ReplaceDstWithSsaIdentifier(right, stmMkRight);
             }
 
@@ -204,11 +204,70 @@ namespace Reko.Analysis
         }
 
         /// <summary>
+        /// Changes the code from:
+        /// <code>
+        /// 1: hi_1 = -hi
+        /// 2: lo_2 = -lo
+        /// 3: C_3 = lo_2 == 0
+        /// 4: hi_2 = (h1_1 - 0) - C_3
+        /// </code>
+        /// to:
+        /// 1: hi_lo = SEQ(hi,lo)
+        ///    hi_lo_4 = -hi_lo
+        ///    hi_1 = -hi
+        /// 2: lo_2 = SLICE(hi_lo_4)
+        /// 3: hi_3 = SLICE(hi_lo_4)
+        /// </summary>
+        /// <param name="loCandidate"></param>
+        /// <param name="hiCandidate"></param>
+        private void CreateLongUnaryInstruction(Candidate loCandidate, Candidate hiCandidate)
+        {
+            var stmHi = ssa.Identifiers[(Identifier) hiCandidate.Dst!].DefStatement;
+            var stmLo = ssa.Identifiers[(Identifier) loCandidate.Dst!].DefStatement;
+            var iStm = stmHi.Block.Statements.IndexOf(stmHi);
+
+            SsaIdentifier AddSsaId(Identifier id) => ssa.Identifiers.Add(id, stmHi, false);
+
+            var totalSize = PrimitiveType.Create(
+                Domain.SignedInt | Domain.UnsignedInt,
+                loCandidate.Dst!.DataType.BitSize + hiCandidate.Dst!.DataType.BitSize);
+            var wideSrc = CreateWideExpression(loCandidate.Left, hiCandidate.Left, totalSize);
+            if (wideSrc is Identifier idWideSrc)
+            {
+                var sidWideSrc = AddSsaId(idWideSrc);
+                wideSrc = sidWideSrc.Identifier;
+                sidWideSrc.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address,
+                    CreateMkSeq(wideSrc, hiCandidate.Left, loCandidate.Left));
+            }
+             
+            var sidWideDst = AddSsaId((Identifier) CreateWideExpression(loCandidate.Dst, hiCandidate.Dst, totalSize));
+
+            var wideDst = sidWideDst.Identifier;
+            sidWideDst.DefStatement = stmHi.Block.Statements.Insert(iStm++, stmHi.Address, 
+                Assign(wideDst, new UnaryExpression(Operator.Neg, wideSrc.DataType, wideSrc)));
+
+            var sidLo = GetSsaIdentifierOf(loCandidate.Dst);
+            if (sidLo is not null)
+            {
+                ssa.RemoveUses(stmLo);
+                stmLo.Instruction = new Assignment(sidLo.Identifier, new Slice(sidLo.Identifier.DataType, wideDst, 0));
+                ssa.AddUses(stmLo);
+            }
+            var sidHi = GetSsaIdentifierOf(hiCandidate.Right);
+            if (sidHi is not null)
+            {
+                ssa.RemoveUses(sidHi.DefStatement);
+                sidHi.DefStatement.Instruction = new Assignment(sidHi.Identifier, new Slice(sidHi.Identifier.DataType, wideDst, loCandidate.Dst.DataType.BitSize));
+                ssa.AddUses(sidHi.DefStatement);
+            }
+        }
+
+        /// <summary>
         /// Find a statement index appropriate for insert the new
         /// long addition statements.
         /// </summary>
         /// <returns></returns>
-        private int FindInsertPosition(AddSubCandidate loCandidate, AddSubCandidate hiCandidate, StatementList stmts)
+        private int FindInsertPosition(Candidate loCandidate, Candidate hiCandidate, StatementList stmts)
         {
             int iStm = stmts.IndexOf(hiCandidate.Statement!);
             if (loCandidate.Dst is Identifier idLow)
@@ -249,7 +308,7 @@ namespace Reko.Analysis
             }
         }
 
-        private SsaIdentifier? GetSsaIdentifierOf(Expression dst)
+        private SsaIdentifier? GetSsaIdentifierOf(Expression? dst)
         {
             if (dst is Identifier id)
                 return ssa.Identifiers[id];
@@ -269,7 +328,7 @@ namespace Reko.Analysis
             {
                 if (listener.IsCanceled())
                     return;
-                ReplaceLongAdditions(block);
+                ReplaceLongOperations(block);
             }
         }
 
@@ -277,7 +336,7 @@ namespace Reko.Analysis
         /// Look for add/adc or sub/sbc pairs that look like long additions
         /// by scanning the statements from the beginning of the block to the end.
         /// </summary>
-        public void ReplaceLongAdditions(Block block)
+        public void ReplaceLongOperations(Block block)
         {
             var stmtsOrig = block.Statements.ToList();
             for (int i = 0; i < block.Statements.Count; ++i)
@@ -285,19 +344,36 @@ namespace Reko.Analysis
                 if (listener.IsCanceled())
                     return;
                 var loInstr = MatchAddSub(block.Statements[i]);
-                if (loInstr is null)
-                    continue;
-                var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!);
-                if (cond is null)
-                    continue;
+                if (loInstr is not null)
+                {
+                    var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!);
+                    if (cond is null)
+                        continue;
 
-                var hiInstr = FindUsingInstruction(block, cond.FlagGroup, loInstr);
-                if (hiInstr is null)
-                    continue;
-                trace.Verbose("Larw: {0}: found add/sub pair {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
-                CreateLongInstruction(loInstr, hiInstr);
+                    var hiInstr = FindUsingAddSub(block, cond.FlagGroup, loInstr);
+                    if (hiInstr is null)
+                        continue;
+                    trace.Verbose("Larw: {0}: found add/sub pair {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
+                    CreateLongBinaryInstruction(loInstr, hiInstr);
+                }
+                loInstr = MatchNegation(block.Statements[i]);
+                if (loInstr is not null)
+                {
+                    if (block.Address.Offset == 0x1780)
+                        _ = this; //$DEBUG
+                    var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!) ??
+                               FindConditionOfNeg(loInstr.Left);
+                    if (cond is null)
+                        continue;
+                    var hiInstr = FindUsingNegation(block, cond.FlagGroup, loInstr);
+                    if (hiInstr is null)
+                        continue;
+                    trace.Verbose("Larw: {0}: found neg/sbc {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
+                    CreateLongUnaryInstruction(loInstr, hiInstr);
+                }
             }
         }
+
 
         /// <summary>
         /// Determines if the carry flag reaches a using instruction, and 
@@ -310,10 +386,10 @@ namespace Reko.Analysis
         /// of the addition.</param>
         /// <returns>The MSB part of the ADD/ADC - SUB/SBC pair if successful,
         /// otherwise null.</returns>
-        public AddSubCandidate? FindUsingInstruction(
+        public Candidate? FindUsingAddSub(
             Block block,
             Identifier cy,
-            AddSubCandidate loInstr)
+            Candidate loInstr)
         {
             var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
             while (queue.Count > 0)
@@ -350,6 +426,35 @@ namespace Reko.Analysis
                 (arch.CarryFlagMask & grf.FlagGroupBits) != 0;
         }
 
+        public Candidate? FindUsingNegation(
+            Block block,
+            Identifier cy,
+            Candidate loInstr)
+        {
+            var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
+            while (queue.TryDequeue(out var use))
+            {
+                var asc = MatchAdcSbc(use);
+                if (asc is null)
+                    continue;
+                if (asc.Op == Operator.ISub &&
+                    asc.Right!.IsZero &&
+                    asc.Left is Identifier idNegatedHi)
+                {
+                    var sidNegatedHi = ssa.Identifiers[idNegatedHi];
+                    var def = sidNegatedHi.GetDefiningExpression();
+                    if (def is UnaryExpression u && u.Operator == Operator.Neg)
+                    {
+                        return new Candidate(asc.Op, u.Expression, asc.Dst)
+                        {
+                            Dst = idNegatedHi
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Finds the subsequent statement in this block that defines a condition code based on the
         /// result in expression <paramref name="exp"/>.
@@ -367,8 +472,8 @@ namespace Reko.Analysis
                     if (!m.Success)
                         continue;
                     var grf = (Identifier)m.CapturedExpression("grf")!;
-                    var condExp = m.CapturedExpression("exp");
-                    if (grf.Storage is FlagGroupStorage && exp == condExp)
+                    //var condExp = m.CapturedExpression("exp");
+                    if (grf.Storage is FlagGroupStorage) // && exp == condExp)
                     {
                         return new CondMatch(grf, exp, use, 0);
                     }
@@ -385,6 +490,48 @@ namespace Reko.Analysis
                 {
                     return new CondMatch(grf, exp, null!, i);
                 }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the statement that defines the condition code for a negation.
+        /// Some architectures check for zeroness before the negation.
+        /// result in expression <paramref name="exp"/>.
+        /// </summary>
+        public CondMatch? FindConditionOfNeg(Expression? exp)
+        {
+            if (exp is Identifier idLo)
+            {
+                foreach (var use in ssa.Identifiers[idLo].Uses)
+                {
+                    var grf = IsGrfSetToNe0(use.Instruction);
+                    if (grf is null)
+                    {
+                        var m = condm.Match(use.Instruction);
+                        if (!m.Success)
+                            continue;
+                        grf = (Identifier) m.CapturedExpression("grf")!;
+                    }
+                    //var condExp = m.CapturedExpression("exp");
+                    if (grf.Storage is FlagGroupStorage) // && exp == condExp)
+                    {
+                        return new CondMatch(grf, exp, use, 0);
+                    }
+                }
+            }
+            return null;
+        }
+
+        private Identifier? IsGrfSetToNe0(Instruction instruction)
+        {
+            if (instruction is Assignment ass &&
+                ass.Dst.Storage is FlagGroupStorage &&
+                ass.Src is BinaryExpression cmp && 
+                cmp.Operator == Operator.Ne &&
+                cmp.Right.IsZero)
+            { 
+                return ass.Dst;
             }
             return null;
         }
@@ -472,7 +619,7 @@ namespace Reko.Analysis
         /// <param name="instr"></param>
         /// <returns>If the match succeeded, returns a partial BinaryExpression
         /// with the left and right side of the ADC/SBC instruction.</returns>
-        public AddSubCandidate? MatchAdcSbc(Statement stm)
+        public Candidate? MatchAdcSbc(Statement stm)
         {
             var m = adcPattern.Match(stm.Instruction);
             if (m.Success)
@@ -482,7 +629,7 @@ namespace Reko.Analysis
                 var op = m.CapturedOperator("op2");
                 if (op is null || !op.Type.IsAddOrSub())
                     return null;
-                return new AddSubCandidate(
+                return new Candidate(
                     op,
                     m.CapturedExpression("left")!,
                     m.CapturedExpression("right")!)
@@ -501,10 +648,10 @@ namespace Reko.Analysis
                     return null;
                 var dst = m.CapturedExpression("dst")!;
                 var left = m.CapturedExpression("left")!;
-                AddSubCandidate? pdp11dst = IsPdp11StyleAdcSbc(op, dst, left);
+                Candidate? pdp11dst = IsPdp11StyleAdcSbc(op, dst, left);
                 if (pdp11dst is not null)
                     return pdp11dst;
-                return new AddSubCandidate(
+                return new Candidate(
                     op,
                     left,
                     Constant.Zero(left.DataType))
@@ -533,7 +680,7 @@ namespace Reko.Analysis
         ///     add r3,r4
         /// On entry we 
         /// </remarks>
-        private AddSubCandidate? IsPdp11StyleAdcSbc(Operator op, Expression dst, Expression left)
+        private Candidate? IsPdp11StyleAdcSbc(Operator op, Expression dst, Expression left)
         {
             if (dst is not Identifier idIntermediate)
                 return null;
@@ -549,7 +696,7 @@ namespace Reko.Analysis
                     var rightFinal = m.CapturedExpression("right")!;
                     if (leftFinal == idIntermediate && op == opFinal)
                     {
-                        return new AddSubCandidate(op, left, rightFinal)
+                        return new Candidate(op, left, rightFinal)
                         {
                             Dst = dstFinal,
                             Statement = use
@@ -560,7 +707,7 @@ namespace Reko.Analysis
             return null;
         }
 
-        public AddSubCandidate? MatchAddSub(Statement stm)
+        public Candidate? MatchAddSub(Statement stm)
         {
             var m = addPattern.Match(stm.Instruction);
             if (!m.Success)
@@ -568,7 +715,7 @@ namespace Reko.Analysis
             var op = m.CapturedOperator("op")!;
             if (!op.Type.IsAddOrSub())
                 return null;
-            return new AddSubCandidate(
+            return new Candidate(
                 op,
                 m.CapturedExpression("left")!,
                 m.CapturedExpression("right")!)
@@ -576,22 +723,38 @@ namespace Reko.Analysis
                 Dst = m.CapturedExpression("dst")!,
             };
         }
-    }
 
-    public class AddSubCandidate
-    {
-        public AddSubCandidate(Operator op, Expression left, Expression right)
+        private Candidate? MatchNegation(Statement stm)
         {
-            this.Op = op;
-            this.Left = left;
-            this.Right = right;
+            if (stm.Instruction is Assignment ass &&
+                ass.Src is UnaryExpression u &&
+                u.Operator == Operator.Neg)
+            {
+                return new Candidate(Operator.ISub, u.Expression, null)
+                {
+                    Dst = ass.Dst
+                };
+            }
+            return null;
         }
 
-        public int StatementIndex;
-        public Statement? Statement;
-        public Expression? Dst;
-        public readonly Operator Op;
-        public readonly Expression Left;
-        public readonly Expression Right;
+        public class Candidate
+        {
+            public Candidate(Operator op, Expression left, Expression? right)
+            {
+                this.Op = op;
+                this.Left = left;
+                this.Right = right;
+            }
+
+            public int StatementIndex;
+            public Statement? Statement;
+            public Expression? Dst;
+            public readonly Operator Op;
+            public readonly Expression Left;
+            public readonly Expression? Right;
+        }
     }
+
+
 }

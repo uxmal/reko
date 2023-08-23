@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             if (loAss.Op != hiAss.Op)
                 return false;
 
-            rw.CreateLongInstruction(loAss, hiAss);
+            rw.CreateLongBinaryInstruction(loAss, hiAss);
             return true;
         }
 
@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             m.Procedure.Dump(true);
             var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
             //Assert.AreEqual("ax_3,0,SCZ_4,SCZ_4 = cond(ax_3),SCZ_4", string.Format("{0},{1},{2},{3}", cm.src, cm.StatementIndex, cm.Statement, cm.FlagGroup));
-            var asc = rw.FindUsingInstruction(block, cm.FlagGroup, new AddSubCandidate(Operator.IAdd, ax, cx));
+            var asc = rw.FindUsingAddSub(block, cm.FlagGroup, new LongAddRewriter.Candidate(Operator.IAdd, ax, cx));
             Assert.AreEqual("dx_8 = dx + bx + C_7", asc.Statement.ToString());
         }
 
@@ -605,6 +605,100 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 m.Assign(A, 0);
                 m.Assign(A, m.IAdd(m.IAdd(A, 0), CF));
                 m.Assign(DPH, A);
+
+                this.block = m.Block;
+            });
+        }
+
+        [Test]
+        public void LarwNegateLong()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	dx_ax_8 = SEQ(dx, ax)
+	dx_ax_9 = -dx_ax_8
+	dx_2 = -dx
+	C_3 = cond(dx_2 != 0<16>)
+	ax_5 = SLICE(dx_ax_9, word16, 0)
+	C_6 = cond(ax_5 != 0<16>)
+	dx_7 = SLICE(dx_ax_9, word16, 16)
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var ax = m.Reg16("ax", 0);
+                var dx = m.Reg16("dx", 2);
+
+                m.Assign(dx, m.Neg(dx));
+                m.Assign(CF, m.Cond(m.Ne0(dx)));
+                m.Assign(ax, m.Neg(ax));
+                m.Assign(CF, m.Cond(m.Ne0(ax)));
+                m.Assign(dx, m.ISubB(dx, m.Word16(0), CF));
+
+                this.block = m.Block;
+            });
+        }
+
+        [Test]
+        public void LarwNegateLong_c_set_before_negation()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	C_2 = dx != 0<16>
+	dx_ax_8 = SEQ(dx, ax)
+	dx_ax_9 = -dx_ax_8
+	dx_3 = -dx
+	C_5 = ax != 0<16>
+	ax_6 = SLICE(dx_ax_9, word16, 0)
+	dx_7 = SLICE(dx_ax_9, word16, 16)
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var ax = m.Reg16("ax", 0);
+                var dx = m.Reg16("dx", 2);
+
+                m.Assign(CF, m.Ne0(dx));
+                m.Assign(dx, m.Neg(dx));
+                m.Assign(CF, m.Ne0(ax));
+                m.Assign(ax, m.Neg(ax));
+                m.Assign(dx, m.ISubB(dx, m.Word16(0), CF));
+
+                this.block = m.Block;
+            });
+        }
+
+        [Test]
+        public void LarwNegateLong_xor_neg()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	dx_1 = 0<16>
+	C_2 = dx_1 != 0<16>
+	dx_ax_8 = -CONVERT(ax, word16, uint32)
+	dx_3 = -dx_1
+	C_5 = ax != 0<16>
+	ax_6 = SLICE(dx_ax_8, word16, 0)
+	dx_7 = SLICE(dx_ax_8, word16, 16)
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var ax = m.Reg16("ax", 0);
+                var dx = m.Reg16("dx", 2);
+
+                m.Assign(dx, m.Word16(0));
+                m.Assign(CF, m.Ne0(dx));
+                m.Assign(dx, m.Neg(dx));
+                m.Assign(CF, m.Ne0(ax));
+                m.Assign(ax, m.Neg(ax));
+                m.Assign(dx, m.ISubB(dx, m.Word16(0), CF));
 
                 this.block = m.Block;
             });
