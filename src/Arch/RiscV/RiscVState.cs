@@ -18,7 +18,6 @@
  */
 #endregion
 
-using System;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -28,7 +27,7 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVState : ProcessorState
     {
-        private RiscVArchitecture arch;
+        private readonly RiscVArchitecture arch;
 
         public RiscVState(RiscVArchitecture arch)
         {
@@ -41,10 +40,7 @@ namespace Reko.Arch.RiscV
             this.InstructionPointer = that.InstructionPointer;
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
         public override ProcessorState Clone()
         {

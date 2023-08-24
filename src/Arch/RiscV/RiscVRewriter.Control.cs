@@ -22,12 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Arch.RiscV
 {
@@ -37,14 +32,14 @@ namespace Reko.Arch.RiscV
         {
             var offset = ((ImmediateOperand)instr.Operands[1]).Value.ToInt32() << 12;
             var addr = instr.Address + offset;
-            var dst = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(0);
             m.Assign(dst, addr);
         }
 
         private void RewriteBranch(Func<Expression, Expression, Expression> fn)
         {
-            var opLeft = RewriteOp(instr.Operands[0]);
-            var opRight = RewriteOp(instr.Operands[1]);
+            var opLeft = RewriteOp(0);
+            var opRight = RewriteOp(1);
             m.Branch(
                 fn(opLeft, opRight),
                 ((AddressOperand)instr.Operands[2]).Address,
@@ -53,7 +48,7 @@ namespace Reko.Arch.RiscV
 
         private void RewriteCompressedBranch(Func<Expression, Expression, Expression> fn)
         {
-            var op = RewriteOp(instr.Operands[0]);
+            var op = RewriteOp(0);
             var zero = Constant.Zero(op.DataType);
             m.Branch(
                 fn(op, zero),
@@ -82,7 +77,7 @@ namespace Reko.Arch.RiscV
             if (reg == arch.LinkRegister)
                 m.Return(0, 0);
             else 
-                m.Goto(RewriteOp(instr.Operands[0]));
+                m.Goto(RewriteOp(0));
         }
 
         private void RewriteCsr(IntrinsicProcedure intrinsic)
@@ -114,7 +109,7 @@ namespace Reko.Arch.RiscV
         private void RewriteJal()
         {
             var continuation = (RegisterStorage)instr.Operands[0];
-            var dst = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(1);
             iclass = InstrClass.Transfer;
             if (continuation.Number == 0)
             {
@@ -131,8 +126,8 @@ namespace Reko.Arch.RiscV
         {
             var continuation = (RegisterStorage)instr.Operands[0];
             var rDst = (RegisterStorage)instr.Operands[1];
-            var dst = RewriteOp(instr.Operands[1]);
-            var off = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(1);
+            var off = RewriteOp(2);
             iclass = InstrClass.Transfer;
             if (!off.IsZero)
             {
@@ -157,7 +152,7 @@ namespace Reko.Arch.RiscV
             else 
             {
                 m.Assign(
-                    RewriteOp(instr.Operands[0]),
+                    RewriteOp(0),
                     instr.Address + instr.Length);
                 m.Goto(dst, 0);
             }

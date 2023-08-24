@@ -20,18 +20,16 @@
 
 #pragma warning disable IDE1006
 
-using Reko.Core.Machine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Types;
-using Reko.Core.Services;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.RiscV
 {

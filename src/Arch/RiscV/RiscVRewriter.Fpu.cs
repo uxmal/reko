@@ -75,8 +75,8 @@ namespace Reko.Arch.RiscV
 
         private void RewriteFcmp(PrimitiveType dt, Func<Expression, Expression,Expression> fn)
         {
-            var left = RewriteOp(instr.Operands[1]);
-            var right = RewriteOp(instr.Operands[2]);
+            var left = RewriteOp(1);
+            var right = RewriteOp(2);
             var dst = RewriteOp(0);
             var result = fn(
                 MaybeSlice(left, dt), 
@@ -86,14 +86,13 @@ namespace Reko.Arch.RiscV
 
         private void RewriteFcvt(PrimitiveType dtFrom, PrimitiveType dtTo)
         {
-            var src = MaybeSlice(RewriteOp(instr.Operands[1]), dtFrom);
-            var dst = RewriteOp(instr.Operands[0]);
+            var src = MaybeSlice(RewriteOp(1), dtFrom);
+            var dst = RewriteOp(0);
             m.Assign(dst, MaybeNanBox(m.Convert(src, dtFrom, dtTo), dst.DataType));
         }
 
         private void RewriteFload(PrimitiveType dt)
         {
-            var dst = RewriteOp(instr.Operands[0]);
             Expression ea;
             if (instr.Operands[1] is MemoryOperand mem)
             {
@@ -108,13 +107,14 @@ namespace Reko.Arch.RiscV
                 //$TODO: once 32-bit loads/stores are fixed, remove
                 // all "is MemoryOperand" occurrences and add a
                 // MemoryOperand case to RewriteOp.
-                ea = RewriteOp(instr.Operands[1]);
-                var offset = RewriteOp(instr.Operands[2]);
+                ea = RewriteOp(1);
+                var offset = RewriteOp(2);
                 if (!offset.IsZero)
                 {
                     ea = m.IAdd(ea, offset);
                 }
             }
+            var dst = RewriteOp(0);
             MaybeDpb(dst, MaybeNanBox(m.Mem(dt, ea), dst.DataType));
         }
 

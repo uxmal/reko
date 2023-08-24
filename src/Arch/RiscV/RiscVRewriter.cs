@@ -269,8 +269,6 @@ namespace Reko.Arch.RiscV
 
         private Expression RewriteOp(int iop) => RewriteOp(instr.Operands[iop], null);
 
-        private Expression RewriteOp(MachineOperand op) => RewriteOp(op, null);
-
         private Expression RewriteOp(MachineOperand op, PrimitiveType? dt)
         {
             switch (op)
