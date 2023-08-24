@@ -76,6 +76,7 @@ namespace Reko.Arch.Sparc
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
+            var regs = arch.Registers;
             while (dasm.MoveNext())
             {
                 instrCur = dasm.Current;
@@ -187,6 +188,38 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.lduw: RewriteLoad(PrimitiveType.Word32); break;
                 case Mnemonic.ldx: RewriteLoad(PrimitiveType.Word64); break;
                 case Mnemonic.ldfsr: RewriteLoad(PrimitiveType.Word32); break;
+
+                case Mnemonic.mova: RewriteMovcc(ConditionCode.ALWAYS, regs.Z, regs.xZ); break;
+                case Mnemonic.movcc: RewriteMovcc(ConditionCode.UGE, regs.C, regs.xC); break;
+                case Mnemonic.movcs: RewriteMovcc(ConditionCode.ULT, regs.C, regs.xC); break;
+                case Mnemonic.move: RewriteMovcc(ConditionCode.EQ, regs.Z, regs.xZ); break;
+                case Mnemonic.movfa: RewriteMovfcc(); break;
+                case Mnemonic.movfe: RewriteMovfcc(); break;
+                case Mnemonic.movfg: RewriteMovfcc(); break;
+                case Mnemonic.movfge: RewriteMovfcc(); break;
+                case Mnemonic.movfl: RewriteMovfcc(); break;
+                case Mnemonic.movfle: RewriteMovfcc(); break;
+                case Mnemonic.movflg: RewriteMovfcc(); break;
+                case Mnemonic.movfn: RewriteMovfcc(); break;
+                case Mnemonic.movfne: RewriteMovfcc(); break;
+                case Mnemonic.movfo: RewriteMovfcc(); break;
+                case Mnemonic.movfu: RewriteMovfcc(); break;
+                case Mnemonic.movfue: RewriteMovfcc(); break;
+                case Mnemonic.movfug: RewriteMovfcc(); break;
+                case Mnemonic.movfuge: RewriteMovfcc(); break;
+                case Mnemonic.movful: RewriteMovfcc(); break;
+                case Mnemonic.movfule: RewriteMovfcc(); break;
+                case Mnemonic.movg: RewriteMovcc(ConditionCode.GT, regs.NZV, regs.xNZV); break;
+                case Mnemonic.movge: RewriteMovcc(ConditionCode.GE, regs.NV, regs.xNV); break;
+                case Mnemonic.movgu: RewriteMovcc(ConditionCode.UGT, regs.ZC, regs.xZC); break;
+                case Mnemonic.movl: RewriteMovcc(ConditionCode.LT, regs.NV, regs.xNV); break;
+                case Mnemonic.movle: RewriteMovcc(ConditionCode.LE, regs.NZV, regs.xNZV); break;
+                case Mnemonic.movleu: RewriteMovcc(ConditionCode.ULE, regs.ZC, regs.xZC); break;
+                case Mnemonic.movn: RewriteMovcc(ConditionCode.NEVER, regs.Z, regs.xZ); break;
+                case Mnemonic.movne: RewriteMovcc(ConditionCode.NE, regs.Z, regs.xZ); break;
+                case Mnemonic.movneg: RewriteMovcc(ConditionCode.LT, regs.N, regs.xN); break;
+                case Mnemonic.movpos: RewriteMovcc(ConditionCode.GE, regs.N, regs.xN); break;
+
                 case Mnemonic.mulx: RewriteAlu(m.IMul, false); break;
                 case Mnemonic.mulscc: RewriteMulscc(); break;
                 case Mnemonic.or: RewriteAlu(m.Or, false); break;
@@ -254,9 +287,19 @@ namespace Reko.Arch.Sparc
             testGenSvc?.ReportMissingRewriter("SparcRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
-        private void EmitCc(FlagGroupStorage grf, Expression src)
+        private void EmitCc(FlagGroupStorage grf32, FlagGroupStorage grf64, Expression src)
         {
-            m.Assign(binder.EnsureFlagGroup(grf), src);
+            if (arch.PointerType.BitSize == 64)
+            {
+                m.Assign(binder.EnsureFlagGroup(grf64), m.Cond(src));
+                var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+                m.Assign(tmp, m.Slice(src, tmp.DataType));
+                m.Assign(binder.EnsureFlagGroup(grf32), m.Cond(tmp));
+            }
+            else
+            {
+                m.Assign(binder.EnsureFlagGroup(grf32), m.Cond(src));
+            }
         }
 
         private void EmitCc(FlagGroupStorage grf, int n)

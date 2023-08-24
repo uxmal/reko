@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Memory;
@@ -79,6 +80,15 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void Sparc64Rw_movcs()
+        {
+            Given_HexString("836577FF");
+            AssertCode(     // movcs\t%xcc,-00000001,%g1
+                "0|L--|0000001000000000(4): 1 instructions",
+                "1|L--|g1 = Test(ULT,xC) ? -1<i64> : g1");
+        }
+
+        [Test]
         public void Sparc64Rw_sllx()
         {
             Given_HexString("BB2F7020");
@@ -112,6 +122,18 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(     // stw	%g1,[%i6+2175]
                 "0|L--|0000001000000000(4): 1 instructions",
                 "1|L--|Mem0[i6 + 2175<i32>:word32] = SLICE(g1, word32, 0)");
+        }
+
+        [Test]
+        public void Sparc64Rw_subcc()
+        {
+            Given_HexString("80A24002");
+            AssertCode(     // subcc %g2,%o1,%g0
+                "0|L--|0000001000000000(4): 4 instructions",
+                "1|L--|g0 = o1 - g2",
+                "2|L--|xNZVC = cond(g0)",
+                "3|L--|v7 = SLICE(g0, word32, 0)",
+                "4|L--|NZVC = cond(v7)");
         }
 
         [Test]

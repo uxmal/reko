@@ -100,12 +100,14 @@ namespace Reko.Arch.Sparc
 
         #region Mutators
 
-        // Register reference
-        private static Mutator<SparcDisassembler> r(int pos)
+        /// <summary>
+        /// Register reference
+        /// </summary>
+        private static Mutator<SparcDisassembler> r(int bitpos)
         {
             return (wInstr, dasm) =>
             {
-                var reg = dasm.arch.Registers.GetRegister((wInstr >> pos) & 0x1F);
+                var reg = dasm.arch.Registers.GetRegister((wInstr >> bitpos) & 0x1F);
                 dasm.ops.Add(reg);
                 return true;
             };
@@ -126,12 +128,14 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> rfsr = r(a => a.Registers.fsr);
         internal static readonly Mutator<SparcDisassembler> ry = r(a => a.Registers.y);
 
-        // Register in a register pair
-        private static Mutator<SparcDisassembler> rp(int pos)
+        /// <summary>
+        /// Register in a register pair
+        /// </summary>
+        private static Mutator<SparcDisassembler> rp(int bitpos)
         {
             return (wInstr, dasm) =>
             {
-                var ireg = (wInstr >> pos) & 0x1F;
+                var ireg = (wInstr >> bitpos) & 0x1F;
                 if ((ireg & 1) != 0)
                     return false;   // odd numbered registers are not allowed.
                 var reg = dasm.arch.Registers.GetRegister(ireg);
@@ -141,12 +145,14 @@ namespace Reko.Arch.Sparc
         }
         internal static readonly Mutator<SparcDisassembler> rp25 = rp(25);
 
-        // FPU register
-        private static Mutator<SparcDisassembler> f(int pos)
+        /// <summary>
+        /// FPU register
+        /// </summary>
+        private static Mutator<SparcDisassembler> f(int bitpos)
         {
             return (u, d) =>
             {
-                var freg = d.arch.Registers.FFloatRegisters[(u >> pos) & 0x1F];
+                var freg = d.arch.Registers.FFloatRegisters[(u >> bitpos) & 0x1F];
                 d.ops.Add(freg);
                 return true;
             };
@@ -156,12 +162,14 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> f24 = f(24);
         internal static readonly Mutator<SparcDisassembler> f25 = f(25);
 
-        // double FPU register encoding
-        private static Mutator<SparcDisassembler> d(int pos)
+        /// <summary>
+        /// Double FPU register encoding
+        /// </summary>
+        private static Mutator<SparcDisassembler> d(int bitpos)
         {
             return (u, d) =>
             {
-                var dreg = GetDoubleRegisterOperand(d.arch.Registers, u, pos);
+                var dreg = GetDoubleRegisterOperand(d.arch.Registers, u, bitpos);
                 if (dreg == null)
                     return false;
                 d.ops.Add(dreg);
@@ -172,12 +180,14 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> d14 = d(14);
         internal static readonly Mutator<SparcDisassembler> d25 = d(25);
 
-        // quad FPU register encoding
-        private static Mutator<SparcDisassembler> q(int pos)
+        /// <summary>
+        /// Quad FPU register encoding
+        /// </summary>
+        private static Mutator<SparcDisassembler> q(int bitpos)
         {
             return (u, d) =>
             {
-                var qreg = GetQuadRegisterOperand(d.arch.Registers, u, pos);
+                var qreg = GetQuadRegisterOperand(d.arch.Registers, u, bitpos);
                 if (qreg == null)
                     return false;
                 d.ops.Add(qreg);
@@ -188,6 +198,9 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> q14 = q(14);
         internal static readonly Mutator<SparcDisassembler> q25 = q(25);
 
+        /// <summary>
+        /// Alternate space
+        /// </summary>
         private static Mutator<SparcDisassembler> A(PrimitiveType size)
         {
             return (u, d) =>
@@ -205,7 +218,9 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> Asw = A(PrimitiveType.Int32);
 
 
-        // 22-bit immediate value
+        /// <summary>
+        /// 22-bit immediate value
+        /// </summary>
         internal static bool I(uint wInstr, SparcDisassembler dasm)
         {
             dasm.ops.Add(GetImmOperand(wInstr, 22));
@@ -255,44 +270,75 @@ namespace Reko.Arch.Sparc
         internal static readonly Mutator<SparcDisassembler> Msh = M(PrimitiveType.Int16);
         internal static readonly Mutator<SparcDisassembler> Msw = M(PrimitiveType.Int32);
 
-        // Register or simm13.
-        private static Mutator<SparcDisassembler> R(bool signed)
+        /// <summary>
+        /// Register or signed immediate.
+        /// </summary>
+        private static Mutator<SparcDisassembler> R(bool signed, int bitsize)
         {
             return (u, d) =>
             {
                 // if 's', return a signed immediate operand where relevant.
-                d.ops.Add(d.GetRegImmOperand(d.arch.Registers, u, signed, 13));
+                d.ops.Add(d.GetRegImmOperand(d.arch.Registers, u, signed, bitsize));
                 return true;
             };
         }
-        internal static readonly Mutator<SparcDisassembler> R0 = R(false);
-        internal static readonly Mutator<SparcDisassembler> Rs = R(true);
+        internal static readonly Mutator<SparcDisassembler> Ru13 = R(false, 13);
+        internal static readonly Mutator<SparcDisassembler> Rs13 = R(true, 13);
+        internal static readonly Mutator<SparcDisassembler> Rs11 = R(true, 11);
+        internal static readonly Mutator<SparcDisassembler> Rs10 = R(true, 10);
 
-        // Register or simm10
-        private static Mutator<SparcDisassembler> RorSimm10()
-        {
-            return (u, d) =>
-            {
-                // if 's', return a signed immediate operand where relevant.
-                d.ops.Add(d.GetRegImmOperand(d.arch.Registers, u, true, 10));
-                return true;
-            };
-        }
-        internal static readonly Mutator<SparcDisassembler> Rs10 = RorSimm10();
 
-        // Register or uimm5/6
+        /// <summary>
+        /// Register or uimm5/6
+        /// </summary>
         internal static bool S(uint wInstr, SparcDisassembler dasm)
         {
             dasm.ops.Add(dasm.GetRegUImmOperand(dasm.arch.Registers, wInstr, 6));
             return true;
         }
 
-        // trap number
+        /// <summary>
+        /// Trap number
+        /// </summary>
         internal static bool T(uint wInstr, SparcDisassembler dasm)
         {
             dasm.ops.Add(dasm.GetRegImmOperand(dasm.arch.Registers, wInstr, false, 7));
             return true;
         }
+
+        /// <summary>
+        /// FCC encoding
+        /// </summary>
+        internal static bool fcc(uint wInstr, SparcDisassembler dasm)
+        {
+            var fccCode = ccField.Read(wInstr);
+            dasm.ops.Add(new ConditionCodeOperand(ffields[fccCode]));
+            return true;
+        }
+
+        /// <summary>
+        /// ICC/XCC encoding
+        /// </summary>
+        internal static bool icc(uint wInstr, SparcDisassembler dasm)
+        {
+            var iccCode = ifields[ccField.Read(wInstr)];
+            if (iccCode == ConditionField.None)
+                return false;
+            dasm.ops.Add(new ConditionCodeOperand(iccCode));
+            return true;
+        }
+
+        private static readonly Bitfield ccField = new Bitfield(11, 2);
+
+        private static readonly ConditionField[] ffields = new[]
+        {
+            ConditionField.fcc0,ConditionField.fcc1,ConditionField.fcc2,ConditionField.fcc3,
+        };
+
+        private static readonly ConditionField[] ifields = new[]
+        {
+            ConditionField.icc,ConditionField.None,ConditionField.xcc,ConditionField.None,
+        };
 
         internal static bool nyi(uint wInstr, SparcDisassembler dasm)
         {
@@ -357,13 +403,9 @@ namespace Reko.Arch.Sparc
         {
             if ((wInstr & (1 << 13)) != 0)
             {
-                // Sign-extend the bastard.
-                int imm = (int) wInstr & ((1 << bits) - 1);
-                int mask = (0 - (imm & (1 << (bits - 1)))) << 1;
-                imm |= mask;
-                Constant c = signed
-                    ? Constant.Create(arch.SignedWord, (long) imm)
-                    : Constant.Create(arch.WordWidth, (long) imm);
+                int imm = (int) Bits.SignExtend(wInstr, bits);
+                var dt = signed ? arch.SignedWord : arch.WordWidth;
+                Constant c = Constant.Create(dt, (long) imm);
                 return new ImmediateOperand(c);
             }
             else
@@ -376,8 +418,7 @@ namespace Reko.Arch.Sparc
         {
             if ((wInstr & (1 << 13)) != 0)
             {
-                // Sign-extend the bastard.
-                uint imm = wInstr & ((1u << bits) - 1);
+                ulong imm = Bits.ZeroExtend(wInstr, bits);
                 return new ImmediateOperand(Constant.Create(this.arch.WordWidth, imm));
             }
             else

@@ -72,6 +72,12 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void Spar64Dasm_movcs()
+        {
+            AssertCode("movcs\t%xcc,-00000001,%g1", "836577FF");
+        }
+
+        [Test]
         public void Sparc64Dasm_return()
         {
             AssertCode("return\t%i7+00000008", "81CFE008");

@@ -40,7 +40,7 @@ namespace Reko.Arch.Sparc
                 op(op(src1, src2), C));
             if (emitCc)
             {
-                EmitCc(arch.Registers.NZVC, m.Cond(dst));
+                EmitCc(arch.Registers.NZVC, arch.Registers.xNZVC, dst);
             }
         }
 
@@ -60,7 +60,8 @@ namespace Reko.Arch.Sparc
         {
             RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(2);
-            EmitCc(arch.Registers.NZVC, m.Cond(dst));
+            EmitCc(arch.Registers.NZVC, arch.Registers.xNZVC, dst);
+
         }
 
         private void RewriteBinaryCc(IntrinsicProcedure intrinsic)
@@ -69,7 +70,7 @@ namespace Reko.Arch.Sparc
             var src2 = RewriteOp(1);
             var dst = RewriteOp(2);
             m.Assign(dst, m.Fn(intrinsic.MakeInstance(src1.DataType), src1, src2));
-            EmitCc(arch.Registers.NZVC, m.Cond(dst));
+            EmitCc(arch.Registers.NZVC, arch.Registers.xNZVC, dst);
         }
 
         private void RewriteLdd()
@@ -134,9 +135,45 @@ namespace Reko.Arch.Sparc
         {
             RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(2);
-            EmitCc(arch.Registers.NZ, m.Cond(dst));
+            EmitCc(arch.Registers.NZ, arch.Registers.xNZ, dst);
             EmitCc(arch.Registers.V, 0);
             EmitCc(arch.Registers.C, 0);
+        }
+
+        private void RewriteMovcc(ConditionCode cc, FlagGroupStorage grf32, FlagGroupStorage grf64)
+        {
+            var consequent = RewriteOp(1);
+            var dst = RewriteOp(2);
+            if (cc == ConditionCode.ALWAYS)
+            {
+                m.Assign(dst, consequent);
+                return;
+            }
+            else if (cc == ConditionCode.NEVER)
+            {
+                m.Assign(dst, dst);
+                return;
+            }
+            var ccField = ((ConditionCodeOperand) instrCur.Operands[0]).Field;
+            FlagGroupStorage grf;
+            switch (ccField)
+            {
+            case ConditionField.icc: grf = grf32; break;
+            case ConditionField.xcc: grf = grf64; break;
+            default: 
+                EmitUnitTest();
+                iclass = InstrClass.Invalid; m.Invalid();
+                return;
+            }
+            var test = m.Test(cc, binder.EnsureFlagGroup(grf));
+            m.Assign(dst, m.Conditional(dst.DataType, test, consequent, dst));
+        }
+
+        private void RewriteMovfcc()
+        {
+            EmitUnitTest();
+            iclass = InstrClass.Invalid; m.Invalid();
+            return;
         }
 
         private void RewriteMulscc()
@@ -147,7 +184,7 @@ namespace Reko.Arch.Sparc
             m.Assign(
                 dst,
                 m.Fn(mulscc_intrinsic.MakeInstance(PrimitiveType.Int32), src1, src2));
-            EmitCc(arch.Registers.NZVC, m.Cond(dst));
+            EmitCc(arch.Registers.NZVC, arch.Registers.xNZVC, dst);
         }
 
         private void RewriteRestore()

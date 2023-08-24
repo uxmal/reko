@@ -48,8 +48,21 @@ namespace Reko.Arch.Sparc
         public readonly FlagGroupStorage Z;
         public readonly FlagGroupStorage V;
         public readonly FlagGroupStorage C;
+        public readonly FlagGroupStorage NV;
         public readonly FlagGroupStorage NZ;
+        public readonly FlagGroupStorage NZV;
         public readonly FlagGroupStorage NZVC;
+        public readonly FlagGroupStorage ZC;
+
+        public readonly FlagGroupStorage xN;
+        public readonly FlagGroupStorage xZ;
+        public readonly FlagGroupStorage xV;
+        public readonly FlagGroupStorage xC;
+        public readonly FlagGroupStorage xNV;
+        public readonly FlagGroupStorage xNZ;
+        public readonly FlagGroupStorage xNZV;
+        public readonly FlagGroupStorage xNZVC;
+        public readonly FlagGroupStorage xZC;
 
         public readonly FlagGroupStorage E;
         public readonly FlagGroupStorage L;
@@ -120,8 +133,21 @@ namespace Reko.Arch.Sparc
             Z = new FlagGroupStorage(psr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
             V = new FlagGroupStorage(psr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
             C = new FlagGroupStorage(psr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            NV = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.VF), "NV", PrimitiveType.Byte);
             NZ = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF), "NZ", PrimitiveType.Byte);
+            NZV = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), "NZV", PrimitiveType.Byte);
             NZVC = new FlagGroupStorage(psr, (uint) (FlagM.NF | FlagM.ZF |FlagM.VF | FlagM.CF), "NZVC", PrimitiveType.Byte);
+            ZC = new FlagGroupStorage(psr, (uint) (FlagM.ZF | FlagM.CF), "ZC", PrimitiveType.Byte);
+
+            xN = new FlagGroupStorage(psr, (uint) FlagM.xNF, "xN", PrimitiveType.Bool);
+            xZ = new FlagGroupStorage(psr, (uint) FlagM.xZF, "xZ", PrimitiveType.Bool);
+            xV = new FlagGroupStorage(psr, (uint) FlagM.xVF, "xV", PrimitiveType.Bool);
+            xC = new FlagGroupStorage(psr, (uint) FlagM.xCF, "xC", PrimitiveType.Bool);
+            xNV = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xVF), "xNV", PrimitiveType.Byte);
+            xNZ = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF), "xNZ", PrimitiveType.Byte);
+            xNZV = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF | FlagM.xVF), "xNZV", PrimitiveType.Byte);
+            xNZVC = new FlagGroupStorage(psr, (uint) (FlagM.xNF | FlagM.xZF | FlagM.xVF | FlagM.xCF), "xNZVC", PrimitiveType.Byte);
+            xZC = new FlagGroupStorage(psr, (uint) (FlagM.xZF | FlagM.xCF), "xZC", PrimitiveType.Byte);
 
 
             E = new FlagGroupStorage(psr, (uint) FlagM.EF, "E", PrimitiveType.Bool);
@@ -176,5 +202,10 @@ namespace Reko.Arch.Sparc
         LF = 0x40,          // FPU less than
         GF = 0x20,          // FPU greater than
         UF = 0x10,          // FPU unordered
+
+        xNF = 0x800,        // sign     (64-bit)
+        xZF = 0x400,        // zero     (64-bit)
+        xVF = 0x200,        // overflow (64-bit)
+        xCF = 0x100,        // carry    (64-bit)
     }
 }
