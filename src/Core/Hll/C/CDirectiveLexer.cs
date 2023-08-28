@@ -185,6 +185,10 @@ namespace Reko.Core.Hll.C
                             token = ReadDefine();
                             state = State.StartLine;
                             break;
+                        case Directive.Undef:
+                            token = ReadUndef();
+                            state = State.StartLine;
+                            break;
                         case Directive.Ifdef:
                             var ifdefVar = (string) Expect(CTokenType.Id)!;
                             startIgnoring = !IsDefined(ifdefVar);
@@ -253,6 +257,14 @@ namespace Reko.Core.Hll.C
                 }
                 tokens.Add(token);
             }
+        }
+
+        public CToken ReadUndef()
+        {
+            var macroName = (string) Expect(CTokenType.Id)!;
+            this.macros.Remove(macroName);
+
+            return ReadToken();
         }
 
         public virtual CToken ReadPragma(string pragma)

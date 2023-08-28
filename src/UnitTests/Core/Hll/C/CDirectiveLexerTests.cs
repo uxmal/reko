@@ -185,6 +185,48 @@ namespace Reko.UnitTests.Core.Hll.C
         }
 
         [Test]
+        public void CDirectiveLexer_undef()
+        {
+            Lex(
+                "#define omg lol\r\n" +
+                "omg wtf\r\n" +
+                "#undef omg\r\n" +
+                "omg hi");
+            Assert.AreEqual("lol", lexer.Read().Value);
+            Assert.AreEqual("wtf", lexer.Read().Value);
+            Assert.AreEqual("omg", lexer.Read().Value);
+            Assert.AreEqual("hi", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_undef_nonexistent()
+        {
+            Lex(
+                "/* does not exist */\r\n" +
+                "#undef macro\r\nmacro");
+            Assert.AreEqual("macro", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_undef_comments()
+        {
+            Lex(
+                "#define xxx yyy\r\n" +
+                "aaa xxx bbb\r\n" +
+                "#/*xd*/undef/* asdf */xxx// comment;?\r\n" +
+                "ccc xxx ddd");
+            Assert.AreEqual("aaa", lexer.Read().Value);
+            Assert.AreEqual("yyy", lexer.Read().Value);
+            Assert.AreEqual("bbb", lexer.Read().Value);
+            Assert.AreEqual("ccc", lexer.Read().Value);
+            Assert.AreEqual("xxx", lexer.Read().Value);
+            Assert.AreEqual("ddd", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
         public void CDirectiveLexer_multiline()
         {
             Lex(
