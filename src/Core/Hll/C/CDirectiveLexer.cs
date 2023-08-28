@@ -85,7 +85,6 @@ namespace Reko.Core.Hll.C
             Ifndef,
             Line,
             Pragma,
-            __Pragma,
             Undef,
         }
 
