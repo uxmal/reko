@@ -250,7 +250,7 @@ bar
         }
 
         [Test]
-        public void CDirectiveLexer_if_else()
+        public void CDirectiveLexer_ifdef_else()
         {
             LexMsvc(@"
 #ifdef DOIT
@@ -262,6 +262,36 @@ bar
 ");
             Assert.AreEqual("dontdoit", lexer.Read().Value);
             Assert.AreEqual("bar", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_nested_ifdefs()
+        {
+            LexMsvc(@"
+#ifdef A
+a
+# ifdef B
+ab
+# else
+anotb
+# endif
+posta
+#else
+b
+# ifdef C
+bc
+# else
+bnotc
+# endif
+postb
+#endif
+done
+");
+            Assert.AreEqual("b", lexer.Read().Value);
+            Assert.AreEqual("bnotc", lexer.Read().Value);
+            Assert.AreEqual("postb", lexer.Read().Value);
+            Assert.AreEqual("done", lexer.Read().Value);
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
         }
     }

@@ -52,7 +52,7 @@ namespace Reko.Core.Hll.C
         private readonly ParserState parserState;
         private readonly Dictionary<string, List<CToken>> macros;
         private readonly CLexer lexer;
-        private readonly Stack<bool> ifdefs;
+        private readonly Stack<(bool prev, bool total)> ifdefs;
         private IEnumerator<CToken>? expandedTokens;
         private State state;
         private bool ignoreTokens;
@@ -63,7 +63,7 @@ namespace Reko.Core.Hll.C
             this.lexer = lexer;
             this.macros = new();
             this.state = State.StartLine;
-            this.ifdefs = new Stack<bool>();
+            this.ifdefs = new Stack<(bool, bool)>();
             this.ignoreTokens = false;
         }
 
@@ -92,6 +92,7 @@ namespace Reko.Core.Hll.C
         public CToken Read()
         {
             var token = ReadToken();
+            bool startIgnoring;
             for (; ; )
             {
                 switch (state)
@@ -187,22 +188,24 @@ namespace Reko.Core.Hll.C
                             break;
                         case Directive.Ifdef:
                             var ifdefVar = (string) Expect(CTokenType.Id)!;
-                            ifdefs.Push(ignoreTokens);
-                            ignoreTokens = !IsDefined(ifdefVar);
+                            startIgnoring = !IsDefined(ifdefVar);
+                            ifdefs.Push((startIgnoring, ignoreTokens));
+                            ignoreTokens |= startIgnoring;
                             token = ReadToken();    //$TODO: read to end of line
                             state = State.StartLine;
                             break;
                         case Directive.Ifndef:
                             ifdefVar = (string) Expect(CTokenType.Id)!;
-                            ifdefs.Push(ignoreTokens);
-                            ignoreTokens = IsDefined(ifdefVar);
+                            startIgnoring = IsDefined(ifdefVar);
+                            ifdefs.Push((startIgnoring, ignoreTokens));
+                            ignoreTokens |= startIgnoring;
                             token = ReadToken();    //$TODO: read to end of line
                             state = State.StartLine;
                             break;
                         case Directive.Endif:
                             if (ifdefs.Count == 0)
                                 throw new FormatException($"Unbalanced #if/#endif");
-                            ignoreTokens = ifdefs.Pop();
+                            (_, ignoreTokens) = ifdefs.Pop();
                             token = ReadToken();    //$TODO: read to end of line
                             state = State.StartLine;
                             break;
@@ -212,7 +215,8 @@ namespace Reko.Core.Hll.C
                         if (ifdefs.Count == 0)
                             throw new FormatException($"Unbalanced #if/#else");
                         state = State.StartLine;
-                        ignoreTokens = !ignoreTokens;
+                        (startIgnoring, ignoreTokens) = ifdefs.Peek();
+                        ignoreTokens |= !startIgnoring;
                         token = ReadToken();    //$TODO: read to end of line
                         state = State.StartLine;
                         break;
