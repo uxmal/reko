@@ -127,8 +127,6 @@ namespace Reko.Core.Hll.Pascal
             {
                 int c = rdr.Peek();
                 char ch = (char) c;
-                if (lineNumber == 283000)
-                    System.Diagnostics.Debug.Print("@@@{0}", ch);
                 switch (st)
                 {
                 case State.Init:
