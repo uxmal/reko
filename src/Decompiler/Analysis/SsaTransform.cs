@@ -705,7 +705,12 @@ namespace Reko.Analysis
             var sp_ssa = ssa.Procedure.Frame.EnsureRegister(sp).Accept(this);
             ci.Uses.Add(new CallBinding(sp, sp_ssa));
 
-            //if (stmCur!.Address.Offset == )
+            // Bind the Mem pseudo-variable in the state in which it was at
+            // the point of call.
+            var mem = ssa.Procedure.Frame.Memory;
+            var mem_ssa = mem.Accept(this);
+            ci.Uses.Add(new CallBinding(mem.Storage, mem_ssa));
+
             var sig = callee.Signature;
             var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite);
             foreach (var param in sig.Parameters!)
@@ -783,15 +788,23 @@ namespace Reko.Analysis
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
                     .Select(d => d.Identifier)
-                    .Where(i => ssa.Identifiers[i].Uses.Count > 0))
+                    .Where(i => ssa.Identifiers[i].Uses.Count > 0 &&
+                           i.Storage is not MemoryStorage)) // Don't capture the old memory storage.
                 // Stack pointers should be added to uses list.
                 // They are required for reconstruction of signature of
                 // indirect calls by IndirectCallRewriter
                 .Concat(
                     frame.Identifiers.Where(id =>
                         id.Storage == arch.StackRegister ||
-                        id.Storage == arch.FpuStackRegister));
+                        id.Storage == arch.FpuStackRegister))
+                // Hang onto the most recent modification of the pseudo-identifier
+                // representing memory; it will be used in CallApplicationBuilder
+                // to rebuild arguments to a call.
+                .Concat(new[] { frame.Memory });
+                ;
+
             ids = CollectFlagGroups(ids, frame, arch);
+            Expression idNew;
             foreach (Identifier id in ResolveOverlaps(ids))
             {
                 var calleeStg = FrameShift(ci, id.Storage, stackDepth);
@@ -799,13 +812,17 @@ namespace Reko.Analysis
                     !existingUses.Contains(calleeStg) &&
                     (calleeStg is RegisterStorage ||
                      calleeStg is StackStorage stack &&
-                     arch.IsStackArgumentOffset(stack.StackOffset)))
+                     arch.IsStackArgumentOffset(stack.StackOffset) ||
+                     calleeStg is MemoryStorage))
                 {
-                    var idNew = NewUse(id, stmCur!, true);
+                    idNew = NewUse(id, stmCur!, true);
                     ci.Uses.Add(new CallBinding(calleeStg, idNew));
                     existingUses.Add(calleeStg);
                 }
             }
+            //idNew = NewUse(frame.Memory, stmCur!, true);
+            //ci.Uses.Add(new CallBinding(frame.Memory.Storage, idNew));
+            //existingUses.Add(frame.Memory.Storage);
 
             ids = SeparateSequences(frame.Identifiers);
             ids = CollectFlagGroups(frame.Identifiers, frame, arch);

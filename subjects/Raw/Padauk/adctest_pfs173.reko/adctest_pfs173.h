@@ -2226,11 +2226,11 @@ T_130: (in 0xB<8> @ 0052 : byte)
   Class: Eq_8
   DataType: byte
   OrigDataType: byte
-T_131: (in a_5 @ 0052 : byte)
+T_131: (in a_6 @ 0052 : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_132: (in __out(0xB<8>, a_5) @ 0052 : void)
+T_132: (in __out(0xB<8>, a_6) @ 0052 : void)
   Class: Eq_12
   DataType: void
   OrigDataType: void
@@ -2254,11 +2254,11 @@ T_137: (in 0x63<8> @ 0054 : byte)
   Class: Eq_8
   DataType: byte
   OrigDataType: byte
-T_138: (in a_7 @ 0054 : byte)
+T_138: (in a_8 @ 0054 : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_139: (in __out(0x63<8>, a_7) @ 0054 : void)
+T_139: (in __out(0x63<8>, a_8) @ 0054 : void)
   Class: Eq_12
   DataType: void
   OrigDataType: void

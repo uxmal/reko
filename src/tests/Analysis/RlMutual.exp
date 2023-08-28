@@ -26,16 +26,16 @@ l0C00_0004:
 l0C00_0009:
 	call fn0C00_0013 (retsize: 2;)
 		uses: dx:dx
-		defs: dx:dx_10
+		defs: dx:dx_11
 l0C00_000F:
 	dx_7 = dx - 1<16>
 l0C00_0010:
-	dx_14 = PHI((dx_10, l0C00_0009), (dx_7, l0C00_000F))
-	ax_15 = dx_14
+	dx_15 = PHI((dx_11, l0C00_0009), (dx_7, l0C00_000F))
+	ax_16 = dx_15
 	return
 fn0C00_0004_exit:
-	use ax_15
-	use dx_14
+	use ax_16
+	use dx_15
 // fn0C00_0013 /////////////////////
 	LiveOut:   dx:[0..15]
 	BitsUsed:  dx:[0..15]
@@ -50,13 +50,13 @@ l0C00_0013:
 l0C00_0018:
 	call fn0C00_0004 (retsize: 2;)
 		uses: dx:dx - 1<16>
-		defs: dx:dx_17
+		defs: dx:dx_18
 l0C00_001F:
 	call fn0C00_0004 (retsize: 2;)
 		uses: dx:dx - 0xA<16>
-		defs: dx:dx_10
+		defs: dx:dx_11
 l0C00_0025:
-	dx_27 = PHI((dx_17, l0C00_0018), (dx_10, l0C00_001F))
+	dx_28 = PHI((dx_18, l0C00_0018), (dx_11, l0C00_001F))
 	return
 fn0C00_0013_exit:
-	use dx_27
+	use dx_28

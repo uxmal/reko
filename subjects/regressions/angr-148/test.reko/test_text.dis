@@ -32,7 +32,7 @@ l0000000000400487:
 	branch true l0000000000400485
 l0000000000400491:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x601040<u64>
+		uses: Mem:Mem8,rdi:0x601040<u64>
 	return
 l0000000000400485:
 	return
@@ -55,7 +55,7 @@ l00000000004004C4:
 	branch true l00000000004004C2
 l00000000004004CE:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x601040<u64>,rsi:0<64>
+		uses: Mem:Mem8,rdi:0x601040<u64>,rsi:0<64>
 	return
 l00000000004004C2:
 	return
@@ -151,7 +151,7 @@ l0000000000400550:
 l0000000000400588:
 l0000000000400590:
 	call Mem30[0x0000000000600E10<p64> + rbx_33 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
+		uses: Mem:Mem30,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_33 = rbx_33 + 1<64>
 	branch rbx_33 != rbp_31 >> 3<64> l0000000000400590
 l00000000004005A6:

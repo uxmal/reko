@@ -5781,8 +5781,8 @@ Eq_n fn00007358(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, struct Eq_
 						r9_n.u4 = (word32) (byte) r9_n;
 					}
 					word32 r12_n;
-					word32 r5_n;
 					word32 r6_n;
+					word32 r5_n;
 					if (SLICE(fn00007754(r2_n, r3_n, r10_n, r9_n, r0_n, r2_n, r4_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 						goto l0000773A;
 l00007718:
@@ -5850,10 +5850,10 @@ l000075A2:
 										r9_n.u0 = 0x00;
 									else
 										r9_n.u4 = (word32) ((r3_n & 0x05) == 0x05);
-									word32 r4_n;
 									word32 r6_n;
 									word32 r12_n;
 									word32 r2_n;
+									word32 r4_n;
 									if (SLICE(fn00007754(r2_n, r3_n, r10_n, r9_n, r0_n, r5_n, r7_n->dwFFFFFFEC - 0x04, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 										goto l0000773A;
 								}
@@ -5903,8 +5903,8 @@ l00007672:
 						struct Eq_n * r7_n;
 						Eq_n r12_n;
 						r6_n->ptr019C();
-						word32 r5_n;
 						word32 r12_n;
+						word32 r5_n;
 						if (SLICE(fn00007754(r2_n, r3_n, r5_n, r7_n->tFFFFFFE8.u4, r0_n, r1_n, r12_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 							break;
 						r8_n = (struct Eq_n *) *r7_n->ptrFFFFFFFC;
@@ -6746,8 +6746,8 @@ l00007E3E:
 						if (r5_n == null)
 							break;
 						union Eq_n ** r5_n;
-						word32 r12_n;
 						word32 r6_n;
+						word32 r12_n;
 						if (SLICE(fn00008144(r2_n, r8_n, r9_n, r2_n, r1_n, r12_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 							goto l00008104;
 						r5_n = (union Eq_n *) *r5_n;
@@ -6769,9 +6769,9 @@ l00007E3E:
 							r9_n = (word32) ((r3_n & 0x05) == 0x05);
 						r9_n.u4 = (word32) (byte) r9_n;
 					}
-					word32 r12_n;
 					word32 r5_n;
 					word32 r6_n;
+					word32 r12_n;
 					if (SLICE(fn00008144(r2_n, r10_n, r9_n, r0_n, r2_n, r4_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 						goto l00008128;
 l00008104:
@@ -6803,9 +6803,9 @@ l00007F8A:
 							r7_n->dwFFFFFFE0 = (word32) r9_n;
 							Eq_n r2_n;
 							Eq_n r4_n;
-							word32 r8_n;
 							word32 r12_n;
 							word32 r6_n;
+							word32 r8_n;
 							Eq_n r5_n;
 							if (!SLICE(fn00008144(r2_n, r8_n, r9_n, r5_n, r1_n, (char *) r12_n + 4, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 							{
@@ -6823,9 +6823,9 @@ l00007F8A:
 									r7_n->dwFFFFFFE0 = (word32) (byte) r9_n;
 								}
 								Eq_n r2_n;
-								word32 r12_n;
 								word32 r4_n;
 								word32 r6_n;
+								word32 r12_n;
 								if (SLICE(fn00008144(r2_n, r10_n, r7_n->dwFFFFFFE0, r0_n, r5_n, r4_n, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 									goto l00008128;
 								if (r5_n != r1_n)
@@ -6840,10 +6840,10 @@ l00007F8A:
 										r9_n.u0 = 0x00;
 									else
 										r9_n.u4 = (word32) ((r3_n & 0x05) == 0x05);
-									word32 r12_n;
-									word32 r6_n;
-									word32 r2_n;
 									word32 r4_n;
+									word32 r6_n;
+									word32 r12_n;
+									word32 r2_n;
 									if (SLICE(fn00008144(r2_n, r10_n, r9_n, r0_n, r5_n, r7_n->dwFFFFFFEC - 0x01, out r0_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out lr_n), bool, 1))
 										goto l00008128;
 								}
@@ -11771,7 +11771,7 @@ l0000ADB8:
 								r7 += r5_n;
 								sp_n = (struct Eq_n *) (&sp_n->dw0000 + 1);
 							}
-							Mem1103[sp_n + 44:word32] = Mem1097[sp_n + 44:word32] + r1_n;
+							Mem1105[sp_n + 44:word32] = Mem1099[sp_n + 44:word32] + r1_n;
 							goto l0000B77E;
 						case 0x55:
 							if (r4_n != 0x45)

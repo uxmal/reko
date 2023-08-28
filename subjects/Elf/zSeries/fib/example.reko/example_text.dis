@@ -35,6 +35,7 @@ l000000000000066A:
 	branch r1_13 != 0<64> l000000000000067C
 l000000000000067C:
 	call r1_13 (retsize: 0;)
+		uses: Mem:Mem0
 	return
 l000000000000067A_1:
 	return
@@ -61,7 +62,7 @@ l00000000000006A8:
 	branch r1_15 != 0<64> l00000000000006BA
 l00000000000006BA:
 	call r1_15 (retsize: 0;)
-		uses: r2:0x0000000000002068<p64>
+		uses: Mem:Mem0,r2:0x0000000000002068<p64>
 	return
 l00000000000006B8_1:
 	return
@@ -122,7 +123,7 @@ l000000000000074C:
 	branch r1_32 == 0<64> l0000000000000740
 l0000000000000760:
 	call r1_32 (retsize: 0;)
-		uses: r13:r13_36,r14:0x0000000000000762<p64>
+		uses: Mem:Mem11,r13:r13_36,r14:0x0000000000000762<p64>
 		defs: CC:CC_44,r15:r15_38
 
 
@@ -159,7 +160,7 @@ l00000000000007CA:
 	word64 r11_101
 	word64 r2_105
 	call Mem25[r11_22 + 280<i64>:word64] (retsize: 0;)
-		uses: r1:r1_82,r10:Mem25[v29_87:word64],r11:Mem25[v29_87 + 8<i64>:word64],r12:Mem25[v29_87 + 16<i64>:word64],r13:Mem25[v29_87 + 24<i64>:word64],r14:Mem25[v29_87 + 32<i64>:word64],r2:r1_82
+		uses: Mem:Mem25,r1:r1_82,r10:Mem25[v29_87:word64],r11:Mem25[v29_87 + 8<i64>:word64],r12:Mem25[v29_87 + 16<i64>:word64],r13:Mem25[v29_87 + 24<i64>:word64],r14:Mem25[v29_87 + 32<i64>:word64],r2:r1_82
 		defs: r10:r10_100,r11:r11_101,r2:r2_105
 	r10Out = r10_100
 	r11Out = r11_101
@@ -180,7 +181,7 @@ l00000000000007E0:
 	word64 r10_71
 	word64 r1_39 = CONVERT(SLICE(fib(0xA<64>, out r10_71, out r11_30), word32, 0), word32, int64)
 	call Mem25[r11_30 + 288<i64>:word64] (retsize: 0;)
-		uses: r1:r1_39,r11:Mem25[r11_30 + 264<i64>:word64],r12:Mem25[r11_30 + 272<i64>:word64],r13:Mem25[r11_30 + 280<i64>:word64],r14:Mem25[r11_30 + 288<i64>:word64],r2:r1_39,r3:r3
+		uses: Mem:Mem25,r1:r1_39,r11:Mem25[r11_30 + 264<i64>:word64],r12:Mem25[r11_30 + 272<i64>:word64],r13:Mem25[r11_30 + 280<i64>:word64],r14:Mem25[r11_30 + 288<i64>:word64],r2:r1_39,r3:r3
 	return
 main_exit:
 
@@ -210,7 +211,7 @@ l0000000000000856:
 l000000000000085A:
 	word64 r11_80
 	call Mem29[r7_57:word64] (retsize: 0;)
-		uses: r10:r10_65,r11:r11_70,r12:r12_71,r13:r13_72,r14:0x0000000000000872<p64>,r2:r10_65,r3:r9_63,r4:r8_61,r6:r6_73,r7:r7_58 + 8<i64>,r8:r8_61,r9:r9_63
+		uses: Mem:Mem29,r10:r10_65,r11:r11_70,r12:r12_71,r13:r13_72,r14:0x0000000000000872<p64>,r2:r10_65,r3:r9_63,r4:r8_61,r6:r6_73,r7:r7_58 + 8<i64>,r8:r8_61,r9:r9_63
 		defs: r10:r10_79,r11:r11_80,r12:r12_81,r13:r13_82,r15:r15_75,r2:r2_84,r3:r3_85,r6:r6_88,r7:r7_76,r8:r8_77,r9:r9_78
 	r11_55 = r11_80 - 1<i64>
 	branch r11_80 != 1<64> l000000000000085A
@@ -218,7 +219,7 @@ l0000000000000876:
 	word64 v18_94 = r15_30 + 216<i64>
 	word64 r4_93 = Mem29[r15_30 + 272<i64>:word64]
 	call r4_93 (retsize: 0;)
-		uses: r10:Mem29[v18_94 + 24<i64>:word64],r11:Mem29[v18_94 + 32<i64>:word64],r12:Mem29[v18_94 + 40<i64>:word64],r13:Mem29[v18_94 + 48<i64>:word64],r14:Mem29[v18_94 + 56<i64>:word64],r2:r2_112,r3:r3_113,r4:r4_93,r6:r6_114,r7:Mem29[v18_94:word64],r8:Mem29[v18_94 + 8<i64>:word64],r9:Mem29[v18_94 + 16<i64>:word64]
+		uses: Mem:Mem29,r10:Mem29[v18_94 + 24<i64>:word64],r11:Mem29[v18_94 + 32<i64>:word64],r12:Mem29[v18_94 + 40<i64>:word64],r13:Mem29[v18_94 + 48<i64>:word64],r14:Mem29[v18_94 + 56<i64>:word64],r2:r2_112,r3:r3_113,r4:r4_93,r6:r6_114,r7:Mem29[v18_94:word64],r8:Mem29[v18_94 + 8<i64>:word64],r9:Mem29[v18_94 + 16<i64>:word64]
 	return
 __libc_csu_init_exit:
 

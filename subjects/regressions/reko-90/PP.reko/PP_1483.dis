@@ -109,7 +109,7 @@ fn1483_0C55_entry:
 l1483_0C55:
 	branch Z l1483_0C55_thunk_fn1483_0C11
 l1483_0C55_thunk_fn1483_0C11:
-	word16 ax_6 = fn1483_0C11(SEQ(ds, si), SEQ(es, di), SLICE(ax_6, byte, 0), cx, bx, bp)
+	word16 ax_7 = fn1483_0C11(SEQ(ds, si), SEQ(es, di), SLICE(ax_7, byte, 0), cx, bx, bp)
 	return
 l1483_0C57:
 	return
@@ -679,7 +679,7 @@ l1483_1B13:
 	word16 ax_44
 	word16 bx_45
 	call Mem6[0x1483<16>:bx:segptr32] (retsize: 0;)
-		uses: ax:ax_44,bx:bx_45,cx:cx_260,dx:dx_42
+		uses: ax:ax_44,bx:bx_45,cx:cx_260,dx:dx_42,Mem:Mem6
 		defs: ax:ax_44,bx:bx_45,dx:dx_42,ecx:ecx_43
 	cxOut = <invalid>
 	dhOut = <invalid>
@@ -789,7 +789,7 @@ fn1483_1C50_entry:
 l1483_1C50:
 	byte al_5 = __in<byte>(dx)
 	call SEQ(ah, al_5) (retsize: 0;)
-		uses: ah:ah,al:al_5,dx:dx
+		uses: ah:ah,al:al_5,dx:dx,Mem:Mem0
 	return
 fn1483_1C50_exit:
 

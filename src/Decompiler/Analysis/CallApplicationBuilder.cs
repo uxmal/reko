@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -47,7 +48,6 @@ namespace Reko.Analysis
         private readonly IProcessorArchitecture arch;
         private readonly BindingDictionary defs;
         private readonly BindingDictionary uses;
-        private readonly MemIdentifierFinder midFinder;
         private readonly bool guessStackArgs;
 
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, bool guessStackArgs)
@@ -59,7 +59,6 @@ namespace Reko.Analysis
             this.arch = ssaCaller.Procedure.Architecture;
             this.defs = call.Definitions.ToDictionary(d => d.Storage);
             this.uses = call.Uses.ToDictionary(u => u.Storage);
-            this.midFinder = new MemIdentifierFinder();
             this.guessStackArgs = guessStackArgs;
         }
 
@@ -210,7 +209,7 @@ namespace Reko.Analysis
             // Attempt to inject a Mem[sp_xx + offset] expression if possible.
             if (guessStackArgs &&
                 map.TryGetValue(arch.StackRegister, out var stackBinding) &&
-                this.TryFindMemBeforeCall(out var memId))
+                this.TryFindMemBeforeCall(this.uses.Values, out MemoryIdentifier? memId))
             {
                 var sp_ssa = stackBinding.Expression;
                 if (sp_ssa != null)
@@ -223,23 +222,34 @@ namespace Reko.Analysis
                         var offset = Constant.Create(dt, nOffset);
                         ea = new BinaryExpression(Operator.IAdd, sp_ssa.DataType, sp_ssa, offset);
                     }
-                    return new MemoryAccess(memId, ea, stack.DataType);
+                    return new MemoryAccess(memId!, ea, stack.DataType);
                 }
             }
             return FallbackArgument($"stackArg{localOff}", stack.DataType);
         }
 
-        private bool TryFindMemBeforeCall(out MemoryIdentifier memId)
+        private bool TryFindMemBeforeCall(
+            IEnumerable<CallBinding> uses,
+            [MaybeNullWhen(false)] out MemoryIdentifier? memId)
         {
-            var block = stmCall.Block;
-            var i = block.Statements.IndexOf(stmCall) - 1;
-            for (;  i >= 0; --i)
+            // See if there is a Mem captured by the call. This happens in
+            // SsaTransform.GenerateUseDefsVarargs and SsaTransform.GenerateUseDefsForUnknownCallee
+            // This should never fail, but we leave the failure path open so that
+            // users can report the failure.
+            var mem = ssaCaller.Procedure.Frame.Memory;
+            foreach (var use in uses)
             {
-                memId = midFinder.Find(block.Statements[i].Instruction)!;
-                if (memId != null)
+                if (use.Storage is MemoryStorage)
+                {
+                    memId = (MemoryIdentifier) use.Expression;
                     return true;
+                }
             }
-            memId = null!;
+
+            // Every indirect call or varargs call should have had injected
+            // Mem references into the call instruction. We should never
+            // reach here.
+            memId = null;
             return false;
         }
 
@@ -303,6 +313,7 @@ Please report this issue at https://github.com/uxmal/reko";
             return sid.Identifier;
         }
 
+        [Obsolete]
         private class MemIdentifierFinder : InstructionVisitorBase
         {
             private MemoryIdentifier? mid;

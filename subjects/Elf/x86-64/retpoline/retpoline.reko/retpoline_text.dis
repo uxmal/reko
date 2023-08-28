@@ -34,7 +34,7 @@ l00000000004004D8:
 	return
 l00000000004004CB:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x601040<u64>
+		uses: Mem:Mem6,rdi:0x601040<u64>
 	return
 deregister_tm_clones_exit:
 
@@ -57,7 +57,7 @@ l0000000000400518:
 	return
 l000000000040050D:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x601040<u64>
+		uses: Mem:Mem8,rdi:0x601040<u64>
 	return
 register_tm_clones_exit:
 
@@ -223,7 +223,7 @@ l0000000000400746:
 	word64 rbx_47 = 0<u64>
 l0000000000400750:
 	call Mem26[0x0000000000600E10<p64> + rbx_47 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
+		uses: Mem:Mem26,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_47 = rbx_47 + 1<64>
 	branch rbp_31 >> 3<64> != rbx_47 l0000000000400750
 l0000000000400766:

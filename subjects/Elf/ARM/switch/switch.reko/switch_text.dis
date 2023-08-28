@@ -32,7 +32,7 @@ l00008388:
 	word32 r10_17
 	word32 pc_19
 	call r3_12 (retsize: 0;)
-		uses: lr:0x00008390<p32>,pc:pc_19,r10:r10_11
+		uses: lr:0x00008390<p32>,Mem:Mem7,pc:pc_19,r10:r10_11
 		defs: pc:pc_19,r10:r10_17
 	return r10_17
 l00008384_1:
@@ -66,7 +66,7 @@ l000083C4:
 	word32 pc_35
 	word32 r2_37
 	call r2_17 (retsize: 0;)
-		uses: lr:0x000083D8<p32>,pc:pc_35,r2:r2_37,r3:r3_27 + 4<32>,r4:r4_15,r5:r5_11
+		uses: lr:0x000083D8<p32>,Mem:Mem29,pc:pc_35,r2:r2_37,r3:r3_27 + 4<32>,r4:r4_15,r5:r5_11
 		defs: pc:pc_35,r2:r2_37
 	return
 l000083AC_1:
@@ -351,7 +351,7 @@ l00008654:
 	branch r4_24 <u r3_33 >> 2<i32> l00008684
 l00008684:
 	call Mem13[r1_31 + (r4_24 << 2<i32>):word32] (retsize: 0;)
-		uses: lr:0x00008694<p32>,r10:r10_21,r4:r4_24,r5:r3_33,r6:r1_31
+		uses: lr:0x00008694<p32>,Mem:Mem13,r10:r10_21,r4:r4_24,r5:r3_33,r6:r1_31
 	return
 l00008680_1:
 	return
@@ -378,7 +378,7 @@ l000086FC_thunk__fini:
 	return
 l000086E0:
 	call Mem11[r1_17 + (r4_22 << 2<i32>):word32] (retsize: 0;)
-		uses: lr:0x000086EC<p32>,r10:r10_16,r4:r4_22,r5:r1_17
+		uses: lr:0x000086EC<p32>,Mem:Mem11,r10:r10_16,r4:r4_22,r5:r1_17
 	return
 __libc_csu_fini_exit:
 
@@ -403,7 +403,7 @@ l00008724:
 	word32 r3_19
 	word32 pc_20
 	call r2_10 (retsize: 0;)
-		uses: lr:0x00008730<p32>,pc:pc_20,r3:r3_19,r4:r3_9 - 4<32>
+		uses: lr:0x00008730<p32>,Mem:Mem7,pc:pc_20,r3:r3_19,r4:r3_9 - 4<32>
 		defs: pc:pc_20,r3:r3_19,r4:r4_17
 	return r4_17
 l00008720_1:

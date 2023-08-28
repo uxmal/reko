@@ -17,6 +17,7 @@ l0800_0121:
 	__restorezero(ds_5)
 	word16 sp_9
 	call 0x800<16>:Mem0[ds_5:0x5DC<16>:word16] (retsize: 2;)
+		uses: Mem:Mem0
 		defs: sp:sp_9
 	word16 si_19 = 0<16>
 	word16 cx_20 = 0x2F<16>
@@ -311,12 +312,15 @@ l0800_0310:
 l0800_0306:
 	word16 bx_19 = Mem13[ds:0x23E<16>:word16]
 	call 0x800<16>:Mem13[ds:(bx_19 << 1<16>) + 0x5E8<16>:word16] (retsize: 2;)
-		uses: bx:bx_19 << 1<16>
+		uses: bx:bx_19 << 1<16>,Mem:Mem13
 l0800_031B:
 	call 0x800<16>:Mem13[ds:0x234<16>:word16] (retsize: 2;)
+		uses: Mem:Mem13
 	call 0x800<16>:Mem13[ds:0x236<16>:word16] (retsize: 2;)
+		uses: Mem:Mem13
 	word16 sp_44
 	call 0x800<16>:Mem13[ds:0x238<16>:word16] (retsize: 2;)
+		uses: Mem:Mem13
 		defs: sp:sp_44
 	Mem52[ss:sp_44 - 2<i16>:word16] = wArg02
 	__exit()
@@ -407,7 +411,7 @@ l0800_0415:
 l0800_0417:
 	Mem174[ss:bp_141:word16] = 0<16>
 	call Mem174[0800:0330:word16] (retsize: 0;)
-		uses: ax:0<16>,bx:4<16>
+		uses: ax:0<16>,bx:4<16>,Mem:Mem174
 	return
 __setargv_exit:
 l0800_03AA:
@@ -1539,6 +1543,7 @@ void __REALCVT(selector ds)
 __REALCVT_entry:
 l0800_1044:
 	call Mem0[ds:0x5E0<16>:word16] (retsize: 0;)
+		uses: Mem:Mem0
 	return
 __REALCVT_exit:
 
@@ -2113,7 +2118,7 @@ l0800_10A1:
 	word16 di_20 = di - (bp - 84<i16>)
 	word16 ax_34
 	call 0x800<16>:Mem29[ss_bp + 10<i32>:word16] (retsize: 2;)
-		uses: ax:bp - 84<i16>,bx:bx,cx:cx,dx:dx,Stack +0002:Mem26[ss_bp + 8<i32>:word16],Stack +0004:di_20,Stack +0006:bp - 84<i16>,Stack +000A:dx,Stack +000C:cx,Stack +000E:bx
+		uses: ax:bp - 84<i16>,bx:bx,cx:cx,dx:dx,Mem:Mem29,Stack +0002:Mem26[ss_bp + 8<i32>:word16],Stack +0004:di_20,Stack +0006:bp - 84<i16>,Stack +000A:dx,Stack +000C:cx,Stack +000E:bx
 		defs: ax:ax_34
 	branch ax_34 != 0<16> l0800_10BE
 l0800_10B9:
@@ -2425,7 +2430,7 @@ l0800_1A7A:
 	word16 ax_230
 	word16 bx_232
 	call 0x800<16>:wArg02 (retsize: 2;)
-		uses: bx:bx_232,cx:wArg06,dx:dx_233,Stack +0002:wArg06,Stack +0004:es_222,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_179
+		uses: bx:bx_232,cx:wArg06,dx:dx_233,Mem:Mem226,Stack +0002:wArg06,Stack +0004:es_222,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_179
 		defs: ax:ax_230,bx:bx_232,dx:dx_233
 	wLoc28_1089 = wLoc28_1089 + 1<16>
 	wLoc04 = wArg06
@@ -2473,7 +2478,7 @@ l0800_1AA5:
 l0800_1AB6:
 	word16 sp_350
 	call 0x800<16>:wArg04 (retsize: 2;)
-		uses: bx:bx_353,cx:cx_359,dx:dx_354,Stack +0002:ax_230,Stack +0004:wArg06,Stack +0006:es_222,Stack +000A:wArg02,Stack +000C:wArg04,Stack +000E:wArg06,Stack +0010:si_179
+		uses: bx:bx_353,cx:cx_359,dx:dx_354,Mem:Mem346,Stack +0002:ax_230,Stack +0004:wArg06,Stack +0006:es_222,Stack +000A:wArg02,Stack +000C:wArg04,Stack +000E:wArg06,Stack +0010:si_179
 		defs: bx:bx_353,dx:dx_354,sp:sp_350
 	wLoc04 = wArg06
 	word16 cx_359 = Mem346[ss:sp_350 + 2<i16>:word16]
@@ -2625,7 +2630,7 @@ l0800_19DB:
 l0800_19DD:
 	word16 ax_706
 	call 0x800<16>:wArg02 (retsize: 2;)
-		uses: bx:bx_708,cx:wArg06,dx:dx_709,Stack +0002:wArg06,Stack +0004:es_1045,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_58
+		uses: bx:bx_708,cx:wArg06,dx:dx_709,Mem:Mem701,Stack +0002:wArg06,Stack +0004:es_1045,Stack +0008:wArg02,Stack +000A:wArg04,Stack +000C:wArg06,Stack +000E:si_58
 		defs: ax:ax_706,bx:bx_708,dx:dx_709
 	wLoc28_1089 = wLoc28_1089 + 1<16>
 	wLoc04 = wArg06
@@ -2677,7 +2682,7 @@ l0800_172F:
 	word16 sp_831
 	word16 ax_832
 	call 0x800<16>:wArg02 (retsize: 2;)
-		uses: ax:di_808,bx:bx_834,cx:cx_838,dx:dx_835,Stack +0000:wLoc04_1577,Stack +0002:wArg06,Stack +0006:wArg02,Stack +0008:wArg04,Stack +000A:wArg06,Stack +000C:wArg08_1560
+		uses: ax:di_808,bx:bx_834,cx:cx_838,dx:dx_835,Mem:Mem823,Stack +0000:wLoc04_1577,Stack +0002:wArg06,Stack +0006:wArg02,Stack +0008:wArg04,Stack +000A:wArg06,Stack +000C:wArg08_1560
 		defs: ax:ax_832,bx:bx_834,dx:dx_835,sp:sp_831
 	word16 ax_807 = CONVERT(al_32, byte, int16)
 	wLoc28_1089 = wLoc28_1089 + 1<16>
@@ -2700,7 +2705,7 @@ l0800_1779:
 	word16 bx_873
 	word16 dx_874
 	call 0x800<16>:wArg04 (retsize: 2;)
-		uses: bx:bx_873,cx:wArg06,dx:dx_874
+		uses: bx:bx_873,cx:wArg06,dx:dx_874,Mem:Mem866
 		defs: bx:bx_873,dx:dx_874
 l0800_1785_thunk_fn0800_1AEB:
 	word16 bp_886 = fn0800_1AEB(SEQ(ss, fp - 2<i16>))
@@ -2717,7 +2722,7 @@ l0800_1767:
 	Mem924[ss:sp_920 - 2<i16>:word16] = ax_840
 	word16 sp_933
 	call 0x800<16>:wArg04 (retsize: 2;)
-		uses: bx:bx_936,cx:cx_942,dx:dx_937
+		uses: bx:bx_936,cx:cx_942,dx:dx_937,Mem:Mem924
 		defs: bx:bx_936,dx:dx_937,sp:sp_933
 	word16 cx_942 = Mem924[ss:sp_933 + 2<i16>:word16]
 	wLoc28_1089 = wLoc28_1089 - 1<16>
@@ -2728,7 +2733,7 @@ l0800_1756:
 	word16 sp_953
 	word16 ax_954
 	call 0x800<16>:wArg02 (retsize: 2;)
-		uses: bx:bx_956,cx:cx_960,dx:dx_957
+		uses: bx:bx_956,cx:cx_960,dx:dx_957,Mem:Mem952
 		defs: ax:ax_954,bx:bx_956,dx:dx_957,sp:sp_953
 	wLoc28_1089 = wLoc28_1089 + 1<16>
 	word16 cx_960 = Mem952[ss:sp_953:word16]
@@ -2850,7 +2855,7 @@ word16 fn0800_1AEB(segptr32 ss_bp)
 fn0800_1AEB_entry:
 l0800_1AEB:
 	call 0x800<16>:Mem12[ss_bp + 6<i16>:word16] (retsize: 2;)
-		uses: ax:0xFFFF<16>,Stack +0002:0xFFFF<16>,Stack +0004:Mem0[ss_bp + 8<i16>:word16]
+		uses: ax:0xFFFF<16>,Mem:Mem12,Stack +0002:0xFFFF<16>,Stack +0004:Mem0[ss_bp + 8<i16>:word16]
 	Mem25[ss_bp - 40<i16>:word16] = Mem12[ss_bp - 40<i16>:word16] - CONVERT(Mem12[ss_bp - 40<i16>:word16] <u 1<16>, bool, word16)
 l0800_1AFB_thunk_fn0800_1AFF:
 	return fn0800_1AFF(ss_bp)
@@ -2896,6 +2901,7 @@ l0800_1B06:
 	word16 ax_18
 	word16 bx_19
 	call 0x800<16>:Mem13[ss_bp + 4<i16>:word16] (retsize: 2;)
+		uses: Mem:Mem13
 		defs: ax:ax_18,bx:bx_19
 	sp_11 = fp - 2<i16>
 	byte al_42 = SLICE(ax_18, byte, 0)
@@ -2913,7 +2919,7 @@ l0800_1B18:
 l0800_1B21:
 	word16 bx_71
 	call wLoc02 + 3<16> (retsize: 0;)
-		uses: cx:wLoc02 + 3<16>
+		uses: cx:wLoc02 + 3<16>,Mem:Mem13
 		defs: bx:bx_71
 	bpOut = bp
 	return bx_71
@@ -2953,6 +2959,7 @@ l0800_1B36:
 	word16 sp_30
 	word16 ax_33
 	call 0x800<16>:Mem28[ss_bp + 4<i16>:word16] (retsize: 2;)
+		uses: Mem:Mem28
 		defs: ax:ax_33,sp:sp_30
 	cl_47 = Mem28[ss:sp_30 + 2<16>:byte] (alias)
 	word16 dx_40 = Mem28[ss:sp_30 + 4<i16>:word16]
@@ -2985,7 +2992,7 @@ l0800_1B89_thunk_fn0800_1AEB:
 	return
 l0800_1B82:
 	call wLoc02 + 3<16> (retsize: 0;)
-		uses: cx:wLoc02 + 3<16>
+		uses: cx:wLoc02 + 3<16>,Mem:Mem74
 	return
 fn0800_1B2C_exit:
 l0800_1B6C:
@@ -3007,6 +3014,7 @@ void __scantod(selector ds)
 __scantod_entry:
 l0800_1B92:
 	call Mem0[ds:0x5E2<16>:word16] (retsize: 0;)
+		uses: Mem:Mem0
 	return
 __scantod_exit:
 
@@ -3023,6 +3031,7 @@ void __scanrslt(selector ds)
 __scanrslt_entry:
 l0800_1B96:
 	call Mem0[ds:0x5E4<16>:word16] (retsize: 0;)
+		uses: Mem:Mem0
 	return
 __scanrslt_exit:
 
@@ -3039,6 +3048,7 @@ void __scanpop(selector ds)
 __scanpop_entry:
 l0800_1B9A:
 	call Mem0[ds:0x5E6<16>:word16] (retsize: 0;)
+		uses: Mem:Mem0
 	return
 __scanpop_exit:
 
@@ -3105,6 +3115,7 @@ l0800_1BE6:
 	word16 sp_38
 	word16 ax_40
 	call 0x800<16>:wArg02 (retsize: 2;)
+		uses: Mem:Mem33
 		defs: ax:ax_40,sp:sp_38
 	word16 v10_27 = wLoc06_546 + 1<16>
 	wLoc06_546 = v10_27
@@ -3135,6 +3146,7 @@ l0800_1C16:
 	Mem102[ss:sp_38:word16] = wArg06
 	word16 sp_111
 	call 0x800<16>:wArg02 (retsize: 2;)
+		uses: Mem:Mem102
 		defs: ax:ax_113,sp:sp_111
 	wLoc06_546 = v10_27 + 1<16>
 	sp_119 = sp_111 + 2<i16>
@@ -3162,6 +3174,7 @@ l0800_1C89:
 	word16 sp_154
 	word16 ax_156
 	call 0x800<16>:wArg02 (retsize: 2;)
+		uses: Mem:Mem151
 		defs: ax:ax_156,sp:sp_154
 	wLoc06_546 = wLoc06_546 + 1<16>
 	byte al_164 = SLICE(ax_156, byte, 0)
@@ -3192,6 +3205,7 @@ l0800_1C66:
 	Mem222[ss:sp_213 - 2<i16>:word16] = ax_120
 	word16 sp_239
 	call 0x800<16>:wArg04 (retsize: 2;)
+		uses: Mem:Mem222
 		defs: sp:sp_239
 	sp_119 = sp_239 + 4<i16>
 	wLoc06_546 = wLoc06_546 - 1<16>
@@ -3212,6 +3226,7 @@ l0800_1C45:
 	word16 sp_270
 	word16 ax_272
 	call 0x800<16>:wArg02 (retsize: 2;)
+		uses: Mem:Mem269
 		defs: ax:ax_272,sp:sp_270
 	wLoc06_546 = wLoc06_546 + 1<16>
 	byte al_279 = SLICE(ax_272, byte, 0)
@@ -3244,6 +3259,7 @@ l0800_1CEF:
 	word16 sp_333
 	word16 ax_335
 	call 0x800<16>:wArg02 (retsize: 2;)
+		uses: Mem:Mem328
 		defs: ax:ax_335,sp:sp_333
 	wLoc06_546 = wLoc06_546 + 1<16>
 	sp_119 = sp_333 + 2<i16>
@@ -3272,6 +3288,7 @@ l0800_1CC3:
 	word16 sp_429
 	word16 ax_431
 	call 0x800<16>:wArg02 (retsize: 2;)
+		uses: Mem:Mem414
 		defs: ax:ax_431,sp:sp_429
 	wLoc06_546 = wLoc06_546 + 1<16>
 	sp_119 = sp_429 + 2<i16>
@@ -3284,6 +3301,7 @@ l0800_1D03:
 	Mem447[ss:sp_443 - 2<i16>:word16] = ax_300
 	word16 sp_452
 	call 0x800<16>:wArg04 (retsize: 2;)
+		uses: Mem:Mem447
 		defs: sp:sp_452
 	sp_119 = sp_452 + 4<i16>
 	wLoc06_546 = wLoc06_546 - 1<16>

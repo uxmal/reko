@@ -51,7 +51,7 @@ Eq_155: (ref int32)
 Eq_160: (union "Eq_160" ((ptr32 word32) u0) ((ref int32) u1))
 	T_160 (in tArg14 + 0<32> @ 80000608 : word32)
 Eq_204: (struct "Eq_204" (FFFFFFFC (ptr32 code) ptrFFFFFFFC))
-	T_204 (in a2_23 @ 8000063C : (ptr32 Eq_204))
+	T_204 (in a2_24 @ 8000063C : (ptr32 Eq_204))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -865,7 +865,7 @@ T_203: (in a0_11 == (<anonymous> *) -1<i32> @ 8000063A : bool)
   Class: Eq_203
   DataType: bool
   OrigDataType: bool
-T_204: (in a2_23 @ 8000063C : (ptr32 Eq_204))
+T_204: (in a2_24 @ 8000063C : (ptr32 Eq_204))
   Class: Eq_204
   DataType: (ptr32 Eq_204)
   OrigDataType: (ptr32 (struct (FFFFFFFC T_207 tFFFFFFFC)))
@@ -873,11 +873,11 @@ T_205: (in -4<i32> @ 8000063E : int32)
   Class: Eq_205
   DataType: int32
   OrigDataType: int32
-T_206: (in a2_23 + -4<i32> @ 8000063E : word32)
+T_206: (in a2_24 + -4<i32> @ 8000063E : word32)
   Class: Eq_206
   DataType: word32
   OrigDataType: word32
-T_207: (in Mem10[a2_23 + -4<i32>:word32] @ 8000063E : word32)
+T_207: (in Mem10[a2_24 + -4<i32>:word32] @ 8000063E : word32)
   Class: Eq_195
   DataType: (ptr32 code)
   OrigDataType: word32
@@ -885,7 +885,7 @@ T_208: (in 4<i32> @ 8000063E : int32)
   Class: Eq_208
   DataType: int32
   OrigDataType: int32
-T_209: (in a2_23 - 4<i32> @ 8000063E : word32)
+T_209: (in a2_24 - 4<i32> @ 8000063E : word32)
   Class: Eq_196
   DataType: (ptr32 (ptr32 code))
   OrigDataType: ptr32

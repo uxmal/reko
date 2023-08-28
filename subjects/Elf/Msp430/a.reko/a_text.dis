@@ -2076,7 +2076,7 @@ l0000532A:
 	word20 r11_28
 	word20 r15_30
 	call Mem16[0x09B2<p16>:word16] (retsize: 2;)
-		uses: r10:r10_15 + 1<16>,r11:r11_24,r14:r14_25,r15:CONVERT(Mem16[r10_15:byte], byte, int16)
+		uses: Mem:Mem16,r10:r10_15 + 1<16>,r11:r11_24,r14:r14_25,r15:CONVERT(Mem16[r10_15:byte], byte, int16)
 		defs: r10:r10_29,r11:r11_28,r14:r14_31,r15:r15_30
 	branch r15_30 < 0<16> l00005342
 l00005342:
@@ -2114,7 +2114,7 @@ l0000535C:
 	word20 r11_32
 	word20 r15_35
 	call Mem25[0x09B2<p16>:word16] (retsize: 2;)
-		uses: r10:r10_23,r11:r11_27,r14:r14_29,r15:r10_23,r9:r9_28
+		uses: Mem:Mem25,r10:r10_23,r11:r11_27,r14:r14_29,r15:r10_23,r9:r9_28
 		defs: r10:r10_33,r11:r11_32,r14:r14_36,r15:r15_35,r9:r9_34
 	branch r15_35 < 0<16> l00005374
 l00005374:

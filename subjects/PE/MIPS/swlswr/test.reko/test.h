@@ -600,11 +600,11 @@ T_105: (in COREDLL.dll!Ordinal_2696() @ 0001120C : void)
   Class: Eq_105
   DataType: void
   OrigDataType: void
-T_106: (in r8_24 @ 00011230 : ui32)
+T_106: (in r8_25 @ 00011230 : ui32)
   Class: Eq_98
   DataType: ui32
   OrigDataType: ui32
-T_107: (in r2_16 @ 00011230 : word32)
+T_107: (in r2_17 @ 00011230 : word32)
   Class: Eq_107
   DataType: uint32
   OrigDataType: uint32
@@ -612,7 +612,7 @@ T_108: (in 0x10<8> @ 00011230 : byte)
   Class: Eq_108
   DataType: byte
   OrigDataType: byte
-T_109: (in r2_16 >> 0x10<8> @ 00011230 : word32)
+T_109: (in r2_17 >> 0x10<8> @ 00011230 : word32)
   Class: Eq_109
   DataType: uint32
   OrigDataType: uint32
@@ -620,15 +620,15 @@ T_110: (in 0xFFFF<32> @ 00011230 : word32)
   Class: Eq_110
   DataType: ui32
   OrigDataType: ui32
-T_111: (in r2_16 & 0xFFFF<32> @ 00011230 : word32)
+T_111: (in r2_17 & 0xFFFF<32> @ 00011230 : word32)
   Class: Eq_111
   DataType: ui32
   OrigDataType: ui32
-T_112: (in r2_16 >> 0x10<8> ^ r2_16 & 0xFFFF<32> @ 00011230 : word32)
+T_112: (in r2_17 >> 0x10<8> ^ r2_17 & 0xFFFF<32> @ 00011230 : word32)
   Class: Eq_98
   DataType: ui32
   OrigDataType: ui32
-T_113: (in dwLoc0C_50 @ 00011234 : ui32)
+T_113: (in dwLoc0C_51 @ 00011234 : ui32)
   Class: Eq_98
   DataType: ui32
   OrigDataType: ui32
@@ -636,7 +636,7 @@ T_114: (in 0<32> @ 0001123C : word32)
   Class: Eq_98
   DataType: ui32
   OrigDataType: word32
-T_115: (in r8_24 != 0<32> @ 0001123C : bool)
+T_115: (in r8_25 != 0<32> @ 0001123C : bool)
   Class: Eq_115
   DataType: bool
   OrigDataType: bool
@@ -656,7 +656,7 @@ T_119: (in 0x13034<32> @ 00011200 : word32)
   Class: Eq_119
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_120 t0000)))
-T_120: (in Mem41[0x13034<32>:word32] @ 00011200 : word32)
+T_120: (in Mem42[0x13034<32>:word32] @ 00011200 : word32)
   Class: Eq_118
   DataType: ui32
   OrigDataType: word32
@@ -664,11 +664,11 @@ T_121: (in 0x13030<32> @ 00011254 : word32)
   Class: Eq_121
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_122 t0000)))
-T_122: (in Mem33[0x13030<32>:word32] @ 00011254 : word32)
+T_122: (in Mem34[0x13030<32>:word32] @ 00011254 : word32)
   Class: Eq_98
   DataType: ui32
   OrigDataType: word32
-T_123: (in ~dwLoc0C_50 @ 00011264 : word32)
+T_123: (in ~dwLoc0C_51 @ 00011264 : word32)
   Class: Eq_118
   DataType: ui32
   OrigDataType: ui32
@@ -676,7 +676,7 @@ T_124: (in 0x13034<32> @ 00011264 : word32)
   Class: Eq_124
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_125 t0000)))
-T_125: (in Mem37[0x13034<32>:word32] @ 00011264 : word32)
+T_125: (in Mem38[0x13034<32>:word32] @ 00011264 : word32)
   Class: Eq_118
   DataType: ui32
   OrigDataType: word32

@@ -3,30 +3,31 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
 Top_3: orig: Top
     def:  Top_3 = 0<i8>
-    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
 ds:ds
     def:  def ds
     uses: ax_6 = Mem0[ds:0x100<16>:word16]
-          call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+          call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
           Mem10[ds:0x102<16>:word16] = ax_8
 Mem0:Mem
     def:  def Mem0
     uses: ax_6 = Mem0[ds:0x100<16>:word16]
+          call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
 ax_6: orig: ax
     def:  ax_6 = Mem0[ds:0x100<16>:word16]
-    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
 sp_7: orig: sp
-    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
     uses: use sp_7
 ax_8: orig: ax
-    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
     uses: Mem10[ds:0x102<16>:word16] = ax_8
           use ax_8
 Top_9: orig: Top
-    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3	defs: ax:ax_8,sp:sp_7,Top:Top_9
     uses: use Top_9
 Mem10: orig: Mem0
     def:  Mem10[ds:0x102<16>:word16] = ax_8
@@ -43,7 +44,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ax_6 = Mem0[ds:0x100<16>:word16]
 	call fn0C00_000C (retsize: 2;)
-		uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3
+		uses: ax:ax_6,ds:ds,Mem:Mem0,sp:sp_2,Top:Top_3
 		defs: ax:ax_8,sp:sp_7,Top:Top_9
 	Mem10[ds:0x102<16>:word16] = ax_8
 	return

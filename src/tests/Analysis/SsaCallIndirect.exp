@@ -1,17 +1,18 @@
 r2:r2
     def:  def r2
     uses: r1_3 = Mem0[r2:word32]
-          call r1_3 (retsize: 4;)	uses: r2:r2	defs: r1:r1_4,r2:r2_5
+          call r1_3 (retsize: 4;)	uses: Mem:Mem0,r2:r2	defs: r1:r1_4,r2:r2_5
 Mem0:Mem
     def:  def Mem0
     uses: r1_3 = Mem0[r2:word32]
+          call r1_3 (retsize: 4;)	uses: Mem:Mem0,r2:r2	defs: r1:r1_4,r2:r2_5
 r1_3: orig: r1
     def:  r1_3 = Mem0[r2:word32]
-    uses: call r1_3 (retsize: 4;)	uses: r2:r2	defs: r1:r1_4,r2:r2_5
+    uses: call r1_3 (retsize: 4;)	uses: Mem:Mem0,r2:r2	defs: r1:r1_4,r2:r2_5
 r1_4: orig: r1
-    def:  call r1_3 (retsize: 4;)	uses: r2:r2	defs: r1:r1_4,r2:r2_5
+    def:  call r1_3 (retsize: 4;)	uses: Mem:Mem0,r2:r2	defs: r1:r1_4,r2:r2_5
 r2_5: orig: r2
-    def:  call r1_3 (retsize: 4;)	uses: r2:r2	defs: r1:r1_4,r2:r2_5
+    def:  call r1_3 (retsize: 4;)	uses: Mem:Mem0,r2:r2	defs: r1:r1_4,r2:r2_5
 // SsaCallIndirect
 // Return size: 0
 define SsaCallIndirect
@@ -22,7 +23,7 @@ SsaCallIndirect_entry:
 l1:
 	r1_3 = Mem0[r2:word32]
 	call r1_3 (retsize: 4;)
-		uses: r2:r2
+		uses: Mem:Mem0,r2:r2
 		defs: r1:r1_4,r2:r2_5
 	return
 	// succ:  SsaCallIndirect_exit

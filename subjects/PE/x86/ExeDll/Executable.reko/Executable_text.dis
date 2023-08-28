@@ -91,8 +91,8 @@ l0040117E:
 	word32 ebx_133 = SEQ(ebx_24_8_135, 0<8>)
 	branch eax_74 == 1<32> l00401177
 l0040119B:
-	word32 eax_294
-	word32 esp_288
+	word32 eax_295
+	word32 esp_289
 	branch eax_74 != 0<32> l004011E8
 l004011E8:
 	Mem85[ebp_20 - 25<i32>:byte] = 1<8>
@@ -102,7 +102,7 @@ l0040119F:
 	word32 esp_88 = esp_37 - 4<i32>
 	Mem89[esp_88:word32] = 0x4020EC<32>
 	Mem91[esp_88 - 4<i32>:word32] = 0x4020E0<32>
-	esp_288 = esp_88 + 4<i32>
+	esp_289 = esp_88 + 4<i32>
 	branch _initterm_e(Mem91[esp_88 - 4<i32>:(ptr32 PVFV)], Mem91[esp_88:(ptr32 PVFV)]) == 0<32> l004011CB
 l004011CB:
 	Mem102[esp_88:word32] = 0x4020DC<32>
@@ -130,7 +130,7 @@ l0040120E:
 	word32 esi_164 = Mem163[esi_144:word32]
 	fn00401976()
 	call esi_164 (retsize: 4;)
-		uses: edx:edx_145
+		uses: edx:edx_145,Mem:Mem163
 		defs: esp:esp_169
 l0040121D:
 	word32 eax_175 = fn0040176E()
@@ -138,45 +138,45 @@ l0040121D:
 l00401228:
 	Mem183[esp_124 - 4<i32>:word32] = eax_175
 	word32 esi_191
-	word32 edx_340
-	word32 edi_341
-	branch fn00401544(ebx_133, eax_175, edi_127, out edx_340, out ebx_133, out ebp_140, out esi_191, out edi_341) == 0<8> l0040123B
+	word32 edx_341
+	word32 edi_342
+	branch fn00401544(ebx_133, eax_175, edi_127, out edx_341, out ebx_133, out ebp_140, out esi_191, out edi_342) == 0<8> l0040123B
 l00401233:
 	register_thread_local_exe_atexit_callback(Mem183[esi_191:word32])
 l0040123B:
 	word32 eax_217 = __p___argv()
 	word32 eax_219 = __p___argc()
-	Mem235[esp_228 - 4<i32>:word32] = get_initial_narrow_environment()
-	Mem238[esp_228 - 8<i32>:word32] = Mem235[eax_217:word32]
-	Mem241[esp_228 - 12<i32>:word32] = Mem238[eax_219:word32]
-	word32 eax_242 = fn00401000()
-	byte bl_263 = SLICE(ebx_133, byte, 0)
-	word32 esp_248 = esp_228
+	Mem236[esp_229 - 4<i32>:word32] = get_initial_narrow_environment()
+	Mem239[esp_229 - 8<i32>:word32] = Mem236[eax_217:word32]
+	Mem242[esp_229 - 12<i32>:word32] = Mem239[eax_219:word32]
+	word32 eax_243 = fn00401000()
+	byte bl_264 = SLICE(ebx_133, byte, 0)
+	word32 esp_249 = esp_229
 	branch fn0040188F() != 0<8> l0040126C
 l0040126C:
-	branch bl_263 != 0<8> l00401275
+	branch bl_264 != 0<8> l00401275
 l00401270:
 	cexit()
 l00401275:
-	word32 esp_275 = esp_248 - 4<i32>
-	Mem276[esp_275:word32] = 0<32>
-	Mem278[esp_275 - 4<i32>:word32] = 1<32>
-	fn004015EB(Mem278[esp_275:byte])
-	Mem292[ebp_140 - 4<i32>:word32] = 0xFFFFFFFE<32>
-	esp_288 = esp_275 + 4<i32>
-	eax_294 = eax_242
+	word32 esp_276 = esp_249 - 4<i32>
+	Mem277[esp_276:word32] = 0<32>
+	Mem279[esp_276 - 4<i32>:word32] = 1<32>
+	fn004015EB(Mem279[esp_276:byte])
+	Mem293[ebp_140 - 4<i32>:word32] = 0xFFFFFFFE<32>
+	esp_289 = esp_276 + 4<i32>
+	eax_295 = eax_243
 l00401266:
-	Mem296[esp_228 - 4<i32>:word32] = eax_242
-	exit(Mem296[esp_228 - 4<i32>:int32])
+	Mem297[esp_229 - 4<i32>:word32] = eax_243
+	exit(Mem297[esp_229 - 4<i32>:int32])
 l004011BA:
-	Mem297[ebp_20 - 4<i32>:word32] = 0xFFFFFFFE<32>
-	eax_294 = 0xFF<32>
+	Mem298[ebp_20 - 4<i32>:word32] = 0xFFFFFFFE<32>
+	eax_295 = 0xFF<32>
 l004012C8:
-	word32 ebp_304
-	word32 edi_307
-	word32 esi_308
-	fn004019C6(ebp_140, Mem303[esp_288 + -4<i32>:word32], out ebp_304, out esi_308, out edi_307)
-	return eax_294
+	word32 ebp_305
+	word32 edi_308
+	word32 esi_309
+	fn004019C6(ebp_140, Mem304[esp_289 + -4<i32>:word32], out ebp_305, out esi_309, out edi_308)
+	return eax_295
 Win32CrtStartup_exit:
 
 
@@ -783,6 +783,7 @@ void fn00401976()
 fn00401976_entry:
 l00401976:
 	call Mem0[0x004020D0<p32>:word32] (retsize: 0;)
+		uses: Mem:Mem0
 	return
 fn00401976_exit:
 

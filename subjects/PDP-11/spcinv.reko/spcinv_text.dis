@@ -106,6 +106,7 @@ l0366:
 	Mem182[0x0EFA<p16>:word16] = 0x456<16>
 l036C:
 	call Mem185[0x0EFA<p16>:word16] (retsize: 2;)
+		uses: Mem:Mem185
 l0370:
 	word16 r4_220
 	r0_108 = fn0998(fn07A6(fn06D6(fn04A0(r4_112)), out r4_220), r4_220, out r4_112)
@@ -169,6 +170,7 @@ l02B8:
 	branch SLICE(r0_94, byte, 0) != Mem330[r1_417:byte] l02B8
 l02BC:
 	call Mem330[(r1_331 - 0x2C7<16> << 1<i16>) + 0x2CC<16>:ptr16] (retsize: 0;)
+		uses: Mem:Mem330
 	return
 fn0200_exit:
 l0234:
@@ -1087,7 +1089,7 @@ l0AF0:
 	word16 r0_33
 	byte NZV_34
 	call r5 + 2<16> (retsize: 0;)
-		uses: r0:r0
+		uses: Mem:Mem17,r0:r0
 		defs: NZV:NZV_34,r0:r0_33
 	r0Out = r0_33
 	r4Out = r4 - 1<16>

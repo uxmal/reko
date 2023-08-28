@@ -1722,7 +1722,7 @@ l00009B0E:
 	word16 er2_16_16_113 = SLICE(er2_89, word16, 16)
 	word16 r2_110 = Mem109[null:word16]
 	call SEQ(er2_16_16_113, r2_110) (retsize: 2;)
-		uses: er0_16_16:er0_16_16_115,er1_16_16:SLICE(er1_88, word16, 16),er2_16_16:er2_16_16_113,er3_16_16:SLICE(er3_90, word16, 16),er4_16_16:SLICE(er4_91, word16, 16),er5_16_16:SLICE(er5_92, word16, 16),r2:r2_110,r4:SLICE(er4_91, word16, 0),r6:r6_101
+		uses: er0_16_16:er0_16_16_115,er1_16_16:SLICE(er1_88, word16, 16),er2_16_16:er2_16_16_113,er3_16_16:SLICE(er3_90, word16, 16),er4_16_16:SLICE(er4_91, word16, 16),er5_16_16:SLICE(er5_92, word16, 16),Mem:Mem109,r2:r2_110,r4:SLICE(er4_91, word16, 0),r6:r6_101
 	return
 fn00009AF8_exit:
 
@@ -1783,7 +1783,7 @@ l00009B90:
 	word16 r6_10
 	word32 er0_11
 	call er0 (retsize: 2;)
-		uses: er0:er0,r6:r6,Stack +0002:r6
+		uses: er0:er0,Mem:Mem5,r6:r6,Stack +0002:r6
 		defs: er0:er0_11,r6:r6_10
 	return SEQ(SLICE(er0_11, word16, 16), r6_10)
 fn00009B90_exit:
@@ -1806,7 +1806,7 @@ l00009B9A:
 	word16 r6_12
 	word32 er0_14
 	call er0 (retsize: 2;)
-		uses: er0:er0,r1:r1,r6:r1,Stack +0002:r6
+		uses: er0:er0,Mem:Mem5,r1:r1,r6:r1,Stack +0002:r6
 		defs: er0:er0_14,r6:r6_12
 	return SEQ(SLICE(er0_14, word16, 16), r6_12)
 fn00009B9A_exit:
@@ -1834,7 +1834,7 @@ l00009BA6:
 	word16 r6_15
 	word32 er0_18
 	call er0 (retsize: 2;)
-		uses: er0:er0,r1:r1,r2:r2,r6:r1,Stack +0002:r2,Stack +0004:r6
+		uses: er0:er0,Mem:Mem8,r1:r1,r2:r2,r6:r1,Stack +0002:r2,Stack +0004:r6
 		defs: er0:er0_18,r6:r6_15
 	return SEQ(SLICE(er0_18, word16, 16), r6_15)
 fn00009BA6_exit:
@@ -1859,7 +1859,7 @@ l00009BB6:
 	word16 r6_18
 	word32 er0_22
 	call er0 (retsize: 2;)
-		uses: er0:er0,r1:r1,r2:r2,r3:wArg02,r6:r1,Stack +0002:r2,Stack +0004:wArg02,Stack +0006:r6,Stack +000A:wArg02
+		uses: er0:er0,Mem:Mem11,r1:r1,r2:r2,r3:wArg02,r6:r1,Stack +0002:r2,Stack +0004:wArg02,Stack +0006:r6,Stack +000A:wArg02
 		defs: er0:er0_22,r6:r6_18
 	return SEQ(SLICE(er0_22, word16, 16), r6_18)
 fn00009BB6_exit:

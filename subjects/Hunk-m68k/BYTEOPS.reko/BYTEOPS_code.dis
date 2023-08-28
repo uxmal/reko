@@ -309,7 +309,7 @@ l000012F6:
 	branch d2_35 == 0<32> l00001308
 l000012FA:
 	call Mem11[0x00002CD0<p32> + (d2_35 << 2<32>):word32] (retsize: 4;)
-		uses: d0:d2_38 << 2<32>,Stack +0014:dwArg04
+		uses: d0:d2_38 << 2<32>,Mem:Mem11,Stack +0014:dwArg04
 	d2_35 = d2_35 - 1<32>
 	branch d2_35 != 0<32> l000012FA
 l00001308:
@@ -337,7 +337,7 @@ l00001328:
 	branch a3_13 == 0<32> l00001346
 l0000133A:
 	call Mem15[a3_13 + 4<i32>:word32] (retsize: 4;)
-		uses: d0:a3_27,Stack +0010:dwArg04
+		uses: d0:a3_27,Mem:Mem15,Stack +0010:dwArg04
 	a3_13 = Mem15[a3_13:word32]
 	branch a3_13 != 0<32> l0000133A
 l00001346:
@@ -364,7 +364,7 @@ l00001366:
 	branch Mem8[0x00002CC8<p32>:word32] == 0<32> l00001372
 l0000136A:
 	call Mem8[a3_19:word32] (retsize: 4;)
-		uses: Stack +0010:dwArg04,Stack +0014:dwArg08
+		uses: Mem:Mem8,Stack +0010:dwArg04,Stack +0014:dwArg08
 	a3_19 = a3_19 + 4<i32>
 	branch Mem8[a3_19:word32] != 0<32> l0000136A
 l00001372:

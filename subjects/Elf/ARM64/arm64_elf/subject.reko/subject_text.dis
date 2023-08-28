@@ -52,6 +52,7 @@ l00000000000014D8:
 	return
 l00000000000014D4:
 	call x1_12 (retsize: 0;)
+		uses: Mem:Mem0
 	return
 fn00000000000014B0_exit:
 

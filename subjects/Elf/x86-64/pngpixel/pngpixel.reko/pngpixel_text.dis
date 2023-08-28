@@ -34,7 +34,7 @@ l0000000000400D30:
 	return
 l0000000000400D1F:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x6020F8<u64>
+		uses: Mem:Mem8,rdi:0x6020F8<u64>
 	return
 deregister_tm_clones_exit:
 
@@ -57,7 +57,7 @@ l0000000000400D78:
 	return
 l0000000000400D6D:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x6020F8<u64>
+		uses: Mem:Mem8,rdi:0x6020F8<u64>
 	return
 register_tm_clones_exit:
 
@@ -340,7 +340,7 @@ l000000000040167F:
 l00000000004016DE:
 	png_destroy_read_struct(fp - 64<i64>, 0<u64>, 0<u64>)
 l000000000040175D:
-	branch (rax_14 ^ Mem692[fs:0x28<32>:word64]) == 0<64> l0000000000401777
+	branch (rax_14 ^ Mem693[fs:0x28<32>:word64]) == 0<64> l0000000000401777
 l0000000000401777:
 	return
 main_exit:
@@ -366,7 +366,7 @@ l00000000004017B6:
 	word64 rbx_47 = 0<u64>
 l00000000004017C0:
 	call Mem26[0x0000000000601E00<p64> + rbx_47 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
+		uses: Mem:Mem26,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_47 = rbx_47 + 1<64>
 	branch rbx_47 != rbp_31 >> 3<64> l00000000004017C0
 l00000000004017D6:

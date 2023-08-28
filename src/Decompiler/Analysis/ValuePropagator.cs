@@ -58,7 +58,7 @@ namespace Reko.Analysis
         private readonly SsaMutator ssam;
         private readonly IDecompilerEventListener eventListener;
         private readonly Scanning.VarargsFormatScanner va;
-        private Statement? stmCur;      //$REFACTOR: try to make this a context paramter.
+        private Statement stmCur;      //$REFACTOR: try to make this a context paramter.
 
         public ValuePropagator(
             IReadOnlyProgram program,
@@ -77,6 +77,7 @@ namespace Reko.Analysis
             this.eval = new ExpressionSimplifier(program.SegmentMap, evalCtx, eventListener);
             var ctx = new SsaEvaluationContext(arch, ssa.Identifiers, dynamicLinker);
             this.va = new Scanning.VarargsFormatScanner(program, arch, ctx, services);
+            this.stmCur = default!;
         }
 
         public void Transform()
@@ -139,7 +140,7 @@ namespace Reko.Analysis
 
         public (Instruction, bool) VisitCallInstruction(CallInstruction ci)
         {
-            var stmCur = this.stmCur!;
+            var stmCur = this.stmCur;
             var oldCallee = ci.Callee;
             bool changed;
             (ci.Callee, changed) = ci.Callee.Accept(eval);
@@ -182,7 +183,7 @@ namespace Reko.Analysis
 
         private (Instruction, bool) ReplaceCallToContinuationWithReturn()
         {
-            var stm = stmCur!;
+            var stm = stmCur;
             var block = stm.Block;
             var iCall = block.Statements.IndexOf(stm);
             for (int i = block.Statements.Count - 1; i >= iCall; --i)
@@ -283,7 +284,7 @@ namespace Reko.Analysis
                     changed |= c;
                 }
                 var abb = new CallApplicationBuilder(this.ssa, stm, ci, true);
-                if (!va.TryScan(stmCur!.Address, ci.Callee, sig, chr, abb, out var vaResult))
+                if (!va.TryScan(stmCur.Address, ci.Callee, sig, chr, abb, out var vaResult))
                     return changed;
                 //$TODO: we found a string, record it in globals.
                 // We can't do it immediately because we're inside a SCC. So hang 
@@ -308,7 +309,7 @@ namespace Reko.Analysis
             }
             ssa.RemoveUses(stm);
             var ab = new CallApplicationBuilder(this.ssa, stm, ci, true);
-            if (va.TryScan(stmCur!.Address, ci.Callee, sig, chr, ab, out var result))
+            if (va.TryScan(stmCur.Address, ci.Callee, sig, chr, ab, out var result))
             {
                 //$TODO: we found a string, record it in globals.
                 // We can't do it immediately because we're inside a SCC. So hang 

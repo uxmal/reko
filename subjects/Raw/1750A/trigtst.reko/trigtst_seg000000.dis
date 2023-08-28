@@ -189,7 +189,7 @@ l000002D6:
 	word16 gp0_62
 	word16 gp2_63
 	call gp2_55 (retsize: 2;)
-		uses: gp1:gp2_18,gp2:gp2_55,gp3:gp4,gp4:7<16>
+		uses: gp1:gp2_18,gp2:gp2_55,gp3:gp4,gp4:7<16>,Mem:Mem31
 		defs: gp0:gp0_62,gp1:gp1_61,gp14:gp14_58,gp2:gp2_63
 	gp1Out = gp1_61
 	gp2Out = gp2_63

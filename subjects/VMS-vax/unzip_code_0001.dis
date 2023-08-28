@@ -14,7 +14,7 @@ l000117D7:
 	word32 sp_20
 	word32 r2_22
 	call Mem16[0x0001926C<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r2:r2,Stack +0004:Mem13[r2 + 0xC617<32>:word32],Stack +0008:0<64>
+		uses: Mem:Mem16,r2:r2,Stack +0004:Mem13[r2 + 0xC617<32>:word32],Stack +0008:0<64>
 		defs: r2:r2_22,sp:sp_20
 	Mem33[sp_20 - 4<32>:word32] = Mem16[r2_22 + 0xC61B<32>:word32]
 	Mem36[sp_20 - 8<32>:word32] = Mem33[r2_22 + 0xC5F3<32>:word32]
@@ -28,7 +28,7 @@ l000117D7:
 	word32 r9_385
 	word32 r2_101
 	call Mem39[0x00019270<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r2:r2_22
+		uses: Mem:Mem39,r2:r2_22
 		defs: ap:ap_51,fp:fp_50,r0:r0_47,r2:r2_45,r4:r4_44,r8:r8_48,r9:r9_52,sp:sp_43
 	Mem55[r2_101 + 0xC5FB<32>:word32] = r0_108
 	branch Mem55[r2_101 + 0xC5FB<32>:word32] == Mem55[r2_101 + 0xC61B<32>:word32] l00011816
@@ -46,7 +46,7 @@ l0001184F:
 	Mem80[sp_76 - 4<32>:word32] = r2_101 + 0xC639<32>
 	Mem82[sp_76 - 8<32>:word32] = r3_70
 	call Mem82[0x000192D8<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r2:r2_68
+		uses: Mem:Mem82,r2:r2_68
 		defs: ap:ap_94,fp:fp_93,r0:r0_90,r2:r2_88,r4:r4_87,r8:r8_91,r9:r9_95,sp:sp_86
 	branch r0_108 != 0<32> l00011880
 l00011880:
@@ -113,14 +113,14 @@ l00011A9F:
 	word32 r2_353
 	word32 r0_355
 	call Mem347[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r2:r2_122
+		uses: Mem:Mem347,r2:r2_122
 		defs: r0:r0_355,r2:r2_353,sp:sp_351
 	Mem366[sp_351 - 4<32>:word32] = r0_355
 	Mem369[sp_351 - 8<32>:word32] = r2_353 + 1515<i32>
 	Mem371[sp_351 - 0xC<32>:word32] = r2_353
 	word32 r3_372 = Mem371[r2_353 + 0xC839<32>:word32]
 	call r3_372 + 2<i32> (retsize: 4;)
-		uses: r2:r2_353,r3:r3_372
+		uses: Mem:Mem371,r2:r2_353,r3:r3_372
 		defs: r2:r2_378,r9:r9_385,sp:sp_376
 l00011ACA:
 	word32 sp_391 = sp_127 - 4<32>
@@ -131,14 +131,14 @@ l00011ACA:
 	word32 r2_410
 	word32 r0_412
 	call Mem404[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r2:r2_402
+		uses: Mem:Mem404,r2:r2_402
 		defs: r0:r0_412,r2:r2_410,sp:sp_408
 	Mem423[sp_408 - 4<32>:word32] = r0_412
 	Mem426[sp_408 - 8<32>:word32] = r2_410 + 1515<i32>
 	Mem428[sp_408 - 0xC<32>:word32] = r2_410
 	word32 r3_429 = Mem428[r2_410 + 0xC839<32>:word32]
 	call r3_429 + 2<i32> (retsize: 4;)
-		uses: r2:r2_410,r3:r3_429
+		uses: Mem:Mem428,r2:r2_410,r3:r3_429
 	return
 fn000117AA_exit:
 l000117D4:
@@ -221,7 +221,7 @@ l00011C5A_1:
 	word32 r3_122
 	word32 r5_123
 	call 0x00011C5E<p32> + r0_108 * 2<32> (retsize: 0;)
-		uses: ap:ap_107,fp:fp_12,r0:r0_108,r1:r1_48,r4:r4_16
+		uses: ap:ap_107,fp:fp_12,Mem:Mem55,r0:r0_108,r1:r1_48,r4:r4_16
 		defs: ap:ap_118,fp:fp_117,r0:r0_116,r2:r2_119,r3:r3_122,r4:r4_121,r5:r5_123
 	r2Out = r2_119
 	r3Out = r3_122
@@ -277,7 +277,7 @@ l00011CF8:
 	word32 r3_53
 	word32 r4_54
 	call r3_20 + 2<i32> (retsize: 4;)
-		uses: ap:ap_16,fp:fp_17,r0:r0_18,r4:r4_21
+		uses: ap:ap_16,fp:fp_17,Mem:Mem44,r0:r0_18,r4:r4_21
 		defs: ap:ap_51,fp:fp_49,r0:r0_50,r2:r2_52,r3:r3_53,r4:r4_54,sp:sp_48
 	Mem60[r2_52 + 0xC65C<32>:word16] = SLICE(r0_50, word16, 0)
 	Mem63[sp_48 - 4<32>:word32] = fp_49 + -40<i32>
@@ -289,7 +289,7 @@ l00011CF8:
 	word32 r3_72
 	word32 r4_73
 	call r3_53 + 2<i32> (retsize: 4;)
-		uses: ap:ap_51,fp:fp_49,r0:r0_50,r4:r4_54
+		uses: ap:ap_51,fp:fp_49,Mem:Mem63,r0:r0_50,r4:r4_54
 		defs: ap:ap_70,fp:fp_68,r0:r0_69,r2:r2_71,r3:r3_72,r4:r4_73,sp:sp_67
 	Mem79[r2_71 + 0xC65E<32>:word16] = SLICE(r0_69, word16, 0)
 	Mem82[sp_67 - 4<32>:word32] = fp_68 + -38<i32>
@@ -301,7 +301,7 @@ l00011CF8:
 	word32 r3_91
 	word32 r4_92
 	call r3_72 + 2<i32> (retsize: 4;)
-		uses: ap:ap_70,fp:fp_68,r0:r0_69,r4:r4_73
+		uses: ap:ap_70,fp:fp_68,Mem:Mem82,r0:r0_69,r4:r4_73
 		defs: ap:ap_89,fp:fp_87,r0:r0_88,r2:r2_90,r3:r3_91,r4:r4_92,sp:sp_86
 	Mem98[r2_90 + 0xC660<32>:word16] = SLICE(r0_88, word16, 0)
 	Mem101[sp_86 - 4<32>:word32] = fp_87 + -36<i32>
@@ -312,7 +312,7 @@ l00011CF8:
 	word32 r2_109
 	word32 r4_111
 	call r3_91 + 2<i32> (retsize: 4;)
-		uses: ap:ap_89,fp:fp_87,r0:r0_88,r4:r4_92
+		uses: ap:ap_89,fp:fp_87,Mem:Mem101,r0:r0_88,r4:r4_92
 		defs: ap:ap_108,fp:fp_106,r0:r0_107,r2:r2_109,r4:r4_111,sp:sp_105
 	Mem117[r2_109 + 0xC662<32>:word16] = SLICE(r0_107, word16, 0)
 	Mem120[sp_105 - 4<32>:word32] = fp_106 + -34<i32>
@@ -323,7 +323,7 @@ l00011CF8:
 	word32 r2_128
 	word32 r4_130
 	call r4_111 + 2<i32> (retsize: 4;)
-		uses: ap:ap_108,fp:fp_106,r0:r0_107,r4:r4_111
+		uses: ap:ap_108,fp:fp_106,Mem:Mem120,r0:r0_107,r4:r4_111
 		defs: ap:ap_127,fp:fp_125,r0:r0_126,r2:r2_128,r4:r4_130,sp:sp_124
 	Mem136[r2_128 + 0xC664<32>:word32] = r0_126
 	Mem139[sp_124 - 4<32>:word32] = fp_125 + -30<i32>
@@ -334,7 +334,7 @@ l00011CF8:
 	word32 r2_147
 	word32 r4_149
 	call r4_130 + 2<i32> (retsize: 4;)
-		uses: ap:ap_127,fp:fp_125,r0:r0_126,r4:r4_130
+		uses: ap:ap_127,fp:fp_125,Mem:Mem139,r0:r0_126,r4:r4_130
 		defs: ap:ap_146,fp:fp_144,r0:r0_145,r2:r2_147,r4:r4_149,sp:sp_143
 	Mem155[r2_147 + 0xC668<32>:word32] = r0_145
 	Mem158[sp_143 - 4<32>:word32] = fp_144 + -26<i32>
@@ -346,7 +346,7 @@ l00011CF8:
 	word32 r3_167
 	word32 r4_168
 	call r4_149 + 2<i32> (retsize: 4;)
-		uses: ap:ap_146,fp:fp_144,r0:r0_145,r4:r4_149
+		uses: ap:ap_146,fp:fp_144,Mem:Mem158,r0:r0_145,r4:r4_149
 		defs: ap:ap_165,fp:fp_163,r0:r0_164,r2:r2_166,r3:r3_167,r4:r4_168,sp:sp_162
 	Mem174[r2_166 + 0xC66C<32>:word32] = r0_164
 	Mem177[sp_162 - 4<32>:word32] = fp_163 + -22<i32>
@@ -358,7 +358,7 @@ l00011CF8:
 	word32 r3_186
 	word32 r4_187
 	call r3_167 + 2<i32> (retsize: 4;)
-		uses: ap:ap_165,fp:fp_163,r0:r0_164,r4:r4_168
+		uses: ap:ap_165,fp:fp_163,Mem:Mem177,r0:r0_164,r4:r4_168
 		defs: ap:ap_184,fp:fp_182,r0:r0_183,r2:r2_185,r3:r3_186,r4:r4_187,sp:sp_181
 	Mem193[r2_185 + 0xC670<32>:word16] = SLICE(r0_183, word16, 0)
 	Mem196[sp_181 - 4<32>:word32] = fp_182 + -20<i32>
@@ -370,7 +370,7 @@ l00011CF8:
 	word32 r3_205
 	word32 r4_206
 	call r3_186 + 2<i32> (retsize: 4;)
-		uses: ap:ap_184,fp:fp_182,r0:r0_183,r4:r4_187
+		uses: ap:ap_184,fp:fp_182,Mem:Mem196,r0:r0_183,r4:r4_187
 		defs: ap:ap_203,fp:fp_201,r0:r0_202,r2:r2_204,r3:r3_205,r4:r4_206,sp:sp_200
 	Mem212[r2_204 + 0xC672<32>:word16] = SLICE(r0_202, word16, 0)
 	Mem215[sp_200 - 4<32>:word32] = fp_201 + -18<i32>
@@ -382,7 +382,7 @@ l00011CF8:
 	word32 r3_224
 	word32 r4_225
 	call r3_205 + 2<i32> (retsize: 4;)
-		uses: ap:ap_203,fp:fp_201,r0:r0_202,r4:r4_206
+		uses: ap:ap_203,fp:fp_201,Mem:Mem215,r0:r0_202,r4:r4_206
 		defs: ap:ap_222,fp:fp_220,r0:r0_221,r2:r2_223,r3:r3_224,r4:r4_225,sp:sp_219
 	Mem231[r2_223 + 0xC674<32>:word16] = SLICE(r0_221, word16, 0)
 	Mem234[sp_219 - 4<32>:word32] = fp_220 + -16<i32>
@@ -394,7 +394,7 @@ l00011CF8:
 	word32 r3_243
 	word32 r4_244
 	call r3_224 + 2<i32> (retsize: 4;)
-		uses: ap:ap_222,fp:fp_220,r0:r0_221,r4:r4_225
+		uses: ap:ap_222,fp:fp_220,Mem:Mem234,r0:r0_221,r4:r4_225
 		defs: ap:ap_241,fp:fp_239,r0:r0_240,r2:r2_242,r3:r3_243,r4:r4_244,sp:sp_238
 	Mem250[r2_242 + 0xC676<32>:word16] = SLICE(r0_240, word16, 0)
 	Mem253[sp_238 - 4<32>:word32] = fp_239 + -14<i32>
@@ -405,7 +405,7 @@ l00011CF8:
 	word32 r2_261
 	word32 r4_263
 	call r3_243 + 2<i32> (retsize: 4;)
-		uses: ap:ap_241,fp:fp_239,r0:r0_240,r4:r4_244
+		uses: ap:ap_241,fp:fp_239,Mem:Mem253,r0:r0_240,r4:r4_244
 		defs: ap:ap_260,fp:fp_258,r0:r0_259,r2:r2_261,r4:r4_263,sp:sp_257
 	Mem269[r2_261 + 0xC678<32>:word16] = SLICE(r0_259, word16, 0)
 	Mem272[sp_257 - 4<32>:word32] = fp_258 + -12<i32>
@@ -416,7 +416,7 @@ l00011CF8:
 	word32 r2_280
 	word32 r4_282
 	call r4_263 + 2<i32> (retsize: 4;)
-		uses: ap:ap_260,fp:fp_258,r0:r0_259,r4:r4_263
+		uses: ap:ap_260,fp:fp_258,Mem:Mem272,r0:r0_259,r4:r4_263
 		defs: ap:ap_279,fp:fp_277,r0:r0_278,r2:r2_280,r4:r4_282,sp:sp_276
 	Mem288[r2_280 + 0xC67A<32>:word32] = r0_278
 	Mem291[sp_276 - 4<32>:word32] = fp_277 + -8<i32>
@@ -427,7 +427,7 @@ l00011CF8:
 	word32 r4_301
 	word32 r5_302
 	call r4_282 + 2<i32> (retsize: 4;)
-		uses: ap:ap_279,fp:fp_277,r0:r0_278,r4:r4_282
+		uses: ap:ap_279,fp:fp_277,Mem:Mem291,r0:r0_278,r4:r4_282
 		defs: fp:fp_296,r0:r0_297,r2:r2_299,r3:r3_300,r4:r4_301,r5:r5_302
 	Mem307[r2_299 + 0xC67E<32>:word32] = r0_297
 	word32 fp_314 = Mem307[fp_296 + 0xC<32>:word32]
@@ -514,7 +514,7 @@ l00012288:
 l00012285:
 l00012312:
 	call Mem33[0x0001929C<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap,fp:fp,r2:r2,Stack +0004:fp + -16<i32>,Stack +0008:Mem26[ap + 4<i32>:word32],Stack +000C:0xC<32>
+		uses: ap:ap,fp:fp,Mem:Mem33,r2:r2,Stack +0004:fp + -16<i32>,Stack +0008:Mem26[ap + 4<i32>:word32],Stack +000C:0xC<32>
 
 
 void fn000124FE(word32 r2, word32 pc)
@@ -541,7 +541,7 @@ l00012503:
 	word32 r0_26
 	word32 ap_27
 	call Mem16[pc:word32] + 2<i32> (retsize: 4;)
-		uses: pc:pc_20 + 4<32>,r2:r2_24
+		uses: Mem:Mem16,pc:pc_20 + 4<32>,r2:r2_24
 		defs: ap:ap_27,pc:pc_25,r0:r0_26,r2:r2_24,sp:sp_23
 	real32 v16_29 = Mem16[Mem16[sp_23 + 32766<i32>:word32]:real32]
 	Mem30[Mem16[r0_26 + -23984<i32>:word32]:real32] = v16_29
@@ -559,7 +559,7 @@ l0001251B:
 	Mem60[sp_23 - 0x24<32>:word32] = 0<32>
 	word32 r2_67
 	call Mem60[pc:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_27 - 0xC<32>,pc:pc_25 + 4<32>,r2:r2_67
+		uses: ap:ap_27 - 0xC<32>,Mem:Mem60,pc:pc_25 + 4<32>,r2:r2_67
 		defs: r2:r2_67
 	__halt()
 
@@ -577,7 +577,7 @@ l000125F0:
 	Mem17[sp_26 - 8<32>:word32] = fp_27 + -6<i32>
 	Mem21[sp_26 - 0xC<32>:word32] = Mem17[r2_29:word32]
 	call Mem21[0x00019270<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: fp:fp_27,pc:pc_31,r2:r2_29
+		uses: fp:fp_27,Mem:Mem21,pc:pc_31,r2:r2_29
 		defs: fp:fp_27,pc:pc_31,r2:r2_29,sp:sp_26
 	branch Mem21[fp_27 + -6<i32>:byte] != 0xA<8> l000125F0
 l00012604:
@@ -602,14 +602,14 @@ l00012616:
 	word32 r8_17
 	word32 r0_18
 	call Mem11[0x00019248<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r7:Mem0[0x00019350<p32>:word32],r8:r8,Stack +0004:0<32>,Stack +0008:r8 + 12<i32>
+		uses: Mem:Mem11,r7:Mem0[0x00019350<p32>:word32],r8:r8,Stack +0004:0<32>,Stack +0008:r8 + 12<i32>
 		defs: r0:r0_18,r8:r8_17,sp:sp_15
 	Mem32[sp_15 - 4<32>:word32] = r0_18
 	word32 sp_36
 	word32 r8_38
 	word32 r0_39
 	call Mem32[0x0001924C<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r8:r8_17
+		uses: Mem:Mem32,r8:r8_17
 		defs: r0:r0_39,r8:r8_38,sp:sp_36
 	branch r0_39 != 0<32> l00012644
 l00012644:
@@ -619,7 +619,7 @@ l00012644:
 	word32 ap_114
 	word32 r8_107
 	call Mem59[0x00019294<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r8:r8_38
+		uses: Mem:Mem59,r8:r8_38
 		defs: ap:ap_69,r7:r7_64,r8:r8_65,sp:sp_63
 	Mem81[sp_108 + 4<i32>:word32] = Mem59[0x00019258<p32>:word32]
 	Mem87[sp_108:word32] = Mem81[ap_114 + 8<i32>:word32]
@@ -631,7 +631,7 @@ l00012684:
 	Mem101[sp_98:word32] = Mem92[r7_109:word32]
 	Mem103[sp_98 - 4<32>:word32] = r9_328
 	call Mem103[sp_98 + 8<32>:word32] + 2<i32> (retsize: 4;)
-		uses: r8:r8_107
+		uses: Mem:Mem103,r8:r8_107
 		defs: ap:ap_114,r7:r7_109,r8:r8_110,sp:sp_108
 l0001268C:
 	word32 sp_125 = sp_108 - 4<32>
@@ -642,14 +642,14 @@ l0001268C:
 	word32 r8_141
 	word32 r11_147
 	call Mem134[sp_125 + 8<32>:word32] + 2<i32> (retsize: 4;)
-		uses: r8:r8_138
+		uses: Mem:Mem134,r8:r8_138
 		defs: r11:r11_147,r7:r7_140,r8:r8_141,sp:sp_139
 	Mem157[sp_139 - 4<32>:word32] = Mem134[r7_140:word32]
 	word32 sp_161
 	word32 r8_163
 	word32 r10_174
 	call r11_147 + 2<i32> (retsize: 4;)
-		uses: r8:r8_141
+		uses: Mem:Mem157,r8:r8_141
 		defs: r10:r10_174,r8:r8_163,sp:sp_161
 	Mem179[sp_161 - 4<32>:word32] = 0<32>
 	word32 sp_183
@@ -657,7 +657,7 @@ l0001268C:
 	word32 r5_192
 	word32 r8_185
 	call r10_174 + 2<i32> (retsize: 4;)
-		uses: r2:0<32>,r8:r8_163
+		uses: Mem:Mem179,r2:0<32>,r8:r8_163
 		defs: r5:r5_192,r6:r6_187,r8:r8_185,sp:sp_183
 l000126A4:
 	Mem202[sp_183 - 4<32>:word32] = r6_187
@@ -668,7 +668,7 @@ l000126A4:
 	word32 r10_221
 	word32 r1_222
 	call r5_192 + 2<i32> (retsize: 4;)
-		uses: r8:r8_207
+		uses: Mem:Mem202,r8:r8_207
 		defs: r0:r0_211,r1:r1_222,r10:r10_221,r2:r2_220,r3:r3_219,r4:r4_218,r5:r5_217,r6:r6_212,r8:r8_210,sp:sp_208
 	int8 v32_224 = CONVERT(r0_211, word32, int8)
 	word24 v33_225 = SLICE(r1_222, word24, 8)
@@ -688,7 +688,7 @@ l000126C8:
 	word32 r7_267
 	word32 r8_268
 	call r10_221 + 2<i32> (retsize: 4;)
-		uses: r8:r8_210
+		uses: Mem:Mem258,r8:r8_210
 		defs: r7:r7_267,r8:r8_268,sp:sp_266
 	Mem284[sp_266 - 4<32>:word32] = Mem258[r7_267:word32]
 	Mem286[sp_266 - 8<32>:word32] = 0xA<32>
@@ -697,13 +697,13 @@ l000126C8:
 	word32 r8_292
 	word32 r11_298
 	call Mem286[0x00019268<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r8:r8_268
+		uses: Mem:Mem286,r8:r8_268
 		defs: r11:r11_298,r7:r7_291,r8:r8_292,sp:sp_290
 	Mem308[sp_290 - 4<32>:word32] = Mem286[r7_291:word32]
 	word32 r6_316
 	word32 r2_324
 	call r11_298 + 2<i32> (retsize: 4;)
-		uses: r8:r8_292
+		uses: Mem:Mem308,r8:r8_292
 		defs: ap:ap_318,r2:r2_324,r6:r6_316,r7:r7_313,r8:r8_314,sp:sp_312
 	r9_328 = r8_107 + 15<i32>
 	branch Mem308[Mem308[sp_108:word32] + (r2_324 - 1<32>):byte] != 0xA<8> l00012680
@@ -712,7 +712,7 @@ l000126EC:
 	Mem335[r3_333 + (r2_324 - 1<32>):word32] = 0<8>
 	Mem337[sp_108 - 4<32>:word32] = r6_316
 	call Mem337[0x00019250<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: r3:r3_333,r8:r8_314
+		uses: Mem:Mem337,r3:r3_333,r8:r8_314
 	return
 l00012641:
 	return
@@ -752,7 +752,7 @@ l000127FD:
 l0001275B_1:
 	word32 r0_58
 	call 0x00012763<p32> + (r4_16 - 0x2D<32>) * 2<32> (retsize: 0;)
-		uses: ap:ap,r0:r0_58,r2:r2
+		uses: ap:ap,Mem:Mem30,r0:r0_58,r2:r2
 		defs: r0:r0_58
 	return
 l00012755:
@@ -777,7 +777,7 @@ l0001297F:
 l00012984:
 	word32 r0_108
 	call Mem90[0x000192E4<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap,r0:r0_108,r2:r2,Stack +0004:1<32>
+		uses: ap:ap,Mem:Mem90,r0:r0_108,r2:r2,Stack +0004:1<32>
 		defs: ap:ap_104,r0:r0_108,r2:r2_103,sp:sp_95
 	branch r0_108 != 0<32> l00012994
 l00012991:
@@ -797,7 +797,7 @@ l000129C2:
 l000129AA_1:
 	word32 r0_166
 	call 0x000129AE<p32> + r0_143 * 2<32> (retsize: 0;)
-		uses: ap:ap_149,r0:r0_166,r2:r2_121
+		uses: ap:ap_149,Mem:Mem142,r0:r0_166,r2:r2_121
 		defs: r0:r0_166
 	return
 l0001296B:
@@ -843,7 +843,7 @@ l00012A5F:
 	word32 fp_59
 	word32 r11_1001
 	call Mem43[0x000192C4<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_56,fp:fp_59,r11:r11_1001,r2:r2,r3:r3_55,r4:r4,r5:r5,r6:r6_54,r7:r7_57,Stack +0004:Mem40[r2 + 0xC613<32>:word32],Stack +0008:Mem37[r2 + 0xC613<32>:word32],Stack +000C:Mem33[r2 + 0xC61B<32>:word32],Stack +0010:r0_13,Stack +0014:r6_29
+		uses: ap:ap_56,fp:fp_59,Mem:Mem43,r11:r11_1001,r2:r2,r3:r3_55,r4:r4,r5:r5,r6:r6_54,r7:r7_57,Stack +0004:Mem40[r2 + 0xC613<32>:word32],Stack +0008:Mem37[r2 + 0xC613<32>:word32],Stack +000C:Mem33[r2 + 0xC61B<32>:word32],Stack +0010:r0_13,Stack +0014:r6_29
 		defs: ap:ap_56,fp:fp_59,r0:r0_52,r11:r11_1001,r2:r2_51,r3:r3_55,r4:r4_53,r5:r5_58,r6:r6_54,r7:r7_57,sp:sp_49
 	branch r0_52 >= 0x27<32> l00012A88
 l00012A88:
@@ -859,7 +859,7 @@ l00012A8C:
 	word32 r4_89
 	word32 r5_94
 	call Mem79[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_115,fp:fp_118,r11:r11_1003,r2:r2_51,r3:r3_114,r4:r4_53,r5:r5_58,r6:r6_113,r7:r7_116
+		uses: ap:ap_115,fp:fp_118,Mem:Mem79,r11:r11_1003,r2:r2_51,r3:r3_114,r4:r4_53,r5:r5_58,r6:r6_113,r7:r7_116
 		defs: r0:r0_88,r2:r2_87,r4:r4_89,r5:r5_94,sp:sp_85
 	Mem98[sp_85 - 4<32>:word32] = r0_88
 	Mem101[sp_85 - 8<32>:word32] = r2_87 + 1515<i32>
@@ -870,7 +870,7 @@ l00012A8C:
 	word32 r7_116
 	word32 r11_1003
 	call ap_104 + 2<i32> (retsize: 4;)
-		uses: ap:ap_104,fp:fp_118,r11:r11_1003,r2:r2_87,r3:r3_114,r4:r4_89,r5:r5_94,r6:r6_113,r7:r7_116
+		uses: ap:ap_104,fp:fp_118,Mem:Mem103,r11:r11_1003,r2:r2_87,r3:r3_114,r4:r4_89,r5:r5_94,r6:r6_113,r7:r7_116
 		defs: ap:ap_115,fp:fp_118,r11:r11_1003,r2:r2_110,r3:r3_114,r4:r4_112,r5:r5_117,r6:r6_113,r7:r7_116,sp:sp_108
 l00012AAB:
 	branch Mem121[r2 + 36<i32>:word32] > 9<32> l00012AB4
@@ -890,7 +890,7 @@ l00012AB4:
 	word32 r4_144
 	word32 r5_149
 	call r7_135 + 2<i32> (retsize: 4;)
-		uses: ap:ap_274,fp:fp_277,r11:r11_1009,r2:r2_120,r3:r3_273,r4:r4_129,r5:r5_139,r6:r6_279,r7:r7_135
+		uses: ap:ap_274,fp:fp_277,Mem:Mem134,r11:r11_1009,r2:r2_120,r3:r3_273,r4:r4_129,r5:r5_139,r6:r6_279,r7:r7_135
 		defs: r0:r0_143,r2:r2_142,r4:r4_144,r5:r5_149,sp:sp_140
 	Mem153[sp_140 - 4<32>:word32] = r0_143
 	Mem156[sp_140 - 8<32>:word32] = r2_142 + 1515<i32>
@@ -902,7 +902,7 @@ l00012AB4:
 	word32 r7_171
 	word32 r5_172
 	call ap_159 + 2<i32> (retsize: 4;)
-		uses: ap:ap_159,fp:fp_277,r11:r11_1009,r2:r2_142,r3:r3_273,r4:r4_144,r5:r5_149,r6:r6_279,r7:r7_275
+		uses: ap:ap_159,fp:fp_277,Mem:Mem158,r11:r11_1009,r2:r2_142,r3:r3_273,r4:r4_144,r5:r5_149,r6:r6_279,r7:r7_275
 		defs: r2:r2_165,r4:r4_167,r5:r5_172,r7:r7_171,sp:sp_163
 	Mem176[sp_163 - 4<32>:word32] = 0<32>
 	Mem179[sp_163 - 8<32>:word32] = r4_167 + 99<i32>
@@ -913,7 +913,7 @@ l00012AB4:
 	word32 r4_190
 	word32 r5_195
 	call r7_171 + 2<i32> (retsize: 4;)
-		uses: ap:ap_274,fp:fp_277,r11:r11_1009,r2:r2_165,r3:r3_273,r4:r4_167,r5:r5_172,r6:r6_279,r7:r7_275
+		uses: ap:ap_274,fp:fp_277,Mem:Mem182,r11:r11_1009,r2:r2_165,r3:r3_273,r4:r4_167,r5:r5_172,r6:r6_279,r7:r7_275
 		defs: r0:r0_189,r2:r2_188,r4:r4_190,r5:r5_195,sp:sp_186
 	Mem199[sp_186 - 4<32>:word32] = r0_189
 	Mem202[sp_186 - 8<32>:word32] = r2_188 + 1515<i32>
@@ -925,7 +925,7 @@ l00012AB4:
 	word32 r7_217
 	word32 r5_218
 	call ap_205 + 2<i32> (retsize: 4;)
-		uses: ap:ap_205,fp:fp_277,r11:r11_1009,r2:r2_188,r3:r3_273,r4:r4_190,r5:r5_195,r6:r6_279,r7:r7_275
+		uses: ap:ap_205,fp:fp_277,Mem:Mem204,r11:r11_1009,r2:r2_188,r3:r3_273,r4:r4_190,r5:r5_195,r6:r6_279,r7:r7_275
 		defs: r2:r2_211,r4:r4_213,r5:r5_218,r7:r7_217,sp:sp_209
 	Mem222[sp_209 - 4<32>:word32] = 0<32>
 	Mem225[sp_209 - 8<32>:word32] = Mem222[r2_211 + 128<i32>:word32]
@@ -940,7 +940,7 @@ l00012AB4:
 	word32 r4_248
 	word32 r5_253
 	call r7_217 + 2<i32> (retsize: 4;)
-		uses: ap:ap_274,fp:fp_277,r11:r11_1009,r2:r2_211,r3:r3_273,r4:r4_213,r5:r5_218,r6:r6_279,r7:r7_275
+		uses: ap:ap_274,fp:fp_277,Mem:Mem240,r11:r11_1009,r2:r2_211,r3:r3_273,r4:r4_213,r5:r5_218,r6:r6_279,r7:r7_275
 		defs: r0:r0_247,r2:r2_246,r4:r4_248,r5:r5_253,sp:sp_244
 	Mem257[sp_244 - 4<32>:word32] = r0_247
 	Mem260[sp_244 - 8<32>:word32] = r2_246 + 1515<i32>
@@ -956,7 +956,7 @@ l00012AB4:
 	word32 fp_277
 	word32 r11_1009
 	call ap_263 + 2<i32> (retsize: 4;)
-		uses: ap:ap_263,fp:fp_277,r11:r11_1009,r2:r2_246,r3:r3_273,r4:r4_248,r5:r5_253,r6:r6_279,r7:r7_275
+		uses: ap:ap_263,fp:fp_277,Mem:Mem262,r11:r11_1009,r2:r2_246,r3:r3_273,r4:r4_248,r5:r5_253,r6:r6_279,r7:r7_275
 		defs: ap:ap_274,fp:fp_277,r11:r11_1009,r2:r2_269,r3:r3_273,r4:r4_271,r5:r5_276,r7:r7_275,sp:sp_267
 	word32 r6_279 = CONVERT(Mem262[r2_269 + 0xC682<32>:word16], word16, uint32)
 	branch r6_279 != 0<32> l00012BA4
@@ -984,7 +984,7 @@ l00012BBC:
 	word32 r4_330
 	word32 r5_335
 	call r7_275 + 2<i32> (retsize: 4;)
-		uses: ap:ap_306 + 1<32>,fp:fp_359,r11:r11_1011,r2:r2_269,r3:r3_355,r4:r4_271,r5:r5_276,r6:r6_279 + 1<32>,r7:r7_357
+		uses: ap:ap_306 + 1<32>,fp:fp_359,Mem:Mem320,r11:r11_1011,r2:r2_269,r3:r3_355,r4:r4_271,r5:r5_276,r6:r6_279 + 1<32>,r7:r7_357
 		defs: r0:r0_329,r2:r2_328,r4:r4_330,r5:r5_335,sp:sp_326
 	Mem339[sp_326 - 4<32>:word32] = r0_329
 	Mem342[sp_326 - 8<32>:word32] = r2_328 + 1515<i32>
@@ -1000,7 +1000,7 @@ l00012BBC:
 	word32 fp_359
 	word32 r11_1011
 	call ap_345 + 2<i32> (retsize: 4;)
-		uses: ap:ap_345,fp:fp_359,r11:r11_1011,r2:r2_328,r3:r3_355,r4:r4_330,r5:r5_335,r6:r6_354,r7:r7_357
+		uses: ap:ap_345,fp:fp_359,Mem:Mem344,r11:r11_1011,r2:r2_328,r3:r3_355,r4:r4_330,r5:r5_335,r6:r6_354,r7:r7_357
 		defs: fp:fp_359,r11:r11_1011,r2:r2_351,r3:r3_355,r4:r4_353,r5:r5_358,r6:r6_354,r7:r7_357,sp:sp_349
 	Mem362[sp_349 - 4<32>:word32] = 0<32>
 	Mem365[sp_349 - 8<32>:word32] = Mem362[r2_351 + 0xC68A<32>:word32]
@@ -1022,7 +1022,7 @@ l00012C10:
 	word32 r4_405
 	word32 r5_410
 	call r7_357 + 2<i32> (retsize: 4;)
-		uses: ap:ap_483,fp:fp_486,r11:r11_1015,r2:r2_351,r3:r3_482,r4:r4_353,r5:r5_358,r6:r6_481,r7:r7_484
+		uses: ap:ap_483,fp:fp_486,Mem:Mem395,r11:r11_1015,r2:r2_351,r3:r3_482,r4:r4_353,r5:r5_358,r6:r6_481,r7:r7_484
 		defs: r0:r0_404,r2:r2_403,r4:r4_405,r5:r5_410,sp:sp_401
 	Mem414[sp_401 - 4<32>:word32] = r0_404
 	Mem417[sp_401 - 8<32>:word32] = r2_403 + 1515<i32>
@@ -1034,7 +1034,7 @@ l00012C10:
 	word32 r7_432
 	word32 r5_433
 	call ap_420 + 2<i32> (retsize: 4;)
-		uses: ap:ap_420,fp:fp_486,r11:r11_1015,r2:r2_403,r3:r3_482,r4:r4_405,r5:r5_410,r6:r6_481,r7:r7_484
+		uses: ap:ap_420,fp:fp_486,Mem:Mem419,r11:r11_1015,r2:r2_403,r3:r3_482,r4:r4_405,r5:r5_410,r6:r6_481,r7:r7_484
 		defs: r2:r2_426,r4:r4_428,r5:r5_433,r7:r7_432,sp:sp_424
 	Mem437[sp_424 - 4<32>:word32] = 0<32>
 	Mem440[sp_424 - 8<32>:word32] = Mem437[r2_426 + 0xC68E<32>:word32]
@@ -1047,7 +1047,7 @@ l00012C10:
 	word32 r4_457
 	word32 r5_462
 	call r7_432 + 2<i32> (retsize: 4;)
-		uses: ap:ap_483,fp:fp_486,r11:r11_1015,r2:r2_426,r3:r3_482,r4:r4_428,r5:r5_433,r6:r6_481,r7:r7_484
+		uses: ap:ap_483,fp:fp_486,Mem:Mem449,r11:r11_1015,r2:r2_426,r3:r3_482,r4:r4_428,r5:r5_433,r6:r6_481,r7:r7_484
 		defs: r0:r0_456,r2:r2_455,r4:r4_457,r5:r5_462,sp:sp_453
 	Mem466[sp_453 - 4<32>:word32] = r0_456
 	Mem469[sp_453 - 8<32>:word32] = r2_455 + 1515<i32>
@@ -1060,7 +1060,7 @@ l00012C10:
 	word32 r7_484
 	word32 fp_486
 	call ap_472 + 2<i32> (retsize: 4;)
-		uses: ap:ap_472,fp:fp_486,r11:r11_1015,r2:r2_455,r3:r3_482,r4:r4_457,r5:r5_462,r6:r6_481,r7:r7_484
+		uses: ap:ap_472,fp:fp_486,Mem:Mem471,r11:r11_1015,r2:r2_455,r3:r3_482,r4:r4_457,r5:r5_462,r6:r6_481,r7:r7_484
 		defs: ap:ap_483,fp:fp_486,r11:r11_1015,r2:r2_478,r3:r3_482,r4:r4_480,r5:r5_485,r6:r6_481,r7:r7_484,sp:sp_476
 l00012B2D:
 	word32 r3_500
@@ -1084,7 +1084,7 @@ l00012B54:
 	word32 r4_532
 	word32 r5_537
 	call r7_275 + 2<i32> (retsize: 4;)
-		uses: ap:ap_610,fp:fp_613,r11:r11_1019,r2:r2_269,r3:r3_609,r4:r4_271,r5:r5_276,r6:r6_608,r7:r7_611
+		uses: ap:ap_610,fp:fp_613,Mem:Mem522,r11:r11_1019,r2:r2_269,r3:r3_609,r4:r4_271,r5:r5_276,r6:r6_608,r7:r7_611
 		defs: r0:r0_531,r2:r2_530,r4:r4_532,r5:r5_537,sp:sp_528
 	Mem541[sp_528 - 4<32>:word32] = r0_531
 	Mem544[sp_528 - 8<32>:word32] = r2_530 + 1515<i32>
@@ -1096,7 +1096,7 @@ l00012B54:
 	word32 r7_559
 	word32 r5_560
 	call ap_547 + 2<i32> (retsize: 4;)
-		uses: ap:ap_547,fp:fp_613,r11:r11_1019,r2:r2_530,r3:r3_609,r4:r4_532,r5:r5_537,r6:r6_608,r7:r7_611
+		uses: ap:ap_547,fp:fp_613,Mem:Mem546,r11:r11_1019,r2:r2_530,r3:r3_609,r4:r4_532,r5:r5_537,r6:r6_608,r7:r7_611
 		defs: r2:r2_553,r4:r4_555,r5:r5_560,r7:r7_559,sp:sp_551
 	Mem564[sp_551 - 4<32>:word32] = 0<32>
 	Mem567[sp_551 - 8<32>:word32] = Mem564[r2_553 + 0xC68E<32>:word32]
@@ -1109,7 +1109,7 @@ l00012B54:
 	word32 r4_584
 	word32 r5_589
 	call r7_559 + 2<i32> (retsize: 4;)
-		uses: ap:ap_610,fp:fp_613,r11:r11_1019,r2:r2_553,r3:r3_609,r4:r4_555,r5:r5_560,r6:r6_608,r7:r7_611
+		uses: ap:ap_610,fp:fp_613,Mem:Mem576,r11:r11_1019,r2:r2_553,r3:r3_609,r4:r4_555,r5:r5_560,r6:r6_608,r7:r7_611
 		defs: r0:r0_583,r2:r2_582,r4:r4_584,r5:r5_589,sp:sp_580
 	Mem593[sp_580 - 4<32>:word32] = r0_583
 	Mem596[sp_580 - 8<32>:word32] = r2_582 + 1515<i32>
@@ -1122,7 +1122,7 @@ l00012B54:
 	word32 r7_611
 	word32 fp_613
 	call ap_599 + 2<i32> (retsize: 4;)
-		uses: ap:ap_599,fp:fp_613,r11:r11_1019,r2:r2_582,r3:r3_609,r4:r4_584,r5:r5_589,r6:r6_608,r7:r7_611
+		uses: ap:ap_599,fp:fp_613,Mem:Mem598,r11:r11_1019,r2:r2_582,r3:r3_609,r4:r4_584,r5:r5_589,r6:r6_608,r7:r7_611
 		defs: ap:ap_610,fp:fp_613,r11:r11_1019,r2:r2_605,r3:r3_609,r4:r4_607,r5:r5_612,r6:r6_608,r7:r7_611,sp:sp_603
 l00012C5C:
 	branch Mem616[r2_478 + 0xC692<32>:word16] != 0<16> l00012C8C
@@ -1139,7 +1139,7 @@ l00012C8C:
 	word32 r4_643
 	word32 r5_648
 	call r3_634 + 2<i32> (retsize: 4;)
-		uses: ap:ap_728,fp:fp_729,r11:r11_1023,r2:r2_615,r3:r3_634,r4:r4_628,r5:r5_638,r6:r6_713,r7:r7_716
+		uses: ap:ap_728,fp:fp_729,Mem:Mem633,r11:r11_1023,r2:r2_615,r3:r3_634,r4:r4_628,r5:r5_638,r6:r6_713,r7:r7_716
 		defs: r0:r0_642,r2:r2_641,r4:r4_643,r5:r5_648,sp:sp_639
 	Mem652[sp_639 - 4<32>:word32] = r0_642
 	Mem655[sp_639 - 8<32>:word32] = r2_641 + 1515<i32>
@@ -1151,7 +1151,7 @@ l00012C8C:
 	word32 r3_668
 	word32 r5_671
 	call ap_658 + 2<i32> (retsize: 4;)
-		uses: ap:ap_658,fp:fp_729,r11:r11_1023,r2:r2_641,r3:r3_714,r4:r4_643,r5:r5_648,r6:r6_713,r7:r7_716
+		uses: ap:ap_658,fp:fp_729,Mem:Mem657,r11:r11_1023,r2:r2_641,r3:r3_714,r4:r4_643,r5:r5_648,r6:r6_713,r7:r7_716
 		defs: r2:r2_664,r3:r3_668,r4:r4_666,r5:r5_671,sp:sp_662
 	Mem675[sp_662 - 4<32>:word32] = 0<32>
 	Mem678[sp_662 - 8<32>:word32] = r4_666 + 1032<i32>
@@ -1162,7 +1162,7 @@ l00012C8C:
 	word32 r4_689
 	word32 r5_694
 	call r3_668 + 2<i32> (retsize: 4;)
-		uses: ap:ap_728,fp:fp_729,r11:r11_1023,r2:r2_664,r3:r3_714,r4:r4_666,r5:r5_671,r6:r6_713,r7:r7_716
+		uses: ap:ap_728,fp:fp_729,Mem:Mem681,r11:r11_1023,r2:r2_664,r3:r3_714,r4:r4_666,r5:r5_671,r6:r6_713,r7:r7_716
 		defs: r0:r0_688,r2:r2_687,r4:r4_689,r5:r5_694,sp:sp_685
 	Mem698[sp_685 - 4<32>:word32] = r0_688
 	Mem701[sp_685 - 8<32>:word32] = r2_687 + 1515<i32>
@@ -1179,7 +1179,7 @@ l00012C8C:
 	word32 r5_717
 	word32 fp_718
 	call ap_704 + 2<i32> (retsize: 4;)
-		uses: ap:ap_704,fp:fp_729,r11:r11_1023,r2:r2_687,r3:r3_714,r4:r4_689,r5:r5_694,r6:r6_713,r7:r7_716
+		uses: ap:ap_704,fp:fp_729,Mem:Mem703,r11:r11_1023,r2:r2_687,r3:r3_714,r4:r4_689,r5:r5_694,r6:r6_713,r7:r7_716
 		defs: ap:ap_715,fp:fp_718,r11:r11_1023,r2:r2_710,r3:r3_714,r4:r4_712,r5:r5_717,r6:r6_713,r7:r7_716,sp:sp_708
 	Mem721[sp_708 - 4<32>:word32] = 1<32>
 	Mem724[sp_708 - 8<32>:uint32] = CONVERT(Mem721[r2_710 + 0xC692<32>:word16], word16, uint32)
@@ -1198,7 +1198,7 @@ l00012CEF:
 	word32 r4_765
 	word32 r5_770
 	call r3_714 + 2<i32> (retsize: 4;)
-		uses: ap:ap_792,fp:fp_795,r11:r11_796,r2:r2_710,r3:r3_791,r4:r4_712,r5:r5_717,r6:r6_790,r7:r7_793
+		uses: ap:ap_792,fp:fp_795,Mem:Mem755,r11:r11_796,r2:r2_710,r3:r3_791,r4:r4_712,r5:r5_717,r6:r6_790,r7:r7_793
 		defs: r0:r0_764,r2:r2_763,r4:r4_765,r5:r5_770,sp:sp_761
 	Mem775[sp_761 - 4<32>:word32] = r0_764
 	Mem778[sp_761 - 8<32>:word32] = r2_763 + 1515<i32>
@@ -1216,7 +1216,7 @@ l00012CEF:
 	word32 fp_795
 	word32 r11_796
 	call ap_781 + 2<i32> (retsize: 4;)
-		uses: ap:ap_781,fp:fp_795,r11:r11_796,r2:r2_763,r3:r3_791,r4:r4_765,r5:r5_770,r6:r6_790,r7:r7_793
+		uses: ap:ap_781,fp:fp_795,Mem:Mem780,r11:r11_796,r2:r2_763,r3:r3_791,r4:r4_765,r5:r5_770,r6:r6_790,r7:r7_793
 		defs: ap:ap_792,fp:fp_795,r11:r11_796,r2:r2_787,r3:r3_791,r4:r4_789,r5:r5_794,r6:r6_790,r7:r7_793,r8:r8_786,sp:sp_785
 	branch r8_786 == 0<32> l00012D7E
 l00012D12:
@@ -1229,7 +1229,7 @@ l00012D12:
 	word32 r4_817
 	word32 r5_822
 	call r3_791 + 2<i32> (retsize: 4;)
-		uses: ap:ap_844,fp:fp_847,r11:r11_848,r2:r2_787,r3:r3_843,r4:r4_789,r5:r5_794,r6:r6_842,r7:r7_845
+		uses: ap:ap_844,fp:fp_847,Mem:Mem809,r11:r11_848,r2:r2_787,r3:r3_843,r4:r4_789,r5:r5_794,r6:r6_842,r7:r7_845
 		defs: r0:r0_816,r2:r2_815,r4:r4_817,r5:r5_822,sp:sp_813
 	Mem827[sp_813 - 4<32>:word32] = r0_816
 	Mem830[sp_813 - 8<32>:word32] = r2_815 + 1515<i32>
@@ -1242,7 +1242,7 @@ l00012D12:
 	word32 fp_847
 	word32 r11_848
 	call ap_833 + 2<i32> (retsize: 4;)
-		uses: ap:ap_833,fp:fp_847,r11:r11_848,r2:r2_815,r3:r3_843,r4:r4_817,r5:r5_822,r6:r6_842,r7:r7_845
+		uses: ap:ap_833,fp:fp_847,Mem:Mem832,r11:r11_848,r2:r2_815,r3:r3_843,r4:r4_817,r5:r5_822,r6:r6_842,r7:r7_845
 		defs: ap:ap_844,fp:fp_847,r11:r11_848,r3:r3_843,r6:r6_842,r7:r7_845
 l00012C64:
 	word32 sp_850 = sp_476 - 4<32>
@@ -1255,7 +1255,7 @@ l00012C64:
 	word32 r4_865
 	word32 r5_870
 	call Mem857[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_892,fp:fp_895,r11:r11_896,r2:r2_615,r3:r3_891,r4:r4_628,r5:r5_638,r6:r6_890,r7:r7_893
+		uses: ap:ap_892,fp:fp_895,Mem:Mem857,r11:r11_896,r2:r2_615,r3:r3_891,r4:r4_628,r5:r5_638,r6:r6_890,r7:r7_893
 		defs: r0:r0_864,r2:r2_863,r4:r4_865,r5:r5_870,sp:sp_861
 	Mem875[sp_861 - 4<32>:word32] = r0_864
 	Mem878[sp_861 - 8<32>:word32] = r2_863 + 1515<i32>
@@ -1268,7 +1268,7 @@ l00012C64:
 	word32 fp_895
 	word32 r11_896
 	call ap_881 + 2<i32> (retsize: 4;)
-		uses: ap:ap_881,fp:fp_895,r11:r11_896,r2:r2_863,r3:r3_891,r4:r4_865,r5:r5_870,r6:r6_890,r7:r7_893
+		uses: ap:ap_881,fp:fp_895,Mem:Mem880,r11:r11_896,r2:r2_863,r3:r3_891,r4:r4_865,r5:r5_870,r6:r6_890,r7:r7_893
 		defs: ap:ap_892,fp:fp_895,r11:r11_896,r3:r3_891,r6:r6_890,r7:r7_893
 l00012AB1:
 l00012D34:
@@ -1294,7 +1294,7 @@ l00012D55:
 	word32 r5_952
 	word32 fp_953
 	call Mem939[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_918,fp:fp_919,r11:r11_978,r2:r2_120,r3:r3_973,r4:r4_129,r5:r5_139,r6:r6_972,r7:r7_975
+		uses: ap:ap_918,fp:fp_919,Mem:Mem939,r11:r11_978,r2:r2_120,r3:r3_973,r4:r4_129,r5:r5_139,r6:r6_972,r7:r7_975
 		defs: fp:fp_953,r0:r0_946,r2:r2_945,r4:r4_947,r5:r5_952,sp:sp_943
 	Mem957[sp_943 - 4<32>:word32] = r0_946
 	Mem960[sp_943 - 8<32>:word32] = r2_945 + 1515<i32>
@@ -1305,7 +1305,7 @@ l00012D55:
 	word32 r7_975
 	word32 r11_978
 	call ap_963 + 2<i32> (retsize: 4;)
-		uses: ap:ap_963,fp:fp_953,r11:r11_978,r2:r2_945,r3:r3_973,r4:r4_947,r5:r5_952,r6:r6_972,r7:r7_975
+		uses: ap:ap_963,fp:fp_953,Mem:Mem962,r11:r11_978,r2:r2_945,r3:r3_973,r4:r4_947,r5:r5_952,r6:r6_972,r7:r7_975
 		defs: r11:r11_978,r3:r3_973,r6:r6_972,r7:r7_975
 l00012D7E:
 	return
@@ -1326,7 +1326,7 @@ l00012D86:
 l00012DA8:
 	word32 r8_32
 	call Mem17[0x000192B4<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_31,fp:fp_29,r0:r0_26,r1:r1,r3:r3,r4:r4_28,r8:r8_32,Stack +0004:Mem10[r3 + 100<i32>:word32] << 2<i8>
+		uses: ap:ap_31,fp:fp_29,Mem:Mem17,r0:r0_26,r1:r1,r3:r3,r4:r4_28,r8:r8_32,Stack +0004:Mem10[r3 + 100<i32>:word32] << 2<i8>
 		defs: ap:ap_31,fp:fp_29,r0:r0_26,r3:r3_25,r4:r4_28,r8:r8_32,sp:sp_20
 	branch r0 == 0<32> l00012DCB
 l00012DB9:
@@ -1342,7 +1342,7 @@ l00012DD0:
 	Mem61[sp_149 - 4<32>:word32] = Mem53[r3 + 104<i32>:word32] << 2<i8>
 	word32 r8_76
 	call Mem61[0x000192B4<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_75,fp:fp_73,r0:r0_70,r1:r1,r3:r3_52,r4:r4_72,r8:r8_76
+		uses: ap:ap_75,fp:fp_73,Mem:Mem61,r0:r0_70,r1:r1,r3:r3_52,r4:r4_72,r8:r8_76
 		defs: ap:ap_75,fp:fp_73,r0:r0_70,r3:r3_69,r4:r4_72,r8:r8_76,sp:sp_64
 	branch r0 == 0<32> l00012DF3
 l00012DE1:
@@ -1393,7 +1393,7 @@ l00012E51:
 	word32 ap_203
 	word32 r8_204
 	call Mem188[0x000192D8<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_203,fp:fp_164,r0:r0_165,r1:r1_210,r3:r3_167,r4:r4_168,r8:r8_204
+		uses: ap:ap_203,fp:fp_164,Mem:Mem188,r0:r0_165,r1:r1_210,r3:r3_167,r4:r4_168,r8:r8_204
 		defs: ap:ap_203,fp:fp_201,r0:r0_198,r3:r3_197,r4:r4_200,r8:r8_204,r9:r9_202,sp:sp_192
 	branch r0_198 == 0<32> l00012E96
 l00012E96:
@@ -1415,7 +1415,7 @@ l00012EA2:
 	word32 r5_239
 	word32 r9_248
 	call r8_204 + 2<i32> (retsize: 4;)
-		uses: ap:ap_249,fp:fp_212,r0:r0_213,r1:r1_251,r3:r3_216,r4:r4_217,r8:r8_250
+		uses: ap:ap_249,fp:fp_212,Mem:Mem234,r0:r0_213,r1:r1_251,r3:r3_216,r4:r4_217,r8:r8_250
 		defs: ap:ap_249,fp:fp_247,r0:r0_244,r1:r1_251,r3:r3_243,r4:r4_246,r5:r5_239,r8:r8_250,r9:r9_248,sp:sp_238
 	branch r0 == 0<32> l00012EBB
 l00012EB2:
@@ -1447,7 +1447,7 @@ l00012ED0:
 	word32 r6_296
 	word32 r2_300
 	call r4_114 + 2<i32> (retsize: 4;)
-		uses: ap:ap_304,fp:fp_291,r0:r0_292,r1:r1_306,r3:r3_276,r4:r4_290,r8:r8_305
+		uses: ap:ap_304,fp:fp_291,Mem:Mem286,r0:r0_292,r1:r1_306,r3:r3_276,r4:r4_290,r8:r8_305
 		defs: ap:ap_304,fp:fp_302,r0:r0_299,r1:r1_306,r2:r2_300,r3:r3_298,r4:r4_301,r5:r5_294,r6:r6_296,r8:r8_305,r9:r9_303,sp:sp_293
 	branch r0 == 0<32> l00012EF8
 l00012EF8:
@@ -1482,7 +1482,7 @@ l00012F10:
 	word32 r7_365
 	word32 r2_368
 	call r4_114 + 2<i32> (retsize: 4;)
-		uses: ap:ap_372,fp:fp_359,r0:r0_360,r1:r1_374,r3:r3_344,r4:r4_358,r8:r8_373
+		uses: ap:ap_372,fp:fp_359,Mem:Mem354,r0:r0_360,r1:r1_374,r3:r3_344,r4:r4_358,r8:r8_373
 		defs: ap:ap_372,fp:fp_370,r0:r0_367,r1:r1_374,r2:r2_368,r3:r3_366,r4:r4_369,r5:r5_362,r7:r7_365,r8:r8_373,r9:r9_371,sp:sp_361
 	branch r0 == 0<32> l00012F38
 l00012F38:
@@ -1516,7 +1516,7 @@ l00012F4F_1:
 	word32 r8_440
 	word32 r1_441
 	call 0x00012F53<p32> + (r0_411 - 1<32>) * 2<32> (retsize: 0;)
-		uses: ap:ap_439,fp:fp_421,r0:r0_411,r1:r1_441,r3:r3_397,r4:r4_417,r8:r8_440
+		uses: ap:ap_439,fp:fp_421,Mem:Mem398,r0:r0_411,r1:r1_441,r3:r3_397,r4:r4_417,r8:r8_440
 		defs: ap:ap_439,r1:r1_441,r8:r8_440
 	return
 l00012F48:
@@ -1530,7 +1530,7 @@ l00013084:
 	Mem448[sp_447:word32] = 0<32>
 	Mem451[sp_447 - 4<32>:uint32] = CONVERT(Mem448[r3 + 0xC672<32>:word16], word16, uint32)
 	call r8_455 + 2<i32> (retsize: 4;)
-		uses: ap:ap_472,fp:fp_421,r0:r0_458,r1:r1_474,r3:r3_397,r4:r4_417,r8:r8_473
+		uses: ap:ap_472,fp:fp_421,Mem:Mem451,r0:r0_458,r1:r1_474,r3:r3_397,r4:r4_417,r8:r8_473
 		defs: ap:ap_472,fp:fp_470,r0:r0_467,r1:r1_474,r3:r3_466,r4:r4_469,r8:r8_473,r9:r9_471,sp:sp_461
 	r8_455 = r8_473
 	ap = ap_472
@@ -1551,7 +1551,7 @@ l000130A5:
 	Mem495[sp_491 - 4<32>:uint32] = CONVERT(Mem492[r3 + 0xC674<32>:word16], word16, uint32)
 	word32 r8_515
 	call r8_455 + 2<i32> (retsize: 4;)
-		uses: ap:ap_514,fp:fp_501,r0:r0_502,r1:r1_516,r3:r3_484,r4:r4_500,r8:r8_515
+		uses: ap:ap_514,fp:fp_501,Mem:Mem495,r0:r0_502,r1:r1_516,r3:r3_484,r4:r4_500,r8:r8_515
 		defs: ap:ap_514,fp:fp_512,r0:r0_509,r1:r1_516,r3:r3_508,r4:r4_511,r8:r8_515,r9:r9_513,sp:sp_503
 	ap = ap_514
 	r1 = r1_516
@@ -1582,7 +1582,7 @@ l00012E68:
 	word32 r4_571
 	word32 fp_572
 	call Mem559[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_610,fp:fp_201,r0:r0_198,r1:r1_602,r3:r3_197,r4:r4_200,r8:r8_601
+		uses: ap:ap_610,fp:fp_201,Mem:Mem559,r0:r0_198,r1:r1_602,r3:r3_197,r4:r4_200,r8:r8_601
 		defs: fp:fp_572,r0:r0_569,r3:r3_568,r4:r4_571,sp:sp_563
 	Mem579[sp_563 - 4<32>:word32] = r0_569
 	Mem582[sp_563 - 8<32>:word32] = r3_568 + 1515<i32>
@@ -1592,7 +1592,7 @@ l00012E68:
 	word32 r8_601
 	word32 r1_602
 	call r2_585 + 2<i32> (retsize: 4;)
-		uses: ap:ap_610,fp:fp_572,r0:r0_569,r1:r1_602,r2:r2_585,r3:r3_568,r4:r4_571,r8:r8_601
+		uses: ap:ap_610,fp:fp_572,Mem:Mem584,r0:r0_569,r1:r1_602,r2:r2_585,r3:r3_568,r4:r4_571,r8:r8_601
 		defs: fp:fp_598,r1:r1_602,r8:r8_601
 	word32 ap_610 = Mem584[fp_598 + 8<32>:word32]
 	return
@@ -1628,7 +1628,7 @@ l000130E4:
 	word32 r10_1013
 	word32 ap_1043
 	call Mem675[0x000192D8<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_650,fp:fp_651,r0:r0_652,r1:r1_692,r3:r3_654,r4:r4_655,r8:r8_691
+		uses: ap:ap_650,fp:fp_651,Mem:Mem675,r0:r0_652,r1:r1_692,r3:r3_654,r4:r4_655,r8:r8_691
 		defs: ap:ap_690,fp:fp_688,r0:r0_685,r1:r1_692,r10:r10_681,r3:r3_684,r4:r4_687,r6:r6_682,r7:r7_683,r8:r8_691,sp:sp_679
 	branch r0_685 == 0<32> l00013126
 l000130FB:
@@ -1642,7 +1642,7 @@ l000130FB:
 	word32 fp_718
 	word32 ap_720
 	call Mem705[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_690,fp:fp_688,r0:r0_685,r1:r1_748,r3:r3_684,r4:r4_687,r8:r8_747
+		uses: ap:ap_690,fp:fp_688,Mem:Mem705,r0:r0_685,r1:r1_748,r3:r3_684,r4:r4_687,r8:r8_747
 		defs: ap:ap_720,fp:fp_718,r0:r0_715,r3:r3_714,r4:r4_717,sp:sp_709
 	Mem725[sp_709 - 4<32>:word32] = r0_715
 	Mem728[sp_709 - 8<32>:word32] = r3_714 + 1515<i32>
@@ -1651,7 +1651,7 @@ l000130FB:
 	word32 r8_747
 	word32 r1_748
 	call r2_731 + 2<i32> (retsize: 4;)
-		uses: ap:ap_720,fp:fp_718,r0:r0_715,r1:r1_748,r2:r2_731,r3:r3_714,r4:r4_717,r8:r8_747
+		uses: ap:ap_720,fp:fp_718,Mem:Mem730,r0:r0_715,r1:r1_748,r2:r2_731,r3:r3_714,r4:r4_717,r8:r8_747
 		defs: ap:ap_746,fp:fp_744,r0:r0_741,r1:r1_748,r3:r3_740,r4:r4_743,r6:r6_738,r7:r7_739,r8:r8_747,sp:sp_735
 	r10_1013 = 1<32>
 l00013126:
@@ -1678,7 +1678,7 @@ l000131B5:
 	word32 fp_805
 	word32 ap_807
 	call Mem789[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_770,fp:fp_794,r0:r0_795,r1:r1_835,r2:r2_781,r3:r3_780,r4:r4_793,r8:r8_834
+		uses: ap:ap_770,fp:fp_794,Mem:Mem789,r0:r0_795,r1:r1_835,r2:r2_781,r3:r3_780,r4:r4_793,r8:r8_834
 		defs: ap:ap_807,fp:fp_805,r0:r0_802,r3:r3_801,r4:r4_804,sp:sp_796
 	Mem812[sp_796 - 4<32>:word32] = r0_802
 	Mem815[sp_796 - 8<32>:word32] = r3_801 + 1515<i32>
@@ -1687,7 +1687,7 @@ l000131B5:
 	word32 r8_834
 	word32 r1_835
 	call r2_818 + 2<i32> (retsize: 4;)
-		uses: ap:ap_807,fp:fp_805,r0:r0_802,r1:r1_835,r2:r2_818,r3:r3_801,r4:r4_804,r8:r8_834
+		uses: ap:ap_807,fp:fp_805,Mem:Mem817,r0:r0_802,r1:r1_835,r2:r2_818,r3:r3_801,r4:r4_804,r8:r8_834
 		defs: ap:ap_833,fp:fp_831,r0:r0_828,r1:r1_835,r3:r3_827,r4:r4_830,r6:r6_825,r8:r8_834,sp:sp_822
 l000131E5:
 	ap_765 = ap_765 + 1<32>
@@ -1697,7 +1697,7 @@ l000131ED:
 	word32 r8_877
 	word32 r1_878
 	call Mem850[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_864,fp:fp_858,r0:r0_861,r1:r1_878,r3:r3_854,r4:r4_855,r8:r8_877
+		uses: ap:ap_864,fp:fp_858,Mem:Mem850,r0:r0_861,r1:r1_878,r3:r3_854,r4:r4_855,r8:r8_877
 		defs: fp:fp_874,r0:r0_871,r1:r1_878,r10:r10_867,r3:r3_870,r4:r4_873,r7:r7_869,r8:r8_877,sp:sp_865
 l000131F6:
 	branch r7_683 == 0<32> l0001324A
@@ -1721,7 +1721,7 @@ l00013209:
 	word32 fp_932
 	word32 ap_934
 	call Mem916[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_897,fp:fp_921,r0:r0_922,r1:r1_962,r2:r2_908,r3:r3_907,r4:r4_920,r8:r8_961
+		uses: ap:ap_897,fp:fp_921,Mem:Mem916,r0:r0_922,r1:r1_962,r2:r2_908,r3:r3_907,r4:r4_920,r8:r8_961
 		defs: ap:ap_934,fp:fp_932,r0:r0_929,r3:r3_928,r4:r4_931,sp:sp_923
 	Mem939[sp_923 - 4<32>:word32] = r0_929
 	Mem942[sp_923 - 8<32>:word32] = r3_928 + 1515<i32>
@@ -1730,7 +1730,7 @@ l00013209:
 	word32 r8_961
 	word32 r1_962
 	call r2_945 + 2<i32> (retsize: 4;)
-		uses: ap:ap_934,fp:fp_932,r0:r0_929,r1:r1_962,r2:r2_945,r3:r3_928,r4:r4_931,r8:r8_961
+		uses: ap:ap_934,fp:fp_932,Mem:Mem944,r0:r0_929,r1:r1_962,r2:r2_945,r3:r3_928,r4:r4_931,r8:r8_961
 		defs: ap:ap_960,fp:fp_958,r0:r0_955,r1:r1_962,r3:r3_954,r4:r4_957,r7:r7_953,r8:r8_961,sp:sp_949
 l00013239:
 	ap_886 = ap_886 + 1<32>
@@ -1740,7 +1740,7 @@ l00013241:
 	word32 r8_1003
 	word32 r1_1004
 	call Mem977[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_990,fp:fp_985,r0:r0_988,r1:r1_1004,r3:r3_981,r4:r4_982,r8:r8_1003
+		uses: ap:ap_990,fp:fp_985,Mem:Mem977,r0:r0_988,r1:r1_1004,r3:r3_981,r4:r4_982,r8:r8_1003
 		defs: r1:r1_1004,r10:r10_993,r8:r8_1003,sp:sp_991
 l0001324A:
 	branch CONVERT(Mem1007[sp_1006 + 2<i32>:word16], word16, uint32) != 0<32> l00013258
@@ -1784,14 +1784,14 @@ l0001328C:
 	word32 r6_35
 	word32 r0_36
 	call Mem27[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap,fp:fp_65,r10:r10_68,r4:r4_66,r5:r5,r6:r6,r8:r8_69,r9:r9_67,Stack +0004:r5 + 1515<i32>,Stack +0008:r6 + 1743<i32>,Stack +000C:Mem17[r5 + 0xC67E<32>:word32] - r2_7,Stack +0010:0<32>
+		uses: ap:ap,fp:fp_65,Mem:Mem27,r10:r10_68,r4:r4_66,r5:r5,r6:r6,r8:r8_69,r9:r9_67,Stack +0004:r5 + 1515<i32>,Stack +0008:r6 + 1743<i32>,Stack +000C:Mem17[r5 + 0xC67E<32>:word32] - r2_7,Stack +0010:0<32>
 		defs: ap:ap_32,r0:r0_36,r5:r5_34,r6:r6_35,sp:sp_31
 	Mem48[sp_31 - 4<32>:word32] = r0_36
 	Mem51[sp_31 - 8<32>:word32] = r5_34 + 1515<i32>
 	Mem53[sp_31 - 0xC<32>:word32] = r5_34
 	word32 r2_54 = Mem53[r5_34 + 0xC839<32>:word32]
 	call r2_54 + 2<i32> (retsize: 4;)
-		uses: ap:ap_32,fp:fp_65,r10:r10_68,r2:r2_54,r4:r4_66,r5:r5_34,r6:r6_35,r8:r8_69,r9:r9_67
+		uses: ap:ap_32,fp:fp_65,Mem:Mem53,r10:r10_68,r2:r2_54,r4:r4_66,r5:r5_34,r6:r6_35,r8:r8_69,r9:r9_67
 		defs: ap:ap_59,fp:fp_65,r10:r10_68,r4:r4_66,r5:r5_61,r6:r6_62,r8:r8_69,r9:r9_67,sp:sp_58
 l000132B7:
 	word32 r3_129 = Mem75[r5 + 0xC67E<32>:word32] + 0x1E<32> + CONVERT(Mem75[r5 + 0xC670<32>:word16], word16, uint32) + CONVERT(Mem75[r5 + 0xC672<32>:word16], word16, uint32) + CONVERT(Mem75[r5 + 0xC674<32>:word16], word16, uint32)
@@ -1810,7 +1810,7 @@ l000132FC:
 l00013304:
 	Mem118[sp_101 - 4<32>:word32] = Mem107[r5 + 0xC627<32>:word32]
 	call Mem118[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_97,fp:fp_98,r10:r10_133,r4:r4_131,r5:r5_74,r6:r6_122,r8:r8_134,r9:r9_132
+		uses: ap:ap_97,fp:fp_98,Mem:Mem118,r10:r10_133,r4:r4_131,r5:r5_74,r6:r6_122,r8:r8_134,r9:r9_132
 		defs: ap:ap_124,fp:fp_130,r10:r10_133,r3:r3_129,r4:r4_131,r5:r5_126,r6:r6_127,r8:r8_134,r9:r9_132,sp:sp_123
 	Mem140[r5 + 0xC627<32>:word32] = 0<32>
 l00013317:
@@ -1851,7 +1851,7 @@ l0001336B:
 	word32 r10_269
 	word32 r8_270
 	call r2_242 + 2<i32> (retsize: 4;)
-		uses: ap:ap_248,fp:fp_160,r10:r10_201,r2:r2_242,r4:r4_183,r5:r5_152,r6:r6_252,r8:r8_233,r9:r9_191
+		uses: ap:ap_248,fp:fp_160,Mem:Mem241,r10:r10_201,r2:r2_242,r4:r4_183,r5:r5_152,r6:r6_252,r8:r8_233,r9:r9_191
 		defs: ap:ap_260,fp:fp_266,r10:r10_269,r4:r4_267,r5:r5_262,r6:r6_263,r8:r8_270,r9:r9_268
 	word32 fp_276
 	word32 ap_275 = fn00017772(ap_260, fp_266, out fp_276)
@@ -1872,7 +1872,7 @@ l0001336B:
 	word32 r10_312
 	word32 r8_313
 	call Mem298[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_275,fp:fp_276,r10:r10_269,r4:r4_267,r5:r5_262,r6:r6_263,r8:r8_270,r9:r9_268
+		uses: ap:ap_275,fp:fp_276,Mem:Mem298,r10:r10_269,r4:r4_267,r5:r5_262,r6:r6_263,r8:r8_270,r9:r9_268
 		defs: ap:ap_303,fp:fp_309,r0:r0_307,r10:r10_312,r4:r4_310,r5:r5_305,r6:r6_306,r8:r8_313,r9:r9_311,sp:sp_302
 	Mem319[sp_302 - 4<32>:word32] = r0_307
 	Mem322[sp_302 - 8<32>:word32] = r5_305 + 1515<i32>
@@ -1888,7 +1888,7 @@ l0001336B:
 	word32 r10_339
 	word32 r8_340
 	call r2_325 + 2<i32> (retsize: 4;)
-		uses: ap:ap_303,fp:fp_309,r10:r10_312,r2:r2_325,r4:r4_310,r5:r5_305,r6:r6_306,r8:r8_313,r9:r9_311
+		uses: ap:ap_303,fp:fp_309,Mem:Mem324,r10:r10_312,r2:r2_325,r4:r4_310,r5:r5_305,r6:r6_306,r8:r8_313,r9:r9_311
 		defs: ap:ap_330,fp:fp_336,r10:r10_339,r4:r4_337,r5:r5_332,r6:r6_333,r8:r8_340,r9:r9_338,sp:sp_329
 	word32 r3_345 = CONVERT(Mem324[sp_329 + 2<i32>:word16], word16, uint32)
 	branch r3_345 <u 0x12<32> l000133DC
@@ -1899,7 +1899,7 @@ l000133C1:
 	Mem358[sp_329 - 8<32>:word32] = r6_333 + 1797<i32>
 	Mem361[sp_329 - 0xC<32>:word32] = fp_336 + -58<i32>
 	call Mem361[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_330,fp:fp_336,r10:r10_339,r4:r4_337,r5:r5_332,r6:r6_333,r8:r8_340,r9:r9_338
+		uses: ap:ap_330,fp:fp_336,Mem:Mem361,r10:r10_339,r4:r4_337,r5:r5_332,r6:r6_333,r8:r8_340,r9:r9_338
 		defs: ap:ap_366,fp:fp_372,r10:r10_375,r5:r5_368,r6:r6_369,r8:r8_376,r9:r9_374,sp:sp_365
 	r4_349 = fp_336 + -58<i32>
 l000133E2:
@@ -1920,7 +1920,7 @@ l000133E2:
 	word32 r10_418
 	word32 r8_419
 	call r7_399 + 2<i32> (retsize: 4;)
-		uses: ap:ap_403,fp:fp_404,r10:r10_406,r4:r4_389,r5:r5_396,r6:r6_392,r7:r7_399,r8:r8_407,r9:r9_405
+		uses: ap:ap_403,fp:fp_404,Mem:Mem398,r10:r10_406,r4:r4_389,r5:r5_396,r6:r6_392,r7:r7_399,r8:r8_407,r9:r9_405
 		defs: ap:ap_409,fp:fp_415,r0:r0_413,r10:r10_418,r4:r4_416,r5:r5_411,r6:r6_412,r8:r8_419,r9:r9_417,sp:sp_408
 	Mem425[sp_408 - 4<32>:word32] = r0_413
 	Mem428[sp_408 - 8<32>:word32] = r5_411 + 1515<i32>
@@ -1937,7 +1937,7 @@ l000133E2:
 	word32 r8_446
 	word32 r7_447
 	call r2_431 + 2<i32> (retsize: 4;)
-		uses: ap:ap_409,fp:fp_415,r10:r10_418,r2:r2_431,r4:r4_416,r5:r5_411,r6:r6_412,r8:r8_419,r9:r9_417
+		uses: ap:ap_409,fp:fp_415,Mem:Mem430,r10:r10_418,r2:r2_431,r4:r4_416,r5:r5_411,r6:r6_412,r8:r8_419,r9:r9_417
 		defs: ap:ap_436,fp:fp_442,r10:r10_445,r4:r4_443,r5:r5_438,r6:r6_439,r7:r7_447,r8:r8_446,r9:r9_444,sp:sp_435
 	Mem452[sp_435 - 4<32>:word32] = 0<32>
 	word32 r1_453 = 0<32>
@@ -1982,7 +1982,7 @@ l00013455:
 	word32 r10_543
 	word32 r8_544
 	call r7_447 + 2<i32> (retsize: 4;)
-		uses: ap:ap_436,fp:fp_442,r10:r10_445,r4:r4_443,r5:r5_438,r6:r6_439,r8:r8_446,r9:r9_444
+		uses: ap:ap_436,fp:fp_442,Mem:Mem510,r10:r10_445,r4:r4_443,r5:r5_438,r6:r6_439,r8:r8_446,r9:r9_444
 		defs: ap:ap_534,fp:fp_540,r0:r0_538,r10:r10_543,r4:r4_541,r5:r5_536,r6:r6_537,r8:r8_544,r9:r9_542,sp:sp_533
 	Mem550[sp_533 - 4<32>:word32] = r0_538
 	Mem553[sp_533 - 8<32>:word32] = r5_536 + 1515<i32>
@@ -1999,7 +1999,7 @@ l00013455:
 	word32 r10_570
 	word32 r8_571
 	call r2_556 + 2<i32> (retsize: 4;)
-		uses: ap:ap_534,fp:fp_540,r10:r10_543,r2:r2_556,r4:r4_541,r5:r5_536,r6:r6_537,r8:r8_544,r9:r9_542
+		uses: ap:ap_534,fp:fp_540,Mem:Mem555,r10:r10_543,r2:r2_556,r4:r4_541,r5:r5_536,r6:r6_537,r8:r8_544,r9:r9_542
 		defs: ap:ap_561,fp:fp_567,r10:r10_570,r4:r4_568,r5:r5_563,r6:r6_564,r7:r7_572,r8:r8_571,r9:r9_569,sp:sp_560
 	word32 r3_576 = CONVERT(SLICE(r9_569, word16, 0), word16, uint32)
 	branch r3_576 <u 0x12<32> l00013494
@@ -2010,7 +2010,7 @@ l0001347C:
 	Mem589[sp_560 - 8<32>:word32] = r6_564 + 1797<i32>
 	Mem592[sp_560 - 0xC<32>:word32] = fp_567 + -58<i32>
 	call r7_572 + 2<i32> (retsize: 4;)
-		uses: ap:ap_561,fp:fp_567,r10:r10_570,r4:r4_568,r5:r5_563,r6:r6_564,r8:r8_571,r9:r9_569
+		uses: ap:ap_561,fp:fp_567,Mem:Mem592,r10:r10_570,r4:r4_568,r5:r5_563,r6:r6_564,r8:r8_571,r9:r9_569
 		defs: ap:ap_597,fp:fp_603,r10:r10_606,r5:r5_599,r6:r6_600,r8:r8_607,r9:r9_605,sp:sp_596
 	r4_580 = fp_567 + -58<i32>
 l0001349A:
@@ -2031,7 +2031,7 @@ l0001349A:
 	word32 r10_649
 	word32 r8_650
 	call r7_630 + 2<i32> (retsize: 4;)
-		uses: ap:ap_634,fp:fp_635,r10:r10_637,r4:r4_620,r5:r5_627,r6:r6_623,r7:r7_630,r8:r8_638,r9:r9_636
+		uses: ap:ap_634,fp:fp_635,Mem:Mem629,r10:r10_637,r4:r4_620,r5:r5_627,r6:r6_623,r7:r7_630,r8:r8_638,r9:r9_636
 		defs: ap:ap_640,fp:fp_646,r0:r0_644,r10:r10_649,r4:r4_647,r5:r5_642,r6:r6_643,r8:r8_650,r9:r9_648,sp:sp_639
 	Mem656[sp_639 - 4<32>:word32] = r0_644
 	Mem659[sp_639 - 8<32>:word32] = r5_642 + 1515<i32>
@@ -2048,7 +2048,7 @@ l0001349A:
 	word32 r8_677
 	word32 r7_678
 	call r2_662 + 2<i32> (retsize: 4;)
-		uses: ap:ap_640,fp:fp_646,r10:r10_649,r2:r2_662,r4:r4_647,r5:r5_642,r6:r6_643,r8:r8_650,r9:r9_648
+		uses: ap:ap_640,fp:fp_646,Mem:Mem661,r10:r10_649,r2:r2_662,r4:r4_647,r5:r5_642,r6:r6_643,r8:r8_650,r9:r9_648
 		defs: ap:ap_667,fp:fp_673,r10:r10_676,r4:r4_674,r5:r5_669,r6:r6_670,r7:r7_678,r8:r8_677,r9:r9_675,sp:sp_666
 	Mem683[sp_666 - 4<32>:word32] = 0<32>
 	word32 r1_684 = 0<32>
@@ -2093,7 +2093,7 @@ l00013509:
 	word32 r10_774
 	word32 r8_775
 	call r7_678 + 2<i32> (retsize: 4;)
-		uses: ap:ap_667,fp:fp_673,r10:r10_676,r4:r4_674,r5:r5_669,r6:r6_670,r8:r8_677,r9:r9_675
+		uses: ap:ap_667,fp:fp_673,Mem:Mem741,r10:r10_676,r4:r4_674,r5:r5_669,r6:r6_670,r8:r8_677,r9:r9_675
 		defs: ap:ap_765,fp:fp_771,r0:r0_769,r10:r10_774,r4:r4_772,r5:r5_767,r6:r6_768,r8:r8_775,r9:r9_773,sp:sp_764
 	Mem781[sp_764 - 4<32>:word32] = r0_769
 	Mem784[sp_764 - 8<32>:word32] = r5_767 + 1515<i32>
@@ -2110,7 +2110,7 @@ l00013509:
 	word32 r10_801
 	word32 r8_802
 	call r2_787 + 2<i32> (retsize: 4;)
-		uses: ap:ap_765,fp:fp_771,r10:r10_774,r2:r2_787,r4:r4_772,r5:r5_767,r6:r6_768,r8:r8_775,r9:r9_773
+		uses: ap:ap_765,fp:fp_771,Mem:Mem786,r10:r10_774,r2:r2_787,r4:r4_772,r5:r5_767,r6:r6_768,r8:r8_775,r9:r9_773
 		defs: ap:ap_792,fp:fp_798,r10:r10_801,r4:r4_799,r5:r5_794,r6:r6_795,r7:r7_803,r8:r8_802,r9:r9_800,sp:sp_791
 	word32 r3_807 = CONVERT(Mem786[sp_791 + 16<i32>:word16], word16, uint32)
 	branch r3_807 <u 0xB<32> l00013548
@@ -2121,7 +2121,7 @@ l00013531:
 	Mem820[sp_791 - 8<32>:word32] = r6_795 + 1797<i32>
 	Mem823[sp_791 - 0xC<32>:word32] = fp_798 + -58<i32>
 	call r7_803 + 2<i32> (retsize: 4;)
-		uses: ap:ap_792,fp:fp_798,r10:r10_801,r4:r4_799,r5:r5_794,r6:r6_795,r8:r8_802,r9:r9_800
+		uses: ap:ap_792,fp:fp_798,Mem:Mem823,r10:r10_801,r4:r4_799,r5:r5_794,r6:r6_795,r8:r8_802,r9:r9_800
 		defs: ap:ap_828,fp:fp_834,r10:r10_837,r5:r5_830,r6:r6_831,r8:r8_838,r9:r9_836,sp:sp_827
 	r4_811 = fp_798 + -58<i32>
 l0001354E:
@@ -2142,7 +2142,7 @@ l0001354E:
 	word32 r10_880
 	word32 r8_881
 	call r7_861 + 2<i32> (retsize: 4;)
-		uses: ap:ap_865,fp:fp_866,r10:r10_868,r4:r4_851,r5:r5_858,r6:r6_854,r7:r7_861,r8:r8_869,r9:r9_867
+		uses: ap:ap_865,fp:fp_866,Mem:Mem860,r10:r10_868,r4:r4_851,r5:r5_858,r6:r6_854,r7:r7_861,r8:r8_869,r9:r9_867
 		defs: ap:ap_871,fp:fp_877,r0:r0_875,r10:r10_880,r4:r4_878,r5:r5_873,r6:r6_874,r8:r8_881,r9:r9_879,sp:sp_870
 	Mem887[sp_870 - 4<32>:word32] = r0_875
 	Mem890[sp_870 - 8<32>:word32] = r5_873 + 1515<i32>
@@ -2159,7 +2159,7 @@ l0001354E:
 	word32 r9_1144
 	word32 r10_1145
 	call r2_893 + 2<i32> (retsize: 4;)
-		uses: ap:ap_871,fp:fp_877,r10:r10_880,r2:r2_893,r4:r4_878,r5:r5_873,r6:r6_874,r8:r8_881,r9:r9_879
+		uses: ap:ap_871,fp:fp_877,Mem:Mem892,r10:r10_880,r2:r2_893,r4:r4_878,r5:r5_873,r6:r6_874,r8:r8_881,r9:r9_879
 		defs: ap:ap_898,fp:fp_904,r10:r10_907,r3:r3_903,r5:r5_900,r6:r6_901,r7:r7_909,r8:r8_908,r9:r9_906,sp:sp_897
 	word32 r4_913 = CONVERT(Mem892[sp_1135 + 16<i32>:word16], word16, uint32)
 	branch r4_913 != 6<32> l000135F4
@@ -2183,14 +2183,14 @@ l000135F9:
 	word32 r10_950
 	word32 r8_951
 	call r7_909 + 2<i32> (retsize: 4;)
-		uses: ap:ap_898,fp:fp_904,r10:r10_907,r2:r2_927,r4:r4_913,r5:r5_900,r6:r6_901,r8:r8_908,r9:r9_906
+		uses: ap:ap_898,fp:fp_904,Mem:Mem936,r10:r10_907,r2:r2_927,r4:r4_913,r5:r5_900,r6:r6_901,r8:r8_908,r9:r9_906
 		defs: ap:ap_941,fp:fp_947,r0:r0_945,r10:r10_950,r4:r4_948,r5:r5_943,r6:r6_944,r8:r8_951,r9:r9_949,sp:sp_940
 	Mem957[sp_940 - 4<32>:word32] = r0_945
 	Mem960[sp_940 - 8<32>:word32] = r5_943 + 1515<i32>
 	Mem962[sp_940 - 0xC<32>:word32] = r5_943
 	word32 r2_963 = Mem962[r5_943 + 0xC839<32>:word32]
 	call r2_963 + 2<i32> (retsize: 4;)
-		uses: ap:ap_941,fp:fp_947,r10:r10_950,r2:r2_963,r4:r4_948,r5:r5_943,r6:r6_944,r8:r8_951,r9:r9_949
+		uses: ap:ap_941,fp:fp_947,Mem:Mem962,r10:r10_950,r2:r2_963,r4:r4_948,r5:r5_943,r6:r6_944,r8:r8_951,r9:r9_949
 		defs: ap:ap_968,fp:fp_974,r10:r10_977,r5:r5_970,r6:r6_971,r8:r8_978,r9:r9_976,sp:sp_967
 l0001357F:
 	word32 r3_1003
@@ -2216,7 +2216,7 @@ l00013597:
 	word32 r10_1034
 	word32 r8_1035
 	call r7_909 + 2<i32> (retsize: 4;)
-		uses: ap:ap_898,fp:fp_904,r10:r10_907,r4:r4_913,r5:r5_900,r6:r6_901,r8:r8_908,r9:r9_906
+		uses: ap:ap_898,fp:fp_904,Mem:Mem1013,r10:r10_907,r4:r4_913,r5:r5_900,r6:r6_901,r8:r8_908,r9:r9_906
 		defs: ap:ap_1025,fp:fp_1031,r0:r0_1029,r10:r10_1034,r4:r4_1032,r5:r5_1027,r6:r6_1028,r8:r8_1035,r9:r9_1033,sp:sp_1024
 	Mem1041[sp_1024 - 4<32>:word32] = r0_1029
 	Mem1044[sp_1024 - 8<32>:word32] = r5_1027 + 1515<i32>
@@ -2234,7 +2234,7 @@ l00013597:
 	word32 r8_1062
 	word32 r7_1063
 	call r2_1047 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1025,fp:fp_1031,r10:r10_1034,r2:r2_1047,r4:r4_1032,r5:r5_1027,r6:r6_1028,r8:r8_1035,r9:r9_1033
+		uses: ap:ap_1025,fp:fp_1031,Mem:Mem1046,r10:r10_1034,r2:r2_1047,r4:r4_1032,r5:r5_1027,r6:r6_1028,r8:r8_1035,r9:r9_1033
 		defs: ap:ap_1052,fp:fp_1058,r10:r10_1061,r3:r3_1057,r4:r4_1059,r5:r5_1054,r6:r6_1055,r7:r7_1063,r8:r8_1062,r9:r9_1060,sp:sp_1051
 	Mem1068[sp_1051 - 4<32>:word32] = 0<32>
 	branch (CONVERT(Mem1068[r5_1054 + 0xC65C<32>:word16], word16, uint32) & 4<32>) == 0<32> l000135CC
@@ -2257,14 +2257,14 @@ l000135CF:
 	word32 r10_1118
 	word32 r8_1119
 	call r7_1063 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1052,fp:fp_1058,r10:r10_1061,r4:r4_1059,r5:r5_1054,r6:r6_1055,r8:r8_1062,r9:r9_1060
+		uses: ap:ap_1052,fp:fp_1058,Mem:Mem1097,r10:r10_1061,r4:r4_1059,r5:r5_1054,r6:r6_1055,r8:r8_1062,r9:r9_1060
 		defs: ap:ap_1109,fp:fp_1115,r0:r0_1113,r10:r10_1118,r4:r4_1116,r5:r5_1111,r6:r6_1112,r8:r8_1119,r9:r9_1117,sp:sp_1108
 	Mem1125[sp_1108 - 4<32>:word32] = r0_1113
 	Mem1128[sp_1108 - 8<32>:word32] = r5_1111 + 1515<i32>
 	Mem1130[sp_1108 - 0xC<32>:word32] = r5_1111
 	word32 r2_1131 = Mem1130[r5_1111 + 0xC839<32>:word32]
 	call r2_1131 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1109,fp:fp_1115,r10:r10_1118,r2:r2_1131,r4:r4_1116,r5:r5_1111,r6:r6_1112,r8:r8_1119,r9:r9_1117
+		uses: ap:ap_1109,fp:fp_1115,Mem:Mem1130,r10:r10_1118,r2:r2_1131,r4:r4_1116,r5:r5_1111,r6:r6_1112,r8:r8_1119,r9:r9_1117
 		defs: ap:ap_1136,fp:fp_1142,r10:r10_1145,r5:r5_1138,r6:r6_1139,r8:r8_1146,r9:r9_1144,sp:sp_1135
 l00013638:
 	word32 r3_1160
@@ -2292,7 +2292,7 @@ l00013650:
 	word32 r10_1204
 	word32 r8_1205
 	call r4_1181 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1186,fp:fp_1188,r10:r10_1192,r4:r4_1181,r5:r5_1154,r6:r6_1164,r8:r8_1159,r9:r9_1190
+		uses: ap:ap_1186,fp:fp_1188,Mem:Mem1180,r10:r10_1192,r4:r4_1181,r5:r5_1154,r6:r6_1164,r8:r8_1159,r9:r9_1190
 		defs: ap:ap_1195,fp:fp_1201,r0:r0_1199,r10:r10_1204,r4:r4_1202,r5:r5_1197,r6:r6_1198,r8:r8_1205,r9:r9_1203,sp:sp_1194
 	Mem1211[sp_1194 - 4<32>:word32] = r0_1199
 	Mem1214[sp_1194 - 8<32>:word32] = r5_1197 + 1515<i32>
@@ -2308,7 +2308,7 @@ l00013650:
 	word32 r10_1231
 	word32 r8_1232
 	call r2_1217 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1195,fp:fp_1201,r10:r10_1204,r2:r2_1217,r4:r4_1202,r5:r5_1197,r6:r6_1198,r8:r8_1205,r9:r9_1203
+		uses: ap:ap_1195,fp:fp_1201,Mem:Mem1216,r10:r10_1204,r2:r2_1217,r4:r4_1202,r5:r5_1197,r6:r6_1198,r8:r8_1205,r9:r9_1203
 		defs: ap:ap_1222,fp:fp_1228,r10:r10_1231,r4:r4_1229,r5:r5_1224,r6:r6_1225,r8:r8_1232,r9:r9_1230,sp:sp_1221
 	Mem1238[sp_1221 - 4<32>:word32] = 0<32>
 	branch (CONVERT(Mem1238[r5_1224 + 0xC65C<32>:word16], word16, uint32) & 8<32>) == 0<32> l0001368C
@@ -2332,7 +2332,7 @@ l00013690:
 	word32 r10_1282
 	word32 r8_1283
 	call r4_1229 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1222,fp:fp_1228,r10:r10_1231,r4:r4_1229,r5:r5_1224,r6:r6_1225,r8:r8_1232,r9:r9_1230
+		uses: ap:ap_1222,fp:fp_1228,Mem:Mem1262,r10:r10_1231,r4:r4_1229,r5:r5_1224,r6:r6_1225,r8:r8_1232,r9:r9_1230
 		defs: ap:ap_1273,fp:fp_1279,r0:r0_1277,r10:r10_1282,r4:r4_1280,r5:r5_1275,r6:r6_1276,r8:r8_1283,r9:r9_1281,sp:sp_1272
 	Mem1289[sp_1272 - 4<32>:word32] = r0_1277
 	Mem1292[sp_1272 - 8<32>:word32] = r5_1275 + 1515<i32>
@@ -2351,7 +2351,7 @@ l00013690:
 	word32 r7_1311
 	word32 r11_1313
 	call r2_1295 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1273,fp:fp_1279,r10:r10_1282,r2:r2_1295,r4:r4_1280,r5:r5_1275,r6:r6_1276,r8:r8_1283,r9:r9_1281
+		uses: ap:ap_1273,fp:fp_1279,Mem:Mem1294,r10:r10_1282,r2:r2_1295,r4:r4_1280,r5:r5_1275,r6:r6_1276,r8:r8_1283,r9:r9_1281
 		defs: ap:ap_1300,fp:fp_1306,r10:r10_1309,r11:r11_1313,r3:r3_1305,r4:r4_1307,r5:r5_1302,r6:r6_1303,r7:r7_1311,r8:r8_1310,r9:r9_1308,sp:sp_1299
 	Mem1317[sp_1299 - 4<32>:word32] = fp_1306 + -42<i32>
 	Mem1319[sp_1299 - 8<32>:word32] = 0<32>
@@ -2381,7 +2381,7 @@ l00013690:
 	word32 r10_1372
 	word32 r8_1373
 	call r4_1337 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1329,fp:fp_1330,r10:r10_1333,r4:r4_1337,r5:r5_1338,r6:r6_1339,r8:r8_1341,r9:r9_1342
+		uses: ap:ap_1329,fp:fp_1330,Mem:Mem1358,r10:r10_1333,r4:r4_1337,r5:r5_1338,r6:r6_1339,r8:r8_1341,r9:r9_1342
 		defs: ap:ap_1363,fp:fp_1369,r0:r0_1367,r10:r10_1372,r4:r4_1370,r5:r5_1365,r6:r6_1366,r8:r8_1373,r9:r9_1371,sp:sp_1362
 	Mem1379[sp_1362 - 4<32>:word32] = r0_1367
 	Mem1382[sp_1362 - 8<32>:word32] = r5_1365 + 1515<i32>
@@ -2397,7 +2397,7 @@ l00013690:
 	word32 r10_1399
 	word32 r8_1400
 	call r2_1385 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1363,fp:fp_1369,r10:r10_1372,r2:r2_1385,r4:r4_1370,r5:r5_1365,r6:r6_1366,r8:r8_1373,r9:r9_1371
+		uses: ap:ap_1363,fp:fp_1369,Mem:Mem1384,r10:r10_1372,r2:r2_1385,r4:r4_1370,r5:r5_1365,r6:r6_1366,r8:r8_1373,r9:r9_1371
 		defs: ap:ap_1390,fp:fp_1396,r10:r10_1399,r4:r4_1397,r5:r5_1392,r6:r6_1393,r8:r8_1400,r9:r9_1398,sp:sp_1389
 	Mem1406[sp_1389 - 4<32>:word32] = 0<32>
 	Mem1409[sp_1389 - 8<32>:word32] = Mem1406[r5_1392 + 0xC664<32>:word32]
@@ -2414,7 +2414,7 @@ l00013690:
 	word32 r10_1429
 	word32 r8_1430
 	call r4_1397 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1390,fp:fp_1396,r10:r10_1399,r4:r4_1397,r5:r5_1392,r6:r6_1393,r8:r8_1400,r9:r9_1398
+		uses: ap:ap_1390,fp:fp_1396,Mem:Mem1415,r10:r10_1399,r4:r4_1397,r5:r5_1392,r6:r6_1393,r8:r8_1400,r9:r9_1398
 		defs: ap:ap_1420,fp:fp_1426,r0:r0_1424,r10:r10_1429,r4:r4_1427,r5:r5_1422,r6:r6_1423,r8:r8_1430,r9:r9_1428,sp:sp_1419
 	Mem1436[sp_1419 - 4<32>:word32] = r0_1424
 	Mem1439[sp_1419 - 8<32>:word32] = r5_1422 + 1515<i32>
@@ -2430,7 +2430,7 @@ l00013690:
 	word32 r10_1456
 	word32 r8_1457
 	call r2_1442 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1420,fp:fp_1426,r10:r10_1429,r2:r2_1442,r4:r4_1427,r5:r5_1422,r6:r6_1423,r8:r8_1430,r9:r9_1428
+		uses: ap:ap_1420,fp:fp_1426,Mem:Mem1441,r10:r10_1429,r2:r2_1442,r4:r4_1427,r5:r5_1422,r6:r6_1423,r8:r8_1430,r9:r9_1428
 		defs: ap:ap_1447,fp:fp_1453,r10:r10_1456,r4:r4_1454,r5:r5_1449,r6:r6_1450,r8:r8_1457,r9:r9_1455,sp:sp_1446
 	Mem1463[sp_1446 - 4<32>:word32] = 0<32>
 	Mem1466[sp_1446 - 8<32>:word32] = Mem1463[r5_1449 + 0xC668<32>:word32]
@@ -2447,7 +2447,7 @@ l00013690:
 	word32 r10_1486
 	word32 r8_1487
 	call r4_1454 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1447,fp:fp_1453,r10:r10_1456,r4:r4_1454,r5:r5_1449,r6:r6_1450,r8:r8_1457,r9:r9_1455
+		uses: ap:ap_1447,fp:fp_1453,Mem:Mem1472,r10:r10_1456,r4:r4_1454,r5:r5_1449,r6:r6_1450,r8:r8_1457,r9:r9_1455
 		defs: ap:ap_1477,fp:fp_1483,r0:r0_1481,r10:r10_1486,r4:r4_1484,r5:r5_1479,r6:r6_1480,r8:r8_1487,r9:r9_1485,sp:sp_1476
 	Mem1493[sp_1476 - 4<32>:word32] = r0_1481
 	Mem1496[sp_1476 - 8<32>:word32] = r5_1479 + 1515<i32>
@@ -2463,7 +2463,7 @@ l00013690:
 	word32 r10_1513
 	word32 r8_1514
 	call r2_1499 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1477,fp:fp_1483,r10:r10_1486,r2:r2_1499,r4:r4_1484,r5:r5_1479,r6:r6_1480,r8:r8_1487,r9:r9_1485
+		uses: ap:ap_1477,fp:fp_1483,Mem:Mem1498,r10:r10_1486,r2:r2_1499,r4:r4_1484,r5:r5_1479,r6:r6_1480,r8:r8_1487,r9:r9_1485
 		defs: ap:ap_1504,fp:fp_1510,r10:r10_1513,r4:r4_1511,r5:r5_1506,r6:r6_1507,r8:r8_1514,r9:r9_1512,sp:sp_1503
 	Mem1520[sp_1503 - 4<32>:word32] = 0<32>
 	Mem1523[sp_1503 - 8<32>:word32] = Mem1520[r5_1506 + 0xC66C<32>:word32]
@@ -2480,7 +2480,7 @@ l00013690:
 	word32 r10_1543
 	word32 r8_1544
 	call r4_1511 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1504,fp:fp_1510,r10:r10_1513,r4:r4_1511,r5:r5_1506,r6:r6_1507,r8:r8_1514,r9:r9_1512
+		uses: ap:ap_1504,fp:fp_1510,Mem:Mem1529,r10:r10_1513,r4:r4_1511,r5:r5_1506,r6:r6_1507,r8:r8_1514,r9:r9_1512
 		defs: ap:ap_1534,fp:fp_1540,r0:r0_1538,r10:r10_1543,r4:r4_1541,r5:r5_1536,r6:r6_1537,r8:r8_1544,r9:r9_1542,sp:sp_1533
 	Mem1550[sp_1533 - 4<32>:word32] = r0_1538
 	Mem1553[sp_1533 - 8<32>:word32] = r5_1536 + 1515<i32>
@@ -2496,7 +2496,7 @@ l00013690:
 	word32 r10_1570
 	word32 r8_1571
 	call r2_1556 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1534,fp:fp_1540,r10:r10_1543,r2:r2_1556,r4:r4_1541,r5:r5_1536,r6:r6_1537,r8:r8_1544,r9:r9_1542
+		uses: ap:ap_1534,fp:fp_1540,Mem:Mem1555,r10:r10_1543,r2:r2_1556,r4:r4_1541,r5:r5_1536,r6:r6_1537,r8:r8_1544,r9:r9_1542
 		defs: ap:ap_1561,fp:fp_1567,r10:r10_1570,r4:r4_1568,r5:r5_1563,r6:r6_1564,r8:r8_1571,r9:r9_1569,sp:sp_1560
 	Mem1577[sp_1560 - 4<32>:word32] = 0<32>
 	Mem1580[sp_1560 - 8<32>:uint32] = CONVERT(Mem1577[r5_1563 + 0xC670<32>:word16], word16, uint32)
@@ -2513,7 +2513,7 @@ l00013690:
 	word32 r10_1600
 	word32 r8_1601
 	call r4_1568 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1561,fp:fp_1567,r10:r10_1570,r4:r4_1568,r5:r5_1563,r6:r6_1564,r8:r8_1571,r9:r9_1569
+		uses: ap:ap_1561,fp:fp_1567,Mem:Mem1586,r10:r10_1570,r4:r4_1568,r5:r5_1563,r6:r6_1564,r8:r8_1571,r9:r9_1569
 		defs: ap:ap_1591,fp:fp_1597,r0:r0_1595,r10:r10_1600,r4:r4_1598,r5:r5_1593,r6:r6_1594,r8:r8_1601,r9:r9_1599,sp:sp_1590
 	Mem1607[sp_1590 - 4<32>:word32] = r0_1595
 	Mem1610[sp_1590 - 8<32>:word32] = r5_1593 + 1515<i32>
@@ -2529,7 +2529,7 @@ l00013690:
 	word32 r10_1627
 	word32 r8_1628
 	call r2_1613 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1591,fp:fp_1597,r10:r10_1600,r2:r2_1613,r4:r4_1598,r5:r5_1593,r6:r6_1594,r8:r8_1601,r9:r9_1599
+		uses: ap:ap_1591,fp:fp_1597,Mem:Mem1612,r10:r10_1600,r2:r2_1613,r4:r4_1598,r5:r5_1593,r6:r6_1594,r8:r8_1601,r9:r9_1599
 		defs: ap:ap_1618,fp:fp_1624,r10:r10_1627,r4:r4_1625,r5:r5_1620,r6:r6_1621,r8:r8_1628,r9:r9_1626,sp:sp_1617
 	Mem1634[sp_1617 - 4<32>:word32] = 0<32>
 	Mem1637[sp_1617 - 8<32>:uint32] = CONVERT(Mem1634[r5_1620 + 0xC672<32>:word16], word16, uint32)
@@ -2546,7 +2546,7 @@ l00013690:
 	word32 r10_1657
 	word32 r8_1658
 	call r4_1625 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1618,fp:fp_1624,r10:r10_1627,r4:r4_1625,r5:r5_1620,r6:r6_1621,r8:r8_1628,r9:r9_1626
+		uses: ap:ap_1618,fp:fp_1624,Mem:Mem1643,r10:r10_1627,r4:r4_1625,r5:r5_1620,r6:r6_1621,r8:r8_1628,r9:r9_1626
 		defs: ap:ap_1648,fp:fp_1654,r0:r0_1652,r10:r10_1657,r4:r4_1655,r5:r5_1650,r6:r6_1651,r8:r8_1658,r9:r9_1656,sp:sp_1647
 	Mem1664[sp_1647 - 4<32>:word32] = r0_1652
 	Mem1667[sp_1647 - 8<32>:word32] = r5_1650 + 1515<i32>
@@ -2562,7 +2562,7 @@ l00013690:
 	word32 r10_1684
 	word32 r8_1685
 	call r2_1670 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1648,fp:fp_1654,r10:r10_1657,r2:r2_1670,r4:r4_1655,r5:r5_1650,r6:r6_1651,r8:r8_1658,r9:r9_1656
+		uses: ap:ap_1648,fp:fp_1654,Mem:Mem1669,r10:r10_1657,r2:r2_1670,r4:r4_1655,r5:r5_1650,r6:r6_1651,r8:r8_1658,r9:r9_1656
 		defs: ap:ap_1675,fp:fp_1681,r10:r10_1684,r4:r4_1682,r5:r5_1677,r6:r6_1678,r8:r8_1685,r9:r9_1683,sp:sp_1674
 	Mem1691[sp_1674 - 4<32>:word32] = 0<32>
 	Mem1694[sp_1674 - 8<32>:uint32] = CONVERT(Mem1691[r5_1677 + 0xC674<32>:word16], word16, uint32)
@@ -2579,7 +2579,7 @@ l00013690:
 	word32 r10_1714
 	word32 r8_1715
 	call r4_1682 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1675,fp:fp_1681,r10:r10_1684,r4:r4_1682,r5:r5_1677,r6:r6_1678,r8:r8_1685,r9:r9_1683
+		uses: ap:ap_1675,fp:fp_1681,Mem:Mem1700,r10:r10_1684,r4:r4_1682,r5:r5_1677,r6:r6_1678,r8:r8_1685,r9:r9_1683
 		defs: ap:ap_1705,fp:fp_1711,r0:r0_1709,r10:r10_1714,r4:r4_1712,r5:r5_1707,r6:r6_1708,r8:r8_1715,r9:r9_1713,sp:sp_1704
 	Mem1721[sp_1704 - 4<32>:word32] = r0_1709
 	Mem1724[sp_1704 - 8<32>:word32] = r5_1707 + 1515<i32>
@@ -2595,7 +2595,7 @@ l00013690:
 	word32 r10_1741
 	word32 r8_1742
 	call r2_1727 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1705,fp:fp_1711,r10:r10_1714,r2:r2_1727,r4:r4_1712,r5:r5_1707,r6:r6_1708,r8:r8_1715,r9:r9_1713
+		uses: ap:ap_1705,fp:fp_1711,Mem:Mem1726,r10:r10_1714,r2:r2_1727,r4:r4_1712,r5:r5_1707,r6:r6_1708,r8:r8_1715,r9:r9_1713
 		defs: ap:ap_1732,fp:fp_1738,r10:r10_1741,r4:r4_1739,r5:r5_1734,r6:r6_1735,r8:r8_1742,r9:r9_1740,sp:sp_1731
 	Mem1748[sp_1731 - 4<32>:word32] = 0<32>
 	word32 r2_1749 = CONVERT(Mem1748[r5_1734 + 0xC676<32>:word16], word16, uint32)
@@ -2613,7 +2613,7 @@ l00013690:
 	word32 r10_1772
 	word32 r8_1773
 	call r4_1739 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1732,fp:fp_1738,r10:r10_1741,r2:r2_1749 + 1<32>,r4:r4_1739,r5:r5_1734,r6:r6_1735,r8:r8_1742,r9:r9_1740
+		uses: ap:ap_1732,fp:fp_1738,Mem:Mem1758,r10:r10_1741,r2:r2_1749 + 1<32>,r4:r4_1739,r5:r5_1734,r6:r6_1735,r8:r8_1742,r9:r9_1740
 		defs: ap:ap_1763,fp:fp_1769,r0:r0_1767,r10:r10_1772,r4:r4_1770,r5:r5_1765,r6:r6_1766,r8:r8_1773,r9:r9_1771,sp:sp_1762
 	Mem1779[sp_1762 - 4<32>:word32] = r0_1767
 	Mem1782[sp_1762 - 8<32>:word32] = r5_1765 + 1515<i32>
@@ -2628,7 +2628,7 @@ l00013690:
 	word32 r10_1799
 	word32 r8_1800
 	call r2_1785 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1763,fp:fp_1769,r10:r10_1772,r2:r2_1785,r4:r4_1770,r5:r5_1765,r6:r6_1766,r8:r8_1773,r9:r9_1771
+		uses: ap:ap_1763,fp:fp_1769,Mem:Mem1784,r10:r10_1772,r2:r2_1785,r4:r4_1770,r5:r5_1765,r6:r6_1766,r8:r8_1773,r9:r9_1771
 		defs: ap:ap_1790,fp:fp_1796,r10:r10_1799,r5:r5_1792,r6:r6_1793,r8:r8_1800,r9:r9_1798,sp:sp_1789
 	Mem1806[sp_1789 - 4<32>:word32] = 0<32>
 	word32 r3_1807 = CONVERT(Mem1806[r5_1792 + 0xC678<32>:word16], word16, uint32)
@@ -2668,7 +2668,7 @@ l00013817:
 	word32 r10_1866
 	word32 r8_1867
 	call Mem1842[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_1790,fp:fp_1796,r10:r10_1799,r4:r4_1831,r5:r5_1792,r6:r6_1793,r8:r8_1800,r9:r9_1798
+		uses: ap:ap_1790,fp:fp_1796,Mem:Mem1842,r10:r10_1799,r4:r4_1831,r5:r5_1792,r6:r6_1793,r8:r8_1800,r9:r9_1798
 		defs: ap:ap_1857,fp:fp_1863,r0:r0_1861,r10:r10_1866,r4:r4_1864,r5:r5_1859,r6:r6_1860,r8:r8_1867,r9:r9_1865,sp:sp_1856
 	Mem1873[sp_1856 - 4<32>:word32] = r0_1861
 	Mem1876[sp_1856 - 8<32>:word32] = r5_1859 + 1515<i32>
@@ -2684,7 +2684,7 @@ l00013817:
 	word32 r10_1893
 	word32 r8_1894
 	call r2_1879 + 2<i32> (retsize: 4;)
-		uses: ap:ap_1857,fp:fp_1863,r10:r10_1866,r2:r2_1879,r4:r4_1864,r5:r5_1859,r6:r6_1860,r8:r8_1867,r9:r9_1865
+		uses: ap:ap_1857,fp:fp_1863,Mem:Mem1878,r10:r10_1866,r2:r2_1879,r4:r4_1864,r5:r5_1859,r6:r6_1860,r8:r8_1867,r9:r9_1865
 		defs: ap:ap_1884,fp:fp_1890,r10:r10_1893,r3:r3_1889,r4:r4_1891,r5:r5_1886,r6:r6_1887,r8:r8_1894,sp:sp_1883
 	Mem1901[sp_1883 + 14<i32>:word16] = Mem1878[r5_1886 + 0xC67C<32>:word16]
 	word32 r9_1902 = CONVERT(Mem1901[sp_1883 + 2<i32>:word16], word16, uint32)
@@ -2794,14 +2794,14 @@ l00013920:
 	word32 r10_2243
 	word32 r8_2244
 	call Mem2153[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_1884,fp:fp_1890,r10:r10_1893,r2:r3_2080,r3:r3_2083,r4:r4_2173,r5:r5_1886,r6:r6_1887,r8:r8_1894,r9:r9_1902
+		uses: ap:ap_1884,fp:fp_1890,Mem:Mem2153,r10:r10_1893,r2:r3_2080,r3:r3_2083,r4:r4_2173,r5:r5_1886,r6:r6_1887,r8:r8_1894,r9:r9_1902
 		defs: ap:ap_2234,fp:fp_2240,r0:r0_2238,r10:r10_2243,r4:r4_2241,r5:r5_2236,r6:r6_2237,r8:r8_2244,r9:r9_2242,sp:sp_2233
 	Mem2250[sp_2233 - 4<32>:word32] = r0_2238
 	Mem2253[sp_2233 - 8<32>:word32] = r5_2236 + 1515<i32>
 	Mem2255[sp_2233 - 0xC<32>:word32] = r5_2236
 	word32 r2_2256 = Mem2255[r5_2236 + 0xC839<32>:word32]
 	call r2_2256 + 2<i32> (retsize: 4;)
-		uses: ap:ap_2234,fp:fp_2240,r10:r10_2243,r2:r2_2256,r4:r4_2241,r5:r5_2236,r6:r6_2237,r8:r8_2244,r9:r9_2242
+		uses: ap:ap_2234,fp:fp_2240,Mem:Mem2255,r10:r10_2243,r2:r2_2256,r4:r4_2241,r5:r5_2236,r6:r6_2237,r8:r8_2244,r9:r9_2242
 		defs: ap:ap_2261,fp:fp_2267,r10:r10_2270,r4:r4_2268,r5:r5_2263,r6:r6_2264,r8:r8_2271,r9:r9_2269,sp:sp_2260
 l00013851:
 l00013958:
@@ -2902,14 +2902,14 @@ l00013A2F:
 	word32 r10_2576
 	word32 r8_2577
 	call Mem2522[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_1884,fp:fp_1890,r10:r10_1893,r4:r4_2475,r5:r5_1886,r6:r6_1887,r8:r8_1894,r9:r9_1902
+		uses: ap:ap_1884,fp:fp_1890,Mem:Mem2522,r10:r10_1893,r4:r4_2475,r5:r5_1886,r6:r6_1887,r8:r8_1894,r9:r9_1902
 		defs: ap:ap_2567,fp:fp_2573,r0:r0_2571,r10:r10_2576,r4:r4_2574,r5:r5_2569,r6:r6_2570,r8:r8_2577,r9:r9_2575,sp:sp_2566
 	Mem2583[sp_2566 - 4<32>:word32] = r0_2571
 	Mem2586[sp_2566 - 8<32>:word32] = r5_2569 + 1515<i32>
 	Mem2588[sp_2566 - 0xC<32>:word32] = r5_2569
 	word32 r2_2589 = Mem2588[r5_2569 + 0xC839<32>:word32]
 	call r2_2589 + 2<i32> (retsize: 4;)
-		uses: ap:ap_2567,fp:fp_2573,r10:r10_2576,r2:r2_2589,r4:r4_2574,r5:r5_2569,r6:r6_2570,r8:r8_2577,r9:r9_2575
+		uses: ap:ap_2567,fp:fp_2573,Mem:Mem2588,r10:r10_2576,r2:r2_2589,r4:r4_2574,r5:r5_2569,r6:r6_2570,r8:r8_2577,r9:r9_2575
 		defs: ap:ap_2594,fp:fp_2600,r10:r10_2603,r4:r4_2601,r5:r5_2596,r6:r6_2597,r8:r8_2604,r9:r9_2602,sp:sp_2593
 l0001395D:
 l00013A64:
@@ -3097,14 +3097,14 @@ l00013C3F:
 	word32 r10_3130
 	word32 r8_3131
 	call Mem3039[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_1884,fp:fp_1890,r10:r10_1893,r4:r4_2830,r5:r5_1886,r6:r6_1887,r8:r8_1894,r9:r9_1902
+		uses: ap:ap_1884,fp:fp_1890,Mem:Mem3039,r10:r10_1893,r4:r4_2830,r5:r5_1886,r6:r6_1887,r8:r8_1894,r9:r9_1902
 		defs: ap:ap_3121,fp:fp_3127,r0:r0_3125,r10:r10_3130,r4:r4_3128,r5:r5_3123,r6:r6_3124,r8:r8_3131,r9:r9_3129,sp:sp_3120
 	Mem3137[sp_3120 - 4<32>:word32] = r0_3125
 	Mem3140[sp_3120 - 8<32>:word32] = r5_3123 + 1515<i32>
 	Mem3142[sp_3120 - 0xC<32>:word32] = r5_3123
 	word32 r2_3143 = Mem3142[r5_3123 + 0xC839<32>:word32]
 	call r2_3143 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3121,fp:fp_3127,r10:r10_3130,r2:r2_3143,r4:r4_3128,r5:r5_3123,r6:r6_3124,r8:r8_3131,r9:r9_3129
+		uses: ap:ap_3121,fp:fp_3127,Mem:Mem3142,r10:r10_3130,r2:r2_3143,r4:r4_3128,r5:r5_3123,r6:r6_3124,r8:r8_3131,r9:r9_3129
 		defs: ap:ap_3148,fp:fp_3154,r10:r10_3157,r4:r4_3155,r5:r5_3150,r6:r6_3151,r8:r8_3158,r9:r9_3156,sp:sp_3147
 l00013C9E:
 	word32 r8_3374
@@ -3184,14 +3184,14 @@ l00013D6C:
 	word32 r10_3346
 	word32 r8_3347
 	call Mem3313[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3323,fp:fp_3259,r10:r10_3193,r4:r4_3247,r5:r5_3163,r6:r6_3181,r8:r8_3186,r9:r9_3211
+		uses: ap:ap_3323,fp:fp_3259,Mem:Mem3313,r10:r10_3193,r4:r4_3247,r5:r5_3163,r6:r6_3181,r8:r8_3186,r9:r9_3211
 		defs: ap:ap_3337,fp:fp_3343,r0:r0_3341,r10:r10_3346,r4:r4_3344,r5:r5_3339,r6:r6_3340,r8:r8_3347,r9:r9_3345,sp:sp_3336
 	Mem3353[sp_3336 - 4<32>:word32] = r0_3341
 	Mem3356[sp_3336 - 8<32>:word32] = r5_3339 + 1515<i32>
 	Mem3358[sp_3336 - 0xC<32>:word32] = r5_3339
 	word32 r2_3359 = Mem3358[r5_3339 + 0xC839<32>:word32]
 	call r2_3359 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3337,fp:fp_3343,r10:r10_3346,r2:r2_3359,r4:r4_3344,r5:r5_3339,r6:r6_3340,r8:r8_3347,r9:r9_3345
+		uses: ap:ap_3337,fp:fp_3343,Mem:Mem3358,r10:r10_3346,r2:r2_3359,r4:r4_3344,r5:r5_3339,r6:r6_3340,r8:r8_3347,r9:r9_3345
 		defs: ap:ap_3364,fp:fp_3370,r10:r10_3373,r4:r4_3371,r5:r5_3366,r6:r6_3367,r8:r8_3374,r9:r9_3372,sp:sp_3363
 l00013CDD:
 	word32 sp_3379 = sp_2260 - 4<32>
@@ -3210,14 +3210,14 @@ l00013CDD:
 	word32 r10_3405
 	word32 r8_3406
 	call Mem3388[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3323,fp:fp_3259,r10:r10_3394,r4:r4_3392,r5:r5_3163,r6:r6_3181,r8:r8_3186,r9:r9_3393
+		uses: ap:ap_3323,fp:fp_3259,Mem:Mem3388,r10:r10_3394,r4:r4_3392,r5:r5_3163,r6:r6_3181,r8:r8_3186,r9:r9_3393
 		defs: ap:ap_3396,fp:fp_3402,r0:r0_3400,r10:r10_3405,r4:r4_3403,r5:r5_3398,r6:r6_3399,r8:r8_3406,r9:r9_3404,sp:sp_3395
 	Mem3412[sp_3395 - 4<32>:word32] = r0_3400
 	Mem3415[sp_3395 - 8<32>:word32] = r5_3398 + 1515<i32>
 	Mem3417[sp_3395 - 0xC<32>:word32] = r5_3398
 	word32 r2_3418 = Mem3417[r5_3398 + 0xC839<32>:word32]
 	call r2_3418 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3396,fp:fp_3402,r10:r10_3405,r2:r2_3418,r4:r4_3403,r5:r5_3398,r6:r6_3399,r8:r8_3406,r9:r9_3404
+		uses: ap:ap_3396,fp:fp_3402,Mem:Mem3417,r10:r10_3405,r2:r2_3418,r4:r4_3403,r5:r5_3398,r6:r6_3399,r8:r8_3406,r9:r9_3404
 		defs: ap:ap_3423,fp:fp_3429,r10:r10_3432,r4:r4_3430,r5:r5_3425,r6:r6_3426,r8:r8_3433,r9:r9_3431,sp:sp_3422
 l00013CAF:
 	word32 sp_3438 = sp_2260 - 4<32>
@@ -3236,14 +3236,14 @@ l00013CAF:
 	word32 r10_3461
 	word32 r8_3462
 	call Mem3447[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3323,fp:fp_3259,r10:r10_3394,r4:r4_3392,r5:r5_3163,r6:r6_3181,r8:r8_3186,r9:r9_3393
+		uses: ap:ap_3323,fp:fp_3259,Mem:Mem3447,r10:r10_3394,r4:r4_3392,r5:r5_3163,r6:r6_3181,r8:r8_3186,r9:r9_3393
 		defs: ap:ap_3452,fp:fp_3458,r0:r0_3456,r10:r10_3461,r4:r4_3459,r5:r5_3454,r6:r6_3455,r8:r8_3462,r9:r9_3460,sp:sp_3451
 	Mem3468[sp_3451 - 4<32>:word32] = r0_3456
 	Mem3471[sp_3451 - 8<32>:word32] = r5_3454 + 1515<i32>
 	Mem3473[sp_3451 - 0xC<32>:word32] = r5_3454
 	word32 r2_3474 = Mem3473[r5_3454 + 0xC839<32>:word32]
 	call r2_3474 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3452,fp:fp_3458,r10:r10_3461,r2:r2_3474,r4:r4_3459,r5:r5_3454,r6:r6_3455,r8:r8_3462,r9:r9_3460
+		uses: ap:ap_3452,fp:fp_3458,Mem:Mem3473,r10:r10_3461,r2:r2_3474,r4:r4_3459,r5:r5_3454,r6:r6_3455,r8:r8_3462,r9:r9_3460
 		defs: ap:ap_3479,fp:fp_3485,r10:r10_3488,r4:r4_3486,r5:r5_3481,r6:r6_3482,r8:r8_3489,r9:r9_3487,sp:sp_3478
 l00013D92:
 	branch CONVERT(Mem3495[r5_3366 + 0xC672<32>:word16], word16, uint32) != 0<32> l00013D9E
@@ -3268,7 +3268,7 @@ l00013DC4:
 	word32 r10_3540
 	word32 r8_3541
 	call Mem3520[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3524,fp:fp_3525,r10:r10_3528,r4:r4_3526,r5:r5_3494,r6:r6_3515,r8:r8_3529,r9:r9_3527
+		uses: ap:ap_3524,fp:fp_3525,Mem:Mem3520,r10:r10_3528,r4:r4_3526,r5:r5_3494,r6:r6_3515,r8:r8_3529,r9:r9_3527
 		defs: ap:ap_3531,fp:fp_3537,r0:r0_3535,r10:r10_3540,r4:r4_3538,r5:r5_3533,r6:r6_3534,r8:r8_3541,r9:r9_3539,sp:sp_3530
 	Mem3547[sp_3530 - 4<32>:word32] = r0_3535
 	Mem3550[sp_3530 - 8<32>:word32] = r5_3533 + 1515<i32>
@@ -3285,7 +3285,7 @@ l00013DC4:
 	word32 r9_3566
 	word32 r10_3567
 	call r2_3553 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3531,fp:fp_3537,r10:r10_3540,r2:r2_3553,r4:r4_3538,r5:r5_3533,r6:r6_3534,r8:r8_3541,r9:r9_3539
+		uses: ap:ap_3531,fp:fp_3537,Mem:Mem3552,r10:r10_3540,r2:r2_3553,r4:r4_3538,r5:r5_3533,r6:r6_3534,r8:r8_3541,r9:r9_3539
 		defs: ap:ap_3558,fp:fp_3564,r10:r10_3567,r4:r4_3565,r5:r5_3560,r6:r6_3561,r7:r7_3569,r8:r8_3568,r9:r9_3566,sp:sp_3557
 	branch CONVERT(Mem3552[sp_3557 + 42<i32>:word16], word16, uint32) >=u 4<32> l00013DF3
 l00013DF3:
@@ -3307,7 +3307,7 @@ l00013E24:
 	word32 r10_3636
 	word32 r8_3637
 	call Mem3622[sp_3602 + 0x20<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3603,fp:fp_3609,r10:r10_3612,r4:r4_3610,r5:r5_3605,r6:r6_3606,r8:r8_3613,r9:r9_3611
+		uses: ap:ap_3603,fp:fp_3609,Mem:Mem3622,r10:r10_3612,r4:r4_3610,r5:r5_3605,r6:r6_3606,r8:r8_3613,r9:r9_3611
 		defs: ap:ap_3627,fp:fp_3633,r0:r0_3631,r10:r10_3636,r4:r4_3634,r5:r5_3629,r6:r6_3630,r8:r8_3637,r9:r9_3635,sp:sp_3626
 	Mem3643[sp_3626 + 40<i32>:word16] = SLICE(r0_3631, word16, 0)
 	Mem3648[sp_3626 + 42<i32>:int16] = CONVERT(CONVERT(Mem3643[sp_3626 + 42<i32>:word16], word16, uint32) - 4<32>, word32, int16)
@@ -3330,14 +3330,14 @@ l00013E4E:
 	word32 r10_3683
 	word32 r8_3684
 	call r9_3635 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3627,fp:fp_3633,r10:r10_3636,r4:r4_3634,r5:r5_3629,r6:r6_3630,r8:r8_3637,r9:r9_3635
+		uses: ap:ap_3627,fp:fp_3633,Mem:Mem3669,r10:r10_3636,r4:r4_3634,r5:r5_3629,r6:r6_3630,r8:r8_3637,r9:r9_3635
 		defs: ap:ap_3674,fp:fp_3680,r0:r0_3678,r10:r10_3683,r4:r4_3681,r5:r5_3676,r6:r6_3677,r8:r8_3684,r9:r9_3682,sp:sp_3673
 	Mem3690[sp_3673 - 4<32>:word32] = r0_3678
 	Mem3693[sp_3673 - 8<32>:word32] = r5_3676 + 1515<i32>
 	Mem3695[sp_3673 - 0xC<32>:word32] = r5_3676
 	word32 r2_3696 = Mem3695[r5_3676 + 0xC839<32>:word32]
 	call r2_3696 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3674,fp:fp_3680,r10:r10_3683,r2:r2_3696,r4:r4_3681,r5:r5_3676,r6:r6_3677,r8:r8_3684,r9:r9_3682
+		uses: ap:ap_3674,fp:fp_3680,Mem:Mem3695,r10:r10_3683,r2:r2_3696,r4:r4_3681,r5:r5_3676,r6:r6_3677,r8:r8_3684,r9:r9_3682
 		defs: ap:ap_3701,fp:fp_3707,r10:r10_3710,r4:r4_3708,r5:r5_3703,r6:r6_3704,r8:r8_3711,r9:r9_3709,sp:sp_3700
 	Mem3717[sp_3626 + 40<i32>:word16] = Mem3695[sp_3626 + 42<i32>:word16]
 l00013E81:
@@ -3348,7 +3348,7 @@ l00013E8D:
 l00013EA0:
 l00013E90_1:
 	call 0x00013E94<p32> + (r2_3723 - 7<32>) * 2<32> (retsize: 0;)
-		uses: ap:ap_3732,fp:fp_3735,r10:r10_3738,r4:r4_3736,r5:r5_3733,r6:r6_3734,r8:r8_3739,r9:r9_3737
+		uses: ap:ap_3732,fp:fp_3735,Mem:Mem3722,r10:r10_3738,r4:r4_3736,r5:r5_3733,r6:r6_3734,r8:r8_3739,r9:r9_3737
 	return
 l00013E8A:
 l00014080:
@@ -3372,7 +3372,7 @@ l00014080:
 	word32 r10_3786
 	word32 r8_3787
 	call r9_3635 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3732,fp:fp_3735,r10:r10_3738,r3:r3_3756,r4:r4_3764,r5:r5_3733,r6:r6_3734,r8:r8_3739,r9:r9_3737
+		uses: ap:ap_3732,fp:fp_3735,Mem:Mem3772,r10:r10_3738,r3:r3_3756,r4:r4_3764,r5:r5_3733,r6:r6_3734,r8:r8_3739,r9:r9_3737
 		defs: ap:ap_3777,fp:fp_3783,r0:r0_3781,r10:r10_3786,r4:r4_3784,r5:r5_3779,r6:r6_3780,r8:r8_3787,r9:r9_3785,sp:sp_3776
 	Mem3793[sp_3776 - 4<32>:word32] = r0_3781
 	Mem3796[sp_3776 - 8<32>:word32] = r5_3779 + 1515<i32>
@@ -3389,7 +3389,7 @@ l00014080:
 	word32 r9_3812
 	word32 r10_3813
 	call r2_3799 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3777,fp:fp_3783,r10:r10_3786,r2:r2_3799,r4:r4_3784,r5:r5_3779,r6:r6_3780,r8:r8_3787,r9:r9_3785
+		uses: ap:ap_3777,fp:fp_3783,Mem:Mem3798,r10:r10_3786,r2:r2_3799,r4:r4_3784,r5:r5_3779,r6:r6_3780,r8:r8_3787,r9:r9_3785
 		defs: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r7:r7_3815,r8:r8_3814,r9:r9_3812,sp:sp_3803
 	branch r4_3811 >= 9<32> l000140BB
 l000140BB:
@@ -3451,14 +3451,14 @@ l00014510:
 	word32 r10_3896
 	word32 r8_3897
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem3882,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_3887,fp:fp_3893,r0:r0_3891,r10:r10_3896,r4:r4_3894,r5:r5_3889,r6:r6_3890,r8:r8_3897,r9:r9_3895,sp:sp_3886
 	Mem3903[sp_3886 - 4<32>:word32] = r0_3891
 	Mem3906[sp_3886 - 8<32>:word32] = r5_3889 + 1515<i32>
 	Mem3908[sp_3886 - 0xC<32>:word32] = r5_3889
 	word32 r2_3909 = Mem3908[r5_3889 + 0xC839<32>:word32]
 	call r2_3909 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3887,fp:fp_3893,r10:r10_3896,r2:r2_3909,r4:r4_3894,r5:r5_3889,r6:r6_3890,r8:r8_3897,r9:r9_3895
+		uses: ap:ap_3887,fp:fp_3893,Mem:Mem3908,r10:r10_3896,r2:r2_3909,r4:r4_3894,r5:r5_3889,r6:r6_3890,r8:r8_3897,r9:r9_3895
 		defs: ap:ap_3914,fp:fp_3920,r10:r10_3923,r4:r4_3921,r5:r5_3916,r6:r6_3917,r8:r8_3924,r9:r9_3922,sp:sp_3913
 l0001450D:
 l00014142:
@@ -3486,7 +3486,7 @@ l000144CB:
 	word32 r10_3975
 	word32 r8_3976
 	call Mem3953[sp_3803 + 0x1C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem3953,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_3966,fp:fp_3972,r0:r0_3970,r10:r10_3975,r4:r4_3973,r5:r5_3968,r6:r6_3969,r8:r8_3976,r9:r9_3974,sp:sp_3965
 	Mem3982[sp_3965 - 4<32>:word32] = r0_3970
 	Mem3985[sp_3965 - 8<32>:word32] = r6_3969 + 4512<i32>
@@ -3502,7 +3502,7 @@ l000144CB:
 	word32 r10_4002
 	word32 r8_4003
 	call r9_3974 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3966,fp:fp_3972,r10:r10_3975,r4:r4_3973,r5:r5_3968,r6:r6_3969,r8:r8_3976,r9:r9_3974
+		uses: ap:ap_3966,fp:fp_3972,Mem:Mem3988,r10:r10_3975,r4:r4_3973,r5:r5_3968,r6:r6_3969,r8:r8_3976,r9:r9_3974
 		defs: ap:ap_3993,fp:fp_3999,r0:r0_3997,r10:r10_4002,r4:r4_4000,r5:r5_3995,r6:r6_3996,r8:r8_4003,r9:r9_4001,sp:sp_3992
 	Mem4009[sp_3992 - 4<32>:word32] = r0_3997
 	Mem4012[sp_3992 - 8<32>:word32] = r5_3995 + 1515<i32>
@@ -3510,7 +3510,7 @@ l000144CB:
 	word32 r2_4015 = Mem4014[r5_3995 + 0xC839<32>:word32]
 	word32 r7_4031
 	call r2_4015 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3993,fp:fp_3999,r10:r10_4002,r2:r2_4015,r4:r4_4000,r5:r5_3995,r6:r6_3996,r8:r8_4003,r9:r9_4001
+		uses: ap:ap_3993,fp:fp_3999,Mem:Mem4014,r10:r10_4002,r2:r2_4015,r4:r4_4000,r5:r5_3995,r6:r6_3996,r8:r8_4003,r9:r9_4001
 		defs: ap:ap_4020,fp:fp_4026,r10:r10_4029,r4:r4_4027,r5:r5_4022,r6:r6_4023,r7:r7_4031,r8:r8_4030,r9:r9_4028,sp:sp_4019
 	branch (CONVERT(Mem4014[r7_4031 + 4<i32>:byte], byte, uint32) & 1<32>) == 0<32> l000144FC
 l000144FC:
@@ -3530,7 +3530,7 @@ l00014347:
 	Mem4062[sp_3803 - 8<32>:word32] = fp_3810 + -154<i32>
 	word32 r4_4074
 	call Mem4062[sp_3803 + 0x18<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:0<32>,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem4062,r10:r10_3813,r4:0<32>,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_4067,fp:fp_4073,r10:r10_4076,r4:r4_4074,r5:r5_4069,r6:r6_4070,r7:r7_4078,r8:r8_4077,r9:r9_4075,sp:sp_4066
 	r4_3811 = r4_4074 + 1<32>
 l00014355:
@@ -3549,7 +3549,7 @@ l0001435C:
 	word32 r10_4115
 	word32 r8_4116
 	call Mem4094[sp_4091 + 24<i32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4098,fp:fp_4092,r10:r10_4103,r4:r4_4101,r5:r5_4099,r6:r6_4100,r8:r8_4104,r9:r9_4102
+		uses: ap:ap_4098,fp:fp_4092,Mem:Mem4094,r10:r10_4103,r4:r4_4101,r5:r5_4099,r6:r6_4100,r8:r8_4104,r9:r9_4102
 		defs: ap:ap_4106,fp:fp_4112,r0:r0_4110,r10:r10_4115,r4:r4_4113,r5:r5_4108,r6:r6_4109,r8:r8_4116,r9:r9_4114,sp:sp_4105
 	word32 r3_4121 = r0_4110
 	branch r4_4113 == 0<32> l00014376
@@ -3561,7 +3561,7 @@ l00014376:
 	Mem4143[sp_4105 - 8<32>:word32] = fp_4112 + -154<i32> + r3_4121
 	word32 r4_4159
 	call Mem4143[sp_4105 + 0x18<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4106,fp:fp_4112,r10:r10_4115,r2:fp_4112 + -154<i32>,r4:r4_4113,r5:r5_4108,r6:r6_4109,r8:r8_4116,r9:r9_4114
+		uses: ap:ap_4106,fp:fp_4112,Mem:Mem4143,r10:r10_4115,r2:fp_4112 + -154<i32>,r4:r4_4113,r5:r5_4108,r6:r6_4109,r8:r8_4116,r9:r9_4114
 		defs: ap:ap_4152,fp:fp_4158,r10:r10_4161,r4:r4_4159,r5:r5_4154,r6:r6_4155,r7:r7_4163,r8:r8_4162,r9:r9_4160,sp:sp_4151
 	Mem4169[Mem4143[ap_3804 + 4<i32>:word32]:word32] = Mem4143[ap_3804 + 4<i32>:word32] + 4<32>
 	r4_3811 = r4_4159 + 1<32>
@@ -3581,7 +3581,7 @@ l00014394:
 	word32 r10_4202
 	word32 r8_4203
 	call Mem4181[sp_4178 + 24<i32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4185,fp:fp_4179,r10:r10_4190,r4:r4_4188,r5:r5_4186,r6:r6_4187,r8:r8_4191,r9:r9_4189
+		uses: ap:ap_4185,fp:fp_4179,Mem:Mem4181,r10:r10_4190,r4:r4_4188,r5:r5_4186,r6:r6_4187,r8:r8_4191,r9:r9_4189
 		defs: ap:ap_4193,fp:fp_4199,r0:r0_4197,r10:r10_4202,r4:r4_4200,r5:r5_4195,r6:r6_4196,r8:r8_4203,r9:r9_4201,sp:sp_4192
 	word32 r3_4208 = r0_4197
 	branch r4_4200 == 0<32> l000143AE
@@ -3593,7 +3593,7 @@ l000143AE:
 	Mem4230[sp_4192 - 8<32>:word32] = fp_4199 + -154<i32> + r3_4208
 	word32 r4_4246
 	call Mem4230[sp_4192 + 0x18<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4193,fp:fp_4199,r10:r10_4202,r2:fp_4199 + -154<i32>,r4:r4_4200,r5:r5_4195,r6:r6_4196,r8:r8_4203,r9:r9_4201
+		uses: ap:ap_4193,fp:fp_4199,Mem:Mem4230,r10:r10_4202,r2:fp_4199 + -154<i32>,r4:r4_4200,r5:r5_4195,r6:r6_4196,r8:r8_4203,r9:r9_4201
 		defs: ap:ap_4239,fp:fp_4245,r10:r10_4248,r4:r4_4246,r5:r5_4241,r6:r6_4242,r8:r8_4249,r9:r9_4247,sp:sp_4238
 	Mem4256[Mem4230[ap_3804 + 4<i32>:word32]:word32] = Mem4230[ap_3804 + 4<i32>:word32] + 4<32>
 	r4_3811 = r4_4246 + 1<32>
@@ -3624,14 +3624,14 @@ l000143DD:
 	word32 r10_4317
 	word32 r8_4318
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4302,fp:fp_4284,r10:r10_4305,r4:r4_4258,r5:r5_4293,r6:r6_4273,r8:r8_4268,r9:r9_4300
+		uses: ap:ap_4302,fp:fp_4284,Mem:Mem4295,r10:r10_4305,r4:r4_4258,r5:r5_4293,r6:r6_4273,r8:r8_4268,r9:r9_4300
 		defs: ap:ap_4308,fp:fp_4314,r0:r0_4312,r10:r10_4317,r4:r4_4315,r5:r5_4310,r6:r6_4311,r8:r8_4318,r9:r9_4316,sp:sp_4307
 	Mem4324[sp_4307 - 4<32>:word32] = r0_4312
 	Mem4327[sp_4307 - 8<32>:word32] = r5_4310 + 1515<i32>
 	Mem4329[sp_4307 - 0xC<32>:word32] = r5_4310
 	word32 r2_4330 = Mem4329[r5_4310 + 0xC839<32>:word32]
 	call r2_4330 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4308,fp:fp_4314,r10:r10_4317,r2:r2_4330,r4:r4_4315,r5:r5_4310,r6:r6_4311,r8:r8_4318,r9:r9_4316
+		uses: ap:ap_4308,fp:fp_4314,Mem:Mem4329,r10:r10_4317,r2:r2_4330,r4:r4_4315,r5:r5_4310,r6:r6_4311,r8:r8_4318,r9:r9_4316
 		defs: ap:ap_4335,fp:fp_4341,r10:r10_4344,r4:r4_4342,r5:r5_4337,r6:r6_4338,r8:r8_4345,r9:r9_4343,sp:sp_4334
 l000143C9:
 l00014335:
@@ -3660,7 +3660,7 @@ l000141E8:
 	word32 r8_4379
 	word32 r7_4380
 	call Mem4366[sp_3803 + 0x20<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_4360,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem4366,r10:r10_4360,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_4369,fp:fp_4375,r0:r0_4373,r10:r10_4378,r5:r5_4371,r6:r6_4372,r7:r7_4380,r8:r8_4379,r9:r9_4377,sp:sp_4368
 	word32 r2_4384 = CONVERT(SLICE(r0_4373, word16, 0), word16, uint32)
 	Mem4388[fp_4375 + -74<i32>:byte] = 0<8>
@@ -3685,7 +3685,7 @@ l00014209:
 	word32 r10_4426
 	word32 r8_4427
 	call Mem4405[sp_4368 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4369,fp:fp_4375,r10:r10_4378,r4:r4_4413,r5:r5_4371,r6:r6_4372,r8:r8_4379,r9:r9_4377
+		uses: ap:ap_4369,fp:fp_4375,Mem:Mem4405,r10:r10_4378,r4:r4_4413,r5:r5_4371,r6:r6_4372,r8:r8_4379,r9:r9_4377
 		defs: ap:ap_4417,fp:fp_4423,r0:r0_4421,r10:r10_4426,r4:r4_4424,r5:r5_4419,r6:r6_4420,r7:r7_4428,r8:r8_4427,r9:r9_4425,sp:sp_4416
 	branch r0_4421 != 0<32> l00014220
 l00014220:
@@ -3694,7 +3694,7 @@ l00014220:
 	Mem4442[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4451
 	call Mem4442[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4417,fp:fp_4423,r10:r10_4426,r4:r4_4424,r5:r5_4419,r6:r6_4420,r8:r8_4427,r9:r9_4425
+		uses: ap:ap_4417,fp:fp_4423,Mem:Mem4442,r10:r10_4426,r4:r4_4424,r5:r5_4419,r6:r6_4420,r8:r8_4427,r9:r9_4425
 		defs: ap:ap_4447,fp:fp_4453,r0:r0_4451,r10:r10_4456,r4:r4_4454,r5:r5_4449,r6:r6_4450,r7:r7_4458,r8:r8_4457,r9:r9_4455,sp:sp_4446
 	branch r0_4451 != 0<32> l00014238
 l00014238:
@@ -3703,7 +3703,7 @@ l00014238:
 	Mem4472[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4481
 	call Mem4472[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4447,fp:fp_4453,r10:r10_4456,r4:r4_4454,r5:r5_4449,r6:r6_4450,r8:r8_4457,r9:r9_4455
+		uses: ap:ap_4447,fp:fp_4453,Mem:Mem4472,r10:r10_4456,r4:r4_4454,r5:r5_4449,r6:r6_4450,r8:r8_4457,r9:r9_4455
 		defs: ap:ap_4477,fp:fp_4483,r0:r0_4481,r10:r10_4486,r4:r4_4484,r5:r5_4479,r6:r6_4480,r7:r7_4488,r8:r8_4487,r9:r9_4485,sp:sp_4476
 	branch r0_4481 != 0<32> l00014250
 l00014250:
@@ -3712,7 +3712,7 @@ l00014250:
 	Mem4502[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4511
 	call Mem4502[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4477,fp:fp_4483,r10:r10_4486,r4:r4_4484,r5:r5_4479,r6:r6_4480,r8:r8_4487,r9:r9_4485
+		uses: ap:ap_4477,fp:fp_4483,Mem:Mem4502,r10:r10_4486,r4:r4_4484,r5:r5_4479,r6:r6_4480,r8:r8_4487,r9:r9_4485
 		defs: ap:ap_4507,fp:fp_4513,r0:r0_4511,r10:r10_4516,r4:r4_4514,r5:r5_4509,r6:r6_4510,r7:r7_4518,r8:r8_4517,r9:r9_4515,sp:sp_4506
 	branch r0_4511 != 0<32> l00014268
 l00014268:
@@ -3721,7 +3721,7 @@ l00014268:
 	Mem4532[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4541
 	call Mem4532[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4507,fp:fp_4513,r10:r10_4516,r4:r4_4514,r5:r5_4509,r6:r6_4510,r8:r8_4517,r9:r9_4515
+		uses: ap:ap_4507,fp:fp_4513,Mem:Mem4532,r10:r10_4516,r4:r4_4514,r5:r5_4509,r6:r6_4510,r8:r8_4517,r9:r9_4515
 		defs: ap:ap_4537,fp:fp_4543,r0:r0_4541,r10:r10_4546,r4:r4_4544,r5:r5_4539,r6:r6_4540,r7:r7_4548,r8:r8_4547,r9:r9_4545,sp:sp_4536
 	branch r0_4541 != 0<32> l00014280
 l00014280:
@@ -3730,7 +3730,7 @@ l00014280:
 	Mem4562[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4571
 	call Mem4562[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4537,fp:fp_4543,r10:r10_4546,r4:r4_4544,r5:r5_4539,r6:r6_4540,r8:r8_4547,r9:r9_4545
+		uses: ap:ap_4537,fp:fp_4543,Mem:Mem4562,r10:r10_4546,r4:r4_4544,r5:r5_4539,r6:r6_4540,r8:r8_4547,r9:r9_4545
 		defs: ap:ap_4567,fp:fp_4573,r0:r0_4571,r10:r10_4576,r4:r4_4574,r5:r5_4569,r6:r6_4570,r7:r7_4578,r8:r8_4577,r9:r9_4575,sp:sp_4566
 	branch r0_4571 != 0<32> l00014298
 l00014298:
@@ -3739,7 +3739,7 @@ l00014298:
 	Mem4592[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4601
 	call Mem4592[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4567,fp:fp_4573,r10:r10_4576,r4:r4_4574,r5:r5_4569,r6:r6_4570,r8:r8_4577,r9:r9_4575
+		uses: ap:ap_4567,fp:fp_4573,Mem:Mem4592,r10:r10_4576,r4:r4_4574,r5:r5_4569,r6:r6_4570,r8:r8_4577,r9:r9_4575
 		defs: ap:ap_4597,fp:fp_4603,r0:r0_4601,r10:r10_4606,r4:r4_4604,r5:r5_4599,r6:r6_4600,r7:r7_4608,r8:r8_4607,r9:r9_4605,sp:sp_4596
 	branch r0_4601 != 0<32> l000142B0
 l000142B0:
@@ -3748,7 +3748,7 @@ l000142B0:
 	Mem4622[sp_4416 - 0xC<32>:word32] = r7_4428
 	word32 r0_4631
 	call Mem4622[sp_4416 + 0x2C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4597,fp:fp_4603,r10:r10_4606,r4:r4_4604,r5:r5_4599,r6:r6_4600,r8:r8_4607,r9:r9_4605
+		uses: ap:ap_4597,fp:fp_4603,Mem:Mem4622,r10:r10_4606,r4:r4_4604,r5:r5_4599,r6:r6_4600,r8:r8_4607,r9:r9_4605
 		defs: ap:ap_4627,fp:fp_4633,r0:r0_4631,r10:r10_4636,r4:r4_4634,r5:r5_4629,r6:r6_4630,r7:r7_4638,r8:r8_4637,r9:r9_4635,sp:sp_4626
 	branch r0_4631 != 0<32> l000142F0
 l000142F0:
@@ -3763,7 +3763,7 @@ l000142CA:
 	Mem4662[sp_4416 - 8<32>:word32] = r7_4428 + 0xC<32>
 	Mem4666[sp_4416 - 0xC<32>:word32] = fp_4423 + 0xFFFFFFB8<32>
 	call Mem4666[0x000192C0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4627,fp:fp_4633,r10:r10_4636,r2:fp_4633 + -74<i32>,r4:r4_4634,r5:r5_4629,r6:r6_4630,r8:r8_4637,r9:r9_4635
+		uses: ap:ap_4627,fp:fp_4633,Mem:Mem4666,r10:r10_4636,r2:fp_4633 + -74<i32>,r4:r4_4634,r5:r5_4629,r6:r6_4630,r8:r8_4637,r9:r9_4635
 		defs: ap:ap_4669,fp:fp_4675,r10:r10_4678,r3:r3_4674,r4:r4_4676,r5:r5_4671,r6:r6_4672,r7:r7_4680,r8:r8_4679,r9:r9_4677,sp:sp_4668
 	Mem4685[fp_4423 + -68<i32>:byte] = 0x29<8>
 	Mem4687[fp_4423 + -67<i32>:byte] = 0<8>
@@ -3798,7 +3798,7 @@ l000142F5:
 	word32 r10_4752
 	word32 r8_4753
 	call Mem4733[sp_4721 + 0x24<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_4735,fp:fp_4724,r10:r10_4740,r4:r4_4738,r5:r5_4736,r6:r6_4737,r8:r8_4741,r9:r9_4739
+		uses: ap:ap_4735,fp:fp_4724,Mem:Mem4733,r10:r10_4740,r4:r4_4738,r5:r5_4736,r6:r6_4737,r8:r8_4741,r9:r9_4739
 		defs: ap:ap_4743,fp:fp_4749,r0:r0_4747,r10:r10_4752,r4:r4_4750,r5:r5_4745,r6:r6_4746,r8:r8_4753,r9:r9_4751,sp:sp_4742
 	Mem4760[sp_4742 - 4<32>:uint32] = CONVERT(SLICE(r0_4747, word16, 0), word16, uint32)
 	Mem4763[sp_4742 - 8<32>:word32] = Mem4760[r6_4746 + 4164<i32> + r4_4750 * 4<i32>:word32]
@@ -3815,14 +3815,14 @@ l000142F5:
 	word32 r10_4783
 	word32 r8_4784
 	call r9_4751 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4743,fp:fp_4749,r10:r10_4752,r4:r4_4750,r5:r5_4745,r6:r6_4746,r8:r8_4753,r9:r9_4751
+		uses: ap:ap_4743,fp:fp_4749,Mem:Mem4769,r10:r10_4752,r4:r4_4750,r5:r5_4745,r6:r6_4746,r8:r8_4753,r9:r9_4751
 		defs: ap:ap_4774,fp:fp_4780,r0:r0_4778,r10:r10_4783,r4:r4_4781,r5:r5_4776,r6:r6_4777,r8:r8_4784,r9:r9_4782,sp:sp_4773
 	Mem4790[sp_4773 - 4<32>:word32] = r0_4778
 	Mem4793[sp_4773 - 8<32>:word32] = r5_4776 + 1515<i32>
 	Mem4795[sp_4773 - 0xC<32>:word32] = r5_4776
 	word32 r2_4796 = Mem4795[r5_4776 + 0xC839<32>:word32]
 	call r2_4796 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4774,fp:fp_4780,r10:r10_4783,r2:r2_4796,r4:r4_4781,r5:r5_4776,r6:r6_4777,r8:r8_4784,r9:r9_4782
+		uses: ap:ap_4774,fp:fp_4780,Mem:Mem4795,r10:r10_4783,r2:r2_4796,r4:r4_4781,r5:r5_4776,r6:r6_4777,r8:r8_4784,r9:r9_4782
 		defs: ap:ap_4801,fp:fp_4807,r10:r10_4810,r4:r4_4808,r5:r5_4803,r6:r6_4804,r8:r8_4811,r9:r9_4809,sp:sp_4800
 l000141E5:
 l0001410A:
@@ -3840,7 +3840,7 @@ l00014594:
 	Mem4841[sp_4828 - 8<32>:word32] = fp_3810 + -188<i32> + r0_4837 * 4<i32>
 	word32 r2_4853
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4846,fp:fp_4839,r0:r0_4837,r10:r10_4850,r4:r4_4849,r5:r5_4847,r6:r6_4848,r8:r8_4834,r9:r9_4845
+		uses: ap:ap_4846,fp:fp_4839,Mem:Mem4841,r0:r0_4837,r10:r10_4850,r4:r4_4849,r5:r5_4847,r6:r6_4848,r8:r8_4834,r9:r9_4845
 		defs: ap:ap_4852,fp:fp_4858,r10:r10_4861,r2:r2_4853,r4:r4_4859,r5:r5_4854,r6:r6_4855,r7:r7_4863,r8:r8_4862,r9:r9_4860,sp:sp_4851
 	r2_4820 = r2_4853 + 1<32>
 	branch r2_4853 <= 0xE<32> l00014594
@@ -3861,14 +3861,14 @@ l000145B0:
 	word32 r10_4895
 	word32 r8_4896
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4852,fp:fp_4858,r10:r10_4861,r4:r4_4859,r5:r5_4854,r6:r6_4855,r8:r8_4862,r9:r9_4860
+		uses: ap:ap_4852,fp:fp_4858,Mem:Mem4881,r10:r10_4861,r4:r4_4859,r5:r5_4854,r6:r6_4855,r8:r8_4862,r9:r9_4860
 		defs: ap:ap_4886,fp:fp_4892,r0:r0_4890,r10:r10_4895,r4:r4_4893,r5:r5_4888,r6:r6_4889,r8:r8_4896,r9:r9_4894,sp:sp_4885
 	Mem4902[sp_4885 - 4<32>:word32] = r0_4890
 	Mem4905[sp_4885 - 8<32>:word32] = r5_4888 + 1515<i32>
 	Mem4907[sp_4885 - 0xC<32>:word32] = r5_4888
 	word32 r2_4908 = Mem4907[r5_4888 + 0xC839<32>:word32]
 	call r2_4908 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4886,fp:fp_4892,r10:r10_4895,r2:r2_4908,r4:r4_4893,r5:r5_4888,r6:r6_4889,r8:r8_4896,r9:r9_4894
+		uses: ap:ap_4886,fp:fp_4892,Mem:Mem4907,r10:r10_4895,r2:r2_4908,r4:r4_4893,r5:r5_4888,r6:r6_4889,r8:r8_4896,r9:r9_4894
 		defs: ap:ap_4913,fp:fp_4919,r10:r10_4922,r4:r4_4920,r5:r5_4915,r6:r6_4916,r8:r8_4923,r9:r9_4921,sp:sp_4912
 l000140EB:
 l000140DF:
@@ -3888,7 +3888,7 @@ l000141AC:
 	word32 r10_4949
 	word32 r8_4950
 	call Mem4935[sp_3803 + 0x1C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem4935,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_4940,fp:fp_4946,r0:r0_4944,r10:r10_4949,r4:r4_4947,r5:r5_4942,r6:r6_4943,r8:r8_4950,r9:r9_4948,sp:sp_4939
 	Mem4956[sp_4939 - 4<32>:word32] = r0_4944
 	Mem4959[sp_4939 - 8<32>:word32] = r6_4943 + 4257<i32>
@@ -3904,14 +3904,14 @@ l000141AC:
 	word32 r10_4976
 	word32 r8_4977
 	call r9_4948 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4940,fp:fp_4946,r10:r10_4949,r4:r4_4947,r5:r5_4942,r6:r6_4943,r8:r8_4950,r9:r9_4948
+		uses: ap:ap_4940,fp:fp_4946,Mem:Mem4962,r10:r10_4949,r4:r4_4947,r5:r5_4942,r6:r6_4943,r8:r8_4950,r9:r9_4948
 		defs: ap:ap_4967,fp:fp_4973,r0:r0_4971,r10:r10_4976,r4:r4_4974,r5:r5_4969,r6:r6_4970,r8:r8_4977,r9:r9_4975,sp:sp_4966
 	Mem4983[sp_4966 - 4<32>:word32] = r0_4971
 	Mem4986[sp_4966 - 8<32>:word32] = r5_4969 + 1515<i32>
 	Mem4988[sp_4966 - 0xC<32>:word32] = r5_4969
 	word32 r2_4989 = Mem4988[r5_4969 + 0xC839<32>:word32]
 	call r2_4989 + 2<i32> (retsize: 4;)
-		uses: ap:ap_4967,fp:fp_4973,r10:r10_4976,r2:r2_4989,r4:r4_4974,r5:r5_4969,r6:r6_4970,r8:r8_4977,r9:r9_4975
+		uses: ap:ap_4967,fp:fp_4973,Mem:Mem4988,r10:r10_4976,r2:r2_4989,r4:r4_4974,r5:r5_4969,r6:r6_4970,r8:r8_4977,r9:r9_4975
 		defs: ap:ap_4994,fp:fp_5000,r10:r10_5003,r4:r4_5001,r5:r5_4996,r6:r6_4997,r8:r8_5004,r9:r9_5002,sp:sp_4993
 	Mem5010[Mem4988[ap_3804 + 4<i32>:word32]:word32] = 0<32>
 l000141A9:
@@ -3952,7 +3952,7 @@ l00014433:
 	word32 r10_5115
 	word32 r8_5116
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5030,fp:fp_5036,r0:r0_5055,r10:r10_5039,r2:r4_5049 + 7<32>,r3:r4_5049 + 5<32>,r4:r4_5049 + 6<32>,r5:r5_5032,r6:r6_5033,r8:r8_5040,r9:r9_5038
+		uses: ap:ap_5030,fp:fp_5036,Mem:Mem5101,r0:r0_5055,r10:r10_5039,r2:r4_5049 + 7<32>,r3:r4_5049 + 5<32>,r4:r4_5049 + 6<32>,r5:r5_5032,r6:r6_5033,r8:r8_5040,r9:r9_5038
 		defs: ap:ap_5106,fp:fp_5112,r0:r0_5110,r10:r10_5115,r4:r4_5113,r5:r5_5108,r6:r6_5109,r8:r8_5116,r9:r9_5114,sp:sp_5105
 	Mem5122[sp_5105 - 4<32>:word32] = r0_5110
 	Mem5125[sp_5105 - 8<32>:word32] = r5_5108 + 1515<i32>
@@ -3961,7 +3961,7 @@ l00014433:
 	word32 r3_5138
 	word32 r7_5144
 	call r2_5128 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5106,fp:fp_5112,r10:r10_5115,r2:r2_5128,r4:r4_5113,r5:r5_5108,r6:r6_5109,r8:r8_5116,r9:r9_5114
+		uses: ap:ap_5106,fp:fp_5112,Mem:Mem5127,r10:r10_5115,r2:r2_5128,r4:r4_5113,r5:r5_5108,r6:r6_5109,r8:r8_5116,r9:r9_5114
 		defs: ap:ap_5133,fp:fp_5139,r10:r10_5142,r3:r3_5138,r4:r4_5140,r5:r5_5135,r6:r6_5136,r7:r7_5144,r8:r8_5143,r9:r9_5141,sp:sp_5132
 	Mem5149[r7_5144 + r3_5138:word32] = Mem5127[fp_3810 + -155<i32>:byte]
 l00014430:
@@ -3990,7 +3990,7 @@ l00014175:
 	word32 r10_5207
 	word32 r8_5208
 	call Mem5178[sp_3803 + 0x1C<32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem5178,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_5198,fp:fp_5204,r0:r0_5202,r10:r10_5207,r3:r3_5203,r4:r4_5205,r5:r5_5200,r6:r6_5201,r8:r8_5208,r9:r9_5206,sp:sp_5197
 	Mem5214[sp_5197 - 4<32>:word32] = r0_5202
 	Mem5216[sp_5197 - 8<32>:word32] = r3_5203
@@ -4006,14 +4006,14 @@ l00014175:
 	word32 r10_5233
 	word32 r8_5234
 	call r9_5206 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5198,fp:fp_5204,r10:r10_5207,r4:r4_5205,r5:r5_5200,r6:r6_5201,r8:r8_5208,r9:r9_5206
+		uses: ap:ap_5198,fp:fp_5204,Mem:Mem5219,r10:r10_5207,r4:r4_5205,r5:r5_5200,r6:r6_5201,r8:r8_5208,r9:r9_5206
 		defs: ap:ap_5224,fp:fp_5230,r0:r0_5228,r10:r10_5233,r4:r4_5231,r5:r5_5226,r6:r6_5227,r8:r8_5234,r9:r9_5232,sp:sp_5223
 	Mem5240[sp_5223 - 4<32>:word32] = r0_5228
 	Mem5243[sp_5223 - 8<32>:word32] = r5_5226 + 1515<i32>
 	Mem5245[sp_5223 - 0xC<32>:word32] = r5_5226
 	word32 r2_5246 = Mem5245[r5_5226 + 0xC839<32>:word32]
 	call r2_5246 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5224,fp:fp_5230,r10:r10_5233,r2:r2_5246,r4:r4_5231,r5:r5_5226,r6:r6_5227,r8:r8_5234,r9:r9_5232
+		uses: ap:ap_5224,fp:fp_5230,Mem:Mem5245,r10:r10_5233,r2:r2_5246,r4:r4_5231,r5:r5_5226,r6:r6_5227,r8:r8_5234,r9:r9_5232
 		defs: ap:ap_5251,fp:fp_5257,r10:r10_5260,r4:r4_5258,r5:r5_5253,r6:r6_5254,r8:r8_5261,r9:r9_5259,sp:sp_5250
 	Mem5267[Mem5245[ap_3804 + 4<i32>:word32]:word32] = 0<32>
 l0001415D:
@@ -4040,14 +4040,14 @@ l00014610:
 	word32 r10_5311
 	word32 r8_5312
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem5291,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_5302,fp:fp_5308,r0:r0_5306,r10:r10_5311,r4:r4_5309,r5:r5_5304,r6:r6_5305,r8:r8_5312,r9:r9_5310,sp:sp_5301
 	Mem5318[sp_5301 - 4<32>:word32] = r0_5306
 	Mem5321[sp_5301 - 8<32>:word32] = r5_5304 + 1515<i32>
 	Mem5323[sp_5301 - 0xC<32>:word32] = r5_5304
 	word32 r2_5324 = Mem5323[r5_5304 + 0xC839<32>:word32]
 	call r2_5324 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5302,fp:fp_5308,r10:r10_5311,r2:r2_5324,r4:r4_5309,r5:r5_5304,r6:r6_5305,r8:r8_5312,r9:r9_5310
+		uses: ap:ap_5302,fp:fp_5308,Mem:Mem5323,r10:r10_5311,r2:r2_5324,r4:r4_5309,r5:r5_5304,r6:r6_5305,r8:r8_5312,r9:r9_5310
 		defs: ap:ap_5329,fp:fp_5335,r10:r10_5338,r11:r11_5342,r4:r4_5336,r5:r5_5331,r6:r6_5332,r7:r7_5340,r8:r8_5339,r9:r9_5337,sp:sp_5328
 	Mem5345[sp_3803 + 38<i32>:word16] = 0x14<16>
 l000145EA:
@@ -4065,14 +4065,14 @@ l000145EA:
 	word32 r10_5370
 	word32 r8_5371
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_3804,fp:fp_3810,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
+		uses: ap:ap_3804,fp:fp_3810,Mem:Mem5356,r10:r10_3813,r4:r4_3811,r5:r5_3806,r6:r6_3807,r8:r8_3814,r9:r9_3812
 		defs: ap:ap_5361,fp:fp_5367,r0:r0_5365,r10:r10_5370,r4:r4_5368,r5:r5_5363,r6:r6_5364,r8:r8_5371,r9:r9_5369,sp:sp_5360
 	Mem5377[sp_5360 - 4<32>:word32] = r0_5365
 	Mem5380[sp_5360 - 8<32>:word32] = r5_5363 + 1515<i32>
 	Mem5382[sp_5360 - 0xC<32>:word32] = r5_5363
 	word32 r2_5383 = Mem5382[r5_5363 + 0xC839<32>:word32]
 	call r2_5383 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5361,fp:fp_5367,r10:r10_5370,r2:r2_5383,r4:r4_5368,r5:r5_5363,r6:r6_5364,r8:r8_5371,r9:r9_5369
+		uses: ap:ap_5361,fp:fp_5367,Mem:Mem5382,r10:r10_5370,r2:r2_5383,r4:r4_5368,r5:r5_5363,r6:r6_5364,r8:r8_5371,r9:r9_5369
 		defs: ap:ap_5388,fp:fp_5394,r10:r10_5397,r11:r11_5401,r4:r4_5395,r5:r5_5390,r6:r6_5391,r7:r7_5399,r8:r8_5398,r9:r9_5396,sp:sp_5387
 	Mem5404[sp_3803 + 38<i32>:word16] = Mem5382[sp_3803 + 40<i32>:word16]
 l00014633:
@@ -4097,7 +4097,7 @@ l0001463C:
 	word32 r10_5458
 	word32 r8_5459
 	call r9_3812 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5443,fp:fp_5444,r0:r0_5426,r10:r10_5446,r4:r4_5445,r5:r5_5436,r6:r6_5432,r8:r8_5447,r9:r9_5442
+		uses: ap:ap_5443,fp:fp_5444,Mem:Mem5438,r0:r0_5426,r10:r10_5446,r4:r4_5445,r5:r5_5436,r6:r6_5432,r8:r8_5447,r9:r9_5442
 		defs: ap:ap_5449,fp:fp_5455,r0:r0_5453,r10:r10_5458,r4:r4_5456,r5:r5_5451,r6:r6_5452,r8:r8_5459,r9:r9_5457,sp:sp_5448
 	Mem5465[sp_5448 - 4<32>:word32] = r0_5453
 	Mem5468[sp_5448 - 8<32>:word32] = r5_5451 + 1515<i32>
@@ -4105,7 +4105,7 @@ l0001463C:
 	word32 r0_5471 = Mem5470[r5_5451 + 0xC839<32>:word32]
 	word32 r11_5489
 	call r0_5471 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5449,fp:fp_5455,r0:r0_5471,r10:r10_5458,r4:r4_5456,r5:r5_5451,r6:r6_5452,r8:r8_5459,r9:r9_5457
+		uses: ap:ap_5449,fp:fp_5455,Mem:Mem5470,r0:r0_5471,r10:r10_5458,r4:r4_5456,r5:r5_5451,r6:r6_5452,r8:r8_5459,r9:r9_5457
 		defs: ap:ap_5476,fp:fp_5482,r10:r10_5485,r11:r11_5489,r4:r4_5483,r5:r5_5478,r6:r6_5479,r7:r7_5487,r8:r8_5486,r9:r9_5484,sp:sp_5475
 	word16 v434_5491 = SLICE(r11_5489, word16, 0) + 1<16>
 	r11_5411 = SEQ(SLICE(r11_5489, word16, 16), v434_5491)
@@ -4120,7 +4120,7 @@ l0001466A:
 	word32 r2_5511 = Mem5510[r5_3806 + 0xC839<32>:word32]
 	word32 r7_5539
 	call r2_5511 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5515,fp:fp_5519,r10:r10_5525,r2:r2_5511,r4:r4_5521,r5:r5_5508,r6:r6_5517,r8:r8_5503,r9:r9_5523
+		uses: ap:ap_5515,fp:fp_5519,Mem:Mem5510,r10:r10_5525,r2:r2_5511,r4:r4_5521,r5:r5_5508,r6:r6_5517,r8:r8_5503,r9:r9_5523
 		defs: ap:ap_5528,fp:fp_5534,r10:r10_5537,r4:r4_5535,r5:r5_5530,r6:r6_5531,r7:r7_5539,r8:r8_5538,r9:r9_5536,sp:sp_5527
 	word32 r0_5543 = CONVERT(Mem5510[sp_3557 + 40<i32>:word16], word16, uint32)
 	word32 r0_5546 = CONVERT(Mem5510[sp_3557 + 42<i32>:word16], word16, uint32) - r0_5543
@@ -4137,7 +4137,7 @@ l0001469C:
 	Mem5564[sp_5554 - 0xC<32>:word32] = r5_3560
 	word32 r2_5565 = Mem5564[r5_3560 + 0xC839<32>:word32]
 	call r2_5565 + 2<i32> (retsize: 4;)
-		uses: ap:ap_5569,fp:fp_5571,r10:r10_5574,r2:r2_5565,r4:r4_5572,r5:r5_5563,r6:r6_5570,r8:r8_5559,r9:r9_5573
+		uses: ap:ap_5569,fp:fp_5571,Mem:Mem5564,r10:r10_5574,r2:r2_5565,r4:r4_5572,r5:r5_5563,r6:r6_5570,r8:r8_5559,r9:r9_5573
 l00013DC0:
 	return
 l00013DB3:
@@ -4185,7 +4185,7 @@ l00014847:
 	word32 r9_102
 	word32 r8_104
 	call Mem55[0x000192BC<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_43,fp:fp,r10:SEQ(SLICE(r10, word16, 16), Mem0[Mem0[r4 + 1511<i32>:word32] + 12<i32>:word16]),r2:ap_43 * 5<32>,r3:r3_24,r4:r4,r6:SEQ(SLICE(r6, word16, 16), v20_25),r8:r8,r9:SEQ(SLICE(r9, word16, 16), CONVERT(Mem0[r4 + 0xC658<32>:byte], byte, uint16)),Stack +0004:fp + -37<i32>,Stack +0008:r8 + 5401<i32> + ap_43 * 0x14<32>
+		uses: ap:ap_43,fp:fp,Mem:Mem55,r10:SEQ(SLICE(r10, word16, 16), Mem0[Mem0[r4 + 1511<i32>:word32] + 12<i32>:word16]),r2:ap_43 * 5<32>,r3:r3_24,r4:r4,r6:SEQ(SLICE(r6, word16, 16), v20_25),r8:r8,r9:SEQ(SLICE(r9, word16, 16), CONVERT(Mem0[r4 + 0xC658<32>:byte], byte, uint16)),Stack +0004:fp + -37<i32>,Stack +0008:r8 + 5401<i32> + ap_43 * 0x14<32>
 		defs: ap:ap_67,fp:fp_69,r10:r10_65,r3:r3_63,r4:r4_61,r5:r5_72,r6:r6_64,r8:r8_68,r9:r9_66,sp:sp_59
 	branch ap_67 != 6<32> l000148AC
 l000148AC:
@@ -4197,7 +4197,7 @@ l000148D5:
 	Mem88[sp_59 - 8<32>:word32] = r5_72 + 236<i32>
 	Mem91[sp_59 - 0xC<32>:word32] = fp_105 + -36<i32>
 	call Mem91[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: fp:fp_69,r10:r10_65,r3:r3_63,r4:r4_61,r6:r6_64,r8:r8_68,r9:r9_66
+		uses: fp:fp_69,Mem:Mem91,r10:r10_65,r3:r3_63,r4:r4_61,r6:r6_64,r8:r8_68,r9:r9_66
 		defs: fp:fp_105,r10:r10_101,r3:r3_99,r4:r4_97,r6:r6_100,r8:r8_104,r9:r9_102
 l000148B1:
 	Mem115[fp_105 + -34<i32>:byte] = Mem55[r8_104 + 5320<i32> + CONVERT(SLICE(CONVERT(Mem55[r4_180 + 0xC65C<32>:word16], word16, uint32) >> 1<i8>, word16, 0) & 3<16>, word16, uint32):byte]
@@ -4233,7 +4233,7 @@ l000148F9:
 l0001492E:
 l0001490C_1:
 	call 0x00014910<p32> + r0_194 * 2<32> (retsize: 0;)
-		uses: fp:fp_164,r10:r10_191,r3:r3_200,r4:r4_180,r6:r6_203,r8:r8_211,r9:r9_207
+		uses: fp:fp_164,Mem:Mem178,r10:r10_191,r3:r3_200,r4:r4_180,r6:r6_203,r8:r8_211,r9:r9_207
 	return
 fn00014812_exit:
 
@@ -4268,7 +4268,7 @@ l000151A0:
 	r5_100 = r3 + 5461<i32> + (r2_46 - 1<32> << 2<i8>)
 l00015189:
 	call Mem73[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap,fp:fp,r10:r10_21,r11:r11_15,r3:r3,r4:r4_98,r6:r6_45,r7:r7_40,r8:r8_34,r9:r9_25,Stack +0004:fp + -8<i32>,Stack +0008:r3 + 5108<i32>,Stack +000C:r2_46
+		uses: ap:ap,fp:fp,Mem:Mem73,r10:r10_21,r11:r11_15,r3:r3,r4:r4_98,r6:r6_45,r7:r7_40,r8:r8_34,r9:r9_25,Stack +0004:fp + -8<i32>,Stack +0008:r3 + 5108<i32>,Stack +000C:r2_46
 		defs: ap:ap_85,fp:fp_96,r10:r10_90,r11:r11_89,r3:r3_95,r4:r4_98,r6:r6_94,r7:r7_93,r8:r8_92,r9:r9_91,sp:sp_84
 	r5_100 = fp + -8<i32>
 l000151AC:
@@ -4309,7 +4309,7 @@ l00015239:
 	Mem167[sp_115 - 0x14<32>:word32] = r3 + 5113<i32>
 	Mem173[sp_115 - 0x18<32>:word32] = Mem167[ap + 16<i32>:word32]
 	call Mem173[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_170,fp:fp_190,r10:r10_180,r11:r11_124,r3:r3_164,r4:r4_104,r6:r6_187,r7:r7_116,r8:r8_120,r9:r9_158
+		uses: ap:ap_170,fp:fp_190,Mem:Mem173,r10:r10_180,r11:r11_124,r3:r3_164,r4:r4_104,r6:r6_187,r7:r7_116,r8:r8_120,r9:r9_158
 		defs: fp:fp_206,r10:r10_200,r4:r4_208,r5:r5_207,r6:r6_204,r8:r8_202,r9:r9_201
 l000151E1:
 	word32 sp_210 = sp_114 - 4<32>
@@ -4323,7 +4323,7 @@ l000151E1:
 	Mem231[sp_210 - 0x18<32>:word32] = r3 + 5159<i32>
 	Mem234[sp_210 - 0x1C<32>:word32] = Mem231[ap + 16<i32>:word32]
 	call Mem234[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_170,fp:fp_190,r0:r0_225,r10:r10_180,r11:r11_124,r3:r3_164,r4:r4_104,r6:r6_187,r7:r7_116,r8:r8_120,r9:r9_158
+		uses: ap:ap_170,fp:fp_190,Mem:Mem234,r0:r0_225,r10:r10_180,r11:r11_124,r3:r3_164,r4:r4_104,r6:r6_187,r7:r7_116,r8:r8_120,r9:r9_158
 		defs: fp:fp_250,r10:r10_244,r4:r4_252,r5:r5_251,r6:r6_248,r8:r8_246,r9:r9_245
 l000151B2:
 	word32 sp_254 = sp_114 - 4<32>
@@ -4337,7 +4337,7 @@ l000151B2:
 	Mem274[sp_254 - 0x18<32>:word32] = r3 + 5135<i32>
 	Mem277[sp_254 - 0x1C<32>:word32] = Mem274[ap + 16<i32>:word32]
 	call Mem277[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_170,fp:fp_190,r0:r0_268,r10:r10_180,r11:r11_124,r3:r3_164,r4:r4_104,r6:r6_187,r7:r7_116,r8:r8_120,r9:r9_158
+		uses: ap:ap_170,fp:fp_190,Mem:Mem277,r0:r0_268,r10:r10_180,r11:r11_124,r3:r3_164,r4:r4_104,r6:r6_187,r7:r7_116,r8:r8_120,r9:r9_158
 		defs: fp:fp_293,r10:r10_287,r4:r4_295,r5:r5_294,r6:r6_291,r8:r8_289,r9:r9_288
 l0001524F:
 	word32 sp_304 = fp_206 - 4<32>
@@ -4425,7 +4425,7 @@ l00015384:
 l000153A0:
 	word32 r0_59
 	call r11 + 2<i32> (retsize: 4;)
-		uses: ap:ap_49,fp:fp_132,r0:r0_50,r11:r11_62,r5:r5_42
+		uses: ap:ap_49,fp:fp_132,Mem:Mem45,r0:r0_50,r11:r11_62,r5:r5_42
 		defs: ap:ap_56,fp:fp_133,r0:r0_59,r11:r11_62,r3:r3_54,r4:r4_55,r5:r5_58
 	r7_64 = r0_59
 	r11 = r11_62
@@ -4477,7 +4477,7 @@ l00015910:
 l0001592C:
 	word32 r0_59
 	call r11 + 2<i32> (retsize: 4;)
-		uses: ap:ap_49,fp:fp_132,r0:r0_50,r11:r11_62,r5:r5_42
+		uses: ap:ap_49,fp:fp_132,Mem:Mem45,r0:r0_50,r11:r11_62,r5:r5_42
 		defs: ap:ap_56,fp:fp_133,r0:r0_59,r11:r11_62,r3:r3_54,r4:r4_55,r5:r5_58
 	r7_64 = r0_59
 	r11 = r11_62
@@ -4528,7 +4528,7 @@ l00015E8C:
 l00015EA8:
 	word32 r0_54
 	call r11 + 2<i32> (retsize: 4;)
-		uses: ap:ap_44,fp:fp_125,r0:r0_45,r11:r11_57,r6:r6_37
+		uses: ap:ap_44,fp:fp_125,Mem:Mem40,r0:r0_45,r11:r11_57,r6:r6_37
 		defs: ap:ap_51,fp:fp_126,r0:r0_54,r11:r11_57,r3:r3_49,r4:r4_50,r6:r6_53
 	r7_59 = r0_54
 	r11 = r11_57
@@ -4578,7 +4578,7 @@ l00016350:
 l0001636C:
 	word32 r0_54
 	call r11 + 2<i32> (retsize: 4;)
-		uses: ap:ap_44,fp:fp_125,r0:r0_45,r11:r11_57,r6:r6_37
+		uses: ap:ap_44,fp:fp_125,Mem:Mem40,r0:r0_45,r11:r11_57,r6:r6_37
 		defs: ap:ap_51,fp:fp_126,r0:r0_54,r11:r11_57,r3:r3_49,r4:r4_50,r6:r6_53
 	r7_59 = r0_54
 	r11 = r11_57
@@ -4674,7 +4674,7 @@ l00017429:
 	word32 r9_79
 	word32 r4_81
 	call Mem64[0x000192D8<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_39,fp:fp_40,r0:r0_41,r1:r1_87,r10:r10_78,r3:r3_43,r4:r4_81
+		uses: ap:ap_39,fp:fp_40,Mem:Mem64,r0:r0_41,r1:r1_87,r10:r10_78,r3:r3_43,r4:r4_81
 		defs: ap:ap_71,fp:fp_72,r0:r0_76,r10:r10_78,r3:r3_73,r4:r4_81,r7:r7_77,r8:r8_74,r9:r9_79,sp:sp_68
 	branch r0_76 == 0<32> l0001748E
 l0001748E:
@@ -4700,7 +4700,7 @@ l0001749A:
 	word32 fp_119
 	word32 r0_123
 	call r9_79 + 2<i32> (retsize: 4;)
-		uses: ap:ap_88,fp:fp_89,r0:r0_90,r1:r1_129,r10:r10_125,r3:r3_93,r4:r4_128
+		uses: ap:ap_88,fp:fp_89,Mem:Mem111,r0:r0_90,r1:r1_129,r10:r10_125,r3:r3_93,r4:r4_128
 		defs: ap:ap_118,fp:fp_119,r0:r0_123,r1:r1_129,r10:r10_125,r3:r3_120,r4:r4_128,r9:r9_126,sp:sp_115
 	branch r0_123 == 0<32> l000174B3
 l000174AA:
@@ -4713,7 +4713,7 @@ l000174BB:
 	word32 r4_168
 	word32 r1_169
 	call Mem148[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_118,fp:fp_119,r0:r0_123,r1:r1_169,r10:r10_165,r3:r3_120,r4:r4_168
+		uses: ap:ap_118,fp:fp_119,Mem:Mem148,r0:r0_123,r1:r1_169,r10:r10_165,r3:r3_120,r4:r4_168
 		defs: ap:ap_158,fp:fp_159,r0:r0_163,r1:r1_169,r10:r10_165,r3:r3_160,r4:r4_168,r9:r9_166,sp:sp_155
 	Mem172[r3_120 + 0xC627<32>:word32] = 0<32>
 l000174CE:
@@ -4728,7 +4728,7 @@ l000174CE:
 	word32 r8_198
 	word32 r5_204
 	call r9_126 + 2<i32> (retsize: 4;)
-		uses: ap:ap_189,fp:fp_190,r0:r0_191,r1:r1_206,r10:r10_202,r3:r3_181,r4:r4_205
+		uses: ap:ap_189,fp:fp_190,Mem:Mem183,r0:r0_191,r1:r1_206,r10:r10_202,r3:r3_181,r4:r4_205
 		defs: ap:ap_195,fp:fp_196,r0:r0_200,r1:r1_206,r10:r10_202,r3:r3_197,r4:r4_205,r5:r5_204,r6:r6_193,r8:r8_198,r9:r9_203,sp:sp_192
 	branch r0 == 0<32> l000174E7
 l000174DE:
@@ -4756,7 +4756,7 @@ l000174FC:
 	word32 r2_256
 	word32 r10_259
 	call r5_204 + 2<i32> (retsize: 4;)
-		uses: ap:ap_246,fp:fp_247,r0:r0_248,r1:r1_263,r10:r10_259,r3:r3_231,r4:r4_262
+		uses: ap:ap_246,fp:fp_247,Mem:Mem241,r0:r0_248,r1:r1_263,r10:r10_259,r3:r3_231,r4:r4_262
 		defs: ap:ap_252,fp:fp_253,r0:r0_257,r1:r1_263,r10:r10_259,r2:r2_256,r3:r3_254,r4:r4_262,r5:r5_261,r6:r6_250,r8:r8_255,r9:r9_260,sp:sp_249
 	branch r0 == 0<32> l00017514
 l00017514:
@@ -4782,7 +4782,7 @@ l0001752C:
 	word32 r2_318
 	word32 r10_321
 	call r5_204 + 2<i32> (retsize: 4;)
-		uses: ap:ap_308,fp:fp_309,r0:r0_310,r1:r1_325,r10:r10_321,r3:r3_293,r4:r4_324
+		uses: ap:ap_308,fp:fp_309,Mem:Mem303,r0:r0_310,r1:r1_325,r10:r10_321,r3:r3_293,r4:r4_324
 		defs: ap:ap_314,fp:fp_315,r0:r0_319,r1:r1_325,r10:r10_321,r2:r2_318,r3:r3_316,r4:r4_324,r5:r5_323,r6:r6_312,r8:r8_317,r9:r9_322,sp:sp_311
 	branch r0 == 0<32> l00017544
 l00017544:
@@ -4806,7 +4806,7 @@ l00017554:
 	word32 r4_389
 	word32 r1_390
 	call Mem360[0x000192C4<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_365,fp:fp_369,r0:r0_373,r1:r1_390,r10:r10_386,r3:r3_341,r4:r4_394
+		uses: ap:ap_365,fp:fp_369,Mem:Mem360,r0:r0_373,r1:r1_390,r10:r10_386,r3:r3_341,r4:r4_394
 		defs: ap:ap_379,fp:fp_380,r0:r0_384,r1:r1_390,r10:r10_386,r3:r3_381,r4:r4_389,r8:r8_382,r9:r9_387,sp:sp_376
 	word32 r4_394 = SEQ(SLICE(r4_389, word24, 8), 0<8>)
 	r4 = r4_394
@@ -4828,7 +4828,7 @@ l00017580:
 	word32 r2_426
 	word32 r10_429
 	call Mem415[0x00019260<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_379,fp:fp_380,r0:r0_406,r1:r1_433,r10:r10_429,r3:r3_381,r4:r4_432
+		uses: ap:ap_379,fp:fp_380,Mem:Mem415,r0:r0_406,r1:r1_433,r10:r10_429,r3:r3_381,r4:r4_432
 		defs: ap:ap_422,fp:fp_423,r0:r0_427,r1:r1_433,r10:r10_429,r2:r2_426,r3:r3_424,r4:r4_432,r8:r8_425,r9:r9_430,sp:sp_419
 	r4 = r4_432
 	r1 = r1_433
@@ -4854,7 +4854,7 @@ l000175CC:
 	Mem485[sp_481 - 4<32>:uint32] = CONVERT(Mem482[r3 + 0xC674<32>:word16], word16, uint32)
 	word32 r10_517
 	call r9_203 + 2<i32> (retsize: 4;)
-		uses: ap:ap_496,fp:fp_499,r0:r0_503,r1:r1_521,r10:r10_517,r3:r3_472,r4:r4_520
+		uses: ap:ap_496,fp:fp_499,Mem:Mem485,r0:r0_503,r1:r1_521,r10:r10_517,r3:r3_472,r4:r4_520
 		defs: ap:ap_510,fp:fp_511,r0:r0_515,r1:r1_521,r10:r10_517,r3:r3_512,r4:r4_520,r8:r8_513,sp:sp_507
 	r4 = r4_520
 	r1 = r1_521
@@ -4890,7 +4890,7 @@ l00017440:
 	word32 r3_576
 	word32 r0_579
 	call Mem567[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_71,fp:fp_72,r0:r0_76,r1:r1_666,r10:r10_662,r3:r3_73,r4:r4_665
+		uses: ap:ap_71,fp:fp_72,Mem:Mem567,r0:r0_76,r1:r1_666,r10:r10_662,r3:r3_73,r4:r4_665
 		defs: ap:ap_574,fp:fp_575,r0:r0_579,r3:r3_576,sp:sp_571
 	Mem588[sp_571 - 4<32>:word32] = r0_579
 	Mem591[sp_571 - 8<32>:word32] = r3_576 + 1515<i32>
@@ -4903,7 +4903,7 @@ l00017440:
 	word32 r0_606
 	word32 r10_608
 	call r2_594 + 2<i32> (retsize: 4;)
-		uses: ap:ap_574,fp:fp_575,r0:r0_579,r1:r1_666,r10:r10_662,r2:r2_594,r3:r3_576,r4:r4_665
+		uses: ap:ap_574,fp:fp_575,Mem:Mem593,r0:r0_579,r1:r1_666,r10:r10_662,r2:r2_594,r3:r3_576,r4:r4_665
 		defs: ap:ap_601,fp:fp_602,r0:r0_606,r10:r10_608,r3:r3_603,sp:sp_598
 	Mem616[sp_598 - 4<32>:uint32] = 0x401<u32>
 	Mem618[sp_598 - 8<32>:word32] = r10_608
@@ -4914,7 +4914,7 @@ l00017440:
 	word32 r3_630
 	word32 r0_633
 	call Mem621[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_601,fp:fp_602,r0:r0_606,r1:r1_666,r10:r10_662,r3:r3_603,r4:r4_665
+		uses: ap:ap_601,fp:fp_602,Mem:Mem621,r0:r0_606,r1:r1_666,r10:r10_662,r3:r3_603,r4:r4_665
 		defs: ap:ap_628,fp:fp_629,r0:r0_633,r3:r3_630,sp:sp_625
 	Mem642[sp_625 - 4<32>:word32] = r0_633
 	Mem645[sp_625 - 8<32>:word32] = r3_630 + 1515<i32>
@@ -4924,7 +4924,7 @@ l00017440:
 	word32 r4_665
 	word32 r1_666
 	call r2_648 + 2<i32> (retsize: 4;)
-		uses: ap:ap_628,fp:fp_629,r0:r0_633,r1:r1_666,r10:r10_662,r2:r2_648,r3:r3_630,r4:r4_665
+		uses: ap:ap_628,fp:fp_629,Mem:Mem647,r0:r0_633,r1:r1_666,r10:r10_662,r2:r2_648,r3:r3_630,r4:r4_665
 		defs: r1:r1_666,r10:r10_662,r4:r4_665
 	return
 l00017425:
@@ -4957,7 +4957,7 @@ l0001760B:
 	word32 ap_739
 	word32 r11_738
 	call Mem732[0x000192D8<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_707,fp:fp_708,r0:r0_709,r1:r1_750,r10:r10_746,r3:r3_711,r4:r4_712
+		uses: ap:ap_707,fp:fp_708,Mem:Mem732,r0:r0_709,r1:r1_750,r10:r10_746,r3:r3_711,r4:r4_712
 		defs: ap:ap_739,fp:fp_740,r0:r0_744,r1:r1_750,r10:r10_746,r11:r11_738,r3:r3_741,r4:r4_749,sp:sp_736
 	branch r0_744 == 0<32> l0001764D
 l00017622:
@@ -4971,7 +4971,7 @@ l00017622:
 	word32 r0_775
 	word32 r4_780
 	call Mem763[0x000192D0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_739,fp:fp_740,r0:r0_744,r1:r1_808,r10:r10_804,r3:r3_741,r4:r4_749
+		uses: ap:ap_739,fp:fp_740,Mem:Mem763,r0:r0_744,r1:r1_808,r10:r10_804,r3:r3_741,r4:r4_749
 		defs: ap:ap_770,fp:fp_771,r0:r0_775,r3:r3_772,r4:r4_780,sp:sp_767
 	Mem784[sp_767 - 4<32>:word32] = r0_775
 	Mem787[sp_767 - 8<32>:word32] = r3_772 + 1515<i32>
@@ -4980,7 +4980,7 @@ l00017622:
 	word32 r10_804
 	word32 r1_808
 	call r2_790 + 2<i32> (retsize: 4;)
-		uses: ap:ap_770,fp:fp_771,r0:r0_775,r1:r1_808,r10:r10_804,r2:r2_790,r3:r3_772,r4:r4_780
+		uses: ap:ap_770,fp:fp_771,Mem:Mem789,r0:r0_775,r1:r1_808,r10:r10_804,r2:r2_790,r3:r3_772,r4:r4_780
 		defs: ap:ap_797,r1:r1_808,r10:r10_804
 	r11_738 = 1<32>
 l0001764D:
@@ -5055,7 +5055,7 @@ l00017772:
 	word32 ap_37
 	word32 fp_39
 	call Mem30[0x000192C4<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:r0_18,fp:fp_17,r2:r2_19
+		uses: ap:r0_18,fp:fp_17,Mem:Mem30,r2:r2_19
 		defs: ap:ap_37,fp:fp_39,r0:r0_36,r2:r2_35,sp:sp_34
 	Mem42[sp_34 - 4<32>:word32] = r0_36
 	Mem44[sp_34 - 8<32>:word32] = ap_37
@@ -5066,7 +5066,7 @@ l00017772:
 	word32 r3_55
 	word32 fp_56
 	call ap_47 + 2<i32> (retsize: 4;)
-		uses: ap:ap_47,fp:fp_39,r2:r2_35
+		uses: ap:ap_47,fp:fp_39,Mem:Mem46,r2:r2_35
 		defs: fp:fp_56,r2:r2_52,r3:r3_55,sp:sp_51
 	Mem59[sp_51 - 4<32>:word32] = 0<32>
 	Mem61[sp_51 - 8<32>:word32] = 1<32>
@@ -5075,7 +5075,7 @@ l00017772:
 	word32 ap_67 = Mem66[r2_52 + 0xC839<32>:word32]
 	word32 fp_76
 	call ap_67 + 2<i32> (retsize: 4;)
-		uses: ap:ap_67,fp:fp_56,r2:r2_52
+		uses: ap:ap_67,fp:fp_56,Mem:Mem66,r2:r2_52
 		defs: fp:fp_76
 	word32 ap_80 = Mem66[fp_76 + 8<32>:word32]
 	fpOut = Mem66[fp_76 + 0xC<32>:word32]
@@ -5218,7 +5218,7 @@ l00017F00:
 	word32 r10_237
 	word32 r11_238
 	call Mem221[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_216,fp:fp_226,pc:pc_342,r10:r10_237,r11:r11_238,r2:r2_218,r3:r3_225,r5:r5_227,r6:r6_235
+		uses: ap:ap_216,fp:fp_226,Mem:Mem221,pc:pc_342,r10:r10_237,r11:r11_238,r2:r2_218,r3:r3_225,r5:r5_227,r6:r6_235
 		defs: fp:fp_231,pc:pc_343,r10:r10_237,r11:r11_238,r2:r2_232,r3:r3_229,r5:r5_233,r6:r6_235,sp:sp_228
 	ap_210 = r2_232
 	branch r2_232 != 0<32> l00017F00
@@ -5361,7 +5361,7 @@ l00018748:
 	word32 r2_31
 	word32 fp_33
 	call Mem22[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_17,fp:fp_33,r0:r0_32,r2:r2_19,r3:r3_26,r4:r4_29
+		uses: ap:ap_17,fp:fp_33,Mem:Mem22,r0:r0_32,r2:r2_19,r3:r3_26,r4:r4_29
 		defs: fp:fp_33,r0:r0_32,r2:r2_31,r3:r3_28,r4:r4_29,sp:sp_27
 	ap_11 = r2_31
 	branch r2_31 != 0<32> l00018748
@@ -5378,7 +5378,7 @@ l0001876C:
 	word32 r2_69
 	word32 fp_71
 	call Mem59[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_54,fp:fp_71,r0:r0_64,r2:r2_56,r3:r3_63,r4:r4_67
+		uses: ap:ap_54,fp:fp_71,Mem:Mem59,r0:r0_64,r2:r2_56,r3:r3_63,r4:r4_67
 		defs: fp:fp_71,r0:r0_70,r2:r2_69,r3:r3_66,r4:r4_67,sp:sp_65
 	ap_43 = r2_69
 	branch r2_69 != 0<32> l0001876C
@@ -5413,7 +5413,7 @@ l000187B7:
 	word32 ap_41
 	word32 r5_47
 	call Mem33[0x0001927C<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap,fp:fp,Stack +0004:fp + -72<i32>,Stack +0008:0<32>,Stack +000C:0x44<u32>,Stack +002C:r3_21
+		uses: ap:ap,fp:fp,Mem:Mem33,Stack +0004:fp + -72<i32>,Stack +0008:0<32>,Stack +000C:0x44<u32>,Stack +002C:r3_21
 		defs: ap:ap_41,fp:fp_39,r5:r5_47,sp:sp_38
 	word32 r2_53 = Mem33[ap_41 + 4<i32>:word32]
 	word32 r11_54 = Mem33[ap_41 + 8<i32>:word32]
@@ -5494,7 +5494,7 @@ l00018892:
 	word32 r5_245
 	word32 r3_240
 	call Mem227[0x0001927C<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_41,fp:fp_39
+		uses: ap:ap_41,fp:fp_39,Mem:Mem227
 		defs: ap:ap_239,fp:fp_237,r3:r3_240,r5:r5_245,r9:r9_244,sp:sp_236
 	word32 r2_251 = Mem227[ap_239 + 4<i32>:word32]
 	word32 r11_252 = 0<32>
@@ -5581,7 +5581,7 @@ l000189D7:
 	word32 r10_453
 	word32 r3_450
 	call Mem436[sp_434 + 28<i32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_444,fp:fp_382,r2:r2_433
+		uses: ap:ap_444,fp:fp_382,Mem:Mem436,r2:r2_433
 		defs: ap:ap_449,fp:fp_447,r0:r0_452,r10:r10_453,r11:r11_451,r2:r2_448,r3:r3_450,r5:r5_455,r6:r6_457,r8:r8_456,r9:r9_454,sp:sp_446
 	branch r0_452 != 0<32> l00018A21
 l00018A21:
@@ -5612,7 +5612,7 @@ l00018A08:
 	word32 r3_525 = Mem524[r2_523 + 2<i32>:word32]
 	Mem528[sp_236 - 4<32>:word32] = r2_523
 	call Mem528[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_533,fp:fp_532,r2:r2_523,r3:r3_525
+		uses: ap:ap_533,fp:fp_532,Mem:Mem528,r2:r2_523,r3:r3_525
 		defs: ap:ap_537,fp:fp_535,r3:r3_538,r5:r5_543,sp:sp_534
 	r2_514 = r3_450
 	branch r3_450 != 0<32> l00018A08
@@ -5725,7 +5725,7 @@ l00018C00:
 	word32 r3_25
 	word32 fp_27
 	call Mem17[0x000192B0<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_21,fp:fp_27,r2:r2_12,r3:r3_14
+		uses: ap:ap_21,fp:fp_27,Mem:Mem17,r2:r2_12,r3:r3_14
 		defs: ap:ap_23,fp:fp_27,r3:r3_25,sp:sp_22
 	r2_11 = r3_25
 	branch r3_25 != 0<32> l00018C00
@@ -5838,7 +5838,7 @@ l00018DAC:
 	word32 r9_203
 	word32 r1_205
 	call r6_1060 + 2<i32> (retsize: 4;)
-		uses: ap:ap_127,fp:fp_198,r0:r0_197,r1:r1_209,r11:r11_204,r3:r3_196,r5:r5_199,r6:r6_190,r7:r7_202,r8:r8_201,r9:r9_203
+		uses: ap:ap_127,fp:fp_198,Mem:Mem185,r0:r0_197,r1:r1_209,r11:r11_204,r3:r3_196,r5:r5_199,r6:r6_190,r7:r7_202,r8:r8_201,r9:r9_203
 		defs: ap:ap_193,fp:fp_198,r0:r0_197,r1:r1_205,r10:r10_192,r11:r11_204,r3:r3_196,r4:r4_195,r5:r5_199,r6:r6_200,r7:r7_202,r8:r8_201,r9:r9_203,sp:sp_191
 	r1_209 = SEQ(SLICE(r1_205, word24, 8), CONVERT(r0_197, word32, int8))
 	r1_177 = r1_209
@@ -5887,7 +5887,7 @@ l00018E05:
 	word32 r9_306
 	word32 r1_308
 	call r6_1060 + 2<i32> (retsize: 4;)
-		uses: ap:ap_293,fp:fp_301,r0:r0_300,r1:r1_308,r11:r11_307,r3:r3_299,r5:r5_302,r6:r6_292,r7:r7_305,r8:r8_304,r9:r9_306
+		uses: ap:ap_293,fp:fp_301,Mem:Mem289,r0:r0_300,r1:r1_308,r11:r11_307,r3:r3_299,r5:r5_302,r6:r6_292,r7:r7_305,r8:r8_304,r9:r9_306
 		defs: ap:ap_296,fp:fp_301,r0:r0_300,r1:r1_308,r10:r10_295,r11:r11_307,r2:r2_297,r3:r3_299,r4:r4_298,r5:r5_302,r6:r6_303,r7:r7_305,r8:r8_304,r9:r9_306,sp:sp_294
 	r2_253 = SEQ(SLICE(r2_297, word24, 8), CONVERT(r0_300, word32, int8))
 	r5_100 = r5_302
@@ -6004,7 +6004,7 @@ l00018EAB:
 	word32 r11_609
 	word32 r1_610
 	call Mem591[0x00019298<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap,fp:fp,r0:r0_602,r1:r1_610,r11:r11_609,r3:r3,r5:r5_575,r6:r6,r7:r7_607,r8:r8_606,r9:r9_608,Stack +0004:CONVERT(SLICE(r5_575, int8, 0), int8, int32)
+		uses: ap:ap,fp:fp,Mem:Mem591,r0:r0_602,r1:r1_610,r11:r11_609,r3:r3,r5:r5_575,r6:r6,r7:r7_607,r8:r8_606,r9:r9_608,Stack +0004:CONVERT(SLICE(r5_575, int8, 0), int8, int32)
 		defs: ap:ap_598,fp:fp_603,r0:r0_602,r1:r1_610,r10:r10_597,r11:r11_609,r3:r3_601,r4:r4_600,r5:r5_604,r6:r6_605,r7:r7_607,r8:r8_606,r9:r9_608,sp:sp_596
 	r3 = SEQ(SLICE(r3_601, word24, 8), CONVERT(r0_602, word32, int8))
 l00018EBF:
@@ -6029,7 +6029,7 @@ l00018EE0:
 	word32 r11_680
 	word32 r1_681
 	call Mem659[0x00019298<p32>:word32] + 2<i32> (retsize: 4;)
-		uses: ap:ap_625,fp:fp_664,r0:r0_673,r1:r1_681,r11:r11_680,r3:r3_650,r5:r5_666,r6:r6_662,r7:r7_678,r8:r8_677,r9:r9_679
+		uses: ap:ap_625,fp:fp_664,Mem:Mem659,r0:r0_673,r1:r1_681,r11:r11_680,r3:r3_650,r5:r5_666,r6:r6_662,r7:r7_678,r8:r8_677,r9:r9_679
 		defs: ap:ap_669,fp:fp_674,r0:r0_673,r1:r1_681,r11:r11_680,r3:r3_672,r4:r4_671,r5:r5_675,r6:r6_676,r7:r7_678,r8:r8_677,r9:r9_679,sp:sp_667
 	r3 = SEQ(SLICE(r3_672, word24, 8), CONVERT(r0_673, word32, int8))
 l00018EF3:

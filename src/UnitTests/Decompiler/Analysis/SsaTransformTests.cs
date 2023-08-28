@@ -1075,28 +1075,32 @@ proc1_exit:
 @"r1:r1
     def:  def r1
     uses: branch r1 true
-          call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
+          call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
 r2_2: orig: r2
     def:  r2_2 = 0x10<32>
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
-          call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
-r1_6: orig: r1
-    def:  call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
-    uses: use r1_6
-r2_7: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
-    uses: use r2_7
-r3_8: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r1:r1,r3:r3	defs: r1:r1_6,r2:r2_7,r3:r3_8
-    uses: use r3_8
+    uses: call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
+          call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
+Mem0:Mem
+    def:  def Mem0
+    uses: call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
+r1_8: orig: r1
+    def:  call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
+    uses: use r1_8
+r2_9: orig: r2
+    def:  call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
+    uses: use r2_9
+r3_10: orig: r3
+    def:  call r3 (retsize: 4;)	uses: Mem:Mem0,r1:r1,r3:r3	defs: r1:r1_8,r2:r2_9,r3:r3_10
+    uses: use r3_10
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	def r1
 	def r3
+	def Mem0
 	// succ:  l1
 l1:
 	branch r1 true
@@ -1106,14 +1110,14 @@ l2:
 	// succ:  true
 true:
 	call r3 (retsize: 4;)
-		uses: r1:r1,r3:r3
-		defs: r1:r1_6,r2:r2_7,r3:r3_8
+		uses: Mem:Mem0,r1:r1,r3:r3
+		defs: r1:r1_8,r2:r2_9,r3:r3_10
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	use r1_6
-	use r2_7
-	use r3_8
+	use r1_8
+	use r2_9
+	use r3_10
 ======
 ";
             #endregion
@@ -1140,7 +1144,7 @@ proc1_exit:
     def:  def fp
     uses: r63_2 = fp
           r63_7 = fp - 4<32>
-          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+          call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: r63_19 = PHI((r63_13, m0Induction), (r63_2, m1Base))
@@ -1157,18 +1161,19 @@ r2_5: orig: r2
 r2_6: orig: r2
     def:  r2_6 = Mem0[r2_4 + 4<32>:word32]
     uses: dwLoc04_15 = r2_6
-          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+          call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_7: orig: r63
     def:  r63_7 = fp - 4<32>
 Mem8: orig: Mem0
+    uses: call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r63_9: orig: r63
-    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
     uses: r63_13 = r63_9 + 4<32>
 r3_10: orig: r3
-    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
     uses: r3_17 = PHI((r3_10, m0Induction), (r3, m1Base))
 r2_11: orig: r2
-    def:  call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    def:  call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
     uses: r2_12 = r2_11 + 1<32>
 r2_12: orig: r2
     def:  r2_12 = r2_11 + 1<32>
@@ -1179,10 +1184,10 @@ r63_13: orig: r63
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: r2_4 = dwArg04
-          call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+          call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 dwLoc04_15: orig: dwLoc04
     def:  dwLoc04_15 = r2_6
-    uses: call proc1 (retsize: 0;)	uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
+    uses: call proc1 (retsize: 0;)	uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04	defs: r2:r2_11,r3:r3_10,r63:r63_9
 r2_16: orig: r2
     def:  r2_16 = PHI((r2_12, m0Induction), (r2_5, m1Base))
     uses: use r2_16
@@ -1214,7 +1219,7 @@ m0Induction:
 	r63_7 = fp - 4<32>
 	dwLoc04_15 = r2_6
 	call proc1 (retsize: 0;)
-		uses: r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04
+		uses: Mem:Mem8,r2:r2_6,r63:fp - 4<32>,Stack +0000:dwLoc04_15,Stack +0008:dwArg04
 		defs: r2:r2_11,r3:r3_10,r63:r63_9
 	r2_12 = r2_11 + 1<32>
 	r63_13 = r63_9 + 4<32>
@@ -4402,28 +4407,32 @@ proc1_exit:
             #region Expected
 @"r2_1: orig: r2
     def:  r2_1 = 0x123400<32>
-    uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+    uses: call r1 (retsize: 0;)	uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_5
 r4_2: orig: r4
     def:  r4_2 = 0xBCDE00<32>
-    uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+    uses: call r1 (retsize: 0;)	uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_5
 r1:r1
     def:  def r1
-    uses: call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
-          call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
-r2_4: orig: r2
-    def:  call r1 (retsize: 0;)	uses: r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_4
+    uses: call r1 (retsize: 0;)	uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_5
+          call r1 (retsize: 0;)	uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_5
+Mem0:Mem
+    def:  def Mem0
+    uses: call r1 (retsize: 0;)	uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_5
+r2_5: orig: r2
+    def:  call r1 (retsize: 0;)	uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2	defs: r2:r2_5
 // proc1
 // Return size: 0
 define proc1
 proc1_entry:
 	def r1
+	def Mem0
 	// succ:  l1
 l1:
 	r2_1 = 0x123400<32>
 	r4_2 = 0xBCDE00<32>
 	call r1 (retsize: 0;)
-		uses: r1:r1,r2:r2_1,r4:r4_2
-		defs: r2:r2_4
+		uses: Mem:Mem0,r1:r1,r2:r2_1,r4:r4_2
+		defs: r2:r2_5
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -4886,6 +4895,41 @@ l1:
 test_exit:
 ";
             #endregion
+
+            When_RunSsaTransform();
+
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void SsaCaptureMemBeforeCallsWithNoSignature()
+        {
+            var sExp =
+            #region Expected
+@"SsaCaptureMemBeforeCallsWithNoSignature_entry:
+	def fp
+l1:
+	r63_2 = fp
+	r63_3 = r63_2 - 4<32>
+	Mem4[r63_3:word32] = 0x123400<32>
+	call Mem4[r63_3 + 0xC<32>:word32] (retsize: 4;)
+		uses: Mem:Mem4,r63:r63_3
+		defs: r63:r63_5
+	return
+SsaCaptureMemBeforeCallsWithNoSignature_exit:
+";
+            #endregion
+
+            var proc = Given_Procedure(nameof(SsaCaptureMemBeforeCallsWithNoSignature), m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var sp = m.Register(m.Architecture.StackRegister);
+                m.Assign(sp, fp);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.MStore(sp, m.Word32(0x00123400));
+                m.Call(m.Mem32(m.IAdd(sp, 12)), 4);
+                m.Return();
+            });
 
             When_RunSsaTransform();
 

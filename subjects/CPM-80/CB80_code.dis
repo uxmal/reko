@@ -15,7 +15,7 @@ fn0387_entry:
 l0387:
 	word16 hl_6 = Mem5[0x1648<16>:word16]
 	call hl_6 (retsize: 0;)
-		uses: hl:hl_6,Stack +0000:0x38F<16>
+		uses: hl:hl_6,Mem:Mem5,Stack +0000:0x38F<16>
 	return
 fn0387_exit:
 

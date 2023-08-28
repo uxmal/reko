@@ -919,7 +919,7 @@ l0D3C:
 	Mem24[0x182C<16>:word16] = 0xF0A0<16>
 	Mem26[0x182E<16>:word16] = 0<16>
 	call ptrArg00 (retsize: 0;)
-		uses: r0:r0,Stack +0004:r0,Stack +000A:ptrArg00
+		uses: Mem:Mem26,r0:r0,Stack +0004:r0,Stack +000A:ptrArg00
 	return 0x1830<16>
 fn0D3C_exit:
 
@@ -1831,7 +1831,7 @@ l011A:
 l0122:
 	fn0128()
 l011E:
-	Mem89[v24_78:word16] = Mem77[r0_79:word16]
+	Mem90[v24_78:word16] = Mem77[r0_79:word16]
 	r0_73 = r0_79 + 2<16>
 
 

@@ -76,9 +76,9 @@ fn004F_entry:
 l004F:
 	__out(3<8>, 0x34<8>)
 	fn0BED()
-	__out(0xB<8>, a_5)
+	__out(0xB<8>, a_6)
 	fn0BEE()
-	__out(0x63<8>, a_7)
+	__out(0x63<8>, a_8)
 	return
 fn004F_exit:
 

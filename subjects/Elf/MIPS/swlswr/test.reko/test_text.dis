@@ -18,7 +18,7 @@ l00000610:
 	Mem22[sp_17 + 0x14<32>:word32] = r2
 	Mem23[sp_17 + 0x18<32>:word32] = sp_17
 	call Mem23[0x00010ADC<p32>:word32] (retsize: 0;)
-		uses: r2:r2,r4:r4_12,r5:dwArg00,r6:fp + 4<i32>,r7:r7_18,r8:r8_19
+		uses: Mem:Mem23,r2:r2,r4:r4_12,r5:dwArg00,r6:fp + 4<i32>,r7:r7_18,r8:r8_19
 l00000664:
 
 
@@ -43,6 +43,7 @@ l000006A0:
 	return
 l00000698:
 	call r25_12 (retsize: 0;)
+		uses: Mem:Mem0
 	return
 deregister_tm_clones_exit:
 
@@ -69,6 +70,7 @@ l000006EC:
 	return
 l000006E4:
 	call r25_17 (retsize: 0;)
+		uses: Mem:Mem0
 	return
 register_tm_clones_exit:
 
@@ -104,7 +106,7 @@ l00000774:
 	word32 r2_52 = (r2_47 << 2<8>) + 0x00010A68<p32>
 	word32 r4_60
 	call Mem50[r2_52:word32] (retsize: 0;)
-		uses: r2:r2_52,r3:r2_47 << 2<8>,r4:r4_60
+		uses: Mem:Mem50,r2:r2_52,r3:r2_47 << 2<8>,r4:r4_60
 		defs: r4:r4_60
 	r2_40 = Mem50[0x00010AF4<p32>:word32]
 	branch CONVERT(r2_40 <u r16_42, bool, word32) != 0<32> l0000079C_ds_t
@@ -180,7 +182,7 @@ l0000091C_ds_f:
 	word32 r17_40 = 0<32>
 l00000920:
 	call Mem30[r16_35:word32] (retsize: 0;)
-		uses: r4:r4,r5:r5,r6:r6
+		uses: Mem:Mem30,r4:r4,r5:r5,r6:r6
 	r17_40 = r17_40 + 1<i32>
 	branch r18_37 >> 2<8> != r17_40 l0000093C_ds_t
 l0000093C_ds_t:
@@ -221,6 +223,7 @@ l000009A4:
 	word32 r16_21 = 0x00010A60<p32>
 l000009A8:
 	call r25_18 (retsize: 0;)
+		uses: Mem:Mem17
 	r16_21 = r16_21 + -4<i32>
 	r25_18 = Mem17[r16_21:word32]
 	branch r25_18 != -1<i32> l000009A8

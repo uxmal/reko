@@ -9,7 +9,7 @@ l10000000:
 	eax_5 = Mem0[0x10003420<p32>:word32]
 	dwLoc04_16 = eax_5
 	call fn10000017 (retsize: 4;)
-		uses: eax:eax_5,esp:fp - 4<i32>,Stack +0004:dwLoc04_16,Top:0<i8>
+		uses: eax:eax_5,esp:fp - 4<i32>,Mem:Mem7,Stack +0004:dwLoc04_16,Top:0<i8>
 		defs: eax:eax_9
 	ax_14 = SLICE(eax_9, word16, 0) (alias)
 	Mem15[0x10003428<p32>:word16] = ax_14

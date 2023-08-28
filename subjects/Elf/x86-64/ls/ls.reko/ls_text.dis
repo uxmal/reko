@@ -1127,7 +1127,7 @@ l00000000004048D7:
 	branch true l00000000004048D5
 l00000000004048E1:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x61A5F8<u64>
+		uses: Mem:Mem8,rdi:0x61A5F8<u64>
 	return
 l00000000004048D5:
 	return
@@ -4260,7 +4260,7 @@ l000000000040A165:
 	word64 r10_96
 	word64 r11_97
 	call r9 (retsize: 8;)
-		uses: r10:r10_96,r11:r11_97,r8:r8_77,r9:r9_78,rcx:fn000000000040A000(r8, rcx, rdx, fs, out rdx_82, out rsi_83, out rdi_81, out r8_77, out r9_78),rdi:rdi_81,rdx:rdx_82,rsi:rsi_83
+		uses: Mem:Mem33,r10:r10_96,r11:r11_97,r8:r8_77,r9:r9_78,rcx:fn000000000040A000(r8, rcx, rdx, fs, out rdx_82, out rsi_83, out rdi_81, out r8_77, out r9_78),rdi:rdi_81,rdx:rdx_82,rsi:rsi_83
 		defs: r10:r10_96,r11:r11_97
 	rax_139 = 0xFFFFFFFFFFFFFFFF<64>
 l000000000040A156:
@@ -4704,7 +4704,7 @@ fn000000000040AC80_entry:
 l000000000040AC80:
 	word64 rax_14
 	call Mem6[rdi + 48<i64>:word64] (retsize: 8;)
-		uses: rdi:rsi,rsi:Mem6[rdi + 16<i64>:word64]
+		uses: Mem:Mem6,rdi:rsi,rsi:Mem6[rdi + 16<i64>:word64]
 		defs: rax:rax_14
 	branch rax_14 >=u Mem6[rdi + 16<i64>:word64] l000000000040AC9D
 l000000000040AC9D:
@@ -4744,7 +4744,7 @@ l000000000040ACDC:
 	word64 rdx_45
 	word64 rcx_286
 	call Mem35[rdi + 56<i64>:word64] (retsize: 8;)
-		uses: ecx:ecx,r10:r10_51,r9:r9_50,rcx_32_32:rcx_32_32_250,rdi:rsi,rdx:rdx,rsi:rsi_36
+		uses: ecx:ecx,Mem:Mem35,r10:r10_51,r9:r9_50,rcx_32_32:rcx_32_32_250,rdi:rsi,rdx:rdx,rsi:rsi_36
 		defs: r10:r10_51,r9:r9_50,rax:rax_49,rcx:rcx_46,rdx:rdx_45
 	word32 rcx_32_32_250 = SLICE(rcx_286, word32, 32)
 	branch SLICE(rax_49, byte, 0) == 0<8> l000000000040AD46
@@ -4761,7 +4761,7 @@ l000000000040AD38:
 	word64 r9_82
 	word64 r10_83
 	call Mem35[rdi + 56<i64>:word64] (retsize: 8;)
-		uses: ecx:ecx_74,r10:r10_83,r9:r9_82,rcx_32_32:rcx_32_32_251,rdi:rsi,rdx:rdx_72,rsi:rsi_65
+		uses: ecx:ecx_74,Mem:Mem35,r10:r10_83,r9:r9_82,rcx_32_32:rcx_32_32_251,rdi:rsi,rdx:rdx_72,rsi:rsi_65
 		defs: r10:r10_83,r9:r9_82,rax:rax_81,rcx:rcx_78,rdx:rdx_77
 	word32 rcx_32_32_251 = SLICE(rcx_286, word32, 32)
 	branch SLICE(rax_81, byte, 0) != 0<8> l000000000040AD60
@@ -5049,7 +5049,7 @@ l000000000040B6D0:
 l000000000040B6E3:
 	word64 rax_38
 	call Mem14[rdi + 64<i64>:word64] (retsize: 8;)
-		uses: rax:rax_38,rdi:rdi_33
+		uses: Mem:Mem14,rax:rax_38,rdi:rdi_33
 		defs: rax:rax_38
 	rbx_25 = Mem14[rbx_25 + 8<i64>:word64]
 	branch rbx_25 != 0<64> l000000000040B6E0
@@ -6555,32 +6555,32 @@ l000000000040D4C5:
 	word64 r13_62 = rdi + (rsi >>u 3<64>) * 8<64>
 	word64 rdx_438
 	fn000000000040D450(rcx, qwLoc48, rdi, qwLoc58 - (rsi >>u 3<64>), r13_62, out rdx_438)
-	word64 rdx_105
-	rcx = fn000000000040D450(rcx, qwLoc48, rdi, rsi >>u 3<64>, rdi, out rdx_105)
-	word64 r14_114 = rsi >>u 3<64>
+	word64 rdx_106
+	rcx = fn000000000040D450(rcx, qwLoc48, rdi, rsi >>u 3<64>, rdi, out rdx_106)
+	word64 r14_115 = rsi >>u 3<64>
 	word64 r15_216 = qwLoc48 + 8<i64>
 	word64 r12_214 = Mem66[rdi:word64]
 	word64 r13_119 = Mem66[r13_62:word64]
 	qwLoc40_305 = 0<64>
 l000000000040D53B:
-	word64 rax_106
+	word64 rax_107
 	call rcx (retsize: 8;)
-		uses: rax:rax_106,rcx:rcx_97,rdi:r12_92,rdx:rdx_99,rsi:r13_90,Stack +0000:qwLoc58,Stack +0010:qwLoc48,Stack +0020:qwLoc38
-		defs: rax:rax_106,rcx:rcx_102,rdx:rdx_105
-	branch SLICE(rax_106, word32, 0) > 0<32> l000000000040D520
+		uses: Mem:Mem102,rax:rax_107,rcx:rcx_97,rdi:r12_92,rdx:rdx_99,rsi:r13_90,Stack +0000:qwLoc58,Stack +0010:qwLoc48,Stack +0020:qwLoc38
+		defs: rax:rax_107,rcx:rcx_103,rdx:rdx_106
+	branch SLICE(rax_107, word32, 0) > 0<32> l000000000040D520
 l000000000040D520:
 	Mem117[r15_216 - 8<i64>:word64] = r13_119
-	r14_114 = r14_114 + 1<64>
-	branch qwLoc48 == r14_114 l000000000040D634
+	r14_115 = r14_115 + 1<64>
+	branch qwLoc48 == r14_115 l000000000040D634
 l000000000040D533:
-	r13_119 = Mem117[rdi + r14_114 * 8<64>:word64]
+	r13_119 = Mem117[rdi + r14_115 * 8<64>:word64]
 l000000000040D547:
 	word64 v25_120 = qwLoc40_305 + 1<64>
 	Mem122[r15_216 - 8<i64>:word64] = r12_214
 	qwLoc40_305 = v25_120
 	branch rbx == v25_120 l000000000040D625
 l000000000040D625:
-	qwLoc40_305 = r14_114
+	qwLoc40_305 = r14_115
 	qwLoc30_301 = qwLoc48
 l000000000040D634:
 	word64 rdx_135 = qwLoc30_301 - qwLoc40_305
@@ -6593,11 +6593,11 @@ l000000000040D57B:
 	word64 qwLoc58_372 = 0<64>
 	word64 r13_150 = Mem149[qwLoc40_305:word64]
 l000000000040D5B7:
-	word64 rax_167
+	word64 rax_168
 	call rcx (retsize: 8;)
-		uses: rax:rax_167,rcx:rcx_158,rdi:r12_153,rdx:rdx_160,rsi:r13_151,Stack +0018:qwLoc58_374,Stack +0028:qwLoc48,Stack +0038:qwLoc38
-		defs: rax:rax_167,rcx:rcx_163,rdx:rdx_166
-	branch SLICE(rax_167, word32, 0) > 0<32> l000000000040D5A0
+		uses: Mem:Mem163,rax:rax_168,rcx:rcx_158,rdi:r12_153,rdx:rdx_160,rsi:r13_151,Stack +0018:qwLoc58_374,Stack +0028:qwLoc48,Stack +0038:qwLoc38
+		defs: rax:rax_168,rcx:rcx_164,rdx:rdx_167
+	branch SLICE(rax_168, word32, 0) > 0<32> l000000000040D5A0
 l000000000040D5A0:
 	Mem178[rdi - 8<i64> + r15_148 * 8<64>:word64] = r13_150
 	r14_146 = r14_146 + 1<64>
@@ -6630,7 +6630,7 @@ l000000000040D660:
 	word64 r12_220 = Mem31[rdi:word64]
 	word64 rax_227
 	call rcx (retsize: 8;)
-		uses: rax:rax_227,rcx:rcx,rdi:r12_220,rdx:rdx,rsi:r13_219,Stack +0018:qwLoc58,Stack +0028:qwLoc48,Stack +0038:qwLoc38
+		uses: Mem:Mem31,rax:rax_227,rcx:rcx,rdi:r12_220,rdx:rdx,rsi:r13_219,Stack +0018:qwLoc58,Stack +0028:qwLoc48,Stack +0038:qwLoc38
 		defs: rax:rax_227,rcx:rcx_223,rdx:rdx_226
 	branch SLICE(rax_227, word32, 0) <= 0<32> l000000000040D479
 l000000000040D677:
@@ -9126,7 +9126,7 @@ l00000000004107A1:
 	return
 l00000000004106BE:
 	call Mem25[0x0000000000416B48<p64>:word64] (retsize: 0;)
-		uses: r8:0x7DD<u64>,r9:r9_157,rcx:rax_69,rdi:rax_88,rdx:5<u64>,rsi:rdi
+		uses: Mem:Mem25,r8:0x7DD<u64>,r9:r9_157,rcx:rax_69,rdi:rax_88,rdx:5<u64>,rsi:rdi
 	return
 fn0000000000410630_exit:
 

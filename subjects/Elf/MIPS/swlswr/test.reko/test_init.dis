@@ -13,10 +13,10 @@ l00000588:
 l000005B8:
 	word32 r25_16 = Mem10[0x00010AB4<p32>:word32]
 	call r25_16 + 2004<i32> (retsize: 0;)
-		uses: r25:r25_16 + 2004<i32>
+		uses: Mem:Mem10,r25:r25_16 + 2004<i32>
 	word32 r25_24 = Mem10[0x00010AB4<p32>:word32]
 	call r25_24 + 2416<i32> (retsize: 0;)
-		uses: r25:r25_24 + 2416<i32>
+		uses: Mem:Mem10,r25:r25_24 + 2416<i32>
 	return
 _init_exit:
 l000005AC:

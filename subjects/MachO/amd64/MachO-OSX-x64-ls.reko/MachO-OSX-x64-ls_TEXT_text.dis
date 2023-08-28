@@ -369,7 +369,7 @@ l00000001000022E2:
 	word64 r8_871
 	word64 r9_872
 	call Mem729[0x00000001000065D8<p64>:word64] (retsize: 8;)
-		uses: r8:r8_871,r9:r9_872,rcx:rcx_869,rdi:fp - 176<i64>,rdx:rdx_870,rsi:rsi_834,Stack +00F6:bLoc6A,Stack +0103:bLoc5D,Stack +0110:bLoc50
+		uses: Mem:Mem729,r8:r8_871,r9:r9_872,rcx:rcx_869,rdi:fp - 176<i64>,rdx:rdx_870,rsi:rsi_834,Stack +00F6:bLoc6A,Stack +0103:bLoc5D,Stack +0110:bLoc50
 		defs: r8:r8_871,r9:r9_872,rcx:rcx_869,rdx:rdx_870
 	Mem874[0x00000001000065E0<p64>:byte] = 1<8>
 	branch Mem874[0x0000000100006578<p64>:word32] == 0<32> l0000000100002322

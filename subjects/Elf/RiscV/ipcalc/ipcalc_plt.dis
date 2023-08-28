@@ -371,7 +371,7 @@ fputc_entry:
 l0000000000015100:
 	word64 t3_5 = Mem0[0x000000000001A100<p64>:word64]
 	call t3_5 (retsize: 0;)
-		uses: t1:0x000000000001510C<p64>,t3:t3_5
+		uses: Mem:Mem0,t1:0x000000000001510C<p64>,t3:t3_5
 	return
 fputc_exit:
 

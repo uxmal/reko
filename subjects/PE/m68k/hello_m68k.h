@@ -652,7 +652,7 @@ Eq_1738: (struct "Eq_1738" (0 word32 dw0000) (8 word32 dw0008) (10 word32 dw0010
 	T_1738 (in fn000023B4(a5 + -744<i32>, a5 + -740<i32>) @ 000022D2 : word32)
 	T_1750 (in a6_40 @ 000022E0 : (ptr32 Eq_1738))
 	T_1758 (in fn000023B4(a7_24->t0000.u0, a7_24->t0004.u0) @ 000022E0 : word32)
-	T_1830 (in a6_105 @ 0000238E : (ptr32 Eq_1738))
+	T_1830 (in a6_106 @ 0000238E : (ptr32 Eq_1738))
 	T_1838 (in fn000023B4(a7_61->tFFFFFFFC.u0, a7_61->t0000.u0) @ 0000238E : word32)
 	T_1869 (in fn000023B4(a7_42->tFFFFFFFC.u0, a7_42->t0000.u0) @ 00002380 : word32)
 	T_1880 (in fn000023B4(a5->tFFFFFD3C.u0, a5->tFFFFFD38.u0) @ 00002372 : word32)
@@ -8440,7 +8440,7 @@ T_1829: (in Mem65[a7_61 + -4<i32>:word32] @ 0000238A : word32)
   Class: Eq_668
   DataType: Eq_668
   OrigDataType: word32
-T_1830: (in a6_105 @ 0000238E : (ptr32 Eq_1738))
+T_1830: (in a6_106 @ 0000238E : (ptr32 Eq_1738))
   Class: Eq_1738
   DataType: (ptr32 Eq_1738)
   OrigDataType: (ptr32 (struct (0 T_1886 t0000) (8 T_1896 t0008) (10 T_1841 t0010)))
@@ -8480,11 +8480,11 @@ T_1839: (in 16<i32> @ 00002398 : int32)
   Class: Eq_1839
   DataType: int32
   OrigDataType: int32
-T_1840: (in a6_105 + 16<i32> @ 00002398 : word32)
+T_1840: (in a6_106 + 16<i32> @ 00002398 : word32)
   Class: Eq_1840
   DataType: word32
   OrigDataType: word32
-T_1841: (in Mem65[a6_105 + 16<i32>:word32] @ 00002398 : word32)
+T_1841: (in Mem65[a6_106 + 16<i32>:word32] @ 00002398 : word32)
   Class: Eq_1841
   DataType: word32
   OrigDataType: word32
@@ -8492,7 +8492,7 @@ T_1842: (in 0<32> @ 00002398 : word32)
   Class: Eq_1841
   DataType: word32
   OrigDataType: word32
-T_1843: (in a6_105->dw0010 != 0<32> @ 00002398 : bool)
+T_1843: (in a6_106->dw0010 != 0<32> @ 00002398 : bool)
   Class: Eq_1843
   DataType: bool
   OrigDataType: bool
@@ -8660,11 +8660,11 @@ T_1884: (in 0<32> @ 000023B0 : word32)
   Class: Eq_1884
   DataType: word32
   OrigDataType: word32
-T_1885: (in a6_105 + 0<32> @ 000023B0 : word32)
+T_1885: (in a6_106 + 0<32> @ 000023B0 : word32)
   Class: Eq_1885
   DataType: ptr32
   OrigDataType: ptr32
-T_1886: (in Mem107[a6_105 + 0<32>:word32] @ 000023B0 : word32)
+T_1886: (in Mem108[a6_106 + 0<32>:word32] @ 000023B0 : word32)
   Class: Eq_1807
   DataType: word32
   OrigDataType: word32
@@ -8700,11 +8700,11 @@ T_1894: (in 8<i32> @ 000023A4 : int32)
   Class: Eq_1894
   DataType: int32
   OrigDataType: int32
-T_1895: (in a6_105 + 8<i32> @ 000023A4 : word32)
+T_1895: (in a6_106 + 8<i32> @ 000023A4 : word32)
   Class: Eq_1895
   DataType: ptr32
   OrigDataType: ptr32
-T_1896: (in Mem65[a6_105 + 8<i32>:word32] @ 000023A4 : word32)
+T_1896: (in Mem65[a6_106 + 8<i32>:word32] @ 000023A4 : word32)
   Class: Eq_1896
   DataType: word32
   OrigDataType: word32

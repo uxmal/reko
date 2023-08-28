@@ -82,7 +82,7 @@ l002001A4:
 	fn002004F2(a_166)
 	word32 xhl_188
 	call Mem156[0x7000<32>:word32] (retsize: 4;)
-		uses: xwa:0x7000<32>
+		uses: Mem:Mem156,xwa:0x7000<32>
 		defs: xhl:xhl_188
 	word16 xhl_16_16_196 = SLICE(xhl_188, word16, 16)
 	fn00200532(SEQ(xhl_16_16_196, 0xD06<16>))
@@ -114,7 +114,7 @@ l00200256:
 	fn002004F2(a_294)
 	word32 xhl_313
 	call Mem284[0x7000<32>:word32] (retsize: 4;)
-		uses: xwa:0x7000<32>
+		uses: Mem:Mem284,xwa:0x7000<32>
 		defs: xhl:xhl_313
 	word16 xhl_16_16_320 = SLICE(xhl_313, word16, 16)
 	fn00200532(SEQ(xhl_16_16_320, 0xD0A<16>))
@@ -146,7 +146,7 @@ l0020030A:
 	fn002004F2(a_418)
 	word32 xhl_437
 	call Mem408[0x7000<32>:word32] (retsize: 4;)
-		uses: xwa:0x7000<32>
+		uses: Mem:Mem408,xwa:0x7000<32>
 		defs: xhl:xhl_437
 	word16 xhl_16_16_444 = SLICE(xhl_437, word16, 16)
 	fn00200532(SEQ(xhl_16_16_444, 0xD0E<16>))
@@ -298,7 +298,7 @@ l002005F5:
 	word32 xwa_16 = SEQ(xwa_16_16, w * 4<8>, a)
 	word32 v10_17 = Mem8[xwa_16:word32]
 	call Mem8[v10_17:word32] (retsize: 4;)
-		uses: sr:sr,Stack +0004:xix,xix:v10_17,xwa:xwa_16
+		uses: Mem:Mem8,sr:sr,Stack +0004:xix,xix:v10_17,xwa:xwa_16
 	return
 fn002005F5_exit:
 

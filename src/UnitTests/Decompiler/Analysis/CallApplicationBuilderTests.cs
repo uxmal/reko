@@ -123,8 +123,9 @@ namespace Reko.UnitTests.Decompiler.Analysis
             var callee = new ProcedureConstant(
                 PrimitiveType.Ptr32,
                 new ExternalProcedure("callee", sigCallee));
+            var mem = m.Ssa.Identifiers.Last(sid => sid.Identifier.Storage is MemoryStorage).Identifier;
             var stmCall = m.Call(callee, 0,
-                new Identifier[] { sp },
+                new Identifier[] { sp, mem },
                 new Identifier[] { });
             m.Return();
 

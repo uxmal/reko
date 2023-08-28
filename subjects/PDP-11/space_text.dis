@@ -233,7 +233,7 @@ l0648:
 	wArg02 = SEQ(__rcr<byte,byte>(bArg03_99, 1<8>, (r1_48 & 1<16>) != 0<16>), bArg02_101) (alias)
 l065C:
 	call Mem69[r4_4 + 0x2A<16>:word16] (retsize: 0;)
-		uses: Stack +0000:wArg00_94,Stack +0002:wArg02_95
+		uses: Mem:Mem69,Stack +0000:wArg00_94,Stack +0002:wArg02_95
 	return
 fn0608_exit:
 l0644:
@@ -344,7 +344,7 @@ l06B2:
 	r3_199 = 0<16>
 l0738:
 	call Mem239[r4_4 + 0x2A<16>:word16] (retsize: 0;)
-		uses: Stack +0000:r2_238,Stack +0002:r3_235
+		uses: Mem:Mem239,Stack +0000:r2_238,Stack +0002:r3_235
 	return
 fn0670_exit:
 
@@ -456,7 +456,7 @@ l07E8:
 	r0_122 = 0<16>
 l07FE:
 	call Mem199[wArg02:word16] (retsize: 0;)
-		uses: Stack +0000:r2_197,Stack +0002:r0_194,Stack +0004:wArg04_304,Stack +0008:r4_4 + 0x2A<16>
+		uses: Mem:Mem199,Stack +0000:r2_197,Stack +0002:r0_194,Stack +0004:wArg04_304,Stack +0008:r4_4 + 0x2A<16>
 	return
 fn0754_exit:
 
@@ -472,7 +472,7 @@ fn0818_entry:
 l0818:
 	fn11A6(r5 + Mem0[r5:word16] + Mem0[r5:word16] + 2<16>, r5)
 	call Mem0[0x53F0<16>:word16] (retsize: 0;)
-		uses: r0:0x53F2<16>
+		uses: Mem:Mem0,r0:0x53F2<16>
 	return
 fn0818_exit:
 
@@ -488,7 +488,7 @@ fn0A64_entry:
 l0A64:
 	fn11A6(r5 + Mem0[r5:word16] + Mem0[r5:word16] + 2<16>, r5)
 	call Mem0[0x5414<16>:word16] (retsize: 0;)
-		uses: r0:0x5416<16>
+		uses: Mem:Mem0,r0:0x5416<16>
 	return
 fn0A64_exit:
 
@@ -546,7 +546,7 @@ l1082:
 	branch r3_31 < 0<16> l105E
 l1086:
 	call Mem102[0x0ABE<p16>:word16] (retsize: 0;)
-		uses: Stack +0000:r0_81
+		uses: Mem:Mem102,Stack +0000:r0_81
 	return
 fn0AAE_exit:
 
@@ -610,15 +610,15 @@ l0B22:
 	Mem38[r3_6 + 0x52<16>:word16] = wArg00
 	Mem40[r3_6 + 0x44<16>:word16] = wArg04
 	call wArg06 (retsize: 0;)
-		uses: Stack +0000:wArg02
+		uses: Mem:Mem53,Stack +0000:wArg02
 	return
 l0B14:
 	Mem66[r3_6 + 0x52<16>:word16] = wArg00
 	Mem69[r3_6 + 0x44<16>:word16] = wArg02
 	call wArg04 (retsize: 2;)
-		uses: Stack +0000:wArg04,Stack +0002:wArg06
+		uses: Mem:Mem69,Stack +0000:wArg04,Stack +0002:wArg06
 	call Mem69[r4:word16] (retsize: 0;)
-		uses: Stack +0000:wArg06
+		uses: Mem:Mem69,Stack +0000:wArg06
 	return
 fn0AE6_exit:
 
@@ -696,7 +696,7 @@ l0B8E:
 l0BC6:
 	word16 r0_89
 	call Mem84[sp_110:word16] (retsize: 2;)
-		uses: r0:r0_88
+		uses: Mem:Mem84,r0:r0_88
 		defs: r0:r0_89
 	word16 sp_86 = sp_110 + 2<16>
 	Mem92[sp_86 - 2<16>:word16] = r3_111
@@ -716,7 +716,7 @@ l0BE0:
 	Mem116[sp_86 - 4<16>:word16] = Mem104[sp_86 - 2<16>:word16]
 	Mem118[sp_86 - 2<16>:word16] = Mem116[r3_95 + 0x7E<16>:word16]
 	call Mem118[sp_86 - 2<16>:word16] (retsize: 0;)
-		uses: r0:v27_100
+		uses: Mem:Mem118,r0:v27_100
 	return
 fn0B60_exit:
 
@@ -744,12 +744,12 @@ l0C5A:
 	branch OVERFLOW<word16>(r1) l0C44
 l0C44:
 	call wArg04 (retsize: 0;)
-		uses: r0:r0 - 1<16>,Stack +0000:r1_35 & ~r1_35
+		uses: Mem:Mem48,r0:r0 - 1<16>,Stack +0000:r1_35 & ~r1_35
 	return
 l0C60:
 l0C62:
 	call wArg04 (retsize: 0;)
-		uses: r0:r0 - 1<16>,Stack +0000:r1_60
+		uses: Mem:Mem61,r0:r0 - 1<16>,Stack +0000:r1_60
 	return
 fn0C4A_exit:
 
@@ -824,7 +824,7 @@ fn0D7A_entry:
 l0D7A:
 l123C_in_fn0D7A:
 	call 0x0D7E<p16> (retsize: 0;)
-		uses: r0:wArg00,Stack +0000:wArg02,Stack +0002:wArg04,Stack +0004:0x125A<16>,Stack +0006:r0,Stack +0012:wArg00
+		uses: Mem:Mem44,r0:wArg00,Stack +0000:wArg02,Stack +0002:wArg04,Stack +0004:0x125A<16>,Stack +0006:r0,Stack +0012:wArg00
 	return
 fn0D7A_exit:
 
@@ -840,7 +840,7 @@ fn0DC8_entry:
 l0DC8:
 l123C_in_fn0DC8:
 	call 0x0DCC<p16> (retsize: 0;)
-		uses: r0:wArg00,Stack +0000:wArg02,Stack +0002:wArg04,Stack +0004:0x125A<16>,Stack +0006:r0,Stack +0012:wArg00
+		uses: Mem:Mem44,r0:wArg00,Stack +0000:wArg02,Stack +0002:wArg04,Stack +0004:0x125A<16>,Stack +0006:r0,Stack +0012:wArg00
 	return
 fn0DC8_exit:
 
@@ -869,6 +869,7 @@ l0E76:
 l0E7A:
 l0E7C:
 	call Mem9[r4_4 + 0x2A<16>:word16] (retsize: 0;)
+		uses: Mem:Mem9
 	return
 fn0E0E_exit:
 
@@ -889,7 +890,7 @@ l0EB8:
 	Mem15[r3_6 + 0x7E<16>:word16] = wArg00
 l0EC2:
 	call wArg00 (retsize: 2;)
-		uses: Stack +0000:wArg00
+		uses: Mem:Mem27,Stack +0000:wArg00
 	word16 r3_36 = Mem35[0x5424<p16>:word16]
 	branch Mem35[r3_36 + 0x74<16>:byte] != 0<8> l0EDA_in_fn0EA8
 l0EDA_in_fn0EA8:
@@ -989,7 +990,7 @@ l0F34:
 	return
 l0F32:
 	call Mem74[r4 + 2<16>:word16] (retsize: 0;)
-		uses: r0:r0_100,Stack +0008:wArg00_143
+		uses: Mem:Mem74,r0:r0_100,Stack +0008:wArg00_143
 	return
 fn0EF8_exit:
 
@@ -1065,6 +1066,7 @@ l13EE:
 	EXIT(r0_18)
 l13E2:
 	call r0_18 (retsize: 0;)
+		uses: Mem:Mem14
 	return
 fn0F9C_exit:
 l13C2:
@@ -1075,6 +1077,7 @@ l13C6:
 	branch Mem14[r3_6 + 0x66<16>:word16] != 2<16> l13D6
 l13D6:
 	call Mem14[0x1DAA<p16>:word16] (retsize: 2;)
+		uses: Mem:Mem14
 l13CE:
 	Mem45[r4_12 - 1<16>:byte] = 0<8>
 	Mem48[r3_6 + 0x66<16>:word16] = Mem45[r3_6 + 0x66<16>:word16] - 1<16>
@@ -1134,7 +1137,7 @@ l0FCC:
 	Mem26[r3_10 + 0x1C<16>:word16] = wArg04
 l123C:
 	call 0x0FE2<p16> (retsize: 0;)
-		uses: r0:wArg02,Stack +0000:wArg06,Stack +0002:wArg08,Stack +0004:0x125A<16>,Stack +0006:r0,Stack +0012:wArg02
+		uses: Mem:Mem85,r0:wArg02,Stack +0000:wArg06,Stack +0002:wArg08,Stack +0004:0x125A<16>,Stack +0006:r0,Stack +0012:wArg02
 	return
 fn0FB2_exit:
 
@@ -1455,7 +1458,7 @@ l1478:
 	Mem41[r0_33:word16] = Mem39[r0_33:word16] & 0x800<16>
 	word16 r0_46
 	call wArg00 (retsize: 2;)
-		uses: Stack +0000:wArg00
+		uses: Mem:Mem41,Stack +0000:wArg00
 		defs: r0:r0_46
 	word16 v23_48 = Mem41[r0_46:word16] & 0x800<16>
 	Mem49[r0_46:word16] = v23_48
@@ -1764,7 +1767,7 @@ l1860:
 	byte v27_49 = Mem48[r4_40 + 0x11<16>:byte] | 0x90<8>
 	word16 r0_63
 	call SEQ(0x88<8>, v27_49) (retsize: 0;)
-		uses: r0:Mem59[r4_40 + 0x16<16>:word16],Stack +0000:Mem56[r4_40 + 2<16>:word16],Stack +0002:0x100<16>,Stack +0004:1<16>,Stack +0006:0x1888<16>,Stack +0008:v27_49,Stack +0009:0x88<8>,Stack +000A:0x99E<16>
+		uses: Mem:Mem59,r0:Mem59[r4_40 + 0x16<16>:word16],Stack +0000:Mem56[r4_40 + 2<16>:word16],Stack +0002:0x100<16>,Stack +0004:1<16>,Stack +0006:0x1888<16>,Stack +0008:v27_49,Stack +0009:0x88<8>,Stack +000A:0x99E<16>
 		defs: r0:r0_63
 	r2Out = r2_38
 	r3Out = r3_39
@@ -1799,7 +1802,7 @@ l18CE:
 	fn1900(r3, r4, out r3_30, out r4_31)
 	byte v19_40 = Mem39[r4_31 + 0x11<16>:byte] | 0x80<8>
 	call SEQ(0x88<8>, v19_40) (retsize: 0;)
-		uses: r0:Mem51[r4_31 + 0x16<16>:word16],Stack +0000:Mem48[r4_31 + 2<16>:word16],Stack +0002:0x100<16>,Stack +0004:0<16>,Stack +0006:0x18F4<16>,Stack +0008:v19_40,Stack +0009:0x88<8>,Stack +000A:0x99E<16>
+		uses: Mem:Mem51,r0:Mem51[r4_31 + 0x16<16>:word16],Stack +0000:Mem48[r4_31 + 2<16>:word16],Stack +0002:0x100<16>,Stack +0004:0<16>,Stack +0006:0x18F4<16>,Stack +0008:v19_40,Stack +0009:0x88<8>,Stack +000A:0x99E<16>
 	r4Out = r4_31
 	return r3_30
 fn18BE_exit:
@@ -1855,7 +1858,7 @@ fn1900_entry:
 l1900:
 	byte NZVC_12
 	call fp - 4<16> (retsize: 2;)
-		uses: Stack +0002:Mem6[r4 + 0x11<16>:byte] | 0xA0<8>,Stack +0003:0x88<8>,Stack +0004:0x99E<16>
+		uses: Mem:Mem9,Stack +0002:Mem6[r4 + 0x11<16>:byte] | 0xA0<8>,Stack +0003:0x88<8>,Stack +0004:0x99E<16>
 		defs: NZVC:NZVC_12
 	branch SLICE(NZVC_12, bool, 0) l190E_thunk_fn18FE
 l190E_thunk_fn18FE:
@@ -2018,6 +2021,7 @@ l1988:
 	branch Mem13[r3 + 0x56<16>:word16] != 0<16> l199E
 l199E:
 	call Mem13[r3 + 0x60<16>:ptr16] (retsize: 2;)
+		uses: Mem:Mem13
 	Mem23[r3 + 0x56<16>:word16] = 0<16>
 	branch Mem23[Mem23[r3 + 0x14<16>:ptr16]:byte] > 0<8> l19B0
 l19AC:
@@ -2027,6 +2031,7 @@ l19B0:
 l1992:
 	fn1966(13<i16>, r3)
 	call Mem13[r3 + 0x60<16>:ptr16] (retsize: 0;)
+		uses: Mem:Mem13
 	return
 fn197A_exit:
 
@@ -2132,6 +2137,7 @@ l0218:
 	branch r0_9 == 0<16> l0222
 l0220:
 	call r0_9 (retsize: 2;)
+		uses: Mem:Mem5
 l0222:
 	word16 sp_16 = Mem5[0x0022<p16>:word16]
 	Mem19[sp_16 - 2<16>:word16] = 0x1DB2<p16>
@@ -2232,9 +2238,11 @@ l0332:
 l03B2:
 	Mem239[sp_16 - 2<16>:word16] = 0x1396<16>
 	call v57_215 + 2<16> (retsize: 0;)
+		uses: Mem:Mem239
 	return
 l0370:
 	call Mem229[v57_215 + 2<16>:word16] (retsize: 0;)
+		uses: Mem:Mem229
 	return
 fn1DAE_exit:
 
@@ -2690,7 +2698,7 @@ l46BA:
 	// This indirect jump appears to use the range [-1,1], which Reko can't deduce. This is a typical place where a user annotation (indicating the range of valid values) would help.
 	word16 r4_271
 	call Mem278[(r4_271 << 1<i16>) + 0x46C4<16>:word16] (retsize: 0;)
-		uses: r0:fn474C(r0 + 6<16>, r2_267, r3, r4_222, out r4_271)
+		uses: Mem:Mem278,r0:fn474C(r0 + 6<16>, r2_267, r3, r4_222, out r4_271)
 	return
 fn45F6_exit:
 l4646:

@@ -259,7 +259,7 @@ l000000014000137F:
 	fn0000000140001BF4()
 	word64 r9_136
 	call rbx_108 (retsize: 8;)
-		uses: al:al_103,r8:0<u64>,r9:r9_136,rax_56_8:rax_56_8_130,rcx:0<u64>,rdx:2<u64>,Stack +0000:qwLoc40,Stack +0010:tLoc30
+		uses: al:al_103,Mem:Mem89,r8:0<u64>,r9:r9_136,rax_56_8:rax_56_8_130,rcx:0<u64>,rdx:2<u64>,Stack +0000:qwLoc40,Stack +0010:tLoc30
 		defs: r9:r9_136,rax:rax_133
 l0000000140001395:
 	fn000000014000196C()
@@ -1010,6 +1010,7 @@ void fn0000000140001BF4()
 fn0000000140001BF4_entry:
 l0000000140001BF4:
 	call Mem0[0x0000000140002190<p64>:word64] (retsize: 0;)
+		uses: Mem:Mem0
 	return
 fn0000000140001BF4_exit:
 
@@ -1187,7 +1188,7 @@ void fn0000000140001F10(word64 rax)
 fn0000000140001F10_entry:
 l0000000140001F10:
 	call rax (retsize: 0;)
-		uses: rax:rax
+		uses: Mem:Mem0,rax:rax
 	return
 fn0000000140001F10_exit:
 

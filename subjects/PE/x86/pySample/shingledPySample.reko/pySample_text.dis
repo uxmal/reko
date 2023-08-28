@@ -147,7 +147,7 @@ l1000134E:
 	word32 ecx_103
 	word32 edx_296
 	call eax_92 (retsize: 4;)
-		uses: ecx:ecx_103,edx:edx_296
+		uses: ecx:ecx_103,edx:edx_296,Mem:Mem81
 		defs: ecx:ecx_103,edx:edx_296,esp:esp_101
 l10001357:
 	word32 esp_106 = esp_101 - 4<i32>
@@ -201,7 +201,7 @@ l100012CE:
 	word32 ecx_250
 	word32 edx_252
 	call Mem243[0x100033B8<p32>:word32] (retsize: 4;)
-		uses: ecx:ecx_250,edx:edx_252,Stack +0004:dwArg04,Stack +0008:edi_222,Stack +000C:dwArg0C,Stack +0024:dwArg04,Stack +0028:dwArg08,Stack +002C:dwArg0C
+		uses: ecx:ecx_250,edx:edx_252,Mem:Mem243,Stack +0004:dwArg04,Stack +0008:edi_222,Stack +000C:dwArg0C,Stack +0024:dwArg04,Stack +0028:dwArg08,Stack +002C:dwArg0C
 		defs: ecx:ecx_250,edx:edx_252,esp:esp_248
 l100012DD:
 	Mem256[0x10003070<p32>:word32] = Mem254[0x10003070<p32>:word32] + 1<32>

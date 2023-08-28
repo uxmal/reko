@@ -6,36 +6,37 @@ sp_2: orig: sp
     uses: sp_5 = sp_2 - 2<i16>
 Top_3: orig: Top
     def:  Top_3 = 0<i8>
-    uses: call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+    uses: call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 cx_4: orig: cx
     def:  cx_4 = 0x64<16>
     uses: Mem7[ss:sp_5:word16] = cx_4
-          call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+          call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 sp_5: orig: sp
     def:  sp_5 = sp_2 - 2<i16>
     uses: Mem7[ss:sp_5:word16] = cx_4
-          call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+          call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 ss:ss
     def:  def ss
     uses: Mem7[ss:sp_5:word16] = cx_4
-          call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+          call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 Mem7: orig: Mem0
     def:  Mem7[ss:sp_5:word16] = cx_4
+    uses: call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 sp_8: orig: sp
-    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
     uses: sp_13 = sp_8 + 2<16>
 cx_9: orig: cx
-    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
     uses: use cx_9
 ax_10: orig: ax
-    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
     uses: Mem16[ds:0x64<16>:word16] = ax_10
           use ax_10
 Top_11: orig: Top
-    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
     uses: use Top_11
 SCZO_12: orig: SCZO
-    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
+    def:  call fn0C00_000F (retsize: 2;)	uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 sp_13: orig: sp
     def:  sp_13 = sp_8 + 2<16>
     uses: SCZO_14 = cond(sp_13)
@@ -78,7 +79,7 @@ l0C00_0000:
 	sp_5 = sp_2 - 2<i16>
 	Mem7[ss:sp_5:word16] = cx_4
 	call fn0C00_000F (retsize: 2;)
-		uses: cx:cx_4,sp:sp_5,ss:ss,Top:Top_3
+		uses: cx:cx_4,Mem:Mem7,sp:sp_5,ss:ss,Top:Top_3
 		defs: ax:ax_10,cx:cx_9,SCZO:SCZO_12,sp:sp_8,Top:Top_11
 	sp_13 = sp_8 + 2<16>
 	SCZO_14 = cond(sp_13)
@@ -107,7 +108,7 @@ sp_2: orig: sp
     uses: sp_4 = sp_2 - 2<i16>
 Top_3: orig: Top
     def:  Top_3 = 0<i8>
-    uses: call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+    uses: call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
           Top_47 = PHI((Top_19, l0C00_0018), (Top_3, l0C00_0026))
 sp_4: orig: sp
     def:  sp_4 = sp_2 - 2<i16>
@@ -123,7 +124,7 @@ ss:ss
     uses: Mem7[ss:sp_4:word16] = bp
           ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
           Mem15[ss:sp_14:word16] = ax_10
-          call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+          call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
           dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
           bp_33 = Mem32[ss:sp_31:word16]
 Mem7: orig: Mem0
@@ -133,7 +134,7 @@ Mem7: orig: Mem0
 bp_8: orig: bp
     def:  bp_8 = sp_4
     uses: ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
-          call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+          call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
           dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
 ax_9: orig: ax
     def:  ax_9 = Mem7[ss:bp_8 + 4<i16>:word16]
@@ -157,24 +158,25 @@ ax_13: orig: ax
 sp_14: orig: sp
     def:  sp_14 = sp_4 - 2<i16>
     uses: Mem15[ss:sp_14:word16] = ax_10
-          call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+          call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
 Mem15: orig: Mem0
     def:  Mem15[ss:sp_14:word16] = ax_10
-    uses: dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
+    uses: call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+          dx_25 = Mem15[ss:bp_8 + 4<i16>:word16]
           Mem32 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
 sp_16: orig: sp
-    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
     uses: sp_21 = sp_16 + 1<16>
 ax_17: orig: ax
-    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
     uses: dx_ax_26 = dx_25 *s32 ax_17
 dx_18: orig: dx
-    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
 Top_19: orig: Top
-    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
     uses: Top_47 = PHI((Top_19, l0C00_0018), (Top_3, l0C00_0026))
 SCZO_20: orig: SCZO
-    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
+    def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
 sp_21: orig: sp
     def:  sp_21 = sp_16 + 1<16>
     uses: SZO_22 = cond(sp_21)
@@ -293,7 +295,7 @@ l0C00_0018:
 	sp_14 = sp_4 - 2<i16>
 	Mem15[ss:sp_14:word16] = ax_10
 	call fn0C00_000F (retsize: 2;)
-		uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3
+		uses: bp:bp_8,Mem:Mem15,sp:sp_14,ss:ss,Top:Top_3
 		defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
 	sp_21 = sp_16 + 1<16>
 	SZO_22 = cond(sp_21)

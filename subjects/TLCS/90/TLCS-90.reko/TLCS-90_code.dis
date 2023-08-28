@@ -91,23 +91,23 @@ fn0350_entry:
 	bool C
 	byte a
 l0350:
-	byte a_18 = b + Mem0[ix + -33<i16>:byte] + CONVERT(C, bool, byte)
-	Mem20[ix + -5<i16>:byte] = a_18
-	byte a_25 = l + Mem20[ix + -32<i16>:byte] + CONVERT(a_18 <u 0<8>, bool, byte)
-	Mem27[ix + -4<i16>:byte] = a_25
-	Mem33[ix + -3<i16>:byte] = h + Mem27[ix + -31<i16>:byte] + CONVERT(a_25 <u 0<8>, bool, byte)
-	ui16 a_a_90 = SEQ(v18_40, Mem33[ix + -10<i16>:byte]) + SEQ(v19_42, Mem33[ix + -18<i16>:byte])
-	byte a_44 = SLICE(a_a_90, byte, 8)
-	byte v18_40 = Mem33[ix + -9<i16>:byte]
-	byte v19_42 = Mem33[ix + -17<i16>:byte]
-	byte a_51 = Mem33[ix + -8<i16>:byte] + Mem33[ix + -16<i16>:byte] + CONVERT(a_44 <u 0<8>, bool, byte)
-	Mem63[ix + -6<i16>:byte] = Mem33[ix + -6<i16>:byte] ^ SLICE(a_a_90, byte, 0)
-	Mem67[ix + -5<i16>:byte] = Mem63[ix + -5<i16>:byte] ^ a_44
-	Mem76[ix + -4<i16>:byte] = Mem67[ix + -4<i16>:byte] ^ a_51
+	byte a_19 = b + Mem0[ix + -33<i16>:byte] + CONVERT(C, bool, byte)
+	Mem21[ix + -5<i16>:byte] = a_19
+	byte a_26 = l + Mem21[ix + -32<i16>:byte] + CONVERT(a_19 <u 0<8>, bool, byte)
+	Mem28[ix + -4<i16>:byte] = a_26
+	Mem34[ix + -3<i16>:byte] = h + Mem28[ix + -31<i16>:byte] + CONVERT(a_26 <u 0<8>, bool, byte)
+	ui16 a_a_92 = SEQ(v18_41, Mem34[ix + -10<i16>:byte]) + SEQ(v19_43, Mem34[ix + -18<i16>:byte])
+	byte a_45 = SLICE(a_a_92, byte, 8)
+	byte v18_41 = Mem34[ix + -9<i16>:byte]
+	byte v19_43 = Mem34[ix + -17<i16>:byte]
+	byte a_52 = Mem34[ix + -8<i16>:byte] + Mem34[ix + -16<i16>:byte] + CONVERT(a_45 <u 0<8>, bool, byte)
+	Mem64[ix + -6<i16>:byte] = Mem34[ix + -6<i16>:byte] ^ SLICE(a_a_92, byte, 0)
+	Mem68[ix + -5<i16>:byte] = Mem64[ix + -5<i16>:byte] ^ a_45
+	Mem77[ix + -4<i16>:byte] = Mem68[ix + -4<i16>:byte] ^ a_52
 l039A_thunk_fn039D:
-	word16 ix_83
-	fn039D(a, h, ix, out ix_83)
-	ixOut = ix_83
+	word16 ix_84
+	fn039D(a, h, ix, out ix_84)
+	ixOut = ix_84
 	return <invalid>
 fn0350_exit:
 

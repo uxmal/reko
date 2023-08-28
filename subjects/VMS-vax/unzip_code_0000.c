@@ -53,13 +53,13 @@ l00008878:
 							int32 v38_n = r6_n - 0x43;
 							if (v38_n <= 55)
 							{
+								word32 pc_n;
 								word32 r2_n;
 								word32 r5_n;
 								word32 r0_n;
 								word32 r11_n;
 								word32 r1_n;
 								word32 fp_n;
-								word32 pc_n;
 								(*((word32) 33684 + v38_n * 0x02))();
 								return;
 							}

@@ -12,7 +12,7 @@ __start_entry:
 l00400230:
 	word32 r2_17 = Mem0[0x10000920<p32>:word32]
 	call Mem18[0x100008C8<p32>:word32] (retsize: 0;)
-		uses: r2:r2_17,r4:dwArg00,r5:fp + 4<i32>,r6:(dwArg00 + 1<i32> << 2<8>) + (fp + 4<i32>),r7:Mem0[0x100009E8<p32>:word32],Stack +0010:r2_17,Stack +0018:dwArg00
+		uses: Mem:Mem18,r2:r2_17,r4:dwArg00,r5:fp + 4<i32>,r6:(dwArg00 + 1<i32> << 2<8>) + (fp + 4<i32>),r7:Mem0[0x100009E8<p32>:word32],Stack +0010:r2_17,Stack +0018:dwArg00
 l00400284:
 
 
@@ -26,117 +26,117 @@ void strcpy(word32 r28, word32 ra)
 strcpy_entry:
 l00400290:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:172<i32>
+		uses: Mem:Mem0,r15:ra,r24:172<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:167<i32>
+		uses: Mem:Mem0,r15:ra,r24:167<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:166<i32>
+		uses: Mem:Mem0,r15:ra,r24:166<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:165<i32>
+		uses: Mem:Mem0,r15:ra,r24:165<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:162<i32>
+		uses: Mem:Mem0,r15:ra,r24:162<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:161<i32>
+		uses: Mem:Mem0,r15:ra,r24:161<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:160<i32>
+		uses: Mem:Mem0,r15:ra,r24:160<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:152<i32>
+		uses: Mem:Mem0,r15:ra,r24:152<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:150<i32>
+		uses: Mem:Mem0,r15:ra,r24:150<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:149<i32>
+		uses: Mem:Mem0,r15:ra,r24:149<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:146<i32>
+		uses: Mem:Mem0,r15:ra,r24:146<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:144<i32>
+		uses: Mem:Mem0,r15:ra,r24:144<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:143<i32>
+		uses: Mem:Mem0,r15:ra,r24:143<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:142<i32>
+		uses: Mem:Mem0,r15:ra,r24:142<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:138<i32>
+		uses: Mem:Mem0,r15:ra,r24:138<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:137<i32>
+		uses: Mem:Mem0,r15:ra,r24:137<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:134<i32>
+		uses: Mem:Mem0,r15:ra,r24:134<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:129<i32>
+		uses: Mem:Mem0,r15:ra,r24:129<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:128<i32>
+		uses: Mem:Mem0,r15:ra,r24:128<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:127<i32>
+		uses: Mem:Mem0,r15:ra,r24:127<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:124<i32>
+		uses: Mem:Mem0,r15:ra,r24:124<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:121<i32>
+		uses: Mem:Mem0,r15:ra,r24:121<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:120<i32>
+		uses: Mem:Mem0,r15:ra,r24:120<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:116<i32>
+		uses: Mem:Mem0,r15:ra,r24:116<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:115<i32>
+		uses: Mem:Mem0,r15:ra,r24:115<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:114<i32>
+		uses: Mem:Mem0,r15:ra,r24:114<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:113<i32>
+		uses: Mem:Mem0,r15:ra,r24:113<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:107<i32>
+		uses: Mem:Mem0,r15:ra,r24:107<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:106<i32>
+		uses: Mem:Mem0,r15:ra,r24:106<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:104<i32>
+		uses: Mem:Mem0,r15:ra,r24:104<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:102<i32>
+		uses: Mem:Mem0,r15:ra,r24:102<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:101<i32>
+		uses: Mem:Mem0,r15:ra,r24:101<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:99<i32>
+		uses: Mem:Mem0,r15:ra,r24:99<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:94<i32>
+		uses: Mem:Mem0,r15:ra,r24:94<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:91<i32>
+		uses: Mem:Mem0,r15:ra,r24:91<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:87<i32>
+		uses: Mem:Mem0,r15:ra,r24:87<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:86<i32>
+		uses: Mem:Mem0,r15:ra,r24:86<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:84<i32>
+		uses: Mem:Mem0,r15:ra,r24:84<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:82<i32>
+		uses: Mem:Mem0,r15:ra,r24:82<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:80<i32>
+		uses: Mem:Mem0,r15:ra,r24:80<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:79<i32>
+		uses: Mem:Mem0,r15:ra,r24:79<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:74<i32>
+		uses: Mem:Mem0,r15:ra,r24:74<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:71<i32>
+		uses: Mem:Mem0,r15:ra,r24:71<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:68<i32>
+		uses: Mem:Mem0,r15:ra,r24:68<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:67<i32>
+		uses: Mem:Mem0,r15:ra,r24:67<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:65<i32>
+		uses: Mem:Mem0,r15:ra,r24:65<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:63<i32>
+		uses: Mem:Mem0,r15:ra,r24:63<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:57<i32>
+		uses: Mem:Mem0,r15:ra,r24:57<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:56<i32>
+		uses: Mem:Mem0,r15:ra,r24:56<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:54<i32>
+		uses: Mem:Mem0,r15:ra,r24:54<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:53<i32>
+		uses: Mem:Mem0,r15:ra,r24:53<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:52<i32>
+		uses: Mem:Mem0,r15:ra,r24:52<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:49<i32>
+		uses: Mem:Mem0,r15:ra,r24:49<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:42<i32>
+		uses: Mem:Mem0,r15:ra,r24:42<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:39<i32>
+		uses: Mem:Mem0,r15:ra,r24:39<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:38<i32>
+		uses: Mem:Mem0,r15:ra,r24:38<i32>
 l0040061C_thunk___do_global_dtors_aux:
 	__do_global_dtors_aux()
 	return
@@ -155,7 +155,7 @@ printf_exit:
 printf_entry:
 l004002A0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:167<i32>
+		uses: Mem:Mem0,r15:ra,r24:167<i32>
 
 
 void recv(word32 r28, word32 ra)
@@ -170,7 +170,7 @@ recv_exit:
 recv_entry:
 l004002B0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:166<i32>
+		uses: Mem:Mem0,r15:ra,r24:166<i32>
 
 
 void connect(word32 r28, word32 ra)
@@ -185,7 +185,7 @@ connect_exit:
 connect_entry:
 l004002C0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:165<i32>
+		uses: Mem:Mem0,r15:ra,r24:165<i32>
 
 
 void strerror(word32 r28, word32 ra)
@@ -198,109 +198,109 @@ void strerror(word32 r28, word32 ra)
 strerror_entry:
 l004002D0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:162<i32>
+		uses: Mem:Mem0,r15:ra,r24:162<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:161<i32>
+		uses: Mem:Mem0,r15:ra,r24:161<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:160<i32>
+		uses: Mem:Mem0,r15:ra,r24:160<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:152<i32>
+		uses: Mem:Mem0,r15:ra,r24:152<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:150<i32>
+		uses: Mem:Mem0,r15:ra,r24:150<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:149<i32>
+		uses: Mem:Mem0,r15:ra,r24:149<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:146<i32>
+		uses: Mem:Mem0,r15:ra,r24:146<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:144<i32>
+		uses: Mem:Mem0,r15:ra,r24:144<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:143<i32>
+		uses: Mem:Mem0,r15:ra,r24:143<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:142<i32>
+		uses: Mem:Mem0,r15:ra,r24:142<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:138<i32>
+		uses: Mem:Mem0,r15:ra,r24:138<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:137<i32>
+		uses: Mem:Mem0,r15:ra,r24:137<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:134<i32>
+		uses: Mem:Mem0,r15:ra,r24:134<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:129<i32>
+		uses: Mem:Mem0,r15:ra,r24:129<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:128<i32>
+		uses: Mem:Mem0,r15:ra,r24:128<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:127<i32>
+		uses: Mem:Mem0,r15:ra,r24:127<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:124<i32>
+		uses: Mem:Mem0,r15:ra,r24:124<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:121<i32>
+		uses: Mem:Mem0,r15:ra,r24:121<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:120<i32>
+		uses: Mem:Mem0,r15:ra,r24:120<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:116<i32>
+		uses: Mem:Mem0,r15:ra,r24:116<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:115<i32>
+		uses: Mem:Mem0,r15:ra,r24:115<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:114<i32>
+		uses: Mem:Mem0,r15:ra,r24:114<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:113<i32>
+		uses: Mem:Mem0,r15:ra,r24:113<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:107<i32>
+		uses: Mem:Mem0,r15:ra,r24:107<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:106<i32>
+		uses: Mem:Mem0,r15:ra,r24:106<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:104<i32>
+		uses: Mem:Mem0,r15:ra,r24:104<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:102<i32>
+		uses: Mem:Mem0,r15:ra,r24:102<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:101<i32>
+		uses: Mem:Mem0,r15:ra,r24:101<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:99<i32>
+		uses: Mem:Mem0,r15:ra,r24:99<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:94<i32>
+		uses: Mem:Mem0,r15:ra,r24:94<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:91<i32>
+		uses: Mem:Mem0,r15:ra,r24:91<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:87<i32>
+		uses: Mem:Mem0,r15:ra,r24:87<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:86<i32>
+		uses: Mem:Mem0,r15:ra,r24:86<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:84<i32>
+		uses: Mem:Mem0,r15:ra,r24:84<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:82<i32>
+		uses: Mem:Mem0,r15:ra,r24:82<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:80<i32>
+		uses: Mem:Mem0,r15:ra,r24:80<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:79<i32>
+		uses: Mem:Mem0,r15:ra,r24:79<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:74<i32>
+		uses: Mem:Mem0,r15:ra,r24:74<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:71<i32>
+		uses: Mem:Mem0,r15:ra,r24:71<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:68<i32>
+		uses: Mem:Mem0,r15:ra,r24:68<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:67<i32>
+		uses: Mem:Mem0,r15:ra,r24:67<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:65<i32>
+		uses: Mem:Mem0,r15:ra,r24:65<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:63<i32>
+		uses: Mem:Mem0,r15:ra,r24:63<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:57<i32>
+		uses: Mem:Mem0,r15:ra,r24:57<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:56<i32>
+		uses: Mem:Mem0,r15:ra,r24:56<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:54<i32>
+		uses: Mem:Mem0,r15:ra,r24:54<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:53<i32>
+		uses: Mem:Mem0,r15:ra,r24:53<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:52<i32>
+		uses: Mem:Mem0,r15:ra,r24:52<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:49<i32>
+		uses: Mem:Mem0,r15:ra,r24:49<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:42<i32>
+		uses: Mem:Mem0,r15:ra,r24:42<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:39<i32>
+		uses: Mem:Mem0,r15:ra,r24:39<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:38<i32>
+		uses: Mem:Mem0,r15:ra,r24:38<i32>
 l0040061C_thunk___do_global_dtors_aux:
 	__do_global_dtors_aux()
 	return
@@ -319,7 +319,7 @@ __xpg_basename_exit:
 __xpg_basename_entry:
 l004002E0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:161<i32>
+		uses: Mem:Mem0,r15:ra,r24:161<i32>
 
 
 void snprintf(word32 r28, word32 ra)
@@ -334,7 +334,7 @@ snprintf_exit:
 snprintf_entry:
 l004002F0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:160<i32>
+		uses: Mem:Mem0,r15:ra,r24:160<i32>
 
 
 void getpid(word32 r28, word32 ra)
@@ -349,7 +349,7 @@ getpid_exit:
 getpid_entry:
 l00400300:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:152<i32>
+		uses: Mem:Mem0,r15:ra,r24:152<i32>
 
 
 void fgets(word32 r28, word32 ra)
@@ -364,7 +364,7 @@ fgets_exit:
 fgets_entry:
 l00400310:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:150<i32>
+		uses: Mem:Mem0,r15:ra,r24:150<i32>
 
 
 void memcpy(word32 r28, word32 ra)
@@ -379,7 +379,7 @@ memcpy_exit:
 memcpy_entry:
 l00400320:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:149<i32>
+		uses: Mem:Mem0,r15:ra,r24:149<i32>
 
 
 void tolower(word32 r28, word32 ra)
@@ -394,7 +394,7 @@ tolower_exit:
 tolower_entry:
 l00400330:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:146<i32>
+		uses: Mem:Mem0,r15:ra,r24:146<i32>
 
 
 void malloc(word32 r28, word32 ra)
@@ -409,7 +409,7 @@ malloc_exit:
 malloc_entry:
 l00400340:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:144<i32>
+		uses: Mem:Mem0,r15:ra,r24:144<i32>
 
 
 void vsnprintf(word32 r28, word32 ra)
@@ -422,93 +422,93 @@ void vsnprintf(word32 r28, word32 ra)
 vsnprintf_entry:
 l00400350:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:143<i32>
+		uses: Mem:Mem0,r15:ra,r24:143<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:142<i32>
+		uses: Mem:Mem0,r15:ra,r24:142<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:138<i32>
+		uses: Mem:Mem0,r15:ra,r24:138<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:137<i32>
+		uses: Mem:Mem0,r15:ra,r24:137<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:134<i32>
+		uses: Mem:Mem0,r15:ra,r24:134<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:129<i32>
+		uses: Mem:Mem0,r15:ra,r24:129<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:128<i32>
+		uses: Mem:Mem0,r15:ra,r24:128<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:127<i32>
+		uses: Mem:Mem0,r15:ra,r24:127<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:124<i32>
+		uses: Mem:Mem0,r15:ra,r24:124<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:121<i32>
+		uses: Mem:Mem0,r15:ra,r24:121<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:120<i32>
+		uses: Mem:Mem0,r15:ra,r24:120<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:116<i32>
+		uses: Mem:Mem0,r15:ra,r24:116<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:115<i32>
+		uses: Mem:Mem0,r15:ra,r24:115<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:114<i32>
+		uses: Mem:Mem0,r15:ra,r24:114<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:113<i32>
+		uses: Mem:Mem0,r15:ra,r24:113<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:107<i32>
+		uses: Mem:Mem0,r15:ra,r24:107<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:106<i32>
+		uses: Mem:Mem0,r15:ra,r24:106<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:104<i32>
+		uses: Mem:Mem0,r15:ra,r24:104<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:102<i32>
+		uses: Mem:Mem0,r15:ra,r24:102<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:101<i32>
+		uses: Mem:Mem0,r15:ra,r24:101<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:99<i32>
+		uses: Mem:Mem0,r15:ra,r24:99<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:94<i32>
+		uses: Mem:Mem0,r15:ra,r24:94<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:91<i32>
+		uses: Mem:Mem0,r15:ra,r24:91<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:87<i32>
+		uses: Mem:Mem0,r15:ra,r24:87<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:86<i32>
+		uses: Mem:Mem0,r15:ra,r24:86<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:84<i32>
+		uses: Mem:Mem0,r15:ra,r24:84<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:82<i32>
+		uses: Mem:Mem0,r15:ra,r24:82<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:80<i32>
+		uses: Mem:Mem0,r15:ra,r24:80<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:79<i32>
+		uses: Mem:Mem0,r15:ra,r24:79<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:74<i32>
+		uses: Mem:Mem0,r15:ra,r24:74<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:71<i32>
+		uses: Mem:Mem0,r15:ra,r24:71<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:68<i32>
+		uses: Mem:Mem0,r15:ra,r24:68<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:67<i32>
+		uses: Mem:Mem0,r15:ra,r24:67<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:65<i32>
+		uses: Mem:Mem0,r15:ra,r24:65<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:63<i32>
+		uses: Mem:Mem0,r15:ra,r24:63<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:57<i32>
+		uses: Mem:Mem0,r15:ra,r24:57<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:56<i32>
+		uses: Mem:Mem0,r15:ra,r24:56<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:54<i32>
+		uses: Mem:Mem0,r15:ra,r24:54<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:53<i32>
+		uses: Mem:Mem0,r15:ra,r24:53<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:52<i32>
+		uses: Mem:Mem0,r15:ra,r24:52<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:49<i32>
+		uses: Mem:Mem0,r15:ra,r24:49<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:42<i32>
+		uses: Mem:Mem0,r15:ra,r24:42<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:39<i32>
+		uses: Mem:Mem0,r15:ra,r24:39<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:38<i32>
+		uses: Mem:Mem0,r15:ra,r24:38<i32>
 l0040061C_thunk___do_global_dtors_aux:
 	__do_global_dtors_aux()
 	return
@@ -527,7 +527,7 @@ strtoul_exit:
 strtoul_entry:
 l00400360:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:142<i32>
+		uses: Mem:Mem0,r15:ra,r24:142<i32>
 
 
 void socket(word32 r28, word32 ra)
@@ -542,7 +542,7 @@ socket_exit:
 socket_entry:
 l00400370:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:138<i32>
+		uses: Mem:Mem0,r15:ra,r24:138<i32>
 
 
 void select(word32 r28, word32 ra)
@@ -557,7 +557,7 @@ select_exit:
 select_entry:
 l00400380:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:137<i32>
+		uses: Mem:Mem0,r15:ra,r24:137<i32>
 
 
 void fflush(word32 r28, word32 ra)
@@ -572,7 +572,7 @@ fflush_exit:
 fflush_entry:
 l00400390:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:134<i32>
+		uses: Mem:Mem0,r15:ra,r24:134<i32>
 
 
 void strncasecmp(word32 r28, word32 ra)
@@ -587,7 +587,7 @@ strncasecmp_exit:
 strncasecmp_entry:
 l004003A0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:129<i32>
+		uses: Mem:Mem0,r15:ra,r24:129<i32>
 
 
 void bzero(word32 r28, word32 ra)
@@ -602,7 +602,7 @@ bzero_exit:
 bzero_entry:
 l004003B0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:128<i32>
+		uses: Mem:Mem0,r15:ra,r24:128<i32>
 
 
 void send(word32 r28, word32 ra)
@@ -617,7 +617,7 @@ send_exit:
 send_entry:
 l004003C0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:127<i32>
+		uses: Mem:Mem0,r15:ra,r24:127<i32>
 
 
 void accept(word32 r28, word32 ra)
@@ -632,7 +632,7 @@ accept_exit:
 accept_entry:
 l004003D0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:124<i32>
+		uses: Mem:Mem0,r15:ra,r24:124<i32>
 
 
 void rename(word32 r28, word32 ra)
@@ -647,7 +647,7 @@ rename_exit:
 rename_entry:
 l004003E0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:121<i32>
+		uses: Mem:Mem0,r15:ra,r24:121<i32>
 
 
 void strrchr(word32 r28, word32 ra)
@@ -662,7 +662,7 @@ strrchr_exit:
 strrchr_entry:
 l004003F0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:120<i32>
+		uses: Mem:Mem0,r15:ra,r24:120<i32>
 
 
 void fprintf(word32 r28, word32 ra)
@@ -677,7 +677,7 @@ fprintf_exit:
 fprintf_entry:
 l00400400:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:116<i32>
+		uses: Mem:Mem0,r15:ra,r24:116<i32>
 
 
 void strcat(word32 r28, word32 ra)
@@ -692,7 +692,7 @@ strcat_exit:
 strcat_entry:
 l00400410:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:115<i32>
+		uses: Mem:Mem0,r15:ra,r24:115<i32>
 
 
 void bind(word32 r28, word32 ra)
@@ -707,7 +707,7 @@ bind_exit:
 bind_entry:
 l00400420:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:114<i32>
+		uses: Mem:Mem0,r15:ra,r24:114<i32>
 
 
 void inet_addr(word32 r28, word32 ra)
@@ -722,7 +722,7 @@ inet_addr_exit:
 inet_addr_entry:
 l00400430:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:113<i32>
+		uses: Mem:Mem0,r15:ra,r24:113<i32>
 
 
 void signal(word32 r28, word32 ra)
@@ -737,7 +737,7 @@ signal_exit:
 signal_entry:
 l00400440:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:107<i32>
+		uses: Mem:Mem0,r15:ra,r24:107<i32>
 
 
 void read(word32 r28, word32 ra)
@@ -750,61 +750,61 @@ void read(word32 r28, word32 ra)
 read_entry:
 l00400450:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:106<i32>
+		uses: Mem:Mem0,r15:ra,r24:106<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:104<i32>
+		uses: Mem:Mem0,r15:ra,r24:104<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:102<i32>
+		uses: Mem:Mem0,r15:ra,r24:102<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:101<i32>
+		uses: Mem:Mem0,r15:ra,r24:101<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:99<i32>
+		uses: Mem:Mem0,r15:ra,r24:99<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:94<i32>
+		uses: Mem:Mem0,r15:ra,r24:94<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:91<i32>
+		uses: Mem:Mem0,r15:ra,r24:91<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:87<i32>
+		uses: Mem:Mem0,r15:ra,r24:87<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:86<i32>
+		uses: Mem:Mem0,r15:ra,r24:86<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:84<i32>
+		uses: Mem:Mem0,r15:ra,r24:84<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:82<i32>
+		uses: Mem:Mem0,r15:ra,r24:82<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:80<i32>
+		uses: Mem:Mem0,r15:ra,r24:80<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:79<i32>
+		uses: Mem:Mem0,r15:ra,r24:79<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:74<i32>
+		uses: Mem:Mem0,r15:ra,r24:74<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:71<i32>
+		uses: Mem:Mem0,r15:ra,r24:71<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:68<i32>
+		uses: Mem:Mem0,r15:ra,r24:68<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:67<i32>
+		uses: Mem:Mem0,r15:ra,r24:67<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:65<i32>
+		uses: Mem:Mem0,r15:ra,r24:65<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:63<i32>
+		uses: Mem:Mem0,r15:ra,r24:63<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:57<i32>
+		uses: Mem:Mem0,r15:ra,r24:57<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:56<i32>
+		uses: Mem:Mem0,r15:ra,r24:56<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:54<i32>
+		uses: Mem:Mem0,r15:ra,r24:54<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:53<i32>
+		uses: Mem:Mem0,r15:ra,r24:53<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:52<i32>
+		uses: Mem:Mem0,r15:ra,r24:52<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:49<i32>
+		uses: Mem:Mem0,r15:ra,r24:49<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:42<i32>
+		uses: Mem:Mem0,r15:ra,r24:42<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:39<i32>
+		uses: Mem:Mem0,r15:ra,r24:39<i32>
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:38<i32>
+		uses: Mem:Mem0,r15:ra,r24:38<i32>
 l0040061C_thunk___do_global_dtors_aux:
 	__do_global_dtors_aux()
 	return
@@ -823,7 +823,7 @@ strncmp_exit:
 strncmp_entry:
 l00400460:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:104<i32>
+		uses: Mem:Mem0,r15:ra,r24:104<i32>
 
 
 void strncpy(word32 r28, word32 ra)
@@ -838,7 +838,7 @@ strncpy_exit:
 strncpy_entry:
 l00400470:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:102<i32>
+		uses: Mem:Mem0,r15:ra,r24:102<i32>
 
 
 void unlink(word32 r28, word32 ra)
@@ -853,7 +853,7 @@ unlink_exit:
 unlink_entry:
 l00400480:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:101<i32>
+		uses: Mem:Mem0,r15:ra,r24:101<i32>
 
 
 void strcasecmp(word32 r28, word32 ra)
@@ -868,7 +868,7 @@ strcasecmp_exit:
 strcasecmp_entry:
 l00400490:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:99<i32>
+		uses: Mem:Mem0,r15:ra,r24:99<i32>
 
 
 void listen(word32 r28, word32 ra)
@@ -883,7 +883,7 @@ listen_exit:
 listen_entry:
 l004004A0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:94<i32>
+		uses: Mem:Mem0,r15:ra,r24:94<i32>
 
 
 void fork(word32 r28, word32 ra)
@@ -898,7 +898,7 @@ fork_exit:
 fork_entry:
 l004004B0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:91<i32>
+		uses: Mem:Mem0,r15:ra,r24:91<i32>
 
 
 void gettimeofday(word32 r28, word32 ra)
@@ -913,7 +913,7 @@ gettimeofday_exit:
 gettimeofday_entry:
 l004004C0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:87<i32>
+		uses: Mem:Mem0,r15:ra,r24:87<i32>
 
 
 void fopen(word32 r28, word32 ra)
@@ -928,7 +928,7 @@ fopen_exit:
 fopen_entry:
 l004004D0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:86<i32>
+		uses: Mem:Mem0,r15:ra,r24:86<i32>
 
 
 void ftell(word32 r28, word32 ra)
@@ -943,7 +943,7 @@ ftell_exit:
 ftell_entry:
 l004004E0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:84<i32>
+		uses: Mem:Mem0,r15:ra,r24:84<i32>
 
 
 void fclose(word32 r28, word32 ra)
@@ -958,7 +958,7 @@ fclose_exit:
 fclose_entry:
 l004004F0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:82<i32>
+		uses: Mem:Mem0,r15:ra,r24:82<i32>
 
 
 void inet_ntoa(word32 r28, word32 ra)
@@ -973,7 +973,7 @@ inet_ntoa_exit:
 inet_ntoa_entry:
 l00400500:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:80<i32>
+		uses: Mem:Mem0,r15:ra,r24:80<i32>
 
 
 void time(word32 r28, word32 ra)
@@ -988,7 +988,7 @@ time_exit:
 time_entry:
 l00400510:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:79<i32>
+		uses: Mem:Mem0,r15:ra,r24:79<i32>
 
 
 void strcspn(word32 r28, word32 ra)
@@ -1003,7 +1003,7 @@ strcspn_exit:
 strcspn_entry:
 l00400520:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:74<i32>
+		uses: Mem:Mem0,r15:ra,r24:74<i32>
 
 
 void strsep(word32 r28, word32 ra)
@@ -1018,7 +1018,7 @@ strsep_exit:
 strsep_entry:
 l00400530:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:71<i32>
+		uses: Mem:Mem0,r15:ra,r24:71<i32>
 
 
 void getsockopt(word32 r28, word32 ra)
@@ -1033,7 +1033,7 @@ getsockopt_exit:
 getsockopt_entry:
 l00400540:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:68<i32>
+		uses: Mem:Mem0,r15:ra,r24:68<i32>
 
 
 void strftime(word32 r28, word32 ra)
@@ -1048,7 +1048,7 @@ strftime_exit:
 strftime_entry:
 l00400550:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:67<i32>
+		uses: Mem:Mem0,r15:ra,r24:67<i32>
 
 
 void __errno_location(word32 r28, word32 ra)
@@ -1063,7 +1063,7 @@ __errno_location_exit:
 __errno_location_entry:
 l00400560:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:65<i32>
+		uses: Mem:Mem0,r15:ra,r24:65<i32>
 
 
 void exit(word32 r28, word32 ra)
@@ -1078,7 +1078,7 @@ exit_exit:
 exit_entry:
 l00400570:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:63<i32>
+		uses: Mem:Mem0,r15:ra,r24:63<i32>
 
 
 void gmtime(word32 r28, word32 ra)
@@ -1093,7 +1093,7 @@ gmtime_exit:
 gmtime_entry:
 l00400580:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:57<i32>
+		uses: Mem:Mem0,r15:ra,r24:57<i32>
 
 
 void strspn(word32 r28, word32 ra)
@@ -1108,7 +1108,7 @@ strspn_exit:
 strspn_entry:
 l00400590:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:56<i32>
+		uses: Mem:Mem0,r15:ra,r24:56<i32>
 
 
 void strlen(word32 r28, word32 ra)
@@ -1123,7 +1123,7 @@ strlen_exit:
 strlen_entry:
 l004005A0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:54<i32>
+		uses: Mem:Mem0,r15:ra,r24:54<i32>
 
 
 void __uClibc_start_main(word32 r28, word32 ra)
@@ -1138,7 +1138,7 @@ __uClibc_start_main_exit:
 __uClibc_start_main_entry:
 l004005B0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:53<i32>
+		uses: Mem:Mem0,r15:ra,r24:53<i32>
 
 
 void toupper(word32 r28, word32 ra)
@@ -1153,7 +1153,7 @@ toupper_exit:
 toupper_entry:
 l004005C0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:52<i32>
+		uses: Mem:Mem0,r15:ra,r24:52<i32>
 
 
 void strchr(word32 r28, word32 ra)
@@ -1168,7 +1168,7 @@ strchr_exit:
 strchr_entry:
 l004005D0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:49<i32>
+		uses: Mem:Mem0,r15:ra,r24:49<i32>
 
 
 void close(word32 r28, word32 ra)
@@ -1183,7 +1183,7 @@ close_exit:
 close_entry:
 l004005E0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:42<i32>
+		uses: Mem:Mem0,r15:ra,r24:42<i32>
 
 
 void strpbrk(word32 r28, word32 ra)
@@ -1198,7 +1198,7 @@ strpbrk_exit:
 strpbrk_entry:
 l004005F0:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:39<i32>
+		uses: Mem:Mem0,r15:ra,r24:39<i32>
 
 
 void free(word32 r28, word32 ra)
@@ -1211,7 +1211,7 @@ void free(word32 r28, word32 ra)
 free_entry:
 l00400600:
 	call Mem0[r28 - 0x7FF0<32>:word32] (retsize: 0;)
-		uses: r15:ra,r24:38<i32>
+		uses: Mem:Mem0,r15:ra,r24:38<i32>
 l0040061C_thunk___do_global_dtors_aux:
 	__do_global_dtors_aux()
 	return
@@ -1247,7 +1247,7 @@ l00400674:
 	Mem28[Mem22[0x10000878<32>:word32] + 4<i32>:word32] = r2_20
 	word32 r4_34
 	call r25_23 (retsize: 0;)
-		uses: r3:r3_38,r4:r4_34
+		uses: Mem:Mem28,r3:r3_38,r4:r4_34
 		defs: r4:r4_34
 	r3_17 = Mem28[Mem28[0x10000878<32>:word32] + 4<i32>:word32]
 	branch Mem28[r3_17:word32] != 0<32> l004006B4_ds_t
@@ -1434,7 +1434,7 @@ l00400F10:
 l00400F30:
 	word32 r2_484
 	call Mem474[r28_1010 - 0x7F30<32>:word32] (retsize: 0;)
-		uses: r4:0<32>,r5:r5_479,Stack +0040:0<32>
+		uses: Mem:Mem474,r4:0<32>,r5:r5_479,Stack +0040:0<32>
 		defs: r2:r2_484
 	word32 dwLoc0160_1284 = 0<32>
 	word32 dwLoc2C_1288 = 0<32>
@@ -1512,7 +1512,7 @@ l00401480:
 l004014CC:
 	word32 r2_826
 	call Mem795[r28_1010 - 0x7F28<32>:word32] (retsize: 0;)
-		uses: r2:dwLoc0150_1342 + 8<i32>,r3:fp + -328<i32>,r4:dwLoc0150_1342 + 8<i32>,r5:fp + -328<i32>,r6:Mem795[dwLoc0150_1342:word32],r7:Mem795[dwLoc0150_1342 + 0x20<32>:word32]
+		uses: Mem:Mem795,r2:dwLoc0150_1342 + 8<i32>,r3:fp + -328<i32>,r4:dwLoc0150_1342 + 8<i32>,r5:fp + -328<i32>,r6:Mem795[dwLoc0150_1342:word32],r7:Mem795[dwLoc0150_1342 + 0x20<32>:word32]
 		defs: r2:r2_826,r5:r5_825
 	r28_1010 = 0x10008860<32>
 	branch r2_826 != 0<32> l00401524
@@ -1543,14 +1543,14 @@ l00401608:
 	branch (Mem878[fp + -304<i32> + ((Mem878[dwLoc0158_1348:word32] >>u 5<8>) << 2<8>):word32] >> (Mem878[dwLoc0158_1348:word32] & 0x1F<32>) & 1<32>) == 0<32> l00401724
 l00401654:
 	call Mem878[r28_1010 - 0x7EF8<32>:word32] (retsize: 0;)
-		uses: r4:dwLoc0158_1349,r5:r5_900
+		uses: Mem:Mem878,r4:dwLoc0158_1349,r5:r5_900
 		defs: r5:r5_904
 	r28_1010 = 0x10008860<32>
 	branch Mem878[dwLoc0158_1348 + 0x7D8<32>:word32] > 0<32> l004016D8
 l004016D8:
 	word32 r2_913 = Mem878[dwLoc0158_1348 + 0x17C0<32>:word32]
 	call r2_913 (retsize: 0;)
-		uses: r2:r2_913,r25:r25_927,r4:dwLoc0158_1349,r5:r5_904,Stack +0184:r2_913
+		uses: Mem:Mem914,r2:r2_913,r25:r25_927,r4:dwLoc0158_1349,r5:r5_904,Stack +0184:r2_913
 	word32 r25_927
 	r5_1005 = client_send_request(dwLoc0158_1348, ra, out r25_927)
 	r28_1010 = 0x10008860<32>
@@ -1569,7 +1569,7 @@ l0040174C:
 	branch (Mem952[fp + -304<i32> + ((Mem952[dwLoc0158_1348 + 4<32>:word32] >>u 5<8>) << 2<8>):word32] >> (Mem952[dwLoc0158_1348 + 4<32>:word32] & 0x1F<32>) & 1<32>) == 0<32> l0040184C
 l00401798:
 	call Mem952[r28_1010 - 0x7E10<32>:word32] (retsize: 0;)
-		uses: r4:dwLoc0158_1349,r5:r5_973
+		uses: Mem:Mem952,r4:dwLoc0158_1349,r5:r5_973
 		defs: r5:r5_977
 	r28_1010 = 0x10008860<32>
 	branch Mem952[dwLoc0158_1348 + 0x178C<32>:word32] > 0<32> l0040181C
@@ -1577,7 +1577,7 @@ l0040181C:
 	word32 r2_986 = Mem952[dwLoc0158_1348 + 0x17C4<32>:word32]
 	word32 r25_990
 	call r2_986 (retsize: 0;)
-		uses: r2:r2_986,r25:r25_990,r4:dwLoc0158_1349,r5:r5_977,Stack +0188:r2_986
+		uses: Mem:Mem987,r2:r2_986,r25:r25_990,r4:dwLoc0158_1349,r5:r5_977,Stack +0188:r2_986
 		defs: r25:r25_990,r5:r5_992
 	r28_1010 = 0x10008860<32>
 l004017CC:
@@ -1597,7 +1597,7 @@ l004018C0:
 	word32 r2_1032 = Mem1015[dwLoc0158_1348 + 0x17C4<32>:word32]
 	word32 r25_1040
 	call r2_1032 (retsize: 0;)
-		uses: r2:r2_1032,r25:r25_1040,r4:dwLoc0158_1349,r5:r5_1038,Stack +018C:r2_1032
+		uses: Mem:Mem1033,r2:r2_1032,r25:r25_1040,r4:dwLoc0158_1349,r5:r5_1038,Stack +018C:r2_1032
 		defs: r25:r25_1040,r5:r5_1042
 	r28_1010 = 0x10008860<32>
 l004018F0:
@@ -1608,7 +1608,7 @@ l00401918:
 	branch (Mem1049[fp + -176<i32> + ((Mem1049[dwLoc0158_1348 + 4<32>:word32] >>u 5<8>) << 2<8>):word32] >> (Mem1049[dwLoc0158_1348 + 4<32>:word32] & 0x1F<32>) & 1<32>) == 0<32> l00401980
 l00401964:
 	call Mem1049[r28_1010 - 0x7EB0<32>:word32] (retsize: 0;)
-		uses: r4:dwLoc0158_1349,r5:r5_1071
+		uses: Mem:Mem1049,r4:dwLoc0158_1349,r5:r5_1071
 		defs: r5:r5_1075
 	r28_1010 = 0x10008860<32>
 l00401980:
@@ -1632,13 +1632,13 @@ l00401A38:
 l00401A50:
 	word32 r2_1128
 	call Mem1049[r28_1010 - 0x7FC8<32>:word32] (retsize: 0;)
-		uses: r4:dwLoc0158_1349,r5:r2_484
+		uses: Mem:Mem1049,r4:dwLoc0158_1349,r5:r2_484
 		defs: r2:r2_1128,r5:r5_1127
 	r28_1010 = 0x10008860<32>
 	branch CONVERT(r2_1128 < 3<i32>, bool, word32) == 0<32> l00401A80
 l00401A80:
 	call Mem1049[r28_1010 - 0x7E4C<32>:word32] (retsize: 0;)
-		uses: r4:r2_296,r5:dwLoc0158_1349
+		uses: Mem:Mem1049,r4:r2_296,r5:dwLoc0158_1349
 		defs: r5:r5_1145
 	r28_1010 = 0x10008860<32>
 	dwLoc0158_1348 = 0<32>
@@ -1667,7 +1667,7 @@ l004013BC:
 l00400F28:
 l00401AD4:
 	call Mem470[r28_1010 - 0x7ED0<32>:word32] (retsize: 0;)
-		uses: r4:r2_296,r5:r5_479
+		uses: Mem:Mem470,r4:r2_296,r5:r5_479
 	slist_destroy(r2_325, ra)
 	branch r2_133 == 0xFFFFF96B<32> l00401B50
 l00401B1C:
@@ -2809,14 +2809,14 @@ l0040495C:
 	branch CONVERT(CONVERT(Mem22[r4 + 4<i32> + (dwLoc18_153 + 1296<i32>):int8], int8, word32) + Mem22[r5 + 0xFAC<32>:word32] < 2000<i32>, bool, word32) == 0<32> l00404A58
 l00404A58:
 	call Mem22[r28_127 - 0x7E74<32>:word32] (retsize: 0;)
-		uses: r4:2<i32>,r5:Mem22[r28_45 - 0x7FE0<32>:word32] + -23492<i32>,r6:Mem22[r28_45 - 0x7FE0<32>:word32] + -23472<i32>,r7:132<i32>
+		uses: Mem:Mem22,r4:2<i32>,r5:Mem22[r28_45 - 0x7FE0<32>:word32] + -23492<i32>,r6:Mem22[r28_45 - 0x7FE0<32>:word32] + -23472<i32>,r7:132<i32>
 	r28_127 = 0x10008860<32>
 l00404994:
 	Mem72[r5 + 0xFAC<32>:word32] = Mem22[r5 + 0xFAC<32>:word32] + CONVERT(Mem22[(r4 + 4<i32>) + (dwLoc18_153 + 1296<i32>):int8], int8, word32)
 	word32 r2_84 = CONVERT(Mem72[r4 + 4<i32> + (dwLoc18_153 + 1296<i32>):int8], int8, word32)
 	word32 r7_95
 	call Mem72[r28_127 - 0x7E18<32>:word32] (retsize: 0;)
-		uses: r2:r2_84,r3:r4,r4:dwArg08_158,r5:Mem72[r4 + 4<i32> + ((dwLoc18_155 << 2<8>) + 1040<i32>):word32],r6:r2_84,r7:r7_95
+		uses: Mem:Mem72,r2:r2_84,r3:r4,r4:dwArg08_158,r5:Mem72[r4 + 4<i32> + ((dwLoc18_155 << 2<8>) + 1040<i32>):word32],r6:r2_84,r7:r7_95
 		defs: r7:r7_95
 	r28_127 = 0x10008860<32>
 	dwArg08_152 = dwArg08_152 + CONVERT(Mem72[(r4 + 4<i32>) + (dwLoc18_153 + 1296<i32>):int8], int8, word32)
@@ -2831,7 +2831,7 @@ l00404AC4:
 	word32 r2_123 = r4 + 4<i32> + ((r3_118 << 2<8>) + 1040<i32>)
 	word32 r7_137
 	call Mem125[r28_127 - 0x7FD4<32>:word32] (retsize: 0;)
-		uses: r2:r2_123,r3:r3_118 + -1<i32>,r4:Mem125[r2_123:word32],r5:r4 + 1368<i32>,r6:r4,r7:r7_137
+		uses: Mem:Mem125,r2:r2_123,r3:r3_118 + -1<i32>,r4:Mem125[r2_123:word32],r5:r4 + 1368<i32>,r6:r4,r7:r7_137
 		defs: r7:r7_137
 	r28_127 = 0x10008860<32>
 l00404ABC:
@@ -3193,7 +3193,7 @@ l00405A70:
 l00405B54:
 	word32 r2_377
 	call 0x004053F0<p32> (retsize: 0;)
-		uses: r25:0x004053F0<p32>,r4:r2_266,r5:0<32>
+		uses: Mem:Mem367,r25:0x004053F0<p32>,r4:r2_266,r5:0<32>
 		defs: r2:r2_377
 	Mem394[Mem367[0x10000A40<32>:word32] + 4<i32> + (dwLoc014C_568 * 0x98<32> + 144<i32>):word32] = r2_377
 l00405AC8:
@@ -3285,7 +3285,7 @@ l0040625C:
 l004061EC:
 	word32 r2_139 = CONVERT(bLoc1C_368, byte, word32)
 	call Mem142[r28_125 - 0x7E74<32>:word32] (retsize: 0;)
-		uses: r2:r2_139,r4:1<i32>,r5:Mem142[r28_125 - 0x7FE0<32>:word32] + -22924<i32>,r6:Mem142[r28_125 - 0x7FE0<32>:word32] + -22900<i32>,r7:200<i32>,Stack +0010:r2_139
+		uses: Mem:Mem142,r2:r2_139,r4:1<i32>,r5:Mem142[r28_125 - 0x7FE0<32>:word32] + -22924<i32>,r6:Mem142[r28_125 - 0x7FE0<32>:word32] + -22900<i32>,r7:200<i32>,Stack +0010:r2_139
 	r5_168 = properties_print_usage(Mem142[r5:word32])
 l00405EFC:
 	branch CONVERT(bLoc1C_368, byte, word32) == CONVERT(Mem116[(Mem116[r28_125 - 0x7E20<32>:word32] + (dwLoc24_383 * 0x98<32> + 8<i32>)) + 4<32>:int8], int8, word32) l00406004
@@ -3295,7 +3295,7 @@ l00405F80:
 	word32 r2_199 = CONVERT(bLoc1C_368, byte, word32)
 	word32 r2_206
 	call Mem116[r28_125 - 0x7F9C<32>:word32] (retsize: 0;)
-		uses: r2:r2_199,r4:r2_199,r5:r5_202,r6:r6_230,r7:r7_231
+		uses: Mem:Mem116,r2:r2_199,r4:r2_199,r5:r5_202,r6:r6_230,r7:r7_231
 		defs: r2:r2_206
 	r28_125 = 0x10008860<32>
 	r5_168 = r5_227
@@ -3310,7 +3310,7 @@ l004060E8:
 	word32 r6_263
 	word32 r7_264
 	call r25_253 + 21488<i32> (retsize: 0;)
-		uses: r25:r25_253 + 21488<i32>,r4:dwLoc18_460,r5:0<32>,r6:r6_263,r7:r7_264
+		uses: Mem:Mem248,r25:r25_253 + 21488<i32>,r4:dwLoc18_460,r5:0<32>,r6:r6_263,r7:r7_264
 		defs: r2:r2_261,r5:r5_260,r6:r6_263,r7:r7_264
 	Mem278[Mem248[0x10000A40<32>:word32] + 4<i32> + (dwLoc24_383 * 0x98<32> + 144<i32>):word32] = r2_261
 	r28_125 = 0x10008860<32>
@@ -3320,7 +3320,7 @@ l0040608C:
 	word32 r2_290 = dwLoc24_383 * 0x98<32> + (Mem248[r28_125 - 0x7E20<32>:word32] + 13<i32>)
 	word32 r7_301
 	call Mem248[r28_125 - 0x7ED4<32>:word32] (retsize: 0;)
-		uses: r2:r2_290,r3:dwLoc24_384 * 0x98<32>,r4:r2_290,r5:dwLoc18_460,r6:20<i32>,r7:r7_301
+		uses: Mem:Mem248,r2:r2_290,r3:dwLoc24_384 * 0x98<32>,r4:r2_290,r5:dwLoc18_460,r6:20<i32>,r7:r7_301
 		defs: r5:r5_297,r7:r7_301
 	r28_125 = 0x10008860<32>
 l00406070:
@@ -3335,7 +3335,7 @@ l004061C8:
 	dwLoc24_383 = dwLoc24_383 + 1<i32>
 l00405E64:
 	call Mem75[r28_125 - 0x7DC4<32>:word32] (retsize: 0;)
-		uses: r2:r5,r4:Mem75[r5:word32],r5:r5_89,r6:r6_109,r7:r7_110
+		uses: Mem:Mem75,r2:r5,r4:Mem75[r5:word32],r5:r5_89,r6:r6_109,r7:r7_110
 	exit(0<32>)
 	r28_125 = r28_111
 	r5_168 = r5_106
@@ -3434,7 +3434,7 @@ l00406610:
 l00406664:
 	word32 r2_40 = vsnprintf(fp + -1048<i32>, 1023<i32>, r5, fp + 8<i32>, fp + 8<i32>)
 	call 0x0040697C<p32> (retsize: 0;)
-		uses: r2:fp + -1048<i32>,r25:0x0040697C<p32>,r4:Mem43[Mem43[0x10000A20<32>:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048<i32>,Stack +0018:fp + 8<i32>,Stack +0420:r2_40
+		uses: Mem:Mem43,r2:fp + -1048<i32>,r25:0x0040697C<p32>,r4:Mem43[Mem43[0x10000A20<32>:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048<i32>,Stack +0018:fp + 8<i32>,Stack +0420:r2_40
 		defs: r25:r25_52,r4:r4_56,r5:r5_53,r6:r6_54,r7:r7_55
 l004066D4:
 	r5Out = r5
@@ -4083,7 +4083,7 @@ l00407A38:
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
 	word32 r2_48
 	call 0x004077E0<p32> (retsize: 0;)
-		uses: r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>
+		uses: Mem:Mem22,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>
 		defs: r2:r2_48
 	__pack_f(r2_48)
 	return
@@ -4105,7 +4105,7 @@ l00407AE0:
 	__unpack_f(fp + -20<i32>, fp + -56<i32>)
 	word32 r2_50
 	call 0x004077E0<p32> (retsize: 0;)
-		uses: r2:dwLoc34 ^ 1<32>,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>,Stack +002C:dwLoc34 ^ 1<32>
+		uses: Mem:Mem46,r2:dwLoc34 ^ 1<32>,r25:0x004077E0<p32>,r4:fp + -72<i32>,r5:fp + -56<i32>,r6:fp + -40<i32>,Stack +002C:dwLoc34 ^ 1<32>
 		defs: r2:r2_50
 	__pack_f(r2_50)
 	return
@@ -4636,7 +4636,7 @@ l004084FC:
 	__unpack_d(fp + -32<i32>, fp + -88<i32>)
 	word32 r2_64
 	call 0x00408180<p32> (retsize: 0;)
-		uses: r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>
+		uses: Mem:Mem34,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>
 		defs: r2:r2_64
 	__pack_d(r2_64)
 	return
@@ -4658,7 +4658,7 @@ l004085CC:
 	__unpack_d(fp + -32<i32>, fp + -88<i32>)
 	word32 r2_67
 	call 0x00408180<p32> (retsize: 0;)
-		uses: r2:dwLoc54 ^ 1<32>,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>,Stack +0034:dwLoc54 ^ 1<32>
+		uses: Mem:Mem64,r2:dwLoc54 ^ 1<32>,r25:0x00408180<p32>,r4:fp + -112<i32>,r5:fp + -88<i32>,r6:fp + -64<i32>,Stack +0034:dwLoc54 ^ 1<32>
 		defs: r2:r2_67
 	__pack_d(r2_67)
 	return
@@ -5679,6 +5679,7 @@ l00409C48_ds_f:
 l00409C4C:
 l00409C50:
 	call r25_17 (retsize: 0;)
+		uses: Mem:Mem16
 	r16_20 = r16_20 + -4<i32>
 	word32 r2_33 = Mem16[r16_20:word32]
 	branch r2_33 != -1<i32> l00409C6C_ds_t

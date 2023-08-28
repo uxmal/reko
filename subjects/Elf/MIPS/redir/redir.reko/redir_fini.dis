@@ -8,7 +8,7 @@ void _fini()
 _fini_entry:
 l00409CB0:
 	call 0x00400620<p32> (retsize: 0;)
-		uses: r25:0x00400620<p32>,Stack +0010:0x10008860<32>,Stack +0018:0x10008860<32>
+		uses: Mem:Mem11,r25:0x00400620<p32>,Stack +0010:0x10008860<32>,Stack +0018:0x10008860<32>
 	return
 _fini_exit:
 

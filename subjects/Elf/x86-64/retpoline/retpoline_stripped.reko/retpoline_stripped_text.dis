@@ -32,7 +32,7 @@ l00000000004004D8:
 	return
 l00000000004004CB:
 	call 0<u64> (retsize: 0;)
-		uses: rdi:0x601040<u64>
+		uses: Mem:Mem6,rdi:0x601040<u64>
 	return
 fn00000000004004B0_exit:
 

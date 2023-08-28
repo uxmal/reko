@@ -2078,7 +2078,7 @@ l00009074:
 	word32 pc_290
 	word32 cpsr_292
 	call Mem261[r0_254:word32] (retsize: 0;)
-		uses: cpsr:cpsr,lr:%continuation,pc:pc_290,r0:r0_254,r1:Mem261[r0_254 + 48<i32>:word32],r4:r4,r5:r5,r6:r6,r7:r7,r8:r8
+		uses: cpsr:cpsr,lr:%continuation,Mem:Mem261,pc:pc_290,r0:r0_254,r1:Mem261[r0_254 + 48<i32>:word32],r4:r4,r5:r5,r6:r6,r7:r7,r8:r8
 		defs: cpsr:cpsr_292,pc:pc_290
 	return cpsr_292
 l00009046:

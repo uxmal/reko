@@ -23,7 +23,7 @@ l00000020:
 	__mtcr(PSW, __mfcr(PSW) & 0xFFFFFEFF<32>)
 	__isync()
 	call 0xC00000A8<32> (retsize: 0;)
-		uses: a0:0xD0008010<32>,a15:0xC00000A8<32>,BTV:BTV,ISP:ISP,PSW:PSW
+		uses: a0:0xD0008010<32>,a15:0xC00000A8<32>,BTV:BTV,ISP:ISP,Mem:Mem0,PSW:PSW
 	return
 fn00000000_exit:
 
@@ -1073,7 +1073,7 @@ l000012F4:
 l00001208:
 	word32 a2_11 = (d15_6 << 2<8>) + 0xC000121C<32>
 	call a2_11 (retsize: 0;)
-		uses: a15:0xD0000234<32>,a2:a2_11,a4:a4,a8:a8 - 8<32>,d15:CONVERT(Mem0[a4 + 12<i32>:byte], byte, uint32)
+		uses: a15:0xD0000234<32>,a2:a2_11,a4:a4,a8:a8 - 8<32>,d15:CONVERT(Mem0[a4 + 12<i32>:byte], byte, uint32),Mem:Mem0
 	return
 fn000011FA_exit:
 
@@ -1211,7 +1211,7 @@ l00001EF6:
 	__store_upper_context()
 	word32 a15_12
 	call 0<32> (retsize: 0;)
-		uses: a15:a15_12
+		uses: a15:a15_12,Mem:Mem0
 		defs: a15:a15_12
 l00001EFA:
 l00001E68:
@@ -1222,10 +1222,10 @@ l00001E92:
 	__load_upper_context()
 	return
 l00001E90:
-	word32 a15_36
+	word32 a15_37
 	call 0<32> (retsize: 0;)
-		uses: a15:a15_36
-		defs: a15:a15_36
+		uses: a15:a15_37,Mem:Mem0
+		defs: a15:a15_37
 	return
 fn00001EE0_exit:
 
@@ -1253,6 +1253,7 @@ fn00001F20_exit:
 l00001F36:
 	__store_upper_context()
 	call a15_12 (retsize: 0;)
+		uses: Mem:Mem0
 		defs: a12:a12_16,d15:d15_17
 
 

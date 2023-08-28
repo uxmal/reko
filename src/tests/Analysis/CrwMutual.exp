@@ -60,17 +60,17 @@ l0C00_0004:
 	branch dx != 0x1E<16> l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
-	dx_10 = fn0C00_0013(dx)
+	dx_11 = fn0C00_0013(dx)
 	goto l0C00_0010
 	// succ:  l0C00_0010
 l0C00_000F:
 	dx_7 = dx - 1<16>
 	// succ:  l0C00_0010
 l0C00_0010:
-	dx_14 = PHI((dx_10, l0C00_0009), (dx_7, l0C00_000F))
-	ax_15 = dx_14
-	dxOut = dx_14
-	return ax_15
+	dx_15 = PHI((dx_11, l0C00_0009), (dx_7, l0C00_000F))
+	ax_16 = dx_15
+	dxOut = dx_15
+	return ax_16
 	// succ:  fn0C00_0004_exit
 fn0C00_0004_exit:
 Register word16 fn0C00_0013(Register word16 dx)
@@ -105,14 +105,14 @@ l0C00_0013:
 	branch dx < 0x14<16> l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F
 l0C00_0018:
-	fn0C00_0004(dx - 1<16>, out dx_17)
+	fn0C00_0004(dx - 1<16>, out dx_18)
 	goto l0C00_0025
 	// succ:  l0C00_0025
 l0C00_001F:
-	fn0C00_0004(dx - 0xA<16>, out dx_10)
+	fn0C00_0004(dx - 0xA<16>, out dx_11)
 	// succ:  l0C00_0025
 l0C00_0025:
-	dx_27 = PHI((dx_17, l0C00_0018), (dx_10, l0C00_001F))
-	return dx_27
+	dx_28 = PHI((dx_18, l0C00_0018), (dx_11, l0C00_001F))
+	return dx_28
 	// succ:  fn0C00_0013_exit
 fn0C00_0013_exit:

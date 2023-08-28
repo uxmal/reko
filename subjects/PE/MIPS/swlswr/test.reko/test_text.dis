@@ -89,16 +89,16 @@ l000111E4:
 	branch r8_7 == 0xB064<32> l0001120C
 l0001120C:
 	COREDLL.dll!Ordinal_2696()
-	word32 r8_24 = r2_16 >>u 0x10<8> ^ r2_16 & 0xFFFF<32>
-	word32 dwLoc0C_50 = r8_24
-	branch r8_24 != 0<32> l0001124C
+	word32 r8_25 = r2_17 >>u 0x10<8> ^ r2_17 & 0xFFFF<32>
+	word32 dwLoc0C_51 = r8_25
+	branch r8_25 != 0<32> l0001124C
 l00011244:
-	dwLoc0C_50 = 0xB064<32>
+	dwLoc0C_51 = 0xB064<32>
 l0001124C:
-	Mem33[0x13030<32>:word32] = dwLoc0C_50
-	Mem37[0x13034<32>:word32] = ~dwLoc0C_50
+	Mem34[0x13030<32>:word32] = dwLoc0C_51
+	Mem38[0x13034<32>:word32] = ~dwLoc0C_51
 l000111F4:
-	Mem41[0x13034<32>:word32] = ~r8_7
+	Mem42[0x13034<32>:word32] = ~r8_7
 l00011268:
 	return
 fn000111C4_exit:
@@ -161,7 +161,7 @@ l00011344:
 l00011330:
 	word32 r8_64 = Mem39[Mem39[0x1303C<32>:word32]:word32]
 	call r8_64 (retsize: 0;)
-		uses: r4:r4,r5:r5,r6:r6,r8:r8_64
+		uses: Mem:Mem39,r4:r4,r5:r5,r6:r6,r8:r8_64
 
 
 void fn000113D8(word32 r4)

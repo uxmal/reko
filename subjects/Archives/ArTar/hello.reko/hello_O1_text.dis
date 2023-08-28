@@ -178,7 +178,7 @@ l00000000000012B3:
 	word64 rbx_45 = 0<u64>
 l00000000000012B8:
 	call Mem30[0x0000000000003DD8<p64> + rbx_45 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
+		uses: Mem:Mem30,rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_45 = rbx_45 + 1<64>
 	branch rbp_31 >> 3<64> != rbx_45 l00000000000012B8
 l00000000000012CE:

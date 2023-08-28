@@ -63,7 +63,7 @@ l00011568:
 	Mem47[l0_42:word32] = o0_44
 	word32 o1_48 = Mem47[o0_44 + -4<i32>:word32]
 	call o1_48 (retsize: 0;)
-		uses: l0:l0_73,o0:o0_45,o1:o1_48,o2:o2_50,o3:o3_51,o4:o4_52,o5:o5_53,o7:0x00011570<p32>
+		uses: l0:l0_73,Mem:Mem47,o0:o0_45,o1:o1_48,o2:o2_50,o3:o3_51,o4:o4_52,o5:o5_53,o7:0x00011570<p32>
 		defs: l0:l0_73,l7:l7_71,o2:o2_61,o3:o3_63,o4:o4_65,o5:o5_67
 	word32 o0_75 = Mem47[l0_42:word32]
 	branch Mem47[o0_75:word32] != 0<32> l00011588_ds_t
@@ -3568,7 +3568,7 @@ l00015408_ds_t:
 l00015420:
 	word32 o0_65
 	call o3 (retsize: 0;)
-		uses: o0:i1_49,o1:o0_34 & 0x7FFFFFFF<32>,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015420<p32>
+		uses: Mem:Mem52,o0:i1_49,o1:o0_34 & 0x7FFFFFFF<32>,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015420<p32>
 		defs: i0:i0_64,o0:o0_65,o2:o2_69,o3:o3_71,o4:o4_73,o5:o5_75
 	i1_104 = o0_65
 l00015408_ds_f:
@@ -3576,7 +3576,7 @@ l00015408_ds_f:
 l0001540C:
 	word32 o0_88
 	call o3 (retsize: 0;)
-		uses: o0:Mem82[o0 + 36<i32>:word32],o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015410<p32>
+		uses: Mem:Mem82,o0:Mem82[o0 + 36<i32>:word32],o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x00015410<p32>
 		defs: i0:i0_87,o0:o0_88,o2:o2_92,o3:o3_94,o4:o4_96,o5:o5_98
 	i1_104 = o0_88
 l0001542C:
@@ -3600,7 +3600,7 @@ l00015434_ds_f:
 l00015438:
 	word32 o1_142 = Mem140[0x2802C<32>:word32]
 	call o1_142 (retsize: 0;)
-		uses: o0:0x28000<32>,o1:o1_142,o2:o2_144,o3:o3_145,o4:o4_146,o5:o5_147,o7:0x00015440<p32>
+		uses: Mem:Mem140,o0:0x28000<32>,o1:o1_142,o2:o2_144,o3:o3_145,o4:o4_146,o5:o5_147,o7:0x00015440<p32>
 
 
 void _obstack_begin_1(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5)
@@ -3641,7 +3641,7 @@ l000154D0_ds_t:
 l000154E8:
 	word32 o0_68
 	call o3 (retsize: 0;)
-		uses: o0:i1_49,o1:0x80000000<32>,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154E8<p32>
+		uses: Mem:Mem55,o0:i1_49,o1:0x80000000<32>,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154E8<p32>
 		defs: i0:i0_67,o0:o0_68,o2:o2_72,o3:o3_74,o4:o4_76,o5:o5_78
 	i1_107 = o0_68
 l000154D0_ds_f:
@@ -3649,7 +3649,7 @@ l000154D0_ds_f:
 l000154D4:
 	word32 o0_91
 	call o3 (retsize: 0;)
-		uses: o0:o5,o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154D8<p32>
+		uses: Mem:Mem85,o0:o5,o1:i1_49,o2:o2_39,o3:o3,o4:o4,o5:o5,o7:0x000154D8<p32>
 		defs: i0:i0_90,o0:o0_91,o2:o2_95,o3:o3_97,o4:o4_99,o5:o5_101
 	i1_107 = o0_91
 l000154F4:
@@ -3673,7 +3673,7 @@ l000154FC_ds_f:
 l00015500:
 	word32 o1_145 = Mem143[0x2802C<32>:word32]
 	call o1_145 (retsize: 0;)
-		uses: o0:0x28000<32>,o1:o1_145,o2:o2_147,o3:o3_148,o4:o4_149,o5:o5_150,o7:0x00015508<p32>
+		uses: Mem:Mem143,o0:0x28000<32>,o1:o1_145,o2:o2_147,o3:o3_148,o4:o4_149,o5:o5_150,o7:0x00015508<p32>
 
 
 void _obstack_newchunk(word32 o0, word32 o1, word32 o3, word32 o4, word32 o5)
@@ -3710,14 +3710,14 @@ l00015590_ds_t:
 l000155AC:
 	word32 o0_52
 	call o1_41 (retsize: 0;)
-		uses: o0:i1_43,o1:o1_41,o2:o2_26,o3:o3,o4:o4,o5:o5,o7:0x000155AC<p32>
+		uses: Mem:Mem0,o0:i1_43,o1:o1_41,o2:o2_26,o3:o3,o4:o4,o5:o5,o7:0x000155AC<p32>
 		defs: i0:i0_51,i1:i1_53,l1:l1_68,l2:l2_66,o0:o0_52,o2:o2_56,o3:o3_58,o4:o4_60,o5:o5_62
 	l0_100 = o0_52
 l00015594:
 	word32 o2_73 = Mem0[o0 + 28<i32>:word32]
 	word32 o0_79
 	call o2_73 (retsize: 0;)
-		uses: o0:Mem0[o0 + 36<i32>:word32],o1:i1_43,o2:o2_73,o3:o3,o4:o4,o5:o5,o7:0x0001559C<p32>
+		uses: Mem:Mem0,o0:Mem0[o0 + 36<i32>:word32],o1:i1_43,o2:o2_73,o3:o3,o4:o4,o5:o5,o7:0x0001559C<p32>
 		defs: i0:i0_78,i1:i1_80,l1:l1_95,l2:l2_93,o0:o0_79,o2:o2_83,o3:o3_85,o4:o4_87,o5:o5_89
 	l0_100 = o0_79
 l000155B8:
@@ -3727,7 +3727,7 @@ l000155C0_ds_t:
 l000155C4:
 	word32 o1_108 = Mem0[0x2802C<32>:word32]
 	call o1_108 (retsize: 0;)
-		uses: o0:0x28000<32>,o1:o1_108,o2:o2_110,o3:o3_111,o4:o4_112,o5:o5_113,o7:0x000155CC<p32>
+		uses: Mem:Mem0,o0:0x28000<32>,o1:o1_108,o2:o2_110,o3:o3_111,o4:o4_112,o5:o5_113,o7:0x000155CC<p32>
 		defs: i0:i0_116,i1:i1_118,l0:l0_134,l1:l1_133,l2:l2_131,o2:o2_121,o4:o4_125,o5:o5_127
 	Mem137[i0_104 + 4<i32>:word32] = l0_100
 l000155D8:
@@ -3804,13 +3804,13 @@ l000156BC_ds_t:
 	word32 o2_252 = Mem247[i0_104 + 32<i32>:word32]
 l00015640:
 	call o2_252 (retsize: 0;)
-		uses: o0:Mem247[i0_145 + 36<i32>:word32],o1:l1_142,o2:o2_252,o3:o3_256,o4:o4_258,o5:o5_263,o7:0x00015644<p32>
+		uses: Mem:Mem247,o0:Mem247[i0_145 + 36<i32>:word32],o1:l1_142,o2:o2_252,o3:o3_256,o4:o4_258,o5:o5_263,o7:0x00015644<p32>
 		defs: i0:i0_273,i1:i1_275,l2:l2_288
 	o0_229 = Mem247[i0_104 + 40<i32>:word32]
 l000156C0:
 	word32 o1_295 = Mem247[i0_104 + 32<i32>:word32]
 	call o1_295 (retsize: 0;)
-		uses: o0:l1_142,o1:o1_295,o2:o2_298,o3:o3_256,o4:o4_258,o5:o5_263,o7:0x000156C4<p32>
+		uses: Mem:Mem247,o0:l1_142,o1:o1_295,o2:o2_298,o3:o3_256,o4:o4_258,o5:o5_263,o7:0x000156C4<p32>
 		defs: i0:i0_303,i1:i1_305,l2:l2_318
 	o0_229 = Mem247[i0_104 + 40<i32>:word32]
 l000156D0:
@@ -3884,7 +3884,7 @@ l00015738_ds_t:
 l00015754:
 	word32 o1_48 = Mem33[i0_109 + 32<i32>:word32]
 	call o1_48 (retsize: 0;)
-		uses: l0:l0_76,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015758<p32>
+		uses: l0:l0_76,Mem:Mem33,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015758<p32>
 		defs: i0:i0_60,i1:i1_62,l0:l0_76,o2:o2_65,o4:o4_69,o5:o5_71
 	o1_103 = Mem33[i0_109 + 40<i32>:word32]
 	l0_107 = l0_76
@@ -3892,7 +3892,7 @@ l00015738_ds_f:
 l0001573C:
 	word32 o2_80 = Mem33[i0_109 + 32<i32>:word32]
 	call o2_80 (retsize: 0;)
-		uses: l0:l0_101,o0:Mem33[i0_32 + 36<i32>:word32],o1:o3_22,o2:o2_80,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015744<p32>
+		uses: l0:l0_101,Mem:Mem33,o0:Mem33[i0_32 + 36<i32>:word32],o1:o3_22,o2:o2_80,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015744<p32>
 		defs: i0:i0_85,i1:i1_87,l0:l0_101,o2:o2_90,o4:o4_94,o5:o5_96
 	o1_103 = Mem33[i0_109 + 40<i32>:word32]
 	l0_107 = l0_101
@@ -3954,7 +3954,7 @@ l000157E8_ds_t:
 l00015804:
 	word32 o1_48 = Mem33[i0_109 + 32<i32>:word32]
 	call o1_48 (retsize: 0;)
-		uses: l0:l0_76,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015808<p32>
+		uses: l0:l0_76,Mem:Mem33,o0:o3_22,o1:o1_48,o2:o2_52,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x00015808<p32>
 		defs: i0:i0_60,i1:i1_62,l0:l0_76,o2:o2_65,o4:o4_69,o5:o5_71
 	o1_103 = Mem33[i0_109 + 40<i32>:word32]
 	l0_107 = l0_76
@@ -3962,7 +3962,7 @@ l000157E8_ds_f:
 l000157EC:
 	word32 o2_80 = Mem33[i0_109 + 32<i32>:word32]
 	call o2_80 (retsize: 0;)
-		uses: l0:l0_101,o0:Mem33[i0_32 + 36<i32>:word32],o1:o3_22,o2:o2_80,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x000157F4<p32>
+		uses: l0:l0_101,Mem:Mem33,o0:Mem33[i0_32 + 36<i32>:word32],o1:o3_22,o2:o2_80,o3:o3_22,o4:o4_54,o5:o5_56,o7:0x000157F4<p32>
 		defs: i0:i0_85,i1:i1_87,l0:l0_101,o2:o2_90,o4:o4_94,o5:o5_96
 	o1_103 = Mem33[i0_109 + 40<i32>:word32]
 	l0_107 = l0_101
@@ -5250,7 +5250,7 @@ l00016B84:
 l00016B90:
 	word32 i6_201
 	call o0_31 (retsize: 0;)
-		uses: l1:0x2B640<32>,o0:o0,o1:o1,o2:o0_39,o3:o3,o4:o4,o5:o5,o7:0x00016B94<p32>,Stack +0078:dwLoc18,Stack +007C:dwLoc14,Stack +00EC:dwArg5C
+		uses: l1:0x2B640<32>,Mem:Mem72,o0:o0,o1:o1,o2:o0_39,o3:o3,o4:o4,o5:o5,o7:0x00016B94<p32>,Stack +0078:dwLoc18,Stack +007C:dwLoc14,Stack +00EC:dwArg5C
 		defs: i6:i6_201
 	fprintf(0x2B640<32>, "%s: ", Mem72[i6_201 + 76<i32>:word32])
 	fprintf(0x2B640<32>, Mem72[0x28078<32>:word32], 0<32>)
@@ -5422,7 +5422,7 @@ l00016E94_ds_f:
 l00016E98:
 	word32 o0_35 = Mem0[l0_31:word32]
 	call o0_35 (retsize: 0;)
-		uses: l0:l0_33 + 0xFFFFFFFC<32>,o0:o0_35,o1:o1_38,o2:o2_39,o3:o3_40,o4:o4_41,o5:o5_42,o7:0x00016E9C<p32>
+		uses: l0:l0_33 + 0xFFFFFFFC<32>,Mem:Mem0,o0:o0_35,o1:o1_38,o2:o2_39,o3:o3_40,o4:o4_41,o5:o5_42,o7:0x00016E9C<p32>
 		defs: l0:l0_62,o1:o1_48,o2:o2_50,o3:o3_52,o4:o4_54,o5:o5_56
 	branch Mem0[l0_31:word32] != 0xFFFFFFFF<32> l00016E98
 l00016EB4:

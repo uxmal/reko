@@ -185,7 +185,7 @@ l00002644:
 l00002650:
 	word32 d0_25
 	call a0_9 (retsize: 4;)
-		uses: a5:a5,a6:fp - 4<32>,Stack +0004:dwArg04,Stack +0010:dwArg04
+		uses: a5:a5,a6:fp - 4<32>,Mem:Mem17,Stack +0004:dwArg04,Stack +0010:dwArg04
 		defs: a5:a5_23,a6:a6_22,d0:d0_25
 	branch d0_25 == 0<32> l00002664
 l00002664:
@@ -280,7 +280,7 @@ l000027A0:
 	word32 a6_16
 	word32 a5_18
 	call a5 + 90<i32> (retsize: 4;)
-		uses: a5:a5,a6:fp - 4<32>,d2:18<i32>,Stack +0004:18<i32>,Stack +0008:a6
+		uses: a5:a5,a6:fp - 4<32>,d2:18<i32>,Mem:Mem10,Stack +0004:18<i32>,Stack +0008:a6
 		defs: a5:a5_18,a6:a6_16
 	a6Out = Mem10[a6_16:word32]
 	return a5_18
@@ -762,7 +762,7 @@ l00002C4E:
 	word32 a5_308
 	word32 a1_309
 	call 0x00002C58<p32> + CONVERT(v25_294, word16, int32) (retsize: 0;)
-		uses: a1:a1_309,a2:dwArg04,a3:a3_101,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_74 + 3<32>, word16, 16), v25_294),Stack +0008:tLoc1C,Stack +001C:tLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
+		uses: a1:a1_309,a2:dwArg04,a3:a3_101,a5:a5,a6:fp - 4<32>,d0:SEQ(SLICE(d0_74 + 3<32>, word16, 16), v25_294),Mem:Mem109,Stack +0008:tLoc1C,Stack +001C:tLoc08,Stack +0028:dwArg04,Stack +002C:dwArg08
 		defs: a1:a1_309,a5:a5_308,a6:a6_301,d0:d0_306
 	a5Out = a5_308
 	a6Out = a6_301

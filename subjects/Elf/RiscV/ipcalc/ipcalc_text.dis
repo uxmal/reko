@@ -43,13 +43,13 @@ l0000000000015378:
 l0000000000015588:
 	__printf_chk(1<i32>, 0x119C8<64>, a2)
 l000000000001537C:
-	branch CONVERT(Mem88[&qwLoc01A8 + 4<i64>:int32], int32, int64) == 0<64> l00000000000153B4
+	branch CONVERT(Mem86[&qwLoc01A8 + 4<i64>:int32], int32, int64) == 0<64> l00000000000153B4
 l0000000000015384:
 	branch true l00000000000153B4
 l00000000000153B4:
-	word64 a6_1013
-	word64 a4_530
-	word64 a0_527
+	word64 a6_1015
+	word64 a4_532
+	word64 a0_529
 	word64 a4_322
 	word64 a5_338
 	word64 a0_174
@@ -62,7 +62,7 @@ l0000000000015924:
 	word64 a1_2795
 	word64 a3_2797
 	word64 a4_2798
-	branch fn0000000000017924(gp, a0_60, out a1_2795, out a2_2796, out a3_2797, out a4_2798, out a6_1013) != 0<64> l0000000000015458
+	branch fn0000000000017924(gp, a0_60, out a1_2795, out a2_2796, out a3_2797, out a4_2798, out a6_1015) != 0<64> l0000000000015458
 l0000000000015930:
 	branch true l0000000000015458
 l0000000000015940:
@@ -72,7 +72,7 @@ l00000000000153BC:
 	word64 a1_2799
 	word64 a2_2800
 	word64 a3_2801
-	branch fn0000000000017924(gp, a0_60, out a1_2799, out a2_2800, out a3_2801, out a4_2802, out a6_1013) == 0<64> l0000000000015434
+	branch fn0000000000017924(gp, a0_60, out a1_2799, out a2_2800, out a3_2801, out a4_2802, out a6_1015) == 0<64> l0000000000015434
 l0000000000015434:
 	branch true l00000000000153CC
 l0000000000015444:
@@ -218,14 +218,14 @@ l0000000000015B88:
 l0000000000015B8C:
 	__fprintf_chk(a0_174, 1<i32>, 0x11A70<64>, a3, a4)
 l00000000000155FC:
-	a4_322 = CONVERT(Mem433[&qwLoc01A8 + 4<i64>:int32], int32, int64)
+	a4_322 = CONVERT(Mem435[&qwLoc01A8 + 4<i64>:int32], int32, int64)
 	branch a4_322 == 0<64> l00000000000159B0
 l00000000000159B0:
-	a0_527 = fn0000000000016D74(ra, gp, s1_139, a5_338, &tLoc0188, s0_126, a4_322, a5_338, a6_1013, a7, fa3, fa4, out a4_530)
+	a0_529 = fn0000000000016D74(ra, gp, s1_139, a5_338, &tLoc0188, s0_126, a4_322, a5_338, a6_1015, a7, fa3, fa4, out a4_532)
 l0000000000015604:
-	a0_527 = fn00000000000175BC(ra, gp, s1_139, s1_139, a5_338, &tLoc0188, s0_126, a4_322, fa3, fa4, out a4_530)
+	a0_529 = fn00000000000175BC(ra, gp, s1_139, s1_139, a5_338, &tLoc0188, s0_126, a4_322, fa3, fa4, out a4_532)
 l0000000000015618:
-	branch a0_527 < 0<64> l00000000000153D8
+	branch a0_529 < 0<64> l00000000000153D8
 l000000000001561C:
 	branch (s0_126 & 4294623231<i64>) != 0<64> l0000000000015630
 l000000000001562C:
@@ -233,8 +233,8 @@ l000000000001562C:
 l0000000000015630:
 	branch CONVERT(isatty(1<i32>), int32, uint64) == 0<64> l0000000000015644
 l000000000001563C:
-	Mem561[gp + 2064<i64>:word32] = 1<32>
-	a4_530 = 1<i64>
+	Mem563[gp + 2064<i64>:word32] = 1<32>
+	a4_532 = 1<i64>
 l0000000000015644:
 	branch (s0_126 & 8<i64>) == 0<64> l00000000000159C8
 l00000000000159C8:
@@ -248,7 +248,7 @@ l0000000000015D48:
 l00000000000159D8:
 	branch (s0_126 & 64<i64>) == 0<64> l00000000000159FC
 l00000000000159E0:
-	branch CONVERT(Mem569[&qwLoc01A8 + 4<i64>:int32], int32, int64) != 0<64> l00000000000159FC
+	branch CONVERT(Mem571[&qwLoc01A8 + 4<i64>:int32], int32, int64) != 0<64> l00000000000159FC
 l00000000000159E8:
 	__printf_chk(1<i32>, 0x11C48<64>, a2)
 l00000000000159FC:
@@ -262,22 +262,22 @@ l0000000000015D78:
 l0000000000015A0C:
 	branch (s0_126 & 1024<i64>) == 0<64> l0000000000015A2C
 l0000000000015A14:
-	branch Mem569[&tLoc0188 + 168<i64>:word64] == 0<64> l0000000000015A2C
+	branch Mem571[&tLoc0188 + 168<i64>:word64] == 0<64> l0000000000015A2C
 l0000000000015A1C:
 	__printf_chk(1<i32>, 0x11C78<64>, a2)
 l0000000000015A2C:
 	branch s0_126 << 0x34<u32> >= 0<64> l0000000000015A4C
 l0000000000015A34:
-	branch Mem569[&tLoc0188 + 176<i64>:word64] == 0<64> l0000000000015A4C
+	branch Mem571[&tLoc0188 + 176<i64>:word64] == 0<64> l0000000000015A4C
 l0000000000015A3C:
 	__printf_chk(1<i32>, 0x11C88<64>, a2)
 l0000000000015A4C:
 	branch s0_126 << 0x32<u32> >= 0<64> l0000000000015A80
 l0000000000015A54:
-	word64 s2_637 = Mem569[&tLoc0188 + 184<i64>:word64]
-	branch s2_637 == 0<64> l0000000000015A80
+	word64 s2_639 = Mem571[&tLoc0188 + 184<i64>:word64]
+	branch s2_639 == 0<64> l0000000000015A80
 l0000000000015A5C:
-	branch strchr(s2_637, ' ') == 0<64> l0000000000015DA4
+	branch strchr(s2_639, ' ') == 0<64> l0000000000015DA4
 l0000000000015DA4:
 	__printf_chk(1<i32>, 0x11CA8<64>, a2)
 l0000000000015A70:
@@ -293,7 +293,7 @@ l0000000000015A9C:
 l0000000000015AAC:
 	branch (s0_126 & 1<i64>) == 0<64> l0000000000015ACC
 l0000000000015AB4:
-	branch Mem569[&tLoc0188 + 56<i64>:word64] == 0<64> l0000000000015ACC
+	branch Mem571[&tLoc0188 + 56<i64>:word64] == 0<64> l0000000000015ACC
 l0000000000015ABC:
 	__printf_chk(1<i32>, 0x11CD8<64>, a2)
 l0000000000015ACC:
@@ -303,209 +303,209 @@ l0000000000015D60:
 l0000000000015AD4:
 	branch (s0_126 & 0xC000<64>) != 0xC000<64> l00000000000153DC
 l0000000000015AE0:
-	branch Mem569[&tLoc0188 + 72<i64>:word64] == 0<64> l0000000000015AF8
+	branch Mem571[&tLoc0188 + 72<i64>:word64] == 0<64> l0000000000015AF8
 l0000000000015AE8:
 	__printf_chk(1<i32>, 0x11CF8<64>, a2)
 l0000000000015AF8:
-	word64 s0_709 = Mem569[&tLoc0188 + 64<i64>:word64]
-	branch s0_709 == 0<64> l0000000000015B24
+	word64 s0_711 = Mem571[&tLoc0188 + 64<i64>:word64]
+	branch s0_711 == 0<64> l0000000000015B24
 l0000000000015B00:
-	branch strchr(s0_709, ' ') == 0<64> l0000000000015E90
+	branch strchr(s0_711, ' ') == 0<64> l0000000000015E90
 l0000000000015E90:
 	__printf_chk(1<i32>, 0x11D18<64>, a2)
 l0000000000015B14:
 	__printf_chk(1<i32>, 0x11D08<64>, a2)
 l0000000000015B24:
-	word64 s0_724 = Mem569[&tLoc0188 + 80<i64>:word64]
-	branch s0_724 == 0<64> l0000000000015B50
+	word64 s0_726 = Mem571[&tLoc0188 + 80<i64>:word64]
+	branch s0_726 == 0<64> l0000000000015B50
 l0000000000015B2C:
-	branch strchr(s0_724, ' ') == 0<64> l0000000000015EA4
+	branch strchr(s0_726, ' ') == 0<64> l0000000000015EA4
 l0000000000015EA4:
 	__printf_chk(1<i32>, 0x11D38<64>, a2)
 l0000000000015B40:
 	__printf_chk(1<i32>, 0x11D28<64>, a2)
 l0000000000015B50:
-	branch Mem569[&tLoc0188 + 88<i64>:word64] == 0<64> l00000000000153DC
+	branch Mem571[&tLoc0188 + 88<i64>:word64] == 0<64> l00000000000153DC
 l0000000000015B58:
 	__printf_chk(1<i32>, 0x11D48<64>, a2)
 l000000000001564C:
-	word64 a4_1009
-	word64 a5_1024
-	word64 s0_1030
-	word64 a3_1008
-	word64 a5_746
-	word64 s4_786
-	word64 a3_750
-	word64 s2_745 = CONVERT(Mem569[&tLoc0188 + 160<i64>:int32], int32, int64)
-	branch CONVERT(Mem569[&qwLoc01A8 + 4<i64>:int32], int32, int64) != 0<64> l000000000001590C
+	word64 a4_1011
+	word64 a5_1026
+	word64 s0_1032
+	word64 a3_1010
+	word64 a5_748
+	word64 s4_788
+	word64 a3_752
+	word64 s2_747 = CONVERT(Mem571[&tLoc0188 + 160<i64>:int32], int32, int64)
+	branch CONVERT(Mem571[&qwLoc01A8 + 4<i64>:int32], int32, int64) != 0<64> l000000000001590C
 l000000000001590C:
-	a5_746 = 128<i64>
-	branch s2_745 != 128<i64> l0000000000015660
+	a5_748 = 128<i64>
+	branch s2_747 != 128<i64> l0000000000015660
 l0000000000015658:
-	a5_746 = 32<i64>
-	branch s2_745 == 32<i64> l0000000000015914
+	a5_748 = 32<i64>
+	branch s2_747 == 32<i64> l0000000000015914
 l0000000000015914:
-	a3_750 = Mem569[&tLoc0188 + 8<i64>:word64]
-	branch a3_750 == 0<64> l0000000000015DDC
+	a3_752 = Mem571[&tLoc0188 + 8<i64>:word64]
+	branch a3_752 == 0<64> l0000000000015DDC
 l0000000000015DDC:
 	word64 a5_2807
-	gp = fn000000000001654C(gp, Mem569[&tLoc0188:word64], a4_530, a5_746, a6_1013, a7, out a4_1009, out a5_2807, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, Mem571[&tLoc0188:word64], a4_532, a5_748, a6_1015, a7, out a4_1011, out a5_2807, out a6_1015, out a7)
 l000000000001591C:
-	s4_786 = 1<i64>
+	s4_788 = 1<i64>
 l0000000000015660:
 	branch true l0000000000015860
 l0000000000015860:
-	word64 s3_803 = Mem569[&tLoc0188:word64]
-	branch CONVERT(strcmp(Mem569[&tLoc0188 + 32<i64>:word64], s3_803), int32, uint64) == 0<64> l0000000000015664
+	word64 s3_805 = Mem571[&tLoc0188:word64]
+	branch CONVERT(strcmp(Mem571[&tLoc0188 + 32<i64>:word64], s3_805), int32, uint64) == 0<64> l0000000000015664
 l0000000000015874:
-	a3_750 = Mem569[&tLoc0188 + 8<i64>:word64]
-	s4_786 = 0<i64>
-	branch a3_750 == 0<64> l0000000000015E14
+	a3_752 = Mem571[&tLoc0188 + 8<i64>:word64]
+	s4_788 = 0<i64>
+	branch a3_752 == 0<64> l0000000000015E14
 l0000000000015E14:
 	word64 a4_2806
-	gp = fn000000000001654C(gp, s3_803, a4_530, a5_746, a6_1013, a7, out a4_2806, out a5_746, out a6_1013, out a7)
-	s2_745 = CONVERT(Mem569[&tLoc0188 + 160<i64>:int32], int32, int64)
+	gp = fn000000000001654C(gp, s3_805, a4_532, a5_748, a6_1015, a7, out a4_2806, out a5_748, out a6_1015, out a7)
+	s2_747 = CONVERT(Mem571[&tLoc0188 + 160<i64>:int32], int32, int64)
 l0000000000015880:
-	word64 a4_849
-	word64 a5_850
-	word64 a6_851
-	word64 a7_852
-	gp = fn000000000001654C(fn000000000001654C(gp, a3_750, a4_530, a5_746, a6_1013, a7, out a4_849, out a5_850, out a6_851, out a7_852), Mem569[&tLoc0188:word64], a4_849, a5_850, a6_851, a7_852, out a4_1009, out a5_746, out a6_1013, out a7)
-	branch s4_786 == 0<64> l0000000000015E74
+	word64 a4_851
+	word64 a5_852
+	word64 a6_853
+	word64 a7_854
+	gp = fn000000000001654C(fn000000000001654C(gp, a3_752, a4_532, a5_748, a6_1015, a7, out a4_851, out a5_852, out a6_853, out a7_854), Mem571[&tLoc0188:word64], a4_851, a5_852, a6_853, a7_854, out a4_1011, out a5_748, out a6_1015, out a7)
+	branch s4_788 == 0<64> l0000000000015E74
 l0000000000015E74:
-	s2_745 = CONVERT(Mem569[&tLoc0188 + 160<i64>:int32], int32, int64)
+	s2_747 = CONVERT(Mem571[&tLoc0188 + 160<i64>:int32], int32, int64)
 l00000000000158B8:
-	a5_1024 = 65544<i64>
+	a5_1026 = 65544<i64>
 	branch (s0_126 & 65544<i64>) == 65544<i64> l0000000000015E64
 l0000000000015E64:
-	a3_1008 = Mem569[&tLoc0188 + 24<i64>:word64]
-	s0_1030 = 1<i64>
-	branch a3_1008 != 0<64> l0000000000015C2C
+	a3_1010 = Mem571[&tLoc0188 + 24<i64>:word64]
+	s0_1032 = 1<i64>
+	branch a3_1010 != 0<64> l0000000000015C2C
 l0000000000015E70:
 l0000000000015664:
 l0000000000015668:
-	word64 a3_892 = Mem569[&tLoc0188 + 16<i64>:word64]
-	branch a3_892 == 0<64> l0000000000015690
+	word64 a3_894 = Mem571[&tLoc0188 + 16<i64>:word64]
+	branch a3_894 == 0<64> l0000000000015690
 l0000000000015674:
 	word64 a4_2804
-	gp = fn000000000001654C(gp, a3_892, s2_745, a5_746, a6_1013, a7, out a4_2804, out a5_746, out a6_1013, out a7)
-	s2_745 = CONVERT(Mem569[&tLoc0188 + 160<i64>:int32], int32, int64)
+	gp = fn000000000001654C(gp, a3_894, s2_747, a5_748, a6_1015, a7, out a4_2804, out a5_748, out a6_1015, out a7)
+	s2_747 = CONVERT(Mem571[&tLoc0188 + 160<i64>:int32], int32, int64)
 l0000000000015690:
-	word64 a5_943
-	word64 a6_944
-	word64 a7_945
-	word64 a5_961
+	word64 a5_945
+	word64 a6_946
+	word64 a7_947
+	word64 a5_963
 	word64 a4_2803
-	gp = fn000000000001654C(fn000000000001654C(gp, Mem569[&tLoc0188 + 32<i64>:word64], s2_745, a5_746, a6_1013, a7, out a4_2803, out a5_943, out a6_944, out a7_945), Mem569[&tLoc0188 + 48<i64>:word64], CONVERT(Mem569[&tLoc0188 + 160<i64>:int32], int32, int64), a5_943, a6_944, a7_945, out a4_1009, out a5_961, out a6_1013, out a7)
-	word64 a3_967 = Mem569[&tLoc0188 + 40<i64>:word64]
-	branch a3_967 == 0<64> l00000000000156EC
+	gp = fn000000000001654C(fn000000000001654C(gp, Mem571[&tLoc0188 + 32<i64>:word64], s2_747, a5_748, a6_1015, a7, out a4_2803, out a5_945, out a6_946, out a7_947), Mem571[&tLoc0188 + 48<i64>:word64], CONVERT(Mem571[&tLoc0188 + 160<i64>:int32], int32, int64), a5_945, a6_946, a7_947, out a4_1011, out a5_963, out a6_1015, out a7)
+	word64 a3_969 = Mem571[&tLoc0188 + 40<i64>:word64]
+	branch a3_969 == 0<64> l00000000000156EC
 l00000000000156D4:
 	word64 a5_2805
-	gp = fn000000000001654C(gp, a3_967, a4_1009, a5_961, a6_1013, a7, out a4_1009, out a5_2805, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_969, a4_1011, a5_963, a6_1015, a7, out a4_1011, out a5_2805, out a6_1015, out a7)
 l00000000000156EC:
-	a5_1024 = 65544<i64>
+	a5_1026 = 65544<i64>
 	branch (s0_126 & 65544<i64>) == 65544<i64> l0000000000015C1C
 l0000000000015C1C:
-	a3_1008 = Mem569[&tLoc0188 + 24<i64>:word64]
-	branch a3_1008 == 0<64> l00000000000156FC
+	a3_1010 = Mem571[&tLoc0188 + 24<i64>:word64]
+	branch a3_1010 == 0<64> l00000000000156FC
 l0000000000015C24:
-	s0_1030 = 0<i64>
+	s0_1032 = 0<i64>
 l0000000000015C2C:
-	gp = fn000000000001654C(gp, a3_1008, a4_1009, 65544<i64>, a6_1013, a7, out a4_1009, out a5_1024, out a6_1013, out a7)
-	branch s0_1030 != 0<64> l00000000000158C8
+	gp = fn000000000001654C(gp, a3_1010, a4_1011, 65544<i64>, a6_1015, a7, out a4_1011, out a5_1026, out a6_1015, out a7)
+	branch s0_1032 != 0<64> l00000000000158C8
 l00000000000158C8:
-	word64 a3_1035 = Mem569[&tLoc0188 + 184<i64>:word64]
-	branch a3_1035 == 0<64> l00000000000158E8
+	word64 a3_1037 = Mem571[&tLoc0188 + 184<i64>:word64]
+	branch a3_1037 == 0<64> l00000000000158E8
 l00000000000158D0:
-	gp = fn000000000001654C(gp, a3_1035, a4_1009, a5_1024, a6_1013, a7, out a4_1009, out a5_1024, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1037, a4_1011, a5_1026, a6_1015, a7, out a4_1011, out a5_1026, out a6_1015, out a7)
 l00000000000158E8:
-	word64 a3_1060 = Mem569[&tLoc0188 + 192<i64>:word64]
-	branch a3_1060 == 0<64> l00000000000157BC
+	word64 a3_1062 = Mem571[&tLoc0188 + 192<i64>:word64]
+	branch a3_1062 == 0<64> l00000000000157BC
 l00000000000158F0:
 	word64 a5_2808
-	gp = fn000000000001654C(gp, a3_1060, a4_1009, a5_1024, a6_1013, a7, out a4_1009, out a5_2808, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1062, a4_1011, a5_1026, a6_1015, a7, out a4_1011, out a5_2808, out a6_1015, out a7)
 l0000000000015C44:
 l00000000000156FC:
 	putchar(10<i32>)
-	word64 a3_1087 = Mem569[&tLoc0188 + 184<i64>:word64]
-	branch a3_1087 == 0<64> l0000000000015728
+	word64 a3_1089 = Mem571[&tLoc0188 + 184<i64>:word64]
+	branch a3_1089 == 0<64> l0000000000015728
 l000000000001570C:
-	gp = fn000000000001654C(gp, a3_1087, a4_1009, a5_1024, a6_1013, a7, out a4_1009, out a5_1024, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1089, a4_1011, a5_1026, a6_1015, a7, out a4_1011, out a5_1026, out a6_1015, out a7)
 l0000000000015728:
-	word64 a3_1112 = Mem569[&tLoc0188 + 192<i64>:word64]
-	branch a3_1112 == 0<64> l000000000001574C
+	word64 a3_1114 = Mem571[&tLoc0188 + 192<i64>:word64]
+	branch a3_1114 == 0<64> l000000000001574C
 l0000000000015730:
-	gp = fn000000000001654C(gp, a3_1112, a4_1009, a5_1024, a6_1013, a7, out a4_1009, out a5_1024, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1114, a4_1011, a5_1026, a6_1015, a7, out a4_1011, out a5_1026, out a6_1015, out a7)
 l000000000001574C:
-	word64 a3_1137 = Mem569[&tLoc0188 + 168<i64>:word64]
-	branch a3_1137 == 0<64> l000000000001576C
+	word64 a3_1139 = Mem571[&tLoc0188 + 168<i64>:word64]
+	branch a3_1139 == 0<64> l000000000001576C
 l0000000000015754:
-	gp = fn000000000001654C(gp, a3_1137, a4_1009, a5_1024, a6_1013, a7, out a4_1009, out a5_1024, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1139, a4_1011, a5_1026, a6_1015, a7, out a4_1011, out a5_1026, out a6_1015, out a7)
 l000000000001576C:
-	word64 a3_1164 = Mem569[&tLoc0188 + 176<i64>:word64]
-	branch a3_1164 == 0<64> l000000000001578C
+	word64 a3_1166 = Mem571[&tLoc0188 + 176<i64>:word64]
+	branch a3_1166 == 0<64> l000000000001578C
 l0000000000015774:
 	word64 a5_2809
-	gp = fn000000000001654C(gp, a3_1164, a4_1009, a5_1024, a6_1013, a7, out a4_1009, out a5_2809, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1166, a4_1011, a5_1026, a6_1015, a7, out a4_1011, out a5_2809, out a6_1015, out a7)
 l000000000001578C:
-	word64 a5_1189 = CONVERT(Mem569[&qwLoc01A8 + 4<i64>:int32], int32, int64)
-	branch a5_1189 == 0<64> l00000000000157A0
+	word64 a5_1191 = CONVERT(Mem571[&qwLoc01A8 + 4<i64>:int32], int32, int64)
+	branch a5_1191 == 0<64> l00000000000157A0
 l0000000000015794:
-	a5_1189 = CONVERT(Mem569[&tLoc0188 + 160<i64>:int32], int32, int64)
-	a4_1009 = 111<i64>
-	branch a5_1189 <=u 111<i64> l0000000000015E3C
+	a5_1191 = CONVERT(Mem571[&tLoc0188 + 160<i64>:int32], int32, int64)
+	a4_1011 = 111<i64>
+	branch a5_1191 <=u 111<i64> l0000000000015E3C
 l0000000000015E3C:
 	word64 a5_2811
-	gp = fn000000000001654C(gp, CONVERT(0x80<32> - SLICE(a5_1189, word32, 0), word32, int64), &tLoc0188 + 96<i64>, a5_1189, a6_1013, a7, out a4_1009, out a5_2811, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, CONVERT(0x80<32> - SLICE(a5_1191, word32, 0), word32, int64), &tLoc0188 + 96<i64>, a5_1191, a6_1015, a7, out a4_1011, out a5_2811, out a6_1015, out a7)
 l00000000000157A0:
 	word64 a5_2810
-	gp = fn000000000001654C(gp, &tLoc0188 + 96<i64>, a4_1009, a5_1189, a6_1013, a7, out a4_1009, out a5_2810, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, &tLoc0188 + 96<i64>, a4_1011, a5_1191, a6_1015, a7, out a4_1011, out a5_2810, out a6_1015, out a7)
 l00000000000157BC:
-	word64 a5_1243 = Mem569[&tLoc0188 + 64<i64>:word64]
-	branch a5_1243 == 0<64> l0000000000015C08
+	word64 a5_1245 = Mem571[&tLoc0188 + 64<i64>:word64]
+	branch a5_1245 == 0<64> l0000000000015C08
 l0000000000015C08:
-	a5_1243 = Mem569[&tLoc0188 + 80<i64>:word64]
-	branch a5_1243 != 0<64> l00000000000157C4
+	a5_1245 = Mem571[&tLoc0188 + 80<i64>:word64]
+	branch a5_1245 != 0<64> l00000000000157C4
 l0000000000015C10:
-	a5_1243 = Mem569[&tLoc0188 + 88<i64>:word64]
-	branch a5_1243 != 0<64> l00000000000157C4
+	a5_1245 = Mem571[&tLoc0188 + 88<i64>:word64]
+	branch a5_1245 != 0<64> l00000000000157C4
 l0000000000015C18:
 l00000000000157C4:
 	putchar(10<i32>)
-	word64 a3_1250 = Mem569[&tLoc0188 + 72<i64>:word64]
-	branch a3_1250 == 0<64> l00000000000157F0
+	word64 a3_1252 = Mem571[&tLoc0188 + 72<i64>:word64]
+	branch a3_1252 == 0<64> l00000000000157F0
 l00000000000157D4:
-	gp = fn000000000001654C(gp, a3_1250, a4_1009, a5_1243, a6_1013, a7, out a4_1009, out a5_1243, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1252, a4_1011, a5_1245, a6_1015, a7, out a4_1011, out a5_1245, out a6_1015, out a7)
 l00000000000157F0:
-	word64 a3_1279 = Mem569[&tLoc0188 + 64<i64>:word64]
-	branch a3_1279 == 0<64> l0000000000015814
+	word64 a3_1281 = Mem571[&tLoc0188 + 64<i64>:word64]
+	branch a3_1281 == 0<64> l0000000000015814
 l00000000000157F8:
-	gp = fn000000000001654C(gp, a3_1279, a4_1009, a5_1243, a6_1013, a7, out a4_1009, out a5_1243, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1281, a4_1011, a5_1245, a6_1015, a7, out a4_1011, out a5_1245, out a6_1015, out a7)
 l0000000000015814:
-	word64 a3_1304 = Mem569[&tLoc0188 + 80<i64>:word64]
-	branch a3_1304 == 0<64> l0000000000015838
+	word64 a3_1306 = Mem571[&tLoc0188 + 80<i64>:word64]
+	branch a3_1306 == 0<64> l0000000000015838
 l000000000001581C:
-	gp = fn000000000001654C(gp, a3_1304, a4_1009, a5_1243, a6_1013, a7, out a4_1009, out a5_1243, out a6_1013, out a7)
+	gp = fn000000000001654C(gp, a3_1306, a4_1011, a5_1245, a6_1015, a7, out a4_1011, out a5_1245, out a6_1015, out a7)
 l0000000000015838:
-	word64 a3_1329 = Mem569[&tLoc0188 + 88<i64>:word64]
-	branch a3_1329 == 0<64> l00000000000153DC
+	word64 a3_1331 = Mem571[&tLoc0188 + 88<i64>:word64]
+	branch a3_1331 == 0<64> l00000000000153DC
 l0000000000015840:
 	word64 a7_2815
 	word64 a6_2814
 	word64 a4_2812
 	word64 a5_2813
-	gp = fn000000000001654C(gp, a3_1329, a4_1009, a5_1243, a6_1013, a7, out a4_2812, out a5_2813, out a6_2814, out a7_2815)
+	gp = fn000000000001654C(gp, a3_1331, a4_1011, a5_1245, a6_1015, a7, out a4_2812, out a5_2813, out a6_2814, out a7_2815)
 l00000000000153D0:
 	branch CONVERT(Mem94[gp + -2028<i64>:int32], int32, int64) == 0<64> l000000000001556C
 l000000000001556C:
 	fwrite(0x11A08<64>, SLICE(1<i64>, size_t, 0), SLICE(37<i64>, size_t, 0), Mem94[gp + -1920<i64>:word64])
 l000000000001538C:
-	branch CONVERT(Mem88[gp + -2028<i64>:int32], int32, int64) != 0<64> l00000000000153D8
+	branch CONVERT(Mem86[gp + -2028<i64>:int32], int32, int64) != 0<64> l00000000000153D8
 l00000000000153D8:
 l0000000000015394:
-	fwrite(0x119D8<64>, SLICE(1<i64>, size_t, 0), SLICE(46<i64>, size_t, 0), Mem88[gp + -1920<i64>:word64])
+	fwrite(0x119D8<64>, SLICE(1<i64>, size_t, 0), SLICE(46<i64>, size_t, 0), Mem86[gp + -1920<i64>:word64])
 l00000000000153DC:
-	branch a5_7 != Mem1370[gp + -1936<i64>:word64] l0000000000015E8C
+	branch a5_7 != Mem1372[gp + -1936<i64>:word64] l0000000000015E8C
 l0000000000015E8C:
 	__stack_chk_fail()
 l00000000000153EC:
@@ -523,7 +523,7 @@ l000000000001522C:
 	word64 fa3_1499
 	word64 fa4_1500
 	call a5_1469 (retsize: 0;)
-		uses: a0:a0_60,a1:a1,a2:a2_1494,a3:a3_1493,a4:0x102A0<64>,a5:a5_1469,a6:a6_1495,a7:a7_1498,fa3:fa3_1499,fa4:fa4_1500,gp:gp,ra:ra,s0:0<i64>,s1:0x108E0<64>,s10:0<i64>,s11:s11,s2:a1,s3:a0,s4:0x12000<64>,s5:s5,s6:0<i64>,s7:1<i64>,s8:0x1000<64>,s9:0<i64>,Stack +0018:qwLoc01A8,Stack +0020:ptrLoc01A0,Stack +0028:tLoc0198,Stack +0030:qwLoc0190,Stack +0038:tLoc0188,Stack +0100:qwLocC0,Stack +0108:bLocB8,t1:t1_1496,t3:t3_1497
+		uses: a0:a0_60,a1:a1,a2:a2_1494,a3:a3_1493,a4:0x102A0<64>,a5:a5_1469,a6:a6_1495,a7:a7_1498,fa3:fa3_1499,fa4:fa4_1500,gp:gp,Mem:Mem50,ra:ra,s0:0<i64>,s1:0x108E0<64>,s10:0<i64>,s11:s11,s2:a1,s3:a0,s4:0x12000<64>,s5:s5,s6:0<i64>,s7:1<i64>,s8:0x1000<64>,s9:0<i64>,Stack +0018:qwLoc01A8,Stack +0020:ptrLoc01A0,Stack +0028:tLoc0198,Stack +0030:qwLoc0190,Stack +0038:tLoc0188,Stack +0100:qwLocC0,Stack +0108:bLocB8,t1:t1_1496,t3:t3_1497
 		defs: a2:a2_1494,a3:a3_1493,a6:a6_1495,a7:a7_1498,fa3:fa3_1499,fa4:fa4_1500,t1:t1_1496,t3:t3_1497
 	return
 fn0000000000015180_exit:
@@ -562,11 +562,11 @@ l0000000000015F0C:
 l0000000000015F20:
 	return
 l0000000000015F18:
-	word64 t1_16
-	word64 ra_17
+	word64 t1_17
+	word64 ra_18
 	call 0<64> (retsize: 0;)
-		uses: a0:0x102A0<64>,ra:ra_17,t1:t1_16
-		defs: ra:ra_17,t1:t1_16
+		uses: a0:0x102A0<64>,Mem:Mem0,ra:ra_18,t1:t1_17
+		defs: ra:ra_18,t1:t1_17
 	return
 fn0000000000015EF0_exit:
 
@@ -588,10 +588,10 @@ l0000000000015F4C:
 l0000000000015F60:
 	return
 l0000000000015F58:
-	word64 t1_19
+	word64 t1_20
 	call 0<64> (retsize: 0;)
-		uses: a0:0x102A0<64>,t1:t1_19
-		defs: t1:t1_19
+		uses: a0:0x102A0<64>,Mem:Mem0,t1:t1_20
+		defs: t1:t1_20
 	return
 fn0000000000015F24_exit:
 
@@ -628,7 +628,7 @@ l0000000000015FA8:
 	branch true l0000000000015FA4
 l0000000000015FB4:
 	call 0<64> (retsize: 0;)
-		uses: ra:ra,Stack +0008:ra
+		uses: Mem:Mem11,ra:ra,Stack +0008:ra
 l0000000000015FC8_thunk_fn0000000000015F24:
 	fn0000000000015F24()
 	return
@@ -1251,7 +1251,7 @@ fn0000000000016D74_entry:
 	char bLoc0188
 	char bLoc0158
 l0000000000016D74:
-	word64 a0_465
+	word64 a0_466
 	word64 a5_7 = Mem5[gp + -1936<i64>:word64]
 	memset(a2, 0<i32>, SLICE(200<i64>, size_t, 0))
 	word64 s6_11 = a2
@@ -1261,7 +1261,7 @@ l0000000000016E60:
 	branch CONVERT(Mem37[gp + -2028<i64>:int32], int32, int64) != 0<64> l0000000000016E20
 l0000000000016E68:
 	__fprintf_chk(Mem37[gp + -1920<i64>:word64], 1<i32>, 0x11788<64>, a3)
-	a0_465 = -1<i64>
+	a0_466 = -1<i64>
 l0000000000016DDC:
 	word64 a0_138
 	branch a1 < 0<64> l0000000000016E88
@@ -1269,9 +1269,9 @@ l0000000000016E88:
 	s5_116 = 32<i64>
 	branch a3 << 0x2D<u32> >= 0<64> l0000000000016EBC
 l0000000000016E94:
-	word64 a4_805
-	word64 a3_804
-	word64 a0_55 = fn00000000000182B4(CONVERT(Mem37[&qwLoc01B8:int32], int32, int64), out a3_804, out a4_805)
+	word64 a4_806
+	word64 a3_805
+	word64 a0_55 = fn00000000000182B4(CONVERT(Mem37[&qwLoc01B8:int32], int32, int64), out a3_805, out a4_806)
 	s5_116 = 8<i64>
 	word64 a5_59 = CONVERT(SLICE(a0_55, word32, 0) >>u 24<i32>, word32, int64)
 	branch a0_55 >= 0<64> l0000000000016EBC
@@ -1308,9 +1308,9 @@ l0000000000016EBC:
 	branch inet_ntop(2<i32>, &qwLoc01B8, &bLoc0188, 47<i32>) == 0<64> l0000000000017074
 l0000000000016ED4:
 	Mem115[a2:word64] = __strdup(&bLoc0188)
-	word64 a4_794
-	word64 a5_795
-	Mem124[&qwLoc01B0:word32] = SLICE(fn0000000000016830(gp, s5_116, out a4_794, out a5_795), word32, 0)
+	word64 a4_795
+	word64 a5_796
+	Mem124[&qwLoc01B0:word32] = SLICE(fn0000000000016830(gp, s5_116, out a4_795, out a5_796), word32, 0)
 	Mem129[&bLoc0188:word64] = 0<64>
 	branch inet_ntop(2<i32>, &qwLoc01B0, &bLoc0188, 16<i32>) == 0<64> l0000000000017300
 l0000000000017300:
@@ -1319,9 +1319,9 @@ l0000000000016F24:
 	Mem142[a2 + 48<i64>:word64] = __strdup(&bLoc0188)
 	word64 s0_143 = CONVERT(Mem142[&qwLoc01B8:int32], int32, int64)
 	Mem144[a2 + 160<i64>:word32] = SLICE(s5_116, word32, 0)
-	word64 a5_797
-	word64 a4_796
-	Mem155[&qwLoc01A0:word32] = SLICE(~fn0000000000016830(gp, s5_116, out a4_796, out a5_797) | s0_143, word32, 0)
+	word64 a5_798
+	word64 a4_797
+	Mem155[&qwLoc01A0:word32] = SLICE(~fn0000000000016830(gp, s5_116, out a4_797, out a5_798) | s0_143, word32, 0)
 	Mem156[&bLoc0188:word64] = 0<64>
 	branch inet_ntop(2<i32>, &qwLoc01A0, &bLoc0188, 16<i32>) == 0<64> l00000000000172F4
 l00000000000172F4:
@@ -1346,9 +1346,9 @@ l0000000000016FF4:
 	word64 s0_218 = CONVERT(Mem212[&qwLoc01A8:int32], int32, int64)
 	Mem219[a2 + 32<i64>:word64] = a0_217
 	Mem229[a2 + 184<i64>:word64] = fn0000000000016B68(s0_218)
-	word64 a4_799
-	word64 a3_798
-	word64 a0_231 = fn00000000000182B4(s0_218, out a3_798, out a4_799)
+	word64 a4_800
+	word64 a3_799
+	word64 a0_231 = fn00000000000182B4(s0_218, out a3_799, out a4_800)
 	word64 a5_235 = CONVERT(SLICE(a0_231, word32, 0) >>u 24<i32>, word32, int64)
 	branch a0_231 >= 0<64> l0000000000017098
 l0000000000017098:
@@ -1402,54 +1402,54 @@ l00000000000172C4:
 	__fprintf_chk(a0_138, 1<i32>, 0x117B0<64>, SLICE(a3, int32, 0))
 	abort()
 l00000000000170DC:
-	word64 a0_319 = __strdup(&bLoc0188)
-	word64 a5_320 = CONVERT(Mem304[&qwLoc01B0:int32], int32, int64)
-	Mem321[a2 + 168<i64>:word64] = a0_319
-	word64 a4_803
-	word64 a3_802
-	word64 a4_801
-	word64 a3_800
-	Mem334[&ptrLoc0190:word32] = SLICE(fn00000000000182B4(CONVERT(CONVERT(fn00000000000182B4(~a5_320 | CONVERT(Mem321[&qwLoc01A8:int32], int32, int64), out a3_800, out a4_801), word64, word32) + -1<i32>, word32, int64), out a3_802, out a4_803), word32, 0)
+	word64 a0_320 = __strdup(&bLoc0188)
+	word64 a5_321 = CONVERT(Mem304[&qwLoc01B0:int32], int32, int64)
+	Mem322[a2 + 168<i64>:word64] = a0_320
+	word64 a4_804
+	word64 a3_803
+	word64 a4_802
+	word64 a3_801
+	Mem335[&ptrLoc0190:word32] = SLICE(fn00000000000182B4(CONVERT(CONVERT(fn00000000000182B4(~a5_321 | CONVERT(Mem322[&qwLoc01A8:int32], int32, int64), out a3_801, out a4_802), word64, word32) + -1<i32>, word32, int64), out a3_803, out a4_804), word32, 0)
 	branch inet_ntop(2<i32>, &ptrLoc0190, &bLoc0188, 47<i32>) == 0<64> l0000000000017074
 l0000000000017074:
-	branch CONVERT(Mem341[gp + -2028<i64>:int32], int32, int64) != 0<64> l0000000000016E20
+	branch CONVERT(Mem342[gp + -2028<i64>:int32], int32, int64) != 0<64> l0000000000016E20
 l000000000001707C:
-	fwrite(0x117F8<64>, SLICE(1<i64>, size_t, 0), SLICE(43<i64>, size_t, 0), Mem341[gp + -1920<i64>:word64])
+	fwrite(0x117F8<64>, SLICE(1<i64>, size_t, 0), SLICE(43<i64>, size_t, 0), Mem342[gp + -1920<i64>:word64])
 l0000000000017120:
-	Mem358[a2 + 176<i64>:word64] = __strdup(&bLoc0188)
+	Mem359[a2 + 176<i64>:word64] = __strdup(&bLoc0188)
 	__snprintf_chk(a2 + 96<i64>, SLICE(64<i64>, size_t, 0), 1<i32>, SLICE(64<i64>, size_t, 0), 0x11828<64>, SLICE(a5, uint32, 0))
 l000000000001717C:
 	branch a3 << 0x31<u32> < 0<64> l0000000000017288
 l0000000000017288:
-	gp = fn0000000000017B40(ra, gp, CONVERT(Mem374[&qwLoc01B8:int32], int32, int64), a2 + 64<i64>, a2 + 72<i64>, a2 + 80<i64>, a2 + 88<i64>, a3 << 0x31<u32>, s5_116, a2, fa3, fa4, out s6_11)
+	gp = fn0000000000017B40(ra, gp, CONVERT(Mem375[&qwLoc01B8:int32], int32, int64), a2 + 64<i64>, a2 + 72<i64>, a2 + 80<i64>, a2 + 88<i64>, a3 << 0x31<u32>, s5_116, a2, fa3, fa4, out s6_11)
 l0000000000017184:
 	branch (a3 & 1<i64>) != 0<64> l00000000000171C8
 l00000000000171C8:
-	word64 a0_436 = fn00000000000168E4(gp, 2<i64>, &qwLoc01B8)
-	Mem448[s6_11 + 56<i64>:word64] = a0_436
-	branch a0_436 != 0<64> l000000000001718C
+	word64 a0_437 = fn00000000000168E4(gp, 2<i64>, &qwLoc01B8)
+	Mem449[s6_11 + 56<i64>:word64] = a0_437
+	branch a0_437 != 0<64> l000000000001718C
 l00000000000171DC:
-	branch CONVERT(Mem448[gp + -2028<i64>:int32], int32, int64) != 0<64> l0000000000016E20
+	branch CONVERT(Mem449[gp + -2028<i64>:int32], int32, int64) != 0<64> l0000000000016E20
 l00000000000171E4:
 	__sprintf_chk(&bLoc0158, 1<i32>, SLICE(250<i64>, size_t, 0), 0x11830<64>, a4)
 	herror(&bLoc0158)
-	a0_465 = -1<i64>
+	a0_466 = -1<i64>
 l000000000001718C:
-	a0_465 = 0<i64>
+	a0_466 = 0<i64>
 l0000000000016E18:
-	branch CONVERT(Mem343[gp + -2028<i64>:int32], int32, int64) == 0<64> l0000000000017054
+	branch CONVERT(Mem344[gp + -2028<i64>:int32], int32, int64) == 0<64> l0000000000017054
 l0000000000017054:
-	__fprintf_chk(Mem343[gp + -1920<i64>:word64], 1<i32>, 0x117D8<64>, SLICE(a3, int32, 0))
-	a0_465 = -1<i64>
+	__fprintf_chk(Mem344[gp + -1920<i64>:word64], 1<i32>, 0x117D8<64>, SLICE(a3, int32, 0))
+	a0_466 = -1<i64>
 l0000000000016E20:
-	a0_465 = -1<i64>
+	a0_466 = -1<i64>
 l0000000000016E24:
-	branch a5_7 != Mem480[gp + -1936<i64>:word64] l00000000000172D8
+	branch a5_7 != Mem481[gp + -1936<i64>:word64] l00000000000172D8
 l00000000000172D8:
 	__stack_chk_fail()
 l0000000000016E30:
 	a4Out = a5_7
-	return a0_465
+	return a0_466
 fn0000000000016D74_exit:
 
 
@@ -1834,7 +1834,7 @@ l0000000000017BB0:
 	word64 a4_62
 	word64 gp_63
 	call a5_46 (retsize: 0;)
-		uses: a0:a0_42,a1:a1_35,a2:a2_36,a3:a3_43,a4:a4_44,a5:a5_46,fa3:fa3_93,fa4:fa4_90,fa5:fa5_91,gp:gp,ra:ra,s0:a0,s1:a3,s2:a2,s3:a1,s4:a4,s5:s5,s6:s6,s7:a0_42,t1:t1_92
+		uses: a0:a0_42,a1:a1_35,a2:a2_36,a3:a3_43,a4:a4_44,a5:a5_46,fa3:fa3_93,fa4:fa4_90,fa5:fa5_91,gp:gp,Mem:Mem21,ra:ra,s0:a0,s1:a3,s2:a2,s3:a1,s4:a4,s5:s5,s6:s6,s7:a0_42,t1:t1_92
 		defs: a2:a2_60,a3:a3_61,a4:a4_62,gp:gp_63,ra:ra_54,s0:s0_49,s1:s1_50,s2:s2_51,s3:s3_52,s4:s4_53,s5:s5_55,s6:s6_56,s7:s7_57
 	word64 a5_70 = Mem21[gp_63 + -1952<i64>:word64]
 	word64 a0_83
@@ -1855,7 +1855,7 @@ l0000000000017BB0:
 	word64 a3_224
 	word64 a4_225
 	call a5_70 (retsize: 0;)
-		uses: a0:1<i64>,a1:16<i64>,a2:a2_60,a3:a3_61,a4:a4_62,a5:a5_70,fa3:fa3_93,fa4:fa4_90,fa5:fa5_91,gp:gp_63,ra:ra_54,s0:s0_49,s1:s1_50,s2:s2_51,s3:s3_52,s4:s4_53,s5:s5_55,s6:s6_56,s7:s7_57,t1:t1_92
+		uses: a0:1<i64>,a1:16<i64>,a2:a2_60,a3:a3_61,a4:a4_62,a5:a5_70,fa3:fa3_93,fa4:fa4_90,fa5:fa5_91,gp:gp_63,Mem:Mem21,ra:ra_54,s0:s0_49,s1:s1_50,s2:s2_51,s3:s3_52,s4:s4_53,s5:s5_55,s6:s6_56,s7:s7_57,t1:t1_92
 		defs: a0:a0_83,a2:a2_85,a3:a3_86,a4:a4_87,fa3:fa3_93,fa4:fa4_90,fa5:fa5_91,gp:gp_88,ra:ra_79,s1:s1_75,s2:s2_76,s3:s3_77,s4:s4_78,s5:s5_80,s6:s6_81,s7:s7_82,t1:t1_92
 	word64 s0_212 = a0_83
 	branch a0_83 == 0<64> l0000000000017C3C
@@ -1879,7 +1879,7 @@ l0000000000017BDC:
 	word64 t1_120
 	word64 fa3_121
 	call a5_96 (retsize: 0;)
-		uses: a0:a0_83,a1:CONVERT(SLICE(s7_82, word32, 0), word32, word64),a2:a2_85,a3:a3_86,a4:1<i64>,a5:a5_96,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_88,ra:ra_79,s0:a0_83,s1:s1_75,s2:s2_76,s3:s3_77,s4:s4_78,s5:s5_80,s6:s6_81,s7:s7_82,t1:t1_120
+		uses: a0:a0_83,a1:CONVERT(SLICE(s7_82, word32, 0), word32, word64),a2:a2_85,a3:a3_86,a4:1<i64>,a5:a5_96,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_88,Mem:Mem99,ra:ra_79,s0:a0_83,s1:s1_75,s2:s2_76,s3:s3_77,s4:s4_78,s5:s5_80,s6:s6_81,s7:s7_82,t1:t1_120
 		defs: a0:a0_111,a2:a2_113,a3:a3_114,a4:a4_115,fa3:fa3_121,fa4:fa4_118,fa5:fa5_119,gp:gp_116,ra:ra_107,s0:s0_102,s1:s1_103,s2:s2_104,s3:s3_105,s4:s4_106,s5:s5_108,s7:s7_110,t1:t1_120
 	branch a0_111 < 0<64> l0000000000017B84
 l0000000000017BFC:
@@ -1904,7 +1904,7 @@ l0000000000017BFC:
 	word64 t1_146
 	word64 fa3_147
 	call a5_124 (retsize: 0;)
-		uses: a0:s0_102,a1:a0_111,a2:a2_113,a3:a3_114,a4:a4_115,a5:a5_124,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_116,ra:ra_107,s0:s0_102,s1:s1_103,s2:s2_104,s3:s3_105,s4:s4_106,s5:s5_108,s6:a0_111,s7:s7_110,t1:t1_146
+		uses: a0:s0_102,a1:a0_111,a2:a2_113,a3:a3_114,a4:a4_115,a5:a5_124,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_116,Mem:Mem99,ra:ra_107,s0:s0_102,s1:s1_103,s2:s2_104,s3:s3_105,s4:s4_106,s5:s5_108,s6:a0_111,s7:s7_110,t1:t1_146
 		defs: a0:a0_137,a1:a1_138,a2:a2_139,a3:a3_140,a4:a4_141,fa3:fa3_147,fa4:fa4_144,fa5:fa5_145,gp:gp_142,ra:ra_133,s0:s0_128,s1:s1_129,s2:s2_130,s3:s3_131,s4:s4_132,s5:s5_134,s6:s6_135,s7:s7_136,t1:t1_146
 	branch a0_137 == 0<64> l0000000000017C18
 l0000000000017C10:
@@ -1931,7 +1931,7 @@ l0000000000017C18:
 	word64 t1_188
 	word64 fa3_189
 	call a5_153 (retsize: 0;)
-		uses: a0:s6_135,a1:a1_138,a2:a2_139,a3:a3_140,a4:a4_141,a5:a5_153,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_142,ra:ra_133,s0:s0_128,s1:s1_129,s2:s2_130,s3:s3_131,s4:s4_132,s5:s5_134,s6:s6_135,s7:s7_136,t1:t1_188
+		uses: a0:s6_135,a1:a1_138,a2:a2_139,a3:a3_140,a4:a4_141,a5:a5_153,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_142,Mem:Mem152,ra:ra_133,s0:s0_128,s1:s1_129,s2:s2_130,s3:s3_131,s4:s4_132,s5:s5_134,s6:s6_135,s7:s7_136,t1:t1_188
 		defs: a0:a0_179,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,fa3:fa3_189,fa4:fa4_186,fa5:fa5_187,gp:gp_184,ra:ra_175,s0:s0_170,s1:s1_171,s2:s2_172,s3:s3_173,s4:s4_174,s5:s5_176,s6:s6_177,s7:s7_178,t1:t1_188
 	branch a0_179 == 0<64> l0000000000017C30
 l0000000000017C28:
@@ -1943,7 +1943,7 @@ l0000000000017C30:
 	word64 t1_230
 	word64 fa3_231
 	call a5_195 (retsize: 0;)
-		uses: a0:s0_170,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,a5:a5_195,fa3:fa3_231,fa4:fa4_228,fa5:fa5_229,gp:gp_184,ra:ra_175,s0:s0_170,s1:s1_171,s2:s2_172,s3:s3_173,s4:s4_174,s5:s5_176,s6:s6_177,s7:s7_178,t1:t1_230
+		uses: a0:s0_170,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,a5:a5_195,fa3:fa3_231,fa4:fa4_228,fa5:fa5_229,gp:gp_184,Mem:Mem194,ra:ra_175,s0:s0_170,s1:s1_171,s2:s2_172,s3:s3_173,s4:s4_174,s5:s5_176,s6:s6_177,s7:s7_178,t1:t1_230
 		defs: a2:a2_223,a3:a3_224,a4:a4_225,fa3:fa3_231,fa4:fa4_228,fa5:fa5_229,gp:gp_226,ra:ra_217,s0:s0_212,s1:s1_213,s2:s2_214,s3:s3_215,s4:s4_216,s5:s5_218,s6:s6_219,s7:s7_220,t1:t1_230
 l0000000000017C3C:
 	word64 a5_235 = Mem234[gp_226 + -1952<i64>:word64]
@@ -1964,7 +1964,7 @@ l0000000000017C3C:
 	word64 a2_263
 	word64 a3_264
 	call a5_235 (retsize: 0;)
-		uses: a0:2<i64>,a1:16<i64>,a2:a2_247,a3:a3_248,a4:a4_249,a5:a5_235,fa3:fa3_271,fa4:fa4_268,fa5:fa5_269,gp:gp_233,ra:ra_243,s0:s0_238,s1:s1_239,s2:s2_240,s3:s3_241,s4:s4_242,s5:s5_244,s6:s6_245,s7:s7_246,t1:t1_270
+		uses: a0:2<i64>,a1:16<i64>,a2:a2_247,a3:a3_248,a4:a4_249,a5:a5_235,fa3:fa3_271,fa4:fa4_268,fa5:fa5_269,gp:gp_233,Mem:Mem234,ra:ra_243,s0:s0_238,s1:s1_239,s2:s2_240,s3:s3_241,s4:s4_242,s5:s5_244,s6:s6_245,s7:s7_246,t1:t1_270
 		defs: a0:a0_261,a2:a2_263,a3:a3_264,a4:a4_265,fa3:fa3_271,fa4:fa4_268,fa5:fa5_269,gp:gp_266,ra:ra_257,s1:s1_253,s2:s2_254,s3:s3_255,s4:s4_256,s5:s5_258,s6:s6_259,s7:s7_260,t1:t1_270
 	word64 s0_273 = a0_261
 	branch a0_261 == 0<64> l0000000000017CF4
@@ -1975,7 +1975,7 @@ l0000000000017CF4:
 	word64 t1_296
 	word64 fa3_297
 	call a5_274 (retsize: 0;)
-		uses: a0:6<i64>,a1:16<i64>,a2:a2_263,a3:a3_264,a4:a4_265,a5:a5_274,fa3:fa3_297,fa4:fa4_294,fa5:fa5_295,gp:gp_266,ra:ra_257,s0:a0_261,s1:s1_253,s2:s2_254,s3:s3_255,s4:s4_256,s5:s5_258,s6:s6_259,s7:s7_260,t1:t1_296
+		uses: a0:6<i64>,a1:16<i64>,a2:a2_263,a3:a3_264,a4:a4_265,a5:a5_274,fa3:fa3_297,fa4:fa4_294,fa5:fa5_295,gp:gp_266,Mem:Mem234,ra:ra_257,s0:a0_261,s1:s1_253,s2:s2_254,s3:s3_255,s4:s4_256,s5:s5_258,s6:s6_259,s7:s7_260,t1:t1_296
 		defs: a0:a0_287,a2:a2_289,a3:a3_290,fa3:fa3_297,fa4:fa4_294,fa5:fa5_295,gp:gp_292,ra:ra_283,s1:s1_279,s2:s2_280,s3:s3_281,s4:s4_282,s5:s5_284,s6:s6_285,s7:s7_286,t1:t1_296
 	s0_273 = a0_261
 	branch a0_261 != 0<64> l0000000000017C54
@@ -1999,7 +1999,7 @@ l0000000000017C54:
 	word64 a2_332
 	word64 a5_336
 	call a5_302 (retsize: 0;)
-		uses: a0:a0_316,a1:CONVERT(SLICE(s7_304, word32, 0), word32, word64),a2:a2_317,a3:a3_318,a4:1<i64>,a5:a5_302,fa3:fa3_340,fa4:fa4_337,fa5:fa5_338,gp:gp_300,ra:ra_313,s0:s0_306,s1:s1_309,s2:s2_310,s3:s3_311,s4:s4_312,s5:s5_314,s6:s6_315,s7:s7_304,t1:t1_339
+		uses: a0:a0_316,a1:CONVERT(SLICE(s7_304, word32, 0), word32, word64),a2:a2_317,a3:a3_318,a4:1<i64>,a5:a5_302,fa3:fa3_340,fa4:fa4_337,fa5:fa5_338,gp:gp_300,Mem:Mem307,ra:ra_313,s0:s0_306,s1:s1_309,s2:s2_310,s3:s3_311,s4:s4_312,s5:s5_314,s6:s6_315,s7:s7_304,t1:t1_339
 		defs: a0:a0_330,a1:a1_331,a2:a2_332,a3:a3_333,a4:a4_334,a5:a5_336,fa3:fa3_340,fa4:fa4_337,fa5:fa5_338,gp:gp_335,s0:s0_321,s1:s1_322,s4:s4_325,sp:sp_320,t1:t1_339
 	branch a0_330 == 0<64> l0000000000017C94
 l0000000000017C74:
@@ -2022,7 +2022,7 @@ l0000000000017C94:
 	word64 t1_409
 	word64 fa3_410
 	call Mem368[gp_335 + -1976<i64>:word64] (retsize: 0;)
-		uses: a0:s0_321,a1:a1_382,a2:a2_384,a3:a3_333,a4:a4_334,a5:a5_389,fa3:fa3_410,fa4:fa4_407,fa5:fa5_408,gp:gp_335,ra:Mem368[sp_320 + 72<i64>:word64],s0:Mem368[sp_320 + 64<i64>:word64],s1:Mem368[sp_320 + 56<i64>:word64],s2:Mem368[sp_320 + 48<i64>:word64],s3:Mem368[sp_320 + 40<i64>:word64],s4:Mem368[sp_320 + 32<i64>:word64],s5:Mem368[sp_320 + 24<i64>:word64],s6:Mem368[sp_320 + 16<i64>:word64],s7:Mem368[sp_320 + 8<i64>:word64],t1:t1_409
+		uses: a0:s0_321,a1:a1_382,a2:a2_384,a3:a3_333,a4:a4_334,a5:a5_389,fa3:fa3_410,fa4:fa4_407,fa5:fa5_408,gp:gp_335,Mem:Mem368,ra:Mem368[sp_320 + 72<i64>:word64],s0:Mem368[sp_320 + 64<i64>:word64],s1:Mem368[sp_320 + 56<i64>:word64],s2:Mem368[sp_320 + 48<i64>:word64],s3:Mem368[sp_320 + 40<i64>:word64],s4:Mem368[sp_320 + 32<i64>:word64],s5:Mem368[sp_320 + 24<i64>:word64],s6:Mem368[sp_320 + 16<i64>:word64],s7:Mem368[sp_320 + 8<i64>:word64],t1:t1_409
 		defs: fa3:fa3_410,fa4:fa4_407,fa5:fa5_408,gp:gp_405,s6:s6_398,t1:t1_409
 	s6Out = s6_398
 	return gp_405
@@ -2068,7 +2068,7 @@ l0000000000017D80:
 	word64 a4_56
 	word64 gp_57
 	call a5_41 (retsize: 0;)
-		uses: a0:a0_34,a1:a1_35,a2:a2_36,a3:a3_37,a4:a4_38,a5:a5_41,fa3:fa3_88,fa4:fa4_85,fa5:fa5_86,gp:gp,ra:ra,s0:a0,s1:s1,s2:a3,s3:a2,s4:a1,s5:a4,s6:s6,s7:s7,t1:t1_87
+		uses: a0:a0_34,a1:a1_35,a2:a2_36,a3:a3_37,a4:a4_38,a5:a5_41,fa3:fa3_88,fa4:fa4_85,fa5:fa5_86,gp:gp,Mem:Mem21,ra:ra,s0:a0,s1:s1,s2:a3,s3:a2,s4:a1,s5:a4,s6:s6,s7:s7,t1:t1_87
 		defs: a2:a2_54,a3:a3_55,a4:a4_56,gp:gp_57,ra:ra_48,s0:s0_43,s1:s1_49,s2:s2_44,s3:s3_45,s4:s4_46,s5:s5_47,s6:s6_50,s7:s7_51
 	word64 a5_64 = Mem21[gp_57 + -1952<i64>:word64]
 	word64 a0_77
@@ -2089,7 +2089,7 @@ l0000000000017D80:
 	word64 a3_224
 	word64 a4_225
 	call a5_64 (retsize: 0;)
-		uses: a0:12<i64>,a1:16<i64>,a2:a2_54,a3:a3_55,a4:a4_56,a5:a5_64,fa3:fa3_88,fa4:fa4_85,fa5:fa5_86,gp:gp_57,ra:ra_48,s0:s0_43,s1:s1_49,s2:s2_44,s3:s3_45,s4:s4_46,s5:s5_47,s6:s6_50,s7:s7_51,t1:t1_87
+		uses: a0:12<i64>,a1:16<i64>,a2:a2_54,a3:a3_55,a4:a4_56,a5:a5_64,fa3:fa3_88,fa4:fa4_85,fa5:fa5_86,gp:gp_57,Mem:Mem21,ra:ra_48,s0:s0_43,s1:s1_49,s2:s2_44,s3:s3_45,s4:s4_46,s5:s5_47,s6:s6_50,s7:s7_51,t1:t1_87
 		defs: a0:a0_77,a2:a2_79,a3:a3_80,a4:a4_81,fa3:fa3_88,fa4:fa4_85,fa5:fa5_86,gp:gp_82,ra:ra_73,s0:s0_68,s2:s2_69,s3:s3_70,s4:s4_71,s5:s5_72,s6:s6_75,s7:s7_76,t1:t1_87
 	word64 s1_218 = a0_77
 	branch a0_77 == 0<64> l0000000000017E18
@@ -2117,7 +2117,7 @@ l0000000000017DA0:
 	word64 t1_121
 	word64 fa3_122
 	call a3_94 (retsize: 0;)
-		uses: a0:a0_77,a1:a4_90 << 0x20<u32> | a1_92,a2:a5_91 << 0x20<u32> | a2_93,a3:a3_94,a4:a4_90 << 0x20<u32>,a5:a5_91 << 0x20<u32>,a6:1<i64>,fa3:fa3_122,fa4:fa4_119,fa5:fa5_120,gp:gp_82,ra:ra_73,s0:s0_68,s1:a0_77,s2:s2_69,s3:s3_70,s4:s4_71,s5:s5_72,s6:s6_75,s7:s7_76,t1:t1_121
+		uses: a0:a0_77,a1:a4_90 << 0x20<u32> | a1_92,a2:a5_91 << 0x20<u32> | a2_93,a3:a3_94,a4:a4_90 << 0x20<u32>,a5:a5_91 << 0x20<u32>,a6:1<i64>,fa3:fa3_122,fa4:fa4_119,fa5:fa5_120,gp:gp_82,Mem:Mem98,ra:ra_73,s0:s0_68,s1:a0_77,s2:s2_69,s3:s3_70,s4:s4_71,s5:s5_72,s6:s6_75,s7:s7_76,t1:t1_121
 		defs: a0:a0_111,a2:a2_113,a3:a3_114,a4:a4_115,fa3:fa3_122,fa4:fa4_119,fa5:fa5_120,gp:gp_116,ra:ra_107,s0:s0_102,s1:s1_108,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_106,s6:s6_109,t1:t1_121
 	branch a0_111 < 0<64> l0000000000017D54
 l0000000000017DD8:
@@ -2142,7 +2142,7 @@ l0000000000017DD8:
 	word64 t1_147
 	word64 fa3_148
 	call a5_124 (retsize: 0;)
-		uses: a0:s1_108,a1:a0_111,a2:a2_113,a3:a3_114,a4:a4_115,a5:a5_124,fa3:fa3_148,fa4:fa4_145,fa5:fa5_146,gp:gp_116,ra:ra_107,s0:s0_102,s1:s1_108,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_106,s6:s6_109,s7:a0_111,t1:t1_147
+		uses: a0:s1_108,a1:a0_111,a2:a2_113,a3:a3_114,a4:a4_115,a5:a5_124,fa3:fa3_148,fa4:fa4_145,fa5:fa5_146,gp:gp_116,Mem:Mem98,ra:ra_107,s0:s0_102,s1:s1_108,s2:s2_103,s3:s3_104,s4:s4_105,s5:s5_106,s6:s6_109,s7:a0_111,t1:t1_147
 		defs: a0:a0_137,a1:a1_138,a2:a2_139,a3:a3_140,a4:a4_141,fa3:fa3_148,fa4:fa4_145,fa5:fa5_146,gp:gp_142,ra:ra_133,s0:s0_128,s1:s1_134,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_132,s6:s6_135,s7:s7_136,t1:t1_147
 	branch a0_137 == 0<64> l0000000000017DF4
 l0000000000017DEC:
@@ -2169,7 +2169,7 @@ l0000000000017DF4:
 	word64 t1_189
 	word64 fa3_190
 	call a5_153 (retsize: 0;)
-		uses: a0:s7_136,a1:a1_138,a2:a2_139,a3:a3_140,a4:a4_141,a5:a5_153,fa3:fa3_190,fa4:fa4_187,fa5:fa5_188,gp:gp_142,ra:ra_133,s0:s0_128,s1:s1_134,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_132,s6:s6_135,s7:s7_136,t1:t1_189
+		uses: a0:s7_136,a1:a1_138,a2:a2_139,a3:a3_140,a4:a4_141,a5:a5_153,fa3:fa3_190,fa4:fa4_187,fa5:fa5_188,gp:gp_142,Mem:Mem152,ra:ra_133,s0:s0_128,s1:s1_134,s2:s2_129,s3:s3_130,s4:s4_131,s5:s5_132,s6:s6_135,s7:s7_136,t1:t1_189
 		defs: a0:a0_179,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,fa3:fa3_190,fa4:fa4_187,fa5:fa5_188,gp:gp_184,ra:ra_175,s0:s0_170,s1:s1_176,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_174,s6:s6_177,s7:s7_178,t1:t1_189
 	branch a0_179 == 0<64> l0000000000017E0C
 l0000000000017E04:
@@ -2181,7 +2181,7 @@ l0000000000017E0C:
 	word64 t1_231
 	word64 fa3_232
 	call a5_195 (retsize: 0;)
-		uses: a0:s1_176,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,a5:a5_195,fa3:fa3_232,fa4:fa4_229,fa5:fa5_230,gp:gp_184,ra:ra_175,s0:s0_170,s1:s1_176,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_174,s6:s6_177,s7:s7_178,t1:t1_231
+		uses: a0:s1_176,a1:a1_180,a2:a2_181,a3:a3_182,a4:a4_183,a5:a5_195,fa3:fa3_232,fa4:fa4_229,fa5:fa5_230,gp:gp_184,Mem:Mem194,ra:ra_175,s0:s0_170,s1:s1_176,s2:s2_171,s3:s3_172,s4:s4_173,s5:s5_174,s6:s6_177,s7:s7_178,t1:t1_231
 		defs: a2:a2_223,a3:a3_224,a4:a4_225,fa3:fa3_232,fa4:fa4_229,fa5:fa5_230,gp:gp_226,ra:ra_217,s0:s0_212,s1:s1_218,s2:s2_213,s3:s3_214,s4:s4_215,s5:s5_216,s6:s6_219,s7:s7_220,t1:t1_231
 l0000000000017E18:
 	word64 a5_235 = Mem234[gp_226 + -1952<i64>:word64]
@@ -2202,7 +2202,7 @@ l0000000000017E18:
 	word64 s7_260
 	word64 a0_261
 	call a5_235 (retsize: 0;)
-		uses: a0:30<i64>,a1:16<i64>,a2:a2_247,a3:a3_248,a4:a4_249,a5:a5_235,fa3:fa3_272,fa4:fa4_269,fa5:fa5_270,gp:gp_233,ra:ra_243,s0:s0_238,s1:s1_244,s2:s2_239,s3:s3_240,s4:s4_241,s5:s5_242,s6:s6_245,s7:s7_246,t1:t1_271
+		uses: a0:30<i64>,a1:16<i64>,a2:a2_247,a3:a3_248,a4:a4_249,a5:a5_235,fa3:fa3_272,fa4:fa4_269,fa5:fa5_270,gp:gp_233,Mem:Mem234,ra:ra_243,s0:s0_238,s1:s1_244,s2:s2_239,s3:s3_240,s4:s4_241,s5:s5_242,s6:s6_245,s7:s7_246,t1:t1_271
 		defs: a0:a0_261,a2:a2_263,a3:a3_264,a4:a4_265,fa3:fa3_272,fa4:fa4_269,fa5:fa5_270,gp:gp_266,ra:ra_257,s0:s0_252,s2:s2_253,s3:s3_254,s4:s4_255,s5:s5_256,s6:s6_259,s7:s7_260,t1:t1_271
 	word64 s1_273 = a0_261
 	branch a0_261 == 0<64> l0000000000017EE8
@@ -2213,7 +2213,7 @@ l0000000000017EE8:
 	word64 t1_297
 	word64 fa3_298
 	call a5_274 (retsize: 0;)
-		uses: a0:31<i64>,a1:16<i64>,a2:a2_263,a3:a3_264,a4:a4_265,a5:a5_274,fa3:fa3_298,fa4:fa4_295,fa5:fa5_296,gp:gp_266,ra:ra_257,s0:s0_252,s1:a0_261,s2:s2_253,s3:s3_254,s4:s4_255,s5:s5_256,s6:s6_259,s7:s7_260,t1:t1_297
+		uses: a0:31<i64>,a1:16<i64>,a2:a2_263,a3:a3_264,a4:a4_265,a5:a5_274,fa3:fa3_298,fa4:fa4_295,fa5:fa5_296,gp:gp_266,Mem:Mem234,ra:ra_257,s0:s0_252,s1:a0_261,s2:s2_253,s3:s3_254,s4:s4_255,s5:s5_256,s6:s6_259,s7:s7_260,t1:t1_297
 		defs: a0:a0_287,fa3:fa3_298,fa4:fa4_295,fa5:fa5_296,gp:gp_292,ra:ra_283,s0:s0_278,s2:s2_279,s3:s3_280,s4:s4_281,s5:s5_282,s6:s6_285,s7:s7_286,t1:t1_297
 	s1_273 = a0_261
 	branch a0_261 != 0<64> l0000000000017E30
@@ -2241,7 +2241,7 @@ l0000000000017E30:
 	word64 a2_336
 	word64 a5_340
 	call a3_307 (retsize: 0;)
-		uses: a0:a0_322,a1:a4_302 << 0x20<u32> | a1_304,a2:a5_303 << 0x20<u32> | a2_305,a3:a3_307,a4:a4_302 << 0x20<u32>,a5:a5_303 << 0x20<u32>,a6:1<i64>,fa3:fa3_345,fa4:fa4_342,fa5:fa5_343,gp:gp_306,ra:ra_319,s0:s0_300,s1:s1_311,s2:s2_315,s3:s3_316,s4:s4_317,s5:s5_318,s6:s6_320,s7:s7_321,t1:t1_344
+		uses: a0:a0_322,a1:a4_302 << 0x20<u32> | a1_304,a2:a5_303 << 0x20<u32> | a2_305,a3:a3_307,a4:a4_302 << 0x20<u32>,a5:a5_303 << 0x20<u32>,a6:1<i64>,fa3:fa3_345,fa4:fa4_342,fa5:fa5_343,gp:gp_306,Mem:Mem312,ra:ra_319,s0:s0_300,s1:s1_311,s2:s2_315,s3:s3_316,s4:s4_317,s5:s5_318,s6:s6_320,s7:s7_321,t1:t1_344
 		defs: a0:a0_334,a1:a1_335,a2:a2_336,a3:a3_337,a4:a4_338,a5:a5_340,fa3:fa3_345,fa4:fa4_342,fa5:fa5_343,gp:gp_339,s1:s1_331,s2:s2_326,s5:s5_329,sp:sp_324,t1:t1_344
 	branch a0_334 == 0<64> l0000000000017E88
 l0000000000017E68:
@@ -2266,7 +2266,7 @@ l0000000000017E88:
 	word64 t1_414
 	word64 fa3_415
 	call Mem372[gp_339 + -1976<i64>:word64] (retsize: 0;)
-		uses: a0:s1_331,a1:a1_386,a2:a2_388,a3:a3_337,a4:a4_338,a5:a5_393,fa3:fa3_415,fa4:fa4_412,fa5:fa5_413,gp:gp_339,ra:Mem372[sp_324 + 72<i64>:word64],s0:Mem372[sp_324 + 64<i64>:word64],s1:Mem372[sp_324 + 56<i64>:word64],s2:Mem372[sp_324 + 48<i64>:word64],s3:Mem372[sp_324 + 40<i64>:word64],s4:Mem372[sp_324 + 32<i64>:word64],s5:Mem372[sp_324 + 24<i64>:word64],s6:Mem372[sp_324 + 16<i64>:word64],s7:Mem372[sp_324 + 8<i64>:word64],t1:t1_414
+		uses: a0:s1_331,a1:a1_386,a2:a2_388,a3:a3_337,a4:a4_338,a5:a5_393,fa3:fa3_415,fa4:fa4_412,fa5:fa5_413,gp:gp_339,Mem:Mem372,ra:Mem372[sp_324 + 72<i64>:word64],s0:Mem372[sp_324 + 64<i64>:word64],s1:Mem372[sp_324 + 56<i64>:word64],s2:Mem372[sp_324 + 48<i64>:word64],s3:Mem372[sp_324 + 40<i64>:word64],s4:Mem372[sp_324 + 32<i64>:word64],s5:Mem372[sp_324 + 24<i64>:word64],s6:Mem372[sp_324 + 16<i64>:word64],s7:Mem372[sp_324 + 8<i64>:word64],t1:t1_414
 		defs: fa3:fa3_415,fa4:fa4_412,fa5:fa5_413,gp:gp_409,s0:s0_395,s3:s3_397,s6:s6_402,t1:t1_414
 	s0Out = s0_395
 	s3Out = s3_397
@@ -2482,7 +2482,7 @@ l0000000000018334:
 	word64 s0_46
 	word64 a5_56
 	call Mem22[s0_31:word64] (retsize: 0;)
-		uses: a0:s5_38,a1:s4_36,a2:s3_34,a5:a5_56,ra:ra_43,s0:s0_31,s1:s1_40 + 1<i64>,s2:s2_42,s3:s3_34,s4:s4_36,s5:s5_38
+		uses: a0:s5_38,a1:s4_36,a2:s3_34,a5:a5_56,Mem:Mem22,ra:ra_43,s0:s0_31,s1:s1_40 + 1<i64>,s2:s2_42,s3:s3_34,s4:s4_36,s5:s5_38
 		defs: a5:a5_56,ra:ra_48,s0:s0_46,s1:s1_49,s2:s2_47,s3:s3_50,s4:s4_51,s5:s5_52
 	s0_31 = s0_46 + 8<i64>
 	branch s2_23 != s1_30 l0000000000018334

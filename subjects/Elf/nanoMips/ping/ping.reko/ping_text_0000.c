@@ -2764,7 +2764,7 @@ l004021F0:
 		}
 	}
 	uint16 wLoc9E_n = wLoc9E;
-	Mem39 = Mem17;
+	Mem40 = Mem17;
 	if (r6_n < r5_n)
 	{
 		if (!__bit<word32,word32>(r7_n, 0x06))
@@ -4311,8 +4311,8 @@ l00403432:
 				word32 r9_n;
 				word32 r10_n;
 				word32 r3_n;
-				word32 r2_n;
 				word32 r24_n;
+				word32 r2_n;
 				word32 r14_n;
 				word32 r15_n;
 				word32 r13_n;

@@ -2566,7 +2566,7 @@ T_567: (in fs:0x28<32> @ 0000000000401770 : segptr48)
   Class: Eq_567
   DataType: segptr48
   OrigDataType: segptr48
-T_568: (in Mem692[fs:0x28<32>:word64] @ 0000000000401770 : word64)
+T_568: (in Mem693[fs:0x28<32>:word64] @ 0000000000401770 : word64)
   Class: Eq_171
   DataType: word64
   OrigDataType: word64
