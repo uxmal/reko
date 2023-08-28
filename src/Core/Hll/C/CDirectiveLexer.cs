@@ -39,16 +39,23 @@ namespace Reko.Core.Hll.C
         private readonly Dictionary<string, Directive> directives = new()
         {
             { "define", Directive.Define },
+            { "ifdef", Directive.Ifdef },
+            { "ifndef", Directive.Ifndef },
+            { "else", Directive.Else },
+            { "endif", Directive.Endif },
             { "line", Directive.Line },
             { "pragma", Directive.Pragma },
-            { "__pragma", Directive.Pragma }
+            { "__pragma", Directive.Pragma },
+            { "undef", Directive.Undef },
         };
 
         private readonly ParserState parserState;
         private readonly Dictionary<string, List<CToken>> macros;
         private readonly CLexer lexer;
+        private readonly Stack<bool> ifdefs;
         private IEnumerator<CToken>? expandedTokens;
         private State state;
+        private bool ignoreTokens;
 
         public CDirectiveLexer(ParserState state, CLexer lexer)
         {
@@ -56,6 +63,8 @@ namespace Reko.Core.Hll.C
             this.lexer = lexer;
             this.macros = new();
             this.state = State.StartLine;
+            this.ifdefs = new Stack<bool>();
+            this.ignoreTokens = false;
         }
 
         public int LineNumber => lexer.LineNumber;
@@ -70,9 +79,14 @@ namespace Reko.Core.Hll.C
         private enum Directive
         {
             Define,
+            Else,
+            Endif,
+            Ifdef,
+            Ifndef,
             Line,
             Pragma,
             __Pragma,
+            Undef,
         }
 
         public CToken Read()
@@ -98,6 +112,11 @@ namespace Reko.Core.Hll.C
                         break;
                     default:
                         state = State.InsideLine;
+                        if (ignoreTokens)
+                        {
+                            token = ReadToken();
+                            break;
+                        }
                         return token;
                     }
                     break;
@@ -118,6 +137,11 @@ namespace Reko.Core.Hll.C
                             token = ReadToken();
                             break;
                         }
+                        if (ignoreTokens)
+                        {
+                            token = ReadToken();
+                            break;
+                        }
                         return token;
                     case CTokenType.__Pragma:
                         Expect(CTokenType.LParen);
@@ -126,6 +150,11 @@ namespace Reko.Core.Hll.C
                         state = State.InsideLine;
                         break;
                     default:
+                        if (ignoreTokens)
+                        {
+                            token = ReadToken();
+                            break;
+                        }
                         return token;
                     }
                     break;
@@ -156,7 +185,36 @@ namespace Reko.Core.Hll.C
                             token = ReadDefine();
                             state = State.StartLine;
                             break;
+                        case Directive.Ifdef:
+                            var ifdefVar = (string) Expect(CTokenType.Id)!;
+                            ifdefs.Push(ignoreTokens);
+                            ignoreTokens = !IsDefined(ifdefVar);
+                            token = ReadToken();    //$TODO: read to end of line
+                            state = State.StartLine;
+                            break;
+                        case Directive.Ifndef:
+                            ifdefVar = (string) Expect(CTokenType.Id)!;
+                            ifdefs.Push(ignoreTokens);
+                            ignoreTokens = IsDefined(ifdefVar);
+                            token = ReadToken();    //$TODO: read to end of line
+                            state = State.StartLine;
+                            break;
+                        case Directive.Endif:
+                            if (ifdefs.Count == 0)
+                                throw new FormatException($"Unbalanced #if/#endif");
+                            ignoreTokens = ifdefs.Pop();
+                            token = ReadToken();    //$TODO: read to end of line
+                            state = State.StartLine;
+                            break;
                         }
+                        break;
+                    case CTokenType.Else:
+                        if (ifdefs.Count == 0)
+                            throw new FormatException($"Unbalanced #if/#else");
+                        state = State.StartLine;
+                        ignoreTokens = !ignoreTokens;
+                        token = ReadToken();    //$TODO: read to end of line
+                        state = State.StartLine;
                         break;
                     default:
                         throw new FormatException($"Unexpected token {token.Type} on line {lexer.LineNumber}.");
@@ -330,6 +388,11 @@ namespace Reko.Core.Hll.C
             if (actualToken.Type != expected)
                 throw new FormatException(string.Format("Expected '{0}' but got '{1}' on line {2}.", expected, actualToken.Type, lexer.LineNumber));
             return actualToken.Value;
+        }
+
+        private bool IsDefined(string preprocessorVar)
+        {
+            return macros.ContainsKey(preprocessorVar);
         }
     }
 }

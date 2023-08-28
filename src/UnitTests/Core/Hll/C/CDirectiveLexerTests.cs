@@ -206,5 +206,63 @@ typedef int");
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
             Assert.AreEqual(8, state.Alignment);
         }
+
+        [Test]
+        public void CDirectiveLexer_ifdef()
+        {
+            LexMsvc(@"
+#define DOIT
+#ifdef DOIT
+foo
+#endif
+bar
+");
+            Assert.AreEqual("foo", lexer.Read().Value);
+            Assert.AreEqual("bar", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_ifdef_not_defined()
+        {
+            LexMsvc(@"
+#ifdef DOIT
+foo
+#endif
+bar
+");
+            Assert.AreEqual("bar", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_ifndef()
+        {
+            LexMsvc(@"
+#ifndef DOIT
+foo
+#endif
+bar
+");
+            Assert.AreEqual("foo", lexer.Read().Value);
+            Assert.AreEqual("bar", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_if_else()
+        {
+            LexMsvc(@"
+#ifdef DOIT
+doit
+#else
+dontdoit
+#endif
+bar
+");
+            Assert.AreEqual("dontdoit", lexer.Read().Value);
+            Assert.AreEqual("bar", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
     }
 }
