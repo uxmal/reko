@@ -74,6 +74,7 @@ namespace Reko.Core.Hll.C
             StartLine,
             InsideLine,
             Hash,
+            IgnoreToEndOfLine,
         }
 
         private enum Directive
@@ -187,30 +188,30 @@ namespace Reko.Core.Hll.C
                             break;
                         case Directive.Undef:
                             token = ReadUndef();
-                            state = State.StartLine;
+                            state = State.IgnoreToEndOfLine;
                             break;
                         case Directive.Ifdef:
                             var ifdefVar = (string) Expect(CTokenType.Id)!;
                             startIgnoring = !IsDefined(ifdefVar);
                             ifdefs.Push((startIgnoring, ignoreTokens));
                             ignoreTokens |= startIgnoring;
-                            token = ReadToken();    //$TODO: read to end of line
-                            state = State.StartLine;
+                            token = ReadToken();
+                            state = State.IgnoreToEndOfLine;
                             break;
                         case Directive.Ifndef:
                             ifdefVar = (string) Expect(CTokenType.Id)!;
                             startIgnoring = IsDefined(ifdefVar);
                             ifdefs.Push((startIgnoring, ignoreTokens));
                             ignoreTokens |= startIgnoring;
-                            token = ReadToken();    //$TODO: read to end of line
-                            state = State.StartLine;
+                            token = ReadToken();
+                            state = State.IgnoreToEndOfLine;
                             break;
                         case Directive.Endif:
                             if (ifdefs.Count == 0)
                                 throw new FormatException($"Unbalanced #if/#endif");
                             (_, ignoreTokens) = ifdefs.Pop();
-                            token = ReadToken();    //$TODO: read to end of line
-                            state = State.StartLine;
+                            token = ReadToken();
+                            state = State.IgnoreToEndOfLine;
                             break;
                         }
                         break;
@@ -220,12 +221,19 @@ namespace Reko.Core.Hll.C
                         state = State.StartLine;
                         (startIgnoring, ignoreTokens) = ifdefs.Peek();
                         ignoreTokens |= !startIgnoring;
-                        token = ReadToken();    //$TODO: read to end of line
-                        state = State.StartLine;
+                        token = ReadToken();
+                        state = State.IgnoreToEndOfLine;
                         break;
                     default:
                         throw new FormatException($"Unexpected token {token.Type} on line {lexer.LineNumber}.");
                     }
+                    break;
+                case State.IgnoreToEndOfLine:
+                    if (token.Type == CTokenType.EOF)
+                        return token;
+                    if (token.Type == CTokenType.NewLine)
+                        state = State.StartLine;
+                    token = ReadToken();
                     break;
                 }
             }
@@ -244,7 +252,7 @@ namespace Reko.Core.Hll.C
 
         public CToken ReadDefine()
         {
-            var macroName = (string)Expect(CTokenType.Id)!;
+            var macroName = (string) Expect(CTokenType.Id)!;
             //$TODO: arguments #define(A,B) A##B
             var tokens = new List<CToken>();
             for (; ; )

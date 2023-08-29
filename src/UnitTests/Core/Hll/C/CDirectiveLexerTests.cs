@@ -227,6 +227,20 @@ namespace Reko.UnitTests.Core.Hll.C
         }
 
         [Test]
+        public void CDirectiveLexer_undef_multiple_tokens()
+        {
+            Lex(
+                "#define token1 something\r\n" +
+                "#define token2 something_else\r\n" +
+                "// should probably warn\r\n" +
+                "#undef token1 token2\r\n" +
+                "token1 token2");
+            Assert.AreEqual("token1", lexer.Read().Value);
+            Assert.AreEqual("something_else", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
         public void CDirectiveLexer_multiline()
         {
             Lex(
@@ -333,6 +347,30 @@ done
             Assert.AreEqual("b", lexer.Read().Value);
             Assert.AreEqual("bnotc", lexer.Read().Value);
             Assert.AreEqual("postb", lexer.Read().Value);
+            Assert.AreEqual("done", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_various_extra_tokens()
+        {
+            LexMsvc(@"
+#define X 0
+#undef Y
+#ifdef Y qwer
+bad
+#else 1.23
+good
+# ifndef X
+bad2
+# else hi qqq
+good2
+# endif
+#endif -1111
+done
+");
+            Assert.AreEqual("good", lexer.Read().Value);
+            Assert.AreEqual("good2", lexer.Read().Value);
             Assert.AreEqual("done", lexer.Read().Value);
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
         }
