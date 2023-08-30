@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_bb()
         {
-            AssertCode("bb,<\rr0,0010000C", "C0104008");
+            AssertCode("bb,<\tr0,0010000C", "C0104008");
         }
 
         [Test]
