@@ -434,11 +434,10 @@ namespace Reko.Arch.X86
                     return disasm.CreateInvalidInstruction();
                 if (!disasm.TryReadByte(out byte vex1))
                     return disasm.CreateInvalidInstruction();
-                var rxb = vex1 >> 5;
-                var mmmmm = vex1 & 0x1F;
-
                 if (!disasm.TryReadByte(out byte vex2))
                     return disasm.CreateInvalidInstruction();
+                var rxb = vex1 >> 5;
+                var mmmmm = vex1 & 0x1F;
                 var w = vex2 >> 7;
                 var vvvv = (~vex2 >> 3) & 0xF;
                 var pp = vex2 & 0x3;
@@ -457,9 +456,9 @@ namespace Reko.Arch.X86
                 Decoder[] decoders;
                 switch (mmmmm)
                 {
-                case 1: decoders = decoders0F; break;
-                case 2: decoders = decoders0F38; break;
-                case 3: decoders = decoders0F3A; break;
+                case 1: decoders = this.decoders0F; break;
+                case 2: decoders = this.decoders0F38; break;
+                case 3: decoders = this.decoders0F3A; break;
                 default: return disasm.CreateInvalidInstruction();
                 }
                 if (!disasm.TryReadByte(out byte vex3))

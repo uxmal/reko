@@ -559,12 +559,20 @@ namespace Reko.Core.Expressions
                 intrinsic = intrinsic.MakeInstance(types);
             }
             var sig = intrinsic.Signature;
-            if (sig is not null && sig.Parameters!.Length != args.Length)
+            if (sig is not null && !HasCorrectNumberOfParameters(sig, args))
                 throw new InvalidOperationException(
                     $"Parameter count for {intrinsic.Name} must match argument count. " +
-                    $"Expected: {sig.Parameters.Length}. " +
+                    $"Expected: {sig.Parameters!.Length}. " +
                     $"But was: {args.Length}.");
             return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
+        }
+
+        private static bool HasCorrectNumberOfParameters(FunctionType sig, Expression[] args)
+        {
+            if (sig.IsVariadic)
+                return sig.Parameters!.Length <= args.Length;
+            else
+                return sig.Parameters!.Length == args.Length;
         }
 
         /// <summary>

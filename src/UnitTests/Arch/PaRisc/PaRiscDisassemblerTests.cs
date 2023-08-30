@@ -21,13 +21,8 @@
 using NUnit.Framework;
 using Reko.Arch.PaRisc;
 using Reko.Core;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.PaRisc
 {
@@ -63,7 +58,6 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode("add,*nuv\tr1,r7,r4", "08E18624");
         }
 
-
         [Test]
         public void PaRiscDis_break()
         {
@@ -74,6 +68,12 @@ namespace Reko.UnitTests.Arch.PaRisc
         public void PaRiscDis_bl()
         {
             AssertCode("b,l\t001001F4,r2", "E800A3D8");
+        }
+
+        [Test]
+        public void PaRiscDis_bb()
+        {
+            AssertCode("bb,<\rr0,0010000C", "C0104008");
         }
 
         [Test]
@@ -1169,5 +1169,6 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             AssertCode("fcnv,w,dbl\tfr9L,fr10R", "3920A28A");
         }
+
     }
 }

@@ -164,12 +164,12 @@ vec_add_entry:
 l00000000000007A8:
 	__align_stack<word64>(fp)
 	word64 rax_31 = CONVERT(CONVERT(rdi, word64, uint128) /u Mem23[0x0000000000000B00<p64>:word64], word64, uint64)
-	word64 qwLoc28_100 = 0<64>
+	word64 qwLoc28_90 = 0<64>
 l0000000000000881:
-	branch qwLoc28_100 <u rax_31 l0000000000000820
+	branch qwLoc28_90 <u rax_31 l0000000000000820
 l0000000000000820:
-	Mem69[rsi + (qwLoc28_100 << 5<64>):word256] = __simd_fadd<real64[4]>(Mem42[rdx + (qwLoc28_100 << 5<64>):word256], Mem42[rcx + (qwLoc28_100 << 5<64>):word256])
-	qwLoc28_100 = qwLoc28_100 + 1<64>
+	Mem67[rsi + (qwLoc28_90 << 5<64>):word256] = __simd_fadd<real64[4]>(Mem42[rdx + (qwLoc28_90 << 5<64>):word256], Mem42[rcx + (qwLoc28_90 << 5<64>):word256])
+	qwLoc28_90 = qwLoc28_90 + 1<64>
 l000000000000088B:
 	return
 vec_add_exit:

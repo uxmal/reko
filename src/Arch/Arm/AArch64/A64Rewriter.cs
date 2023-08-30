@@ -172,8 +172,11 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.ld1: RewriteLdN(ld1_intrinsic); break;
                     case Mnemonic.ld1r: RewriteLdNr(ld1r_intrinsic); break;
                     case Mnemonic.ld2: RewriteLdN(ld2_intrinsic); break;
+                    case Mnemonic.ld2r: RewriteLdN(ld2r_intrinsic); break;
                     case Mnemonic.ld3: RewriteLdN(ld3_intrinsic); break;
+                    case Mnemonic.ld3r: RewriteLdN(ld3r_intrinsic); break;
                     case Mnemonic.ld4: RewriteLdN(ld4_intrinsic); break;
+                    case Mnemonic.ld4r: RewriteLdN(ld4r_intrinsic); break;
                     case Mnemonic.ldnp: RewriteLoadStorePair(true); break;
                     case Mnemonic.ldp: RewriteLoadStorePair(true); break;
                     case Mnemonic.ldarh: RewriteLoadAcquire(load_acquire_intrinsic, PrimitiveType.Word16); break;
@@ -702,34 +705,43 @@ namespace Reko.Arch.Arm.AArch64
         private static readonly IntrinsicProcedure ld1_intrinsic = IntrinsicBuilder.Pure("__ld1")
             .GenericTypes("T")
             .PtrParam("T")
-            .OutParam("T")
+            .Variadic()
             .Void();
         private static readonly IntrinsicProcedure ld1r_intrinsic = IntrinsicBuilder.Pure("__ld1r")
             .GenericTypes("T")
             .PtrParam("T")
-            .OutParam("T")
+            .Variadic()
             .Void();
         private static readonly IntrinsicProcedure ld2_intrinsic = IntrinsicBuilder.Pure("__ld2")
             .GenericTypes("T")
             .PtrParam("T")
-            .OutParam("T")
-            .OutParam("T")
+            .Variadic()
             .Void();
+        private static readonly IntrinsicProcedure ld2r_intrinsic = IntrinsicBuilder.Pure("__ld2r")
+          .GenericTypes("T")
+          .PtrParam("T")
+          .Variadic()
+          .Void();
         private static readonly IntrinsicProcedure ld3_intrinsic = IntrinsicBuilder.Pure("__ld3")
-              .GenericTypes("T")
-              .PtrParam("T")
-              .OutParam("T")
-              .OutParam("T")
-              .OutParam("T")
-              .Void();
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Variadic()
+            .Void();
+        private static readonly IntrinsicProcedure ld3r_intrinsic = IntrinsicBuilder.Pure("__ld3r")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Variadic()
+            .Void();
         private static readonly IntrinsicProcedure ld4_intrinsic = IntrinsicBuilder.Pure("__ld4")
-              .GenericTypes("T")
-              .PtrParam("T")
-              .OutParam("T")
-              .OutParam("T")
-              .OutParam("T")
-              .OutParam("T")
-              .Void();
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Variadic()
+            .Void();
+        private static readonly IntrinsicProcedure ld4r_intrinsic = IntrinsicBuilder.Pure("__ld4r")
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Variadic()
+            .Void();
         private static readonly IntrinsicProcedure load_acquire_intrinsic = new IntrinsicBuilder("__load_acquire", true)
             .GenericTypes("T")
             .PtrParam("T")
@@ -981,29 +993,23 @@ namespace Reko.Arch.Arm.AArch64
         private static readonly IntrinsicProcedure st1_intrinsic = IntrinsicBuilder.Pure("__st1")
             .GenericTypes("T")
             .PtrParam("T")
-            .Param("T")
+            .Variadic()
             .Void();
         private static readonly IntrinsicProcedure st2_intrinsic = IntrinsicBuilder.Pure("__st2")
             .GenericTypes("T")
             .PtrParam("T")
-            .Param("T")
-            .Param("T")
+            .Variadic()
             .Void();
         private static readonly IntrinsicProcedure st3_intrinsic = IntrinsicBuilder.Pure("__st3")
-              .GenericTypes("T")
-              .PtrParam("T")
-              .Param("T")
-              .Param("T")
-              .Param("T")
-              .Void();
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Variadic()
+            .Void();
         private static readonly IntrinsicProcedure st4_intrinsic = IntrinsicBuilder.Pure("__st4")
-              .GenericTypes("T")
-              .PtrParam("T")
-              .Param("T")
-              .Param("T")
-              .Param("T")
-              .Param("T")
-              .Void();
+            .GenericTypes("T")
+            .PtrParam("T")
+            .Variadic()
+            .Void();
         private static readonly IntrinsicProcedure stlr_intrinsic = new IntrinsicBuilder("__store_release", true)
             .GenericTypes("T")
             .PtrParam("T")

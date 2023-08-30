@@ -29,8 +29,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
@@ -448,7 +446,7 @@ namespace Reko.Arch.PaRisc
                 Decoder.DumpMaskedInstruction(32, u, field.Mask << field.Position, "conditional field");
                 var iCond = field.Read(u);
                 var cond = conds[iCond];
-                if (cond == null)
+                if (cond is null)
                     return false;
                 d.cond = cond;
                 return true;
@@ -1836,7 +1834,7 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 // 30
-                Nyi(Mnemonic.bvb, ""),
+                Instr(Mnemonic.bb, CTD, cf16_bb_1, r6, PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Mnemonic.bb, CTD, cf16_bb_1, r11, bb_bitpos(), PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Mnemonic.movb, CTD, cf16_shext, r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Mnemonic.movib, CTD, cf16_shext, lse(11,5),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),

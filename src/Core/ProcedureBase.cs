@@ -158,9 +158,10 @@ namespace Reko.Core
                 }
                 parameters[i] = param;
             }
+            FunctionType concreteSig;
             if (sig.HasVoidReturn)
             {
-                return FunctionType.Action(parameters);
+                concreteSig = FunctionType.Action(parameters);
             }
             else
             {
@@ -172,8 +173,10 @@ namespace Reko.Core
                         ResolvePointer(ret.DataType, concreteTypes[index], ptrSize),
                         ret.Storage);
                 }
-                return FunctionType.Func(ret, parameters);
+                concreteSig = FunctionType.Func(ret, parameters);
             }
+            concreteSig.IsVariadic = sig.IsVariadic;
+            return concreteSig;
         }
 
         /// <summary>

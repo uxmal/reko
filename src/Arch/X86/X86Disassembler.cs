@@ -879,8 +879,6 @@ namespace Reko.Arch.X86
 
         private static bool vK(uint opcode, X86Disassembler dasm)
         {
-            if (!dasm.TryEnsureModRM(out byte modRm))
-                return false;
             var op = dasm.MaskRegFromBits(dasm.decodingContext.VexRegister, PrimitiveType.Word16);
             dasm.decodingContext.ops.Add(op);
             return true;
@@ -1267,7 +1265,7 @@ namespace Reko.Arch.X86
                 if (width.BitSize == 0)
                     return false;
                 var op = d.DecodeModRM(opType, width, d.XmmRegFromBits);
-                if (op == null)
+                if (op is null)
                     return false;
                 d.decodingContext.ops.Add(op);
                 return true;
@@ -1369,11 +1367,10 @@ namespace Reko.Arch.X86
 
         internal static bool rV(uint uInstr, X86Disassembler dasm)
         {
-            RegisterStorage reg;
-            if (dasm.decodingContext.SizeOverridePrefix)
-                reg = dasm.RegFromBitsRexB((int)uInstr & 7, dasm.decodingContext.dataWidth);
-            else
-                reg = dasm.RegFromBitsRexB((int)uInstr & 7, dasm.mode.WordWidth);
+            DataType dt = dasm.decodingContext.SizeOverridePrefix
+                ? dasm.decodingContext.dataWidth
+                : dasm.mode.WordWidth;
+            RegisterStorage reg = dasm.RegFromBitsRexB((int)uInstr & 7, dt);
             dasm.decodingContext.ops.Add(reg);
             return true;
         }
@@ -1908,10 +1905,7 @@ public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string m
             var fragments = new List<string>();
             if (ctx.IsVex)
             {
-                if (ctx.IsEvex)
-                    fragments.Add("EVEX");
-                else
-                    fragments.Add("VEX");
+                fragments.Add(ctx.IsEvex ? "EVEX" : "VEX");
                 fragments.Add(ctx.VexLongCode switch
                 {
                     0 => "128",

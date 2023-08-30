@@ -571,6 +571,16 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|x0 = __load_exclusive<word64>(v5)");
         }
 
+        //  mla vector
+        [Test]
+        public void AArch64Rw_mla()
+        {
+            Given_HexString("7E95314E");
+            AssertCode(     // mla	v30.16b,v11.16b,v17.16b
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q30 = __mla<byte[16]>(q30, q11, q17)");
+        }
+
         [Test]
         public void AArch64Rw_mla_by_element()
         {
@@ -578,6 +588,15 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // mla	v1.4h,v12.4h,v13.h[2]
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|d1 = __mla_by_element<word16[4],word16>(d1, d12, d13[2<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_mls()
+        {
+            Given_HexString("3F942A6E");
+            AssertCode(     // mls	v31.16b,v1.16b,v10.16b
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q31 = __mls<byte[16]>(q31, q1, q10)");
         }
 
         [Test]
@@ -732,11 +751,23 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Rw_st1()
         {
+            Given_HexString("0020004C");
+            AssertCode(     // st1	{v0.16b-v3.16b},[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__st1<word128>(x0, v0, v1, v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_st1_indexed()
+        {
             Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[x13:word16] = v21[0<i32>]");
         }
+
+
+
 
         [Test]
         public void AArch64Rw_st4_post()
@@ -1732,12 +1763,75 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_fmov_double()
+        {
+            Given_HexString("0090621E");
+            AssertCode(     // fmov	d0,#5.0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d0 = 5.0");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_f32_to_w32()
+        {
+            Given_Instruction(0x1E26002B);
+            AssertCode(     // fmov\tw11,s1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w11 = s1");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_f64_to_i64()
+        {
+            Given_Instruction(0x9E6701B0);
+            AssertCode(     // fmov\td16,x13
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d16 = x13");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_i32_to_f32()
+        {
+            Given_Instruction(0x1E2703E1);
+            AssertCode(     // fmov\ts1,w31
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s1 = 0<32>");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_single()
+        {
+            Given_HexString("0090221E");
+            AssertCode(     // fmov	s0,#5.0F
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|s0 = 5.0F");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_vector_immediate()
+        {
+            Given_Instruction(0x4F03F600);
+            AssertCode(     // fmov\tv0.4s,#1.0F
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q0 = __fmov<real32,real32[4]>(1.0F)");
+        }
+
+        [Test]
         public void AArch64Rw_fmov_to_vector_element()
         {
             Given_HexString("0D00AF9E");
             AssertCode(     // fmov v13.d[1],x0
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|v13 = SEQ(x0, SLICE(v13, word64, 0))");
+        }
+
+        [Test]
+        public void AArch64Rw_fmov_vector_hiword()
+        {
+            Given_Instruction(0x9EAF0060);
+            AssertCode(     // fmov\tq0.d[1],x3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v0 = SEQ(x3, SLICE(v0, word64, 0))");
         }
 
         [Test]
@@ -1783,15 +1877,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // scvtf\td0,w23
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|d0 = CONVERT(w23, int32, real64)");
-        }
-
-        [Test]
-        public void AArch64Rw_fmov_f64_to_i64()
-        {
-            Given_Instruction(0x9E6701B0);
-            AssertCode(     // fmov\td16,x13
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = x13");
         }
 
         [Test]
@@ -1897,15 +1982,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_fmov_i32_to_f32()
-        {
-            Given_Instruction(0x1E2703E1);
-            AssertCode(     // fmov\ts1,w31
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|s1 = 0<32>");
-        }
-
-        [Test]
         public void AArch64Rw_fcvt_f32_to_f64()
         {
             Given_Instruction(0x1E22C041);
@@ -1930,24 +2006,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // mov\tv2.16b,v9.16b
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q2 = q9");
-        }
-
-        [Test]
-        public void AArch64Rw_fmov_f32_to_w32()
-        {
-            Given_Instruction(0x1E26002B);
-            AssertCode(     // fmov\tw11,s1
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|w11 = s1");
-        }
-
-        [Test]
-        public void AArch64Rw_fmov_vector_immediate()
-        {
-            Given_Instruction(0x4F03F600);
-            AssertCode(     // fmov\tv0.4s,#1.0F
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|q0 = __fmov<real32,real32[4]>(1.0F)");
         }
 
         [Test]
@@ -2123,12 +2181,66 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_ld2_indexed()
+        {
+            Given_HexString("0004604D");
+            AssertCode(     // ld2	{v0.b,v1.b}[9],[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld2<int32>(x0, 9<i32>, out v0, out v1)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld2r()
+        {
+            Given_HexString("00C0604D");
+            AssertCode(     // ld2r	{v0.16b,v1.16b},[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld2r<word128>(x0, out v0, out v1)");
+        }
+
+        [Test]
         public void AArch64Rw_ld3()
         {
             Given_Instruction(0x0C404565);
             AssertCode(     // ld3\t{v5.4h,v6.4h,v7.4h},[x11]
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__ld3<word128>(x11, out v5, out v6, out v7)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld3_indexed()
+        {
+            Given_HexString("0024404D");
+            AssertCode(     // ld3	{v0.b-v2.b}[9],[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld3<int32>(x0, 9<i32>, out v0, out v1, out v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld3r()
+        {
+            Given_HexString("00E0404D");
+            AssertCode(     // ld3r	{v0.16b-v2.16b},[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld3r<word128>(x0, out v0, out v1, out v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld4()
+        {
+            Given_HexString("0024604D");
+            AssertCode(     // ld4	{v0.b-v3.b}[9],[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld4<int32>(x0, 9<i32>, out v0, out v1, out v2, out v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld4r()
+        {
+            Given_HexString("00E0604D");
+            AssertCode(     // ld4r	{v0.16b-v3.16b},[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld4r<word128>(x0, out v0, out v1, out v2, out v3)");
         }
 
         [Test]
@@ -2174,15 +2286,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // scvtf\td16, d0
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|d16 = CONVERT(d0, int64, real64)");
-        }
-
-        [Test]
-        public void AArch64Rw_fmov_vector_hiword()
-        {
-            Given_Instruction(0x9EAF0060);
-            AssertCode(     // fmov\tq0.d[1],x3
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|v0 = SEQ(x3, SLICE(v0, word64, 0))");
         }
 
         [Test]
@@ -2663,13 +2766,21 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("Read up on the specs")]
-        public void AArch64Rw_ld1()
+        public void AArch64Rw_ld1_indexed()
         {
             Given_HexString("0000400D");
             AssertCode(     // ld1	{v0.b}[0],[x0]
-                "0|L--|0000000100002A50(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld1<int32>(x0, 0<i32>, out v0)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld1()
+        {
+            Given_HexString("00A0404C");
+            AssertCode(     // ld1	{v0.16b,v1.16b},[x0]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|__ld1<word128>(x0, out v0, out v1)");
         }
 
         [Test]
@@ -4397,23 +4508,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|v4 = d17",
                 "3|L--|d17 = __zip2<byte[8]>(v3, v4)");
         }
-
-        // This file contains unit tests automatically generated by Reko decompiler.
-        // Please copy the contents of this file and report it on GitHub, using the 
-        // following URL: https://github.com/uxmal/reko/issues
-
-
-
-
-
-
-
-
-
-
-
-
-        // Unable to cast object of type 'Reko.Core.Expressions.ConstantUInt64' to type 'Reko.Core.Expressions.BigConstant'.
 
     }
 }

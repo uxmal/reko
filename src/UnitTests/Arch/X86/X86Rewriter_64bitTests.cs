@@ -71,10 +71,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("C5FD588570FFFFFF");
             AssertCode(     // vaddpd   ymm0,ymm0,[rbp-90h]
-                "0|L--|0000000140000000(8): 3 instructions",
-                "1|L--|v5 = ymm0",
-                "2|L--|v6 = Mem0[rbp - 144<i64>:word256]",
-                "3|L--|ymm0 = __simd_fadd<real64[4]>(v5, v6)");
+                "0|L--|0000000140000000(8): 1 instructions",
+                "1|L--|ymm0 = __simd_fadd<real64[4]>(ymm0, Mem0[rbp - 144<i64>:(arr real64 4)])");
         }
 
         [Test]
@@ -82,10 +80,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("0F 58 0D FB B0 00 00");
             AssertCode( // addps xmm1,[0000000000415EF4]
-                "0|L--|0000000140000000(7): 3 instructions",
-                "1|L--|v4 = xmm1",
-                "2|L--|v5 = Mem0[0x000000014000B102<p64>:word128]",
-                "3|L--|xmm1 = __simd_fadd<real32[4]>(v4, v5)");
+                "0|L--|0000000140000000(7): 1 instructions",
+                "1|L--|xmm1 = __simd_fadd<real32[4]>(xmm1, Mem0[0x000000014000B102<p64>:(arr real32 4)])");
         }
 
         [Test]
@@ -116,6 +112,24 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(     // vaesenc	xmm0,xmm0
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|xmm0 = __aesenc(xmm0, xmm0)");
+        }
+
+        [Test]
+        public void X86Rw_aesenclast()
+        {
+            Given_HexString("660F38DD04C2");
+            AssertCode(     // aesenclast	xmm0,[rdx+rax*8]
+                "0|L--|0000000140000000(6): 1 instructions",
+                "1|L--|xmm0 = __aesenclast(xmm0, Mem0[rdx + rax * 8<64>:word128])");
+        }
+
+        [Test]
+        public void X86Rw_aeskeygen()
+        {
+            Given_HexString("660F3ADFC600");
+            AssertCode(     // aeskeygen	xmm0,xmm6,0h
+                "0|L--|0000000140000000(6): 1 instructions",
+                "1|L--|xmm0 = __aeskeygen(xmm6, 0<8>)");
         }
 
         [Test]
@@ -161,6 +175,15 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(5): 2 instructions",
                 "1|L--|edi = __bextr<word32>(r9d, r10d)",
                 "2|L--|Z = edi == 0<32>");
+        }
+
+        [Test]
+        public void X86Rw_vblendw()
+        {
+            Given_HexString("66440F3A0ED8F0");
+            AssertCode(     // vblendw	xmm11,xmm0,0F0h
+                "0|L--|0000000140000000(7): 1 instructions",
+                "1|L--|xmm11 = __packed_blend<word16[8]>(xmm11, xmm0, 0xF0<8>)");
         }
 
         [Test]
@@ -227,6 +250,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_cmpeqsd()
+        {
+            Given_HexString("F20FC244241800");
+            AssertCode(     // cmpeqsd	xmm0,[esp+18]
+                "0|L--|0000000140000000(7): 1 instructions",
+                "1|L--|xmm0 = SLICE(xmm0, real64, 0) == Mem0[rsp + 24<i64>:real64] ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
+        }
+
+        [Test]
         public void X86Rw_cmplesd()
         {
             Given_HexString("F20FC2E806");
@@ -236,14 +268,22 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_cmpeqsd()
+        public void X86Rw_vcmpnltsd()
         {
-            Given_HexString("F20FC244241800");
-            AssertCode(     // cmpeqsd	xmm0,[esp+18]
-                "0|L--|0000000140000000(7): 1 instructions",
-                "1|L--|xmm0 = SLICE(xmm0, real64, 0) == Mem0[rsp + 24<i64>:real64] ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
+            Given_HexString("C5FBC21DF616020005");
+            AssertCode(     // vcmpnltsd	xmm3,xmm0,double ptr [rip+216F6h]
+                "0|L--|0000000140000000(9): 1 instructions",
+                "1|L--|xmm3 = SLICE(xmm0, real64, 0) < Mem0[0x00000001400216FF<p64>:real64] ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }
 
+        [Test]
+        public void X86Rw_cmpnltsd()
+        {
+            Given_HexString("F20FC21D1619020005");
+            AssertCode(     // cmpnltsd	xmm3,double ptr [rip+21916h]
+                "0|L--|0000000140000000(9): 1 instructions",
+                "1|L--|xmm3 = SLICE(xmm3, real64, 0) < Mem0[0x000000014002191F<p64>:real64] ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
+        }
 
         [Test]
         public void X86Rw_cmpss()
@@ -278,21 +318,21 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("660F5AC0");
             AssertCode(     // cvtpd2ps	xmm0,xmm0
-                "0|L--|0000000140000000(4): 2 instructions",
+                "0|L--|0000000140000000(4): 3 instructions",
                 "1|L--|v4 = xmm0",
-                "2|L--|xmm0 = __cvtpd2ps<real64[2],real32[2]>(v4)");
+                "2|L--|v5 = __cvtpd2ps<real64[2],real32[2]>(v4)",
+                "3|L--|xmm0 = SEQ(SLICE(xmm0, word64, 64), v5)");
         }
-
-
 
         [Test]
         public void X86Rw_cvtpd2dq()
         {
             Given_HexString("F20FE6E7");
             AssertCode(     // cvtpd2dq	xmm4,xmm7
-                "0|L--|0000000140000000(4): 2 instructions",
+                "0|L--|0000000140000000(4): 3 instructions",
                 "1|L--|v4 = xmm7",
-                "2|L--|xmm4 = __cvtpd2dq<real64[2],int32[2]>(v4)");
+                "2|L--|v6 = __cvtpd2dq<real64[2],int32[2]>(v4)",
+                "3|L--|xmm4 = SEQ(SLICE(xmm4, word64, 64), v6)");
         }
 
         [Test]
@@ -381,9 +421,10 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("66450FE6C9");
             AssertCode(     // cvttpd2dq	xmm9,xmm9
-                "0|L--|0000000140000000(5): 2 instructions",
-                "1|L--|v4 = xmm9",
-                "2|L--|xmm9 = __cvttpd2dq<real64[2],int32[2]>(v4)");
+                "0|L--|0000000140000000(5): 3 instructions",
+                "1|L--|v4 = xmm9", //$REVIEW: unnecessary copy
+                "2|L--|v5 = __cvttpd2dq<real64[2],int32[2]>(v4)",
+                "3|L--|xmm9 = SEQ(SLICE(xmm9, word64, 64), v5)");
         }
 
         [Test]
@@ -412,10 +453,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("660F5EF1");
             AssertCode(     // divpd	xmm6,xmm1
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v5 = xmm6",
-                "2|L--|v6 = xmm1",
-                "3|L--|xmm6 = __divp<real64[2]>(v5, v6)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm6 = __divp<real64[2]>(xmm6, xmm1)");
         }
 
         [Test]
@@ -450,7 +489,17 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|xmm0 = SEQ(0<64>, v4)");
         }
 
-
+        [Test]
+        public void X86Rw_enterw()
+        {
+            Given_HexString("66C8A50AE2");
+            AssertCode(     // enterw	0AA5h,0E2h
+                "0|L--|0000000140000000(5): 4 instructions",
+                "1|L--|rsp = rsp - 2<i64>",
+                "2|L--|Mem0[rsp:word16] = bp",
+                "3|L--|bp = SLICE(rsp, word16, 0)",
+                "4|L--|rsp = rsp - 2665<i64>");     //$TODO: odd numbers are suspicious
+        }
 
         [Test]
         public void X86rw_fmul_load()
@@ -487,6 +536,24 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(     // ret 0001
                 "0|---|0000000140000000(3): 1 instructions",
                 "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86Rw_jkz()
+        {
+            Given_HexString("C5C584F9FFFFFF");
+            AssertCode(     // jkz\tk7 10000h
+                "0|T--|0000000140000000(7): 1 instructions",
+                "1|T--|if (k7 == 0<64>) branch 0000000140000000");
+        }
+
+        [Test]
+        public void X86Rw_jknz()
+        {
+            Given_HexString("C5C585F9FFFFFF");
+            AssertCode(     // jknz\tk7 10000h
+                "0|T--|0000000140000000(7): 1 instructions",
+                "1|T--|if (k7 != 0<64>) branch 0000000140000000");
         }
 
         [Test]
@@ -610,8 +677,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("F20F5FD0");
             AssertCode(     // maxsd	xmm2,xmm0
-                "0|L--|0000000140000000(4): 1 instructions",
-                "1|L--|xmm2 = SEQ(SLICE(xmm2, word64, 64), max(SLICE(xmm2, real64, 0), SLICE(xmm0, real64, 0)))");
+                "0|L--|0000000140000000(4): 2 instructions",
+                "1|L--|v5 = max(SLICE(xmm2, real64, 0), SLICE(xmm0, real64, 0))",
+                "2|L--|xmm2 = SEQ(SLICE(xmm2, word64, 64), v5)");
         }
 
         [Test]
@@ -619,10 +687,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("660F5D4242"); // minpd\txmm0,[rdx+42]
             AssertCode(
-                "0|L--|0000000140000000(5): 3 instructions",
-                "1|L--|v5 = xmm0",
-                "2|L--|v6 = Mem0[rdx + 66<i64>:word128]",
-                "3|L--|xmm0 = __minp<real64[2]>(v5, v6)");
+                "0|L--|0000000140000000(5): 1 instructions",
+                "1|L--|xmm0 = __simd_min<real64[2]>(xmm0, Mem0[rdx + 66<i64>:(arr real64 2)])");
         }
 
         [Test]
@@ -630,10 +696,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("C401E95DFB");
             AssertCode(     // vminpd	xmm15,xmm2,xmm11
-                "0|L--|0000000140000000(5): 3 instructions",
-                "1|L--|v6 = xmm2",
-                "2|L--|v7 = xmm11",
-                "3|L--|xmm15 = __minp<real64[2]>(v6, v7)");
+                "0|L--|0000000140000000(5): 1 instructions",
+                "1|L--|xmm15 = __simd_min<real64[2]>(xmm2, xmm11)");
         }
 
         [Test]
@@ -689,6 +753,15 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(     // vmovd	xmm1,r14
                 "0|L--|0000000140000000(5): 1 instructions",
                 "1|L--|xmm1 = CONVERT(r14, word64, word128)");
+        }
+
+        [Test]
+        public void X86Rw_vmovddup()
+        {
+            Given_HexString("C5FF12D5");
+            AssertCode(     // vmovddup	ymm2,ymm5
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ymm2 = __movddup<word256>(ymm5)");
         }
 
         [Test]
@@ -850,10 +923,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("0F 59 4A 08");
             AssertCode(     // mulps xmm1,[rdx+08]
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v5 = xmm1",
-                "2|L--|v6 = Mem0[rdx + 8<i64>:word128]",
-                "3|L--|xmm1 = __mulp<real32[4]>(v5, v6)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm1 = __mulp<real32[4]>(xmm1, Mem0[rdx + 8<i64>:(arr real32 4)])");
         }
 
         [Test]
@@ -898,16 +969,31 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_vorpd()
+        {
+            Given_HexString("C5F956442450");
+            AssertCode(     // vorpd	xmm0,xmm0,[rsp+50h]
+                "0|L--|0000000140000000(6): 1 instructions",
+                "1|L--|xmm0 = __orp<real64[2]>(xmm0, Mem0[rsp + 80<i64>:(arr real64 2)])");
+        }
+
+        [Test]
         public void X86Rw_packsswb()
         {
             Given_HexString("660F63C1");
             AssertCode(     // packsswb	xmm0,xmm1
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v5 = xmm0",
-                "2|L--|v6 = xmm1",
-                "3|L--|xmm0 = __packss<int16[8],int8[16]>(v5, v6)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = __packss<int16[8],int8[16]>(xmm0, xmm1)");
         }
 
+        [Test]
+        public void X86Rw_vpaddb()
+        {
+            Given_HexString("C591FCC1");
+            AssertCode(     // vpaddb	xmm0,xmm13,xmm1
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = __simd_add<byte[16]>(xmm13, xmm1)");
+        }
 
         [Test]
         public void X86Rw_vpbroadcastb()
@@ -923,10 +1009,27 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("C5ED74D8");
             AssertCode(     // vpcmpeqb	ymm3,ymm2,ymm0
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v6 = ymm2",
-                "2|L--|v7 = ymm0",
-                "3|L--|ymm3 = __pcmpeq<byte[32]>(v6, v7)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ymm3 = __pcmpeq<byte[32]>(ymm2, ymm0)");
+        }
+
+        [Test]
+        public void X86Rw_vpcmpeqw()
+        {
+            Given_HexString("C5ED750A");
+            AssertCode(     // vpcmpeqw	ymm1,ymm2,[rdx]
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ymm1 = __pcmpeq<word16[16]>(ymm2, Mem0[rdx:(arr word16 16)])");
+        }
+
+        [Test]
+        [Ignore("whoa...")]
+        public void X86Rw_pcmpistri()
+        {
+            Given_HexString("66410F3A630140");
+            AssertCode(     // pcmpistri	xmm0,[r9],40h
+                "0|L--|000000013F179336(7): 1 instructions",
+                "1|L--|@@@");
         }
 
         [Test]
@@ -947,6 +1050,34 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|rdx = __pext<word64>(r15, r14)");
         }
 
+        [Test]
+        public void X86Rw_pextrb()
+        {
+            Given_HexString("660F3A14C303");
+            AssertCode(     // pextrb	dword ptr [rcx+10h],xmm4,3h
+                "0|L--|0000000140000000(6): 2 instructions",
+                "1|L--|ebx = SLICE(xmm0, byte, 24)",
+                "2|L--|rbx = CONVERT(ebx, word32, uint64)");
+        }
+
+        [Test]
+        public void X86Rw_pextrd()
+        {
+            Given_HexString("660F3A16611003");
+            AssertCode(     // pextrd	dword ptr [rcx+10h],xmm4,3h
+                "0|L--|0000000140000000(7): 2 instructions",
+                "1|L--|v5 = SLICE(xmm4, word32, 24)",
+                "2|L--|Mem0[rcx + 16<i64>:word32] = v5");
+        }
+
+        [Test]
+        public void X86Rw_vpinsrq()
+        {
+            Given_HexString("C4E3F122C101");
+            AssertCode(     // vpinsrq	xmm0,xmm1,rcx,1h
+                "0|L--|0000000140000000(6): 1 instructions",
+                "1|L--|xmm0 = __pinsr<word128,word64>(xmm1, rcx, 1<8>)");
+        }
 
         [Test]
         public void X86Rw_pmaddubsw()
@@ -964,10 +1095,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("C5C9DEC9");
             AssertCode(     // vpmaxub	xmm1,xmm6,xmm1
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v5 = xmm6",
-                "2|L--|v6 = xmm1",
-                "3|L--|xmm1 = __pmaxu<uint8[16]>(v5, v6)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm1 = __pmaxu<uint8[16]>(xmm6, xmm1)");
         }
 
         [Test]
@@ -1017,6 +1146,25 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|0000000140000000(4): 1 instructions",
                 "1|L--|__prefetcht0<ptr64>(Mem0[r8:byte])");
+        }
+
+        [Test]
+        public void X86Rw_vpshufd()
+        {
+            Given_HexString("C5D570F081");
+            AssertCode(     // vpshufd	ymm6,ymm0,81h
+                "0|L--|0000000140000000(5): 1 instructions",
+                "1|L--|ymm6 = __pshuf<word32[8]>(ymm6, ymm0, 0x81<8>)");
+        }
+
+        [Test]
+        public void X86Rw_pslldq()
+        {
+            Given_HexString("660F73FB01");
+            AssertCode(     // pslldq	xmm3,1h
+                "0|L--|0000000140000000(5): 2 instructions",
+                "1|L--|v4 = xmm3",  //$TODO unnecessary copy
+                "2|L--|xmm3 = __psll<word128[1]>(v4, 1<8>)");
         }
 
         [Test]
@@ -1073,12 +1221,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("C501E92F");
             AssertCode(     // vpsubsw	xmm13,xmm15,[rdi]
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v6 = xmm15",
-                "2|L--|v7 = Mem0[rdi:word128]",
-                "3|L--|xmm13 = __psubs<int16[8]>(v6, v7)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm13 = __psubs<int16[8]>(xmm15, Mem0[rdi:(arr int16 8)])");
         }
-
 
         [Test]
         public void X86Rw_punpcklqdq()
@@ -1181,10 +1326,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("C5FD5709");   // vxorpd\tymm1,ymm0,[rcx]
             AssertCode(
-             "0|L--|0000000140000000(4): 3 instructions",
-             "1|L--|v6 = ymm0",
-             "2|L--|v7 = Mem0[rcx:word256]",
-             "3|L--|ymm1 = __xorp<word64[4]>(v6, v7)");
+             "0|L--|0000000140000000(4): 1 instructions",
+             "1|L--|ymm1 = __xorp<word64[4]>(ymm0, Mem0[rcx:(arr word64 4)])");
         }
 
         [Test]
@@ -1205,8 +1348,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("66 0F 3A 0A C3 03");
             AssertCode(     // roundss xmm0,xmm3,3h
-                "0|L--|0000000140000000(6): 1 instructions",
-                "1|L--|xmm0 = SEQ(SLICE(xmm0, word96, 32), truncf(SLICE(xmm3, real32, 0)))");
+                "0|L--|0000000140000000(6): 2 instructions",
+                "1|L--|v5 = truncf(SLICE(xmm3, real32, 0))",
+                "2|L--|xmm0 = SEQ(SLICE(xmm0, word96, 32), v5)");
         }
 
         [Test]
@@ -1228,14 +1372,30 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_sha1rnds4()
+        {
+            Given_HexString("440F3ACCD000");
+            AssertCode(     // sha1rnds4	xmm10,xmm0,0h
+                "0|L--|0000000140000000(6): 1 instructions",
+                "1|L--|xmm10 = __sha1rnds4(xmm0, 0<8>)");
+        }
+
+        [Test]
         public void X86Rw_sha256mds2()
         {
             Given_HexString("0F38CB00");
             AssertCode(     // sha256mds2	xmm0,[rax]
-                "0|L--|0000000140000000(4): 3 instructions",
-                "1|L--|v5 = Mem0[rax:word128]",
-                "2|L--|v6 = xmm0",
-                "3|L--|xmm0 = __sha256mds2(v6, v5)");
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm0 = __sha256mds2(xmm0, Mem0[rax:word128])");
+        }
+
+        [Test]
+        public void X86Rw_sha256msg1()
+        {
+            Given_HexString("0F38CCCA");
+            AssertCode(     // sha256msg1	xmm1,xmm2
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|xmm1 = __sha256msg1(xmm1, xmm2)");
         }
 
         [Test]
@@ -1302,10 +1462,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("0F 5C 05 61 AA 00 00");
             AssertCode( // subps xmm0,[0000000000415F0C]
-               "0|L--|0000000140000000(7): 3 instructions",
-               "1|L--|v4 = xmm0",
-               "2|L--|v5 = Mem0[0x000000014000AA68<p64>:word128]",
-               "3|L--|xmm0 = __simd_fsub<real32[4]>(v4, v5)");
+               "0|L--|0000000140000000(7): 1 instructions",
+               "1|L--|xmm0 = __simd_fsub<real32[4]>(xmm0, Mem0[0x000000014000AA68<p64>:(arr real32 4)])");
         }
 
         [Test]
@@ -1350,6 +1508,17 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_vucomisd()
+        {
+            Given_HexString("C4C1C12E9D94557D01");
+            AssertCode(     // vucomisd	xmm3,double ptr [r13d+17D5594h]
+                "0|L--|0000000140000000(9): 3 instructions",
+                "1|L--|CZP = cond(SLICE(xmm3, real64, 0) - Mem0[r13 + 24991124<i64>:real64])",
+                "2|L--|O = false",
+                "3|L--|S = false");
+        }
+
+        [Test]
         public void X86rw_ucomisd()
         {
             Given_HexString("660F2E052DB10000");
@@ -1381,7 +1550,6 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|Z = ecx == 0<32>");
         }
 
-
         [Test]
         public void X86Rw_wrpkru()
         {
@@ -1405,10 +1573,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             Given_HexString("0F57C3"); // xorps\txmm0,xmm3
             AssertCode(
-                "0|L--|0000000140000000(3): 3 instructions",
-                "1|L--|v5 = xmm0",
-                "2|L--|v6 = xmm3",
-                "3|L--|xmm0 = __xorp<word32[4]>(v5, v6)");
+                "0|L--|0000000140000000(3): 1 instructions",
+                "1|L--|xmm0 = __xorp<word32[4]>(xmm0, xmm3)");
         }
 
         [Test]
@@ -1419,8 +1585,6 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|0000000140000000(3): 1 instructions",
                 "1|L--|xmm0 = 0<128>");
         }
-
-
 
         [Test]
         public void X86Rw_vzeroupper()

@@ -29,7 +29,7 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public partial class Arm64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
-        private readonly IProcessorArchitecture arch;
+        private readonly Arm64Architecture arch;
         private readonly Address baseAddress;
         private AArch64Instruction instr;
 
@@ -436,6 +436,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ld1_4regs()
+        {
+            AssertCode("ld1\t{v0.16b-v3.16b},[x0]", "0020404C");
+        }
+
+        [Test]
         public void AArch64Dis_ld1_postindex()
         {
             AssertCode("ld1\t{v25.16b-v28.16b},[x2],#&40", "5920DF4C");
@@ -445,6 +451,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_ld2_indexed()
         {
             AssertCode("ld2\t{v0.b,v1.b}[9],[x0]", "0004604D");
+        }
+
+        [Test]
+        public void AArch64Dis_ld2_word64()
+        {
+            AssertCode("ld2\t{v0.d,v1.d}[0],[x0]", "0084600D");
         }
 
         [Test]
@@ -648,6 +660,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_st1_8()
+        {
+            AssertCode("st1\t{v0.16b,v1.16b},[x0]", "00A0004C");
+        }
+
+        [Test]
         public void AArch64Dis_st1_indexed()
         {
             AssertCode("st1\t{v0.d}[1],[x0]", "0084004D");
@@ -687,9 +705,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_st3_indexed()
+        public void AArch64Dis_st3_word64_indexed()
         {
             AssertCode("st3\t{v0.d-v2.d}[1],[x0]", "00A4004D");
+        }
+
+        [Test]
+        public void AArch64Dis_st3_byte_indexed()
+        {
+            AssertCode("st3\t{v0.b-v2.b}[9],[x0]", "0024004D");
         }
 
         [Test]
@@ -3150,7 +3174,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("and\tx4,x4,#&FFFFFFFFF7FFFFFF", "84F86492");
         }
- 
+
 
         /*
          * //$BORED: amuse yourself by making these tests pass.

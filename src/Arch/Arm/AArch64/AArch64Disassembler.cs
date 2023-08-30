@@ -2484,36 +2484,30 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.st1, q30, Vmr(0, 5, 1, BHSD, 10), Mbq(5, 5)),
  
                         Instr(Mnemonic.st2, q30, Vmr(0, 5, 2, BHSD, 10), Mbq(5, 5)),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1001"),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1010"),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1011"),
+                        invalid,
+                        Instr(Mnemonic.st1, q30, Vmr(0, 5, 2, BHSD, 10), Mbq(5, 5)),
+                        invalid,
 
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1100"),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1101"),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1110"),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=0:1111"),
-                        Mask(30, 1,
-                            Instr(Mnemonic.ld4, Vmr(0, 5, 4, BHSD, 10), Mb(w64, 5, 5)),
-                            Instr(Mnemonic.ld4, Vmr(0, 5, 4, BHSD, 10), Mb(w128, 5, 5))),
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid,
+
+                        Instr(Mnemonic.ld4, q30, Vmr(0, 5, 4, BHSD, 10), Mbq(5, 5)),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:0001"),
-                        Nyi("AdvancedSimdLdStMultiple L:opcode=1:0010"),
+                        Instr(Mnemonic.ld1, q30, Vmr(0, 5, 4, BHSD, 10), Mbq(5, 5)),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:0011"),
-                        Mask(30, 1,
-                            Instr(Mnemonic.ld3, Vmr(0, 5, 3, BHSD, 10), Mb(w64, 5, 5)),
-                            Instr(Mnemonic.ld3, Vmr(0, 5, 3, BHSD, 10), Mb(w128, 5, 5))),
+
+                        Instr(Mnemonic.ld3, q30, Vmr(0, 5, 3, BHSD, 10), Mbq(5, 5)),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:0101"),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:0110"),
-                        Mask(30, 1,
-                            Instr(Mnemonic.ld1, q30, Vmr(0, 5, 1, BHSD, 10), Mb(w64, 5, 5)),
-                            Instr(Mnemonic.ld1, q30, Vmr(0, 5, 1, BHSD, 10), Mb(w128, 5, 5))),
-                        Mask(30, 1,
-                            Instr(Mnemonic.ld2, Vmr(0, 5, 2, BHSD, 10), Mb(w64, 5, 5)),
-                            Instr(Mnemonic.ld2, Vmr(0, 5, 2, BHSD, 10), Mb(w128, 5, 5))),
+                        Instr(Mnemonic.ld1, q30, Vmr(0, 5, 1, BHSD, 10), Mbq(5, 5)),
+
+                        Instr(Mnemonic.ld2, q30, Vmr(0, 5, 2, BHSD, 10), Mbq(5, 5)),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:1001"),
-                        Mask(30, 1, "  opcode=1:1010",
-                            Instr(Mnemonic.ld1, q30, Vmr(0, 5, 2, BHSD, 10), Mb(w64, 5, 5)),
-                            Instr(Mnemonic.ld1, q30, Vmr(0, 5, 2, BHSD, 10), Mb(w128, 5, 5))),
+                        Instr(Mnemonic.ld1, q30, Vmr(0, 5, 2, BHSD, 10), Mbq(5, 5)),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:1011"),
+
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:1100"),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:1101"),
                         Nyi("AdvancedSimdLdStMultiple L:opcode=1:1110"),
@@ -2578,12 +2572,14 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 Decoder AdvancedSimdLdStSingleStructure;
                 { 
-                    AdvancedSimdLdStSingleStructure = Mask(21,2, "  AdvancedSimdLdStSingleStructure",
+                    AdvancedSimdLdStSingleStructure = Mask(21,2, "  Advanced SIMD load/store single structure",
                         Mask(13, 3, // L:R=0 0 opcode
                             Mask(10, 1,     // L:R=0 0 opcode=010 size=x?
                                 Instr(Mnemonic.st1, Vmrx(0,5,1,8), Mb(w64, 5,5)),
                                 Instr(Mnemonic.st1, Vmrx(0,5,1,8), Mb(w128, 5,5))),
-                            Nyi("AdvancedSimdLdStSingleStructure L:R=0 0 opcode=001"),
+                            Mask(10, 1,     // L:R=0 0 opcode=010 size=x?
+                                Instr(Mnemonic.st3, Vmrx(0, 5, 3, 8), Mb(w64, 5, 5)),
+                                Instr(Mnemonic.st3, Vmrx(0, 5, 3, 8), Mb(w128, 5, 5))),
                             Mask(10, 1,     // L:R=0 0 opcode=010 size=x?
                                 Instr(Mnemonic.st1, Vmrx(0,5,1,16),Mbq(5,5)),
                                 invalid),   // L:R=0 0 opcode=010 size=x1
@@ -2658,7 +2654,17 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("opcode=010"),
                             Nyi("opcode=011"),
 
-                            Nyi("opcode=100"),
+                            Mask(10, 3, "  opcode=100",
+                                Instr(Mnemonic.ld2, q30, Vmrx(0,5,2,32), Mbq(5, 5)),
+                                Instr(Mnemonic.ld2, q30, Vmrx(0,5,2,64), Mbq(5, 5)),
+                                invalid,
+                                invalid,
+                                
+                                Instr(Mnemonic.ld2, q30, Vmrx(0,5,2,32), Mbq(5, 5)),
+                                invalid,
+                                invalid,
+                                invalid),
+
                             Mask(10, 2, "  opcode=101",
                                 Instr(Mnemonic.ld4, q30, Vmrx(0, 5, 4, 32), Mbq(5, 5)),
                                 Mask(12, 1,  "  size=01",
@@ -2842,7 +2848,7 @@ namespace Reko.Arch.Arm.AArch64
                                 LoadStoreExclusive,
                                 invalid,
                                 invalid),
-                            Mask(23, 2,  // op0 = 0 op1 = 00 op2 = 1
+                            Mask(23, 2,  "  op2 = 1",
                                 Select((16, 6), IsZero,
                                     AdvancedSimdLdStMultiple,
                                     invalid),
@@ -2853,7 +2859,7 @@ namespace Reko.Arch.Arm.AArch64
                                     AdvancedSimdLdStSingleStructure,
                                     invalid),
                                 AdvancedSimdLdStSingleStructurePostIdx)),
-                        Mask(23, 2,      // op0 = 0, op1 = 1
+                        Mask(23, 2, "  op1=01",
                             LoadRegLit,
                             LoadRegLit,
                             invalid,
@@ -2863,7 +2869,7 @@ namespace Reko.Arch.Arm.AArch64
                             LdStRegPairPost,
                             LdStRegPairOffset,
                             LdStRegPairPre),
-                        Mask(24, 1, // op0 = 0, op1 = 1x
+                        Mask(24, 1, "  op1=11",
                             Mask(21, 1,     // LdSt op0 = 0, op1 = 3, op3 = 0, high bit of op4
                                 Mask(10, 2, 
                                     LdStRegUnscaledImm,

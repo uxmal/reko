@@ -143,6 +143,12 @@ namespace Reko.Arch.X86
             m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1)!, InstrClass.ConditionalTransfer);
         }
 
+        private void RewriteConditionalMaskGoto(Func<Expression,Expression> eq)
+        {
+            var k = SrcOp(0);
+            m.Branch(eq(k), OperandAsCodeAddress(instrCur.Operands[1])!);
+        }
+
         private void RewriteEndbr()
         {
             // Endbr signals an indirect jump/call target, but is otherwise a NOP. We want to avoid fusing

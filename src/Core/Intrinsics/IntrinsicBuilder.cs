@@ -48,6 +48,7 @@ namespace Reko.Core.Intrinsics
         private Func<Constant[], Constant>? applyConstants;
         private DataType[]? genericTypes;
         private Dictionary<string, DataType>? genericTypeDictionary;
+        private bool isVariadic;
 
         public IntrinsicBuilder(string intrinsicName, bool hasSideEffect) : this(intrinsicName, hasSideEffect, DefaultProcedureCharacteristics.Instance)
         {
@@ -168,6 +169,7 @@ namespace Reko.Core.Intrinsics
         public IntrinsicProcedure Void()
         {
             var signature = FunctionType.Action(parameters.ToArray());
+            signature.IsVariadic = isVariadic;
             return MakeIntrinsic(signature);
         }
 
@@ -176,6 +178,7 @@ namespace Reko.Core.Intrinsics
             var signature = FunctionType.CreateUserDefined(
                 new Identifier("", dt, null!),
                 parameters.ToArray());
+            signature.IsVariadic = isVariadic;
             return MakeIntrinsic(signature);
         }
 
@@ -196,6 +199,12 @@ namespace Reko.Core.Intrinsics
             // When IntrinsicProcedure.MakeInstance is called, the pointer
             // size of the architecture is resolved.
             return Returns(new Pointer(dt, 0));
+        }
+
+        public IntrinsicBuilder Variadic()
+        {
+            this.isVariadic = true;
+            return this;
         }
 
         private IntrinsicProcedure MakeIntrinsic(FunctionType signature)

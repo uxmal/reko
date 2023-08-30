@@ -43,10 +43,10 @@ namespace Reko.Arch.X86
             m.Assign(cr0, m.Fn(clts_intrinsic, cr0));
         }
 
-        private void RewriteCldemote()
+        private void RewriteCacheLine(IntrinsicProcedure intrinsic)
         {
             var mem = SrcOp(0);
-            m.SideEffect(m.Fn(cldemote_intrinsic, m.AddrOf(arch.PointerType, mem)));
+            m.SideEffect(m.Fn(intrinsic, m.AddrOf(arch.PointerType, mem)));
 
         }
         public void RewriteEmms()
@@ -135,7 +135,7 @@ namespace Reko.Arch.X86
             {
                 src = m.Slice(src, opDst.Width, 0);
             }
-            EmitCopy(opDst, src, 0);
+            EmitCopy(0, src);
         }
 
         public void RewritePause()
@@ -173,6 +173,11 @@ namespace Reko.Arch.X86
         private void RewriteVmptrld()
         {
             m.SideEffect(m.Fn(vmptrld_intrinsic, SrcOp(0)));
+        }
+
+        private void RewriteVmxon()
+        {
+            m.SideEffect(m.Fn(vmxon_intrinsic, m.AddrOf(PrimitiveType.Ptr64, SrcOp(0))));
         }
 
         private void RewriteVmread()

@@ -605,13 +605,13 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86dis_packssdw()
         {
-            AssertCode32("packssdw\tmm0,dword ptr [edx+42h]", 0x0F, 0x6B, 0x42, 0x42);
+            AssertCode32("packssdw\tmm0,[edx+42h]", 0x0F, 0x6B, 0x42, 0x42);
         }
 
         [Test]
         public void X86dis_packuswb()
         {
-            AssertCode32("packuswb\tmm0,dword ptr [edx+42h]", 0x0F, 0x67, 0x42, 0x42);
+            AssertCode32("packuswb\tmm0,[edx+42h]", 0x0F, 0x67, 0x42, 0x42);
         }
 
         [Test]
@@ -645,15 +645,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86dis_pcmpgtw()
+        public void X86dis_pcmpgtd()
         {
-            AssertCode32("pcmpgtw\tmm0,dword ptr [edx+42h]", 0x0F, 0x65, 0x42, 0x42);
+            AssertCode32("pcmpgtd\tmm0,[edx+42h]", 0x0F, 0x66, 0x42, 0x42);
         }
 
         [Test]
-        public void X86dis_pcmpgtd()
+        public void X86dis_pcmpgtw()
         {
-            AssertCode32("pcmpgtd\tmm0,dword ptr [edx+42h]", 0x0F, 0x66, 0x42, 0x42);
+            AssertCode32("pcmpgtw\tmm0,[edx+42h]", 0x0F, 0x65, 0x42, 0x42);
         }
 
         [Test]
@@ -689,8 +689,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86dis_pinsrw()
         {
-            //$TODO check encoding; look in the Intel spec.
-            AssertCode32("pinsrw\tmm0,edx", 0x0F, 0xC4, 0x42, 0x42);
+            AssertCode32("pinsrw\tmm0,edx,42h", 0x0F, 0xC4, 0x42, 0x42);
         }
 
         [Test]

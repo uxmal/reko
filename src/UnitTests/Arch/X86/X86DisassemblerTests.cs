@@ -424,6 +424,12 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_jnkz()
+        {
+            AssertCode64("jknz\tk5,10000h", "C5D585F9FFFFFFFF");
+        }
+
+        [Test]
         public void X86Dis_64_rexW()
         {
             AssertCode64("lea\trdx,[rsp+20h]", 0x48, 0x8D, 0x54, 0x24, 0x20);
@@ -1284,6 +1290,12 @@ movzx	ax,byte ptr [bp+4h]
         public void X86Dis_btr()
         {
             AssertCode64("btr\t[rsp+30h],eax", 0x0f, 0xb3, 0x44, 0x24, 0x30);
+        }
+
+        [Test]
+        public void X86Dis_jkz_offset32()
+        {
+            AssertCode64("jkz\tk7,10000h", "C5C584F9FFFFFF");
         }
 
         [Test]
@@ -2750,8 +2762,6 @@ movzx	ax,byte ptr [bp+4h]
         {
             AssertCode64("cvtpi2ps\txmm7,[rdx-4DB21120h]", "0F 2A BA E0 EE 4D B2");
         }
-
-
 
         [Test]
         [Ignore("Think about this, some more -- Intel manual allows it")]

@@ -24,12 +24,9 @@ using Reko.Core.Intrinsics;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
@@ -356,7 +353,11 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
             {
-                NotImplementedYet();
+                var args = new List<Expression> { ea };
+                args.Add(Constant.Int32(vec.Index));
+                args.AddRange(vec.GetRegisters()
+                    .Select(r => (Expression) m.Out(r.DataType, binder.EnsureRegister(r))));
+                m.SideEffect(m.Fn(intrinsic.MakeInstance(64, args[1].DataType), args.ToArray()));
             }
             if (postIndex != null)
             {
@@ -379,14 +380,20 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands[^1] is VectorRegisterOperand vr && vr.Index >= 0)
             {
                 var dtSrc = this.MakeArrayType(instr.Operands[1]);
-                m.Assign(RewriteOp(0), m.Fn(intrinsicByElement.MakeInstance(dtSrc, dtSrc.ElementType),
+                m.Assign(RewriteOp(0), m.Fn(
+                    intrinsicByElement.MakeInstance(dtSrc, dtSrc.ElementType),
                     RewriteOp(0),
                     RewriteOp(1),
                     RewriteOp(2)));
             }
             else
             {
-                EmitUnitTest(" mla vector");
+                var dtSrc = this.MakeArrayType(instr.Operands[1]);
+                m.Assign(RewriteOp(0), m.Fn(
+                   intrinsic.MakeInstance(dtSrc),
+                   RewriteOp(0),
+                   RewriteOp(1),
+                   RewriteOp(2)));
             }
         }
 

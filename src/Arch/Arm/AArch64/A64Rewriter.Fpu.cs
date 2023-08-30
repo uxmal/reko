@@ -246,13 +246,16 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteFmov()
         {
-            if (instr.Operands[0] is VectorRegisterOperand v && v.Index >= 0)
+            if (instr.Operands[0] is VectorRegisterOperand v)
             {
-                RewriteVectorElementStore(v);
-            }
-            else if (instr.Operands[1] is ImmediateOperand)
-            {
-                RewriteSimdUnaryWithScalar(fmov_intrinsic, Domain.Real);
+                if (v.Index >= 0)
+                {
+                    RewriteVectorElementStore(v);
+                }
+                else
+                {
+                    RewriteSimdUnaryWithScalar(fmov_intrinsic, Domain.Real);
+                }
             }
             else
             {

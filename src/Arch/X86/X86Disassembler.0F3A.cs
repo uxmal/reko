@@ -66,7 +66,7 @@ namespace Reko.Arch.X86
 
                 d[0x0C] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.blendps, Mnemonic.vblendps, Vx,Hx,Wx,Ib));
                 d[0x0D] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.blendpd, Mnemonic.vblendpd, Vx,Hx,Wx,Ib));
-                d[0x0E] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.blendw, Mnemonic.vblendw, Vx,Hx,Wx,Ib));
+                d[0x0E] = new PrefixedDecoder(dec66: VexInstr(Mnemonic.pblendw, Mnemonic.vpblendw, Vx,Hx,Wx,Ib));
                 d[0x0F] = new PrefixedDecoder(
                     dec:Instr(Mnemonic.palignr, Pq,Qq,Ib),
                     dec66:Instr(Mnemonic.palignr, Vx,Hx,Wx,Ib));

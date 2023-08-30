@@ -25,6 +25,9 @@ using System;
 
 namespace Reko.Arch.Arm.AArch64
 {
+    /// <summary>
+    /// Represents a vector register operand used in AArch64 SIMD instructions.
+    /// </summary>
     public class VectorRegisterOperand : AbstractMachineOperand
     {
         public VectorRegisterOperand(PrimitiveType dt, RegisterStorage reg) : base(dt)
