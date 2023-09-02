@@ -1,4 +1,4 @@
-cmake_minimum_required ( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 list(INSERT CMAKE_MODULE_PATH 0 "${REKO_SRC}/../cmake")
 
 include(msbuild2cmake)
