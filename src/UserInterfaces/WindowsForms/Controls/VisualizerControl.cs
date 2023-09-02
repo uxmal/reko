@@ -178,7 +178,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             var bgPattern = new[] { Color.FromArgb(0x7F,0,0), Color.FromArgb(0x30,0x00,0x00) };
             var addrStart = bmem.BaseAddress + vscroll.Value * LineLength;
-            Debug.Print("Visualizer: {0} {1:X}", addrStart, vscroll.Value);
+            trace.Verbose("Visualizer: {0} {1:X}", addrStart, vscroll.Value);
             var bytesOnScreen = LinesOnScreen * LineLength;
             var colors = visualizer.RenderBuffer(program, bmem, addrStart, bytesOnScreen, null);
             int x = 0;
