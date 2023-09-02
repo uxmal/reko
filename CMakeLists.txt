@@ -1,4 +1,4 @@
-cmake_minimum_required ( VERSION 3.10 FATAL_ERROR )
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake")
 find_package(Dotnet 2.0 REQUIRED)
 
