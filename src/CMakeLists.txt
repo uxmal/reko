@@ -645,7 +645,7 @@ elseif("${TARGET}" STREQUAL "create_release")
 
 	add_custom_target(create_release_zip_cmdline
 		COMMENT "Compressing CmdLine..."
-		COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/CmdLine-${build_version}-${build_shorthash}.zip
+		COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/CmdLine-${build_version}-${REKO_PLATFORM}-${build_shorthash}.zip
 			${REKO_SRC}/Drivers/CmdLine/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/*
 	)
 	add_dependencies(create_release create_release_zip_cmdline)

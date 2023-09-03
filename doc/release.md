@@ -13,13 +13,9 @@ Commit changes and push to GitHub, triggering the CI builds on AppVeyor and Trav
 Make sure CI tests are are passing.
 
 ## Final steps
-$TODO: The following could probably be automated with a script.
-
-Create a new tag: 'version-x.x.x.x`
-Push tag to `master` on Github
-
 Copy the distributables (msi files)
-Go to https://github.com/uxmal/reko/releases and make a new release
+Go to https://github.com/uxmal/reko/releases and make a new release with a tag 
+following the pattern 'version-.x.x.x.x'
 
 ### Versioning
 Once the release is done, decide on a new version number x.x.x.x
