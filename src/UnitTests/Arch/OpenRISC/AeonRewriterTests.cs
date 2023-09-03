@@ -160,7 +160,16 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("2061E0");
             AssertCode(     // bn.beqi?	r3,0x0,00100078
                 "0|T--|00100000(3): 1 instructions",
-                "1|T--|if (r3 == 0<32>) branch 00100078");
+                "1|T--|if (r3 == 0<i32>) branch 00100078");
+        }
+
+        [Test]
+        public void AeonRw_bn_beqi___negative()
+        {
+            Given_HexString("207C68");
+            AssertCode(     // bn.beqi?	r3,-0x1,0010001A
+                "0|T--|00100000(3): 1 instructions",
+                "1|T--|if (r3 == -1<i32>) branch 0010001A");
         }
 
         [Test]

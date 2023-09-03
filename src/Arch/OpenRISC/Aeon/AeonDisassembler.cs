@@ -557,7 +557,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             
             var decode001000 = Mask(0, 2, "  8",
                 // branch if reg == imm
-                Instr(Mnemonic.bn_beqi__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),   // guess
+                Instr(Mnemonic.bn_beqi__, InstrClass.ConditionalTransfer, R13, simm10_3, disp2_8),   // guess
                 Instr(Mnemonic.bn_bf, InstrClass.ConditionalTransfer, disp2_16),                     // chenxing(mod), source
                 Instr(Mnemonic.bn_bnei__, InstrClass.ConditionalTransfer, R13, uimm10_3, disp2_8),
                 Instr(Mnemonic.bn_bnf__, InstrClass.ConditionalTransfer, disp2_16));
