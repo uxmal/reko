@@ -55,6 +55,7 @@ namespace Reko.Analysis
         private IProcessorArchitecture arch;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
+        private readonly IReadOnlyProgram program;
 
         public TrashedRegisterFinder(
             IReadOnlyProgram program,
@@ -71,6 +72,7 @@ namespace Reko.Analysis
             this.cmp = new ExpressionValueComparer();
             this.worklist = new WorkStack<Block>();
             this.ssas = sccGroup.ToDictionary(s => s.SsaState.Procedure, s => s.SsaState);
+            this.program = program;
         }
 
         /// <summary>
@@ -262,8 +264,19 @@ namespace Reko.Analysis
             this.ctx.IsDirty = false;
             foreach (var stm in block.Statements)
             {
-                if (!stm.Instruction.Accept(this))
-                    return;
+                try
+                {
+                    if (!stm.Instruction.Accept(this))
+                        return;
+                } catch (Exception ex)
+                {
+                    listener.Error(
+                        listener.CreateStatementNavigator(program, stm),
+                        ex,
+                        "An error occurred when finding the trashed registers in {0}", stm);
+                    block.Procedure.Write(false, Console.Out);
+                    block.Procedure.Dump(true);
+                }
             }
             if (block == block.Procedure.ExitBlock)
             {
@@ -332,6 +345,7 @@ namespace Reko.Analysis
             var (value, _) = ass.Src.Accept(eval!);
             trace.Verbose("{0} = [{1}]", ass.Dst, value);
             ctx!.SetValue(ass.Dst, value);
+
             return true;
         }
 
