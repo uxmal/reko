@@ -27,7 +27,7 @@ using System;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class ProcedureListToolView : UserControl
+    public partial class ProcedureListToolView : UserControl
     {
         public ProcedureListToolView()
         {
@@ -47,7 +47,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             }
         }
 
-        private void procList_DoubleTapped(object sender, RoutedEventArgs e)
+        protected void procList_DoubleTapped(object sender, RoutedEventArgs e)
         {
             var vm = ViewModel;
             if (vm is null)

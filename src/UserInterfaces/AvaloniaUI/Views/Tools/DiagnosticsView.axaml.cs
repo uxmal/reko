@@ -23,7 +23,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class DiagnosticsView : UserControl
+    public partial class DiagnosticsView : UserControl
     {
         public DiagnosticsView()
         {

@@ -31,8 +31,8 @@
 					HorizontalAlignment="Right"
 					Spacing="5"
 					Margin="0,5,0,0">
-			<Button Tapped="btnOK_Click" IsEnabled="{Binding OkEnabled}">OK</Button>
-			<Button Tapped="btnCancel_Click">Cancel</Button>
+			<Button Click="btnOK_Click" IsEnabled="{Binding OkEnabled}">OK</Button>
+			<Button Click="btnCancel_Click">Cancel</Button>
 		</StackPanel>
 	</Grid>
 </Window>

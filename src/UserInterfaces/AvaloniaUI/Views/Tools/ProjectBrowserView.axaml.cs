@@ -26,7 +26,7 @@ using Reko.UserInterfaces.AvaloniaUI.ViewModels.Tools;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class ProjectBrowserView : UserControl
+    public partial class ProjectBrowserView : UserControl
     {
         private TreeView tree;
 

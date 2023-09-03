@@ -56,8 +56,8 @@
 		<StackPanel Orientation="Horizontal"
 					Spacing="6"
 					HorizontalAlignment="Right">
-			<Button Tapped="btnOK_Click">OK</Button>
-			<Button Tapped="btnCancel_Click">Cancel</Button>
+			<Button Click="btnOK_Click">OK</Button>
+			<Button Click="btnCancel_Click">Cancel</Button>
 		</StackPanel>
 	</StackPanel>
 

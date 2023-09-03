@@ -9,12 +9,10 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
     public partial class BaseAddressFinderDocumentView : UserControl
     {
-        private DataGrid listCandidates;
-
         public BaseAddressFinderDocumentView()
         {
             InitializeComponent();
-            this.listCandidates = this.FindControl<DataGrid>("listCandidates");
+            //$REVIEW:
             this.listCandidates.SelectionChanged += listCandidates_SelectionChanged;
         }
 

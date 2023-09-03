@@ -31,7 +31,7 @@
 				CanUserResizeColumns="True"
 				CanUserSortColumns="True"
 				AutoGenerateColumns="false"
-				DoubleTapped="procList_DoubleTapped">
+				DoubleClick="procList_DoubleTapped">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
 					<DataGridTextColumn Header="Address" Binding="{Binding Address}" />

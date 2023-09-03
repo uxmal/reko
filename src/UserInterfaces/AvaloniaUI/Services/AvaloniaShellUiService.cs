@@ -21,7 +21,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using Dock.Model.Core;
-using MessageBox.Avalonia.Enums;
+using MsBox.Avalonia.Enums;
 using Reko.Core.Diagnostics;
 using Reko.Gui;
 using Reko.Gui.Services;
@@ -106,11 +106,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public async ValueTask<bool> Prompt(string prompt)
         {
-            var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+            var msgBox = MsBox.Avalonia.MessageBoxManager.GetMessageBoxStandard(
                 "Reko Decompiler",
                 prompt,
                 ButtonEnum.YesNo);
-            var result = await msgBox.Show(mainWindow);
+            var result = await msgBox.ShowWindowDialogAsync(mainWindow);
             return result == ButtonResult.Yes;
         }
 
@@ -148,23 +148,23 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             }
             await Dispatcher.UIThread.InvokeAsync(async delegate ()
             {
-                var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                var msgBox = MsBox.Avalonia.MessageBoxManager.GetMessageBoxStandard(
                     "Reko Decompiler",
                     sb.ToString(),
                     ButtonEnum.Ok,
                     Icon.Error);
-                await msgBox.Show(mainWindow);
+                await msgBox.ShowWindowDialogAsync(mainWindow);
             });
         }
 
         public async ValueTask ShowMessage(string msg)
         {
-            var msgBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+            var msgBox = MsBox.Avalonia.MessageBoxManager.GetMessageBoxStandard(
                 "Reko Decompiler",
                 msg,
                 ButtonEnum.YesNo,
                 Icon.Info);
-            await msgBox.Show(mainWindow);
+            await msgBox.ShowWindowDialogAsync(mainWindow);
         }
 
         public async ValueTask<DialogResult> ShowModalDialog(IDialog dlg)

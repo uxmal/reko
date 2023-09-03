@@ -23,7 +23,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class PropertiesView : UserControl
+    public partial class PropertiesView : UserControl
     {
         public PropertiesView()
         {

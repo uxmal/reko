@@ -15,7 +15,7 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="18.4.22" />
+    <PackageReference Include="ReactiveUI" Version="19.4.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />

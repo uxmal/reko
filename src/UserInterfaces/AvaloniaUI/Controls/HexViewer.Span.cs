@@ -55,7 +55,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 dc.FillRectangle(Brushes.White, Bounds);
                 var fg = GetValue(ForegroundProperty);
                 var tx = new TextLayout(this.Text, font, size, fg);
-                using (dc.PushPostTransform(Matrix.CreateTranslation(Bounds.Left, Bounds.Top)))
+                using (dc.PushTransform(Matrix.CreateTranslation(Bounds.Left, Bounds.Top)))
                 {
                     tx.Draw(dc, new Point(0, 0));
                 }
@@ -66,7 +66,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
                 dc.FillRectangle(Brushes.White, Bounds);
                 var fg = GetValue(ForegroundProperty);
                 var tx = new TextLayout(this.Text, font, size, fg);
-                using (dc.PushPostTransform(Matrix.CreateTranslation(Bounds.Left, Bounds.Top)))
+                using (dc.PushTransform(Matrix.CreateTranslation(Bounds.Left, Bounds.Top)))
                 {
                     tx.Draw(dc, new Point(0, 0));
                 }

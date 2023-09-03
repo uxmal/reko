@@ -50,8 +50,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 
         public ISearchResultView CreateSearchResultView()
         {
-            var dg = this.FindControl<DataGrid>("gridResults");
-            return new DataGridSearchResultView(dg);
+            return new DataGridSearchResultView(gridResults);
         }
 
         private class DataGridSearchResultView : ISearchResultView

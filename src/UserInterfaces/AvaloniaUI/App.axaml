@@ -8,6 +8,7 @@
   <Application.DataTemplates>
     <local:ViewLocator />
   </Application.DataTemplates>
+	
   <Application.Styles>
     <FluentTheme />
     <Style Selector="idc|DocumentControl">
@@ -33,9 +34,6 @@
         </DataTemplate>
       </Setter>
     </Style>
-
-	  <!-- 
-	  <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Default.xaml"/>-->
     <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
   </Application.Styles>
 </Application>

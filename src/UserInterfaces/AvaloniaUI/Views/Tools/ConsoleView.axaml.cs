@@ -23,7 +23,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 {
-    public class ConsoleView : UserControl
+    public partial class ConsoleView : UserControl
     {
         public ConsoleView()
         {

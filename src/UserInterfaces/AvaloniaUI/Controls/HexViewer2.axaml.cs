@@ -48,19 +48,19 @@ namespace Reko.UserInterfaces.AvaloniaUI.Controls
         };
 
 
-        public static DirectProperty<HexViewer2, MemoryArea?> MemoryAreaProperty =
+        public static readonly DirectProperty<HexViewer2, MemoryArea?> MemoryAreaProperty =
             AvaloniaProperty.RegisterDirect<HexViewer2, MemoryArea?>(
                 nameof(MemoryArea),
                 o => o.MemoryArea,
                 (o, v) => o.MemoryArea = v);
 
-        public static DirectProperty<HexViewer2, EndianServices> EndiannessProperty =
+        public static readonly DirectProperty<HexViewer2, EndianServices> EndiannessProperty =
             AvaloniaProperty.RegisterDirect<HexViewer2, EndianServices>(
                 nameof(Endianness),
                 o => o.Endianness,
                 (o, v) => o.Endianness = v);
 
-        public static DirectProperty<HexViewer2, Address?> TopAddressProperty =
+        public static readonly DirectProperty<HexViewer2, Address?> TopAddressProperty =
             AvaloniaProperty.RegisterDirect<HexViewer2, Address?>(
                 nameof(TopAddress),
                 o => o.TopAddress,

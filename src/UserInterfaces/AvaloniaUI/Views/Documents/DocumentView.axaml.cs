@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Documents
 {
-    public class DocumentView : UserControl
+    public partial class DocumentView : UserControl
     {
         public DocumentView()
         {

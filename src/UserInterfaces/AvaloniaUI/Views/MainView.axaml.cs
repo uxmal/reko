@@ -33,7 +33,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
     /// The main view of the application, displaying the menu, the toolbar, 
     /// the dockable windows, and the status bar.
     /// </summary>
-    public class MainView : UserControl
+    public partial class MainView : UserControl
     {
         public MainView()
         {
@@ -68,8 +68,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
 
         private void InitializeMenu()
         {
-            var menu = this.FindControl<Menu>("mainMenu");
-            menu.AddHandler(MenuItem.SubmenuOpenedEvent, (_, e) =>
+            mainMenu.AddHandler(MenuItem.SubmenuOpenedEvent, (_, e) =>
             {
                 if (e.Source is not MenuItem mi)
                     return;
@@ -81,25 +80,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
                     vm.SetMenuStatus(item.Items);
                 };
             });
-            /*
-            this.FindControl<MenuItem>("OptionsIsDragEnabled")?.Click += (_, _) =>
-            {
-                if (VisualRoot is Window window)
-                {
-                    var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
-                    window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
-                }
-            };
 
-            this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (_, _) =>
-            {
-                if (VisualRoot is Window window)
-                {
-                    var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
-                    window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
-                }
-            };
-            */
         }
     }
 }
