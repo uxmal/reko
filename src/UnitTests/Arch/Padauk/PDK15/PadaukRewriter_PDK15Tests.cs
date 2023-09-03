@@ -53,7 +53,8 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("FF50");
             AssertCode(     // add	a,+00FF
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = a + 0xFF<8>");
+                "1|L--|a = a + 0xFF<8>",
+                "2|L--|ZCAV = cond(a)");
         }
 
         [Test]
@@ -186,7 +187,8 @@ namespace Reko.UnitTests.Arch.Padauk.PDK15
             Given_HexString("031D");
             AssertCode(     // or	a,[0x3]
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = a | Mem0[0x0003<p16>:byte]");
+                "1|L--|a = a | Mem0[0x0003<p16>:byte]",
+                "2|L--|Z = cond(a)");
         }
 
         [Test]

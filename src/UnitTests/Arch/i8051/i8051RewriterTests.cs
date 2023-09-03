@@ -99,7 +99,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x08); // inc\tR0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|R0 = R0 + 1<8>");
+                "1|L--|R0 = R0 + 1<8>",
+                "2|L--|P = cond(R0)");
 
             Given_Bytes(0x04); // inc\tA
             AssertCode(
@@ -409,7 +410,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x18); // dec\tR0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|R0 = R0 - 1<8>");
+                "1|L--|R0 = R0 - 1<8>",
+                "2|L--|P = cond(R0)");
         }
 
         [Test]

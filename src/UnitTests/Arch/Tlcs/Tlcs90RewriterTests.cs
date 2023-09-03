@@ -677,7 +677,13 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|0100(1): 9 instructions",
                 "1|L--|v3 = bc",
                 "2|L--|bc = bc'",
-                "3|L--|bc' = v3");
+                "3|L--|bc' = v3",
+                "4|L--|v6 = de",
+                "5|L--|de = de'",
+                "6|L--|de' = v6",
+                "7|L--|v9 = hl",
+                "8|L--|hl = hl'",
+                "9|L--|hl' = v9");
         }
 
         [Test]
@@ -696,7 +702,10 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("A6");	// sll
             AssertCode(
                 "0|L--|0100(1): 4 instructions",
-                "1|L--|a = a << 1<i8>");
+                "1|L--|a = a << 1<i8>",
+                "2|L--|H = false",
+                "3|L--|N = false",
+                "4|L--|SZXC = cond(a)");
         }
 
         [Test]

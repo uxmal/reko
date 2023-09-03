@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using System;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -101,20 +102,36 @@ namespace Reko.UnitTests.Arch
             int i = 0;
             var frame = Architecture.CreateFrame();
             var host = CreateRewriterHost();
-            var rewriter = GetRtlStream(mem, frame, host).GetEnumerator();
-            while (i < expected.Length && rewriter.MoveNext())
-            {
-                Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class), rewriter.Current));
-                ++i;
-                var ee = rewriter.Current.Instructions.OfType<RtlInstruction>().GetEnumerator();
-                while (i < expected.Length && ee.MoveNext())
+            var actual = GetRtlStream(mem, frame, host)
+                .SelectMany(cluster =>
                 {
-                    Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));
+                    var a = new string[cluster.Instructions.Length + 1];
+                    a[0] = string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(cluster.Class), cluster);
                     ++i;
+                    for (int j = 0; j < cluster.Instructions.Length; ++j)
+                    {
+                        var instr = cluster.Instructions[j];
+                        a[j + 1] = string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(instr.Class), instr);
+                        ++i;
+                    }
+                    return a;
+                }).ToArray();
+            try
+            {
+                var c = Math.Min(expected.Length, actual.Length);
+                for (i = 0; i < c; ++i)
+                {
+                    Assert.AreEqual(expected[i], actual[i]);
                 }
+                Assert.AreEqual(expected.Length, actual.Length, $"Expected {expected.Length} RTL instructions but got {actual.Length}.");
             }
-            Assert.AreEqual(expected.Length, i, $"Expected {expected.Length} RTL instructions.");
-            Assert.IsFalse(rewriter.MoveNext(), "More instructions were emitted than were expected.");
+            catch
+            {
+                Console.WriteLine(string.Join(
+                    "," + Environment.NewLine, 
+                    actual.Select(s =>$"\"{s}\"")));
+                throw;
+            }
         }
     }
 }

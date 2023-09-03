@@ -605,7 +605,8 @@ namespace Reko.UnitTests.Arch.X86
                "0|L--|10000000(2): 4 instructions",
                "1|L--|CZP = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])",
                "2|L--|O = false",
-               "3|L--|S = false");
+               "3|L--|S = false",
+               "4|L--|Top = Top + 1<i8>");
         }
 
         [Test]
@@ -964,7 +965,8 @@ namespace Reko.UnitTests.Arch.X86
                 "0|L--|10000000(2): 4 instructions",
                 "1|L--|CZP = cond(ST[Top:real64] - ST[Top + 2<i8>:real64])",
                 "2|L--|O = false",
-                "3|L--|S = false");
+                "3|L--|S = false",
+                "4|L--|Top = Top + 1<i8>");
         }
 
         [Test]
@@ -1012,7 +1014,8 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("DD4842");    // fisttp\tqword ptr [eax+42]
             AssertCode(
                 "0|L--|10000000(3): 2 instructions",
-                "1|L--|Mem0[eax + 66<i32>:int64] = CONVERT(trunc(ST[Top:real64]), real64, int64)");
+                "1|L--|Mem0[eax + 66<i32>:int64] = CONVERT(trunc(ST[Top:real64]), real64, int64)",
+                "2|L--|Top = Top + 1<i8>");
         }
 
         [Test]
@@ -1031,7 +1034,8 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("DDE5");    // fucom\tst(5),st(0)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top + 5<i8>:real64] - ST[Top:real64])");
+                "1|L--|FPUF = cond(ST[Top + 5<i8>:real64] - ST[Top:real64])",
+                "2|L--|Top = Top + 0<i8>");
         }
 
         [Test]
@@ -1040,7 +1044,8 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("D8 D9");               // fcomp st(0),st(1)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])");
+                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])",
+                "2|L--|Top = Top + 1<i8>");
         }
 
         [Test]
@@ -1049,7 +1054,8 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("DDEA");    // fucomp\tst(2)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 2<i8>:real64])");
+                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 2<i8>:real64])",
+                "2|L--|Top = Top + 1<i8>");
         }
 
         [Test]

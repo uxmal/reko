@@ -46,7 +46,8 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x9601); // "adiw\tr24,01"
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|r25_r24 = r25_r24 + 1<16>");
+                "1|L--|r25_r24 = r25_r24 + 1<16>",
+                "2|L--|SVNZC = cond(r25_r24)");
         }
 
         [Test]

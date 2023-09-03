@@ -281,7 +281,8 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0xF8, 0x08, 0x53, 0x52, 0x51, 0x08, 0x54);	// ashp	
             AssertCode(
                 "0|L--|00010000(7): 2 instructions",
-                "1|L--|VZN = vax_ashp(8<8>, r3, SLICE(r2, word16, 0), r1, 8<16>, r4)");
+                "1|L--|VZN = vax_ashp(8<8>, r3, SLICE(r2, word16, 0), r1, 8<16>, r4)",
+                "2|L--|C = false");
         }
 
         [Test]
@@ -875,7 +876,8 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|r2 = r2 - 4<32>",
                 "2|L--|v5 = CONVERT(Mem0[r5:real64], real64, real32)",
                 "3|L--|Mem0[r2:real32] = v5",
-                "4|L--|VZN = cond(v5)");
+                "4|L--|VZN = cond(v5)",
+                "5|L--|C = false");
         }
 
         [Test]
@@ -2018,7 +2020,10 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0x9E, 0xE0, 0xC9, 0xD3, 0xFD, 0xFF, 0x57);	// movab	FFFE5400,r7
             AssertCode(
                 "0|L--|00010000(7): 4 instructions",
-                "1|L--|r7 = r0 + 0xFFFDD3C9<32>");
+                "1|L--|r7 = r0 + 0xFFFDD3C9<32>",
+                "2|L--|ZN = cond(r7)",
+                "3|L--|C = false",
+                "4|L--|V = false");
         }
 
         [Test]
@@ -2041,7 +2046,10 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|L--|00010000(3): 6 instructions",
                 "1|L--|v5 = r0",
                 "2|L--|Mem0[r5:word32] = v5",
-                "3|L--|r5 = r5 + 4<32>");
+                "3|L--|r5 = r5 + 4<32>",
+                "4|L--|ZN = cond(v5)",
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -2143,7 +2151,9 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0x58, 0x52, 0x64);	// adawi	
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|v5 = atomic_fetch_add<word16>(Mem0[r4:word16], SLICE(r2, word16, 0))");
+                "1|L--|v5 = atomic_fetch_add<word16>(Mem0[r4:word16], SLICE(r2, word16, 0))",
+                "2|L--|Mem0[r4:word16] = v5",
+                "3|L--|CVZN = cond(v5)");
         }
 
         [Ignore("")]

@@ -56,7 +56,8 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("8E5B");
             AssertCode(     // SP = SP + P1;
                 "0|L--|00100000(2): 2 instructions",
-                "1|L--|SP = SP + P1");
+                "1|L--|SP = SP + P1",
+                "2|L--|NZVC = cond(SP)");
         }
 
         [Test]
@@ -152,7 +153,8 @@ namespace Reko.UnitTests.Arch.Blackfin
             AssertCode( // (FP:P0) = [SP++];
                 "0|L--|00100000(2): 3 instructions",
                 "1|L--|v4 = SP",
-                "2|L--|SP = SP + 4<i32>");
+                "2|L--|SP = SP + 4<i32>",
+                "3|L--|FP_SP_P5_P4_P3_P2_P1_P0 = Mem0[v4:word32]");
         }
 
         [Test]

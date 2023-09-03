@@ -700,7 +700,8 @@ namespace Reko.UnitTests.Arch.MilStd1750
             Given_HexString("E102");
             AssertCode(     // orr	gp0,gp2
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|gp0 = gp0 | gp2");
+                "1|L--|gp0 = gp0 | gp2",
+                "2|L--|PZN = cond(gp0)");
         }
 
         [Test]

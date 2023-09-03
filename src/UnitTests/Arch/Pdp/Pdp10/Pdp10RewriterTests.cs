@@ -1331,7 +1331,8 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp10
                 "1|L--|v3 = Mem0[0x024022<p18>:word36] - 1<36>",
                 "2|L--|Mem0[0x024022<p18>:word36] = v3",
                 "3|L--|r1 = v3",
-                "4|L--|C0C1VT = cond(v3)");
+                "4|L--|C0C1VT = cond(v3)",
+                "5|T--|if (v3 <= 0<36>) branch 200002");
         }
 
         [Test]

@@ -832,7 +832,10 @@ namespace Reko.UnitTests.Arch.Loongson
             AssertCode(     // fldgt.s	$f0,$r10,$r17
                 "0|L--|0000000000100000(4): 5 instructions",
                 "1|T--|if (r10 >u r17) micro_goto skip",
-                "2|L--|__raise_exception(0xA<32>)");
+                "2|L--|__raise_exception(0xA<32>)",
+                "3|---|skip::",
+                "4|L--|v6 = Mem0[r10:real32]",
+                "5|L--|f0 = SEQ(SLICE(f0, word32, 32), v6)");
         }
 
         [Test]
@@ -856,7 +859,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "1|T--|if (r14 <=u r19) micro_goto skip",
                 "2|L--|__raise_exception(0xA<32>)",
                 "3|---|skip::",
-                "4|L--|v6 = Mem0[r14:real32]");
+                "4|L--|v6 = Mem0[r14:real32]",
+                "5|L--|f17 = SEQ(SLICE(f17, word32, 32), v6)");
         }
 
         [Test]
@@ -958,7 +962,8 @@ namespace Reko.UnitTests.Arch.Loongson
                 "0|L--|0000000000100000(4): 4 instructions",
                 "1|L--|v4 = SLICE(f2, word32, 0)",
                 "2|L--|v6 = SLICE(f16, word32, 0)",
-                "3|L--|v8 = __fmina<real32>(v4, v6)");
+                "3|L--|v8 = __fmina<real32>(v4, v6)",
+                "4|L--|f5 = SEQ(SLICE(f5, word32, 32), v8)");
         }
 
         [Test]
@@ -1076,7 +1081,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("855F7738");
             AssertCode(     // fstle.s	$f5,$r28,$r23
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v4 = SLICE(f5, real32, 0)");
+                "1|L--|v4 = SLICE(f5, real32, 0)",
+                "2|T--|if (r28 <=u r23) micro_goto skip",
+                "3|L--|__raise_exception(0xA<32>)",
+                "4|---|skip::",
+                "5|L--|Mem0[r28:real32] = v4");
         }
 
         [Test]
@@ -1215,7 +1224,10 @@ namespace Reko.UnitTests.Arch.Loongson
             AssertCode(     // ldgt.b	$r0,$r1,$r12
                 "0|L--|0000000000100000(4): 5 instructions",
                 "1|T--|if (r1 >u r12) micro_goto skip",
-                "2|L--|__raise_exception(0xA<32>)");
+                "2|L--|__raise_exception(0xA<32>)",
+                "3|---|skip::",
+                "4|L--|v6 = Mem0[r1:int8]",
+                "5|L--|r0 = CONVERT(v6, int8, int64)");
         }
 
         [Test]
@@ -1903,7 +1915,11 @@ namespace Reko.UnitTests.Arch.Loongson
             Given_HexString("4D017E38");
             AssertCode(     // stle.b	$r13,$r10,$r0
                 "0|L--|0000000000100000(4): 5 instructions",
-                "1|L--|v4 = SLICE(r13, byte, 0)");
+                "1|L--|v4 = SLICE(r13, byte, 0)",
+                "2|T--|if (r10 <=u r0) micro_goto skip",
+                "3|L--|__raise_exception(0xA<32>)",
+                "4|---|skip::",
+                "5|L--|Mem0[r10:byte] = v4");
         }
 
         [Test]

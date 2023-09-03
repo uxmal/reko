@@ -6740,7 +6740,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("13FB0746");	// smlabb r6, r3, r7, r4
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r6 = CONVERT(r3, word32, int16) *s CONVERT(r7, word32, int16) + r4");
+                "1|L--|r6 = CONVERT(r3, word32, int16) *s CONVERT(r7, word32, int16) + r4",
+                "2|L--|Q = cond(r6)");
         }
 
         [Test]
@@ -7789,7 +7790,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("1EFB1A68");	// smlabt r8, lr, sl, r6
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r8 = CONVERT(lr, word32, int16) *s CONVERT(r10 >> 16<i32>, word32, int16) + r6");
+                "1|L--|r8 = CONVERT(lr, word32, int16) *s CONVERT(r10 >> 16<i32>, word32, int16) + r6",
+                "2|L--|Q = cond(r8)");
         }
 
         [Test]
@@ -8095,8 +8097,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("10EB0208"); // adds.w\tr8,r0,r2
             AssertCode(
-                 "0|L--|00100000(4): 2 instructions",
-                 "1|L--|r8 = r0 + r2");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r8 = r0 + r2",
+                "2|L--|NZCV = cond(r8)");
         }
 
         [Test]
@@ -8105,7 +8108,8 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("54EB3200"); // adcs.w\tr0,r4,r2,rrx
             AssertCode(
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|r0 = r4 + __rcr<word32,uint32>(r2, 1<u32>, C) + C");
+                 "1|L--|r0 = r4 + __rcr<word32,uint32>(r2, 1<u32>, C) + C",
+                 "2|L--|NZCV = cond(r0)");
         }
 
 

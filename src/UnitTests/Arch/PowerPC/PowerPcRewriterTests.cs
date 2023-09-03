@@ -651,7 +651,9 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_HexString("401D26CF");
             AssertCode(     // bdnzfl	cr7+gt,$000026CC
                 "0|T--|00100000(4): 3 instructions",
-                "1|L--|ctr = ctr - 1<32>");
+                "1|L--|ctr = ctr - 1<32>",
+                "2|T--|if (ctr == 0<32> || Test(GT,cr7)) branch 00100004",
+                "3|T--|call 000026CC (0)");
         }
 
         [Test]
@@ -2733,7 +2735,8 @@ namespace Reko.UnitTests.Arch.PowerPC
             Given_HexString("1BFFF265");
             AssertCode(     // vcmpequw128.	v63,v63,v62
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v63 = __vector_cmpeq<uint32[4]>(v63, v62)");
+                "1|L--|v63 = __vector_cmpeq<uint32[4]>(v63, v62)",
+                "2|L--|cr6 = cond(v63)");
         }
 
         [Test]

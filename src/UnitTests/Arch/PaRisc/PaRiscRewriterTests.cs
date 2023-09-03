@@ -96,7 +96,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             Given_HexString("082A9A13");
             AssertCode(
-                "0|T--|00100000(4): 2 instructions");
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|r19 = r10 + r1",
+                "2|T--|if (Test(NO,r19 -u 0<64>)) branch 00100008");
         }
 
         [Test]
@@ -114,7 +116,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             Given_HexString("0859AA0A");
             AssertCode(
-                "0|T--|00100000(4): 2 instructions");
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|r10 = r25 + r2",
+                "2|T--|if (r10 != 0<64> & Test(OV,r10 - 0<64>)) branch 00100008");
         }
 
         [Test]

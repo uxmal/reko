@@ -281,7 +281,8 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("19"); // daa
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = __daa(a)");
+                "1|L--|a = __daa(a)",
+                "2|L--|NZC = cond(a)");
         }
 
         [Test]

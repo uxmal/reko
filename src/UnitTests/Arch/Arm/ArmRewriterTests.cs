@@ -1482,7 +1482,8 @@ means
             Given_UInt32s(0xE10e3b88);  // smlabb lr, r8, fp, r3
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|lr = CONVERT(r8, word32, int16) *s CONVERT(fp, word32, int16) + r3");
+                "1|L--|lr = CONVERT(r8, word32, int16) *s CONVERT(fp, word32, int16) + r3",
+                "2|L--|Q = cond(lr)");
         }
 
         [Test]
@@ -1777,7 +1778,8 @@ means
             AssertCode(
                 "0|L--|00100000(4): 3 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|L--|r8 = __sat_add<int32>(r0, __sat_mul<int32>(r0, 2<i32>))");
+                "2|L--|r8 = __sat_add<int32>(r0, __sat_mul<int32>(r0, 2<i32>))",
+                "3|L--|Q = cond(r8)");
         }
 
         [Test]

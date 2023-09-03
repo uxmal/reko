@@ -524,7 +524,7 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86Rw_movsd_16bit()
+        public void X86Rw_movsw()
         {
             Given_HexString("B9 00 40 66 F3 A5");
             AssertCode(

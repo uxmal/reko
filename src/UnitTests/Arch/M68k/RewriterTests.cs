@@ -511,7 +511,9 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(4): 5 instructions",
                 "1|L--|v5 = Mem0[a0 + -8<i32>:word32] | d0",
                 "2|L--|Mem0[a0 + -8<i32>:word32] = v5",
-                "3|L--|ZN = cond(v5)");
+                "3|L--|ZN = cond(v5)",
+                "4|L--|C = false",
+                "5|L--|V = false");
         }
 
         [Test]
@@ -953,7 +955,8 @@ namespace Reko.UnitTests.Arch.M68k
                 "1|L--|v4 = a7 + 48<i32>",
                 "2|L--|d0 = Mem0[v4:word32]",
                 "3|L--|v4 = v4 + 4<i32>",
-                "4|L--|d1 = Mem0[v4:word32]");
+                "4|L--|d1 = Mem0[v4:word32]",
+                "5|L--|v4 = v4 + 4<i32>");
         }
 
         [Test]
@@ -1032,7 +1035,8 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|v4 = __ror<word32,byte>(Mem0[a4:word32], 1<8>)",
                 "2|L--|Mem0[a4:word32] = v4",
-                "3|L--|CZN = cond(v4)");
+                "3|L--|CZN = cond(v4)",
+                "4|L--|V = false");
         }
 
         [Test]

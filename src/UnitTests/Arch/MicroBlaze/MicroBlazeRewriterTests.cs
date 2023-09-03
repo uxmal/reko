@@ -82,7 +82,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         {
             Given_HexString("3021001C"); // addik\tr1,r1,0000001C
             AssertCode(
-                "0|L--|00100000(4): 1 instructions");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r1 + 0x1C<32>");
         }
 
         [Test]
@@ -117,7 +118,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         {
             Given_HexString("A4A400FF"); // andi\tr5,r4,000000FF
             AssertCode(
-                "0|L--|00100000(4): 1 instructions");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = r4 & 0xFF<32>");
         }
 
         [Test]
@@ -406,7 +408,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         {
             Given_HexString("16A3A800"); // rsubk\tr21,r3,r21
             AssertCode(
-                "0|L--|00100000(4): 1 instructions");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = r21 - r3");
         }
 
         [Test]
@@ -521,7 +524,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         {
             Given_HexString("AAA3FFFF"); // xori\tr21,r3,FFFFFFFF
             AssertCode(
-                "0|L--|00100000(4): 1 instructions");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = r3 ^ 0xFFFFFFFF<32>");
         }
     }
 }

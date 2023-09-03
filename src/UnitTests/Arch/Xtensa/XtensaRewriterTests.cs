@@ -338,7 +338,8 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             Given_UInt32s(0xC01190); // "sub\ta1,a1,a9"
             AssertCode(
-                "0|L--|00010000(3): 1 instructions");
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a1 = a1 - a9");
         }
 
         [Test]
@@ -1683,7 +1684,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a5 = a5 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl<word32,int40>(mr1, a0)");
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_hl<word32,int40>(mr1, a0)",
+                "3|L--|mr0 = Mem0[a5:word32]");
         }
 
         [Test]
@@ -1759,7 +1761,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
                 "1|L--|a5 = a5 - 4<i32>",
-                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll<word32,int40>(mr0, a4)");
+                "2|L--|ACCHI_ACCLO = ACCHI_ACCLO + __mul_ll<word32,int40>(mr0, a4)",
+                "3|L--|mr0 = Mem0[a5:word32]");
         }
 
         [Test]
