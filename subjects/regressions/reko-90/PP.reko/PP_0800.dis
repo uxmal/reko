@@ -629,7 +629,7 @@ l0800_07BD:
 	word16 di_615 = di_1625 - cx_613
 	uint32 size_635 = (cx_613 >>u 1<16>) *u32 2<16>
 	memcpy(ds:0x42E3<16>, wLoc04_1253:di_615, size_635)
-	memcpy(ds:SLICE(size_635, word16, 0) + 0x42E3<16>, wLoc04_1253:di_615 + SLICE(size_635, word16, 0), CONVERT(SLICE(cond(cx_613 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ds:SLICE(size_635, word16, 0) + 0x42E3<16>, wLoc04_1253:di_615 + SLICE(size_635, word16, 0), CONVERT(SLICE(cond(cx_613 >>u 1<16>), bool, 1), bool, uint32))
 	dx = fn0800_0C6C(ds, SEQ(ds, 0x42E3<16>))
 	di = 0x42E3<16>
 	word16 cx_671 = 0xFFFF<16>
@@ -668,7 +668,7 @@ l0800_081E:
 	word16 di_744 = di_1628 - cx_742
 	uint32 size_764 = (cx_742 >>u 1<16>) *u32 2<16>
 	memcpy(ds:0x427E<16>, wLoc04_1253:di_744, size_764)
-	memcpy(ds:SLICE(size_764, word16, 0) + 0x427E<16>, wLoc04_1253:di_744 + SLICE(size_764, word16, 0), CONVERT(SLICE(cond(cx_742 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ds:SLICE(size_764, word16, 0) + 0x427E<16>, wLoc04_1253:di_744 + SLICE(size_764, word16, 0), CONVERT(SLICE(cond(cx_742 >>u 1<16>), bool, 1), bool, uint32))
 	dx = fn0800_0C6C(ds, SEQ(ds, 0x427E<16>))
 	di = 0x427E<16>
 	word16 cx_800 = 0xFFFF<16>
@@ -815,7 +815,7 @@ l0800_0A5E_1:
 l0800_0A60:
 	word16 cx_116 = ~cx_105
 	word16 ax_135 = 0<16>
-	word16 cmpResult_124 = memcmp(ds_99:si_94, es_363:di_109 - cx_116, cx_116)
+	word16 cmpResult_124 = memcmp(ds_99:si_94, es_363:di_109 - cx_116, CONVERT(cx_116, word16, uint32))
 	branch cmpResult_124 == 0<16> l0800_0A6D
 l0800_0A68:
 	word16 ax_132 = 0<16> - CONVERT(cmpResult_124 <u 0<16>, bool, word16)
@@ -1135,7 +1135,7 @@ l0800_0CB9_1:
 l0800_0CBB:
 	word16 cx_60 = ~cx_49
 	word16 di_62 = di_328 - cx_60
-	word16 cmpResult_69 = memcmp(ds:0x2714<16>, ss:di_62, cx_60)
+	word16 cmpResult_69 = memcmp(ds:0x2714<16>, ss:di_62, CONVERT(cx_60, word16, uint32))
 	word16 ax_80 = 0<16>
 	word16 cx_198 = cx_60 - __find_first_difference__(ds:0x2714<16>, ss:di_62)
 	branch cmpResult_69 == 0<16> l0800_0CC8
@@ -1162,7 +1162,7 @@ l0800_0CF7:
 	word16 di_170 = di_144 - cx_168
 	uint32 size_190 = (cx_168 >>u 1<16>) *u32 2<16>
 	memcpy(ds:0x2714<16>, ss:di_170, size_190)
-	memcpy(ds:SLICE(size_190, word16, 0) + 0x2714<16>, ss:di_170 + SLICE(size_190, word16, 0), CONVERT(SLICE(cond(cx_168 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ds:SLICE(size_190, word16, 0) + 0x2714<16>, ss:di_170 + SLICE(size_190, word16, 0), CONVERT(SLICE(cond(cx_168 >>u 1<16>), bool, 1), bool, uint32))
 	cx_198 = 0<16>
 l0800_0D0D:
 	word16 di_325
@@ -2626,7 +2626,7 @@ l0800_1BA3:
 	word16 di_657 = di_1288 - cx_655
 	uint32 size_677 = (cx_655 >>u 1<16>) *u32 2<16>
 	memcpy(es_670:di_666, es_632:di_657, size_677)
-	memcpy(es_670:di_666 + SLICE(size_677, word16, 0), es_632:di_657 + SLICE(size_677, word16, 0), CONVERT(SLICE(cond(cx_655 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(es_670:di_666 + SLICE(size_677, word16, 0), es_632:di_657 + SLICE(size_677, word16, 0), CONVERT(SLICE(cond(cx_655 >>u 1<16>), bool, 1), bool, uint32))
 	selector ds_687 = Mem675[ss:sp_182:selector]
 	branch Mem675[ds_687:0x2A25<16>:word16] != 8<16> l0800_1C29
 l0800_1BC0:
@@ -3075,7 +3075,7 @@ l0800_202E:
 	word16 di_256 = di_238 - cx_254
 	uint32 size_276 = (cx_254 >>u 1<16>) *u32 2<16>
 	memcpy(es_269:di_265, wArg04_392:di_256, size_276)
-	memcpy(es_269:di_265 + SLICE(size_276, word16, 0), wArg04_392:di_256 + SLICE(size_276, word16, 0), CONVERT(SLICE(cond(cx_254 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(es_269:di_265 + SLICE(size_276, word16, 0), wArg04_392:di_256 + SLICE(size_276, word16, 0), CONVERT(SLICE(cond(cx_254 >>u 1<16>), bool, 1), bool, uint32))
 	selector ds_286 = Mem274[ss:sp_212 - 2<i16>:selector]
 	Mem294[ax_165:dx_167 + (cx_186 + 3<16>) - 1<i16>:byte] = 0<8>
 	ptr32 es_bx_299 = Mem294[ds_286:0x2E51<16>:segptr32]
@@ -3138,7 +3138,7 @@ l0800_2121:
 	word16 di_139 = di_121 - cx_137
 	uint32 size_159 = (cx_137 >>u 1<16>) *u32 2<16>
 	memcpy(dx_72:bx_74 - 1<16>, psegArg04_554:di_139, size_159)
-	memcpy(dx_72:bx_74 - 1<16> + SLICE(size_159, word16, 0), psegArg04_554:di_139 + SLICE(size_159, word16, 0), CONVERT(SLICE(cond(cx_137 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(dx_72:bx_74 - 1<16> + SLICE(size_159, word16, 0), psegArg04_554:di_139 + SLICE(size_159, word16, 0), CONVERT(SLICE(cond(cx_137 >>u 1<16>), bool, 1), bool, uint32))
 	selector es_209 = dx_72
 	word16 di_180 = bx_74 - 1<16>
 	word16 cx_176 = 0xFFFF<16>
@@ -3891,7 +3891,7 @@ l0800_28D4_1:
 l0800_28D6:
 	word16 cx_211 = ~cx_200
 	word16 ax_230 = 0<16>
-	word16 cmpResult_219 = memcmp(ptrLoc0A_480 + 2<32>, es_316:di_204 - cx_211, cx_211)
+	word16 cmpResult_219 = memcmp(ptrLoc0A_480 + 2<32>, es_316:di_204 - cx_211, CONVERT(cx_211, word16, uint32))
 	branch cmpResult_219 == 0<16> l0800_28E3
 l0800_28DE:
 	word16 ax_227 = 0<16> - CONVERT(cmpResult_219 <u 0<16>, bool, word16)
@@ -3962,7 +3962,7 @@ l0800_296F_1:
 l0800_2971:
 	word16 cx_106 = ~cx_103
 	word16 ax_125 = 0<16>
-	word16 cmpResult_114 = memcmp(ptrArg06_278, es_256:di_102 - cx_106, cx_106)
+	word16 cmpResult_114 = memcmp(ptrArg06_278, es_256:di_102 - cx_106, CONVERT(cx_106, word16, uint32))
 	branch cmpResult_114 == 0<16> l0800_297E
 l0800_2979:
 	word16 ax_122 = 0<16> - CONVERT(cmpResult_114 <u 0<16>, bool, word16)
@@ -4094,7 +4094,7 @@ l0800_2AB5:
 	word16 di_294 = di_1397 - cx_292
 	uint32 size_314 = (cx_292 >>u 1<16>) *u32 2<16>
 	memcpy(ptrArg0A, es_261:di_294, size_314)
-	memcpy(ptrArg0A + SLICE(size_314, word16, 0), es_261:di_294 + SLICE(size_314, word16, 0), CONVERT(SLICE(cond(cx_292 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ptrArg0A + SLICE(size_314, word16, 0), es_261:di_294 + SLICE(size_314, word16, 0), CONVERT(SLICE(cond(cx_292 >>u 1<16>), bool, 1), bool, uint32))
 	selector es_330 = Mem329[ds:0x45AC<16>:selector]
 	word16 di_1398 = Mem333[ds:0x45AA<16>:word16]
 	word16 cx_339 = 0xFFFF<16>
@@ -4116,7 +4116,7 @@ l0800_2AF3_3:
 	cx_371 = cx_371 - 1<16>
 	branch Mem370[wArg0C:di_1399:byte] == 0<8> l0800_2AF3
 l0800_2AF5:
-	memcpy(wArg0C:di_1399 - 1<16>, es_330:di_352, cx_350)
+	memcpy(wArg0C:di_1399 - 1<16>, es_330:di_352, CONVERT(cx_350, word16, uint32))
 	ptr32 es_di_405 = Mem370[ds:0x45AA<16>:segptr32]
 	selector es_439 = SLICE(es_di_405, selector, 16)
 	word16 di_1400 = SLICE(es_di_405, word16, 0)
@@ -4217,7 +4217,7 @@ l0800_2BD8_2:
 l0800_2BDA:
 	word16 cx_646 = ~cx_635
 	word16 di_648 = di_1405 - cx_646
-	word16 cmpResult_654 = memcmp(ds_624:si_618 + 2<16>, ss:di_648, cx_646)
+	word16 cmpResult_654 = memcmp(ds_624:si_618 + 2<16>, ss:di_648, CONVERT(cx_646, word16, uint32))
 	word16 ax_665 = 0<16>
 	si = si_618 + 2<16> + __find_first_difference__(ds_624:si_618 + 2<16>, ss:di_648)
 	branch cmpResult_654 == 0<16> l0800_2BE7
@@ -4572,7 +4572,7 @@ l0800_2EDB:
 	word16 di_355 = di_1822 - cx_353
 	uint32 size_375 = (cx_353 >>u 1<16>) *u32 2<16>
 	memcpy(ptrArg02, ds:di_355, size_375)
-	memcpy(ptrArg02 + SLICE(size_375, word16, 0), ds:di_355 + SLICE(size_375, word16, 0), CONVERT(SLICE(cond(cx_353 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ptrArg02 + SLICE(size_375, word16, 0), ds:di_355 + SLICE(size_375, word16, 0), CONVERT(SLICE(cond(cx_353 >>u 1<16>), bool, 1), bool, uint32))
 	Mem387[ds:0x4617<16>:word16] = Mem373[ds:0x4617<16>:word16] + 1<16>
 	cxOut = 0<16>
 	dxOut = dx_272
@@ -4655,7 +4655,7 @@ l0800_302A:
 	word16 di_667 = di_1824 - cx_665
 	uint32 size_687 = (cx_665 >>u 1<16>) *u32 2<16>
 	memcpy(ptrArg02, ds:di_667, size_687)
-	memcpy(ptrArg02 + SLICE(size_687, word16, 0), ds:di_667 + SLICE(size_687, word16, 0), CONVERT(SLICE(cond(cx_665 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ptrArg02 + SLICE(size_687, word16, 0), ds:di_667 + SLICE(size_687, word16, 0), CONVERT(SLICE(cond(cx_665 >>u 1<16>), bool, 1), bool, uint32))
 	Mem699[ds:0x4617<16>:word16] = Mem685[ds:0x4617<16>:word16] + 1<16>
 	Mem701[ds:0x4652<16>:word16] = Mem699[ds:0x4652<16>:word16] + 1<16>
 	cxOut = 0<16>
@@ -4756,7 +4756,7 @@ l0800_3132_2:
 	cx_1055 = cx_1055 - 1<16>
 	branch Mem1054[wArg04_1432:di_1041:byte] == 0<8> l0800_3132
 l0800_3134:
-	memcpy(wArg04_1432:di_1041 - 1<16>, ss:di_1034, cx_1032)
+	memcpy(wArg04_1432:di_1041 - 1<16>, ss:di_1034, CONVERT(cx_1032, word16, uint32))
 	word16 dx_1099 = fn0800_0C6C(ds, ptrArg02)
 	word16 di_1112 = 0x4348<16>
 	word16 cx_1120 = 0xFFFF<16>
@@ -4769,7 +4769,7 @@ l0800_315A_3:
 l0800_315C:
 	word16 cx_1131 = ~cx_1120
 	word16 di_1133 = di_1112 - cx_1131
-	word16 cmpResult_1139 = memcmp(ptrArg02, ds:di_1133, cx_1131)
+	word16 cmpResult_1139 = memcmp(ptrArg02, ds:di_1133, CONVERT(cx_1131, word16, uint32))
 	word16 firstDifference_1140 = __find_first_difference__(ptrArg02, ds:di_1133)
 	word16 ax_1150 = 0<16>
 	word16 cx_1141 = cx_1131 - firstDifference_1140
@@ -4792,7 +4792,7 @@ l0800_3181_1:
 l0800_3183:
 	word16 cx_1201 = ~cx_1190
 	word16 di_1203 = di_1182 - cx_1201
-	word16 cmpResult_1209 = memcmp(ptrArg02, ds:di_1203, cx_1201)
+	word16 cmpResult_1209 = memcmp(ptrArg02, ds:di_1203, CONVERT(cx_1201, word16, uint32))
 	word16 firstDifference_1210 = __find_first_difference__(ptrArg02, ds:di_1203)
 	word16 ax_1220 = 0<16>
 	cx_1141 = cx_1201 - firstDifference_1210
@@ -4883,7 +4883,7 @@ l0800_32AE_3:
 	cx_216 = cx_216 - 1<16>
 	branch Mem215[wArg04:di_202:byte] == 0<8> l0800_32AE
 l0800_32B0:
-	memcpy(wArg04:di_202 - 1<16>, ss:di_195, cx_193)
+	memcpy(wArg04:di_202 - 1<16>, ss:di_195, CONVERT(cx_193, word16, uint32))
 	Mem252[ds:0x9AC<16>:word16] = Mem215[ds:0x9AC<16>:word16] - 1<16>
 	word16 bx_253 = Mem252[ds:0x9AC<16>:word16]
 	Mem257[ds:(bx_253 << 1<16>) + 0x9AE<16>:word16] = Mem252[ds:(bx_253 << 1<16>) + 0x9AE<16>:word16] + 1<16>
@@ -4929,7 +4929,7 @@ l0800_32E9:
 	word16 di_44 = di_26 - cx_42
 	uint32 size_65 = (cx_42 >>u 1<16>) *u32 2<16>
 	memcpy(ss:fp - 104<i16>, psegArg08:di_44, size_65)
-	memcpy(ss:fp - 104<i16> + SLICE(size_65, word16, 0), psegArg08:di_44 + SLICE(size_65, word16, 0), CONVERT(SLICE(cond(cx_42 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ss:fp - 104<i16> + SLICE(size_65, word16, 0), psegArg08:di_44 + SLICE(size_65, word16, 0), CONVERT(SLICE(cond(cx_42 >>u 1<16>), bool, 1), bool, uint32))
 	word16 di_314 = fp - 104<i16>
 	word16 cx_82 = 0xFFFF<16>
 l0800_330C:
@@ -4991,7 +4991,7 @@ l0800_33A0_1:
 l0800_33A2:
 	word16 cx_96 = ~cx_85
 	word16 ax_115 = 0<16>
-	word16 cmpResult_104 = memcmp(ss:fp - 16<i16>, ss:di_290 - cx_96, cx_96)
+	word16 cmpResult_104 = memcmp(ss:fp - 16<i16>, ss:di_290 - cx_96, CONVERT(cx_96, word16, uint32))
 	branch cmpResult_104 == 0<16> l0800_33AF
 l0800_33AA:
 	word16 ax_112 = 0<16> - CONVERT(cmpResult_104 <u 0<16>, bool, word16)
@@ -5068,7 +5068,7 @@ l0800_345D:
 	word16 di_151 = di_133 - cx_149
 	uint32 size_171 = (cx_149 >>u 1<16>) *u32 2<16>
 	memcpy(ptrArg02, ds:di_151, size_171)
-	memcpy(ptrArg02 + SLICE(size_171, word16, 0), ds:di_151 + SLICE(size_171, word16, 0), CONVERT(SLICE(cond(cx_149 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ptrArg02 + SLICE(size_171, word16, 0), ds:di_151 + SLICE(size_171, word16, 0), CONVERT(SLICE(cond(cx_149 >>u 1<16>), bool, 1), bool, uint32))
 	cx_179 = 0<16>
 l0800_3473:
 	cxOut = cx_179
@@ -5142,7 +5142,7 @@ l0800_34ED:
 	word16 di_145 = di_127 - cx_143
 	uint32 size_165 = (cx_143 >>u 1<16>) *u32 2<16>
 	memcpy(ptrArg02, ds:di_145, size_165)
-	memcpy(ptrArg02 + SLICE(size_165, word16, 0), ds:di_145 + SLICE(size_165, word16, 0), CONVERT(SLICE(cond(cx_143 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ptrArg02 + SLICE(size_165, word16, 0), ds:di_145 + SLICE(size_165, word16, 0), CONVERT(SLICE(cond(cx_143 >>u 1<16>), bool, 1), bool, uint32))
 	cx_173 = 0<16>
 l0800_3503:
 	cxOut = cx_173
@@ -5191,7 +5191,7 @@ l0800_354D:
 	word16 di_94 = di_333 - cx_92
 	uint32 size_115 = (cx_92 >>u 1<16>) *u32 2<16>
 	memcpy(psegArg04:wArg02, ss:di_94, size_115)
-	memcpy(psegArg04:wArg02 + SLICE(size_115, word16, 0), ss:di_94 + SLICE(size_115, word16, 0), CONVERT(SLICE(cond(cx_92 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(psegArg04:wArg02 + SLICE(size_115, word16, 0), ss:di_94 + SLICE(size_115, word16, 0), CONVERT(SLICE(cond(cx_92 >>u 1<16>), bool, 1), bool, uint32))
 	word16 di_139 = fp - 90<i16>
 	word16 cx_152 = 0xFFFF<16>
 l0800_357D:
@@ -5212,7 +5212,7 @@ l0800_3594_3:
 	cx_186 = cx_186 - 1<16>
 	branch Mem185[psegArg04:di_172:byte] == 0<8> l0800_3594
 l0800_3596:
-	memcpy(psegArg04:di_172 - 1<16>, ss:di_165, cx_163)
+	memcpy(psegArg04:di_172 - 1<16>, ss:di_165, CONVERT(cx_163, word16, uint32))
 	bxOut = bx_44
 	return psegArg04
 fn0800_3509_exit:
@@ -5252,7 +5252,7 @@ l0800_35E7:
 	word16 di_94 = di_333 - cx_92
 	uint32 size_115 = (cx_92 >>u 1<16>) *u32 2<16>
 	memcpy(psegArg04:wArg02, ss:di_94, size_115)
-	memcpy(psegArg04:wArg02 + SLICE(size_115, word16, 0), ss:di_94 + SLICE(size_115, word16, 0), CONVERT(SLICE(cond(cx_92 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(psegArg04:wArg02 + SLICE(size_115, word16, 0), ss:di_94 + SLICE(size_115, word16, 0), CONVERT(SLICE(cond(cx_92 >>u 1<16>), bool, 1), bool, uint32))
 	word16 di_139 = fp - 22<i16>
 	word16 cx_152 = 0xFFFF<16>
 l0800_3617:
@@ -5273,7 +5273,7 @@ l0800_362E_3:
 	cx_186 = cx_186 - 1<16>
 	branch Mem185[psegArg04:di_172:byte] == 0<8> l0800_362E
 l0800_3630:
-	memcpy(psegArg04:di_172 - 1<16>, ss:di_165, cx_163)
+	memcpy(psegArg04:di_172 - 1<16>, ss:di_165, CONVERT(cx_163, word16, uint32))
 	dxOut = psegArg04
 	return 0<8>
 fn0800_35A3_exit:
@@ -5447,7 +5447,7 @@ l0800_377E:
 	word16 di_63 = di_202 - cx_61
 	uint32 size_83 = (cx_61 >>u 1<16>) *u32 2<16>
 	memcpy(ds:0x44DC<16>, ds:di_63, size_83)
-	memcpy(ds:SLICE(size_83, word16, 0) + 0x44DC<16>, ds:di_63 + SLICE(size_83, word16, 0), CONVERT(SLICE(cond(cx_61 >>u 1<16>), bool, 1), bool, word16))
+	memcpy(ds:SLICE(size_83, word16, 0) + 0x44DC<16>, ds:di_63 + SLICE(size_83, word16, 0), CONVERT(SLICE(cond(cx_61 >>u 1<16>), bool, 1), bool, uint32))
 l0800_37A6:
 	word16 di_103 = 0x44DC<16>
 	word16 cx_105 = 0xFFFF<16>
@@ -9130,7 +9130,7 @@ l0800_5E7E:
 	cx_23 = 3<16>
 l0800_5E80:
 	word16 ax_28 = 0<16>
-	word16 cmpResult_34 = memcmp(ds:0x4271<16>, ds:0x2202<16>, cx_23)
+	word16 cmpResult_34 = memcmp(ds:0x4271<16>, ds:0x2202<16>, CONVERT(cx_23, word16, uint32))
 	branch cmpResult_34 == 0<16> l0800_5E8B
 l0800_5E86:
 	word16 ax_42 = 0<16> - CONVERT(cmpResult_34 <u 0<16>, bool, word16)
@@ -9148,7 +9148,7 @@ l0800_5EA5:
 	word16 cx_75 = cx_65 >>u 1<16>
 	memcpy(ds:0x4271<16>, ds:0x2202<16>, cx_75 *u32 2<16>)
 	word16 di_84 = cx_75 *u 2<16> + 0x4271<16>
-	memcpy(ds:di_84, ds:cx_75 *u 2<16> + 0x2202<16>, CONVERT(SLICE(cond(cx_75), bool, 1), bool, word16))
+	memcpy(ds:di_84, ds:cx_75 *u 2<16> + 0x2202<16>, CONVERT(SLICE(cond(cx_75), bool, 1), bool, uint32))
 	word16 di_2150 = di_84 + CONVERT(cx_75 <u 0<16>, bool, word16)
 	word16 cx_2153 = dx_66
 l0800_5EB1:
@@ -9774,7 +9774,7 @@ l0800_66D0:
 	cx_31 = 3<16>
 l0800_66D2:
 	word16 ax_36 = 0<16>
-	word16 cmpResult_42 = memcmp(ds:0x4271<16>, ds:0x2206<16>, cx_31)
+	word16 cmpResult_42 = memcmp(ds:0x4271<16>, ds:0x2206<16>, CONVERT(cx_31, word16, uint32))
 	branch cmpResult_42 == 0<16> l0800_66DD
 l0800_66D8:
 	word16 ax_50 = 0<16> - CONVERT(cmpResult_42 <u 0<16>, bool, word16)
@@ -9792,7 +9792,7 @@ l0800_66F7:
 	word16 cx_83 = cx_73 >>u 1<16>
 	memcpy(ds:0x4271<16>, ds:0x2206<16>, cx_83 *u32 2<16>)
 	word16 di_92 = cx_83 *u 2<16> + 0x4271<16>
-	memcpy(ds:di_92, ds:cx_83 *u 2<16> + 0x2206<16>, CONVERT(SLICE(cond(cx_83), bool, 1), bool, word16))
+	memcpy(ds:di_92, ds:cx_83 *u 2<16> + 0x2206<16>, CONVERT(SLICE(cond(cx_83), bool, 1), bool, uint32))
 	word16 di_290 = di_92 + CONVERT(cx_83 <u 0<16>, bool, word16)
 	word16 cx_104 = dx_74
 l0800_6703:
@@ -12313,9 +12313,10 @@ l0800_8726:
 l0800_8728:
 	word16 si_453 = di_200 - 1<16> - SEQ(bh_167, Mem61[ds_20:si_101:byte])
 	__cli()
-	memcpy(es_22:di_200, es_22:si_453, cx_145)
+	uint32 size_469 = CONVERT(cx_145, word16, uint32)
+	memcpy(es_22:di_200, es_22:si_453, size_469)
 	__sti()
-	di_200 = di_200 + cx_145
+	di_200 = di_200 + SLICE(size_469, word16, 0)
 	si_101 = si_101 + 1<16>
 
 
@@ -12525,7 +12526,7 @@ l0800_893E:
 	word16 si_111 = di_108 - bx_110
 	word16 ax_113 = Mem69[ds:0x4E94<16>:word16] - cx_100
 	selector ds_123 = Mem122[ds:0x2E6F<16>:selector]
-	word16 cmpResult_125 = memcmp(ds_123:si_111, es_124:di_108, ax_113)
+	word16 cmpResult_125 = memcmp(ds_123:si_111, es_124:di_108, CONVERT(ax_113, word16, uint32))
 	word16 cx_127 = ax_113 - __find_first_difference__(ds_123:si_111, es_124:di_108)
 	branch cmpResult_125 == 0<16> l0800_895C
 l0800_895B:
@@ -17518,7 +17519,7 @@ l0800_B019:
 l0800_B01D:
 	branch Mem64[es_66:cx_39 - 1<16> + di_68:byte] != 0x3D<8> l0800_B002
 l0800_B025:
-	word16 cmpResult_95 = memcmp(ptrArg02, es_di_65, cx_39 - 1<16>)
+	word16 cmpResult_95 = memcmp(ptrArg02, es_di_65, CONVERT(cx_39 - 1<16>, word16, uint32))
 	word16 di_99 = di_68 + __find_first_difference__(ptrArg02, es_di_65)
 	branch cmpResult_95 != 0<16> l0800_B002
 l0800_B002:
@@ -19033,7 +19034,7 @@ l0800_BFAE_1:
 	di_100 = di_17
 	branch Mem14[es_66:di_100:byte] == 0<8> l0800_BFAE
 l0800_BFB0:
-	memcpy(ptrArg02, ptrArg06, ~cx_23)
+	memcpy(ptrArg02, ptrArg06, CONVERT(~cx_23, word16, uint32))
 	return
 fn0800_BF9E_exit:
 
@@ -19107,7 +19108,7 @@ l0800_BFFE_1:
 	di_123 = di_31
 	branch Mem14[es_82:di_123:byte] == 0<8> l0800_BFFE
 l0800_C000:
-	memcmp(ptrArg02, ptrArg06, wArg0A - cx_22)
+	memcmp(ptrArg02, ptrArg06, CONVERT(wArg0A - cx_22, word16, uint32))
 	word16 firstDifference_55 = __find_first_difference__(ptrArg02, ptrArg06)
 	ax_100 = Mem14[SLICE(ptrArg02, selector, 16):SLICE(ptrArg02, word16, 0) + firstDifference_55 - 1<i16>:byte] - Mem14[es_82:(di_19 + firstDifference_55) - 1<i16>:byte]
 l0800_C018:
@@ -19139,10 +19140,10 @@ l0800_C030_1:
 	di_126 = di_17
 	branch Mem14[es_86:di_126:byte] == 0<8> l0800_C030
 l0800_C032:
-	word16 bx_37 = wArg0A - cx_24
-	memcpy(ptrArg02, ptrArg06, bx_37)
+	uint32 size_57 = CONVERT(wArg0A - cx_24, word16, uint32)
+	memcpy(ptrArg02, ptrArg06, size_57)
 	selector es_58 = SLICE(ptrArg02, selector, 16)
-	word16 di_63 = SLICE(ptrArg02, word16, 0) + bx_37
+	word16 di_63 = SLICE(ptrArg02 + size_57, word16, 0)
 	word16 cx_64 = cx_24
 l0800_C042:
 	branch cx_64 == 0<16> l0800_C044

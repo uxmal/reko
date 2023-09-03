@@ -368,9 +368,9 @@ l0800_0374:
 	branch di_67 <u 0<16> l0800_03E7
 l0800_0387:
 	Mem81[ss:di_67 - 2<i16>:word16] = cx_27
-	word16 cx_82 = cx_27 - 1<16>
-	memcpy(ss:di_67, es_30:si_25 + 2<16>, cx_82)
-	word16 di_89 = di_67 + cx_82
+	uint32 size_83 = CONVERT(cx_27 - 1<16>, word16, uint32)
+	memcpy(ss:di_67, es_30:si_25 + 2<16>, size_83)
+	word16 di_89 = di_67 + SLICE(size_83, word16, 0)
 	Mem92[ss:di_89:byte] = 0<8>
 	word16 si_102 = 0x81<16>
 	word16 cx_104 = ax_16 + 1<16>
@@ -490,7 +490,7 @@ l0800_0421:
 	word16 ax_10 = _malloc(ds, cx_6)
 	branch ax_10 == 0<16> l0800_0454
 l0800_0430:
-	memcpy(ds:ax_10, Mem29[ds:0x8C<16>:selector]:0<16>, cx_6)
+	memcpy(ds:ax_10, Mem29[ds:0x8C<16>:selector]:0<16>, CONVERT(cx_6, word16, uint32))
 	word16 ax_49 = _malloc(ds, Mem45[ds:0x8E<16>:word16])
 	Mem61[ds:0x88<16>:word16] = ax_49
 	word16 di_166 = ax_10

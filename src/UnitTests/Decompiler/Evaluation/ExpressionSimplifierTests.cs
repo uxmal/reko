@@ -1249,5 +1249,15 @@ namespace Reko.UnitTests.Decompiler.Evaluation
 
             Assert.AreEqual("e_3 - foo_1 * 2<32>", exp.ToString());
         }
+
+        [Test]
+        public void Exs_long_multiplication_of_constant_1()
+        {
+            Given_ExpressionSimplifier();
+            Expression exp = m.SMul(PrimitiveType.Int64, m.Int32(1), foo);
+            exp = RunExpressionSimplifier(exp);
+
+            Assert.AreEqual("CONVERT(foo_1, word32, int64)", exp.ToString());
+        }
     }
 }

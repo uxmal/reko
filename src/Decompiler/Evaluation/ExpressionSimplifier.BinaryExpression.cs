@@ -104,14 +104,15 @@ namespace Reko.Evaluation
             Constant? cRight = right as Constant;
             if (cLeft is not null && binExp.Operator.Type.Commutes())
             {
-                cRight = cLeft; left = right; right = cLeft;
+                (cLeft, cRight) = (cRight, cLeft);
+                (left, right) =  (right, cRight);
             }
             Expression? e;
             //$TODO: operands to binary operations appear to be
             // mismatched in some processors. Change the ctor
             // of BinaryExpression to catch this later.
-            var sameBitsize = left.DataType.BitSize == right.DataType.BitSize;
-            if (cRight != null)
+            var sameBitsize = left.DataType.BitSize == right!.DataType.BitSize;
+            if (cRight is not null)
             {
                 switch (binExp.Operator.Type)
                 {
@@ -180,9 +181,16 @@ namespace Reko.Evaluation
                 case OperatorType.IMul:
                 case OperatorType.SMul:
                 case OperatorType.UMul:
-                    if (cRight.IsIntegerOne)
+                    if (cRight.IsIntegerOne && cLeft is null)
                     {
-                        return (left, true);
+                        if (binExp.DataType.BitSize == left.DataType.BitSize)
+                        {
+                            return (left, true);
+                        }
+                        else
+                        {
+                            return (m.Convert(left, left.DataType, binExp.DataType), true);
+                        }
                     }
                     break;
                 }
