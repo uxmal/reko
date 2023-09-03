@@ -105,6 +105,7 @@ namespace Reko.CmdLine
             if (pArgs.ContainsKey("assemble"))
             {
                 Assemble(pArgs);
+                return;
             }
             if (OverridesRequested(pArgs))
             {
@@ -287,7 +288,6 @@ namespace Reko.CmdLine
                 var binPath = Path.ChangeExtension(filename, ".bin");
                 File.WriteAllBytes(binPath, ((ByteMemoryArea) seg.MemoryArea).Bytes);
             }
-
         }
 
         /// <summary>
