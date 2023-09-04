@@ -146,7 +146,7 @@ namespace Reko.Core.Hll.C
                         return token;
                     case CTokenType.__Pragma:
                         Expect(CTokenType.LParen);
-                        ReadPragma((string) ReadToken().Value!);
+                        ReadPragma((string) ReadToken().Value!, ignoreTokens);
                         token = ReadToken();
                         state = State.InsideLine;
                         break;
@@ -179,15 +179,15 @@ namespace Reko.Core.Hll.C
                             state = State.StartLine;
                             break;
                         case Directive.Pragma:
-                            token = ReadPragma((string) ReadToken().Value!);
+                            token = ReadPragma((string) ReadToken().Value!, ignoreTokens);
                             state = State.StartLine;
                             break;
                         case Directive.Define:
-                            token = ReadDefine();
+                            token = ReadDefine(ignoreTokens);
                             state = State.StartLine;
                             break;
                         case Directive.Undef:
-                            token = ReadUndef();
+                            token = ReadUndef(ignoreTokens);
                             state = State.IgnoreToEndOfLine;
                             break;
                         case Directive.Ifdef:
@@ -250,7 +250,7 @@ namespace Reko.Core.Hll.C
             return lexer.Read();
         }
 
-        public CToken ReadDefine()
+        public CToken ReadDefine(bool ignoreTokens)
         {
             var macroName = (string) Expect(CTokenType.Id)!;
             //$TODO: arguments #define(A,B) A##B
@@ -260,22 +260,29 @@ namespace Reko.Core.Hll.C
                 var token = ReadToken();
                 if (token.Type == CTokenType.EOF || token.Type == CTokenType.NewLine)
                 {
-                    this.macros.Add(macroName, tokens);
+                    if (!ignoreTokens)
+                    {
+                        if (!this.macros.TryAdd(macroName, tokens))
+                        {
+                            //$TODO: emit redefinition warning.
+                            this.macros[macroName] = tokens;
+                        }
+                    }
                     return token;
                 }
                 tokens.Add(token);
             }
         }
 
-        public CToken ReadUndef()
+        public CToken ReadUndef(bool ignoreUndef)
         {
             var macroName = (string) Expect(CTokenType.Id)!;
-            this.macros.Remove(macroName);
-
+            if (!ignoreUndef)
+                this.macros.Remove(macroName);
             return ReadToken();
         }
 
-        public virtual CToken ReadPragma(string pragma)
+        public virtual CToken ReadPragma(string pragma, bool ignorePragma)
         {
             if (pragma == "once")
             {
@@ -337,12 +344,14 @@ namespace Reko.Core.Hll.C
                 switch (token.Type)
                 {
                 case CTokenType.NumericLiteral:
-                    this.parserState.PushAlignment((int) token.Value!);
+                    if (!ignorePragma)
+                        this.parserState.PushAlignment((int) token.Value!);
                     Expect(CTokenType.RParen);
                     Expect(CTokenType.NewLine);
                     break;
                 case CTokenType.RParen:
-                    this.parserState.PopAlignment();
+                    if (!ignorePragma)
+                        this.parserState.PopAlignment();
                     Expect(CTokenType.NewLine);
                     break;
                 case CTokenType.Id:
@@ -352,14 +361,17 @@ namespace Reko.Core.Hll.C
                         token = ReadToken();
                         if (token.Type == CTokenType.Comma)
                         {
-                            this.parserState.PushAlignment((int) Expect(CTokenType.NumericLiteral)!);
+                            var al = (int) Expect(CTokenType.NumericLiteral)!;
+                            if (!ignorePragma)
+                                this.parserState.PushAlignment(al);
                             token = ReadToken();
                         }
                         Expect(CTokenType.RParen, token);
                     }
                     else if (verb == "pop")
                     {
-                        this.parserState.PopAlignment();
+                        if (!ignorePragma)
+                            this.parserState.PopAlignment();
                         Expect(CTokenType.RParen);
                     }
                     else

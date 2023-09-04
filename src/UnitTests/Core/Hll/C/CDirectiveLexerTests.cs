@@ -374,5 +374,32 @@ done
             Assert.AreEqual("done", lexer.Read().Value);
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
         }
+
+        [Test]
+        public void CDirectiveLexer_dont_define_twice()
+        {
+            LexMsvc(@"
+#ifdef X
+# define Y 3
+#else 
+# define Y 42
+#endif
+Y
+");
+            Assert.AreEqual(42, lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_redefine()
+        {
+            LexMsvc(@"
+#define Y 3
+#define Y 42
+Y
+");
+            Assert.AreEqual(42, lexer.Read().Value);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
     }
 }
