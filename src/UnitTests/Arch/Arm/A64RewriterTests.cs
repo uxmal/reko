@@ -2784,13 +2784,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("Read up on the specs")]
         public void AArch64Rw_ld1_1()
         {
             Given_HexString("0000400D");
             AssertCode(     // ld1	{v0.b}[0],[x0]
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__ld1<int32>(x0, 0<i32>, out v0)");
         }
 
         [Test]
