@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
@@ -31,16 +32,16 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Builds webs out of the unions of phi functions. Each
-	/// web will correspond to a local variable in the finished 
-	/// decompilation. 
+    /// <summary>
+    /// Builds webs out of the unions of phi functions. Each
+    /// web will correspond to a local variable in the finished 
+    /// decompilation. 
     /// </summary>
     /// <remarks>
     /// After this pass, the code is no longer in SSA
     /// form, so all analyses should be done prior to applying this stage.
     /// </remarks>
-	public class WebBuilder
+    public class WebBuilder
 	{
         private readonly Program program;
 		private readonly SsaState ssa;

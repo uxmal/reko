@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-	public class Web
+    public class Web
 	{
 		public Web()
 		{

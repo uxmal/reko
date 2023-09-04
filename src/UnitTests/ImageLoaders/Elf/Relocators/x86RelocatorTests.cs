@@ -28,6 +28,7 @@ using Reko.ImageLoaders.Elf;
 using Reko.ImageLoaders.Elf.Relocators;
 using Reko.Core;
 using System.ComponentModel.Design;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 {

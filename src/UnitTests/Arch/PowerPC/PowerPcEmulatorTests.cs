@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.Emulation;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

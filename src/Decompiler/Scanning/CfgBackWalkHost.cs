@@ -20,8 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Rtl;
-using Reko.Scanning;
 using System.Collections.Generic;
 using System.Linq;
 

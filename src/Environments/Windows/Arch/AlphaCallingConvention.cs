@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Types;
 using System.Linq;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Windows
 {

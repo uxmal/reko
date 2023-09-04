@@ -32,6 +32,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Reko.Core.Loading;
+using Reko.Core.Code;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Msdos
 {

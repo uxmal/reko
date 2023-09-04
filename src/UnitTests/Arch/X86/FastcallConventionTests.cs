@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Arch.X86;
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -34,6 +33,7 @@ using Reko.Environments.Windows;
 using System.Collections.Generic;
 using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 using System.ComponentModel.Design;
+using Reko.Core.Machine;
 
 namespace Reko.UnitTests.Arch.X86
 {

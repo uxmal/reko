@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace Reko.Tools.HdrGen
         public void Hdrgen_Enum()
         {
             var hdrgen = new HeaderGenerator(typeof(Address).Assembly, sw);
-            hdrgen.WriteEnumDefinition(typeof(Reko.Core.AccessMode));
+            hdrgen.WriteEnumDefinition(typeof(AccessMode));
             var sExp =
             #region Expected
 @"enum class AccessMode

@@ -32,6 +32,7 @@ using System.Text;
 using System.Windows.Forms;
 using Reko.Gui.Components;
 using Reko.Gui.TextViewing;
+using Reko.Core.Loading;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {

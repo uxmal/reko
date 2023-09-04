@@ -21,7 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
-using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;

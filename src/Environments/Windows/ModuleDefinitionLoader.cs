@@ -26,6 +26,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using Reko.Core.Diagnostics;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.Windows
 {

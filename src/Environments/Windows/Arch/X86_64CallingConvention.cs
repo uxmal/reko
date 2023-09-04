@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Arch.X86;
 using System.Diagnostics;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Windows
 {

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;

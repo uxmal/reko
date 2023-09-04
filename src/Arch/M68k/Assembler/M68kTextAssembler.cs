@@ -31,6 +31,7 @@ using System.IO;
 using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Arch.M68k.Assembler
 {

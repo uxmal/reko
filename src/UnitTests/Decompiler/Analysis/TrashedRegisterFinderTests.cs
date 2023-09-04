@@ -24,6 +24,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;

@@ -30,6 +30,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Reko.Core.Loading;
+using Reko.Core.Code;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.MacOS.Classic
 {

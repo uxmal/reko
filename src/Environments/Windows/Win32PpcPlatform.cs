@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Loading;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Windows
 {

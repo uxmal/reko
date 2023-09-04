@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;

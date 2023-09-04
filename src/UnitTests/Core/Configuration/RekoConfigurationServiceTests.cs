@@ -20,8 +20,8 @@
 
 using Moq;
 using NUnit.Framework;
-using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
 using System;

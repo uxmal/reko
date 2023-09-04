@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core;
+using Reko.Core.Loading;
 using Reko.ImageLoaders.WebAssembly;
 using System;
 using System.Collections.Generic;

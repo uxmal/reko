@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Services;
 using System;

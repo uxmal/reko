@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Gui;
 using System;
 using System.Linq;

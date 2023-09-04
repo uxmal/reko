@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch.M68k
 {

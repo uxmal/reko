@@ -38,6 +38,8 @@ using System.IO;
 using System.Linq;
 using Reko.Core.Memory;
 using Reko.Services;
+using Reko.Core.Loading;
+using Reko.Core.Analysis;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

@@ -545,7 +545,7 @@ namespace Reko.Core.Output
 				InnerFormatter.Write(" = "); 
 			}
 			a.Src.Accept(this);
-			if (a.IsAlias)
+			if (a is AliasAssignment)
 				InnerFormatter.Write(" (alias)");
 			InnerFormatter.Terminate();
 		}

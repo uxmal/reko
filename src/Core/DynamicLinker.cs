@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Core.Operators;
+using Reko.Core.Loading;
 
 namespace Reko.Core
 {

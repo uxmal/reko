@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.Windows;

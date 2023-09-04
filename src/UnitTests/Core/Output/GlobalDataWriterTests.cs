@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Memory;
 using System;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Core.Output
 {

@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.SysV.ArchSpecific
 {

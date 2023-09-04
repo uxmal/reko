@@ -19,7 +19,9 @@
 
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Graphs;
+using Reko.Core.Loading;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
 using Reko.Core.Serialization;

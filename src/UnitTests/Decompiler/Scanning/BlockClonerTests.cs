@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Types;
 using System.ComponentModel.Design;
+using Reko.Core.Graphs;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

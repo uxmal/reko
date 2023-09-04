@@ -23,6 +23,8 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
+using Reko.Core.Loading;
+using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;

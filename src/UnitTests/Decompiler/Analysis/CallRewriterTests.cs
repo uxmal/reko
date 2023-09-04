@@ -25,6 +25,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;

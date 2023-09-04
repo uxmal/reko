@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Graphs;
+using Reko.Core.Loading;
 using Reko.Core.Rtl;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;

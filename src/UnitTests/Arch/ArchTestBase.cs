@@ -32,6 +32,7 @@ using System.Diagnostics;
 using Reko.Core.Serialization;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch
 {

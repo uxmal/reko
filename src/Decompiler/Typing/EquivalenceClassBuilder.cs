@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -33,10 +34,10 @@ using System.Linq;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Assigns a type to each expression node in a program and builds equivalence classes.
-	/// </summary>
-	public class EquivalenceClassBuilder : InstructionVisitorBase
+    /// <summary>
+    /// Assigns a type to each expression node in a program and builds equivalence classes.
+    /// </summary>
+    public class EquivalenceClassBuilder : InstructionVisitorBase
 	{
         private static readonly TraceSwitch trace = new(nameof(EquivalenceClassBuilder), "Trace EquivalenceClassBuilder") { Level = TraceLevel.Warning };
 

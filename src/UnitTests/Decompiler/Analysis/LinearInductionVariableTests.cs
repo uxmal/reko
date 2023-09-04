@@ -34,10 +34,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.Design;
 using Reko.Services;
+using Reko.Core.Analysis;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class LinearInductionVariableTests : AnalysisTestBase
 	{
 		private SsaState ssa;

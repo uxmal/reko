@@ -28,7 +28,7 @@ using Reko.Arch.MicrochipPIC.PIC18;
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
-    using Reko.Core;
+    using Reko.Core.Lib;
     using static Common.Sample;
 
     [TestFixture]

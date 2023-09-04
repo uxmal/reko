@@ -19,6 +19,7 @@
 #endregion
 
 using System.Diagnostics.CodeAnalysis;
+using Reko.Core.Loading;
 
 namespace Reko.Core
 {

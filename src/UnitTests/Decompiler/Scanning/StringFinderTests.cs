@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

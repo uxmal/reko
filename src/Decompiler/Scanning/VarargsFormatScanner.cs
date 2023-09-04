@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;

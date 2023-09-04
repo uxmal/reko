@@ -25,6 +25,7 @@ using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.C64
 {

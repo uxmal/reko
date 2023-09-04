@@ -30,6 +30,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18
 {

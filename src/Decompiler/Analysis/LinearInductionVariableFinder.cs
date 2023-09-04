@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
@@ -29,10 +30,10 @@ using System.Linq;
 
 namespace Reko.Analysis
 {
-	/// <summary>
-	/// Finds linear induction variables and annotates the identifiers with that information.
-	/// </summary>
-	public class LinearInductionVariableFinder : InstructionVisitorBase
+    /// <summary>
+    /// Finds linear induction variables and annotates the identifiers with that information.
+    /// </summary>
+    public class LinearInductionVariableFinder : InstructionVisitorBase
 	{
         private readonly SsaState ssa;
         private readonly List<LinearInductionVariable> ivs;

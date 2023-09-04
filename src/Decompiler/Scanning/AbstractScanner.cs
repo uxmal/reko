@@ -19,9 +19,11 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;

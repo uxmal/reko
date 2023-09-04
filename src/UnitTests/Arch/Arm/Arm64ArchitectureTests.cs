@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

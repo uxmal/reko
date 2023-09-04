@@ -31,6 +31,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using Reko.Core.Analysis;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {

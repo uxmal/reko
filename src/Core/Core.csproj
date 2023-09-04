@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)../Drivers/CommonBuildProperties.items" />
-  <!--<Import Project="$(ProjectDir)../Drivers/ApiTracking.items "/>-->
+  <Import Project="$(ProjectDir)../Drivers/ApiTracking.items " />
   <PropertyGroup>
     <ProjectGuid>{5C315C78-1F97-4B16-81AA-917284969DFE}</ProjectGuid>
     <AssemblyName>Reko.Core</AssemblyName>

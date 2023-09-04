@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.M68k.Assembler;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using System.Collections.Generic;

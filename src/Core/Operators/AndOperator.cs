@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.Numerics;
 
 namespace Reko.Core.Operators
 {
@@ -28,7 +29,7 @@ namespace Reko.Core.Operators
 	{
         internal AndOperator() : base(OperatorType.And) { }
 
-		public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
+        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
                 return InvalidConstant.Create(c1.DataType);

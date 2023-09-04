@@ -20,6 +20,7 @@
 
 using Moq;
 using NUnit.Framework;
+using Reko.Analysis;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
@@ -27,7 +28,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 

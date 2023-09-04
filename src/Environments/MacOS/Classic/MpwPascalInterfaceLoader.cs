@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Hll.Pascal;
+using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;

@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Linq;
+using Reko.Core.Machine;
 
 namespace Reko.Core.Serialization
 {

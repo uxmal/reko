@@ -45,10 +45,10 @@ using Reko.Services;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
-	/// <summary>
-	/// Base class for all typing tests.
-	/// </summary>
-	public abstract class TypingTestBase
+    /// <summary>
+    /// Base class for all typing tests.
+    /// </summary>
+    public abstract class TypingTestBase
 	{
         private IDecompilerEventListener eventListener;
 

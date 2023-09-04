@@ -2,6 +2,7 @@ using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;

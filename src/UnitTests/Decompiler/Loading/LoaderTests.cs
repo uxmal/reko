@@ -33,7 +33,7 @@ using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Decompiler.Loading
 {
-	[TestFixture]
+    [TestFixture]
 	public class LoaderTests
 	{
         private IServiceContainer sc;

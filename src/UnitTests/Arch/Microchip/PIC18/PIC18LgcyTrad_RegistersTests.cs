@@ -20,15 +20,15 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;
 using Reko.Arch.MicrochipPIC.PIC18;
+using Reko.Core.Lib;
+using Reko.Libraries.Microchip;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
-    using Reko.Core;
     using static Common.Sample;
 
     [TestFixture]

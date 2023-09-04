@@ -25,6 +25,7 @@ using Reko.Arch.M68k;
 using System;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.AtariTOS
 {

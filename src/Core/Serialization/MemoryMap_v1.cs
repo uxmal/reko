@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;

@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Loading;
+using Reko.Core.Machine;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;

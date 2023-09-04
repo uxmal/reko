@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.RiscV;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System.Collections.Generic;

@@ -21,10 +21,11 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Reko.Core.Loading;
 
 namespace Reko.Core.Assemblers
 {
-	public interface IAssembler
+    public interface IAssembler
 	{
         Address StartAddress { get; }
         ICollection<ImageSymbol> EntryPoints { get; }

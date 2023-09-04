@@ -33,6 +33,7 @@ using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 using Reko.Core.Code;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Core
 {

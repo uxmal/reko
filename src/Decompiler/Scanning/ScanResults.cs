@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Core.Graphs;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;

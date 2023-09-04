@@ -20,6 +20,7 @@
 
 using ReactiveUI;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Gui;
 using Reko.UserInterfaces.AvaloniaUI.Views.Documents;
 using System;

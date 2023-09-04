@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Operators;
 using Reko.Core.Types;
+using Reko.Core.Loading;
+using Reko.Core.Lib;
 
 namespace Reko.Scanning
 {

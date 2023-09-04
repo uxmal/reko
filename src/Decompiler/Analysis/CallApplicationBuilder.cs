@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -311,33 +312,6 @@ Please report this issue at https://github.com/uxmal/reko";
             var sid = ssaCaller.EnsureDefInstruction(id, entryBlock);
             sid.Uses.Add(stmCall);
             return sid.Identifier;
-        }
-
-        [Obsolete]
-        private class MemIdentifierFinder : InstructionVisitorBase
-        {
-            private MemoryIdentifier? mid;
-
-            public MemoryIdentifier? Find(Instruction instr)
-            {
-                this.mid = null;
-                instr.Accept(this);
-                return mid;
-    }
-
-            public override void VisitStore(Store store)
-            {
-                store.Dst.Accept(this);
-                if (mid != null)
-                    return;
-                store.Src.Accept(this);
-            }
-
-            public override void VisitMemoryAccess(MemoryAccess access)
-            {
-                this.mid = access.MemoryId;
-                base.VisitMemoryAccess(access);
-            }
         }
     }
 

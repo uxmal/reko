@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;

@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Types;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Windows
 {

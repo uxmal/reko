@@ -27,6 +27,8 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Reko.Core.Loading;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.Xbox
 {

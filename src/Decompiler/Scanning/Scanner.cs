@@ -38,6 +38,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ConstrainedExecution;
 using Reko.Services;
 using System.IO;
+using Reko.Core.Loading;
 
 namespace Reko.Scanning
 {

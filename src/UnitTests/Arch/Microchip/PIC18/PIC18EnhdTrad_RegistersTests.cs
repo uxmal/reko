@@ -20,6 +20,7 @@
  */
 #endregion
 
+using Reko.Core.Lib;
 using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;

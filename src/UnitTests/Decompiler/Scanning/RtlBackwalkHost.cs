@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Scanning;
 using System;

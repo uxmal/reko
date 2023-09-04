@@ -29,6 +29,7 @@ using Reko.Core.Hll.C;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Core.Emulation;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.AtariTOS
 {

@@ -227,13 +227,13 @@ namespace Reko.ImageLoaders.Coff
             return ImageSymbol.Create(stype, arch, Address.Ptr32(xcoffSym.l_value), name);
         }
 
-        private static Core.SymbolType GetSymbolType(SymbolClass l_smclas)
+        private static Core.Loading.SymbolType GetSymbolType(SymbolClass l_smclas)
         {
             return l_smclas switch
             {
-                SymbolClass.XMC_PR => Core.SymbolType.Procedure,
-                SymbolClass.XMC_RW => Core.SymbolType.Data,
-                _ => Core.SymbolType.Unknown
+                SymbolClass.XMC_PR => Core.Loading.SymbolType.Procedure,
+                SymbolClass.XMC_RW => Core.Loading.SymbolType.Data,
+                _ => Core.Loading.SymbolType.Unknown
             };
         }
 

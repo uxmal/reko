@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 
 namespace Reko.Environments.SysV.ArchSpecific

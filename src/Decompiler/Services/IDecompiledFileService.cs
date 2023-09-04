@@ -28,6 +28,8 @@ using Reko.Core.Services;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using Reko.Core.Collections;
+using Reko.Core.Loading;
 
 namespace Reko.Services
 {

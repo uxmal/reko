@@ -1,14 +1,12 @@
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using CoreProgram = Reko.Core.Program;
 

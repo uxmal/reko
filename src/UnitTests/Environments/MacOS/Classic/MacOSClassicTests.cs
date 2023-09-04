@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.Classic;

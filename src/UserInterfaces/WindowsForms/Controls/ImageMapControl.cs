@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;

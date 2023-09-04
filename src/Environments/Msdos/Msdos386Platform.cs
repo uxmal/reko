@@ -21,6 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;

@@ -163,7 +163,7 @@ namespace Reko.Arch.Arm
 #endif
         }
 
-        public override Core.CallingConvention GetCallingConvention(string? name)
+        public override Core.Machine.CallingConvention GetCallingConvention(string? name)
         {
             // At this point, we're falling back onto the architecture-defined
             // calling convention.

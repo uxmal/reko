@@ -22,7 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
+using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Evaluation;
@@ -37,6 +37,7 @@ using System.IO;
 using System.Collections.Generic;
 using Reko.Core.Services;
 using Moq;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

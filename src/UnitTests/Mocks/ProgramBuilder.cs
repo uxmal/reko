@@ -23,6 +23,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -32,11 +33,11 @@ using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Mocks
 {
-	/// <summary>
-	/// Supports building a intermediate code program directly without having
+    /// <summary>
+    /// Supports building a intermediate code program directly without having
     /// to first generate machine code and scanning it.
-	/// </summary>
-	public class ProgramBuilder
+    /// </summary>
+    public class ProgramBuilder
 	{
 		private uint procCount;
         private readonly Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();

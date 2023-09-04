@@ -32,10 +32,10 @@ using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.MzExe
 {
-	/// <summary>
-	/// An image loader that understands the LzExe packing algorithms. 
-	/// </summary>
-	public class LzExeUnpacker : ProgramImageLoader
+    /// <summary>
+    /// An image loader that understands the LzExe packing algorithms. 
+    /// </summary>
+    public class LzExeUnpacker : ProgramImageLoader
 	{
         private IProcessorArchitecture arch;
         private IPlatform platform;

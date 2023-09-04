@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.NativeInterface
 {
-	public class NativeSymbolSource : ISymbolSource
+    public class NativeSymbolSource : ISymbolSource
 	{
         private IProcessorArchitecture arch;
 		private IntPtr handle;

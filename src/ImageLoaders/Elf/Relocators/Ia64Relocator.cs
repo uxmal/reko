@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.Elf.Relocators

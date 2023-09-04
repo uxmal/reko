@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Services;

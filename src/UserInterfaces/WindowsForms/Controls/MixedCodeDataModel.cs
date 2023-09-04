@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Machine;
 using Reko.Gui.Services;
 using Reko.Gui.TextViewing;

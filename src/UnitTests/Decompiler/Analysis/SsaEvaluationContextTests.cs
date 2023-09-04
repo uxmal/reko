@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.ImageLoaders.OdbgScript;
 using Reko.UnitTests.Mocks;

@@ -28,13 +28,14 @@ using Reko.Core.Machine;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
 using System.Collections.Generic;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch.X86
 {
-	/// <summary>
-	/// Tests for operator rewriting when dealing with real mode.
-	/// </summary>
-	[TestFixture]
+    /// <summary>
+    /// Tests for operator rewriting when dealing with real mode.
+    /// </summary>
+    [TestFixture]
 	public class OperandRewriterRealModeTests
 	{
 		private OperandRewriter orw;

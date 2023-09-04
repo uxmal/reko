@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System.Linq;
 

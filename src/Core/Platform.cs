@@ -18,11 +18,14 @@
  */
 #endregion
 
+using Reko.Core.Code;
 using Reko.Core.Collections;
 using Reko.Core.Configuration;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Hll.C;
+using Reko.Core.Loading;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;

@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Linq;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Arch.X86.Assembler
 {

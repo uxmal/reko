@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Loading;
 using Reko.Core.Types;
 using Reko.Services;
 using System;

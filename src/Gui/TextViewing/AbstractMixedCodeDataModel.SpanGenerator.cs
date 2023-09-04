@@ -62,7 +62,7 @@ namespace Reko.Gui.TextViewing
             program.SegmentMap.TryFindSegment(curPos.Address, out var seg);
             program.ImageMap.TryFindItem(curPos.Address, out var item);
 
-            SpanGenerator sp = CreateSpanifier(item, seg.MemoryArea, curPos);
+            SpanGenerator? sp = CreateSpanifier(item, seg.MemoryArea, curPos);
             while (count != 0 && seg != null && item != null)
             {
                 if (TryReadComment(out var commentLine))

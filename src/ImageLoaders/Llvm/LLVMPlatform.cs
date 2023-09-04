@@ -30,6 +30,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Reko.Core.Loading;
+using Reko.Core.Code;
+using Reko.Core.Machine;
 
 namespace Reko.ImageLoaders.LLVM
 {

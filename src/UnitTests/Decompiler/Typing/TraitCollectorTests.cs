@@ -37,10 +37,11 @@ using System.ComponentModel.Design;
 using Reko.Core.Services;
 using System.Runtime.InteropServices;
 using Reko.Services;
+using Reko.Core.Analysis;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
-	[TestFixture]
+    [TestFixture]
 	public class TraitCollectorTests : TypingTestBase
 	{
 		private TraitCollector coll;

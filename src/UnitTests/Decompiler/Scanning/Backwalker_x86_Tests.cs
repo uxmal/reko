@@ -18,31 +18,33 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Loading;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.Scanning;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using System;
-using System.Linq;
-using Reko.Arch.X86.Assembler;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Collections.Generic;
-using Reko.Core.Services;
-using Reko.Core.Lib;
-using Moq;
-using Reko.Services;
+using System.Linq;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
-	[TestFixture]
+    [TestFixture]
 	public class Backwalker_x86_Tests
 	{
         private IServiceContainer sc;

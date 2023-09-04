@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 
 namespace Reko.Environments.MacOS.Classic

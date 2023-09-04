@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;

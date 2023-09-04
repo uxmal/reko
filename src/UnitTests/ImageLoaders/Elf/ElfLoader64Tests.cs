@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.ImageLoaders.Elf;
 using System.Collections.Generic;

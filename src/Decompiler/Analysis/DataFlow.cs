@@ -29,6 +29,7 @@ using Storage = Reko.Core.Storage;
 using StringWriter = System.IO.StringWriter;
 using TextWriter = System.IO.TextWriter;
 using System.IO;
+using Reko.Core.Lib;
 
 namespace Reko.Analysis
 {

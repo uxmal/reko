@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.PaRisc;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;

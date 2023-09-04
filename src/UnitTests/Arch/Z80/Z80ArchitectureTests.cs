@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Z80;
 using Reko.Core;
+using Reko.Core.Lib;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 

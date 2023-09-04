@@ -29,6 +29,7 @@ using Reko.Core.Diagnostics;
 using Reko.Core.Services;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {

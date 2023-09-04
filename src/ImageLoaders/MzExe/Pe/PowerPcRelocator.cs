@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe.Pe

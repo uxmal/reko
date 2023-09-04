@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.SuperH;
 using Reko.Core;
+using Reko.Core.Machine;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Tlcs

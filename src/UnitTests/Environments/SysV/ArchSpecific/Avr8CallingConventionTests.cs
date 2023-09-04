@@ -27,9 +27,9 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Reko.Environments.SysV.ArchSpecific;
 using Reko.Arch.Avr;
-using Reko.Core;
 using Reko.Core.Types;
 using System.ComponentModel.Design;
+using Reko.Core.Machine;
 
 namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {

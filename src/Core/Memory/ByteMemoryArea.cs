@@ -20,6 +20,7 @@
 
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Loading;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
@@ -27,15 +28,15 @@ using System.Buffers.Binary;
 
 namespace Reko.Core.Memory
 {
-	/// <summary>
-	/// Representation of a byte-granular area of memory. Byte-addressable CPU architectures
+    /// <summary>
+    /// Representation of a byte-granular area of memory. Byte-addressable CPU architectures
     /// should use this class to represent in-memory data.
-	/// </summary>
+    /// </summary>
     /// <remarks>
     /// Loading sparse images should load multiple memory areas. Use <see cref="SegmentMap"/>
     /// and <see cref="ImageSegment"/>s to accomplish this.
     /// </remarks>
-	public class ByteMemoryArea : MemoryArea
+    public class ByteMemoryArea : MemoryArea
 	{
 		public ByteMemoryArea(Address addrBase, byte [] bytes)
             : base(addrBase, bytes.Length, 8, new MemoryFormatter(PrimitiveType.Byte, 1, 16, 2, 1))

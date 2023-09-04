@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Graphs;
+using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Services;

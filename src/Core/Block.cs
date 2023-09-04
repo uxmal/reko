@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Collections;
 using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,10 @@ using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Represents a basic block of <see cref="Statement"/>s.
-	/// </summary>
-	public class Block
+    /// <summary>
+    /// Represents a basic block of <see cref="Statement"/>s.
+    /// </summary>
+    public class Block
 	{
 		public Block(Procedure proc, Address addr, string id)
 		{

@@ -27,6 +27,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using System.Text.RegularExpressions;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.MacOS.Classic
 {

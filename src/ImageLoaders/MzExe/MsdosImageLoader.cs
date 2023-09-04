@@ -32,11 +32,11 @@ using System.Diagnostics;
 
 namespace Reko.ImageLoaders.MzExe
 {
-	/// <summary>
-	/// Loads MS-DOS binary executables that haven't had any packing or encryption
+    /// <summary>
+    /// Loads MS-DOS binary executables that haven't had any packing or encryption
     /// done to them.
-	/// </summary>
-	public class MsdosImageLoader : ProgramImageLoader
+    /// </summary>
+    public class MsdosImageLoader : ProgramImageLoader
 	{
         // "640k should be enough for anybody" -- consider making this configurable?
         private const ushort segMemTop = 0xA000;

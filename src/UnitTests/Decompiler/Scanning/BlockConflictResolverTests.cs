@@ -32,6 +32,7 @@ using System.Linq;
 using System.Text;
 using RtlBlock = Reko.Scanning.RtlBlock;
 using HeuristicProcedure = Reko.Scanning.HeuristicProcedure;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {

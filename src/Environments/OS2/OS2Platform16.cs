@@ -28,6 +28,7 @@ using System.IO;
 using Reko.Core.Services;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core.Machine;
 
 namespace Reko.Environments.OS2
 {

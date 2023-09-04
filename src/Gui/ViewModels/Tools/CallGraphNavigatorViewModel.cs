@@ -22,6 +22,7 @@ using DynamicData;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Graphs;
 using Reko.Gui.Reactive;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

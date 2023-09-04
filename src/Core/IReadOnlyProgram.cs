@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Reko.Core.Analysis;
 using Reko.Core.Expressions;
+using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System.Collections.Generic;

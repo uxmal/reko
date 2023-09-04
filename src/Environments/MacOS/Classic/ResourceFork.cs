@@ -20,6 +20,7 @@
 
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
@@ -30,7 +31,7 @@ using System.Text;
 
 namespace Reko.Environments.MacOS.Classic
 {
-// http://developer.apple.com/legacy/mac/library/documentation/mac/MoreToolbox/MoreToolbox-99.html
+    // http://developer.apple.com/legacy/mac/library/documentation/mac/MoreToolbox/MoreToolbox-99.html
 
     /// <summary>
     /// This class knows how to unpack a resource fork into its constituent resources.

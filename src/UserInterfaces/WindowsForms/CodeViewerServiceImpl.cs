@@ -26,6 +26,7 @@ using System.Text;
 using System.Linq;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Core.Loading;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

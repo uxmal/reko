@@ -23,6 +23,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Loading;
@@ -33,7 +34,7 @@ using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Decompiler.Scanning
 {
-	[TestFixture]
+    [TestFixture]
     [Ignore("This needs to be rewritten, as we are now more explicitly referring to the stack pointer")]
 	public class EscapedAccessRewriterTests
 	{

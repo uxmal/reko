@@ -21,7 +21,6 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.PowerPC;
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Environments.SysV;
@@ -34,6 +33,7 @@ using System.Xml.Serialization;
 using PowerPcCallingConvention = Reko.Arch.PowerPC.PowerPcCallingConvention;
 using System.ComponentModel.Design;
 using System.Collections.Generic;
+using Reko.Core.Machine;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {

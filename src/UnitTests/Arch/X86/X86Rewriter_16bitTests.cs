@@ -2,6 +2,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Linq;

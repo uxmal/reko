@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System;

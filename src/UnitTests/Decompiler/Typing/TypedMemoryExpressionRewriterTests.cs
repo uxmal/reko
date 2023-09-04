@@ -28,10 +28,11 @@ using Reko.Core;
 using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
-	[TestFixture]
+    [TestFixture]
 	public class TypedMemoryExpressionRewriterTests
 	{
         private Program program;

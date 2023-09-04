@@ -20,6 +20,7 @@
 
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -29,17 +30,17 @@ using System.Diagnostics;
 
 namespace Reko.Typing
 {
-	/// <summary>
-	/// Gathers the traits for each expression in a program.
-	/// </summary>
-	/// <remarks>
-	/// Assumes that a prior pass has assigned unique type identifiers to each expression in the program.
-	/// <para>
-	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
-	/// </para>
-	/// </remarks>
-	public class TraitCollector : InstructionVisitor<DataType?>, ExpressionVisitor<DataType?>
+    /// <summary>
+    /// Gathers the traits for each expression in a program.
+    /// </summary>
+    /// <remarks>
+    /// Assumes that a prior pass has assigned unique type identifiers to each expression in the program.
+    /// <para>
+    /// Much of the type inference code in this namespace was inspired by the master's thesis
+    /// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
+    /// </para>
+    /// </remarks>
+    public class TraitCollector : InstructionVisitor<DataType?>, ExpressionVisitor<DataType?>
 	{
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(TraitCollector), "Traces the work of the Trait Collector");
 

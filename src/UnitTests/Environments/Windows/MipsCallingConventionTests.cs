@@ -21,7 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.Mips;
-using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System.Collections.Generic;

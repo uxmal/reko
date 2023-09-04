@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Core;
 using System;
 using System.Diagnostics;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.X86
 {

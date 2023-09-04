@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.M68k;
-using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Environments.MacOS.Classic;
 using System.Collections.Generic;

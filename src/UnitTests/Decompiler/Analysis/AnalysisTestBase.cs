@@ -42,10 +42,11 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using Reko.Services;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Analysis
 {
-	public abstract class AnalysisTestBase
+    public abstract class AnalysisTestBase
 	{
         protected IPlatform platform;
         protected Mock<IPlatform> platformMock;

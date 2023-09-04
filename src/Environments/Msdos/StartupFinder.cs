@@ -34,6 +34,7 @@ using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.Msdos
 {

@@ -29,6 +29,7 @@ using C2 = Microsoft.Msagl.Drawing.Color;
 namespace Reko.UserInterfaces.WindowsForms
 {
     using Microsoft.Msagl.Drawing;
+    using Reko.Core.Graphs;
 
     public class CallGraphGenerator
     {

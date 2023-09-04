@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Padauk;
 using Reko.Core;
+using Reko.Core.Machine;
 
 namespace Reko.UnitTests.Arch.Padauk.PDK14
 {

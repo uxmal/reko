@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
 using System.ComponentModel.Design;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch.X86
 {

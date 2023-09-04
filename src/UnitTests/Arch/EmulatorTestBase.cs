@@ -29,6 +29,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch
 {

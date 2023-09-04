@@ -36,7 +36,6 @@ namespace Reko.Core.Code
 
         public Identifier Dst { get; set; }
         public Expression Src { get; set; }
-        public virtual bool IsAlias => false;
         public override bool IsControlFlow => false;
         
         public override Instruction Accept(InstructionTransformer xform)
@@ -109,7 +108,5 @@ namespace Reko.Core.Code
         public AliasAssignment(Identifier idDst, Expression expSrc) : base(idDst, expSrc)
         {
         }
-
-        public override bool IsAlias => true;
     }
 }

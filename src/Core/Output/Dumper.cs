@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Reko.Core.Collections;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;

@@ -28,8 +28,9 @@ using System;
 using System.IO;
 using System.ComponentModel.Design;
 using System.Collections.Generic;
+using Reko.Core.Analysis;
 
-namespace Reko.UnitTests.Core
+namespace Reko.UnitTests.Core.Code
 {
 	[TestFixture]
 	public class FrameTests

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using System.Collections.Generic;

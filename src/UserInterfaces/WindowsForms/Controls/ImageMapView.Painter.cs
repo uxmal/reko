@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Collections;
 using Reko.Core.Diagnostics;
+using Reko.Core.Loading;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;

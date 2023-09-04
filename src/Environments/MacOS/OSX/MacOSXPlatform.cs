@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.OSX.ArchSpecific;
 using System;

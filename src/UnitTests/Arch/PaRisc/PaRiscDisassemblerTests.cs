@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.PaRisc;
 using Reko.Core;
+using Reko.Core.Machine;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 

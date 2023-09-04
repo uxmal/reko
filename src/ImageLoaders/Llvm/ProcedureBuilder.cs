@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using IrInstruction = Reko.Core.Code.Instruction;
 using Branch = Reko.Core.Code.Branch;
+using Reko.Core.Code;
 
 namespace Reko.ImageLoaders.LLVM
 {

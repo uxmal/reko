@@ -29,10 +29,11 @@ using System.Collections.Generic;
 using Reko.Core.Serialization;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Arch.X86
 {
-	[TestFixture]
+    [TestFixture]
 	public class OperandRewriterTests
 	{
 		private OperandRewriter orw;

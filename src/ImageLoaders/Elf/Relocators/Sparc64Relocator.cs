@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Diagnostics;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Text;

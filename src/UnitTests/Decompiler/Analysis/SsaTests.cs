@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Graphs;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;

@@ -33,6 +33,7 @@ using System.Xml;
 using System.Text;
 using System.ComponentModel.Design;
 using Reko.Core.Memory;
+using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Arch.X86
 {

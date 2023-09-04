@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core;
 using Reko.Core.Emulation;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 
 namespace Reko.Arch.Mos6502

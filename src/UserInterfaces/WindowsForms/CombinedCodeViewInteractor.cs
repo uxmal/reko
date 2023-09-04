@@ -22,6 +22,7 @@ using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Core.Collections;
+using Reko.Core.Loading;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using Reko.Core.Types;

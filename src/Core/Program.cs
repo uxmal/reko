@@ -32,6 +32,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Text;
+using Reko.Core.Graphs;
+using Reko.Core.Analysis;
 
 namespace Reko.Core
 {

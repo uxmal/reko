@@ -24,6 +24,7 @@ using Reko.Core.Serialization;
 using System;
 using System.Diagnostics;
 using Reko.Core.Memory;
+using Reko.Core.Collections;
 
 namespace Reko.Scanning
 {

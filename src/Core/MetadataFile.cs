@@ -30,13 +30,9 @@ namespace Reko.Core
     /// Represents a file that only used for the metdata it contains.
     /// </summary>
     [Designer("Reko.Gui.Design.MetadataFileDesigner,Reko.Gui")]
-    public class MetadataFile : ProjectFile
+    public class MetadataFile 
     {
-        public override T Accept<T>(IProjectFileVisitor<T> visitor)
-        {
-            return visitor.VisitMetadataFile(this);
-        }
-
         public string? ModuleName { get; set; }
+        public ImageLocation? Location { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace Reko.Gui.Services
 {
     /// <summary>
     /// Implementations of this service show a document window with an editable 
-    /// list of the <see cref="Reko.Core.ImageSegment"/>s of a program.
+    /// list of the <see cref="Core.Loading.ImageSegment"/>s of a program.
     /// </summary>
     public interface ISegmentListService
     {

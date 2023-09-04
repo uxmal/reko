@@ -27,10 +27,11 @@ using NUnit.Framework;
 using System;
 using Reko.UnitTests.Mocks;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
-	[TestFixture]
+    [TestFixture]
 	public class EquivalenceClassBuilderTests
 	{
 		private TypeFactory factory;

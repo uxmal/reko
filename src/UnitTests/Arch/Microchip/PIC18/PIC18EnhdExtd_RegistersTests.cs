@@ -28,7 +28,7 @@ using Reko.Libraries.Microchip;
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
-    using Reko.Core;
+    using Reko.Core.Lib;
     using System.Collections.Generic;
     using System.ComponentModel.Design;
     using static Common.Sample;

@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;

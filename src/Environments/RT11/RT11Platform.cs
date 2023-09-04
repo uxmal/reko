@@ -22,6 +22,7 @@ using Reko.Arch.Pdp;
 using Reko.Arch.Pdp.Pdp11;
 using Reko.Core;
 using Reko.Core.Hll.C;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;

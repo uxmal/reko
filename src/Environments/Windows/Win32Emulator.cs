@@ -32,6 +32,7 @@ using Reko.Core.Types;
 using Reko.Core.Memory;
 using Reko.Core.Emulation;
 using Reko.Core.Machine;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.Windows
 {

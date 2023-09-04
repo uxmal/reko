@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 

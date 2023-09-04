@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
@@ -39,7 +40,7 @@ using System.IO;
 
 namespace Reko.UnitTests.Arch.X86
 {
-	public class RewriterTestBase
+    public class RewriterTestBase
 	{
         private ServiceContainer sc;
         private string configFile;

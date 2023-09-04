@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Diagnostics;
+using Reko.Core.Loading;
 using Reko.Services;
 using System;
 using System.Collections.Concurrent;
