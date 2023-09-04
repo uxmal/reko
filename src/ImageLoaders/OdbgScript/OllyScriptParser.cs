@@ -382,7 +382,7 @@ namespace Reko.ImageLoaders.OdbgScript
             case TokenType.LBracket:
                 GetToken();
                 var ea = Expression();
-                if (ea == null)
+                if (ea is null)
                     return null;    //$TODO: SyncTo(Comma, NewLine)
                 if (!PeekAndDiscard(TokenType.RBracket))
                     return null;

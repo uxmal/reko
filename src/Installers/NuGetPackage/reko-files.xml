@@ -344,12 +344,14 @@
         <File Source="$(var.Decompiler.ProjectDir)Loading\Signatures\PLATFORM_INDEPENDENT.xml" nuget_target="c:" />
         
         <!-- Unpacker scripts -->
+        <File Source="$(var.OdbgScript.ProjectDir)Exepack-3.60-unpacker.osc" nuget_target="c:" />
+        <File Source="$(var.OdbgScript.ProjectDir)LzExe-0.91-unpacker.osc" nuget_target="c:" />
+        <File Source="$(var.OdbgScript.ProjectDir)PkLite-1.12-unpacker.osc" nuget_target="c:" />
         <File Source="$(var.OdbgScript.ProjectDir)PkLite-1.50-unpacker.osc" nuget_target="c:" />
         <File Source="$(var.OdbgScript.ProjectDir)RekoUnpacker_823.osc" nuget_target="c:" />
         <File Source="$(var.OdbgScript.ProjectDir)upx_ultimate.osc" nuget_target="c:" />
-        <File Source="$(var.OdbgScript.ProjectDir)Exepack-3.60-unpacker.osc" nuget_target="c:" />
 
-      <!-- External files -->
+        <!-- External files -->
       <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
       <File Source="$(var.WindowsDecompiler.TargetDir)AutomaticGraphLayout.dll" />
       <File Source="$(var.WindowsDecompiler.TargetDir)AutomaticGraphLayout.Drawing.dll" />

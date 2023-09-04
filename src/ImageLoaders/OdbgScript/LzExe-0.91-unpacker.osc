@@ -1,0 +1,39 @@
+; Reko OllyDbg script for unpacking files packed with LzExe 0.91
+
+var selector
+
+; Run until the retf that calls the unpacker and step into the retf
+bp cs:002A
+run
+sti
+
+; msg $"At {cs}:{ip}"
+
+;; Now inside the unpacker code. Execute the unpacking and intercept
+;; the relocations.
+
+; Break at the instruction after a relocation is done.
+bp cs:0122 
+
+; Break at the point where the CS:IP have been stored at address
+; [CS:BX]
+bp cs:0155
+
+relocation_loop:
+run
+
+cmp ip,0155
+je relocation_done
+
+; Read the relocation
+mov selector,[es:di],2
+; msg $"Relocation at {es}:{di} = {selector}"
+reko.addseg es:di,selector
+jmp relocation_loop
+
+relocation_done:
+; Single step into the original code.
+sti
+msg $"Entry point at {cs}:{ip}"
+dpe "dontcare",cs:ip
+ret

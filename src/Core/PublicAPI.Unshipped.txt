@@ -1130,6 +1130,7 @@ Reko.Core.SegmentMap.CreateImageReader(Reko.Core.Address! address, Reko.Core.IPr
 Reko.Core.SegmentMap.SegmentMap(params Reko.Core.Loading.ImageSegment![]! segments) -> void
 Reko.Core.SegmentMap.SegmentMap(Reko.Core.Address! addrBase, params Reko.Core.Loading.ImageSegment![]! segments) -> void
 Reko.Core.SegmentMap.Segments.get -> System.Collections.Generic.SortedList<Reko.Core.Address!, Reko.Core.Loading.ImageSegment!>!
+Reko.Core.SegmentMap.TryCreateImageReader(Reko.Core.Address! address, Reko.Core.IProcessorArchitecture! arch, out Reko.Core.Memory.EndianImageReader! rdr) -> bool
 Reko.Core.SegmentMap.TryFindSegment(Reko.Core.Address! addr, out Reko.Core.Loading.ImageSegment! segment) -> bool
 Reko.Core.SegmentMap.TryFindSegment(string! segmentName, out Reko.Core.Loading.ImageSegment! segment) -> bool
 Reko.Core.SegmentMap.TryFindSegment(ulong linAddress, out Reko.Core.Loading.ImageSegment! segment) -> bool

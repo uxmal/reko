@@ -124,7 +124,7 @@ namespace Reko.Core.Output
 
         public int VisitMemberPointer(MemberPointer memptr)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public int VisitPointer(Pointer ptr)

@@ -228,6 +228,31 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// Creates an <see cref="EndianImageReader"/> that starts reading at the <see cref="Address"/>
+        /// <paramref name="address"/>. The endianness of the image reader is controlled by the
+        /// <see cref="arch"/>. 
+        /// </summary>
+        /// <param name="address">Address at which to start reading.</param>
+        /// <param name="arch"><see cref="IProcessorArchitecture"/> that determines the 
+        /// endianness, byte granularity and other processor-specific details.
+        /// </param>
+        /// <returns>The resulting <see cref="EndianImageReader"/> instance.</returns>
+        public bool TryCreateImageReader(
+            Address address,
+            IProcessorArchitecture arch,
+            [MaybeNullWhen(false)] out EndianImageReader rdr)
+        {
+            if (!TryFindSegment(address, out var segment))
+            {
+                rdr = null;
+                return false;
+            }
+            rdr = segment.CreateImageReader(arch);
+            rdr.Seek(address - segment.Address);
+            return true;
+        }
+
+        /// <summary>
         /// Returns the segment that contains the specified address.
         /// </summary>
         public bool TryFindSegment(Address addr, [MaybeNullWhen(false)] out ImageSegment segment)

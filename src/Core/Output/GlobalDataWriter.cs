@@ -321,7 +321,10 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitMemberPointer(MemberPointer memptr)
         {
-            throw new NotImplementedException();
+            if (!rdr.TryRead(PrimitiveType.Create(Domain.Offset, memptr.BitSize), out var c))
+                return codeFormatter;
+            c.Accept(codeFormatter);
+            return codeFormatter;
         }
 
         public CodeFormatter VisitPointer(Pointer ptr)

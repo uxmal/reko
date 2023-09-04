@@ -4218,5 +4218,31 @@ string filename, data;
             Host.TE_Log(sw.ToString());
             return true;
         }
+
+        private bool RekoDisassemble(Expression[] args)
+        {
+            if (args.Length < 1)
+                return false;
+            if (!GetAddress(args[0], out Address addr))
+                return false;
+            rulong count = 10;
+            if (args.Length == 2)
+            {
+                if (!GetRulong(args[1], out count))
+                    return false;
+            }
+            if (!this.Host.SegmentMap.TryCreateImageReader(addr, arch, out var rdr))
+                return false;
+            var sw = new StringWriter();
+            var dasm = arch.CreateDisassembler(rdr).GetEnumerator();
+            for (uint i = 0; i < count && dasm.MoveNext(); ++i)
+            {
+                var instr = dasm.Current;
+                sw.WriteLine("{0}: {1}", instr.Address, instr);
+            }
+
+            Host.TE_Log(sw.ToString());
+            return true;
+        }
     }
 }

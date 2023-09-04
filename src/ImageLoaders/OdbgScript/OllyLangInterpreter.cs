@@ -313,6 +313,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             commands["reko.addseg"] = RekoAddSegmentReference;
             commands["reko.db"] = RekoDumpBytes;
+            commands["reko.dasm"] = RekoDisassemble;
 
             #endregion
 #if LATER
@@ -501,7 +502,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
 
         // Commands that can be executed
-        Dictionary<string, Func<Expression[], bool>> commands = new Dictionary<string, Func<Expression[], bool>>(StringComparer.InvariantCultureIgnoreCase );
+        Dictionary<string, Func<Expression[], bool>> commands = new(StringComparer.InvariantCultureIgnoreCase );
 
         private int EOB_row, EOE_row;
         private bool bInternalBP;
