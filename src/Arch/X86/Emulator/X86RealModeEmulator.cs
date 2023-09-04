@@ -28,11 +28,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Emulator
 {
     public class X86RealModeEmulator : X86Emulator
     {
-        public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) 
+        public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
             : base(arch, segmentMap, envEmulator, X86.Registers.ip, X86.Registers.cx)
         {
         }
@@ -65,7 +65,7 @@ namespace Reko.Arch.X86
                 segReg = m.DefaultSegment;
 
             var off = GetEffectiveOffset(m) & 0xFFFF;
-            var seg = (ushort)ReadRegister(segReg);
+            var seg = (ushort) ReadRegister(segReg);
             return ToLinear(seg, off);
         }
 
@@ -77,9 +77,9 @@ namespace Reko.Arch.X86
             var value = ReadMemory(ToLinear(ds, si), dt);
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax);
-            var aNew = (a & ~mask.value) | value;
+            var aNew = a & ~mask.value | value;
             WriteRegister(X86.Registers.eax, aNew);
-            var delta = (uint) dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
+            var delta = (uint) dt.Size * ((Flags & Dmask) != 0 ? 0xFFFFu : 0x0001u);
             si += delta;
             WriteRegister(X86.Registers.si, si);
         }
@@ -93,7 +93,7 @@ namespace Reko.Arch.X86
             var dt = instr.dataWidth;
             var value = ReadMemory(ToLinear(ds, si), dt);
             WriteMemory(value, ToLinear(es, di), dt);
-            var delta = (uint)dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
+            var delta = (uint) dt.Size * ((Flags & Dmask) != 0 ? 0xFFFFu : 0x0001u);
             si += delta;
             di += delta;
             WriteRegister(X86.Registers.si, si);
@@ -117,11 +117,11 @@ namespace Reko.Arch.X86
             var es = ReadSegmentRegister(instr.Operands[1], X86.Registers.es);
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = ReadMemory(ToLinear(es, di), dt) & mask.value;
-            var delta = dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
+            var delta = dt.Size * ((Flags & Dmask) != 0 ? -1 : 1);
             di += (uint) delta;
             WriteRegister(X86.Registers.di, di);
             Flags &= ~Zmask;
-            Flags |= (a == value ? Zmask : 0u);
+            Flags |= a == value ? Zmask : 0u;
         }
 
         protected override void Stos(X86Instruction instr)
@@ -131,7 +131,7 @@ namespace Reko.Arch.X86
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = (uint) (Registers[X86.Registers.rax.Number] & Bits.Mask(0, dt.BitSize));
             WriteMemory(value, ToLinear(es, di), dt);
-            var delta = (uint) dt.Size * (((Flags & Dmask) != 0) ? 0xFFFFu : 0x0001u);
+            var delta = (uint) dt.Size * ((Flags & Dmask) != 0 ? 0xFFFFu : 0x0001u);
             di += delta;
             WriteRegister(X86.Registers.di, di);
         }
@@ -149,7 +149,7 @@ namespace Reko.Arch.X86
         protected override void Push(ulong value, DataType dt)
         {
             var ss = (ushort) ReadRegister(X86.Registers.ss);
-            var sp = (ushort) ReadRegister(X86.Registers.sp) - (uint)dt.Size;
+            var sp = (ushort) ReadRegister(X86.Registers.sp) - (uint) dt.Size;
             WriteLeUInt16(ToLinear(ss, sp), (ushort) value);
             WriteRegister(X86.Registers.sp, sp);
         }
@@ -173,7 +173,7 @@ namespace Reko.Arch.X86
                 new[] { "AX", "BX", "CX", "DX", "SP", "BP", "SI", "DI" }
                 .Select(DumpReg)));
             Debug.Print("{0}   {1}", string.Join("  ",
-                new[] {"DS", "ES", "SS", "CS", "IP" }
+                new[] { "DS", "ES", "SS", "CS", "IP" }
                 .Select(DumpReg)),
                 DumpFlags());
             Debug.Print("{0}", DumpInstr(instr));
@@ -184,7 +184,7 @@ namespace Reko.Arch.X86
 
         private string DumpReg(string regName)
         {
-            var regValue = this.ReadRegister(arch.GetRegister(regName.ToLower())!);
+            var regValue = ReadRegister(arch.GetRegister(regName.ToLower())!);
             return $"{regName}={regValue:X4}";
         }
 
@@ -212,12 +212,12 @@ namespace Reko.Arch.X86
 
         private string DumpMem(X86Instruction instr)
         {
-                    string sValue = "???";
+            string sValue = "???";
             if (instr.Mnemonic == Mnemonic.lodsb || instr.Mnemonic == Mnemonic.movsb)
             {
                 var ds = (uint) ReadRegister(X86.Registers.ds);
                 var si = (uint) ReadRegister(X86.Registers.si);
-                if (base.TryReadByte(ToLinear(ds, si), out var b))
+                if (TryReadByte(ToLinear(ds, si), out var b))
                     sValue = b.ToString("X2");
                 return $"DS:[{si:X4}]={sValue}";
             }
@@ -225,7 +225,7 @@ namespace Reko.Arch.X86
             {
                 var ds = (uint) ReadRegister(X86.Registers.ds);
                 var si = (uint) ReadRegister(X86.Registers.si);
-                var w = base.ReadLeUInt16(ToLinear(ds, si));
+                var w = ReadLeUInt16(ToLinear(ds, si));
                 sValue = w.ToString("X4");
                 return $"DS:[{si:X4}]={sValue}";
             }
@@ -235,12 +235,13 @@ namespace Reko.Arch.X86
                 {
                     try
                     {
-                        var value = base.Read(mem);
+                        var value = Read(mem);
                         if (mem.Width.Size == 1)
                             sValue = ((byte) value).ToString("X2");
-                        else 
+                        else
                             sValue = ((ushort) value).ToString("X4");
-                    } catch
+                    }
+                    catch
                     {
                     }
                     return $"{mem.ToString()}={sValue}";
@@ -252,7 +253,7 @@ namespace Reko.Arch.X86
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong ToLinear(uint seg, uint off)
         {
-            return (((ulong) seg) << 4) + off;
+            return ((ulong) seg << 4) + off;
         }
     }
 }

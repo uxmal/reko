@@ -27,7 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Rewriter
 {
     /// <summary>
     /// Rewrite rules for control flow instructions.

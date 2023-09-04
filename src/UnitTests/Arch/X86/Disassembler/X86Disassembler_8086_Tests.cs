@@ -28,21 +28,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Disassembler
 {
     [TestFixture]
     public class X86Disassembler_8086_Tests : DisassemblerTestBase<X86Instruction>
     {
         public X86Disassembler_8086_Tests()
         {
-            this.Architecture = new X86ArchitectureReal(
+            Architecture = new X86ArchitectureReal(
                 CreateServiceContainer(),
                 "x86-real-16",
                 new Dictionary<string, object>
                 {
                     { ProcessorOption.InstructionSet, "8086" }
                 });
-            this.LoadAddress = Address.SegPtr(0x800, 0);
+            LoadAddress = Address.SegPtr(0x800, 0);
         }
         public override IProcessorArchitecture Architecture { get; }
         public override Address LoadAddress { get; }

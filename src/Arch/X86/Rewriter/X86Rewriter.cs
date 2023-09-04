@@ -33,7 +33,7 @@ using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Rewriter
 {
     /// <summary>
     /// Rewrites x86 instructions into a stream of low-level RTL-like instructions.

@@ -35,11 +35,11 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Threading;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Rewriter
 {
-	[TestFixture]
-	public class Rewrite32
-	{
+    [TestFixture]
+    public class Rewrite32
+    {
         private Win32Platform win32;
         private IntelArchitecture arch;
         private ServiceContainer services;
@@ -49,12 +49,12 @@ namespace Reko.UnitTests.Arch.X86
         public void Setup()
         {
             eventListener = new FakeDecompilerEventListener();
-            this.services = new ServiceContainer();
+            services = new ServiceContainer();
             var tlSvc = new TypeLibraryLoaderServiceImpl(services);
             var configSvc = new Mock<IConfigurationService>();
             var win32env = new PlatformDefinition
             {
-                TypeLibraries = 
+                TypeLibraries =
                 {
                     new TypeLibraryDefinition {  Name= "msvcrt.xml" },
                     new TypeLibraryDefinition {  Name= "windows32.xml" },
@@ -68,70 +68,70 @@ namespace Reko.UnitTests.Arch.X86
             services.AddService(typeof(IEventListener), eventListener);
             services.AddService(typeof(IDecompilerEventListener), eventListener);
             services.AddService(typeof(CancellationTokenSource), new CancellationTokenSource());
-            services.AddService(typeof(IFileSystemService),new FileSystemServiceImpl());
+            services.AddService(typeof(IFileSystemService), new FileSystemServiceImpl());
             arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             win32 = new Win32Platform(services, arch);
         }
 
-		[Test]
-		public void RwAutoArray32()
-		{
-			RunTest("Fragments/autoarray32.asm", "Arch/X86/RwAutoArray32.txt");
-		}
+        [Test]
+        public void RwAutoArray32()
+        {
+            RunTest("Fragments/autoarray32.asm", "Arch/X86/RwAutoArray32.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void RwMallocFree()
-		{
-			RunTest("Fragments/import32/mallocfree.asm", "Arch/X86/RwMallocFree.txt");
-		}
+        public void RwMallocFree()
+        {
+            RunTest("Fragments/import32/mallocfree.asm", "Arch/X86/RwMallocFree.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void RwFrame32()
-		{
-			RunTest("Fragments/multiple/frame32.asm", "Arch/X86/RwFrame32.txt");
-		}
+        public void RwFrame32()
+        {
+            RunTest("Fragments/multiple/frame32.asm", "Arch/X86/RwFrame32.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
         public void RwFtol()
-		{
-			RunTest("Fragments/import32/ftol.asm", "Arch/X86/RwFtol.txt");
-		}
+        {
+            RunTest("Fragments/import32/ftol.asm", "Arch/X86/RwFtol.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void RwGlobalHandle()
-		{
-			RunTest("Fragments/import32/GlobalHandle.asm", "Arch/X86/RwGlobalHandle.txt");
-		}
+        public void RwGlobalHandle()
+        {
+            RunTest("Fragments/import32/GlobalHandle.asm", "Arch/X86/RwGlobalHandle.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void RwLoopMalloc()
-		{
-			RunTest("Fragments/import32/loopmalloc.asm", "Arch/X86/RwLoopMalloc.txt");
-		}
+        public void RwLoopMalloc()
+        {
+            RunTest("Fragments/import32/loopmalloc.asm", "Arch/X86/RwLoopMalloc.txt");
+        }
 
-		[Test]
+        [Test]
         [Category(Categories.IntegrationTests)]
-		public void RwLoopGetDC()
-		{
-			RunTest("Fragments/import32/loop_GetDC.asm", "Arch/X86/RwLoopGetDC.txt");
-		}
+        public void RwLoopGetDC()
+        {
+            RunTest("Fragments/import32/loop_GetDC.asm", "Arch/X86/RwLoopGetDC.txt");
+        }
 
-		[Test]
-		public void RwReg00006()
-		{
-			RunTest("Fragments/regressions/r00006.asm", "Arch/X86/RwReg00006.txt");
-		}
+        [Test]
+        public void RwReg00006()
+        {
+            RunTest("Fragments/regressions/r00006.asm", "Arch/X86/RwReg00006.txt");
+        }
 
-		[Test]
-		public void RwSwitch32()
-		{
-			RunTest("Fragments/switch32.asm", "Arch/X86/RwSwitch32.txt");
-		}
+        [Test]
+        public void RwSwitch32()
+        {
+            RunTest("Fragments/switch32.asm", "Arch/X86/RwSwitch32.txt");
+        }
 
         [Test]
         public void RwSwitchReg00001()
@@ -149,8 +149,8 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         private void RunTest(string sourceFile, string outputFile)
-		{
-			Program program;
+        {
+            Program program;
             var asm = new X86TextAssembler(new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>()));
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
@@ -174,15 +174,15 @@ namespace Reko.UnitTests.Arch.X86
             }
             scan.ScanImage();
 
-			using (FileUnitTester fut = new FileUnitTester(outputFile))
-			{
-				foreach (Procedure proc in program.Procedures.Values)
-				{
-					proc.Write(true, fut.TextWriter);
-					fut.TextWriter.WriteLine();
-				}
-				fut.AssertFilesEqual();
-			}
-		}
-	}
+            using (FileUnitTester fut = new FileUnitTester(outputFile))
+            {
+                foreach (Procedure proc in program.Procedures.Values)
+                {
+                    proc.Write(true, fut.TextWriter);
+                    fut.TextWriter.WriteLine();
+                }
+                fut.AssertFilesEqual();
+            }
+        }
+    }
 }

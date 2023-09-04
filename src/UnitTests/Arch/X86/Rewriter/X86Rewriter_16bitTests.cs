@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Rewriter
 {
     [TestFixture]
     public class X86Rewriter_16bitTests : Arch.RewriterTestBase
@@ -418,8 +418,8 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode(
                 "0|L--|0C00:0000(1): 1 instructions",
                 "1|L--|ah = SCZOP");
-        } 
-        
+        }
+
         [Test]
         public void X86rw_lea()
         {

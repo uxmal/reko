@@ -20,6 +20,7 @@
 
 using Reko.Analysis;
 using Reko.Arch.X86.Analysis;
+using Reko.Arch.X86.Rewriter;
 using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Assemblers;

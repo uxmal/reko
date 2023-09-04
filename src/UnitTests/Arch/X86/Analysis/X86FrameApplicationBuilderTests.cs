@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Arch.X86.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -31,7 +32,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Analysis
 {
     [TestFixture]
     public class X86FrameApplicationBuilderTests
@@ -44,14 +45,14 @@ namespace Reko.UnitTests.Arch.X86
         [SetUp]
         public void Setup()
         {
-            this.arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
-            this.frame = arch.CreateFrame();
-            this.callee = frame.EnsureRegister(Registers.eax);
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            frame = arch.CreateFrame();
+            callee = frame.EnsureRegister(Registers.eax);
         }
 
         private void CreateApplicationBuilder(CallSite site)
         {
-            this.fab = new X86FrameApplicationBuilder(
+            fab = new X86FrameApplicationBuilder(
                 arch,
                 frame,
                 site);

@@ -23,7 +23,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using System.Collections.Generic;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Rewriter
 {
     [TestFixture]
     public class X86Rewriter_64bitTests : Arch.RewriterTestBase

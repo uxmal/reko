@@ -27,11 +27,11 @@ using System;
 using System.Diagnostics;
 using Reko.Core.Lib;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Rewriter
 {
     /// <summary>
     /// Helper class used by the X86 rewriter to turn machine code operands into
-    /// IL expressions.
+    /// <see cref="Expression"/>s.
     /// </summary>
     public abstract class OperandRewriter
     {

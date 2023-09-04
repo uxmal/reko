@@ -30,28 +30,22 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Rewriter
 {
     [TestFixture]
-    partial class X86RewriterTests : Arch.RewriterTestBase
+    partial class X86Rewriter_32bitTests : Arch.RewriterTestBase
     {
         private readonly IntelArchitecture arch32;
-        private readonly IntelArchitecture arch64;
-        private readonly Address baseAddr16;
         private readonly Address baseAddr32;
-        private readonly Address baseAddr64;
         private IntelArchitecture arch;
         private Address baseAddr;
         private ServiceContainer sc;
-        private RewriterHost host;
 
-        public X86RewriterTests()
+        public X86Rewriter_32bitTests()
         {
             var sc = CreateServiceContainer();
             arch32 = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
-            arch64 = new X86ArchitectureFlat64(sc, "x86-protected-64", new Dictionary<string, object>());
             baseAddr32 = Address.Ptr32(0x10000000);
-            baseAddr64 = Address.Ptr64(0x140000000ul);
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -70,7 +64,6 @@ namespace Reko.UnitTests.Arch.X86
             arch = arch32;
             baseAddr = baseAddr32;
             var asm = new X86Assembler(arch, baseAddr32, new List<ImageSymbol>());
-            host = new RewriterHost(arch, asm.ImportReferences);
             return asm;
         }
 
@@ -85,7 +78,6 @@ namespace Reko.UnitTests.Arch.X86
         {
             arch = arch32;
             Given_MemoryArea(new ByteMemoryArea(baseAddr32, BytePattern.FromHexBytes(hexBytes)));
-            host = new RewriterHost(null);
         }
 
 
@@ -123,7 +115,7 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|edi = __crc32<word32,word32>(edi, ebp)");
         }
 
-        [Test] 
+        [Test]
         public void X86rw_Neg_mem()
         {
             Run32bitTest("F719");   // neg dword ptr [ecx]
@@ -312,7 +304,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest("C0C0C0");
             AssertCode(
                 "0|L--|10000000(3): 3 instructions",
-                "1|L--|v3 = (al & 1<8> << 8<8> - 0xC0<8>) != 0<8>", 
+                "1|L--|v3 = (al & 1<8> << 8<8> - 0xC0<8>) != 0<8>",
                 "2|L--|al = __rol<byte,byte>(al, 0xC0<8>)",
                 "3|L--|C = v3");
         }
@@ -515,7 +507,7 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|xmm0 = __pshuf<word32[4]>(xmm0, xmm0, 0<8>)");
         }
 
- 
+
 
         [Test]
         public void X86rw_PIC_idiom()
@@ -2309,7 +2301,7 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-         public void X86Rw_cmpxchg8b()
+        public void X86Rw_cmpxchg8b()
         {
             Run32bitTest("0FC70F");	// cmpxchg8b	qword ptr [edi]
             AssertCode(
@@ -2490,9 +2482,9 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|ST[Top:real64] = CONVERT(Mem0[ebp - 0x88<32>:real32], real32, real64) - ST[Top:real64]");
         }
 
- 
 
-       
+
+
 
         [Test]
         public void X86Rw_adcx()

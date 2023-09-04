@@ -25,7 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Numerics;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Rewriter
 {
     public partial class X86Rewriter
     {

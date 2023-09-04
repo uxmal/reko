@@ -24,18 +24,18 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Emulator
 {
     public class X86Protected32Emulator : X86Emulator
     {
-        public X86Protected32Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) 
+        public X86Protected32Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
             : base(arch, segmentMap, envEmulator, X86.Registers.eip, X86.Registers.ecx)
         {
         }
 
         public override Address AddressFromWord(ulong word)
         {
-            return Address.Ptr32((uint)word);
+            return Address.Ptr32((uint) word);
         }
 
         protected override void Call(MachineOperand op)
@@ -71,11 +71,11 @@ namespace Reko.Arch.X86
             var a = ReadRegister(X86.Registers.eax) & mask.value;
             var edi = ReadRegister(X86.Registers.edi);
             var value = ReadMemory(edi, dt) & mask.value;
-            var delta = (long) dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
+            var delta = (long) dt.Size * ((Flags & Dmask) != 0 ? -1 : 1);
             edi += (ulong) delta;
             WriteRegister(X86.Registers.edi, edi);
             Flags &= ~Zmask;
-            Flags |= (a == value ? Zmask : 0u);
+            Flags |= a == value ? Zmask : 0u;
         }
 
         protected override void Stos(X86Instruction dt)
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
         {
             var esp = (uint) Registers[X86.Registers.esp.Number] - 4;
             WriteLeUInt32(esp, (uint) word);
-            WriteRegister(X86.Registers.esp, (uint) esp);
+            WriteRegister(X86.Registers.esp,  esp);
         }
 
         protected override void Ret()

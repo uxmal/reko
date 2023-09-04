@@ -34,7 +34,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Disassembler
 {
     [TestFixture]
     public class X86DisassemblerTests
@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            Reko.Arch.X86.X86Disassembler.traceVex.Level = System.Diagnostics.TraceLevel.Verbose;
+            X86Disassembler.traceVex.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 
         private X86Instruction Disassemble16(params byte[] bytes)
@@ -1721,7 +1721,7 @@ movzx	ax,byte ptr [bp+4h]
 
         [Test]
         public void X86Dis_vpmovzxbq_broken()
-        { 
+        {
             AssertCode64("vpmovzxbq\tzmm6{k7},qword ptr [ecx]", "67 62F27D4F 32 31");
         }
 
@@ -1778,7 +1778,7 @@ movzx	ax,byte ptr [bp+4h]
 
         [Test]
         public void X86Dis_vbroadcastsd()
-        { 
+        {
             AssertCode64("vbroadcastsd\tzmm6,qword ptr [rcx]", "62F2FD48 19 31");
         }
 
@@ -2153,7 +2153,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vcvtpd2dq_masked()
         {
-            AssertCode64("vcvtpd2dq\tymm6{k7},[ecx]","67 62F1FF4F E6 31");
+            AssertCode64("vcvtpd2dq\tymm6{k7},[ecx]", "67 62F1FF4F E6 31");
         }
 
         [Test]
@@ -2492,8 +2492,8 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86dis_vrndscale()
         {
-            AssertCode64("vrndscalepd\tymm30,ymm29,{sae},7Bh","62 03 FD 38 09 F5 7B");
-            AssertCode64("vrndscaleps\tymm30,ymm29,{sae},0ABh","62 03 7D 38 08 F5 AB");
+            AssertCode64("vrndscalepd\tymm30,ymm29,{sae},7Bh", "62 03 FD 38 09 F5 7B");
+            AssertCode64("vrndscaleps\tymm30,ymm29,{sae},0ABh", "62 03 7D 38 08 F5 AB");
             AssertCode64("vrndscalesd\txmm30,xmm28,{sae},0ABh", "62 03 95 30 0B F4 AB");
             AssertCode64("vrndscaless\txmm30,xmm28,{sae},0ABh", "62 03 15 30 0A F4 AB");
         }
@@ -2515,7 +2515,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vshufps_EVEX()
         {
-            AssertCode64("vshufps\tzmm6,zmm5,dword ptr [rdx+1FCh]{1to16},7Bh","62 F1 54 58 C6 72 7F 7B");
+            AssertCode64("vshufps\tzmm6,zmm5,dword ptr [rdx+1FCh]{1to16},7Bh", "62 F1 54 58 C6 72 7F 7B");
         }
 
         [Test]
@@ -2667,7 +2667,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_vpcmpgtq_mask()
         {
-            AssertCode64("vpcmpgtq\tk5{k7},xmm6,qword ptr [rdx-400h]{1to2}","62 F2 CD 1F 37 6A 80");
+            AssertCode64("vpcmpgtq\tk5{k7},xmm6,qword ptr [rdx-400h]{1to2}", "62 F2 CD 1F 37 6A 80");
         }
 
         [Test]
@@ -2829,11 +2829,11 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_pextrX()
         {
-            AssertCode64("pextrb\tebx,xmm0,4h",             "66 0f 3a 14 C3 04");
-            AssertCode64("pextrb\tbyte ptr [rbx],xmm0,4h",  "66 0F 3A 14 03 04");
-            AssertCode64("pextrd\tebx,xmm0,4h",             "66 0F 3A 16 C3 04");
+            AssertCode64("pextrb\tebx,xmm0,4h", "66 0f 3a 14 C3 04");
+            AssertCode64("pextrb\tbyte ptr [rbx],xmm0,4h", "66 0F 3A 14 03 04");
+            AssertCode64("pextrd\tebx,xmm0,4h", "66 0F 3A 16 C3 04");
             AssertCode64("pextrd\tdword ptr [rbx],xmm0,4h", "66 0F 3A 16 03 04");
-            AssertCode64("pextrq\trbx,xmm0,4h",             "66 48 0f 3a 16 c3 04");
+            AssertCode64("pextrq\trbx,xmm0,4h", "66 48 0f 3a 16 c3 04");
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
         }
 

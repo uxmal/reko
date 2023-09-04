@@ -23,7 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Intrinsics;
 using Reko.Core.Types;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Rewriter
 {
     /// <summary>
     /// Rewrite string intrinsics(strlen, memcpy, etc.).

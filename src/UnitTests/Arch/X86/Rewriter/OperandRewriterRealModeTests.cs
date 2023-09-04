@@ -29,19 +29,20 @@ using System.ComponentModel.Design;
 using Reko.Core.Memory;
 using System.Collections.Generic;
 using Reko.Core.Loading;
+using Reko.Arch.X86.Rewriter;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Rewriter
 {
     /// <summary>
     /// Tests for operator rewriting when dealing with real mode.
     /// </summary>
     [TestFixture]
-	public class OperandRewriterRealModeTests
-	{
-		private OperandRewriter orw;
-		private IntelArchitecture arch;
+    public class OperandRewriterRealModeTests
+    {
+        private OperandRewriter orw;
+        private IntelArchitecture arch;
         private X86State state;
-		private Procedure proc;
+        private Procedure proc;
         private X86Instruction instr;
 
         [OneTimeSetUp]
@@ -50,33 +51,33 @@ namespace Reko.UnitTests.Arch.X86
             var sc = new ServiceContainer();
             arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[4]);
-			var program = new Program(
+            var program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(sc, arch));
-			var procAddress = Address.Ptr32(0x10000000);
+            var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Mnemonic.nop, InstrClass.Linear, PrimitiveType.Word16, PrimitiveType.Word16)
             {
                 Address = procAddress,
             };
 
             proc = Procedure.Create(arch, procAddress, arch.CreateFrame());
-			orw = new OperandRewriter16(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
-            state = (X86State)arch.CreateProcessorState();
+            orw = new OperandRewriter16(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
+            state = (X86State) arch.CreateProcessorState();
         }
 
-		[Test]
-		public void X86Orw16_RewriteSegConst()
-		{
-			var m = new MemoryOperand(
-				PrimitiveType.Byte,
-				Registers.bx,
-				Constant.Int32(32));
-			var e = orw.CreateMemoryAccess(instr, m);
-			Assert.AreEqual("Mem0[ds:bx + 0x20<16>:byte]", e.ToString());
-		}
-	}
+        [Test]
+        public void X86Orw16_RewriteSegConst()
+        {
+            var m = new MemoryOperand(
+                PrimitiveType.Byte,
+                Registers.bx,
+                Constant.Int32(32));
+            var e = orw.CreateMemoryAccess(instr, m);
+            Assert.AreEqual("Mem0[ds:bx + 0x20<16>:byte]", e.ToString());
+        }
+    }
 }

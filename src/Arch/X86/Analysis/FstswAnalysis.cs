@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Analysis;
+using Reko.Arch.X86.Rewriter;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Collections;

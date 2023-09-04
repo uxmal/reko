@@ -28,9 +28,9 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Disassembler
 {
-    [TestFixture] 
+    [TestFixture]
     public class X86Disassembler_32bit_Tests : DisassemblerTestBase<X86Instruction>
     {
         private readonly X86ArchitectureFlat32 arch;
@@ -38,8 +38,8 @@ namespace Reko.UnitTests.Arch.X86
 
         public X86Disassembler_32bit_Tests()
         {
-            this.arch = new X86ArchitectureFlat32(CreateServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
-            this.addr = Address.Ptr32(0x10000);
+            arch = new X86ArchitectureFlat32(CreateServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            addr = Address.Ptr32(0x10000);
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void AssertCode32(string sExp, params byte[] bytes)
         {
-            var instr = base.DisassembleBytes(bytes);
+            var instr = DisassembleBytes(bytes);
             Assert.AreEqual(sExp, instr.ToString());
         }
 
@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Dis_DirectOperand32()
         {
             var instr = DisassembleBytes(0x8B, 0x15, 0x22, 0x33, 0x44, 0x55, 0x66);
-            Assert.AreEqual("mov\tedx,[55443322h]", instr.ToString()); 
+            Assert.AreEqual("mov\tedx,[55443322h]", instr.ToString());
             var memOp = (MemoryOperand) instr.Operands[1];
             Assert.AreEqual("word32", memOp.Offset.DataType.ToString());
         }
@@ -360,7 +360,7 @@ namespace Reko.UnitTests.Arch.X86
         public void X86Dis_instr_tool_long_prefixes()
         {
             AssertCode32("xor\teax,fs:[eax]", "64 64 64 64  64 64 64 64  64 64 64 64  64 33 00");
-            AssertCode32("illegal",           "64 64 64 64  64 64 64 64  64 64 64 64  64 64 33 00");
+            AssertCode32("illegal", "64 64 64 64  64 64 64 64  64 64 64 64  64 64 33 00");
         }
 
         [Test]
@@ -911,7 +911,7 @@ namespace Reko.UnitTests.Arch.X86
             AssertCode32("rcpps\txmm0,[edx+42h]", 0x0F, 0x53, 0x42, 0x42);
         }
 
- 
+
 
         [Test]
         public void X86dis_rdmsr()

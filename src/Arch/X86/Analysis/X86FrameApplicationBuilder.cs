@@ -28,13 +28,13 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Analysis;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Analysis
 {
     public class X86FrameApplicationBuilder : FrameApplicationBuilder
     {
         public X86FrameApplicationBuilder(
             IntelArchitecture arch,
-            IStorageBinder binder, 
+            IStorageBinder binder,
             CallSite site)
             : base(arch, binder, site)
         {

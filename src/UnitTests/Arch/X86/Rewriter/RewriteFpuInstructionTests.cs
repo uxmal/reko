@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
+using Reko.Arch.X86.Rewriter;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
@@ -31,7 +32,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Rewriter
 {
     [TestFixture]
     public class RewriteFpuInstructionTests : Arch.RewriterTestBase
@@ -63,7 +64,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             return new X86Rewriter(
                 arch,
-                host, 
+                host,
                 new X86State(arch),
                 asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), binder);
         }

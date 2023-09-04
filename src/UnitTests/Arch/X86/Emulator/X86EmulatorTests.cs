@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
+using Reko.Arch.X86.Emulator;
 using Reko.Core;
 using Reko.Core.Emulation;
 using Reko.Core.Loading;
@@ -35,7 +36,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Arch.X86
+namespace Reko.UnitTests.Arch.X86.Emulator
 {
     [TestFixture]
     public class X86EmulatorTests
@@ -66,15 +67,15 @@ namespace Reko.UnitTests.Arch.X86
             var asm = new X86Assembler(arch, Address.Ptr32(0x00100000), new List<ImageSymbol>());
             coder(asm);
             var program = asm.GetImage();
-            this.segmentMap = program.SegmentMap;
+            segmentMap = program.SegmentMap;
 
             Given_Platform();
 
             var win32 = new Win32Emulator(program.SegmentMap, platform, importReferences);
-            
+
             emu = (X86Emulator) arch.CreateEmulator(program.SegmentMap, win32);
             emu.InstructionPointer = program.ImageMap.BaseAddress;
-            emu.WriteRegister(Registers.esp, (uint)program.ImageMap.BaseAddress.ToLinear() + 0x0FFC);
+            emu.WriteRegister(Registers.esp, (uint) program.ImageMap.BaseAddress.ToLinear() + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
         }
 
@@ -88,7 +89,7 @@ namespace Reko.UnitTests.Arch.X86
             coder(asm);
             asm.Align(0x2000);  // make room for a stack.
             var program = asm.GetImage();
-            this.segmentMap = program.SegmentMap;
+            segmentMap = program.SegmentMap;
 
             Given_Platform();
 
@@ -112,9 +113,9 @@ namespace Reko.UnitTests.Arch.X86
                 .Returns(new ExternalProcedure("", new FunctionType()));
             mockPlatform.Setup(p => p.CreateEmulator(
                 It.IsAny<SegmentMap>(),
-                It.IsAny<Dictionary<Address,ImportReference>>()))
+                It.IsAny<Dictionary<Address, ImportReference>>()))
                 .Returns(emu.Object);
-            this.platform = mockPlatform.Object;
+            platform = mockPlatform.Object;
         }
 
         // Calculate a segmented real mode address.
@@ -157,7 +158,7 @@ namespace Reko.UnitTests.Arch.X86
             emu.Start();
 
             Assert.AreEqual(0, emu.Registers[Registers.eax.Number]);
-            Assert.AreEqual(1 | (1 << 6) | (1 << 11), emu.Flags, "Should set carry + z + ov");
+            Assert.AreEqual(1 | 1 << 6 | 1 << 11, emu.Flags, "Should set carry + z + ov");
         }
 
 
@@ -165,10 +166,11 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86Emu_Sub32_ov()
         {
-            Given_Win32Code(m => {
+            Given_Win32Code(m =>
+            {
                 m.Mov(m.eax, ~0x7FFFFFFF);
                 m.Mov(m.ebx, 0x00000001);
-                m.Sub(m.eax, m.ebx); 
+                m.Sub(m.eax, m.ebx);
             });
 
             emu.Start();
@@ -190,16 +192,17 @@ namespace Reko.UnitTests.Arch.X86
             emu.Start();
 
             Assert.AreEqual(0xFFFFFFFCu, emu.Registers[Registers.eax.Number]);
-            Assert.AreEqual(X86Emulator.Cmask|X86Emulator.Smask, emu.Flags, "Should set C, S flags");
+            Assert.AreEqual(X86Emulator.Cmask | X86Emulator.Smask, emu.Flags, "Should set C, S flags");
         }
 
         [Test]
         public void X86Emu_ReadDirect_W32()
         {
-            Given_Win32Code(m => {
+            Given_Win32Code(m =>
+            {
                 m.Label("datablob");
                 m.Dd(0x12345678);
-                m.Mov(m.eax, m.MemDw("datablob")); 
+                m.Mov(m.eax, m.MemDw("datablob"));
             });
             emu.InstructionPointer += 4;
             emu.Start();
@@ -263,7 +266,7 @@ namespace Reko.UnitTests.Arch.X86
             Given_RegValue(Registers.eax, 0xFFFFFFFF);
             emu.Start();
 
-            Assert.AreEqual(0xFFFF1234u, emu.Registers[(int)Registers.eax.Domain]);
+            Assert.AreEqual(0xFFFF1234u, emu.Registers[(int) Registers.eax.Domain]);
         }
 
         [Test]
@@ -281,7 +284,8 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86Emu_or()
         {
-            Given_Win32Code(m => {
+            Given_Win32Code(m =>
+            {
                 m.Mov(m.eax, m.Imm(0x80000000));
                 m.Or(m.eax, m.Imm(1));
             });
@@ -295,7 +299,8 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86Emu_halt()
         {
-            Given_Win32Code(m => {
+            Given_Win32Code(m =>
+            {
                 m.Hlt();
                 m.Mov(m.eax, 42);
             });
@@ -331,10 +336,10 @@ namespace Reko.UnitTests.Arch.X86
                 m.Pusha();
                 m.Hlt();
                 m.Dw(0);
-                m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
-                m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
+                m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0);
+                m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0);
             });
-            emu.WriteRegister(Registers.esp, (uint)segmentMap.BaseAddress.ToLinear() + 0x24u);
+            emu.WriteRegister(Registers.esp, (uint) segmentMap.BaseAddress.ToLinear() + 0x24u);
 
             emu.Start();
 
@@ -394,7 +399,7 @@ namespace Reko.UnitTests.Arch.X86
             Given_Win32Code(m =>
             {
                 m.Mov(m.esi, -0x4);
-                m.Db(0x83,0xEE,0xFC);     // sub esi,-4
+                m.Db(0x83, 0xEE, 0xFC);     // sub esi,-4
             });
 
             emu.Start();

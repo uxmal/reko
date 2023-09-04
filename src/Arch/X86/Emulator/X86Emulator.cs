@@ -30,9 +30,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Emulator
 {
-    using TWord = System.UInt32;
+    using TWord = UInt32;
 
     /// <summary>
     /// Simple emulator of X86 instructions. No attempt is made to be high-performance
@@ -47,12 +47,12 @@ namespace Reko.Arch.X86
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
-        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") 
-        { 
+        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator")
+        {
             Level = TraceLevel.Warning
         };
 
-        public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
+        public static readonly (uint value, uint hibit)[] masks = new (uint, uint)[]{
                 (0, 0),
                 (0x0000_00FFu,  0x0000_0080),
                 (0x0000_FFFFu, 0x0000_8000),
@@ -87,22 +87,22 @@ namespace Reko.Arch.X86
             : base(segmentMap)
         {
             this.arch = arch;
-            this.map = segmentMap;
+            map = segmentMap;
             this.ipReg = ipReg;
             this.cxReg = cxReg;
-            this.Registers = new ulong[40];
-            this.iFlags = X86.Registers.eflags.Number;
+            Registers = new ulong[40];
+            iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
-            this.dasm = default!;
-            this.ip = default!;
+            dasm = default!;
+            ip = default!;
         }
 
         public override MachineInstruction CurrentInstruction => dasm.Current;
 
         public ulong Flags
         {
-            get { return this.Registers[iFlags]; }
-            set { this.Registers[iFlags] = value; }
+            get { return Registers[iFlags]; }
+            set { Registers[iFlags] = value; }
         }
 
         public abstract Address AddressFromWord(ulong word);
@@ -126,8 +126,8 @@ namespace Reko.Arch.X86
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UpdateIp(Address value)
         {
-            this.ip = value;
-            WriteRegister(this.ipReg, (TWord) value.Offset);
+            ip = value;
+            WriteRegister(ipReg, (TWord) value.Offset);
             if (value.Selector.HasValue)
             {
                 WriteRegister(X86.Registers.cs, value.Selector.Value);
@@ -274,7 +274,7 @@ namespace Reko.Arch.X86
             if (m.Offset != null)
                 ea += m.Offset.ToUInt32();
             if (m.Index != RegisterStorage.None)
-                ea += (TWord)ReadRegister(m.Index) * m.Scale;
+                ea += (TWord) ReadRegister(m.Index) * m.Scale;
             if (m.Base != null && m.Base != RegisterStorage.None)
             {
                 ea += (TWord) ReadRegister(m.Base);
@@ -335,7 +335,7 @@ namespace Reko.Arch.X86
 
         public sealed override ulong WriteRegister(RegisterStorage r, ulong value)
         {
-            Registers[r.Number] = (Registers[r.Number] & ~r.BitMask) | (value << (int) r.BitAddress);
+            Registers[r.Number] = Registers[r.Number] & ~r.BitMask | value << (int) r.BitAddress;
             return value;
         }
 
@@ -345,7 +345,7 @@ namespace Reko.Arch.X86
             {
             case 1: WriteByte(ea, (byte) w); return;
             case 2: WriteLeUInt16(ea, (ushort) w); return;
-            case 4: WriteLeUInt32(ea, (uint) w); return;
+            case 4: WriteLeUInt32(ea,  w); return;
             case 8: throw new NotImplementedException();
             }
             throw new InvalidOperationException();
@@ -374,18 +374,18 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             TWord r = Read(src);
             var mask = masks[dst.Width.Size];
-            TWord sum = (l + r + ((uint)Flags & 1)) & mask.value;
+            TWord sum = l + r + ((uint) Flags & 1) & mask.value;
             Write(dst, sum);
             var newCy =
-                ((l & r) | ((l | r) & (~(sum)))) >> 31;
+                (l & r | (l | r) & ~sum) >> 31;
 
-            uint ov = ((~(l ^ r) & (l ^ sum)) & 0x80000000u) >> 20;
+            uint ov = (~(l ^ r) & (l ^ sum) & 0x80000000u) >> 20;
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
-                (newCy) |       // Carry
+                newCy |       // Carry
                 (sum == 0 ? 1u << 6 : 0u) | // Zero
                 ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
-                (ov)                        // Overflow
+                ov                        // Overflow
                 ;
         }
 
@@ -396,22 +396,22 @@ namespace Reko.Arch.X86
             if (src.Width.Size < dst.Width.Size)
                 r = (TWord) (sbyte) r;
             var mask = masks[dst.Width.Size];
-            TWord sum = (l + r) & mask.value;
+            TWord sum = l + r & mask.value;
             Write(dst, sum);
-            uint ov = ((~(l ^ r) & (l ^ sum)) & mask.hibit) >> 20;
+            uint ov = (~(l ^ r) & (l ^ sum) & mask.hibit) >> 20;
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
                 (r > sum ? 1u : 0u) |     // Carry
                 (sum == 0 ? 1u << 6 : 0u) |                 // Zero
                 ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
-                (ov)                        // Overflow
+                ov                        // Overflow
                 ;
         }
 
         private void Rep()
         {
             var strInstr = dasm.Current;
-            this.ignoreRep = true;
+            ignoreRep = true;
             var c = ReadRegister(cxReg);
             while (c != 0)
             {
@@ -419,14 +419,14 @@ namespace Reko.Arch.X86
                 --c;
                 WriteRegister(cxReg, c);
             }
-            this.ignoreRep = false;
+            ignoreRep = false;
         }
 
         // Repeat while Z flag is set.
         private void Repe()
         {
             var strInstr = dasm.Current;
-            this.ignoreRep = true;
+            ignoreRep = true;
             var c = ReadRegister(cxReg);
             while (c != 0)
             {
@@ -438,13 +438,13 @@ namespace Reko.Arch.X86
                 if ((Flags & Zmask) == 0)
                     break;
             }
-            this.ignoreRep = false;
+            ignoreRep = false;
         }
 
         private void Repne()
         {
             var strInstr = dasm.Current;
-            this.ignoreRep = true;
+            ignoreRep = true;
             var c = ReadRegister(cxReg);
             while (c != 0)
             {
@@ -456,7 +456,7 @@ namespace Reko.Arch.X86
                 if ((Flags & Zmask) != 0)
                     break;
             }
-            this.ignoreRep = false;
+            ignoreRep = false;
         }
 
         protected abstract void Ret();
@@ -470,9 +470,9 @@ namespace Reko.Arch.X86
             if ((Flags & Cmask) != 0)
                 l |= 1;
             byte sh = (byte) Read(src);
-            TWord r = (l << sh) | (l >> (dst.Width.BitSize + 1 - sh));
+            TWord r = l << sh | l >> dst.Width.BitSize + 1 - sh;
             var mask = masks[dst.Width.Size];
-            Write(dst, (r >> 1) & mask.value);
+            Write(dst, r >> 1 & mask.value);
             Flags &= ~(Cmask | Zmask);
             Flags |=
                 ((r & ~1) == 0 ? Zmask : 0u) |  // Zero
@@ -483,11 +483,11 @@ namespace Reko.Arch.X86
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            TWord r = (l << sh) | (l >> (32 - sh));
+            TWord r = l << sh | l >> 32 - sh;
             Write(dst, r);
-            Flags &= ~(Zmask);
+            Flags &= ~Zmask;
             Flags |=
-                (r == 0 ? Zmask : 0u);      // Zero
+                r == 0 ? Zmask : 0u;      // Zero
         }
 
         protected abstract void Lods(X86Instruction instr);
@@ -502,7 +502,7 @@ namespace Reko.Arch.X86
             long l = (long) Bits.SignExtend(n, dst.Width.BitSize);
             byte sh = (byte) Read(src);
             var mask = masks[dst.Width.Size];
-            TWord r = (TWord)((l >> sh) & mask.value);
+            TWord r = (TWord) (l >> sh & mask.value);
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
@@ -515,7 +515,7 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
             var (value, hibit) = masks[dst.Width.Size];
-            TWord r = (l << sh) & value;
+            TWord r = l << sh & value;
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
@@ -528,11 +528,11 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
             var mask = masks[dst.Width.Size];
-            TWord r = (l >> sh) & mask.value;
+            TWord r = l >> sh & mask.value;
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
-                ((l >> (sh-1)) & 1) |                   // Carry
+                l >> sh - 1 & 1 |                   // Carry
                 (r == 0 ? Zmask : 0u) |                 // Zero
                 ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
         }
@@ -568,17 +568,17 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             TWord r = Read(src);
             if (src.Width.Size < dst.Width.Size)
-                r = (TWord)(sbyte)r;
+                r = (TWord) (sbyte) r;
             r = ~r + 1u;
             var mask = masks[dst.Width.Size];
-            TWord diff = (l + r) & mask.value;
-            uint ov = ((~(l ^ r) & (l ^ diff)) & mask.hibit) >> 20;
+            TWord diff = l + r & mask.value;
+            uint ov = (~(l ^ r) & (l ^ diff) & mask.hibit) >> 20;
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
                 (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
                 ((diff & mask.hibit) != 0 ? Smask : 0u) |   // Sign
-                (ov)                        // Overflow
+                ov                        // Overflow
                 ;
         }
 
@@ -587,18 +587,18 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             TWord r = Read(src);
             if (src.Width.Size < dst.Width.Size)
-                r = (TWord)(sbyte)r;
+                r = (TWord) (sbyte) r;
             r = ~r + 1u;        // Two's complement subtraction.
             var mask = masks[dst.Width.Size];
-            TWord diff = (l + r) & mask.value;
+            TWord diff = l + r & mask.value;
             Write(dst, diff);
-            uint ov = ((~(l ^ r) & (l ^ diff)) & mask.hibit) >> 20;
+            uint ov = (~(l ^ r) & (l ^ diff) & mask.hibit) >> 20;
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
                 (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
                 ((diff & mask.hibit) != 0 ? Smask : 0u) |    // Sign
-                (ov)                        // Overflow
+                ov                        // Overflow
                 ;
         }
 
@@ -607,9 +607,9 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             TWord r = Read(src);
             if (src.Width.Size < dst.Width.Size)
-                r = (TWord)(sbyte)r;
+                r = (TWord) (sbyte) r;
             var mask = masks[dst.Width.Size];
-            var and = (l & r) & mask.value;
+            var and = l & r & mask.value;
             Write(dst, and);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
@@ -623,7 +623,7 @@ namespace Reko.Arch.X86
         {
             TWord v = Read(op);
             var mask = masks[op.Width.Size];
-            var not = (~v) & mask.value;
+            var not = ~v & mask.value;
             Write(op, not);
             // Flags are not affected according to Intel docs.
         }
@@ -633,7 +633,7 @@ namespace Reko.Arch.X86
             TWord l = Read(dst);
             TWord r = Read(src);
             if (src.Width.Size < dst.Width.Size)
-                r = (TWord)(sbyte)r;
+                r = (TWord) (sbyte) r;
             var mask = masks[dst.Width.Size];
             var or = (l | r) & mask.value;
             Write(dst, or);
@@ -649,7 +649,7 @@ namespace Reko.Arch.X86
         {
             TWord old = Read(op);
             var mask = masks[op.Width.Size];
-            TWord gnu = (old - 1) & mask.value;
+            TWord gnu = old - 1 & mask.value;
             Write(op, gnu);
             uint ov = ((old ^ gnu) & ~gnu & mask.hibit) >> 20;
             Flags &= ~(Zmask | Smask | Omask);
@@ -663,7 +663,7 @@ namespace Reko.Arch.X86
         {
             TWord old = Read(op);
             var mask = masks[op.Width.Size];
-            TWord gnu = (old + 1) & mask.value;
+            TWord gnu = old + 1 & mask.value;
             Write(op, gnu);
             uint ov = ((old ^ gnu) & gnu & mask.hibit) >> 20;
             Flags &= ~(Zmask | Smask | Omask);
@@ -699,15 +699,15 @@ namespace Reko.Arch.X86
         public void Pusha()
         {
             var dt = PrimitiveType.Word32;
-            var temp = (uint)Registers[X86.Registers.esp.Number];
-            Push((uint)Registers[X86.Registers.eax.Number], dt);
-            Push((uint)Registers[X86.Registers.ecx.Number], dt);
-            Push((uint)Registers[X86.Registers.edx.Number], dt);
-            Push((uint)Registers[X86.Registers.ebx.Number], dt);
+            var temp = (uint) Registers[X86.Registers.esp.Number];
+            Push((uint) Registers[X86.Registers.eax.Number], dt);
+            Push((uint) Registers[X86.Registers.ecx.Number], dt);
+            Push((uint) Registers[X86.Registers.edx.Number], dt);
+            Push((uint) Registers[X86.Registers.ebx.Number], dt);
             Push(temp, dt);
-            Push((uint)Registers[X86.Registers.ebp.Number], dt);
-            Push((uint)Registers[X86.Registers.esi.Number], dt);
-            Push((uint)Registers[X86.Registers.edi.Number], dt);
+            Push((uint) Registers[X86.Registers.ebp.Number], dt);
+            Push((uint) Registers[X86.Registers.esi.Number], dt);
+            Push((uint) Registers[X86.Registers.edi.Number], dt);
         }
 
         protected abstract TWord Pop(DataType dt);
@@ -737,7 +737,7 @@ namespace Reko.Arch.X86
             if (op2.Width.Size < op1.Width.Size)
                 r = (TWord) (sbyte) r;
             var mask = masks[op1.Width.Size];
-            var test = (l & r) & mask.value;
+            var test = l & r & mask.value;
             Flags &= ~(Cmask | Zmask | Smask | Omask);      //$TODO: parity.
             Flags |=
                 0 |                             // Clear carry

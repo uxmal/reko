@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 
-namespace Reko.Arch.X86
+namespace Reko.Arch.X86.Rewriter
 {
     /// <summary>
     /// Rewriter support for "extended" instructions of the x86 architecture.

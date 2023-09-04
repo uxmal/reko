@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Arch.X86.Emulator;
+using Reko.Arch.X86.Rewriter;
 using Reko.Core;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
