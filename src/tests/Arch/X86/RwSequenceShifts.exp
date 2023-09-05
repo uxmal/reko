@@ -8,8 +8,8 @@
 // ds:ds
 // edx:edx
 // SCZO:SCZO
-// v8:v8
 // C:C
+// v9:v9
 // Top:Top
 // return address size: 2
 define fn0C00_0000
@@ -29,9 +29,9 @@ l0C00_0000:
 	edx = Mem0[ds:0x104<16>:word32]
 	eax = eax << 1<32>
 	SCZO = cond(eax)
-	v8 = (edx & 1<32> << 0x20<8> - 1<8>) != 0<32>
-	edx = __rcl<word32,byte>(edx, 1<8>, C)
-	C = v8
+	v9 = C
+	C = (edx & 1<32> << 0x20<8> - 1<8>) != 0<32>
+	edx = __rcl<word32,byte>(edx, 1<8>, v9)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

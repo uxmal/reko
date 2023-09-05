@@ -757,11 +757,11 @@ l06B0:
 		r2_r3_n = r2_r3_n;
 		r0_n = r0_n;
 		r2_r3_n = r2_r3_n;
-		if ((r0_n & 0x8000) == 0x00)
+		if ((r0_n & 0x8000) != 0x00)
 			r2_r3_n = r2_r3_n + r4_r5_n;
 	}
 	struct Eq_n * r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
-	if ((r0_n & 0x8000) == 0x00)
+	if ((r0_n & 0x8000) != 0x00)
 	{
 l0700:
 		r2_r3_n += r4_r5_n;
@@ -914,7 +914,7 @@ l07B6:
 								r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
 								C_n = (r0_n & 0x8000) != 0x00;
 								r0_n = r0_n;
-							} while ((r0_n & 0x8000) != 0x00);
+							} while ((r0_n & 0x8000) == 0x00);
 							if (true)
 								goto l07E6;
 							goto l07FE;
@@ -926,7 +926,7 @@ l07C6:
 l07CE:
 					r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
 					r4_r3_n = r4_r3_n;
-				} while ((r0_n & 0x8000) != 0x00);
+				} while ((r0_n & 0x8000) == 0x00);
 				return;
 			}
 		}
@@ -1822,7 +1822,7 @@ void fn11A6(struct Eq_n * r0, word16 * r5)
 		{
 			uint16 v29_n = wLoc02_n >> 0x01;
 			wLoc02_n = v29_n;
-			if ((wLoc02_n & 0x01) == 0x00)
+			if ((wLoc02_n & 0x01) != 0x00)
 			{
 				r4_n &= 0x01;
 				if (r4_n != 0x00)

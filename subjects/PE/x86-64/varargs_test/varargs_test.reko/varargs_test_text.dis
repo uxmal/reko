@@ -99,10 +99,10 @@ fn00000001400011B0_entry:
 l00000001400011B0:
 	branch rcx != Mem0[0x0000000140003000<p64>:word64] l00000001400011CC
 l00000001400011BA:
-	word64 rcx_8 = __rol<word64,byte>(rcx, 0x10<8>)
-	branch SLICE(rcx_8, word16, 0) != 0<16> l00000001400011C8
+	word64 rcx_7 = __rol<word64,byte>(rcx, 0x10<8>)
+	branch SLICE(rcx_7, word16, 0) != 0<16> l00000001400011C8
 l00000001400011C8:
-	rcx = __ror<word64,byte>(rcx_8, 0x10<8>)
+	rcx = __ror<word64,byte>(rcx_7, 0x10<8>)
 l00000001400011CC:
 l00000001400011CC_thunk_fn000000014000147C:
 	return fn000000014000147C(rcx, qwArg00)
@@ -466,30 +466,30 @@ l000000014000170A:
 l0000000140001717_thunk_fn0000000140001718:
 	return SLICE(fn0000000140001718(rcx_20), byte, 0)
 l0000000140001664:
-	word64 rax_163
+	word64 rax_162
 	branch fn0000000140001DC4() == 0<32> l0000000140001698
 l000000014000166D:
 	branch ecx != 0<32> l0000000140001698
 l0000000140001698:
 	word64 rdx_53 = Mem7[0x0000000140003000<p64>:word64]
 	word64 rax_64 = CONVERT(SLICE(rdx_53, word32, 0) & 0x3F<32>, word32, uint64)
-	word64 r8_73 = __ror<word64,byte>(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - SLICE(rax_64, byte, 0)) ^ rdx_53
-	Mem83[0x00000001400035C0<p64>:word128] = SEQ(r8_73, r8_73)
-	Mem88[0x00000001400035D0<p64>:real64] = r8_73
-	Mem90[0x00000001400035D8<p64>:word128] = SEQ(r8_73, r8_73)
-	Mem91[0x00000001400035E8<p64>:real64] = r8_73
-	rax_163 = SEQ(SLICE(rax_64, word56, 8), 1<8>) (alias)
+	word64 r8_72 = __ror<word64,byte>(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - SLICE(rax_64, byte, 0)) ^ rdx_53
+	Mem82[0x00000001400035C0<p64>:word128] = SEQ(r8_72, r8_72)
+	Mem87[0x00000001400035D0<p64>:real64] = r8_72
+	Mem89[0x00000001400035D8<p64>:word128] = SEQ(r8_72, r8_72)
+	Mem90[0x00000001400035E8<p64>:real64] = r8_72
+	rax_162 = SEQ(SLICE(rax_64, word56, 8), 1<8>) (alias)
 l0000000140001671:
-	word64 rax_94 = initialize_onexit_table(0x00000001400035C0<p64>)
-	word56 rax_56_8_164 = SLICE(rax_94, word56, 8)
-	branch SLICE(rax_94, word32, 0) == 0<32> l0000000140001685
+	word64 rax_93 = initialize_onexit_table(0x00000001400035C0<p64>)
+	word56 rax_56_8_163 = SLICE(rax_93, word56, 8)
+	branch SLICE(rax_93, word32, 0) == 0<32> l0000000140001685
 l0000000140001685:
-	word64 rax_106 = initialize_onexit_table(0x00000001400035D8<p64>)
-	rax_163 = SEQ(SLICE(rax_106, word56, 8), CONVERT(SLICE(rax_106, word32, 0) == 0<32>, bool, int8)) (alias)
+	word64 rax_105 = initialize_onexit_table(0x00000001400035D8<p64>)
+	rax_162 = SEQ(SLICE(rax_105, word56, 8), CONVERT(SLICE(rax_105, word32, 0) == 0<32>, bool, int8)) (alias)
 l0000000140001681:
-	rax_163 = SEQ(rax_56_8_164, 0<8>) (alias)
+	rax_162 = SEQ(rax_56_8_163, 0<8>) (alias)
 l00000001400016FF:
-	return SLICE(rax_163, byte, 0)
+	return SLICE(rax_162, byte, 0)
 fn000000014000164C_exit:
 
 
@@ -607,20 +607,20 @@ word64 fn0000000140001804(word64 rcx)
 // Preserved: rbx rsp
 fn0000000140001804_entry:
 l0000000140001804:
-	word32 eax_35
+	word32 eax_34
 	word64 rdx_7 = Mem5[0x0000000140003000<p64>:word64]
 	branch __ror<word64,byte>(rdx_7 ^ Mem5[0x00000001400035C0<p64>:word64], SLICE(rdx_7, byte, 0) & 0x3F<8>) != 0xFFFFFFFFFFFFFFFF<64> l0000000140001833
 l0000000140001833:
-	eax_35 = SLICE(register_onexit_function(0x00000001400035C0<p64>, rcx), word32, 0) (alias)
+	eax_34 = SLICE(register_onexit_function(0x00000001400035C0<p64>, rcx), word32, 0) (alias)
 l0000000140001829:
-	eax_35 = SLICE(crt_atexit(rcx), word32, 0) (alias)
+	eax_34 = SLICE(crt_atexit(rcx), word32, 0) (alias)
 l0000000140001842:
-	word64 rcx_34 = 0<u64>
-	branch eax_35 != 0<32> l000000014000184A
+	word64 rcx_33 = 0<u64>
+	branch eax_34 != 0<32> l000000014000184A
 l0000000140001846_1:
-	rcx_34 = rcx
+	rcx_33 = rcx
 l000000014000184A:
-	return rcx_34
+	return rcx_33
 fn0000000140001804_exit:
 
 

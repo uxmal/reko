@@ -1234,7 +1234,7 @@ ProcedureBuilder_exit:
                 var r2 = m.Reg32("r2", 2);
                 var r3 = m.Reg32("r3", 3);
                 var psw = RegisterStorage.Reg32("psw", 4);
-                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x1, "C", PrimitiveType.Bool));
+                var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
 
                 m.Assign(r2, m.Shr(r2, 1));
                 m.Assign(C, m.Cond(r2));
@@ -1271,7 +1271,7 @@ ProcedureBuilder_exit:
                 var SZ = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0C, "SZ", PrimitiveType.Byte));
                 var SZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x0E, "SZO", PrimitiveType.Byte));
                 var O = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x02, "O", PrimitiveType.Bool));
-                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0x01, "C", PrimitiveType.Bool));
+                var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
                 m.Label("foo");
                 m.Assign(eax, m.Or(eax, eax));
                 m.Assign(SZ, m.Cond(eax));
@@ -1281,5 +1281,78 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test(Description = "Treat condition codes as simple bit flags if they're not the result of Cond pseudo-expressions")]
+        public void CceSingleBitTest_noCond_true()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	// succ:  foo
+foo:
+	eax_1 = 0x123400<32>()
+	branch (eax_1 & 1<32>) != 0<32> foo
+	// succ:  l1 foo
+l1:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var eax = m.Reg32("eax", 1);
+                var psw = RegisterStorage.Reg32("psw", 4);
+                var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
+                var tmp = m.Frame.CreateTemporary(PrimitiveType.Bool);
+                m.Label("foo");
+                m.Assign(eax, m.Fn(m.Word32(0x00123400)));
+                m.Assign(C, m.Ne0(m.And(eax, 1)));
+                m.Assign(eax, m.Fn(CommonOps.Ror, eax, m.Byte(1)));
+                m.BranchIf(m.Test(ConditionCode.ULT, C), "foo");
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Treat condition codes as simple bit flags if they're not the result of Cond pseudo-expressions")]
+        public void CceSingleBitTest_noCond_false()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	// succ:  foo
+foo:
+	eax_1 = 0x123400<32>()
+	branch (eax_1 & 1<32>) == 0<32> foo
+	// succ:  l1 foo
+l1:
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var eax = m.Reg32("eax", 1);
+                var psw = RegisterStorage.Reg32("psw", 4);
+                var C = m.Frame.EnsureFlagGroup(m.Architecture.CarryFlag);
+                var tmp = m.Frame.CreateTemporary(PrimitiveType.Bool);
+                m.Label("foo");
+                m.Assign(eax, m.Fn(m.Word32(0x00123400)));
+                m.Assign(C, m.Ne0(m.And(eax, 1)));
+                m.Assign(eax, m.Fn(CommonOps.Ror, eax, m.Byte(1)));
+                m.BranchIf(m.Test(ConditionCode.UGE, C), "foo");
+                m.Return();
+            });
+        }
+
     }
 }

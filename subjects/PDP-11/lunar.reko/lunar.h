@@ -5116,7 +5116,7 @@ T_1049: (in 0<16> @ 0BEA : word16)
   Class: Eq_1048
   DataType: cui16
   OrigDataType: word16
-T_1050: (in (g_w0070 & 1<16>) != 0<16> @ 0BEA : bool)
+T_1050: (in (g_w0070 & 1<16>) == 0<16> @ 0BEA : bool)
   Class: Eq_1050
   DataType: bool
   OrigDataType: bool
@@ -8172,7 +8172,7 @@ T_1813: (in 0<16> @ 11A6 : word16)
   Class: Eq_1812
   DataType: cui16
   OrigDataType: word16
-T_1814: (in (r2_24 & 0x8000<16>) != 0<16> @ 11A6 : bool)
+T_1814: (in (r2_24 & 0x8000<16>) == 0<16> @ 11A6 : bool)
   Class: Eq_1814
   DataType: bool
   OrigDataType: bool
@@ -9068,7 +9068,7 @@ T_2037: (in r2_338 & 0x8000<16> @ 1232 : word16)
   Class: Eq_2034
   DataType: cui16
   OrigDataType: cui16
-T_2038: (in (r2_338 & 0x8000<16>) != 0<16> @ 1232 : bool)
+T_2038: (in (r2_338 & 0x8000<16>) == 0<16> @ 1232 : bool)
   Class: Eq_2038
   DataType: bool
   OrigDataType: bool
@@ -9096,7 +9096,7 @@ T_2044: (in 0<16> @ 1228 : word16)
   Class: Eq_2043
   DataType: cui16
   OrigDataType: word16
-T_2045: (in (SLICE(r2_r3_380, word16, 16) & 0x8000<16>) != 0<16> @ 1228 : bool)
+T_2045: (in (SLICE(r2_r3_380, word16, 16) & 0x8000<16>) == 0<16> @ 1228 : bool)
   Class: Eq_2045
   DataType: bool
   OrigDataType: bool
@@ -9124,7 +9124,7 @@ T_2051: (in 0<16> @ 121E : word16)
   Class: Eq_2050
   DataType: cui16
   OrigDataType: word16
-T_2052: (in (SLICE(r2_r3_378, word16, 16) & 0x8000<16>) != 0<16> @ 121E : bool)
+T_2052: (in (SLICE(r2_r3_378, word16, 16) & 0x8000<16>) == 0<16> @ 121E : bool)
   Class: Eq_2052
   DataType: bool
   OrigDataType: bool
@@ -9152,7 +9152,7 @@ T_2058: (in 0<16> @ 1214 : word16)
   Class: Eq_2057
   DataType: cui16
   OrigDataType: word16
-T_2059: (in (SLICE(r2_r3_376, word16, 16) & 0x8000<16>) != 0<16> @ 1214 : bool)
+T_2059: (in (SLICE(r2_r3_376, word16, 16) & 0x8000<16>) == 0<16> @ 1214 : bool)
   Class: Eq_2059
   DataType: bool
   OrigDataType: bool
@@ -9180,7 +9180,7 @@ T_2065: (in 0<16> @ 120A : word16)
   Class: Eq_2064
   DataType: cui16
   OrigDataType: word16
-T_2066: (in (SLICE(r2_r3_374, word16, 16) & 0x8000<16>) != 0<16> @ 120A : bool)
+T_2066: (in (SLICE(r2_r3_374, word16, 16) & 0x8000<16>) == 0<16> @ 120A : bool)
   Class: Eq_2066
   DataType: bool
   OrigDataType: bool
@@ -9208,7 +9208,7 @@ T_2072: (in 0<16> @ 1200 : word16)
   Class: Eq_2071
   DataType: cui16
   OrigDataType: word16
-T_2073: (in (SLICE(r2_r3_372, word16, 16) & 0x8000<16>) != 0<16> @ 1200 : bool)
+T_2073: (in (SLICE(r2_r3_372, word16, 16) & 0x8000<16>) == 0<16> @ 1200 : bool)
   Class: Eq_2073
   DataType: bool
   OrigDataType: bool
@@ -9236,7 +9236,7 @@ T_2079: (in 0<16> @ 11F6 : word16)
   Class: Eq_2078
   DataType: cui16
   OrigDataType: word16
-T_2080: (in (SLICE(r2_r3_370, word16, 16) & 0x8000<16>) != 0<16> @ 11F6 : bool)
+T_2080: (in (SLICE(r2_r3_370, word16, 16) & 0x8000<16>) == 0<16> @ 11F6 : bool)
   Class: Eq_2080
   DataType: bool
   OrigDataType: bool
@@ -9264,7 +9264,7 @@ T_2086: (in 0<16> @ 11EC : word16)
   Class: Eq_2085
   DataType: cui16
   OrigDataType: word16
-T_2087: (in (SLICE(r2_r3_368, word16, 16) & 0x8000<16>) != 0<16> @ 11EC : bool)
+T_2087: (in (SLICE(r2_r3_368, word16, 16) & 0x8000<16>) == 0<16> @ 11EC : bool)
   Class: Eq_2087
   DataType: bool
   OrigDataType: bool
@@ -9292,7 +9292,7 @@ T_2093: (in 0<16> @ 11E2 : word16)
   Class: Eq_2092
   DataType: cui16
   OrigDataType: word16
-T_2094: (in (SLICE(r2_r3_366, word16, 16) & 0x8000<16>) != 0<16> @ 11E2 : bool)
+T_2094: (in (SLICE(r2_r3_366, word16, 16) & 0x8000<16>) == 0<16> @ 11E2 : bool)
   Class: Eq_2094
   DataType: bool
   OrigDataType: bool
@@ -9320,7 +9320,7 @@ T_2100: (in 0<16> @ 11D8 : word16)
   Class: Eq_2099
   DataType: cui16
   OrigDataType: word16
-T_2101: (in (SLICE(r2_r3_364, word16, 16) & 0x8000<16>) != 0<16> @ 11D8 : bool)
+T_2101: (in (SLICE(r2_r3_364, word16, 16) & 0x8000<16>) == 0<16> @ 11D8 : bool)
   Class: Eq_2101
   DataType: bool
   OrigDataType: bool
@@ -9348,7 +9348,7 @@ T_2107: (in 0<16> @ 11CE : word16)
   Class: Eq_2106
   DataType: cui16
   OrigDataType: word16
-T_2108: (in (SLICE(r2_r3_362, word16, 16) & 0x8000<16>) != 0<16> @ 11CE : bool)
+T_2108: (in (SLICE(r2_r3_362, word16, 16) & 0x8000<16>) == 0<16> @ 11CE : bool)
   Class: Eq_2108
   DataType: bool
   OrigDataType: bool
@@ -9376,7 +9376,7 @@ T_2114: (in 0<16> @ 11C4 : word16)
   Class: Eq_2113
   DataType: cui16
   OrigDataType: word16
-T_2115: (in (SLICE(r2_r3_360, word16, 16) & 0x8000<16>) != 0<16> @ 11C4 : bool)
+T_2115: (in (SLICE(r2_r3_360, word16, 16) & 0x8000<16>) == 0<16> @ 11C4 : bool)
   Class: Eq_2115
   DataType: bool
   OrigDataType: bool
@@ -9404,7 +9404,7 @@ T_2121: (in 0<16> @ 11BA : word16)
   Class: Eq_2120
   DataType: cui16
   OrigDataType: word16
-T_2122: (in (SLICE(r2_r3_358, word16, 16) & 0x8000<16>) != 0<16> @ 11BA : bool)
+T_2122: (in (SLICE(r2_r3_358, word16, 16) & 0x8000<16>) == 0<16> @ 11BA : bool)
   Class: Eq_2122
   DataType: bool
   OrigDataType: bool
@@ -9432,7 +9432,7 @@ T_2128: (in 0<16> @ 11B0 : word16)
   Class: Eq_2127
   DataType: cui16
   OrigDataType: word16
-T_2129: (in (SLICE(r2_r3_356, word16, 16) & 0x8000<16>) != 0<16> @ 11B0 : bool)
+T_2129: (in (SLICE(r2_r3_356, word16, 16) & 0x8000<16>) == 0<16> @ 11B0 : bool)
   Class: Eq_2129
   DataType: bool
   OrigDataType: bool

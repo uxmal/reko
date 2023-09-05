@@ -306,25 +306,25 @@ l0040153C:
 	fn00401774(5<32>)
 	int3()
 l00401543_thunk_fn00401544:
-	word32 ebp_238
-	word32 esi_239
-	word32 edx_236
-	word32 ebx_237
-	word32 edi_240
-	fn00401544(ebx, dwArg04, edi, out edx_236, out ebx_237, out ebp_238, out esi_239, out edi_240)
+	word32 ebp_237
+	word32 esi_238
+	word32 edx_235
+	word32 ebx_236
+	word32 edi_239
+	fn00401544(ebx, dwArg04, edi, out edx_235, out ebx_236, out ebp_237, out esi_238, out edi_239)
 	return
 l004014C0:
 	branch fn00401B98() == 0<32> l004014F3
 l004014C9:
 	branch dwArg04 != 0<32> l004014F3
 l004014F3:
-	word32 eax_80 = __ror<word32,byte>(0xFFFFFFFF<32>, 0x20<8> - (Mem11[0x00403004<p32>:byte] & 0x1F<8>)) ^ Mem72[0x00403004<p32>:word32]
-	Mem88[0x0040333C<p32>:word32] = eax_80
-	Mem92[0x00403340<p32>:word32] = eax_80
-	Mem96[0x00403344<p32>:word32] = eax_80
-	Mem104[0x00403348<p32>:word32] = eax_80
-	Mem108[0x0040334C<p32>:word32] = eax_80
-	Mem112[0x00403350<p32>:word32] = eax_80
+	word32 eax_79 = __ror<word32,byte>(0xFFFFFFFF<32>, 0x20<8> - (Mem11[0x00403004<p32>:byte] & 0x1F<8>)) ^ Mem72[0x00403004<p32>:word32]
+	Mem87[0x0040333C<p32>:word32] = eax_79
+	Mem91[0x00403340<p32>:word32] = eax_79
+	Mem95[0x00403344<p32>:word32] = eax_79
+	Mem103[0x00403348<p32>:word32] = eax_79
+	Mem107[0x0040334C<p32>:word32] = eax_79
+	Mem111[0x00403350<p32>:word32] = eax_79
 l004014CD:
 	branch initialize_onexit_table(0x40333C<32>) == 0<32> l004014E0
 l004014E0:
@@ -442,15 +442,15 @@ word32 fn00401613(word32 dwArg04)
 // Preserved: ebp esp
 fn00401613_entry:
 l00401613:
-	word32 eax_23
+	word32 eax_22
 	word32 eax_8 = Mem6[0x00403004<p32>:word32]
 	branch __ror<word32,byte>(eax_8 ^ Mem6[0x0040333C<p32>:word32], SLICE(eax_8, byte, 0) & 0x1F<8>) != 0xFFFFFFFF<32> l00401637
 l00401637:
-	eax_23 = register_onexit_function(0x40333C<32>)
+	eax_22 = register_onexit_function(0x40333C<32>)
 l00401630:
-	eax_23 = crt_atexit()
+	eax_22 = crt_atexit()
 l00401642:
-	return CONVERT(eax_23 != 0<32>, bool, word32) - 1<i32> & dwArg04
+	return CONVERT(eax_22 != 0<32>, bool, word32) - 1<i32> & dwArg04
 fn00401613_exit:
 
 

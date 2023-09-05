@@ -302,7 +302,7 @@ Eq_265: (struct "Eq_265" (FFFFFFDC Eq_66 tFFFFFFDC) (FFFFFFE7 byte bFFFFFFE7) (F
 	T_265 (in ebpOut @ 0040120C : (ptr32 Eq_265))
 	T_271 (in out ebp_140 @ 0040120C : ptr32)
 	T_342 (in out ebp_140 @ 00401231 : ptr32)
-	T_578 (in out ebp_238 @ 00401543 : ptr32)
+	T_578 (in out ebp_237 @ 00401543 : ptr32)
 	T_647 (in ebp_71 @ 004015C8 : (ptr32 Eq_265))
 Eq_291: (fn void ())
 	T_291 (in fn00401976 @ 00401216 : ptr32)
@@ -2768,7 +2768,7 @@ T_530: (in int3() @ 00401543 : void)
   Class: Eq_530
   DataType: void
   OrigDataType: void
-T_531: (in eax_80 @ 0040150E : ui32)
+T_531: (in eax_79 @ 0040150E : ui32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: ui32
@@ -2832,7 +2832,7 @@ T_546: (in 0x0040333C<p32> @ 0040151D : ptr32)
   Class: Eq_546
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_547 t0000)))
-T_547: (in Mem88[0x0040333C<p32>:word32] @ 0040151D : word32)
+T_547: (in Mem87[0x0040333C<p32>:word32] @ 0040151D : word32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: word32
@@ -2840,7 +2840,7 @@ T_548: (in 0x00403340<p32> @ 0040151E : ptr32)
   Class: Eq_548
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_549 t0000)))
-T_549: (in Mem92[0x00403340<p32>:word32] @ 0040151E : word32)
+T_549: (in Mem91[0x00403340<p32>:word32] @ 0040151E : word32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: word32
@@ -2848,7 +2848,7 @@ T_550: (in 0x00403344<p32> @ 0040151F : ptr32)
   Class: Eq_550
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_551 t0000)))
-T_551: (in Mem96[0x00403344<p32>:word32] @ 0040151F : word32)
+T_551: (in Mem95[0x00403344<p32>:word32] @ 0040151F : word32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: word32
@@ -2856,7 +2856,7 @@ T_552: (in 0x00403348<p32> @ 00401533 : ptr32)
   Class: Eq_552
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_553 t0000)))
-T_553: (in Mem104[0x00403348<p32>:word32] @ 00401533 : word32)
+T_553: (in Mem103[0x00403348<p32>:word32] @ 00401533 : word32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: word32
@@ -2864,7 +2864,7 @@ T_554: (in 0x0040334C<p32> @ 00401534 : ptr32)
   Class: Eq_554
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_555 t0000)))
-T_555: (in Mem108[0x0040334C<p32>:word32] @ 00401534 : word32)
+T_555: (in Mem107[0x0040334C<p32>:word32] @ 00401534 : word32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: word32
@@ -2872,7 +2872,7 @@ T_556: (in 0x00403350<p32> @ 00401535 : ptr32)
   Class: Eq_556
   DataType: (ptr32 ui32)
   OrigDataType: (ptr32 (struct (0 T_557 t0000)))
-T_557: (in Mem112[0x00403350<p32>:word32] @ 00401535 : word32)
+T_557: (in Mem111[0x00403350<p32>:word32] @ 00401535 : word32)
   Class: Eq_531
   DataType: ui32
   OrigDataType: word32
@@ -2924,23 +2924,23 @@ T_569: (in initialize_onexit_table(0x403348<32>) @ 004014E5 : word32)
   Class: Eq_569
   DataType: word32
   OrigDataType: word32
-T_570: (in ebp_238 @ 00401543 : word32)
+T_570: (in ebp_237 @ 00401543 : word32)
   Class: Eq_570
   DataType: word32
   OrigDataType: word32
-T_571: (in esi_239 @ 00401543 : word32)
+T_571: (in esi_238 @ 00401543 : word32)
   Class: Eq_571
   DataType: word32
   OrigDataType: word32
-T_572: (in edx_236 @ 00401543 : word32)
+T_572: (in edx_235 @ 00401543 : word32)
   Class: Eq_572
   DataType: word32
   OrigDataType: word32
-T_573: (in ebx_237 @ 00401543 : word32)
+T_573: (in ebx_236 @ 00401543 : word32)
   Class: Eq_573
   DataType: word32
   OrigDataType: word32
-T_574: (in edi_240 @ 00401543 : word32)
+T_574: (in edi_239 @ 00401543 : word32)
   Class: Eq_574
   DataType: word32
   OrigDataType: word32
@@ -2948,27 +2948,27 @@ T_575: (in fn00401544 @ 00401543 : ptr32)
   Class: Eq_258
   DataType: (ptr32 Eq_258)
   OrigDataType: (ptr32 (fn T_581 (T_514, T_516, T_515, T_576, T_577, T_578, T_579, T_580)))
-T_576: (in out edx_236 @ 00401543 : ptr32)
+T_576: (in out edx_235 @ 00401543 : ptr32)
   Class: Eq_263
   DataType: ptr32
   OrigDataType: ptr32
-T_577: (in out ebx_237 @ 00401543 : ptr32)
+T_577: (in out ebx_236 @ 00401543 : ptr32)
   Class: Eq_212
   DataType: ptr32
   OrigDataType: ptr32
-T_578: (in out ebp_238 @ 00401543 : ptr32)
+T_578: (in out ebp_237 @ 00401543 : ptr32)
   Class: Eq_265
   DataType: (ptr32 Eq_265)
   OrigDataType: ptr32
-T_579: (in out esi_239 @ 00401543 : ptr32)
+T_579: (in out esi_238 @ 00401543 : ptr32)
   Class: Eq_266
   DataType: ptr32
   OrigDataType: ptr32
-T_580: (in out edi_240 @ 00401543 : ptr32)
+T_580: (in out edi_239 @ 00401543 : ptr32)
   Class: Eq_267
   DataType: ptr32
   OrigDataType: ptr32
-T_581: (in fn00401544(ebx, dwArg04, edi, out edx_236, out ebx_237, out ebp_238, out esi_239, out edi_240) @ 00401543 : byte)
+T_581: (in fn00401544(ebx, dwArg04, edi, out edx_235, out ebx_236, out ebp_237, out esi_238, out edi_239) @ 00401543 : byte)
   Class: Eq_274
   DataType: byte
   OrigDataType: byte
@@ -3352,7 +3352,7 @@ T_676: (in dwArg04 @ 00401612 : ui32)
   Class: Eq_676
   DataType: ui32
   OrigDataType: ui32
-T_677: (in eax_23 @ 00401613 : word32)
+T_677: (in eax_22 @ 00401613 : word32)
   Class: Eq_677
   DataType: word32
   OrigDataType: word32
@@ -3436,11 +3436,11 @@ T_697: (in 0<32> @ 0040164D : word32)
   Class: Eq_677
   DataType: word32
   OrigDataType: word32
-T_698: (in eax_23 != 0<32> @ 0040164D : bool)
+T_698: (in eax_22 != 0<32> @ 0040164D : bool)
   Class: Eq_698
   DataType: bool
   OrigDataType: bool
-T_699: (in CONVERT(eax_23 != 0<32>, bool, word32) @ 0040164D : word32)
+T_699: (in CONVERT(eax_22 != 0<32>, bool, word32) @ 0040164D : word32)
   Class: Eq_699
   DataType: word32
   OrigDataType: word32
@@ -3448,11 +3448,11 @@ T_700: (in 1<i32> @ 0040164D : int32)
   Class: Eq_700
   DataType: int32
   OrigDataType: int32
-T_701: (in (word32) (eax_23 != 0<32>) - 1<i32> @ 0040164D : word32)
+T_701: (in (word32) (eax_22 != 0<32>) - 1<i32> @ 0040164D : word32)
   Class: Eq_701
   DataType: ui32
   OrigDataType: ui32
-T_702: (in (word32) (eax_23 != 0<32>) - 1<i32> & dwArg04 @ 0040164D : word32)
+T_702: (in (word32) (eax_22 != 0<32>) - 1<i32> & dwArg04 @ 0040164D : word32)
   Class: Eq_675
   DataType: ui32
   OrigDataType: ui32

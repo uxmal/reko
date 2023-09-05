@@ -688,7 +688,7 @@ l0BD0:
 	fn0C90(sp_n->wFFFFFFFE, sp_n->t0000.u0);
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	word16 * r3_n = &g_w0030;
-	if ((g_w0070 & 0x01) == 0x00)
+	if ((g_w0070 & 0x01) != 0x00)
 		r3_n = (word16 *) -48;
 	sp_n->ptrFFFFFFFE = r3_n;
 	fn0C36(~0x17, r3_n);
@@ -1207,67 +1207,67 @@ l119E:
 	else
 	{
 		r2_r3_n = (char *) &(r2_n->*r1).ptrFFFFFFFE + 2 << 0x01;
-		if ((r2_n & 0x8000) != 0x00)
+		if ((r2_n & 0x8000) == 0x00)
 			goto l11AC;
 	}
 	r2_r3_n += (uint32) r1;
 l11AC:
 	r2_r3_n = r2_r3_n << 0x01;
-	if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+	if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 	{
 l11B6:
 		r2_r3_n = r2_r3_n << 0x01;
-		if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+		if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 		{
 l11C0:
 			r2_r3_n = r2_r3_n << 0x01;
-			if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+			if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 			{
 l11CA:
 				r2_r3_n = r2_r3_n << 0x01;
-				if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+				if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 				{
 l11D4:
 					r2_r3_n = r2_r3_n << 0x01;
-					if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+					if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 					{
 l11DE:
 						r2_r3_n = r2_r3_n << 0x01;
-						if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+						if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 						{
 l11E8:
 							r2_r3_n = r2_r3_n << 0x01;
-							if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+							if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 							{
 l11F2:
 								r2_r3_n = r2_r3_n << 0x01;
-								if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+								if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 								{
 l11FC:
 									r2_r3_n = r2_r3_n << 0x01;
-									if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+									if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 									{
 l1206:
 										r2_r3_n = r2_r3_n << 0x01;
-										if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+										if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 										{
 l1210:
 											r2_r3_n = r2_r3_n << 0x01;
-											if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+											if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 											{
 l121A:
 												r2_r3_n = r2_r3_n << 0x01;
-												if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+												if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 												{
 l1224:
 													r2_r3_n = r2_r3_n << 0x01;
-													if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
+													if ((SLICE(r2_r3_n, word16, 16) & 0x8000) == 0x00)
 													{
 l122E:
 														cui16 r2_n = SLICE(r2_r3_n, word16, 16);
 														ui32 v91_n = r2_r3_n << 0x01;
 														bool C_n = (r2_n & 0x8000) != 0x00;
-														if ((r2_n & 0x8000) == 0x00)
+														if ((r2_n & 0x8000) != 0x00)
 															C_n = (bool) cond(SLICE(v91_n + (uint32) r1, word16, 16));
 														r2_r3Out.u0 = <invalid>;
 														return C_n;

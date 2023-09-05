@@ -614,11 +614,11 @@ namespace Reko.Arch.X86.Rewriter
                 case Mnemonic.pushw: RewritePush(PrimitiveType.Word16, SrcOp(0)); break;
                 case Mnemonic.pxor: RewritePxor(false); break;
                 case Mnemonic.vpxor: RewritePxor(true); break;
-                case Mnemonic.rcl: RewriteRotation(CommonOps.RolC, true, true); break;
+                case Mnemonic.rcl: RewriteRotationWithCarry(CommonOps.RolC, RotateMaskLeft()); break;
                 case Mnemonic.rcpps: RewritePackedUnaryop(rcpp_intrinsic, PrimitiveType.Real32); break;
-                case Mnemonic.rcr: RewriteRotation(CommonOps.RorC, true, false); break;
-                case Mnemonic.rol: RewriteRotation(CommonOps.Rol, false, true); break;
-                case Mnemonic.ror: RewriteRotation(CommonOps.Ror, false, false); break;
+                case Mnemonic.rcr: RewriteRotationWithCarry(CommonOps.RorC, RotateMaskRight()); break;
+                case Mnemonic.rol: RewriteRotation(CommonOps.Rol, RotateMaskLeft()); break;
+                case Mnemonic.ror: RewriteRotation(CommonOps.Ror, RotateMaskRight()); break;
                 case Mnemonic.rorx: RewriteRorx(); break;
                 case Mnemonic.rdmsr: RewriteRdmsr(); break;
                 case Mnemonic.rdpmc: RewriteRdpmc(); break;

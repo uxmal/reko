@@ -31,7 +31,8 @@ using System.Linq;
 namespace Reko.Core
 {
     /// <summary>
-    /// Encapsulates architecture-dependent storage mechanisms for an identifier.
+    /// A <see cref="Storage"/> is a value type that encapsulates 
+    /// architecture-dependent storage locations for <see cref="Identifier"/>s.
     /// </summary>
     public abstract class Storage
     {

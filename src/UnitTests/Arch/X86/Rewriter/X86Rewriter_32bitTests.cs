@@ -299,14 +299,44 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        public void X86Rw_rcl_1()
+        {
+            Run32bitTest("D0 D8");      // ror al,1h
+            AssertCode(
+                "0|L--|10000000(2): 3 instructions",
+                "1|L--|v4 = C",
+                "2|L--|C = (al & 1<8> << 1<8> - 1<8>) != 0<8>",
+                "3|L--|al = __rcr<byte,byte>(al, 1<8>, v4)");
+        }
+
+        [Test]
+        public void X86Rw_rol_1()
+        {
+            Run32bitTest("D0 C0");      // ror al,1h
+            AssertCode(
+                "0|L--|10000000(2): 2 instructions",
+                "1|L--|C = (al & 1<8> << 8<8> - 1<8>) != 0<8>",
+                "2|L--|al = __rol<byte,byte>(al, 1<8>)");
+        }
+
+        [Test]
         public void X86rw_rol_Eb()
         {
             Run32bitTest("C0C0C0");
             AssertCode(
-                "0|L--|10000000(3): 3 instructions",
-                "1|L--|v3 = (al & 1<8> << 8<8> - 0xC0<8>) != 0<8>",
-                "2|L--|al = __rol<byte,byte>(al, 0xC0<8>)",
-                "3|L--|C = v3");
+                "0|L--|10000000(3): 2 instructions",
+                "1|L--|C = (al & 1<8> << 8<8> - 0xC0<8>) != 0<8>",
+                "2|L--|al = __rol<byte,byte>(al, 0xC0<8>)");
+        }
+
+        [Test]
+        public void X86Rw_ror_1()
+        {
+            Run32bitTest("D0 C8");      // ror al,1h
+            AssertCode(
+                "0|L--|10000000(2): 2 instructions",
+                "1|L--|C = (al & 1<8> << 1<8> - 1<8>) != 0<8>",
+                "2|L--|al = __ror<byte,byte>(al, 1<8>)");
         }
 
         [Test]

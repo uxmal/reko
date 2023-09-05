@@ -93,7 +93,6 @@ namespace Reko.Analysis
                 this.aliases.Clear();
                 ClosureOfUsingStatements(sidGrf, uses, aliases);
                 trace.Inform("CCE: Tracing {0}", sidGrf.DefStatement.Instruction);
-
                 foreach (var u in uses)
                 {
                     try
@@ -122,13 +121,9 @@ namespace Reko.Analysis
             while (wl.TryGetWorkItem(out var sid))
             {
                 var def = sid.DefStatement;
-                if (def != null)
-                {
-                    if (visited.Contains(def))
-                        continue;
-                    visited.Add(def);
-                }
-                switch (def?.Instruction)
+                if (!visited.Add(def))
+                    continue;
+                switch (def.Instruction)
                 {
                 case Assignment ass:
                     switch (ass.Src)
@@ -226,7 +221,7 @@ namespace Reko.Analysis
                 BinaryExpression bin when bin.Operator.Type == OperatorType.Or => bin.Left == grf || bin.Right == grf,
                 _ => false,
             };
-            }
+        }
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
@@ -267,6 +262,11 @@ namespace Reko.Analysis
                             e = ssa.Identifiers[idLeft].GetDefiningExpression();
                             continue;
                         }
+                    }
+                    if (sid.Identifier.Storage.Equals(ssa.Procedure.Architecture.CarryFlag))
+                    {
+                        if (cc == ConditionCode.UGE)
+                            e = e.Invert();
                     }
                     if (gf.IsNegated)
                         e = e.Invert();

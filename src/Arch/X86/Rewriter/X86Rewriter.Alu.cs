@@ -1062,40 +1062,49 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(orw.StackAccess(sp, dataWidth), rhs);
         }
 
-        private void RewriteRotation(IntrinsicProcedure operation, bool useCarry, bool left)
+        private void RewriteRotation(IntrinsicProcedure operation, Expression sh)
         {
-            Identifier? t;
-            Expression sh;
-            if (left)
-            {
-                sh = m.ISub(
-                    Constant.Create(instrCur.Operands[1].Width, instrCur.Operands[0].Width.BitSize),
-                    SrcOp(1));
-            }
-            else
-            {
-                sh = SrcOp(1);
-            }
-            sh = m.Shl(Constant.Create(instrCur.Operands[0].Width, 1), sh);
-            t = binder.CreateTemporary(PrimitiveType.Bool);
-            m.Assign(t, m.Ne0(m.And(SrcOp(0), sh)));
+            var cy = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(cy, m.Ne0(m.And(SrcOp(0), sh)));
             Expression p;
             var src0 = SrcOp(0);
             var src1 = SrcOp(1);
-            if (useCarry)
-            {
-                p = m.Fn(
-                    operation.MakeInstance(src0.DataType, src1.DataType),
-                    src0, src1, binder.EnsureFlagGroup(Registers.C));
-            }
-            else
-            {
-                p = m.Fn(
-                    operation.MakeInstance(src0.DataType, src1.DataType),
-                    src0, src1);
-            }
+            p = m.Fn(
+                operation.MakeInstance(src0.DataType, src1.DataType),
+                src0, src1);
             m.Assign(SrcOp(0), p);
-            m.Assign(binder.EnsureFlagGroup(Registers.C), t);
+        }
+
+        private void RewriteRotationWithCarry(IntrinsicProcedure operation, Expression sh)
+        {
+            Identifier? t;
+            var cy = binder.EnsureFlagGroup(Registers.C);
+            t = binder.CreateTemporary(PrimitiveType.Bool);
+            m.Assign(t, cy);
+            m.Assign(cy, m.Ne0(m.And(SrcOp(0), sh)));
+            Expression p;
+            var src0 = SrcOp(0);
+            var src1 = SrcOp(1);
+            p = m.Fn(
+                operation.MakeInstance(src0.DataType, src1.DataType),
+                src0, src1, t);
+            m.Assign(SrcOp(0), p);
+        }
+
+        private Expression RotateMaskLeft()
+        {
+            var ops = instrCur.Operands;
+            Expression sh = m.ISub(
+                    Constant.Create(ops[1].Width, ops[0].Width.BitSize),
+                    SrcOp(1));
+            return m.Shl(Constant.Create(ops[0].Width, 1), sh);
+        }
+
+        private Expression RotateMaskRight()
+        {
+            Expression sh = SrcOp(1);
+            sh = m.Shl(Constant.Create(instrCur.Operands[0].Width, 1), m.ISub(sh, 1));
+            return sh;
         }
 
         private void RewriteRorx()

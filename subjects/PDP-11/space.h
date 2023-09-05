@@ -3432,7 +3432,7 @@ T_455: (in 0<16> @ 06FE : word16)
   Class: Eq_454
   DataType: cui16
   OrigDataType: word16
-T_456: (in (r0_311 & 0x8000<16>) != 0<16> @ 06FE : bool)
+T_456: (in (r0_311 & 0x8000<16>) == 0<16> @ 06FE : bool)
   Class: Eq_456
   DataType: bool
   OrigDataType: bool
@@ -3464,7 +3464,7 @@ T_463: (in 0<16> @ 06F2 : word16)
   Class: Eq_462
   DataType: cui16
   OrigDataType: word16
-T_464: (in (r0_311 & 0x8000<16>) != 0<16> @ 06F2 : bool)
+T_464: (in (r0_311 & 0x8000<16>) == 0<16> @ 06F2 : bool)
   Class: Eq_464
   DataType: bool
   OrigDataType: bool
@@ -4384,7 +4384,7 @@ T_693: (in 0<16> @ 07D0 : word16)
   Class: Eq_692
   DataType: cui16
   OrigDataType: word16
-T_694: (in (r0_122 & 0x8000<16>) != 0<16> @ 07D0 : bool)
+T_694: (in (r0_122 & 0x8000<16>) == 0<16> @ 07D0 : bool)
   Class: Eq_694
   DataType: bool
   OrigDataType: bool
@@ -4476,7 +4476,7 @@ T_716: (in r0_340 & 0x8000<16> @ 07DE : word16)
   Class: Eq_713
   DataType: cui16
   OrigDataType: cui16
-T_717: (in (r0_340 & 0x8000<16>) != 0<16> @ 07DE : bool)
+T_717: (in (r0_340 & 0x8000<16>) == 0<16> @ 07DE : bool)
   Class: Eq_717
   DataType: bool
   OrigDataType: bool
@@ -8337,7 +8337,7 @@ T_1675: (in 0<16> @ 11D2 : word16)
   Class: Eq_1674
   DataType: cui16
   OrigDataType: word16
-T_1676: (in (wLoc02_100 & 1<16>) != 0<16> @ 11D2 : bool)
+T_1676: (in (wLoc02_100 & 1<16>) == 0<16> @ 11D2 : bool)
   Class: Eq_1676
   DataType: bool
   OrigDataType: bool

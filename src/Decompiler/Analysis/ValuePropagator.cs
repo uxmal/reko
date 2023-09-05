@@ -115,6 +115,8 @@ namespace Reko.Analysis
         {
             bool changed;
             evalCtx.Statement = stm;
+            if (stm.Address.Offset == 0x28A9)
+                _ = this; //$DEBUG
             trace.Verbose("From: {0}", stm.Instruction.ToString());
             (stm.Instruction, changed) = stm.Instruction.Accept(this);
             trace.Verbose("  To: {0}", stm.Instruction.ToString());
