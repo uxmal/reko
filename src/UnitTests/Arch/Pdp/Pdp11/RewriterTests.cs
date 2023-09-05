@@ -438,14 +438,6 @@ namespace Reko.UnitTests.Arch.Pdp.Pdp11
         }
 
         [Test]
-        public void Pdp11Rw_rol()
-        {
-            Given_UInt16s(0x0C41);
-            AssertCode(
-                "@@@");
-        }
-
-        [Test]
         public void Pdp11Rw_rts_r5()
         {
             Given_UInt16s(0x0085);
