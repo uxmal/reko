@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             rdx = binder.EnsureRegister(RegisterStorage.Reg64("rdx", 2));
             es = binder.EnsureRegister(RegisterStorage.Reg16("es", 14));
             SCZ = binder.EnsureFlagGroup(arch.GetFlagGroup("SCZ"));
-            CF = binder.EnsureFlagGroup(arch.GetFlagGroup("C"));
+            CF = binder.EnsureFlagGroup(arch.CarryFlag);
         }
 
         private Identifier GetId(string idName)

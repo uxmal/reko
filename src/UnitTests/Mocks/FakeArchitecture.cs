@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Mocks
         public FakeArchitecture(IServiceProvider services, string archId, Dictionary<string,object> options) 
             : base(services, archId, options, null!, null!)
         {
-            this.CarryFlagMask = (uint)StatusFlags.C;
+            this.CarryFlag = new FlagGroupStorage(FlagRegister, (uint) StatusFlags.C, "C", PrimitiveType.Bool);
             this.Description = "Fake Architecture for testing";
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;

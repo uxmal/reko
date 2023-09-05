@@ -42,7 +42,7 @@ namespace Reko.Arch.Rl78
             FramePointerType = PrimitiveType.Ptr16;
             PointerType = PrimitiveType.Ptr16;
             WordWidth = PrimitiveType.Word16;
-            CarryFlagMask = (uint) FlagM.CF;
+            CarryFlag = Registers.C;
             StackRegister = Registers.sp;
             Endianness = EndianServices.Little;
         }

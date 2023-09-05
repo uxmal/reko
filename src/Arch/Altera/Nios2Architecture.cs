@@ -36,7 +36,7 @@ namespace Reko.Arch.Altera
             : base(services, archId, options, Nios2.Registers.ByName, null!)
         {
             base.Endianness = EndianServices.Little;
-            base.CarryFlagMask = 0;
+            base.CarryFlag = null;
             base.FramePointerType = PrimitiveType.Ptr32;
             base.InstructionBitSize = 32;
             base.PointerType = PrimitiveType.Ptr32;

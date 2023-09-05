@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp
         public Pdp7Architecture(IServiceProvider services, string name, Dictionary<string, object> options)
             : base(services, name, options, Registers.RegistersByName, Registers.RegistersByDomain)
         {
-            this.CarryFlagMask = 1;
+            this.CarryFlag = null;
             this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PdpTypes.Ptr18;

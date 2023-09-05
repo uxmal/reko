@@ -44,7 +44,7 @@ namespace Reko.Arch.Tlcs
         public Tlcs900Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, null, null)
         {
-            this.CarryFlagMask = Registers.C.FlagGroupBits;
+            this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;        // Instruction alignment, really.
             this.FramePointerType = PrimitiveType.Ptr32;

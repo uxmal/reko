@@ -422,8 +422,7 @@ namespace Reko.Analysis
         {
             return 
                 exp is Identifier cf &&
-                cf.Storage is FlagGroupStorage grf &&
-                (arch.CarryFlagMask & grf.FlagGroupBits) != 0;
+                cf.Storage.Equals(arch.CarryFlag);
         }
 
         public Candidate? FindUsingNegation(

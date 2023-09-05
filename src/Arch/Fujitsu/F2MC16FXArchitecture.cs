@@ -40,7 +40,7 @@ namespace Reko.Arch.Fujitsu
             : base(services, name, options, new(), new())
         {
             this.Endianness = EndianServices.Little;
-            this.CarryFlagMask = (uint) FlagM.C;
+            this.CarryFlag = Registers.C;
             this.FramePointerType = PrimitiveType.Offset16;
             this.InstructionBitSize = 8;
             this.MemoryGranularity = 8;

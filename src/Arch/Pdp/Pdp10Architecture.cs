@@ -40,7 +40,7 @@ namespace Reko.Arch.Pdp
         public Pdp10Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, null, null)
         {
-            this.CarryFlagMask = 0; //$TODO:
+            this.CarryFlag = null; //$TODO:
             this.DefaultBase = 8;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PdpTypes.Ptr18;

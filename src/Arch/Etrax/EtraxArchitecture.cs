@@ -39,7 +39,7 @@ namespace Reko.Arch.Etrax
             Dictionary<string, object> options) 
             : base(services, archId, options, new(), new())
         {
-            this.CarryFlagMask = (uint) FlagM.CF;
+            this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Word32;
             this.InstructionBitSize = 16;

@@ -61,7 +61,7 @@ namespace Reko.Arch.Pdp
             Endianness = EndianServices.Little;
             InstructionBitSize = 16;
             StackRegister = Registers.sp;
-            CarryFlagMask = Registers.C.FlagGroupBits;
+            CarryFlag = Registers.C;
             FramePointerType = PrimitiveType.Ptr16;
             PointerType = PrimitiveType.Ptr16;
             WordWidth = PrimitiveType.Word16;

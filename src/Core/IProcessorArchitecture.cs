@@ -43,8 +43,10 @@ namespace Reko.Core
 	{
         /// <summary>
         /// Used when building large adds/subs when carry flag is used.
+        /// Nullable because not all architectures have condition code
+        /// flags.
         /// </summary>
-        uint CarryFlagMask { get; }
+        FlagGroupStorage? CarryFlag { get; }
 
         /// <summary>
         /// Preferred base used to render numbers.
@@ -614,7 +616,7 @@ namespace Reko.Core
         }
 
         public RegisterStorage? FpuStackRegister { get; protected set; }
-        public uint CarryFlagMask { get; protected set; }
+        public FlagGroupStorage? CarryFlag { get; protected set; }
 
         public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);

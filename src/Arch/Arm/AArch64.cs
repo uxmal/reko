@@ -51,7 +51,7 @@ namespace Reko.Arch.Arm
             this.FramePointerType = PrimitiveType.Ptr64;
             this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
-            this.CarryFlagMask = 0;
+            this.CarryFlag = null;
 #if NATIVE
             var unk = CreateNativeArchitecture("arm-64");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);

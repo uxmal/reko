@@ -43,7 +43,7 @@ namespace Reko.Arch.Mos6502
         public Mos6502Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, Registers.RegistersByName, null!)
         {
-            CarryFlagMask = (uint)FlagM.CF;
+            CarryFlag = Registers.C;
             Endianness = EndianServices.Little;
             InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Byte;       // Yup, stack pointer is a byte register (!)

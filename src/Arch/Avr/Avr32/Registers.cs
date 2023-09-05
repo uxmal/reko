@@ -153,6 +153,7 @@ namespace Reko.Arch.Avr.Avr32
             112-191 448-764 Reserved Reserved for future use - -
             192-255 768-1020 IMPL IMPLEMENTATION DEFINED - -
              */
+            C = new FlagGroupStorage(sr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
         }
 
         public static Dictionary<string, RegisterStorage> ByName { get; }
@@ -163,6 +164,8 @@ namespace Reko.Arch.Avr.Avr32
         public static RegisterStorage sr { get; }
         public static RegisterStorage evba { get; }
         public static RegisterStorage acba { get; }
+
+        public static FlagGroupStorage C { get; }
     }
 
     public enum FlagM

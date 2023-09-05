@@ -75,7 +75,7 @@ namespace Reko.Arch.X86
             this.mode = mode;
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
-            this.CarryFlagMask = (uint)FlagM.CF;
+            this.CarryFlag = Registers.C;
             this.PointerType = mode.PointerType;
             this.WordWidth = mode.WordWidth;
             this.FramePointerType = mode.FramePointerType;

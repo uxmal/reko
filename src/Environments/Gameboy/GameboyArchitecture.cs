@@ -39,7 +39,7 @@ namespace Reko.Environments.Gameboy
         public GameboyArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
             : base(services, archId, options, new(), new())
         {
-            this.CarryFlagMask = (uint) FlagM.CF;
+            this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;

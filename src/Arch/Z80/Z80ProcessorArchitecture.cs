@@ -45,7 +45,7 @@ namespace Reko.Arch.Z80
             this.PointerType = PrimitiveType.Ptr16;
             this.WordWidth = PrimitiveType.Word16;
             this.StackRegister = Registers.sp;
-            this.CarryFlagMask = (uint)FlagM.CF;
+            this.CarryFlag = Registers.C;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)

@@ -44,7 +44,7 @@ namespace Reko.Arch.Padauk
             this.Endianness = EndianServices.Little;
             this.CodeMemoryGranularity = 16;
             this.MemoryGranularity = 8;
-            this.CarryFlagMask = (uint) FlagM.CF;
+            this.CarryFlag = Registers.C;
             this.FramePointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr16;

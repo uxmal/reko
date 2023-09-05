@@ -40,7 +40,7 @@ namespace Reko.Arch.Avr
         public Avr32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, Registers.ByName, Registers.ByDomain)
         {
-            this.CarryFlagMask = (uint) FlagM.CF;
+            this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;

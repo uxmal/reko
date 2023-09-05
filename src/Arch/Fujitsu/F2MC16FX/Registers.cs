@@ -55,6 +55,8 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
         public static RegisterStorage[] rw { get; }
         public static RegisterStorage[] r { get; }
 
+        public static FlagGroupStorage C { get; }
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -206,6 +208,7 @@ namespace Reko.Arch.Fujitsu.F2MC16FX
                 { 0xCC, ioPortFactory.Reg("PC_DR", PrimitiveType.Byte) },
                 { 0xCD, ioPortFactory.Reg("PC_CR", PrimitiveType.Byte) },
             };
+            C = new FlagGroupStorage(ccr, (uint) FlagM.C, "C", PrimitiveType.Bool);
         }
     }
 

@@ -41,7 +41,7 @@ namespace Reko.Arch.H8
         public H8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, null, null)
         {
-            this.CarryFlagMask = (uint) FlagM.CF;
+            this.CarryFlag = Registers.C;
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
