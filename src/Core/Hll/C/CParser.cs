@@ -27,11 +27,12 @@ using System.Linq;
 
 namespace Reko.Core.Hll.C
 {
-    // http://www.ssw.uni-linz.ac.at/Coco/C/C.atg
+    // https://web.archive.org/web/20200223191833/http://www.ssw.uni-linz.ac.at/Coco/C/C.atg
 
     public class CParser
     {
-        /* ANSI C 89 grammar as specified in http://flash-gordon.me.uk/ansi.c.txt
+        /* ANSI C 89 grammar as specified in
+        https://web.archive.org/web/20170605121212/http://flash-gordon.me.uk/ansi.c.txt
 
 	    Processing the C grammar requires LL(1) conflict resolvers, some of which
 	    need to check whether an identifier is a type name (see IsTypeName() below).
