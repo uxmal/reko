@@ -58,7 +58,7 @@ namespace Reko.Arch.M68k.Assembler
 
         #region Assembler Members
 
-        public Program Assemble(Address baseAddress, TextReader rdr)
+        public Program Assemble(Address baseAddress, string filename, TextReader rdr)
         {
             this.addrBase = baseAddress;
             this.lexer = new Lexer(rdr);
@@ -584,7 +584,7 @@ namespace Reko.Arch.M68k.Assembler
         public Program AssembleFragment(Address baseAddress, string fragment)
         {
             var rdr = new StringReader(fragment);
-            return Assemble(baseAddress, rdr);
+            return Assemble(baseAddress, "", rdr);
         }
 
         public int AssembleAt(Program program, Address address, TextReader rdr)

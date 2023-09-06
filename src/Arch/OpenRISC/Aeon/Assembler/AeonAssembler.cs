@@ -27,6 +27,7 @@ using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 #pragma warning disable IDE1006
 
@@ -50,23 +51,30 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
         public AeonAssembler(
             AeonArchitecture arch,
             Address addrBase,
-            List<ImageSymbol> entryPoints)
+            List<ImageSymbol> entryPoints,
+            AssemblerDiagnostics diagnostics)
         {
             this.arch = arch;
             this.BaseAddress = addrBase;
             this.entryPoints = entryPoints;
+            this.Diagnostics = diagnostics;
             this.symbolsByName = new Dictionary<string, ImageSymbol>();
             this.Emitter = new Emitter();
             this.relocations = new();
+            this.Equates = new();
         }
 
         public Address BaseAddress { get; }
 
         public Address CurrentAddress => this.BaseAddress + this.Emitter.Size;
 
+        public AssemblerDiagnostics Diagnostics { get; }
+
         public Emitter Emitter { get; }
 
-        public void bg_andi(RegisterStorage rdst, RegisterStorage rsrc1, ImmediateOperand immop)
+        public Dictionary<string, ImmediateOperand> Equates { get; }
+
+        public void bg_andi(RegisterStorage rdst, RegisterStorage rsrc1, ParsedOperand immop)
         {
             uint opcode = 0b110001u << 26;
             opcode |= R(rdst, 21);
@@ -75,7 +83,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Emitter.EmitBeUInt32(opcode);
         }
 
-        public void bg_beqi(RegisterStorage rsrc, ImmediateOperand imm, ImmediateOperand displacement)
+        public void bg_beqi(RegisterStorage rsrc, ParsedOperand imm, ParsedOperand displacement)
         {
             uint opcode = (0b110100u << 26) | 0b010u;
             opcode |= R(rsrc, 21);
@@ -84,7 +92,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Emitter.EmitBeUInt32(opcode);
         }
 
-        public void bg_movhi(RegisterStorage rd, ImmediateOperand immop)
+        public void bg_movhi(RegisterStorage rd, ParsedOperand immop)
         {
             uint opcode = (0b110000u << 26) | 0b0001u;
             opcode |= R(rd, 21);
@@ -92,7 +100,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Emitter.EmitBeUInt32(opcode);
         }
 
-        public void bg_ori(RegisterStorage rdst, RegisterStorage rsrc1, ImmediateOperand immop)
+        public void bg_ori(RegisterStorage rdst, RegisterStorage rsrc1, ParsedOperand immop)
         {
             uint opcode = 0b110010u << 26;
             opcode |= R(rdst, 21);
@@ -128,7 +136,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             Emitter.EmitBeUInt32(opcode);
         }
 
-        public void bn_bnei(RegisterStorage reg, ImmediateOperand imm, ImmediateOperand displacement)
+        public void bn_bnei(RegisterStorage reg, ParsedOperand imm, ParsedOperand displacement)
         {
             var opcode = (0b001000u << 18) | 0b10;
             opcode |= R(reg, 13);
@@ -137,7 +145,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             EmitUInt24(opcode);
         }
 
-        public void bn_j(ImmediateOperand displacement)
+        public void bn_j(ParsedOperand displacement)
         {
             var opcode = 0b001011u << 18;
             opcode |= S(displacement, 0, 18);
@@ -153,7 +161,7 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             EmitUInt24(opcode);
         }
 
-        public void bt_addi(RegisterStorage reg, ImmediateOperand imm)
+        public void bt_addi(RegisterStorage reg, ParsedOperand imm)
         {
             var opcode = 0b100111u << 10;
             opcode |= R(reg, 5);
@@ -187,10 +195,10 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             return (uint)r.Number << bitPos;
         }
 
-        private uint S(ImmediateOperand imm, int bitPos, int bitlength)
+        private uint S(ParsedOperand imm, int bitPos, int bitlength)
         {
             var mask = Bits.Mask(bitPos, bitlength);
-            return (uint) (((uint)imm.Value.ToInt32() << bitPos) & mask);
+            return (uint) (((uint)GetIntValue(imm) << bitPos) & mask);
         }
 
         private uint S16(int value, int bitPos)
@@ -198,15 +206,15 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             return ((uint)value & 0xFFFF) << bitPos;
         }
 
-        private uint U(ImmediateOperand imm, int bitPos, int bitlength)
+        private uint U(ParsedOperand imm, int bitPos, int bitlength)
         {
             var mask = Bits.Mask(bitPos, bitlength);
-            return (uint) ((imm.Value.ToUInt32() << bitPos) & mask);
+            return (uint) ((GetUIntValue(imm) << bitPos) & mask);
         }
 
-        private uint U16(ImmediateOperand imm, int bitPos)
+        private uint U16(ParsedOperand imm, int bitPos)
         {
-            return (imm.Value.ToUInt32() & 0xFFFFu) << bitPos;
+            return (GetUIntValue(imm) & 0xFFFFu) << bitPos;
         }
 
         public Program GetImage(Address addrBase)
@@ -239,14 +247,29 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             }
         }
 
+        public void EmitByte(ParsedOperand op)
+        {
+            Emitter.EmitByte((byte) GetUIntValue(op));
+        }
+
         public void EmitWord16(uint halfword)
         {
             Emitter.EmitBeUInt16((ushort)halfword);
         }
 
+        public void EmitWord16(ParsedOperand op)
+        {
+            Emitter.EmitBeUInt16((ushort)GetUIntValue(op));
+        }
+
         public void EmitWord32(uint word)
         {
             Emitter.EmitBeUInt32(word);
+        }
+
+        public void EmitWord32(ParsedOperand op)
+        {
+            Emitter.EmitBeUInt32(GetUIntValue(op));
         }
 
         private uint ReadBeUInt24(Address address)
@@ -355,6 +378,69 @@ namespace Reko.Arch.OpenRISC.Aeon.Assembler
             var sym = ImageSymbol.Create(SymbolType.Unknown, arch, addr, name);
             entryPoints.Add(sym);
             symbolsByName.Add(name, sym);
+        }
+
+        private uint GetUIntValue(ParsedOperand op)
+        {
+            var imm = op.Immediate;
+            if (op.Identifier is not null &&
+                !Equates.TryGetValue(op.Identifier, out imm))
+            {
+                Diagnostics.Error($"Unknown symbol {op.Identifier}.");
+                return 0;
+            }
+            return imm!.Value.ToUInt32();
+        }
+
+        private int GetIntValue(ParsedOperand op)
+        {
+            var imm = op.Immediate;
+            if (op.Identifier is not null &&
+                !Equates.TryGetValue(op.Identifier, out imm))
+            {
+                Diagnostics.Error($"Unknown symbol {op.Identifier}.");
+                return 0;
+            }
+            return imm!.Value.ToInt32();
+        }
+
+        public void Align(ParsedOperand op)
+        {
+            var align = GetUIntValue(op);
+            var offset = (uint)Emitter.Position;
+            var newOffset = align * ((offset + (align - 1)) / align);
+            while (Emitter.Position < newOffset)
+            {
+                Emitter.EmitBytes(0, (int)(newOffset - Emitter.Position));
+            }
+        }
+
+        public void Equate(string label, ParsedOperand op)
+        {
+            if (string.IsNullOrEmpty(label))
+            {
+                this.Diagnostics.Error("Must have a label before .equ directive.");
+                return;
+            }
+            ImmediateOperand? imm;
+            if (op.Identifier is not null)
+            {
+                if (!Equates.TryGetValue(op.Identifier, out imm))
+                {
+                    Diagnostics.Error($"Unknown identifier '{op.Identifier}'.");
+                    return;
+                }
+            }
+            else
+            {
+                Debug.Assert(op.Immediate is not null);
+                imm = op.Immediate;
+            }
+            if (!Equates.TryAdd(label, imm))
+            {
+                Diagnostics.Error($"'{label}' redefinition.");
+                return;
+            }
         }
     }
 }

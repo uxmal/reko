@@ -119,6 +119,11 @@ namespace Reko.Core.Assemblers
             }
         }
 
+        public void EmitBytes(byte[] bytes)
+        {
+            stmOut.Write(bytes);
+        }
+
         public void EmitLeUInt32(uint l)
         {
             stmOut.WriteByte((byte) (l));

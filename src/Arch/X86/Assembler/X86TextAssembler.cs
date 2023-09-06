@@ -51,7 +51,7 @@ namespace Reko.Arch.X86.Assembler
             this.arch = arch;
         }
 
-        public Program Assemble(Address addr, TextReader rdr)
+        public Program Assemble(Address addr, string filename, TextReader rdr)
         {
             addrBase = addr;
             lexer = new Lexer(rdr);
@@ -79,7 +79,7 @@ namespace Reko.Arch.X86.Assembler
 
 		public Program AssembleFragment(Address addr, string fragment)
 		{
-			return Assemble(addr, new StringReader(fragment));
+			return Assemble(addr, "", new StringReader(fragment));
 		}
 
         public int AssembleAt(Program program, Address addr, TextReader rdr)

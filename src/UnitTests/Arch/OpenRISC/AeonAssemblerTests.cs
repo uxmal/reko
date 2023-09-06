@@ -232,5 +232,53 @@ variable:
 0010000A Nyi 000000
 0010000D Nyi 000000");
         }
+
+        [Test]
+        public void AeonAsm_Equ()
+        {
+            RoundTrip(@"
+TWO .equ 2
+    bg.ori r1,r0,TWO
+    bt.jr r2
+", @"
+00100000 bg.ori r1,r0,0x2
+00100004 bt.jr r2");
+        }
+
+        [Test]
+        public void AeonAsm_hi_lo_of_equ()
+        {
+            RoundTrip(@"
+BIGNUM .equ 0x12345678
+    bg.movhi r1,hi(BIGNUM)
+    bg.ori   r1,r1,lo(BIGNUM)
+
+    bt.jr r2
+", @"
+00100000 bg.movhi r1,0x12345678@hi
+00100004 bg.ori r1,r1,0x12345678@lo
+00100008 bt.jr r2");
+        }
+
+        [Test]
+        public void AeonAsm_align()
+        {
+            AssertAsm(@"
+    bt.jr r2
+    .align 4
+    bt.jr r2
+",
+"844900008449");
+        }
+
+        [Test]
+        public void AeonAsm_byte_string()
+        {
+            AssertAsm(@"
+NUL .equ 0
+    .byte ""Hello world!"",NUL
+",
+"48656C6C6F20776F726C642100");
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 			Program program;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                program = asm.Assemble(addrBase, rdr);
+                program = asm.Assemble(addrBase, sourceFile, rdr);
             }
             foreach (var item in asm.ImportReferences)
             {
@@ -242,9 +242,10 @@ foo		endp
 		public void AsCarryInstructions()
 		{
             Program program;
-            using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/carryinsts.asm")))
+            var filename = "Fragments/carryinsts.asm";
+            using (var rdr = new StreamReader(FileUnitTester.MapTestPath(filename)))
             {
-			    program = asm.Assemble(Address.SegPtr(0xBAC, 0), rdr);
+			    program = asm.Assemble(Address.SegPtr(0xBAC, 0), filename, rdr);
             }
 			using (FileUnitTester fut = new FileUnitTester("Arch/X86/AsCarryInstructions.txt"))
 			{
@@ -381,7 +382,7 @@ foo		endp
             Program program;
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                program = asm.Assemble(Address.SegPtr(0x0C00, 0), rdr);
+                program = asm.Assemble(Address.SegPtr(0x0C00, 0), sourceFile, rdr);
             }
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{

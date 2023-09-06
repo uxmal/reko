@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
         {
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                var program = asm.Assemble(addrBase, rdr);
+                var program = asm.Assemble(addrBase, sourceFile, rdr);
                 program.Platform = new DefaultPlatform(null, program.Architecture);
                 return program;
             }

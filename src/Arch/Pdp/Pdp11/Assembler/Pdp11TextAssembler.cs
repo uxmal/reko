@@ -49,7 +49,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
             this.Assembler = null!;
         }
 
-        public Program Assemble(Address addrBase, TextReader reader)
+        public Program Assemble(Address addrBase, string filename, TextReader reader)
         {
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
             lexer = new Lexer(reader);
@@ -69,7 +69,7 @@ namespace Reko.Arch.Pdp.Pdp11.Assembler
  
         public Program AssembleFragment(Address baseAddress, string fragment)
         {
-            return Assemble(baseAddress, new StringReader(fragment));
+            return Assemble(baseAddress, "", new StringReader(fragment));
         }
 
         public int AssembleAt(Program progra, Address addr, TextReader asm)

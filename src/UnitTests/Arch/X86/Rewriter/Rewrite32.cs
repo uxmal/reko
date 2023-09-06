@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             var asm = new X86TextAssembler(new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>()));
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
-                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program = asm.Assemble(Address.Ptr32(0x10000000), sourceFile, rdr);
                 program.Platform = new Win32Platform(services, program.Architecture);
                 program.User.Heuristics.Add("shingle");
             }

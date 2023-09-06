@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         {
             using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                var lr = asm.Assemble(baseAddress, stm);
+                var lr = asm.Assemble(baseAddress, relativePath, stm);
                 program.SegmentMap = lr.SegmentMap;
                 program.ImageMap = lr.ImageMap;
                 program.Platform = lr.Platform ?? new MsdosPlatform(sc, lr.Architecture);

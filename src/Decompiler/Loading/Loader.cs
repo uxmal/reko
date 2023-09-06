@@ -67,7 +67,7 @@ namespace Reko.Loading
 
         public Program AssembleExecutable(ImageLocation asmFileLocation, byte[] image, IAssembler asm, IPlatform platform, Address addrLoad)
         {
-            var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
+            var program = asm.Assemble(addrLoad, asmFileLocation.GetFilename(), new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = asmFileLocation.GetFilename();
             program.Location = asmFileLocation;
             program.Platform = platform;

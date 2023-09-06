@@ -286,9 +286,10 @@ movzx	ax,byte ptr [bp+4h]
                 var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
                 X86TextAssembler asm = new X86TextAssembler(arch);
                 Program lr;
-                using (var rdr = new StreamReader(FileUnitTester.MapTestPath("Fragments/fpuops.asm")))
+                var sourceFilename = "Fragments/fpuops.asm";
+                using (var rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFilename)))
                 {
-                    lr = asm.Assemble(Address.SegPtr(0xC32, 0), rdr);
+                    lr = asm.Assemble(Address.SegPtr(0xC32, 0), sourceFilename, rdr);
                 }
                 CreateDisassembler16(lr.SegmentMap.Segments.Values.First().MemoryArea);
                 foreach (X86Instruction instr in dasm)

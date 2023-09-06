@@ -283,7 +283,7 @@ namespace Reko.CmdLine
             var asm = arch.CreateAssembler(syntax);
             using (TextReader rdr = new StreamReader(filename))
             {
-                var program = asm.Assemble(addrBase, rdr);
+                var program = asm.Assemble(addrBase, filename, rdr);
                 var seg = program.SegmentMap.Segments.Values.First();
                 var binPath = Path.ChangeExtension(filename, ".bin");
                 File.WriteAllBytes(binPath, ((ByteMemoryArea) seg.MemoryArea).Bytes);

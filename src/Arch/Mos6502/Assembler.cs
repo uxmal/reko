@@ -380,7 +380,7 @@ namespace Reko.Arch.Mos6502
             }
         }
 
-        public Program Assemble(Address baseAddress, TextReader reader)
+        public Program Assemble(Address baseAddress, string filename, TextReader reader)
         {
             throw new NotImplementedException();
         }

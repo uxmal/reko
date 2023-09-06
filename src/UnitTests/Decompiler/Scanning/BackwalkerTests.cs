@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var platform = new DefaultPlatform(sc, arch);
-                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program = asm.Assemble(Address.Ptr32(0x10000000), relativePath, rdr);
                 program.Platform = platform;
             }
             var dynlinker = new Mock<IDynamicLinker>();

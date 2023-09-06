@@ -155,9 +155,8 @@ namespace Reko.UnitTests.Decompiler.Analysis
             IAssembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
+                program = asm.Assemble(Address.SegPtr(0xC00, 0), relativePath, rdr);
                 program.Platform = new MsdosPlatform(sc, arch);
-                
             }
             Rewrite(program, asm, configFile);
             return program;
@@ -178,7 +177,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             IAssembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                program = asm.Assemble(Address.SegPtr(0xC00, 0),  rdr);
+                program = asm.Assemble(Address.SegPtr(0xC00, 0), relativePath, rdr);
                 program.Platform = new MsdosPlatform(sc, arch);
             }
             Rewrite(program, asm, postLoad);
@@ -206,7 +205,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
                 {
                     platformMock.Setup(p => p.Architecture).Returns(arch);
                 }
-                program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program = asm.Assemble(Address.Ptr32(0x10000000), relativePath, rdr);
                 program.Platform = this.platform;
             }
             foreach (var item in asm.ImportReferences)
