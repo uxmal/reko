@@ -390,7 +390,7 @@ namespace Reko.Arch.OpenRISC.Aeon
             var decoder110100 = Mask(0, 3, "  opc=110100",
                 Instr(Mnemonic.bg_blesi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_bltsi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),  // guess
-                Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),   // guess
+                Instr(Mnemonic.bg_beqi__, InstrClass.ConditionalTransfer, R21, simm16_5, disp3_13),   // guess
                 Instr(Mnemonic.bg_b011i__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_b__bitseti__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess
                 Instr(Mnemonic.bg_bgtui__, InstrClass.ConditionalTransfer, R21, uimm16_5, disp3_13),  // guess

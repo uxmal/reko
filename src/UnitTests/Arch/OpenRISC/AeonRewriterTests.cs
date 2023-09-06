@@ -175,10 +175,19 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [Test]
         public void AeonRw_bg_beqi__()
         {
-            Given_HexString("D0B700CA");
-            AssertCode(     // bg.beqi?	r3,0x17,00100019
+            Given_HexString("D0A700CA");
+            AssertCode(     // bg.beqi?	r5,0x7,00100019
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (r5 == 0x17<32>) branch 00100019");
+                "1|T--|if (r5 == 7<i32>) branch 00100019");
+        }
+
+        [Test]
+        public void AeonRw_bg_beqi___negative()
+        {
+            Given_HexString("D29F24BA");
+            AssertCode(     // bg.beqi?	r20,-0x1,00100497
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (r20 == -1<i32>) branch 00100497");
         }
 
         [Test]
