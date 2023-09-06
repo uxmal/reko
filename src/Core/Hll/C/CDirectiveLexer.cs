@@ -53,7 +53,7 @@ namespace Reko.Core.Hll.C
         private readonly Dictionary<string, List<CToken>> macros;
         private readonly CLexer lexer;
         private readonly Stack<(bool prev, bool total)> ifdefs;
-        private IEnumerator<CToken>? expandedTokens;
+        private readonly Stack<IEnumerator<CToken>> expandedTokens;
         private State state;
         private bool ignoreTokens;
 
@@ -64,6 +64,7 @@ namespace Reko.Core.Hll.C
             this.macros = new();
             this.state = State.StartLine;
             this.ifdefs = new Stack<(bool, bool)>();
+            this.expandedTokens = new();
             this.ignoreTokens = false;
         }
 
@@ -134,7 +135,7 @@ namespace Reko.Core.Hll.C
                         var id = (string) token.Value!;
                         if (macros.TryGetValue(id, out var macro))
                         {
-                            this.expandedTokens = macro.GetEnumerator();
+                            this.expandedTokens.Push(macro.GetEnumerator());
                             token = ReadToken();
                             break;
                         }
@@ -241,11 +242,13 @@ namespace Reko.Core.Hll.C
 
         private CToken ReadToken()
         {
-            if (this.expandedTokens != null)
+            while (this.expandedTokens.TryPop(out var e))
             {
-                if (this.expandedTokens.MoveNext())
-                    return this.expandedTokens.Current;
-                this.expandedTokens = null;
+                if (e.MoveNext())
+                {
+                    this.expandedTokens.Push(e);
+                    return e.Current;
+                }
             }
             return lexer.Read();
         }

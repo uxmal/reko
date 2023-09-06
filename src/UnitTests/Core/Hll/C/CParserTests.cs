@@ -1675,5 +1675,25 @@ fail:
 ");
             var decl = parser.Parse()[0];
         }
+
+        [Test]
+        public void CParser_Regression4()
+        {
+            GccLex(@"
+#define SEAL_NONPM_GROUP_NUM        (24UL) //[SEAL][HAL][001] Numbers of non-PM domain groups
+#define SEAL_NONPM_GROUP_IP_NUM     (16UL) //[SEAL][HAL][002] Numbers of non-PM domain IPs in a group
+#define SEAL_NONPM_TBL_IP_NUM       (SEAL_NONPM_GROUP_NUM*SEAL_NONPM_GROUP_IP_NUM)
+
+typedef struct _SRAM_TZPC_NSGroup
+{
+    SRAM_TZPC_NSClient client[SEAL_NONPM_TBL_IP_NUM];
+} SRAM_TZPC_NSGroup;
+");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef (Struct _SRAM_TZPC_NSGroup ("+
+                "(SRAM_TZPC_NSClient) (((arr client (Star 24 16))))) " +
+                "((init-decl SRAM_TZPC_NSGroup)))",
+                           decl.ToString());
+        }
     }
 }

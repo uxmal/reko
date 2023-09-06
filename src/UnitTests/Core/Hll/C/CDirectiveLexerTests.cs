@@ -401,5 +401,20 @@ Y
             Assert.AreEqual(42, lexer.Read().Value);
             Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
         }
+
+        [Test]
+        public void CDirectiveLexer_nested_defines()
+        {
+            LexMsvc(@"
+#define A ( 3 )
+#define B ( A )
+B");
+            Assert.AreEqual(CTokenType.LParen, lexer.Read().Type);
+            Assert.AreEqual(CTokenType.LParen, lexer.Read().Type);
+            Assert.AreEqual(3, lexer.Read().Value);
+            Assert.AreEqual(CTokenType.RParen, lexer.Read().Type);
+            Assert.AreEqual(CTokenType.RParen, lexer.Read().Type);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
     }
 }
