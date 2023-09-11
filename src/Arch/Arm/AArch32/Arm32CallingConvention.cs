@@ -53,14 +53,27 @@ namespace Reko.Arch.Arm.AArch32
         {
             ccr.LowLevelDetails(4, 0);
 
+            int ncrn = 0;
             if (dtRet != null)
             {
-                SetReturnRegister(ccr, dtRet.BitSize);
+                if (dtRet.BitSize <= 32)
+                {
+                    ccr.RegReturn(argRegs[0]);
+                }
+                else if (dtRet.BitSize <= 64)
+                {
+                    ccr.SequenceReturn(argRegs[1], argRegs[0]);
+                }
+                else
+                {
+                    ccr.RegReturn(argRegs[0]);
+                    ccr.RegParam(argRegs[ncrn]);
+                    ++ncrn;
+                }
             }
 
             // The first four registers r0 - r3 are used to pass argument values into a subroutine and to return a result
             // value from a function.
-            int ncrn = 0;
 
             foreach (var dt in dtParams)
             {

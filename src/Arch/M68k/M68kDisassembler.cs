@@ -2007,7 +2007,6 @@ namespace Reko.Arch.M68k
             MachineOperand op2 = BIT_A(extension)
                 ? dasm.get_double_data_reg(extension & 7u, (uint)(extension >> 12) & 7u)
                 : (MachineOperand) get_data_reg((uint)(extension >> 12) & 7);
-            var opDecoder = new OperandFormatDecoder(dasm, 0);
             dasm.mnemonic = BIT_B(extension) ? Mnemonic.muls : Mnemonic.mulu;
             dasm.dataWidth = PrimitiveType.Word32;
 
