@@ -23,8 +23,10 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Hll.C;
 using Reko.Core.Loading;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
@@ -35,11 +37,41 @@ namespace Reko.UnitTests.Core.Loading
     public class CHeaderLoaderTests
     {
         private Mock<IPlatform> platform = default!;
+        private TestCallingConvention testCc;
 
         [SetUp]
         public void Setup()
         {
             this.platform = default!;
+            this.testCc = new TestCallingConvention();
+        }
+
+        private class TestCallingConvention : CallingConvention
+        {
+            public void Generate(ICallingConventionEmitter ccr, int retAddressOnStack, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+            {
+                ccr.LowLevelDetails(4, 4);
+                int i = 0;
+                foreach (var dtParam in dtParams)
+                {
+                    var reg = new RegisterStorage($"r{i}", i, 0, PrimitiveType.CreateWord(dtParam.BitSize));
+                    ccr.RegParam(reg);
+                }
+                if (dtRet is not null)
+                {
+                    ccr.RegReturn(new RegisterStorage($"r{i}", i, 0, PrimitiveType.CreateWord(dtRet.BitSize)));
+                }
+            }
+
+            public bool IsArgument(Storage stg)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool IsOutArgument(Storage stg)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private byte[] Given_File(string filecontents)
@@ -95,6 +127,23 @@ namespace Reko.UnitTests.Core.Loading
 
             Assert.IsTrue(typelib.Characteristics.TryGetValue("exit", out var chr));
             Assert.IsTrue(chr.Terminates);
+        }
+
+        [Test]
+        public void Chl_function_typedef()
+        {
+            Given_Platform();
+            platform.Setup(p => p.GetCallingConvention(It.IsAny<string>())).Returns(testCc);
+            var file = Given_File(@"
+typedef int fn(int);
+int caller(fn thing_to_call);
+");
+            var sc = new ServiceContainer();
+            var chl = new CHeaderLoader(sc, ImageLocation.FromUri("file:foo.inc"), file);
+            var typelib = chl.Load(platform.Object, new TypeLibrary());
+
+            var caller = typelib.Signatures["caller"];
+            Assert.AreEqual("(fn int32 ((ptr32 (fn int32 (int32)))))", typelib.Signatures["caller"].ToString());
         }
     }
 }

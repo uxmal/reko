@@ -446,7 +446,12 @@ namespace Reko.Core
             var members = enumType.Values != null
                 ? enumType.Values.ToSortedList(k => k.Name!, v => (long)v.Value)
                 : new SortedList<string, long>();
-            return new EnumType(enumType.Name!, enumType.Size, members);
+            int size = enumType.Size;
+            if (size == 0)
+            {
+                size = platform.Architecture.WordWidth.Size;
+            }
+            return new EnumType(enumType.Name!, size, members);
         }
 
         DataType ISerializedTypeVisitor<DataType>.VisitTemplate(SerializedTemplate sTemplate)

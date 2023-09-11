@@ -19,13 +19,11 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
-using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.Linq;
-using Reko.Core.Machine;
 
 namespace Reko.Core.Serialization
 {
@@ -155,7 +153,7 @@ namespace Reko.Core.Serialization
                 var dtParameters = ss.Arguments != null
                     ? ss.Arguments
                         .TakeWhile(p => p.Name != "...")
-                        .Select(p => p.Type!.Accept(TypeLoader))
+                        .Select(DeserializeParameter)
                         .ToList()
                     : new List<DataType>();
 
@@ -217,6 +215,19 @@ namespace Reko.Core.Serialization
             }
         }
 
+        private DataType DeserializeParameter(Argument_v1 parameter, int arg2)
+        {
+            var dtParam = parameter.Type!.Accept(TypeLoader);
+            if (dtParam is TypeReference tref && tref.Referent is FunctionType)
+            {
+                // A declaration of a parameter as “function returning type”
+                // shall be adjusted to “pointer to function returning type”,
+                // as in 6.3.2.1.
+                return new Pointer(tref.Referent, platform.PointerType.BitSize);
+            }
+            return dtParam;
+        }
+
         /// <summary>
         /// If the user has specified the storage on all parameters, and the
         /// return value, no heed is taken of any calling convention.
@@ -235,7 +246,7 @@ namespace Reko.Core.Serialization
             return true;
         }
 
-        private string GenerateParameterName(string? name, DataType dataType, Storage storage)
+        private static string GenerateParameterName(string? name, DataType dataType, Storage storage)
         {
             if (!string.IsNullOrEmpty(name))
                 return name!;

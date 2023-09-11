@@ -1695,5 +1695,15 @@ typedef struct _SRAM_TZPC_NSGroup
                 "((init-decl SRAM_TZPC_NSGroup)))",
                            decl.ToString());
         }
+
+        [Test]
+        public void CParser_TypedefOfFunction()
+        {
+            MsvcLex(@"typedef int pfn(int);");
+
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl Typedef Int ((init-decl (func pfn ((Int ))))))",
+                decl.ToString());
+        }
     }
 }
