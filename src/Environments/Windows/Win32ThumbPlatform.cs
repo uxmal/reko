@@ -222,9 +222,6 @@ namespace Reko.Environments.Windows
 
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
-            if (addrInstr.Offset == 0x116B0)
-                _ = this; //$DEBUG
-
             var trampInstrs = instrs.Take(2).ToArray();
             if (trampInstrs.Length != 2)
                 return null;
@@ -248,8 +245,6 @@ namespace Reko.Environments.Windows
                 if (proc is not null)
                     return proc;
                 return host.GetInterceptedCall(this.Architecture, addrTarget);
-
-                _ = this; //$DEBUG
             }
             return null;
         }

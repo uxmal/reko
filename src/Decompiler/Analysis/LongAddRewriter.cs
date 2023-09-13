@@ -359,8 +359,6 @@ namespace Reko.Analysis
                 loInstr = MatchNegation(block.Statements[i]);
                 if (loInstr is not null)
                 {
-                    if (block.Address.Offset == 0x1780)
-                        _ = this; //$DEBUG
                     var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!) ??
                                FindConditionOfNeg(loInstr.Left);
                     if (cond is null)

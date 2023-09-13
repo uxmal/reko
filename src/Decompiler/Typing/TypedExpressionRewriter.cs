@@ -297,7 +297,8 @@ namespace Reko.Typing
             else
             {
                 this.basePtr = null;
-                ea = Rewrite(access.EffectiveAddress, access.DataType);
+                var dt = DataTypeOf(access);
+                ea = Rewrite(access.EffectiveAddress, dt);
             }
             this.basePtr = oldBase;
             return ea;
