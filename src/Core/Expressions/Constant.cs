@@ -350,10 +350,8 @@ namespace Reko.Core.Expressions
                     return ToFloat() < 0.0F;
                 else if (p == PrimitiveType.Real64)
                     return ToDouble() < 0.0;
-                else if (p.Domain == Domain.Pointer)
+                else 
                     return false;
-                else
-                    throw new InvalidOperationException(string.Format("Type {0} can't be negative", DataType));
             }
         }
 
