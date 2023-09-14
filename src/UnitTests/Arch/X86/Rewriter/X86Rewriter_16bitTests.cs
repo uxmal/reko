@@ -166,8 +166,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             AssertCode(
                 "0|L--|0C00:0000(2): 4 instructions",
                 "1|L--|v6 = dx_ax",
-                "2|L--|dx = CONVERT(v6 %u cx, word32, uint16)",
-                "3|L--|ax = CONVERT(v6 /u cx, word16, uint16)",
+                "2|L--|dx = v6 %u cx",
+                "3|L--|ax = v6 /u cx",
                 "4|L--|SCZO = cond(ax)");
         }
 
@@ -281,8 +281,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             AssertCode(
                     "0|L--|0C00:0000(2): 4 instructions",
                     "1|L--|v6 = dx_ax",
-                    "2|L--|dx = CONVERT(v6 %s cx, word32, int16)",
-                    "3|L--|ax = CONVERT(v6 /16 cx, word16, int16)",
+                    "2|L--|dx = v6 %s cx",
+                    "3|L--|ax = v6 /16 cx",
                     "4|L--|SCZO = cond(ax)");
         }
 

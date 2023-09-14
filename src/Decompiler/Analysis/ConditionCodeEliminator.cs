@@ -622,7 +622,7 @@ namespace Reko.Analysis
 			Expression e;
             if (bin.Operator.Type == OperatorType.ISub || bin.Operator.Type == OperatorType.FSub)
             {
-                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
+                e = m.Bin(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
             }
             else
             {
@@ -639,7 +639,7 @@ namespace Reko.Analysis
                     var pt = bin.Left.DataType.ResolveAs<PrimitiveType>();
                     zero = Constant.Zero(pt!);
                 }
-                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, zero);
+                e = m.Bin(cmpOp, PrimitiveType.Bool, bin, zero);
             }
 			return e;
 		}

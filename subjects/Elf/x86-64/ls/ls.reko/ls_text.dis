@@ -135,7 +135,7 @@ l000000000040322C:
 	word64 rax_482 = 1<u64>
 	branch rdx_480 >u 2<64> l00000000004037FB
 l00000000004037FB:
-	rax_482 = CONVERT(CONVERT(rdx_480, word64, uint128) /u 3<u64>, word64, uint64)
+	rax_482 = CONVERT(rdx_480, word64, uint128) /u 3<u64>
 l0000000000403242:
 	Mem502[0x000000000061B020<p64>:word64] = rax_482
 	word64 rax_503 = fn000000000040E600(0<u64>)
@@ -1625,7 +1625,7 @@ l000000000040526B:
 	branch rcx_18 != 0<64> l0000000000405220
 l0000000000405220:
 	word64 rsi_28 = rbx_13 + 1<i64>
-	branch CONVERT(CONVERT(rsi, word64, uint128) /u rcx_18, word64, uint64) <=u CONVERT(CONVERT(rsi_28, word64, uint128) /u rcx_18, word64, uint64) l00000000004052A8
+	branch CONVERT(rsi, word64, uint128) /u rcx_18 <=u CONVERT(rsi_28, word64, uint128) /u rcx_18 l00000000004052A8
 l00000000004052A8:
 	rbx_13 = rsi_28
 l000000000040523C:
@@ -1639,7 +1639,7 @@ l000000000040524D:
 	Mem53[rdi_44 + 40<i64>:word64] = rax_45 + 1<i64>
 	Mem54[rax_45:byte] = 9<8>
 l0000000000405258:
-	rbx_13 = rbx_13 + rcx_18 - CONVERT(CONVERT(rbx_13, word64, uint128) %u rcx_18, word128, uint64)
+	rbx_13 = rbx_13 + rcx_18 - CONVERT(rbx_13, word64, uint128) %u rcx_18
 l0000000000405277:
 	rbx_13 = rbx_13 + 1<64>
 l000000000040527B:
@@ -2195,7 +2195,7 @@ l0000000000405F44:
 	word64 rcx_82 = rsi_79 *s rdi_80
 	branch rbp_50 >u rsi_79 l000000000040619D
 l0000000000405F66:
-	branch rsi_79 != CONVERT(CONVERT(rcx_82, word64, uint128) /u rdi_80, word64, uint64) l000000000040619D
+	branch rsi_79 != CONVERT(rcx_82, word64, uint128) /u rdi_80 l000000000040619D
 l0000000000405F77:
 	branch rcx_82 >>u 1<64> >u 0x1FFFFFFFFFFFFFFF<64> l000000000040619D
 l000000000040619D:
@@ -2256,9 +2256,9 @@ l00000000004060B3:
 	word64 r10_239
 	branch r12b_215 != 0<8> l0000000000406050
 l0000000000406050:
-	r10_239 = CONVERT(CONVERT(rbp_168, word64, uint128) /u CONVERT(CONVERT((r14_201 - 1<i64>) + rcx_585, word64, uint128) /u rcx_585, word64, uint64), word64, uint64)
+	r10_239 = CONVERT(rbp_168, word64, uint128) /u (CONVERT((r14_201 - 1<i64>) + rcx_585, word64, uint128) /u rcx_585)
 l00000000004060B8:
-	r10_239 = CONVERT(CONVERT(rbp_168, word64, uint128) %u rcx_585, word128, uint64)
+	r10_239 = CONVERT(rbp_168, word64, uint128) %u rcx_585
 l000000000040606A:
 	word64 rax_265 = Mem209[rsi_204 + 16<i64>:word64] + r10_239 * 8<64>
 	word64 rdx_261 = rax_186 + CONVERT(CONVERT(r9_212 != r10_239, bool, int8), int8, uint64) * 2<64>
@@ -2679,7 +2679,7 @@ l0000000000406781:
 l00000000004067A0:
 	fn0000000000406400()
 	rcx_1039 = Mem783[0x000000000061B0C8<p64>:word64]
-	branch CONVERT(CONVERT(rcx, word64, uint128) /u rcx_1039, word64, uint64) == CONVERT(CONVERT((rbp_683 - 1<i64>) + rcx, word64, uint128) /u rcx_1039, word64, uint64) l000000000040678B
+	branch CONVERT(rcx, word64, uint128) /u rcx_1039 == CONVERT((rbp_683 - 1<i64>) + rcx, word64, uint128) /u rcx_1039 l000000000040678B
 l00000000004067C6:
 	fn0000000000406440(0x61A550<u64>, out rcx_1039)
 l000000000040678B:
@@ -3252,7 +3252,7 @@ l0000000000407A48:
 	word64 rcx_222 = rax_186
 	branch Mem196[0x000000000061B1B0<p64>:word64] >u 1<64> l0000000000407B0D
 l0000000000407B0D:
-	word64 rdx_231 = CONVERT(CONVERT(rbx_206, word64, uint128) %u rax_166, word128, uint64)
+	word64 rdx_231 = CONVERT(rbx_206, word64, uint128) %u rax_166
 	branch rdx_231 == 0<64> l0000000000407AB0
 l0000000000407AB0:
 	word64 rdi_239 = Mem238[0x000000000061A610<p64>:word64]
@@ -3291,7 +3291,7 @@ l0000000000407CDA:
 	word64 rax_360 = fn0000000000405ED0(1<32>, fs)
 	word128 rdx_rax_376 = CONVERT(Mem25[0x000000000061B1B0<p64>:word64], word64, uint128)
 	word64 r15_372 = Mem25[0x000000000061B028<p64>:word64] - 24<i64> + rax_360 * 0x18<64>
-	word64 rdx_385 = CONVERT(CONVERT(rdx_rax_376 %u rax_360, word128, uint64) != 0<64>, bool, uint64) + CONVERT(rdx_rax_376 /u rax_360, word64, uint64)
+	word64 rdx_385 = CONVERT(rdx_rax_376 %u rax_360 != 0<64>, bool, uint64) + rdx_rax_376 /u rax_360
 	branch rdx_385 == 0<64> l0000000000407A38
 l0000000000407D1A:
 	word64 qwLoc40_705 = 0<64>
@@ -4695,9 +4695,9 @@ l000000000040AC21:
 	branch rsi_29 <u rdi_11 l000000000040AC10
 l000000000040AC10:
 	r8_27 = r8_27 + 8<64>
-	branch CONVERT(CONVERT(rdi_11, word64, uint128) %u rcx_17, word128, uint64) == 0<64> l000000000040AC3A
+	branch CONVERT(rdi_11, word64, uint128) %u rcx_17 == 0<64> l000000000040AC3A
 l000000000040AC2D:
-	branch CONVERT(CONVERT(rdi_11, word64, uint128) %u rcx_17, word128, uint64) != 0<64> l000000000040AC44
+	branch CONVERT(rdi_11, word64, uint128) %u rcx_17 != 0<64> l000000000040AC44
 l000000000040AC3A:
 	rdi_11 = rdi_11 + 2<64>
 	branch rdi_11 != 0xFFFFFFFFFFFFFFFF<64> l000000000040ABE0
@@ -5499,13 +5499,13 @@ l000000000040C0E0:
 	branch rcx == 0<64> l000000000040BE59
 l000000000040C0E9:
 	word128 rdx_rax_111 = CONVERT(r8, word64, uint128)
-	word64 rax_114 = CONVERT(rdx_rax_111 /u rcx, word64, uint64)
-	branch CONVERT(rdx_rax_111 %u rcx, word128, uint64) != 0<64> l000000000040BE59
+	word64 rax_114 = rdx_rax_111 /u rcx
+	branch rdx_rax_111 %u rcx != 0<64> l000000000040BE59
 l000000000040C0FF:
 	word128 rdx_rax_125 = CONVERT(rdi, word64, uint128)
-	word128 rdx_rax_134 = CONVERT(CONVERT(rdx_rax_125 %u rax_114, word128, uint64) * 0xA<64>, word64, uint128)
-	r10_130 = CONVERT(rdx_rax_125 /u rax_114, word64, uint64)
-	word64 rdx_136 = CONVERT(rdx_rax_134 %u rax_114, word128, uint64)
+	word128 rdx_rax_134 = CONVERT(rdx_rax_125 %u rax_114 * 0xA<64>, word64, uint128)
+	r10_130 = rdx_rax_125 /u rax_114
+	word64 rdx_136 = rdx_rax_134 %u rax_114
 	rdi_141 = CONVERT(SLICE(rdx_rax_134 /u rax_114, word32, 0), word32, uint64)
 	branch rax_114 <=u rdx_136 * 2<64> l000000000040C6E0
 l000000000040C6E0:
@@ -5514,11 +5514,11 @@ l000000000040C125:
 	ecx_153 = CONVERT(CONVERT(rdx_136 * 2<64> != 0<64>, bool, int8), int8, uint32) (alias)
 l000000000040BE43:
 	word128 rdx_rax_165 = CONVERT(rcx, word64, uint128)
-	word64 rax_168 = CONVERT(rdx_rax_165 /u r8, word64, uint64)
-	branch CONVERT(rdx_rax_165 %u r8, word128, uint64) == 0<64> l000000000040C2F0
+	word64 rax_168 = rdx_rax_165 /u r8
+	branch rdx_rax_165 %u r8 == 0<64> l000000000040C2F0
 l000000000040C2F0:
 	r10_130 = rax_168 *s rdi
-	branch CONVERT(CONVERT(r10_130, word64, uint128) /u rax_168, word64, uint64) != rdi l000000000040BE59
+	branch CONVERT(r10_130, word64, uint128) /u rax_168 != rdi l000000000040BE59
 l000000000040C308:
 	ecx_153 = 0<32> (alias)
 	rdi_141 = 0<64> (alias)
@@ -5540,11 +5540,11 @@ l000000000040C153:
 	ebx_1345 = 0<32> (alias)
 l000000000040C17D:
 	word128 rdx_rax_232 = CONVERT(r10_130, word64, uint128)
-	word64 rdx_235 = CONVERT(rdx_rax_232 %u rsi_209, word128, uint64)
+	word64 rdx_235 = rdx_rax_232 %u rsi_209
 	word64 edx_eax_254 = CONVERT(SLICE(rdi_1576, word32, 0) + (SLICE(rdx_235, word32, 0) + SLICE(rdx_235, word32, 0) * 4<32>) * 2<32>, word32, uint64)
-	word32 eax_258 = CONVERT(edx_eax_254 /u v24_62, word32, uint32)
-	word32 edx_257 = CONVERT(edx_eax_254 %u v24_62, word64, uint32)
-	word64 rax_236 = CONVERT(rdx_rax_232 /u rsi_209, word64, uint64)
+	word32 eax_258 = edx_eax_254 /u v24_62
+	word32 edx_257 = edx_eax_254 %u v24_62
+	word64 rax_236 = rdx_rax_232 /u rsi_209
 	word64 rdi_264 = CONVERT(eax_258, word32, uint64)
 	word32 r14d_265 = (ecx_153 >> 1<32>) + edx_257 * 2<32>
 	r10_130 = rax_236
@@ -9447,7 +9447,7 @@ l0000000000411077:
 	rdx_1292 = 0<64> (alias)
 l000000000041107F:
 	word64 rdi_265 = CONVERT(eax_261, word32, int64)
-	word64 rax_272 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_265, word64, uint64)
+	word64 rax_272 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_265
 	word32 esi_303 = 7<32>
 	word32 edx_277 = 0<32>
 l00000000004110A6:
@@ -9466,7 +9466,7 @@ l000000000041109E:
 	branch esi_303 == 0<32> l0000000000411038
 l00000000004110BA:
 	word64 rdi_309 = CONVERT(eax_261, word32, int64)
-	word64 rax_316 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_309, word64, uint64)
+	word64 rax_316 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_309
 	word32 esi_347 = 8<32>
 	word32 edx_321 = 0<32>
 l00000000004110E5:
@@ -9485,7 +9485,7 @@ l00000000004110D9:
 	branch esi_347 == 0<32> l0000000000411038
 l00000000004110F9:
 	word64 rsi_354 = CONVERT(eax_261, word32, int64)
-	word64 rax_361 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rsi_354, word64, uint64)
+	word64 rax_361 = 0x0FFFFFFFFFFFFFFFF<u128> /u rsi_354
 	word32 edi_392 = 4<32>
 	word32 edx_366 = 0<32>
 l000000000041110F:
@@ -9505,7 +9505,7 @@ l000000000041111F:
 l0000000000411127:
 l000000000041112C:
 	word64 rsi_398 = CONVERT(eax_261, word32, int64)
-	word64 rax_405 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rsi_398, word64, uint64)
+	word64 rax_405 = 0x0FFFFFFFFFFFFFFFF<u128> /u rsi_398
 	word32 edi_436 = 5<32>
 	word32 edx_410 = 0<32>
 l0000000000411157:
@@ -9524,7 +9524,7 @@ l000000000041114B:
 	branch edi_436 == 0<32> l0000000000411038
 l000000000041116B:
 	rdi_444 = CONVERT(eax_261, word32, int64)
-	word64 rax_451 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_444, word64, uint64)
+	word64 rax_451 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_444
 	branch rbx_117 >u rax_451 l00000000004112A3
 l0000000000411186:
 	rbx_117 = rbx_117 *s rdi_444
@@ -9534,7 +9534,7 @@ l00000000004112A3:
 	rdx_1292 = 1<64> (alias)
 l000000000041119E:
 	rdi_444 = CONVERT(eax_261, word32, int64)
-	branch rbx_117 <=u CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_444, word64, uint64) l0000000000411193
+	branch rbx_117 <=u 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_444 l0000000000411193
 l0000000000411193:
 	rbx_117 = rbx_117 *s rdi_444
 	rdx_1292 = 0<64> (alias)
@@ -9543,7 +9543,7 @@ l00000000004111B5:
 	rdx_1292 = 1<64> (alias)
 l000000000041121B:
 	word64 rsi_488 = CONVERT(eax_261, word32, int64)
-	word64 rax_495 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rsi_488, word64, uint64)
+	word64 rax_495 = 0x0FFFFFFFFFFFFFFFF<u128> /u rsi_488
 	word32 edi_526 = 3<32>
 	word32 edx_500 = 0<32>
 l0000000000411231:
@@ -9563,7 +9563,7 @@ l000000000041123D:
 l0000000000411245:
 l00000000004111C2:
 	word64 rdi_532 = CONVERT(eax_261, word32, int64)
-	word64 rax_539 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_532, word64, uint64)
+	word64 rax_539 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_532
 	word32 esi_570 = 6<32>
 	word32 edx_544 = 0<32>
 l00000000004111ED:
@@ -9762,7 +9762,7 @@ l000000000041154F:
 	rdx_1294 = 0<64> (alias)
 l0000000000411557:
 	word64 rdi_267 = CONVERT(eax_263, word32, int64)
-	word64 rax_274 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_267, word64, uint64)
+	word64 rax_274 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_267
 	word32 esi_305 = 7<32>
 	word32 edx_279 = 0<32>
 l000000000041157E:
@@ -9781,7 +9781,7 @@ l0000000000411576:
 	branch esi_305 == 0<32> l0000000000411510
 l0000000000411592:
 	word64 rdi_311 = CONVERT(eax_263, word32, int64)
-	word64 rax_318 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_311, word64, uint64)
+	word64 rax_318 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_311
 	word32 esi_349 = 8<32>
 	word32 edx_323 = 0<32>
 l00000000004115BD:
@@ -9800,7 +9800,7 @@ l00000000004115B1:
 	branch esi_349 == 0<32> l0000000000411510
 l00000000004115D1:
 	word64 rsi_356 = CONVERT(eax_263, word32, int64)
-	word64 rax_363 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rsi_356, word64, uint64)
+	word64 rax_363 = 0x0FFFFFFFFFFFFFFFF<u128> /u rsi_356
 	word32 edi_394 = 4<32>
 	word32 edx_368 = 0<32>
 l00000000004115E7:
@@ -9820,7 +9820,7 @@ l00000000004115F7:
 l00000000004115FF:
 l0000000000411604:
 	word64 rsi_400 = CONVERT(eax_263, word32, int64)
-	word64 rax_407 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rsi_400, word64, uint64)
+	word64 rax_407 = 0x0FFFFFFFFFFFFFFFF<u128> /u rsi_400
 	word32 edi_438 = 5<32>
 	word32 edx_412 = 0<32>
 l000000000041162F:
@@ -9839,7 +9839,7 @@ l0000000000411623:
 	branch edi_438 == 0<32> l0000000000411510
 l0000000000411643:
 	rdi_446 = CONVERT(eax_263, word32, int64)
-	word64 rax_453 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_446, word64, uint64)
+	word64 rax_453 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_446
 	branch rbx_119 >u rax_453 l000000000041177B
 l000000000041165E:
 	rbx_119 = rbx_119 *s rdi_446
@@ -9849,7 +9849,7 @@ l000000000041177B:
 	rdx_1294 = 1<64> (alias)
 l0000000000411676:
 	rdi_446 = CONVERT(eax_263, word32, int64)
-	branch rbx_119 <=u CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_446, word64, uint64) l000000000041166B
+	branch rbx_119 <=u 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_446 l000000000041166B
 l000000000041166B:
 	rbx_119 = rbx_119 *s rdi_446
 	rdx_1294 = 0<64> (alias)
@@ -9858,7 +9858,7 @@ l000000000041168D:
 	rdx_1294 = 1<64> (alias)
 l00000000004116F3:
 	word64 rsi_490 = CONVERT(eax_263, word32, int64)
-	word64 rax_497 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rsi_490, word64, uint64)
+	word64 rax_497 = 0x0FFFFFFFFFFFFFFFF<u128> /u rsi_490
 	word32 edi_528 = 3<32>
 	word32 edx_502 = 0<32>
 l0000000000411709:
@@ -9878,7 +9878,7 @@ l0000000000411715:
 l000000000041171D:
 l000000000041169A:
 	word64 rdi_534 = CONVERT(eax_263, word32, int64)
-	word64 rax_541 = CONVERT(0x0FFFFFFFFFFFFFFFF<u128> /u rdi_534, word64, uint64)
+	word64 rax_541 = 0x0FFFFFFFFFFFFFFFF<u128> /u rdi_534
 	word32 esi_572 = 6<32>
 	word32 edx_546 = 0<32>
 l00000000004116C5:

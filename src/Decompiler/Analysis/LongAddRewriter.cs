@@ -624,10 +624,10 @@ namespace Reko.Analysis
                 if (!IsCarryFlag(m.CapturedExpression("cf")))
                     return null;
                 var op = m.CapturedOperator("op2");
-                if (op is not BinaryOperator binOp || !binOp.Type.IsAddOrSub())
+                if (op is not BinaryOperator binop || !binop.Type.IsAddOrSub())
                     return null;
                 return new Candidate(
-                    binOp,
+                    binop,
                     m.CapturedExpression("left")!,
                     m.CapturedExpression("right")!)
                 {
@@ -640,7 +640,7 @@ namespace Reko.Analysis
             {
                 if (!IsCarryFlag(m.CapturedExpression("right")))
                     return null;
-                var op = m.CapturedOperator("op");
+                var op = m.CapturedOperator("op") as BinaryOperator;
                 if (op is not BinaryOperator binOp|| !binOp.Type.IsAddOrSub())
                     return null;
                 var dst = m.CapturedExpression("dst")!;
@@ -675,7 +675,6 @@ namespace Reko.Analysis
         ///     add r1,r2
         ///     adc r3
         ///     add r3,r4
-        /// On entry we 
         /// </remarks>
         private Candidate? IsPdp11StyleAdcSbc(BinaryOperator op, Expression dst, Expression left)
         {
@@ -688,7 +687,7 @@ namespace Reko.Analysis
                 if (m.Success)
                 {
                     var dstFinal = m.CapturedExpression("dst");
-                    var opFinal = m.CapturedOperator("op");
+                    var opFinal = (BinaryOperator?) m.CapturedOperator("op");
                     var leftFinal = m.CapturedExpression("left");
                     var rightFinal = m.CapturedExpression("right")!;
                     if (leftFinal == idIntermediate && op == opFinal)
@@ -709,7 +708,7 @@ namespace Reko.Analysis
             var m = addPattern.Match(stm.Instruction);
             if (!m.Success)
                 return null;
-            var op = m.CapturedOperator("op")!;
+            var op = (BinaryOperator) m.CapturedOperator("op")!;
             if (!op.Type.IsAddOrSub())
                 return null;
             return new Candidate(

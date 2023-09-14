@@ -21,8 +21,10 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Dynamic;
 using System.Numerics;
 
 namespace Reko.Arch.X86.Rewriter
@@ -431,7 +433,7 @@ namespace Reko.Arch.X86.Rewriter
             VexAssign(isVex, dst, m.Fn(intrinsic, m.Slice(src, dt)));
         }
 
-        private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size, bool zeroExtend)
+        private void RewriteScalarBinop(BinaryOperator fn, PrimitiveType size, bool zeroExtend)
         {
             var dst = SrcOp(0);
             var tmp = binder.CreateTemporary(size);
@@ -451,7 +453,7 @@ namespace Reko.Arch.X86.Rewriter
                 src1 = m.Slice(src1, size);
             if (src2.DataType.BitSize != size.BitSize)
                 src2 = m.Slice(src2, size);
-            m.Assign(tmp, fn(src1, src2));
+            m.Assign(tmp, m.Bin(fn, src1, src2));
 
             //$REVIEW: this does a DPB-ish operation.
             var highBits = dst.DataType.BitSize - size.BitSize;

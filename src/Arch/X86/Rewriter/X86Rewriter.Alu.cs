@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -69,15 +70,19 @@ namespace Reko.Arch.X86.Rewriter
                             orw.AddrOf(orw.AluRegister(Registers.ah))));
         }
 
-        public void RewriteAdcSbb(Func<Expression, Expression, Expression> opr)
+        public void RewriteAdcSbb(BinaryOperator opr)
         {
+            //$REVIEW adc
+
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = binder.EnsureFlagGroup(Registers.C);
             EmitCopy(
                 0,
-                opr(
-                    opr(
+                m.Bin(
+                    opr,
+                    m.Bin(
+                        opr,
                         SrcOp(0),
                         SrcOp(1, instrCur.Operands[0].Width)),
                     c),
@@ -86,6 +91,7 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteAdcx(FlagGroupStorage carry)
         {
+            //$REVIEW: adc
             var cy = binder.EnsureFlagGroup(carry);
             var dst = SrcOp(0);
             m.Assign(
@@ -105,7 +111,7 @@ namespace Reko.Arch.X86.Rewriter
         /// <param name="i"></param>
         /// <param name="next"></param>
         /// <returns></returns>
-        public void RewriteAddSub(Func<Expression,Expression,Expression> op)
+        public void RewriteAddSub(BinaryOperator op)
         {
             EmitBinOp(
                 op,
@@ -114,6 +120,18 @@ namespace Reko.Arch.X86.Rewriter
                 SrcOp(0),
                 SrcOp(1),
                 CopyFlags.EmitCc);
+        }
+
+        public void RewriteAnd()
+        {
+            if (instrCur.Operands[0] is RegisterStorage r &&
+                r == arch.StackRegister &&
+                instrCur.Operands[1] is ImmediateOperand)
+            {
+                m.SideEffect(m.Fn(alignStack_intrinsic.MakeInstance(r.Width), SrcOp(0)));
+                return;
+            }
+            RewriteLogical(Operator.And);
         }
 
         private void RewriteArpl()
@@ -243,7 +261,7 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(edx_eax, m.Fn(rdtscp_intrinsic, m.Out(arch.PointerType, ecx)));
         }
 
-        public void RewriteBinOp(Func<Expression,Expression,Expression> opr)
+        public void RewriteBinOp(BinaryOperator opr)
         {
             int iOp = (instrCur.Operands.Length == 3) ? 1 : 0;
             var opL = SrcOp(iOp++);
@@ -344,7 +362,6 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(
                 rdx_rax,
                 m.Convert(orw.AluRegister(Registers.rax), PrimitiveType.Int64, PrimitiveType.Int128));
-
         }
 
         private void RewriteCwd()
@@ -364,18 +381,30 @@ namespace Reko.Arch.X86.Rewriter
                 m.Convert(orw.AluRegister(Registers.ax), PrimitiveType.Int16, PrimitiveType.Int32));
         }
 
-        public Expression EmitBinOp(Func<Expression,Expression,Expression> binOp, int iOpDst, DataType dtDst, Expression left, Expression right, CopyFlags flags = 0)
+        public Expression EmitBinOp(BinaryOperator binOp, int iOpDst, DataType dtDst, Expression left, Expression right, CopyFlags flags = 0)
         {
-            if (right is Constant c)
+            right = SignExtendConstant(right, left.DataType);
+            var bin = m.Bin(binOp, dtDst, left, right);
+            return EmitCopy(iOpDst, bin, flags);
+        }
+
+        public Expression EmitBinOp(Func<Expression, Expression, Expression> fn, int iOpDst, DataType dtDst, Expression left, Expression right, CopyFlags flags = 0)
+        {
+            right = SignExtendConstant(right, left.DataType);
+            var bin = fn(left, right);
+            return EmitCopy(iOpDst, bin, flags);
+        }
+
+        private Expression SignExtendConstant(Expression exp, DataType dt)
+        {
+            if (exp is Constant c)
             {
-                if (c.DataType.BitSize  < left.DataType.BitSize)
+                if (c.DataType.BitSize < dt.BitSize)
                 {
-                    right = m.Const(left.DataType, c.ToInt64());
+                    exp = m.Const(dt, c.ToInt64());
                 }
             }
-            var bin = binOp(left, right);
-            bin.DataType = dtDst;
-            return EmitCopy(iOpDst, bin, flags);
+            return exp;
         }
 
         /// <summary>
@@ -389,6 +418,13 @@ namespace Reko.Arch.X86.Rewriter
             if (defFlags is null)
                 return;
             m.Assign(binder.EnsureFlagGroup(defFlags), new ConditionOf(expr.CloneExpression()));
+        }
+
+        private void EmitLogicalFlags(Expression result)
+        {
+            EmitCcInstr(result, Registers.SZ);
+            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
         private void RewriteConditionalMove(ConditionCode cc, MachineOperand dst, MachineOperand src)
@@ -454,8 +490,8 @@ namespace Reko.Arch.X86.Rewriter
         }
 
         private void RewriteDivide(
-            Func<Expression, Expression, Expression> div,
-            Func<Expression, Expression, Expression> rem,
+            BinaryOperator div,
+            BinaryOperator rem,
             Domain domain)
         {
             if (instrCur.Operands.Length != 1)
@@ -492,15 +528,12 @@ namespace Reko.Arch.X86.Rewriter
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
             var tmp = binder.CreateTemporary(regDividend.DataType);
             m.Assign(tmp, regDividend);
-            var r = rem(tmp, SrcOp(0));
             var divisor = SrcOp(0);
-            var q = div(tmp, divisor);
-            m.Assign(
-                regRemainder,
-                m.Convert(r, r.DataType, p));
-            m.Assign(
-                regQuotient,
-                m.Convert(q, q.DataType, p));
+            var r = m.Bin(rem, p, tmp, divisor);
+            divisor = SrcOp(0);
+            var q = m.Bin(div, p, tmp, divisor);
+            m.Assign(regRemainder, r);
+            m.Assign(regQuotient, q);
             EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.Mnemonic));
         }
 
@@ -529,10 +562,10 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteIncDec(int amount)
         {
-            Func<Expression,Expression,Expression> op = m.IAdd;
+            var op = Operator.IAdd;
             if (amount < 0)
             {
-                op= m.ISub;
+                op = Operator.ISub;
                 amount = -amount;
             }
 
@@ -549,18 +582,8 @@ namespace Reko.Arch.X86.Rewriter
             m.SideEffect(m.Fn(lock_intrinsic));
         }
 
-        private void RewriteLogical(Func<Expression,Expression,Expression> op)
+        private void RewriteLogical(BinaryOperator op)
         {
-            if (instrCur.Mnemonic == Mnemonic.and)
-            {
-                if (instrCur.Operands[0] is RegisterStorage r &&
-                    r == arch.StackRegister &&
-                    instrCur.Operands[1] is ImmediateOperand)
-                {
-                    m.SideEffect(m.Fn(alignStack_intrinsic.MakeInstance(r.Width), SrcOp(0)));
-                    return;
-                }
-            }
             if (instrCur.Operands.Length == 3)
             {
                 EmitBinOp(
@@ -579,12 +602,33 @@ namespace Reko.Arch.X86.Rewriter
                     SrcOp(0),
                     SrcOp(1));
             }
-            EmitCcInstr(SrcOp(0), Registers.SZ);
-            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            EmitLogicalFlags(SrcOp(0));
         }
 
-        private void RewriteMultiply(Func<Expression,Expression,Expression> op, Domain resultDomain)
+        private void RewriteLogical(Func<Expression, Expression,Expression> op)
+        {
+            if (instrCur.Operands.Length == 3)
+            {
+                EmitBinOp(
+                    op,
+                    0,
+                    instrCur.Operands[0].Width,
+                    SrcOp(1),
+                    SrcOp(2));
+            }
+            else
+            {
+                EmitBinOp(
+                    op,
+                    0,
+                    instrCur.Operands[0].Width,
+                    SrcOp(0),
+                    SrcOp(1));
+            }
+            EmitLogicalFlags(SrcOp(0));
+        }
+
+        private void RewriteMultiply(BinaryOperator op, Domain resultDomain)
         {
             Expression product;
             switch (instrCur.Operands.Length)
@@ -616,7 +660,7 @@ namespace Reko.Arch.X86.Rewriter
                 default:
                     throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.Operands[0].Width));
                 };
-                var bin = op(SrcOp(0), multiplicator);
+                var bin = m.Bin(op, SrcOp(0), multiplicator);
                 bin.DataType = PrimitiveType.Create(resultDomain, product.DataType.BitSize);
                 m.Assign(product, bin);
                 EmitCcInstr(product, X86Instruction.DefCc(instrCur.Mnemonic));
@@ -930,7 +974,7 @@ namespace Reko.Arch.X86.Rewriter
 
         private void RewriteNot()
         {
-            RewriteUnaryOperator(m.Comp, 0, instrCur.Operands[0]);
+            RewriteUnaryOperator(Operator.Comp, 0, instrCur.Operands[0]);
         }
 
         private void RewriteOut()
@@ -1120,7 +1164,7 @@ namespace Reko.Arch.X86.Rewriter
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            var value = EmitBinOp(m.Sar, 0, instrCur.dataWidth, dst, src);
+            var value = EmitBinOp(Operator.Sar, 0, instrCur.dataWidth, dst, src);
             EmitCcInstr(value, Registers.SCZ);
             if (src is Constant c && c.ToInt32() == 1)
             {
@@ -1344,9 +1388,9 @@ namespace Reko.Arch.X86.Rewriter
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
-        private void RewriteUnaryOperator(Func<Expression,Expression> op, int iOp, MachineOperand opSrc, CopyFlags flags = 0)
+        private void RewriteUnaryOperator(UnaryOperator op, int iOp, MachineOperand opSrc, CopyFlags flags = 0)
         {
-            EmitCopy(iOp, op(SrcOp(opSrc)), flags);
+            EmitCopy(iOp, m.Unary(op, SrcOp(opSrc)), flags);
         }
 
         private void RewriteXadd()
@@ -1401,12 +1445,6 @@ namespace Reko.Arch.X86.Rewriter
                 Registers.edx,
                 Registers.eax);
             m.SideEffect(m.Fn(xsetbv_intrinsic, orw.AluRegister(Registers.ecx),edx_eax));
-        }
-
-
-        private Identifier StackPointer()
-        {
-            return binder.EnsureRegister(arch.ProcessorMode.StackRegister);
         }
     }
 }

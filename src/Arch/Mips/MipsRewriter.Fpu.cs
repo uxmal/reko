@@ -139,7 +139,7 @@ namespace Reko.Arch.Mips
         {
             m.Assign(
                 RewriteOperand0(instr.Operands[0]),
-                new BinaryExpression(cmp, PrimitiveType.Bool,
+                m.Bin(cmp, PrimitiveType.Bool,
                     GetFpuRegPair(instr.Operands[1]),
                     GetFpuRegPair(instr.Operands[2])));
         }

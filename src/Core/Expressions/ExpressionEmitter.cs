@@ -169,6 +169,36 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Convenience method that generates a <see cref="BinaryExpression"/> using
+        /// the provided <see cref="BinaryOperator"/> and assuming the returned 
+        /// data type is the same as the one of its first operand.
+        /// </summary>
+        /// <param name="op">The binary operator of the resulting expression.</param>
+        /// <param name="left">The first operand of the resulting expression.</param>
+        /// <param name="right">The second operand of the resulting expression.</param>
+        /// <returns>A binary expression.</returns>
+        public BinaryExpression Bin(BinaryOperator op, Expression left, Expression right)
+        {
+            return new BinaryExpression(op, left.DataType, left, right);
+        }
+
+        /// <summary>
+        /// Convenience method that generates a <see cref="BinaryExpression"/> using
+        /// the provided <see cref="BinaryOperator"/> and returning a value of 
+        /// the given data type <paramref name="dt"/>.
+        /// </summary>
+        /// <param name="op">The binary operator of the resulting expression.</param>
+        /// <param name="dt">The <see cref="DataType"/> of the result of the 
+        /// binary expression.</param>
+        /// <param name="left">The first operand of the resulting expression.</param>
+        /// <param name="right">The second operand of the resulting expression.</param>
+        /// <returns>A binary expression.</returns>
+        public BinaryExpression Bin(BinaryOperator op, DataType dt, Expression left, Expression right)
+        {
+            return new BinaryExpression(op, dt, left, right);
+        }
+
+        /// <summary>
         /// Short-circuiting 'and' ('&&' in C family of languages)
         /// </summary>
         /// <param name="a">Antecedent expression.</param>
@@ -1508,6 +1538,19 @@ namespace Reko.Core.Expressions
         public TestCondition Test(ConditionCode cc, Expression expr)
         {
             return new TestCondition(cc, expr);
+        }
+
+        /// <summary>
+        /// Convenience method that generates a <see cref="UnaryExpression"/> using
+        /// the provided <see cref="UnaryOperator"/> and assuming the returned 
+        /// data type is the same as the one of its operand.
+        /// </summary>
+        /// <param name="op">The unary operator of the resulting expression.</param>
+        /// <param name="exp">The operand of the expression.</param>
+        /// <returns>A unary expression.</returns>
+        public UnaryExpression Unary(UnaryOperator op, Expression exp)
+        {
+            return new UnaryExpression(op, exp.DataType, exp);
         }
 
         /// <summary>

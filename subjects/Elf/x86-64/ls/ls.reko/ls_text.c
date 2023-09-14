@@ -603,7 +603,7 @@ l0000000000403A7C:
 		Eq_n rdx_n = g_t61B0C8.u3;
 		Eq_n rax_n = 0x01;
 		if (rdx_n > 0x02)
-			rax_n.u4 = (uint64) ((uint128) rdx_n /u 0x03);
+			rax_n = (uint128) rdx_n /u 0x03;
 		g_t61B020.u3 = (size_t) rax_n;
 		struct Eq_n * rax_n = fn000000000040E600(0x00);
 		g_ptr61B0E8 = rax_n;
@@ -1904,7 +1904,7 @@ void fn0000000000405200(Eq_n rsi, Eq_n rdi)
 				goto l000000000040527B;
 			}
 			Eq_n rsi_n = (word32) rbx_n + 1;
-			if ((uint64) ((uint128) rsi /u rcx_n) > (uint64) ((uint128) rsi_n /u rcx_n))
+			if ((uint128) rsi /u rcx_n > (uint128) rsi_n /u rcx_n)
 			{
 				FILE * rdi_n = stdout;
 				Eq_n rax_n = rdi_n->t0028.u3;
@@ -1918,7 +1918,7 @@ void fn0000000000405200(Eq_n rsi, Eq_n rdi)
 					__overflow(rdi_n, 9);
 					rcx_n = g_qw61B0D8;
 				}
-				rbx_n = (char *) rbx_n.u4 + rcx_n - (uint64) ((uint128) rbx_n % rcx_n);
+				rbx_n = (char *) rbx_n.u4 + rcx_n - (uint128) rbx_n % rcx_n;
 				goto l0000000000405266;
 			}
 			rbx_n = rsi_n;
@@ -2395,7 +2395,7 @@ Eq_n fn0000000000405ED0(word32 edi, struct Eq_n * fs)
 	Eq_n rsi_n = (char *) rax_n.u4 + ((word64) rbp_n.u3 + 1);
 	Eq_n rdi_n = rbp_n - rax_n;
 	Eq_n rcx_n = rsi_n *s64 rdi_n;
-	if (rbp_n <= rsi_n && (rsi_n == (uint64) ((uint128) rcx_n /u rdi_n) && rcx_n >> 0x01 <= 0x1FFFFFFFFFFFFFFF))
+	if (rbp_n <= rsi_n && (rsi_n == (uint128) rcx_n /u rdi_n && rcx_n >> 0x01 <= 0x1FFFFFFFFFFFFFFF))
 	{
 		Eq_n rax_n = fn0000000000410C40((rcx_n >> 0x01) * 0x08);
 		Eq_n rcx_n = g_t61A660.u3;
@@ -2440,9 +2440,9 @@ l0000000000406004:
 							{
 								uint64 r10_n;
 								if (r12b_n == 0x00)
-									r10_n = (uint64) ((uint128) rbp_n % rcx_n);
+									r10_n = (uint128) rbp_n % rcx_n;
 								else
-									r10_n = (uint64) ((uint128) rbp_n /u (uint64) ((uint128) ((char *) rcx_n.u4 + (r14_n - 1)) /u rcx_n));
+									r10_n = (uint128) rbp_n /u ((uint128) ((char *) rcx_n.u4 + (r14_n - 1)) /u rcx_n);
 								up64 * rax_n = (char *) ((word32) rsi_n + 16)->u4 + r10_n * 0x08;
 								up64 rdx_n = (char *) rax_n.u4 + (uint64) ((int8) (r9_n != r10_n)) * 0x02;
 								up64 r9_n = *rax_n;
@@ -2782,7 +2782,7 @@ l00000000004066FF:
 				{
 					fn0000000000406400();
 					rcx_n.u3 = g_t61B0C8.u3;
-					if ((uint64) ((uint128) rcx /u rcx_n) != (uint64) ((uint128) ((char *) rcx.u4 + (rbp_n - 1)) /u rcx_n))
+					if ((uint128) rcx /u rcx_n != (uint128) ((char *) rcx.u4 + (rbp_n - 1)) /u rcx_n)
 						fn0000000000406440(&g_t61A550, out rcx_n);
 				}
 				rcxOut = rcx_n;
@@ -3362,7 +3362,7 @@ void fn00000000004079F0(Eq_n r12, struct Eq_n * fs)
 			uint64 rax_n = fn0000000000405ED0(0x01, fs);
 			uint128 rdx_rax_n = (uint128) g_t61B1B0.u3;
 			struct Eq_n * r15_n = g_t61B028.u3 - 24 + rax_n * 0x18;
-			Eq_n rdx_n = (uint64) ((uint64) (rdx_rax_n % rax_n) != 0x00) + (uint64) (rdx_rax_n /u rax_n);
+			Eq_n rdx_n = (uint64) (rdx_rax_n % rax_n != 0x00) + rdx_rax_n /u rax_n;
 			if (rdx_n != 0x00)
 			{
 				Eq_n qwLoc40_n = 0x00;
@@ -3416,7 +3416,7 @@ void fn00000000004079F0(Eq_n r12, struct Eq_n * fs)
 			{
 				do
 				{
-					uint64 rdx_n = (uint64) ((uint128) rbx_n % rax_n);
+					uint64 rdx_n = (uint128) rbx_n % rax_n;
 					if (rdx_n != 0x00)
 					{
 						Eq_n r12_n = (char *) r15_n.u4 + r12_n;
@@ -4666,14 +4666,14 @@ uint64 fn000000000040ABC0(Eq_n rdi)
 					if (rsi_n >= rdi_n)
 						goto l000000000040AC2D;
 					r8_n += 0x08;
-				} while ((uint64) ((uint128) rdi_n % rcx_n) != 0x00);
+				} while ((uint128) rdi_n % rcx_n != 0x00);
 			}
 		}
 		else
 		{
 			rcx_n = 0x03;
 l000000000040AC2D:
-			if ((uint64) ((uint128) rdi_n % rcx_n) != 0x00)
+			if ((uint128) rdi_n % rcx_n != 0x00)
 				return rdi_n;
 		}
 		rdi_n += 0x02;
@@ -5379,11 +5379,11 @@ struct Eq_n * fn000000000040BD70(Eq_n rcx, ui32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8
 	if (r8 <= rcx)
 	{
 		uint128 rdx_rax_n = (uint128) rcx;
-		Eq_n rax_n = (uint64) (rdx_rax_n /u r8);
-		if ((uint64) (rdx_rax_n % r8) != 0x00)
+		Eq_n rax_n = rdx_rax_n /u r8;
+		if (rdx_rax_n % r8 != 0x00)
 			goto l000000000040BE59;
 		r10_n = rax_n *s64 rdi;
-		if ((uint64) ((uint128) r10_n /u rax_n) == rdi)
+		if ((uint128) r10_n /u rax_n == rdi)
 		{
 			ecx_n.u0 = 0x00;
 			rdi_n = 0x00;
@@ -5395,13 +5395,13 @@ struct Eq_n * fn000000000040BD70(Eq_n rcx, ui32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8
 		if (rcx == 0x00)
 			goto l000000000040BE59;
 		uint128 rdx_rax_n = (uint128) r8;
-		uint64 rax_n = (uint64) (rdx_rax_n /u rcx);
-		if ((uint64) (rdx_rax_n % rcx) == 0x00)
+		uint64 rax_n = rdx_rax_n /u rcx;
+		if (rdx_rax_n % rcx == 0x00)
 		{
 			uint128 rdx_rax_n = (uint128) rdi;
-			uint128 rdx_rax_n = (uint128) ((uint64) (rdx_rax_n % rax_n) * 0x0A);
-			r10_n.u1 = (uint64) (rdx_rax_n /u rax_n);
-			uint64 rdx_n = (uint64) (rdx_rax_n % rax_n);
+			uint128 rdx_rax_n = (uint128) (rdx_rax_n % rax_n * 0x0A);
+			r10_n = rdx_rax_n /u rax_n;
+			uint64 rdx_n = rdx_rax_n % rax_n;
 			rdi_n = (uint64) (word32) (rdx_rax_n /u rax_n);
 			if (rax_n > rdx_n * 0x02)
 				ecx_n.u1 = (uint32) (int8) (rdx_n * 0x02 != 0x00);
@@ -5423,11 +5423,11 @@ l000000000040C12D:
 					do
 					{
 						uint128 rdx_rax_n = (uint128) r10_n;
-						uint64 rdx_n = (uint64) (rdx_rax_n % rsi_n);
+						uint64 rdx_n = rdx_rax_n % rsi_n;
 						uint64 edx_eax_n = (uint64) ((word32) rdi_n + ((word32) rdx_n + (word32) rdx_n * 0x04) * 0x02);
-						uint32 eax_n = (uint32) (edx_eax_n /u v24_n);
-						uint32 edx_n = (uint32) (edx_eax_n % v24_n);
-						Eq_n rax_n = (uint64) (rdx_rax_n /u rsi_n);
+						uint32 eax_n = edx_eax_n /u v24_n;
+						uint32 edx_n = edx_eax_n % v24_n;
+						Eq_n rax_n = rdx_rax_n /u rsi_n;
 						uint64 rdi_n = (uint64) eax_n;
 						Eq_n r14d_n = (ecx_n >> 0x01) + edx_n * 0x02;
 						r10_n = rax_n;
@@ -9423,7 +9423,7 @@ l0000000000410FD5:
 					goto l0000000000411028;
 				case 0x03:
 					Eq_n rdi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					word32 esi_n;
 					ui32 edx_n = 0x00;
 					for (esi_n = 0x06; esi_n != 0x00; --esi_n)
@@ -9446,7 +9446,7 @@ l0000000000410FD5:
 				case 0x05:
 				case 0x25:
 					Eq_n rsi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rsi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rsi_n;
 					word32 edi_n;
 					ui32 edx_n = 0x00;
 					for (edi_n = 0x03; edi_n != 0x00; --edi_n)
@@ -9469,7 +9469,7 @@ l0000000000410FD5:
 				case 0x09:
 				case 0x29:
 					rdi_n.u0 = (int64) eax_n;
-					if (rbx_n <= (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n))
+					if (rbx_n <= 0FFFFFFFFFFFFFFFF /u rdi_n)
 						goto l0000000000411193;
 					rbx_n.u0 = ~0x00;
 					rdx_n = 0x01;
@@ -9477,7 +9477,7 @@ l0000000000410FD5:
 				case 11:
 				case 0x2B:
 					rdi_n.u0 = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					if (rbx_n <= rax_n)
 					{
 						rbx_n *= rdi_n;
@@ -9496,7 +9496,7 @@ l00000000004112A3:
 					break;
 				case 0x0E:
 					Eq_n rsi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rsi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rsi_n;
 					word32 edi_n;
 					ui32 edx_n = 0x00;
 					for (edi_n = 0x05; edi_n != 0x00; --edi_n)
@@ -9519,7 +9519,7 @@ l00000000004112A3:
 				case 0x12:
 				case 0x32:
 					Eq_n rsi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rsi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rsi_n;
 					word32 edi_n;
 					ui32 edx_n = 0x00;
 					for (edi_n = 0x04; edi_n != 0x00; --edi_n)
@@ -9541,7 +9541,7 @@ l00000000004112A3:
 					break;
 				case 0x17:
 					Eq_n rdi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					word32 esi_n;
 					ui32 edx_n = 0x00;
 					for (esi_n = 0x08; esi_n != 0x00; --esi_n)
@@ -9563,7 +9563,7 @@ l00000000004112A3:
 					break;
 				case 0x18:
 					Eq_n rdi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					word32 esi_n;
 					ui32 edx_n = 0x00;
 					for (esi_n = 0x07; esi_n != 0x00; --esi_n)
@@ -9804,7 +9804,7 @@ l00000000004114AD:
 					goto l0000000000411500;
 				case 0x03:
 					Eq_n rdi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					word32 esi_n;
 					ui32 edx_n = 0x00;
 					for (esi_n = 0x06; esi_n != 0x00; --esi_n)
@@ -9827,7 +9827,7 @@ l00000000004114AD:
 				case 0x05:
 				case 0x25:
 					Eq_n rsi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rsi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rsi_n;
 					word32 edi_n;
 					ui32 edx_n = 0x00;
 					for (edi_n = 0x03; edi_n != 0x00; --edi_n)
@@ -9850,7 +9850,7 @@ l00000000004114AD:
 				case 0x09:
 				case 0x29:
 					rdi_n.u0 = (int64) eax_n;
-					if (rbx_n <= (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n))
+					if (rbx_n <= 0FFFFFFFFFFFFFFFF /u rdi_n)
 						goto l000000000041166B;
 					rbx_n.u0 = ~0x00;
 					rdx_n = 0x01;
@@ -9858,7 +9858,7 @@ l00000000004114AD:
 				case 11:
 				case 0x2B:
 					rdi_n.u0 = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					if (rbx_n <= rax_n)
 					{
 						rbx_n *= rdi_n;
@@ -9877,7 +9877,7 @@ l000000000041177B:
 					break;
 				case 0x0E:
 					Eq_n rsi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rsi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rsi_n;
 					word32 edi_n;
 					ui32 edx_n = 0x00;
 					for (edi_n = 0x05; edi_n != 0x00; --edi_n)
@@ -9900,7 +9900,7 @@ l000000000041177B:
 				case 0x12:
 				case 0x32:
 					Eq_n rsi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rsi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rsi_n;
 					word32 edi_n;
 					ui32 edx_n = 0x00;
 					for (edi_n = 0x04; edi_n != 0x00; --edi_n)
@@ -9922,7 +9922,7 @@ l000000000041177B:
 					break;
 				case 0x17:
 					Eq_n rdi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					word32 esi_n;
 					ui32 edx_n = 0x00;
 					for (esi_n = 0x08; esi_n != 0x00; --esi_n)
@@ -9944,7 +9944,7 @@ l000000000041177B:
 					break;
 				case 0x18:
 					Eq_n rdi_n = (int64) eax_n;
-					Eq_n rax_n = (uint64) (0FFFFFFFFFFFFFFFF /u rdi_n);
+					Eq_n rax_n = 0FFFFFFFFFFFFFFFF /u rdi_n;
 					word32 esi_n;
 					ui32 edx_n = 0x00;
 					for (esi_n = 0x07; esi_n != 0x00; --esi_n)

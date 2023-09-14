@@ -30,7 +30,7 @@ namespace Reko.Arch.X86.Rewriter
     public partial class X86Rewriter
     {
         public void EmitCommonFpuInstruction(
-            Func<Expression,Expression,Expression> op,
+            BinaryOperator op,
             bool fReversed,
             bool fPopStack)
         {
@@ -38,7 +38,7 @@ namespace Reko.Arch.X86.Rewriter
         }
 
         public void EmitCommonFpuInstruction(
-            Func<Expression,Expression,Expression> op,
+            BinaryOperator op,
             bool fReversed,
             bool fPopStack,
             Domain? cast)
@@ -63,7 +63,8 @@ namespace Reko.Arch.X86.Rewriter
                     }
                     m.Assign(
                         opLeft,
-                        op(
+                        m.Bin(
+                            op,
                             fReversed ? opRight : opLeft,
                             fReversed ? opLeft : opRight));
                     break;
@@ -74,7 +75,8 @@ namespace Reko.Arch.X86.Rewriter
                     Expression op2 = SrcOp(1);
                     m.Assign(
                         SrcOp(0),
-                        op(
+                        m.Bin(
+                            op,
                             fReversed ? op2 : op1,
                             fReversed ? op1 : op2));
                     break;

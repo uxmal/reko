@@ -585,8 +585,8 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             AssertCode(
                   "0|L--|10000000(4): 4 instructions",
                   "1|L--|v6 = edx_eax",
-                  "2|L--|edx = CONVERT(v6 %s Mem0[esp + 4<i32>:word32], word64, int32)",
-                  "3|L--|eax = CONVERT(v6 /32 Mem0[esp + 4<i32>:word32], word32, int32)",
+                  "2|L--|edx = v6 %s Mem0[esp + 4<i32>:word32]",
+                  "3|L--|eax = v6 /32 Mem0[esp + 4<i32>:word32]",
                   "4|L--|SCZO = cond(eax)");
         }
 
@@ -890,6 +890,18 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
                 "0|L--|10000000(4): 2 instructions",
                 "1|L--|v4 = Mem0[edx + 66<i32>:word128]",
                 "2|L--|mm0 = __cvtps2pi<real32[4],int32[4]>(v4)");
+        }
+
+        [Test]
+        public void X86rw_div()
+        {
+            Run32bitTest("F7742404");       // idiv [esp+04]
+            AssertCode(
+                  "0|L--|10000000(4): 4 instructions",
+                  "1|L--|v6 = edx_eax",
+                  "2|L--|edx = v6 %u Mem0[esp + 4<i32>:word32]",
+                  "3|L--|eax = v6 /u Mem0[esp + 4<i32>:word32]",
+                  "4|L--|SCZO = cond(eax)");
         }
 
         [Test]

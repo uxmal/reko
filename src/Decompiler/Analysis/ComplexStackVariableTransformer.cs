@@ -102,7 +102,7 @@ namespace Reko.Analysis
             }
             var left = bin.Left.Accept(this);
             var right = bin.Right.Accept(this);
-            return new BinaryExpression(bin.Operator, bin.DataType, left, right);
+            return m.Bin(bin.Operator, bin.DataType, left, right);
         }
 
         #endregion

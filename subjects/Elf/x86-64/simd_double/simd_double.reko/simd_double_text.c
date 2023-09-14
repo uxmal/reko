@@ -90,7 +90,7 @@ void vec_add(Eq_n rcx[], Eq_n rdx[], Eq_n rsi[], word64 rdi)
 {
 	char ** fp;
 	__align_stack<word64>(fp);
-	uint64 rax_n = (uint64) ((uint128) rdi /u double_size.21529);
+	uint64 rax_n = (uint128) rdi /u double_size.21529;
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < rax_n; ++qwLoc28_n)
 		rsi[qwLoc28_n].u1.u0 = (word256) __simd_fadd<real64[4]>(rdx[qwLoc28_n].u1.u0, rcx[qwLoc28_n].u1.u0);

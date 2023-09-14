@@ -11,7 +11,7 @@ PyObject * div_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 	int32 dwLoc04;
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", &dwLoc08, &dwLoc04);
 	if (eax_n != null)
-		return Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
+		return Py_BuildValue("i", (int64) dwLoc08 /32 dwLoc04);
 	return eax_n;
 }
 

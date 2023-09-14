@@ -28,14 +28,14 @@ namespace Reko.Core.Operators
 	{
         protected UnaryOperator(OperatorType type) : base(type) { }
 
-        public override Constant ApplyConstants(DataType dt, params Constant[] cs)
+        public sealed override Constant ApplyConstants(DataType dt, params Constant[] cs)
         {
             if (cs.Length != 1)
                 throw new ArgumentException();
             return ApplyConstant(cs[0]);
         }
 
-        public override Expression Create(DataType dt, params Expression[] exprs)
+        public sealed override Expression Create(DataType dt, params Expression[] exprs)
         {
             if (exprs.Length != 1)
                 throw new ArgumentException();

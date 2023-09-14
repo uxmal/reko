@@ -326,6 +326,11 @@ namespace Reko.Core.Expressions
             return new WildId(label);
         }
 
+        public static UnaryOperator AnyUnaryOperator(string label)
+        {
+            return new WildUnaryOperator(label);
+        }
+
         public static BinaryOperator AnyBinaryOperator(string label)
         {
             return new WildBinaryOperator(label);
@@ -462,21 +467,16 @@ namespace Reko.Core.Expressions
             public string? Label { get; }
         }
 
-        private class WildBinaryOperator : BinaryOperator
+        private class WildUnaryOperator : UnaryOperator
         {
-            public WildBinaryOperator(string Label) : base((OperatorType)(-1))
+            public WildUnaryOperator(string Label) : base((OperatorType)(-1))
             {
                 this.Label = Label;
             }
 
             public string? Label { get; }
 
-            public override Constant ApplyConstants(DataType dt, params Constant[] cs)
-            {
-                throw new InvalidOperationException();
-            }
-
-            public override Expression Create(DataType dt, params Expression[] exprs)
+            public override Constant ApplyConstant(Constant c)
             {
                 throw new InvalidOperationException();
             }
@@ -486,6 +486,27 @@ namespace Reko.Core.Expressions
                 return string.Format("[{0}]", Label);
             }
         }
+
+        private class WildBinaryOperator : BinaryOperator
+        {
+            public WildBinaryOperator(string Label) : base((OperatorType) (-1))
+            {
+                this.Label = Label;
+            }
+
+            public string? Label { get; }
+
+            public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override string ToString()
+            {
+                return string.Format("[{0}]", Label);
+            }
+        }
+
 
         private class WildDataType : DataType
         {

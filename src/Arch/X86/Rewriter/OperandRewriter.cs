@@ -182,7 +182,7 @@ namespace Reko.Arch.X86.Rewriter
 
                         DataType dt = expr.DataType;
                         Constant cOffset = Constant.Create(dt, l);
-                        expr = new BinaryExpression(op, dt, expr, cOffset);
+                        expr = m.Bin(op, dt, expr, cOffset);
                     }
                 }
                 else

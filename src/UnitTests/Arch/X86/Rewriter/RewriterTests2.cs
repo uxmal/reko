@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Output;
+using System;
 
 namespace Reko.UnitTests.Arch.X86.Rewriter
 {
@@ -54,6 +55,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         }
 
         [Test]
+        [Ignore("This is already covered by unit tests, remove next commit.")]
         public void X86RwDivideTests()
         {
             Procedure proc = DoRewrite(@".i86

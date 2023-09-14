@@ -1066,7 +1066,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
 
-
         [Test]
         public void PPCrw_extsb()
         {

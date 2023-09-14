@@ -163,7 +163,7 @@ vec_add_entry:
 	ptr64 fp
 l00000000000007A8:
 	__align_stack<word64>(fp)
-	word64 rax_31 = CONVERT(CONVERT(rdi, word64, uint128) /u Mem23[0x0000000000000B00<p64>:word64], word64, uint64)
+	word64 rax_31 = CONVERT(rdi, word64, uint128) /u Mem23[0x0000000000000B00<p64>:word64]
 	word64 qwLoc28_90 = 0<64>
 l0000000000000881:
 	branch qwLoc28_90 <u rax_31 l0000000000000820

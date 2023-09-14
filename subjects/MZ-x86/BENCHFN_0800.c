@@ -973,11 +973,11 @@ l0800_nCC1:
 		do
 		{
 			uint32 dx_ax_n = (uint32) cx_n;
-			uint32 dx_ax_n = SEQ((uint16) (dx_ax_n % wArg06), ax_n);
+			uint32 dx_ax_n = SEQ(dx_ax_n % wArg06, ax_n);
 			ds->*si_n = (byte) (dx_ax_n % wArg06);
-			Eq_n ax_n = (uint16) (dx_ax_n /u wArg06);
+			Eq_n ax_n = dx_ax_n /u wArg06;
 			cx_n = ax_n;
-			ax_n = (uint16) (dx_ax_n /u wArg06);
+			ax_n = dx_ax_n /u wArg06;
 			++si_n;
 		} while (ax_n != 0x00);
 l0800_nCA4:
@@ -1002,7 +1002,7 @@ l0800_nCA4:
 	}
 	uint32 dx_ax_n = (uint32) ax_n;
 	ds->*si_n = (byte) (dx_ax_n % wArg06);
-	ax_n = (uint16) (dx_ax_n /u wArg06);
+	ax_n = dx_ax_n /u wArg06;
 	++si_n;
 	goto l0800_nCA4;
 }
