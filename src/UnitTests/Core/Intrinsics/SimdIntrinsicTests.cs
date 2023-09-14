@@ -18,18 +18,26 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core.Expressions;
+using Reko.Core.Intrinsics;
 using Reko.Core.Types;
+using System;
+using System.Numerics;
 
-namespace Reko.Core.Operators
+namespace Reko.UnitTests.Core.Intrinsics
 {
-    public class CommaOperator : BinaryOperator
+    [TestFixture]
+    public class SimdIntrinsicTests
     {
-        internal CommaOperator() : base(OperatorType.Comma) { }
-
-        public override Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
+        [Test]
+        public void Simd_ApplyToLanes()
         {
-            return c2;
+            var c1 = Constant.Create(PrimitiveType.Word128, new BigInteger(0x332211));
+            var c2 = Constant.Create(PrimitiveType.Word128, new BigInteger(0x112233));
+            var max = Simd.Max.MakeInstance(new ArrayType(PrimitiveType.Byte, 16));
+            var result = max.ApplyConstants(PrimitiveType.Word128, c1, c2);
+            Assert.AreEqual("0x332233<128>", result.ToString());
         }
     }
 }

@@ -471,6 +471,16 @@ namespace Reko.Core.Expressions
 
             public string? Label { get; }
 
+            public override Constant ApplyConstants(DataType dt, params Constant[] cs)
+            {
+                throw new InvalidOperationException();
+            }
+
+            public override Expression Create(DataType dt, params Expression[] exprs)
+            {
+                throw new InvalidOperationException();
+            }
+
             public override string ToString()
             {
                 return string.Format("[{0}]", Label);

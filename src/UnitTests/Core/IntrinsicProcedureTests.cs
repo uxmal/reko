@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("arg1", t, null!),
                 new Identifier("arg2", t, null!));
 
-            var generic = new IntrinsicProcedure("GenericIntrinsic", args, false, false, sig);
+            var generic = new IntrinsicProcedure("GenericIntrinsic", args, false, false, null, sig);
 
             Assert.AreEqual("U GenericIntrinsic<T,U>(T arg1, T arg2)", generic.ToString());
         }
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("arg1", t, null!),
                 new Identifier("arg2", t, null!));
 
-            var generic = new IntrinsicProcedure("GenericIntrinsic", args, false, false, sig);
+            var generic = new IntrinsicProcedure("GenericIntrinsic", args, false, false, null, sig);
             var instance = generic.MakeInstance(PrimitiveType.Int32, PrimitiveType.Real32);
 
             Assert.AreEqual("real32 GenericIntrinsic<int32,real32>(int32 arg1, int32 arg2)", instance.ToString());
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("arg1", t, null!),
                 new Identifier("arg2", t, null!));
 
-            var generic = new IntrinsicProcedure("GenericIntrinsic", args, false, false, sig);
+            var generic = new IntrinsicProcedure("GenericIntrinsic", args, false, false, null, sig);
             var instance1 = generic.MakeInstance(PrimitiveType.Int32, PrimitiveType.Real32);
             var instance2 = generic.MakeInstance(PrimitiveType.Int32, PrimitiveType.Real32);
 
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core
             var sig = FunctionType.Func(
                 new Identifier("", new Pointer(t, 0), null!),   // generic ptr
                 new Identifier("arg1", t, null!));
-            var generic = new IntrinsicProcedure("PtrOf", args, false, false, sig);
+            var generic = new IntrinsicProcedure("PtrOf", args, false, false, null, sig);
             var instance = generic.MakeInstance(64, PrimitiveType.Int64);
             Assert.AreEqual("(ptr64 int64) PtrOf<int64>(int64 arg1)", instance.ToString());
         }

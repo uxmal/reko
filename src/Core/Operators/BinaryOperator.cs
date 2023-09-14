@@ -33,6 +33,23 @@ namespace Reko.Core.Operators
 		{
 		}
 
+        public sealed override Expression Create(DataType dt, params Expression[] exprs)
+        {
+            if (exprs.Length != 2)
+                throw new ArgumentException();
+            return new BinaryExpression(this, dt, exprs[0], exprs[1]);
+        }
+
+        public sealed override Constant ApplyConstants(DataType dt, params Constant[] cs)
+        {
+            if (cs.Length != 2)
+                throw new ArgumentException();
+            return ApplyConstants(dt, cs[0], cs[1]);
+        }
+
+        public abstract Constant ApplyConstants(DataType dt, Constant c1, Constant c2);
+
+
         protected bool ValidArgs(Constant c1, Constant c2)
         {
             return c1.IsValid && c2.IsValid;

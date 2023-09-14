@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Concurrent;
@@ -30,8 +31,8 @@ namespace Reko.Core
     /// Represents predefined functions or processor instructions that don't have a 
     /// C/C++ equivalent (like rotate operations).
     /// </summary>
-    public class IntrinsicProcedure : ProcedureBase
-	{
+    public class IntrinsicProcedure : ProcedureBase, IFunctionalUnit
+    {
         /// <summary>
         /// To avoid generating massive amounts of instances of generic intrinsics,
         /// we use a cache to store them.
@@ -67,11 +68,18 @@ namespace Reko.Core
         /// <param name="name"></param>
         /// <param name="returnType"></param>
         /// <param name="arity"></param>
-		public IntrinsicProcedure(string name, bool hasSideEffect, DataType returnType, int arity)
+        /// <param name="eval">Optional evaluation function.</param>
+		public IntrinsicProcedure(
+            string name, 
+            bool hasSideEffect,
+            DataType returnType, 
+            int arity,
+            Func<DataType, Constant[], Constant?>? eval = null)
             : base(name, hasSideEffect)
 		{
             this.returnType = returnType;
 			this.arity = arity;
+            this.Evaluate = eval ?? FailEvaluator;
 		}
 
         /// <summary>
@@ -80,11 +88,17 @@ namespace Reko.Core
         /// <param name="name">The name of the intrinsic procedure.</param>
         /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.IsIdempotent"/></param>
         /// <param name="sig">The signature of the procedure.</param>
-		public IntrinsicProcedure(string name, bool hasSideEffect, FunctionType sig)
+        /// <param name="eval">Optional evaluation function.</param>
+		public IntrinsicProcedure(
+            string name,
+            bool hasSideEffect,
+            FunctionType sig,
+            Func<DataType, Constant[], Constant?>? eval = null)
             : base(name, hasSideEffect)
 		{
 			this.sig = sig;
             this.returnType = sig.ReturnValue?.DataType!;
+            this.Evaluate = eval ?? FailEvaluator;
 		}
 
         /// <summary>
@@ -100,20 +114,23 @@ namespace Reko.Core
             string name, 
             DataType[] genericTypes, 
             bool isConcrete,
-            bool hasSideEffect, 
+            bool hasSideEffect,
+            Func<DataType, Constant[], Constant?>? evaluator,
             FunctionType sig)
             : base(name, genericTypes, isConcrete, hasSideEffect)
         {
             this.sig = sig;
             this.returnType = sig.ReturnValue?.DataType!;
+            this.Evaluate = evaluator ?? FailEvaluator;
         }
 
         /// <summary>
         /// Optional function used to evaluate constants.
         /// </summary>
-        public Func<Constant[], Constant>? ApplyConstants { get; set; }
+        private Func<DataType, Constant[], Constant?> Evaluate { get; }
 
-		public int Arity
+
+        public int Arity
 		{
 			get 
             { return sig != null && sig.Parameters != null
@@ -132,6 +149,16 @@ namespace Reko.Core
 			get { return sig!; }
 			set { throw new InvalidOperationException("Changing the signature of an IntrinsicProcedure is not allowed."); }
 		}
+
+        public virtual Expression Create(DataType dt, params Expression[] exprs)
+        {
+            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, this), dt, exprs);
+        }
+
+        public virtual Constant? ApplyConstants(DataType dt, params Constant[] cs)
+        {
+            return this.Evaluate(dt, cs);
+        }
 
         /// <summary>
         /// Makes a concrete instance of this <see cref="IntrinsicProcedure"/> instance, using
@@ -159,7 +186,7 @@ namespace Reko.Core
 
         protected virtual IntrinsicProcedure DoMakeInstance(DataType[] concreteTypes, FunctionType sig)
         {
-            return new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, sig)
+            return new IntrinsicProcedure(this.Name, concreteTypes, true, this.HasSideEffect, Evaluate, sig)
             {
                 Characteristics = this.Characteristics,
                 EnclosingType = this.EnclosingType
@@ -217,7 +244,7 @@ namespace Reko.Core
                 }
                 newSig = FunctionType.CreateUserDefined(ret, parameters);
             }
-            return new IntrinsicProcedure(this.Name, this.HasSideEffect, newSig)
+            return new IntrinsicProcedure(this.Name, this.HasSideEffect, newSig, Evaluate)
             {
                 Characteristics = this.Characteristics,
                 EnclosingType = this.EnclosingType
@@ -235,6 +262,8 @@ namespace Reko.Core
 				return string.Format("{0} {1}({2} args)", ReturnType, Name, arity);
 			}
 		}
+
+        private static Constant? FailEvaluator(DataType dt, Constant[] cs) => null;
 
         private class InstanceCacheComparer : IEqualityComparer<(IntrinsicProcedure, DataType[])>
         {

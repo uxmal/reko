@@ -25,7 +25,7 @@ using System.Numerics;
 
 namespace Reko.Core.Operators
 {
-    public abstract class Operator
+    public abstract class Operator : IFunctionalUnit
     {
         public static readonly BinaryOperator IAdd = new IAddOperator();
         public static readonly BinaryOperator ISub = new ISubOperator();
@@ -92,10 +92,9 @@ namespace Reko.Core.Operators
 
         public OperatorType Type { get; }
 
-        public virtual Constant ApplyConstants(DataType dt, Constant c1, Constant c2)
-        {
-            throw new NotSupportedException();
-        }
+        public abstract Constant ApplyConstants(DataType dt, params Constant[] cs);
+
+        public abstract Expression Create(DataType dt, params Expression[] exprs);
 
         public virtual string AsCompound()
         {

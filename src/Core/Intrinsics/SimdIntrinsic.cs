@@ -23,6 +23,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Reko.Core.Intrinsics
 {
@@ -40,17 +41,17 @@ namespace Reko.Core.Intrinsics
     {
         public SimdIntrinsic(
             string name,
-            Operator op,
+            IFunctionalUnit laneOp,
             DataType[] genericTypes,
             bool isConcrete,
             FunctionType signature) :
-            base(name, genericTypes, isConcrete, false, signature)
+            base(name, genericTypes, isConcrete, false, null, signature)
         {
-            this.Operator = op;
+            this.Operator = laneOp;
         }
 
         public int LaneCount { get; }
-        public Operator Operator { get; }
+        public IFunctionalUnit Operator { get; }
 
         protected override IntrinsicProcedure DoMakeInstance(DataType[] concreteTypes, FunctionType sig)
         {
@@ -66,9 +67,43 @@ namespace Reko.Core.Intrinsics
             };
         }
 
+        public override Constant? ApplyConstants(DataType dt, params Constant[] cs)
+        {
+            var dtInput = cs[0].DataType;
+            var bitsInput = dtInput.BitSize;
+            var dtInputLane = this.InputLaneType(0);    //$REVIEW: do these vary by input #?
+            var dtOutputLane = this.OutputLaneType();
+            var bitsInputLane = dtInputLane .BitSize;
+            var maskInputLane = (BigInteger.One << bitsInputLane) - 1;
+            var laneInputs = new Constant[cs.Length];
+            int cLanes = bitsInput / bitsInputLane;
+            var output = BigInteger.Zero;
+            var laneOutputs = new Constant[cLanes];
+            for (int iLane = cLanes - 1; iLane >= 0; --iLane)
+            {
+                for (int i = 0; i < cs.Length; ++i)
+                {
+                    int sh = iLane * bitsInputLane;
+                    laneInputs[i] = Constant.Create(dtInputLane, (cs[i].ToBigInteger() >> sh) & maskInputLane);
+                }
+                var laneResult = this.Operator.ApplyConstants(dtOutputLane, laneInputs);
+                if (laneResult is null)
+                    return null;
+                output <<= dtOutputLane.BitSize;
+                output |= laneResult.ToBigInteger();
+            }
+            return Constant.Create(dt, output);
+        }
+
+        public override Expression Create(DataType dt, params Expression[] exprs)
+        {
+            return base.Create(dt, exprs);
+        }
+
         public DataType InputLaneType(int iParameter)
         {
-            throw new NotImplementedException();
+            var arrayType = (ArrayType) Signature.Parameters![iParameter].DataType;
+            return arrayType.ElementType;
         }
 
         public DataType OutputLaneType()
@@ -79,12 +114,13 @@ namespace Reko.Core.Intrinsics
 
         public Expression MakeSlice(Expression[] arguments, int lane)
         {
-            //$TODO: n-ary? intrinsics like max, sqrt?
             var laneType = ((ArrayType) base.Signature.Parameters![0].DataType).ElementType;
-            Debug.Assert(this.Operator is BinaryOperator, "Slicing non-binary SIMD operators not implemented yet");
-            var left = new Slice(laneType, arguments[0], lane * laneType.BitSize);
-            var right = new Slice(laneType, arguments[1], lane * laneType.BitSize);
-            return new BinaryExpression((BinaryOperator)Operator, laneType, left, right);
+            var slices = new Expression[arguments.Length];
+            for (int i = 0; i < arguments.Length; ++i)
+            {
+                slices[i] = new Slice(laneType, arguments[i], lane * laneType.BitSize);
+            }
+            return Operator.Create(laneType, slices);
         }
     }
 }

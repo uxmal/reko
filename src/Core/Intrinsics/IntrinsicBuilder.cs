@@ -42,10 +42,10 @@ namespace Reko.Core.Intrinsics
     {
         private readonly string intrinsicName;
         private readonly bool hasSideEffect;
-        private readonly Operator? op;
+        private readonly IFunctionalUnit? simdOp;
         private readonly ProcedureCharacteristics characteristics;
         private readonly List<Identifier> parameters;
-        private Func<Constant[], Constant>? applyConstants;
+        private Func<DataType, Constant[], Constant>? applyConstants;
         private DataType[]? genericTypes;
         private Dictionary<string, DataType>? genericTypeDictionary;
         private bool isVariadic;
@@ -54,10 +54,10 @@ namespace Reko.Core.Intrinsics
         {
         }
 
-        public IntrinsicBuilder(string intrinsicName, Operator op, ProcedureCharacteristics? characteristics = null)
+        public IntrinsicBuilder(string intrinsicName, IFunctionalUnit op, ProcedureCharacteristics? characteristics = null)
         {
             this.intrinsicName = intrinsicName;
-            this.op = op;
+            this.simdOp = op;
             this.hasSideEffect = false;
             this.characteristics = characteristics ?? DefaultProcedureCharacteristics.Instance;
             this.parameters = new List<Identifier>();
@@ -74,11 +74,12 @@ namespace Reko.Core.Intrinsics
         /// <summary>
         /// Add an evaluator function to the intrinsic.
         /// </summary>
-        public IntrinsicBuilder ApplyConstants(Func<Constant[], Constant> fn)
+        public IntrinsicBuilder ApplyConstants(Func<DataType, Constant[], Constant> fn)
         {
             this.applyConstants = fn;
             return this;
         }
+
 
         /// <summary>
         /// Define some types as generic.
@@ -212,13 +213,13 @@ namespace Reko.Core.Intrinsics
             IntrinsicProcedure proc;
             if (this.genericTypes is not null)
             {
-                if (this.op is not null)
+                if (this.simdOp is not null)
                 {
-                    proc = new SimdIntrinsic(intrinsicName, this.op, genericTypes, false, signature);
+                    proc = new SimdIntrinsic(intrinsicName, this.simdOp, genericTypes, false, signature);
                 }
                 else
                 {
-                    proc = new IntrinsicProcedure(intrinsicName, genericTypes, false, hasSideEffect, signature);
+                    proc = new IntrinsicProcedure(intrinsicName, genericTypes, false, hasSideEffect, this.applyConstants, signature);
                 }
             }
             else
@@ -226,7 +227,6 @@ namespace Reko.Core.Intrinsics
                 proc = new IntrinsicProcedure(intrinsicName, hasSideEffect, signature);
             }
             proc.Characteristics = characteristics;
-            proc.ApplyConstants = this.applyConstants;
             return proc;
         }
 
@@ -259,9 +259,28 @@ namespace Reko.Core.Intrinsics
                 .Returns("T");
         }
 
+        public static IntrinsicProcedure GenericBinary(string name, Func<DataType, Constant[], Constant> eval)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .ApplyConstants(eval)
+                .Returns("T");
+        }
+
         public static IntrinsicProcedure SimdBinary(string name, BinaryOperator op)
         {
             return new IntrinsicBuilder(name, op)
+                .GenericTypes("T")
+                .Param("T")
+                .Param("T")
+                .Returns("T");
+        }
+
+        public static IntrinsicProcedure SimdBinary(string name, IntrinsicProcedure intrinsic)
+        {
+            return new IntrinsicBuilder(name, intrinsic)
                 .GenericTypes("T")
                 .Param("T")
                 .Param("T")
@@ -282,6 +301,15 @@ namespace Reko.Core.Intrinsics
             return new IntrinsicBuilder(name, false)
                 .GenericTypes("T")
                 .Param("T")
+                .Returns("T");
+        }
+
+        public static IntrinsicProcedure GenericUnary(string name, Func<DataType, Constant[], Constant> eval)
+        {
+            return new IntrinsicBuilder(name, false)
+                .GenericTypes("T")
+                .Param("T")
+                .ApplyConstants(eval)
                 .Returns("T");
         }
 

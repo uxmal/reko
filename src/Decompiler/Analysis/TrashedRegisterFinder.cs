@@ -40,6 +40,7 @@ namespace Reko.Analysis
     {
         private static readonly TraceSwitch trace = new(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
 
+        private readonly IReadOnlyProgram program;
         private readonly IReadOnlySegmentMap segmentMap;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
@@ -57,7 +58,6 @@ namespace Reko.Analysis
         private IProcessorArchitecture arch;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
-        private readonly IReadOnlyProgram program;
 
         public TrashedRegisterFinder(
             IReadOnlyProgram program,
@@ -65,6 +65,7 @@ namespace Reko.Analysis
             IEnumerable<SsaTransform> sccGroup,
             IDecompilerEventListener listener)
         {
+            this.program = program;
             this.arch = program.Architecture;
             this.segmentMap = program.SegmentMap;
             this.flow = flow;

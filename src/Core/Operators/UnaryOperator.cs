@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -27,7 +28,21 @@ namespace Reko.Core.Operators
 	{
         protected UnaryOperator(OperatorType type) : base(type) { }
 
-		public abstract Constant ApplyConstant(Constant c);
+        public override Constant ApplyConstants(DataType dt, params Constant[] cs)
+        {
+            if (cs.Length != 1)
+                throw new ArgumentException();
+            return ApplyConstant(cs[0]);
+        }
+
+        public override Expression Create(DataType dt, params Expression[] exprs)
+        {
+            if (exprs.Length != 1)
+                throw new ArgumentException();
+            return new UnaryExpression(this, dt, exprs[0]);
+        }
+
+        public abstract Constant ApplyConstant(Constant c);
 	}
 
     /// <summary>

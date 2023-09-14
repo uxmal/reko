@@ -18,10 +18,13 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace Reko.Core.Intrinsics
@@ -88,9 +91,33 @@ namespace Reko.Core.Intrinsics
         public static readonly IntrinsicProcedure ReverseWords = IntrinsicBuilder.GenericUnary("__reverse_word32s");
 
         // Integer math
-        public static readonly IntrinsicProcedure Abs = IntrinsicBuilder.GenericUnary("abs"); //$REVIEW: math.h
-        public static readonly IntrinsicProcedure Max = IntrinsicBuilder.GenericBinary("max"); //$REVIEW: math.h
+        //$REVIEW: generate a reference to math.h
+        public static readonly IntrinsicProcedure Abs = IntrinsicBuilder.GenericUnary("abs", EvalAbs);
+        public static readonly IntrinsicProcedure Max = IntrinsicBuilder.GenericBinary("max", EvalMax); //$REVIEW: math.h
         public static readonly IntrinsicProcedure Min = IntrinsicBuilder.GenericBinary("min"); //$REVIEW: math.h
+
+        private static Constant EvalAbs(DataType dt, params Constant[] inputs)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static Constant EvalMax(DataType dt, params Constant[] inputs)
+        {
+            if (inputs.Length == 0)
+                throw new ArgumentException(nameof(inputs), "Must have at least one input parameter to EvalMax.");
+            if (dt.Domain is Domain.SignedInt)
+            {
+                throw new NotImplementedException();
+            }
+            var mask = Bits.Mask(0, dt.BitSize);
+            ulong max = inputs[0].ToUInt64() & mask;
+            for (int i = 1; i < inputs.Length; ++i)
+            {
+                var input = inputs[i].ToUInt64() & mask;
+                max = Math.Max(max, input);
+            }
+            return Constant.Create(dt, max);
+        }
 
         // Rotations
         public static readonly IntrinsicProcedure Rol = new IntrinsicBuilder("__rol", false)
