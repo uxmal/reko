@@ -660,26 +660,6 @@ namespace Reko.Core
             }
         }
 
-        public IntrinsicProcedure EnsureIntrinsicProcedure(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
-        {
-            var sig = MakeSignatureFromApplication(returnType, args);
-            return EnsureIntrinsicProcedure(name, hasSideEffect, sig);
-        }
-
-        private static FunctionType MakeSignatureFromApplication(DataType returnType, Expression[] args)
-        {
-            return new FunctionType(
-                new Identifier("", returnType, null!),
-                args.Select(arg => IdFromExpression(arg)).ToArray());
-        }
-
-        private static Identifier IdFromExpression(Expression arg)
-        {
-            var id = arg as Identifier;
-            var stg = id?.Storage;
-            return new Identifier("", arg.DataType, stg!);
-        }
-
         /// <summary>
         /// Ensure that there is a procedure at address <paramref name="addr"/>.
         /// </summary>
