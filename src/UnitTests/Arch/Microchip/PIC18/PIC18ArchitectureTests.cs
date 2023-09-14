@@ -103,6 +103,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void PIC18arch_CheckArchEnhancedFromDBTests()
         {
             var picModel = PICProcessorModel.GetModel(PIC18EnhancedName);

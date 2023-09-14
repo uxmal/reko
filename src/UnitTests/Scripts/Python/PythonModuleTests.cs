@@ -98,6 +98,7 @@ namespace Reko.UnitTests.Scripts.Python
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void PyMod_ConsoleOutput()
         {
             Given_File(

@@ -33,6 +33,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
     {
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void PIC16DevConf_Tests()
         {
             PICProcessorModel.GetModel(PIC16BasicName).CreateMemoryDescriptor();

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2023 Christian Hostelet.
  * inspired by work of:
@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void PIC16Registers_Basic_All_Tests()
         {
             foreach (var pic in GetSelectedPIC(InstructionSetID.PIC16))
@@ -67,6 +68,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void PIC16Registers_Enhd_All_Tests()
         {
             foreach (var pic in GetSelectedPIC(InstructionSetID.PIC16_ENHANCED))
@@ -85,6 +87,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Registers
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void PIC16Registers_Full_All_Tests()
         {
             foreach (var pic in GetSelectedPIC(InstructionSetID.PIC16_FULLFEATURED))

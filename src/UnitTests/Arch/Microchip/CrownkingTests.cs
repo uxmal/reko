@@ -148,6 +148,7 @@ namespace Reko.UnitTests.Arch.Microchip.Crownking
 
         [Test]
         [Description("Decipher whole XML definitions")]
+        [Category(Categories.IntegrationTests)]
         public void WholeDecipherXML_Tests()
         {
             var count = 0;
