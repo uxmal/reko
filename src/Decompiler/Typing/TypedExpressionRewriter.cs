@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using Reko.Services;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Typing
@@ -297,11 +298,67 @@ namespace Reko.Typing
             else
             {
                 this.basePtr = null;
-                var dt = DataTypeOf(access);
-                ea = Rewrite(access.EffectiveAddress, dt);
+                // Very aggressive; consider putting it under user
+                // control.
+                if (TryAggressiveRewriteOfStringPointer(access, out var strConst))
+                {
+                    ea = strConst;
+                }
+                else
+                {
+                    ea = Rewrite(access.EffectiveAddress, access.DataType);
+                }
             }
             this.basePtr = oldBase;
             return ea;
+        }
+
+
+        /// <summary>
+        /// Try to discover whether a memory access is fetching a (ptr char)
+        /// value. If it is, and that pointer is in read-only memory, and
+        /// also points to read only memory, assume it's safe to follow
+        /// the pointer and read the string it points to.
+        /// </summary>
+        /// <param name="access">Memory access.</param>
+        /// <param name="value">The resulting string constant if all the conditions
+        /// above pass.</param>
+        /// <returns>True if a string constant was fetched, otherwise false.
+        /// </returns>
+        private bool TryAggressiveRewriteOfStringPointer(
+            MemoryAccess access, 
+            [MaybeNullWhen(false)] out StringConstant value)
+        {
+            value = null;
+            if (DataTypeOf(access) is not Pointer ptr)
+            {
+                return false;
+            }
+             
+            var charType = TypedConstantRewriter.MaybeCharType(ptr.Pointee);
+            if (charType is null ||
+                !program.TryInterpretAsAddress(access.EffectiveAddress, false, out var addrPtr) ||
+                !program.SegmentMap.TryFindSegment(addrPtr, out var segment) ||
+                segment.IsWriteable)
+            {
+                return false;
+            }
+            var arch = program.Architecture;
+            if (!arch.TryRead(segment.MemoryArea, addrPtr, arch.PointerType, out var pch))
+            {
+                return false;
+            }
+            var addrString = program.Platform.MakeAddressFromConstant(pch, false);
+            if (addrString is null ||
+                !program.SegmentMap.TryFindSegment(addrString, out segment) ||
+                segment.IsWriteable)
+            {
+                return false;
+            }
+            tcr.PromoteToCString(pch, charType);
+            var rdr = arch.CreateImageReader(segment.MemoryArea, addrString);
+            value = rdr.ReadCString(charType, program.TextEncoding);
+            return true;
         }
 
         public override Expression VisitMkSequence(MkSequence seq)

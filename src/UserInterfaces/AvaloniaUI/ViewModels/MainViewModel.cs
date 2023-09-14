@@ -70,8 +70,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
             var cmdDefs = new CommandDefinitions();
             this.interactor = new MainFormInteractor(services);
+            interactor.PropertyChanged += Interactor_PropertyChanged;
             interactor.Attach(mainForm);
             this.menus = new DecompilerMenus(cmdDefs, this.interactor);
+        }
+
+        private void Interactor_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainFormInteractor.TitleText))
+                this.RaisePropertyChanged(nameof(WindowTitle));
         }
 
         /// <summary>
@@ -98,11 +105,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
 
         public AvaloniaStatusBarService? Status { get; set; }
         
-        public string? WindowTitle {
-            get { return windowTitle; }
-            set { windowTitle = value; this.RaiseAndSetIfChanged(ref windowTitle, value); }
+        public string? WindowTitle 
+        {
+            get { return interactor.TitleText; }
+            set { interactor.TitleText = value!; }
         }
-        private string? windowTitle;
 
         [Conditional("DEBUG")]
         private void DebugFactoryEvents(IFactory factory)

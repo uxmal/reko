@@ -171,17 +171,8 @@ namespace Reko.Scanning
             else
             {
                 var reg = ab.BindInArg(formatParam.Storage)!;
-                switch (GetValue(reg))
-                {
-                case Address addrFormat:
+                if (program.TryInterpretAsAddress(GetValue(reg), false, out Address? addrFormat))
                     return addrFormat;
-                case Constant c:
-                    if (c.IsValid)
-                    {
-                        return program.Platform.MakeAddressFromConstant(c, false)!;
-                    }
-                    break;
-                }
             }
             WarnUnableToDetermineFormatString(addrInstr, callee);
             return null;

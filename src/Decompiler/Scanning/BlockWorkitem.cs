@@ -1275,12 +1275,8 @@ namespace Reko.Scanning
                 return null;
             if (mem.EffectiveAddress.DataType.Size != this.program.Platform.PointerType.Size)
                 return null;
-            if (mem.EffectiveAddress is not Address addrTarget)
-            {
-                if (mem.EffectiveAddress is not Constant offset)
+            if (!program.TryInterpretAsAddress(mem.EffectiveAddress, true, out Address? addrTarget))
                     return null;
-                addrTarget = program.Platform.MakeAddressFromConstant(offset, true)!;
-            }
             var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric!.Address);
             //if (impEp != null)
                 return impEp;

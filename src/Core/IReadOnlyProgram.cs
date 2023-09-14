@@ -24,6 +24,7 @@ using Reko.Core.Graphs;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Reko.Core
@@ -49,5 +50,27 @@ namespace Reko.Core
         IReadOnlyUserData User { get; }
 
         EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr);
+
+        /// <summary>
+        /// Determines whether an <see cref="Address"/> refers to read-only memory.
+        /// </summary>
+        /// <param name="addr">Address to check.</param>
+        /// <returns>True if the given address specifies a location in read-only
+        /// memory, otherwise false;</returns>
+        public bool IsPtrToReadonlySection(Address addr);
+
+
+        /// <summary>
+        /// Attempt to use <paramref name="expr"/> as an <see cref="Address"/>, possibly
+        /// converting <see cref="Constant"/>s to addresses as necessary.
+        /// </summary>
+        /// <param name="expr">Expression to be interpreted as a constant.</param>
+        /// <param name="interpretAsCodePtr">True if a converted pointer needs
+        /// to be adjusted (Arm Thumb code pointers have their LSB set).</param>
+        /// <param name="addr">The resulting <see cref="Address"/> instance.</param>
+        /// <returns>True if <paramref name="expr"/> can be interpreted as an 
+        /// address.
+        /// </returns>
+        bool TryInterpretAsAddress(Expression expr, bool interpretAsCodePtr, [MaybeNullWhen(false)] out Address addr);
     }
 }

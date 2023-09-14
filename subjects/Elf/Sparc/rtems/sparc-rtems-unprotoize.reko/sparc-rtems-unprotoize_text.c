@@ -743,12 +743,12 @@ void unexpand_if_needed(Eq_n o0)
 		goto l00011EC8;
 	}
 	l1_n.u0 = line_buf.78.u0;
-	char * o0_n = g_ptr16F14;
+	char * o0_n = "struct _iobuf";
 l00011DA0:
 	if (o0_n != null)
 	{
 		struct Eq_n * l4_n = &g_ptr16F14;
-		char * l0_n = g_ptr16F14;
+		char * l0_n = "struct _iobuf";
 		while (true)
 		{
 			Eq_n o0_n = (uint32) strlen(l0_n);
@@ -834,7 +834,7 @@ l00011EC8:
 		}
 		return;
 	}
-	o0_n = g_ptr16F14;
+	o0_n = (char *) "struct _iobuf";
 	goto l00011DA0;
 }
 
@@ -2562,7 +2562,7 @@ l000145B4:
 					Mem274[164144:word32] = o0_n + 0x01;
 					struct Eq_n * sp_n = sp_n - (l0_n + 0x6B & ~0x07);
 					strncpy(sp_n->a0060, o0_n + 0x01, l0_n);
-					char * o0_n = g_ptr1753C;
+					char * o0_n = "if";
 					sp_n->a0060[l0_n] = 0x00;
 					if (o0_n == null)
 					{
@@ -2608,7 +2608,7 @@ l000147BC:
 						notice("%s: function definition not converted\n", g_ptr28150, sp_n->dw0048, out i1_n, out i2_n, out i6_n);
 					}
 					word32 * l0_n = &g_ptr1753C;
-					char * o1_n = g_ptr1753C;
+					char * o1_n = "if";
 					while (strcmp(sp_n->a0060, o1_n) != 0x00)
 					{
 						++l0_n;

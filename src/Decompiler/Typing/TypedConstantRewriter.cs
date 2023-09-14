@@ -297,9 +297,10 @@ namespace Reko.Typing
                     return e;
                 }
                 
+
                 var dt = ptr.Pointee.ResolveAs<DataType>()!;
                 var charType = MaybeCharType(dt);
-                if (charType != null && IsPtrToReadonlySection(addr))
+                if (charType != null && program.IsPtrToReadonlySection(addr))
                 {
                     PromoteToCString(c, charType);
                     var rdr = program.CreateImageReader(program.Architecture, addr);
@@ -307,7 +308,7 @@ namespace Reko.Typing
                 }
                 if (Dereferenced &&
                     TryReadReal(addr, dt, out var cReal) &&
-                    IsPtrToReadonlySection(addr))
+                    program.IsPtrToReadonlySection(addr))
                 {
                     return cReal;
                 }
@@ -319,7 +320,7 @@ namespace Reko.Typing
         /// <summary>
         /// Drill into dt to see if it could be the beginning of a character string.
         /// </summary>
-        private PrimitiveType? MaybeCharType(DataType dt)
+        public static PrimitiveType? MaybeCharType(DataType dt)
         {
             var pr = dt.ResolveAs<PrimitiveType>();
             if (pr is null)
@@ -340,14 +341,7 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        private bool IsPtrToReadonlySection(Address addr)
-        {
-            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
-                return false;
-            return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
-        }
-
-        DataType PromoteToCString(Constant c, DataType charType)
+        public DataType PromoteToCString(Constant c, DataType charType)
         {
             // Note that it's OK if there is no global field corresponding to a string constant.
             // It means that the string will be emitted "inline" in the code and not

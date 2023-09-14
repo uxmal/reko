@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Reko.UnitTests.Decompiler.Typing
 {
@@ -198,6 +199,11 @@ namespace Reko.UnitTests.Decompiler.Typing
         private void Given_GlobalVariable(uint linAddress, string name, DataType dt)
         {
             userDefinedGlobals.Add(new StructureField((int)linAddress, dt, name));
+        }
+
+        private void Given_ReadonlyMemory(uint uAddr, uint length)
+        {
+
         }
 
         private ExternalProcedure Given_Procedure(string name, params DataType [] argTypes)
@@ -1533,5 +1539,46 @@ main_exit:
             });
             RunStringTest(pb.BuildProgram(), sExp);
         }
+
+        [Test]
+        public void TerFetchReadonlyCharPtr()
+        {
+            var sExp =
+@"// Before ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	return Mem0[0x2000<32>:(ptr32 char)]
+	// succ:  main_exit
+main_exit:
+
+// After ///////
+// main
+// Return size: 0
+define main
+main_entry:
+	// succ:  l1
+l1:
+	return ""Hello""
+	// succ:  main_exit
+main_exit:
+
+";
+            var pb = new ProgramBuilder();
+            var mem = new ByteMemoryArea(Address.Ptr32(0x2000), new byte[0x100]);
+            mem.WriteLeUInt32(0, 0x2008);
+            mem.WriteBytes(Encoding.UTF8.GetBytes("Hello"), 8, 5);
+            imageSegments.Add(mem.BaseAddress, new ImageSegment(".rodata", mem, AccessMode.Read));
+            pb.Add("main", m =>
+            {
+                var ptr = new Pointer(PrimitiveType.Char, 32);
+                m.Return(m.Mem(ptr, m.Word32(0x2000)));
+            });
+            RunStringTest(pb.BuildProgram(), sExp);
+        }
+
     }
 }

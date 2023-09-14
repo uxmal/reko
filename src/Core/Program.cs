@@ -35,6 +35,8 @@ using System.Text;
 using Reko.Core.Text;
 using Reko.Core.Graphs;
 using Reko.Core.Analysis;
+using System.Diagnostics.CodeAnalysis;
+using System.Data;
 
 namespace Reko.Core
 {
@@ -519,6 +521,30 @@ namespace Reko.Core
         IReadOnlyCallGraph IReadOnlyProgram.CallGraph => this.CallGraph;
         IReadOnlyDictionary<Identifier, LinearInductionVariable> IReadOnlyProgram.InductionVariables => this.InductionVariables;
         IReadOnlySegmentMap IReadOnlyProgram.SegmentMap => this.SegmentMap;
+
+
+        public bool IsPtrToReadonlySection(Address addr)
+        {
+            if (!this.SegmentMap.TryFindSegment(addr, out ImageSegment? seg))
+                return false;
+            return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
+        }
+
+        public bool TryInterpretAsAddress(Expression e, bool codeAlign, [MaybeNullWhen(false)] out Address addr)
+        {
+            if (e is Address a)
+            {
+                addr = a;
+                return true;
+            }
+            if (e is Constant c)
+            {
+                addr = Platform.MakeAddressFromConstant(c, codeAlign);
+                return addr is not null;
+            }
+            addr = null;
+            return false;
+        }
 
 
         // Mutators /////////////////////////////////////////////////////////////////
