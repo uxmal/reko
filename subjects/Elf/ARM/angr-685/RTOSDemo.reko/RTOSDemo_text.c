@@ -2068,9 +2068,8 @@ void OSRAMWriteArray(struct Eq_n * r0, int32 r1)
 	struct Eq_n * r6_n = r0 + r1;
 	do
 	{
-		do
+		while (I2CMasterIntStatus(r4_n, 0x00) == 0x00)
 			;
-		while (I2CMasterIntStatus(r4_n, 0x00) == 0x00);
 		OSRAMDelay(*r7_n);
 		I2CMasterDataPut(r4_n, (word32) r5_n->b0000);
 		I2CMasterControl(r4_n, 0x01);
@@ -2088,9 +2087,8 @@ struct Eq_n * g_ptr9700 = &g_t40020000; // 00009700
 //      OSRAMDisplayOff
 void OSRAMWriteByte(ui32 r0)
 {
-	do
+	while (I2CMasterIntStatus(g_ptr9730, 0x00) == 0x00)
 		;
-	while (I2CMasterIntStatus(g_ptr9730, 0x00) == 0x00);
 	OSRAMDelay(*g_ptr9734);
 	I2CMasterDataPut(g_ptr9730, r0);
 	struct Eq_n * r0_n = g_ptr9730;
@@ -2109,17 +2107,15 @@ word32 * g_ptr9734 = &g_dw2000087C; // 00009734
 void OSRAMWriteFinal(ui32 r0)
 {
 	struct Eq_n * r4_n = g_ptr9778;
-	do
+	while (I2CMasterIntStatus(r4_n, 0x00) == 0x00)
 		;
-	while (I2CMasterIntStatus(r4_n, 0x00) == 0x00);
 	word32 * r5_n = g_ptr977C;
 	struct Eq_n * r4_n = g_ptr9778;
 	OSRAMDelay(*r5_n);
 	I2CMasterDataPut(r4_n, r0);
 	I2CMasterControl(r4_n, 0x05);
-	do
+	while (I2CMasterIntStatus(r4_n, 0x00) == 0x00)
 		;
-	while (I2CMasterIntStatus(r4_n, 0x00) == 0x00);
 	word32 r0_n = *r5_n;
 	OSRAMDelay(r0_n);
 }
@@ -2382,9 +2378,8 @@ void SSIIntClear(struct Eq_n * r0, word32 r1)
 //      PDCWrite
 void SSIDataPut(struct Eq_n * r0, ui32 r1)
 {
-	do
+	while (r0->dw000C << 30 >= 0x00)
 		;
-	while (r0->dw000C << 30 >= 0x00);
 	r0->dw0008 = r1;
 }
 
@@ -2400,9 +2395,8 @@ void SSIDataNonBlockingPut(struct Eq_n * r0, word32 r1)
 //      PDCWrite
 void SSIDataGet(struct Eq_n * r0, ui32 * r1)
 {
-	do
+	while (r0->dw000C << 29 >= 0x00)
 		;
-	while (r0->dw000C << 29 >= 0x00);
 	*r1 = r0->dw0008;
 }
 
@@ -2847,9 +2841,8 @@ void UARTEnable(struct Eq_n * r0)
 // 00009FEC: void UARTDisable(Register (ptr32 Eq_n) r0)
 void UARTDisable(struct Eq_n * r0)
 {
-	do
+	while (r0->dw0018 << 28 < 0x00)
 		;
-	while (r0->dw0018 << 28 < 0x00);
 	r0->dw002C &= ~0x10;
 	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
 }
@@ -2873,9 +2866,8 @@ void UARTCharNonBlockingGet(struct Eq_n * r0)
 // 0000A034: void UARTCharGet(Register (ptr32 Eq_n) r0)
 void UARTCharGet(struct Eq_n * r0)
 {
-	do
+	while (r0->dw0018 << 27 < 0x00)
 		;
-	while (r0->dw0018 << 27 < 0x00);
 }
 
 // 0000A044: void UARTCharNonBlockingPut(Register (ptr32 Eq_n) r0, Register word32 r1)
@@ -2888,9 +2880,8 @@ void UARTCharNonBlockingPut(struct Eq_n * r0, word32 r1)
 // 0000A054: void UARTCharPut(Register (ptr32 Eq_n) r0, Register word32 r1)
 void UARTCharPut(struct Eq_n * r0, word32 r1)
 {
-	do
+	while (r0->dw0018 << 26 < 0x00)
 		;
-	while (r0->dw0018 << 26 < 0x00);
 	r0->dw0000 = r1;
 }
 

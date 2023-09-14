@@ -227,9 +227,8 @@ ui20 putchar(ui20 sr, Eq_n r15, union Eq_n & r11Out)
 	Eq_n r15_n;
 	if (g_a0200[0].u0 == 0x00)
 	{
-		do
+		while ((*(union Eq_n *) 121 & 0x01) == 0x00)
 			;
-		while ((*(union Eq_n *) 121 & 0x01) == 0x00);
 		*(union Eq_n *) 0x7F = r11_n;
 		r15_n.u1 = 0x01;
 	}

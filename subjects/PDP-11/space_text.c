@@ -489,9 +489,8 @@ void fn0468(byte * r3)
 		int16 r0_n = (int16) *r3;
 		if (r0_n == 0x00)
 			break;
-		do
+		while (TTYOUT((char) r0_n))
 			;
-		while (TTYOUT((char) r0_n));
 	}
 }
 
@@ -511,9 +510,8 @@ void fn0472(word16 r1, struct Eq_n * wArg10)
 	ci16 v22_n = *g_ptr5426;
 	if (v22_n == 0x00)
 	{
-		do
+		while (TTYOUT('?'))
 			;
-		while (TTYOUT('?'));
 	}
 	else
 		fn04FA(v22_n);
@@ -527,9 +525,8 @@ void fn0472(word16 r1, struct Eq_n * wArg10)
 		{
 			r1_n = __rcl<word16,byte>(r1_n, 0x01, C_n);
 			struct Eq_n * r0_n = __rcl<word16,byte>(r0_n, 0x01, (r1_n & 0x8000) != 0x00);
-			do
+			while (TTYOUT((char) r0_n))
 				;
-			while (TTYOUT((char) r0_n));
 			r0_n = (struct Eq_n *) (&t0000.w0036 + 40);
 			do
 			{
@@ -537,9 +534,8 @@ void fn0472(word16 r1, struct Eq_n * wArg10)
 				bool C_n = (bool) cond(r1_n);
 				if (r1_n == null)
 				{
-					do
+					while (TTYOUT(')'))
 						;
-					while (TTYOUT(')'));
 					goto l04F2;
 				}
 				r0_n = __rcl<word16,byte>(r0_n, 0x01, C_n);
@@ -573,9 +569,8 @@ void fn04FA(ci16 r0)
 	if (r0_n != 0x01)
 		fn04FA(r0_n - 0x01);
 	int16 r0_n = (int16) bLoc02_n;
-	do
+	while (TTYOUT((char) r0_n))
 		;
-	while (TTYOUT((char) r0_n));
 }
 
 Eq_n g_t0500 = // 0500
@@ -608,9 +603,8 @@ void fn0528(struct Eq_n * r0)
 	while (true)
 	{
 		int16 r0_n = (int16) r0_n->b05AF;
-		do
+		while (TTYOUT((char) r0_n))
 			;
-		while (TTYOUT((char) r0_n));
 		--r3_n;
 		if (r3_n == 0x00)
 			break;
@@ -1935,9 +1929,8 @@ int16 fn1366(int16 r0, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct
 	}
 	else
 	{
-		do
+		while (TTYOUT((char) r0))
 			;
-		while (TTYOUT((char) r0));
 		r2Out = r2;
 		r3Out = r3;
 		r4Out = r4;

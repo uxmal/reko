@@ -134,8 +134,11 @@ real64 _start()
 		g_ptr100000->r0018 = -(g_ptr100000->r0018 * v13_n + 0.0 + g_ptr100000->r0050 * v15_n + g_ptr100000->r0088 * v15_n + g_ptr100000->r00C0 * v15_n + g_ptr100000->r00F8 * v15_n) / 39.47841760435743;
 		g_ptr100000->r0020 = -v13_n / 39.47841760435743;
 		g_ptr100000->r0028 = -v13_n / 39.47841760435743;
-		while (true)
-			;
+		if (true)
+		{
+			while (true)
+				;
+		}
 	} while (true);
 	return <invalid>;
 }
@@ -158,9 +161,8 @@ real64 _run(int32 arg0)
 		int32 v10_n = arg0_n + 0x01;
 		if (v10_n < 0x05)
 		{
-			do
+			while (v10_n != 0x04)
 				;
-			while (v10_n != 0x04);
 		}
 		if (v10_n == 0x05)
 			break;

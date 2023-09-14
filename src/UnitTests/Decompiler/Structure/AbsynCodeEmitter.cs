@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             stmts.Add(decl);
         }
 
-        public void DoWhile(Action<AbsynCodeEmitter> bodyGen, BinaryExpression cond)
+        public void DoWhile(Action<AbsynCodeEmitter> bodyGen, Expression cond)
         {
             var bodyStmts = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(bodyStmts);

@@ -1597,9 +1597,8 @@ Eq_n fn000026F2(Eq_n d0, Eq_n d1, Eq_n d2, ptr32 & d1Out)
 		{
 			d3_n = SEQ(v52_n, v50_n - 0x01);
 			&d0_n.u2->ptr0000 = d0_n.u2 + d1_n / 4;
-			do
+			while (d0_n >= 0x00)
 				;
-			while (d0_n >= 0x00);
 		}
 		d1Out = __swap(__rol<word32,word32>(d0_n, __swap(d3_n)));
 		return (uint32) (word16) d3_n;

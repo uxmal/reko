@@ -6523,17 +6523,15 @@ l00404C8E:
 					if (r6_n != 0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&*(word32 *) 0x0554, __load_linked<word32>(&*(word32 *) 0x0554) & r4_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&*(word32 *) 0x0554, __load_linked<word32>(&*(word32 *) 0x0554) & r4_n) == 0x00);
 						__sync(0x00);
 					}
 					if (r7_n != ~0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) & r7_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) & r7_n) == 0x00);
 						__sync(0x00);
 					}
 					r18_n.u3 = r4->t0004.u3;
@@ -6715,17 +6713,15 @@ l00404E62:
 					if (r6_n != 0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&*(word32 *) 0x0554, __load_linked<word32>(&*(word32 *) 0x0554) & r4_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&*(word32 *) 0x0554, __load_linked<word32>(&*(word32 *) 0x0554) & r4_n) == 0x00);
 						__sync(0x00);
 					}
 					if (r7_n != ~0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) & r7_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) & r7_n) == 0x00);
 						__sync(0x00);
 					}
 				}
@@ -6998,17 +6994,15 @@ l00404FBA:
 					if (r5_n != 0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&*(word32 *) 0x0555, __load_linked<word32>(&*(word32 *) 0x0555) | r5_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&*(word32 *) 0x0555, __load_linked<word32>(&*(word32 *) 0x0555) | r5_n) == 0x00);
 						__sync(0x00);
 					}
 					if (r7_n != 0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) | r7_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) | r7_n) == 0x00);
 						__sync(0x00);
 					}
 				}
@@ -7299,17 +7293,15 @@ l00405610:
 					if (r6_n != 0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&*(word32 *) 0x0555, __load_linked<word32>(&*(word32 *) 0x0555) & r5_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&*(word32 *) 0x0555, __load_linked<word32>(&*(word32 *) 0x0555) & r5_n) == 0x00);
 						__sync(0x00);
 					}
 					if (r7_n != ~0x00)
 					{
 						__sync(0x00);
-						do
+						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) & r7_n) == 0x00)
 							;
-						while (__store_conditional<word32>(&g_dw432554, __load_linked<word32>(&g_dw432554) & r7_n) == 0x00);
 						__sync(0x00);
 					}
 					r5_n.u3 = r9_n->t0003.u3;
@@ -12176,9 +12168,8 @@ void __libc_sigaction(up32 r4, union Eq_n * r5, struct Eq_n * r6)
 			__sync(0x00);
 			word32 * r6_n = 0x00432980 + ((r4 + ~0x00 >> 0x05) << 0x02);
 			ui32 r5_n = 0x01 << r4 + ~0x00;
-			do
+			while (__store_conditional<word32>(&*r6_n, __load_linked<word32>(&*r6_n) | r5_n) == 0x00)
 				;
-			while (__store_conditional<word32>(&*r6_n, __load_linked<word32>(&*r6_n) | r5_n) == 0x00);
 			__sync(0x00);
 			if (g_dw454434 == 0x00 && unmask_done == 0x00)
 			{
@@ -17961,9 +17952,8 @@ Eq_n __wait(Eq_n r4, word32 * r5, Eq_n r6, word32 r7, union Eq_n & r4Out, word32
 	{
 l0040ADD6:
 		__sync(0x00);
-		do
+		while (__store_conditional<word32>(&*r5, __load_linked<word32>(&*r5).u11 + 1) == 0x00)
 			;
-		while (__store_conditional<word32>(&*r5, __load_linked<word32>(&*r5).u11 + 1) == 0x00);
 		__sync(0x00);
 	}
 	while (r6 == *r4.u0)
@@ -17981,9 +17971,8 @@ l0040ADD6:
 	if (r5 != null)
 	{
 		__sync(0x00);
-		do
+		while (__store_conditional<word32>(&*r5, &__load_linked<word32>(&*r5).u11->bFFFFFFFF) == 0x00)
 			;
-		while (__store_conditional<word32>(&*r5, &__load_linked<word32>(&*r5).u11->bFFFFFFFF) == 0x00);
 		__sync(0x00);
 	}
 l0040AE08:
@@ -18076,9 +18065,8 @@ void cgt_init(word32 r4, word32 r5)
 {
 	Eq_n r4_n = __vdsosym(&g_b412044, &g_b41202C);
 	__sync(0x00);
-	do
+	while (0x0040AEB0 == __load_linked<word32>(&vdso_func) && __store_conditional<word32>(&vdso_func, r4_n) == 0x00)
 		;
-	while (0x0040AEB0 == __load_linked<word32>(&vdso_func) && __store_conditional<word32>(&vdso_func, r4_n) == 0x00);
 	__sync(0x00);
 	if (r4_n == 0x00)
 		return;
@@ -24703,9 +24691,8 @@ void lseek64()
 void cleanup(word32 * r4)
 {
 	__sync(0x00);
-	do
+	while (__store_conditional<word32>(&*r4, &__load_linked<word32>(&*r4).u11->bFFFFFFFF) == 0x00)
 		;
-	while (__store_conditional<word32>(&*r4, &__load_linked<word32>(&*r4).u11->bFFFFFFFF) == 0x00);
 	__sync(0x00);
 }
 
@@ -24731,14 +24718,12 @@ void sem_timedwait(struct Eq_n * r4, struct Eq_n * r5)
 		if (sem_trywait(r4) == 0x00)
 			return;
 		__sync(0x00);
-		do
+		while (__store_conditional<word32>(&r4->dw0004, __load_linked<word32>(&r4->dw0004).u11 + 1) == 0x00)
 			;
-		while (__store_conditional<word32>(&r4->dw0004, __load_linked<word32>(&r4->dw0004).u11 + 1) == 0x00);
 		__sync(0x00);
 		__sync(0x00);
-		do
+		while (__load_linked<word32>(&r4->t0000.u3) == 0x00 && __store_conditional<word32>(&(r4->t0000).u3, ~0x00) == 0x00)
 			;
-		while (__load_linked<word32>(&r4->t0000.u3) == 0x00 && __store_conditional<word32>(&(r4->t0000).u3, ~0x00) == 0x00);
 		__sync(0x00);
 		_pthread_cleanup_push(&tLoc1C, 0x0040E890, &r4->dw0004);
 		Eq_n r4_n = __timedwait_cp(0x00, r5, r4->dw0002);

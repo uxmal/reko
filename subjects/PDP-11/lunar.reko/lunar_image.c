@@ -1942,9 +1942,8 @@ void fn34E0()
 //      fn34E0
 void fn355A()
 {
-	do
+	while (*(ci8 *) 64396 > 0x00)
 		;
-	while (*(ci8 *) 64396 > 0x00);
 }
 
 cui16 g_w35CA = 17221; // 35CA

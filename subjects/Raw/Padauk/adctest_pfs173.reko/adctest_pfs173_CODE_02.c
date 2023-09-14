@@ -126,9 +126,8 @@ Eq_n g_t0035 = // 0035
 //      fn0112
 Eq_n fn0038()
 {
-	do
+	while ((g_t0002.u1 | g_b0003) != 0x00)
 		;
-	while ((g_t0002.u1 | g_b0003) != 0x00);
 	__out_bit(0x04, 0x06, false);
 	g_t00B3.u1 = g_t0004.u1;
 	g_t00B4.u1 = g_t0005.u1;
@@ -313,9 +312,8 @@ void fn0068(byte f, byte a)
 	byte f_n = fn0146(f);
 	__out(0x02, __in(0x02) + ~0x01);
 	__out_bit(0x20, 0x06, true);
-	do
+	while ((__in(0x20) & 0x40) == 0x00)
 		;
-	while ((__in(0x20) & 0x40) == 0x00);
 	g_t0012.u1 = (byte) __in(0x22);
 	g_b0013 = 0x00;
 	g_b0014 = 0x00;
@@ -351,9 +349,8 @@ void fn0068(byte f, byte a)
 	while (true)
 	{
 		__out_bit(0x20, 0x06, true);
-		do
+		while ((__in(0x20) & 0x40) == 0x00)
 			;
-		while ((__in(0x20) & 0x40) == 0x00);
 		byte a_n = __in(0x22);
 		null = 0x00;
 		*sp_n = a_n;

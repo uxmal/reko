@@ -1061,8 +1061,17 @@ are added during loop refinement, which we discuss next.
                         // DoWhile!
                         var exp = s == succs[0]
                             ? n.Expression!.Invert()
-                            : n.Expression;
-                        loopStm = new AbsynDoWhile(s.Statements, exp!);
+                            : n.Expression!;
+                        // #1287: do-while's with empty bodies are identical to whiles,
+                        // and whiles are more idiomatic.
+                        if (s.Statements.Count == 0)
+                        {
+                            loopStm = new AbsynWhile(exp, s.Statements);
+                        }
+                        else
+                        {
+                            loopStm = new AbsynDoWhile(s.Statements, exp);
+                        }
                         n.Type = RegionType.Linear;
                     }
                     n.Statements = new List<AbsynStatement> { loopStm };

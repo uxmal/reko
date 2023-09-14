@@ -76,9 +76,8 @@ word16 fn0110(word16 S0TIC)
 {
 	ptr16 fp;
 	*(ptr16 *) ~0x014F = fp;
-	do
+	while (!__bit<word16,int16>(S0TIC, 7))
 		;
-	while (!__bit<word16,int16>(S0TIC, 7));
 	return __bit_clear<word16,int16>(S0TIC, 7);
 }
 
@@ -87,9 +86,8 @@ word16 fn0110(word16 S0TIC)
 //      fn0034
 word16 fn011C(word16 S0RIC)
 {
-	do
+	while (!__bit<word16,int16>(S0RIC, 7))
 		;
-	while (!__bit<word16,int16>(S0RIC, 7));
 	return __bit_clear<word16,int16>(S0RIC, 7);
 }
 

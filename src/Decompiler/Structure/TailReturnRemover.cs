@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 namespace Reko.Structure
 {
     /// <summary>
-    /// Removes reduntant 'return' statements in procedures that return
+    /// Removes redundant 'return' statements in procedures that return
     /// void. These return statements will always be in tail position.
     /// </summary>
     public class TailReturnRemover : IAbsynVisitor<bool>

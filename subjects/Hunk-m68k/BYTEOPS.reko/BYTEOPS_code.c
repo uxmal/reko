@@ -1714,9 +1714,8 @@ word32 * fn00002AFA(word32 * d0, word32 * d1, word32 * d2, ptr32 & d1Out)
 		{
 			d3_n = SEQ(v52_n, v50_n - 0x01);
 			d0_n += d1_n;
-			do
+			while (d0_n >= null)
 				;
-			while (d0_n >= null);
 		}
 		d1Out = __swap(__rol<word32,word32>(d0_n, __swap(d3_n)));
 		return (uint32) (word16) d3_n;

@@ -159,9 +159,8 @@ void fn002004F2(byte w)
 	word32 xwa;
 	byte w_n = SLICE(xwa, byte, 8);
 	*(byte *) 0x4004 = 0x00;
-	do
+	while (*(byte *) 0x4004 != w_n)
 		;
-	while (*(byte *) 0x4004 != w_n);
 }
 
 // 0020050A: FlagGroup bool fn0020050A(Register word16 hl)

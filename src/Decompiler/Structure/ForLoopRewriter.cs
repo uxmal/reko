@@ -23,17 +23,16 @@ using Reko.Core.Absyn;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Structure
 {
+    /// <summary>
+    /// Detects and rewrites loop constructs.
+    /// </summary>
     public class ForLoopRewriter
     {
-        private Procedure proc;
+        private readonly Procedure proc;
         private readonly ExpressionValueComparer cmp;
 
         public ForLoopRewriter(Procedure proc)
@@ -125,8 +124,8 @@ namespace Reko.Structure
                     // Pattern 1
                     return new AbsynWhile(doCond, doWhile.Body);
                 }
-                if (!(ifStm.Condition is BinaryExpression ifCondBin) ||
-                    !(doWhile.Condition is BinaryExpression doCondBin))
+                if (ifStm.Condition is not BinaryExpression ifCondBin ||
+                    doWhile.Condition is not BinaryExpression doCondBin)
                     return null;
 
                 if (ifCondBin.Operator.Type == OperatorType.Ne && 
@@ -159,8 +158,8 @@ namespace Reko.Structure
             List<AbsynStatement> container, 
             int i)
         {
-            if (!(cond is BinaryExpression cmp) ||
-                !(cmp.Operator is ConditionalOperator))
+            if (cond is not BinaryExpression cmp ||
+                cmp.Operator is not ConditionalOperator)
                 return null;
 
             var (loopVariable, update) = IdentifyLoopVariable(loopBody, cmp);

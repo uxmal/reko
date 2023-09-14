@@ -27,6 +27,8 @@ using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Decompiler.Structure
 {
@@ -371,5 +373,29 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
         {
             RunTest("Fragments/regressions/r00568.asm", "Structure/StrReg00568.txt");
         }
+
+        [Test(Description = "A polling loop is idiomatically expressed as a while(poll) ; ")]
+        [Category(Categories.UnitTests)]
+        public void StrPollingLoop()
+        {
+            var pm = new ProgramBuilder();
+            pm.Add(nameof(StrPollingLoop), m =>
+            {
+                var pollFn = Identifier.Create(new TemporaryStorage("poll", 1, PrimitiveType.Ptr32));
+                m.Label("lupe");
+                m.BranchIf(m.Fn(pollFn), "lupe");
+                m.Return();
+            });
+            var sExp =
+@"define StrPollingLoop
+{
+	while (poll())
+		;
+}
+===
+";
+            RunTest(sExp, pm.Program);
+        }
+
     }
 }

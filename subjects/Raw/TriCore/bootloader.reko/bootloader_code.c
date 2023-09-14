@@ -211,13 +211,11 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 {
 		__store_upper_context();
 		fn00000AC0(a4, a15);
-		do
+		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 			;
-		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00));
 		((union Eq_n *) 0xF0004000)->u0 = 0x08;
-		do
+		while (__bit<word32,word16>(*(union Eq_n *) 0xF0004000, 0x01))
 			;
-		while (__bit<word32,word16>(*(union Eq_n *) 0xF0004000, 0x01));
 		*(word32 *) 0xF000400C = 0x43FF;
 		__store_upper_context();
 		fn00000AC0(a4, 0xF0000000);
@@ -237,9 +235,8 @@ Eq_n fn00000400(Eq_n a4, Eq_n a15)
 		*(word32 *) 0xF0004400 = 0x41;
 		*(word32 *) 0xF0004500 = 0x41;
 		((union Eq_n *) 0xF00041C4)->u0 = 0x01000002;
-		do
+		while (__bit<word32,word16>(*(union Eq_n *) 0xF00041C4, 0x08))
 			;
-		while (__bit<word32,word16>(*(union Eq_n *) 0xF00041C4, 0x08));
 		((union Eq_n *) 0xF00041C4)->u0 = 0x01010002;
 		do
 		{
@@ -529,12 +526,10 @@ void fn000009BA(struct Eq_n * d4, word32 * d5, union Eq_n * a4)
 		d4->dw5554 = 0xAA;
 		d4->dwAAA8 = 0x55;
 		*d5 = 0x30;
-		do
+		while (!__bit<word32,byte>(a4->u1, 0x00) && (!__bit<word32,byte>(a4->u1, 0x02) && !__bit<word32,word16>(a4->u1, 0x03)))
 			;
-		while (!__bit<word32,byte>(a4->u1, 0x00) && (!__bit<word32,byte>(a4->u1, 0x02) && !__bit<word32,word16>(a4->u1, 0x03)));
-		do
+		while (__bit<word32,word16>(a4->u1, 0x00) || (__bit<word32,word16>(a4->u1, 0x02) || __bit<word32,word16>(a4->u1, 0x03)))
 			;
-		while (__bit<word32,word16>(a4->u1, 0x00) || (__bit<word32,word16>(a4->u1, 0x02) || __bit<word32,word16>(a4->u1, 0x03)));
 		__load_upper_context();
 }
 
@@ -571,9 +566,8 @@ Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 		{
 			__store_upper_context();
 			fn00000AC0(a4, a15);
-			do
+			while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 				;
-			while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00));
 			*(union Eq_n *) 247064 = a15;
 			*(union Eq_n *) 247064 = a15;
 			__store_upper_context();
@@ -582,26 +576,22 @@ Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 			{
 				__store_upper_context();
 				fn00000AC0(a4, a15);
-				do
+				while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 					;
-				while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00));
 				*(union Eq_n *) 0x0003C530 = a15;
 				*(union Eq_n *) 247064 = a15;
-				do
+				while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x00))
 					;
-				while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x00));
 				*(union Eq_n *) 247064 = a15;
 				*(union Eq_n *) 0x0003C51C = a15;
 				__store_upper_context();
 				fn00000AC0(a4, a15);
-				do
+				while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x02))
 					;
-				while (!__bit<word32,word16>(*(union Eq_n *) 247060, 0x02));
 				__store_upper_context();
 				fn00000AC0(a4, a15);
-				do
+				while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 					;
-				while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00));
 				*(union Eq_n *) 247064 = a15;
 				__store_upper_context();
 				fn00000AC0(a4, a15);
@@ -609,9 +599,8 @@ Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 		}
 		__store_upper_context();
 		fn00000AC0(a4, a15);
-		do
+		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 			;
-		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00));
 		*(union Eq_n *) 247284 = a15;
 		__store_upper_context();
 		__mtcr(ICR, fn00000AC0(a4, a15));
@@ -635,9 +624,8 @@ Eq_n fn00000B04(Eq_n a4, Eq_n a15, uint32 ICR)
 		*(word32 *) 0xF0043FDC = 0x1000;
 		__store_upper_context();
 		fn00000AC0(a4, 0xF0040000);
-		do
+		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00))
 			;
-		while (__bit<word32,word16>(*(union Eq_n *) 0x0003C5F0, 0x00));
 		*(word32 *) 0x0003FC00 = 0xD0000000;
 		*(word32 *) 0xD0000240 = *(word32 *) 0x0003FC00;
 		__store_upper_context();
