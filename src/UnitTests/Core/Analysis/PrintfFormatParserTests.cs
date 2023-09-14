@@ -177,5 +177,15 @@ namespace Reko.UnitTests.Core.Analysis
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("real80", parser.ArgumentTypes[0].ToString());
         }
+
+        [Test]
+        public void PFP_dynamic_width_specifier()
+        {
+            ParseChar32("%0*.*s");
+            Assert.AreEqual(3, parser.ArgumentTypes.Count);
+            Assert.AreEqual("int32", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("int32", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[2].ToString());
+        }
     }
 }

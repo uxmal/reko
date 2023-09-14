@@ -93,8 +93,7 @@ namespace Reko.Libraries.Libc
                 char domain = CollectDataType();
 
                 DataType dt = MakeDataType(byteSize, domain);
-                if (dt != null)
-                    ArgumentTypes.Add(dt);
+                ArgumentTypes.Add(dt);
             }
         }
 
@@ -243,6 +242,13 @@ namespace Reko.Libraries.Libc
 
         private void SkipNumber()
         {
+            if (format[i] == '*')
+            {
+                var dt = MakeDataType(PrintfSize.Default, 'd'); //$ int
+                ArgumentTypes.Add(dt);
+                ++i;
+                return;
+            }
             while (i < format.Length && Char.IsDigit(format[i]))
                 ++i;
         }
