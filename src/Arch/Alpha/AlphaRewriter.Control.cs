@@ -71,7 +71,7 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
-        private void RewriteFCmov(Operator op)
+        private void RewriteFCmov(BinaryOperator op)
         {
             var cond = Rewrite(instr.Operands[0]);
             var src = Rewrite(instr.Operands[1]);
@@ -81,7 +81,7 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
-        private void RewriteFBranch(Operator op)
+        private void RewriteFBranch(BinaryOperator op)
         {
             var src = Rewrite(instr.Operands[0]);
             var dst = ((AddressOperand)instr.Operands[1]).Address;

@@ -72,7 +72,7 @@ namespace Reko.Core.Expressions
 
         private bool Match(Operator opPattern, Operator op, ExpressionMatch m)
         {
-            if (opPattern is WildOperator wildOp)
+            if (opPattern is WildBinaryOperator wildOp)
             {
                 if (wildOp.Label is { })
                     m.Capture(wildOp.Label, op);
@@ -326,9 +326,9 @@ namespace Reko.Core.Expressions
             return new WildId(label);
         }
 
-        public static Operator AnyOperator(string label)
+        public static BinaryOperator AnyBinaryOperator(string label)
         {
-            return new WildOperator(label);
+            return new WildBinaryOperator(label);
         }
 
         public static DataType AnyDataType(string? label)
@@ -462,9 +462,9 @@ namespace Reko.Core.Expressions
             public string? Label { get; }
         }
 
-        private class WildOperator : Operator
+        private class WildBinaryOperator : BinaryOperator
         {
-            public WildOperator(string Label) : base((OperatorType)(-1))
+            public WildBinaryOperator(string Label) : base((OperatorType)(-1))
             {
                 this.Label = Label;
             }

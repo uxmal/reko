@@ -84,7 +84,7 @@ namespace Reko.Core.Intrinsics
             Debug.Assert(this.Operator is BinaryOperator, "Slicing non-binary SIMD operators not implemented yet");
             var left = new Slice(laneType, arguments[0], lane * laneType.BitSize);
             var right = new Slice(laneType, arguments[1], lane * laneType.BitSize);
-            return new BinaryExpression(Operator, laneType, left, right);
+            return new BinaryExpression((BinaryOperator)Operator, laneType, left, right);
         }
     }
 }

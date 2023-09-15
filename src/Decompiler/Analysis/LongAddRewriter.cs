@@ -88,7 +88,7 @@ namespace Reko.Analysis
                 new Assignment(
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op"),
+                        ExpressionMatcher.AnyBinaryOperator("op"),
                         VoidType.Instance,
                         ExpressionMatcher.AnyExpression("left"),
                         ExpressionMatcher.AnyExpression("right"))));
@@ -97,10 +97,10 @@ namespace Reko.Analysis
                 new Assignment(
                     ExpressionMatcher.AnyId("dst"),
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op1"),
+                        ExpressionMatcher.AnyBinaryOperator("op1"),
                         VoidType.Instance,
                         new BinaryExpression(
-                            ExpressionMatcher.AnyOperator("op2"),
+                            ExpressionMatcher.AnyBinaryOperator("op2"),
                             VoidType.Instance,
                             ExpressionMatcher.AnyExpression("left"),
                             ExpressionMatcher.AnyExpression("right")),
@@ -109,7 +109,7 @@ namespace Reko.Analysis
             memOffset = ExpressionMatcher.Build(m =>
                 new MemoryAccess(
                     new BinaryExpression(
-                        ExpressionMatcher.AnyOperator("op"),
+                        ExpressionMatcher.AnyBinaryOperator("op"),
                         VoidType.Instance,
                         ExpressionMatcher.AnyExpression("base"),
                         ExpressionMatcher.AnyConstant("Offset")),
@@ -122,7 +122,7 @@ namespace Reko.Analysis
                         ExpressionMatcher.AnyDataType(null),
                         ExpressionMatcher.AnyId(),
                         new BinaryExpression(
-                            ExpressionMatcher.AnyOperator("op"),
+                            ExpressionMatcher.AnyBinaryOperator("op"),
                             VoidType.Instance,
                             ExpressionMatcher.AnyExpression("base"),
                             ExpressionMatcher.AnyConstant("Offset"))),
@@ -624,10 +624,10 @@ namespace Reko.Analysis
                 if (!IsCarryFlag(m.CapturedExpression("cf")))
                     return null;
                 var op = m.CapturedOperator("op2");
-                if (op is null || !op.Type.IsAddOrSub())
+                if (op is not BinaryOperator binOp || !binOp.Type.IsAddOrSub())
                     return null;
                 return new Candidate(
-                    op,
+                    binOp,
                     m.CapturedExpression("left")!,
                     m.CapturedExpression("right")!)
                 {
@@ -641,15 +641,15 @@ namespace Reko.Analysis
                 if (!IsCarryFlag(m.CapturedExpression("right")))
                     return null;
                 var op = m.CapturedOperator("op");
-                if (op is null || !op.Type.IsAddOrSub())
+                if (op is not BinaryOperator binOp|| !binOp.Type.IsAddOrSub())
                     return null;
                 var dst = m.CapturedExpression("dst")!;
                 var left = m.CapturedExpression("left")!;
-                Candidate? pdp11dst = IsPdp11StyleAdcSbc(op, dst, left);
+                Candidate? pdp11dst = IsPdp11StyleAdcSbc(binOp, dst, left);
                 if (pdp11dst is not null)
                     return pdp11dst;
                 return new Candidate(
-                    op,
+                    binOp,
                     left,
                     Constant.Zero(left.DataType))
                 {
@@ -677,7 +677,7 @@ namespace Reko.Analysis
         ///     add r3,r4
         /// On entry we 
         /// </remarks>
-        private Candidate? IsPdp11StyleAdcSbc(Operator op, Expression dst, Expression left)
+        private Candidate? IsPdp11StyleAdcSbc(BinaryOperator op, Expression dst, Expression left)
         {
             if (dst is not Identifier idIntermediate)
                 return null;
@@ -713,7 +713,7 @@ namespace Reko.Analysis
             if (!op.Type.IsAddOrSub())
                 return null;
             return new Candidate(
-                op,
+                (BinaryOperator)op,
                 m.CapturedExpression("left")!,
                 m.CapturedExpression("right")!)
             {
@@ -737,7 +737,7 @@ namespace Reko.Analysis
 
         public class Candidate
         {
-            public Candidate(Operator op, Expression left, Expression? right)
+            public Candidate(BinaryOperator op, Expression left, Expression? right)
             {
                 this.Op = op;
                 this.Left = left;
@@ -747,7 +747,7 @@ namespace Reko.Analysis
             public int StatementIndex;
             public Statement? Statement;
             public Expression? Dst;
-            public readonly Operator Op;
+            public readonly BinaryOperator Op;
             public readonly Expression Left;
             public readonly Expression? Right;
         }

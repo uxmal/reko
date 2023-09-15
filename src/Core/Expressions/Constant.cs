@@ -101,7 +101,8 @@ namespace Reko.Core.Expressions
             case 29:
             case 30:
             case 31:
-                value &= (long) Bits.Mask(0, bitSize);
+                if (dt.Domain != Domain.SignedInt)
+                    value &= (long) Bits.Mask(0, bitSize);
                 goto case 32;
             case 32:
                 switch (dt.Domain)

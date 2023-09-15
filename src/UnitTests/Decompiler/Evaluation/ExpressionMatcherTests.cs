@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Decompiler.Evaluation
         public void Emt_MatchAnyOp()
         {
             var sum = m.IAdd(Id("ebx"), Id("ecx"));
-            Create(new BinaryExpression(AnyOp("op"), sum.DataType, AnyId("left"), AnyId("right")));
+            Create(new BinaryExpression(AnyBinOp("op"), sum.DataType, AnyId("left"), AnyId("right")));
             var match = matcher.Match(sum);
             Assert.IsTrue(match.Success);
             Assert.AreEqual(" + ", match.CapturedOperator("op").ToString());
@@ -151,9 +151,9 @@ namespace Reko.UnitTests.Decompiler.Evaluation
             return ExpressionMatcher.AnyId(label);
         }
 
-        private Operator AnyOp(string label)
+        private BinaryOperator AnyBinOp(string label)
         {
-            return ExpressionMatcher.AnyOperator(label);
+            return ExpressionMatcher.AnyBinaryOperator(label);
         }
     }
 }

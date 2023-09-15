@@ -290,7 +290,7 @@ namespace Reko.Evaluation
                 if (binLeft.Operator.Type == OperatorType.ISub)
                 {
                     return (new BinaryExpression(
-                        ((ConditionalOperator) binExp.Operator).Negate(),
+                        (BinaryOperator)((ConditionalOperator) binExp.Operator).Negate(),
                         binExp.DataType,
                         binLeft.Right,
                         cBinLeft), true);

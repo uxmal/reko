@@ -135,7 +135,7 @@ namespace Reko.Arch.Mips
             m.Assign(dst, m.FMul(src1, src2));
         }
 
-        private void RewriteFpuCmpD(MipsInstruction instr, Operator cmp)
+        private void RewriteFpuCmpD(MipsInstruction instr, BinaryOperator cmp)
         {
             m.Assign(
                 RewriteOperand0(instr.Operands[0]),

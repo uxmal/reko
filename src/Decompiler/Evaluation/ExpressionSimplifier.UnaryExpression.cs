@@ -68,7 +68,7 @@ namespace Reko.Evaluation
                 unary.Expression is BinaryExpression bin &&
                 bin.Operator is ConditionalOperator cond)
             {
-                return new BinaryExpression(cond.Invert(), bin.DataType, bin.Left, bin.Right);
+                return new BinaryExpression((BinaryOperator)cond.Invert(), bin.DataType, bin.Left, bin.Right);
             }
             return null;
         }

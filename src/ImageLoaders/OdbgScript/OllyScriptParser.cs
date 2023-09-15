@@ -269,7 +269,7 @@ namespace Reko.ImageLoaders.OdbgScript
             for (; ; )
             {
                 var tok = PeekToken();
-                Operator op;
+                BinaryOperator op;
                 switch (tok.Type)
                 {
                 case TokenType.Shl:
@@ -300,7 +300,7 @@ namespace Reko.ImageLoaders.OdbgScript
             for (; ; )
             {
                 var tok = PeekToken();
-                Operator op;
+                BinaryOperator op;
                 switch (tok.Type)
                 {
                 case TokenType.Plus:
@@ -328,7 +328,7 @@ namespace Reko.ImageLoaders.OdbgScript
             for (; ; )
             {
                 var tok = PeekToken();
-                Operator op;
+                BinaryOperator op;
                 switch (tok.Type)
                 {
                 case TokenType.Times:
