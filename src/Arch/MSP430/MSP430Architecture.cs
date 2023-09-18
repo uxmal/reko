@@ -32,25 +32,34 @@ using System.Text;
 
 namespace Reko.Arch.Msp430
 {
+    using Decoder = Decoder<Msp430Disassembler, Mnemonics, Msp430Instruction>;
+
     public class Msp430Architecture : ProcessorArchitecture
     {
+        public readonly static PrimitiveType Ptr20 = PrimitiveType.Create(Domain.Pointer, 20);
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(20);
 
+        private Decoder[] decoders = default!;
+
         public Msp430Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
-            : base(services, archId, options, Registers.ByName, null!)
+            : base(services, archId, options, null!, null!)
         {
-            this.CarryFlag = Registers.C;
             this.InstructionBitSize = 16;
-            this.StackRegister = Registers.sp;
             this.WordWidth = PrimitiveType.Word16;
             this.PointerType = PrimitiveType.Ptr16;
             this.FramePointerType = PrimitiveType.Ptr16;
             this.Endianness = EndianServices.Little;
+            SetOptionDependentProperties(options);
+            this.StackRegister = Registers.sp;
+            this.CarryFlag = Registers.C;
         }
+
+        public Registers Registers { get; private set; } = default!;
+        public PrimitiveType RegisterType { get; private set; } = default!;
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Msp430Disassembler(this, imageReader);
+            return new Msp430Disassembler(this, decoders, imageReader);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -70,7 +79,12 @@ namespace Reko.Arch.Msp430
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Msp430Rewriter(this, rdr, state, binder, host);
+            return new Msp430Rewriter(this, decoders, rdr, state, binder, host);
+        }
+
+        public override CallingConvention? GetCallingConvention(string? name)
+        {
+            return new Msp430CallingConvention(this);
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -135,6 +149,12 @@ namespace Reko.Arch.Msp430
             return s.ToString();
         }
 
+        public override void LoadUserOptions(Dictionary<string, object>? options)
+        {
+            base.LoadUserOptions(options);
+            SetOptionDependentProperties(options);
+        }
+
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             var uAddr = c.ToUInt32();
@@ -146,6 +166,30 @@ namespace Reko.Arch.Msp430
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
+        }
+
+        private void SetOptionDependentProperties(Dictionary<string,object>? options)
+        {
+            bool useExtensions = false;
+            if (options is { } &&
+                options.TryGetValue(ProcessorOption.InstructionSet, out var oIsa) &&
+                oIsa is string sIsa &&
+                sIsa == "MSP430X")
+            {
+                useExtensions = true;
+                this.RegisterType = Word20;
+                this.PointerType = Ptr20;
+            }
+            else
+            {
+                this.RegisterType = PrimitiveType.Word16;
+                this.PointerType = PrimitiveType.Ptr16;
+            }
+            var isa = new Msp430Disassembler.InstructionSet(useExtensions);
+            decoders = isa.CreateRootDecoders();
+            this.Registers = new Registers(this.RegisterType);
+            this.StackRegister = Registers.sp;
+            this.CarryFlag = Registers.C;
         }
 
         public override bool TryGetRegister(string name, [MaybeNullWhen(false)] out RegisterStorage reg)

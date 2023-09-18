@@ -26,33 +26,39 @@ using System.Linq;
 
 namespace Reko.Arch.Msp430
 {
-    public static class Registers
+    public class Registers
     {
-        public static RegisterStorage[] GpRegisters;
-        public readonly static Dictionary<string, RegisterStorage> ByName;
+        public RegisterStorage[] GpRegisters { get; }
+        public Dictionary<string, RegisterStorage> ByName { get; }
 
-        public static RegisterStorage pc = new RegisterStorage("pc", 0, 0, Msp430Architecture.Word20);
-        public static RegisterStorage sp = new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20);
-        public static RegisterStorage sr = new RegisterStorage("sr", 2, 0, Msp430Architecture.Word20);
+        public RegisterStorage pc { get; }
+        public RegisterStorage sp { get; }
 
-        public static FlagGroupStorage C { get; }
+        /// <summary>
+        /// Processor Status Register.
+        /// </summary>
+        public RegisterStorage sr { get; }
 
-        public static FlagGroupStorage NZC { get; }
-        public static FlagGroupStorage V { get; }
-        public static FlagGroupStorage VNZC { get; }
+        public FlagGroupStorage C { get; }
+        public FlagGroupStorage NZC { get; }
+        public FlagGroupStorage V { get; }
+        public FlagGroupStorage VNZC { get; }
         
-        static Registers()
+        public Registers(PrimitiveType dtGpReg)
         {
+            pc = new RegisterStorage("pc", 0, 0, dtGpReg);
+            sp = new RegisterStorage("sp", 1, 0, dtGpReg);
+            sr = new RegisterStorage("sr", 2, 0, dtGpReg);
             GpRegisters = new RegisterStorage[]
             {
                 pc,
                 sp,
                 sr,
-                new RegisterStorage("cg2", 3, 0, Msp430Architecture.Word20),
+                new RegisterStorage("cg2", 3, 0, dtGpReg),
             }.Concat(
                 Enumerable.Range(4, 12)
                 .Select(i => new RegisterStorage(
-                    string.Format("r{0}", i), i, 0, Msp430Architecture.Word20)))
+                    string.Format("r{0}", i), i, 0, dtGpReg)))
 
                 .ToArray();
             C = new FlagGroupStorage(sr, (uint) FlagM.CF, "C", PrimitiveType.Bool);

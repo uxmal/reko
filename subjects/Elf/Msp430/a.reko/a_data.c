@@ -4,34 +4,135 @@
 
 #include "a.h"
 
-Eq_n g_a0200[] = // 0200
+Eq_n g_a0200[29] = // 0200
 	{
+		
+		{
+			0x01
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x0A
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
+		
+		{
+			0x00
+		},
 	};
-Eq_n pxCurrentTCB = // 0202
-	{
-		null
-	};
+struct Eq_n * pxCurrentTCB = null; // 0202
 word16 uxTasksDeleted = 0x00; // 0204
 word16 uxCurrentNumberOfTasks = 0x00; // 0206
-Eq_n xTickCount = // 0208
-	{
-		0x00
-	};
-Eq_n uxTopUsedPriority = // 020A
-	{
-		0x00
-	};
-Eq_n uxTopReadyPriority = // 020C
-	{
-		0x00
-	};
+cup16 xTickCount = 0x00; // 0208
+uint16 uxTopUsedPriority = 0x00; // 020A
+uint16 uxTopReadyPriority = 0x00; // 020C
 word16 xSchedulerRunning = 0x00; // 020E
 word16 uxSchedulerSuspended = 0x00; // 0210
 word16 uxMissedTicks = 0x00; // 0212
 word16 uxTaskNumber.0 = 0x00; // 0214
-Eq_n xNextFreeByte = // 0216
-	{
-		0x000A0000
-	};
+cup16 xNextFreeByte = 0x00; // 0216
 word16 usCriticalNesting = 0x0A; // 0218
 word16 total_len = 0x00; // 021A

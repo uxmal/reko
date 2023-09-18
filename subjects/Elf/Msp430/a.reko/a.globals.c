@@ -14,15 +14,15 @@ Eq_n g_t0057;
 Eq_n g_t0078;
 Eq_n g_t0079;
 Eq_n g_t007B;
-byte g_b007C; // 007C
+Eq_n g_t007C;
 Eq_n g_t007D;
 Eq_n g_t007F;
 word16 g_w0120; // 0120
 Eq_n g_t0130;
 Eq_n g_t0134;
 Eq_n g_t0138;
-Eq_n g_t013A;
-Eq_n g_t013C;
+uint16 g_w013A; // 013A
+uint16 g_w013C; // 013C
 cui16 g_w0160; // 0160
 word16 g_w0162; // 0162
 word16 g_w0172; // 0172

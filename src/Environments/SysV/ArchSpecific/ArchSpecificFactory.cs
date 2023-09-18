@@ -144,7 +144,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "avr32":
                 return new Avr32CallingConvention(arch);
             case "msp430":
-                return new Msp430CallingConvention(arch);
+                return arch.GetCallingConvention("");
             case "risc-v":
                 if (this.ccRiscV == null)
                 {

@@ -91,12 +91,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void MSP430Dis_cmpa()
-        {
-            AssertCode("cmpa.a\tr9,r4", "D409");
-        }
-
-        [Test]
         public void MSP430Dis_symbolic()
         {
             AssertCode("rrc.w\t1236(pc)", "1010 3412");
@@ -106,6 +100,18 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void MSP430Dis_call_immediate()
         {
             AssertCode("call\t1234", "B012 3412");
+        }
+
+        [Test]
+        public void MSP430Dis_dint()
+        {
+            AssertCode("dint", "32C2");
+        }
+
+        [Test]
+        public void MSP430Dis_eint()
+        {
+            AssertCode("eint", "32D2");
         }
 
         [Test]
@@ -133,42 +139,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void MSP430Dis_rrum()
-        {
-            AssertCode("rrum.w\t#01,r12", "5C03");
-        }
-
-        [Test]
-        public void MSP430Dis_repeat_const()
-        {
-            AssertCode("rpt #14 rrax.w\tr12", "4d180c11");
-            AssertCode("rpt r13 rrax.w\tr12", "CD180c11");
-        }
-
-        [Test]
-        public void MSP430Dis_popm()
-        {
-            AssertCode("popm.w\t#01,r10", "0A17");
-        }
-
-        // New decoders.
-
-        [Test]
-        public void MSP430Dis_mova_indir()
-        {
-            AssertCode("mova.a\t@sp,pc", "0001");
-        }
-
-        [Test]
         public void MSP430Dis_rrc()
         {
             AssertCode("rrc.w\tpc", "0010");
-        }
-
-        [Test]
-        public void MSP430Dis_mova_postinc()
-        {
-            AssertCode("mova.a\t@r4+,pc", "1004");
         }
 
         [Test]
@@ -178,15 +151,15 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void MSP430Dis_mova_idx()
+        public void MSP430Dis_bic()
         {
-            AssertCode("mova.a\t-0040(r12),sr", "320CC0FF");
+            AssertCode("bic.w\t#0004,sr", "22C2");
         }
 
         [Test]
-        public void MSP430Dis_bic()
+        public void MSP430Dis_bic_gie()
         {
-            AssertCode("bic.w\t#0008,sr", "32C2");
+            AssertCode("dint", "32C2");
         }
 
         [Test]

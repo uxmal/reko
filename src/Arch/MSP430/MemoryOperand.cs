@@ -42,7 +42,7 @@ namespace Reko.Arch.Msp430
             }
             if (Offset > 0)
             {
-                if (Base == Registers.pc && (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
+                if (IsPcRelative && (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
                     var addr = renderer.Address + 4 + Offset;
                     renderer.WriteAddress(addr.ToString(), addr);
@@ -54,7 +54,7 @@ namespace Reko.Arch.Msp430
             }
             else if (Offset < 0)
             {
-                if (Base == Registers.pc && (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
+                if (IsPcRelative && (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
                     var addr = renderer.Address + 4 + Offset;
                     renderer.WriteAddress(addr.ToString(), addr);
@@ -72,5 +72,7 @@ namespace Reko.Arch.Msp430
                     renderer.WriteChar('+');
             }
         }
+
+        public bool IsPcRelative => this.Base is not null && this.Base.Number == 0;
     }
 }

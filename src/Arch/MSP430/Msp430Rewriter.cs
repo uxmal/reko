@@ -31,9 +31,12 @@ using Reko.Core.Types;
 using Reko.Core.Services;
 using Reko.Core.Memory;
 using Reko.Core.Intrinsics;
+using System.Globalization;
 
 namespace Reko.Arch.Msp430
 {
+    using Decoder = Decoder<Msp430Disassembler, Mnemonics, Msp430Instruction>;
+
     internal class Msp430Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private readonly IStorageBinder binder;
@@ -47,14 +50,14 @@ namespace Reko.Arch.Msp430
         private Msp430Instruction instr;
         private InstrClass iclass;
 
-        public Msp430Rewriter(Msp430Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public Msp430Rewriter(Msp430Architecture arch, Decoder[] decoders, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
-            this.dasm = new Msp430Disassembler(arch, rdr).GetEnumerator();
+            this.dasm = new Msp430Disassembler(arch, decoders, rdr).GetEnumerator();
             this.instrs = new List<RtlInstruction>();
             this.m = new RtlEmitter(instrs);
             this.instr = null!;
@@ -74,15 +77,17 @@ namespace Reko.Arch.Msp430
                     Invalid();
                     break;
                 case Mnemonics.addc: RewriteAdcSbc(m.IAdd); break;
-                case Mnemonics.add: RewriteBinop(m.IAdd, Registers.VNZC); break;
+                case Mnemonics.add: RewriteBinop(m.IAdd, arch.Registers.VNZC); break;
                 case Mnemonics.and: RewriteLogop(m.And); break;
-                case Mnemonics.bic: RewriteBinop(Bis,  null); break;
+                case Mnemonics.bic: RewriteBinop(Bic,  null); break;
                 case Mnemonics.bis: RewriteBinop(m.Or, null); break;
                 case Mnemonics.bit: RewriteBit(); break;
                 case Mnemonics.br: RewriteBr(); break;
                 case Mnemonics.call: RewriteCall(); break;
                 case Mnemonics.cmp: RewriteCmp(); break;
-                case Mnemonics.dadd: RewriteBinop(Dadd, Registers.NZC); break;
+                case Mnemonics.dadd: RewriteBinop(Dadd, arch.Registers.NZC); break;
+                case Mnemonics.dint: RewriteDint(); break;
+                case Mnemonics.eint: RewriteEint(); break;
 
                 case Mnemonics.jc:  RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
                 case Mnemonics.jge: RewriteBranch(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
@@ -104,11 +109,11 @@ namespace Reko.Arch.Msp430
                 case Mnemonics.rrax: RewriteRrax(); break;
                 case Mnemonics.rrc: RewriteRrc(); break;
                 case Mnemonics.rrum: RewriteRrum(); break;
-                case Mnemonics.sub: RewriteBinop(m.ISub, Registers.VNZC); break;
+                case Mnemonics.sub: RewriteBinop(m.ISub, arch.Registers.VNZC); break;
                 case Mnemonics.subc: RewriteAdcSbc(m.ISub); break;
                 case Mnemonics.swpb: RewriteSwpb(); break;
                 case Mnemonics.sxt: RewriteSxt(); break;
-                case Mnemonics.xor: RewriteBinop(m.Xor, Registers.VNZC); break;
+                case Mnemonics.xor: RewriteBinop(m.Xor, arch.Registers.VNZC); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
                 this.instrs.Clear();
@@ -125,14 +130,14 @@ namespace Reko.Arch.Msp430
             m.Assign(binder.EnsureFlagGroup(grf), e);
         }
 
-        private Expression Bis(Expression a, Expression b)
+        private Expression Bic(Expression a, Expression b)
         {
             return m.And(a, m.Comp(b));
         }
 
         private Expression Dadd(Expression a, Expression b)
         {
-            var cy = binder.EnsureFlagGroup(Registers.C);
+            var cy = binder.EnsureFlagGroup(arch.Registers.C);
             return m.Fn(dadd_intrinsic.MakeInstance(b.DataType), a, b, cy);
         }
 
@@ -142,7 +147,14 @@ namespace Reko.Arch.Msp430
             switch (op)
             {
             case RegisterStorage rop:
-                return binder.EnsureRegister(rop);
+                var id = binder.EnsureRegister(rop); 
+                if (dt.BitSize < id.DataType.BitSize)
+                {
+                    var t = binder.CreateTemporary(dt);
+                    m.Assign(t, m.Slice(id, dt));
+                    return t;
+                }
+                return id;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -152,10 +164,10 @@ namespace Reko.Arch.Msp430
                     {
                         var tmp = binder.CreateTemporary(dt);
                         m.Assign(tmp, m.Mem(op.Width!, ea));
-                        m.Assign(ea, m.IAdd(ea, m.Int16((short) dt.Size)));
+                        m.Assign(ea, m.IAddS(ea, dt.Size));
                         return tmp;
                     }
-                    else if (mop.Base == Registers.pc)
+                    else if (mop.IsPcRelative)
                     {
                         ea = instr.Address + mop.Offset;
                         var tmp = binder.CreateTemporary(dt);
@@ -165,7 +177,7 @@ namespace Reko.Arch.Msp430
                     else if (mop.Offset != 0)
                     {
                         var tmp = binder.CreateTemporary(dt);
-                        m.Assign(tmp, m.Mem(dt, m.IAdd(ea, m.Int16(mop.Offset))));
+                        m.Assign(tmp, m.Mem(dt, m.IAddS(ea, mop.Offset)));
                         return tmp;
                     }
                     else
@@ -196,23 +208,41 @@ namespace Reko.Arch.Msp430
             {
             case RegisterStorage rop:
                 var dst = binder.EnsureRegister(rop);
-                var ev = fn(dst, src);
-                if (dst.Storage == Registers.sp && ev is Constant)
+                var src1 = dst;
+                if (dst.DataType.BitSize > src.DataType.BitSize)
+                {
+                    var t = binder.CreateTemporary(src.DataType);
+                    m.Assign(t, m.Slice(dst, t.DataType));
+                    src1 = t;
+                }
+                var ev = fn(src1, src);
+                if (rop == arch.Registers.sp && ev is Constant)
                 {
                     m.SideEffect(m.Fn(set_stackpointer_intrinsic, src));
+                    return dst;
                 }
                 else
                 {
-                    m.Assign(dst, ev);
+                    if (dst.DataType.BitSize > ev.DataType.BitSize)
+                    {
+                        var t = binder.CreateTemporary(ev.DataType);
+                        m.Assign(t, ev);
+                        m.Assign(dst, m.Convert(t, t.DataType, dst.DataType));
+                        return t;
+                    }
+                    else
+                    {
+                        m.Assign(dst, ev);
+                        return dst;
+                    }
                 }
-                return dst;
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
                 {
-                    if (mop.Base == Registers.pc)
+                    if (mop.IsPcRelative)
                     {
                         ea = instr.Address + mop.Offset;
                     }
@@ -221,7 +251,7 @@ namespace Reko.Arch.Msp430
                         ea = binder.EnsureRegister(mop.Base);
                         if (mop.Offset != 0)
                         {
-                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                            ea = m.IAddS(ea, mop.Offset);
                         }
                     }
                 }
@@ -248,7 +278,7 @@ namespace Reko.Arch.Msp430
             {
             case RegisterStorage rop:
                 var dst = binder.EnsureRegister(rop);
-                if (dst.Storage == Registers.sp && src is Constant)
+                if (dst.Storage == arch.Registers.sp && src is Constant)
                 {
                     m.SideEffect(m.Fn(set_stackpointer_intrinsic, src));
                 }
@@ -263,7 +293,7 @@ namespace Reko.Arch.Msp430
                 Expression ea;
                 if (mop.Base != null)
                 {
-                    if (mop.Base == Registers.pc)
+                    if (mop.Base == arch.Registers.pc)
                     {
                         ea = instr.Address + mop.Offset;
                     }
@@ -272,7 +302,7 @@ namespace Reko.Arch.Msp430
                         ea = binder.EnsureRegister(mop.Base);
                         if (mop.Offset != 0)
                         {
-                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                            ea = m.IAddS(ea, mop.Offset);
                         }
                     }
                 }
@@ -300,21 +330,21 @@ namespace Reko.Arch.Msp430
 
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
         {
-            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.sr, (uint)FlagM.CF));
+            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.CF));
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, (a, b) => fn(fn(a, b), c));
-            EmitCc(dst, Registers.VNZC);
+            EmitCc(dst, arch.Registers.VNZC);
         }
 
         private void RewriteBinop(Func<Expression,Expression,Expression> fn, FlagGroupStorage? vnzc)
         {
             var src = RewriteOp(instr.Operands[0]);
             if (instr.Operands[1] is RegisterStorage rop &&
-                rop == Registers.pc)
+                rop == arch.Registers.pc)
             {
                 if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
-                    mop.Base == Registers.sp)
+                    mop.Base == arch.Registers.sp)
                 {
                     m.Return(2, 0);
                     return;
@@ -329,9 +359,9 @@ namespace Reko.Arch.Msp430
             var left = RewriteOp(instr.Operands[1]);
             var right = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(instr.Operands[0].Width);
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)(FlagM.NF | FlagM.ZF)));
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)FlagM.CF));
-            var v = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)FlagM.VF));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)(FlagM.NF | FlagM.ZF)));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.CF));
+            var v = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)FlagM.VF));
             m.Assign(tmp, m.And(left, right));
             m.Assign(grf, m.Cond(tmp));
             m.Assign(c, m.Test(ConditionCode.NE, tmp));
@@ -347,7 +377,7 @@ namespace Reko.Arch.Msp430
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
             iclass = InstrClass.ConditionalTransfer;
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)flags));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.Registers.sr, (uint)flags));
             m.Branch(m.Test(cc, grf), ((AddressOperand)instr.Operands[0]).Address, InstrClass.ConditionalTransfer);
         }
 
@@ -362,7 +392,17 @@ namespace Reko.Arch.Msp430
         {
             var right = RewriteOp(instr.Operands[0]);
             var left = RewriteOp(instr.Operands[1]);
-            EmitCc(m.ISub(left, right), Registers.VNZC);
+            EmitCc(m.ISub(left, right), arch.Registers.VNZC);
+        }
+
+        private void RewriteDint()
+        {
+            m.SideEffect(m.Fn(dint_intrinsic));
+        }
+
+        private void RewriteEint()
+        {
+            m.SideEffect(m.Fn(eint_intrinsic));
         }
 
         private void RewriteGoto()
@@ -375,30 +415,30 @@ namespace Reko.Arch.Msp430
         {
             var src = RewriteOp(instr.Operands[0]);
             if (instr.Operands[1] is RegisterStorage rop &&
-                rop == Registers.pc)
+                rop == arch.Registers.pc)
             {
                 if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
-                    mop.Base == Registers.sp)
+                    mop.Base == arch.Registers.sp)
                 {
                     m.Return(2, 0);
                     return;
                 }
             }
             var dst = RewriteDst(instr.Operands[1], src, fn);
-            EmitCc(dst, Registers.NZC);
-            Assign(Registers.V, Constant.False());
+            EmitCc(dst, arch.Registers.NZC);
+            Assign(arch.Registers.V, Constant.False());
         }
 
         private void RewriteMov()
         {
             var src = RewriteOp(instr.Operands[0]);
             if (instr.Operands[1] is RegisterStorage rop &&
-                rop == Registers.pc)
+                rop == arch.Registers.pc)
             {
                 if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
-                    mop.Base == Registers.sp)
+                    mop.Base == arch.Registers.sp)
                 {
                     m.Return(2, 0);
                     return;
@@ -416,10 +456,10 @@ namespace Reko.Arch.Msp430
                 Invalid();
                 return;
             }
-            var sp = binder.EnsureRegister(Registers.sp);
+            var sp = binder.EnsureRegister(arch.Registers.sp);
             while (c > 0)
             {
-                m.Assign(binder.EnsureRegister(Registers.GpRegisters[iReg]), m.Mem16(sp));
+                m.Assign(binder.EnsureRegister(arch.Registers.GpRegisters[iReg]), m.Mem16(sp));
                 m.Assign(sp, m.IAdd(sp, m.Int32(2)));
                 ++iReg;
                 --c;
@@ -429,7 +469,7 @@ namespace Reko.Arch.Msp430
         private void RewritePush()
         {
             var src = RewriteOp(instr.Operands[0]);
-            var sp = binder.EnsureRegister(Registers.sp);
+            var sp = binder.EnsureRegister(arch.Registers.sp);
             m.Assign(sp, m.ISub(sp, m.Int32(2)));
             m.Assign(m.Mem16(sp), src);
         }
@@ -437,7 +477,7 @@ namespace Reko.Arch.Msp430
         private void RewritePushm()
         {
             int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
-            var sp = binder.EnsureRegister(Registers.sp);
+            var sp = binder.EnsureRegister(arch.Registers.sp);
             int iReg = ((RegisterStorage)instr.Operands[1]).Number;
             if (iReg < c)
             {
@@ -447,7 +487,7 @@ namespace Reko.Arch.Msp430
             while (c > 0)
             {
                 m.Assign(sp, m.ISub(sp, m.Int32(2)));
-                m.Assign(m.Mem16(sp), binder.EnsureRegister(Registers.GpRegisters[iReg]));
+                m.Assign(m.Mem16(sp), binder.EnsureRegister(arch.Registers.GpRegisters[iReg]));
                 --iReg;
                 --c;
             }
@@ -467,16 +507,16 @@ namespace Reko.Arch.Msp430
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, m.Byte(1)));
-            EmitCc(dst, Registers.NZC);
-            Assign(Registers.V, Constant.False());
+            EmitCc(dst, arch.Registers.NZC);
+            Assign(arch.Registers.V, Constant.False());
         }
 
         private void RewriteRrax()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, Repeat()));
-            EmitCc(dst, Registers.NZC);
-            Assign(Registers.V, Constant.False());
+            EmitCc(dst, arch.Registers.NZC);
+            Assign(arch.Registers.V, Constant.False());
         }
 
         private void RewriteRrc()
@@ -489,9 +529,9 @@ namespace Reko.Arch.Msp430
                     CommonOps.RorC.MakeInstance(a.DataType, PrimitiveType.Byte),
                     a,
                     m.Byte(1),
-                    binder.EnsureFlagGroup(Registers.C)));
-            EmitCc(dst, Registers.NZC);
-            Assign(Registers.V, Constant.False());
+                    binder.EnsureFlagGroup(arch.Registers.C)));
+            EmitCc(dst, arch.Registers.NZC);
+            Assign(arch.Registers.V, Constant.False());
         }
 
         private Expression Repeat()
@@ -510,8 +550,8 @@ namespace Reko.Arch.Msp430
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.Shr(a, b));
-            EmitCc(dst, Registers.NZC);
-            Assign(Registers.V, Constant.False());
+            EmitCc(dst, arch.Registers.NZC);
+            Assign(arch.Registers.V, Constant.False());
         }
 
         private void RewriteSwpb()
@@ -527,10 +567,11 @@ namespace Reko.Arch.Msp430
             var src = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.Slice(src, PrimitiveType.Byte));
-            var dst = RewriteDst(instr.Operands[0], tmp, (a, b) => m.Convert(b, b.DataType, PrimitiveType.Int16));
-            EmitCc(dst, Registers.NZC);
-            Assign(Registers.V, Constant.False());
-
+            var dst = RewriteMovDst(
+                instr.Operands[0],
+                m.Convert(tmp, tmp.DataType, instr.Operands[0].Width));
+            EmitCc(dst, arch.Registers.NZC);
+            Assign(arch.Registers.V, Constant.False());
         }
 
         private void Invalid()
@@ -552,6 +593,10 @@ namespace Reko.Arch.Msp430
             .Param("T")
             .Param(PrimitiveType.Bool)
             .Returns("T");
+        static readonly IntrinsicProcedure dint_intrinsic = new IntrinsicBuilder("__disable_interrupts", true)
+            .Void();
+        static readonly IntrinsicProcedure eint_intrinsic = new IntrinsicBuilder("__enable_interrupts", true)
+            .Void();
         static readonly IntrinsicProcedure set_stackpointer_intrinsic = new IntrinsicBuilder("__set_stackpointer", true)
             .Param(PrimitiveType.Ptr16)
             .Void();

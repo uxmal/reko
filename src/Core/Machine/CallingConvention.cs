@@ -19,11 +19,8 @@
 #endregion
 
 using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
@@ -57,6 +54,15 @@ namespace Reko.Core.Machine
     public interface ICallingConventionEmitter
     {
         /// <summary>
+        /// Allocate a stack slot of size <paramref name="dt"/>, without
+        /// generating a parameter. Caller usually does this when building
+        /// heterogenous sequences of register/stack storages.
+        /// </summary>
+        /// <param name="dt">Size of the stack slot to allocate.</param>
+        /// <returns>Freshly allocated stack slot storage.</returns>
+        Storage AllocateStackSlot(DataType dt);
+
+        /// <summary>
         /// Indicate that the callee will clean up all pushed arguments off 
         /// the stack.
         /// </summary>
@@ -83,6 +89,12 @@ namespace Reko.Core.Machine
         void LowLevelDetails(int stackAlignment, int parameterStackSaveOffset);
 
         /// <summary>
+        /// Add a parameter.
+        /// </summary>
+        void Param(Storage stg);
+
+
+        /// <summary>
         /// Add a register parameter.
         /// </summary>
         void RegParam(RegisterStorage stg);
@@ -101,13 +113,13 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Add a sequence parameter.
         /// </summary>
-        void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo);
+        void SequenceParam(params Storage[] stgs);
         void SequenceParam(SequenceStorage seq);
 
         /// <summary>
         /// Indicate that a sequence is returned.
         /// </summary>
-        void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo);
+        void SequenceReturn(params Storage [] stgs);
         void SequenceReturn(SequenceStorage seq);
 
         /// <summary>
@@ -178,6 +190,11 @@ namespace Reko.Core.Machine
             stackOffset = initialStackOffset;
         }
 
+        public void Param(Storage stg)
+        {
+            Parameters.Add(stg);
+        }
+
         public void RegParam(RegisterStorage stg)
         {
             Parameters.Add(stg);
@@ -193,12 +210,9 @@ namespace Reko.Core.Machine
             Parameters.Reverse();
         }
 
-        public void SequenceParam(RegisterStorage stgHi, RegisterStorage stgLo)
+        public void SequenceParam(params Storage[] stgs)
         {
-            Parameters.Add(new SequenceStorage(
-                PrimitiveType.CreateWord(stgHi.DataType.BitSize + stgLo.DataType.BitSize),
-                stgHi,
-                stgLo));
+            Parameters.Add(new SequenceStorage(stgs));
         }
 
         public void SequenceParam(SequenceStorage seq)
@@ -206,12 +220,9 @@ namespace Reko.Core.Machine
             Parameters.Add(seq);
         }
 
-        public void SequenceReturn(RegisterStorage stgHi, RegisterStorage stgLo)
+        public void SequenceReturn(params Storage[] stgs)
         {
-            Return = new SequenceStorage(
-                PrimitiveType.CreateWord(stgHi.DataType.BitSize + stgLo.DataType.BitSize),
-                stgHi,
-                stgLo);
+            Return = new SequenceStorage(stgs);
         }
 
         public void SequenceReturn(SequenceStorage seq)
@@ -219,10 +230,16 @@ namespace Reko.Core.Machine
             Return = seq;
         }
 
-        public void StackParam(DataType dt)
+        public Storage AllocateStackSlot(DataType dt)
         {
             var stg = new StackStorage(stackOffset, dt);
             stackOffset += Align(dt.Size, stackAlignment);
+            return stg;
+        }
+
+        public void StackParam(DataType dt)
+        {
+            var stg = AllocateStackSlot(dt);
             Parameters.Add(stg);
         }
 

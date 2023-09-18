@@ -217,7 +217,7 @@ msp430_compute_modulator_bits proc
 	mov.w	r14,r12
 	mov.w	r15,r13
 	push.w	sr
-	bic.w	#0008,sr
+	dint
 	call	5ADC
 	mov.w	@sp+,sr
 	mov.w	r14,r8
@@ -310,7 +310,7 @@ init_uart_isr proc
 	mov.w	@r12+,r10
 	sub.w	#0004,r12
 	mov.b	0004(r12),r15
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	r15,r11
 	mov.w	#0001,r14
@@ -350,7 +350,7 @@ l00004366:
 	jnz	0000436E
 
 l0000436C:
-	bis.w	#0008,sr
+	eint
 
 l0000436E:
 	add.w	#0002,sp
@@ -469,7 +469,7 @@ x_putchar proc
 	sub.w	#0002,sp
 	mov.b	r15,@sp
 	mov.w	r14,r13
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	cmp.w	#0001,&0220
 	jz	00004440
@@ -490,7 +490,7 @@ l00004426:
 	jnz	0000444A
 
 l0000442C:
-	bis.w	#0008,sr
+	eint
 	jmp	0000444A
 
 l00004430:
@@ -611,7 +611,7 @@ l000044E2:
 	mov.w	r6,r14
 	call	519A
 	mov.w	r15,@r11
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#0001,&0206
 	cmp.w	#0001,&0206
@@ -666,7 +666,7 @@ l0000456C:
 	jnz	00004574
 
 l00004572:
-	bis.w	#0008,sr
+	eint
 
 l00004574:
 	cmp.w	#0001,r10
@@ -718,7 +718,7 @@ vTaskDelete proc
 	push.w	r10
 	push.w	r9
 	mov.w	r15,r9
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	r15,r11
 	cmp.w	#0000,r15
@@ -745,7 +745,7 @@ l45EE:
 	jnz	45F6
 
 l45F4:
-	bis.w	#0008,sr
+	eint
 
 l45F6:
 	cmp.w	#0000,r9
@@ -929,7 +929,7 @@ l0000470A:
 	jnz	00004708
 
 l00004726:
-	bic.w	#0008,sr
+	dint
 	mov.w	#0001,&020E
 	mov.w	#0000,&0208
 	call	520A
@@ -937,7 +937,7 @@ l00004726:
 
 ;; vTaskEndScheduler: 4736
 vTaskEndScheduler proc
-	bic.w	#0008,sr
+	dint
 	mov.w	#0000,&020E
 	call	5238
 	ret.w
@@ -953,7 +953,7 @@ vTaskEndScheduler proc
 ;;     00004FB6 (in xQueueReceive)
 ;;     00005166 (in pvPortMalloc)
 vTaskSuspendAll proc
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#0001,&0210
 	cmp.w	#0000,&0218
@@ -964,7 +964,7 @@ l00004752:
 	jnz	0000475A
 
 l00004758:
-	bis.w	#0008,sr
+	eint
 
 l0000475A:
 	ret.w
@@ -987,7 +987,7 @@ xTaskResumeAll proc
 	push.w	r9
 	push.w	r8
 	mov.w	#0000,r8
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#FFFF,&0210
 	jnz	000047EA
@@ -1068,7 +1068,7 @@ l000047F0:
 	jnz	00004812
 
 l000047F6:
-	bis.w	#0008,sr
+	eint
 	jmp	00004812
 
 l000047FA:
@@ -1104,7 +1104,7 @@ l00004812:
 ;;     40BE (in task_2)
 ;;     40E4 (in task_3)
 xTaskGetTickCount proc
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	&0208,r15
 	jz	00004832
@@ -1114,14 +1114,14 @@ l0000482A:
 	jnz	00004832
 
 l00004830:
-	bis.w	#0008,sr
+	eint
 
 l00004832:
 	ret.w
 
 ;; uxTaskGetNumberOfTasks: 4834
 uxTaskGetNumberOfTasks proc
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	&0206,r15
 	jz	4848
@@ -1131,7 +1131,7 @@ l4840:
 	jnz	4848
 
 l4846:
-	bis.w	#0008,sr
+	eint
 
 l4848:
 	ret.w
@@ -1438,7 +1438,7 @@ l4A74:
 	jnz	4ABE
 
 l4A7C:
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	cmp.w	#0000,&0296
 	jz	4ABA
@@ -1462,7 +1462,7 @@ l4AAA:
 	jnz	4AB2
 
 l4AB0:
-	bis.w	#0008,sr
+	eint
 
 l4AB2:
 	mov.w	r11,r15
@@ -1777,7 +1777,7 @@ l00004CD6:
 
 l00004CE4:
 	push.w	sr
-	bic.w	#0008,sr
+	dint
 	invalid
 	mov.w	r10,&0132
 	mov.w	r9,&0138
@@ -1789,7 +1789,7 @@ l00004CE4:
 	cmp.w	#0000,r15
 	jz	00004D6E
 	push.w	sr
-	bic.w	#0008,sr
+	dint
 	invalid
 	mov.w	r10,&0132
 	mov.w	r9,&0138
@@ -1802,7 +1802,7 @@ l00004CE4:
 	mov.w	r14,0004(r11)
 	add.w	#FFFF,r10
 	push.w	sr
-	bic.w	#0008,sr
+	dint
 	invalid
 	mov.w	r10,&0132
 	add.w	#0001,r10
@@ -1844,7 +1844,7 @@ xQueueSend proc
 	mov.w	r14,r9
 	mov.w	r13,r10
 	call	4742
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
@@ -1856,7 +1856,7 @@ l00004DA2:
 	jnz	00004DAA
 
 l00004DA8:
-	bis.w	#0008,sr
+	eint
 
 l00004DAA:
 	mov.w	r11,r15
@@ -1869,7 +1869,7 @@ l00004DB4:
 	jnz	00004E26
 
 l00004DB8:
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	cmp.w	002A(r11),0028(r11)
 	jnc	00004DF6
@@ -1886,7 +1886,7 @@ l00004DD0:
 	jnz	00004DD8
 
 l00004DD6:
-	bis.w	#0008,sr
+	eint
 
 l00004DD8:
 	mov.w	r11,r15
@@ -1932,7 +1932,7 @@ l00004E26:
 	add.w	#0008,r15
 	mov.w	r10,r14
 	call	48DA
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	r11,r15
 	call	5092
@@ -1942,7 +1942,7 @@ l00004E26:
 
 l00004E44:
 	call	4742
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
@@ -1954,7 +1954,7 @@ l00004E5C:
 	jnz	00004E64
 
 l00004E62:
-	bis.w	#0008,sr
+	eint
 
 l00004E64:
 	cmp.w	#0000,&0218
@@ -1965,7 +1965,7 @@ l00004E6A:
 	jnz	00004DB8
 
 l00004E70:
-	bis.w	#0008,sr
+	eint
 	jmp	00004DB8
 
 l00004E74:
@@ -2054,7 +2054,7 @@ xQueueReceive proc
 	mov.w	r14,r9
 	mov.w	r13,r10
 	call	4742
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
@@ -2066,7 +2066,7 @@ l00004F14:
 	jnz	00004F1C
 
 l00004F1A:
-	bis.w	#0008,sr
+	eint
 
 l00004F1C:
 	mov.w	r11,r15
@@ -2079,7 +2079,7 @@ l00004F26:
 	jnz	00004F96
 
 l00004F2A:
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	0028(r11),r14
 	cmp.w	#0000,r14
@@ -2114,7 +2114,7 @@ l00004F6C:
 	jnz	00004F74
 
 l00004F72:
-	bis.w	#0008,sr
+	eint
 
 l00004F74:
 	mov.w	r11,r15
@@ -2144,7 +2144,7 @@ l00004F96:
 	add.w	#0018,r15
 	mov.w	r10,r14
 	call	48DA
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	r11,r15
 	call	5092
@@ -2154,7 +2154,7 @@ l00004F96:
 
 l00004FB6:
 	call	4742
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
@@ -2166,7 +2166,7 @@ l00004FCE:
 	jnz	00004FD6
 
 l00004FD4:
-	bis.w	#0008,sr
+	eint
 
 l00004FD6:
 	cmp.w	#0000,&0218
@@ -2177,7 +2177,7 @@ l00004FDC:
 	jnz	00004F2A
 
 l00004FE2:
-	bis.w	#0008,sr
+	eint
 	jmp	00004F2A
 
 l00004FE6:
@@ -2262,7 +2262,7 @@ l00005062:
 
 ;; uxQueueMessagesWaiting: 5068
 uxQueueMessagesWaiting proc
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	0028(r15),r15
 	jz	507C
@@ -2272,7 +2272,7 @@ l5074:
 	jnz	507C
 
 l507A:
-	bis.w	#0008,sr
+	eint
 
 l507C:
 	ret.w
@@ -2299,7 +2299,7 @@ prvUnlockQueue proc
 	push.w	r10
 	mov.w	r15,r11
 	mov.w	#0000,r10
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#FFFF,0030(r15)
 	jn	000050B0
@@ -2318,10 +2318,10 @@ l000050B6:
 	jnz	000050BE
 
 l000050BC:
-	bis.w	#0008,sr
+	eint
 
 l000050BE:
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	add.w	#FFFF,002E(r11)
 	jn	000050D4
@@ -2340,7 +2340,7 @@ l000050DA:
 	jnz	00005104
 
 l000050E0:
-	bis.w	#0008,sr
+	eint
 	jmp	00005104
 
 l000050E4:
@@ -2374,7 +2374,7 @@ l00005104:
 ;;   Called from:
 ;;     00004F1E (in xQueueReceive)
 prvIsQueueEmpty proc
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	#0000,r14
 	cmp.w	#0000,0028(r15)
@@ -2392,7 +2392,7 @@ l00005122:
 	jnz	0000512A
 
 l00005128:
-	bis.w	#0008,sr
+	eint
 
 l0000512A:
 	mov.w	r14,r15
@@ -2402,7 +2402,7 @@ l0000512A:
 ;;   Called from:
 ;;     00004DAC (in xQueueSend)
 prvIsQueueFull proc
-	bic.w	#0008,sr
+	dint
 	add.w	#0001,&0218
 	mov.w	#0000,r14
 	cmp.w	002A(r15),0028(r15)
@@ -2417,7 +2417,7 @@ l00005144:
 	jnz	00005152
 
 l0000514A:
-	bis.w	#0008,sr
+	eint
 	jmp	00005152
 
 l0000514E:
@@ -2564,7 +2564,7 @@ vPortEndScheduler proc
 ;;     00004FE6 (in xQueueReceive)
 vPortYield proc
 	push.w	sr
-	bic.w	#0008,sr
+	dint
 	push.w	r4
 	push.w	r5
 	push.w	r6

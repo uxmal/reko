@@ -33,6 +33,8 @@ namespace Reko.Arch.Msp430
         call,
         cmp,
         dadd,
+        dint,
+        eint,
 
         jc,
         jge,
@@ -55,18 +57,19 @@ namespace Reko.Arch.Msp430
         xor,
 
         // 430X
-        rrax,
-        rlam,
+        adda,
+        br,
+        calla,
+        cmpa,
+        mova,
         popm,
         pushm,
-        rrcm,
-        rram,
-        rrum,
-        mova,
-        cmpa,
-        adda,
-        suba,
         ret,
-        br,
+        rlam,
+        rram,
+        rrax,
+        rrcm,
+        rrum,
+        suba,
     }
 }
