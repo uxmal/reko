@@ -1738,13 +1738,11 @@ l57AE:
 						dwLoc1C_n = SEQ((word16) (v136_n * 0x02 < 0x00) - 1, v136_n);
 					}
 					word16 wLoc1C_n = (word16) dwLoc1C_n;
-					ci16 wLoc1A_n = SLICE(dwLoc1C_n, word16, 16);
-					uint32 dwLoc1C_n = dwLoc1C_n;
-					if (wLoc1A_n < 0x00)
+					if (SLICE(dwLoc1C_n, word16, 16) < 0x00)
 					{
-						uint16 v132_n = ~wLoc1C_n;
+						word16 v132_n = ~wLoc1C_n;
 						bLoc24_n.u1 = 0x2D;
-						dwLoc1C_n = SEQ(SLICE(SEQ(~wLoc1A_n, v132_n) + 0x01, word16, 16), v132_n + 0x01);
+						dwLoc1C_n = SEQ(SLICE(-dwLoc1C_n, word16, 16), v132_n + 0x01);
 					}
 					bLoc18_n.u1 = 0x0A;
 					dwLoc1C_n = dwLoc1C_n;
@@ -1890,8 +1888,8 @@ l564A:
 						}
 						wLoc20_n = wLoc20_n + 0x0000FFFF;
 						wLoc20_n->b0000 = (byte) r4_n;
-						ui40 r15_r14_n;
 						ui40 r13_r12_n;
+						ui40 r15_r14_n;
 						fn00005B4E((uint40) wLoc14_n, r8_n, wLoc1C_n, wLoc1A_n, out r13_r12_n, out r15_r14_n, out r8);
 						Eq_n r13_n = <invalid>;
 						Eq_n r12_n = <invalid>;

@@ -11646,19 +11646,21 @@ uint32 fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx)
 	return SEQ(dx >> cl, ax >> cl | dx << -cl + 0x10);
 }
 
-// 0800:8CCB: Register Eq_n fn0800-8CCB(Register Eq_n ax, Register ci16 cx, Register Eq_n dx, Register Eq_n bx, Register out Eq_n chOut, Register out ptr16 dxOut)
+// 0800:8CCB: Register Eq_n fn0800-8CCB(Sequence uint32 cx_bx, Register Eq_n ax, Register Eq_n dx, Register out Eq_n chOut, Register out ptr16 dxOut)
 // Called from:
 //      fn0800_A215
 //      fn0800_ABA3
 //      fn0800_AD85
-Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 & dxOut)
+Eq_n fn0800-8CCB(uint32 cx_bx, Eq_n ax, Eq_n dx, union Eq_n & chOut, ptr16 & dxOut)
 {
+	ci16 cx = SLICE(cx_bx, word16, 16);
+	word16 bx = (word16) cx_bx;
 	byte dh_n = SLICE(dx, byte, 8);
 	byte dl_n = (byte) dx;
 	byte cl_n = (byte) cx;
 	if (cx >= 0x00)
 	{
-		word16 ax_n = ax + bx;
+		cu16 ax_n = ax.u4 + bx;
 		byte al_n = (byte) ax_n;
 		if (ax_n < 0x00)
 		{
@@ -11671,9 +11673,10 @@ Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 &
 	}
 	else
 	{
-		uint16 bx_n = ~bx;
-		byte cl_n = SLICE(SEQ(~cx, bx_n) + 0x01, byte, 16);
-		cu16 ax_n = ax - (bx_n + 0x01);
+		ui32 cx_bx_n = ~cx_bx;
+		word16 bx_n = (word16) cx_bx_n + 0x01;
+		byte cl_n = SLICE(cx_bx_n + 0x01, byte, 16);
+		cu16 ax_n = ax - bx_n;
 		byte al_n = (byte) ax_n;
 		if (ax_n < 0x00)
 			dx -= 0x1000;
@@ -14123,8 +14126,6 @@ l0800_A213:
 Eq_n fn0800_A215(Eq_n ds, uint32 dwArg02, union Eq_n & dxOut)
 {
 	struct Eq_n * ss;
-	ci16 wArg04_n = SLICE(dwArg02, word16, 16);
-	Eq_n wArg02_n = (word16) dwArg02;
 	Eq_n dx_n;
 	Eq_n ax_n;
 	ui32 dx_ax_n = fn0800-8C69(Mem7[ds:141:word16], 0x04, 0x00) + CONVERT(Mem7[ds:0x8B:word16], word16, uint32) + dwArg02;
@@ -14134,11 +14135,11 @@ Eq_n fn0800_A215(Eq_n ds, uint32 dwArg02, union Eq_n & dxOut)
 	{
 		Eq_n dx_n;
 		byte ch_n;
-		word16 ax_n = fn0800-8CCB(Mem7[ds:0x8B:word16], wArg04_n, Mem7[ds:141:word16], wArg02_n, out ch_n, out dx_n);
+		word16 ax_n = fn0800-8CCB(dwArg02, Mem7[ds:0x8B:word16], Mem7[ds:141:word16], out ch_n, out dx_n);
 		word16 cx_n;
 		word16 dx_n;
 		word16 bx_n;
-		fn0800-8F2F(ax_n, Mem58[ds:0x89:word16], dx_n, Mem58[ds:0x87:word16], out cx_n, out dx_n, out bx_n);
+		fn0800-8F2F(ax_n, Mem59[ds:0x89:word16], dx_n, Mem59[ds:0x87:word16], out cx_n, out dx_n, out bx_n);
 		Eq_n sp_n = <invalid>;
 		bool C_n = <invalid>;
 		if (!C_n)
@@ -14146,13 +14147,13 @@ Eq_n fn0800_A215(Eq_n ds, uint32 dwArg02, union Eq_n & dxOut)
 			word16 cx_n;
 			word16 dx_n;
 			word16 bx_n;
-			fn0800-8F2F(ax_n, Mem58[ds:0x91:word16], dx_n, Mem58[ds:0x8F:word16], out cx_n, out dx_n, out bx_n);
+			fn0800-8F2F(ax_n, Mem59[ds:0x91:word16], dx_n, Mem59[ds:0x8F:word16], out cx_n, out dx_n, out bx_n);
 			bool Z_n = <invalid>;
 			bool C_n = <invalid>;
 			if (!(Z_n | C_n))
 			{
-				word16 ax_n = Mem58[ds:141:word16];
-				word16 dx_n = Mem58[ds:0x8B:word16];
+				word16 ax_n = Mem59[ds:141:word16];
+				word16 dx_n = Mem59[ds:0x8B:word16];
 				ss->*((word32) sp_n - 2) = dx_n;
 				ss->*((word32) sp_n - 4) = ax_n;
 				word16 cx_n;
@@ -15063,7 +15064,7 @@ uint16 fn0800_ABA3(Eq_n ds, Eq_n dwArg02, Eq_n wArg06, Eq_n wArg08, Eq_n dwArg0A
 				sp_n.u0 = <invalid>;
 				wArg04 = dx_n;
 				byte ch_n;
-				wArg02 = fn0800-8CCB(wArg02, 0x00, wArg04, wArg06, out ch_n, out dx_n);
+				wArg02 = fn0800-8CCB((uint32) wArg06, wArg02, wArg04, out ch_n, out dx_n);
 				dx_n = dx_n;
 			}
 			ax_n = wArg08 - si_n;
@@ -15291,7 +15292,7 @@ l0800_AE0A:
 				wArg04 = dx_n;
 				Eq_n dx_n;
 				byte ch_n;
-				wArg02 = fn0800-8CCB(wArg02, 0x00, wArg04, wArg06, out ch_n, out dx_n);
+				wArg02 = fn0800-8CCB((uint32) wArg06, wArg02, wArg04, out ch_n, out dx_n);
 				si_n.u4 = (word32) si_n + 1;
 			} while (si_n < wArg08);
 		}

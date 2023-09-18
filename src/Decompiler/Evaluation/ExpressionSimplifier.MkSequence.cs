@@ -1,4 +1,5 @@
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
@@ -81,6 +82,9 @@ namespace Reko.Evaluation
             var log = FuseLogicalOperations(seq.DataType, newSeq);
             if (log is not null)
                 return (log, true);
+            var nots = FuseComplements(seq.DataType, newSeq);
+            if (nots is not null)
+                return (nots, true);
             var neg = SignExtendedNegation(seq);
             if (neg is not null)
                 return (neg, true);
@@ -322,6 +326,35 @@ namespace Reko.Evaluation
             }
         }
 
+        public Expression? FuseComplements(DataType dt, Expression[] exps)
+        {
+            var unaries = new UnaryExpression[exps.Length];
+            UnaryOperator? opPrev = null;
+            for (int i = 0; i < exps.Length; ++i)
+            {
+                var e = exps[i];
+                if (e is Identifier id)
+                {
+                    e = ctx.GetDefiningExpression(id);
+                }
+                if (e is not UnaryExpression unary ||
+                    unary.Operator.Type != OperatorType.Comp ||
+                    (opPrev is not null && opPrev != unary.Operator))
+                {
+                    return null;
+                }
+                unaries[i] = unary;
+                opPrev = unary.Operator;
+            }
+            var subs = new Expression[unaries.Length];
+            for (int i = 0; i < unaries.Length; ++i)
+            {
+                subs[i] = unaries[i].Expression;
+            }
+            var (sub, _) = new MkSequence(dt, subs).Accept(this);
+            return new UnaryExpression(opPrev!, dt, sub);
+        }
+
         public Expression? FuseLogicalOperations(DataType dt, Expression[] exps)
         {
             var bins = new BinaryExpression[exps.Length];
@@ -335,7 +368,7 @@ namespace Reko.Evaluation
                         (opPrev is null || opPrev == op))
                     {
                         bins[i] = bin;
-                        opPrev = (BinaryOperator) op;
+                        opPrev = op;
                     }
                     else
                         return null;
@@ -354,6 +387,5 @@ namespace Reko.Evaluation
             var (right, _) = new MkSequence(dt, rights).Accept(this);
             return new BinaryExpression(opPrev!, dt, left, right);
         }
-
     }
 }
