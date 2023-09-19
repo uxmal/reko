@@ -12,7 +12,7 @@
           Visualizer="{Binding SelectedVisualizer.Value}">
       </v:VisualizerControl>
       <ComboBox
-        Items="{Binding Visualizers}"
+        ItemsSource="{Binding Visualizers}"
         SelectedItem="{Binding SelectedVisualizer}">
         <ComboBox.ItemTemplate>
           <DataTemplate>

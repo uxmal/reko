@@ -25,13 +25,13 @@
 			<TextBlock Grid.Row="2" Text="{Binding ProcedureList.Procedures.Count}" DockPanel.Dock="Top"/>
 			<DataGrid Grid.Row="3"
 				Name="procList"
-				Items="{Binding ProcedureList.Procedures}"
+				ItemsSource="{Binding ProcedureList.Procedures}"
 				DockPanel.Dock="Top"
 				RowBackground="{Binding #procList.AlternatingRowBackground}"
 				CanUserResizeColumns="True"
 				CanUserSortColumns="True"
-				AutoGenerateColumns="false"
-				DoubleClick="procList_DoubleTapped">
+				AutoGenerateColumns="false" >
+				<!--DoubleClick="procList_DoubleTapped">-->
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
 					<DataGridTextColumn Header="Address" Binding="{Binding Address}" />

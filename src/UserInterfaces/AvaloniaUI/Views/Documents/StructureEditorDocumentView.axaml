@@ -10,10 +10,10 @@
 		VerticalAlignment="Stretch"
 		x:DataType="vm:StructureEditorDocumentViewModel">
 	<StackPanel VerticalAlignment="Stretch">
-		<ComboBox Items="{Binding ViewModel.DataTypes}" />
+		<ComboBox ItemsSource="{Binding ViewModel.DataTypes}" />
 		<TextBox Text="{Binding ViewModel.StructureName}" />
 		<Grid ColumnDefinitions="*,4,*" RowDefinitions="*" VerticalAlignment="Stretch">
-			<DataGrid Items="{Binding ViewModel.StructFields}"
+			<DataGrid ItemsSource="{Binding ViewModel.StructFields}"
 					  AutoGenerateColumns="False"
 					  VerticalAlignment="Stretch">
 				<DataGrid.Columns>

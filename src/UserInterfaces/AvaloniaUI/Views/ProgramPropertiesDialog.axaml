@@ -15,7 +15,7 @@
 				<StackPanel>
 				<Label>Heuristics to use when performing data flow analysis:</Label>
 				<ListBox
-					Items="{Binding AnalysisHeuristics}"
+					ItemsSource="{Binding AnalysisHeuristics}"
 					SelectionMode="Multiple"
 					SelectionChanged="AnalysisHeuristics_SelectionChanged">
 					<DataTemplates>
@@ -34,7 +34,7 @@
 				<StackPanel>
 				<Label>Heuristics to use when scanning for executable code:</Label>
 				<ListBox
-					Items="{Binding ScanHeuristics}"
+					ItemsSource="{Binding ScanHeuristics}"
 					SelectionMode="Multiple"
 					SelectionChanged="ScanningHeuristics_SelectionChanged">
 					<DataTemplates>
@@ -50,7 +50,7 @@
 			<TabItem Header="General">
 				<StackPanel HorizontalAlignment="Stretch">
 					<Label>_Output files</Label>
-					<ComboBox Items="{Binding OutputFileDispositions}" />
+					<ComboBox ItemsSource="{Binding OutputFileDispositions}" />
 				</StackPanel>
 			</TabItem>
 			<TabItem Header="Loading">

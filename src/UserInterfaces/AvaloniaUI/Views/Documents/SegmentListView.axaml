@@ -10,7 +10,7 @@
 	<StackPanel>
 		<ScrollViewer>
 			<DataGrid Name="segmentList"
-					  Items="{Binding Segments}"
+					  ItemsSource="{Binding Segments}"
 					  AutoGenerateColumns="False"
 					  CanUserResizeColumns="True">
 				<DataGrid.Columns>

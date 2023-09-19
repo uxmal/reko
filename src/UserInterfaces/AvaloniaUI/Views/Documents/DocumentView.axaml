@@ -17,7 +17,7 @@
       <TextBlock Text="{Binding Context}" Padding="2" />
 
       <ScrollViewer Width="200">
-        <ItemsControl Items="{Binding Procedures}">
+        <ItemsControl ItemsSource="{Binding Procedures}">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
               <Border Classes="procViewBorder">

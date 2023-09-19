@@ -15,7 +15,7 @@
 			<Label Grid.Column="2" Grid.Row="0">Called procedures</Label>
 
 			<Border Grid.Column="0" Grid.Row="1">
-				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Predecessors}"
+				<DataGrid AutoGenerateColumns="false" ItemsSource="{Binding ViewModel.Predecessors}"
 						  x:DataType="guivmt:CallGraphViewModelItem">
 					<DataGrid.Columns>
 						<DataGridTemplateColumn Header="Name" Width="3*">
@@ -35,7 +35,7 @@
 				<Label Name="lblSignature" />
 			</StackPanel>
 			<Border Grid.Column="2" Grid.Row="1">
-				<DataGrid AutoGenerateColumns="false" Items="{Binding ViewModel.Successors}">
+				<DataGrid AutoGenerateColumns="false" ItemsSource="{Binding ViewModel.Successors}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Title}" />
 						<DataGridTextColumn Header="Address" Width="2*" Binding="{Binding Description}" />

@@ -10,7 +10,7 @@
   <Grid ColumnDefinitions="180,4,*">
 	  <StackPanel Grid.Column="0" VerticalAlignment="Top" Spacing="5">
 		  <Label>Select architecture:</Label>
-		  <ComboBox Items="{Binding Architectures}" SelectedItem="{Binding SelectedArchitecture}" />
+		  <ComboBox ItemsSource="{Binding Architectures}" SelectedItem="{Binding SelectedArchitecture}" />
 		  <Label>Address:</Label>
 		  <TextBox Text="{Binding Address}" />
 		  <Label>Machine code:</Label>

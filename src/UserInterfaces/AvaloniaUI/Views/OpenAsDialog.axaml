@@ -35,21 +35,21 @@
 		<StackPanel Classes="cell" Grid.Row="1" Grid.Column="0">
 			<Label>Raw file _type:</Label>
 			<ComboBox Name="ddlFormats"
-					  Items="{Binding FileFormats}"
+					  ItemsSource="{Binding FileFormats}"
 					  SelectedItem="{Binding SelectedFileFormat}" />
 			<Label>Operating _environment:</Label>
 			<ComboBox Name="ddlEnvironments"
-					  Items="{Binding Environments}"
+					  ItemsSource="{Binding Environments}"
 					  IsEnabled="{Binding EnvironmentsEnabled}"
 					  SelectedItem="{Binding SelectedEnvironment}" />
 			<Label>_Processor architecture:</Label>
 			<ComboBox Name="ddlArchictectures"
-					  Items="{Binding Architectures}"
+					  ItemsSource="{Binding Architectures}"
 					  IsEnabled="{Binding ArchitecturesEnabled}"
 					  SelectedItem="{Binding SelectedArchitecture}" />
 			<Label>Processor _model:</Label>
 			<ComboBox Name="ddlModels"
-					  Items="{Binding ProcessorModels}"
+					  ItemsSource="{Binding ProcessorModels}"
 					  IsEnabled="{Binding ProcessorModelsEnabled}"
 					  SelectedItem="{Binding SelectedProcessorModel}" />
 			<Label>Load binary</Label>

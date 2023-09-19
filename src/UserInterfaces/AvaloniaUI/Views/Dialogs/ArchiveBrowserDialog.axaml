@@ -13,7 +13,7 @@
 		  RowDefinitions="*,Auto">
 		<Border BorderThickness="1">
 			<TreeView Name="ArchiveItems"
-					  Items="{Binding ArchiveEntries}"
+					  ItemsSource="{Binding ArchiveEntries}"
 					  SelectedItem="{Binding SelectedArchiveEntry}">
 				<TreeView.DataTemplates>
 					<TreeDataTemplate DataType="loading:ArchivedFolder"

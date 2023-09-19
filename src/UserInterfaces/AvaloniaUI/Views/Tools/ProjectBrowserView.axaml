@@ -12,7 +12,7 @@
     <StackPanel>
       <ScrollViewer>
 		  <TreeView Name="projectItems"
-					Items="{Binding TreeView.Nodes}"
+					ItemsSource="{Binding TreeView.Nodes}"
 					DragDrop.AllowDrop="True"
 					SelectedItem="{Binding TreeView.SelectedNode}">
 			  <TreeView.DataTemplates>

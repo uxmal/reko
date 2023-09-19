@@ -45,7 +45,7 @@
 			<DataGrid
 					Name="listCandidates"
 					DockPanel.Dock="Top"
-					Items="{Binding ViewModel.Results}"
+					ItemsSource="{Binding ViewModel.Results}"
 					AutoGenerateColumns="False"
 					CanUserResizeColumns="True">
 				<DataGrid.Columns>

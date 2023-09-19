@@ -21,7 +21,7 @@
 					</Style>
 				</StackPanel.Styles>
 				<Label VerticalAlignment="Center">Architectures</Label>
-				<ComboBox Items="{Binding ViewModel.Architectures}"
+				<ComboBox ItemsSource="{Binding ViewModel.Architectures}"
 						 SelectedItem="{Binding ViewModel.SelectedArchitectureOption}"  />
 			</StackPanel>
 		<Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">

@@ -13,7 +13,7 @@
       <TextBlock Text="{Binding Title}" />
       <TextBlock Text="{Binding Context}" />
 	  <TextBlock Text="{Binding Friend}" />
-		<DataGrid Name="gridResults" Items="{Binding SearchResults}">
+		<DataGrid Name="gridResults" ItemsSource="{Binding SearchResults}">
 		</DataGrid>
     </StackPanel>
   </Grid>

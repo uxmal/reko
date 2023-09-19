@@ -6,6 +6,7 @@
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
+             xmlns:ds="using:Dock.Settings"
              xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
              xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime"
              mc:Ignorable="d"
@@ -18,11 +19,11 @@
   <Grid RowDefinitions="Auto,*,25"
 		ColumnDefinitions="Auto,*"
 		Background="Transparent">
-	<Menu Name="mainMenu" Items="{Binding MainMenu}" Grid.Column="0" VerticalAlignment="Top">
+	<Menu Name="mainMenu" ItemsSource="{Binding MainMenu}" Grid.Column="0" VerticalAlignment="Top">
 		  <Menu.Styles>
 			  <Style Selector="MenuItem" x:DataType="vm:CommandItem">
 				  <Setter Property="Header" Value="{Binding Text}" />
-				  <Setter Property="Items" Value="{Binding Items}"/>
+				  <Setter Property="ItemsSource" Value="{Binding Items}"/>
 				  <Setter Property="Command" Value="{Binding Command}" />
 				  <Setter Property="CommandParameter" Value="{Binding CommandID}" />
 				  <Setter Property="IsVisible" Value="{Binding IsVisible}" />

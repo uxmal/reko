@@ -4,11 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:id="using:Dock.Avalonia"
+        xmlns:ids="using:Dock.Settings"
         xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels"
         xmlns:v="using:Reko.UserInterfaces.AvaloniaUI.Views"
+		x:Name="mainWindow"
         mc:Ignorable="d"
         d:DesignWidth="1200" d:DesignHeight="680"
-        x:Name="MainWindow"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         Background="{x:Null}"
         TransparencyLevelHint="AcrylicBlur"
@@ -21,8 +22,8 @@
 		Icon="/Assets/App.ico"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome"
-        id:DockProperties.IsDragEnabled="True"
-        id:DockProperties.IsDropEnabled="True">
+        ids:DockProperties.IsDragEnabled="True"
+        ids:DockProperties.IsDropEnabled="True">
 <!--         WindowState="Normal" WindowStartupLocation="CenterScreen" -->
   <Design.DataContext>
     <vm:MainViewModel />
@@ -37,8 +38,8 @@
                                      MaterialOpacity="0.55" />
       </ExperimentalAcrylicBorder.Material>
     </ExperimentalAcrylicBorder>
-    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
-      <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+    <Panel Margin="{Binding #mainWindow.OffScreenMargin}">
+      <Panel Margin="{Binding #mainWindow.WindowDecorationMargin}">
         <v:MainView />
       </Panel>
     </Panel>

@@ -42,11 +42,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views
             InitializeMenu();
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         private void InitializeThemes()
         {
             /*
