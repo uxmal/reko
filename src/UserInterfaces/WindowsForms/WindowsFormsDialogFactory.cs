@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -33,6 +34,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -252,6 +254,15 @@ namespace Reko.UserInterfaces.WindowsForms
                 Value  = filter,
             };
             return dlg;
+        }
+
+        public IDialog<SearchArea> CreateSearchAreaDialog(Program program, SearchArea searchArea)
+        {
+            var uiPreferencesSvc = services.RequireService<IUiPreferencesService>();
+            return new SearchAreaDialog
+            {
+                DataContext = new SearchAreaViewModel(program, searchArea, uiPreferencesSvc)
+            };
         }
     }
 }

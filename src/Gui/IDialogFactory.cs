@@ -23,12 +23,10 @@ using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
 
 namespace Reko.Gui
 {
@@ -63,5 +61,6 @@ namespace Reko.Gui
         IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture architecture, List<UserRegisterValue> regValues);
         IBlockNameDialog CreateBlockNameDialog(Procedure proc, Block block);
         IDiagnosticFilterDialog CreateDiagnosticFilterDialog(DiagnosticFilters filterSettings);
+        IDialog<SearchArea?> CreateSearchAreaDialog(Program program, SearchArea searchArea);
     }
 }

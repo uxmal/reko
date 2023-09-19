@@ -233,9 +233,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IUiPreferencesService CreateUiPreferencesService()
         {
-            return new AvaloniaUiPreferencesService(
-                services.RequireService<IConfigurationService>(),
-                services.RequireService<ISettingsService>());
+            var configSvc = services.RequireService<IConfigurationService>();
+            var settingsSvc = services.RequireService<ISettingsService>();
+            return new AvaloniaUiPreferencesService(configSvc, settingsSvc);
         }
 
         public IUserEventService CreateUserEventService()

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
@@ -200,6 +201,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         public IDiagnosticFilterDialog CreateDiagnosticFilterDialog(DiagnosticFilters filters)
         {
             throw new NotImplementedException();
+        }
+
+        public IDialog<SearchArea?> CreateSearchAreaDialog(Program program, SearchArea searchArea)
+        {
+            var uiPreferencesSvc = services.RequireService<IUiPreferencesService>();
+            return new SearchAreaDialog
+            {
+                DataContext = new SearchAreaViewModel(program, searchArea, uiPreferencesSvc)
+            };
         }
     }
 }

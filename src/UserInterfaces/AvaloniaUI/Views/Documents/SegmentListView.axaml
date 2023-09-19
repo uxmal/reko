@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="using:Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents"
+			 xmlns:gvm="using:Reko.Gui.ViewModels.Documents"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:DataType="vm:SegmentListViewModel"
 			 x:CompileBindings="True"
@@ -14,19 +15,19 @@
 					  AutoGenerateColumns="False"
 					  CanUserResizeColumns="True">
 				<DataGrid.Columns>
-					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="Name" Binding="{Binding Name}" ></DataGridTextColumn>
-					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
-					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="End" Binding="{Binding End}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="gvm:SegmentListItemViewModel" Header="Name" Binding="{Binding Name}" ></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="gvm:SegmentListItemViewModel" Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="gvm:SegmentListItemViewModel" Header="End" Binding="{Binding End}"></DataGridTextColumn>
 					<DataGridTemplateColumn Header="Length">
 						<DataGridTemplateColumn.CellTemplate>
-							<DataTemplate DataType="vm:SegmentListItemViewModel">
+							<DataTemplate DataType="gvm:SegmentListItemViewModel">
 								<TextBlock  Text="{Binding Length}" VerticalAlignment="Center" HorizontalAlignment="Right" />
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
-					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="R" Binding="{Binding Read}"></DataGridTextColumn>
-					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="W" Binding="{Binding Write}"></DataGridTextColumn>
-					<DataGridTextColumn x:DataType="vm:SegmentListItemViewModel" Header="X" Binding="{Binding Execute}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="gvm:SegmentListItemViewModel" Header="R" Binding="{Binding Read}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="gvm:SegmentListItemViewModel" Header="W" Binding="{Binding Write}"></DataGridTextColumn>
+					<DataGridTextColumn x:DataType="gvm:SegmentListItemViewModel" Header="X" Binding="{Binding Execute}"></DataGridTextColumn>
 				</DataGrid.Columns>
 			</DataGrid>
 		</ScrollViewer>

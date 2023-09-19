@@ -22,6 +22,7 @@ using ReactiveUI;
 using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Gui;
+using Reko.Gui.ViewModels.Documents;
 using Reko.UserInterfaces.AvaloniaUI.Views.Documents;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
         {
             this.program = program;
             this.Segments = new ObservableCollection<SegmentListItemViewModel>(program.SegmentMap.Segments.Values
-                .Select(MakeItemViewModel));
+                .Select(SegmentListItemViewModel.FromImageSegment));
         }
 
         public ObservableCollection<SegmentListItemViewModel> Segments { get; }
@@ -62,35 +63,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels.Documents
             return view;
         }
 
-        private SegmentListItemViewModel MakeItemViewModel(ImageSegment seg)
-        {
-            return new SegmentListItemViewModel
-            {
-                Name = seg.Name,
-                Address = seg.Address.ToString(),
-                End = seg.EndAddress.ToString(),
-                //$TODO: PDP-10 and PDP-11 prefer octal
-                Length = $"0x{seg.Size:X}",
-                Read = seg.Access.HasFlag(AccessMode.Read) ? "R" : "-",
-                Write = seg.Access.HasFlag(AccessMode.Write) ? "W" : "-",
-                Execute = seg.Access.HasFlag(AccessMode.Execute) ? "X" : "-",
-            };
-        }
-
         public void SetSite(IServiceProvider services)
         {
             this.services = services;
         }
-    }
-
-    public class SegmentListItemViewModel : ReactiveObject
-    {
-        public string? Name { get; set; }
-        public string? Address { get; set; }
-        public string? End { get; set; }
-        public string? Length { get; set; }
-        public string? Read { get; set; }
-        public string? Write { get; set; }
-        public string? Execute { get; set; }
     }
 }

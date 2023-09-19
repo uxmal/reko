@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Gui.Controls;
 using Reko.Gui.Services;
@@ -28,8 +27,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms

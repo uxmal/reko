@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:DataType="SearchAreaViewModel"
+        x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.SearchAreaDialog"
+        Title="Select memory areas to search">
+	<StackPanel>
+		<DataGrid ItemsSource="{Binding SegmentList}">
+		</DataGrid>
+		<Label>Enter memory ranges as free text</Label>
+		<TextBox></TextBox>
+		<Label>Memory ranges can be specified as half-open or closed intervals ( [0x0000-0x3000) or
+		[0x0000-0x2FFF] respectively).</Label>
+	</StackPanel>
+</Window>
