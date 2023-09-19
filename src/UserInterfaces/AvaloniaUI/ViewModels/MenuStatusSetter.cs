@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Microsoft.Toolkit.Mvvm.Input;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
@@ -74,24 +76,33 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                         if (menu.IsDynamic(i))
                         {
                             menu.SetText(i, cmdText.Text);
+                            menu.SetStatus(i, cmdStatus.Status);
+                            if ((cmdStatus.Status & MenuStatus.Visible) != 0)
+                            {
+                                ++visibleItemsInGroup;
+                                ++totalVisible;
+                            }
                             cmdId = new CommandID(cmdId.Guid, cmdId.ID + 1);
                             while (ct.QueryStatus(cmdId, cmdStatus, cmdText))
                             {
                                 var itemNew = new CommandItem
                                 {
                                     Text = cmdText.Text,
-                                    Command = null, //$BUG: need the command target.
+                                    Command = new RelayedCommand(ct, cmdId),
                                     CommandID = cmdId,
+                                    IsEnabled = true,
                                     IsTemporary = true
                                 };
                                 //itemNew.DropDownOpening += popupHandler;
                                 //itemNew.Click += clickHandler;
-                                menu.InsertAt(++i, itemNew);
                                 if ((cmdStatus.Status & MenuStatus.Visible) != 0)
                                 {
                                     ++visibleItemsInGroup;
                                     ++totalVisible;
+                                    itemNew.IsVisible = true;
                                 }
+                                menu.InsertAt(++i, itemNew);
+
                                 cmdId = new CommandID(cmdId.Guid, cmdId.ID + 1);
                             }
                         }
@@ -112,6 +123,34 @@ namespace Reko.UserInterfaces.AvaloniaUI.ViewModels
                 menu.SetStatus(iLastSeparator, 0);
             }
             return totalVisible;
+        }
+
+        private class RelayedCommand : IRelayCommand
+        {
+            private readonly ICommandTarget target;
+            private readonly CommandID cmdId;
+
+            public RelayedCommand(ICommandTarget ct, CommandID cmdId)
+            {
+                this.target = ct;
+                this.cmdId = cmdId;
+            }
+
+            public event EventHandler? CanExecuteChanged;
+
+            public bool CanExecute(object? parameter)
+            {
+                return true;
+            }
+
+            public void Execute(object? parameter)
+            {
+                target.ExecuteAsync(cmdId);
+            }
+
+            public void NotifyCanExecuteChanged()
+            {
+            }
         }
     }
 }

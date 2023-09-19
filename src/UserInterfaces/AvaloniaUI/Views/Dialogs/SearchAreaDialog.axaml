@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-		x:DataType="SearchAreaViewModel"
+		x:DataType="vm:SearchAreaViewModel"
         x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.SearchAreaDialog"
         Title="Select memory areas to search">
 	<StackPanel>

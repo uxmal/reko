@@ -30,6 +30,7 @@ using Size = System.Drawing.Size;
 using Cursor = Avalonia.Input.Cursor;
 using System.Linq;
 using Avalonia;
+using Avalonia.Input;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Services
 {
@@ -45,9 +46,82 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         {
             this.configSvc = configSvc;
             this.settingsSvc = settingsSvc;
+            this.Styles = new Dictionary<string, Gui.Services.UiStyle>();
+            this.SettingNames = new StyleSettingNames[] {
+                new StyleSettingNames
+                {
+                    Name = UiStyles.MemoryWindow,
+                    ForeColor = UiStyles.MemoryForeColor,
+                    BackColor = UiStyles.MemoryBackColor,
+                    FontName = UiStyles.MemoryFont
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.MemoryCode,
+                    ForeColor = UiStyles.MemoryCodeForeColor,
+                    BackColor = UiStyles.MemoryCodeBackColor,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.MemoryData,
+                    ForeColor = UiStyles.MemoryDataForeColor,
+                    BackColor = UiStyles.MemoryDataBackColor,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.MemoryHeuristic,
+                    ForeColor = UiStyles.MemoryHeuristicForeColor,
+                    BackColor = UiStyles.MemoryHeuristicBackColor,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.Disassembler,
+                    ForeColor = UiStyles.DisassemblerForeColor,
+                    BackColor = UiStyles.DisassemblerBackColor,
+                    FontName = UiStyles.DisassemblerFont,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.DisassemblerOpcode,
+                    ForeColor = UiStyles.DisassemblerOpcodeColor,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.CodeWindow,
+                    ForeColor = UiStyles.CodeForeColor,
+                    BackColor = UiStyles.CodeBackColor,
+                    FontName = UiStyles.CodeFont,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.CodeKeyword,
+                    ForeColor = UiStyles.CodeKeywordColor,
+                    FontName = UiStyles.CodeKeywordFont,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.CodeComment,
+                    ForeColor = UiStyles.CodeCommentColor,
+                    FontName = UiStyles.CodeCommentFont,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.Browser,
+                    ForeColor = UiStyles.BrowserForeColor,
+                    BackColor = UiStyles.BrowserBackColor,
+                    FontName = UiStyles.BrowserFont,
+                },
+                new StyleSettingNames
+                {
+                    Name = UiStyles.List,
+                    ForeColor = UiStyles.ListForeColor,
+                    BackColor = UiStyles.ListBackColor,
+                    FontName = UiStyles.ListFont,
+        }
+            }.ToDictionary(k => k.Name);
         }
 
-        public IDictionary<string, UiStyle> Styles => throw new NotImplementedException();
+        public IDictionary<string, UiStyle> Styles { get; }
 
         public Size WindowSize {
             get => new Size(800, 600);
@@ -119,10 +193,15 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.UiPreferencesChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private Cursor? GetCursor(string? cursor)
+        private StandardCursorType? GetCursor(string? cursor)
         {
-            //$TODO: implement this.
-            return null;
+            if (cursor is null)
+                return null;
+            switch (cursor)
+            {
+            case "Hand": return StandardCursorType.Hand;
+            }
+            throw new NotImplementedException();
         }
 
         private void SetStyle(string name)

@@ -41,6 +41,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
         private IDiagnosticsService diagnosticSvc;
         private IStatusBarService sbSvc;
         private SynchronizationContext uiSyncCtx;
+        private readonly IEventBus? eventBus;
 
         private CancellationTokenSource cancellationSvc;
         private bool isCanceled;
@@ -56,11 +57,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
             this.sbSvc = services.RequireService<IStatusBarService>();
             this.Progress = new StatusbarProgressIndicator(sbSvc);
+
+            this.eventBus = services.GetService<IEventBus>();
         }
 
         public bool IsBackgroundWorkerRunning { get; private set; }
 
         public IProgressIndicator Progress { get; }
+
 
         public ICodeLocation CreateAddressNavigator(IReadOnlyProgram program, Address addr)
         {
@@ -181,7 +185,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public void OnProcedureFound(Program program, Address addrProc)
         {
-            throw new NotImplementedException();
+            eventBus?.RaiseProcedureFound(program, addrProc);
         }
 
         /// <summary>
