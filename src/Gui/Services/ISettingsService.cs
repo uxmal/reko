@@ -31,11 +31,11 @@ namespace Reko.Gui.Services
     /// </summary>
     public interface ISettingsService
     {
-        object Get(string settingName, object defaultValue);
+        object? Get(string settingName, object? defaultValue);
         string[] GetList(string settingName);
 
         void SetList(string name, IEnumerable<string> values);
-        void Set(string name, object value);
+        void Set(string name, object? value);
         void Delete(string name);
 
         void Load();        // Load settings from their persistent location

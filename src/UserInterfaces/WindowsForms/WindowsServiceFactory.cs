@@ -51,6 +51,11 @@ namespace Reko.UserInterfaces.WindowsForms
             this.mainForm = mainForm;
         }
 
+        public ISettingsService CreateSettingsService()
+        {
+            return new WindowsFormsSettingsService(services);
+        }
+
         public IArchiveBrowserService CreateArchiveBrowserService()
         {
             return new ArchiveBrowserService(services);
@@ -168,7 +173,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IFileSystemService CreateFileSystemService()
         {
-            return new FileSystemServiceImpl();
+            return new FileSystemService();
         }
 
         public ICallGraphViewService CreateCallGraphViewService()

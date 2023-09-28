@@ -48,6 +48,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             this.mainViewModel = mainViewModel;
         }
 
+        public ISettingsService CreateSettingsService()
+        {
+            return new FileSystemSettingsService(services.RequireService<IFileSystemService>());
+        }
+
         public IAnalyzedPageInteractor CreateAnalyzedPageInteractor()
         {
             return new AnalyzedPageInteractorImpl(services);
@@ -103,7 +108,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IFileSystemService CreateFileSystemService()
         {
-            return new FileSystemServiceImpl();
+            return new FileSystemService();
         }
 
         public IFinalPageInteractor CreateFinalPageInteractor()
@@ -228,7 +233,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         public IUiPreferencesService CreateUiPreferencesService()
         {
-            return new AvaloniaUiPreferencesService(services);
+            return new AvaloniaUiPreferencesService(
+                services.RequireService<IConfigurationService>(),
+                services.RequireService<ISettingsService>());
         }
 
         public IUserEventService CreateUserEventService()

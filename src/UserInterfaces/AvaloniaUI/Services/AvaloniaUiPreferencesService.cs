@@ -121,7 +121,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
 
         private Cursor? GetCursor(string? cursor)
         {
-            throw new NotImplementedException();
+            //$TODO: implement this.
+            return null;
         }
 
         private void SetStyle(string name)

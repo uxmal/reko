@@ -31,9 +31,7 @@ using Reko.Scanning;
 using Reko.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -69,8 +67,6 @@ namespace Reko.Gui.Forms
         private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
-
-        private static string? dirSettings;     //$REFACTOR: this belongs elsewhere
 
         private const int MaxMruItems = 9;
 
@@ -109,10 +105,12 @@ namespace Reko.Gui.Forms
             projectBrowserSvc.Clear();
             this.projectFilesWatcher = new ProjectFilesWatcher(sc);
 
+            var settingsSvc = sc.RequireService<ISettingsService>();
             var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
             // It's ok if we can't load settings, just proceed with defaults.
             try
             {
+                settingsSvc.Load();
                 uiPrefsSvc.Load();
                 if (uiPrefsSvc.WindowSize != new System.Drawing.Size())
                     form.Size = uiPrefsSvc.WindowSize;
@@ -533,7 +531,7 @@ namespace Reko.Gui.Forms
 
         private static string MruListFile
         {
-            get { return Path.Combine(SettingsDirectory, "mru.txt"); }
+            get { return Path.Combine(SettingsService.SettingsDirectory, "mru.txt"); }
         }
 
         public async ValueTask RestartRecompilation()
@@ -840,22 +838,6 @@ namespace Reko.Gui.Forms
                 await uiSvc.ShowError(ex, "Unable to save file.", ProjectFileName);
             }
             return true;
-        }
-
-        private static string SettingsDirectory
-        {
-            get
-            {
-                if (dirSettings is null)
-                {
-                    string dir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                    dir = Path.Combine(dir, "reko");
-                    if (!Directory.Exists(dir))
-                        Directory.CreateDirectory(dir);
-                    dirSettings = dir;
-                }
-                return dirSettings;
-            }
         }
 
         public async ValueTask SwitchInteractor(IPhasePageInteractor interactor)

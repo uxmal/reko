@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class WindowsFormsSettingsService : ISettingsService
+    public class WindowsFormsSettingsService : SettingsService
     {
         private IServiceProvider services;
 
@@ -45,7 +45,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return regSvc.CurrentUser.OpenSubKey(keyName, writeable);
         }
 
-        public object Get(string settingName, object defaultValue)
+        public override object Get(string settingName, object defaultValue)
         {
             string keyName; string valName;
             SplitIntoKeyValueName(settingName, out keyName, out valName);
@@ -53,19 +53,19 @@ namespace Reko.UserInterfaces.WindowsForms
             return key.GetValue(valName, defaultValue);
         }
 
-        public string[] GetList(string settingName)
+        public override string[] GetList(string settingName)
         {
             byte[] bytes = (byte[]) Get(settingName, new byte[] { });
             return Encoding.UTF8.GetString(bytes).Split((char) 0);
         }
 
-        public void SetList(string name, IEnumerable<string> settings)
+        public override void SetList(string name, IEnumerable<string> settings)
         {
             Set(name, Encoding.UTF8.GetBytes(
                 string.Join("\0", settings)));
         }
 
-        public void Set(string name, object value)
+        public override void Set(string name, object value)
         {
             string keyName; string valName;
             SplitIntoKeyValueName(name, out keyName, out valName); 
@@ -73,7 +73,7 @@ namespace Reko.UserInterfaces.WindowsForms
             key.SetValue(valName, value);
         }
 
-        public void Delete(string name)
+        public override void Delete(string name)
         {
             string keyName; string valName;
             SplitIntoKeyValueName(name, out keyName, out valName); 
@@ -105,12 +105,12 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
 
-        public void Load()
+        public override void Load()
         {
             // Doesn't need an implementation, since we load live values from the registry.
         }
 
-        public void Save()
+        public override void Save()
         {
             // Doesn't need an implementation, since we save values to the registry immediately in the Set method.
         }
