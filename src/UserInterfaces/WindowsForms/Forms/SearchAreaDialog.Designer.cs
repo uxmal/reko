@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Forms
+namespace Reko.UserInterfaces.WindowsForms.Forms
 {
     partial class SearchAreaDialog
     {
@@ -32,12 +32,13 @@
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
             columnHeader2 = new System.Windows.Forms.ColumnHeader();
             columnHeader3 = new System.Windows.Forms.ColumnHeader();
-            button1 = new System.Windows.Forms.Button();
-            button2 = new System.Windows.Forms.Button();
+            btnOK = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
             txtFreeForm = new System.Windows.Forms.TextBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
+            lblFreeFormError = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // listSegments
@@ -51,6 +52,7 @@
             listSegments.TabIndex = 0;
             listSegments.UseCompatibleStateImageBehavior = false;
             listSegments.View = System.Windows.Forms.View.Details;
+            listSegments.ItemChecked += listSegments_ItemChecked;
             // 
             // columnHeader1
             // 
@@ -67,34 +69,38 @@
             columnHeader3.Text = "Attributes";
             columnHeader3.Width = 90;
             // 
-            // button1
+            // btnOK
             // 
-            button1.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            button1.Location = new System.Drawing.Point(227, 373);
-            button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(75, 23);
-            button1.TabIndex = 1;
-            button1.Text = "OK";
-            button1.UseVisualStyleBackColor = true;
+            btnOK.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            btnOK.Location = new System.Drawing.Point(227, 373);
+            btnOK.Name = "btnOK";
+            btnOK.Size = new System.Drawing.Size(75, 23);
+            btnOK.TabIndex = 1;
+            btnOK.Text = "OK";
+            btnOK.UseVisualStyleBackColor = true;
+            btnOK.Click += btnOK_Click;
             // 
-            // button2
+            // btnCancel
             // 
-            button2.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            button2.Location = new System.Drawing.Point(308, 373);
-            button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(75, 23);
-            button2.TabIndex = 2;
-            button2.Text = "Cancel";
-            button2.UseVisualStyleBackColor = true;
+            btnCancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            btnCancel.Location = new System.Drawing.Point(308, 373);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(75, 23);
+            btnCancel.TabIndex = 2;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = true;
             // 
             // txtFreeForm
             // 
             txtFreeForm.Anchor =  System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            txtFreeForm.Location = new System.Drawing.Point(12, 209);
+            txtFreeForm.Location = new System.Drawing.Point(12, 205);
             txtFreeForm.Multiline = true;
             txtFreeForm.Name = "txtFreeForm";
-            txtFreeForm.Size = new System.Drawing.Size(371, 103);
+            txtFreeForm.Size = new System.Drawing.Size(371, 88);
             txtFreeForm.TabIndex = 3;
+            txtFreeForm.TextChanged += txtFreeForm_TextChanged;
             // 
             // label1
             // 
@@ -117,24 +123,34 @@
             // label3
             // 
             label3.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            label3.Location = new System.Drawing.Point(12, 313);
+            label3.Location = new System.Drawing.Point(13, 315);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(372, 57);
+            label3.Size = new System.Drawing.Size(372, 38);
             label3.TabIndex = 6;
             label3.Text = "Memory ranges can be specified as half-open or closed intervals ( [0x0000-0x3000) or [0x0000-0x2FFF] respectively).";
+            // 
+            // lblFreeFormError
+            // 
+            lblFreeFormError.AutoSize = true;
+            lblFreeFormError.ForeColor = System.Drawing.Color.Red;
+            lblFreeFormError.Location = new System.Drawing.Point(13, 300);
+            lblFreeFormError.Name = "lblFreeFormError";
+            lblFreeFormError.Size = new System.Drawing.Size(0, 15);
+            lblFreeFormError.TabIndex = 7;
             // 
             // SearchAreaDialog
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(395, 408);
+            Controls.Add(lblFreeFormError);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(label1);
             Controls.Add(txtFreeForm);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnCancel);
+            Controls.Add(btnOK);
             Controls.Add(listSegments);
+            Controls.Add(label1);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "SearchAreaDialog";
@@ -150,11 +166,12 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TextBox txtFreeForm;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblFreeFormError;
     }
 }

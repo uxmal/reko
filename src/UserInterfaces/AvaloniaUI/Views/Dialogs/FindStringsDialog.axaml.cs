@@ -24,6 +24,7 @@ using Avalonia.Markup.Xaml;
 using Reko.Gui;
 using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
+using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 {
@@ -33,6 +34,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
         {
             InitializeComponent();
         }
+
+        public FindStringsViewModel? ViewModel => (FindStringsViewModel?) DataContext;
 
         public StringFinderCriteria? Value { get; private set; }
 
@@ -49,7 +52,8 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            this.Value = ((FindStringsViewModel?) DataContext)?.GetCriteria();
+            this.Value = ViewModel?.GetCriteria();
+            ViewModel?.SaveMruToSettings();
             this.Close();
         }
 
@@ -57,6 +61,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
         {
             this.Value = null;
             this.Close();
+        }
+
+        private async void btnSearchArea_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel!.SelectSearchArea();
         }
     }
 }

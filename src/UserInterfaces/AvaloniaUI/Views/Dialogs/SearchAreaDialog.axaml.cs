@@ -19,6 +19,7 @@
 #endregion
 
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Reko.Gui;
 using Reko.Gui.ViewModels.Dialogs;
 
@@ -31,6 +32,9 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
             InitializeComponent();
         }
 
+        public SearchAreaViewModel? ViewModel => (SearchAreaViewModel?) DataContext;
+
+
         public string? Text {
             get { return Title; }
             set { Title = value; }
@@ -38,9 +42,26 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 
         public SearchArea? Value
         {
-            get;
+            get; set;
         }
 
         public void Dispose() { }
+
+        private void segmentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel?.ChangeAreas(segmentList.SelectedItems);
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            this.Value = new SearchArea(ViewModel!.Areas);
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Value = null;
+            this.Close();
+        }
     }
 }

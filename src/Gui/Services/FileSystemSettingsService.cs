@@ -56,7 +56,8 @@ namespace Reko.Gui.Services
 
         public override object? Get(string settingName, object? defaultValue)
         {
-            if (!this.settings.TryGetValue(settingName, out var value))
+            if (string.IsNullOrEmpty(settingName) ||
+                !this.settings.TryGetValue(settingName, out var value))
                 return defaultValue;
             if (value is JsonElement je)
             {
@@ -67,6 +68,18 @@ namespace Reko.Gui.Services
 
         public override string[] GetList(string settingName)
         {
+            if (string.IsNullOrEmpty(settingName) ||
+                !this.settings.TryGetValue(settingName, out var value))
+                return Array.Empty<string>();
+            if (value is JsonElement je && je.ValueKind == JsonValueKind.Array)
+            {
+                var result = new String[je.GetArrayLength()];
+                for (int i = 0; i < result.Length; ++i)
+                {
+                    result[i] = je[i].GetString()!;
+                }
+                return result;
+            }
             throw new NotImplementedException();
         }
 

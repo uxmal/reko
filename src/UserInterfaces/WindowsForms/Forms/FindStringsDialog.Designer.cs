@@ -36,6 +36,9 @@
             btnCancel = new System.Windows.Forms.Button();
             label3 = new System.Windows.Forms.Label();
             numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            label4 = new System.Windows.Forms.Label();
+            ddlSearchArea = new System.Windows.Forms.ComboBox();
+            btnSearchArea = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize) numericUpDown1).BeginInit();
             SuspendLayout();
             // 
@@ -85,11 +88,11 @@
             // 
             btnOk.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            btnOk.Location = new System.Drawing.Point(292, 212);
+            btnOk.Location = new System.Drawing.Point(292, 147);
             btnOk.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnOk.Name = "btnOk";
             btnOk.Size = new System.Drawing.Size(88, 27);
-            btnOk.TabIndex = 4;
+            btnOk.TabIndex = 6;
             btnOk.Text = "&Search";
             btnOk.UseVisualStyleBackColor = true;
             // 
@@ -97,11 +100,11 @@
             // 
             btnCancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            btnCancel.Location = new System.Drawing.Point(386, 212);
+            btnCancel.Location = new System.Drawing.Point(386, 147);
             btnCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(88, 27);
-            btnCancel.TabIndex = 5;
+            btnCancel.TabIndex = 7;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -126,13 +129,43 @@
             numericUpDown1.TabIndex = 3;
             numericUpDown1.Value = new decimal(new int[] { 5, 0, 0, 0 });
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(15, 108);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(58, 15);
+            label4.TabIndex = 7;
+            label4.Text = "&Search in:";
+            // 
+            // ddlSearchArea
+            // 
+            ddlSearchArea.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            ddlSearchArea.FormattingEnabled = true;
+            ddlSearchArea.Location = new System.Drawing.Point(126, 105);
+            ddlSearchArea.Name = "ddlSearchArea";
+            ddlSearchArea.Size = new System.Drawing.Size(317, 23);
+            ddlSearchArea.TabIndex = 4;
+            // 
+            // btnSearchArea
+            // 
+            btnSearchArea.Location = new System.Drawing.Point(449, 105);
+            btnSearchArea.Name = "btnSearchArea";
+            btnSearchArea.Size = new System.Drawing.Size(24, 23);
+            btnSearchArea.TabIndex = 5;
+            btnSearchArea.Text = "...";
+            btnSearchArea.UseVisualStyleBackColor = true;
+            // 
             // FindStringsDialog
             // 
             AcceptButton = btnOk;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new System.Drawing.Size(488, 253);
+            ClientSize = new System.Drawing.Size(488, 188);
+            Controls.Add(btnSearchArea);
+            Controls.Add(ddlSearchArea);
+            Controls.Add(label4);
             Controls.Add(numericUpDown1);
             Controls.Add(label3);
             Controls.Add(btnCancel);
@@ -164,5 +197,8 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox ddlSearchArea;
+        private System.Windows.Forms.Button btnSearchArea;
     }
 }

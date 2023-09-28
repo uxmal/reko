@@ -23,10 +23,9 @@
 				Text="{Binding ProcedureList.SearchCriterion}">
 			</TextBox>
 			<TextBlock Grid.Row="2" Text="{Binding ProcedureList.Procedures.Count}" DockPanel.Dock="Top"/>
-			<DataGrid Grid.Row="3"
+			<DataGrid Grid.Row="3" Grid.Column="0"
 				Name="procList"
 				ItemsSource="{Binding ProcedureList.Procedures}"
-				DockPanel.Dock="Top"
 				RowBackground="{Binding #procList.AlternatingRowBackground}"
 				CanUserResizeColumns="True"
 				CanUserSortColumns="True"

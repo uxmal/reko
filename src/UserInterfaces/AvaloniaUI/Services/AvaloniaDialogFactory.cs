@@ -101,11 +101,14 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IDialog<StringFinderCriteria?> CreateFindStringDialog()
+        public IDialog<StringFinderCriteria?> CreateFindStringDialog(Program program)
         {
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var settingsSvc = services.RequireService<ISettingsService>();
+            var dlgFactory = services.RequireService<IDialogFactory>();
             return new FindStringsDialog
             {
-                DataContext = new FindStringsViewModel()
+                DataContext = new FindStringsViewModel(program, uiSvc, settingsSvc, dlgFactory)
             };
         }
 

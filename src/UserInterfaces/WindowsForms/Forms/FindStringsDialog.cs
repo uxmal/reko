@@ -33,8 +33,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public FindStringsDialog()
         {
             InitializeComponent();
-            this.interactor = new FindStringsDialogInteractor();
-            this.interactor.Attach(this);
+        }
+
+        public FindStringsDialogInteractor DataContext
+        {
+            get => interactor;
+            set
+            {
+                this.interactor = value;
+                interactor.Attach(this);
+            }
         }
 
         public int MinLength => Convert.ToInt32(this.numericUpDown1.Value);
@@ -43,6 +51,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public ComboBox StringKindList => ddlStringKind;
 
-        public StringFinderCriteria Value => interactor.GetCriteria();
+        public StringFinderCriteria Value {
+            get {
+                return (DialogResult == DialogResult.Cancel)
+                    ? null : interactor.GetCriteria();
+            }
+        }
+
+        public ComboBox SearchAreas => ddlSearchArea;
+
+        public Button SearchAreaButton => btnSearchArea;
     }
 }

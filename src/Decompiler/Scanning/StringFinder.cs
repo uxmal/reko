@@ -43,14 +43,8 @@ namespace Reko.Scanning
 
         public IEnumerable<AddressSearchHit> FindStrings(StringFinderCriteria criteria)
         {
-            foreach (var segment in program.SegmentMap.Segments.Values)
+            foreach (var rdr in GenerateReaders(program, criteria))
             {
-                if (segment.MemoryArea is not ByteMemoryArea mem)
-                    continue; //$TODO: what to do with odd archs?
-                Address segEnd = Address.Min(
-                    segment.Address + segment.Size,
-                    segment.MemoryArea.BaseAddress + mem.Bytes.Length);
-                var rdr = criteria.CreateReader(mem, segment.Address, segEnd);
                 Address? addrStartRun = null;
                 int cValid = 0;
                 var charType = (PrimitiveType)criteria.StringType.ElementType;
@@ -76,6 +70,36 @@ namespace Reko.Scanning
             }
         }
 
+        private IEnumerable<EndianImageReader> GenerateReaders(Program program, StringFinderCriteria criteria)
+        {
+            if (criteria.Areas is null || criteria.Areas.Count == 0)
+            {
+                foreach (var segment in program.SegmentMap.Segments.Values)
+                {
+                    if (segment.MemoryArea is not ByteMemoryArea mem)
+                        continue; //$TODO: what to do with odd archs?
+                    Address segEnd = Address.Min(
+                        segment.Address + segment.Size,
+                        segment.MemoryArea.BaseAddress + mem.Bytes.Length);
+                    var rdr = criteria.CreateReader(mem, segment.Address, segment.Size);
+                    yield return rdr;
+                }
+            }
+            else
+            {
+                foreach (var area in criteria.Areas)
+                {
+                    if (area.Program.SegmentMap.TryFindSegment(area.Address, out var segment) &&
+                        segment.MemoryArea is ByteMemoryArea mem)
+                    {
+                        var rdr = criteria.CreateReader(mem, area.Address, area.Length);
+                        yield return rdr;
+                    }
+                }
+            }
+        }
+
+
         //$TODO: This assumes only ASCII values are valid.
         // How to deal with Swedish? Cyrillic? Chinese?
         // Added common escaped characters for C strings.
@@ -89,5 +113,6 @@ namespace Reko.Scanning
         StringType StringType,
         Encoding Encoding,
         int MinimumLength,
-        Func<ByteMemoryArea, Address, Address, EndianImageReader> CreateReader);
+        List<ProgramAddressRange>? Areas, // Optional search areas; null means search entire program image.
+        Func<ByteMemoryArea, Address, long, EndianImageReader> CreateReader);
 }

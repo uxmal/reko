@@ -333,6 +333,12 @@ namespace Reko.Gui.Forms
             svc.SelectedProgram = program;
         }
 
+        private Program? SelectedProgram()
+        {
+            var svc = Services.RequireService<ISelectedAddressService>();
+            return svc.SelectedProgram;
+        }
+
         /// <summary>
         /// Prompts the user for a metadata file and adds to the project.
         /// </summary>
@@ -721,17 +727,17 @@ namespace Reko.Gui.Forms
 
         public async ValueTask FindStrings(ISearchResultService srSvc)
         {
-            using (var dlgStrings = dlgFactory.CreateFindStringDialog())
+            var program = SelectedProgram();
+            if (program is null)
+                return;
+            using var dlgStrings = dlgFactory.CreateFindStringDialog(program);
+            var criteria = await uiSvc.ShowModalDialog(dlgStrings);
+            if (criteria is not null)
             {
-                var criteria = await uiSvc.ShowModalDialog(dlgStrings);
-                if (criteria is not null)
-                {
-                    var hits = this.decompilerSvc.Decompiler!.Project.Programs
-                        .SelectMany(p => new StringFinder(p).FindStrings(criteria));
-                    srSvc.ShowAddressSearchResults(
-                       hits,
-                       new StringSearchDetails(criteria));
-                }
+                var hits = new StringFinder(program).FindStrings(criteria);
+                srSvc.ShowAddressSearchResults(
+                   hits,
+                   new StringSearchDetails(criteria));
             }
         }
 

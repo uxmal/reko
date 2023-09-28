@@ -3,16 +3,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="400" Height="350"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="350"
 		x:DataType="vm:SearchAreaViewModel"
         x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.SearchAreaDialog"
         Title="Select memory areas to search">
-	<StackPanel>
-		<DataGrid ItemsSource="{Binding SegmentList}">
+	<Grid ColumnDefinitions="*"
+		  RowDefinitions="*,auto,*,auto,auto"
+		  Margin="8">
+		<DataGrid Grid.Row="0"
+			Name="segmentList"
+			ItemsSource="{Binding SegmentList}"
+			IsReadOnly="True"
+			SelectionChanged="segmentList_SelectionChanged"
+			AutoGenerateColumns="false">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
+				<DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="5*" />
+				<DataGridTextColumn Header="Access" Binding="{Binding Access}" />
+			</DataGrid.Columns>
 		</DataGrid>
-		<Label>Enter memory ranges as free text</Label>
-		<TextBox></TextBox>
-		<Label>Memory ranges can be specified as half-open or closed intervals ( [0x0000-0x3000) or
-		[0x0000-0x2FFF] respectively).</Label>
-	</StackPanel>
+		<Label Grid.Row="1">Enter memory ranges as free text:</Label>
+		<TextBox Grid.Row="2" Text="{Binding FreeFormAreas}"></TextBox>
+		<StackPanel Grid.Row="3">
+			<TextBlock Foreground="Red"
+					   IsVisible="{Binding FreeFormError,
+						Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+					   Text="{Binding FreeFormError}">
+			</TextBlock>
+			<TextBlock TextWrapping="Wrap" >
+				Memory ranges can be specified as half-open or closed intervals ( [0x0000-0x3000) or\
+				[0x0000-0x2FFF] respectively).
+			</TextBlock>
+		</StackPanel>
+		<StackPanel Grid.Row="4"
+					Orientation="Horizontal"
+					HorizontalAlignment="Right"
+					Spacing="8">
+			<Button Click="btnOK_Click">OK</Button>
+			<Button Click="btnCancel_Click">Cancel</Button>
+		</StackPanel>
+	</Grid>
 </Window>

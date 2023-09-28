@@ -22,17 +22,36 @@ using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Gui.Reactive;
+using Reko.Gui.Services;
 using Reko.Scanning;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.ViewModels.Dialogs
 {
     public class FindStringsViewModel : ChangeNotifyingObject
     {
-        public FindStringsViewModel()
+        private Program program;
+        private IDecompilerShellUiService uiSvc;
+        private ISettingsService settingsSvc;
+        private IDialogFactory dialogFactory;
+
+        public FindStringsViewModel(
+            Program program,
+            IDecompilerShellUiService uiSvc,
+            ISettingsService settingsSvc,
+            IDialogFactory dialogFactory)
         {
+            this.program = program;
+            this.uiSvc = uiSvc;
+            this.settingsSvc = settingsSvc;
+            this.dialogFactory = dialogFactory;
             this.minLength = 5;
+            this.program = program;
+            this.SearchAreasMru = LoadMruFromSettings();
         }
 
         public int CharacterType
@@ -56,6 +75,15 @@ namespace Reko.Gui.ViewModels.Dialogs
         }
         private int minLength;
 
+        public ObservableCollection<ListOption> SearchAreasMru { get; }
+
+        public int SelectedMruIndex
+        {
+            get => selectedMruIndex;
+            set => base.RaiseAndSetIfChanged(ref selectedMruIndex, value);
+        }
+        private int selectedMruIndex;
+
         public StringFinderCriteria GetCriteria()
         {
             return GetCriteria(this.CharacterType, this.StringKind, this.MinLength);
@@ -65,7 +93,7 @@ namespace Reko.Gui.ViewModels.Dialogs
         {
             Encoding encoding;
             PrimitiveType charType;
-            Func<ByteMemoryArea, Address, Address, EndianImageReader> rdrCreator;
+            Func<ByteMemoryArea, Address, long, EndianImageReader> rdrCreator;
             switch (characterType)
             {
             default:
@@ -93,11 +121,97 @@ namespace Reko.Gui.ViewModels.Dialogs
             case 2: case 3: strType = StringType.LengthPrefixedStringType(charType, PrimitiveType.UInt16); break;
             }
 
+            var searchAreasListOption = this.SearchAreasMru[this.SelectedMruIndex];
+            var searchAreas = (searchAreasListOption.Value is SearchArea sa && sa.Areas.Count != 0)
+                ? sa.Areas
+                : null;
             return new StringFinderCriteria(
                 StringType: strType,
                 Encoding: encoding,
+                Areas: searchAreas,  
                 MinimumLength: minLength,
                 CreateReader: rdrCreator);
+        }
+
+        public async ValueTask SelectSearchArea()
+        {
+            var dlg = this.dialogFactory.CreateSearchAreaDialog(program, new SearchArea());
+            var searchArea = await uiSvc.ShowModalDialog(dlg);
+            if (searchArea is null || searchArea.Areas.Count == 0)
+                return;
+            UpdateSearchAreaMru(searchArea);
+        }
+
+        public void UpdateSearchAreaMru(SearchArea? searchArea)
+        {
+            var iExisting = IndexOf(this.SearchAreasMru, e => object.Equals(e.Value, searchArea));
+            ListOption item;
+            if (iExisting != 0)
+            {
+                if (iExisting >= 1)
+                {
+                    item = this.SearchAreasMru[iExisting];
+                    this.SearchAreasMru.RemoveAt(iExisting);
+                }
+                else
+                {
+                    item = new ListOption(searchArea?.ToString() ?? "", searchArea);
+                }
+                this.SearchAreasMru.Insert(0, item);
+            }
+            this.selectedMruIndex = -1;  // Hack to force an event to be raised.
+            this.SelectedMruIndex = 0;
+        }
+
+        private static int IndexOf<T>(ObservableCollection<T> list, Predicate<T> predicate)
+        {
+            for (int i = 0; i < list.Count; ++i)
+            {
+                if (predicate(list[i]))
+                    return i;
+            }
+            return -1;
+        }
+
+
+        public ObservableCollection<ListOption> LoadMruFromSettings()
+        {
+            var items = settingsSvc.GetList("FindStringsDialog/AreasMru");
+            if (items is null || items.Length == 0)
+            {
+                return new ObservableCollection<ListOption>
+                {
+                    new ListOption("Entire program", null)
+                };
+            }
+            else
+            {
+                var list = new ObservableCollection<ListOption>();
+                foreach (string s in items)
+                {
+                    ListOption item;
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        item = new ListOption("Entire program", null);
+                        list.Add(item);
+                    }
+                    else
+                    {
+                        if (SearchArea.TryParse(program, s, out var sa))
+                        {
+                            item = new ListOption(s, sa);
+                            list.Add(item);
+                        }
+                    }
+                }
+                return list;
+            }
+        }
+
+        public void SaveMruToSettings()
+        {
+            settingsSvc.SetList("FindStringsDialog/AreasMru", SearchAreasMru
+                .Select(a => a.Value is null ? "" : a.Text));
         }
     }
 }

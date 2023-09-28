@@ -95,5 +95,23 @@ namespace Reko.UnitTests.Gui.Services
   ]
 }", Encoding.UTF8.GetString(stm.ToArray()));
         }
+
+        [Test]
+        public void Fsssvc_Load_List()
+        {
+            Given_Settings(@"
+{
+    'stringlist': ['A', 'B', 'C']
+}");
+            Given_FileSystemSettingsService();
+
+            fsssSvc.Load();
+            var items = fsssSvc.GetList("stringlist");
+
+            Assert.AreEqual(3, items.Length);
+            Assert.AreEqual("A", items[0]);
+            Assert.AreEqual("B", items[1]);
+            Assert.AreEqual("C", items[2]);
+        }
     }
 }

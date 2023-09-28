@@ -187,7 +187,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             ofd.InitialFileName = fileName;
             ofd.AllowMultiple = false;
             var files = await ofd.ShowAsync(mainWindow);
-            if (files is null)
+            if (files is null || files.Length == 0)
                 return null;
             else
                 return files[0];

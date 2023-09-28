@@ -5,13 +5,13 @@
 		xmlns:vm="using:Reko.Gui.ViewModels.Dialogs"
 		x:DataType="vm:FindStringsViewModel"
 		x:CompileBindings="True"
-		Width="480" Height="150"
-        mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="150"
+		Width="540" Height="180"
+        mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="180"
         x:Class="Reko.UserInterfaces.AvaloniaUI.Views.Dialogs.FindStringsDialog"
         Title="Find Possible Strings">
 	<StackPanel Margin="10" Spacing="6">
 		
-	<Grid ColumnDefinitions="2*,4*" RowDefinitions="auto,auto,auto">
+	<Grid ColumnDefinitions="2*,4*" RowDefinitions="auto,auto,auto,auto">
 		<Grid.Styles>
 			<Style Selector="ComboBox">
 				<Setter Property="Width" Value="300" />
@@ -24,6 +24,7 @@
 		<Label Grid.Row="0" Grid.Column="0">_Character size:</Label>
 		<Label Grid.Row="1" Grid.Column="0">_Length specified:</Label>
 		<Label Grid.Row="2" Grid.Column="0">_Minimum length:</Label>
+		<Label Grid.Row="3" Grid.Column="0">_Search in:</Label>
 
 		<ComboBox Grid.Row="0" Grid.Column="1"
 				  SelectedIndex="{Binding CharacterType}">
@@ -52,6 +53,17 @@
 			HorizontalAlignment="Left"
 			Value="{Binding MinLength}">
 		</NumericUpDown>
+
+		<StackPanel
+			Grid.Row="3" Grid.Column="1"
+			Orientation="Horizontal" >
+			<ComboBox 
+				SelectedIndex="{Binding SelectedMruIndex}"
+				ItemsSource="{Binding SearchAreasMru}">
+			</ComboBox>
+			<Button Click="btnSearchArea_Click">...</Button>
+		</StackPanel>
+			
 	</Grid>
 		<StackPanel Orientation="Horizontal"
 					Spacing="6"

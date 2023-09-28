@@ -72,6 +72,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 StringType: StringType.NullTerminated(PrimitiveType.Char),
                 Encoding.ASCII,
                 MinimumLength: 5,
+                Areas: null,
                 CreateReader: (m, a, b) => new LeImageReader(m, a, b))).Count());
         }
 
@@ -85,6 +86,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 StringType: StringType.NullTerminated(PrimitiveType.Char),
                 Encoding: Encoding.ASCII,
                 MinimumLength: 1,
+                Areas: null,
                 CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(1, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400000), hits[0].Address);
@@ -100,6 +102,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 StringType: StringType.NullTerminated(PrimitiveType.Char),
                 Encoding: Encoding.ASCII,
                 MinimumLength: 1,
+                Areas: null,
                 CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(4, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400002), hits[0].Address);
@@ -118,6 +121,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 StringType: StringType.NullTerminated(PrimitiveType.Char),
                 Encoding: Encoding.ASCII,
                 MinimumLength: 1,
+                Areas: null,
                 CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(2, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400000), hits[0].Address);
@@ -135,10 +139,31 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 StringType: StringType.NullTerminated(PrimitiveType.UInt16),
                 Encoding: enc,
                 MinimumLength: 3,
+                Areas: null,
                 CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
             Assert.AreEqual(1, hits.Length);
             Assert.AreEqual(Address.Ptr32(0x00400004), hits[0].Address);
             Assert.AreEqual(10, hits[0].Length);
+        }
+
+        [Test(Description = "Only return hits in specific search areas.")]
+        public void StrFind_Find_in_Area()
+        {
+            var enc = Encoding.ASCII;
+            Given_Image(enc.GetBytes("ax\0\0bx\0\0cx\0\0"));
+
+            var sf = new StringFinder(program);
+            var hits = sf.FindStrings(new StringFinderCriteria(
+                StringType: StringType.NullTerminated(PrimitiveType.Char),
+                Encoding: enc,
+                Areas: new() {  ProgramAddressRange.Create(program, program.SegmentMap.BaseAddress+4, 4) },
+                MinimumLength: 1,
+                CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
+
+            Assert.AreEqual(1, hits.Length);
+            Assert.AreEqual(Address.Ptr32(0x00400004), hits[0].Address);
+            Assert.AreEqual(2, hits[0].Length);
+
         }
     }
 }

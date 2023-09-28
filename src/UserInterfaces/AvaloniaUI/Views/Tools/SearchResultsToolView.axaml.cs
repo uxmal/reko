@@ -43,11 +43,6 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
             }
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
         public ISearchResultView CreateSearchResultView()
         {
             return new DataGridSearchResultView(gridResults);
@@ -69,7 +64,11 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Tools
 
             public void AddColumn(string columnTitle, int width)
             {
-                throw new NotImplementedException();
+                dataGrid.Columns.Add(new DataGridTextColumn
+                {
+                    Header = columnTitle,
+                    Width = new DataGridLength(width),
+                });
             }
 
             public void Invalidate()

@@ -206,6 +206,7 @@ namespace Reko.Gui
                 StringType.NullTerminated(PrimitiveType.Char),
                 Encoding.ASCII,
                 0,
+                null,
                 default!));
                 View.Invalidate(); break;
             case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); break;

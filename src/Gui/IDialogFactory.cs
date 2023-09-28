@@ -42,7 +42,7 @@ namespace Reko.Gui
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();
         ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
-        IDialog<StringFinderCriteria?> CreateFindStringDialog();
+        IDialog<StringFinderCriteria?> CreateFindStringDialog(Program program);
         IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
         IDialog<LoadDetails?> CreateOpenAsDialog(string initialFilename);
         IDialog<UserProcedure?> CreateProcedureDialog(Program program, UserProcedure proc);

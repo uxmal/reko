@@ -19,20 +19,31 @@
 #endregion
 
 using Reko.Core;
+using Reko.Gui.Reactive;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Documents;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Gui.ViewModels.Dialogs
 {
-    public class SearchAreaViewModel
+    public class SearchAreaViewModel : ChangeNotifyingObject
     {
+        private readonly Program program;
 
         public SearchAreaViewModel(Program program, SearchArea searchArea, IUiPreferencesService uiPreferencesSvc)
         {
+            this.program = program;
             this.SegmentList = LoadSegmentDetails(program);
             this.UiPreferencesSvc = uiPreferencesSvc;
+            this.freeFormAreas = "";
+            this.freeFormError = "";
+            this.Areas = new();
         }
 
         private ObservableCollection<SegmentListItemViewModel> LoadSegmentDetails(Program program)
@@ -45,5 +56,67 @@ namespace Reko.Gui.ViewModels.Dialogs
         public ObservableCollection<SegmentListItemViewModel> SegmentList { get; }
 
         public IUiPreferencesService UiPreferencesSvc { get; }
+
+        public string FreeFormAreas
+        {
+            get { return freeFormAreas; }
+            set {
+                RaiseAndSetIfChanged(ref freeFormAreas, value);
+                ParseFreeFormAreas();
+            }
+        }
+        private string freeFormAreas;
+
+        public List<ProgramAddressRange> Areas { get; set; }
+
+        public string FreeFormError
+        {
+            get { return freeFormError; }
+            set { RaiseAndSetIfChanged(ref freeFormError, value); }
+        }
+        private string freeFormError;
+
+
+        private void ParseFreeFormAreas()
+        {
+            this.Areas.Clear();
+            if (!SearchArea.TryParse(program, freeFormAreas, out var sa))
+            {
+                this.Areas.Clear();
+                FreeFormError = "Invalid range syntax.";
+            }
+            else
+            {
+                this.Areas = sa.Areas;
+                FreeFormError = "";
+            }
+        }
+
+
+        private bool TryParseAddress(int iBegin, int iEnd, [MaybeNullWhen(false)] out Address addr)
+        {
+            return program.Architecture.TryParseAddress(
+                this.freeFormAreas.Substring(iBegin, iEnd - iBegin),
+                out addr);
+        }
+
+
+
+        public void ChangeAreas(IEnumerable selectedItems)
+        {
+            this.Areas.Clear();
+            foreach (SegmentListItemViewModel sitem in selectedItems)
+            {
+                var segment = sitem.Segment;
+                var range = ProgramAddressRange.Create(
+                    this.program,
+                    segment.Address,
+                    segment.Size);
+                this.Areas.Add(range);
+            }
+            // Because user checked in the list box, we clear the 
+            // free form text area.
+            this.FreeFormAreas = "";
+        }
     }
 }

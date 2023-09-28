@@ -29,16 +29,14 @@ using Reko.Gui.ViewModels.Dialogs;
 using Reko.Scanning;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-	public class WindowsFormsDialogFactory : IDialogFactory
+    public class WindowsFormsDialogFactory : IDialogFactory
 	{
         private readonly IServiceProvider services;
         private readonly Form syncForm;  // used _only_ to make sure forms are created on the UI thread for Mono compatibility.
@@ -99,9 +97,15 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlg;
         }
 
-        public IDialog<StringFinderCriteria> CreateFindStringDialog()
+        public IDialog<StringFinderCriteria> CreateFindStringDialog(Program program)
         {
-            return new FindStringsDialog();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var settingsSvc = services.RequireService<ISettingsService>();
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            return new FindStringsDialog
+            {
+                DataContext = new FindStringsDialogInteractor(program, uiSvc, settingsSvc, dlgFactory),
+            };
         }
 
         public IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings)
