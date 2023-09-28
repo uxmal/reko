@@ -2765,10 +2765,9 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        [Ignore("Think about this, some more -- Intel manual allows it")]
         public void X86Dis_enterw()
         {
-            AssertCode64("enterw\t0x854,0xD5", "66 C8 54 08 D5");
+            AssertCode64("enterw\t854h,0D5h", "66 C8 54 08 D5");
         }
 
         [Test]

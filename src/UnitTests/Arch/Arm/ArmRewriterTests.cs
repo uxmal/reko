@@ -2426,6 +2426,20 @@ means
         }
 
         [Test]
+        public void ArmRw_vld4()
+        {
+            Given_UInt32s(0xF468F191);
+            AssertCode(
+                "0|L--|00100000(4): 6 instructions",
+                "1|L--|v3 = __vld4_multiple<int32>(r8)",
+                "2|L--|d0 = SLICE(v3, word64, 192)",
+                "3|L--|d1 = SLICE(v3, word64, 128)",
+                "4|L--|d2 = SLICE(v3, word64, 64)",
+                "5|L--|d31 = SLICE(v3, word64, 0)",
+                "6|L--|r8 = r8 + r1");
+        }
+
+        [Test]
         public void ArmRw_vmla()
         {
             Given_UInt32s(0xF2DEF14C);
@@ -2495,16 +2509,6 @@ means
         // Please copy the contents of this file and report it on GitHub, using the 
         // following URL: https://github.com/uxmal/reko/issues
 
-                [Test]
-        [Ignore("Read up on the specs")]
-        public void ArmRw_vld4()
-        {
-            Given_UInt32s(0xF468F191);
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@",
-                "1|L--|@@@");
-        }
 
 
 

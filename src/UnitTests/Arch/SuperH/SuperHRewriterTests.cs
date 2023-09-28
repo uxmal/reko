@@ -22,7 +22,6 @@ using NUnit.Framework;
 using Reko.Arch.SuperH;
 using Reko.Core;
 using Reko.Core.Machine;
-using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Tlcs
 {
@@ -689,7 +688,6 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|@@@");
         }
-
 
         [Test]
         public void SHRw_movt()
