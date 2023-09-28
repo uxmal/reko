@@ -42,7 +42,7 @@ namespace Reko.WindowsDecompiler
             services.AddService<IWindowPaneFactory>(new WindowsFormsPaneFactory(services));
             services.AddService<IRegistryService>(new WindowsFormsRegistryService());
             services.AddService<ISettingsService>(new WindowsFormsSettingsService(services));
-            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            services.AddService<IFileSystemService>(new FileSystemService());
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             mainForm.Attach(services);
             System.Windows.Forms.Application.Run(mainForm);

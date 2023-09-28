@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.X86.Emulator
         {
             sc = new ServiceContainer();
             importReferences = new Dictionary<Address, ImportReference>();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
         }
 

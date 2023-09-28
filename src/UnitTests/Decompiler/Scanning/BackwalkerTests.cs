@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         {
             Program program;
             var sc = new ServiceContainer();
-            var fsSvc = new FileSystemServiceImpl();
+            var fsSvc = new FileSystemService();
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<IEventListener>(el);

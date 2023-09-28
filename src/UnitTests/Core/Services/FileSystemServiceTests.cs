@@ -30,7 +30,7 @@ namespace Reko.UnitTests.Core.Services
     [TestFixture]
     public class FileSystemServiceTests
     {
-        private FileSystemServiceImpl fs;
+        private FileSystemService fs;
 
         [SetUp]
         public void Setup()
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Core.Services
         [Test]
         public void FS_MakeRelative_1()
         {
-            fs = new FileSystemServiceImpl('/');
+            fs = new FileSystemService('/');
             Assert.AreEqual("ax", fs.MakeRelativePath("/home/ox", "/home/ax"));
         }
     }

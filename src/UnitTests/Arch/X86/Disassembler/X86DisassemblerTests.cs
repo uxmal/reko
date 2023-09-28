@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.X86.Disassembler
         public X86DisassemblerTests()
         {
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             X86Disassembler.traceVex.Level = System.Diagnostics.TraceLevel.Verbose;
         }
 

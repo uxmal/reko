@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         public void Setup()
         {
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
         }
 
 		[Test]

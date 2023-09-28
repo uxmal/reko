@@ -53,16 +53,16 @@ namespace Reko.Core.Services
         void AppendAllText(string filename, string v);
     }
 
-    public class FileSystemServiceImpl : IFileSystemService
+    public class FileSystemService : IFileSystemService
     {
         private readonly char sepChar;
 
-        public FileSystemServiceImpl()
+        public FileSystemService()
         {
             this.sepChar = Path.DirectorySeparatorChar;
         }
 
-        public FileSystemServiceImpl(char sepChar)
+        public FileSystemService(char sepChar)
         {
             this.sepChar = sepChar;
         }

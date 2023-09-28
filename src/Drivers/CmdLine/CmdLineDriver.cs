@@ -55,7 +55,7 @@ namespace Reko.CmdLine
                 Quiet = Console.IsOutputRedirected
             };
             var config = RekoConfigurationService.Load(services);
-            var fsSvc = new FileSystemServiceImpl();
+            var fsSvc = new FileSystemService();
             var dcSvc = new DecompilerService();
             services.AddService<IDecompilerService>(dcSvc);
             services.AddService<IEventListener>(listener);

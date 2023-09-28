@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.cfgSvc = new Mock<IConfigurationService>();
             this.listener = new Mock<IEventListener>();
             this.sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
+            sc.AddService<IFileSystemService>(new FileSystemService('/'));
             sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 

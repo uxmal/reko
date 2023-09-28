@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Serialization
         public SerializedSignatureTests()
 		{
             this.sc = new ServiceContainer();
-            this.sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            this.sc.AddService<IFileSystemService>(new FileSystemService());
 			this.arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             this.platform = new MsdosPlatform(sc, arch);
 		}

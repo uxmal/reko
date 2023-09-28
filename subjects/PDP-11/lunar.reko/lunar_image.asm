@@ -96,7 +96,6 @@ l013C:
 ;;     0440 (in fn03CE)
 ;;     058E (in fn053A)
 ;;     09F6 (in fn0856)
-;;     109A (in fn103C)
 fn0242 proc
 	mov	r0,r4
 	mov	r1,r5
@@ -295,8 +294,6 @@ l0414:
 ;;     0572 (in fn053A)
 ;;     09EE (in fn0856)
 ;;     0EA2 (in fn0E98)
-;;     1090 (in fn103C)
-;;     10A6 (in fn103C)
 fn0444 proc
 	mov	@#0046,r0
 	bpl	0458
@@ -1439,17 +1436,8 @@ fn0D3C proc
 	mov	#F0A0,(r5)+
 	clr	(r5)+
 	jmp	@000A(sp)
-
-;; fn0D66: 0D66
-fn0D66 proc
-	mov	@sp,000C(sp)
-	mov	(sp)+,r4
-	mov	(sp)+,r4
-	mov	(sp)+,r1
-	mov	(sp)+,r0
-	mov	(sp)+,r3
-	mov	(sp)+,r2
-	rts	pc
+0D66                   B6 13 0C 00 84 15 84 15 81 15       ..........
+0D70 80 15 83 15 82 15 87 00                         ........        
 
 ;; fn0D78: 0D78
 ;;   Called from:
@@ -1758,8 +1746,6 @@ l0FEE	dw	0x07EE
 ;;     0748 (in fn053A)
 ;;     0F18 (in fn0F04)
 ;;     0F3C (in fn0F04)
-;;     105C (in fn103C)
-;;     1066 (in fn103C)
 fn100C proc
 	mov	r4,-(sp)
 	asl	r4
@@ -1771,66 +1757,15 @@ fn100C proc
 	rts	pc
 101E                                           DF 09               ..
 1020 3C 10 00 00 17 00 E8 FF DF 09 3C 10 A6 FF 10 00 <.........<.....
-1030 EE FF DF 09 3C 10 5A 00 10 00 EE FF             ....<.Z.....    
-
-;; fn103C: 103C
-fn103C proc
-	cmp	r5,#1F96
-	bhi	10B6
-
-l1042:
-	mov	r1,-(sp)
-	mov	r2,-(sp)
-	mov	r3,-(sp)
-	mov	r4,-(sp)
-	mov	r0,-(sp)
-	mov	000A(sp),r0
-	mov	#9800,(r5)+
-	mov	@sp,(r5)+
-	mov	@#0046,-(sp)
-	mov	@r3,r4
-	jsr	pc,fn100C
-	mov	r4,-(sp)
-	mov	0002(r3),r4
-	jsr	pc,fn100C
-	add	(sp)+,r4
-	asr	r4
-	mov	(r0)+,@#0046
-	add	(r0)+,r4
-	mov	@r0,@#0084
-	mov	r4,(r5)+
-	cmp	@r3,0002(r3)
-	beq	1090
-
-l1080:
-	bhi	108A
-
-l1082:
-	add	#FFEA,@#0046
-	br	1090
-
-l108A:
-	add	#0016,@#0046
-
-l1090:
-	jsr	pc,fn0444
-	mov	r5,r1
-	mov	#26D8,r0
-	jsr	pc,fn0242
-	clr	-(r5)
-	clr	-(r5)
-	mov	(sp)+,@#0046
-	jsr	pc,fn0444
-	mov	(sp)+,r0
-	mov	(sp)+,r4
-	mov	(sp)+,r3
-	mov	(sp)+,r2
-	mov	(sp)+,r1
-	tst	(sp)+
-
-l10B6:
-	rts	pc
-10B8                         57 21 C6 1F 2A 82 1F 10         W!..*...
+1030 EE FF DF 09 3C 10 5A 00 10 00 EE FF 57 21 96 1F ....<.Z.....W!..
+1040 3A 82 66 10 A6 10 E6 10 26 11 26 10 80 1D 0A 00 :.f.....&.&.....
+1050 D5 15 00 98 95 13 E6 17 46 00 C4 12 DF 09 0C 10 ........F.......
+1060 26 11 C4 1C 02 00 DF 09 0C 10 84 65 84 0C 1F 14 &..........e....
+1070 46 00 04 64 1F 12 84 00 15 11 F3 22 02 00 08 03 F..d......."....
+1080 04 82 DF 65 EA FF 46 00 03 01 DF 65 16 00 46 00 ...e..F....e..F.
+1090 DF 09 44 04 41 11 C0 15 D8 26 DF 09 42 02 25 0A ..D.A....&..B.%.
+10A0 25 0A 9F 15 46 00 DF 09 44 04 80 15 84 15 83 15 %...F...D.......
+10B0 82 15 81 15 D6 0B 87 00 57 21 C6 1F 2A 82 1F 10 ........W!..*...
 10C0 AC 26 C4 12 DF 09 0C 10 01 11 C4 1C 02 00 DF 09 .&..............
 10D0 0C 10 44 60 84 0C 1F 11 AE 26 C1 15 A8 26 13 01 ..D`.....&...&..
 10E0 57 21 C2 1F 16 82 1F 10 DC 25 C4 12 DF 09 0C 10 W!.......%......

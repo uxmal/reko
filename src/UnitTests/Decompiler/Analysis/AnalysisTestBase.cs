@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
         {
             //$TODO: this is a hard dependency on the file system.
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             var decompilerEventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(decompilerEventListener);
             sc.AddService<IDecompilerEventListener>(decompilerEventListener);
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             cfgSvcMock.Setup(c => c.GetEnvironment("ms-dos")).Returns(envMock.Object);
             envMock.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             envMock.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             sc.AddService<IConfigurationService>(cfgSvcMock.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvcMock.Object);
             Program program;
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             var loader = new Loader(sc);
             var location = ImageLocation.FromUri(FileUnitTester.MapTestPath(configFile));
             var project = string.IsNullOrEmpty(configFile)
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Decompiler.Analysis
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             var loader = new Loader(sc);
             var project = new Project
             {

@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Decompiler
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             sc.AddService<IDecompiledFileService>(host);
             sc.AddService<IConfigurationService>((IConfigurationService)cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);

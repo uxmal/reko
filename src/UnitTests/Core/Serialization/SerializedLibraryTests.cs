@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core.Serialization
         [SetUp]
         public void Setup()
         {
-            fsSvc = new FileSystemServiceImpl();
+            fsSvc = new FileSystemService();
         }
 
 		[Test]

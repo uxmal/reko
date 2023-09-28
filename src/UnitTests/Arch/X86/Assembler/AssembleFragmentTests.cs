@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
         }
 
         [Test]

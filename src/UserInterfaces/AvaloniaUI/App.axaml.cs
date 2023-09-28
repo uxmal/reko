@@ -93,7 +93,7 @@ namespace Reko.UserInterfaces.AvaloniaUI
             services.AddService<IDialogFactory>(new AvaloniaDialogFactory(services));
             services.AddService<IWindowPaneFactory>(new AvaloniaWindowPaneFactory(services));
             services.AddService<ISettingsService>(new AvaloniaSettingsService(services));
-            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            services.AddService<IFileSystemService>(new FileSystemService());
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 

@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
         public void Setup()
         {
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
         }
 
         private X86Assembler Create32bitAssembler()

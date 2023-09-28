@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Decompiler.Structure
             var decompilerEventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(decompilerEventListener);
             sc.AddService<IDecompilerEventListener>(decompilerEventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Decompiler.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(new FakeDecompilerConfiguration());
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);

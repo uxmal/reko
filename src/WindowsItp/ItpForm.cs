@@ -271,7 +271,7 @@ namespace Reko.WindowsItp
         {
             var sc = new ServiceContainer();
             var cfgSvc = new FakeConfigurationService();
-            var fsSvc = new FileSystemServiceImpl();
+            var fsSvc = new FileSystemService();
             var uiSvc = new FakeDecompilerShellUiService(this);
             sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<IFileSystemService>(fsSvc);

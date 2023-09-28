@@ -146,7 +146,7 @@ namespace Reko.Gui.Forms
                 pageFinal);
     }
 
-    private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
+        private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
@@ -184,7 +184,7 @@ namespace Reko.Gui.Forms
             sc.AddService<IStatusBarService>(sbSvc);
 
             var del = svcFactory.CreateDecompilerEventListener();
-            workerDlgSvc = (IWorkerDialogService)del;
+            workerDlgSvc = (IWorkerDialogService) del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
             sc.AddService<IEventListener>(del);
             sc.AddService<IDecompilerEventListener>(del);

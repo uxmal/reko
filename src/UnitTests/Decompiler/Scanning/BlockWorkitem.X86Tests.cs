@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             env.Setup(c => c.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(c => c.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             sc.AddService<IEventListener>(eventListener.Object);

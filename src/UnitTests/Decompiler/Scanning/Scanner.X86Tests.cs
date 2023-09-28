@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
         private void BuildTest16(Action<X86Assembler> asmProg)
         {
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(sc, arch), asmProg);
         }
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             var entryPoints = new List<ImageSymbol>();
             var asm = new X86Assembler(arch, addrBase, entryPoints);
             asmProg(asm);

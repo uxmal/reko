@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Decompiler.Typing
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
         }
 
         protected void RunHexTest(string hexFile, string outputFile)

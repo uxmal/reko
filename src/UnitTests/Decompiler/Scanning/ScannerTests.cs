@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IEventListener>(eventListener);
             sc.AddService<IDecompilerEventListener>(eventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
         }
 
         private FunctionType CreateSignature(string ret, params string[] args)

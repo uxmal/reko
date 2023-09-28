@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Arch.X86.Rewriter
             services.AddService(typeof(IEventListener), eventListener);
             services.AddService(typeof(IDecompilerEventListener), eventListener);
             services.AddService(typeof(CancellationTokenSource), new CancellationTokenSource());
-            services.AddService(typeof(IFileSystemService), new FileSystemServiceImpl());
+            services.AddService(typeof(IFileSystemService), new FileSystemService());
             arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             win32 = new Win32Platform(services, arch);
         }

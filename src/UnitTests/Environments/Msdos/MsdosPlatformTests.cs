@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Environments.Msdos
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             sc = new ServiceContainer();
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<IFileSystemService>(new FileSystemService());
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
         }
