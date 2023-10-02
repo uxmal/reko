@@ -22,11 +22,10 @@ using Reko.Core;
 using Reko.Gui.Reactive;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Documents;
-using System;
+using Reko.Scanning;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -36,7 +35,7 @@ namespace Reko.Gui.ViewModels.Dialogs
     {
         private readonly Program program;
 
-        public SearchAreaViewModel(Program program, SearchArea searchArea, IUiPreferencesService uiPreferencesSvc)
+        public SearchAreaViewModel(Program program, List<SearchArea> searchArea, IUiPreferencesService uiPreferencesSvc)
         {
             this.program = program;
             this.SegmentList = LoadSegmentDetails(program);
@@ -67,7 +66,7 @@ namespace Reko.Gui.ViewModels.Dialogs
         }
         private string freeFormAreas;
 
-        public List<ProgramAddressRange> Areas { get; set; }
+        public List<SearchArea> Areas { get; set; }
 
         public string FreeFormError
         {
@@ -87,36 +86,22 @@ namespace Reko.Gui.ViewModels.Dialogs
             }
             else
             {
-                this.Areas = sa.Areas;
+                this.Areas = sa;
                 FreeFormError = "";
             }
         }
 
-
-        private bool TryParseAddress(int iBegin, int iEnd, [MaybeNullWhen(false)] out Address addr)
-        {
-            return program.Architecture.TryParseAddress(
-                this.freeFormAreas.Substring(iBegin, iEnd - iBegin),
-                out addr);
-        }
-
-
-
         public void ChangeAreas(IEnumerable selectedItems)
         {
+            // Because user checked in the list box, we clear the 
+            // free form text area.
+            this.FreeFormAreas = "";
             this.Areas.Clear();
             foreach (SegmentListItemViewModel sitem in selectedItems)
             {
                 var segment = sitem.Segment;
-                var range = ProgramAddressRange.Create(
-                    this.program,
-                    segment.Address,
-                    segment.Size);
-                this.Areas.Add(range);
+                this.Areas.Add(SearchArea.FromSegment(program, segment));
             }
-            // Because user checked in the list box, we clear the 
-            // free form text area.
-            this.FreeFormAreas = "";
         }
     }
 }

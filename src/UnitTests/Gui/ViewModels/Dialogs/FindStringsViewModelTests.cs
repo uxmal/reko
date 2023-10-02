@@ -9,6 +9,7 @@ using Reko.Core;
 using Reko.Gui;
 using Moq;
 using Reko.Gui.Services;
+using Reko.Scanning;
 
 namespace Reko.UnitTests.Gui.ViewModels.Dialogs
 {
@@ -35,16 +36,16 @@ namespace Reko.UnitTests.Gui.ViewModels.Dialogs
             var fsvm = new FindStringsViewModel(program, uiSvc.Object, settingsSvc.Object, dlgFactory.Object);
             Assert.AreEqual(1, fsvm.SearchAreasMru.Count);
             Assert.AreEqual("Entire program", fsvm.SearchAreasMru[0].Text);
-            fsvm.UpdateSearchAreaMru(new SearchArea(new List<ProgramAddressRange>
+            fsvm.UpdateSearchAreaMru(new List<SearchArea>
             {
-                ProgramAddressRange.Create(program, Address.Ptr16(0x1000), 0x100) 
-            }));
+                SearchArea.FromAddressRange(program, Address.Ptr16(0x1000), 0x100) 
+            });
             Assert.AreEqual(2, fsvm.SearchAreasMru.Count);
             Assert.AreEqual("[1000-10FF]", fsvm.SearchAreasMru[0].Text);
-            fsvm.UpdateSearchAreaMru(new SearchArea(new List<ProgramAddressRange>
+            fsvm.UpdateSearchAreaMru(new List<SearchArea>
             {
-                ProgramAddressRange.Create(program, Address.Ptr16(0x2000), 0x100)
-            }));
+                SearchArea.FromAddressRange(program, Address.Ptr16(0x2000), 0x100)
+            });
 
             Assert.AreEqual(3, fsvm.SearchAreasMru.Count);
             Assert.AreEqual("[2000-20FF]", fsvm.SearchAreasMru[0].Text);

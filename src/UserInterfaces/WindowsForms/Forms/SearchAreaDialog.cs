@@ -1,21 +1,36 @@
-using Reko.Core.Loading;
+#region License
+/* 
+ * Copyright (C) 1999-2023 John Källén.
+ .
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Gui;
-using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Dialogs;
+using Reko.Scanning;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    public partial class SearchAreaDialog : Form, IDialog<SearchArea>
+    public partial class SearchAreaDialog : Form, IDialog<List<SearchArea>>
     {
         private SearchAreaViewModel viewModel;
 
@@ -38,7 +53,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             }
         }
 
-        public SearchArea Value { get; set; }
+        public List<SearchArea> Value { get; set; }
 
         private void OnDataContextChanged()
         {
@@ -59,7 +74,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            this.Value = new SearchArea(viewModel.Areas);
+            this.Value = viewModel.Areas;
         }
 
         private void listSegments_ItemChecked(object sender, EventArgs e)

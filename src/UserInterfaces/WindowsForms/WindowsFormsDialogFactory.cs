@@ -260,7 +260,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlg;
         }
 
-        public IDialog<SearchArea> CreateSearchAreaDialog(Program program, SearchArea searchArea)
+        public IDialog<List<SearchArea>> CreateSearchAreaDialog(Program program, List<SearchArea> searchArea)
         {
             var uiPreferencesSvc = services.RequireService<IUiPreferencesService>();
             return new SearchAreaDialog

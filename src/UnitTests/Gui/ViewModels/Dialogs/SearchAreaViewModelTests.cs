@@ -25,6 +25,7 @@ using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Gui.Services;
 using Reko.Gui.ViewModels.Dialogs;
+using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
 
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Gui.ViewModels.Dialogs
         [Test]
         public void Savm_Parse_ClosedRange()
         {
-            var savm = new SearchAreaViewModel(program, new SearchArea(), uiPreferencesSvc.Object);
+            var savm = new SearchAreaViewModel(program, new(), uiPreferencesSvc.Object);
 
             savm.FreeFormAreas = " [1000 - 103F]";
 
@@ -67,7 +68,7 @@ namespace Reko.UnitTests.Gui.ViewModels.Dialogs
         [Test]
         public void Savm_Parse_IncompleteRange()
         {
-            var savm = new SearchAreaViewModel(program, new SearchArea(), uiPreferencesSvc.Object);
+            var savm = new SearchAreaViewModel(program, new(), uiPreferencesSvc.Object);
 
             savm.FreeFormAreas = " [1000 - 103F";
 

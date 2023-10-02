@@ -48,6 +48,11 @@ namespace Reko.Core
         /// </summary>
         public bool IsValid => this.Begin <= this.End; 
 
+        /// <summary>
+        /// The length of this address range in storage units.
+        /// </summary>
+        public long Length => this.End - this.Begin;
+
         public static bool operator == (AddressRange left, AddressRange right)
         {
             return left.Begin == right.Begin && left.End == right.End;

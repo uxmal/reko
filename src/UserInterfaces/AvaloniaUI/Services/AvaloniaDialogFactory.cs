@@ -206,7 +206,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Services
             throw new NotImplementedException();
         }
 
-        public IDialog<SearchArea?> CreateSearchAreaDialog(Program program, SearchArea searchArea)
+        public IDialog<List<SearchArea>?> CreateSearchAreaDialog(Program program, List<SearchArea> searchArea)
         {
             var uiPreferencesSvc = services.RequireService<IUiPreferencesService>();
             return new SearchAreaDialog

@@ -20,7 +20,10 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Gui.ViewModels.Dialogs;
+using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System.Linq;
 
@@ -34,7 +37,14 @@ namespace Reko.UnitTests.Gui.ViewModels.Dialogs
         {
             this.program = new Program()
             {
-                Architecture = new FakeArchitecture()
+                Architecture = new FakeArchitecture(),
+                SegmentMap = new SegmentMap(
+                    new ImageSegment(
+                        ".text",
+                        new ByteMemoryArea(
+                            Address.Ptr32(0x1000),
+                            new byte[0x200]),
+                        AccessMode.ReadExecute))
             };
         }
 
@@ -43,15 +53,26 @@ namespace Reko.UnitTests.Gui.ViewModels.Dialogs
         {
             Assert.IsTrue(SearchArea.TryParse(program, " [1000 - 103F]", out var sa));
 
-            Assert.AreEqual(1, sa.Areas.Count);
-            Assert.AreEqual(0x1000, sa.Areas[0].Address.Offset);
-            Assert.AreEqual(0x40, sa.Areas[0].Length);
+            Assert.AreEqual(1, sa.Count);
+            Assert.AreEqual(0x1000, sa[0].Address.Offset);
+            Assert.AreEqual(0x40, sa[0].Length);
         }
 
         [Test]
         public void Sa_TryParse_IncompleteRange()
         {
             Assert.IsFalse(SearchArea.TryParse(program, " [1000 - 103F", out _));
+        }
+
+        [Test]
+        public void Sa_TryParse_SegmentName()
+        {
+            Assert.IsTrue(SearchArea.TryParse(program, " [1000 - 1100], .text", out var sa));
+
+            Assert.AreEqual(2, sa.Count);
+            Assert.AreEqual(0x1000, sa[1].Address.Offset);
+            Assert.AreEqual(0x200, sa[1].Length);
+
         }
     }
 }

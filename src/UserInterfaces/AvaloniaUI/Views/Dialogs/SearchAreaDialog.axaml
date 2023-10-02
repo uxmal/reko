@@ -18,7 +18,16 @@
 			SelectionChanged="segmentList_SelectionChanged"
 			AutoGenerateColumns="false">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="5*" />
+				<DataGridTemplateColumn Header="Name" Width="5*">
+                <DataGridTemplateColumn.CellTemplate>
+					<DataTemplate>
+						<CheckBox Content="{Binding Name}"
+								  IsChecked="{Binding IsSelected}"
+								  IsCheckedChanged="segmentList_Click">
+						</CheckBox>
+					</DataTemplate>
+				</DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 				<DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="5*" />
 				<DataGridTextColumn Header="Access" Binding="{Binding Access}" />
 			</DataGrid.Columns>

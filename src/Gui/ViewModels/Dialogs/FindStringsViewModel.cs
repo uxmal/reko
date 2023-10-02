@@ -25,6 +25,7 @@ using Reko.Gui.Reactive;
 using Reko.Gui.Services;
 using Reko.Scanning;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -122,8 +123,8 @@ namespace Reko.Gui.ViewModels.Dialogs
             }
 
             var searchAreasListOption = this.SearchAreasMru[this.SelectedMruIndex];
-            var searchAreas = (searchAreasListOption.Value is SearchArea sa && sa.Areas.Count != 0)
-                ? sa.Areas
+            var searchAreas = (searchAreasListOption.Value is List<SearchArea> sa && sa.Count != 0)
+                ? sa
                 : null;
             return new StringFinderCriteria(
                 StringType: strType,
@@ -135,16 +136,16 @@ namespace Reko.Gui.ViewModels.Dialogs
 
         public async ValueTask SelectSearchArea()
         {
-            var dlg = this.dialogFactory.CreateSearchAreaDialog(program, new SearchArea());
-            var searchArea = await uiSvc.ShowModalDialog(dlg);
-            if (searchArea is null || searchArea.Areas.Count == 0)
+            var dlg = this.dialogFactory.CreateSearchAreaDialog(program, new List<SearchArea>());
+            var searchAreas = await uiSvc.ShowModalDialog(dlg);
+            if (searchAreas is null || searchAreas.Count == 0)
                 return;
-            UpdateSearchAreaMru(searchArea);
+            UpdateSearchAreaMru(searchAreas);
         }
 
-        public void UpdateSearchAreaMru(SearchArea? searchArea)
+        public void UpdateSearchAreaMru(List<SearchArea>? searchAreas)
         {
-            var iExisting = IndexOf(this.SearchAreasMru, e => object.Equals(e.Value, searchArea));
+            var iExisting = IndexOf(this.SearchAreasMru, e => EqualSearchAreas(e.Value, searchAreas));
             ListOption item;
             if (iExisting != 0)
             {
@@ -155,12 +156,28 @@ namespace Reko.Gui.ViewModels.Dialogs
                 }
                 else
                 {
-                    item = new ListOption(searchArea?.ToString() ?? "", searchArea);
+                    item = new ListOption(SearchArea.Format(searchAreas) ?? "", searchAreas);
                 }
                 this.SearchAreasMru.Insert(0, item);
             }
             this.selectedMruIndex = -1;  // Hack to force an event to be raised.
             this.SelectedMruIndex = 0;
+        }
+
+        private static bool EqualSearchAreas(object? value, List<SearchArea>? right)
+        {
+            if (value is not List<SearchArea> left)
+                return false;
+            if (right is null)
+                return false;
+            if (left.Count != right.Count)
+                return false;
+            for (int i = 0; i < left.Count; ++i)
+            {
+                if (!left[i].Equals(right[i]))
+                    return false;
+            }
+            return true;
         }
 
         private static int IndexOf<T>(ObservableCollection<T> list, Predicate<T> predicate)

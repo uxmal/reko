@@ -61,6 +61,6 @@ namespace Reko.Gui
         IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture architecture, List<UserRegisterValue> regValues);
         IBlockNameDialog CreateBlockNameDialog(Procedure proc, Block block);
         IDiagnosticFilterDialog CreateDiagnosticFilterDialog(DiagnosticFilters filterSettings);
-        IDialog<SearchArea?> CreateSearchAreaDialog(Program program, SearchArea searchArea);
+        IDialog<List<SearchArea>?> CreateSearchAreaDialog(Program program, List<SearchArea> searchArea);
     }
 }

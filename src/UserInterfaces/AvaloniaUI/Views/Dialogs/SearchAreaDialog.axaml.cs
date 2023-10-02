@@ -22,10 +22,14 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Reko.Gui;
 using Reko.Gui.ViewModels.Dialogs;
+using Reko.Gui.ViewModels.Documents;
+using Reko.Scanning;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
 {
-    public partial class SearchAreaDialog : Window, IDialog<SearchArea?>
+    public partial class SearchAreaDialog : Window, IDialog<List<SearchArea>?>
     {
         public SearchAreaDialog()
         {
@@ -40,7 +44,7 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
             set { Title = value; }
         }
 
-        public SearchArea? Value
+        public List<SearchArea>? Value
         {
             get; set;
         }
@@ -52,9 +56,18 @@ namespace Reko.UserInterfaces.AvaloniaUI.Views.Dialogs
             ViewModel?.ChangeAreas(segmentList.SelectedItems);
         }
 
+        private void segmentList_Click(object sender, RoutedEventArgs e)
+        {
+            var checkBox = (CheckBox) sender;
+            var itemVm = (SegmentListItemViewModel) checkBox.DataContext!;
+            itemVm.IsSelected = checkBox.IsChecked ?? false;
+            ViewModel?.ChangeAreas(segmentList.ItemsSource
+                .OfType<SegmentListItemViewModel>().Where(s => s.IsSelected));
+        }
+
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            this.Value = new SearchArea(ViewModel!.Areas);
+            this.Value = ViewModel!.Areas;
             this.Close();
         }
 

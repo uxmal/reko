@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
             var hits = sf.FindStrings(new StringFinderCriteria(
                 StringType: StringType.NullTerminated(PrimitiveType.Char),
                 Encoding: enc,
-                Areas: new() {  ProgramAddressRange.Create(program, program.SegmentMap.BaseAddress+4, 4) },
+                Areas: new() {  SearchArea.FromAddressRange(program, program.SegmentMap.BaseAddress+4, 4) },
                 MinimumLength: 1,
                 CreateReader: (m, a, b) => new LeImageReader(m, a, b))).ToArray();
 

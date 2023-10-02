@@ -47,8 +47,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public override object Get(string settingName, object defaultValue)
         {
-            string keyName; string valName;
-            SplitIntoKeyValueName(settingName, out keyName, out valName);
+            SplitIntoKeyValueName(settingName, out string keyName, out string valName);
             var key = GetRegistryKey(keyName, false);
             return key.GetValue(valName, defaultValue);
         }

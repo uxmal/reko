@@ -113,6 +113,6 @@ namespace Reko.Scanning
         StringType StringType,
         Encoding Encoding,
         int MinimumLength,
-        List<ProgramAddressRange>? Areas, // Optional search areas; null means search entire program image.
+        List<SearchArea>? Areas, // Optional search areas; null means search entire program image.
         Func<ByteMemoryArea, Address, long, EndianImageReader> CreateReader);
 }

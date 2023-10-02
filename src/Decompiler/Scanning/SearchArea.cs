@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,29 +28,64 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui.ViewModels.Dialogs
+namespace Reko.Scanning
 {
+    /// <summary>
+    /// A search area is either a continuous address range or a named segment.
+    /// </summary>
     public class SearchArea
     {
+        private ImageSegment? segment;
+        private AddressRange? addressRange;
 
-        public SearchArea()
+        public static SearchArea FromAddressRange(Program program, Address address, long length)
         {
-            this.Areas = new List<ProgramAddressRange>();
+            return new SearchArea(program, null, new AddressRange(address, address + length));
         }
 
-        public SearchArea(List<ProgramAddressRange> areas)
+        public static SearchArea? FromSegment(Program program, string segmentName)
         {
-            this.Areas = areas;
+            if (!program.SegmentMap.TryFindSegment(segmentName, out var segment))
+                return null;
+            return new SearchArea(program, segment, null);
         }
+
+        public static SearchArea FromSegment(Program program, ImageSegment segment)
+        {
+            return new SearchArea(program, segment, null);
+        }
+
+        private SearchArea(Program program, ImageSegment? segment, AddressRange? addressRange)
+        {
+            if (segment is null) {
+                if (addressRange is null) throw new ArgumentNullException();
+            }
+            else
+            {
+                if (addressRange is not null) throw new ArgumentException();
+            }
+
+            this.Program = program;
+            this.segment = segment;
+            this.addressRange = addressRange;
+        }
+
+        public Program Program { get; }
+
+        public Address Address => segment is not null ? segment.Address : addressRange!.Begin;
+
+        public long Length => segment is not null ? segment.Size : addressRange!.Length;
+
 
         private enum State
         {
             Start,
             InBeginRange,
             InEndRange,
+            SegmentName,
         }
 
-        public static bool TryParse(Program program, string freeFormAreas, [MaybeNullWhen(false)] out SearchArea result)
+        public static bool TryParse(Program program, string freeFormAreas, [MaybeNullWhen(false)] out List<SearchArea> result)
         {
             var arch = program.Architecture;
             var i = 0;
@@ -57,7 +93,9 @@ namespace Reko.Gui.ViewModels.Dialogs
             result = null;
             Address? addrBegin = null;
             State state = State.Start;
-            var areas = new List<ProgramAddressRange>();
+            string segName;
+            SearchArea? area;
+            var areas = new List<SearchArea>();
             for (; ; )
             {
                 i = SkipWs(freeFormAreas, i);
@@ -76,7 +114,10 @@ namespace Reko.Gui.ViewModels.Dialogs
                     case ',':
                         break;
                     default:
-                        return false;
+                        // Assume it's a segment name
+                        state = State.SegmentName;
+                        iBegin = i - 1;
+                        break;
                     }
                     break;
                 case State.InBeginRange:
@@ -102,10 +143,9 @@ namespace Reko.Gui.ViewModels.Dialogs
                             return false;
                         if (addrBegin >= addrEnd)
                             return false;
-                        areas.Add(ProgramAddressRange.Create(
-                            program,
+                        areas.Add(new SearchArea(program, null, new AddressRange(
                             addrBegin!,
-                            (addrEnd - addrBegin) + adjustment));
+                            (addrEnd + adjustment))));
                         state = State.Start;
                         break;
                     case ')':
@@ -113,25 +153,48 @@ namespace Reko.Gui.ViewModels.Dialogs
                             return false;
                         if (addrBegin! >= addrEnd)
                             return false;
-                        areas.Add(ProgramAddressRange.Create(
-                            program,
+                        areas.Add(new SearchArea(program, null, new AddressRange(
                             addrBegin!,
-                            (addrEnd - addrBegin!)));
+                            addrEnd)));
                         break;
                     default:
                         break;
                     }
                     break;
+                case State.SegmentName:
+                    switch (c)
+                    {
+                    case ',':
+                        segName = freeFormAreas.Substring(iBegin, i - iBegin);
+                        area = SearchArea.FromSegment(program, segName);
+                        if (area is not null)
+                        {
+                            areas.Add(area);
+                        }
+                        state = State.Start;
+                        break;
+                    }
+                    break;
                 }
             }
-            if (state != State.Start)
-                return false;
-
-            result = new SearchArea(areas);
-            return true;
+            if (state == State.Start)
+            {
+                result = areas;
+                return true;
+            }
+            if (state == State.SegmentName)
+            {
+                segName = freeFormAreas.Substring(iBegin, i - iBegin);
+                area = SearchArea.FromSegment(program, segName);
+                if (area is not null)
+                {
+                    areas.Add(area);
+                }
+                result = areas;
+                return true;
+            }
+            return false;
         }
-
-        public List<ProgramAddressRange> Areas { get; }
 
         public override bool Equals(object? obj)
         {
@@ -139,25 +202,13 @@ namespace Reko.Gui.ViewModels.Dialogs
                 return false;
             if (this == that)
                 return true;
-            if (this.Areas.Count != that.Areas.Count)
-                return false;
-            for (int i = 0; i < Areas.Count; ++i)
-            {
-                if (!this.Areas[i].Equals(that.Areas[i]))
-                    return false;
-            }
-            return true;
+            return this.Address == that.Address && 
+                this.Length == that.Length;
         }
 
         public override int GetHashCode()
         {
-            var h = new HashCode();
-            h.Add(Areas.Count);
-            for (int i = 0; i < Areas.Count; ++i)
-            {
-                h.Add(Areas[i]);
-            }
-            return h.ToHashCode();
+            return HashCode.Combine(this.Address, this.Length);
         }
 
         private static int SkipWs(string str, int i)
@@ -174,9 +225,13 @@ namespace Reko.Gui.ViewModels.Dialogs
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendJoin(", ", this.Areas
-                .Select(a => $"[{a.Address}-{a.Address + (a.Length - 1)}]"));
-            return sb.ToString();
+            if (this.segment is not null)
+                return segment.Name;
+            else
+            {
+                Debug.Assert(addressRange is not null);
+                return $"[{addressRange.Begin}-{addressRange.Begin + (addressRange.Length - 1)}]";
+            }
         }
 
         private static bool TryParseAddress(IProcessorArchitecture arch, string freeFormAreas, int iBegin, int iEnd, [MaybeNullWhen(false)] out Address addr)
@@ -184,6 +239,13 @@ namespace Reko.Gui.ViewModels.Dialogs
             return arch.TryParseAddress(
                 freeFormAreas.Substring(iBegin, iEnd - iBegin),
                 out addr);
+        }
+
+        public static string Format(List<SearchArea>? searchAreas)
+        {
+            if (searchAreas is null || searchAreas.Count == 0)
+                return "";
+            return string.Join(", ", searchAreas);
         }
 
     }

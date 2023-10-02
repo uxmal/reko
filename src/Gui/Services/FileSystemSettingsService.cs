@@ -80,7 +80,9 @@ namespace Reko.Gui.Services
                 }
                 return result;
             }
-            throw new NotImplementedException();
+            if (value is List<string> list)
+                return list.ToArray();
+            throw new NotImplementedException(value?.GetType().Name ?? "null");
         }
 
         public override void Load()
