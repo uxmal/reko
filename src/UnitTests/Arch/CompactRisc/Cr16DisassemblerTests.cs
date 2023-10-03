@@ -21,13 +21,11 @@
 using NUnit.Framework;
 using Reko.Arch.CompactRisc;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.CompactRisc
 {
@@ -40,7 +38,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public Cr16DisassemblerTests()
         {
             this.arch = new Cr16Architecture(CreateServiceContainer(), "cr16c", new Dictionary<string, object>());
-            this.addrLoad = Address.Ptr16(0x8000);
+            this.addrLoad = Address.Ptr32(0x8000);
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -49,7 +47,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         // [Test]
         public void Cr16Dasm_Gen()
         {
-            var mem = new ByteMemoryArea(Address.Ptr16(0x8000), new byte[1024]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x8000), new byte[1024]);
             var rnd = new Random(0x4711);
             rnd.NextBytes(mem.Bytes);
             var rdr = mem.CreateBeReader(0);
@@ -60,7 +58,45 @@ namespace Reko.UnitTests.Arch.CompactRisc
         private void AssertCode(string sExpected, string hexBytes)
         {
             var instr = base.DisassembleHexBytes(hexBytes);
+            //if (!instr.ToString().Contains("nvalid"))
+            //    return;
             Assert.AreEqual(sExpected, instr.ToString());
+        }
+
+        [Test]
+        public void Cr16Dasm_addb_imm()
+        {
+            AssertCode("addb\t$1,r1", "1030");
+        }
+
+        [Test]
+        public void Cr16Dasm_addd_imm32()
+        {
+            AssertCode("addd\t$12345678,(r5,r4)", "240078563412");
+        }
+
+        [Test]
+        public void Cr16Dasm_addd_imm4()
+        {
+            AssertCode("addd\t$2,sp", "2F60");
+        }
+
+        [Test]
+        public void Cr16Dasm_addub()
+        {
+            AssertCode("addub\t$3,r3", "362C");
+        }
+
+        [Test]
+        public void Cr16Dasm_addw_imm4_16()
+        {
+            AssertCode("addw\t$1,r1", "1232");
+        }
+
+        [Test]
+        public void Cr16Dasm_andb_imm4()
+        {
+            AssertCode("andb\t$34,r11", "B020 3412");
         }
 
         [Test]
@@ -70,9 +106,15 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_andw_imm16()
+        {
+            AssertCode("andw\t$2345,r11", "B322 4523");
+        }
+
+        [Test]
         public void Cr16Dasm_ashud_right()
         {
-            AssertCode("ashud\t$FFFFFFF2,(r7,r6)", "E64F");
+            AssertCode("ashud\t$-30,(r7,r6)", "E64F");
         }
 
         [Test]
@@ -88,15 +130,70 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_bne0b()
+        {
+            AssertCode("bne0b\tr10,8002", "0A0D");
+        }
+
+
+        [Test]
         public void Cr16Dasm_br()
         {
             AssertCode("beq\t800E", "0710");
         }
 
         [Test]
+        public void Cr16Dasm_bra_cond_disp8()
+        {
+            AssertCode("br\tC68A", "E018 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_br_disp24()
+        {
+            AssertCode("br\t007C80E0", "1000E0007C06");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitb_abs20()
+        {
+            AssertCode("cbitb\tr8,(0x042345)", "84684523");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitw_abs20()
+        {
+            AssertCode("cbitw\t$3,(0x032345)", "436F 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitw_abs20_rel()
+        {
+            AssertCode("cbitw\t$C,0xC2345(r6)", "6C6C 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitw_rp()
+        {
+            AssertCode("cbitw\t$9,(r10,r9)", "496E 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_cbitw_disp16()
+        {
+            AssertCode("cbitw\t$2,0x2345(r3,r2)", "7269 4523");
+        }
+
+        [Test]
         public void Cr16Dasm_cmpb_imm4()
         {
             AssertCode("cmpb\t$0,r0", "0050");
+        }
+
+        [Test]
+        public void Cr16Dasm_cmpb_reg_reg()
+        {
+            AssertCode("cmpb\tr2,r0", "0251");
         }
 
         [Test]
@@ -112,9 +209,87 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_cmpw_imm4()
+        {
+            AssertCode("cmpw\t$0,r0", "0052");
+        }
+
+        [Test]
+        public void Cr16Dasm_cmpw_imm16()
+        {
+            AssertCode("cmpw\t$2345,r0", "B052 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_cmpw_reg_reg()
+        {
+            AssertCode("cmpw\tr0,r2", "2053");
+        }
+
+        [Test]
         public void Cr16Dasm_jal_rp()
         {
             AssertCode("jal\tra,(r1,r0)", "D000");
+        }
+
+        [Test]
+        public void Cr16Dasm_jr()
+        {
+            AssertCode("jr\t(r1,r0)", "E00A");
+        }
+
+        [Test]
+        public void Cr16Dasm_loadb_abs20()
+        {
+            AssertCode("loadb\t(0x012345),r0", "0188 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_loadb_abs24()
+        {
+            AssertCode("loadb\t(0x0108A8),r0", "12000071A808");
+        }
+
+        [Test]
+        public void Cr16Dasm_loadb_rp()
+        {
+            AssertCode("loadb\t(r1,r0),r0", "00B0");
+        }
+
+        [Test]
+        public void Cr16Dasm_loadd_abs20()
+        {
+            AssertCode("loadd\t(0x012345),r6", "61874523");
+        }
+
+        [Test]
+        public void Cr16Dasm_loadw_abs20()
+        {
+            AssertCode("loadw\t(0x0F2345),r1", "1F89 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_loadw_abs24()
+        {
+            AssertCode("loadw\t(0x010680),r3", "120030F18006");
+        }
+
+        [Test]
+        public void Cr16Dasm_lpr()
+        {
+            AssertCode("lpr\tr0,CFG", "140080007F00");
+        }
+
+        [Test]
+        public void Cr16Dasm_lprd()
+        {
+            AssertCode("lprd\t(r3,r2),DBS", "14000212C112");
+        }
+
+        [Test]
+        public void Cr16Dasm_lprd_ISP()
+        {
+            AssertCode("lprd\t(r1,r0),ISPL", "1400C010005A");
         }
 
         [Test]
@@ -138,7 +313,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
         [Test]
         public void Cr16Dasm_movd_imm20()
         {
-            AssertCode("movd\t$12345,r2", "2105 4523");
+            AssertCode("movd\t$12345,(r3,r2)", "2105 4523");
         }
 
         [Test]
@@ -154,6 +329,12 @@ namespace Reko.UnitTests.Arch.CompactRisc
         }
 
         [Test]
+        public void Cr16Dasm_movw_imm4_reg()
+        {
+            AssertCode("movw\t$1,r2", "125A");
+        }
+
+        [Test]
         public void Cr16Dasm_movw_reg_reg()
         {
             AssertCode("movw\tr7,r4", "745B");
@@ -163,6 +344,18 @@ namespace Reko.UnitTests.Arch.CompactRisc
         public void Cr16Dasm_movzw()
         {
             AssertCode("movzw\tr4,(r5,r4)", "445F");
+        }
+
+        [Test]
+        public void Cr16Dasm_mulb_reg_reg()
+        {
+            AssertCode("mulb\tr7,r2", "7265");
+        }
+
+        [Test]
+        public void Cr16Dasm_orw_imm4_16_reg()
+        {
+            AssertCode("orw\t$2345,r11", "B0264523");
         }
 
         [Test]
@@ -188,6 +381,125 @@ namespace Reko.UnitTests.Arch.CompactRisc
         {
             AssertCode("push\t$3,r8", "3801");
         }
+
+        [Test]
+        public void Cr16Dasm_sbitb()
+        {
+            AssertCode("sbitb\t$0,(r1,r0)", "2072 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_sbitb_abs20_rel()
+        {
+            AssertCode("sbitb\t$2,0x22345(r7)", "7270 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_sbitw_abs20()
+        {
+            AssertCode("sbitw\t$4,(0x042345)", "74774523");
+        }
+
+        [Test]
+        public void Cr16Dasm_sbitw_abs20_rel()
+        {
+            AssertCode("sbitw\t$8,0x82345(r6)", "6874 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_sbitw_rp_disp0()
+        {
+            AssertCode("sbitw\t$2,(r3,r2)", "7276");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb()
+        {
+            AssertCode("storb\tr2,(0x0108A0)", "13002071A008");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_rp_disp4()
+        {
+            AssertCode("storb\tr12,6(r7,r6)", "C6F6");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_rp_disp20()
+        {
+            AssertCode("storb\tr0,0x10371(r1,r0)", "130002517103");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_sp()
+        {
+            AssertCode("storb\tr11,0x2345(sp)", "BFFF 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_12001E11C173()
+        {
+            AssertCode("storb\tr1,0x173C1(r2,r1)", "12001E11C173");
+        }
+
+        [Test]
+        public void Cr16Dasm_storb_abs20()
+        {
+            AssertCode("storb\tr0,(0x0F2345)", "0FC8 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_storw_abs20()
+        {
+            AssertCode("storw\tr0,(0x0F2345)", "0FC9 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_storw_rp()
+        {
+            AssertCode("storw\tr0,0x1A(r1,r0)", "00DD");
+        }
+
+        [Test]
+        public void Cr16Dasm_subw_reg_reg()
+        {
+            AssertCode("subw\tr1,r0", "013B");
+        }
+
+        [Test]
+        public void Cr16Dasm_tbit()
+        {
+            AssertCode("tbit\t$3,r0", "0306");
+        }
+
+        [Test]
+        public void Cr16Dasm_tbitw_abs20()
+        {
+            AssertCode("tbitw\t$8,(0x082345)", "487F 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_tbitw_abs20_rel()
+        {
+            AssertCode("tbitw\t$E,0xE2345(r7)", "7E7C 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_tbitw_disp16()
+        {
+            AssertCode("tbitw\t$3,0x2345(r4,r3)", "7379 4523");
+        }
+
+        [Test]
+        public void Cr16Dasm_xorw()
+        {
+            AssertCode("xorw\t$FFFF,r9", "912A");
+        }
+
+        // This file contains unit tests automatically generated by Reko decompiler.
+        // Please copy the contents of this file and report it on GitHub, using the 
+        // following URL: https://github.com/uxmal/reko/issues
+
 
         // This file contains unit tests automatically generated by Reko decompiler.
         // Please copy the contents of this file and report it on GitHub, using the 

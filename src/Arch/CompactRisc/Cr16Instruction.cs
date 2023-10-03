@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,15 +50,25 @@ namespace Reko.Arch.CompactRisc
             switch (operand)
             {
             case ImmediateOperand imm:
-                renderer.WriteFormat("${0:X}", imm.Value.ToUInt32());
+                if (imm.Width.Domain == Domain.SignedInt)
+                    renderer.WriteFormat("${0}", imm.Value.ToInt32());
+                else 
+                    renderer.WriteFormat("${0:X}", imm.Value.ToUInt32());
                 return;
             case SequenceStorage seq:
-                renderer.WriteFormat("({0},{1})", seq.Elements[0], seq.Elements[1]);
+                renderer.WriteChar('(');
+                RenderRegisterPair(seq, renderer);
+                renderer.WriteChar(')');
                 return;
             default:
                 base.RenderOperand(operand, renderer, options);
                 break;
             }
+        }
+
+        internal static void RenderRegisterPair(SequenceStorage seq, MachineInstructionRenderer renderer)
+        {
+            renderer.WriteFormat("{0},{1}", seq.Elements[0], seq.Elements[1]);
         }
     }
 }

@@ -24,6 +24,8 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Reko.Arch.CompactRisc
@@ -34,6 +36,8 @@ namespace Reko.Arch.CompactRisc
         public static MachineOperand[] RegisterPairs { get; }
         public static RegisterStorage r12L { get; }
         public static RegisterStorage r13L { get; }
+
+        public static RegisterStorage[] ProcessorRegisters { get; }
         public static Dictionary<string, RegisterStorage> ByName { get; }
         public static Dictionary<StorageDomain, RegisterStorage> ByDomain { get; }
 
@@ -72,8 +76,47 @@ namespace Reko.Arch.CompactRisc
                 GpRegisters[15],
             };
 
+            factory = new StorageFactory(StorageDomain.SystemRegister);
 
-            ByName = GpRegisters.ToDictionary(r => r.Name);
+            var DBS = factory.Reg16("DBS");
+            var DSR = factory.Reg16("DSR");
+            var DCRL = factory.Reg16("DCRL");
+            var DCRH = factory.Reg16("DCRH");
+            var CAR0L = factory.Reg16("CAR0L");
+            var CAR0H = factory.Reg16("CAR0H");
+            var CAR1L = factory.Reg16("CAR1L");
+            var CAR1H = factory.Reg16("CAR1H");
+            var CFG = factory.Reg16("CFG");
+            var PSR = factory.Reg16("PSR");
+            var INTBASEL = factory.Reg16("INTBASEL");
+            var INTBASEH = factory.Reg16("INTBASEH");
+            var ISPL = factory.Reg16("ISPL");
+            var ISPH = factory.Reg16("ISPH");
+            var USPL = factory.Reg16("USPL");
+            var USP = factory.Reg16("USP");
+
+            ProcessorRegisters = new RegisterStorage[16]
+            {
+                DBS,
+                DSR,
+                DCRL,
+                DCRH,
+                CAR0L,
+                CAR0H,
+                CAR1L,
+                CAR1H,
+                CFG,
+                PSR,
+                INTBASEL,
+                INTBASEH,
+                ISPL,
+                ISPH,
+                USPL,
+                USP,
+            };
+            ByName = GpRegisters
+                .Concat(ProcessorRegisters)
+                .ToDictionary(r => r.Name);
             ByDomain = factory.DomainsToRegisters;
         }
     }

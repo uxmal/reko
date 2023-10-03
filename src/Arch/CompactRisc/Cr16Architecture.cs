@@ -33,6 +33,7 @@ namespace Reko.Arch.CompactRisc
     public class Cr16Architecture : ProcessorArchitecture
     {
         public static PrimitiveType Word24 = PrimitiveType.CreateWord(24);
+        public static PrimitiveType Ptr24 = PrimitiveType.Create(Domain.Pointer, 24);
 
         public Cr16Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options, Registers.ByName, Registers.ByDomain)
